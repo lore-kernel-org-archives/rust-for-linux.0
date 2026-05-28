@@ -1,118 +1,330 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2497E32F764
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 07:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779954630; cv=pass; b=cqDwyyAxAEXR1m5SpRC/AKL4vJk1OxrjNy+5mmso1tB9m4Ln5CEqkvbLNWntVhOTTfnK2/xatKcDPl1iZranDOoIalMV7yE+VpwpOl3HPNd8hyXwgW6AYvSTmBogdj/RjncuRenDFMK2iTTK5ckDIXsyg+yzsx9phQalNHMoazI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779954630; c=relaxed/simple;
-	bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KCQB0Dr+xnmDpzxW5k6kQpu9Tg1xkUaBEkQWHXn92miV0KSh4uSmy6Tevl1HLLIHqqDtIsenFA/r/G3MtFjvpcIRFJhHALShDoaDtvIZLYgNxRRYupNkBDJrn1KdgdIE61WxZ2ta+H61KeYDZe4FHCtvp51MtmmdfCurroycm+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lWHc7TyN; arc=pass smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8A6E37882B
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 08:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779956441; cv=none; b=njr3D5DXUp0+ffDqaE8OR9c1+wbO+i6Du725hC1vxMfMAwAXLLUSrwyO443e0CayIOzsHfOJ2qsVwDTpA/rbeMu9tlbGGDVfHqiczg54+w55476mJTSiMi2KQqtjLHyS+RR5HFCbvfj5CpVnRnRK5FLwzSxDDZmwB8wFrC27NRU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779956441; c=relaxed/simple;
+	bh=67xLME/jrqvDN+6o0vE0p8K4JnPPiwDhkF3zcWvoMDo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z9NEvSqgS+myxF9WeabtDimcLZSr1mqoYjBtA0DhAoRQrTDidZ5elJZIpu6Fe5ZJTxoRq9fLqn7W9Zek6be7a5PJoh6BdMJL3fqcdF1ia4VH2GURaQYOGhLL8UnhpuwnW+UnjsqB5Wvgu3P5R0hqSS6HuUSlxC38vCgdfLSNrA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=tk7TWDIN; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lWHc7TyN"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-304d8e3bb72so688207eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 00:50:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779954628; cv=none;
-        d=google.com; s=arc-20240605;
-        b=le4ePYUFob+7kYRhFO8/nL5ZSqSoGsnuogSNrTmwSS2OLr4mFZJjH8903VKqO+doDh
-         m5JKB4X0YjHZcQ32P7ktpzcm2YpeMHYthVk+A+pG7iBnjiZ8Wg6Dc/sXsRrZIJ3yRUt3
-         dj6OhwGxP8cZDiqeDHXsMXR+P6kC7gqnzYNy47kK+VBN7vWAauWSNUm/0I2FGONkx5QN
-         XbF5b4e1meM13cC+b06iTU/boc3RrieSODBN1RzeuWhVI8wRo2i6++hDWRZ9e4HZaG7f
-         fvxH74y9HStGk78ZAgtYKHeYICM6bQphRcc7t8cQ7EdbmDGBOdjDuLRRptbgvgN6O3UX
-         P3rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-        fh=W7hxf5bnlI4MsVN74e8Cx6kC7Cbnb0egRl6EoFB21Gc=;
-        b=X08IzTk4TW/erLXh5VRxYduMJqbU6Hf4R9T7DYzizQPY7vquoVxkVDO4CqJvI1XZMN
-         QTYE3/oD9PkeCTCArx2rqyqwKv9GJmDvr0iglNgy6ZAWlEkxNmH8mjZ9qHz7PoVvN3zE
-         8gK5rdBFxJRgX5xUWjrRekB8pxTKi7eSJZtT66ZFa+hn5k/71eN+fN/QxKRTzXVbmXWy
-         atCJ309qm7pCGmxalKNMA7Jr00dCYSIq911YhxORU13E2h2NFXHAMIxjkdOcjKjgdqPQ
-         datIhElWQNloXkMV1pC4elNkAMKL1qcNfsnS1sLRDBMIvHNJScrZ9nUz87yaFaLcOFGq
-         2cpQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779954628; x=1780559428; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-        b=lWHc7TyNWIGIR0dQ+iuW/ZtSC7yNVk8aEnC9RNDr0gE+KlICoU6ZDPh4vVQWkdVhiM
-         TFDk9M+58z00ApW50L6cggsHVuJ+SwGjQZAB3K2XokuFzB8KzmZhDjKsukHmdQflSaJI
-         Y07mF5WmIlLD8kEANr0llyy5UPBth5QlUOmgWByckq+ZIVAYir1thzsWWt7KbLsENi97
-         kwsubOMY2p7txzET+G9qIve2lRnKmM7isi5NExkae9CosftvDr7gqo2b6fQfMmLVAyyy
-         8TdxDPgyuoXtIUorYMg3th7wnJtbqsZoKd+mtfp16Tu6V8PxYsBdzZ/oIGRjg+qERbzV
-         tVaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779954628; x=1780559428;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t0V9M6e2VB4qcIJrywyyrYPhcdcYJQBM+oNk8gNRf+8=;
-        b=eMld5gFvmCPY0cnPKhc1nyd4BVcSLtixCNB6Y8i8bXQF0cWMARL2HUD3jCAmsuSTSa
-         OFk1dBgq5CO4VDiWdOx5kxY4TMcGY7sVg/29YO1wodLZjertnl5jU0JU7UyojmN1dGO3
-         Hnr8hwH6JS0i5wIV5iDCYG5rL9dzVBG0wI7aKpX+yHmvOjwcUWluT7XlCHBWXGKtAgLS
-         pEDbpM9oe2J1i75gVOX4yekpx+XMvNwX5007YFo0JxiG6P78Xx0asTOytAuYWF3u2qAc
-         QJcF1AIa/OyUTfubd5ATFDw4X+nK4LKXY2hWk8z0RmIi+5SMF0g+I9F1FEBeA+Ik3gLb
-         Uoag==
-X-Forwarded-Encrypted: i=1; AFNElJ/3uJIINWxt1vKFzKaOQ8Xwzq3G0uv2Wg9+NYxGSRGHTVyUx6MCAl3hI8uZ9kfNY56/v7CQBOQjKbQb7wWIFQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOwIrhdJayFFblAnGJmMj1hDtYI/Srnvu6tUn9h4fbN7nMpvmC
-	NzIVypmRX+CNNy1OnS9H+yfxpps2JianUuUL9FDqaBRmiVmj84dKpiF3nXRqKTzbo1j0qfBiRnd
-	Cvn3UW1tdVYNbvnjmH8J1wglUbt/FoTJ31/SUFaxj
-X-Gm-Gg: Acq92OF9l40cHpzeJjQpJL0hm8+E9q1pk8wdo95yZ86yPk+5sbyVLIKwxiojlvFzgn8
-	UhdM1QL/rX13IwzZpun6WPdDWcS0X8DFKEWJRq6ZMU7w2iKYYhpYqR9vaa0rHC8P+H21o54X+jT
-	9aXU7a3FDoLbXLXAtaT3qh+PamYsRpDDPV7Vgdo9ndFUNLQW5TT2OdxQyzbwbmrCXmylRllwNFE
-	k2bAEdryj2q5/YmNIFQ3J2u4oZQ/RDq+PXp7pmxbNRULrskAtVjPFNZPKgaOmbOWdwAl2zXX3PN
-	FtzVKP8i6+WglLDBa630O93+QCcjec/9F7ou7lBPu4ZgrAOpi1RsDre786NhLvpKEu1oKblntM4
-	VmdHt
-X-Received: by 2002:a05:693c:69d3:b0:304:5db8:daaa with SMTP id
- 5a478bee46e88-3045db9c438mr6096842eec.12.1779954627675; Thu, 28 May 2026
- 00:50:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="tk7TWDIN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1779956434; x=1780215634;
+	bh=El77Hs0w/tnGS3/Zfzv8VmSeAqqh1AD94Dk/chXGtlk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=tk7TWDINt3nXUJqg3lk3QOPs7BOCIVQruT3h0r2WbqPaD1fGc5xk2HWeOOk4JkdDH
+	 gYZy4NpeAucc5chY9jB4IVNJtOcoQqzHmD+AvL548YYnkSLQtk48nc/ioK6tOCsxhv
+	 6vLzxX9pOYBT/xyxXAtARLQyYA8B7K107R9UQpK4ghZgZnrMFfu1NB5B1DvfANCQkY
+	 H2e8ZaHvoxuPTfLihZ1NRhj5H6d68onNKN9Kz0SGUmbHFMkyiWOPojjuY4MOLXhR6v
+	 GFyCP/+67J8cLfFjYD03/cp5q/HmcMMO5VesQ+OfhoE7Lku/MsYNRHE9HpzyAJcmrG
+	 X4dI59j/syNjw==
+X-Pm-Submission-Id: 4gQzvG5StDz1DF6l
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Cc: rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v7 3/4] rust: sync: add SRCU abstraction
+Date: Thu, 28 May 2026 11:20:10 +0300
+Message-ID: <20260528082025.44414-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260528062810.256212-4-work@onurozkan.dev>
+References: <20260528062810.256212-1-work@onurozkan.dev> <20260528062810.256212-4-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527-set-extended-error-v1-1-407b4b466035@google.com>
-In-Reply-To: <20260527-set-extended-error-v1-1-407b4b466035@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 28 May 2026 09:50:11 +0200
-X-Gm-Features: AVHnY4INulTCcRwU6GdvWBSiFwJioZKqN5qt8BQbixvcN9LDNmBIpBZ3C8IQ-yw
-Message-ID: <CAH5fLggH-kXntkwF_m6=xv+AzEANKm5eX5rUV4sT3HCasheBuQ@mail.gmail.com>
-Subject: Re: [PATCH] rust_binder: fix setting the extended_error
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 27, 2026 at 3:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This code currently copies the ExtendedError struct to the stack,
-> modifies the copy, and then doesn't modify the original. Thus, fix it.
-> Clearly nobody actually uses this feature, because nobody noticed that
-> this is broken until they tried changing userspace to make some errors
-> fatal.
->
-> A test in userspace is being added along with this change.
->
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-
-Hrm, looks like this patch is insufficient.
-
-Alice
+On Thu, 28 May 2026 09:27:35 +0300=0D
+Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+=0D
+> Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_struct.=
+=0D
+> Provide FFI helpers and a safe wrapper with a guard-based API for read-si=
+de=0D
+> critical sections.=0D
+> =0D
+> Cleanup is handled via `PinnedDrop`, which explicitly drains pending grac=
+e=0D
+> periods and callbacks via `synchronize_srcu` and `srcu_barrier` before=0D
+> executing `cleanup_srcu_struct` to guarantee memory safety e.g. when ther=
+e=0D
+> are leaked guards (via `mem::forget($guard)`).=0D
+> =0D
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> ---=0D
+>  rust/kernel/sync.rs      |   2 +=0D
+>  rust/kernel/sync/srcu.rs | 166 +++++++++++++++++++++++++++++++++++++++=0D
+>  2 files changed, 168 insertions(+)=0D
+>  create mode 100644 rust/kernel/sync/srcu.rs=0D
+> =0D
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs=0D
+> index 993dbf2caa0e..0d6a5f1300c3 100644=0D
+> --- a/rust/kernel/sync.rs=0D
+> +++ b/rust/kernel/sync.rs=0D
+> @@ -21,6 +21,7 @@=0D
+>  pub mod rcu;=0D
+>  mod refcount;=0D
+>  mod set_once;=0D
+> +pub mod srcu;=0D
+>  =0D
+>  pub use arc::{Arc, ArcBorrow, UniqueArc};=0D
+>  pub use completion::Completion;=0D
+> @@ -31,6 +32,7 @@=0D
+>  pub use locked_by::LockedBy;=0D
+>  pub use refcount::Refcount;=0D
+>  pub use set_once::SetOnce;=0D
+> +pub use srcu::Srcu;=0D
+>  =0D
+>  /// Represents a lockdep class.=0D
+>  ///=0D
+> diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs=0D
+> new file mode 100644=0D
+> index 000000000000..343f00d070c7=0D
+> --- /dev/null=0D
+> +++ b/rust/kernel/sync/srcu.rs=0D
+> @@ -0,0 +1,166 @@=0D
+> +// SPDX-License-Identifier: GPL-2.0=0D
+> +=0D
+> +//! Sleepable read-copy update (SRCU) support.=0D
+> +//!=0D
+> +//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h)=0D
+> +=0D
+> +use crate::{=0D
+> +    bindings,=0D
+> +    error::to_result,=0D
+> +    prelude::*,=0D
+> +    sync::LockClassKey,=0D
+> +    types::{=0D
+> +        NotThreadSafe,=0D
+> +        Opaque, //=0D
+> +    },=0D
+> +};=0D
+> +=0D
+> +use pin_init::pin_data;=0D
+> +=0D
+> +/// Creates an [`Srcu`] initialiser with the given name and a newly-crea=
+ted lock class.=0D
+> +#[doc(hidden)]=0D
+> +#[macro_export]=0D
+> +macro_rules! new_srcu {=0D
+> +    ($($name:literal)?) =3D> {=0D
+> +        $crate::sync::Srcu::new($crate::optional_name!($($name)?), $crat=
+e::static_lock_class!())=0D
+> +    };=0D
+> +}=0D
+> +pub use new_srcu;=0D
+> +=0D
+> +/// Sleepable read-copy update primitive.=0D
+> +///=0D
+> +/// SRCU readers may sleep while holding the read-side guard.=0D
+> +///=0D
+> +/// The destructor waits for active readers and callbacks, so it may sle=
+ep.=0D
+> +/// If a read-side guard has been leaked, dropping an [`Srcu`] may never=
+ return.=0D
+> +///=0D
+> +/// # Invariants=0D
+> +///=0D
+> +/// This represents a valid `struct srcu_struct` initialized by the C SR=
+CU API=0D
+> +/// and it remains pinned and valid until the pinned destructor runs.=0D
+> +#[repr(transparent)]=0D
+> +#[pin_data(PinnedDrop)]=0D
+> +pub struct Srcu {=0D
+> +    #[pin]=0D
+> +    inner: Opaque<bindings::srcu_struct>,=0D
+> +}=0D
+> +=0D
+> +impl Srcu {=0D
+> +    /// Creates a new SRCU instance.=0D
+> +    #[inline]=0D
+> +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> =
+impl PinInit<Self, Error> {=0D
+> +        try_pin_init!(Self {=0D
+> +            // INVARIANT: On success, the C initializer creates a valid =
+`srcu_struct` and=0D
+> +            // it remains pinned until `PinnedDrop` runs.=0D
+> +            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu_stru=
+ct| {=0D
+> +                // SAFETY: `ptr` points to valid uninitialised memory fo=
+r a `srcu_struct`.=0D
+> +                to_result(unsafe {=0D
+> +                    bindings::init_srcu_struct_with_key(ptr, name.as_cha=
+r_ptr(), key.as_ptr())=0D
+> +                })=0D
+> +            }),=0D
+> +        })=0D
+> +    }=0D
+> +=0D
+> +    /// Enters an SRCU read-side critical section.=0D
+> +    ///=0D
+> +    /// Leaking the returned [`Guard`] leaves the SRCU read-side critica=
+l=0D
+> +    /// section active and makes `drop` sleep forever.=0D
+> +    #[inline]=0D
+> +    pub fn read_lock(&self) -> Guard<'_> {=0D
+> +        // SAFETY: By the type invariants, `self` contains a valid `stru=
+ct srcu_struct`.=0D
+> +        let idx =3D unsafe { bindings::srcu_read_lock(self.inner.get()) =
+};=0D
+> +=0D
+> +        // INVARIANT: `idx` was returned by `srcu_read_lock()` for this =
+`Srcu`.=0D
+> +        Guard {=0D
+> +            srcu: self,=0D
+> +            idx,=0D
+> +            _not_send: NotThreadSafe,=0D
+> +        }=0D
+> +    }=0D
+> +=0D
+> +    /// Waits until all pre-existing SRCU readers have completed.=0D
+> +    #[inline]=0D
+> +    pub fn synchronize(&self) {=0D
+> +        // SAFETY: By the type invariants, `self` contains a valid `stru=
+ct srcu_struct`.=0D
+> +        unsafe { bindings::synchronize_srcu(self.inner.get()) };=0D
+> +    }=0D
+> +=0D
+> +    /// Waits until all pre-existing SRCU readers have completed, expedi=
+ted.=0D
+> +    ///=0D
+> +    /// This requests a lower-latency grace period than [`Srcu::synchron=
+ize`] typically=0D
+> +    /// at the cost of higher system-wide overhead. Prefer [`Srcu::synch=
+ronize`] by default=0D
+> +    /// and use this variant only when reducing reset or teardown latenc=
+y is more important=0D
+> +    /// than the extra cost.=0D
+> +    #[inline]=0D
+> +    pub fn synchronize_expedited(&self) {=0D
+> +        // SAFETY: By the type invariants, `self` contains a valid `stru=
+ct srcu_struct`.=0D
+> +        unsafe { bindings::synchronize_srcu_expedited(self.inner.get()) =
+};=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +#[pinned_drop]=0D
+> +impl PinnedDrop for Srcu {=0D
+> +    fn drop(self: Pin<&mut Self>) {=0D
+> +        let ptr =3D self.inner.get();=0D
+> +=0D
+> +        // SAFETY: By the type invariants, `self` contains a valid and p=
+inned `struct srcu_struct`=0D
+> +        // and `srcu_readers_active()` only checks the active reader cou=
+nt.=0D
+> +        if unsafe { bindings::srcu_readers_active(ptr) } {=0D
+> +            crate::pr_warn!(=0D
+> +                "Leaked `Guard` detected while dropping SRCU; drop will =
+block forever.\n"=0D
+> +            );=0D
+> +        }=0D
+> +=0D
+> +        // `cleanup_srcu_struct()` may return early if readers are still=
+ active. Because `Srcu`=0D
+> +        // owns the embedded `srcu_struct`, returning from `drop` in tha=
+t state could free memory=0D
+> +        // that is still referenced by the C side.=0D
+> +        //=0D
+> +        // Wait for all readers to complete first. If any `Guard` was le=
+aked, `synchronize_srcu()`=0D
+> +        // will sleep forever.=0D
+> +        //=0D
+> +        // SAFETY: By the type invariants, `self` contains a valid and p=
+inned `struct srcu_struct`.=0D
+> +        unsafe { bindings::synchronize_srcu(ptr) };=0D
+=0D
+Sashiko got a good point here which is calling synchronize_srcu() only if t=
+here=0D
+are active readers. That's a nice low-effort improvement we can have in the=
+ next=0D
+version.=0D
+=0D
+Onur=0D
+=0D
+> +=0D
+> +        // Ensure all SRCU callbacks have been finished before freeing.=
+=0D
+> +        // SAFETY: By the type invariants, `self` contains a valid and p=
+inned `struct srcu_struct`.=0D
+> +        unsafe { bindings::srcu_barrier(ptr) };=0D
+> +=0D
+> +        // SAFETY: By the type invariants, `self` contains a valid and p=
+inned `struct srcu_struct`.=0D
+> +        unsafe { bindings::cleanup_srcu_struct(ptr) };=0D
+> +    }=0D
+> +}=0D
+> +=0D
+> +// SAFETY: `srcu_struct` may be shared and used across threads.=0D
+> +unsafe impl Send for Srcu {}=0D
+> +// SAFETY: `srcu_struct` may be shared and used concurrently.=0D
+> +unsafe impl Sync for Srcu {}=0D
+> +=0D
+> +/// Guard for an active SRCU read-side critical section on a particular =
+[`Srcu`].=0D
+> +///=0D
+> +/// Leaking this guard with [`core::mem::forget`] leaves the SRCU read-s=
+ide=0D
+> +/// critical section active and makes dropping the associated [`Srcu`] s=
+leep forever.=0D
+> +///=0D
+> +/// # Invariants=0D
+> +///=0D
+> +/// `idx` is the index returned by `srcu_read_lock()` for `srcu`.=0D
+> +#[must_use =3D "if unused, the lock will be immediately unlocked"]=0D
+> +pub struct Guard<'a> {=0D
+> +    srcu: &'a Srcu,=0D
+> +    idx: i32,=0D
+> +    _not_send: NotThreadSafe,=0D
+> +}=0D
+> +=0D
+> +impl Guard<'_> {=0D
+> +    /// Explicitly releases the SRCU read-side critical section.=0D
+> +    #[inline]=0D
+> +    pub fn unlock(self) {}=0D
+> +}=0D
+> +=0D
+> +impl Drop for Guard<'_> {=0D
+> +    #[inline]=0D
+> +    fn drop(&mut self) {=0D
+> +        // SAFETY: `Guard` is only constructible through `Srcu::read_loc=
+k()`,=0D
+> +        // which returns a valid index for the SRCU instance.=0D
+> +        unsafe { bindings::srcu_read_unlock(self.srcu.inner.get(), self.=
+idx) };=0D
+> +    }=0D
+> +}=0D
+> -- =0D
+> 2.51.2=0D
+> =0D
