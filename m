@@ -1,119 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6993B960B;
-	Thu, 28 May 2026 11:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779969056; cv=none; b=Otv5HQZMIKC5haF791LtKUaDqJGfacY1mJZBrLs16/SNlm+xr0AAvWs9BAqQIM4xEFBL72b9b00UtA1TnOC280Bsapuz38tHAnKKk1J1Mue3s0ihPXRSYxjbh+kmdNMNwIQmgj7Fc0sIT5CntHYOacR5yb3SXOUX/ZNOKZqLo9I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779969056; c=relaxed/simple;
-	bh=aWA7rEsrqvANl6MVbaBX4D4zGr5K+M7ddhon1j6yYQc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=RCv13eWj/HU9XjmS518e36AcJHAeUon9BT/9/RVlK4JV3clZPlfoRxQqak35ItjENIIY6sZ66nqtZSBQ0CGbXVkU9Qj5Fc3SQP6dJbxjhKnNkikQT6LdebkBp78VrtjqlRLPUags6sAs42c0g/t05fuMJwxE7OGtXBZxFF4IVAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nE1J3bRw; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0D930BF67
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 11:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779969242; cv=pass; b=YDZToCKZUBheX6u+BeYRvxK0l1btFKTIdM+y/sA3/AZm/EVDBicGmUw5iM9mh4IFtZWGWyghq5ZebQKQ2u3NWqTIUAA9tsMdZZlvrTmBLNOqHPI7RirVHYAiqH76qJKgNKHixoXZ/P1AYbfwpElKUa4eR5Yf4A5L4aekLzxpy6A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779969242; c=relaxed/simple;
+	bh=+i+7WT6hQq2y9ySvwKVLfO/vDchNz67s/vijWeP69DM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rKKBnFVE1zk0Hj5B5riGEfkLhmg9HP5Ilb4+tV8xJ46fDEwqszkWMpJ82D6aYcQ2Kq28PawEHskmXpX0vdDs95uLyWNeezT3/SCEN/QYV1B6zFCe2SjgQ1aeRiiOLj/2zIpGZg1ULf8kIbxUaa6LN3/awoFlJFVuyx3Ai/Qp3vw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U+Sdiz2N; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nE1J3bRw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB861F000E9;
-	Thu, 28 May 2026 11:50:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779969054;
-	bh=tzOYLnNmfatgJt40jq08mU/2TFAS1f4Zcn4F1Y76X1E=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=nE1J3bRww4EW8HPtW8n2ESVbCUKWErXoOBQmSxy+3ZBEdUxTKzOJHoMKav/qwYzdD
-	 /J95DocihKTJ+P91MF7sXeXkCxAiI07pSBwfC5LkucK5LGFK5O6cVw2zGR0USTchd8
-	 tlHdWfe4+IT1vqZFEGPD7FNA/2BvWVuFlCZQ+yDz32N2YyXRZrogv5oGPaKuN/fyQ2
-	 hgWCQ+w3UjvA9EkxxLGyBm8e6ZQboy7FQ+zSBycB/R/u06hWyxC9BsHr9xql1VXM4k
-	 dFyQ9s8lohk8fVGLlXSUCgHlu+ssXI7MVTCA0yLLOZHgSbsJh92O8tes5jqEiGOCJA
-	 K/eCczfGssvQA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Ren Wei <n05ec@lzu.edu.cn>, linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
- axboe@kernel.dk, tamird@kernel.org, sunke@kylinos.cn,
- yuantan098@gmail.com, bird@lzu.edu.cn, royenheart@gmail.com,
- n05ec@lzu.edu.cn
-Subject: Re: [PATCH v2 1/1] rust: block: fix GenDisk cleanup paths
-In-Reply-To: <e14c015e2e0bde04f84a9452330b94436e2d8e68.1779901336.git.royenheart@gmail.com>
-References: <e14c015e2e0bde04f84a9452330b94436e2d8e68.1779901336.git.royenheart@gmail.com>
-Date: Thu, 28 May 2026 13:50:39 +0200
-Message-ID: <87ldd37nxs.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U+Sdiz2N"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-304d3d3d8f8so40643eec.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 04:54:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779969240; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DfvETBckoMWWTC1koYHkWiFbY2MGAVCGa9t7ltGCvuvIykZZ1nhM8tEmDcAjBJX2+i
+         vIjFby78th9McVJvxHleJKc0iOTrHKpB932/rnY8mm29mL1EWh121msvBkhxrs4TC6ja
+         xoEDByNw8Jn8qcFV0i62U3Wvnzd++bVtyU7XeyHcHDFQeKlpSQ6LOL08q3m/DE+N99Xo
+         Q05Gom+l29WasAC034++phUOMEsgYI//P4WmQo6gp0+D1mz+/OM/rEVg5oQwcsvxCPuY
+         6CesOA4/Oob49tuHFvWevt/d/FC/MmFpf/b/S8IhYAI551u1HLxGp4ylJXXklTIupc3H
+         Av3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9YWbdpeB3kBUHbSUawXWFsvVyi180Z90CSLxa8M6it8=;
+        fh=3X5d6vPPmGR97WjFr5DQn9xTQrgSDoISxPj3H9e/UM8=;
+        b=EyEC8Uls4Fn2KUwv/su0fRNqO9AQhzrUYCMAPnnbCWPIHE1CO+/EZZdxP5LX5BwS68
+         CzZVy0w3SLigMNuDePEhyI+ovVsSU6I6Pb4xw9fQL7T+Cq4h/kwRUXGMnjpR7uAlAXH/
+         VeEtOAXnn07ZvsgApcTayM7J7aI+cNVrfQDv/X6vN9jwCk6V7uBibjrKNL9e/EsizNZr
+         AYUYgBfFHnX2CBKEZgeua1XuBEPjYYI6aoHxPIVVgSyoJmZk3F5NvH6pjVTT/OdwhLDP
+         L0N/+0d1YbTiksJ0UKkWrUGracXqqiDq8CC2Wg0m5+ZYYlkrGFgSrV8sJC/cmlfpHERg
+         7Q3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779969240; x=1780574040; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9YWbdpeB3kBUHbSUawXWFsvVyi180Z90CSLxa8M6it8=;
+        b=U+Sdiz2NUoVAJzUntwkPEpwHIIgHYD+YgYQh5DCl8MP7oYZpyEPx3mnujvEurJvX4o
+         yW59WOTWKLMwz+zLAKSrAR2CU4fuADaSh/dB6nHrxLWaDJrjY5kYz96W20PKGnKynMPp
+         VVnmLk7gYScBH4kgumbFqzjVHhn6Sy/anmUfQDNxB1+49niRFXUOlojGL5/XbNP2BBii
+         UbPd2yFZfZOrqZ/lVZPTHyzfqV1aC4MPINp/MD2A6nRo5+SAE0zRIsW89oyG00sE1Vjc
+         fROVa28zUcgRXHPY0UR0waObqsOSLHAPvYabAxmo7buyK8HlFr0tiaVcHRYw6wWHxyJc
+         Vf7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779969240; x=1780574040;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9YWbdpeB3kBUHbSUawXWFsvVyi180Z90CSLxa8M6it8=;
+        b=YCP6F60zBbRYY4cjda2o6HV9yFoCc985JSng6MmG8e9KmLmj1kSlCU9xYUlU1t+iJM
+         mjs0D87Dn7djakY+HXihVianY2JrMc9ctqXng0G/GaXkRdDSlekAMQGE0p+XILQC/Z9f
+         1EFrlCSojIIVC8KkuHLmV4hMUQ5Zk8K9JtFD8Yzp77tCEOiTKH3kbumLPudfy7j1g2Zj
+         UJJ2FgcXJZj4ydJbjdP3m/TvUYHdYrnLgJAuU3P3E3Vyr6IOVE3as0PO7esbzAav7l22
+         358BwkoY/jtMXf8wqtY/Lv9YHQF1xK5JBx3Rv6efUd+WPgxF6TlxuhefEjthwou8rk5v
+         8Yow==
+X-Forwarded-Encrypted: i=1; AFNElJ9dMttZ0c7aBrtCQMp9Gj120+IDGfEHoFHETVosWu3dqEyc1dRlCqQxV7Fz0hEcjOg9jqia/dq9zVDj+ubHKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRk3SULCCQwdwC/6pHEH88SVKBrept3l6Kue5ZUj8faOb6CFoy
+	GhonQhAfhFcqR35qsGQd6/y2MrGhRL+ViU9RRXcPPuydN6hyDlBqNNBAf3nTyNkCH0NG6F22hRQ
+	mgI6ThawYRJEu1vG3B58CE9Qj0mBZ8oc=
+X-Gm-Gg: Acq92OHHXU7P8rd45Kw01kWm3P1iu4vkVWh3KoVarFs2yYSbNPryXXfvfRnqxVOjqnU
+	o3JzLAam9q/ywQKN3rlq2wvoE2Uxi/vFQey7ntpWnMyDRnjDkADN4CsX3/36AAZIMLaoJsSOeB8
+	VuvcxWl31tmAlPkiM0MFIGuarneze+KgX/iIXEt0DIgtq0EbwaVWZu+6hl9enyu2xQn7DGUH8Go
+	GlgoUGcHtG/6vBA5wpKV/lm5h6vjEKfwKYd+u2TC/dsgqE8VNGMmLlf4f8t+PcqBf31I7lP6ibS
+	fsdO+ljZaT4os/LtJDtuJSrvAfbKhh/52qoSiT4vIuje8AXmFhtHSVRNBek/nh83ZiL9j4mpcM7
+	vPAKCHgwznJ4Gu61rDSJ8+kNOISvoQ6VkKg==
+X-Received: by 2002:a05:7301:6793:b0:304:1d92:42ab with SMTP id
+ 5a478bee46e88-304d2ab127dmr475529eec.2.1779969240385; Thu, 28 May 2026
+ 04:54:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260521-rust-gitignore-long-types-txt-v1-1-5be5e6fa427c@pitsidianak.is>
+In-Reply-To: <20260521-rust-gitignore-long-types-txt-v1-1-5be5e6fa427c@pitsidianak.is>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 28 May 2026 13:53:46 +0200
+X-Gm-Features: AVHnY4IpyYWsCqgASiWCHSdBWaUHYsVId58mzWvg96RYZDoZpq6E4eRyhNYy59w
+Message-ID: <CANiq72=cKXdmxEacuGET8fuz_v5eFGB50vnOnKZZJd6iEeAAFA@mail.gmail.com>
+Subject: Re: [PATCH] .gitignore: ignore rustc long type txt files
+To: Manos Pitsidianakis <manos@pitsidianak.is>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ren Wei <n05ec@lzu.edu.cn> writes:
-
-> From: Haoze Xie <royenheart@gmail.com>
+On Thu, May 21, 2026 at 12:29=E2=80=AFPM Manos Pitsidianakis
+<manos@pitsidianak.is> wrote:
 >
-> GenDiskBuilder::build() still has fallible work after
-> __blk_mq_alloc_disk(), but its error path only recovers the
-> foreign queue data. That leaks the temporary gendisk and
-> request_queue until later teardown. If the caller moved the last
-> Arc<TagSet<T>> into build(), the leaked queue can retain blk-mq
-> state after the tag set is dropped.
+> When rustc prints an error containing a long type that doesn't fit in a
+> line, it will write the whole thing in a .txt file and print messages
+> like:
 >
-> Fix the pre-registration failure path by dropping the temporary
-> gendisk reference with put_disk() before recovering queue_data,
-> so disk_release() can tear down the owned queue.
+>   note: the full type name has been written to
+>   'path/to/subsystem/module_name.long-type-11621316855315349594.txt
 >
-> Also pair GenDisk::drop() with put_disk() after del_gendisk().
-> Once a Rust GenDisk has been added with device_add_disk(),
-> del_gendisk() only unregisters it; the final gendisk reference
-> still has to be dropped to complete the release path.
+> Long types like core::result::Result<core::pin::Pin<Box<_, Kmalloc,
+> kernel::error::Error>: pin_init::PinInit<Box<_, Kmalloc>, _> are common
+> during development, so add a gitignore entry.
 >
-> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-> Cc: stable@kernel.org
-> Reported-by: Yuan Tan <yuantan098@gmail.com>
-> Reported-by: Xin Liu <bird@lzu.edu.cn>
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Haoze Xie <royenheart@gmail.com>
-> Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+> Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
 
-Looks good to me, but could you please add some newlines for
-readability:
+Cc'ing Nathan, Nicolas and Kbuild -- I considered whether deleting
+these in e.g. `distclean`. They are only error artifacts, i.e. the
+build system doesn't create these intentionally -- they come from the
+Rust compiler in a minority of error cases (where type names are
+long).
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 6ea16b943c99..fc97dd873974 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -149,6 +149,7 @@ pub fn build<T: Operations>(
- 
-         // SAFETY: `gendisk` is a valid pointer as we initialized it above
-         unsafe { (*gendisk).fops = &TABLE };
-+
-         let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
-             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
-             // has not been added to the VFS on this cleanup path.
-@@ -157,6 +158,7 @@ pub fn build<T: Operations>(
-             // converted back on this cleanup path.
-             drop(unsafe { T::QueueData::from_foreign(data) });
-         });
-+
-         // The failure guard now owns both pieces of cleanup; the early guard
-         // must not run on this path anymore.
-         recover_data.dismiss();
-@@ -225,6 +227,7 @@ fn drop(&mut self) {
-         // initialized instance of `struct gendisk`, and it was previously added
-         // to the VFS.
-         unsafe { bindings::del_gendisk(self.gendisk) };
-+
-         // SAFETY: By type invariant, `self.gendisk` was added to the VFS, so
-         // `put_disk()` must follow `del_gendisk()` to drop the final gendisk
-         // reference and trigger the remaining release path.
+So end users shouldn't see them anyway, so I am not sure what the policy is=
+.
 
-With those changes:
+In any case, putting these in `.gitignore` shouldn't hurt, and they
+are definitely not intended to be committed, so it makes sense
+regardless of the cleaning. Thus I will commit it with these notes
+unless someone shouts:
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+    [ Depending on the compiler version and the kind of error, there are
+      two possible spellings -- copying them here for reference:
 
+          =3D note: the full name for the type has been written to
+'...long-type-...txt'
+          =3D note: the full type name has been written to '...long-type-..=
+.txt'
 
-Best regards,
-Andreas Hindborg
+        - Miguel ]
 
+    [ Moved the lines closer to the existing rust-analyzer one. - Miguel ]
 
+I also wondered about `--verbose` (which probably we don't want to
+enable unconditionally) and `-Zwrite-long-types-to-disk=3Dno` (which
+could be possible as a nice middle ground if kernel developers prefer
+to avoid the files unconditionally -- I asked upstream out of
+curiosity if that or something similar is intended to be stable at
+some point).
+
+Thanks!
+
+Cheers,
+Miguel
