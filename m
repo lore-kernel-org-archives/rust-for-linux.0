@@ -1,126 +1,201 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D66379C43
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 09:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779959877; cv=pass; b=UX2IH+9DvcmWwlKuCdzqolpk/cI2Se7UZUUzp4QAvKJXVvgsesk6yubKXD9CoTYw9ytrhvoVEfehPH+auuNhdcsEBDOvdX/wzM7JcTB3VggkwNFyIzGpSQKWQ2jOCtb60IDSAtbmKbWT0U6Vd3kaetO3u0IWCLQSwvKr9UswiC8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779959877; c=relaxed/simple;
-	bh=WhO5G6gzlFr32SqW7CFgcwHNDWkrtQdw0YHY+Igb4l8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tfk6Yz1kEXgQyYiYgsFrmxcqnORvRHI2Tkt5iv13Gm1v+0mxN2Zxf8jJORd/w5aaS2+k8q4ebbIes50Drk+JIDw/n3TBX9ic1Zl4GZVeo7dp0Lcx7tTfGVZW+GsbY3mmnkGOGi1tN2jwBMuOzZimjXxFg6OLoIfKO+P97PMg7pY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4lu7th0; arc=pass smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F783B585F;
+	Thu, 28 May 2026 10:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779965028; cv=none; b=MlhXJFwPtSjFxrk38yNPoTxOJggsYZNBx7xJXr8/QH3bKrD1qOyrOiASuZU5qoKPlzMDIXMbm9hQwZp9vf97wU9uKNATWugQNuo/mNFfxcUtzY1c3rZzvxDxBpuwkkstdR7jF4Wdn9123n3rALUXWj2XtnZLX8nI/jer9R/1L2E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779965028; c=relaxed/simple;
+	bh=u0aRxM6DUow2LEF0COnOp/ciM9e5CqyqG3ckcIj5TdQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YO4kAQkoQlKihCMDwja/jkYJue/f36cckVFgKL+P4LEExVWKrA/W6POvJHzG377MOxI1NohesoYIkTKwzsVVNxDWd0+E9jUP1JxrvBu7L3W0tWATB7yIukWt71TtChsi3Q7JnaEYDvJTVXuAY/RxF17RPm6iBaoqdDYdLIwj+Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=RcLkjF7V; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4lu7th0"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5a86cb123e0so1224039e87.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 02:17:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779959874; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JjIQE9chEoW3VzgmdvLDAYhy96tze0BcKJj8/40g9BpO/T1qP3+qf/YN6lIhS8qxgB
-         TPA4H8yq3pqEW6EyzibKItQzmJVRAkcFyqB5mWpfyCk8aeLv1JchBgqYP4eE5uVhvniy
-         wW3fx4dqkU8pat0qhdNoOoZmaqWYvunHHx874DXaOD6hqdNYrbxkEX8gbWwV1tBbpSZf
-         A9SkVcwAHbeKisItRxBgNbeTsdknNrt2Kzwux7PeDuA/XdU1nU9+3XDnQCcVToCp9Pnc
-         /0jupdgK6OO2eVqWOLzMGrWWWW0jLAC/kvZebi6X3RwEm+oFnIATBOfQS7Kmgovd2cdl
-         tZUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xAoLVzm1+sBvhfJvAzz19IzARWt64sZWYa23INP9RTI=;
-        fh=NRlMFLFTXdywqTXbJk642d50bygDWeAq0iIYV/ySWI0=;
-        b=M/Niu/Dk2bEfnYws5aeOfLiH7oQH+lLCVtGaUu9vJB+nCu8+gZvR8aoxEDeVZZuLnI
-         CYp0/d8wB3btKr7TojoJq7lx8vmLMhF4NyJmGKhLAwRMZMQ2JXjLi6qFVYvp+Vxlduia
-         vpzjHoiKrQhtM/IXFn3uXMeT+XAxBTMFqm4Ns8o+xBdxSOkZ+uW/J7xVBiTk9bMu4x52
-         gIo+oC2veqZUfSTLcy6R0VaYy68H49sAlmgFW8vYGY7NfM6h5Tg37qR6RjGDmdi50PJ/
-         +1Rxn222QwVK2AQXN8ptHUsUK1JR7QYTpNzqj+gcFPyiksaJlPJOioIzaL4VE06693Fw
-         gLDw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779959874; x=1780564674; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xAoLVzm1+sBvhfJvAzz19IzARWt64sZWYa23INP9RTI=;
-        b=e4lu7th0ipxaiAlMCWifMQP1BONf0aabT05qqTqyBZ2yqwio9OEhPPwKE01LMLehOK
-         Yp7yysyReuryinPG6rVTmuz12f+LboSccrYqhr1vGm1RBsTyafSakReNAyiFpXtRB68C
-         3/i4Phw7ihBGL+4OJoiyhvWK4JJGYMdWrhxb8rjHmBX26UmVzAU4GlJ8pEsbrV/s7n+x
-         EgKjFj7Z2+WUYlFFXtpkMDlrXaEKo2PgzTWIprc4YQNLje5SjWj13Chf2m72P3keCDli
-         ttVseNCFc+aNa8kphSkQOZwWSsJ6tefc5nhKGwMPD5tzn45ah7k8x7M8ezFsAX9irw+6
-         J4sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779959874; x=1780564674;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xAoLVzm1+sBvhfJvAzz19IzARWt64sZWYa23INP9RTI=;
-        b=mChT0Ug3nz/9StcRlscBc7bsIWmZ/g5xyPFeTnJEWtZbPxUxq6yPeOZkkw9Tc0NVPF
-         MIvabk6XuIhu5Ei3Zjr+Cs1s9IJdHypxDIeQlfFVmfM6ojH7DOdKv7h04UQdKOjO4Ldm
-         hQRSWcdLpwvWhw2J42EcJeM+w2y58N8SsCBqJKsAl2NeLOhtUSc9jkbG8k5Sf5u+HKcd
-         jw8dWJ2cWZWFjUIoo4AqRHJdGz8Aw3+vnzGstEE9zgTc3hfDdwM9FRMpYF6lP55gvsJs
-         A+C8ullWugB+TQin0f9GeWxpL5Zw5iUfYhP+njKOCR1OiZtwL6JO0lW80b1+sSkc+zAl
-         NykQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/1bvuxsSTQCImTyngY0wrLe5GLGNp8GjUnu0TO1+BVMr/bWeLnVGzoXGi/mCfpb8tT6X8ax62eyojzl2JT/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3e0J9dpXh+3JSKIDxuWXgjAZUjwMJZe4bTEzGQUw+XOoq4jKA
-	tjumWL3CInYkrxrf7LoiqHF64wh0lmy626FXaspO4BwRoi+jn7KMMEJvEb+w1vun3qYphOAUu7q
-	8YxMLe8KuKVfpPKBiGcLEsb0hvmkC/YI=
-X-Gm-Gg: Acq92OH2qAPmy5fRYwbxR03SfUdCHoVhKkfBcXQ9pYM5BV+IQGdeWHroap1J4/U854l
-	xExY5KrjUmEzl9XACZpGZkFReUneMbPcVgcJxCORxuPmFtTUsybTIv0hH8ZYxuix4gyHp6U81od
-	EEJvwe16jbz09fdVfvqFhjf5mLUyKYWBPB8AdM0pIJpxb5tT7cs94BVpXcTaD9BpdpoGZkdbub3
-	Zs1Z2VgvVB6qS7BhuKEzcZFRaDcNsPwtD0m8bccpx0sXNFm1VFNj2whhme4awWEv5d5NfCge5mv
-	0aJLCmdXKBzrkVWNCkpAeQv2KHKEYlAElOwBlvplLZZlsWGV1AWHw6lW0sJEF9qobr6kHz73HO0
-	A04K+mWkJLE5FUPR8llonsiJIgURTYrMt7Q==
-X-Received: by 2002:a05:6512:15a1:b0:5a8:fbe0:bc61 with SMTP id
- 2adb3069b0e04-5aa4f9e549dmr325248e87.0.1779959873933; Thu, 28 May 2026
- 02:17:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RcLkjF7V"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QNGyN387Cp9R9r4L3A3EkBe0+Z04BA1d59VcVSxY2qg=; b=RcLkjF7VAWEi/WJ42Gg3mP0vkN
+	e7YrUtYqNm8uy8PlEB50BEvOpn2kA6AGr3MDbry26s0J3mLybsXpqWKg+zfyt/3Dmjj60uAhiee/A
+	/4b5PyHJzcXRUHu5VXPnwJVwQRzMTs9lmt3f/Ij1oEpEb6DrC5yAANizMKcNGD2idE/k6HeNiAKbi
+	Zq/hQyT23mQGKm/MsesQKMmUw0AhXDh6gugvxiMh6g2XqzT6pJbP3dsHXd8IgwkowlO/7wDSIponU
+	KQlyeAE6B9XXHbM9PTLAFj5KFcoJntNHYFlziFHrNeSBxGc2HSfUy9wKVzBFH9MW85oH+jfLcIK7c
+	ktsVWEmw==;
+Received: from 2001-1c00-8d85-4b00-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:4b00:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wSYCx-0000000GCDI-3Iqm;
+	Thu, 28 May 2026 10:43:24 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9CB74300673; Thu, 28 May 2026 12:43:22 +0200 (CEST)
+Date: Thu, 28 May 2026 12:43:22 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>, Lyude Paul <lyude@redhat.com>,
+	Thomas Huth <thuth@redhat.com>, Sohil Mehta <sohil.mehta@intel.com>,
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kernel@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-arch@vger.kernel.org,
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH v2 05/12] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20260528104322.GF343181@noisy.programming.kicks-ass.net>
+References: <20260526152148.30514-1-boqun@kernel.org>
+ <20260526152148.30514-6-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260408200949.99059-1-delcastillodelarosadaniel@gmail.com>
-In-Reply-To: <20260408200949.99059-1-delcastillodelarosadaniel@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 28 May 2026 11:17:39 +0200
-X-Gm-Features: AVHnY4K2XtbXALyCe794zU4odICsARb6RZcP1b3jqcYjLY0kSZVzOs85YU87PAU
-Message-ID: <CANiq72nOHYHhUuyYiUhwmZQoYYP=YdWZjHFsGi6d15DbKzXjeg@mail.gmail.com>
-Subject: Re: [PATCH] rust: macros: Replace match + panic in const context with
- const expect
-To: CastilloDel <delcastillodelarosadaniel@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526152148.30514-6-boqun@kernel.org>
 
-On Wed, Apr 8, 2026 at 10:10=E2=80=AFPM CastilloDel
-<delcastillodelarosadaniel@gmail.com> wrote:
->
-> This patch replaces an instance of match + panic with const expect,
-> which is now usable in const contexts after the MSRV was was updated to
-> 1.85.0 (it was available since Rust 1.83.0).
->
-> Signed-off-by: Daniel del Castillo <delcastillodelarosadaniel@gmail.com>
-> Suggested-by: Gary Guo <gary@garyguo.net>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1229
+On Tue, May 26, 2026 at 08:21:41AM -0700, Boqun Feng wrote:
 
-Applied to `rust-next` -- thanks!
+> diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+> index e2d3079d3f5f..33fc4c814a9f 100644
+> --- a/include/linux/preempt.h
+> +++ b/include/linux/preempt.h
+> @@ -151,6 +151,10 @@ static __always_inline unsigned char interrupt_context_level(void)
+>  #define in_softirq()		(softirq_count())
+>  #define in_interrupt()		(irq_count())
+>  
+> +#define hardirq_disable_count()	((preempt_count() & HARDIRQ_DISABLE_MASK) >> HARDIRQ_DISABLE_SHIFT)
+> +#define hardirq_disable_enter()	__preempt_count_add_return(HARDIRQ_DISABLE_OFFSET)
+> +#define hardirq_disable_exit()	__preempt_count_sub_return(HARDIRQ_DISABLE_OFFSET)
+> +
+>  /*
+>   * The preempt_count offset after preempt_disable();
+>   */
 
-    [ Adjusted Git author's name with the Signed-off-by value. Reworded
-      slightly and removed duplicated word. - Miguel ]
+> diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
+> new file mode 100644
+> index 000000000000..868f32524a87
+> --- /dev/null
+> +++ b/include/linux/interrupt_rc.h
+> @@ -0,0 +1,65 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * include/linux/interrupt_rc.h - refcounted local processor interrupt
+> + * management.
+> + *
+> + * Since the implementation of this API currently depends on
+> + * local_irq_save()/local_irq_restore(), we split this into it's own header to
+> + * make it easier to include without hitting circular header dependencies.
+> + */
+> +
+> +#ifndef __LINUX_INTERRUPT_RC_H
+> +#define __LINUX_INTERRUPT_RC_H
+> +
+> +#include <linux/irqflags.h>
+> +#include <asm/processor.h>
+> +#ifdef CONFIG_SMP
+> +#include <asm/smp.h>
+> +#endif
+> +
+> +/* Per-cpu interrupt disabling state for local_interrupt_{disable,enable}() */
+> +struct interrupt_disable_state {
+> +	unsigned long flags;
+> +};
+> +
+> +DECLARE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
+> +
+> +static inline void local_interrupt_disable(void)
+> +{
+> +	unsigned long flags;
+> +	int new_count;
+> +
+> +	new_count = hardirq_disable_enter();
+> +
+> +	/* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
+> +
+> +	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET) {
+> +		local_irq_save(flags);
+> +		raw_cpu_write(local_interrupt_disable_state.flags, flags);
+> +	}
+> +}
+> +
+> +static inline void local_interrupt_enable(void)
+> +{
+> +	int new_count;
+> +
+> +	new_count = hardirq_disable_exit();
+> +
+> +	if ((new_count & HARDIRQ_DISABLE_MASK) == 0) {
+> +		unsigned long flags;
+> +
+> +		flags = raw_cpu_read(local_interrupt_disable_state.flags);
+> +		local_irq_restore(flags);
+> +		/*
+> +		 * TODO: re-read preempt count can be avoided, but it needs
+> +		 * should_resched() taking another parameter as the current
+> +		 * preempt count
+> +		 */
+> +#ifdef CONFIG_PREEMPTION
+> +		if (should_resched(0))
+> +			__preempt_schedule();
 
-Please shout if the author adjustment is not correct (and please check
-your Git settings so that Git uses the right one when creating the
-commit for the future).
+I'm not sure why you bother with should_resched() at this point, can't
+you simply write:
 
-By the way, `scripts/checkpatch.pl` can help you catch nits like that :)
+		if (!new_count)
+			__preempt_schedule();
 
-Cheers,
-Miguel
+> +#endif
+> +	}
+> +}
+> +
+> +#endif /* !__LINUX_INTERRUPT_RC_H */
