@@ -1,32 +1,33 @@
-Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E1032E13B
-	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 06:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65680335566
+	for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 06:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779949705; cv=none; b=fEhGV1i+uRYfE+0dSzrHUmfbaTeo90igITyE+woWOk+rji+aeeEdlv2J3DuAUuXYiV+mWOnxNBcvGeRFNkiXn76LsBDiEA0pXhhIP7XOLL225BHSseTV16BboAzghe/mlTn+Rt5OYHtlhA9LNyCgla74P3dCcyNQGBqObutEaH4=
+	t=1779949712; cv=none; b=sMjm/kNYBCKgZSx4r+e6pJz8sLKn+1IrLGV3UFZWq2JS6pYSqTQWkmJ3wk51hrZlkSBRQrwv9i01LRudlOFGLVSdiO5TDJ8Mj3eqA7R50JMNMX9Xy0vxlBciI8sQZ+YKmex1TwFaBFF25B5G70uDT3KVXwbpbOnlYuZNPux4iSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779949705; c=relaxed/simple;
-	bh=r9OTM24KA6NX+bhS8hKOgq9wzzId73OfMpI5oy17eWQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a2DyE2Qx2hknZV/kyHC6LxpC1I44ZCcCSVx7l49Ov9zSS1BT1Rth6UVCmGK14Qe3p5LylD2Eg4doVuQjL6E8Ryp5JkCR6uekz5a+hMAgtVJAwJGNNXBRrmSz4hVkN4kx+myvjQBl268ZGT5ANAjD0eYlGTs8QFnqfxQvcuw4ja8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=dvOiq3vX; arc=none smtp.client-ip=79.135.106.111
+	s=arc-20240116; t=1779949712; c=relaxed/simple;
+	bh=nwto9TSN5DwcrkY38NX1+Y3ppUDOvXkhEPgbZdMEZeg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t0n/nd7Oqp4+aF0LggrgsvM+mRMva63zT5WJCmj3kIuyUGGl9JonGFYzso/a8+XqODkb7tExJ2lHZdv8Mt/iapxs8cmVwxajixuClyfdQ/BKKV9Bbk0P7/0nW+aR9COuYAY0XYAy8bnd39fMx5emyjaBNH6dTu8ZUJDB+ZXmjTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Aq2UTG7Q; arc=none smtp.client-ip=79.135.106.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="dvOiq3vX"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Aq2UTG7Q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1779949698; x=1780208898;
-	bh=Ee42yZhShWZECuGcP1k6WHYqDjh9zHjbNXLjINc6/9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=dvOiq3vXda7bb35LZgdhC5v359D/Nz0JIr0XDeAzTkn2j94fr+BmQEaoVVBhTT1l6
-	 OcptNjx7YNf6JC1OAaWR2eibrpY/RsK5xKrHDUquYvK10I/8i6EnQM35HfUqqbVqg+
-	 A/grOhLeG2k+0IPsbzRV9aME6Uyzm75hlBig12pPs/gnFPjneKybCEXHcqK8hRaG/1
-	 MHmsVE43CbQZRGEhq6l1zuitNdGEzq6aBbmPp/lmT3COcbXtjOgRXmi2LB76ubY5fj
-	 zFfyzyQtnax36ndn+yCMjhlqGUGeR0IFsdG+zEFzeAEZ9hKRX9FqVM5D+fMWe7P67S
-	 WfyghnPsfHfyQ==
-X-Pm-Submission-Id: 4gQxPm2l2jz2ScpZ
+	s=protonmail; t=1779949704; x=1780208904;
+	bh=hucoFCxR6ZRmPQZBC0IZgPLRY3PhP3652ZNo3G0VcFc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Aq2UTG7Q5Im+0tV8KLLx2G9sIjMGk/Ud9vgA0x86Yc27KmeQSNv3Qc0j78tfEp74P
+	 iGcIXxPKZlTGwTOASQlxdX7D+7cw8vDTkUzOU7+nmus883ZGVqBGmRXtFTsWiuMz5y
+	 tXUx4N2yzYVRFqO7wy3iO4BqPklSolYIGfgBdo8Ygd1EGBAip1mPdcc1+zLKgyyMLY
+	 1SlIVoZ+vO0slgYh2VDQPRYcJ5q9i3A1+6p8Esu+nvDiVUQvVZkTznA25OxtAnnb1N
+	 UCngCoYhB+ysDviGP1TahbU29qpevwfKRueoChj7bTf/QGhxbDHKl8h8AqqWcgLc0A
+	 +ZuUTafAGQJUQ==
+X-Pm-Submission-Id: 4gQxPx6lBqz2ScXC
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rcu@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -49,10 +50,12 @@ Cc: ojeda@kernel.org,
 	rostedt@goodmis.org,
 	mathieu.desnoyers@efficios.com,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v7 0/4] rust: helpers: add SRCU helpers
-Date: Thu, 28 May 2026 09:27:32 +0300
-Message-ID: <20260528062810.256212-1-work@onurozkan.dev>
+Subject: [PATCH v7 3/4] rust: sync: add SRCU abstraction
+Date: Thu, 28 May 2026 09:27:35 +0300
+Message-ID: <20260528062810.256212-4-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260528062810.256212-1-work@onurozkan.dev>
+References: <20260528062810.256212-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,91 +65,214 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The immediate motivation is the Tyr reset infrastructure [1] which needs
-to serialize reset sensitive hardware access against reset and teardown
-paths. That reset series started to require many independent dependencies
-so this SRCU support is split out as a standalone Rust API to keep the
-reset series focused on the reset logic and easier to review, rebase and
-land.
+Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_struct.
+Provide FFI helpers and a safe wrapper with a guard-based API for read-side
+critical sections.
 
-Changes since v6:
+Cleanup is handled via `PinnedDrop`, which explicitly drains pending grace
+periods and callbacks via `synchronize_srcu` and `srcu_barrier` before
+executing `cleanup_srcu_struct` to guarantee memory safety e.g. when there
+are leaked guards (via `mem::forget($guard)`).
 
-- Removed "CONFIG_DEBUG_LOCK_ALLOC" condition from "rust/helpers/srcu.c"
-  and created a simple wrapper inside "include/linux/srcu.h" for it.
-
-v6: https://lore.kernel.org/all/20260527203615.163688-1-work@onurozkan.dev
-
-Changes since v5:
-
-- Created separate srcu_readers_active() variants for "srcutiny.h" and
-  "srcutree.h".
-
-v5: https://lore.kernel.org/all/20260527174120.510447-1-work@onurozkan.dev
-
-Changes since v4:
-
-- Exposed srcu_readers_active from C side and wired it to the Rust
-  helpers.
-- Used srcu_readers_active() in SRCU drop and logged with pr_warn if
-  there are leaked guards during the drop.
-
-v4: https://lore.kernel.org/all/20260525175706.124910-1-work@onurozkan.dev
-
-Changes since v3 (which are for Sashiko notes [2]):
-
-- Added rust helpers for srcu_barrier() and synchronize_srcu_expedited()
-  so the abstraction builds with CONFIG_TINY_SRCU, where these are
-  static inline functions.
-- Added missing INVARIANT comment in Srcu::new() about why the type
-  invariants hold after successful initialization.
-
-v3: https://lore.kernel.org/all/20260522054228.114814-1-work@onurozkan.dev
-
-Changes since v2:
-
-- Removed closure-based API.
-- Added #[doc(hidden)] on new_srcu macro.
-- Added #[must_use..] on srcu::Guard.
-- Improved the clean-up path (PinnedDrop implementation) which
-  eventually made read_lock safe with leaked guards.
-
-v2: https://lore.kernel.org/all/20260502162833.34334-1-work@onurozkan.dev
-
-Changes since v1:
-
-- Made the owned SRCU read-side guard API unsafe and added a safe closure
-  based helper for callers that do not need to keep the guard. This is to
-  avoid UB on the C side cleanup_srcu_struct where the SRCU struct is freed
-  while there are still active guards, which can happen if the caller leaks
-  the guard e.g., with mem::forget().
-- Improved doc comments.
-
-v1: https://lore.kernel.org/all/20260428103437.156236-1-work@onurozkan.dev
-
-
-[1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.dev
-[2]: https://sashiko.dev/#/patchset/20260522054228.114814-1-work@onurozkan.dev?part=2
-
-Onur Özkan (4):
-  rust: helpers: add SRCU helpers
-  srcu: expose srcu_readers_active()
-  rust: sync: add SRCU abstraction
-  MAINTAINERS: add Rust SRCU files to SRCU entry
-
- MAINTAINERS              |   3 +
- include/linux/srcu.h     |   5 ++
- include/linux/srcutiny.h |  13 +++
- include/linux/srcutree.h |  24 ++++++
- kernel/rcu/srcutiny.c    |   2 +-
- kernel/rcu/srcutree.c    |  25 ------
- rust/helpers/helpers.c   |   1 +
- rust/helpers/srcu.c      |  35 +++++++++
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
  rust/kernel/sync.rs      |   2 +
  rust/kernel/sync/srcu.rs | 166 +++++++++++++++++++++++++++++++++++++++
- 10 files changed, 250 insertions(+), 26 deletions(-)
- create mode 100644 rust/helpers/srcu.c
+ 2 files changed, 168 insertions(+)
  create mode 100644 rust/kernel/sync/srcu.rs
 
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 993dbf2caa0e..0d6a5f1300c3 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -21,6 +21,7 @@
+ pub mod rcu;
+ mod refcount;
+ mod set_once;
++pub mod srcu;
+ 
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+ pub use completion::Completion;
+@@ -31,6 +32,7 @@
+ pub use locked_by::LockedBy;
+ pub use refcount::Refcount;
+ pub use set_once::SetOnce;
++pub use srcu::Srcu;
+ 
+ /// Represents a lockdep class.
+ ///
+diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs
+new file mode 100644
+index 000000000000..343f00d070c7
+--- /dev/null
++++ b/rust/kernel/sync/srcu.rs
+@@ -0,0 +1,166 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Sleepable read-copy update (SRCU) support.
++//!
++//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h)
++
++use crate::{
++    bindings,
++    error::to_result,
++    prelude::*,
++    sync::LockClassKey,
++    types::{
++        NotThreadSafe,
++        Opaque, //
++    },
++};
++
++use pin_init::pin_data;
++
++/// Creates an [`Srcu`] initialiser with the given name and a newly-created lock class.
++#[doc(hidden)]
++#[macro_export]
++macro_rules! new_srcu {
++    ($($name:literal)?) => {
++        $crate::sync::Srcu::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
++    };
++}
++pub use new_srcu;
++
++/// Sleepable read-copy update primitive.
++///
++/// SRCU readers may sleep while holding the read-side guard.
++///
++/// The destructor waits for active readers and callbacks, so it may sleep.
++/// If a read-side guard has been leaked, dropping an [`Srcu`] may never return.
++///
++/// # Invariants
++///
++/// This represents a valid `struct srcu_struct` initialized by the C SRCU API
++/// and it remains pinned and valid until the pinned destructor runs.
++#[repr(transparent)]
++#[pin_data(PinnedDrop)]
++pub struct Srcu {
++    #[pin]
++    inner: Opaque<bindings::srcu_struct>,
++}
++
++impl Srcu {
++    /// Creates a new SRCU instance.
++    #[inline]
++    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self, Error> {
++        try_pin_init!(Self {
++            // INVARIANT: On success, the C initializer creates a valid `srcu_struct` and
++            // it remains pinned until `PinnedDrop` runs.
++            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu_struct| {
++                // SAFETY: `ptr` points to valid uninitialised memory for a `srcu_struct`.
++                to_result(unsafe {
++                    bindings::init_srcu_struct_with_key(ptr, name.as_char_ptr(), key.as_ptr())
++                })
++            }),
++        })
++    }
++
++    /// Enters an SRCU read-side critical section.
++    ///
++    /// Leaking the returned [`Guard`] leaves the SRCU read-side critical
++    /// section active and makes `drop` sleep forever.
++    #[inline]
++    pub fn read_lock(&self) -> Guard<'_> {
++        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
++        let idx = unsafe { bindings::srcu_read_lock(self.inner.get()) };
++
++        // INVARIANT: `idx` was returned by `srcu_read_lock()` for this `Srcu`.
++        Guard {
++            srcu: self,
++            idx,
++            _not_send: NotThreadSafe,
++        }
++    }
++
++    /// Waits until all pre-existing SRCU readers have completed.
++    #[inline]
++    pub fn synchronize(&self) {
++        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
++        unsafe { bindings::synchronize_srcu(self.inner.get()) };
++    }
++
++    /// Waits until all pre-existing SRCU readers have completed, expedited.
++    ///
++    /// This requests a lower-latency grace period than [`Srcu::synchronize`] typically
++    /// at the cost of higher system-wide overhead. Prefer [`Srcu::synchronize`] by default
++    /// and use this variant only when reducing reset or teardown latency is more important
++    /// than the extra cost.
++    #[inline]
++    pub fn synchronize_expedited(&self) {
++        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
++        unsafe { bindings::synchronize_srcu_expedited(self.inner.get()) };
++    }
++}
++
++#[pinned_drop]
++impl PinnedDrop for Srcu {
++    fn drop(self: Pin<&mut Self>) {
++        let ptr = self.inner.get();
++
++        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`
++        // and `srcu_readers_active()` only checks the active reader count.
++        if unsafe { bindings::srcu_readers_active(ptr) } {
++            crate::pr_warn!(
++                "Leaked `Guard` detected while dropping SRCU; drop will block forever.\n"
++            );
++        }
++
++        // `cleanup_srcu_struct()` may return early if readers are still active. Because `Srcu`
++        // owns the embedded `srcu_struct`, returning from `drop` in that state could free memory
++        // that is still referenced by the C side.
++        //
++        // Wait for all readers to complete first. If any `Guard` was leaked, `synchronize_srcu()`
++        // will sleep forever.
++        //
++        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
++        unsafe { bindings::synchronize_srcu(ptr) };
++
++        // Ensure all SRCU callbacks have been finished before freeing.
++        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
++        unsafe { bindings::srcu_barrier(ptr) };
++
++        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
++        unsafe { bindings::cleanup_srcu_struct(ptr) };
++    }
++}
++
++// SAFETY: `srcu_struct` may be shared and used across threads.
++unsafe impl Send for Srcu {}
++// SAFETY: `srcu_struct` may be shared and used concurrently.
++unsafe impl Sync for Srcu {}
++
++/// Guard for an active SRCU read-side critical section on a particular [`Srcu`].
++///
++/// Leaking this guard with [`core::mem::forget`] leaves the SRCU read-side
++/// critical section active and makes dropping the associated [`Srcu`] sleep forever.
++///
++/// # Invariants
++///
++/// `idx` is the index returned by `srcu_read_lock()` for `srcu`.
++#[must_use = "if unused, the lock will be immediately unlocked"]
++pub struct Guard<'a> {
++    srcu: &'a Srcu,
++    idx: i32,
++    _not_send: NotThreadSafe,
++}
++
++impl Guard<'_> {
++    /// Explicitly releases the SRCU read-side critical section.
++    #[inline]
++    pub fn unlock(self) {}
++}
++
++impl Drop for Guard<'_> {
++    #[inline]
++    fn drop(&mut self) {
++        // SAFETY: `Guard` is only constructible through `Srcu::read_lock()`,
++        // which returns a valid index for the SRCU instance.
++        unsafe { bindings::srcu_read_unlock(self.srcu.inner.get(), self.idx) };
++    }
++}
 -- 
 2.51.2
 
