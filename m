@@ -1,68 +1,70 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021079.outbound.protection.outlook.com [52.101.100.79])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022086.outbound.protection.outlook.com [52.101.96.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7133DFC94
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 12:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716B93D75C2;
+	Fri, 29 May 2026 12:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.86
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780056830; cv=fail; b=Ef9UgwBaRRRaQU3VzsUe4gsAauJqabzKjecYTTv7QyMiM8nMRyPd7phLFS7lXnXaayBP1Loc2y/X9g+4bRpGT9FL+bb5T+jtH6qBbDmL1/C894gvt0f+b8xkioN7tjIxlnDzYEbt9rM4gIXwBaMImAwOw9cgA4tva7CjH9tM3fE=
+	t=1780056982; cv=fail; b=gjjMiAdVH5oOQU5HNpRVLMN5+yyWaOp/cJNSGGfT46vMy9VO1jeJUSjQZyax8CpL6pxOMUwoaUXyDR5JpRbBid2yOB6vLiwKGAdIrcsIMg7Ffks1KQQHZx/lwdW9FqhIRF1nu4vdL9qUgb+HXruufpuuzBGwniDN5saoa7kJQU8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780056830; c=relaxed/simple;
-	bh=gLWu6EXehftzTZTZMx82gpAraw4auWfUeZHBA1265dc=;
+	s=arc-20240116; t=1780056982; c=relaxed/simple;
+	bh=ypWs1IDBiWJNO0EZp7r0Qo4BomThC+GqYO3sx074RSc=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=LYrMQZ/gMDPdv6FJCKcczkKu6i4zsEwUy+SAxbiivY7FygQEam3n2r3w7W6JBpQ0Jou6pvK3/L6lZ5GsFoc9cqOsFTUfzZBw5mfqyhkHPVJpmArbPq1QpyyowFaWqT3O/Ls1bsiwIt0vSu/OReCDBN6/RSs9TU5Z9sP2SdBFX20=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=bXC0AfFZ; arc=fail smtp.client-ip=52.101.100.79
+	 In-Reply-To:MIME-Version; b=iwzZk54my+2UXpV6t0Bqu4mms7V+sHtLe4UjdI7kCFNQo6JHU55vgC5Cp8K3tpt8ybhJnnDUWzcJ0UQt1Nef45Fzlg+WYwIGBiBWk3fnhqNk5OllCC96tCC65mhIxGasdPcs9PRbMKyEhPOkjwE7a6qaAc9BFQh7j+g9AhyAjHw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=eTHsUnp0; arc=fail smtp.client-ip=52.101.96.86
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="bXC0AfFZ"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="eTHsUnp0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K6WGrpGey8FsAxhJ3EH8FOO5mv5CjOhNrdhFBto8k3ta26Vl21mZcZ0Xuo/oIPblxbFuF51L7Z0Ns3QhW6ZdtqCYUmlQuccSsV1ZaLGC2OJuN116JB2YlWpi2VUJ3Osj6YjIm/9gQO4yeVXnKdvN9ky1QsF/68cGl6G526kYrIUuNobVz80qs0FzamI3n4QhpWplMvFQm6panp8W2Euss2BeKB1CicA8atVYPOeolAkxhWEP96X5usD1vy9SlAnRGmFfPKoCfgzf57xJEwqOzTbyL8RMkRYxc6LXa6EyISzfmhylxwqEgp1x7oQizyPdtFNwlLroWN8L2kU+V2LkjA==
+ b=nYTXusc7pI9jvOGY83gpvVv/LMz8eQSSsrz54z5yHb9KdvKFPogt6BSilNfn9Af2SfZXnDV5zPeCOtoZ7Mpw363qhe5OiuluWrUMCjWjgdj4FwJJ6szQAD5zeL77gbQxJ7j5Fd/3JRd1X8UgYYRkqgZeSolUPFS+BEivPBBp1Rke6+qsAUQjjWHw9E9bAGybzwnWjlEZQwNhnSYO/x1dd1r5bKxXX55l9mp0C17ilohCLiD38KnnUv5S9lHdgTzERpXC5wObyQ5u+rUvcI6aT2o4lK9DR6ua+ecboiufmbuBuQASrZpbFtAcbYtUJhYxuLzNSIUlL3OGufEXy4r+dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y+AONA20MBALR9vf0gr/rU9gKPNX7QyxMne4JXn8ZFI=;
- b=xRUbmm0XOEq6uOjElwnnvXfAihyPosFj72P/B22700TVXFpd39h1jzz9h9K26l9dIOhr5rv1T+VKcaw9D5k9VgzrTczAy+m3t6DUui09wuoZQWdnN4CnoyDlxtOkhydUI5ZCXQNSRk4FzliBrNFRUBncAKmsE1sW3t6FeuorX8gpizlE20iVPdrX9YF7Pr8JgG7QCVem0I9rktDtjrR6H8FIZbA1wtpFzAIAl//cjRAbRFk44MobwCHYtSeQPKliTyEfmvsD6gKP5OiZ6DvV8PqUUS/MVmS8p5wXYoCR0pHoIMur0sG6/gWTs+yiDQbNN14HuRpqOl4SAjLsm67gFA==
+ bh=0DfqykfSJh0MHalEwSREdCPGvpT9AUzqKVlLtiztfx8=;
+ b=O8MtQyjmRlx+mx1fZEEyIMBvT4qLApxcsSVDqvBC9Nwd+MxJa6Qjsy0Yd6DQsOOHeseZQk8A29OI0lrjH71mFVAX+OBdLSMr+zMj1an5qNlw61rTU7++J5jNcjIr/EId9gqrgpMFmHpf+SvyrmBgp5dvQw73KmuO1TSge0KSfjd3IiH3txkvpsbn2hojKmKWxN8zoTMHuVNgwDd59yLJ2LLIFEAv7Edssr9SwwTZCM0ZO0U+5Pymk+k/TxvK0fVh0WqqMF+0s8nur8Pm+EMHoPH/tdXQYuBTarP6dom6MoRs8pw3v8DUE/B5k05+bi9lTxOvQSSUhTy0sPP/AJ7chg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y+AONA20MBALR9vf0gr/rU9gKPNX7QyxMne4JXn8ZFI=;
- b=bXC0AfFZdal8hYQuEta3fZrQu1OSANjnpN5odfGWdbfTBJlENqtOXJScnmKFBtXi61nRFzcfN/IZov1dwjz+98SpQ/kMYNq0QwO5k2JqXyFTGv1/UoNwG6w7TA0yED4TvfhMNfI1QbjgW9f3qS8H0Z+4pQofYwMfvYWGV1tfJjI=
+ bh=0DfqykfSJh0MHalEwSREdCPGvpT9AUzqKVlLtiztfx8=;
+ b=eTHsUnp02sC2+RLf2NUY+R/TU9JcH/iD6PBkYOmOR3hdg23BjGGpCW42y1GRqwNwnPHScf2hL5wgoSM5SOVaT5qW3fEJeeTOHYv27WdcDj5iIq7TeYOsdbTjhLJ5ypYT9HiDt7Bd5eX2lnSdRYE27/JzEtlz6iV6hMT9GeaBIHo=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB2755.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:a9::10) with
+ by LOAP265MB9078.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:497::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
- 2026 12:13:40 +0000
+ 2026 12:16:18 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0071.014; Fri, 29 May 2026
- 12:13:40 +0000
+ 12:16:18 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 29 May 2026 13:13:39 +0100
-Message-Id: <DIV5H9S8ZN2L.234ZKX4RBF6BO@garyguo.net>
-Cc: "kernel test robot" <lkp@intel.com>, "Danilo Krummrich"
- <dakr@kernel.org>, <llvm@lists.linux.dev>, <oe-kbuild-all@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [linux-next:master 3728/9137]
- samples/rust/rust_driver_auxiliary.o: warning: objtool:
- _RINvXs5_NtNtCshc5sK6KjdJJ_6kernel5alloc4kboxINtB6_3BoxINtNtNtCsbsbRiabPlh9_4core3mem12maybe_uninit11MaybeUninitINtNtBa_9auxiliary16RegistrationDataNtCseULRbgTYaTO_21rust_driver_auxiliary4DataEENtNtB...
+Date: Fri, 29 May 2026 13:16:17 +0100
+Message-Id: <DIV5JADSFZEM.3DV46U1BI4EYS@garyguo.net>
+Cc: <rcu@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
+ <peterz@infradead.org>, <fujita.tomonori@gmail.com>, <tamird@kernel.org>,
+ <jiangshanlai@gmail.com>, <paulmck@kernel.org>, <josh@joshtriplett.org>,
+ <rostedt@goodmis.org>, <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH v8 1/4] rust: helpers: add SRCU helpers
 From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>
+To: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Gary Guo"
+ <gary@garyguo.net>
 X-Mailer: aerc 0.21.0
-References: <202605291041.seNEWvLQ-lkp@intel.com>
- <ahkzosbjO4NdSyD8@google.com> <DIUZYLZW1KTM.VRI2RJ8DXEGQ@nvidia.com>
- <CAH5fLgiFo1rep3N5qGWGsTXT177hfSwW0=e1KsVCrrz2uRMoBw@mail.gmail.com>
- <DIV0HOKW3R1L.2ZK80B9TV36H7@nvidia.com>
-In-Reply-To: <DIV0HOKW3R1L.2ZK80B9TV36H7@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0479.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a8::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260529114449.112066-1-work@onurozkan.dev>
+ <20260529114449.112066-2-work@onurozkan.dev>
+ <DIV55HYTKCM3.23VXO47N90C9G@garyguo.net>
+ <20260529120759.145202-1-work@onurozkan.dev>
+In-Reply-To: <20260529120759.145202-1-work@onurozkan.dev>
+X-ClientProxiedBy: LO4P265CA0283.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:38f::14) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -71,137 +73,147 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB2755:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff864cd4-ce2a-4d64-ebcd-08debd7bb7fc
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOAP265MB9078:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6dcd2944-4594-4747-6a11-08debd7c163d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|22082099003|18002099003|56012099006|4143699003;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|10070799003|366016|18002099003|22082099003|6133799003|4143699003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	m/7sG31qWbTcFHvItZo+vHQQm04P4ZLKuobGWDXUylwlAyj3re1/YfS9N/QYqwSWFL6Mw0Y2Ka0Qzx8AWyGYluV9t4ClYjHWyQrrUdvpc0CNbEEe7UOoVzzlS0MDfJ/KMzad/e4k013ZAI4wJ2rUjwzWsj3lM8TuhMhggqHTlrCqRhdF354R79So8YsXI+I/hS6Zglj23ywu+FVnnrz2mn7wz1arUcX5atJYb+hw6AIEw6bCAgZlZwHBXqemYmdnwY2DEZc43bLlkg7DVZLFu5xbe5duw+zNvjP1jDKefFzxjvI8HvYxcl7l+N+6ZGv30dGsrVDW/pRGNqnh7vSalhyXXAYHBmcwTWVPQSMSaYxx/aBcx15Ff5Y8X/7QpPHLn+x9mIjSGK+0oHKwNVcOxcO2Xwpo64EI4CzcIhFGC2vGjDrAmikicSNK9gVabJMAKetpCs/Zyd2e9wnSIBywcDubNhpNX6Ol9dCPDwh0940p5yZfXlfOfVIn0Be67yFYpmpXPXKBCg3/v3PgC+eOlvz9ayVlf03lOn54+sw6dmeSlQUX4e6fHNvlpUrsZ7KzogETj/Wf0VKe3M1BE9Xw/Cbf3oiznBxVEhRnCtp39uTKCfyJ8f5/dSgIOBLJ8zA2VNAk78OQo2ch/66o+Doq0w==
+	P+8jBPz0aAAAPs0Ojd/fUtQsH8qYstYtgOxkngTgwAyH4/X9rB9t1fo1Jvwi6v2iYvbGhSKzqrhDqW8ZaXXd1WjdoTX9v+I/K9e7A1a+Cj3zcf3yNotCaj+2m9hSxwiKcKRFqkiEhEufDIDLtKUV7DuUmlGXt3ojryKXV25mCx7bFS8vy8dT20tDE/P+8ipxU2ImQzQHTkk8BHUmhUKTh+f4Me/5BnR0bPjAXouXYvEPWgQUNGOeYTkadYQUwyYxvUus4D6wFgBvu09ULWXDL8gyx9fC5MFOEC1M3CLI2KG47+j+iVci/P7LMNbGAaSiTya+Xa4FFkuQ44Jf5X2MYIjgKMn6kPUPalMbDpuj9dcHlDy4Y4fJaK3Pms2nE8d9TNic11is8dCeu5pSs36j+xdaDK3FWu9x5rynkpckjNgjTjSj1wrX/rZiyTodXi7NE00QCXYYzP1eTf+05N+6MUWBsWRmqmcwru9Fw0OfVOfDd3dPsU/EqS9CMULBCTT1obMTufPE3ioF86JOwSUNR9ob/0Bl7kJrss8DX/WdAUy584iBDYTIH/1ceFefEl3d/cfIGT8qFmVz8+efsyKsQjxFFSFfY4dCc4t9+6OCNRhvThPaM95Gi5JSW2vKMg1678t1MW0+RDQ8P4F4S1Y1/T8igq/NHuGH4CoZzAxcODIFxNbeX8hAby6mwZy9CUyEtci2jLD2j6NAdalVN20Rdg==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(22082099003)(18002099003)(56012099006)(4143699003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(10070799003)(366016)(18002099003)(22082099003)(6133799003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VngyOU9OZTVsV2NOR0lhRUthNmVDdDJhaWNoc1ltWGhadWpXc2o1aEZ5RFJW?=
- =?utf-8?B?S0l6bDlNcHRia29Qak55SU9LMTRTOFJNMDdNMFc5enY0NUhGQVMzL1BtR0NQ?=
- =?utf-8?B?R0lsYzdKcm5RWnlpek5kaWpoTEdwbTZ0eWMyazREMGdSR0hTb0hFMnYxQkp6?=
- =?utf-8?B?S2ZtVjRuUDJHTUFXSjJjS3NTR0d2Ukt5SU85Q1k0SEVqQkM0ZGxQS050NHpR?=
- =?utf-8?B?YWRmSlZackw0N1ZlVG4zU2VUT3RVODIwenRVVzA2N3Z2NERSbmd5Q2haTXdV?=
- =?utf-8?B?MUJsQ294VUhXRnVIRVRzMHdlc2p2S0dGK1BXUS9vWkp6UXJTY0xEclhQWkYr?=
- =?utf-8?B?UkJYNU01M2VCdlQyclc2cmhwdm01aytyUUpKc1R5NFhZWXR6c2h6clB0dWgz?=
- =?utf-8?B?eFdydzFxQlBvL0pGL2hXOVdaQUtjNkMxWEdNdmg5eVVOQVh2cXptd0x3d0xY?=
- =?utf-8?B?cUJkUnJtWTQ2SEk3bFdsaVBmRUVFcUZUNUlQZmd0UEFZcmZuem5VdU11djZC?=
- =?utf-8?B?dVk2UE1oWTRoTVRZQjZ3M0JkYmgxV3g3S1lpd05ieW1hU1JJZzQveWhiREpj?=
- =?utf-8?B?OGNkS3FoRzVMNmovaGRQWkhCdWFkTkhmZkVWVHVZVUxwZzRlUm0xSjVFSGl4?=
- =?utf-8?B?b1RmY3pDUHBJV1hxMXZQYy9jQjRRVkxGR3BhY3FjNnVjV01VVkZoUFg3V3lH?=
- =?utf-8?B?dGVFNWVRU0ZlUXJ0OVpnU2h4cC9qUkptRGZLYXdPaGR4SXNhR0daOTFEZWF2?=
- =?utf-8?B?eWM2a2JkcHJibC9FbHNkaUk0UG5YTWZnMnpjUGdjZ2RPZ3JoNzdtOWVHZ1Vq?=
- =?utf-8?B?M2NuN281MnJhLzR0THZmLzg0UGhEQ1hHWmtJdDRPamNUU0wxS3U3Mkl4ZlJm?=
- =?utf-8?B?RXFRdTI0MmFHYnVPNHk2UUQ1UjZldWUrSFpFUUhsOC9JN0YvajBycVJjRGda?=
- =?utf-8?B?RmNVeGNZWW5LZ3JkcS9vdXNNQjJ4Q29RUCtNbUwrNm1sVFJvVlU4b1FCaTkz?=
- =?utf-8?B?K3dwN1NKOXBVUFVyb0grTGNHK0YzSDJ2amVmSmEzb3hPZGlpaDJFNUcxaHhX?=
- =?utf-8?B?cGNGTnFUUUpBeGw2SlVPNkVEM3c2d0VVWkovYnYxWEkyVVplaFVNcEJScXEw?=
- =?utf-8?B?NGFaeGwrVTFJemQyL1FkL2Y1WXBIQnZ2RmdhMDgybVUrK3dOSnp0YnVaeUhN?=
- =?utf-8?B?K1BQcldqR2lpN0kwWHNTVVI5Lys0VGtkNkx0c3RvcDZVNFRlbk5XK0d3cSti?=
- =?utf-8?B?VFVlOStiMTUvLzVXdHI4ZTZ0N0xQRGVuNlE5L2pvUTU0Rmg4czdUMGloOWMv?=
- =?utf-8?B?N0xucFpsVGx5bnhlM1JjZ0t5STRZUndDS2IxSjJtaEhZUE0ycDh4L1hPSFpw?=
- =?utf-8?B?ZmQ0MkRTSHljeHN4UGU1cWNadzRPQ1pWQTUrbm94c1FwekdIdHVoT3NBR1Zq?=
- =?utf-8?B?bWxMcDFpWGZENkFEajBwY1RGcVk4bXAyaG4wcEUrRE1YVVVoR3NCWWxxM05G?=
- =?utf-8?B?emJlK2RFcnN2UG5lR1FnTStrYmhpWmpSbEM0Vmg4dThVay9iNDJrMTRFbklV?=
- =?utf-8?B?MExqM0dnL21IRVMxMVFHblBrSXBvS1E0akJuWVd0MThUNTdzL3FkeThMbkxP?=
- =?utf-8?B?YjFzL0xSVTU3WHNMWnNjL2E1YzVXWml3ZU0xZHh4ZnVjRDNNSlgvWkYyQy9S?=
- =?utf-8?B?VVJ3Y1Bta2YxQW5hRVNrSGxLdFRrYjZ0RWpOcktaTTFxNWRTZjZIUFQrUElj?=
- =?utf-8?B?ZnJ4WTdtSmNZblQyWkV5K013OUdOa0c4b01qSHVpZVF4SkdtUWZmNG0zY2Rt?=
- =?utf-8?B?OHlaK0xuMGMxMXVEeVoyYmhGeHpWNExiNHg5Ky9Qcm90ZVNNbHJ2NTh5Nm1B?=
- =?utf-8?B?Y3h5K1haUmFSK3ppZjhiNnBNY1l5Tnl6WFMrNERDWU9zUDhyZXluZlFNOGhK?=
- =?utf-8?B?N0JKVS95NmVOSGk0RHNac2ZDNzE2RlMyYnpYODNqaXM0TWVrV0JSNm9kcWhy?=
- =?utf-8?B?YWNKYUUwRVl0aDZOMXFyOFNBcWFrYU85ZHk0eTZZcEJqb1I5aXBHekdpQkFx?=
- =?utf-8?B?cFFuUmNucGt2ZVVsWERqV0c2VG16djUxUUdnUDZRZU5mdW5OODJOK1RPSDhx?=
- =?utf-8?B?RDFqZm5mWTM4MG9RSmdwemJYeHhWTm83Yk9hYmVoQ0tEbi9CY3ZzYVBYeGln?=
- =?utf-8?B?NkJNdm5ReW1FUzRIbFNpQ0dCMXZKaGdnYVRBVnFJQ0VnTlFCYlluVFRGY1RY?=
- =?utf-8?B?UjhRNGFOMnZHdkRDQjF4cHpyMDhEKzc2SmtoWFkwWjFXV3NXRTVwRzkwaUpT?=
- =?utf-8?B?c2JiS2F3czBSVTJ5T1NOVU1qcWU1Q2hZOWZDczh0UUpqTlBOSWxOZz09?=
+	=?utf-8?B?V2xTVnowVnIzMWVtUzBqd1BBbWw1TVVPVGI2VGg0MnlyUWtYN1lZQWlENVFt?=
+ =?utf-8?B?Y2I4V0FYUWNvRkFOaUE2VlozL2RkSGVOQjhDV3lZV29vbW02ZjBLMThhZi9j?=
+ =?utf-8?B?VEtEaGJWQkc0V1VYVTdUcCtJdk5PM09BcjBvQ1RMWlhUYmZnb243dzl6VXcr?=
+ =?utf-8?B?SVpSa1BNL21TQ21yTHE4WXVDMktucll3bzVvUVdxOERidnhMeEoxR3d1Lzl6?=
+ =?utf-8?B?bVhXOGN4U0pMalFWU0xSQXpyVXFmMnpOODFkR2ZEMENJY1R3cUNWaGtHMlh2?=
+ =?utf-8?B?NWtXRUNROG1RTHVDNWM3aTlzYUJGN1RNT1l5UjRFSEhsWW5uWGFaTGQwSlVW?=
+ =?utf-8?B?VWlMQ1FYRjJFTVFsVHlmczN2amFpWDdhbzVUZVJMOWJ3eEdIV0I3akhmcnZM?=
+ =?utf-8?B?S1hJTW0wOC8xbzRQcDQ0SmVqWVhlalhuVEJVMEI5MVFTWUZVRFBpbzBiNWlX?=
+ =?utf-8?B?ZUdITGVkcU5lcGFGZ3Z1TGp6b1krL0RSaStQcFNYdkFaYS9tNGZSSU5uZHNo?=
+ =?utf-8?B?bjhZVUEyekh2MndabThTcGQ3N0F3Q2hUSHlMZVRRaytEeVBtZGNsUzh4ZXFR?=
+ =?utf-8?B?R0hTcnBIeGJuQytHTzM0azZGZU9aV0hvM2QwSDZ4d3l4QzNmTXppMkRGTlZL?=
+ =?utf-8?B?eGE4RVd3M2F1M1B1KzRZeE90STBIQkg1RjBmeXEzUGJwNW9jQjNRZis2OFJy?=
+ =?utf-8?B?VkJFV0xGRkpOSEIwbkhMSXQwWUpuTm80S1d5OVFya3d4QUF0dm9VSXlOVFVz?=
+ =?utf-8?B?ZmRzbGVqcVo4azVISEU1WEdlZy9vVmpTNUNtTS9CQXRPVHQ4cDJDcWwxS3I3?=
+ =?utf-8?B?ejV4V2hIMFJqSVFHNUZxVUp1Q1Jnc3kxTCtORGJkTGVSa29ZVW1UYStRTXJS?=
+ =?utf-8?B?c1U3N1hIWHh1NEMxNUoyVStBZzVwSTVqa01NZWl4RlFpTkRFVnFhSm1OdmJa?=
+ =?utf-8?B?YnRWbUQyM1RXa0tYZGxnN1dnckZnanpZa2ZqNWRra2lST2VLY3JrWXFIOHhk?=
+ =?utf-8?B?UXpjTHhyNldwUTE4bXJBVjAzMXdrYkcwMTdHcCtnd3hDTDhMZ0NNcHBiU3gy?=
+ =?utf-8?B?Qnp5ZnNuNEpsUzJjaGRiMHYvMkpWdmhRbk11YjhzTitSb3FWL1pjT2tXWHlr?=
+ =?utf-8?B?U3krNE53YktYb0p2WVNjTG93UEF5aWVQbW9GV3MySVQwd2hsTkIrcGVSWXVD?=
+ =?utf-8?B?Y0h4VTE2eDkzTG80S3VpdkZYanZxUVZPQ0ZFRmp0bWx6TU8vNHRjRlczT1k0?=
+ =?utf-8?B?eVdtWElvNHl6MHBOYUFvMjRXVnJwSGRuTnl5YVNvRzlPSGxWblRqdDAyQlJN?=
+ =?utf-8?B?NTJhZ083UUt6L2RsVHkyYlRsQndTY1VtQzQ5d1FlTEZYYytxS1Z3R0ErVXht?=
+ =?utf-8?B?T3FJV0FHS3d4am1uVXBjTFRKdlNFSTF4WnZKYUxZbnR6Wnk0aVNidU9UWmhh?=
+ =?utf-8?B?WkRYRlhWSEI5RUhqWjhxbWVjYnk4Wm9MZXVFa2lCRG9QdEJDSElObnA0UWp5?=
+ =?utf-8?B?THljaHN2bTVvSmdUaFUvdkgwS08rWTZVSnY3V0NFQm0xSHR3Z0N3MkxwNU5v?=
+ =?utf-8?B?ZURmandJUnFIeVV2RXk2NnFma09ZM1JPT0szdzRhdENqbXRqT29EU1ZKUDF0?=
+ =?utf-8?B?YVp1QmlNeGJ1UDlnOGxkZjBRS09pUXNtTVRyVTZxek0zV0hrbU5OSHFDT1ZO?=
+ =?utf-8?B?UEl1UkFrMzJ1cGJZUlVWeFNvakgwdENwU0IvSXJBM0QxOHhlWERXOUNKQWdU?=
+ =?utf-8?B?Qm91ays5L1F5OXBKZnNwWENSa0pac0FOMXNGTGhWNmxkZzlUZzAyN3Z6Y1lq?=
+ =?utf-8?B?YUhtdEJhNmdqdEk2S3lYZkJoU2U1aTlCeXB4Q1hDa3VOOVFpWnVCdm9ZeklS?=
+ =?utf-8?B?Qm1UNWI1d3BndnAzQmZLelpnVHd2VDQ5dHNlT1V4Sys3WjdjbFIxNGFueEZF?=
+ =?utf-8?B?Q0laVEJPYUZOakFjTHJ2MVZKNFdhWmo5Sk50d2NWbmNkMm43bU9vbi9wODRt?=
+ =?utf-8?B?aVo1U3JYSGtWdzByK2FJTjhoU3UxbnljaC9pcUxad05Db0k5c29xMTNtN2Zs?=
+ =?utf-8?B?Z1g3Mk1hVXpibWNNL3RlZGZXWUxZRkhIRXZwWkZXS09nT0RiRjQ4SExVSU5I?=
+ =?utf-8?B?eXYweWNURTJTVU5PcVRKMzRKaytUbGdscmV6bUVNS2Zrb2J0TE1VM2FHWk0z?=
+ =?utf-8?B?MUJUUGNFNFZaaC9PV3pwUW1Dc05GQ0V4cit0eFZmQVU1Rm1iUU8wNXFPNmpW?=
+ =?utf-8?B?UWpRVUs0b1VEVU13MWJKZTR2ZW5NTHAvaFJwNjBPeEhDZktkdmpndEd2VEJn?=
+ =?utf-8?B?N2drZEhhSHFnVUE1bFBvTFd0ejdyYlgzM3ViNkZ3enA4V3haUU96UT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff864cd4-ce2a-4d64-ebcd-08debd7bb7fc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6dcd2944-4594-4747-6a11-08debd7c163d
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 12:13:39.9685
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 12:16:18.0558
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DOsdfGCaPCaeb+ceXK/bXbkv/TifGqFvVjQbNxKLvYz5D928Np0utIzHYC09wyp216LWwcZjUOb90yIwPfQdzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2755
+X-MS-Exchange-CrossTenant-UserPrincipalName: /QNSX7KU/rS9o+rOKlBtxRDwfuGgaQUrd0cLHKT0ow5ElsXPIC4llncbSIB8yTIpnHAXRpmQWJW3kNUkH9Xkhg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOAP265MB9078
 
-On Fri May 29, 2026 at 9:19 AM BST, Alexandre Courbot wrote:
-> On Fri May 29, 2026 at 5:00 PM JST, Alice Ryhl wrote:
->> On Fri, May 29, 2026 at 9:54=E2=80=AFAM Alexandre Courbot <acourbot@nvid=
-ia.com> wrote:
->>>
->>> On Fri May 29, 2026 at 3:35 PM JST, Alice Ryhl wrote:
->>> > On Fri, May 29, 2026 at 10:52:52AM +0800, kernel test robot wrote:
->>> >> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-n=
-ext.git master
->>> >> head:   f7af91adc230aa99e23330ecf85bc9badd9780ad
->>> >> commit: fd3b87ff0232f46e1ad53a48609a3853c8757c6c [3728/9137] rust: a=
-uxiliary: add registration data to auxiliary devices
->>> >> config: x86_64-randconfig-004-20260529 (https://download.01.org/0day=
--ci/archive/20260529/202605291041.seNEWvLQ-lkp@intel.com/config)
-
-Ah, OPTIMIZE_FOR_SIZE build, it's always this...
-
->>> >> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project=
- 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
->>> >> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
->>> >> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/=
-archive/20260529/202605291041.seNEWvLQ-lkp@intel.com/reproduce)
->>> >>
->>> >> If you fix the issue in a separate patch/commit (i.e. not just a new=
- version of
->>> >> the same patch/commit), kindly add following tags
->>> >> | Reported-by: kernel test robot <lkp@intel.com>
->>> >> | Closes: https://lore.kernel.org/oe-kbuild-all/202605291041.seNEWvL=
-Q-lkp@intel.com/
->>> >>
->>> >> All warnings (new ones prefixed by >>):
->>> >>
->>> >>    samples/rust/rust_driver_auxiliary.o: warning: objtool: asan.modu=
-le_ctor+0xd: call without frame pointer save/setup
->>> >>    samples/rust/rust_driver_auxiliary.o: warning: objtool: asan.modu=
-le_dtor+0x1: call without frame pointer save/setup
->>> >
->>> > This one looks like this bug:
->>> > https://github.com/rust-lang/rust/pull/156980
->>>
->>> Does [1] work around the problem by any chance?
->>>
->>> [1] https://lore.kernel.org/all/20260527-nova-exports-v2-3-06de4c556d55=
-@nvidia.com/
->>
->> The asan.module_ctor error? I don't see how it would work around that.
+On Fri May 29, 2026 at 1:07 PM BST, Onur =C3=96zkan wrote:
+> On Fri, 29 May 2026 12:58:17 +0100
+> Gary Guo <gary@garyguo.net> wrote:
 >
-> I was referring to this error on the report:
+>> On Fri May 29, 2026 at 12:43 PM BST, Onur =C3=96zkan wrote:
+>> > Add helper wrappers for SRCU functions that are exposed to Rust
+>> > through generated bindings.
+>> >
+>> > Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+>> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+>> > ---
+>> >  include/linux/srcu.h   |  5 +++++
+>> >  rust/helpers/helpers.c |  1 +
+>> >  rust/helpers/srcu.c    | 30 ++++++++++++++++++++++++++++++
+>> >  3 files changed, 36 insertions(+)
+>> >  create mode 100644 rust/helpers/srcu.c
+>> >
+>> > diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+>> > index 81b1938512d5..790a4ef713c0 100644
+>> > --- a/include/linux/srcu.h
+>> > +++ b/include/linux/srcu.h
+>> > @@ -57,6 +57,11 @@ int __init_srcu_struct_fast_updown(struct srcu_stru=
+ct *ssp, const char *name,
+>> >  #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+>> > =20
+>> >  int init_srcu_struct(struct srcu_struct *ssp);
+>> > +static inline int __init_srcu_struct(struct srcu_struct *ssp, const c=
+har *name,
+>> > +				     struct lock_class_key *key)
+>> > +{
+>> > +	return init_srcu_struct(ssp);
+>> > +}
+>>=20
+>>=20
+>> This looks like a different strategy than, say, how mutex handles lockde=
+p. IMO
+>> the way that mutex handles this is more clear.
 >
-> _RINvXs5_NtNtCshc5sK6KjdJJ_6kernel5alloc4kboxINtB6_3BoxINtNtNtCsbsbRiabPl=
-h9_4core3mem12maybe_uninit11MaybeUninitINtNtBa_9auxiliary16RegistrationData=
-NtCseULRbgTYaTO_21rust_driver_auxiliary4DataEENtNtB8_9allocator7KmallocEINt=
-Cs57PXBekmiam_8pin_init12InPlaceWriteB1L_E14write_pin_initNtNtBa_5error5Err=
-orINtNtB3y_10___internal11InitClosureNCINvYIBH_B1L_B35_EINtNtBa_4init11InPl=
-aceInitB1L_E8pin_initB4u_IB4O_NCINvMsc_B1O_INtB1O_12RegistrationB2l_E3newNt=
-NtBX_7convert10InfallibleB2l_Es_0B1L_B4u_EE0B1L_B4u_EEB2n_: symbol name too=
- long, can't create __pfx_ symbol
+> Initially it was the same strategy, this one was suggested by Paul [1] an=
+d it
+> didn't sound like a bad idea to me. Also, in previous revisions, Boqun on=
+ce
+> said:
+
+I'm talking about changing how this is handled in SRCU side, not helper sid=
+e.
+
 >
-> As this patch might help shorten the symbol.
+> 	"Having a "#ifdef" in a function body is generally considered as bad cod=
+e
+> 	(I know we have some of these in rust helpers, but helpers are a bit
+> 	special and maybe we should clean them up). So could you move this
+> 	function into include/linux/srcutiny.h and include/linux/srcutree.h?"
 
-https://lore.kernel.org/rust-for-linux/20260527-pin-init-sync-v1-5-e20335ed=
-2501@garyguo.net/
-would also help a bit with this, although I'm not sure if is sufficient.
-
-Also, regarding your patch; do you need `#[inline(always)]` or is `#[inline=
-]`
-sufficient? Inlining shouldn't be forced unless there's a good justificatio=
-n.
+mutex.h doesn't use ifdef inside function body, it just define two static i=
+nline
+functions with the same signature in different ifdef branches.
 
 Best,
 Gary
+
+>
+> So putting them together, I decided to follow Paul's suggestion.
+>
+> [1]: https://lore.kernel.org/all/05906890-cf06-414c-a625-02f9d7150d57@pau=
+lmck-laptop
+>
+>>=20
+>> If we follow the way mutex is handles this, the `init_srcu_struct` would=
+ always
+>> create lock class key and forward to `__init_srcu_struct`, and
+>> `__init_srcu_struct` is an inline function that either calls
+>> `init_srcu_struct_lockdep` with all args, or discard name/key and forwar=
+d to
+>> `init_srcu_struct_mutex`.
+>>=20
+>> This is beneficial because the usage flows one way. You don't have in on=
+e config
+>> `init_srcu_struct` call `__init_srcu_struct` and have the opposite in an=
+other
+>> config, which I think can be quite confusing.
