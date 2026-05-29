@@ -1,32 +1,33 @@
 Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336A23DC4A4
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 11:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8263DCD81;
+	Fri, 29 May 2026 11:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780055109; cv=none; b=qcNn0w2wRCrDewJ7IiQpqMOSfq6XRTJQX7DASNCjWU+D4ZdXIVCjs2ts42hr/3JlcQTOqEIymP4IE8pcA+K7RzhAelQC6yLtQ/NvIgGLOM7hmkCN2B49nF+dfWw7nwvV1aTp6+g7NJiUwS017la12s2dqZ+R7lycHiLGkyTqFXU=
+	t=1780055112; cv=none; b=I9katHnPYnhB/3k4U8HGHdDeCRDsdWXKoo6wMaA9PeIqhaijdn8SY/pVoxJtQkyJ5VLpQn4Ct7i+iZvfkeQ110VKKAxDXgUrgBTwb2Hvb6uqJkBhjuPTa8bh/xLp0BaWBVknE33csYaKNOsmjrahqvJ+3x7PVwJ5b5trQAIR32I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780055109; c=relaxed/simple;
-	bh=QOgMwlVGoSS3aWw2O4I+mn0eC5ABmtw5uXckh0d/Chg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ET1vDai3CpYRXuCwzuoDDN0w/ofCp306YU8EKDps6A6fZkjh6XkFcJQWQTZKws0Tv+pdwhotd/ffqTuZ8MLURzvRwTx8WI5EwN1kSJyCVUTHVfmU4szJA9pPbXb3L3WY5Qt4qrqfw0nJ7J8e45WWTitHAQP6ZlY5BKPz2cFmvBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=mWB16Zn6; arc=none smtp.client-ip=109.224.244.107
+	s=arc-20240116; t=1780055112; c=relaxed/simple;
+	bh=iNIea3X1u5UlLSCKpcd9EjyAvSlc5TEnDXzmsvHUUBY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nWJz5OzximLZZzHi9xXjk9M9YSmeWsfkNL8vN8SeKRy3exkj/92ZK7u8LZdK9jrSR5VSnhi86T7+mdHdUOLwdBZQfA/oByrD4bTUL5BqdPvwf4dPwTKJsLO+FdmUQ6o+BbV+/aTVViicTt9VV3T5oBY5hJ/gQOWbp3PIOn8628g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=sZ/L03Rj; arc=none smtp.client-ip=109.224.244.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="mWB16Zn6"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="sZ/L03Rj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1780055098; x=1780314298;
-	bh=teMeCr9MNW9sCv6xOxoqpMjTo09nSFeejzagqRk5rM4=;
-	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
-	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=mWB16Zn6lO6kJTHFFWq2Dr+MPadde1ZYuJUxn9wQ66j6KEHS+KKIO6i6Hw/RP9pI7
-	 CMhPv2PTnQhBdRzDj4ZVcRpvRpdPo8LzkiKuxUVerKWQRnnhDYDCBRTI+lTKTejeKJ
-	 lzy+84F7a30XdENhRMmNMVzWA2ThfWptEwslE2c5lYksjzQ/z58V8bNTOYGkqrgGwq
-	 wLd+QzsoURGxVzs4D64moni7tIX/QVaH6aWg41w3R1ytYZ+hwhwUYHv/aVe84u/VHz
-	 8g/yEh7NRJ+twfv1QRe/c+bmxZNYxMMKXmdoz7Q76uOIcLsgT/znqaRmQ0CKmQ2yFq
-	 K1WjjCoDLgFsA==
-X-Pm-Submission-Id: 4gRhNk40RHz1DF6t
+	s=protonmail; t=1780055106; x=1780314306;
+	bh=JkD+A35aA68GLUHdDWX6WjTBKf+CG0Z+zqkNuKRO2O8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=sZ/L03RjvjSuLyveXTi4CPx0U2OlozEyvMKG2Z+rv2/6qsu9RcqxSDJU1tRAl1C0u
+	 AQc1Cxe1zE37lbVVr973jByHMO92Q8kdvYn3T3pVY4xYI1pLSMk2IsgpK0OWXN1gKH
+	 tXwJOdTDgR4UNv6K7rdvM2jXu+/hr6iP10KWRVGcG2EELg4ShQxbp05INMJFopDCaB
+	 tUCQ4+8sfPRV/geL59rCvr1zEYzOXTIJdkZo8NqJKrC26m1YTD5RiHEUIVyFsU956b
+	 Q6CIcvxJcwZp0bLWRS+Tz7tTaHTZ0CxlgZUsffRPi2uzWqGt/DhbFOPH/thx9hm4lp
+	 +jLi7xKiab3QA==
+X-Pm-Submission-Id: 4gRhNt6tsYz1DF70
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rcu@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
@@ -49,10 +50,12 @@ Cc: ojeda@kernel.org,
 	rostedt@goodmis.org,
 	mathieu.desnoyers@efficios.com,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v8 0/4] rust: helpers: add SRCU helpers
-Date: Fri, 29 May 2026 14:43:49 +0300
-Message-ID: <20260529114449.112066-1-work@onurozkan.dev>
+Subject: [PATCH v8 4/4] MAINTAINERS: add Rust SRCU files to SRCU entry
+Date: Fri, 29 May 2026 14:43:53 +0300
+Message-ID: <20260529114449.112066-5-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260529114449.112066-1-work@onurozkan.dev>
+References: <20260529114449.112066-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,100 +65,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The immediate motivation is the Tyr reset infrastructure [1] which needs
-to serialize reset sensitive hardware access against reset and teardown
-paths. That reset series started to require many independent dependencies
-so this SRCU support is split out as a standalone Rust API to keep the
-reset series focused on the reset logic and easier to review, rebase and
-land.
+Include Rust side implementation files to the SRCU maintainer
+entry.
 
-Changes since v7:
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ MAINTAINERS | 3 +++
+ 1 file changed, 3 insertions(+)
 
-- Moved synchronize_srcu() call inside "if srcu_readers_active()"
-  condition in "impl PinnedDrop for Srcu".
-- Improved comments on the synchronize_srcu() call in
-  "impl PinnedDrop for Srcu".
-
-v7: https://lore.kernel.org/all/20260528062810.256212-1-work@onurozkan.dev
-
-Changes since v6:
-
-- Removed "CONFIG_DEBUG_LOCK_ALLOC" condition from "rust/helpers/srcu.c"
-  and created a simple wrapper inside "include/linux/srcu.h" for it.
-
-v6: https://lore.kernel.org/all/20260527203615.163688-1-work@onurozkan.dev
-
-Changes since v5:
-
-- Created separate srcu_readers_active() variants for "srcutiny.h" and
-  "srcutree.h".
-
-v5: https://lore.kernel.org/all/20260527174120.510447-1-work@onurozkan.dev
-
-Changes since v4:
-
-- Exposed srcu_readers_active from C side and wired it to the Rust
-  helpers.
-- Used srcu_readers_active() in SRCU drop and logged with pr_warn if
-  there are leaked guards during the drop.
-
-v4: https://lore.kernel.org/all/20260525175706.124910-1-work@onurozkan.dev
-
-Changes since v3 (which are for Sashiko notes [2]):
-
-- Added rust helpers for srcu_barrier() and synchronize_srcu_expedited()
-  so the abstraction builds with CONFIG_TINY_SRCU, where these are
-  static inline functions.
-- Added missing INVARIANT comment in Srcu::new() about why the type
-  invariants hold after successful initialization.
-
-v3: https://lore.kernel.org/all/20260522054228.114814-1-work@onurozkan.dev
-
-Changes since v2:
-
-- Removed closure-based API.
-- Added #[doc(hidden)] on new_srcu macro.
-- Added #[must_use..] on srcu::Guard.
-- Improved the clean-up path (PinnedDrop implementation) which
-  eventually made read_lock safe with leaked guards.
-
-v2: https://lore.kernel.org/all/20260502162833.34334-1-work@onurozkan.dev
-
-Changes since v1:
-
-- Made the owned SRCU read-side guard API unsafe and added a safe closure
-  based helper for callers that do not need to keep the guard. This is to
-  avoid UB on the C side cleanup_srcu_struct where the SRCU struct is freed
-  while there are still active guards, which can happen if the caller leaks
-  the guard e.g., with mem::forget().
-- Improved doc comments.
-
-v1: https://lore.kernel.org/all/20260428103437.156236-1-work@onurozkan.dev
-
-
-[1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.dev
-[2]: https://sashiko.dev/#/patchset/20260522054228.114814-1-work@onurozkan.dev?part=2
-
-Onur Özkan (4):
-  rust: helpers: add SRCU helpers
-  srcu: expose srcu_readers_active()
-  rust: sync: add SRCU abstraction
-  MAINTAINERS: add Rust SRCU files to SRCU entry
-
- MAINTAINERS              |   3 +
- include/linux/srcu.h     |   5 ++
- include/linux/srcutiny.h |  13 +++
- include/linux/srcutree.h |  24 ++++++
- kernel/rcu/srcutiny.c    |   2 +-
- kernel/rcu/srcutree.c    |  25 ------
- rust/helpers/helpers.c   |   1 +
- rust/helpers/srcu.c      |  35 ++++++++
- rust/kernel/sync.rs      |   2 +
- rust/kernel/sync/srcu.rs | 173 +++++++++++++++++++++++++++++++++++++++
- 10 files changed, 257 insertions(+), 26 deletions(-)
- create mode 100644 rust/helpers/srcu.c
- create mode 100644 rust/kernel/sync/srcu.rs
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e0b307b2108c..7739a435f258 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -24624,6 +24624,7 @@ SLEEPABLE READ-COPY UPDATE (SRCU)
+ M:	Lai Jiangshan <jiangshanlai@gmail.com>
+ M:	"Paul E. McKenney" <paulmck@kernel.org>
+ M:	Josh Triplett <josh@joshtriplett.org>
++M:	Onur Özkan <work@onurozkan.dev> (RUST)
+ R:	Steven Rostedt <rostedt@goodmis.org>
+ R:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+ L:	rcu@vger.kernel.org
+@@ -24632,6 +24633,8 @@ W:	http://www.rdrop.com/users/paulmck/RCU/
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rcu/linux.git rcu/dev
+ F:	include/linux/srcu*.h
+ F:	kernel/rcu/srcu*.c
++F:	rust/helpers/srcu.c
++F:	rust/kernel/sync/srcu.rs
+ 
+ SMACK SECURITY MODULE
+ M:	Casey Schaufler <casey@schaufler-ca.com>
 -- 
 2.51.2
 
