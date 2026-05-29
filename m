@@ -1,65 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DA83CFF72;
-	Fri, 29 May 2026 11:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313B3BCD34;
+	Fri, 29 May 2026 11:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780053349; cv=none; b=P/w/0FxZKcEHlYnNhfFPAvUQBfwKnLPvyywftb5C14q+4OXNVzJG06crYKgU86xMcrmITQAeunQXoOI9tDZUFr7JV7dRr29hjL8vZx1WMIM3I16IFUzI0YWBE1KxwxxRlU0weYQ4c9sBN0lCrhwxjs/lqa7DuebzScdh77g9qpo=
+	t=1780055105; cv=none; b=KDEXNxGaJuedj8tAMGOkCcmrybkv8YZQ0G4SCgA7/qfxzcY3QsJI522il8VVN21KdSfOSvlSK3IoPB/qo6OYIYcsFL4GSd0OMHb+4p3PXW7e+E59iVV4sg2iqPCg7aJz7qHwDc8iRcXjjzR5Bk056hnRUXji+djClsTHyXNwrQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780053349; c=relaxed/simple;
-	bh=RKerTwBPlEkp1AoKfHTIHH2M4SsnZfTHsiA96JlVWAQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=hadUNt68jIBp8kuqofCYImM/et5YHrPZuHPllq+Aze0O7IdenaBt0VSnfkf2SfFImyAZIP98RdJ82a0XHldr2GnRZR2Lq1maXrgR0N0DaBRrmxzkbh6a9IXrzTPY7IF1Md7OrRQi6DOE16uuct8bxkyETaY9N8xHrY/KBbYjV1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JEkG/OZh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780055105; c=relaxed/simple;
+	bh=r2V3NNmJ1FMNs2qXlSBmdvHpo127A6yMdpacTbf8yWo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=onk0wHGrH9GX0dCaFpKhqM15bD8pXJ8yFM/btqtWn4E0IFxX4JI/gyL9jBPmKIG5k50jCg2JCs2MItC2ltB8Z0r8lI8dVCCtQrlPoitRa8OKmKGeWLJx5x0Yl7NhQwYOoFJY8A5+w+O9lpWuo3xJPqo0bAwDvPfpTzlvjbCfH8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=dpe213dl; arc=none smtp.client-ip=185.70.43.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JEkG/OZh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633071F00893;
-	Fri, 29 May 2026 11:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780053348;
-	bh=N5Mhwu56fACKBFI/ybtg1k7sKqLtp73anF5nOE+olEY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=JEkG/OZhSeqgRe7b/76jf0sGMfVWPrdypx401L12VmmA+ERwDx/OPQaUmIpu3dFuJ
-	 G0c1jqbzyw2TY/ywjTmlx6VcJVhqsyfsrHq0bjrsXWnClEspF3c90gEJyrlFeqNAGW
-	 z2cqWUoWZNNIG27zMnG61wZIWtmzJyTOKcoAvUVhx2ngwD8q/se1Elkz3dGQK+Yk9U
-	 J9pfG2dh01eklOrMfzIyNaFqVB95I0DfHR2AiAPq/eniBDfC6rN68+0/fKr6ikT3PW
-	 5cHn3y0BeaK1DAWCECTMZf2J0ELbalCxdMD7o+YKWn4t0301qHkLGAdslFyzd/v+U6
-	 E9na2k+KED1uA==
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="dpe213dl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1780055099; x=1780314299;
+	bh=r/4/lCxneay9Wm1Is0SI8vp62o6LmcLfnaBDeJWkaUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=dpe213dlMyiaUNkfsvA0AEoEWws2Scuk1SHxjaYNIV1VYWC3pecvnoIIU+7V3w67e
+	 N40GBPRaBX6algC6NL2wcxKgZ+MvfSggPKU2qDr6ooMGxco5LC41yQ93KqLALuu+eN
+	 t/tP9gNqPqbWSBVcBk3no8l+ph1yd9VPzKezwt+3b2S1Qo3yf/X9adtgzhlGZ4+ecj
+	 8NKEkz70g6Kjfi8w3IaIgZKoTBXRiv0ZeYBM8mECOgRe2SgUwUdGj/hfT40gCqpQ5A
+	 M6t3egmnLNJsRsJbWvWJ4QZdwCORczngm6DP3rtuY/eGMLF4mbzMXehJmxjoGHc4KE
+	 7lHpGoSA277Cw==
+X-Pm-Submission-Id: 4gRhNn1K5rz1DDLg
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v8 1/4] rust: helpers: add SRCU helpers
+Date: Fri, 29 May 2026 14:43:50 +0300
+Message-ID: <20260529114449.112066-2-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260529114449.112066-1-work@onurozkan.dev>
+References: <20260529114449.112066-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 29 May 2026 13:15:44 +0200
-Message-Id: <DIV48XH2KKI4.1AI7LJQBHVGM3@kernel.org>
-Subject: Re: [PATCH v7 0/4] gpu: nova-core: run unload sequence upon
- unbinding
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Eliot Courtney" <ecourtney@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260529-nova-unload-v7-0-678f39209e00@nvidia.com>
-In-Reply-To: <20260529-nova-unload-v7-0-678f39209e00@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri May 29, 2026 at 9:33 AM CEST, Alexandre Courbot wrote:
-> Alexandre Courbot (4):
->       gpu: nova-core: gsp: move chipset-specific parts of the boot proces=
-s into a HAL
->       gpu: nova-core: send UNLOADING_GUEST_DRIVER GSP command upon unload=
-ing
->       gpu: nova-core: run Booter Unloader and FWSEC-SB upon unbinding
->       gpu: nova-core: gsp: run the unload bundle if Gsp::boot() fails
+Add helper wrappers for SRCU functions that are exposed to Rust
+through generated bindings.
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ include/linux/srcu.h   |  5 +++++
+ rust/helpers/helpers.c |  1 +
+ rust/helpers/srcu.c    | 30 ++++++++++++++++++++++++++++++
+ 3 files changed, 36 insertions(+)
+ create mode 100644 rust/helpers/srcu.c
 
-NIT: There's a few places with Result<()> instead of just Result that could=
- be
-cleaned up (including the moved code).
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index 81b1938512d5..790a4ef713c0 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -57,6 +57,11 @@ int __init_srcu_struct_fast_updown(struct srcu_struct *ssp, const char *name,
+ #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
+ int init_srcu_struct(struct srcu_struct *ssp);
++static inline int __init_srcu_struct(struct srcu_struct *ssp, const char *name,
++				     struct lock_class_key *key)
++{
++	return init_srcu_struct(ssp);
++}
+ #ifndef CONFIG_TINY_SRCU
+ int init_srcu_struct_fast(struct srcu_struct *ssp);
+ int init_srcu_struct_fast_updown(struct srcu_struct *ssp);
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 625921e27dfb..f3562d3b3888 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -88,6 +88,7 @@
+ #include "signal.c"
+ #include "slab.c"
+ #include "spinlock.c"
++#include "srcu.c"
+ #include "sync.c"
+ #include "task.c"
+ #include "time.c"
+diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+new file mode 100644
+index 000000000000..225b3bf9334a
+--- /dev/null
++++ b/rust/helpers/srcu.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/srcu.h>
++
++__rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
++							const char *name,
++							struct lock_class_key *key)
++{
++	return __init_srcu_struct(ssp, name, key);
++}
++
++__rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
++{
++	return srcu_read_lock(ssp);
++}
++
++__rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx)
++{
++	srcu_read_unlock(ssp, idx);
++}
++
++__rust_helper void rust_helper_srcu_barrier(struct srcu_struct *ssp)
++{
++	srcu_barrier(ssp);
++}
++
++__rust_helper void rust_helper_synchronize_srcu_expedited(struct srcu_struct *ssp)
++{
++	synchronize_srcu_expedited(ssp);
++}
+-- 
+2.51.2
+
