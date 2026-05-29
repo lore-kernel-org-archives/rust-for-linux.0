@@ -1,222 +1,263 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022094.outbound.protection.outlook.com [52.101.96.94])
+Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEEC33ADA4
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 13:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061511; cv=fail; b=NKs0a5ctNPfpq8WiGrdQbjrkoe4aIL/++g7/PwEGa9RvOBcVCIsB9UtzYKfiyaIV4h4Moh6oesBi/hQUMVUy2rl3CkhB9xFn9Il+wOFT6+xtcbXgCpQcbMAXoDnSt3WrQHASazMIwL3oXWBVMjpMh7IvCp9CkjdgcYy0E0cClFQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061511; c=relaxed/simple;
-	bh=PNAy2ovIyRcabnXTxdu1jHzg8P9+DrOZSARq3Qs+DZ0=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=hQwV9S/wxJMpf/QH1+OLuRCviENxkFoBI7T5ZsT2z2apGdpNd+SHsteuBPNNxQwkTWY55WYLXWrpek+CNRNufLu0Rfn2yHZXs8fyATXEO1qY3zLh0wH6w5Q0UQ8UNBtfi9Hz4JuBbby7eDnsYUstBi/PVpGT8Tvl94KnQJf8klA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=zkTVV9Zr; arc=fail smtp.client-ip=52.101.96.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6473332861F
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 13:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780062022; cv=none; b=P/0nu8ZHepUMrcPIjYNKYHajZUXwCBeu/Xxnix+QZ38T/v9u9YUovyzLIH3qh+sPI6kk42BDW3AR/lwP4oeqv2+qnieF4vNq9gcC5kWhNAgzOU1qEFNC1MyoLis/DOvPB6tGOHQONCNT+TepaQibYkEKDJokPiTRjLJGLECAzfc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780062022; c=relaxed/simple;
+	bh=GRu2w6Yl53hjYDtCSyWax23qkoJc99/mS9lhpS2cZNs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WTpAq54hphC0bRkVFjA2/7v5Kj28hlLA7OuAUfhrhpqEKaFmA0T0327xvIpkOFd5vu1viOwj4hlcLF9p1Rb07iK9ZOXfPuY4pW+tqcB5ZBAlWy45Xr4sUKqPHHyN7RdC24bIyFt9Kvxw3f9+stub7/FWcUyscfEPBH19IRY65Ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=QpxB0QRR; arc=none smtp.client-ip=109.224.244.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="zkTVV9Zr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HCVfZRUMCnnL7+s5APwCHh5LWwRyw7wYcXLITlrrvMV6e5dcsrhmCqhFOkeWmqiVHJgG6lLnQ1wkZQf0KZLrFkQKIqojInIvHEm9zE8GZ/LJme1AN/EukChsXqawfTbypiG/97oLVXFuHkoJNpN0sk2fKE2/NKbGi5gIkJ/7uUSQcZSFqEFnt1aU+HYs8Qqd9rsDVvV56gNoH8jFWR3xbWQl2j1r3lL8blKqyNB2ZSxvYSIcAue+0lyZOVnY8SQeX5/G0msuQl2dNTqyeLsFz7qelPqlc+DBwyoUhNfQScwG/9pNhOQRkqAvI3CDzdb8XSG9SDbaJgBnCpscGk7NRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sjkpkov86ju/feilmBr2sp5Y74+VHKzUZ32UEid3Sr4=;
- b=o5sl8Dl8uYrx8MOqIhG8okKflfVx07hQm055xBi7aPSqqXxEhesxO6BHRvWR6q3Fpu4Sib40zaQDJdAtYRCT1ZlI6PUInruBPK+f1dVfnWNHX6L1irro8t15mH0Y1gUu61pX/RU4/p0guEOpqmAJxNeo0jEwhcrLK+z1Q42pOahtseg7N0ln/LOSD3FnR3MEZNbQc/zRWUX/7KhgWFwbe+8pDJSm1kBmUqbbyTYxo+/tjPmCCkLocQDxEWDXvSv6kVuDdG19U5iXHldINst7Cr2Z+E/D08VxYMI0zfQW56SY6XrCZWp4Iyge6z9hucPKgPy6a02z98Xme5kvDj6oHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sjkpkov86ju/feilmBr2sp5Y74+VHKzUZ32UEid3Sr4=;
- b=zkTVV9ZrMcQoWAqPEcgTqrzbmzXvvMfgKOEfz4q+NExLOxqeySHd1c3dl1Xq/BVnmwze5qjHx2wUZH9q0YCOxWeKurhNZ0OCXOlU7nyuGY9bvG4YlwtwSta4H65/qd9ZpPzuAijq+Msx9uNTQ1SZ/W1GkcTJsqFHPgzu5liP5C8=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB5627.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:274::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
- 2026 13:31:43 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0071.014; Fri, 29 May 2026
- 13:31:42 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 29 May 2026 14:31:42 +0100
-Message-Id: <DIV7510GLW8P.1KP88LYA360IC@garyguo.net>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "kernel test robot"
- <lkp@intel.com>, "Danilo Krummrich" <dakr@kernel.org>,
- <llvm@lists.linux.dev>, <oe-kbuild-all@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [linux-next:master 3728/9137]
- samples/rust/rust_driver_auxiliary.o: warning: objtool:
- _RINvXs5_NtNtCshc5sK6KjdJJ_6kernel5alloc4kboxINtB6_3BoxINtNtNtCsbsbRiabPlh9_4core3mem12maybe_uninit11MaybeUninitINtNtBa_9auxiliary16RegistrationDataNtCseULRbgTYaTO_21rust_driver_auxiliary4DataEENtNtB...
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <202605291041.seNEWvLQ-lkp@intel.com>
- <ahkzosbjO4NdSyD8@google.com> <DIUZYLZW1KTM.VRI2RJ8DXEGQ@nvidia.com>
- <CAH5fLgiFo1rep3N5qGWGsTXT177hfSwW0=e1KsVCrrz2uRMoBw@mail.gmail.com>
- <DIV0HOKW3R1L.2ZK80B9TV36H7@nvidia.com>
- <DIV5H9S8ZN2L.234ZKX4RBF6BO@garyguo.net>
- <DIV6O6TSXRU9.2RAEFRRAGX4EM@nvidia.com>
-In-Reply-To: <DIV6O6TSXRU9.2RAEFRRAGX4EM@nvidia.com>
-X-ClientProxiedBy: LO3P123CA0001.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:ba::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="QpxB0QRR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1780062014; x=1780321214;
+	bh=ZL9ESIKvQirxwn04NTuae03syak/bnIEqsL+uBn0S2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=QpxB0QRRMygiPZjw1oV34QjExJrxrqAkCwknEpeMVyiFSEa0sh+6rIRO+2HcXiHtE
+	 r8i4FTFmOR0vNj5Se2zIwa1/2QIr0LFjtCm7PQbYGg+8CM5fugC5yee1CyjdWpPJeN
+	 4cdlEbccFe/ffRjLHfi0EGfanamgIPy7cGSMnBZO4NUSuu30zbh6ToKcBu607l1SvL
+	 t1q/aqRscmt//RZNPfjJOnDKnpqlbmclaNvGuDJK3sluOhPcGEle5qBY1SDuiq82Lp
+	 171WSKio6Ks9gvuZYrParYATnU30YkZRDbkVqIn1+hvauWTbu41/5P+yre2rrVrQuq
+	 Ts2aAxsxYqbWg==
+X-Pm-Submission-Id: 4gRkxk4FqHz1DDLL
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v9 1/4] rust: helpers: add SRCU helpers
+Date: Fri, 29 May 2026 16:39:51 +0300
+Message-ID: <20260529134004.396743-2-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260529134004.396743-1-work@onurozkan.dev>
+References: <20260529134004.396743-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB5627:EE_
-X-MS-Office365-Filtering-Correlation-Id: 982b33c0-59b4-4a19-5765-08debd869f27
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|18002099003|22082099003|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	/NaxbYU8eBPcQYvlmJylfHFpTmdGAZYqanp6XS1nTgni8kgZH9BnSvzsOSayf3fG8lnbdkUDoAkMaaD+//LxA4/YQqMdiDygbAmAGUdBNR39+gXcVfB+hPx6c1/sEPp2UTRo09H3WJxaGCx4JR29PSZIexw8LMFPVrBXNKiIh/W6Y4eCLBr+i0SQJghWwyRcuwbRdh9MCFoxMlQ+7CXNo8XbDKi8TKpHePirIo1KFN463FqynNWy2YbJBfVsk/8ru4Od1SnA41GyB9X54sxXPoJ9CMR0uAh2pdRY8KSk4Jpld60IlEw7Bp1JFKmHC6/ZbB4ifZDxCR9h+uj2x7DO3qYxOlAsbgVuoFkC0gZ5ioaTkI5uhjdCh6ZPMlyBZyNF26fQyLAnnkpTK/0WazCuL594XPJJ8MPWEGkO3RdvyfBPQ7AUZmxZEYG/dCwjH4G5dQdMaWRIru7Jc5EgZiywEKgQlBqZN3lFiJHEpndl2QCScMzf2gn/TYxRFcyn5CqBiRgc1vuKZwZzCX7dpkGEEVKOjm1wCA02osKCWUK3HpqIG8gLQXqVsriuOQLsvuNm++cxe7k0EZNxVqzcEzvCLIPChPEFTt8Bx/G39PalIKMclJa1LtaPCXVKiJcr/u4HRgrx+3pP5LGUWh9NrSdFEA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aXkzQi96dVhsTmZXTGdSMVhIc3ltRitaSUhLMG1hYmZaOVI4elZEdVFtamp1?=
- =?utf-8?B?dVJtcm45WHkwMkovMktYa1pGTlh2NTRTcENUWVVXTTJxQ0U2YUdmMmE5SlVh?=
- =?utf-8?B?c2F5MHYvNUdNZEthbFRGU3RlRDZLVkNkYUoxM2JMdktJcVE3bjlhM3Uxb01R?=
- =?utf-8?B?U1ByWjFkZ1dlMlBtZGlUUkVxYkF4SE5aZjF1QlV4bGZNeTZqSHNSQ2xucnNN?=
- =?utf-8?B?QU5hODgyeUZQcS9rcHgyOFdMUjNKa0RkOHowTlRoZW1zdkZGeDhNc090clNs?=
- =?utf-8?B?MVc1eTl4cmxuMzMvZGxXRFREQmlielZzdXluY0E1Nm4zOU5JN3ltUjloYjhh?=
- =?utf-8?B?cENYc1dHOUxMZm5QWngvamV4Vng4SGxtQUJ2WWNtaWZaSXF4NWhGTWlvWWlj?=
- =?utf-8?B?a1B0NjRvRVMyNnUza2NJQ1ZPbFlKcVBzVmY0bVp5WWZmSlg1bktGVWpLeW9x?=
- =?utf-8?B?aWpOUkJlQjNtTHIxaU93RlNPOHY4SFR6aVh6ZnBLcThxK1RrUFpCT21qZjAr?=
- =?utf-8?B?ZW9Md1FvdktNT1FqeEQrYlRqMmZWb1FKRXpPaUZrSW9KNkdlTitudzdsRmZN?=
- =?utf-8?B?VDNjUXRrbG9td0RZc1duelFIZnRnSG0yRnIreENaQnlyS0dON1pGTGZ0TWVv?=
- =?utf-8?B?VkRUYzlnN0NCQUtkMGU5WTlNL3NuOHFIZGRKYmRUQXBwck5UREJqNWc3c1VI?=
- =?utf-8?B?RVJZNmZlUkErcDZ5SmFjc0xFQUdhaDcwRFRqNGZlS0dLUGxoYlpDM3BkMFBr?=
- =?utf-8?B?NDZUSDUyWEZzZmNEdGY3bThXNFRiK05UdEFZbE9KaHlaNzBTUUZxSEpvOXBa?=
- =?utf-8?B?K3FuQ1ljSVFPYWZWUzYxbDFoaDZsWThpNnRtM2RvazhuUE9SbzRMMG9GRWM0?=
- =?utf-8?B?Vk5hSVIzTGdGaVo3WUJEWlMyUlF0b0RMSDVZbDFUMnJBenZVbjRrZjR5SFNG?=
- =?utf-8?B?QXVOcy9JNFFjNmxXam5oaHlkcmVaUE9XcXQrOUZGa291aEVldG5FT3dpeFUr?=
- =?utf-8?B?RlhCSU15Tk13ZFRjZkpodmY5WmpqdG1Wc0lhaEZBT1BjcDhzVjQ2VTNzYWVP?=
- =?utf-8?B?YTdRUWxYZ3p4MzJQTm1ZUXh2S0hqOXAwTTVxMXlqaDc5OU9ybHJyRVU2dXZq?=
- =?utf-8?B?bUNrRmZvM01WRGNUK3JtcDVNc0g0SjgzSktoaHB4eVpkeXVyNFVnNFRadnZJ?=
- =?utf-8?B?SXJRK2lqYjZXQUg0NnJmVFJwQ0pwWXpzbS9wR1BkbHZZelFrME5XRFVDSm9M?=
- =?utf-8?B?bXI0T2t2MXJTZTRkY2pWVDRNSDg3T0JXNExGZ0JGZnEwbUIxaFNhZUh1YXR1?=
- =?utf-8?B?VFFLOVhUWXRXVjVrOGo0dFZPejBvR215TUg3Yzd6UHkwaHR3TXU2QVFHNmJK?=
- =?utf-8?B?RGZmY0xiQVRvT0dLOURmRW9FRks1Vkw2SUZzMlBSRUl6dTZ2bWJaTkdBVFIw?=
- =?utf-8?B?VmpmTTRrUlllWHJUMHRTbWI4Sk41czM1akRycTFYYW9TbUVxNHp6cmFrNXdG?=
- =?utf-8?B?UnhxdjZVSGtkSFE0UnV6VzljdjY0SnV4WkJzUXBMZ2x5VUhPK1E0YnhqYVZy?=
- =?utf-8?B?U2RuTjRXT1BZWWQ0ZjRuUG5mdXd6SXMzM1FaTjBYSEpMT2RXWTBTOHUrWFBY?=
- =?utf-8?B?QlZYL2NlUzRhUmRaaFUxRldUOGRQSVVaRUlQLzlXM1NzSjNxMFlxQ09rTGhw?=
- =?utf-8?B?MVRxbHNHVTMvTmhaVXRIaGhscTRvSU4rS0k5aUFqaTlzdkQyZHA2UFNRNC81?=
- =?utf-8?B?bWR4WCs5cHlxM1BMYUkrelRIYytmZGpoVURySUw4cmU2SzZyZ3dFTE9GOTBY?=
- =?utf-8?B?SkJ6OTRHT1R4ZGQ2MnAyQ3BSK3dIRm1yUVN6SktsUDNHSGdGZWkrSEMxRUR0?=
- =?utf-8?B?VC93VzFIMjRKM21naEJwLytrNjdUS0tONFZDWE9OaUVUVTBseFdQdDl2TXZr?=
- =?utf-8?B?TjVON2VpNUxNTXBiMHkyYnV3NmRlOFdjMktySXc0eU1RY3ZZRGdpZ2xFTWZx?=
- =?utf-8?B?M2Jycmx6anJwU1FQQ0d4NDNMYkRQU1lHclhweVhFS1h0by9VWHlZemU4ck1P?=
- =?utf-8?B?Rnd2d0VLeGRxOE5xNG9PaGN0bDVJSkpJdjZZVzFIRzczd0RnY0xhbWVBZm9t?=
- =?utf-8?B?a3FRWDFRZ1ZpV2xRVGxXNGQvV3MyeGVTalEwaW5kMEd3R3p4SzB5eEY1Tkhw?=
- =?utf-8?B?TEorQ29LU2tUek4xY2pDYVJwWXhLYUxObXFwMDZDeXJjMDVRM1h0S1JpdWNu?=
- =?utf-8?B?ajFLanBxUDA2YzNoS1krblkwYWdQMmdXd3IzVFJtbHg0aC9laldoQUhZRk1N?=
- =?utf-8?B?ZzZBUkhBcW0rRTVVYUM4UjVneHNYbytwS2p5V3loSGtaTENrMlJ3UT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 982b33c0-59b4-4a19-5765-08debd869f27
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 13:31:42.7491
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vsH9dKYw5RZuX4reAkP1WiRSsb+JZXWNsJ/jNd6lccCqfzGpOWPRfBbVAAxFw9I0Ct+2JL/vIcCqRKc/scTnyQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5627
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri May 29, 2026 at 2:09 PM BST, Alexandre Courbot wrote:
-> On Fri May 29, 2026 at 9:13 PM JST, Gary Guo wrote:
->> On Fri May 29, 2026 at 9:19 AM BST, Alexandre Courbot wrote:
->>> On Fri May 29, 2026 at 5:00 PM JST, Alice Ryhl wrote:
->>>> On Fri, May 29, 2026 at 9:54=E2=80=AFAM Alexandre Courbot <acourbot@nv=
-idia.com> wrote:
->>>>>
->>>>> On Fri May 29, 2026 at 3:35 PM JST, Alice Ryhl wrote:
->>>>> > On Fri, May 29, 2026 at 10:52:52AM +0800, kernel test robot wrote:
->>>>> >> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux=
--next.git master
->>>>> >> head:   f7af91adc230aa99e23330ecf85bc9badd9780ad
->>>>> >> commit: fd3b87ff0232f46e1ad53a48609a3853c8757c6c [3728/9137] rust:=
- auxiliary: add registration data to auxiliary devices
->>>>> >> config: x86_64-randconfig-004-20260529 (https://download.01.org/0d=
-ay-ci/archive/20260529/202605291041.seNEWvLQ-lkp@intel.com/config)
->>
->> Ah, OPTIMIZE_FOR_SIZE build, it's always this...
->>
->>>>> >> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-proje=
-ct 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
->>>>> >> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
->>>>> >> reproduce (this is a W=3D1 build): (https://download.01.org/0day-c=
-i/archive/20260529/202605291041.seNEWvLQ-lkp@intel.com/reproduce)
->>>>> >>
->>>>> >> If you fix the issue in a separate patch/commit (i.e. not just a n=
-ew version of
->>>>> >> the same patch/commit), kindly add following tags
->>>>> >> | Reported-by: kernel test robot <lkp@intel.com>
->>>>> >> | Closes: https://lore.kernel.org/oe-kbuild-all/202605291041.seNEW=
-vLQ-lkp@intel.com/
->>>>> >>
->>>>> >> All warnings (new ones prefixed by >>):
->>>>> >>
->>>>> >>    samples/rust/rust_driver_auxiliary.o: warning: objtool: asan.mo=
-dule_ctor+0xd: call without frame pointer save/setup
->>>>> >>    samples/rust/rust_driver_auxiliary.o: warning: objtool: asan.mo=
-dule_dtor+0x1: call without frame pointer save/setup
->>>>> >
->>>>> > This one looks like this bug:
->>>>> > https://github.com/rust-lang/rust/pull/156980
->>>>>
->>>>> Does [1] work around the problem by any chance?
->>>>>
->>>>> [1] https://lore.kernel.org/all/20260527-nova-exports-v2-3-06de4c556d=
-55@nvidia.com/
->>>>
->>>> The asan.module_ctor error? I don't see how it would work around that.
->>>
->>> I was referring to this error on the report:
->>>
->>> _RINvXs5_NtNtCshc5sK6KjdJJ_6kernel5alloc4kboxINtB6_3BoxINtNtNtCsbsbRiab=
-Plh9_4core3mem12maybe_uninit11MaybeUninitINtNtBa_9auxiliary16RegistrationDa=
-taNtCseULRbgTYaTO_21rust_driver_auxiliary4DataEENtNtB8_9allocator7KmallocEI=
-NtCs57PXBekmiam_8pin_init12InPlaceWriteB1L_E14write_pin_initNtNtBa_5error5E=
-rrorINtNtB3y_10___internal11InitClosureNCINvYIBH_B1L_B35_EINtNtBa_4init11In=
-PlaceInitB1L_E8pin_initB4u_IB4O_NCINvMsc_B1O_INtB1O_12RegistrationB2l_E3new=
-NtNtBX_7convert10InfallibleB2l_Es_0B1L_B4u_EE0B1L_B4u_EEB2n_: symbol name t=
-oo long, can't create __pfx_ symbol
->>>
->>> As this patch might help shorten the symbol.
->>
->> https://lore.kernel.org/rust-for-linux/20260527-pin-init-sync-v1-5-e2033=
-5ed2501@garyguo.net/
->> would also help a bit with this, although I'm not sure if is sufficient.
->>
->> Also, regarding your patch; do you need `#[inline(always)]` or is `#[inl=
-ine]`
->> sufficient? Inlining shouldn't be forced unless there's a good justifica=
-tion.
->
-> If the code is not inlined, we risk a build failure - pretty similarly
-> to the link errors of `build_assert!`. I'd say that justifies using
-> `#[inline(always)]` here, but maybe we should also add a comment
-> explaining why we do so.
+Add helper wrappers for SRCU functions that are exposed to Rust
+through generated bindings.
 
-I think for long symbol names it's a very difference argument. There're man=
-y ways to
-create complex types that can lead to those. With this logic every generic =
-code
-needs to be `#[inline(always)]`, which obviously is not what we want.
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ include/linux/srcu.h   | 29 ++++++++++++++++++++---------
+ kernel/rcu/srcutiny.c  | 10 +++++-----
+ kernel/rcu/srcutree.c  |  9 +++++----
+ rust/helpers/helpers.c |  1 +
+ rust/helpers/srcu.c    | 30 ++++++++++++++++++++++++++++++
+ 5 files changed, 61 insertions(+), 18 deletions(-)
+ create mode 100644 rust/helpers/srcu.c
 
-Best,
-Gary
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index 81b1938512d5..a028a5b5ebef 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -25,20 +25,19 @@ context_lock_struct(srcu_struct, __reentrant_ctx_lock);
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 
+-int __init_srcu_struct(struct srcu_struct *ssp, const char *name, struct lock_class_key *key);
++int init_srcu_struct_lockdep(struct srcu_struct *ssp, const char *name,
++				     struct lock_class_key *key);
++static inline int __init_srcu_struct(struct srcu_struct *ssp, const char *name,
++				     struct lock_class_key *key)
++{
++	return init_srcu_struct_lockdep(ssp, name, key);
++}
+ #ifndef CONFIG_TINY_SRCU
+ int __init_srcu_struct_fast(struct srcu_struct *ssp, const char *name, struct lock_class_key *key);
+ int __init_srcu_struct_fast_updown(struct srcu_struct *ssp, const char *name,
+ 				   struct lock_class_key *key);
+ #endif // #ifndef CONFIG_TINY_SRCU
+ 
+-#define init_srcu_struct(ssp) \
+-({ \
+-	static struct lock_class_key __srcu_key; \
+-	\
+-	__init_srcu_struct((ssp), #ssp, &__srcu_key); \
+-})
+-
+ #define init_srcu_struct_fast(ssp) \
+ ({ \
+ 	static struct lock_class_key __srcu_key; \
+@@ -56,7 +55,12 @@ int __init_srcu_struct_fast_updown(struct srcu_struct *ssp, const char *name,
+ #define __SRCU_DEP_MAP_INIT(srcu_name)	.dep_map = { .name = #srcu_name },
+ #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
+-int init_srcu_struct(struct srcu_struct *ssp);
++int init_srcu_struct_generic(struct srcu_struct *ssp);
++static inline int __init_srcu_struct(struct srcu_struct *ssp, const char *name,
++				     struct lock_class_key *key)
++{
++	return init_srcu_struct_generic(ssp);
++}
+ #ifndef CONFIG_TINY_SRCU
+ int init_srcu_struct_fast(struct srcu_struct *ssp);
+ int init_srcu_struct_fast_updown(struct srcu_struct *ssp);
+@@ -65,6 +69,13 @@ int init_srcu_struct_fast_updown(struct srcu_struct *ssp);
+ #define __SRCU_DEP_MAP_INIT(srcu_name)
+ #endif /* #else #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
++#define init_srcu_struct(ssp) \
++({ \
++	static struct lock_class_key __srcu_key; \
++	\
++	__init_srcu_struct((ssp), #ssp, &__srcu_key); \
++})
++
+ /* Values for SRCU Tree srcu_data ->srcu_reader_flavor, but also used by rcutorture. */
+ #define SRCU_READ_FLAVOR_NORMAL		0x1		// srcu_read_lock().
+ #define SRCU_READ_FLAVOR_NMI		0x2		// srcu_read_lock_nmisafe().
+diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+index a2e2d516e51b..780a95e8cad7 100644
+--- a/kernel/rcu/srcutiny.c
++++ b/kernel/rcu/srcutiny.c
+@@ -48,15 +48,15 @@ static int init_srcu_struct_fields(struct srcu_struct *ssp)
+ 
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 
+-int __init_srcu_struct(struct srcu_struct *ssp, const char *name,
+-		       struct lock_class_key *key)
++int init_srcu_struct_lockdep(struct srcu_struct *ssp, const char *name,
++		     struct lock_class_key *key)
+ {
+ 	/* Don't re-initialize a lock while it is held. */
+ 	debug_check_no_locks_freed((void *)ssp, sizeof(*ssp));
+ 	lockdep_init_map(&ssp->dep_map, name, key, 0);
+ 	return init_srcu_struct_fields(ssp);
+ }
+-EXPORT_SYMBOL_GPL(__init_srcu_struct);
++EXPORT_SYMBOL_GPL(init_srcu_struct_lockdep);
+ 
+ #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
+@@ -68,11 +68,11 @@ EXPORT_SYMBOL_GPL(__init_srcu_struct);
+  * to any other function.  Each srcu_struct represents a separate domain
+  * of SRCU protection.
+  */
+-int init_srcu_struct(struct srcu_struct *ssp)
++int init_srcu_struct_generic(struct srcu_struct *ssp)
+ {
+ 	return init_srcu_struct_fields(ssp);
+ }
+-EXPORT_SYMBOL_GPL(init_srcu_struct);
++EXPORT_SYMBOL_GPL(init_srcu_struct_generic);
+ 
+ #endif /* #else #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 0d01cd8c4b4a..45154630c54e 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -266,12 +266,13 @@ __init_srcu_struct_common(struct srcu_struct *ssp, const char *name, struct lock
+ 	return init_srcu_struct_fields(ssp, false);
+ }
+ 
+-int __init_srcu_struct(struct srcu_struct *ssp, const char *name, struct lock_class_key *key)
++int init_srcu_struct_lockdep(struct srcu_struct *ssp, const char *name,
++			     struct lock_class_key *key)
+ {
+ 	ssp->srcu_reader_flavor = 0;
+ 	return __init_srcu_struct_common(ssp, name, key);
+ }
+-EXPORT_SYMBOL_GPL(__init_srcu_struct);
++EXPORT_SYMBOL_GPL(init_srcu_struct_lockdep);
+ 
+ int __init_srcu_struct_fast(struct srcu_struct *ssp, const char *name, struct lock_class_key *key)
+ {
+@@ -301,12 +302,12 @@ EXPORT_SYMBOL_GPL(__init_srcu_struct_fast_updown);
+  * to any other function.  Each srcu_struct represents a separate domain
+  * of SRCU protection.
+  */
+-int init_srcu_struct(struct srcu_struct *ssp)
++int init_srcu_struct_generic(struct srcu_struct *ssp)
+ {
+ 	ssp->srcu_reader_flavor = 0;
+ 	return init_srcu_struct_fields(ssp, false);
+ }
+-EXPORT_SYMBOL_GPL(init_srcu_struct);
++EXPORT_SYMBOL_GPL(init_srcu_struct_generic);
+ 
+ /**
+  * init_srcu_struct_fast - initialize a fast-reader sleep-RCU structure
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 625921e27dfb..f3562d3b3888 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -88,6 +88,7 @@
+ #include "signal.c"
+ #include "slab.c"
+ #include "spinlock.c"
++#include "srcu.c"
+ #include "sync.c"
+ #include "task.c"
+ #include "time.c"
+diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+new file mode 100644
+index 000000000000..225b3bf9334a
+--- /dev/null
++++ b/rust/helpers/srcu.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/srcu.h>
++
++__rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
++							const char *name,
++							struct lock_class_key *key)
++{
++	return __init_srcu_struct(ssp, name, key);
++}
++
++__rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
++{
++	return srcu_read_lock(ssp);
++}
++
++__rust_helper void rust_helper_srcu_read_unlock(struct srcu_struct *ssp, int idx)
++{
++	srcu_read_unlock(ssp, idx);
++}
++
++__rust_helper void rust_helper_srcu_barrier(struct srcu_struct *ssp)
++{
++	srcu_barrier(ssp);
++}
++
++__rust_helper void rust_helper_synchronize_srcu_expedited(struct srcu_struct *ssp)
++{
++	synchronize_srcu_expedited(ssp);
++}
+-- 
+2.51.2
+
