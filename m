@@ -1,75 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F87136894D;
-	Thu, 28 May 2026 23:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673931CD2C
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 00:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780009840; cv=none; b=kJi66DDn5Je1ZKRCADgLs66+GV/llZa9yLA8agk9GvU4TCssstsbyDC553JUeh5RkwYO2gCFtyWYGDYKKxb9mVUVAK5p3NnhxE9XMOvV0QW3rN2im7GoRfC5QmK09HDcBJVpdS9NZHcdtZn5A9VuX5RCp+ZcjbxYCQNKO3bIflY=
+	t=1780012872; cv=none; b=QYCk3Q8R3tHBfuQTAjpYFKpyl/2y6LtxLHLHrBtZHwX/qOJcD/9Yv6w4O8vKdSqTfNjU3cpcYpbxjwV3U2qxQa+WfYwdg8IMwR8BlyxcmzjaKYstUvqegGIN8WqypdKmP1JZM94IK5BE0LW/rKs/4lDOAK1IFmF+f1I+KqHvH04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780009840; c=relaxed/simple;
-	bh=0nMZ4yHxVBlrd5e8Dg+WyKk8RJ3TFg9oP8hMGpME+44=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mdSYyJwS74Z0jNlAathjm6KFKcALlk0bCxMb7b/+usGQzKKAy3WbTjvF1pnaAcKPG5Jb0t3Hn1biGgsfyJQfbkY8Df+NaeawgpCOUXsFcQPDE8aidcyxfa4hoo2Ni8gUGdun8yFERsykgx5K15RPjPZBQpxfjCxH7F/9Fk2OO7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jasw8d+R; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780012872; c=relaxed/simple;
+	bh=W80Ui8IxHPdH6aYMnP7XONzC6aNeglDjskkZRP0YlX8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EREkp19KHIW3WbHh9rEtFoEa2R32aZg1cK3U5bb2d/daA4OdTCRLxkc0kIhcRRDMlNxElxHxvlOeD0ye2jh3mdzbsFy1rC4o8sneZWbcy+Tc0UnKNf3wWCgqkkkVlgB2zp24UiRHsmRlFpllO9/ifEsK3052XsEp7s8io9hLQzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cd1sNyoE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jasw8d+R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9731E1F000E9;
-	Thu, 28 May 2026 23:10:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cd1sNyoE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D38C1F000E9;
+	Fri, 29 May 2026 00:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780009839;
-	bh=R/tBOqyVGQgM7eBEDPWxlNEHz1ad4uDCbcOKrESu1N0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jasw8d+R2/VOB00imbnSRozm0g+qB+woTGQLJAsv94/cyCW6I0uO0jgXnx3mGu2C8
-	 CLaeJLxFXaHa+56EN/mlJAzO/FYVS7enqQVKCzc6Pu3igBnL0s1Wx0i7TphYZ7lRy8
-	 QLCd8p3fLVQEECRonQ5jBMfQEKOCfaR8nO81k+l/9QXd09wTAdUSArLuNdEtgqi5fT
-	 aTxYBkl4NZZyrxYWe0aqlBpzDMOD4jkcflU2R3RqUABg/2EodSz7RvukA+eKoL7R2R
-	 xvSiN2A8pdo0Nv5TvFcPzjVkZ9e+8H5NY7+Zr7/CV+uaDpt5g9w6YZc6GCx18J2gdp
-	 5MHTymtYNrWzQ==
+	s=k20260515; t=1780012871;
+	bh=JPawECuv70TjMvx1NH/GERoDHWctvHzeFAAYYj/q4rA=;
+	h=From:To:Cc:Subject:Date;
+	b=cd1sNyoEw1TqeuNAvlnXCPm4lukbXAqjelpJuF5EVWSwu655aUewYq8aQzHoTAXvr
+	 EgST2lTHodbaCZLf2w0bbBq7piSJOGWHnTLbgulx+p2dhQNcWYLPMPcdy3vyFKeoNK
+	 3KDRW4WqvGF+hkfBvkJQyCg8g2CFX5ojiZSoLDlLJ7GMRTCYHQKwn6ssr6HDGjW8JH
+	 b2H1kcYD49xUCrCePihYNU2h9iDoY769RAZbEloC53FdmuBZI6Y+rGtnCOpQQQGc78
+	 BF6pewQ3pvyaGQl+VnZkHOwdttpbBcRyhsocVK5ZK52YrTw1rN70/rPrzQohlXQQjp
+	 JuF374ZaN11LA==
 From: Danilo Krummrich <dakr@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
+To: dakr@kernel.org,
 	aliceryhl@google.com,
-	tmgross@umich.edu,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	daniel.almeida@collabora.com,
+	boris.brezillon@collabora.com,
+	deborah.brouwer@collabora.com,
+	gary@garyguo.net
+Cc: dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: devres: add 'static bound to Devres<T>
-Date: Fri, 29 May 2026 01:10:34 +0200
-Message-ID: <20260528231034.2208765-1-dakr@kernel.org>
+Subject: [PATCH 0/2] drm: tyr: use lifetime-bound IoMem
+Date: Fri, 29 May 2026 02:00:52 +0200
+Message-ID: <20260529000106.2257996-1-dakr@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260526000447.350558-1-dakr@kernel.org>
-References: <20260526000447.350558-1-dakr@kernel.org>
-X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Tue, 26 May 2026 02:04:41 +0200, Danilo Krummrich wrote:
-> [PATCH] rust: devres: add 'static bound to Devres<T>
+Adopt the driver core lifetime infrastructure for tyr.
 
-Applied, thanks!
+Separate the driver type from the driver data and use lifetime-bound
+IoMem directly in probe instead of wrapping it in Devres and Arc,
+simplifying register access.
 
-  Branch: driver-core-testing
-  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+Changes in v2:
+  - Don't return Result from GpuInfo::new()
+  - Use "drm/tyr:" commit message prefix
 
-[1/1] rust: devres: add 'static bound to Devres<T>
-      commit: 016267b521b1
+Danilo Krummrich (2):
+  drm/tyr: separate driver type from driver data
+  drm/tyr: use IoMem directly instead of Devres
 
-The patch will appear in the next linux-next integration (typically within 24
-hours on weekdays).
+ drivers/gpu/drm/tyr/driver.rs | 29 ++++++++++++-----------------
+ drivers/gpu/drm/tyr/gpu.rs    | 17 +++++------------
+ drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
+ 3 files changed, 19 insertions(+), 31 deletions(-)
 
-The patch is in the driver-core-testing branch and will be promoted to
-driver-core-next after validation.
+
+base-commit: a3e50e7279996cd987001fd8a3db36e72665f8f7
+-- 
+2.54.0
+
