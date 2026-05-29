@@ -1,129 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF31B2E737B;
-	Fri, 29 May 2026 08:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07A03B47D7
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 08:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780044095; cv=none; b=Ry38LJL91SOre/r+BbAhVOJNr82jsAq6uERh8PtfXFmxshj5CrS2FWTBdtwLz+oS6/y4UnzMDKFdv5Vlbiu+88WkV48DPRPlqZUf03RUU2mGgfaOrwGG9lgKcu2+G5UJTMqRJ5PJc6wCuif/iusm0aQ9mxsqH2AQVJdsVnu0oag=
+	t=1780044943; cv=none; b=na6MLJGcn47v1NrvWkc4u9yWozdI3cEatsbJLSacPejQ2qim3ceaeM9qpGVgYxKikXEtoI6eUMxpfJb1CJapWpGpWJCuhX1z1rkcG6MvmWnp1Z0uGiggjA9/xc+l7vFzOEN8Gn26F39vEsh7J0BUhEC1HnuCc7O1fmE3OEeKC3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780044095; c=relaxed/simple;
-	bh=CyjlJi26II7CvKckHHnnb1gu02wSiT4bvox+oP9v56s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dFNDuFH4zPdY2e47pxIZ3Ou7LS+vjZ1eNOOqcAxaLWED2lpCVjEf1KwlwKbR5lZCj1oBE1lB4oyldZK4gSdMVaa7ZvXkNjM4WPQnTy3aXWZktWhmG8niQpWg+MLX82CVRXOjK3XPOHlE299MFI7Se5UZ8BPDH19/GBTrhszHEY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnQxpiSt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780044943; c=relaxed/simple;
+	bh=ti4tWn2kN4PSb0X1ALMBWcYxq+pb2DAYrWu953FJHt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PLDd6gCPBh9j2JLxPZcYSTwYRw4fOUp8mLhTEFwiLJ6Q9Oce2Bqo41bECAbkf4POGHbqS7VtKniBhVFA6PcSsHRd4tT2Xc0ZLTEyzbv5HR8oU7rN6ps+CsR+mXlNSg0RS0LM8AdmVxu+kqbgPeCL5YGiWXdl6DMJeERgwhrslj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ddJ+NHow; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnQxpiSt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCCE1F00893;
-	Fri, 29 May 2026 08:41:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780044094;
-	bh=sn5+bneNN1jRhDtTMp3NKcDehOKRu+Zfgt28rAzrnzc=;
-	h=From:Date:Subject:To:Cc;
-	b=YnQxpiSt67Bx3i8nrSewvIQn9jiCJ2JffWGt9/Js9TgR1uxwfwjYhpJgye9N0DY+b
-	 hLxVV2GK1/Gv7dPyWdOI+gClCfZbQF3U3swy/eJ+pYMSm86IEX2+nr+TrUystfRJNz
-	 XeY2Ok+4zPR7HF7EoGu8KxapgilN4Iz2kLwWNUEeYaD4y9CZyhD9TKxWWyUVQEpvlS
-	 L+4Sf301gWa3ErLvEkgj1AbO4f1LPgLZpdFGHvfpjdK/R/QrHO4GXUGJpQNf31LbMP
-	 yAVOCfL6YyDFkIT2DwtkQhN+WESj+3lSRiQFHZouJBgniuuCKr0EObEigabXaGkLJu
-	 KE70SesJ4kGpg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 29 May 2026 10:41:22 +0200
-Subject: [PATCH] rust: module_param: return value by copy from `value`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ddJ+NHow"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3697f25d26eso7381650a91.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 01:55:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780044938; x=1780649738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
+        b=ddJ+NHowfSY8xcq+kq8k9FpWLlUyHIx3xKw+gsNp8l1kY9eMiRXBBnVKP9Fo9bhL+l
+         CTnUU2cmkTnv/3bzph/I+f1NAWVXJslzUeAzmlvmZ/WHWlPfHNO6VwSLQ8CC8SLjEIfC
+         H+RePQKLa1QUGOEMhjSOB1nRSk/Gjc+ceGcLsvMmSjGqCiAuyAhxBIy1sXwYVLo82ke3
+         9x2Qs0BEIyNcBP55zJprfGSvgDUcI+Ay/yOfTAq2TRQeK35eUjj0bzaFW4fNmubceUUv
+         +oNtrM3Xyn1IMK67i6MWGep3ZRCnqZ//Mkv8c8A+3/5muxmTM1HwrTSdOJ0jRwW7IatQ
+         mxrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780044938; x=1780649738;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JB/AJdGnqIf/Ml4hT7r5UXyiGQNpweafn+GD5Bd5gsc=;
+        b=nWuRUvgUr6kgWGYTmjGtfXDga2OnSVvnU1fpWAzN4Kl8B5WbL1txfW6KEC/dzJi1C2
+         ugylmJ38Q0Uutxn28ddTKA41lrHYecGMkpaHzFKrgvoM0C7SHX5sVwdg8iZf/8hh9hTh
+         aooXTyL7/74Vyxhn+aUsCit/3ATuyT07KaA1TwyS5pQhMjPChtUKBr53P9FvDv8hyhPx
+         Br2hDRyixdo+rZuZetST3XY4nACUDHAT8kGLyg/MSqBDoVOJNTPCmP3akHM5N1Si0d++
+         0q9xtn4kgFM6AlOZm9q8fOixsgqe3OMSvh5g4sf2VjHL3QP5KK30Xlj4JXImCQwDqkJz
+         4Zug==
+X-Forwarded-Encrypted: i=1; AFNElJ92BzMR8rkkpEK/D+scsq/AS4pBa0Wbgt3RXewcG/hfme8NbZJYOpb0G0nxVsTtTepLh5nMxpqIrEcZgOu5Fg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0y5DLwqQRorSDFSm4K3O7NWEwuuS/PiAJBEcmWVOj4uJKUx1L
+	MEjpt+CW+Bn3xc9aQiCIegryBVQ7bbR6cXyEMOn+SBdEDlK9BHH5Vwgu
+X-Gm-Gg: Acq92OF7ut+zYoQaoh34y1rEFLWRyL6opsTB88N54BS1b6CAfE0kDGG/IFGcr4ljar/
+	xZEiEG0IdV0yMM8LcrRTX6t9Wc0lEcWMrWj4Cjjl3QsXEBoobFr+R+BHJvyEKcKQzR1OpJfpQh0
+	9fz1P1YJBXD0VD7Uz3NpCRVmP/YnntcWGxLOl0AgZzSHm5TfzO/m+CiDcEoMZ09Z4Mo0UkYJLH1
+	KQj4xgQrp6xzwhy1KpRzcqAwi4ZfzyH4nufqijcuLSMX+U+PKBZ3R7uPGr5L2pAXGAGNfrrifkX
+	N1MyYrdwFr9fT9hUZaKqrSTasn2qmodZgoixD+YlicVf1b1dIPup/7m8iWOOhI1uF40nYkvfuS8
+	AF4l6Zj8fosHUuLwQTVzzwre7Vie1GifQc0dvphULynZBME3+geRRosesOATvoeQf04b4V0rLGA
+	8QLlDndo1NyOH5ZoRdLtTu4zmQFeeHm+XeJYEO0MYCtjtJmzV0RnhpeszStJhEwxuXg/Bsuohb0
+	HD2/zQ=
+X-Received: by 2002:a17:903:4765:b0:2bf:2243:d4ee with SMTP id d9443c01a7336-2bf2243d83dmr26285365ad.18.1780044938035;
+        Fri, 29 May 2026 01:55:38 -0700 (PDT)
+Received: from ubuntu (softbank060152129044.bbtec.net. [60.152.129.44])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf239e7019sm12732315ad.11.2026.05.29.01.55.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 May 2026 01:55:37 -0700 (PDT)
+From: Nakamura Shuta <nakamura.shuta@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Nakamura Shuta <nakamura.shuta@gmail.com>
+Subject: [PATCH] rust: page: mark Page::nid as inline
+Date: Fri, 29 May 2026 17:53:16 +0900
+Message-ID: <20260529085316.27432-1-nakamura.shuta@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260529-modules-value-ref-v1-1-a0df7e9e6f2d@kernel.org>
-X-B4-Tracking: v=1; b=H4sIADFRGWoC/x2MQQqAIBAAvxJ7bsEkC/tKdNBca8EslCKI/p50n
- IGZBzIlpgxD9UCiizPvsUBTVzCvJi6E7AqDFLITSmrcdncGyniZcBIm8khamd5Y3XpnoXRHkXz
- /z3F63w8+Q368YwAAAA==
-X-Change-ID: 20260529-modules-value-ref-e95a7ab94fdb
-To: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
- Aaron Tomlin <atomlin@atomlin.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-For `Copy` parameter types it is more ergonomic to retrieve the
-parameter value by copy than through a shared reference. Change
-`ModuleParamAccess::value` to return `T` by copy when `T: Copy`,
-and rename the previous reference-returning accessor to
-`value_ref`. Update the in-tree caller in `rust_minimal`.
+When building the kernel, the following Rust symbol is generated:
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+  $ nm vmlinux | grep ' _R'.*Page | rustfilt
+  <kernel::page::Page>::nid
+
+`Page::nid` is a trivial wrapper around the C function `page_to_nid`.
+It does not make sense to go through a trivial wrapper for this function,
+so mark it inline.
+
+This follows commit 878620c5a93a ("rust: page: optimize rust symbol
+generation for Page"), which did the same for `alloc_page` and `drop`.
+
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Signed-off-by: Nakamura Shuta <nakamura.shuta@gmail.com>
 ---
-This change was suggested during review of the rust null block series [1].
+ rust/kernel/page.rs | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1] https://lore.kernel.org/r/abfe2LbhLzXiGCkA@google.com
----
- rust/kernel/module_param.rs  | 15 ++++++++++++++-
- samples/rust/rust_minimal.rs |  2 +-
- 2 files changed, 15 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
-index 6a8a7a875643..701210206bba 100644
---- a/rust/kernel/module_param.rs
-+++ b/rust/kernel/module_param.rs
-@@ -132,9 +132,12 @@ pub const fn new(default: T) -> Self {
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index adecb200c654..764bb5acc90a 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -193,6 +193,7 @@ pub fn as_ptr(&self) -> *mut bindings::page {
      }
  
-     /// Get a shared reference to the parameter value.
-+    ///
-+    /// Returns a reference to the value supplied at module load time, or a
-+    /// reference to the default value if the parameter has not been set.
-     // Note: When sysfs access to parameters are enabled, we have to pass in a
-     // held lock guard here.
--    pub fn value(&self) -> &T {
-+    pub fn value_ref(&self) -> &T {
-         self.value.as_ref().unwrap_or(&self.default)
-     }
- 
-@@ -146,6 +149,16 @@ pub const fn as_void_ptr(&self) -> *mut c_void {
-     }
- }
- 
-+impl<T: Copy> ModuleParamAccess<T> {
-+    /// Get a copy of the parameter value.
-+    ///
-+    /// Returns the value supplied at module load time, or the default value
-+    /// if the parameter has not been set.
-+    pub fn value(&self) -> T {
-+        self.value.copy().unwrap_or(self.default)
-+    }
-+}
-+
- #[doc(hidden)]
- /// Generate a static [`kernel_param_ops`](srctree/include/linux/moduleparam.h) struct.
- ///
-diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
-index 8eb9583571d7..60d03df6cd80 100644
---- a/samples/rust/rust_minimal.rs
-+++ b/samples/rust/rust_minimal.rs
-@@ -28,7 +28,7 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
-         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
-         pr_info!(
-             "test_parameter: {}\n",
--            *module_parameters::test_parameter.value()
-+            module_parameters::test_parameter.value()
-         );
- 
-         let mut numbers = KVec::new();
+     /// Get the node id containing this page.
++    #[inline]
+     pub fn nid(&self) -> i32 {
+         // SAFETY: Always safe to call with a valid page.
+         unsafe { bindings::page_to_nid(self.as_ptr()) }
 
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260529-modules-value-ref-e95a7ab94fdb
-
-Best regards,
+base-commit: 72d33b8bfeacbfdccf2cda4650e8e002def036f8
 -- 
-Andreas Hindborg <a.hindborg@kernel.org>
-
+2.51.0
 
