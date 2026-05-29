@@ -1,204 +1,361 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010022.outbound.protection.outlook.com [52.101.85.22])
+Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1872D876A;
-	Fri, 29 May 2026 06:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780037871; cv=fail; b=NMqc7DOUohepjeyXLKOm/HR+PfzvGaNuUGpfhfoDc0Oge52G414hRhF6GBCRoHzvDcP4MEiWGQg8IqlFA4Jyjn8lH7aI7Y7tIBGW/4A5JuY320tp/yl18RjvjGU9r3n7SBtjDxzLR1BUJECWGlATdVcaz3db8L7f44qfad8YGIQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780037871; c=relaxed/simple;
-	bh=9w2Q1VC0T4R9C/X8J1bwoq25aYf5MDBeEzSccBJHMp8=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=YzqrC1IzySyPHj7Pf2MIu+CUdYBjGsSurnLhxRVnyRtcugWpsppJDYwGHB8avOF1J1a3qPtcuCGQCBJ6XtZEmJe/IdmLNIC2fHez3IIFYErB6rKtvK2JaatkHh2x/QYXAMLOPPnnW19GDBpamgsOLbUS1Kq8/j+Fld6ydMPPlx8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gddZHIyO; arc=fail smtp.client-ip=52.101.85.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311A438B125
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 06:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780037883; cv=none; b=ND2KHdUsFNQ8mPhwwpb54kiiOsRJwEu0W5FWsjs7POQFOfzGwOmIXMKJcOGUK1o3Sr0FzJdxBXzY27wSMiaGexhoGmz9Og2Fd/ULUeb6YINDihpKrW9/xIQH3rgKk5waGMlMa8JjsaHk8siXJM0hYBkCrIN583D0Hz40vgtVahQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780037883; c=relaxed/simple;
+	bh=Bfa1nOHtwvFxIGKyPcX37ZzaUMpx5lAL/3XJ6oGnaeE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=vB4/gNV+WIsRGkAJzZOMg6EWkoJrl2hnGD6QDa+gk6/vOVAfx6AiLxTAKmetLttnGC6ProIRJUEIR+j62Hl5WJMOgO0xi/tZdBcjdm7+wiQnuSLjhmQSZXV3ZdFFcRD57plOMGtr38tokPRonbIIh9IWStsCKFN9zqL6IV/ot04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=pgSkExiJ; arc=none smtp.client-ip=185.70.43.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gddZHIyO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XAMcLD+L9q3LDozbAqPlMpes7QhfavL3FXvyhhCRCY7ohxxBOBK0lBUgU1RTjspLEHI2K1X5k41PmUQVGF6O+KoLEmLK9U6TqFTQq6hvs0JzSjC3Yyth7zfe8sg2NsKr5c7ijHA5hRMrxBpjemTkPZzcXDW4llMA0vWzdG6uraOmuE0WrNi6cEYtBmYSTI9E1z4P3QgfETP57MGaYuSBjwHIMiCtk9DPNnB1y3m+GQp+0W+wVRao7ePVdV+uhuXvYMuQWWMf7hPrsXaooa3RRVlnyeqVZ/k0ov9EbWS73mPYp8wmqZXZYpDAphiCw+YJPVAfsGP8j4mDKylHpxE7hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9w2Q1VC0T4R9C/X8J1bwoq25aYf5MDBeEzSccBJHMp8=;
- b=SrupCj1Nh3LB8SGjPBVRspZbJx05nk2zVFtJsw0xNsvhq2/voAMjFFPSfisg4NgmzHqamQj++awkg53MrPIS8ikdTJ8tMKjkZ7tIbWXlkIXiPdrxIm3y6MFD0fNeQ1kFyI2uRu4xE3ikDYby7bHyIKVTMNbII8ZICSDmXAW2xgVt4cHpwkZDENsRfY67tnZ//FXCXD706IMRHKBlPZpzkD6qzP5nk6BuT5UCObuZ/5uNAz24nJ4s/XyX3uf1QHeWzTBJG6wifS9AuOQx8Jhd7MZkEcKm+OQDRWb9epqpDWY9gpuExMoENt5+j2FsbLP71dCdKI7eOI/5HscQoKCMaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9w2Q1VC0T4R9C/X8J1bwoq25aYf5MDBeEzSccBJHMp8=;
- b=gddZHIyOoHf/0TReLQDtdyTeaoQ/iPS64g7JWzR2Ber4+JbnjMWCF2525xS7GeT7uqWxRqL8p6+2PG8Di3XGPOZ9lagAWql4906rvcoauuvtLDM9KE3N5k0qVaK8xfluhMZRjVBibS86VUq+w0cIEmgX6mt07cpDSPwpaSnqrLGZt5Mi1RPPQ4LulygcBn4BWRBiNxCnhm/0Dd+IWNMJ0w9GborHFhb0olZoVTIL0B/JRoyRYX/ZnKTM6hAsTROwH3SvXHZogHBcqL4oT423tmyvSQIWwnL2e9wkGX+IKXI8dRek2xoVCUJ1amB0KyB6W0jSF5RIIbPm1q4dZ8zrlw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by LV3PR12MB9265.namprd12.prod.outlook.com (2603:10b6:408:215::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
- 2026 06:57:46 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0071.010; Fri, 29 May 2026
- 06:57:46 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 29 May 2026 15:57:42 +0900
-Message-Id: <DIUYRD4ZZSKX.QMNH7VQKBDM1@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v6 7/7] gpu: nova-core: run Booter Unloader and FWSEC-SB
- upon unbinding
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-References: <20260521-nova-unload-v6-0-65f581c812c9@nvidia.com>
- <20260521-nova-unload-v6-7-65f581c812c9@nvidia.com>
- <DIP0EROV7VSK.1WYD6SKNI05UD@nvidia.com>
- <DITIJ7IIAK7L.2PKIBC52OS7AG@nvidia.com>
- <DITXLUSX8J8Q.3OXYXGUBILQB2@nvidia.com>
-In-Reply-To: <DITXLUSX8J8Q.3OXYXGUBILQB2@nvidia.com>
-X-ClientProxiedBy: TY4P286CA0026.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:2b0::11) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="pgSkExiJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1780037872; x=1780297072;
+	bh=/bW7+2bHtYC9OMYeat4EhQjViNItbOtbPfXoUnZbITs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=pgSkExiJCjn7MxTrDd/rcqPU5xBXcR0YbXBLoRbtflG7PCgj4giSNMPr7yU3d4f/v
+	 Y6937EoAo/lxE6aIqXi7fErkpX8gr/Qe5TG8Qgqu/NDpYVw1EOgN7i09hOBRTGL4ZX
+	 UiPVQX3v44SMk/wLx2mAYI+6Zugd7W0g7kuRgAXU56+UUUx1hbgRT/zROquQ14gD9E
+	 +rqXiqkyLNqK4EZNSVIobqXeu26D09tny4SvH/u0Hyun0kN+apThELyCAB9uDGVs/v
+	 3GACQcU/45ubzvjsI8wz8toAoXRgVQUPWKcZk2nNJbaneZgUg7+QvPcIcvXWu2Put5
+	 LP0n2kCM+ipCg==
+X-Pm-Submission-Id: 4gRZ1Q4sH0z1DDKv
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Gary Guo <gary@garyguo.net>
+Cc: rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	paulmck@kernel.org,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v7 3/4] rust: sync: add SRCU abstraction
+Date: Fri, 29 May 2026 09:57:37 +0300
+Message-ID: <20260529065744.59786-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <DIUB2DNTF6W9.2BT1NF6UXUOFI@garyguo.net>
+References: <20260528062810.256212-1-work@onurozkan.dev> <20260528062810.256212-4-work@onurozkan.dev> <20260528082025.44414-1-work@onurozkan.dev> <20260528083518.66203-1-work@onurozkan.dev> <DIUB2DNTF6W9.2BT1NF6UXUOFI@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV3PR12MB9265:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1be384b-f9ff-4b82-0c42-08debd4f96af
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|10070799003|1800799024|11063799006|3023799007|6133799003|56012099006|18002099003|22082099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	Ndi5tr984rdiheT2PVc+7OkyGu/axi2fkrx0rwcfqDzOeTFtRRhqvP8Mfw8Z8ncYxgGSpbX5+W+63vRnsf5VKTLnKB0eT1scOUdZei4K20sCXcf5NZHYd7+sZ+txl2oWS2ARS6nxfqB/5Mn2kANweiVIlhghnfAMJ6Ih3D5Npmjf2r0BJkQIak3bl2Fb/R6gh3FuR9iBEp5W5qctXfswuZhW+6AdxhPYMdThgkdLA0C8SdDuK/KancAf9w2LEMlZW8Nd9aXDlQlUbchTO+MpELBBh22jnfkrCjcpAaT6iSli4zVk/zL8/UAKUJ5gt+K1nkjsGwN+OFbnZPeLIBt4GmE/3IFfTvpBv9PB80arK5ewYlucBw5AwuErr1nRRidIi9LgOYEqeMxRMjbvKBj/BbU477eLl+FyL+auA0kuTqMknJPSz9/Tf26Kktj6/VnkYPMHijfNHOR1zXhovsD1D0eYTtyhEHshFGLiEDiAtOoqjSJiKv5fNgbXO+T8yu/JVJ47QNjOjU9fqm5KSjjPWk9bdn9gSiaQ/6nC4e5rs6NIaHlLM9RPzr9sr2LCpZfjyKjorI2TWSFaUZYZ0/bXdDrIDGuNBoV1hs6FjwcTlscW+B4OuASKbqJZzgiVgNRmErkLPAirfPqOMRzl3sBvN8G0SnHveRR0oHxw0wQhnbkRCT585p+aQzP/7c168ae6
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(10070799003)(1800799024)(11063799006)(3023799007)(6133799003)(56012099006)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VC92SnFRNDFLUjdCeGZNRVlmRFlqeXJTdFQ1dkRKL2x6KzZYWTU4SVVycUtt?=
- =?utf-8?B?aUlxdTd1UDBTNUpKSlNvSVhxaG5FOCszR2ZVUG1ZK09LTXVrTUFMbUp4K0wr?=
- =?utf-8?B?ZVBBNzBZbmNzcTlQUmFhdjBqYmc5NTV2aGRFTkNHZkxMRFlwTGtmMzZZdStH?=
- =?utf-8?B?KzlnWk1xbVdCeVBtY1JSK00wLzFXazI2djExK1NWakdPaGNmNytpcXAyTkt2?=
- =?utf-8?B?VS9NR3VZTDA0YnIyN1B1cWtER3hIN3Q1bEZFei8rck1WSXJ3dFJrN0tTa2RG?=
- =?utf-8?B?UVJaUFV0d3FhaUJxSlFma1IyQlZNbTd4T3dlN3FjRDBmWWlEM2wram9VU3Z3?=
- =?utf-8?B?bVphbGJGd1NaZ1pyTXZTbXFORlRTMVVTcEJ4cVhldDh6OS9ZZUtZWSsySm1V?=
- =?utf-8?B?SGxIanFIUElaUjNTUVlFdm5QNElKYnZFcFN6VzhUb1ZxajBYMmMzL3RoaEQ2?=
- =?utf-8?B?NVlnaFBoL0Z0OTM1NUoyUHBodGl5OXpNT2M5UDJ3K081bmF6SmR6bG9yb0dL?=
- =?utf-8?B?a29raUl3RXkydnFyQVR3MzlvSUlmbWliS3BZYzcya2oxUjJEaVR1STltOVlj?=
- =?utf-8?B?Um5XYWdKMmZEYmh3UTlRSEJaRzJTeWFXUDVSZE9PTndwVEplZWhxY2JKeTVK?=
- =?utf-8?B?SllFZkQ2QVZpVHcxOXNMc1pkR0xUellVb1UyL0pnK1o5SDNLTGxlcFZyWXAv?=
- =?utf-8?B?TEYveUMrVmhUNitiaTZXcDMyYmNvTi9aYy9yYk1QMGdTZElxakRqQVUrV04x?=
- =?utf-8?B?S1RuM1VaQS8vOXFVT2NBQzhEeVhtUkJ6aG9aejE2U0h0NGRwZHo2WkdueFdm?=
- =?utf-8?B?RVI0blUrSEY4WW56VDFQOFRyYkZUeEpjVXc3VER4dld1a2JzckswcnZpQmFR?=
- =?utf-8?B?czRBTzhtb2hOOFBsUmFWK0hmVVNSRXg1R1l0a1FacnN3MU54eVhoYWY0ck5z?=
- =?utf-8?B?dzBYSnNKSFNvZXlVV3hGcHI1cmFDVGtQKzFaWHgzWGF4WTRXZ3pZUmg4N3Vi?=
- =?utf-8?B?WnNsNVhSRzhWVVYxR0MwVmRKaTBJNk1FUGlFWFNxZnAxbThCSERtdlhSK2lV?=
- =?utf-8?B?UFI1b2E1TGtPY003NXpISGZpMWovb0ZhbytlaUlsOG9zU3Ztem82MTFwZXdm?=
- =?utf-8?B?aG04Mm1MU1pXVVpPaVhxRzI1QzZVN2tKMlBQNFA0M3dVRG4vWE1jbmxLWStm?=
- =?utf-8?B?eEtzYUdMaXRTaEhzM2E4WHVTcnRpclpsMHArQlFPZVVnZG9qREJaVXRaWTNn?=
- =?utf-8?B?SEtBYkRIVmNPVkQ3aitqN2p5NUNOcmxKNi96QmxoWFpvQ1hOV0JLUEJzTlBs?=
- =?utf-8?B?aWxIc3hvQW41UTdudGZ6WlFOS0FUdXBQM1VZTFUzcWVXWURab2lJSWd3NTdT?=
- =?utf-8?B?TE5FNXlSaUhRY0ZRYlQ1Z0tWcFhEakdqbVp2RDdzbWw1ek1IbU02cDhJam56?=
- =?utf-8?B?U1NMN1NoaVloNHlmNnphUC85TVdmRFdFeWNtUHY3N3FaYkR1cFBKY2x5UFFI?=
- =?utf-8?B?ck0wUkpUYmRlcnM1VnFaZVllcFV2bFhXc2xob2c0RDhnUjh4OVBSS2RmdkYz?=
- =?utf-8?B?NFJZaHRwaXYwbTErMWJEaGxDL0xTU3I0S1h5aEdNSE9uMTdwY3VJUXk3Z2RV?=
- =?utf-8?B?NG1ZVE5MTVAvTmxaRWYyOWtXYkF5TWduenY1MngwTjdXSGU0TXhVKzFpSm1Q?=
- =?utf-8?B?amhpeW16NGFOMVIwOHBoOFhFL3JvL2g1aVpqU0dhOFBZbktFaWdmbmduV2g4?=
- =?utf-8?B?akowakdwSDhIUnV5TlhEWk0yN1JQdWtRbXVIYnUrbENucG1pZWNvOUNlZ1dT?=
- =?utf-8?B?ZXZqbTBTQlJtNklNdUpGM3NYNjVXS09NSTcvdDlGeG9CWmVlb3doeFB2SURw?=
- =?utf-8?B?ZWkvZjd0ekNzN1htQXNOaEY3UEY5dWEzOU8vY2ZyeFpRYmJwM1d6bk9KZDNC?=
- =?utf-8?B?Z3U5Ui9RWW5lSjdSaEwyVFB0SHA4R21uNTdCaklYc2lmRTFDR28rRWxrYWlJ?=
- =?utf-8?B?RFpzRjZLV1pjTlcwNUMvQmw5cjU1K0UvZVNqVnNPTkp5c1FWOHoxanRJUXZz?=
- =?utf-8?B?Smtaa0Y3cG5CRDY1OFkrUTZiSEdkUmQ5bk1KQWk5UmhrRTlzb3l5YlFtZmhL?=
- =?utf-8?B?VkhDZ0ZEY0Q0WFIycld0cGhuR0ZaVWtLeURyZG1zRi9qWWJUUzFzdmE1Qm1V?=
- =?utf-8?B?c0NTS2tWNVJnNkJ1MVVUN0M5U3VNaWx1QW5jeG5YdnI4cStHeWtKTTJOZGx2?=
- =?utf-8?B?SUdiQmN1dXNwdGUyTzQyUCt6dmN0VTIyU2l6TDBvOE9XL0QvbmtNNU9TN3l3?=
- =?utf-8?B?SnVqR1BoYXkrOXF5VXZnQ0NzZEJra2l1MkV3SDRML0l1eWoyYmJOMHZOK20r?=
- =?utf-8?Q?voOEd7+Ewup3PipcPVseafNQnj32MPXJTxEFzwVbq99Ge?=
-X-MS-Exchange-AntiSpam-MessageData-1: JoBOQfxGN9E3cg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1be384b-f9ff-4b82-0c42-08debd4f96af
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 06:57:46.3808
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GKlMR7B9Ifly5QISk3NnpRYdKbQ8LgGEZZj+ut5iKpyGaradb/CWdWF+cveah7Gaz0CtnW/UXmOu7R2yOp5opw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9265
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu May 28, 2026 at 10:50 AM JST, Eliot Courtney wrote:
-> On Wed May 27, 2026 at 11:02 PM JST, Alexandre Courbot wrote:
->> On Fri May 22, 2026 at 3:59 PM JST, Eliot Courtney wrote:
->>> On Thu May 21, 2026 at 10:50 PM JST, Alexandre Courbot wrote:
->>>> When probing the driver, the FWSEC-FRTS firmware creates a WPR2 secure
->>>> memory region to store the GSP firmware, and the Booter Loader loads a=
-nd
->>>> starts that firmware into the GSP, making it run in RISC-V mode.
->>>>
->>>> These operations need to be reverted upon unloading, particularly the
->>>> WPR2 secure region creation, as its presence prevents the driver from
->>>> subsequently probing.
->>>>
->>>> Thus, prepare the Booter Unloader and FWSEC-SB firmwares when booting
->>>> the GSP, so they can be executed at unbind time to put the GPU into a
->>>> state where it can be probed again.
->>>>
->>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->>>> ---
->>>
->>> After seeing the bundle moved outwards, I realised that it has the same
->>> issue that SysmemFlush does, i.e. if probe fails it does not reset the
->>> GSP. A lot of the time during development I will break things badly
->>> enough that probe fails, so it would be nice if this is supported. OTOH=
-,
->>> this gets the probe suceed and unload case working which is important
->>> and this is a definite improvement, so for this version and the previou=
-s
->>> version of the patch:
->>>
->>> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
->>>
->>> I also had a brief go at making this work on Drop, here is the diff on
->>> top of this series. I can send this as a follow up if you would like
->>> after cleaning it up, or lmk wdyt:
->>
->> This is clearly better. It guarantees that the unload sequence is run
->> when the `Gpu` is dropped, while preserving its one-shot nature. Also,
->> no `Cell` and no awkward output parameter to `Gpu::new`.
->>
->> The only blind spot remaining would be to also cover the case where a
->> failure occurs during `Gsp::boot`, but that's for `Gsp::boot` to handle
->> itself imho.
->>
->> Would you be ok if I folded this into this patch for v7, with your
->> `Co-developed-by` and `Signed-off-by`? Then I'll also try to tackle the
->> `Gsp::boot` failure scenario using a drop wrapper or something similar.
->
-> Yerp that is fine of course. For Gsp::boot it should handle unwinding if
-> there is a failure but I agree it is orthogonal to this case, so
-> addressing in a follow-up SGTM.
-
-I will add a patch that takes care of that using a drop guard in v7.
-
-While doing so, I noticed that with the current state of the code we
-could also perfectly store that drop guard into `Gpu` itself, and get
-the behavior we want without implementing `PinnedDrop`. However, this is
-only possible because `Falcon::run` and `Falcon::load` do not take
-mutable references, which they should do eventually for soundness - once
-we do the switch, storing the drop guard won't be possible anymore as
-that would mean keeping mutable references for the full life of the GPU.
-So `PinnedDrop` is necessary.
-
-I mention this here preemptively lest it is raised in v7. :)
+On Thu, 28 May 2026 13:23:39 +0100=0D
+Gary Guo <gary@garyguo.net> wrote:=0D
+=0D
+> On Thu May 28, 2026 at 9:35 AM BST, Onur =C3=96zkan wrote:=0D
+> > On Thu, 28 May 2026 11:20:10 +0300=0D
+> > Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+> >=0D
+> >> On Thu, 28 May 2026 09:27:35 +0300=0D
+> >> Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+> >> =0D
+> >> > Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_st=
+ruct.=0D
+> >> > Provide FFI helpers and a safe wrapper with a guard-based API for re=
+ad-side=0D
+> >> > critical sections.=0D
+> >> > =0D
+> >> > Cleanup is handled via `PinnedDrop`, which explicitly drains pending=
+ grace=0D
+> >> > periods and callbacks via `synchronize_srcu` and `srcu_barrier` befo=
+re=0D
+> >> > executing `cleanup_srcu_struct` to guarantee memory safety e.g. when=
+ there=0D
+> >> > are leaked guards (via `mem::forget($guard)`).=0D
+> >> > =0D
+> >> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> >> > ---=0D
+> >> >  rust/kernel/sync.rs      |   2 +=0D
+> >> >  rust/kernel/sync/srcu.rs | 166 ++++++++++++++++++++++++++++++++++++=
++++=0D
+> >> >  2 files changed, 168 insertions(+)=0D
+> >> >  create mode 100644 rust/kernel/sync/srcu.rs=0D
+> >> > =0D
+> >> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs=0D
+> >> > index 993dbf2caa0e..0d6a5f1300c3 100644=0D
+> >> > --- a/rust/kernel/sync.rs=0D
+> >> > +++ b/rust/kernel/sync.rs=0D
+> >> > @@ -21,6 +21,7 @@=0D
+> >> >  pub mod rcu;=0D
+> >> >  mod refcount;=0D
+> >> >  mod set_once;=0D
+> >> > +pub mod srcu;=0D
+> >> >  =0D
+> >> >  pub use arc::{Arc, ArcBorrow, UniqueArc};=0D
+> >> >  pub use completion::Completion;=0D
+> >> > @@ -31,6 +32,7 @@=0D
+> >> >  pub use locked_by::LockedBy;=0D
+> >> >  pub use refcount::Refcount;=0D
+> >> >  pub use set_once::SetOnce;=0D
+> >> > +pub use srcu::Srcu;=0D
+> >> >  =0D
+> >> >  /// Represents a lockdep class.=0D
+> >> >  ///=0D
+> >> > diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs=0D
+> >> > new file mode 100644=0D
+> >> > index 000000000000..343f00d070c7=0D
+> >> > --- /dev/null=0D
+> >> > +++ b/rust/kernel/sync/srcu.rs=0D
+> >> > @@ -0,0 +1,166 @@=0D
+> >> > +// SPDX-License-Identifier: GPL-2.0=0D
+> >> > +=0D
+> >> > +//! Sleepable read-copy update (SRCU) support.=0D
+> >> > +//!=0D
+> >> > +//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h=
+)=0D
+> >> > +=0D
+> >> > +use crate::{=0D
+> >> > +    bindings,=0D
+> >> > +    error::to_result,=0D
+> >> > +    prelude::*,=0D
+> >> > +    sync::LockClassKey,=0D
+> >> > +    types::{=0D
+> >> > +        NotThreadSafe,=0D
+> >> > +        Opaque, //=0D
+> >> > +    },=0D
+> >> > +};=0D
+> >> > +=0D
+> >> > +use pin_init::pin_data;=0D
+> >> > +=0D
+> >> > +/// Creates an [`Srcu`] initialiser with the given name and a newly=
+-created lock class.=0D
+> >> > +#[doc(hidden)]=0D
+> >> > +#[macro_export]=0D
+> >> > +macro_rules! new_srcu {=0D
+> >> > +    ($($name:literal)?) =3D> {=0D
+> >> > +        $crate::sync::Srcu::new($crate::optional_name!($($name)?), =
+$crate::static_lock_class!())=0D
+> >> > +    };=0D
+> >> > +}=0D
+> >> > +pub use new_srcu;=0D
+> >> > +=0D
+> >> > +/// Sleepable read-copy update primitive.=0D
+> >> > +///=0D
+> >> > +/// SRCU readers may sleep while holding the read-side guard.=0D
+> >> > +///=0D
+> >> > +/// The destructor waits for active readers and callbacks, so it ma=
+y sleep.=0D
+> >> > +/// If a read-side guard has been leaked, dropping an [`Srcu`] may =
+never return.=0D
+> >> > +///=0D
+> >> > +/// # Invariants=0D
+> >> > +///=0D
+> >> > +/// This represents a valid `struct srcu_struct` initialized by the=
+ C SRCU API=0D
+> >> > +/// and it remains pinned and valid until the pinned destructor run=
+s.=0D
+> >> > +#[repr(transparent)]=0D
+> >> > +#[pin_data(PinnedDrop)]=0D
+> >> > +pub struct Srcu {=0D
+> >> > +    #[pin]=0D
+> >> > +    inner: Opaque<bindings::srcu_struct>,=0D
+> >> > +}=0D
+> >> > +=0D
+> >> > +impl Srcu {=0D
+> >> > +    /// Creates a new SRCU instance.=0D
+> >> > +    #[inline]=0D
+> >> > +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>=
+) -> impl PinInit<Self, Error> {=0D
+> >> > +        try_pin_init!(Self {=0D
+> >> > +            // INVARIANT: On success, the C initializer creates a v=
+alid `srcu_struct` and=0D
+> >> > +            // it remains pinned until `PinnedDrop` runs.=0D
+> >> > +            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu=
+_struct| {=0D
+> >> > +                // SAFETY: `ptr` points to valid uninitialised memo=
+ry for a `srcu_struct`.=0D
+> >> > +                to_result(unsafe {=0D
+> >> > +                    bindings::init_srcu_struct_with_key(ptr, name.a=
+s_char_ptr(), key.as_ptr())=0D
+> >> > +                })=0D
+> >> > +            }),=0D
+> >> > +        })=0D
+> >> > +    }=0D
+> >> > +=0D
+> >> > +    /// Enters an SRCU read-side critical section.=0D
+> >> > +    ///=0D
+> >> > +    /// Leaking the returned [`Guard`] leaves the SRCU read-side cr=
+itical=0D
+> >> > +    /// section active and makes `drop` sleep forever.=0D
+> >> > +    #[inline]=0D
+> >> > +    pub fn read_lock(&self) -> Guard<'_> {=0D
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid =
+`struct srcu_struct`.=0D
+> >> > +        let idx =3D unsafe { bindings::srcu_read_lock(self.inner.ge=
+t()) };=0D
+> >> > +=0D
+> >> > +        // INVARIANT: `idx` was returned by `srcu_read_lock()` for =
+this `Srcu`.=0D
+> >> > +        Guard {=0D
+> >> > +            srcu: self,=0D
+> >> > +            idx,=0D
+> >> > +            _not_send: NotThreadSafe,=0D
+> >> > +        }=0D
+> >> > +    }=0D
+> >> > +=0D
+> >> > +    /// Waits until all pre-existing SRCU readers have completed.=0D
+> >> > +    #[inline]=0D
+> >> > +    pub fn synchronize(&self) {=0D
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid =
+`struct srcu_struct`.=0D
+> >> > +        unsafe { bindings::synchronize_srcu(self.inner.get()) };=0D
+> >> > +    }=0D
+> >> > +=0D
+> >> > +    /// Waits until all pre-existing SRCU readers have completed, e=
+xpedited.=0D
+> >> > +    ///=0D
+> >> > +    /// This requests a lower-latency grace period than [`Srcu::syn=
+chronize`] typically=0D
+> >> > +    /// at the cost of higher system-wide overhead. Prefer [`Srcu::=
+synchronize`] by default=0D
+> >> > +    /// and use this variant only when reducing reset or teardown l=
+atency is more important=0D
+> >> > +    /// than the extra cost.=0D
+> >> > +    #[inline]=0D
+> >> > +    pub fn synchronize_expedited(&self) {=0D
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid =
+`struct srcu_struct`.=0D
+> >> > +        unsafe { bindings::synchronize_srcu_expedited(self.inner.ge=
+t()) };=0D
+> >> > +    }=0D
+> >> > +}=0D
+> >> > +=0D
+> >> > +#[pinned_drop]=0D
+> >> > +impl PinnedDrop for Srcu {=0D
+> >> > +    fn drop(self: Pin<&mut Self>) {=0D
+> >> > +        let ptr =3D self.inner.get();=0D
+> >> > +=0D
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid =
+and pinned `struct srcu_struct`=0D
+> >> > +        // and `srcu_readers_active()` only checks the active reade=
+r count.=0D
+> >> > +        if unsafe { bindings::srcu_readers_active(ptr) } {=0D
+> >> > +            crate::pr_warn!(=0D
+> >> > +                "Leaked `Guard` detected while dropping SRCU; drop =
+will block forever.\n"=0D
+> >> > +            );=0D
+> =0D
+> I think this could be a `warn_on` similar to how cleanup_srcu_struct hand=
+le the=0D
+> condition.=0D
+=0D
+We also call cleanup_srcu_struct below. The idea was to provide additional=
+=0D
+information, we don't need to call warn_on twice.=0D
+=0D
+> =0D
+> >> > +        }=0D
+> >> > +=0D
+> >> > +        // `cleanup_srcu_struct()` may return early if readers are =
+still active. Because `Srcu`=0D
+> >> > +        // owns the embedded `srcu_struct`, returning from `drop` i=
+n that state could free memory=0D
+> >> > +        // that is still referenced by the C side.=0D
+> >> > +        //=0D
+> >> > +        // Wait for all readers to complete first. If any `Guard` w=
+as leaked, `synchronize_srcu()`=0D
+> >> > +        // will sleep forever.=0D
+> >> > +        //=0D
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid =
+and pinned `struct srcu_struct`.=0D
+> >> > +        unsafe { bindings::synchronize_srcu(ptr) };=0D
+> >> =0D
+> >> Sashiko got a good point here which is calling synchronize_srcu() only=
+ if there=0D
+> >> are active readers. That's a nice low-effort improvement we can have i=
+n the next=0D
+> >> version.=0D
+> >> =0D
+> >> Onur=0D
+> >=0D
+> > Actually, now I am now thinking about whether we can come up with a bet=
+ter=0D
+> > approach when we detect leaked guards. Initially I came up with the=0D
+> > synchronize_srcu() solution because it would handle leaked guards autom=
+atically=0D
+> > without requiring any additional checks. But now that we can actually d=
+etect=0D
+> > whether guards are leaked the question becomes:=0D
+> >=0D
+> > 	"Is there a better option than effectively sleeping forever when leake=
+d=0D
+> > 	 guards are detected?"=0D
+> >=0D
+> > I have no plans for tomorrow other than finalizing this series includin=
+g the=0D
+> > question above.=0D
+> =0D
+> The best solution is to proceed cleanups anyway, given Rust rules ensure =
+that=0D
+> these are actual leaks and not just srcu read-side critical section that =
+failed=0D
+> to synchronize with the destruction of SRCU.=0D
+> =0D
+> This obviously require changes to the SRCU code though.=0D
+=0D
+=0D
+The issue is difficult to fix purely from the C side. Once drop returns Rus=
+t=0D
+is free to destroy srcu_struct. If srcu still has pending callback associat=
+ed=0D
+with that srcu_struct, for example from a future call_srcu() wrapper then=0D
+returning from drop while readers are active can turn into a UAF. There is =
+also=0D
+no way to handle callbacks in a reasonable way in cleanup logic while there=
+ are=0D
+active readers.=0D
+=0D
+I mean in theory this could be fixed in the C code, but that would require =
+to=0D
+re-write srcu cores/semantics for this special case. The $clean_something h=
+elper=0D
+would need know that the active readers are abandoned and will never unlock=
+ and=0D
+it would also need to decide what to do with the pending callbacks, which i=
+s=0D
+also a big problem (as gp will never complete, callbacks will never run).=0D
+=0D
+It's also worth to note that calling mem::forget on the srcu guard is WRONG=
+=0D
+CODE and very easy to catch on review (by us and also Sashiko/any LLM). So=
+=0D
+finding a solution that doesn't add too much complexity should be a key=0D
+consideration here. With that in mind, keeping the synchronize_srcu() not r=
+eally=0D
+a bad solution. Sleeping forever is a bad failure mode, but it is better th=
+an a=0D
+potential UAF and either case requires sending a fix patch for the leaked g=
+uard=0D
+anyway.=0D
+=0D
+- Onur=0D
+=0D
+> =0D
+> Best,=0D
+> Gary=0D
+> =0D
