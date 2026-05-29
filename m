@@ -1,81 +1,79 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A952B332ED0
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 13:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC30232B12F
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 13:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780061364; cv=none; b=q24pdXdDmT5Qc7MaRFXgja6rcCjf8Uu384D441352SqzUu41N+zs4IpcJ9vnesxAapdJotdP/eJA7tHSoZnyVMNDJo1dlupFDGLxdnT9ShGV2ldvLgYVaJO4Sr4kCr/akLwG2qCRiDen8ptAvnegRq8iT76R4QXhiUYzDpjbs3M=
+	t=1780061372; cv=none; b=k1w40r3zKX/aRlfYoWd72X93A/WlkvWjW3HdHQs68G1t6vkHuXTRZc/ENTomDjAOoH7LFLmWqsmnPU/Gyvu7wOi0bSfd3RsQMX1tDNu1XXJ4k11Jku300GHOvKJJuPRKM8H2O+BwwuJN/0PyGuurE5RbRHih4EWsuGIDLqJ1bsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780061364; c=relaxed/simple;
-	bh=/iJHCtlUB7ZZdvLrVonfY3NnlAeU/QaU7QZAo5L5qNM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=l2sV9cG/ZcadWOeUNEp73VLfEMkxW6pf1RxmsO83RBh9W9oRrzQmN7nfxuO16a/sufZUuv2P84SReXtytu+OQtNSxoitLt8biQNqhDPMqt7Ae27952Q9801YDTLGwR4gFCqp7EyEgY3NCt+jbhZ4WDSOu8OJwrRXqMqEpk/Nvn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JKo8ncPO; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1780061372; c=relaxed/simple;
+	bh=jQS5w3juKxh/8rsWEVFsuUj2CrwmODGzA/KyT3vg3gc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=PjLQ8ChlKK5S+eAOk+vskqM7ACAn44/XuUEP3DN7jnOx787PINMbET43920pO1n/Oa745UnVwtHRr7IbW7c/3HPyl/yhJ9WO4zTCcBjncxsRIXuyB34VD4CO81Djd65pp0PjSrGcva10Cz/DWztBavA1hvwDpHLwa/VpSj0NAiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rTmZshYw; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JKo8ncPO"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45ef697092fso2324f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 06:29:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rTmZshYw"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-49045243094so100703685e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 06:29:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780061361; x=1780666161; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+CWotcliT6zQIjcAHTd32KhZWmuLac4qETbDggcx32Q=;
-        b=JKo8ncPOdYISSHVBt3FrDJlDugHX4iF5AvypHNimCFydl7YwxihlmUdUTNlCQwA39O
-         NpVf+5r4VkzVZVrfqCIwy35X5KF9fNlCkrpR+4Mi7nqVsjdjVmlpmT/L7yd8DDKFv25w
-         7MGp5Uii3zug3CrckIotp+vdOqkLxGKIfklJyaDPitj4S3+4PvH1lMGl29XNs81Mmmjn
-         oWJEtY74D11tWmk9V/otZJF/FlYbKUoTtVqTunhFOYSgAsULY2H8DtzEo0cxznx7QmKP
-         uZ3fffGCEV/RTpOSdt9JZ9tkmoQcW33wyQRU/JeCorhmeRXmW4DhVXNah8L5IBlvl1eP
-         0lag==
+        d=google.com; s=20251104; t=1780061369; x=1780666169; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oPbFopuJb3xJlIvAFVS2VoE+RIwABLyaYMui6R01KkA=;
+        b=rTmZshYwgLBrjWpD5mkHTMgbNmbTubycRjyFAads1/j0HGvX2aAnUJ2MF4hoOgyq6W
+         DtmaJwn8xEYHtTKmoSQxjdpdIl6cqTqMtGY7npsVR4v2EqtFF//RF6f9mgC2BXS1K02m
+         V3ymkZWhddmD+D0cirLFiCl0fI0JGh5nxP9mu4D4fEhO45soc2eePOji//C0D4+U4VAb
+         4wuP5hbTVPImdaWZFj+xZdZjeSfiCtjdxoiBKITpgs3FOezlj7bT/ce5c7U2SjLH9V4K
+         F0HCkgBve24AjYAkR5kARxSZPJDdYN8PzHdUwouIk8hHxUQQy9N42zgMc0BIkL6rUYHq
+         XntA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780061361; x=1780666161;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+CWotcliT6zQIjcAHTd32KhZWmuLac4qETbDggcx32Q=;
-        b=cjAelGJq9xDC+idQH4lX48MDa4n9+x/RtvRZGk1t5ejA14dnkKhHj06sqvy0037E1h
-         R+XvSuRVITQuhsqtyP1VW47CN2ewYPAo98HCCZzgB4I7hlNrVkKJwFjTetL0O+y6I2I3
-         wlK+6ilnbb3w1P3UuWlonQVRHAltDINSitWYBg01sJVZZg4t3Cxvk3uav/5UP5j95yuQ
-         5K5uU8YEI6bACN5dCP3EWUebpJwCV2eL0anXZeangJqOZ3dHfGyIYr2ftEotWRpoeAfM
-         sgWp7zHXiH/PdcMP+XF3YdjzkzoaIbCQQJkOWMrxlkQr/ufBrfNgObTxGSnZixr1IWzm
-         srBQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8WZyLdaxOhb7EjliRIzHuzF8SjMZ0UDT2ThJl6jZIHTu8YVSH3x03aophOqpPzVQQ9EUgnK8Q14vUQzaK7qA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoQpNSTen27UTHVAUeMPas7bfWjjWoS5uaji4NU+NgsW1Uc/JG
-	hj7Cc31IA93y5l+HXBgSyo6E56i+GsDMFnhyS36O0A7PaLLCB9skL3Ui28I7U5ru32PgdEjLaHq
-	2FJVM5Jxnw6yCDgoM6Q==
-X-Received: from wrbdy6.prod.google.com ([2002:a05:6000:e46:b0:446:d23b:d96b])
+        d=1e100.net; s=20251104; t=1780061369; x=1780666169;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oPbFopuJb3xJlIvAFVS2VoE+RIwABLyaYMui6R01KkA=;
+        b=h4ByfXa9JS0yCHcj0qO5l3OMkqeJjSkX7ndzncmrIeGwArReGn6LuKwPF3ayRGilk3
+         C7/QaMZU7Vw3dLt36kVwqgYPTG0t1mKiHnlL+oM/YiyAndX99q/uUyX5lpCV1Lcq+nUa
+         gX+Ix3U7Xd2aVehpLFm/YQHpEWSXPGxO3dnlhQ7cIx2o9SC54reWvy4hvQqxzR5DCPeF
+         FZ546oPLzgzKMgK7Bq+bln99YvIaouT8vI6z2tGcYVT0QY3Wp4LEek0gzw+aZwLYkpq6
+         lBH6KAeRlhH4g2pRSlExmjhOekxItFXRjIHzZ57TEBGHsIaZrWvfxj7FIUKBsAYNBHkl
+         4j2g==
+X-Forwarded-Encrypted: i=1; AFNElJ+c3ZYFMZ5c3+nTtiNlSXBrg+cOM1awPww4BuZXn+oW142vbk5jXqdeIccOseTGLPJdulcB7pU9i30yHczFYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqWa14Bv5Bl5tc5cTSFDYVefTZf6CRIPOVmqGro/FiJgGaNSwg
+	544n9qdKWqXdbCziReI01LVDg4w4T1J4TYfYYXPDgCxK5X6b2t/+d5EJ6+DK5jgtOczcFbx7UtC
+	nDr58KrtZh4YRgIT6zQ==
+X-Received: from wmla10.prod.google.com ([2002:a05:600d:238a:b0:48f:d328:60c])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:adf:ee8e:0:b0:45e:de0a:1773 with SMTP id ffacd0b85a97d-45ef1463a9amr4136473f8f.33.1780061360817;
- Fri, 29 May 2026 06:29:20 -0700 (PDT)
-Date: Fri, 29 May 2026 13:28:37 +0000
+ 2002:a05:600c:4589:b0:490:50e8:45c3 with SMTP id 5b1f17b1804b1-4909c028fccmr57511305e9.0.1780061365120;
+ Fri, 29 May 2026 06:29:25 -0700 (PDT)
+Date: Fri, 29 May 2026 13:28:38 +0000
+In-Reply-To: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAIaUGWoC/3XNzU7DMBAE4FepfMZovf5p0hPvgXrI2pvUosTgp
- BGoyrvjlkOKLI4z0jdzFRPnyJM47K4i8xKnmMYS3NNO+FM3DixjKFkgoAMNTlIcA2c58nyO45v
- 0DSoFhD3tjSjoI3Mfv+6Dr8ffnPnzUnbnrTzFaU75+366qFv77/6iJMjQeSZLvtE9vgwpDWd+9
- uld3LYW3LyBpvJYvIegcR+UNdpWXj94ZSuvi28McUud08z1v9m8BVN5U7wDRUb5gJZqbx881v+ 2+K4FxhY1E9Mfv67rD+dvlEjCAQAA
-X-Change-Id: 20260306-binder-netlink-c82110b2fb74
+References: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2872; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=/iJHCtlUB7ZZdvLrVonfY3NnlAeU/QaU7QZAo5L5qNM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqGZSKRFumD7moMd4a4uIjwu3BirqEdLijHukCI
- 0usj+HExAeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCahmUigAKCRAEWL7uWMY5
- RiA2D/9poDQsb+q/Y0X70eC+zLhq6AhyWHathtKG54Xr76OejbANXjK+fKvB0e/ZTHkSd6Z2mCc
- RTz8oQS88TOxEeC8UOCDZGGmSDiE4En1vIJX1mCPnR0iuWDu/HCdUndfjXCjXSRQM3h/ys8zlNV
- zXeUONdbTMa/7u7wQf8bnSxLf1zRhoq7kMS7zJoW3Zp4LS/L1XQBbWQKsh/8eYuKJTgT8UXqbeS
- M0+W1nyLTHO5by93+/nyBLtbEBM+6CC5O+f2AsFTGy5acapGnAUVp5Js9Hf2Bacy5biSreuyBtD
- rtdv+vMdhzn/RHM/s7BSnoyi4hiSqOcNIcgT2z97VyJtOxVw7Z+hX0NFWFGCzFvtwq2umHho9sZ
- u9pWD4wOCJUZPdG/56ggJ0SPMeRxHeEZI+CPgVjOtnP26b11jQCyrXDCMRF90UnTHz2vyHZfa8u
- wTlIayeO6pA/TkWSy7XOjNKT6TACg7dQmGt/94aSLiMPkMMMQ4oIcuxM25CTGwfylJm0eMt4nis
- ZfwdY+Nkc1PIIBu7Jh1CAlyX3HqbN3FqJqV/Ph3/26PE4NuCDtwk3DPmF4uBDO+Zrm3DJUOInMC
- YD7N82psjjfHgGpPBKijuPMAxYK5xee8mtSBS9xzM1Fvm2yLS7RRTwn+H5NbqMOYgJKSsxBu1KD j+9QYQA9dsd2yvg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=969; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=jQS5w3juKxh/8rsWEVFsuUj2CrwmODGzA/KyT3vg3gc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqGZSqiLJlV643r8T6gfx80O09094kuKPpWw9NA
+ E1PXS3vroWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCahmUqgAKCRAEWL7uWMY5
+ RhBwD/90l0syKd+gZ1Z71dZ0oWqW+27vPX2QWMsTCj7diDQn408Q4NI5cWOxyYmIy19+bbOz/by
+ MuUe5K1VYbw/5ifmAf5o77bZyisqa6EwQwLm2cNGrV8ErTf2uPngM9LDB/yRVZybATAeuMLeodA
+ GJeof0Vo0m+cKrj6UoXmBEjiY5NbMXKjOnwdtmTQRvMhin2569HK7Dic++xoUUwv/sE09rZADrS
+ cbfcLEBsv0ACIh+R/Oksnyz8Jq+GUjcBBt+nlpUWmHuCuYbN3OSiY6MaWodtWN7DbAOU4IGxpFV
+ kbzWtpb4hoZeKQ6eKlJoenHuwLA0TlX3sIYRAwOkMtcpmRl9fxEqMn4SZxt2wJFb980pEzpOppL
+ 7mD9POOAt/wexriuoQ5UeVn0XxWx4zPxlWmRrF2Y+FD9MN1CDQ982dqfrKVTwLfFVAV99viGtEb
+ CJCqlfUaImTMmYjMDKVLe2KAiDFLDPKX8EKLQNmbQcHV3+69yysD3SgJlQAp72k6LNvwGmm5t8C
+ EsQ/pQajhXT/HGp57F8EHAz5RZIA414UOnFuQyZ/3d7nR3HchfBCp9JFspdNNuXr5W6wBHhrUg4
+ 2eikaXLsYTjTN5pMuAowxS+OYjHmwQpLZYUwN+cVTq2eKUEqaPxKG919gMEXr2nkLVQSy2UuDRb A0CcsEogqS3u2MQ==
 X-Mailer: b4 0.14.3
-Message-ID: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
-Subject: [PATCH v6 0/3] Rust netlink support + use in Rust Binder
+Message-ID: <20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
+Subject: [PATCH v6 1/3] rust: net: add rust/kernel/net to NETWORKING [GENERAL]
 From: Alice Ryhl <aliceryhl@google.com>
 To: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
@@ -90,75 +88,35 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The C Binder driver exposes messages over netlink when transactions
-fail, so that a userpace daemon can respond to processes with many
-failing transactions.
-
-This patch series adds netlink support from Rust, then implements an
-equivalent API in Rust Binder.
-
-As Binder only uses broadcast messages, I did not add support for other
-kinds of messages.
+To ensure that networking code can be found in a single shared place,
+add it to the relevant NETWORKING entry. The net.rs file is moved into
+the net/ directory so that it's included under the MAINTAINERS entry
+without needing a separate rust/kernel/net.rs entry.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Changes in v6:
-- Introduce MAINTAINERS entry update for net files.
-- Move netlink.rs to rust/kernel/net/.
-- Tweak info.reply logic in Binder patch.
-- Link to v5: https://lore.kernel.org/r/20260525-binder-netlink-v5-0-a90e2923ebeb@google.com
+ MAINTAINERS                        | 2 ++
+ rust/kernel/{net.rs => net/mod.rs} | 0
+ 2 files changed, 2 insertions(+)
 
-Changes in v5:
-- Remove patch 2.
-- Squash patches 3 and 4.
-- Link to v4: https://lore.kernel.org/r/20260504-binder-netlink-v4-0-601b41cd25b2@google.com
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a61a229670b3..08bbe8e0a74a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18612,6 +18612,8 @@ F:	include/uapi/linux/sctp.h
+ F:	lib/net_utils.c
+ F:	lib/random32.c
+ F:	net/
++F:	rust/helpers/net/
++F:	rust/kernel/net/
+ F:	samples/pktgen/
+ F:	tools/net/
+ F:	tools/testing/selftests/net/
+diff --git a/rust/kernel/net.rs b/rust/kernel/net/mod.rs
+similarity index 100%
+rename from rust/kernel/net.rs
+rename to rust/kernel/net/mod.rs
 
-Changes in v4:
-- Fix typo in 'report netlink transactions' commit message.
-- Document that some methods are for const context only.
-- Rebase and pick up tags.
-- Link to v3: https://lore.kernel.org/r/20260415-binder-netlink-v3-0-84be9ba63ee2@google.com
-
-Changes in v3:
-- Fix spurious 'return' statements in Rust helpers (Patch 1).
-- Sashiko review:
-  - Fix ynl_gen to handle empty multicast groups and correct multicast indexing (Patch 2).
-  - Fix transaction failed reply logic to report via Netlink inside reply_inner() (Patch 4).
-- Link to v2: https://lore.kernel.org/r/20260408-binder-netlink-v2-0-c0d327d15435@google.com
-
-Changes in v2:
-- Make inclusion of to_pid conditional too.
-- Add note about file name in second patch.
-- Make it clear that the sk_buff wrapper is netlink-specific.
-- Better handle bitfield in patch 1.
-- Link to v1: https://lore.kernel.org/r/20260306-binder-netlink-v1-0-daceb5bc83f2@google.com
-
----
-Alice Ryhl (2):
-      rust: net: add rust/kernel/net to NETWORKING [GENERAL]
-      rust: netlink: add raw netlink abstraction
-
-Carlos Llamas (1):
-      rust_binder: report netlink transactions
-
- MAINTAINERS                                |   2 +
- drivers/android/Kconfig                    |   2 +-
- drivers/android/binder/netlink.rs          | 117 ++++++++++
- drivers/android/binder/rust_binder_main.rs |   8 +-
- drivers/android/binder/thread.rs           |  11 +-
- drivers/android/binder/transaction.rs      |  40 ++++
- rust/bindings/bindings_helper.h            |   3 +
- rust/helpers/helpers.c                     |   1 +
- rust/helpers/net/genetlink.c               |  46 ++++
- rust/kernel/{net.rs => net/mod.rs}         |   2 +
- rust/kernel/net/netlink.rs                 | 337 +++++++++++++++++++++++++++++
- rust/uapi/uapi_helper.h                    |   1 +
- 12 files changed, 566 insertions(+), 4 deletions(-)
----
-base-commit: 5ad28496055858166eb2268344c8fda2c26d3561
-change-id: 20260306-binder-netlink-c82110b2fb74
-
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.54.0.823.g6e5bcc1fc9-goog
 
