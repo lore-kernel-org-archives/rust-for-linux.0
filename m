@@ -1,350 +1,268 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012013.outbound.protection.outlook.com [40.107.209.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFB03FF890;
-	Fri, 29 May 2026 15:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780068510; cv=fail; b=R425EYhNsq2s9ACFYwoj5Xb0VUtHvNFz6ChO4Y9aC8c0J+lQTEoP6KF4ov2m5w7yDXQDE33RmKp51mWTSWSA/ODONUh/d+55wOifPlstJEG3x0kpVQ78SWXutykAIrBg8THY42QF7BECUaJIkyKApsigScW7U5TMvc676oCvrFk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780068510; c=relaxed/simple;
-	bh=0d8Fwg0j2Qu2n6x4OdcXBl6KwQodnvn87YipER9aLn8=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=eTCB+5cPr/2gs2UJiefne6x1+A0WlHxlIPf2Svb9ac87hZJBnHw/5z2px2cORtJ7Ya1IdqQCKvfyTtyU+L2Go0q5NWNU0Gs1zF4kCL644lYFu0GS3RcbG7JSfrzBi5PTgguZfwl2+ihWrjCBK4KfUUXm8gegYPIehbZuGipvvsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nLjz2dj2; arc=fail smtp.client-ip=40.107.209.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D8535B646;
+	Fri, 29 May 2026 15:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780068978; cv=none; b=WLcSN2jQfNk8itqVE7NJSmOnZM1YvVQqJRNyuXfAHLCHZ3h0geLb2epdh2aQb+HhQd2aexf+RbXORP++60+O+xXmU7PjU+ZB5FxmJHCAxoh6jjXIkJLOwqt+jM8mSIB5eF74hYWqz/12a+rCvYhmWhvVM3hBdq4dS/gM5pvqvjA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780068978; c=relaxed/simple;
+	bh=6Cd39RgC6tdtGXOaFeSocfulBdnhoTCOKzR1OniU3ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Av4LU01NxSkjF1kAevPMxAEi9FB9uphziLVoafjKHBJRyLs9rwVZzeAm+dcxBk1XA2AdyjBwMRLtVvAmxZ6nRrHjHrtIORUEVo9RYI1csyzka7RChbVci3q0riK7Qu9QOuXuoPvl/nVT1s+9gZQ3xm5ixWpbS/6J4j0IjSkQisc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XgqDYt9L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nLjz2dj2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B2Er+hkCj10L2WCA9Ga5ufqrT+oRr4uCFzd31UAs5EWBJOGfVQk+zcfGa4UUCA6wIr7ck6luANvgW1UdHP8xP6yaUupscOCSGJOdmIKhLGOxmsvzmY8splpV7RcJ2MAlCJIDXCUyc+XvjvAXGq8AH0MhTkVLJp2NsRYNVCH47k3NDwXZfPUegkzY3OwSs761abX0QS6MM3oS6HdFuUWmUd9/K044e9j5VJMw1uFHB/hhSBlzBdDJBUfpaKvzfiS9zt/pJl8lmUyfFIFSENCusE53SQdJXkF/wc5KaN6aSCpP09SOxtXgqtfGNw1KSSsY1tXXVyfrrksSvn7UGJjIGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=L56oQJIn5ZiiBi0M154+UAtXQy+z8psf15QLM/9UwbE=;
- b=OrKxqPxHJQmMTnjO2jiNMFbvw0TTXWWTl2l7Mz3saxFQ8aEY8TBb4IBT5rEu6Jt57LfGbQ7RXFVZ1OTO/bia3gfUmCP1cksjnFbgfvWTHrqxejHTMoOedEGrWLY8gQSKjKC4+5lStq+xmlOLB2X5jYFuTsGfn3nmR7+spzuKtTKnKsDOFIgw6dKhNyuPkeIzDj+hWLZNPqZ0OnDXgNC4YAD6GaPJ3Tb7iot0ktE8CNpTIItVyCJTkHlQviMqnNpxaR35KMls8339qehUarFeQ3e0PJZO0K3qUfhB/Y7hyNanWtFixro3Jv1v/lKf5uTSJwe+drW7MhPfdnL1vf0UCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=L56oQJIn5ZiiBi0M154+UAtXQy+z8psf15QLM/9UwbE=;
- b=nLjz2dj23UCLsK8HjU/0+O1EympsI+6gfceNTvZj35dMwkA0ouVvo8b20t7VeozZpsrdu7pe0mIM1IiZZzcnz9Kf5ydREmhZy1XmoYON9z4ObsDHSaJ0zyC/Fn4HwEJfpK3C4ElXzAu3DlcaMN7KMdcUl8rHwFew9POwvYi/wjF8by2Xcv7YLRXFxNlN7bQ4Vw0rzgxd95O2qRImhHBgfMJDbwqJSSZ8CGPyymOkYG8rQb1hY0f5SYUM1BJM8NUk+purYOcMNVWm7+MJhCmunhGxzLJTuGUWqFtlKNKdJo9aafy3eyZKG/fsUkbLKaW7O1vcpsBPuc2pW/HampSlwQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA3PR12MB9159.namprd12.prod.outlook.com (2603:10b6:806:3a0::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
- 2026 15:28:24 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0071.011; Fri, 29 May 2026
- 15:28:24 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Sat, 30 May 2026 00:27:45 +0900
-Subject: [PATCH POC v3 5/5] drm: nova: demonstrate interaction with
- nova-core
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260530-nova-exports-v3-5-1202aa339ef7@nvidia.com>
-References: <20260530-nova-exports-v3-0-1202aa339ef7@nvidia.com>
-In-Reply-To: <20260530-nova-exports-v3-0-1202aa339ef7@nvidia.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
- Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>
-Cc: John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev, 
- dri-devel@lists.freedesktop.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TYCP286CA0021.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:263::11) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XgqDYt9L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDE11F00893;
+	Fri, 29 May 2026 15:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780068976;
+	bh=VJrhjsjFBiXGF59B9dhCa7HroDC7nPJqJ9WcHyRBIzs=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=XgqDYt9LN6I0WnAhEepMx4ad52gR3wPZi+i+06hrvXaQ5MKKdqn0HYIwBRlab8ikI
+	 BDe8BVRojmPnaerD8aRNr6zazMDJB8aPYbaGpO76o5LeiISI+2LkPvxOhjFr/1XJIS
+	 vWYo1Zav8hntjktECLBXEADKNT9BwFu66tO8TdJRj355zffuGi0OfNwifufh1kcWRd
+	 cRZEX5KjO1kfvAUys6RzVxhfIdQFRMmijEOwszTBVmywgyEUlnOlkrvRPcCflW0ch8
+	 qXybv3fYD08DVHznZgrZWBko6uX8EVlcruZAt3XF2B+PjZsU6sEB5IW7DaBbk03pY3
+	 hghPxErWz/T1g==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 69FE1CE02FC; Fri, 29 May 2026 08:36:16 -0700 (PDT)
+Date: Fri, 29 May 2026 08:36:16 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	ojeda@kernel.org, boqun@kernel.org, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org,
+	fujita.tomonori@gmail.com, tamird@kernel.org,
+	jiangshanlai@gmail.com, josh@joshtriplett.org, rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v7 3/4] rust: sync: add SRCU abstraction
+Message-ID: <b4f6d3e8-3a08-409e-89ae-ba5d612bae30@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260528062810.256212-1-work@onurozkan.dev>
+ <20260528062810.256212-4-work@onurozkan.dev>
+ <20260528082025.44414-1-work@onurozkan.dev>
+ <20260528083518.66203-1-work@onurozkan.dev>
+ <DIUB2DNTF6W9.2BT1NF6UXUOFI@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA3PR12MB9159:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3488fdf2-ae02-4239-03a7-08debd96ec3a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003|11062099010|7136999003|22082099003|18002099003|921020|6133799003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	hFvw/Hck/Ec25jw2sOYtbPmdxbvS9TOL/cGXEqiRznmeu0OoRSbJyQ071jUIbG+wR0Wmo7yav70Vay2dOgV0jgsZwtnhUDZpOh3hdLwBvKBSdoovhPFb5EdC6g5qB4hj4kvLtY9s8mVxmLSNIPJFRRqVFPrU+QV7amYxxgap6mSqJMB70I/1dWWMI/gx3ml3R4v1AbSKCMK89bdfYVFaB2BHKw620CPmb69ke1J/sWGqW3POgR/Aepuozs2I/PyAKHmmBNtGnNb/wq73AEMsits7A2kksqBoR9RTglNgMRoj3ZVEcBvxnGKXaUpUZYC6CGDvXFV8YwGfOA62yorrxcgXwHZP152tO4uTj9nc3F8+G0TaEknqIUbVFnyDvF3v3jQcwSsuG36qsCEHl5Xy6zxjBMwRonstwbLE8O8ZiXCcq5O32JRJ4uN4W9qL9Mwev7wnjxsLgQNVHKw1z/0dzVcrweEFm7RqQVfGHiAvCLUZx1gu8xz4Jqqry32XP1XF47wlIDZcBj6DjTDQr8jkMzCGXZk2LiegMooErWoIOU9iXgbSUYDoMp7JJyQxLQbbT0KA6H4tm7a5HBZXup1gwXIlACMCql7oWOMV1RcbW8eih1bJB1NtTL32FpAbImmjkKmbRMQakEBLN6K8dWJT8Z2TlcgRhrSQSSjzprYawInY9DzDBFORFoDAdTLHyo332VzwQTI2Lzy1LFqEygl3LguPpY5XiQHS404TyOz0xNk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003)(11062099010)(7136999003)(22082099003)(18002099003)(921020)(6133799003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NnllcWtZcTNrVkhvbWt6QVdGSXFXK2E2RXMydnRHcVl6SUV5ZVd1UjhyWi9U?=
- =?utf-8?B?RllHTnpRTU1FT0V1YU0yVCszYjluWGowN0U0NGxiNEQzVFFmSlpDN2s1VUFy?=
- =?utf-8?B?eXRmYW9Uenc4L3FBVTIwVE81cFdqdjlJMHloNWZSNXhPbmVtZnRQK0RXbS81?=
- =?utf-8?B?K3ZYQS92dUE0Nlh0bVdUY0VURVJXajBvRDNBTU1DeDBldnV4UlYxWGJYQlRS?=
- =?utf-8?B?ZFpiUkdPVDBTbkdsWnR3U1dYb1ZBWVQzWkhoUmJXVDZ1NE9TOGZoNTFCcm5R?=
- =?utf-8?B?NEZGVDN6ZWpKUEdJMjMxZ2QzU1ZCS3VpY2F3SDBqblV1L0xDeWhuVGdsWDho?=
- =?utf-8?B?VTl3UE5EeE9HRjNDKzlmZ29JVCt3ZStsaXliaFhZR1lQZmJVbm9LM3BOSVdK?=
- =?utf-8?B?VTZTdU9PVkJvbDBzUVQxY1RqZ3d3SEhSMXUxSXduSjc5MTJ3VmtHOVZCc1Vl?=
- =?utf-8?B?bGVNMm5ldUtQeW40dXFZR2RaSmRtYWRXVm1DZnlMdEpIU2tvVm9yRDhrOUNp?=
- =?utf-8?B?aHBSRmdubFpuYm1EdmQyVkViYms5NEtvL1RFV3dONHZlUFpOVVE4SGtDOXRU?=
- =?utf-8?B?SktFYWc2dUhnN1B0aEdkamRGMVd3NHNOMGs4WTlIUktpL0VPT1A0cXNsOTU2?=
- =?utf-8?B?SThZbU5TZldxcFpqRjFtZ25DSi9yZUZBdGVWT3hyQXZHeWM4T1RRaW8vZWpH?=
- =?utf-8?B?NDR1Snd5eTd0VERXOC9RQXFtVlhpNDRsTHBkRWVKOVE1UjNtdnBLbE5sOG85?=
- =?utf-8?B?SkErQ2tJTWV6bFNiSzJTaFpGbm5LWjNPcE45L0Z1QlVQZ05OYzVaOUNJU2Z4?=
- =?utf-8?B?aDE5M2ErYVhON0xKSXdEdmprUWdqc3BjeUpNTWJEcXN2ZytkN1VqMEhzWFVs?=
- =?utf-8?B?QXowSWVCeGZkT29saGc2RzQ1Q2dKL2xXS3dtSGhncHo0T3FnbVRCTTRrTzdD?=
- =?utf-8?B?b0RFMVRQaUxlVXZqM2RLeGFob0M3enEyQlZnZkY3MXVTZE5JVEwyL2ZGR3Vq?=
- =?utf-8?B?NEZnbk1Zc0FEUXE3T1ZJdzc5QlF1WWp6MzFWYUpWOFpRODJTVnRCM3hYUWgv?=
- =?utf-8?B?ZW96cVAvVlduRWd1RWhDeGl3a2Vhd1FVRlBENzU2WklYV0l4b0RHRGg2blJS?=
- =?utf-8?B?VHhaSkorMmQ2MUcxOVFxYktwN3E3Nml0WFJraVVsZzdXOTJvME5tZTBKOUNY?=
- =?utf-8?B?T05mSHBTQ0NTcnUvTUM1T2pEMTN4VVo2eENSMzBUQTF2WWMza0pGY3R1aVQz?=
- =?utf-8?B?eExmMGxEazQ2UWgydVpvbUJkWFlndUlVQTUvWlpLWHlVVzJLdmRKTkRkenE1?=
- =?utf-8?B?aWxjY2VkbFl0cG11VWpQdnFKaFduT1dnQzkxa0w3VlY4VVpTZ2JUT3B3VXlO?=
- =?utf-8?B?MzVucE1rMnZzdGNrbXdnVW5GcjhEeUhLcWVkTGpvb1lySG13TVU0QzhwczRU?=
- =?utf-8?B?RFRlY1FvUWIybWY5SU5IdnlMRWZWS0E4eVJCU0NQbHZpZkE1b2hrUWJBYjJs?=
- =?utf-8?B?aGU4YWJBejREVFZ2ZGFESXM4dmZ1T1JKVnh0Rnc4eVlncG56QzdIeitERTJB?=
- =?utf-8?B?KzBTS2Q2K25tTFh5U0RBemlUQUFWNlQzM0FOc2tjTXB4RkxGMVErcitjcURC?=
- =?utf-8?B?aEZEZGhmN1pZMWdmVVZ0UXQzTU5CUHhYek9YRmlnMFNWeHB4ZGNzMm00UHRJ?=
- =?utf-8?B?aGtDVEJiNjZIMFZHaVZFV295MHBVRURVYW5GUlNPNlArcXE4eGNib3BhZlVQ?=
- =?utf-8?B?NVJmZzlVQzdYM21uZVFJN0JnM2FPc0Z1M2RRdUYzWURyMzVUVzVwalJyeVJQ?=
- =?utf-8?B?Z1B0b0JjLzZtN1F2cU53dDl2eUJCY0E2QzY1bllzOW5VVDRRM0hOL3lkT1NI?=
- =?utf-8?B?SlRlSkhMTzQwZjFGTEQxcGZMSjdBeWdpKzFUdXc2OEFUdTlnMGFoVEwxTTNw?=
- =?utf-8?B?aXBrcjZpeWt4L0NXOHV6czlDTG5ValpGRWVsVk5TSUZ2amIyRDJsSUhqY1I0?=
- =?utf-8?B?L0hDQkIxUmNpa3FIcUFLY2VCL05KMFZkUElhZ3hyZTJDbVpaa0M0TkZpREk1?=
- =?utf-8?B?UzZKU2RFeTB2M0R1bHI0UlFBekltV09xbEZXSkdWek1iL3lCdkdNZlRTUldW?=
- =?utf-8?B?SzJ5ZGxyMjc1cG1iQmt6QkROK1lTbUdZeG0rV3kvN1FmYk5VNE9GUFE0TGFS?=
- =?utf-8?B?bGE0Q25IT2xoRVZhRTdnczRNd0xwREhHWHVRSXFCL0lxTDk2RERNWnFnbGdQ?=
- =?utf-8?B?b1FhUGtIYUg4UThGNUFtMFU4QktNT1lBcHZRR2hWeHFIY3AwUFdHSnhDSXNW?=
- =?utf-8?B?UW1tMTlkNW1UVUNzY0V3NlhuZThLb0oxTGZKMk5XMWU3UCtrdnZMVmpORmNj?=
- =?utf-8?Q?hup1vFf5c1u57rDhM8NySMz6urqXFqrjyBawiqeVze9vQ?=
-X-MS-Exchange-AntiSpam-MessageData-1: ZFCt8a+Ld+SqVw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3488fdf2-ae02-4239-03a7-08debd96ec3a
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 15:28:24.0445
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WL2U0mjmSnR++tAw0Hky9umRp4BK/c+2UAzTWsOJYOzjxrTcIOFPpG17QMFWuK7aYe/J1XvnR9c4x9giGm0ZvQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9159
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DIUB2DNTF6W9.2BT1NF6UXUOFI@garyguo.net>
 
-Export a few items from nova-core and use them from nova-drm in order to
-print the chipset of the GPU being probed.
+On Thu, May 28, 2026 at 01:23:39PM +0100, Gary Guo wrote:
+> On Thu May 28, 2026 at 9:35 AM BST, Onur Özkan wrote:
+> > On Thu, 28 May 2026 11:20:10 +0300
+> > Onur Özkan <work@onurozkan.dev> wrote:
+> >
+> >> On Thu, 28 May 2026 09:27:35 +0300
+> >> Onur Özkan <work@onurozkan.dev> wrote:
+> >> 
+> >> > Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_struct.
+> >> > Provide FFI helpers and a safe wrapper with a guard-based API for read-side
+> >> > critical sections.
+> >> > 
+> >> > Cleanup is handled via `PinnedDrop`, which explicitly drains pending grace
+> >> > periods and callbacks via `synchronize_srcu` and `srcu_barrier` before
+> >> > executing `cleanup_srcu_struct` to guarantee memory safety e.g. when there
+> >> > are leaked guards (via `mem::forget($guard)`).
+> >> > 
+> >> > Signed-off-by: Onur Özkan <work@onurozkan.dev>
+> >> > ---
+> >> >  rust/kernel/sync.rs      |   2 +
+> >> >  rust/kernel/sync/srcu.rs | 166 +++++++++++++++++++++++++++++++++++++++
+> >> >  2 files changed, 168 insertions(+)
+> >> >  create mode 100644 rust/kernel/sync/srcu.rs
+> >> > 
+> >> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> >> > index 993dbf2caa0e..0d6a5f1300c3 100644
+> >> > --- a/rust/kernel/sync.rs
+> >> > +++ b/rust/kernel/sync.rs
+> >> > @@ -21,6 +21,7 @@
+> >> >  pub mod rcu;
+> >> >  mod refcount;
+> >> >  mod set_once;
+> >> > +pub mod srcu;
+> >> >  
+> >> >  pub use arc::{Arc, ArcBorrow, UniqueArc};
+> >> >  pub use completion::Completion;
+> >> > @@ -31,6 +32,7 @@
+> >> >  pub use locked_by::LockedBy;
+> >> >  pub use refcount::Refcount;
+> >> >  pub use set_once::SetOnce;
+> >> > +pub use srcu::Srcu;
+> >> >  
+> >> >  /// Represents a lockdep class.
+> >> >  ///
+> >> > diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs
+> >> > new file mode 100644
+> >> > index 000000000000..343f00d070c7
+> >> > --- /dev/null
+> >> > +++ b/rust/kernel/sync/srcu.rs
+> >> > @@ -0,0 +1,166 @@
+> >> > +// SPDX-License-Identifier: GPL-2.0
+> >> > +
+> >> > +//! Sleepable read-copy update (SRCU) support.
+> >> > +//!
+> >> > +//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu.h)
+> >> > +
+> >> > +use crate::{
+> >> > +    bindings,
+> >> > +    error::to_result,
+> >> > +    prelude::*,
+> >> > +    sync::LockClassKey,
+> >> > +    types::{
+> >> > +        NotThreadSafe,
+> >> > +        Opaque, //
+> >> > +    },
+> >> > +};
+> >> > +
+> >> > +use pin_init::pin_data;
+> >> > +
+> >> > +/// Creates an [`Srcu`] initialiser with the given name and a newly-created lock class.
+> >> > +#[doc(hidden)]
+> >> > +#[macro_export]
+> >> > +macro_rules! new_srcu {
+> >> > +    ($($name:literal)?) => {
+> >> > +        $crate::sync::Srcu::new($crate::optional_name!($($name)?), $crate::static_lock_class!())
+> >> > +    };
+> >> > +}
+> >> > +pub use new_srcu;
+> >> > +
+> >> > +/// Sleepable read-copy update primitive.
+> >> > +///
+> >> > +/// SRCU readers may sleep while holding the read-side guard.
+> >> > +///
+> >> > +/// The destructor waits for active readers and callbacks, so it may sleep.
+> >> > +/// If a read-side guard has been leaked, dropping an [`Srcu`] may never return.
+> >> > +///
+> >> > +/// # Invariants
+> >> > +///
+> >> > +/// This represents a valid `struct srcu_struct` initialized by the C SRCU API
+> >> > +/// and it remains pinned and valid until the pinned destructor runs.
+> >> > +#[repr(transparent)]
+> >> > +#[pin_data(PinnedDrop)]
+> >> > +pub struct Srcu {
+> >> > +    #[pin]
+> >> > +    inner: Opaque<bindings::srcu_struct>,
+> >> > +}
+> >> > +
+> >> > +impl Srcu {
+> >> > +    /// Creates a new SRCU instance.
+> >> > +    #[inline]
+> >> > +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> impl PinInit<Self, Error> {
+> >> > +        try_pin_init!(Self {
+> >> > +            // INVARIANT: On success, the C initializer creates a valid `srcu_struct` and
+> >> > +            // it remains pinned until `PinnedDrop` runs.
+> >> > +            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::srcu_struct| {
+> >> > +                // SAFETY: `ptr` points to valid uninitialised memory for a `srcu_struct`.
+> >> > +                to_result(unsafe {
+> >> > +                    bindings::init_srcu_struct_with_key(ptr, name.as_char_ptr(), key.as_ptr())
+> >> > +                })
+> >> > +            }),
+> >> > +        })
+> >> > +    }
+> >> > +
+> >> > +    /// Enters an SRCU read-side critical section.
+> >> > +    ///
+> >> > +    /// Leaking the returned [`Guard`] leaves the SRCU read-side critical
+> >> > +    /// section active and makes `drop` sleep forever.
+> >> > +    #[inline]
+> >> > +    pub fn read_lock(&self) -> Guard<'_> {
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
+> >> > +        let idx = unsafe { bindings::srcu_read_lock(self.inner.get()) };
+> >> > +
+> >> > +        // INVARIANT: `idx` was returned by `srcu_read_lock()` for this `Srcu`.
+> >> > +        Guard {
+> >> > +            srcu: self,
+> >> > +            idx,
+> >> > +            _not_send: NotThreadSafe,
+> >> > +        }
+> >> > +    }
+> >> > +
+> >> > +    /// Waits until all pre-existing SRCU readers have completed.
+> >> > +    #[inline]
+> >> > +    pub fn synchronize(&self) {
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
+> >> > +        unsafe { bindings::synchronize_srcu(self.inner.get()) };
+> >> > +    }
+> >> > +
+> >> > +    /// Waits until all pre-existing SRCU readers have completed, expedited.
+> >> > +    ///
+> >> > +    /// This requests a lower-latency grace period than [`Srcu::synchronize`] typically
+> >> > +    /// at the cost of higher system-wide overhead. Prefer [`Srcu::synchronize`] by default
+> >> > +    /// and use this variant only when reducing reset or teardown latency is more important
+> >> > +    /// than the extra cost.
+> >> > +    #[inline]
+> >> > +    pub fn synchronize_expedited(&self) {
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid `struct srcu_struct`.
+> >> > +        unsafe { bindings::synchronize_srcu_expedited(self.inner.get()) };
+> >> > +    }
+> >> > +}
+> >> > +
+> >> > +#[pinned_drop]
+> >> > +impl PinnedDrop for Srcu {
+> >> > +    fn drop(self: Pin<&mut Self>) {
+> >> > +        let ptr = self.inner.get();
+> >> > +
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`
+> >> > +        // and `srcu_readers_active()` only checks the active reader count.
+> >> > +        if unsafe { bindings::srcu_readers_active(ptr) } {
+> >> > +            crate::pr_warn!(
+> >> > +                "Leaked `Guard` detected while dropping SRCU; drop will block forever.\n"
+> >> > +            );
+> 
+> I think this could be a `warn_on` similar to how cleanup_srcu_struct handle the
+> condition.
+> 
+> >> > +        }
+> >> > +
+> >> > +        // `cleanup_srcu_struct()` may return early if readers are still active. Because `Srcu`
+> >> > +        // owns the embedded `srcu_struct`, returning from `drop` in that state could free memory
+> >> > +        // that is still referenced by the C side.
+> >> > +        //
+> >> > +        // Wait for all readers to complete first. If any `Guard` was leaked, `synchronize_srcu()`
+> >> > +        // will sleep forever.
+> >> > +        //
+> >> > +        // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`.
+> >> > +        unsafe { bindings::synchronize_srcu(ptr) };
+> >> 
+> >> Sashiko got a good point here which is calling synchronize_srcu() only if there
+> >> are active readers. That's a nice low-effort improvement we can have in the next
+> >> version.
+> >> 
+> >> Onur
+> >
+> > Actually, now I am now thinking about whether we can come up with a better
+> > approach when we detect leaked guards. Initially I came up with the
+> > synchronize_srcu() solution because it would handle leaked guards automatically
+> > without requiring any additional checks. But now that we can actually detect
+> > whether guards are leaked the question becomes:
+> >
+> > 	"Is there a better option than effectively sleeping forever when leaked
+> > 	 guards are detected?"
+> >
+> > I have no plans for tomorrow other than finalizing this series including the
+> > question above.
+> 
+> The best solution is to proceed cleanups anyway, given Rust rules ensure that
+> these are actual leaks and not just srcu read-side critical section that failed
+> to synchronize with the destruction of SRCU.
+> 
+> This obviously require changes to the SRCU code though.
 
-Some documentation items are added to make Clippy happy.
+Right now, the C-language SRCU code would splat and leak the srcu_struct
+structure.  Of course, we *could* provide something that zeroed the
+reader counts to avoid the splat and leak, but yikes!  Or is there a
+way to make such a function available *only* to the Rust code associated
+with cleanup_srcu_struct(), and not to other C/Rust code?
 
-This is only meant for demonstration purposes, and won't be merged.
-
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
- drivers/gpu/drm/nova/driver.rs     |  9 +++++-
- drivers/gpu/nova-core/driver.rs    | 59 +++++++++++++++++++++++++++++---------
- drivers/gpu/nova-core/gpu.rs       |  9 ++++--
- drivers/gpu/nova-core/nova_core.rs |  4 +--
- 4 files changed, 61 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index 4289df7de01c..2a3f47974079 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -9,12 +9,15 @@
-         ioctl, //
-     },
-     prelude::*,
--    sync::aref::ARef, //
-+    sync::aref::ARef,
-+    types::ForLt, //
- };
- 
- use crate::file::File;
- use crate::gem::NovaObject;
- 
-+use nova_core::driver::AuxData;
-+
- pub(crate) struct NovaDriver;
- 
- pub(crate) struct Nova {
-@@ -60,6 +63,10 @@ fn probe<'bound>(
-         adev: &'bound auxiliary::Device<Core<'_>>,
-         _info: &'bound Self::IdInfo,
-     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-+        let aux_data = adev.registration_data::<ForLt!(AuxData<'_>)>()?;
-+
-+        pr_info!("Chipset from nova-core: {}\n", aux_data.chipset());
-+
-         let data = try_pin_init!(NovaData { adev: adev.into() });
- 
-         let drm = drm::Device::<Self>::new(adev.as_ref(), data)?;
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index cff5034c2dcd..95fb4d13e676 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+//! Main driver module.
-+
- use kernel::{
-     auxiliary,
-     device::Core,
-@@ -20,18 +22,36 @@
-     types::ForLt,
- };
- 
--use crate::gpu::Gpu;
-+use crate::gpu::{
-+    Chipset,
-+    Gpu, //
-+};
- 
- /// Counter for generating unique auxiliary device IDs.
- static AUXILIARY_ID_COUNTER: Atomic<u32> = Atomic::new(0);
- 
-+/// Data passed to the auxiliary device registration, for the sibling driver to use.
-+pub struct AuxData<'bound> {
-+    gpu: &'bound Gpu<'bound>,
-+}
-+
-+impl AuxData<'_> {
-+    /// Returns the chipset of this GPU.
-+    pub fn chipset(&self) -> Chipset {
-+        self.gpu.spec.chipset
-+    }
-+}
-+
-+/// Driver-associated data.
- #[pin_data]
--pub(crate) struct NovaCore<'bound> {
-+pub struct NovaCore<'bound> {
-+    // Fields are dropped in declaration order: unregister the auxiliary device before dropping
-+    // `gpu`, and drop `gpu` before `bar` because `AuxData` borrows `gpu` and `Gpu` borrows `bar`.
-+    #[allow(clippy::type_complexity)]
-+    _reg: auxiliary::Registration<'bound, ForLt!(AuxData<'_>)>,
-     #[pin]
-     pub(crate) gpu: Gpu<'bound>,
-     bar: pci::Bar<'bound, BAR0_SIZE>,
--    #[allow(clippy::type_complexity)]
--    _reg: auxiliary::Registration<'bound, ForLt!(())>,
- }
- 
- pub(crate) struct NovaCoreDriver;
-@@ -93,7 +113,7 @@ fn probe<'bound>(
-             // other threads of execution.
-             unsafe { pdev.dma_set_mask_and_coherent(DmaMask::new::<GPU_DMA_BITS>())? };
- 
--            Ok(try_pin_init!(NovaCore {
-+            Ok(try_pin_init!(&this in NovaCore {
-                 bar: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"nova-core/bar0")?,
-                 // TODO: Use `&bar` self-referential pin-init syntax once available.
-                 //
-@@ -101,15 +121,26 @@ fn probe<'bound>(
-                 // (`try_pin_init!()` initializes fields in declaration order), lives at a pinned
-                 // stable address, and is dropped after `gpu` (struct field drop order).
-                 gpu <- Gpu::new(pdev, unsafe { &*core::ptr::from_ref(bar) }),
--                _reg: auxiliary::Registration::new(
--                    pdev.as_ref(),
--                    c"nova-drm",
--                    // TODO[XARR]: Use XArray or perhaps IDA for proper ID allocation/recycling. For
--                    // now, use a simple atomic counter that never recycles IDs.
--                    AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
--                    crate::MODULE_NAME,
--                    (),
--                )?,
-+                // SAFETY: `NovaCore` is dropped when the device is unbound; i.e. `mem::forget()` is
-+                // never called on it.
-+                _reg: unsafe {
-+                    auxiliary::Registration::new_with_lt(
-+                        pdev.as_ref(),
-+                        c"nova-drm",
-+                        // TODO[XARR]: Use XArray or perhaps IDA for proper ID allocation/recycling.
-+                        // For now, use a simple atomic counter that never recycles IDs.
-+                        AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
-+                        crate::MODULE_NAME,
-+                        AuxData {
-+                            // TODO: Use `&gpu` self-referential pin-init syntax once available.
-+                            //
-+                            // SAFETY: `this.gpu` is initialized before this expression is
-+                            // evaluated, lives at a pinned stable address, and is dropped after
-+                            // `_reg` (struct field drop order).
-+                            gpu: &*core::ptr::from_ref(&this.as_ref().gpu),
-+                        },
-+                    )?
-+                },
-             }))
-         })
-     }
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index cf134cab49cd..5636659f24a8 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+//! Core types for the driver.
-+
- use kernel::{
-     device,
-     fmt,
-@@ -29,7 +31,8 @@ macro_rules! define_chipset {
-     {
-         /// Enum representation of the GPU chipset.
-         #[derive(fmt::Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq)]
--        pub(crate) enum Chipset {
-+        #[allow(missing_docs)]
-+        pub enum Chipset {
-             $($variant = $value),*,
-         }
- 
-@@ -183,7 +186,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- /// Structure holding a basic description of the GPU: `Chipset` and `Revision`.
- #[derive(Clone, Copy)]
- pub(crate) struct Spec {
--    chipset: Chipset,
-+    pub(crate) chipset: Chipset,
-     revision: Revision,
- }
- 
-@@ -245,7 +248,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- /// Structure holding the resources required to operate the GPU.
- #[pin_data]
- pub(crate) struct Gpu<'gpu> {
--    spec: Spec,
-+    pub(crate) spec: Spec,
-     /// MMIO mapping of PCI BAR 0.
-     bar: &'gpu Bar0,
-     /// System memory page required for flushing all pending GPU-side memory writes done through
-diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-index 5a260062295f..5166e10ce8a0 100644
---- a/drivers/gpu/nova-core/nova_core.rs
-+++ b/drivers/gpu/nova-core/nova_core.rs
-@@ -13,11 +13,11 @@
- #[macro_use]
- mod bitfield;
- 
--mod driver;
-+pub mod driver;
- mod falcon;
- mod fb;
- mod firmware;
--mod gpu;
-+pub mod gpu;
- mod gsp;
- #[macro_use]
- mod num;
-
--- 
-2.54.0
-
+							Thanx, Paul
