@@ -1,116 +1,154 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468AD30F934
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 05:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780031761; cv=pass; b=Zg9PtWU/zYH9PggW+gyKSwQdQYxMwZMQoNpF695m+llz14GoG1qz7nPZgW6yn9vNlKu9rw7lyC/pl34/VmIxZKWX0Yar1Pcc0dYkq2E0mOgD46++DauYKj/I2PJCEJ1peIHkCy3gDwv0WaTX07naaBjKaTWs9foOfmk7RLfNDRA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780031761; c=relaxed/simple;
-	bh=RZmlRufzWqXoxl9YMpr3zqfVc7Zbb6YFULZJWEcCPOg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HJbnzz7LPhv2uyx2zrKwUZqK5M9BcT4difctSgLWfFEJoqhuUWkecK+PS+PqEuswaJgXKZFeeEaZKxThU4ahdjrvEwzgaT+zcW9lrWDd/SjCrXzLL+XQ0xDxcSl2j/0cOK5k9XsRTrgKh8RzSs0N9FMd9XrjtLFNGjUisyT/dQ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4SlhRPI; arc=pass smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC8A369D5B
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 05:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780033326; cv=none; b=FcqF81S67CuYy+JlOnM4VFfXpRthPqJTugbYIwcrdS5+4Ll+YaS93MPz9QiX6YD2rskfQoRbJ5RR63vQ7tq0NFdId1cPF0cxC0j1N6YvbykduE+QOmJaCAmWa0+0DomedLBKT2eChynqv3hIKIqPuYncciVvihohmC2u+qUs7ks=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780033326; c=relaxed/simple;
+	bh=rF2fjIczSR5/O/w8jUrxzr8qaMT2qPjcyQns/bTHSkM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OgFkmEz09vWkIkIINY016tbG2jt5iuYYbipQJPAMiJ+ypgRlNrWH+LLg1N3NAJ4vqc014Jh3fNJti5OskXmkbmz7Puwc61mDOJsX3hLl5lff/lNWZ6THS8X2BbkQfjCLC4J1sLuehiLUC996A3T+3mksgou9pJ+WN7sgs954VQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=suK8qX4H; arc=none smtp.client-ip=74.125.82.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4SlhRPI"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1351aa6418cso593770c88.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 22:16:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780031759; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IuieJ0MV4ELhd02my53j0Pm5dcf7S6L3lTQ+zJbMxNWYqcVAt2EEgn874SQPUlSKas
-         wXEBntqtGCH95Feo4QhbuHMiyAM+9Tc1E2ENc0Ppp4bOAnYJdWG/y2F5dqAVW4XADWcD
-         ITTgoCp9shACnjJaVNfHDyfglMkNiQpUZgZToYTSkq6fdG6HbHfpIxjOAFwBYZFe2pQA
-         NS5VQG94XSNOV+C7x/UsuoCMcdAfa9g2y7AiBO2+ivQxwbVJT+SSpuZUYUS/l5Rl6WQa
-         M+et0+0soJESn65SsRCehyqCj7br/DjHYE7E6kPlZDhJhtCX1IcR5Eg7FhYdMrkde+GV
-         92gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X+RniAYNsrfL09sn7xlO64xDYFduCytNvTWSC7DXHDQ=;
-        fh=bXIW4PsdDhob8rdtB0w7S3QNYpNpNDPKqRwm39E4pns=;
-        b=eL17ccq4DqwBXiZI/gW9W0XAlCL6IgOUl316CcAudALJtNLhUXILjd6KO4G4RBk/r9
-         MO9/Ez+f8Ue51rCClHqu4fSgjXuf0k39dGVgZQwDUNeWx2ksa4Et38lEDufhGkc7zSLq
-         TcOTQza+qStzjMjFU5yzD9nAlC9iGekrJ82iMkjRbXNqkA2IhG0MobEG+2ZX5dfW/tGl
-         gcHGbVc0PUBTRl1UBN4GYhM172C8oRoI48LRwbDHJpkJfmIEyHuS5HO943v9C/ebGjCo
-         PM5fjxVp8KwPdN6sNX1X7ALFT/argQmtdyCAGgQGRo0OfSi/VxtJxfknnrwsWRkgzsoo
-         4PEg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="suK8qX4H"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304c520fe9aso4581993eec.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 22:42:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780031759; x=1780636559; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780033323; x=1780638123; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=X+RniAYNsrfL09sn7xlO64xDYFduCytNvTWSC7DXHDQ=;
-        b=U4SlhRPI8XTmVZXLHHfZIx6gIQ6mUh5jjD2P5woLQns6/eJmqPGzF960SXC39ggFJB
-         22qnoU9aBityAY2tfJB8d4Eou7Y3n7PenJN4LHarWJ4Vbwryalll51NL1oFonzNEMnsZ
-         usc7ti75wL/zMjZhO3XKOGXcv4iqwNGFfizPtP06AEDHhbp0COs8M1GNQ5abn5DJaaBb
-         gEKJJvsCD+pcHob+Te3QLBL5ITLT6glIk2W/XtxLbDCrVTnHwsCA5uYhLLsTwUDIHu4W
-         90iDppr3ZtwFuelgHnrvioYZbcpVsPd6QoFVijtnQdmfiZSqtEobLicB9C9MXkgIXJe3
-         jC8A==
+        bh=Xk0hlbm0P5JJAGntaPUrnolV3Vq6zGWkmyfbWRCDuAQ=;
+        b=suK8qX4H+aZYsl0m/Ogzd8nWGEkOhR7MgKUnr15Ddf0+JaJIuyhla3sbOqhRW8yoHV
+         60WotZU8ozBMZqt0G77dO9FD++NUPoxnZsEaMSdqFs9EML6ht1JeXrtLFFj9en5iHzAB
+         rCZISnIykYqAfvfTEpCK9gat7G/D4iUOLJrhOl+6V1bJXVQ4nToizTbtcasqSleT6sBG
+         xNMhzsGeE1Lk3o+NP/VX9ayfyJMsFKN0HinxFgLsLoY7234HCZAv3TWQEnYfFBAlL0fb
+         TQ2cwHx0aE7av6cpM/JyTiyE4oj2Sezw6JPtp66m9mc7oF934bsZcw+kpLA5NXbnC3a+
+         9lRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780031759; x=1780636559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1780033323; x=1780638123;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=X+RniAYNsrfL09sn7xlO64xDYFduCytNvTWSC7DXHDQ=;
-        b=TSY7Q0cEH3hYGcIv7B1uGMUzbcmTEznxfzDTEIdiQefmmQadcSzCYxFkfSSyr7lqyl
-         pFuV/3r4TlGlybsPDYsN7v9ETapTDAMaqVJhLDAKJpCV+ForPntQr+j1NPa8+ZSLUJk0
-         EeQcmvcQgR3BpcXTK4kgXnwHr45hcA4gt/xbLrxRnRaTrQIYIfZGXqj5YOO9zJF02/Vc
-         dVe9N2mkJ9WEj3W26s/ep8Ff9CAywuonQlOQa81hM9B9WKq5IgD98LHtn4aYhcqGyH1b
-         mcSgJ+09V6QoA0SokVdpnKr5Ej77YL8aN8M7BqPlomQ1eTdr3CEDaD7zuigZI5y6GzPV
-         ddww==
-X-Forwarded-Encrypted: i=1; AFNElJ95GMrZp6/5zTFwNGfTis8OStsBh08nBK047yfTT0BKtba1SNQosCN+8+ZQ2C7D8qep2yF8HrXVsBBxuJ/RiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSeXAglcqf8Y7lVL33KmtDvHUNBjoxF+g9dX6sZa2VRyyGGuob
-	nZU1ZLH6YHP0CJJU77C/mI8kTvPDTJ+YkZQD0/dz/mm9WB7CZSZ+G5FkZoTabHN0Wxp3dJ7vmYX
-	E3lyR9YK8CMLPEBjOLNCgKObbED+Mxec=
-X-Gm-Gg: Acq92OFSRkHuLlKLQzmeVPFSczYPknzFr1RAPuUIkPnRJJWUDfGPl8LH1NUxGylutt8
-	jVFLCa4Go9dgZ5f3N6E+jxTPd178N4CiosF6xwlGETOeF6iBrZk6tI4u3kTULUSX4jZc5JwqvY+
-	2atnOhg9egd4BY71871CA37xuV0BJI6oy6KNXxY7iNuxpg0Nyqtem6s+tgz5XBC2wX8MKer7mBG
-	GHVF6ZY2eqrU+LCDM5sYPL32MxlCvZRrZqoacNQOVjBoveK2jmqmgK322veOvM+Hg9O9N1W1Llo
-	yXThtgn4g1OtvaocHW+DwZIjfD7yodgOtNhrB7IYPUoqubMiGpVb6Yn7aVWKQlMsn/wdGLiI8IY
-	cV0zdLwhX49UTGG/Mj6pVMEgLi3Ff1Pe4W2EYwuhuO5YJ
-X-Received: by 2002:a05:7301:1288:b0:304:c73b:79ea with SMTP id
- 5a478bee46e88-304eb0faad8mr347356eec.3.1780031759297; Thu, 28 May 2026
- 22:15:59 -0700 (PDT)
+        bh=Xk0hlbm0P5JJAGntaPUrnolV3Vq6zGWkmyfbWRCDuAQ=;
+        b=CbCcSwuIt7UQzOfVAMcumGjNFaR8UOASqanz5JenmRjBSEVeaqFcKHZNxLTUoZE1AV
+         ipP/yoED2wG8X3eN3kJ0aAqgj8yFBRZ3iJyxLPSh2F/u1VB8s5sPmRUIxwjw5M/a4bvW
+         CPLckxkVKKR3+s+n8psxtwMOM7WK6qvyYgUAC4xt8JsgRnFg55vkkueqE3gg+nPcql7b
+         Omt6qvuJyBCc46TNMYRIZ0pdLV66vauO+g9/woC8DNWxZLJIL8/52NON5Kc1gPoBq8fH
+         3uFFaorT5k1MVQCDtJ7yJDpzVJ2yXg5R3njlO/GS9Fa/wgoOwte/3zSmI9/YSwwInd33
+         qO8A==
+X-Forwarded-Encrypted: i=1; AFNElJ9dhndyJ+dJvqMYEoRw090Z348FcKv1CxHiWMvI+tsz/sG4Nm1lYtmHBdgKY/Gi8YoJH+OpWiZe7lZbSGlNdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsNYOxuNzWv4oP51n7aebxpqPMsTBpSbuGSNqHSazHuO2e1479
+	xo/SNNaDjpKrnTCBLcS224HZ6CJ0xcOTFHFuyNqPYGECww5pJZW5ZcOE
+X-Gm-Gg: Acq92OHjGzSnMIYVB7AdMuBic8e9O6Luag1bUsNR5uOoIt6oYuvMiHoJQsijKRxLwS6
+	OgbW9xV/L23WukwWIvJ58t6taZSExWhUdP4cpya/XaqlzpspTl9BiFav8r8N4MJBxka1RolNrQK
+	DOoCvXBLWQ+/YyT1qZtMru9dWFpijz7x0Nijfl7KOAuO3nraphkjg7tYBfbk4/qTY2EI66fiVJL
+	SEvxzTZQzXm+Jybj/QpPqAg/CPzwaMmqmQ0JfbI91wSPJi8SwCk9RZkqG2B/Ej6NW1bavBrPrX3
+	EZZSmkrG/Cchc9pBYiD+YYZO+fC4MXW6k1hqeoW0EsJZ04FtBzcvvy8KOBx/EbCiRs6jiLYJg52
+	AAH9nX3YKvvqNYZP1Qmqu5E52FxjFoOTlA3rMTQp2beBIDLs92O6WCwdFwGt2q74EDYKpzcCdRq
+	dFj0Yrj0kHLjFQxSqsc3bFq+jU9JhQN/3d00xApw==
+X-Received: by 2002:a05:7301:4196:b0:2de:cc07:e99 with SMTP id 5a478bee46e88-304ead9b7fbmr734452eec.7.1780033323236;
+        Thu, 28 May 2026 22:42:03 -0700 (PDT)
+Received: from majuro ([2601:644:4383:1c0::4126])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed30fffesm620713eec.11.2026.05.28.22.42.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 22:42:02 -0700 (PDT)
+From: Brandon Saint-John <branstj@gmail.com>
+To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Cc: Brandon Saint-John <branstj@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	linux-iio@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Igor Korotin <igor.korotin.linux@gmail.com>
+Subject: Re: [RFC PATCH v3 3/4] iio: position: add Rust driver for ams AS5600
+Date: Thu, 28 May 2026 22:37:56 -0700
+Message-ID: <20260529053803.3256031-1-branstj@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260524132824.54918-4-muchamadcoirulanwar@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260521161405.64042-1-SisyphusCode0311@gmail.com>
- <CANiq72m5GZp_p2HCgotBaevLmt1NrvzwrzJJK5sLUEwxeVLBdw@mail.gmail.com>
- <CABCJKue2BvckpFK1yROmOcsrRpxRC9m0OiwCymxF=OW0JZkLUw@mail.gmail.com> <CANN+23v9vkzq_2o01z2VmkDnLaBTP8_Op5vvu=Ozg21T3o6m3w@mail.gmail.com>
-In-Reply-To: <CANN+23v9vkzq_2o01z2VmkDnLaBTP8_Op5vvu=Ozg21T3o6m3w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 29 May 2026 07:15:45 +0200
-X-Gm-Features: AVHnY4IXYRmYXeaL2akTBUG-TDhJkn4WVHbKolyP28qYFK0d8D_UpPqyVmWfGaU
-Message-ID: <CANiq72kTEQJcxD2iAd97Ly-qh7uRzPn7=k=DUEvHJw=NMFVk8A@mail.gmail.com>
-Subject: Re: [PATCH] rust: module_param: add missing newline to pr_warn
-To: Kenny Glowner <sisyphuscode0311@gmail.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 29, 2026 at 2:55=E2=80=AFAM Kenny Glowner
-<sisyphuscode0311@gmail.com> wrote:
->
-> I hope I submitted everything correctly?  I am trying to get used to it s=
-o I can provide better assistance on more mainstream issues. That's why I s=
-tarted with the most minor issue I could find. I appreciate all of the feed=
-back.
+On Sun, 24 May 2026 20:28:22 +0700 Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com> wrote:
 
-Yes, it looks fine, thanks! :)
+> +//! Driver for ams AS5600 12-bit magnetic rotary position sensor.
+> +//!
+> +//! Datasheet: https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
 
-However, in general, please try to reply to the feedback, e.g. I asked
-a question about the commit message.
+Small nitpick, but going to the above link doesn't resolve to a pdf.
+The link that works as of today for me is:
 
-Cheers,
-Miguel
+https://look.ams-osram.com/m/7059eac7531a86fd/original/AS5600-DS000365.pdf
+
+> +fn err_enodata() -> Error {
+> +    Error::from_errno(-(ENODATA as i32))
+> +}
+
+Later on it's probably better to add ENODATA to kernel::error::code instead of the helper.
+
+> +#[derive(Clone, Copy)]
+> +struct As5600Io(*mut i2c_client);
+> +
+
+You can replace the *mut i2c_client with an ARef<I2cClient>. The
+kernel::impl_device_context_into_aref! macro is run on &I2cClient<Core>
+so you can call ARef::from on dev instead of casting it to the raw pointer
+to hold it.
+
+Then it saves you from repeating a few different parts, like redoing unsafe impls,
+recasting back to I2cClient<Core> in try_readN, etc.
+
+> +impl IoCapable<u8> for As5600Io {}
+> +impl IoCapable<u16> for As5600Io {}
+
+None of the read_u16 or IoCapable<u16> are used at this point, so those traits/methods
+could be dropped.
+
+As a side note, in the most recent rust-next branch, there are a few changes with IoCapable
+so maybe worth rebasing at some point to get those changes. IoCapable isn't a marker trait
+anymore so I get compile errors trying to rebase there.
+
+> +#[pin_data]
+> +struct As5600Priv<T> {
+> +    #[pin]
+> +    io_lock: Mutex<As5600HwState<T>>,
+> +    channels: KBox<[iio_chan_spec; 1]>,
+> +}
+> +
+> +/// Encapsulates the I/O interface and its runtime health state.
+> +///
+> +/// This prevents operations on a known-dead bus (Circuit Breaker pattern).
+> +struct As5600HwState<T> {
+> +    io: T,
+> +    state: DeviceState,
+> +}
+
+Could As5600Priv/HwState hold the As5600Io directly instead of a generic T?
+As5600Priv was not generic over T in v2, and since As5600Io implements Io/IoCapable
+and the sensor only uses the I2C bus it doesn't seem like it needs to be generic,
+at least at the moment.
+
+> +impl<T: Io + IoCapable<u8> + Unpin> IioDriver for As5600Priv<T> {
+> +    fn read_raw(&self, _chan: *const iio_chan_spec, mask: isize) -> Result<IioVal> {
+> +        match mask {
+> +            // IIO_CHAN_INFO_RAW — read the 12-bit raw angle value.
+> +            m if m == iio_chan_info_enum_IIO_CHAN_INFO_RAW as isize => {
+
+Ideally in the future, the iio_chan_info_enum_* variants can be wrapped in an Rust
+enum with an #[repr] attribute. At this stage, match isn't as useful as it could be
+since you still need to call "if m == ...".
+
+Sent using hkml (https://github.com/sjp38/hackermail)
