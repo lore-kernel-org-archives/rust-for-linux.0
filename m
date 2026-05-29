@@ -1,154 +1,139 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC8A369D5B
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 05:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9410332B13A;
+	Fri, 29 May 2026 06:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780033326; cv=none; b=FcqF81S67CuYy+JlOnM4VFfXpRthPqJTugbYIwcrdS5+4Ll+YaS93MPz9QiX6YD2rskfQoRbJ5RR63vQ7tq0NFdId1cPF0cxC0j1N6YvbykduE+QOmJaCAmWa0+0DomedLBKT2eChynqv3hIKIqPuYncciVvihohmC2u+qUs7ks=
+	t=1780035576; cv=none; b=EseYOPzYIsjqJ33rWmsn9/pEjr5PwLpG9YIbo9dgXYkIKFnx7TyWDrUwk+LvNwwy9oTAj//3C5sHRRCNshq/pr5T6kNfpuBBIcR13z2Wqs0tg4hmfQQ5WVW8GnyB8b2EsGvNyfC9P1MMd5c0ZDiUfcoX4rkFVHmCeO9FNAacMb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780033326; c=relaxed/simple;
-	bh=rF2fjIczSR5/O/w8jUrxzr8qaMT2qPjcyQns/bTHSkM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OgFkmEz09vWkIkIINY016tbG2jt5iuYYbipQJPAMiJ+ypgRlNrWH+LLg1N3NAJ4vqc014Jh3fNJti5OskXmkbmz7Puwc61mDOJsX3hLl5lff/lNWZ6THS8X2BbkQfjCLC4J1sLuehiLUC996A3T+3mksgou9pJ+WN7sgs954VQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=suK8qX4H; arc=none smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780035576; c=relaxed/simple;
+	bh=mLrKjWWivQT6KcJ50KEr/lOyLOkCG5rptxpC8LkCVHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tWkVhKUBUb6Ra59CcUlJkbOMG4vNteOymeiU8zgMG6lNnnhmBuvVRRqPVugedvqe8q9LVplPvFjwDdjypIkmzJD0nMG3HcWi2NoUXi9h4/VRh9SGpgzan3FAL+SfiTfQHd2MG750HywuJCG6dNfMnTWRapd4qtGEhk/ygk1A8H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dwwfo7HW; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="suK8qX4H"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304c520fe9aso4581993eec.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 22:42:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780033323; x=1780638123; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xk0hlbm0P5JJAGntaPUrnolV3Vq6zGWkmyfbWRCDuAQ=;
-        b=suK8qX4H+aZYsl0m/Ogzd8nWGEkOhR7MgKUnr15Ddf0+JaJIuyhla3sbOqhRW8yoHV
-         60WotZU8ozBMZqt0G77dO9FD++NUPoxnZsEaMSdqFs9EML6ht1JeXrtLFFj9en5iHzAB
-         rCZISnIykYqAfvfTEpCK9gat7G/D4iUOLJrhOl+6V1bJXVQ4nToizTbtcasqSleT6sBG
-         xNMhzsGeE1Lk3o+NP/VX9ayfyJMsFKN0HinxFgLsLoY7234HCZAv3TWQEnYfFBAlL0fb
-         TQ2cwHx0aE7av6cpM/JyTiyE4oj2Sezw6JPtp66m9mc7oF934bsZcw+kpLA5NXbnC3a+
-         9lRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780033323; x=1780638123;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Xk0hlbm0P5JJAGntaPUrnolV3Vq6zGWkmyfbWRCDuAQ=;
-        b=CbCcSwuIt7UQzOfVAMcumGjNFaR8UOASqanz5JenmRjBSEVeaqFcKHZNxLTUoZE1AV
-         ipP/yoED2wG8X3eN3kJ0aAqgj8yFBRZ3iJyxLPSh2F/u1VB8s5sPmRUIxwjw5M/a4bvW
-         CPLckxkVKKR3+s+n8psxtwMOM7WK6qvyYgUAC4xt8JsgRnFg55vkkueqE3gg+nPcql7b
-         Omt6qvuJyBCc46TNMYRIZ0pdLV66vauO+g9/woC8DNWxZLJIL8/52NON5Kc1gPoBq8fH
-         3uFFaorT5k1MVQCDtJ7yJDpzVJ2yXg5R3njlO/GS9Fa/wgoOwte/3zSmI9/YSwwInd33
-         qO8A==
-X-Forwarded-Encrypted: i=1; AFNElJ9dhndyJ+dJvqMYEoRw090Z348FcKv1CxHiWMvI+tsz/sG4Nm1lYtmHBdgKY/Gi8YoJH+OpWiZe7lZbSGlNdA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsNYOxuNzWv4oP51n7aebxpqPMsTBpSbuGSNqHSazHuO2e1479
-	xo/SNNaDjpKrnTCBLcS224HZ6CJ0xcOTFHFuyNqPYGECww5pJZW5ZcOE
-X-Gm-Gg: Acq92OHjGzSnMIYVB7AdMuBic8e9O6Luag1bUsNR5uOoIt6oYuvMiHoJQsijKRxLwS6
-	OgbW9xV/L23WukwWIvJ58t6taZSExWhUdP4cpya/XaqlzpspTl9BiFav8r8N4MJBxka1RolNrQK
-	DOoCvXBLWQ+/YyT1qZtMru9dWFpijz7x0Nijfl7KOAuO3nraphkjg7tYBfbk4/qTY2EI66fiVJL
-	SEvxzTZQzXm+Jybj/QpPqAg/CPzwaMmqmQ0JfbI91wSPJi8SwCk9RZkqG2B/Ej6NW1bavBrPrX3
-	EZZSmkrG/Cchc9pBYiD+YYZO+fC4MXW6k1hqeoW0EsJZ04FtBzcvvy8KOBx/EbCiRs6jiLYJg52
-	AAH9nX3YKvvqNYZP1Qmqu5E52FxjFoOTlA3rMTQp2beBIDLs92O6WCwdFwGt2q74EDYKpzcCdRq
-	dFj0Yrj0kHLjFQxSqsc3bFq+jU9JhQN/3d00xApw==
-X-Received: by 2002:a05:7301:4196:b0:2de:cc07:e99 with SMTP id 5a478bee46e88-304ead9b7fbmr734452eec.7.1780033323236;
-        Thu, 28 May 2026 22:42:03 -0700 (PDT)
-Received: from majuro ([2601:644:4383:1c0::4126])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304ed30fffesm620713eec.11.2026.05.28.22.42.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 22:42:02 -0700 (PDT)
-From: Brandon Saint-John <branstj@gmail.com>
-To: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Cc: Brandon Saint-John <branstj@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	linux-iio@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Igor Korotin <igor.korotin.linux@gmail.com>
-Subject: Re: [RFC PATCH v3 3/4] iio: position: add Rust driver for ams AS5600
-Date: Thu, 28 May 2026 22:37:56 -0700
-Message-ID: <20260529053803.3256031-1-branstj@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260524132824.54918-4-muchamadcoirulanwar@gmail.com>
-References: 
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dwwfo7HW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780035575; x=1811571575;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mLrKjWWivQT6KcJ50KEr/lOyLOkCG5rptxpC8LkCVHQ=;
+  b=Dwwfo7HWSUBoGrX10clqLurgJ++cz2AQP5JW457/3Kv4hBb1wge5mkr6
+   c94wuBYqOYDGIqcqfkMnc/Xa/+sLLsA1gsTw4pdNM+JRz2NSd5vajbTfV
+   31olYqrkwoQuwswMv++XtpgJ82kemuymNW9aEa+diGL5DM0sCZiJO54N4
+   7VbeZXAqxAAyb35cofxI4mjyzz5dvqjTJCXEHNZgJw6n1q6q1vnSl4pk7
+   rFJ4F3cYrJgQEJKjZ3g1rsi0BeCH4QNWj5wYlTwUXlsO/E35i3qIEtWwB
+   rs1fX34lliK3Rp3ikQnzdvtshcm8heeaC9py12MByI2q+5tcZuorDUSo/
+   g==;
+X-CSE-ConnectionGUID: UxhihgRPSVGpQMHtSFT1Ow==
+X-CSE-MsgGUID: 39VkjPggThGZTkPn94LOSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11800"; a="80782643"
+X-IronPort-AV: E=Sophos;i="6.24,174,1774335600"; 
+   d="scan'208";a="80782643"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2026 23:19:35 -0700
+X-CSE-ConnectionGUID: wugcElarQpOJoAatsPLsvw==
+X-CSE-MsgGUID: OCxStORMRa2YKIjvxUWkhg==
+X-ExtLoop1: 1
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by fmviesa003.fm.intel.com with ESMTP; 28 May 2026 23:19:32 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wSqZ8-000000000p3-1WhS;
+	Fri, 29 May 2026 06:19:30 +0000
+Date: Fri, 29 May 2026 08:18:54 +0200
+From: kernel test robot <lkp@intel.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>, gregkh@linuxfoundation.org,
+	arve@android.com, tkjos@android.com, brauner@kernel.org,
+	cmllamas@google.com, aliceryhl@google.com, mo@sdhn.cc,
+	wedsonaf@gmail.com, Liam.Howlett@oracle.com
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: Re: [PATCH] rust_binder: use a u64 stride when cleaning up the
+ offsets array
+Message-ID: <202605290823.20jvlxFD-lkp@intel.com>
+References: <ahjpn-3WQTywTdyj@v4bel>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahjpn-3WQTywTdyj@v4bel>
 
-On Sun, 24 May 2026 20:28:22 +0700 Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com> wrote:
+Hi Hyunwoo,
 
-> +//! Driver for ams AS5600 12-bit magnetic rotary position sensor.
-> +//!
-> +//! Datasheet: https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
+kernel test robot noticed the following build errors:
 
-Small nitpick, but going to the above link doesn't resolve to a pdf.
-The link that works as of today for me is:
+[auto build test ERROR on staging/staging-testing]
+[also build test ERROR on staging/staging-next staging/staging-linus linus/master v7.1-rc5 next-20260528]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-https://look.ams-osram.com/m/7059eac7531a86fd/original/AS5600-DS000365.pdf
+url:    https://github.com/intel-lab-lkp/linux/commits/Hyunwoo-Kim/rust_binder-use-a-u64-stride-when-cleaning-up-the-offsets-array/20260529-092450
+base:   staging/staging-testing
+patch link:    https://lore.kernel.org/r/ahjpn-3WQTywTdyj%40v4bel
+patch subject: [PATCH] rust_binder: use a u64 stride when cleaning up the offsets array
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260529/202605290823.20jvlxFD-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260529/202605290823.20jvlxFD-lkp@intel.com/reproduce)
 
-> +fn err_enodata() -> Error {
-> +    Error::from_errno(-(ENODATA as i32))
-> +}
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202605290823.20jvlxFD-lkp@intel.com/
 
-Later on it's probably better to add ENODATA to kernel::error::code instead of the helper.
+All errors (new ones prefixed by >>):
 
-> +#[derive(Clone, Copy)]
-> +struct As5600Io(*mut i2c_client);
-> +
+   PATH=/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.88.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-20/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j384 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
+   make: Entering directory '/kbuild/src'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in drivers/android/binder/allocation.rs:412:
+        }
+    
+        fn cleanup_object(&self, index_offset: usize) -> Result {
+   -        let offset: usize = self.alloc.read::<u64>(index_offset)?.try_into().map_err(|_| EINVAL)?;
+   +        let offset: usize = self
+   +            .alloc
+   +            .read::<u64>(index_offset)?
+   +            .try_into()
+   +            .map_err(|_| EINVAL)?;
+            let header = self.read::<BinderObjectHeader>(offset)?;
+            match header.type_ {
+                BINDER_TYPE_WEAK_BINDER | BINDER_TYPE_BINDER => {
+>> Diff in drivers/android/binder/allocation.rs:412:
+        }
+    
+        fn cleanup_object(&self, index_offset: usize) -> Result {
+   -        let offset: usize = self.alloc.read::<u64>(index_offset)?.try_into().map_err(|_| EINVAL)?;
+   +        let offset: usize = self
+   +            .alloc
+   +            .read::<u64>(index_offset)?
+   +            .try_into()
+   +            .map_err(|_| EINVAL)?;
+            let header = self.read::<BinderObjectHeader>(offset)?;
+            match header.type_ {
+                BINDER_TYPE_WEAK_BINDER | BINDER_TYPE_BINDER => {
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make[2]: *** [Makefile:1954: rustfmt] Error 123
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
 
-You can replace the *mut i2c_client with an ARef<I2cClient>. The
-kernel::impl_device_context_into_aref! macro is run on &I2cClient<Core>
-so you can call ARef::from on dev instead of casting it to the raw pointer
-to hold it.
-
-Then it saves you from repeating a few different parts, like redoing unsafe impls,
-recasting back to I2cClient<Core> in try_readN, etc.
-
-> +impl IoCapable<u8> for As5600Io {}
-> +impl IoCapable<u16> for As5600Io {}
-
-None of the read_u16 or IoCapable<u16> are used at this point, so those traits/methods
-could be dropped.
-
-As a side note, in the most recent rust-next branch, there are a few changes with IoCapable
-so maybe worth rebasing at some point to get those changes. IoCapable isn't a marker trait
-anymore so I get compile errors trying to rebase there.
-
-> +#[pin_data]
-> +struct As5600Priv<T> {
-> +    #[pin]
-> +    io_lock: Mutex<As5600HwState<T>>,
-> +    channels: KBox<[iio_chan_spec; 1]>,
-> +}
-> +
-> +/// Encapsulates the I/O interface and its runtime health state.
-> +///
-> +/// This prevents operations on a known-dead bus (Circuit Breaker pattern).
-> +struct As5600HwState<T> {
-> +    io: T,
-> +    state: DeviceState,
-> +}
-
-Could As5600Priv/HwState hold the As5600Io directly instead of a generic T?
-As5600Priv was not generic over T in v2, and since As5600Io implements Io/IoCapable
-and the sensor only uses the I2C bus it doesn't seem like it needs to be generic,
-at least at the moment.
-
-> +impl<T: Io + IoCapable<u8> + Unpin> IioDriver for As5600Priv<T> {
-> +    fn read_raw(&self, _chan: *const iio_chan_spec, mask: isize) -> Result<IioVal> {
-> +        match mask {
-> +            // IIO_CHAN_INFO_RAW — read the 12-bit raw angle value.
-> +            m if m == iio_chan_info_enum_IIO_CHAN_INFO_RAW as isize => {
-
-Ideally in the future, the iio_chan_info_enum_* variants can be wrapped in an Rust
-enum with an #[repr] attribute. At this stage, match isn't as useful as it could be
-since you still need to call "if m == ...".
-
-Sent using hkml (https://github.com/sjp38/hackermail)
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
