@@ -1,144 +1,116 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9A41A682A
-	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 02:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780022520; cv=none; b=Vzc3efw3Z5o7yV0GIORMKoZCkHfHaRr0k5QRk+jVIRp29MXOfudyeagfgv553eL/vpwHfPm+yjLoyDiqEjdI/cSxz4NXH7u9qiHCX8Jb4iWd+UiCVoceqcV3M25YkZtPEFlhiX8YhR9XcXGBY8uzKzOoXpb1g5SY+dMNYrmOd4I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780022520; c=relaxed/simple;
-	bh=Ds1p122B60FV2zTmvWNc9nWzQxs8vMilrGSAwxzAFxM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=azrtn3AtZsdO8N5jOiP50kMjdI9zk9L7sQNr2esMg3J8DtE6F1Usi5EVwxxZB1Lnv9lB9NwHmvGGpSt9Yn3jXZUSb4lChATHEKP+fj842JfISfJ/+AVEazU79yg+jugP0AKSxg7qovoe6v099mLcvq4DEp1vKbZR6pEVqQiPiQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amPlXST+; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468AD30F934
+	for <rust-for-linux@vger.kernel.org>; Fri, 29 May 2026 05:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780031761; cv=pass; b=Zg9PtWU/zYH9PggW+gyKSwQdQYxMwZMQoNpF695m+llz14GoG1qz7nPZgW6yn9vNlKu9rw7lyC/pl34/VmIxZKWX0Yar1Pcc0dYkq2E0mOgD46++DauYKj/I2PJCEJ1peIHkCy3gDwv0WaTX07naaBjKaTWs9foOfmk7RLfNDRA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780031761; c=relaxed/simple;
+	bh=RZmlRufzWqXoxl9YMpr3zqfVc7Zbb6YFULZJWEcCPOg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HJbnzz7LPhv2uyx2zrKwUZqK5M9BcT4difctSgLWfFEJoqhuUWkecK+PS+PqEuswaJgXKZFeeEaZKxThU4ahdjrvEwzgaT+zcW9lrWDd/SjCrXzLL+XQ0xDxcSl2j/0cOK5k9XsRTrgKh8RzSs0N9FMd9XrjtLFNGjUisyT/dQ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4SlhRPI; arc=pass smtp.client-ip=74.125.82.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amPlXST+"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2b4583f0a1aso98503925ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 19:41:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4SlhRPI"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1351aa6418cso593770c88.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 28 May 2026 22:16:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780031759; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IuieJ0MV4ELhd02my53j0Pm5dcf7S6L3lTQ+zJbMxNWYqcVAt2EEgn874SQPUlSKas
+         wXEBntqtGCH95Feo4QhbuHMiyAM+9Tc1E2ENc0Ppp4bOAnYJdWG/y2F5dqAVW4XADWcD
+         ITTgoCp9shACnjJaVNfHDyfglMkNiQpUZgZToYTSkq6fdG6HbHfpIxjOAFwBYZFe2pQA
+         NS5VQG94XSNOV+C7x/UsuoCMcdAfa9g2y7AiBO2+ivQxwbVJT+SSpuZUYUS/l5Rl6WQa
+         M+et0+0soJESn65SsRCehyqCj7br/DjHYE7E6kPlZDhJhtCX1IcR5Eg7FhYdMrkde+GV
+         92gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=X+RniAYNsrfL09sn7xlO64xDYFduCytNvTWSC7DXHDQ=;
+        fh=bXIW4PsdDhob8rdtB0w7S3QNYpNpNDPKqRwm39E4pns=;
+        b=eL17ccq4DqwBXiZI/gW9W0XAlCL6IgOUl316CcAudALJtNLhUXILjd6KO4G4RBk/r9
+         MO9/Ez+f8Ue51rCClHqu4fSgjXuf0k39dGVgZQwDUNeWx2ksa4Et38lEDufhGkc7zSLq
+         TcOTQza+qStzjMjFU5yzD9nAlC9iGekrJ82iMkjRbXNqkA2IhG0MobEG+2ZX5dfW/tGl
+         gcHGbVc0PUBTRl1UBN4GYhM172C8oRoI48LRwbDHJpkJfmIEyHuS5HO943v9C/ebGjCo
+         PM5fjxVp8KwPdN6sNX1X7ALFT/argQmtdyCAGgQGRo0OfSi/VxtJxfknnrwsWRkgzsoo
+         4PEg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780022519; x=1780627319; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GZDub8BcFtFH80ZleNgO+woCxrWrG0i7gSDN+ih8DeY=;
-        b=amPlXST+wEFjX8ga5F62ffh03AdDxP5AXZUkZrniJU0c9qqM1WvhRYjr/kU8WLCFu3
-         vjKH3ZhDJaOeeLcMksIJzDN75v7CZMAKvbUvHSw5fbq9ZGJ0LoGNME+PUMO6UiqXoC1w
-         MG6vZWArSeeTEajwcbbXoGjksTsbyKv9BeMJsmL8cPdd709jfQeytEkBEQlD0nO+6JHu
-         LvKC8/DEt6PO5XyfxzNI5382J3vqaearojYWPf5K6tmLTYKWXMSzUncLVej4qMPsDpeq
-         2li3jg0iXui2z3Bf5CsiZFpxiCQ4ct8Y95vB7u4XI4BCxosEdc6Gkk1YjAdsafctAx8e
-         X7Cg==
+        d=gmail.com; s=20251104; t=1780031759; x=1780636559; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X+RniAYNsrfL09sn7xlO64xDYFduCytNvTWSC7DXHDQ=;
+        b=U4SlhRPI8XTmVZXLHHfZIx6gIQ6mUh5jjD2P5woLQns6/eJmqPGzF960SXC39ggFJB
+         22qnoU9aBityAY2tfJB8d4Eou7Y3n7PenJN4LHarWJ4Vbwryalll51NL1oFonzNEMnsZ
+         usc7ti75wL/zMjZhO3XKOGXcv4iqwNGFfizPtP06AEDHhbp0COs8M1GNQ5abn5DJaaBb
+         gEKJJvsCD+pcHob+Te3QLBL5ITLT6glIk2W/XtxLbDCrVTnHwsCA5uYhLLsTwUDIHu4W
+         90iDppr3ZtwFuelgHnrvioYZbcpVsPd6QoFVijtnQdmfiZSqtEobLicB9C9MXkgIXJe3
+         jC8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780022519; x=1780627319;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GZDub8BcFtFH80ZleNgO+woCxrWrG0i7gSDN+ih8DeY=;
-        b=eoU1LpBo4vg45yxxal/K77nAqid0E0yiEmzGrbbcAJVXBCuxyOduHxO12Oyc3JQcxJ
-         xiiMt6KUB+ny0QmNsKk034FebloOzV5V22ySAHQG4ePZ+C4y24HbA4Tky/XqfSEWqbsw
-         WxUic5mLd8YoLb5zlN2fF1FtlZUh7Zb0DfHcqLZWBjJnEvBeMNLVe7GDy2+N4q2gJCbV
-         y9kbShDXgNh3vjOwSlNv6IhKPAIQHvPS9erEE+OXg/OhSBxovu7uMhOvwYXexQ8gjsvT
-         n9HyNLtezFYnnZpsThbtP2s1RKKiamyFg7lVwL35LMSS8pR/2WwlFzHgksGvvUkaxsJO
-         Sb8w==
-X-Forwarded-Encrypted: i=1; AFNElJ+trWNOOTEmIXwhp5d3RvQ86s5cr7GEDDvq/ljQRdJl+yIJDzKRgS/ZGtEmWRWf3RSB8Vq6Od2hzoIOYdr2Og==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5gJh9xUj06a3hM3YulxEDccAK0XRBcy9yvDgO+qphnZK3jeoQ
-	qnGgbsWeqQDUAWsSYtgZjOBvv3hyfsgAykE9jLEGJ5IuRyP1wQJXoiv2
-X-Gm-Gg: Acq92OH6C3pDTOT77tL8ZnSxTR5a9D6JQQePxOS6DXq2KLwabcbRP/MfTkwXsj2xk39
-	ARCHP5nUb5JbzHBBAC91aQ4xlsbM1UDEF1dXFejQKIuKFeKV8cL1ylNGiCEeDkFCSW46t7KKAHS
-	Xv8EZLAhNljYlbYwWpfLlcqrrZWIvLwKjBnqAvIs+W0g7S7zwssBHd834FJbEbFX5ncbPywjqZt
-	wxIck4/zxfENb0cc6gZ4l+todV4jxfqCNCsKEFzymFHATwf5oOOIFhVvCcOU1Vy5IBMq9J8s06r
-	YliygSXWJRba5QkRm0JOv7qga0IKO0TRm6rtasPqI4nmCe0fKx/0qlFeX1DAnl2Yg9MYg1osV0J
-	EEyahSgN6xXMIGiW7rE71g5P1eyyVp5/bwO1I3/EgGCjF8/oTEPzDJvv5o9WBhc8mW9KRHDOmlf
-	wfbe7k6WhgsCYuMcjEMjcxoNyVvC4o7ZQxM1E/+qyF3SrdIOvuw0kQGA==
-X-Received: by 2002:a17:902:f641:b0:2b9:ea53:4cfc with SMTP id d9443c01a7336-2bf20976e99mr12238495ad.19.1780022518682;
-        Thu, 28 May 2026 19:41:58 -0700 (PDT)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bf23a0fd4csm1915955ad.30.2026.05.28.19.41.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 May 2026 19:41:58 -0700 (PDT)
-Date: Fri, 29 May 2026 11:41:53 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
-	brauner@kernel.org, cmllamas@google.com, aliceryhl@google.com,
-	mo@sdhn.cc, wedsonaf@gmail.com, Liam.Howlett@oracle.com
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH] rust_binder: use a u64 stride when cleaning up the
- offsets array
-Message-ID: <ahj88dV6McFC0oFu@v4bel>
-References: <ahjpn-3WQTywTdyj@v4bel>
+        d=1e100.net; s=20251104; t=1780031759; x=1780636559;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X+RniAYNsrfL09sn7xlO64xDYFduCytNvTWSC7DXHDQ=;
+        b=TSY7Q0cEH3hYGcIv7B1uGMUzbcmTEznxfzDTEIdiQefmmQadcSzCYxFkfSSyr7lqyl
+         pFuV/3r4TlGlybsPDYsN7v9ETapTDAMaqVJhLDAKJpCV+ForPntQr+j1NPa8+ZSLUJk0
+         EeQcmvcQgR3BpcXTK4kgXnwHr45hcA4gt/xbLrxRnRaTrQIYIfZGXqj5YOO9zJF02/Vc
+         dVe9N2mkJ9WEj3W26s/ep8Ff9CAywuonQlOQa81hM9B9WKq5IgD98LHtn4aYhcqGyH1b
+         mcSgJ+09V6QoA0SokVdpnKr5Ej77YL8aN8M7BqPlomQ1eTdr3CEDaD7zuigZI5y6GzPV
+         ddww==
+X-Forwarded-Encrypted: i=1; AFNElJ95GMrZp6/5zTFwNGfTis8OStsBh08nBK047yfTT0BKtba1SNQosCN+8+ZQ2C7D8qep2yF8HrXVsBBxuJ/RiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSeXAglcqf8Y7lVL33KmtDvHUNBjoxF+g9dX6sZa2VRyyGGuob
+	nZU1ZLH6YHP0CJJU77C/mI8kTvPDTJ+YkZQD0/dz/mm9WB7CZSZ+G5FkZoTabHN0Wxp3dJ7vmYX
+	E3lyR9YK8CMLPEBjOLNCgKObbED+Mxec=
+X-Gm-Gg: Acq92OFSRkHuLlKLQzmeVPFSczYPknzFr1RAPuUIkPnRJJWUDfGPl8LH1NUxGylutt8
+	jVFLCa4Go9dgZ5f3N6E+jxTPd178N4CiosF6xwlGETOeF6iBrZk6tI4u3kTULUSX4jZc5JwqvY+
+	2atnOhg9egd4BY71871CA37xuV0BJI6oy6KNXxY7iNuxpg0Nyqtem6s+tgz5XBC2wX8MKer7mBG
+	GHVF6ZY2eqrU+LCDM5sYPL32MxlCvZRrZqoacNQOVjBoveK2jmqmgK322veOvM+Hg9O9N1W1Llo
+	yXThtgn4g1OtvaocHW+DwZIjfD7yodgOtNhrB7IYPUoqubMiGpVb6Yn7aVWKQlMsn/wdGLiI8IY
+	cV0zdLwhX49UTGG/Mj6pVMEgLi3Ff1Pe4W2EYwuhuO5YJ
+X-Received: by 2002:a05:7301:1288:b0:304:c73b:79ea with SMTP id
+ 5a478bee46e88-304eb0faad8mr347356eec.3.1780031759297; Thu, 28 May 2026
+ 22:15:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahjpn-3WQTywTdyj@v4bel>
+References: <20260521161405.64042-1-SisyphusCode0311@gmail.com>
+ <CANiq72m5GZp_p2HCgotBaevLmt1NrvzwrzJJK5sLUEwxeVLBdw@mail.gmail.com>
+ <CABCJKue2BvckpFK1yROmOcsrRpxRC9m0OiwCymxF=OW0JZkLUw@mail.gmail.com> <CANN+23v9vkzq_2o01z2VmkDnLaBTP8_Op5vvu=Ozg21T3o6m3w@mail.gmail.com>
+In-Reply-To: <CANN+23v9vkzq_2o01z2VmkDnLaBTP8_Op5vvu=Ozg21T3o6m3w@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 29 May 2026 07:15:45 +0200
+X-Gm-Features: AVHnY4IXYRmYXeaL2akTBUG-TDhJkn4WVHbKolyP28qYFK0d8D_UpPqyVmWfGaU
+Message-ID: <CANiq72kTEQJcxD2iAd97Ly-qh7uRzPn7=k=DUEvHJw=NMFVk8A@mail.gmail.com>
+Subject: Re: [PATCH] rust: module_param: add missing newline to pr_warn
+To: Kenny Glowner <sisyphuscode0311@gmail.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 29, 2026 at 10:19:27AM +0900, Hyunwoo Kim wrote:
-> Allocation's Drop walks the offsets array (binder_size_t = u64 entries),
-> cleaning up the objects, but it used usize instead of u64 for both the
-> stride and the per-entry read.
-> 
-> On 64-bit kernels (usize == u64) this is harmless, but on 32-bit kernels
-> it walks the 8-byte entries in 4-byte steps, iterating an N-entry array
-> 2N times, and reads the always-zero high word as offset 0, cleaning up
-> the object at offset 0 N extra times. As a result the referenced node or
-> handle ends up with a lower reference count than it actually has (a
-> refcount over-decrement), and binder's reference accounting is corrupted;
-> for example, the owner can be notified of a strong reference release
-> (BR_RELEASE) even though references still remain.
-> 
-> Change the stride to u64, and read each entry as a u64, narrowing it to
-> usize with try_into().
-> 
-> On 32-bit ARM, when this over-decrement would drive a count below zero,
-> the driver's existing refcount guard refuses it and fires:
-> 
->   rust_binder: Failure: refcount underflow!
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  drivers/android/binder/allocation.rs | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
-> index 0cab959e4b7e..f4ffc57a8cb2 100644
-> --- a/drivers/android/binder/allocation.rs
-> +++ b/drivers/android/binder/allocation.rs
-> @@ -251,7 +251,7 @@ fn drop(&mut self) {
->  
->              if let Some(offsets) = info.offsets.clone() {
->                  let view = AllocationView::new(self, offsets.start);
-> -                for i in offsets.step_by(size_of::<usize>()) {
-> +                for i in offsets.step_by(size_of::<u64>()) {
->                      if view.cleanup_object(i).is_err() {
->                          pr_warn!("Error cleaning up object at offset {}\n", i)
->                      }
-> @@ -412,7 +412,7 @@ pub(crate) fn transfer_binder_object(
->      }
->  
->      fn cleanup_object(&self, index_offset: usize) -> Result {
-> -        let offset = self.alloc.read(index_offset)?;
-> +        let offset: usize = self.alloc.read::<u64>(index_offset)?.try_into().map_err(|_| EINVAL)?;
->          let header = self.read::<BinderObjectHeader>(offset)?;
->          match header.type_ {
->              BINDER_TYPE_WEAK_BINDER | BINDER_TYPE_BINDER => {
-> -- 
-> 2.43.0
-> 
+On Fri, May 29, 2026 at 2:55=E2=80=AFAM Kenny Glowner
+<sisyphuscode0311@gmail.com> wrote:
+>
+> I hope I submitted everything correctly?  I am trying to get used to it s=
+o I can provide better assistance on more mainstream issues. That's why I s=
+tarted with the most minor issue I could find. I appreciate all of the feed=
+back.
 
-The BC_FREE_BUFFER handling in thread.rs's write() seems to have 
-a similar problem.
+Yes, it looks fine, thanks! :)
 
-Sashiko's review:
-https://sashiko.dev/#/patchset/ahjpn-3WQTywTdyj@v4bel?part=1
+However, in general, please try to reply to the feedback, e.g. I asked
+a question about the commit message.
 
-
-Best regards,
-Hyunwoo Kim
+Cheers,
+Miguel
