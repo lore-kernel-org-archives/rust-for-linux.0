@@ -1,94 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A063655DF;
-	Sat, 30 May 2026 20:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373A71DDC28;
+	Sat, 30 May 2026 21:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.18.0.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780174796; cv=none; b=f9BY9GXckrbGzM/cdfbZa+0R1Pn59bCVJgpSNUnGsaUez5vZFYjJykgHNFwo43w+wxSTW/X8Lh8bZLmLJPLskW0S9hsR2UlkV6jdVQbCstDGFulqup5xN+jnCYLMXNZ3lxvhoxXos6WRxUn5kiOErkn+daLCosht3/3PhswbQnI=
+	t=1780177664; cv=none; b=S2ckr14zSSB7IP7HqlF9OL0moO/FKowVuozraSZFb6k/THZx1FQZnj0DLrseID85BW8Xd/T8GqvrowDZJPXl+XPxBdPW2tMFwUxanm0985nphFTrOTQHxXaxD5gpk5KjflBeFKbFynIUcQVYuUvkdvsfmOw9TMMIQ5TfgoX7grM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780174796; c=relaxed/simple;
-	bh=I0XpV/UJgvdMUeyZPVzwXcTNw9GkbNU1eOxQB0PkzTI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MKo1w3SDhBRlXE9twfg8Tk3dgGVgb9WEV0Ar5eIe05XWS2RkBqzEHmTzYTkHAqO6amMcFCQgrlAJZE25S+p1gAsrGOjji9gu9ZhGVA5QA69ix7NZsR2ROb+/z7ItvDByW8zijNiUwvDzwNTEhfhMqMv3reqJZE1BPTvELktmrvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jifiKmME; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jifiKmME"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B681F00893;
-	Sat, 30 May 2026 20:59:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780174795;
-	bh=I0XpV/UJgvdMUeyZPVzwXcTNw9GkbNU1eOxQB0PkzTI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=jifiKmME7zfqB4ndc4TqFzgI+RvBKaEp8U5IqhXg5aMLiy2CbWdLlxm6zI+A/Y92T
-	 7w9Rn4Le26XDiSOEA7az5HG9E74L3NGVjem4JK4u4g1XkTSHLFCxsXrg9szIVqDen0
-	 ahvS5RkCtt9R6AlDcmKqf8zlBU1WUsB/SZJ/ZlRmTvvPyiYivgfL1ssHMsXyaw3sGx
-	 QbT0hehHG2ZVuk8CxHGB6ulgQSMuDT9G2C06vvwNXpzGJ+JfunOTJ6PAvKLB036v4y
-	 SkhQyhiQyyG+pDTISsRdhdYEAspZvkzOSihwAoeFfBdbwRzwoQlhxArEbECZv1X4WQ
-	 dHm1juONeM39g==
+	s=arc-20240116; t=1780177664; c=relaxed/simple;
+	bh=+OdWi9WDtXgTepnQhKQYQwYgI4l6P+St845J3qNXsrI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=IzdtKsYHVIb1LVDs3WUkSXlt/SH9znPUGDLcePOjBARQBDdI8EjPdVj8fVbairI64MtbvSbbiSdmkJEqtkME2HAKJbcPy1yqA99DuxPPqgKaC9g0wLlY+mzArTUmziu88BiOg1PaPFhN9aITErLvi1dBdOHRbMXIF8NPn+kodGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=nefkom.net; arc=none smtp.client-ip=212.18.0.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nefkom.net
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gSYjk41jXz1sG8Z;
+	Sat, 30 May 2026 23:47:38 +0200 (CEST)
+Received: from frontend03.mail.m-online.net (unknown [192.168.6.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gSYjj4CZvz1sG7h;
+	Sat, 30 May 2026 23:47:37 +0200 (CEST)
+Received: from localhost (dynscan3.mnet-online.de [192.168.6.87])
+	by mail.m-online.net (Postfix) with ESMTP id 4gSYjj2cFzz1qqlS;
+	Sat, 30 May 2026 23:47:37 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.6.182])
+ by localhost (dynscan3.mail.m-online.net [192.168.6.87]) (amavis, port 10024)
+ with ESMTP id jhAAUe4_r901; Sat, 30 May 2026 23:47:36 +0200 (CEST)
+X-Auth-Info: VhoZGXqafEl8xd2Vn3898hxCrPZhtM4EMxNmVIF69poad4TwEdSE9C4PLgF6bHrY
+Received: from igel.home (aftr-82-135-83-65.dynamic.mnet-online.de [82.135.83.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Sat, 30 May 2026 23:47:36 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id 42A002C16CE; Sat, 30 May 2026 23:47:36 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>,
+  Thomas Gleixner <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,
+  Borislav Petkov <bp@alien8.de>,  Dave Hansen
+ <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
+ <hpa@zytor.com>,  Andrew Morton <akpm@linux-foundation.org>,  "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
+  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  Paul Walmsley
+ <paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>,  Albert
+ Ou <aou@eecs.berkeley.edu>,  Conor Dooley <conor@kernel.org>,  Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd
+ Bergmann <arnd@arndb.de>,  Christian Brauner <brauner@kernel.org>,  Peter
+ Zijlstra <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Eric
+ Biederman <ebiederm@xmission.com>,  Kees Cook <kees@kernel.org>,  Jonathan
+ Corbet <corbet@lwn.net>,  Shuah Khan <shuah@kernel.org>,  Jann Horn
+ <jannh@google.com>,  Conor Dooley <conor+dt@kernel.org>,  Miguel Ojeda
+ <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@kernel.org>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Benno Lossin <lossin@kernel.org>,  linux-kernel@vger.kernel.org,
+  linux-fsdevel@vger.kernel.org,  linux-mm@kvack.org,
+  linux-riscv@lists.infradead.org,  devicetree@vger.kernel.org,
+  linux-arch@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  alistair.francis@wdc.com,
+  richard.henderson@linaro.org,  jim.shu@sifive.com,  andybnac@gmail.com,
+  kito.cheng@sifive.com,  charlie@rivosinc.com,  atishp@rivosinc.com,
+  evan@rivosinc.com,  cleger@rivosinc.com,  alexghiti@rivosinc.com,
+  samitolvanen@google.com,  broonie@kernel.org,
+  rick.p.edgecombe@intel.com,  rust-for-linux@vger.kernel.org,  Zong Li
+ <zong.li@sifive.com>
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
+ | VM_WRITE
+In-Reply-To: <CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+	(Deepak Gupta's message of "Sat, 30 May 2026 12:40:33 -0700")
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+	<87jyslndo4.fsf@igel.home>
+	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+Date: Sat, 30 May 2026 23:47:36 +0200
+Message-ID: <875x44o9hj.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 30 May 2026 22:59:48 +0200
-Message-Id: <DIWBAO4X3AAZ.I66NB6DQNQO3@kernel.org>
-Subject: Re: [PATCH v8 3/5] rust: add basic serial device bus abstractions
-Cc: "Markus Probst via B4 Relay"
- <devnull+markus.probst.posteo.de@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Jiri
- Slaby" <jirislaby@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Kari Argillander"
- <kari.argillander@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Boqun Feng" <boqun@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
-To: "Markus Probst" <markus.probst@posteo.de>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260530-rust_serdev-v8-0-2a95f1da22a7@posteo.de>
- <20260530-rust_serdev-v8-3-2a95f1da22a7@posteo.de>
- <DIW1B4FUIXO7.28GSUA0CEA4EV@kernel.org>
- <4638946fc49a38797b716ea173c93327eb751479.camel@posteo.de>
- <ad98dfb1d8469022519d37364e8a068bed3b5687.camel@posteo.de>
- <888dc39c52bb6ddac1a1eed7876c4573bdbef002.camel@posteo.de>
- <DIW2JUUL6A6J.96VI4IQN6HYU@kernel.org>
- <55eae11ea68f129508d0f7e30ac457ba919812b2.camel@posteo.de>
- <DIW34DX6BSUS.ANXBOP9687B0@kernel.org>
- <25dc9a4bbde0b542abf608be1b3305f1421a4502.camel@posteo.de>
- <DIW587AGXYCS.39MR1B4TVSO9@kernel.org>
- <01e20401845ce5eab5731698ca8a0f8f44ed3eb9.camel@posteo.de>
- <DIW9Q5GVC0H2.2BEOWKL02AMWA@kernel.org>
- <aaf88d7fc2168c3ef893713b0643c4132bec1da3.camel@posteo.de>
-In-Reply-To: <aaf88d7fc2168c3ef893713b0643c4132bec1da3.camel@posteo.de>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Sat May 30, 2026 at 10:31 PM CEST, Markus Probst wrote:
-> On Sat, 2026-05-30 at 21:45 +0200, Danilo Krummrich wrote:
->> On Sat May 30, 2026 at 8:55 PM CEST, Markus Probst wrote:
->> > pin-init doesn't have enum support yet, so at least in my driver devre=
-s is
->> > still required for now.
->>=20
->> Hm...how is this related to having a registration type that takes a life=
-time
->> rather than a registration type being wrapped in Devres?
-> In order to register "optional" devices, the driver currently uses
-> devres::register.
+On Mai 30 2026, Deepak Gupta wrote:
+
+> I see two ways forward:
 >
-> I just released I could use KBox for this.
+> - It can be done in generic way where incoming PROT_WRITE means
+>   PROT_READ | PROT_WRITE irrespective of RISC-V. Although others
+>   (x86, arm, etc) would have to weigh in.
+>
+> OR
+>
+> - mmap04 LTP test can be updated to expect either of "rw-p" or "-w-p"
+>   whenever only PROT_WRITE was specified.
 
-Ah, so you basically use devres::register() to avoid a pinned Option. Let's=
- not
-absuse devres for this.
+OR
 
-The class device registration should rather use a lifetime now that we got =
-all
-the infrastructure for this; the pinned Option problem can be tackled other=
-wise.
+- Add a new PROT_ flag.
+
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
