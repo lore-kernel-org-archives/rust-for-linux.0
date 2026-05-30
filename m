@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F031F3783AC;
-	Sat, 30 May 2026 22:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AAF280A56;
+	Sat, 30 May 2026 22:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780181470; cv=none; b=cBfPiwQNjQR3aUlDVI4eBktLtGamQClJdFung6Djxs3ehg/8HCk0JKqM5pCxq8zD3XtawRgk6Tmq9Eosw9ZSZStWaldud0qGxvlBIfer+R4c14jPMCqtVutJgrpcDTDPiskvEA+hMqIprkZEMLjH+LC7jmeUXenlbsPU2hkH2qw=
+	t=1780181829; cv=none; b=skLWeCrwO4+j+VfS8lRY72roI2W57UpLDnYjxOuAhCtb3zjQ1envTHRbzNeem3Mjai69/q86O8Z4a2nVQb9KMCmYCa6QthgJ5ddrziAfJjyrISTVAKdg/TYooXGGvVtreZ9ZUqTaVBH67lbA2Al7C2qtylqFxsMmv6s0LVF783Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780181470; c=relaxed/simple;
-	bh=mmnBQ9FjR+gEr16gSzDQTJsoTQfHVew62QvHUyymbbs=;
+	s=arc-20240116; t=1780181829; c=relaxed/simple;
+	bh=oBh8rSLedMnT1aRFTUkdbrdk3gJSdkwKkFBkb0YUq2A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AKwZDau5MI2eydSdYN5aE+kb4myK4m2+JOkYwHCFqZJO4vRbX82bzgU3fqRHvf0qvQpD2RAASPYxpePQhlQ64dCI41Okx1pvOgCS0h6qZauLEBnGVdEHenp3QsiSyYbe+P29Rn/EhU8aVNHtdGoAOMfMlgHjpoBGGaaQVUJSj2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBfprtOp; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=oO1/NlMi800dwRkyiEV++NpfqVVm2wPf6JiqUeaKEBgVYjuZYCTh00fdlSvnQuGamky40flD9+Iodfbh2om0fKJUGF0cKW+C8Do5Gqxc3g0osZ9jTeRkLO589Rtb5SSFzpIadOOHpoRjRVUnSHun+af1Hjfhy71p7frR1KXNjj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhcMefqU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBfprtOp"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9E313C2BCC6;
-	Sat, 30 May 2026 22:51:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhcMefqU"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 30258C2BCC9;
+	Sat, 30 May 2026 22:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780181469;
-	bh=mmnBQ9FjR+gEr16gSzDQTJsoTQfHVew62QvHUyymbbs=;
+	s=k20201202; t=1780181829;
+	bh=oBh8rSLedMnT1aRFTUkdbrdk3gJSdkwKkFBkb0YUq2A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gBfprtOpGU11WEdNzYzbMuZZfMfVvVQz3+7wGwEAmFklMlHDn2aV3s43GtwsEiTc3
-	 lSvOmzkoipyfCcwXUeX9ozT3PF5DK90hWmM3JyRRDloOTkvJCzJX+mfyBJWELgpa6I
-	 J9j0WirU4uJXr+5Qzh2wMPNiTnJoryB+Y7E0JGrsRv3V5dymy0vuJY8TNZ8cde0aWF
-	 l94O+oYIEB/9hZZD5RuYKiXXT2mx7TOOLIIcYK871M2tdRtfnGI+H2KDXeQVKlI6xW
-	 wWYwJJVfADNv456oo/ZAQFqRtKEq9IKtQcLuOMlZjdHyjefZ1jBcjDVT4VkTl3WrQe
-	 fRdvSCm4LxGhQ==
+	b=ZhcMefqUo2VKFE3dW87eyGDLPG0wCX4+eYzGwUA22HI8D5JUdeUHINGdG9zZVjg4j
+	 DdWT8kE4xN8ebMNcMEfa0ldO0fVkfpGOVReQ+4k7FEbOIjDUoS+wOjaxMXyDXT0qVB
+	 3dJu4PDLjJUrm+nlqOYUcE1ENVZ5kpKJHTGxPCZJWL+1neiie0XGUSPmESbhU/0mff
+	 yr3BFnlrvh/HDrYO1qebhAEy9Fn5id9WHWX1P6qsgs746diJyT9EbXkgnHbm+yd/8S
+	 roFk2UWVJKYBqFA9N4ruElV9ZfKgRbSBzcWgJkg6Wfs6tN/R8htRNfmPUvfaQX6mLU
+	 IuyD2GHDeYYcg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86ED9CD6E52;
-	Sat, 30 May 2026 22:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D1A9CD4F54;
+	Sat, 30 May 2026 22:57:09 +0000 (UTC)
 From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
-Date: Sun, 31 May 2026 00:51:02 +0200
-Subject: [PATCH v11 1/3] rust: add basic serial device bus abstractions
+Date: Sun, 31 May 2026 00:57:04 +0200
+Subject: [PATCH v14 2/2] platform: Add initial synology microp driver
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,42 +40,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260531-rust_serdev-v11-1-dee8e0d830f1@posteo.de>
-References: <20260531-rust_serdev-v11-0-dee8e0d830f1@posteo.de>
-In-Reply-To: <20260531-rust_serdev-v11-0-dee8e0d830f1@posteo.de>
-To: Rob Herring <robh@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
+Message-Id: <20260531-synology_microp_initial-v14-2-1377d425b24b@posteo.de>
+References: <20260531-synology_microp_initial-v14-0-1377d425b24b@posteo.de>
+In-Reply-To: <20260531-synology_microp_initial-v14-0-1377d425b24b@posteo.de>
+To: Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Kari Argillander <kari.argillander@gmail.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Boqun Feng <boqun@kernel.org>
-Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- Markus Probst <markus.probst@posteo.de>
+ Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=26523;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=19547;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=DbWPEtpuFHER0txfyHEd2k+ZqSU25kUpzsnxtF2df30=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqG2nbAXLk4x5W+iBEFEX3fQhHfll9bCoRmAxHr
- 2SVs/MkNXyJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCahtp2xsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KanA/9HP+GQXop2ghjIrgtvcB70eRP2yJPhZx
- B4/wPF1nEa3nf+jAZeVtWOiqm9WA5XZ8QBR9cdwXnOBnKIdJiam9KxU1eFhMTJK4smJ8H5h+yHl
- s6vhILFJ5HFNABvZiMSpouSN8xjG3PsNr8KKkMc6zEk05zVrgB1BPQw8oaBH9baN3y1EtQ4AUVn
- TC3kg+3RM+DDcT7TB5tVd6XmxkkFH3bw3/6ZgWgkp3PSuyQjqXFcd/f/zb+3/x7smVJtvmhsl+l
- 2JT0csyFMAfVRODuZ8N1MDPlLxmRr53uh0Qr1cHR6zEheb8jiBFya8hSNJ9Cvg8u+NALJx9iQ/h
- /hpAvhkO6GajHBYmljLOEVJzra8d1hlAqw+VofOm2ARPVNlusuYAYsfybBogEWORM2YMzLwIsya
- w8OIyvSO0h+HpSB/nuDG6BuP85O1hllbw9HBj/5ZCR2DYH28L+qrtRrwj/kMwNf2RAjRY/PSmJ7
- jwRY6oYs+4BSLeKIbR2fdJ39I+KpfZ9z0gSP07eM/8g77d2Jfwm/oV7Ia+DQJ0V6Ch2T+ijJxF+
- VeKC0DGmq904UpAnyfcayNHhHTHSF2iBEOZzurhkliLbLu2er86+a4z+zWWLEe1LTScsxhbhN+Y
- PNkGCJJ75NSs9GWJ0+LJ+iG1dZa13EciLGLuPxreCiv8t8o6Akm8=
+ bh=amH62Z6HJa3CGHenmZNIudg6jVE4PkD+ZlY3QBfjlxQ=;
+ b=kA0DAAgBNHYf+OetQ9IByyZiAGoba0PIINz9MfaYPG+2yQBDp+ZU3gTcCP9JN0Y0QSolnPGkL
+ okCTwQAAQgAORYhBIJ0GMT0rFjncjDEczR2H/jnrUPSBQJqG2tDGxSAAAAAAAQADm1hbnUyLDIu
+ NSsxLjEyLDIsMgAKCRA0dh/4561D0jxVD/9UT0WzHj5rrUT73vmUKq3e2kHaM2IQo1iQlCCTHhO
+ NWzSqkFTpL6F/QX2gTA8cU9ujIED5UhdO1xCPqrsTBN/7bAgvqeHhfWhDD4Hvmxj1HiZbJPuNeI
+ TVoh5berrXR94LspPO9s2eVYmzLKILpfgusmgzOfvQIo8hmoIPWLVE9oz5+aYusUxugkOunGoHr
+ OV3h76QgTNG+ksj36drUdpROAplxv/yU96v8Biq6J9RL9ePugwGxyIfdoe8rKf8kXdeTj/xqq5z
+ VE4loq/ZpdnYq1c7r6tg9/wTlG5+8uuk9m+rCaT8zasKWGI49MFr4PxAie6C5GezgYRAioDMkdg
+ piUSkjahr0AqEuhCc262mstFF/MeYXSm8U71gL99/EYQXRmO2U/AGtlX2fg6K87ZZkO5tgy5bej
+ eQLvKu34m2czqApADnjkTspPaoLgjxsZCPfEeHCrTEX+k3nRAS/K4xWEy6bbXpsj8BdpSGq4A66
+ PMsR/uTmZfdMfhrAn5YCH2soB3TQ1z++vhFRDfcgKHH3fixMvGM3AATcK3HGjv5PcsyG8OmesRe
+ WMKsLRiyc1jH0lC8JCIfqhPyaa7HQXoQLAKN/5OUObzzpLZPjz2TC9XUTGu4U1qxHGS10FKYww0
+ xZot1MUzDoOBzMUxFK/n7YifUDRF/tLub6oI5u/Y9lA==
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
@@ -85,721 +83,611 @@ Reply-To: markus.probst@posteo.de
 
 From: Markus Probst <markus.probst@posteo.de>
 
-Implement the basic serial device bus abstractions required to write a
-serial device bus device driver with or without the need for initial device
-data. This includes the following data structures:
+Add a initial synology microp driver, written in Rust.
+The driver targets a microcontroller found in Synology NAS devices. It
+currently only supports controlling of the power led, status led, alert
+led and usb led. Other components such as fan control or handling
+on-device buttons will be added once the required rust abstractions are
+there.
 
-The `serdev::Driver` trait represents the interface to the driver.
+This driver can be used both on arm and x86, thus it goes into the root
+directory of drivers/platform.
 
-The `serdev::Device` abstraction represents a `struct serdev_device`.
-
-In order to provide the Serdev specific parts to a generic
-`driver::Registration` the `driver::RegistrationOps` trait is
-implemented by `serdev::Adapter`.
+Tested successfully on a Synology DS923+.
 
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- MAINTAINERS                     |   2 +
- drivers/tty/serdev/Kconfig      |   7 +
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/helpers.c          |   1 +
- rust/helpers/serdev.c           |  22 ++
- rust/kernel/lib.rs              |   2 +
- rust/kernel/serdev.rs           | 590 ++++++++++++++++++++++++++++++++++++++++
- 7 files changed, 625 insertions(+)
+ MAINTAINERS                                        |   7 +
+ drivers/platform/Kconfig                           |   2 +
+ drivers/platform/Makefile                          |   1 +
+ drivers/platform/synology_microp/Kconfig           |  13 +
+ drivers/platform/synology_microp/Makefile          |   3 +
+ drivers/platform/synology_microp/command.rs        |  54 ++++
+ drivers/platform/synology_microp/led.rs            | 297 +++++++++++++++++++++
+ drivers/platform/synology_microp/model.rs          |  49 ++++
+ .../platform/synology_microp/synology_microp.rs    |  91 +++++++
+ 9 files changed, 517 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 4e118f704699..d2f608ff8ca0 100644
+index 6e974a518a25..e032b4a1566c 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -24276,6 +24276,8 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/serial/serial.yaml
- F:	drivers/tty/serdev/
- F:	include/linux/serdev.h
-+F:	rust/helpers/serdev.c
-+F:	rust/kernel/serdev.rs
+@@ -25838,6 +25838,13 @@ F:	drivers/dma-buf/sync_*
+ F:	include/linux/sync_file.h
+ F:	include/uapi/linux/sync_file.h
  
- SERIAL IR RECEIVER
- M:	Sean Young <sean@mess.org>
-diff --git a/drivers/tty/serdev/Kconfig b/drivers/tty/serdev/Kconfig
-index 46ae732bfc68..e6dfe949ad01 100644
---- a/drivers/tty/serdev/Kconfig
-+++ b/drivers/tty/serdev/Kconfig
-@@ -9,6 +9,13 @@ menuconfig SERIAL_DEV_BUS
++SYNOLOGY MICROP DRIVER
++M:	Markus Probst <markus.probst@posteo.de>
++L:	platform-driver-x86@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/embedded-controller/synology,ds918p-microp.yaml
++F:	drivers/platform/synology_microp/
++
+ SYNOPSYS ARC ARCHITECTURE
+ M:	Vineet Gupta <vgupta@kernel.org>
+ L:	linux-snps-arc@lists.infradead.org
+diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
+index 312788f249c9..996050566a4a 100644
+--- a/drivers/platform/Kconfig
++++ b/drivers/platform/Kconfig
+@@ -22,3 +22,5 @@ source "drivers/platform/arm64/Kconfig"
+ source "drivers/platform/raspberrypi/Kconfig"
  
- 	  Note that you typically also want to enable TTY port controller support.
- 
-+config RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-+	bool "Rust Serial device bus abstractions"
-+	depends on RUST
-+	select SERIAL_DEV_BUS
+ source "drivers/platform/wmi/Kconfig"
++
++source "drivers/platform/synology_microp/Kconfig"
+diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
+index fa322e7f8716..2381872e9133 100644
+--- a/drivers/platform/Makefile
++++ b/drivers/platform/Makefile
+@@ -15,3 +15,4 @@ obj-$(CONFIG_SURFACE_PLATFORMS)	+= surface/
+ obj-$(CONFIG_ARM64_PLATFORM_DEVICES)	+= arm64/
+ obj-$(CONFIG_BCM2835_VCHIQ)	+= raspberrypi/
+ obj-$(CONFIG_ACPI_WMI)		+= wmi/
++obj-$(CONFIG_SYNOLOGY_MICROP)	+= synology_microp/
+diff --git a/drivers/platform/synology_microp/Kconfig b/drivers/platform/synology_microp/Kconfig
+new file mode 100644
+index 000000000000..8878cfb7bcdd
+--- /dev/null
++++ b/drivers/platform/synology_microp/Kconfig
+@@ -0,0 +1,13 @@
++# SPDX-License-Identifier: GPL-2.0
++
++config SYNOLOGY_MICROP
++	tristate "Synology Microp driver"
++	depends on LEDS_CLASS && LEDS_CLASS_MULTICOLOR
++	depends on RUST_SERIAL_DEV_BUS_ABSTRACTIONS
 +	help
-+	  This enables the Rust abstraction for the serial device bus API.
++	  Enable support for the EC found in Synology NAS devices.
 +
- if SERIAL_DEV_BUS
- 
- config SERIAL_DEV_CTRL_TTYPORT
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 446dbeaf0866..4e42635b8607 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -84,6 +84,7 @@
- #include <linux/regulator/consumer.h>
- #include <linux/sched.h>
- #include <linux/security.h>
-+#include <linux/serdev.h>
- #include <linux/slab.h>
- #include <linux/sys_soc.h>
- #include <linux/task_work.h>
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 38b34518eff1..2fb8506a748a 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -86,6 +86,7 @@
- #include "regulator.c"
- #include "scatterlist.c"
- #include "security.c"
-+#include "serdev.c"
- #include "signal.c"
- #include "slab.c"
- #include "spinlock.c"
-diff --git a/rust/helpers/serdev.c b/rust/helpers/serdev.c
++	  This is needed to properly shutdown and reboot the device, as well as
++	  additional functionality like fan and LED control.
++
++	  This driver is work in progress and may not be fully functional.
+diff --git a/drivers/platform/synology_microp/Makefile b/drivers/platform/synology_microp/Makefile
 new file mode 100644
-index 000000000000..c52b78ca3fc7
+index 000000000000..63585ccf76e4
 --- /dev/null
-+++ b/rust/helpers/serdev.c
-@@ -0,0 +1,22 @@
++++ b/drivers/platform/synology_microp/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++obj-y += synology_microp.o
+diff --git a/drivers/platform/synology_microp/command.rs b/drivers/platform/synology_microp/command.rs
+new file mode 100644
+index 000000000000..58cb2f3cb3da
+--- /dev/null
++++ b/drivers/platform/synology_microp/command.rs
+@@ -0,0 +1,54 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+#include <linux/serdev.h>
++use kernel::{
++    device::Bound,
++    error::Result,
++    serdev, //
++};
 +
-+__rust_helper
-+void rust_helper_serdev_device_driver_unregister(struct serdev_device_driver *sdrv)
-+{
-+	serdev_device_driver_unregister(sdrv);
++use crate::led;
++
++#[expect(
++    clippy::enum_variant_names,
++    reason = "future variants will not end with Led"
++)]
++pub(crate) enum Command {
++    PowerLed(led::State),
++    StatusLed(led::StatusLedColor, led::State),
++    AlertLed(led::State),
++    UsbLed(led::State),
++    EsataLed(led::State),
 +}
 +
-+__rust_helper
-+void rust_helper_serdev_device_put(struct serdev_device *serdev)
-+{
-+	serdev_device_put(serdev);
-+}
++impl Command {
++    pub(crate) fn write(self, dev: &serdev::Device<Bound>) -> Result {
++        dev.write_all(
++            match self {
++                Self::PowerLed(led::State::On) => &[0x34],
++                Self::PowerLed(led::State::Blink) => &[0x35],
++                Self::PowerLed(led::State::Off) => &[0x36],
 +
-+__rust_helper
-+void rust_helper_serdev_device_set_client_ops(struct serdev_device *serdev,
-+					      const struct serdev_device_ops *ops)
-+{
-+	serdev_device_set_client_ops(serdev, ops);
++                Self::StatusLed(_, led::State::Off) => &[0x37],
++                Self::StatusLed(led::StatusLedColor::Green, led::State::On) => &[0x38],
++                Self::StatusLed(led::StatusLedColor::Green, led::State::Blink) => &[0x39],
++                Self::StatusLed(led::StatusLedColor::Amber, led::State::On) => &[0x3A],
++                Self::StatusLed(led::StatusLedColor::Amber, led::State::Blink) => &[0x3B],
++
++                Self::AlertLed(led::State::On) => &[0x4C, 0x41, 0x31],
++                Self::AlertLed(led::State::Blink) => &[0x4C, 0x41, 0x32],
++                Self::AlertLed(led::State::Off) => &[0x4C, 0x41, 0x33],
++
++                Self::UsbLed(led::State::On) => &[0x40],
++                Self::UsbLed(led::State::Blink) => &[0x41],
++                Self::UsbLed(led::State::Off) => &[0x42],
++
++                Self::EsataLed(led::State::On) => &[0x4C, 0x45, 0x31],
++                Self::EsataLed(led::State::Blink) => &[0x4C, 0x45, 0x32],
++                Self::EsataLed(led::State::Off) => &[0x4C, 0x45, 0x33],
++            },
++            serdev::Timeout::Max,
++        )?;
++        dev.wait_until_sent(serdev::Timeout::Max);
++        Ok(())
++    }
 +}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b72b2fbe046d..83bc2c312241 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -118,6 +118,8 @@
- pub mod scatterlist;
- pub mod security;
- pub mod seq_file;
-+#[cfg(CONFIG_RUST_SERIAL_DEV_BUS_ABSTRACTIONS)]
-+pub mod serdev;
- pub mod sizes;
- #[cfg(CONFIG_SOC_BUS)]
- pub mod soc;
-diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
+diff --git a/drivers/platform/synology_microp/led.rs b/drivers/platform/synology_microp/led.rs
 new file mode 100644
-index 000000000000..c6a7f9683d06
+index 000000000000..4454f06bca4c
 --- /dev/null
-+++ b/rust/kernel/serdev.rs
-@@ -0,0 +1,590 @@
++++ b/drivers/platform/synology_microp/led.rs
+@@ -0,0 +1,297 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Abstractions for the serial device bus.
-+//!
-+//! C header: [`include/linux/serdev.h`](srctree/include/linux/serdev.h)
-+
-+use crate::{
-+    acpi,
-+    device,
-+    driver,
-+    error::{
-+        from_result,
-+        to_result,
-+        VTABLE_DEFAULT_ERROR, //
++use kernel::{
++    device::Bound,
++    led::{
++        self,
++        LedOps,
++        MultiColorSubLed, //
 +    },
 +    new_mutex,
-+    of,
 +    prelude::*,
-+    sync::{
-+        aref::AlwaysRefCounted,
-+        Mutex, //
-+    },
-+    time::{
-+        msecs_to_jiffies,
-+        Jiffies,
-+        Msecs, //
-+    },
-+    types::{
-+        Opaque,
-+        ScopeGuard, //
-+    }, //
++    serdev,
++    str::CString,
++    sync::Mutex,
++    time::Delta, //
++};
++use pin_init::pin_init_scope;
++
++use crate::{
++    command::Command,
++    model::Model, //
 +};
 +
-+use core::{
-+    cell::UnsafeCell,
-+    marker::PhantomData,
-+    mem::{offset_of, MaybeUninit},
-+    num::NonZero,
-+    ptr::NonNull, //
-+};
-+
-+/// Parity bit to use with a serial device.
-+#[repr(u32)]
-+pub enum Parity {
-+    /// No parity bit.
-+    None = bindings::serdev_parity_SERDEV_PARITY_NONE,
-+    /// Even partiy.
-+    Even = bindings::serdev_parity_SERDEV_PARITY_EVEN,
-+    /// Odd parity.
-+    Odd = bindings::serdev_parity_SERDEV_PARITY_ODD,
-+}
-+
-+/// Timeout in Jiffies.
-+pub enum Timeout {
-+    /// Wait for a specific amount of [`Jiffies`].
-+    Jiffies(NonZero<Jiffies>),
-+    /// Wait for a specific amount of [`Msecs`].
-+    Milliseconds(NonZero<Msecs>),
-+    /// Wait as long as possible.
-+    ///
-+    /// This is equivalent to [`kernel::task::MAX_SCHEDULE_TIMEOUT`].
-+    Max,
-+}
-+
-+impl Timeout {
-+    fn into_jiffies(self) -> isize {
-+        match self {
-+            Self::Jiffies(value) => value.get().try_into().unwrap_or_default(),
-+            Self::Milliseconds(value) => {
-+                msecs_to_jiffies(value.get()).try_into().unwrap_or_default()
-+            }
-+            Self::Max => 0,
-+        }
-+    }
-+}
-+
-+/// An adapter for the registration of serial device bus device drivers.
-+pub struct Adapter<T: Driver>(T);
-+
-+// SAFETY:
-+// - `bindings::serdev_device_driver` is a C type declared as `repr(C)`.
-+// - `PrivateData<'bound, T>` is the type of the driver's device private data.
-+// - `struct serdev_device_driver` embeds a `struct device_driver`.
-+// - `DEVICE_DRIVER_OFFSET` is the correct byte offset to the embedded `struct device_driver`.
-+unsafe impl<T: Driver> driver::DriverLayout for Adapter<T> {
-+    type DriverType = bindings::serdev_device_driver;
-+    type DriverData<'bound> = PrivateData<'bound, T>;
-+    const DEVICE_DRIVER_OFFSET: usize = core::mem::offset_of!(Self::DriverType, driver);
-+}
-+
-+// SAFETY: A call to `unregister` for a given instance of `DriverType` is guaranteed to be valid if
-+// a preceding call to `register` has been successful.
-+unsafe impl<T: Driver> driver::RegistrationOps for Adapter<T> {
-+    unsafe fn register(
-+        sdrv: &Opaque<Self::DriverType>,
-+        name: &'static CStr,
-+        module: &'static ThisModule,
-+    ) -> Result {
-+        let of_table = match T::OF_ID_TABLE {
-+            Some(table) => table.as_ptr(),
-+            None => core::ptr::null(),
-+        };
-+
-+        let acpi_table = match T::ACPI_ID_TABLE {
-+            Some(table) => table.as_ptr(),
-+            None => core::ptr::null(),
-+        };
-+
-+        // SAFETY: It's safe to set the fields of `struct serdev_device_driver` on initialization.
-+        unsafe {
-+            (*sdrv.get()).driver.name = name.as_char_ptr();
-+            (*sdrv.get()).probe = Some(Self::probe_callback);
-+            (*sdrv.get()).remove = Some(Self::remove_callback);
-+            (*sdrv.get()).driver.of_match_table = of_table;
-+            (*sdrv.get()).driver.acpi_match_table = acpi_table;
-+        }
-+
-+        // SAFETY: `sdrv` is guaranteed to be a valid `DriverType`.
-+        to_result(unsafe { bindings::__serdev_device_driver_register(sdrv.get(), module.0) })
-+    }
-+
-+    unsafe fn unregister(sdrv: &Opaque<Self::DriverType>) {
-+        // SAFETY: `sdrv` is guaranteed to be a valid `DriverType`.
-+        unsafe { bindings::serdev_device_driver_unregister(sdrv.get()) };
-+    }
-+}
-+
-+#[doc(hidden)]
-+#[pin_data(PinnedDrop)]
-+pub struct PrivateData<'bound, T: Driver> {
-+    sdev: &'bound Device<device::Bound>,
++#[pin_data]
++pub(crate) struct Data<'bound> {
 +    #[pin]
-+    driver: UnsafeCell<MaybeUninit<T::Data<'bound>>>,
-+    open: UnsafeCell<bool>,
++    status: led::MultiColorDevice<'bound, StatusLedHandler>,
++    power_name: CString,
 +    #[pin]
-+    active: Mutex<bool>,
++    power: led::Device<'bound, LedHandler>,
++    alert: Option<Pin<KBox<led::Device<'bound, LedHandler>>>>,
++    usb_copy: Option<Pin<KBox<led::Device<'bound, LedHandler>>>>,
++    esata: Option<Pin<KBox<led::Device<'bound, LedHandler>>>>,
 +}
 +
-+#[pinned_drop]
-+impl<T: Driver> PinnedDrop for PrivateData<'_, T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        let mut active = self.active.lock();
-+        if *active {
-+            // SAFETY:
-+            // - We have exclusive access to `self.driver`.
-+            // - `self.driver` is guaranteed to be initialized.
-+            unsafe { (*self.driver.get()).assume_init_drop() };
-+            *active = false;
-+        }
-+
-+        // SAFETY: We have exclusive access to `self.open`.
-+        if unsafe { *self.open.get() } {
-+            // SAFETY: `self.sdev.as_raw()` is guaranteed to be a pointer to a valid
-+            // `struct serdev_device`.
-+            unsafe { bindings::serdev_device_close(self.sdev.as_raw()) };
-+        }
-+    }
-+}
-+
-+impl<T: Driver> Adapter<T> {
-+    const OPS: &'static bindings::serdev_device_ops = &bindings::serdev_device_ops {
-+        receive_buf: if T::HAS_RECEIVE {
-+            Some(Self::receive_buf_callback)
-+        } else {
-+            None
-+        },
-+        write_wakeup: Some(bindings::serdev_device_write_wakeup),
-+    };
-+
-+    extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi::c_int {
-+        // SAFETY: The serial device bus only ever calls the probe callback with a valid pointer to
-+        // a `struct serdev_device`.
-+        //
-+        // INVARIANT: `sdev` is valid for the duration of `probe_callback()`.
-+        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal<'_>>>() };
-+        let info = <Self as driver::Adapter>::id_info(sdev.as_ref());
-+
-+        from_result(|| {
-+            sdev.as_ref().set_drvdata(try_pin_init!(PrivateData::<T> {
-+                sdev: &**sdev,
-+                driver: MaybeUninit::<T::Data<'_>>::zeroed().into(),
-+                open: false.into(),
-+                active <- new_mutex!(false),
-+            }))?;
-+            // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
-+            let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
-+            let private_data = ScopeGuard::new_with_data(private_data, |_| {
-+                // SAFETY: We just set drvdata to `PrivateData<'_, T>`.
-+                drop(unsafe { sdev.as_ref().drvdata_obtain::<PrivateData<'_, T>>() });
-+            });
-+            let mut active = private_data.active.lock();
-+
-+            // SAFETY: `sdev.as_raw()` is guaranteed to be a valid pointer to `serdev_device`.
-+            unsafe { bindings::serdev_device_set_client_ops(sdev.as_raw(), Self::OPS) };
-+
-+            // SAFETY: The serial device bus only ever calls the probe callback with a valid pointer
-+            // to a `serdev_device`.
-+            to_result(unsafe { bindings::serdev_device_open(sdev.as_raw()) })?;
-+
-+            // SAFETY: We have exclusive access to `private_data.open`.
-+            unsafe { *private_data.open.get() = true };
-+
-+            let data = T::probe(sdev, info);
-+
-+            // SAFETY: We have exclusive access to `private_data.driver`.
-+            let driver = unsafe { &mut *private_data.driver.get() };
-+            // SAFETY:
-+            // - `driver.as_mut_ptr()` is a valid pointer to uninitialized data.
-+            // - `private_data.driver` is pinned.
-+            let result = unsafe { data.__pinned_init(driver.as_mut_ptr()) };
-+
-+            *active = result.is_ok();
-+
-+            drop(active);
-+
-+            result.map(|()| {
-+                private_data.dismiss();
-+                0
-+            })
++impl<'bound> Data<'bound> {
++    pub(super) fn register<'a>(
++        dev: &'bound serdev::Device<Bound>,
++        model: &'a Model,
++    ) -> impl PinInit<Self, Error> + 'a
++    where
++        'bound: 'a,
++    {
++        pin_init_scope(move || {
++            Ok(try_pin_init!(Self {
++                status <- led::DeviceBuilder::new()
++                    .color(led::Color::Multi)
++                    .name(c"synology:multicolor:status")
++                    .build_multicolor(
++                        dev,
++                        try_pin_init!(StatusLedHandler {
++                            blink <- new_mutex!(false),
++                        }),
++                        StatusLedHandler::SUBLEDS,
++                    ),
++                power_name: CString::try_from_fmt(fmt!(
++                    "synology:{}:power",
++                    model.led_power.as_c_str().to_str()?
++                ))?,
++                power <- led::DeviceBuilder::new()
++                    .color(model.led_power)
++                    .name(power_name)
++                    .build(
++                        dev,
++                        try_pin_init!(LedHandler {
++                            blink <- new_mutex!(false),
++                            command: Command::PowerLed,
++                        }),
++                    ),
++                alert: {
++                    if let Some(color) = model.led_alert {
++                        let name = CString::try_from_fmt(fmt!(
++                            "synology:{}:alarm",
++                            color.as_c_str().to_str()?
++                        ))?;
++                        Some(KBox::pin_init(
++                            led::DeviceBuilder::new().color(color).name(&name).build(
++                                dev,
++                                try_pin_init!(LedHandler {
++                                    blink <- new_mutex!(false),
++                                    command: Command::AlertLed,
++                                }),
++                            ),
++                            GFP_KERNEL,
++                        )?)
++                    } else {
++                        None
++                    }
++                },
++                usb_copy: {
++                    if model.led_usb_copy {
++                        Some(KBox::pin_init(
++                            led::DeviceBuilder::new()
++                                .color(led::Color::Green)
++                                .name(c"synology:green:usb")
++                                .build(
++                                    dev,
++                                    try_pin_init!(LedHandler {
++                                        blink <- new_mutex!(false),
++                                        command: Command::UsbLed,
++                                    }),
++                                ),
++                            GFP_KERNEL,
++                        )?)
++                    } else {
++                        None
++                    }
++                },
++                esata: {
++                    if model.led_esata {
++                        Some(KBox::pin_init(
++                            led::DeviceBuilder::new()
++                                .color(led::Color::Green)
++                                .name(c"synology:green:esata")
++                                .build(
++                                    dev,
++                                    try_pin_init!(LedHandler {
++                                        blink <- new_mutex!(false),
++                                        command: Command::EsataLed,
++                                    }),
++                                ),
++                            GFP_KERNEL,
++                        )?)
++                    } else {
++                        None
++                    }
++                },
++            }))
 +        })
 +    }
++}
 +
-+    extern "C" fn remove_callback(sdev: *mut bindings::serdev_device) {
-+        // SAFETY: The serial device bus only ever calls the remove callback with a valid pointer
-+        // to a `struct serdev_device`.
-+        //
-+        // INVARIANT: `sdev` is valid for the duration of `remove_callback()`.
-+        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal<'_>>>() };
++#[derive(Copy, Clone)]
++pub(crate) enum StatusLedColor {
++    Green,
++    Amber,
++}
 +
-+        // SAFETY: `remove_callback` is only ever called after a successful call to
-+        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-+        // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-+        let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
++#[derive(Copy, Clone)]
++pub(crate) enum State {
++    On,
++    Blink,
++    Off,
++}
 +
-+        // SAFETY: No one has exclusive access to `private_data.driver`.
-+        let data = unsafe { &*private_data.driver.get() };
-+        // SAFETY:
-+        // - `private_data.driver` is pinned.
-+        // - `remove_callback` is only ever called after a successful call to `probe_callback`,
-+        //   hence it's guaranteed that `private_data.driver` was initialized.
-+        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_ref()) };
++#[pin_data]
++struct LedHandler {
++    #[pin]
++    blink: Mutex<bool>,
++    command: fn(State) -> Command,
++}
 +
-+        T::unbind(sdev, data_pinned);
++/// Blink delay measured using video recording on DS923+ for Power and Status Led.
++///
++/// We assume it is the same for all other leds and models.
++const BLINK_DELAY: Delta = Delta::from_millis(167);
++
++#[vtable]
++impl LedOps for LedHandler {
++    type Bus = serdev::Device<Bound>;
++    type Mode = led::Normal;
++    const BLOCKING: bool = true;
++    const MAX_BRIGHTNESS: u32 = 1;
++
++    fn brightness_set<'bound>(
++        &self,
++        dev: &'bound Self::Bus,
++        _classdev: &led::Device<'bound, Self>,
++        brightness: u32,
++    ) -> Result<()> {
++        let mut blink = self.blink.lock();
++        (self.command)(if brightness == 0 {
++            *blink = false;
++            State::Off
++        } else if *blink {
++            State::Blink
++        } else {
++            State::On
++        })
++        .write(dev)?;
++
++        Ok(())
 +    }
 +
-+    extern "C" fn receive_buf_callback(
-+        sdev: *mut bindings::serdev_device,
-+        buf: *const u8,
-+        length: usize,
-+    ) -> usize {
-+        // SAFETY: The serial device bus only ever calls the receive buf callback with a valid
-+        // pointer to a `struct serdev_device`.
-+        //
-+        // INVARIANT: `sdev` is valid for the duration of `receive_buf_callback()`.
-+        let sdev = unsafe { &*sdev.cast::<Device<device::CoreInternal<'_>>>() };
++    fn blink_set<'bound>(
++        &self,
++        dev: &'bound Self::Bus,
++        _classdev: &led::Device<'bound, Self>,
++        delay_on: &mut usize,
++        delay_off: &mut usize,
++    ) -> Result<()> {
++        let mut blink = self.blink.lock();
 +
-+        // SAFETY: `receive_buf_callback` is only ever called after a successful call to
-+        // `probe_callback`, hence it's guaranteed that `Device::set_drvdata()` has been called
-+        // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-+        let private_data = unsafe { sdev.as_ref().drvdata_borrow::<PrivateData<'_, T>>() };
-+        let active = private_data.active.lock();
++        (self.command)(if *delay_on == 0 && *delay_off != 0 {
++            *blink = false;
 +
-+        if !*active {
-+            return length;
++            State::Off
++        } else if *delay_on != 0 && *delay_off == 0 {
++            *blink = false;
++
++            State::On
++        } else {
++            *blink = true;
++            *delay_on = BLINK_DELAY.as_millis() as usize;
++            *delay_off = BLINK_DELAY.as_millis() as usize;
++
++            State::Blink
++        })
++        .write(dev)
++    }
++}
++
++#[pin_data]
++struct StatusLedHandler {
++    #[pin]
++    blink: Mutex<bool>,
++}
++
++impl StatusLedHandler {
++    const SUBLEDS: &[MultiColorSubLed] = &[
++        MultiColorSubLed::new(led::Color::Green).initial_intensity(1),
++        MultiColorSubLed::new(led::Color::Amber),
++    ];
++}
++
++#[vtable]
++impl LedOps for StatusLedHandler {
++    type Bus = serdev::Device<Bound>;
++    type Mode = led::MultiColor;
++    const BLOCKING: bool = true;
++    const MAX_BRIGHTNESS: u32 = 1;
++
++    fn brightness_set<'bound>(
++        &self,
++        dev: &'bound Self::Bus,
++        classdev: &led::MultiColorDevice<'bound, Self>,
++        brightness: u32,
++    ) -> Result<()> {
++        let mut blink = self.blink.lock();
++        if brightness == 0 {
++            *blink = false;
 +        }
 +
-+        // SAFETY: No one has exclusive access to `private_data.driver`.
-+        let data = unsafe { &*private_data.driver.get() };
-+        // SAFETY:
-+        // - `private_data.driver` is pinned.
-+        // - `receive_buf_callback` is only ever called after a successful call to `probe_callback`,
-+        //   hence it's guaranteed that `private_data.driver` was initialized.
-+        let data_pinned = unsafe { Pin::new_unchecked(data.assume_init_ref()) };
++        let (color, subled_brightness) = if classdev.subleds()[1].intensity == 0 {
++            (StatusLedColor::Green, classdev.subleds()[0].brightness)
++        } else {
++            (StatusLedColor::Amber, classdev.subleds()[1].brightness)
++        };
 +
-+        // SAFETY: `buf` is guaranteed to be non-null and has the size of `length`.
-+        let buf = unsafe { core::slice::from_raw_parts(buf, length) };
++        Command::StatusLed(
++            color,
++            if subled_brightness == 0 {
++                State::Off
++            } else if *blink {
++                State::Blink
++            } else {
++                State::On
++            },
++        )
++        .write(dev)
++    }
 +
-+        T::receive(sdev, data_pinned, buf)
++    fn blink_set<'bound>(
++        &self,
++        dev: &'bound Self::Bus,
++        classdev: &led::MultiColorDevice<'bound, Self>,
++        delay_on: &mut usize,
++        delay_off: &mut usize,
++    ) -> Result<()> {
++        let mut blink = self.blink.lock();
++        *blink = true;
++
++        let (color, subled_intensity) = if classdev.subleds()[1].intensity == 0 {
++            (StatusLedColor::Green, classdev.subleds()[0].intensity)
++        } else {
++            (StatusLedColor::Amber, classdev.subleds()[1].intensity)
++        };
++        Command::StatusLed(
++            color,
++            if *delay_on == 0 && *delay_off != 0 {
++                *blink = false;
++                State::Off
++            } else if subled_intensity == 0 {
++                State::Off
++            } else if *delay_on != 0 && *delay_off == 0 {
++                *blink = false;
++                State::On
++            } else {
++                *delay_on = BLINK_DELAY.as_millis() as usize;
++                *delay_off = BLINK_DELAY.as_millis() as usize;
++
++                State::Blink
++            },
++        )
++        .write(dev)
 +    }
 +}
+diff --git a/drivers/platform/synology_microp/model.rs b/drivers/platform/synology_microp/model.rs
+new file mode 100644
+index 000000000000..715d8840f56b
+--- /dev/null
++++ b/drivers/platform/synology_microp/model.rs
+@@ -0,0 +1,49 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+impl<T: Driver> driver::Adapter for Adapter<T> {
-+    type IdInfo = T::IdInfo;
++use kernel::led::Color;
 +
-+    fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
-+        T::OF_ID_TABLE
-+    }
-+
-+    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
-+        T::ACPI_ID_TABLE
-+    }
++pub(crate) struct Model {
++    pub(crate) led_power: Color,
++    pub(crate) led_alert: Option<Color>,
++    pub(crate) led_usb_copy: bool,
++    pub(crate) led_esata: bool,
 +}
 +
-+/// Declares a kernel module that exposes a single serial device bus device driver.
-+///
-+/// # Examples
-+///
-+/// ```ignore
-+/// kernel::module_serdev_device_driver! {
-+///     type: MyDriver,
-+///     name: "Module name",
-+///     authors: ["Author name"],
-+///     description: "Description",
-+///     license: "GPL v2",
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! module_serdev_device_driver {
-+    ($($f:tt)*) => {
-+        $crate::module_driver!(<T>, $crate::serdev::Adapter<T>, { $($f)* });
-+    };
-+}
-+
-+/// The serial device bus device driver trait.
-+///
-+/// Drivers must implement this trait in order to get a serial device bus device driver registered.
-+///
-+/// # Examples
-+///
-+///```
-+/// # use kernel::{
-+///     acpi,
-+///     bindings,
-+///     device::{
-+///         Bound,
-+///         Core, //
-+///     },
-+///     of,
-+///     serdev, //
-+/// };
-+///
-+/// struct MyDriver;
-+///
-+/// kernel::of_device_table!(
-+///     OF_TABLE,
-+///     MODULE_OF_TABLE,
-+///     <MyDriver as serdev::Driver>::IdInfo,
-+///     [
-+///         (of::DeviceId::new(c"test,device"), ())
-+///     ]
-+/// );
-+///
-+/// kernel::acpi_device_table!(
-+///     ACPI_TABLE,
-+///     MODULE_ACPI_TABLE,
-+///     <MyDriver as serdev::Driver>::IdInfo,
-+///     [
-+///         (acpi::DeviceId::new(c"LNUXBEEF"), ())
-+///     ]
-+/// );
-+///
-+/// #[vtable]
-+/// impl serdev::Driver for MyDriver {
-+///     type IdInfo = ();
-+///     type Data<'bound> = Self;
-+///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
-+///
-+///     fn probe<'bound>(
-+///         sdev: &'bound serdev::Device<Core<'_>>,
-+///         _id_info: Option<&'bound Self::IdInfo>,
-+///     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-+///         sdev.set_baudrate(115200);
-+///         sdev.write_all(b"Hello\n", serdev::Timeout::Max)?;
-+///         Ok(MyDriver)
-+///     }
-+/// }
-+///```
-+#[vtable]
-+pub trait Driver {
-+    /// The type holding driver private data about each device id supported by the driver.
-+    // TODO: Use associated_type_defaults once stabilized:
-+    //
-+    // ```
-+    // type IdInfo: 'static = ();
-+    // ```
-+    type IdInfo: 'static;
-+
-+    /// The type of the driver's bus device private data.
-+    type Data<'bound>: Send + 'bound;
-+
-+    /// The table of OF device ids supported by the driver.
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-+
-+    /// The table of ACPI device ids supported by the driver.
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-+
-+    /// Serial device bus device driver probe.
-+    ///
-+    /// Called when a new serial device bus device is added or discovered.
-+    /// Implementers should attempt to initialize the device here.
-+    fn probe<'bound>(
-+        sdev: &'bound Device<device::Core<'_>>,
-+        id_info: Option<&'bound Self::IdInfo>,
-+    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
-+
-+    /// Serial device bus device driver unbind.
-+    ///
-+    /// Called when a [`Device`] is unbound from its bound [`Driver`]. Implementing this callback
-+    /// is optional.
-+    ///
-+    /// This callback serves as a place for drivers to perform teardown operations that require a
-+    /// `&Device<Core>` or `&Device<Bound>` reference. For instance.
-+    ///
-+    /// Otherwise, release operations for driver resources should be performed in `Drop`.
-+    fn unbind<'bound>(sdev: &'bound Device<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
-+        let _ = (sdev, this);
++impl Model {
++    pub(super) const fn new() -> Self {
++        Self {
++            led_power: Color::Blue,
++            led_alert: None,
++            led_usb_copy: false,
++            led_esata: false,
++        }
 +    }
 +
-+    /// Serial device bus device data receive callback.
-+    ///
-+    /// Called when data got received from device.
-+    ///
-+    /// Returns the number of bytes accepted.
-+    fn receive<'bound>(
-+        sdev: &'bound Device<device::Bound>,
-+        this: Pin<&Self::Data<'bound>>,
-+        data: &[u8],
-+    ) -> usize {
-+        let _ = (sdev, this, data);
-+        build_error!(VTABLE_DEFAULT_ERROR)
++    pub(super) const fn led_power(self, color: Color) -> Self {
++        Self {
++            led_power: color,
++            ..self
++        }
++    }
++
++    pub(super) const fn led_alert(self, color: Color) -> Self {
++        Self {
++            led_alert: Some(color),
++            ..self
++        }
++    }
++
++    pub(super) const fn led_esata(self) -> Self {
++        Self {
++            led_esata: true,
++            ..self
++        }
++    }
++
++    pub(super) const fn led_usb_copy(self) -> Self {
++        Self {
++            led_usb_copy: true,
++            ..self
++        }
 +    }
 +}
+diff --git a/drivers/platform/synology_microp/synology_microp.rs b/drivers/platform/synology_microp/synology_microp.rs
+new file mode 100644
+index 000000000000..f7168309e611
+--- /dev/null
++++ b/drivers/platform/synology_microp/synology_microp.rs
+@@ -0,0 +1,91 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+/// The serial device bus device representation.
-+///
-+/// This structure represents the Rust abstraction for a C `struct serdev_device`. The
-+/// implementation abstracts the usage of an already existing C `struct serdev_device` within Rust
-+/// code that we get passed from the C side.
-+///
-+/// # Invariants
-+///
-+/// A [`Device`] instance represents a valid `struct serdev_device` created by the C portion of
-+/// the kernel.
-+#[repr(transparent)]
-+pub struct Device<Ctx: device::DeviceContext = device::Normal>(
-+    Opaque<bindings::serdev_device>,
-+    PhantomData<Ctx>,
++//! Synology Microp driver
++
++use kernel::{
++    device,
++    led::Color,
++    of::{
++        DeviceId,
++        IdTable, //
++    },
++    of_device_table,
++    prelude::*,
++    serdev, //
++};
++use pin_init::pin_init_scope;
++
++use crate::model::Model;
++
++pub(crate) mod command;
++mod led;
++mod model;
++
++kernel::module_serdev_device_driver! {
++    type: SynologyMicropDriver<'static>,
++    name: "synology_microp",
++    authors: ["Markus Probst <markus.probst@posteo.de>"],
++    description: "Synology Microp driver",
++    license: "GPL v2",
++}
++
++#[rustfmt::skip]
++of_device_table!(
++    OF_TABLE,
++    MODULE_OF_TABLE,
++    Model,
++    [
++        // apollolake
++        (DeviceId::new(c"synology,ds918p-microp"), Model::new()),
++
++        // evansport
++        (DeviceId::new(c"synology,ds214play-microp"), Model::new()),
++
++        // geminilakenk
++        (DeviceId::new(c"synology,ds225p-microp"), Model::new().led_usb_copy()),
++
++        // pineview
++        (DeviceId::new(c"synology,ds710p-microp"), Model::new().led_esata()),
++        (DeviceId::new(c"synology,ds1010p-microp"), Model::new().led_alert(Color::Amber)),
++
++        // rtd1296
++        (DeviceId::new(c"synology,ds118-microp"), Model::new()),
++
++        // rtd1619b
++        (DeviceId::new(c"synology,ds223-microp"), Model::new().led_usb_copy()),
++
++        // v1000
++        (DeviceId::new(c"synology,ds1823xsp-microp"), Model::new()),
++        (DeviceId::new(c"synology,rs1221p-microp"), Model::new().led_power(Color::Green)),
++    ]
 +);
 +
-+impl<Ctx: device::DeviceContext> Device<Ctx> {
-+    fn as_raw(&self) -> *mut bindings::serdev_device {
-+        self.0.get()
-+    }
++#[pin_data]
++struct SynologyMicropDriver<'bound> {
++    #[pin]
++    led: led::Data<'bound>,
 +}
 +
-+impl Device<device::Bound> {
-+    /// Set the baudrate in bits per second.
-+    ///
-+    /// Common baudrates are 115200, 9600, 19200, 57600, 4800.
-+    ///
-+    /// Use [`Device::write_flush`] before calling this if you have written data prior to this call.
-+    pub fn set_baudrate(&self, speed: u32) -> Result<(), u32> {
-+        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
-+        let ret = unsafe { bindings::serdev_device_set_baudrate(self.as_raw(), speed) };
-+        if ret == speed {
-+            Ok(())
-+        } else {
-+            Err(ret)
-+        }
-+    }
++#[vtable]
++impl serdev::Driver for SynologyMicropDriver<'_> {
++    type IdInfo = Model;
++    type Data<'bound> = SynologyMicropDriver<'bound>;
++    const OF_ID_TABLE: Option<IdTable<Self::IdInfo>> = Some(&OF_TABLE);
 +
-+    /// Set if flow control should be enabled.
-+    ///
-+    /// Use [`Device::write_flush`] before calling this if you have written data prior to this call.
-+    pub fn set_flow_control(&self, enable: bool) {
-+        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
-+        unsafe { bindings::serdev_device_set_flow_control(self.as_raw(), enable) };
-+    }
++    fn probe<'bound>(
++        dev: &'bound serdev::Device<device::Core<'_>>,
++        model: Option<&'bound Model>,
++    ) -> impl PinInit<Self::Data<'bound>, kernel::error::Error> + 'bound {
++        pin_init_scope(move || {
++            let model = model.ok_or(EINVAL)?;
 +
-+    /// Set parity to use.
-+    ///
-+    /// Use [`Device::write_flush`] before calling this if you have written data prior to this call.
-+    pub fn set_parity(&self, parity: Parity) -> Result {
-+        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
-+        to_result(unsafe { bindings::serdev_device_set_parity(self.as_raw(), parity as u32) })
-+    }
++            dev.set_baudrate(9600).map_err(|_| EINVAL)?;
++            dev.set_flow_control(false);
++            dev.set_parity(serdev::Parity::None)?;
 +
-+    /// Write data to the serial device until the controller has accepted all the data or has
-+    /// been interrupted by a timeout or signal.
-+    ///
-+    /// Note that any accepted data has only been buffered by the controller. Use
-+    /// [`Device::wait_until_sent`] to make sure the controller write buffer has actually been
-+    /// emptied.
-+    ///
-+    /// Returns the number of bytes written (less than `data.len()` if interrupted).
-+    /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::ERESTARTSYS`] if interrupted
-+    /// before any bytes were written.
-+    pub fn write_all(&self, data: &[u8], timeout: Timeout) -> Result<usize> {
-+        // SAFETY:
-+        // - `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
-+        // - `data.as_ptr()` is guaranteed to be a valid array pointer with the size of
-+        //   `data.len()`.
-+        let ret = unsafe {
-+            bindings::serdev_device_write(
-+                self.as_raw(),
-+                data.as_ptr(),
-+                data.len(),
-+                timeout.into_jiffies(),
-+            )
-+        };
-+        // CAST: negative return values are guaranteed to be between `-MAX_ERRNO` and `-1`,
-+        // which always fit into a `i32`.
-+        to_result(ret as i32).map(|()| ret.unsigned_abs())
-+    }
-+
-+    /// Write data to the serial device.
-+    ///
-+    /// If you want to write until the controller has accepted all the data, use
-+    /// [`Device::write_all`].
-+    ///
-+    /// Note that any accepted data has only been buffered by the controller. Use
-+    /// [ Device::wait_until_sent`] to make sure the controller write buffer has actually been
-+    /// emptied.
-+    ///
-+    /// Returns the number of bytes written (less than `data.len()` if not enough room in the
-+    /// write buffer).
-+    pub fn write(&self, data: &[u8]) -> Result<u32> {
-+        // SAFETY:
-+        // - `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
-+        // - `data.as_ptr()` is guaranteed to be a valid array pointer with the size of
-+        //   `data.len()`.
-+        let ret =
-+            unsafe { bindings::serdev_device_write_buf(self.as_raw(), data.as_ptr(), data.len()) };
-+
-+        to_result(ret as i32).map(|()| ret.unsigned_abs())
-+    }
-+
-+    /// Send data to the serial device immediately.
-+    ///
-+    /// Note that this doesn't guarantee that the data has been transmitted.
-+    /// Use [`Device::wait_until_sent`] for this purpose.
-+    pub fn write_flush(&self) {
-+        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
-+        unsafe { bindings::serdev_device_write_flush(self.as_raw()) };
-+    }
-+
-+    /// Wait for the data to be sent.
-+    ///
-+    /// After this function, the write buffer of the controller should be empty.
-+    pub fn wait_until_sent(&self, timeout: Timeout) {
-+        // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
-+        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw(), timeout.into_jiffies()) };
++            Ok(try_pin_init!(SynologyMicropDriver {
++                led <- led::Data::register(dev, model),
++            }))
++        })
 +    }
 +}
-+
-+// SAFETY: `serdev::Device` is a transparent wrapper of `struct serdev_device`.
-+// The offset is guaranteed to point to a valid device field inside `serdev::Device`.
-+unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for Device<Ctx> {
-+    const OFFSET: usize = offset_of!(bindings::serdev_device, dev);
-+}
-+
-+// SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
-+// argument.
-+kernel::impl_device_context_deref!(unsafe { Device });
-+kernel::impl_device_context_into_aref!(Device);
-+
-+// SAFETY: Instances of `Device` are always reference-counted.
-+unsafe impl AlwaysRefCounted for Device {
-+    fn inc_ref(&self) {
-+        self.as_ref().inc_ref();
-+    }
-+
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+        unsafe { bindings::serdev_device_put(obj.cast().as_ptr()) }
-+    }
-+}
-+
-+impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<Ctx> {
-+    fn as_ref(&self) -> &device::Device<Ctx> {
-+        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
-+        // `struct serdev_device`.
-+        let dev = unsafe { &raw mut (*self.as_raw()).dev };
-+
-+        // SAFETY: `dev` points to a valid `struct device`.
-+        unsafe { device::Device::from_raw(dev) }
-+    }
-+}
-+
-+// SAFETY: A `Device` is always reference-counted and can be released from any thread.
-+unsafe impl Send for Device {}
-+
-+// SAFETY: `Device` can be shared among threads because all methods of `Device`
-+// (i.e. `Device<Normal>) are thread safe.
-+unsafe impl Sync for Device {}
-+
-+// SAFETY: Same as `Device<Normal>` -- the underlying `struct serdev_device` is the same;
-+// `Bound` is a zero-sized type-state marker that does not affect thread safety.
-+unsafe impl Sync for Device<device::Bound> {}
 
 -- 
 2.53.0
