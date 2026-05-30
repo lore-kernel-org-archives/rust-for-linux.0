@@ -1,153 +1,335 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C8F261B71;
-	Sat, 30 May 2026 06:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
+Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC73836B07C
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 06:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780121548; cv=none; b=jLVZDe55SBcsJ8EQcZ3oDM1pLbBR55hrObZl1eriU0kJLVpjbj1t9DM64hiYZfXvmf92ca6MV8cVzfFUQ+wgtoAjanF0Wajmbi/cZMGTLRlor6XOLa8qVgWKFmwLJvV+7zxtp54Ybgf6v9mNSwFaA9h9vDDkozRftuQ7um8uzy4=
+	t=1780122470; cv=none; b=IprTMukO+LWqTxTYM7Wx+GihcSCmdi5hS4HgizV6sFY+URMs2ljzTXJiS7FFPxatMvoFcjdzuR7rlw1S9VMoFOW0cZ90DMesp5TSraNz9jH4cRf1W5rLLYS6t0q9raTNfja/Z4Q4/hPCHTimbtBJG5yReDqGSdIBSO6Ubg0ZttU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780121548; c=relaxed/simple;
-	bh=7ouJQbjnkf4ajwlrMpoph4gL41YDuMTIoHaBSseSOHQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JBaagqpWJ9xoZPQrQDYdv1/SqgLDksi1rON4GJEvH5qjZl2PPtdQfrjW6Fi4TuXyXL2AOObdrBbzUM23hvc5jAUNSj2pg9Hdx0r+1ZI3+a+xW7J7kKvIKrnGuJDkUCA+NxmF0Z+9ltjtV+VjCkF11KVSH3OVmbycG2G93zCkiio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=52.175.55.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
-Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
-	by app3 (Coremail) with SMTP id ywmowAA3dv66fxpqXeQOAA--.28177S2;
-	Sat, 30 May 2026 14:12:10 +0800 (CST)
-From: Ren Wei <n05ec@lzu.edu.cn>
-To: linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
+	s=arc-20240116; t=1780122470; c=relaxed/simple;
+	bh=yMAHVCFmmUiFAK92xcvyI4Ulktoa4C5f8gjeqX9lvHA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RIuAFoho2UNYUZZY4jpVj5AiHMVKMVUSRoJHnH5FUMttrbPHGVAaxzwQl4h2i5KNHch4upgzIR18o/sf81xPOamldcCu84OvJBoYfFQyhOAzlHNwSSQaPSKh353XQosdrq73gGj/riUz033F0vJyCH6A4Fuk+ANj+IQfTy+hJHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=uSdFtXWo; arc=none smtp.client-ip=79.135.106.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="uSdFtXWo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1780122457; x=1780381657;
+	bh=/7KVO7NNVVZLhgs7uHvMHpbUVIAm88VHLPbRqmbLeB0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=uSdFtXWoivbUdLoiYfJ/GPnIDXI7SH9SlBfvWTnv7lSb1wxwGyd/JekhNUyQkT3OR
+	 BlJvLEwHtfjtgdK0RYGqLC8HleOMKn21/XthOOiucKZLhMov5X0z2x/vkL8hK/6hNC
+	 REqMrSzDP6JKJl86VO5Zg2dvNThDOQDOs06xaSHIv0jjSM4EzkgqXkXEk1MxT23F9l
+	 1n6du1eIzrmPRo5U3SBdYLg5cgSxhEwOAgvHsWVpAG4IphXH0O9ws4MnPpuoEfqnaU
+	 G6A72IWk/PI6xgJLMoQ6eJqJyAI48Ja/FjZMoeQAAGrLZZS8Qvj/gehPz1+Endw5gZ
+	 Ok/b8jFInRXog==
+X-Pm-Submission-Id: 4gS9J35k6Bz1DF6h
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>,
+	rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
 	boqun@kernel.org,
-	gary@garyguo.net,
 	bjorn3_gh@protonmail.com,
 	lossin@kernel.org,
 	a.hindborg@kernel.org,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	axboe@kernel.dk,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
 	tamird@kernel.org,
-	sunke@kylinos.cn,
-	yuantan098@gmail.com,
-	bird@lzu.edu.cn,
-	royenheart@gmail.com,
-	n05ec@lzu.edu.cn
-Subject: [PATCH rust-fixes v3 1/1] rust: block: fix GenDisk cleanup paths
-Date: Sat, 30 May 2026 14:11:54 +0800
-Message-ID: <b70aff9a920cc42110fe5cf454c3099561863519.1780063368.git.royenheart@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	jiangshanlai@gmail.com,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v7 3/4] rust: sync: add SRCU abstraction
+Date: Sat, 30 May 2026 09:27:29 +0300
+Message-ID: <20260530062730.38077-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <b4f6d3e8-3a08-409e-89ae-ba5d612bae30@paulmck-laptop>
+References: <20260528062810.256212-1-work@onurozkan.dev> <20260528062810.256212-4-work@onurozkan.dev> <20260528082025.44414-1-work@onurozkan.dev> <20260528083518.66203-1-work@onurozkan.dev> <DIUB2DNTF6W9.2BT1NF6UXUOFI@garyguo.net> <b4f6d3e8-3a08-409e-89ae-ba5d612bae30@paulmck-laptop>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:ywmowAA3dv66fxpqXeQOAA--.28177S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXFy5JF43ury8CrWDJryfCrg_yoWrGFW3pr
-	WrWws0krWkKFn7tF4UArW7Zry8Gw1kG34rJa98C34a9F98Jrn7XrsYgF43ZFWDJFs29rZa
-	qay09rW2gr1rAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBj1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
-	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
-	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
-	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVW8ZVWrXwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8V
-	W8GwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
-	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7
-	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
-	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRpOJnUUUUU=
-X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQsDCWoZTE8LOwABsB
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Haoze Xie <royenheart@gmail.com>
-
-GenDiskBuilder::build() still has fallible work after
-__blk_mq_alloc_disk(), but its error path only recovers the
-foreign queue data. That leaks the temporary gendisk and
-request_queue until later teardown. If the caller moved the last
-Arc<TagSet<T>> into build(), the leaked queue can retain blk-mq
-state after the tag set is dropped.
-
-Fix the pre-registration failure path by dropping the temporary
-gendisk reference with put_disk() before recovering queue_data,
-so disk_release() can tear down the owned queue.
-
-Also pair GenDisk::drop() with put_disk() after del_gendisk().
-Once a Rust GenDisk has been added with device_add_disk(),
-del_gendisk() only unregisters it; the final gendisk reference
-still has to be dropped to complete the release path.
-
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Haoze Xie <royenheart@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
----
-Changes in v3:
-  - Add the requested blank lines around cleanup blocks for readability.
-  - v2 Link: https://lore.kernel.org/r/e14c015e2e0bde04f84a9452330b94436e2d8e68.1779901336.git.royenheart@gmail.com
-Changes in v2:
-  - Add the missing put_disk() after del_gendisk() in GenDisk::drop(),
-    as suggested by Andreas Hindborg.
-  - Keep the GenDiskBuilder::build() failure cleanup fix and fold both
-    lifecycle fixes into one patch.
-  - v1 Link: https://lore.kernel.org/r/b6411cc055080c984a67bfad72fd683aa84b8e13.1779596478.git.royenheart@gmail.com
-
- rust/kernel/block/mq/gen_disk.rs | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 912cb805caf5..fc97dd873974 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -150,6 +150,19 @@ pub fn build<T: Operations>(
-         // SAFETY: `gendisk` is a valid pointer as we initialized it above
-         unsafe { (*gendisk).fops = &TABLE };
- 
-+        let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
-+            // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
-+            // has not been added to the VFS on this cleanup path.
-+            unsafe { bindings::put_disk(gendisk) };
-+            // SAFETY: `data` came from `into_foreign()` above and has not been
-+            // converted back on this cleanup path.
-+            drop(unsafe { T::QueueData::from_foreign(data) });
-+        });
-+
-+        // The failure guard now owns both pieces of cleanup; the early guard
-+        // must not run on this path anymore.
-+        recover_data.dismiss();
-+
-         let mut writer = NullTerminatedFormatter::new(
-             // SAFETY: `gendisk` points to a valid and initialized instance. We
-             // have exclusive access, since the disk is not added to the VFS
-@@ -172,7 +185,7 @@ pub fn build<T: Operations>(
-             },
-         )?;
- 
--        recover_data.dismiss();
-+        cleanup_failure.dismiss();
- 
-         // INVARIANT: `gendisk` was initialized above.
-         // INVARIANT: `gendisk` was added to the VFS via `device_add_disk` above.
-@@ -215,6 +228,11 @@ fn drop(&mut self) {
-         // to the VFS.
-         unsafe { bindings::del_gendisk(self.gendisk) };
- 
-+        // SAFETY: By type invariant, `self.gendisk` was added to the VFS, so
-+        // `put_disk()` must follow `del_gendisk()` to drop the final gendisk
-+        // reference and trigger the remaining release path.
-+        unsafe { bindings::put_disk(self.gendisk) };
-+
-         // SAFETY: `queue.queuedata` was created by `GenDiskBuilder::build` with
-         // a call to `ForeignOwnable::into_foreign` to create `queuedata`.
-         // `ForeignOwnable::from_foreign` is only called here.
--- 
-2.47.3
-
+On Fri, 29 May 2026 08:36:16 -0700=0D
+"Paul E. McKenney" <paulmck@kernel.org> wrote:=0D
+=0D
+> On Thu, May 28, 2026 at 01:23:39PM +0100, Gary Guo wrote:=0D
+> > On Thu May 28, 2026 at 9:35 AM BST, Onur =C3=96zkan wrote:=0D
+> > > On Thu, 28 May 2026 11:20:10 +0300=0D
+> > > Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+> > >=0D
+> > >> On Thu, 28 May 2026 09:27:35 +0300=0D
+> > >> Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
+> > >> =0D
+> > >> > Add a Rust abstraction for sleepable RCU (SRCU), backed by C srcu_=
+struct.=0D
+> > >> > Provide FFI helpers and a safe wrapper with a guard-based API for =
+read-side=0D
+> > >> > critical sections.=0D
+> > >> > =0D
+> > >> > Cleanup is handled via `PinnedDrop`, which explicitly drains pendi=
+ng grace=0D
+> > >> > periods and callbacks via `synchronize_srcu` and `srcu_barrier` be=
+fore=0D
+> > >> > executing `cleanup_srcu_struct` to guarantee memory safety e.g. wh=
+en there=0D
+> > >> > are leaked guards (via `mem::forget($guard)`).=0D
+> > >> > =0D
+> > >> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> > >> > ---=0D
+> > >> >  rust/kernel/sync.rs      |   2 +=0D
+> > >> >  rust/kernel/sync/srcu.rs | 166 ++++++++++++++++++++++++++++++++++=
++++++=0D
+> > >> >  2 files changed, 168 insertions(+)=0D
+> > >> >  create mode 100644 rust/kernel/sync/srcu.rs=0D
+> > >> > =0D
+> > >> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs=0D
+> > >> > index 993dbf2caa0e..0d6a5f1300c3 100644=0D
+> > >> > --- a/rust/kernel/sync.rs=0D
+> > >> > +++ b/rust/kernel/sync.rs=0D
+> > >> > @@ -21,6 +21,7 @@=0D
+> > >> >  pub mod rcu;=0D
+> > >> >  mod refcount;=0D
+> > >> >  mod set_once;=0D
+> > >> > +pub mod srcu;=0D
+> > >> >  =0D
+> > >> >  pub use arc::{Arc, ArcBorrow, UniqueArc};=0D
+> > >> >  pub use completion::Completion;=0D
+> > >> > @@ -31,6 +32,7 @@=0D
+> > >> >  pub use locked_by::LockedBy;=0D
+> > >> >  pub use refcount::Refcount;=0D
+> > >> >  pub use set_once::SetOnce;=0D
+> > >> > +pub use srcu::Srcu;=0D
+> > >> >  =0D
+> > >> >  /// Represents a lockdep class.=0D
+> > >> >  ///=0D
+> > >> > diff --git a/rust/kernel/sync/srcu.rs b/rust/kernel/sync/srcu.rs=0D
+> > >> > new file mode 100644=0D
+> > >> > index 000000000000..343f00d070c7=0D
+> > >> > --- /dev/null=0D
+> > >> > +++ b/rust/kernel/sync/srcu.rs=0D
+> > >> > @@ -0,0 +1,166 @@=0D
+> > >> > +// SPDX-License-Identifier: GPL-2.0=0D
+> > >> > +=0D
+> > >> > +//! Sleepable read-copy update (SRCU) support.=0D
+> > >> > +//!=0D
+> > >> > +//! C header: [`include/linux/srcu.h`](srctree/include/linux/srcu=
+.h)=0D
+> > >> > +=0D
+> > >> > +use crate::{=0D
+> > >> > +    bindings,=0D
+> > >> > +    error::to_result,=0D
+> > >> > +    prelude::*,=0D
+> > >> > +    sync::LockClassKey,=0D
+> > >> > +    types::{=0D
+> > >> > +        NotThreadSafe,=0D
+> > >> > +        Opaque, //=0D
+> > >> > +    },=0D
+> > >> > +};=0D
+> > >> > +=0D
+> > >> > +use pin_init::pin_data;=0D
+> > >> > +=0D
+> > >> > +/// Creates an [`Srcu`] initialiser with the given name and a new=
+ly-created lock class.=0D
+> > >> > +#[doc(hidden)]=0D
+> > >> > +#[macro_export]=0D
+> > >> > +macro_rules! new_srcu {=0D
+> > >> > +    ($($name:literal)?) =3D> {=0D
+> > >> > +        $crate::sync::Srcu::new($crate::optional_name!($($name)?)=
+, $crate::static_lock_class!())=0D
+> > >> > +    };=0D
+> > >> > +}=0D
+> > >> > +pub use new_srcu;=0D
+> > >> > +=0D
+> > >> > +/// Sleepable read-copy update primitive.=0D
+> > >> > +///=0D
+> > >> > +/// SRCU readers may sleep while holding the read-side guard.=0D
+> > >> > +///=0D
+> > >> > +/// The destructor waits for active readers and callbacks, so it =
+may sleep.=0D
+> > >> > +/// If a read-side guard has been leaked, dropping an [`Srcu`] ma=
+y never return.=0D
+> > >> > +///=0D
+> > >> > +/// # Invariants=0D
+> > >> > +///=0D
+> > >> > +/// This represents a valid `struct srcu_struct` initialized by t=
+he C SRCU API=0D
+> > >> > +/// and it remains pinned and valid until the pinned destructor r=
+uns.=0D
+> > >> > +#[repr(transparent)]=0D
+> > >> > +#[pin_data(PinnedDrop)]=0D
+> > >> > +pub struct Srcu {=0D
+> > >> > +    #[pin]=0D
+> > >> > +    inner: Opaque<bindings::srcu_struct>,=0D
+> > >> > +}=0D
+> > >> > +=0D
+> > >> > +impl Srcu {=0D
+> > >> > +    /// Creates a new SRCU instance.=0D
+> > >> > +    #[inline]=0D
+> > >> > +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKe=
+y>) -> impl PinInit<Self, Error> {=0D
+> > >> > +        try_pin_init!(Self {=0D
+> > >> > +            // INVARIANT: On success, the C initializer creates a=
+ valid `srcu_struct` and=0D
+> > >> > +            // it remains pinned until `PinnedDrop` runs.=0D
+> > >> > +            inner <- Opaque::try_ffi_init(|ptr: *mut bindings::sr=
+cu_struct| {=0D
+> > >> > +                // SAFETY: `ptr` points to valid uninitialised me=
+mory for a `srcu_struct`.=0D
+> > >> > +                to_result(unsafe {=0D
+> > >> > +                    bindings::init_srcu_struct_with_key(ptr, name=
+.as_char_ptr(), key.as_ptr())=0D
+> > >> > +                })=0D
+> > >> > +            }),=0D
+> > >> > +        })=0D
+> > >> > +    }=0D
+> > >> > +=0D
+> > >> > +    /// Enters an SRCU read-side critical section.=0D
+> > >> > +    ///=0D
+> > >> > +    /// Leaking the returned [`Guard`] leaves the SRCU read-side =
+critical=0D
+> > >> > +    /// section active and makes `drop` sleep forever.=0D
+> > >> > +    #[inline]=0D
+> > >> > +    pub fn read_lock(&self) -> Guard<'_> {=0D
+> > >> > +        // SAFETY: By the type invariants, `self` contains a vali=
+d `struct srcu_struct`.=0D
+> > >> > +        let idx =3D unsafe { bindings::srcu_read_lock(self.inner.=
+get()) };=0D
+> > >> > +=0D
+> > >> > +        // INVARIANT: `idx` was returned by `srcu_read_lock()` fo=
+r this `Srcu`.=0D
+> > >> > +        Guard {=0D
+> > >> > +            srcu: self,=0D
+> > >> > +            idx,=0D
+> > >> > +            _not_send: NotThreadSafe,=0D
+> > >> > +        }=0D
+> > >> > +    }=0D
+> > >> > +=0D
+> > >> > +    /// Waits until all pre-existing SRCU readers have completed.=
+=0D
+> > >> > +    #[inline]=0D
+> > >> > +    pub fn synchronize(&self) {=0D
+> > >> > +        // SAFETY: By the type invariants, `self` contains a vali=
+d `struct srcu_struct`.=0D
+> > >> > +        unsafe { bindings::synchronize_srcu(self.inner.get()) };=
+=0D
+> > >> > +    }=0D
+> > >> > +=0D
+> > >> > +    /// Waits until all pre-existing SRCU readers have completed,=
+ expedited.=0D
+> > >> > +    ///=0D
+> > >> > +    /// This requests a lower-latency grace period than [`Srcu::s=
+ynchronize`] typically=0D
+> > >> > +    /// at the cost of higher system-wide overhead. Prefer [`Srcu=
+::synchronize`] by default=0D
+> > >> > +    /// and use this variant only when reducing reset or teardown=
+ latency is more important=0D
+> > >> > +    /// than the extra cost.=0D
+> > >> > +    #[inline]=0D
+> > >> > +    pub fn synchronize_expedited(&self) {=0D
+> > >> > +        // SAFETY: By the type invariants, `self` contains a vali=
+d `struct srcu_struct`.=0D
+> > >> > +        unsafe { bindings::synchronize_srcu_expedited(self.inner.=
+get()) };=0D
+> > >> > +    }=0D
+> > >> > +}=0D
+> > >> > +=0D
+> > >> > +#[pinned_drop]=0D
+> > >> > +impl PinnedDrop for Srcu {=0D
+> > >> > +    fn drop(self: Pin<&mut Self>) {=0D
+> > >> > +        let ptr =3D self.inner.get();=0D
+> > >> > +=0D
+> > >> > +        // SAFETY: By the type invariants, `self` contains a vali=
+d and pinned `struct srcu_struct`=0D
+> > >> > +        // and `srcu_readers_active()` only checks the active rea=
+der count.=0D
+> > >> > +        if unsafe { bindings::srcu_readers_active(ptr) } {=0D
+> > >> > +            crate::pr_warn!(=0D
+> > >> > +                "Leaked `Guard` detected while dropping SRCU; dro=
+p will block forever.\n"=0D
+> > >> > +            );=0D
+> > =0D
+> > I think this could be a `warn_on` similar to how cleanup_srcu_struct ha=
+ndle the=0D
+> > condition.=0D
+> > =0D
+> > >> > +        }=0D
+> > >> > +=0D
+> > >> > +        // `cleanup_srcu_struct()` may return early if readers ar=
+e still active. Because `Srcu`=0D
+> > >> > +        // owns the embedded `srcu_struct`, returning from `drop`=
+ in that state could free memory=0D
+> > >> > +        // that is still referenced by the C side.=0D
+> > >> > +        //=0D
+> > >> > +        // Wait for all readers to complete first. If any `Guard`=
+ was leaked, `synchronize_srcu()`=0D
+> > >> > +        // will sleep forever.=0D
+> > >> > +        //=0D
+> > >> > +        // SAFETY: By the type invariants, `self` contains a vali=
+d and pinned `struct srcu_struct`.=0D
+> > >> > +        unsafe { bindings::synchronize_srcu(ptr) };=0D
+> > >> =0D
+> > >> Sashiko got a good point here which is calling synchronize_srcu() on=
+ly if there=0D
+> > >> are active readers. That's a nice low-effort improvement we can have=
+ in the next=0D
+> > >> version.=0D
+> > >> =0D
+> > >> Onur=0D
+> > >=0D
+> > > Actually, now I am now thinking about whether we can come up with a b=
+etter=0D
+> > > approach when we detect leaked guards. Initially I came up with the=0D
+> > > synchronize_srcu() solution because it would handle leaked guards aut=
+omatically=0D
+> > > without requiring any additional checks. But now that we can actually=
+ detect=0D
+> > > whether guards are leaked the question becomes:=0D
+> > >=0D
+> > > 	"Is there a better option than effectively sleeping forever when lea=
+ked=0D
+> > > 	 guards are detected?"=0D
+> > >=0D
+> > > I have no plans for tomorrow other than finalizing this series includ=
+ing the=0D
+> > > question above.=0D
+> > =0D
+> > The best solution is to proceed cleanups anyway, given Rust rules ensur=
+e that=0D
+> > these are actual leaks and not just srcu read-side critical section tha=
+t failed=0D
+> > to synchronize with the destruction of SRCU.=0D
+> > =0D
+> > This obviously require changes to the SRCU code though.=0D
+> =0D
+> Right now, the C-language SRCU code would splat and leak the srcu_struct=
+=0D
+> structure.  Of course, we *could* provide something that zeroed the=0D
+> reader counts to avoid the splat and leak, but yikes!  Or is there a=0D
+> way to make such a function available *only* to the Rust code associated=
+=0D
+> with cleanup_srcu_struct(), and not to other C/Rust code?=0D
+> =0D
+=0D
+=0D
+Anyone can use them if they want from `bindings::` once it's exposed to Rus=
+t.=0D
+=0D
+Regards,=0D
+Onur=0D
+=0D
+> 							Thanx, Paul=0D
