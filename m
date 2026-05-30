@@ -1,146 +1,153 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012071.outbound.protection.outlook.com [40.93.195.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E5A2773DE;
-	Sat, 30 May 2026 05:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780120531; cv=fail; b=sx6rGHJX3zCfQi2QqQB9BUTFPsxqfuxef8s74Rv/oprY2vZUQJsKloRAn0VRimaRNFtGhnkneR+nF05uQRY/Hi5foFBdDGx3WW8HuxwpJQqGc3YVYmAPlEuGDl783Zuty0Z7NcDPlE3fAm57/+3BO2+Kt/sDonWgflVewS7kBNs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780120531; c=relaxed/simple;
-	bh=TAz2zvGqp4W9gflKR9K51uUXvpO5cj+ruC1rR7Z5qvk=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=NFfxsPe6U+iKaenQMlyC4m1Ox/7Xev/e//TZ5abnwyAka7/Sh7b2plT/XcbUy30KhhpJoqTfJgbmU76SitHoLJvc2Gd1FprqXCvnHKtlPPfx+A0tv/fHkGGhLIm2nWrGfdNEncjpZY8EXCNmzDUlgB87JNQfp1CAUPARDheIstU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WyGFlOXt; arc=fail smtp.client-ip=40.93.195.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WyGFlOXt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Go9S8TikN8pS5SrgudLfI4u8OKzeGYEyGdAkVoIvK3RUuWfbcQWE6TIceBlxKqZAEXUzuL1OPWAUK94NY+rEMgRsnu2a/dK7H9uVUakVBCmVh7XD4a4rpTO2pxmzpZM8NUVjpEi1vCvLQ4ADMzeweUcM/1o85h/2gIlc3FjqHEhw+5OaHSXNtyob2g9deXKay7o+Ds7hkjMVAW8dnWamyvsf75herR8hBo/+9Dv2K4n1LLog8N/yns1Okp7TFDcctU9vqzCvDieKlRi4kg550sikH+mt5NHZX2k80tCZwuYrEg76XgFDcKtdNA86nDmq4d1eVK9OyMyAUvljmxcS3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JvsUHZoSFLmMPz7eJkKMQpQNML4MiJ0C4p/IbdN4QkM=;
- b=vF2XxGcu7IK1VcQJkYvJcLmZTp8UgEeEcPLJ4kWSfMoD+csO7R81wdDAKsBqofYTkqGcOc/DIz3aBZ2i5ALSRVilyq293q5pLdsA0EYs8DMkdqYHabf0XaB9B8Vd0ztEKFmE2jkZE1Jj+Ixwh4mhR1DUFu3xukvR/fuAI2AnEgR3wdDEH4FfOIP1nKtsO3st9fi32gA7fzolORQMhVVM710UVVnCpNfdtvVTRmIUB9SvDEmO8dmVcrOTicpYw+SgyWrCzN1vb0pVVnekxNWv/FMjk94JQe0Gn2lA2s/uSuWvKWngsotZgaGMZPCe8ZqKx5LJqfVhvWpviFfcSNeXAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JvsUHZoSFLmMPz7eJkKMQpQNML4MiJ0C4p/IbdN4QkM=;
- b=WyGFlOXtFH7aUNc75Lh9zoMC1Ccm+FbboNWPRyYlCdZyrnOfPiw+dbxDUWyExoAjevoWYl28vF/Tdm8AGrXQE2KKCdnKZCVFGGqZAuMSXbc1qihL9SdetWnNpcSESHpLcPe1Vr1rcP2oZHeyJVrbXetwF6/kS5M1vXWPM1+Gel/roe4VtKB7qs81ywmJgD5jDKrYykQjZp4aIJu35Sfe7e9iaNEPCpHR6w08ksh4LM92n5N9DAktMr0YBIzCdXGdsACewvFu6kwyGTEpjbiCDZyC+JFqz0mzMBRv2AeO4QpeCYdx4CHrcabH5KMr59Z7N4F17c+3MWWHKusPyDEQfw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH7PR12MB6694.namprd12.prod.outlook.com (2603:10b6:510:1b1::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Sat, 30 May
- 2026 05:55:25 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0071.011; Sat, 30 May 2026
- 05:55:24 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 30 May 2026 14:55:20 +0900
-Message-Id: <DIVS25D4TZQS.10FHBKSEU4SPF@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>
-Subject: Re: [PATCH v7 0/4] gpu: nova-core: run unload sequence upon
- unbinding
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>
-References: <20260529-nova-unload-v7-0-678f39209e00@nvidia.com>
-In-Reply-To: <20260529-nova-unload-v7-0-678f39209e00@nvidia.com>
-X-ClientProxiedBy: TYCP286CA0030.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:263::20) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.175.55.52])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C8F261B71;
+	Sat, 30 May 2026 06:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.175.55.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780121548; cv=none; b=jLVZDe55SBcsJ8EQcZ3oDM1pLbBR55hrObZl1eriU0kJLVpjbj1t9DM64hiYZfXvmf92ca6MV8cVzfFUQ+wgtoAjanF0Wajmbi/cZMGTLRlor6XOLa8qVgWKFmwLJvV+7zxtp54Ybgf6v9mNSwFaA9h9vDDkozRftuQ7um8uzy4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780121548; c=relaxed/simple;
+	bh=7ouJQbjnkf4ajwlrMpoph4gL41YDuMTIoHaBSseSOHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JBaagqpWJ9xoZPQrQDYdv1/SqgLDksi1rON4GJEvH5qjZl2PPtdQfrjW6Fi4TuXyXL2AOObdrBbzUM23hvc5jAUNSj2pg9Hdx0r+1ZI3+a+xW7J7kKvIKrnGuJDkUCA+NxmF0Z+9ltjtV+VjCkF11KVSH3OVmbycG2G93zCkiio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=52.175.55.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019.coin-barley.ts.net (unknown [172.23.56.36])
+	by app3 (Coremail) with SMTP id ywmowAA3dv66fxpqXeQOAA--.28177S2;
+	Sat, 30 May 2026 14:12:10 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	axboe@kernel.dk,
+	tamird@kernel.org,
+	sunke@kylinos.cn,
+	yuantan098@gmail.com,
+	bird@lzu.edu.cn,
+	royenheart@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH rust-fixes v3 1/1] rust: block: fix GenDisk cleanup paths
+Date: Sat, 30 May 2026 14:11:54 +0800
+Message-ID: <b70aff9a920cc42110fe5cf454c3099561863519.1780063368.git.royenheart@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB6694:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89d770ad-0a50-4913-21a0-08debe100ac6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|18002099003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	fp92J33v84J7hnrWWvU+lORmGUHqTyMfXByP9tJ4gShLXb7YD3Bydidjd3CmqYOlhbVrDMruvwTmaUdGG9y4HeSDo/8izWZPUW7CIqfolRbfzx/ZbfC0T3bH7Ud3UNo3a06jj5Y2EQma5TZlEAtTk7Rs0N9sQ6vhjdZl/JzqiFsZS5ntc7b9GTnkm0RWWIgs3rl0yVdo4CAEQKHJg2QApXieUskZhMrXJSxjt+amdhhrXtcWXDVC9tpfZK+uswfk5W4VdQEmXPFlZBM8LXp/3QIHfwWzEklcFNwMGLjvMlRRPcIZ5aADZaph67mT715ZnRi5eRkw4qzW/RjsRYLqk4gzDZqAFKL3924ZYWAzT2pINBZpkpNg/ZFUqAo4+0jEUdMA6NEXaSlUz2FHFt/zfZaN0dV86V741UORC18SY8I7xzFxx3SJOrlY8+mLAPtnU33pkrSyFO9Ir/zIIlkqdVlD5b02IZp+5MUUoK2I2zRMWdXTc4doy0Ig0dk2AIVbDY+Q2Mh/3c3/7hb45Z8A32D68cezrcfbQ1Sr50W3yL3VM22pEqAOavwz3Ouh59FynYrBZZ+pHKRBv+bRxatYgfsye4n6EunulcC69Ti1H8RPQY9YSq+x7aU/Dqs8BDvJv1ioih/OoSGsfzerV38vkIbdG48cgVyak4mbPITvYtkRORAoKegeHn02gYFHQrmVFzNBYBbEMBbWz40w/NsOIQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WTgwY205UDlUTkZndzhQMVkrQXlmT0VCMk1aVCt1MDM0MU51MTh5MTZSK3ND?=
- =?utf-8?B?RDNlZGQvUy9oWEQ4UVZkT1RmeUNRQnJiOWRqVEw2YUcxK3lLYlR4MHoyK0R2?=
- =?utf-8?B?OHpqT2pPYlYxTE5MbjV1Q0lPcThVL2NRdEtUYkcwaE9vbHlMMFVma0F5TllL?=
- =?utf-8?B?UGRSSG9KMTJuL0FnYitSSzlQYjNHWlhpaUxQN08yOVJ6bnZjd1BEYnROWmor?=
- =?utf-8?B?ZU05MGtHTUt0d3c5em0ycGhHOWVmZzJpcUVQYys2b2lJOXBpOHprRlhRYkZO?=
- =?utf-8?B?ZmJ1dEdzdHoyYzJwTXVtN1FEdVE5WEl2RTcxcm1PYldpdHZNQVh2eFkyTlc0?=
- =?utf-8?B?b3doWmJsb1F0UlNBYTlsenFhR0Q4UFg4dHVTSG4wQ3B5UTJWS2Z5UXgxTGtq?=
- =?utf-8?B?eXIwSUx6YnhmZDhuV21jcmoreHRUbTNYQnhqZGRZbHFQVVhZUzVpbFJodlYr?=
- =?utf-8?B?dEQ1UVgrUWZad2crMDYzWXdZL1JLdU50c1lnckRLVG1TcGtnOGdNQWltemdE?=
- =?utf-8?B?OExUeDZGeVo5Sy8yWkNMSmhVbFNNdmFzQ2FXKzY1MGF0SlJadWUrSGF6V2k4?=
- =?utf-8?B?ZHIvTnJQcHFrNmI0L3kvRUF1bEt4R2hjc0RLWjhuWnRqcGRQWVpnWld2QVRk?=
- =?utf-8?B?clY2MkdhVDQ2TzVXQTNYRW84MWxiYlkxVHVlR1czQmtXb1E0QmdBMDZLekJQ?=
- =?utf-8?B?OTV4ZEZaVnBwVkVvMk1YZVNCRUpSTkZabDBIZnkwY1ZDRjd1My9yRjRZZG8r?=
- =?utf-8?B?OHp5dnRQckxSSmh0c2JNb0l2WU1SeGJReE1ONU50U1FjeTd5cXpGeFRPT0ZK?=
- =?utf-8?B?K1ZFRFd3L0xKeStNUlhKaldxUCttTFN5K09ZY1ZnTXowMUZzYnFPV3VaMVlj?=
- =?utf-8?B?T01iSlZkRk50OHFybm0zeVM1MjloRnZ0dXk2VVA5NU1JVXBBWUtBWFFVVWs3?=
- =?utf-8?B?Nm80RUpBMmZnaWsrblh0S2dJT29SZnJLNWFzMGZtN2gxUEZ0Wm5MYkc2TEkr?=
- =?utf-8?B?Wi80WWxiZ2l4NXVyUUpLTk54TDZ2SkdLcGp6eXFEaVFDR2MrTnc1YlVmNVEy?=
- =?utf-8?B?a3psaEhucE82NTFib2h1U2Q5Q2NqUWtLQ1hJSXFwNWxyUDNpUTlZOFZ6aUdD?=
- =?utf-8?B?SVdCdHlzU3h6MXRpdzFhZHptUzFsZ3BsMWw1d2w2YU1sU3VYYWJMTlJoRnhp?=
- =?utf-8?B?SW9iNUJvditXZ1lEUW5SNzd0NUxJRkFxWVlQQVBNMkpUNTNMa2Q1Z1RvQldp?=
- =?utf-8?B?YVYwY1gwUi9wNTNWRDh6Sk5vMFAzbnVQTVB0eU1HZzFWdzMxaGdaeFc4KzJU?=
- =?utf-8?B?R3NzK0lJeDlNUjBlTTEvL1ZjdllKdDR0bjF3eExpUEhmKzRQVjkxaGh3R2NI?=
- =?utf-8?B?ZWR4a0RoL1dIT2RoZFhQMlB2Y1NucHgrNHNUN1BiRnlzcUR0VzRXRmx1UW15?=
- =?utf-8?B?a2NScmg1WFpUUFNaRG8wcndrOUxsSEV4WVBvaDQyamtlNWVXZEpFVUhqSS9G?=
- =?utf-8?B?c3cyYy9wZkJVZHRMNkhJZU83NExvRHpEQ1hNUzBVaVFxQjFtay9Zcmt1N3lq?=
- =?utf-8?B?TUJMOTBVR05EYXhPeEc0dCtBdVJGYm5uZVdrRmN3dTBDRW1DTFRrOTAreTIy?=
- =?utf-8?B?Rk8zSzhYSnBRWjBRVDYrWWw0Mmc1NnlqSnRVU2hUa2dGMVp2cXBTdi9JOG8z?=
- =?utf-8?B?NE5BVmNESjdzeHNLYXRtTVZQcG84RENoNEQwRzhUQXVOdGsyK1ljangrOFJQ?=
- =?utf-8?B?UzBjdmxKZmFidFlURFpuMXZ6NVgzV09jcEJzQWpiSzYvSDRFWGREMlBQWUpw?=
- =?utf-8?B?c0p0Z1N4NUQ0K1U2bXFWeElnbVE5UGFqMlFlUVIwdExuTzdnU0tuRG9tLzdY?=
- =?utf-8?B?TUZBNWJaYSszclRjM1NUQlNmWE9LS1lpRTlESnlzTGRFb2w4TlJTTFBoZGJu?=
- =?utf-8?B?WjlTWmVUS29DaEVBdFVKQnVibnUzNTlvVTVwMGJOTW9URm9BUVdSYUNZaDBI?=
- =?utf-8?B?ZzVVTkE5UDlvM0FqQ0pqRTNKNzdXSmxOL0hkMGROZkdlVm9ObXRMeWFobWpW?=
- =?utf-8?B?cklpQytxTUdIZVhRbUVYcnNvd1hjWDF3T0cvWTVxaUdpek0yL3paRFhubDE2?=
- =?utf-8?B?SmpkWVB6dHJaemhyQWJBdEZZTDREbzYwQW1BV0pnc054WkJxa2IwUkFuWUU2?=
- =?utf-8?B?cHQ2QnZ1UEN3UjU5YlFxMFlEelQwb012dCs4RzRWbTR3Vm9VRXk5ZS9DclI3?=
- =?utf-8?B?V0tUU2RwRXErUTJuY0VXZlByVHNFTGZLdTZxcFVISHZRVlFma2JXRVRibjkx?=
- =?utf-8?B?ckFKZzdSVUxMZWpPNDdvbEc0cFdFRUpVZ1hmaUpWS0Nzc2NWbE41enJwS1d2?=
- =?utf-8?Q?181FO27z9C+UmcItGg79RnhflpTwEeqRQbgUg/LyQdWv9?=
-X-MS-Exchange-AntiSpam-MessageData-1: QEesZLT07mmu7g==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89d770ad-0a50-4913-21a0-08debe100ac6
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2026 05:55:24.5682
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tqiHpa8rq/XsYjiaOtqGybjoVQiZi96x47LwOatH2tK3fBoBmh1od4Ko4nfCax6f1EM9msa/JmHHGPIn3x7iBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6694
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ywmowAA3dv66fxpqXeQOAA--.28177S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXFy5JF43ury8CrWDJryfCrg_yoWrGFW3pr
+	WrWws0krWkKFn7tF4UArW7Zry8Gw1kG34rJa98C34a9F98Jrn7XrsYgF43ZFWDJFs29rZa
+	qay09rW2gr1rAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2
+	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVW8ZVWrXwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8V
+	W8GwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRpOJnUUUUU=
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQsDCWoZTE8LOwABsB
 
-On Fri May 29, 2026 at 4:33 PM JST, Alexandre Courbot wrote:
->       gpu: nova-core: gsp: move chipset-specific parts of the boot proces=
-s into a HAL
->       gpu: nova-core: send UNLOADING_GUEST_DRIVER GSP command upon unload=
-ing
->       gpu: nova-core: run Booter Unloader and FWSEC-SB upon unbinding
->       gpu: nova-core: gsp: run the unload bundle if Gsp::boot() fails
+From: Haoze Xie <royenheart@gmail.com>
 
-All pushed to drm-rust-next (after s/Result<()>/Result)! Thanks for the
-reviews.
+GenDiskBuilder::build() still has fallible work after
+__blk_mq_alloc_disk(), but its error path only recovers the
+foreign queue data. That leaks the temporary gendisk and
+request_queue until later teardown. If the caller moved the last
+Arc<TagSet<T>> into build(), the leaked queue can retain blk-mq
+state after the tag set is dropped.
+
+Fix the pre-registration failure path by dropping the temporary
+gendisk reference with put_disk() before recovering queue_data,
+so disk_release() can tear down the owned queue.
+
+Also pair GenDisk::drop() with put_disk() after del_gendisk().
+Once a Rust GenDisk has been added with device_add_disk(),
+del_gendisk() only unregisters it; the final gendisk reference
+still has to be dropped to complete the release path.
+
+Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Haoze Xie <royenheart@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+Changes in v3:
+  - Add the requested blank lines around cleanup blocks for readability.
+  - v2 Link: https://lore.kernel.org/r/e14c015e2e0bde04f84a9452330b94436e2d8e68.1779901336.git.royenheart@gmail.com
+Changes in v2:
+  - Add the missing put_disk() after del_gendisk() in GenDisk::drop(),
+    as suggested by Andreas Hindborg.
+  - Keep the GenDiskBuilder::build() failure cleanup fix and fold both
+    lifecycle fixes into one patch.
+  - v1 Link: https://lore.kernel.org/r/b6411cc055080c984a67bfad72fd683aa84b8e13.1779596478.git.royenheart@gmail.com
+
+ rust/kernel/block/mq/gen_disk.rs | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 912cb805caf5..fc97dd873974 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -150,6 +150,19 @@ pub fn build<T: Operations>(
+         // SAFETY: `gendisk` is a valid pointer as we initialized it above
+         unsafe { (*gendisk).fops = &TABLE };
+ 
++        let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
++            // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
++            // has not been added to the VFS on this cleanup path.
++            unsafe { bindings::put_disk(gendisk) };
++            // SAFETY: `data` came from `into_foreign()` above and has not been
++            // converted back on this cleanup path.
++            drop(unsafe { T::QueueData::from_foreign(data) });
++        });
++
++        // The failure guard now owns both pieces of cleanup; the early guard
++        // must not run on this path anymore.
++        recover_data.dismiss();
++
+         let mut writer = NullTerminatedFormatter::new(
+             // SAFETY: `gendisk` points to a valid and initialized instance. We
+             // have exclusive access, since the disk is not added to the VFS
+@@ -172,7 +185,7 @@ pub fn build<T: Operations>(
+             },
+         )?;
+ 
+-        recover_data.dismiss();
++        cleanup_failure.dismiss();
+ 
+         // INVARIANT: `gendisk` was initialized above.
+         // INVARIANT: `gendisk` was added to the VFS via `device_add_disk` above.
+@@ -215,6 +228,11 @@ fn drop(&mut self) {
+         // to the VFS.
+         unsafe { bindings::del_gendisk(self.gendisk) };
+ 
++        // SAFETY: By type invariant, `self.gendisk` was added to the VFS, so
++        // `put_disk()` must follow `del_gendisk()` to drop the final gendisk
++        // reference and trigger the remaining release path.
++        unsafe { bindings::put_disk(self.gendisk) };
++
+         // SAFETY: `queue.queuedata` was created by `GenDiskBuilder::build` with
+         // a call to `ForeignOwnable::into_foreign` to create `queuedata`.
+         // `ForeignOwnable::from_foreign` is only called here.
+-- 
+2.47.3
+
