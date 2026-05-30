@@ -1,156 +1,121 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900923932E7
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 07:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780126868; cv=pass; b=BBAaFm6w79qfbQ1rOQo56Vkt1wGwlJQ4k2dLMVR5M04t0QkbpOOCPhRtzCVPYUBB23LAlrRIQj5sIbUTGBqzk7oi1+o7BwmZfE9hwYe/uEeY9I81Q3ZXWpDvSrLO1mTSiHRKDw2+1G0RNDyFrj6JBBlwcoU18wNXcvJ0s7mru0c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780126868; c=relaxed/simple;
-	bh=L3UEWLmXReuYoCrmgUMxQKkIqL6gBhu9SHlnPE1kURQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j8266nBkB07xELweBw2MrVfovyNakDuw/h2rj3tXe2URYXw6F3xjfrHymwrj5D4G+p9OYrHrZXqrsZI7BkTlr+MFEvVW/zn1+pj7CPAPUJsJvzUgwJJmZmDTpIJM35GBIHGml1LLCVXPYBUo4b4VCeIFR6z+7sApCtrkFFE5tJ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6zdXdOH; arc=pass smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C463955DC
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 08:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780131523; cv=none; b=iObpcIMZx4WrwJhISb0OWlKEwrMo/Lr+p64IoAJyvNE/TczLJMFvpHt2MO3bZKmV/ULfg5JDF4Uv8xoOAHYVrgw6v/aMLLMDTrXKepl1RUv7h4ueqq5Ns7ZJIKl5F2ILksVBX0iHgXPUOurRU78j2vjVK+Oka/vBpQJ6F6Hsqfc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780131523; c=relaxed/simple;
+	bh=XRJSf3ftIv03/qui+8SqaGNF84m2IEKZj5de66SRlhA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ky6MXhuzKDugBtRfq53xBepo+RxCA4qGa4HM/IsUe6KXcrD+VC++M55FEmHgCsQ5K427w2yeqNZ5klidB5ecsgy7SL5wuP7LUT2uKZaOCVlwyiM6f/E1MsT4DgVrhCB/wejpdJRQMoSYzGXGtYP2JyjFOWBX46u+a/y+QujBK+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cB6ncJX0; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6zdXdOH"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-134a84f0aa7so551963c88.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 00:41:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780126866; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Rt2Qifv66IY6T8fZFoDSdvHXVA66v5kiJfOp6CvtCzFsN9MsncWxAZe6J/1CU2TdI+
-         6KKLR+u0aVE06E/VbXhj7np1Z73DcLCzvEhIiTznkT/xIGjQr5S9ULgcKIMUK5JphQOR
-         PF2MEru0tQ8puGszo1Tx+cs0QRecsMXUutBW350r029DrcbDe2bQQHttrLLeoa6qin5C
-         bbl08TqMfvJt5MJvxzAGzyngLtpaB4JyDTa7EPDKaIesz70SQQHzeTQdAgJKFb2U63zy
-         i7p2ZAaEjwq54M5VKSRQ4qu8Tfj+axcC5ByL/ZIPq/KwUIQdGT9TVk1ya+6GGd5PNIMR
-         WJ1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Qpr9VE3elbZ+vLOG6raofIn6zipcaovFd851fDkQwe4=;
-        fh=rODWTdyFLkGljgvvPfFc7/+5AMQGQnrXUwnDyJ1ivHY=;
-        b=d37+ZBALvp1UxzfpSYgNb0xb4ejjlWWZVw+RGkLZc9SxBlQTQ/FxCONNFnQxwiIVSt
-         jq5pPtdbttl0MJTP8KB4ZDWxPqoJ58xIqMR2NcwMEJa77LQ3bR2jLqlH7tdsHjKeeJO9
-         AiS3kVPjGOszNINvkjTmDhkmP/Fw4yC5TOuRjqSbk4d+g6iOIBsLIGuABpNUHU/Eqv/z
-         06d8AnxRvdGGk32wJ3gRBRdPSiAH6cWWED5sZHRR212RJjeI0pX08rGGHGY73vhHhMKb
-         L7ZjOlfKWuA2oeDwsT0WOjP5ks1O0k6Ma3REIyOROq/pGA2fSzT9HzuyJEkk68ugndMj
-         f8eg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cB6ncJX0"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-45eeba68948so1781822f8f.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 01:58:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780126866; x=1780731666; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qpr9VE3elbZ+vLOG6raofIn6zipcaovFd851fDkQwe4=;
-        b=S6zdXdOH6Uvp4Nn7whRLu2u8b3L3jP76XleCLwCZ66wt/9ccL6g+35HzCVWSgzJCtW
-         Lw0MjUjz6bb/WDpnFow47nITnn24qZPYlNHbDKKZMvixVIkdJERWtXNEh1UmsQKlgDMY
-         +gfXL9cqPuaZbyVwOvmRlduejoVbPmUVVRAGhqgWjuJUFvYMB9ify3Ebtg7Lp5K7Drcn
-         uFRS3wAzepbqoZSqQ1YU2WcoovwrCFwEFaoHsPdl9iIw3tb8nOqnjVSzsDm33PW0tAyq
-         uXzKnkaAK5UWnMxng6+jAagBfvnbS8I+QZVdoS5puDKEo7ofBC+Sg003nM4qdzWmSgXy
-         iJHA==
+        d=gmail.com; s=20251104; t=1780131521; x=1780736321; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eOj7K5QUJdDs386HYdmbDYGPD84wYNIL17LY6chhIIM=;
+        b=cB6ncJX0i0r29NR5EVFGzi6yHHAqQ8DqatXGIqEll6m4fpYBouGtgZyAN5n65DNWna
+         GeEVGhiT3Qm1KCEAr8K8/p5RVyErlYlBCyZRnNVc1euJFGv8rSvqdFWdx9vx3j5h1vxM
+         pOERyOXpcRb/qAGUzbo9XZF4u8w/6tNqCH5379csBqv7tly9FxnG5u49rJJ0SDZaX0UX
+         MU0ejIESXIiWuFLTQql8EKPJ8/PZinfF+nY7oIn7nmuNf8HZlijvgjqjMo9U0BGZAB7O
+         IC1KR8AeRusNtf7rHXbZ1C0Eh1AWZOfOdlJUNRCkOJzyXvq0IxUxhUZiskv8ls4u7ujL
+         HJIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780126866; x=1780731666;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qpr9VE3elbZ+vLOG6raofIn6zipcaovFd851fDkQwe4=;
-        b=Q+E9laeE5Cng7VCf9JN3STyQuiczKVSrqWd4V3LFvHjxSjBgmCD9lFt4TSr3Pyqqbu
-         sXGRLFk1PecDVJQ52eJzk5UoBmDErNsiQTrXJy5DizWZYkbBnBsHoqOPGDY+SPCLfM1E
-         TkkFV6lztEfqCK+1W85pBqN9HN3s9YyEV1JhzqCEee+3IIF2lbHp9kEYt1F21bqfQTWQ
-         pUn7sNv+ZAQXSPZWtKFUambftotRJQUXhoin9KF8QTL6IUKDhL2XYQgusrUd6b9EscZ3
-         NZDHACRaAek03vPxY/IB/9uY2+7Wj3i3KheFSEPPWiGOKorbUijamHwErcf21bPJq3aM
-         wyUA==
-X-Forwarded-Encrypted: i=1; AFNElJ+X+1vbGBwh23U8EVp14p2+R9PPD/YvfPjLRdO/m4TDKL2IQFCzSu16MRAU9TBWU1bXmDI/+Xz66Ymy/Ww+GA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyZZMU+ZUIa77Vv1buQ30i8R496PqouJasWisnts0oUFECG4tY
-	HgjzSjmKZhaXKQgFs7lF5FswspQJdA3c9k82jekozHP9ILVKH5CyTsdd9AYuX3FGgETwsKy2Erx
-	4pz1k1XyT8DFIZwUft4wsdWw3RoB5DEY=
-X-Gm-Gg: Acq92OFS9x1NcCUtZ8NW/x8vghueBSvD1vbluXzxTLQ2G4Dh4eYpC4WbUenXcTsolCe
-	pLGHIR4juCh3Os9KwMWdiGYXZoXhXWBc27qNXZc8OqCtYhAtpKroNYTC3YoyTVO8PQn/pQoRvFR
-	UzXxH/oWlDYwwt2JgoijayVEIOXix7ERs06amer0xLdxUgVe0JtfyRD1/2IrtZs+v1owMuJQ1de
-	5igs9N4EQi8Lvux0eos0uO4b2ys8HzwJXIY6eOu18Z7yr8uYxliMluSkJKWNo2ZNQ+mLrQDX3eq
-	DRS6IuWP24oGjhiPdillg0EiePcZrhUk7e6K0oKJ21lomo30sMI4d7fF+10BuyuYRio+lm3swG1
-	+uvODfneWcWpeyK2qzd2OwKbxZDp1vOzdgg==
-X-Received: by 2002:a05:693c:2c86:b0:304:3c33:7afd with SMTP id
- 5a478bee46e88-304fa4a75dbmr712153eec.1.1780126865429; Sat, 30 May 2026
- 00:41:05 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780131521; x=1780736321;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eOj7K5QUJdDs386HYdmbDYGPD84wYNIL17LY6chhIIM=;
+        b=FQ4HQ0LAz56YCO7EEf3FYaYQcYTsHM9oX/9EPVf8AvsA8XMW2kqk91/9treCI4X2Lq
+         hsDzFgo4LgwcioKrVUJCY1xnEB50tXY2F8TlT5FHMGoAFdtrpunUe3XoWfeFdsnN2RLI
+         A1e/8NXIrr2uKl0hCCK9tw+Lf/tNROI7AK9/SkfSQzXbWT2C5Q/WhtfVwg27KobIFi7Z
+         d90RIx4zK8YGQyau4cV6mlCIg4HQ8/qAY1M1Kp2ophDUoMpAv97MMHZ0rpeedlBiIN0D
+         iF8PrlogHw3OvVQcHQu6ei//zEtQE9RpbOd9mtgDXQHxW1qpKDOtySvFgrK6xxbYMx0c
+         LVTA==
+X-Gm-Message-State: AOJu0YzkVBWUDegmKka0CrEC5YFxwUoeURrk/zfR5fM5jGhv1FFvP7ds
+	+D71qi7K9l5CDBzQa6Z7+CZZm6TQQpljwjmuBfO4Lwb1F5rre94ginRl3/Tk/R4K
+X-Gm-Gg: Acq92OFCe3OgDCH2x0sv9ztJlknRkCDhDhJDqWLhAeUTbReBY+zKkuwdceHGlimr1sk
+	CeI3K8Ne1XACzR4/aWQiXtiXiw+HLT7lYUtCSYGE6T0ZtnF8UTs/9Ap+ozY4GCJuN/sqLGMyZxc
+	4OBqDN1eB2oO7nm5y/gMqfG+zNww0nTVcemByat9C498f4SeMP9LQE3rwnbdgsQQHYMMN/wZJLj
+	HsnlncPemaNDs2Pv5ULYgAIO/UzCDxZO5APJIp+ytN+YzZoYOr1ZE07X5+fkSXV4cbQ6SVveH8x
+	xAGQZzxd1TySBosOLvnY1+iMUd8vTVmI0OSfMcF21OCMx0yrIQuPcIeg3SJRbcr3dg14zJzpbpa
+	QzS5ZMalcXrZiVn9FuI764GP7rkLEJNymvmrVLiliyod/kdm9+UeRcPGVgNKgjFPEYgUf108wUY
+	YnC6LNKdzs+HQKlo7TqGyJuI7Z9qP9BnMSmD5FrZeYq8q9CwdOcIzMeCk=
+X-Received: by 2002:a05:6000:2213:b0:439:b8b2:fad0 with SMTP id ffacd0b85a97d-45ef6aec74bmr4896282f8f.5.1780131520404;
+        Sat, 30 May 2026 01:58:40 -0700 (PDT)
+Received: from localhost (a89-182-201-132.net-htp.de. [89.182.201.132])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-45ef3559645sm8925833f8f.26.2026.05.30.01.58.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 May 2026 01:58:39 -0700 (PDT)
+From: Sergei Litvin <litvindev@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	Sergei Litvin <litvindev@gmail.com>
+Subject: [PATCH v2] scripts/tags.sh: fix "make COMPILED_SOURCE=1 cscope" command ends up with *.rlib, *.rmeta, *.so filenames in cscope.files
+Date: Sat, 30 May 2026 10:58:21 +0200
+Message-ID: <20260530085821.19689-1-litvindev@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
-In-Reply-To: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 30 May 2026 09:40:51 +0200
-X-Gm-Features: AVHnY4LYzc72_leHtuASvRnfI_XBQ5P_tmJIekDaxm-OGvsoitOo6icCZq7qopI
-Message-ID: <CANiq72ny89rMb9y1ysfbBjm=LVhO=51sRd6Ocpy-UOwFj=61vQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: arm64: set uwtable llvm module flag for CONFIG_UNWIND_TABLES
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, stable@kernel.org, 
-	Bo Ye <bo.ye@mediatek.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
-	Sami Tolvanen <samitolvanen@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 27, 2026 at 8:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> Due to a rustc bug [1] the -Cforce-unwind-tables=3Dy flag only emits the
-> uwtable annotation for functions, but not for the module. This means
-> that compiler-generated functions such as 'asan.module_ctor' do not
-> receive the uwtable annotation.
->
-> When CONFIG_UNWIND_PATCH_PAC_INTO_SCS is enabled, this leads to boot
-> failures because the dwarf information emitted for the kasan
-> constructors is wrong, which causes the SCS boot patching code to
-> patch the constructor in an illegal manner. Specifically, the paciasp
-> instruction is patched, but the autiasp instruction is not. This
-> mismatch leads to a crash when the constructor is called during boot.
->
->         =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->         BUG: KASAN: global-out-of-bounds in do_basic_setup+0x4c/0x90
->         Read of size 8 at addr ffffffe3cc7eb488 by task swapper/0/1
->
-> Specifically the faulting instruction is the (*fn)() to invoke the
-> constructor in do_ctors() of the init/main.c file.
->
-> Once the fix lands in rustc, this flag can be made conditional on the
-> rustc version. Note that passing the flag on a rustc with the fix
-> present has no effect.
->
-> Fixes: d077242d68a3 ("rust: support for shadow call stack sanitizer")
-> Cc: stable@kernel.org
-> Link: https://github.com/rust-lang/rust/pull/156980 [1]
-> Reported-by: Bo Ye <bo.ye@mediatek.com>
-> Debugged-by: Isaac Manjarres <isaacmanjarres@google.com>
-> Debugged-by: Sami Tolvanen <samitolvanen@google.com>
-> Tested-by: Isaac Manjarres <isaacmanjarres@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+When executing the command `make COMPILED_SOURCE=1 cscope`, the `cscope.files`
+file generated by it includes filenames with the extensions *.rlib, *.rmeta,
+and *.so (taken from *.cmd files, which, in turn, are generated from *.d
+dependency files by the `fixdep` utility).
 
-Applied to `rust-fixes` -- thanks everyone!
+Signed-off-by: Sergei Litvin <litvindev@gmail.com>
+---
+ scripts/tags.sh | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-    [ The fix [1] has landed for Rust 1.98.0 (expected release on
-      2026-08-20).
+diff --git a/scripts/tags.sh b/scripts/tags.sh
+index 243373683f98..9a58fed694b7 100755
+--- a/scripts/tags.sh
++++ b/scripts/tags.sh
+@@ -84,15 +84,20 @@ find_other_sources()
+ all_sources()
+ {
+ 	find_arch_include_sources ${SRCARCH} '*.[chS]'
++	find_arch_include_sources ${SRCARCH} '*.rs'
+ 	if [ -n "$archinclude" ]; then
+ 		find_arch_include_sources $archinclude '*.[chS]'
++		find_arch_include_sources $archinclude '*.rs'
+ 	fi
+ 	find_include_sources '*.[chS]'
++	find_include_sources '*.rs'
+ 	for arch in $ALLSOURCE_ARCHS
+ 	do
+ 		find_arch_sources $arch '*.[chS]'
++		find_arch_sources $arch '*.rs'
+ 	done
+ 	find_other_sources '*.[chS]'
++	find_other_sources '*.rs'
+ }
+ 
+ all_compiled_sources()
+@@ -100,7 +105,7 @@ all_compiled_sources()
+ 	{
+ 		echo include/generated/autoconf.h
+ 		find $ignore -name "*.cmd" -exec \
+-			grep -Poh '(?<=^  )\S+|(?<== )\S+[^\\](?=$)' {} \+ |
++			grep -Poh '(?<=^  )\S+\.([chS]|rs)|(?<== )\S+\.(?1)(?=$)' {} \+ |
+ 		awk '!a[$0]++'
+ 	} | xargs realpath -esq $([ -z "$KBUILD_ABS_SRCTREE" ] && echo --relative-to=.) |
+ 	sort -u
+-- 
+2.54.0
 
-      Thus add a version check as discussed.
-
-        - Miguel ]
-
-    [ Adjusted link and comment. - Miguel ]
-
-Cheers,
-Miguel
