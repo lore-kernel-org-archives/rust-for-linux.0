@@ -1,185 +1,264 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020089.outbound.protection.outlook.com [52.101.196.89])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EF5330666;
-	Fri, 29 May 2026 21:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780088736; cv=fail; b=rCdCpoEiHt+Ly0sinP/Sflfqtm8fCsbFh271JZphTmj5Hr0rSShxlg3TsPk2A2b3qOsykXEWU6W0fz2yQG5ku2W9jkZ7V5Lhko5vEvLGrR19BshQSJnP9+0hYMoz3e+s1omx2Va4tUFHDVqsLDKKdIiUTerQA7EDg7F5YxfaRdU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780088736; c=relaxed/simple;
-	bh=e7OzFuGoGP3u6K0VRbkIqGN7beCMNKjU2xEi/CkuB8E=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=jgd4voSjucnnuCqGQXTEGilQBOTiNY/TALhId8UYZvYiPfJDdNsiYs2xYfqcF48W4LZQVMcAHOe5zeZw6fyBz2CzPciHFmaGDTSfzRiGBs2h0fV0qEUpv2L77Yysqt7W5JvTtItvBIcI1dVuVjDkpVPUK7SlVCKTb0hiJw+9K1o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=iBiojZbH; arc=fail smtp.client-ip=52.101.196.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1581A6814
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 01:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780103510; cv=none; b=mKLAb3xobf06CRc8wmaTatcpIGWXQprK069K/cNgh89IBgcur5E+ocK91aI7yaiWu/rl6zGhCx535TWWguE645A7rFGTX9sCS+tLAAS9YNOmt2X2Jg6XCf7s+4Kzi8pO53GBt50bSDxHJSaJ71PFKruSVZ9C5y02HNLUg/9F0m0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780103510; c=relaxed/simple;
+	bh=cIPmenTZ/6OjEpZggOylCPhvLo1J2uxTYs4hRgQgPcA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jawtoIMCf1mDQlA5Wq3WbTkja+QTZvFXlH54TCvClebMOQWNvUF6AdqO4jRX8hyLACO61lzHrB/O0dzH01pqT2d8ZyN9jP+k7kDPQ7mzop7+IKAO17b5VJptnNNFuBhu6eoTVVb2rrvI6VNB67/03KNcnu/23Z7DcX7tAXLwUbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=piypHSL9; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="iBiojZbH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aDDKHp88nvDafx46kGlt0ebkIBnLSHS5zz12muMCsOsnVEwetYVnb391hxQxxdt4JuHNUg6T7BsZgeKwLU15AxQy+b+Y6L6EI/a5+XQFsywneIMvgcARqlxKrijY54Pj7tnvOyrLIsocSf3zAhwJ3AkuJPw2m67imYAWpABkaC07c6jo4gl9CnMBxlguIu9oJjZVAyQzxXyv5XrlZYT6tMAXbAV4TNYls0mT0B5Fsg/pUW3yYaWDU6ewQC420+n0xkqUi4ctBf2i5MS64d93t/Y7hcBqd9Oiasq1dTlq12ShJxPClR/ojAtvFs29OD6sIw17ZOe2gUd3oScPxKvJCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v3HXL3fnaF/rSCXoSOg5Xb8n6E7EvUbF9fGf0ZAEm0M=;
- b=qbycZ8FH4z2LJmmEsyr0N9gfhXg9b00PVf8jE3E5By6XNWXHpSV7NYGnpmrlIl+7wnk71nXVunqNb0Rz+mFXgKNAvBJcGZagHFJ3JEflEPn3uQpBlYjLj2KTKVNAW2Ws4FXtNMCidUVfy+te3HknM4xSpj/lU4Zv7F+BFkhTGU+ZfpSDfYQbnsag683GosM0NEcyUsrzMHU/7K4BoUVKs3zeLpdP1RF9AgqP1mpiqF6vbTowaIJ+fz5WBEbp99pk/5cIbc7xMFS/+DSyNXxg6Zavi1D3TjNdxWQI5mE0DkeyJsMg1eZbIfNmG5zhlTTFbje7Gh9Qyfc5fsRGs9jB/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v3HXL3fnaF/rSCXoSOg5Xb8n6E7EvUbF9fGf0ZAEm0M=;
- b=iBiojZbHB+p2Ur8dW/QPMwZatgR2BakgC5BUw3ppNNGKT5QrfzsHB238UPW65cd9h5r6ExBLUp05LZzUSN/jjPszEbUHBBPvFxCCgcZY1OQtTa0e+4d8pFuQOnfOYffCaKvQzJFa3HL+rodql5otTfPDKVLlYz5OYE4GTrhbVS0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOBP265MB9404.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4bb::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.15; Fri, 29 May
- 2026 21:05:32 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0071.014; Fri, 29 May 2026
- 21:05:32 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 29 May 2026 22:05:32 +0100
-Message-Id: <DIVGSI93PLOE.2UJANKGVF9GWV@garyguo.net>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: pin_init: internal: use `loop {}` to produce
- never value
-From: "Gary Guo" <gary@garyguo.net>
-To: "Gary Guo" <gary@garyguo.net>, "Benno Lossin" <lossin@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260508152950.833635-1-gary@kernel.org>
-In-Reply-To: <20260508152950.833635-1-gary@kernel.org>
-X-ClientProxiedBy: LO4P123CA0347.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18d::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="piypHSL9"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 060FC240028
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 03:11:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1780103500; bh=4/QpZC7LxSYMVYR4nA2xm6rwUz4aL+qn2WRWX/CiPPw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=piypHSL9dvTj3cNR/Rbn0+GxOmAUOnZ8a7xmKLT29jdF1dgmd0ekWOuy5aspHU0PU
+	 gnB2aM/VCYMdiOPd+Xb/XztDONBsY4I0v7ugEPKJlUMH2Ps1FgRur4KlGBQNKjYF93
+	 IOOIQICsjnz9Mhw/p/WloLiQ/+fQAcM6NTVwYr7pXRGjws5aFAseth7O/V70kAADnQ
+	 FLSOBrvc7sxbR5XLRfUQC8bz1L7t6BVZ0ITasjlQP3HpMvwWbsYEsDaknBPsWR4tYB
+	 YneKVQGPeADptb78ryC4rLvoAr54rvtBChohUYxYhTSPRZK7dlyFg+IbtmCIgdhEXz
+	 VLbaNVhL6wVKg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4gS2HX5tzKz6txq;
+	Sat, 30 May 2026 03:11:36 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH v17 0/3] rust: leds: add led classdev abstractions
+Date: Sat, 30 May 2026 01:11:39 +0000
+Message-Id: <20260530-rust_leds-v17-0-c0698c4368e2@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOBP265MB9404:EE_
-X-MS-Office365-Filtering-Correlation-Id: d58991a8-8a0c-4614-0782-08debdc60566
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|10070799003|366016|6133799003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	1LqZHHgXsQY6cJEg9yeOVjTFbB0wDIR8TmG2UvH9qntpQeZ101f751+SIXFRQuEQPuf8d7nS2io24iYc6Re0nVw/ET2CO5sfpYuHSatEjwI4UngexORm6ZxM+WLiztJ9BL9Cf4JOXcvh1j9Au763NSZOhqu7s18/WUHhHkPZC1TNxZcgnpfQRIuQK5ILe8WalTG3ALDXhH5QAcprNzz3Y4QTBlN7GY5+BYSg+P+z55KJJQVTCvWSQwJh30X+gDnZNJHp5KQwoq1FVbbxaIwNYKdgp1U7dOYEEzWyI2vMhmMyA9lgdoQ3eK3EddUBUzhGm3Q0bPzs5utM8xmNJ1m6yNWwtFJABv24WcChXqKKGw1JrCzlef5qMt0cca+gQKytQsYTAWOp2ff00cc02WS5wzWxKzJttP8yidkE7EM5W2vRWQFsU/U4uKsdsTLiSJ9RY41bWImsUJFcMX1F5MN18t4x/j6qQcATxfBZxik4EADAgvmtapaMr8M1+GdE2lLvV60rEX6PP+GVAzwIP1l1RDVhzrr8NYCTlABmVEgN8DtzLJFr6cKnktHckTOkqvVj3m55DBXaekQ3uKLSVNVuT4c0lmVTI7bp6v5LCyvGgP9UoBCMZ+/RszdIPOI7S7B2vDYEBDLvmO5Ysk2Zoq7wqWvs6vgyAggpF6hAomZzIzVFKAgyEEAYp8Ixzdp2FPmQ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(10070799003)(366016)(6133799003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bzlyN2Z1ZG1aTERBY1R5dXQzbUZMaGp2Y2g4VEJYUklYbXE0Y3hHWmw1dDNG?=
- =?utf-8?B?Z2VQbWY2c0VwQmpxbEhlMUFySjdlNE9oamtLc2RFWWVVTm9FZ2xRaU43ZDkx?=
- =?utf-8?B?aVlnRno5NFVkcWxWbmpGVlAyakJHWVpONFVGcVNFUU90T0pYaUR2RFNCbm1o?=
- =?utf-8?B?Q2FhclI0T01HNDhQSjZ3Nmg0dlYzMFphWU9EV0hJajVnRWhjNjRaWHpGeExI?=
- =?utf-8?B?SnZRTFE1QVA5dEFXbnhEZzlvL1I2RFNFT2Q4ejliSkdlVGQwcDhaWVZreWZP?=
- =?utf-8?B?OE9NR3FWZ1JYVHlVajNYUGIzODR1ZVZRR1hPUFgyQVBobXNwbjhleUcwZnk1?=
- =?utf-8?B?T2x5eU5HNkdINDM5eGpERm1lZXBqQzNhaXp0cHd6SnhzeUNMbGVzZ3MyNzRk?=
- =?utf-8?B?b1N4b2dpd3B1MFU0Q1hTRzlqTXVBa1lPWUErSU1TWGtOYzZvVWxvTEQ3Y0R3?=
- =?utf-8?B?bjltc0xSdXlpazU1MmpHcXB3dm52U1QxOEpQeW41WmJLVnhaRUl3KzJGUTN0?=
- =?utf-8?B?cDNqeU1EU3JtdDVjT1hQM0hqRjE5dFhhMjZuek84K1VXZ3Z2VmJEc3NoMnNO?=
- =?utf-8?B?YkovZ3BlYU5ia091ODl6YXBPaWR6d2lremhPYi9FQ3hQODc0QlNMWTVzc3hM?=
- =?utf-8?B?THFva1BGdGNLYktZU2hNQXVsZjZ3VkpodzRSYk5GSHovWjZZM2hzeFNJR2Ru?=
- =?utf-8?B?L0ZjQVBKdi95RHdoUGo5Unh0TjY5NEdSZWsyTWlnelM2cE1LNnBKQitPZ0oy?=
- =?utf-8?B?Z3d5Z3REcHBrN1ViTitVMEtUT3dBVjRmNUFEM3JwWGF1ZEJWVnRkblE2Z1hq?=
- =?utf-8?B?Ri93aDU1Q3RvanBBSEN5bG5KV3dpRWRQeUJEWXJqQldhRlJ2amZTdU9iRWtW?=
- =?utf-8?B?eEpKdmdqRkpTUzVsKy9ucVRPOXFzZ0ZMWnpobS9xVmMzaW44NlVJZ3kwZkc3?=
- =?utf-8?B?Y3RTL05GZ1NYMi94czY4bUt5MjNLZHVwTUVKaGhyNTZER3JsbTJWTE90MWk0?=
- =?utf-8?B?aGxBZzk0Z2I2WGk3bVBibkFNNWJOVllxbUtvVGE4bk9hcU1tWTlrY3BORmV5?=
- =?utf-8?B?d29ETmc3cjNwdGVvLzE1RVBDM2VQVHpUUUFHNG53V09Felo5ajZsOUdkZkhY?=
- =?utf-8?B?SWlQTE9tWHBXZjBXeFJtUmVCWjdJVCtybGNzZzZnaG9PUzloRDhJbXhiNWtW?=
- =?utf-8?B?TjdsNU9SR0ExamN4eGdQdDFOL3F5L2pEMlVZUVlSaUV3MDgxSU1NejNmdjNo?=
- =?utf-8?B?R0E4blVpOWdna0QwN1hselhram9scCtjeHBmeXhJa25sa01sUjN6RlhiK3BI?=
- =?utf-8?B?U3I0TFZJRkMvMDB5SGRmWUpxcXlFMlMvMjNlYThQY3AzeFlBbk1WK25lS3I1?=
- =?utf-8?B?cmVqUUdzNllXeTk1ZE91VDREUTM1NjVQVjlidlZnZVdncUtiVmZsb09MMGYr?=
- =?utf-8?B?RUFEclYvM2RlQ1duallJbzZXeCthTnFRM0l4WkRZVzBiOHZ1VkRVbVpNNWZi?=
- =?utf-8?B?czgzV0ptV25qUUl5MTJ5ZmxzT1l4MHpYcVorMlNXSnpUVFdHdHRLRFRhbEhp?=
- =?utf-8?B?WXBpcXRIVGU4ODJKREZ1VGVtWm0xRGJkcnBLU25hZnRCcEUxd3gzU0VJYkdk?=
- =?utf-8?B?b0hWVW0zWS9WVGFBSnp6eDJGV3cwYjY3Ymk0bDdUZytiajV1Y1pvT3QzNlhE?=
- =?utf-8?B?WWs5VlVvNVVpOEVlV0ZScmVxN0FuN2htOWZlendwOXFpcDVFNkx5SFBlb0NM?=
- =?utf-8?B?cDZjSE5HUTR2K0xIR3lRVnJ5VVdZaFVvcGk0dmlkU3lNR25FSkRGYXMyRGh2?=
- =?utf-8?B?ZEQ2UityekZxdFZBVm5VbVNWYXlac2w5ZHQ1Z2ZsRXNOUE80aGN2d1hPVGZO?=
- =?utf-8?B?TXZqcEZ2ODUxQUR1VkdBbFVDRjE4RUJQL2g5MEplc2NWWEhuYVVBUyt4a3dx?=
- =?utf-8?B?T3g3R2R1Q0lUQ05leHZqZWZ2b2lndlE5MEZkdDNnTU9sajVRM2Z4dWZ3ak5v?=
- =?utf-8?B?cnFBTUkwd2xHUU5TRHVZUkZZMm5MUitzVXdta1lXRG9Rc2haUXc4UmdzUVFl?=
- =?utf-8?B?RHVCYnNacFZPTUM5cVQwLzVTbHZlWXQ2WlROMHVpRGNNZ295QmdUbGlJNVRp?=
- =?utf-8?B?dnR6YloxcnQwcldZOGpEYjBqWmtxWk14M2g0WHJNQzRVaUxDc3VUemd6SVNF?=
- =?utf-8?B?Yk03Q3kxMGZlSldxbjl2YnIxbk84Ry94Qm5MdWY5QTRxUU9MQXUxTTY1d0tl?=
- =?utf-8?B?WGRLOTRkbHNWdFhLR3NYNXliQytEWk8xOXFBcmFoQ3BxNXcwSjBYcWlueVFt?=
- =?utf-8?B?ZHBDRnRHeVFhNytaVlhZS0FJNjMvcDJSWWRYWlROc2xWTGFXUnlVQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d58991a8-8a0c-4614-0782-08debdc60566
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2026 21:05:32.5448
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ovAe1X6rX/qxTKfFAZvADR41ouF/y6+ic67cs10O86cGFBZ8WcMioIJZb/3ltkptu6/jLMYN9Y90L65anN9G4A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB9404
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADs5GmoC/2XS227DIAwG4FepuF4qTDCHXu09pmkKYNZIa9OFN
+ NpU9d3ntqqSLDdIIH8/GPkiCvUtFbHbXERPY1va7sgbsC8bEffN8ZOqNvGBUFIhAOiqP5fh44t
+ SqRqPPtuoss1ecP2pp9z+3MPe3nm/b8vQ9b/37NHdTp8pOEsZXSWr5BsNuUbE2r2eujJQt00kb
+ imjn0s/l56lMxEwNeClqf9LkE9qJEgzpyDZkmwAjXZOZ7+yMFleFhbYosME0QVSMq6smlu7sIp
+ tTgHBabDB4srWk63Vol2o2Spo0PuIQSVYWT1ZrZb3arY66wCWMCGYlcW5Xd6LbL0lb4OyFML6z
+ WayKGFhzc1m7iQnSjEt/vn6GJqevs88eMNjckRoClWxOxzaYbcZ7ZbzInLx9Q/u7K5TrQIAAA=
+ =
+X-Change-ID: 20251114-rust_leds-a959f7c2f7f9
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Boqun Feng <boqun@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4873;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=cIPmenTZ/6OjEpZggOylCPhvLo1J2uxTYs4hRgQgPcA=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqGjlHm1aB5f0cQHYlIm9jfY8Ut1+COwhWucxTa
+ MmhdkSehCmJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaho5RxsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9JuNg/6Al4ov7JlK4It9kIWEbxwoW+7+ToSvyr
+ lVQ9hPiJ4GNJGphhoYv1VJRtbpPhUuTGr7zmaiNTBFKHvErN/6ezDSJdWnwa110YZMp3ZGMSuc8
+ 9ZSY74uogKmA1NWZ3jqVtBBNRdOeSpA/hXQMut0vwv+rCXTKqIer54N2Xd+5tH8q9xYjWa4fnRG
+ bCbnknjSu9DFSR4AQOClyeX08hkWtSV7pHwuubeS/92xVjQpLgIc8T/tXPM4Xcst5zN5c7pPfBR
+ aOKRFPg+oIHRusDpD7Yiba2ZB8ED3Bd19aJgXVnQkS3R3zk/TDTaSFq/zXkcYWucv8QT3S5vZaa
+ dhQ8lWQ8V1S0zcz3sMPsDLLZCfjzclVPOhPTPxeJTQoUEbpc625Yd4DFiaxA43S3pT2g9uFPmAN
+ 41k68kFzeky3Ppuh7VGKBEUHh+gTC73ukIcfyCjOc84UXW2mSt9wtfdrFnvHtIeyiBBikrmMTri
+ KZueqhZ5Sf0OtND2pm6JMnL+EdjZmkhjJJV89YsDEphYdx9SzYPJiYCtIh6jNNKvkvdchw7CzP9
+ s2TckQFAp4YmMVxBMf6/wl6LwZmwQKeXM/f1zzZ3AFoRRmrHEDGCZlOvcyDa5nlccOZe9JVwGYn
+ o75FKozdm8Qq42uuA5pNuV60ucUSBO3W0UvI3l7TBK4gKExU5ZrA=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Fri May 8, 2026 at 4:29 PM BST, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
->
-> In the `init!`/`pin_init!` macros, we rely on a trick that assigns never
-> (`!`) values to all mentioned fields in never-executed code to let the
-> compiler check that all fields have been initialized.
->
-> Currently we use `::core::panic!()` to produce this value, but before Rus=
-t
-> 1.91.0, it creates outlined `panic_cold_explicit` functions which do not
-> get removed by the optimizer, thus leaving dead code behind in the binary=
-.
-> This has been fixed by [1], which lands in Rust 1.91.0+, higher than the
-> kernel minimum version 1.85.0.
->
-> This causes ~200 dead `panic_cold_explicit` instances being included in t=
-he
-> binary, with ~90 of them from nova-core's usage of pin-init.
->
-> Work around the issue by using `loop {}` which creates the never value
-> without macro expansion or function call at all. All instances of
-> `panic_cold_explicit` outside libcore are removed by this change in my
-> kernel build.
->
-> Link: https://github.com/rust-lang/rust/pull/145304 [1]
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+This patch series has previously been contained in
+https://lore.kernel.org/rust-for-linux/20251008181027.662616-1-markus.probst@posteo.de/T/#t
+which added a rust written led driver for a microcontroller via i2c.
 
-Applied to pin-init-next.
+As the reading and writing to the i2c client via the register!
+macro has not been implemented yet [1], the patch series will only
+contain the additional abstractions required.
 
-Best,
-Gary
+[1] https://lore.kernel.org/rust-for-linux/DDDS2V0V2NVJ.16ZKXCKUA1HUV@kernel.org/
 
-> ---
->  rust/pin-init/internal/src/init.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/=
-src/init.rs
-> index fbc8286263b2..b1cb2e53ee6f 100644
-> --- a/rust/pin-init/internal/src/init.rs
-> +++ b/rust/pin-init/internal/src/init.rs
-> @@ -338,7 +338,7 @@ fn make_field_check(
->              ::core::ptr::write(slot, #path {
->                  #(
->                      #(#field_attrs)*
-> -                    #field_name: ::core::panic!(),
-> +                    #field_name: loop {},
->                  )*
->                  #zeroing_trailer
->              })
+The following changes were made:
+* add basic led classdev abstractions to register and unregister leds
 
+* add basic led classdev abstractions to register and unregister
+  multicolor leds
+
+Changes since v16:
+* use for loops for duplicate checking
+
+Changes since v15:
+* fix issues reported by Sashiko bot:
+  * fix returning error not possible on `brightness_get` callback
+
+Changes since v14:
+* fix issues reported by Sashiko bot:
+  * add missing inlines
+  * add missing Sync trait bound
+  * fix vertical import layout for public export of private types
+  * fix potential memory leak, if a multicolor led device with over
+    `u32::MAX` subleds is registered
+* remove default_trigger option
+* fix missing CAST doc
+
+Changes since v13:
+* rebased onto v7.1-rc1
+
+Changes since v12:
+* add `led::DeviceBuilder::name()` and `DeviceBuilderState'
+* add `led::Color::as_c_str`
+
+Changes since v11:
+* use `led::DeviceBuilder` instead of `led::InitData`
+* use static_assert instead of const { assert!(...) }
+* restructured patches to avoid moving `led::Device` from
+  rust/kernel/led.rs to rust/kernel/led/normal.rs in the 2. patch
+
+Changes since v10:
+* allow in-place initialization of `LedOps`
+* run rustfmt for code inside `try_pin_init!`
+
+Changes since v9:
+* add missing periods in documentation
+* duplicate `led::Device` and `led::Adapter` instead of using a complex
+  trait
+* fix imports not using prelude
+* adapt to CStr change
+* documented `led::Color::Multi` and `led::Color::Rgb`
+
+Changes since v8:
+* accept `Option<ARef<Fwnode>>` in `led::InitData::fwnode()`
+* make functions in `MultiColorSubLed` const
+* drop the "rust: Add trait to convert a device reference to a bus
+  device reference" patch, as it has been picked into driver-core
+
+Changes since v7:
+* adjusted import style
+* added classdev parameter to callback functions in `LedOps`
+* implement `led::Color`
+* extend `led::InitData` with
+  - initial_brightness
+  - default_trigger
+  - default_color
+* split generic and normal led classdev abstractions up (see patch 3/4)
+* add multicolor led class device abstractions (see patch 4/4)
+* added MAINTAINERS entry
+
+Changes since v6:
+* fixed typos
+* improved documentation
+
+Changes since v5:
+* rename `IntoBusDevice` trait into `AsBusDevice`
+* fix documentation about `LedOps::BLOCKING`
+* removed dependency on i2c bindings
+* added `AsBusDevice` implementation for `platform::Device`
+* removed `device::Device` fallback implementation
+* document that `AsBusDevice` must not be used by drivers and is
+  intended for bus and class device abstractions only.
+
+Changes since v4:
+* add abstraction to convert a device reference to a bus device
+  reference
+* require the bus device as parent device and provide it in class device
+  callbacks
+* remove Pin<Vec<_>> abstraction (as not relevant for the led
+  abstractions)
+* fixed formatting in `led::Device::new`
+* fixed `LedOps::BLOCKING` did the inverse effect
+
+Changes since v3:
+* fixed kunit tests failing because of example in documentation
+
+Changes since v2:
+* return `Devres` on `led::Device` creation
+* replace KBox<T> with T in struct definition
+* increment and decrement reference-count of fwnode
+* make a device parent mandatory for led classdev creation
+* rename `led::Handler` to `led::LedOps`
+* add optional `brightness_get` function to `led::LedOps`
+* use `#[vtable]` instead of `const BLINK: bool`
+* use `Opaque::cast_from` instead of casting a pointer
+* improve documentation
+* improve support for older rust versions
+* use `&Device<Bound>` for parent
+
+Changes since v1:
+* fixed typos noticed by Onur Özkan
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+Markus Probst (3):
+      rust: leds: add basic led classdev abstractions
+      rust: leds: add Mode trait
+      rust: leds: add multicolor classdev abstractions
+
+ MAINTAINERS                     |   8 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/led.rs              | 351 +++++++++++++++++++++++++++++++++++
+ rust/kernel/led/multicolor.rs   | 400 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/led/normal.rs       | 238 ++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 6 files changed, 999 insertions(+)
+---
+base-commit: 9e171fc1d7d7ab847a750c03571c87ac3c17bd84
+change-id: 20251114-rust_leds-a959f7c2f7f9
 
