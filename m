@@ -1,167 +1,103 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECD6349CCF
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 17:37:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE079304BCB
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 17:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780162667; cv=none; b=RWnZAa9oEpPid2dBldOrwsoF0qPMFXjEc2HXZRnXYVbSJeja0xzX1aUbRynoQquqBxD3CNlGvKCWCXsOfqiZYwc/RTmR10L2+VFZRDi6dxHiMsvO+DwezG5XKxlVkVdzB1mv7/lnFyr4owEYXACnHNAYJtYnHJesR5a7x8xHBQU=
+	t=1780163373; cv=none; b=lst4trWYUSFvqT+zIV1YHr9wx4dfmbwRDxMJn+lFRWVvt/IAGEAWdAOw0n8Rr41dnrFPoX4OrxEx0RFDvVIPXLcwPBvpQsH+bFaEjU6oCNpQ+z7hF1YCSq/F2fIkuAd6Kf0GXYt3sUJt2WIzwKBTZfbmA9mZb8Pi1Ej0/QZNnZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780162667; c=relaxed/simple;
-	bh=I9dHrQ7Rc3XErpRzI6Oi2nDfezCG3HUIDnem2tab4nA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gd7fWYpU4PsrW1rHjC5UxfIk6n3UhvRGDuY5ifxWW2OCHiuEsACy++J/qNlrb+6oIRoQK6tdPGunXmwjt3ZfeO5cBXGtVxTI2geAyTMfBSDYc0OnmYn1gEWHQu7aSstVEdatAJv1gv+XK4eVQE3e0evxdYHnc4VCRESc33uRzc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=GTlXoWvN; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1780163373; c=relaxed/simple;
+	bh=UyJOXarCGRXmDIUZlOVYj8xbuJzNlD5g254qIE/U4bk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=Vzzw9eluOyVS/c05s+3u/STFE9U7yvV5WCvQQaTPJRt/2XF5x06TLr3RI5tB/Gypjamx/na+8eYZzQmFo+PehXb03qx90Ekle9HOpO46ZTDyouiHgsEwDwqsHl+cRK3noY6KJqSS9dGQjIYDAqAddwGfpLI4QT1kY3j0dnW8rlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=TZs3VqHf; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="GTlXoWvN"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id F3B48240105
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 19:37:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1780162663; bh=I9dHrQ7Rc3XErpRzI6Oi2nDfezCG3HUIDnem2tab4nA=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=GTlXoWvNminSy9Hx0l7m9kWX7/Pk0fob1ct9a5y8W6FtzrncJVfCQTtlLlOhQeUvn
-	 KkH1oYIWTt+FRO3ZETYkoYA5jINUZrhB/1sTOOekbPYhJHsWW7iDYBT5X7HttKwhYm
-	 Jiuxpw2jECtU/DwyQX6UQG7MiISqZ0UCvAt7SNCGzhzNsZ7KRNMDKgy8Gr0ZvVJY4F
-	 YUJPIgPROL+RNGGG5TCBRGiAc731Lm6A/ZhdcVNubRxrCZrnBKrDeJEgEx9iyJui1r
-	 EroHM0EpiORup3sV6bwz1PFw39Muib1M0f9oW1c4/Cuehkk6sz9KWc3CK0nRdbdhcX
-	 T53749KyEwayQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4gSS9K3rPrz6tsg;
-	Sat, 30 May 2026 19:37:41 +0200 (CEST)
-Message-ID: <471c6cc43213d47578a77e421f06648615ec8e9a.camel@posteo.de>
-Subject: Re: [PATCH v8 1/5] rust: devres: return reference in
- `devres::register`
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>, Markus Probst via B4 Relay
-	 <devnull+markus.probst.posteo.de@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Greg Kroah-Hartman	
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, Miguel
- Ojeda	 <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Kari Argillander
- <kari.argillander@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- linux-serial@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, 	linux-pm@vger.kernel.org,
- driver-core@lists.linux.dev, 	dri-devel@lists.freedesktop.org
-Date: Sat, 30 May 2026 17:37:42 +0000
-In-Reply-To: <DIVZPIJYZ244.26RVUD86YHX1N@kernel.org>
-References: <20260530-rust_serdev-v8-0-2a95f1da22a7@posteo.de>
-	 <20260530-rust_serdev-v8-1-2a95f1da22a7@posteo.de>
-	 <DIVZPIJYZ244.26RVUD86YHX1N@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-9OBkUSJ/Jd1TG2ob7uZa"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="TZs3VqHf"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260530174923euoutp01bd46b10604cb24c7adb87d5ae5330b24~0aSXA4CI12075420754euoutp01B
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 17:49:23 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260530174923euoutp01bd46b10604cb24c7adb87d5ae5330b24~0aSXA4CI12075420754euoutp01B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1780163363;
+	bh=EbVO9J2kBmD3bmjr66FDYqyfGc2oM0Qu91oggGlNoeE=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=TZs3VqHfo74uDw3aR/pa37Zn8EoyvExyG7aSGbJXMpXUDbn+8xlmRezTjIUYQgZWo
+	 4CjQ6jcd57zlwxum7A8KtCFO9BcfYKnB7EcUKtEJ5XXC+UKjMv+fsgZ66BitpxrnjS
+	 mLx6FjqhSxoC+ImqsjyAKKbP7vVp6yk3r6tUQdFc=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260530174922eucas1p2d7a4ec1d5c18adaadd06ec1fbb7a779a~0aSVw8Ylj1076310763eucas1p2A;
+	Sat, 30 May 2026 17:49:22 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260530174921eusmtip2f3133531530bba41a6405761c3e14640~0aSVDTyTP1888418884eusmtip2Y;
+	Sat, 30 May 2026 17:49:21 +0000 (GMT)
+Message-ID: <c17631cc-77a3-464d-b4b6-fc3521acca5e@samsung.com>
+Date: Sat, 30 May 2026 19:49:21 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] rust: pwm: use pin_init::zeroed() to initialize
+ pwm_ops
+To: Francis Laniel <laniel_francis@privacyrequired.com>, Miguel Ojeda
+	<ojeda@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+	Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+	Krummrich <dakr@kernel.org>, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <20260529153821.126823-1-laniel_francis@privacyrequired.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260530174922eucas1p2d7a4ec1d5c18adaadd06ec1fbb7a779a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260529154838eucas1p25f3bf881090a8a80556bc2f1dfc278b4
+X-EPHeader: CA
+X-CMS-RootMailID: 20260529154838eucas1p25f3bf881090a8a80556bc2f1dfc278b4
+References: <CGME20260529154838eucas1p25f3bf881090a8a80556bc2f1dfc278b4@eucas1p2.samsung.com>
+	<20260529153821.126823-1-laniel_francis@privacyrequired.com>
 
 
---=-9OBkUSJ/Jd1TG2ob7uZa
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2026-05-30 at 13:54 +0200, Danilo Krummrich wrote:
-> On Sat May 30, 2026 at 3:13 AM CEST, Markus Probst via B4 Relay wrote:
-> > From: Markus Probst <markus.probst@posteo.de>
-> >=20
-> > Return the reference to the initialized data in the `devres::register`
-> > function.
-> >=20
-> > This is needed in a following commit (rust: add basic serial device bus
-> > abstractions).
-> >=20
-> > Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
->=20
-> For driver-core and DRM,
->=20
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
->=20
-> This is useful in the context of the HRT work in general, should this ser=
-ies not
-> make it this cycle, please let me know, then I'm going to pick this throu=
-gh the
-> driver-core tree.
-As discussed, rust_private_data is not needed anymore thus this patch
-has been dropped. Feel free to pick it.
+On 5/29/26 17:38, Francis Laniel wrote:
+> Replace unsafe block containing core::mem::zeroed by calling
+> pin_init::zeroed().
+> This is safer, as this function is guarded by trait contrary to
+> core::mem:zeroed().
+> Also, we can call this because all fields in pwm_ops, i.e. function
+> pointers in Option<> and usize, are Zeroable.
+> 
+> Link: https://protect2.fireeye.com/v1/url?k=c68066dd-991b5fb8-c681ed92-000babff32e3-8cf7da03bc5f790c&q=1&e=7bb43a54-acba-4578-8682-f88365e5bdf6&u=https%3A%2F%2Fgithub.com%2FRust-for-Linux%2Flinux%2Fissues%2F1189
+> Signed-off-by: Francis Laniel <laniel_francis@privacyrequired.com>
+> ---
+>  rust/kernel/pwm.rs | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+> index 6c9d667009ef..3427b7d93a03 100644
+> --- a/rust/kernel/pwm.rs
+> +++ b/rust/kernel/pwm.rs
+> @@ -494,9 +494,7 @@ pub(crate) fn as_raw(&self) -> *const bindings::pwm_ops {
+>  /// This is used to bridge Rust trait implementations to the C `struct pwm_ops`
+>  /// expected by the kernel.
+>  pub const fn create_pwm_ops<T: PwmOps>() -> PwmOpsVTable {
+> -    // SAFETY: `core::mem::zeroed()` is unsafe. For `pwm_ops`, all fields are
+> -    // `Option<extern "C" fn(...)>` or data, so a zeroed pattern (None/0) is valid initially.
+> -    let mut ops: bindings::pwm_ops = unsafe { core::mem::zeroed() };
+> +    let mut ops: bindings::pwm_ops = pin_init::zeroed();
+>  
+>      ops.request = Some(Adapter::<T>::request_callback);
+>      ops.capture = Some(Adapter::<T>::capture_callback);
 
-Thanks
-- Markus Probst
+Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
 
---=-9OBkUSJ/Jd1TG2ob7uZa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmobIGUbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSVI4P/jV1mRfcdTMEpRsvTDwa
-B4eGd3WMfgHeIZ35HiBVWy/pMHBmW5dLcQwQ7nTvSH80dZOt9frHEAWIpDN2jcCM
-PpxFI1cksJ+d3v6s6X3T7XchlTlSC/Rln/XGAOaENVoiPkQpiAJPl/uKJon9U8Px
-SfO2+1ygqeyeXYQC4SSc0EeCI07tCHvEtYUJiO8zUcfvHAkzfbyevVdP/KCg93gx
-Be044Awho+kOebnbfXXWAukDVXTbxpK5jQOCoVxyN5l5UZ0YUWJkThSlMQ8zAkbV
-a7j+YW8AV3SCun4ufhMiIgq21q4BtGZx0VBZNGN1zNyX0XP7hDn3PC109Y06/LOx
-7hq7ewLF/L6yFY3EnFVk7gHFdi/4iS0Gkord8lIx/AARy1MJhH2rMyqkpVa3M0CU
-he/19ohfuQZ+D+XLydgNi61KFBlw2xoMt9fEUcAQChc2RtBF6YbahH2Ps7eHuO1p
-Eyv3QaN56P3p5q1I9PNECDqI0REczp84qGnlwh1JRV1eD3w6VCBB+OQ9/7LNYI4W
-S1woek9K8+bNWIE78N4QEFXv/piwxLClL2cH7/o0lhZM3IeEFzX6ZcOwq7EOJDxo
-JMtrcy/usMRIRC5BRE7EY5pfaW+Ko0HnE+g/KCFwDgQHXZwjBykaCAaX5i3sVkmr
-+GEyCPyXvpFS91VqloRYsd91
-=PCBE
------END PGP SIGNATURE-----
-
---=-9OBkUSJ/Jd1TG2ob7uZa--
