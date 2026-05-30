@@ -1,96 +1,194 @@
-Received: from sender-op-o7.zohocloud.ca (sender-op-o7.zohocloud.ca [199.67.87.7])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E54137750;
-	Sat, 30 May 2026 18:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=199.67.87.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167069; cv=pass; b=uxh0W3jBpG0SwVn57czTAp2ecH8A5Xc5bfWE6niyDOsHrfrzzZP8abjfURyNlZuqiQVfDarSZdOIwTOpRm/HcM6JP0JyLTCWUa9N8NmXI2O5acVHWWnvawm2Ybrqe9FgqqijQQvXYwM/AnDNgDvxKsYiNPaGXg8se9rVjp7oZrg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167069; c=relaxed/simple;
-	bh=/cZ0+sdw88qoRb+cyGY9n7CzUrAk/9Geak3ZfDkbKFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Biq4u3ctGn0fvSkEgvu9NJzBaWt4ZNb1D7Tlzul2q4ZrN7os5q80Si5X2LGFlVaI+34G4lyeRswFoEQz9EBMMgojLPkP+dLerQFPbdkew3J7wzElESvyn7RgnY/LLxpAWj51ABKn3e7nDlGPNY50QXA6lqetNXstDesncaVOmgQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jkam.dev; spf=pass smtp.mailfrom=jkam.dev; dkim=pass (1024-bit key) header.d=jkam.dev header.i=contact@jkam.dev header.b=g6tfWKc1; arc=pass smtp.client-ip=199.67.87.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jkam.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jkam.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6ED241C8C
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 18:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780167343; cv=none; b=k5aPQnptzvY5w4YMZ+WkNIQiFqvIKzVfy3yDwflPbxiM0r6sX6s4ZIi8itlGycSyX4cIIhbC8esLS81GmHF2OnYMMC3QPs8U1RZ8xdqcHO1x45TXTPOPNpEcbjY6HBpwIo7NTZw0koEc9cVMJGuAzWSi+q136976ygfGYHHQC/g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780167343; c=relaxed/simple;
+	bh=7liBuoUJTQfvwd86ABlHP9P2JYcIto0EGU7InnY/XZE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OGhuyy8Xuo1xJL22zrG+qqX412uVVJTQgD1qV8pQNIPKl/drLHr13DRDG9i6ItdwYcXVk60ZGOGXjlocc1SlxPhexOLJIN6bwydoqF1N/fD4iRE3faG5Av2dCi7Sj54TGALH/efCiChOIODcjSo7zl3PsuftMZgH6Q6tcd/zeK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=AQzQ81Jg; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=jkam.dev header.i=contact@jkam.dev header.b="g6tfWKc1"
-ARC-Seal: i=1; a=rsa-sha256; t=1780167047; cv=none; 
-	d=zohomailcloud.ca; s=zohoarc; 
-	b=NEWKuD9feRJaxL/ucoBkS507DYR3RNqWD21ZV0TjOgzPEYzT/HxCEqsbeLSogXFixdFH70zH5D1A0QEzRVQCD1y+xNTHl7GSUc88uRdjMYxXfmyjpFTa/npLOgh0HbMGkMciH7gmTICqF1QU6+OyHPbaGMbDkp0gskZoOCPOqvg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomailcloud.ca; s=zohoarc; 
-	t=1780167047; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=L/E9yG1U5jtouAB+uazBa353gIisF7vX/LYWQcbbMko=; 
-	b=loj3bmmDrah+XsukVJwq1d6Noz7SFsAwG/9YKho+xiihxLYCV+GvkNSx2M+ewaUUkQu5FpPJA44ukwAuxzyYOL/m0jqUxPPeqoxU0UOQwZYoTsMtp7CcqGHVvpzcwRlAn+9k0Y61X3pK6QHBTEXy7jibS0MU6kOr/JlQzqdQD5Q=
-ARC-Authentication-Results: i=1; mx.zohomailcloud.ca;
-	dkim=pass  header.i=jkam.dev;
-	spf=pass  smtp.mailfrom=contact@jkam.dev;
-	dmarc=pass header.from=<contact@jkam.dev>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1780167047;
-	s=zoho; d=jkam.dev; i=contact@jkam.dev;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=L/E9yG1U5jtouAB+uazBa353gIisF7vX/LYWQcbbMko=;
-	b=g6tfWKc1UJ3y7YLQCH8SwdExoKe/RBJp/tkQPyuNmXJOnvhGDbejUfMLH5nPTqdx
-	fq3s0ghEWrvBcvsCgl+BimU7NXMF0qnd1iof8CA/3YlwLPyAECZstwMxKZ+b8S/0YoE
-	xwtznJC+GkPDuh31jINt7rgUe1LW1O+gVOq0U59E=
-Received: by mx.zohocloud.ca with SMTPS id 1780167045933869.1071949291838;
-	Sat, 30 May 2026 14:50:45 -0400 (EDT)
-From: Joel Kamminga <contact@jkam.dev>
-To: Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	Joel Kamminga <contact@jkam.dev>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] kbuild: rust: make `*.long-type-*.txt` a target for cleanup
-Date: Sat, 30 May 2026 12:49:43 -0600
-Message-ID: <20260530184944.10459-1-contact@jkam.dev>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="AQzQ81Jg"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 4E09D24002A
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 20:55:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1780167340; bh=7liBuoUJTQfvwd86ABlHP9P2JYcIto0EGU7InnY/XZE=;
+	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
+	 MIME-Version:OpenPGP:From;
+	b=AQzQ81JgcCAk3BTpUjk0I4TLHSFS80/+mtyz2ZZOY7GM2xGYhUCj70T0ddlGXO/Zs
+	 MJ42QTZomfzuu6DrUSYqD8aXKpZlxpQIXaywBuwh0IrViSU/61+DwNSIgH4PEMVLuh
+	 0cvVIcGk+kr3YHoZxV1UD9sBWu7c1Hkt8EbXZaeCXC0q6oXX2yr9b9gc7n3JjXUe5l
+	 9WPyI36EAsdQTlgdF/xd6tosqx6yqhUDcT3E0LKmNwVIbN+RWlbh7kJESNS2lDMrLJ
+	 ChRHCmkDizMg4x0XpJQ2mXWxQ6RrCAWKSzbuBuULDEFWR2+CqSg4Odk6g4pE8LTWeA
+	 bDJtvsE7kaNuw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4gSTvF0TB4z6tw4;
+	Sat, 30 May 2026 20:55:37 +0200 (CEST)
+Message-ID: <01e20401845ce5eab5731698ca8a0f8f44ed3eb9.camel@posteo.de>
+Subject: Re: [PATCH v8 3/5] rust: add basic serial device bus abstractions
+From: Markus Probst <markus.probst@posteo.de>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>,
+  Rob Herring <robh@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jiri Slaby	 <jirislaby@kernel.org>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo	 <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Kari
+ Argillander <kari.argillander@gmail.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng
+ <boqun@kernel.org>,  David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, linux-serial@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pm@vger.kernel.org, driver-core@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org
+Date: Sat, 30 May 2026 18:55:39 +0000
+In-Reply-To: <DIW587AGXYCS.39MR1B4TVSO9@kernel.org>
+References: <20260530-rust_serdev-v8-0-2a95f1da22a7@posteo.de>
+	 <20260530-rust_serdev-v8-3-2a95f1da22a7@posteo.de>
+	 <DIW1B4FUIXO7.28GSUA0CEA4EV@kernel.org>
+	 <4638946fc49a38797b716ea173c93327eb751479.camel@posteo.de>
+	 <ad98dfb1d8469022519d37364e8a068bed3b5687.camel@posteo.de>
+	 <888dc39c52bb6ddac1a1eed7876c4573bdbef002.camel@posteo.de>
+	 <DIW2JUUL6A6J.96VI4IQN6HYU@kernel.org>
+	 <55eae11ea68f129508d0f7e30ac457ba919812b2.camel@posteo.de>
+	 <DIW34DX6BSUS.ANXBOP9687B0@kernel.org>
+	 <25dc9a4bbde0b542abf608be1b3305f1421a4502.camel@posteo.de>
+	 <DIW587AGXYCS.39MR1B4TVSO9@kernel.org>
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+ keydata=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
+ jfGillcaQOqFZ3WwVqyzG1BUfTow==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-KF9YFnMuz2Ii19euSWzF"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-This cleans up files generated by rustc compiler in the case of an
-error containing an excessively long type name that doesn't fit in
-a single line. Such types appear relatively frequently so the risk
-of generating these files certainly exists. These files are purely
-compiler artifacts and are not created intentionally by the build
-system. They should be added to the `clean` target to stop from
-cluttering up the source tree.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1236
-Signed-off-by: Joel Kamminga <contact@jkam.dev>
----
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+--=-KF9YFnMuz2Ii19euSWzF
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Makefile b/Makefile
-index 9f59598d3a08..3a265e7e3347 100644
---- a/Makefile
-+++ b/Makefile
-@@ -2164,6 +2164,7 @@ clean: $(clean-dirs)
- 		-o -name '*.c.[012]*.*' \
- 		-o -name '*.ll' \
- 		-o -name '*.gcno' \
-+		-o -name '*.long-type-*.txt' \
- 		\) -type f -print \
- 		-o -name '.tmp_*' -print \
- 		| xargs rm -rf
--- 
-2.54.0
+On Sat, 2026-05-30 at 18:14 +0200, Danilo Krummrich wrote:
+> On Sat May 30, 2026 at 4:51 PM CEST, Markus Probst wrote:
+> > On Sat, 2026-05-30 at 16:35 +0200, Danilo Krummrich wrote:
+> > > On Sat May 30, 2026 at 4:27 PM CEST, Markus Probst wrote:
+> > > > This would work, but I don't see how it would get rid of rust_priva=
+te_data in
+> > > > this way. The device private data will but the private bus abstract=
+ion data
+> > > > needs to outlive the devres callbacks (which is done by rust_privat=
+e_data).
+> > >=20
+> > > Why? You only ever use it in the receive callback, which won't be cal=
+led after
+> > > device unbind anymore.
+> > Because the possibility exists that some classdev ops or Drop calls
+> > e.g. sdev.set_baudrate. This is a null pointer dereference after
+> > serdev_device_close has been called. I interpreted it to add a state to
+> > the abstraction private data which would prevent those calls (early
+> > return with error) after serdev_device_close has been called, but this
+> > would only work if it outlives these calls.
+> >=20
+> > But it seems you were refering to something else with the state?
+>=20
+> Yes, but I just notice that I'm a step ahead. With the lifetime model cla=
+ss
+> device registrations shouldn't be guarded with Devres anymore, but with a
+> lifetime.
+That might be an issue. pin-init doesn't have enum support yet, so at
+least in my driver devres is still required for now.
 
+I will readd the rust_private_data field.
+
+Thanks
+- Markus Probst
+
+>=20
+> (This also entirely eliminates the need for having different devres stage=
+s to
+> prevent drivers from smuggling a newly created Devres object into an exis=
+ting
+> Devres<Registration<T>>'s data, which would be unsound for obvious reason=
+s.)
+>=20
+> With this there is no way there are still class device callbacks after th=
+e bus
+> device private data has been dropped in the first place.
+
+--=-KF9YFnMuz2Ii19euSWzF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmobMqgbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSsP4QAJvgDX/oBlDfYv2tZ9/k
+iqvykK+GkeeYAJsEMKKFHnbChReKuA8Ot+MHfe3ZXFFbUaQ9CuGWH0IH3Ve5aBrw
+/LVBWhhD9oGFkZiTl6d/JxBBEWw6d4diLm+G4hmD2E05opEe+lH/16V5ZQ+7nTgP
+0N7TCKrRudJIFg9gX31C1hJSDdUV/q1S4LBue2EOg67YX2nUVuVGyl4pxLoIZ5oM
+p7C+3Fr0EtetHiJEx5YLjNg56LybwCYIY2r1r9roln/Gh02CeoFOGeTAf7YZErbP
+4qUp6oQDfNZhBWWrjiCAKyeK7054GVyXL+Js+ECe+2EsK6eecj9vPjpPkGSlJCMW
+na564sEOpKt8IbPB65E+h8qqroFns2GPsoGLq7QX07DrUMoXRI8KdxemjpmjfjL7
+SUNDAKLCKRWC6q9WLyOWgTvr2xjFq12wf85rwFSJ02e1ibXMH4XkCzfkT/BGZSBb
+I8GmSQuaEb0+ht12v/86Iy5xwqdNITJMvE+gGSvvFVVOf7tUzinkA2fRjNzDuER7
+XkeESS26C36GmbI5924+gCiAYGP+Z1CfOLZWIVIyL2vsfl8koo2ox3cJOJVFmj3Y
+aWUces/kyUVV4jDpSvJD/th6XTpEY35vxtTcHWSlTJAq+ujhl58RWsxAw9VI/FxJ
+sZU2iF3gffqVfJX3mmzDz1KZ
+=ujLv
+-----END PGP SIGNATURE-----
+
+--=-KF9YFnMuz2Ii19euSWzF--
