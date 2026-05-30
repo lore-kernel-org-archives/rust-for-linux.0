@@ -1,317 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011048.outbound.protection.outlook.com [40.93.194.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BD123392A;
-	Sat, 30 May 2026 01:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780103839; cv=none; b=n0D5AsfsXHTpaT8HMefidPS6zTfLLoLesXTW1wzE0XGaOYMjBeTTbc0IGN8hMnO2b+mDVGDTmCTm5GbjQyjKsELsjF64gEn5GAVnOftS/CZlyf3FVJhHWReKRGFRkwJhrCiLpe1dwbcZActcRlePbm6k+8Fn+oA3CLDPmKCRF6c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780103839; c=relaxed/simple;
-	bh=XEG7/6Tx8+Ho9GaqwSQnKkYuJ7k2VfUo2qlY6W8R35M=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TBImJzGDQZe98fZVrs82ra+fmQ/tXavQ5PKoPBUgvVzeMoc9L6JTs6fBouvTbz/rgK3dhY5YhOqceAVnLwyUV6VXzI3UpMZWVffcUywdE+aWw2k+kokP9aTTu46N1QEjOJ0jpCnI0os8OnOqixpMCJMAOyIJ+ahRCMyJIaP7bh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W18sP45z; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58041EB5FD;
+	Sat, 30 May 2026 01:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780105589; cv=fail; b=PcpIawbCJfP43psDC6dqw0NefRe1QIv/uQ5cPlzg0LwuZouxzKrYKUMAlPlnlXscEHBqSXcJCxeUrflsUw4Dft9iq3hwE+uWhJiMUirkBetIEymefnFirmOv07AA4OnVIW/zVb5JhSwqVAgbNn1TQ74XtszAnl8e1K4mTm22230=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780105589; c=relaxed/simple;
+	bh=Dlb5zHH+Or5tjrxuYfzK38TEydIID0gz00ThkLzsYVc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=bkTGz/pk4iPjCAU+QmoIPzcn9SCPEtCXyaULsGclrIh/dh396cyaY+71yIL7ox7dZcxbMYMsehOJ0b0hBrKIdn8AkUobueBiwbk4I3ogVEVMzTylnp1SHsky6IezpMYxo8jTRAY6jN8gDRpba1FUondM00kDr+0t0Knn+OXOTF8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=piMLl+Ly; arc=fail smtp.client-ip=40.93.194.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W18sP45z"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 977F0C2BCB3;
-	Sat, 30 May 2026 01:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1780103838;
-	bh=XEG7/6Tx8+Ho9GaqwSQnKkYuJ7k2VfUo2qlY6W8R35M=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=W18sP45z8f6Jzvl+DhZ8mcPn+7L+EuwVmobfHkUY3MPKB6dfKt6onwC6tggUdNwz+
-	 zNfojlalSgu0L8CEWziuRiUrUAfq3ckjCfLTNsOJ6Et1uxRMm6m3uRR7R6RKyRSYTI
-	 zAmiZCdfxQfiLtUjFK3739v7xzA5qBr+GrQ/e+laEswcylpry5NDWuvJqNbLA4MsvZ
-	 sS+tGwj6JyKWq0DNIrXl0mRGdsl04dBiUMZbtDh4gbXdjBAyuunSvRanpZtRaxRRmz
-	 kqAXN8ugxt3Dk7JHyAfqYTOz9EwXxrwkTtO5XMK1/MyQ9HRY7BPuze/7ahGf19kUvi
-	 g6RO0NmRYV/DA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D523CD6E51;
-	Sat, 30 May 2026 01:17:18 +0000 (UTC)
-From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
-Subject: [PATCH v13 0/2] Introduce Synology Microp driver
-Date: Sat, 30 May 2026 03:17:10 +0200
-Message-Id: <20260530-synology_microp_initial-v13-0-aa2bb9c56efc@posteo.de>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="piMLl+Ly"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g5NUpbl/HBM2XJg2TP7hRmVtk8rVzFqN3eqR7addI25zup1R3olS+FGA3cqcAPf9XUeZJH5+kz2LSQd8Jzqwtb0dGW+qE8YKUW/n5qcc7IcZzMrawresgEMmd5hb3gE/LRnQdMun3vkWr/Gtq/+o+g2Iwqd5ke75AHGh8kwvQvWtVrNx3pmlj0CCuuvzvDnb0B4vIaI4xIpKnYgeNSrLJO1zhKeu5+gnYsC1Qxhe/99rv7Yz174npcEIw5qbbLMatftb3AiOWonHUF+apJmDkRz2RgnteVpx0MHWBgfj0ho71oUDrmY8uVvyI8V4aepv2Nc2fcIzDosXWvUk8TmopA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dlb5zHH+Or5tjrxuYfzK38TEydIID0gz00ThkLzsYVc=;
+ b=Ab5K57k8O+UiJ8/YVxpErROHwIsloCBOGhCinspVmKjFnO9siejTpD++i/F0DJI1gI/UupaixRW1uy9p4O1o/j55wnxpUvmXu/P83+VvtgBOXDw9bPwLzN19Tx6K1PJHZCsVlqOpbcCuefxINK85V6cloukf00QyZfkKxeIzDfK+OJI/uATdexdNKNTtf0MchstrbRfIju5bidTTgqFjdvbKKiaZ9sdvl60mv3c9O2ieUP25lBDEPFp06T0kWK1Gp1biYCLTfUBB+4IsPQnLByALSmfjySD1k1eKnPgDEoUQhE2oh5ZNUyr1SBY6BvLrqT8HFDLT6kfyaYKMvIOH1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dlb5zHH+Or5tjrxuYfzK38TEydIID0gz00ThkLzsYVc=;
+ b=piMLl+LyCCfI6OsNCExSZNYgBitQQjxRdQkb/zRkHFyJZ0hPZ6aWegivgvR6I4ZxqE+pHDLWRV9FITGoCKTbXOim+WGpayNTcjWV+pSSnHfDi/w4gcUZ6yy6vkWCngojPhORg91SXS+qGkoELU7DlfDtJ2hOV7e/5D/GRGgDtGS3Mql9w1nm/HV8JXidxIcNTS2mX4TGO5saGqDN2viDNNSuxIhUpvldocSgiFZJE0bvHGbwHbiRun7f48wVEh+dvmDXYcA0KmfR9B5HCbX93WkJj3AUAAy1EunjC2TwG3B7B0NBxYZYHJBOfaoMXtKMKM335eWwNsNOF3DceyyCWg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by BL4PR12MB9483.namprd12.prod.outlook.com (2603:10b6:208:590::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.14; Sat, 30 May
+ 2026 01:46:25 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0071.011; Sat, 30 May 2026
+ 01:46:24 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 30 May 2026 10:46:22 +0900
+Message-Id: <DIVMRIYNDQ5H.3MG3GMWT3ZGRH@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "dri-devel"
+ <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH v7 4/4] gpu: nova-core: gsp: run the unload bundle if
+ Gsp::boot() fails
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260529-nova-unload-v7-0-678f39209e00@nvidia.com>
+ <20260529-nova-unload-v7-4-678f39209e00@nvidia.com>
+In-Reply-To: <20260529-nova-unload-v7-4-678f39209e00@nvidia.com>
+X-ClientProxiedBy: DM6PR07CA0104.namprd07.prod.outlook.com
+ (2603:10b6:5:330::30) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJc6GmoC/4XU227jIBAG4FeJfL1EDGdy1fdYrSIMQ4qaxCm4V
- qMq717sSLuWU2evLJDmg/kZ+aspmBOWZrf5ajIOqaTuXBfAf20a/+rOByQp1I2GUaYop4qU67k
- 7dofr/pR87i77dE59ckdCow7O61YLq5pafckY0+dE//5zX2d8/6gn9PfN5oSluOmA3WbiJZUgm
- aB0y21dWEWABPeWX94wn/G47fJhlB/rmKxfy2ALTChrfi77285UJYGBJvmj9PsaQcCBIEphAC0
- 10u8G81MJgLiXHDEU4qy0UXsWdbS7AfRY0bqCxHenU+p3m0FvgWQvm7H/11T6Ll+npAeYAvhvp
- gMQSqKPEQMqIYx/uXSlx24bcDIHNnfMusOqY7mxVvHIwculw2cO8HWHV8cF5bxQ3DEKS0fMHEb
- XHVEdKhgPoTXcO7F05Nyx646sDtO+NbQNUdqH+6h/jqBy3VHjfUwMKLRolbdLR88cgHVHjzk77
- qgVqGtES8fMnGf5mOpoK5SzdaLFY1927jx5L1sd4YzkPBqNVC8doHNIPBnEmg9BI1lgkWPrHm4
- EMJf0E2mcaeuhDdKpaoUHic2lJ48P41QL6uqvgnOvGJ1Lt9vtG8tSrObdBAAA
-X-Change-ID: 20260306-synology_microp_initial-0f7dac7b7496
-To: Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>, 
- Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11870;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=XEG7/6Tx8+Ho9GaqwSQnKkYuJ7k2VfUo2qlY6W8R35M=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqGjqcKVrYHDmJ0oBoU91qnSwjap8r+nQ+iwhsM
- ZIhszkcTFKJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCaho6nBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9J5TA/+I3T/oh45SvxmGfx+Md+E08AFbXnPkZ8
- achBSp8fuXTmdwUfQ54nxk+OPEEGubVrDcrTQbmOGi5NBx0BDjtZ80ZPbpuP07vXyMYkX3TZx2P
- EYeeJTn4RKzOTI7oFgunaypwwCHHGQ22z4fAtsvjoP0gb201SDnCaIXDFrq5McTA1r7M8TK23oi
- UxqLGQaRBH8rM+/+YBpXZ0t3eWNPs8648oLEepzcDwGfRniFwQItg5TOdcP5HPCIUK6k9JOammY
- vRxGVyLlG+r4KBno6mqmJ6qPvAyeB8CVzVSH6jkytZI2qH5S6CXDhu+wGy32H+/UsUFmFcv9kwy
- Rmo1auzQ71zUhprHRcFCSc4wsM/P6nXrxK+nXxxPwHiORAwHq2Qaumnhsv8WIRjezhT+cLn9xMt
- F5P6XuIlQuVTjJuNWiV8PryHWuOrt3DouZ7oeY7ZsxniJ02qXz0L5iM1UR+hFSIQxitqQfZ7wlv
- K1MHnuME1LETzEhql3LogemmAMPSsGdARNsdqA71xbM16WWDZYvErPemSEKh4mf8IdNskttahon
- ohse2q7hgjThEBR8TOxXjmekMquX+qSaxNUIwWI8vYX/ptIlI59aAwu+g7HAWAi0YOaZdv7fdGd
- Tru4IXuVGatyFvBtyJ9y2JC9gJgf5qEufCwHRnBhubyABwi170N0=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
- auth_id=680
-X-Original-From: Markus Probst <markus.probst@posteo.de>
-Reply-To: markus.probst@posteo.de
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|BL4PR12MB9483:EE_
+X-MS-Office365-Filtering-Correlation-Id: e61324b8-c918-4a4d-e5fa-08debded4212
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|10070799003|376014|1800799024|22082099003|18002099003|56012099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	vZ9GLFI331e+UFhcokK5CYr+/WU0H0IRhia1Ny+cw9Duvfu7yl378Ps/tSKCbPNpdgRiNvKVXJwqc3XOUeUITqEjksaP/hIOiK0o4pwnLhDFZ1LCYQs/uuSraxehvIlKBq9kNzQSsbTxO9sLcz0NVBsZ2I6Jf2huzzJ2xTYR0svYVuZ3bDl0s5BkXCkK1GNTkYnTrxydDudHqmR9hXoLtP7+v8ukXqZpYG2ff85YXxuOv0ojIZTShqjkaV7g6ZUt9WEBpwzpsUPOr1rwrNuTtFvnqjFjAjk+gcZSYEGh5l5AmonDS6ogsGBW3ADYHxpeiLSZySkUH9+nwC9KIRF7p4t10n4ER44go35qd4nNwZAEir8JEiBfobUQtEPyFC76wtmOEUOwYVHnoyoDeXBc/Rt4UnxyrW9JxpPp0yryJqnEUYFd/MPNfxisFH0qK0xfhneOKnxvJ65f1vE+i4joLIgv80T8n3j4cZV5ESLfrU5rvY72sSkMgRtZ8AYGDOZUZ0xWdG0gn0Xls0BMTJKPXUATnUAg6SEqlIiJi3IhGrHJSUKpxattqxtwq/aSColZq8rto33T7gOtWn/t+Wk3By9stLnsUQhhuZp0DGe4CZzs5pMM4Xx9EJyJMgK0XocSmHcxlm1oBb+wQaTVsBxq5oWiN1xYASD4ppcTBYGq8pn2TBfqkEIPYx6HmCBsgrR0VIz8UzEn+BBwQ42mMD37Tw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(1800799024)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MDNRRUI0dEozM2gxTzNNZ1U4Y3RxSjl0R2s0aHlmcXlEQlkvQUxyYkJZNElv?=
+ =?utf-8?B?a0xwSjJkVFBaQ01PMmlvcFNTL3hmVTZ6V2h1TFYxMXBrNFQ2aExKb0t3WVp0?=
+ =?utf-8?B?QUt4THBEZW14aHJJZlA3WXpQWlFmR1JmMFBuVUQ3bXI1bU1yLy96NExKK0xK?=
+ =?utf-8?B?YXR5YWx1a2JxNGFwL3lDNmNndEpxUG9ZM1dZNExEbjcvbThLYmpVeXZ6Z3Jv?=
+ =?utf-8?B?aUErSjJSNThYNXJ6em1WM2pGTXZ5MVVPN2NxYkZFdlJwMkJmeU1nVDh6Nll6?=
+ =?utf-8?B?T3dTa3YwYnlQNE1kQ2tMQUJTRkhmT2FXdGQxczdKa1lCQlRLa0puelI2bDlj?=
+ =?utf-8?B?WllmR21vMStBcy82eE9GcWxaUXg1NEtkUGlVSVpqRGM2LzNzQStYcWVuUHNm?=
+ =?utf-8?B?NzBhWjJTd1VmQkRsdkZPK1pjQnBuTUNVZ1VrTzg2N3NyTEJNd2dnS0xEQUVZ?=
+ =?utf-8?B?eFJLZXJEeklvWnRSM2lvdUxubFA3WGwyN3dOaE9RQzVON1VaZnUrTkFGNlBU?=
+ =?utf-8?B?dFJsYmhETVl2NEsrL01hb051YVNPU1cvVTg1SThNTEtacU5JNzhpWTZDWUox?=
+ =?utf-8?B?Y29qcGtDOVovajNldjZYYWNhOU5jTGZxV2xDLzM0YWZHamVJT3JRajhXTHNW?=
+ =?utf-8?B?ZlN0S29lZk5FVS9hNDRXMVNRd2dwTkh2TUhLcnBiWVdmOXRjTTIwdEdmZEln?=
+ =?utf-8?B?Tm50UGE0Z3VCbGVjRzZuSWducUQ0cmREVzFaZXowSDhUZmREOFhVMUhUdklt?=
+ =?utf-8?B?cStxc25RUm4rbUVtNUVHSllycDVtRFlaem1Tc056elRYcUo3RTRZcHFWd0JI?=
+ =?utf-8?B?RGt2aEpaTnMvbmRJYU43SExTVWZJSklyRjRhVWZpcHU1T0QyRGRlTUJnRnQw?=
+ =?utf-8?B?YmZqSUtxelBMVXBZdTJHMnl6bXpoLzdVWStuS2s5QXhiWk1ra2IzV3ZyNjI2?=
+ =?utf-8?B?NmdvSzBTN3E4WmFTRzNyUHgwdk5LS2tXRnFTL0RwVGg0eGxwMHlsUlBwZFZw?=
+ =?utf-8?B?T3RSTExPOURWdWpRMGdhMGVEbzNvWWc4UUxrQU5tQUMrcUlrYlhOVDdNV1Fv?=
+ =?utf-8?B?VjBqRWUvNW9MZ1FIdHdCbFl1L2JmWXc2eSt2bVNlYmptelhjcnZqNTEwdDJU?=
+ =?utf-8?B?bHVBU1VTaHdWd3pRUUlLUnFFYlBHNUErY05tSVJxVnJmOVBkT0Z3cEsvdys1?=
+ =?utf-8?B?WXJhU24xY0NweDIzUVQyR3J2TmV0Uk1OYk43T0MvSXRYR09DZW84UUp4RVNX?=
+ =?utf-8?B?c21GNVkrZFFQMjhPWEI4d2Q4cThoZXJpTHNNTzZEMmpJYTJ3bE5LMCtCV0h5?=
+ =?utf-8?B?cUFsZ1lDUlcrNzE3RGtxMWlQVmx6bC9WV3hSUlc1d3Q2Z05mTWE4anhUY2RN?=
+ =?utf-8?B?N0NJd1NJRUJ0L3MrcFhJV2E4c0RXSi91c0FnOGlQQnptZU10SUU4R0tnckFF?=
+ =?utf-8?B?T0x4eGNIbGRZQ3IxakFZUzJuQUhiMmZDYkRxY2MzVGVteUVCbmZqSUh6TXhC?=
+ =?utf-8?B?cWJSMXBvby9VbFh0ZTR1VlEzcEVGYy9SYzN5aUtQeFkrZHhyR3g2aVg4dVBW?=
+ =?utf-8?B?SEk0ZEJjUWE1K0dHSUVKYU96dlJCaG5mNUV6d3NZUE9SZlpoMkY4cmhWSGdC?=
+ =?utf-8?B?TmV5Y2F0cit2UVNSc2RQbS8vZUZDWk1veHUxWS9KdzVZZ2hHcmJYb2I1aDVz?=
+ =?utf-8?B?WURCektaekhLYzZOb1F6cUlJdzFNWHU5T28yRUZtUnZja0h3RmxPZ2s2cXZK?=
+ =?utf-8?B?cEtMYW9SWFVHME4xMGloTE9wbTRMc2hZQ2NFTEdnYVBWZjh2MXFtbG44T0Rz?=
+ =?utf-8?B?V0dsRlNvYTF5NVZHVjBDK3c2cGhKRUN5NWZ3ZnF5bS9Ocyt6d0sraEEyVzJu?=
+ =?utf-8?B?R3FmSjh2aDZVZm5OcnRKRW9ETU9uUjNhQU04MUhWdHZYckVNVmtrY1Z1b2lG?=
+ =?utf-8?B?di9yc0d2enNYY2xFS1FNL0xuaGp1blpwaTYzcGV4eksyWmxYcUc3TlNXcFZP?=
+ =?utf-8?B?bzJWdWd2aXY4S0tadlJuUFZRU0NiekVQMUNtVjRGMUNEeDVtVU8xQ3d4elFP?=
+ =?utf-8?B?Y0R4MWhLdVBPbk5RRDNLR0huZTNFVFJwVlpPdkpyTjBLUGoyWkg5V0JidGRm?=
+ =?utf-8?B?NDRoazFmZEk3VlFUcDA2S1hDakVvNzUxN0wvdm92TXozVnpVcEZUSTUwWEx0?=
+ =?utf-8?B?TUkvZGMwKzllZFJKdUNWUGtXbjg4RnFNVmcyQWN2b2NZY0lPK3RKVW1yRktT?=
+ =?utf-8?B?SkxLYTNJUS9TVmFwV3pPUlBkSnpxendDS1hESXFCWGpycmdHazBSMUxMb1FC?=
+ =?utf-8?B?YzhXb1UwNjk2T3lQQitYa2pjL1o0RGx1b20yY01JczFGY3RxZU1LUktMdVRq?=
+ =?utf-8?Q?L+O1JYJvaIQ+cS/N/IokCBeV3XyTswZieyusAi+wFZFHo?=
+X-MS-Exchange-AntiSpam-MessageData-1: Qibo3ypKvhLipg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e61324b8-c918-4a4d-e5fa-08debded4212
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2026 01:46:24.8059
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bHITZ3ae8DxDFHnF/4jp8XoCInRMj525dut3+xet4WDQiY0hzNpqxRY9PMn7LBtoZZOEczdDFzMzsc2Ph9sR+g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9483
 
-Synology uses a microcontroller in their NAS devices connected to a
-serial port to control certain LEDs, fan speeds, a beeper, to handle
-proper shutdown and restart, buttons and fan failures.
+On Fri May 29, 2026 at 4:33 PM JST, Alexandre Courbot wrote:
+> If `Gsp::boot` fails, the GSP can be left in a state where boot cannot
+> be attempted again unless it is reset first.
+>
+> To avoid this, we want to run the unload bundle whenever `boot` fails to
+> try and clear the partially-initialized state.
+>
+> Do this by wrapping the unload bundle into a drop guard up until `boot`
+> returns. After that, running the unload bundle becomes the
+> responsibility of the caller.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
 
-This patch series depends on the rust led abstraction [1] and the rust
-serdev abstraction [2].
-
-This is only a initial version of the driver able to control LEDs.
-The following rust abstractions would be required, to implement the
-remaining features:
-- hwmon (include/linux/hwmon.h)
-- input (include/linux/input.h)
-- sysoff handler (include/linux/reboot.h)
-
-[1] https://lore.kernel.org/rust-for-linux/20260530-rust_leds-v17-0-c0698c4368e2@posteo.de/
-[2] https://lore.kernel.org/rust-for-linux/20260530-rust_serdev-v8-0-2a95f1da22a7@posteo.de/
-
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
-Changes in v13:
-- adapted to driver-lifetime v5 patch series.
-- set blink = false as initial power led state, as set_blink hasn't been
-  called yet (even though the led is blinking at startup)
-- Link to v12: https://patch.msgid.link/20260429-synology_microp_initial-v12-0-40a05033c620@posteo.de
-
-Changes in v12:
-- adapted to driver-lifetime patch series. The driver can't take
-  advantage of it, until class devices like led also make use of it.
-- Link to v11: https://patch.msgid.link/20260427-synology_microp_initial-v11-0-9c1bd5a6f3ed@posteo.de
-
-Changes in v11:
-- rebased on top of 7.1-rc1
-- add "synology" as devicename to led, like it is done in existing dts
-  files in the kernel
-- fix color for led being orange instead of amber. I personally can't
-  clearly tell them apart, but apparently its amber.
-- replaced MCU with EC in Kconfig help
-- Link to v10: https://patch.msgid.link/20260424-synology_microp_initial-v10-0-e852d2f3eba1@posteo.de
-
-Changes in v10:
-- resolved issues reported by Sashiko Bot:
-  - removed unneeded include from device tree
-  - fix typo in of device table
-  - fix blink not set to false, if delay_off or delay_on is 0
-- Link to v9: https://patch.msgid.link/20260423-synology_microp_initial-v9-0-4a8533f87e07@posteo.de
-
-Changes in v9:
-- separate fallback and front compatibles in dt schema
-- remove front compatibles from of id table, if all functionality is
-  by covered by the fallback
-- remove TODO file
-- add platform-driver-x86@vger.kernel.org to Maintainers file entry
-- use `Delta` type in `BLINK_DELAY` const
-- Link to v8: https://patch.msgid.link/20260420-synology_microp_initial-v8-0-7946a9124491@posteo.de
-
-Changes in v8:
-- removed unnecessary Copy and Clone derive
-- added `BLINK_DELAY` constant
-- added compatible id fallbacks
-- moved dt schema patch before the driver
-- added ds411p
-- Link to v7: https://lore.kernel.org/r/20260411-synology_microp_initial-v7-0-9a3a094e763a@posteo.de
-
-Changes in v7:
-- remove list of compatible ids from commit msg
-- explain what makes the different models not compatible in the commit msg
-- remove unnecessary examples
-- Link to v6: https://lore.kernel.org/r/20260405-synology_microp_initial-v6-0-08fde474b6c9@posteo.de
-
-Changes in v6:
-- moved devicetree bindings patch at the end of the set
-- remove several patches
-- move of id table from model.rs to synology_microp.rs
-- remove the model! macro
-- use if blocks in devicetree schema to narrow down the
-  fan-failure-gpios property
-- add multiple devicetree examples to test if blocks
-- Link to v5: https://lore.kernel.org/r/20260329-synology_microp_initial-v5-0-27cb80bdf591@posteo.de
-
-Changes in v5:
-- add esata led support
-- use different compatible for each model
-- add visibility modifier to of_device_table macro
-- fix match data missing when using PRP0001
-- Link to v4: https://lore.kernel.org/r/20260320-synology_microp_initial-v4-0-0423ddb83ca4@posteo.de
-
-Changes in v4:
-- convert to monolithic driver and moved it into drivers/platform
-- removed mfd rust abstraction
-- moved dt-bindings to embedded-controller
-- Link to v3: https://lore.kernel.org/r/20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de
-
-Changes in v3:
-- remove `default n` from Kconfig entry, as n is the default already.
-- select RUST_SERIAL_DEV_BUS_ABSTRACTIONS in Kconfig
-- add mfd rust abstraction
-- split core and led parts into their own driver. It should now be considered a
-  MFD device.
-- split led part of dt binding into its own file
-- Link to v2: https://lore.kernel.org/r/20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de
-
-Changes in v2:
-- fix missing tabs in MAINTAINERS file
-- remove word binding from patch subject
-- add missing signed-off-by
-- add missing help entry in Kconfig
-- add missing spdx license headers
-- remove no-check{,-cpu}-fan properties from the dt-bindings and replace
-  them with the check_fan module parameter
-- use patternProperties for leds in dt-bindings
-- license dt-binding as GPL-2.0-only OR BSD-2-Clause
-- move driver from staging tree into mfd tree and mark it as work in
-  progress inside Kconfig
-- only register alert and usb led if fwnode is present
-- Link to v1: https://lore.kernel.org/r/20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de
-
----
-Markus Probst (2):
-      dt-bindings: embedded-controller: Add synology microp devices
-      platform: Add initial synology microp driver
-
- .../synology,ds918p-microp.yaml                    | 100 +++++++
- MAINTAINERS                                        |   7 +
- drivers/platform/Kconfig                           |   2 +
- drivers/platform/Makefile                          |   1 +
- drivers/platform/synology_microp/Kconfig           |  13 +
- drivers/platform/synology_microp/Makefile          |   3 +
- drivers/platform/synology_microp/command.rs        |  54 ++++
- drivers/platform/synology_microp/led.rs            | 287 +++++++++++++++++++++
- drivers/platform/synology_microp/model.rs          |  49 ++++
- .../platform/synology_microp/synology_microp.rs    |  91 +++++++
- 10 files changed, 607 insertions(+)
----
-base-commit: 9e171fc1d7d7ab847a750c03571c87ac3c17bd84
-change-id: 20260306-synology_microp_initial-0f7dac7b7496
-prerequisite-message-id: 20260505152400.3905096-1-dakr@kernel.org
-prerequisite-patch-id: d2aebf69b153c039bbed1d0ed26906708fd22534
-prerequisite-patch-id: 84b28da2f5de20fc1785095c647b2ffc35d969a5
-prerequisite-patch-id: 67318671a5eed5fb4ad23a450f1cf0e442bf8ca2
-prerequisite-message-id: 20260525202921.124698-1-dakr@kernel.org
-prerequisite-patch-id: b84db329d4372a175cb8d49e4e88c3eecf7eb228
-prerequisite-patch-id: 2c30303f409cc8288cc87e241920219f5ddd8390
-prerequisite-patch-id: 4e4f0ad370d763ad00b0f75b91fa216f2cc95953
-prerequisite-patch-id: 5bcd6b37f3498feebda275dfef78136eba34004e
-prerequisite-patch-id: 872b0982f3e5e7d1698d9df3b325e4cd27b27789
-prerequisite-patch-id: 3a3c7749e017d9335f58497404d1350e96caf471
-prerequisite-patch-id: 3526c9154f581497a11465b936d83ef61a875454
-prerequisite-patch-id: 65d8c757b52475c2acc7d22ddc92cd3f0152b55d
-prerequisite-patch-id: 4bd31f1414d5248dc080884caadf5f21684a8427
-prerequisite-patch-id: 7beadbb0da3e589ed86d12f512d1c83427dd82b4
-prerequisite-patch-id: 12cd0f67ffd27347f90c065db491945908206b7f
-prerequisite-patch-id: 4642e31f66331f6c3b579377111ea733dbb3a11c
-prerequisite-patch-id: 52d67b40b4396c741e2222d6a5bc7927abcb77aa
-prerequisite-patch-id: 74ca82ff26cf9c7a993757c87db8be62006e820f
-prerequisite-patch-id: 466fb9fa7febbffd8ef51b311c7d9893c11fc0f0
-prerequisite-patch-id: e515cd98b06e26721cbbe6a4fbacd251d0073b63
-prerequisite-patch-id: 8dc8e75d9f6499a554ef7e474bbacdbf3660a9f2
-prerequisite-patch-id: 5fdb9f71dca2f44dd293760a60db125b770f1f55
-prerequisite-patch-id: c766a24c2d5064f5ec09daada0b8e8fba862d3aa
-prerequisite-patch-id: b768f6456d35fa7a80c015e34bbdba6082dbd593
-prerequisite-patch-id: 6a8b17234f12f7084e6e2ce843a7031b0a891ce4
-prerequisite-patch-id: 98b2deb9e60c1f28f90c5ee34fd608aaa9fd9420
-prerequisite-patch-id: 774b29be66e641ee50cedb4704cf49d8b9fabf50
-prerequisite-patch-id: cf95dc936cfc4b3a7a363435a51a48d9009645b3
-prerequisite-change-id: 20251217-rust_serdev-ee5481e9085c:v8
-prerequisite-patch-id: 45128665162dd9f51a0764deb3815a338948b291
-prerequisite-patch-id: b84db329d4372a175cb8d49e4e88c3eecf7eb228
-prerequisite-patch-id: 2c30303f409cc8288cc87e241920219f5ddd8390
-prerequisite-patch-id: 4e4f0ad370d763ad00b0f75b91fa216f2cc95953
-prerequisite-patch-id: 5bcd6b37f3498feebda275dfef78136eba34004e
-prerequisite-patch-id: 872b0982f3e5e7d1698d9df3b325e4cd27b27789
-prerequisite-patch-id: 3a3c7749e017d9335f58497404d1350e96caf471
-prerequisite-patch-id: 3526c9154f581497a11465b936d83ef61a875454
-prerequisite-patch-id: 65d8c757b52475c2acc7d22ddc92cd3f0152b55d
-prerequisite-patch-id: 4bd31f1414d5248dc080884caadf5f21684a8427
-prerequisite-patch-id: 7beadbb0da3e589ed86d12f512d1c83427dd82b4
-prerequisite-patch-id: 12cd0f67ffd27347f90c065db491945908206b7f
-prerequisite-patch-id: 4642e31f66331f6c3b579377111ea733dbb3a11c
-prerequisite-patch-id: 52d67b40b4396c741e2222d6a5bc7927abcb77aa
-prerequisite-patch-id: 74ca82ff26cf9c7a993757c87db8be62006e820f
-prerequisite-patch-id: 466fb9fa7febbffd8ef51b311c7d9893c11fc0f0
-prerequisite-patch-id: e515cd98b06e26721cbbe6a4fbacd251d0073b63
-prerequisite-patch-id: 8dc8e75d9f6499a554ef7e474bbacdbf3660a9f2
-prerequisite-patch-id: 5fdb9f71dca2f44dd293760a60db125b770f1f55
-prerequisite-patch-id: c766a24c2d5064f5ec09daada0b8e8fba862d3aa
-prerequisite-patch-id: b768f6456d35fa7a80c015e34bbdba6082dbd593
-prerequisite-patch-id: 6a8b17234f12f7084e6e2ce843a7031b0a891ce4
-prerequisite-patch-id: 98b2deb9e60c1f28f90c5ee34fd608aaa9fd9420
-prerequisite-patch-id: 774b29be66e641ee50cedb4704cf49d8b9fabf50
-prerequisite-patch-id: cf95dc936cfc4b3a7a363435a51a48d9009645b3
-prerequisite-patch-id: 52b17274481cc770c257d8f95335293eca32a2c5
-prerequisite-patch-id: 6ab09768759461c6bea5d4a0833d50e3e41067f1
-prerequisite-patch-id: c8506718a0433ffc4b3c686c1261509159a54d31
-prerequisite-patch-id: 19eb53ce0c653c1406f8f192f6ad158fb4bd8d8f
-prerequisite-patch-id: 55d6a70baf3be7f4da36b82cf02a5a7d59457520
-prerequisite-change-id: 20251114-rust_leds-a959f7c2f7f9:v17
-prerequisite-patch-id: 45128665162dd9f51a0764deb3815a338948b291
-prerequisite-patch-id: b84db329d4372a175cb8d49e4e88c3eecf7eb228
-prerequisite-patch-id: 2c30303f409cc8288cc87e241920219f5ddd8390
-prerequisite-patch-id: 4e4f0ad370d763ad00b0f75b91fa216f2cc95953
-prerequisite-patch-id: 5bcd6b37f3498feebda275dfef78136eba34004e
-prerequisite-patch-id: 872b0982f3e5e7d1698d9df3b325e4cd27b27789
-prerequisite-patch-id: 3a3c7749e017d9335f58497404d1350e96caf471
-prerequisite-patch-id: 3526c9154f581497a11465b936d83ef61a875454
-prerequisite-patch-id: 65d8c757b52475c2acc7d22ddc92cd3f0152b55d
-prerequisite-patch-id: 4bd31f1414d5248dc080884caadf5f21684a8427
-prerequisite-patch-id: 7beadbb0da3e589ed86d12f512d1c83427dd82b4
-prerequisite-patch-id: 12cd0f67ffd27347f90c065db491945908206b7f
-prerequisite-patch-id: 4642e31f66331f6c3b579377111ea733dbb3a11c
-prerequisite-patch-id: 52d67b40b4396c741e2222d6a5bc7927abcb77aa
-prerequisite-patch-id: 74ca82ff26cf9c7a993757c87db8be62006e820f
-prerequisite-patch-id: 466fb9fa7febbffd8ef51b311c7d9893c11fc0f0
-prerequisite-patch-id: e515cd98b06e26721cbbe6a4fbacd251d0073b63
-prerequisite-patch-id: 8dc8e75d9f6499a554ef7e474bbacdbf3660a9f2
-prerequisite-patch-id: 5fdb9f71dca2f44dd293760a60db125b770f1f55
-prerequisite-patch-id: c766a24c2d5064f5ec09daada0b8e8fba862d3aa
-prerequisite-patch-id: b768f6456d35fa7a80c015e34bbdba6082dbd593
-prerequisite-patch-id: 6a8b17234f12f7084e6e2ce843a7031b0a891ce4
-prerequisite-patch-id: 98b2deb9e60c1f28f90c5ee34fd608aaa9fd9420
-prerequisite-patch-id: 774b29be66e641ee50cedb4704cf49d8b9fabf50
-prerequisite-patch-id: cf95dc936cfc4b3a7a363435a51a48d9009645b3
-prerequisite-patch-id: ea861073f29519d3aa4e6e13b6cdf22e6882c093
-prerequisite-patch-id: 72e3f69ddcb244e8871f63086c416d485d807901
-prerequisite-patch-id: e8dab3c76da6795163eabb6799188856431134b7
-
-
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
