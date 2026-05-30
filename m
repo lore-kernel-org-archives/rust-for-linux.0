@@ -1,100 +1,176 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020091.outbound.protection.outlook.com [52.101.195.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F49A399340;
-	Sat, 30 May 2026 10:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780137689; cv=none; b=eW+UyEHER8zmRVfzjEVa4i2QjxJeAkOUjeEBz3yebzeqBAGt2Mb79lziHVrgwDt9qnoHxmP67fgHZhgjKZblT/HBQx4i9E5ZSgHOvAw74tRT9RP1qIs9FTV4WK5aJmgjQYwHDublJDQR2xDfW4iVAtLC4zL0H1R+EfoVtjjLtAk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780137689; c=relaxed/simple;
-	bh=8rLJAHarAeoUMg59HygnNpa2WBuECEEdnuMIXACLS/w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KPs5jiGXZS78mIEYmgAdknyzguEUgOHv61apatqhMOtHJUOmg4e2xqidDAZwA1Vh5zSfvYiEbt07lZ1TE9jPP22VwBRXo7x8DREHPd33KsLwUGz8g4svPb+Bx2ox1wVdeGxWoR6JbhApRMlCuX9HH3onzyQIOpLf30EIfaNLB0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=H0TpCUQp; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE5B2EF64F;
+	Sat, 30 May 2026 11:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.91
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780139066; cv=fail; b=q1ASbW17CX1nWZE8Q/sWx17NgLUkCypjIsq6PAH4Tu0YTMrGnZLxD1tj0iHTduFYPBNhvWqRHjGt2vnvwZjvlTiZp6YIdcf20kCsX1wfx4E1xRh/Iz2+ssB/AxmFX8LbQCCVQ9BSPcv8shPB2NEIcC9W0ykDAHuiunYPNw0T49k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780139066; c=relaxed/simple;
+	bh=QUELZK6vg0HVa3jjBcWwjL1knUWjcbXhgOE+Jh4TpfU=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=kSc7WP8RBb5CtgZgNrxZybd5INuSFHh+7HNkVirZhqq0gbeR7Fn+R1I9ND9ksOyROoYiZGHTo7BM+LzKIMdzZsa8XXhqbTUdiHAz5fCo7p8v9TWveroaQSsd/ziQZqxnkWAOnOSrLfT74/swH2eTVTNpEeJT1a9MO0pTYRhlc3o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=IrrALZSo; arc=fail smtp.client-ip=52.101.195.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="H0TpCUQp"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gSGws0fwFz9tpD;
-	Sat, 30 May 2026 12:41:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780137677;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8rLJAHarAeoUMg59HygnNpa2WBuECEEdnuMIXACLS/w=;
-	b=H0TpCUQpQ+Dr9Pvt+Ml8uhSOYfjX7mn/HBGzH+0yuyngapzV0xhIUrnYMAJdEkZKOPmlE6
-	6bPrr74+kesJtiZhnCMR2utspDjmRTh0V+y5YUqlFI1v2Oao5U1EtfdABClzF15QtEJk1H
-	gxs1yT4k1HqDfsZcZ5LF3UFqCT1yqPl0ZC1UssqQDoF3k+s/I20VrYyJ/NkIzAchOlA9Km
-	+BHM0PmW/A4hu4H2wR5TS8zwNjY9QHaO6MUIZ5rSR7u6TxQzHjKTYedyOPfyNtpGWBOQR1
-	aZiJ4vizjDVX1Ne/E9/IYcBGGe3xJzw3AnG3KrksPAaN8YGjmRcmZRr1ZX+vww==
-Message-ID: <47062326dcf87b605cf4def9835394551645caa5.camel@mailbox.org>
-Subject: Re: [PATCH RESEND] pwm: th1520: Remove requirement for
- mul_u64_u64_div_u64_roundup
-From: Maurice Hieronymus <mhi@mailbox.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>, Drew Fustini	
- <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei
- <wefu@redhat.com>,  Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=	
- <ukleinek@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng	
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>
-Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Sat, 30 May 2026 12:41:08 +0200
-In-Reply-To: <58245ce0-7271-4b07-b866-0037ff68d92c@samsung.com>
-References: 
-	<CGME20260525131112eucas1p1d7e4836f71c81686e1f71e4007e344ec@eucas1p1.samsung.com>
-		<20260525-pwm-th1520-fix-v1-1-814e537c6812@mailbox.org>
-		<8857fc45-b787-4661-b27b-8976e655f7c9@samsung.com>
-		<1f550af5b8d1fa2aaa9936d5b0010c156e0cb455.camel@mailbox.org>
-	 <58245ce0-7271-4b07-b866-0037ff68d92c@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="IrrALZSo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oUcaMS9TKwsaalm2Uo58x8/NyzXHq6PLkEVaCYYAsf2GNFAfmOOoEeBO/jV3WcoBJ6UQfGXcuzr1xle2GioVZbgQ0XQc50OZiTBx2F5T0dr+qBzBp9FTDqr93ab+nCsWHfum6/ShulRcl28co76YHQjgaN7SclsQJtH9ZIHI5T1WHfOwFlXav8xHC8hp5Y8FhE4EmIMa0e04uZN3fLvZEHjmw46i0umSKzVhoC72U4sle8MDAQlPXFevD0zx4QlvpqIBlyiCFij4qUqZA5UnNXeqbf3jMlnDs1UTk+aWTNRUcs4um33JJSLeqCuLOJRjVXHrf4H+tJEVPJWnz34WJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eVWZNnUHX/WxEnOKFtE2j/e+qHtodGduYRfQNTYE2aE=;
+ b=gbAg6UUCyZ+iJ20FW+gcqFHv87/NL7OVCb7lJr+/JISLUN2ZWRluqoIGHIAD7MuKHitUDLEomZxEqjovrskOx1E3QI3w4HJfGEfdchujpCGetgKDQxCiTQrKOgFfJ5JEjDDhR86M98SBGZTEKn7nBOuZku+3bShJ5TjVC8Iux+YEmQRIAq/M+9fhV2WVfqioVuCS0Mw4FuErt6nGOuQtMZUFjrVPbb9IdfiUgbpw8yooi2bl62iDskqD6XVWip4BpiaGiZtlwynfIHKmPAGSy/ABCJIoY4g6zpyJkWvy2U4Xj4DfUdWUHWoO8ZOAIyWQuMH954t1HBVjTN+pYv2D1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eVWZNnUHX/WxEnOKFtE2j/e+qHtodGduYRfQNTYE2aE=;
+ b=IrrALZSow5OGy3VCardbLQDt2e0eUZeuZKGoHAd92NOA41d9v8bxmwlmgw/HCUT1O48SAnk+iZ1Wqh/dbdhgOhePNQOF35cLXYSm6wDB+TvbG/xSx3lquYpyRKwSfIbE9ImPgO1eXvsmfmLSb6eWbKOW4DXGOi6ou7imVT1EisQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CW1P265MB7926.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:212::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Sat, 30 May
+ 2026 11:04:21 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0071.015; Sat, 30 May 2026
+ 11:04:20 +0000
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 30 May 2026 12:04:20 +0100
+Message-Id: <DIVYMQP1WAU0.1V6OFY4Y7K244@garyguo.net>
+Cc: <linux-pm@vger.kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] rust: cpufreq: clean new `clippy::map_or_identity` lint
+ for Rust 1.98.0
+From: "Gary Guo" <gary@garyguo.net>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>
+X-Mailer: aerc 0.21.0
+References: <20260530095809.213611-1-ojeda@kernel.org>
+In-Reply-To: <20260530095809.213611-1-ojeda@kernel.org>
+X-ClientProxiedBy: LO4P265CA0220.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:33a::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: w7y49kc766z4x146mxmm6op3a9e9kqhq
-X-MBO-RS-ID: 66b95ce410648b2b261
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7926:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95650987-e05b-4345-60b8-08debe3b3367
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|366016|6133799003|56012099006|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	RQZV3A9/yJwBZE32zETnUulOyrUdixVmCc8T8RrkCJeoXaVmamwh7mnWiLeZbryMYd0Nl51AvEUdKehxBHo9sXhuwWhYD1KWacus8Era62fnUfWWlUKfrTLIaZ3t/wzWxMT8x3/TFPzOxWQ0TuqZ3MRl7Hj4yQetRu/1sy0jyR38XdJeh68J5z1ST39WtHUAzdBW0ShxlivnibHHvdGD4YTwAmaIBsCO8RT8DMTTmk1qoARX6kXEg6WhvqHzLZwzMHPKERRkcZQLYzmAcs+++LYHwZS6p0TkJLB6Nq7F6wmsBaoHL4wE8CFOzWTQ9mxNNtz20a7UFD0Zitf+H8CylQ6wLV683Ct1qyYH4Glnt1wi4yu8qjJ4t9yHi9F+ygqCIb5NdsstOn0hDQjz54/Puctolgo4lslfxgveA1J+UgFJFY7i0QT5pJTmDhels3l+MUobslRriNQBQQccePc5kkz51tnEpQgGxx6theFYRWTpAg0OTap4vLdcUvBW/ieVuufYKRaDDJ5GTtKErPavD3aUZBzNmvYcvWSzhIJVXIYaoIM2v2+U0gnriFKlzUxKPPEDHx5sRUoncdoCH6WRWMCbQtyfNPWgi9hDuY0aBmsvpCwws9ULcIXpp2op4nYCI2/6LtdrhH/OP1YDdJdegw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(366016)(6133799003)(56012099006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RThwRUxhbXlzYWh1bmk2UVdlU0RrcXhvWWo0TUZwOTJjTlFxZ2J3RGkrSDFY?=
+ =?utf-8?B?Z1ZETU1MTlloR25VeHkyZXhSejRhcDJBV2crbTBodnJyZXNMOE1ZZFRjZjRD?=
+ =?utf-8?B?QmtNNnEwVGVWZUpiNk84Zm5GZVozYlB0cWdjL0VoZlVBWTBNVmNpalQ0RTBv?=
+ =?utf-8?B?WWJIa1JwM3ZhK3l2bXpVUWErRkFIQXVxMTRmcmg2OUdLRUFtcEo1bkpIZkN0?=
+ =?utf-8?B?cW52OUVsc1VsRmN1dkV4L1JWWDNvK2hoVjI4YnR3VzF4NVlCZ3crQmswSEta?=
+ =?utf-8?B?RHExMTd1QXM4czZqZTlaY3Q4UXU1ajJoazg3YXE1Sm9pZUFQRGh5Y3FNaGlY?=
+ =?utf-8?B?ZEZ2aVNWUXdlWGN6ZXVGUnJwZGZhWFhJSndxRHBlamxqcFFsd3JjdVZOK3V2?=
+ =?utf-8?B?Q3crdG01LzJaMGIzc3ljdDRkUXViMnhlNnNxaXZsTmxSQmNjY3duYkhlTW1r?=
+ =?utf-8?B?RlRCMXFodXp0VkhNNHAvZVovOC9FUHN2RmNhY3JuSUZZWEIwRjIzNXY4ODd5?=
+ =?utf-8?B?Uk55aFpWME03aXl4VWxuai9JZkwvTUo3MlFKZzNLanZZV0VxQ2l5eGw0YUJl?=
+ =?utf-8?B?MzZtOHpsYTk2U0pHVTZKWEVlK3ZyWlZNWmhDd24zNC9XSG1FcFZTTERwQWky?=
+ =?utf-8?B?MTlmSEhCYm1ETkdzbmF4bFl0T0hsU1VlcjB1M1F2MS95THVXNk01Tm1OcTE1?=
+ =?utf-8?B?S2dGaGhBOE01QVRvekVueGp4OHVwOFdSZWhIdXd6SHV5eE9uUHNRYmVmemd6?=
+ =?utf-8?B?YVprVzRlSkRZTHU2bVpvWDFxZHZZd2l3MnpTUGU4VFFPMFpkd2pFK2NhdzBr?=
+ =?utf-8?B?Lzg0QmtoUzZNQ1gwR1QwL2VYM0RlUlAyNEJJZzJ5amNjbkNFTzk3end6VTZa?=
+ =?utf-8?B?ZUhmbjMyMGMraUlVVWFCQjloTXRnSk91TXY3R3U5WllFM0loSHk2V21hOG1F?=
+ =?utf-8?B?V3RGeWdOaXplZ3VVb0czU3RjK2tuUCtZbUpxZU1LaVVIdENqQWR6dHhSRm9j?=
+ =?utf-8?B?M2dldXNmdHRSUjJBcmZUNjRQQjlNWS9Pd1JGeVZnSkxLT1Ayck02elNQRkRy?=
+ =?utf-8?B?Y1QvYlJCYld6QU5NN204RmRYYjh1NE93V3FPNi85aFkxS2JaanpxV2craHM5?=
+ =?utf-8?B?eDViL3Z6SGtGQXMvc1JVM0RKdkQrd3BNblNUL3pKanJQa24yaHl2eTlSSU1R?=
+ =?utf-8?B?QlRvQ0ZKMHVxM0E4QTQxNHBYdGJRaC95M3VsdUpPdEJaMWUxdTJZRkYxNXpP?=
+ =?utf-8?B?NkVXZ1dGWjcwVGlvbDBvd1djZHAwcmIxbjRsbmJVYndCNHBzTjU0TERpLzE5?=
+ =?utf-8?B?T1ZoLzQzRlZ6N1MyR3JRdVZBY0FhRjhSNzJWUzZnbitlQTJ4L3NHcHFMSVp4?=
+ =?utf-8?B?UGp1NUs3dlJjSWVEWFlVTWszSU02LzlIaDVlY2REdUduN1Q1cGVia294U3ZN?=
+ =?utf-8?B?cGJ4Rm9RZWs1M0hBNkFBMkZCUS9IazhxWnlGaStrVjVYQ1JmeXZzZUxNUFRa?=
+ =?utf-8?B?ZFo0bGg4WlFGV3VFMW9NZXFDbVptSlRFVjBGMTdCTkxYcVRTZHdQRVJrN2tm?=
+ =?utf-8?B?bUxleXhERmN6cUI1a3NoaXpzUEhZRHB0Q1J4ZTB3MDBZMndHdVFyQkYwOXFz?=
+ =?utf-8?B?QjArSit1TkF1aldxTE9FVmVuZFRhUXBvWDVoOTlKVUx5NkJFNWIyajNSdjhU?=
+ =?utf-8?B?NVhmN0h3RFlVd05uZGlHVE41TVFTYW50L3RkZzBQbVYyVTdmOGU3YkRNMnY2?=
+ =?utf-8?B?VFZVUXMrUFNSYUNzRXZpQjY1ZGFtNnpOYjdrKzVSdkpyYzZ1UWFDck01SklW?=
+ =?utf-8?B?cGNQT214TDd4NWsyUFpMaitrZWM3bHlsdEhhcm1WMjFxWkZCYmhyd2NWUnhm?=
+ =?utf-8?B?dUtBNUlkcXA5dFJJQ20zS2pEWXFkNm1uc2pUeEQwUjFlUlFIMzNxaHp3SHZQ?=
+ =?utf-8?B?RlZMaVdZRWFaWDI4Vk1KSUFFU3JJRldxMGU1ZkFPQVp3STBjSVV3SFZWMVJY?=
+ =?utf-8?B?Q1doTDhsWkpydElrSHhuTUVyNXlMbUhja1AzeVIxVFcySDFqZlRHU3RhYTFh?=
+ =?utf-8?B?aUlYNW5uS2loRHhHNUJobzBEMWRRQUwrOEZaYUdKN0tRMHk1dURGTHNZMVlG?=
+ =?utf-8?B?RnRTYjJiOGt6dDBYMW1PSjhwZHEyQmdCcUZockNMWmVEbEt2am1pVmZIMGlF?=
+ =?utf-8?B?R2hodHI5THJmSFErMVlpeERpRHl3S3g3ai9iL1haaTVlOEhxcU10d0EvR05X?=
+ =?utf-8?B?YmNaM0l3YlhTT1FvSS94ak9EbTZoaFFKc3RROWpoZ3gxM3h0MWlUb0F1U0tW?=
+ =?utf-8?B?R3dHZzlmZlVHdXRBaUd1TjZEVjJ6dmU3OG9JQkR5MVkvMlJ6WE9DZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95650987-e05b-4345-60b8-08debe3b3367
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2026 11:04:20.8695
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JOD0tp1MwwSiGKgdH8EwTCo/rhaxdsgFfF/v4KAcoM02EN/6jzvzguZTT103kWQ5sprm5Fvik7UGWY091+o5WQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7926
 
+On Sat May 30, 2026 at 10:58 AM BST, Miguel Ojeda wrote:
+> Starting with Rust 1.98.0 (expected 2026-08-20), Clippy is likely
+> introducing a new lint `clippy::map_or_identity` [1][2], which currently
+> triggers in a single case:
 >=20
-> Apologies, I have to correct my statement from before after
-> discussing
-No worries!
-> with Uwe. The reason the macro was used in the mentioned driver is
-> NOT
-> that PWM controllers have 64-bit registers - Uwe isn't aware of that
-> being a real pattern either, and I was inferring it from the code
-> rather
-> than from hardware reality. The actual reason the macros get used
-> isn't
-> unified across drivers and we should pin that down separately rather
-> than block your patch on it.
+>     warning: expression can be simplified using `Result::unwrap_or()`
+>         --> rust/kernel/cpufreq.rs:1326:60
+>          |
+>     1326 |         PolicyCpu::from_cpu(cpu_id).map_or(0, |mut policy| T::=
+get(&mut policy).map_or(0, |f| f))
+>          |                                                            ^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>          |
+>          =3D help: for further information visit https://rust-lang.github=
+.io/rust-clippy/master/index.html#map_or_identity
+>          =3D note: `-W clippy::map-or-identity` implied by `-W clippy::al=
+l`
+>          =3D help: to override `-W clippy::all` add `#[allow(clippy::map_=
+or_identity)]`
+>     help: consider using `unwrap_or`
+>          |
+>     1326 -         PolicyCpu::from_cpu(cpu_id).map_or(0, |mut policy| T::=
+get(&mut policy).map_or(0, |f| f))
+>     1326 +         PolicyCpu::from_cpu(cpu_id).map_or(0, |mut policy| T::=
+get(&mut policy).unwrap_or(0))
+>          |
 >=20
-> So please hold off on the Rust helper for now - your initial patch
-> might
-> be the right direction.
+> The suggestion is valid, thus clean it up.
 >=20
-Is there any further conclusion which direction is right? Can we merge
-my patch, does it need some change or are we going down the road with
-the Rust helpers?
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://github.com/rust-lang/rust-clippy/issues/15801 [1]
+> Link: https://github.com/rust-lang/rust-clippy/pull/16052 [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Thanks!
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
-Maurice
-> >=20
-> > Maurice
-> >=20
->=20
-> Best regards,
+> ---
+>  rust/kernel/cpufreq.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
