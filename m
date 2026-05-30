@@ -1,154 +1,156 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C3238643B
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 07:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780124798; cv=none; b=JoHqRafgD3WmHgmZZRTYRc/bLarQ/emDT6muFAZgL0f47Ues3M/0K6uQDOPjl4xjJyzb1jOW4tN/QFc/56EGxlcT4f7ip7ZKg3yOUIYnFb6keCzNHAo+Zpn4XF+RV7omQB5bwUlhbBW0E77J7U+E2QUk7AFs6fXnkZ6Aen3RPKI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780124798; c=relaxed/simple;
-	bh=2N1CfdEjIp9UZ5olaB3KnwZIGIv8BcFHL7Wp9Xuj+6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M03sVASfCCJWN+y8LTg5cGbFpYLv2mP9LxTNnwbOJJRDryomtlnUSXUC7DkaP8BesQz0C1+nkhcpiHMXz6kjrycPX4ckwbWWkYZRhll2IRIgfiT1Bmdxw/uVRdFQczQqp85gLQryOwCLlShSyE8eVlKRqTL52GJXKU87B041VUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XnTzG5Lz; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900923932E7
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 07:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780126868; cv=pass; b=BBAaFm6w79qfbQ1rOQo56Vkt1wGwlJQ4k2dLMVR5M04t0QkbpOOCPhRtzCVPYUBB23LAlrRIQj5sIbUTGBqzk7oi1+o7BwmZfE9hwYe/uEeY9I81Q3ZXWpDvSrLO1mTSiHRKDw2+1G0RNDyFrj6JBBlwcoU18wNXcvJ0s7mru0c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780126868; c=relaxed/simple;
+	bh=L3UEWLmXReuYoCrmgUMxQKkIqL6gBhu9SHlnPE1kURQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j8266nBkB07xELweBw2MrVfovyNakDuw/h2rj3tXe2URYXw6F3xjfrHymwrj5D4G+p9OYrHrZXqrsZI7BkTlr+MFEvVW/zn1+pj7CPAPUJsJvzUgwJJmZmDTpIJM35GBIHGml1LLCVXPYBUo4b4VCeIFR6z+7sApCtrkFFE5tJ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6zdXdOH; arc=pass smtp.client-ip=74.125.82.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XnTzG5Lz"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-45ef56d9b67so701906f8f.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 00:06:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6zdXdOH"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-134a84f0aa7so551963c88.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 00:41:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780126866; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Rt2Qifv66IY6T8fZFoDSdvHXVA66v5kiJfOp6CvtCzFsN9MsncWxAZe6J/1CU2TdI+
+         6KKLR+u0aVE06E/VbXhj7np1Z73DcLCzvEhIiTznkT/xIGjQr5S9ULgcKIMUK5JphQOR
+         PF2MEru0tQ8puGszo1Tx+cs0QRecsMXUutBW350r029DrcbDe2bQQHttrLLeoa6qin5C
+         bbl08TqMfvJt5MJvxzAGzyngLtpaB4JyDTa7EPDKaIesz70SQQHzeTQdAgJKFb2U63zy
+         i7p2ZAaEjwq54M5VKSRQ4qu8Tfj+axcC5ByL/ZIPq/KwUIQdGT9TVk1ya+6GGd5PNIMR
+         WJ1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Qpr9VE3elbZ+vLOG6raofIn6zipcaovFd851fDkQwe4=;
+        fh=rODWTdyFLkGljgvvPfFc7/+5AMQGQnrXUwnDyJ1ivHY=;
+        b=d37+ZBALvp1UxzfpSYgNb0xb4ejjlWWZVw+RGkLZc9SxBlQTQ/FxCONNFnQxwiIVSt
+         jq5pPtdbttl0MJTP8KB4ZDWxPqoJ58xIqMR2NcwMEJa77LQ3bR2jLqlH7tdsHjKeeJO9
+         AiS3kVPjGOszNINvkjTmDhkmP/Fw4yC5TOuRjqSbk4d+g6iOIBsLIGuABpNUHU/Eqv/z
+         06d8AnxRvdGGk32wJ3gRBRdPSiAH6cWWED5sZHRR212RJjeI0pX08rGGHGY73vhHhMKb
+         L7ZjOlfKWuA2oeDwsT0WOjP5ks1O0k6Ma3REIyOROq/pGA2fSzT9HzuyJEkk68ugndMj
+         f8eg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780124795; x=1780729595; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/ikebuPUf41dJZeKHSamjbBCXgK2fFPq++GSjJDx1ew=;
-        b=XnTzG5LzssubPnDy6/PMDnf4163T/4pHOfjcZtcxiSSooI1ToHk4OwQhmjj+PXZHJK
-         +j91bxOU/CGD2ev6MyEKMIAKn4vcMPt584HfFql/TynbOBJ4oXqVftfNHg316zPbIu69
-         REYbna1Z8ukTsQxIeZ944hwH7FzWmMQ908Z37fhmb964kilH9vIEEj66+w0myzG/qNa/
-         UHrva0r9JmwD9PnsEQ2GjmTfbUyJrQZBpL5PY2lXM+n7IN26dfjbCrG/0jIKdqpZk5/Z
-         pjzJ6Rfu/2lp1r0AN49BPyHDdUezkAmTm95k3p3koJsK37LBLHLhnIaU9GRAJNptCf5W
-         xy2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780124795; x=1780729595;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1780126866; x=1780731666; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/ikebuPUf41dJZeKHSamjbBCXgK2fFPq++GSjJDx1ew=;
-        b=eJ414kYElRBkaMcWubPax+cn3MKUWJwTdp9UP4AbtR0/2BxxMS12aaoCNF0vGZBwAN
-         h2qmescorBxELNPBykcSB3yjYSk2dub5R53as7z7wk0B+t+5MPNktOy5EtUpDVFUG3EE
-         czFVxyXwAFawfnPkf5Z8m2mGNQGKSlnmHEpZRaM7Cclvlqd+FDEvpbh+IaaqNA5rS1jS
-         64FlrOWnFFNfqqfrN3eex+1E0Gicg7Fupe2L4Bys+B81fIneR7261V/xq7q11E/+/oxe
-         VfehfLRsPFLjLDbKfJoBT/Kkn9mIdQo89HVBvUI7OaBZpJqvoXH9+k5++DOP7rF0Txvd
-         Spmw==
-X-Gm-Message-State: AOJu0Yye9gDF8S7oQagKmUeFUKi8VGnQNtOSO4vSYCHs7EnqsO1Y4UMB
-	os9OEHnWeR49soAf/K4w6RhFpoBM8AFh+b5pc0HuQUGoCyyQLFmOAVyKPffdPzPJ
-X-Gm-Gg: Acq92OHMk/GMF5BpHx+Ah62R2GTe8+QmyF8oWJ+IkGLixjkCCizikFQgIj0W8/3n/WB
-	HMFH41nZ+3XH4nUYmrRGbM+WoGaYbln5goW0Ss6Os0OIdEzdaXmEncoTUnWSXd5E/fCD9JPKtQi
-	weB8KhhOCKEp2w40Tfe422uDuB/Xcy3ZqhdDgDIT1Z6Ri8Y0lW7BM6e4vQjXn4BFwSOy+g+//d0
-	w3Y1Lo8ebCiN5r9yYG9FfTz0YYMvLgMVIVV7ZcwnJkpkl/WGZAkx5WS/o/8iG9T4OZBiFtQ+GzY
-	VeeR+P11lfHppGsFmw8NVJ8zgvBgcLZPkGGdtD0IUOC/63JThLqLHjTCVU4hGp8gwW8FA56Q0BL
-	TzoQgSybk1yWbNQyZSj7Kz/jjM68DSRU8KfNg02zoG2S6A8/O2nGg4bIl0zhvVLFqM+24u9Nmqh
-	oVU4k+vtRHNfwKrPoWHwTpYjJN0qZ5s3UbhQzcRM0pPXBVHei0FUBZ3dU=
-X-Received: by 2002:a05:6000:4388:b0:45e:de0a:178e with SMTP id ffacd0b85a97d-45ef6b55c09mr3549373f8f.20.1780124795448;
-        Sat, 30 May 2026 00:06:35 -0700 (PDT)
-Received: from localhost (a89-182-201-132.net-htp.de. [89.182.201.132])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-45ef34a0403sm9170895f8f.6.2026.05.30.00.06.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 May 2026 00:06:35 -0700 (PDT)
-From: Sergei Litvin <litvindev@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	Sergei Litvin <litvindev@gmail.com>
-Subject: [PATCH] scripts/tags.sh: fix "make COMPILED_SOURCE=1 cscope" command ends up with *.rlib, *.rmeta, *.so filenames in cscope.files
-Date: Sat, 30 May 2026 09:06:31 +0200
-Message-ID: <20260530070631.14955-1-litvindev@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        bh=Qpr9VE3elbZ+vLOG6raofIn6zipcaovFd851fDkQwe4=;
+        b=S6zdXdOH6Uvp4Nn7whRLu2u8b3L3jP76XleCLwCZ66wt/9ccL6g+35HzCVWSgzJCtW
+         Lw0MjUjz6bb/WDpnFow47nITnn24qZPYlNHbDKKZMvixVIkdJERWtXNEh1UmsQKlgDMY
+         +gfXL9cqPuaZbyVwOvmRlduejoVbPmUVVRAGhqgWjuJUFvYMB9ify3Ebtg7Lp5K7Drcn
+         uFRS3wAzepbqoZSqQ1YU2WcoovwrCFwEFaoHsPdl9iIw3tb8nOqnjVSzsDm33PW0tAyq
+         uXzKnkaAK5UWnMxng6+jAagBfvnbS8I+QZVdoS5puDKEo7ofBC+Sg003nM4qdzWmSgXy
+         iJHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780126866; x=1780731666;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Qpr9VE3elbZ+vLOG6raofIn6zipcaovFd851fDkQwe4=;
+        b=Q+E9laeE5Cng7VCf9JN3STyQuiczKVSrqWd4V3LFvHjxSjBgmCD9lFt4TSr3Pyqqbu
+         sXGRLFk1PecDVJQ52eJzk5UoBmDErNsiQTrXJy5DizWZYkbBnBsHoqOPGDY+SPCLfM1E
+         TkkFV6lztEfqCK+1W85pBqN9HN3s9YyEV1JhzqCEee+3IIF2lbHp9kEYt1F21bqfQTWQ
+         pUn7sNv+ZAQXSPZWtKFUambftotRJQUXhoin9KF8QTL6IUKDhL2XYQgusrUd6b9EscZ3
+         NZDHACRaAek03vPxY/IB/9uY2+7Wj3i3KheFSEPPWiGOKorbUijamHwErcf21bPJq3aM
+         wyUA==
+X-Forwarded-Encrypted: i=1; AFNElJ+X+1vbGBwh23U8EVp14p2+R9PPD/YvfPjLRdO/m4TDKL2IQFCzSu16MRAU9TBWU1bXmDI/+Xz66Ymy/Ww+GA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyZZMU+ZUIa77Vv1buQ30i8R496PqouJasWisnts0oUFECG4tY
+	HgjzSjmKZhaXKQgFs7lF5FswspQJdA3c9k82jekozHP9ILVKH5CyTsdd9AYuX3FGgETwsKy2Erx
+	4pz1k1XyT8DFIZwUft4wsdWw3RoB5DEY=
+X-Gm-Gg: Acq92OFS9x1NcCUtZ8NW/x8vghueBSvD1vbluXzxTLQ2G4Dh4eYpC4WbUenXcTsolCe
+	pLGHIR4juCh3Os9KwMWdiGYXZoXhXWBc27qNXZc8OqCtYhAtpKroNYTC3YoyTVO8PQn/pQoRvFR
+	UzXxH/oWlDYwwt2JgoijayVEIOXix7ERs06amer0xLdxUgVe0JtfyRD1/2IrtZs+v1owMuJQ1de
+	5igs9N4EQi8Lvux0eos0uO4b2ys8HzwJXIY6eOu18Z7yr8uYxliMluSkJKWNo2ZNQ+mLrQDX3eq
+	DRS6IuWP24oGjhiPdillg0EiePcZrhUk7e6K0oKJ21lomo30sMI4d7fF+10BuyuYRio+lm3swG1
+	+uvODfneWcWpeyK2qzd2OwKbxZDp1vOzdgg==
+X-Received: by 2002:a05:693c:2c86:b0:304:3c33:7afd with SMTP id
+ 5a478bee46e88-304fa4a75dbmr712153eec.1.1780126865429; Sat, 30 May 2026
+ 00:41:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
+In-Reply-To: <20260527-uwtable-module-flag-v1-1-caa41342be4b@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 30 May 2026 09:40:51 +0200
+X-Gm-Features: AVHnY4LYzc72_leHtuASvRnfI_XBQ5P_tmJIekDaxm-OGvsoitOo6icCZq7qopI
+Message-ID: <CANiq72ny89rMb9y1ysfbBjm=LVhO=51sRd6Ocpy-UOwFj=61vQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: arm64: set uwtable llvm module flag for CONFIG_UNWIND_TABLES
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, stable@kernel.org, 
+	Bo Ye <bo.ye@mediatek.com>, Isaac Manjarres <isaacmanjarres@google.com>, 
+	Sami Tolvanen <samitolvanen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When executing the command `make COMPILED_SOURCE=1 cscope`, the `cscope.files`
-file generated by it includes filenames with the extensions *.rlib, *.rmeta,
-and *.so (taken from *.cmd files, which, in turn, are generated from *.d
-dependency files by the `fixdep` utility).
+On Wed, May 27, 2026 at 8:18=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Due to a rustc bug [1] the -Cforce-unwind-tables=3Dy flag only emits the
+> uwtable annotation for functions, but not for the module. This means
+> that compiler-generated functions such as 'asan.module_ctor' do not
+> receive the uwtable annotation.
+>
+> When CONFIG_UNWIND_PATCH_PAC_INTO_SCS is enabled, this leads to boot
+> failures because the dwarf information emitted for the kasan
+> constructors is wrong, which causes the SCS boot patching code to
+> patch the constructor in an illegal manner. Specifically, the paciasp
+> instruction is patched, but the autiasp instruction is not. This
+> mismatch leads to a crash when the constructor is called during boot.
+>
+>         =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>         BUG: KASAN: global-out-of-bounds in do_basic_setup+0x4c/0x90
+>         Read of size 8 at addr ffffffe3cc7eb488 by task swapper/0/1
+>
+> Specifically the faulting instruction is the (*fn)() to invoke the
+> constructor in do_ctors() of the init/main.c file.
+>
+> Once the fix lands in rustc, this flag can be made conditional on the
+> rustc version. Note that passing the flag on a rustc with the fix
+> present has no effect.
+>
+> Fixes: d077242d68a3 ("rust: support for shadow call stack sanitizer")
+> Cc: stable@kernel.org
+> Link: https://github.com/rust-lang/rust/pull/156980 [1]
+> Reported-by: Bo Ye <bo.ye@mediatek.com>
+> Debugged-by: Isaac Manjarres <isaacmanjarres@google.com>
+> Debugged-by: Sami Tolvanen <samitolvanen@google.com>
+> Tested-by: Isaac Manjarres <isaacmanjarres@google.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Signed-off-by: Sergei Litvin <litvindev@gmail.com>
----
- scripts/tags.sh | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Applied to `rust-fixes` -- thanks everyone!
 
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index 243373683f98..f6642bb0f8ee 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -52,7 +52,7 @@ find_arch_sources()
- 	for i in $archincludedir; do
- 		local prune="$prune ( -path $i ) -prune -o"
- 	done
--	find ${tree}arch/$1 $ignore $prune -name "$2" -not -type l -print;
-+	find ${tree}arch/$1 $ignore $prune -regextype posix-extended -regex "$2" -not -type l -print;
- }
- 
- # find sources in arch/$1/include
-@@ -61,14 +61,14 @@ find_arch_include_sources()
- 	local include=$(find ${tree}arch/$1/ -name include -type d -print);
- 	if [ -n "$include" ]; then
- 		archincludedir="$archincludedir $include"
--		find $include $ignore -name "$2" -not -type l -print;
-+		find $include $ignore -regextype posix-extended -regex "$2" -not -type l -print;
- 	fi
- }
- 
- # find sources in include/
- find_include_sources()
- {
--	find ${tree}include $ignore -name config -prune -o -name "$1" \
-+	find ${tree}include $ignore -name config -prune -o -regextype posix-extended -regex "$1" \
- 		-not -type l -print;
- }
- 
-@@ -78,21 +78,21 @@ find_other_sources()
- {
- 	find ${tree}* $ignore \
- 	     \( -path ${tree}include -o -path ${tree}arch -o -name '.tmp_*' \) -prune -o \
--	       -name "$1" -not -type l -print;
-+	       -regextype posix-extended -regex "$1" -not -type l -print;
- }
- 
- all_sources()
- {
--	find_arch_include_sources ${SRCARCH} '*.[chS]'
-+	find_arch_include_sources ${SRCARCH} '.*\.([chS]|rs)'
- 	if [ -n "$archinclude" ]; then
--		find_arch_include_sources $archinclude '*.[chS]'
-+		find_arch_include_sources $archinclude '.*\.([chS]|rs)'
- 	fi
--	find_include_sources '*.[chS]'
-+	find_include_sources '.*\.([chS]|rs)'
- 	for arch in $ALLSOURCE_ARCHS
- 	do
--		find_arch_sources $arch '*.[chS]'
-+		find_arch_sources $arch '.*\.([chS]|rs)'
- 	done
--	find_other_sources '*.[chS]'
-+	find_other_sources '.*\.([chS]|rs)'
- }
- 
- all_compiled_sources()
-@@ -100,7 +100,7 @@ all_compiled_sources()
- 	{
- 		echo include/generated/autoconf.h
- 		find $ignore -name "*.cmd" -exec \
--			grep -Poh '(?<=^  )\S+|(?<== )\S+[^\\](?=$)' {} \+ |
-+			grep -Poh '(?<=^  )\S+\.([chS]|rs)|(?<== )\S+\.(?1)(?=$)' {} \+ |
- 		awk '!a[$0]++'
- 	} | xargs realpath -esq $([ -z "$KBUILD_ABS_SRCTREE" ] && echo --relative-to=.) |
- 	sort -u
--- 
-2.54.0
+    [ The fix [1] has landed for Rust 1.98.0 (expected release on
+      2026-08-20).
 
+      Thus add a version check as discussed.
+
+        - Miguel ]
+
+    [ Adjusted link and comment. - Miguel ]
+
+Cheers,
+Miguel
