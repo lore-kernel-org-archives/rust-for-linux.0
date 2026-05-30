@@ -1,104 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B9B3AB293;
-	Sat, 30 May 2026 11:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D34E21ABC9;
+	Sat, 30 May 2026 11:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780141781; cv=none; b=lnn9F3Mz1ShiPc5bkYai+0OVMyJMf3G00nx4NoYkD5GmqcZpn/FdsY2AP5QpxZgJ2+zBppHvk34vah+ArsMn4q1ZSaEj1YWzq3bbWzNU65kJsIpRJSQgyZQWrsLjbLDqeY2sLemy+81+IdlYnGcG2ZhZ4+FrULPpFMtgHvkLy9Q=
+	t=1780142106; cv=none; b=iGs84eRFDjAaKNJ89ETy7R6Cl8NC6upD7z6baH3wmRZEcsxuZ2MmaALy/KZzdDimXTKiB56EgXkLBWZR6cVLzFafrDZuFUrXpBMb6a5VqQTu48VoUcS22FUPUShbFDQvrRv6rz27JZrwsDPT5kff24hakAumGrWzjbAQdcnUBfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780141781; c=relaxed/simple;
-	bh=LHDo+ZhBJKQohA9UlEU+BNm59Al6T7BX8YhX8vLBYts=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j4NOzpHGvrmzNLmw1d22tllYSejewST/lW9cOrUfPOJvZz0S4fw9Up/Ge2cpsNNu7fUhSuQOkEz1JlKcwFhjoSlYBpGKp6u7DaKRudbj3icub9aLTCliS+v3Y8hWy7OTRiI1QtML8dsK7HZb/npOEpwhrxSz4/4ZycIAHa/WXbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=idO0gdBv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780142106; c=relaxed/simple;
+	bh=jm8hdmAkEvJcbwS7hgydGF1qmrnzoDP4FHKn0i/2TXc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=CWuwJ3pR9W5qlaHOuDK3IY1vG2yjXud4fhgjDvNxASktxQFwakrQQHS2Zm05EOnRxwc9ZqkiB1HNWFutpfqBAYXXOn+fE4qk0DL3LQoLbvQYNgRWqL1L5aFstyUKpB4jXMv3FvLR7M0twbJUn0ve7IF7tnhSPs/ZdPVcf1gJh1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCqCaQI3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="idO0gdBv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18681F00893;
-	Sat, 30 May 2026 11:49:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCqCaQI3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D1A1F00893;
+	Sat, 30 May 2026 11:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780141780;
-	bh=UgQLCX5R4nUTVcEi2+T6tAoqT0LEeC2bEEWFpQZ3VRM=;
-	h=From:To:Cc:Subject:Date;
-	b=idO0gdBvUzHIqOartjFJn5iybYT5M8IdwYQXmhNfarLE20B0g01gnLCXzr28h0yTw
-	 RWe1xddBsaSPtjIznFN6+AFA8uQT/P1+8aYgEj7/53yy1j2K394e7nLcchMySjKtw2
-	 fvFzH+pNYqUmvQjf6cQhyP2k4pufCCJwm1b9pEoaLM3QQ5RUQqIj5+lZnVDssqQHXQ
-	 5lrgA+l8oUImrWELNgrdAVOAzbu9Et6cJJdE3CbKFKfroWoDOBghS1gZjCvvAOreW7
-	 WGP8LJKxrrJaQr1jLrWFGBzS4HDLPZHUZ+HW2jcPi83ITM2jQFauZ1noGMklcHfOQs
-	 pamAWUs2nwiSg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org,
-	Ralf Jung <post@ralfj.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] rust: x86: support Rust >= 1.98.0 target spec
-Date: Sat, 30 May 2026 13:49:25 +0200
-Message-ID: <20260530114925.260754-1-ojeda@kernel.org>
+	s=k20260515; t=1780142105;
+	bh=jm8hdmAkEvJcbwS7hgydGF1qmrnzoDP4FHKn0i/2TXc=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=XCqCaQI3wTaiEpjHV+goSY6qoZCDZ8DaWIgGBul+wGjAgZWvz1L2AvWDURbUbLHXL
+	 bOrBQqdGXVTtfC/wxJjKkhtbb9ecGvyvFErDQRz0kxTggLdFYwwi1WOLmu3ED+3cHd
+	 pu9PoeZwr/zJ8Ntt4tyEuaVJPISqI6sPubXdr1vPp0N8QYwCdpQ1Zv/IPpKuttT3U0
+	 1pU7LdDg9ePcx09dnPQFzY39KIPQ6ywI1Dk1grBW6IEv6DXLZ+WKdnEfqBi7SsN6os
+	 P/1rNqCr62Fm1MdM5XT+rvEnUtKHMSkYV5FFl6BbURT0ht23Eb592jDlQ+w+HS9pYE
+	 eWHTdoMkOr4Fg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 30 May 2026 13:54:58 +0200
+Message-Id: <DIVZPIJYZ244.26RVUD86YHX1N@kernel.org>
+Subject: Re: [PATCH v8 1/5] rust: devres: return reference in
+ `devres::register`
+Cc: <markus.probst@posteo.de>, "Rob Herring" <robh@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Jiri Slaby"
+ <jirislaby@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Kari Argillander"
+ <kari.argillander@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>, "Boqun Feng" <boqun@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
+To: "Markus Probst via B4 Relay"
+ <devnull+markus.probst.posteo.de@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260530-rust_serdev-v8-0-2a95f1da22a7@posteo.de>
+ <20260530-rust_serdev-v8-1-2a95f1da22a7@posteo.de>
+In-Reply-To: <20260530-rust_serdev-v8-1-2a95f1da22a7@posteo.de>
 
-Starting with Rust 1.98.0 (expected 2026-08-20), the target spec will not
-support `x86-softfloat` anymore [1]. Instead, `softfloat` should be used,
-which is an alias. Otherwise, one gets:
+On Sat May 30, 2026 at 3:13 AM CEST, Markus Probst via B4 Relay wrote:
+> From: Markus Probst <markus.probst@posteo.de>
+>
+> Return the reference to the initialized data in the `devres::register`
+> function.
+>
+> This is needed in a following commit (rust: add basic serial device bus
+> abstractions).
+>
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Signed-off-by: Markus Probst <markus.probst@posteo.de>
 
-    error: error loading target specification: rustc-abi: invalid rustc abi: 'x86-softfloat'. allowed values: 'x86-sse2', 'softfloat' at line 3 column 32
-      |
-      = help: run `rustc --print target-list` for a list of built-in targets
+For driver-core and DRM,
 
-Thus conditionally use one or the other depending on the version.
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-The alias has existed since Rust 1.95.0 (released 2026-04-16) [2], but
-use the newer version instead to avoid changing how the build works for
-existing compilers, at least until more testing takes place.
-
-Cc: Ralf Jung <post@ralfj.de>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/157151 [1]
-Link: https://github.com/rust-lang/rust/pull/151154 [2]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- scripts/generate_rust_target.rs | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 38b3416bb979..02bc45d15484 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -196,7 +196,9 @@ fn main() {
-         }
-     } else if cfg.has("X86_64") {
-         ts.push("arch", "x86_64");
--        if cfg.rustc_version_atleast(1, 86, 0) {
-+        if cfg.rustc_version_atleast(1, 98, 0) {
-+            ts.push("rustc-abi", "softfloat");
-+        } else if cfg.rustc_version_atleast(1, 86, 0) {
-             ts.push("rustc-abi", "x86-softfloat");
-         }
-         ts.push(
-
-base-commit: ac35b5580ace12e5d0a0b5e61e36d2c4e1ffa29c
--- 
-2.54.0
-
+This is useful in the context of the HRT work in general, should this serie=
+s not
+make it this cycle, please let me know, then I'm going to pick this through=
+ the
+driver-core tree.
