@@ -1,151 +1,197 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41575329C6B
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 19:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780169130; cv=none; b=Us3JznNZ+GPMf5wqHxFPjlK6ek7H/Ipdi15+YU0k+/8g6x1/wsobO4yTvrRl+MxjJ7BZDZCokGu9JQ0cTnElK7ZHloZ7eWny/5jGOKlsG/g6LHHl+oloZPKRhiDhZI8qCWfOIvsK1hLIptfOIyckEOxw/ScyaQ2DpoxzKkgKLNg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780169130; c=relaxed/simple;
-	bh=P+qqzzRwhI8B2ZhOfr+PVqRWtfVtS9KesBahL8YX4uk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oS5AIhg34tXqwjHUqDFsll2r/cylg1/RkBRroGcGDisLIKG194MBJ3Xa0/68qkBJGtG32disE8VOuNv5RYxOUguS0moBJGZmb3TZ9EFw62PQ0ws9pglCEBR8ABZ1r/DMtmYA78hRS9rCQ3J6qcU3UW2BEH6ZJocSfEX5Cdt91uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=owSIzHJK; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A0526B764
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 19:40:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780170046; cv=pass; b=NV9NUtlxeCGw2Xb5KJhWourQloGKFRzkNX17+BLr69iVNMezCmSHFZTx13JB4p+MFgF0sFFh9Ve7qeIrs1wHJN0jY74oRpG35a9dAGZTukY7CIWHsV6PCQyHRiUiHPv88T7EkLguIjCVTkbHwDdatkz9xnC+FrgcsJg5kOZHMTY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780170046; c=relaxed/simple;
+	bh=cIra25/7V0IbwrRRmDW+gsrIYwnkI1A+HRB1U6+DiGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BEFa4vjQWJrGUIr3jDsnUN9QhMqg3bycbFIa7Fk37Ao8YMsb0caAhoHBbKUyirU5SIYuZK+f8wj7u+cCBcKfAMReAHAUayBUAAh7m17ue0XteNCwkOkGtfT4ymb5Gc5yx1C4gn52fN60EPjnn7UNBYe/RNxzr98w9co1mKOxFEI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=MY6DdfAL; arc=pass smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="owSIzHJK"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id BE2A024002A
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 21:25:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1780169126; bh=SqEDsvTehTsmlHRK3kcALX6aeWf55kfJ4Kqinm0z8bs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=owSIzHJKnIo6oScOVQz74wV2YgLlsIK4jd/jXMVPSaRIDA7rD1+uwmN0SubnnF9Vv
-	 Rl9sf7pq266ulUShFQuI61xaCdBr22q2metnscFY0Hrb7h/9JSBnSOMpZKpB0sJL8A
-	 opmxjrGSx27mEjv9w9H/ZsJKMm3rvsxWexaLqxFMOzrhUS+B01vgATJMJPx7d7cWMp
-	 mUtc1NCKfKEreoWx+45WmxcRo0PyjH9MALWu29rzT1XZwySy5ub4OHoBBba0EIhnGQ
-	 LBG7cSR4hf2AAT2i19i7RD4MJ5Ku6B4S2TXruwqdqh2hFewAG4qneLmfE+O4s3CtKV
-	 ndkxLK8Mr/z1g==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4gSVYc2Lt4z6twS;
-	Sat, 30 May 2026 21:25:24 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Sat, 30 May 2026 19:25:25 +0000
-Subject: [PATCH v10 5/5] MAINTAINERS: serdev: Add self for serdev
+	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="MY6DdfAL"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7dca5a81be2so29057497b3.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 12:40:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780170045; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OOuzZeCriaVJN/Ud39mjDgICgQAf+OBNzXUr+ET460u8ONltqy75gRzGOolzspcVnv
+         UMcRJFgq+IwyuIchRUbbtru8rXsDowHmE05OBefQBuSvvKBqLFQkx/MwO9v02Wg5iIme
+         pCPA4gzFQEiNZVtY7TKf5nzi0Xt3dY/lGv1fdWLHAbV1f33utYM/5ksrxGcEC8rjs7P/
+         0cmOw8zDypnUJRzoBUHiB3nQljajb2KEfiyN1DRlHq4n3KkfQW/BuirhT7LgUVT650C2
+         1Nu/hhPHkxQzAEOVu1uGCP6tNvHj9U+MynnWk8PjBiAKhN4HCzGSEvZvQxU+8kuMzPvK
+         3RnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZhMPXpo5C9bO9KiY6ITYmWYOylh8Rc870xEi824FVCY=;
+        fh=bN2f5e7Egn0BbNX2O7LYO++S1s82n2Dvanj0FwSaEMQ=;
+        b=CGxG8H24/jNjp34ABLg2MN7eJRAtNb4w2vGBC6nHe3dgHCUZVseyjNfihAEsLUUq4V
+         7l8T+Mxtnwni0pN0UW/nbgGRb7tdb4nQ9uHxHVy2kendErRBAJTpIKD0169xb1r92PDy
+         1fFcOvpZS36G6lo4219RzBeMwVgsEdRY4VzIFo6Xm5Su84YBIDC0revAXtAcfSQIWk0v
+         M4KS3by+8gCcBS59HJ1cpMT96zQG4cXjDJXyWoTFjEoarBSUHe/ph1ru6q1toSggQxux
+         xPvYPgskwdhLHM0VI1+149jOtG+STQitjN1OgkpsLB0tqHXoDeHGIaVGqDmOGDo7f3t5
+         TXmg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc.com; s=google; t=1780170045; x=1780774845; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZhMPXpo5C9bO9KiY6ITYmWYOylh8Rc870xEi824FVCY=;
+        b=MY6DdfALfU2jE5XLhMv850ewVAbg2AmF3OlwgDROnQb8CBjUKLuT9j/n2VnQ1OaHEH
+         Fj1l8ZMwvmY4tMJXPfKAURVwRyrsKNGa5283gCuH8ezfn6U8pEK2kPcFD/K0WlrUaVXq
+         S1fi5+HpURX51EOa10v4vWvD+ORNKj741qku/aslBKkRr5XeTXfUDpYQRk/zhjYrCj15
+         R4uj1z6YRwSNUKm9YtnMBEcQV37eY/nm1e2Z/gnZHEgeOBbjIaveXR5n4e4AArW141Fp
+         9H9ECvGeM9Z0mvi8AuibXvo46pvYOecKgCtkqN3zC4DdGwiValuykAC5Xzm4H7wB3nVo
+         cHCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780170045; x=1780774845;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZhMPXpo5C9bO9KiY6ITYmWYOylh8Rc870xEi824FVCY=;
+        b=NJHfmnBleWKoBMxUgtqWOpjQ7RyHbCFf9aEQdsSNMcuqumEjQIJBZXYBU9Y0q4Th8u
+         fOMbisEkrgaIhr6bKFo/fpiMt0ijWIMg1X5x2vMa+l5sf2uqvgRPV/0i1rs5xqZKXll6
+         WBm/+P+ZRjo2leKgQkK79DKXbYOnlADnFipY+neCE60F6NcszfPgKVjC8CWkXjUsbps+
+         6hgghKkODQz2WrXOebKil79hW6+0qwgGy/77eYl7dhrHQ99D+DlfUm4QAMsKII5o1nFA
+         WwbCZBo149QLb6J4FVQW3XqwPpV5Phl9lYexqLKP8UiUIJ5w7qLZJkCaLOohizCbqMhO
+         oQPA==
+X-Forwarded-Encrypted: i=1; AFNElJ82+A33SuLUbvJ1dy9c+oSqRjcXsFq1laaa6YaMY07vRiS36gxbhBuomq98eGN8bAB0qCY7t/n0levz4la2NQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyy93BOAfxbvM1UYXfa1Eot6jYt+epA3C7iPqwebHo57Kx4ROSV
+	2LKLWgBMhER4JmMmklupr5fsuVQroMobreZEQSk4HRNoxDNaN+GEA/IM31QPMetNV5StBdgKSyl
+	rKgkAiO0bLGCGvRu3NDFEVPYaikbiq293TbFKstayKA==
+X-Gm-Gg: Acq92OG2nIjb/hqHwk1YjRf9gP8es7xIrzrahLe5gDlEsfSiMafETX6STjTeNGNSxRy
+	HUt7VdQTf8tqJvTUb1vrGjSngprNK4jeVRPGCj6WnuRdnhzfxyOGXcFArWeu3fNFjh5S4l4GMyO
+	Sx5M+NdyDH+mcS8nyiiCZQznW6lkKaoYgrPtPaTSt5pumt4LUHP2Z28mpRvEfTnsgYBKc3angyg
+	PnE2oBw77uzjdkKaqY7O8fBtY7pWK1SUfSTyYD044UqSmG8pA6BRGNh/1bh1fT72kDCDvJASL7k
+	SLMQFvqMJhFieray6GL+kt0ztoo6YryQMqaXa1Me39fpIRLf5Ko=
+X-Received: by 2002:a05:690c:f04:b0:7b2:513b:34d7 with SMTP id
+ 00721157ae682-7e05c664b30mr45779587b3.29.1780170044578; Sat, 30 May 2026
+ 12:40:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260530-rust_serdev-v10-5-65d1d5db876c@posteo.de>
-References: <20260530-rust_serdev-v10-0-65d1d5db876c@posteo.de>
-In-Reply-To: <20260530-rust_serdev-v10-0-65d1d5db876c@posteo.de>
-To: Rob Herring <robh@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Kari Argillander <kari.argillander@gmail.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Boqun Feng <boqun@kernel.org>
-Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=838;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=P+qqzzRwhI8B2ZhOfr+PVqRWtfVtS9KesBahL8YX4uk=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqGzmczOcVeRxR9VEJ4K+lErvgwmakc5mHb4JOS
- x/BBhK3EtWJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCahs5nBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9LbUg//Wq1mMxwl2+4mLTvvkSnrGq0n1EF4ybc
- WUKYBteC8IG8gGBs3rGMJKRjYL7iaH3US+J1UKzGdzLnjesFHUoRp1rbPk7BX/JYU75EVLoetFL
- AtbGsg9Sca5mGFFut8X4e1ohVe5qBNUf7IqvtYocwrySeTkO2l29koyyhaO0NeFvDU2kscC9u6Y
- eya4dfnO6M3Eox+EZBqc+/q8F5vTq8TxsH6K0eQo28UZaudn4OXv9YW+2uhGgRBmLBFqemPeBGX
- TQQAkzvReH5+D27WlKJ1nHsuYLM9ni3B2wO6FWQT1jotxTQ3KGrvr4LVykxMJJC2xNl3ZZDfY29
- 64OOIPWmeece/YFy/LZYU4wJo8kqnM4vBljf6XHTG/a1l7H+JT2nlJu74J9pL3o6NzQBa+MBPOd
- QXjDr2tNVszljhuHY/KcCaVhKAZjLrTI9jbTFsRpMAf+z5CUGO35lCtUkOaJbAhCRqZ4yaUfoXB
- uMYWIycck3lY7quhiC/frP4cmIcEwJO1cG7EijZs2Y2YajVfbPm9qVxxCZdcuxXLnw4xGLK5OW+
- Hiee2aTJ/64fzB7P7mvrV1IHwqB3uFbw2odNOhhyA/XlWmj+KjeIQN/wYqISrMhITZWUT4kXaO4
- MPGVCmf2ER8n3Iig6FJ0umktHaVFTmTp1l7mX+AYbFqq0WSFMVoo=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+ <20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com> <87jyslndo4.fsf@igel.home>
+In-Reply-To: <87jyslndo4.fsf@igel.home>
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Sat, 30 May 2026 12:40:33 -0700
+X-Gm-Features: AVHnY4L_dtmKXZYG4oLZDjuNSTdF7bCgCYfC8yAIbkNUuu6y-j26ASIyCiMoR50
+Message-ID: <CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
+To: Andreas Schwab <schwab@linux-m68k.org>
+Cc: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Rob mentioned he needs to find someone else to maintain serdev.
+On Sat, May 30, 2026 at 8:02=E2=80=AFAM Andreas Schwab <schwab@linux-m68k.o=
+rg> wrote:
+>
+> On Nov 12 2025, Deepak Gupta via B4 Relay wrote:
+>
+> > From: Deepak Gupta <debug@rivosinc.com>
+> >
+> > `arch_calc_vm_prot_bits` is implemented on risc-v to return VM_READ |
+> > VM_WRITE if PROT_WRITE is specified. Similarly `riscv_sys_mmap` is
+> > updated to convert all incoming PROT_WRITE to (PROT_WRITE | PROT_READ).
+> > This is to make sure that any existing apps using PROT_WRITE still work=
+.
+> >
+> > Earlier `protection_map[VM_WRITE]` used to pick read-write PTE encoding=
+s.
+> > Now `protection_map[VM_WRITE]` will always pick PAGE_SHADOWSTACK PTE
+> > encodings for shadow stack. Above changes ensure that existing apps
+> > continue to work because underneath kernel will be picking
+> > `protection_map[VM_WRITE|VM_READ]` PTE encodings.
+>
+> This breaks LTP mmap04:
+>
+> $ ./mmap04
+> tst_test.c:2042: TINFO: LTP version: 20260529.5ccf816f
+> tst_test.c:2045: TINFO: Tested kernel: 7.0.10-5-default #1 SMP PREEMPT_DY=
+NAMIC Sat May 23 12:09:09 UTC 2026 (bb95589) riscv64
+> tst_kconfig.c:90: TINFO: Parsing kernel config '/proc/config.gz'
+> tst_kconfig.c:753: TINFO: CONFIG_FAULT_INJECTION kernel option detected w=
+hich might slow the execution
+> tst_test.c:1870: TINFO: Overall timeout per run is 0h 04m 00s
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: ---p
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: ---s
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: r--p
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: r--s
+> mmap04.c:68: TFAIL: mapping permissions in /proc mismatched, expected: -w=
+-p, found: rw-p
+> mmap04.c:68: TFAIL: mapping permissions in /proc mismatched, expected: -w=
+-s, found: rw-s
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: rw-p
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: rw-s
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: r-xp
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: r-xs
+> mmap04.c:68: TFAIL: mapping permissions in /proc mismatched, expected: -w=
+xp, found: rwxp
+> mmap04.c:68: TFAIL: mapping permissions in /proc mismatched, expected: -w=
+xs, found: rwxs
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: rwxp
+> mmap04.c:66: TPASS: mapping permissions in /proc matched: rwxs
 
-Link: https://lore.kernel.org/rust-for-linux/20260430195858.GA1650658-robh@kernel.org/
-Link: https://lore.kernel.org/rust-for-linux/da85ceb81f51079d4a8248a1ffde6a27d2ef24ad.camel@posteo.de/
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+But what does a writable only mapping even mean? It can always be read.
+I see two ways forward:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fa3f20f0cc4f..58db6aedf45a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24270,7 +24270,7 @@ F:	drivers/iio/chemical/sps30_i2c.c
- F:	drivers/iio/chemical/sps30_serial.c
- 
- SERIAL DEVICE BUS
--M:	Rob Herring <robh@kernel.org>
-+M:	Markus Probst <markus.probst@posteo.de>
- L:	linux-serial@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/serial/serial.yaml
+- It can be done in generic way where incoming PROT_WRITE means
+  PROT_READ | PROT_WRITE irrespective of RISC-V. Although others
+  (x86, arm, etc) would have to weigh in.
 
--- 
-2.53.0
+OR
 
+- mmap04 LTP test can be updated to expect either of "rw-p" or "-w-p"
+  whenever only PROT_WRITE was specified.
+
+I think latter (updating mmap04 test) is the easier path.
+
+>
+> Summary:
+> passed   10
+> failed   4
+> broken   0
+> skipped  0
+> warnings 0
+>
+> --
+> Andreas Schwab, schwab@linux-m68k.org
+> GPG Key fingerprint =3D 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC=
+1
+> "And now for something completely different."
