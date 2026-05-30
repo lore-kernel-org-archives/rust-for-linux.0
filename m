@@ -1,172 +1,267 @@
-Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE5D28C869
-	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 19:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A316274FDC
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 19:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780167871; cv=none; b=HedmlUPXYijH2p5IG/nCrBE8ZKJIK4v6pwdt/gW7AAGzagxCiyhITSE+12FSg0rCLA2WraykAEppdGIIbWFHjKWCu8JJJtBexpIb3QOGZ0nIIn8hdKkF3bB2SY9nSLupPDSgNM0gHWqOOxMfDjxlIHB0cZOizgfg3OOFSgt/BPE=
+	t=1780169122; cv=none; b=B2Av1Ye14mE4/59Vn3q17bD3bn9lTMy4yGOyBjTwciFuZ6JZkrtYP3mQCO275b7Dr3KDNHLu7O5Hc2PSeTPBqU4AkzTQFIPM4SriyLLb8jskltpZKMFvr+sqvqAD9/jqVHNSaOO7zfRMLUCBIAo2v+JzcX9DGIozJob0Rbrhx+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780167871; c=relaxed/simple;
-	bh=/T7UrSU5XCpZvw2C38x2jiVi8ogoTB6rNVHoeLNhCgs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xdklvm+Oe0r3QbIfQLgg3CwqAzKz5PzMWatqZWYrzEIcuu36JVOzJX++34QQJ7WP8FbsTlYD86C6kkrCVNN0TMJnqjETkZp3yXyjEJbAXnMO/upCxw4FhkVx6KURLPtBKaSO+nQWE0u4ACPy941L3X1foVcFwNs0jqPbZf8LwRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=EvuLNOXj; arc=none smtp.client-ip=79.135.106.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1780169122; c=relaxed/simple;
+	bh=fG0Xk1jmgGIaoeaZ6iMpXRngV4ryrvJ6hSfXyhYUDXQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=C1WUiTUSnHqZcU/BmBNgozGJmH4bCae43kEPO6NWAtcuHk506IEpqf9kb98H6fI03yY41xepFOQMWyyoVxLAWA9DrNeIrDCNo4KLT6yaG3Cxkbd2f/kuaUIuXVF3GgLvbjwiSuMsUNNd92uDFW0aHuVDZVzEQnOVv9/U7y4pwts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=NmavaD21; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="EvuLNOXj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1780167860; x=1780427060;
-	bh=rdkfGcD4WFq4qnJGm76D2aHxb8DVkQ+0+svroCGwR+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=EvuLNOXj9OQ5ISV9XHCDHHBKluke/xz4jMA/Ky+5Eq8BF1RdLdbZ9Phu4/XKnKtG2
-	 gaH2WTiaDYCLCM5bsgV8RZ7p1NyVENE7zM4HVfRHjL8We5mOSMUhCdSRhqKQkw/5ta
-	 6DbYEcUs7Jg83qK7auzCn5NtWdGxwgGEc+R2IWTQ9CCXWU8Ldso0NZrUELJgzAtmUf
-	 4ie7UvAt7T5ECIoqdXygsWzK7hy468Xv0wEhfAo3IoqwUl6IHjTNmGgw3MJWXqk1C2
-	 H8IGxU+uZrJxgkiPXlrmvQkzQjJHg1AMIJNYE+Ib1kSdWdAOtDvJNtWA+6+toxiCmW
-	 C+kYZDpsPInZg==
-X-Pm-Submission-Id: 4gSV5C5tXkz1DDL0
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>,
-	rcu@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	fujita.tomonori@gmail.com,
-	tamird@kernel.org,
-	jiangshanlai@gmail.com,
-	josh@joshtriplett.org,
-	rostedt@goodmis.org,
-	mathieu.desnoyers@efficios.com
-Subject: Re: [PATCH v8 1/4] rust: helpers: add SRCU helpers
-Date: Sat, 30 May 2026 22:04:10 +0300
-Message-ID: <20260530190413.15079-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <dbcfbe88-0103-41e1-8650-4c559112547d@paulmck-laptop>
-References: <20260529114449.112066-1-work@onurozkan.dev> <20260529114449.112066-2-work@onurozkan.dev> <DIV55HYTKCM3.23VXO47N90C9G@garyguo.net> <20260529120759.145202-1-work@onurozkan.dev> <DIV5JADSFZEM.3DV46U1BI4EYS@garyguo.net> <dbcfbe88-0103-41e1-8650-4c559112547d@paulmck-laptop>
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="NmavaD21"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id C41FB240027
+	for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 21:25:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1780169119; bh=H/vzrp6ocFmMM6JQAE2skH33R14EUCJKj9tlGGiKXu0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=NmavaD21p/uIqg6rCC8mif0/+UXriBhl4x5y1pRaJle/oqwNuUIvT1G+eqmJYx6Dt
+	 3IlcEXtbsGQNWuOtdzKewHkzfJsHBnEq5lLeoG2JSgvJMp1f73dlRVTWZiotoGC7US
+	 oWOZnek+ax2EoUOspfkOkbNVd0P2JXEYKn4/c1NQsz0sgEOhbF+tyja236jX4PSpfd
+	 tNo3yD3ioeK7PTsi8OXQ4+sgBL4Y+7uRTXYKt/m3iSJsN7i37RERFuctKPG3lgnMdu
+	 5cjqEfuSUTyECM7nqLYqSe6I20ZqpETQo4EpmVFckSJFrmQlmVl23geKoGrAjhaAHM
+	 WK3TClS1OE2sA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4gSVYT0sD0z6tx7;
+	Sat, 30 May 2026 21:25:17 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH v10 0/5] rust: add basic serial device bus abstractions
+Date: Sat, 30 May 2026 19:25:18 +0000
+Message-Id: <20260530-rust_serdev-v10-0-65d1d5db876c@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJg5G2oC/43S0W7bMAwF0F8J/DwbIiVKYp76H8MwyDLdGl3iz
+ nKNDUX/vUzSobEzFH0SKOBciMJ9qYpMg5Rqv3upJlmGMoxHHcB821X5IR3vpR46vajQIAFCqKf
+ nMv9U1clSi5CLIGwi5UrF0yT98Occ9/2Hzg9Dmcfp7zl9gdPtew6aVc4CtanFOe8o+OAR7p7GM
+ svYdFKdchb8Z72xxq8tniy3aFuHLRJtrb2yYNfWqs2cbOoRXB/6rXUf1gGsrVMbHQl7k73HsLV
+ 0Zbf7kloKEttkCLi3W+uv7frPF68Wgg0cOxJINzZcW17boNZ0kXNgaCnHrY0fluzmzVEtJqYeu
+ oSYbvblTyyr7WNLfc6t47x68+ulOJP8ftb6zZf2VAcpJZ3bt99dMvWnCJ0xjWUd2NdQd+lxunu
+ U6Si/mnG6P1Xw1iHpyQgNoPMcv8qsAYvB+sYiR3L8f9emInUeD4dh3u+W0GhHMulOr2+gl24OW
+ gMAAA==
+X-Change-ID: 20251217-rust_serdev-ee5481e9085c
+To: Rob Herring <robh@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Kari Argillander <kari.argillander@gmail.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Boqun Feng <boqun@kernel.org>
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ Markus Probst <markus.probst@posteo.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6230;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=fG0Xk1jmgGIaoeaZ6iMpXRngV4ryrvJ6hSfXyhYUDXQ=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqGzmcPQQXH1aFaeBbS8MYGHwNCD8kdFLhza0lw
+ jmZApf5SvqJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCahs5nBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9JsGQ//bStMMwb5/uxZGy4I/JmQ0PUb9FDITrm
+ TWDU+T32XMXI1wUMKHpOKz0iZ5yFmi5fXDABBBl1O4/fP9Y0FtSQCPIgKEN4xB4LSRtaq+CTYZO
+ m4Qixi5I4QDLotEHHQoSmqLHyrTcefBxmUcZufZKkRT8vE2gkMkfP3AFaNdKySXWLJdm5FOh7K9
+ o2owF2noEchI6/t3PnUZ7mlR/N+AgdeKIg2TNYUrts2vSeKMAuAqy6PQvly6RUu6a3c2DSVY5mY
+ jY82ZS+0y5RHmeRZsF6TYktoGJJOhOdSLS8+T2dpEUyHez8aADz5fh16pYR1qvpLKKuXM79F+q0
+ 9LzHy+sDthTJGF9zWbr2scqnPD92lA4AxTRUrQWbmglVlIn+KeGx4uR0Ca/H0D66c7n8q8QUS5c
+ +He2ZJH+pc3kkjAOMQ9q2bwehvQXu3vWlWdoA07e+h/K80y7JVOXPMIDJambF7lgcfIGacDZQok
+ HggiwtBnFaHIoqx++VZKgGOg0EWVCZiK9VH10ryPPQPxcEjOXfT2/Rs9o/QsjILAYOrSkZp9WhB
+ xGZel15f8VqV1PBEb064Ljdx9zCwr0eeEQTlxD8nUBo8j14eGTiryvHIvvbCBS1QAFYdIcLE3aH
+ s/EQ62c4miM6LSjH6MgJ47rdl8WYDOlnYntFfCuNc8/a5lLFsYeI=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=xsFNBGiDvXgBEADAXUceKafpl46S35UmDh2wRvvx+UfZbcTjeQOlSwKP7YVJ4JOZrVs93qReNLkO
+  WguIqPBxR9blQ4nyYrqSCV+MMw/3ifyXIm6Pw2YRUDg+WTEOjTixRCoWDgUj1nOsvJ9tVAm76Ww+
+  /pAnepVRafMID0rqEfD9oGv1YrfpeFJhyE2zUw3SyyNLIKWD6QeLRhKQRbSnsXhGLFBXCqt9k5JA
+  RhgQof9zvztcCVlT5KVvuyfC4H+HzeGmu9201BVyihJwKdcKPq+n/aY5FUVxNTgtI9f8wIbmfAja
+  oT1pjXSp+dszakA98fhONM98pOq723o/1ZGMZukyXFfsDGtA3BB79HoopHKujLGWAGskzClwTjRQ
+  xBqxh/U/lL1pc+0xPWikTNCmtziCOvv0KA0arDOMQlyFvImzX6oGVgE4ksKQYbMZ3Ikw6L1Rv1J+
+  FvN0aNwOKgL2ztBRYscUGcQvA0Zo1fGCAn/BLEJvQYShWKeKqjyncVGoXFsz2AcuFKe1pwETSsN6
+  OZncjy32e4ktgs07cWBfx0v62b8md36jau+B6RVnnodaA8++oXl3FRwiEW8XfXWIjy4umIv93tb8
+  8ekYsfOfWkTSewZYXGoqe4RtK80ulMHb/dh2FZQIFyRdN4HOmB4FYO5sEYFr9YjHLmDkrUgNodJC
+  XCeMe4BO4iaxUQARAQABzRdtYXJrdXMucHJvYnN0QHBvc3Rlby5kZcLBkQQTAQgAOxYhBIJ0GMT0
+  rFjncjDEczR2H/jnrUPSBQJog714AhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEDR2
+  H/jnrUPSgdkQAISaTk2D345ehXEkn5z2yUEjaVjHIE7ziqRaOgn/QanCgeTUinIv6L6QXUFvvIfH
+  1OLPwQ1hfvEg9NnNLyFezWSy6jvoVBTIPqicD/r3FkithnQ1IDkdSjrarPMxJkvuh3l7XZHo49GV
+  HQ8i5zh5w4YISrcEtE99lJisvni2Jqx7we5tey9voQFDyM8jxlSWv3pmoUTCtBkX/eKHJXosgsuS
+  B4TGDCVPOjla/emI5c9MhMG7O4WEEmoSdPbmraPw66YZD6uLyhV4DPHbiDWRzXWnClHSyjB9rky9
+  lausFxogvu4l9H+KDsXIadNDWdLdu1/enS/wDd9zh5S78rY2jeXaG4mnf4seEKamZ7KQ6FIHrcyP
+  ezdDzssPQcTQcGRMQzCn6wP3tlGk7rsfmyHMlFqdRoNNv+ZER/OkmZFPW655zRfbMi0vtrqK2Awm
+  9ggobb1oktfd9PPNXMUY+DNVlgR2G7jLnenSoQausLUm0pHoNE8TWFv851Y6SOYnvn488sP1Tki5
+  F3rKwclawQFHUXTCQw+QSh9ay8xgnNZfH+u9NY7w3gPoeKBOAFcBc2BtzcgekeWS8qgEmm2/oNFV
+  G0ivPQbRx8FjRKbuF7g3YhgNZZ0ac8FneuUtJ2PkSIFTZhaAiC0utvxk0ndmWFiW4acEkMZGrLaM
+  L2zWNjrqwsD2zsFNBGiDvXgBEADCXQy1n7wjRxG12DOVADawjghKcG+5LtEf31WftHKLFbp/HArj
+  BhkT6mj+CCI1ClqY+FYU5CK/s0ScMfLxRGLZ0Ktzawb78vOgBVFT3yB1yWBTewsAXdqNqRooaUNo
+  8cG/NNJLjhccH/7PO/FWX5qftOVUJ/AIsAhKQJ18Tc8Ik73v427EDxuKb9mTAnYQFA3Ev3hAiVbO
+  6Rv39amVOfJ8sqwiSUGidj2Fctg2aB5JbeMln0KCUbTD1LhEFepeKypfofAXQbGwaCjAhmkWy/q3
+  IT1mUrPxOngbxdRoOx1tGUC0HCMUW1sFaJgQPMmDcR0JGPOpgsKnitsSnN7ShcCr1buel7vLnUMD
+  +TAZ5opdoF6HjAvAnBQaijtK6minkrM0seNXnCg0KkV8xhMNa6zCs1rq4GgjNLJue2EmuyHooHA4
+  7JMoLVHcxVeuNTp6K2+XRx0Pk4e2Lj8IVy9yEYyrywEOC5XRW37KJjsiOAsumi1rkvM7QREWgUDe
+  Xs0+RpxI3QrrANh71fLMRo7LKRF3Gvw13NVCCC9ea20P4PwhgWKStkwO2NO+YJsAoS1QycMi/vKu
+  0EHhknYXamaSV50oZzHKmX56vEeJHTcngrM8R1SwJCYopCx9gkz90bTVYlitJa5hloWTYeMD7FNj
+  Y6jfVSzgM/K4gMgUNDW/PPGeMwARAQABwsF2BBgBCAAgFiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IF
+  AmiDvXgCGwwACgkQNHYf+OetQ9LHDBAAhk+ab8+WrbS/b1/gYW3q1KDiXU719nCtfkUVXKidW5Ec
+  Idlr5HGt8ilLoxSWT2Zi368iHCXS0WenGgPwlv8ifvB7TOZiiTDZROZkXjEBmU4nYjJ7GymawpWv
+  oQwjMsPuq6ysbzWtOZ7eILx7cI0FjQeJ/Q2baRJub0uAZNwBOxCkAS6lpk5Fntd2u8CWmDQo4SYp
+  xeuQ+pwkp0yEP30RhN2BO2DXiBEGSZSYh+ioGbCHQPIV3iVj0h6lcCPOqopZqyeCfigeacBI0nvN
+  jHWz/spzF3+4OS+3RJvoHtAQmProxyGib8iVsTxgZO3UUi4TSODeEt0i0kHSPY4sCciOyXfAyYoD
+  DFqhRjOEwBBxhr+scU4C1T2AflozvDwq3VSONjrKJUkhd8+WsdXxMdPFgBQuiKKwUy11mz6KQfcR
+  wmDehF3UaUoxa+YIhWPbKmycxuX/D8SvnqavzAeAL1OcRbEI/HsoroVlEFbBRNBZLJUlnTPs8ZcU
+  4+8rq5YX1GUrJL3jf6SAfSgO7UdkEET3PdcKFYtS+ruV1Cp5V0q4kCfI5jk25iiz8grM2wOzVSsc
+  l1mEkhiEPH87HP0whhb544iioSnumd3HJKL7dzhRegsMizatupp8D65A2JziW0WKopa1iw9fti3A
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-On Sat, 30 May 2026 12:01:21 -0700=0D
-"Paul E. McKenney" <paulmck@kernel.org> wrote:=0D
-=0D
-> On Fri, May 29, 2026 at 01:16:17PM +0100, Gary Guo wrote:=0D
-> > On Fri May 29, 2026 at 1:07 PM BST, Onur =C3=96zkan wrote:=0D
-> > > On Fri, 29 May 2026 12:58:17 +0100=0D
-> > > Gary Guo <gary@garyguo.net> wrote:=0D
-> > >=0D
-> > >> On Fri May 29, 2026 at 12:43 PM BST, Onur =C3=96zkan wrote:=0D
-> > >> > Add helper wrappers for SRCU functions that are exposed to Rust=0D
-> > >> > through generated bindings.=0D
-> > >> >=0D
-> > >> > Reviewed-by: Paul E. McKenney <paulmck@kernel.org>=0D
-> > >> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
-> > >> > ---=0D
-> > >> >  include/linux/srcu.h   |  5 +++++=0D
-> > >> >  rust/helpers/helpers.c |  1 +=0D
-> > >> >  rust/helpers/srcu.c    | 30 ++++++++++++++++++++++++++++++=0D
-> > >> >  3 files changed, 36 insertions(+)=0D
-> > >> >  create mode 100644 rust/helpers/srcu.c=0D
-> > >> >=0D
-> > >> > diff --git a/include/linux/srcu.h b/include/linux/srcu.h=0D
-> > >> > index 81b1938512d5..790a4ef713c0 100644=0D
-> > >> > --- a/include/linux/srcu.h=0D
-> > >> > +++ b/include/linux/srcu.h=0D
-> > >> > @@ -57,6 +57,11 @@ int __init_srcu_struct_fast_updown(struct srcu_=
-struct *ssp, const char *name,=0D
-> > >> >  #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */=0D
-> > >> >  =0D
-> > >> >  int init_srcu_struct(struct srcu_struct *ssp);=0D
-> > >> > +static inline int __init_srcu_struct(struct srcu_struct *ssp, con=
-st char *name,=0D
-> > >> > +				     struct lock_class_key *key)=0D
-> > >> > +{=0D
-> > >> > +	return init_srcu_struct(ssp);=0D
-> > >> > +}=0D
-> > >> =0D
-> > >> =0D
-> > >> This looks like a different strategy than, say, how mutex handles lo=
-ckdep. IMO=0D
-> > >> the way that mutex handles this is more clear.=0D
-> > >=0D
-> > > Initially it was the same strategy, this one was suggested by Paul [1=
-] and it=0D
-> > > didn't sound like a bad idea to me. Also, in previous revisions, Boqu=
-n once=0D
-> > > said:=0D
-> > =0D
-> > I'm talking about changing how this is handled in SRCU side, not helper=
- side.=0D
-> > =0D
-> > >=0D
-> > > 	"Having a "#ifdef" in a function body is generally considered as bad=
- code=0D
-> > > 	(I know we have some of these in rust helpers, but helpers are a bit=
-=0D
-> > > 	special and maybe we should clean them up). So could you move this=0D
-> > > 	function into include/linux/srcutiny.h and include/linux/srcutree.h?=
-"=0D
-> > =0D
-> > mutex.h doesn't use ifdef inside function body, it just define two stat=
-ic inline=0D
-> > functions with the same signature in different ifdef branches.=0D
-> =0D
-> True, but SRCU has the added complication of having different !SMP (Tiny)=
-=0D
-> and SMP (Tree) implementations.  On the other hand, it is quite possible=
-=0D
-> that I missed a trick when setting up this part of SRCU.  Please feel=0D
-> free to send a patch that simplifies it.=0D
-=0D
-It's on the list [1].=0D
-=0D
-Thanks,=0D
-Onur=0D
-=0D
-[1]: https://lore.kernel.org/all/20260529134004.396743-2-work@onurozkan.dev=
-=0D
-=0D
-> =0D
-> 							Thanx, Paul=0D
-> =0D
-> > Best,=0D
-> > Gary=0D
-> > =0D
-> > >=0D
-> > > So putting them together, I decided to follow Paul's suggestion.=0D
-> > >=0D
-> > > [1]: https://lore.kernel.org/all/05906890-cf06-414c-a625-02f9d7150d57=
-@paulmck-laptop=0D
-> > >=0D
-> > >> =0D
-> > >> If we follow the way mutex is handles this, the `init_srcu_struct` w=
-ould always=0D
-> > >> create lock class key and forward to `__init_srcu_struct`, and=0D
-> > >> `__init_srcu_struct` is an inline function that either calls=0D
-> > >> `init_srcu_struct_lockdep` with all args, or discard name/key and fo=
-rward to=0D
-> > >> `init_srcu_struct_mutex`.=0D
-> > >> =0D
-> > >> This is beneficial because the usage flows one way. You don't have i=
-n one config=0D
-> > >> `init_srcu_struct` call `__init_srcu_struct` and have the opposite i=
-n another=0D
-> > >> config, which I think can be quite confusing.=0D
-> > =0D
+This patch series adds the serdev device bus rust abstraction into the
+kernel.
+
+This abstraction will be used by a driver,
+which targets the MCU devices in Synology devices.
+
+Kari Argillander also messaged me, stating that he wants to write a
+watchdog driver with this abstraction (needing initial device data).
+
+This series depends on [1] and [2].
+
+[1]
+https://lore.kernel.org/rust-for-linux/20260525202921.124698-1-dakr@kernel.org/
+[2] https://lore.kernel.org/rust-for-linux/20260530132736.3298549-1-dakr@kernel.org/
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
+---
+Changes in v10:
+- revert everything from v9, except BoundInternal
+- use mutex to ensure receive_buf won't be called on a dropped drvdata.
+- Link to v9: https://patch.msgid.link/20260530-rust_serdev-v9-0-f8b5fccb49c3@posteo.de
+
+Changes in v9:
+- make use of BoundInternal
+- use PrivateData wrapper and drop rust_private_data field
+- use non-devm version of serdev_device_open
+- Link to v8: https://patch.msgid.link/20260530-rust_serdev-v8-0-2a95f1da22a7@posteo.de
+
+Changes in v8:
+- adapted to driver-lifetime v5 patch series
+- add MAINTAINERS file patch
+- Link to v7: https://patch.msgid.link/20260429-rust_serdev-v7-0-0d89c791b5c8@posteo.de
+
+Changes in v7:
+- adapted to driver-lifetime patch series
+- Link to v6: https://patch.msgid.link/20260427-rust_serdev-v6-0-173798d5e1a3@posteo.de
+
+Changes in v6:
+- rebased onto v7.1-rc1
+- Link to v5: https://patch.msgid.link/20260420-rust_serdev-v5-0-57e8ba0519f3@posteo.de
+
+Changes in v5:
+- fix typo in documentation
+- Link to v4: https://lore.kernel.org/r/20260411-rust_serdev-v4-0-845e960c6627@posteo.de
+
+Changes in v4:
+- fixed not selecting rust serdev abstraction in sample
+- Link to v3: https://lore.kernel.org/r/20260313-rust_serdev-v3-0-c9a3af214f7f@posteo.de
+
+Changes in v3:
+- fix vertical import style
+- add Kconfig entry for the rust abstraction
+- fix documentation in include/linux/serdev.h
+- rename private_data to rust_private_data
+- fix `complete_all` <-> `wait_for_completion` typo
+- move drvdata_borrow call after the completion
+- Link to v2: https://lore.kernel.org/r/20260306-rust_serdev-v2-0-e9b23b42b255@posteo.de
+
+Changes in v2:
+- fix documentation in `serdev::Driver::write` and
+  `serdev::Driver::write_all`
+- remove use of `dev_info` in probe from the sample
+- remove `properties_parse` from the sample
+- add optional `baudrate` property to the sample
+- remove 1. patch
+- remove `TryFrom<&device::Device<Ctx>> for &serdev::Device<Ctx>`
+  implementation
+- fix import style
+- add patch to return reference in `devres::register` to fix safety
+  issue
+- add patch to add private data to serdev_device, to fix
+  `Device.drvdata()` from failing
+- simplify abstraction by removing ability to receive the initial
+  transmission. It may be added later in a separate patch series if
+  needed.
+- Link to v1: https://lore.kernel.org/r/20251220-rust_serdev-v1-0-e44645767621@posteo.de
+
+---
+Markus Probst (5):
+      rust: devres: return reference in `devres::register`
+      serdev: add rust private data to serdev_device
+      rust: add basic serial device bus abstractions
+      samples: rust: add Rust serial device bus sample device driver
+      MAINTAINERS: serdev: Add self for serdev
+
+ MAINTAINERS                        |   5 +-
+ drivers/tty/serdev/Kconfig         |   7 +
+ include/linux/serdev.h             |  15 +-
+ rust/bindings/bindings_helper.h    |   1 +
+ rust/helpers/helpers.c             |   1 +
+ rust/helpers/serdev.c              |  22 ++
+ rust/kernel/cpufreq.rs             |   3 +-
+ rust/kernel/devres.rs              |  15 +-
+ rust/kernel/drm/driver.rs          |   3 +-
+ rust/kernel/lib.rs                 |   2 +
+ rust/kernel/serdev.rs              | 553 +++++++++++++++++++++++++++++++++++++
+ samples/rust/Kconfig               |  11 +
+ samples/rust/Makefile              |   1 +
+ samples/rust/rust_driver_serdev.rs |  91 ++++++
+ 14 files changed, 719 insertions(+), 11 deletions(-)
+---
+base-commit: 9e171fc1d7d7ab847a750c03571c87ac3c17bd84
+change-id: 20251217-rust_serdev-ee5481e9085c
+prerequisite-message-id: 20260505152400.3905096-1-dakr@kernel.org
+prerequisite-patch-id: d2aebf69b153c039bbed1d0ed26906708fd22534
+prerequisite-patch-id: 84b28da2f5de20fc1785095c647b2ffc35d969a5
+prerequisite-patch-id: 67318671a5eed5fb4ad23a450f1cf0e442bf8ca2
+prerequisite-message-id: 20260525202921.124698-1-dakr@kernel.org
+prerequisite-patch-id: b84db329d4372a175cb8d49e4e88c3eecf7eb228
+prerequisite-patch-id: 2c30303f409cc8288cc87e241920219f5ddd8390
+prerequisite-patch-id: 4e4f0ad370d763ad00b0f75b91fa216f2cc95953
+prerequisite-patch-id: 5bcd6b37f3498feebda275dfef78136eba34004e
+prerequisite-patch-id: 872b0982f3e5e7d1698d9df3b325e4cd27b27789
+prerequisite-patch-id: 3a3c7749e017d9335f58497404d1350e96caf471
+prerequisite-patch-id: 3526c9154f581497a11465b936d83ef61a875454
+prerequisite-patch-id: 65d8c757b52475c2acc7d22ddc92cd3f0152b55d
+prerequisite-patch-id: 4bd31f1414d5248dc080884caadf5f21684a8427
+prerequisite-patch-id: 7beadbb0da3e589ed86d12f512d1c83427dd82b4
+prerequisite-patch-id: 12cd0f67ffd27347f90c065db491945908206b7f
+prerequisite-patch-id: 4642e31f66331f6c3b579377111ea733dbb3a11c
+prerequisite-patch-id: 52d67b40b4396c741e2222d6a5bc7927abcb77aa
+prerequisite-patch-id: 74ca82ff26cf9c7a993757c87db8be62006e820f
+prerequisite-patch-id: 466fb9fa7febbffd8ef51b311c7d9893c11fc0f0
+prerequisite-patch-id: e515cd98b06e26721cbbe6a4fbacd251d0073b63
+prerequisite-patch-id: 8dc8e75d9f6499a554ef7e474bbacdbf3660a9f2
+prerequisite-patch-id: 5fdb9f71dca2f44dd293760a60db125b770f1f55
+prerequisite-patch-id: c766a24c2d5064f5ec09daada0b8e8fba862d3aa
+prerequisite-patch-id: b768f6456d35fa7a80c015e34bbdba6082dbd593
+prerequisite-patch-id: 6a8b17234f12f7084e6e2ce843a7031b0a891ce4
+prerequisite-patch-id: 98b2deb9e60c1f28f90c5ee34fd608aaa9fd9420
+prerequisite-patch-id: 774b29be66e641ee50cedb4704cf49d8b9fabf50
+prerequisite-patch-id: cf95dc936cfc4b3a7a363435a51a48d9009645b3
+prerequisite-message-id: 20260530132736.3298549-1-dakr@kernel.org
+prerequisite-patch-id: 310c6bee038ca3909a8e5e58ec12b74f7189b869
+prerequisite-patch-id: 92812c3d42b29504838e6dc66c307ff5c035bb5e
+
