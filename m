@@ -1,152 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E384D16A395;
-	Sat, 30 May 2026 23:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780185075; cv=none; b=dKgRyFZCtqybyTs5WauDNue6/k8zD6gjZ4stXCE23EQnOifyN/j2X3JQwt5LFgiPeL/2RDwTfDylDUTV+kDBIliU+wcdS/frL5/Ua4bXZ2YpfSsLIiAzl5SDWIHnOQkybmyWjPZSWh4f1sBAQMLzEChZYJfS9peHpwZKbgyiFmc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780185075; c=relaxed/simple;
-	bh=4nkRtkwtPnDbrJ3STpOA6mpkGbSuCZkV9TjqZ0Q3PeY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=NMasertFwI1g+hADoKdkJOqVMzBaDCOdQd09cGKkMosfJ930uOi0AdFXI4G1kaMUXTnzPQhM4i/8axyE/MQua0qZdmbyU4jvOZOjee3IJJoarg+1uwGoUz7Z77hW2H90sQZCBFM8GIqy6jxA61Zd/x8AxvEU5tARBxYjAzpMuLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2jGAnQe; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDF733F38E
+	for <rust-for-linux@vger.kernel.org>; Sun, 31 May 2026 06:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780209931; cv=pass; b=PTdmZff5i+JFk+HdLYcSopNphHmc84fVSPX+xNmZ0m2yQ3eh6cCpuim6JVHnhaY0kDkuANMAuQA2YSoJPzhtxkXTSxx1CaBTx7zFppGB1uTAoPnq7zfCrsIQdIskfnWb5YIAI09l5Snx2g2vVOpGv4/AJqRb6IIEwYMCycb44Es=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780209931; c=relaxed/simple;
+	bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dhyob9ICeixiXuSwBDZsCFkV9uI3XOsMYLYVIqcae18OQBZ4AsqM+Oh4JOo294wHTxEZQipB7QoJAxZ+4xxCSdcxs4hMe9DMIHhIUkVDuijw2jQ9ERGN7MZiVJYd/Pok47NLw7sV5NaWeCOe2lfvNW+pYHcrYAekSJQDazTiKNs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pOmtiiR5; arc=pass smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2jGAnQe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B439F1F00893;
-	Sat, 30 May 2026 23:51:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780185074;
-	bh=e97dhm3DCmMHdKubUBMsoeKxwBZGTs6HbLhBOat2oK4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=e2jGAnQeoK/T+UeqD4gy0FuvMwzHtX9YDHdJXgPWYTEe06JqylKqsBLTRvhxpAyIb
-	 VYbB1+oGYwnfH++8wQ9uU7tHN8/aDSUhmn0kuR8/H/UjPpd8bqdEr2Kikp5fX7fIwJ
-	 9uEpD1Igmfxco4bqgqVjKEONJOZuQZOUj0g8p6BbSi/Bkw9uBmocJjVWTGwDwwvW6T
-	 jJaDaR8CmVxTlhKkgXCGAvujzkNgwnMUZSOukVDOBkszTWwV4hpVOAOWNy20vrBLR1
-	 O/LqRaKynKcMSHCaXcgkPrc+SXyNESzyW/cTeb38Bq8QQ4AU2ChrIUreBoBAjRcCWj
-	 fghrPhO9IStyA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pOmtiiR5"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304e86ecebfso271940eec.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 23:45:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780209928; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FpqKrZOdyGM9hmJtH2NRp3IUCiBsFNJuhzDWREu+P5FnSyJDCtlYhOrEm1McHl38OV
+         ML4bGA5pJu4938k2QFqjeA8fTzVaER8NZD5t/my7Q6TvekN4JkJdEYMFd73TtZTTjEpr
+         4aCiJL3iIwBTkUKvP91bzowdpZrnHPjaxI4ctVGOIE+kfPewpQX4CvGQvibpyECG30pO
+         ADkWB42TFypLSEQGw2mXvzHJG0LVMbkAUNdI5O+Qg64UplYvbRmFFiBHN+YiiZwd2QIf
+         utIAbpEHUbvUo6pIvWujYd3KD/wOGUK45G7Z5VIDDEpdpKu2s6EbHmYOmC8RmQ1Jc/j7
+         TNwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
+        fh=y0P9DQqs2yfhDJePXxiybpN1Ml9MMbDq/l66lcD1SEk=;
+        b=jLLEntXdkfsudbIX/t33nLQwxoMKAtQztQa3as6njhWJEGvvyhaPxWkTCzH6MosWrM
+         x/yMGaa/DD+Qen0o5DWczsc5IeCmAsoqVXDb1zkmwdshooQc1eblO5s+ZDUaqC6FL8OG
+         nQANkrd9YeZTnP4wHhrXn6f07USQ310wl7q2E98pIcAXlOsnqPqXSsX2tr8GfFbaNX18
+         qDDqitVetchmY46alTDRXvF/sb/R2om45Ya6zX9maRzaEJH2AFG5Ub36qZScviFqILD7
+         DKEX2m7AcoaCQ589wYYOjxBbdnYrgGiofrptJyiU6HBanX4GIULvxKyTg7ps72lXiS2j
+         u9ag==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780209928; x=1780814728; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
+        b=pOmtiiR5Nuvz848QajAdLhYJ9KKaJ0ucJJ8fcdEOT+oxgPdxXlVD+fJYgrzM7+mhqa
+         kw/pKirVh3qM8m1ZQQMJG/CHU7toZbTXcCX+7k6HCEABuzeH+JhSOOns6aBHbOmuyM1a
+         hK1Eq3xI8zdbdafHAFB+6dqIxswtjCG1HQNI9QkK9sIPF3UCQSR4EP0fGbaZjsgA5oY9
+         b8DbugwpANHKKjECvRMxbaTIiSa71ADgJp5NsWf4ZZTWsBe+zJ152vrPOZW7RIM/+6hV
+         3nvyKA+1PJOxJO61oFVbhPIkFDQl6D8uaq5Y3AAddOpxDcxgq/LqUvsNxgiwA7LqjsRC
+         abxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780209928; x=1780814728;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
+        b=WDdgvWvjGlJEAd/1lgqRE8DFYngy69kzhzrQEeVGLLYV8M3Ezyq2DA2jC1obOof13D
+         Gb/WYpvA/aicqdUpbGDBw2u+yy8PdUZyqZHR6x4t0jyDZJzKr3NePrPAu94G4HJilYBY
+         gtgzv2J+0GaXBpsjGbj7fVpwRuI0x2B6zjMVktXLWWhdyX1h3IVN+Lhh2khQ10aPYAtM
+         IMu/aS2lRBqFcMRICqZy8CKrNCdxcpMrc1jSopumNTSShG/wT/uzXQ5n+if0wdSiBSia
+         UOpEF5O1fT9r/AGecf5bDpXlxUtc5dDvcH3XD5cR0j+ggAeBL2F+dHERXET+A/AEdQ0N
+         IlXA==
+X-Forwarded-Encrypted: i=1; AFNElJ/eHJQvwaI40njHE9TzI1USP4AbcQ1KQh7LE45GkM+zZMzPs1cn0rEHeEfWMLZyquijnDcm+uIeQ55246yhIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy00p9H/BINH0ZNP9hdIub6sT82gGFhWyMWobsDEEEtzr0B/47N
+	6ep+Ctar5mAx+chktMSI7BPpgvVtSfNVUcp5xzixKyadC8i2WPIiuGGT7wzEyXKKzJB22IkKrTV
+	9L3gMQYN5/lxm3WXmd4TXowU7cDBg9gk=
+X-Gm-Gg: Acq92OE03MUl4mIW2Huq7PglaQNqcV6+dccFkibl/rWfYhuzINkvtSGxpblKQ4IqTPO
+	u3Se8jBnpul4Jbv2PfUCWdaEEKBz1tVHZRbOu9MmDYrgc1V7eogLSotss4WNBoQ1IJ9d/26Ag37
+	kFxRLDDolr0LpmM6rqcHtZUhx0L0YPaYoNfuCkY3x8CZOLZhJ5y1L6dlvYt2ALYz8v+f2mHgqov
+	ClVcXmvbnhtN7n3Jg1ZycfeLYczD/CDn5qbPlkmq6MtyNYmgOf98wVPiQwTfz1aKeZYaAP6Xzz2
+	w7Z8vV4it/ulAMVgDVjdE8yhXpL1OPiEbq45iSoPeuJH94zGpetRhRJAUYY+Pyn8g/26AEdvEgC
+	VQSoIuOOOJ1SwR6tN1ifoUOkH8Pk3c3yQ9w==
+X-Received: by 2002:a05:7301:6785:b0:304:c73b:79fd with SMTP id
+ 5a478bee46e88-304fa68f723mr1482767eec.5.1780209927997; Sat, 30 May 2026
+ 23:45:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260530184944.10459-1-contact@jkam.dev>
+In-Reply-To: <20260530184944.10459-1-contact@jkam.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 31 May 2026 08:45:15 +0200
+X-Gm-Features: AVHnY4L8pDtXPdbKNrUQfpBv_HjLynBdwLkgy_JeIYUFSH2IkQeNYPWqY7tCCRc
+Message-ID: <CANiq72=huc=AfjBRYUsoJY1hSvB8W6CvnUh7g2G4rt98XYmxYw@mail.gmail.com>
+Subject: Re: [PATCH v3] kbuild: rust: make `*.long-type-*.txt` a target for cleanup
+To: Joel Kamminga <contact@jkam.dev>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 31 May 2026 01:51:08 +0200
-Message-Id: <DIWEXUCNLURG.136XXDBHSBNVR@kernel.org>
-Subject: Re: [PATCH v11 1/3] rust: add basic serial device bus abstractions
-Cc: <markus.probst@posteo.de>, "Rob Herring" <robh@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Jiri Slaby"
- <jirislaby@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Kari Argillander"
- <kari.argillander@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Boqun Feng" <boqun@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
-To: "Markus Probst via B4 Relay"
- <devnull+markus.probst.posteo.de@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260531-rust_serdev-v11-0-dee8e0d830f1@posteo.de>
- <20260531-rust_serdev-v11-1-dee8e0d830f1@posteo.de>
-In-Reply-To: <20260531-rust_serdev-v11-1-dee8e0d830f1@posteo.de>
 
-On Sun May 31, 2026 at 12:51 AM CEST, Markus Probst via B4 Relay wrote:
-> +#[pinned_drop]
-> +impl<T: Driver> PinnedDrop for PrivateData<'_, T> {
-> +    fn drop(self: Pin<&mut Self>) {
-> +        let mut active =3D self.active.lock();
-> +        if *active {
-> +            // SAFETY:
-> +            // - We have exclusive access to `self.driver`.
-> +            // - `self.driver` is guaranteed to be initialized.
-> +            unsafe { (*self.driver.get()).assume_init_drop() };
-> +            *active =3D false;
-> +        }
-> +
-> +        // SAFETY: We have exclusive access to `self.open`.
-> +        if unsafe { *self.open.get() } {
-> +            // SAFETY: `self.sdev.as_raw()` is guaranteed to be a pointe=
-r to a valid
-> +            // `struct serdev_device`.
-> +            unsafe { bindings::serdev_device_close(self.sdev.as_raw()) }=
-;
-> +        }
-> +    }
-> +}
+On Sat, May 30, 2026 at 8:51=E2=80=AFPM Joel Kamminga <contact@jkam.dev> wr=
+ote:
+>
+> This cleans up files generated by rustc compiler in the case of an
+> error containing an excessively long type name that doesn't fit in
+> a single line. Such types appear relatively frequently so the risk
+> of generating these files certainly exists. These files are purely
+> compiler artifacts and are not created intentionally by the build
+> system. They should be added to the `clean` target to stop from
+> cluttering up the source tree.
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1236
+> Signed-off-by: Joel Kamminga <contact@jkam.dev>
+> ---
 
-Just in case it came across otherwise, I did not mean to push for you to go=
- for
-this approach. We just kept discussing it because it let to the (to me more
-interesting) discussion around the LED class device abstraction.
+In general, please add a changelog after the `---` line. Otherwise,
+reviewers need to manually inspect the patch to see what has changed,
+if anything.
 
-While this approach gets us rid of an extra allocation and the rust_private=
-_data
-pointer in struct serdev_device it also turns out a bit more convoluted.
+For instance, I see you changed the title, but the commit message
+seems identical. Was there a reason to not change it?
 
-That said, both are correct, and I won't object either one; up to you and t=
-he
-serdev / tty maintainers.
+Thanks!
 
-Please wait a bit before resending, so other people can comment on this as =
-well.
-
-> +    extern "C" fn receive_buf_callback(
-> +        sdev: *mut bindings::serdev_device,
-> +        buf: *const u8,
-> +        length: usize,
-> +    ) -> usize {
-> +        // SAFETY: The serial device bus only ever calls the receive buf=
- callback with a valid
-> +        // pointer to a `struct serdev_device`.
-> +        //
-> +        // INVARIANT: `sdev` is valid for the duration of `receive_buf_c=
-allback()`.
-> +        let sdev =3D unsafe { &*sdev.cast::<Device<device::CoreInternal<=
-'_>>>() };
-
-CoreInternal snuck back in, should be BoundInternal.
-
-> +
-> +        // SAFETY: `receive_buf_callback` is only ever called after a su=
-ccessful call to
-> +        // `probe_callback`, hence it's guaranteed that `Device::set_drv=
-data()` has been called
-> +        // and stored a `Pin<KBox<PrivateData<'_, T>>>`.
-> +        let private_data =3D unsafe { sdev.as_ref().drvdata_borrow::<Pri=
-vateData<'_, T>>() };
-> +        let active =3D private_data.active.lock();
-
-I think SRCU would be a much better fit, but the code didn't land yet, so t=
-he
-mutex seems fine for now. But I'd probably add a TODO.
-
-> +
-> +        if !*active {
-> +            return length;
-> +        }
-> +
-> +        // SAFETY: No one has exclusive access to `private_data.driver`.
-> +        let data =3D unsafe { &*private_data.driver.get() };
-> +        // SAFETY:
-> +        // - `private_data.driver` is pinned.
-> +        // - `receive_buf_callback` is only ever called after a successf=
-ul call to `probe_callback`,
-> +        //   hence it's guaranteed that `private_data.driver` was initia=
-lized.
-> +        let data_pinned =3D unsafe { Pin::new_unchecked(data.assume_init=
-_ref()) };
-> +
-> +        // SAFETY: `buf` is guaranteed to be non-null and has the size o=
-f `length`.
-> +        let buf =3D unsafe { core::slice::from_raw_parts(buf, length) };
-> +
-> +        T::receive(sdev, data_pinned, buf)
-> +    }
-> +}
+Cheers,
+Miguel
