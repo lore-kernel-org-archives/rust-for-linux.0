@@ -1,123 +1,98 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7B7284B29
-	for <rust-for-linux@vger.kernel.org>; Sun, 31 May 2026 18:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780253603; cv=pass; b=aGV3/AKCZ4DM2I4oN7rOd5LsQxD65CMyqwbO8UlxlfvC1/hh+nJCFXc8P9i5Do+SLBcfXb5ZazTbBiiGL6HFm6C9fU90afyaUM5gP5CDUmpMiyq+Snd6XoDleEplqnTUS0e8BYzU6mwzbn5ywCl2ey95rH45c25khfN/2xRL7cg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780253603; c=relaxed/simple;
-	bh=jgPxYYhrUPADA2UCr3MF6jfqPwTFJ6/F2LjSfEUcPio=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mqeCc71CKWDX9fJy3dYGZUWVw8icJq0t/BIuW0yAEpco7bFyfn4+LxdAaHkvr6y0UwHAbNg+qxz9Ja57Akj/qi3eqw4ZORkZcUq/LYXgiHTSG2LQLEL4KSfXtruEC+QvVtZAXmrtUX1nFgcdS17hFlurh7Tw8Ixf+VvPBAlosSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sg/9W1O3; arc=pass smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20D72D9787;
+	Sun, 31 May 2026 19:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780254680; cv=none; b=TluLXbEYm114d1FwxdpGYJFvB1M6jVKUhiOM7xmkayV/G+m+mVrF6KOQL5MgH0BNTF6EFgbXgl8SzlbvsUTpVSqVeTqPYnv2cK94w/6IMsQjw7E/7YIyt4IWbm+w/tPE024aZ8+XhzBuurfiMpO02Ni1h7Fi7oum8c4CcuDuULA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780254680; c=relaxed/simple;
+	bh=UKRJQc8YqVMTgJsPDJNd00kFseYjS/8ANLRWDlzvXzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Sg8CVlIsWDtQpjSo1gHr4L3e11Clr+DTBa4w/yl9dB7C/ahG4kKal2gCyN++x0oniLNBjs9I+d6I8rpOeaJf5Jpvchk14oCpAvZPZMPhXE3FS+THj3EvlzDDeB9UK7SOf9j5zCEvyIZl0oYkrF4psNp8m4bBMQUkTmleujYS+7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Y/1oyPGT; arc=none smtp.client-ip=109.224.244.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sg/9W1O3"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-304e86ecebfso298663eec.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 31 May 2026 11:53:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780253601; cv=none;
-        d=google.com; s=arc-20240605;
-        b=j2YeOzpgvQNEYBHXc74tTeRB5oYyggisNTbJdqaLNev3nSHcw5BC+Z3SnpJxC/BNfA
-         r25OTx+zZBw1lXcyhOvoAUJCVUSwt2RIzFi34ZuBBBCE01EfdoDXg/kJogL/6v9YI62s
-         5ExXDYLLoywLEnYJ1QJFviZpkLnQH5geMikOHYJC/cJX7fKrrr76Y5UjtvXF6Iu1Dp/B
-         QEiXc5EiDJ7w9vwR+uhNZ8uRhGA5qR5mGDPEWM5QxZHy4+LTHx+NDC9X0mWSVXM4vk5b
-         d5VCGWyOUUEMxQjGbkeWkrxcoJ01CknwFdOf2sT0gkPwH7BMtabT5PGjE4xY/DWvMaNN
-         78nw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jgPxYYhrUPADA2UCr3MF6jfqPwTFJ6/F2LjSfEUcPio=;
-        fh=gvSv2ku6yzsdy6tYyaSL0z7VL5ZYmU9emwb4TvpLM+Q=;
-        b=Pen9E0sUR1/bmGP/77uOZvZaVbn2DgrF5xSVuSYlFuqu+3aNrZPOTQgOvRCtIcZIuv
-         w9e5qvbAr3Jb7awfGjY8dUBTGF7s1xSq2RRDsNpS46CmVOx+egcYLpcBabBUSU3HEtyA
-         UiwKO5GUVREwmLz6iD00b05ZphtOpCaNpiEWHnOToZyuwi1OxetaxH3eBxDlxDt+/31V
-         MMjJPA3wfdfPqWWltGbBVnfx8fYFmhgszZrOCQbEFwX4U+LAI3Om3P4SYlVY1wZXt2Pw
-         KakW33ow8Fxv4NGCQCfvF2I6TH3qWsp0IvkWcLXVPiXRXcwmemcRUpsAvoSWE6veMDwk
-         6/Dw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780253601; x=1780858401; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jgPxYYhrUPADA2UCr3MF6jfqPwTFJ6/F2LjSfEUcPio=;
-        b=Sg/9W1O3KOSLGeG7x8n3RDQYPVJowCksJgEqkGI/D8ZXVT4XWXvQ/4PbAawaeiRlEm
-         xjF/GE0GS9xEIcpKbWQ/B3wEViI+Vo1LYH6ysC8VK2j4RlvAvoBLJ4gRy//77JdlBP0E
-         lLsw0F8U/mNoyIM0KoBV5ZPGmao6/tykgcU0brkk1izb5ZRsOKniMe4xcJ42I715rNEh
-         3iLWeLAhT9oVYOXI0jeT/7OUPgOpsXzulRe2qtubFgEqZgYt3/R0Fj82v+fISefobcth
-         HBjIG7AImD0onK2zpJ4dILRK9kWGngcgaEHv8Pm+hMC6PvD+JylAU6FaP/WCJLDFy1I/
-         QjaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780253601; x=1780858401;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jgPxYYhrUPADA2UCr3MF6jfqPwTFJ6/F2LjSfEUcPio=;
-        b=SxZHFTDVHkVHZPPcXMd+Q2t/t1lvhWhnQJHtlqJk6XqOTEMsB8tDCBcApFpwvtS4OV
-         XSAKSUGX9qXz62UsnanfwUKLraixyPaRSbss7MqHdL54ivsd0ZFAD6xWI63oZNhcXMXr
-         c25ZliQg8ct2EXdPDbsxBXfS27jRg6s/64nBXiYe3ucNkIMGzsIasFgK7VW8KYhE1if+
-         C5QVOOMAHShj4Lq05hzkRwMHt+w9a5aMXKKJZj6yM0waUgtIQ6yJC20ZFWe++5NF52Yy
-         j13fEGZ1uwYAPSDHq8iKWSC1lI6/XeEy/Z1mOfth3Ab3LdK+NZUYVxkHf2X4PPI++Tmm
-         XUAw==
-X-Forwarded-Encrypted: i=1; AFNElJ9VvjyQSgy5fZ/6frBB7KyGqe2VhtBwP/3gdcgA0v+gnWS98wjQhUd2uaY8zFMRaqF2OHTSTaP2e/QbWqcH9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbDAQjshQstidcBPe/lW4FUptDEWakS8SGBATdNGXSZMyIWJEw
-	Q57K0y+4g091u/UL9qJP0f6AlXtSHLVXZb/x6Ru9yD3ExSXePHwDBRRcrf2LNj0aHFZxgfS7Zfu
-	CTOUFHkhtNXrYDmVcvY3bj6nMPrkgaYQ=
-X-Gm-Gg: Acq92OHnCLcexwupq8Q31MjQih4kk09ZJC1U/aJ/61NCIfFb1BN+MmBuQkv9zT2cVbX
-	++D4wCXFzAjSHeBSHLb32cuxBiqnKRnKEGW6B8Z3GM3m89KsG80INcG+46QAKTjj2MatuH4Ybby
-	3mf1dVqUb0Bj92DswL6g2U73gjtRmeUIOubEmYRBpBP+rictd/u4Ukx1NDJ43YLSR1BwIKuerBg
-	pBP4jFNPZaQquYJ243IT6Dyxm+wJHnrb+SCkQDA5lh1MmWP+45FFcVAIiv/vR7ZQtAZanTJsuAe
-	TybX2HBcOMRGJEhBqJMU3bxiOwBkPZeWWCNezTLRcyzlFjZCN3YNR64tu3dSu7kA8Git6tZeGPs
-	+6oCoyX5AGpDMJLz+VtZA7YozfceoEVYqLw==
-X-Received: by 2002:a05:693c:2c86:b0:304:f860:3ae3 with SMTP id
- 5a478bee46e88-304fa49e500mr1849902eec.1.1780253601227; Sun, 31 May 2026
- 11:53:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Y/1oyPGT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1780254674; x=1780513874;
+	bh=UKRJQc8YqVMTgJsPDJNd00kFseYjS/8ANLRWDlzvXzI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Y/1oyPGTkcPwb2E3eCBr640dIEdACcl75Ywlm6zC2C6Mz9kCFnx9xb84Ryv6+Yap6
+	 wfkYAdFEy1D/a0eVg5bNsjW55BawxETDiJVs+aLm1Whffq1Uiz1ycAuN1Onfzp4GYJ
+	 zFV/poip5Dk2DAb0dwTrNF49/TzSYhw829rxTfYeVHGjE2iFBzUREXwXYjfdaV2X/c
+	 ypk+KdpkHD+C0iyYLE9Q7heHdbBgPpr4d9OVhrmdAmWGCl0JfjDAah5YA8cANadDPZ
+	 MY+4etYNU2nhuQYHdmMD8/Yn+w//y5rMX7XkObRRukh7qu1iQtXM2x5Q1sq6H+m+nl
+	 EC7w5NZaeJIFw==
+X-Pm-Submission-Id: 4gT6Bj3Xrfz1DF70
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: paulmck@kernel.org,
+	Gary Guo <gary@garyguo.net>,
+	rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	peterz@infradead.org,
+	fujita.tomonori@gmail.com,
+	tamird@kernel.org,
+	jiangshanlai@gmail.com,
+	josh@joshtriplett.org,
+	rostedt@goodmis.org,
+	mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v7 3/4] rust: sync: add SRCU abstraction
+Date: Sun, 31 May 2026 22:11:04 +0300
+Message-ID: <20260531191107.35357-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <CANiq72=jVHEu5veW_k9B66avYgVR2aHDN2QmDny=j4EK2uRXbw@mail.gmail.com>
+References: <20260528062810.256212-1-work@onurozkan.dev> <20260528062810.256212-4-work@onurozkan.dev> <20260528082025.44414-1-work@onurozkan.dev> <20260528083518.66203-1-work@onurozkan.dev> <DIUB2DNTF6W9.2BT1NF6UXUOFI@garyguo.net> <b4f6d3e8-3a08-409e-89ae-ba5d612bae30@paulmck-laptop> <20260530062730.38077-1-work@onurozkan.dev> <3ef86db1-edc4-4e50-8614-2dd7270540b4@paulmck-laptop> <CANiq72=jVHEu5veW_k9B66avYgVR2aHDN2QmDny=j4EK2uRXbw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260528062810.256212-1-work@onurozkan.dev> <20260528062810.256212-4-work@onurozkan.dev>
- <20260528082025.44414-1-work@onurozkan.dev> <20260528083518.66203-1-work@onurozkan.dev>
- <DIUB2DNTF6W9.2BT1NF6UXUOFI@garyguo.net> <b4f6d3e8-3a08-409e-89ae-ba5d612bae30@paulmck-laptop>
- <20260530062730.38077-1-work@onurozkan.dev> <3ef86db1-edc4-4e50-8614-2dd7270540b4@paulmck-laptop>
-In-Reply-To: <3ef86db1-edc4-4e50-8614-2dd7270540b4@paulmck-laptop>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 31 May 2026 20:53:07 +0200
-X-Gm-Features: AVHnY4LjPr_-R-w9GEV0I1IedUBZ4-Zsh5wDmqL_ofn06vbOsdcxe1NMN3VRKCA
-Message-ID: <CANiq72=jVHEu5veW_k9B66avYgVR2aHDN2QmDny=j4EK2uRXbw@mail.gmail.com>
-Subject: Re: [PATCH v7 3/4] rust: sync: add SRCU abstraction
-To: paulmck@kernel.org
-Cc: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Gary Guo <gary@garyguo.net>, rcu@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, boqun@kernel.org, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	peterz@infradead.org, fujita.tomonori@gmail.com, tamird@kernel.org, 
-	jiangshanlai@gmail.com, josh@joshtriplett.org, rostedt@goodmis.org, 
-	mathieu.desnoyers@efficios.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 31, 2026 at 8:06=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
-g> wrote:
->
-> Is there a Rust-language counterpart to checkpatch.pl that could warn
-> when it sees patches adding calls to this function?
-
-We had some patches for proposed Rust checks for `checkpatch.pl`, so
-it could be there (there was also a proposed `rust_checkpatch.pl`).
-
-Having said that, Clippy's `disallowed_methods` is likely better
-(modulo bugs), and we already have a couple entries on it (please see
-`.clippy.toml` in the root). So I would suggest that first.
-
-There is also Klint if something more custom/complex is needed.
-
-Cheers,
-Miguel
+On Sun, 31 May 2026 20:53:07 +0200=0D
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:=0D
+=0D
+> On Sun, May 31, 2026 at 8:06=E2=80=AFPM Paul E. McKenney <paulmck@kernel.=
+org> wrote:=0D
+> >=0D
+> > Is there a Rust-language counterpart to checkpatch.pl that could warn=0D
+> > when it sees patches adding calls to this function?=0D
+> =0D
+> We had some patches for proposed Rust checks for `checkpatch.pl`, so=0D
+> it could be there (there was also a proposed `rust_checkpatch.pl`).=0D
+> =0D
+> Having said that, Clippy's `disallowed_methods` is likely better=0D
+> (modulo bugs), and we already have a couple entries on it (please see=0D
+> `.clippy.toml` in the root). So I would suggest that first.=0D
+> =0D
+> There is also Klint if something more custom/complex is needed.=0D
+> =0D
+=0D
+I am waiting for the v9 [1] reviews. If we get a complain on the current=0D
+approach we can consider the Rust-specific clean-up C function +=0D
+disallowed_methods from Clippy.=0D
+=0D
+Thanks,=0D
+Onur=0D
+=0D
+[1]: https://lore.kernel.org/all/20260529134004.396743-1-work@onurozkan.dev=
+=0D
+=0D
+> Cheers,=0D
+> Miguel=0D
