@@ -1,129 +1,181 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDF733F38E
-	for <rust-for-linux@vger.kernel.org>; Sun, 31 May 2026 06:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780209931; cv=pass; b=PTdmZff5i+JFk+HdLYcSopNphHmc84fVSPX+xNmZ0m2yQ3eh6cCpuim6JVHnhaY0kDkuANMAuQA2YSoJPzhtxkXTSxx1CaBTx7zFppGB1uTAoPnq7zfCrsIQdIskfnWb5YIAI09l5Snx2g2vVOpGv4/AJqRb6IIEwYMCycb44Es=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780209931; c=relaxed/simple;
-	bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dhyob9ICeixiXuSwBDZsCFkV9uI3XOsMYLYVIqcae18OQBZ4AsqM+Oh4JOo294wHTxEZQipB7QoJAxZ+4xxCSdcxs4hMe9DMIHhIUkVDuijw2jQ9ERGN7MZiVJYd/Pok47NLw7sV5NaWeCOe2lfvNW+pYHcrYAekSJQDazTiKNs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pOmtiiR5; arc=pass smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61831347FEE
+	for <rust-for-linux@vger.kernel.org>; Sun, 31 May 2026 06:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780210739; cv=none; b=owKJWmUoY+HRqQFcDORBuWIpLPrtg96xuSPah1VsDv5KIWAi7v944aeYviMmXuiY4b+VKFR6sArE02NicLS9XmKdmP1hDNbzY3/kcpf4b4N4X7ShP9IERZ3F/1dQJG7yBPKHd74dQN8jUezzD6cHYuIqi2QZu11bzqi428wjAPU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780210739; c=relaxed/simple;
+	bh=xutHP44hJcIDCGcIELGlCWuxjlQ1wFNS9DJ9kd6fNzY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nnyydXerryP6dpyXQj21/cytHL5rjQWAqxJKlH7XSjKSMLNN9v/1K1Pip7F0EQZhCsCRis9FsHpAic3/5DQSmFQRlXvQ1fqHRmhNPKjf65GHwQS1balAfYEDBbFRy31b+S0mV+CufAKVbhZ3P04lbELNSShUwKRHtXje+TOhquI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=SoY3+pbW; arc=none smtp.client-ip=109.224.244.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pOmtiiR5"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304e86ecebfso271940eec.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 30 May 2026 23:45:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780209928; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FpqKrZOdyGM9hmJtH2NRp3IUCiBsFNJuhzDWREu+P5FnSyJDCtlYhOrEm1McHl38OV
-         ML4bGA5pJu4938k2QFqjeA8fTzVaER8NZD5t/my7Q6TvekN4JkJdEYMFd73TtZTTjEpr
-         4aCiJL3iIwBTkUKvP91bzowdpZrnHPjaxI4ctVGOIE+kfPewpQX4CvGQvibpyECG30pO
-         ADkWB42TFypLSEQGw2mXvzHJG0LVMbkAUNdI5O+Qg64UplYvbRmFFiBHN+YiiZwd2QIf
-         utIAbpEHUbvUo6pIvWujYd3KD/wOGUK45G7Z5VIDDEpdpKu2s6EbHmYOmC8RmQ1Jc/j7
-         TNwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
-        fh=y0P9DQqs2yfhDJePXxiybpN1Ml9MMbDq/l66lcD1SEk=;
-        b=jLLEntXdkfsudbIX/t33nLQwxoMKAtQztQa3as6njhWJEGvvyhaPxWkTCzH6MosWrM
-         x/yMGaa/DD+Qen0o5DWczsc5IeCmAsoqVXDb1zkmwdshooQc1eblO5s+ZDUaqC6FL8OG
-         nQANkrd9YeZTnP4wHhrXn6f07USQ310wl7q2E98pIcAXlOsnqPqXSsX2tr8GfFbaNX18
-         qDDqitVetchmY46alTDRXvF/sb/R2om45Ya6zX9maRzaEJH2AFG5Ub36qZScviFqILD7
-         DKEX2m7AcoaCQ589wYYOjxBbdnYrgGiofrptJyiU6HBanX4GIULvxKyTg7ps72lXiS2j
-         u9ag==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780209928; x=1780814728; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
-        b=pOmtiiR5Nuvz848QajAdLhYJ9KKaJ0ucJJ8fcdEOT+oxgPdxXlVD+fJYgrzM7+mhqa
-         kw/pKirVh3qM8m1ZQQMJG/CHU7toZbTXcCX+7k6HCEABuzeH+JhSOOns6aBHbOmuyM1a
-         hK1Eq3xI8zdbdafHAFB+6dqIxswtjCG1HQNI9QkK9sIPF3UCQSR4EP0fGbaZjsgA5oY9
-         b8DbugwpANHKKjECvRMxbaTIiSa71ADgJp5NsWf4ZZTWsBe+zJ152vrPOZW7RIM/+6hV
-         3nvyKA+1PJOxJO61oFVbhPIkFDQl6D8uaq5Y3AAddOpxDcxgq/LqUvsNxgiwA7LqjsRC
-         abxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780209928; x=1780814728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l0S8477QSvG3Dyip1hUSjiO6JEar45YczihYrhVWLWs=;
-        b=WDdgvWvjGlJEAd/1lgqRE8DFYngy69kzhzrQEeVGLLYV8M3Ezyq2DA2jC1obOof13D
-         Gb/WYpvA/aicqdUpbGDBw2u+yy8PdUZyqZHR6x4t0jyDZJzKr3NePrPAu94G4HJilYBY
-         gtgzv2J+0GaXBpsjGbj7fVpwRuI0x2B6zjMVktXLWWhdyX1h3IVN+Lhh2khQ10aPYAtM
-         IMu/aS2lRBqFcMRICqZy8CKrNCdxcpMrc1jSopumNTSShG/wT/uzXQ5n+if0wdSiBSia
-         UOpEF5O1fT9r/AGecf5bDpXlxUtc5dDvcH3XD5cR0j+ggAeBL2F+dHERXET+A/AEdQ0N
-         IlXA==
-X-Forwarded-Encrypted: i=1; AFNElJ/eHJQvwaI40njHE9TzI1USP4AbcQ1KQh7LE45GkM+zZMzPs1cn0rEHeEfWMLZyquijnDcm+uIeQ55246yhIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy00p9H/BINH0ZNP9hdIub6sT82gGFhWyMWobsDEEEtzr0B/47N
-	6ep+Ctar5mAx+chktMSI7BPpgvVtSfNVUcp5xzixKyadC8i2WPIiuGGT7wzEyXKKzJB22IkKrTV
-	9L3gMQYN5/lxm3WXmd4TXowU7cDBg9gk=
-X-Gm-Gg: Acq92OE03MUl4mIW2Huq7PglaQNqcV6+dccFkibl/rWfYhuzINkvtSGxpblKQ4IqTPO
-	u3Se8jBnpul4Jbv2PfUCWdaEEKBz1tVHZRbOu9MmDYrgc1V7eogLSotss4WNBoQ1IJ9d/26Ag37
-	kFxRLDDolr0LpmM6rqcHtZUhx0L0YPaYoNfuCkY3x8CZOLZhJ5y1L6dlvYt2ALYz8v+f2mHgqov
-	ClVcXmvbnhtN7n3Jg1ZycfeLYczD/CDn5qbPlkmq6MtyNYmgOf98wVPiQwTfz1aKeZYaAP6Xzz2
-	w7Z8vV4it/ulAMVgDVjdE8yhXpL1OPiEbq45iSoPeuJH94zGpetRhRJAUYY+Pyn8g/26AEdvEgC
-	VQSoIuOOOJ1SwR6tN1ifoUOkH8Pk3c3yQ9w==
-X-Received: by 2002:a05:7301:6785:b0:304:c73b:79fd with SMTP id
- 5a478bee46e88-304fa68f723mr1482767eec.5.1780209927997; Sat, 30 May 2026
- 23:45:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="SoY3+pbW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1780210728; x=1780469928;
+	bh=1zuTcz9lsZ3dSxS9JH0d/vr7IOtYnrFPsiw5PML6+Tc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=SoY3+pbWoI8cC0zQAyDnyHRMxRceGzV9QkNEA442WHcQgE1DVT1H+X6fDltDwnCsM
+	 5EULxZMeC5BgKlr7dqiU3qXao9xTPr3MkSZncNgHbLk5VIAwpvDIwy0tEtC0Cjqmb3
+	 V1ZF8uWBx4py0dU3Uck8Ks+Njf1NFCH/wkGO67ZP2a9K9WNJDfTGubiawgZbualuyl
+	 4evv8n2fpnwr+WTPwO8rf71+CKAlmbgDA6kzBaUyXdSWVuWqJIlxuWPwkk8TIpmJbp
+	 HTQewyvcuyf38XcT5ehTYSUJ5LKEaU3eNd1WN8nmO2vYtywEpjm94ZH0PLKozYqgmw
+	 KQlROHlxlU5EA==
+X-Pm-Submission-Id: 4gSnxb0tjHz1DDKv
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>,
+	markus.probst@posteo.de,
+	Rob Herring <robh@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Kari Argillander <kari.argillander@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Boqun Feng <boqun@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v11 1/3] rust: add basic serial device bus abstractions
+Date: Sun, 31 May 2026 09:58:34 +0300
+Message-ID: <20260531065838.7352-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <DIWEXUCNLURG.136XXDBHSBNVR@kernel.org>
+References: <20260531-rust_serdev-v11-0-dee8e0d830f1@posteo.de> <20260531-rust_serdev-v11-1-dee8e0d830f1@posteo.de> <DIWEXUCNLURG.136XXDBHSBNVR@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260530184944.10459-1-contact@jkam.dev>
-In-Reply-To: <20260530184944.10459-1-contact@jkam.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 31 May 2026 08:45:15 +0200
-X-Gm-Features: AVHnY4L8pDtXPdbKNrUQfpBv_HjLynBdwLkgy_JeIYUFSH2IkQeNYPWqY7tCCRc
-Message-ID: <CANiq72=huc=AfjBRYUsoJY1hSvB8W6CvnUh7g2G4rt98XYmxYw@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: rust: make `*.long-type-*.txt` a target for cleanup
-To: Joel Kamminga <contact@jkam.dev>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 30, 2026 at 8:51=E2=80=AFPM Joel Kamminga <contact@jkam.dev> wr=
-ote:
->
-> This cleans up files generated by rustc compiler in the case of an
-> error containing an excessively long type name that doesn't fit in
-> a single line. Such types appear relatively frequently so the risk
-> of generating these files certainly exists. These files are purely
-> compiler artifacts and are not created intentionally by the build
-> system. They should be added to the `clean` target to stop from
-> cluttering up the source tree.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1236
-> Signed-off-by: Joel Kamminga <contact@jkam.dev>
-> ---
-
-In general, please add a changelog after the `---` line. Otherwise,
-reviewers need to manually inspect the patch to see what has changed,
-if anything.
-
-For instance, I see you changed the title, but the commit message
-seems identical. Was there a reason to not change it?
-
-Thanks!
-
-Cheers,
-Miguel
+On Sun, 31 May 2026 01:51:08 +0200=0D
+Danilo Krummrich <dakr@kernel.org> wrote:=0D
+=0D
+> On Sun May 31, 2026 at 12:51 AM CEST, Markus Probst via B4 Relay wrote:=0D
+> > +#[pinned_drop]=0D
+> > +impl<T: Driver> PinnedDrop for PrivateData<'_, T> {=0D
+> > +    fn drop(self: Pin<&mut Self>) {=0D
+> > +        let mut active =3D self.active.lock();=0D
+> > +        if *active {=0D
+> > +            // SAFETY:=0D
+> > +            // - We have exclusive access to `self.driver`.=0D
+> > +            // - `self.driver` is guaranteed to be initialized.=0D
+> > +            unsafe { (*self.driver.get()).assume_init_drop() };=0D
+> > +            *active =3D false;=0D
+> > +        }=0D
+> > +=0D
+> > +        // SAFETY: We have exclusive access to `self.open`.=0D
+> > +        if unsafe { *self.open.get() } {=0D
+> > +            // SAFETY: `self.sdev.as_raw()` is guaranteed to be a poin=
+ter to a valid=0D
+> > +            // `struct serdev_device`.=0D
+> > +            unsafe { bindings::serdev_device_close(self.sdev.as_raw())=
+ };=0D
+> > +        }=0D
+> > +    }=0D
+> > +}=0D
+> =0D
+> Just in case it came across otherwise, I did not mean to push for you to =
+go for=0D
+> this approach. We just kept discussing it because it let to the (to me mo=
+re=0D
+> interesting) discussion around the LED class device abstraction.=0D
+> =0D
+> While this approach gets us rid of an extra allocation and the rust_priva=
+te_data=0D
+> pointer in struct serdev_device it also turns out a bit more convoluted.=
+=0D
+> =0D
+> That said, both are correct, and I won't object either one; up to you and=
+ the=0D
+> serdev / tty maintainers.=0D
+> =0D
+> Please wait a bit before resending, so other people can comment on this a=
+s well.=0D
+> =0D
+> > +    extern "C" fn receive_buf_callback(=0D
+> > +        sdev: *mut bindings::serdev_device,=0D
+> > +        buf: *const u8,=0D
+> > +        length: usize,=0D
+> > +    ) -> usize {=0D
+> > +        // SAFETY: The serial device bus only ever calls the receive b=
+uf callback with a valid=0D
+> > +        // pointer to a `struct serdev_device`.=0D
+> > +        //=0D
+> > +        // INVARIANT: `sdev` is valid for the duration of `receive_buf=
+_callback()`.=0D
+> > +        let sdev =3D unsafe { &*sdev.cast::<Device<device::CoreInterna=
+l<'_>>>() };=0D
+> =0D
+> CoreInternal snuck back in, should be BoundInternal.=0D
+> =0D
+> > +=0D
+> > +        // SAFETY: `receive_buf_callback` is only ever called after a =
+successful call to=0D
+> > +        // `probe_callback`, hence it's guaranteed that `Device::set_d=
+rvdata()` has been called=0D
+> > +        // and stored a `Pin<KBox<PrivateData<'_, T>>>`.=0D
+> > +        let private_data =3D unsafe { sdev.as_ref().drvdata_borrow::<P=
+rivateData<'_, T>>() };=0D
+> > +        let active =3D private_data.active.lock();=0D
+> =0D
+> I think SRCU would be a much better fit, but the code didn't land yet, so=
+ the=0D
+> mutex seems fine for now. But I'd probably add a TODO.=0D
+> =0D
+=0D
+Jfyi v9 is on the list [1] and I would say we are pretty close on taking th=
+at.=0D
+=0D
+Thanks,=0D
+Onur=0D
+=0D
+[1]: https://lore.kernel.org/rust-for-linux/DIWEXUCNLURG.136XXDBHSBNVR@kern=
+el.org=0D
+=0D
+> > +=0D
+> > +        if !*active {=0D
+> > +            return length;=0D
+> > +        }=0D
+> > +=0D
+> > +        // SAFETY: No one has exclusive access to `private_data.driver=
+`.=0D
+> > +        let data =3D unsafe { &*private_data.driver.get() };=0D
+> > +        // SAFETY:=0D
+> > +        // - `private_data.driver` is pinned.=0D
+> > +        // - `receive_buf_callback` is only ever called after a succes=
+sful call to `probe_callback`,=0D
+> > +        //   hence it's guaranteed that `private_data.driver` was init=
+ialized.=0D
+> > +        let data_pinned =3D unsafe { Pin::new_unchecked(data.assume_in=
+it_ref()) };=0D
+> > +=0D
+> > +        // SAFETY: `buf` is guaranteed to be non-null and has the size=
+ of `length`.=0D
+> > +        let buf =3D unsafe { core::slice::from_raw_parts(buf, length) =
+};=0D
+> > +=0D
+> > +        T::receive(sdev, data_pinned, buf)=0D
+> > +    }=0D
+> > +}=0D
