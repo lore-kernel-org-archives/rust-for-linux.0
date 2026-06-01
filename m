@@ -1,129 +1,124 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8343403E8
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 22:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780352769; cv=none; b=JljZgj60n5Wj4VyxFfPnWOJkZ+6vAc/d6Ic3dZynJHxT8srDbkVxAqBw0B3pHjvXWJJkIlQHY5G3lhcfeKeTsRgcMxMM5LcdhuZOE0o/IZIS6iiUBdbnFoUdTdrDPM9rbxH4x1G9hGKiwX3YiJ20C0pE9N2WjucHB0LosI3EGLc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780352769; c=relaxed/simple;
-	bh=KEKGZD7wPG4K2tO6rX2z5E8F6yamjZqlTqEu1Uo9K0c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cVbmtTRDqZ/M8YJR4lPjXYL+0KDnRAZF8w8sXMvAJRC6pOWCBW2xp4lnZ09bwKxoC1SQ0VLpHeScw3W4cTL1J5KBJv6ArduWNth/MYQFwOjTsJGt/ygsrBFHW+jyrKR939LGPC82AxStt96LP6sjwcs3XDgs+UjyGaXLJm3Rlfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MBDFhlJa; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E95236C9D5
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 23:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780355631; cv=pass; b=DvJUVq7EX3/AkkKjjQpxwsc3TQ9X6IZeFAMEsv9xXm2EiMreNUBbk2CMVV3J9gdP5Cyp0yThBrEvjqT328oagaxU12/Hlf0A0E78Hjc0ZvAJwrsgTSvGXWiY7yMFGiDKXRLg0ZtJgFRvqvs4KgRROzQQWTp7jpZKR3+NdW1XAGo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780355631; c=relaxed/simple;
+	bh=aHqU/GAv+Kwj1BqBbcVETpbD87Fi+TBisbMXFFy+wTs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i7/dv4DCffpk2HGir+WWBdOLvEq6uioJ7k1b3/3wl+OYJ3THJNvVGpaBHuruEahOWnUOtUxQ/nV2iqj67tniWYTNLj7OmZItMGF7qDJRw4l3r6I5QY5hxx0323CF62E8Hmm3clYkrpKdXHqHdbZgeMKU7sDb8BelXYL+dTAgAWs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=LnIjykco; arc=pass smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MBDFhlJa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1780352767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KEKGZD7wPG4K2tO6rX2z5E8F6yamjZqlTqEu1Uo9K0c=;
-	b=MBDFhlJairdnFQBgaZjG6uc5tH6o5QozZW0NZ7fEG9LzxOjpARmLIPlAioPM6gINyemHx6
-	jSgdFTPYbedr8yVNl9fouXGWa8lgz2OfYu5AXqs39fuP9208nMKMngcbIDKQXxn2nb4GbS
-	FsI8qrOe+fkyelTjwL6+edMCF+RJCpQ=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-4Qk4R2MxOkW533kEpigETQ-1; Mon, 01 Jun 2026 18:26:06 -0400
-X-MC-Unique: 4Qk4R2MxOkW533kEpigETQ-1
-X-Mimecast-MFC-AGG-ID: 4Qk4R2MxOkW533kEpigETQ_1780352766
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ccf396f53bso66162376d6.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 15:26:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="LnIjykco"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2c0c3184c71so13043685ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 16:13:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780355629; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FIKCUrIWxyHcgtZ2CWVoUm2OtX5Fti03va4HWKZOUpWB19WDeq7RVQ8YrWCkEG6tdR
+         rLG2YD2Ea8cFQJfyNzYrP7mu6oCd1g6Y8eA11+5ybNcK6I6LXuVvT34EQuxafuXisob9
+         kyei8YXTkHYJ7tmu4bHBYgH1id1DguZisOO0bAZXzE7kwZppr7K0bBxJVGbeq2blqLMR
+         UsmwdBvcslgkbDsEu6xDFNHCKyQ6+tjp8e55l+uQFlonDRaFMU7cvJzb50kL90qE8LZV
+         yuT7y/fLtP5A8Cw0TLM+jQ51X8Xb4BtdDRGsJDlCcmXwV+D4j6ZkkCNadod+bYAatBsN
+         8Ofg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Vz7MwT4u5UsOtiG3xQsmDxW+jD8LsxAD2bqnbWJgenk=;
+        fh=76a73H2K0mBG9dExp7PhkBSvKzSu69LJPBfLCwh6M8k=;
+        b=dyfAGa/vKfCVlatcT+hKi6Fhgbw0m50PhItjpwffZU26mvRFvMwE7/7FNn/Dro0mMR
+         zry5ERgiwcmAZw7W4rFKG2koa9clXbhAzQpBjhJpkR7IYvBj/9iwULo5m6iWIT7pwWj0
+         40J1KqGs7KPBaRLOIa6EIHR3i33RveU4GK38oo73KDfMIMs+4hud66ye3enUWBLy44x6
+         V/j3NzDLNTBVVi69SLqt2hlx3oIoSmCg9KtPMUqy+3B9m10lRLT9Oq/P1TbqlahAOVPe
+         +IfDRazbOsPkhyMZLLAlK+LqS35ZyHCoiwsLDORCDe9Q/ae+XZK5D2q+9+fIBSRlPMYP
+         NrNw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1780355629; x=1780960429; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Vz7MwT4u5UsOtiG3xQsmDxW+jD8LsxAD2bqnbWJgenk=;
+        b=LnIjykcojR6vyy08kHpOWVWsSFeDXGxpMMVde26QTGOjhFB60YFvmGgjCjuRfUuzFS
+         J4NUevoyFi7xAgvDJeQjjRAuB3AxsbOb8aEkXZomD5dsOvR0G+tPFCCr9dkq0SLSz9TF
+         YxhMcpdgKDKOjSdPI4sB4izsz9o7enwjLhNnEs9sdz8UGE5UEYeImQiB0DoIuLBf2iy/
+         sRwWZKExf4h6mEZ92zOV9P5qXShSzvqGWFBpwPO7+a1/jXhmZuDSd9dsufalQP7hokiQ
+         g771zr6u0J+RySuiC3tKdFp86Hg1O+1juFHYhY8i2pM8vKXcpaw/69fa7eG//m8ITQkp
+         nA/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780352766; x=1780957566;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KEKGZD7wPG4K2tO6rX2z5E8F6yamjZqlTqEu1Uo9K0c=;
-        b=CFAcG9BTJO/UPTgGYzKppJkH2B62u6nUDPdb5kLvDUsLaqeMZG8ENje3IYCTYFOW0n
-         7S4tzAXfJuIE3a1plfqpXnYjgBuG1ZiQA4+LouxBp8bow907h+FSZcDO0v7vMlwfMSgF
-         KliFpxssbi94Zeu806jzOVC2vaJmUCpRKB+ATapmxMBOrRHLs2cPYOT1l13Oxcf2hqgy
-         MtNeN9U9pNYl92EW95FYaLl9EW6JSDdnFk2Jan7lzDB+wY+AfI8Fl0lAo8Fj0RdRurOy
-         SVvV8AmjHHFW5Bn0LUzo5zkEcl96kM9d50GBXI6wMopoG8BWuoUg7oLrKDU4duvSj/fX
-         NU0A==
-X-Forwarded-Encrypted: i=1; AFNElJ9uZCEC++rOJTMpbhOlW25q/w3g/CAntgDKrzSuiW9H4w0GbQIWfTQGvTIdG6CI1xkB9KCkXLswhJ0ZiCWLpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyepqi/m1gwJr3DUegM0NODYOKnh/oJv2jgX1QAWrXZufH5T/oW
-	bT9PrmNxHKp0Efbm/ame7PgWZoyrgVVKBcmHNRXh24ZeyJ8ySNzCAWSbHJZ3pw1bXFJYf/VjNY1
-	1SLsRSkp3/OTy8a6/RGfMHbCSkEKrres3NHFmx6ilTdjgAPSfS/NNXO1uMdyuaSpv35S5
-X-Gm-Gg: Acq92OHB7gD4rSe09u6eDb8dheZ3WFpca4fH4zL2+wDB4VpXL3jUNMeHDU6VCeeDhcx
-	3J64OvLCLI2KezxYEChpK3fX0AhTExjYd+YfFd7Fd3EQHFWbUqzhWydKgdtC5rmSsnkwOz9kI2I
-	kOrxq3/qykL/1yRlQPzbzoc1O5YK7HWmy8kOaKWGEPR7ABovItCDgOZo3YhSmXUAAuyHuM8GoZP
-	ODqGPc69E2xiDc2r3hm6qmiZgL7pLVQ4ao9GeFSBMN+GheXPfhw/FYB266BoQ2OYI6CGc1aSCA+
-	WGLuY9jPZU9v7GNUDKZrJjso6QM2fu09ouuRWZigWMEukpUCgzq8O9DY1ifAWaXDOcDTICUJ5mp
-	QGiPYu5G+7UzlJC1keNU6lIWgneXT
-X-Received: by 2002:ad4:5947:0:b0:8cc:f5b7:4e13 with SMTP id 6a1803df08f44-8cebf53afdbmr26107396d6.24.1780352765749;
-        Mon, 01 Jun 2026 15:26:05 -0700 (PDT)
-X-Received: by 2002:ad4:5947:0:b0:8cc:f5b7:4e13 with SMTP id 6a1803df08f44-8cebf53afdbmr26107066d6.24.1780352765346;
-        Mon, 01 Jun 2026 15:26:05 -0700 (PDT)
-Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ccebb681f6sm99921236d6.4.2026.06.01.15.26.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2026 15:26:04 -0700 (PDT)
-Message-ID: <fe3c191db743897eace3e50d9994269b45f16d3f.camel@redhat.com>
-Subject: Re: [PATCH v2 2/2] rust: sync: Introduce LazyInit
-From: lyude@redhat.com
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>, Ingo Molnar	
- <mingo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Tamir Duberstein	
- <tamird@kernel.org>, Boqun Feng <boqun@kernel.org>, Peter Zijlstra	
- <peterz@infradead.org>, Viresh Kumar <viresh.kumar@linaro.org>, Benno
- Lossin	 <lossin@kernel.org>, Will Deacon <will@kernel.org>
-Date: Mon, 01 Jun 2026 18:26:04 -0400
-In-Reply-To: <ah1CarNtFhCvAAav@google.com>
-References: <20260529173137.303717-1-lyude@redhat.com>
-	 <20260529173137.303717-3-lyude@redhat.com> <ah1CarNtFhCvAAav@google.com>
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
+        d=1e100.net; s=20251104; t=1780355629; x=1780960429;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Vz7MwT4u5UsOtiG3xQsmDxW+jD8LsxAD2bqnbWJgenk=;
+        b=ewvdlRnB3fkha10vHyn7bPJifAxhOUHWjs8piouRgFILLMfQMJ61Zxdx97EQHh3ZxC
+         NgNNSnHhMxeDAQ7uPe4NTY3s5Jn21j0dNw6C5XNNi6AS3c4gpafA7fhmr+QOKmrtIOQR
+         bhzxaj0hAV1oynANeIx+g9MwTl8RVfnwh7dR7duJB4geEMwSNy5bjhK6+6IASsHyWEAo
+         oas2Dm4a5SAMRfuWnPYqo1elVOTJRRh8Jr8/4QT7fofsKHY6iB4AWF0U5zw9Q9cXLtVC
+         hR4CM6pE1G93uue7JTlOP7Dfu4iYgBePTq2hc94wqLDXIYDQvUGSkBcuuWwux9L/IMDa
+         jJ0g==
+X-Forwarded-Encrypted: i=1; AFNElJ8C4tsUmUq8YZJ3V81pRTHHBqVDPSbCJG6xcpekYDALhbiNeQ5rStVpaQKvb3we1dzyG6m0jxtBfG77+X2jCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzj9yXwo3S2pRAPWEtjaD07anT5MpyyWvKQtikVP7lBl3AbHgXs
+	OFrzyJyGi1einfEupWvlXX/eAIwXCWqzhIGhlU4IFUDX43xsDPYCb7js3pYZGXJz67E30zZdaCi
+	hTRgjyyhchKut1pLhj8G3f56oUzutcGb64dLf6JY9
+X-Gm-Gg: Acq92OFksl5dvO0k8DheygCwnz9v0ZrW3mcvy70o/Y1lILZ+l59Xy+dzDjZ+NlIvwtX
+	3mztuz2avuK+stv4//Xx51avsBgsTP09ONn5ZKgKkwruJlQ0Df0pL29oKonF/Bq5cU0PCTtvz1r
+	0jltmW8VWkNP8WMpjhMFFKBJsFG4waCi58rd7ZZgOheTD0vCWuy5eKR6q0JQ+G+Uh4tmxgM7m7R
+	jV9XtObeA1hSAPVIMmTQzP7R+Wm9B4LZKSvIQdF9UJfFrYSW2dCj1LiiewxUw+CtGxS5UAV/SOu
+	aUFAcK7IJFOwtCQk2iJyvSosjOjM
+X-Received: by 2002:a17:902:f64a:b0:2c0:c940:dc1e with SMTP id
+ d9443c01a7336-2c0c940e206mr79129685ad.20.1780355629409; Mon, 01 Jun 2026
+ 16:13:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: B6vFnb99OHzQ5sROAZfg9M1_n6NNhfXH4lyMAckQvI4_1780352766
-X-Mimecast-Originator: redhat.com
+References: <20260529-remove-task-euid-v4-0-07cbdf3af980@google.com>
+In-Reply-To: <20260529-remove-task-euid-v4-0-07cbdf3af980@google.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 1 Jun 2026 19:13:37 -0400
+X-Gm-Features: AVHnY4L0VLMjaF6hJi9yQFqw7kmnIWO5yk2GkkTGfjEcklH1ybYU-qiacr6meWU
+Message-ID: <CAHC9VhR5Ca+WyP2OiNGtL1SqHn0SwLe=M9SB8D2bxtdS52quhg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] Delete task_euid()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Serge Hallyn <sergeh@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, 
+	Dongliang Mu <dzm91@hust.edu.cn>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-06-01 at 08:27 +0000, Alice Ryhl wrote:
-> I'm not a big fan of using these kinds of tricks to access the
-> contents
-> of a mutex after unlocking it. Could we instead use a struct like
-> this:
->=20
-> struct LazyInit<T> {
-> =C2=A0=C2=A0=C2=A0 data: UnsafeCell<MaybeUninit<T>>,
-> =C2=A0=C2=A0=C2=A0 set: AtomicBool,
-> =C2=A0=C2=A0=C2=A0 lock: Mutex<()>,
-> }
->=20
-> or even:
->=20
-> struct LazyInit<T> {
-> =C2=A0=C2=A0=C2=A0 data: SetOnce<T>,
-> =C2=A0=C2=A0=C2=A0 lock: Mutex<()>,
-> }
->=20
-> I think this logic will be simpler for everyone.
+On Fri, May 29, 2026 at 5:33=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> The task_euid() method is a very weird method, and Binder was the only
+> user. As of commit 65b672152289 ("binder: use current_euid() for
+> transaction sender identity") Binder doesn't use task_euid() anymore,
+> so we can delete this method.
 
-> By the way, another option is to use a similar strategy to
-> https://lore.kernel.org/rust-for-linux/20260523-upgrade-poll-v4-2-f5b4c74=
-7eac2@google.com/
-> where you just use SetOnce and protect calls to `populate` by another
-> mutex in the structure. Then you don't need a separate LazyInit.
+Given the problems from last time, it seems like it might be prudent
+to let the commit have some time to "breathe" in a proper release, I'd
+suggest merging this not for the upcoming v7.2 merge window but
+instead waiting for v7.3.
 
-ooo - yeah, that definitely works for me and would be preferable. I
-still will like to make one change to SetOnce that I think isn't too
-crazy: writing up a `reset()` function for SetOnce that works through a
-&mut like what I had here for LazyInit, since that would be quite
-helpful to have in the gem shmem free_callback() function.
+> My suggestion would be to merge this through the LSM tree.
 
->=20
-> Alice
+That's fine with me.  I'd also suggest updating the commit description
+in patch 1/2 to indicate that binder is no longer using task_euid();
+it currently reads like it is still being used.
 
+--=20
+paul-moore.com
