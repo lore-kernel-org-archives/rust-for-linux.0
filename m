@@ -1,220 +1,129 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5E280309
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 21:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8343403E8
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 22:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780348761; cv=none; b=bEavMdQzm0/4P4QEP0sOFIDu19nusDTt346gR/5isjoNaaI38Tndn6kCPBCXWX61lmyQvPSHAtt1Gbx++EEv5gqW10qcWdcxhCQtMW4YPcouWA8m3G/gUA7E5jDGLbKXACk3bmKwx+DOb2zvQyNx6sb8wPNZze6Oak7kE6GPeMI=
+	t=1780352769; cv=none; b=JljZgj60n5Wj4VyxFfPnWOJkZ+6vAc/d6Ic3dZynJHxT8srDbkVxAqBw0B3pHjvXWJJkIlQHY5G3lhcfeKeTsRgcMxMM5LcdhuZOE0o/IZIS6iiUBdbnFoUdTdrDPM9rbxH4x1G9hGKiwX3YiJ20C0pE9N2WjucHB0LosI3EGLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780348761; c=relaxed/simple;
-	bh=IfPIiZW0gCIHgOF0/+IIrxBC8ZG3r9xHJsxK0+0F0kg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HQwkhrNFcWL7dERoQWNGM31ROIqpkTWfbhrZGZT6dmi4EDl1cn1p11f/x48D+3GlEjSY0SbbB3sZ5lVuZzc0o1Y7UJsJXgCOI/pRln3BAHl7cDKfmqRjlPHGE0achdxGS/YKsOStAi1JYhGc0ASK4RBsNaANoRKEtSyX9eh4MBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o3ipgcmU; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780352769; c=relaxed/simple;
+	bh=KEKGZD7wPG4K2tO6rX2z5E8F6yamjZqlTqEu1Uo9K0c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cVbmtTRDqZ/M8YJR4lPjXYL+0KDnRAZF8w8sXMvAJRC6pOWCBW2xp4lnZ09bwKxoC1SQ0VLpHeScw3W4cTL1J5KBJv6ArduWNth/MYQFwOjTsJGt/ygsrBFHW+jyrKR939LGPC82AxStt96LP6sjwcs3XDgs+UjyGaXLJm3Rlfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MBDFhlJa; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o3ipgcmU"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45eeea039ebso1986552f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 14:19:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780348758; x=1780953558; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JuVHAspRZOzT54Q3CeGYfhWxBcncLtAKm4G7e3ZGvNU=;
-        b=o3ipgcmUluH9ud6bWumsrmuDdH9Gtfcr7BDcN1KYANa/V7Wyrm0ZVKSPv/9tWDyiPf
-         4wt8MHAgTn2cIT3CPJ+zDvhzP6OeLiSMnGVEcUMK2Urcxi0Mzdj439ocdQqDtvOFBb3D
-         YSdRJfc0PKf4SLJhXWipVSQr5uSt3RgB48vKJfH2WzinHUmvphwqPqEioWQQduieJ/x4
-         B6JmYc9s84jSJAuZzTqA+lqeEth4SUky09gKVQRykYU2MsCu2pEAT0FxVj9iNhvr9Vr+
-         Z75yW6cD0C5m+fDElR2DU+dpqjFAcyud7fGJ3g0NAwB1jw4nv4i4RSV2hQdqxh2HlAOG
-         5hNA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MBDFhlJa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780352767;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KEKGZD7wPG4K2tO6rX2z5E8F6yamjZqlTqEu1Uo9K0c=;
+	b=MBDFhlJairdnFQBgaZjG6uc5tH6o5QozZW0NZ7fEG9LzxOjpARmLIPlAioPM6gINyemHx6
+	jSgdFTPYbedr8yVNl9fouXGWa8lgz2OfYu5AXqs39fuP9208nMKMngcbIDKQXxn2nb4GbS
+	FsI8qrOe+fkyelTjwL6+edMCF+RJCpQ=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-654-4Qk4R2MxOkW533kEpigETQ-1; Mon, 01 Jun 2026 18:26:06 -0400
+X-MC-Unique: 4Qk4R2MxOkW533kEpigETQ-1
+X-Mimecast-MFC-AGG-ID: 4Qk4R2MxOkW533kEpigETQ_1780352766
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8ccf396f53bso66162376d6.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 15:26:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780348758; x=1780953558;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JuVHAspRZOzT54Q3CeGYfhWxBcncLtAKm4G7e3ZGvNU=;
-        b=ngWFROVtUvJvo3vpjgoOLk37DcBTJjihp3YuUJY/k+6x0XW1J+QFMtoWuACV9REKcR
-         8yP09UjSjXSxveEJXnGH6V7+VXFe9qwp4VqCcfaK6+B/cllBKlUm/ziJnrwu26Ki8x/U
-         l11/99SrY7MqDwoplqGkfz73rTNJtGWRYe6QXIi7csn99DhZKQLOlLOgphamAdDoaCJW
-         AMYnEmIbHpZzk/tVBWu+2t2K2CNZhGzvyK4JMvl8xohadhen6XZNloaNgK556Izw8atm
-         fGtfECcv0KPbgEWZHgIh4Y4J+jPqyd5nA9vCUnzGXl8Zsgnls2Ts7QlXA9DgyuKApyPY
-         tUjQ==
-X-Gm-Message-State: AOJu0Yxi/nRimEL8zb1VWUDqXZazA+QPegwuStVsWvUghnZQtX3GQBr2
-	23MRAUm0xQPd7VE4eRoCZXrZWAUtcd/2Wa0TxKik8KgTmzHyOZpvGB/U
-X-Gm-Gg: Acq92OGcA+PjE1oQUm2LKWe3XGHVxOg9eBtKlPYTZYRKyVhMwsZxC22a3v6I9nJwpMl
-	bsIHe41akkDiVLofJS4gVqHDFKwHO2vs1ONLUC0sHGw1CezkhMnoJs26vGTlY25Eb1jUYlSK5Xg
-	8f5WY+TI/rzpWOxAKeANTzrBK6Gef493BVAuT9zcwHXqfp59Yxn9owGABKa1wvzoCDTfVYghozb
-	VC/tnHMf1+iF9+I0uJlcL07RNOTgTLLQ2Gonicfo3woEUt7m9CkM9Yqm84zLbEHQE9lcHzwXnNr
-	20Got2ln+9QtQQMBXoIF4uQlFRJFWkWsSwKcJYxl6aJFEKLxmjGRZhauH+i93Vv5SX6UXKUKYIh
-	YrFGoo1i/7TOsYjJKv+Xdl5dYt7IjtytvGM0vdQjhTkNPbXsyC83SRobpQC59hJC8OC92VrdDOF
-	ghYBsNL7yG3lTo++BsQ36+UCfw3AyoFvWYXDoHmWd9yn+6YsIT3em6XaU=
-X-Received: by 2002:a05:6000:4b02:b0:45f:1bd:a053 with SMTP id ffacd0b85a97d-45f01bda1famr19783269f8f.1.1780348757529;
-        Mon, 01 Jun 2026 14:19:17 -0700 (PDT)
-Received: from localhost (a89-182-201-205.net-htp.de. [89.182.201.205])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-45ef3587072sm28494538f8f.34.2026.06.01.14.19.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jun 2026 14:19:17 -0700 (PDT)
-From: Sergei Litvin <litvindev@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com,
-	nathan@kernel.org,
-	nsc@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	ojeda@kernel.org,
-	Sergei Litvin <litvindev@gmail.com>
-Subject: [PATCH v3] scripts/tags.sh: fix "make COMPILED_SOURCE=1 cscope" command ends up with *.rlib, *.rmeta, *.so filenames in cscope.files
-Date: Mon,  1 Jun 2026 23:18:50 +0200
-Message-ID: <20260601211850.3378-1-litvindev@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <CANiq72mBkBxGk4CbTrjeNYZ5ZUsD=wVfLVyP2Bcm_v9BExQaGQ@mail.gmail.com>
-References: <CANiq72mBkBxGk4CbTrjeNYZ5ZUsD=wVfLVyP2Bcm_v9BExQaGQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1780352766; x=1780957566;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KEKGZD7wPG4K2tO6rX2z5E8F6yamjZqlTqEu1Uo9K0c=;
+        b=CFAcG9BTJO/UPTgGYzKppJkH2B62u6nUDPdb5kLvDUsLaqeMZG8ENje3IYCTYFOW0n
+         7S4tzAXfJuIE3a1plfqpXnYjgBuG1ZiQA4+LouxBp8bow907h+FSZcDO0v7vMlwfMSgF
+         KliFpxssbi94Zeu806jzOVC2vaJmUCpRKB+ATapmxMBOrRHLs2cPYOT1l13Oxcf2hqgy
+         MtNeN9U9pNYl92EW95FYaLl9EW6JSDdnFk2Jan7lzDB+wY+AfI8Fl0lAo8Fj0RdRurOy
+         SVvV8AmjHHFW5Bn0LUzo5zkEcl96kM9d50GBXI6wMopoG8BWuoUg7oLrKDU4duvSj/fX
+         NU0A==
+X-Forwarded-Encrypted: i=1; AFNElJ9uZCEC++rOJTMpbhOlW25q/w3g/CAntgDKrzSuiW9H4w0GbQIWfTQGvTIdG6CI1xkB9KCkXLswhJ0ZiCWLpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyepqi/m1gwJr3DUegM0NODYOKnh/oJv2jgX1QAWrXZufH5T/oW
+	bT9PrmNxHKp0Efbm/ame7PgWZoyrgVVKBcmHNRXh24ZeyJ8ySNzCAWSbHJZ3pw1bXFJYf/VjNY1
+	1SLsRSkp3/OTy8a6/RGfMHbCSkEKrres3NHFmx6ilTdjgAPSfS/NNXO1uMdyuaSpv35S5
+X-Gm-Gg: Acq92OHB7gD4rSe09u6eDb8dheZ3WFpca4fH4zL2+wDB4VpXL3jUNMeHDU6VCeeDhcx
+	3J64OvLCLI2KezxYEChpK3fX0AhTExjYd+YfFd7Fd3EQHFWbUqzhWydKgdtC5rmSsnkwOz9kI2I
+	kOrxq3/qykL/1yRlQPzbzoc1O5YK7HWmy8kOaKWGEPR7ABovItCDgOZo3YhSmXUAAuyHuM8GoZP
+	ODqGPc69E2xiDc2r3hm6qmiZgL7pLVQ4ao9GeFSBMN+GheXPfhw/FYB266BoQ2OYI6CGc1aSCA+
+	WGLuY9jPZU9v7GNUDKZrJjso6QM2fu09ouuRWZigWMEukpUCgzq8O9DY1ifAWaXDOcDTICUJ5mp
+	QGiPYu5G+7UzlJC1keNU6lIWgneXT
+X-Received: by 2002:ad4:5947:0:b0:8cc:f5b7:4e13 with SMTP id 6a1803df08f44-8cebf53afdbmr26107396d6.24.1780352765749;
+        Mon, 01 Jun 2026 15:26:05 -0700 (PDT)
+X-Received: by 2002:ad4:5947:0:b0:8cc:f5b7:4e13 with SMTP id 6a1803df08f44-8cebf53afdbmr26107066d6.24.1780352765346;
+        Mon, 01 Jun 2026 15:26:05 -0700 (PDT)
+Received: from [192.168.8.4] ([100.0.180.93])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ccebb681f6sm99921236d6.4.2026.06.01.15.26.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jun 2026 15:26:04 -0700 (PDT)
+Message-ID: <fe3c191db743897eace3e50d9994269b45f16d3f.camel@redhat.com>
+Subject: Re: [PATCH v2 2/2] rust: sync: Introduce LazyInit
+From: lyude@redhat.com
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>, Ingo Molnar	
+ <mingo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Tamir Duberstein	
+ <tamird@kernel.org>, Boqun Feng <boqun@kernel.org>, Peter Zijlstra	
+ <peterz@infradead.org>, Viresh Kumar <viresh.kumar@linaro.org>, Benno
+ Lossin	 <lossin@kernel.org>, Will Deacon <will@kernel.org>
+Date: Mon, 01 Jun 2026 18:26:04 -0400
+In-Reply-To: <ah1CarNtFhCvAAav@google.com>
+References: <20260529173137.303717-1-lyude@redhat.com>
+	 <20260529173137.303717-3-lyude@redhat.com> <ah1CarNtFhCvAAav@google.com>
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: B6vFnb99OHzQ5sROAZfg9M1_n6NNhfXH4lyMAckQvI4_1780352766
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-PROBLEM
+On Mon, 2026-06-01 at 08:27 +0000, Alice Ryhl wrote:
+> I'm not a big fan of using these kinds of tricks to access the
+> contents
+> of a mutex after unlocking it. Could we instead use a struct like
+> this:
+>=20
+> struct LazyInit<T> {
+> =C2=A0=C2=A0=C2=A0 data: UnsafeCell<MaybeUninit<T>>,
+> =C2=A0=C2=A0=C2=A0 set: AtomicBool,
+> =C2=A0=C2=A0=C2=A0 lock: Mutex<()>,
+> }
+>=20
+> or even:
+>=20
+> struct LazyInit<T> {
+> =C2=A0=C2=A0=C2=A0 data: SetOnce<T>,
+> =C2=A0=C2=A0=C2=A0 lock: Mutex<()>,
+> }
+>=20
+> I think this logic will be simpler for everyone.
 
-(1) When executing the command `make COMPILED_SOURCE=1 cscope`, the
-`cscope.files` file generated by it includes filenames with the
-extensions *.rlib, *.rmeta, and *.so (taken from *.cmd files, which, in turn,
-are generated from *.d dependency files by the `fixdep` utility).
+> By the way, another option is to use a similar strategy to
+> https://lore.kernel.org/rust-for-linux/20260523-upgrade-poll-v4-2-f5b4c74=
+7eac2@google.com/
+> where you just use SetOnce and protect calls to `populate` by another
+> mutex in the structure. Then you don't need a separate LazyInit.
 
-(2) When executing the command `make cscope`, the `cscope.files` file generated
-by it includes only filenames with the extensions *.h, *.c, *.S and not includes
-filenames with *.rs extensions.
+ooo - yeah, that definitely works for me and would be preferable. I
+still will like to make one change to SetOnce that I think isn't too
+crazy: writing up a `reset()` function for SetOnce that works through a
+&mut like what I had here for LazyInit, since that would be quite
+helpful to have in the gem shmem free_callback() function.
 
-SOLUTION
-
-(1) Modify the regular expression in the `all_compiled_sources()` function so
-that only files with the extensions *.h, *.c, *.S, and *.rs are accepted.
-
-This causes `make COMPILED_SOURCE=1 cscope` command to generate the
-`cscope.files` file that contains only files with the extensions *.h, *.c, *.S,
-and *.rs.
-
-(2) Modify the functions `find_arch_sources()`, `find_arch_include_sources()`,
-`find_include_sources()`, and `find_other_sources()` so that they no longer
-accept the filename pattern as the last argument, but instead retrieve it from
-the new variable `pattern` (analogous to the variables `ignore`, `prune`, and
-`tree`) which includes *.rs along with *.h, *.c, *.S.
-
-This causes `make cscope` command to generate a `cscope.files` file that
-contains *.rs files along with *.h, *.c, *.S
-
-Signed-off-by: Sergei Litvin <litvindev@gmail.com>
-
----
-
-Changes since V2:
-https://lore.kernel.org/lkml/20260530085821.19689-1-litvindev@gmail.com/
-
-- The functions find_arch_sources()`, `find_arch_include_sources()`,
-`find_include_sources()`, and `find_other_sources()` have been modified rather
-than having their calls duplicated to avoid redundant directory
-traversals (suggested by Sashiko).
-
-– The regular expression in the `all_compiled_sources()` function was improved
-by adding a lookahead anchor (?=\s) to the first branch (also suggested by Sashiko).
-
-Changes between the V1 and V2:
-https://lore.kernel.org/lkml/20260530085821.19689-1-litvindev@gmail.com/
-https://lore.kernel.org/lkml/20260530070631.14955-1-litvindev@gmail.com/
-
-- In Version V1, the `-name` parameters to the `find` calls in the functions
-`find_arch_sources()`, `find_arch_include_sources()`, `find_include_sources()`,
-and `find_other_sources()` were replaced by `-regextype posix-extended
--regex`. However, as noted by Sashiko, the `-regextype` option is a GNU-specific
-extension; therefore, in V2, duplicate function calls were introduced instead.
----
- scripts/tags.sh | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
-
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index 243373683f98..be7c2ffd2d4e 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -12,6 +12,9 @@ if [[ "$KBUILD_VERBOSE" =~ 1 ]]; then
- 	set -x
- fi
- 
-+# sources to searh
-+pattern="( -name *.[chS] -o -name *.rs )"
-+
- # RCS_FIND_IGNORE has escaped ()s -- remove them.
- ignore="$(echo "$RCS_FIND_IGNORE" | sed 's|\\||g' )"
- # tags and cscope files should also ignore MODVERSION *.mod.c files
-@@ -52,7 +55,7 @@ find_arch_sources()
- 	for i in $archincludedir; do
- 		local prune="$prune ( -path $i ) -prune -o"
- 	done
--	find ${tree}arch/$1 $ignore $prune -name "$2" -not -type l -print;
-+	find ${tree}arch/$1 $ignore $prune $pattern -not -type l -print;
- }
- 
- # find sources in arch/$1/include
-@@ -61,14 +64,14 @@ find_arch_include_sources()
- 	local include=$(find ${tree}arch/$1/ -name include -type d -print);
- 	if [ -n "$include" ]; then
- 		archincludedir="$archincludedir $include"
--		find $include $ignore -name "$2" -not -type l -print;
-+		find $include $ignore $pattern -not -type l -print;
- 	fi
- }
- 
- # find sources in include/
- find_include_sources()
- {
--	find ${tree}include $ignore -name config -prune -o -name "$1" \
-+	find ${tree}include $ignore -name config -prune -o $pattern \
- 		-not -type l -print;
- }
- 
-@@ -78,21 +81,21 @@ find_other_sources()
- {
- 	find ${tree}* $ignore \
- 	     \( -path ${tree}include -o -path ${tree}arch -o -name '.tmp_*' \) -prune -o \
--	       -name "$1" -not -type l -print;
-+	       $pattern -not -type l -print;
- }
- 
- all_sources()
- {
--	find_arch_include_sources ${SRCARCH} '*.[chS]'
-+	find_arch_include_sources ${SRCARCH}
- 	if [ -n "$archinclude" ]; then
--		find_arch_include_sources $archinclude '*.[chS]'
-+		find_arch_include_sources $archinclude
- 	fi
--	find_include_sources '*.[chS]'
-+	find_include_sources
- 	for arch in $ALLSOURCE_ARCHS
- 	do
--		find_arch_sources $arch '*.[chS]'
-+		find_arch_sources $arch
- 	done
--	find_other_sources '*.[chS]'
-+	find_other_sources
- }
- 
- all_compiled_sources()
-@@ -100,7 +103,7 @@ all_compiled_sources()
- 	{
- 		echo include/generated/autoconf.h
- 		find $ignore -name "*.cmd" -exec \
--			grep -Poh '(?<=^  )\S+|(?<== )\S+[^\\](?=$)' {} \+ |
-+			grep -Poh '(?<=^  )\S+\.([chS]|rs)(?=\s)|(?<== )\S+\.(?1)(?=$)' {} \+ |
- 		awk '!a[$0]++'
- 	} | xargs realpath -esq $([ -z "$KBUILD_ABS_SRCTREE" ] && echo --relative-to=.) |
- 	sort -u
--- 
-2.54.0
+>=20
+> Alice
 
