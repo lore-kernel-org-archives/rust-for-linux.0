@@ -1,108 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA13A2E0A;
-	Mon,  1 Jun 2026 11:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF89D38399E;
+	Mon,  1 Jun 2026 11:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780312618; cv=none; b=BdFaurjJfaW93Vu7kvmhhqWxFb9Nw/y7VbSJ80HrSN8cd/87ESEk+9pZieV5R2oCxKT91T11Ra/bvaYBfXKtaebMFr19B6IIchwPak+gpWZCqIjn84YY6zAz8c/cNQ/gSjHvd/GYzgNYNc3H6/pQvTo2Anwy6gLcFSJYk2TSWUM=
+	t=1780312666; cv=none; b=QHEvS+rcnhU01/85qnIGj/XkUcRVuugBKzd6Ql65O5DMuGv0Nc5ujoROl8D0BfUyLkKnXeRamIzgdEz/cPP0NYPaAKhpo1i2uJ647bz17d1D1SwdTf2QqZ4N9zUT3Nu6dgx5VuONADk7Bks4WjcqpGpEG7GIu1E5iSwJbWJzjNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780312618; c=relaxed/simple;
-	bh=CRHoP5VdkIAyG5qDOl9IysDCvNb5MiyLvpUd9S+gzQM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=aaBp3CKVdFEOrL3Xcg/AKFAPslPwaCO17xrWWzOKUvAghF+ZnN6kW3pj4hRH0eXcxiYSwEGbNHz+KiwKuTf0pihBLt2FjO0HM847/Mq2JwUAO8pT4KqPU7noMQ6nulthXHtHHNG2CFVccCNLD9bPW/Z2hh6x6tg3w6TTxmqumko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8uki+OG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780312666; c=relaxed/simple;
+	bh=D04O1XsCuuemXbY2YVN0rSer7xhr48HKYGRqzuFlAPQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YRtNcK4iuIbELmcjTw2LfgPebcJ9Ysbmg9EOPYeH0V7B1da5f/3iK+Nu4f3YlKdewNi3inNlJIclTCdJ/1YHt+/vBQT1vVCIaYBxuNafYMtG66sR/otpO+aGyI/5t2zG9fXo25JvWZAPavcSA+H6ohCjbaZFtY3OTAt4vUnenU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=cPbFnAeS; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8uki+OG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86091F00898;
-	Mon,  1 Jun 2026 11:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780312616;
-	bh=CRHoP5VdkIAyG5qDOl9IysDCvNb5MiyLvpUd9S+gzQM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=G8uki+OG4nJXKcRZtOFdjfuVaje7IhPsSBlyQxDVK6rQ2U2XfNst+LmO0FDBhPdXO
-	 S09iAU4U8VXKGMxtoIGANyksSGGohF++3CaROL4ZLv35QNRbjgTN7rdFwI2udY/yGB
-	 MlSzA2LgcqfOXO8ZeuobJNEqbV3AjxWUeDbFUynLg9wmnrD1qtE7iJ+3sCn7vj5gWn
-	 k+/0phmTAOUi1PJrkemVvfv1wuJkLg3+nfOLY1HRONfiINTWcn/IB4to5JOUD+BLda
-	 6KSEpSUYUbufzVG9aM3tzf6WzRvhetNrL3fEil0hi7jD6r5dRl7YswnbbOgM8JSKFJ
-	 X9/wW7jFtnY7g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 04/79] block: rust: fix generation of bindings to
- `BLK_STS_.*`
-In-Reply-To: <CAH5fLgi+K_5So-kLwyZGhaagEx-rRXPmk=zCOTqG3yh=bSe9Ww@mail.gmail.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-4-de9a7af4b469@kernel.org>
- <abfNByL15D4s69Al@google.com>
- <CAH5fLgi+K_5So-kLwyZGhaagEx-rRXPmk=zCOTqG3yh=bSe9Ww@mail.gmail.com>
-Date: Mon, 01 Jun 2026 13:16:35 +0200
-Message-ID: <875x427bos.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="cPbFnAeS"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gTWdw0pXfz9tZ4;
+	Mon,  1 Jun 2026 13:17:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1780312660; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D04O1XsCuuemXbY2YVN0rSer7xhr48HKYGRqzuFlAPQ=;
+	b=cPbFnAeSy9iiIQhi43evWGZcVGFHTXNPXi90ZHOokjf+XuWUCknF67LUcSNjDtcSTfW6J0
+	M3Q7eVk0KtSZVwvmLiX0nE77hu9cIojWChsZv0J/XTVlU99Bi/9nfwZzkjJU42dVIXyMhG
+	ZYdaq1qcoGXROeuiPa1vTaDuI0cgs4L9uEy5Gy9KNcrLJDBMUXa+aCuyBi5IhFo1kcgCfj
+	0I8T3aZMcEXrHP4wdyYzMnr4wbIDJPYLp8MoDAuRCFstfuUs7HQb85JEOBjMt2uepu7+oB
+	JELjiEK73LfBi3MjC4qn4bGNbFTYTBQtF4ABkbVVGotTOUTaoXz6SH6udW6HmA==
+Message-ID: <df2daf200c9a69f497f4285074d2a95425b3dbdd.camel@mailbox.org>
+Subject: Re: [PATCH 3/4] rust: Add dma_fence abstractions
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Boris Brezillon <boris.brezillon@collabora.com>, Alice Ryhl
+	 <aliceryhl@google.com>
+Cc: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich	 <dakr@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+ Frederic Weisbecker	 <frederic@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Uladzislau Rezki	 <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers	
+ <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+ Zqiang <qiang.zhang@linux.dev>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Igor Korotin <igor.korotin@linux.dev>,
+ Lorenzo Stoakes	 <ljs@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ FUJITA Tomonori	 <fujita.tomonori@gmail.com>, Krishna Ketan Rai
+ <prafulrai522@gmail.com>,  Shankari Anand <shankari.ak0208@gmail.com>,
+ manos@pitsidianak.is, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	rcu@vger.kernel.org
+Date: Mon, 01 Jun 2026 13:17:27 +0200
+In-Reply-To: <20260601125933.17ca4dd5@fedora-2.home>
+References: <20260530143541.229628-2-phasta@kernel.org>
+		<20260530143541.229628-5-phasta@kernel.org>	<ah1glmXDM-OAKa5h@google.com>
+	 <20260601125933.17ca4dd5@fedora-2.home>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-META: e4utjoyocfe4p1fqaetun1euskdi8cyn
+X-MBO-RS-ID: b921df505de11e783e6
 
-Alice Ryhl <aliceryhl@google.com> writes:
+On Mon, 2026-06-01 at 12:59 +0200, Boris Brezillon wrote:
+> On Mon, 1 Jun 2026 10:36:06 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> > > +};
+> > > +
+> > > +use bindings::ECANCELED;
+> > > +
+> > > +use kernel::str::CString;
+> > > +use kernel::sync::{
+> > > +=C2=A0=C2=A0=C2=A0 aref::{
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ARef,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AlwaysRefCounted, //
+> > > +=C2=A0=C2=A0=C2=A0 },
+> > > +=C2=A0=C2=A0=C2=A0 Arc,
+> > > +=C2=A0=C2=A0=C2=A0 ArcBorrow, //
+> > > +};
+> > > +
+> > > +/// VTable for dma_fence backend_ops callbacks.
+> > > +//
+> > > +// Mandatory dma_fence backend_ops are implemented implicitly throug=
+h
+> > > +// [`FenceCtx`]. Additional ones shall get implemented on this trait=
+, which then
+> > > +// shall be demanded for the fence context data.
+> > > +pub trait FenceCtxOps {}=C2=A0=20
+> >=20
+> > This empty trait is unused.
+>=20
+> I had initially suggested to add the F type (AKA FenceData) passed
+> around in multiple places type as an associated type
+>=20
+> pub trait FenceCtxOps {
+> =C2=A0=C2=A0 type FenceData: Send + Sync;
+> }
+>=20
+> so we don't have to pass both F and C. The reasoning here is that:
+>=20
+> 1. We expect we'll have to define more methods to the FenceCtxOps trait
+> at some point, so adding it now kinda makes sense.
+>=20
+> 2. In the current design, we've assumed that a Fence can't live/be
+> created outside of a given context, so there's no world where the
+> FenceData wouldn't be known by the FenceCtx implementation, and forcing
+> users to pass F and C around seems needlessly verbose.
 
-> On Mon, Mar 16, 2026 at 10:27=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
->>
->> On Mon, Feb 16, 2026 at 12:34:51AM +0100, Andreas Hindborg wrote:
->> > Bindgen generates constants for CPP integer literals as u32. The
->> > `blk_status_t` type is defined as `u8` but the variants of the type are
->> > defined as integer literals via CPP macros. Thus the defined variants =
-of
->> > the type are not of the same type as the type itself.
->> >
->> > Prevent bindgen from emitting generated bindings for the `BLK_STS_.*`
->> > defines and instead define constants manually in `bindings_helper.h`
->> >
->> > Also remove casts that are no longer necessary.
->> >
->> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>
->> It'd be ideal to change the C header to use an enum, but that may not
->> work as I'm not sure you can specify the integer width you want for an
->> enum.
->>
->> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->
-> Honestly, it might be better just to declare a Rust module somewhere
-> with each constant redeclared:
->
-> const BLK_STS_FOO: blk_status_t =3D bindings::BLK_STS_FOO as blk_status_t;
+I had investigated that, but found that this causes us to write things
+like
 
-As it turns out, `bindgen` only emits a binding for `BLK_STS_OK`. It
-cannot parse the rest, because they are declared as `((__force
-blk_status_t)<N>)`. So in order to avoid special casing the `BLK_STS_OK`
-constant, I think we should just keep the patch as is. I don't think we
-will gain much from re-declaring all these in a local module.
+DriverFence<T> (where T is the FencCtx generic)
 
-I will update the comment on the `blocklist-item`:
+and then in the actual implementation use
 
-+# Bindgen cannot extract values from the `((__force blk_status_t)N)`
-+# CPP-macro form used by most of these and emits the few it can extract
-+# as `u32`. Block them entirely; the `RUST_CONST_HELPER_BLK_STS_*`
-+# definitions in `bindings_helper.h` expose them as `blk_status_t`.
+T::FenceData
+
+which reads very weird IMO. Because now for reasons a fence's own data
+are not referred to in its own implementation, but you derive it from
+the context.
+
+I do prefer it in a way where the DriverFence generic does appear in
+said fence's actual code, on equal rank with the FenceCtx.
+
+I suppose that is actually one use case for which PhantomData does
+exist.
 
 
-Best regards,
-Andreas Hindborg
-
-
+P.
