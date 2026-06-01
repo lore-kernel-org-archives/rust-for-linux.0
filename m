@@ -1,134 +1,108 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A24D3DBD7A
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 17:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780333226; cv=pass; b=JR6FJY9bKZRr0pHbDO7AX9p/LjYz+mHTJckpYs2ewRRntxiHUL8MyyhBPXxtmGinBiGLcg5JhG7g2CXwQXF4DfybfuiO9F5F1QcbW5l7XHksO3ZNC14pZf0GFn45XvGn0wZZGWDWrAE9hOowGtUN+R6jtY3w3JS8lBVOlHyT3CI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780333226; c=relaxed/simple;
-	bh=salmmm95H70q1+9ROpe1qMKo8sa8cqKehQgZ87WFyHg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JSdUMNUCGSHAJxDxnbYCVSrkZYK8bzbbz2FSU5QVVs6tRR5qw7kLq1ElJva5txR29ohpW7a1iLzvxJJjTFy0XGhr2eanyfDWzcXBFm+s62Bi+f2+/m3QzqOq8laE/jTPRtaYbJVeVNEKikZHAlpBoN1FQ/tD6G0vsOv4mQBqKvw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sjs0FMtK; arc=pass smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sjs0FMtK"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-137eb8e3491so39934c88.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 10:00:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780333225; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X06MVXrE2wvtOgF+mt0V4OPVSx3wzcrAV95ELqXdQZreoTLMR2qaWUgD3oLWq0Co9A
-         VNwjvYkSoNS98GtnJs1aeE5X8xcRxLkZpv9ZcKMdP7Ze1Z0+5qpNcgyHsP2/6WIwPlta
-         wH4D3zq1soVNJcR3DjDK4ibGruXTZG0YwPHFznXSz3yTSh4icdcilG1BL8Z/VXPmBJch
-         TayJAhm6bdjTAqUAanCZPjFIZWyqmE0zbIoShtXsD3+nc8gS4A5yZ6fkeidOH+MUl7b5
-         AIfwO3kR6TPrNcNT/WvXhB9sNbce/XLVk8GMMKS+fgcWRNj1iYJHQzXnMDGmow4OJipe
-         33Ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kYUhb6mQkkMhkxxhyG/H6BneYLT2Y7wBn/vJjSqdV84=;
-        fh=qVF7vIH5sxqBnsVqUYn7ajEXkdDRb1eF6NVaHoIZIR0=;
-        b=YTDxFTz/1+06YNB02lGmYroUWIQPHU0nJY6mdNODlAPReJAgGJdzVRvqzToufok3MM
-         wTbj3hW4CZRLPgFf1JavBUnIy/v2ganaNju0MH1mRFADBWCAzupBpBB82BbowR0QzQQl
-         0MR9GgwvBfM0SugXWHd7+sPixUjOJz4+NB+yWR7fQXIT5kpBBL86HtsaAewGDAx+NJXO
-         TmjCTePZMBbaM1RArhKjbK1IAAH+XV9GTPfdvnNskCiI6sPQXaFrHMVhdtuuSTrgJrGo
-         LyvJ1lL4+0DkntsdxH9Z0XyhQQxMRbGBfmwDnuF3Et8UHxgneo/gqpct+0aBhacVAK2S
-         6CtA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780333225; x=1780938025; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kYUhb6mQkkMhkxxhyG/H6BneYLT2Y7wBn/vJjSqdV84=;
-        b=Sjs0FMtKJQROH9P5CNZZ/6n82+bhS42s06nHi/9Hamb7jL6hvJ9g4E7TWkWRZt5Cys
-         jO6lm9reXo+m9gjECDEkdANBts9bJYY5RlZM+6hm4EzC9lJ6DrBYd6rsC+s+WbYFENB+
-         wb4uwgcEvRw05bYVG3/SYMxrxX55q4/eiRXYSck7BRltmDc/BnDKbgQ9WbwPPOYQTuyh
-         xaynkgkNYppS4T7q5a4D10nh2SzIzv2p261LEN5UkIqZ04oEbb5egmb8JevCDKgC1gnQ
-         fTu/4V/oGff9TQc0qT8JvucmyK10O2pR42RmbIUX+iLVWy/hbPypDM5FQ/wgnufzXFQE
-         tRjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780333225; x=1780938025;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kYUhb6mQkkMhkxxhyG/H6BneYLT2Y7wBn/vJjSqdV84=;
-        b=k6MIr0KO06RVJ9MXgvoNadTHKuaS9V1lHDzcMwjV8lisDOoGnRnIF1yMjDe0boIEg7
-         afxVdT7XoLOocIoFsGc/67N4YXIL3b0CyQFq3bIjBYXKt4z5Vwpb/v9iC6Uhi4jYyDqY
-         Zcjl2eJgPh1CXZAQZ1nvtUi/4/KibZWhVpaP6KS0HWMLaxyILEfUydhMVtsTq5IYGIC0
-         nTCqb2DVq3w2PJZ7wg/x6ujvnGNpc+uZcyrI6ue1BiJF/c+21bPg5ntFLVlwRaseKwiA
-         uwkQMT+COwh9fIZ08hFzmVjv3nJUp554iVKxnuv+g4m1qfcUDh9ynB/ijsF6suIs84U+
-         B7fA==
-X-Forwarded-Encrypted: i=1; AFNElJ+2QSdPb1lB7FBw8mCwT1f/PtA4iCizNPZ2fnTBFlsLqsuldXDbY323VHkiCeJF5KN6LMioAd+ObLKG/taF9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0mBk5fj6eH5rbFVcIIQdScgG8klCTW4Y0b5xCp3vjr3Mt48AG
-	baLUibUj/s5jg6Pyuno+8LRO0OS6+/cxfDIa9A5YFNdNknnY9EFWIV3s/vELmVR/xYMdVKmAoP7
-	GbTCKdOcbjlNuwMxjFJcr3yT77VOOhKQ=
-X-Gm-Gg: Acq92OEfVMYwdWmcSlkDpalGr0XsGJ4Lm+RkyR7paQRO9tfDQ+y+RkzcIZi2S1/5DWd
-	HPFrgM3n2lZJxCkopPPqxisITAeN1YmXzs+b+980RA3JA38Se7sQFGAa4XsQT/yb3juXWoY6sT/
-	mdPCQsuv73IUE+CQ8d9pjknew0tOBqwPSl067Ag9ZCkzZdMi6pbnAzZMHbxfkhe2+IWOJLBOWyy
-	O1+PSCtJfVgRxLJsAmbz4cxsFr8Yzsi1trGJF4V83yEDzE8e/kr3i/vhY9lNPs0GbYmvYW0OMFf
-	h8Vh4+VuROcMK3I7G6cw34J+SDnpaLBMD23QIurhk8AP/iuiVNECQD0d0Bcmjxic54psQbg7gy1
-	LifwBlLttYTlN8+HOgWFkxJdAWPd0691C/w==
-X-Received: by 2002:a05:7300:d508:b0:2e6:b55a:76ca with SMTP id
- 5a478bee46e88-304fa30cb81mr2563311eec.0.1780333224237; Mon, 01 Jun 2026
- 10:00:24 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C775E3DCD90;
+	Mon,  1 Jun 2026 17:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.18.0.9
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780334280; cv=none; b=X4oprCErwSww8//M1Y7EgfF15n26B2zUqrboNLSkxsMhoJMMgvXVMz8QB7jFU2hXgf0uCmFqGvI7/JV63NsZnQWnqW2Ohn1eQJpOMElRMyQP8oeAkJdeJBL+7cDSUpdt+j+d05Dmya0x5sk1gnRuSbbl6a39UjuuprHVehPINAM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780334280; c=relaxed/simple;
+	bh=LQUTB94cM9nNiaq73r39iQB5cbmgYYtvftmacB4sm7g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=tmW6qOlVUZRbNDgepx3tAw9CrnilktWfraOu5E8q3qYo7QI8/L154bhTYxaMVgQ9kP3L10ykIpdfLyo+tTPJOpxllJsBxf3JjrKiHonyWKAMtWsje6nsxPTNNNSiuOA9WsN1rzb8VTzrtgVdrkuXLbgV4uhGKBtkoBxx9YbdiC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=nefkom.net; arc=none smtp.client-ip=212.18.0.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nefkom.net
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gTgTB64v4z1r5hp;
+	Mon,  1 Jun 2026 19:10:38 +0200 (CEST)
+Received: from frontend03.mail.m-online.net (unknown [192.168.6.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gTgTB21gvz1r5hh;
+	Mon,  1 Jun 2026 19:10:38 +0200 (CEST)
+Received: from localhost (dynscan3.mnet-online.de [192.168.6.87])
+	by mail.m-online.net (Postfix) with ESMTP id 4gTgTB094jz1qqlT;
+	Mon,  1 Jun 2026 19:10:38 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.6.182])
+ by localhost (dynscan3.mail.m-online.net [192.168.6.87]) (amavis, port 10024)
+ with ESMTP id 4ObbziePTiqW; Mon,  1 Jun 2026 19:10:37 +0200 (CEST)
+X-Auth-Info: 5KwVlaw+khWHn6gx4eE0zoJA0qIH7ypG7QdiocwwDCnNkXIZNIRcKtK9irFsGuR+
+Received: from igel.home (aftr-82-135-83-133.dynamic.mnet-online.de [82.135.83.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Mon,  1 Jun 2026 19:10:37 +0200 (CEST)
+Received: by igel.home (Postfix, from userid 1000)
+	id C844A2C16DB; Mon,  1 Jun 2026 19:10:36 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>,
+  Thomas Gleixner <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,
+  Borislav Petkov <bp@alien8.de>,  Dave Hansen
+ <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
+ <hpa@zytor.com>,  Andrew Morton <akpm@linux-foundation.org>,  "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
+  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  Paul Walmsley
+ <paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>,  Albert
+ Ou <aou@eecs.berkeley.edu>,  Conor Dooley <conor@kernel.org>,  Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd
+ Bergmann <arnd@arndb.de>,  Christian Brauner <brauner@kernel.org>,  Peter
+ Zijlstra <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Eric
+ Biederman <ebiederm@xmission.com>,  Kees Cook <kees@kernel.org>,  Jonathan
+ Corbet <corbet@lwn.net>,  Shuah Khan <shuah@kernel.org>,  Jann Horn
+ <jannh@google.com>,  Conor Dooley <conor+dt@kernel.org>,  Miguel Ojeda
+ <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
+ <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@kernel.org>,
+  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
+  Benno Lossin <lossin@kernel.org>,  linux-kernel@vger.kernel.org,
+  linux-fsdevel@vger.kernel.org,  linux-mm@kvack.org,
+  linux-riscv@lists.infradead.org,  devicetree@vger.kernel.org,
+  linux-arch@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  alistair.francis@wdc.com,
+  richard.henderson@linaro.org,  jim.shu@sifive.com,  andybnac@gmail.com,
+  kito.cheng@sifive.com,  charlie@rivosinc.com,  atishp@rivosinc.com,
+  evan@rivosinc.com,  cleger@rivosinc.com,  alexghiti@rivosinc.com,
+  samitolvanen@google.com,  broonie@kernel.org,
+  rick.p.edgecombe@intel.com,  rust-for-linux@vger.kernel.org,  Zong Li
+ <zong.li@sifive.com>
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
+ | VM_WRITE
+In-Reply-To: <CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
+	(Deepak Gupta's message of "Mon, 1 Jun 2026 09:22:17 -0700")
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+	<87jyslndo4.fsf@igel.home>
+	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+	<875x44o9hj.fsf@igel.home>
+	<CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
+Date: Mon, 01 Jun 2026 19:10:36 +0200
+Message-ID: <871peqgp9v.fsf@igel.home>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260530-nova-exports-v3-0-1202aa339ef7@nvidia.com> <CANiq72kbzmLeFv58mkiKn+LvhCXmH5g7UsnTYTcVmJ6kyc+vLw@mail.gmail.com>
-In-Reply-To: <CANiq72kbzmLeFv58mkiKn+LvhCXmH5g7UsnTYTcVmJ6kyc+vLw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 1 Jun 2026 19:00:10 +0200
-X-Gm-Features: AVHnY4LIwUudBe8SRqAYvkFU4tYqnuQ9elbt4jHzXY4lB4fo93aHUJvNuPfUj8E
-Message-ID: <CANiq72nAOpowra81qOHHCw6EVyWVTymDoL8xPdpjT=xc3eS5bQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] gpu: drm: nova: enable calling into nova-core
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	Joel Fernandes <joelagnelf@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Jun 1, 2026 at 3:50=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> By the way, I think a `.gitignore` entry for the generated header is miss=
-ing.
+On Jun 01 2026, Deepak Gupta wrote:
 
-A few other notes:
+> This was settled when x86 introduced shadow stack. Instead of having
+> new `PROT_`, it was agreed to create a new syscall for mapping shadow
+> stack memory (syscall: `map_shadow_stack`). Scenarios like `clone3` or
+> co-routines required manufacturing a shadow stack, thus necessitating a
+> new mechanism to create shadow stack style memory in demand. Instead
+> of having a new PROT_ flag,  a new syscall was created.
 
-  - The `exports` rule' `awk` filtering is stricter than the one we
-normally use -- it is fine if you don't need `static`s etc., but I
-will likely export `T|R|D|B` when I replace it, not just `T`.
+So what prevents riscv from making use of VM_SHADOW_STACK similar as
+x86, without the user visible effects?
 
-  - Similarly, you don't use `EXPORT_SYMBOL_RUST_GPL` and the "dummy
-symbol" is a function instead of the simple `int`. Is there a reason
-for that? i.e. the ones you want to export are functions, but using
-the global one (even defining `EXPORT_SYMBOL_RUST_GPL` the same way)
-would reduce the divergence (so one less thing to think about later
-when I replace it).
-
-  - I noticed touching `nova-core` and then running a build twice will
-only build `nova-drm.ko` the second time -- you may want to use
-`--extern nova_core -L $(objtree)/...` like we do in `rust/Makefile`
-instead of giving an explicit path to `--extern`.
-
-I hope that helps!
-
-Cheers,
-Miguel
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
