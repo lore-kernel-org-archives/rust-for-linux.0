@@ -1,136 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D040A3921C8;
-	Mon,  1 Jun 2026 10:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B2A395AE4;
+	Mon,  1 Jun 2026 10:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780308830; cv=none; b=o0HFocX1lzG3AZtyDqSl/PIsQo97SiBvhThdIE3ndMgChXyhg2zivrfa7o7GfF5UP7JzVMTmq0uzSMcG20qefkGVYY7HZNQAFN7rR+KWuCv/tbXt2S/WDAhl5utcWLGk0ZCsv/9PIZTQAQfDoIeYima0ARKLq6k9skLYYr/si+M=
+	t=1780309042; cv=none; b=CYlAHxqfRFlGy8YEMME3UpjEWwhbXogqu1mNml8l7q2Vfw38GUo7RlcG4Y1KGoA3ZDFcd867GRQW1ONvBO1F8YMxOLBNmDX0Wd48PrrQbSQu7OGQQ09P5mUtgOuVmwTuEMMR5Ius5OTHsNADzfJGko0rvGXV2eAeAqYTcRr7Ljc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780308830; c=relaxed/simple;
-	bh=3Ts6lB+NKnhLtXYHmT257yvnWMD6Ph1yqe+TlwPK+oM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=frsNnGB7SecOVnuRe8E6saSjU1EQNZkmhrk2ttIzOZ3clsZL0kxaKtEoVg4HpV3LrOAPegR6Z7kbtUNV/zfM1gjUkPWitesURuJ6f87gpus/nlkq1JiIrBhdq+A6JrNzh9Po4zja4QR9jRZBN1Uu3+yDTog6JMcyehqM93BFHOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pd8ZT5BK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780309042; c=relaxed/simple;
+	bh=oN4tgEjkssR24leQ4AFRUD6ac9mIxpWf9/nvRKN/tZc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tolw3Cc4llgR2SLFtMsCsMRdxebLKZMprOj7oTCOZsGni69Sp9M3xFejFVlzpgi/dgwov4Amb1lmJmOZXoqa9LoEEoMnKLKdZNgOZjE6icBopnskMuExtgocPRPOfrQbqoZ2sAARVUhtCxDZNkmy8NkltxZLLfbfHzHyGqAE+2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jyi9PvJ2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pd8ZT5BK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425C21F00893;
-	Mon,  1 Jun 2026 10:13:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jyi9PvJ2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC771F00898;
+	Mon,  1 Jun 2026 10:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780308827;
-	bh=3Ts6lB+NKnhLtXYHmT257yvnWMD6Ph1yqe+TlwPK+oM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=Pd8ZT5BK2RvzgTUlsXOQVBEiMwZGkMyUoMd8Lx5ODzTdFIWZswBajI/tODyqROqWT
-	 to5Yfm2ruJGsFd7Aaqg5YI78s6jRh8vdyPShR3BzPDi0KAtBFul22aTc8Gw2fRrPyU
-	 415n2lb7D2q/yed7aDWBBAXuFXxW8frBXPM1v6tiAg9tphhbwFI8zO4a0Z8dtR2zDI
-	 vsoh7J7e32jR6yQKssPu7IRwWXZNZ3yCtIwpB4nto02HbgaYuXtIWLC5SNmvl/u1eu
-	 Nw//bc5n+3e3w5IED5m33qGD9XEW0gruuh669lKpNd15WbUaIAG0a70JOKA5dT7gd8
-	 VGaNX/Kx7TrDg==
+	s=k20260515; t=1780309038;
+	bh=9NOfXEJPCZhSlh+7O/rr3+37t4x5+m2fhwTPiZ2YwLY=;
+	h=From:Date:Subject:To:Cc;
+	b=Jyi9PvJ2wvCGGflQxF+0BEShUE3lvFDtj5BCOy5gnzIaY1cS+98uB0STdd4yhKZi0
+	 7OoIT+Rpzzj3E3lmL7TMKAEqZkFAnHpvt8pmozEAN37SvXoCKeSkkwAiTjhqIjtUjD
+	 l5/k7X9gW1VmnlxweiUa4QtOLfzZfvURYMOKnLXnV5b5ZEHS+cRGjiV45pyBJWfODT
+	 eodVuZ1daEPQRU+HBFRYcQ0po1DlF7My9gkrkHOpPL8njmtS6AS1FbXcDPImkb3MD6
+	 ujq1JTnOA8QfBUi+KTBF6Z87ggYTbPocC3gNsc3AuSyU0MQpyyLxoOEXk//jeog82H
+	 EKd91Vj9FwX6A==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Mon, 01 Jun 2026 12:17:05 +0200
+Subject: [PATCH v2] rust: module_param: return value by copy from `value`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Jun 2026 12:13:38 +0200
-Message-Id: <DIXMT0KKU8D9.2XLDHIGBCM1PZ@kernel.org>
-Subject: Re: [PATCH 3/4] rust: Add dma_fence abstractions
-Cc: <phasta@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Sumit
- Semwal" <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Paul E. McKenney" <paulmck@kernel.org>,
- "Frederic Weisbecker" <frederic@kernel.org>, "Neeraj Upadhyay"
- <neeraj.upadhyay@kernel.org>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Josh Triplett" <josh@joshtriplett.org>, "Uladzislau Rezki"
- <urezki@gmail.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Mathieu
- Desnoyers" <mathieu.desnoyers@efficios.com>, "Lai Jiangshan"
- <jiangshanlai@gmail.com>, "Zqiang" <qiang.zhang@linux.dev>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Igor Korotin" <igor.korotin@linux.dev>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- "Krishna Ketan Rai" <prafulrai522@gmail.com>, "Shankari Anand"
- <shankari.ak0208@gmail.com>, <manos@pitsidianak.is>, "Boris Brezillon"
- <boris.brezillon@collabora.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
- <rcu@vger.kernel.org>
-To: "Philipp Stanner" <phasta@mailbox.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260530143541.229628-2-phasta@kernel.org>
- <20260530143541.229628-5-phasta@kernel.org>
- <DIW3ZK5NLKU3.1QYMQB0ISHFBG@kernel.org>
- <08b87b07279e7774c76c0267b1d6c337f705acda.camel@mailbox.org>
-In-Reply-To: <08b87b07279e7774c76c0267b1d6c337f705acda.camel@mailbox.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260601-modules-value-ref-v2-1-12ebbf0510c9@kernel.org>
+X-B4-Tracking: v=1; b=H4sIACBcHWoC/32NQQ7CIBBFr9LM2jFAbBtceQ/TBZWhJSKYwRJN0
+ 7uLPYDL95L//gqZ2FOGc7MCU/HZp1hBHRq4zSZOhN5WBiVUJ1ql8ZHsEihjMWEhZHJIujW9GfX
+ J2RHq7lmlf+/N61B59vmV+LNfFPmz/2pFokQjrOtJU+eUvdyJI4Vj4gmGbdu+0lYoDrMAAAA=
+X-Change-ID: 20260529-modules-value-ref-e95a7ab94fdb
+To: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+ Aaron Tomlin <atomlin@atomlin.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2720; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=oN4tgEjkssR24leQ4AFRUD6ac9mIxpWf9/nvRKN/tZc=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqHVwh30q/43ydjndgORBSEwNHlxaTO04cndE/+
+ WdRElx8jImJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCah1cIQAKCRD6UCkIqsW9
+ 0BoID/9DK/+qdBSLJO6QqtHL+SnWmp0w7Vlo6uR8WpHf2dA6jNy5GmGzlenFcY1dWpgV8XPM2tM
+ i3YZsL9pXu+loqHsBv53LyKeRCvp6qvnqAVjq8MybEOQUOoASGeXZn3qRyMj9dHe8K/37aSfjD2
+ gEU0BaYZsYp44DzXbEGoERyfJ1YKFo0vb2OC73OKQ1Ib8ziM8DhND1pv/P0YD6znurGbrRNtmfi
+ TsjEz0uT4Hat8Rwrn/wEH2McR4R664jbAGThT6av81bMU2iY5qb/ZyG6OO7VamkVbi57Jcz39gO
+ 3aSthtv5wj/4uemY8oSCQkcLCZKZqvS/sKrAdPGHBif4uOLpbesvDlu+pv3w2yUDRzdNtqM0xNf
+ kLvwbBadxPEyBAX3br9oSNWIYdAhHr2JFfEWLji49q465aF5ra0bEpmW6Hag6uUK5w6454IjS+/
+ fGOwI6nIr5QgtDcoujXyogg2SjoqgHieDvJdvBoIj2Zeoqv1X5hgQ+N3t8T4skCVN6mixeetZzN
+ 6O1WglNcYhTjsReL46slcKlLrGgiGPFlvNvcPF3RQV7SgTGrc1+e/lBwS3+nk5euQhCkykapQBa
+ YM48+D5RWOhLCpRX8pC9Us9UN9rYc1qkp7hwFVmlEU53jqTmJBHQooN7FNeoyzZgy44Iec9jHNx
+ D0wrAJalu12Gs1Q==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Mon Jun 1, 2026 at 10:46 AM CEST, Philipp Stanner wrote:
-> On Sat, 2026-05-30 at 17:16 +0200, Danilo Krummrich wrote:
->> (Not a full review, but a few drive-by comments.)
->>=20
->> On Sat May 30, 2026 at 4:35 PM CEST, Philipp Stanner wrote:
->> > +#[allow(unused_unsafe)]
->>=20
->> What is this needed for?
->
-> You know that :-P
+For `Copy` parameter types it is more ergonomic to retrieve the
+parameter value by copy than through a shared reference. Change
+`ModuleParamAccess::value` to return `T` by copy when `T: Copy`,
+and rename the previous reference-returning accessor to
+`value_ref`. Update the in-tree caller in `rust_minimal`.
 
-I don't, it's a serious question.
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+This change was suggested during review of the rust null block series [1].
 
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: Once a `DriverF=
-ence` is initialized, the inner `fence` is
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // valid and initialized. =
-It is valid until the refcount drops
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // to 0, which can earlies=
-t happen once the `DriverFence` has been dropped.
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bi=
-ndings::dma_fence_lock_irqsave(fence, flag_ptr);
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if=
- !bindings::dma_fence_is_signaled_locked(fence) {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 if let Err(err) =3D res {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bindings::dma_fence_set_error=
-(fence, err.to_errno());
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 }
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 bindings::dma_fence_signal_locked(fence);
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bi=
-ndings::dma_fence_unlock_irqrestore(fence, flag_ptr);
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>=20
->> Please use a single unsafe block per unsafe function call, here and in a=
- few
->> other places.
->
-> Is that an official rule? If so, the linters should inform about it.
->
-> At first glance, I don't see any advantage to it and the disadvantage
-> of greatly reducing readability.
+[1] https://lore.kernel.org/r/abfe2LbhLzXiGCkA@google.com
+---
+Changes in v2:
+- Move `value` into existing impl block (Gary).
+- Add inline attributes (Sashiko).
+- Link to v1: https://msgid.link/20260529-modules-value-ref-v1-1-a0df7e9e6f2d@kernel.org
+---
+ rust/kernel/module_param.rs  | 18 +++++++++++++++++-
+ samples/rust/rust_minimal.rs |  2 +-
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-The advantage is that it separates the safety justifications per unsafe cal=
-l,
-which increases the chances of catching a bug, makes it easier for the read=
-er to
-match requirements against justifications and potentially allows tooling to
-perform checks of the justification against the requirement.
+diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
+index 6a8a7a875643..a33302d1b8a3 100644
+--- a/rust/kernel/module_param.rs
++++ b/rust/kernel/module_param.rs
+@@ -131,10 +131,26 @@ pub const fn new(default: T) -> Self {
+         }
+     }
+ 
++    /// Get a copy of the parameter value.
++    ///
++    /// Returns the value supplied at module load time, or the default value
++    /// if the parameter has not been set.
++    #[inline]
++    pub fn value(&self) -> T
++    where
++        T: Copy,
++    {
++        self.value.copy().unwrap_or(self.default)
++    }
++
+     /// Get a shared reference to the parameter value.
++    ///
++    /// Returns a reference to the value supplied at module load time, or a
++    /// reference to the default value if the parameter has not been set.
+     // Note: When sysfs access to parameters are enabled, we have to pass in a
+     // held lock guard here.
+-    pub fn value(&self) -> &T {
++    #[inline]
++    pub fn value_ref(&self) -> &T {
+         self.value.as_ref().unwrap_or(&self.default)
+     }
+ 
+diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+index 8eb9583571d7..60d03df6cd80 100644
+--- a/samples/rust/rust_minimal.rs
++++ b/samples/rust/rust_minimal.rs
+@@ -28,7 +28,7 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
+         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
+         pr_info!(
+             "test_parameter: {}\n",
+-            *module_parameters::test_parameter.value()
++            module_parameters::test_parameter.value()
+         );
+ 
+         let mut numbers = KVec::new();
 
-For the specific case above, there's no documented requirements in the sens=
-e of
-Rust safety requirements of course, as they are all FFI calls, but
-dma_fence_signal_locked() for instance has the obvious requirement that it =
-must
-only be called with the fence lock held and dma_fence_set_error() must only=
- be
-called when the fence is actually signaled.
+---
+base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+change-id: 20260529-modules-value-ref-e95a7ab94fdb
 
-Besides that, since this pattern seems to occur at least twice, you could a=
-lso
-consider adding a lock guard.
+Best regards,
+-- 
+Andreas Hindborg <a.hindborg@kernel.org>
+
+
