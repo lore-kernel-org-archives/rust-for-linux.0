@@ -1,109 +1,220 @@
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC388386C25;
-	Mon,  1 Jun 2026 20:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.18.0.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5E280309
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 21:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780347546; cv=none; b=J/eaMYw1+XYQqGKM+IvLqRQ/oy9FRz69nN4ah/+T/WwgG8xpx1oXOtmiF2Kcq7V6LTVsFGQ9ggCh2hgKp3gGo8TJg2/sGPJseJy7TxPxWPb3mkMcEkY5KqpGLQwZ12vzqHxgzNKy818lw0M6fC/imvgfUiv4555SabcOoC67sr0=
+	t=1780348761; cv=none; b=bEavMdQzm0/4P4QEP0sOFIDu19nusDTt346gR/5isjoNaaI38Tndn6kCPBCXWX61lmyQvPSHAtt1Gbx++EEv5gqW10qcWdcxhCQtMW4YPcouWA8m3G/gUA7E5jDGLbKXACk3bmKwx+DOb2zvQyNx6sb8wPNZze6Oak7kE6GPeMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780347546; c=relaxed/simple;
-	bh=JSuMB78WGrnAVsJ7teKH/zI0mt19h3G7ax62Fj2NvyE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=plFGTNz0M+lvKSLMn6n2ix1XPXVL95qy2avLq0cwLkBD8yW5ySkb7Q2XbwPOF6cSSzSBQONY1JaJ59ulOvoNY31IDPzdzLFbSZE563gsgHEcI5TDrmjrD8Fqzj4vzX0Uv1IOYRQFtgBJr9ZnmfsVb9KHJGipKI36RFqpsKLL09k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=nefkom.net; arc=none smtp.client-ip=212.18.0.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nefkom.net
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
-	by mail-out.m-online.net (Postfix) with ESMTP id 4gTmXZ1PYGz1sGWy;
-	Mon,  1 Jun 2026 22:58:54 +0200 (CEST)
-Received: from frontend03.mail.m-online.net (unknown [192.168.6.182])
-	by mail-out.m-online.net (Postfix) with ESMTP id 4gTmXY53gdz1sG8c;
-	Mon,  1 Jun 2026 22:58:53 +0200 (CEST)
-Received: from localhost (dynscan3.mnet-online.de [192.168.6.87])
-	by mail.m-online.net (Postfix) with ESMTP id 4gTmXY3vBrz1qqlS;
-	Mon,  1 Jun 2026 22:58:53 +0200 (CEST)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.6.182])
- by localhost (dynscan3.mail.m-online.net [192.168.6.87]) (amavis, port 10024)
- with ESMTP id e1EAzhraFHWf; Mon,  1 Jun 2026 22:58:52 +0200 (CEST)
-X-Auth-Info: FqnxIDPc+CejjKHAe9u56JUkf8btEszKYhyFrkdtC5LkcdNUzyTOWALY7FYpYrLU
-Received: from igel.home (aftr-82-135-83-133.dynamic.mnet-online.de [82.135.83.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.mnet-online.de (Postfix) with ESMTPSA;
-	Mon,  1 Jun 2026 22:58:52 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-	id 6F0742C16DB; Mon,  1 Jun 2026 22:58:52 +0200 (CEST)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>,
-  Thomas Gleixner <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,
-  Borislav Petkov <bp@alien8.de>,  Dave Hansen
- <dave.hansen@linux.intel.com>,  x86@kernel.org,  "H. Peter Anvin"
- <hpa@zytor.com>,  Andrew Morton <akpm@linux-foundation.org>,  "Liam R.
- Howlett" <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
-  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,  Paul Walmsley
- <paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>,  Albert
- Ou <aou@eecs.berkeley.edu>,  Conor Dooley <conor@kernel.org>,  Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd
- Bergmann <arnd@arndb.de>,  Christian Brauner <brauner@kernel.org>,  Peter
- Zijlstra <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Eric
- Biederman <ebiederm@xmission.com>,  Kees Cook <kees@kernel.org>,  Jonathan
- Corbet <corbet@lwn.net>,  Shuah Khan <shuah@kernel.org>,  Jann Horn
- <jannh@google.com>,  Conor Dooley <conor+dt@kernel.org>,  Miguel Ojeda
- <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
- <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  Andreas Hindborg <a.hindborg@kernel.org>,
-  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross <tmgross@umich.edu>,
-  Benno Lossin <lossin@kernel.org>,  linux-kernel@vger.kernel.org,
-  linux-fsdevel@vger.kernel.org,  linux-mm@kvack.org,
-  linux-riscv@lists.infradead.org,  devicetree@vger.kernel.org,
-  linux-arch@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  alistair.francis@wdc.com,
-  richard.henderson@linaro.org,  jim.shu@sifive.com,  andybnac@gmail.com,
-  kito.cheng@sifive.com,  charlie@rivosinc.com,  atishp@rivosinc.com,
-  evan@rivosinc.com,  cleger@rivosinc.com,  alexghiti@rivosinc.com,
-  samitolvanen@google.com,  broonie@kernel.org,
-  rick.p.edgecombe@intel.com,  rust-for-linux@vger.kernel.org,  Zong Li
- <zong.li@sifive.com>
-Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
- | VM_WRITE
-In-Reply-To: <CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
-	(Deepak Gupta's message of "Mon, 1 Jun 2026 10:57:41 -0700")
-References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
-	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
-	<87jyslndo4.fsf@igel.home>
-	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
-	<875x44o9hj.fsf@igel.home>
-	<CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
-	<871peqgp9v.fsf@igel.home>
-	<CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
-Date: Mon, 01 Jun 2026 22:58:52 +0200
-Message-ID: <87wlwif04z.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1780348761; c=relaxed/simple;
+	bh=IfPIiZW0gCIHgOF0/+IIrxBC8ZG3r9xHJsxK0+0F0kg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HQwkhrNFcWL7dERoQWNGM31ROIqpkTWfbhrZGZT6dmi4EDl1cn1p11f/x48D+3GlEjSY0SbbB3sZ5lVuZzc0o1Y7UJsJXgCOI/pRln3BAHl7cDKfmqRjlPHGE0achdxGS/YKsOStAi1JYhGc0ASK4RBsNaANoRKEtSyX9eh4MBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o3ipgcmU; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o3ipgcmU"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-45eeea039ebso1986552f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 14:19:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780348758; x=1780953558; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JuVHAspRZOzT54Q3CeGYfhWxBcncLtAKm4G7e3ZGvNU=;
+        b=o3ipgcmUluH9ud6bWumsrmuDdH9Gtfcr7BDcN1KYANa/V7Wyrm0ZVKSPv/9tWDyiPf
+         4wt8MHAgTn2cIT3CPJ+zDvhzP6OeLiSMnGVEcUMK2Urcxi0Mzdj439ocdQqDtvOFBb3D
+         YSdRJfc0PKf4SLJhXWipVSQr5uSt3RgB48vKJfH2WzinHUmvphwqPqEioWQQduieJ/x4
+         B6JmYc9s84jSJAuZzTqA+lqeEth4SUky09gKVQRykYU2MsCu2pEAT0FxVj9iNhvr9Vr+
+         Z75yW6cD0C5m+fDElR2DU+dpqjFAcyud7fGJ3g0NAwB1jw4nv4i4RSV2hQdqxh2HlAOG
+         5hNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780348758; x=1780953558;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JuVHAspRZOzT54Q3CeGYfhWxBcncLtAKm4G7e3ZGvNU=;
+        b=ngWFROVtUvJvo3vpjgoOLk37DcBTJjihp3YuUJY/k+6x0XW1J+QFMtoWuACV9REKcR
+         8yP09UjSjXSxveEJXnGH6V7+VXFe9qwp4VqCcfaK6+B/cllBKlUm/ziJnrwu26Ki8x/U
+         l11/99SrY7MqDwoplqGkfz73rTNJtGWRYe6QXIi7csn99DhZKQLOlLOgphamAdDoaCJW
+         AMYnEmIbHpZzk/tVBWu+2t2K2CNZhGzvyK4JMvl8xohadhen6XZNloaNgK556Izw8atm
+         fGtfECcv0KPbgEWZHgIh4Y4J+jPqyd5nA9vCUnzGXl8Zsgnls2Ts7QlXA9DgyuKApyPY
+         tUjQ==
+X-Gm-Message-State: AOJu0Yxi/nRimEL8zb1VWUDqXZazA+QPegwuStVsWvUghnZQtX3GQBr2
+	23MRAUm0xQPd7VE4eRoCZXrZWAUtcd/2Wa0TxKik8KgTmzHyOZpvGB/U
+X-Gm-Gg: Acq92OGcA+PjE1oQUm2LKWe3XGHVxOg9eBtKlPYTZYRKyVhMwsZxC22a3v6I9nJwpMl
+	bsIHe41akkDiVLofJS4gVqHDFKwHO2vs1ONLUC0sHGw1CezkhMnoJs26vGTlY25Eb1jUYlSK5Xg
+	8f5WY+TI/rzpWOxAKeANTzrBK6Gef493BVAuT9zcwHXqfp59Yxn9owGABKa1wvzoCDTfVYghozb
+	VC/tnHMf1+iF9+I0uJlcL07RNOTgTLLQ2Gonicfo3woEUt7m9CkM9Yqm84zLbEHQE9lcHzwXnNr
+	20Got2ln+9QtQQMBXoIF4uQlFRJFWkWsSwKcJYxl6aJFEKLxmjGRZhauH+i93Vv5SX6UXKUKYIh
+	YrFGoo1i/7TOsYjJKv+Xdl5dYt7IjtytvGM0vdQjhTkNPbXsyC83SRobpQC59hJC8OC92VrdDOF
+	ghYBsNL7yG3lTo++BsQ36+UCfw3AyoFvWYXDoHmWd9yn+6YsIT3em6XaU=
+X-Received: by 2002:a05:6000:4b02:b0:45f:1bd:a053 with SMTP id ffacd0b85a97d-45f01bda1famr19783269f8f.1.1780348757529;
+        Mon, 01 Jun 2026 14:19:17 -0700 (PDT)
+Received: from localhost (a89-182-201-205.net-htp.de. [89.182.201.205])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-45ef3587072sm28494538f8f.34.2026.06.01.14.19.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jun 2026 14:19:17 -0700 (PDT)
+From: Sergei Litvin <litvindev@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com,
+	nathan@kernel.org,
+	nsc@kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	ojeda@kernel.org,
+	Sergei Litvin <litvindev@gmail.com>
+Subject: [PATCH v3] scripts/tags.sh: fix "make COMPILED_SOURCE=1 cscope" command ends up with *.rlib, *.rmeta, *.so filenames in cscope.files
+Date: Mon,  1 Jun 2026 23:18:50 +0200
+Message-ID: <20260601211850.3378-1-litvindev@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <CANiq72mBkBxGk4CbTrjeNYZ5ZUsD=wVfLVyP2Bcm_v9BExQaGQ@mail.gmail.com>
+References: <CANiq72mBkBxGk4CbTrjeNYZ5ZUsD=wVfLVyP2Bcm_v9BExQaGQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Jun 01 2026, Deepak Gupta wrote:
+PROBLEM
 
-> riscv uses `VM_SHADOW_STACK`. It's just very simple to use `protection_map`
-> with just `VM_WRITE`. On RISC-V, `-W-` is a shadow stack mapping. It's not same
-> on x86 or arm64. So `protection_map[VM_WRITE]` simply picks shadow stack
-> encoding. We just ensure that PROT_WRITE is converted to
-> "VM_READ | VM_WRITE" at vma level.
+(1) When executing the command `make COMPILED_SOURCE=1 cscope`, the
+`cscope.files` file generated by it includes filenames with the
+extensions *.rlib, *.rmeta, and *.so (taken from *.cmd files, which, in turn,
+are generated from *.d dependency files by the `fixdep` utility).
 
-That does not explain _why_ you need to make that user visible change,
-when others can get away without it.
+(2) When executing the command `make cscope`, the `cscope.files` file generated
+by it includes only filenames with the extensions *.h, *.c, *.S and not includes
+filenames with *.rs extensions.
 
+SOLUTION
+
+(1) Modify the regular expression in the `all_compiled_sources()` function so
+that only files with the extensions *.h, *.c, *.S, and *.rs are accepted.
+
+This causes `make COMPILED_SOURCE=1 cscope` command to generate the
+`cscope.files` file that contains only files with the extensions *.h, *.c, *.S,
+and *.rs.
+
+(2) Modify the functions `find_arch_sources()`, `find_arch_include_sources()`,
+`find_include_sources()`, and `find_other_sources()` so that they no longer
+accept the filename pattern as the last argument, but instead retrieve it from
+the new variable `pattern` (analogous to the variables `ignore`, `prune`, and
+`tree`) which includes *.rs along with *.h, *.c, *.S.
+
+This causes `make cscope` command to generate a `cscope.files` file that
+contains *.rs files along with *.h, *.c, *.S
+
+Signed-off-by: Sergei Litvin <litvindev@gmail.com>
+
+---
+
+Changes since V2:
+https://lore.kernel.org/lkml/20260530085821.19689-1-litvindev@gmail.com/
+
+- The functions find_arch_sources()`, `find_arch_include_sources()`,
+`find_include_sources()`, and `find_other_sources()` have been modified rather
+than having their calls duplicated to avoid redundant directory
+traversals (suggested by Sashiko).
+
+– The regular expression in the `all_compiled_sources()` function was improved
+by adding a lookahead anchor (?=\s) to the first branch (also suggested by Sashiko).
+
+Changes between the V1 and V2:
+https://lore.kernel.org/lkml/20260530085821.19689-1-litvindev@gmail.com/
+https://lore.kernel.org/lkml/20260530070631.14955-1-litvindev@gmail.com/
+
+- In Version V1, the `-name` parameters to the `find` calls in the functions
+`find_arch_sources()`, `find_arch_include_sources()`, `find_include_sources()`,
+and `find_other_sources()` were replaced by `-regextype posix-extended
+-regex`. However, as noted by Sashiko, the `-regextype` option is a GNU-specific
+extension; therefore, in V2, duplicate function calls were introduced instead.
+---
+ scripts/tags.sh | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
+
+diff --git a/scripts/tags.sh b/scripts/tags.sh
+index 243373683f98..be7c2ffd2d4e 100755
+--- a/scripts/tags.sh
++++ b/scripts/tags.sh
+@@ -12,6 +12,9 @@ if [[ "$KBUILD_VERBOSE" =~ 1 ]]; then
+ 	set -x
+ fi
+ 
++# sources to searh
++pattern="( -name *.[chS] -o -name *.rs )"
++
+ # RCS_FIND_IGNORE has escaped ()s -- remove them.
+ ignore="$(echo "$RCS_FIND_IGNORE" | sed 's|\\||g' )"
+ # tags and cscope files should also ignore MODVERSION *.mod.c files
+@@ -52,7 +55,7 @@ find_arch_sources()
+ 	for i in $archincludedir; do
+ 		local prune="$prune ( -path $i ) -prune -o"
+ 	done
+-	find ${tree}arch/$1 $ignore $prune -name "$2" -not -type l -print;
++	find ${tree}arch/$1 $ignore $prune $pattern -not -type l -print;
+ }
+ 
+ # find sources in arch/$1/include
+@@ -61,14 +64,14 @@ find_arch_include_sources()
+ 	local include=$(find ${tree}arch/$1/ -name include -type d -print);
+ 	if [ -n "$include" ]; then
+ 		archincludedir="$archincludedir $include"
+-		find $include $ignore -name "$2" -not -type l -print;
++		find $include $ignore $pattern -not -type l -print;
+ 	fi
+ }
+ 
+ # find sources in include/
+ find_include_sources()
+ {
+-	find ${tree}include $ignore -name config -prune -o -name "$1" \
++	find ${tree}include $ignore -name config -prune -o $pattern \
+ 		-not -type l -print;
+ }
+ 
+@@ -78,21 +81,21 @@ find_other_sources()
+ {
+ 	find ${tree}* $ignore \
+ 	     \( -path ${tree}include -o -path ${tree}arch -o -name '.tmp_*' \) -prune -o \
+-	       -name "$1" -not -type l -print;
++	       $pattern -not -type l -print;
+ }
+ 
+ all_sources()
+ {
+-	find_arch_include_sources ${SRCARCH} '*.[chS]'
++	find_arch_include_sources ${SRCARCH}
+ 	if [ -n "$archinclude" ]; then
+-		find_arch_include_sources $archinclude '*.[chS]'
++		find_arch_include_sources $archinclude
+ 	fi
+-	find_include_sources '*.[chS]'
++	find_include_sources
+ 	for arch in $ALLSOURCE_ARCHS
+ 	do
+-		find_arch_sources $arch '*.[chS]'
++		find_arch_sources $arch
+ 	done
+-	find_other_sources '*.[chS]'
++	find_other_sources
+ }
+ 
+ all_compiled_sources()
+@@ -100,7 +103,7 @@ all_compiled_sources()
+ 	{
+ 		echo include/generated/autoconf.h
+ 		find $ignore -name "*.cmd" -exec \
+-			grep -Poh '(?<=^  )\S+|(?<== )\S+[^\\](?=$)' {} \+ |
++			grep -Poh '(?<=^  )\S+\.([chS]|rs)(?=\s)|(?<== )\S+\.(?1)(?=$)' {} \+ |
+ 		awk '!a[$0]++'
+ 	} | xargs realpath -esq $([ -z "$KBUILD_ABS_SRCTREE" ] && echo --relative-to=.) |
+ 	sort -u
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.54.0
+
