@@ -1,167 +1,242 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011050.outbound.protection.outlook.com [52.101.52.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C772DA75C
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 08:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD6733DEE9;
+	Mon,  1 Jun 2026 08:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780302656; cv=pass; b=lRuPUfH0Gh1i4jMEZXmhPA5k8GzWAqWlkdFPpGsdtF5u3wiiWpAkl/2MmB+WB1axOtbXL4dLSdscDhg0CrOtZV8Yy/wkb6HWrr0ugI/A0m5Wih7GNuyBWmw4/I5ZcHSpYeCjQhA4op2Uk3VLaH+lC206rmHqzlCgrz2LHXhJsQk=
+	t=1780302780; cv=fail; b=EUkRY1PvSeh/Fb6QWU9aKKL20EWGU4xHOJXoyNSvrkz/zOBR04OyAMXCtuypg00q0tgRt12Jw2fBOCpad8Pq7bHmJ/NtCqqgy33MlA3/8MZVvIVjhhGn7VkHgOmBxL2UQSD2U/as4BU2wfLwUF8Giu9OK56XcyX84b0DK0LGGMQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780302656; c=relaxed/simple;
-	bh=dqkqR4BnOVQZ1yByVkkIKp5wLe1EcgY0DOuGCt7r8gU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KrtYw1QsRd8FeCOBLYE5xKmqPN94IbP7/ha6zjCJBtuyJ0oa5q4H4IwIromL1CzLvchHMPKpsllUrpvS2yn9b/h0PnmCJRkmu/lVJX7nku7RM6VQGbt2ECL154cyNjesPzvCeMR/eYj0HJiRebXSLTwh52vORyKnvY1REsxdC/Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XbJ1IA3o; arc=pass smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780302780; c=relaxed/simple;
+	bh=ZkZtKPy7O13AbdWVdg2b+JnEJAcXbeutjHMZWW8RaJc=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=MVnLm32srmE1rIUKpqThvKKXUr8zfB99XaBQZtFxbaeEHS4Oso+ta7HShDLWL7XkaYSNBZPvfMM3KhUNyf9qwlTae0b4/X+F3V+oHu+5Vgqu8NrUuOtG0ArulqMPdDiC+wltFrMOmGE30JcVofrG0JrqsdJ5h5+btuy4uMsu9kw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BX0tpHi8; arc=fail smtp.client-ip=52.101.52.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XbJ1IA3o"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5aa63daf2a5so1393810e87.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 01:30:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780302653; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EP2Q3ZWyJdOLBb7a/sAns/FdMmgQBCxynC93pnegoRp3qvDOP6NC/2h/KDmPMwpygl
-         IOWn2mrkoHCXl9l0/sFsJLO9Q1kkidsFdTWR16xjS1lJlenm0wQ8LznZ6iUrilVZy7v8
-         mgtushF0ktnRmdtY+V6NUyTGrOy1TJ81dHk4sY0Lu+0b//t6IIets0fNqV2NTEkUs+Dd
-         m12jm/ICs47K+Sh3Znlql5Dg/2vNHILewfKETeU2NpOGucRM8dMbeSOuwA3LbhuNYmCv
-         1FqXgoWnMYUHeJtDJGzO/i+s2u8W1C6qmbJxFBVYMDKBg/QiJLlmf1JYU0JDLJ8BAC3u
-         vUIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=YypMuV9q9YXVfPhMTCupjt06XXyEV6MtVbgxq/LZL/4=;
-        fh=171vD5Eho6M+kbiZV8qxTPom047yx/7KjtU0AsS5TbI=;
-        b=Kz/jYe5VffWriePEvdjACNArD+SoA5gYXVlmn/BZQJzENRQGQidcixVwnXq2G2buNy
-         wxvjHelm1xn4hT6BZCAHvleRnctk1+wVMUP0FetglDx8+stFeIsFqfqClAsn/7HyI2D9
-         wP+/feM/1nvZHzU8nyhQe+SWOU0x4SeseUXn0xZmjZNbnXET7tdyeppv89+Wcxwlm+gW
-         vRDii/cXZrS6ST0/A9DkcVtM2K56exldnJqFF9o8OUGvfq243vvqAPJ/4MchKw7BL3sW
-         fTf4sy0cUzYvvX11Emr+2I8zAwhBg491C6+N6p4tTXbgK3Em99QqSP05w1zb7TYxMmPn
-         EBsA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780302653; x=1780907453; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YypMuV9q9YXVfPhMTCupjt06XXyEV6MtVbgxq/LZL/4=;
-        b=XbJ1IA3o9rZKqeJ/peV7u3sd4AJmq/DWhaPQ067PlO7lu0hq3GakpVKmLieyjaJGNO
-         QgLFYA9Ay5m3kthbb2xgmqeVRnsXzwzrg/8yOE0u9NLr1+1aX5NIpQYw1lvuk2vBfmfy
-         4eJQcyEvOVlqfvjxncw6uPMEYsIMQi1WuAH6cocK5lf7yGPFGAy5GH7pLaoj8hxfHnGw
-         AJdH3BsmqR/Ud92B1LwDSqX5Q9crZrJBi7qmjApRu/mfifRRJBbbC1Nk8b/Z23bsrfpV
-         x/p3fudziGgQilYE9KzO1KL4twQCyyv6//W3DfsiaDZ3HpPboHlkX9SjryD1Q8gYjyvc
-         gXyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780302653; x=1780907453;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YypMuV9q9YXVfPhMTCupjt06XXyEV6MtVbgxq/LZL/4=;
-        b=Rkh0bjqvmxHV5VQxKoibpcBOXTTmUTcwF8MLWGKzKayKewfjt5kfXetlB4lxREYQ8A
-         T0yfyirnUG9ZfduYhGQ39AE8ZPsaYJl/OO7Uuv99tmtlBakWCRG61L5fENc4d23itknQ
-         SYFIOZxLlQzM8UBZSXX5eZZ4BYOPINwScZ/JhWvnIcRligX96oqoE99+ItciCDWcQ4Bu
-         RURL04jjslPVF1sSupcCA+ogqJ6s8zCBSqNQfPih9vYH6L/sslsC1mn91ztxbLjY4/Ir
-         ByT6fDvKpB6CKG28JgN+of4VNybMKLehsCntc1g1N6NUyY/TbIga/nNqNxjaLPeGxcVr
-         TMpg==
-X-Forwarded-Encrypted: i=1; AFNElJ8y4vmRWdgYQehzYAplwQO3YIlrGb2RDd2tcgiks0PwI4+2OAU8uw4LD/y1VC0dBbH1Yr8naY7FHpumAKndrQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9o9sXrJ86f4wzzJyoDF3DJrOZBNxppq6baxFVrjTEiMEvTa/X
-	caYKLS/AgWiFYSECvzKQkJdFckjU1Z0S4wCwiq0DlKhbQ6dzdvyGIpMa6ZQ77KmM4GkaV83xd9a
-	WlXh4CmMYSgYriIwRBpPcFQCksTPhQQw=
-X-Gm-Gg: Acq92OHtbLulW0nUsLwAjChIfqg6sbaLq6AJGrYuevFAJycM7YQaQknaiKxcqBoyx+V
-	990N9rtaYztOPqyVOWxI/+1r/qADk8dr3LXBvF2qfwHORvq8xbv67ZxaoeSg15ieoWwSrTP9QBR
-	q4NN/87ym/PsipgKCjMdvlGIrGnU11P2pPoZt1QzoweB/Q+J7kC7t7WHwH0G1rll/wyG+B3w4a+
-	KLqJ/0osSrgKPFZRyE/cFGkiewob/7p602MCSSf46A3L4W0QKe2dog5oLz6L1qVFab0q3jfLmer
-	/RGo1Iifp9BkFWtyDqYWtzmXbpkMkXN5bsvVeWPpzs/YzqowOLtVsT/kTS5efec=
-X-Received: by 2002:a05:6512:24ce:b0:5aa:6d83:800a with SMTP id
- 2adb3069b0e04-5aa6d8381bdmr522214e87.16.1780302652412; Mon, 01 Jun 2026
- 01:30:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BX0tpHi8"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qi4muQwwXVuTnc2kEasmBPuJBn/Q5ID0JsqozqxVcR3nbqu+xEzuwtAfjZ8OHFX71dPI2vhr+qGvXSnG3He1WKN5SpjyqJkXJXob0wrQnzQFvv8DehyOAyJkGz5eQTfjNRpJsDDeoD1at5m0+PB9gpSezUWnXi7+zEC0lO5sVGKUTm++ihY9chV6+6k6xQeyqCgs251h3/DoCUFlvDfzQ8iAvVJIONvMgpoqDMuh8JBvh0RVJWPgd0pYgpMuwz80rBmDEYcrnRbQJvKjzkts7jQ7INAX+DpwQyTE8g0UlmmuN83bXwe/gnWl99Yi1nAEMaVWbGBMIhcPugPODo2wOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jVnF5T+xaOXTDERVIG8llvUpjIb5bXaSJ3w5X0xq1hU=;
+ b=dj6abXrV7z/m7r6XY4joCOqzVuXfXExtyY7NBT2kLowmPH3Fri4+PhyZR0MiL5YxDjWawCEDeJDwkKpWOtNuk1seYsVVz/agJd23rk3b4KPngGF0ARQKInB/P0fAY5kfpviQVV3nvqdu9sjywaZv8VnK2TTp5zu7rxsKqlhlsi75VZF8CjWzhq1bKc7MrCYewzYApUhpb4SCF8pH6ZmNEuD72CEk1NfZ98hyG4/9SEgKisGhksnIIEEmSrE9ZpKjonA6CRYHv3avlFkoIWhDM41Mz5ryPxnX9hdzoXVTn8R9A3N7KQMX5R930wvDYz8cGr6jb8Dr5xbyEPu+fc5e3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jVnF5T+xaOXTDERVIG8llvUpjIb5bXaSJ3w5X0xq1hU=;
+ b=BX0tpHi8/BEKbo3x7VGQBADWe71IucBrYULC8AbHJnIcai9GB+7GuZajE7tMvUwatu+Bkf3t5UBjWBalOpe9iRad6MumqgRTCOusIa4NmzKCS5SOMKWdKPJKgBemjjRIURmk7qbV8V13dz8vxLf/Qv5QIR+LZKjHGB6y3hILW22ipZyBhDGJgNGSP8wjKFYmpBb3eDGpBwIRkHInaYRKG0iGCBETawG38xZkebvlXUGVf8K7I786CpQQwW15T5lceTGrwgj86ioqMO87RGwK3IADBqSyNPN4LeWe59qdlVJhZynW5/W8u/D7+MSz+H4cOEHegYP02G5n3sQX14XStg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by SA5PPFCB4F033D6.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e2) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 08:32:51 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
+ 08:32:50 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 01 Jun 2026 17:32:46 +0900
+Message-Id: <DIXKNSBMSIEB.3SURNUK64U50U@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Joel Fernandes"
+ <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Shashank
+ Sharma" <shashanks@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ "LKML" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 12/22] gpu: nova-core: Hopper/Blackwell: add FSP
+ secure boot completion waiting
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "John Hubbard"
+ <jhubbard@nvidia.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260530030953.740561-1-jhubbard@nvidia.com>
+ <20260530030953.740561-13-jhubbard@nvidia.com>
+ <DIXJPV5RWRNK.OLQ2M3QL908W@nvidia.com>
+In-Reply-To: <DIXJPV5RWRNK.OLQ2M3QL908W@nvidia.com>
+X-ClientProxiedBy: TY4PR01CA0030.jpnprd01.prod.outlook.com
+ (2603:1096:405:2bd::12) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
- <20260524132824.54918-3-muchamadcoirulanwar@gmail.com> <20260528170927.65168836@jic23-huawei>
-In-Reply-To: <20260528170927.65168836@jic23-huawei>
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Date: Mon, 1 Jun 2026 15:30:40 +0700
-X-Gm-Features: AVHnY4JErnspeaoP2OZI2ukHg5O69BCq1jevCR3XrllajWyDd-8YbOzEVDhD6E0
-Message-ID: <CAO26r3QasDuUo2_7qrJfPtQer-UP6K6jzg9=RhDRT8OXN5BK-w@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 2/4] rust: add minimal IIO subsystem abstractions
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Igor Korotin <igor.korotin.linux@gmail.com>, Brandon Saint-John <branstj@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|SA5PPFCB4F033D6:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8a05703-fa7d-41c3-b0d2-08debfb85e1f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|366016|18002099003|22082099003|56012099006|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	dLHCJK5ENB8zDkz0XrLrctsXdJTfXkqnCbGt/s6webFAjBH/C84xNu14jNt/ueG3ZVBGd1pKOxJ7AFvf6eqWDj8TRktiP0+g3oir0UoLypJCs0cIWNgi+nMrKhY4lS6bCmU8e9/HVpmkSTTxODmF+0bMt80hfSSIZsL+68uw3C/sp9bD4cwkcRAiUT9g+0tU772Erem8V/1YL+GsBOEheMU8LTLt857466nOgzjk6girDMv4kGV7gbi6yqr6p4vqIg59Mg7tHiYsftGOfUWwqtZDSymllZYIfWsa7Qs4kSeQX952WQXzUjGLaN+xGIh2p2Vaf4PPPG08Kd2e0hiDA10PKzraIXcFlvVWaxnALOYxyvOm/t8P4fEaE8K44sNTlc+tu0mL9qplqnUavwON3A7dyW8MO0ycxhZsshykF/YXVVfIoS+pcWT5WQmd0NkYD0sXicXcHrnVJAZ01zpH/FwTcynV0AIM+V4wq9TUYxnJL/yMbsXlBbQ/6af1XOwLF7fq2hlUfS9zE4KtckzPEkkBT/H1zDK3QFSt52GS1fv1DyGowBslaiEzk9V43IpdDiNa4Hw9kgrwhvUf1DjyJu1U8jIQLQmdWSujOlpWNGBzFMdCkmPjcPPqSCdtNAMPjyijsCYRQV0c1L3RbfbgDj6aMY8R1GykUpXjg2DwpwODmY4WXbBIEevqxJIl5+W5
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(366016)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WlF3aG0ybkN1a3ZjT0hycXNJNDlRL256aDFETU1qV0o5dXA5WTZvNXhJTldo?=
+ =?utf-8?B?QkZiYlNlRUdQTFd0OThlQ1ZYNDJGVlRhd2ZWM2pNQ3k5cVRxVWhkS1hHaTdK?=
+ =?utf-8?B?eXFBV1RaOHN2ZXFpbHpVNml0QnBjRFg3ek9jZ0laYmRkeWFtdmZkblI2R3lo?=
+ =?utf-8?B?QURTbmtrckw1NnN5QzBvTTBzSG5tVVZGQmJPZHRYNkZkSnhWc1JtekVZUHFJ?=
+ =?utf-8?B?VFp2OFc4N291VXE0VXFiNzB2K3hGS2d3RENWTTJxTzVXQ3owVkU4OHBiS2J4?=
+ =?utf-8?B?STBMQTF6Vk43MUtiZTJNcUt5aTVMY0VrZ0gwaVlmWlk5UVZVMHo5dXRYUHJC?=
+ =?utf-8?B?OHNweUg2TlNRcDd2S2F3Nk1EZEQxaSs5Q3RlaHZuYW5ta1ljYzRjZ1ovK0hG?=
+ =?utf-8?B?OTk4a2pycTU4ZjloM1l2c0U0MWVJVXRPbG5sSXJiNSsrUU9tdzNFTUdOSUpD?=
+ =?utf-8?B?SjVDMFRZZytFSzdqRmFRdG1ublc0bEpydkd6emZISFRCOEFPdWFoYzkrQ25t?=
+ =?utf-8?B?SGkwaFZaaTQvNkdVay8zRGNvZFpGUFg3RXd0NksxVnF5VGdTeUU3OGNOS1RO?=
+ =?utf-8?B?eVMyRWh4ZWRZSytnN2VweVhUaWhjLzVKYUJQaXNLa1ErbkFhN3lkRWo3cEVz?=
+ =?utf-8?B?dDllOXZ1MjNWSVptZ2ZWbHNENGE4dm1hMGE1SzBJaUxvYVcwSEl0dWFUYUNW?=
+ =?utf-8?B?TExrd09hV0YyOGhReTVJMEQrTys2OUROelA3RlkzUURqTkt2dDlYMGdEZm5m?=
+ =?utf-8?B?QitqNDlpZVR6a1l1Q2tzWUY3YlYveGVUWnR2SWxYNmE2aFUrN1hzL29ua1Nm?=
+ =?utf-8?B?cXBrN1NtSmFTdzM5NlNLZzRqWXZZVlpEeFhLUGIwME5Oc1VFTFp4Q3R5NnEy?=
+ =?utf-8?B?aXE3OFpDYkZRUXlwcVE4NE1haUxHZWp0L1JJU2FGcjJTSG9ac25XQ05iMXNW?=
+ =?utf-8?B?TVVHdjNjeFR1T095TVA5Wk8wUjhrVDFBVDZSSTdSZVM0NUwvaGltRHJWSDMw?=
+ =?utf-8?B?QWNDOG1aZCszUGJZeXVLa29vcHkxNE5kcjhiQ09MeVdkaUZRN1FPOG5qWis1?=
+ =?utf-8?B?aHZSNXI0cXg2ckQ3WnAzMFhXdFdoRkxxZkc2M0FnNVJ0akExT3RRVGs5b2hG?=
+ =?utf-8?B?d1ZHR0ovYjkxTUZManNqQXV3bTlDS1JZUjVEM1FTZGhZMFUvbDExeWFIem1T?=
+ =?utf-8?B?OUNzak5PUzUxU2EwQkZZQVZNcmc2c290MFR5LzZod01CZEN3eUxEbXpveDE4?=
+ =?utf-8?B?YkRWK3REM0trUjZGSE5PaFFDMDl2ZHlISjV6NFdIeE94Q0xnSG0rRDdYZjZ0?=
+ =?utf-8?B?TCtKd1VyTFM5RERZaWEzQ1hLbGd2cWZBNEFlVXlVNmhFOEI4RDI5bDk2bDR0?=
+ =?utf-8?B?c2Vsd0xiaFdHcFFlVm5LdG9Ga0VlMHdWemllTGM1aE1VSE5XMlZ1V25oOS93?=
+ =?utf-8?B?cEh1Z2xqVTNzbDliQXVFdEtKNDNCTkpTdUZNSmVNK1BCYUZDN1F4TTIzSy8y?=
+ =?utf-8?B?Wm8zc3ByL3N3M1dMNkQrNGVDNUNGTjdjdFppZ3lqMm9SOVB3MzRVeCtOQnh5?=
+ =?utf-8?B?eTRnRmJIM0F6MjJBTWl6MDlZWk9CdUFUcjVCNlNuU0F5Nnl6QmhLUXVRb0pP?=
+ =?utf-8?B?c0dhdHIybjNidi9xTGNOSVppd05FWkxCYjhmNXRKeW4rdHR0ODg5K3Nab1Yz?=
+ =?utf-8?B?dGQ1NmxqMFIxU2ZlbXpFMWpLL3dMTHdBSHZRRmNXRVZSVkVJZERWRkthTjNu?=
+ =?utf-8?B?d2o5UFNTakRoaXgxZndxTUtPUStoRUlJa0F6WjdNZnlkMlk2cXpsc2FQdTN2?=
+ =?utf-8?B?eGZNN1BIOUhNOThQOEZSTkRuUFE0TG5FdlV6ckN0YW4rT3A0dk1rYkRiSWIy?=
+ =?utf-8?B?RUZhbG5RdkZCTURyS0g1SDhrSlFOdzFDYlI2VTcwLzhDQW4vdTZESFhpUmFG?=
+ =?utf-8?B?YllmdS8raUtGTDhqd3VyWjNkNlQ1bng5a2d6SytHeVRuQjhzWVIyMWp2NFZQ?=
+ =?utf-8?B?ZlB0TW9LeVAwaldGYUxzOFdRMk5OMktuQmU0K001aEoxMWo1OHRtTzNhdUhZ?=
+ =?utf-8?B?azk2dTQzdVQwcFIzbGRFdER4Rk1seGU4VTEwZGt4akZnZjVLNHU1dmNab0c0?=
+ =?utf-8?B?TVQ1Q3g3clFQRTN2NHMxd2luREFxUkdnamNmY0pNcElPVkExR0hCV2RjK0dh?=
+ =?utf-8?B?bnFwU1lhRWoxOGVmdmVQbC81bk44RGJYalJyVHNhM2UwalRZZm9tWGkrVFRI?=
+ =?utf-8?B?VGhSdWxlRmJ6Y083VlBCVzljUTB0OW9RL2xYTG1PejhxTlJackRzNXBFV3Y4?=
+ =?utf-8?B?ZWY5bTJrenNtNU4wRm52T1FWanVCYmtVdnJNSjREa0dHc1BNTzYzaXpHeXZB?=
+ =?utf-8?Q?tZdLClMMW97z3SubUjWMf7gkbL5BFxta7UJ5ZgiEBlTYF?=
+X-MS-Exchange-AntiSpam-MessageData-1: jMye0G4s11sN5w==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8a05703-fa7d-41c3-b0d2-08debfb85e1f
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 08:32:50.9057
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +v7n8jWIw4DrroH706bcpra19vgdN/3xwnBL1Y4ihBHW5NuquQVZhqjtq8BP/G9I/UaPZ+eWHuI3IwFC2Xs9hw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFCB4F033D6
 
-On Thu, 28 May 2026 17:09:00 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
-
-> You'll need a lot more stuff before it makes any sense to be messing
-> with claims on the state.  They only come in once drivers are dealing
-> with buffers etc. I'd leave them until then.
-
-> As above with the level of bindings you are doing so far, neither of these
-> should ever be called.  They are not for use by drivers simply wanting
-> to serialize things but about controlling the ability of the IIO core to
-> change the fundamental data flow from simple polling to streaming data to
-> user space accessible kfifos.
-
-Understood. I was conflating "serialize concurrent sysfs reads" with
-"prevent mode transitions", which are two different things. The driver's
-Mutex handles the former; DirectModeGuard is for the latter and has no
-business being here until buffer support exists.
-
-Dropping DirectModeGuard entirely from v4: struct, C helpers, and the
-trampoline call. Will bring it back when adding buffer/trigger support,
-where it belongs in the individual driver rather than the generic
-trampoline.
-
-> Sort of. It ensures the state doesn't change.  Given buffer/trigger
-> operations only occur when in a buffer state it sort of prevents their
-> operations. That's not including stuff like setting up buffers though -
-> just the data streaming.
+On Mon Jun 1, 2026 at 4:48 PM JST, Alexandre Courbot wrote:
+> On Sat May 30, 2026 at 12:09 PM JST, John Hubbard wrote:
+>> Hopper and Blackwell use FSP instead of SEC2 for secure boot. The
+>> driver must wait for FSP secure boot to complete before continuing
+>> with GSP bring-up. Poll for boot success with a 5-second timeout.
+>>
+>> Co-developed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/fsp.rs           | 51 ++++++++++++++++++++++++++
+>>  drivers/gpu/nova-core/fsp/hal.rs       | 27 ++++++++++++++
+>>  drivers/gpu/nova-core/fsp/hal/gb202.rs | 23 ++++++++++++
+>>  drivers/gpu/nova-core/fsp/hal/gh100.rs | 23 ++++++++++++
+>>  drivers/gpu/nova-core/gsp/hal/gh100.rs |  5 ++-
+>>  drivers/gpu/nova-core/nova_core.rs     |  1 +
+>>  drivers/gpu/nova-core/regs.rs          | 36 ++++++++++++++++++
+>>  7 files changed, 165 insertions(+), 1 deletion(-)
+>>  create mode 100644 drivers/gpu/nova-core/fsp.rs
+>>  create mode 100644 drivers/gpu/nova-core/fsp/hal.rs
+>>  create mode 100644 drivers/gpu/nova-core/fsp/hal/gb202.rs
+>>  create mode 100644 drivers/gpu/nova-core/fsp/hal/gh100.rs
+>>
+>> diff --git a/drivers/gpu/nova-core/fsp.rs b/drivers/gpu/nova-core/fsp.rs
+>> new file mode 100644
+>> index 000000000000..ee8fc384fe38
+>> --- /dev/null
+>> +++ b/drivers/gpu/nova-core/fsp.rs
+>> @@ -0,0 +1,51 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +// SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFI=
+LIATES. All rights reserved.
+>> +
+>> +//! FSP (Firmware System Processor) interface for Hopper/Blackwell GPUs=
+.
+>> +//!
+>> +//! Hopper/Blackwell use a simplified firmware boot sequence: FMC, then=
+ FSP, then GSP.
+>> +//! Unlike Turing/Ampere/Ada, there is no SEC2 (Security Engine 2) usag=
+e.
+>> +//! FSP handles secure boot directly using FMC firmware and Chain of Tr=
+ust.
+>> +
+>> +use kernel::{
+>> +    device,
+>> +    io::poll::read_poll_timeout,
+>> +    prelude::*,
+>> +    time::Delta, //
+>> +};
+>> +
+>> +use crate::{
+>> +    driver::Bar0,
+>> +    gpu::Chipset,
+>> +    regs, //
+>> +};
+>> +
+>> +mod hal;
+>> +
+>> +/// FSP interface for Hopper/Blackwell GPUs.
+>> +pub(crate) struct Fsp;
 >
-> Anyhow, kick it in the long grass (drop for now) given you don't support
-> buffer state. Good to see what this probably looks like though.
-
-Noted. Good to have the shape sketched out at least.
-
-> We only need to do this if the particular device the driver is supporting
-> needs for the specific operation to ensure that no accesses occur to
-> the device. We should not do this for reading stuff back that is cached in the
-> driver for instance.  In many cases devices have interfaces where absolutely
-> anything is safe in buffer modes.
+> Throughout the patchset, this type is never instantiated and is only
+> used as a namespace for static methods - something that the `fsp` module
+> itself could also do.
 >
-> This is unfortunately going to be hard to do other than in specific drivers
-> that knows those rules. + doesn't belong here at all yet as a rust driver
-> can't get into a state where this fails and should never be relying on this
-> for its own synchronization (e.g. between concurrent calls of read_raw()).
+> But I think it could be useful to create it and pass it as the `&mut
+> self` parameter of the other methods in the module, as doing so would
+> make the module more resilient: we could request `&mut self` for its two
+> other methods added later in the patchset and guarantee that there won't
+> be any concurrency issue.
+>
+> This should also probably create and own the `Falcon<Fsp>`, as it is the
+> only user through this patchset (and this makes sense from an
+> architectural point of view). The `FSP falcon engine stub` patch could
+> then refrain from creating the `Falcon<Fsp>`, which would be created by
+> this patch.
+>
+>> +
+>> +impl Fsp {
+>> +    /// Wait for FSP secure boot completion.
+>> +    ///
+>> +    /// Polls the thermal scratch register until FSP signals boot compl=
+etion
+>> +    /// or timeout occurs.
+>> +    pub(crate) fn wait_secure_boot(dev: &device::Device, bar: &Bar0, ch=
+ipset: Chipset) -> Result {
+>
+> ... and with the design proposed above, this method can return
+> `Result<Fsp>`: we are not supposed to use `Fsp` it until secure boot has
+> successfully completed, so making it return the instance that enables
+> the other methods guarantees that this has happened at the API level.
 
-Right. The trampoline shouldn't be making policy decisions about when to
-claim direct mode, that's driver-specific knowledge. Removing from the
-generic abstraction.
-
-> why .get() for this one.
-
-I used .get() because NonZeroI32 is a wrapper type, meaning we have to
-explicitly extract the
-inner i32. Since the other variants use a plain i32, they don't need
-it. I'll add a quick comment in
-v4 to clarify this.
-
-> The data accessed in c by iio_priv() is zeroed, not uninitialized but
-> I'm not sure that's what you are referring to.
-
-You're right, `iio_device_alloc` uses `kzalloc`, so `priv_` is zeroed.
-The SAFETY comment was wrong. Fixing in v4 to say "zeroed memory" and
-note that PinInit overwrites it with the initialized state.
-
-> Can channels be static const?  It is in most IIO drivers written in C.
-
-Yes. Moving it to a module-level static in v4. That removes the KBox
-allocation and the lifetime question around `indio_dev->channels`
-outliving `priv_`.
-
-Thanks,
-Coirul
+I think this is a good direction. I think we can also make FspFirmware
+owned by this fsp::Fsp object - i.e., move more control of FSP from
+Gh100::boot to the Fsp object. You might need to change up FmcBootArgs
+and e.g. return something from `boot_fmc` to keep the DMA allocation
+alive.
