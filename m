@@ -1,1145 +1,154 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012003.outbound.protection.outlook.com [40.107.209.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAF23DA7ED
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 15:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780329133; cv=none; b=CeJFKSxAFu27r8vi64kHM12fuDJkr5pe+7lQxbFKUc/iiaoyUwBIzgeMmyp3pdkyDNikDOaa9htOr7AxzgA/hD/Y2YEU24rlEA08cN7eHWofRJKkvvDsfkSW3UP6793Qobdd5Pva2UcYUyqrwqUfHF/Y5w1eXinkAvlGcLnJJTM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780329133; c=relaxed/simple;
-	bh=E53+j5OrmDWTJPZSleLjANoJPrnk2qWcUsi83c/2/sk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N3PIsLV8W+6G6dOcuTr4tDg0wuu2Agp3N5SFOwad+09HdafEMC4D2Suwp3BefmkW20GcCeMpxOG/H77U2JxQWMrvCwUnrs+XQ66yJiWgggvnRWqcVwOnHzxnr3RyBX32SBcuWfHuwYMGXrHOXmfcum2I9hhk588RTdF8qBrGoYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Dm2WgP8O; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFBE2BE05A;
+	Mon,  1 Jun 2026 16:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780330266; cv=fail; b=sKYEqQSO0AuVX4WTV7iievWgTP5w1+EvPrwE7WpN2xxQ+1ItaaVLDZ7MKjhTHZvupP9l/kZi3IdEEKswIi3Y67scYg3Z1ewCSEMDgtqXZyvgviz9Afk0MZgYEQYhLEQi2d0llHcugteppHtp2tMejeEU0qkG9Vi8FNTdWHc3Vuk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780330266; c=relaxed/simple;
+	bh=HOeJ00lT7E+THBy65Uj8h5xquYAF085VyLYsTuN0kO8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TRtTcNBHFwydjZcSDPU/BSBJCXazyhjV7kcxdBLTb6e4I+FpAWFCggCRQhxT9E6gdgdqD7pjwpz+X6qEfntKYVIKq5qgvX8IAtVxGRjXIPbrSFGRbezTyppl53SnHZTMNy277k4LBoKoTAH+hI+igRK+mKe8XrcCOWxVkqbjpK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qJJfQbOS; arc=fail smtp.client-ip=40.107.209.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Dm2WgP8O"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-bec405b1c6fso126225466b.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 08:52:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780329129; x=1780933929; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAynOLNRBFGvahhgUhcDk/GilRjAG20EvuC0QUvlc8M=;
-        b=Dm2WgP8OTt9B3hZ8zjXe7gor35nV9EwjgHm6x7Ghfe1UwlIiQSmRczM3OBLo/X8ZKC
-         CQhZSWz3LnRXS8O5zLGCPJGVrXt7RfmgFoI78rp6OMmfxZjigeVhZNyUA2ZiiyvyKHSp
-         0KP80p0r6DGMrEqW5oboVOWMoP8q9IavjDIq7oWWgKaFDALA5Yt7n8+WltfYxFdYVWLc
-         WCEJF8jsBt/3eCsMbW2EoXDgbb2gjLEZlHoNqoTX/KrdQtrIguBOXhIL4JDnNkTzVB3q
-         NAJjWE6l4GDGuhxGEOypx2K25JRLczsJbtohRniskkNmwdIU408yCCXVKKsBet8+lgLI
-         bvIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780329129; x=1780933929;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAynOLNRBFGvahhgUhcDk/GilRjAG20EvuC0QUvlc8M=;
-        b=YmMscZOCVTVv8NfWb3T4OBmAWKx0J+2DaoCClUA1BVT/crXRrQpUhTYWLTY9JKbRlS
-         n33S9Wsx6n0Ec1y88G/A43nYu5sr7HJR0+qqymRMFyVGRG+LZ7M0rDQbPSPAVW/GhBJB
-         f3mTW9Lawrvk2Pco3dhJ006Ywoy/vheUeO4zbeLYb+ZCgFnHIG3bu6OGi2rerkteAsey
-         wyTT1mXx5tXofg3MfSk2vWOw5dtCXQkvbQAPXFYhdL09G0N7/Gm9WeTIbm+AhwbDIi1V
-         80RpToy1LZGE5ZagayiI85Vtl3dP7vD7KmEbHX14IkYBbZMMwvXdAQqLlceEd3utw/6f
-         9lVA==
-X-Forwarded-Encrypted: i=1; AFNElJ9rdYyQa9sLrIn4qohmkNyFtYiJRV3y7X46TTw2pviZ5jbU60P8Fbklf4cTe4mJ4GKMz+BPbY5El5nfH4u2Rg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCCVAvLLwcZodCDoiGOYMHJQDPy2RMDLz0T4QvwnKydqIH+CLD
-	Q3Y9C/+StqxlNqWxENbgTkUkRQ6bhPx2+8wdv4nQNA5K0yyiAQi8WdL+Nm1duDTbURwciAXlt9b
-	7/PtDLVRh4FGpQlzfJQ==
-X-Received: from edbdd23.prod.google.com ([2002:a05:6402:3137:b0:688:57d9:5a0c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:1b14:b0:be5:2bc0:5370 with SMTP id a640c23a62f3a-beab542b91fmr616531266b.36.1780329128314;
- Mon, 01 Jun 2026 08:52:08 -0700 (PDT)
-Date: Mon, 1 Jun 2026 15:52:07 +0000
-In-Reply-To: <20260514150957.3501924-2-beata.michalska@arm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qJJfQbOS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qrADCLhxhQbZt1vQPky0OaKwB5i+v/Z++FMobH5i+jZa4RGOs9uw8/YB7wc8lvB2gjwrozAlFyxQs9QBXvm3lYV70lqfxhoUgmJ0SWEpuXXPCnbMcLESnvXUsH1pCqIW6I6xwFZ/9/9PiAsbAxXLvxGrMmiCvC9wQiUuEPFdfwZYPSDQp9uuJl/k1VUdoG8Qsqx62pjqZ/yRz+P5TqnSQ1gg3P7n/f8QI5/DY8OE6tynWXFms/nqmnx7Li7XRjozjAavklRKlZKs/lI10GhewHgihdd4W91Zeo7Q8IelCzJ/ifDEf5hfm9X9y/tV/yP4FCh1fpHGZfJZL0IWb/YPmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HOeJ00lT7E+THBy65Uj8h5xquYAF085VyLYsTuN0kO8=;
+ b=rq+KAYMRA7cKy/sI/9qLPAATUDX1mwC928zARwiCETUPVdOqM8yhIHQgVh6DKRVisR9uW89tmDLkZzhUFSOfscUwdCQs7u2IcNQ2p7oaMNSpk/w1R48dwMyymO4rIHuBsVK1CkXnMka3YgFMwSAXtiTpka4QW71TuSkoKp0QNGb7vl1JJs4ad26I8YVFMhH1Hy4vk56OMdoGd/z4vy6UaZOHe5TSyOcdlo2ofx/aFUmfdMfHaxGv+4GBAjsSUChxz+hWsPG7wVHyv08aZ9fzaO8xUMKKnLslOuAF27Xn3macDoUVyTVpGMl0u13L16Ss9Jmiz9vQaR/R8FRQHhvgeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HOeJ00lT7E+THBy65Uj8h5xquYAF085VyLYsTuN0kO8=;
+ b=qJJfQbOSxRipYVVluM2DnmbTcnfQaMgj6cQR5cUtJM7pwk0Ei6QfqhFTkna47cRT56nzijnlPDHL6/h9fyN2WZ3/4ijBgrHoqvr4j/TMTYXw01KXssdkB4xvNJvratQewjEjiPG/5fC1QMPK/dImdyiJpOj3Uge7x2ef/knfFaOGQHm2eLL3PsxYgaVDQbB94ovNtfggSLWqhIQ9XUuEz9+H+n+8GrG1lwU/pvmtGg2FKkFnFgrig7PwyuBJb63c1bhCVCFE1IzobSnIBurcw8V71Ugi9iY3B4S3zeQETzY6QE3i11T+xGmfp1GJUKKfMyfmvgoWoA07Fnjl1gTgpg==
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
+ by DS1PR12MB999190.namprd12.prod.outlook.com (2603:10b6:8:495::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Mon, 1 Jun
+ 2026 16:11:00 +0000
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970%5]) with mapi id 15.21.0071.015; Mon, 1 Jun 2026
+ 16:10:59 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>, "dakr@kernel.org"
+	<dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>
+CC: "aliceryhl@google.com" <aliceryhl@google.com>, "lossin@kernel.org"
+	<lossin@kernel.org>, Shashank Sharma <shashanks@nvidia.com>,
+	"boqun.feng@gmail.com" <boqun.feng@gmail.com>, "a.hindborg@kernel.org"
+	<a.hindborg@kernel.org>, Zhi Wang <zhiw@nvidia.com>, "simona@ffwll.ch"
+	<simona@ffwll.ch>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
+	"ojeda@kernel.org" <ojeda@kernel.org>, "tmgross@umich.edu"
+	<tmgross@umich.edu>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com"
+	<bjorn3_gh@protonmail.com>, Eliot Courtney <ecourtney@nvidia.com>,
+	"airlied@gmail.com" <airlied@gmail.com>, Joel Fernandes
+	<joelagnelf@nvidia.com>, "bhelgaas@google.com" <bhelgaas@google.com>,
+	"gary@garyguo.net" <gary@garyguo.net>, Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH v11 10/22] gpu: nova-core: Hopper/Blackwell: add FSP
+ falcon engine stub
+Thread-Topic: [PATCH v11 10/22] gpu: nova-core: Hopper/Blackwell: add FSP
+ falcon engine stub
+Thread-Index: AQHc7+HUz5CUMwAhp0OeAj2kZy4QALYp4rSA
+Date: Mon, 1 Jun 2026 16:10:59 +0000
+Message-ID: <6c85489c0e8d9b49c01352e869f578c609443118.camel@nvidia.com>
+References: <20260530030953.740561-1-jhubbard@nvidia.com>
+	 <20260530030953.740561-11-jhubbard@nvidia.com>
+In-Reply-To: <20260530030953.740561-11-jhubbard@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2-9 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|DS1PR12MB999190:EE_
+x-ms-office365-filtering-correlation-id: 340d0377-4f8e-43a2-9a8d-08debff85ef6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|1800799024|376014|10070799003|18002099003|22082099003|56012099006|38070700021|4143699003|11063799006;
+x-microsoft-antispam-message-info:
+ WpXqGWjYNDAHb1lwBWFPNGFK8Io5k+VfzJeqrN9z5Jwo7V2kEKx69Nx/agPNFESYeHLsIYlertMQNjPPZLenxQw1e/fU+MF/ROacA9J00yPJvUHW8bzq/eMtwcuuMtiWyK8c7FpAFYqgeOfIf+14hyybQJL6mNZIVS4pw2w6HqXtFSRlxsdKgCwxdnifOjgk+jaVWzZZmuqq/X+FUx7rDBc5ZfUYJb4TP3kKMOX04CEuzERZM1rOaYWDCTmHipxu6Wx/oG50NRg5x0zhKWwB1wIbkvztQsEE5U5uT022+7e880PYHyXj9m9Vc5PjcjfA9hysnQCS6eW5QaADTUNHZ5kKWYX0Wec0ns6zL+c3SnvfFplXlY1GVym9ckl9W/CR3mPTZUelk/3V4yUX53O7ppx+/1RUP4j3WY+RhPZ8GHGa3QKuzpqoMUVdyGRxt9SiK0BP6cdUIuaJCo+pQGLPpKsfa0Ea6G0adNU/7kA+jq31xIzYQDZVxjG5YAbtuRCHHkQJldEtc6KcjswewPrkB3ZHqr7iNsb4M7+sJoHyJlyW7SnpXVywECDhO8twCj/9xS7rOZ3HF7F2iN3Xi42qk9l6RuojJ/x9olqPWLdVwkh3qVtCPEFN1ca5W9ccRIqXGTPr0IeVgAZX44G7ZND/g8AQ5tQoMFK+jLGLXF1UR1qkWDm8G0QcgAWQHFVDzMkiDdrpj4vfEeoC8fH+RQ9WKDqc6OLFfTEk/aUVvi4pZpJwagwzed590gG9GZTK/nao
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(10070799003)(18002099003)(22082099003)(56012099006)(38070700021)(4143699003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?bTl0cE9Zcnkxc0huNHRyK0ZYQjdnV21MYXlnWlB1ZFFoZjdUZkd1NmtucVZY?=
+ =?utf-8?B?SS9LUzVnckpSWTEydG9LaC8rTWZLQitZK2lBWHBkSG5uc0FHd1k2NjAzWHZV?=
+ =?utf-8?B?dThDaDJhZ2E0VDVkZzZFczhNamNGL2I5TzRnQ2pPUU1qRUx5L2RVL0NUVzVr?=
+ =?utf-8?B?dmZmNVRsVStQcGRWUk50d2xqUDJabHlOVnB3eDdralp4VmxSMWgvcjZHdzJD?=
+ =?utf-8?B?cW9UUExmZ0FCMFNIbmRCdkdybWxvbk9CZ0pLV05relVTNE9lOVpkMDFSVXB5?=
+ =?utf-8?B?L0YyWjlLMnJZZ0hEaERvYVdvZVZhalRZWXNXNEZWQjl1dEVWVnNoRWh3ZFF0?=
+ =?utf-8?B?WThWUFFkRXJTdFpLOTBwWStoekpXUmZNcVBBWStDVk5xTlBQZE04a0ptYmd1?=
+ =?utf-8?B?c2drMXZDSW1uWS95Q0FoVmo3cFE2bU1mcmhhQjBwdk1nVG53Q0F2VDVCRE9O?=
+ =?utf-8?B?ZjFKMHBCQjdyVHMyQmx4cWVwekQvc1FRdlU5NjdCNlRoZmNTM3NJNi9BMmQz?=
+ =?utf-8?B?TkpweHhHcmVpTjl2Ynd6YzFLcEM1QittcmREUmdNTXpOUndIYmUvUTc3aUs1?=
+ =?utf-8?B?UmpsbDJpc3NUTmw4ZnAyakpBbVdoV1hYZ05Qc1lZUnpnMnBUS3FEczh3b1FZ?=
+ =?utf-8?B?N1RBS0kxSE50QzVPamgrRkcwa3EzRjQ1Z2x6UjdmK29McWdSbnQ5OXFyVlFn?=
+ =?utf-8?B?eGJsWjdCQm9GM1B5a3ZTUFNBR1NGNGxDNkpvbzlnUldKdzNwM3MzVHdXR3dI?=
+ =?utf-8?B?TzYzdU16djlrMEw1cXdSb24rYUtFUHVnOW1PY0xMWis5RkU4bTl5V2JkWUxn?=
+ =?utf-8?B?MWdzdk1qZVdEdVJUeWxZZDJzN0RHS0UrT1M3NzZsdHhHS2NNUDVrMTJJcHdX?=
+ =?utf-8?B?VW9rc05lMEtHUWYwNlM5S2NWcVpVYTN1MTIvWFVCeG9uVHJRYkVOYm9yeFZx?=
+ =?utf-8?B?b1djMlhGdEVJR2VxK3BzTVI4eExTVFRwSno4WGtEbENqN2VQUlVhVW5WamlF?=
+ =?utf-8?B?Ni9xbFBTQ1BONngwU2d5YlNOS0ZzQlBWVEFpelRTeDNKR0EraEJ4d2tRbmFD?=
+ =?utf-8?B?V2ZXWmxic0pGR2NWbC96U3pxUGFyNWtPa1ZkZjVFaXdTOUY4T21LZjJDSTZr?=
+ =?utf-8?B?dStjR05PTDRTd2RLa25yNS8xNXBQdU1sTm9CSEZaNmRCenFvektpa1FUYkJt?=
+ =?utf-8?B?dDBESE9hdC94SlE3aVRkTEVJUkRHOW5Hc3FOMHRoUk4zWnVGNXlpekEwY0RE?=
+ =?utf-8?B?WTEyYjhpUS9FU1ZPMXI0clpaa21nT2tqZHlzZzQvNDBxNGVLUUlnRUxqYWEr?=
+ =?utf-8?B?OW1qT091SE5SWFBKNUk5cmhUWS9YUUJTVExPaFhhMXhZeG9sMk5xMEh4N2pQ?=
+ =?utf-8?B?emZURVRlMGdqVCtTSGluT0FPTTFrUXNZUjJ4MlJlL0krS3FhekNnbnhLVGtK?=
+ =?utf-8?B?Q0prMHZUem9XOWljNGtHdElSR1BxNGZXZDRkeVVUUHNaRGpuS01XVUVzOGt6?=
+ =?utf-8?B?OFNBK1dTUzRjOWUxWmU5YW40QWxGY09JbUNseU9yalFUeFZjNmpBdTFmTGJU?=
+ =?utf-8?B?M0xaaXRRN2RMSTdFa2ZmR0toRklqWE1TT3JqSXo2VnpEaXp0bWkwZ0crNXFM?=
+ =?utf-8?B?bU9KMEtNY2JmaXNkYjYvbEU2QWRzR2pOV0hUajN5WWFKU0FoUkpxc25wNzJO?=
+ =?utf-8?B?NXFZV0VtR3c4VUFRNlV3SnA3QVRzN0FuNjhIOUNiMUtvNTc4RzcwTWZqaDZr?=
+ =?utf-8?B?SThZUmpvZ1NsZExoeXFxd0cydUZ1eTlQK0ZUcE1wb2NkSG40MCs0K0JnMTZv?=
+ =?utf-8?B?SWVlenVObkxNUFF0d3NwZDVFTG5ydDJCTjFXVlFYUlQxMzA1azk2T04wMzcz?=
+ =?utf-8?B?NmNMZHE4WTUxemUyWWMzZ2NxeHpMUU5LRXFycXROeDlOUU1ZNkljR3VOejdt?=
+ =?utf-8?B?S05sakgwNjBPRWVCQ200TUc0ZG5VSk5RVmpKdFR1L2Z3Q2hVRVBkeGRtSGN6?=
+ =?utf-8?B?NnVnUHJpT2NrVzVLa2dnNzlYMnN5WWpmZWE1RTUyTmszVmI5UWlTK2V3Q0RQ?=
+ =?utf-8?B?WUhEZWVESTNWV2JPMFJGbEdXaHNBNlNqRmgzaDh1a0w0b29EYVI3VDlNOG9h?=
+ =?utf-8?B?VkozbURyNDJyTU1FUE56bVZwRVBncnk1UlIzTEZiakhVeEFYSTVpVTVzU2VM?=
+ =?utf-8?B?NUZIRlVidm1RNVhpcVFlUzFxdHdnS0VKTGlJbjl4Rng5WDFpeWI4aDhrMGFx?=
+ =?utf-8?B?eWRWYkJZWjNMUFFGNkhyRmtLajlFMHUzNkN3UlFZQ1FGQTcwMlliK1JoUVpj?=
+ =?utf-8?B?eDU1MmxabnJlb1hYNGZhV0V1ekJRZndNa2VFSjB2c1hDMHBtbEdhTjQ0ejJs?=
+ =?utf-8?Q?+viODQcrm1uryw9hIQAfIJzBi1d6W4VC4goGFGYZcJdFv?=
+x-ms-exchange-antispam-messagedata-1: OSF0Qyra+tR92w==
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <4FEE364A57E5FA4FBF7808C949AB1253@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260514150957.3501924-1-beata.michalska@arm.com> <20260514150957.3501924-2-beata.michalska@arm.com>
-Message-ID: <ah2qp7CZqtAofMHQ@google.com>
-Subject: Re: [RFC PATCH 1/3] rust: Add runtime PM support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, rust-for-linux@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 340d0377-4f8e-43a2-9a8d-08debff85ef6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2026 16:10:59.8996
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +y5fGeIr3Be46wAdxOfJ6Rjdc9BGUrybInTRqpzwFsMlsVIPOC5RQD317UQw/1LuDhnlkC9SQlIuPyghztbGSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS1PR12MB999190
 
-On Thu, May 14, 2026 at 05:09:03PM +0200, Beata Michalska wrote:
-> Introduce a Rust abstraction for Linux runtime PM, centered around a
-> `PMContext` ownign a device reference and modeling the runtime PM
-> lifecycle. The context is initialised inactive and transitions into
-> active once the runtime PM gets enabled. The drivers might opt in to
-> initialize the devices power state prior to enabling the context, which
-> is advised at probe, when the actual PM callbacks cannot be fully served.
-> Once active, the context provides access to runtime PM operations and
-> request modes used to manage device power state transitions.
-> 
-> Runtime PM callbacks are provided via a PMOps trait. The generated
-> dev_pm_ops callbacks retrieve the driver's PMContext from drvdata,
-> validate the expected transition, and transfer ownership of the
-> driver-defined runtime PM payload to the relevant callback. Once
-> the callback completes, ownership of the returned payload is
-> transferred back to the PMContext and stored for the next transition.
-> The payload returned by the callback is expected to reflect the
-> current runtime PM state of the device. On a successful transition,
-> the returned payload should represent the new state reached by
-> the device. If the transition fails, it is the responsibility of
-> the driver to return a payload either rolled back to the previous
-> state or left in a state that remains valid for subsequent runtime PM
-> transitions. At present, only runtime_suspend and runtime_resume
-> callbacks are supported.
-> 
-> Profile and scoped runtime PM helpers are provided for common usage
-> patterns. ResumeScope resumes the device for the lifetime of the scope,
-> AwakeScope resumes the device while holding a runtime PM usage reference,
-> and RetainScope only increments the runtime PM usage count. References
-> are released on drop, and request behaviour is controlled through
-> driver-defined Profile values covering the common runtime PM request
-> modes.
-> 
-> Additionally, PMConfig provides common runtime PM configuration options.
-> 
-> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/helpers/helpers.c          |   1 +
->  rust/helpers/pm_runtime.c       |  38 ++
->  rust/kernel/lib.rs              |   1 +
->  rust/kernel/pm.rs               | 924 ++++++++++++++++++++++++++++++++
->  5 files changed, 965 insertions(+)
->  create mode 100644 rust/helpers/pm_runtime.c
->  create mode 100644 rust/kernel/pm.rs
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 446dbeaf0866..3a38db22681f 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -76,6 +76,7 @@
->  #include <linux/pid_namespace.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_opp.h>
-> +#include <linux/pm_runtime.h>
->  #include <linux/poll.h>
->  #include <linux/property.h>
->  #include <linux/pwm.h>
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 625921e27dfb..d67c69ebd33e 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -75,6 +75,7 @@
->  #include "pci.c"
->  #include "pid_namespace.c"
->  #include "platform.c"
-> +#include "pm_runtime.c"
->  #include "poll.c"
->  #include "processor.c"
->  #include "property.c"
-> diff --git a/rust/helpers/pm_runtime.c b/rust/helpers/pm_runtime.c
-> new file mode 100644
-> index 000000000000..9b2056110199
-> --- /dev/null
-> +++ b/rust/helpers/pm_runtime.c
-> @@ -0,0 +1,38 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/pm_runtime.h>
-> +
-> +void rust_helper_pm_runtime_get_noresume(struct device *dev)
-> +{
-> +	pm_runtime_get_noresume(dev);
-> +}
-> +
-> +void rust_helper_pm_runtime_put_noidle(struct device *dev)
-> +{
-> +	pm_runtime_put_noidle(dev);
-> +}
-> +
-> +void rust_helper_pm_runtime_mark_last_busy(struct device *dev)
-> +{
-> +	pm_runtime_mark_last_busy(dev) ;
-> +}
-> +
-> +bool rust_helper_pm_runtime_active(struct device *dev)
-> +{
-> +	return pm_runtime_active(dev);
-> +}
-> +
-> +void rust_helper_pm_suspend_ignore_children(struct device *dev, bool enable)
-> +{
-> +	pm_suspend_ignore_children(dev, enable);
-> +}
-> +
-> +int rust_helper_pm_runtime_set_active(struct device *dev)
-> +{
-> +	return pm_runtime_set_active(dev);
-> +}
-> +
-> +int rust_helper_pm_runtime_set_suspended(struct device *dev)
-> +{
-> +	return pm_runtime_set_suspended(dev);
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index b72b2fbe046d..7e51e497e2f0 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -105,6 +105,7 @@
->  pub mod pci;
->  pub mod pid_namespace;
->  pub mod platform;
-> +pub mod pm;
->  pub mod prelude;
->  pub mod print;
->  pub mod processor;
-> diff --git a/rust/kernel/pm.rs b/rust/kernel/pm.rs
-> new file mode 100644
-> index 000000000000..7bdffa727c71
-> --- /dev/null
-> +++ b/rust/kernel/pm.rs
-> @@ -0,0 +1,924 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust Runtime Power Management abstraction.
-> +//!
-> +//! C header: [`include/linux/pm_runtime.h`](srctree/include/linux/pm_runtime.h)
-> +
-> +use crate::{
-> +    bindings, device,
-> +    error::{to_result, VTABLE_DEFAULT_ERROR},
-> +    macros::paste,
-> +    prelude::*,
-> +    sync::aref::ARef,
-> +    sync::atomic::{
-> +        ordering::{Acquire, Full, Release},
-> +        Atomic,
-> +    },
-> +    sync::Arc,
-> +    sync::{new_mutex, Mutex},
-> +};
-> +
-> +use core::marker::PhantomData;
-> +
-> +/// Runtime Power Management modes that determine how a particular PM
-> +/// transition is to be carried out.
-> +/// Corresponds to C Runtime PM flag argument bits:
-> +/// - `RPM_ASYNC`
-> +/// - `RPM_NOWAIT`
-> +/// - `RPM_GET_PUT`
-> +/// - `RPM_AUTO`
-> +#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-> +struct Mode(u32);
-> +
-> +impl Mode {
-> +    /// Synchronous PM operations - default.
-> +    #[allow(unused)]
-> +    const SYNC: Mode = Mode(0);
-> +    /// Allow asynchronous PM operations.
-> +    const ASYNC: Mode = Mode(bindings::RPM_ASYNC);
-> +    /// Do not wait for any pending rquests to finish.
-> +    const NOWAIT: Mode = Mode(bindings::RPM_NOWAIT);
-> +    /// Acquire a runtime-PM usage reference.
-> +    const ACQUIRE: Mode = Mode(bindings::RPM_GET_PUT);
-> +    /// Use autosuspend.
-> +    const AUTO: Mode = Mode(bindings::RPM_AUTO);
-> +    /// Additional mode for devices supporting idle states.
-> +    const IDLE: Mode = Mode(1 << 16);
-> +
-> +    const fn join(self, other: Self) -> Self {
-> +        Self(self.0 | other.0)
-> +    }
-> +
-> +    fn contains(self, other: Self) -> bool {
-> +        (self.0 & other.0) != 0
-> +    }
-> +}
-> +
-> +impl core::ops::BitOr for Mode {
-> +    type Output = Self;
-> +    fn bitor(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 | rhs.0)
-> +    }
-> +}
-> +
-> +impl core::ops::BitAnd for Mode {
-> +    type Output = Self;
-> +    fn bitand(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 & rhs.0)
-> +    }
-> +}
-> +
-> +impl core::ops::Not for Mode {
-> +    type Output = Self;
-> +    fn not(self) -> Self::Output {
-> +        Self(!self.0)
-> +    }
-> +}
-> +
-> +impl From<Mode> for core::ffi::c_int {
-> +    #[inline]
-> +    fn from(mode: Mode) -> core::ffi::c_int {
-> +        mode.0 as core::ffi::c_int
-> +    }
-> +}
-> +
-> +/// Utility macro for combining multiple request modes
-> +macro_rules! mode {
-> +    ($mode:expr $(, $args:expr)+ $(,)?) => {{
-> +        let mut new_mode = $mode;
-> +        $( new_mode = new_mode.join($args); )+
-> +        new_mode
-> +    }};
-> +}
-> +
-> +/// Runtime power transition scope.
-> +pub struct Scope<Tag> {
-> +    dev: ARef<device::Device>,
-> +    mode: Mode,
-> +    _tag: PhantomData<Tag>,
-> +}
-> +
-> +/// Device resumed without incrementing the device's usage count
-> +pub struct Resume;
-> +/// Device resumed with the devices'a usage count being incremented
-> +pub struct Awake;
-> +/// Device with increased usage reference
-> +pub struct Retain;
-> +
-> +/// Resumes the device without acquiring the usage reference.
-> +/// Note: This does not guarantee the device will be kept active
-> +/// for the lifetime of the scope due to potentil pending suspend
-> +/// requests.
-> +///
-> +/// On drop:
-> +/// - If `Mode::IDLE`, calls `__pm_runtime_idle()`:
-> +///   triggers idle notification before attempting to suspend
-> +/// - If `Mode::AUTO`, marks last busy then calls `__pm_runtime_suspend()`.
-> +/// - Otherwise calls `__pm_runtime_suspend()`.
-> +///
-> +/// The guard must be dropped from a context matching the requested transition
-> +/// mode: sync vs async.
-> +#[must_use = "dropping this guard issues the matching runtime PM release request"]
-> +pub struct ResumeScope(Scope<Resume>);
-> +
-> +/// Acquires a runtime-PM usage reference and keeps the device powered.
-> +///
-> +/// Requires `Mode::ACQUIRE`. Drop behavior matches `ResumeScope`.
-> +/// The guard must be dropped from a context matching the requested transition
-> +/// mode: sync vs async.
-> +#[must_use = "dropping this guard releases its runtime PM hold"]
-> +pub struct AwakeScope(Scope<Awake>);
-> +
-> +/// Prevents the device from getting suspended by holding the usage reference
-> +/// count.
-> +///
-> +/// On drop, calls `pm_runtime_put_noidle()`.
-> +#[must_use = "dropping this guard releases its runtime PM hold"]
-> +pub struct RetainScope(Scope<Retain>);
-> +
-> +impl ResumeScope {
-> +    fn new(dev: ARef<device::Device>, mode: Mode) -> Result<Self> {
-> +        if mode.contains(Mode::ACQUIRE) {
-> +            // Mode::ACQUIRE is intended to be used with Awake scope
-> +            // Avoid mixing the modes.
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        // Mode::IDLE is internal so strip it of before passing further
-> +        Request::resume(&dev, mode & !Mode::IDLE).map(|()| {
-> +            Self(Scope::<Resume> {
-> +                dev: dev.clone(),
-> +                mode,
-> +                _tag: PhantomData,
-> +            })
-> +        })
-> +    }
-> +}
-> +
-> +impl Drop for ResumeScope {
-> +    fn drop(&mut self) {
-> +        let scope_mode = self.0.mode & !Mode::IDLE;
-> +
-> +        match self.0.mode {
-> +            mode if mode.contains(Mode::IDLE) => {
-> +                Request::idle(&self.0.dev, scope_mode & Mode::ASYNC);
-> +            }
-> +            mode if mode.contains(Mode::AUTO) => {
-> +                Request::mark_last_busy(&self.0.dev);
-> +                let _ = Request::suspend(&self.0.dev, scope_mode).inspect_err(|_| {
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend device\n");
-> +                });
-> +            }
-> +            _ => {
-> +                let _ = Request::suspend(&self.0.dev, scope_mode).inspect_err(|_| {
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend device\n");
-> +                });
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> +impl AwakeScope {
-> +    fn new(dev: ARef<device::Device>, mode: Mode) -> Result<Self> {
-> +        if !mode.contains(Mode::ACQUIRE) {
-> +            return Err(EINVAL);
-> +        }
-> +        // Mode::IDLE is internal so strip it of before passing further
-> +        Request::resume(&dev, mode & !Mode::IDLE)
-> +            .inspect_err(|_| Request::put_noidle(&dev))
-> +            .map(|()| {
-> +                Self(Scope::<Awake> {
-> +                    dev: dev.clone(),
-> +                    mode,
-> +                    _tag: PhantomData,
-> +                })
-> +            })
-> +    }
-> +}
-> +
-> +impl Drop for AwakeScope {
-> +    fn drop(&mut self) {
-> +        let scope_mode = self.0.mode & !Mode::IDLE;
-> +        match self.0.mode {
-> +            mode if mode.contains(Mode::IDLE) => {
-> +                Request::idle(&self.0.dev, scope_mode);
-> +            }
-> +            mode if mode.contains(Mode::AUTO) => {
-> +                Request::mark_last_busy(&self.0.dev);
-> +                let _ = Request::suspend(&self.0.dev, scope_mode).inspect_err(|_| {
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend device\n");
-> +                });
-> +            }
-> +            _ => {
-> +                let _ = Request::suspend(&self.0.dev, scope_mode).inspect_err(|_| {
-> +                    dev_err!(self.0.dev.as_ref(), "Failed to suspend device\n");
-> +                });
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> +impl RetainScope {
-> +    fn new(dev: ARef<device::Device>) -> Result<Self> {
-> +        Request::get_noresume(&dev);
-> +        Ok(Self(Scope::<Retain> {
-> +            dev,
-> +            mode: Mode(0),
-> +            _tag: PhantomData,
-> +        }))
-> +    }
-> +}
-> +
-> +impl Drop for RetainScope {
-> +    fn drop(&mut self) {
-> +        Request::put_noidle(&self.0.dev);
-> +    }
-> +}
-> +
-> +struct Request;
-> +
-> +#[cfg(CONFIG_PM)]
-> +impl Request {
-> +    #[inline(always)]
-> +    fn resume(dev: &ARef<device::Device>, mode: Mode) -> Result {
-> +        // SAFETY: `dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +        // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +        // duration of this call.
-> +        to_result(unsafe { bindings::__pm_runtime_resume(dev.as_raw(), mode.into()) })
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn idle(dev: &ARef<device::Device>, mode: Mode) {
-> +        // SAFETY: `dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +        // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +        // duration of this call.
-> +            unsafe {
-> +            bindings::__pm_runtime_idle(dev.as_raw(), mode.into());
-> +        }
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn mark_last_busy(dev: &ARef<device::Device>) {
-> +        // SAFETY: `dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +        // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +        // duration of this call.
-> +        unsafe {
-> +            bindings::pm_runtime_mark_last_busy(dev.as_raw());
-> +        }
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn suspend(dev: &ARef<device::Device>, mode: Mode) -> Result {
-> +        // SAFETY: `dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +        // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +        // duration of this call.
-> +        to_result(unsafe { bindings::__pm_runtime_suspend(dev.as_raw(), mode.into()) })
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn runtime_enable(dev: &ARef<device::Device>) -> Result {
-> +        // SAFETY: `dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +        // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +        // duration of this call.
-> +        to_result(unsafe { bindings::devm_pm_runtime_enable(dev.as_raw()) })
-> +    }
-> +}
-> +
-> +#[cfg(not(CONFIG_PM))]
-> +impl Request {
-> +    #[inline(always)]
-> +    fn resume(_dev: &ARef<device::Device>, _mode: Mode) -> Result {
-> +        Err(Error::from_errno(-(bindings::ENOSYS as i32)))
-
-This can just be Err(ENOSYS).
-
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn idle(_dev: &ARef<device::Device>, _mode: Mode) {}
-> +
-> +    #[inline(always)]
-> +    fn mark_last_busy(_dev: &ARef<device::Device>) {}
-> +
-> +    #[inline(always)]
-> +    fn suspend(_dev: &ARef<device::Device>, _mode: Mode) -> Result {
-> +        Err(Error::from_errno(-(bindings::ENOSYS as i32)))
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn runtime_enable(_dev: &ARef<device::Device>) -> Result {
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl Request {
-> +    #[inline(always)]
-> +    fn get_noresume(dev: &ARef<device::Device>) {
-> +        // SAFETY: `dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +        // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +        // duration of this call.
-> +        unsafe { bindings::pm_runtime_get_noresume(dev.as_raw()) };
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn put_noidle(dev: &ARef<device::Device>) {
-> +        // SAFETY: `dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +        // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +        // duration of this call.
-> +        unsafe { bindings::pm_runtime_put_noidle(dev.as_raw()) };
-> +    }
-> +}
-> +
-> +macro_rules! runtime_state {
-> +    (
-> +        $(#[$enum_meta:meta])*
-> +        $name:ident : $repr:ty {
-> +            $(
-> +                $(#[$variant_meta:meta])*
-> +                $v:ident
-> +            ),+$(,)?
-> +        }
-> +    ) => {
-> +        #[repr($repr)]
-> +        #[derive(Copy, Clone, Debug, Eq, PartialEq)]
-> +        $(#[$enum_meta])*
-> +        pub enum $name {
-> +            $(
-> +                $(#[$variant_meta])*
-> +                $v
-> +            ),+
-> +        }
-> +
-> +        impl From<$name> for $repr {
-> +            fn from(v: $name) -> Self { v as $repr }
-> +        }
-> +
-> +        impl TryFrom<$repr> for $name {
-> +            type Error = crate::error::Error;
-> +
-> +            fn try_from(v: $repr) -> Result<Self> {
-> +                match v {
-> +                    $(x if x == $name::$v as $repr => Ok($name::$v), )+
-> +                    _ => Err(EINVAL),
-> +                }
-> +            }
-> +        }
-> +    }
-> +}
-> +
-> +runtime_state!(
-> +    ///  Runtime PM state tracked by [`PMContext`].
-> +    ///
-> +    /// This state mirrors the transitions expected by the runtime PM
-> +    /// callbacks and is used to validate those independently
-> +    /// from the PM core's internal `RPM_*` state.
-> +    RuntimePMState: u32 {
-> +        /// Device has entered the runtime idle notification path.
-> +        Idle,
-> +        /// Device is runtime active.
-> +        Active,
-> +        /// Runtime suspend callback is in progress.
-> +        Suspending,
-> +        /// Device is runtime suspended.
-> +        Suspended,
-> +        /// Runtime resume callback is in progress.
-> +        Resuming,
-> +        /// Runtime PM state has not been initialized.
-> +        Unknown,
-> +    }
-> +);
-> +
-> +/// Generated callbacks require the device to be bound and driver data to be
-> +/// installed.
-> +macro_rules! define_pm_callback {
-> +    // Bare callback with no associate transition nor fallible descriptor
-> +    (@parse_desc $name:ident) => { define_pm_callback!(@default $name); };
-> +    // Callback with associated state transition
-> +    (@parse_desc $name:ident ($from:ident, $pre:ident, $post:ident)) => {
-> +        define_pm_callback!(@default $name, $from, $pre, $post);
-> +    };
-> +
-> +    (@default $name:ident $(, $from:ident, $pre:ident, $post:ident)? ) => {
-> +        paste!(
-> +            /// # Safety
-> +            ///
-> +            /// `dev` must be a valid `struct device *` provided by the PM core.
-> +            unsafe extern "C" fn [<$name _callback>]<T:PMOps>(
-> +                dev: *mut bindings::device
-> +            ) -> core::ffi::c_int {
-> +
-> +                let dev: &device::Device<device::CoreInternal> =
-> +                     // SAFETY: `dev` is provided by the PM core to a runtime PM callback and
-> +                     // is valid for the duration of the callback.
-> +                    unsafe { device::Device::from_raw(dev) };
-> +
-> +                // SAFETY: PM callbacks are only invoked while the device is bound
-> +                // See [`pm_runtime_remove`](srctree/drivers/base/power/runtime.c)
-> +                let bound_dev = unsafe { dev.as_bound() };
-> +
-> +                bound_dev.drvdata::<T::DriverDataType>()
-> +                    .and_then(|data| {
-> +                        let pm_ctx = T::get_pmcontext(data.get_ref())?;
-> +                        let pm_dev = match <T as PMOps>::DeviceType::try_from(dev) {
-> +                            Ok(pm_dev) => Ok(pm_dev),
-> +                            Err(_)  => Err(ENODEV),
-> +                        }?;
-> +
-> +                        define_pm_callback!(@transition verify, pm_ctx $(, $from, $pre)?)?;
-> +                        match T::$name(pm_dev, pm_ctx.current_payload()) {
-> +                            Ok(new_state) => {
-> +                                pm_ctx.update_payload(new_state);
-> +                                // This should not really fail
-> +                                let _ =
-> +                                    define_pm_callback!(@transition unchecked, pm_ctx $(,$pre, $post)?);
-> +                                Ok(0)
-> +                            },
-> +                            Err((old_state, e)) => {
-> +                                pm_ctx.update_payload(old_state);
-> +                                let _ = define_pm_callback!(@transition unchecked, pm_ctx $(,$pre, $from)?);
-> +                                Err(e)
-> +                            }
-> +                        }
-> +                    }).map_err(|e| e.to_errno()).err().unwrap_or(0)
-> +            }
-> +        );
-> +
-> +    };
-> +
-> +   (@transition verify, $ctx:ident, $prev:ident, $new:ident) => {
-> +        // Mark the transition to requested state - if viable
-> +        $ctx.record_transition(
-> +            RuntimePMState::$prev,
-> +            RuntimePMState::$new,
-> +        ).map_err(|_| EINVAL)
-> +    };
-> +
-> +    (@transition unchecked, $ctx:ident, $prev:ident, $new:ident) => {
-> +        {
-> +            $ctx.set_state(RuntimePMState::$new);
-> +            Result::<(), crate::error::Error>::Ok(())
-> +        }
-> +    };
-> +
-> +    (@transition verify, $ctx:ident) => {
-> +        Result::<(), crate::error::Error>::Ok(())
-> +    };
-> +
-> +    (@transition unchecked, $ctx:ident) => {
-> +        Result::<(), crate::error::Error>::Ok(())
-> +    };
-> +}
-> +
-> +/// SAFETY:
-> +/// bindings::dev_pm_ops is #[repr(C)], implements Default
-> +/// and the struct itself is all nullable function pointers.
-> +/// There is no padding and all zero bit-pattern is valid
-> +///
-> +const PMOPS_NONE: bindings::dev_pm_ops =
-> +    unsafe { core::mem::MaybeUninit::<bindings::dev_pm_ops>::zeroed().assume_init() };
-> +
-> +/// Runtime PM callbacks implemented by a driver.
-> +///
-> +/// The generated `dev_pm_ops` callbacks obtain the driver's private data,
-> +/// retrieve the associated `PMContext`, validate the expected PM
-> +/// transition, and then call the corresponding trait method.
-> +macro_rules! define_pm_ops {
-
-I think it would be ideal if we could avoid this macro. Generally if you
-have a trait that the driver should implement, then it's preferable to
-define said trait without a macro so that it's easier for driver authors
-to see what methods they must provide.
-
-Could you expand this macro?
-
-Similar comment applies to define_pm_callback.
-
-> +    ($($name:ident $( : $desc:tt )? ),+ $(,)?) => {
-> +        $( define_pm_callback!( @parse_desc $name $( $desc )?); )+
-> +        define_pm_ops!(@common $( $name ), +);
-> +    };
-> +
-> +    (@common $( $name:ident),+ ) => {
-> +        /// Runtime PM callbacks implemented by a driver
-> +        ///
-> +        /// The PM core will call into the generated C tcallbacks, which in
-> +        /// turn invoke these methods.
-> +        /// Runtime payload ownership is transferred to the callback.
-> +        /// On success, the callback returns the payload to store
-> +        /// for the new PM state. On failure, it returns the payload to restore
-> +        /// together with the error reported to the PM core.
-> +        #[vtable]
-> +        pub trait PMOps: Sized
-> +        {
-> +            /// Type of a bus device
-> +            type DeviceType<'a>:
-> +                TryFrom<&'a device::Device<device::CoreInternal>>
-> +                + AsRef<device::Device>
-> +                where
-> +                    Self: 'a;
-> +            /// Type of data associated with the `DeviceType' drvier.
-> +            type DriverDataType: 'static;
-> +            /// Type allowing access to associated PMContext
-> +            type PMContextRef<'a>:
-> +                core::ops::Deref<Target = PMContext<Self, Active>>
-> +                + 'a
-> +                where
-> +                    Self: 'a;
-> +
-> +            /// Type of the data associated with a PM transitions:
-> +            /// owned by the PMContext, though the transition is managed
-> +            /// by the driver.
-> +            type RuntimePayloadType;
-> +
-> +            /// Function that needs to be implemented by the driver
-> +            fn get_pmcontext(_: &Self::DriverDataType) -> Result<Self::PMContextRef<'_>>;
-> +
-> +            $(
-> +                #[allow(missing_docs)]
-> +                // Callback-specific docs are provided by the generated `dev_pm_ops`
-> +                // contract on `PMOps`.
-> +
-> +                fn $name(
-> +                    _dev:  Self::DeviceType<'_>,
-> +                    _data: Option<Arc<Self::RuntimePayloadType>>
-> +                ) -> Result<
-> +                    Option<Arc<Self::RuntimePayloadType>>,
-> +                    (Option<Arc<Self::RuntimePayloadType>>, $crate::error::Error)
-> +                > {
-> +                    build_error!(VTABLE_DEFAULT_ERROR)
-> +                }
-> +            )+
-> +        }
-> +        paste!(
-> +            impl<T:PMOps> PMContext<T> {
-> +                #[allow(missing_docs)]
-> +                pub const PM_OPS: bindings::dev_pm_ops = bindings::dev_pm_ops {
-> +                    $( [<$name>]: if T::[<HAS_ $name:upper>] {
-> +                        Some([<$name _callback>]::<T>)
-> +                    } else {
-> +                        None
-> +                    }, )+
-> +                    ..PMOPS_NONE
-> +                };
-> +            }
-> +        );
-> +    }
-> +}
-> +
-> +/// Marker type for a PM context that is not yet enabled.
-> +pub struct Dormant;
-> +/// Marker type for a PM context that is enabled (runtime PM enabled).
-> +/// It does not by itself mean that the device is currently runtime-active;
-> +/// use `active()` or `suspended()` to query the runtime state.
-> +pub struct Active;
-> +
-> +#[pin_data]
-> +struct PMRuntimeState<T: PMOps> {
-> +    current_state: Atomic<u32>,
-> +    #[pin]
-> +    data: Mutex<Option<Arc<T::RuntimePayloadType>>>,
-> +}
-> +
-> +impl<T: PMOps> PMRuntimeState<T> {
-> +    fn new() -> impl PinInit<Self> {
-> +        pin_init!(Self {
-> +            current_state: Atomic::new(RuntimePMState::Unknown.into()),
-> +            data <- new_mutex!(None)
-> +        })
-> +    }
-> +}
-> +
-> +/// Runtime PM context tied to a device.
-> +pub struct PMContext<T: PMOps, State = Dormant> {
-> +    dev: ARef<device::Device>,
-> +    /// Optional driver-selected runtime PM request profiles.
-> +    ///
-> +    /// Set of runtime PM predefined profiles that can be used by the driver
-> +    /// when requesting a PM transition. This might be useful when a driver
-> +    /// has several different PM usage patterns.
-> +    /// See [crate::module::Profile] for more details.
-> +    pub profiles: Option<KVec<Profile>>,
-> +    state: Pin<KBox<PMRuntimeState<T>>>,
-> +
-> +    _marker: PhantomData<State>,
-> +}
-> +
-> +define_pm_ops!(
-> +        // PM state change : (expected current state, tranition state, final expected state)
-> +        runtime_suspend : (Active, Suspending, Suspended),
-> +        runtime_resume  : (Suspended, Resuming, Active),
-> +);
-> +
-> +impl<T: PMOps, State> PMContext<T, State> {
-> +    /// Takes ownership of the stored runtime PM payload.
-> +    #[inline]
-> +    fn current_payload(&self) -> Option<Arc<<T as PMOps>::RuntimePayloadType>> {
-> +        self.state.data.lock().take()
-> +    }
-> +
-> +    /// Stores the runtime PM payload for the next transition.
-> +    #[inline]
-> +    fn update_payload(&self, data: Option<Arc<<T as PMOps>::RuntimePayloadType>>) {
-> +        *self.state.data.lock() = data;
-> +    }
-> +
-> +    /// Calls `f` with a reference to the currently stored runtime PM payload.
-> +    ///
-> +    /// The payload is driver-defined and represents the data associated with
-> +    /// the current runtime PM state.
-> +    ///
-> +    pub fn with_payload(
-> +        &self,
-> +        f: impl FnOnce(&Option<Arc<<T as PMOps>::RuntimePayloadType>>) -> Result,
-> +    ) -> Result {
-> +        let state = self.state.data.lock().clone();
-> +        f(&state)
-> +    }
-> +}
-> +
-> +impl<T: PMOps> PMContext<T, Dormant> {
-> +    /// Creates a dormant PM context for a device.
-> +    ///
-> +    /// `profiles` is an optional driver-defined [`Profile`] preset that are later
-> +    /// selected by the driver when requesting runtime PM transitions.
-> +    #[inline]
-> +    pub fn new(
-> +        dev: &device::Device,
-> +        profiles: Option<KVec<Profile>>,
-> +    ) -> Result<Self> {
-> +        Ok(Self {
-> +            dev: dev.into(),
-> +            profiles,
-> +            state: KBox::pin_init(PMRuntimeState::new(), GFP_KERNEL)?,
-> +            _marker: PhantomData,
-> +        })
-> +    }
-> +
-> +    /// Initialize the RPM state.
-> +    /// The caller is responsible for configuring the runtime payload
-> +    /// approprietaly for chosen state.
-> +    /// Intendend to be called prior to enabling full pm runtime,
-> +    /// i.e. during probe when the device's private data is not yet set.
-> +    pub fn init_state(
-> +        &self,
-> +        runtime_state: RuntimePMState,
-> +        data: Option<Arc<T::RuntimePayloadType>>,
-> +    ) -> Result {
-> +        match runtime_state {
-> +            RuntimePMState::Active => {
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +                // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +                // duration of this call.
-> +                to_result(unsafe { bindings::pm_runtime_set_active(self.dev.as_raw()) })
-> +            }
-> +            RuntimePMState::Suspended => {
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +                // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +                // duration of this call.
-> +                to_result(unsafe { bindings::pm_runtime_set_suspended(self.dev.as_raw()) })
-> +            }
-> +            _ => return Err(EINVAL),
-> +        }?;
-> +
-> +        self.update_payload(data);
-> +        self.state
-> +            .current_state
-> +            .store(runtime_state.into(), Release);
-> +        Ok(())
-> +    }
-> +
-> +    /// Enables runtime PM and returns an active PMContext.
-> +    #[inline]
-> +    pub fn enable(self) -> Result<PMContext<T, Active>> {
-> +        Request::runtime_enable(&self.dev)?;
-> +
-> +        let PMContext {
-> +            dev,
-> +            profiles,
-> +            state,
-> +            ..
-> +        } = self;
-> +
-> +        // In case the PM state has not been initialized upfront
-> +        let _ = state.current_state.cmpxchg(
-> +            RuntimePMState::Unknown.into(),
-> +            RuntimePMState::Suspended.into(),
-> +            Release,
-> +        );
-> +        Ok(PMContext {
-> +            dev,
-> +            profiles,
-> +            state,
-> +            _marker: PhantomData,
-> +        })
-> +    }
-> +}
-> +
-> +/// Runtime PM request profile.
-> +///
-> +/// `PMContext` can store a driver-provided set of profiles in
-> +/// [`PMContext::profiles`].
-> +///
-> +/// # Example:
-> +///
-> +/// ```ignore
-> +/// enum PMProfile {
-> +///     RegisterAccess = 0,
-> +///     SubmitJob = 1,
-> +/// }
-> +///
-> +/// let profiles = KVec::from_iter([
-> +///     // Synchronous resume/suspend. Useful for short register accesses where
-> +///     // the caller needs the device powered before continuing.
-> +///     Profile::new(),
-> +///
-> +///     // Resume synchronously, then allow autosuspend when the scope is
-> +///     // dropped.
-> +///     Profile::new().auto(),
-> +///
-> +/// ], GFP_KERNEL)?;
-> +///
-> +/// let pm = PMContext::new(dev, Some(profiles))?;
-> +/// pm.apply_config(
-> +///     &[PMConfig::AutoSuspend(true),PMConfig::AutoSuspendDelay(300)]
-> +/// )?;
-> +///
-> +/// let pm = pm.enable()?;
-> +///
-> +/// let profile = pm.profiles
-> +///     .as_ref()
-> +///     .ok_or(EINVAL)?[PMProfile::SubmitJob as usize];
-> +///
-> +/// pm.with_get(profile, || {
-> +///     submit_job_to_device()?;
-> +///     Ok(())
-> +/// })?;
-> +///
-> +/// ```
-> +pub struct Profile(Mode);
-> +
-> +impl Profile {
-> +    /// Creates a profile with default SYNC mode set.
-> +    pub const fn new() -> Self {
-> +        Self(Mode::SYNC)
-> +    }
-> +    /// /Enables async PM operations for this profile.
-> +    pub const fn r#async(self) -> Self {
-> +        Self(mode!(self.0, Mode::ASYNC))
-> +    }
-> +    /// Use autosuspend
-> +    pub const fn auto(self) -> Self {
-> +        Self(mode!(self.0, Mode::AUTO))
-> +    }
-> +    /// Requests idle handling for this profile.
-> +    pub const fn idle(self) -> Self {
-> +        Self(mode!(self.0, Mode::IDLE))
-> +    }
-> +    /// Do not wait for concurrent requests to finish.
-> +    pub const fn nowait(self) -> Self {
-> +        Self(mode!(self.0, Mode::NOWAIT))
-> +    }
-> +}
-> +
-> +impl Default for Profile {
-> +     fn default() -> Self {
-> +         Self::new()
-> +     }
-> +}
-> +
-> +impl<T: PMOps> PMContext<T, Active> {
-> +    #[inline(always)]
-> +    fn record_transition(
-> +        &self,
-> +        expected_state: RuntimePMState,
-> +        new_state: RuntimePMState,
-> +    ) -> Result {
-> +        self.state
-> +            .current_state
-> +            .cmpxchg(expected_state.into(), new_state.into(), Full)
-> +            .map(|_| ())
-> +            .map_err(|_| EINVAL)
-> +    }
-> +
-> +    #[inline(always)]
-> +    fn set_state(&self, new_state: RuntimePMState) {
-> +        self.state.current_state.store(new_state.into(), Release);
-> +    }
-> +
-> +    /// Returns whether the runtime PM state is active.
-> +    ///
-> +    /// This reflects the state tracked by [`PMContext`], not a direct query of
-> +    /// the PM core's internal `RPM_*` state.
-> +    #[inline(always)]
-> +    pub fn active(&self) -> bool {
-> +        self.state
-> +            .current_state
-> +            .load(Acquire)
-> +            .try_into()
-> +            .unwrap_or(RuntimePMState::Unknown)
-> +            == RuntimePMState::Active
-> +    }
-> +
-> +    /// Returns whether the runtime PM state is suspended.
-> +    ///
-> +    /// This reflects the state tracked by [`PMContext`], not a direct query of
-> +    /// the PM core's internal `RPM_*` state.
-> +    #[inline(always)]
-> +    pub fn suspended(&self) -> bool {
-> +        self.state
-> +            .current_state
-> +            .load(Acquire)
-> +            .try_into()
-> +            .unwrap_or(RuntimePMState::Unknown)
-> +            == RuntimePMState::Suspended
-> +    }
-> +
-> +    /// Creates a `ResumeScope` for the given profile.
-> +    #[inline]
-> +    pub fn resume(&self, profile: Profile) -> Result<ResumeScope> {
-> +        ResumeScope::new(self.dev.clone(), profile.0)
-> +    }
-> +
-> +    /// Creates an `AwakeScope` for the given profile.
-> +    #[inline]
-> +    pub fn get(&self, profile: Profile) -> Result<AwakeScope> {
-> +        AwakeScope::new(self.dev.clone(), profile.0 | Mode::ACQUIRE)
-> +    }
-> +
-> +    /// Creates a `RetainScope` for this device.
-> +    pub fn hold(&self) -> Result<RetainScope> {
-> +        RetainScope::new(self.dev.clone())
-> +    }
-> +    /// Runs a closure while holding a `ResumeScope`.
-> +    pub fn with_resume<R>(&self, profile: Profile, f: impl FnOnce() -> Result<R>) -> Result<R> {
-> +        if profile.0.contains(Mode::ASYNC) {
-> +            return Err(EINVAL);
-> +        }
-> +        let _scope = self.resume(profile)?;
-> +        f()
-> +    }
-> +    /// Runs a closure while holding an `AwakeScope`.
-> +    pub fn with_get<R>(&self, profile: Profile, f: impl FnOnce() -> Result<R>) -> Result<R> {
-> +        if profile.0.contains(Mode::ASYNC) {
-> +            return Err(EINVAL);
-> +        }
-> +        let _scope = self.get(profile)?;
-> +        f()
-> +    }
-> +
-> +    /// Runs a closure while holding a `RetainScope`.
-> +    pub fn with_hold<R>(&self, f: impl FnOnce() -> Result<R>) -> Result<R> {
-> +        let _scope = self.hold()?;
-> +        f()
-> +    }
-> +}
-> +
-> +/// Configuration knobs for runtime PM.
-> +pub enum PMConfig {
-> +    /// Ignore child devices when suspending.
-> +    IgnoreChildren(bool),
-> +    /// Disable runtime PM callbacks.
-> +    NoCallbacks,
-> +    /// Mark device as IRQ-safe for runtime PM.
-> +    IrqSafe,
-> +    /// Enable or disable autosuspend.
-> +    AutoSuspend(bool),
-> +    /// Set autosuspend delay (milliseconds).
-> +    AutoSuspendDelay(u32),
-> +}
-> +
-> +impl<T: PMOps, State> PMContext<T, State> {
-> +    /// Applies runtime PM configuration options.
-> +    ///
-> +    /// Options are applied in the order provided. The currently supported
-> +    /// options do not report per-option failures.
-> +    ///
-> +    /// This may be called before or after runtime PM is enabled, depending on
-> +    /// the option and the driver's setup sequence.
-> +    pub fn apply_config(&self, opts: &[PMConfig]) -> Result {
-> +        #[cfg(not(CONFIG_PM))]
-> +        let _ = opts;
-> +        #[cfg(CONFIG_PM)]
-> +        for opt in opts {
-> +            match opt {
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +                // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +                // duration of this call.
-> +                PMConfig::IgnoreChildren(v) => unsafe {
-> +                    bindings::pm_suspend_ignore_children(self.dev.as_raw(), *v)
-> +                },
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +                // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +                // duration of this call.
-> +                PMConfig::NoCallbacks => unsafe {
-> +                    bindings::pm_runtime_no_callbacks(self.dev.as_raw())
-> +                },
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +                // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +                // duration of this call.
-> +                PMConfig::IrqSafe => unsafe { bindings::pm_runtime_irq_safe(self.dev.as_raw()) },
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +                // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +                // duration of this call.
-> +                PMConfig::AutoSuspend(v) => unsafe {
-> +                    bindings::__pm_runtime_use_autosuspend(self.dev.as_raw(), *v);
-> +                },
-> +                // SAFETY: `self.dev` is a valid `&ARef<Device>`, so the underlying `Device` is
-> +                // guaranteed to be alive and `as_raw()` yields a valid pointer for the
-> +                // duration of this call.
-> +                PMConfig::AutoSuspendDelay(v) => unsafe {
-> +                    bindings::pm_runtime_set_autosuspend_delay(self.dev.as_raw(), *v as i32);
-> +                    bindings::__pm_runtime_use_autosuspend(self.dev.as_raw(), true);
-> +                },
-> +            }
-> +        }
-> +        Ok(())
-> +    }
-> +}
-> -- 
-> 2.43.0
-> 
+T24gRnJpLCAyMDI2LTA1LTI5IGF0IDIwOjA5IC0wNzAwLCBKb2huIEh1YmJhcmQgd3JvdGU6DQo+
+IEFkZCB0aGUgRlNQIChGaXJtd2FyZSBTeXN0ZW0gUHJvY2Vzc29yKSBmYWxjb24gZW5naW5lIHR5
+cGUgdGhhdCB3aWxsDQoNCkZZSSwgRlNQID0gRm91bmRhdGlvbiBTZWN1cml0eSBQcm9jZXNzb3IN
+Cg==
