@@ -1,147 +1,181 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF89D38399E;
-	Mon,  1 Jun 2026 11:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780312666; cv=none; b=QHEvS+rcnhU01/85qnIGj/XkUcRVuugBKzd6Ql65O5DMuGv0Nc5ujoROl8D0BfUyLkKnXeRamIzgdEz/cPP0NYPaAKhpo1i2uJ647bz17d1D1SwdTf2QqZ4N9zUT3Nu6dgx5VuONADk7Bks4WjcqpGpEG7GIu1E5iSwJbWJzjNQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780312666; c=relaxed/simple;
-	bh=D04O1XsCuuemXbY2YVN0rSer7xhr48HKYGRqzuFlAPQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YRtNcK4iuIbELmcjTw2LfgPebcJ9Ysbmg9EOPYeH0V7B1da5f/3iK+Nu4f3YlKdewNi3inNlJIclTCdJ/1YHt+/vBQT1vVCIaYBxuNafYMtG66sR/otpO+aGyI/5t2zG9fXo25JvWZAPavcSA+H6ohCjbaZFtY3OTAt4vUnenU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=cPbFnAeS; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C8032ED24
+	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 11:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780313601; cv=pass; b=lMtZgHSv3woZQsSTbKlKHMLFepzFqp2H4QK3Srf8PwIuiqNpNOAMsE8fN2dvtazWWM4qvVZDpGzXwwKLqxYayhIRMT8SQJ7Lifu4miGOLxgPLOSgU2L24bbnN/45B0Y8179h0/h3h9Q48vM4wlhLLjc3sQp3EEidwcxLndUMGCQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780313601; c=relaxed/simple;
+	bh=2EkJKyz4kt+nX/YiRPXOU9Y/RomvRxwf410SJENTcWM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M+OO6gWxmcNyOYFySWa1wWNd+XAs0Av5uMyioUvO62USCKdMQbQccjEJAg2hNeB8joY5OJyB0IgCAo+Y0OKVgPfwys9oBn2AxkYCnlhmswSfMRn5DFjAjlKC/6G/nnEM51aJPg0dD+7Tei3wpI0WgCQHcwaxHcscXA6uTHfAs3U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RFkyQjd+; arc=pass smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="cPbFnAeS"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gTWdw0pXfz9tZ4;
-	Mon,  1 Jun 2026 13:17:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780312660; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D04O1XsCuuemXbY2YVN0rSer7xhr48HKYGRqzuFlAPQ=;
-	b=cPbFnAeSy9iiIQhi43evWGZcVGFHTXNPXi90ZHOokjf+XuWUCknF67LUcSNjDtcSTfW6J0
-	M3Q7eVk0KtSZVwvmLiX0nE77hu9cIojWChsZv0J/XTVlU99Bi/9nfwZzkjJU42dVIXyMhG
-	ZYdaq1qcoGXROeuiPa1vTaDuI0cgs4L9uEy5Gy9KNcrLJDBMUXa+aCuyBi5IhFo1kcgCfj
-	0I8T3aZMcEXrHP4wdyYzMnr4wbIDJPYLp8MoDAuRCFstfuUs7HQb85JEOBjMt2uepu7+oB
-	JELjiEK73LfBi3MjC4qn4bGNbFTYTBQtF4ABkbVVGotTOUTaoXz6SH6udW6HmA==
-Message-ID: <df2daf200c9a69f497f4285074d2a95425b3dbdd.camel@mailbox.org>
-Subject: Re: [PATCH 3/4] rust: Add dma_fence abstractions
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Boris Brezillon <boris.brezillon@collabora.com>, Alice Ryhl
-	 <aliceryhl@google.com>
-Cc: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich	 <dakr@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker	 <frederic@kernel.org>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Uladzislau Rezki	 <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers	
- <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
- Zqiang <qiang.zhang@linux.dev>, Daniel Almeida
- <daniel.almeida@collabora.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Igor Korotin <igor.korotin@linux.dev>,
- Lorenzo Stoakes	 <ljs@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- FUJITA Tomonori	 <fujita.tomonori@gmail.com>, Krishna Ketan Rai
- <prafulrai522@gmail.com>,  Shankari Anand <shankari.ak0208@gmail.com>,
- manos@pitsidianak.is, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	rcu@vger.kernel.org
-Date: Mon, 01 Jun 2026 13:17:27 +0200
-In-Reply-To: <20260601125933.17ca4dd5@fedora-2.home>
-References: <20260530143541.229628-2-phasta@kernel.org>
-		<20260530143541.229628-5-phasta@kernel.org>	<ah1glmXDM-OAKa5h@google.com>
-	 <20260601125933.17ca4dd5@fedora-2.home>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RFkyQjd+"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5aa68d9d4a3so1169631e87.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 04:33:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780313598; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Js4E/buj2fumghos7HY474w9nsM4D0xwfstAbg03sYhHVmeUG6Ymsl0keLBq0Oyr0W
+         HL8iS4J9g4kyGY9j0NUbaaaPWMZJyYSMJEm1ho0DBTzXEzjmAb3FZIXopSkOn9jRe++8
+         oKVgsJLC8LYs/foxmOZ2lpWLOHU001Qu08mmwRSp9XmXfHvJcEMfrqzHRZ3LwLwa7tUr
+         6eJOVh/2N53GVD8bEVpMXVzOgOCxTwWx50DB1uJ81tE3Pe+70rpM3zOo2THVMvIyVmbr
+         yZwdoJDFXISeHktH/em86/We8XQ67kA7dONOuG4g8HagVQ9WeW36RXOaPVe8ccbZh9kN
+         YiOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=9AFofBAYz8Sa57QxDZuZAkdSqVfumktDj0aUTcAMgtk=;
+        fh=lypFxhxgj5R/Q5HG69j43Mp29S7fZljNM3l3U9ef9vY=;
+        b=Hh1UMjTln3yapHGxij61s/FatFipRIjBTnYMNUIk58gay2LH2EFhmVaAHp03o9Erv8
+         mL0O7T4m4ndKM1rU2dGh+cUbypXSbjOGXAGdnFyRq507CB2w4r0JOSKYA1Sps1uIOtJ1
+         UgqMgyl6xta5ND+LwWCzEXuOaNsLqbjk4DSmbbcy8qLplIRsJhK+RF/pRtdkaNQiPe5g
+         uWerYGbm/mq8DyhjhuumVD0R8K2j95j9zuwJqJfZRhOuQxNEn9fGM1NTid877Btt8H+o
+         ESue6xmJAXvww76mOXwv/ECkyriYeY7PKBnhNlCYoIu3EjNQUnkOROyciyUEt4eIBAsv
+         v6dA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780313598; x=1780918398; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9AFofBAYz8Sa57QxDZuZAkdSqVfumktDj0aUTcAMgtk=;
+        b=RFkyQjd+tZd1FOBaAp15q39WaJJiCzGoREKNKGqPu3dSTR+GNsrF1b/CpST6zUtKGu
+         f4kq9DWOHhJSkz/VOY8XPYFQmeznmwsjCdFTOR/LYAiFttwS4Q6SPrOvNOCFi5WfuueI
+         cXP5m+4WsVJHXZTs+ecvMFYcODngfHN2zhVVCZgrYvvt66qyB4TDJ/ZbSkxGBZMngHqh
+         2HydpqD+W0PCOpabm+y0L/0mpxjKEIbsL5BMXowZDoSHnJciWHNqak++wr+Acsy7TV1q
+         JoTawqLcTPNrZ9oo1PJeKwZegMRjVTobLC/+pxmBsxfMaXBHlFeUE3sc020+H2RJtwej
+         9tEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780313598; x=1780918398;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9AFofBAYz8Sa57QxDZuZAkdSqVfumktDj0aUTcAMgtk=;
+        b=J4BaSemKvukHwpkvwOxTIDA45kDddoJ+Z5Zq8KVD7bc4ckvgkm7pe0Z/6aZ5G0KeX+
+         jJKyG7NHEEfta2y5Gu8XeT3yfM00Ke81rFXtsJ5eUwhWCDQS89j2E9DC4XR5x/Wr2tXa
+         bkNzUSwiy6z4Bi1qCxVh8S/yOvs+OvMq6M7QwDOnbLmI6cVgVzhbuZ84HNlcqnPKjsbY
+         UG83LJXjxZ+ikK3vyqGm1GgL+g3cPhuHM6xuvWlzjXS2EIEMa5ksjWfDGdI5ceKsYNJH
+         VtRUnISNQIKVQdJBtQ16viPDZZdeqviaNkcGgqk6ncDw9ZCGkxx5aZznL/2kdkYMYx2k
+         ejfg==
+X-Forwarded-Encrypted: i=1; AFNElJ8LwO+wx5iFXonQ+GU6JEHmJNElO0/hVUiViYjgESFXAE4V3/Fcf+fgHvKESXpUMFTbXUctJz6dU8FsvE8C0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YylNrh/bpgZPxTCbv3DmUNYEhiBuTYpRb8QRL1QnerPV2PV4z3x
+	bInAtLdtturEyxdDfQhhCLXB7FeYmTPISfJliZ4SCyH/NUGe15MAdsY6D1gcZLVluu0mDOCzz7w
+	dPQ+nr1GU6/iFQxjdulsZ2LfxYWfqUK+/ov58+LI=
+X-Gm-Gg: Acq92OFV0zDGAab/FUdiffWowMYT10fZkFbHn/HjirTYDCLhxNGNO+cMWxjPC3LGGqz
+	V+4ZQznuh976sW+WpKFl0xguILve7SXumLQyvffnrtINLzBg1cje3ZnbFkR7sBHapnln0MEli16
+	qb8H7pgYDEb5KdpMuvl6uhaNWzN0HzNxqpNhcfvHXx4FndGQe6k2LByFRnasAyARNjcVq8vX/38
+	jdddyCmT9fIsEIiwCR0j0uLsCS3+D52XE4uIPaM/DJm/fYEDGOLtd77zmOHeBEN4t4xeNnb+Pil
+	FL2yyEYvbxp997d5OQN7w4SWHZ4tOkZvMzMfScRgnp+qIF2GHsJK
+X-Received: by 2002:a05:6512:689:b0:5aa:b6a:738e with SMTP id
+ 2adb3069b0e04-5aa6092a284mr3457717e87.44.1780313597763; Mon, 01 Jun 2026
+ 04:33:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: e4utjoyocfe4p1fqaetun1euskdi8cyn
-X-MBO-RS-ID: b921df505de11e783e6
+References: <20260524132824.54918-4-muchamadcoirulanwar@gmail.com> <20260529053803.3256031-1-branstj@gmail.com>
+In-Reply-To: <20260529053803.3256031-1-branstj@gmail.com>
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Date: Mon, 1 Jun 2026 18:33:04 +0700
+X-Gm-Features: AVHnY4IhtGOIH_QUtVZymfWopC_MaNartaHjSBgct--I-duvHtzGa7eq2I4G5jU
+Message-ID: <CAO26r3QseHMqX7iQ5B3BRk5wf0_3i1XY+xr6BmY8u4M50ufE6A@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 3/4] iio: position: add Rust driver for ams AS5600
+To: Brandon Saint-John <branstj@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 2026-06-01 at 12:59 +0200, Boris Brezillon wrote:
-> On Mon, 1 Jun 2026 10:36:06 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> > > +};
-> > > +
-> > > +use bindings::ECANCELED;
-> > > +
-> > > +use kernel::str::CString;
-> > > +use kernel::sync::{
-> > > +=C2=A0=C2=A0=C2=A0 aref::{
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ARef,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AlwaysRefCounted, //
-> > > +=C2=A0=C2=A0=C2=A0 },
-> > > +=C2=A0=C2=A0=C2=A0 Arc,
-> > > +=C2=A0=C2=A0=C2=A0 ArcBorrow, //
-> > > +};
-> > > +
-> > > +/// VTable for dma_fence backend_ops callbacks.
-> > > +//
-> > > +// Mandatory dma_fence backend_ops are implemented implicitly throug=
-h
-> > > +// [`FenceCtx`]. Additional ones shall get implemented on this trait=
-, which then
-> > > +// shall be demanded for the fence context data.
-> > > +pub trait FenceCtxOps {}=C2=A0=20
-> >=20
-> > This empty trait is unused.
->=20
-> I had initially suggested to add the F type (AKA FenceData) passed
-> around in multiple places type as an associated type
->=20
-> pub trait FenceCtxOps {
-> =C2=A0=C2=A0 type FenceData: Send + Sync;
-> }
->=20
-> so we don't have to pass both F and C. The reasoning here is that:
->=20
-> 1. We expect we'll have to define more methods to the FenceCtxOps trait
-> at some point, so adding it now kinda makes sense.
->=20
-> 2. In the current design, we've assumed that a Fence can't live/be
-> created outside of a given context, so there's no world where the
-> FenceData wouldn't be known by the FenceCtx implementation, and forcing
-> users to pass F and C around seems needlessly verbose.
+On Fri, 29 May 2026 05:37:00 +0000
+Brandon Saint-John <branstj@gmail.com> wrote:
 
-I had investigated that, but found that this causes us to write things
-like
+> > +//! Datasheet: https://ams.com/documents/20143/36005/AS5600_DS000365_5-00.pdf
+>
+> Small nitpick, but going to the above link doesn't resolve to a pdf.
+> The link that works as of today for me is:
+> https://look.ams-osram.com/m/7059eac7531a86fd/original/AS5600-DS000365.pdf
 
-DriverFence<T> (where T is the FencCtx generic)
+I'll update in v4. Looks like ams reorganized under the ams-osram.com domain.
 
-and then in the actual implementation use
+> > +fn err_enodata() -> Error {
+> > +    Error::from_errno(-(ENODATA as i32))
+> > +}
+>
+> Later on it's probably better to add ENODATA to kernel::error::code
+> instead of the helper.
 
-T::FenceData
+Agreed, the `err_enodata()` helper is a workaround. Will check if
+ENODATA can be added to kernel::error::code directly for v4, or at
+minimum leave a TODO comment.
 
-which reads very weird IMO. Because now for reasons a fence's own data
-are not referred to in its own implementation, but you derive it from
-the context.
+> > +#[derive(Clone, Copy)]
+> > +struct As5600Io(*mut i2c_client);
+>
+> You can replace the *mut i2c_client with an ARef<I2cClient>. The
+> kernel::impl_device_context_into_aref! macro is run on &I2cClient<Core>
+> so you can call ARef::from on dev instead of casting it to the raw pointer
+> to hold it.
+>
+> Then it saves you from repeating a few different parts, like redoing unsafe
+> impls, recasting back to I2cClient<Core> in try_readN, etc.
 
-I do prefer it in a way where the DriverFence generic does appear in
-said fence's actual code, on equal rank with the FenceCtx.
+Good suggestion. I'll restructure around `ARef<I2cClient>` in v4, it
+eliminates the As5600Io wrapper, the manual Send/Sync impls, and the
+unsafe casts entirely.
 
-I suppose that is actually one use case for which PhantomData does
-exist.
+> > +impl IoCapable<u16> for As5600Io {}
+>
+> None of the read_u16 or IoCapable<u16> are used at this point, so those
+> traits/methods could be dropped.
 
+Per Jonathan's feedback, I'm switching to a word read for the angle
+register, so `try_read16` will actually be used in v4. But the As5600Io
+wrapper (and its IoCapable impls) goes away regardless since I'm moving
+to `ARef<I2cClient>` which already has the Io impl from patch 1.
 
-P.
+> As a side note, in the most recent rust-next branch, there are a few changes
+> with IoCapable so maybe worth rebasing at some point to get those changes.
+> IoCapable isn't a marker trait anymore so I get compile errors trying to
+> rebase there.
+
+I checked and you're right. `IoCapable` changed upstream, the empty
+marker impls in patch 1 won't compile against rust-next anymore.
+Will provide proper implementations for I2cClient in v4.
+
+> > +#[pin_data]
+> > +struct As5600Priv<T> {
+> > +    #[pin]
+> > +    io_lock: Mutex<As5600HwState<T>>,
+> > +    channels: KBox<[iio_chan_spec; 1]>,
+> > +}
+>
+> Could As5600Priv/HwState hold the As5600Io directly instead of a generic T?
+> As5600Priv was not generic over T in v2, and since As5600Io implements
+> Io/IoCapable and the sensor only uses the I2C bus it doesn't seem like it
+> needs to be generic, at least at the moment.
+
+I will make this change in v4. I agree that simplifying the struct to
+use a concrete
+type is the better approach here.With ARef<I2cClient> replacing
+As5600Io, the struct
+becomes As5600Priv { io_lock: Mutex<As5600HwState>, ... } with no type
+parameter."
+
+> > +            m if m == iio_chan_info_enum_IIO_CHAN_INFO_RAW as isize => {
+>
+> Ideally in the future, the iio_chan_info_enum_* variants can be wrapped in
+> an Rust enum with an #[repr] attribute. At this stage, match isn't as
+> useful as it could be since you still need to call "if m == ...".
+
+Makes sense as future work for the IIO abstraction. Would make the match
+exhaustive and eliminate the catch-all arm.
+
+Thanks,
+Coirul
