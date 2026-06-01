@@ -1,109 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E983AFCE2
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 09:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D1E394E91;
+	Mon,  1 Jun 2026 10:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780307701; cv=none; b=OcUYDrh7btyfq5v0xwYs3U6yEqMDbxo6V6k6bgHhsc0GexQo00HaGPxgT10CkoxPqPS+UbmzaYmqgFUgGIDUkpBBBgvMiHAp4Cx9gsELYsfwrNhzxyMaJ8eMSmdb3RMb90NrZUwl9tZx5Q1VCL7XNdqIU1LyMZpXxQMieMtuLPw=
+	t=1780308631; cv=none; b=sLz3ZKJ+adZ1IqkwDd5TxMfFBvNFSU1Fvum1uxOdMc3a7+Dbe37zHcsqRXSrqJsFkzyA4I7G3iVm8XIMxY1adn5fsp7JTF/soYW7C+Uz7TTzoSDcQUxG20qxppwVyziZ5j9Vr2RT9WW8/PYTMv9dC3xEU56sg9Qj1SzuXaDzHww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780307701; c=relaxed/simple;
-	bh=PetMFzOtry2SH82+IJoLjzPxL/KXe1OuUtmde9C/Th4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=buKpMq4RV8e38LdBRncUPv6BQuECRCvLPsptEKJU8/3ochmTzuUOKMoCrHmhBmtAArIc6TswQ6VUSa4OB5pM+FE87L5HkmePsaMWz1Rtt7Jk979mnRfi+v7bt4L07MPCRrRtXXqp9l4HZglTlal2ULik1jRo+hfok/g8Cv1cpBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuaEjX0R; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780308631; c=relaxed/simple;
+	bh=xw6EOQOZa57QEzNICPTlKfQ1oFLxa1x8tG3sAZOkU0c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=RPAx1flzhye6vZC0R4FjvSKJmIFa6JlGX6oeO6h1yz9f2tdOgbiHHP6WmFZc5kxK6Sg2f21k90LFVYbkvobIJ5Vf6gIQlyY01aXJSgSaB+6gKUILOtrUzYb7h1o6/w89a2ahh+PHiSY3yx2FmL5hWgFnUw8+S7j0U6cNLaB1GZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbzH8r55; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuaEjX0R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA8E1F00893;
-	Mon,  1 Jun 2026 09:54:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbzH8r55"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45C91F00893;
+	Mon,  1 Jun 2026 10:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780307690;
-	bh=GlXiKKGGXoAPCiK24bzKUEBDD83IrCG0X1CTDeGYU48=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To;
-	b=CuaEjX0RmkhGPphKmnkOXYLrNkY0aJdGGnFU0JOy4SXkhs627PCUffF27UNl01nDi
-	 aGARn+rdJTUXJ2DI5R3HOXS232JhWqcs07JEm3BFRjidwMgVPDVT/qMeYGhctCCc/u
-	 Vw+PxenEmwA6mc+3XJz4AahOXqe+QtQ4qVOyvr4H71gic6Zp2dfb20BpR/OQyGdMD4
-	 6CUOu9iUBcFXNaFVkE8xQZ26ReH1524zenk2zztBMbRt6nSLb25erZb2hDK7m9EiZU
-	 j7xKoow14PjesufnCVG0/H7eKbeonu6mGZMUxrpf9XbjUjKEAl8E5aXItOrL9mq0zV
-	 5wVqwpp+vKwWw==
+	s=k20260515; t=1780308624;
+	bh=vfQ8+IUZDhxYmHScq4CKs3ZZbxy5wKvV5kA45jMiA2c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=HbzH8r55hZFyZwyMzjLlbmm9PSCQv53MO1ij2E36tp4yH6h2wizdXHOZ+TkjUc66n
+	 lAuf0IQAWUH7lYPglQknJDYE6/LQRhQYwWFnYfOCQRjEcJeOBxaRSDO4mFv0/9TNmK
+	 ax2B1k34PMyP2F2nCNbWEcGWhg680+IY+P075BE2uUcCKMBOQVQdscShsb+2LfqfBV
+	 DDVyJ5NInJ5DOS1mkn7EgMM7E3Skh2kqMWw3s8ifJkh4earqYpOihxjpeM++KpQ60+
+	 Kjzh07XlZKU7pC8a5h2UonhZYkdMQRieio3LtYIYVbHul2nzwJmPH60OOV7gIr5XS/
+	 C6QKf6TJKAnZg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Luis Chamberlain <mcgrof@kernel.org>, Petr
+ Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, Sami
+ Tolvanen <samitolvanen@google.com>, Aaron
+ Tomlin <atomlin@atomlin.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>
+Cc: linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: module_param: return value by copy from `value`
+In-Reply-To: <DIV5NRUFAGLY.1RH2GL15CYQCG@garyguo.net>
+References: <20260529-modules-value-ref-v1-1-a0df7e9e6f2d@kernel.org>
+ <DIV5NRUFAGLY.1RH2GL15CYQCG@garyguo.net>
+Date: Mon, 01 Jun 2026 12:10:15 +0200
+Message-ID: <878q8y7erc.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Jun 2026 11:54:47 +0200
-Message-Id: <DIXMEKSYML5D.1JUXO9CW10RY8@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 2/2] drm/tyr: use IoMem directly instead of Devres
-Cc: <daniel.almeida@collabora.com>, <boris.brezillon@collabora.com>,
- <deborah.brouwer@collabora.com>, <gary@garyguo.net>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Alice Ryhl" <aliceryhl@google.com>
-References: <20260529000106.2257996-1-dakr@kernel.org>
- <20260529000106.2257996-3-dakr@kernel.org> <ah1SSN8_dCEA4Osz@google.com>
-In-Reply-To: <ah1SSN8_dCEA4Osz@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Mon Jun 1, 2026 at 11:35 AM CEST, Alice Ryhl wrote:
-> On Fri, May 29, 2026 at 02:00:54AM +0200, Danilo Krummrich wrote:
->> Now that IoMem is lifetime-parameterized, use it directly in probe
->> rather than wrapping it in Devres and Arc. The I/O memory mapping is
->> only used during probe and not stored in driver data, so device-managed
->> revocation is unnecessary.
->>=20
->> This removes the Devres access(dev) pattern from issue_soft_reset(),
->> GpuInfo::new(), and l2_power_on(), simplifying register access.
->>=20
->> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
->> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+"Gary Guo" <gary@garyguo.net> writes:
+
+> On Fri May 29, 2026 at 9:41 AM BST, Andreas Hindborg wrote:
+>> For `Copy` parameter types it is more ergonomic to retrieve the
+>> parameter value by copy than through a shared reference. Change
+>> `ModuleParamAccess::value` to return `T` by copy when `T: Copy`,
+>> and rename the previous reference-returning accessor to
+>> `value_ref`. Update the in-tree caller in `rust_minimal`.
+>>
+>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>> This change was suggested during review of the rust null block series [1].
+>>
+>> [1] https://lore.kernel.org/r/abfe2LbhLzXiGCkA@google.com
+>> ---
+>>  rust/kernel/module_param.rs  | 15 ++++++++++++++-
+>>  samples/rust/rust_minimal.rs |  2 +-
+>>  2 files changed, 15 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
+>> index 6a8a7a875643..701210206bba 100644
+>> --- a/rust/kernel/module_param.rs
+>> +++ b/rust/kernel/module_param.rs
+>> @@ -132,9 +132,12 @@ pub const fn new(default: T) -> Self {
+>>      }
+>>  
+>>      /// Get a shared reference to the parameter value.
+>> +    ///
+>> +    /// Returns a reference to the value supplied at module load time, or a
+>> +    /// reference to the default value if the parameter has not been set.
+>>      // Note: When sysfs access to parameters are enabled, we have to pass in a
+>>      // held lock guard here.
+>> -    pub fn value(&self) -> &T {
+>> +    pub fn value_ref(&self) -> &T {
+>>          self.value.as_ref().unwrap_or(&self.default)
+>>      }
+>>  
+>> @@ -146,6 +149,16 @@ pub const fn as_void_ptr(&self) -> *mut c_void {
+>>      }
+>>  }
+>>  
+>> +impl<T: Copy> ModuleParamAccess<T> {
 >
->> -pub(crate) type IoMem =3D kernel::io::mem::IoMem<'static, SZ_2M>;
->> +pub(crate) type IoMem<'a> =3D kernel::io::mem::IoMem<'a, SZ_2M>;
+> Instead of adding a new impl block, this should just be moved to immediately
+> after (or before) `value_ref` with a `where T: Copy` bound instead.
 >
-> It'd make more sense for me to put 'b or 'bound here.
+> This makes related code close together for readers of the code.
 
-You can name it 'b of course, but the semantics for 'bound has been agreed =
-to
-describe the lifetime of something actually being in place for the entire
-duration of a device being bound to a driver, which isn't the case here.
+Will do.
 
->>          let sram_regulator =3D Regulator::<regulator::Enabled>::get(pde=
-v.as_ref(), c"sram")?;
->> =20
->>          let request =3D pdev.io_request_by_index(0).ok_or(ENODEV)?;
->> -        let iomem =3D Arc::new(request.iomap_sized::<SZ_2M>()?.into_dev=
-res()?, GFP_KERNEL)?;
->> +        let iomem =3D request.iomap_sized::<SZ_2M>()?;
->> =20
->>          issue_soft_reset(pdev.as_ref(), &iomem)?;
->>          gpu::l2_power_on(pdev.as_ref(), &iomem)?;
->> =20
->> -        let gpu_info =3D GpuInfo::new(pdev.as_ref(), &iomem)?;
->> +        let gpu_info =3D GpuInfo::new(&iomem);
->
->
-> While this change is fine, I notice that we don't actually keep the
-> iomem alive past the probe method. I assume we're going to need that,
-> which leads to the question of whether we can store the iomem in the
-> places we need it.
->
-> As far as I can tell, we can store it in TyrPlatformDriverData but not
-> in TyrDrmDeviceData, is that right?
 
-TyrDrmDeviceData will eventually become the drm::Registration data, so it w=
-ill
-be a ForLt type as well and IoMem<'a> can directly be stored in there.
+Best regards,
+Andreas Hindborg
 
-The DRM device private data being tied to the lifetime of the DRM device it=
-self
-doesn't seem to be useful anymore after IOCTLs won't potentially reach into=
- the
-driver after device unbind anymore.
 
-In the meantime (or even after this change, although I wouldn't recommend t=
-hat),
-you can call into_devres() before storing it in TyrDrmDeviceData.
+
