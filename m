@@ -1,210 +1,385 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139793A6F04
-	for <rust-for-linux@vger.kernel.org>; Mon,  1 Jun 2026 13:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780320444; cv=pass; b=d3OtSSjYigkDy4zaAfcP1OGRVuTU5JAgnB4+jxUWGP/BZGG48zxMfjLOjgHBR22ykdjTNASQTYzmsgbC5eYDEDkKgf8kSnjkhFDE0dIsOvz2gEgj7kpF/dHblukLtdLC8uf4lI/aX3CunS2KwGn9UkI78JdYzK+rGeQbFRsbDFM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780320444; c=relaxed/simple;
-	bh=0DHOe9b8avRmAIwuEFXwH9kNoZgOYx6xrIy5spz3Blk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YAtnQR8Dyqr60Tp4zCYiwOgYN2MsFIuioiZ2r4obvSFbOkSkeK5cdurt8FCyoTveqQ3lz09rgD72pmQ8OaFebZ8cpb59Tmsk6FZdzGQccp57o+iUGPlAjGdpFro9eiZ1DhuldDgAV6qBhLLtLYd4kkSpb1p4n8OC0WJl05hil3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PIJVNL6Y; arc=pass smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1290377018;
+	Mon,  1 Jun 2026 13:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780321279; cv=none; b=CzJPXiLa8PxMQtlbk28zFS5jHfhBiIz96v69oS6MtGYmlUYfBcRvTVrQyH8ez7IGiSt04kigWcdDNFwnlBRpD0xbQwM54vxuhp4IvsR9iv2IJNZvvf8CDfXe5//pkHNv4pbwELfVXkgmUWWqutuEFUjWgwD7PlENBzza75DcuUk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780321279; c=relaxed/simple;
+	bh=5/o6NQqtTVwjIlNjXVO4Xt/qjxB+FqG1olLOJTKzZw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vB31v3uWfrX4ZbmsWAUk/rwVePBb/oET+NqF+jKA08QVBdkJN8CyUZ0AZ0o34BoxamNfxmI9yzaNMNNmqzrVbxsSd4B0660rTtI16CbD4VtsCSPZHlXwOVmqYtdiMrCqKrSBvaSLemNge+dE0wKOl+cZMjO5/ZZnmDb4ypGe6W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZD/1qwUQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PIJVNL6Y"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-304e58292d3so6628289eec.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 06:27:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780320442; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dC6gTF+eivTbmoT9jBTvo+A5cAZznrzyaD8mJn9zvpBX72JBlj4IEJ8YM70NcLD4Cg
-         du9CMvosHnvkwT5BydHnEWhtZrhwKzgEEXVDBN18ghQTa9F/2RD501DUoORIxQC4uOlg
-         PF65A3lr3ka0OVBPfnOJ/XyghSGt4R6OHCRPLueP8HxpuNwoTrFNwEJqg/2OJmyeSfSO
-         6afaUlM8793inpXW9zi8ZN0jsVXzQOyZ7LB3598Dw0RSRcpTrVABJ+MHryokNa0fjLk7
-         CB3oBzqW6M+ASLfIWp+aRc635SJUgvZbEcUv6WJPlH+7MV/0C1XQccwU9aNrNhY61Nwl
-         eo8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ri49UqDlI7T6GkNPLNf+vktr0M6I1uPdwQQUuW9VuW4=;
-        fh=3YRYuyAy3g0KLhaBndIkU13c9HzuESvesx05c6qg0Es=;
-        b=Mf5Am17CzqEYqb1YsH8+oHtcz0DSXMKZDDMu8m8rXxGoRx7lhitAuKgC3MppFdcjN7
-         PqkHbYFBnYE8AWRbOWhyaap8ee9c+vNvfrJrH4V2vy2Ylk84sQsc6E0JeGIJF4+rbahG
-         UW4sndyW2qlWJBR5MNvhEeWjW/+uZmf3tgCm0NOPgTVAxsm6Gf7GsWzsj08x+6DaraCM
-         Av3vCHZXMonodovY3Il+BbaN+QQGJs4AOFPzN6Xp4HYGSAPU6NqruXhYJ7zf6yHyms+V
-         S8zWarFyocCevhPxcFx2XDfoUUo9GYI3sHo+/pjEWJjFmkFO1ILG0PKhTbuxK0q8zSo/
-         vBPw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780320442; x=1780925242; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ri49UqDlI7T6GkNPLNf+vktr0M6I1uPdwQQUuW9VuW4=;
-        b=PIJVNL6Yg1pM/611/nm5MHUW3g4YZR5NvyRGwqcBG4Rdcz6o4qO+l520CcFX6ajtDq
-         f8Nl+jZAOKTn8qxhXgjdMyX0tg00GXUz7AGs0d9hDPDuMzq21czi5gwcT0k/HUXI9f5I
-         uHDccF0bzD188UskmOvITNiTjOXIbB0Mhfmy313ZQSiOJJyFsfrPOmKp0cB3EtYHy2Ix
-         okMPDPSrdfD/iNZx5xOjVsLKXe98wVs8HouGwP8rtvB/Tfk0d7CdzfzlaLHzCxQx275b
-         B84LP/t1aru0U2rw4c3hLcmW0HcTFszNlVX5QDwhbRjYF/JtjZkCwG9sS4Gbouh5X2Nu
-         r5fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780320442; x=1780925242;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ri49UqDlI7T6GkNPLNf+vktr0M6I1uPdwQQUuW9VuW4=;
-        b=X+lwXuRoB7lSdPLjXq029V5BVsc/wmVhElZVz+vbzteRQMKepAoU8xiSilLGYHItWX
-         uo20U9noqbOrjLIe0g0YqLGlBCgj+29drebpAZDAtm5w+XFnKOA6FDz1QQTrnQ4tGReo
-         EGagkAKvEEW9B9hlS8FOHLBlP0wOk7pDirEjLL85pbpXLnmAg4pk/1bY5Aw/EkrmVAKq
-         KTt/ru1JYAgLbaUyeGm+gACGF+V+42zRKtPbNEW5omgvfNZtsAsz3KYczDf42K3qHM2g
-         epm+q0DruUFbVAguEsQTZMHHvGu1COxDpvyEuKLdJi4eMB/p7/0Bo8ZN4fukeBlD97nn
-         mnUA==
-X-Forwarded-Encrypted: i=1; AFNElJ+qGEXWq7+VHldzVX77MrGQa3S62u8O03Ve0AWcc7MGmXu7VlRcUawTCfAWE6AtazdHH7wH/fyjOQydH8jikQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxl4RScgm/QgzPI2lqdC21jRBBefwWcsvJMIJYiPskPz5qctRC8
-	r0lk/8EyJa1BBqxgA6HcBsglMy2/NmlZX85WMhPeBvnew4LmaypVKKjmZZwbx4ASsPHJJs2hDes
-	1YdvVRFN1G6fpqglcQXj46dV/EwYsn5PvMpOYWgsH
-X-Gm-Gg: Acq92OGdazGnc3KpyOC8ETLhXI40BUWgPZK7NjrQEZVKs0WkK/hb+9jc8b50w09rkPf
-	owcZADPFUtx9nW31Pzj7pBpuoiQQshlozfxwH0VG6h68xa2GKnu4jXFMDv0pSx6lBwp6OAp5gV2
-	yrpWxy9tFFD9MK4d+noyUXU18PQH4TXE5Pc7r7xvgZyPbxWXvfH0p3RszfiB1rXb4w7McnFp/yG
-	BsCKWraPqWulj/57rumiTSLYTCypEZ91M6/bm9dctDFaUeXKtwkm8LZa4+Fh8tTuYOZgnx1z22G
-	YZV+jMDmgcG2DBR9tQSeoeEMyAwTL2zWWFDPq+KaM4rFcZrjzWg09dfMjD5BfwOPhisr+R+IP/m
-	81tM=
-X-Received: by 2002:a05:7300:2201:b0:304:d8cb:8424 with SMTP id
- 5a478bee46e88-304fa546886mr4919952eec.9.1780320441610; Mon, 01 Jun 2026
- 06:27:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZD/1qwUQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6A91F00898;
+	Mon,  1 Jun 2026 13:41:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780321277;
+	bh=Cy/Wx8iHE+k3tnhZgJfl2Qf8HrXMI7saH/g6ishR5cw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZD/1qwUQecSnKfTT66yrGOSNo8WOMEXQQQ9R3IbvQfQhjd651FrPeqeL9Sn+VJ3ax
+	 BhVO0KmIo1FTz6s2UpPkb2oYSpR8G16KywEdVOf7XlNJOOsprbclirHrtIeOIh8XlD
+	 9FTViaKyzZLTta5KwN4fdKsMj0UPdzR8r5vZi0M8mvA0GZOInaBEKLSfvnNsl/O878
+	 L5K5x/D/fK50wEW7ei7xUvYiAUp1WNnHvvHfIHKWJoetIptRK+EuazavG0TZg0EMQC
+	 bIJwzQ2KWq0h00FyAkNS2XmSfHclYfo2Ew+WkNKhCqg/GxdHYlj+Llt4JJHfAzw1tI
+	 SibGx2RMqrrKQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BA7BFF4008A;
+	Mon,  1 Jun 2026 09:41:15 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 01 Jun 2026 09:41:15 -0400
+X-ME-Sender: <xms:-4sdarzHZ6Vq9HtsOFeOO85MzAGI-Ah0vFhwMTBVZIvO-rjjhM5M3g>
+    <xme:-4sdalq9FJxZ0-F_IItS9avqwcYvsI6ZePdHcjdKwhyQtRAzq80GCyEoeFZj14KxA
+    rZw9xfOUUr9sCcPlvf5wM5h7Ug-qLjRbF-8leyFgb58_oUGZJuq>
+X-ME-Received: <xmr:-4sdav7VT4VL2EfhcT26KxLioXm1vn5EArLtJ0_EXYRD-cYr7ZlUaHk1oL1T8Zhy0HI017nHtgidGp5xoBWdYKtWV5MO7I8cuQ>
+X-ME-Proxy-Cause: dmFkZTEQx9WLyMJiwmRV/+uLnLi6x4tXtGJyKzl7rVMSP6cJN4a3LJQXrGvoa5s5QegsPj
+    cBG9+VIEViyPnp9vQVotsHJtdGjqtL8FjYMeqtYA04kgCDQXIM0kLMdz+KfFxGn/jm2kHV
+    UPnXdzWfZjVLyVBPSvBY72/HFGneZCGM2MkwQhN5CaUI8t2NuPJFNw0c4FeZxthAmhyRiv
+    NN0aTXWc0JrQXjEClv0gxSkxg9jvRYyZeqON0CnaaBjd6BvKn/mQbMrHfoUJUig1DYbcUD
+    XxkCwq+IvtsoGKWSaiESv2T4BxPHNSjkq4ZmvgZ7/OVZkTpvSG3l8Q7eAtkEZapasA3Rco
+    tQ7QJ65HWT9eVssyAmvMK2peoVFi3X7P2LXRootOWWQ45mZ4ro3AWW/OvA4g7MF1Sf/jgP
+    mBGJ2O81xU6Q4lsGyjn0nIMJN+CG9xgVjzeGgSgZQYQJM7XG7oQ6amNwo+5eGdcWoKNiYE
+    Bi/DK+s1w/v6o4mdBq9vPdYSX+rsc5L50f3RnkZhV9On5d6fsJOXwS4FtcqG9bZGRmyUQA
+    FJjm/HtDkgcrhhDS1LcKFDdQovY02T4TIBh1TpJvMCvl+aisTIozYS6Oz7JdstEJ14gIpx
+    EAExkYvv/PzMdfThegFq1qzG2GVqxy80uwMbuMemZqJzsIOZnaJFjK0PpOOQ
+X-ME-Proxy: <xmx:-4sdagC00o4l8d5ZXp0MOHiTuMek0dQUNf3hXe7v_xU6la8nXPt3kA>
+    <xmx:-4sdal3oR2JPLGLZe81XDLAecgKlmBHwTTyMlkPsL-c0iw1kHSm3rg>
+    <xmx:-4sdavZrr0U6gJ7bPYpk1cz8VGFwicN1CkhMOu3-ZsnFf9ouUMa0Bg>
+    <xmx:-4sdap-lry_mBVdMIgF886GkdpB-LkVWd-DVIW-izB0N48WCQ8mWbw>
+    <xmx:-4sdapOo-eGQE5QSonTMmvPTDYsc5Gw3FV2qQsXBiil_-0azbG9Hnwro>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Jun 2026 09:41:15 -0400 (EDT)
+Date: Mon, 1 Jun 2026 06:41:13 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: phasta@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Igor Korotin <igor.korotin@linux.dev>,	Lorenzo Stoakes <ljs@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>, manos@pitsidianak.is,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, rcu@vger.kernel.org
+Subject: Re: [PATCH 2/4] rust: rcu: add RcuBox type
+Message-ID: <ah2L-TMT5UHSd_Hs@tardis-2.local>
+References: <20260530143541.229628-2-phasta@kernel.org>
+ <20260530143541.229628-4-phasta@kernel.org>
+ <ahr9gtzQLSbPeBx_@tardis.local>
+ <e8b16f3b40d42f3b0a8814180fa9b06f82c9d901.camel@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260530143541.229628-2-phasta@kernel.org> <20260530143541.229628-5-phasta@kernel.org>
- <ah1glmXDM-OAKa5h@google.com> <0ea6b6fdd1e3f1e07445f17c0bf672524938dc85.camel@mailbox.org>
- <ah19ZVkr7b3m7V_u@google.com> <3b216f24afb406b797b8bbb73b3f5c0eec2fdc6c.camel@mailbox.org>
- <CAH5fLgiZb5fqfXGQMicPp+UbBi3JMN8ZNG_Ldt5KiSk+btVCSA@mail.gmail.com> <3829028571be1886b99018040782ef94369b9523.camel@mailbox.org>
-In-Reply-To: <3829028571be1886b99018040782ef94369b9523.camel@mailbox.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 1 Jun 2026 15:27:06 +0200
-X-Gm-Features: AVHnY4IJXBoMvh-rw5Yz6dkN_FCzB34R7ldudBtNs3IR1XQFjKtmqNv3cEC-Bt4
-Message-ID: <CAH5fLggFHp6bLZ-g8aTQKY_sHRJ0aEmB+-2XWG3RMS1yBXO+8A@mail.gmail.com>
-Subject: Re: [PATCH 3/4] rust: Add dma_fence abstractions
-To: phasta@kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Igor Korotin <igor.korotin@linux.dev>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Krishna Ketan Rai <prafulrai522@gmail.com>, 
-	Shankari Anand <shankari.ak0208@gmail.com>, manos@pitsidianak.is, 
-	Boris Brezillon <boris.brezillon@collabora.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
-	rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e8b16f3b40d42f3b0a8814180fa9b06f82c9d901.camel@mailbox.org>
 
-On Mon, Jun 1, 2026 at 3:24=E2=80=AFPM Philipp Stanner <phasta@mailbox.org>=
- wrote:
->
-> On Mon, 2026-06-01 at 15:22 +0200, Alice Ryhl wrote:
-> > On Mon, Jun 1, 2026 at 2:47=E2=80=AFPM Philipp Stanner <phasta@mailbox.=
-org> wrote:
-> > >
-> > > On Mon, 2026-06-01 at 12:39 +0000, Alice Ryhl wrote:
-> > > > On Mon, Jun 01, 2026 at 02:26:17PM +0200, Philipp Stanner wrote:
-> > > > > On Mon, 2026-06-01 at 10:36 +0000, Alice Ryhl wrote:
-> > > > > > On Sat, May 30, 2026 at 04:35:11PM +0200, Philipp Stanner wrote=
-:
-> > > > > > > +/// A trait to enforce that all data in a [`DriverFence`] ei=
-ther does not need
-> > > > > > > +/// drop, or lives in a [`RcuBox`].
-> > > > > > > +pub trait DriverFenceAllowedData: private::Sealed {}
-> > > > > > > +
-> > > > > > > +mod private {
-> > > > > > > +    pub trait Sealed {}
-> > > > > > > +}
-> > > > > > > +
-> > > > > > > +impl<F: Copy> DriverFenceAllowedData for F {}
-> > > > > > > +impl<F: Send> DriverFenceAllowedData for RcuBox<F> {}
-> > > > > > > +
-> > > > > > > +impl<F: Copy> private::Sealed for F {}
-> > > > > > > +impl<F: Send> private::Sealed for RcuBox<F> {}
-> > > > > >
-> > > > > > Why sealed? Just make the trait unsafe and require the things y=
-ou
-> > > > > > require from the user.
-> > > > >
-> > > > > This is far better. We definitely only allow the user to pass A o=
-r B,
-> > > > > and only then it compiles.
-> > > >
-> > > > What if I have another type that I want to use here? For example, m=
-aybe
-> > > > I have a struct containing a copy field and an RcuBox. Or maybe I h=
-ave
-> > > > an ARef<_> of some C type that uses rcu for cleanup. Then I must ed=
-it
-> > > > this file to add support for it?
-> > > >
-> > > > > The unsafe implementation could be messed up.
-> > > > >
-> > > > > I thought that's what Sealed is for. Or isn't it?
-> > > >
-> > > > Sealed is for making 100% sure that downstream crates/drivers canno=
-t
-> > > > provide their own implementations. But I don't see why you need tha=
-t.
-> > > > All you require is that the value remains valid for one grace perio=
-d
-> > > > after cleanup begins. As long as the type satisfies that, you are h=
-appy.
-> > > > An unsafe trait can require that sort of requirement from the user.
-> > > >
-> > > > I think what you want is expressed well by `RcuFreeSafe` from this
-> > > > thread:
-> > > > https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library=
-/topic/Consolidate.20.60PollCondVarBox.60.20into.20.60Rcu.2ABox.60/near/598=
-726724
-> > > >
-> > >
-> > > I guess this is a question of design principles. If you demand an
-> > > RcuBox, you have a guarantee that it's safe.
-> > >
-> > > If you demand an unsafe trait, you open the possibility for people
-> > > messing up.
-> > >
-> > > Due to the unsafe-contract you'd have moved the responsibility for th=
-e
-> > > soundness to the driver.
-> > >
-> > > I would not want to block your suggestion, but I am not sure whether
-> > > that's really the better design idea.
-> >
-> > Yes, it's a design principle. You are saying that if someone needs to
-> > do X but might get it wrong, we should take away the ability to do X?
-> > I fundamentally disagree with that principle. Unsafe traits is the
-> > tool Rust created for the exact problem you have; marking places where
-> > you should be careful is the entire point of 'unsafe'.
->
-> I mean, fine by me if the others don't disagree.
->
-> But when then do you ever really want a Sealed trait?
+On Mon, Jun 01, 2026 at 09:56:23AM +0200, Philipp Stanner wrote:
+> On Sat, 2026-05-30 at 08:08 -0700, Boqun Feng wrote:
+> > On Sat, May 30, 2026 at 04:35:10PM +0200, Philipp Stanner wrote:
+> > > From: Alice Ryhl <aliceryhl@google.com>
+> > > 
+> > > This adds an RcuBox container, which is like KBox except that the value
+> > > is freed with kfree_rcu.
+> > > 
+> > > To allow containers to rely on the rcu properties of RcuBox, an
+> > > extension of ForeignOwnable is added.
+> > > 
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > ---
+> > 
+> > I have the following on top of Alice's patch. @Alice, @Danilo, thoughts?
+> > 
+> > Then we can have:
+> > 
+> > type RcuKBox<T> = RcuBox<T, Kmalloc>;
+> > type RcuVBox<T> = RcuBox<T, Vmalloc>;
+> 
+> No objections by me.
+> 
+> I just think we have to decide how the treat the namespaces, though.
+> Probably Alice wrote it like that so that it's very apparent that this
+> is not a normal box. It still breaks the naming convention in my
+> opinion.
+> 
+> rcu::Box vs rcu::RcuBox
+> 
+> With all other subsystems, naming like that seems not allowed.
+> 
+> dma::Fence vs dma::DmaFence
+> 
+> 
+> I probably would allow the user to decide whether he wants to just use
+> it as `rcu::Box` in all his code.
+> 
+> But no hard feelings.
+> 
 
-Sealed traits are a very niche feature. The main use-case is
-forwards-compatibility. It's not a breaking change to add a new method
-to a sealed trait because no downstream crates could implement the
-trait.
+For this I think that rcu::RcuBox is a bit different than dma::Fence,
+because Box has its widely-accepted meaning through all Rust code,
+while `Fence` doesn't. Hence my current thought is rcu::RcuBox and
+dma::Fence. My personal preference is using namespace as much as we
+could until there might be some misleading.
 
-Alice
+> 
+> 
+> > 
+> > and Philipp can use the `RcuKBox` in this patchset. We also need to impl
+> > InPlaceInit for RcuBox, but that can be added later.
+> 
+> So shall we merge my series with Alice's patch, and later we add your
+> patch and other features, or would you prefer to have the additional
+> boxes from your patch from the get-go?
+> 
+
+I would like to have it from the get-go mainly because of RcuBox vs
+RcuKBox naming. Thank you!
+
+Regards,
+Boqun
+
+> 
+> P.
+> 
+> > 
+> > Regards,
+> > Boqun
+> > 
+> > ------------->8
+> > Subject: [PATCH] rust: rcu: Make RcuBox generic over Allocator
+> > 
+> > To support RCU-protected vmalloc allocation, we need to make `RcuBox`
+> > generic over `Allocator`. Currently this works since all `Allocator`s
+> > are either kmalloc() or vmalloc(), and kvfree_call_rcu() works with both
+> > allocations.
+> > 
+> > While we are at it, add some basic test cases.
+> > 
+> > Signed-off-by: Boqun Feng <boqun@kernel.org>
+> > ---
+> >  rust/kernel/sync/rcu/rcu_box.rs | 96 +++++++++++++++++++++++----------
+> >  1 file changed, 67 insertions(+), 29 deletions(-)
+> > 
+> > diff --git a/rust/kernel/sync/rcu/rcu_box.rs b/rust/kernel/sync/rcu/rcu_box.rs
+> > index 2508fdb609ec..5c344d82c0d9 100644
+> > --- a/rust/kernel/sync/rcu/rcu_box.rs
+> > +++ b/rust/kernel/sync/rcu/rcu_box.rs
+> > @@ -4,47 +4,59 @@
+> >  
+> >  //! Provides the `RcuBox` type for Rust allocations that live for a grace period.
+> >  
+> > -use core::{ops::Deref, ptr::NonNull};
+> > +use core::{
+> > +    marker::PhantomData,
+> > +    ops::Deref,
+> > +    ptr::NonNull, //
+> > +};
+> >  
+> >  use kernel::{
+> > -    alloc::{self, AllocError},
+> > +    alloc::{
+> > +        self,
+> > +        AllocError,
+> > +        Allocator, //
+> > +    },
+> >      bindings,
+> >      ffi::c_void,
+> >      prelude::*,
+> > -    sync::rcu::{ForeignOwnableRcu, Guard},
+> >      types::ForeignOwnable,
+> >  };
+> >  
+> > +use super::{
+> > +    ForeignOwnableRcu,
+> > +    Guard, //
+> > +};
+> > +
+> >  /// A box that is freed with rcu.
+> >  ///
+> >  /// The value must be `Send`, as rcu may drop it on another thread.
+> >  ///
+> >  /// # Invariants
+> >  ///
+> > -/// * The pointer is valid and references a pinned `RcuBoxInner<T>` allocated with `kmalloc`.
+> > +/// * The pointer is valid and references a pinned `RcuBoxInner<T>` allocated with `A`.
+> >  /// * This `RcuBox` holds exclusive permissions to rcu free the allocation.
+> > -pub struct RcuBox<T: Send>(NonNull<RcuBoxInner<T>>);
+> > +pub struct RcuBox<T: Send, A: Allocator>(NonNull<RcuBoxInner<T>>, PhantomData<A>);
+> >  
+> >  struct RcuBoxInner<T> {
+> >      value: T,
+> >      rcu_head: bindings::callback_head,
+> >  }
+> >  
+> > -// Note that `T: Sync` is required since when moving an `RcuBox<T>`, the previous owner may still
+> > -// access `&T` for one grace period.
+> > +// Note that `T: Sync` is required since when moving an `RcuBox<T, A>`, the previous owner may
+> > +// still access `&T` for one grace period.
+> >  //
+> > -// SAFETY: Ownership of the `RcuBox<T>` allows for `&T` and dropping the `T`, so `T: Send + Sync`
+> > -// implies `RcuBox<T>: Send`.
+> > -unsafe impl<T: Send + Sync> Send for RcuBox<T> {}
+> > +// SAFETY: Ownership of the `RcuBox<T, A>` allows for `&T` and dropping the `T`, so `T: Send +
+> > +// Sync` implies `RcuBox<T, A>: Send`.
+> > +unsafe impl<T: Send + Sync, A: Allocator> Send for RcuBox<T, A> {}
+> >  
+> > -// SAFETY: `&RcuBox<T>` allows for no operations other than those permitted by `&T`, so `T: Sync`
+> > -// implies `RcuBox<T>: Sync`.
+> > -unsafe impl<T: Send + Sync> Sync for RcuBox<T> {}
+> > +// SAFETY: `&RcuBox<T, A>` allows for no operations other than those permitted by `&T`, so `T:
+> > +// Sync` implies `RcuBox<T, A>: Sync`.
+> > +unsafe impl<T: Send + Sync, A: Allocator> Sync for RcuBox<T, A> {}
+> >  
+> > -impl<T: Send> RcuBox<T> {
+> > +impl<T: Send, A: Allocator> RcuBox<T, A> {
+> >      /// Create a new `RcuBox`.
+> >      pub fn new(x: T, flags: alloc::Flags) -> Result<Self, AllocError> {
+> > -        let b = KBox::new(
+> > +        let b = Box::<_, A>::new(
+> >              RcuBoxInner {
+> >                  value: x,
+> >                  rcu_head: Default::default(),
+> > @@ -53,9 +65,9 @@ pub fn new(x: T, flags: alloc::Flags) -> Result<Self, AllocError> {
+> >          )?;
+> >  
+> >          // INVARIANT:
+> > -        // * The pointer contains a valid `RcuBoxInner` allocated with `kmalloc`.
+> > +        // * The pointer contains a valid `RcuBoxInner` allocated with `A`.
+> >          // * We just allocated it, so we own free permissions.
+> > -        Ok(RcuBox(NonNull::from(KBox::leak(b))))
+> > +        Ok(RcuBox(NonNull::from(Box::leak(b)), PhantomData))
+> >      }
+> >  
+> >      /// Access the value for a grace period.
+> > @@ -66,7 +78,7 @@ pub fn with_rcu<'rcu>(&self, _read_guard: &'rcu Guard) -> &'rcu T {
+> >      }
+> >  }
+> >  
+> > -impl<T: Send> Deref for RcuBox<T> {
+> > +impl<T: Send, A: Allocator> Deref for RcuBox<T, A> {
+> >      type Target = T;
+> >      fn deref(&self) -> &T {
+> >          // SAFETY: While the `RcuBox<T>` exists, the value remains valid.
+> > @@ -75,10 +87,10 @@ fn deref(&self) -> &T {
+> >  }
+> >  
+> >  // SAFETY:
+> > -// * The `RcuBoxInner<T>` was allocated with `kmalloc`.
+> > +// * The `RcuBoxInner<T>` was allocated with `A`.
+> >  // * `NonNull::as_ptr` returns a non-null pointer.
+> > -unsafe impl<T: Send + 'static> ForeignOwnable for RcuBox<T> {
+> > -    const FOREIGN_ALIGN: usize = <KBox<RcuBoxInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
+> > +unsafe impl<T: Send + 'static, A: Allocator> ForeignOwnable for RcuBox<T, A> {
+> > +    const FOREIGN_ALIGN: usize = <Box<RcuBoxInner<T>, A> as ForeignOwnable>::FOREIGN_ALIGN;
+> >  
+> >      type Borrowed<'a> = &'a T;
+> >      type BorrowedMut<'a> = &'a T;
+> > @@ -88,9 +100,9 @@ fn into_foreign(self) -> *mut c_void {
+> >      }
+> >  
+> >      unsafe fn from_foreign(ptr: *mut c_void) -> Self {
+> > -        // INVARIANT: Pointer returned by `into_foreign` carries same invariants as `RcuBox<T>`.
+> > +        // INVARIANT: Pointer returned by `into_foreign, A` carries same invariants as `RcuBox<T>`.
+> >          // SAFETY: `into_foreign` never returns a null pointer.
+> > -        Self(unsafe { NonNull::new_unchecked(ptr.cast()) })
+> > +        Self(unsafe { NonNull::new_unchecked(ptr.cast()) }, PhantomData)
+> >      }
+> >  
+> >      unsafe fn borrow<'a>(ptr: *mut c_void) -> &'a T {
+> > @@ -104,7 +116,7 @@ unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> &'a T {
+> >      }
+> >  }
+> >  
+> > -impl<T: Send + 'static> ForeignOwnableRcu for RcuBox<T> {
+> > +impl<T: Send + 'static, A: Allocator> ForeignOwnableRcu for RcuBox<T, A> {
+> >      type RcuBorrowed<'a> = &'a T;
+> >  
+> >      unsafe fn rcu_borrow<'a>(ptr: *mut c_void) -> &'a T {
+> > @@ -114,7 +126,7 @@ unsafe fn rcu_borrow<'a>(ptr: *mut c_void) -> &'a T {
+> >      }
+> >  }
+> >  
+> > -impl<T: Send> Drop for RcuBox<T> {
+> > +impl<T: Send, A: Allocator> Drop for RcuBox<T, A> {
+> >      fn drop(&mut self) {
+> >          // SAFETY: The `rcu_head` field is in-bounds of a valid allocation.
+> >          let rcu_head = unsafe { &raw mut (*self.0.as_ptr()).rcu_head };
+> > @@ -122,9 +134,11 @@ fn drop(&mut self) {
+> >              // SAFETY: `rcu_head` is the `rcu_head` field of `RcuBoxInner<T>`. All users will be
+> >              // gone in an rcu grace period. This is the destructor, so we may pass ownership of the
+> >              // allocation.
+> > -            unsafe { bindings::call_rcu(rcu_head, Some(drop_rcu_box::<T>)) };
+> > +            unsafe { bindings::call_rcu(rcu_head, Some(drop_rcu_box::<T, A>)) };
+> >          } else {
+> >              // SAFETY: All users will be gone in an rcu grace period.
+> > +            // TODO: We are luckily since `kvfree_call_rcu()` works on both kmalloc and vmalloc,
+> > +            // maybe a new `Allocator` method is needed.
+> >              unsafe { bindings::kvfree_call_rcu(rcu_head, self.0.as_ptr().cast()) };
+> >          }
+> >      }
+> > @@ -135,11 +149,35 @@ fn drop(&mut self) {
+> >  /// # Safety
+> >  ///
+> >  /// `head` references the `rcu_head` field of an `RcuBoxInner<T>` that has no references to it.
+> > -/// Ownership of the `KBox<RcuBoxInner<T>>` must be passed.
+> > -unsafe extern "C" fn drop_rcu_box<T>(head: *mut bindings::callback_head) {
+> > +/// Ownership of the `Box<RcuBoxInner<T>, A>` must be passed.
+> > +unsafe extern "C" fn drop_rcu_box<T, A: Allocator>(head: *mut bindings::callback_head) {
+> >      // SAFETY: Caller provides a pointer to the `rcu_head` field of a `RcuBoxInner<T>`.
+> >      let box_inner = unsafe { crate::container_of!(head, RcuBoxInner<T>, rcu_head) };
+> >  
+> >      // SAFETY: Caller ensures exclusive access and passed ownership.
+> > -    drop(unsafe { KBox::from_raw(box_inner) });
+> > +    drop(unsafe { Box::<_, A>::from_raw(box_inner) });
+> > +}
+> > +
+> > +#[kunit_tests(rust_rcu_box)]
+> > +mod tests {
+> > +    use super::*;
+> > +
+> > +    #[test]
+> > +    fn rcu_box_basic() -> Result {
+> > +        let rb = RcuBox::<_, alloc::allocator::Kmalloc>::new(42i32, alloc::flags::GFP_KERNEL)?;
+> > +
+> > +        assert_eq!(*rb, 42);
+> > +        assert_eq!(*rb.with_rcu(&Guard::new()), 42);
+> > +
+> > +        drop(rb);
+> > +
+> > +        let rb = RcuBox::<_, alloc::allocator::Vmalloc>::new(42i32, alloc::flags::GFP_KERNEL)?;
+> > +
+> > +        assert_eq!(*rb, 42);
+> > +        assert_eq!(*rb.with_rcu(&Guard::new()), 42);
+> > +
+> > +        drop(rb);
+> > +
+> > +        Ok(())
+> > +    }
+> >  }
