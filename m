@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CEA376A13;
-	Tue,  2 Jun 2026 19:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5334125B088;
+	Tue,  2 Jun 2026 20:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780430398; cv=none; b=lNQshrQ8jD36u61JxSZMFdL5XB8fAMByuYnAUSQDiMqoOSuXlnRc4lmKQoVdF7D2ngTSVBS48LmjkJmrx7YDZIu1qNyhzpNo0ulJr/sGbgYuTFye5+57wRjSxE3W+jh+wCaRLSS/tNZuAqLfkPpAw22h13c3EcWbHyTzCaSwk3I=
+	t=1780430428; cv=none; b=HjCYlfCiTIUchlRIjmY5QQcIe+sgiPeMDOohvfAaLz630njj8HHWe1RenFJ6dtzWLC2jUEj58p10kYOxOJxccNRFkkZpg8Xkuja50nqKr5NkM7NKKvM/WSe0BE09hnQ9wmJWFt0IVtWTISGJHTm9EzUD8+crnVV8oSdYWPLIAqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780430398; c=relaxed/simple;
-	bh=ywSD0fPdkOV3PRi2wNsFq0uZ4W4kD8z3znRDzIGdc34=;
+	s=arc-20240116; t=1780430428; c=relaxed/simple;
+	bh=YCXEpa08KnLDcAtvIVLebI1Fa6o34B4vWsrvIJpO+z8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lbrYrsWZlU+mzRj+d4KvLj8HlGeF5sS6kFPOFnOeuy5J5UN1MYgLk1+ZWiackx8Jl3dsMRN0qQwfUXFkCfvciCRFHysqxd3DIaHF0yBCmwBAs/hZ+e7FQqaMc4UXMVoyoq7HkX2u3Z4Vt9lvKII4PGpZUUX8SEjxYDmYTFhqKs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERsIXOq3; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Raf0LknIwhZ7PKptNi37uAe15PMk9VDw76s06Tc383sb/OOk+SMVBVICQ9w6HNwsgcysTcG+4Qm+ugXAKGI4iWWCvg69j5H981GN0zRmqpnjmhtpWBjR6Jn19lmxqOyvfAkLQQFprmMoU9SKSxhdCTf7VmRECLem/xiiotTjJIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LeEIdTKY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERsIXOq3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7F21F00893;
-	Tue,  2 Jun 2026 19:59:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LeEIdTKY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2D11F00893;
+	Tue,  2 Jun 2026 20:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780430396;
-	bh=ywSD0fPdkOV3PRi2wNsFq0uZ4W4kD8z3znRDzIGdc34=;
+	s=k20260515; t=1780430427;
+	bh=28uFiFaPz00034N6mbPxIg597Anz/KiVjczsmXdtiAU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ERsIXOq3+goH1skhNWCqoJdjeeyftXXtO2tXIn0yfN5hvK5dJhQm6YF6SZB1krrLJ
-	 ZTogZGUaJpc9GqmjNLzCBrJErPh/fRCk+gBhV3qj8WWn5AOXYJBgKA93/GjnvGDDY8
-	 aL4GeKKi8NBauFDtK8aoof5dQ8PxuSFQU9TlED2X4NAaW0L9+B5CGv3qzqzZCgplq7
-	 lIGKpdqLP9L7/2upys2x72kOQZK7/xkgjCMC+BJ5s7x0QFR1Wz1zI+GK65AoEfH0pg
-	 aExjWIk1Ryh94RGSOR8yZdudVPl747IeqPHyDkrQXyjS97xsYwO3cjLgBIDmH4wUTu
-	 t2gE+0S9C50ug==
-Date: Tue, 2 Jun 2026 12:59:54 -0700
+	b=LeEIdTKY/sRuBIGhNCn+pS2TNWw25Ld/g5eQxQCDyWFc+FNTxNMXfFaoQi8MlAjyd
+	 B66U1MCiOZ0PKEiNE1SQxpRCmU+bL28cKfphN1KehuxXCYr3DcZNxqrFBgTIdfl9x3
+	 8ULZYWYbF4zch7yZ8n3NIlSZsh2TTH+rze/qtz+l6g/lHdcWJmu4nQZe2s3CbmB5Qd
+	 aNCY5f1trWFsIeOaA85aS9mQWxcJLOCkCqSZAA7glUk9FfTW2YXGKOJdUwBbSKycIs
+	 GAhSCasKdJTNMz0bknZH7WluSY9R2gFNe71Iyyckyh9pK8P2JQxQsMRw9kU0s2IKX2
+	 6c0PRvm1INsuA==
+Date: Tue, 2 Jun 2026 13:00:25 -0700
 From: Jakub Kicinski <kuba@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman
@@ -41,12 +41,11 @@ Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman
  Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
  netdev@vger.kernel.org
-Subject: Re: [PATCH v6 1/3] rust: net: add rust/kernel/net to NETWORKING
- [GENERAL]
-Message-ID: <20260602125954.2a1b09dc@kernel.org>
-In-Reply-To: <20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
+Subject: Re: [PATCH v6 2/3] rust: netlink: add raw netlink abstraction
+Message-ID: <20260602130025.4df4e5d3@kernel.org>
+In-Reply-To: <20260529-binder-netlink-v6-2-92dd74b6a32e@google.com>
 References: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
-	<20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
+	<20260529-binder-netlink-v6-2-92dd74b6a32e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,10 +55,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 29 May 2026 13:28:38 +0000 Alice Ryhl wrote:
-> To ensure that networking code can be found in a single shared place,
-> add it to the relevant NETWORKING entry. The net.rs file is moved into
-> the net/ directory so that it's included under the MAINTAINERS entry
-> without needing a separate rust/kernel/net.rs entry.
+On Fri, 29 May 2026 13:28:39 +0000 Alice Ryhl wrote:
+> This implements a safe and relatively simple API over the netlink API,
+> that allows you to add different attributes to a netlink message and
+> broadcast it. As the first user of this API only makes use of broadcast,
+> only broadcast messages are supported here.
+> 
+> This API is intended to be safe and to be easy to use in *generated*
+> code. This is because netlink is generally used with yaml files that
+> describe the underlying API, and the python generator outputs C code
+> (or, soon, Rust code) that lets you use the API more easily. So for
+> example, if there is a string field, the code generator will output a
+> method that internall calls `put_string()` with the right attr type.
 
 Acked-by: Jakub Kicinski <kuba@kernel.org>
