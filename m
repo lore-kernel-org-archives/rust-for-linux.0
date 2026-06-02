@@ -1,93 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622E32EFD9B
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 17:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2CEA376A13;
+	Tue,  2 Jun 2026 19:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780422856; cv=none; b=mID9J1JndH8iSFlsZy0QE4NTxxhGlQ00CQ2vd+uyj/bdLcN6G1Et/KyMMo7Etp6VrxHB3BjBqkGPh/d/rTdA0CAudDXXz+DrT/FIuSgD0/4uXNDP8zPDlsS4xoqJX92dQAsfOpEHmOR0j9zmgZ9QJmu5SFi26f+wI3Q5VE4qJdo=
+	t=1780430398; cv=none; b=lNQshrQ8jD36u61JxSZMFdL5XB8fAMByuYnAUSQDiMqoOSuXlnRc4lmKQoVdF7D2ngTSVBS48LmjkJmrx7YDZIu1qNyhzpNo0ulJr/sGbgYuTFye5+57wRjSxE3W+jh+wCaRLSS/tNZuAqLfkPpAw22h13c3EcWbHyTzCaSwk3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780422856; c=relaxed/simple;
-	bh=wSahDUxMAu/KTsE8WIzk28eXDFwofViLXLphYhM2ZXw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H1tFMqkVWFGCCuKyxB/HAAR70IxEjoWb4gg84QVtzSnYT1Mc9VatHkegXMPUYJx1xmW66POO2DZbKJTE4JNbaLnDLUhrZsq1AIrBh5L2URA3NIyYcCBYqa332WftEhAlq4yX56SthM6IAaQqhKpDWiTDODF0T09uliBXDXyzVvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DmkeuNUQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780430398; c=relaxed/simple;
+	bh=ywSD0fPdkOV3PRi2wNsFq0uZ4W4kD8z3znRDzIGdc34=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lbrYrsWZlU+mzRj+d4KvLj8HlGeF5sS6kFPOFnOeuy5J5UN1MYgLk1+ZWiackx8Jl3dsMRN0qQwfUXFkCfvciCRFHysqxd3DIaHF0yBCmwBAs/hZ+e7FQqaMc4UXMVoyoq7HkX2u3Z4Vt9lvKII4PGpZUUX8SEjxYDmYTFhqKs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ERsIXOq3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DmkeuNUQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294581F008A3
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 17:54:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ERsIXOq3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7F21F00893;
+	Tue,  2 Jun 2026 19:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780422854;
-	bh=ocCyWLz5TiPAT6PlSGlYvtcNs7yG9sMDA6UHnOxRQJc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=DmkeuNUQFY8GjsL4tiPVK8zqUi+KRu5fGt02lG0gTDwtqu3EAuJheW6tlAfFPNQ/b
-	 qNkOuekAhO4yuHnOQ5BYhXWJecPDwTVMQ2qEAGKLiPZLDy+YZoBAqMrgXgfrA3Wlih
-	 xKg+WiJMjErqXXQ6qsJ0Hb3yjD6MvgChQR+DN4Tl9dfqaSb5PPRBviwYpXVUEcv3lz
-	 LZIENIQAooysMSmy8dea81qTgBM1CEl4na2h/fi1iu/VHRjnbsT0yAS1bXafxRBcbz
-	 9/oPa/3Rxm7EoxCa6v7HOB5urCyBPCUmuCXu6zaeUEeqCjS8F4ArqZZiCxGThGdBbT
-	 3SDSDv5C8xI4w==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-39666f49929so33523431fa.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Jun 2026 10:54:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+CVyabGSAJJIpUk4lktkZWAVp+opTSuiJZbs39KQyLy3QyzjxBwl+HoJXxTMNJzFdBGfNMyQlRXSVzPV8W0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI1LVGD+S6bvAmJtNaEOewMlhnXUZEsIgaZIkkTkAafQKop3MV
-	eYXzG7OZOcx0pPobOEji6KJ7lbn2SbNPE0ETRDOISixfViRcG3tSyevRNC7rfpnNTWqIMvDoCvB
-	aZu3MNQbdIXmrTrTN/dnt/GDy/8Lkz+Y=
-X-Received: by 2002:a2e:a993:0:b0:396:9598:aa2d with SMTP id
- 38308e7fff4ca-396ac1f9630mr2253651fa.1.1780422852908; Tue, 02 Jun 2026
- 10:54:12 -0700 (PDT)
+	s=k20260515; t=1780430396;
+	bh=ywSD0fPdkOV3PRi2wNsFq0uZ4W4kD8z3znRDzIGdc34=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ERsIXOq3+goH1skhNWCqoJdjeeyftXXtO2tXIn0yfN5hvK5dJhQm6YF6SZB1krrLJ
+	 ZTogZGUaJpc9GqmjNLzCBrJErPh/fRCk+gBhV3qj8WWn5AOXYJBgKA93/GjnvGDDY8
+	 aL4GeKKi8NBauFDtK8aoof5dQ8PxuSFQU9TlED2X4NAaW0L9+B5CGv3qzqzZCgplq7
+	 lIGKpdqLP9L7/2upys2x72kOQZK7/xkgjCMC+BJ5s7x0QFR1Wz1zI+GK65AoEfH0pg
+	 aExjWIk1Ryh94RGSOR8yZdudVPl747IeqPHyDkrQXyjS97xsYwO3cjLgBIDmH4wUTu
+	 t2gE+0S9C50ug==
+Date: Tue, 2 Jun 2026 12:59:54 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, Donald Hunter
+ <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] rust: net: add rust/kernel/net to NETWORKING
+ [GENERAL]
+Message-ID: <20260602125954.2a1b09dc@kernel.org>
+In-Reply-To: <20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
+References: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
+	<20260529-binder-netlink-v6-1-92dd74b6a32e@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260602172920.30342-1-ojeda@kernel.org> <20260602172920.30342-2-ojeda@kernel.org>
- <CAJ-ks9m-Gt3qiBRMq7HiMDjRVHmyL7wrsm+3JHOoPFC2Lz2BDQ@mail.gmail.com> <CANiq72=+f_139RtP37FSHkZ+9wuATgf-9KzvSUfwqO949iqT5w@mail.gmail.com>
-In-Reply-To: <CANiq72=+f_139RtP37FSHkZ+9wuATgf-9KzvSUfwqO949iqT5w@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 2 Jun 2026 13:53:36 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9kM18eu2A=_3xeBQdhdQWDvhi98OT-omxeqtd78LCd5bw@mail.gmail.com>
-X-Gm-Features: AVHnY4LCoADW22Jn_abeYebOlVkKSukmWdPMzMXNMAfaa_sFn-oFvGSPY8xU6Uc
-Message-ID: <CAJ-ks9kM18eu2A=_3xeBQdhdQWDvhi98OT-omxeqtd78LCd5bw@mail.gmail.com>
-Subject: Re: [PATCH 01/18] scripts: generate_rust_analyzer: support passing
- env vars
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Joshua Liebow-Feeser <joshlf@google.com>, 
-	Jack Wrenn <jswrenn@amazon.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 2, 2026 at 1:52=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Jun 2, 2026 at 7:47=E2=80=AFPM Tamir Duberstein <tamird@kernel.or=
-g> wrote:
-> >
-> > This can be
-> >
-> > crate_env =3D {
-> >   "RUST_MODFILE": "This is only for rust-analyzer",
-> >   **crates_envs.get(display_name, {}),
-> > }
->
-> Sounds good.
->
-> > Acked-by: Tamir Duberstein <tamird@kernel.org>
-> >
-> > Did you want to take this through rust or did you want me to pick it?
->
-> It is cleaner to carry it with the series (I will likely create a
-> merge commit for the patch series anyway, since it is a major one in
-> volume at least).
+On Fri, 29 May 2026 13:28:38 +0000 Alice Ryhl wrote:
+> To ensure that networking code can be found in a single shared place,
+> add it to the relevant NETWORKING entry. The net.rs file is moved into
+> the net/ directory so that it's included under the MAINTAINERS entry
+> without needing a separate rust/kernel/net.rs entry.
 
-Duh, I missed that this was in a series. Makes sense!
-
-> Thanks for the quick reply!
-
-You're welcome!
+Acked-by: Jakub Kicinski <kuba@kernel.org>
