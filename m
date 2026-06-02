@@ -1,79 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5693D8910
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 10:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780397383; cv=none; b=ZyTx2GuT/nFHlTyjUJSzi+S5gV9zbOS7Bax1KIWuYV1eDWeJid3V5f0bqsQFuvbTeB8/dKYtd2UthtrN08EUaEeXW1YCkpAivpiwqfhfaZ28fVH2z0Yqo2rf0D+T4t/HErxZ5+UymU03CgW/BeuKXurH5+0d1i0Xc8DlLTcc8Dk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780397383; c=relaxed/simple;
-	bh=dda2g0AOA+F5AMlYixnPmuaXdYO4GO3Dd+j+NDDNWxE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=OyTL/kZAUkkz4qUFHSmYdQ1yA8Oro7cHEuXqiPsnHqGD/q61Jl97kF+Y3IIidnWHf9KcWvT8Nmme0TCJexuv2xPfgBqfMLJSOgo7OyqZfhZOfYZn4oj9WRQLPZKF08BEdnapEvyCzKewGS2vw2l/GZhbtcwBPf1vPRrAaK7pPuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YDQG78iy; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C06357CE6
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 10:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780397784; cv=pass; b=bQFEF7HpWH4N7HWdS3zfXTL+fwLX7XTDZAHMOAbIw8trenLec89nkAvXztvjpze5+VUxXaTTWtObDqJxQc+NzuNXfYVNmpxtcJQQ3VD08BtR5krpz/W+9YX7fSg9CZ8yoU/mdKys9AN2khSh/ImNV30FvCQ37jDonRgdH04FXU4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780397784; c=relaxed/simple;
+	bh=qpJ7DIYnveN38OIokGL7dJTIBiQVvD5eg6M0Ese/EOQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=LjCBQ8a4HPHPQPYPh8/T4eoDTTKOR/V9x6XJEung+Cn6SNDlx9/NnYH3VJqDTPM+0UW7FXD+GyXMPWzY0Cg3tIUWBHEVe4qs/g9SWDZa5TGB4ssq4pPVWihJyEvRZzDQqpUo9O7qOFF2OYAKAm/2E8KvJXM9RBJB234Anvx4z0k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YUUzW8UD; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YDQG78iy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32301F00893;
-	Tue,  2 Jun 2026 10:49:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780397381;
-	bh=dda2g0AOA+F5AMlYixnPmuaXdYO4GO3Dd+j+NDDNWxE=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=YDQG78iyxFxfFlfIM6CdZNi6ypYywtLJs8DYlBpEiptosw36TiVv5Yp0yc5BkCIHH
-	 ycf5o1u87MaFuGwaKVnSFNuDqHAo97VVTpvr/UTmyfmqVhV7T9cMZ+jTclNOuKwTCf
-	 vlrok6v4r23A1/bG9IhE6vGzQJlaeRfY9qYhRY0GHkB0vic8egs6Sw/WKTjYjWL/cp
-	 pjJ78+TZMC46sen9aTi6VlCk6VSVqxDKzMROnHElei4ykspkSfhoBWYUKSHSyP4giK
-	 s24p7UE9PoO4L8XE8o7+v5qkitI+muhjMLiyuMlZwBuZFHmJ/ggG45a0w4UkcUjxTg
-	 MKN1/DoyWTo+w==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YUUzW8UD"
+ARC-Seal: i=1; a=rsa-sha256; t=1780397771; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=im9nJq32cMf/AaxOxw7ddKE2oAtPjIbuXXkQpZQIdgGGixPBBslhvCjQx3udsv+RcDEyidaE2+17AVkqzIpIEpkKlM9+dIqzFDi8GS3LH6sd9jgTP6ZaI0yRtkqkQ9NJl8BFhFebUXy7jvGU+PNyAOIP/0s3aOHI5xIJhZXiEj4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1780397771; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=iiBqjoD4EsYqN1Fal3BhE3EeXjYiDrKSSSa/8jY4Bko=; 
+	b=LGfetZ4eXbSXt35OSAULZH1+55ZJvj5MvYjnwFx6g2LMJCzhYhn+pZlVEn54/SJYezbPt28ndPAxT8+4NkozqcLqdLbvXN81+dbwGSTpqw2LVC/DbPtQCrzC+Qp6ULwA+pckr+nFR+1uZrM2I68JLFFtmSDH2ILS7ttxQHM0O7I=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1780397771;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=iiBqjoD4EsYqN1Fal3BhE3EeXjYiDrKSSSa/8jY4Bko=;
+	b=YUUzW8UDzKIpQy4JqBRBbq5zO5hi8klUbS4R6CTmYQk8S0/vRAd7dhA/EjYSt8KV
+	qYCWpQdzfBnyngNV0ewDghksfysVyQPjm2IQmQDgCnlirloQLZeg6p4krD/ArrZ0RGZ
+	D6PCx4RtKqVy4C3yvArUu1GSk0u6O9nnNpE+sLQw=
+Received: by mx.zohomail.com with SMTPS id 1780397764062323.93913048628724;
+	Tue, 2 Jun 2026 03:56:04 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 02 Jun 2026 12:49:38 +0200
-Message-Id: <DIYI74CF465A.259FWQ2ZT6Y1Y@kernel.org>
-Cc: "Deborah Brouwer" <deborah.brouwer@collabora.com>, "Alice Ryhl"
- <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
- <boris.brezillon@collabora.com>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, "Eliot Courtney" <ecourtney@nvidia.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 2/2] drm/tyr: use IoMem directly instead of Devres
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH 0/2] drm: tyr: use lifetime-bound IoMem
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260529000106.2257996-1-dakr@kernel.org>
+Date: Tue, 2 Jun 2026 07:55:27 -0300
+Cc: aliceryhl@google.com,
+ boris.brezillon@collabora.com,
+ deborah.brouwer@collabora.com,
+ gary@garyguo.net,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <17A1BFA7-A5E1-430B-A954-9C2AC9439FE3@collabora.com>
 References: <20260529000106.2257996-1-dakr@kernel.org>
- <20260529000106.2257996-3-dakr@kernel.org> <ah1SSN8_dCEA4Osz@google.com>
- <ah4t8IPo1L6XZMy_@um790> <DIYHW8MAG0AY.FJ96EJ5RDZK7@garyguo.net>
-In-Reply-To: <DIYHW8MAG0AY.FJ96EJ5RDZK7@garyguo.net>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue Jun 2, 2026 at 12:35 PM CEST, Gary Guo wrote:
-> I am not sure what the distinction even mean for a class device?
->
-> There's 1 device per registration, so they're equal. Am I missing somethi=
-ng?
 
-The existing DRM device private data's lifetime is tied to the lifetime of =
-the
-DRM device itself, which makes sense as long as IOCTLs are not guarded agai=
-nst
-driver unbind and can still reach into the driver after driver unbind.
 
-Once that is changed, this doesn't make sense anymore, the driver structure=
-s are
-then tied to the lifetime of the Registration.
+> On 28 May 2026, at 21:00, Danilo Krummrich <dakr@kernel.org> wrote:
+> 
+> Adopt the driver core lifetime infrastructure for tyr.
+> 
+> Separate the driver type from the driver data and use lifetime-bound
+> IoMem directly in probe instead of wrapping it in Devres and Arc,
+> simplifying register access.
+> 
+> Changes in v2:
+>  - Don't return Result from GpuInfo::new()
+>  - Use "drm/tyr:" commit message prefix
+> 
+> Danilo Krummrich (2):
+>  drm/tyr: separate driver type from driver data
+>  drm/tyr: use IoMem directly instead of Devres
+> 
+> drivers/gpu/drm/tyr/driver.rs | 29 ++++++++++++-----------------
+> drivers/gpu/drm/tyr/gpu.rs    | 17 +++++------------
+> drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
+> 3 files changed, 19 insertions(+), 31 deletions(-)
+> 
+> 
+> base-commit: a3e50e7279996cd987001fd8a3db36e72665f8f7
+> -- 
+> 2.54.0
+> 
 
-Any handles that userspace may keep open beyond this should be handled by t=
-he
-subsystem; at this point there is no more HW state the driver would need to=
- take
-care of.
 
-Thus, the private data tied to the lifetime of the DRM device won't be need=
-ed
-anymore, see also [1].
-
-[1] https://lore.kernel.org/dri-devel/DIXMEKSYML5D.1JUXO9CW10RY8@kernel.org=
-/
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
