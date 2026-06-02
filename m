@@ -1,121 +1,158 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671CD335081
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 11:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780398083; cv=pass; b=R3ZqyEBI4Q87iZb3VDGkINsqpg1ZDDpg39WPbWZOpgA3DSUOzzn0flCcA1munZOnP4DkSNiS+CDHhRBEG1n8VvuOJepqJqOq95TgiGII77psR1PieeZN14jYC8PuTIuRCGv17u38lzMwfWaGVoBZ0/GT/BMu254KnymQK11Plb8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780398083; c=relaxed/simple;
-	bh=EXQKe9KDqYrZRHigRPOszHTAsqXwql1KtKQuvZVp5Sg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q0DR5VPFtCRJOM6/exr+I5pCsOastSOrPL7LoCTZzZhtZRoIhmFX4j3WaYAMH/pKbjSA/k9x3mLj458TzCSG+KCTO6yDjd+GEnniNDsLoWnLhhNq8leDaXC/mE8PHzTsWljvXE0CvoaHVJZfIoygf1zflJHL2Lfb0dVi/v7FEwI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WvjNNC52; arc=pass smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D0D3D5C0C;
+	Tue,  2 Jun 2026 11:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.232
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780398772; cv=none; b=qgLH/i0NL+XBarjIdlPH26etRAHkrP97UHzrntyNLC5oncKOTQ56u/Hbit3C/yGw9AbsgyVFMGhiI55krm/VUZnxlSpn+XtA1kgPr3Mi4fTcsONTYM5FXCuVeFZAWL0TeyGqQRRos1uey/2Xu3ctT2FX1EqBBx/eTvY28KbbfUQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780398772; c=relaxed/simple;
+	bh=vvILlsXaVQShutp1p5WceQi2Eaf3pB4ovG/S15HHsU4=;
+	h=From:To:Cc:In-Reply-To:References:Date:Message-ID:MIME-Version:
+	 Content-Type:Subject; b=cNHkPHmtouJJRpCZK+UhcqWNnVG5Lnj/ejJkkyBb5FzLTOY4+tGJEfbHDPiD/c+8vGwiYeHAUgNjc0CC3//sCAJFkNx0uwE8zfSpNt6jFeXySlJHlHrdViH9FrHGsc9zhd0iiVVL9o91EUAYtQCKiwa1XB3bZ3PFo73l6liDFYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; dkim=pass (1024-bit key) header.d=xmission.com header.i=@xmission.com header.b=PT1nwI4K; arc=none smtp.client-ip=166.70.13.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WvjNNC52"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490b09e4cccso7063285e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Jun 2026 04:01:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780398081; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Gb2n37ZDQ8ySiDzMraHMps1ixJWFeQUJxGWfltFBxSkRIW3+Cv4W5jeO+wg1ZweggG
-         ysj15wOjmFn8lNfYl3lXTc6QdTMRPCXT0LtB2JP56TkTTFkAY/2QXz8SOTopg4yNPgre
-         cTXGzupL/RD9rZxM/U9GZoGrwVAJKd/HQ5TAD71jVaGyNKHtjuqd0ZZBKKoMyAQ1sLp2
-         2Mt5D9dAnGmhQPjqk8A78ab9gKVIGA67frrI4cScwqsqRSUh+4I5ONoz6ZER/912WfSg
-         FO/88cbX7RenRh6/tClHzWxBHLvQhzALSVMPXP1wHdjlTaWaap7F1J/hS4rKbMjLY/cT
-         k/dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Bu2OrHUrdv8mY3erGyGbB8ppYLrym+SFyVnHvC8BRas=;
-        fh=GbJMrFzs651hPnaR+E7jgQaLh4Q8wJZLuaZTtms9pQk=;
-        b=CXQRLCjwjqxrx6PtlC5uFqkxps2DwX6eYRb1hjyaTDb6ypE7mgkPLvYtjXkLmRua82
-         gbsXe10RjUXsK/2B/YVUi1DNF7dlRaob8VEoIOK8Gh73U5OkBZ757X8C0IC1pD+cyu++
-         drM0EPZfcHv63BBokzCuJkACtg2/APB3fvmhwqsZawYjzulgCaWGDgi0dTUQq+umJyxy
-         dSP/2nLD+OMhhcpP5J/pHrbjOuwFDhuhNBZ9Adn9V9Cmi/+mPV+X97UBlETnsCqhdbyw
-         4tLt6D58KY1THDGpYe/sj/9snrufM4BV5WmAr7WfSyUWQkk7CvtZGZYg14BuraKATY+g
-         rSqg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780398081; x=1781002881; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bu2OrHUrdv8mY3erGyGbB8ppYLrym+SFyVnHvC8BRas=;
-        b=WvjNNC52UNzO+X5yh0YJThJnp+KVgnebVWi0NEp27aC3FbObbGvlNgxC/fApaJmHeJ
-         2D7DCtsQZvir0+BvlBAUNK7anKuDBwCZGfUZvC0gih0M2LXrUSF62TtzRrqSmRa+MJeg
-         fvR1hgtnBMykhdluWZSkrCpH0AZSdhuywqfXKNStpg0WzePmXbd/7V9PJnRN7mWjBZ/r
-         bG7orwyATKy/vQY/uaDCq12NHlbRaPDHXi7Kn3exFox4SnIjklJ03BNvdAAsYU2R6pqv
-         27TA1T1CJ9jXSCtGypDZTdIfwXpQrT2xD6pWjv7ANEBT0Ctrr8rfDjI508thH57aW9nz
-         JMfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780398081; x=1781002881;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Bu2OrHUrdv8mY3erGyGbB8ppYLrym+SFyVnHvC8BRas=;
-        b=qYPYDOHChNQqvKzFc+CZ8Pl/DnlDuOmy+HMD7ZUrs/nDpWE9tc9TAURyKQxhn+NnZV
-         n2r+xjp4gf4aAOiG7RJREzaJ/E4UvP8RKOPO2S+OdDeRbpk7UsnTUiDWASmUyHf9H+Y3
-         gaT24IjR3RqsJgNSEXB1PLoboGRI0GcfVkxywsadGtikssWLRcM8zRxsqZaaTdabP+ih
-         Vhvh2ntO3+n3YGb6GsAsOhrfch9HQY9bVmfT5f4ct8HDBD9Xt9oQB1nCSUxWWIRgUeD2
-         nn5ILtdt9QBpulxBhoMOTkSOQBgzWsqfLgPvTc8aKal6vohWQruS8eHbynAjtpmVjNrK
-         hOfA==
-X-Forwarded-Encrypted: i=1; AFNElJ/lOLN/PYXnYgib0U/VdwDdpZQw43bXRCq9L9hOmoEjG6xa9aefYIrA18f3s69W4wHvXQDdWlXAiNX+Yre3lw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwES2vd3W98699d1uTaTP454vNqxexRiLHnqrg1gUCurHfEezQd
-	55x/wwu8YfMQykwDWVQ1gjX0eC4YdxfzzF4miBIUsZFzJTK42TUHbxNGYrSn6zLLHFw1C3cdF86
-	Y3kJn/lf0sKmXRKCB1H+z95TJ0dv2VhXD5cuJgFeKrawI7ljhYS8RImbI
-X-Gm-Gg: Acq92OGLyf5ac4SamoIvygwZVPovRvJSGJfXZmvfITClUhGnUiMtj0C9/evSRp9t9xs
-	uiGHIwitXEb//6TENmp+SXzqSsSGluSsWH2jcLAim7OCJVYlVROifgbJoh0nErKsVEifuPyJvte
-	80Gay2ioSDhkoqgMVtjkmrvFeiSrKC/L5j5c8xFxqICnObkTY+fXIgfyRlr1TbEQjNt35D30lsi
-	81cRhLdsI2jrI0zQk1BKHu4gbYXLwDM1BnnZFXalCxh3OiMEDA5/kqeK2odI2Z9LuZQI96pqEub
-	0FdySc3PkwBlz0ZrTLh2kJ8RO3U/XNCwCBAgG4QHIxE5M7I/EiiXuI3RWKI0NbvNp1nKUCNjarz
-	mULn/
-X-Received: by 2002:a05:600c:870c:b0:490:b2a6:8c2b with SMTP id
- 5b1f17b1804b1-490b2a68d7cmr31498225e9.10.1780398080374; Tue, 02 Jun 2026
- 04:01:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=xmission.com header.i=@xmission.com header.b="PT1nwI4K"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=simple/simple; d=xmission.com;
+	 s=xmission; h=Subject:Content-Type:MIME-Version:Message-ID:Date:References:
+	In-Reply-To:Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=vvILlsXaVQShutp1p5WceQi2Eaf3pB4ovG/S15HHsU4=; b=PT1nwI4K/LueK0DDSNL+s4C13J
+	wCISW9cQ6Rku1p5e71v6LNcH9E8BpNOErgTq20OxsIi/JohdQWrgMebuwQrMKgen7pJXROs+AsRqv
+	q/PDtUrCrIsMZAHrVRiLpwUsOkpysGxuDIlQz4e1uDX5u9eweqgYZDbb9a8545EZNJqI=;
+Received: from in01.mta.xmission.com ([166.70.13.51]:57296)
+	by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1wUMHI-00EQUk-Sf; Tue, 02 Jun 2026 04:23:20 -0600
+Received: from ip72-198-198-28.om.om.cox.net ([72.198.198.28]:37600 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1wUMHF-002RRp-JI; Tue, 02 Jun 2026 04:23:20 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Andreas Schwab <schwab@linux-m68k.org>
+Cc: Deepak Gupta <debug@rivosinc.com>,  Deepak Gupta via B4 Relay
+ <devnull+debug.rivosinc.com@kernel.org>,  Thomas Gleixner
+ <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov
+ <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,
+  x86@kernel.org,  "H. Peter Anvin" <hpa@zytor.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+  Vlastimil Babka <vbabka@suse.cz>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Paul Walmsley <paul.walmsley@sifive.com>,
+  Palmer Dabbelt <palmer@dabbelt.com>,  Albert Ou <aou@eecs.berkeley.edu>,
+  Conor Dooley <conor@kernel.org>,  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
+  Christian Brauner <brauner@kernel.org>,  Peter Zijlstra
+ <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
+ <kees@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
+ <shuah@kernel.org>,  Jann Horn <jannh@google.com>,  Conor Dooley
+ <conor+dt@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
+ <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Andreas
+ Hindborg <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,
+  Trevor Gross <tmgross@umich.edu>,  Benno Lossin <lossin@kernel.org>,
+  linux-kernel@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
+  devicetree@vger.kernel.org,  linux-arch@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  alistair.francis@wdc.com,  richard.henderson@linaro.org,
+  jim.shu@sifive.com,  andybnac@gmail.com,  kito.cheng@sifive.com,
+  charlie@rivosinc.com,  atishp@rivosinc.com,  evan@rivosinc.com,
+  cleger@rivosinc.com,  alexghiti@rivosinc.com,  samitolvanen@google.com,
+  broonie@kernel.org,  rick.p.edgecombe@intel.com,
+  rust-for-linux@vger.kernel.org,  Zong Li <zong.li@sifive.com>
+In-Reply-To: <87wlwif04z.fsf@igel.home> (Andreas Schwab's message of "Mon, 01
+	Jun 2026 22:58:52 +0200")
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+	<87jyslndo4.fsf@igel.home>
+	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+	<875x44o9hj.fsf@igel.home>
+	<CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
+	<871peqgp9v.fsf@igel.home>
+	<CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
+	<87wlwif04z.fsf@igel.home>
+Date: Tue, 02 Jun 2026 05:23:10 -0500
+Message-ID: <87tsrli6lt.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260529000106.2257996-1-dakr@kernel.org>
-In-Reply-To: <20260529000106.2257996-1-dakr@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 2 Jun 2026 13:01:06 +0200
-X-Gm-Features: AVHnY4JUvKNlcBZ7jut1VhY0EFa3b4OvoHyV8efxn_w3UI8lZJxRLR-PKLgkXcQ
-Message-ID: <CAH5fLghfiSY66767FBzDkibD6+YUHXKdCeoYymsDp2i9F45RRA@mail.gmail.com>
-Subject: Re: [PATCH 0/2] drm: tyr: use lifetime-bound IoMem
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: daniel.almeida@collabora.com, boris.brezillon@collabora.com, 
-	deborah.brouwer@collabora.com, gary@garyguo.net, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-XM-SPF: eid=1wUMHF-002RRp-JI;;;mid=<87tsrli6lt.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=72.198.198.28;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX19J6tpF2AGRJ9xglxGPNzSSZeVg13KZsgY=
+X-Spam-Level: 
+X-Spam-Virus: No
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  0.1 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.4997]
+	*  0.7 XMSubLong Long Subject
+	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+	*      [sa02 1397; Body=1 Fuz1=1 Fuz2=1]
+	*  0.0 T_TooManySym_01 4+ unique symbols in subject
+	*  0.0 T_TooManySym_02 5+ unique symbols in subject
+X-Spam-DCC: XMission; sa02 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Andreas Schwab <schwab@linux-m68k.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 2774 ms - load_scoreonly_sql: 0.03 (0.0%),
+	signal_user_changed: 3.6 (0.1%), b_tie_ro: 2.5 (0.1%), parse: 0.84
+	(0.0%), extract_message_metadata: 8 (0.3%), get_uri_detail_list: 0.86
+	(0.0%), tests_pri_-2000: 7 (0.3%), tests_pri_-1000: 8 (0.3%),
+	tests_pri_-950: 1.02 (0.0%), tests_pri_-900: 0.92 (0.0%),
+	tests_pri_-90: 62 (2.2%), check_bayes: 61 (2.2%), b_tokenize: 13
+	(0.5%), b_tok_get_all: 9 (0.3%), b_comp_prob: 1.76 (0.1%),
+	b_tok_touch_all: 35 (1.3%), b_finish: 0.56 (0.0%), tests_pri_0: 297
+	(10.7%), check_dkim_signature: 0.41 (0.0%), check_dkim_adsp: 3.2
+	(0.1%), poll_dns_idle: 2367 (85.3%), tests_pri_10: 2.7 (0.1%),
+	tests_pri_500: 2379 (85.8%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
+ | VM_WRITE
+X-SA-Exim-Connect-IP: 166.70.13.51
+X-SA-Exim-Rcpt-To: too long (recipient list exceeded maximum allowed size of 512 bytes)
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Scanned: No (on out02.mta.xmission.com); SAEximRunCond expanded to false
 
-On Fri, May 29, 2026 at 2:01=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> Adopt the driver core lifetime infrastructure for tyr.
->
-> Separate the driver type from the driver data and use lifetime-bound
-> IoMem directly in probe instead of wrapping it in Devres and Arc,
-> simplifying register access.
->
-> Changes in v2:
->   - Don't return Result from GpuInfo::new()
->   - Use "drm/tyr:" commit message prefix
->
-> Danilo Krummrich (2):
->   drm/tyr: separate driver type from driver data
->   drm/tyr: use IoMem directly instead of Devres
->
->  drivers/gpu/drm/tyr/driver.rs | 29 ++++++++++++-----------------
->  drivers/gpu/drm/tyr/gpu.rs    | 17 +++++------------
->  drivers/gpu/drm/tyr/tyr.rs    |  4 ++--
->  3 files changed, 19 insertions(+), 31 deletions(-)
+Andreas Schwab <schwab@linux-m68k.org> writes:
 
-Applied to drm-rust-next. Thanks!
+> On Jun 01 2026, Deepak Gupta wrote:
+>
+>> riscv uses `VM_SHADOW_STACK`. It's just very simple to use `protection_map`
+>> with just `VM_WRITE`. On RISC-V, `-W-` is a shadow stack mapping. It's not same
+>> on x86 or arm64. So `protection_map[VM_WRITE]` simply picks shadow stack
+>> encoding. We just ensure that PROT_WRITE is converted to
+>> "VM_READ | VM_WRITE" at vma level.
+>
+> That does not explain _why_ you need to make that user visible change,
+> when others can get away without it.
+
+Especially since as I recall the decision was made was that the user
+visible protection bits would match the mmap call.  If there is some
+combination an architecture does not support that would simply not be
+reflected in hardware until some future version of the hardware gets
+around to supporting it.
+
+This is what happened with executable page permissions on x86 for
+example.  It used to be that it was not possible to deny execute
+permission on a readable page.  Later that proved sufficiently valuable
+that support for denying execute permission was added to the hardware.
+
+That all happened quite transparently to userspace, that wasn't trying
+to assuming PROT_READ implied PROT_EXEC.
+
+So I am at a complete loss why someone would choose to break userspace
+by confusing hardware limitations with what userspace asks for in mmap.
+
+Eric
+
