@@ -1,115 +1,140 @@
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB573AA9F8
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 07:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7B6367292
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 08:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780385811; cv=pass; b=WzoPge6F5XYzXUHDXFuPzGuUyBxolzm+Y+zjpX1O/GqSM9B8j9b7zFFIu/LOTZcXM0D2O7dHRavCenAwQsCuTs74TlVgGa9wuHugFBXwBwQzGE3jh/tzHGPzFeMlQXBPpG90ztEBJatXB4ymggVmF2YzZyt50Ksn9DZwGV/uASU=
+	t=1780387888; cv=pass; b=W9GgwUTnaspi9/+ZrUfmFnZTMwQTOIbZn4CwM7938mUNTNmQoBs5+1P7O0otG/zkaTUGxOXC/ALubZwKPYf1yvu0Ktm19FdJnlLgOZsYG5WJiVFNcpL7muAB3ZdEE3487CC16fRGPuUu9wPor6k7spQYXB04BiqnnKl4t41iRPg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780385811; c=relaxed/simple;
-	bh=+A/GV5o2sUlHF+5jSvNVL6GHuIN8ETVy4HVJ/HHAPUA=;
+	s=arc-20240116; t=1780387888; c=relaxed/simple;
+	bh=pnwmlQxuqdNrQurh7v1e9vKSMxYrp0Jp3doNPYkrr1U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NTdHJfsyl9UBKTu4BMFX3KBJtwRZCgCiKPot/gjsW7nA5Vu5oKPu2sWKil04s74s4WpVVbOSoQLpF0yFhWvKZA0D3YDH9K2pcq6Pvf0Xt/eVCjniKAlAGR0k4PtKrmmbL9FDbiGOpE14aChlBRiozoFIlNM2N9r7/HBJBFCyDP4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PrVkap4I; arc=pass smtp.client-ip=74.125.82.47
+	 To:Cc:Content-Type; b=QuiAK+gjPYawi28uiDuyvs2b8IFQD0lyiZ/uDPxdO+75zf3zrTDqrDJr8QF5Qn19nslnKXmzDo2adKDCibiBIQCUhMIYRGXavfenS3e9n32X/vopPKUz0T+FozKgRnzky14W26HeBFtEMLJwuAf0MCSs3A9aoA/B/jXGQVXqqjo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gSrTIaqe; arc=pass smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PrVkap4I"
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-137c0db2638so244400c88.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Jun 2026 00:36:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780385808; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gSrTIaqe"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5aa61e3d3f3so2756565e87.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Jun 2026 01:11:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780387885; cv=none;
         d=google.com; s=arc-20240605;
-        b=GKdbZhxwJWDEv7W0nQLeZGDVbO6/V7sZd58zLbvIVV9yTCXEdcXmh8EmQNJ41SJt1k
-         IGcPGMdY5aWVpA+i6ESIVAuQ250cT3JnOFc7aXbi2GBPjbEDxrIbyk+h5zAp0G17T7vJ
-         V8yw+KhvhSZRLDKHdUn4bAW+LGjYEOQuMXjv9HUNjMZ0zRJNM/HmYJgqQTpSLQLnhOW/
-         6UNfFwn7ZShTeAUiz2MTOfZNGkIHO9ro7hWSYBzLWtGPhKp2PUeMMJFWNuAZUpB4dfRe
-         cHseCJBgMpqAWwKLJ+xufaRHKfbTvIoQykAcxMxx/OVCBZ0sbc8FJ9Ck3B9+Xao4pJIl
-         DoxA==
+        b=MhHEQm4chNZbMjQvXAWdPnadCu8JhSXyl17sisKZWWOrVv4cdd0/x1g3+C5zn+j9fo
+         XbAEKiHrMoWexOSyBSgocGRK/gzF4OQmKHY3seui9bE0ZliMH7v4iAmj/gLr3HU+EUpF
+         Jelfxawed5KdtdiqWZeC8stxV9ffYycZ0vSQjysN9tDg0f3mmKuAdTcmxW6xFeQiQcIo
+         /Zr46iVXab6hDlPiFEjj2vHODm+M3WQV8whQarL7px9BYsGHrBAX88BRzwH6VuYmi8mE
+         idvgz2n4J6idj/Al/L2LKDlnaUocZgyxPftBVmsKGlR/ZvRDgP4DJkvDg8+8nvfVEojY
+         TrXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+A/GV5o2sUlHF+5jSvNVL6GHuIN8ETVy4HVJ/HHAPUA=;
-        fh=vy6UCH7tQHYjXpNl9ZYNemfniYJk9SwFPjc2ROuP6Ig=;
-        b=BBXIySPELwhmWH30qL3q6y9t90lQFXa5oStU6w+vXwJlu/EmMYq5MFo+Uqg0dMaFC0
-         LnwZ/J+gu4m6mJVfESFecastoHf7lumnBMyoJJbbvEopjGiF4w8+dLhPlXJ51eJSkAwm
-         Xestl6t0R0eRx++bp7JPFKiqWWmyGRFnOLu5K3J90LxOqIwZ0qfkABnvFMvw1HlDb6DQ
-         giFrr2NTCWXD9py9HypmJ9n0FPpcYaTdpFaIcCvHA/QIcEzi+bg9lqBgc4pVRs58H8tB
-         LXmiUE9EVWroa3ubRhoR46KU35oAeosRm/mYogJwLYrjffuo34EPljf5Zb6Ta4LVy4Ub
-         czeg==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=0AqyNY/g3TIszlVcbBsHINX2o3fZo7a95+GAaAZfEE4=;
+        fh=DTmfFDomKxJdxhQ4UTVDTZRAD6hBMeerpUwhChi29p4=;
+        b=VjuHnb8u4nS5tjuKxh4/aaiabNrpgk4Wynn0m1SSh15yQi3tmeUZep/wsocYmIz+R6
+         ouyvIUOWEfWuuyLf01MGORFZQ7TaIH11pNpciX7ZJxVcC/zsZ6KcKkdGdoDHgYjpINe1
+         JPL/ZAkn3H48lZoDtzBFudFTESNcFLxBYbDqNMaN4nxPUK44H8PujRZuQEaV3LN/cHcA
+         YUwpYtoCsdXunthzUpjgC/wdvgzYjFddVSASKLcTKh5sNUqCK4a7V8Q4AnkxpInGCG3o
+         DtoBdoFqonlXV03UQMSibRhDu93P0RX2/SWZIVewV1GfHBufl6lD58ptQfPBY8EW2CZl
+         SxVA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780385808; x=1780990608; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+A/GV5o2sUlHF+5jSvNVL6GHuIN8ETVy4HVJ/HHAPUA=;
-        b=PrVkap4I57y8fhb6AwoV4w6aKSd2xz8XwYil/5/WNN3F+u4NhsSRflSPIsRbpFib/D
-         IFg8YylzjPYqQuijTKVND0mrezqwA3JQjhbkVhcGKd9qscnlg4rWy6NTvyTZAU7o+/LT
-         XbR4G5Kf3KHzEjvYeZJLo1z9kDCKPWniR1+YNtaSIeV6kUOVJT9WsOoLq7rhdTJcheOU
-         Jz8oJ1LlPP2DM+69ZDug2FuQckFal6aJiSTUU8psUWn8i6ABdK6QqX560a3xtufV7sl8
-         9Aiaw7HvKrtwQV3y7aRuN3FsmUFwt/IygnPD6xaTpgIRYkbCtk2SAOzVMKGCBflTyr/7
-         WyXw==
+        d=gmail.com; s=20251104; t=1780387885; x=1780992685; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0AqyNY/g3TIszlVcbBsHINX2o3fZo7a95+GAaAZfEE4=;
+        b=gSrTIaqe8y4APNvrrEF9dpDWnvgf+dXoj40XvtK53tn76AhXRONto3nvO+Z0Q9Bq12
+         kWcxtEgncTVBB31sB4OO7Kx19+Kx65xCNBs6k9xIyo3TEjj0XAfWyec+tyaROZ0XQIME
+         QOCXojv65TwcDQ99IMOMP8rVpHS54BIvOt7P0c+pTaphRvZM4dsUbprC+IAwmgf3/5oG
+         knOUDGVBVFWH00emlyVZuF+uWeZU132AINezOJD4CLMVpPujY6ZGdefK+wWuGbDt6M9v
+         pKFRGsHrlt8uzqUwxJ7oklJWnFM/20ib8QC4X22OLsAhyPIAgqvasRZxE/ZqjM7zxMSr
+         7pvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780385808; x=1780990608;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+A/GV5o2sUlHF+5jSvNVL6GHuIN8ETVy4HVJ/HHAPUA=;
-        b=PSpu1+62h6F61BHCoYZAoi28EszruvtJwNxw4Rwt+06eVpDULBl21MAK2jseXeRAZA
-         q/LPrm6oyj9u69t8XzEEue0Nf+ATAwVMjlpt0vNLi11GSyyakAaIBLl2YeRldt1NUDDr
-         RkbIHe/AqX1aRCwbk//EtMIy+3HSzFHjR3/ey+TitFl8dySJUuHLzexKxEkt1Tv4+NWZ
-         EvV2n6I9Nax+b4jpaifFWqqsMKH+WATgUHR8HMT0UEm4fkrOiLPOkj2r3FPvks7ivqE4
-         PfTH1bg7SQQULFCJqJHUCktFdOpR7YX+aILHjL2cWeRTfuz+jb04wxFj7fqMWdaIW2u1
-         sqOw==
-X-Forwarded-Encrypted: i=1; AFNElJ+6PBATH5s+x/cw37FFxMy8K2dNYipdmcAcNC/eD30CjbLJcXCgWt6wTmcJDmkYgXjFy6MutwVioxNQdbOVWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUHjDTCAxQUxC0w4IhoGEsB/JjrvbPYBs4la/0juadKaXqFlk8
-	xdn8LJ7omZrj/oqHJoLmQ6tWYNF85IEPjxboi3+hJdwIdgGoDN5XbPwn2/OnbHMtWJDHVGfiJVB
-	+abMkOMvbl9Xn2fctsOyD8F5mwF9yBY4=
-X-Gm-Gg: Acq92OEM7ntTCdYWXP/xEifI4vJ6fZYYflt3Gc1HKc/NmQ2HFOWNadF+Z0vfN5g4Uuw
-	/q8rjG6xzx26h6OToc27MSBk6iQXpVlQ4YjCmfUAFsn7Zk1JkpqGX7CROfIXg0nlNmYnqeGdnAx
-	9121Q1jbEUw1r+LfIE69WxcD0M6C+HIOUW8LUJ2bv+33r7gywfY2+D8C6IpypBruSxx6Scq6tXA
-	frsowF9oswYgi7B84/3kmVRcd79YFliPkFqPk9UOc+bhFvnnwywnSlZZFhbLeaFFIC5R4zvpWsO
-	i2PEb9JdMvSvG55rMTPQZqcs7kM9FXUeedNCEOtwrdpAiExBQSFvREpikogBEQjBeNX6hgrnSGM
-	mIp+dXtu6Nrq2QvT311c6iWAb1JnBwWlsTg==
-X-Received: by 2002:a05:7300:fd02:b0:304:c73b:79ea with SMTP id
- 5a478bee46e88-304fa65935fmr3407438eec.3.1780385807836; Tue, 02 Jun 2026
- 00:36:47 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780387885; x=1780992685;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0AqyNY/g3TIszlVcbBsHINX2o3fZo7a95+GAaAZfEE4=;
+        b=KypTO6d9w/lNwPCPZ50FweGO/D0rIJNzFGZ6ecnMyfD/fUJswC2giA4VABxyDcEl2B
+         mvSs10+no63V+5uruAD3s9XtNLpaFSjacLZyIHALSLko4r/5MNILHz8fNkaYxOerGEsa
+         pFaBh6cXGbY70EzFyWlyieM7wBxf4FMouZ3VFCVh6YmSkLwwr8nbpzJfxagpzu4lLvEE
+         SenzHxClG5y2FZf8IJH65OURFDA1Uf9r44ymmBuinbSL+0+81DSs5c3gu10CTMEcTHvu
+         h/A3guYnCe2Sv771kJ02ViCeHVBZtpVxwdljBZjZ6W9pXwVgSMT0SbIaWw18IiLU4x+H
+         L6tA==
+X-Forwarded-Encrypted: i=1; AFNElJ/Jht5C0s0BMWs0IQ5vAt5PuFmFJh9D2ZFNIMqFnhP7E6gvBZPzSYfzGK3f4j+sIRj+7B+dVY+sWZdzFmQ0Aw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDgK/iZ1GIf6d7swHQ4OahAhmp6fMAffmV7tdU9rJ0b7zgDXhm
+	//mmuKrWuH4kZkecilTsYEWOT1m2aTGqVb9DQbOLJEjkuWVMA2U7MKbOfnMnE3jdfg7wCBPdGr7
+	4uwH5V050Arc0Fd2KAie/nQ5gT0cMKHY=
+X-Gm-Gg: Acq92OENaoeXKlGkqYtTisT3h98FSqbWMx8J1K1M1hrcKzontmbBw4g/8NsnV51ptz/
+	q/jmBgSycHbtb02AxXECLs0Fat8FQuQjV+dRkIWgC+mAqRhg+KzCktFROJe7L09r/4Hw0fS3+bi
+	gXviYP+mto+RSAeSpsttLUVdiZ8uJiaqHHHIi7LzMzpYOvvnzGNzVPzLbY1Y83OVd1HOiTNTKRh
+	6MeSuMakFu0eolrKXaz4xVExj+k65N6P9DIuNXuyLVZmGp3Dkc2Oz+lZANaKv6DfZkhpSTSTRPW
+	bQ16XCwavucP314QFXxf
+X-Received: by 2002:a05:6512:3b99:b0:5aa:6523:22b5 with SMTP id
+ 2adb3069b0e04-5aa652323acmr4015131e87.16.1780387885222; Tue, 02 Jun 2026
+ 01:11:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260530184944.10459-1-contact@jkam.dev> <20260601165042.8450-1-contact@jkam.dev>
- <20260601192305.GA965997@ax162>
-In-Reply-To: <20260601192305.GA965997@ax162>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 2 Jun 2026 09:36:34 +0200
-X-Gm-Features: AVHnY4JJ4SVDYenG-jUsNBsnkOBJxlBK42SYK7J_hB85geQn0FH46b8_Yiq3DeU
-Message-ID: <CANiq72nwsocH1xypqFegtAuopaARid_3NHCdbZNhDWjYOtNe5g@mail.gmail.com>
-Subject: Re: [PATCH v3] kbuild: rust: make `*.long-type-*.txt` a target for cleanup
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Joel Kamminga <contact@jkam.dev>, a.hindborg@kernel.org, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, gary@garyguo.net, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	nsc@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu
+References: <20260524132824.54918-1-muchamadcoirulanwar@gmail.com>
+ <20260524132824.54918-2-muchamadcoirulanwar@gmail.com> <20260528162557.2b0b28d9@jic23-huawei>
+ <CAO26r3QZyVco2aZRqPSyWr3d-SBAVEknkaeNDM4g5DFCr3-2aw@mail.gmail.com> <20260601100559.274d5b05@jic23-huawei>
+In-Reply-To: <20260601100559.274d5b05@jic23-huawei>
+From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
+Date: Tue, 2 Jun 2026 15:11:12 +0700
+X-Gm-Features: AVHnY4Irm78_Kg_xuJgPzY0YzVzov3ndwWZWvfzeJyil_0GTKGZCNCjHaprgtCs
+Message-ID: <CAO26r3QLJ1ZR1Qfjr6wQo+e3H6v=Z=bxkeE8+nseajYgWLbi4g@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 1/4] i2c: rust: implement kernel::io::Io trait for I2cClient
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Igor Korotin <igor.korotin.linux@gmail.com>, Brandon Saint-John <branstj@gmail.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 1, 2026 at 9:23=E2=80=AFPM Nathan Chancellor <nathan@kernel.org=
-> wrote:
+On Mon, 1 Jun 2026 10:05:00 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> +CC linux-i2c and Wolfram - make sure to keep them on future versions
+> of this patch.
+
+Noted.
+
+> If this was renamed to make it the rust smbus binding then I wouldn't
+> be as bothered by this. For something claiming to be I2C this is a
+> misleading interface and I am very much against it.
+
+Agreed. I'll rename it to make it clearly SMBus-scoped in v4.
+
+> Understood that there is more to do, but given the regmap already
+> encapsulates the smbus support you have here, I'd be much more in
+> favour of the focus going on getting that done.
 >
-> Not that I think it is worth resending over but I personally find the
-> "clean '...' files" title easier to understand than the "make '...' a
-> target for cleanup".
+> I would almost suggest not merging a non regmap interface for what you
+> cover here, except we do get annoying corner cases where the device
+> uses a mixture of smbus like commands and non smbus so there probably
+> will need to be support at the i2c / smbus level.
 
-Agreed, I can take it and use that title (with the `kbuild: rust:`
-prefix mentioned in v2).
+Makes sense. Will defer to Wolfram and the i2c folks on whether this
+should wait for regmap or land as a clearly-scoped SMBus patch.
 
-Thanks for the tag!
 
-Cheers,
-Miguel
+> Is this separating a safety argument from a bug check? If so why
+> not just use the tighter one?
+
+> +    fn maxsize(&self) -> usize {
+> +        256
+> +    }
+
+The try_read8 here is a general SMBus wrapper, not AS5600-specific.
+The u8 command (register address) applies to any SMBus device, so
+8-bit is the protocol max. If we tighten below that, it breaks devices
+with registers at 0x80 and above. The 7-bit limit applies to the
+device address, not this command byte.
+
+Thanks,
+Coirul
