@@ -1,71 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5334125B088;
-	Tue,  2 Jun 2026 20:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80DE21CA0D;
+	Tue,  2 Jun 2026 21:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780430428; cv=none; b=HjCYlfCiTIUchlRIjmY5QQcIe+sgiPeMDOohvfAaLz630njj8HHWe1RenFJ6dtzWLC2jUEj58p10kYOxOJxccNRFkkZpg8Xkuja50nqKr5NkM7NKKvM/WSe0BE09hnQ9wmJWFt0IVtWTISGJHTm9EzUD8+crnVV8oSdYWPLIAqI=
+	t=1780434427; cv=none; b=qXQCapTC4Ephc3hBejdPvJ2Sfa0LDE6jH0CiSiqfaPsihKw9+SJNaaMg/4jiXfOvCA/P3ACQjs9MSlV2fh68EYhh+SvZ5AAI3305WfGFc+GHBaML35FKr5Cc4H9qRDPXu5C5xfK0+Vsma4bD2M0S/Vz4tvm+LvJeYVGSncUDFm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780430428; c=relaxed/simple;
-	bh=YCXEpa08KnLDcAtvIVLebI1Fa6o34B4vWsrvIJpO+z8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Raf0LknIwhZ7PKptNi37uAe15PMk9VDw76s06Tc383sb/OOk+SMVBVICQ9w6HNwsgcysTcG+4Qm+ugXAKGI4iWWCvg69j5H981GN0zRmqpnjmhtpWBjR6Jn19lmxqOyvfAkLQQFprmMoU9SKSxhdCTf7VmRECLem/xiiotTjJIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LeEIdTKY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780434427; c=relaxed/simple;
+	bh=XNQ6l1x2V2wqcKAAOIcZo6YVCluqwbkdrlbhNesSKF8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cXnmX5jfl3CMiImbZRIGoPnY7h+Yph2c2MoENkRjgE4DALPHhHN1cD+x5yxXYoj72pvd0a7oLAH0JPpD/l2JYMW3wGhpMMuVUZN1YbP+/IJUw+QeYbhXWcj1TmefrbVR3JWJEXl+lXrDCQrfx1CJFo8cVhUPh/7+tOv/MskBeX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4l3MyzV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LeEIdTKY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2D11F00893;
-	Tue,  2 Jun 2026 20:00:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4l3MyzV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6211F00893;
+	Tue,  2 Jun 2026 21:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780430427;
-	bh=28uFiFaPz00034N6mbPxIg597Anz/KiVjczsmXdtiAU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LeEIdTKY/sRuBIGhNCn+pS2TNWw25Ld/g5eQxQCDyWFc+FNTxNMXfFaoQi8MlAjyd
-	 B66U1MCiOZ0PKEiNE1SQxpRCmU+bL28cKfphN1KehuxXCYr3DcZNxqrFBgTIdfl9x3
-	 8ULZYWYbF4zch7yZ8n3NIlSZsh2TTH+rze/qtz+l6g/lHdcWJmu4nQZe2s3CbmB5Qd
-	 aNCY5f1trWFsIeOaA85aS9mQWxcJLOCkCqSZAA7glUk9FfTW2YXGKOJdUwBbSKycIs
-	 GAhSCasKdJTNMz0bknZH7WluSY9R2gFNe71Iyyckyh9pK8P2JQxQsMRw9kU0s2IKX2
-	 6c0PRvm1INsuA==
-Date: Tue, 2 Jun 2026 13:00:25 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Andrew Lunn <andrew@lunn.ch>, Donald Hunter
- <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Matthew Maurer <mmaurer@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH v6 2/3] rust: netlink: add raw netlink abstraction
-Message-ID: <20260602130025.4df4e5d3@kernel.org>
-In-Reply-To: <20260529-binder-netlink-v6-2-92dd74b6a32e@google.com>
-References: <20260529-binder-netlink-v6-0-92dd74b6a32e@google.com>
-	<20260529-binder-netlink-v6-2-92dd74b6a32e@google.com>
+	s=k20260515; t=1780434426;
+	bh=DX7aQVZtVpsdM/RCECISKbiWk2U1XLyBOjRx65HmhIc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=h4l3MyzVzZPPdBXqFarUf5KwwJu3EUiM6Ue2kf/367heW/5is0XWYQSNEeRy6h5Rh
+	 wEOsE/KBezpouAP3m9sG01b913V/3jzSzDESGF8lX51wDBeB/tr9vXeh6Pip2ouxo2
+	 wZUkjeYKlk/0aOpDjz+sK5dcctZaPwxmnVDEm4sQXmXmrzPCjRtxwf4CErTzMcaTsY
+	 J6twA1BBssw4l+dxUrzNY+PGXgXFqSh7vMz7hM4CEXkeLKXprsWzuUBjTTbaDTmbqh
+	 LGKVVOjMm3Vhr2EmeOZTP9j2h/xtZZ0p9c9oclVgKba+Hr/gxnjftcYAGpytaCbvf2
+	 LvwarXhlsYVqw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Nova-gpu@lists.linux.dev,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	David Airlie <airlied@gmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v6 0/3] Introduce DeviceContext
+Date: Tue,  2 Jun 2026 23:07:01 +0200
+Message-ID: <20260602210701.1705071-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260507220044.3204919-1-lyude@redhat.com>
+References: <20260507220044.3204919-1-lyude@redhat.com>
+X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, 29 May 2026 13:28:39 +0000 Alice Ryhl wrote:
-> This implements a safe and relatively simple API over the netlink API,
-> that allows you to add different attributes to a netlink message and
-> broadcast it. As the first user of this API only makes use of broadcast,
-> only broadcast messages are supported here.
-> 
-> This API is intended to be safe and to be easy to use in *generated*
-> code. This is because netlink is generally used with yaml files that
-> describe the underlying API, and the python generator outputs C code
-> (or, soon, Rust code) that lets you use the API more easily. So for
-> example, if there is a string field, the code generator will output a
-> method that internall calls `put_string()` with the right attr type.
+On Thu,  7 May 2026 17:59:18 -0400, Lyude Paul wrote:
+> [PATCH v6 0/3] Introduce DeviceContext
 
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+Applied, thanks!
+
+  Branch: drm-rust-next
+  Tree:   https://gitlab.freedesktop.org/drm/rust/kernel.git
+
+[1/3] rust/drm: Introduce DeviceContext
+      commit: 571d4242c466
+[2/3] rust/drm/gem: Add DriverAllocImpl type alias
+      commit: 43a5d04a743b
+[3/3] rust/drm/gem: Use DeviceContext with GEM objects
+      commit: 0023a1e8d01a
+
+The patches will appear in the next linux-next integration (typically within 24
+hours on weekdays).
+
+The patches are queued up for the upcoming merge window for the next major
+kernel release.
