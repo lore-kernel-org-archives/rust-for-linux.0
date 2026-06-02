@@ -1,35 +1,36 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021080.outbound.protection.outlook.com [52.101.100.80])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021105.outbound.protection.outlook.com [52.101.95.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B143EB7FF;
-	Tue,  2 Jun 2026 14:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466F93ECBF1;
+	Tue,  2 Jun 2026 14:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.105
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780409893; cv=fail; b=fwi4lD6B+lnsPS555nVpqKfpzWnuYWVjf+9TdV6xDk7W84CiWV62Y7oCDPhvm777Uw4tXFaZ21rhMozhmOr60FmHOrbZMGm3EGcfl3gzj8cTcyIUh+BzBUuKjBGzIyjxiRSNg5biE4mOeM4Ctdh6olfFc6liBpXo9jPV7F0s4jo=
+	t=1780409894; cv=fail; b=VRX73rHntU0nbM76JSqNZSz5JtQbsFQdKmxijXMwWBOoCknYSyNqwqzr14u1al+du9V9lLuMVSg2/gmWkXXc/93zU2Vml4SyJ92CLt8i/8+QMLty7Y3i3+m79pINOOQD1K4jg3Tc0EiS45Msb7oSJzpUDFiVM6iFl8Yp4GhqXlw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780409893; c=relaxed/simple;
-	bh=W9/8Jz0PfElOc2/CmWBDkIX2sx9kQlcPe5ctnIwRHTQ=;
-	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=Sc9t9Hwli0oNjAFbN5ln/T5N1d5u+vYObv5bE8v+HxSpBzLzP+EfeWb/Z0TfxLlscwnFHnEdsABUS4Gx1XiwNY8xMv0mO/dHt4imwubOYBn4NPoNuVYR6m4O3mB7ls8r/bDjNSX6FhzJeipEmEBWKpUJhnlQnxAgAN+HnFOAUlw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=iuleAIyk; arc=fail smtp.client-ip=52.101.100.80
+	s=arc-20240116; t=1780409894; c=relaxed/simple;
+	bh=hr04Tt1QZvtf3ZStThFAxQPZm/WEXIYt5H2AG4sQ6kE=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=IHMOLHmZs5SEKCLx+lrUgecxiu2YwSBRXy20ioVxUrRdDo18Fa1znCSwd7GOxFESG4TvAFcubK8dtS/kZmcim48YiXDcsLKyEacmy3AfH91Qu1N5mGn5N+/2iEbo+VcxPhDao/9dt20ZIPewk6/gvpXlVhhPNo0WRQc5/3CZjIs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=do+jdc8P; arc=fail smtp.client-ip=52.101.95.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="iuleAIyk"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="do+jdc8P"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V4gCoZ/GMSTg4oLJtVxXFZ7SE5Rg2XgeVxOhuT1mbspilmoXmbwtuAhwZXZ1qRV9VP77WZI+UrSSlp6Bq6m6XAyWQOMVxLEwE5ZH3jqDl1b+ajDJgGJ4/q9HCLHwgVz3KiByXYy1E1Ij78iW90jXlRKgXe49LRqjtTCR6wUtQw+IYJgzCFhW5qf/Y96J7ZZii4rvcUgu/K+S8mPv/5iSAwKlhaD67GOhDeXOE4rvmU+OHg8qfqMPthupjydg4Pd0Ps9DBtfDcG5q39AkMqI2UxEMFhJ9+0TgX3kcwbp99kfpW5+5PjdiwJ0Joyio7JcoKWx4wFDNOw3XJ78nlQ/iSw==
+ b=yoosyG9XhHQGxv95DAZYf6kp5RqX/sZWFoZhnMQQ56wVzSSVU1GyLz03WUx4o1UiVCICo1wtQHp4cCM2afbjwgvwz2OCzJ/nTXi8oSTHJT058gkFCoh8uZ6qznMfX4p/kcKt6snhB7zw+VRNYn3RXGjYbyOIOfRzf6B9FRhq1f80LpnBZ6LUJQj82v0TMO3xHXWLElRipevGk+7LYVNmJiJjg9yonKda+UKAWtNSjyt/AaDiAd2EcSYei9F75Uc3yE/gUxdBOB3SF0rDUlqfAdL+i1ocFGTJo51Qghr+jKaV8RwoM2/rsssRr4/5XJz8y3FTHe7ZFxAulzqUUOKeWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uRjeqqHooDCH68bix3cdDq29gatIgrx6TCCbpQUpqCs=;
- b=MhpdMTp8FLxdLKPYaBKui9PXfGXruX/eb4E3ZUmaRPtRKsSwMpTnP9fXfcDkifSCrPjgAQV/r7H1D1qW6NvBK+/uCDPYiCfG0PHahsbzir+/l+sXUz85TsiB2ioJ6TvQLBWoBv2NTFF8itqBFqI3hG/EcNc6hM4uctnQvPs7WJ67eEhurMJwalS1waMWkVL5jtrjabvdbkvXRTMx6iCQk6S+awFWKYn6J3hlRMlK+r8ajqrVucDigKMR2Hb7FdR7JAYRJfeuQwONINkq1Ojz3xaOgUPLoudhGHex0hK4PxK9DS22UpFI3h+V8MF7xsGs9lVhmMWa2EkNhXfUz62Szw==
+ bh=c0TacVsjqtHn6L22DUpGtY9yQ/xAOVzmc3UVIs0/rn0=;
+ b=ALrjlEPQ0CJZsKyUCpMBQlVLCbgfFW8pU/TAij2MsLYLxml1OAvcODGvzwxyAn3s4wL+mo98vvuJdc5OEMscu21PoatevrQRsCh70WW83XFkuef2fiDVCSM65TAqZWmFGwL79uHiVM6hQXH+RQu/rBl6q44+QvKvh9DZg/23kODp69dTzvNUXwONCKpzMoJGEmzsAPJcc7T8pvowQzg5FKx+/QMQhszFwPYb/X8Zq2koq8d7Ah/fHqnSbGGsv4pOw02S50vrgq/+s4hqs5hUHNgkLcoFHyHItahEGibYkdkipnimBwP6gI8VC3v+DVSwwHTCdy263puxpamfGu5V5g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uRjeqqHooDCH68bix3cdDq29gatIgrx6TCCbpQUpqCs=;
- b=iuleAIyk6IWO2gOq0zjP4lhOtAlzLhhw/yHSgIHvku4aWNaR31wB9iz0h3y6vwq+vNmArauDfwXtE7evjEyghkttcdweuWgPZJ3ODey6yRKla/6HgM4bu39OG599Tpky1D2uVUxg7nRO+FpGQwqf3cdbpCd9QGUNc+0AeQA3YVY=
+ bh=c0TacVsjqtHn6L22DUpGtY9yQ/xAOVzmc3UVIs0/rn0=;
+ b=do+jdc8PoD9rHUCNlHTQvI+QM/fpTp6mLewJU+1xS5T+QevEqvpdxHlmJG7FCrmJawWwBir35blUPB0DehPNZHtZzrfpqpIfL4E7D3bDYBZURa0nLq4l86BfGVDqk2ffR/G0WcR/NfRCxGfFVn3f/wkpq3wgAyTX8w5KB0zmzco=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
@@ -40,18 +41,16 @@ Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.006; Tue, 2 Jun 2026
- 14:18:01 +0000
+ 14:18:02 +0000
 From: Gary Guo <gary@garyguo.net>
-Subject: [PATCH v2 0/6] Rework index projection syntax
-Date: Tue, 02 Jun 2026 15:17:51 +0100
-Message-Id: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net>
+Date: Tue, 02 Jun 2026 15:17:53 +0100
+Subject: [PATCH v2 2/6] rust: ptr: use `match` instead of `unwrap_or_else`
+ for `build_index`
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAA/mHmoC/42NQQ7CIBBFr2JYO4bSItGV9zBdAI4tmkAz0Nqm6
- d2FegGXL3n//ZVFJIeRXQ8rI5xcdMFnEMcDs732HYJ7ZGaCizNvKgkDhRfalDWIi096BsJPoDc
- YdeG65tJYKVieD4RPN+/pe/vjOJqyLb1i9C6mQMv+PVXF++NmqoBDI7kStTW1EurWaVq6MZw8J
- tZu2/YF9nyuXtQAAAA=
-X-Change-ID: 20260415-projection-syntax-rework-b790a305bc52
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260602-projection-syntax-rework-v2-2-6989470f5440@garyguo.net>
+References: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net>
+In-Reply-To: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -67,11 +66,11 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  driver-core@lists.linux.dev, nova-gpu@lists.linux.dev, 
  dri-devel@lists.freedesktop.org
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780409881; l=3121;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780409881; l=1018;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=W9/8Jz0PfElOc2/CmWBDkIX2sx9kQlcPe5ctnIwRHTQ=;
- b=VNNfbZ3RRQcMT7+IMtA+GN8cjMO31EMRxPHMssDOKQSRfYszjpjgoHNiRrKaIi4KfwCsUWWAu
- eSrW5pDlk05Dnak4CVWz9p+IhgvrmZDmhBl26XQ4PiNwOU/4EkfmmMU
+ bh=hr04Tt1QZvtf3ZStThFAxQPZm/WEXIYt5H2AG4sQ6kE=;
+ b=nDRSXfcKJlczdRlmRmi24bZpHI+UVay7eR/s256qMwh8egQuYJ1A+HKu3PlnF0DID4D1ISLNy
+ i1+rfgReU4nAf7dYd8/DQffByMPFi8/+raTT0KXMe3wJ/1jGIf1Sec0
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P123CA0539.GBRP123.PROD.OUTLOOK.COM
@@ -85,139 +84,95 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB3626:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2988478e-bce6-4799-5aff-08dec0b1c138
+X-MS-Office365-Filtering-Correlation-Id: 27848689-0b6f-4330-71cf-08dec0b1c1a6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|376014|7416014|1800799024|18002099003|921020|6133799003|56012099006;
+	BCL:0;ARA:13230040|366016|10070799003|376014|7416014|1800799024|22082099003|18002099003|921020|56012099006|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	uZUKaC0/6defvsR40LaOjnA0P0bDdRE23r+GJDTloELBcKjFCZJAt+fqrhv6/wgYIZyL6r2Fq6lBZEleHvJM5Z6zct56Cl0/KpY77xMgljZnCKHsyajlPmzLIX+afDFsKfZyh3ehtfOwB5hhcwV4xu2tyoiCnRu9zTdC/ThpbMsVG7zY82+Qv5J5ar5peMDtt4M8cePIuglDbsCQZ+uJ5/M033i/qH0DRkPXY46gHE1S5CJgeAjLjLNN4y3FgEYranR7ntUOK9y51oqlHBYO2PpkTFzdZBikUt+I7djFIKwQ/P+ouPC3u6+5xk6TyNAptncjY4bkBiNkYvpHyjdywgJkc5nDgCnT59GeD6LFRxRI9xCsPJK6VMjmkApcGrPbZa5/EBgvZ9rkef8uMnWhiCfHpDFvbtNmZxFREDtxLhTihkbGPhh4d64mroY7UEIDiWLVSX/UuZgf+lVj9AY7IREhDzD6hDToJsmf3ecyqIyw3l5aHtmaKWUQkNcpEo2TQGyDTiOnLrudHtR9bH4208Q/diczB6EyzOUcRv1KiQJnTd4G1l/TJ1/jCU8nDfIVAxzlbgkmtChaGftzOE/MpNTu6ar+q5Lokm8hTd82DDv45IyzcnIWh4mcRO3Y4FZFaapYxweFfz/YFmOyCpZ+D1g5ZZZihCQ7qpM9YjlPawVDNX6/+Os6thssCnastvAI
+	R865n9AWB9niYLZkWGAL6g8zHVhF3RvmR2lU+WjJ4jV+4ISvsylAFDTy8d7RRC80TKZu19fbW/6kOXoEcA1Ex1If8xpFFyIZZmdOdCRfK1/fZmMNTa8ID4Okp/FPqLuI2tP2L6rAigxjyqhhrZC5Zz5kHZNJ5kiQmzPL6YM+zbYiPbde4ftBNelvZL9FXm+RPXRAtLJDGFBCk+6uCbOgqdYnyaYxUUNZH+MpRD9klFeHjXeLbzm4eUi3TNe5DWQBd1OBsUg7qEX0z6i7weakWjSbKb8ooDc79eWPNYuNH8fmAJUjRKnVh7+bX0NdUlgUWiy+/G3SZ5eOCn+/LlAGjhBDlJxE1LB5rTRxHBj4N4rRAba6U9tDnmk/0eU82KjfyJodEmvbGul37yr7L6jHiKzF0VUU9/Q1su0K5BL7wZB/CMUijz2xYMcd3Jqe6zbiYEhtJNSZI3qxTLGZC1p2Vs59U/6PpwubpW3mmGlsZiSHEzW76or4u3I7rjiOa3onKyn6Rj+2inHNcZVxcoTWYIourZSy9zSVqrsLtj7rT4x9SCvaG8PzLcJ+dtHRjiSsvO+Rdk0jXd6uRgphsclSOE9/RYnmO3JDAwjhO/LMMI8OFFgmo3M+7ecGJEKWCH+TusSe0Sbic63+Et0Gbdi96DhQ8WeX0Ho7yfif/zrhlxm/HYhVaZQb9/oLOt6ikibYwEkcWcfk4cJW6hsUoPOD2wXpOlXEgeufK/VxuOASdzig15586Eu7x3Bv+cJXyhiN
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(7416014)(1800799024)(18002099003)(921020)(6133799003)(56012099006);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(376014)(7416014)(1800799024)(22082099003)(18002099003)(921020)(56012099006)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZHVSU1dSUjZqYnJLNXRHNkFuOEVJclVST0FIbWFqRGRNWGJDR25jeHhVUFRB?=
- =?utf-8?B?dlhtYTNZaUk0T3RpSzlmSTBjcTdlTjErTTJ5S2VjbzdHS1kvNTk5WjR4b08y?=
- =?utf-8?B?NEswaEhGdFNaQ2FRT0g2Ty9ySTdIbGZjY2daV1l3Ry95ajlESzNpOWxuVHNI?=
- =?utf-8?B?bWZxWDZ6MHd4N1Y1aHVnd2sxd1kwNm0xU0JlZnlWYm5yU0NndHdHdkR0TU96?=
- =?utf-8?B?UlRxbDJwZzVRMUlpU25ETHA1TElEek1ESjlhR0FGM0dITHJXVmNhcWJFdXl4?=
- =?utf-8?B?WmI5bU1wZlNpRHFMRFUvMjhjbG1aenY0VjZIZzR4Q2hPUkJndGRoTlRHY2NJ?=
- =?utf-8?B?WkFLdVYzRndmYTgwTUI0aGpCSTY5SnNFUnBsc1BteWU3SGZKUUh6NzdWaWE5?=
- =?utf-8?B?QThxOVRCd1BVby9NRGlMOGdFdTdnWFZtQVJwTWxOSnhMekdwS0NRdG9YR1gy?=
- =?utf-8?B?MmpzdEdUZW4wYmxVc0xpVm94NW80bkRlZEovMWZCanUvQjZobk5GazB3ODJq?=
- =?utf-8?B?YVFOR0loTnV3dnc5TG9leEJXRy9LZHBKaEMrdGpFdUJvdTZPMDZYNkw0U3JZ?=
- =?utf-8?B?WnlQbTVBTU83R0NieUZPM0VIZ1RaZ1RzU0dORmswWHFFdktWTVgwNGhPRFRI?=
- =?utf-8?B?ZVhXNDlUQ3hEdUdZdWZxWlBKVEJZaVhhYzBOelJyT1M3aFVRREpHYytOL2FT?=
- =?utf-8?B?TXJGS0RoODlnbHZRU1lvZjhIRE9iYjVOMkhrWkpuRHN3WWgzL2dhL2E2WXh3?=
- =?utf-8?B?K3ordzRhZEFSWmZnZXFmZVdUNFV0UEQ2Sk16aFllRVV5ekYzWkp0ZlNwME5z?=
- =?utf-8?B?Ky9QMDNGQVpzZm9ycTJGcnFvZlBGSVBKS0orRS85c0lWMDgyM2p5UEtzVTFU?=
- =?utf-8?B?cTdVTzA2ZHZLbm9lMEh6b05RWUl0NTFnTzN3LzFRVWNxTUROUURDSXVMRlRT?=
- =?utf-8?B?RHBhVHA0VkpGRG90MHZqOUZaY01RU25YbGt2YzBRdkJCLzZwVkFPcGNyYWEz?=
- =?utf-8?B?Z0NqNTlZOHJBOXpXcjBOaDZUKzVuYWs2OXVBNlZJU1kzNlVDbStIZW5ZMmhw?=
- =?utf-8?B?M0lMRDh3WHdRZnlhUDVJNWUyU21tWU1MeEdQa3BRMXpUMnVjUzkzeWtQQTY4?=
- =?utf-8?B?QWw2ak11WEdvdklFZS8yaXlTeW80TFJBeVZHSHVEbnJQRUhESG5WNmJac0lG?=
- =?utf-8?B?U2hHU0ROOVhUVHhXVDJQbmFGNmpmUWJncFdBYzE4ZTVPaVRqK3NyQjRac3ZK?=
- =?utf-8?B?ZzBab25BRk4xZzhOZ1RoakJxSkJhNE0wdHFOREpmOWV5RUVCMVZvcG1sQTFS?=
- =?utf-8?B?aXB0Z1hpMjdjZkpCYW9xMTBMUmZXVDNibXl6eTBnaXVoSExoeHVIeEVYNEZ6?=
- =?utf-8?B?UGlhYTExbEk1UnBYbTJDREhMNGpmWkVuejVUSkxvR3pyVnJpTTd4TU11WDhp?=
- =?utf-8?B?djVlMnVUZ0xNREFQM0VYZHpMaUxvMWNoQ05hcW9FNU5RMzlrekJ5dHppUVI2?=
- =?utf-8?B?V0pNS3NEL05WYTd0emgrczVkMkZtZ1k2dUNNajc4VTlqc045QlE1cWU4UHhR?=
- =?utf-8?B?Z2tMa1lWWEpQM3ZoVys1OWg4Y0hKYTgycWtGa3NjOG15QXg0dk91TlNxaHZO?=
- =?utf-8?B?U3UxRDVWUkNQcGJKcUYydHNvQWtWZDFObDVyZit3bHRaRmlYM1hQb1BEOXkx?=
- =?utf-8?B?T1h1cDlrb1RHUG10MCs1dFBnbUkrVmZoM0pZazNLRnpxZzc2Y0o1QUsrblRF?=
- =?utf-8?B?L2lXNFZ5cmdzc1dRMU5PUk5qRnpqaml2SHBEOVhsc3FKOC9KRXhHUjFlOUpF?=
- =?utf-8?B?KzVVU0pSQVdlcE0vTy9pdTliNDBMRjFkbXExNm5XN3YyTkxTMTNENzlCKzQ2?=
- =?utf-8?B?bjRDYmk3RHdWV0sxOXhmS1gzdmQxNFRVWE5wVmNEeU5GWVR5OFpSQ2xSdU95?=
- =?utf-8?B?MHg4Nk5RVVBrcWMvV0pBU0lKUmlpVDNGRndVVXpaUTRUVXNPeDl4REhhazF5?=
- =?utf-8?B?YUtNUnczZ0FEYXFQVXBScEszZFc1bFl6T3d6cEdiNTFldDdlWkFoZ01qU1Yz?=
- =?utf-8?B?R25iRFVBL2xBUW5UVHJwcGprdXRIaXoxclBRTDZCY1JwOEZuR29lREtXaFBk?=
- =?utf-8?B?aGZQU2FuT3B2R01DY0tkUG1ScUFtcUI0Kys4bFQ5U3RrMFMvWWVBUVZTaVd5?=
- =?utf-8?B?a3RrL0Y4akdUWUZUd0cyQVBrWDF4WDJwK29aT0p0N3dncXN2VlRtaXpuRHNC?=
- =?utf-8?B?cGM3OFpUeis5K1M4cUl2SUw3NlM3UjB2TFQxNnlaRWwvZ21BMDg1d1U3dVZK?=
- =?utf-8?B?MHdJVEhWcWlydzF4R0JRczdpL3RoNXJvQmlEckFmSHpCQ1pOYnFiZz09?=
+	=?utf-8?B?a1AwUE8xT0hsV3ZNTjQrYW9GZXQwMFFJVHR2dXVESFEzQzVVV3RHWG1UR2Jq?=
+ =?utf-8?B?a3JkLzBhQlUxdXpJM2UrTGNHY2NrVUIzZWxoT0JSaEUrdE53bUNlMTVzZE9u?=
+ =?utf-8?B?ZzIySGc5WUpxelgwS3VwL2dUb3RKVHF1b2ltRXMzM2QyeHd2QlhVMFYrNWxq?=
+ =?utf-8?B?WERxOXU3ejBXZkY1QnNTa2t1amJDSFJMdEpadmRzQXN5V3VsUzJEcVA1clQ4?=
+ =?utf-8?B?cGd2MmxNUUdYa0tRczVabmpSOVJXTC8reUZmcGkyNzQyM2lzY2p5b3JkbGpI?=
+ =?utf-8?B?WU5qZnBSalpVaEVOWUFSeGlWOFRBb2g0NHBEdjNkOEVsK0RuVVErakxmblRz?=
+ =?utf-8?B?Vkh0eVJ0bXViV2N3VUJTcUo1Mm5rRndXTnhraVdDVmNWemhtQXNmQzZUV3pX?=
+ =?utf-8?B?S2M3OFhaamhOUnM4Zkd0S294MmlkdlVYRXZmaDlUOFVTQlVPc0xwdURlSlVv?=
+ =?utf-8?B?ZXIybTlOOSticlhWc1hiRk5LRW9HRS8wcVVPd1F3UHB3ajlOOFl2U3pMdDlK?=
+ =?utf-8?B?Z2E0aDFoK3I5eU9yajRDanpmaHJUbGxwZEhhTWVPbGhTWVVVazA1VW4vSUpt?=
+ =?utf-8?B?bkRhN01NVW0rWFhtamNtcC9ncmtvU05mK2VDd0c5UWYrM01DbG1HT0Y3aTJC?=
+ =?utf-8?B?dHhEQW9sK2hXai91ZzV0UGRnWUJlY1EyRE5BWk9nb3E4aDRSa053MnUybmpM?=
+ =?utf-8?B?NzUvM1Q2N2RDTGd1cGZlSXU5WGdMdWMraTkvcEhqRkZiMTZwYTViNDVVZ21H?=
+ =?utf-8?B?UXVqT1N4OGgzNzFBNUxhaHpEQlVXYUp3LzZrQTlvenJJNTFCd1o2T2VjRFFs?=
+ =?utf-8?B?Nm5DaEFhK2tGOUV1aUo1c2g5NERUWTh1Vldmc28zQm80NFlrd2JMNEJCN3Y5?=
+ =?utf-8?B?cXBHakY0dFVsTWlPVUkvT0Q5MDBvRDAzNTdod2pYUWt2WmdGVlRjbmdzUUgw?=
+ =?utf-8?B?WFdSZ0hGZGV3SmdDQ3NmSzhRL1NIRlozL2x1QXd1NmtGb3NqN3l6c0RwNTZV?=
+ =?utf-8?B?c2lHNkVCK1hCSTdqRTBRRTFVWWQ1UHdWUG9HaTFJUFNkOVlRZ05yZWp6SHNT?=
+ =?utf-8?B?YXlHbzVUcjVmVTAxYURYMTdTaS9ueWNUeWxCK2E0bDlHbTd5MjlBY3Z6Tjg0?=
+ =?utf-8?B?cXM0enVVbjRERjYwc2ZQQk5Xd0pGeTVUNy9UMVFjbW1YQTNrajhMT2NRaEt5?=
+ =?utf-8?B?b0ZuQitWbkxuMnJpZVR0Qy9SNFhPd2w0WlFxdng5MUo5cXdSakVxS2tuVlB0?=
+ =?utf-8?B?d0dpc2duTk96NGx5R1FIUS9VcE0wL01nSlczcVBLWUhZL2ZKOStYd2xyN3N6?=
+ =?utf-8?B?bkExdjA1ODlOcUgzRHpDVlkwdXNVSDd5cmlmeFYreXByd3oza0lsbU1PbDN1?=
+ =?utf-8?B?Vk5pUE5iOGFVMk1nbnA5cFVnWTZZT3JvNFU4Nm8xeWNOYUZ0SE9wVm9oNmVH?=
+ =?utf-8?B?SzhIVi9lRTBnNFE4K0hxeFc2OGs3WUVoMnNPdVE1Z3pMc2lSdmdmT1ExY2dG?=
+ =?utf-8?B?VnBMTjJCK0tLU2FyaVJzb29mK3R6d2R4S1dVMGJLblBEZHVkalZ6eURBakl0?=
+ =?utf-8?B?N1NnVXhHSzF3ZVVEZXErVUhiOHFQVnFTalhzTGY5OU05YUFmbHlCMEgvWVRr?=
+ =?utf-8?B?UnFCdklyZjU1MjNLZXYxNzI5QWluc0dCQTFsVWpPSjU3dFNORHB3TXhjOG5s?=
+ =?utf-8?B?UGRXZ0pjb3FNaEFyaHFReXdBa1hSNitPNklaUjFyNEN1TFlsZFhxcFdQQktG?=
+ =?utf-8?B?OTh4dklhMmJJV2hRaXp5dUdyV2t2aTVjR2J6T1Z1WXZWWGZoMlpSaHJ5TVlp?=
+ =?utf-8?B?OHBJNmRacWRIcmp2aHJ6Z1F4Q2RDRHB0cC9GZXBSZEVxb2ZhVThaR0NoNzNS?=
+ =?utf-8?B?RkUxRXIwRWg3S2pEN0l1T0xLT3FqUFpBbWNrcUZ4MDNzMmFqQlUwc0ZKZ2VP?=
+ =?utf-8?B?MGppT1VKY3NweWhoaVVBL3J6aWtoSzhiNG5uOEROMlRnZThTQ09sdWFjVWRp?=
+ =?utf-8?B?THd6Z2gyaHRoVVFoa1RWSG5SVnJYQTZCdE9ZcTNaZ1M3YW1UUHZKekg0NVdE?=
+ =?utf-8?B?ZnZnd0lhZFlLd2xiZ0cxMUlNQkVJTGRtV3NMc3VMVTN1cnlQNlJRT1N2b0Ez?=
+ =?utf-8?B?UnBkK1VlbzFLdGMza2tjaDArVkRyc2Z0N255SWJOQnpITTlMZWF4b1RTeThK?=
+ =?utf-8?B?WXM4WWhRenZQRlBwTUNJVWk2a3dTN3ZrWnY4MVFDeVdJTWJMMWpNMlFJN0gw?=
+ =?utf-8?B?ajVzQkVCbjVrOXg3U1kweGQxVUg5d2dzNWI5Wkk5amY3SzI2dTkzdjAxaytN?=
+ =?utf-8?B?MHZ2TDJFbHptSGl3M0V3a1VxdTQ3b1hGL2FuOVJmMzhtang2Y2hrdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2988478e-bce6-4799-5aff-08dec0b1c138
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27848689-0b6f-4330-71cf-08dec0b1c1a6
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 14:18:01.7605
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2026 14:18:02.4646
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UjCjk8uDKmfoqazz7uz5R6T/tjFBur8tleNj4vCun0VOarcIKpxsMLEDP7Ks8VcSJ3XQCZx1AOhXW0nqU4TfDg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: vhPNhPpX/S5rgTc/MBp14RBu2Z+uS9FbupG0uWV3rCd90p4mJ/6Y3Q4TNyVCR1RP6DECw5dx4tR5YiG31YEXLg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3626
 
-This series reworks the index projection syntax in the pointer
-projection infrastructure to use the keyworded syntax to be more explicit.
+Use `match` to avoid potential inlining issues of the `unwrap_or_else`
+function.
 
-Doing this allows adding a new panicking variant of index projection,
-just like the normal index operator. This is useful for cases where
-compiler cannot prove (or cannot reliably prove) access is inbounds.
-
-The new syntax looks like this:
-- `[try: index]`: Fallible indexing (replaces `[index]?`).
-- `[build: index]`: Build-time checked indexing (replaces `[index]`).
-- `[panic: index]`: Runtime panicking indexing (newly added).
-
-DMA sample driver and nova core is updated.
-
-Danilo, we previously discussed merging this series with I/O projection for
-patch logistics. However, I'll need more time for next version of I/O
-projection (implementing view types that have original container type
-erased) which won't make it this cycle. This new version for projection
-syntax rework is minor changes only comparde to v1, so I think it's worth
-sending out so it can still land this cycle and get out of the way.
-
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/rust-for-linux/aeCKlut-88SbNsyW@google.com/
+Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-Changes in v2:
-- Fix missing colon in documentation (Alice)
-- Reworded safety comment (Andreas)
-- Convert `unwrap_or_else` to match (Alice)
-- Split rename of `index` to `build_index` to a separate patch (Alex)
-- Dropped nova cmdq refactor as this will be better served in the I/O
-  projection series.
-- Link to v1: https://patch.msgid.link/20260415-projection-syntax-rework-v1-0-450723cb3727@garyguo.net
+ rust/kernel/ptr/projection.rs | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Trevor Gross <tmgross@umich.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-To: Robin Murphy <robin.murphy@arm.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-To: David Airlie <airlied@gmail.com>
-To: Simona Vetter <simona@ffwll.ch>
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: driver-core@lists.linux.dev
-Cc: nova-gpu@lists.linux.dev
-Cc: dri-devel@lists.freedesktop.org
+diff --git a/rust/kernel/ptr/projection.rs b/rust/kernel/ptr/projection.rs
+index fbe172e493c2..1b54616c6cbb 100644
+--- a/rust/kernel/ptr/projection.rs
++++ b/rust/kernel/ptr/projection.rs
+@@ -45,7 +45,10 @@ pub unsafe trait ProjectIndex<T: ?Sized>: Sized {
+     /// Returns an index-projected pointer; fail the build if it cannot be proved to be in bounds.
+     #[inline(always)]
+     fn build_index(self, slice: *mut T) -> *mut Self::Output {
+-        Self::get(self, slice).unwrap_or_else(|| build_error!())
++        match Self::get(self, slice) {
++            Some(v) => v,
++            None => build_error!(),
++        }
+     }
+ }
+ 
 
----
-Gary Guo (6):
-      rust: ptr: rename `ProjectIndex::index` to `build_index`
-      rust: ptr: use `match` instead of `unwrap_or_else` for `build_index`
-      rust: ptr: add panicking index projection variant
-      rust: dma: update to keyworded index projection syntax
-      gpu: nova-core: convert to keyworded projection syntax
-      rust: ptr: remove implicit index projection syntax
-
- drivers/gpu/nova-core/gsp/cmdq.rs |  6 +--
- rust/kernel/dma.rs                | 15 +++---
- rust/kernel/ptr/projection.rs     | 97 +++++++++++++++++++++++++++++++--------
- samples/rust/rust_dma.rs          | 12 ++---
- 4 files changed, 93 insertions(+), 37 deletions(-)
----
-base-commit: 46def663dd34da36464ba059f7cfeacf29d98e5e
-change-id: 20260415-projection-syntax-rework-b790a305bc52
-
-Best regards,
---  
-Gary Guo <gary@garyguo.net>
+-- 
+2.54.0
 
