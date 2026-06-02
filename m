@@ -1,184 +1,164 @@
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3903233E8
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 16:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780417204; cv=pass; b=QVdxdkNlbRbzSLF1b4Pq2ueZdApvP2e0VKFKESqhW/khOd0RCF0RvQQ+T3BmehFWV913qSQ6AGgA4mvUDA7eoHoNlCgh6DwucW8fP1xfwB6bo/81iS5U3473UDesldeM6YHcwZh3HluQiB0VkkpYtGtAYbMcoEVsgnDnurIJxXc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780417204; c=relaxed/simple;
-	bh=ydH4/QV/1+IbTAhdeYNLwa8ygu64uWvWhoVur27Jo/0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PfchiQnvfiJlKdJASw4wVIr7r8WTWZHviX5XOsI1poROm37ogsKo7N1aX1vWSLjFmvKFdzOowDLL4w9h3ffvy+ASJWmGvBRIQ2iBxtuLFEYLnUwLBOtO2RB757b3yutC7ROA3x4hKylC/pBF6aXLtxJFGhoOkShximH36TREgfY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=c/VE6Dfq; arc=pass smtp.client-ip=74.125.224.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DA7371CE2
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 16:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780418414; cv=none; b=JSpPVAl2PWUJ/xbokIkVZlyT9c9C3CaURqxSTGewsOQMHt+aWikeUjz/iQ2OlqP52Hl2kV18xDH86cJ8xKhh3llwK+GGQjQTozy0qsjGMaAdp0+ONjBEVAwg4828Bt42nsVkixhLR7vrB20CegwDDq2qPBXnN1IeVcwaw69mWiQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780418414; c=relaxed/simple;
+	bh=UcC92rOVY8sXC99QJ0UWXjuHtWzbzFRvvhWQA/3IFjk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lDNCHMMu+bNL8eq5xdron1C4Eqh56hsNGlxqxEkprrKiTbxfKjEgRdcVXpkvkQYw2AUMVVH1p9L5WxHwPrPgmFAd0sC+KFKv440V1I8tpjg7F5+zN47Dd7BdWU2k0VcjgudWPPiLkyfFNICwt5gr+8ceV1f0/zUjXNtMQUl3hAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQGQuu3t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="c/VE6Dfq"
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-66050c021f0so4396917d50.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 02 Jun 2026 09:20:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780417202; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DrCcCsVYkndWkJbBOH1zvzdFQdaedCUAJfLVB2rYS4vFMGTXppRAJofbSgkUYKzYL9
-         46Vx3W350TWlHTYQqFReJtrlGCsmHsGKtUZFpYoWkyIyBDq9tfWPdw4q/11BmyP/dlbM
-         +9yw8isBnnjXZqWGIWuNz502L8XYg2IbiJNerlm0tFwIw67D9TZsI8QNhhAnXC1f1pc3
-         yxMQNzvIGh+fSs1ekLMt3ApXDfIt+XFd85opOQQOccbK4oNwxzzDA5vhEe+l0fEF9WFt
-         Iby0Aek5e4LVutcamBWGSdZbm982rXl5nmZkoAuNacsPV1aEIzVY1tUD2MU1vh7zpK4+
-         1gaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qYFMKnZkfNnmRXGo0xQ4eN2VdP8xCoBWS52ZR4ARnJo=;
-        fh=/x+j0L4JSfqEbJMyHu+2JbCXUqdAb12s+qhoP9rExA4=;
-        b=Z9QgS7pfOGVqpGBkzNhBUneOAzAJXhTlregorYkBTba1sk1Yw7tcxgDZ2mQnElLrzv
-         FHmUiZATbjrCcY3cLvXBKsgvY6tOHzzoG/TY2F0plAl0oYSsZnN+xZrKu9yCSQwTMnBO
-         yIKQ8ZbwoTPPKgIeIBJDY2tpTse4C8EExN66lxHoSEviU+wCx3V7wDO0BAz+CgYGiT2+
-         xvS3Sg5t2AHvbWKQHagyfp2LYJRkg2pLmiQuXgYFNldcOEvlOhbFK6G6TPmIGCskCQ+o
-         6jGgq3XPXJmTDMgpfQ72vGwkNl1GmkfknU3PjS7gy0hs9QA1v3/MBrUViO2u+kbUnn3p
-         Ij/w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1780417202; x=1781022002; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qYFMKnZkfNnmRXGo0xQ4eN2VdP8xCoBWS52ZR4ARnJo=;
-        b=c/VE6DfqYn4w+HWhelXW5cH3cKDMBvmmPkVsAt1mRpbe/kx0fpJhdpax/nVFBksa/q
-         kWQOQ3TaZTqarShkrrTJKHivLOSIJRlP5ChFQxVgYC5hqdi3Kwy6ThI+1cQiLvakbV5r
-         EN2CKw4yqeAbNirJuDwnGr7HREmnRWw1TVqQR6cWIWIwpsKjofo4YQYGqkv4kX6L0rF1
-         3FeGiu6Xyw+dqrRgyICL5NayCKUBiSvyHv3Mf2Vtla8HNIKYLEAD6fI0S3XIcPnRNC6e
-         U9PgeKeKvgpuY8awo8S5+XjMCS2FR7ESbtR2gvFFaxrelzBcqVhqbvmX5lzxFG3CThxE
-         SolQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780417202; x=1781022002;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qYFMKnZkfNnmRXGo0xQ4eN2VdP8xCoBWS52ZR4ARnJo=;
-        b=GW2cvY7nTn+ZxqBj0TXWSpzfA2QLXgiwh073DNRbRckctHnViAy19+dPpEdkA7ugpq
-         n0X1/A+2e9rLYYtp6y+9w2WwJeWDwD4Jlfd+4j9GffjewhGDnibqLiyE/TMpQ52Z33LT
-         cWypVASiSBXpmNFsS/NgngDa8G1/KMokO8JIhdKv17mh46A6uXmgMUpvqyJZiQDyFL/u
-         Bejai7ulpHSAKdRBEskgUYNv9oNzSOv2FiiWg2MO9R4TgGThX7MIUx/pRosIgZ57kIYL
-         xcW74YCgwrDvI+5zfRzfxnrpMMjjdDqhLL5gy7RLgtR4NZXnc9wl6z2nMMfxVn0VnlYS
-         d18w==
-X-Forwarded-Encrypted: i=1; AFNElJ+FijSLfino7JcukAXP9x4odXzsP8DClcXfZNOW3MjaSSq4Q08Mtk4+CPkIGhLqnCR5DUiNAH8Q+jxMmG4YTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyecfcbPLFAbG6SL8AAb87PJc4aS67yQOsX3WOdswE0IPLeUe3H
-	Zd3dtb9W36G3WMb1T2G6xN3W9kGcbXB6OnnaDjkbcyE7P5AKKuyI64OPzu+rhX+zR/e9MwQvEuc
-	rlSCq9dyrN/evoDrL4D24r7k/yN8khtAeNFyoTD9NbQ==
-X-Gm-Gg: Acq92OHt6D6dYnx8H8DNwzbJ4AOXqyJ/ajRLEQacxU3v2IqULgKNnxxDFfBeqBaoyhW
-	TLuhAYPXVIJEmOHhvsagXJHvxOCXZSGXaahhsoNExErJAuKaCwtf0JNxyqL0nyDNrwYlAKBCNHG
-	8U5bt/QkBZ58Lr9M3iVh6jXCeBnrVaZRy3/nRR1a2M07DWGCpBMatvg3eClDLByBEbbkEItsDCT
-	JEhxrXXn1SxMhAUADbMHyYPOV+Xr2AMGEDni/G50GIikS67m0SuZPA1WD0Ynrr3z7dsjlKnpKuV
-	jCP5Q7mAzJPlBgTdcAsFGTzy0yPDIxeO0g==
-X-Received: by 2002:a05:690e:23c7:b0:660:367d:539c with SMTP id
- 956f58d0204a3-660d61a5f90mr366583d50.65.1780417201973; Tue, 02 Jun 2026
- 09:20:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQGQuu3t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF12D1F00898;
+	Tue,  2 Jun 2026 16:40:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780418412;
+	bh=hrz8jo3q1RJAhlZX9ihfYsYh8nGiQRGdQjVcwGgPm3U=;
+	h=From:To:Cc:Subject:Date;
+	b=KQGQuu3tzwuBPp9M7oFZYzGtesg71FS2wWDONi6qKfGmQZiX+J43kCAyv+6qvvo+e
+	 bLeCu3jK2P9OTMQ1hyWZ85iy7G8vVfPk6GbarMoFqYT9UTYO50lKejVbjhoErymFXZ
+	 S3NaVBYgUEOT0u+2opkkxSWN1vmimgdNG1YMSBaYWYe0HcmoWmypwMXY4Fk+pajG1L
+	 Ptc5YmTVeRVhMl2Rp++af0jEflGouzKeDOpZCwAo3ashKYfPqlK3Uzf4v7Hd7LOvhG
+	 bbUzHWc4ICtW4U3psZn2T6XInylzh+UXRQcC2yTghKE+BZvbuJoLkvpUePKry38yVj
+	 sGBqIINrHlAtw==
+From: Gary Guo <gary@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org
+Subject: [GIT PULL] pin-init changes for v7.2-rc1
+Date: Tue,  2 Jun 2026 17:39:48 +0100
+Message-ID: <20260602163949.2215642-1-gary@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
- <20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
- <87jyslndo4.fsf@igel.home> <CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
- <875x44o9hj.fsf@igel.home> <CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
- <871peqgp9v.fsf@igel.home> <CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
- <87wlwif04z.fsf@igel.home> <87tsrli6lt.fsf@email.froward.int.ebiederm.org>
-In-Reply-To: <87tsrli6lt.fsf@email.froward.int.ebiederm.org>
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Tue, 2 Jun 2026 09:19:50 -0700
-X-Gm-Features: AVHnY4LGzvAggFLA4mHNoi-t9ivcZhZK65HitG7Axu1HWjT50Q9msXqH7dSmtzU
-Message-ID: <CAKC1njRapOxS6ibQdCuES1E3aAjsA+yGz4yZ1xJAZHU2vkAm_A@mail.gmail.com>
-Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: Andreas Schwab <schwab@linux-m68k.org>, 
-	Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 2, 2026 at 3:23=E2=80=AFAM Eric W. Biederman <ebiederm@xmission=
-.com> wrote:
->
-> Andreas Schwab <schwab@linux-m68k.org> writes:
->
-> > On Jun 01 2026, Deepak Gupta wrote:
-> >
-> >> riscv uses `VM_SHADOW_STACK`. It's just very simple to use `protection=
-_map`
-> >> with just `VM_WRITE`. On RISC-V, `-W-` is a shadow stack mapping. It's=
- not same
-> >> on x86 or arm64. So `protection_map[VM_WRITE]` simply picks shadow sta=
-ck
-> >> encoding. We just ensure that PROT_WRITE is converted to
-> >> "VM_READ | VM_WRITE" at vma level.
-> >
-> > That does not explain _why_ you need to make that user visible change,
-> > when others can get away without it.
->
-> Especially since as I recall the decision was made was that the user
-> visible protection bits would match the mmap call.  If there is some
-> combination an architecture does not support that would simply not be
-> reflected in hardware until some future version of the hardware gets
-> around to supporting it.
->
-> This is what happened with executable page permissions on x86 for
-> example.  It used to be that it was not possible to deny execute
-> permission on a readable page.  Later that proved sufficiently valuable
-> that support for denying execute permission was added to the hardware.
->
-> That all happened quite transparently to userspace, that wasn't trying
-> to assuming PROT_READ implied PROT_EXEC.
->
-> So I am at a complete loss why someone would choose to break userspace
-> by confusing hardware limitations with what userspace asks for in mmap.
+Hi Miguel,
 
-Initially my plan was to re-use (only) VM_WRITE as (alias to) VM_SHADOW_STA=
-CK
-on risc-v to match hardware Write-only PTE encoding and I didn't see
-any opposition
-to that initially. Until later when it was suggested to  use distinct
-VM_SHADOW_STACK
-encoding.
-Although there wasn't any oppostion to this patch, seems like it made it in=
-.
+There is more developments this cycle than the last one, with a mix of
+improvements and cleanups. No breaking changes to users expected.
 
-Now that I take a look at it, I think it can be made to work. Sorry about t=
-hat.
+Tuple structs did not make it this cycle, I hope it'll finally land the next
+one. I have also been working on getting pin-init to support self-referential
+types, which I plan to send next cycle (although unsure it can land in the next
+one).
 
-Now that I have switched my affiliation to meta, I'll have to spend
-some time to set
-up risc-v dev environment.
+The refactoring commits have been in linux-next for a while. There a few
+patches taken later in the cycle, and they have all been in linux-next since
+2026-06-01. Feel free to wait for a few more rounds before pulling if you see
+fit.
 
-I'll send a patch. Thanks.
+Best,
+Gary
 
->
-> Eric
->
+The following changes since commit 5d6919055dec134de3c40167a490f33c74c12581:
+
+  Linux 7.1-rc3 (2026-05-10 14:08:09 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/pin-init-v7.2
+
+for you to fetch changes up to d2f309227952e73966682f348161094e40eb6440:
+
+  rust: pin_init: internal: use `loop {}` to produce never value (2026-05-29 21:58:36 +0100)
+
+----------------------------------------------------------------
+pin-init changes for v7.2
+
+User visible changes:
+
+- `non_snake_case` warnings will no longer be generated for identifiers that
+  are syntactically just users of a field name. This would allow all
+  `#[allow(non_snake_case)]` in nova-core to be removed, which I will send to
+  nova tree next cycle.
+
+- Non-cfg attributes are now properly filtered out in derived structs. This
+  improves pin-init compatibility with other derive macros.
+
+- Projection types have their where clause properly inserted now.
+
+Other changes:
+
+- MSRV is bumped to 1.82 and associated cleanups.
+
+- There is an overhaul on how init slots are projected. The new approach is
+  easier to justify with safety comments.
+
+- More functions are marked as inline, which should help mitigate super-long
+  symbol name issue due to lack of inlining.
+
+- Various small code quality cleanups.
+
+----------------------------------------------------------------
+Alistair Francis (1):
+      rust: pin-init: examples: mark as `#[inline]` all `From::from()`s for `Error`
+
+Benno Lossin (1):
+      rust: pin-init: internal: adjust license identifier of `zeroable.rs`
+
+Gary Guo (17):
+      rust: pin-init: bump minimum Rust version to 1.82
+      rust: pin-init: internal: remove redundant `#[pin]` filtering
+      rust: pin-init: fix badge URL in README
+      rust: pin-init: cleanup workaround for old Rust compiler
+      rust: pin-init: internal: turn `PhantomPinned` error into warnings
+      rust: pin-init: internal: remove `collect_tuple` polyfill after MSRV bump
+      rust: pin-init: examples: fix `useless_borrows_in_formatting` clippy warning
+      rust: pin-init: internal: pin_data: use closure for `handle_field`
+      rust: pin-init: internal: add `PhantomInvariant` and `PhantomInvariantLifetime`
+      rust: pin-init: internal: init: handle code blocks early
+      rust: pin-init: internal: use marker on drop guard type for pinned fields
+      rust: pin-init: internal: make `make_closure` inherent methods
+      rust: pin-init: internal: project slots instead of references
+      rust: pin-init: internal: project using full slot
+      rust: pin-init: move `InitClosure` out from `__internal`
+      rust: pin-init: remove `E` from `InitClosure`
+      rust: pin_init: internal: use `loop {}` to produce never value
+
+Martin Kletzander (1):
+      rust: pin-init: internal: pin_data: filter non-`#[cfg]` attr in generated code
+
+Mirko Adzic (2):
+      rust: pin-init: internal: suppress `non_snake_case` lint in `#[pin_data]`
+      rust: pin-init: internal: suppress `non_snake_case` lint in `[pin_]init!`
+
+Mohamad Alsadhan (4):
+      rust: pin-init: cleanup `Zeroable` and `ZeroableOptions`
+      rust: pin-init: extend `impl_zeroable_option` macro to handle generics
+      rust: pin-init: internal: add missing where clause to projection types
+      rust: pin-init: internal: pin_data: add struct to record field info
+
+Xiaobo Liu (1):
+      rust: pin-init: docs: fix typos in MaybeZeroable documentation
+
+ rust/pin-init/README.md                       |   2 +-
+ rust/pin-init/examples/big_struct_in_place.rs |   3 -
+ rust/pin-init/examples/error.rs               |   2 +
+ rust/pin-init/examples/linked_list.rs         |   2 -
+ rust/pin-init/examples/mutex.rs               |   4 +-
+ rust/pin-init/examples/pthread_mutex.rs       |   4 +-
+ rust/pin-init/examples/static_init.rs         |   4 +-
+ rust/pin-init/internal/src/diagnostics.rs     |  14 ++
+ rust/pin-init/internal/src/init.rs            | 169 +++++++---------
+ rust/pin-init/internal/src/lib.rs             |   1 -
+ rust/pin-init/internal/src/pin_data.rs        | 268 ++++++++++++--------------
+ rust/pin-init/internal/src/zeroable.rs        |   2 +-
+ rust/pin-init/src/__internal.rs               | 231 +++++++++++++++-------
+ rust/pin-init/src/lib.rs                      | 137 +++++++------
+ 14 files changed, 439 insertions(+), 404 deletions(-)
