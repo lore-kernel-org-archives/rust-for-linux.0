@@ -1,106 +1,200 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7223220B80B
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 06:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78B932BF52
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 06:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780380945; cv=none; b=IAfdQgmfFqssoi5gpg+QJoVohqnOjDYLlY/8P2U5HfzLzFvUobYA4zxGk5gQDu+n0VHkXJSJzmgkua0/z3rqalh7xJFQ0cbbUldTN6MuK8mEmsl4aJi1kkTfKLXjRAkLsM5A1lYE0QqRrxofRfSxvjOsGXBLk7D844jtGkLZ6FM=
+	t=1780382448; cv=none; b=XzXJfqx0+PKbOKpS4B2LasoBmeG8SgQTk13fU/YKI2+YLDZtiBRtj0KCWQraJJSLuarLMnjiWBY1HCbaVO8Yqj8SNpQD3yVUayukeJeoh4yRMpdX1jd17BXmKjhsp7XC7bVus6p1rQK8ijTRny+OaiKY5DBX28WShix5lHJ2EQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780380945; c=relaxed/simple;
-	bh=1X/bccwOfssWIS6ajyQ189AljJH2LtuBT18CMIZ+1Ls=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kcrP/5oisw7dHv3lgDVaYgaxcTVoYHc3Gn5xL4WCR18zQFFQZHNy1K3aImYN4Oc2CL3rm9psmRFaGMNGzJ+9iXXrhZgIHOkv8zazh9pRoRV+k5SKqHdsz9oyhAsg3wNhwpLA3StTYt6x68WrcqnvXjB0KiU5q9zx/nHU1N6e8Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZXNPCuao; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1780382448; c=relaxed/simple;
+	bh=jl2nMSoVVJ4DyVjw9OL/RKqK6+ZYOFx277e056b+nwc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jP+rRNnZ4tete75NM+Jr4N9A4RaN2lAuNC5Yk2cpa4iiWSItQ68kKZ5oCv1d/I9FR2+8ULRB4/mc4CE2l9zSFWkw+0ly7ykq+gPKmFmUflvpNVjM5sqSqkLWwb3oayD+0oWk3UKWkYHtT5UDLciJEEv/jbYPuLIklqOEnFkyl1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=fWnrKExD; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZXNPCuao"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-49045f93baeso74088775e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 01 Jun 2026 23:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780380943; x=1780985743; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XgRgw1IKC03OLwNyxPDI58QMkRMSvSCj4bII0pkMkMw=;
-        b=ZXNPCuaoeorrH6dKoluuANYDEtScJKv3GR58TIMUYz7vkUv8hE3oA/Avwdg4Ejr2IC
-         mSMqLHA5t3OEfRMWxFI/euhVIDH6hO+N5OTkJCSsuiNMEFfyjTE9a2enEaA9ttmirwCn
-         G+omSuOWWaaye4QbjW3MQ6MmxIAZFULSpxQ3PAP4lTo2IVobfM5v+9za5QYi+hb+ko7S
-         QlDW5caSFfqEmsQbBis9rkG3jv54us8ejPlWQOYLk6OKmy6ZXRh86e9Oj7I554ZBtT14
-         sOIYqSvSCwOyZQwuw3tunwdg0rhTYzNcRe2nDpeZ9QmFAjJ+dXhwFY6+4CszCj3Gyk8n
-         AovQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780380943; x=1780985743;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XgRgw1IKC03OLwNyxPDI58QMkRMSvSCj4bII0pkMkMw=;
-        b=neHwjB50XBgLXWjwP5PDNJLO2m+m1VnwNmQAsLVDp99ZuiVMsBk8xt5XyobNmgFasq
-         WlY/csyKiVIEuDv8V0RWwKfSDby8FbhKuUOWpdo/G036H0i2xwqmY1bBJVdroOD4ZPfh
-         f6QF5fIYzTGEsTGe/t+0phV+rP+tNP9Hx5dnNGH8pmB2RneLQKkBiY7WougpDCPBaEBG
-         yW4FoGKc39MaZ3G8N4+PdHCJiA6R0316y7TGbqMz4ExZUTztW4GK2wBttfgJHsLE3JK0
-         BGmgZaPaCO22oCebCiojBrVl0ZHejGxXboNcMzkEMLbYCPf36ZwJYrJvEL5UA0WBBP8m
-         drxg==
-X-Forwarded-Encrypted: i=1; AFNElJ/oUKsZokjkRLinPGTFfK0NJvnDPL0RMr4cUtGQwNTIIWGiqE0inbWI6nvrH/vF2S6k6StMb08Iho/dhUHKsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy16RPnDGjFAPgVU56Z/3mN0A4VvUM5MwgQHMDA60s+fZbk0mMW
-	/H+9cffu68iyiBhXx8pJpE+GmadDigX2rHshQMZ5l6Few2OwejOqO1QepnT3siXS1glB4FVfVbc
-	Uk9D1KzVxvrid27gAOA==
-X-Received: from wmaw13.prod.google.com ([2002:a05:600c:6d4d:b0:490:b22d:da02])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c0d2:10b0:48e:7854:1608 with SMTP id 5b1f17b1804b1-490a2938f7cmr185302145e9.25.1780380942885;
- Mon, 01 Jun 2026 23:15:42 -0700 (PDT)
-Date: Tue, 2 Jun 2026 06:15:41 +0000
-In-Reply-To: <CAHC9VhR5Ca+WyP2OiNGtL1SqHn0SwLe=M9SB8D2bxtdS52quhg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="fWnrKExD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1780382445;
+	bh=jl2nMSoVVJ4DyVjw9OL/RKqK6+ZYOFx277e056b+nwc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fWnrKExDGqTy/dz7UQV4Z8KmpgItlp/69zNJ8fRlO5aVR5ea4pqiGJ/V1Nm2Saw8B
+	 4OUC2qOqX2G5+5bghPK+RPpXPZw2pZPNHyA9U5lxzTfyIITJ2Ws/FIByQr2w+N35OC
+	 YmWE04odtEDUwWwCV/Aks9cC8J4k8GAHCzEN5CAMtad00m0h4IqiaIkrNK6oPm5zOU
+	 51CgArEgXPIrCUEaamZLkCQlfDs+nYk3Fqe51t+jzGcxLL+PP7vRA9akS7TfvG1nbS
+	 3fCDpug2f2eYYzBQDBVLtM9vdROio/uoYpbvg4meUKlJTReZTRw8Ok4be0FzYw6yYe
+	 mmTYlXRKkpUVw==
+Received: from fedora-2.home (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id D0DB717E09B8;
+	Tue,  2 Jun 2026 08:40:44 +0200 (CEST)
+Date: Tue, 2 Jun 2026 08:40:40 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: aliceryhl@google.com, daniel.almeida@collabora.com,
+ deborah.brouwer@collabora.com, gary@garyguo.net,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Eliot
+ Courtney <ecourtney@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>
+Subject: Re: [PATCH v2 2/2] drm/tyr: use IoMem directly instead of Devres
+Message-ID: <20260602084040.7c63e06d@fedora-2.home>
+In-Reply-To: <20260529000106.2257996-3-dakr@kernel.org>
+References: <20260529000106.2257996-1-dakr@kernel.org>
+	<20260529000106.2257996-3-dakr@kernel.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529-remove-task-euid-v4-0-07cbdf3af980@google.com> <CAHC9VhR5Ca+WyP2OiNGtL1SqHn0SwLe=M9SB8D2bxtdS52quhg@mail.gmail.com>
-Message-ID: <ah51DY5yfaNZejBd@google.com>
-Subject: Re: [PATCH v4 0/2] Delete task_euid()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Serge Hallyn <sergeh@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, 
-	Dongliang Mu <dzm91@hust.edu.cn>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
-	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 01, 2026 at 07:13:37PM -0400, Paul Moore wrote:
-> On Fri, May 29, 2026 at 5:33=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > The task_euid() method is a very weird method, and Binder was the only
-> > user. As of commit 65b672152289 ("binder: use current_euid() for
-> > transaction sender identity") Binder doesn't use task_euid() anymore,
-> > so we can delete this method.
->=20
-> Given the problems from last time, it seems like it might be prudent
-> to let the commit have some time to "breathe" in a proper release, I'd
-> suggest merging this not for the upcoming v7.2 merge window but
-> instead waiting for v7.3.
+On Fri, 29 May 2026 02:00:54 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
 
-Sure, that makes sense. I'll resend after the merge window.
+> Now that IoMem is lifetime-parameterized, use it directly in probe
+> rather than wrapping it in Devres and Arc. The I/O memory mapping is
+> only used during probe and not stored in driver data, so device-managed
+> revocation is unnecessary.
+> 
+> This removes the Devres access(dev) pattern from issue_soft_reset(),
+> GpuInfo::new(), and l2_power_on(), simplifying register access.
+> 
+> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-> > My suggestion would be to merge this through the LSM tree.
->=20
-> That's fine with me.  I'd also suggest updating the commit description
-> in patch 1/2 to indicate that binder is no longer using task_euid();
-> it currently reads like it is still being used.
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
-I guess this occurred because when patch 1 was written, it really *was*
-still being used. Perhaps we could pick up only patch 1 now since even
-if we run into problems and Binder has to go back to using task_euid(),
-clarifying the docs is still useful.
+> ---
+>  drivers/gpu/drm/tyr/driver.rs | 19 ++++++-------------
+>  drivers/gpu/drm/tyr/gpu.rs    | 17 +++++------------
+>  2 files changed, 11 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+> index 6276e9743c32..227ea2adccea 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -6,11 +6,9 @@
+>          OptionalClk, //
+>      },
+>      device::{
+> -        Bound,
+>          Core,
+>          Device, //
+>      },
+> -    devres::Devres,
+>      dma::{
+>          Device as DmaDevice,
+>          DmaMask, //
+> @@ -30,7 +28,6 @@
+>      sizes::SZ_2M,
+>      sync::{
+>          aref::ARef,
+> -        Arc,
+>          Mutex, //
+>      },
+>      time, //
+> @@ -44,7 +41,7 @@
+>      regs::gpu_control::*, //
+>  };
+>  
+> -pub(crate) type IoMem = kernel::io::mem::IoMem<'static, SZ_2M>;
+> +pub(crate) type IoMem<'a> = kernel::io::mem::IoMem<'a, SZ_2M>;
+>  
+>  pub(crate) struct TyrDrmDriver;
+>  
+> @@ -74,15 +71,11 @@ pub(crate) struct TyrDrmDeviceData {
+>      pub(crate) gpu_info: GpuInfo,
+>  }
+>  
+> -fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+> -    let io = (*iomem).access(dev)?;
+> -    io.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
+> +fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
+> +    iomem.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
+>  
+>      poll::read_poll_timeout(
+> -        || {
+> -            let io = (*iomem).access(dev)?;
+> -            Ok(io.read(GPU_IRQ_RAWSTAT))
+> -        },
+> +        || Ok(iomem.read(GPU_IRQ_RAWSTAT)),
+>          |status| status.reset_completed(),
+>          time::Delta::from_millis(1),
+>          time::Delta::from_millis(100),
+> @@ -123,12 +116,12 @@ fn probe<'bound>(
+>          let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
+>  
+>          let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
+> -        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?.into_devres()?, GFP_KERNEL)?;
+> +        let iomem = request.iomap_sized::<SZ_2M>()?;
+>  
+>          issue_soft_reset(pdev.as_ref(), &iomem)?;
+>          gpu::l2_power_on(pdev.as_ref(), &iomem)?;
+>  
+> -        let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
+> +        let gpu_info = GpuInfo::new(&iomem);
+>          gpu_info.log(pdev.as_ref());
+>  
+>          let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
+> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
+> index 652556026f50..592b8bb16eba 100644
+> --- a/drivers/gpu/drm/tyr/gpu.rs
+> +++ b/drivers/gpu/drm/tyr/gpu.rs
+> @@ -9,7 +9,6 @@
+>          Bound,
+>          Device, //
+>      },
+> -    devres::Devres,
+>      io::{
+>          poll,
+>          register::Array,
+> @@ -40,10 +39,8 @@
+>  pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
+>  
+>  impl GpuInfo {
+> -    pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
+> -        let io = (*iomem).access(dev)?;
+> -
+> -        Ok(Self(uapi::drm_panthor_gpu_info {
+> +    pub(crate) fn new(io: &IoMem<'_>) -> Self {
+> +        Self(uapi::drm_panthor_gpu_info {
+>              gpu_id: io.read(GPU_ID).into_raw(),
+>              gpu_rev: io.read(REVIDR).into_raw(),
+>              csf_id: io.read(CSF_ID).into_raw(),
+> @@ -81,7 +78,7 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
+>              pad: 0,
+>              //GPU_FEATURES register is not available; it was introduced in arch 11.x.
+>              gpu_features: 0,
+> -        }))
+> +        })
+>      }
+>  
+>      pub(crate) fn log(&self, dev: &Device<Bound>) {
+> @@ -163,15 +160,11 @@ struct GpuModels {
+>  }];
+>  
+>  /// Powers on the l2 block.
+> -pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
+> -    let io = (*iomem).access(dev)?;
+> +pub(crate) fn l2_power_on(dev: &Device, io: &IoMem<'_>) -> Result {
+>      io.write_reg(L2_PWRON_LO::zeroed().with_const_request::<1>());
+>  
+>      poll::read_poll_timeout(
+> -        || {
+> -            let io = (*iomem).access(dev)?;
+> -            Ok(io.read(L2_READY_LO))
+> -        },
+> +        || Ok(io.read(L2_READY_LO)),
+>          |status| status.ready() == 1,
+>          Delta::from_millis(1),
+>          Delta::from_millis(100),
 
-Alice
