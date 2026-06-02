@@ -1,200 +1,102 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from confino.investici.org (confino.investici.org [93.190.126.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78B932BF52
-	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jun 2026 06:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCB233B6FB;
+	Tue,  2 Jun 2026 07:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.190.126.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780382448; cv=none; b=XzXJfqx0+PKbOKpS4B2LasoBmeG8SgQTk13fU/YKI2+YLDZtiBRtj0KCWQraJJSLuarLMnjiWBY1HCbaVO8Yqj8SNpQD3yVUayukeJeoh4yRMpdX1jd17BXmKjhsp7XC7bVus6p1rQK8ijTRny+OaiKY5DBX28WShix5lHJ2EQ4=
+	t=1780384335; cv=none; b=GtLSrNMSyjgfNBBFmcBFxCRcmkNVsMNmaaYEIfY/Ge7kSONpGLx7J+RrUhpA423u+vT0q2mvRKfJ262nsQlYWeMaDUCceCOrV6dXnsKAwAE2vI9JPO9uugOiishPDwQXLsNw6CtVTeZMq8TmoJlR1BrPSG+BLcKnWuiRtYafMYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780382448; c=relaxed/simple;
-	bh=jl2nMSoVVJ4DyVjw9OL/RKqK6+ZYOFx277e056b+nwc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jP+rRNnZ4tete75NM+Jr4N9A4RaN2lAuNC5Yk2cpa4iiWSItQ68kKZ5oCv1d/I9FR2+8ULRB4/mc4CE2l9zSFWkw+0ly7ykq+gPKmFmUflvpNVjM5sqSqkLWwb3oayD+0oWk3UKWkYHtT5UDLciJEEv/jbYPuLIklqOEnFkyl1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=fWnrKExD; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1780384335; c=relaxed/simple;
+	bh=P8lh701jT9yZmofB7hy7w97sJuyJLPaeQffJywe9s6g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YraVl6ZvIv5GX+eLeMjC3N6K/18cFKV4j4E+iMrNf5kE6BDBr2fBMMVRa6O/iOFTQWO+Tg5J9v4F0EvPIaWYS7+G+RU/PoEXAwjrmLX5I90R9nOMFIgDtCCQLksn7CMFvnVgPa9PWgnupXuXfB2Gu656HbNVF1Pk8j/V3sOw1S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=privacyrequired.com; spf=pass smtp.mailfrom=privacyrequired.com; dkim=pass (1024-bit key) header.d=privacyrequired.com header.i=@privacyrequired.com header.b=IqJLEOjs; arc=none smtp.client-ip=93.190.126.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=privacyrequired.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=privacyrequired.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="fWnrKExD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1780382445;
-	bh=jl2nMSoVVJ4DyVjw9OL/RKqK6+ZYOFx277e056b+nwc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fWnrKExDGqTy/dz7UQV4Z8KmpgItlp/69zNJ8fRlO5aVR5ea4pqiGJ/V1Nm2Saw8B
-	 4OUC2qOqX2G5+5bghPK+RPpXPZw2pZPNHyA9U5lxzTfyIITJ2Ws/FIByQr2w+N35OC
-	 YmWE04odtEDUwWwCV/Aks9cC8J4k8GAHCzEN5CAMtad00m0h4IqiaIkrNK6oPm5zOU
-	 51CgArEgXPIrCUEaamZLkCQlfDs+nYk3Fqe51t+jzGcxLL+PP7vRA9akS7TfvG1nbS
-	 3fCDpug2f2eYYzBQDBVLtM9vdROio/uoYpbvg4meUKlJTReZTRw8Ok4be0FzYw6yYe
-	 mmTYlXRKkpUVw==
-Received: from fedora-2.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D0DB717E09B8;
-	Tue,  2 Jun 2026 08:40:44 +0200 (CEST)
-Date: Tue, 2 Jun 2026 08:40:40 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, daniel.almeida@collabora.com,
- deborah.brouwer@collabora.com, gary@garyguo.net,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Eliot
- Courtney <ecourtney@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v2 2/2] drm/tyr: use IoMem directly instead of Devres
-Message-ID: <20260602084040.7c63e06d@fedora-2.home>
-In-Reply-To: <20260529000106.2257996-3-dakr@kernel.org>
-References: <20260529000106.2257996-1-dakr@kernel.org>
-	<20260529000106.2257996-3-dakr@kernel.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	dkim=pass (1024-bit key) header.d=privacyrequired.com header.i=@privacyrequired.com header.b="IqJLEOjs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=privacyrequired.com;
+	s=stigmate; t=1780383886;
+	bh=z0jmVNzZvirhy3R+tfL9bbf+f442BGqrfXEemWbJb9o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IqJLEOjsiXnW2zkyrLbvMKHHaE0+D1wVk7aSiasGfF/mxbTdcO7MkQOF29YeIXIYn
+	 ysy7JJ2gNSdc/DlQWj01fd0WscuyrwtVkAfJjs8sD6/TYVJQhhJgEWoJ4UZix4hK3g
+	 3uhawK0I8knHFo1iiTEdOU0D4ZdoCtYCXi9QLzNw=
+Received: from mx1.investici.org (unknown [127.0.0.1])
+	by confino.investici.org (Postfix) with ESMTP id 4gV1zf2bk4z11HB;
+	Tue, 02 Jun 2026 07:04:46 +0000 (UTC)
+Received: by mx1.investici.org (Postfix) id 4gV1zd112Nz11H5;
+	Tue, 02 Jun 2026 07:04:45 +0000 (UTC)
+From: Francis Laniel <laniel_francis@privacyrequired.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Michal Wilczynski <m.wilczynski@samsung.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
+ Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Boqun Feng <boqun@kernel.org>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH v1] rust: pwm: use pin_init::zeroed() to initialize pwm_ops
+Date: Tue, 02 Jun 2026 10:04:43 +0300
+Message-ID: <2833204.mvXUDI8C0e@pmachine>
+In-Reply-To:
+ <CANiq72=DK_qr96K7V=akgHqm0z4msymJ+VRxY0f1uqmyDmbZkw@mail.gmail.com>
+References:
+ <20260529153821.126823-1-laniel_francis@privacyrequired.com>
+ <CANiq72=DK_qr96K7V=akgHqm0z4msymJ+VRxY0f1uqmyDmbZkw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, 29 May 2026 02:00:54 +0200
-Danilo Krummrich <dakr@kernel.org> wrote:
+Hi,
 
-> Now that IoMem is lifetime-parameterized, use it directly in probe
-> rather than wrapping it in Devres and Arc. The I/O memory mapping is
-> only used during probe and not stored in driver data, so device-managed
-> revocation is unnecessary.
-> 
-> This removes the Devres access(dev) pattern from issue_soft_reset(),
-> GpuInfo::new(), and l2_power_on(), simplifying register access.
-> 
-> Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Le vendredi 29 mai 2026, 19:45:06 heure d=E2=80=99=C3=A9t=C3=A9 d=E2=80=99E=
+urope de l=E2=80=99Est Miguel Ojeda a=20
+=C3=A9crit :
+> On Fri, May 29, 2026 at 5:48=E2=80=AFPM Francis Laniel
+>=20
+> <laniel_francis@privacyrequired.com> wrote:
+> > Replace unsafe block containing core::mem::zeroed by calling
+> > pin_init::zeroed().
+> > This is safer, as this function is guarded by trait contrary to
+> > core::mem:zeroed().
+>=20
+> It is definitely safer, but it is actually fully safe, i.e. it is a
+> safe `const fn` after all, which is great. I would say removing
+> `unsafe` code is the justification, even if of course the function is
+> able to be safe thanks to implementing the trait only for certain
+> types. (Also missing `:`).
+>=20
+> I would suggest reusing Benno's commit message from the series he
+> links in the issue instead, e.g.
+>=20
+>   https://lore.kernel.org/all/20250814093046.2071971-8-lossin@kernel.org/
+>=20
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1189
+>=20
+> Please use Suggested-by like the issue mentions :)
+>=20
+> Suggested-by: Benno Lossin <lossin@kernel.org>
 
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+I read the issue too fast! I will send a v2 with the corresponding tags and=
+=20
+new commit message! Thank you for your suggestions!
 
-> ---
->  drivers/gpu/drm/tyr/driver.rs | 19 ++++++-------------
->  drivers/gpu/drm/tyr/gpu.rs    | 17 +++++------------
->  2 files changed, 11 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-> index 6276e9743c32..227ea2adccea 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -6,11 +6,9 @@
->          OptionalClk, //
->      },
->      device::{
-> -        Bound,
->          Core,
->          Device, //
->      },
-> -    devres::Devres,
->      dma::{
->          Device as DmaDevice,
->          DmaMask, //
-> @@ -30,7 +28,6 @@
->      sizes::SZ_2M,
->      sync::{
->          aref::ARef,
-> -        Arc,
->          Mutex, //
->      },
->      time, //
-> @@ -44,7 +41,7 @@
->      regs::gpu_control::*, //
->  };
->  
-> -pub(crate) type IoMem = kernel::io::mem::IoMem<'static, SZ_2M>;
-> +pub(crate) type IoMem<'a> = kernel::io::mem::IoMem<'a, SZ_2M>;
->  
->  pub(crate) struct TyrDrmDriver;
->  
-> @@ -74,15 +71,11 @@ pub(crate) struct TyrDrmDeviceData {
->      pub(crate) gpu_info: GpuInfo,
->  }
->  
-> -fn issue_soft_reset(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-> -    let io = (*iomem).access(dev)?;
-> -    io.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
-> +fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
-> +    iomem.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
->  
->      poll::read_poll_timeout(
-> -        || {
-> -            let io = (*iomem).access(dev)?;
-> -            Ok(io.read(GPU_IRQ_RAWSTAT))
-> -        },
-> +        || Ok(iomem.read(GPU_IRQ_RAWSTAT)),
->          |status| status.reset_completed(),
->          time::Delta::from_millis(1),
->          time::Delta::from_millis(100),
-> @@ -123,12 +116,12 @@ fn probe<'bound>(
->          let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
->  
->          let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
-> -        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?.into_devres()?, GFP_KERNEL)?;
-> +        let iomem = request.iomap_sized::<SZ_2M>()?;
->  
->          issue_soft_reset(pdev.as_ref(), &iomem)?;
->          gpu::l2_power_on(pdev.as_ref(), &iomem)?;
->  
-> -        let gpu_info = GpuInfo::new(pdev.as_ref(), &iomem)?;
-> +        let gpu_info = GpuInfo::new(&iomem);
->          gpu_info.log(pdev.as_ref());
->  
->          let pa_bits = MMU_FEATURES::from_raw(gpu_info.mmu_features)
-> diff --git a/drivers/gpu/drm/tyr/gpu.rs b/drivers/gpu/drm/tyr/gpu.rs
-> index 652556026f50..592b8bb16eba 100644
-> --- a/drivers/gpu/drm/tyr/gpu.rs
-> +++ b/drivers/gpu/drm/tyr/gpu.rs
-> @@ -9,7 +9,6 @@
->          Bound,
->          Device, //
->      },
-> -    devres::Devres,
->      io::{
->          poll,
->          register::Array,
-> @@ -40,10 +39,8 @@
->  pub(crate) struct GpuInfo(pub(crate) uapi::drm_panthor_gpu_info);
->  
->  impl GpuInfo {
-> -    pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
-> -        let io = (*iomem).access(dev)?;
-> -
-> -        Ok(Self(uapi::drm_panthor_gpu_info {
-> +    pub(crate) fn new(io: &IoMem<'_>) -> Self {
-> +        Self(uapi::drm_panthor_gpu_info {
->              gpu_id: io.read(GPU_ID).into_raw(),
->              gpu_rev: io.read(REVIDR).into_raw(),
->              csf_id: io.read(CSF_ID).into_raw(),
-> @@ -81,7 +78,7 @@ pub(crate) fn new(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result<Self> {
->              pad: 0,
->              //GPU_FEATURES register is not available; it was introduced in arch 11.x.
->              gpu_features: 0,
-> -        }))
-> +        })
->      }
->  
->      pub(crate) fn log(&self, dev: &Device<Bound>) {
-> @@ -163,15 +160,11 @@ struct GpuModels {
->  }];
->  
->  /// Powers on the l2 block.
-> -pub(crate) fn l2_power_on(dev: &Device<Bound>, iomem: &Devres<IoMem>) -> Result {
-> -    let io = (*iomem).access(dev)?;
-> +pub(crate) fn l2_power_on(dev: &Device, io: &IoMem<'_>) -> Result {
->      io.write_reg(L2_PWRON_LO::zeroed().with_const_request::<1>());
->  
->      poll::read_poll_timeout(
-> -        || {
-> -            let io = (*iomem).access(dev)?;
-> -            Ok(io.read(L2_READY_LO))
-> -        },
-> +        || Ok(io.read(L2_READY_LO)),
->          |status| status.ready() == 1,
->          Delta::from_millis(1),
->          Delta::from_millis(100),
+> Thanks!
+>=20
+> Cheers,
+> Miguel
+
+Best regards,
+
 
