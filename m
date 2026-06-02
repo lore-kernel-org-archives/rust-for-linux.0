@@ -1,91 +1,72 @@
-Received: from confino.investici.org (confino.investici.org [93.190.126.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BBA1DA60D;
-	Tue,  2 Jun 2026 14:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.190.126.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB2838B7B1;
+	Tue,  2 Jun 2026 15:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780410626; cv=none; b=O0H3uFvLRFNA59sywgIFyHlE9X6X/DnmsOB1aOjarkqypstDJTHXPeOi/i7cutqcOSt8KfiwPYKvbC90UreYCc8gIrNyUl4o1H+yrlobqqnpKWmB0VGjX37DMRDT4oe5/cvmOC6IV0ghw+Sd2kb/njzu78dZrLlf56bV97q1D1o=
+	t=1780412631; cv=none; b=k2CAhBiMkl5FTU2l0Jw7UQKDNKdGTxCjHidSbS0UtKcHXk/LVFw/0GEuso1yZxUAHobsT2iNt6OzqQYbTpsAc01Zg5kM8zkiMEfFh31295IbbJZEa+/t78z8LWt93htBYgQiT1Afg76dZaTPqkckyte6mCce9csPsJb3tKzblvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780410626; c=relaxed/simple;
-	bh=16i/JJjNhoMN1c1Ms7nybdLc81QMezO68mt+246DxSo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E7NzJyIsbfJb9leu2OIcd/5XjZZCZda+RAXtKEOxNc0ppYzcI8+GYvnXGv3jHq/tG/1rAlrO6R1VUUynA6oES9uycqNkQz2gw2TuW+c8npimZ+tthMKDeRC1hRijty/jhLxsMIJ5pA+L/cQPvR0NBzM7WUwDZkxq4P0FIcdOXrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=privacyrequired.com; spf=pass smtp.mailfrom=privacyrequired.com; dkim=pass (1024-bit key) header.d=privacyrequired.com header.i=@privacyrequired.com header.b=FAoBtotV; arc=none smtp.client-ip=93.190.126.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=privacyrequired.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=privacyrequired.com
+	s=arc-20240116; t=1780412631; c=relaxed/simple;
+	bh=8xQkRJaNuQBvap9IdHj5s58Pi1Gs8jwPfEySsq40tGo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Kb2OPT+YCQNXgiW24zGxSqWondkZYQaTpkVXzm5HWCuz2K80ZdubmGjm7iDa+pEgbip2P0ozxI82vtp2wjXrNCJqq20CJ/rXIolJOQFmanBqVLG2LFlGzIEbu9K33SzpJMIEthaCiriDErzM3Tww9aUocyzc1XeYkYxYQOEK4pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qnjl7o3c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=privacyrequired.com header.i=@privacyrequired.com header.b="FAoBtotV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=privacyrequired.com;
-	s=stigmate; t=1780410619;
-	bh=6TKcjPnH0nC1FrF6sUHUFL2v1lRBfi1+s/MSYZAUc40=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FAoBtotVFVugE4ZqRUGdbc1U50XhYOIsxJMvVfIaa1j4lY/0QOWH44C0Ih+6jth6M
-	 dayy6jErXtVxhoAZo3648e9zrIrpA0I/q9IVbBSQMfWxdr23KWu/SJl8/K7jPRo6nJ
-	 kWOhPqdy6dRf8ah51sWH0WJzWURCVhFnOg626QXo=
-Received: from mx1.investici.org (unknown [127.0.0.1])
-	by confino.investici.org (Postfix) with ESMTP id 4gVCsl6PH7z11MR;
-	Tue, 02 Jun 2026 14:30:19 +0000 (UTC)
-Received: by mx1.investici.org (Postfix) id 4gVCsk3BrBz11Ll;
-	Tue, 02 Jun 2026 14:30:18 +0000 (UTC)
-From: Francis Laniel <laniel_francis@privacyrequired.com>
-To: Michal Wilczynski <m.wilczynski@samsung.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>
-Cc: Francis Laniel <laniel_francis@privacyrequired.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Boqun Feng <boqun@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: pwm: replace `core::mem::zeroed` with `pin_init::zeroed`
-Date: Tue,  2 Jun 2026 17:30:00 +0300
-Message-ID: <20260602143002.38390-1-laniel_francis@privacyrequired.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qnjl7o3c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F761F00893;
+	Tue,  2 Jun 2026 15:03:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780412630;
+	bh=8xQkRJaNuQBvap9IdHj5s58Pi1Gs8jwPfEySsq40tGo=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=Qnjl7o3cUe6I8eHXYPjAtQLRZpFKinpSSuzG2bGoLcGg+i1l/S+wbF2mnNIAQVeGq
+	 +e5h3NYDJLN8SKD7RL2q4j14sbuBK/vTw3ZWZG/JYhuODWC34f+dYbxCZoYEkWxqvI
+	 RKCG24HJfGOKauB/7unfdk0j8N7sl5SWagfh5YFfX3cTRAO5cfZRvdvUzGsZ+neUCw
+	 LaOXgDi16JbY1VnNttkl6GqT3+0O96cJTDkzkyGfHUy8ld3J+neJ1fJVy+esjgdnbh
+	 soBl8ZOeTcVhYnbH3V8pLKQ6/zI0wk1K6b1r6ThttHSrERV7z3yMlq8jzbLVgHyc8g
+	 8NbfiiIAqcmSg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 02 Jun 2026 17:03:45 +0200
+Message-Id: <DIYNLOMQPWYW.HBQ59GSHGENX@kernel.org>
+Subject: Re: [PATCH v2 0/6] Rework index projection syntax
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Abdiel
+ Janulgue" <abdiel.janulgue@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net>
+In-Reply-To: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net>
 
-All types in `bindings` implement `Zeroable` if they can, so use
-`pin_init::zeroed` instead of relying on `unsafe` code.
+On Tue Jun 2, 2026 at 4:17 PM CEST, Gary Guo wrote:
+> Danilo, we previously discussed merging this series with I/O projection f=
+or
+> patch logistics. However, I'll need more time for next version of I/O
+> projection (implementing view types that have original container type
+> erased) which won't make it this cycle. This new version for projection
+> syntax rework is minor changes only comparde to v1, so I think it's worth
+> sending out so it can still land this cycle and get out of the way.
 
-If this ends up not compiling in the future, something in bindgen or on
-the C side changed and is most likely incorrect.
+[...]
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Signed-off-by: Francis Laniel <laniel_francis@privacyrequired.com>
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
----
- rust/kernel/pwm.rs | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> base-commit: 46def663dd34da36464ba059f7cfeacf29d98e5e
 
-diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-index 6c9d667009ef..3427b7d93a03 100644
---- a/rust/kernel/pwm.rs
-+++ b/rust/kernel/pwm.rs
-@@ -494,9 +494,7 @@ pub(crate) fn as_raw(&self) -> *const bindings::pwm_ops {
- /// This is used to bridge Rust trait implementations to the C `struct pwm_ops`
- /// expected by the kernel.
- pub const fn create_pwm_ops<T: PwmOps>() -> PwmOpsVTable {
--    // SAFETY: `core::mem::zeroed()` is unsafe. For `pwm_ops`, all fields are
--    // `Option<extern "C" fn(...)>` or data, so a zeroed pattern (None/0) is valid initially.
--    let mut ops: bindings::pwm_ops = unsafe { core::mem::zeroed() };
-+    let mut ops: bindings::pwm_ops = pin_init::zeroed();
- 
-     ops.request = Some(Adapter::<T>::request_callback);
-     ops.capture = Some(Adapter::<T>::capture_callback);
--- 
-2.47.3
+Agreed, as discussed; and in this case I think this can go through rust-nex=
+t.
 
+Acked-by: Danilo Krummrich <dakr@kernel.org>
