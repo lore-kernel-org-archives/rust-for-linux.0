@@ -1,52 +1,52 @@
 Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013055.outbound.protection.outlook.com [52.101.83.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688AE3839BB;
-	Wed,  3 Jun 2026 18:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF12137D131;
+	Wed,  3 Jun 2026 18:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780509749; cv=fail; b=KqRLoxiG6c9QOYKFiayRPC+DVDLGwND1Sz+DzELsuEDplS+yAvU4yyvtrhsLAfXCJM5yVWPvfqsAmZ0IS/X6okXtQP7Uj4+zg4sRKEWj35tBuxpgVJQMfO4xREFAKVKo/GKzAiB1pAdZS77eHXwFLc9ABXJj32yt8itMKam0rP0=
+	t=1780509755; cv=fail; b=QtuR5QL0lGgPHYGjxB/JB+1YqRRYNv/0TJ/N8lfAmHzwkRMYPOVUOG8tZeC9ua9/NKL26mCETP0J3fAdhlD7p48BrYKTFwF4T9QfD42/Pb4/vUatZhsJH6GYigB+GXVo0C/aDHtUSjgiNuzjPlnX1cUbJ6FS6ZYva0xDHnYjjNw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780509749; c=relaxed/simple;
-	bh=h/MbvKHra8r5bgPTCjvt3ySalptEw3uCYRthulAohxk=;
+	s=arc-20240116; t=1780509755; c=relaxed/simple;
+	bh=gFgOK7ZmMMeG3My4iRRKYf9nA0ykQXQ2I9XJxLmS858=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=HjsQ15+EsFGmW4HnefEzEas2OgdpLA3xo9aCKRy9WVtp5yZEbRktn0HClzfybj/jKDdVGmJ3NUjXJjY4sFq0nlAj4wAe47dnBAt+jxoWtKe7/EY0EfFtc2QsReGRtVhhZ/tm8Je30zgAHirjD4ljsmcZSib5hTvfMiz1saRuwYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=O3lpp7ST; arc=fail smtp.client-ip=52.101.83.55
+	 To:Cc:MIME-Version; b=aMF8IamYSIv1QYNT/OktKC0BgmqhQRPE178wSXpbRWc9QJybuL0FNpt49ugutTi+cSmux6bUtVBVxZBiiWHLac4FrT9NjHVGORE4pRMRubr5PxwASLU4tu/m9wDtG4FQv5g1RSU69rIFURkMFO5iOkpI1a6r8mca38FsW/bS92w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=goCATmuX; arc=fail smtp.client-ip=52.101.83.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="O3lpp7ST"
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="goCATmuX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FUg6oUTnBgNpKX1hBmp5Mg8fGHllZDQy7Z5gFjSLvjzVUPApHF0n7AtJie4ALGkiOswgwtTVGQmBwtJO6jdwK+HcP+BDNcWNlpgCXCJxnXD9xtszrBUDhnI0Wtp9eg4r+hoyVaFEa+aUTveECZhGap7XomIJyxYimdmT/ca3QBa1bwxWJXukCSx0/ysU76mtrHxek2Rlw3/DrUkUnwxDmsvHEni4K67yNWnYxXajBdeA9V0r02irrDuJNu/NDS4zrhfLIq3e2FJcRftNhW8j3cjMR17osQc8aQ3on9O/u7IdZFxDGVI8bvsZL7eHJ72L8OzvnvxMOHlG5Idu+KT6cw==
+ b=mkxhsbUPopwRozCX+pTgBJlllpAJsMZzMf6uTN540FRo3cghFI684U3q5BOyVoUGzlISgs1ctWOhxcUNjUmjLF+xgsZeT90AN7xqf1Qq0F0+w0bZtziUKrdFrd+//QPYxIVtpi6aOk43tU6jdWApewsXOD4GGLs7QD0CdwRp+Ut5bjEXzshGnH/NF08iIPU4t/EQW9L+7oCPdhHPi9Y7VlbHfYUygYCN69oC2+tlG2yaVzxC3YJNeSziTx+QvPUFyPGHKsE6QbyEFGl7YnntKw2tK1eFICzxRzwfBsZfgZfk9TJ5WJbS3jTMf0oUGjRGT79bvYMorxhhovvq3KboFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NEsqHbWUhr4A8P5H+HqjSQJQ3FvtqY1c2wyMQa6cVVA=;
- b=PXWLZfWk4QorbsBCWqAgF2BIE0uWUOqae+dBXtihwt9cuL7nM03GRWQtsrrZPRaLDx+koNBneiexmI6uyHrGIWoZ5zjFOanESwqA8LSPWDH9Ed9LEGFZ0esMEaNnK8X6D7DKjdKNVP/nIOrGKeHZGbgfNk4YPqDUOy42lxxk+HGnqmXjWAxTHTSr4sVT7EQth4vEccLSryYSs+4RRgVDKUNQ8mMAlZ4VaH9mJSzEkx4nxH0ysIfkG8kB6B1KUUdo2/muGSY9C0J9GbjvVLS9LryMWImhk3OZjNmDzvPXGLojnJPMNrCPxfXGZqzMcQn7t8WudzR3dmjDCYB3/0IdMg==
+ bh=+ceLLZrWfFjKiu0bfHxnLBvylgfiaV/HsUFzQSI55ds=;
+ b=PU9c8mC1QXHrXOMq8iVRx8xuVo9JKCZtNsvZIePvbaxALgsmIvooGkw4Qf/gaaGKWihb65RZE2OBdje2t/kp/pUrVl5TKcQnuXHgqTaBfrEKPI9W9RBLLtOFofBisJkhPmg8wC51MXeTSuSxamS3hRqvf6AK5vQHOsvOcJ0Wcmdm+lNzaKkaJDEXXy5It3WT0wOx3ZvaQP5SFr9rMmy64KkinQr3i/uMjZgC+Rw5mQ+kghNEq+AEpzb5KIxE7NlQlVxGAMI1k1CXIXNbbzx50tzBfzLE2B7gLqCCfFvXkvx7k2LYc0Z9VSUSPIkObfTKDgahi1CaFIyU1uynnA7BUA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
  dkim=pass header.d=est.tech; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NEsqHbWUhr4A8P5H+HqjSQJQ3FvtqY1c2wyMQa6cVVA=;
- b=O3lpp7ST0O98rZX6MykJzYfIwd9HtBTg3wtKOfQCEpvgimRmwevBD+lMbViW2ZH7LhjtDeapJckwTxTjfZt+rXClle8e5WMaWXDbeIq8KzcZZ9Y7D4Adu9VAdHbSLfcma3b29jpAHC+9GuCX6S4fcgi+LS7YFQVmuHib/O4x4RLubn41zTXl+IRP7hVnk57yNVnDg87FFef3XjvTaN2jquBvSlovf43aYjpIqiXp528qjo89WxFf6UJUEpUd/CFdkSGSsYpt1fHoOCzcPtfGaKdi8ExW5EvZVbpQwfOLxgYvNE1FjYjM6+KJIHw8CEwR7x6upebM+xThipn9YMQZBg==
+ bh=+ceLLZrWfFjKiu0bfHxnLBvylgfiaV/HsUFzQSI55ds=;
+ b=goCATmuXa4I96nK7WjZ0y/YzHQVPEfuxmg0nMci0gdZ8OdWCJqiCdTeBMT8WdAyM+Ng11jITK9ZSqpG7Q57TnWf7YI69p8TP/YlZA07yLvTIB6hQBUSsEemvDl8YRPR3O2Nos66Zn78r1qZ12KZ3qA0A9spEVYqLwSilEXTbTWwAolgWRnJBenxbQ0OoOQREUFFDVeQgvI1S1lcLmCO8Mo/NCrvJBh4zz4dxaAwTFgg8XCaIP/oGw6UXWTnrN9IK4PMhoPQcZP8cAhxE78FCpx/qMv4kAvPdZvQMAj8nIAVugTXW5Oxl8cL+IO0g9BTSjNMZiTaOuQ2oAg8Jk7W4Jw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=est.tech;
 Received: from AS8P189MB1752.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:39b::19)
  by DB8P189MB1063.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:148::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 18:02:22 +0000
+ 18:02:23 +0000
 Received: from AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
  ([fe80::69fc:c4d4:200b:e4b4]) by AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
  ([fe80::69fc:c4d4:200b:e4b4%7]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 18:02:21 +0000
+ 18:02:23 +0000
 From: Yunseong Kim <yunseong.kim@est.tech>
-Date: Wed, 03 Jun 2026 20:01:43 +0200
-Subject: [PATCH 2/4] binder: reject duplicate BC_ENTER_LOOPER commands
+Date: Wed, 03 Jun 2026 20:01:44 +0200
+Subject: [PATCH 3/4] rust_binder: cap set_max_threads at RLIMIT_NPROC
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260603-b4-binder-hardening-v1-2-d0aae3556c9b@est.tech>
+Message-Id: <20260603-b4-binder-hardening-v1-3-d0aae3556c9b@est.tech>
 References: <20260603-b4-binder-hardening-v1-0-d0aae3556c9b@est.tech>
 In-Reply-To: <20260603-b4-binder-hardening-v1-0-d0aae3556c9b@est.tech>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -62,15 +62,15 @@ Cc: Greg Kroah-Hartman <gregkh@suse.de>, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, Yunseong Kim <yunseong.kim@est.tech>, 
  Yunseong Kim <ysk@kzalloc.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780509735; l=2505;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780509735; l=3150;
  i=yunseong.kim@est.tech; s=20260426; h=from:subject:message-id;
- bh=h/MbvKHra8r5bgPTCjvt3ySalptEw3uCYRthulAohxk=;
- b=UC0EDPPpg0rnTT6ecfeyYuhzQu7kv0B9waZoAvlO+AGQC6zUrOhI6nd2DwMJCjzVVxVxr4VcT
- c1J5QgzanolC4fWFiElpZyyInXpwOa9RkUgpczTw8CoOUy5c+S+i2zC
+ bh=gFgOK7ZmMMeG3My4iRRKYf9nA0ykQXQ2I9XJxLmS858=;
+ b=skcdQxYOTiIwq/JMHk4gK4opzI9e+gasxH4GoMfn/861WWPZGVsY/ibTSHtDZqulvW8lHjLbl
+ 3QJ5unFKY4MAG1UapnLNVIr8OGV1mjpdHcrxG72KlWrTuyoRbfXNNpU
 X-Developer-Key: i=yunseong.kim@est.tech; a=ed25519;
  pk=1nBUX92cvTaavYG1+MR073D+XMKhdOciBZcnf6h6qEo=
-X-ClientProxiedBy: DUZPR01CA0052.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:469::8) To AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
+X-ClientProxiedBy: DUZPR01CA0043.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:468::6) To AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
  (2603:10a6:20b:39b::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -80,125 +80,137 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AS8P189MB1752:EE_|DB8P189MB1063:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1f0ac08-24c4-4677-590c-08dec19a4285
+X-MS-Office365-Filtering-Correlation-Id: 1769e959-9cb1-4fc8-51d5-08dec19a4380
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|921020|56012099006|11063799006|5023799004|22082099003|18002099003;
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|921020|6133799003|56012099006|11063799006|5023799004|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	mfKBN7X5tObpYtOu5MdcAo3HifXyQlr0GUyrrCOaK3WGJMACN9bZkXC0KTE7FxrNIuvfgYmxQciPvsl7JkzURwCp+CUGSHLdGwAO1euvoXHAH4dzjBwXvfNf4magfju4aFwqHGy5q8yFIrH+US8rcKzvMSOexUDMkkn4ZGCDO8ZwclIoE+8it+JzzOyA8aedSKxbfVDTf857qzfn6N+hia60j9N/aiYmpbw/6aLRFz5kQgTw3AKyIzStAISBq4VpEbh8fJrL0Jsx19Ufw8NwFsaiDuBu0ntov6Wz/cDOY/BU36sfjNpNBnRcHN6YRFIXPCM+pgZVmuCdz9ZEF5EmbM9S/7n0EyCBOFVBi2HJlXMQ3jOeRTgYO/SbZAcM96TBpbaU7eXMO1GNej4QPnHRcHYSVMJaDXOGUqNRS0CYY7nB3VRWSc4p9n0Ar/+77EmSc18U5JNJPxO7r0FpRR0wor1cFkl2XvNidby1POst9LT2MKxf/SmFGdj99yZgB9sBf+Y+XsVEiKik+FXBAOcyeUy/bKzjqB9v6lV+McdhUJdWwf34OWyv4r6E9rgKa2qoJ/p7UEb/Gck3JW20l4qji5n949WpJLtn0dYW5MYhIDu6jCIQTBFPGVbUF7x77sh7+D4tpHGAPoRyB1ovM9PAQ8JC4H/BSM2LF6ONIRLs80wSWs5SSFIC8XSsg80krzf4YIyHPGxg6nruztLAgbZb+9wYtf2EpQyesHzzU/9o7fXju2oXz/6MXRiUtqUlqdEy
+	Jk3QXRtw7M1qUuH3ZGA1qRfNskv4A8UirGBHe4Q28C/CWUyDB8b6MwkS5ZTJH7r+wiJzx3P2Vut1MLrroz9iO7Eb/sdZ1RyyzAq+Faj4xDSDv3455HQLuavx0tl+HhbUzXj44rSLAqOQZ6vLAoKRgnGJqFX0tKH5WHaRMQAA1iwY6n/RTYcReNjUNcxjhWtnGyKwIZB26S6LBPCMYnBDg6XwWkJvk8n6cXOuh8TVibeJ132p0w5P0j/fHffthrkdQJ9x8n6hsUHoj+zEaJSfXSo+x3w2u5hZzKJCUANFQNNgp86rqv6vpBBv+G9+fZ6K6k3R5OOOgTGd+Rhi+LyzoJksNBdTsy9I1DLkC3k73iDz0ipjnYkQEbSdYOfCd+mY7sAZJt4psDYi2fo1tDVLbYMF981kla81S83fbkQXSv5b3zCUPde52krosjNFyygjDF0oKv3t4x29IQzGVLL6JoA5gK1shskXDMsg6qcikiAG+RYGEpwTmNabTYAI5RfoSm6PmCXmWAO7MVna8+THOmWn5n+sQWNDKTHJct7TeluklUnhL4U2WDpxtKRqEcbhnCSXV9PHlNhrnE3I0W82nFcYNlZmyYfdZl7rsPiVzevdyujdcZjgR0QyDMKNPtRQa1EfdgLabHxCpqPlsM8quUt2Yrl9PTBpp7RVGWxwoylPzUCHRvF+B0d78pKu0uRegWPCLN3EhsmS9acs93ktTm0tqN8zHWls1dM8ZcSTHVSPpwtF+bgFEWNa1hqFiwLZ
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P189MB1752.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(921020)(56012099006)(11063799006)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P189MB1752.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(921020)(6133799003)(56012099006)(11063799006)(5023799004)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WmpJTkdqeHBvMmN1blpnampkdHZVeW4zSFFCVm1XWDBISE5kcGZXQ213UE5U?=
- =?utf-8?B?RDg5UUN2d25XQnRFVEUvcTlPV1gvZ3lZYmtaWGRFaXpZQSs2czdJUnZGdVJ2?=
- =?utf-8?B?R0l1cHpFTHduSUNQcjFMS2ZBeVpONFpJaGx6SklVRE5ZZHQ0UWxJcW9GNXkv?=
- =?utf-8?B?Z3lwNFltZVg2Zlo1dFAzWkY4RjdvNDJCallkY3JYUlJaSEk1cEVIYVVhV1hS?=
- =?utf-8?B?UUNhaXVxRG5Oa1hNbW1XZUJBSWs1bzNvNW1rS3FKd21zQzloWXE2S0d1S0JJ?=
- =?utf-8?B?U1ZBUytRUkpLQ2lxRUgvRWNJK3RZaWRWQU9YT09JM0RBdU4rZjgrK21Kblgz?=
- =?utf-8?B?cS9BVk1LZ0xRWWwzR0FGejBsNGl2Njh4YVJHVjNnS1owUFdYNlZBRUgyNG44?=
- =?utf-8?B?czBwaE1LaDEvblVXU20zRXgzZGFIMmV4QWNsNitwVHVtY0VDM0JaMGZrSFFy?=
- =?utf-8?B?WWNFWkVERnZUdUtpY3hMeEIwSHRiL2dvNjROdk1hMjNkWUFFS1l3cW0yM0tk?=
- =?utf-8?B?MmVWQTRoY1I5TnJpS0dhUkdDazYxZGdtVXRJYXYvamZ0MkxlaUpMOHNmWjZS?=
- =?utf-8?B?Q1Fmd2oycHp4QUJvTHB6TkE1cnVIRTBpdlViV20xei9TVkJ0RGtocU5lQUE0?=
- =?utf-8?B?ZjNHK1NsakU5dFMvaEpBWEp5R3Y5anIrL3dGQWJXQkp0K3RTcmpHNnRxTDJG?=
- =?utf-8?B?S0hRQ21xMk9meit4dGt1anBjYkNWYllWTWx5U01mejV2TVBTdnFNVkVQVzNo?=
- =?utf-8?B?UTE4d2hPRW5BaVhhTjhJOC9RNmNTNUlxQ3N5UVBoVHZGSU5GQnJub3RtRUpL?=
- =?utf-8?B?VlFWV2kyNktzbCs4blNaa3NpN1dWS2tpNldLbTRibUdHd0JnLzZmc1gwTDVi?=
- =?utf-8?B?dVByQzZqYjJQcTNJYXp3WHZ2b0x2YWJIQmRLOFNHOTlub1dKM3dGOHMxd0FC?=
- =?utf-8?B?VGdhd2t5Uk1hS1dNZFpoR0ZZT0dDRFgxMGJhK0hHSytMZ2EvY2FxTUQ3Nnp3?=
- =?utf-8?B?NUtFY0RwN0I4N0EzZHpvYjhOODY1WE1DeEFFNUpZa0RNOUJDY1N2dEFnekhO?=
- =?utf-8?B?cjdpUkNvMFZEUm4vR1RkTjNUUVpLc0VLQjRjKzhFM3A4dElySWVoSmVnbEo4?=
- =?utf-8?B?M1IzZHFHSTVYejFRQlo5MlU5ODJVMWE0UlJtb0VZTE9VNjdVTDdFVCsrVWFx?=
- =?utf-8?B?R1VXV1VWYzJmQjUvSlZDOW5yNmZpcXcxaFc0Q2E3QlhyUmcyaVlNTHNFNjFM?=
- =?utf-8?B?UkdSTmdJZzhwQWtFNlI0czUwYk9Ka25FZlptM3ViTkdqY2hvTHFrMkFPZjVO?=
- =?utf-8?B?N1RJY1BaYTBINWhhV3lZLzg0T2pLV3V6UzZBTkRmN0JWcGF6YXBhRjd5d3dY?=
- =?utf-8?B?NktmbmMxdXlsUkpMd2k2aDBKdVp5Q25tZnArU3RGTDdmOWZnWlJrdXc4blBV?=
- =?utf-8?B?NVc5VGNSUm1zQzFYTFBjTzUxOWM3N2RLNkFwNnFoQStXbjJHMXhueDNMVXIy?=
- =?utf-8?B?NnI1bVlvQ0p5RWJVTlhkRHcxVUh4aU9pbjF3VklmcTVHRnVDYWdoRENEUkdh?=
- =?utf-8?B?bE1LSXliMDduTTRPcmJBZ1BCZWNMa0lxd0RJOHduaXpOMEFBQzd0bmIyWkRI?=
- =?utf-8?B?ME5ydGRDazQzRjZXMnlBdURlMldvRWdiMnBJVEdsYWZvZDRxTlNRZTQrd1Iy?=
- =?utf-8?B?QTFqRk9SZDRBdmRNLzlsZXcwVFFvWWlDeEdxc3JSNEVQOHZXRWdnWm1PTk9T?=
- =?utf-8?B?YVorb2owTmdYWWdHa1BVVmhadFg1dWlzb21nNnlxbHV0ZHBvM3JGTmlJUzg1?=
- =?utf-8?B?WFNrcEYrNFFESjNWbG9hWnExcGZudVdJeVNSRHFQb2FIQmh2a040WlJZUnlK?=
- =?utf-8?B?T25aSFQ0SGh0bTB4NkZHMGE5aFlYNGZqbFh6UHp3eTQ1L1FKYlppMlM4TGFF?=
- =?utf-8?B?Y3l5QVJOYWpFZUdqbFVmSU5JRjNEY0haanRiUlByRzdnSXNQc3htWUozUC96?=
- =?utf-8?B?ejFCWlBVcGh4TUZ3ZjV1UFMzaTU1RFYwMklHUTJjbzA1U1NNbHAxcmxEK1ND?=
- =?utf-8?B?L3lVcnAwY2wyaFBuZG1IbFlUd1BjZTlCSnprb1NyM2N1dDE3WUE0SWZ2WG84?=
- =?utf-8?B?YjJqWUVlTUpnVXZsVXl0V1hYdExKL1BNb3NQUCtQa1M0QzZUV0hoZFJxeHls?=
- =?utf-8?B?eHFWbk14bnpockZaa29jdklxY3lUNCtiYTNKcitCUklCMGtnK295OEY3Vy93?=
- =?utf-8?B?MmVCd0VaRGVTc0MyeFR3bVR5SURzK0Jmb3VidUxXSUZqRVUybGtLTHMzVHV5?=
- =?utf-8?B?clQwMEhWMU8xKzhkZy92ZlZaREpaOUlBL2dDKzh6ejhoSDUzSlI1Zz09?=
+	=?utf-8?B?YTBzcnhzNGpBYlFoT2hXcDJacnMxbVAxOVgrWDVXSmZFNzZjd2NBY3ZROU9p?=
+ =?utf-8?B?dlZnditPWnN1eUY3M201dksyUURQRFZWdlc1OE5QTzlMUzFuYUsrdDZpb0cv?=
+ =?utf-8?B?cUY1SktzNktRb0NOVWJPYllpMmVrQXpIdkk1MWJQU0Z0SDcxQlpCZTZ6QlVs?=
+ =?utf-8?B?WmpWdUV3Y2Ywb1NSWk4veUNlWkRNamRSOHREUmZ6b21CZlplYkNnWUo4Yjdh?=
+ =?utf-8?B?OXlZbXc2bXhHTGJUU3BybVQzUGlIQ2tTdUQzRVJwSEErUmhDNXlVVU9ONmJJ?=
+ =?utf-8?B?UlJ4elVvWUxYSmlhclk2NENsQkx2QUdYL0hqbVQyOC8rR011MFVxRVNwZ1oz?=
+ =?utf-8?B?ZlBvU0lYa0YvZWNUMjhodDFuNHh6MzJoa0dTYXExRmgxQ1lFMTlYNEV0akhP?=
+ =?utf-8?B?QUh0ek0wOU9FOUtpc2t0Tzd5Vm5IY1RMT3hheUd4b2gyS3NUanRDNEFxUTZZ?=
+ =?utf-8?B?aUg5T0Z6K2FBUXlYRW9iRHEvUGpLTStLaXppTk5ma25VQUNXOWVhckYvdEZB?=
+ =?utf-8?B?OC94T1dmOENEVHFDNEg4TCtmazR1aFFxblBYOGdBZjB4bHdFWkM2elA5Vjhw?=
+ =?utf-8?B?ZEQrbVZ5aDMrVzRQN3c3ZlJWdEpFZ2Q5UnZkRmhZMFBuZXJNcUZIVzBPeDYv?=
+ =?utf-8?B?Wi8xSFpNNmszUUliSkFQZjlFeit2V3lwYU9sSkpuUjlBVFdVcjVIc3RkYmhz?=
+ =?utf-8?B?QktaNzQrdERSOWYybC80MVRWQ2NwbTg0ZThpaTVUTm0xeXVoQ0U3Yy9GSm9Q?=
+ =?utf-8?B?UjRXcDRRQ2phajFML0NxNU9peEtMa09sUVhFUjR5T2tFMi9pc0tmbTRjN2do?=
+ =?utf-8?B?SS9vRjVtbHV5bTg1RVgxRDYrbDNDKzFOam5zVUZMZkFNdUt0NmMzN1ZrdEh6?=
+ =?utf-8?B?akd3MUdMYVE4UjBrNWpqMklvWGhDMGxTS3YySDZvdEl4OCtuRzdXdkNsZ1d2?=
+ =?utf-8?B?K0hhNHRpUkNCR0gxSzkyWHNER1VHSmhFZ2NQMkpWWnVWT2sxN3FoT1BaWkRm?=
+ =?utf-8?B?b3poOWx1RlF5bGhYQ0VZY2dmeVpYSWdTZmt6WDNZQmE3QUZpZXBQUHhWREgy?=
+ =?utf-8?B?QldjT2k2SVhweWMrRTJYYnJPRngrTTRkTFE0LzJsRlI1aDRjaGZkeDN4WTdI?=
+ =?utf-8?B?ZGN2WFVuVGx5UkE0NEd4YlkrNjY4NjJGSFA0akg0NzNwc21PcTRIczRTTzY2?=
+ =?utf-8?B?R0JIN0dQM2h3aUpXWFhUYUI1Ni9kMEx5dXNrRE9OUTZ1aG9BOHlaRnJGeFNq?=
+ =?utf-8?B?TnRPMitHb3lLSWtWYnhYaGRnYUpuNWd1M2tza1dsZHVhekU0aUFtaFJWd0NS?=
+ =?utf-8?B?Q0cvNHM0cHU2S2RpUmNSRWUrOHpmMzVndTlSdC95dG1zckdvZmNoZGQ1cHcy?=
+ =?utf-8?B?c3ZlN0lYNnhQQTUyYlVwUjh1U0RLVlZwNlBJdFBRZWdYeExoT3dvUGRSRlZH?=
+ =?utf-8?B?V09HbzZTNndjNHY5bko5V0ZEQzFWY3Qrd3BvdTlGZldlbHA5U0tsbDEvSElS?=
+ =?utf-8?B?a1JUSHNnYmduT25XSkxVUTZlS1J2VkxwNlFta09EUEM1Nis2TGJPaElQQWkx?=
+ =?utf-8?B?VGR0eXdCSEFUSlBmdm9PVkN5RGR6eVlldlh5aER6bDVrTVlqbmp5S2xkV1Zz?=
+ =?utf-8?B?cE0yWFluY1JFL3N0VjMyUlBmQXNoNmh6U044cXFzRS8wWnZMLzRXVlVTUUQ0?=
+ =?utf-8?B?VmtaT0IyRVZrdmF0S2E1WDAzS0xDMlpnaVdYa1FjbUJTRHVLaDhOek5JaXF1?=
+ =?utf-8?B?aVhBMlN0M2RaRkVqdHdPd1NPL3VZYWZHeWVEN2plMlg4dHVla0x3MnRjYnZR?=
+ =?utf-8?B?VHBPbElEZVFaTW5FL3J1MEYybWhTT3NyY3BVRmxzOUU3M1FyODFCQzJlM1Nx?=
+ =?utf-8?B?b3A5MlpoRkE3NmJ0cktPN2gvNFJzUlAyN1dlaTdTRVRnZTI1YjYrQ1V6eTRM?=
+ =?utf-8?B?a3plSTJlZmkvUzhFNjlHd25IZ0QxdGhDV1VlZG44MVN1Y2RFWGgwV2t6SzE4?=
+ =?utf-8?B?MEZPRmlpSnRiaXRpZEs3NFdxRUtmUk5yWVBZQnRjemFGanQ3QzZLdG1rcTND?=
+ =?utf-8?B?QmJvWTRHZ1BwaUJuOWpOR2kzcDdYc0tDdzFDb2Z2YWZ5bHFJNUE1cGJGUys0?=
+ =?utf-8?B?V09EdVBzTHVRQk14b3pyWnM3SnVyaFRGR2o1cG82NWhCcU9uYzJWTkhnbVhS?=
+ =?utf-8?B?dnFLYTdqbzJCNGdBWjlsOUQxWFZ3VzAvUEIxblBuZDIzQVNyL2VGM2tvcWUr?=
+ =?utf-8?B?eG1va3VwRzFvK1N2YllsMm1RaHQ1QjNrNk9SbjQvUmhOanNFSmlwb3JWdVpW?=
+ =?utf-8?B?aTJldEFzUzlYL01QbHZJOURYSlFrOEluNXdUUjhGOE80RzBXSnpNUT09?=
 X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1f0ac08-24c4-4677-590c-08dec19a4285
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1769e959-9cb1-4fc8-51d5-08dec19a4380
 X-MS-Exchange-CrossTenant-AuthSource: AS8P189MB1752.EURP189.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 18:02:21.9429
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 18:02:23.5859
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1BnllPpwALIs5Eh+qptbSSX77nuIwFAcptb/mjbyM6jumiyFHgx6f6aCrPc2ysj0VlWnTy04Joxun++V5Fzx/w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: fgsrbjSkXqoWNCXKzOp1AXQ9GozxHS3Vjq4GnrFj+nN9zYoEB8ekE6BjVzD4QiiAXtFT6J+KrYTQvXRy+X3xDQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8P189MB1063
 
-BC_ENTER_LOOPER can be sent multiple times by a userspace process
-without any error. The handler unconditionally ORs in the
-BINDER_LOOPER_STATE_ENTERED flag without checking if already set.
+The Rust binder's set_max_threads() stores the user-provided u32 value
+directly into proc.max_threads without any bounds checking. This is the
+same bug as in the C binder: an unprivileged process can set max_threads
+to 0xFFFFFFFF, enabling unlimited binder thread spawning that bypasses
+RLIMIT_NPROC and leads to OOM.
 
-While the existing code checks for the REGISTERED→ENTERED conflict,
-it does not check for ENTERED→ENTERED. Sending BC_ENTER_LOOPER twice
-corrupts the thread pool accounting because the kernel believes it has
-more available looper threads than actually exist.
-
-Add a check: if BINDER_LOOPER_STATE_ENTERED is already set, mark the
-thread as INVALID and break without re-entering.
+Cap max_threads at the calling task's RLIMIT_NPROC by reading
+current->signal->rlim[RLIMIT_NPROC].rlim_cur, following the same
+pattern used by io_uring (io-wq.c:1488) to limit its worker threads.
 
 kcov-dataflow tracking (before):
-  ENTRY binder_thread_write(cmd=BC_ENTER_LOOPER)
-    thread->looper |= LOOPER_ENTERED
-  RET   binder_thread_write() = 0           ← first call, OK
-  ENTRY binder_thread_write(cmd=BC_ENTER_LOOPER)
-    thread->looper |= LOOPER_ENTERED        ← duplicate, no check!
-  RET   binder_thread_write() = 0           ← silently accepted
+  ENTRY Process::ioctl(cmd=BINDER_SET_MAX_THREADS)
+    ENTRY set_max_threads(max=0xffffffff)
+      self.inner.lock().max_threads = 0xffffffff  ← stored directly
+    RET   set_max_threads()                       ← void, no error
 
 kcov-dataflow tracking (after):
-  ENTRY binder_thread_write(cmd=BC_ENTER_LOOPER)
-    thread->looper |= LOOPER_ENTERED
-  RET   binder_thread_write() = 0           ← first call, OK
-  ENTRY binder_thread_write(cmd=BC_ENTER_LOOPER)
-    thread->looper |= LOOPER_INVALID        ← marked invalid, break
-  RET   binder_thread_write() = 0           ← logged, thread invalidated
+  ENTRY Process::ioctl(cmd=BINDER_SET_MAX_THREADS)
+    ENTRY set_max_threads(max=0xffffffff)
+      nproc_limit = current->signal->rlim[NPROC] = 50
+      0xffffffff > 50                             ← rejected
+    RET   set_max_threads() = Err(EINVAL)
 
 Reproduction:
+  # CONFIG_ANDROID_BINDER_IPC_RUST=y
+  $ ulimit -u 50
   $ ./To-Ulimit-and-Beyond
-  First  BC_ENTER_LOOPER: ret=0
-  Second BC_ENTER_LOOPER: ret=0  ← both succeed (should reject 2nd)
+  BINDER_SET_MAX_THREADS = 0xFFFFFFFF: accepted (before) / rejected (after)
 
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
 Link: https://lore.kernel.org/all/20260603-kcov-dataflow-next-20260603-v2-0-fee0939de2c4@est.tech/
 Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
 ---
- drivers/android/binder.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/android/binder/process.rs | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index 0f3fc293cdf0..0430be814175 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4365,6 +4365,12 @@ static int binder_thread_write(struct binder_proc *proc,
- 				binder_user_error("%d:%d ERROR: BC_ENTER_LOOPER called after BC_REGISTER_LOOPER\n",
- 					proc->pid, thread->pid);
- 			}
-+			if (thread->looper & BINDER_LOOPER_STATE_ENTERED) {
-+				thread->looper |= BINDER_LOOPER_STATE_INVALID;
-+				binder_user_error("%d:%d ERROR: BC_ENTER_LOOPER called twice\n",
-+					proc->pid, thread->pid);
-+				break;
-+			}
- 			thread->looper |= BINDER_LOOPER_STATE_ENTERED;
- 			break;
- 		case BC_EXIT_LOOPER:
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 96b8440ceac6..4752b84505bd 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1139,8 +1139,19 @@ fn remove_thread(&self, thread: Arc<Thread>) {
+         thread.release();
+     }
+ 
+-    fn set_max_threads(&self, max: u32) {
++    fn set_max_threads(&self, max: u32) -> Result {
++        // Cap at the calling task's RLIMIT_NPROC, following the same pattern
++        // as io_uring (io-wq.c) for limiting kernel-side thread creation.
++        // SAFETY: current is valid, signal and rlim are always initialized.
++        let nproc_limit = unsafe {
++            let task = kernel::current!().as_ptr();
++            (*(*(*task).signal).rlim.as_ptr().add(bindings::RLIMIT_NPROC as usize)).rlim_cur
++        };
++        if (max as u64) > (nproc_limit as u64) {
++            return Err(EINVAL);
++        }
+         self.inner.lock().max_threads = max;
++        Ok(())
+     }
+ 
+     fn set_oneway_spam_detection_enabled(&self, enabled: u32) {
+@@ -1574,7 +1585,7 @@ fn ioctl_write_only(
+     ) -> Result {
+         let thread = this.get_current_thread()?;
+         match cmd {
+-            uapi::BINDER_SET_MAX_THREADS => this.set_max_threads(reader.read()?),
++            uapi::BINDER_SET_MAX_THREADS => this.set_max_threads(reader.read()?)?,
+             uapi::BINDER_THREAD_EXIT => this.remove_thread(thread),
+             uapi::BINDER_SET_CONTEXT_MGR => this.set_as_manager(None, &thread)?,
+             uapi::BINDER_SET_CONTEXT_MGR_EXT => {
 
 -- 
 2.43.0
