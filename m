@@ -1,73 +1,70 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022100.outbound.protection.outlook.com [52.101.96.100])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022113.outbound.protection.outlook.com [52.101.96.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C5937188B;
-	Wed,  3 Jun 2026 11:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AED5472798;
+	Wed,  3 Jun 2026 11:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.113
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780487571; cv=fail; b=AVSdkjCWq/QlA2BCPTcXz1PK5XPBFNOlxVzq6h97Y91b4M5wDjXYGgmUzd2YnU6YQoG94/xlRztO7uZlQpkVI/kzuaqEjetl+t8KIb9+4HbGyGLCv4UpSvwkyawiBrxRkeAiLAiWX+XS06egwwiFrDfyxKhb5MTSDw4Fl/9+6V8=
+	t=1780487959; cv=fail; b=mHEi3LCjPCQjOnZyhB7Rnr+9Ft9xlDHm4PZn5UJ4QgOVJDhMq/nLfwFYreXbBk/zkuaLlwGpjTNNrjwbscMT44OXffbgaWak/Q7VM2AAj5/WyIbJgD8U5vxgT0qlMChzH5yJazoPMF7buK7fLD1UsIuIGu7W8aae/loamLND3ck=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780487571; c=relaxed/simple;
-	bh=9Zw0Zo9ieCeinr2AsmsztmeX+a0WU+0MRoNk+Uv7WX0=;
+	s=arc-20240116; t=1780487959; c=relaxed/simple;
+	bh=9qsT6JxDc+a8BVzL6aVEKRNLGH21HbVIexHg895+GeM=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=RielikJ18ltmruWysb24RAqQvpb0k9GoMz8xanl/MPKBSQTHs82RXg5WhIojI0GKksymJWx8iQ32aAcRst97DXDp+eYB75fxHVYlcqW6LHmP3om+05OK1/Wt62W9UNSoVer4g4lzI5a4gG0wwjWDpRseQncTrqFeC53VVsvZaF8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=WPl+e63l; arc=fail smtp.client-ip=52.101.96.100
+	 In-Reply-To:MIME-Version; b=edZFOkIJqaHfagQGIH9sUCTscSgMPOZzaRXB3jp8/Zp1lNIpdmOcQ3KMNjCUDfaPYOrXc9/dKjzR+Tq6k/CnfypZV3aueqfK1LBcdnzHW/5BcUSmzWuo5QR2dpUFon/RnIEoFXLhpMnrFUjeQuZc7eABIw4ZLpEQun6mKzi2QRA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=tYybUmeo; arc=fail smtp.client-ip=52.101.96.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="WPl+e63l"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="tYybUmeo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kpZ2KIx1MYvoGqsValvlI4GwlzdPlPmKNY71zFDYLw+jkteNT+8VykQBLD3T3QeH8d3ru89Slm4r8pXmNRYU+VrCUeEVyMobuhw8tMDOO2reTV9M8IUCTEOxt9znB7n093IyYTSMywg/XthAYdcIJ3g0OEmqPN6vcoTsKd5D0pKl5eSBeuvywLXTxuqukdN1wX6dBHuefVW9WXdMW5c7zDBoNk6sDJCesavNG71jDnB68AKxEl35k8/x4uk7CGDFUeF5zjZplcO9OVVad9utyBSV3aHHM9NhlIgRv5nt53WSy6oV8bsk1KF7sL9PZ/S0yx9xHn8VPwb2dT6o6+gRbg==
+ b=UTlornADj/B4sZ4O8VXwaVhNSzGhmuwJh4OeTALMNL9Ft3ZUufVUU8kgQQMneHiJASpByzChk25mdH3BEn29xTc2O4paaTlKWllZQJ48mmJxLcgR+l6uKme440iYBoOS0EyS4/dY+LbeI2H6uPiwUM7ZjWdDG7h7jFwNKAGjCG2m1W1iQFJ/wtoyq/xYwvZSg7pZS5f6dApcjrRz4FH66z18FgXEiLUBOKGxJc0tVu8yVOc+vBsFe2zOvmiaOg1h9qoHKlsC6KmAgQp5dPStfeJloJEdWQcsAMLZN5mCXOLL9dYSuarCPkeTunWD1CDcR53uyncAJsIXvrcUDZZ+wA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TIa6cRio2Aojtc+ddqqsdZnYF4Nq9trRfWh+c15Jiz8=;
- b=mIdHyMCmPlISt+Tn7LtzviLDKUQKTGijSufZgduPCEID92b4JuLZ6oBP0Nvcxv4VYCz8P/wnAqRrI1De/Rpkah1GwYYmz1b90Tby+csg1gY6kzba2Bp/Ms7ihsHeRJN03XGA96bHFvrtOpjaNgQ2UXp5Fo290k2obJw+FVcsCewAE6c1A1zJlIuc3tEcq26+IKEbwmvLNm/mFwD0J4NHtlXtS8E5id9H4XQwKDwG2+vkj8rsT3eLL6pqnUbnrBsh5Nvd38gRwuYmmJfDyWXCkfZsIA3i6Q1Xbx0ecI13vkk6QY4r/RM7S55bIJ2czBWng92miADrWKwf3mUD5rgHmQ==
+ bh=RXyS9w8lBT6t5YDLirSKdxBYSkdaflIZh4/tW0mcOdQ=;
+ b=BBKqM7Y2TgsFBB1oBcCZMkqA7gz7r6GPDz+Z02zRCRMVbzMzcgZTiXsUXIjIuDvgKE54ZreXW7B24K9uSTlrLPOf3lvc5buQ3zqmlJvqeNVh8NMGzefowUkMak0pey/JnFa9qdyt4DRcbuQVlaZ4dgfqwiIpukxwWlvFDvqyvTj1ETwmWnosz1hzGhCYFva5XNa5f2x9THzqZpGYd/3fYCTJ3ZlCXmm8mKsMhdCdkIA0V6g3cEA0k32n+/srwYxDfc+4iTrrqo0GqnbTdFs7eKR9d0MwD5dakpoKehMnYMp16Lq0r6OmVV59eZqYDrOZ46HJiHHXxOYNbXv+jLdu5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TIa6cRio2Aojtc+ddqqsdZnYF4Nq9trRfWh+c15Jiz8=;
- b=WPl+e63lYT0ikKwqBbnmJV93mZm3f8kwChi3Ea6wpLEqTJEmS0jaDl2IRvdPtI23pjK0dtOhjAGOl7H+mTurjV4dmAaAqQLA5KXXvg0swAXHTNlVyoDCpnHtIBeHT83uSUOrTIGFRYhWxdMvV46crZb4yCuP+MhZLBkxFqfiH6w=
+ bh=RXyS9w8lBT6t5YDLirSKdxBYSkdaflIZh4/tW0mcOdQ=;
+ b=tYybUmeo7YzdR6rxRBZrfaMiQUbF2ZMNozu3s1A48UpAQNIVRPMTwhBNShSL/NX/m+vgVYcERiAyP4h7T2prXWoCwCzIoqO9fU5Hl1tu8jW5B7z8ULfL83r4XeUHGmceYvMaITjfpLPrVnYNFLosTBldkCvMY6jWY+UZvBNwMOE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB1893.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:30::7) with
+ by LO8P265MB7703.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3aa::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 11:52:44 +0000
+ 11:59:13 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 11:52:43 +0000
+ 11:59:13 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Jun 2026 12:52:42 +0100
-Message-Id: <DIZE5YHLR2WJ.1VOBKWU8Q6AWH@garyguo.net>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v3 1/5] rust: inline some init methods
+Date: Wed, 03 Jun 2026 12:59:13 +0100
+Message-Id: <DIZEAXX05BMZ.Z6FPWIH8XP92@garyguo.net>
+Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pwm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 1/7] rust: types: rename ForLt to CovariantForLt
 From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>, "Nicolas
- Schier" <nsc@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
+ <rafael@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <acourbot@nvidia.com>, <ecourtney@nvidia.com>, <m.wilczynski@samsung.com>,
+ <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
+ <daniel.almeida@collabora.com>, <bhelgaas@google.com>,
+ <kwilczynski@kernel.org>
 X-Mailer: aerc 0.21.0
-References: <20260530-nova-exports-v3-0-1202aa339ef7@nvidia.com>
- <20260530-nova-exports-v3-1-1202aa339ef7@nvidia.com>
-In-Reply-To: <20260530-nova-exports-v3-1-1202aa339ef7@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0208.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:33a::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260603011020.2073650-1-dakr@kernel.org>
+ <20260603011020.2073650-2-dakr@kernel.org>
+In-Reply-To: <20260603011020.2073650-2-dakr@kernel.org>
+X-ClientProxiedBy: LO4P123CA0106.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:191::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -76,81 +73,369 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB1893:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1839c903-aaa2-4d8b-53cc-08dec1669f08
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO8P265MB7703:EE_
+X-MS-Office365-Filtering-Correlation-Id: b76667f5-0de6-4c0a-5611-08dec16787d9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014|56012099006|22082099003|18002099003|4143699003|921020;
+	BCL:0;ARA:13230040|10070799003|7416014|376014|366016|1800799024|921020|6133799003|22082099003|4143699003|5023799004|18002099003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	b+qyiO+JjT3OW8/smqaWA62y9ZkVSzV1q41tHfBODpLFEx0jzJ8EQT7dbrIyATAtlJqo/jmlunjYlvUfEjh0ERTCcfrFWlXXrgLUbHAtZO8IHr85BtUKREk2ni9yJKe0Z1qI2Yr//nVDs7rjyXIDOFPEJYykrrP5+y7cglIMu9zEASSzbboiypP7rHv8rdJ0nRpEo0BVYxwWolBr+fS1bExGo0tMgLwUiwtVQRmxQPy8TSqFK6988efUjwliA9A2Ed/icp2rFuFvruX23izaqMF8VA8PxmfFl6M6Vj18G0c++VBMRK8LUsKZrNrfRS6v+XtoQIFDxS3Uf9Qw1bcoPuC9bkTNrN5jDfuiJZF09KWVGSEM1cSa4O/sw0RXfRl43bemMFmrYW45Ge28eDzrm54+NIpIRFMKRDFbnb4mIzOr79nLnbDnkd0ehtFK2/RUEShN8atUI51fcy3nhrczq9ioj18ZHrtHyhSP0h+UHrH10HA4DLNAOj+rgzGOwkHaqUguiEHzEH8+t0q+S+wbaEw3MkyRs13a6p1mHn25kGxTHgNMwRFYbl4NgrfLkMdKPpqQS2JR4CWlW9FtY82Oc05dPZYAzM8NARNivM/sUe9UhAAcL3mc1n+9XBX97fxB6bAmIWM7QfJdmuI/OGNHdhSLDe6PqIXbeBXsgNmPhfy5HKqgEuBxf2FNcjGGW4l825mwA0oqR34bY0o0XqZ+OhQ9lKdAntFsDu4h8lzIdzk=
+	OV+OElU/+mxYNEbAwvf8Ihao12vNf3hLDU33OkUmTK5CkE3Qbexgp5LztTf4IusqJ4FQr9kGmLbKXQpT2a0yRpPYAO4EeBABvpJhvGHelS5z1A3kW85FfEc8wM4d5kwdeqaSmbMWR1ejTNeRyOZzgCldtLCa/Tg6xtAMTQpA0m/gVI+pNVpO7cpH8o3/4EmV1NaBLUHSzeEkyrSGS+Kjg7tn+6KNgfTc+BCXHHFmwuffkoNvsimd8Dm6TDR/+HgeYVbJLkpEG43laAvdv9GwDmmlXP2uxlclrYb/y7s11AwypM3ZI0eS1jruXfzGynn/ddj+0Jczz77rLhrxOZxX9D1ru0JjyU6xAjZwkOIn2PmQti31u/KZUGamfql0JzFT/Eb936qx06mn55A1Km+tr5gtPRdI3ESVs9ewSSnYpPGs6Zjw5xpqJKFMR6mRzuWQ+LBJ5rx9bRCVEQVeegadFQF0aDFei2sL5ohEQWUuyJcUQ1X6RmHowQsrnOLlYTv7VUFW+RABNeB+QkpZSW5JHAo6RvhiciDrVc29v/fCjcL9X/tzOtDmPXQZhuN4Pg1vQuDksUmcDp+AN8cL4MiVrfv2XUsjwiznSTm5S5oIMaTrxllTm/H3qzBDrkiI+3cF050v9dj++XO3hvtYJwoWeHos139a+/bpnHqUsB7Ao+mVlUPydRTUIvc6EKNHJ+6Y03E6H86xEdeT72ljley5yDVoTJCWUUdrbvuJ3kLCi44=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014)(56012099006)(22082099003)(18002099003)(4143699003)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(366016)(1800799024)(921020)(6133799003)(22082099003)(4143699003)(5023799004)(18002099003)(56012099006);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?REE5K3hpVjdlZ0lvUkdMK3VBWm9zMDFZaFI0ZmdNNGJVVWtuSFVjcEhoUy9C?=
- =?utf-8?B?cXRsS3hEY01Lek5OdnFoTDJCa2dQWm4xU0kxdis0bll5QStORHRuR0VDSmho?=
- =?utf-8?B?QklIYm85N3c0ZXhCTCsvYk9jb3Y0bjR6Wkd4cGZ5bFJLSENXc1BYa3JBZCtC?=
- =?utf-8?B?M1RVbEZPeUU4cEhFNlc1SVh5WG4xQXdnRGM0Wm9KYndlM0RtSHFtM2FQNStk?=
- =?utf-8?B?aS81dVRNVVpuTnhndVhGMWVxbUVPa0docFk2eWJrdWx0VklqSmsrTFkxUVFl?=
- =?utf-8?B?ZGJrRy9PQmZSWXZmYXJFZERtSWw1dGdjZnd2WEJNWE9VZW4yT1ZGaXFWaXA1?=
- =?utf-8?B?Z0VnSUFhbkQxWW1VRTNXWElzaGNNM0F6aENGaHIxSlJJaGFLaUpnRjl1aXNt?=
- =?utf-8?B?SktmNmZPOEd2MGtRQjJwV0U2SGxjUk96cHk3MzZqcHB6RE91bWwyVnRmSkxo?=
- =?utf-8?B?a0hpMVdxbWJpeC9aSXZWYU0vM1V5K2RKRXgrZXFrVFdPUyt2UXRTdlpISWcw?=
- =?utf-8?B?MGxlbW5sWmh6RE9OR0dNbjRNUkRWejNJSzZiZ3E4Uys5L2REOFRCYjUrMU9R?=
- =?utf-8?B?QjdpOHB6Y2dWanpubFpyd1RVLzM5M3pweHptY2NadmQ3endqRmdtV3VQVVha?=
- =?utf-8?B?c1VLYThsdmdlL052ejVwMWhFOG1LcHJSRnRmanJNcEY2Y05DaHV3aEFVanB3?=
- =?utf-8?B?YWJDelZRbEozeTJXYVhSM1Y5aGFrbjN2dXdpVisvS2kwQUJyWFhETUdlaCsr?=
- =?utf-8?B?RG1XdVY0NGsvTDFtbisrazRoQjZJSS91Q2lZNkVYVlA5c0RieXNSWjlUK1RQ?=
- =?utf-8?B?QlBuWHFBN1pTcUtwM2pMRzZVWUJzY3Vyb3NnWktxbXpFd1BmeXYwR3hhRkZQ?=
- =?utf-8?B?dnB4eEYybkoxQlJpQnRidTV1cm41eEhZUDBIb0NyK1BweW83RVpDS1JwS29s?=
- =?utf-8?B?aDdabjdlOFBKV1prRWhSMXNtcERVMy9NZjJtWjhpNjVPR1VDVXB1bnNGa0V5?=
- =?utf-8?B?bytWWDdaOFQ0d2xVQzM0Nnl5S0VQQUs5WDJGSDJvUnpGbTREaE90bFlIbFd4?=
- =?utf-8?B?SFBlcTkvMEh3K1FaVzBucHRPMUhxOElOdFhLNmZDRU5XYXJnMXFHcXJkTHp1?=
- =?utf-8?B?MThsZWRGL0dXUGNkU1N6V2RkQlhxTTZpdTZmTXpNKzRqeW1OU2VmTytLZDFw?=
- =?utf-8?B?dWN3Z0M2TzQvVlhzRGQxTnR4MjYvR1JMRldqM3orZy9FQVlZYmNBRGtxRGNG?=
- =?utf-8?B?TE5aOWp5M0xwNG1zb0JjSGxpWjc2akJ3MkxZV0luRi9oTU1ObEtCbEVVdm50?=
- =?utf-8?B?MmVyR2NGTUlJNC9CenFjR2UwWTE5UlZ6ZUk2Vk1QMC9mRHlBV3E1ZjVML3BG?=
- =?utf-8?B?RFB1Q01Yam5aSGZlckJkQmZES3pRWi9sckI1VThMdnBTbjBrL0Ria1hodzZa?=
- =?utf-8?B?QW9YY242bmJ2Y2RBQzdIc0JmMHRXd0NFOHc1UjAvY0pHdUNWcXhmQWVqd0xZ?=
- =?utf-8?B?S0NFcHQ3eXpGamFwc1ExM0tTVXpCWVRUb1lZaytKTmhJZDJNUjMza1RsTVBo?=
- =?utf-8?B?c2JpQlVUVUM5RWRram56Y3JIcDdRU2xCRUc0N1hRUSswd2YzaGlPTE0xaW41?=
- =?utf-8?B?Z2MzNGhRMG1qS1NhczB4bTJBTDJRcUZPN3V4RUR2eis5QmFNbGJqZXpBZ1Jj?=
- =?utf-8?B?ZlRhSHo3a0RTOHRMajZtdUtVUjBCaTlzeUZyR0tDNS9IZ1drMGcvNG9aNkgx?=
- =?utf-8?B?V0JHa2ZoVjNoemxpb3VJKzIxY0RoeExNcjFGZCtPY2NnUEMyRDJNOTk4K0dv?=
- =?utf-8?B?R2NteWcrbzZvWHZ1a2NOVHhsWjFMaUxCNW5TckZSUlhzWUZIQWd3amJBM2hC?=
- =?utf-8?B?czNMZ2ZtNWpzeURSLzA1ZUpwck83eVpCWU1PN0hzWmRLZ2pNbU9jeEFjYjFi?=
- =?utf-8?B?c01Za0dJY1JSVHo4MlFtSHo5WE0zUTNvZHU5eFVaSUdVT09FaHdNTUpJQkV3?=
- =?utf-8?B?U2FSZGYwVWU3RmdiOCs5UFFZNGgvOHJNYkpRQ2N0bWZDOWI2UndrV013eFJn?=
- =?utf-8?B?L29hRnBMQTZ4SHlubXRybFFKNG5DRmFjdzhEL01hOXk3UVBRM1JuNWlTYmt4?=
- =?utf-8?B?eUNGWFFqT0NZS0ptT05ib3l5enhQS2x4SGZhV3FYeVRlVExXUERSbFA4MURF?=
- =?utf-8?B?SEt6aWJQRk5jcWNxRzdVYllTSmc2eTkwYzc2U2Q0VVoxTXM5RUdqTGJsYklm?=
- =?utf-8?B?RTJIWk5tc3pkRWVLbkFuRHFKUUxNYXYwam1BSFBOd2UrZDJ6TlhyR0dKM0FL?=
- =?utf-8?B?eE1VVHJYcnVsL0VMTytsaE80ci9neTRRVXY4Rzg0UFE3eEVqS242dz09?=
+	=?utf-8?B?YVJSb1BlMmRoN1F0L2M4dmx0SVBXYXp2dUJ1RE0zR0tackxZb3lWeXlTVzBn?=
+ =?utf-8?B?d1UrdittdFBDVnEwWGg3U2xiQUVxSlBJdzBkdFBnRjRsaXRtMlNWVXdEVEZW?=
+ =?utf-8?B?Wjd4MnBxYS9KcWNYeExsMmxPbDJlWjZxb3dScFdTQTFOLzYzNFdxdGtzZmF2?=
+ =?utf-8?B?N1Z4emUyTlhzaCtPMHdieTFUK09saTNpZUgwRlhKenZqdzhvOEtMVVlua0xz?=
+ =?utf-8?B?RlZiTW1qdURuWWJkMVkrRUgyR1BmaloyUUFrRDNzMGllZmhVb1UrRnFVWHZ4?=
+ =?utf-8?B?ZjViVCtlYVlId2kvcE50TXlVQTIzUS8vVTViTFhnNEtacWNxd3Q1dURpZDg2?=
+ =?utf-8?B?amZ6SE9kbUI0cHRJQmFOQlZ4MmNRSGVIUGFSU3lUeGFLcHJpbFF6cnl2SVNW?=
+ =?utf-8?B?bkNoNmZXYmh4RW5NV2o2ZmV5SGVEWjY0dW5jYlpkMVdZdUhBTmZBM3V0ZFpV?=
+ =?utf-8?B?ME9vbmtOem0wditUa2lLWFFtZ1Y0d1htNVVyQjJndzA5VGxHM2hESVpJOWpB?=
+ =?utf-8?B?ZnFyTUUwT0pGSE1NWStDaXpNdXc1K0cxNXM4VjBOMVVEeFhSMWUvV1QzRXlM?=
+ =?utf-8?B?bDFaNC8rdzhzNnlSaHNQT1JzbmVOUUlkaWJ6UjVtOGNhZkszbUxKQ2tBazJq?=
+ =?utf-8?B?VXNlVGZGYWs0bjhBTFVRQmtBM0NhRklnd2Q0YUxIdmx1RFA4d0REUW4xbGl6?=
+ =?utf-8?B?ZkVsSlVKNDRwYkVRTnQzU3NEcDhrRXlDL2pZUERYakVSZS9iOVVHQkd6UkI2?=
+ =?utf-8?B?dFZ2OFZvMHRHZkhrMWg0VEttZzJIcUJNR0UwdWxxbnl5OXkxbFVQeXNzdXlk?=
+ =?utf-8?B?WWVSb0FIK0QwS2IyaGhNdWxndzR1TmZzSG1ZS1ErMHkxQmVrTmFnd2tDN3hm?=
+ =?utf-8?B?ZGVoRWhTaEhUYlR4aHc1alQvMjRMU3VYTHBHLzJ6blFxWGVsTFMxZ2ZVb2tC?=
+ =?utf-8?B?VUhONVVXM2RmdDFQOXRvcG1NaXJpendzZVFKRmJGS2RLYWhsT2ZkT0V5WEZR?=
+ =?utf-8?B?Tzg4QjlxNXZ5NGI3SGVzWjd1OW5hWTV1eTdSTjJtR051d2xTUTZGVG9UMHRK?=
+ =?utf-8?B?bFJWR2hXeTltREU4UllBejZlcFVRWUZQQUFDNzVNQlJhNHlsSitoRlVtR3N6?=
+ =?utf-8?B?M0pDS2N1TWp6WFQzMWxMaXBnYW1GUXE0QWdLQlVHbkF1VEZsZzBUNXV1RlBi?=
+ =?utf-8?B?WVdKbUZEK0JnNHNLV2tTclJwTWczbXQza2dOMGlxTE16a2NSemozSFEwVjkv?=
+ =?utf-8?B?RHU0UUw2OFM1NVhGZEhSbWk2a3F2S1RHbjdxZStrQkhkOFNqdnVUcnREUHU4?=
+ =?utf-8?B?bnhYTmU5T1dCZXc5WkxVWGFRSVIxWllaMGEyYndJbXl0VGk2Mzk3RENPemc3?=
+ =?utf-8?B?bTVqc0ltaDIyL1NhVHdjcmNqNWxiNGdwTmFzK1FCcDVKb0NkVHA3NjhXakRV?=
+ =?utf-8?B?Sm9taUJ2STAxY2h5OUY2ZzlmVmg2TGlOZzdSN1pYVFhaNWpBRFFzNlNtUERW?=
+ =?utf-8?B?eVRVaFp3QndXNy8yNm83a05Fajl6dytjcTM4N1dUV0Z0SVMzMTBwOXpqaGRo?=
+ =?utf-8?B?WmpkcVhML1BDTnZ4U2dkZ3BkcFdqbnl1UW9ZK2dGSG1FeFUxUXJYbSsxeDhK?=
+ =?utf-8?B?Q3preUR5SkVHd2Z5cm9PbVkxUzBSK3lFSE9nVVJLOWFYZVhKaVN3clJySGYw?=
+ =?utf-8?B?MUdDaEs0U052RE5uNmNSL25Qcm9sVEhINmRZL0loVkhPTnpyS1J3alg4VFJM?=
+ =?utf-8?B?ckMvOUYxM2FXRGRFN0xzenY0VVFUSWl0ZlZkUHFVM2NZYmZXZExEdU9pb3FL?=
+ =?utf-8?B?Z0tBVWhGdTV4VWlsOERuY0lVRUxqQ2UvSVFoOFpiSmRYMExFblQ0aTY1SDN2?=
+ =?utf-8?B?dkFTSnVHaFp0RkNwMGFGYU5kSloxYitCdk5GemRDN0RrRS83eGM0NEhQY2lF?=
+ =?utf-8?B?SGUrQnJwN0hSUUhIRENGaWwydmxFSnVMQk1QemVtZ2ZRVnBIU3hvZGVVL3RE?=
+ =?utf-8?B?cExFSmRPeUxuK2RhTWxOTnpSenhreDFuOEt4MWZCcTB1bW9SSDBUbk1IUXBC?=
+ =?utf-8?B?SjBoRUdYTklKb2hxeFpsMWR3a1J2QzBaTnVoZjRQaTFyOUJES2N5RjVNQWhk?=
+ =?utf-8?B?YTNDa3ZJTVRsRDF3NXlMMlg2dU9ENnNiSm1DU0s0akJtM21WdTAwTklqSjdI?=
+ =?utf-8?B?QXY5bnA1RVRHQVFML0szb1FKaGtZblJxZXEvWFZXekRWanQxY1NNWFFHdUww?=
+ =?utf-8?B?STVmMXVJM05ycXB3enNjcWdJWm0zNFNiejZQWFFVdHZycXpFZU01cEtiU3B0?=
+ =?utf-8?B?NnlvTmJETVhZY1N4K3hEdnB2RTAwQ3pGMHBCd0o4UUovWnEydnl3QT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1839c903-aaa2-4d8b-53cc-08dec1669f08
+X-MS-Exchange-CrossTenant-Network-Message-Id: b76667f5-0de6-4c0a-5611-08dec16787d9
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 11:52:43.2828
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 11:59:13.8940
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qJDxJKRVY4HPzIstuaw+9PrAw8VQtaYIHgZbIrw6Weu3llXppQfON5IGL1qTdQGz/o8+bC656svUFxlnU/yNAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB1893
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8FmksgNjab6tPMvcReJQEp2b+mkKXmi7g0w/dcCiwOpJWWu83TkmB1mXsU0OkrPJZHMdlJxOVIA77M44uagzfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7703
 
-On Fri May 29, 2026 at 4:27 PM BST, Alexandre Courbot wrote:
-> These methods should be inlined for optimization reasons. Failure to do
-> so can also produce symbol names larger than what `modpost` or `objtool`
-> can handle.
->=20
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-
+On Wed Jun 3, 2026 at 2:10 AM BST, Danilo Krummrich wrote:
+> Rename ForLt to CovariantForLt to prepare for the introduction of a new
+> ForLt base trait that does not require covariance.
+>
+> The existing ForLt trait requires covariance, which enables the safe
+> cast_ref() method. This rename preserves the same semantics under a more
+> precise name, making room for a weaker ForLt trait in a subsequent
+> commit.
+>
+> No functional change.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
->  rust/kernel/alloc/kbox.rs | 2 ++
->  rust/kernel/init.rs       | 1 +
->  rust/kernel/sync/arc.rs   | 2 ++
->  3 files changed, 5 insertions(+)
+>  drivers/gpu/nova-core/driver.rs       |  4 +-
+>  rust/kernel/auxiliary.rs              | 23 +++++-----
+>  rust/kernel/types.rs                  |  2 +-
+>  rust/kernel/types/for_lt.rs           | 61 ++++++++++++++-------------
+>  rust/macros/for_lt.rs                 |  4 +-
+>  rust/macros/lib.rs                    | 11 +++--
+>  samples/rust/rust_driver_auxiliary.rs |  8 ++--
+>  7 files changed, 57 insertions(+), 56 deletions(-)
+>
+> diff --git a/rust/kernel/types/for_lt.rs b/rust/kernel/types/for_lt.rs
+> index d44323c28e8d..ef510ab6c092 100644
+> --- a/rust/kernel/types/for_lt.rs
+> +++ b/rust/kernel/types/for_lt.rs
+> @@ -1,8 +1,8 @@
+>  // SPDX-License-Identifier: Apache-2.0 OR MIT
+> =20
+> -//! Provide implementation and test of the `ForLt` trait and macro.
+> +//! Provide implementation and test of the `CovariantForLt` trait and ma=
+cro.
+>  //!
+> -//! This module is hidden and user should just use `ForLt!` directly.
+> +//! This module is hidden and user should just use `CovariantForLt!` dir=
+ectly.
+> =20
+>  use core::marker::PhantomData;
+> =20
+> @@ -15,38 +15,39 @@
+>  ///
+>  /// # Macro
+>  ///
+> -/// It is not recommended to implement this trait directly. `ForLt!` mac=
+ro is provided to obtain a
+> -/// type that implements this trait.
+> +/// It is not recommended to implement this trait directly. `CovariantFo=
+rLt!` macro is provided to
+> +/// obtain a type that implements this trait.
+>  ///
+>  /// The full syntax is
+>  ///
+>  /// ```
+> -/// # use kernel::types::ForLt;
+> -/// # fn expect_lt<F: ForLt>() {}
+> +/// # use kernel::types::CovariantForLt;
+> +/// # fn expect_lt<F: CovariantForLt>() {}
+>  /// # struct TypeThatUse<'a>(&'a ());
+>  /// # expect_lt::<
+> -/// ForLt!(for<'a> TypeThatUse<'a>)
+> +/// CovariantForLt!(for<'a> TypeThatUse<'a>)
+>  /// # >();
+>  /// ```
+>  ///
+> -/// which gives a type so that `<ForLt!(for<'a> TypeThatUse<'a>) as ForL=
+t>::Of<'b>`
+> +/// which gives a type so that
+> +/// `<CovariantForLt!(for<'a> TypeThatUse<'a>) as CovariantForLt>::Of<'b=
+>`
+>  /// is `TypeThatUse<'b>`.
+>  ///
+>  /// You may also use a short-hand syntax which works similar to lifetime=
+ elision.
+>  /// The macro also accepts types that do not involve a lifetime at all.
+>  ///
+>  /// ```
+> -/// # use kernel::types::ForLt;
+> -/// # fn expect_lt<F: ForLt>() {}
+> +/// # use kernel::types::CovariantForLt;
+> +/// # fn expect_lt<F: CovariantForLt>() {}
+>  /// # struct TypeThatUse<'a>(&'a ());
+>  /// # expect_lt::<
+> -/// ForLt!(TypeThatUse<'_>) // Equivalent to `ForLt!(for<'a> TypeThatUse=
+<'a>)`.
+> +/// CovariantForLt!(TypeThatUse<'_>) // Equivalent to `CovariantForLt!(f=
+or<'a> TypeThatUse<'a>)`.
+>  /// # >();
+>  /// # expect_lt::<
+> -/// ForLt!(&u32) // Equivalent to `ForLt!(for<'a> &'a u32)`.
+> +/// CovariantForLt!(&u32) // Equivalent to `CovariantForLt!(for<'a> &'a =
+u32)`.
+>  /// # >();
+>  /// # expect_lt::<
+> -/// ForLt!(u32) // Equivalent to `ForLt!(for<'a> u32)`.
+> +/// CovariantForLt!(u32) // Equivalent to `CovariantForLt!(for<'a> u32)`=
+.
+>  /// # >();
+>  /// ```
+>  ///
+> @@ -55,10 +56,10 @@
+>  /// it.
+>  ///
+>  /// ```ignore,compile_fail
+> -/// # use kernel::types::ForLt;
+> -/// # fn expect_lt<F: ForLt>() {}
+> +/// # use kernel::types::CovariantForLt;
+> +/// # fn expect_lt<F: CovariantForLt>() {}
+>  /// # expect_lt::<
+> -/// ForLt!(fn(&u32)) // Contravariant, will fail compilation.
+> +/// CovariantForLt!(fn(&u32)) // Contravariant, will fail compilation.
+>  /// # >();
+>  /// ```
+>  ///
+> @@ -67,23 +68,23 @@
+>  /// the generic parameter but is in a separate item.
+>  ///
+>  /// ```
+> -/// # use kernel::types::ForLt;
+> -/// fn expect_lt<F: ForLt>() {}
+> +/// # use kernel::types::CovariantForLt;
+> +/// fn expect_lt<F: CovariantForLt>() {}
+>  /// # #[allow(clippy::unnecessary_safety_comment, reason =3D "false posi=
+tive")]
+>  /// fn generic_fn<T: 'static>() {
+>  ///     // Syntactically proven by the macro
+> -///     expect_lt::<ForLt!(&T)>();
+> +///     expect_lt::<CovariantForLt!(&T)>();
+>  ///     // Syntactically proven by the macro
+> -///     expect_lt::<ForLt!(&KBox<T>)>();
+> +///     expect_lt::<CovariantForLt!(&KBox<T>)>();
+>  ///     // Cannot be syntactically proven, need to check covariance of `=
+KBox`
+> -///     // expect_lt::<ForLt!(&KBox<&T>)>();
+> +///     // expect_lt::<CovariantForLt!(&KBox<&T>)>();
+>  /// }
+>  /// ```
+>  ///
+>  /// # Safety
+>  ///
+>  /// `Self::Of<'a>` must be covariant over the lifetime `'a`.
+> -pub unsafe trait ForLt {
+> +pub unsafe trait CovariantForLt {
+>      /// The type parameterized by the lifetime.
+>      type Of<'a>: 'a;
+> =20
+> @@ -94,11 +95,11 @@ fn cast_ref<'r, 'short: 'r, 'long: 'short>(long: &'r =
+Self::Of<'long>) -> &'r Sel
+>          unsafe { core::mem::transmute(long) }
+>      }
+>  }
+> -pub use macros::ForLt;
+> +pub use macros::CovariantForLt;
+> =20
+> -/// This is intended to be an "unsafe-to-refer-to" type.
+> +/// Helper type for the `CovariantForLt!` macro.
+>  ///
+> -/// Must only be used by the `ForLt!` macro.
+> +/// Must only be used by the `CovariantForLt!` macro.
+>  ///
+>  /// `T` is the magic `dyn for<'a> WithLt<'a, TypeThatUse<'a>>` generated=
+ by macro.
+>  ///
+> @@ -107,16 +108,16 @@ fn cast_ref<'r, 'short: 'r, 'long: 'short>(long: &'=
+r Self::Of<'long>) -> &'r Sel
+>  /// `N` is to provide the macro a place to emit arbitrary items, in case=
+ it needs to prove
+>  /// additional properties.
+>  #[doc(hidden)]
+> -pub struct UnsafeForLtImpl<T: ?Sized, WF, const N: usize>(PhantomData<(W=
+F, T)>);
+> +pub struct CovariantForLtImpl<T: ?Sized, WF, const N: usize>(PhantomData=
+<(WF, T)>);
+
+I think I prefer this name to be stayed the same (so it has the "Unsafe" in=
+ it
+and is not too long).
+
+You can actually use this same helper type for both `ForLt!` and
+`CovariantForLt!` later in patch 2, by using different `N` based on whether
+covariance check has been conducted. So
+
+impl<T: ?Sized + for<'a> WithLt<'a>, WF, const N: usize> ForLt for UnsafeFo=
+rLtImpl<T, WF, N> {
+    type Of<'a> =3D <T as WithLt<'a>>::Of;
+}
+
+impl<T: ?Sized + for<'a> WithLt<'a>, WF> CovariantForLt for UnsafeForLtImpl=
+<T, WF, 1> {}
+
+Best,
+Gary
+
+> =20
+> -// This is a helper trait for implementation `ForLt` to be able to use H=
+RTB.
+> +// This is a helper trait for implementation `CovariantForLt` to be able=
+ to use HRTB.
+>  #[doc(hidden)]
+>  pub trait WithLt<'a> {
+>      type Of: 'a;
+>  }
+> =20
+> -// SAFETY: In `ForLt!` macro, a covariance proof is generated when namin=
+g `UnsafeForLtImpl`
+> -// and it will fail to evaluate if the type is not covariant.
+> -unsafe impl<T: ?Sized + for<'a> WithLt<'a>, WF> ForLt for UnsafeForLtImp=
+l<T, WF, 0> {
+> +// SAFETY: In `CovariantForLt!` macro, a covariance proof is generated w=
+hen naming
+> +// `CovariantForLtImpl` and it will fail to evaluate if the type is not =
+covariant.
+> +unsafe impl<T: ?Sized + for<'a> WithLt<'a>, WF> CovariantForLt for Covar=
+iantForLtImpl<T, WF, 0> {
+>      type Of<'a> =3D <T as WithLt<'a>>::Of;
+>  }
+> diff --git a/rust/macros/for_lt.rs b/rust/macros/for_lt.rs
+> index 364d4113cd10..3cb094d00548 100644
+> --- a/rust/macros/for_lt.rs
+> +++ b/rust/macros/for_lt.rs
+> @@ -176,7 +176,7 @@ fn prove(&mut self, ty: &'a Type) {
+>      }
+>  }
+> =20
+> -pub(crate) fn for_lt(input: HigherRankedType) -> TokenStream {
+> +pub(crate) fn covariant_for_lt(input: HigherRankedType) -> TokenStream {
+>      let (ty, lifetime) =3D match input {
+>          HigherRankedType::Explicit { lifetime, ty, .. } =3D> (ty, lifeti=
+me),
+>          HigherRankedType::Implicit { ty } =3D> {
+> @@ -235,7 +235,7 @@ fn #cov_proof_name<'__short, '__long: '__short>(
+>      );
+> =20
+>      quote!(
+> -        ::kernel::types::for_lt::UnsafeForLtImpl::<
+> +        ::kernel::types::for_lt::CovariantForLtImpl::<
+>              dyn for<#lifetime> ::kernel::types::for_lt::WithLt<#lifetime=
+, Of =3D #ty>,
+>              #ty_static,
+>              {
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index 4a48fabbc268..2167cb270928 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -491,14 +491,13 @@ pub fn kunit_tests(attr: TokenStream, input: TokenS=
+tream) -> TokenStream {
+>          .into()
+>  }
+> =20
+> -/// Obtain a type that implements [`ForLt`] for the given higher-ranked =
+type.
+> +/// Obtain a type that implements [`CovariantForLt`] for the given highe=
+r-ranked type.
+>  ///
+> -/// Please refer to the documentation of the [`ForLt`] trait.
+> +/// Please refer to the documentation of the [`CovariantForLt`] trait.
+>  ///
+> -/// [`ForLt`]: trait.ForLt.html
+> +/// [`CovariantForLt`]: trait.CovariantForLt.html
+>  #[proc_macro]
+> -// The macro shares the name with the trait.
+>  #[allow(non_snake_case)]
+> -pub fn ForLt(input: TokenStream) -> TokenStream {
+> -    for_lt::for_lt(parse_macro_input!(input)).into()
+> +pub fn CovariantForLt(input: TokenStream) -> TokenStream {
+> +    for_lt::covariant_for_lt(parse_macro_input!(input)).into()
+>  }
+> diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_dr=
+iver_auxiliary.rs
+> index 2c1351040e45..92ee6a6d348e 100644
+> --- a/samples/rust/rust_driver_auxiliary.rs
+> +++ b/samples/rust/rust_driver_auxiliary.rs
+> @@ -13,7 +13,7 @@
+>      driver,
+>      pci,
+>      prelude::*,
+> -    types::ForLt,
+> +    types::CovariantForLt,
+>      InPlaceModule, //
+>  };
+> =20
+> @@ -60,8 +60,8 @@ struct Data<'bound> {
+> =20
+>  #[allow(clippy::type_complexity)]
+>  struct ParentData<'bound> {
+> -    _reg0: auxiliary::Registration<'bound, ForLt!(Data<'_>)>,
+> -    _reg1: auxiliary::Registration<'bound, ForLt!(Data<'_>)>,
+> +    _reg0: auxiliary::Registration<'bound, CovariantForLt!(Data<'_>)>,
+> +    _reg1: auxiliary::Registration<'bound, CovariantForLt!(Data<'_>)>,
+>  }
+> =20
+>  kernel::pci_device_table!(
+> @@ -115,7 +115,7 @@ fn probe<'bound>(
+> =20
+>  impl ParentDriver {
+>      fn connect(adev: &auxiliary::Device<Bound>) -> Result {
+> -        let data =3D adev.registration_data::<ForLt!(Data<'_>)>()?;
+> +        let data =3D adev.registration_data::<CovariantForLt!(Data<'_>)>=
+()?;
+>          let pdev =3D data.parent;
+> =20
+>          dev_info!(
+
 
