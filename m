@@ -1,184 +1,198 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010056.outbound.protection.outlook.com [52.101.46.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E3734D90C;
-	Wed,  3 Jun 2026 10:30:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780482642; cv=fail; b=MBdcqwx2cYJQk4frtqZPrQyofEEI0fIEf1lpOJgDhxFYt2iHIo67TBw5BnoKRgzNCLYhz4zRAyQ1stGJyAxPQar27QaV0l2a9Fw5NnHXny2d7mvofyM1Ee0cCfhLJm//2mnTAn5eYFuJt/MPIJbkPVc/kFjvuZAyKNlubaAe4d0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780482642; c=relaxed/simple;
-	bh=oWmCeieLZ1bqnhcS5nB48xZR+gbfYi0RXS0krCz6uzg=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=eZZVeVx4T0ZB3K4x+kDwMEBZLbiGyAgbmWNXqpB7AX+/e8GzSVjWoKgDdPAYcyAN2rjj3vWCZkPIoT9I0BuNonZ7SSUZw48sptZF2qZNs0WUzj9UxyOb1QhqXD6dz4SKMyIfUonilQrPwLrTn5Ls6fKel/+dvrPhvzYL/gWbpRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ItbtXZup; arc=fail smtp.client-ip=52.101.46.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DAB377EB8;
+	Wed,  3 Jun 2026 10:41:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780483264; cv=none; b=sKMt4ZeazK3z/WGesX/ionNLzXq91OCPAhaVvcz1hGTVJQF4kfdfhuib7fFCmQhJ+V1/HCr5m8znGUEpAxYOeOJbfRPZ8hhN4lFaVbMSdHT74GNezatnxNkxYLXVYqYz+UeNLIyq7QbCnoLLM3Y0/Vl8lariOz5g1R73+jVahA0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780483264; c=relaxed/simple;
+	bh=o5elUqlDQE4cP8+aQEL2ZQbecnNDIgNQQkdSV6w6nKE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KBehgp6WDhEEV3nevzwLKxp5/86HF/zUaUGhH+6h2rhZGZ9XOHKhV895DWBLqUxtUCd9GahvC2ogqZW6nCOu23Ema4eHMvfBaBuuZbSQCc3JyEbRsnXg2BNE3Ivr///gXRsPoZj5UYI5jGSHKTY7h72Xl0EFp7k2LixwosclyP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+OYS/J/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ItbtXZup"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tlK25Oo9Lb6NmbQ0BtFeDtetA4X6x22m2C7Lj2tx9aahegbvRDJIVKwBqeHDCAaY+v6tmmPvqCCadg7ly21N0fsz/FVt1PWgXCkSpN69qXx95rrJ1LkKrP5Iw3RkW/eVXbFZbURV7cFI1tFpLjI4ipVdkBzvAv8HL/H0QBPnuLVQum7JJ3vv8+QvL3aA7XceiO/EGnA9MD8XVLj6xqlwLcOBPpBjanAzkiXkiFRpSsjk5U1qwr5ttupi/S3ztSSw0YfmDLSwnrapDmvub3UQh1cIezieWPx2+6XJRX+We2AbpDyCC8fbbKbr5xB8np+AD81wtfVULRCZFuLMfdF2mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oWmCeieLZ1bqnhcS5nB48xZR+gbfYi0RXS0krCz6uzg=;
- b=AfsbWqQ3h0SOWgLejBU6W/SoAQ2/5I5hU1KOX2Imu01aiD+f8Nxz4/SMXwpqHNMZMul2rj560hSDF9PBHhJed7ssiuPmdDdfKCdW8bOP6tm71FJfbf03Ku17WA7vHXcRaCMA1jCMerBfaxMs46setpoBAQZgFpA6FqZhs8vaphrn3bE9TW25cpFvgHVDMAG3gGupujt8twOxDyut3L5uHMEmDKuuTj0PcPv4c+DJi3U0lNFSkNZHXv7ozkiAoO08/wuniu9nc15oCW1pm/q/LaChjfC8OojsuhtpgpdChyus6yxAYkPBCw81djW6Cs5W1l6avc6DEw7f6AATRkR6zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oWmCeieLZ1bqnhcS5nB48xZR+gbfYi0RXS0krCz6uzg=;
- b=ItbtXZup3iyvFRkJsD/aZkijPE135SNHbBmyhVA+KeMiqjFf1yUuf8+KdS1+dO6G7tC4dNbdsoj6qayWk502JfMLuJ5HULoG7XeFDrrXRnOC6JpqEK7iarYQ6N2lghn2agnFobSc5YQRkl7EMrXVtuO0M7EhziULFgrwuouGHxNqhWGs0J6iq0aHpGAyhVPWne28eU1jKkE5Dig21cP3iySSdiSU2tl/Jj5/Hai6Zv9GL+NMGQ2TFS8DgfdkGTMUYc5YuFgZdXxRJdtnERYFZUJUu56VjQ4uOcD+5l7LkhlfK4ZVJyR8HV02lfOn0KsEnTO7hMPE2g6LzGrRH/r8HA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BN7PPFED9549B84.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6e7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Wed, 3 Jun 2026
- 10:30:37 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 10:30:37 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Jun 2026 19:30:33 +0900
-Message-Id: <DIZCF27FZH6I.17CWGBTLDNSMP@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
- <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, "Joel Fernandes" <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v3 0/5] gpu: drm: nova: enable calling into nova-core
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Content-Transfer-Encoding: quoted-printable
-References: <20260530-nova-exports-v3-0-1202aa339ef7@nvidia.com>
- <CANiq72kbzmLeFv58mkiKn+LvhCXmH5g7UsnTYTcVmJ6kyc+vLw@mail.gmail.com>
-In-Reply-To: <CANiq72kbzmLeFv58mkiKn+LvhCXmH5g7UsnTYTcVmJ6kyc+vLw@mail.gmail.com>
-X-ClientProxiedBy: TY4PR01CA0086.jpnprd01.prod.outlook.com
- (2603:1096:405:37d::14) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+OYS/J/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFBA1F00893;
+	Wed,  3 Jun 2026 10:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780483263;
+	bh=s7g+YgnU5mYzWEYBRa4inLWSLO7CCiRf4ByLQT5tfZY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=N+OYS/J/t3VZ0KZzQP4YJ7w3BTT26YT5oyBCWmyE1q1r+8mnOg1ld4b6EeAhfEAQ2
+	 pKOVfEsgvxq6CHYTuRNjM/aCl1g+UUDrtSfrbHLWWldfsVfpP6duEcC+68+gwaSCaI
+	 dIWSw1rsnuiHIxJLVJjZZPYrEJEQlJ6hvQvjWb36uGwEVc2z6RbBWI9jTXnMlfQ8bX
+	 l1JIrwYR1XFBQ7LMeGvPkMcPdaloKd08pATKIFQuRV/nEBIrZzv3zOwPBZ3jcWC0uT
+	 e6ICzSlXKZIzciWouRQiDt7rn0cphZRUkkZTLc/j87zkvtA5z9+YVAO8lHYB5DuyDv
+	 mtamVBdFFBoBg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 06/79] block: rust: add `Request` private data support
+In-Reply-To: <abfXIqlT9qRhXssT@google.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-6-de9a7af4b469@kernel.org>
+ <abfXIqlT9qRhXssT@google.com>
+Date: Wed, 03 Jun 2026 12:40:49 +0200
+Message-ID: <87se73kitq.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BN7PPFED9549B84:EE_
-X-MS-Office365-Filtering-Correlation-Id: 58cee80d-c05c-4ff0-f374-08dec15b26d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|10070799003|366016|1800799024|4143699003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	jTi/xNoQArdysXuFqIwabv7C5MgahKhvtcoDCqy05G+pUQmbG6Hc5g+IiIDltJujXOlUqveZyJ53/mDbjKHax1CsZaz8ry9jmIk2VSsCU9me4vcGMOrklzYkC4vwGN0j+ptDkK98aDLvwBRsg3NbmxZEX7cZrLTlEmb0OVrF4auA/jVJFp/TdikljF5Q9zp2s9ShVkWqyZ0abNWxVC9xtKyiWAtzRq8ZTt1BhOSm4r+gVd3co0YkO4Z0VX9FyFhDMsLZ8Of5+XASEi/wg1wIjLFF2Q8OGhwuphg8TjoNQvrFTm2gh/8GWZ4f64SHhjym7lwGkfDx/KamUHsztVHs6nlKSSKvn0njT3ecdlLqlEDEmHlKcwTxsxaxT5cfv+31FHH2u9vvSlkqfEKQCr3g15R1ly+LpnwDXUE+RY8h/L/UXPhpv0T9I1zVzcH/Zd0ZftTWl+5TIyJV/5oo40MYwq614cF/4KMfCm8LSVVkUUDhUFBEbQUH5FetvkieUcarTXcaFYzHz8A1MMLAUEq8Ax06owDBtlG5q6aGIZh70zkUKbKhG0zzcZdTLAV8vyBXO4o6cwanIHwH2zs1wt3xm9TtyIghTkeORImV1DqcFtfCwPfJ5EVif1jRSRYw/7L5f9R1jP2YQx+xhwfbf7HtbfKuj79h3p+cmfE/aMJ4s9o6X7oPVURZGY+1PwtkHvML
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(10070799003)(366016)(1800799024)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OG0rMGNyVjgxMm0zcTF0elRtQVdZS1BBZ3NwelFobUFwaWxRcm1pa3UrS1Fy?=
- =?utf-8?B?dzhTRUtOa3c0MGxDbkIrWG1iN3JVTnhkN1Y0bG03UytSUzJQUjlrSVJQSURH?=
- =?utf-8?B?azUxZWRFYXd4YVd0T2g5Q2dwcytNaXk1czgzZE53QmI4RDRLcTZpR3FTaG1S?=
- =?utf-8?B?M1ROa1IxV0gzZzZmZzFUWjJFOUl6UCtMNWtBdE8zY2h3U1V6b3RoWUZMc2pT?=
- =?utf-8?B?S1dickppa08zSmJKYjBvbHRsZi82blpvY2VGR1pDeEpacThaL1czUUxlQjFl?=
- =?utf-8?B?ckRQYUYvMlJoZnBOUENOR0JvVHhiM2JiZ00vSVZuSjJCWEN3UHNhUWN3ZGFH?=
- =?utf-8?B?ODRWVjF6SmV3Rk1Ld2RjUk9EQ0FOR0tUMHpQeVdWWGRVK0hyUUo5ZnowNmdV?=
- =?utf-8?B?SnZHWnB5WmNDQjhyd25VaU13ZGlodWVSVXppWHZLUUQyZnB2VUd0SUg2dXJP?=
- =?utf-8?B?L3M3d09ZMWZPVXlTdUc2STlpYmFaaDNDdlczUTZCK1Q5OEtSeGVSVldOYXhO?=
- =?utf-8?B?VUlHclpObk9nazNHZ0JhRldveXkrK01jcnhydGRjRFZZNUdsN0xCdzhRMFBL?=
- =?utf-8?B?TWJIeno1amJrL0xCb0tNTjJSVlp0U0t2ZVpPWE5CdGFnY0VZeXdNTG5KRC8y?=
- =?utf-8?B?SlVZcjNOMm5GbHhLZWtYRGVLcGVTbi94L1NKTHIrcGNCWnRDdE5uUTlaVnUr?=
- =?utf-8?B?QnRsR0ZUczBqTlBualdSRTNZVis1eExDQWV0ZTQzZXI2bnk4WGRRRlY1cG5o?=
- =?utf-8?B?OUthaDQ1NmFycmRGZ0RaUW80SnpwbmlIMjAvREh2dGpJa0Z3M3BEakI5bUMy?=
- =?utf-8?B?eHFCa1c5bjdNak5kVnViYUc3VkdsTVowQ1REN1lqUC9qbWFnTU01QnNKcmdO?=
- =?utf-8?B?VDdFT0tsWXVMbGZvNXBzdTVIS0p6T3hLMWd2UHVpZDliZllKSkRvZXBodDVi?=
- =?utf-8?B?NnB1ZFJFT1dUT0ZEMUhhOTBBSC9ucm52eG9ObjZKaVRDU0dwQy9HYmlFWk9k?=
- =?utf-8?B?WGlkTHFPQThCTlNkMUFWd1h6R1pkLzZsR21OemdPdVc3N0c0K2svWjJsRGZt?=
- =?utf-8?B?d2UybTdHOWlXTEdxaVFtV0FPWUd1Vll5QzMxKzVkUkREVVB1b25aU1pmUzM2?=
- =?utf-8?B?T3RtZ0FHZUVIdjYxTkloT1VVMlo4UXg2enZMWmlDUHoyZmt3am5KZHhrdG1k?=
- =?utf-8?B?b3Z5ZHdEUGVGREw5c1JoRzh0MHg5eGhmTFdQd2dOaEpKV09wek9ZSjFDcDVh?=
- =?utf-8?B?Q3pPOEJTWm15Wm5YelJqSDd4bTIxbVBBbkc3bkRpdG5PbzFHWm41NnJnVUJR?=
- =?utf-8?B?NkxjU2FNZi9QSEduK0VUTFFwVVZXclpHbk54MlFGaENlWm0rUnlvQm5xdkFz?=
- =?utf-8?B?eURzV2s3WnVrQmNtckJ3RUdpZEhKOGRhR3VFUzVUc09JdVNJa1plU1RXSWNT?=
- =?utf-8?B?Nm1IUDR3MkZnYlJvUTN3NE5OTmwzZmE3OHVrU29DK1BlQzhrTWtLRlVHUWhN?=
- =?utf-8?B?WVRiRXVLTXZTWmxNdGF2bkVOcXExS2xyUzBocGNWUXdSMVVEYU1IREovd2Jk?=
- =?utf-8?B?RnhVVnNNQnp2anlnNWtzRjJjeUgrSjFJUUZ0T09nV2NTZkppWC9YVWZnWmND?=
- =?utf-8?B?eVBsYlJCK2hDS2l5TDlVMVhoejF3TFRyclN6eHZtTWp5Zy9rUm9vVDRnS1ZP?=
- =?utf-8?B?KzF0OU5nTWJ5aklQQVBRdXNadTdRT093NGRwWEluYjZ0QmtrSkdMLzlaWkVa?=
- =?utf-8?B?ak9xVWRVakZIa2xCQ0xaT29ma3lZTy9JWG5VaVp6Y2NtWmNWTE45QlRYOUNZ?=
- =?utf-8?B?YzE0S2RXU0drWWlPZU1rQ21BOU9Sd0JBRmh6dmxxVXMwMFo2S05KWEJmaDJj?=
- =?utf-8?B?RWR2RTBlMC8xYS8wSEFVOThINVA3czZ6VzBJd09GQTBsZnFBMVBXYnIydnBQ?=
- =?utf-8?B?cndRWGw1MTdOb052b2NFaVdIb0ExZTVPcklxQVlRTEJybU9YNm5XTDRKVi9w?=
- =?utf-8?B?WHRyaVAyeXpPNnMyZG9tbjVxOU54ZjkwM21uSHRLTFJGTHpMY3c4dmlreGpw?=
- =?utf-8?B?S3dNT3B6WTFSMlNZR1JFNTdQSDFwSitrcUpGQVNvODV0MzFUSm9hTU1FTk9H?=
- =?utf-8?B?VDZoNTZwMEZqZEEwenhaODdjNkYveXEvRkk0RWR6bjBpL292YTcxQjJtMlhT?=
- =?utf-8?B?QWN0NGw5Q2dibWYvNEY5NGJqNFhMQk1Jc1hQREdjOFJJWG1GM3htb25Kd1Z1?=
- =?utf-8?B?MEdZRTIxNWRXRVJ2Ykxwd214cVM3ZE5oakg0R0pBYnRZa3hvQTBKOGtSVVZj?=
- =?utf-8?B?WkhvWjhjZEdSd291eE1FczlnUFFUUkdkQjdkMVFPUDdRVEMvODNoVFNZQ052?=
- =?utf-8?Q?JyBaQE1YMP3YyoJ20O/zL/bX6YcI/Rb+wa+T22CG1USEQ?=
-X-MS-Exchange-AntiSpam-MessageData-1: s7zYtBO9QETGkw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 58cee80d-c05c-4ff0-f374-08dec15b26d1
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 10:30:37.2955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ySMzdGlmtss2Cr5fLbPghuY16ziQCgE+JMK6ZLbOGYzPEzmSig+MycZtQSy3Ol5Fadg0HlPcYOG71uDxBZZ8eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFED9549B84
+Content-Type: text/plain
 
-> On Fri, May 29, 2026 at 5:28=E2=80=AFPM Alexandre Courbot <acourbot@nvidi=
-a.com> wrote:
->>
->> In the meantime, this series introduces a Nova-local workaround for
->> `nova-drm` to call into `nova-core`. It generates the `nova-core`
->> metadata that `nova-drm` can use to resolve references at build-time,
->> and also builds a list of exported symbols for symbol resolution when
->> modules are loaded.
+Alice Ryhl <aliceryhl@google.com> writes:
+
+> On Mon, Feb 16, 2026 at 12:34:53AM +0100, Andreas Hindborg wrote:
+>> C block device drivers can attach private data to a `struct request`. This
+>> data is stored next to the request structure and is part of the request
+>> allocation set up during driver initialization.
+>> 
+>> Expose this private request data area to Rust block device drivers.
+>> 
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-> The "local approach" is essentially what I suggested back then, so if
-> this works for you then I am happy -- with the understanding that we
-> will replace it with the global support soon (it is good to have a use
-> case in-tree :)
+> Overall looks ok. A few nits below:
+>
+>> ---
+>>  drivers/block/rnull/rnull.rs       |  5 +++++
+>>  rust/kernel/block/mq.rs            |  6 ++++++
+>>  rust/kernel/block/mq/operations.rs | 24 +++++++++++++++++++++++-
+>>  rust/kernel/block/mq/request.rs    | 24 +++++++++++++++++++-----
+>>  rust/kernel/block/mq/tag_set.rs    |  2 +-
+>>  5 files changed, 54 insertions(+), 7 deletions(-)
+>> 
+>> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+>> index 6a7f660d31998..065639fc4f941 100644
+>> --- a/drivers/block/rnull/rnull.rs
+>> +++ b/drivers/block/rnull/rnull.rs
+>> @@ -134,6 +134,11 @@ struct QueueData {
+>>  #[vtable]
+>>  impl Operations for NullBlkDevice {
+>>      type QueueData = KBox<QueueData>;
+>> +    type RequestData = ();
+>> +
+>> +    fn new_request_data() -> impl PinInit<Self::RequestData> {
+>> +        pin_init::zeroed::<Self::RequestData>()
+>
+> Simpler to just return Ok(()) here.
 
-Yup, I just want to have something that allows us to call from
-`nova-drm` to `nova-core` as it becomes increasingly pressing for us to
-be able to do so, but will be very happy to replace this with the global
-support as soon as it is available.
-
-This patchset won't make it for the 7.2 merge window, so if support in
-the R4L build system comes during the next cycle we may even be able to
-skip this altogether.
+Not sure why I picked zeroed. Will change.
 
 >
-> I see you play some tricks to get the ordering right, including a
-> sub-make with a double build of the `.rmeta` in "private", which in
-> turn forces you also to do the `.o`, right?
+>> +    }
+>>  
+>>      #[inline(always)]
+>>      fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool) -> Result {
+>> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+>> index b8ecd69abe980..a285b753ada88 100644
+>> --- a/rust/kernel/block/mq.rs
+>> +++ b/rust/kernel/block/mq.rs
+>> @@ -69,8 +69,14 @@
+>>  //!
+>>  //! #[vtable]
+>>  //! impl Operations for MyBlkDevice {
+>> +//!     type RequestData = ();
+>>  //!     type QueueData = ();
+>>  //!
+>> +//!     fn new_request_data(
+>> +//!     ) -> impl PinInit<()> {
+>> +//!         pin_init::zeroed::<()>()
 >
-> What I originally had in mind was simply to do everything from a
-> single parent `Makefile` instead, precisely to avoid complexity (after
-> all, it is the local approach, so you don't need to force yourself to
-> handle that). That should remove all those shenanigans, and it is way
-> easier to get right. Did you consider it?
+> Simpler to just return Ok(()) here.
 
-I haven't thought about that, no - in that case the parent `Makefile`
-would need to be the one in `drivers`? Or am I missing something?
+Will change.
 
 >
-> By the way, I think a `.gitignore` entry for the generated header is miss=
-ing.
+>> +//!     }
+>> +//!
+>>  //!     fn queue_rq(_queue_data: (), rq: Owned<Request<Self>>, _is_last: bool) -> Result {
+>>  //!         rq.end_ok();
+>>  //!         Ok(())
+>> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
+>> index 3dea79d647ff7..cd37b939bbf30 100644
+>> --- a/rust/kernel/block/mq/operations.rs
+>> +++ b/rust/kernel/block/mq/operations.rs
+>> @@ -13,6 +13,7 @@
+>>      types::{ForeignOwnable, Owned},
+>>  };
+>>  use core::{marker::PhantomData, ptr::NonNull};
+>> +use pin_init::PinInit;
+>>  
+>>  type ForeignBorrowed<'a, T> = <T as ForeignOwnable>::Borrowed<'a>;
+>>  
+>> @@ -28,10 +29,24 @@
+>>  /// [module level documentation]: kernel::block::mq
+>>  #[macros::vtable]
+>>  pub trait Operations: Sized {
+>> +    /// Data associated with a request. This data is located next to the request
+>> +    /// structure.
+>> +    ///
+>> +    /// To be able to handle accessing this data from interrupt context, this
+>> +    /// data must be `Sync`.
+>> +    ///
+>> +    /// The `RequestData` object is initialized when the requests are allocated
+>> +    /// during queue initialization, and it is are dropped when the requests are
+>> +    /// dropped during queue teardown.
+>> +    type RequestData: Sized + Sync;
+>
+> It was surprising to me that `request` is reused over many requests. I
+> think it could be a bit more obvious in the wording.
 
-Thanks, I'll add that.
+I will add a bit of info in the `Request` type docs.
+
+>
+>>      /// Data associated with the `struct request_queue` that is allocated for
+>>      /// the `GenDisk` associated with this `Operations` implementation.
+>>      type QueueData: ForeignOwnable;
+>>  
+>> +    /// Called by the kernel to get an initializer for a `Pin<&mut RequestData>`.
+>> +    fn new_request_data() -> impl PinInit<Self::RequestData>;
+>> +
+>>      /// Called by the kernel to queue a request with the driver. If `is_last` is
+>>      /// `false`, the driver is allowed to defer committing the request.
+>>      fn queue_rq(
+>> @@ -236,6 +251,13 @@ impl<T: Operations> OperationsVTable<T> {
+>>              // it is valid for writes.
+>>              unsafe { RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(Refcount::new(0)) };
+>>  
+>> +            let initializer = T::new_request_data();
+>> +
+>> +            // SAFETY: `pdu` is a valid pointer as established above. We do not
+>> +            // touch `pdu` if `__pinned_init` returns an error. We promise ot to
+>
+> typo
+>
+>
+>> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
+>> index c3cf56d52beec..46481754b1335 100644
+>> --- a/rust/kernel/block/mq/tag_set.rs
+>> +++ b/rust/kernel/block/mq/tag_set.rs
+>> @@ -41,7 +41,7 @@ pub fn new(
+>>          // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
+>>          // all are allowed to be 0.
+>>          let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
+>> -        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
+>> +        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper<T>>()
+>
+> size_of in prelude.
+
+Fixed.
+
+Thanks,
+Andreas
+
