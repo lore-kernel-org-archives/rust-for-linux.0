@@ -1,198 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013032.outbound.protection.outlook.com [40.93.201.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DAB377EB8;
-	Wed,  3 Jun 2026 10:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780483264; cv=none; b=sKMt4ZeazK3z/WGesX/ionNLzXq91OCPAhaVvcz1hGTVJQF4kfdfhuib7fFCmQhJ+V1/HCr5m8znGUEpAxYOeOJbfRPZ8hhN4lFaVbMSdHT74GNezatnxNkxYLXVYqYz+UeNLIyq7QbCnoLLM3Y0/Vl8lariOz5g1R73+jVahA0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780483264; c=relaxed/simple;
-	bh=o5elUqlDQE4cP8+aQEL2ZQbecnNDIgNQQkdSV6w6nKE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KBehgp6WDhEEV3nevzwLKxp5/86HF/zUaUGhH+6h2rhZGZ9XOHKhV895DWBLqUxtUCd9GahvC2ogqZW6nCOu23Ema4eHMvfBaBuuZbSQCc3JyEbRsnXg2BNE3Ivr///gXRsPoZj5UYI5jGSHKTY7h72Xl0EFp7k2LixwosclyP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+OYS/J/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04EC3FF893;
+	Wed,  3 Jun 2026 10:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780483630; cv=fail; b=fau4H60qdLY+VgMsIOae695eWbRHjuHfKHSf5N2TvgfgA55DKPW7f2BUbFIe6WALiZENESRaZ+p+Ij6G66D5OfGdAjAJ16X0yKOmphViq8I43TCSh0II7DKHloDJoKnydfCSzBE3dAOWCbAdLNTngVU2GTZm6GL3UMg9yGxrgj4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780483630; c=relaxed/simple;
+	bh=aBTKjYqbJP0PajOB9pcUOoXgZYZ/LXJNE4GLJeNrPVg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=cyfNohoYJv3won32BaBMHbnmQhDnzkQs6zPKm/qgxSKExFmMXad05w9wGFZBP3ek62SHLQGMfdo6ndIU5jRiF0MBKUCX9lzXTx07GccAFKoNTGZwlCI1CwCae9eaORuP96AWTF3HCipGXfl35u5zH9YIyD2i/CEq7aputfT6mVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ul6CSzGL; arc=fail smtp.client-ip=40.93.201.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+OYS/J/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFBA1F00893;
-	Wed,  3 Jun 2026 10:40:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780483263;
-	bh=s7g+YgnU5mYzWEYBRa4inLWSLO7CCiRf4ByLQT5tfZY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=N+OYS/J/t3VZ0KZzQP4YJ7w3BTT26YT5oyBCWmyE1q1r+8mnOg1ld4b6EeAhfEAQ2
-	 pKOVfEsgvxq6CHYTuRNjM/aCl1g+UUDrtSfrbHLWWldfsVfpP6duEcC+68+gwaSCaI
-	 dIWSw1rsnuiHIxJLVJjZZPYrEJEQlJ6hvQvjWb36uGwEVc2z6RbBWI9jTXnMlfQ8bX
-	 l1JIrwYR1XFBQ7LMeGvPkMcPdaloKd08pATKIFQuRV/nEBIrZzv3zOwPBZ3jcWC0uT
-	 e6ICzSlXKZIzciWouRQiDt7rn0cphZRUkkZTLc/j87zkvtA5z9+YVAO8lHYB5DuyDv
-	 mtamVBdFFBoBg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
- Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
- <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
- Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
- <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 06/79] block: rust: add `Request` private data support
-In-Reply-To: <abfXIqlT9qRhXssT@google.com>
-References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
- <20260216-rnull-v6-19-rc5-send-v1-6-de9a7af4b469@kernel.org>
- <abfXIqlT9qRhXssT@google.com>
-Date: Wed, 03 Jun 2026 12:40:49 +0200
-Message-ID: <87se73kitq.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ul6CSzGL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Zb+i+gqN7q/fbROhBLt2Xb1Dja0m7xdY7EozeGrbFlD49opNGWK4qxTuAlUEfg1uq5mF19JDm+wL/maYriXe2bR/0PMRVkWkVNeLHzojAUW2JzYOw6ivAUSLzU8q4ZxEaWFpyIoX/VPPshAW2ruYy3HKqptw2gwHCwM0d31otX3CmkfuS6UdTpS3yjVMswG3VmAIUB47Dyr46qaqO9bWeEKjb6iJj+u4Tq1cNw35ZPu5zzSmxd+8TUStDRIhGl1fzMB9ELHYymZKPckguwoDDjdbRaDs3AZ3hxXdIePYcnTaF2GvQqGS6Hm7hpY1IwTxumCB9e+YlIP3xcnQmBlfog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aBTKjYqbJP0PajOB9pcUOoXgZYZ/LXJNE4GLJeNrPVg=;
+ b=Wv89n7tNHQGGCNuuMyHFYyShTM42ZAaEFte/aCzU89inmqg33p4Gb4Vz0MlK1wZe36eqE46zGwZcJ9YedUyuqJVUoLTgmXfdeZPsv2L3JLck7o4CMlEgFdyESKTpxKFy7ivIVzcTDXBnofbJSPEfyF2n3NboGUE1E5ZCQe/4BUtYDC3dXEo8eH2JhXMwXUMDcDgmVfhXo5U5O06LLv0JNsho8D29GqXGZTub6NqTXLAkfq6uvhUiLBZmwRdWLQy+XKwIhxhXppiJ2aoNKQ22c4s/bGBOAIueZchlhJmplGAHHUqqkd2Vqp2B4nvJ1qzENtBK5yU7nErlgHRHPKqnow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aBTKjYqbJP0PajOB9pcUOoXgZYZ/LXJNE4GLJeNrPVg=;
+ b=Ul6CSzGLyT9z+lSn7OL8N2SWFJ5/j3jif156hurnWsquDEjMr8Hs/XhkQY2JJlVjLbysNzjH2juUPjLXSwI6yypZfKLEM1oxx0Ulu1gI6FU0pjGK9+yx8D0we6IA1Q90DQ75inuroeIZ8N/zwuBI8PU+RLcrrviZ0M6O+nq+WAQ0XIRil7LVK7j0ijPi5V7yRWYinaqrKeF0f6SrkGVL1ykYLGJLJfSMvf4P5B4+i9/QrvbR3rc580LQ7qlBmKN9ihZC1K019awtKfNjokqcjmp7iVhAuP0gU34kWUnb44/aQ/QDcYGB9wLtgfZpkc7ocEkwHJVuxfIrDqcap5mTLA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SA1PR12MB8722.namprd12.prod.outlook.com (2603:10b6:806:373::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
+ 10:47:05 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
+ 10:47:05 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 03 Jun 2026 19:47:02 +0900
+Message-Id: <DIZCROA18EVK.1WTOC61CIP7Y2@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] gpu: nova-core: move lifetime to `Bar0`
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@kernel.org>
+References: <20260602170416.2268531-1-gary@kernel.org>
+In-Reply-To: <20260602170416.2268531-1-gary@kernel.org>
+X-ClientProxiedBy: TY6P286CA0026.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:3b9::18) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB8722:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3041399-3208-4fae-95c4-08dec15d7413
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|18002099003|22082099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	L6bRWGhOjr4ho3npkik3Yt8ciGc1UPGQsUkXCH6SG7XxV8QQSK8n4R6bP79DfCktuuShdcL3iH1knNXy1raqajp7vbPaPIBW/QU/7TOX+Q3j/SvfzKyA2BmWKTP5wkbhNyF0xnhfdlxk8ZU8wE/9CizOapInT2ouH88zpBLpJW7PUfGxY7PIuc9j0n63m7m2QXzKd+bDZaKA39btLdUK1YB79V9KCtsQNvjjpaN28ZW6N2wvkfUlTJJIFeXYScY0OKqYHVBrBt7upODev0y9cbMQXNTwDoEyqxy1CHxlWxV97y7xviEI2fbwCY87fRHbV2hDTK7Q1MmRImeP6CWBYBIkyaGq5Cz15z/KrUiLOCu7rdf1eFsgIfEEEPVPoqvHCYaNBPauXBJYX7kWvrVnCNNhAUz97L9hYMsGpOzffhveXZVEXkgNYCu8fXVi0b2ek+MG/BIABon/1yWIOBEsbtuIAtSRMSjbwvvdt9hnk+3z3q51CjcBkwzgkLCxEd2XgxKhficruUA1uYDv1CHLS62zr+jLwyZoekWlT2OI7s3yHXBKrdOA/SvrT19qaDeb8hu5bDIes2Y9aOGtQzAQdcw1pS+v5pLrzd3G2huVtg2JWX++FVQpOo1pw93//4XKmzrp4bE7S9H3mTqWtCgltHEyFF4wlFpJQrh/Djjd0DRrWBa4SJsDg7IJQrLq3Ado
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aC9uZ3NwTjllSmxKdC8rNURMRzZIZzBLaDBCNFA0ZldxZXVxSG8xOXVsU0Ri?=
+ =?utf-8?B?OFVEYjk1VFdpK0t5OUtQQXFNOVIwQUpFei94MGRMVDIrWUl3cWJiVUR6MHFW?=
+ =?utf-8?B?eHhRV0JoNTdvUEJPWWdUS0xuVFk0d00rMVZ0MTQ2cnNCRnBPTmJmZWozQ3Bu?=
+ =?utf-8?B?VlZRK1NxdlZXU0xzMktWWTlJcllGN0NoZy9GSTE4K2Z5RGhTSG9BaDBreUNp?=
+ =?utf-8?B?T2t3UnU4Tkg3WllnRi9YWm5QbHNqcXMxaDdZdnhQYVZINDhGbVhIN3JWZDB1?=
+ =?utf-8?B?TnNBWTBZKzFKb2pvbHNlUVRlUWVpVENsM3lTWTZFMzdoN3dpM1ZONHlRcmln?=
+ =?utf-8?B?ZmN3QWhxM0VteEg0dkxUNDhOOGJGN0hhT1ltQkxhc2h2ZG1tckVhUGtJRURF?=
+ =?utf-8?B?OVhsV0NJZnFTSTY2eEYxQ0c1V2Z5U05yWGluT3BLK214TmRyTllNaGFUWExF?=
+ =?utf-8?B?U0ZGTDhXNEgyamx3ZUd6L0M2SzQ2YXJLendKdXhGTTFpS3lxL0tsOXFzVzRi?=
+ =?utf-8?B?WFA2WkZqdmM3aVEzYWNOd01xK28vRE5yMWw2c3o5UGFEd0JiRWIxc2s5Zmlv?=
+ =?utf-8?B?RHJOR2xPQ0ZvRHNLOUpjYnhOWmN5KzFya3d4eFI2UFRESEtmMmI0TGkzM1Bl?=
+ =?utf-8?B?alc0VlhBc2daMmxaNFpZZkNyV09GWmt2VHRIdjlUV2R5UStEcmdIQTh0bUhs?=
+ =?utf-8?B?RE1Cdy8zYnFtaHJhQ3VpMU9hcXo0YmxXUWNUOExPeXZIWWxRWU9udm1yTDQz?=
+ =?utf-8?B?clBMWU8ybzBpcjlZRFNyOXBhWnNnY1diS0gyZmhhWDZkTnVVclVxelc0cmc5?=
+ =?utf-8?B?OU82aGo2dCt2akx6VTN4M25LdUdRSEFIOU1rT3pNeVB4dHRPQ0htbG9abnZF?=
+ =?utf-8?B?U3ZkTkJvcnd2ZmhVVGJLQnVZSlN2emd0VFVkTmN2cEc1eXJFaEFzMlJ0Qkow?=
+ =?utf-8?B?MzNPVzJ1bWRsdjdndnV5Zk8wWmpWVHRCNDFraHBhTmF1TXZEWGVySE1NaUpT?=
+ =?utf-8?B?c0hJQllGZ3FzejVBVnJLbmdJckxRL0tOdy9JR0VlcDdkZGZMQWE0clR4U3g5?=
+ =?utf-8?B?YXVJWUJGWjZ4M3JLSkRFUm82RmlUNzZQdzVkOEpKVmhackFqekQxeG9ncFJu?=
+ =?utf-8?B?bEtYTHdtcS9sSHg4T0JSVzlRUUo4MWNYVHljL2x3Z0pIdEFzcFpHREV4RktO?=
+ =?utf-8?B?bFcrSEx4QzR3WkVqNHJRSjFaRnZSQ2RFbFhrNlNydGsxalp0S2l0ek54ZzlV?=
+ =?utf-8?B?cHVNVStreWZRc0NZSWlaV2N2Nlo4NWdYejhYN1I1ZEZPd010MW4rUFh2Q3Nu?=
+ =?utf-8?B?NWJTdWwrcE5Na0htRUxXeEpSNWxLQUVuRUNEbXdNSmp5aDIvdUc2UzBYMmlF?=
+ =?utf-8?B?VlluNEd0anNHZnNxa2NQSEdyeUU5Z09QNGZuZGFNVnpzdVFPcE9tQzNjMHdS?=
+ =?utf-8?B?di9NbVhCdDg1Z2dQMHJ0cWd0dmwyRzluM3BwQS9lTmtZNThDQzd0cnJUQ1BF?=
+ =?utf-8?B?eHVkWUZSS2hCZ3l4L2pENEFVTkVZL1U1UTRWUWRvdzRKUG5pZkhqQXdDaDNQ?=
+ =?utf-8?B?VVpZd2xrSUZxRVp4Y2NBWmlpa2prN1hwSERpYUtBSTRPVGIzaXNmQ2RpRWpt?=
+ =?utf-8?B?OHdHc1JVVWdoREZBNFNJU2dQRDk3Qy92ZmFORUJSUHF5WDZzcVE0R1RrOFE2?=
+ =?utf-8?B?dDR2aEE0MGEyd2UxMXpqbkJxTDVlYWJMR2grb0JTRTJNbmtJS2VYL0JDTUdj?=
+ =?utf-8?B?cjRTWkxqWmVOa29HS0xvUmlVRTFrWmphL2wrZmRucEIxWkxLZTZaVlBuZzA0?=
+ =?utf-8?B?Y0M1MkpFUm9JUEVLQVVIVTBZWVIwL2tvbWo4VXpGVkRYUVBjemRCeVZROHVu?=
+ =?utf-8?B?aUphYThLRmhqNDB0M3c4ZVlrbUU3RmoybktiYkI4aEFwWUpEZUUvOWlXNk1O?=
+ =?utf-8?B?elA1VHFBYThhT29yUlVzTzhRNzNPUkd4NXkzM0J1UU51Y3dYbG9DM0diNFlU?=
+ =?utf-8?B?SnowMG50ZjAwZFRFOUp1bEE1bVVhbGpLL085eGJZNnVySlpsL3JicHBybWFN?=
+ =?utf-8?B?MENObW5uclNmUnpuSkFlT3VsZEVsZlJmdWhiVlFlY0ZzVUJYM0FMd1dmYmFK?=
+ =?utf-8?B?cVBmcEFLQ2dva0JJclBQU3RZVG5hN2Z1RUY1emhrcW5ITldMcUhYOXV4Y2VO?=
+ =?utf-8?B?NnY4cGhxTzE5NWVndEtaOXY3MEptOXFPSG9Jc0ZVVG9iUVdFV1l2MWsyVVBI?=
+ =?utf-8?B?OTJpUGxnZm5zUm5FQStJV0E2WXZ5TXBmTitoQXFsSVVRMmRJMUI4bGVSYWlB?=
+ =?utf-8?B?ck9RY2lTSEpoMWxvY2MrWW5hSjFCWEFVajZneGdxVEZ4UGlKQ2RSK2hJME5F?=
+ =?utf-8?Q?f7jgQgiuwC7WX8Sa45TF/Hcw3R2rlJXFI2RCML1b1V/Ou?=
+X-MS-Exchange-AntiSpam-MessageData-1: 19xHoKIQFaqg3Q==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3041399-3208-4fae-95c4-08dec15d7413
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 10:47:05.8277
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YIyF+ECx7TSTZ3uhfYqehtS+yxcF2bPOG5ihxhmPwnMv06zdVzO1m7jq0AEXaF8rpVSaJyPs4ar4GAArn5FwMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8722
 
-Alice Ryhl <aliceryhl@google.com> writes:
+On Wed Jun 3, 2026 at 2:04 AM JST, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
+>
+> Currently Nova code uses `&'a Bar0` a lot. This is `&'a Mmio`, where `Mmi=
+o`
+> represents an owned MMIO region; this type only exists as a target for
+> `Deref` so `Bar` and `IoMem` can share code and should be avoided to be
+> named directly. The upcoming I/O projection series would make `Io` trait
+> much simpler to implement, and thuis the owned MMIO type would be removed
+> in favour of direct `Io` implementation on `Bar` and `IoMem`.
+>
+> Add lifetime parameter to `Bar0<'a>` and change it to be alias of `&'a
+> pci::Bar<'a, ..>`. This also prepares Nova core so that when I/O projecti=
+on
+> series land, this could be changed to using a MMIO view type directly whi=
+ch
+> avoids double indirection.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-> On Mon, Feb 16, 2026 at 12:34:53AM +0100, Andreas Hindborg wrote:
->> C block device drivers can attach private data to a `struct request`. This
->> data is stored next to the request structure and is part of the request
->> allocation set up during driver initialization.
->> 
->> Expose this private request data area to Rust block device drivers.
->> 
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> Overall looks ok. A few nits below:
->
->> ---
->>  drivers/block/rnull/rnull.rs       |  5 +++++
->>  rust/kernel/block/mq.rs            |  6 ++++++
->>  rust/kernel/block/mq/operations.rs | 24 +++++++++++++++++++++++-
->>  rust/kernel/block/mq/request.rs    | 24 +++++++++++++++++++-----
->>  rust/kernel/block/mq/tag_set.rs    |  2 +-
->>  5 files changed, 54 insertions(+), 7 deletions(-)
->> 
->> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
->> index 6a7f660d31998..065639fc4f941 100644
->> --- a/drivers/block/rnull/rnull.rs
->> +++ b/drivers/block/rnull/rnull.rs
->> @@ -134,6 +134,11 @@ struct QueueData {
->>  #[vtable]
->>  impl Operations for NullBlkDevice {
->>      type QueueData = KBox<QueueData>;
->> +    type RequestData = ();
->> +
->> +    fn new_request_data() -> impl PinInit<Self::RequestData> {
->> +        pin_init::zeroed::<Self::RequestData>()
->
-> Simpler to just return Ok(()) here.
-
-Not sure why I picked zeroed. Will change.
-
->
->> +    }
->>  
->>      #[inline(always)]
->>      fn queue_rq(queue_data: &QueueData, rq: Owned<mq::Request<Self>>, _is_last: bool) -> Result {
->> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
->> index b8ecd69abe980..a285b753ada88 100644
->> --- a/rust/kernel/block/mq.rs
->> +++ b/rust/kernel/block/mq.rs
->> @@ -69,8 +69,14 @@
->>  //!
->>  //! #[vtable]
->>  //! impl Operations for MyBlkDevice {
->> +//!     type RequestData = ();
->>  //!     type QueueData = ();
->>  //!
->> +//!     fn new_request_data(
->> +//!     ) -> impl PinInit<()> {
->> +//!         pin_init::zeroed::<()>()
->
-> Simpler to just return Ok(()) here.
-
-Will change.
-
->
->> +//!     }
->> +//!
->>  //!     fn queue_rq(_queue_data: (), rq: Owned<Request<Self>>, _is_last: bool) -> Result {
->>  //!         rq.end_ok();
->>  //!         Ok(())
->> diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
->> index 3dea79d647ff7..cd37b939bbf30 100644
->> --- a/rust/kernel/block/mq/operations.rs
->> +++ b/rust/kernel/block/mq/operations.rs
->> @@ -13,6 +13,7 @@
->>      types::{ForeignOwnable, Owned},
->>  };
->>  use core::{marker::PhantomData, ptr::NonNull};
->> +use pin_init::PinInit;
->>  
->>  type ForeignBorrowed<'a, T> = <T as ForeignOwnable>::Borrowed<'a>;
->>  
->> @@ -28,10 +29,24 @@
->>  /// [module level documentation]: kernel::block::mq
->>  #[macros::vtable]
->>  pub trait Operations: Sized {
->> +    /// Data associated with a request. This data is located next to the request
->> +    /// structure.
->> +    ///
->> +    /// To be able to handle accessing this data from interrupt context, this
->> +    /// data must be `Sync`.
->> +    ///
->> +    /// The `RequestData` object is initialized when the requests are allocated
->> +    /// during queue initialization, and it is are dropped when the requests are
->> +    /// dropped during queue teardown.
->> +    type RequestData: Sized + Sync;
->
-> It was surprising to me that `request` is reused over many requests. I
-> think it could be a bit more obvious in the wording.
-
-I will add a bit of info in the `Request` type docs.
-
->
->>      /// Data associated with the `struct request_queue` that is allocated for
->>      /// the `GenDisk` associated with this `Operations` implementation.
->>      type QueueData: ForeignOwnable;
->>  
->> +    /// Called by the kernel to get an initializer for a `Pin<&mut RequestData>`.
->> +    fn new_request_data() -> impl PinInit<Self::RequestData>;
->> +
->>      /// Called by the kernel to queue a request with the driver. If `is_last` is
->>      /// `false`, the driver is allowed to defer committing the request.
->>      fn queue_rq(
->> @@ -236,6 +251,13 @@ impl<T: Operations> OperationsVTable<T> {
->>              // it is valid for writes.
->>              unsafe { RequestDataWrapper::refcount_ptr(pdu.as_ptr()).write(Refcount::new(0)) };
->>  
->> +            let initializer = T::new_request_data();
->> +
->> +            // SAFETY: `pdu` is a valid pointer as established above. We do not
->> +            // touch `pdu` if `__pinned_init` returns an error. We promise ot to
->
-> typo
->
->
->> diff --git a/rust/kernel/block/mq/tag_set.rs b/rust/kernel/block/mq/tag_set.rs
->> index c3cf56d52beec..46481754b1335 100644
->> --- a/rust/kernel/block/mq/tag_set.rs
->> +++ b/rust/kernel/block/mq/tag_set.rs
->> @@ -41,7 +41,7 @@ pub fn new(
->>          // SAFETY: `blk_mq_tag_set` only contains integers and pointers, which
->>          // all are allowed to be 0.
->>          let tag_set: bindings::blk_mq_tag_set = unsafe { core::mem::zeroed() };
->> -        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper>()
->> +        let tag_set: Result<_> = core::mem::size_of::<RequestDataWrapper<T>>()
->
-> size_of in prelude.
-
-Fixed.
-
-Thanks,
-Andreas
-
+Acked-by: Alexandre Courbot <acourbot@nvidia.com>
