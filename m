@@ -1,162 +1,88 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011025.outbound.protection.outlook.com [52.101.62.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B26391822;
-	Wed,  3 Jun 2026 01:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.25
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780451931; cv=fail; b=cA6EyI2TQDFSkM/iMTTsfGebeU/03m+u0Ho2CYmK/QQR+hmUTQSoHyZ1ed19mgyp/AGd/PpMr7jWFX/jOh2fjTCIlCcsQkxERSL/LElt0BRDzc6mItcTcmfn/jfdQTPcp+c54qU84nViHLKIsahx7gYY5nNKSv86iIJ7b2qo1Dk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780451931; c=relaxed/simple;
-	bh=I1+7SU2R9gsTVSNpMeZcVJt++g0cscRS4TXBZclkYi0=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=RG5bsm5phhJvNkNLklgkpHMGG1SmvzqhT7klTjtrSN3DJLVUuipdndt8LmuXH3jXEGvJu07mwwIzIAZxEn3Aoz0jd52+nFZMdAGrD9NrP3JdO6BMtrQKMYy+5VMNmgGzwPMqQEEtJTCm+iIKtpVX9l/sqA3S3x11J7s220RxQtE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PNB6dODt; arc=fail smtp.client-ip=52.101.62.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DABC3FE654
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jun 2026 07:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780471545; cv=none; b=n+G16ReEMF5oU8VbDiZH8DK0fiMKP0eJFKywPOEAlIDDRgyszIURvL8f+vJ+sCXlQNaKjLcCDf6VOCOlxK3OxXG00jnRX2LjCe+AXBrpBEJI2XRTxFeUUxER+wCuWLHMwJhYxHL8FKOuisMUFfqUXVHc3JMCslaqOUrR9NEVI+Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780471545; c=relaxed/simple;
+	bh=Mlwtbz+gVN22gH4dM+AnS8oUUbPu0tBkZ2ExDcjDpNk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KHHzhKVZk91sf9UE2HQpKgVD9G9Lq//pyTEc4yakQkZdBij1f/fcUgPdImTKS86XgyU8fdZaCO1ZXX8Ht8XlgKWkhAo103DR0Cgn9gd2hc/cCxIWTSVoqe64A9USnPPgdbIIKZAZN2eOK07S9asn3g/1yLHbo8hjKDLVDOf44tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NjOqUT2X; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PNB6dODt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HEpuwvsPvywf7HwldGWz1UlxqJc3HnX8qFaNM/54LVGfKGcJFQ1Mj8loljo6FP7pOoqHEQGPmqFJ48WcluW6mel0d6XgxMreKSvUgPBgeEFT9RgCIkU02tWiWtPGI+nKphP2g2r4uixiYPtCT6OObAXg6y6Xvz2lvKywA32lXinX79JgOxHUynVprkdjUC1emjxwIglIz65NHCXTLMi/LFKdQgc5inl5yZuesFtuWH0gIKHDU4F5xPfw/IEL1aDQ2dNvjzKvRsUO5i4RbWxCaZ3typJ9u+eZBPE3O2FzdkljWuW2jzLpbyusbguIMavSiAb0EgxNTBqNUQk652OCLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I1+7SU2R9gsTVSNpMeZcVJt++g0cscRS4TXBZclkYi0=;
- b=mKB0g5U43t8akvYQN70q43biIlNOufZORs3mTBbttq0olETyTGCf93CvqUMwkdXO1tybacMJtpojlJo0ZDMEYUQ8JFD+JRYRW/EPpLY2TmD+DBK+0p1b8tdH3A+GNX2iNawTOUkhw+F+RUyty8x1Sm10sjqEHhYskyy0dw2/x75B3dzO246ysXeHQUXslcbJ8ayBIVKcZBZfu3ePtoP2VqrjtIV8XCrnzXjeDK61+VRtaHVFy+yQMxTQJhqYnVtliBGZ2DaJGIkDmIdVsBdgFbOFlqSm+13C3GxibXrApMxpmOmT2aarFM3dtpJ3ill8ZtkpFZPhowbeElWyVPbNGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=I1+7SU2R9gsTVSNpMeZcVJt++g0cscRS4TXBZclkYi0=;
- b=PNB6dODt8EsIpAdNSjtilkIicI1rRJoCVoUqrgAQ2u3FhFLJ6dA0yYJQutLz84J+8WqKmAfSqwUELF/9OMdKb1VLWUN6jjV4Mg6+xy+IML60VHx9xhBfLXwEJ8BhtoxtMOUtOtucnqFVUYbR2z+gktbvb6Fhbof7BWl0jpsA179DhjgPpAyZWODVTY4mZi6EoqTwyslqPSqM3UvBZUYOFTNcWqwuDXsO/rgsE//udjCHF7XyarlCKJ3M61ocExWaBOn1hLY5+6rQYsRsRRo9vpR88oriqhZSXVm4kz3GxxIhnzHtv+/ALeUODKQnjo3Kc+6SescazESdXu8BRuDNXw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN1PR12MB2368.namprd12.prod.outlook.com (2603:10b6:802:32::23)
- by LV3PR12MB9354.namprd12.prod.outlook.com (2603:10b6:408:211::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.17; Wed, 3 Jun 2026
- 01:58:42 +0000
-Received: from SN1PR12MB2368.namprd12.prod.outlook.com
- ([fe80::281e:52ee:b18e:ad42]) by SN1PR12MB2368.namprd12.prod.outlook.com
- ([fe80::281e:52ee:b18e:ad42%7]) with mapi id 15.21.0071.015; Wed, 3 Jun 2026
- 01:58:42 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Jun 2026 10:58:29 +0900
-Message-Id: <DIZ1IZJWNI8L.176YPYSVFLUKH@nvidia.com>
-Cc: <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH] gpu: nova-core: move lifetime to `Bar0`
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Gary Guo" <gary@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260602170416.2268531-1-gary@kernel.org>
-In-Reply-To: <20260602170416.2268531-1-gary@kernel.org>
-X-ClientProxiedBy: TYCPR01CA0060.jpnprd01.prod.outlook.com
- (2603:1096:405:2::24) To MW2PR12MB2363.namprd12.prod.outlook.com
- (2603:10b6:907:f::33)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NjOqUT2X"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490ae3bcf4cso10909325e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Jun 2026 00:25:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780471542; x=1781076342; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kn1fwrz0N95jpQxjLA6rHpxyLrIkfU2xk5HoRUHBs5I=;
+        b=NjOqUT2XAosPhcoaktiNR2N0agBfPNsGCIGsOA61TBvKQdwRQbvgQArHTL17mJxdjE
+         ei3OGCzot9HwE5RYXqJkWg2RKxD/T1IOYd04ypKfmyFlPXZAMwYZhz+yVV2Xs+BRZudO
+         mtdJH8sBE6yowdkfLtkeOcVFzXa1TvXxWI3JCtqPOlLj5ngmxRqrxskuMW7gqP43SWOH
+         tbXxREetMUOb0qvaKW24OW280xqbkLWb6FM8NWzFGZrsTEmO+s1E7IXqzInwGDhuGeOG
+         U9/1mQICAH1oqvg5FweQHLlUE6ZMpaSJ9zYDoaUXqLQ+02ceeTHQhhgPLSFf50z3Suro
+         j8mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780471542; x=1781076342;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kn1fwrz0N95jpQxjLA6rHpxyLrIkfU2xk5HoRUHBs5I=;
+        b=FCsVxg/u351PNttwRP02VbJw3/dbEFjZLBg8qAkZGq8eNu14c1DedcSOkTQWqmx5nt
+         ynoBaEY18nhJ/C+L1D/KVyBnNAoGmK1t1ZCUgxJfex50liWyQKtUrxDoo5WQfA0Gion/
+         NagBMTnvcLWNEtfV1ulKvEfOxvkXxbNBer8IvQ63wcc6zR1cRHpP934L7AP0PsI0ZFLH
+         BJmFr80qtps+YdNKO219r5hEcYiopOd2SgE4tUjTH70sY9GTIu8v1cq5tQiKadWZSZwi
+         pxoL+K8r5Z3QHdmQOInpUVqk5LkJ3+Zry1pSpMI9vEZ9WKzaxNyZxPQQhOkWL1gf66O4
+         wTeg==
+X-Forwarded-Encrypted: i=1; AFNElJ+uqs1ZhXhas4JYPOrVjXRawa7Jxkh7kl3rVxETstb2BKBYx1dIAqZp/pvFsd/ZbDzUwTl2BBGtCIr92mIqRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrkeJ5P1kBw4HZ5CNyqa8AJcADWpCA6Q875p5wh7GU82qqzSPr
+	9AIe25FNF/hFGcoprqcyj35KIye4ZlWdb5i/gMyS83Z+3aXIITecwe3IVFVan8OesP9aOguCYRT
+	VTRWPE4zSFViu0LZMPw==
+X-Received: from wmqy18.prod.google.com ([2002:a05:600c:3652:b0:490:b027:8bb9])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c4b8:b0:490:b591:b5a3 with SMTP id 5b1f17b1804b1-490b60e9af0mr32900305e9.32.1780471541391;
+ Wed, 03 Jun 2026 00:25:41 -0700 (PDT)
+Date: Wed, 3 Jun 2026 07:25:40 +0000
+In-Reply-To: <20260602151638.14358-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PR12MB2368:EE_|LV3PR12MB9354:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38e7d5ba-c0a1-4e12-8ed3-08dec113a106
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|10070799003|7416014|1800799024|376014|921020|11063799006|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	YwNelbadzGtYTTXZ7FPjmvFnFwjQ+SC2Wd6xpIqtUvgINFMGHGzPVCxLwDdCKmj+V77mIlEceqEvGXp2vJ2rm2Z2os75lN4d65z2jlHqPuhEtcEzPG4VI/yRZRD+h5KjKywegmbzkbM+UPC5XZ1baEuvsjblCmmafGK9jDJduB81M3Hnb5oE/KS25npYC9kU62abNGdjzhJOKWr1RM8hzvdSYanCWnZdPBZj3tAXZalY+5Dodbg6VhlOVapXFtSjcf+cKx7W9pXKM1Ln8Ia07by1jPx3o1ek24Z9fr4qeMDv3Qq+jDkYNmmnaEiABpvDeVB5EkllCdZTlHZorTRZG/0cZfXWQLBkTwHyAr5wTCB7lLu2XPGF3UkhHDO/wJBN0TFjr2FOtRpQKEKGYq351jE5ctHJGmCIzUuvGc/GlqZNk4cMSKb+920VJCiN1keFOxJAFnxuX2YxmPjdSjfCFIBvc4yH+oDMWtbT+AA2HTfIHxz+wXfnErh6ls8t9B6M5n4g0UdzKO7R9cL0SAgzp63D84p9VVfJ98r2pJytM5g5qeKYB579yLpdYwg6WF1eAAX/fMuMSX7NG0UlgRgbRC7m+pVs7p+oS2UyHsQ9qWPmBWxZDrRa5sDwAQWRuIyr0Nt1iqP5nykvEM/Q7rAyRBegWsRUOLsDL5adSceHLfAKDyXssSVZCeBNJEEw6R8OC4DWw6ZyYpnZiETHifT42jsq6bicANoXQK2DIs68Lpg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN1PR12MB2368.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(7416014)(1800799024)(376014)(921020)(11063799006)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dXVpUDNFemR0akdaRVRGSy91VkNZZnlaalJ5aWo1Sk9JdWxGRzJ1Qk1peThZ?=
- =?utf-8?B?ckVuaWFQWUtCclZFUEorVEpWRzd3T21WUE9yaGFhQXBpV0s1L1FScXR3TFFZ?=
- =?utf-8?B?YjFacm9qVDZIUWxMa1FmSzd5dXovbTc3VWFCRnlwTmZZQkUrdkdMSjZ1OGRr?=
- =?utf-8?B?K0RWck5DYWNIRW1pU3dCM0xKZ1pJdEV5ZDEyeUNxQVA1VmNVN0tNUGEzY1Ni?=
- =?utf-8?B?QlF2KzNxZkFrU3p3aFdGVnFjek5teTBtbU5ZRSt5czhrZUI2K0pCSHZPUExP?=
- =?utf-8?B?eEpKd3kwNzgyREZwOGdCWU1BWFovckhWUlU2MWZqRTBqZXVRV0pVTWFrZWkz?=
- =?utf-8?B?UFU1V25PQml6QXgzWWRNODdLYWZpbm03WTExRng4OXJpZENLN1NvdkRVSTUw?=
- =?utf-8?B?bHlNV3VmTU9GR2EzUkluYWRuMEtzVytaNHAzMGczRDhGRVJDOWFvOWxXY00r?=
- =?utf-8?B?dWZjcUoxT0FOclp1S3RaZ1NHVW1tV0FsTXpweEJvT0F0dUdsc1IvL0ZHRzRB?=
- =?utf-8?B?R2ZROWZYSWVNTXFGRWlBcE93ZXhJTkViSTdHWHVuTjRKNkxORkpMN0dzd0o3?=
- =?utf-8?B?aklxcW41cy83VzhEWldBLzRXNS9mWDdlcE1XVXFJWHRaY09YRmtpazZhdXh6?=
- =?utf-8?B?ai83RWEwc015THlJVVV4K1VaWVgrLzc0ZGo3eHpXdkw3YXNGKzREU09iN2dG?=
- =?utf-8?B?M0ozTDZjbVNnd09HcGdsd0RnZ1YyYXNqUjhmU3ZNN3NYb1JxT01Dc1hNcUVq?=
- =?utf-8?B?cVVoeUZVRVhVWml6ZWswTlJGQWxJdW8zWS96OVljZXczSlRDYnhaSUVIdlAv?=
- =?utf-8?B?MGF3bFhpNUlUOWkrZjhYRmZJVHdHbDNGSGNCWDk1U0lRYUtGRzBBcWtkR0NL?=
- =?utf-8?B?MXVNOENqN2NUbDVDd3BUVUFIbnZYR1dLOW51NUlXWEpKWUJObWJhMTl5YTd2?=
- =?utf-8?B?S0FLOE91WndjRkw3cHhtVmFYREpTY25FcU5RWVlpZkR1T2IwbCtWaDJpVHZR?=
- =?utf-8?B?ZmJXR28zWlVUM2ZIT2RrbE40TTNwMGFaYXo1cTJZVFE2ZG9MeU5iaDlWZGt5?=
- =?utf-8?B?VGRjR1o0OWlhNjR5THFVODRNeHBvVjU1QlNiUzU2QmR6MDZJNVBEaERpRmIw?=
- =?utf-8?B?MStpd1V0c2d1cE5ERjhWMWUzSjY0SGgwQ0Z1VFhIWXZjZWR5ZnZyTEM0cnFI?=
- =?utf-8?B?M0syK0R6WGpkYzVpS3lVcU9MS2FvMmI3UmxVSlp3THl4V1M3aUZ5cm9EWlM0?=
- =?utf-8?B?T0h5U1FIMldmZTE0OFVLOHcyNVRjYmFOQlk2bFEwOHc2M2FObjB1b2Npb3ly?=
- =?utf-8?B?U1J3amJYM2FsaHRidllCdDJ2Q1N0R0JwSE9lUXRqRUxJV0hDT2szaWtBajZM?=
- =?utf-8?B?V1FxS2I2eFhzV1VlSE9Ud2hkcCtIYzF6WE9ndkZ0amVFSmZ5akVkM2Y3U0FB?=
- =?utf-8?B?RVIzVlZoc3ZLdW15QVp6cEc4Vmx5Y1cvTUJLUERqK3A5MDdINi90b1pOdDJh?=
- =?utf-8?B?bGpEOHBMMDJOT0Urd2pLRkVxWFJQVkJEQ3pJNVh0dHVrUTRDNDNqNE1BRHhF?=
- =?utf-8?B?YktzcE1kQ2NZMEdUWURGM1l1ZEdDZnRhaU0wYU1pNXRwanZZRXkzOWxsVnJx?=
- =?utf-8?B?Z0xkQ1QxcWdjWUFmMmtJMWQzaHdrTU90TDducXlJUXl3V0tDODROaElkd09m?=
- =?utf-8?B?b0VyMi9Uc0xMdDRUYllPWjhJQ21vZENVT2tEUFZJcVk0NnI4RzRBdncrTERI?=
- =?utf-8?B?T0M0RXAzOXdBU0I1eGZwYnJvOXhMZHBmSGNGM3IrcmJaK1JCbERCTDY0UEVj?=
- =?utf-8?B?RGttaklzSFU0NlhCaGZEcGJPVDNNdkZDMkdpT3h5VTJkT0xDSzV6REpxZkJQ?=
- =?utf-8?B?V3dYaG5pQUZpTW4xNUR6WGJST2J6OEpJQzhXY1BhVDF4T2VaRWtPcXMzdVQ1?=
- =?utf-8?B?RU1ocEg0WVhBWnRKZk80dlhUNEVnTFgxNzhSTzZwRDJ5bmNuMStDb3BCaVBh?=
- =?utf-8?B?bHhVYVNqRmQzUUh2VGFVbFI1UjJiTzNNc0ZsQ3dvUHEyY0VySVM4RURqL0lw?=
- =?utf-8?B?b2FyamQrQnFEc1VLQlRGQ1NrR3RxdHZ6ekVHUERWWG1KdHhMUlBlMG5Dak9U?=
- =?utf-8?B?R0dOelJWRHUrUldhZDgvUmVGUUhXaGIvQWttR0lTQ0RGZ011SS9KRVZJY3E1?=
- =?utf-8?B?dWxpbE9MQ0cvdTBKWkRNTDR4R1dFYW5ZQzRTVDJVblh1RkhSZlR0ZjhhVS84?=
- =?utf-8?B?a0pkNTd5dzlDUWpicjI0YnhyK2t1OFlOYVQxMFo1eWE1dUxXTjFSeDVhZ2du?=
- =?utf-8?B?bytyNXJhb2hwaERveVFGd2cwdG1LaG56VytxZ3JCSHZJMGVTUkQyME9NdXMx?=
- =?utf-8?Q?WospjY/h6BaWQDWKOoZaVtIrvHRDDM/RxJwXC2AlTXSpn?=
-X-MS-Exchange-AntiSpam-MessageData-1: AhimclBo78Amgw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38e7d5ba-c0a1-4e12-8ed3-08dec113a106
-X-MS-Exchange-CrossTenant-AuthSource: MW2PR12MB2363.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 01:58:42.1513
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UjX9XB8a32zuHz5jAJLpMYLMkeBcfzVvIieM4m/QWzKHyD8ypapq0dVQe3hnYnlSXxWRKPgfzSLhKJhNkpayCA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9354
+Mime-Version: 1.0
+References: <20260602151638.14358-1-ojeda@kernel.org>
+Message-ID: <ah_W9IMXQh06-EgB@google.com>
+Subject: Re: [PATCH] kbuild: rust: rename flag to `-Zdebuginfo-for-profiling`
+ for Rust >= 1.98
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Wed Jun 3, 2026 at 2:04 AM JST, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
->
-> Currently Nova code uses `&'a Bar0` a lot. This is `&'a Mmio`, where `Mmi=
-o`
-> represents an owned MMIO region; this type only exists as a target for
-> `Deref` so `Bar` and `IoMem` can share code and should be avoided to be
-> named directly. The upcoming I/O projection series would make `Io` trait
-> much simpler to implement, and thuis the owned MMIO type would be removed
-> in favour of direct `Io` implementation on `Bar` and `IoMem`.
->
-> Add lifetime parameter to `Bar0<'a>` and change it to be alias of `&'a
-> pci::Bar<'a, ..>`. This also prepares Nova core so that when I/O projecti=
-on
-> series land, this could be changed to using a MMIO view type directly whi=
-ch
-> avoids double indirection.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
+On Tue, Jun 02, 2026 at 05:16:38PM +0200, Miguel Ojeda wrote:
+> Starting with Rust 1.98.0 (expected 2026-08-20), the
+> `-Zdebug-info-for-profiling` flag has been renamed to
+> `-Zdebuginfo-for-profiling` (i.e. one less dash, to match `debuginfo`s
+> in other flags) [1].
+> 
+> Without this change, one gets in the latest nightlies:
+> 
+>     error: unknown unstable option: `debug-info-for-profiling`
+> 
+> Thus pass the right name.
+> 
+> Link: https://github.com/rust-lang/rust/pull/156887 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
