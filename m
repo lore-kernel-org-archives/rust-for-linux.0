@@ -1,158 +1,323 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013032.outbound.protection.outlook.com [40.93.201.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04EC3FF893;
-	Wed,  3 Jun 2026 10:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780483630; cv=fail; b=fau4H60qdLY+VgMsIOae695eWbRHjuHfKHSf5N2TvgfgA55DKPW7f2BUbFIe6WALiZENESRaZ+p+Ij6G66D5OfGdAjAJ16X0yKOmphViq8I43TCSh0II7DKHloDJoKnydfCSzBE3dAOWCbAdLNTngVU2GTZm6GL3UMg9yGxrgj4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780483630; c=relaxed/simple;
-	bh=aBTKjYqbJP0PajOB9pcUOoXgZYZ/LXJNE4GLJeNrPVg=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=cyfNohoYJv3won32BaBMHbnmQhDnzkQs6zPKm/qgxSKExFmMXad05w9wGFZBP3ek62SHLQGMfdo6ndIU5jRiF0MBKUCX9lzXTx07GccAFKoNTGZwlCI1CwCae9eaORuP96AWTF3HCipGXfl35u5zH9YIyD2i/CEq7aputfT6mVc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ul6CSzGL; arc=fail smtp.client-ip=40.93.201.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B10402427;
+	Wed,  3 Jun 2026 11:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780486168; cv=none; b=AgxN8TTydunnFE5OfLWryOLTeOSkUjmc93q564JOB8+ry9tp+AE1XqWeh80eMc2ePnSVANBhvz7XydiJoy0zZWC7pGtvJ1D/VfbEW9/WNbNaynj6xSULz92e0Aa0axLHgDRvR8bM+bH4CvWOuvlHJd38D95ddUIhButSzb1139g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780486168; c=relaxed/simple;
+	bh=AaYztLVSeMaS7YA0p3Z+Mp5y2IcoRllzuNd9fKmV59E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=etcvFdNPN6P4MUiD0tkHvEDM5bYMbqfFG3Yu8vN1/v1rKQdrTXA5hGwrpZRfXGV66TJhEcvCkUKJLIRY2ufQ5LLscYizbZ9amJKcXgFtYCfoLR8XW2W6bNsm3m+pty1obHOwFfzP4Sz8+89D89B5+cvbs6xTbX3k+SSRcGR+f9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWnVJ5Jf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ul6CSzGL"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zb+i+gqN7q/fbROhBLt2Xb1Dja0m7xdY7EozeGrbFlD49opNGWK4qxTuAlUEfg1uq5mF19JDm+wL/maYriXe2bR/0PMRVkWkVNeLHzojAUW2JzYOw6ivAUSLzU8q4ZxEaWFpyIoX/VPPshAW2ruYy3HKqptw2gwHCwM0d31otX3CmkfuS6UdTpS3yjVMswG3VmAIUB47Dyr46qaqO9bWeEKjb6iJj+u4Tq1cNw35ZPu5zzSmxd+8TUStDRIhGl1fzMB9ELHYymZKPckguwoDDjdbRaDs3AZ3hxXdIePYcnTaF2GvQqGS6Hm7hpY1IwTxumCB9e+YlIP3xcnQmBlfog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aBTKjYqbJP0PajOB9pcUOoXgZYZ/LXJNE4GLJeNrPVg=;
- b=Wv89n7tNHQGGCNuuMyHFYyShTM42ZAaEFte/aCzU89inmqg33p4Gb4Vz0MlK1wZe36eqE46zGwZcJ9YedUyuqJVUoLTgmXfdeZPsv2L3JLck7o4CMlEgFdyESKTpxKFy7ivIVzcTDXBnofbJSPEfyF2n3NboGUE1E5ZCQe/4BUtYDC3dXEo8eH2JhXMwXUMDcDgmVfhXo5U5O06LLv0JNsho8D29GqXGZTub6NqTXLAkfq6uvhUiLBZmwRdWLQy+XKwIhxhXppiJ2aoNKQ22c4s/bGBOAIueZchlhJmplGAHHUqqkd2Vqp2B4nvJ1qzENtBK5yU7nErlgHRHPKqnow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aBTKjYqbJP0PajOB9pcUOoXgZYZ/LXJNE4GLJeNrPVg=;
- b=Ul6CSzGLyT9z+lSn7OL8N2SWFJ5/j3jif156hurnWsquDEjMr8Hs/XhkQY2JJlVjLbysNzjH2juUPjLXSwI6yypZfKLEM1oxx0Ulu1gI6FU0pjGK9+yx8D0we6IA1Q90DQ75inuroeIZ8N/zwuBI8PU+RLcrrviZ0M6O+nq+WAQ0XIRil7LVK7j0ijPi5V7yRWYinaqrKeF0f6SrkGVL1ykYLGJLJfSMvf4P5B4+i9/QrvbR3rc580LQ7qlBmKN9ihZC1K019awtKfNjokqcjmp7iVhAuP0gU34kWUnb44/aQ/QDcYGB9wLtgfZpkc7ocEkwHJVuxfIrDqcap5mTLA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA1PR12MB8722.namprd12.prod.outlook.com (2603:10b6:806:373::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Wed, 3 Jun 2026
- 10:47:05 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.006; Wed, 3 Jun 2026
- 10:47:05 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Jun 2026 19:47:02 +0900
-Message-Id: <DIZCROA18EVK.1WTOC61CIP7Y2@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] gpu: nova-core: move lifetime to `Bar0`
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@kernel.org>
-References: <20260602170416.2268531-1-gary@kernel.org>
-In-Reply-To: <20260602170416.2268531-1-gary@kernel.org>
-X-ClientProxiedBy: TY6P286CA0026.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:3b9::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWnVJ5Jf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E1E21F00893;
+	Wed,  3 Jun 2026 11:29:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780486167;
+	bh=a30nVMM4YrCO+YydqXD4huUxG3Uq7bEk8pXDh6HkJuY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VWnVJ5Jf1vfW+v2SYn+vKHM75sFCZz8QodOgMT/ts/k7JKe+KTDblFjnu0VzETEuY
+	 SsQKnK71hX3mhMcIdNXydnB0wiwpAgv/kTPvNFxUNEJv+SWIewc4QeWhyTBlhOfLEA
+	 BEkQ/TQO/LGalDFb8Kmoquk6FS7Fphv67MAoz5sXFdMUAPEppFvElU4zmGX+2s2HSo
+	 6T0Ir+vPHnm+2q/bCa3Hck6mZWBCwFleb8nN+fCALkXn8sA7Dm2syVsJTHYLmXoAM6
+	 puhDyX80bioQEUwa3KutNbx3lpuIhlEODupjVLgkVlyUaXY1ZRgCTP1b0NdeMpTZ2r
+	 a1me9POeRnoyQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Jens Axboe <axboe@kernel.dk>, Miguel
+ Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>,
+ Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz
+ <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 09/79] block: rust: introduce `kernel::block::bio` module
+In-Reply-To: <abfbfV6-FXnVT9Ud@google.com>
+References: <20260216-rnull-v6-19-rc5-send-v1-0-de9a7af4b469@kernel.org>
+ <20260216-rnull-v6-19-rc5-send-v1-9-de9a7af4b469@kernel.org>
+ <abfbfV6-FXnVT9Ud@google.com>
+Date: Wed, 03 Jun 2026 13:29:13 +0200
+Message-ID: <87pl27kgl2.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB8722:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3041399-3208-4fae-95c4-08dec15d7413
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|18002099003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	L6bRWGhOjr4ho3npkik3Yt8ciGc1UPGQsUkXCH6SG7XxV8QQSK8n4R6bP79DfCktuuShdcL3iH1knNXy1raqajp7vbPaPIBW/QU/7TOX+Q3j/SvfzKyA2BmWKTP5wkbhNyF0xnhfdlxk8ZU8wE/9CizOapInT2ouH88zpBLpJW7PUfGxY7PIuc9j0n63m7m2QXzKd+bDZaKA39btLdUK1YB79V9KCtsQNvjjpaN28ZW6N2wvkfUlTJJIFeXYScY0OKqYHVBrBt7upODev0y9cbMQXNTwDoEyqxy1CHxlWxV97y7xviEI2fbwCY87fRHbV2hDTK7Q1MmRImeP6CWBYBIkyaGq5Cz15z/KrUiLOCu7rdf1eFsgIfEEEPVPoqvHCYaNBPauXBJYX7kWvrVnCNNhAUz97L9hYMsGpOzffhveXZVEXkgNYCu8fXVi0b2ek+MG/BIABon/1yWIOBEsbtuIAtSRMSjbwvvdt9hnk+3z3q51CjcBkwzgkLCxEd2XgxKhficruUA1uYDv1CHLS62zr+jLwyZoekWlT2OI7s3yHXBKrdOA/SvrT19qaDeb8hu5bDIes2Y9aOGtQzAQdcw1pS+v5pLrzd3G2huVtg2JWX++FVQpOo1pw93//4XKmzrp4bE7S9H3mTqWtCgltHEyFF4wlFpJQrh/Djjd0DRrWBa4SJsDg7IJQrLq3Ado
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aC9uZ3NwTjllSmxKdC8rNURMRzZIZzBLaDBCNFA0ZldxZXVxSG8xOXVsU0Ri?=
- =?utf-8?B?OFVEYjk1VFdpK0t5OUtQQXFNOVIwQUpFei94MGRMVDIrWUl3cWJiVUR6MHFW?=
- =?utf-8?B?eHhRV0JoNTdvUEJPWWdUS0xuVFk0d00rMVZ0MTQ2cnNCRnBPTmJmZWozQ3Bu?=
- =?utf-8?B?VlZRK1NxdlZXU0xzMktWWTlJcllGN0NoZy9GSTE4K2Z5RGhTSG9BaDBreUNp?=
- =?utf-8?B?T2t3UnU4Tkg3WllnRi9YWm5QbHNqcXMxaDdZdnhQYVZINDhGbVhIN3JWZDB1?=
- =?utf-8?B?TnNBWTBZKzFKb2pvbHNlUVRlUWVpVENsM3lTWTZFMzdoN3dpM1ZONHlRcmln?=
- =?utf-8?B?ZmN3QWhxM0VteEg0dkxUNDhOOGJGN0hhT1ltQkxhc2h2ZG1tckVhUGtJRURF?=
- =?utf-8?B?OVhsV0NJZnFTSTY2eEYxQ0c1V2Z5U05yWGluT3BLK214TmRyTllNaGFUWExF?=
- =?utf-8?B?U0ZGTDhXNEgyamx3ZUd6L0M2SzQ2YXJLendKdXhGTTFpS3lxL0tsOXFzVzRi?=
- =?utf-8?B?WFA2WkZqdmM3aVEzYWNOd01xK28vRE5yMWw2c3o5UGFEd0JiRWIxc2s5Zmlv?=
- =?utf-8?B?RHJOR2xPQ0ZvRHNLOUpjYnhOWmN5KzFya3d4eFI2UFRESEtmMmI0TGkzM1Bl?=
- =?utf-8?B?alc0VlhBc2daMmxaNFpZZkNyV09GWmt2VHRIdjlUV2R5UStEcmdIQTh0bUhs?=
- =?utf-8?B?RE1Cdy8zYnFtaHJhQ3VpMU9hcXo0YmxXUWNUOExPeXZIWWxRWU9udm1yTDQz?=
- =?utf-8?B?clBMWU8ybzBpcjlZRFNyOXBhWnNnY1diS0gyZmhhWDZkTnVVclVxelc0cmc5?=
- =?utf-8?B?OU82aGo2dCt2akx6VTN4M25LdUdRSEFIOU1rT3pNeVB4dHRPQ0htbG9abnZF?=
- =?utf-8?B?U3ZkTkJvcnd2ZmhVVGJLQnVZSlN2emd0VFVkTmN2cEc1eXJFaEFzMlJ0Qkow?=
- =?utf-8?B?MzNPVzJ1bWRsdjdndnV5Zk8wWmpWVHRCNDFraHBhTmF1TXZEWGVySE1NaUpT?=
- =?utf-8?B?c0hJQllGZ3FzejVBVnJLbmdJckxRL0tOdy9JR0VlcDdkZGZMQWE0clR4U3g5?=
- =?utf-8?B?YXVJWUJGWjZ4M3JLSkRFUm82RmlUNzZQdzVkOEpKVmhackFqekQxeG9ncFJu?=
- =?utf-8?B?bEtYTHdtcS9sSHg4T0JSVzlRUUo4MWNYVHljL2x3Z0pIdEFzcFpHREV4RktO?=
- =?utf-8?B?bFcrSEx4QzR3WkVqNHJRSjFaRnZSQ2RFbFhrNlNydGsxalp0S2l0ek54ZzlV?=
- =?utf-8?B?cHVNVStreWZRc0NZSWlaV2N2Nlo4NWdYejhYN1I1ZEZPd010MW4rUFh2Q3Nu?=
- =?utf-8?B?NWJTdWwrcE5Na0htRUxXeEpSNWxLQUVuRUNEbXdNSmp5aDIvdUc2UzBYMmlF?=
- =?utf-8?B?VlluNEd0anNHZnNxa2NQSEdyeUU5Z09QNGZuZGFNVnpzdVFPcE9tQzNjMHdS?=
- =?utf-8?B?di9NbVhCdDg1Z2dQMHJ0cWd0dmwyRzluM3BwQS9lTmtZNThDQzd0cnJUQ1BF?=
- =?utf-8?B?eHVkWUZSS2hCZ3l4L2pENEFVTkVZL1U1UTRWUWRvdzRKUG5pZkhqQXdDaDNQ?=
- =?utf-8?B?VVpZd2xrSUZxRVp4Y2NBWmlpa2prN1hwSERpYUtBSTRPVGIzaXNmQ2RpRWpt?=
- =?utf-8?B?OHdHc1JVVWdoREZBNFNJU2dQRDk3Qy92ZmFORUJSUHF5WDZzcVE0R1RrOFE2?=
- =?utf-8?B?dDR2aEE0MGEyd2UxMXpqbkJxTDVlYWJMR2grb0JTRTJNbmtJS2VYL0JDTUdj?=
- =?utf-8?B?cjRTWkxqWmVOa29HS0xvUmlVRTFrWmphL2wrZmRucEIxWkxLZTZaVlBuZzA0?=
- =?utf-8?B?Y0M1MkpFUm9JUEVLQVVIVTBZWVIwL2tvbWo4VXpGVkRYUVBjemRCeVZROHVu?=
- =?utf-8?B?aUphYThLRmhqNDB0M3c4ZVlrbUU3RmoybktiYkI4aEFwWUpEZUUvOWlXNk1O?=
- =?utf-8?B?elA1VHFBYThhT29yUlVzTzhRNzNPUkd4NXkzM0J1UU51Y3dYbG9DM0diNFlU?=
- =?utf-8?B?SnowMG50ZjAwZFRFOUp1bEE1bVVhbGpLL085eGJZNnVySlpsL3JicHBybWFN?=
- =?utf-8?B?MENObW5uclNmUnpuSkFlT3VsZEVsZlJmdWhiVlFlY0ZzVUJYM0FMd1dmYmFK?=
- =?utf-8?B?cVBmcEFLQ2dva0JJclBQU3RZVG5hN2Z1RUY1emhrcW5ITldMcUhYOXV4Y2VO?=
- =?utf-8?B?NnY4cGhxTzE5NWVndEtaOXY3MEptOXFPSG9Jc0ZVVG9iUVdFV1l2MWsyVVBI?=
- =?utf-8?B?OTJpUGxnZm5zUm5FQStJV0E2WXZ5TXBmTitoQXFsSVVRMmRJMUI4bGVSYWlB?=
- =?utf-8?B?ck9RY2lTSEpoMWxvY2MrWW5hSjFCWEFVajZneGdxVEZ4UGlKQ2RSK2hJME5F?=
- =?utf-8?Q?f7jgQgiuwC7WX8Sa45TF/Hcw3R2rlJXFI2RCML1b1V/Ou?=
-X-MS-Exchange-AntiSpam-MessageData-1: 19xHoKIQFaqg3Q==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3041399-3208-4fae-95c4-08dec15d7413
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2026 10:47:05.8277
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YIyF+ECx7TSTZ3uhfYqehtS+yxcF2bPOG5ihxhmPwnMv06zdVzO1m7jq0AEXaF8rpVSaJyPs4ar4GAArn5FwMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8722
+Content-Type: text/plain
 
-On Wed Jun 3, 2026 at 2:04 AM JST, Gary Guo wrote:
-> From: Gary Guo <gary@garyguo.net>
->
-> Currently Nova code uses `&'a Bar0` a lot. This is `&'a Mmio`, where `Mmi=
-o`
-> represents an owned MMIO region; this type only exists as a target for
-> `Deref` so `Bar` and `IoMem` can share code and should be avoided to be
-> named directly. The upcoming I/O projection series would make `Io` trait
-> much simpler to implement, and thuis the owned MMIO type would be removed
-> in favour of direct `Io` implementation on `Bar` and `IoMem`.
->
-> Add lifetime parameter to `Bar0<'a>` and change it to be alias of `&'a
-> pci::Bar<'a, ..>`. This also prepares Nova core so that when I/O projecti=
-on
-> series land, this could be changed to using a MMIO view type directly whi=
-ch
-> avoids double indirection.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+Alice Ryhl <aliceryhl@google.com> writes:
 
-Acked-by: Alexandre Courbot <acourbot@nvidia.com>
+> On Mon, Feb 16, 2026 at 12:34:56AM +0100, Andreas Hindborg wrote:
+>> Add Rust abstractions for working with `struct bio`, the core IO command
+>> descriptor for the block layer.
+>> 
+>> The `Bio` type wraps `struct bio` and provides safe access to the IO
+>> vector describing the data buffers associated with the IO command. The
+>> data buffers are represented as a vector of `Segment`s, where each
+>> segment is a contiguous region of physical memory backed by `Page`.
+>> 
+>> The `BioSegmentIterator` provides iteration over segments in a single
+>> bio, while `BioIterator` allows traversing a chain of bios. The
+>> `Segment` type offers methods for copying data to and from pages, as
+>> well as zeroing page contents, which are the fundamental operations
+>> needed by block device drivers to process IO requests.
+>> 
+>> The `Request` type is extended with methods to access the bio chain
+>> associated with a request, allowing drivers to iterate over all data
+>> buffers that need to be processed.
+>> 
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/helpers/blk.c              |   8 +
+>>  rust/kernel/block.rs            |   1 +
+>>  rust/kernel/block/bio.rs        | 143 +++++++++++++++
+>>  rust/kernel/block/bio/vec.rs    | 389 ++++++++++++++++++++++++++++++++++++++++
+>>  rust/kernel/block/mq/request.rs |  46 +++++
+>>  rust/kernel/lib.rs              |   2 +
+>>  rust/kernel/page.rs             |   2 +-
+>>  7 files changed, 590 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/rust/helpers/blk.c b/rust/helpers/blk.c
+>> index cc9f4e6a2d234..53beba8c7782d 100644
+>> --- a/rust/helpers/blk.c
+>> +++ b/rust/helpers/blk.c
+>> @@ -1,5 +1,6 @@
+>>  // SPDX-License-Identifier: GPL-2.0
+>>  
+>> +#include <linux/bio.h>
+>>  #include <linux/blk-mq.h>
+>>  #include <linux/blkdev.h>
+>>  
+>> @@ -12,3 +13,10 @@ struct request *rust_helper_blk_mq_rq_from_pdu(void *pdu)
+>>  {
+>>  	return blk_mq_rq_from_pdu(pdu);
+>>  }
+>> +
+>> +void rust_helper_bio_advance_iter_single(const struct bio *bio,
+>> +					 struct bvec_iter *iter,
+>> +					 unsigned int bytes)
+>> +{
+>> +	bio_advance_iter_single(bio, iter, bytes);
+>> +}
+>
+> __rust_helper
+
+Thanks.
+
+>
+>> diff --git a/rust/kernel/block/bio.rs b/rust/kernel/block/bio.rs
+>> new file mode 100644
+>> index 0000000000000..94062ea5281e6
+>> --- /dev/null
+>> +++ b/rust/kernel/block/bio.rs
+>> @@ -0,0 +1,143 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! Types for working with the bio layer.
+>> +//!
+>> +//! C header: [`include/linux/blk_types.h`](../../include/linux/blk_types.h)
+>
+> srctree/
+
+Ok.
+
+>
+>> +/// A block device IO descriptor (`struct bio`).
+>> +///
+>> +/// A `Bio` is the main unit of IO for the block layer. It describes an IO command and associated
+>> +/// data buffers.
+>> +///
+>> +/// The data buffers associated with a `Bio` are represented by a vector of [`Segment`]s. These
+>> +/// segments represent physically contiguous regions of memory. The memory is represented by
+>> +/// [`Page`] descriptors internally.
+>> +///
+>> +/// The vector of [`Segment`]s can be iterated by obtaining a [`SegmentIterator`].
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// Instances of this type is always reference counted. A call to
+>> +/// `bindings::bio_get()` ensures that the instance is valid for read at least
+>> +/// until a matching call to `bindings :bio_put()`.
+>
+> Refcounted? None of these methods are called anywhere, and you do not
+> implement AlwaysRefcounted.
+
+This is stale info, I will remove it.
+
+>
+>> +#[repr(transparent)]
+>> +pub struct Bio(Opaque<bindings::bio>);
+>> +
+>> +impl Bio {
+>> +    /// Returns an iterator over segments in this `Bio`. Does not consider
+>> +    /// segments of other bios in this bio chain.
+>> +    #[inline(always)]
+>> +    pub fn segment_iter(&mut self) -> BioSegmentIterator<'_> {
+>
+> Not `self: Pin<&mut Self>` here?
+
+It definitely must be pinned, thanks.
+
+>
+>> +    /// Create an instance of `Bio` from a raw pointer.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// Caller must ensure that the `ptr` is valid for use as a reference to
+>> +    /// `Bio` for the duration of `'a`.
+>> +    #[inline(always)]
+>> +    pub(crate) unsafe fn from_raw<'a>(ptr: *mut bindings::bio) -> Option<&'a Self> {
+>> +        Some(
+>> +            // SAFETY: by the safety requirement of this funciton, `ptr` is
+>> +            // valid for read for the duration of the returned lifetime
+>> +            unsafe { &*NonNull::new(ptr)?.as_ptr().cast::<Bio>() },
+>> +        )
+>> +    }
+>> +
+>> +    /// Create an instance of `Bio` from a raw pointer.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// Caller must ensure that the `ptr` is valid for use as a unique reference
+>> +    /// to `Bio` for the duration of `'a`.
+>> +    #[inline(always)]
+>> +    pub(crate) unsafe fn from_raw_mut<'a>(ptr: *mut bindings::bio) -> Option<&'a mut Self> {
+>> +        Some(
+>> +            // SAFETY: by the safety requirement of this funciton, `ptr` is
+>> +            // valid for read for the duration of the returned lifetime
+>> +            unsafe { &mut *NonNull::new(ptr)?.as_ptr().cast::<Bio>() },
+>
+> Why the Option? I imagine every caller has a non-null pointert
+
+It felt more streamlined to have the check here than at the call site:
+
+    /// Get a mutable reference to the first [`Bio`] in this request.
+    #[inline(always)]
+    pub fn bio_mut(&mut self) -> Option<&mut Bio> {
+        // SAFETY: By type invariant of `Self`, `self.0` is valid and the deref
+        // is safe.
+        let ptr = unsafe { (*self.0 .0.get()).bio };
+        // SAFETY: By C API contract, if `bio` is not null it will have a
+        // positive refcount at least for the duration of the lifetime of
+        // `&self`.
+        unsafe { Bio::from_raw_mut(ptr) }
+    }
+
+
+Yes, this also needs to take Pin<&mut Self>.
+
+>
+>> +        )
+>> +    }
+>> +}
+>> +
+>> +impl core::fmt::Display for Bio {
+>
+> We have our own fmt trait now, right?
+
+Will switch to the kernel one.
+
+>
+>> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+>> +        write!(
+>> +            f,
+>> +            "Bio({:?}, vcnt: {}, idx: {}, size: 0x{:x}, completed: 0x{:x})",
+>> +            self.0.get(),
+>> +            self.io_vec_count(),
+>> +            self.raw_iter().bi_idx,
+>> +            self.raw_iter().bi_size,
+>> +            self.raw_iter().bi_bvec_done
+>
+> This reads the entire `bi_iter` field three separate times. A local
+> variable may be a good idea.
+
+Ok.
+
+>
+>> +/// An iterator over `Segment`
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// If `iter.bi_size` > 0, `iter` must always index a valid `bio_vec` in `bio.io_vec()`.
+>> +pub struct BioSegmentIterator<'a> {
+>> +    bio: &'a mut Bio,
+>> +    iter: bindings::bvec_iter,
+>> +}
+>> +
+>> +impl<'a> BioSegmentIterator<'a> {
+>> +    /// Creeate a new segemnt iterator for iterating the segments of `bio`. The
+>
+> typo
+
+Thanks.
+
+>
+>> +impl<'a> core::iter::Iterator for BioSegmentIterator<'a> {
+>> +    type Item = Segment<'a>;
+>> +
+>> +    #[inline(always)]
+>> +    fn next(&mut self) -> Option<Self::Item> {
+>> +        if self.iter.bi_size == 0 {
+>> +            return None;
+>> +        }
+>> +
+>> +        // SAFETY: We checked that `self.iter.bi_size` > 0 above.
+>> +        let bio_vec_ret = unsafe { self.io_vec() };
+>> +
+>> +        // SAFETY: By existence of reference `&bio`, `bio.0` contains a valid
+>> +        // `struct bio`. By type invariant of `BioSegmentItarator` `self.iter`
+>> +        // indexes into a valid `bio_vec` entry. By C API contracit, `bv_len`
+>> +        // does not exceed the size of the bio.
+>> +        unsafe {
+>> +            bindings::bio_advance_iter_single(
+>> +                self.bio.0.get(),
+>> +                core::ptr::from_mut(&mut self.iter),
+>
+> Creating this BioSegmentItarator copies the bvec_iter from the Bio, and
+> then here you modify the copy. Is that the intent? Is the C type such
+> that copying it is always okay?
+
+Yes. I can see if I can document this better.
+
+> Also, is the C type such that moves are ok? It's playsible that the
+> answer is yes - the same applies in rust/kernel/iov.rs but it could be
+> clearer in e.g. "Invariants" that this is the case.
+
+Yes, it is so. I'll update docs.
+
+> Nit: core::ptr::from_mut(&mut self.iter) -> &raw mut self.iter
+
+Ok.
+
+>
+>> +    /// Get a mutable reference to the first [`Bio`] in this request.
+>> +    #[inline(always)]
+>> +    pub fn bio_mut(&mut self) -> Option<&mut Bio> {
+>> +        // SAFETY: By type invariant of `Self`, `self.0` is valid and the deref
+>> +        // is safe.
+>> +        let ptr = unsafe { (*self.0.get()).bio };
+>> +        // SAFETY: By C API contract, if `bio` is not null it will have a
+>> +        // positive refcount at least for the duration of the lifetime of
+>> +        // `&self`.
+>> +        unsafe { Bio::from_raw_mut(ptr) }
+>
+> Surely &mut requires refcount == 1, not just positive refcount?
+
+No, that is not how the C refcount works. Upper layers of the IO stack
+will hold refcounts on the bio, even though lower layers are allowed to
+mutate the data buffers of the bio.
+
+Best regards,
+Andreas Hindborg
+
+
