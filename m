@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF793CC7D3;
-	Thu,  4 Jun 2026 19:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB543C5529;
+	Thu,  4 Jun 2026 19:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780603192; cv=none; b=aOKGAOJLO9oKBBjhNmwETeAR7QY4H1x6VVS3YjJtRvLivcjzTAA+8a8zKoNLvO8DrRlhk3urv+dUIacoEsRNHU3KvBHVKnMWzVNupktDzjGeRdIkQOaU6yvIAz33QzCZ+pe4pnuPdT65hJxrh3kOCUksQBqjvhky6YE9+8I96p0=
+	t=1780603198; cv=none; b=IVY+WR9avMZgMG7V/anGmkboQZ+GrSDvlHc21HVKTLd1EjwdsP7cayMkFchqibI5mpNGOCQ0Sf8LkkZk8PFzY3xCZlUVfSn5WIW7pC1+2FesWRNpxrVnli5mLXRbQkPYuOnAsGbLd2dDsLnUB9HsCGlffCjJ2CNEgmrCln3H0d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780603192; c=relaxed/simple;
-	bh=BhCLKxRMqF4V+mE7gy9xjhXHgxHe6HNf41/h4Z3bGDc=;
+	s=arc-20240116; t=1780603198; c=relaxed/simple;
+	bh=wW3dDYAPEV4zxCchJaOgHpoU9SxK5JCQAEcaobGW2ME=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NqJAqHmEqBGzrW3JQ7+XRn8Z3XDDdC2UD3wUr1UH/gYFfO1It/AvyPuz8MWfnS8WgjQIS2ugOgEdvG07XeO0ByFdt1XalV+CcwBfEJhtHVtBw+59SMDhp8lLDCUuvFDQnGYER1YKw9EpS9N8YNDVf+xbp/SICbEo8rAdaItKovk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JPB7jQM4; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=qGd5tKQLC6deCq6VDpHfX95xQEG8VH9V8+DJYfVMNIlj5nYekk4aBycw0+2ITQWQcjdEAvPHSggKfF7smPvyQy/vJ8+8RnjwpRQLoQOMyyWlDKu5F0cywu2z6f1o1zt3i51nqz5HJeeBqLUUpADBJztOaTec+Y0RIgjDrAVC4Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erNGeM2b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JPB7jQM4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3E91F00893;
-	Thu,  4 Jun 2026 19:59:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erNGeM2b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE141F00898;
+	Thu,  4 Jun 2026 19:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780603188;
-	bh=SmiYFIKuE1zvPsAEwECS8Z/13j8fqEOETWiRIjYfqnM=;
+	s=k20260515; t=1780603194;
+	bh=Ixi+QJOhPBvaKKM++NPOJdur0t/SwSTk/yHnYjkZNng=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JPB7jQM4qJtWMPT2RpIm3aDZ+OqvI++pmnDzF8FMZBTb31pYMzeuqqRAwPEt2U/M8
-	 oJKnydYcgbMlOhGRVfZEoV0I58oPOh+XPf6uMTBjDM9Eep/0dTqrdtnj68lmGASZox
-	 PBX5XLmf0gL1N51R9I3dAOan6GiEkpZ++4QT/rp6O1XJsmBIswbVhxlZIoWaRneVA4
-	 /VQkNhLFs1jQhfm8QOigz8afOxpQ3XRLy5aaXRNNqiIuKX9UKc1/ytGC3dlFArNUql
-	 LdwpoFUyRNrClq/wrHMIXnf1s7kSW43K7mdm0+mdt1SdV+xeMClipC88ye1INxd9de
-	 IvKZV6qi03OKA==
+	b=erNGeM2bqlTFuHgqScFLsIgo9udKdgieAvty5VzUEKsfA2o3xirRR5x0ULJkbEsH7
+	 T/hpr8VKTJ2ckcJIH6SfKpMRTQtgd+CoENYNfiDZs6CVoFQUdcNdsD8t4K+yWK14Tn
+	 RhuktW5+RgVpp5DQ95jqYMGl+0KxOOp0xh+KtnvdWjjy9kwwqMNq30iPX6N6O+Oyhr
+	 AmxmA2Va+XSxhOYAloOKe1QVLD6Zu5gkwWcQwCNvS1sMuF2W1wAnBmTCLK6JwOFp/C
+	 BjTNimW2xa3V/8X7kQrHYS9g69PB96U8s9nmdoAzkOP3jxZ7Qk8dSdVa9nvsBVrDX4
+	 JChl3U7TC+Iaw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 04 Jun 2026 21:58:16 +0200
-Subject: [PATCH v4 10/11] xarray, radix-tree: enable sheaf support for
- kmem_cache
+Date: Thu, 04 Jun 2026 21:58:09 +0200
+Subject: [PATCH v4 03/11] rust: xarray: add `XArrayState`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-xarray-entry-send-v4-10-965f6028790e@kernel.org>
+Message-Id: <20260604-xarray-entry-send-v4-3-965f6028790e@kernel.org>
 References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
 In-Reply-To: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -58,60 +57,144 @@ To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Harry Yoo <harry@kernel.org>
 Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Andreas Hindborg <a.hindborg@kernel.org>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
+ Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1241; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=BhCLKxRMqF4V+mE7gy9xjhXHgxHe6HNf41/h4Z3bGDc=;
- b=kA0DAAoB+lApCKrFvdAByyZiAGoh2PKiOBQrTuWb4+c//hzTix9gM8yNN9SYEMxv0B6vxjLml
- 4kCMwQAAQoAHRYhBFeK2cjZZnYmKsBqhvpQKQiqxb3QBQJqIdjyAAoJEPpQKQiqxb3Qbq0P/jVv
- ytNdtugJpYOvBMGd1/YyL95/92eWNJhenjaWD1s1c0k4gvnjG7MsQU66xf/lWXcu++IXGQOkSqx
- NU+8laAbYXgJ9wN62QfkdW8g08qC/0aduBghYfnV6wkNkH2TAeb+plHFV3GehmBmt5ah3diPeSd
- q8/UWaLDuC6dFp/gK0VpFU4Jx5nq/I18kDluysSCN2SVcm0YYMEee4taiZaClYxtYt9nmS/9fjz
- pm0KexPuArJ4IHr0LUsEX7m5k+JCUG9v5jFyWHbg97msdx4K9q7/8l/06Ru1TrMFJB31+FGgYFX
- PiQny9SX83eY87vZ2QFPBZoflNlDll8SIEVX0fD3AKwXL8IkIK7GeyvG2pGgs2Tb37siozoMGJs
- BL1TLFNii7SWJoNjTxQcrVb+hIi1ri4hAibMvDE3DCV05yVhiEGX2sQIQnFPEEAoUlH6K2ueN6b
- idJJycJ6yaueCdo5sT7p0hyuIk5m2MJprCBbkbviOogzBeBdhlc3FyovogAtHhd1eS4XMtEsg6+
- NdE5CmDY8wrOrdGdIheNX9d88Utv3GLICqXBLW5kKukdbGuLnXFDjds6oeWEJnBsPr2BfZ+Pj2c
- 7f/YdnKxZaIpg5SIR+wVwdSoXlrLhifSSTWTd/QAehI+Ash+Nc0acpg3gWI/knsDdI/46xM0rPI
- 0qePx
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4215; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=wW3dDYAPEV4zxCchJaOgHpoU9SxK5JCQAEcaobGW2ME=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdjsiRRLOBz8U2tFyUbjDABp9LNAcfFnMAacB
+ q/TryPb/ISJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHY7AAKCRD6UCkIqsW9
+ 0OYsEAChP21SQ0tJK1PcYeptIDAx+bvYcOm3teBt0ihZgYnh6nYrnTdBGHf2kMuIvfs12QTpp+T
+ zfNl/w5+U5C0LlK4b5tXCvMMtUaocbXe+5Zh/rSN00zoJs4lDVVneujrjMjLCludaNgUxiSCee2
+ zQYlDt53i82yVNaMF61aUtErkLrQ8l4jlOanqN5wbz2oYGH9PYNgxgOwKHWzCayrWq9k5kBtSf5
+ 9aEe26/crBBXnrPNSZFNe7wSqZ/pzzhblbGRLGs9Qu8DGpy1kiXB5Hs1q55np19W1HOjP8C4E/X
+ qr1bWj5mMZVqW262zqgRr87XmdAiOgKsT3zEqbbnCcJPNM8Z8cnaNCWXAqGouU8I0m9XKVMp+xe
+ BLveGRujcqD4FAn22ZeIJhbrc3PcL5rwpDxpPycTJcQt5K84ullP7MSDR4U4sZxqZNOtJJj3D4Q
+ qXhGXu9eKmJ6NkLWNfg+t7DKg3FhxPZVT0TrnYOOXXIkl6fxkP3C7ajQqy4CihoJjHm3lgeVbdC
+ PzNd7/RQ5Kv+5mwaFlptrzXy/7L+CmnKQuk2lnYX3N3L9ZEpfvCcGYcYGzb4yJJbAbyYQrPZzbb
+ xxOWYE7RQfr8JjTCqUyV4K6WWYACKR+hYc6utgnsyOw4gn1H57G5rWBG4VinID/419rAnxs/hQP
+ rXW2fFRBvTDAMPQ==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-The rust null block driver plans to rely on preloading xarray nodes from
-the radix_tree_node_cachep kmem_cache.
+Add `XArrayState` as internal state for XArray iteration and entry
+operations. This struct wraps the C `xa_state` structure and holds a
+reference to a `Guard` to ensure exclusive access to the XArray for the
+lifetime of the state object.
 
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+The `XAS_RESTART` constant is also exposed through the bindings helper
+to properly initialize the `xa_node` field.
+
+The struct and its constructor are marked with `#[expect(dead_code)]` as
+there are no users yet. We will remove this annotation in a later patch.
+
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- lib/radix-tree.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ rust/bindings/bindings_helper.h |  7 +++++
+ rust/kernel/xarray.rs           | 66 ++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 72 insertions(+), 1 deletion(-)
 
-diff --git a/lib/radix-tree.c b/lib/radix-tree.c
-index 976b9bd02a1b..1cf0012b15ad 100644
---- a/lib/radix-tree.c
-+++ b/lib/radix-tree.c
-@@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
- 	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
- 	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
- 	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
--	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
--			sizeof(struct radix_tree_node), 0,
--			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
--			radix_tree_node_ctor);
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 446dbeaf0866..d4093367a4a8 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -123,6 +123,13 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
+ 
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
++/*
++ * `XAS_RESTART` is `((struct xa_node *)3UL)` -- a sentinel pointer value, not
++ * an address. Cast to `size_t` so bindgen emits a plain `usize` constant; for
++ * pointer-typed macro values bindgen otherwise generates a `pub static mut`,
++ * see https://github.com/rust-lang/rust-bindgen/issues/3347.
++ */
++const size_t RUST_CONST_HELPER_XAS_RESTART = (size_t)XAS_RESTART;
+ 
+ const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
+ const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index d54942aeb201..6d0d4905004a 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -8,7 +8,10 @@
+     iter,
+     marker::PhantomData,
+     pin::Pin,
+-    ptr::NonNull, //
++    ptr::{
++        null_mut,
++        NonNull, //
++    },
+ };
+ use kernel::{
+     alloc,
+@@ -299,6 +302,67 @@ pub fn store(
+     }
+ }
+ 
++/// A reference to a [`Guard`], either shared or mutable, that exposes the
++/// underlying xarray pointer and the value type stored in the array.
++pub(crate) trait GuardRef {
++    type Value: ForeignOwnable;
++    fn xa_ptr(&self) -> *mut bindings::xarray;
++}
 +
-+	struct kmem_cache_args args = {
-+		.ctor = radix_tree_node_ctor,
-+		.sheaf_capacity = 64,
-+	};
++impl<'a, T: ForeignOwnable> GuardRef for &Guard<'a, T> {
++    type Value = T;
++    fn xa_ptr(&self) -> *mut bindings::xarray {
++        self.xa.xa.get()
++    }
++}
 +
-+	radix_tree_node_cachep = kmem_cache_create(
-+		"radix_tree_node", sizeof(struct radix_tree_node), &args,
-+		SLAB_PANIC | SLAB_RECLAIM_ACCOUNT);
++impl<'a, T: ForeignOwnable> GuardRef for &mut Guard<'a, T> {
++    type Value = T;
++    fn xa_ptr(&self) -> *mut bindings::xarray {
++        self.xa.xa.get()
++    }
++}
 +
- 	ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, "lib/radix:dead",
- 					NULL, radix_tree_cpu_dead);
- 	WARN_ON(ret < 0);
++/// Internal state for XArray iteration and entry operations.
++///
++/// `R` is the borrow held on the guard: either `&Guard` for read-only callers
++/// or `&mut Guard` for entry-style APIs that need to surrender the borrow back
++/// via [`XArrayState::into_guard`].
++///
++/// # Invariants
++///
++/// - `state` is always a valid `bindings::xa_state`.
++/// - `state.xa` aliases the xarray reachable through `guard`.
++#[expect(dead_code)]
++pub(crate) struct XArrayState<R: GuardRef> {
++    guard: R,
++    state: bindings::xa_state,
++}
++
++impl<R: GuardRef> XArrayState<R> {
++    #[expect(dead_code)]
++    fn new(guard: R, index: usize) -> Self {
++        let xa_ptr = guard.xa_ptr();
++        // INVARIANT: `state` is initialized to a valid `xa_state` whose `xa` field aliases the
++        // xarray reachable through `guard`.
++        Self {
++            guard,
++            state: bindings::xa_state {
++                xa: xa_ptr,
++                xa_index: index,
++                xa_shift: 0,
++                xa_sibs: 0,
++                xa_offset: 0,
++                xa_pad: 0,
++                xa_node: bindings::XAS_RESTART as *mut bindings::xa_node,
++                xa_alloc: null_mut(),
++                xa_update: None,
++                xa_lru: null_mut(),
++            },
++        }
++    }
++}
++
+ // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
+ unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
+ 
 
 -- 
 2.51.2
