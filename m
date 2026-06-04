@@ -1,64 +1,64 @@
 Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AB33E3D95
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 11:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7C840DFDE
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 11:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780571836; cv=none; b=MecMM12X7S9EDNbIPKoden9RHwPdl7gs/zf6tae7iRgTATulFJjhbu0iQG4osappjno34yIENMGUIYl8V+hEl923JJm0Q5qvhTyfCf9Yeb2Zv5Cfb67xrnTtmeKKPh6E9oQAHbLMnWI6PbdoI8WYOxoDfmD6AczJeysIWorLEkk=
+	t=1780571864; cv=none; b=PsUku2OfsxxaNxNiiw4hNgRKV1k9rF0juFq7aWH3tdIpYw/kAzyhY1KQQZLIPp4Zs5KzzaJb5r25ID6E9avb4wBq1ZZpHJXIWtFBP3R8T1d6/Dc+6XYxocyQlflj94SNI8S0XHc4/5Ng8EmXDzBXyDHpiBsIviuiwwZSZ4N0BhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780571836; c=relaxed/simple;
-	bh=Li3Wd9vZ2do7YIFFIrvPQ4L5MznI5BwPjL7AunXsO9M=;
+	s=arc-20240116; t=1780571864; c=relaxed/simple;
+	bh=RXDUQowYZh9h3j6qG/zfu8NnZV/DxLiYcI7PD6e6SN0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZtFXCywAVZjeZ1aVvjJgs01awXB1p46v7f3IV3SF5Fr9ba5IzRfHvejUz8KY0Bdl5PWgKh56jZPjXtMiR+b4QXOQedUNSDQUF91BO44SlmKPUWLI77lhyqqB49Os+Yo3kGlT4fhdpqkpa+RSnpHqpnYLmzJaKIon8BVtTCPzCSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivsLnTTa; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=ZtgX9K31RhVZTttKBHW80fk3jcn6U7Wj5F28lAc161koUTeqsQkl34bV+4EbyrgsUi2Q43kzIu1OMoUG3yNWF8biUPFdYMzoE/bhZgP2/4GfHeFJp8JaFiOg2T8cYo7HkJkp59cPQQNd56go3IAJCND1dDGlEtRN97iJ57INQ4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BFrvfGuN; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivsLnTTa"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-460153ce644so402348f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 04:17:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BFrvfGuN"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4601c9b630fso256840f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 04:17:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780571833; x=1781176633; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780571862; x=1781176662; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bL3cr/N4yYTt9Xr62pbCqd/6k/zRQ+lTKB/ioJiYtd8=;
-        b=ivsLnTTanW/nUJfToVzGLrP8aPC39hcFvo9+j6K+4wVvBmgyLxwQkR0ZQPK5SA3XV4
-         Tjagv/7GALQCeBLxZee7yQxdIn5PAgZ0iD4GiZ+vCIFwLcRxIbFEUX3dUnrHC2818WMg
-         bONOgIwPUbhDO2jB5s9y+K6fOvN9W1YiOFPFpI/xmtZyL4J3fXl8KJNT+79+Kmt42ehP
-         EPjlx5QajL2pXk0D431dpu9WRZdAEL3Gx2dk8va/yXNlVF3Vi1+NVYY/v1ZGvwrT2/C2
-         83fR5nKoM0+wm6Le0MbAKEsETFRBqvnNmcoEsFicptWqLDrXB5uX4jeK/rzuR0swcrVy
-         LJdQ==
+        bh=vMPINAxbwMQr+CA+jaOG7PHibBNPmddYJIp5CCiKSfg=;
+        b=BFrvfGuN9oSDubYLaDAS12jTS2M9OlRJFlUWVTwP6kmkTbVQa2dp/a8oxL4WYPzQRy
+         bkxb3TVNVb8zWvUQVHOO7g46rXwpQCbzxoqgWm2WixoOeY9B7cRdvnZPRcehGmDZuAj8
+         mJH1C6OIEyN6q/l+ds7kJaKhp7iTaG5kwhrSm31hED1jTHEv4IhJSRWYJEV/I1mNsFdJ
+         9cKklyICIuWnj5fAfA8I2CKYwEu6YJraNEMv8491k7Hm99R/WsXYK60yo7mjoYk3wWzq
+         xzcvpe8ywrG1BwVL4O1rgspzZXieoViS3Nf5Wd6OOn9/7R8aOHUnmr7sYpSBcJbdwA7X
+         xuvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780571833; x=1781176633;
+        d=1e100.net; s=20251104; t=1780571862; x=1781176662;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bL3cr/N4yYTt9Xr62pbCqd/6k/zRQ+lTKB/ioJiYtd8=;
-        b=jPCIsPulusEwhL5YCV0PCc0yXAdOSXsbfY3qYpqENnay55V6XKVburuVsxwp7129QD
-         edelJy7LEOYYY/mSDsRNpyTpe7u91MbOvnqD9GGzb9UlypR/Fa3LGZDm1Et2Sj7O7F+3
-         kVh3FD3KOUeKabI9FDrTR405Am/vSJY6vHDHs9pPmcIyIYhxQ0udPxAh7I7jHlP5tYpT
-         aDjotGrlKu4wkSq37v3PKRaXSdVW7IFMyGDdRb7K+HJVKoVblddBKjzBu/PjeAd+WzJT
-         WQ/NC/erR+JR5NbUurzncH+2wBv7dW5F4LCFC0ZsCgrC3P+bn1rfgAaS4eUBcRqjbBqe
-         PR/w==
-X-Forwarded-Encrypted: i=1; AFNElJ/4OaFZSnC+7Y9HDg/LR3SZOAkNe/J/QX8m1QYqY5WLnBFXLG7E93UzQEIuxoYpnxrKX+UaLbtiVn/ePu9CDg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaR+kpWzhkuaSI2k0H7mzT/nZCOGLj6VCYH4CLHfb+391lCPQl
-	gsbovqZpYuDxHfvPsxqh4Kjqi/bTQr2pGl2jIFWnm0ZKT4+7QFqq5g/Rp8GnwmoMkQG0ao+agQo
-	xOGm4J4dGByn52owQoQ==
-X-Received: from wrvx5.prod.google.com ([2002:a5d:54c5:0:b0:45e:ee1e:37d3])
+        bh=vMPINAxbwMQr+CA+jaOG7PHibBNPmddYJIp5CCiKSfg=;
+        b=UUEewT8f2qEI+BrmOQzGcWFZH1LTp3inVA1dGOO1OzY2RZfgMOxeAMZKy8Lgp6oauI
+         1QKDpjefx5ve/N+vdt7p6sL7PxiJJFHimzKkUH2BC3AWF0lPfsw7cOfp0OVqxhG6VQt+
+         PUC9y0lvEyCgUVEJ6w3cfhC51aaW5WywAFVQhHCVnqrh5tACC5usuV5cxQBd3qTFnyX6
+         PRAWJ1Ggvtzua8+wMO8E3LxAxYdLfj9oCKEqhk6QOPE3vJ4ha9ena+a+Wr2wi1FThbyV
+         3svCBz5NBmZRWM9Dtdlu400/fDx1wnEcuBAB3Rse3+nN7ptP7Yw2oVfAfVI4+rjb9t9T
+         rsVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8QUZVrVOGJ2uEaetBqDebBBWdzYj5qhBiETNyDKH0tUg2xbGc2K8IXvZPI749qf1ls7LP6ylt9/rrJHvV9/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf7TRK+bCfNURgtu1LrcWK2dGyrgJ9iNZG3FLLfoXtTmbwVaFw
+	p0EfxKhhEF1nmKMDi+XJBuP0AZnrw+/UMdkMJrsqDZeHsDacAPce24Kz+j9puX2tu5FbEqhXUqS
+	CL3oUbxfYvgTtSGsNPg==
+X-Received: from wmbz1.prod.google.com ([2002:a05:600c:c081:b0:490:af44:67a5])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1993:b0:490:bb19:b110 with SMTP id 5b1f17b1804b1-490bb19b19amr73563895e9.27.1780571832368;
- Thu, 04 Jun 2026 04:17:12 -0700 (PDT)
-Date: Thu, 4 Jun 2026 11:17:11 +0000
-In-Reply-To: <20260526-rate-exclusive-get-th1520-v1-1-34cf034e1764@mailbox.org>
+ 2002:a05:600c:a016:b0:490:bc46:1a58 with SMTP id 5b1f17b1804b1-490bc461b57mr60168765e9.18.1780571861570;
+ Thu, 04 Jun 2026 04:17:41 -0700 (PDT)
+Date: Thu, 4 Jun 2026 11:17:40 +0000
+In-Reply-To: <20260526-rate-exclusive-get-th1520-v1-2-34cf034e1764@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260526-rate-exclusive-get-th1520-v1-0-34cf034e1764@mailbox.org> <20260526-rate-exclusive-get-th1520-v1-1-34cf034e1764@mailbox.org>
-Message-ID: <aiFet_2SNAwj6o2O@google.com>
-Subject: Re: [PATCH 1/2] rust: clk: Add ExclusiveClk wrapper for clk_rate_exclusive_get
+References: <20260526-rate-exclusive-get-th1520-v1-0-34cf034e1764@mailbox.org> <20260526-rate-exclusive-get-th1520-v1-2-34cf034e1764@mailbox.org>
+Message-ID: <aiFe1NSoQDs1YOj_@google.com>
+Subject: Re: [PATCH 2/2] pwm: th1520: Lock clock rate with clk_rate_exclusive_get
 From: Alice Ryhl <aliceryhl@google.com>
 To: mhi@mailbox.org
 Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
@@ -72,113 +72,14 @@ Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
 	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 26, 2026 at 07:04:57PM +0200, Maurice Hieronymus via B4 Relay wrote:
+On Tue, May 26, 2026 at 07:04:58PM +0200, Maurice Hieronymus via B4 Relay wrote:
 > From: Maurice Hieronymus <mhi@mailbox.org>
 > 
-> Add Rust bindings for clk_rate_exclusive_get() and
-> clk_rate_exclusive_put().
-> 
-> Clk::rate_exclusive_get() consumes the Clk and returns an ExclusiveClk;
-> the matching put is issued from its Drop impl. ExclusiveClk derefs to
-> Clk so existing rate / prepare / enable APIs remain available on the
-> locked handle.
+> The driver derives period and duty cycle from the clock rate read at
+> probe, so a later rate change would silently miscompute waveforms.
+> Switch to the new ExclusiveClk wrapper to hold the rate for the lifetime
+> of the driver data and drop the corresponding TODO.
 > 
 > Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
 
-Overall looks okay to me. With below comments fixed:
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
->  rust/kernel/clk.rs | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 65 insertions(+)
-> 
-> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
-> index 7abbd0767d8c..8cda40cb01e4 100644
-> --- a/rust/kernel/clk.rs
-> +++ b/rust/kernel/clk.rs
-> @@ -249,6 +249,23 @@ pub fn set_rate(&self, rate: Hertz) -> Result {
->              // [`clk_set_rate`].
->              to_result(unsafe { bindings::clk_set_rate(self.as_raw(), rate.as_hz()) })
->          }
-> +
-> +        /// Acquire exclusive control over the clock's rate.
-> +        ///
-> +        /// Consumes the [`Clk`] and returns an [`ExclusiveClk`] that releases the exclusivity
-> +        /// when dropped. While held, no other consumer may change the clock's rate.
-> +        ///
-> +        /// Equivalent to the kernel's [`clk_rate_exclusive_get`] API. Must not be called from
-> +        /// atomic context.
-> +        ///
-> +        /// [`clk_rate_exclusive_get`]:
-> +        /// https://docs.kernel.org/core-api/kernel-api.html#c.clk_rate_exclusive_get
-
-Avoid the newline here. Links are long, and it's okay that they are
-long. They must be on one line.
-
-> +        pub fn rate_exclusive_get(self) -> Result<ExclusiveClk> {
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
-> +            // [`clk_rate_exclusive_get`].
-> +            to_result(unsafe { bindings::clk_rate_exclusive_get(self.as_raw()) })?;
-> +            Ok(ExclusiveClk(self))
-> +        }
->      }
->  
->      impl Drop for Clk {
-> @@ -329,6 +346,54 @@ fn deref(&self) -> &Clk {
->              &self.0
->          }
->      }
-> +
-> +    /// A [`Clk`] with exclusive control over its rate.
-> +    ///
-> +    /// While an [`ExclusiveClk`] exists, no other consumer of the same clock may change its rate.
-> +    /// Obtained by calling [`Clk::rate_exclusive_get`]; the exclusivity is released automatically
-> +    /// when the value is dropped, after which the inner [`Clk`] is dropped as usual.
-> +    ///
-> +    /// # Invariants
-> +    ///
-> +    /// An [`ExclusiveClk`] instance owns a [`Clk`] for which `clk_rate_exclusive_get` has been
-> +    /// called and the matching `clk_rate_exclusive_put` has not yet been called.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::clk::{Clk, ExclusiveClk};
-> +    /// use kernel::device::Device;
-> +    /// use kernel::error::Result;
-> +    ///
-> +    /// fn lock_rate(dev: &Device) -> Result<ExclusiveClk> {
-> +    ///     let clk = Clk::get(dev, None)?;
-> +    ///     clk.prepare_enable()?;
-> +    ///     clk.rate_exclusive_get()
-> +    /// }
-> +    /// ```
-> +    ///
-> +    /// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
-
-Unused link.
-
-> +    pub struct ExclusiveClk(Clk);
-> +
-> +    // Make [`ExclusiveClk`] behave like [`Clk`].
-> +    impl Deref for ExclusiveClk {
-> +        type Target = Clk;
-> +
-> +        fn deref(&self) -> &Clk {
-> +            &self.0
-> +        }
-> +    }
-> +
-> +    impl Drop for ExclusiveClk {
-> +        fn drop(&mut self) {
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
-> +            // [`clk_rate_exclusive_put`] and balances the [`clk_rate_exclusive_get`] call from
-> +            // [`Clk::rate_exclusive_get`].
-> +            unsafe {
-> +                bindings::clk_rate_exclusive_put(self.as_raw());
-> +            }
-
-Nit: usually we format this with the semicolon outside the unsafe block.
-
-unsafe { bindings::clk_rate_exclusive_put(self.as_raw()) };
-
-Alice
