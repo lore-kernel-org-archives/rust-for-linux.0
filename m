@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB543C5529;
-	Thu,  4 Jun 2026 19:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950443CBE75;
+	Thu,  4 Jun 2026 20:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780603198; cv=none; b=IVY+WR9avMZgMG7V/anGmkboQZ+GrSDvlHc21HVKTLd1EjwdsP7cayMkFchqibI5mpNGOCQ0Sf8LkkZk8PFzY3xCZlUVfSn5WIW7pC1+2FesWRNpxrVnli5mLXRbQkPYuOnAsGbLd2dDsLnUB9HsCGlffCjJ2CNEgmrCln3H0d8=
+	t=1780603203; cv=none; b=jGGV6ErFVAFpK4uWxpV26ltjV5nbnPl0xtji65qQVEfXO2emyFIhXdvCks8Ypx4Dm4fOH9/xBzU1qGxXR1J1O9JQ3QSBuENeOf1hfLqugqZc1Zcs4AYJu/h3r60AZtQx8OQvpS9GokxLmcGdfcQUhr9TfTO3VD6Yi3TzQ1B1r+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780603198; c=relaxed/simple;
-	bh=wW3dDYAPEV4zxCchJaOgHpoU9SxK5JCQAEcaobGW2ME=;
+	s=arc-20240116; t=1780603203; c=relaxed/simple;
+	bh=l0CwU5Ulb0y9mTSS9KkZDum+7qeUfx4uMpAmUgVECbw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qGd5tKQLC6deCq6VDpHfX95xQEG8VH9V8+DJYfVMNIlj5nYekk4aBycw0+2ITQWQcjdEAvPHSggKfF7smPvyQy/vJ8+8RnjwpRQLoQOMyyWlDKu5F0cywu2z6f1o1zt3i51nqz5HJeeBqLUUpADBJztOaTec+Y0RIgjDrAVC4Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=erNGeM2b; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=LqlTQw1ImRU5oVEXfxVlWeUNmc7zTf7Wtxuk3Om9ITFsbWk8VDd5YiU7wVRVTACTOTA8+grHog6YXLKwce9GOS5LkUnOVrOpxCqYPStOyiqJZ0ZHtYrok0FKEAug4DXfY/tpy0zIT4ISedarH9Je7d2hlZflAWqPwpC1LKE0vm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YO/iaCXs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="erNGeM2b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE141F00898;
-	Thu,  4 Jun 2026 19:59:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YO/iaCXs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D10D1F00893;
+	Thu,  4 Jun 2026 19:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780603194;
-	bh=Ixi+QJOhPBvaKKM++NPOJdur0t/SwSTk/yHnYjkZNng=;
+	s=k20260515; t=1780603201;
+	bh=0nBF57LRsWrMEo8iN2euSSytrxyB+R/0oRMmaelTwQA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=erNGeM2bqlTFuHgqScFLsIgo9udKdgieAvty5VzUEKsfA2o3xirRR5x0ULJkbEsH7
-	 T/hpr8VKTJ2ckcJIH6SfKpMRTQtgd+CoENYNfiDZs6CVoFQUdcNdsD8t4K+yWK14Tn
-	 RhuktW5+RgVpp5DQ95jqYMGl+0KxOOp0xh+KtnvdWjjy9kwwqMNq30iPX6N6O+Oyhr
-	 AmxmA2Va+XSxhOYAloOKe1QVLD6Zu5gkwWcQwCNvS1sMuF2W1wAnBmTCLK6JwOFp/C
-	 BjTNimW2xa3V/8X7kQrHYS9g69PB96U8s9nmdoAzkOP3jxZ7Qk8dSdVa9nvsBVrDX4
-	 JChl3U7TC+Iaw==
+	b=YO/iaCXs1ZU63nZVH1a43zbW8BPeEPyW7LFZCDDd5aVO0JXVJTt/1OW0VvZuvisiW
+	 TJlHfnUzpTJxFgNyVRQjDc9WNCg5gvwTxlj96TNDApW5aOAFjFIrrRbHSkFWMifdUu
+	 i0pT8C0EpBz5CqaV296YpJaGTWF4MHkz3khQmEMFsyGmOMfQj7jnRszGL/OPKeFbs7
+	 KECsJiYIyKv8ieP81f7zerO+8Dyn7RESVDAsSHQOKk4DHYZKbqdzWpL5FSwnPqBKQw
+	 qm/zy69GWjTXKAbjAZPq8pyWhCzr8yZqaUTyQHcR1JssnixZdcZw1T7J8E5hXhrAjM
+	 8J4uN7fBuaSmQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 04 Jun 2026 21:58:09 +0200
-Subject: [PATCH v4 03/11] rust: xarray: add `XArrayState`
+Date: Thu, 04 Jun 2026 21:58:08 +0200
+Subject: [PATCH v4 02/11] rust: xarray: add debug format for `StoreError`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-xarray-entry-send-v4-3-965f6028790e@kernel.org>
+Message-Id: <20260604-xarray-entry-send-v4-2-965f6028790e@kernel.org>
 References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
 In-Reply-To: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -57,144 +57,58 @@ To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Harry Yoo <harry@kernel.org>
 Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
+ Andreas Hindborg <a.hindborg@kernel.org>, 
+ Daniel Gomez <da.gomez@samsung.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4215; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=wW3dDYAPEV4zxCchJaOgHpoU9SxK5JCQAEcaobGW2ME=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdjsiRRLOBz8U2tFyUbjDABp9LNAcfFnMAacB
- q/TryPb/ISJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHY7AAKCRD6UCkIqsW9
- 0OYsEAChP21SQ0tJK1PcYeptIDAx+bvYcOm3teBt0ihZgYnh6nYrnTdBGHf2kMuIvfs12QTpp+T
- zfNl/w5+U5C0LlK4b5tXCvMMtUaocbXe+5Zh/rSN00zoJs4lDVVneujrjMjLCludaNgUxiSCee2
- zQYlDt53i82yVNaMF61aUtErkLrQ8l4jlOanqN5wbz2oYGH9PYNgxgOwKHWzCayrWq9k5kBtSf5
- 9aEe26/crBBXnrPNSZFNe7wSqZ/pzzhblbGRLGs9Qu8DGpy1kiXB5Hs1q55np19W1HOjP8C4E/X
- qr1bWj5mMZVqW262zqgRr87XmdAiOgKsT3zEqbbnCcJPNM8Z8cnaNCWXAqGouU8I0m9XKVMp+xe
- BLveGRujcqD4FAn22ZeIJhbrc3PcL5rwpDxpPycTJcQt5K84ullP7MSDR4U4sZxqZNOtJJj3D4Q
- qXhGXu9eKmJ6NkLWNfg+t7DKg3FhxPZVT0TrnYOOXXIkl6fxkP3C7ajQqy4CihoJjHm3lgeVbdC
- PzNd7/RQ5Kv+5mwaFlptrzXy/7L+CmnKQuk2lnYX3N3L9ZEpfvCcGYcYGzb4yJJbAbyYQrPZzbb
- xxOWYE7RQfr8JjTCqUyV4K6WWYACKR+hYc6utgnsyOw4gn1H57G5rWBG4VinID/419rAnxs/hQP
- rXW2fFRBvTDAMPQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1148; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=l0CwU5Ulb0y9mTSS9KkZDum+7qeUfx4uMpAmUgVECbw=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdjrzorzq+4T6PurdpmkIUWDjVZ/tEBb8myon
+ 5d/0/v7XIqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHY6wAKCRD6UCkIqsW9
+ 0EfUD/9OWWqFNFIktQfpK1Hyle/LSAjmNlESK91BK2sb65VFLfMXyoTm67fb3PbbhdLRKbEkrN8
+ Cmf/q4f9mPWpw5IZXPdvpE6COADtszfD/KLvrYr+fgFA16tWnvXtjpxp2Sy+SWI02uLkeOO3YYU
+ 6lln3/eE5N9bc4aMSJHSFGXFOWQUbPnqy3NYMONVbnZuBUd+nQdSE9iX67mmCZINedr9HMVKdpe
+ SmDNlTDHEEyfCRUn6bwv9VEARI3o2Vm8HOhMaLbmPqRm2h3WCa6DpRqQbyVDa5lnsRR/UNLJ6Ky
+ gF9D/p/gAu66ru+R26U0G13ri+7ntEggShXuRw6SKs44stEdanQk/P+BnTs0ap6R6eI6a8wnnbx
+ +jFNpn5TgiXEWqTPXZwn7LAQYbuBsr8K6bmC3qhDypfzYg2kJJq0k+Fnk1kPOrNT0FiwDg+pw0N
+ JBdHH3RkypHidqpglHSixmYT/p4ggHiD/osQLnLyHsjjOuXS7yXxmfkwBCqfZmRf7W/RDniTy2i
+ cuz2hcNkOaEPrH5oEwGuWi4o6V/oYIKLq8RISJViVqVr4z9TfRI0hrQVRkot4v8PuOI2Abl8QoB
+ +HOJ0ZrYUPLbqm880J95kzG6gBV3JFxPGpPPxQSJoBcYFyK0BH1nEPSdJGZkiUx21JcbCpmM1p4
+ frYqT+ng6G3oPrw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Add `XArrayState` as internal state for XArray iteration and entry
-operations. This struct wraps the C `xa_state` structure and holds a
-reference to a `Guard` to ensure exclusive access to the XArray for the
-lifetime of the state object.
+Add a `Debug` implementation for `StoreError<T>` to enable better error
+reporting and debugging. The implementation only displays the `error`
+field and omits the `value` field, as `T` may not implement `Debug`.
 
-The `XAS_RESTART` constant is also exposed through the bindings helper
-to properly initialize the `xa_node` field.
-
-The struct and its constructor are marked with `#[expect(dead_code)]` as
-there are no users yet. We will remove this annotation in a later patch.
-
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+Acked-by: Tamir Duberstein <tamird@gmail.com>
+Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/bindings/bindings_helper.h |  7 +++++
- rust/kernel/xarray.rs           | 66 ++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 72 insertions(+), 1 deletion(-)
+ rust/kernel/xarray.rs | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 446dbeaf0866..d4093367a4a8 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -123,6 +123,13 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
- 
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
-+/*
-+ * `XAS_RESTART` is `((struct xa_node *)3UL)` -- a sentinel pointer value, not
-+ * an address. Cast to `size_t` so bindgen emits a plain `usize` constant; for
-+ * pointer-typed macro values bindgen otherwise generates a `pub static mut`,
-+ * see https://github.com/rust-lang/rust-bindgen/issues/3347.
-+ */
-+const size_t RUST_CONST_HELPER_XAS_RESTART = (size_t)XAS_RESTART;
- 
- const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
- const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index d54942aeb201..6d0d4905004a 100644
+index b80fb7a262d0..d54942aeb201 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -8,7 +8,10 @@
-     iter,
-     marker::PhantomData,
-     pin::Pin,
--    ptr::NonNull, //
-+    ptr::{
-+        null_mut,
-+        NonNull, //
-+    },
- };
- use kernel::{
-     alloc,
-@@ -299,6 +302,67 @@ pub fn store(
-     }
+@@ -193,6 +193,14 @@ pub struct StoreError<T> {
+     pub value: T,
  }
  
-+/// A reference to a [`Guard`], either shared or mutable, that exposes the
-+/// underlying xarray pointer and the value type stored in the array.
-+pub(crate) trait GuardRef {
-+    type Value: ForeignOwnable;
-+    fn xa_ptr(&self) -> *mut bindings::xarray;
-+}
-+
-+impl<'a, T: ForeignOwnable> GuardRef for &Guard<'a, T> {
-+    type Value = T;
-+    fn xa_ptr(&self) -> *mut bindings::xarray {
-+        self.xa.xa.get()
++impl<T> kernel::fmt::Debug for StoreError<T> {
++    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
++        f.debug_struct("StoreError")
++            .field("error", &self.error)
++            .finish()
 +    }
 +}
 +
-+impl<'a, T: ForeignOwnable> GuardRef for &mut Guard<'a, T> {
-+    type Value = T;
-+    fn xa_ptr(&self) -> *mut bindings::xarray {
-+        self.xa.xa.get()
-+    }
-+}
-+
-+/// Internal state for XArray iteration and entry operations.
-+///
-+/// `R` is the borrow held on the guard: either `&Guard` for read-only callers
-+/// or `&mut Guard` for entry-style APIs that need to surrender the borrow back
-+/// via [`XArrayState::into_guard`].
-+///
-+/// # Invariants
-+///
-+/// - `state` is always a valid `bindings::xa_state`.
-+/// - `state.xa` aliases the xarray reachable through `guard`.
-+#[expect(dead_code)]
-+pub(crate) struct XArrayState<R: GuardRef> {
-+    guard: R,
-+    state: bindings::xa_state,
-+}
-+
-+impl<R: GuardRef> XArrayState<R> {
-+    #[expect(dead_code)]
-+    fn new(guard: R, index: usize) -> Self {
-+        let xa_ptr = guard.xa_ptr();
-+        // INVARIANT: `state` is initialized to a valid `xa_state` whose `xa` field aliases the
-+        // xarray reachable through `guard`.
-+        Self {
-+            guard,
-+            state: bindings::xa_state {
-+                xa: xa_ptr,
-+                xa_index: index,
-+                xa_shift: 0,
-+                xa_sibs: 0,
-+                xa_offset: 0,
-+                xa_pad: 0,
-+                xa_node: bindings::XAS_RESTART as *mut bindings::xa_node,
-+                xa_alloc: null_mut(),
-+                xa_update: None,
-+                xa_lru: null_mut(),
-+            },
-+        }
-+    }
-+}
-+
- // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
- unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
- 
+ impl<T> From<StoreError<T>> for Error {
+     #[inline]
+     fn from(value: StoreError<T>) -> Self {
 
 -- 
 2.51.2
