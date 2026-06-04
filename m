@@ -1,35 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BD33CF02A;
-	Thu,  4 Jun 2026 20:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B0B3C9EC6;
+	Thu,  4 Jun 2026 20:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780603237; cv=none; b=EbX5WbwQkS+qhdGTh9Jy2qdwgTe8zRqV7TLxBW4k9IDI3pvY4jQayVF3GXZxY9XzT0nUi97g5yZii+HenzYhVu5vQGhgf3XefqaDjsXp91u4rMWx0ZeL0gsKxpr4oH7EOyvMAA1DGmc10s1QkEGOMuEh6S9AQVzIOfbJFnluccA=
+	t=1780603244; cv=none; b=JQ4z+tOl9y1JaY1swgHtyrnnDwrY3wh6ygvVrZ4ea/rYc/qs1bVMmIpdnjndaWTmYQ5k8wtOyFVwia8ebDeW0djNgrbm0nM5tBQhrTQueg7fbQM5EKcS6DGlQfhXCazu510xK6prV5X0MxifsHOAFd4MFi/yumu28esSrerFbuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780603237; c=relaxed/simple;
-	bh=oYaezwlxJQpR8UtIF1kAo4ndp1y9jT02xjr/aB92Sp8=;
+	s=arc-20240116; t=1780603244; c=relaxed/simple;
+	bh=ezQhkpviZx/0cjtMqszOUvlxFZxlxC9tkEpF0/WvfOY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iYLfcyVmM+GpEJQDbYk7gTS6pVYq7dKuNm7vUIlPzTkIUjS+5nJxPiV827mu/Ok9TkDYUNUPYjtGeKjyB6N0NycFgpO/y1aHFZjZ2tKcQBHa63ogdIZhfzFgvRnNNTn7YIkbm9zGGxBKQeRD+Jy9HrGyj4R96R01jzo95URYuws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Td6OZ0oB; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=NuuQ7tonNIU5C3EhZuz/+dpT8bZyxh/BJRuo5L0HvTt8tMi620ULW++dCztqyg4VkfQXM9+IaH9eLaFULv3Wvz/cCh7pzKvsluu9LhRyCR5gXjZP1bbXAAkny6lV/PNrcbXZuwhlbiWksbgobkPFgCiHONuavSffLJWCGZVv9d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cySSMS0w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Td6OZ0oB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8091F00898;
-	Thu,  4 Jun 2026 20:00:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cySSMS0w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29BB1F00893;
+	Thu,  4 Jun 2026 20:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780603234;
-	bh=p6YuYMOYnDWDBMZ9bbEPIsqKNsVYpVFYY4aODNh2Npw=;
+	s=k20260515; t=1780603240;
+	bh=uzpE/Seo/CVQh6i9kKpA38HdPooRgCjlsYOlxSZWRAo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Td6OZ0oB6NVr21aNjgjcbw9w8ngfB+Z+W7pM31bHdmaKrm8mUW+6P8SMyO01LTBB7
-	 aZ28jpYveay9tJ5hxsepy0tMwjd+/K0b0b62mriLyAfadJMX7yOH1xbVLTH+GjxXIW
-	 xXYy9mdQsnEBLW5xw1hY9Kx7iB/BqUo8bgnwsoQkDL9Z4TKuBOLPi1A22j8IJPb4Ti
-	 Ka+XELivsbPTaK1xUt4+ZtPAvJCiGqPgtpQLJloAD9LeeO44w71KP1xUap4+A46yWV
-	 5FvJdE5XAPsDDdly6nKoknfZMmHKtutNTU2Qbpxq6B6s7x+Xz24d0yStjFZQO6gQYr
-	 7yMi00M3QyZsw==
+	b=cySSMS0wQoYMLFZzNwdzKmfmDrtcSP/NCTMcBFjGrWbz/6X+Fz/vnrepqH5ta2nh1
+	 lhCk9aTbZPsqiZNsvbjOpL4PQxz8kP+DABIXN56KvsyAjv59XHUSu7zIHiAoEbqhPm
+	 1esZpcUGWk6ajslGpO2jjpcIxVt6RdEiE6v7A1RYXbUZ8oEM1XcBwgXVVBKTFf1wg7
+	 A9AfnP56HKtTmklCWvGhwU/UpbvkpJ/N3Xx67srCiTyhHV1gejmg4wmO0SpwR+eOcl
+	 Ac5Hdplhy87NTF5pJ+2+4er41Stu9yUF0Qjed+2CogvW7P+aqeNxfZXdaox+bkAki9
+	 laeW5QIFtTTTA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 04 Jun 2026 21:58:10 +0200
-Subject: [PATCH v4 04/11] rust: xarray: use `xas_load` instead of `xa_load`
- in `Guard::load`
+Date: Thu, 04 Jun 2026 21:58:11 +0200
+Subject: [PATCH v4 05/11] rust: xarray: simplify `Guard::load`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -38,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-xarray-entry-send-v4-4-965f6028790e@kernel.org>
+Message-Id: <20260604-xarray-entry-send-v4-5-965f6028790e@kernel.org>
 References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
 In-Reply-To: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -60,84 +59,73 @@ Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2450; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=oYaezwlxJQpR8UtIF1kAo4ndp1y9jT02xjr/aB92Sp8=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdjtXXR6p/YMNbWL1d7vr9jQHRbkshID8Gu3F
- 6Mk1qpxbzqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHY7QAKCRD6UCkIqsW9
- 0Hw9D/sExDzOpSwLMZPByJRIDOftL7P3W6n7egMhr5eH9jrbr9Z0/bBmlY2GkTSChDdjCeti3iT
- PVzlvvzpBFAgB4xhGAZc1fFPSzbzCqh4RJPCS0uQJQPIVONDRjtimSwNNnBq96darpyBzlwFvEn
- KjsE5NUuh3cK4rWz1wFY4lmNJYvY2V/WhPSgF5uATxvWeWGOLBpehSE3VVwxLmPHj6pV7bLUUUz
- khgcIVMTUB/gNsL83eoQZ/W5bC2Kn+KxIdS3rHNP914QHRl6SFYIe8JmcLhKOLo1mKY7cx/Qws+
- 4MxvLHw9WzELoT2fl28hr+JJvFP98b717NvSCD8IlX1nQtNIGO176AFpvBxQva/iR9H1B/tIKUr
- iVyK/L7Sf6AC85xIEkE/HgiHEYgWDLSgIurtf/qli6Z/acWX218XdPN/t4eBjvX+viDKN2FgU6F
- 8tHLcVGzVaS0RSEYlgZdGH2HOWEsoVrPnscKZxlDw0uNJL2bI0DuJJf/pq+QUdwC7shxxbP5aJm
- f0vrRRd58MuAyjwHmuDGjD/mR4jVQ2IocIaoDuGFn/21bOKIoo2viRFX61R0ygKGgslQdPNHbrN
- gTq6DgLkQnZ3tAS9a7ey3JIY2SuAfHi//Uwe6zTdpbn10CTe4EAimfAbEFxVji5kns8Fk9TGqWE
- PbSDm83CaEkfRDA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1921; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=ezQhkpviZx/0cjtMqszOUvlxFZxlxC9tkEpF0/WvfOY=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIdju4CQhaBJkwad79lAfp/ue4pLZH7qUsiCm/
+ +qQ25t3ElKJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiHY7gAKCRD6UCkIqsW9
+ 0PkLEACqUwe49HzCnXbMEXytmhd0EooYaXxjvSqDIcIDhP4BqsAGSFzbXsRfdR93yV15pTd5Btl
+ JHv74i4b5Z0UVvF6rEXcae2n9TT/TdoVv/YNvAQPOxodV9+9pCG64KN4WoVJm882c8kllHD70qk
+ tikJcRAEbjzyuVBJLcxZXzqkRiSG5Q9sGUHb/P9OacmoI9I/czaNbF+qmD7KqDV4zJwY1z2zni/
+ lgoGOJFES7OBBQPeLRWZpfHgViKACn71Fetc6wyljzbj2iSwwm2pEAtOLFFNxtbPJub04IgQfeH
+ S7TZ6+OE6b/N0Wsz4vVgOQB+gsSlDqG9cuvkgayZ8xasT1X6h3snzsh+VL6DXuzLnxAb083ktup
+ Wx3n9CP4v6XAmNyDEf1KG9jQiAaQ+OqLjFyfshRwHn+2l0dL1YUlFd3O3ncsb35BJOj8QoTegAo
+ soE0Crn8McmYMPM64I0llHlTFjJsVxwKrMVViZb1/fY5FQXsSLNOwWllgKwdCkSpGwQYgX/7WHm
+ fxjoYCVj4oVoQ4kMayxYBlTYUrcfz355KKByl+Y4455Mel4QLQlngxC9hYIcQdNjlQohUFBwzQp
+ n1fy6EZejVLk87xWLxOfnqFhP9BelJBmHncIW3inXaCP1jgOVFdU4IJrvuIvaVpR/Gq8hk8tBNZ
+ eVEHfHszdt31wHw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
-`xa_load` function takes the RCU lock internally, which we do not need,
-since the `Guard` already holds an exclusive lock on the `XArray`. The
-`xas_load` function operates on `xa_state` and assumes the required locks
-are already held.
-
-This change also removes the `#[expect(dead_code)]` annotation from
-`XArrayState` and its constructor, as they are now in use.
+Simplify the implementation by removing the closure-based API from
+`Guard::load` in favor of returning `Option<NonNull<c_void>>` directly.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/xarray.rs | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ rust/kernel/xarray.rs | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 6d0d4905004a..05e6dc1ffe69 100644
+index 05e6dc1ffe69..7da57c778669 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -216,10 +216,8 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
-     where
-         F: FnOnce(NonNull<c_void>) -> U,
-     {
--        // SAFETY: `self.xa.xa` is always valid by the type invariant.
--        let ptr = unsafe { bindings::xa_load(self.xa.xa.get(), index) };
--        let ptr = NonNull::new(ptr.cast())?;
--        Some(f(ptr))
-+        let mut state = XArrayState::new(self, index);
-+        Some(f(state.load()?))
+@@ -212,28 +212,23 @@ fn from(value: StoreError<T>) -> Self {
+ }
+ 
+ impl<'a, T: ForeignOwnable> Guard<'a, T> {
+-    fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+-    where
+-        F: FnOnce(NonNull<c_void>) -> U,
+-    {
+-        let mut state = XArrayState::new(self, index);
+-        Some(f(state.load()?))
++    fn load(&self, index: usize) -> Option<NonNull<c_void>> {
++        XArrayState::new(self, index).load()
      }
  
      /// Provides a reference to the element at the given index.
-@@ -333,14 +331,12 @@ fn xa_ptr(&self) -> *mut bindings::xarray {
- ///
- /// - `state` is always a valid `bindings::xa_state`.
- /// - `state.xa` aliases the xarray reachable through `guard`.
--#[expect(dead_code)]
- pub(crate) struct XArrayState<R: GuardRef> {
-     guard: R,
-     state: bindings::xa_state,
- }
- 
- impl<R: GuardRef> XArrayState<R> {
--    #[expect(dead_code)]
-     fn new(guard: R, index: usize) -> Self {
-         let xa_ptr = guard.xa_ptr();
-         // INVARIANT: `state` is initialized to a valid `xa_state` whose `xa` field aliases the
-@@ -361,6 +357,14 @@ fn new(guard: R, index: usize) -> Self {
-             },
-         }
+     pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
+-        self.load(index, |ptr| {
+-            // SAFETY: `ptr` came from `T::into_foreign`.
+-            unsafe { T::borrow(ptr.as_ptr()) }
+-        })
++        let ptr = self.load(index)?;
++        // SAFETY: `ptr` came from `T::into_foreign`.
++        Some(unsafe { T::borrow(ptr.as_ptr()) })
      }
-+
-+    fn load(&mut self) -> Option<NonNull<c_void>> {
-+        // SAFETY: `self.state` is a valid `xa_state` by the type invariant. By the same
-+        // invariant, `self.state.xa` aliases the xarray reachable through `self.guard`, whose
-+        // lock we hold.
-+        let ptr = unsafe { bindings::xas_load(&raw mut self.state) };
-+        NonNull::new(ptr.cast())
-+    }
- }
  
- // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
+     /// Provides a mutable reference to the element at the given index.
+     pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
+-        self.load(index, |ptr| {
+-            // SAFETY: `ptr` came from `T::into_foreign`.
+-            unsafe { T::borrow_mut(ptr.as_ptr()) }
+-        })
++        let ptr = self.load(index)?;
++
++        // SAFETY: `ptr` came from `T::into_foreign`.
++        Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
+     }
+ 
+     /// Removes and returns the element at the given index.
 
 -- 
 2.51.2
