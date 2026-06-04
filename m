@@ -1,211 +1,610 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B9336896;
-	Thu,  4 Jun 2026 22:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780612144; cv=none; b=Cudcg0KXW6t00/zpzgiwjhQSpF8U4zOJxBI9iCItdQ4esvbqDE4YQKu2iznYpQygRyr2jfdmhnNvL0VloK/+782HGqAID1tai5NPfLXghRtOzgua0BcqOjCBdJJFlRVT7ed+oLi3T5V7LV2XTVPgpO/W7P3xsXnFNZu3/RW7E3U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780612144; c=relaxed/simple;
-	bh=9q13binj1Gh2mhCoNsaz8Nyhr+DpqkGjH7iScj/pL3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FTAoUwpgqqKpHo43adY6AGViymYAAhVEJqetK5oRu0vUSdRW5r08gdqrK0lReszgDPxjMW3gCmb5o6/IsTvKaFPjgKAd89BkhBP2df5Km2acRFB+WV5H5HVqe14EVCKQXAw/8iop3GplHiks9q/rVgdAxAQuHjgra1jnAyZnxmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1zUvoBP; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D3231E821;
+	Thu,  4 Jun 2026 23:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780615620; cv=pass; b=P1EcVqtfZpGqEmox7jWjfA1iQ8f60ifuqyKHhc9IRT7W2CDJD3Ejs4b6VFm2kMO/Fx6c5tgFL5wpBj2N8nXPev+awQZzIIcKY4EEW3UIB2G7/hCU/QNAmSiwa+r5id0M5WjvUZjPbRUg36T/1eNUVIL+dqINiDmexazWAKV9Uls=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780615620; c=relaxed/simple;
+	bh=SR0OXde1dO1WcYRX2W4CVYW2UMQY9jeLKYw6B++/+mg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XQ7Hpm5cDWzknnynirB5/TVcW99jnSTvj2ZKZMkMcN9HU/Tjo6XI3w2zhLJAlEuy8kKvNv99md+qCFrOdxDxfQ++0d91SmDqCae4sZNGgGgnZMXugxrhjpF5Og7OaJuoD4n598Zc0+wt2hVcTnEFAeTL45RW3zeNbQAxT4aziEM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=R+7bCUPt; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1zUvoBP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533061F00893;
-	Thu,  4 Jun 2026 22:29:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780612143;
-	bh=aChqsZLCdnwCdbNyuyN+o8J2VhEvDT4W+ZyicK8F/s8=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=A1zUvoBPOIRme8oK7mkdSUjzwcbu0bDy23xNMSGCQv8HQqLzwX6oy0CQvm+aO/8W1
-	 qIn4UcTLy1xyshjnHR5Y4S23lhyf35pDk4HsMJbkghVZZ0YdOQqkIOHKVIv47mBQXV
-	 pEikiP4in4Kix+uR2JPZi/N8EJ8GmQmu0tyYTK+DuCtIUDn7KKfIMswD8BWx2c6EGP
-	 d6km3eQr0zuEGcgdpN62rP6S3WdpVKYx3QmIi+7cfRdC8rscXjM1QT1jcrAzgxBCrJ
-	 G8iJoJz9Q0GzHvRT4ldlHaIi+1VFLya1tUdaptmFDtCB6U4Tq3VFBf75W6No107T/t
-	 vbRv7d9kFiH6Q==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id EB526CE0555; Thu,  4 Jun 2026 15:29:02 -0700 (PDT)
-Date: Thu, 4 Jun 2026 15:29:02 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: rcu@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ojeda@kernel.org, boqun@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, peterz@infradead.org, fujita.tomonori@gmail.com,
-	tamird@kernel.org, jiangshanlai@gmail.com, josh@joshtriplett.org,
-	rostedt@goodmis.org, mathieu.desnoyers@efficios.com
-Subject: Re: [PATCH v9 2/4] srcu: expose srcu_readers_active()
-Message-ID: <1db254a1-951c-47e9-bb4b-adb5ca00f2fd@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260529134004.396743-1-work@onurozkan.dev>
- <20260529134004.396743-3-work@onurozkan.dev>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="R+7bCUPt"
+ARC-Seal: i=1; a=rsa-sha256; t=1780615598; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=RZO7cxv0+/iWaKzyWntp1HpFAcyjldK1HEUlk70XmCWeA9esMmyOAQvj7w9STTARdw+gpWKqG+5L1eltmTN2Tvok6i1KFdubL2whpLQA9cp/cWfFT9OY6un53bKc/HD5jVS/0bdJ4FCyXtAx0SkA0CjbRnNYyIW4Ri5x1td7T3Q=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1780615598; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=bPThW9ju5SJ7OPJ60AEV5ERmRcvVjctfG9y/3U3Eo2g=; 
+	b=dg2gAObdGaLaMQMJThHZt481em1Z6bqe7zTZw0oyQDWbez5iMPpgI3LbBLK/Hd1CUw4NLDKePG4PP9LUMNpNOJ+2AB0r4Ov/8lTHB/Lotnq8NR6mQojnFzwRvWitRazgLC7aEPDzZYA1vbRryUPYwhks+IOXPouCNDPSNVOLH0Q=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1780615598;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=bPThW9ju5SJ7OPJ60AEV5ERmRcvVjctfG9y/3U3Eo2g=;
+	b=R+7bCUPtdWiXE/Bo1LDmpMSeKFtZvEZic7JJZOpd/T9xzqtLY8SRa8EQZ99ToFsH
+	cDvzzQn/H8pZFnYhZ6GkoqbB5lKGBCwob3UsAi0XxXDCjhzKHR/C9vFW5rTPoYLpLsG
+	pmYyA5rli6NFA4qTD6CGaandSShys70hpsw/c/h4=
+Received: by mx.zohomail.com with SMTPS id 1780615596201257.9782750096773;
+	Thu, 4 Jun 2026 16:26:36 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Thu, 04 Jun 2026 16:26:12 -0700
+Subject: [PATCH v2] drm/tyr: move probe resources into registration data
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260529134004.396743-3-work@onurozkan.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260604-use_tyr_reg_data-v2-1-f77a1ffcf08d@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6DIBBFr2JmXRrAFmNXvUdjDMKgJFaagZoaw
+ 91LPUCX7yX//R0ikscIt2oHwtVHH5YC8lSBmfQyIvO2MEguFVe8Zu+IfdqoJxx7q5NmtWwkR6U
+ GaS2U2YvQ+c+RfHSFJx9ToO14WMXP/omtggnWNk5dsL0K49TdhHnWQyB9NuEJXc75C6JIghO0A
+ AAA
+X-Change-ID: 20260603-use_tyr_reg_data-32720e66b2dd
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ rust-for-linux@vger.kernel.org, laura.nao@collabora.com, 
+ boris.brezillon@collabora.com, samitolvanen@google.com, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16827;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=SR0OXde1dO1WcYRX2W4CVYW2UMQY9jeLKYw6B++/+mg=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFlKnKv/MDwuj3k081p94KuWnoAL5su1qm7VP1qc2qhct
+ L+JZZV/RykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABPJrmdk2JDOsNJK1lL6ae/h
+ cHHmqxtKU1t3MDd2xOqfiI/fsODAdob/hR/u6TUFCUl5vdmY4FWx1eLi9ilzK9ZeP6pZ8Ifrf+d
+ KRgA=
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-On Fri, May 29, 2026 at 04:39:52PM +0300, Onur Özkan wrote:
-> This is needed by rust/helpers/srcu.c which now adds
-> rust_helper_srcu_readers_active() as a wrapper around the SRCU helper
-> for Rust callers.
-> 
-> To achive this:
-> 
-> 1- Move the srcu_readers_active() implementation from
->    "kernel/rcu/srcutree.c" to "include/linux/srcutree.h".
-> 
-> 2- Implement a matching srcu_readers_active() in
->    "include/linux/srcutiny.h" and use it on the existing open-coded
->    WARN_ON() check in cleanup_srcu_struct().
-> 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-> Signed-off-by: Onur Özkan <work@onurozkan.dev>
+Introduce TyrDrmRegistrationData to hold resources that need to stay alive
+while the DRM device is registered. This moves the parent platform device,
+clocks, regulators, MMIO mapping, firmware state, and GPU info into data
+owned by the DRM registration.
 
-It would be good to merge the rust/helpers piece of this change into
-the separate commit that I suggested for patch 1/4.  Either way, I
-still stand behind my Reviewed-by.
+The registration data is tied to the platform device binding lifetime, so
+use Registration::new_with_lt() and store the returned Registration in the
+platform driver data.
 
-							Thanx, Paul
+Add initial stubs for firmware, MMU, VM, and address-space handling, to
+show the intended ownership model.
 
-> ---
->  include/linux/srcutiny.h | 13 +++++++++++++
->  include/linux/srcutree.h | 24 ++++++++++++++++++++++++
->  kernel/rcu/srcutiny.c    |  2 +-
->  kernel/rcu/srcutree.c    | 25 -------------------------
->  rust/helpers/srcu.c      |  5 +++++
->  5 files changed, 43 insertions(+), 26 deletions(-)
-> 
-> diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
-> index 905b629e8fa3..fbcf13bc12d1 100644
-> --- a/include/linux/srcutiny.h
-> +++ b/include/linux/srcutiny.h
-> @@ -154,4 +154,17 @@ static inline void srcu_torture_stats_print(struct srcu_struct *ssp,
->  		 data_race(READ_ONCE(ssp->srcu_idx_max)));
->  }
->  
-> +/**
-> + * srcu_readers_active - returns true if there are readers. and false otherwise.
-> + * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
-> + *
-> + * Note that this is not an atomic primitive, and can therefore suffer
-> + * severe errors when invoked on an active srcu_struct. That said, it
-> + * can be useful as an error check at cleanup time.
-> + */
-> +static inline bool srcu_readers_active(struct srcu_struct *ssp)
-> +{
-> +	return READ_ONCE(ssp->srcu_lock_nesting[0]) || READ_ONCE(ssp->srcu_lock_nesting[1]);
-> +}
-> +
->  #endif
-> diff --git a/include/linux/srcutree.h b/include/linux/srcutree.h
-> index fd1a9270cb9a..75e54e4f963f 100644
-> --- a/include/linux/srcutree.h
-> +++ b/include/linux/srcutree.h
-> @@ -374,4 +374,28 @@ static inline void srcu_check_read_flavor(struct srcu_struct *ssp, int read_flav
->  		__srcu_check_read_flavor(ssp, read_flavor);
->  }
->  
-> +/**
-> + * srcu_readers_active - returns true if there are readers. and false otherwise.
-> + * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
-> + *
-> + * Note that this is not an atomic primitive, and can therefore suffer
-> + * severe errors when invoked on an active srcu_struct. That said, it
-> + * can be useful as an error check at cleanup time.
-> + */
-> +static inline bool srcu_readers_active(struct srcu_struct *ssp)
-> +{
-> +	int cpu;
-> +	unsigned long sum = 0;
-> +
-> +	for_each_possible_cpu(cpu) {
-> +		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
-> +
-> +		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
-> +		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
-> +		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
-> +		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
-> +	}
-> +	return sum;
-> +}
-> +
->  #endif
-> diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-> index 780a95e8cad7..dde99876d473 100644
-> --- a/kernel/rcu/srcutiny.c
-> +++ b/kernel/rcu/srcutiny.c
-> @@ -85,7 +85,7 @@ EXPORT_SYMBOL_GPL(init_srcu_struct_generic);
->   */
->  void cleanup_srcu_struct(struct srcu_struct *ssp)
->  {
-> -	WARN_ON(ssp->srcu_lock_nesting[0] || ssp->srcu_lock_nesting[1]);
-> +	WARN_ON(srcu_readers_active(ssp));
->  	irq_work_sync(&ssp->srcu_irq_work);
->  	flush_work(&ssp->srcu_work);
->  	WARN_ON(ssp->srcu_gp_running);
-> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-> index 45154630c54e..d1a69320b5c0 100644
-> --- a/kernel/rcu/srcutree.c
-> +++ b/kernel/rcu/srcutree.c
-> @@ -599,31 +599,6 @@ static bool srcu_readers_active_idx_check(struct srcu_struct *ssp, int idx)
->  	return srcu_readers_lock_idx(ssp, idx, did_gp, unlocks);
->  }
->  
-> -/**
-> - * srcu_readers_active - returns true if there are readers. and false
-> - *                       otherwise
-> - * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
-> - *
-> - * Note that this is not an atomic primitive, and can therefore suffer
-> - * severe errors when invoked on an active srcu_struct.  That said, it
-> - * can be useful as an error check at cleanup time.
-> - */
-> -static bool srcu_readers_active(struct srcu_struct *ssp)
-> -{
-> -	int cpu;
-> -	unsigned long sum = 0;
-> -
-> -	for_each_possible_cpu(cpu) {
-> -		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
-> -
-> -		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
-> -		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
-> -		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
-> -		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
-> -	}
-> -	return sum;
-> -}
-> -
->  /*
->   * We use an adaptive strategy for synchronize_srcu() and especially for
->   * synchronize_srcu_expedited().  We spin for a fixed time period
-> diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
-> index 225b3bf9334a..1a2f563640e0 100644
-> --- a/rust/helpers/srcu.c
-> +++ b/rust/helpers/srcu.c
-> @@ -9,6 +9,11 @@ __rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
->  	return __init_srcu_struct(ssp, name, key);
->  }
->  
-> +__rust_helper bool rust_helper_srcu_readers_active(struct srcu_struct *ssp)
-> +{
-> +	return srcu_readers_active(ssp);
-> +}
-> +
->  __rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
->  {
->  	return srcu_read_lock(ssp);
-> -- 
-> 2.51.2
-> 
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+Changes in v2:
+ - Store the parent platform device as a bound reference instead of as an ARef.
+ - Store Firmware directly instead of in an Arc.
+ - Replace manual ForLt implementation with the ForLt!() macro.
+ - Remove TyrDrmDeviceData and just pass Ok(()) to UnregisteredDevice::new().
+ - Complete firmware boot() as an example of it using iomem.
+ - Add more content to the MMU stub as well as VM, and address-space stubs
+   to show how iomem is shared.
+
+- Link to v1: https://lore.kernel.org/r/20260603-use_tyr_reg_data-v1-1-97f64e951cf6@collabora.com
+
+This patch applies on top of the drm lifetime series [1] and the
+full branch [2].
+
+[1] https://lore.kernel.org/rust-for-linux/20260603011711.2077361-1-dakr@kernel.org/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=drm-lifetime
+---
+ drivers/gpu/drm/tyr/driver.rs            | 49 ++++++++++++++----
+ drivers/gpu/drm/tyr/file.rs              | 11 ++--
+ drivers/gpu/drm/tyr/fw.rs                | 88 ++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/mmu.rs               | 56 ++++++++++++++++++++
+ drivers/gpu/drm/tyr/mmu/address_space.rs | 63 +++++++++++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs               |  3 ++
+ drivers/gpu/drm/tyr/vm.rs                | 62 ++++++++++++++++++++++
+ 7 files changed, 316 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 819f64a7573d..7f2d2e8eb7de 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -6,6 +6,7 @@
+         OptionalClk, //
+     },
+     device::{
++        Bound,
+         Core,
+         Device,
+         DeviceContext, //
+@@ -29,6 +30,7 @@
+     sizes::SZ_2M,
+     sync::{
+         aref::ARef,
++        Arc,
+         Mutex, //
+     },
+     time,
+@@ -37,9 +39,11 @@
+ 
+ use crate::{
+     file::TyrDrmFileData,
++    fw::Firmware,
+     gem::BoData,
+     gpu,
+     gpu::GpuInfo,
++    mmu::Mmu,
+     regs::gpu_control::*, //
+ };
+ 
+@@ -49,7 +53,6 @@
+ 
+ /// Convenience type alias for the DRM device type for this driver.
+ pub(crate) type TyrDrmDevice<Ctx = drm::Registered> = drm::Device<TyrDrmDriver, Ctx>;
+-
+ pub(crate) struct TyrPlatformDriver;
+ 
+ #[pin_data(PinnedDrop)]
+@@ -58,9 +61,14 @@ pub(crate) struct TyrPlatformDriverData<'bound> {
+     _reg: drm::Registration<'bound, TyrDrmDriver>,
+ }
+ 
++/// Resources kept alive by the DRM registration.
+ #[pin_data]
+-pub(crate) struct TyrDrmDeviceData {
+-    pub(crate) pdev: ARef<platform::Device>,
++pub(crate) struct TyrDrmRegistrationData<'bound> {
++    /// Parent platform device.
++    pub(crate) pdev: &'bound platform::Device<Bound>,
++
++    /// Firmware sections.
++    pub(crate) fw: Firmware<'bound>,
+ 
+     #[pin]
+     clks: Mutex<Clocks>,
+@@ -68,6 +76,9 @@ pub(crate) struct TyrDrmDeviceData {
+     #[pin]
+     regulators: Mutex<Regulators>,
+ 
++    /// GPU MMIO register mapping.
++    pub(crate) iomem: Arc<IoMem<'bound>>,
++
+     /// Some information on the GPU.
+     ///
+     /// This is mainly queried by userspace, i.e.: Mesa.
+@@ -119,7 +130,7 @@ fn probe<'bound>(
+         let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
+ 
+         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
+-        let iomem = request.iomap_sized::<SZ_2M>()?;
++        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?, GFP_KERNEL)?;
+ 
+         issue_soft_reset(pdev.as_ref(), &iomem)?;
+         gpu::l2_power_on(pdev.as_ref(), &iomem)?;
+@@ -135,10 +146,23 @@ fn probe<'bound>(
+         // other threads of execution.
+         unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
+ 
+-        let platform: ARef<platform::Device> = pdev.into();
++        let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
++
++        let mmu = Mmu::new(iomem.as_arc_borrow(), &gpu_info)?;
++
++        let firmware = Firmware::new(
++            pdev,
++            iomem.clone(),
++            &unreg_dev,
++            mmu.as_arc_borrow(),
++            &gpu_info,
++        )?;
++
++        firmware.boot()?;
+ 
+-        let data = try_pin_init!(TyrDrmDeviceData {
+-                pdev: platform.clone(),
++        let reg_data = try_pin_init!(TyrDrmRegistrationData {
++                pdev,
++                fw: firmware,
+                 clks <- new_mutex!(Clocks {
+                     core: core_clk,
+                     stacks: stacks_clk,
+@@ -148,11 +172,14 @@ fn probe<'bound>(
+                     _mali: mali_regulator,
+                     _sram: sram_regulator,
+                 }),
++                iomem,
+                 gpu_info,
+         });
+ 
+-        let tdev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;
+-        let reg = drm::Registration::new(pdev.as_ref(), tdev, (), 0)?;
++        // SAFETY: `reg` is stored in the platform driver data and is not leaked or
++        // forgotten, so it is dropped before the `'bound` registration data can become
++        // invalid.
++        let reg = unsafe { drm::Registration::new_with_lt(pdev.as_ref(), unreg_dev, reg_data, 0)? };
+ 
+         let driver = TyrPlatformDriverData {
+             _device: reg.device().into(),
+@@ -183,8 +210,8 @@ fn drop(self: Pin<&mut Self>) {}
+ 
+ #[vtable]
+ impl drm::Driver for TyrDrmDriver {
+-    type Data = TyrDrmDeviceData;
+-    type RegistrationData = ForLt!(());
++    type Data = ();
++    type RegistrationData = ForLt!(TyrDrmRegistrationData<'_>);
+     type File = TyrDrmFileData;
+     type Object<R: drm::DeviceContext> = drm::gem::shmem::Object<BoData, R>;
+     type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index 9f53da7633ab..9baec67febc9 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -11,7 +11,8 @@
+ 
+ use crate::driver::{
+     TyrDrmDevice,
+-    TyrDrmDriver, //
++    TyrDrmDriver,
++    TyrDrmRegistrationData, //
+ };
+ 
+ #[pin_data]
+@@ -30,16 +31,16 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+ 
+ impl TyrDrmFileData {
+     pub(crate) fn dev_query(
+-        ddev: &TyrDrmDevice,
++        _ddev: &TyrDrmDevice,
+         _pdev: &platform::Device<device::Bound>,
+-        _reg_data: &(),
++        reg_data: &TyrDrmRegistrationData<'_>,
+         devquery: &mut uapi::drm_panthor_dev_query,
+         _file: &TyrDrmFile,
+     ) -> Result<u32> {
+         if devquery.pointer == 0 {
+             match devquery.type_ {
+                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
+-                    devquery.size = core::mem::size_of_val(&ddev.gpu_info) as u32;
++                    devquery.size = core::mem::size_of_val(&reg_data.gpu_info) as u32;
+                     Ok(0)
+                 }
+                 _ => Err(EINVAL),
+@@ -53,7 +54,7 @@ pub(crate) fn dev_query(
+                     )
+                     .writer();
+ 
+-                    writer.write(&ddev.gpu_info)?;
++                    writer.write(&reg_data.gpu_info)?;
+ 
+                     Ok(0)
+                 }
+diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+new file mode 100644
+index 000000000000..fb4b6709bce1
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/fw.rs
+@@ -0,0 +1,88 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! Firmware loading and management for Mali CSF GPUs.
++//!
++//! This is currently only a lifetime/resource stub. The actual firmware parser,
++//! section loading, MCU VM mapping, and boot sequence will be added later.
++#![allow(dead_code)]
++
++use kernel::{
++    device::Bound,
++    drm::Uninit,
++    io::{
++        poll,
++        Io, //
++    },
++    platform,
++    prelude::*,
++    sync::{
++        Arc,
++        ArcBorrow, //
++    },
++    time::Delta, //
++};
++
++use crate::{
++    driver::{
++        IoMem,
++        TyrDrmDevice, //
++    },
++    gpu::GpuInfo,
++    mmu::Mmu,
++    regs::gpu_control::{
++        McuControlMode,
++        McuStatus,
++        MCU_CONTROL,
++        MCU_STATUS, //
++    },
++    vm::Vm, //
++};
++
++/// Firmware state for a bound Tyr device.
++///
++/// For now this only keeps the device resources alive. Later this will own the
++/// loaded firmware sections, MCU VM mappings, and boot state.
++pub(crate) struct Firmware<'bound> {
++    /// Parent platform device.
++    _pdev: &'bound platform::Device<Bound>,
++
++    /// MMIO mapping used for firmware/MCU register access.
++    iomem: Arc<IoMem<'bound>>,
++}
++
++impl<'bound> Firmware<'bound> {
++    /// Create firmware state for this device.
++    ///
++    /// This stub only records the resources that future firmware loading code
++    /// will need.
++    pub(crate) fn new(
++        pdev: &'bound platform::Device<Bound>,
++        iomem: Arc<IoMem<'bound>>,
++        ddev: &TyrDrmDevice<Uninit>,
++        mmu: ArcBorrow<'_, Mmu<'bound>>,
++        gpu_info: &GpuInfo,
++    ) -> Result<Firmware<'bound>> {
++        let vm = Vm::new(pdev, ddev, mmu, gpu_info)?;
++        vm.activate()?;
++
++        Ok(Firmware { _pdev: pdev, iomem })
++    }
++
++    /// Boot the firmware.
++    pub(crate) fn boot(&self) -> Result {
++        let io = &self.iomem;
++        io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Auto));
++
++        if let Err(e) = poll::read_poll_timeout(
++            || Ok(io.read(MCU_STATUS)),
++            |status| status.value() == McuStatus::Enabled,
++            Delta::from_millis(1),
++            Delta::from_millis(100),
++        ) {
++            let status = io.read(MCU_STATUS);
++            pr_err!("MCU failed to boot, status: {:?}", status.value());
++            return Err(e);
++        }
++        Ok(())
++    }
++}
+diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
+new file mode 100644
+index 000000000000..9e2efe342df3
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/mmu.rs
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! Memory Management Unit (MMU) driver for the Tyr GPU.
++//!
++//! This is just a lifetime/resource stub.
++//! The actual MMU initialization, page table management,
++//! and GPU VM mapping will be added later.
++
++use kernel::{
++    new_mutex,
++    prelude::*,
++    sync::{
++        Arc,
++        ArcBorrow,
++        Mutex, //
++    }, //
++};
++
++use crate::{
++    driver::IoMem,
++    gpu::GpuInfo,
++    mmu::address_space::AddressSpaceManager,
++    regs::gpu_control::AS_PRESENT, //
++};
++
++pub(crate) mod address_space;
++
++#[pin_data]
++pub(super) struct Mmu<'bound> {
++    /// Manages the allocation of hardware MMU slots to GPU address spaces.
++    #[pin]
++    pub(crate) as_manager: Mutex<AddressSpaceManager<'bound>>,
++}
++
++impl<'bound> Mmu<'bound> {
++    /// Create an MMU component for this device.
++    pub(super) fn new(
++        iomem: ArcBorrow<'_, IoMem<'bound>>,
++        gpu_info: &GpuInfo,
++    ) -> Result<Arc<Mmu<'bound>>> {
++        let present = AS_PRESENT::from_raw(gpu_info.as_present).present().get();
++        let slot_count: usize = present.count_ones().try_into()?;
++        pr_info!("MMU: {} address space slots present", slot_count);
++
++        let as_manager = AddressSpaceManager::new(iomem)?;
++        let mmu_init = try_pin_init!(Self{
++            as_manager <- new_mutex!(as_manager),
++        });
++        Arc::pin_init(mmu_init, GFP_KERNEL)
++    }
++
++    /// Make a VM active.
++    pub(crate) fn activate_vm(&self) -> Result {
++        self.as_manager.lock().activate_vm()
++    }
++}
+diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
+new file mode 100644
+index 000000000000..47534944b458
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
+@@ -0,0 +1,63 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! GPU address space management and hardware operations.
++//!
++//! This is just a lifetime/resource stub.
++//! The actual GPU hardware address spaces (AS), including configuration,
++//! command submission, and page table update regions will be added later.
++
++use kernel::{
++    io::{
++        poll,
++        register::Array,
++        Io, //
++    },
++    prelude::*,
++    sync::{
++        Arc, //
++        ArcBorrow,
++    },
++    time::Delta, //
++};
++
++use crate::{
++    driver::IoMem,
++    regs::mmu_control::mmu_as_control::STATUS, //
++};
++
++/// Manages GPU hardware address spaces via MMIO register operations.
++pub(crate) struct AddressSpaceManager<'bound> {
++    /// Memory-mapped I/O region for GPU register access.
++    iomem: Arc<IoMem<'bound>>,
++}
++
++impl<'bound> AddressSpaceManager<'bound> {
++    /// Creates a new address space manager.
++    ///
++    /// Initializes the manager with references to the platform device and
++    /// I/O memory region, along with the bitmask of available AS slots.
++    pub(super) fn new(iomem: ArcBorrow<'_, IoMem<'bound>>) -> Result<AddressSpaceManager<'bound>> {
++        Ok(Self {
++            iomem: iomem.into(),
++        })
++    }
++
++    pub(super) fn activate_vm(&mut self) -> Result {
++        self.as_wait_ready(0)
++    }
++
++    /// Waits for an AS slot to become ready (not active).
++    ///
++    /// Returns an error if polling times out after 10ms or if register access fails.
++    fn as_wait_ready(&self, as_nr: usize) -> Result {
++        let io = &*self.iomem;
++        let op = || {
++            let status_reg = STATUS::try_at(as_nr).ok_or(EINVAL)?;
++            Ok(io.read(status_reg))
++        };
++        let cond = |status: &STATUS| -> bool { !status.active_ext() };
++        poll::read_poll_timeout(op, cond, Delta::from_millis(0), Delta::from_millis(10))?;
++
++        Ok(())
++    }
++}
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index 95cda7b0962f..ace2764c6059 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -9,9 +9,12 @@
+ 
+ mod driver;
+ mod file;
++mod fw;
+ mod gem;
+ mod gpu;
++mod mmu;
+ mod regs;
++mod vm;
+ 
+ kernel::module_platform_driver! {
+     type: TyrPlatformDriver,
+diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+new file mode 100644
+index 000000000000..5ca1b773df92
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/vm.rs
+@@ -0,0 +1,62 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! GPU virtual memory management.
++//!
++//! This is just a lifetime/resource stub. The actual vm
++//! implementation using the DRM GPUVM framework will be added later.
++
++use kernel::{
++    device::Bound,
++    drm::DeviceContext,
++    platform,
++    prelude::*,
++    sync::{
++        aref::ARef,
++        Arc,
++        ArcBorrow, //
++    }, //
++};
++
++use crate::{
++    driver::TyrDrmDevice,
++    gpu::GpuInfo,
++    mmu::Mmu, //
++};
++
++/// GPU virtual address space.
++///
++/// Each VM can be mapped into a hardware address space slot.
++#[pin_data]
++pub(crate) struct Vm<'bound> {
++    /// MMU manager.
++    mmu: Arc<Mmu<'bound>>,
++    /// Platform device reference (needed to access the page table via devres).
++    pdev: ARef<platform::Device>,
++}
++
++impl<'bound> Vm<'bound> {
++    /// Creates a new GPU virtual address space.
++    pub(crate) fn new<Ctx: DeviceContext>(
++        pdev: &'bound platform::Device<Bound>,
++        _ddev: &TyrDrmDevice<Ctx>,
++        mmu: ArcBorrow<'_, Mmu<'bound>>,
++        _gpu_info: &GpuInfo,
++    ) -> Result<Arc<Vm<'bound>>> {
++        let vm = Arc::pin_init(
++            pin_init!(Self {
++                pdev: pdev.into(),
++                mmu: mmu.into(),
++            }),
++            GFP_KERNEL,
++        )?;
++
++        Ok(vm)
++    }
++
++    /// Activate the VM in a hardware address space slot.
++    pub(crate) fn activate(&self) -> Result {
++        self.mmu.activate_vm().inspect_err(|e| {
++            pr_err!("Failed to activate VM: {:?}\n", e);
++        })
++    }
++}
+
+---
+base-commit: 305b04e26f0cdff2c8c0db208dbec0d9c9984a48
+change-id: 20260603-use_tyr_reg_data-32720e66b2dd
+
+Best regards,
+-- 
+Deborah Brouwer <deborah.brouwer@collabora.com>
+
