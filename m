@@ -1,122 +1,211 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E483A329E6C;
-	Thu,  4 Jun 2026 21:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B9336896;
+	Thu,  4 Jun 2026 22:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780609731; cv=none; b=Stzr4rNzyKtVbicycBzadsGwUY9h+Bj3dHsVR75V7lmSXuGySIVGhLcnXHG6x1fTIepaD9umtxUZtZ7hEbI6pCDoVw2P8lYXnpRwoFTDtTABOOdaJsncihePKcvLtD8Ea9/GaxSTjAU4v5As77OZh7rwGKyNM4sqlKDYoq4LzXs=
+	t=1780612144; cv=none; b=Cudcg0KXW6t00/zpzgiwjhQSpF8U4zOJxBI9iCItdQ4esvbqDE4YQKu2iznYpQygRyr2jfdmhnNvL0VloK/+782HGqAID1tai5NPfLXghRtOzgua0BcqOjCBdJJFlRVT7ed+oLi3T5V7LV2XTVPgpO/W7P3xsXnFNZu3/RW7E3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780609731; c=relaxed/simple;
-	bh=iK7nDkaVl+kbc7PjAEoaEgaDEKAIkheFFI1yWCxh/uA=;
+	s=arc-20240116; t=1780612144; c=relaxed/simple;
+	bh=9q13binj1Gh2mhCoNsaz8Nyhr+DpqkGjH7iScj/pL3Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bLvbVHmrIlsDwkcItFk/QJBBJkwwBsFhSMXbBuLWAKGbxZ53qY67wfHTlehJu480XBjC80idK6siy3tEDgF/lWkrLkuwMk/VA9MvJ5eUd9ELhulo9WXw1VkVApyd6N0Wo9XXm+vtYqX+0B/dBCZipmcXzhJC2LtLgDv1OpPimSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOJtH3Ws; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=FTAoUwpgqqKpHo43adY6AGViymYAAhVEJqetK5oRu0vUSdRW5r08gdqrK0lReszgDPxjMW3gCmb5o6/IsTvKaFPjgKAd89BkhBP2df5Km2acRFB+WV5H5HVqe14EVCKQXAw/8iop3GplHiks9q/rVgdAxAQuHjgra1jnAyZnxmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1zUvoBP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOJtH3Ws"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EC31F00893;
-	Thu,  4 Jun 2026 21:48:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1zUvoBP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533061F00893;
+	Thu,  4 Jun 2026 22:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780609730;
-	bh=hccU/NDSuAvcNj2qshs5G5T8N2B5+zR4AKzNjS5QKDY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oOJtH3WswuxaSXCBwtdBZdGgqvPxMl2AxmgsBn1Q7sv9bv+2fIQpUu8P6psX9SraE
-	 lSBE1kDOlOcCkxwq1Te5aY2Bf5gUb74/snkw1zcC7CzFdqpd4Avhfe2fsm750odqgS
-	 O59dMX2g/aDU3jKvEKl8txbOdj8B+U3/SsyEk2xAP8EUrnd4KHHvI+btOw06/4rK2Q
-	 taz///r7YoJ8dRaGduBLFDxVhYonPuOrFN7EFKzndPcRwg/FSeYlsjY8zFKlhD4Wob
-	 HX+achzSxwGdodU9S7+z5XB058pkm5Q/iau8rvefFGQqQMoYtL2OOWHLyI0pZM4xE6
-	 OCPIVEZUZh7Aw==
-Date: Thu, 4 Jun 2026 14:48:40 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Yunseong Kim <yunseong.kim@est.tech>, Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org, Yunseong Kim <ysk@kzalloc.com>
-Subject: Re: [RFC PATCH v2 2/6] kcov: add build system support for dataflow
- instrumentation
-Message-ID: <20260604214840.GA3915915@ax162>
-References: <20260603-kcov-dataflow-next-20260603-v2-0-fee0939de2c4@est.tech>
- <20260603-kcov-dataflow-next-20260603-v2-2-fee0939de2c4@est.tech>
- <20260604084519.GA3126523@noisy.programming.kicks-ass.net>
+	s=k20260515; t=1780612143;
+	bh=aChqsZLCdnwCdbNyuyN+o8J2VhEvDT4W+ZyicK8F/s8=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
+	b=A1zUvoBPOIRme8oK7mkdSUjzwcbu0bDy23xNMSGCQv8HQqLzwX6oy0CQvm+aO/8W1
+	 qIn4UcTLy1xyshjnHR5Y4S23lhyf35pDk4HsMJbkghVZZ0YdOQqkIOHKVIv47mBQXV
+	 pEikiP4in4Kix+uR2JPZi/N8EJ8GmQmu0tyYTK+DuCtIUDn7KKfIMswD8BWx2c6EGP
+	 d6km3eQr0zuEGcgdpN62rP6S3WdpVKYx3QmIi+7cfRdC8rscXjM1QT1jcrAzgxBCrJ
+	 G8iJoJz9Q0GzHvRT4ldlHaIi+1VFLya1tUdaptmFDtCB6U4Tq3VFBf75W6No107T/t
+	 vbRv7d9kFiH6Q==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id EB526CE0555; Thu,  4 Jun 2026 15:29:02 -0700 (PDT)
+Date: Thu, 4 Jun 2026 15:29:02 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Cc: rcu@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, boqun@kernel.org,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, peterz@infradead.org, fujita.tomonori@gmail.com,
+	tamird@kernel.org, jiangshanlai@gmail.com, josh@joshtriplett.org,
+	rostedt@goodmis.org, mathieu.desnoyers@efficios.com
+Subject: Re: [PATCH v9 2/4] srcu: expose srcu_readers_active()
+Message-ID: <1db254a1-951c-47e9-bb4b-adb5ca00f2fd@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20260529134004.396743-1-work@onurozkan.dev>
+ <20260529134004.396743-3-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260604084519.GA3126523@noisy.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260529134004.396743-3-work@onurozkan.dev>
 
-On Thu, Jun 04, 2026 at 10:45:19AM +0200, Peter Zijlstra wrote:
-> On Wed, Jun 03, 2026 at 07:43:29PM +0200, Yunseong Kim wrote:
-> > Add CFLAGS_KCOV_DATAFLOW and RUSTFLAGS_KCOV_DATAFLOW exports to
-> > scripts/Makefile.kcov, containing:
-> >   -fsanitize-coverage=dataflow-args,dataflow-ret -g
-> >   (with optional -fno-inline via CONFIG_KCOV_DATAFLOW_NO_INLINE)
-> > 
-> > scripts/Makefile.lib applies these flags when a module's Makefile sets:
-> >   KCOV_DATAFLOW_file.o := y   (per-file)
-> >   KCOV_DATAFLOW := y          (per-directory)
-> > 
-> > Also supports CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL for global enablement.
-> > The flags are only applied to kernel objects (same guard as basic KCOV).
-> > 
-> > Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
-> > ---
-> >  scripts/Makefile.kcov | 6 ++++++
-> >  scripts/Makefile.lib  | 7 +++++++
-> >  2 files changed, 13 insertions(+)
-> > 
-> > diff --git a/scripts/Makefile.kcov b/scripts/Makefile.kcov
-> > index 78305a84ba9d..101173fe194b 100644
-> > --- a/scripts/Makefile.kcov
-> > +++ b/scripts/Makefile.kcov
-> > @@ -2,10 +2,16 @@
-> >  kcov-flags-y					+= -fsanitize-coverage=trace-pc
-> >  kcov-flags-$(CONFIG_KCOV_ENABLE_COMPARISONS)	+= -fsanitize-coverage=trace-cmp
-> >  
-> > +# KCOV dataflow: trace function args and return values
-> > +kcov-dataflow-flags-y := -fsanitize-coverage=dataflow-args,dataflow-ret -g
-> > +kcov-dataflow-flags-$(CONFIG_KCOV_DATAFLOW_NO_INLINE) += -fno-inline
+On Fri, May 29, 2026 at 04:39:52PM +0300, Onur Özkan wrote:
+> This is needed by rust/helpers/srcu.c which now adds
+> rust_helper_srcu_readers_active() as a wrapper around the SRCU helper
+> for Rust callers.
 > 
-> https://clang.llvm.org/docs/ClangCommandLineReference.html
+> To achive this:
 > 
-> Has no mention of -fno-inline, furthermore, what are the exact
-> semantics? Does it inhibit __always_inline?
+> 1- Move the srcu_readers_active() implementation from
+>    "kernel/rcu/srcutree.c" to "include/linux/srcutree.h".
 > 
+> 2- Implement a matching srcu_readers_active() in
+>    "include/linux/srcutiny.h" and use it on the existing open-coded
+>    WARN_ON() check in cleanup_srcu_struct().
+> 
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+> Signed-off-by: Onur Özkan <work@onurozkan.dev>
 
-Based on clang/test/CodeGen/always-inline.c [1], I believe the semantics
-are the same as GCC's '-fno-inline' [2], which avoids inlining except
-for always_inline functions.
+It would be good to merge the rust/helpers piece of this change into
+the separate commit that I suggested for patch 1/4.  Either way, I
+still stand behind my Reviewed-by.
 
-[1]: https://github.com/llvm/llvm-project/blob/1d13b74cf086629d5cdae5f44ef4a62cebcaf3ff/clang/test/CodeGen/always-inline.c
-[2]: https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#index-fno-inline
+							Thanx, Paul
 
--- 
-Cheers,
-Nathan
+> ---
+>  include/linux/srcutiny.h | 13 +++++++++++++
+>  include/linux/srcutree.h | 24 ++++++++++++++++++++++++
+>  kernel/rcu/srcutiny.c    |  2 +-
+>  kernel/rcu/srcutree.c    | 25 -------------------------
+>  rust/helpers/srcu.c      |  5 +++++
+>  5 files changed, 43 insertions(+), 26 deletions(-)
+> 
+> diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
+> index 905b629e8fa3..fbcf13bc12d1 100644
+> --- a/include/linux/srcutiny.h
+> +++ b/include/linux/srcutiny.h
+> @@ -154,4 +154,17 @@ static inline void srcu_torture_stats_print(struct srcu_struct *ssp,
+>  		 data_race(READ_ONCE(ssp->srcu_idx_max)));
+>  }
+>  
+> +/**
+> + * srcu_readers_active - returns true if there are readers. and false otherwise.
+> + * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
+> + *
+> + * Note that this is not an atomic primitive, and can therefore suffer
+> + * severe errors when invoked on an active srcu_struct. That said, it
+> + * can be useful as an error check at cleanup time.
+> + */
+> +static inline bool srcu_readers_active(struct srcu_struct *ssp)
+> +{
+> +	return READ_ONCE(ssp->srcu_lock_nesting[0]) || READ_ONCE(ssp->srcu_lock_nesting[1]);
+> +}
+> +
+>  #endif
+> diff --git a/include/linux/srcutree.h b/include/linux/srcutree.h
+> index fd1a9270cb9a..75e54e4f963f 100644
+> --- a/include/linux/srcutree.h
+> +++ b/include/linux/srcutree.h
+> @@ -374,4 +374,28 @@ static inline void srcu_check_read_flavor(struct srcu_struct *ssp, int read_flav
+>  		__srcu_check_read_flavor(ssp, read_flavor);
+>  }
+>  
+> +/**
+> + * srcu_readers_active - returns true if there are readers. and false otherwise.
+> + * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
+> + *
+> + * Note that this is not an atomic primitive, and can therefore suffer
+> + * severe errors when invoked on an active srcu_struct. That said, it
+> + * can be useful as an error check at cleanup time.
+> + */
+> +static inline bool srcu_readers_active(struct srcu_struct *ssp)
+> +{
+> +	int cpu;
+> +	unsigned long sum = 0;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
+> +
+> +		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
+> +		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
+> +		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
+> +		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
+> +	}
+> +	return sum;
+> +}
+> +
+>  #endif
+> diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+> index 780a95e8cad7..dde99876d473 100644
+> --- a/kernel/rcu/srcutiny.c
+> +++ b/kernel/rcu/srcutiny.c
+> @@ -85,7 +85,7 @@ EXPORT_SYMBOL_GPL(init_srcu_struct_generic);
+>   */
+>  void cleanup_srcu_struct(struct srcu_struct *ssp)
+>  {
+> -	WARN_ON(ssp->srcu_lock_nesting[0] || ssp->srcu_lock_nesting[1]);
+> +	WARN_ON(srcu_readers_active(ssp));
+>  	irq_work_sync(&ssp->srcu_irq_work);
+>  	flush_work(&ssp->srcu_work);
+>  	WARN_ON(ssp->srcu_gp_running);
+> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+> index 45154630c54e..d1a69320b5c0 100644
+> --- a/kernel/rcu/srcutree.c
+> +++ b/kernel/rcu/srcutree.c
+> @@ -599,31 +599,6 @@ static bool srcu_readers_active_idx_check(struct srcu_struct *ssp, int idx)
+>  	return srcu_readers_lock_idx(ssp, idx, did_gp, unlocks);
+>  }
+>  
+> -/**
+> - * srcu_readers_active - returns true if there are readers. and false
+> - *                       otherwise
+> - * @ssp: which srcu_struct to count active readers (holding srcu_read_lock).
+> - *
+> - * Note that this is not an atomic primitive, and can therefore suffer
+> - * severe errors when invoked on an active srcu_struct.  That said, it
+> - * can be useful as an error check at cleanup time.
+> - */
+> -static bool srcu_readers_active(struct srcu_struct *ssp)
+> -{
+> -	int cpu;
+> -	unsigned long sum = 0;
+> -
+> -	for_each_possible_cpu(cpu) {
+> -		struct srcu_data *sdp = per_cpu_ptr(ssp->sda, cpu);
+> -
+> -		sum += atomic_long_read(&sdp->srcu_ctrs[0].srcu_locks);
+> -		sum += atomic_long_read(&sdp->srcu_ctrs[1].srcu_locks);
+> -		sum -= atomic_long_read(&sdp->srcu_ctrs[0].srcu_unlocks);
+> -		sum -= atomic_long_read(&sdp->srcu_ctrs[1].srcu_unlocks);
+> -	}
+> -	return sum;
+> -}
+> -
+>  /*
+>   * We use an adaptive strategy for synchronize_srcu() and especially for
+>   * synchronize_srcu_expedited().  We spin for a fixed time period
+> diff --git a/rust/helpers/srcu.c b/rust/helpers/srcu.c
+> index 225b3bf9334a..1a2f563640e0 100644
+> --- a/rust/helpers/srcu.c
+> +++ b/rust/helpers/srcu.c
+> @@ -9,6 +9,11 @@ __rust_helper int rust_helper_init_srcu_struct_with_key(struct srcu_struct *ssp,
+>  	return __init_srcu_struct(ssp, name, key);
+>  }
+>  
+> +__rust_helper bool rust_helper_srcu_readers_active(struct srcu_struct *ssp)
+> +{
+> +	return srcu_readers_active(ssp);
+> +}
+> +
+>  __rust_helper int rust_helper_srcu_read_lock(struct srcu_struct *ssp)
+>  {
+>  	return srcu_read_lock(ssp);
+> -- 
+> 2.51.2
+> 
