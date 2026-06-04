@@ -1,173 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E43477E27;
-	Thu,  4 Jun 2026 12:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA2747D951
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 12:58:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780576845; cv=none; b=qxDh6iBXB6jpFui2u5CBm8ga4fGmQZ3hUI3cvUNAoLtM8Z9M7wbYgMvVMAHH30FAppBlw7uMUq+NE39ZPDaAaXriZw4XjNS6boBI/Pw9xtJox6JoMuVEkgCsEuqS1VBIhHc21BkEfYCgd6Xe2AHKyPE/cCqd9jW1lBkFSYOmFak=
+	t=1780577910; cv=none; b=D0Gd7hVFZxyWsY1Zh3cIw+lj2laO79WlAG0tHHnTxbnVIg22b/d2U8R8svuXnZmd4Lqgws+zIml4Ioe9TxVndHVqnN98GCAHtXDIRreF7VQ9NaJOGQlvdg0Rg2KNrhF63jaF8I48GL6f7tE+imjxg2JBrOtiv+qL5APXQtuLgYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780576845; c=relaxed/simple;
-	bh=3motd/Kk9tEcEy98c5ncAGr3nNkb1fzwM1uTOGz4Qus=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HOuF4qX2t3NGwFO0ZOoMcapWh9joO59NiGpznsEYiIqEe4xkgGUcxY1dde1x1PCjklA5TAruWNniyFs3x8qY6gxM2VdE6UGg5sPuDPcOybU3TaJeN3SMyXKm2Y43wf9mZoTKJLWpv03OaaC9kfxrYL9T1n3Hwq3EHwEdUwvSGO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l2/Ly8io; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780577910; c=relaxed/simple;
+	bh=WTeAlVO0DRWMQLHY+AVCUlz1Ehp3ZPr3YJrQQQlXSb8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=b/0ajR82xoKEvb6RtkFbtwLvMB6ZLHwu6xcAaeYSeJ2r8uSjglZ7P01x8PU0vTR6yc5hP3/bVqCoLHpAoqSf+Dj44gwgsN414ORAGAJIotnmBWvFLKuA+ffnRo8zN/PZy2Br/mJxxpSw7axdQv16CKU6UCyPhyiMbuERKtAXz5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hymAQgjl; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l2/Ly8io"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0731F00898;
-	Thu,  4 Jun 2026 12:40:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780576844;
-	bh=GnOm+v7F1LKSbVaBQReSZi8hz25Kzy0nepO4bxrUVcs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l2/Ly8io+6pNgjeg3NB14IEfCQfKWpweb0eJKJ7SQ6Gz0ITGa2NRnQDCDfdq1vs76
-	 eHVSagFXGbe8QOVvnOPbK9NuA5I0IQcf+zQsmc0JOA7AwaNOpgOWuhEtUDsBqYIDN0
-	 dBGBSHprHOUkKCgU4ocuSlMwbNpsIb0/KLN+gKujZ6LUrMc/cjbCR2FoWkllYsEDpC
-	 yhqTp3rcfpntt1TN/9elHktGTNTqDTdciG8rjJgFtedK12OZEhbgb0koUg+DkKwHYJ
-	 M2hY0H01Fe9S27uWItliJRn/RpqB8p54OLhqVIByLr8IpnStfxTk/vPmwkrOqgI5Vf
-	 rHrnkuClyogqQ==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id F3A80F40084;
-	Thu,  4 Jun 2026 08:40:40 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 04 Jun 2026 08:40:41 -0400
-X-ME-Sender: <xms:SHIhakSnCrdg9gx5m4iHzTicKaK_DQbZUK11E3bhlG_5yYmLh4HVcA>
-    <xme:SHIhamrf8l8qqXn5spEz_3zIQSqGxPGzydYKiqYC1Ad9mQIGDEO2BI-tVRzQTjo8L
-    N8dPE-jHh3R_hm5kGq61j-lWA9098jHtcxIXHtK6lSOM5b04J8>
-X-ME-Received: <xmr:SHIhanvyg3DUTUpzz1Tr6mmNDYVvEMOWhgBEhBREpTYdxxCkkBVJjshxDdQ>
-X-ME-Proxy-Cause: dmFkZTF1BaCWatKURocL+NpcgGk8YfcgR1XBShgJesrvsvC2cG3vlDNwoRLKuuKWvI9wgr
-    KG4Un6Q8MLsUhJ7qUby0lAaArhUaGksZuyniOIcFRF3jBJfW9luEJSa356GyMvadHeAIUB
-    F7Fsk6uIaYS9/XUo/AHbvEW2iTXW7UQHwAiD96JBraglfj5eFgrMXQqkhBFZpo5fmGG/eI
-    AQb5l6O4b5u+PthGYCRYvuYPUJXdmWKqj7KOhX79C+va6qRUJSnqWA/slW9fvEtsxZflmn
-    cZYxt7SIfaZSY+71gr8mRZqSZhlvD3ofSHh//MmWZCDH7C7YuX5/Ca4yauFP5gCXu8R5e8
-    ATuCazD5w14RyGhUDf8kJ2nnJlgWRO3UwgsRWPcouZeOlihQh5D8nnxfIJXtuCyTTW3jlv
-    7TsEq+dkGy+hPVqy5gzBhzu74DPvX0twDJI7dlB6ID2+z1ZSG+J1UYSs61b9WIUb4ttyzS
-    TjZSEePWTPWlDNq9PoUQQWqdzHgd48jCUCsvE2SpVwPE7xmxBMRNl9jVOmXJglehoDpXd9
-    z7WWsk64xF+a6MwNoBsFE/yKMv6OSIpaAByuh/5HYUXC1C2pht/LVhYAvicEDOwXVeAMyN
-    6QHhq6XTEBwnqHjw+vWgmxJE8KWrktttFqSpXIHL+Ldl3JEWwh3FcBx1FKuw
-X-ME-Proxy: <xmx:SHIhaqeGCWvoTr6Zf4A7VuqQKHMJAl9R7ARuuX7SWO3hikB0EABGqw>
-    <xmx:SHIhajm2MNfjagJxh9VKB7kVOB1FHuJFe5pi_tBuhyOPef0APhlWJA>
-    <xmx:SHIhauE42o8acVl_EkD0i90rEiqekyJ5wDDuuU7N0Uc-cMcHHEKKFA>
-    <xmx:SHIhapIi0Aj_i8f5RMMHTUFMJs_gmylfCV5Mpk-2TVrJhlM3iZONJw>
-    <xmx:SHIhaktsp0bNSEQQ_zMYZ1h3aUBSoUkTxD9FkfVknP1rAqe0eaUb8bXA>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jun 2026 08:40:40 -0400 (EDT)
-Date: Thu, 4 Jun 2026 05:40:39 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon <will@kernel.org>,
- Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,	Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,	Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,	Jiri Olsa <jolsa@kernel.org>,
- Shuah Khan <shuah@kernel.org>,	Miguel Ojeda <ojeda@kernel.org>,
- Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,	Jinjie Ruan <ruanjinjie@huawei.com>,
- Lyude Paul <lyude@redhat.com>,	Thomas Huth <thuth@redhat.com>,
- Sohil Mehta <sohil.mehta@intel.com>,	"Xin Li (Intel)" <xin@zytor.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Randy Dunlap <rdunlap@infradead.org>,	Yury Norov <ynorov@nvidia.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	linux-kernel@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-arch@vger.kernel.org,
-	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH v2 10/12] preempt: Introduce
- HAS_SEPARATE_PREEMPT_RESCHED_BITS
-Message-ID: <aiFyR-9rSGx38tWi@tardis-2.local>
-References: <20260526152148.30514-1-boqun@kernel.org>
- <20260526152148.30514-11-boqun@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hymAQgjl"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso6002145e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 05:58:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780577908; x=1781182708; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xwe384gyxIbZlOev+w5QVkieSQ1N1l24QasZ+3nTCfs=;
+        b=hymAQgjlycnxX4GViYv/Cgvgmg96cjw8d8Y/MKADdH8cODtlhC1eLNZ1zawB2C5Xba
+         54YySIqfZJ1q0848vY8li2MaapnIMoM2QDi86HpK2IoiVEbUiBFowsi8iYNehOY4Qu0T
+         F4k7O3BmCgVZ7BQFZm5SR2SQioiYhfqcx9/n76mZrctZDN+RrixR58hxOBBNIvAroooQ
+         Gm+6iax/hYkuksFg+XQ4XQqXOMz/MjE6ML3zC21r0kSsxmtRCXgUTrZh2b2V/w3/7A5J
+         Ht9RGxIIaXpruMw89i3xLa6rpvjTJgvp/q+M51YxtZGyZl4rgCwLX1AoFNH6hRQzvwDs
+         eHNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780577908; x=1781182708;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xwe384gyxIbZlOev+w5QVkieSQ1N1l24QasZ+3nTCfs=;
+        b=lPz4wBWR+jTGkaSjiZFMm9MJJlIE6O5HwJB8eIBjdsd5TPb0+Gje0TjiJtm86m/ZpR
+         sBv9Q9/hBxQDorQRwFCPW35s+Hf+0DQ/HmYoc0LsixY+vqBngQRJZlvRPYM3PbE7YKHi
+         hm0uhXtGomB41zrzNVRTccLgLEQNrD79Q5QLzyKLKyb9r0kmRB+LSQyhDaU9YX9cXXgn
+         Mmj5F2kDkgdrpCYBpT9lt9exP7UWbm6+367MZY+Yqif0d7p7rs4rBd6ZZaT+RlwX0xy5
+         +79QQcWvOSVhAdVWiREQrSpRIeg7z7C41UobYM10GReXZvMZ9/+qAuhI5OI370p2tl15
+         o6nw==
+X-Forwarded-Encrypted: i=1; AFNElJ/rK2ixA9z5C4cRkneDLd5xqUJGSWWFUv2cupPnjxNg0jC+X3aWJX4DqkHZxObWD/DA+nMNUvN9KVFCH9V5wA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMRzekMBvV3A7MdJoFtvlho1hgnE5UDcZm+4nLv0uQBphXPKj0
+	JVj7dZvNilLZnBCwU6kP6rb2pDLjU4D7pEpkRpBMjJe7VPyVBhzGkglofRzxoWyayTdvFwsx6FC
+	DGIZoG1Xu4PveO5qkTA==
+X-Received: from wmbje15.prod.google.com ([2002:a05:600c:1f8f:b0:490:4477:50d3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5250:b0:490:c015:21 with SMTP id 5b1f17b1804b1-490c0150155mr22460345e9.20.1780577907632;
+ Thu, 04 Jun 2026 05:58:27 -0700 (PDT)
+Date: Thu, 4 Jun 2026 12:58:26 +0000
+In-Reply-To: <20260604-set-extended-error-v2-1-fb0753e7ab53@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260526152148.30514-11-boqun@kernel.org>
+Mime-Version: 1.0
+References: <20260604-set-extended-error-v2-1-fb0753e7ab53@google.com>
+Message-ID: <aiF2cpJKpyj3XFj4@google.com>
+Subject: Re: [PATCH v2] rust_binder: fix BINDER_GET_EXTENDED_ERROR
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 26, 2026 at 08:21:46AM -0700, Boqun Feng wrote:
-[...]
-> +#ifdef CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS
-> +static __always_inline void __preempt_count_nmi_enter(void)
-> +{
-> +	__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);
-> +}
-> +
-> +static __always_inline void __preempt_count_nmi_exit(void)
-> +{
-> +	__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);
-> +}
-> +#else
-> +DECLARE_PER_CPU(unsigned int, nmi_nesting);
-> +
-> +#define __preempt_count_nmi_enter()				\
-> +	do {							\
-> +		unsigned int _o = NMI_MASK + HARDIRQ_OFFSET;	\
-> +		/* Maximum NMI nesting is 15. */		\
-> +		BUG_ON(__this_cpu_read(nmi_nesting) >= 15);	\
-> +		__this_cpu_inc(nmi_nesting);			\
-> +		_o -= (preempt_count() & NMI_MASK);		\
-> +		__preempt_count_add(_o);			\
-> +	} while (0)
-> +
-> +#define __preempt_count_nmi_exit()				\
-> +	do {							\
-> +		unsigned int _o = HARDIRQ_OFFSET;		\
-> +		if (!__this_cpu_dec_return(nmi_nesting))	\
-> +			_o += NMI_MASK;				\
-> +		__preempt_count_sub(_o);			\
-> +	} while (0)
+On Thu, Jun 04, 2026 at 11:37:07AM +0000, Alice Ryhl wrote:
+> This code currently copies the ExtendedError struct to the stack,
+> modifies the copy, and then doesn't modify the original. Thus, fix it.
+> 
+> Furthermore, errors when replying must be delivered directly to the
+> remote thread, so update deliver_reply() to take an extended error
+> argument.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-This needs to be:
+>              BR_DEAD_REPLY => f.pad("BR_DEAD_REPLY"),
+>              BR_FROZEN_REPLY => f.pad("BR_FROZEN_REPLY"),
+>              BR_TRANSACTION_PENDING_FROZEN => f.pad("BR_TRANSACTION_PENDING_FROZEN"),
+>              BR_TRANSACTION_COMPLETE => f.pad("BR_TRANSACTION_COMPLETE"),
+> -            _ => f
+> -                .debug_struct("BinderError")
+> -                .field("reply", &self.reply)
+> -                .finish(),
+> +            _ => match self.source.as_ref() {
+> +                Some(source) => source.fmt(f),
+> +                None => f.pad("OTHER_ERROR"),
 
-#define __preempt_count_nmi_exit()				\
-	do {							\
-		__preempt_count_sub(HARDIRQ_OFFSET);		\
-		if (!__this_cpu_dec_return(nmi_nesting))	\
-			preempt_count_set(preempt_count() & ~NMI_MASK); \
-	} while (0)
+As sashiko points out, this is probably better as:
 
-otherwise we would have an underflow issue if an NMI happen between
-the "if" being true and __preempt_count_sub(_o);
+	self.reply.fmt(f)
 
-Regards,
-Boqun
+to just print the raw integer.
 
+> -            let reply = Err(BR_FAILED_REPLY);
+> -            orig.from.deliver_reply(reply, &orig);
 > +
-> +#endif
-> +
-> +
-[...]
+> +            let param = err.source.as_ref().map_or(0, |e| e.to_errno());
+> +            let ee = ExtendedError::new(orig.debug_id as u32, err.reply, param);
+> +            orig.from
+> +                .deliver_reply(Err(BR_FAILED_REPLY), &orig, Some(ee));
+
+As sashiko points out it should be info.debug_id instead of
+orig.debug_id here.
+
+Alice
