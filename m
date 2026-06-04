@@ -1,123 +1,248 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747E33AFAE0
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 07:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780558093; cv=pass; b=NuRQ9Ko4ioZom7tVDX2hIf5H7Y33/BeXgESxnQaGcFjKQqIvZAW2ofIk6d5D75ZOLWnujAJJAGjxLbHndbzPqYJGdj5/k/1fcxX08XmZFgOmuuua1WsdSPEpJULw6QAemn18TNlmsr2+2xLDZ+ikciundhtC99XL4Dtf7oeHnr8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780558093; c=relaxed/simple;
-	bh=9BRFQxXjY1k2RdP+jwj/2G9funm2lNm/ZgWUqjbg4d0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IJG5oLWdJC63mjHiAbLcW23+219vacWlvUQldvQwVCHYTNfBCKzPlvCq4eYlOJRLB8/WWyTOe/9rsXKH5G4KMTwP6StMSwHgey13oyhjp3cwKs/DIxundnkVGsTeaNR3vUz5EO2BOL7/5IxEtYp33SAwCDD0lgo4HzruihQ7rZ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GnF9PgvR; arc=pass smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1052DA762;
+	Thu,  4 Jun 2026 08:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780560966; cv=none; b=TpJbur0qGI6vt/VCa8N4emm7DLnE8lCdpw+J76x/CuN05Ml+nDcDli1oWraSaxMp88PkvQdNT4XPiA7kU3XDC26jNLH5ZXa/CQGJoP9KhhC9DHv8uU9MYk+j+j3RRkT7+FX5vzumRNQAoCNgo61ybhZRkndpPiuLzdKPgEVivSY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780560966; c=relaxed/simple;
+	bh=0Y7Wgjd+88mbx6eBRrnHlgMIRq18/ldRsZrp3x6grII=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FaG6k6JQ3AxWM6f0PDxEltVbacQAfewowTPDLxPQL9LZN65S3bN+o/DLc+6Bp1O2IidNDIu2DVrGW8NQRPviPZyAdgnm6cF/8Uk6QXEdaystXH764vMnfEmsX3kN4fsfuW2y7oBrLDoynZjK26VLgkLprc51elCbLPFsPhly4A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ZNinGa1J; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GnF9PgvR"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-304e5d3cdfeso21573eec.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 00:28:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780558092; cv=none;
-        d=google.com; s=arc-20240605;
-        b=d6xqJgTJDk78dXd7gqjDEx9wLfGZ5F1+y2tKH2tY5GMBc1HoSGBHtcMuLvRguMxXkZ
-         q6xJrgL5JzKAd78v6QvjBnHVLwh8BZPnoTYT3tvbNhAzVT28ceX2Gj+auiQUE80BuGDM
-         +i6hKTjzYBIRuHqGP5oGeoqqcK/nYg5olyPuoAanlrrKoMVmCMjttMaF8BEtWrnMYE8A
-         ytZUxFXGfFpgvPzPaV+2IP3WKvftqAGdC82lbQmlMne0XC6t7Od4lQ1FHbfnM5Js0tJF
-         z95IisyuvHDv7fsXTm4RqQ2wR62tKBrcw0ileE6lgQMjJupT5K5cEpkBEvYq6cDmfUkL
-         siPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ni83wS7JKDvHsibcin5DOIqjeZAyCeU2HWUB3Y7TJ/g=;
-        fh=OzaMUSWeLVkiaeKe9RzovLlKL/lqM0Dtyh6UK+agqpk=;
-        b=L9L0Lj0RAscbdu1W5kaIcH4WHG1yn+RUDoDLoWd2HAtVlRUpcTts8hy3xDWloTrt01
-         VUpTqmwVXE6PW+UavlnvRhddz3IaH0QlzQ2FVyxAJ+yIpfJFtPLSjEqZdzQxmAN4Jkc5
-         85NF1GrrAsiPhS6F1ZumodUthay9uagGiywemYYGz9rsHC1Qaxf4uRhpj85CisJhwbs4
-         oCHeV5sGq5j6smZjIAQlpuqtuTg/x/TnWM6h0xMOEayyHKfvDt5VXy5KQIXttw8kwNfV
-         yCvrk9E9QgY2AhvKlZu4wbsfJvFghav1HJElIipzz+MTDhNs4pvZZLOw6M+sDINjsAtp
-         FYmg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780558092; x=1781162892; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ni83wS7JKDvHsibcin5DOIqjeZAyCeU2HWUB3Y7TJ/g=;
-        b=GnF9PgvR9onQIrx7jWHRz4opmVmZrlPARkgcnBYwJAPbzhWe+E0W7Q7ztJwnVdV6Rl
-         thAU+sWnDNsjvaZjC4ctZSMlE43VSwtC2xpfDdZsUvTTfxK0D2zaSJ5VHRAxo2NYkXqX
-         F4dVcFp8gU3DPTv8D7o4ZweS65Txa8xEpF2NzW572o4gTxpzsgfuUuwrVbkAwaYFs5XF
-         RmLSTZXotQ+b4DhOBvHtM/AujxQoYByW/Vgr8vhBYc6Ypz4khU+oVxsKG5y7Ka857Peg
-         D4jHWEYqgsG9iwndwJMgsT+iuRzXV/NYulMCxP45qc+ouBYtbJl4Ctf1jNX3kLbDQBDF
-         PBgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780558092; x=1781162892;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ni83wS7JKDvHsibcin5DOIqjeZAyCeU2HWUB3Y7TJ/g=;
-        b=exdJmI/UBRv2g31LY6ylNT+fB5Zsqb0pJl3yCDqqgWO+Ckzo204evKpabE5aahmM3P
-         aigMltbypeM+Zh+qj4lLAxSjXzyGj0JI2XDUH3fYvGq15UqZekQv7vqWOlzPLvUScnaB
-         UKqE3qGFDWG/WF6ehuPCC7+oSOrnWNV/n8U4yxiCwuGgySLmP+HXZ0c133QMvm+B77+Z
-         8lFSAfClP7mQC0qBSfb/mtmhWD2WwJr8IfwujaXME8VWxvsBmtBm4yiJECmyXgVISTIl
-         fVE9ropwRvDbw9iraQVZ6mOuhYkGkbM6iElBOHRQ/xdwFF0GfuWwxJpmXSW2NIGjyYD/
-         35zQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9vUDh87lGqduUnStItJRzxaqCkO13cmHsgI4KuM3Zdf774HXGgUoLLmLCTo+gNn3XOts7z47PuLR8vvuSOGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxsoy4he4cngt8Xd/h2H7q+SbJeVGdodKkZSet+iNtrN8hdWeQP
-	A0QMTMMCKMRYanb/kyGUuAFqi7SaoKEGtA6W4lBeRGp3J+wTfdPNYid5xqUDKCe2JUgsi7pMpw2
-	1sS0UoJBywbdULTboPaMR8M+uFGa+oMw=
-X-Gm-Gg: Acq92OGsMhJJegLjyWWUK7WfmaOCLH00MGMrBm9aw91GOHOVKraz/0ratqvkXLaEwNU
-	M9IjEHbE2LSkQAP8QJ+fJeNYoNk0N8c+Xn/xhLZ1nrLtBtDZ6Es/LmG8adkdH5w1QHF8hu1k/90
-	PoxM02kzA8mAkj+r82zvtUbbDle2sVGDfh2tUg5sZVRndA95LmKbKVvV8/m4zToL7rsVVBFwa6G
-	4BiISdVwtar3sdGuYMZo1MAf8gCKGzH/T65qmxSSD3XZlxk8U3RtPBBgPwtz8ydMIMBzhYRdzat
-	75cvulqcubY6nyy7IkwU/h3VxreeWp7oo+D+B0niwhnoXgDH5+/ra4hnPOveDHu2FnXUaTSDA8L
-	Tt7I2q38lDGloeXW9qr0gEYHgU/S/0dxt1Q==
-X-Received: by 2002:a05:7301:1f15:b0:304:c73b:79ea with SMTP id
- 5a478bee46e88-3076a4fe74fmr322506eec.3.1780558091555; Thu, 04 Jun 2026
- 00:28:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ZNinGa1J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1780560963;
+	bh=0Y7Wgjd+88mbx6eBRrnHlgMIRq18/ldRsZrp3x6grII=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZNinGa1J0lLXQYyrBJR0buj+EVTZ80+2Uuh9nZXqO5DlLo5sEXIgohmA8VDsKAtoz
+	 UvCqtRX47RtYpxgOHrWo8+vktVHLFvnBvDW+E8Ko4K+xhPvTaH/nI/lejQf80lbqWm
+	 Qf9POeDLzHkMsjucLQavTvPNYR8Tr3Jlr6KSD2or4e8PqPTGjgy6DrUgHQIuUL3B+q
+	 JzkgS9DOAEszq/R8nHmx76Yu6iVGRNez/yOJPiT4sseUIitOTj/fezTTaeFWg6GsAc
+	 oMAUvO7JH3MpB05Q9sDx1vkCEmwLYRlQG801pUppqED/pS+btzqljwhf8djFJ1x0NG
+	 eZyz35pp1VL0A==
+Received: from fedora-2.home (unknown [100.64.0.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id E820317E0979;
+	Thu,  4 Jun 2026 10:16:01 +0200 (CEST)
+Date: Thu, 4 Jun 2026 10:15:52 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Daniel Almeida <dwlsalmeida@gmail.com>
+Cc: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, Neeraj
+ Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, Uladzislau
+ Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan
+ <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Igor Korotin
+ <igor.korotin@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Alexandre
+ Courbot <acourbot@nvidia.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Krishna Ketan Rai <prafulrai522@gmail.com>, Shankari Anand
+ <shankari.ak0208@gmail.com>, manos@pitsidianak.is,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, rcu@vger.kernel.org
+Subject: Re: [PATCH 3/4] rust: Add dma_fence abstractions
+Message-ID: <20260604101552.4232733b@fedora-2.home>
+In-Reply-To: <09096455-BA79-4E61-AD88-44DA57C5BEA8@gmail.com>
+References: <20260530143541.229628-2-phasta@kernel.org>
+	<20260530143541.229628-5-phasta@kernel.org>
+	<4F8E8E04-5AB5-4E6B-9194-5FC467E2313F@collabora.com>
+	<20260603191405.4c75badb@fedora-2.home>
+	<09096455-BA79-4E61-AD88-44DA57C5BEA8@gmail.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260602151638.14358-1-ojeda@kernel.org>
-In-Reply-To: <20260602151638.14358-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 4 Jun 2026 09:27:58 +0200
-X-Gm-Features: AVHnY4Lm65x6LZu6zOIIfGuVu-Hof_j5ErOVEWYGfSDESff_BqZowlbGgAsyimg
-Message-ID: <CANiq72no3MBBFdV5ZVK-wJrzixwnEkrb6j5QnXMYuZ_=Qjp+bw@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: rename flag to `-Zdebuginfo-for-profiling`
- for Rust >= 1.98
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 2, 2026 at 5:17=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> Starting with Rust 1.98.0 (expected 2026-08-20), the
-> `-Zdebug-info-for-profiling` flag has been renamed to
-> `-Zdebuginfo-for-profiling` (i.e. one less dash, to match `debuginfo`s
-> in other flags) [1].
->
-> Without this change, one gets in the latest nightlies:
->
->     error: unknown unstable option: `debug-info-for-profiling`
->
-> Thus pass the right name.
->
-> Link: https://github.com/rust-lang/rust/pull/156887 [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Wed, 3 Jun 2026 21:43:05 -0300
+Daniel Almeida <dwlsalmeida@gmail.com> wrote:
 
-Applied to `rust-next` -- thanks everyone!
+> > On 3 Jun 2026, at 14:14, Boris Brezillon <boris.brezillon@collabora.com=
+> wrote:
+> >=20
+> > On Wed, 3 Jun 2026 13:41:02 -0300
+> > Daniel Almeida <dwlsalmeida@gmail.com> wrote:
+> >  =20
+> >>> +    /// Called when the fence is signaled.
+> >>> +    ///
+> >>> +    /// This is called from the fence signaling path, which may be i=
+n interrupt
+> >>> +    /// context or with locks held, which is why `self` is only borr=
+owed, so that
+> >>> +    /// it cannot drop. Implementations must not sleep or perform
+> >>> +    /// long-running operations.
+> >>> +    ///
+> >>> +    /// An implementation likely wants to inform itself (e.g., throu=
+gh a work item)
+> >>> +    /// within this callback that the associated [`FenceCbRegistrati=
+on`] can now be
+> >>> +    /// dropped.
+> >>> +    fn called(&mut self);   =20
+> >>=20
+> >> This is a central point. We ideally would want this to consume self, b=
+ecause we
+> >> may want to move things out of the callback.   =20
+> >=20
+> > This one comes from me. The rationale being that ::called() is called
+> > from an atomic context, and the resources attached to the callback data
+> > might require acquiring other sleeping locks to be released, and
+> > sometimes you don't even notice immediately because said resources are
+> > refcounted, and the lock is only acquired when you happen to be the
+> > last owner. Yes, those can be caught at runtime if the C side is
+> > properly annotated with might_sleep(), but that's not always the case.
+> >=20
+> > If we defer the drop of the data only when the FenceCb is
+> > dropped/recycled, we're at least not constrained by this "runs in
+> > atomic context" thing.
+> >  =20
+>=20
+> This design does not solve it, because one can quite trivially get around=
+ this
+> restriction using Option<T> as I said. If your point is =E2=80=9Cdon=E2=
+=80=99t run any drop() here=E2=80=9D,
+> then &mut self doesn=E2=80=99t do it.
 
-Cheers,
-Miguel
+My bad, I thought you were talking about some Option<T> in
+FenceCbRegistration<T> (there was one at some point, but it's gone now),
+but you're talking about having an Option<X> inside the T. Yes, there's
+indeed nothing preventing a drop on X in that path, and it's just as
+bad as passing the fence back as value to the callback in that case.
+
+>=20
+> >>=20
+> >> Consider a fence design where signal() consumes self. Now consider thi=
+s:
+> >>=20
+> >> ```
+> >> impl FenceCb for MyCallback {
+> >> fn called(&mut self) {
+> >>   // Can't move the fence out, so we have to put an Option<T> just to =
+be able
+> >>   // to move.
+> >>   if let Some(f) =3D self.some_fence.take() {
+> >>     f.signal();
+> >>   }
+> >> }
+> >> ```
+> >>=20
+> >> This used to be the case when our version of the job queue used the "p=
+roxy
+> >> fence" design:
+> >>=20
+> >>=20
+> >> ```
+> >> // Callback on the hw fence
+> >> impl FenceCb for MyCallback {
+> >> fn called(&mut self) {
+> >>   if let Some(f) =3D self.submit_fence.take() {
+> >>     f.signal();
+> >>   } =20
+> >=20
+> > I'm pretty sure lockdep won't like it anyway, because this is nested
+> > locking of the same lock class. For such proxies, we'll need to teach
+> > lockdep about the nesting like has been recently done on
+> > dma_fence_array & co. But I'm digressing. =20
+>=20
+> Yeah, but this is more about resource transfer in general, not
+> this pattern specifically.
+>=20
+> I agree that this has issues, and yes, lockdep complained back
+> then :)
+
+The thing is, there's so many aspects that could go wrong because of the
+context this callback is called in. Nested locking is one of them,
+the fact we can't sleep is another. And with rust it's even worse,
+because of the implicit drops that will happen when you take ownership
+of resources (taking sleeping locks to remove resources from a dataset
+for instance).
+
+So, by passing self by value to the ::callback(), you're basically
+telling users "hey, BTW, don't forget to defer the drop to some
+workqueue if you think it's not atomic-safe". And how can users know
+that the thing they're about to drop can be dropped in atomic context?
+They basically have to audit the ::drop() of all the resources they
+embed in their type implementing FenceCb. Not only that, but they also
+have to design the thing so the deferral of this ::drop() doesn't
+allocate, because, obviously, allocating in atomic context is
+tricky/fallible. AFAIK, none of this can be spot at compile-time (I
+remember Gary/Danilo mentioning that we could teach the klint about
+some of these rules). This would leave us with runtime checks like
+might_sleep(), but most of the C putters (xxx_put(object)) don't have
+might_sleep() in the path where the decref doesn't lead to a refcnt=3D0
+situation.
+
+TLDR; Call this PTSD if you want, but this is the sort of bugs I
+struggled with on the C side, and I can predict that the exact same
+will happen in rust drivers if we expose the FenceCb as it is designed
+here and we don't have a way to check the soundness of the FenceCb
+implementations at compile time.
+
+The other option (the one I've been advocating for from the start), is
+to not let drivers implement FenceCb (make it private), but instead
+have a bunch of implementations that we know are safe. Here's a list of
+implementations that I think would unblock most of the drivers use
+cases:
+
+- wakeup a thread
+- complete a completion object
+- schedule a WorkItem
+- schedule a kthread_worker (once we get a proper rust abstraction for
+  that)
+
+It doesn't mean we can't have optimized FenceCb implementations that do
+a lot more in the callback() path instead of deferring to a
+workqueue/thread, but at least those would have to be implemented in
+dma_fence.rs, and the dma_fence.rs maintainers can then carefully audit
+the code as part of the review process, which we know is not really the
+case when changes touch drivers code only.
+
+FWIW, I think the FenceProxy design you were describing falls into
+this "must be carefully audited" bucket, and should be implemented in
+dma_fence.rs.
+
+>=20
+> >  =20
+> >> }
+> >> ```
+> >>=20
+> >> Although this is not the case anymore, since we phased out this design=
+ given
+> >> Christian's recent work. Still, we should ideally not require Option<T=
+> here in
+> >> general just to make resource transfer possible. =20
+> >=20
+> > I see. OTOH, don't we need to make this inner data movable if we want
+> > to cancel the FenceCb before the fence is signaled anyway? And that's
+> > most certainly a case we have in the teardown path. =20
+>=20
+> Can you expand a bit on what you mean here?
+
+Never mind, I was confusing two different iterations of the code here.
+I thought the Option<T> you were mentioning was in
+FenceCbRegistration<T>, with some explicit ::cancel() function that
+would return Option<T> so the user can get its resources back when it
+cancels the registration, and also know whether the callback was called
+or not. But this is all gone now, and all we can do is drop the
+registration, which will automatically drop the inner T.
