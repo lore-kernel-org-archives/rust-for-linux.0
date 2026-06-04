@@ -1,130 +1,184 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5B340963B
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 11:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780571435; cv=pass; b=n4TSNxFMXOnIVH6he5zs3Nr16Fces7u1Xz0VopjP8paqbJPrZ+5t9NHBJAOidT3fuZk1AcCLdv1WMIerzbLdwcrxpXYe9HKP1SG4Me6Gh8qdy8vdwEKkf+GpfqPs2sa84VZ+MEesArk7GmHG4nkDsNL/MZdqjycg7puJpBFeJY8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780571435; c=relaxed/simple;
-	bh=eSci7xLpxgYHSBUqhNqtJbViKyYVOJoOaMBk8J7sasA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=apSqJC74jqdlX/S99yjvN3mwUwHHYqm08HQGNfVlTQAR8gxVH+4C2ldzE8s2d2dkHwn2MTAPSd1ElyoZkzA5biWCcq71JPE/MinUDPaq8nSqInby7iZJ1iNI1geCOJhtd3siuq2SmosZakCIXhURKlB53tAaL2BIp83wHl/y8r0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A1z3xLOt; arc=pass smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AB33E3D95
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 11:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780571836; cv=none; b=MecMM12X7S9EDNbIPKoden9RHwPdl7gs/zf6tae7iRgTATulFJjhbu0iQG4osappjno34yIENMGUIYl8V+hEl923JJm0Q5qvhTyfCf9Yeb2Zv5Cfb67xrnTtmeKKPh6E9oQAHbLMnWI6PbdoI8WYOxoDfmD6AczJeysIWorLEkk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780571836; c=relaxed/simple;
+	bh=Li3Wd9vZ2do7YIFFIrvPQ4L5MznI5BwPjL7AunXsO9M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZtFXCywAVZjeZ1aVvjJgs01awXB1p46v7f3IV3SF5Fr9ba5IzRfHvejUz8KY0Bdl5PWgKh56jZPjXtMiR+b4QXOQedUNSDQUF91BO44SlmKPUWLI77lhyqqB49Os+Yo3kGlT4fhdpqkpa+RSnpHqpnYLmzJaKIon8BVtTCPzCSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivsLnTTa; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A1z3xLOt"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso7056525e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 04:10:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780571432; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Rv9hUknAIpJWEG5yRijTTKOBuID7ABUja5q/ukW28P8oKxl4q9Qb5mF43ZcVgulHX2
-         482z8DB5v7GTyOogEd8AwLSsEYDCX5MyVi0Ydnw37PM82LFNzzXkGPPTR7Wez+xa0gr3
-         +OhejZGkkTThSMVNiJPwtTUDAoBIrK6roxcpoCtWtPooVb2tlhET2pmkmD60S5KPFWvY
-         HqeTF2oFygM1RRAcllNfLliYVFOUYA6SUHhn7ld6M/l/4VLEWExkNpFfT2no39VdHNuN
-         bPO6SPA1pDwelGv29rcOUuJwEUUqWJz6SrKyQQyVhP7WO9S0j/XM6iNzQIcgY3o8Khjw
-         QrsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eSci7xLpxgYHSBUqhNqtJbViKyYVOJoOaMBk8J7sasA=;
-        fh=QeMTjpXNGFYIt5wer4FH/kIRkBOpOh2hDtvR5zqcwII=;
-        b=k9LbXivgrAVHQ+/oXJG/grRXSxK/NLhd6y5IPzuaQxynwTiaS7iKq9L37CEozb2HMx
-         FZ3ydKIkybqy3BaIOUPTT1YQr5JX0JbBxBcCYFSaq/UCCZQw3swAo9fdsNyu44MIfjgE
-         pNjKKE+HiujrsxdYRQ2naXLQu4tbhCokYv9NEeHqn4c8APwBK7JHPnaW7VILlEBlZiu0
-         f/waq/i6JRd+HJl0UzmH0fneWylw0ghjktESTD0HCNrlMFC4HQn9JhE0/DYs7Bf/Rd/8
-         awSX95tO36nT4ZoALgmCXWZFBVCMZWWIzPIvcs3pZBmDVNO/2iDEJ9XwWsmGEvF0vizt
-         JcQg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivsLnTTa"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-460153ce644so402348f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 04:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780571432; x=1781176232; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eSci7xLpxgYHSBUqhNqtJbViKyYVOJoOaMBk8J7sasA=;
-        b=A1z3xLOtRcNaVrfJB5v53z+Aqlg4CUp47+QLZW/E8Sc4In67WuzIGtoQ93kF1d33n1
-         jFek8XKrZtTSq8yBWRMANrzIfNzUzOGJQaZorEpCO16KCeNuW7FXhwFrIV1QFAx1zBLt
-         +SstjgG8h95Ex5NwYfB+XgyBAXKUEpToEo7xey9Dr083760/E6ZsoBL0ZZ0JilbTLiR3
-         RaQlQK23lZIwiW0xX1F7zbcnhhTKJhl6EEoZ8g+vRN6xdc5xn1MSNweMn+794NLmjVnt
-         tPc6lxt2esrfqDqCeWcIJOm3BeSPgwlXJBMnQ2ncs1zGczz2yVq3GhtszFAKsl8ATA6M
-         fkCQ==
+        d=google.com; s=20251104; t=1780571833; x=1781176633; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bL3cr/N4yYTt9Xr62pbCqd/6k/zRQ+lTKB/ioJiYtd8=;
+        b=ivsLnTTanW/nUJfToVzGLrP8aPC39hcFvo9+j6K+4wVvBmgyLxwQkR0ZQPK5SA3XV4
+         Tjagv/7GALQCeBLxZee7yQxdIn5PAgZ0iD4GiZ+vCIFwLcRxIbFEUX3dUnrHC2818WMg
+         bONOgIwPUbhDO2jB5s9y+K6fOvN9W1YiOFPFpI/xmtZyL4J3fXl8KJNT+79+Kmt42ehP
+         EPjlx5QajL2pXk0D431dpu9WRZdAEL3Gx2dk8va/yXNlVF3Vi1+NVYY/v1ZGvwrT2/C2
+         83fR5nKoM0+wm6Le0MbAKEsETFRBqvnNmcoEsFicptWqLDrXB5uX4jeK/rzuR0swcrVy
+         LJdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780571432; x=1781176232;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eSci7xLpxgYHSBUqhNqtJbViKyYVOJoOaMBk8J7sasA=;
-        b=V3FwqstTvc4q0ZNalfeF/LvXu/poNTxccWal3ElaMxI6zh+YUQYvvz7ZfbwVFBk3yE
-         5166lNqIP9si8bjJkBf6ihoIM5CP/qwde+bK9H0OF33ftmxdR3OQ488nuRF9G29vO42u
-         ioEYeY6OSwbGtiKboI4oOIto+O1l2ccUzRzmW19wPn9RvY1Enjel1jUopJ7hdvavBsQm
-         aoMqBLDpeFCK6MYfFlqYFE9eyr92ZogtPWrssq7hleE/z6Y6TeOmSxGWuM+Z6xqlqjhq
-         KF4FJq83vgAB3a4V01Eqs83bV6ytagpddeFW3bVJ9yV/O+Q9fGyE5dNmzUf0jkKuyzJl
-         0oxw==
-X-Forwarded-Encrypted: i=1; AFNElJ/GVWJXsC/30ox5CwBIgA0WMzRX/4Nl1x1sxJetNDMWvGvTr8qva78//jwbj0oy3490EoHrqp1vQr1SUj522A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoibqvGXpN9mZ2Ps6Ul/U/BL+k6GAfKNsaFp1I2wED3Vsr8QwE
-	ZtIjqMy3KVDC5SQaJdOCJbvKcPak3JcBpAjDeFkruND8B3qlPQZAUTEDxX9C+IPqhNVRHfx+Sg/
-	/S2pvIWdsucy5zB+eEoi0Pq8cAInUwOW9YoJ6MmZS
-X-Gm-Gg: Acq92OHSmrMQSex4qAyM37RtDzqvpAk6ERJQKN2ab+My3n6xQUCVNl9SZzVZc2B28YO
-	k+wGw7HWKXTbyJHUbkcfuCs0hnWL9rYLG9C0gf5LKFzFoghSVVr5D5c90GwBeahmBwEjx8ibBn5
-	WafKSe/2RLYCW3VYUfAm5ozWDhTz+Vnvr37DdQ4baBGjaAK3YfnVyixPteH9hUr7WgZhG/ND7N9
-	S/cHTDrUPC2vhZ2q2ZKG/aYVNinV5FOlsVSeMHQ/IkwiLotsRbqydCSXxW2M5bh7+gnRzFmXTtG
-	kdufVrF1M3jFzBf6fQwCZlwR6mHlga5lAmEe5mgL2+82yM5NDDN3hOYH3ouXWUffIoRMUYL8R3y
-	DYk4=
-X-Received: by 2002:a05:600c:4fc6:b0:488:9bf8:7f17 with SMTP id
- 5b1f17b1804b1-490b5e95f44mr117890035e9.14.1780571431900; Thu, 04 Jun 2026
- 04:10:31 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780571833; x=1781176633;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bL3cr/N4yYTt9Xr62pbCqd/6k/zRQ+lTKB/ioJiYtd8=;
+        b=jPCIsPulusEwhL5YCV0PCc0yXAdOSXsbfY3qYpqENnay55V6XKVburuVsxwp7129QD
+         edelJy7LEOYYY/mSDsRNpyTpe7u91MbOvnqD9GGzb9UlypR/Fa3LGZDm1Et2Sj7O7F+3
+         kVh3FD3KOUeKabI9FDrTR405Am/vSJY6vHDHs9pPmcIyIYhxQ0udPxAh7I7jHlP5tYpT
+         aDjotGrlKu4wkSq37v3PKRaXSdVW7IFMyGDdRb7K+HJVKoVblddBKjzBu/PjeAd+WzJT
+         WQ/NC/erR+JR5NbUurzncH+2wBv7dW5F4LCFC0ZsCgrC3P+bn1rfgAaS4eUBcRqjbBqe
+         PR/w==
+X-Forwarded-Encrypted: i=1; AFNElJ/4OaFZSnC+7Y9HDg/LR3SZOAkNe/J/QX8m1QYqY5WLnBFXLG7E93UzQEIuxoYpnxrKX+UaLbtiVn/ePu9CDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaR+kpWzhkuaSI2k0H7mzT/nZCOGLj6VCYH4CLHfb+391lCPQl
+	gsbovqZpYuDxHfvPsxqh4Kjqi/bTQr2pGl2jIFWnm0ZKT4+7QFqq5g/Rp8GnwmoMkQG0ao+agQo
+	xOGm4J4dGByn52owQoQ==
+X-Received: from wrvx5.prod.google.com ([2002:a5d:54c5:0:b0:45e:ee1e:37d3])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1993:b0:490:bb19:b110 with SMTP id 5b1f17b1804b1-490bb19b19amr73563895e9.27.1780571832368;
+ Thu, 04 Jun 2026 04:17:12 -0700 (PDT)
+Date: Thu, 4 Jun 2026 11:17:11 +0000
+In-Reply-To: <20260526-rate-exclusive-get-th1520-v1-1-34cf034e1764@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net>
-In-Reply-To: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net>
+Mime-Version: 1.0
+References: <20260526-rate-exclusive-get-th1520-v1-0-34cf034e1764@mailbox.org> <20260526-rate-exclusive-get-th1520-v1-1-34cf034e1764@mailbox.org>
+Message-ID: <aiFet_2SNAwj6o2O@google.com>
+Subject: Re: [PATCH 1/2] rust: clk: Add ExclusiveClk wrapper for clk_rate_exclusive_get
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jun 2026 13:10:20 +0200
-X-Gm-Features: AVHnY4KT0fbb0zrOV-n0xIWvnd6M6oIkQFpOjNPef2gzJpQvDH0c138r3Ikq7Iw
-Message-ID: <CAH5fLgh8L0gshrfaHWxdAqQMtXY5XEm=TT2cx6C8W519Pj3+Jw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] Rework index projection syntax
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
-	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: mhi@mailbox.org
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	"Uwe =?utf-8?Q?Kleine-K=C3=B6nig?=" <ukleinek@kernel.org>, linux-clk@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jun 2, 2026 at 4:18=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> This series reworks the index projection syntax in the pointer
-> projection infrastructure to use the keyworded syntax to be more explicit=
-.
->
-> Doing this allows adding a new panicking variant of index projection,
-> just like the normal index operator. This is useful for cases where
-> compiler cannot prove (or cannot reliably prove) access is inbounds.
->
-> The new syntax looks like this:
-> - `[try: index]`: Fallible indexing (replaces `[index]?`).
-> - `[build: index]`: Build-time checked indexing (replaces `[index]`).
-> - `[panic: index]`: Runtime panicking indexing (newly added).
->
-> DMA sample driver and nova core is updated.
->
-> Danilo, we previously discussed merging this series with I/O projection f=
-or
-> patch logistics. However, I'll need more time for next version of I/O
-> projection (implementing view types that have original container type
-> erased) which won't make it this cycle. This new version for projection
-> syntax rework is minor changes only comparde to v1, so I think it's worth
-> sending out so it can still land this cycle and get out of the way.
+On Tue, May 26, 2026 at 07:04:57PM +0200, Maurice Hieronymus via B4 Relay wrote:
+> From: Maurice Hieronymus <mhi@mailbox.org>
+> 
+> Add Rust bindings for clk_rate_exclusive_get() and
+> clk_rate_exclusive_put().
+> 
+> Clk::rate_exclusive_get() consumes the Clk and returns an ExclusiveClk;
+> the matching put is issued from its Drop impl. ExclusiveClk derefs to
+> Clk so existing rate / prepare / enable APIs remain available on the
+> locked handle.
+> 
+> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
 
+Overall looks okay to me. With below comments fixed:
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+>  rust/kernel/clk.rs | 65 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 65 insertions(+)
+> 
+> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+> index 7abbd0767d8c..8cda40cb01e4 100644
+> --- a/rust/kernel/clk.rs
+> +++ b/rust/kernel/clk.rs
+> @@ -249,6 +249,23 @@ pub fn set_rate(&self, rate: Hertz) -> Result {
+>              // [`clk_set_rate`].
+>              to_result(unsafe { bindings::clk_set_rate(self.as_raw(), rate.as_hz()) })
+>          }
+> +
+> +        /// Acquire exclusive control over the clock's rate.
+> +        ///
+> +        /// Consumes the [`Clk`] and returns an [`ExclusiveClk`] that releases the exclusivity
+> +        /// when dropped. While held, no other consumer may change the clock's rate.
+> +        ///
+> +        /// Equivalent to the kernel's [`clk_rate_exclusive_get`] API. Must not be called from
+> +        /// atomic context.
+> +        ///
+> +        /// [`clk_rate_exclusive_get`]:
+> +        /// https://docs.kernel.org/core-api/kernel-api.html#c.clk_rate_exclusive_get
+
+Avoid the newline here. Links are long, and it's okay that they are
+long. They must be on one line.
+
+> +        pub fn rate_exclusive_get(self) -> Result<ExclusiveClk> {
+> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
+> +            // [`clk_rate_exclusive_get`].
+> +            to_result(unsafe { bindings::clk_rate_exclusive_get(self.as_raw()) })?;
+> +            Ok(ExclusiveClk(self))
+> +        }
+>      }
+>  
+>      impl Drop for Clk {
+> @@ -329,6 +346,54 @@ fn deref(&self) -> &Clk {
+>              &self.0
+>          }
+>      }
+> +
+> +    /// A [`Clk`] with exclusive control over its rate.
+> +    ///
+> +    /// While an [`ExclusiveClk`] exists, no other consumer of the same clock may change its rate.
+> +    /// Obtained by calling [`Clk::rate_exclusive_get`]; the exclusivity is released automatically
+> +    /// when the value is dropped, after which the inner [`Clk`] is dropped as usual.
+> +    ///
+> +    /// # Invariants
+> +    ///
+> +    /// An [`ExclusiveClk`] instance owns a [`Clk`] for which `clk_rate_exclusive_get` has been
+> +    /// called and the matching `clk_rate_exclusive_put` has not yet been called.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::clk::{Clk, ExclusiveClk};
+> +    /// use kernel::device::Device;
+> +    /// use kernel::error::Result;
+> +    ///
+> +    /// fn lock_rate(dev: &Device) -> Result<ExclusiveClk> {
+> +    ///     let clk = Clk::get(dev, None)?;
+> +    ///     clk.prepare_enable()?;
+> +    ///     clk.rate_exclusive_get()
+> +    /// }
+> +    /// ```
+> +    ///
+> +    /// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
+
+Unused link.
+
+> +    pub struct ExclusiveClk(Clk);
+> +
+> +    // Make [`ExclusiveClk`] behave like [`Clk`].
+> +    impl Deref for ExclusiveClk {
+> +        type Target = Clk;
+> +
+> +        fn deref(&self) -> &Clk {
+> +            &self.0
+> +        }
+> +    }
+> +
+> +    impl Drop for ExclusiveClk {
+> +        fn drop(&mut self) {
+> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
+> +            // [`clk_rate_exclusive_put`] and balances the [`clk_rate_exclusive_get`] call from
+> +            // [`Clk::rate_exclusive_get`].
+> +            unsafe {
+> +                bindings::clk_rate_exclusive_put(self.as_raw());
+> +            }
+
+Nit: usually we format this with the semicolon outside the unsafe block.
+
+unsafe { bindings::clk_rate_exclusive_put(self.as_raw()) };
+
+Alice
