@@ -1,113 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB5435B650;
-	Thu,  4 Jun 2026 21:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E483A329E6C;
+	Thu,  4 Jun 2026 21:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780607243; cv=none; b=V/9v6i7eNTewfQDfGQ+IJIDDp3qhl40IHLWsoqjq2opopcUx5fZBGLMEox/lGTB/S1Z05iaOqF1DGiJX+L40Sx58A6Pysy7MV6lApbESzpPjYgwkiCsJcGVcq1339iWAAuOCyU2iALGvzBQ7QwsgCFeStYsmU6b5XSmnTOd06mM=
+	t=1780609731; cv=none; b=Stzr4rNzyKtVbicycBzadsGwUY9h+Bj3dHsVR75V7lmSXuGySIVGhLcnXHG6x1fTIepaD9umtxUZtZ7hEbI6pCDoVw2P8lYXnpRwoFTDtTABOOdaJsncihePKcvLtD8Ea9/GaxSTjAU4v5As77OZh7rwGKyNM4sqlKDYoq4LzXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780607243; c=relaxed/simple;
-	bh=g7GV7VqMpijIW+SNfApb2mbR+GSpP8vpvnWUWnP8eqk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCK7ZqjCXSouA3HXy3XJIbfjph9x3LdfLgOdoJUlCIpIkjVEfNXIvmGMTJ/msNpiJkVWiwK6hydn++or1AlKmyC9BaP/LcPhpJe3zLJNdXMoQe8FWCzepbcWkykZC+24W00MXXsV5TwuY0CXt82GgQ0SnUomgkk2FlmGeFxnlUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=npD/qQCX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780609731; c=relaxed/simple;
+	bh=iK7nDkaVl+kbc7PjAEoaEgaDEKAIkheFFI1yWCxh/uA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bLvbVHmrIlsDwkcItFk/QJBBJkwwBsFhSMXbBuLWAKGbxZ53qY67wfHTlehJu480XBjC80idK6siy3tEDgF/lWkrLkuwMk/VA9MvJ5eUd9ELhulo9WXw1VkVApyd6N0Wo9XXm+vtYqX+0B/dBCZipmcXzhJC2LtLgDv1OpPimSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOJtH3Ws; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npD/qQCX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B531F00893;
-	Thu,  4 Jun 2026 21:07:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOJtH3Ws"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EC31F00893;
+	Thu,  4 Jun 2026 21:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780607241;
-	bh=TNQDzyTjPMOgbDEx67tSPYyxULtyqVXdtuqSOyi2rII=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=npD/qQCXliwX+s1LGnUae8rBscKjT9LqeuyXN2Y+WEUsCfVCvW68Q8iCSCNm1XCV8
-	 NIm/5JSF5mb5VQwS1T+llt+BLnNor8purnG+vKzOJmUspBUXCtJvnZP3ioPo1sktJv
-	 XoTnioM2w/Y/SXH0w0N1i0TPkNkd/pzuriuzadPPT8Zaor60E/yvTn6HfW44MY6uBr
-	 rY2euggspZA+vOCnKYWTy0d8iJG7hyDFOUanrZjJIsaKYiGddxfnEMkZrJZJDf+CHD
-	 4hNO0y4LEiVQt+m5oh8sZhmCPeiiwiwEAk1Zlu3wz/f0Lw07t+i4V2onX6mgAlHceY
-	 UFJS3wUyhlaIg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: penguin-kernel@i-love.sakura.ne.jp
-Cc: akpm@linux-foundation.org,
-	axboe@kernel.dk,
-	bvanassche@acm.org,
-	dlemoal@kernel.org,
-	hch@lst.de,
-	hdanton@sina.com,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	tom.leiming@gmail.com,
-	wqu@suse.com,
+	s=k20260515; t=1780609730;
+	bh=hccU/NDSuAvcNj2qshs5G5T8N2B5+zR4AKzNjS5QKDY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oOJtH3WswuxaSXCBwtdBZdGgqvPxMl2AxmgsBn1Q7sv9bv+2fIQpUu8P6psX9SraE
+	 lSBE1kDOlOcCkxwq1Te5aY2Bf5gUb74/snkw1zcC7CzFdqpd4Avhfe2fsm750odqgS
+	 O59dMX2g/aDU3jKvEKl8txbOdj8B+U3/SsyEk2xAP8EUrnd4KHHvI+btOw06/4rK2Q
+	 taz///r7YoJ8dRaGduBLFDxVhYonPuOrFN7EFKzndPcRwg/FSeYlsjY8zFKlhD4Wob
+	 HX+achzSxwGdodU9S7+z5XB058pkm5Q/iau8rvefFGQqQMoYtL2OOWHLyI0pZM4xE6
+	 OCPIVEZUZh7Aw==
+Date: Thu, 4 Jun 2026 14:48:40 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Yunseong Kim <yunseong.kim@est.tech>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3] block: assign caller-specific lockdep class to disk->open_mutex
-Date: Thu,  4 Jun 2026 23:07:04 +0200
-Message-ID: <20260604210704.41751-1-ojeda@kernel.org>
-In-Reply-To: <226152a3-1e4c-4eec-9a17-1d40426a7b18@I-love.SAKURA.ne.jp>
-References: <226152a3-1e4c-4eec-9a17-1d40426a7b18@I-love.SAKURA.ne.jp>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org, Yunseong Kim <ysk@kzalloc.com>
+Subject: Re: [RFC PATCH v2 2/6] kcov: add build system support for dataflow
+ instrumentation
+Message-ID: <20260604214840.GA3915915@ax162>
+References: <20260603-kcov-dataflow-next-20260603-v2-0-fee0939de2c4@est.tech>
+ <20260603-kcov-dataflow-next-20260603-v2-2-fee0939de2c4@est.tech>
+ <20260604084519.GA3126523@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260604084519.GA3126523@noisy.programming.kicks-ass.net>
 
-On Wed, 03 Jun 2026 20:54:05 +0900 Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
->
-> Acknowledgment:
->   Since I have no experience with Rust, changes needed by Rust block layer
->   bindings and rnull module are made based on conversation with the Gemini
->   AI collaborator.
+On Thu, Jun 04, 2026 at 10:45:19AM +0200, Peter Zijlstra wrote:
+> On Wed, Jun 03, 2026 at 07:43:29PM +0200, Yunseong Kim wrote:
+> > Add CFLAGS_KCOV_DATAFLOW and RUSTFLAGS_KCOV_DATAFLOW exports to
+> > scripts/Makefile.kcov, containing:
+> >   -fsanitize-coverage=dataflow-args,dataflow-ret -g
+> >   (with optional -fno-inline via CONFIG_KCOV_DATAFLOW_NO_INLINE)
+> > 
+> > scripts/Makefile.lib applies these flags when a module's Makefile sets:
+> >   KCOV_DATAFLOW_file.o := y   (per-file)
+> >   KCOV_DATAFLOW := y          (per-directory)
+> > 
+> > Also supports CONFIG_KCOV_DATAFLOW_INSTRUMENT_ALL for global enablement.
+> > The flags are only applied to kernel objects (same guard as basic KCOV).
+> > 
+> > Signed-off-by: Yunseong Kim <yunseong.kim@est.tech>
+> > ---
+> >  scripts/Makefile.kcov | 6 ++++++
+> >  scripts/Makefile.lib  | 7 +++++++
+> >  2 files changed, 13 insertions(+)
+> > 
+> > diff --git a/scripts/Makefile.kcov b/scripts/Makefile.kcov
+> > index 78305a84ba9d..101173fe194b 100644
+> > --- a/scripts/Makefile.kcov
+> > +++ b/scripts/Makefile.kcov
+> > @@ -2,10 +2,16 @@
+> >  kcov-flags-y					+= -fsanitize-coverage=trace-pc
+> >  kcov-flags-$(CONFIG_KCOV_ENABLE_COMPARISONS)	+= -fsanitize-coverage=trace-cmp
+> >  
+> > +# KCOV dataflow: trace function args and return values
+> > +kcov-dataflow-flags-y := -fsanitize-coverage=dataflow-args,dataflow-ret -g
+> > +kcov-dataflow-flags-$(CONFIG_KCOV_DATAFLOW_NO_INLINE) += -fno-inline
+> 
+> https://clang.llvm.org/docs/ClangCommandLineReference.html
+> 
+> Has no mention of -fno-inline, furthermore, what are the exact
+> semantics? Does it inhibit __always_inline?
+> 
 
-Then please do Cc the right people as `MAINTAINERS` mentions, including
-"BLOCK LAYER DEVICE DRIVER API [RUST]" and "RUST"...
+Based on clang/test/CodeGen/always-inline.c [1], I believe the semantics
+are the same as GCC's '-fno-inline' [2], which avoids inlining except
+for always_inline functions.
 
-I am quite confused. Why was this added to linux-next?
+[1]: https://github.com/llvm/llvm-project/blob/1d13b74cf086629d5cdae5f44ef4a62cebcaf3ff/clang/test/CodeGen/always-inline.c
+[2]: https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#index-fno-inline
 
-It doesn't go through block, nor has an Ack or review and breaks
-the `rustdoc` build in linux-next (and thus rust.docs.kernel.org):
-
-    error: unresolved link to `my_gendisk_lkclass`
-      --> rust/kernel/block/mq/gen_disk.rs:42:50
-       |
-    42 | /// This type can only be instantiated via the [`my_gendisk_lkclass!`] macro.
-
-It is also not Clippy-clean -- it doesn't follow our usual conventions
-for safety comments and sections:
-
-    error: unsafe function's docs are missing a `# Safety` section
-      --> rust/kernel/block/mq/gen_disk.rs:59:5
-       |
-    59 |     pub const unsafe fn new_lock_class(ptr: *mut bindings::gendisk_lkclass) -> GenDiskLockClass {
-
-    error: function has unnecessary safety comment
-      --> rust/kernel/block/mq/gen_disk.rs:59:5
-       |
-    58 |     /// SAFETY: `ptr` must point to a valid static `gendisk_lkclass` instance.
-       |         ------- help: consider changing it to a `# Safety` section: `# Safety`
-    59 |     pub const unsafe fn new_lock_class(ptr: *mut bindings::gendisk_lkclass) -> GenDiskLockClass {
-
-Please see:
-
-  https://rust-for-linux.com/contributing#submit-checklist-addendum
-
-In any case, it is also too late in the cycle to be experimenting in
-linux-next.
-
-So what am I missing? What is going on?
-
-(And on top of all that, for some reason I did not receive it even if I
-am apparently in Cc, so I have asked the admins about that.)
-
+-- 
 Cheers,
-Miguel
-
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>
-Cc: rust-for-linux@vger.kernel.org
-
-Cc: Mark Brown <broonie@kernel.org>
+Nathan
