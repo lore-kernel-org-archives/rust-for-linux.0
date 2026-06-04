@@ -1,65 +1,64 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D87426ECD
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 11:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A4C421F10
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 11:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780573773; cv=none; b=eQQ2aS8Hx5fmzs2RiNp8QTcmuLKc2rcjxvVSAWpY9+5g3XDvwo3qE1SOwM2EiNyRpClcYt6VD4wwn4zGGWd9Cf0u+TLWAnDnFxRWvE18shnbtaY4HtsEnNVLpQ3Gi9gc3J6rwYJSXOZqfE78arYP6mfmxrlbaJs8lNKDZsnwInA=
+	t=1780574294; cv=none; b=Jtwn16BH7Ve/HqXvQJJJNpJhsQhzMDHeME2epTzklUHu66DiUa2svAgDqR9BV6G2kCHCAD3/Sg/TSPqcYBZ5uYugHx8KGVlMP7d3JkEHHYsCa5MYVp4gfGOC3YG082SPPZls19SxFnsJ1+4X3fJo//iRYksOfGPzAp9p6SxPwEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780573773; c=relaxed/simple;
-	bh=eOJ28jQK0dMXwHg78GmVtabOBwJqVXIChB/pOF0BUW8=;
+	s=arc-20240116; t=1780574294; c=relaxed/simple;
+	bh=UVIqVMclZDr4qxCyNWMZ/qWloEXWIhQNsmxjFg/How8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Sl/1F0BPK5ZVUSvne8Q7zEbuiPAUjVnjF81Q9MjjfCZJR9k2ok5MQdILBYIQeNt3iow9ggoqpybvIylDWMOsfSup79szVGvpFwy6TLHaN2PavbR+L47rhmFtuvK6FrUquLwDDvexYg51YDxEv/AknwrzJP42qC0Vi3J1UfrrCfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P679IZHY; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=ftSIXn0rXzNbCLhADKORHveWz7zJr9u4eDMowiciSQ0o1fEUMnlN7OuMTgf5swu2YEAeQy4XEGLeqrG0eyozMKX9cYte0YLJUBIhsoXPn9W6yrCOj/cZhTCQBML6EoeJf70+tVWmTwqc9lcPZdSq+T0nAXJJed1mEb4PRDjrQf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KpP0bCD2; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P679IZHY"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-45eecec7667so453922f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 04:49:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KpP0bCD2"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-68cdfbad902so666282a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 04:58:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780573770; x=1781178570; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780574291; x=1781179091; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IDsisrKoiSBYw8b45wvLvNabX1p1YR55LCjFQrLjodw=;
-        b=P679IZHYZyoPKYWl3QwucXddhueKnOUJtRKPw9yUpKYxsxqTeI9HoYO9j0V/DhYHdD
-         YbtKGfQoj5rQ7q6kOPCZSH9CZKobzYWfzHhKbQqv8PX6iHOYfOxWMCHgWjh8al4cG3T0
-         6uNpKxxztgHlKlzyx30PRA3Zs8yOyosEpPvPa9TlXdOrY2ScQT/th02wl/EfLM65k+pt
-         8vSg4hIneziuN7lCZfpHMY5ZUenVlYq6fs2j69h+Ur0jiU2g2yLTdQdWVE3EbBh6GeC6
-         ToS8jYwmYS/zb4OYtPN2gGVv4xkzXAaH/7hqVyy4jUCEgOp8OkIcN5gT0uAMO4lDW/Zn
-         9wgw==
+        bh=tsDBf51o8QHp6SAQ5/8ziLKktk7y3LjUQBohqdmyxqM=;
+        b=KpP0bCD2b/xDSQtHVikC8bBAVEkCDL8VxDlAKFX+lHSFzR0z81IFlJ+4uzRY/2Hgdh
+         2inHTu+MDyzjmAaaTOzIWGTkU1fXI5fI3HBEuaXTBUMwvIRRJ+4ekBhknPlqKD37mxGx
+         Le3XPZ5kcn1uVcxkXfDzMhg8LvjCM3c+7p6Bly6Pt3MpzHjj0wmaJYDbLkEkS2vWU2bV
+         7i+QERjYZPVCQkqgiRkLy7ucx6Ln5Ss9F2TY5VL2t4eTx4j2/W9qzKt64/tmrN69UK/w
+         6YD296c1YccmGZ3pvIeyU9oeaLG2h1YIlDzmbZfWfati3tijexUr+megDrQB24YwjofU
+         y0Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780573770; x=1781178570;
+        d=1e100.net; s=20251104; t=1780574291; x=1781179091;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IDsisrKoiSBYw8b45wvLvNabX1p1YR55LCjFQrLjodw=;
-        b=BpvRl4cmmy5DamyhOK6JQgR69OLtIJ5xvJu/jRl34Wl2Dt7uL2Ki8V17WrF8IsDwFq
-         KzCJ5NH4pLMWDRTzQEQTPZPHpN7KNeHnv+iJcygGxfjv9PoRQfZ4MT4Lr4NBvIjBYPhh
-         PoQQK1Bd5gO/oQALjk0xe/4vc7IhmK9TWHHD+EYfRejYyI4fExu35tokNA9ooBN+qmpT
-         RShL8Mg32OkYfnVGvqQFM+TTXLhfjIgF7zC9BWGpK89/avLFOfcomEtpFoPBkRXalYNN
-         jRdA8eRKhpRrtLLEvX81U8YsqYdOxL8gnYMNCNt23siqSpL7XqRmIopzf8m0WxsPpYz3
-         Mp4A==
-X-Forwarded-Encrypted: i=1; AFNElJ+9LQyB0QCQOpt5IeiRhWbO81kFwgCxHlSKoEAc12JvAK3WtqcJpTiGGUaisK/CMFM4OLs7vpiU/NrWnqLAaQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnNYsyjAvB/dg4DgSCXhjSU6afkDsetmCb5QBheAY9uznod/vv
-	HkIj8DItEaq3jDiueZdcZ4ubCD8pur3ZEcBX+Y3hdIHVWw6uH64iay5AZVjUWxMIY1KdxK0eIbu
-	SspyWAgrrEcKkLg8aKg==
-X-Received: from wmbc9.prod.google.com ([2002:a7b:c009:0:b0:48a:7f8c:a95a])
+        bh=tsDBf51o8QHp6SAQ5/8ziLKktk7y3LjUQBohqdmyxqM=;
+        b=QCHjnX1FVyzDYRLJQxdvH45Qrwcsa1lnh9mNi6hxmNln1TgukhBn9reZQnoUuMBjo/
+         QzfNC83fm3ilXG8MOR2GSFtOsqAV+K9pOSFn3IHyQJisczvbNZM4SFkIlq8X/KOeAAVN
+         ImGx/8aMaR0/ViKhwCZ52QiAIs7DShSs3cZ7LGxYkQaWANn63aea6EJi1XGTKkFjAg6J
+         29qMCnNkBWBCoHAxkzm6gM6z+YIGLl+6S6DuboRT0kK3TD8fK83H1MCLgTetwKl2Riz9
+         XQ53gzUOgh0m+U7BQl7UV2aDSBFyi9f4LLWA2UFlgoW/sY8+8szrbdHU9wRwJwovik23
+         AiRw==
+X-Forwarded-Encrypted: i=1; AFNElJ9nqSnejoAHmrk4+ciJAoatfoZRgGdsV5CEY1oCbZjGoqnFrm89GPmZEGVPqJrfRNcN23eTef1+Am9IhZeorQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVTJ+3pSglDgKKb/X3c5LkxiWagkT13uv89JCcW6X7mSU23juo
+	JD04WC9wsJFaS7wCRDp5fcL+/7x8XDseBzsmLqBS9jx2itpw61kSa1nYsfiLqyKA2HagPuscGgc
+	Af41mS0HAwe+0ReYsiw==
+X-Received: from edrm6.prod.google.com ([2002:aa7:d346:0:b0:68b:163d:99f3])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d86:b0:490:6869:46c3 with SMTP id 5b1f17b1804b1-490b5fe79f8mr132548195e9.30.1780573770264;
- Thu, 04 Jun 2026 04:49:30 -0700 (PDT)
-Date: Thu, 4 Jun 2026 11:49:29 +0000
-In-Reply-To: <20260603195210.693856-2-lyude@redhat.com>
+ 2002:a05:6402:27cf:b0:688:1d5:44c5 with SMTP id 4fb4d7f45d1cf-68e6f79352amr4016032a12.2.1780574290900;
+ Thu, 04 Jun 2026 04:58:10 -0700 (PDT)
+Date: Thu, 4 Jun 2026 11:58:09 +0000
+In-Reply-To: <20260603195210.693856-6-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260603195210.693856-1-lyude@redhat.com> <20260603195210.693856-2-lyude@redhat.com>
-Message-ID: <aiFmSUi0ZHVIj5Q1@google.com>
-Subject: Re: [PATCH v17 1/6] rust: drm: gem: shmem: Fix Default implementation
- for ObjectConfig
+References: <20260603195210.693856-1-lyude@redhat.com> <20260603195210.693856-6-lyude@redhat.com>
+Message-ID: <aiFoUauWYLz-Oyrx@google.com>
+Subject: Re: [PATCH v17 5/6] rust: sync: Add SetOnce::reset()
 From: Alice Ryhl <aliceryhl@google.com>
 To: Lyude Paul <lyude@redhat.com>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
@@ -69,26 +68,22 @@ Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
 	Miguel Ojeda <ojeda@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
 	Simona Vetter <simona@ffwll.ch>, linux-kernel@vger.kernel.org, 
 	Sumit Semwal <sumit.semwal@linaro.org>, linux-media@vger.kernel.org, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>, Benno Lossin <lossin@kernel.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Maxime Ripard <mripard@kernel.org>, Benno Lossin <lossin@kernel.org>, 
 	linaro-mm-sig@lists.linaro.org, Danilo Krummrich <dakr@kernel.org>, 
 	Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Asahi Lina <lina+kernel@asahilina.net>, 
 	Daniel Almeida <daniel.almeida@collabora.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jun 03, 2026 at 03:42:30PM -0400, Lyude Paul wrote:
-> I completely forgot when coming up with this type that #[derive(Default)]
-> only works if all generics mentioned in the type implement Default (and T
-> usually doesn't). This being said: We don't use `T` for anything besides
-> using it for a reference type, so whether or not it implements `Default`
-> shouldn't actually need to matter.
-> 
-> So, fix this by just manually implementing Default instead of deriving it.
+On Wed, Jun 03, 2026 at 03:42:34PM -0400, Lyude Paul wrote:
+> This function simply drops the contents of the SetOnce, given a mutable
+> reference - since that proves we have exclusive access to the SetOnce.
+> Additionally, update the invariants for SetOnce to make it clear as to why
+> this is safe.
 > 
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-This one is so simple I went ahead and applied it to drm-rust-next right
-away.
+This isn't needed, you can just do:
 
-Alice
+unsafe { (*this).sgt_res = SetOnce::new() };
+
