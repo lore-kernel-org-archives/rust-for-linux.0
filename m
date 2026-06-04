@@ -1,120 +1,179 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FC339D6F6
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 18:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780598683; cv=pass; b=UOdlXd1rl8r7XGPUpcvwpmyfNS1uJ9laJIjkb0PhuA6XeFp8+XQZGuSoL5UdjQNFRmkDr4X32mBQgkjZ4mii9out6WWYHw1KsHjlzVKcEKyWL+kdtwYYHub+m7dARUw4zMdseBhBBbei4HfDMBCW13t6lI8eghVcB9eTh4iTAGE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780598683; c=relaxed/simple;
-	bh=xPfKe6EbKcYxdvp0/jDHxc5F/Qx0hqbJHwqSktbCkXA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VfJi0JPgE1IEVkEGJ1b1NKS4UIvn0K/aaVss/yT//ACjF43g6itBGdP2Kr9rmkBStxmk+swpUhoLf/NxcPzE0lAV7/4xIogIfPyBqofcdrRlGxfd1VQKFX1x4D5tCSWu1sjX030S/I+vCnH16hNoxIFmHIEarFw11dHwBL5DjOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eDsrLbZQ; arc=pass smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630B13BFAD3
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jun 2026 18:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780598948; cv=none; b=p9Ki9cqthCCTZuBxMlxVOcegIUco8UHPlvyFO0hC1tSsvzP1VZxt8yMuy8SDRfmkZ0VB4Vl4uYxY5xUU5SjgZfEgPRQjAeh94PuIsSy7skRrBBLzQiazf+7Tf3oFgtlY5m6lQSGHdRG65nzALjLq44Bdf2i6UhN+ffJqXWEjbpg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780598948; c=relaxed/simple;
+	bh=bSOB8kwgdkJuUcuvvGWTTy+0BwGIhrEyhn+sNY27Rlk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JBMVlpx+vYUdLb6hSqwqTmi596tU0S/MWfpM/UWISWLnUpH6NbLw5DZLFVsK4kaTo2UrBKAUZY8yy2ufMBe3Yq8dY6ACCEQxcP1U9IV6iCUpBpmqVn+XahPYer4KXH+Ne7xHdW1Vh2L2SIi7OaHMUwW5OXCxHlE0EpEuqGshf8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PSbb7SOb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eDsrLbZQ"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aa68da4e45so95910e87.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 11:44:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780598680; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lqMv88pnF9eWuHVvnkZRx1g2yY60ydVrQKL9c1m1jaTl2JSIgWClG708CfOZsDeA47
-         svJvxsjQNRaET061Sl4MTUg25DDxn8xFzvHW6rHXfi6UqIb1we7G05cqOIEOwCwsWkgq
-         f0cRQDSQfB0tfKYED3vrzelqQWQOu/Jw4Y+rS67rWLfwLbbpCYqZ+ffARvyWj+bqdBlQ
-         j/21sf3AL+JRDKkIqSXp/SqVrDpa8VAh7t0os0+nD+sYDir5ZGXMRU7HSsWImbGRnIB+
-         Nb/maN4z+uFY5yr6Vze2XjnZUlsLRIkVLs7w+6gAHR5WUs46GRklY1O+wZOig2JMhTFW
-         DvdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xPfKe6EbKcYxdvp0/jDHxc5F/Qx0hqbJHwqSktbCkXA=;
-        fh=r4FGeab9CQ8VUdIPTWGzk0RwI3uL0nqyM7gPt3LwTBs=;
-        b=QI+80WYy3pE9FZugLTkSfboZLesRelmEAoKd4nKFRcnLD/kIrARgA0EDQ5hHadukaW
-         vWbCNaRlbAQjF5Y06rLLNPE0kwlrQRXOKjWQt3PHONlWXuQWLrt51BQ6d5PrZ8DIiVz6
-         ifHt8eivoZk7vNgNDVamsIklkGif5xj1uwHgyRVf7SORJcN2jIlOem/J1fnLhOSh/oDR
-         M6Pu7+PBWi1ysTkCfJ7PusQFFaXlvQecTLF15ddZywqVCCKltKICxpKnyBFoOBQqbZzd
-         V1xlGeJGf7BDYdD2fjzHpCp2um0D40+B2xXSckEWGDwPADNYvdlAmRJqZbgGYQitPC3v
-         Q67A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780598680; x=1781203480; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xPfKe6EbKcYxdvp0/jDHxc5F/Qx0hqbJHwqSktbCkXA=;
-        b=eDsrLbZQph/iF63QuHo4KTO2ckxTE74etgUNuMw3U8rLBizGX1DeRubXF7IbXRgFZe
-         KO3U41Aj7oyd+x8qlkK7MmtzpRAmDGIBl/hhKfMCOjGV1eIZEkDl4uDb9Q+Cl2Hjk0u+
-         H6EfX16DvIIbeYXM1O3yBmZ1sMnR8xZa24vGmpbwEkNaKF7HU758m1VTJI4OE1I3cAzF
-         HQwaq1Lgd2Ka8YFLfCVH9Z6DsiHmzeRagl+Er3TwyMYcl3vytJcnhneUpTGAnRcywV6r
-         Bcd/BGV3rqIfXqJymye3lTJ9rqidXJ7uPSSwy+6wLbPNk5zyFIA6opsbVm0S/ZJgpekX
-         bSzQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PSbb7SOb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780598945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bSOB8kwgdkJuUcuvvGWTTy+0BwGIhrEyhn+sNY27Rlk=;
+	b=PSbb7SObVM5nZdYrjtxzPjiV/PWbSZf6AJPko1z1A8q2EkfM9DCLyox47Na+y47KoSyFH1
+	v2HIgC9texiDZkweVlQFlI18rGH3KXMaVQTWhNEtHjGoYg7YYVLelcy85AmTVmvjGcX4m2
+	ULnnjN5y+J8Y98vtwI0rBIiHtjteoKU=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-399-RwGynqDCPr6AVtX1jvFKfA-1; Thu, 04 Jun 2026 14:49:02 -0400
+X-MC-Unique: RwGynqDCPr6AVtX1jvFKfA-1
+X-Mimecast-MFC-AGG-ID: RwGynqDCPr6AVtX1jvFKfA_1780598942
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8cceb5a9686so5761246d6.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 11:49:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780598680; x=1781203480;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xPfKe6EbKcYxdvp0/jDHxc5F/Qx0hqbJHwqSktbCkXA=;
-        b=O0yctjEQPiQdI4WsOvVVFX9FpbHFUwRVzLj2y/COp2ml54u2SUzssb80BM3xeZq5sG
-         o0aI6IViqK5nVzs7sbTagjhI3+godfTx3PyUz8k6Wik0v7ZnGwm5g5wZfYOz9ZDyZx8j
-         c+Q/LZe/dlzoDeATD3vLtK+BqX2pqHlHXv9+e8Z4PFbegopgghXvmfLW2PvPAX4SHoU7
-         VvkqgEfzlJTXWscajN8sgUeyOBCwao3+50Bz8LL2BjBYOABkcO+Lqzf5JrRZY7UUk34x
-         HfG1qhzLou01VKlb0ekuy57JTECIgGT9t6JnYp2GTaHpZFruyHbgMk1Tk0EhPbcQjdyJ
-         BB6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+FM9FEMLvK142pTp+6cgUiaYRNd52gpL2SZ2XMwWt0kWUKK0d6jC5M/yqJ8R9IMMAh0ECsORoZedWcQi5LLQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiS4l/bqjZtgTdBkg+DvjBS/3VFt5dFqeCg3aOV3nEyF3cBaJ4
-	6EmlhDun6m7RWSBDR24B+AmMosXb4318tlJy8GfysX2VO6JEBo7gFQNJ38aLoOVSkXTasqS5y6u
-	1RzL/hWaLmLmMzrLG9xUkC9OqcRRJeqQ=
-X-Gm-Gg: Acq92OEo52RyUups8tXj4UZ6x/vCBJaFcFCexFtarzz7hOY1laI0rwGfWgn3rgoLDRZ
-	6HfrxJ/drtKLs63HY25IDtUbL8GQxhR5RbTbLFv4oEoUP/LtcYuF8IaL8TyCwC8vyVZsyeG2a4s
-	OAAkk/W8JRkPkc5ceGUBk+EYr5CJSypt1nSE0SZKa9vR5nxBLK1VuPO9dJh91a5hePo/u0TYJ26
-	Lgc4+culSnuAwnm5HuUdbER28e4b39yQ3Sqk4S7UV5emJV9M5oL+fYNwYaCo5w1jmtkKxTAuPK4
-	YlFZbfcc61qe/qtCLywkKntOU5to5N0dRhybAJdDK5NvLxpRf3qNutHnAWTgLNNh8octzF8yMVp
-	XXkpe4UMcGQaW69B65ay605TW+S91QsxerQ==
-X-Received: by 2002:a05:6512:10c3:b0:5aa:6ec6:2587 with SMTP id
- 2adb3069b0e04-5aa87bdd564mr2389e87.4.1780598680290; Thu, 04 Jun 2026 11:44:40
- -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780598942; x=1781203742;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bSOB8kwgdkJuUcuvvGWTTy+0BwGIhrEyhn+sNY27Rlk=;
+        b=cfxz8951Iy3DeGuCvZA4OjR/3RfsNMrQZ5sou1WYF+3wP+fpKkMdjf3gYghvXE3BXp
+         hghfXWFkGxHWK76pbvSfHY97a6gMV6gqBa45TfmSnIcHxP/XWQIHu+cPq4RfomK2WENe
+         fatZshCxQYuWTrcakSpgHQNnLP79aWbjavd8T/l+iKJvUFQKhFSXHB51glFBCz8Mpyer
+         u4E5OIaACOylFRKEW/qUg8Ejw3dadiwS+eK+YSKRYwHAo30jzJRI3tWv19ZF4ontQZWY
+         SlB72pA3yz9W8FyG8fsy6zmesYqwSqDtd2JtZu3Uv/xxr0ftN+TfuOEVRoUAdtpsqZ6c
+         KZvw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Drwi6dqVwOzgPeo+a22Cuto2ceyyMHIhc3mud1pNcxUzvHwziFWlVtwWkNj0fC3MbU1rPEXkiRR5iZJFeWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzl55ubYeWK7qy64KuA9zCMMEkLFj84PnxsHNlHGZhUgJGkA+Q9
+	DKdYLri1tU5g67lGw9XHglHH62ENalNCz6coQtzNcDQciavDlO+RQvJd3xfka25xjzatFyQp2BO
+	J2WWa5dQrq5GNZ+9CLWZtH9MdPzvK+nYa4LpLk7gP68JGdhFADPXXwPB0QFSV9F9FfK/X
+X-Gm-Gg: Acq92OEYW2b4pHVk1NbCTN5oM4rTwKMSJ6Wc2Tcn1X8ojERU5Eod29HeJI/2Ee5d47i
+	ocTUoIpJP3Zd0XmGoYM2qDbvplN63jRRi4/RSee6lskbPzFqDSg+YKNhV5TJq3OAA8ckPWOxnwg
+	F84ydzEymYyIoEY0UpXNvC1PI9PwfTsklR8Sj/Ey8thqGV6jyBD15JFjDCdn4/USwhAkbg9f+cg
+	v0uT4uChcg6XRe8Q67bBoyCOvqxBS1WSIRFadIGQQ8WrgRjtE0mWyjDLt0OVLmitdtJ1tJlQvR7
+	z9BAMADv/EMbcPTqN7QDUV4xq3Hxk8U3QXtFYzQ1jYivQIcmj1ae425auqjUqRRl0x6uYVspHZv
+	5An2QKE1mC7DNqv1I11ynnP8dtf9O
+X-Received: by 2002:ad4:4e09:0:b0:8cc:dd12:a545 with SMTP id 6a1803df08f44-8cee5f9e8c3mr5117576d6.8.1780598941790;
+        Thu, 04 Jun 2026 11:49:01 -0700 (PDT)
+X-Received: by 2002:ad4:4e09:0:b0:8cc:dd12:a545 with SMTP id 6a1803df08f44-8cee5f9e8c3mr5117046d6.8.1780598941090;
+        Thu, 04 Jun 2026 11:49:01 -0700 (PDT)
+Received: from [192.168.8.4] ([100.0.180.93])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ceccd9fda2sm60367866d6.2.2026.06.04.11.48.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jun 2026 11:49:00 -0700 (PDT)
+Message-ID: <f8a49ca906428f6190f5df2ae93a7966b7734199.camel@redhat.com>
+Subject: Re: [PATCH v17 4/6] rust: faux: Allow retrieving a bound Device
+From: lyude@redhat.com
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, Alexandre Courbot <acourbot@nvidia.com>,
+ Gary Guo	 <gary@garyguo.net>, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, driver-core@lists.linux.dev, Miguel Ojeda	
+ <ojeda@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org,  Sumit Semwal <sumit.semwal@linaro.org>,
+ linux-media@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Maxime Ripard
+ <mripard@kernel.org>, David Airlie <airlied@gmail.com>, Benno Lossin
+ <lossin@kernel.org>, linaro-mm-sig@lists.linaro.org, Mukesh Kumar
+ Chaurasiya	 <mkchauras@gmail.com>, Asahi Lina <lina+kernel@asahilina.net>,
+ Daniel Almeida	 <daniel.almeida@collabora.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Date: Thu, 04 Jun 2026 14:48:59 -0400
+In-Reply-To: <DJ0AREWNNJPT.9XEZC98B76II@kernel.org>
+References: <20260603195210.693856-1-lyude@redhat.com>
+	 <20260603195210.693856-5-lyude@redhat.com>
+	 <DJ0AREWNNJPT.9XEZC98B76II@kernel.org>
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260502160057.3402896-1-ashutoshdesai993@gmail.com>
-In-Reply-To: <20260502160057.3402896-1-ashutoshdesai993@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 4 Jun 2026 20:44:19 +0200
-X-Gm-Features: AVVi8CcNzCZfGdNa43ETXT6gv-24GRawVHzD35mqaRN-rSVvDK4iIqtny8Vbqn4
-Message-ID: <CANiq72kJBH-4ENoLRLrezbcRovYGvx-TLODs_khOJwtr7dMz3A@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: sync: add #[must_use] to GlobalGuard and GlobalLock::try_lock
-To: Ashutosh Desai <ashutoshdesai993@gmail.com>, boqun@kernel.org
-Cc: ojeda@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org, 
-	wl@lyx.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nu2Z9o1bHGObEvBacOF2lK_M3q_3pPjUTdTKIOEl7YE_1780598942
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 2, 2026 at 6:02=E2=80=AFPM Ashutosh Desai
-<ashutoshdesai993@gmail.com> wrote:
->
-> Guard is marked #[must_use] since dropping it releases the lock. GlobalGu=
-ard
-> wraps Guard with identical semantics but was missing the annotation, so
-> discarding it would silently compile without warning.
->
-> Similarly, GlobalLock::try_lock was missing #[must_use]. Option<T> does n=
-ot
-> propagate #[must_use] from T, so the attribute needs to be on the functio=
-n
-> directly - same reason Lock::try_lock has it.
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+I mentioned this already to Danilo via alternate channels, but to
+clarify - this patch -is- actually needed, as we make use of
+`AsRef<Device<Bound>>` in the kunit test for SGTable
 
-I could pick this one -- do you want me to, Boqun?
+On Thu, 2026-06-04 at 15:25 +0200, Danilo Krummrich wrote:
+> On Wed Jun 3, 2026 at 9:42 PM CEST, Lyude Paul wrote:
+> > When writing up some rust code that used faux devices for unit
+> > testing, I
+> > noticed that we never actually added the Bound device context to
+> > faux::Registration's AsRef<device::Device> implementation. This
+> > being said:
+> > the Registration object itself is proof that a driver is bound to
+> > the
+> > device - so this should be safe.
+>=20
+> Yes, it should be, but the reasons are non-trivial and should be part
+> of the
+> safety comment below.
+>=20
+> =C2=A0 - faux_match() always returns 1, and probe runs synchronously
+> =C2=A0=C2=A0=C2=A0 (PROBE_FORCE_SYNCHRONOUS)
+>=20
+> =C2=A0 - suppress_bind_attrs =3D true on faux_driver prevents userspace-
+> triggered
+> =C2=A0=C2=A0=C2=A0 unbind via sysfs
+>=20
+> =C2=A0 - mem::forget(Registration) is not a problem; if the Registration
+> is leaked,
+> =C2=A0=C2=A0=C2=A0 the faux device stays bound forever
+>=20
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
+> I can pick this through the driver-core tree already, as it seems
+> this it not
+> needed by this series. Feel free to resend as individual patch for
+> thus purpose.
+>=20
+> > ---
+> > =C2=A0rust/kernel/faux.rs | 7 ++++---
+> > =C2=A01 file changed, 4 insertions(+), 3 deletions(-)
+> >=20
+> > diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+> > index 43b4974f48cd2..e0856b2964a2c 100644
+> > --- a/rust/kernel/faux.rs
+> > +++ b/rust/kernel/faux.rs
+> > @@ -25,7 +25,8 @@
+> > =C2=A0///
+> > =C2=A0/// # Invariants
+> > =C2=A0///
+> > -/// `self.0` always holds a valid pointer to an initialized and
+> > registered [`struct faux_device`].
+> > +/// - `self.0` always holds a valid pointer to an initialized and
+> > registered [`struct faux_device`].
+> > +/// - This object is proof that the object described by this
+> > `Registration` is bound to a device.
+> > =C2=A0///
+> > =C2=A0/// [`struct faux_device`]: srctree/include/linux/device/faux.h
+> > =C2=A0pub struct Registration(NonNull<bindings::faux_device>);
+> > @@ -59,8 +60,8 @@ fn as_raw(&self) -> *mut bindings::faux_device {
+> > =C2=A0=C2=A0=C2=A0=C2=A0 }
+> > =C2=A0}
+> > =C2=A0
+> > -impl AsRef<device::Device> for Registration {
+> > -=C2=A0=C2=A0=C2=A0 fn as_ref(&self) -> &device::Device {
+> > +impl AsRef<device::Device<device::Bound>> for Registration {
+> > +=C2=A0=C2=A0=C2=A0 fn as_ref(&self) -> &device::Device<device::Bound> =
+{
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: The underly=
+ing `device` in `faux_device` is
+> > guaranteed by the C API to be
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // a valid initialized=
+ `device`.
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe {
+> > device::Device::from_raw(addr_of_mut!((*self.as_raw()).dev)) }
+> > --=20
+> > 2.54.0
 
-Cheers,
-Miguel
