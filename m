@@ -1,48 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7534DA535;
-	Fri,  5 Jun 2026 12:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAF62C1595;
+	Fri,  5 Jun 2026 12:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780661080; cv=none; b=T+SdkAs3n2goYJK0XKDFSHrp49bzeTj0WGf+xQrR0RSmkC6EkC4OeCMUEHJ0Gx+4ih+tIUffsCFmAbKtyn+zCZBil9XG50G92fQbgAdUoEMvFty4j0JiaGQennd6pKI/Ug0aX97hKT8T/zdoiWafg3V1JEB7XlNPvJ40pyZnD88=
+	t=1780661283; cv=none; b=b1JHKIBR4wSPMrBBlsuqPLd0hrjgjeG0fSg9pcF0J319kPRfCMKQojXxP5lrd8OdRqhZqlZRpJo7voglwveaR6aK0DLh0T06ckwqcA8/dgNDDTTtUVqnXbGmo7zlrITgY5m4j6KFvEEBNq5B2socjk5UqD6FHqZbrBLFKvYbBK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780661080; c=relaxed/simple;
-	bh=CBugO4tBT4tJQHA8HIOOmL0b48mq9HwYuyuQPJ8V4eY=;
+	s=arc-20240116; t=1780661283; c=relaxed/simple;
+	bh=87M3kBakEBJVQQ4M0v2n+8FD2QjfthNbE3uBbHgwWWs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YjD9HIopg2yFzcGSRscaqvs4Hf2m8+QLSXbPTBO4qXa1EMhOw5kjFt7bUV/Kw3IlMHzBWfoPMexys5+3kuLrMxSqTvCamkRWOuwvzUKFznfeOaF8g8QEcwAW2eOiftBVXI3zK3JjZ5g/Om0esyat7aEUT6Tlmc0JPmJqn6dxaIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIZb/SMN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYFSpJGmkAu35o4ri/JpAaePfx5dQgYmVOwdc2mnTN/Kztc9r48RawalYGSL5vOy+paP4gEHzemV1CJO3+GvaL71Hozt3wBf+JITrc5cLsyAcG/bfTqNKk9OR1FcMjbxSF1eBrbHY1oRHvugJfRSgIQEve+0LpVFbqkWl3aHDlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hB+BrAF3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIZb/SMN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F88D1F00893;
-	Fri,  5 Jun 2026 12:04:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hB+BrAF3"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 592CE1F00893;
+	Fri,  5 Jun 2026 12:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780661078;
-	bh=cN2I4cs/2c2NI326aH1UOb5eaKWyax4VWbE/kwBA7uM=;
+	s=k20260515; t=1780661282;
+	bh=87M3kBakEBJVQQ4M0v2n+8FD2QjfthNbE3uBbHgwWWs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GIZb/SMNoti/2/xXzFzRffM4bNK3kBGZzB1b2teMeeUuzbqAmze6AEpfIIc+ddZI5
-	 z7z909Q0LT94fu7uRxkh0BKSvOa2O3kF/Gj71UjgdERaBzPnX+03w+q3h8/BT48Pe5
-	 LB2iMfmtn3hA7YA6+7UhGTSTfARzGpi/OuR9o5X6rHeKM6z2nSxHHYUnkDdmS5692z
-	 26ZTamuzggw3mgC1NAL3MER2hdtexMKdMUfuMITqru061SDmb4zcr6Z/awS1LiBbRE
-	 uwXFxaDxIFcNJZaXAfsD8EG52t/CCAmi0Pa3xTDuD6yZqEykj5pMtLR5jUNaPgCMzH
-	 V4gUflPNPKKEA==
-Date: Fri, 5 Jun 2026 13:04:32 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Miguel Ojeda <ojeda@kernel.org>, akpm@linux-foundation.org,
-	axboe@kernel.dk, bvanassche@acm.org, dlemoal@kernel.org, hch@lst.de,
-	hdanton@sina.com, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, tom.leiming@gmail.com, wqu@suse.com,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] block: assign caller-specific lockdep class to
- disk->open_mutex
-Message-ID: <4ffdbe16-61ab-47e8-b696-e2fcf9a26385@sirena.org.uk>
-References: <226152a3-1e4c-4eec-9a17-1d40426a7b18@I-love.SAKURA.ne.jp>
- <20260604210704.41751-1-ojeda@kernel.org>
- <89f0f308-2ee7-4c68-b811-8132e5d88530@I-love.SAKURA.ne.jp>
- <CANiq72nGo=F5D7b7Hx8A1jfAJw_72Np+UpRWBRQoPLAE+RAPpA@mail.gmail.com>
+	b=hB+BrAF3+R5c1NEuBb/NrRCTTQsVA3PghmjDLi3rsyIajeXQ48OUQkTQ2+1B/Td67
+	 DichNuHaIDLGezakbz2Yg7EF6VcfOAXNOJuPATAZXJ4LAb1QBFbgIJy/Pe7h3N5Uca
+	 Rm7Aj80rYylraNt4JOldab5Hzj/EyGjKcLE3HDpX/m2Nusowv4XOu6HxNBSErg7FXm
+	 pSoH9O3BxMadxmu/+5ujbjhszft7bKRzAMq4UyovFbh+dMgYKEZMfax6wdimh7xuhL
+	 tlid06yV591Bn/P/jhthHwhpbvJVqrWk/xQnVT/aAO1U7+THXg5tybthh/aCB6c8cR
+	 dDDqbtbeyMHHA==
+Date: Fri, 5 Jun 2026 14:07:58 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Maurice Hieronymus <mhi@mailbox.org>
+Cc: Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] pwm: th1520: Remove requirement for
+ mul_u64_u64_div_u64_roundup
+Message-ID: <aiK7i_bblFzHDiH2@monoceros>
+References: <20260605-pwm-th1520-fix-v2-1-5921e3a595f7@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,74 +48,56 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="StAMqoMBl4zgWmc9"
+	protocol="application/pgp-signature"; boundary="gqwi5irkxvviovzj"
 Content-Disposition: inline
-In-Reply-To: <CANiq72nGo=F5D7b7Hx8A1jfAJw_72Np+UpRWBRQoPLAE+RAPpA@mail.gmail.com>
-X-Cookie: Error in operator: add beer
+In-Reply-To: <20260605-pwm-th1520-fix-v2-1-5921e3a595f7@mailbox.org>
 
 
---StAMqoMBl4zgWmc9
-Content-Type: text/plain; charset=utf-8
+--gqwi5irkxvviovzj
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] pwm: th1520: Remove requirement for
+ mul_u64_u64_div_u64_roundup
+MIME-Version: 1.0
 
-On Fri, Jun 05, 2026 at 01:02:59PM +0200, Miguel Ojeda wrote:
-> On Fri, Jun 5, 2026 at 12:15=E2=80=AFPM Tetsuo Handa
-> <penguin-kernel@i-love.sakura.ne.jp> wrote:
+Hello,
 
-> > I am using my tree for allowing syzbot to test debug/experimental patch=
-es in linux-next tree
+On Fri, Jun 05, 2026 at 09:03:59AM +0200, Maurice Hieronymus wrote:
+> The cycle register is always u32, so cycles_to_ns() can take a u32
+> instead of a u64. With that narrowing, cycles * NSEC_PER_SEC is at most
+> u32::MAX * 1e9 (~4.3e18), which fits in u64 without overflow. The
+> saturating arithmetic is therefore no longer needed, and the ceiling
+> division can use Rust's u64::div_ceil() directly instead of the
+> open-coded numerator/denominator form.
+>=20
+> This also drops the TODO referring to a future
+> mul_u64_u64_div_u64_roundup kernel helper, which is no longer required.
+>=20
+> Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
+> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
 
-> linux-next is only meant for patches that are already reviewed, tested
-> and destined for the merge window.
+Applied to
 
-> It is not meant for experimental patches, and adding those, especially
-> this late in the kernel cycle, can break other people's CIs and
-> systems at the worst possible time. If every maintainers put random
-> patches in linux-next, then it would be unusable...
+https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for-=
+next
 
-> (There are exceptions, of course, but only if people is aware and in
-> agreement...)
+Thanks
+Uwe
 
-In general the sort of testing that it's good for is "this needs more
-exposure" sorts of things - things that look good locally but where
-there's a wide variety of users or affected systems that might be
-affected and where it's hard to judge the impact.
-
-> > Do you see any technical problems except comment style problem?
-
-> The above errors are already a technical problem -- they break the
-> Clippy and docs build!
-
-Oh, bah - something turned off RUST in allmodconfig again so we lost
-coverage in -next, sorry about that.  I'll need to work something out to
-make sure I notice that happening and can do something about it.  It's
-kind of worrying that this keeps happening TBH, otherwise rust conflicts
-are likely to result in broken builds.  The dependencies feel really
-fraigle here.
-
-> No, please drop it now -- the patch shouldn't have been applied to
-> linux-next yet, since the maintainers didn't ack it (they just
-> realized it exists...), it is not reviewed (apart from Sashiko), it is
-> not tested enough (given the errors above) and not destined for the
-> next merge window (for all the reasons before).
-
-Had the rust builds been enabled for allmodconfig as I had expected the
-tree would have been kept out of -next as a result of this.
-
---StAMqoMBl4zgWmc9
+--gqwi5irkxvviovzj
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoiu08ACgkQJNaLcl1U
-h9AjUAf+KvxHG2EpNg/5WRLFMD+usuVYU6396FrVd3qAnwYZHZ4NL8YKbVSH0xE0
-BiOzCycX8KKLq55wHPy+v9DB1PUGCHhMHCXbcgMXWUtXNCKXlz3K8lH2btLADSkE
-sS4Fh28CoDPhVREPITYhRb3QwRHtztwqcayblFxM3Epm3cEtJzET5qgFKbGtKbFq
-arb2USdnn0IP5z6FhTxm4Joco+c6QSfHDCCbFXyFfKhIK4lpK0KhJBp675uFTkgH
-RIkRTr6cKEc+yg7wi2koWA/g39rMQxEUHHqVRxu5lsHcXad4ctmFrvnuHP6HvYpP
-V7DbGAnI18515PvWAvMPafYsIY11nQ==
-=qEAs
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmoivBsACgkQj4D7WH0S
+/k7R6wgAuMzZA+55AkXQeRINO6VINuOHL8cJptc2DiHB8jHkCpe/lCHO6md0D9SA
+0WQQrBea3pb9DGRf1z0u8iWJpaMzFL0tg3SCUyM1MjHnr9uj37y7O+37ahRiWogT
+ovotIzIy3UAZdUel9DA+9yxbooZ6JpkvH77chf9rYYIwtmtorfa1/LSKKryueJ7i
+46K3fN5hYuGbkV/QnHLtt6AqEtPv1Hvo5RuZC4ynvE0aIN68NVcvLnahDqGwaRcg
+2Dcwq3dOWNzxAuylmH7fa0oR5ur/O5YydLDELBX8++m2Zm4+9I1codmLjeYkF0tX
+PHV64hYGR7riLxW3UnGBGX6WFD6fnA==
+=lOKo
 -----END PGP SIGNATURE-----
 
---StAMqoMBl4zgWmc9--
+--gqwi5irkxvviovzj--
