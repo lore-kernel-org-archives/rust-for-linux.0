@@ -1,178 +1,205 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012029.outbound.protection.outlook.com [52.101.43.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90483194AE6;
-	Fri,  5 Jun 2026 14:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780669160; cv=fail; b=R2C4xk35Yg43z0K8kmCCGEi4M+LFe4fv5vArWapaDNY8Jx24B2wJqAi+zKDCXT/Cb3anrJhX33CvxGIubFMGSfXPLv6SzbnzG6EKBj72TNVAJw7VFy2koMmcecXawAbqJws5oEbTo5ALu0AirblDPTM2As4hkVHpZz2Hq+n9bWo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780669160; c=relaxed/simple;
-	bh=dQnhKg7uqyjXzIuhiqz5aVc6O42+jVxZK0QD45fPV6I=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Yw/48MLtVapdVEcUmNXOjUtEedLGIKRDbVg3zOXQVlh3P6SBfBhkq0W8rIEiNAINvtwq8dWBvr037pBjqIwtlgA41oqtVl7UK5GdK/8yPthxXeVlJTUEqExp5ifiSiFfv+MSxuy4CSJKsFNoBg9/aNUrurkNUiIzt6Vv0kdVjwY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oBl1zhvq; arc=fail smtp.client-ip=52.101.43.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3786C38422F;
+	Fri,  5 Jun 2026 14:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780669253; cv=none; b=R7Xf5qYSV1fANjfLOk2feYH/CVoLoY2WfDmiWo/+xRMho18VrD0Zzbuj9O8MExhcDE+z2gTk6j2YNT/ZzCC30k/8tKFg+rkraMQ2y8Z5e2sJjaVmq2+rJnNwpx0K3Ft0LN33jRKGeYT237fZoXFwI6lloIVxjYXG7UR5be+VskE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780669253; c=relaxed/simple;
+	bh=vHxWGiABXfRZX/nTj9f8+kR/kRQsP11gYHu2xJvMhqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gr0hoVtEZxa114pVZ8EXR/YvMxIVKs45lCURB4GvZDEgdBBEW2IgmsiqjrwQC7iZYCmWuX/fX23edXPppKPdPckCd9M5RI+B/Tpt6B5Q5tjt9lDqYoFFygXYeIomL7qHQXtZVibFXMH3EakcYF3gbIZc3KiLrIs7iyuMQjvXDSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6bDNQUP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oBl1zhvq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CbbpGt/EVo+IlTXdZAHVbRd4WXxd93odmnwuMQUTvr0mEXjpWQ/IpORvcxU3hmEo3HAMyt+7bavQMFnZ8/MNbH0GydRE3uU7qpEFdayKUcD50HWdoLZzJJmoOq2v+8CWiQHA3K1yKLTb0vYrdMD+H03VgfBjzWWgGEwLrgcDnrRHXFz3MT288IKETt+jTLUqHk4oSca4RCBI5+VHRnNsx31FoPnfSSMhvf/se7XH++dZAYm5JrChWvJX73HO8EPXICroJVcNONI+Zmj23Dsys3wadNfz2iLyplklahUNwXZa0GJQRPrCH5onf0dxN5Uan+krn29xfoCNp4S/mw6voA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xNpgEOmiDuVY6xL0XFcfkpIuVQfY91pXoUjoLjF0CZA=;
- b=RXk1vK0qn/M1Mny9zOHWzKYljkPJUkmUw/JcofwUDHwGLfFixKWeKZS3xDL7XdLn2MasWlD8+whhO4r5hyHF+SLRGrSJVB9dfcOVBMqeIM0p6dyBL8vtF+MzXu6ytE27R0H1mJsnEdai6Hj7FwhcKSeE/LiIY16F3A4WOgFTX2hb+ugHQZQpBNOCFnbPbHqE071t5T30GwYLwfW1v90wihNljjwgfQBSzsWyrGcd94D6BY4eRDlB17DStUCwsvXKGRB6/9G3FdtxYnAinE1G15eMUV61GPmnjPGzyPtfEulUh3E5Z80n/hR8koxZbXfh4L5BBLxjHa92ItyOT0iRZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xNpgEOmiDuVY6xL0XFcfkpIuVQfY91pXoUjoLjF0CZA=;
- b=oBl1zhvqmmwOkPnIiijccBukH0UxTsjYgOtDotX1/6gV2BrcDP0IoDDCuma26DTOE44Mh6UU56bbC04bDmbbJW75bVwg3a2maNv3mVRO3FxWWTjwjpQtW5VdKXNxWjoy1cFwIIbqnOPhHqfoXpsV0IK2IKOEx71i6yOIiPSXRG8e82U3Ujdpm+YzxaFEpJOJrcowkCJ8IRrrZwrd5z9qZ8Mr6FIFt4864I8a04/dT6Frsr5B4yJsJF8i3xNM3+aU79aWG4m/Y0cgzxoHeb+Kkzmg01p5rHqTavHh4gKWvpB9Fv5dEvalTudj7B4pakK5UzNyQXGUFPX5Ptw5mj18yA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ0PR12MB5676.namprd12.prod.outlook.com (2603:10b6:a03:42e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Fri, 5 Jun 2026
- 14:19:16 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
- 14:19:16 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Jun 2026 23:19:12 +0900
-Message-Id: <DJ16J7OSI38Z.2Q7N17PWBS2DH@nvidia.com>
-Cc: "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier"
- <nsc@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Joshua
- Liebow-Feeser" <joshlf@google.com>, "Jack Wrenn" <jswrenn@amazon.com>
-Subject: Re: [PATCH 18/18] gpu: nova-core: firmware: parse
- `FalconUCodeDescV2` via `zerocopy`
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-References: <20260602172920.30342-1-ojeda@kernel.org>
- <20260602172920.30342-19-ojeda@kernel.org>
-In-Reply-To: <20260602172920.30342-19-ojeda@kernel.org>
-X-ClientProxiedBy: TY4P286CA0065.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:371::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6bDNQUP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8691F0089B;
+	Fri,  5 Jun 2026 14:20:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780669244;
+	bh=rZm80SCqfNzEoYvnBtG8GQgboPdoaSiQU7oZ5wE97mI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=d6bDNQUPgpcbZgQiqdR7qpbaVpZqpX22yPzIfuJ+X+GJfUbzwzTmhRuFueQZrfIRJ
+	 qxAYnTx7PSD0kxAIrvwBFLS0tADeNc8ISDI/ttUfp3PuPFPJm1KN14jN4sB6gBG/3Y
+	 D3bUHFjFi4zKYwkXGsgm7mJvlUoXjGzzhmsJ67QqBI1WH64oZLV3DALzl2SrJvt56j
+	 4rt427WTisuUzs/KQveAhMuNFDFthyZOV9ep9fxi4DeqU/w1vvIQQ3NTAGZ5xtpgMt
+	 sCnlDWere+e/wn3rpGd8BEgRxwFmJ5ECnsmG0x5jGfDZrRX7d48ldKejKhWolQuCEk
+	 NxT4/9TkH5ojA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 11C11F4007E;
+	Fri,  5 Jun 2026 10:20:43 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 05 Jun 2026 10:20:43 -0400
+X-ME-Sender: <xms:Otsiakb3VgscOwQzObb9TnmCmdWfqsPbh1aKv6Ob1Gd4GnMm7g45cg>
+    <xme:OtsiaswjOPU2H6OSi5TRRzTWJN1oxdosSHMWKU_xFLsbRBHQpEW6NqVq9E3l47Ar_
+    _lgTF2cByW95QA75xv5ldkBLiujDQu1BJ0vYDNKrvTVE-_5bXKSjw>
+X-ME-Received: <xmr:Otsiaq96ApZ9LuO6DemZFypZXDeykSN9R4ZWEMcOu325AV7T_b7aEirzjVs>
+X-ME-Proxy-Cause: dmFkZTGmnYP5N/Y3347uBlTz0c7MclhskUD680CYIEvbldBBZOlbo8Ym/SOIKA+wnzZwqu
+    zergSXkVsymVPFOH0pDne+qgzS+nkBAu5N0axf3sYZRo2nvTNCUjtPm1MMQssycnGEvk2z
+    yaI544/RtZ8irsNtuXAmHJZIpjSaeCpLMs7XgEV+/rn1pCm2lHwIKR5NxoLv/Kp7KTgG1Z
+    lLY1vZh76vKJ+oN17gUDdN0Th/LrUAsJPcjSsE776bPWq7CPgQxyXYzm+Vjk8Dm/1y02fb
+    puunQqufAKdZiWOXFH4RfjlNHdhu4yzA3qQXzyuuNqM/+68+zvAuDsnJfYTo4B5CI11KSz
+    0Z/h4GuSIxa5oqGjjmyx76Enz2u2eUx7GXT1PNjs4iwrlg39TUG6FjeYF87UoM4WeCLG/r
+    xouuK/m/Gk1nqyzUOYDGO2U+yhP3S8w2gDavQX3jstdmU+W0AE2r+P4S3TBS1qziQ3CO5x
+    8+wy91h1pK5gBNMtQgKVrEL+9GPYeWmYLnGblXrzWiFcUFuEJ8RjuWpZ2Roa3wu45wsPGh
+    j2ArhLYXf5wYyOqLiXH6+dkO55yhJCVHrgy+4O67SQ6ZWH6nc5ZcdT7S5//okCwxaE7/Mt
+    4OEXVNhzWwVZuRMC7T+q6xEjTLQdr8IO4/n51Tj/DiPrTPnbPzY2g+Kmowwg
+X-ME-Proxy: <xmx:OtsiaiX5ZZYYUUWBD0GFrR8lNA7Remyu638zwCJRWBzviig9GfKXew>
+    <xmx:O9siarOe-qdwbCXDYWcMKzCkwHhGyJk4yeG00Y1xAGgqgVNz9avZTQ>
+    <xmx:O9siaszJbtt1LQ2ng-3qPyR_1TRzEwSqe6XFTozbY0hJbDwn4etASw>
+    <xmx:O9siajPKFsXAgrpE11c85DtWGygRvW1UO8lxWAUqZ5z_ine-CUmJow>
+    <xmx:O9siaii1Yx2gN81YC7CB5PuXo-Q7xO6ltrA6zbuXUtHBh_gZiER7_fFK>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 5 Jun 2026 10:20:42 -0400 (EDT)
+Date: Fri, 5 Jun 2026 07:20:41 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	rcu@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,	Danilo Krummrich <dakr@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	maple-tree@lists.infradead.org, linux-mm@kvack.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Philipp Stanner <phasta@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Subject: Re: [RFC PATCH 3/3] rust: rcu: Introduce RcuFreeBox
+Message-ID: <aiLbOd9BkRrrzauk@tardis-2.local>
+References: <20260605133541.22569-1-boqun@kernel.org>
+ <20260605133541.22569-6-boqun@kernel.org>
+ <aiLXWHg22P6OTb7O@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB5676:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8bdb944-32f8-4ee8-1441-08dec30d6cd3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|7416014|376014|366016|1800799024|4143699003|56012099006|11063799006|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	FNWSdx62Ag079P2fLII/GugtHaspUgbhCpOmAzdOPnllfh70KD5JtbACCvi1bF4MnUjYDCxo0gw52STzGXxjq1boG6Z33y2Wc4G4LIh8pH8M0pMoouSn2AiDH2ZHctRr425Ps+1vw0zY00Xns+MXbkGIOmD7COYzWVNtvXp/m05mW01QsrbA41GAQWWMN9HvN/Dc4/SZsXI7tnPzCwF+/mceLdEeIlo1IPI8Z+K1+ATHJYUnOKXFcfxzQmTMOIzfOx3ybrZ0treOHtn16p4tNi/ewcfq6ZyKBdWbh1r+g8PpeUbB7OeX1+9fzdOYgn39z0HpOMhTOmOgFD4ZLksESN2Y5AXumnGOELFn3LaGK3MrJszlE1bYrixArdoOa/3mBXLo7PI/go3kKQiA/rgOouGrVnPqSy8teyzmGkvIOe23dGgSIOI2smstn4Ohokb35ii3+C5gtKmP/98vW2nh2oSLFfYTv6+Ek5zBS0NlAKqo9MPCTKOXL33Eh/waSRwqGPxLaiBUW1Yt5VJRBaJsp00BDBmbbMsE5p8ERA53P3VMBesgls8RLtfgUiCinzrJB5JjNMTx9/UqLCV8mv5W6sereL9rdqGe9qFu9hWtz+N/sRCXfNepfEGM5948yjrKE9lIdWsm9CSDoN9xVm8WlatE7+GZ395m4uzNoVi8YzUj8INcFXUX4nq9dog886KL
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(366016)(1800799024)(4143699003)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VHhiQ01VNEVvZUZtYVJ2RmdTcnd2SWU4dTVLWndlNi9jOHFWb2J4L3Yxck80?=
- =?utf-8?B?NzhraDNsVEFEeXNJMWNxWGc3VjNFL0F5cUhIbHViYXExTTA0K1JwYytxZTZL?=
- =?utf-8?B?VlJhWmc3ZTM3WWdPMEppTnNvV0ljQ01zYTRJc0g5Y2dnNVU5c0J2eXJ6MnZD?=
- =?utf-8?B?OWJUOTFNNGEwZ2FtNEZWNXkxWjRKRWsvUE9ubEg4NERTZGMzNW90TWc2czM1?=
- =?utf-8?B?ZU1HcWlJcWpjWGhRazlLdHB4amVKQWE1QzNJeGR3akZSRDBKWFMwYW1qWm0v?=
- =?utf-8?B?L0FPeDV5RzFwYjhiMm1sSGRieDV5aWk2WUtrbTN0dDJxV3U3WFR5SkRrK0c2?=
- =?utf-8?B?NGpDbkdUeXYrYTE3dVBRRlZZdmg4SEVoZHpBaWRPSFczS2k5WU9uT1dmdGVW?=
- =?utf-8?B?OTNKRU5Ncm9ja3NJdnNjeGdrYkRrcTArSmVSaklrd0M3aEFvYW8xYUVVME5M?=
- =?utf-8?B?bFhZYndvTDM5TXd3UVJQM0JiRzIrMXduRmRhWHR5K3dyNzBib0MwU3VjK3Rq?=
- =?utf-8?B?d0JOR294eU1lV0NVYU9KUENGSklWZXdzanNLRjgyL3ordDhVZzRwUi9WY2hi?=
- =?utf-8?B?akFzSjBKS01zV0pWbFRha0M0OHAzZElhaVc5Y2RjV2ltck5kR2xWR29sWnZo?=
- =?utf-8?B?WVVuaTcra1Z3QW5keHNvVm1KdmdoV3FEYjRsUUs3TlROV0FDclc5UFVvSTAv?=
- =?utf-8?B?bDVEdE1WMDFMalByODNJTGpVbTlZalVRVzUvMlA2TlYrc2JYdWhrY2lrMFI2?=
- =?utf-8?B?VDZpa0pYZW9WTU4xK1k2RE1uQ3diTzJyRFpYUDN1c3FUSWxYc1AwUVBZQzRF?=
- =?utf-8?B?Umc5bnR6YldmTUIyZWFjSGZtaTVyOEFibUl2eTJTUDRBSzhXMDF4c2hRckFu?=
- =?utf-8?B?UFhZd3dnUDVHeEFtak94dkpwYUJuYVEydVpSeUVLM21qWXlQUzV3QVZ3THE4?=
- =?utf-8?B?YW5mV3RBdEFuQU9nSm9oemkreHJFdmN2cUY3Z1l3L2VEWVdPNnd2a1JTWDZk?=
- =?utf-8?B?dDFlUTlHV3kzcXVaQjN4YVp2U1FqOUJNaWVhSlQ3N2VLMVc1SXFXYmE2SVh6?=
- =?utf-8?B?U2dXdHJuK01SZ05nM0xoei9hOU9xVzlGaC9yalJPZDRwKzNnalpsQ2llOXRt?=
- =?utf-8?B?MnRCTDZ1aGZzWnpGR1VwQk1vcEM0TGdpTStHOWZZUWNRNGlyR1ZRS1R6VmpO?=
- =?utf-8?B?QTR4OXBzUGVud1JOenF3YU5idmNvSDN3aWJ5d2dtSTdTSzBtRy93L1NWTDZu?=
- =?utf-8?B?WlV2R1JkUE81Z0xqY3JtZnF6SXlneHZvT3orVExjeDF3Umpib3RFcE9oUWxw?=
- =?utf-8?B?M29MZ1hNbXJXZ3hnLzRUVkFxTFo3a0hSV0FZckxQRzM2ZUZjUTlDZjY3YVo0?=
- =?utf-8?B?OHpweklvMUhyVi9OaE1CVU5rQ1RNdGZMdGdVUjJYRCt2WWRIajVuQ01QQVNB?=
- =?utf-8?B?VmR3bUxnY3RwTjlQNXVRNW8vQ0REVGNkK3U1ZEY0cDBGYWlVUEdwRGFOQjdo?=
- =?utf-8?B?NTh1Yjg1d3NHaGgzSzZPRHRYWW1TcTBRY2RsQmRNYWJkYXpBRXcwcFRjd0xs?=
- =?utf-8?B?ZmhpbGtxdzR5d2ZTemlRRTZ2c0tYdE5LbkViTzdyNDQwZUZTTVc2QnFFS2lN?=
- =?utf-8?B?aW85dGFKdzhKbWtvL1A3WFdQdUxoajY0eG5OUm1rRmt0Y25obUkvNW1lelpU?=
- =?utf-8?B?ZjZJejRvc0djMHdDYVA5V0RJVGtyTGpOU1hCbG9MSm9BNTFncmRoemI4RWdn?=
- =?utf-8?B?MnpHSWRBZFpLdUpOWUpFUmhMNFpnVjdmUUlkRituQWFuWWlPY1JyN1RDSFd5?=
- =?utf-8?B?ODV2b3ZUaFBrTW5VVlVvNVNTalRCWHlvcWxQdVY0emZBeDRDWFd6R1BBZVli?=
- =?utf-8?B?QXM1dnpYbE5teE5zMUZoNitEUlBpYmNnZkd3UFd1NDlUZk9QRndDd1NtRnB1?=
- =?utf-8?B?eHZzSStuMzQ3Q3ArUE5uQnZjQUNnM053V0dMeGNMKzZTTkxIMnRYL1NyWHRD?=
- =?utf-8?B?OHNKOWd2TXZxbDFNUHYrVUdmTndDWUZadzE0cTNsb29tMjR6NWFpaU5TS2lq?=
- =?utf-8?B?Z0ZjMFZFMW5PTXFjUXhSK25jZWxKL1dZOE44azgvbVp5TWdrMEVDK2VMdjBt?=
- =?utf-8?B?QnpNM2FEYnNSZmtjcXoxS2Y0UktBek9hdjVNamc3WUtWaXh2bis3bU5TbXBW?=
- =?utf-8?B?NFBqV21DL0dMVkc2VVI2ZjVJUmwwUkdmNjI3VVM2dis3S29acXN2YU5VUmxi?=
- =?utf-8?B?eHlHMXUxMUZPbEVVYW5RR204UElSbGVDZUtkRlJyenlINmVKSGcrM2p1citJ?=
- =?utf-8?B?dFdmMWlTK1lpdnZDTFlMaHZwRk5kcnFhSnQvT09EajhWclYrdlVUSmU0L3FY?=
- =?utf-8?Q?3yMHHOyvXhiJ2PfSL6p2izjExCQxA+7oSIMyuZhBQG0ZL?=
-X-MS-Exchange-AntiSpam-MessageData-1: +SXKbySICDVTQQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8bdb944-32f8-4ee8-1441-08dec30d6cd3
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 14:19:16.4366
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xgqEqCT8AmDn+smyUjhDgDbq0JvezXzURUSDwdbM8eKmKkqVRX1ki2RLBR8N3wB4gygfwrf58mxYTN117CSB1w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5676
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aiLXWHg22P6OTb7O@google.com>
 
-On Wed Jun 3, 2026 at 2:29 AM JST, Miguel Ojeda wrote:
-> Now that we have `zerocopy` support, we can avoid some `unsafe` code.
->
-> For instance, for `FalconUCodeDescV2`, we can replace the `unsafe impl
-> FromBytes` by safely deriving `zerocopy`'s `FromBytes` and then calling
-> `read_from_prefix`.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  drivers/gpu/nova-core/firmware.rs | 5 +----
->  drivers/gpu/nova-core/vbios.rs    | 4 ++--
->  2 files changed, 3 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/fi=
-rmware.rs
-> index 6c2ab69cb605..d97da0c0856d 100644
-> --- a/drivers/gpu/nova-core/firmware.rs
-> +++ b/drivers/gpu/nova-core/firmware.rs
-> @@ -48,7 +48,7 @@ fn request_firmware(
-> =20
->  /// Structure used to describe some firmwares, notably FWSEC-FRTS.
->  #[repr(C)]
-> -#[derive(Debug, Clone)]
-> +#[derive(Debug, Clone, zerocopy_derive::FromBytes)]
->  pub(crate) struct FalconUCodeDescV2 {
->      /// Header defined by 'NV_BIT_FALCON_UCODE_DESC_HEADER_VDESC*' in Op=
-enRM.
->      hdr: u32,
-> @@ -84,9 +84,6 @@ pub(crate) struct FalconUCodeDescV2 {
->      pub(crate) alt_dmem_load_size: u32,
->  }
-> =20
-> -// SAFETY: all bit patterns are valid for this type, and it doesn't use =
-interior mutability.
-> -unsafe impl FromBytes for FalconUCodeDescV2 {}
+On Fri, Jun 05, 2026 at 02:04:08PM +0000, Alice Ryhl wrote:
+> On Fri, Jun 05, 2026 at 06:35:41AM -0700, Boqun Feng wrote:
+> > The current RcuBox will call the `drop()` function after a grace period
+> > inside an RCU callback. This suffices for maintaining a RCU-protected
+> > object:
+> > 
+> >   RcuBox::drop():
+> >     call_rcu(
+> >       |..| { // <- call back after one grace period.
+> >         T::drop(); // <- call the destructor of the inner object.
+> >       }
+> >     )
+> > 
+> > However, to support a different RCU usage pattern as below we need to
+> > extend RcuBox:
+> > 
+> > 1. clean up the object, and unshare it from future RCU readers.
+> > 2. wait for an RCU grace period.
+> > 3. no other RCU readers, we can free the memory.
+> > 
+> > An `RcuFreeBox<T: RcuFreeSafe>` is introduced to provide support for
+> > this:
+> > 
+> >   RcuFreeBox::drop():
+> >     T::drop_before_gp(); // clean up and ushare.
+> >     kfree_call_rcu(..);  // free it after one grace period.
+> > 
+> > Signed-off-by: Boqun Feng <boqun@kernel.org>
+> > ---
+> >  rust/kernel/sync/rcu.rs         | 31 +++++++++++++++
+> >  rust/kernel/sync/rcu/rcu_box.rs | 68 +++++++++++++++++++++++++++++++--
+> >  2 files changed, 95 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+> > index 7da6b8d22277..7c26591bb318 100644
+> > --- a/rust/kernel/sync/rcu.rs
+> > +++ b/rust/kernel/sync/rcu.rs
+> > @@ -4,6 +4,8 @@
+> >  //!
+> >  //! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdate.h)
+> >  
+> > +use core::pin::Pin;
+> > +
+> >  use crate::{
+> >      bindings,
+> >      types::{
+> > @@ -82,3 +84,32 @@ pub trait ForeignOwnableRcu: ForeignOwnable {
+> >      /// [`from_foreign`]: ForeignOwnable::from_foreign
+> >      unsafe fn rcu_borrow<'a>(ptr: *mut ffi::c_void) -> Self::RcuBorrowed<'a>;
+> >  }
+> > +
+> > +/// Declares a struct is safe to free after a grace period if all readers are guarded by RCU.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementation must guarantee `drop_before_gp()` makes sure no future RCU reader will access
+> > +/// any part of [`Self`], as a result, after `drop_before_gp()` return + one grace period, no RCU
+> > +/// reader will be on the object, and it's safe to free it.
+> > +///
+> > +/// Notes for implementators: implementing this trait in general requires `Self` being a
+> > +/// [`UnsafePinned`], i.e. a `&mut Self` is not a noalias reference if `Self` has non-trivial
+> > +/// `drop()` function.
+> > +pub unsafe trait RcuFreeSafe {
+> > +    fn drop_before_gp(self: Pin<&mut Self>);
+> > +}
+> 
+> Should this have an associated type for the rcu-safe view?
+> 
+> pub unsafe trait RcuFreeSafe {
+>     type RcuView<'a>;
+> 
+>     /// Access this value in a manner that is safe after
+>     /// `drop_before_gp` for one grace period.
+>     fn rcu_view<'a>(self: Pin<&'a Self>, _rcu: &'a RcuGuard) -> Self::RcuView<'a>;
+> 
+>     /// Drop this value in a manner where it may still be accessed via
+>     /// `rcu_view` for one grace period.
+>     ///
+>     /// # Safety
+>     ///
+>     /// All other accesses to this value must happen before the call to this
+>     /// method, except for accesses using `rcu_view`.
+>     fn drop_before_gp(self: Pin<&mut Self>);
+> }
+> 
+> The idea being that once you call `drop_before_gp()`, the value
+> immediately becomes unusable as the type itself, but you can still use
+> it via `rcu_view`. The `RcuView` type can then be a type that has a
+> subset of the type's methods that is safe to use for one grace period
+> after `drop_before_gp`.
+> 
+> If you define the trait like this, then PollCondVar becomes RcuFreeSafe.
+> It can't be RcuFreeSafe today because you must not create new waiters after
+> `drop_before_gp()` is called. With this modified trait, it can simply
+> not provide methods for registering new waiters from the RcuView type.
+> 
 
-I can't wait to remove the many, many instances of this we have in the
-driver. ToT
+Good point! But I guess I could keep RcuFreeSafe as it is but remove the
+`RcuFreeSafe::with_rcu()`, and this should be sufficient for
+PollCondVar. I do want to wait for a meaningful usage of `rcu_view()` to
+add that, but I think your idea of that is great. Or maybe you have a
+potential usage in mind?
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Regards,
+Boqun
+
+> Alice
