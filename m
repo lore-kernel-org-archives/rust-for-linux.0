@@ -1,171 +1,368 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012041.outbound.protection.outlook.com [52.101.53.41])
+Received: from mx6.ucr.edu (mx6.ucr.edu [138.23.62.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467B5378826;
-	Thu,  4 Jun 2026 23:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780616696; cv=fail; b=X/QV2nDuuTaT2fY9GbiipKEXYWkGVLGn9pwfM8qeZvwsiKgjgm17QaDgYf56I+0dT8pgPYzDTKyHPJeZrJbP6i7dy6GRCQwn5VJijoX5PZEkQjIxjKYw8Qjm9yYEPnY6jc3gZkSSslCiaUDQYZrDJH9EcIZttSqjDFCHl3UBgR0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780616696; c=relaxed/simple;
-	bh=GCMlIYpJH6o9j792Z2YSnZCVmNIF3ZS8chSUErA2lSA=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=UAF7tnEtPBTU613xmQtJSNwjpGhj6ngiWtTeiXFejlHLj/Kr8oDxLcguOAT3ue9HpTT+mK4Q5zKYFKSHsUTOfyvJ+u/BeaNqLHx1R8U+Z0SgadOyPDVJg50EW2zsEyCnuontReu1vlvqDeX/wqy0hj/LF9wOE2Nasjx0JylwOqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=faoSzk/n; arc=fail smtp.client-ip=52.101.53.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF03F3D45E5
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 02:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=138.23.62.71
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780626235; cv=none; b=HleaWAUzRwAy8Xg0GdHE2/8fP7WMMuh6CSEhsislcivVzjzSupD4GHl/hvnRlVvyS86eOq7P27U+YHdF9R0B7CPILDvLftsYkn1kKzGHHdB8UT4TLkRk6iCtyYcizNLa926pjZ0v0Ag/sXeEk29nzK2B4KQ9Ku0D+ErCy6hNmf4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780626235; c=relaxed/simple;
+	bh=EkKOMsCa/udStFr77ymLaCp3d2/tcq9uAdUElqm6kSk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KbpBjXPgPZFUMfCoQ/pVm4B7uWs3rYsPs8kBxCl9Xc//1Tjx8bARZaH7L03Wa8kn6Dm0/sLGTe9XjBthtetLx1lPfXEePWezh0AR4OrToAClrr12yTKNkdVzv6364Zu27cpmUQoz/BnOVF8v6UpDWOWNJI0/ou+vpOGkumQ9WAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=email.ucr.edu; spf=pass smtp.mailfrom=ucr.edu; dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=e549cncv; dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=el+gLcGE; arc=none smtp.client-ip=138.23.62.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=email.ucr.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucr.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="faoSzk/n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XJIYqcI3VGCUdZ40QffSgo5Ja9kwbxgYYc3TlWwHJugk06DhcCHCfIBC8nAzbyQimKxkCK7FCB3qlzKMWlWAPid8N6d20MzW8o+I/rYvXvBF5jePmzKNMnpZe6fy+j1Lne+OdlkUwv7sviDLSuKLBem6LtEZW4YgGBUkOkB/B++nWvgrwFuQtfybg7Jgc0iRtwqUYfhyE2J4fjDBy3kblXxZe4/IUvLJkioSEz+vbOOCGW3m5S8Bnajv5BSXsupERhfhRdg3tr/K3jC/fgid5JMb1eWZL2B5kM2vi3WrVOv5Yt/PTOMd9b9quUjiUbfQyL3NCwvD/NAGmAeqc1QVrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GCMlIYpJH6o9j792Z2YSnZCVmNIF3ZS8chSUErA2lSA=;
- b=o/FIavV9ge3UYC/LJeNZfxvuYDAxmDatJyh/RJ56Fk8Z6da669PssJ7W5uG7XnUYoiJGlSPkiB0TdYRvxLMQUP7JwiIBuI24je8n6E7e8xPG3cw5RlUBJvHdvZpaKOCrz47I17cLJ4tbU/DAYC0V0XBGUGcam00eBFDQFhFc8fIYAzW+mFf/oTQ3KRyddqTGZja8CFZ2whs4Askq4PiBf/wvQVTHGimwADQCRAUQ8+LHBrvLpTQqfE3rYqyXiknRzAblmgNoSFKnNXH+HrIj+viXADtqKGah3/X03Fb0boeNuVpVbjNjq2OegA4J6jHFvK3jqWToDRZwnqAUnXSFGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GCMlIYpJH6o9j792Z2YSnZCVmNIF3ZS8chSUErA2lSA=;
- b=faoSzk/ng6y7tPVlswhMa9G4wiDBAB+UpvR/J3zOUN349p0PIIbKWXbd/CvzjarLUgEqtljw//3l/F7syFT3ubjVTiqQwrbtZ/VU3iOX3xWib2hQ4RZCe9AFz6n82CFobeYigzNf3JnT4mP72e3aBVumLIr6SxgMOpUhyigHPN+mFgICKm6a7JNq7TsB4L3pr2JFiscROB8wAEZRvj2IZ598PB014kGlAZvMEM1ncaiaFNTt+N+hezBJXK+zxVnGxmNB5U+tU8CSBzCVPpkmy8+57+x20lmV9QTxzrDqGOFH1+/UK1X7GTlqoNmTpKCxVKW+yV+YgUU4TqIlniBL+A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB3997.namprd12.prod.outlook.com (2603:10b6:208:161::11)
- by SJ1PR12MB6099.namprd12.prod.outlook.com (2603:10b6:a03:45e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 23:44:51 +0000
-Received: from MN2PR12MB3997.namprd12.prod.outlook.com
- ([fe80::73c6:e479:9b75:b2cf]) by MN2PR12MB3997.namprd12.prod.outlook.com
- ([fe80::73c6:e479:9b75:b2cf%6]) with mapi id 15.21.0092.006; Thu, 4 Jun 2026
- 23:44:51 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Jun 2026 08:44:47 +0900
-Message-Id: <DJ0NXPLOU9QB.3T1LO1CT3VHFW@nvidia.com>
-Subject: Re: [PATCH v2 3/6] rust: ptr: add panicking index projection
- variant
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-References: <20260602-projection-syntax-rework-v2-0-6989470f5440@garyguo.net> <20260602-projection-syntax-rework-v2-3-6989470f5440@garyguo.net>
-In-Reply-To: <20260602-projection-syntax-rework-v2-3-6989470f5440@garyguo.net>
-X-ClientProxiedBy: TY4P301CA0034.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:2be::11) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="e549cncv";
+	dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="el+gLcGE"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
+  t=1780626228; x=1812162228;
+  h=dkim-signature:x-google-dkim-signature:
+   x-forwarded-encrypted:x-gm-message-state:x-gm-gg:sender:
+   from:x-google-original-from:to:cc:subject:date:message-id:
+   x-mailer:mime-version:content-transfer-encoding:
+   x-cse-connectionguid:x-cse-msgguid;
+  bh=EkKOMsCa/udStFr77ymLaCp3d2/tcq9uAdUElqm6kSk=;
+  b=e549cncvSFueiw19vfXXwbAjBE7kYm2Y3rzQZw1PMWy6oUhYWFbDwNqS
+   zlnRh5HypHM01YkAkDx8AAg9mlGKLS06jAKGqES6MK2/v+PlOWll9mld7
+   3/vBDNIK470r4ChNsOliLUeFDCRZvbd2GpgPy8I+2TzP95qdnQ1IVRe33
+   eUgtNeliL6VeCLFCbs9fliWXEUq5nUcfIvLjGjsGSe2jDhkyoPu2G9raj
+   l29jURlmeRU6QyImeHYhXH1kKVoWrZRGXl4q6FP/zhv6YQhEJo7tfV+7u
+   6rijK5V5MLs9tJ446MGD/5NczIUMLM4qMuGJ3c4GqdgFGxXacrWpZV0ad
+   g==;
+X-CSE-ConnectionGUID: milz31yCTDaCnmfDlGpCVQ==
+X-CSE-MsgGUID: ZMxmEOgOQ8m9NWHP4Sq92A==
+Received: from mail-dy1-f200.google.com ([74.125.82.200])
+  by smtpmx6.ucr.edu with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 04 Jun 2026 19:22:40 -0700
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-304e4636205so1407949eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 19:22:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ucr.edu; s=rmail; t=1780626160; x=1781230960; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=XTB3tYSqeZZwGv+tDxtvZ26MxKjcck4RpWVDxAqUswk=;
+        b=el+gLcGEhUdwflgsHhEd4fwk1qgIyWlBWDJVdGGO00m1WY0MY+pCjSdOx0UAo7s4M5
+         NKOJZRzXDfz1CzC+J+ct3WdSlXGAyd2A+nmXoZ5knvdEgp2zPJqVLm8p4zLGMHQya7iB
+         IJmiKZocxRhs/XHaDxgXVxN5zBElZl/npr+vw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780626160; x=1781230960;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XTB3tYSqeZZwGv+tDxtvZ26MxKjcck4RpWVDxAqUswk=;
+        b=CzlOb4q+0oPU3olsczJ+10F/n1IFtLonk9S+3LqSmCcQh62dEl89Q3ZF9nf3VUj2T4
+         ISq8vMgPbwqIO7Vv/3EhEZ66UZc60BPcq6tBNnCY4YmVDLKSkCmsNItUKwI0WztI1cVN
+         VRnzLAsKx8W6fobPhH8FBVfwpui2iysbNTf9DtVh8Lzv6J8cx8026fmn8CBgGBgRo/Ct
+         z8M2hPdFDppJVLgv23XbraKy+JOkdfzaRMLc6yiwNqYj125cSQHmLn8V7jS/hgqwaqal
+         Hh5rTKc9phaDd3pE+XW/iz84O1f5Rmv0M9+QIry04q6hlb3RR6m5fGzHcR3kiRy9Bo2m
+         k+gQ==
+X-Forwarded-Encrypted: i=1; AFNElJ86bYy3T4oQqyri9PRYhT0w1qsNqbS49BczdApnidrGwdZGTPXxfSTWCBP9K16LoJVs6W9xngyykLhF1DX0iQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhAM7MwoFRLGHoUz1Z1kvonFB7ZpBAnLxrYt3mkeGs5nybY+Yu
+	XKpI1rxLmRHRZjBJzvl9RLrLgk0Z91u94nZj8LqpvNpNxmxFkVh9dygMqzIJ8xL2r8YBfEwkRd1
+	wIHsL1ef3Nn5qv20aA5FdWX1diNCSKmalEu9ef4OqY1a9i7eGWBYOb/CZ5ti2P5By9T0dzA==
+X-Gm-Gg: Acq92OHbpv0FAR320OX/Si2TuPw1Mlkf6K3Lsyctj2PCVY/9SiWwNghmyDesyxpOGcr
+	OR5wst9MEEnE4LSpcWlcygQ8nT69kGWmV6dihCaEc89MLpb+COJR93fN8sKs0SvUmhmWmpoNZeA
+	SWucr8lHPMzS0YEjBFNr2QuFHjQggJDhkfM9Z9eCDeEkFeCE4JP+JQW5Lt2OI02LooUjVW6fEzh
+	una8iC0abAwP0YjEg+ojTK484WiRLCZhfkWkPJnVIxjtoRaeA6A80TtvAaKhaq1t/WJue1OUWrW
+	MlYlk3Piq3kQYegQVgGXzLKaQBKC7dlDN62/9HAf0FXcOc+DdcaGPryqbFcY1n8P7t5yT0B6OYq
+	nym634VhssDo1k1Dd3+biqA7Pw4hLXu8P7NQHz4wJgLXP1Xh74PA97DpeKU3kjjKWSv7W0OZ5ew
+	3VwKyvJTPD/JBKXjtucjRzDPiodZwwAgBdc3+fqxDhStenO+N5PHRYEaE8nDAVUrKV5gtKJFnfZ
+	3keBXO6fHw3hI9RVJhzsoAfSmg=
+X-Received: by 2002:a05:7301:678e:b0:2de:c5ca:c1f3 with SMTP id 5a478bee46e88-3077aeef992mr729178eec.4.1780626160228;
+        Thu, 04 Jun 2026 19:22:40 -0700 (PDT)
+X-Received: by 2002:a05:7301:678e:b0:2de:c5ca:c1f3 with SMTP id 5a478bee46e88-3077aeef992mr729163eec.4.1780626159744;
+        Thu, 04 Jun 2026 19:22:39 -0700 (PDT)
+Received: from ucr-secure-48-10-13-243-195.wnet.ucr.edu.net (ftd-border-nat-ucr-secure-v348.ucr.edu. [169.235.95.220])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074db5610esm6431175eec.4.2026.06.04.19.22.38
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 04 Jun 2026 19:22:39 -0700 (PDT)
+Sender: Yuan Tan <ytan089@ucr.edu>
+From: Yuan Tan <yuan.tan1@email.ucr.edu>
+X-Google-Original-From: Yuan Tan <kentertan12138@outlook.com>
+To: ojeda@kernel.org,
+	gary@garyguo.net,
+	rust-for-linux@vger.kernel.org
+Cc: peterz@infradead.org,
+	zhiyunq@cs.ucr.edu,
+	ardalan@uci.edu,
+	pgovind2@uci.edu,
+	dzueck@uci.edu,
+	Yuan Tan <ytan089@ucr.edu>
+Subject: [PATCH 0/1] rust: sync: fix Guard::lock_ref lock lifetime leak
+Date: Thu,  4 Jun 2026 19:22:30 -0700
+Message-ID: <20260605022232.31405-1-kentertan12138@outlook.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB3997:EE_|SJ1PR12MB6099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 246bead2-380d-4082-c838-08dec293450c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|10070799003|366016|11063799006|18002099003|22082099003|6133799003|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	EgazwJs4NMRf7I+tClq3kpS/plgM/tv1TRfXA+5egAuMvPRGGXmSNb8bn4+A4E8dd/cDu0WDX7kZGOBix7exo5S4ZlDfAxxU2KhucviBroUBTUXExES8cHnlra3DaVNsRkykv0h1gXHGsaMEJrgRwL1SkI0vt2Cs154V/mFxttnBriS2Rx6B3FGEpO87xYaSsVpTnqfgT9EB+vyWPw8ds7g8h8x1vrIUSf8Y30kTsSd/r/vjT3Nq5SSSq5L+UjMOe31dLaMWIjLYim9/LSJ/rtNIJ5N9s/jdRQ5qkpuyaS1Jwe0PtoS1BkTlwjSnGIku4RMj1mCN7RbaoFPGtjPdrgNwLNmjNcUuDMGb3TvpNrBMJZhsgdnQVsrMAothD2DKFs+pOdJtokN1Mx93uSReEdwHYjqfvDpIc2Q+ATo7+3GCQ7yRqcyiocjOXlF3ncVLud7A5dQHdy0+8E1QDzvG1Ko6mwX7N0GneL1Rs7PV0HRzF24nOvUbiZvEnl3Cy0kyl7rOMG9VXfTtvSuB/gLSnPFCNjj4A80r0YA0Pn5KWbCks1TBwj4h+1t82LJjX4gmdbelNKrb7KvBZyPA7mR4tDPuhjZ8L6KAJYSNvtljXBYcKeIGvlSJ858cCcAuDIHEOcf8ODcP3JhqIVU3qgWBEMRG3vjKWPqcanHO/EEpygKvF1NkH5xB8dJj6R/O6JKE
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB3997.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(10070799003)(366016)(11063799006)(18002099003)(22082099003)(6133799003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UzExTUlrV3gyY0F1aGpZamRkUlIzNGJOVmtsMkxkNVFxcWhXanpEMmQrdkxu?=
- =?utf-8?B?SWJ2SXprdEg4QWpZaEVTZnlscG5LU3FaUTdwWjh6dWhYbDBXRDNvKzNLdlJk?=
- =?utf-8?B?V0h5a3lRRitmRjBzOFJQUkFRWGV1dG5ubncrY3NnNlJ6MmpkbXFwR2pTM285?=
- =?utf-8?B?RVorUlQwdnB4SVJORi8yN3dNd3pWNkw1SEdvSGtGbnBpVkwxOU4wQ0dJdzYw?=
- =?utf-8?B?WWVZLzlIMzQ3bzV0dElCMGd4Tml3RTY4enBZdDl5S3ZJa0xFZFZaOWRHYnI1?=
- =?utf-8?B?K1JndmhGb2tNNWh3MEFxSFE4Rk55dlNWRHFBTDBPNTludHFnd3RlSjAzNm81?=
- =?utf-8?B?Y01qUGtDVFd0UXUvakltMExLOVBqMnhnTVBmMkJueGh2WE1HV3l4TXRIR2tn?=
- =?utf-8?B?Y1ZBUGtRMjQ2SDd2L2RPVEFRbXVpV2Nua0pTN2Vqc2pBZ3pQK1BGUU1vNTk0?=
- =?utf-8?B?TXE4UFN3cXViUERHeEhYaVJXbmtvckI2Z1ZTb0NDOWZlSFI0OXNPNDhVUUdj?=
- =?utf-8?B?KzFxbXQ2bnIxMlFIS29sV0tIMkwzczFHTm8xckRjRlN0OGplTVE1TXF0VHZy?=
- =?utf-8?B?QWlVMi9IN2RwOWg1VW5KQ1YvbUh1NWdlMDh2NVVGaHhBcUZkZWgzVDJ0Y1Ay?=
- =?utf-8?B?Qm44d2NmelFBN0FGeUdzaTFINU1jMm5hWnErMlNMREJzdDNXMGVTR3FWaUdP?=
- =?utf-8?B?NVhiTlZHaWFRTUpQcytqbldVVmJtQkJxdnN6WnlXVXl3ZElyMkhpa2c4cnp1?=
- =?utf-8?B?Zy9CQXA5bHBlMlk4TDA5RHVCUmQ3K0QyVmdCcXA1QzZndk5JbEZ4N0sybm1a?=
- =?utf-8?B?c3M4cW5zMEpsRlJRaGcyYm5tbG1vQmdPbS9paDc3MUlyTWhWVWlFcThvbHNS?=
- =?utf-8?B?U2JQTG51QkRzRVVOaHFPVDZITWREeGxaMTU0bXFSKytVdFYzVG5jQ25xdmhq?=
- =?utf-8?B?WUIrNE5scTMxdFdtNCtaMnQ1UjJvaFhtc2pHTzVwSlV3empaOFNNYm14NnZy?=
- =?utf-8?B?MTF0aTViSUZKNmkrUVQxcGF2MkNLOWxROW90WFk0WVF1eThKRDE1aEVVRnk0?=
- =?utf-8?B?SGZlcTF5QlgyUHpGQ1F0eWd2WjZ5VWpkclA3MExtdlJGTCtka3hZT0F0NkF6?=
- =?utf-8?B?VUdaeWx4eUlVUVZTNmMrZnZXKytKZ3c3SElrczNVNmxlZlRBcWoxN05GeFZT?=
- =?utf-8?B?RXY1NnlkUVBiY3NXV1pRR09CT0t4WXJRUnI0TlBDUVhXS1owNEtkK3FWdlZD?=
- =?utf-8?B?WUtpNjgrYVYyZ0hYMlk2d0dEQkhTS3dJLzBKK0h5MU1Bb3Z6R09ZZm80ZVh4?=
- =?utf-8?B?Z2RhbWxFTDlVN1RxYzdJZWdPN21hczNtMXJqdGRqQXJDWDFUU1JjRzEyRUs4?=
- =?utf-8?B?d0FPUmhGdlJVMGt6T0VxaHV2a0RyUXVsM0FpSm1QQ052S0VvVHZheHFaQm1S?=
- =?utf-8?B?OURmRm5xTWEvRjNsT2RsZTczVEZrMWNMVmJJWGx0QUZ4dHdJS09BRzk2ZDRw?=
- =?utf-8?B?SlQzNE9hY2lSOExCOGtmMy9pS3BjTTdka2JFbE4yTEdoWTVvWGxOM1hwRi9S?=
- =?utf-8?B?UUVzbVVhUGJUSmV5ODUrMW1KSU4rVk9iMEoyQ1ViUDV3OWR4Vmo4VWdVWGtD?=
- =?utf-8?B?SjlOSy9SSUVpdHpVUUJDQVEvSUNHb002QTM3NEhDMElsTEUyMitqK3JTUWpZ?=
- =?utf-8?B?bnFFSVVHajE2MC9sQ1hIYXpZQW8xQXJZdnpjTUJWM1ZXU2Q0NzJOMnExOXhk?=
- =?utf-8?B?S2swL0p0OUd6TDFhRTBRS294Z2w5U3ZpREFidkxld3FZZm9JMUU3eXd0QWRx?=
- =?utf-8?B?Q3ZxbjZVKzRiNUxhTTlLVW04UDFLcUZtcm5hc1hGUUFXTVB4WkRYK3hBSVlY?=
- =?utf-8?B?MTBDYzAvVWtyaHVIK1ExV3liZFpFbFE4dktXOXVuVmJTem0rdFJreHVJNWZR?=
- =?utf-8?B?K0dJMFFXVUFSWGNUcUNxTmhDcGtPWVpWTjhTaDJQSk8wamg2NUZiUmpzb013?=
- =?utf-8?B?S2paZkd2amJiTmRweVBsdHlHbHJpQk93SWZ6Q2F0QnZzNnFuVkRFbjV1d2Y3?=
- =?utf-8?B?L2JpaHBCdHo1bXlKVzlBRzJ1dnBTYVdCNGJzN0tuaE5jNkVRbEhybkRqanhF?=
- =?utf-8?B?ODByNmpwWWpOSUMyckNYS0JZZWY4RmVnWWl6eXhNdU1Od0gzZ3VvdDZKRmkw?=
- =?utf-8?B?a3FOeitERkhnL3NVcGU2UnkrRC96Y09ZVklzR09IVDhhRHhDNEx2L1RMcVpr?=
- =?utf-8?B?RzBLMHYvSEN2d1RNTFNHTjgyWkVtd0FWOERyWnhndVpyTCs0c0JhQVNtWWsy?=
- =?utf-8?B?UEN4eFZIdTIrUkVtb2ZaR1BJZUU1LytuYkpGbmFRYU9UZjlsMUZRaUZXc0No?=
- =?utf-8?Q?DWz5Ce31T9eXHQyxjmFLd0gVsaRM2W96J4qyCVPkHYdLb?=
-X-MS-Exchange-AntiSpam-MessageData-1: hiUbY4JFXw/esA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 246bead2-380d-4082-c838-08dec293450c
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 23:44:51.3297
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mKL5paztv5la3MIiSHfTM3AizXs6fCN9rv7Kg3IgNjlQwAiqaSH3psNtlX9UuTW0N9fEo+5eLsJq/9m+mfpPsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6099
+Content-Transfer-Encoding: 8bit
 
-On Tue Jun 2, 2026 at 11:17 PM JST, Gary Guo wrote:
-> There have been a few cases where the programmer knows that the indices a=
-re
-> in bounds but the compiler cannot deduce that. This is also
-> compiler-version-dependent, so using build indexing here can be
-> problematic. On the other hand, it is also not ideal to use the fallible
-> variant, as it adds an error handling path that is never hit.
->
-> Add a new panicking index projection for this scenario. Like all panickin=
-g
-> operations, this should be used carefully only in cases where the user
-> knows the index is going to be in bounds, and panicking would indicate
-> something is catastrophically wrong.
->
-> To signify this, require users to explicitly denote the type of index bei=
-ng
-> used. The existing two types of index projections also gain the keyworded
-> version, which will be the recommended way going forward.
->
-> The keyworded syntax also paves the way of perhaps adding more flavors in
-> the future, e.g. `unsafe` index projection. However, unless the code is
-> extremely performance sensitive and bounds checking cannot be tolerated,
-> the panicking variant is safer and should be preferred, so it will be lef=
-t
-> to the future when demand arises.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+From: Yuan Tan <ytan089@ucr.edu>
 
-Thanks for splitting the renaming part out!
+Hi linux kernel maintainers,
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+We are developing a tool called FerroLens to detect potential unsound
+behavior in Rust code in the Linux kernel. FerroLens reported the following
+bug in rust/kernel/sync/lock.rs.
+
+`Guard<'a, T, B>` is defined with `lock: &'a Lock<T, B>` as one of its
+fields. One of the functions that it implements, `Guard::lock_ref(&self)`
+returns that `&'a Lock<T, B>`. If `Guard` is `Sync`, then `&Guard` may be
+shared with another thread. That other thread can call `lock_ref` and keep
+an `&'a Lock<T, B>` even after the original guard is dropped.
+
+But `Lock<T, B>` is only `Sync` when `T: Send`, because a shared `&Lock`
+lets another thread acquire the lock and obtain mutable access to `T`. The
+`unsafe impl Sync for Guard` only requires `T: Sync`, which is weaker. For
+a type `T` that is `Sync` but not `Send`, this would let another thread
+obtain `&Lock<T, B>` and later lock it, effectively enabling cross-thread
+mutable access to a `T` that is not safe to send between threads.
+
+This issue can cause UB in the following situation. If T is sync but not
+send, Thread A: Creates a Lock<T>. Because T is not Send, Lock<T> is not
+Sync. It cannot be shared with other threads. Locks the mutex and gets a
+Guard<T>. Since T is Sync, code says Guard<T> is Sync. Thread A can now
+safely give a &Guard<T> to Thread B. Thread B: calls guard.lock_ref(). This
+returns a &'a Lock<T>. Thread B now has a reference to the Lock. Even after
+Thread A drops the guard, Thread B still has that &Lock. Thread B can now
+call lock.lock() and get a &mut T.
+
+We're not Rust experts, so we may have gotten some things wrong. We'd greatly
+appreciate any corrections.
+
+Here is a poc kernel module which demonstrates this problem:
+
+#![no_std]
+
+use core::sync::atomic::{AtomicBool, Ordering};
+use kernel::{
+    bindings, c_str,
+    error::from_err_ptr,
+    prelude::*,
+    sync::{
+        lock::{mutex::MutexBackend, Backend, Guard, Lock},
+        new_mutex, Arc,
+    },
+    types::NotThreadSafe,
+};
+use pin_init::stack_pin_init;
+
+module! {
+    type: LockRefPoc,
+    name: "lock_ref_poc",
+    author: "Priya Govindasamy",
+    description: "Sample module demonstrating cross-thread Guard::lock_ref access",
+    license: "GPL",
+}
+
+struct LockRefPoc;
+
+struct SyncButNotSend {
+    value: u32,
+    _not_send: NotThreadSafe,
+}
+
+// SAFETY: Access to `value` is synchronized by the lock in this sample, and the marker field is
+// only used to prevent `Send`.
+unsafe impl Sync for SyncButNotSend {}
+
+struct HandoffState {
+    lock_ref_ready: AtomicBool,
+    guard_dropped: AtomicBool,
+    relock_done: AtomicBool,
+}
+
+struct ThreadBContext {
+    guard_addr: usize,
+    handoff: Arc<HandoffState>,
+    thread_id: u32,
+}
+
+fn guard_matches_lock<T, B: Backend>(guard: &Guard<'_, T, B>, lock: &Lock<T, B>) -> bool {
+    core::ptr::eq(guard.lock_ref(), lock)
+}
+
+unsafe extern "C" fn thread_b_main(data: *mut kernel::ffi::c_void) -> i32 {
+    // SAFETY: `data` comes from `Arc::into_raw` in `spawn_thread_b`, and the thread takes back
+    // ownership of exactly one reference.
+    let ctx = unsafe { Arc::from_raw(data.cast::<ThreadBContext>()) };
+
+    let guard: &Guard<'_, SyncButNotSend, MutexBackend> =
+        // SAFETY: Thread A passes the address of a live guard to thread B.
+        unsafe { &*(ctx.guard_addr as *const Guard<'_, SyncButNotSend, MutexBackend>) };
+
+    let leaked_lock = guard.lock_ref();
+    pr_info!(
+        "thread {} obtained &Lock<SyncButNotSend, _> through &Guard\n",
+        ctx.thread_id,
+    );
+    ctx.handoff.lock_ref_ready.store(true, Ordering::Release);
+
+    while !ctx.handoff.guard_dropped.load(Ordering::Acquire) {
+        unsafe { bindings::msleep(20) };
+    }
+
+    let mut relocked = leaked_lock.lock();
+    relocked.value += 1;
+    pr_info!(
+        "thread {} locked after thread A dropped the original guard; value={}\n",
+        ctx.thread_id,
+        relocked.value
+    );
+    ctx.handoff.relock_done.store(true, Ordering::Release);
+    0
+}
+
+fn spawn_thread_b(guard_addr: usize, handoff: Arc<HandoffState>, thread_id: u32) -> Result {
+    let ctx = Arc::new(
+        ThreadBContext {
+            guard_addr,
+            handoff,
+            thread_id,
+        },
+        GFP_KERNEL,
+    )?;
+    let data = Arc::into_raw(ctx) as *mut kernel::ffi::c_void;
+
+    let task = match from_err_ptr(unsafe {
+        bindings::kthread_create_on_node(
+            Some(thread_b_main),
+            data,
+            bindings::NUMA_NO_NODE,
+            c_str!("lock_ref_thread_b/%u").as_char_ptr(),
+            thread_id,
+        )
+    }) {
+        Ok(task) => task,
+        Err(err) => {
+            // SAFETY: Thread creation failed, so the raw reference was not handed off.
+            unsafe { drop(Arc::from_raw(data.cast::<ThreadBContext>())) };
+            return Err(err);
+        }
+    };
+
+    // SAFETY: `task` is a valid sleeping kthread returned by `kthread_create_on_node`.
+    unsafe { bindings::wake_up_process(task) };
+    Ok(())
+}
+
+unsafe extern "C" fn thread_a_main(_data: *mut kernel::ffi::c_void) -> i32 {
+    let handoff = match Arc::new(
+        HandoffState {
+            lock_ref_ready: AtomicBool::new(false),
+            guard_dropped: AtomicBool::new(false),
+            relock_done: AtomicBool::new(false),
+        },
+        GFP_KERNEL,
+    ) {
+        Ok(h) => h,
+        Err(_) => return ENOMEM.to_errno(),
+    };
+
+    stack_pin_init!(let lock = new_mutex!(
+        SyncButNotSend {
+            value: 100,
+            _not_send: NotThreadSafe,
+        },
+        "lock_ref_poc.thread_a_lock"
+    ));
+
+    let guard = lock.lock();
+    if !guard_matches_lock(&guard, &lock) {
+        pr_err!("thread A: guard.lock_ref() did not return the original lock\n");
+        return EINVAL.to_errno();
+    }
+
+    if let Err(err) = spawn_thread_b(
+        (&guard as *const Guard<'_, SyncButNotSend, MutexBackend>) as usize,
+        handoff.clone(),
+        2,
+    ) {
+        return err.to_errno();
+    }
+
+    while !handoff.lock_ref_ready.load(Ordering::Acquire) {
+        unsafe { bindings::msleep(20) };
+    }
+
+    drop(guard);
+    pr_info!("thread A dropped the original guard after thread B captured &Lock\n");
+    handoff.guard_dropped.store(true, Ordering::Release);
+
+    while !handoff.relock_done.load(Ordering::Acquire) {
+        unsafe { bindings::msleep(20) };
+    }
+
+    0
+}
+
+fn spawn_thread_a() -> Result {
+    let task = match from_err_ptr(unsafe {
+        bindings::kthread_create_on_node(
+            Some(thread_a_main),
+            core::ptr::null_mut(),
+            bindings::NUMA_NO_NODE,
+            c_str!("lock_ref_thread_a").as_char_ptr(),
+        )
+    }) {
+        Ok(task) => task,
+        Err(err) => return Err(err),
+    };
+
+    // SAFETY: `task` is a valid sleeping kthread returned by `kthread_create_on_node`.
+    unsafe { bindings::wake_up_process(task) };
+    Ok(())
+}
+
+impl kernel::Module for LockRefPoc {
+    fn init(_module: &'static ThisModule) -> Result<Self> {
+        
+        spawn_thread_a()?;
+
+        Ok(Self)
+    }
+}
+
+impl Drop for LockRefPoc {
+    fn drop(&mut self) {
+        pr_info!("lock_ref_poc unloaded\n");
+    }
+}
+
+
+
+Makefile:
+
+obj-m += lock_ref_poc.o
+
+KDIR := /lib/modules/$(shell uname -r)/build
+
+PWD := $(shell pwd)
+
+all:
+	$(MAKE) -C $(KDIR) M=$(PWD) LLVM=1 modules
+
+clean:
+	$(MAKE) -C $(KDIR) M=$(PWD) clean
+
+
+Output:
+[949319.304760] lock_ref_poc: thread 2 obtained &Lock<SyncButNotSend, _> through &Guard
+[949319.332467] lock_ref_poc: thread A dropped the original guard after thread B captured &Lock
+[949319.356484] lock_ref_poc: thread 2 locked after thread A dropped the original guard; value=101
+
+
+Yuan Tan (1):
+  rust: sync: avoid leaking the lock lifetime from Guard::lock_ref
+
+ rust/kernel/sync/lock.rs | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+-- 
+2.43.2
+
