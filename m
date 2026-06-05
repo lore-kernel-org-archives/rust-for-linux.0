@@ -1,257 +1,170 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020080.outbound.protection.outlook.com [52.101.195.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A591C2EEE6F;
-	Fri,  5 Jun 2026 07:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780646236; cv=none; b=ZRicP4v5cMIT3e1gaA/meg9fmsPx95VL4+vo7z3Au4cagLuSh/bkQGLpmB89CKnxtKLmdw9ZoDqkrSo+jg1eTHEDbA2zoNDi3Ly/45LTjHhZdyYofDI+4ouhJuOK37YCvD4UVUT9uPi+WaS8pFsCNCvqNTeGyzb0etcHybhY3Tk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780646236; c=relaxed/simple;
-	bh=YZscO3yakbHdZc4j0RGnCdnyy50smezrqiuIpDYbTeI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BFFc7ZMJBSEFbO+uMpE4cge1hFxhObmg/77+hHGw3qh4BViAF1lkKY/pVDwYeQMo8KqXgbr+FKZUR46SJV85o/Cfe5xDv1g//tFkF37e3EONdoHwbSdWdRchFi11O5q+CMftzGXOIRgnjYI66wfZ59mD+ZlR6vA3XbpcJo+2lJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ud9TN26i; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B7B48B367;
+	Fri,  5 Jun 2026 08:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780646904; cv=fail; b=srlBJelDD8oOkT8xMjeIBZ7yPm6SS8s22owo06Ji+c/TlbuwJYonwswpySdnfZC5WKJbfZDwM7NqZ0zYFNPQrhclrFSx68Z3UW+/183Yl9Y+mm53AtJ4LXHsm9LfrM+S3Vja96ckclXR9POBLIF5Q1xEHREI23Le5x8To1T4Gq4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780646904; c=relaxed/simple;
+	bh=aHpciEhT07jAy29lhWPk9gGS6LzE3HDDg6B8iVgnhwQ=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=H7IBaLwfZuvIiPk1Ns64Q+gK3T6GQgp2zXr6nxLekFDWP+5cgDbQNizTcVC5Z2NgZOfMCIw1kMStI0roT4evCSP4KlSwPrCeGQrAE/VJxXfNmwgYYphtYF8b2bngU89hS/EZxTYh1Nd7EoriIC74Q2q0tPTBjVtpLKozvN7pj84=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=fUEXg8AP; arc=fail smtp.client-ip=52.101.195.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ud9TN26i"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gWv0c3R1Bz9tgY;
-	Fri,  5 Jun 2026 09:57:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1780646224; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YZscO3yakbHdZc4j0RGnCdnyy50smezrqiuIpDYbTeI=;
-	b=ud9TN26ikC4TheW87sW5sBb0y2fqqKzew5ee3W2uJP7eL0IRSx/XGRTNn5y9pkOecyS/RA
-	K/7g4n+Do9YA3XS5TTP7T+S4TLlVSPWnYnOzde5LcsMROQMe90Tm96LylDf2b8x9VuQkZp
-	qN3vsiXI30/uRjCLIoblFdNRbR2frgMsipUZg8qVTRTY8whn5tDu8Jq1sVSNwtq8ZCVnou
-	CRNyO4ketnaWtSzGeGYji4nJfM/n4irESZmSi/vosa12sTW4nCsmiXR8qGjWrqAsWV5PHR
-	W2uKePhv2y5CPa6GuTTA6MKwDkB/s/bhnE71Z8HtFvVpqmS2fMwJCQMne/9ECw==
-Message-ID: <8ff2de94a50ed077a4cfe520a081f2b8b438a375.camel@mailbox.org>
-Subject: Re: [PATCH 3/4] rust: Add dma_fence abstractions
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Boris Brezillon <boris.brezillon@collabora.com>, Daniel Almeida
-	 <dwlsalmeida@gmail.com>
-Cc: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Sumit Semwal	
- <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker	 <frederic@kernel.org>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Uladzislau Rezki	 <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers	
- <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
- Zqiang <qiang.zhang@linux.dev>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Igor Korotin	 <igor.korotin@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Alexandre Courbot	 <acourbot@nvidia.com>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Krishna Ketan Rai
- <prafulrai522@gmail.com>, Shankari Anand <shankari.ak0208@gmail.com>,
- manos@pitsidianak.is, 	linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, 	linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, 	linaro-mm-sig@lists.linaro.org,
- rcu@vger.kernel.org
-Date: Fri, 05 Jun 2026 09:56:51 +0200
-In-Reply-To: <20260604101552.4232733b@fedora-2.home>
-References: <20260530143541.229628-2-phasta@kernel.org>
-		<20260530143541.229628-5-phasta@kernel.org>
-		<4F8E8E04-5AB5-4E6B-9194-5FC467E2313F@collabora.com>
-		<20260603191405.4c75badb@fedora-2.home>
-		<09096455-BA79-4E61-AD88-44DA57C5BEA8@gmail.com>
-	 <20260604101552.4232733b@fedora-2.home>
-Content-Type: text/plain; charset="UTF-8"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="fUEXg8AP"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qur4POCU3VjMFzPh1NSo6xTDktuabgW+xK9t5mDHxpEL5kR58iS9jFN0S07VeRBhlOAJF2GNjoymDJB39n8SF4PoWu8pmUnOEOHgpro/eaZUQzuciAzWZAefy8JYc67UBgMRPu/a6cjFwm+F6kWF+svBjrUUdhYCWLbibabCyDbupQlOcf3RYp6Uikk//CVqS8iGKpRDKWHn7yRWc9WvNNgyoiKYLYFCQ1cyetg+3c2wccx1kNEOYA/TMhok7aRSwQCoJDQEUTfpi1TwEyCfIfFZiYHYaDHD7GhP9NSV4wwu0fLWNITK28lMFcVuyH89XQLKqA2hG/AYEO6MDAzHRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aHpciEhT07jAy29lhWPk9gGS6LzE3HDDg6B8iVgnhwQ=;
+ b=mLF2o+LiWnEZBv9s7cLTuAqvpFyJQF9TaJman9h9q/evjXhaCOG1IwyT/KBoLDKi3PBYtp5H/lRMG1DcFYNCwogfZ1aJNhbL7vnTGZ1J7JUU3+fBGDjtmbRtSBuhOwwtKCXTLaiM76ETF725hswFMU2VMxifjoQEnAriGPiYZrJCMPLao1a3Xq4cjdLHn4AST0ijOpmdOa1LKqNz8/WMHITZC5ebYLlf+JIsvfeheOilN+smJjY7dW2RqrhXUD1bV2rnZwlzP2U0/ovoK2J04wjiqhJwwr0tAfcWTUcoyQmwOFlFvhPqPUh51BVyts/S2picfmlrze4wWjhb8ZEKFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aHpciEhT07jAy29lhWPk9gGS6LzE3HDDg6B8iVgnhwQ=;
+ b=fUEXg8APSXvTwZJ7BRLQi8NrxyfTeeK7xEGJbSCYN1yv+2AHiurBVnuisJXkt3b5lnO1U9/scqkwvvEU36n9Lz027HXE+ojAo6CHUd4AIHprMFUzzdldNDH1yR85IornpNwGRbVdASAXLP4azkq+rMC3jJvVIIuf1UhLveJefAk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO4P265MB6091.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:29f::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Fri, 5 Jun 2026
+ 08:08:18 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 08:08:18 +0000
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Jun 2026 09:08:16 +0100
+Message-Id: <DJ0YN7DGQDD1.2O7A7RAXRACTC@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Nathan Chancellor"
+ <nathan@kernel.org>, "Nicolas Schier" <nsc@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ <linux-kbuild@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v3 1/5] rust: inline some init methods
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260530-nova-exports-v3-0-1202aa339ef7@nvidia.com>
+ <20260530-nova-exports-v3-1-1202aa339ef7@nvidia.com>
+ <DIZE5YHLR2WJ.1VOBKWU8Q6AWH@garyguo.net>
+ <DJ0CR9A8OXYR.27EFEWLDXK5RZ@nvidia.com>
+In-Reply-To: <DJ0CR9A8OXYR.27EFEWLDXK5RZ@nvidia.com>
+X-ClientProxiedBy: LO4P123CA0317.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:197::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: a672bee9a7bdcd496a0
-X-MBO-RS-META: 5yqks91n4urtritwsng9kaxh7prq1gie
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB6091:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7b73e93-a292-4474-9a99-08dec2d999b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|22082099003|18002099003|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	zyRoDuomEMR8LArgYT5CUQpS0GzWZ+H29WWy6gHayUMmtVBS3xXhNBxnDHIoZVbFatKdPVU+GQH0LLpONUJPRbNdI4rchM/yQdNFOl/Z4nMvJHkVkjfCOfFAiVVZncoQc/HqWRZLOqBQ3cX2iFTE+SoXuIwo6peZhGv1i6EkVcsNdWOyCZH6n/RHINL6vYN+hRanvYKjmqC7VvByIJz2C+Tc/c4RLBJrn3inFYr9Z1Ig53cJPeXK8pec72JzLEdgYhnWWgAt4ddw8I3KeqPSmcJizbrSvMHydWLzfVFtKhftzT3TUmpGmzzcCttxI/i7MadFqHG188JkYSO+yNmLbJR9lx7RF6nG3ndVYhpcJVi2/TPCjDnaCDFi+V0FRETapFA6D/bV8fDW4ZXVeNNNPHS85rh2CKN/+wss+ij/2EVldL9AQoN20eqXLnTDZpuPSXi3vI3xX90TvdGQMnBw5LlF0SdT8q2nwGTmfUfPf4ggFKUEnVAg0m9VwvhhSYTJLtu02bwNS/yiSCNKQC+ignf/lmN5YgvOpDgE7uUdKBhykC/UkMsdgLyUPg5KSJiogDoDpfXA75qeUbotKZuk9uoDzRTjiv5ygiu8zNcRM/jneXRTWVDWGLDylwoKRY21HdbXQXq8TDT0nxxiFJIH6UbZjfsI7f48ZP/S2JvYW2brp0Zh2nP9WGTzkiBf/JBu
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(22082099003)(18002099003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ODV0L3ljbVZEL3kwVEJjYjk1eUx5VWFZS3JWbmtZQlVKV2U1a1dtSWIyYVBX?=
+ =?utf-8?B?TjFmdjFVUGphaEttRTZNUTZQVVdIYjJmV0M4dXE5RDJtTStMbU9aR1haVzBQ?=
+ =?utf-8?B?Y01wRlkyWWp0Mzd2USsyZ0JzaWFRUllTNGRZUU1XQ0lZc2V2ZHA1UEFzWlpw?=
+ =?utf-8?B?QXlqOE5Ob1ltb25SMFRFR3BGYndoQm1XMEIrZGdWRnM5TEdFU2Q4cjJoaFFO?=
+ =?utf-8?B?ZzBrQ0Z1U0dkcXdzWDhUb1h0cXp4Qk94UWg3WmJDdDhmRHBlM3U4aHR1MVkz?=
+ =?utf-8?B?djJ1RlZtV0JpT0R2NjdZR0Z5dDlIMENmQVAvOEd6OVhYNGNNYXNmbjhPYnp0?=
+ =?utf-8?B?NVZMQXpvbFNVYzNhNFhscGN0S0dISDNrdllxM3F1ZzZSR3Zka1haNCtQWS9w?=
+ =?utf-8?B?cVpyREVVOURXTk9icDRlWlU1Q09QcmxFSmorZ3F3b1NyeUNUdkZHWk9qbjlm?=
+ =?utf-8?B?QUcrWWxNWnl5QWl0cFFJWitXNnFyRnJnamNRQ2RoQjhKazl3NnhYelZOL3Jv?=
+ =?utf-8?B?UVBCZlpKWDNBNXMxRTFIelBxeU9OVUk2TngySW8xS1k5NVVjU0xSN3FzVTJj?=
+ =?utf-8?B?aE9UVi9IVlhORTkxWldnbzZRU2RKL1dzVVNrd1N4N3ZCNm9NbmltUlIrSy81?=
+ =?utf-8?B?ZlZNWFdMSy9FR1dwVFlSTDBpNWI2VmJWYXBLL3B1L2Riem13eWxkVnJGLzRS?=
+ =?utf-8?B?dTF1dzlUZUloaHhsYllyTTRlTTdHQjd5Vzg4WnNUTEN3bnJJOXpDT2VsUEh6?=
+ =?utf-8?B?M0V5R0piRURaU2RJM0lvT0lHYWRhd1JmWTRZaTdpYWN4ZDU3ZngwUHNhTlJH?=
+ =?utf-8?B?ckQvN0NxREVFOExoUUovKytCYWw4QkRLRjRIcmF2M1o3Q3RaV3FYN0RGVURh?=
+ =?utf-8?B?RXVLQVBoSGl3ek8rY3gzVTJicG5qWnFjN3lVYjR2akR6MTkyUWlrL0I1Wmt4?=
+ =?utf-8?B?aEVzQTg3WGtGZTIvMk9TOHhlK0V1MFUrdXZJejYwK3lJeTlwUm11bmIza043?=
+ =?utf-8?B?cEc2VFRMN0d2OXE2Zm13cGNURWhvWHRXajJOTkljTzBTTFpWRnhrSEF2OG82?=
+ =?utf-8?B?cWlxVGdwQ3V4djF0VlF1Sko1RkpjMm1kNXBvOEFQcTFzZGUzTHEzUFI0NVo4?=
+ =?utf-8?B?NGhtMk85TkFOY2Z2cVMzUDI1Z1lqekE3aVVPdVBVNkJYeExUSkF1Yi9zSFZ2?=
+ =?utf-8?B?Njl2M1Q2a2ZYZXpOZXBkeHB1WGwvTXg5bUhnT0xOYmNTc1ZNNlI1WXNrZFVK?=
+ =?utf-8?B?eHUwSm5FN1BNa0RMQXVSWUJCdHlNSjlSYWhyWEhET0VNYjFVbk5hS0xoRXFU?=
+ =?utf-8?B?azNIeHlvSGM1VzdoTmNRMkRBYUVGTjJWdVNYN3BFYmI5L3I3ZlBZWkx3dkUv?=
+ =?utf-8?B?c2VRZkRKNytkZ3ozam9tUTFMRXYvL1lLbkttYzgvQkdTNEU4SFZBVHpFcmt6?=
+ =?utf-8?B?d2E1MHdzQTlDU3ZhVkRCVGtCVWFlMTYyaG1XZjdCNTdkVXNkanRMQ2pIYjlD?=
+ =?utf-8?B?T2g2b2dJUzBoS1NyRVNGR3BIU1ZuWHk2QmhQcmMvQVRwUkxzL0NINVN5eEZu?=
+ =?utf-8?B?ZXVaNitiVnlmc21kbldkbjRrWnRJNkQrdmwyQWRxQndQcGlwNXNhNDF3Ti9Q?=
+ =?utf-8?B?QXozQzdGZWc0bzVyd3FBZDBYL0lLUHJKVzI0ekNmNThWaDU4QVgwQUtFbHVx?=
+ =?utf-8?B?NXFNTjJ6dXlTemY1Vlh3VUZYTjZXbXBlOFRuczBhZUEvTjgyeHF4REQvMXJY?=
+ =?utf-8?B?R2tOOHZjeDNndWJyc04vTWdENVBzZGdUcTdvKzlWWWFwRGU1aG9ScTZzZnc0?=
+ =?utf-8?B?cWZmQmlwL3RFckpQTnZDOXFHb1JNQ2ExeVNkUXFET0Z6Vys5UEFwYi9tRG1C?=
+ =?utf-8?B?WmdJS0dybmd5QUF6UXlHMVdoYncxVnFTTUMyVlRQNCtMVG01UlNWcXlocGoz?=
+ =?utf-8?B?Tk1NaTJoTkcreEZXN0x5NkhkNzdaMTFLZ0RQd08rZjNRcEZZU3hhWXBlZ1c3?=
+ =?utf-8?B?VjhEV1RIbEdSaGU1WDNTSkdnQVpJVjJ0YjZad1pWZE9BRDZ0Y0oyQXVYMnQ3?=
+ =?utf-8?B?SlNxN2ZENXhKUmRwN244YVJyNkJzeUZ4S0k3U1Q5OHdRa1FhbFBVUlpzdWM1?=
+ =?utf-8?B?SEVqMEJGaUl0enA1Mk9zUlpIdDREOW1RVVZaQ1g2ZVVKSy80THlMYi90dlBK?=
+ =?utf-8?B?MytaRUN5UzdpdG52dnVoeW5MTXdFb1p1U1B4RjRKc1lwcGYwdnNObjQ4eXND?=
+ =?utf-8?B?U0Ntc1BnS1VNbzlWallvUlh4ZUY4TDNsN2M0NVFBL002RmNUdVRNb2pBdS9B?=
+ =?utf-8?Q?AAOcvfy9rXdyIzaSuQ?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7b73e93-a292-4474-9a99-08dec2d999b0
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 08:08:18.0646
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BhvsidfTh3VvEYApZ9CP1Sd0KOL89F6iQktVSLkjI6uFR5pJpg5tkDVL6JzeZVRbAgbke3kRRDXCCdUZiqmeZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6091
 
-On Thu, 2026-06-04 at 10:15 +0200, Boris Brezillon wrote:
-> On Wed, 3 Jun 2026 21:43:05 -0300
-> Daniel Almeida <dwlsalmeida@gmail.com> wrote:
->=20
-> > > On 3 Jun 2026, at 14:14, Boris Brezillon <boris.brezillon@collabora.c=
-om> wrote:
-> > >=20
-> > > On Wed, 3 Jun 2026 13:41:02 -0300
-> > > Daniel Almeida <dwlsalmeida@gmail.com> wrote:
-> > > =C2=A0=20
-> > > > > +=C2=A0=C2=A0=C2=A0 /// Called when the fence is signaled.
-> > > > > +=C2=A0=C2=A0=C2=A0 ///
-> > > > > +=C2=A0=C2=A0=C2=A0 /// This is called from the fence signaling p=
-ath, which may be in interrupt
-> > > > > +=C2=A0=C2=A0=C2=A0 /// context or with locks held, which is why =
-`self` is only borrowed, so that
-> > > > > +=C2=A0=C2=A0=C2=A0 /// it cannot drop. Implementations must not =
-sleep or perform
-> > > > > +=C2=A0=C2=A0=C2=A0 /// long-running operations.
-> > > > > +=C2=A0=C2=A0=C2=A0 ///
-> > > > > +=C2=A0=C2=A0=C2=A0 /// An implementation likely wants to inform =
-itself (e.g., through a work item)
-> > > > > +=C2=A0=C2=A0=C2=A0 /// within this callback that the associated =
-[`FenceCbRegistration`] can now be
-> > > > > +=C2=A0=C2=A0=C2=A0 /// dropped.
-> > > > > +=C2=A0=C2=A0=C2=A0 fn called(&mut self);=C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > This is a central point. We ideally would want this to consume self=
-, because we
-> > > > may want to move things out of the callback.=C2=A0=C2=A0=C2=A0=20
-> > >=20
-> > > This one comes from me. The rationale being that ::called() is called
-> > > from an atomic context, and the resources attached to the callback da=
-ta
-> > > might require acquiring other sleeping locks to be released, and
-> > > sometimes you don't even notice immediately because said resources ar=
-e
-> > > refcounted, and the lock is only acquired when you happen to be the
-> > > last owner. Yes, those can be caught at runtime if the C side is
-> > > properly annotated with might_sleep(), but that's not always the case=
-.
-> > >=20
-> > > If we defer the drop of the data only when the FenceCb is
-> > > dropped/recycled, we're at least not constrained by this "runs in
-> > > atomic context" thing.
-> > > =C2=A0=20
-> >=20
-> > This design does not solve it, because one can quite trivially get arou=
-nd this
-> > restriction using Option<T> as I said. If your point is =E2=80=9Cdon=E2=
-=80=99t run any drop() here=E2=80=9D,
-> > then &mut self doesn=E2=80=99t do it.
->=20
-> My bad, I thought you were talking about some Option<T> in
-> FenceCbRegistration<T> (there was one at some point, but it's gone now),
-> but you're talking about having an Option<X> inside the T. Yes, there's
-> indeed nothing preventing a drop on X in that path, and it's just as
-> bad as passing the fence back as value to the callback in that case.
+On Thu Jun 4, 2026 at 3:59 PM BST, Alexandre Courbot wrote:
+> On Wed Jun 3, 2026 at 8:52 PM JST, Gary Guo wrote:
+>> On Fri May 29, 2026 at 4:27 PM BST, Alexandre Courbot wrote:
+>>> These methods should be inlined for optimization reasons. Failure to do
+>>> so can also produce symbol names larger than what `modpost` or `objtool=
+`
+>>> can handle.
+>>>=20
+>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>
+>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>
+> Hi Gary,
+>
+> Sashiko suggested (and I tend to agree) to also inline the following
+> methods for consistency:
+>
+> - InPlaceInit::init
+> - UniqueArc::init_with
+> - UniqueArc::pin_init_with
+>
+> Does your `Reviewed-by` still hold with these methods added?
 
-Then maybe we should just pass it by value and require implementation
-of an unsafe trait on `T`, whose safety-requirements demand that this
-must be save to drop from atomic context.
+Yes, it's fine to keep the tag.
 
->=20
-> >=20
-> > > >=20
-> > > > Consider a fence design where signal() consumes self. Now consider =
-this:
-> > > >=20
-> > > > ```
-> > > > impl FenceCb for MyCallback {
-> > > > fn called(&mut self) {
-> > > > =C2=A0 // Can't move the fence out, so we have to put an Option<T> =
-just to be able
-> > > > =C2=A0 // to move.
-> > > > =C2=A0 if let Some(f) =3D self.some_fence.take() {
-> > > > =C2=A0=C2=A0=C2=A0 f.signal();
-> > > > =C2=A0 }
-> > > > }
-> > > > ```
-> > > >=20
-> > > > This used to be the case when our version of the job queue used the=
- "proxy
-> > > > fence" design:
-> > > >=20
-> > > >=20
-> > > > ```
-> > > > // Callback on the hw fence
-> > > > impl FenceCb for MyCallback {
-> > > > fn called(&mut self) {
-> > > > =C2=A0 if let Some(f) =3D self.submit_fence.take() {
-> > > > =C2=A0=C2=A0=C2=A0 f.signal();
-> > > > =C2=A0 }=C2=A0=20
-> > >=20
-> > > I'm pretty sure lockdep won't like it anyway, because this is nested
-> > > locking of the same lock class. For such proxies, we'll need to teach
-> > > lockdep about the nesting like has been recently done on
-> > > dma_fence_array & co. But I'm digressing.=C2=A0=20
-> >=20
-> > Yeah, but this is more about resource transfer in general, not
-> > this pattern specifically.
-> >=20
-> > I agree that this has issues, and yes, lockdep complained back
-> > then :)
->=20
-> The thing is, there's so many aspects that could go wrong because of the
-> context this callback is called in. Nested locking is one of them,
-> the fact we can't sleep is another. And with rust it's even worse,
-> because of the implicit drops that will happen when you take ownership
-> of resources (taking sleeping locks to remove resources from a dataset
-> for instance).
-
-Doesn't that have to be a problem for much of Rust infrastructure? How
-do other parties solve that?
-
->=20
-> So, by passing self by value to the ::callback(), you're basically
-> telling users "hey, BTW, don't forget to defer the drop to some
-> workqueue if you think it's not atomic-safe". And how can users know
-> that the thing they're about to drop can be dropped in atomic context?
-> They basically have to audit the ::drop() of all the resources they
-> embed in their type implementing FenceCb. Not only that, but they also
-> have to design the thing so the deferral of this ::drop() doesn't
-> allocate, because, obviously, allocating in atomic context is
-> tricky/fallible. AFAIK, none of this can be spot at compile-time (I
-> remember Gary/Danilo mentioning that we could teach the klint about
-> some of these rules). This would leave us with runtime checks like
-> might_sleep(), but most of the C putters (xxx_put(object)) don't have
-> might_sleep() in the path where the decref doesn't lead to a refcnt=3D0
-> situation.
->=20
-> TLDR; Call this PTSD if you want, but this is the sort of bugs I
-> struggled with on the C side, and I can predict that the exact same
-> will happen in rust drivers if we expose the FenceCb as it is designed
-> here and we don't have a way to check the soundness of the FenceCb
-> implementations at compile time.
-
-My guess would be that the existence of unsafe-traits is the admission
-of Rust that this just cannot be guaranteed by design.
-
-If a driver cannot know whether this or that is safe to drop, then it
-would have to defer it's dropping. Or would there be cases where this
-also doesn't work?
-
->=20
-> The other option (the one I've been advocating for from the start), is
-> to not let drivers implement FenceCb (make it private), but instead
-> have a bunch of implementations that we know are safe. Here's a list of
-> implementations that I think would unblock most of the drivers use
-> cases:
->=20
-> - wakeup a thread
-> - complete a completion object
-> - schedule a WorkItem
-> - schedule a kthread_worker (once we get a proper rust abstraction for
-> =C2=A0 that)
->=20
-> It doesn't mean we can't have optimized FenceCb implementations that do
-> a lot more in the callback() path instead of deferring to a
-> workqueue/thread, but at least those would have to be implemented in
-> dma_fence.rs, and the dma_fence.rs maintainers can then carefully audit
-> the code as part of the review process, which we know is not really the
-> case when changes touch drivers code only.
-
-Pragmatically speaking, if the common cases are trivial, then the
-drivers will get them right, because those critical primitives are
-already atomic-safe.
-
-And a non-common case will have to be implemented in the driver
-anyways, so we'd have to allow for that.
-
-
-
-P.
+Best,
+Gary
