@@ -1,147 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE2F35E1D7;
-	Fri,  5 Jun 2026 12:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2375F3B14C0;
+	Fri,  5 Jun 2026 13:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780664242; cv=none; b=P2RfSXqfPmDpJoeeeu3mO1nV99IGOCydmVPoIYKEx4K07GUCpe4BKy4ZFvPLy8eG+NKvScDU6wBm4bljD2Z1OnQeYSzooYLaBd1qCsKhn9Q6cSdPC8lkbh5nTl+3cuoq6dIOGvT2fHFy3N1NNEj7SuAuXmQXXUSAPZqkCbfvRjU=
+	t=1780664604; cv=none; b=fZyD3HJ8im5dOAaZd6631Ql9xhBJE7rUlTSt9qOD6FBNQbo6i95xrTEggSX1in3B0OsGevS4GonUt/6fUebzH6i+T2Dfx8tq6uThpaZ/DLR4pVzBna44snPBitpfboYiSrOqZtNZUsQKWNw1fLmHuvxS6qCziCAtkvpYd41gVic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780664242; c=relaxed/simple;
-	bh=Q9EZ3qPCUi3s0DK9Uw7pw9S0owGDYWwEJ6XikxfUdLA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FNxas8rwY3Fmxv11kELHlddqtdIV2viF6UU78sAUWRfLEiMveVhPTLX0MlCq0utSxk8DvFKNKugy5z7SG/YHqxVpj8+dg1JbmNR2zItwUUpcJnNvdkFh1mjNI5f1ZEy83WI4Goxhd5Vn++214f92mqFaoalULpOJGx7OYX/hEOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hwwm9+4T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780664604; c=relaxed/simple;
+	bh=lVjmYJAafcfNRTJdBqdjJ7O56bNKya2KV9tVeNTbUmQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rprDIVCikQ4eznl2aEmPsy9V4+nPQPbfRBtpn64CbvTUhFqaUitsm2ZNGNk/VI6ivHO6ZFuKdx2exFGFdUH/XWqNwUPxQJrejVstbzCEZecWpkbXgkrso1WU6ee9qVslR8nK7erQzqQ4V+qRUKuy6BixRGXx9QhYgL4TWbOnA7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=do7oqJ9b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hwwm9+4T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FCE1F00898;
-	Fri,  5 Jun 2026 12:57:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="do7oqJ9b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC6B1F00893;
+	Fri,  5 Jun 2026 13:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780664240;
-	bh=rOeSBJOOlukMgbMbuUcAyCtu6L8oEpk9zjN7q/XIG84=;
-	h=From:Date:Subject:To:Cc;
-	b=Hwwm9+4TNI9nqllAV0j1xhrGMOMRlf7c3ay+3C49KGl3ASL97hrhltbNE6kOhr2KY
-	 x8q+lI0OXpNQewi3zDSTyYy6ZJ0xbs2dguq/URCIMofg53WJW8JSYPTTVgRB1eDUts
-	 zZEKXKgoDeybiP2x/EucKoil/nrbuUdqLGIvt5u5hewHlss01LYhQeRxL0SFY/l0ih
-	 AZSx0sPAI1p/Sq8LSq+7iPwVQHfyyCLNKKqhAaUQ5/M97Rbtbx+AwfJ7fcMQqpErEI
-	 Zf3PC6maqOOU2nQpV99UW5LL/gCcksf+psBDLVa5Cr/xqPPIWrX0XDkVfHhfLc/z/i
-	 yf0zlU+d4Jyiw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 05 Jun 2026 14:57:07 +0200
-Subject: [PATCH v2] rust: sync: export lock::do_unlocked
+	s=k20260515; t=1780664602;
+	bh=UBr/1zPj5DyYo4cmDts4CxkrR2KDbHvoTJb1mnqCGK0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=do7oqJ9bmL0jyi/BSyTxK5f3Ms8VqnLZiLtgoUDXZcApW0jVGoF/OltF9RBghk2KA
+	 GDN/gubiYlPyzA+JRh+ivITZYUUIZwgsNJAEsVHybE+8DLZQlt5adPVJJixlMdp/p2
+	 dXNTDv6QybUPav/jR8pl/zA0pkacdcc1KikOL1K6HwthyTMub5cQa0VmGiCeQjLnNG
+	 5d9+04I7lIbKSMyPEAnTFOqhc56TuODpP/MpuNXtlzx1Qb4IKykD3kV3zRqM1RAFLD
+	 wn16eu5fGXsiimzuCnCSscJEav7dpBFjI0Y4+5jP9bFlJIjbob1zMWigiFJUK1UEjy
+	 9gDLFK2P3/fAw==
+Date: Fri, 5 Jun 2026 14:03:16 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Miguel Ojeda <ojeda@kernel.org>, akpm@linux-foundation.org,
+	axboe@kernel.dk, bvanassche@acm.org, dlemoal@kernel.org, hch@lst.de,
+	hdanton@sina.com, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tom.leiming@gmail.com, wqu@suse.com,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] block: assign caller-specific lockdep class to
+ disk->open_mutex
+Message-ID: <14686d75-c481-42ba-bbcf-94a4423aeb42@sirena.org.uk>
+References: <226152a3-1e4c-4eec-9a17-1d40426a7b18@I-love.SAKURA.ne.jp>
+ <20260604210704.41751-1-ojeda@kernel.org>
+ <89f0f308-2ee7-4c68-b811-8132e5d88530@I-love.SAKURA.ne.jp>
+ <CANiq72nGo=F5D7b7Hx8A1jfAJw_72Np+UpRWBRQoPLAE+RAPpA@mail.gmail.com>
+ <4ffdbe16-61ab-47e8-b696-e2fcf9a26385@sirena.org.uk>
+ <CANiq72nKDpzd9BTPfQ-NhWgcTgWdE=spED_n-idv1Jnekdo=Fw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260605-export-do-unlocked-v2-1-e23001390231@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAKLHImoC/32NQQ6CMBBFr0Jm7Zh2EIyuvIdhge0ADaQlUyQY0
- rtbOYDL95L//g6RxXGEe7GD8OqiCz4DnQowQ+t7RmczAymqFekKeZuDLGgDvv0UzMgWlWrr1tz
- Ka2kvkIezcOe2I/psMg8uLkE+x8eqf/ZvbtWosauMJVLli1T3GFk8T+cgPTQppS+yNJ9+tQAAA
- A==
-X-Change-ID: 20260215-export-do-unlocked-00a6ac9373d4
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Boqun Feng <boqun@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2861; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=Q9EZ3qPCUi3s0DK9Uw7pw9S0owGDYWwEJ6XikxfUdLA=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIselzUpoit1vKiHohMWyl6GcyffS+jtkdlk44
- 01/lAer7SyJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiLHpQAKCRD6UCkIqsW9
- 0AbCD/9ATSe3gA5LDO951K/MHc3ovW/Q6Kvfv3ay+oQ7GM9dSj1+hmzmkzCJlwnY1QJCXTi6RbM
- lvPqaRYu+p7SZ41jIUcbO0biDpDx6bTkjZwQAd3/YgcGu4h8KIhnJqjIO2xIZ0ssNkgNwRgopzr
- J0J45ALI1WOpYaLx4lrdxWRjW85875Ruth7JJkODRGqVtBANZT7enma+1d/hiJycp+yu/Kn4TSn
- /Swyx4+3AyN3HaKaOl15xIyhE0D4fmSmWrF5I4g0+JmyK4qXXmu77ptRgAjg06RyT9o5widVfaX
- sG7aNb3PsoCwSOal9aObzEwqhFByNLvnKEhDgQnkOIr+sSJahoTlrBVIGKF1Nj6Z0LmHQ7gzc9I
- TLdDGUb4M6k/I74tyj+XGjioyL/aA6KiVooY1WllLUtfLwcuAmmIbDUeTUJLmfPlDhKnUOEZssy
- zl0FXmLkhF5vXTRVqeB6ilg5ZdvwWsKJytEYjOEn8gOQSev/sKCvRg7+51+8FWq5HcWBdFXT6fl
- QPRCT5uyu3CsuAT77F9A1zLLEB8V3L4EHrU2yObfXsJiLuS8eO9RF3utBpi7oyBIsC/JHMjsi7u
- qluEnB3itExhXfj4Jgdkv55luXNt0s07dFWYXpL/nMBr8OM8nan1mxWGhzg7v8r8f0qfwBYDPWO
- 1MFvCFh4IIZG0lw==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-
-Export lock::do_unlocked publicly. Add documentation for the method.
-
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v2:
-- Drop spurious space before `guard.do_unlocked` in the doc example (Benno).
-- Un-hide the imports in the doc example so the rendered docs no longer have a spurious blank line after them (Alice).
-- Link to v1: https://msgid.link/20260215-export-do-unlocked-v1-1-f5cd2203b20f@kernel.org
-
-To: Peter Zijlstra <peterz@infradead.org>
-To: Ingo Molnar <mingo@redhat.com>
-To: Will Deacon <will@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Waiman Long <longman@redhat.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Trevor Gross <tmgross@umich.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org
----
- rust/kernel/sync/lock.rs | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 10b6b5e9b024..9c549e469785 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -238,7 +238,31 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
-         self.lock
-     }
- 
--    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-+    /// Temporarily unlock the lock to execute the given closure.
-+    ///
-+    /// This method unlocks the lock before calling the closure `cb`, and re-locks it afterwards.
-+    /// This is useful when you need to perform operations that are not allowed while holding
-+    /// certain locks, such as allocating memory (which is prohibited while holding a spinlock).
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::{new_spinlock, prelude::*};
-+    /// use pin_init::stack_pin_init;
-+    ///
-+    /// stack_pin_init!{
-+    ///     let lock = new_spinlock!(())
-+    /// }
-+    ///
-+    /// let mut guard = lock.lock();
-+    /// let mut buffer = KVec::new();
-+    /// // Temporarily unlock to allocate memory, which should not be done while holding a spinlock.
-+    /// guard.do_unlocked(|| {
-+    ///     buffer.push(5u32, GFP_KERNEL)
-+    /// })?;
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
- 
-
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260215-export-do-unlocked-00a6ac9373d4
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="q7w0dM811B4jc7oX"
+Content-Disposition: inline
+In-Reply-To: <CANiq72nKDpzd9BTPfQ-NhWgcTgWdE=spED_n-idv1Jnekdo=Fw@mail.gmail.com>
+X-Cookie: Error in operator: add beer
 
 
+--q7w0dM811B4jc7oX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jun 05, 2026 at 02:40:24PM +0200, Miguel Ojeda wrote:
+
+Copying in Kees and Gustavo due to a rust/randstruct interaction in
+-next.
+
+> I Cc'd you since I was wondering if your new `LLVM=3D1` build should
+> have caught it (I thought the GCC one wouldn't, since my understanding
+> is that we lost that last week due to the KASAN+RUST patch).
+
+Yes, you did loose it so I swapped to LLVM=3D1 in order to try to keep
+coverage.  I didn't specifically verify that it worked though, I only
+noticed that change as I'd been enabling rust for KUnit and that flags
+any missing Kconfig symbol.
+
+> And, yeah, it is fragile... It is quite a complicated set of Kconfig
+> relationships, so years ago I also ended up in the same situation and
+> early on decided to add an explicit grep for `CONFIG_RUST=3Dy` and
+> certain other bits that I wanted to ensure are in place after the
+> config phase.
+
+It looks like the breakage is due to 'depends on !RANDSTRUCT' because
+clang supports randstruct and allmodconfig defaults that to
+RANDSTRUCT_FULL.  The fact that rust depends on !RANDSTRUCT but
+randstruct doesn't care about rust means that randstruct wins.  I've got
+to say rust coverage seems more important than randstruct coverage for
+-next, others might have different opinions though!
+
+> For you and those building with Rust enabled it would be great to
+> notice when it gets disabled by mistake, but I am not sure if most
+> maintainers (i.e. those without a Rust toolchain but using
+> `all*config` routinely) will appreciate it (or rather, tolerate it...
+> :).
+
+I guess there's a difference between !RUST_IS_AVAILABLE and
+RUST_IS_AVAILABLE && !RUST which is interesting here. =20
+
+I know other people have been caught out by silently not having rust
+coverage in their CI.
+
+--q7w0dM811B4jc7oX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoiyRMACgkQJNaLcl1U
+h9D8CQf/WpDfeh2TJR2gE7fYiC4pNWeGRiipEcxppGbs7b/pH+fV5WZDGC7mPzas
+4crdh7SZHGnGyqQuNZGX6j+eHvk6gPojdz+D59VPoet0ko3jEKPFDR2E2+PRIMqq
+JOBjEjTCB7fHMPAJ9JoXvCFREwGlymZMBiyoYwMtNSdOir3oV4ambOO4ym4A4j7k
+nV5maj2FFyAb38Ln0gvqqAupyeHDhltc3++zDo1MZTCxzGbTcrVocQvoVJR72VTa
++ZTC0LGct0Du36MGZi015kGlML6WME+/pq9FtrXhoxi6tJcIASOl+WzeToUfbM7y
+FZUeHv0iKx/Ih7muojld2FDepUG8+w==
+=zoZf
+-----END PGP SIGNATURE-----
+
+--q7w0dM811B4jc7oX--
