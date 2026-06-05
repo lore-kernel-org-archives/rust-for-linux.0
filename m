@@ -1,145 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8344A40F8C2;
-	Fri,  5 Jun 2026 06:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E14340B6F9;
+	Fri,  5 Jun 2026 07:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780641939; cv=none; b=gXU3+8KDRGNeuhkeVCWQhuWEZj/pExWZQszy+pGcmktg84OHhCPriRNTZgr5kG1isGTnlXmHijhbquk9GCMwMctoJpcaL6z8JhXwjVW2iDdihtGq2uCUlv642qaNaH4q6WQ4pOD5PmdpQH3SWfERndWnBnXGxojS70O7TYTiJjo=
+	t=1780642866; cv=none; b=rIQCxRsQzWjwRfwjCdfl9XhqtMYc7BZdAcJUPdCKBnOo2uS2t7GGF0oOvW9cDPhJve4QIagI3L/Bp7OXgynDzz/6SPJQ+vUsueBE60T08r0z51HWjkx+xt9pYCelz88A8vyNRmOf0eWAVVX7zT9Dup03xt6HlczNugUcWpzA2ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780641939; c=relaxed/simple;
-	bh=ht0m413PEIPsvFhOM1o886ZRoLV1gC4nu/drcCsImqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dsYBqBheu/zeu+o60xu70H31WF1wAEg7l26cgY6Y1iwYFThoeW4pNHRVZOfMOByx5fmm2pQRm0YWfsT6L+e4P9+9ZC/oFdDaOe7n0ZxbA5WuqX16VNYJz/fDx3MgUYEPHJZ+D/9p/Bz3MJW5vtSQucEE5HjOsnFbLmEXpMj5Tk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dK0zPN9m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780642866; c=relaxed/simple;
+	bh=Eq2/FqQK+/3GGvQH1jgzjXllW8SOFixYwWstqkvt+Ks=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jKGFQSZvEUhKAZOwKee8jNH8XyBeo6WXTHRex8hiMuVsYWUm5gcDs7VJbwQdQ664cQeJS0Fl/ljUXnqDy0DjwOqrjnTRDjzNnEnNkCihYxcvfcTymNaUniOmLqEyGRTFLYabZMybP/pI9DDMjjnwg0PWkQc0MjAGNFeUWOb+2OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=GGaoMEEQ; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=h4ZJD7pW; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dK0zPN9m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C491F00898;
-	Fri,  5 Jun 2026 06:45:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780641934;
-	bh=6AYsKMuIdTg8BFUNDzRsVuHiBD4UL7B2xke/AuEe1z0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dK0zPN9mxzfuHkm4hcM3IAZJDt3m85l7bTjDAVJ/aM9X33cVUMHMAIeUPL4LsDIhp
-	 k54xhzFHe2Q4W+KWJrjVRaG8F9zCXkYdJzie2Mh3vjAqFKr8u3F7D83v9wCnJ4oI9Z
-	 h6/0N6w+4jquG06meZl9RL8Ss7yCedqPfDMJcji3RR9XOF7gpPigVmQdf0Sk7AA9IN
-	 imdEVehSS8rQ+IBsAKH+QIFxrvmOpJukHhGwYYb+FZLJ64JEBQWmHTdTI/7jMPgQIk
-	 JpEUrUXdPdRlMb8IGt0nJqhb0gJu+ic0bU1SCxeZ/v03ODFmZRaPNHatt4/BPS7cB2
-	 p+W7TNNiZ8Z4g==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6A0B5F40069;
-	Fri,  5 Jun 2026 02:45:31 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 05 Jun 2026 02:45:31 -0400
-X-ME-Sender: <xms:i3AiasdNhS_KlyqsumDnLI22Nji4lRgCBXcSawziHZ2KFg80dz_r4Q>
-    <xme:i3AiakojmIrUnzTRKqDHplwGdcPbZxtOaTFP6K98Vj0YJ24e4Yl6aUGtq9D9Nzmvn
-    dcMr-cG4jeurCmamtatymxfRXu8-9msdHJpL6xRRXmXxk5SNBRDTw>
-X-ME-Received: <xmr:i3AiamWVTVH3_IAljezw_p-QLVIZaFjSRdoyaHFhFkYxqxmTVE3j8bXmTY4>
-X-ME-Proxy-Cause: dmFkZTGlcVUQF+Wer3Y5GEVfzATn/deLTQvoklESl61u/rNXp18gne78kg+hRKjPmN+C95
-    +Y+rXOz/wSPynF1ZkSdI0xvnTDk3JzZaYZOwjqPAn5fQPB5z2a4kXq2VN3blLahI0YorC6
-    APEiTrZ02zYFXqZnZgAW76LEBfDjgETDW2APCndMnzlyLbZN8mPXZJRcW+BiZy/tT4XTI9
-    gorxxmEj99FWScGx0DkJim8WCCu/p+rSQEv5zsCk6uLz2qEy3UOrvzI1IH/P0syZmm1PjK
-    z1nsfspXhNfHZz9/FZPcRBYZZsf499hB7WRksmESyQj/3vQnvnMuEcLF8frbXbZ+jh3fYq
-    F9er7eAogPZABVgXL6W7BcIowtwwkYDNbmnE3IOgIUgj9NagEvWW20FlTpx1yL6strEj/Z
-    WJHbcOzvwEWsv8PV/fayj3VJ6keQBQfgmLk7QDi0JfAjld7LRft2EECvZe2ZYFD4zzOej9
-    Nxy8uaR71MAQJHZKEy6xZSdbys0s6JQU1Ij1OY/VhQ/GBrcZf9PmTcsSLHJ/eSfwDSfzbA
-    n0lCqO7VCrMBNcd8az+EodvJTqUDsl7rw3cGMPTDoCvxMwUOIZAoAT8nRABxxbcxFTW052
-    QhmDCDgRZCK7bhjDhoaTeT5bgah4eMxVV4uUgn9Jy+K/G1Mb+K3JD6lRF7gg
-X-ME-Proxy: <xmx:i3Aiak0_yaXo814KKvtjbSJLXyCjEkcH-jAjAUdSEKbjbfUGfoZPMw>
-    <xmx:i3AiaoCA73VJ_JuQ_aX7YVQOERTqb8jzs1LYgHeSIzJEnG1wIJS8wg>
-    <xmx:i3AiaqMkJXwDRZCfL3DNEZs0PCOCBrBagytlIIa-7N2B1_8f-BTGgQ>
-    <xmx:i3Aiahi-nEmDbpxiyOSDZbNGp3rTP8ngb1TRRq9n44dGNgvY0THPRQ>
-    <xmx:i3AiapA8TnDWJqClrosWAiqwxgG4UVI_aUwompfqr0Bbc312m9quGLuN>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Jun 2026 02:45:30 -0400 (EDT)
-Date: Thu, 4 Jun 2026 23:45:29 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: bot+bpf-ci@kernel.org
-Cc: peterz@infradead.org, catalin.marinas@arm.com, will@kernel.org,
-	jonas@southpole.se, stefan.kristiansson@saunalahti.fi,	shorne@gmail.com,
- hca@linux.ibm.com, gor@linux.ibm.com,	agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com,	svens@linux.ibm.com, tglx@kernel.org,
- mingo@redhat.com,	bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org,	hpa@zytor.com, arnd@arndb.de, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-	vschneid@redhat.com, kprateek.nayak@amd.com, longman@redhat.com,
-	akpm@linux-foundation.org, andrii@kernel.org, eddyz87@gmail.com,
-	ast@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev,
-	memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev,
-	jolsa@kernel.org, shuah@kernel.org, ojeda@kernel.org,	gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org,	a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu,	dakr@kernel.org,
- ruanjinjie@huawei.com, lyude@redhat.com,	thuth@redhat.com,
- sohil.mehta@intel.com,	pawan.kumar.gupta@linux.intel.com,
- seanjc@google.com,	nikunj@amd.com, xin@zytor.com, joelagnelf@nvidia.com,
-	andriy.shevchenko@linux.intel.com, rdunlap@infradead.org,
-	ynorov@nvidia.com, bigeasy@linutronix.de,	linux-kernel@vger.kernel.org,
- linux-openrisc@vger.kernel.org,	linux-s390@vger.kernel.org,
- linux-arch@vger.kernel.org,	bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org,	rust-for-linux@vger.kernel.org,
- boqun.feng@gmail.com,	martin.lau@kernel.org, clm@meta.com,
- ihor.solodrai@linux.dev
-Subject: Re: [PATCH v3 03/13] preempt: Introduce __preempt_count_{sub,
- add}_return()
-Message-ID: <aiJwieZoxCBEZ2ji@tardis-2.local>
-References: <20260605054128.5925-4-boqun@kernel.org>
- <d3e91d227b0e1b777a85806e54b03d46581e4460f893e5b45baa9168f5319fbf@mail.kernel.org>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="GGaoMEEQ";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="h4ZJD7pW"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gWslx34H3z9v3Q;
+	Fri,  5 Jun 2026 09:01:01 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1780642861;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OpNBtlw9n2UCJW3D0hBUmygvSZ9hYaw7j0NNMC94AK4=;
+	b=GGaoMEEQI3Xwgau5/KSpvAySoomQK91gLt491999CJTJ6qWIxbsGyRWlpefLN9VdkpzswO
+	JGAcgDUAzmc7UgPYlp4OKVWP4tJKbFhq5wsvnqMJ6OUU3pK0gOALDBwQFrNC6szaYKMIw2
+	6krzfuD35LZwtB+Qdtm5yuWQztwa6NpqaGvu4htpakZpnkGwh6M8ntZSXp2/9r5OfXQY03
+	FMMKyGXZi6x7fr28Nb5AfT9rYeJI8seAq2HSlQQiIHMZGwOwKE+5JUwwHWvy9ykS7kaP15
+	VRUvl/pXHMPpDyO6kFED+yZTmSRkanpNWF+zRJP6Pf3KK0NkF4iOUSH4HqUnFg==
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1780642859;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OpNBtlw9n2UCJW3D0hBUmygvSZ9hYaw7j0NNMC94AK4=;
+	b=h4ZJD7pWeiBrHP178TiWZuxtX1fdKlYrIYx1VcSOMs+fzU84EYqGbu5FcO9uzIEgn91tcS
+	Jn5LZ2ope1hnWhoapqqxQyz/frTp8TYH0gFRD5hSu0z9fFZxcx5oZRFn2FphEN4y86L+Oz
+	fr6v2oGNgsu3TatoZA7Cm9zbjwpwIShCh6Qt9G9a1z4VOqsku+joy1N4jRACQlNvi9g7hf
+	Hm4rcBOOLU7Wgoqddlr3fTTyQbz00s+Hv6+R8c3LLyTgDkYXMMcQAKoqm3OQPJkzyAYRd+
+	3wgGQiQ1dBDrTr66YS16GVW+Q4Hs7zg1EsKk/MLGVaCo6DkfRtOL9lXNx+T13Q==
+Date: Fri, 05 Jun 2026 08:59:59 +0200
+Subject: [PATCH v2 1/2] rust: clk: Add ExclusiveClk wrapper for
+ clk_rate_exclusive_get
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d3e91d227b0e1b777a85806e54b03d46581e4460f893e5b45baa9168f5319fbf@mail.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260605-rate-exclusive-get-th1520-v2-1-695640bf7249@mailbox.org>
+References: <20260605-rate-exclusive-get-th1520-v2-0-695640bf7249@mailbox.org>
+In-Reply-To: <20260605-rate-exclusive-get-th1520-v2-0-695640bf7249@mailbox.org>
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, 
+ Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-pwm@vger.kernel.org, Maurice Hieronymus <mhi@mailbox.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780642818; l=3552;
+ i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
+ bh=Eq2/FqQK+/3GGvQH1jgzjXllW8SOFixYwWstqkvt+Ks=;
+ b=EnPdbF7ZbiSZsoiQzpqVV642CEH+9nF8nNVKGzxReY0KS0hzY5ErgB16n/ogDC4ZIgDHlnxRs
+ 3pOhFWYN/TeBhXC4PYk2qu9FhThAApgBG4qR+jGpgZpndrfq7TktHcu
+X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
+ pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
+X-MBO-RS-META: btqxt863ejstfjtaxooubyxo1r5tg14c
+X-MBO-RS-ID: 46288b54c5fc677ce46
 
-On Fri, Jun 05, 2026 at 06:30:14AM +0000, bot+bpf-ci@kernel.org wrote:
-> >     preempt: Introduce __preempt_count_{sub, add}_return()
-> >
-> >     In order to use preempt_count() to tracking the interrupt disable
-> >     nesting level, __preempt_count_{add,sub}_return() are introduced, as
-> >     their name suggest, these primitives return the new value of the
-> >     preempt_count() after changing it. The following example shows the usage
-> >     of it in local_interrupt_disable():
-> >
-> >             // increase the HARDIRQ_DISABLE bit
-> >             new_count = __preempt_count_add_return(HARDIRQ_DISABLE_OFFSET);
-> >
-> >             // if it's the first-time increment, then disable the interrupt
-> >             // at hardware level.
-> >             if (new_count & HARDIRQ_DISABLE_MASK == HARDIRQ_DISABLE_OFFSET) {
->                                                     ^^
-> 
-> The operator precedence in this example appears incorrect. In C, the equality
-> operator == has higher precedence than the bitwise AND operator &, so this
-> evaluates as:
-> 
->     new_count & (HARDIRQ_DISABLE_MASK == HARDIRQ_DISABLE_OFFSET)
-> 
-> Since the mask does not equal the offset, the equality evaluates to 0, making
-> the entire condition always false.
-> 
-> Should this be written with explicit parentheses to prevent readers from
-> copying flawed logic into downstream implementations?
-> 
+Add Rust bindings for clk_rate_exclusive_get() and
+clk_rate_exclusive_put().
 
-Will fix this but this code is in commit log rather than real code.
+Clk::rate_exclusive_get() consumes the Clk and returns an ExclusiveClk;
+the matching put is issued from its Drop impl. ExclusiveClk derefs to
+Clk so existing rate / prepare / enable APIs remain available on the
+locked handle.
 
-Regards,
-Boqun
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+---
+ rust/kernel/clk.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
->     if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET) {
-> 
-> This was raised by sashiko-bot@kernel.org in v3 review:
-> https://lore.kernel.org/all/20260605055933.EDF3D1F00898@smtp.kernel.org/
-> 
-> 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/26998319662
+diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+index 7abbd0767d8c..f834f4833f18 100644
+--- a/rust/kernel/clk.rs
++++ b/rust/kernel/clk.rs
+@@ -249,6 +249,22 @@ pub fn set_rate(&self, rate: Hertz) -> Result {
+             // [`clk_set_rate`].
+             to_result(unsafe { bindings::clk_set_rate(self.as_raw(), rate.as_hz()) })
+         }
++
++        /// Acquire exclusive control over the clock's rate.
++        ///
++        /// Consumes the [`Clk`] and returns an [`ExclusiveClk`] that releases the exclusivity
++        /// when dropped. While held, no other consumer may change the clock's rate.
++        ///
++        /// Equivalent to the kernel's [`clk_rate_exclusive_get`] API. Must not be called from
++        /// atomic context.
++        ///
++        /// [`clk_rate_exclusive_get`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_rate_exclusive_get
++        pub fn rate_exclusive_get(self) -> Result<ExclusiveClk> {
++            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
++            // [`clk_rate_exclusive_get`].
++            to_result(unsafe { bindings::clk_rate_exclusive_get(self.as_raw()) })?;
++            Ok(ExclusiveClk(self))
++        }
+     }
+ 
+     impl Drop for Clk {
+@@ -329,6 +345,50 @@ fn deref(&self) -> &Clk {
+             &self.0
+         }
+     }
++
++    /// A [`Clk`] with exclusive control over its rate.
++    ///
++    /// While an [`ExclusiveClk`] exists, no other consumer of the same clock may change its rate.
++    /// Obtained by calling [`Clk::rate_exclusive_get`]; the exclusivity is released automatically
++    /// when the value is dropped, after which the inner [`Clk`] is dropped as usual.
++    ///
++    /// # Invariants
++    ///
++    /// An [`ExclusiveClk`] instance owns a [`Clk`] for which `clk_rate_exclusive_get` has been
++    /// called and the matching `clk_rate_exclusive_put` has not yet been called.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::clk::{Clk, ExclusiveClk};
++    /// use kernel::device::Device;
++    /// use kernel::error::Result;
++    ///
++    /// fn lock_rate(dev: &Device) -> Result<ExclusiveClk> {
++    ///     let clk = Clk::get(dev, None)?;
++    ///     clk.prepare_enable()?;
++    ///     clk.rate_exclusive_get()
++    /// }
++    /// ```
++    pub struct ExclusiveClk(Clk);
++
++    // Make [`ExclusiveClk`] behave like [`Clk`].
++    impl Deref for ExclusiveClk {
++        type Target = Clk;
++
++        fn deref(&self) -> &Clk {
++            &self.0
++        }
++    }
++
++    impl Drop for ExclusiveClk {
++        fn drop(&mut self) {
++            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
++            // [`clk_rate_exclusive_put`] and balances the [`clk_rate_exclusive_get`] call from
++            // [`Clk::rate_exclusive_get`].
++            unsafe { bindings::clk_rate_exclusive_put(self.as_raw()) };
++        }
++    }
+ }
+ 
+ #[cfg(CONFIG_COMMON_CLK)]
+
+-- 
+2.51.2
 
