@@ -1,83 +1,86 @@
-Received: from mx6.ucr.edu (mx6.ucr.edu [138.23.62.71])
+Received: from mx-lax3-1.ucr.edu (mx-lax3-1.ucr.edu [169.235.156.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF03F3D45E5
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 02:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=138.23.62.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89103B777B
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 02:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=169.235.156.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780626235; cv=none; b=HleaWAUzRwAy8Xg0GdHE2/8fP7WMMuh6CSEhsislcivVzjzSupD4GHl/hvnRlVvyS86eOq7P27U+YHdF9R0B7CPILDvLftsYkn1kKzGHHdB8UT4TLkRk6iCtyYcizNLa926pjZ0v0Ag/sXeEk29nzK2B4KQ9Ku0D+ErCy6hNmf4=
+	t=1780626240; cv=none; b=DCR8oygzQxBmdErTVO/+WzAyRlbcFJyqNA7H8FRGrpjuq5sudQDDPxsHb+4plPZ+aoO4Hl2K6IJfNvn4DkkYKUfI+DCJnflnd75xojQj37F5/4wSuOmLT3i05FLTdQ1yabAb4HnyGpvDOuqv9zDQPnhdjYiQW49Z1TEH8QSJgeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780626235; c=relaxed/simple;
+	s=arc-20240116; t=1780626240; c=relaxed/simple;
 	bh=EkKOMsCa/udStFr77ymLaCp3d2/tcq9uAdUElqm6kSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KbpBjXPgPZFUMfCoQ/pVm4B7uWs3rYsPs8kBxCl9Xc//1Tjx8bARZaH7L03Wa8kn6Dm0/sLGTe9XjBthtetLx1lPfXEePWezh0AR4OrToAClrr12yTKNkdVzv6364Zu27cpmUQoz/BnOVF8v6UpDWOWNJI0/ou+vpOGkumQ9WAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=email.ucr.edu; spf=pass smtp.mailfrom=ucr.edu; dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=e549cncv; dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=el+gLcGE; arc=none smtp.client-ip=138.23.62.71
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DTrQQy1yBl0Hbu2ngxAg4ik4E/et/rvStGe4nnw9RxtZL5Ba/dJeA6wcifTwytgp/NR27ldaBUzAiu4jgXOtKlzBrru/ssXGhR7fnqjYGJBfbBziBLWGUJRIHFlDxhUT06wJPMdj4SE0RDH+L/aREx7PqeeMdycbDYtuyNPSHao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=email.ucr.edu; spf=pass smtp.mailfrom=ucr.edu; dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=nuJ2uEdb; dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b=dfGR4Jlu; arc=none smtp.client-ip=169.235.156.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=email.ucr.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucr.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="e549cncv";
-	dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="el+gLcGE"
+	dkim=pass (2048-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="nuJ2uEdb";
+	dkim=pass (1024-bit key) header.d=ucr.edu header.i=@ucr.edu header.b="dfGR4Jlu"
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=ucr.edu; i=@ucr.edu; q=dns/txt; s=selector3;
-  t=1780626228; x=1812162228;
+  t=1780626231; x=1812162231;
   h=dkim-signature:x-google-dkim-signature:
    x-forwarded-encrypted:x-gm-message-state:x-gm-gg:sender:
    from:x-google-original-from:to:cc:subject:date:message-id:
-   x-mailer:mime-version:content-transfer-encoding:
-   x-cse-connectionguid:x-cse-msgguid;
+   x-mailer:in-reply-to:references:mime-version:
+   content-transfer-encoding:x-cse-connectionguid:
+   x-cse-msgguid;
   bh=EkKOMsCa/udStFr77ymLaCp3d2/tcq9uAdUElqm6kSk=;
-  b=e549cncvSFueiw19vfXXwbAjBE7kYm2Y3rzQZw1PMWy6oUhYWFbDwNqS
-   zlnRh5HypHM01YkAkDx8AAg9mlGKLS06jAKGqES6MK2/v+PlOWll9mld7
-   3/vBDNIK470r4ChNsOliLUeFDCRZvbd2GpgPy8I+2TzP95qdnQ1IVRe33
-   eUgtNeliL6VeCLFCbs9fliWXEUq5nUcfIvLjGjsGSe2jDhkyoPu2G9raj
-   l29jURlmeRU6QyImeHYhXH1kKVoWrZRGXl4q6FP/zhv6YQhEJo7tfV+7u
-   6rijK5V5MLs9tJ446MGD/5NczIUMLM4qMuGJ3c4GqdgFGxXacrWpZV0ad
+  b=nuJ2uEdbbrlVZ4gUbjIoyW8zLViqqWpxD/IanNvD5fEb//CogT98x6fm
+   hamNsROCVymS7X8YQZF636qq9LSJtVOVQPupiMUQFDEcDpwRGYugMH8mX
+   9EPhkgbzdBAI37PYtbHCBcqauIwfKnpivkqT+GfpJggP7AkDx6m+UKmed
+   aGJGkn3QZSrfJH5BNMgzqSoNUyDfeRAwIR1ADat1YW3Uu7oU5jHWPOQiK
+   QFLucamejrc6gS/UIOpylxrm30FpVYPbIawMwh24MHDps5KD98MraOeeh
+   uUoxoxAfU6vxNV8q5gfnfb1mGvvjsP+h5Q06R6B1Ia3iaNNIO5kLDjNeH
    g==;
-X-CSE-ConnectionGUID: milz31yCTDaCnmfDlGpCVQ==
-X-CSE-MsgGUID: ZMxmEOgOQ8m9NWHP4Sq92A==
-Received: from mail-dy1-f200.google.com ([74.125.82.200])
-  by smtpmx6.ucr.edu with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 04 Jun 2026 19:22:40 -0700
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-304e4636205so1407949eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 19:22:40 -0700 (PDT)
+X-CSE-ConnectionGUID: 4xiha0ILQwKAY1ZhE2XyDw==
+X-CSE-MsgGUID: TSAX1nMFShGeJCbr5AbMyA==
+Received: from mail-dy1-f199.google.com ([74.125.82.199])
+  by smtp-lax3-1.ucr.edu with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 04 Jun 2026 19:22:44 -0700
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-304ed777a96so723082eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jun 2026 19:22:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ucr.edu; s=rmail; t=1780626160; x=1781230960; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=XTB3tYSqeZZwGv+tDxtvZ26MxKjcck4RpWVDxAqUswk=;
-        b=el+gLcGEhUdwflgsHhEd4fwk1qgIyWlBWDJVdGGO00m1WY0MY+pCjSdOx0UAo7s4M5
-         NKOJZRzXDfz1CzC+J+ct3WdSlXGAyd2A+nmXoZ5knvdEgp2zPJqVLm8p4zLGMHQya7iB
-         IJmiKZocxRhs/XHaDxgXVxN5zBElZl/npr+vw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780626160; x=1781230960;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=ucr.edu; s=rmail; t=1780626163; x=1781230963; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
          :message-id:reply-to;
         bh=XTB3tYSqeZZwGv+tDxtvZ26MxKjcck4RpWVDxAqUswk=;
-        b=CzlOb4q+0oPU3olsczJ+10F/n1IFtLonk9S+3LqSmCcQh62dEl89Q3ZF9nf3VUj2T4
-         ISq8vMgPbwqIO7Vv/3EhEZ66UZc60BPcq6tBNnCY4YmVDLKSkCmsNItUKwI0WztI1cVN
-         VRnzLAsKx8W6fobPhH8FBVfwpui2iysbNTf9DtVh8Lzv6J8cx8026fmn8CBgGBgRo/Ct
-         z8M2hPdFDppJVLgv23XbraKy+JOkdfzaRMLc6yiwNqYj125cSQHmLn8V7jS/hgqwaqal
-         Hh5rTKc9phaDd3pE+XW/iz84O1f5Rmv0M9+QIry04q6hlb3RR6m5fGzHcR3kiRy9Bo2m
-         k+gQ==
-X-Forwarded-Encrypted: i=1; AFNElJ86bYy3T4oQqyri9PRYhT0w1qsNqbS49BczdApnidrGwdZGTPXxfSTWCBP9K16LoJVs6W9xngyykLhF1DX0iQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhAM7MwoFRLGHoUz1Z1kvonFB7ZpBAnLxrYt3mkeGs5nybY+Yu
-	XKpI1rxLmRHRZjBJzvl9RLrLgk0Z91u94nZj8LqpvNpNxmxFkVh9dygMqzIJ8xL2r8YBfEwkRd1
-	wIHsL1ef3Nn5qv20aA5FdWX1diNCSKmalEu9ef4OqY1a9i7eGWBYOb/CZ5ti2P5By9T0dzA==
-X-Gm-Gg: Acq92OHbpv0FAR320OX/Si2TuPw1Mlkf6K3Lsyctj2PCVY/9SiWwNghmyDesyxpOGcr
-	OR5wst9MEEnE4LSpcWlcygQ8nT69kGWmV6dihCaEc89MLpb+COJR93fN8sKs0SvUmhmWmpoNZeA
-	SWucr8lHPMzS0YEjBFNr2QuFHjQggJDhkfM9Z9eCDeEkFeCE4JP+JQW5Lt2OI02LooUjVW6fEzh
-	una8iC0abAwP0YjEg+ojTK484WiRLCZhfkWkPJnVIxjtoRaeA6A80TtvAaKhaq1t/WJue1OUWrW
-	MlYlk3Piq3kQYegQVgGXzLKaQBKC7dlDN62/9HAf0FXcOc+DdcaGPryqbFcY1n8P7t5yT0B6OYq
-	nym634VhssDo1k1Dd3+biqA7Pw4hLXu8P7NQHz4wJgLXP1Xh74PA97DpeKU3kjjKWSv7W0OZ5ew
-	3VwKyvJTPD/JBKXjtucjRzDPiodZwwAgBdc3+fqxDhStenO+N5PHRYEaE8nDAVUrKV5gtKJFnfZ
-	3keBXO6fHw3hI9RVJhzsoAfSmg=
-X-Received: by 2002:a05:7301:678e:b0:2de:c5ca:c1f3 with SMTP id 5a478bee46e88-3077aeef992mr729178eec.4.1780626160228;
-        Thu, 04 Jun 2026 19:22:40 -0700 (PDT)
-X-Received: by 2002:a05:7301:678e:b0:2de:c5ca:c1f3 with SMTP id 5a478bee46e88-3077aeef992mr729163eec.4.1780626159744;
-        Thu, 04 Jun 2026 19:22:39 -0700 (PDT)
+        b=dfGR4JluEIFHLBHcNgGVTu/OhVpUn7wATvNwb7PUOWiZMtnSHHnHq0AQtKacxHiISQ
+         XTAV5H0iiWJ5P2HKggETnJkFpnpfAB3mwVOFBb22JjtKZxR1gzjyuwtYIZIn7GgPjcTp
+         q1JZnZTX9qK3k/I44hl0IgGJ5Ol68espEqIKs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780626163; x=1781230963;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XTB3tYSqeZZwGv+tDxtvZ26MxKjcck4RpWVDxAqUswk=;
+        b=CJO9Rc02V6x2ibUHGwrmVfkG+DZCcSzawb2ljKTcJ07Jzx8X6ryq9PizJQH0cSo5c7
+         21ZbvHYyhlvC8QrwLQjpa9X4Vg9k6bNuzVmSuzVoT9mqJqZP28rTZ0EgUZpCFyEC5lXx
+         +grB8vB4Y1O2yK8LkyhpUT6HUoLuiPmEuQglR4cwhZy4IgvQe/EizGIV/pMDKTEZdGnn
+         BYF2AYXd5k4w+OK2QTYVlmg9N7VGKVL7kpFiCZogT2G2O94c2/37DEmcfovsPet+ja5N
+         OLU6OGPFs2vr14qH4ZKfLMgUAePJx2hzeP3Mm1nEufGqVoGTtADLPBfQqr+3Q2dWYwAE
+         qscg==
+X-Forwarded-Encrypted: i=1; AFNElJ8PSDfLTqUxblGRApuMl5uX+XN8/i7SUM2wMki7WaHI9bHD/hiu5xstG1P/pVyzC+PgunoY1CP+WOrQ6xlBVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgvpBBZ+UxIP8kMDNLCCj/XB/3mwyEm98mGBN5eEqENJ0y0rl9
+	SCw0RBmXtUE8ocbOLuolDE0aT7Hqo2XNYyxHUpuoYfTn+ozNQcL2oeM2RBMfCPU2WeDXlcqmbkM
+	XdhYBhmcIlEbYdjJJMQkO69uAC22tCW39lblfWE0UqwBzj3TSweaLypansCVWkhJVAUhCUA==
+X-Gm-Gg: Acq92OEvR8lzjIVp8UQQXBdZqjtme+fXuQVKV95UNQkRgfF7O1FFxg9qCe/sFOME8Ma
+	ILiZWqH7FU04kSRSG1ClQX/KSCV7PrO8muapYFJL60XsZp0rt547Kz2aEBggljYH4ht0s/b9ItS
+	BH/nIOZVdSdyvzX6fcpC7IrynWoFODZZ5lgtA/SzRR23RKG6h+mtZAAwHIUWvSRzaBtVdk4CqYr
+	iy/PwCdRcQEP6UZiOnNL1TJd0J9ajFWmtzFC45WMqYJGEqzw4V4wIihQA5Abe7B+c4tsiAh/NKi
+	bvOTn+pP2BrApUxsnlY1TyrClsqwqhBIZPyhxCFsHUXIEKf7YG5hHh71YbifXRIKZHLmghDXGaW
+	ChX7PMvHOjaKZ+Ke2CL0nVMgaiQY0Z7kKHFgRMsgW7faWXxB3Tl63C8CfJZKrJnCqYhQP9Sxeew
+	FrmIZPJu9IRITg6ZXLgiikg9G7M8+LNdOBjPOF3JhH2gUhxZtJU+LK0kkqZjbSsvL8TTp5yUiEQ
+	xWMfl5N4oLRkWy3/ez204TeK64=
+X-Received: by 2002:a05:7300:7308:b0:302:b44b:b64a with SMTP id 5a478bee46e88-3077fd759bbmr262018eec.1.1780626163040;
+        Thu, 04 Jun 2026 19:22:43 -0700 (PDT)
+X-Received: by 2002:a05:7300:7308:b0:302:b44b:b64a with SMTP id 5a478bee46e88-3077fd759bbmr262001eec.1.1780626162538;
+        Thu, 04 Jun 2026 19:22:42 -0700 (PDT)
 Received: from ucr-secure-48-10-13-243-195.wnet.ucr.edu.net (ftd-border-nat-ucr-secure-v348.ucr.edu. [169.235.95.220])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074db5610esm6431175eec.4.2026.06.04.19.22.38
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074db5610esm6431175eec.4.2026.06.04.19.22.41
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 04 Jun 2026 19:22:39 -0700 (PDT)
+        Thu, 04 Jun 2026 19:22:41 -0700 (PDT)
 Sender: Yuan Tan <ytan089@ucr.edu>
 From: Yuan Tan <yuan.tan1@email.ucr.edu>
 X-Google-Original-From: Yuan Tan <kentertan12138@outlook.com>
@@ -91,9 +94,11 @@ Cc: peterz@infradead.org,
 	dzueck@uci.edu,
 	Yuan Tan <ytan089@ucr.edu>
 Subject: [PATCH 0/1] rust: sync: fix Guard::lock_ref lock lifetime leak
-Date: Thu,  4 Jun 2026 19:22:30 -0700
-Message-ID: <20260605022232.31405-1-kentertan12138@outlook.com>
+Date: Thu,  4 Jun 2026 19:22:31 -0700
+Message-ID: <20260605022232.31405-2-kentertan12138@outlook.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260605022232.31405-1-kentertan12138@outlook.com>
+References: <20260605022232.31405-1-kentertan12138@outlook.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
