@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCCC3CF693;
-	Fri,  5 Jun 2026 15:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2B540DFDC;
+	Fri,  5 Jun 2026 15:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780672534; cv=none; b=C+IvUt2Miv9v0fHVxU2rUDrD+8UYSqdrMvd2D4PjPBezjEIRnydwabsVCu/Ugldspag5JJrGwkNaluzkzNCqy/C0Pqe004ImYo6A7FoSeJbCspH16nOXcYqvwxiLW7iUe13VP5YsnhrQKBA2doq4e4faf3ia2vezkZxfQlmGNYQ=
+	t=1780672537; cv=none; b=cqWaHi9hnnWMYAgZp5bSwPxOlfe4Wzv7BTC0eN95gVS+g8SVpSmOFfcUdzdHsN8BWK6DRlq8PSIKQxUlisBAbdVn5Nffya+Ubvn4iGkWaseE0XqXrcQ1fQ1eHd841W3TtF9txVHYjg8KyVl5GVnZ0Eee+DkPBEOLevNR3Eq854E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780672534; c=relaxed/simple;
-	bh=efjpmt0tSacNlIg1827ocaHBfa/q3Wj5XMD4Vq67/s0=;
+	s=arc-20240116; t=1780672537; c=relaxed/simple;
+	bh=0yZ8MNnL/6JmXr7ul0Kx6gDu12++TzJW8JGsu0EE8KQ=;
 	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=GosLv+/ZyJnqS5dEz3i6KIMyzdNlQ3dBw/zZYR9SKDDRoKzGRL7pg48cP/6arl7ZkGyk1EVuT0ZGckwz1r+EupZ15OJ6vboXEe+RLdMHuW7m4yeNX2QV/4m7xgdD1gVAbF/VyYA+cc7lqCHnpr00w9HMljoF+C/jr1ZKhVlaTr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/LST3rA; arc=none smtp.client-ip=100.103.45.18
+	 References:Date:Message-Id; b=ooQd8L79eGB/5UzBxQNs3hAKgaqmJKw0Yhs+vsNKN7DV+RUPN04V5PEsORwIZTuva6DHRATa/cufXvTZ1opdl8H72dLSby5F8IvKRmrz4ufBg59zOKOdWYuFoWD95ToNWsv4yFjocUvE3d5GOL3EiXSHZQtrj1drKlb4wMe7z4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAkHgqrh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/LST3rA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3272D1F00893;
-	Fri,  5 Jun 2026 15:15:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAkHgqrh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8321F00898;
+	Fri,  5 Jun 2026 15:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780672533;
-	bh=9hu0o0fyp20w7TIliLFLcpValiU7Db1HDsBy9VVEPVw=;
+	s=k20260515; t=1780672536;
+	bh=puhtAJbtTv10DbpMBzxxn4d8tkyueRSzpyS9PIcm/Do=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=A/LST3rA7KUIeIGHI7O0N0Vc2oaxbsiSW365Mn4PUJcOqTIzqXelzxVwOmTi0o8Gj
-	 GMXiLWcRyvvZ+szm4vFJzhJRccjP4ueMyMrE3DyIUwGtIWDhWW+L+xvwb3O9iZ7bdt
-	 o0fCIrMXxKTH03I5eJ5UC9eXb5i984raH2/lEsMOamSQFC/A8oITq/p3m45JTs36cs
-	 mEbMlxpPO3oJlycNgfurvnWHLyS3ROcECYHb6Rlfst24KRau2cZwwiDBnYvjcKfqXj
-	 GvQeI5BAlHxHb9u1AvgSusnjvKJoUL3j45/7j7rKdjzVZLyTitg1EcEyaZh4pIy3zT
-	 OKSNuuaTO5GWg==
+	b=bAkHgqrhvi63nXp1C7VGteim+y4gX3V6BNOlfGB3MuR/OoTCl95ozYQpmoWVp0o8Z
+	 oOOQ5UBAofckRS+WVkyQ01hS2CI9zCdJJ+Ag9+mQkd3X/VqYTcGSc+8l9g361rmSgD
+	 S1G5QdXJMzt0GOg1cWWMsTIXMb7Arvfk2DHl4+QBw3SVHcHlKkyXE2uRTbdw/yxSed
+	 1glD6bSHdeIlxKCglJydri+dhGRfBiW1XgVuN8ZN2VNEbQifjwUzat8yu74WuUAlGW
+	 aUChmd43TXFT/rlxMXAKa2HnVXULJjewyCHp1aK0+qpADq0zq7snXGHOM7MdZY+3Yb
+	 rzvz0PfohMfCw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4 02/11] rust: xarray: add debug format for
- `StoreError`
+Subject: Re: [PATCH v4 03/11] rust: xarray: add `XArrayState`
 From: Tamir Duberstein <tamird@kernel.org>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -51,41 +50,55 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
  Hao Li <hao.li@linux.dev>, Daniel Gomez <da.gomez@kernel.org>, 
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, Daniel Gomez <da.gomez@samsung.com>
-In-Reply-To: <20260604-xarray-entry-send-v4-2-965f6028790e@kernel.org>
+ linux-mm@kvack.org
+In-Reply-To: <20260604-xarray-entry-send-v4-3-965f6028790e@kernel.org>
 References: <20260604-xarray-entry-send-v4-0-965f6028790e@kernel.org>
- <20260604-xarray-entry-send-v4-2-965f6028790e@kernel.org>
+ <20260604-xarray-entry-send-v4-3-965f6028790e@kernel.org>
 Date: Fri, 05 Jun 2026 11:15:13 -0400
-Message-Id: <178067251341.96312.1551479010624701516.b4-review@b4>
+Message-Id: <178067251345.96312.12627213045914595867.b4-review@b4>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=713; i=tamird@kernel.org;
- h=from:subject:message-id; bh=efjpmt0tSacNlIg1827ocaHBfa/q3Wj5XMD4Vq67/s0=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFlKL9hfvjU39bJQLn/Rb/T6YMm+rbucQmx00qZoGeyXP
- 3rg4Ma7HRNZGMS4GCzFFFkSRQ/tTU+9vUc2891xmDmsTCBDpEUaGICAhYEvNzGv1EjHSM9U21DP
- 0EjHQMeYgYtTAK56FSPD9j2Ga3TW/xQ1+2PscvVO44GYA6HFfTy+v4sDPwj/2i7Vw/CHZ7HNDzU
- 2z61/DOVW6b6p9Vj8c6bi7o1bpi+8dvDdrdzprAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1380; i=tamird@kernel.org;
+ h=from:subject:message-id; bh=0yZ8MNnL/6JmXr7ul0Kx6gDu12++TzJW8JGsu0EE8KQ=;
+ b=owGbwMvMwCV2wYdPVfy60HTG02pJDFlKL4S28b9iVNtz/WnUqw+ODBmZC0qWyBXc7e/3/tM6p
+ 3OVrl5xx0QWBjEuBksxRZZE0UN701Nv75HNfHccZg4rE8gQaZEGBiBgYeDLTcwrNdIx0jPVNtQz
+ NNIx0DFm4OIUgKk2kmb4X+QtM+1rgP7T2VOduqTWLS/YuDz2Y/m+C9dsTFbpdFb1z2RkOKP9o5z
+ pe4NU8PPff/U4P99pEHyq3X3zuUnTthl775vrswIA
 X-Developer-Key: i=tamird@kernel.org; a=openpgp;
  fpr=5A6714204D41EC844C50273C19D6FF6092365380
 
-On Thu, 04 Jun 2026 21:58:08 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Thu, 04 Jun 2026 21:58:09 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+> Add `XArrayState` as internal state for XArray iteration and entry
+> operations. This struct wraps the C `xa_state` structure and holds a
+> reference to a `Guard` to ensure exclusive access to the XArray for the
+> lifetime of the state object.
+> 
+> The `XAS_RESTART` constant is also exposed through the bindings helper
+> to properly initialize the `xa_node` field.
+> 
+> The struct and its constructor are marked with `#[expect(dead_code)]` as
+> there are no users yet. We will remove this annotation in a later patch.
+
+The review of this patch in v3 requested the next patch be absorbed into
+it.
+
+>
+>
 > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index b80fb7a262d0..d54942aeb201 100644
+> index d54942aeb201..6d0d4905004a 100644
 > --- a/rust/kernel/xarray.rs
 > +++ b/rust/kernel/xarray.rs
-> @@ -193,6 +193,14 @@ pub struct StoreError<T> {
->      pub value: T,
->  }
->  
-> +impl<T> kernel::fmt::Debug for StoreError<T> {
-> +    fn fmt(&self, f: &mut kernel::fmt::Formatter<'_>) -> kernel::fmt::Result {
-> +        f.debug_struct("StoreError")
-> +            .field("error", &self.error)
-> +            .finish()
+> @@ -299,6 +302,67 @@ pub fn store(
+> [ ... skip 17 lines ... ]
+> +impl<'a, T: ForeignOwnable> GuardRef for &mut Guard<'a, T> {
+> +    type Value = T;
+> +    fn xa_ptr(&self) -> *mut bindings::xarray {
+> +        self.xa.xa.get()
 > +    }
 > +}
-> +
 
-Maybe an import of `kernel::fmt` at the top would be cleaner.
+I'm having a hard time understanding the need for this trait, and it is
+not described in the commit message at all. How is this different than
+using Deref? `&mut T` has a blanket `Deref<Target = T>` impl.
 
 -- 
 Tamir Duberstein <tamird@kernel.org>
