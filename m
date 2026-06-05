@@ -1,101 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A012E4DA549;
-	Fri,  5 Jun 2026 12:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171D930D409
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 12:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780661393; cv=none; b=eOJqAsbEqctqRlWK+pWgRiDd39/ZmQpZwccCUcKQS/t5eD0FCOcpu282wSf0mZORw9Rn1XK00RZNHdbHGgTMyT4B0D1nAJrRGzM0k3ut3vWopWEUkdwoKexF4yefwkMEWyQv+rXeMoM5dtTlRq0jk+9JBu6wKcsehdhzPxCN3b4=
+	t=1780662768; cv=none; b=t5d24bCLAkz141+uuG+Ua37TN9kKO/bkR012nF0dNBMNNfkBCs+Iwpkqp4a1tvIyk2/ch56HIx6P1QxT+Z03nMUTVgrtD4Q0EZHBNwIH2YaMcCfFUXCCiIDHsTq87RY93tiVoumM8Sko7Mnf3kXjq5mG88uqNBm0upg33dbalw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780661393; c=relaxed/simple;
-	bh=QpuAV3zk19RGb+7z8r/sk0Ps9TJj1VkUh0NT/s2ysa8=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=PghbAS5Lhju/M95xg0arVSepRu1xuvwyPUYXFX2ZgqeiEW6gxbPzJxRkNo/Kqv1CVEy3NyOhFg8RvAxsnuO3nVDCWc0li9l/PdsocWybR+vgehPhhQJJeX5hAaGakqL6ue4YLLz76/WxsnmXLXy37t1kkv5I17vfJOXgkwY6dB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o23dQSOs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780662768; c=relaxed/simple;
+	bh=D1oLHAua4jUTmU5gp6WlzH8JfS2s3/uXtpY80bD92r8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rW6wLdB0DHn6VrHU6HETgqPL5ZlHp/V0eIiKoH04q7QNzjMdw/uctAvB1u3tXN1bFJ7Xm6gd4bKygJF48JoMUzjwCBnN5miQ7AJJhpTaAk6NSUXdYuShmdF2AWeIYvvRObaCOrWehBRaUz518uU1oeT1owfquSWI4y5nVzkgtpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXm+5Yty; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o23dQSOs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195421F00899;
-	Fri,  5 Jun 2026 12:09:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXm+5Yty"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A061F008A0
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 12:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780661392;
-	bh=WGoD3PN0zrGuFdoyMJ88S3Ug/i+eTLaAiwO2/pnnQuo=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=o23dQSOsbyfV3QwslRhyLM1tia7gLwoLJRIVWq30hXx+yjosEptAiW7PFxm26UOCg
-	 qTes9WWkwi9XHXKiDcSrkMgYgYpfypt11qpcWLkTRjUIrYw61GWMKAmBJcop8r4npg
-	 bErbyzq0v++yh8KBbtEjzB+R0UWzpdo3FzMLpS05hgDlqd27GcMrbNiHTcq3XmB7fe
-	 lP+SCw+/WnLM6QgwZna3lvFkMHgKuk7siqepZZ4GbQSPhnACIOSW831cfg54UHzoBc
-	 XsnRuRm4V5QIT0W2ByTCyH3Wb82L0C8uELwo/xwiVsiQawYASC+YEsua1nLzUtmlLc
-	 ijN84Sx7jbxUg==
+	s=k20260515; t=1780662768;
+	bh=D1oLHAua4jUTmU5gp6WlzH8JfS2s3/uXtpY80bD92r8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SXm+5YtyQFklf+zSamfp65tiQAGsEPBS3vr45Or/3jRioWWTB+PV1nsHlzIl4wgDt
+	 VIlalCkydzLw849D3+Q4KTD07aFF89E5CQr4pWX2x3CevJRUIaLHz2zD1nz9Ybe1xQ
+	 fJPznToagvASn3pZ6dy1QZg4+1OULnC/lVcTMMeuibgs518SFC5NVDqX3FivX9CkI/
+	 +hGLg9YWwWubcWnYKOy2rs32mIm9sW+Tdvp+ThfrMC624LtMS3R3/K03V5MYb1eDtS
+	 WqjGpxjSrPLPbsO7nIPg2h7kgfaVvfk+EkJOW/HVqeiqmM9IVWNEm+l2Ve7Q8YI0oF
+	 1KsQwOCURoUkQ==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aa6cdebc33so1760042e87.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jun 2026 05:32:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8NNKP8rcDcYukqiLdsnyU3LwSjwZmwAYurs5pqW3A6PKN7QaUEYZ+GAzDxeg1F6Ka+YwHtPhjpADW0qzobXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPvaCy3zWRcwNCHgj9V8JFjLBVoc8YLe/sqqn0+EwEzfJDCUA7
+	rw6mawpe0+3V3BgX+8RvypGVMBwp2rHno9/FhYN687NvWKqwxx7bdO4Rp0+ijrlXJt+Ux/b345l
+	OwA9ZmKeXLm54QcQPtMi30sWAbgd2Nho=
+X-Received: by 2002:a05:6512:800b:10b0:5aa:6a5c:be3c with SMTP id
+ 2adb3069b0e04-5aa87bb96a3mr786459e87.14.1780662766576; Fri, 05 Jun 2026
+ 05:32:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] rust: xarray: fix false positive lockdep warnings
+References: <20260605-xarray-lockdep-fix-v2-1-25a5509abee3@kernel.org> <178066138611.3594.6559938011018564470.b4-review@b4>
+In-Reply-To: <178066138611.3594.6559938011018564470.b4-review@b4>
 From: Tamir Duberstein <tamird@kernel.org>
+Date: Fri, 5 Jun 2026 08:32:10 -0400
+X-Gmail-Original-Message-ID: <CAJ-ks9nTHUwO9CZBqzP5aRxMRapOwXQ69LX2-9L2w8VdQDMwgg@mail.gmail.com>
+X-Gm-Features: AVVi8CcX64NRog_7wMR1bB7W-QcNLkxJ-oG2VZohCw6zgIy-1GUDnpTN2mxAOAg
+Message-ID: <CAJ-ks9nTHUwO9CZBqzP5aRxMRapOwXQ69LX2-9L2w8VdQDMwgg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: xarray: fix false positive lockdep warnings
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Tamir Duberstein <tamird@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260605-xarray-lockdep-fix-v2-1-25a5509abee3@kernel.org>
-References: <20260605-xarray-lockdep-fix-v2-1-25a5509abee3@kernel.org>
-Date: Fri, 05 Jun 2026 08:09:46 -0400
-Message-Id: <178066138616.3594.4372925551839686675.b4-review@b4>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1652; i=tamird@kernel.org;
- h=from:subject:message-id; bh=QpuAV3zk19RGb+7z8r/sk0Ps9TJj1VkUh0NT/s2ysa8=;
- b=owGbwMvMwCV2wYdPVfy60HTG02pJDFlKe3oT4zX3ayyTexofdeVYeGDJ5I4Lp1p1pn81zK86r
- CXSfdirYyILgxgXg6WYIkui6KG96am398hmvjsOM4eVCWSItEgDAxCwMPDlJuaVGukY6ZlqG+oZ
- GukY6BgzcHEKwFTves/I0CnP7xe5i7+5/4L1kmCF90+47fM+tUzcFDjX7Vr8ZA3juYwMB6e579X
- nq5v++HdQjA+zOmvsy1t162a72/Fd50p5s9mQCQA=
-X-Developer-Key: i=tamird@kernel.org; a=openpgp;
- fpr=5A6714204D41EC844C50273C19D6FF6092365380
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 05 Jun 2026 11:14:29 +0200, Andreas Hindborg <a.hindborg@kernel.org> wrote:
-> diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
-> index 08979b304341..dce8b36492e6 100644
-> --- a/rust/helpers/xarray.c
-> +++ b/rust/helpers/xarray.c
-> @@ -7,9 +7,21 @@ __rust_helper int rust_helper_xa_err(void *entry)
->  	return xa_err(entry);
->  }
->  
-> -__rust_helper void rust_helper_xa_init_flags(struct xarray *xa, gfp_t flags)
-> +/*
-> + * `xa_init_flags()` expands `spin_lock_init()`, which generates one static
-> + * `lock_class_key` per compilation unit. Going through a single Rust binding
-> + * helper would make every Rust `XArray` instance share that one key, causing
-> + * false-positive lock-ordering reports from lockdep. Re-register the
-> + * spinlock's lockdep class with a key supplied by the caller so each Rust
-> + * instantiation site can have its own.
-> + */
-
-This is an implementation comment rather than a useful comment for the
-caller.
-
+On Fri, Jun 5, 2026 at 8:09=E2=80=AFAM Tamir Duberstein <tamird@kernel.org>=
+ wrote:
 >
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index 46e5f43223fe..78c9fbe8f0aa 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -27,9 +42,10 @@
->  ///
->  /// ```rust
->  /// use kernel::alloc::KBox;
-> -/// use kernel::xarray::{AllocKind, XArray};
-> +/// use kernel::xarray::{new_xarray, AllocKind, XArray};
->  ///
-> -/// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc1), GFP_KERNEL)?;
-> +/// let xa: Pin<KBox<XArray<KBox<u32>>>> =
-> +///     KBox::pin_init(new_xarray!(AllocKind::Alloc1), GFP_KERNEL)?;
+> On Fri, 05 Jun 2026 11:14:29 +0200, Andreas Hindborg <a.hindborg@kernel.o=
+rg> wrote:
+> > rust: xarray: fix false positive lockdep warnings
+>
+> Reviewed-by: Tamir Duberstein <tamird@kernel.org>
+>
+> --
+> Tamir Duberstein <tamird@kernel.org>
 
-Was it necessary to add this type ascription on the LHS?
+Apologies for the duplicate emails, it looks like a bug in b4[0].
 
--- 
-Tamir Duberstein <tamird@kernel.org>
+Link: https://lore.kernel.org/all/20260605-review-double-review-email-v1-1-=
+d52c2ca14024@kernel.org/
+[0]
