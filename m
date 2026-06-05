@@ -1,84 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18D03FFAA4;
-	Fri,  5 Jun 2026 05:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535243BB669;
+	Fri,  5 Jun 2026 05:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780637020; cv=none; b=CGWqtvtKu/EaB98hk9CSBkra8vqo+xW+2UFebh0aswsEP7R6TKuPWX83sBEh3uUUWcpH0+QZ+dItPrkJe2cHe1PkgxuwUcCH9weCxIn+EicXTzW4rYc5An118+lmkZJqKXzPMrs1gq8QyFeaCHa07b9LCQTdzLMoVu5JudGEQ08=
+	t=1780638097; cv=none; b=ilrjtDK3vheQ7Mvgf2CWybmSE/yf12eSQhYeoOsjNYZWPy9CxvRHAakOE/4n7YX2wgOPXlcGlMNc/TE9BbeOr+3Lil8qQdWsXw0aTZD3i4S4NvFLjW1zDsX/7GiZIlHJEMn35S/0OXuVVUqZAgIyIobUhUlQ9Qcr7zXmsMuc70Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780637020; c=relaxed/simple;
-	bh=O5U9/mE/ws0WC9A9baVp+Em13U8kMcULebFgHo4una4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYLfeJvEc1xOeOlFoocJDtjsxw7DSt9kt3HOQcm9DWxvQNRvdVhjW+yrx+Kh4P3cEKxvjyNehna6v0TSCMVQbkVdhImhcKs4cWMDEZD6cVzand5S9sxARKxUuZemvBUKPiB1SLdB2K2fovNARKTsnQphTAn9i5vQDqTz8eV/xi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QyKpLKpe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780638097; c=relaxed/simple;
+	bh=Ls8jAn9uxSIuXUvxGwKTd0oyRzMQf9ICZGzwFlvvGEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TyOIEOZPmXtcF0EJ+u+4iPMXXXdP/8qnWs/UlRdqzwycX0zj/X1xEX5QPf4B7h+EM0Fk2iI4hYTvdv+qhwxUiSqvfOu/Hj6Z/iAN4ymBlrFf1x5AeEuxOLs1t1kPlcui0x+T3ZFr6afVfASOEBxkmGnqurv62OKQLdYj+hmiLYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MObfmUyE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QyKpLKpe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E698D1F00898;
-	Fri,  5 Jun 2026 05:23:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MObfmUyE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DC91F00898;
+	Fri,  5 Jun 2026 05:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780637019;
-	bh=0eq71ClCc2y2QnZZklcpAKj/F5X2bJEmtSbXujLM+2c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QyKpLKpeJ//6k1pz9IfJOnxeJzxjzIlCrukITz+c/fV6eKR7eceUu3mmqFVvNe1LK
-	 AHSgTClweEEA3FDPw5mRixsup5ZEe++KY450wyWaozQLW2uyr0ayQtHxWatG5toefb
-	 gWyhyIJBY2Yoy+5X8IqeZXIz/ycbwZZqJKC2l2B7+30rgL3xewZIt9f4KFyz+/5FKZ
-	 Z7kg6L2dfoO+WklCHRl32ecrLxOGJG/DvOJzwEMlK8Fkr4SRLtVW7xyL1K8eBAegQe
-	 2ZB5Tp8iiq7CaleHcrPESQ43MqHx19ugIMpACHkGya+dcwYQvrmzzPMjQFyec9r7dL
-	 DSMW7G/tV998Q==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 45D07F4008B;
-	Fri,  5 Jun 2026 01:23:38 -0400 (EDT)
+	s=k20260515; t=1780638096;
+	bh=SPlBajyEY6daFB22p/LrTuA35kcRxPh5dhkRnYY+Ggo=;
+	h=From:To:Cc:Subject:Date;
+	b=MObfmUyEGI4gsHNOfRmcE5B8Djlg4lkrTjak7Rs1Zj6fqLyBs1fZayWXdKO/94FLh
+	 eooAeTUtNPcqchnhpY0yfIckQaBlZ76Msx9ff3F8LASsQQFduhFp9guhMYEbWgp3vq
+	 8YDEsuX7JPq9023+cb8AIqyA0BUJedImk9x3elmDrNMDx/eVYtSMm2QE4reZ3OFwx5
+	 EQ8zscZIjBFf/bxt/Cii844N/Sfx7iPyrFrACWrhoOqmuVnN21tbPBx0YtuiNouuGp
+	 nkaDjdWBtRWSca0QUcsrdxv7X78mAXHTXJsNoBREfILvFrrsM/Y1x8ouOjgYr9WMLe
+	 Jfhb220uBXmFA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0DF60F40075;
+	Fri,  5 Jun 2026 01:41:33 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 05 Jun 2026 01:23:38 -0400
-X-ME-Sender: <xms:Wl0iavpNgT9tuL09mFD17NjaPEo161j9O0lRTW9SNjSHxpng94JSDA>
-    <xme:Wl0iatmOS4B03gGoqsVuL0gz0uYFEFuEQwvhLq84Tosv36eXCor1Rla9JNgVA8lqe
-    -z8VrF6ZuG_afSch7ojzNQnueoZrKotH1sUIf0qTtV6XxzvsDENng>
-X-ME-Received: <xmr:Wl0iagx_hWQpvT59iAOSFo8QHuBEiOreCDi8Rt-jeC0Px5VS1XDgVoyy1a8>
-X-ME-Proxy-Cause: dmFkZTGVFc55oynbaSnStRiW6SrUZLe7lsFvszDeVCl7MvIXzrJlTiksVD7ngpaPNtnBA0
-    xzpe0KAcgjxOnzHwp6rZ9Ql7S0lC44ptRJ0hsl9aktWp207P//NWvfBaH6pyJtCaRIDIg1
-    1zZ1CdVquqOEtD75Kj985uzC9ToB2LMOrhRjDA6MOXxbEX/kmztAQYeGB9EXpSS/4TsRe/
-    6Qf2l2+vPx+b+fqTQ9BeHNLfkuvUD1sPfcbNHNhL+jGtKJIC6o5BUIo4+ewgiSabQMG/02
-    r+GRrWdB/QHVTqnWjec/xWbuSPNl4GSruprwTDU0SGp0gFAVp9fQrfcQkLrzvZFpXXrDnB
-    EQZnD4lBIGT0YBWvBs/Vu+Gnm1NnNyA+jBGHof727VuVuJIYWmIM3HcRnsYmxwtRm9ElrV
-    fofYqK7TiATjCQHWu3gfDSLYKI9G1EhgBxoXFmh8Vi3XSuWLszIZHLsyoNLxmavArTLFtf
-    6+Rru3IJ1L1mZ6SMh8+ys4Kzhej8YHaLi9I1gGiq5BSi46OS2XRo3Vbs3J+NSvr7uANBBy
-    1efnS2XFIyXCRAh6q8qh5JLN8W5OejGvsRisq1Yy5wo5MAcdlzM1LVeSUVrSBCN8318fCI
-    6w3s1oynxQ1TW3LSunDBcDJDUugEEALZEbAwa26qQ+AcNUEzcMECo6kUK/uA
-X-ME-Proxy: <xmx:Wl0iaq3psVlKdEL7yKPXkS7SRObvezl-TxTti1WQ8S62ifua8tXb8w>
-    <xmx:Wl0iakBKEY9-ZCbsYYjQblSentlQheBv6hqm6yjW3oHoOwRYHJXw4Q>
-    <xmx:Wl0ian9vARiLie1Mb4LSe9h96q5eUCaXUEt_YREIDb0OgAMERfWrEg>
-    <xmx:Wl0iai_LkpL7gwnRGthRwvqXNskPAbR9HOmB6JxHvrHjoJQlV8i2-g>
-    <xmx:Wl0ian2xv3bNuFSsJ010Cv6yXUyNAsvtHulrXgNO2bymbt6vKoT9fQsZ>
+  by phl-compute-05.internal (MEProxy); Fri, 05 Jun 2026 01:41:33 -0400
+X-ME-Sender: <xms:jGEian6pbR-I090HCRq40lABCksHe_AMB-tMU-ksxzL_HbSyBS0yKA>
+    <xme:jGEiajvRRAC1Tj8t6DkGoYYfBIkyUIAYBaNwdNIhkk_6rNBN86RfumUO-7N67Bvz6
+    4KtuohlS_Q1UaG-wIO55zGGP5VZdbRsWDNnAG1bXmVMUqV261VZPQ>
+X-ME-Received: <xmr:jGEiavoLx40h6nXgPtksAw3ktngeKFB3savDUCnwY_dYiQs3Wjs0MHTX_Dg>
+X-ME-Proxy-Cause: dmFkZTFc+6I5dnayd2BYaWnu3DfmchaRspDny6hXOeQ0WXB+cUQ8+NyHSxw59pEB4HYxYa
+    hQ/jpd2pfuJ3tb8YfwNEy34LuyXTLFRcJbt/R3UZar0R7U6maQKv8Ka6NzqAWGME+IqBdu
+    RQdq5hY1TEX4Mkzh6yYHh+p5reirdqtNwaqftTDkO7sP45Jaff/WH/0OIgW/vJp50latAm
+    /rZjqCPZR5E6s9fBO3Fb5bdDNNFP7jhf5AaUB5cFypzcKqHlteCps9x6FxSEcbNaEgP8SO
+    zQY036UKu1kACwxOSXMerD2djNH46JMVmwsHENjblrU+CF4vthjwdTe26BiLxe3GIJfiJG
+    RjxR1yUIIVwSsXPKsrNdSCXGu6UprlEJkGbJ3B1VFu+tZg4rlXYG22BD0s8OrcXSQwm7NC
+    l4CbhELYEZuVNoKuLdDMRZr6C/IjJWC97a4XxBGAxUFbF8LpyT/BC/HsxqwBEQ/HRLMbAh
+    Dpp4/sZ1kF0bb4aiYj3m13E2PmMVn7cftH8o+dAQNxJdTp5fTb/EjC26ZGRBOA1Q80npOd
+    2Qex/+DWN7SgpELtlSBBcSbTL2nubPHJymTzywzvBJolNNEtkVlORFC1UwerW2cGz53Isx
+    M8QJPTjEsaTF7VLs8NWwd5o0BuRMm78L/vG+Z9c0aa9bn7IoCunGEhauKf3Q
+X-ME-Proxy: <xmx:jGEial4QER2MrYz0DiDUDJTLXRdmyy4sQPfOBLh--p6E8484ePvGKw>
+    <xmx:jWEiaicqOB0Nq2Wcw2UqV6QRBAqL9B5h-SAx_FgKDB17GXzl0BbAig>
+    <xmx:jWEiagiecPLdtMT_wqMPQ4ardSZLgJsKqWeVe8FvkR0wca5Uc-lpcw>
+    <xmx:jWEiat4IwbpUPMVrOQ3uAqNXnEsZDnDVf39rqZQ8w6mLTWaT0MoCLg>
+    <xmx:jWEiat_QeSJwiP0onTcKhoVUIw9TYHNqOUQ0_iNoX_CSNMiaNUGoFc-i>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Jun 2026 01:23:37 -0400 (EDT)
+ 5 Jun 2026 01:41:32 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
+Cc: Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon <will@kernel.org>,
+	Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,	Arnd Bergmann <arnd@arndb.de>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,	Boqun Feng <boqun@kernel.org>,
 	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,	Miguel Ojeda <ojeda@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Fabricio Parra <a@alice0.com>
-Subject: [PATCH 3/3] rust: sync: completion: Mark inline complete_all and wait_for_completion
-Date: Thu,  4 Jun 2026 22:23:31 -0700
-Message-ID: <20260605052331.1628-4-boqun@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>,	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Lyude Paul <lyude@redhat.com>,	Thomas Huth <thuth@redhat.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikunj A Dadhania <nikunj@amd.com>,	"Xin Li (Intel)" <xin@zytor.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Randy Dunlap <rdunlap@infradead.org>,	Yury Norov <ynorov@nvidia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-kernel@vger.kernel.org,	linux-openrisc@vger.kernel.org,
+	linux-s390@vger.kernel.org,	linux-arch@vger.kernel.org,
+	bpf@vger.kernel.org,	linux-kselftest@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 00/13] Refcounted interrupt disable and SpinLockIrq for rust (Part 1)
+Date: Thu,  4 Jun 2026 22:41:15 -0700
+Message-ID: <20260605054128.5925-1-boqun@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260605052331.1628-1-boqun@kernel.org>
-References: <20260605052331.1628-1-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -87,52 +112,75 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Fabricio Parra <a@alice0.com>
+Hi Peter,
 
-When building the kernel using the llvm-22.1.0-rust-1.93.1-x86_64
-toolchain provided by kernel.org with ARCH=x86_64, the following symbols
-are generated:
+Please take a look at the v3 of refcounted interrupt disabling.
 
-$ nm vmlinux | grep ' _R'.*Completion | rustfilt
-ffffffff81827930 T <kernel::sync::completion::Completion>::complete_all
-ffffffff81827950 T <kernel::sync::completion::Completion>::wait_for_completion
+Changes since v2:
 
-These Rust methods are thin wrappers around the C completion helpers
-`complete_all` and `wait_for_completion`. Mark them `#[inline]` to keep
-the wrapper pattern consistent with other small Rust helper methods.
+- Fix NMI_OFFSET underflow issue reported by sashiko. See patch #1
+  (__nmi_ext()) and #10 (__preempt_count_nmi_exit()) for details: we
+  have to replace preempt_count_sub() with preempt_count_set().
+- Add WARN_ON_ONCE(in_nmi()) in local_interrupt_disable() per Peter.
+- Remove the use of should_resched() in local_interrupt_enable(), see
+  patch #13.
+- Remove my gmail in SoB.
 
-After applying this patch, the above command will produce no output.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1145
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Fabricio Parra <a@alice0.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260316151056.287-1-a@alice0.com
----
- rust/kernel/sync/completion.rs | 2 ++
- 1 file changed, 2 insertions(+)
+v1: https://lore.kernel.org/rust-for-linux/20260508042111.24358-1-boqun@kernel.org/
+v2: 
 
-diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion.rs
-index c50012a940a3..35ff049ff078 100644
---- a/rust/kernel/sync/completion.rs
-+++ b/rust/kernel/sync/completion.rs
-@@ -94,6 +94,7 @@ fn as_raw(&self) -> *mut bindings::completion {
-     ///
-     /// This method wakes up all tasks waiting on this completion; after this operation the
-     /// completion is permanently done, i.e. signals all current and future waiters.
-+    #[inline]
-     pub fn complete_all(&self) {
-         // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
-         unsafe { bindings::complete_all(self.as_raw()) };
-@@ -105,6 +106,7 @@ pub fn complete_all(&self) {
-     /// timeout.
-     ///
-     /// See also [`Completion::complete_all`].
-+    #[inline]
-     pub fn wait_for_completion(&self) {
-         // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
-         unsafe { bindings::wait_for_completion(self.as_raw()) };
+Boqun Feng (9):
+  preempt: Introduce HARDIRQ_DISABLE_BITS
+  preempt: Introduce __preempt_count_{sub, add}_return()
+  irq & spin_lock: Add counted interrupt disabling/enabling
+  locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+  sched: Remove the unused preempt_offset parameter of __cant_sleep()
+  sched: Avoid signed comparison of preempt_count() in __cant_migrate()
+  preempt: Introduce HAS_SEPARATE_PREEMPT_RESCHED_BITS
+  arm64: sched/preempt: Enable HAS_SEPARATE_PREEMPT_RESCHED_BITS
+  irq: Optimize reschedule check in local_interrupt_enable()
+
+Heiko Carstens (1):
+  s390/preempt: Enable HAS_SEPARATE_PREEMPT_RESCHED_BITS
+
+Joel Fernandes (1):
+  preempt: Track NMI nesting to separate per-CPU counter
+
+Lyude Paul (2):
+  openrisc: Include <linux/cpumask.h> in smp.h
+  irq: Add KUnit test for refcounted interrupt enable/disable
+
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/preempt.h              |  18 +++
+ arch/openrisc/include/asm/smp.h               |   2 +
+ arch/s390/Kconfig                             |   1 +
+ arch/s390/include/asm/lowcore.h               |  13 ++-
+ arch/s390/include/asm/preempt.h               |  49 ++++----
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/include/asm/preempt.h                |  61 +++++++---
+ arch/x86/kernel/cpu/common.c                  |   2 +-
+ include/asm-generic/preempt.h                 |  14 +++
+ include/linux/hardirq.h                       |  41 ++++++-
+ include/linux/interrupt_rc.h                  |  76 ++++++++++++
+ include/linux/kernel.h                        |   4 +-
+ include/linux/preempt.h                       |  35 ++++--
+ include/linux/spinlock.h                      |  49 +++++---
+ include/linux/spinlock_api_smp.h              |  41 +++++++
+ include/linux/spinlock_api_up.h               |  16 +++
+ include/linux/spinlock_rt.h                   |  18 +++
+ kernel/Kconfig.preempt                        |   4 +
+ kernel/irq/Makefile                           |   1 +
+ kernel/irq/refcount_interrupt_test.c          | 109 ++++++++++++++++++
+ kernel/locking/spinlock.c                     |  29 +++++
+ kernel/sched/core.c                           |  18 ++-
+ kernel/softirq.c                              |  22 +++-
+ lib/locking-selftest.c                        |   2 +-
+ .../testing/selftests/bpf/bpf_experimental.h  |   7 +-
+ 26 files changed, 554 insertions(+), 80 deletions(-)
+ create mode 100644 include/linux/interrupt_rc.h
+ create mode 100644 kernel/irq/refcount_interrupt_test.c
+
 -- 
 2.51.0
 
