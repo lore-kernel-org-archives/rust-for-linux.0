@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575DC4DA552;
-	Fri,  5 Jun 2026 12:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F2F3CFF6C;
+	Fri,  5 Jun 2026 12:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780663776; cv=none; b=JipdnUoIBZSLZnc4dOf1noDLGigXfw2NjgLBl0qtvTU6n5yXn+NErqqTJ2i+UGyXNhGxlTj/j7lBu+IM1rj385P52Hhwr9gPwFsbyoa+MjkUSqd6uwS9sM+adlJJUUxOtu2h2/dHMPMD+t+ec6oMhqw4aed3Ex1MNFownGM6BzQ=
+	t=1780663780; cv=none; b=trrrWaoOe3oJmrpSt+lRgkuuhfCy/VJpqAdnHq75X5UFHpIFUSsGvVN+PDBZ3knjqpKICknxsTv04rfq0SWYED8iinVmXqzUw/taPncDnLDMS+gMgqBMcvy0w1nQrMFSX19H1nDfCcr5To4WkAFhBqtlRQVPhqqri5bb+RJakA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780663776; c=relaxed/simple;
-	bh=p9uJWucfNKJgIkL5qVSUlbNGwi9u5AIxwCQJDK4aSMs=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ssss8syemUiVGPLB9Y2NxlzdnHpIRmSD+X7AaW3QbFKZO6W95lpvMaDQ+Q0O8suI2GBkBEq7VtSsKiBU7TbTlIpWew7ZYsPmy2zq0GrnxhQMUu4SQXZuTrUSZHkv8ojZ+zmwDa/65cZS7zaTgpdxW2kN17VjuITWWs+aQ4HaOZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LU0JWvzU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780663780; c=relaxed/simple;
+	bh=dzp6cOSqfyflttG0MeQMpzGj5B+SlllJR/JvQBXauF8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lwAzd3bBB82dRJbnlDaT/Jp6AjtlKO5poSUExB0tDc4sJ7WsgGw/UJ3TqkKiXB7du36ymPtBzYbfV0Xz6Fkc/NDVOx497BBZCLkUdaonf9HPuP3hGJlk4DHPpjanrxyLDnxYeILXn5hLfhMzaFUC3aUNb5+ttQAkywlXOmsAw3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCC93ulo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LU0JWvzU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69D61F00898;
-	Fri,  5 Jun 2026 12:49:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCC93ulo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10051F00899;
+	Fri,  5 Jun 2026 12:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780663775;
-	bh=HDtMLF8guH4ne88IjSb6K49/Xx+Louz/o/nOF0oGjaU=;
-	h=From:Subject:Date:To:Cc;
-	b=LU0JWvzUQfXqvTgu9Gidfm/Q8P40MuVCsx+Z4PJm8xb3w+3YeKSANL5PVhk4CASDs
-	 5r5LnUo6KMuHkZvCzyPLIRNBo4ak01UFKd7/r5ws8Dy+HO4a5hcam03ua5u7d/dKPz
-	 0c46XfTee1PBXFc+4ON02DrqjXuq3ku7cYDNBB5KjubnklieJ6zWWNeJBUoZShl4pT
-	 WpGoubM6JtGAirxu5t058eaVcT6NOWq+Ad/SUma7bdD+bH5jk1wHeLjVVasmpdIblb
-	 MPtHdVMcgsj7SFDc6PDhUiMOGpmXOe0D4nN4tmOswx1qKa49w1Z/8HIYP7elI3Fva0
-	 saqi+wm/UX8VQ==
+	s=k20260515; t=1780663779;
+	bh=j747jOREbIkvFsg/aHzSYOHlVF+tB6wBTmNCEvHgfnA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=lCC93uloqOF6Saw4qFLkFpI/H4rGKgYjI51PNWwxmotH8za1SoVm56NPQqTXeY7/2
+	 ne0HYAGSfgKUAraTPThkkiJKcsyK3eo90LhQ1idfdBtxgA9hwA7Ji3DP4YuNjpiie4
+	 D7ULucSlvem2NtX+aAdW1OjdvVQdykCaoRtvFVpEs04KRc1WGTN189VhaU6XwitOSU
+	 mgUT+o8ojnPwq5ye5vLfi0/Xb2wSlyTf2rqQRGVHbUT+dutEWrRKtvILXIZEg7hNFd
+	 AajWgDpq40hmDymOTPaj4r0qs36S6g059nwsqXKvxUxfmBlt0XrdccdVv4E9Hfml4W
+	 +HVn+kYY9ONcA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH v2 0/2] rust: pages that cannot be racy
-Date: Fri, 05 Jun 2026 14:49:13 +0200
-Message-Id: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org>
+Date: Fri, 05 Jun 2026 14:49:15 +0200
+Subject: [PATCH v2 2/2] rust: page: add method to copy data between safe
+ pages
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,13 +37,10 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAMnFImoC/3WOQW6DMBBFr4JmnUG2A7hmlXtEWRh7nIyaQGKD1
- Qpx97pk002X72vm/b9CosiUoK9WiJQ58TQWUIcK3M2OV0L2hUEJ1QklW3zaklnveS6XCQd37ET
- TkQnBQ3l6Rgr8tQvPlzdHei3FO79DGGwidNPjwXNfZV1LjE7B375SL1QrjqLFZeTXQlikqExwv
- tNtMGT6LDX86m+c5il+7/Oz3P3/Lc0SBTYfSmsjrBlcc/qkONK9nuIVLtu2/QDGna/SDAEAAA=
- =
-X-Change-ID: 20260215-page-additions-bc36046e9ffd
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260605-page-additions-v2-2-03f04c8fdbbf@kernel.org>
+References: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org>
+In-Reply-To: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -54,90 +52,101 @@ To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3079; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=p9uJWucfNKJgIkL5qVSUlbNGwi9u5AIxwCQJDK4aSMs=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIsXNN3kQ4knaub6xUG+ElnSKxnSKJo6LdsZ83
- ikZ3bcDN5KJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiLFzQAKCRD6UCkIqsW9
- 0ERFEACsFIAwTdYH0V3Ocmb2DOYetCkTMJ8jHliFnGTeTkRTr57x7fBztphSykWMZLHhWfdCZEt
- OT1EKcdxLbiPojOrqoZCtBMcBq8KWb0cfnttdDLEZJQEHtmHh90zhEBpR24tcf9YHq6nEaCWdMp
- +n8e+WrDonNPrrQubPfijdDywMZOe1tPIwW+lcGCKyHTXLvmYEBqQopaZg+m19adOR01nal5CIk
- gOfQFeragzEYlIbC2uK149tm4h+UpFQAdGMnIv5Qs0IrKdvp7uqhX39N+C/3i8PRSYUt+uA59+Q
- 0lrR59JXv8iJAaOVbmTUTX4frko7J9TadybLK2ss4JykGGOEgCpJVYUL1UE/PxDERFL4+8tr689
- hNV8YxiHPFBhcaXkcK/YJ9wP2G6yHGUdPCKQfr1dFwqk1YWbsI9n/ea3o42J5aeag/hO8Y2tWKP
- yNpaaOWZLvtzlrRQk2F+zp+fl0eSvqVJT1FuAoeZ8KrGX7UytvfExfDB1f3YbH8hlTGBdeinQni
- RD747Ta++MfKmXiCTts8su3wZai4H/37wFLOZNm0GAEvgOvrkANT4jTg0Sy9U7FSCo0OJtlnMuB
- VChUb5aPMao3QwTI7nau0jSxA3BupIZzGt0YI1HS/GTW7UlZGNJxHyA6uUstO1CxF/o6UHO5coa
- w5eF6U6S9BhyIGA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3310; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=dzp6cOSqfyflttG0MeQMpzGj5B+SlllJR/JvQBXauF8=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIsXPwpB4FTMvmdQ+DkEJMq1tlEwRJQ/YlCbJg
+ EfQD8YbWNOJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiLFzwAKCRD6UCkIqsW9
+ 0IwqD/9kbmi0nAXUhpyZgyZPFjcP242UtyBBoopaXPnPhF7rf8pCj6WUmqGhbm4Q1qUYj3KueeY
+ 82yfgiSPhEWM2JNNVDwfBAN4e98UQDMRKw6Kv7IgXnk0XLh93TYmUKl/gxJBvJuDmqfJ8it63r4
+ jBmNdGkw608QaFXnUloqPKJ9TB7LLo55kQzeSqwexJ1eNRj38rt3Hnh6+ziOF08KuCHjxrJ2vGq
+ zDd7l36PLd139G7vEbvWwfjDgu+mXs9CktjRuoC4xyjf/qirnfi64PFHsRLPDb8LaKvcQSpMZJm
+ wp4IZCWZmllxSEj9QvAlbup+7aLjUQFhF3nr/UepEikqdXbHWddCNWrYvtUcytaZHh8nSw5oeVF
+ z02cvlo67msFQ1ten/H5E/OxB7imEn41OEU5EWs7NsK78baW7sskoqlEhGwwEZOVE5ZB18Sjbdb
+ aGDReVZgJsoOqzVwPBooFvJOm/QUpgGYUE+wuscrF28+y7jU57zWD/W9Up7pclit3ObfWbDMsT9
+ hsDUaqK884CSWo46BzaeOZQoeptZ1DwSIjwINW0ts5LGFBlTt8U9FZAA1DYThGaSm2k6ctusbL8
+ SHVS0JSxHWDUvQNqB/JGVAnQBsa8/TavOFKCWiYqQbUS2cFlRu97C0YUa97wVnFffojf08mCu7D
+ ubZxxW+0Krag5bw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-Some drivers might want to use pages for data storage in the same way
-one would use an array of u8. The current page cannot be used for this
-purpose, as it provides no guarantees for how it is accessed.
-
-This series adds a newtype around `Page` with an additional invariant
-that the data of the page does not incur races. This makes it possible
-to treat the page as a regular array and even obtain a slice into the
-page.
+Add `SafePage::copy_to_page` to copy data from one page to another at a
+given offset. Because `SafePage` cannot be mapped to user space or shared
+with devices, there are no data races and the copy can be performed using
+the existing `with_pointer_into_page` and `write_raw` methods.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
-Changes in v2:
-- Reimplement `Page::alloc_page()` in terms of `SafePage::alloc_page()`
-  to drop the duplicated raw allocation helper (Alice).
-- Reword the `SafePage` invariant to spell out the standard Rust
-  aliasing rules that apply to its data (Alice, Miguel).
-- Replace the `# Arguments` list in `copy_to_page` with a prose
-  description, matching the prevailing style of the kernel crate
-  (Miguel).
-- Expand the `copy_to_page` doctest to populate the source page,
-  assert that the copy succeeds and produced the expected bytes, and
-  demonstrate the out-of-bounds error path (Miguel).
-- Reword the SAFETY justification in `copy_to_page` from "no other
-  writes" to "no writes" on the source side, since this call only
-  reads from `src` (Miguel).
-- Rebase on v7.1-rc2.
-- Link to v1: https://msgid.link/20260215-page-additions-v1-0-4827790a9bc4@kernel.org
+ rust/kernel/page.rs | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-To: Alice Ryhl <aliceryhl@google.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Trevor Gross <tmgross@umich.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: linux-mm@kvack.org
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+index f143b42d1bd6..2307e1f06360 100644
+--- a/rust/kernel/page.rs
++++ b/rust/kernel/page.rs
+@@ -23,6 +23,7 @@
+     marker::PhantomData,
+     mem::ManuallyDrop,
+     ops::{Deref, DerefMut},
++    pin::Pin,
+     ptr::{
+         self,
+         NonNull, //
+@@ -427,6 +428,53 @@ pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
+         // `Page` and `SafePage` are transparent, we can cast to the raw page pointer directly.
+         Ok(unsafe { Owned::from_raw(page.cast()) })
+     }
++
++    /// Copies `len` bytes from this page to `dst` at the specified byte offset.
++    ///
++    /// Copying starts within both pages at the same offset.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::error::code::EINVAL;
++    /// use kernel::page::{SafePage, PAGE_SIZE};
++    ///
++    /// let mut src_page = SafePage::alloc_page(GFP_KERNEL)?;
++    /// let mut dst_page = SafePage::alloc_page(GFP_KERNEL)?;
++    ///
++    /// let data = [0xdeu8, 0xad, 0xbe, 0xef];
++    /// // SAFETY: `data` is valid for reading `data.len()` bytes, and `src_page` is exclusively
++    /// // owned, so there is no concurrent access to its data.
++    /// unsafe { src_page.write_raw(data.as_ptr(), 0, data.len())? };
++    ///
++    /// assert!(src_page.copy_to_page(dst_page.as_pin_mut(), 0, data.len()).is_ok());
++    ///
++    /// let mut buf = [0u8; 4];
++    /// // SAFETY: `buf` is valid for writing `buf.len()` bytes, and `dst_page` is exclusively
++    /// // owned, so there is no concurrent access to its data.
++    /// unsafe { dst_page.read_raw(buf.as_mut_ptr(), 0, buf.len())? };
++    /// assert_eq!(buf, data);
++    ///
++    /// // A copy that would extend past the end of the page fails with `EINVAL`.
++    /// assert_eq!(
++    ///     src_page.copy_to_page(dst_page.as_pin_mut(), 0, PAGE_SIZE + 1),
++    ///     Err(EINVAL),
++    /// );
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn copy_to_page(&self, dst: Pin<&mut Self>, offset: usize, len: usize) -> Result {
++        // INVARIANT: The following code makes sure to not cause data races.
++        self.with_pointer_into_page(offset, len, |src| {
++            // SAFETY:
++            // - If `with_pointer_into_page` calls into this closure, then it has performed a
++            //   bounds check and guarantees that `src` is valid for `len` bytes.
++            // - By type invariant and existence of shared reference, there are no writes to
++            //   `src` during this call.
++            // - By exclusive ownership of `dst`, there are no other writes to `dst` during this
++            //   call.
++            unsafe { dst.write_raw(src, offset, len) }
++        })
++    }
+ }
+ 
+ impl Ownable for SafePage {
 
----
-Andreas Hindborg (2):
-      rust: page: add `SafePage` for race-free page access
-      rust: page: add method to copy data between safe pages
-
- rust/kernel/page.rs | 121 +++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 110 insertions(+), 11 deletions(-)
----
-base-commit: 9e0898f1c0f134c6bad146ca8578f73c3e40ac0a
-change-id: 20260215-page-additions-bc36046e9ffd
-prerequisite-change-id: 20250305-unique-ref-29fcd675f9e9:v17
-prerequisite-patch-id: 6c6a7fdd56627293ec3bba61c495f16a0858700c
-prerequisite-patch-id: c1958590235ee32d6ddb31ea168105bd9cf248f2
-prerequisite-patch-id: c5a4b231dc8adf37e93ebdce308dacbe6a244bf3
-prerequisite-patch-id: 541dba7938ba874f8d17fee05a36b1cd9fa2c4d7
-prerequisite-patch-id: 3668fd640e4c411bae0c8ea9d986c3fa5d3c9e82
-prerequisite-patch-id: da1274864841e267697be9529a50531126c64872
-prerequisite-patch-id: c1463b6578e94b56d2bad41f6e614b5286fb1db3
-prerequisite-patch-id: a31185fe1abbf553377d6d695c5d206eebc84358
-prerequisite-patch-id: 4f392b5736e55a354ec3022644389f89b52fda42
-prerequisite-patch-id: b6388ff0ebdd54610010d72a5398842a3c668bbf
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
+-- 
+2.51.2
 
 
