@@ -1,117 +1,96 @@
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467E331F9B3
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 11:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780658149; cv=pass; b=oSOeG3Lkdbv8Qo3GPTqHfy4BbJCshvQR1YPiUyuiEw2IwIj9EWNqzsJ5+2hMZxhEmbCYrVN6fm/p7LUo3o2w9Vd1E7dqlU5wZCMY9tlBKMZ3zaVSvK4q6KFLTqk4yA1Hxo0F6LeNip0DuBGddIHtic/sVza4OmcmrW70HXX9XV0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780658149; c=relaxed/simple;
-	bh=my64/1IBEIL43GuC3wT1kWWVvvLkggDAhttkWSBbVOM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B3Xlko1oypyk4BUHoHx9BygJV5x7nrQ6qUcmhLXXzvv4C2xyGPCYwUi7P5XlGjjQv3Uo3u+1NQ3fc8tbHbGepEPBV/ZDfjyNZLKESGSX47X6fzonfcd4VlADj1h7cXxLyH3Ag87qwfNt4pwzBa+KGZhlVD7FDHynZQ2JL1vt/6g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=epEirlnR; arc=pass smtp.client-ip=74.125.82.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED484183A5
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 11:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780658229; cv=none; b=g/yyayZyw0F3p7EX/nlJT5jCp8SJkLpTajvMMTLn6upPJTXixJEBNuJyzoSTe+g/nb6LMwmHKCmrk1r9q2840lIJzFzbPm81apILPyHbgC8LaheczmH+HCU1ElewZVjIEeSU6ZZirzcEtt+pc3I26jnBf4PR/R+0LaMth9I7BCM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780658229; c=relaxed/simple;
+	bh=Jfhhoy1F0ebcVxM7LEmEEcwMSkV1JGLOusEFPE2K4+c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hSebdtqguhwND1FF2Ey2w/VUwDfSWxA6Ff7JhhNa6WMgiERiOQgrgdbKGiNPRkf98LQvHJ3em0dWhPjBBHOD4jQiMZRcvHrl9BcC2yhqYNJ6OXXb/DM9b8MqxsloFNzj8oBYuO9wxflpYVqcPxXkANheT9DR4aBZVlpGdthWHco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GSHsKHuq; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="epEirlnR"
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-304d4e57d33so59308eec.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jun 2026 04:15:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780658147; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ASOhTsI8oaM57TesJ39PRiDgpnFJJ3iKyRn+JKESJ/Jd65o/QhLrW3Gpe9m/Wgf+o8
-         yiO8X6dTwS9tFR4ooQH5qM4HmoehIJSujhKvfv3O4TVmxK44MFG7mk4X8gfHKcIxAsQx
-         cRKk7LaSobu04V1hjkPkNTNUk7FT3okeEavtIkI2OITaL+WojEfoaHtYBoXH2rASItxD
-         1dAWS/Klcy07BsqxLRMtjMXJXtHPJUo9/5sTuc24vdmFfsHFCrj2I/o97ePMLplFR9xg
-         hKlE31h9DAVD4fzAJ4nVkJrK0Lx3yoXqbS38JzBXdFohtEZ8rzdf1pAh5hFboAvJR1BG
-         RvDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=my64/1IBEIL43GuC3wT1kWWVvvLkggDAhttkWSBbVOM=;
-        fh=snV+Yb8xmPqkvuzSwfnkQC9qvO8sIzrsJPAYm0+IkY4=;
-        b=EyW0an2dGtaOx/Kpn13xv+olYSWruXDB08Q1i/0w0H5DjTHUDLVrIlbzhl77cRX4Pi
-         9W1yE9iY1CPqpXfw0A4sQuiR9bQ2sAC1RmllMPF8bfnE0E8za3OdV5OUoptxreTG08H5
-         UKzG9IIf05riPyYO8U+SlQepJDc2gss8IiKG71DBFe+Q7+CSZvtME07pxFxVbyHe9vfq
-         mBx7nqiaipwMj8RzyJkDKmhEaPXpYnmTa9Sc+0qTR35o9o1p6txoJ/Umbs01rZfQqDyd
-         wMRfhl1vPfGGm5ZXHCdqU780nAHFN0GypUDNEfOmZvLiFPkFZrtob+b5GCFWU13cteKz
-         TQpg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GSHsKHuq"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490b79e6b94so13246835e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jun 2026 04:17:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780658147; x=1781262947; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=my64/1IBEIL43GuC3wT1kWWVvvLkggDAhttkWSBbVOM=;
-        b=epEirlnRZot4ImqvNbrFaFW1b3l7g1/0FNHU8xDv9t0M9Dg+h+ef6ETySayjrCDpyk
-         seD6HyhA3cKQ6It0b1Fd6Ybnscvt1/6dAF75/7w8ItPnFj+TpN616hy+G2bCq5RGtRWd
-         C3OP9/Uis3tl++HjE1BsBEI5OVj8gPXjMnUx8/bpLHnGMsuyOxgyDScNj8DVT2fVYh9E
-         GdrjtDpnXjZAD1N100tDw8GKXUiOZDgU5YuaCeB8mKURkJdzCeFTEuwSrlWlx6WeZOLk
-         Dnfoov9aVYG+GKiHLLLeMU+jjRZoA0aY/1zdwQZIIadgi6/L+MXiD9PpiDyedMaHAcJQ
-         akSA==
+        d=google.com; s=20251104; t=1780658226; x=1781263026; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9+aRoATs22S45omivn7vkQA5BKTx+/lYuCUoy7Taidw=;
+        b=GSHsKHuqfCvlQfegaZ4uzvb0RZNyKBgLVD+cJCncCwPwpryhiJWzIyCtcyYVWxHA8F
+         wbMLLNwmyJ8CJPMjNyy6w6A+FGaCRxB/qXjutmQfWEFaoVlDU58G2muPit/npTBtao+b
+         Zw0NREIPcndHqKhm3RWPCjzis9cxmUHzFmE0x7+tym6Giu5JdAhsz0959cMypHcMVvPB
+         UVDM/d8YvufhuGA1+F82Le+t6k0iHjQP77g+J0BiM9+9GtEgafm2HCNr47lq9LNaXrbP
+         +Z11NQ1IDFaastlL4vfyuDpv//i5Gp6bq+BpYdIRfe7pE1Ly49/bUBvVemWWB3tJPFCK
+         /gcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780658147; x=1781262947;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=my64/1IBEIL43GuC3wT1kWWVvvLkggDAhttkWSBbVOM=;
-        b=ES7SE9ZifuOp9TqbpaOtvbCjdfyz6VakDzA/CtFxBrJIGRly5qgjL8Ea+ro2p5IG3L
-         WGn5p7yQ7rkK0C7xOXTgp4nabUWvOT6UR6pd5bbCMGF1QHbVeDYgZ8Ut/yljrZly+5x6
-         eNlEIjnu1AyJjV7Q9qLhIzUGE/btJGaEQ2joa++fUOpeyhJGBRnTRG2yXwhxqOSmq0tY
-         Fyuu6E4LCO9RJfxrnyvmlnpU6Iic4AwtXktKd8VwygUVKTvx1n5il6SB1J/oz0Wds4oZ
-         KIdBki9bZOipmT35LyQsG2QG7z8pZP/uIrSp+VwMLIhqEM9rwDhZtU5YVfcF4/O/IRO9
-         FGvw==
-X-Forwarded-Encrypted: i=1; AFNElJ8yX0oZQiYN0vnEt0+LGIBj36udpq6c1m5PRjFiwDeG1wSY66xFykIXtmcndq4CxEQJbEAopJ6d8Nms7nV4Dg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+Mdb7QqS1WS3CJ6adz7bCR+oO0wjemOdcVMi+skYTDmkfq1aQ
-	paaGgxOUaozwoa4MHYZNMU0FgbB8AoHNWOgDy6rfD0R0QVsvYuSP0l4GK3pzJcPD3f0PgOJqRHG
-	pUVlPJUXJlz+isIMvr15v8fTTcM1huCw=
-X-Gm-Gg: Acq92OF9zAK7vBnU4IQWvBavTp1kCOGoeqHYLIjeojHiURtHxb7tzMs1bmRREzUsnMi
-	3ebqIfCNmI0eP2i2ol4P2tz6wEbPBE9znzw31CqyaPy7O6JmXG0HrBJjhuZTcnHSaD1K0+CvPV1
-	gnY8oa4g81jD6GPeOJol+iIcxMs8Aysm34uxt8B15Km/BBw/1wkOyHKIxqPqUPowceNS8mrdnzC
-	CumhYDnE+qSIizp9+2NMPPYXVGL5F1O5CKdWrA6eNhndfvvQUOP/nOGo6D0r9QGGvhF7XQCCSb6
-	BSKoGdhIT31JpEg1AaRZtU/PC1lwxFv/YxjLdw1plQIceH5cvoJo5yKT1VsiXPl8wB+V4gfxcR5
-	Nezq0VpZPtVB7Nh1tBBNmlWaUmgSD/nnEuw==
-X-Received: by 2002:a05:7300:134a:b0:304:4f23:4823 with SMTP id
- 5a478bee46e88-3077b326a5dmr659325eec.7.1780658147377; Fri, 05 Jun 2026
- 04:15:47 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1780658226; x=1781263026;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9+aRoATs22S45omivn7vkQA5BKTx+/lYuCUoy7Taidw=;
+        b=jKP3nucdchokYz1NS/NwV+dn5GA4e0jQPqL5gRHuBla/1GKkvNPqfQzh9VDjG4WDwD
+         a26oW4Ju92+TmCBKAb95wxL09asb8N+OskHeNIg8PwH7+CFxPU/fDucqIQrcadzzZMRk
+         NOrhgrE+L2u4o0d3BtMU22A3EuokyK/0HQTOpciOKUEQKTk6lIejyGGQru205QSiWVJk
+         kKTSAKkyf4zj6rQZ3IFuHu2ppjyaqKM3xTYcWuyy5r+F/TsvO78ylv1wz6F65HaVHKH7
+         B536xfqapE3NgUvm0D5A8JuJ35gcWpoblkSfP/lUCX7nqAXsY/RrcprH/7KzEF7WY/Z+
+         bX9Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+3yhIhzJOm60YvWsKb41SZS1y9Nm66vPQgbxt7G1rWB3KT/t4o048MTmaqMawUocQMYGqXUqnbRDCCMJPJcQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1McDEBcoH2ZVyGr7PP5mfLas48rdFmxSv77ZKJVkBgt2Rohr9
+	FX6tLJ0vobesSPvEU8QZsK68P8pk69ZBT7Ry5JU3p7nHv/g7m+f+yBUcffNx5hqaZLDIvBcadNJ
+	tBWeFIFuu+5RcVVb/7g==
+X-Received: from wmbjq12.prod.google.com ([2002:a05:600c:55cc:b0:487:2186:fcf7])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:45d1:b0:489:2005:b36e with SMTP id 5b1f17b1804b1-490c26055aemr42019955e9.19.1780658225644;
+ Fri, 05 Jun 2026 04:17:05 -0700 (PDT)
+Date: Fri, 5 Jun 2026 11:17:04 +0000
+In-Reply-To: <20260605-xarray-lockdep-fix-v2-1-25a5509abee3@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260605041134.38290-1-ytan089@ucr.edu> <20260605071104.135675-1-work@onurozkan.dev>
- <DJ0YRJ6MHAU7.WVR4P2MQ4HIX@garyguo.net> <20260605091632.313084-1-work@onurozkan.dev>
- <DJ10CJ31GS5I.1ZD6WPPWGZTQN@garyguo.net>
-In-Reply-To: <DJ10CJ31GS5I.1ZD6WPPWGZTQN@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 5 Jun 2026 13:15:32 +0200
-X-Gm-Features: AVVi8CfJonDrVd3vGam6duBD_2L2EfxY_kIzLcohD_P9GEpMXFyOnCWv175rJqk
-Message-ID: <CANiq72nE9H34DzEthWmRSmDxgaDW+XLLbrA=T6ywy=hB5FAMrg@mail.gmail.com>
-Subject: Re: [PATCH] rust: firmware: return empty slice for zero-size firmware
-To: Gary Guo <gary@garyguo.net>
-Cc: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Yuan Tan <ytan089@ucr.edu>, ojeda@kernel.org, boqun@kernel.org, 
-	rust-for-linux@vger.kernel.org, zhiyunq@cs.ucr.edu, ardalan@uci.edu, 
-	pgovind2@uci.edu, dzueck@uci.edu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260605-xarray-lockdep-fix-v2-1-25a5509abee3@kernel.org>
+Message-ID: <aiKwMKyHaZ1WqI5I@google.com>
+Subject: Re: [PATCH v2] rust: xarray: fix false positive lockdep warnings
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Tamir Duberstein <tamird@kernel.org>, Boqun Feng <boqun@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jun 5, 2026 at 11:28=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
->
-> Oh right. Arguably the wrong error code, but it does prevent the path fro=
-m being
-> hit. xz decompression always grow at least 1 page and thus won't hit NULL=
- case
-> as well.
->
-> So indeed under no paths we will have a sucessful `request_firmware` with
-> `buffer` is NULL.
+On Fri, Jun 05, 2026 at 11:14:29AM +0200, Andreas Hindborg wrote:
+> `xa_init_flags()` is a static inline that expands `spin_lock_init()`,
+> which generates a single static `lock_class_key` per compilation unit.
+> When used through the Rust binding helper, every Rust `XArray`
+> instance ends up sharing that single key. Lockdep then sees concurrent
+> locking of distinct Rust `XArray`s as recursive locking on the same
+> class and emits false-positive lock-ordering reports.
+> 
+> Add a custom helper `xa_init_flags_with_key()` that mirrors
+> `xa_init_flags()` but takes an explicit name and `struct
+> lock_class_key` from the caller. Update `XArray::new` to take a name
+> and a `LockClassKey`, and add a `new_xarray!` macro that uses
+> `optional_name!` and `static_lock_class!` to generate a unique class
+> per instantiation site.
+> 
+> Remove the now unused `rust_helper_xa_init_flags`.
+> 
+> This was previously part of the series at [1].
+> 
+> Link: https://lore.kernel.org/r/20251203-xarray-entry-send-v1-0-9e5ffd5e3cf0@kernel.org [1]
+> Fixes: 210b81578efbe ("rust: xarray: Add an abstraction for XArray")
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Acked-by: Tamir Duberstein <tamird@kernel.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-If we are not expecting it in practice, then at least a
-`debug_assert!` would be nice, or perhaps even making it an invariant?
-
-Cheers,
-Miguel
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
