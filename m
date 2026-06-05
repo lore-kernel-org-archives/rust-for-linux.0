@@ -1,57 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC98D3033CC
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 05:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4812383326
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 05:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780637015; cv=none; b=gYhctHYCEBCFNfoeG24DKA5YtvCeRF7g9gBdBKMjuQxSanqtB3yTWNTGBseq1s875iESWfM3nmPywRhhcqwH4z2814HUN7uQEQd02FhvykS55StOY4Vm6rXLM6kmpgsSnOMlrqgMRnHp5ux7DYYJZ5Q4dK0NiRCEqqyOo3RuqR0=
+	t=1780637018; cv=none; b=QvLFHVTiU47ItUL51Ei8EfhmNRKFBzUK9dcm7dj+rKhrMzkeIUV+aOE/V27IfoMoyjxa/UAvB0t9suOwERJTpQZkbE3c5vXxcC/8dcqOL86sbztbLT7n/gmc6lLvgvE8rS7Nk0CH0urqCsoz9/xD06fAyFC9zBnUSiFZ2PFl8Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780637015; c=relaxed/simple;
-	bh=PvsSeE2ChQ1tI69wTU4kKv9ENYqVN1rPDK4jlbQTgGQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bgkmc0j35j+xEpT4Xjm4AZV4kgJiF17iCuSpwJ/ygdfJm8RWxVMCL+O9qGR8S+yK6ARB5RGwc3oGbEy3VZ7vR/q5ioC0F+iXlgYty9WFJQGzIRNn6nndiO1pSws5bJHQRSW2Hv8fUBapVL0IdxOlmN7NMr/D+dckxhGtypP+YNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KO0emYX/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780637018; c=relaxed/simple;
+	bh=ewM9aNlXNMaCTdGGGxgxFrW8A0rEbzUNkaQO0+Jl4zI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uLll3bgiFIJJgV2NDlSitMKpAtKNdjAsJWlkj5K+OtMOREQFKyxjfn+O3wMHY0mPtg89fNVU02BQCGPOlMmXoPuPBtrLKc3qhL/VJKzlKgLkmoQQFlxODOFOdRZ5qfpmQXhcLv0uh2p8Qf5l+erFR8bky1NBw7O40wAlxPvXiH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnJD2srJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KO0emYX/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8351F00899;
-	Fri,  5 Jun 2026 05:23:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnJD2srJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E0A1F00899;
+	Fri,  5 Jun 2026 05:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780637014;
-	bh=Ag1qZDlFglvMfHJffMSCoFRCAtiG7m6LnL2rPrdd2Mk=;
-	h=From:To:Cc:Subject:Date;
-	b=KO0emYX/N4vM3kXyj3dNenr3IuLuW/xGkMMks+YosQ4N2hxk1hNcmebY52hgWx0QO
-	 Vgs7/yJR64jy4wcNveZifb6oxTcvSmtN2ZyBk8uth4DorjxYe8KJXdIPDgZEhiVEqP
-	 n0BgFWs+LIbxaXzF3b5/eiMwGdzjsOB+kAJYV64o2EiSv5pBAVo72Xdq1+KIVlBAj8
-	 RwrAA4hQMoaCBz5Q2AH2oFXZjCnL7GICyIu6wc4SOOXCYgRM4tHggp3vqWyBGd14cj
-	 Y3cSbTElhGTICoVgkoQwnQ4njLSs/x5Z258bS2EyI9MlARG2umT9SNXd307bp6+a70
-	 IpHG0ug1ixO+A==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 57A08F40087;
-	Fri,  5 Jun 2026 01:23:33 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 05 Jun 2026 01:23:33 -0400
-X-ME-Sender: <xms:VV0iajGAzs-l737P40o24spXjKlwUlCq5KCoClhdIF74Yy5srfDfOA>
-    <xme:VV0iasRZifZrReS4F3T6Wec144QCJUmIT9it3StbslUYuquk-Pu71txBdI-f0Acdk
-    md5w08KnoNisHQXnq5kizSGIuiBHY2hSmQwNTgsg7XCZ-qJus-NBA>
-X-ME-Received: <xmr:VV0iarTsstqHq3P4fGDL7wSH58EMB_FkVJxn8vJqdoFQ0nHJhx9Zglhh_D0>
-X-ME-Proxy-Cause: dmFkZTEOdd+DOBTTBIaZhHR+fyS2s+mFaqQZR7A7rhCt6qWiBA+qJitV7Z9V9KXR3mTG6N
-    2Ot10J2Uc0VrkVqe9yswFH4jQiJ9eraJfSfEnpUAsEkBzNlrfl0jKBLgoyVs/MF/htdVM0
-    nYf+TQ5lp5R7zHlcA/wu8EVBkTetFCmBz7GkVfYYDPhNLSihoX4wgyB/8PjFDQWafVmEZ5
-    TTBhUjMjPb9Uzwuhf5ScVx6bks+fJJT7xrLTAgkXvl72LMXsDOK6LSPvaGP4+h1vrw2lmG
-    unLfwV4tDlamMPbYyYVgwNOFwVqlFLor7wn1d+2QmEIyeFW7fHtcACzqQyOlqel68HRClG
-    eHLEmQzuSLgdG89SPmIVfvFPKbOiX/l1/oY4eOym8R2iKfHjzicZd2VpL4xY871PoSmJCr
-    LtKwsV4ONzL2j8xpZwnCwxLIKKIkzi9CukZi/CHXIQPRN+KXS3ytBkLDFbh1pYKA47BbN9
-    LwnaKshbi1PAwBCc++5Jhivf/6kEhtqjO7pHG+tcG5xBhOQP/65oLImjy8ntD8cGw2jxfI
-    tbkZhFYLmtCKbzTZF8CX9QptjqC7Kfq1zulgwoUyhM/V6mBYayUyaiGBynX/Uua7WJoYhB
-    RZLIcVjlNeBP5azzovxhBkGN6FqXoaXceKbIZb9kTvwZqTK1aMLe/ivALMbQ
-X-ME-Proxy: <xmx:VV0iandZbk_hlM-TnJgWiwyPqFTZjNnG6PIxi8ulVtpYxwbF3eOrFQ>
-    <xmx:VV0iane00K5kexC_LmMFruS_DH5a9hHjfm1iMSyqTuJ9VXmGEHbv1A>
-    <xmx:VV0ial9c3B2Ov1c-TavUFRX_NzCp0kK3_m0x2JV_VOHlW6Q1XQvCDQ>
-    <xmx:VV0iavPNA4YD_noj9cnIU7NJZueF0MosKZ-Mu-Ovihnt5D-Kn-N2Gw>
-    <xmx:VV0iarWZxXK9R5r6eBczwEGcs3CKWwhD9k0-OyVQWgvpctjaByIXCLnQ>
+	s=k20260515; t=1780637016;
+	bh=XbOg7WPLk0OnCbHsP0KPvHZ6rXK+yhY/bIYgntWItGc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=DnJD2srJ/IAVoBGXt2AMoiVcZbA6j1qyD0E8zKNPN2QNxKYFd9aq19e2M0NmamucF
+	 AAdwW8iGYj7xjInitf2tN7yyhuC20EtALN25cUIxCx+uW/qH/ammXOtrYuSA7GSFbd
+	 SDYFLgEhQWuiLMngDCRpEiX0C5FVRJdn6CcISgscOuftHFsWGxmknLhJmKgv/pIB0o
+	 +WrDqRgtbM5zkdi9183N+HHoD/vd/ahiSwrakES4XGIcJRi/CkNYyAby/55mo8g3+5
+	 QKzJHP/JfDZhsLSGfTRVjdHfSm+rbM5KgdV+XzEAx6wOQpz7P5X3h2kGcqC9gRULk9
+	 c2MZ6DO0mkt6g==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A51F5F40087;
+	Fri,  5 Jun 2026 01:23:35 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 05 Jun 2026 01:23:35 -0400
+X-ME-Sender: <xms:V10iane2RwYyVrfiOpH31hYCWPyAT2B0xNpdju31cpg22XrsfBLSDg>
+    <xme:V10iapJZcMu5p3_KrYPs-OmY_hoMQPyzGRmVtD11zhVxBDHGGlKhdi3OUggiNKs9j
+    -R4tagiVYjmou7n23bXxwdMyVjjtVHIpSE5JsIt65PiwCfOTUqAm2o>
+X-ME-Received: <xmr:V10iamrryIDCGrrv1lHil-cGnOr90sZWW3_guh0Zr7I08sQ9vX-5kOA5T0Q>
+X-ME-Proxy-Cause: dmFkZTFrVVThTqT8bJJhflEbKi6jjaoRdHCe3/aaIcW9ckEVawwSkOr/1AYrtZ9NKCDbGc
+    tw/dywjM+I35stMKpMTXQwO0SdL4GmE3ocgr3dXlubgN1UWUu4iVzBJc5Q1UDtbeHKHGNb
+    tuJwPcilrCzzN1k0UdW+mgwOIuirfQMtStSQzWkGvELg3JmsSHD2CrFkTKJ8zUWlWi3GfD
+    klvR8mf16w0WA51uHvXYxiIqMOPFsPHfDRJiCgvmlnaNIwtJTozitHgsWPJuoWKEbm+EMu
+    lewJIeDUPNoQAKvu86osIj6tAzPIvFxhTJKXPO5L/BAHFP1DibRS/0trc5k4wCE41ANLmy
+    UVtCVOH1pDszwjSkWN5C2conabnXlu4RDUa9AYCFj3sBqUTeGqhFSyyeCtCooErnmpVAzT
+    Mu+R5L03g46oOUKZQIJRAU9QQzI6slLsiAqLcbgxW9mlxGZkX4xz8qYrKogNsbpGdvF788
+    UgtHHjNoRe8tTwfLHNG6KBT/zP+RkgrpA0KL1bFky+qZt4HvFYFbOkGWjBu3iXI/rtoPNL
+    7jRLvqgSxKoywJpY9/0EnQ0qKu7nkKSAIVfYvqMfSPfAjKCTFfbu6LdR/wPC9KqI25aOxt
+    UAKzmytGBxDHlThfU7gKbwAtokIFigepPMJG8ra3PXEm/8OBKKW+VZJ3aoIA
+X-ME-Proxy: <xmx:V10iavVQa23q64RJacSxf3pjxaAVxrcSXP2AaOyKcMxjnE5NfXdxOA>
+    <xmx:V10iah1JCSaRAbf6mqVKqGpnCJCJwFbi66KSPvPqC9px5sW0giyApw>
+    <xmx:V10iag3LiLMIKAkgGDuDEbEh137gjb9sdF8TvooMREGxOMtuTnuNhg>
+    <xmx:V10iaglCRxhJZ_LOrlGZ7mZcjWVcdaPQAFRtgZk2-Ximjg1mbB2t4Q>
+    <xmx:V10iahPLEWyMtOusZRP8q6R3EpUj2S_YESg5RJwJzGFHzaft_u83EG7A>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Jun 2026 01:23:32 -0400 (EDT)
+ 5 Jun 2026 01:23:34 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Ingo Molnar <mingo@kernel.org>,
@@ -71,10 +72,12 @@ Cc: Ingo Molnar <mingo@kernel.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] [PATCH 0/3] Rust synchronization changes for v7.2
-Date: Thu,  4 Jun 2026 22:23:28 -0700
-Message-ID: <20260605052331.1628-1-boqun@kernel.org>
+Subject: [PATCH 1/3] MAINTAINERS: Add RUST [SYNC] entry
+Date: Thu,  4 Jun 2026 22:23:29 -0700
+Message-ID: <20260605052331.1628-2-boqun@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260605052331.1628-1-boqun@kernel.org>
+References: <20260605052331.1628-1-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,50 +87,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Peter,
+We have two pull requests on Rust synchronization primitives with 10+
+patches in a row for recent cycles, so it makes sense to start the
+effort of handling this area as a group.
 
-Please pull this small set of changes into tip.
+Luckily for me, Gary Guo and Alice Ryhl agreed to help as
+co-maintainers, and we also have a talented group of reviewers:
 
-Sorry for being a bit late on this cycle. I was trying to get the
-refcounted interrupt change [1] in this PR, but I feel maybe I should
-make that a separate patch series for more reviews, which I will send
-out shortly.
+Lyude Paul started the SpinLockIrq work [1] and did an amazing job at
+improving the design and implementation.
 
-The following changes since commit 608323bf7bb85bbb647eca4373acef247f105e67:
+Daniel Almeida resolved the Lock<T: !Unpin> issue [2] and he did a fair
+amount of reviews in areas related to synchronization primitives
+already.
 
-  selftests: futex: Add tests for robust release operations (2026-06-03 11:38:53 +0200)
+Onur Özkan started the ww_mutex work [3] and did an amazing job at
+consolidating various design requirements and decisions.
 
-are available in the Git repository at:
+Of course, this only reflects my own knowledge, and I believe they did
+way more outside what I'm aware of ;-)
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/ tags/rust-sync-7.2
+Note that having this MAINTAINERS entry is meant to bring more people
+to help on the synchronization primitives in Rust, which means for patch
+submissions and design discussion, please still involve the
+corresponding maintainers (e.g. LOCKING and ATOMIC),
+scripts/get_maintainers.pl should have this covered.
 
-for you to fetch changes up to 33d221f06eb7e068fd6c3c78d432322f807a3f0f:
+Link: https://lore.kernel.org/rust-for-linux/20260302232154.861916-1-lyude@redhat.com/ [1]
+Link: https://lore.kernel.org/all/20250828-lock-t-when-t-is-pinned-v2-0-b067c4b93fd6@collabora.com/ [2]
+Link: https://lore.kernel.org/rust-for-linux/20260103073554.34855-1-work@onurozkan.dev/ [3]
+Acked-by: Daniel Almeida <daniel.almeida@collabora.com>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Onur Özkan <work@onurozkan.dev>
+Acked-by: Gary Guo <gary@garyguo.net>
+Acked-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260415232830.8128-1-boqun@kernel.org
+Signed-off-by: Boqun Feng <boqun@kernel.org>
+---
+ MAINTAINERS | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-  rust: sync: completion: Mark inline complete_all and wait_for_completion (2026-06-03 11:52:08 -0700)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 882214b0e7db..7c0f853b881b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23450,6 +23450,20 @@ S:	Maintained
+ T:	git https://github.com/Rust-for-Linux/linux.git rust-analyzer-next
+ F:	scripts/generate_rust_analyzer.py
+ 
++RUST [SYNC]
++M:	Boqun Feng <boqun@kernel.org>
++M:	Gary Guo <gary@garyguo.net>
++M:	Alice Ryhl <aliceryhl@google.com>
++R:	Lyude Paul <lyude@redhat.com>
++R:	Daniel Almeida <daniel.almeida@collabora.com>
++R:	"Onur Özkan" <work@onurozkan.dev>
++L:	linux-kernel@vger.kernel.org
++L:	rust-for-linux@vger.kernel.org
++S:	Maintained
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git rust-sync
++F:	rust/kernel/sync.rs
++F:	rust/kernel/sync/
++
+ RXRPC SOCKETS (AF_RXRPC)
+ M:	David Howells <dhowells@redhat.com>
+ M:	Marc Dionne <marc.dionne@auristor.com>
+-- 
+2.51.0
 
-----------------------------------------------------------------
-Rust synchronization changes for 7.2:
-
-- Add "RUST [SYNC]" maintainer entry.
-- locking/lockdep: Replace snprintf with strscpy in seq_stats.
-- Mark a few completion related Rust function as inline.
-
-[1]: https://lore.kernel.org/rust-for-linux/20260526152148.30514-1-boqun@kernel.org/
-
-Regards,
-Boqun
-
-----------------------------------------------------------------
-Boqun Feng (1):
-      MAINTAINERS: Add RUST [SYNC] entry
-
-Fabricio Parra (1):
-      rust: sync: completion: Mark inline complete_all and wait_for_completion
-
-Thorsten Blum (1):
-      locking/lockdep: Replace snprintf with strscpy in seq_stats
-
- MAINTAINERS                    | 14 ++++++++++++++
- kernel/locking/lockdep_proc.c  |  5 +++--
- rust/kernel/sync/completion.rs |  2 ++
- 3 files changed, 19 insertions(+), 2 deletions(-)
