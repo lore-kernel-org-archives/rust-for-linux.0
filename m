@@ -1,156 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF9B40B376;
-	Fri,  5 Jun 2026 10:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780657002; cv=none; b=G145QRhti103vvoA5pSf5qhAo8MTxZhi32/YW4NMVmyBt/E9PAJngQWDF5JDuoY0ikkpQXey2aT/38Glj/LcS4BU4Pf0eGV8kldDorafKzt0RX2ad0IHous/yVf4F7W+WbpvhxU9TQbmEfKDPMYdYWCuSTxYPgYO0zR6LuJ2VOU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780657002; c=relaxed/simple;
-	bh=+3VVbIsHViof554tMhYg+UM69PNfRqrXukqw9svsYnA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fGl+v36YF0i46cyk9HYwETNqkkw+8PB2OTd0y/T8jVrwzoShOiYHGdstc4LqOFYsfuohC+bxpXBNhPEvrQfAmL2WXRaqpfq8vM6Ur49zYJ9dPdTFOijmyY/95dDNPAWOZoOpoeYLJNihPB217kdCW8779JrIHRyAN17XfCekQE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZPtFR45Q; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 615964B8DCC
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 11:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780657395; cv=pass; b=XMNOuya6KJh5p2PHpqp2cid5Sjd7ohdpQ8LCy9OQ5SW99h+c9nKY2AZkCLljF2zvk4Ed/e5RitiutsGFHkG5zBdNo32tZxPNB6G+QGyri5zaiXkRqEtIILJTeqFbkCqwfhyYth+va0mR/Lfi7LRZGdxhK4O2l5apd2G6/ER5hF8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780657395; c=relaxed/simple;
+	bh=f1MUM6D03lZH8m9sJMdZV49CHTFZPYYABFO8u2/04d0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jTT8s/ggidr2lRm4xtZxNcytlC0ydPXnE/QEfwr0Y1PfhtyjOn/JmAHYzSSJxyJAjfDOq+Fogj+979gveghb9zcC8Qe3hR7Y2KTfnaZu72okWcAzHTM8oqeTA4r2RIvW1XwVkrxiScaYGKGzQInDo9lyiuntydBpDhbpR2du628=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JdT7gPSd; arc=pass smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZPtFR45Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC9A1F00893;
-	Fri,  5 Jun 2026 10:56:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780657001;
-	bh=m1vrsCWez3KirdGgBnyUYRcCksAbydsH8OpW/bG7Bfk=;
-	h=From:Date:Subject:To:Cc;
-	b=ZPtFR45QxN5HDrB6gmglwtx1QWkM923sg+oW7HTR94P/I5dxvVBocoo8yfClZ+cE9
-	 DomZLeed362TUoA/09MpBFRnvO+gyv+XlqI20x96w4BHrM0izoq8K+EEtqKb/92iEK
-	 mY+rBR59HLVj2St+uqZBjkWwm+rM1DP/34JAZUHTVorTOXeACCU42ec1pEE7avIpS0
-	 SClqbKmZXZag81JrI3ljRZfDeoEPTYDUVjoipyOGSy52eKkjZJBLtWDQPmLzjyHN6Q
-	 QtyIBoPSo5wDH49OBjTba8a06pyUNY6WOmZbMtn9etBp18mIr9NtdfJbX7Mp0DZuKS
-	 TXsj2qJfjZzBQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 05 Jun 2026 12:56:31 +0200
-Subject: [PATCH v2] rust: alloc: allow different error types in
- `KBox::pin_slice`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JdT7gPSd"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-304eb0fc233so153565eec.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jun 2026 04:03:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780657393; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OJsQONg57jEJwF2EImCIq+Ny2WqJRGr7+UbMash+H4NNKu/NxokVBGpe/QyZ0w7eZp
+         sYkpFk3866oHrjYv8LPW06P1oaFHwrqnEIaRKUTc6ow48hwXyT7fLktkNb//m688/nRf
+         3uZ3HEe0qjOKzP7OkN+xriyt6QjCLbqm1/7LnF9speKAJhjHahw6mJxzGoOtePkerTpm
+         ezFnphQZSdQFX6fWFlvKjk0UvG1svDb+hQE5E395I+NZXdkSy3xUWAyBsMi3KejSlkSA
+         uxYfpEV5/I8olcckoOyHUOgqhf5471l8D82DMfk+B7GR7qUcLdD/O0gijHXHwdQWcpgj
+         rppQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=f1MUM6D03lZH8m9sJMdZV49CHTFZPYYABFO8u2/04d0=;
+        fh=6LGoPepNRq37YZuJ+TN3NogU3Er1Uq6dMjFeZn+moVk=;
+        b=KcvvwF0lEb9H/FejkHYrtAwpMTZr0IOIg5cYat0jP/pdyyBwvlwNKvBlN3Ux+Wh5fH
+         W5EpNJgfBb5RwV1UJRb9jbjZJIh2oHyTfCIPiIR2yeWwgMZNOLEDqz/YPiqJdfFFb4Pt
+         4PcHW1mr5YumuJy5NFcdQQFnDOQ5Fe0bj0G7Z1keFd4UnUjVUCpsxGnCbhUpK0VlRtJR
+         pzYIuC3qI5sp+NktEcY27DEndzBNvSBgr/0AHedzl2uENarinfWHDCAaKH723i1ORiF1
+         uPQYAkWChtIf9KRzmB7zFVgus1C+nG/gxqcNMYMfrtquVxgUTK9NOGEId3SqkWMVatFx
+         Uuvg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780657393; x=1781262193; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f1MUM6D03lZH8m9sJMdZV49CHTFZPYYABFO8u2/04d0=;
+        b=JdT7gPSdXdxzb8+YuwFowHuC/lI1Sm3/kGh9Xj8BdBRBWSJHgplpb1IlCqMeHXbMx3
+         8hf9C29D6on+4K98IIe9PUfMYYY5lJ+fO98lUNVu0YcDsBICMvhken6eSgFpqzIjvjzx
+         Geud/Fu9jWWrpoCtWYAtRC9NrQJUtuMAxB1Ientqi+acYVHnPK9DDcuX0hi1Q8zsUtlh
+         H2coFNgFwhM7EPiyO3IDpKYX4wJM8UMzeYT0fSkMcuf8y+T57Yv30olxxiuIsGB178b1
+         iP8WxWhGyGYgTq/kKaB74/rFlY1Bx2LlEyOeDus+dnNcduTpfS7tjamnqiViGrZFcCMw
+         xYOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780657393; x=1781262193;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f1MUM6D03lZH8m9sJMdZV49CHTFZPYYABFO8u2/04d0=;
+        b=o7XLp3G9DlAfqzhU5jFrBSSG1WwNAspVM4g2spEvCYDTqPGsADmQoBqp+xIpCGp2QY
+         GbK4xlcadr5Vel1TZsQSicxIKDiwelEnFnbFBuDmuVxYNO0ImkFlKh7we9xhjkNbriO1
+         40NubYYOaVYMmkyUedvrv2LCB8+5N7m59dsrQxNvDPw7fNhfjPcdjCj4vyVovfZ/q/T3
+         FK3PpqsTg1w66ZxZoMOWj7mWpIT84rWh5z2L/cAo/0uz8xSq4PpVQjzxdR+kY8JS2g9Z
+         Z8KHiNvx+Y/1+LNYNobSfiHJygc03zkMmwKFDOL+WCiiGhxr7WspxhmQyk4hxSya0DLz
+         ZzMQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/ymCtLrg2qRBfDe/WBSSBuE9bT/ZUfT2U9RvdxXEK6l0nOEvHd0GgRH4hy9zydV7SMCJnOMsueYzlJ1JP3Vw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzf5NRp9jFxXm9lWdhRcZHHzXgADl8/PyN15sYa/AxSe9OiP4S
+	oNDxLxfTqMV2tJ+OXTKUjVs7T4CKlCb86vyNvBa7TNfyXGI9EEX4zq9Jr5d9cLM1P/KTIX2rJZS
+	LpFmPvBbpaPhIjOZCXCx+/B5sFRix+4M=
+X-Gm-Gg: Acq92OHvvMY7EbrR62r8MH6OR61J7O9FPI1o5tjXjeAFeS4lFI2mDYJd7RkES+NGsvM
+	VqtqvOIvQ8/ZRCO80mPTc2tvV5uXTgK7eowq33ITn9eNHEww+o4niA+3+sxS1KebmB3uQdMclJV
+	rELi/HrVs5IEMXCzbqUwppe2FWx562OigKkWWldJwxh4x7K6BJnZWgaZ94/DxNkTuX/yJ7+mJ0J
+	tLixC+PAq/MJt6C+6C+7VcdkhzWRtsLALOqxGksjGQ5oY4kuWW75MWay5KbKPEZLqk8JsSvStfF
+	6CpMMlCbsSyqxxxgnBNNj/kk2WKLd3jMbOIZCWNBQ5E6Wsx3RE/uT3dWbNUp6U4sOjAL4cQ9jd7
+	Ix5dh5hwuG7rPP3DELlt3i9cGmFooJvFVVw==
+X-Received: by 2002:a05:7300:bc0c:b0:304:8860:74dd with SMTP id
+ 5a478bee46e88-3077b57ff09mr582723eec.8.1780657393363; Fri, 05 Jun 2026
+ 04:03:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260605-pin-slice-init-v2-1-b197e84040ba@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAF6rImoC/3WMywrDIBBFfyXMulNUJI+u+h8hi2rHZGjQoEFag
- v9em32X517OOSBRZEpwaw6IlDlx8BXUpQG7PPxMyM/KoIRqhZIaN/aYVrb18Lwj9eSG1lnRmQG
- qtEVy/D6D41R54bSH+Dn7Wf7Wv6ksUaIwstPOGNlrfX9R9LReQ5xhKqV8AYxwaqOtAAAA
-X-Change-ID: 20260214-pin-slice-init-e8ef96fc07b9
-To: Danilo Krummrich <dakr@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Boqun Feng <boqun@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Boqun Feng <boqun@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3120; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=+3VVbIsHViof554tMhYg+UM69PNfRqrXukqw9svsYnA=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqIqtguvur9V5S0QGaD1jnOjo5ftsHFO1rztIaF
- OSE5C5+vkyJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiKrYAAKCRD6UCkIqsW9
- 0MRoD/97KxVFIEx94MUo+ui7s6st+WJsU7J86wNKxJpiMyoZ7aPyr4wGdXwtNt5WNW9zHfDG9bL
- H+qjv8Hxk7OmeF2g3/iBvOKyWSAwJVY63uCl+XTgvUUU+qOpHij0Hhs837tOcKO0IzB1qBvAp0t
- Fl8bRpyeN++nTJMxcDR4MOZzTgGchCnz/SRIlHVwfKBUfSxdELvAQNuPmnmdPX3EdsOlQr1wpuW
- hq5xz3t56wXeHMVG0vEc0TS2nkE8Ub7UC3mrXrY/oQR7TxtdtUufnxfHKWwkMsMbuyFsgOtrJIl
- +fldpzDKSfPorDR8HBPRTLOoy4mJCgr8wrTAmmVzf7zmHbVUQOMi5ePKY/0q4hAzfoo+e3/H0Ts
- 6NDNKyrgghcAuVCM/46pc25NOuqGeXgZd6m5BM9JC64K19d814aogFK93ekdr8246JsKAQQQDKx
- +1optiSFwWkTowpx8AeHNJ8v6Bf1nsIMszb9h9WdIO93iKWjvDxfxRy7fpJgR/IpBUVEnnnumnt
- XelV6+oOmRIK2cYLld56aAaP2Fw0OihafTKVUrICNRp3sL0FiODG9clswuM2FKImFpRwaOe6xKa
- tQUgS2S7FM9nthnuGlIRzfbS0+k7mNGo6MU6mRD9E2Pb7xaW+8pOeguaIzY9wI4LVplbE6J1l5z
- Q8HYPzHZuAQ42SA==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <226152a3-1e4c-4eec-9a17-1d40426a7b18@I-love.SAKURA.ne.jp>
+ <20260604210704.41751-1-ojeda@kernel.org> <89f0f308-2ee7-4c68-b811-8132e5d88530@I-love.SAKURA.ne.jp>
+In-Reply-To: <89f0f308-2ee7-4c68-b811-8132e5d88530@I-love.SAKURA.ne.jp>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 5 Jun 2026 13:02:59 +0200
+X-Gm-Features: AVVi8CdqkuEhPtbDH0s4twQIZkrvVriRAJrVBmrFnoy9Lj0_mQmQbpOfQv8yYl4
+Message-ID: <CANiq72nGo=F5D7b7Hx8A1jfAJw_72Np+UpRWBRQoPLAE+RAPpA@mail.gmail.com>
+Subject: Re: [PATCH v3] block: assign caller-specific lockdep class to disk->open_mutex
+To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Miguel Ojeda <ojeda@kernel.org>, akpm@linux-foundation.org, axboe@kernel.dk, 
+	bvanassche@acm.org, dlemoal@kernel.org, hch@lst.de, hdanton@sina.com, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	tom.leiming@gmail.com, wqu@suse.com, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Previously, `KBox::pin_slice` required the initializer error type to match
-the return error type via `E: From<AllocError>`. This prevented using
-infallible initializers like `new_mutex!` inside `pin_slice`, because
-`Infallible` does not implement `From<AllocError>`.
+On Fri, Jun 5, 2026 at 12:15=E2=80=AFPM Tetsuo Handa
+<penguin-kernel@i-love.sakura.ne.jp> wrote:
+>
+> Oops, it seems that I overlooked the rust-for-linux@vger.kernel.org line.
 
-Introduce a separate type parameter `E2` for the initializer error type
-and require `E: From<AllocError>` and `E: From<E2>` instead. This allows
-the initializer to return a different error type that can be converted
-into the final error type, enabling use of infallible pin initializers
-in fallible allocation contexts.
+I am not sure what you mean -- it is not just the mailing list, the
+maintainers and the reviewers of both entries were not Cc'd either.
 
-Co-developed-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-Changes in v2:
-- Use `E: From<E2>` (and keep `E: From<AllocError>`) instead of `Into<E>`
-  bounds, which allows the body to use `?` instead of explicit `match`
-  blocks (Danilo).
-- Add Benno's Co-developed-by and Signed-off-by tags (Benno).
-- Link to v1: https://msgid.link/20260214-pin-slice-init-v1-1-0b174fbb1844@kernel.org
+So like 9 Ccs are missing...
 
-To: Danilo Krummrich <dakr@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-To: Björn Roy Baron <bjorn3_gh@protonmail.com>
-To: Benno Lossin <lossin@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-To: Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- rust/kernel/alloc/kbox.rs | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+> I am using my tree for allowing syzbot to test debug/experimental patches=
+ in linux-next tree
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index bd6da02c7ab8..c2e89e523eae 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -298,7 +298,7 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, A>>, AllocError>
-     /// }
-     ///
-     /// // Allocate a boxed slice of 10 `Example`s.
--    /// let s = KBox::pin_slice(
-+    /// let s = KBox::pin_slice::<_, _, Error, _>(
-     ///     | _i | Example::new(),
-     ///     10,
-     ///     GFP_KERNEL
-@@ -308,15 +308,16 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, A>>, AllocError>
-     /// assert_eq!(s[3].d.lock().a, 20);
-     /// # Ok::<(), Error>(())
-     /// ```
--    pub fn pin_slice<Func, Item, E>(
-+    pub fn pin_slice<Func, Item, E, E2>(
-         mut init: Func,
-         len: usize,
-         flags: Flags,
-     ) -> Result<Pin<Box<[T], A>>, E>
-     where
-         Func: FnMut(usize) -> Item,
--        Item: PinInit<T, E>,
-+        Item: PinInit<T, E2>,
-         E: From<AllocError>,
-+        E: From<E2>,
-     {
-         let mut buffer = super::Vec::<T, A>::with_capacity(len, flags)?;
-         for i in 0..len {
+linux-next is only meant for patches that are already reviewed, tested
+and destined for the merge window.
 
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260214-pin-slice-init-e8ef96fc07b9
+It is not meant for experimental patches, and adding those, especially
+this late in the kernel cycle, can break other people's CIs and
+systems at the worst possible time. If every maintainers put random
+patches in linux-next, then it would be unusable...
 
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
+(There are exceptions, of course, but only if people is aware and in
+agreement...)
 
+> Do you see any technical problems except comment style problem?
 
+The above errors are already a technical problem -- they break the
+Clippy and docs build!
+
+I assume Andreas or Boqun will eventually take a look at the patch now
+that they know about its existence (is there a particular reason to
+rush?).
+
+> Nothing bad is going on. The final patch will be sent to linux-next tree =
+via
+> appropriate tree after getting acks from maintainers, and the current pat=
+ch
+> in my tree will be dropped when maintainers accepted the final patch.
+
+No, please drop it now -- the patch shouldn't have been applied to
+linux-next yet, since the maintainers didn't ack it (they just
+realized it exists...), it is not reviewed (apart from Sashiko), it is
+not tested enough (given the errors above) and not destined for the
+next merge window (for all the reasons before).
+
+Thanks!
+
+Cheers,
+Miguel
