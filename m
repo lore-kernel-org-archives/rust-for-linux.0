@@ -1,125 +1,123 @@
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA261478E52
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 07:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B092A477998;
+	Fri,  5 Jun 2026 07:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780643482; cv=none; b=mQm2k5w4Zu+ka6wbHPf8ZjulaxvzbVHx5xr/kW0x7lIUju++2G6nZ2F32KBy5HSttdVSt/OHg1TfpbdXX9AJmRU84QHhjEYmz0blmxV/yaNLVOsQmynzuFSqWawZRu4NdkH7Tn6ZScaVz1WdB5LlEkpQqNO6uUgyjjEmi/n4TsM=
+	t=1780644976; cv=none; b=Oo/egZyEixANSTQwx41VolxEOt1ZWc39I7Z9mrtbNX9Z7eyfPL8tlLMJLfumMEIyJTex7zGPyIRelmoNhZLHpLeVeHJB6SmP1YhiLc6MiXlT3g+SodcQji8O+cjHVL3M/6HCi6CqBKA36xDb2WSGSmKYgX3bjd52JkFSAU1T/K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780643482; c=relaxed/simple;
-	bh=MkpAuI2e1V0LrUw0T+NyS+K//sMJyhCdoUUgU9DpQZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dryA/G013CMXz7POLv3u0ITq32l+/DZWhAsVBLOtMhtDx6u7wTOpO+eJTMqP0PuGHsjzCE4Cwxj066J2mC73SZungML068hh4Bv36TNdGapEVHry1vT+DYQ9yNa+9pH8O1edqyDsjD4Dm9qPv+PppTU0dZJLKiIYJh3Dyo+Iunc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=L88vBS0/; arc=none smtp.client-ip=79.135.106.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1780644976; c=relaxed/simple;
+	bh=nMbjHr1vKiDnCsHB4hJLxHFpD2VDpetdGM5Cr504iuU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UcXH4lQbWjaTceL66eIA2pjDgNLEPbv0WKzAbJIdh/i/MEbyJWrbOvJ770j3rIEy/u4si6Aa6ipeKEis/Zd6PMv8VLS99fraeo+0pZT1dr+KOIC0E7pvEn/PfBwR4F99dU2rxjp3e68itC5sYm2CEeicJzW7JXUQ4cU7g5LlIH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NoT79SeZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="L88vBS0/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1780643469; x=1780902669;
-	bh=HRxhzyxOHY3JBnWyUgtazruryDamO6m96XNGDJqD/1Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=L88vBS0/A2etLt7bm5lIyWM6ctWnI/wqiz4/+5pjnlDKEY8X3nEcGVWVeCCM7Z8uz
-	 zaIPh5lhn/4LtJtRF5qojLJ8wcWYJnzJUe1asiVX3mF3z/oQzsYPdxgNzbtmUuKFxk
-	 q+B+YER7weIhR+wzARYFhQK2Okq8p/YyCaM+uem4/rZsqJj753e2AHwHQ6fXO+zyBi
-	 6mD7Y+yVqWf++C8FYNErrCzVEi0QLTuG3cPU909wLDCN+ixEAYTB0AAM19tJ9wtt8j
-	 /kpHhen3hzGLytnrtXIfjAPbnnKe+9eTO6LRx9mJJ0pRyimkU24/MCJqKocpCl8jv1
-	 p1a0vkUieWBBg==
-X-Pm-Submission-Id: 4gWszY0tVJz1DF6h
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Yuan Tan <ytan089@ucr.edu>
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	zhiyunq@cs.ucr.edu,
-	ardalan@uci.edu,
-	pgovind2@uci.edu,
-	dzueck@uci.edu,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] rust: firmware: return empty slice for zero-size firmware
-Date: Fri,  5 Jun 2026 10:10:42 +0300
-Message-ID: <20260605071104.135675-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260605041134.38290-1-ytan089@ucr.edu>
-References: <20260605041134.38290-1-ytan089@ucr.edu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NoT79SeZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65231F00893;
+	Fri,  5 Jun 2026 07:36:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780644975;
+	bh=HDU5QqmZWp9tQ0ikyjzbohExLSGRNkAWIVys3WP4fBA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=NoT79SeZsTJlrTSxQ0DLrEOEZjHiAZHjA4Tq7NsT3v9f2VDpFenrbSvlpWt/rLBSW
+	 0TC18RjVVfoCJkubCViIMqFY5VmRUpZjIveKMIebwweDsp+79UpqIq1JSKH1C1U6AY
+	 etF7hejsmqElaTLFp3MfPAgvg1IxzfdTzsfsm30zzmzR6gms0oOG4xbdecvvbZaYV/
+	 ph2kH3UySkyDT+514mPrfAg/7sRXGRSrIaxIb+l+DtKnSUfo/k5NP03ui3IXJh/XIh
+	 MDGGz2O1PVvjwYeiPPm6F0UML7JQfbps07NPNaNlp8m80pduAPtn2+5HeHTkSxA/dY
+	 Q43tVT5vQMHAg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, penguin-kernel@i-love.sakura.ne.jp,
+ Kentaro Takeda <takedakn@nttdata.co.jp>
+Cc: akpm@linux-foundation.org, axboe@kernel.dk, bvanassche@acm.org,
+ dlemoal@kernel.org, hch@lst.de, hdanton@sina.com,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ojeda@kernel.org, tom.leiming@gmail.com, wqu@suse.com, Boqun Feng
+ <boqun@kernel.org>, rust-for-linux@vger.kernel.org, Mark Brown
+ <broonie@kernel.org>
+Subject: Re: [PATCH v3] block: assign caller-specific lockdep class to
+ disk->open_mutex
+In-Reply-To: <20260604210704.41751-1-ojeda@kernel.org>
+References: <226152a3-1e4c-4eec-9a17-1d40426a7b18@I-love.SAKURA.ne.jp>
+ <WX3XCppxtwahZrFW9ODTU5Hu4b12QJFtthvYbPo5SiKqV8hWCyqoEy5W-eVMQ3cnZ2fW3SHofR3WtHsu7-ZHxg==@protonmail.internalid>
+ <20260604210704.41751-1-ojeda@kernel.org>
+Date: Fri, 05 Jun 2026 09:36:05 +0200
+Message-ID: <87zf19igm2.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, 04 Jun 2026 21:11:34 -0700=0D
-Yuan Tan <ytan089@ucr.edu> wrote:=0D
-=0D
-> Firmware::data() builds a Rust slice with core::slice::from_raw_parts().=
-=0D
-> Unlike many C APIs, from_raw_parts() requires its pointer argument to be=
-=0D
-> non-NULL even when the length is zero.=0D
-> =0D
-> The firmware loader can represent an empty firmware image with size =3D=
-=3D 0=0D
-=0D
-=0D
-I haven't checked in detail yet but "empty firmware image with size =3D=3D =
-0"=0D
-sounds like an invalid image. Can such an image actually make it all the wa=
-y=0D
-to Firmware::data()? I would be surprised if the loader accepted it.=0D
-=0D
-Thanks,=0D
-Onur=0D
-=0D
-> and data =3D=3D NULL. Passing that pointer to from_raw_parts() would be=0D
-> undefined behavior.=0D
-> =0D
-> Return an empty slice before constructing the raw slice. For non-zero=0D
-> firmware sizes, the existing firmware API guarantee that data has size=0D
-> bytes also means that the pointer is non-NULL.=0D
-> =0D
-> Fixes: de6582833db0 ("rust: add firmware abstractions")=0D
-> Cc: stable@vger.kernel.org=0D
-> Reported-by: Priya Bala Govindasamy <pgovind2@uci.edu>=0D
-> Reported-by: Dylan Zueck <dzueck@uci.edu>=0D
-> Signed-off-by: Yuan Tan <ytan089@ucr.edu>=0D
-> ---=0D
->  rust/kernel/firmware.rs | 9 ++++++++-=0D
->  1 file changed, 8 insertions(+), 1 deletion(-)=0D
-> =0D
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs=0D
-> index 71168d8004e2..5e22a574a91e 100644=0D
-> --- a/rust/kernel/firmware.rs=0D
-> +++ b/rust/kernel/firmware.rs=0D
-> @@ -106,10 +106,17 @@ pub fn size(&self) -> usize {=0D
->  =0D
->      /// Returns the requested firmware as `&[u8]`.=0D
->      pub fn data(&self) -> &[u8] {=0D
-> +        let size =3D self.size();=0D
-> +=0D
-> +        if size =3D=3D 0 {=0D
-> +            return &[];=0D
-> +        }=0D
-> +=0D
->          // SAFETY: `self.as_raw()` is valid by the type invariant. Addit=
-ionally,=0D
->          // `bindings::firmware` guarantees, if successfully requested, t=
-hat=0D
->          // `bindings::firmware::data` has a size of `bindings::firmware:=
-:size` bytes.=0D
-> -        unsafe { core::slice::from_raw_parts((*self.as_raw()).data, self=
-.size()) }=0D
-> +        // For non-zero `size`, this also means `bindings::firmware::dat=
-a` is not NULL.=0D
-> +        unsafe { core::slice::from_raw_parts((*self.as_raw()).data, size=
-) }=0D
->      }=0D
->  }=0D
->  =0D
-> -- =0D
-> 2.43.2=0D
-> =0D
+"Miguel Ojeda" <ojeda@kernel.org> writes:
+
+> On Wed, 03 Jun 2026 20:54:05 +0900 Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
+>>
+>> Acknowledgment:
+>>   Since I have no experience with Rust, changes needed by Rust block layer
+>>   bindings and rnull module are made based on conversation with the Gemini
+>>   AI collaborator.
+>
+> Then please do Cc the right people as `MAINTAINERS` mentions, including
+> "BLOCK LAYER DEVICE DRIVER API [RUST]" and "RUST"...
+>
+> I am quite confused. Why was this added to linux-next?
+>
+> It doesn't go through block, nor has an Ack or review and breaks
+> the `rustdoc` build in linux-next (and thus rust.docs.kernel.org):
+>
+>     error: unresolved link to `my_gendisk_lkclass`
+>       --> rust/kernel/block/mq/gen_disk.rs:42:50
+>        |
+>     42 | /// This type can only be instantiated via the [`my_gendisk_lkclass!`] macro.
+>
+> It is also not Clippy-clean -- it doesn't follow our usual conventions
+> for safety comments and sections:
+>
+>     error: unsafe function's docs are missing a `# Safety` section
+>       --> rust/kernel/block/mq/gen_disk.rs:59:5
+>        |
+>     59 |     pub const unsafe fn new_lock_class(ptr: *mut bindings::gendisk_lkclass) -> GenDiskLockClass {
+>
+>     error: function has unnecessary safety comment
+>       --> rust/kernel/block/mq/gen_disk.rs:59:5
+>        |
+>     58 |     /// SAFETY: `ptr` must point to a valid static `gendisk_lkclass` instance.
+>        |         ------- help: consider changing it to a `# Safety` section: `# Safety`
+>     59 |     pub const unsafe fn new_lock_class(ptr: *mut bindings::gendisk_lkclass) -> GenDiskLockClass {
+>
+> Please see:
+>
+>   https://rust-for-linux.com/contributing#submit-checklist-addendum
+>
+> In any case, it is also too late in the cycle to be experimenting in
+> linux-next.
+>
+> So what am I missing? What is going on?
+>
+> (And on top of all that, for some reason I did not receive it even if I
+> am apparently in Cc, so I have asked the admins about that.)
+>
+> Cheers,
+> Miguel
+>
+> Cc: Andreas Hindborg <a.hindborg@kernel.org>
+> Cc: Boqun Feng <boqun@kernel.org>
+> Cc: rust-for-linux@vger.kernel.org
+>
+> Cc: Mark Brown <broonie@kernel.org>
+
+Looks like this was pulled through the tomoyo tree:
+
+tomoyo		git://git.code.sf.net/p/tomoyo/tomoyo.git#master
+
+M:	Kentaro Takeda <takedakn@nttdata.co.jp>
+M:	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+
+
+Best regards,
+Andreas Hindborg
+
+
