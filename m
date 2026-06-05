@@ -1,136 +1,614 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FC63B42D5
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jun 2026 16:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B81345CD3;
+	Fri,  5 Jun 2026 16:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780676488; cv=pass; b=QbYe3eDoWyVcmunJMKn0z7Q+hMKFKdmtI5q5Rfbj3MSJzRQWcX/JcayVHKhO93EAPRwuZ04VCyMVIZswcyNo6XpyOE+uh97LxxEXbhqVzfu4lLhDfTOTNo3HmGI+Ctvqsys8CibSincS/oR28rEZX5xigfWW604OAyI2T0EI++4=
+	t=1780677851; cv=pass; b=cZ2yU0k4R/8RqPnCzDV7T0s2EndpkUVUVHVidz8YPea1pjIynSx6XrPJXzRAJHZIWscpQfuxlJFAvXl+ML3PQ2XPCSLRXoBEZ7Lyb9Sl8ChtGDXrHwllYAOfxc0gb09DIY+B5WDtTFQMj88H4mVK5XfxZXLpVb9mgaqFX5Fe3Fw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780676488; c=relaxed/simple;
-	bh=mWB1QjoCqaUp7xOYtL0VXwUOlRHPZS3Zm5pVWOTzZow=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XgTr9Ht8oJOraASsWeAXeaqWoeQbUGB1xqq8eRc7JRxxPNCmT8TTBSQGcK2h5A6+wTF11j/EWWungcfy+NA44ZPL2MCzjdOTRkphrnqjoTFgpno4WIQ5HeS3P7jt+CrBgzPxBGnQ7k3VV6xCa8+OndBvLmMBJb4AVprRciAjbVc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ui8wUur8; arc=pass smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1780677851; c=relaxed/simple;
+	bh=xQD3Doh14iqYHxbW54QNk6UN1ctO+fsq5bDISWOmspU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VY4x3Ukm+LAEwLQugvRyIoCtDp8buJU35Ryx2mOI3UfYFZtU62eFa8PPIZlo1DPWN3gTzFeFeOd2uwwTK7Vk8bHs/fH4AMbqyZCzjpltymXAuLCSk/1B43OL/D5iGD7S1fXwuJXgcnDPGV41dzTgrrYv1zrtdOFXTIOg5AfVMA4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=P4GXxc4B; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ui8wUur8"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6611689dc10so118914d50.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jun 2026 09:21:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780676486; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SZ/IlGpGJkAmw8VqFHJyq+9DFCY/374HCcgBQLIK/zTcJz4fzCIKSSaeTzx1y2kCvd
-         cWqMsgE2PH7EohD5gUFqvTiD8CBNVy1RKqAEdAAq1pUQlUUbubHEBF2Z9n0j7V+nMhEX
-         6jJ3ytQWkp7CbEZ2EjD+xfEN0FWrR5p1YZ0lGNBXRDaE/rT7ybduQNvZxViC2rMJqHaG
-         AarSxTlB8nOsdkLO+bl6PjfVJIkxrnS09Z2Ap9ZhbyttX2GDXqkTs9G1wmyZwPHgEE5E
-         WRrgV/T9kw4s1klvPmKP2guXCQYTCZ01Cp/IxU6qV9En0G5haEmscv1xX3B6MtAruXjs
-         poyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mWB1QjoCqaUp7xOYtL0VXwUOlRHPZS3Zm5pVWOTzZow=;
-        fh=LatNg7CmvFwQQEmX+CxhK7ZIvsAB7pCwn1MHl9YnNo4=;
-        b=eixEt5QJ7xyuTeFLl2D6RsJdVvs8Yliw8ULqyxBAOhyJ8ry6MN5u7rCWS7rITiy1Eh
-         O2eCkcnG6Cq5KihC0DVrIjX6oE6jB128JVtNIc9jFvKcY9pCvdqjt65EwiKWI1C1i6kS
-         9jdIVLBjPEPf3XpeKwV8QIL6P3iUW08WOqRQ/tR2gO66SjVLvkfNcFoGRjcdwgjC2Po9
-         ddj8U2fvz4PuOLB4OyiUpVsjhcopb6Z8Tc1/Fj30hoAvA1QIJld4llnEONYpTE32pPLc
-         XMZYFZSlmgJ3bzyz2ymbHB0JvMKzbKEZ+jacLOlW4goByLqlT9gZGT/B83hiObnIyTm7
-         jubA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780676486; x=1781281286; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mWB1QjoCqaUp7xOYtL0VXwUOlRHPZS3Zm5pVWOTzZow=;
-        b=Ui8wUur8KSyN0pvynRn3skezHBd3sfh1W5TIjT4eVt8Ktiz8vrwisyKkScL5uRWs83
-         GBDkw6QrKOQy7eVUQZoCJWF5kgJ9MUu2mbMLhq6GgQOCJWyTwgqUwp3kwBc1JF6hg0cY
-         AVaO6PI9zVJGkoVY23ra2X+Pshx9zPmheAZP3Vgy5eNnT59Is8pWFvrufHHr7ADCbIan
-         N1LnZ2808X83NOKNBnd2eL5qBX97ba92cAY2Qh3rEEM5SzBPlKMWOzrojBQau6ULIAiL
-         fq+cXcJbuJiw+OekQSmQwaeYvzjLb5tD7/ywY9GJ8ni0M44MdhHBiNzPnzL2umckP+rC
-         RWig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780676486; x=1781281286;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mWB1QjoCqaUp7xOYtL0VXwUOlRHPZS3Zm5pVWOTzZow=;
-        b=luB41UHAv6Sl8AgnPormS7dq0MdFw9Vsv2kdPt3mSVMJbcFooJwyV5Gysqoy2FbKAc
-         pWpliq6pZyNLPjATgUqyieKxqSbJqqhbto8ii5o1EXfqWDm90CmD1214EPrBpdHzLpCn
-         76q0eucL9btr2ar3vXJFCyGyx6MSxFX0MzhPB1YVmbMDY9M1dCrtv5En62x2SbuEpiD0
-         YYBBoY+qFJwdPkKMPhnnDD01NJzSoO0ycDqSUDrvv2bq9pzAzvCZgLlnYFc52bAXoXLM
-         TRk1focc6n6cBBp1rhSOe/Gu6se+9hKdnhkqKifnThDbMEj5gy4GWtLTLH/7QtWcSvyd
-         IoDw==
-X-Forwarded-Encrypted: i=1; AFNElJ/RrVdYtkJb7xH/A2B6YiEAQnaPE6eHd9LNx789/Dqx+49WD5geUxnXgdh/0gE7A9zNgwOxvrxK8PTvPmnSbQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykGw7k6bnimeIOxyGfJ+UyGdjBrgmqEgyfOqeAMxMRB7U0nT7E
-	yNiILuObgrTNz6vEKzNz0jaNSEc8Ww7tKfbiw/jRFSlUCJWgEq7yYzV4HUBDujH4yAk3F30GiY7
-	grRBeG5HtCt9WbEZ1rkYxtQhhDju0gZSG0e5Hmvm9
-X-Gm-Gg: Acq92OFCkDlfq0DqUF9OnlqwWVCqLYS4q60RFpgnXSkMq2c8B3eL9hQwcMAr2iwJ19V
-	N7iRaWgdREOVb754/pArhPnIAi4rEcJPm7Aigh3vRjzQbOvqIjLYbYWhhjFZUuo4tlQ0HoexI3R
-	9mf0cRWLlrEIFU3XGVW+rGN30boLsgOWXaCoR1RaUI0Z0LrcoO+N2TofJOoiA8qErr5d1vBtpTK
-	VZ+SWH36zck06JsUeckHf4vV2z+C8e83/yEhqhlF93OLlk5YbspLHpMu1uon0M7heIjPIBouePP
-	IhF2WH3dS+4cu8IGczQmqSotpmxpg2ZQ6a95MOxxifDBgK6wgDc=
-X-Received: by 2002:a05:690e:1388:b0:660:877f:a5f5 with SMTP id
- 956f58d0204a3-6610704f8f0mr3897550d50.43.1780676485426; Fri, 05 Jun 2026
- 09:21:25 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="P4GXxc4B"
+ARC-Seal: i=1; a=rsa-sha256; t=1780677833; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cSH4o6k5EPIzsPlrhnqItpcJleFeTUR+K6+8+tYZDjCz+7QdDyAJhq+706mi4Z010AGfOXw7gklrXqb4ORLR67jaDyr3badydSt+IhIx4SFpFqHT6j875xeEbIkQmypCEl2FYcoWMQZaiDs/8DIN4UY9D78Q9MxQv5vIPENAbHU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1780677833; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=vIG+xxZ/UClIW5Nfw/TkGMC8DB/sUaXlu5CObc4iZbM=; 
+	b=LKe1YjdDQ8+MZwPUGBh0tveg8nreY85KvNCZ0Ran93ML13uwFXRXJxmLUcQSPGgZnc9imD0fsuWaxFyX8UeUKpRYBT8wEB9ny/zVsR7T9peeXsHuy1a+OsynngvwXg9AO9zpw+jOlfPyBfY/ZENtQ0vQtlKORXehh7e4ZrX0sus=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1780677833;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=vIG+xxZ/UClIW5Nfw/TkGMC8DB/sUaXlu5CObc4iZbM=;
+	b=P4GXxc4BRpD4BgytL7wgnUfNzUdeuHWXRq1JvTVNqw+bc6uOCuUYL+UOJQ4ssb4O
+	/kIXZ+NZoN2TSq71fL05kCqEJyFPi/P94qb4uZpoFkMOGs9Ug9yOKz15jHO/Hh61Hxk
+	vW96xQVvlahFfoo5t5FK6oQ7U+PCq4effBjX348E=
+Received: by mx.zohomail.com with SMTPS id 1780677831483358.0773706649936;
+	Fri, 5 Jun 2026 09:43:51 -0700 (PDT)
+Date: Fri, 5 Jun 2026 09:43:50 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+	laura.nao@collabora.com, samitolvanen@google.com
+Subject: Re: [PATCH v2] drm/tyr: move probe resources into registration data
+Message-ID: <aiL8xtohSEDZ7Lbx@um790>
+References: <20260604-use_tyr_reg_data-v2-1-f77a1ffcf08d@collabora.com>
+ <20260605090714.2c4c7945@fedora-2.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603-kcov-dataflow-next-20260603-v2-0-fee0939de2c4@est.tech>
-In-Reply-To: <20260603-kcov-dataflow-next-20260603-v2-0-fee0939de2c4@est.tech>
-From: Alexander Potapenko <glider@google.com>
-Date: Fri, 5 Jun 2026 18:20:43 +0200
-X-Gm-Features: AVVi8Cev4P7AiBmPodWfwaPtX8_k3m47tFa_rHl6t21z7L5L4Qmm-6Ly0xXbR54
-Message-ID: <CAG_fn=W1++qPJWQk1+4MtRfe6n1iUKF2O5pddnqKGwSq85CuqA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/6] kcov: per-task dataflow extraction at kernel
- function boundaries
-To: Yunseong Kim <yunseong.kim@est.tech>
-Cc: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	llvm@lists.linux.dev, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Yunseong Kim <ysk@kzalloc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605090714.2c4c7945@fedora-2.home>
 
-On Wed, Jun 3, 2026 at 7:43=E2=80=AFPM Yunseong Kim <yunseong.kim@est.tech>=
- wrote:
->
-> Introduces a new KCOV exetened feature that captures function arguments a=
-nd
-> return values at kernel function boundaries, enabling per-process visibil=
-ity
-> into runtime dataflow.
+On Fri, Jun 05, 2026 at 09:07:14AM +0200, Boris Brezillon wrote:
+> On Thu, 04 Jun 2026 16:26:12 -0700
+> Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+> 
+> > Introduce TyrDrmRegistrationData to hold resources that need to stay alive
+> > while the DRM device is registered. This moves the parent platform device,
+> > clocks, regulators, MMIO mapping, firmware state, and GPU info into data
+> > owned by the DRM registration.
+> > 
+> > The registration data is tied to the platform device binding lifetime, so
+> > use Registration::new_with_lt() and store the returned Registration in the
+> > platform driver data.
+> > 
+> > Add initial stubs for firmware, MMU, VM, and address-space handling, to
+> > show the intended ownership model.
+> 
+> I get that it's useful to prove that things work as intended, but I'd
+> prefer if were submitting the working implementation instead of the
+> stub, since we have it. Anyway, this should at least be done in separate
+> commits (first the RegData with just the things we need today, then
+> commits to show what it would look like with real components).
 
-Some high-level comments:
-- Make sure your code can run on every platform supported by kcov (namely A=
-RM64)
-- Check out Sashiko findings:
-https://sashiko.dev/#/patchset/20260603-kcov-dataflow-next-20260603-v2-0-fe=
-e0939de2c4%40est.tech,
-at least some of them seem to make sense
-- Please consolidate changes to the same file into a single patch
-- There seem to be two tools (one in C and one in Python) with
-overlapping functionality, can you keep only one?
-- The test modules seem to be used only in manual testing. Can you
-convert them to kselftests or remove them?
-- At this point, long dashes in the kernel codebase are quite rare,
-and I don't see a reason to add more.
+It's true that we don't need to merge the stubs, I would just like Danilo's
+changes to tyr/driver.rs in "rust: drm: Add RegistrationData to drm::Driver"
+to match what this patch does in tyr/driver.rs
+
+> 
+> > 
+> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > ---
+> > Changes in v2:
+> >  - Store the parent platform device as a bound reference instead of as an ARef.
+> >  - Store Firmware directly instead of in an Arc.
+> >  - Replace manual ForLt implementation with the ForLt!() macro.
+> >  - Remove TyrDrmDeviceData and just pass Ok(()) to UnregisteredDevice::new().
+> >  - Complete firmware boot() as an example of it using iomem.
+> >  - Add more content to the MMU stub as well as VM, and address-space stubs
+> >    to show how iomem is shared.
+> > 
+> > - Link to v1: https://lore.kernel.org/r/20260603-use_tyr_reg_data-v1-1-97f64e951cf6@collabora.com
+> > 
+> > This patch applies on top of the drm lifetime series [1] and the
+> > full branch [2].
+> > 
+> > [1] https://lore.kernel.org/rust-for-linux/20260603011711.2077361-1-dakr@kernel.org/
+> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=drm-lifetime
+> > ---
+> >  drivers/gpu/drm/tyr/driver.rs            | 49 ++++++++++++++----
+> >  drivers/gpu/drm/tyr/file.rs              | 11 ++--
+> >  drivers/gpu/drm/tyr/fw.rs                | 88 ++++++++++++++++++++++++++++++++
+> >  drivers/gpu/drm/tyr/mmu.rs               | 56 ++++++++++++++++++++
+> >  drivers/gpu/drm/tyr/mmu/address_space.rs | 63 +++++++++++++++++++++++
+> >  drivers/gpu/drm/tyr/tyr.rs               |  3 ++
+> >  drivers/gpu/drm/tyr/vm.rs                | 62 ++++++++++++++++++++++
+> >  7 files changed, 316 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+> > index 819f64a7573d..7f2d2e8eb7de 100644
+> > --- a/drivers/gpu/drm/tyr/driver.rs
+> > +++ b/drivers/gpu/drm/tyr/driver.rs
+> > @@ -6,6 +6,7 @@
+> >          OptionalClk, //
+> >      },
+> >      device::{
+> > +        Bound,
+> >          Core,
+> >          Device,
+> >          DeviceContext, //
+> > @@ -29,6 +30,7 @@
+> >      sizes::SZ_2M,
+> >      sync::{
+> >          aref::ARef,
+> > +        Arc,
+> >          Mutex, //
+> >      },
+> >      time,
+> > @@ -37,9 +39,11 @@
+> >  
+> >  use crate::{
+> >      file::TyrDrmFileData,
+> > +    fw::Firmware,
+> >      gem::BoData,
+> >      gpu,
+> >      gpu::GpuInfo,
+> > +    mmu::Mmu,
+> >      regs::gpu_control::*, //
+> >  };
+> >  
+> > @@ -49,7 +53,6 @@
+> >  
+> >  /// Convenience type alias for the DRM device type for this driver.
+> >  pub(crate) type TyrDrmDevice<Ctx = drm::Registered> = drm::Device<TyrDrmDriver, Ctx>;
+> > -
+> >  pub(crate) struct TyrPlatformDriver;
+> >  
+> >  #[pin_data(PinnedDrop)]
+> > @@ -58,9 +61,14 @@ pub(crate) struct TyrPlatformDriverData<'bound> {
+> >      _reg: drm::Registration<'bound, TyrDrmDriver>,
+> >  }
+> >  
+> > +/// Resources kept alive by the DRM registration.
+> >  #[pin_data]
+> > -pub(crate) struct TyrDrmDeviceData {
+> > -    pub(crate) pdev: ARef<platform::Device>,
+> > +pub(crate) struct TyrDrmRegistrationData<'bound> {
+> > +    /// Parent platform device.
+> > +    pub(crate) pdev: &'bound platform::Device<Bound>,
+> > +
+> > +    /// Firmware sections.
+> > +    pub(crate) fw: Firmware<'bound>,
+> >  
+> >      #[pin]
+> >      clks: Mutex<Clocks>,
+> > @@ -68,6 +76,9 @@ pub(crate) struct TyrDrmDeviceData {
+> >      #[pin]
+> >      regulators: Mutex<Regulators>,
+> >  
+> > +    /// GPU MMIO register mapping.
+> > +    pub(crate) iomem: Arc<IoMem<'bound>>,
+> > +
+> >      /// Some information on the GPU.
+> >      ///
+> >      /// This is mainly queried by userspace, i.e.: Mesa.
+> > @@ -119,7 +130,7 @@ fn probe<'bound>(
+> >          let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
+> >  
+> >          let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
+> > -        let iomem = request.iomap_sized::<SZ_2M>()?;
+> > +        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?, GFP_KERNEL)?;
+> >  
+> >          issue_soft_reset(pdev.as_ref(), &iomem)?;
+> >          gpu::l2_power_on(pdev.as_ref(), &iomem)?;
+> > @@ -135,10 +146,23 @@ fn probe<'bound>(
+> >          // other threads of execution.
+> >          unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
+> >  
+> > -        let platform: ARef<platform::Device> = pdev.into();
+> > +        let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
+> > +
+> > +        let mmu = Mmu::new(iomem.as_arc_borrow(), &gpu_info)?;
+> > +
+> > +        let firmware = Firmware::new(
+> > +            pdev,
+> > +            iomem.clone(),
+> > +            &unreg_dev,
+> > +            mmu.as_arc_borrow(),
+> > +            &gpu_info,
+> > +        )?;
+> > +
+> > +        firmware.boot()?;
+> >  
+> > -        let data = try_pin_init!(TyrDrmDeviceData {
+> > -                pdev: platform.clone(),
+> > +        let reg_data = try_pin_init!(TyrDrmRegistrationData {
+> > +                pdev,
+> > +                fw: firmware,
+> >                  clks <- new_mutex!(Clocks {
+> >                      core: core_clk,
+> >                      stacks: stacks_clk,
+> > @@ -148,11 +172,14 @@ fn probe<'bound>(
+> >                      _mali: mali_regulator,
+> >                      _sram: sram_regulator,
+> >                  }),
+> > +                iomem,
+> >                  gpu_info,
+> >          });
+> >  
+> > -        let tdev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;
+> > -        let reg = drm::Registration::new(pdev.as_ref(), tdev, (), 0)?;
+> > +        // SAFETY: `reg` is stored in the platform driver data and is not leaked or
+> > +        // forgotten, so it is dropped before the `'bound` registration data can become
+> > +        // invalid.
+> > +        let reg = unsafe { drm::Registration::new_with_lt(pdev.as_ref(), unreg_dev, reg_data, 0)? };
+> >  
+> >          let driver = TyrPlatformDriverData {
+> >              _device: reg.device().into(),
+> > @@ -183,8 +210,8 @@ fn drop(self: Pin<&mut Self>) {}
+> >  
+> >  #[vtable]
+> >  impl drm::Driver for TyrDrmDriver {
+> > -    type Data = TyrDrmDeviceData;
+> > -    type RegistrationData = ForLt!(());
+> > +    type Data = ();
+> > +    type RegistrationData = ForLt!(TyrDrmRegistrationData<'_>);
+> >      type File = TyrDrmFileData;
+> >      type Object<R: drm::DeviceContext> = drm::gem::shmem::Object<BoData, R>;
+> >      type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
+> > diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+> > index 9f53da7633ab..9baec67febc9 100644
+> > --- a/drivers/gpu/drm/tyr/file.rs
+> > +++ b/drivers/gpu/drm/tyr/file.rs
+> > @@ -11,7 +11,8 @@
+> >  
+> >  use crate::driver::{
+> >      TyrDrmDevice,
+> > -    TyrDrmDriver, //
+> > +    TyrDrmDriver,
+> > +    TyrDrmRegistrationData, //
+> >  };
+> >  
+> >  #[pin_data]
+> > @@ -30,16 +31,16 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+> >  
+> >  impl TyrDrmFileData {
+> >      pub(crate) fn dev_query(
+> > -        ddev: &TyrDrmDevice,
+> > +        _ddev: &TyrDrmDevice,
+> >          _pdev: &platform::Device<device::Bound>,
+> > -        _reg_data: &(),
+> > +        reg_data: &TyrDrmRegistrationData<'_>,
+> >          devquery: &mut uapi::drm_panthor_dev_query,
+> >          _file: &TyrDrmFile,
+> >      ) -> Result<u32> {
+> >          if devquery.pointer == 0 {
+> >              match devquery.type_ {
+> >                  uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
+> > -                    devquery.size = core::mem::size_of_val(&ddev.gpu_info) as u32;
+> > +                    devquery.size = core::mem::size_of_val(&reg_data.gpu_info) as u32;
+> >                      Ok(0)
+> >                  }
+> >                  _ => Err(EINVAL),
+> > @@ -53,7 +54,7 @@ pub(crate) fn dev_query(
+> >                      )
+> >                      .writer();
+> >  
+> > -                    writer.write(&ddev.gpu_info)?;
+> > +                    writer.write(&reg_data.gpu_info)?;
+> >  
+> >                      Ok(0)
+> >                  }
+> > diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+> > new file mode 100644
+> > index 000000000000..fb4b6709bce1
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/tyr/fw.rs
+> > @@ -0,0 +1,88 @@
+> > +// SPDX-License-Identifier: GPL-2.0 or MIT
+> > +
+> > +//! Firmware loading and management for Mali CSF GPUs.
+> > +//!
+> > +//! This is currently only a lifetime/resource stub. The actual firmware parser,
+> > +//! section loading, MCU VM mapping, and boot sequence will be added later.
+> > +#![allow(dead_code)]
+> > +
+> > +use kernel::{
+> > +    device::Bound,
+> > +    drm::Uninit,
+> > +    io::{
+> > +        poll,
+> > +        Io, //
+> > +    },
+> > +    platform,
+> > +    prelude::*,
+> > +    sync::{
+> > +        Arc,
+> > +        ArcBorrow, //
+> > +    },
+> > +    time::Delta, //
+> > +};
+> > +
+> > +use crate::{
+> > +    driver::{
+> > +        IoMem,
+> > +        TyrDrmDevice, //
+> > +    },
+> > +    gpu::GpuInfo,
+> > +    mmu::Mmu,
+> > +    regs::gpu_control::{
+> > +        McuControlMode,
+> > +        McuStatus,
+> > +        MCU_CONTROL,
+> > +        MCU_STATUS, //
+> > +    },
+> > +    vm::Vm, //
+> > +};
+> > +
+> > +/// Firmware state for a bound Tyr device.
+> > +///
+> > +/// For now this only keeps the device resources alive. Later this will own the
+> > +/// loaded firmware sections, MCU VM mappings, and boot state.
+> > +pub(crate) struct Firmware<'bound> {
+> > +    /// Parent platform device.
+> > +    _pdev: &'bound platform::Device<Bound>,
+> > +
+> > +    /// MMIO mapping used for firmware/MCU register access.
+> > +    iomem: Arc<IoMem<'bound>>,
+> > +}
+> > +
+> > +impl<'bound> Firmware<'bound> {
+> > +    /// Create firmware state for this device.
+> > +    ///
+> > +    /// This stub only records the resources that future firmware loading code
+> > +    /// will need.
+> > +    pub(crate) fn new(
+> > +        pdev: &'bound platform::Device<Bound>,
+> > +        iomem: Arc<IoMem<'bound>>,
+> > +        ddev: &TyrDrmDevice<Uninit>,
+> > +        mmu: ArcBorrow<'_, Mmu<'bound>>,
+> > +        gpu_info: &GpuInfo,
+> > +    ) -> Result<Firmware<'bound>> {
+> > +        let vm = Vm::new(pdev, ddev, mmu, gpu_info)?;
+> > +        vm.activate()?;
+> > +
+> > +        Ok(Firmware { _pdev: pdev, iomem })
+> > +    }
+> > +
+> > +    /// Boot the firmware.
+> > +    pub(crate) fn boot(&self) -> Result {
+> > +        let io = &self.iomem;
+> > +        io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Auto));
+> > +
+> > +        if let Err(e) = poll::read_poll_timeout(
+> > +            || Ok(io.read(MCU_STATUS)),
+> > +            |status| status.value() == McuStatus::Enabled,
+> > +            Delta::from_millis(1),
+> > +            Delta::from_millis(100),
+> > +        ) {
+> > +            let status = io.read(MCU_STATUS);
+> > +            pr_err!("MCU failed to boot, status: {:?}", status.value());
+> > +            return Err(e);
+> > +        }
+> > +        Ok(())
+> > +    }
+> > +}
+> > diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
+> > new file mode 100644
+> > index 000000000000..9e2efe342df3
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/tyr/mmu.rs
+> > @@ -0,0 +1,56 @@
+> > +// SPDX-License-Identifier: GPL-2.0 or MIT
+> > +
+> > +//! Memory Management Unit (MMU) driver for the Tyr GPU.
+> > +//!
+> > +//! This is just a lifetime/resource stub.
+> > +//! The actual MMU initialization, page table management,
+> > +//! and GPU VM mapping will be added later.
+> > +
+> > +use kernel::{
+> > +    new_mutex,
+> > +    prelude::*,
+> > +    sync::{
+> > +        Arc,
+> > +        ArcBorrow,
+> > +        Mutex, //
+> > +    }, //
+> > +};
+> > +
+> > +use crate::{
+> > +    driver::IoMem,
+> > +    gpu::GpuInfo,
+> > +    mmu::address_space::AddressSpaceManager,
+> > +    regs::gpu_control::AS_PRESENT, //
+> > +};
+> > +
+> > +pub(crate) mod address_space;
+> > +
+> > +#[pin_data]
+> > +pub(super) struct Mmu<'bound> {
+> > +    /// Manages the allocation of hardware MMU slots to GPU address spaces.
+> > +    #[pin]
+> > +    pub(crate) as_manager: Mutex<AddressSpaceManager<'bound>>,
+> > +}
+> > +
+> > +impl<'bound> Mmu<'bound> {
+> > +    /// Create an MMU component for this device.
+> > +    pub(super) fn new(
+> > +        iomem: ArcBorrow<'_, IoMem<'bound>>,
+> > +        gpu_info: &GpuInfo,
+> > +    ) -> Result<Arc<Mmu<'bound>>> {
+> > +        let present = AS_PRESENT::from_raw(gpu_info.as_present).present().get();
+> > +        let slot_count: usize = present.count_ones().try_into()?;
+> > +        pr_info!("MMU: {} address space slots present", slot_count);
+> > +
+> > +        let as_manager = AddressSpaceManager::new(iomem)?;
+> > +        let mmu_init = try_pin_init!(Self{
+> > +            as_manager <- new_mutex!(as_manager),
+> > +        });
+> > +        Arc::pin_init(mmu_init, GFP_KERNEL)
+> > +    }
+> > +
+> > +    /// Make a VM active.
+> > +    pub(crate) fn activate_vm(&self) -> Result {
+> > +        self.as_manager.lock().activate_vm()
+> > +    }
+> > +}
+> > diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
+> > new file mode 100644
+> > index 000000000000..47534944b458
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
+> > @@ -0,0 +1,63 @@
+> > +// SPDX-License-Identifier: GPL-2.0 or MIT
+> > +
+> > +//! GPU address space management and hardware operations.
+> > +//!
+> > +//! This is just a lifetime/resource stub.
+> > +//! The actual GPU hardware address spaces (AS), including configuration,
+> > +//! command submission, and page table update regions will be added later.
+> > +
+> > +use kernel::{
+> > +    io::{
+> > +        poll,
+> > +        register::Array,
+> > +        Io, //
+> > +    },
+> > +    prelude::*,
+> > +    sync::{
+> > +        Arc, //
+> > +        ArcBorrow,
+> > +    },
+> > +    time::Delta, //
+> > +};
+> > +
+> > +use crate::{
+> > +    driver::IoMem,
+> > +    regs::mmu_control::mmu_as_control::STATUS, //
+> > +};
+> > +
+> > +/// Manages GPU hardware address spaces via MMIO register operations.
+> > +pub(crate) struct AddressSpaceManager<'bound> {
+> > +    /// Memory-mapped I/O region for GPU register access.
+> > +    iomem: Arc<IoMem<'bound>>,
+> > +}
+> > +
+> > +impl<'bound> AddressSpaceManager<'bound> {
+> > +    /// Creates a new address space manager.
+> > +    ///
+> > +    /// Initializes the manager with references to the platform device and
+> > +    /// I/O memory region, along with the bitmask of available AS slots.
+> > +    pub(super) fn new(iomem: ArcBorrow<'_, IoMem<'bound>>) -> Result<AddressSpaceManager<'bound>> {
+> > +        Ok(Self {
+> > +            iomem: iomem.into(),
+> > +        })
+> > +    }
+> > +
+> > +    pub(super) fn activate_vm(&mut self) -> Result {
+> > +        self.as_wait_ready(0)
+> > +    }
+> > +
+> > +    /// Waits for an AS slot to become ready (not active).
+> > +    ///
+> > +    /// Returns an error if polling times out after 10ms or if register access fails.
+> > +    fn as_wait_ready(&self, as_nr: usize) -> Result {
+> > +        let io = &*self.iomem;
+> > +        let op = || {
+> > +            let status_reg = STATUS::try_at(as_nr).ok_or(EINVAL)?;
+> > +            Ok(io.read(status_reg))
+> > +        };
+> > +        let cond = |status: &STATUS| -> bool { !status.active_ext() };
+> > +        poll::read_poll_timeout(op, cond, Delta::from_millis(0), Delta::from_millis(10))?;
+> > +
+> > +        Ok(())
+> > +    }
+> > +}
+> > diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+> > index 95cda7b0962f..ace2764c6059 100644
+> > --- a/drivers/gpu/drm/tyr/tyr.rs
+> > +++ b/drivers/gpu/drm/tyr/tyr.rs
+> > @@ -9,9 +9,12 @@
+> >  
+> >  mod driver;
+> >  mod file;
+> > +mod fw;
+> >  mod gem;
+> >  mod gpu;
+> > +mod mmu;
+> >  mod regs;
+> > +mod vm;
+> >  
+> >  kernel::module_platform_driver! {
+> >      type: TyrPlatformDriver,
+> > diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+> > new file mode 100644
+> > index 000000000000..5ca1b773df92
+> > --- /dev/null
+> > +++ b/drivers/gpu/drm/tyr/vm.rs
+> > @@ -0,0 +1,62 @@
+> > +// SPDX-License-Identifier: GPL-2.0 or MIT
+> > +
+> > +//! GPU virtual memory management.
+> > +//!
+> > +//! This is just a lifetime/resource stub. The actual vm
+> > +//! implementation using the DRM GPUVM framework will be added later.
+> > +
+> > +use kernel::{
+> > +    device::Bound,
+> > +    drm::DeviceContext,
+> > +    platform,
+> > +    prelude::*,
+> > +    sync::{
+> > +        aref::ARef,
+> > +        Arc,
+> > +        ArcBorrow, //
+> > +    }, //
+> > +};
+> > +
+> > +use crate::{
+> > +    driver::TyrDrmDevice,
+> > +    gpu::GpuInfo,
+> > +    mmu::Mmu, //
+> > +};
+> > +
+> > +/// GPU virtual address space.
+> > +///
+> > +/// Each VM can be mapped into a hardware address space slot.
+> > +#[pin_data]
+> > +pub(crate) struct Vm<'bound> {
+> > +    /// MMU manager.
+> > +    mmu: Arc<Mmu<'bound>>,
+> > +    /// Platform device reference (needed to access the page table via devres).
+> > +    pdev: ARef<platform::Device>,
+> > +}
+> > +
+> > +impl<'bound> Vm<'bound> {
+> > +    /// Creates a new GPU virtual address space.
+> > +    pub(crate) fn new<Ctx: DeviceContext>(
+> > +        pdev: &'bound platform::Device<Bound>,
+> > +        _ddev: &TyrDrmDevice<Ctx>,
+> > +        mmu: ArcBorrow<'_, Mmu<'bound>>,
+> > +        _gpu_info: &GpuInfo,
+> > +    ) -> Result<Arc<Vm<'bound>>> {
+> > +        let vm = Arc::pin_init(
+> > +            pin_init!(Self {
+> > +                pdev: pdev.into(),
+> > +                mmu: mmu.into(),
+> > +            }),
+> > +            GFP_KERNEL,
+> > +        )?;
+> > +
+> > +        Ok(vm)
+> > +    }
+> > +
+> > +    /// Activate the VM in a hardware address space slot.
+> > +    pub(crate) fn activate(&self) -> Result {
+> > +        self.mmu.activate_vm().inspect_err(|e| {
+> > +            pr_err!("Failed to activate VM: {:?}\n", e);
+> > +        })
+> > +    }
+> > +}
+> > 
+> > ---
+> > base-commit: 305b04e26f0cdff2c8c0db208dbec0d9c9984a48
+> > change-id: 20260603-use_tyr_reg_data-32720e66b2dd
+> > 
+> > Best regards,
+> 
