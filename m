@@ -1,308 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012029.outbound.protection.outlook.com [52.101.43.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E37817C211;
-	Fri,  5 Jun 2026 14:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780668271; cv=none; b=GtKC5fElV6vywUMh9rT17evm6U2HRppGJ8NjL81jYxMOccd/T/C53P7M+2ieHQLYU6XTFz6Gu/UEnD/4viBDEwzqmVTM+2Z21mEPzABvEv35oy5MbfrE5tdb2RG4WvAxdNGH4t54HwnbSQsy6dWQ6KTi1ELe1HaZhHHXDcGVBIg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780668271; c=relaxed/simple;
-	bh=FmOiaWHYYNRw1PqlXtpBZh6nUY7y4GCwrtLkmUAlu3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PqTrb5P+rpRWLuK4mFPc6YI35TSMtY+BXg2CUinVwfY3vgE8HqGX9xh8uxiIDOM+O3BzpUIpI5EhKjb6+Tk/fkg6wLhiZTSX+a/DmKog1uQdZyFvC89dbuNebFe7ssuVhi+XX5doGTt1uNJiDmxXKFhm4MSeEHOecyVsG9Sj9TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RApMYwO7; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90483194AE6;
+	Fri,  5 Jun 2026 14:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780669160; cv=fail; b=R2C4xk35Yg43z0K8kmCCGEi4M+LFe4fv5vArWapaDNY8Jx24B2wJqAi+zKDCXT/Cb3anrJhX33CvxGIubFMGSfXPLv6SzbnzG6EKBj72TNVAJw7VFy2koMmcecXawAbqJws5oEbTo5ALu0AirblDPTM2As4hkVHpZz2Hq+n9bWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780669160; c=relaxed/simple;
+	bh=dQnhKg7uqyjXzIuhiqz5aVc6O42+jVxZK0QD45fPV6I=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Yw/48MLtVapdVEcUmNXOjUtEedLGIKRDbVg3zOXQVlh3P6SBfBhkq0W8rIEiNAINvtwq8dWBvr037pBjqIwtlgA41oqtVl7UK5GdK/8yPthxXeVlJTUEqExp5ifiSiFfv+MSxuy4CSJKsFNoBg9/aNUrurkNUiIzt6Vv0kdVjwY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oBl1zhvq; arc=fail smtp.client-ip=52.101.43.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RApMYwO7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FC41F00898;
-	Fri,  5 Jun 2026 14:04:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780668269;
-	bh=n9phLvi9RaSkTbiV76v3B+9PIG1KyHFVOKkyTySAtm8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RApMYwO7er3nWL423qBa8U7GezuFG85ZFI5QxfxdBRA7oxZOqr3+dUKOvKsQD42dk
-	 MBm8gyp4fD+eznKQX2NuNl3PnC9qt/wtqr5m86YXCEdGRJMAhV26S4jY7Kh24jYkAq
-	 GbrrIb2q4riaQyR41vegJ4WkCjoH4Em7/d4vKPqhCsKUoNi6h+Hyry4kG2iyFA90Sz
-	 5aUMgBIh8jiCcjHLrtWhYi+Cg2DmYH55hjF80jg5xWdqKNdobAdnhkM5bg8xfUaHx1
-	 KfNXPeeTrR8LvzTbFRWiEekhhKHP90RPEUV8lI5QIW3OQA8Ix9YzL1OHon50JAkz+m
-	 /aMXpi8IlhVTA==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 04B5BF4006B;
-	Fri,  5 Jun 2026 10:04:27 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 05 Jun 2026 10:04:28 -0400
-X-ME-Sender: <xms:a9ciaqlosAOgMQ-H7Bs3JEtceK8yxjIZyvfv12DxMpT8noa2LvH6UA>
-    <xme:a9ciauTmf_0ZDts2yRwzgpvSn-ozgSSUasZ63qxsOL7UFns9IZhhWS3I7kz2NyySD
-    srfWhMNvIgstAqsVM9nJB3Ob7qEmVRhMOVTtffqHmvrB1W3bPwETw>
-X-ME-Received: <xmr:a9ciav5x9HVbnmYbLxkD4mit0JBd3O-U72si7DYB5phFmSYDmDoybYuX78o>
-X-ME-Proxy-Cause: dmFkZTE0LZy4M50cfSktgTQFQkT6rI8G/Y5ximbMU42xvQT/+Sed7xjM9kNTsktTuSYDm1
-    BIjZO7IzdASMlhBtV1S7AFMQApb37A8fKR9/AHBLIr/n9d/wlMaBz+PRGef2ki8mMhu9tX
-    4JvIRsbSlNYDdkdzSA6KfbTuLTkSgs9bVuP2uAzw08Hls1twdxyz7y7v9YaBKujNxVJEjL
-    G0EeIDtlTu2RAmmMKOAuCcjCCAFGKqDKV8vFzoNSBFeiSMcfD6JZu6gP3ORcpCyzteW65r
-    25GOeoMN2WTRB5S4afaK+GExykd4IQTngu5itniecfIpXUhstt8v8txm3kk/kZVZbv1bqO
-    ino+D2vIRbGMN+F1hRXDOCzUUZ2iJH07hy1zl3BcOJNvFSHyIe1wkLhZ97kGI/eS+3q0so
-    mx/DzXcsnBDcWHgz6WWNinkDN6IiI48Vi289YaFfyxv8KArnYJOTUiWIfZ4GiV7IRl+0sO
-    be02Isnlw5gQ6PVC39s4/Er7YAf9Cb0CT1xqHgh2ckzV1mpGiJHVHN4FZrGBoUVBJOBAcL
-    t+ZwTOzejpgfVg0iqdMKpWeCjLU3a5n44cIPoA/RfgiZ4LMkRNHl2sJkaEZRhYj7pHjiJo
-    ZVydVPBt8Dd6psI3xOgvfEiZQ/1XhhJ7y+n8Pv6AmgF9oUJpk/pxlIOaoAdg
-X-ME-Proxy: <xmx:a9cialHZ--5RMQutJGNI-mXfgpahld13JBnKh_cXRhsUWb5rNGxwgA>
-    <xmx:a9ciapGyCe-Jsr-DKFpFLGNwICjSfAj78LXIpdeH4ICgyDz8UpyQig>
-    <xmx:a9ciartEuy8QyrrZg5xel2j7fyTUsmEiLyAvUGLc9pqqbxBhx36GZg>
-    <xmx:a9cianI6wu3QjraoT0xkcrI8owwNVsdSwqYU2kw7PK0Smvh6B6QI7Q>
-    <xmx:a9ciaizRFxuinjXkGL5XxgnHr3z8LABkzVb52CrBYIK0js_GkvR6y0HT>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Jun 2026 10:04:27 -0400 (EDT)
-Date: Fri, 5 Jun 2026 07:04:26 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	rcu@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	maple-tree@lists.infradead.org, linux-mm@kvack.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Philipp Stanner <phasta@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Subject: Re: [RFC PATCH 3/3] rust: rcu: Introduce RcuFreeBox
-Message-ID: <aiLXaoGZVkiNEAgC@tardis-2.local>
-References: <20260605133541.22569-1-boqun@kernel.org>
- <20260605133541.22569-6-boqun@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oBl1zhvq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CbbpGt/EVo+IlTXdZAHVbRd4WXxd93odmnwuMQUTvr0mEXjpWQ/IpORvcxU3hmEo3HAMyt+7bavQMFnZ8/MNbH0GydRE3uU7qpEFdayKUcD50HWdoLZzJJmoOq2v+8CWiQHA3K1yKLTb0vYrdMD+H03VgfBjzWWgGEwLrgcDnrRHXFz3MT288IKETt+jTLUqHk4oSca4RCBI5+VHRnNsx31FoPnfSSMhvf/se7XH++dZAYm5JrChWvJX73HO8EPXICroJVcNONI+Zmj23Dsys3wadNfz2iLyplklahUNwXZa0GJQRPrCH5onf0dxN5Uan+krn29xfoCNp4S/mw6voA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xNpgEOmiDuVY6xL0XFcfkpIuVQfY91pXoUjoLjF0CZA=;
+ b=RXk1vK0qn/M1Mny9zOHWzKYljkPJUkmUw/JcofwUDHwGLfFixKWeKZS3xDL7XdLn2MasWlD8+whhO4r5hyHF+SLRGrSJVB9dfcOVBMqeIM0p6dyBL8vtF+MzXu6ytE27R0H1mJsnEdai6Hj7FwhcKSeE/LiIY16F3A4WOgFTX2hb+ugHQZQpBNOCFnbPbHqE071t5T30GwYLwfW1v90wihNljjwgfQBSzsWyrGcd94D6BY4eRDlB17DStUCwsvXKGRB6/9G3FdtxYnAinE1G15eMUV61GPmnjPGzyPtfEulUh3E5Z80n/hR8koxZbXfh4L5BBLxjHa92ItyOT0iRZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xNpgEOmiDuVY6xL0XFcfkpIuVQfY91pXoUjoLjF0CZA=;
+ b=oBl1zhvqmmwOkPnIiijccBukH0UxTsjYgOtDotX1/6gV2BrcDP0IoDDCuma26DTOE44Mh6UU56bbC04bDmbbJW75bVwg3a2maNv3mVRO3FxWWTjwjpQtW5VdKXNxWjoy1cFwIIbqnOPhHqfoXpsV0IK2IKOEx71i6yOIiPSXRG8e82U3Ujdpm+YzxaFEpJOJrcowkCJ8IRrrZwrd5z9qZ8Mr6FIFt4864I8a04/dT6Frsr5B4yJsJF8i3xNM3+aU79aWG4m/Y0cgzxoHeb+Kkzmg01p5rHqTavHh4gKWvpB9Fv5dEvalTudj7B4pakK5UzNyQXGUFPX5Ptw5mj18yA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ0PR12MB5676.namprd12.prod.outlook.com (2603:10b6:a03:42e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Fri, 5 Jun 2026
+ 14:19:16 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.007; Fri, 5 Jun 2026
+ 14:19:16 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Jun 2026 23:19:12 +0900
+Message-Id: <DJ16J7OSI38Z.2Q7N17PWBS2DH@nvidia.com>
+Cc: "Nathan Chancellor" <nathan@kernel.org>, "Nicolas Schier"
+ <nsc@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Joshua
+ Liebow-Feeser" <joshlf@google.com>, "Jack Wrenn" <jswrenn@amazon.com>
+Subject: Re: [PATCH 18/18] gpu: nova-core: firmware: parse
+ `FalconUCodeDescV2` via `zerocopy`
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Miguel Ojeda" <ojeda@kernel.org>
+References: <20260602172920.30342-1-ojeda@kernel.org>
+ <20260602172920.30342-19-ojeda@kernel.org>
+In-Reply-To: <20260602172920.30342-19-ojeda@kernel.org>
+X-ClientProxiedBy: TY4P286CA0065.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:371::7) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260605133541.22569-6-boqun@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB5676:EE_
+X-MS-Office365-Filtering-Correlation-Id: a8bdb944-32f8-4ee8-1441-08dec30d6cd3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|376014|366016|1800799024|4143699003|56012099006|11063799006|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	FNWSdx62Ag079P2fLII/GugtHaspUgbhCpOmAzdOPnllfh70KD5JtbACCvi1bF4MnUjYDCxo0gw52STzGXxjq1boG6Z33y2Wc4G4LIh8pH8M0pMoouSn2AiDH2ZHctRr425Ps+1vw0zY00Xns+MXbkGIOmD7COYzWVNtvXp/m05mW01QsrbA41GAQWWMN9HvN/Dc4/SZsXI7tnPzCwF+/mceLdEeIlo1IPI8Z+K1+ATHJYUnOKXFcfxzQmTMOIzfOx3ybrZ0treOHtn16p4tNi/ewcfq6ZyKBdWbh1r+g8PpeUbB7OeX1+9fzdOYgn39z0HpOMhTOmOgFD4ZLksESN2Y5AXumnGOELFn3LaGK3MrJszlE1bYrixArdoOa/3mBXLo7PI/go3kKQiA/rgOouGrVnPqSy8teyzmGkvIOe23dGgSIOI2smstn4Ohokb35ii3+C5gtKmP/98vW2nh2oSLFfYTv6+Ek5zBS0NlAKqo9MPCTKOXL33Eh/waSRwqGPxLaiBUW1Yt5VJRBaJsp00BDBmbbMsE5p8ERA53P3VMBesgls8RLtfgUiCinzrJB5JjNMTx9/UqLCV8mv5W6sereL9rdqGe9qFu9hWtz+N/sRCXfNepfEGM5948yjrKE9lIdWsm9CSDoN9xVm8WlatE7+GZ395m4uzNoVi8YzUj8INcFXUX4nq9dog886KL
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(366016)(1800799024)(4143699003)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VHhiQ01VNEVvZUZtYVJ2RmdTcnd2SWU4dTVLWndlNi9jOHFWb2J4L3Yxck80?=
+ =?utf-8?B?NzhraDNsVEFEeXNJMWNxWGc3VjNFL0F5cUhIbHViYXExTTA0K1JwYytxZTZL?=
+ =?utf-8?B?VlJhWmc3ZTM3WWdPMEppTnNvV0ljQ01zYTRJc0g5Y2dnNVU5c0J2eXJ6MnZD?=
+ =?utf-8?B?OWJUOTFNNGEwZ2FtNEZWNXkxWjRKRWsvUE9ubEg4NERTZGMzNW90TWc2czM1?=
+ =?utf-8?B?ZU1HcWlJcWpjWGhRazlLdHB4amVKQWE1QzNJeGR3akZSRDBKWFMwYW1qWm0v?=
+ =?utf-8?B?L0FPeDV5RzFwYjhiMm1sSGRieDV5aWk2WUtrbTN0dDJxV3U3WFR5SkRrK0c2?=
+ =?utf-8?B?NGpDbkdUeXYrYTE3dVBRRlZZdmg4SEVoZHpBaWRPSFczS2k5WU9uT1dmdGVW?=
+ =?utf-8?B?OTNKRU5Ncm9ja3NJdnNjeGdrYkRrcTArSmVSaklrd0M3aEFvYW8xYUVVME5M?=
+ =?utf-8?B?bFhZYndvTDM5TXd3UVJQM0JiRzIrMXduRmRhWHR5K3dyNzBib0MwU3VjK3Rq?=
+ =?utf-8?B?d0JOR294eU1lV0NVYU9KUENGSklWZXdzanNLRjgyL3ordDhVZzRwUi9WY2hi?=
+ =?utf-8?B?akFzSjBKS01zV0pWbFRha0M0OHAzZElhaVc5Y2RjV2ltck5kR2xWR29sWnZo?=
+ =?utf-8?B?WVVuaTcra1Z3QW5keHNvVm1KdmdoV3FEYjRsUUs3TlROV0FDclc5UFVvSTAv?=
+ =?utf-8?B?bDVEdE1WMDFMalByODNJTGpVbTlZalVRVzUvMlA2TlYrc2JYdWhrY2lrMFI2?=
+ =?utf-8?B?VDZpa0pYZW9WTU4xK1k2RE1uQ3diTzJyRFpYUDN1c3FUSWxYc1AwUVBZQzRF?=
+ =?utf-8?B?Umc5bnR6YldmTUIyZWFjSGZtaTVyOEFibUl2eTJTUDRBSzhXMDF4c2hRckFu?=
+ =?utf-8?B?UFhZd3dnUDVHeEFtak94dkpwYUJuYVEydVpSeUVLM21qWXlQUzV3QVZ3THE4?=
+ =?utf-8?B?YW5mV3RBdEFuQU9nSm9oemkreHJFdmN2cUY3Z1l3L2VEWVdPNnd2a1JTWDZk?=
+ =?utf-8?B?dDFlUTlHV3kzcXVaQjN4YVp2U1FqOUJNaWVhSlQ3N2VLMVc1SXFXYmE2SVh6?=
+ =?utf-8?B?U2dXdHJuK01SZ05nM0xoei9hOU9xVzlGaC9yalJPZDRwKzNnalpsQ2llOXRt?=
+ =?utf-8?B?MnRCTDZ1aGZzWnpGR1VwQk1vcEM0TGdpTStHOWZZUWNRNGlyR1ZRS1R6VmpO?=
+ =?utf-8?B?QTR4OXBzUGVud1JOenF3YU5idmNvSDN3aWJ5d2dtSTdTSzBtRy93L1NWTDZu?=
+ =?utf-8?B?WlV2R1JkUE81Z0xqY3JtZnF6SXlneHZvT3orVExjeDF3Umpib3RFcE9oUWxw?=
+ =?utf-8?B?M29MZ1hNbXJXZ3hnLzRUVkFxTFo3a0hSV0FZckxQRzM2ZUZjUTlDZjY3YVo0?=
+ =?utf-8?B?OHpweklvMUhyVi9OaE1CVU5rQ1RNdGZMdGdVUjJYRCt2WWRIajVuQ01QQVNB?=
+ =?utf-8?B?VmR3bUxnY3RwTjlQNXVRNW8vQ0REVGNkK3U1ZEY0cDBGYWlVUEdwRGFOQjdo?=
+ =?utf-8?B?NTh1Yjg1d3NHaGgzSzZPRHRYWW1TcTBRY2RsQmRNYWJkYXpBRXcwcFRjd0xs?=
+ =?utf-8?B?ZmhpbGtxdzR5d2ZTemlRRTZ2c0tYdE5LbkViTzdyNDQwZUZTTVc2QnFFS2lN?=
+ =?utf-8?B?aW85dGFKdzhKbWtvL1A3WFdQdUxoajY0eG5OUm1rRmt0Y25obUkvNW1lelpU?=
+ =?utf-8?B?ZjZJejRvc0djMHdDYVA5V0RJVGtyTGpOU1hCbG9MSm9BNTFncmRoemI4RWdn?=
+ =?utf-8?B?MnpHSWRBZFpLdUpOWUpFUmhMNFpnVjdmUUlkRituQWFuWWlPY1JyN1RDSFd5?=
+ =?utf-8?B?ODV2b3ZUaFBrTW5VVlVvNVNTalRCWHlvcWxQdVY0emZBeDRDWFd6R1BBZVli?=
+ =?utf-8?B?QXM1dnpYbE5teE5zMUZoNitEUlBpYmNnZkd3UFd1NDlUZk9QRndDd1NtRnB1?=
+ =?utf-8?B?eHZzSStuMzQ3Q3ArUE5uQnZjQUNnM053V0dMeGNMKzZTTkxIMnRYL1NyWHRD?=
+ =?utf-8?B?OHNKOWd2TXZxbDFNUHYrVUdmTndDWUZadzE0cTNsb29tMjR6NWFpaU5TS2lq?=
+ =?utf-8?B?Z0ZjMFZFMW5PTXFjUXhSK25jZWxKL1dZOE44azgvbVp5TWdrMEVDK2VMdjBt?=
+ =?utf-8?B?QnpNM2FEYnNSZmtjcXoxS2Y0UktBek9hdjVNamc3WUtWaXh2bis3bU5TbXBW?=
+ =?utf-8?B?NFBqV21DL0dMVkc2VVI2ZjVJUmwwUkdmNjI3VVM2dis3S29acXN2YU5VUmxi?=
+ =?utf-8?B?eHlHMXUxMUZPbEVVYW5RR204UElSbGVDZUtkRlJyenlINmVKSGcrM2p1citJ?=
+ =?utf-8?B?dFdmMWlTK1lpdnZDTFlMaHZwRk5kcnFhSnQvT09EajhWclYrdlVUSmU0L3FY?=
+ =?utf-8?Q?3yMHHOyvXhiJ2PfSL6p2izjExCQxA+7oSIMyuZhBQG0ZL?=
+X-MS-Exchange-AntiSpam-MessageData-1: +SXKbySICDVTQQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a8bdb944-32f8-4ee8-1441-08dec30d6cd3
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2026 14:19:16.4366
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xgqEqCT8AmDn+smyUjhDgDbq0JvezXzURUSDwdbM8eKmKkqVRX1ki2RLBR8N3wB4gygfwrf58mxYTN117CSB1w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5676
 
-On Fri, Jun 05, 2026 at 06:35:41AM -0700, Boqun Feng wrote:
-> The current RcuBox will call the `drop()` function after a grace period
-> inside an RCU callback. This suffices for maintaining a RCU-protected
-> object:
-> 
->   RcuBox::drop():
->     call_rcu(
->       |..| { // <- call back after one grace period.
->         T::drop(); // <- call the destructor of the inner object.
->       }
->     )
-> 
-> However, to support a different RCU usage pattern as below we need to
-> extend RcuBox:
-> 
-> 1. clean up the object, and unshare it from future RCU readers.
-> 2. wait for an RCU grace period.
-> 3. no other RCU readers, we can free the memory.
-> 
-> An `RcuFreeBox<T: RcuFreeSafe>` is introduced to provide support for
-> this:
-> 
->   RcuFreeBox::drop():
->     T::drop_before_gp(); // clean up and ushare.
->     kfree_call_rcu(..);  // free it after one grace period.
-> 
-> Signed-off-by: Boqun Feng <boqun@kernel.org>
+On Wed Jun 3, 2026 at 2:29 AM JST, Miguel Ojeda wrote:
+> Now that we have `zerocopy` support, we can avoid some `unsafe` code.
+>
+> For instance, for `FalconUCodeDescV2`, we can replace the `unsafe impl
+> FromBytes` by safely deriving `zerocopy`'s `FromBytes` and then calling
+> `read_from_prefix`.
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
->  rust/kernel/sync/rcu.rs         | 31 +++++++++++++++
->  rust/kernel/sync/rcu/rcu_box.rs | 68 +++++++++++++++++++++++++++++++--
->  2 files changed, 95 insertions(+), 4 deletions(-)
-> 
-> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-> index 7da6b8d22277..7c26591bb318 100644
-> --- a/rust/kernel/sync/rcu.rs
-> +++ b/rust/kernel/sync/rcu.rs
-> @@ -4,6 +4,8 @@
->  //!
->  //! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdate.h)
->  
-> +use core::pin::Pin;
-> +
->  use crate::{
->      bindings,
->      types::{
-> @@ -82,3 +84,32 @@ pub trait ForeignOwnableRcu: ForeignOwnable {
->      /// [`from_foreign`]: ForeignOwnable::from_foreign
->      unsafe fn rcu_borrow<'a>(ptr: *mut ffi::c_void) -> Self::RcuBorrowed<'a>;
+>  drivers/gpu/nova-core/firmware.rs | 5 +----
+>  drivers/gpu/nova-core/vbios.rs    | 4 ++--
+>  2 files changed, 3 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/fi=
+rmware.rs
+> index 6c2ab69cb605..d97da0c0856d 100644
+> --- a/drivers/gpu/nova-core/firmware.rs
+> +++ b/drivers/gpu/nova-core/firmware.rs
+> @@ -48,7 +48,7 @@ fn request_firmware(
+> =20
+>  /// Structure used to describe some firmwares, notably FWSEC-FRTS.
+>  #[repr(C)]
+> -#[derive(Debug, Clone)]
+> +#[derive(Debug, Clone, zerocopy_derive::FromBytes)]
+>  pub(crate) struct FalconUCodeDescV2 {
+>      /// Header defined by 'NV_BIT_FALCON_UCODE_DESC_HEADER_VDESC*' in Op=
+enRM.
+>      hdr: u32,
+> @@ -84,9 +84,6 @@ pub(crate) struct FalconUCodeDescV2 {
+>      pub(crate) alt_dmem_load_size: u32,
 >  }
-> +
-> +/// Declares a struct is safe to free after a grace period if all readers are guarded by RCU.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementation must guarantee `drop_before_gp()` makes sure no future RCU reader will access
-> +/// any part of [`Self`], as a result, after `drop_before_gp()` return + one grace period, no RCU
-> +/// reader will be on the object, and it's safe to free it.
-> +///
-> +/// Notes for implementators: implementing this trait in general requires `Self` being a
-> +/// [`UnsafePinned`], i.e. a `&mut Self` is not a noalias reference if `Self` has non-trivial
-> +/// `drop()` function.
-> +pub unsafe trait RcuFreeSafe {
-> +    fn drop_before_gp(self: Pin<&mut Self>);
-> +}
-> +
-> +macro_rules! impl_not_drop {
-> +    ($($t:ty, )*) => {
-> +        // SAFETY: Dropping `T` has no side effect means `T` is always ready to be freed. And an
-> +        // empty `drop_before_gp()` suffices.
-> +        $(unsafe impl RcuFreeSafe for $t {
-> +            fn drop_before_gp(self: Pin<&mut Self>) {
-> +                $crate::const_assert!(!core::mem::needs_drop::<$t>());
-> +            }
-> +        })*
-> +    }
-> +}
-> +
-> +impl_not_drop! {i8,u8,i16,u16,i32,u32,isize,usize,i64,u64,}
-> diff --git a/rust/kernel/sync/rcu/rcu_box.rs b/rust/kernel/sync/rcu/rcu_box.rs
-> index 943fe3e8974e..8f52bb472daf 100644
-> --- a/rust/kernel/sync/rcu/rcu_box.rs
-> +++ b/rust/kernel/sync/rcu/rcu_box.rs
-> @@ -6,6 +6,7 @@
->  
->  use core::{
->      marker::PhantomData,
-> +    mem::ManuallyDrop,
->      ops::Deref,
->      ptr::NonNull, //
->  };
-> @@ -29,17 +30,18 @@
->  
->  use super::{
->      ForeignOwnableRcu,
-> -    Guard, //
-> +    Guard,
-> +    RcuFreeSafe, //
->  };
->  
-> -/// A box that is freed with rcu.
-> +/// A box that is drop with RCU.
->  ///
-> -/// The value must be `Send`, as rcu may drop it on another thread.
-> +/// The value must be `Send`, as RCU may drop it on another thread.
->  ///
->  /// # Invariants
->  ///
->  /// * The pointer is valid and references a pinned `RcuBoxInner<T>` allocated with `A`.
-> -/// * This `RcuBox` holds exclusive permissions to rcu free the allocation.
-> +/// * This `RcuBox` holds exclusive permissions to RCU-free the allocation.
->  pub struct RcuBox<T: Send, A: Allocator>(NonNull<RcuBoxInner<T>>, PhantomData<A>);
->  
->  /// Type alias for [`RcuBox`] with a [`Kmalloc`] allocator.
-> @@ -205,6 +207,50 @@ fn drop(&mut self) {
->      drop(unsafe { Box::<_, A>::from_raw(box_inner) });
->  }
->  
-> +/// A box that is freed with RCU.
-> +///
-> +/// Currently we require `T` being `Send` because of an implementation limitation. In theory we can
-> +/// support `T` being `!Send`, since the RCU callback is only used to free the memory, not dropping
-> +/// `T`.
-> +pub struct RcuFreeBox<T: Send + RcuFreeSafe, A: Allocator>(RcuBox<ManuallyDrop<T>, A>);
-> +
-> +impl<T: Send + RcuFreeSafe, A: Allocator> RcuFreeBox<T, A> {
-> +    /// Create a new `RcuFreeBox`.
-> +    pub fn new(x: T, flags: alloc::Flags) -> Result<Self, AllocError> {
-> +        Ok(Self(RcuBox::new(ManuallyDrop::new(x), flags)?))
-> +    }
-> +
-> +    /// Access the value for a grace period.
-> +    pub fn with_rcu<'rcu>(&self, read_guard: &'rcu Guard) -> &'rcu T {
-> +        self.0.with_rcu(read_guard)
-> +    }
-> +}
-> +
-> +impl<T: Send + RcuFreeSafe, A: Allocator> Deref for RcuFreeBox<T, A> {
-> +    type Target = T;
-> +
-> +    fn deref(&self) -> &T {
-> +        self.0.deref()
-> +    }
-> +}
-> +
-> +impl<T: Send + RcuFreeSafe, A: Allocator> Drop for RcuFreeBox<T, A> {
-> +    fn drop(&mut self) {
-> +        // CAST: `ManuallyDrop<T>` is transparet to `T`, adn `RcuBox` owns the object per type
-> +        // invariants.
-> +        let ptr = self.0 .0.as_ptr().cast::<T>();
-> +
-> +        // SAFETY: Per the invariants of `RcuBox`, `ptr` owns the pointed object. And we are not
-> +        // going to move it.
-> +        let pin = unsafe { Pin::new_unchecked(&mut *ptr) };
-> +
+> =20
+> -// SAFETY: all bit patterns are valid for this type, and it doesn't use =
+interior mutability.
+> -unsafe impl FromBytes for FalconUCodeDescV2 {}
 
-This part needs to be:
+I can't wait to remove the many, many instances of this we have in the
+driver. ToT
 
-        // CAST: `ManuallyDrop<RcuBoxInner<T>>` is transparent to `RcuBoxInner<T>`, and `RcuBox`
-        // owns the object per type invariants.
-        let inner: *mut RcuBoxInner<T> = self.0 .0.as_ptr().cast();
-
-        // SAFETY: Per the invariants of `RcuBox`, `inner` owns the pointed object. And we are not
-        // going to move it.
-        let pin = unsafe { Pin::new_unchecked(&mut (*inner).value) };
-
-Fixed locally.
-
-Regards,
-Boqun
-
-> +        pin.drop_before_gp();
-> +
-> +        // `needs_drop::<ManuallyDrop>()` returns `false`, hence `kvfree_call_rcu()` will be called
-> +        // and free the underlying data after a gracer period.
-> +    }
-> +}
-> +
->  #[kunit_tests(rust_rcu_box)]
->  mod tests {
->      use super::*;
-> @@ -218,6 +264,13 @@ fn rcu_box_basic() -> Result {
->  
->          drop(rb);
->  
-> +        let rb = RcuFreeBox::<_, alloc::allocator::Kmalloc>::new(42i32, alloc::flags::GFP_KERNEL)?;
-> +
-> +        assert_eq!(*rb, 42);
-> +        assert_eq!(*rb.with_rcu(&Guard::new()), 42);
-> +
-> +        drop(rb);
-> +
->          let rb = RcuBox::<_, alloc::allocator::Vmalloc>::new(42i32, alloc::flags::GFP_KERNEL)?;
->  
->          assert_eq!(*rb, 42);
-> @@ -225,6 +278,13 @@ fn rcu_box_basic() -> Result {
->  
->          drop(rb);
->  
-> +        let rb = RcuFreeBox::<_, alloc::allocator::Vmalloc>::new(42i32, alloc::flags::GFP_KERNEL)?;
-> +
-> +        assert_eq!(*rb, 42);
-> +        assert_eq!(*rb.with_rcu(&Guard::new()), 42);
-> +
-> +        drop(rb);
-> +
->          Ok(())
->      }
->  }
-> -- 
-> 2.51.0
-> 
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
