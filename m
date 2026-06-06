@@ -1,136 +1,112 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED10B316199
-	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jun 2026 12:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780750740; cv=pass; b=WuX/9EvnvqyqMEIbh0XyCRDArjln47aOIbxwaKg9ooB8oqKpunqwxYjG3Fld7ARoVj1nguVabAaiGlMqcXk+Z1oRLSFx7BnIaqRhg2mSRG2IvuSXHUX4iACgUTN6448Qgza02zRFrdFjRYrgQ6AV+MJdacI6YO++UpDp92jRfE4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780750740; c=relaxed/simple;
-	bh=3BXWtzVi4LQGwgSBHq5PRD0CwABzHiOZUxs129faFuY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dZRWrXIhYrVPFk8tdOIii7uIXMmvDDj+t1bMmkxhJWf2HX1Hq1BoB6hrr5glq8WLr5i4fyn3Rt7EjMnlwWWGIeQRRnIIOJTkwqyIm7OTieJmIkQGmNdQFOIwGgJvtOuCnnR1WahUH2Z4cRBeccYEy+jgW1CJ6/l+U4b/oKw4QF4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qz8wEvpc; arc=pass smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5983B3BFE
+	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jun 2026 13:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780753140; cv=none; b=WR+wtrunxiViCQqhL/ArTBnBK4w18R+e9zya7+eUxUbCYLh4+I2p5huNvB7MVX9PA7SrKLWaYooOsQZ7c6DDW1Bhms79BGD7tjNYuSCSvVx3R2a2NIAfOL+O1Y+IBWeuTegmcuNGCWyaQC8tpGN+VQ/RkTfa7KmTwSUGriC02xo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780753140; c=relaxed/simple;
+	bh=pEDmj3SEILGcxeJONFmnZmYsKsITSXE2ZrM2ghPME1Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ew7dSs53Z/za7Wcxsktj2TZojIOhe9B5AFyW0U8HpOMz69y6EQXVG2R3mepCeHFH5OpfK+LWs/OBIW2qcxClxYseIKgxUjHRFRfcIbgc1/0FaZxhM0KOZCPN8rrmZDJFNT6JLwiydqo23xNUVO+Brdy0JEALWGaQpQmOok+UDCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KJfYIP+v; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qz8wEvpc"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-304f9bc869aso351091eec.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 06 Jun 2026 05:58:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780750738; cv=none;
-        d=google.com; s=arc-20240605;
-        b=T8DC0gT3DBefV73lEJH42vyiWJNlDV8Uf5NpN8JLB8iawi+oCNWDSBLDo4SFRTg8hj
-         84qFzcliQhT8tDL3CNedJWwrXiEyrIYALOwPCqaeuvwvWBv14Mvfeb/EXetQ4qMqWvFS
-         e19S2iubeqt2W5SXXazlH8ZwMiZg+ubvC7HgdsfdxXyl8/5EDROJBLMssSSH0b224w5v
-         e5l8d42wPswvIJJj60OmLvWzZHU0HWzt2sVuZW7Sr4/6Xc6qkVaE62IqevcWQzA8tFW+
-         1G+OQsLOYJTU1UjwiFbxLKPPXGYUVplFY/BNlIAmd+r4o6PeWmKz/B2t9FweH5hNzuSQ
-         37/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=a4n+BOgWnXRxyDrcHuqgnk7I5ws77s2DC2XfzX6E8FI=;
-        fh=iPwQ5Ynb3C0WI7axHV+AvPEAd/xPHAxpvGXXYu+NtJQ=;
-        b=LBYWXSDX5j1CiPubLbefwXMoTwkpNZCl4SmUjFMbAo407vbVMdeAZgHHG5Pw1Ff+qM
-         wE8dlBahkIoHCa46rOlmFM4Cn+WkXNgtD63WAcopFNvWwolPCIKFAJvGyRybhXmfeNKS
-         v/ryV1N7H6He2qTXmpFynBwZPgvb3M9yi9G4XxH8eq36cJ5yDjrBXtMx1taAj1a1I8CC
-         d3proamQZ03z+QWVK8JlzD5Owrl4u/k7WynzWvKpaHcLzt8HJaDM77BKfRYFfdntcgtL
-         jZwVuilrxFtg/c2J3pqu91Tyc+JmkYVw+Ctco4DdbzW2HC03rCvTP0DDcx/ltFjrB5s1
-         cJ9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780750738; x=1781355538; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a4n+BOgWnXRxyDrcHuqgnk7I5ws77s2DC2XfzX6E8FI=;
-        b=Qz8wEvpclvSgPwLOd0DMXkVe05UBroN7JgOeexO33x4W7XGw5k8SdslLwlJm1N0DK5
-         QtaSuACeKqPzvsOkGha2Fc5LnGWqBfUXmXpgY+5loJ4tMBqYe4h8aFEC/O0aLvh0CasD
-         qIfhSClTR6h6aa5O9uKWRpxoEvanQQUklSktivrRrrTFoR/3L4NJkHeNeyA4Fsd0eoUX
-         9tuYwWIs0spGUBVFwbL82cgYJPJ3TWmwEMzRTEgIGDXjkUEchfbs7TXrlCaNfg8nCsnY
-         oZt4JKmSNH/DB1ILKrgIhqzPZd3w5nsff23Cg5gIirX9eVWg6bSYkvT/gQOF0p64p2ku
-         8xrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780750738; x=1781355538;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=a4n+BOgWnXRxyDrcHuqgnk7I5ws77s2DC2XfzX6E8FI=;
-        b=e03xACWW1YjKCqO3ZvfKR2Vn6Z4bF759hjopUSPBBwRUs29FVeiUyKDlGyrr+/qDqX
-         ACPXRMXiMeK01tMLCAJlpK5579kPp/K7Su+Akb9Usba8fU37IW6m9HcxNQVvECMB2UVR
-         1ZO1EWvMCD2Al19JCFidxlk1Bis/VUzoqRKP9clHH0pStcU7AKz8VKXgDHN+d16C6v/e
-         e5hQcW+r15NNZ8pbJhqdGyF7LGo0BaTdWjWl9oFUntWuO56WZkomcWj+eaw9S8B3titq
-         qRYnFcJ4hLY5nHL7Yopj8kRn5VCAGewFqOAeg71Uoy0R3NlFTQsg53YhKSefNZWAi4mY
-         0jvw==
-X-Forwarded-Encrypted: i=1; AFNElJ+V36l82farOnbz1R1pewfz9/rI02MUC4wvP3dVQVrEGMjLSqDkISk3gRM3lFSpdmp2cLLoLao0CjYHS4I7Cg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMXoSYCIJUdXbQnJUf7y+dT/J0KpeioAs0DExQOgNbUvBL026/
-	bdNF2HhWSIhJjSy0+C15Rhe0e3vpZlzJV9YVSpEiLkqJ1RSR/gGzwdln1rEobDbmMfE4pBSKAH6
-	8yQxhO6LbvO+fjY/qSsLdJ4q4p5HjBDY=
-X-Gm-Gg: Acq92OHbGIAv/QiigOdgQFxlxFartRU69CRetptc79J5ZFHqfittlV/Yl7UyzM8C2XB
-	ElYkKBiHQqacpqsHUzJBpCuyfy1GD/fIr1ayy5LFoVBHQBT62g86vEu1ZDk/IHTT0Hj1npwW6vY
-	t1CFEm6q2CoPk8AoZ+/GFha3vF0l8GTNLJeZoClYmEm5/ceb5GysaXMX72E3PMeFDPKton7PWHP
-	QYdXOKbvh9KJ2mmc/kf8bE8WfHzBxiW7WCGNXqpUDN8gnVgkgVjd2EM1BVGW6nIkfdip7LVv1DV
-	r/3JSWKLV427oqxKydvT7ssLbIi+nV23CG5N8+Xl/tznga7KRxs44mSJCdZGTmO4/UWcmMvlcrm
-	bxZ2DPIAr82ZFTJexhu2BfzQ/To7DkOkjiA==
-X-Received: by 2002:a05:7300:c8a:b0:307:2877:b2b6 with SMTP id
- 5a478bee46e88-3077b585b75mr1731054eec.3.1780750738054; Sat, 06 Jun 2026
- 05:58:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KJfYIP+v"
+Message-ID: <37ead39b-6b02-4871-afdd-aafce4398175@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1780753135;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GphkXsxzxI8/ZUUpZNdX/mNnkxReGKZ9d5RKyC86MA0=;
+	b=KJfYIP+vK1dxKBbscwbQvvIzIPV3MD6yM4j+G7tHkpl3QBCr6NEqcDYCIdS3mVLwF/wqrN
+	/bVaqdyBuLfkZri/2E17B4hzhqV/ogeBqZqqRwJ5dUf7yF0dTTYCzPw5x0AtXUczopwK2J
+	+8qXc5TYujlOxJ0Mf/5a3XMCy+QJ7xQ=
+Date: Sat, 6 Jun 2026 14:38:04 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260605-rust-fault-inject-v2-1-aaf978883cc2@kernel.org>
-In-Reply-To: <20260605-rust-fault-inject-v2-1-aaf978883cc2@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 6 Jun 2026 14:58:44 +0200
-X-Gm-Features: AVVi8Cds-mtSL03OuH9_LDzNmpDmFJlCmuaaixkwHKY84f0Wx8jFyTmY46FzIV4
-Message-ID: <CANiq72k9Yc=tQgSEUXgcaJaw+Jub0ZX8g8XWsT8dA4kxifxGEA@mail.gmail.com>
-Subject: Re: [PATCH v2] fault-inject: rust: add a Rust API for fault-injection
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Akinobu Mita <akinobu.mita@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3] i2c: rust: fix I2cAdapter refcounts double increment
+To: =?UTF-8?Q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Boqun Feng <boqun@kernel.org>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>,
+ Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20260531182319.21777-1-nico.antinori.7@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Igor Korotin <igor.korotin@linux.dev>
+In-Reply-To: <20260531182319.21777-1-nico.antinori.7@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Andreas,
+Hello Nicolás
 
-Some quick comments scanning your patch diagonally since I was here
-for something else.
+On 5/31/2026 7:23 PM, Nicolás Antinori wrote:
+> When `I2cAdapter::get` executes, it first calls
+> `bindings::i2c_get_adapter()` which increments the device and module
+> reference counts. It then takes a reference to the raw pointer and
+> converts it to an `ARef` via `.into()`.
+> 
+> The implementation of `From<&T> for ARef<T>` where `T: AlwaysRefCounted`
+> unconditionally calls `T::inc_ref()`. This leads to a second increment
+> to the reference counts.
+> 
+> Since the returned `ARef` will only release a single reference when
+> dropped via `dec_ref()`, this leaks one device and module reference count
+> on every call.
+> 
+> This fix was suggested by sashiko.dev.
+> 
+> Link: https://sashiko.dev/#/patchset/20260521190937.248904-1-nico.antinori.7@gmail.com
+> Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+> ---
+> v3:
+>   - Remove unnecessary `.as_ptr()` and `NonNull` rewrap.
+>   - Add SAFETY comment for `ARef::from_raw`.
+>   - Small change in commit message to make it clearer.
+> v2:
+>   - Add missing Link tag to commit message.
+>   - https://lore.kernel.org/rust-for-linux/20260526194734.14378-1-nico.antinori.7@gmail.com
+> v1: https://lore.kernel.org/rust-for-linux/20260524181151.24988-1-nico.antinori.7@gmail.com
+> 
+>   rust/kernel/i2c.rs | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+> index 7b908f0c5a58..c084a45b1916 100644
+> --- a/rust/kernel/i2c.rs
+> +++ b/rust/kernel/i2c.rs
+> @@ -405,7 +405,9 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
+> 
+>           // SAFETY: `adapter` is non-null and points to a live `i2c_adapter`.
+>           // `I2cAdapter` is #[repr(transparent)], so this cast is valid.
+> -        Ok(unsafe { (&*adapter.as_ptr().cast::<I2cAdapter<device::Normal>>()).into() })
+> +        // `i2c_get_adapter` returned the adapter with an incremented refcount, which we pass to
+> +        // the `ARef`.
+> +        Ok(unsafe { ARef::from_raw(adapter.cast::<I2cAdapter<device::Normal>>()) })
+>       }
+>   }
+> 
+> --
+> 2.53.0
+> 
 
-On Fri, Jun 5, 2026 at 3:27=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
->  #include <linux/ethtool.h>
->  #include <linux/fdtable.h>
-> +#include <linux/fault-inject.h>
->  #include <linux/file.h>
+Reviewed-by: Igor Korotin <igor.korotin@linux.dev>
 
-Please keep them sorted :)
-
-> +// SAFETY: FaultConfig can be used from any task.
-
-`FaultConfig`
-
-> +        // SAFETY: By type invariant, self is always valid.
-
-`self`
-
-> +    /// Returns `true` if the operation should fail.
-
-[`true`]
-
-> +            // INVARIANT: `self.inner` is initialized in ffi_init.
-
-I was going to say `ffi_init`, but there is no such call here. Isn't
-it getting initialized by the C side? I guess this got copy-pasted
-from somewhere else?
-
-Cheers,
-Miguel
+Cheers
+Igor
