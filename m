@@ -1,91 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F339352C28;
-	Sat,  6 Jun 2026 11:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DADC392812;
+	Sat,  6 Jun 2026 11:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780744990; cv=none; b=XRLvRk2x7hKp2Gclm7iCLcHcpD93mEMmD/3JZJlGVij6YTGLRIkF0/+/UcVc2fo+SA8iwyByRk0HqgqV7K79+kYKsdxfP+MPFtZW9WHah9nVjznFusbYaT1G1KNfuShqOFg0m6jxFR2inVsUqdDD9uV4hZKyqXSbk9VnocS4jSc=
+	t=1780745795; cv=none; b=HxJ9GstNot01uVhWri+DYxEnglniiRFuaiRqFerHaVW5SQMuoPrrILnyaLm0pR1UhqJzT/nval3LyUrBwqW1HZF8IeXgzUTIboSZAFfaBfeOlxsvnsLPDhzsLdbg3kUwWIOUPZifEfBJe6RY8aKER1Zl3qL+t+GQcPkN1NnMky0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780744990; c=relaxed/simple;
-	bh=RW5iDI1nw5+hsyNe8SDVvtSzDbtxr9FzhrWhpqGQpCI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=GvcS/KlOff2DiIV4NPekUt+DVsTV9z7d0dUFYZzWeZxuVcINGrO0q4voV7ribySVNkGmxLcJ3DyMlo71ubPdMhI3jOxXyfb9h8Jiy/BBAmFp7IlRGrz04uWNwt7oZQB4s96m2cgJRNUXCYPzzpq2aruJqWU1TibcX3444D/Ql4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=chVxYjcD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780745795; c=relaxed/simple;
+	bh=NG7hAvmS12sIfywaLsmTLwZ2kORwyW9zOHx3WcE3hVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S5FN1RSPBVTCJlnADzx7uddUrzrk5+CDJkwJKL6F2g4BxaupVtYelsa9k+douI15P4NwiXzDFRXqjpV7utIZWdpbnRnt4ThKjlwHKlDy6/FDFee9/ncrnTsTaTeXG3MRvCAbtivwxLgXEngtb217ZCJq/OV+KqH/idLAtPyJCeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9o5wmzS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="chVxYjcD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B301F00893;
-	Sat,  6 Jun 2026 11:23:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9o5wmzS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845771F00893;
+	Sat,  6 Jun 2026 11:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780744989;
-	bh=RW5iDI1nw5+hsyNe8SDVvtSzDbtxr9FzhrWhpqGQpCI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=chVxYjcD+H8dRnfy4Ion4alSdIl2BOAY9eaMuPzyuDQkyy1J80SdWT0ch9NJHTCpm
-	 gKLWqzCgl6yTSjmCu01XHOSgSBxLHl/HF/db6rWcNBZFzFRCT0IlpdiXiXNuNZi49W
-	 y90fW3Hg34vrtv6+3mg+aTiEhiI5sJBThntUB0x9EoBjckeeavulJH2YiZsGUQopbV
-	 arCDSjbOaKCxi6HlYY8erE6Nc/lPj86n4QFUYOXJ/WcpNNSWshJzMANCFzKZMPO1Mb
-	 5VnLE0qIhBljeLEDqPl8G3tL25vCnxFSkIafpYDI6s03Z0r9TtbyFw+c5TXG5c9G4D
-	 BU/uZmF51xFfw==
+	s=k20260515; t=1780745794;
+	bh=V7E5P36Lrj9No5yUdUn3tUWJDWnKv68a7ZmB0+kKRio=;
+	h=From:To:Cc:Subject:Date;
+	b=n9o5wmzSEy00LK7p58ZLYkAwZZaPxokgap7BiztAqwjvU/Sosgo1/3e6kZ/i+jbPR
+	 lHjeJffOVamGeeaWsxuE7/vlvb+jv9FnUeklxXgSRliJtNfCuYV9iMiVdgB3yW60zR
+	 nygIhsmnAjwtZ9Db/rNzzA2d3DI6LWcix3zKHUmgMoV3yupEevFJad0yImMZQ7hr23
+	 XMGW4S6w9uVFzXmoqOt+242HtlH9IfITa4KlphAONmkqojWJ3FsqC/7bwtl1PeWZp+
+	 vbSRBege71WicAmud0oXr5l3zi2/PbjyjnaECrjTVTKyfaZFBdigEhqnCCN9TplGRA
+	 FL1Hn1sIOYcfQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 7.1 (2nd)
+Date: Sat,  6 Jun 2026 13:36:18 +0200
+Message-ID: <20260606113618.12487-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Jun 2026 13:23:04 +0200
-Message-Id: <DJ1XEW84UTAU.28B9WK4VR0QLP@kernel.org>
-Subject: Re: [PATCH v2 3/7] rust: drm: Add RegistrationData to drm::Driver
-Cc: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
- <acourbot@nvidia.com>, <ecourtney@nvidia.com>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <boris.brezillon@collabora.com>, <driver-core@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-To: "Deborah Brouwer" <deborah.brouwer@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260603011711.2077361-1-dakr@kernel.org>
- <20260603011711.2077361-4-dakr@kernel.org> <aiC41_huOYhvacQD@um790>
- <DJ0BD0O60VAB.10S80F8N6MQPG@kernel.org> <aiINpEVaLW85LM5j@um790>
-In-Reply-To: <aiINpEVaLW85LM5j@um790>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Jun 5, 2026 at 1:43 AM CEST, Deborah Brouwer wrote:
-> On Thu, Jun 04, 2026 at 03:53:32PM +0200, Danilo Krummrich wrote:
->> On Thu Jun 4, 2026 at 1:29 AM CEST, Deborah Brouwer wrote:
->> > Hi Danilo, could we use separate data arguments in UnregisteredDevice
->> > vs in the Registration? Basically we want to use the UnregisteredDevic=
-e
->> > to initialize and boot the firmware which we then store as registratio=
-n
->> > data.
->> >
->> > Could you have a look at this patch, it applies on top of this series:
->> > https://lore.kernel.org/rust-for-linux/20260603-use_tyr_reg_data-v1-1-=
-97f64e951cf6@collabora.com/
->>=20
->> They already are separate -- UnregisteredDevice::new() takes T::Data and
->> Registration::new() takes the registration data independently. Your patc=
-h
->> demonstrates this correctly.
->
-> Ah, true the arguments are different, but the issue for Tyr is we need
-> iomem to initialize and boot the firmware before we have a registered
-> device.
->
-> Could you replace your Tyr with the changes i'm proposing here:
+Hi Linus,
 
-I don't see any change in your patch that belongs into this one. What exact=
-ly do
-you have in mind?
+Please pull these fixes for Rust.
 
-Please note that this patch is about core infrastructure and should only to=
-uch
-drivers for the minimum of mechanic changes required. IOW, your follow-up p=
-atch
-already sits perfectly in this context.
+They have all been in linux-next for a week or longer.
 
-> [PATCH v2] drm/tyr: move probe resources into registration data
-> https://lore.kernel.org/rust-for-linux/20260604-use_tyr_reg_data-v2-1-f77=
-a1ffcf08d@collabora.com/
+No conflicts expected.
+
+Thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 5d6919055dec134de3c40167a490f33c74c12581:
+
+  Linux 7.1-rc3 (2026-05-10 14:08:09 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.1-2
+
+for you to fetch changes up to 905b06d32a52afe32fcf5f30cf298c9ea6359f11:
+
+  rust: x86: support Rust >= 1.98.0 target spec (2026-05-30 15:38:16 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v7.1 (2nd)
+
+Toolchain and infrastructure:
+
+ - Fix 'rustc-option' (the Makefile one) when cross-compiling that leads
+   to build or boot failures in certain configs.
+
+ - Work around a Rust compiler bug (already fixed for Rust 1.98.0) thats
+   lead to boot failures in certain configs due to missing 'uwtable'
+   LLVM module flags.
+
+ - Support a Rust compiler change (starting with Rust 1.98.0) in the
+   unstable target specification JSON files.
+
+ - Forbid Rust + arm + KASAN configs, which do not build.
+
+'kernel' crate:
+
+ - Fix NOMMU build by adding a missing helper.
+
+----------------------------------------------------------------
+Alice Ryhl (2):
+      rust: kasan/kbuild: fix rustc-option when cross-compiling
+      rust: arm64: set uwtable llvm module flag for CONFIG_UNWIND_TABLES
+
+Miguel Ojeda (1):
+      rust: x86: support Rust >= 1.98.0 target spec
+
+Nathan Chancellor (1):
+      ARM: Do not select HAVE_RUST when KASAN is enabled
+
+Shivam Kalra (1):
+      rust: helpers: add is_vmalloc_addr wrapper for NOMMU builds
+
+ Makefile                        | 3 ++-
+ arch/arm/Kconfig                | 2 +-
+ arch/arm64/Makefile             | 3 +++
+ arch/x86/Makefile               | 4 ++++
+ arch/x86/Makefile.um            | 8 ++++++++
+ rust/helpers/vmalloc.c          | 6 ++++++
+ scripts/Makefile.compiler       | 2 +-
+ scripts/generate_rust_target.rs | 8 ++++++--
+ 8 files changed, 31 insertions(+), 5 deletions(-)
