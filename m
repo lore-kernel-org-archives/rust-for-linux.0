@@ -1,68 +1,78 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020143.outbound.protection.outlook.com [52.101.195.143])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011041.outbound.protection.outlook.com [40.107.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6812737EFEB
-	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jun 2026 12:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AB43ACF0C;
+	Sat,  6 Jun 2026 12:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780749471; cv=fail; b=ZFWFQEutGF0eobTtTdtSNKZFnANNM2TR6A+2aYe19yd6XwaO3+7xGfup9D7TBVWhY8DgYmF/qv2pq4OuDk4iPSZveTXNUxcVXFrqzsBVfbtrwQXmhbTwF1NXoXENNxZlP6MIpiJhF5+MUBy2auEXMEqotxUfKw8zAdbAXUz92g0=
+	t=1780749801; cv=fail; b=eVZlIXbT4ynPdBk1Lb1L/YM/LI1mUhFYnHho7Uo2Pe/AnXObabEg90nVrtsAChDoWBBMR4joLsHceBMM077yJHqtztNK1wmTAnsx+6b6alJv4/NNofu8xJMujtTJEXzV+kxP7Spu489WEhTVASBOhH0tnA/cAqDsPon2CNwBvlw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780749471; c=relaxed/simple;
-	bh=0nTmzMKjVgtoF+PO2NS4e4kS7yHWss/QYo7IFHXum6A=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=f2csQEdhETgS8VpUtaEgJNjVqvmmrn+jL3NggA39iIrXoNSLPU7n5hATpfeUpQLK7aAXN55GaFRCDs1UaWooN3LcZf2lPw5gH72DN4ohkNyxI8QvGvaUlP7LnkwcTXOkux9jaBgUpqt/QYAWJnoY6LCv7J3jCirrI98Ci1CQZ5c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=tTNsXBiw; arc=fail smtp.client-ip=52.101.195.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1780749801; c=relaxed/simple;
+	bh=Nf/52pr9rA7vA807j6tc2kh6caKvRuATM41SD03VaLo=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=gx5clja+0jVIbvCFbs/XT+77akqL0eOzlBMhKOmhBOKBMasppTEsxCqnHrHPfxijQ5cKdTzOvgBdPMHAaogZ+jYrsG46YjIDM0OvLGWBZoJidx2Gv4bJjPc644yPeg/+c3SLPclMIIS8AQVpuhwwqDHchOHZLwmxqBux6h4ULII=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WDQkEWHk; arc=fail smtp.client-ip=40.107.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="tTNsXBiw"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WDQkEWHk"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RBF6RSUE5+oip7OAZU593JmXPjeKS/SRLgg5i+PQINT356pisD7SnoJafbA3iO/MrtubdF8IIwn9ohdj/lMkZKGRyRt+BDOR0ZViFZXk0wxhRcrGCUD0m4g61g/tPaKoEX/8xFjrwPD/xH+utA/2epe9ku2d6BY8a9ZGoV4vWXaOmOfe03jkL7Nh6beb8NgiauD/o3eF+V2FVs3vc5mluFIV6uNSjBoXQLwUxprh0iUB2FMu2koYELPnVnd37aGo0jDnaLnyWFeDxwDWI1U7gjeCFlXwSs4/8qum4E7o/bmgs7Vqq8W1Pcqov9FonUwxp3vv9Lx8fS00RhbptGquiw==
+ b=wEdmvz6HqWE6vDmaEtY4MJ1dS36eUT04BkRDr0qfVrov9DWFfZCjK3YU6aU4eVfTDZON4VHq+PERTsdzd5ZPf8OcDC0a5rIry3ZwlunqJeABHyymf/viDovupPjcwz4XTpLLZ27nKtvEgNhpX7oJdM7u1eNK2d+V8khbvigMrQdOsUJRcI1a/caHagiU7wuWuMBi1NR1bLlwQ4ELDZZ9jTLfZu13lqxjI+kMaDEun4W53IG/ziQ9vJpYF3D/0ZEKgNBa+1vBq9JkEgaP/qfglOk7uADfUk7wDRE4J45CkLC0wnKFmsuzGPEOhFWqM1xHtOTieDN35jR/2UCAEWl9aQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0nTmzMKjVgtoF+PO2NS4e4kS7yHWss/QYo7IFHXum6A=;
- b=ezcgbvvL26pCF2qx3gQVGQJGWAj4GMgP0ZbXXVcQfF22x5XJsFeNpopawL0ae/wQ7hbNaKGiwowBV6E9leltPb2Ap6hQLQYb3/yiCt8v04S/TPuaa7HMNayRwYwgW1i93tw30nLDOeuflm8RQRLDWJMwPecoSFk7JFhf5I9uNZFc9ZiuWj9xqvCR31k1/qc+vsU864ACWXN1C+MUgcM4VL0l8SdWvXugakHyOJNBgXCftVfJ/sy2Yr8qrAFZMrNq9kuXuRPPgFa+nJqkKtCwp72pVbULiBXyNXrLbC9gb8XXxtV2nYHBevq8RGEsdqhC319fXQu9IuoT/IForMesXg==
+ bh=vfC7eFiqX1flKtkDTgy2X5XixdosJlS6O+Ra6HNDA6Y=;
+ b=MVaTnuuUI74VtntYeR5CN1/FVWaswQFnmBmcMqQyvFGPD1CMA5pNHhvf9W5PYG86qgbTMesC1WGVHzELrhrBNEtamvuuCo+30ZZCc2piwrBuUS80XxZ5i1wKO5fSMk8HCLphIw4n/Cvrhd+p9TDKHTNyCO0XtrkrZibh15lX9x+FubLoFMs/MF4zeV742BSf+SwUzFGx+Mg5SP9tAnBbyO9we1sWFPIsXcMO5VRPnrXldm0q34taUxGanZoBup6PBVhJ6hJ/BjC7QgRDndJh5ow18ZykfHvE76luglu9jctrUzwPetdU9oCBOOPJg0EuSdEWo0FyQMqHRpn7YpPHCw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0nTmzMKjVgtoF+PO2NS4e4kS7yHWss/QYo7IFHXum6A=;
- b=tTNsXBiwrna8/C09BFWkwv24AfHn7rkh53vvwcI8YoD/mTXWoqqh/2YtL5JyAQs3hIX6oiM55tkLfzwKlb2bBkqhmZZpg5/3kXqJun7F7Y/SWcMh0d1XhjhleksyQ+j53k6Bakpy3IF3mGEcpbvwFZxzFpvh5SUC+oZJESmHF7g=
+ bh=vfC7eFiqX1flKtkDTgy2X5XixdosJlS6O+Ra6HNDA6Y=;
+ b=WDQkEWHk5GWiZf9vXtQj4e2kBJR/BnOz+4IJzUAJXlKf3f0KgEO2JbySUcoqKpzuh76k5newCscsMrCTwV82BeQkNo+4JbTFxlpzjkuTzJQfr7los2davg+eGvHqeepMh5YAYFTwBX2iu8soCLQmvYHgImbp7bBaML9HO10fAJc15oHSdvuqNc0yrsnI5RGrXOjZPr3wEy0fyZzeK6hjcJLZZN1Ias4EgSClnG1/lA22kx7izXyJXoK8dKRhfmw50i1nQtNcRhTkaF49ZPtnmYI74t+A4BY5KEJfahcV/GtUDMl8MPoHGu48F5Prc3KqUF+WPOb6gBzfBoE1GeRGqg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LOCP265MB8566.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4b6::21) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by BL1PR12MB5730.namprd12.prod.outlook.com (2603:10b6:208:385::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.10; Sat, 6 Jun 2026
- 12:37:47 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.010; Sat, 6 Jun 2026
- 12:37:46 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 06 Jun 2026 13:37:46 +0100
-Message-Id: <DJ1Z03DMKJOI.APL4BE9O9B4F@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [GIT PULL] pin-init changes for v7.2-rc1
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Gary Guo"
- <gary@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260602163949.2215642-1-gary@kernel.org>
- <CANiq72n3t1VW5oTFeEZt-raBFnhO-uw_Fjm17vEY2SuvR8XNWA@mail.gmail.com>
-In-Reply-To: <CANiq72n3t1VW5oTFeEZt-raBFnhO-uw_Fjm17vEY2SuvR8XNWA@mail.gmail.com>
-X-ClientProxiedBy: LO6P265CA0017.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ff::8) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.11; Sat, 6 Jun 2026
+ 12:43:15 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.007; Sat, 6 Jun 2026
+ 12:43:15 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH v5 0/3] rust: add `bitfield!` macro
+Date: Sat, 06 Jun 2026 21:43:03 +0900
+Message-Id: <20260606-bitfield-v5-0-b92188820914@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WQzW7DIBCEX8XiXKJlwTb1qe9R9cDP0lA1dgsOa
+ hTl3YttVXHUC9KI+QZmrixTipTZ0FxZohJznMYq2qeGuaMZ34lHXzVDwA4UaG7jHCJ9et6R0Ni
+ qoIJ3rNq/EoX4s0a9vm06n+0HuXnhF8cx5nlKl/WtgovvL/b5HluQA0dpnAKAXjj7Mpboozm46
+ cSW3CLvZAtiR8pKGiOg75yUsvf/SLUjsd+RqpKkNQqvKFhPD+RtK5Po+1znmbeGzJpMvN6f4jw
+ 0PXoprbaBjLN1DxfQeaO6FkgTAHoKILuglxVOlLNZdx2arb7oQYpWikM9UQsu+GWc0lQef3H7B
+ QFFyf6sAQAA
+X-Change-ID: 20260408-bitfield-6e18254f4fdc
+To: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: John Hubbard <jhubbard@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+ Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ nova-gpu@lists.linux.dev, driver-core@lists.linux.dev, 
+ Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <ynorov@nvidia.com>, 
+ Joel Fernandes <joelagnelf@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TY4P286CA0134.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:37f::6) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,113 +80,148 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOCP265MB8566:EE_
-X-MS-Office365-Filtering-Correlation-Id: f977da9c-b6db-42ca-3ba6-08dec3c869bd
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BL1PR12MB5730:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66a04ee4-180f-4576-097c-08dec3c92d0f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|4143699003|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|18002099003|921020|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	KIAhpVrSgmDc/t2xmzHT6721N4YWzDvaQhsfdxERuDJau5rqnQlANSNQAXeWj0UN7qa0H13Q6NVFQn7zI/zxi9WUgZre1TPMybzhWGT5YuI0mNwlO88TRgwN6CqzNo7wSaDJSgjdXiqfZgjEQX4eBONJ03MX8e9TVCkO3Hl8Jv/pkcTJfPjews0suh/pYAWtkkWyi2MLPKD0MdVagsNrMQ74PnFpEsD3d8BVIrQgbcUOPn9KFbv216SQtNr5n8229/Jrpu98k03T0iTARmSczmQ26gAOZ9YXDdd20LOzzULyCSJ0A/qP9fG2ENVlZaC37hXasWX6r09dZDgfpBdom82V+tMYgx5XIPJ5CQullGKWzT2pNhDVrSl0TL5bx4xNlEGusVP/w4yuIf3uAC6NWQDZkhWcKpLCk1r7i//NSQWsRBDTA9RTQbCRlE+NTvnRkgjHii3sE5Wzcp2kN/VXsXZCTfs3BogbuAgPav8fi7UGoUSM71oRmFttilGYjdJlHwNl/xbQMYfJ5gDoSN0wM3OY/O5d019wLAeICtLFoIl83ygcYL3afgYgloZzm1c7MUeLwHEgjzYTrb2l9rmwegfobCpmA+ZWuAwGRLaxsDN7uwdIWpkcBpDZ070apLLFUfzQ3/2/0I6lqIxgbCnj1TTFchqrDNRZPWz9yaE9ZdbMzeIs9B5kxbY8+q3Vc595
+	ro9Hacze6Ubn7V/XsAV3usEt1qw2tE7m8A3XI86CeLcD6knxvS5bkDFsZmoqI4PoH59C4g+xTiF7/N0ceWySkUA7RkvKNHSgDch8CMGzHL4VBP0hAkhpRL1UIqi4Jo4gdsMIfsCiF9sRfZctX6fkHnGw35+IWciRjRveMVfFFsxmd/T+1GLDE2h01pKXE2FrqpX1VfpA5dhyLBZAeLRCdfnXUHHqGX3EeaOQ9XhUp3tb8+FK+95WR+dI8io8WJo0MbUNTYXW6IuDFlCWTHvRLXlC6Jfp1YTL4HqPM6ySIhXBMXIX4jp5WawHkAXYGrG0J3KxiJAx67rmh0tOmubKHb76VB/dEFlD3x7zmtZ6kuVUWIrzB0OqOB8GeRl4dPbGiQnBe6wXeflJB/Dnwhm7fhUkK0ld/tHdkiu/WMA2GaIhS7ND1tiKMRz83oS/+U439IWWwVJCvyRX+0gOAuVBK+0hDAI2tCGTdB/Jt/WMlQV0dHMD8sPFGtJCYn/yieePI6vdw05lNJl6EJamkBuHViMZ0kYag+0xjCnJ+VQoNcVxxyauYlqueOP35ESEr3Vza46b1L80lbQMVvm3/5DTDRabBc2CbVt5qHXVUbTMqj8mAXrgLCb6NOFhbjl0WRxUTuABd8ptE7IhJF/DiEq+pklrkDOyg1NVgwL8XMqTvxABmWpwPypbWo2uY/njZ8W7XsUt8tROtJ50cMMQEya66xtcOPkZTJ2dCv73rFryFuEd58fVwDZaLttierVu0Zch
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(18002099003)(921020)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MlVwemx0SUhwNEw1V2wwSWlhL3RNNnpKQmlWUExGZUxQZ3BsV011S2tFUzFT?=
- =?utf-8?B?ZW0rNno0N3dLaXVHc0tXYVBWNGZzTjVMRnVBZGltdG83YUJvSDNOcFhpUVFt?=
- =?utf-8?B?VitRVlYrV3J6Rm83VW95Mm05Z1BHaGNBdTFad2RuU3hPbzFjUEhzd0JPamlv?=
- =?utf-8?B?LzVadHdEUEgwSnFGOTlpbml2QVJ3VmVzeDU4R3ROVGtFOFF5RkN2VTV0MzNY?=
- =?utf-8?B?bjZzTVhMdlIzUUdZZituaEhDdEs1KzlPOVJBMUNOSitsYkpDeUFOUklaTktj?=
- =?utf-8?B?T1dRUURyU2pXaE02eTJYZFV3QzlRUW10dmgvOHdFaXk1Ynh0OHQ4ODlpcFh1?=
- =?utf-8?B?TFJJbFBzeTZxdTIzY0psK0c5bGVMOUJrbFRXcTBhL0tVVnBmU0s3c1JjVjd3?=
- =?utf-8?B?cXM1ekh4ank1aUgvVnJPSzltZWU0bmtFZEZYWUZCb05GbXdZb1E0aGFUTjZS?=
- =?utf-8?B?cVZUbjV5MCtsSC95cWoxSDN0ZlF2cng3WjlNeXNsbVVzbXJid3lSY1BrQVo2?=
- =?utf-8?B?bTliUTg2YmFYRXJFZHc0WVNRZmhFTFpsamVibit6S0RXNFJUL2hCSE1LQmF6?=
- =?utf-8?B?dlFpNG52REorTkhOWERWZG5JQ3d6d3E0MzVXSEFsNXdHZVMyRTV1YzZrVmlB?=
- =?utf-8?B?ZnlxZzJ0TDJvYkNMbWxLc2tnOWM5dlZQTnJMbElJdzgvRU9XbSt6VDYwN2ND?=
- =?utf-8?B?OHY5d3l0UDJpMEtjYU9Yd3hCQTdyQ2lLeDdKSStkUHhudmtvM1ZMak5Rdnkw?=
- =?utf-8?B?dnNQcG8vc3pLeXIwdUpVbnhQWUQyei8wUG1lcmJHcndQRWRZL1ZoSCtoRlll?=
- =?utf-8?B?VTZFZVRzSS9odWx0dkNzYnh0dUVyZnoyYnVTK3hxVkVzUU9TZ21HNURFZ2Z6?=
- =?utf-8?B?ZFJ0OHRXLzRmTng2YU8yS2xmeVBhRC9YZDR3RklZa0VmRnhTNEtyZ3hIMzBN?=
- =?utf-8?B?bnVSYk96NVNNOEoxWm1TT1ZsaW42dFZNU0lqYWIyWlVDWnBlNU9ick44T0ZK?=
- =?utf-8?B?ZUQ1WkxWSTlicUZnVXRFSHFSWWZwYXRiNnlMRlR2UVIzTXlrbVVMQThIbDVl?=
- =?utf-8?B?VkhvV2lwTThaZk8wNUV2dzVRMmc3L2xMMWVUdXUyc2I0ZVFHWWVERWNPRFNY?=
- =?utf-8?B?QnN4bTVIK01lc0ZIV3BUUFBXajE2bm1wUFMvOEgrWFFxcmZ5azNyMVlOc3Nm?=
- =?utf-8?B?RHc4aWwyWVExbjMwcTNTVmRsem9SNVE3NWFoWmpmbXFjUitFQVM0L0p6amxY?=
- =?utf-8?B?a01WQ2RaM1JxWkw1OTVieWwzN2lLbzhYTjJzSTJsZjZBdUZMTHYxd3VWSDF4?=
- =?utf-8?B?WmZNc0dtcEpRMlRLcjFqUytRZFg3U1FzWFNPMFVrNThwbGhTakRiMUR6TC8z?=
- =?utf-8?B?N2NIbzhDWjQxSmtNMk5EbHBWZk40amZNM2k1azRPWGlJb2Vxeml5eHhZZGRz?=
- =?utf-8?B?R0lLUFc3NUZDbFFMQm1WR2lVenlrL1U1cGhpNHFtSFV0aE5ndlNXQ0lHSW9q?=
- =?utf-8?B?NjVTZ01xR2pTQXl1NmxxemNiK1V4eURRZi9MdEhZckNuQVRBSUlEWnJjYlJ5?=
- =?utf-8?B?UHlyOVJsbzFicWp6UlZyQis2YVArK3VTMjdYUStWTnd1Zldzb2dQNTY1SVV6?=
- =?utf-8?B?bElyU3owTjRyK2VMeS9ocG5vbW1OUlNBc2dNeno5NXRFbDNsNVNlVlZJOGVZ?=
- =?utf-8?B?TjJEVWMwYXR5MUU0d0NCRzUxQTgyaCs1VERMRTU4ZzFVanUwOXFGWmZzQlo3?=
- =?utf-8?B?SW5JOHQrRU1OSVRISlZqUyt5Um5IVHRLalJla3FZV1BWNFlmVkxQL0VqRDlw?=
- =?utf-8?B?TExDUmM0NVYzY3kzR1Nlc2JOZVA1MGtMNlpBc3Nydyt6dGdFVWU2L3hGMmRR?=
- =?utf-8?B?aDdnY0R5VVBJZVVqMjR0dTZNZzdFL25rR0JUWTlyNUV3bUhCcGpoUlFQTTli?=
- =?utf-8?B?MDhjZ2VVem9ueDhjd2VhQnFJeGtROHljRmRwZXVWVjVpUHJhbFU5RzRoRmp4?=
- =?utf-8?B?dkRaYytYRjZZVk12RTd4eVpuNzRlVG9hVnA3eUtoRFJpa1NpdEY0cHpObkFu?=
- =?utf-8?B?blNFdnZsS3F5aWJkUlBBbTZzbWo0cE5pdFRTYndXZlJQZUdBM2IrSXNyNXV5?=
- =?utf-8?B?Mzg1ZDBLaUdHdEEyc25rNmdOMm5pSVJRL1NscFlkeGI4MENoV0xianJ2MlMw?=
- =?utf-8?B?UERrVWc4V3FNcVQ5aVQ3NGkxdDFNVWdsT1c4MmhxOEhtTVNJYjRFcGd5OWJT?=
- =?utf-8?B?L3VZZllUYXMwWGExc2VPQWxWdDhoSUJlU0lRTlQxWUpmc0V2SzNMUjRJRlp0?=
- =?utf-8?B?RmpHa0s2dVNPV2RFMkZqUGV1Z2dHZnJqZDYrdHFIZE1kMTRrSm9Idz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f977da9c-b6db-42ca-3ba6-08dec3c869bd
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?ZE5xTVVUZzFqUTU1dzlnOUg1UlROOHhwK1orVUt3NWFSSXFhZGRyL1REQUdu?=
+ =?utf-8?B?Sk44WUFLMXNoaFplb1F3NEszWm1ScUN1UG4xNm5VaGxWL29vN1F6M294cUxM?=
+ =?utf-8?B?YWVGT1k2dHp0clYyWVhqazhuU2J2R1RKMEFwYm5YR2tzd2tOeVlGdHFEOWlX?=
+ =?utf-8?B?dXB4aHdJNW05TEo5aXU5R2psSUNGcTFmRk1RSkUxUVkzTG1KaVpIYldQbElw?=
+ =?utf-8?B?cnVmMlgwRTFCYTkzdXRid2hoRzUzNGdiUTRkSTRId2FySlY1S3lJRUpLODNN?=
+ =?utf-8?B?L002dWVodWg5Y3hFdnpvR24wTHorNmpSTVRuVXp1UWNrMkNiVWdYRmkvL05M?=
+ =?utf-8?B?d1ljZEhCdlJNd1lEU3REOFRrYkdQSW1RYnlqQ3lhUHdrVHlmdFRieDFGaXhp?=
+ =?utf-8?B?eGk4bGlyV1dwNjBrMG5kZXU5UndTMzBjQjJHUGNQWjFGRnFyMEtFbk1mSCtL?=
+ =?utf-8?B?cXAwdUxlZVlQc3FRRDlZYU55cnNSYlJweUJtVGtyWE9leWo4UnpaeEFVVGhB?=
+ =?utf-8?B?c25UL284TXpRTVpQb2xwcHdDL295S1l6Y3g4b2dHbTdQK0JvV256dnI3LzBp?=
+ =?utf-8?B?dE5JaUU1T2hFcHU2aTlEQlVXWUtaM2dmNDBVT0kwK1RIQXM4V1JJamxTQzVX?=
+ =?utf-8?B?TE5RdWN6all1dThsaDMvbkNMeWNPSkpzM1J2WC9CbTdTMXhaL21FRksreURW?=
+ =?utf-8?B?ZGM2T2VVSkdYckZTcGphQ3FCeEt4UDR2UkhaNXYrRzFHQXNkaG1wTno2eGZN?=
+ =?utf-8?B?NDNYT3Z3OU51aEw3YWtVbGpEQlhSNmFQRm5sNDFaM2lLYUhqRDlZS1QvZExD?=
+ =?utf-8?B?M05yakJRS2RPVFNIVENEa3pTM1YrMHp2dE16c002VEQ5TjVNcldRbjB2VTlH?=
+ =?utf-8?B?OS8wOWxMTk9QbHl4cHNEamFIL3BGWjJ2dTZtUWRodEh3cnZjejl1eDBhbGtl?=
+ =?utf-8?B?SCs4UWxxdnZDWG14N2hQdzFxaXl5T1c2NldMcDhsRjNudlZWbVEwb0dLclND?=
+ =?utf-8?B?TlFxbk12RWtsR1V2QjU0UDFlQlJRTVJIQ2VYaWZuTWlZSHB4RStoSW9xOVAy?=
+ =?utf-8?B?SlZPZ3pVS1JKZS90bjErUFFlNDYrTDhNQjBGUWUxQkE1OVgyMllFa0w0cDRN?=
+ =?utf-8?B?T2NPQ1UxSDV3TmkvVWVZV0FoT3lCTlJpTVZmcWdqT2F6ZXU2YXBEYzh0Wmg1?=
+ =?utf-8?B?VFpobWJ4cnVKL2FoNVR2c0lhaWR5RWJNcmZkcmR4MmtScERmTE9JanAvN2xW?=
+ =?utf-8?B?NGU2bThyQ1NJaVlKMUtZTEZ3ZkdGTzNXNjJQMXVlRU9BaGNUalJoUjFtcCtY?=
+ =?utf-8?B?dzJnS0hkVFBpTjZHdkw4alN2NC9DTzA2T2NreWw4YWdia0dtdndXamZCb1VQ?=
+ =?utf-8?B?QURPWFFtckhMdEZ1WWNMMktpN0xzZEwvMHhIVjVUZFVjK3g3L0hlcTJXaWhF?=
+ =?utf-8?B?TVlvRG5lOER3RzBwTjFBVWxHM2ZGZER4T2dMSm1LbVBFV2xsZEM1dE54Y1Q4?=
+ =?utf-8?B?V2haejlJMWdZU1FFdHh3QWNxa01EZ3NCcGQ0QnRJWWZKajRiSUlucGZINzZo?=
+ =?utf-8?B?SGVKWmpVbTNYUVRNK1ZGWExRdVRxZjdtVm9jOVY0TjRtRDAwRW5yVk5iUGhy?=
+ =?utf-8?B?WTJRVXJCaG95V0JDUjA0dDlKQkNRcy9pOExvWHNJUDRSL3d6MG9oQnFhaEdm?=
+ =?utf-8?B?TFd3YSs0V3QzMktUWGJmMlpCOXpkKzJybGovbmlXQmRxdXg2Ty9XZzBTY2pD?=
+ =?utf-8?B?bTVRZ1BpRU8vOWc2SFRWTnBaOEpMeStnT1J5cUMwVmZlOERsTnRXVndqcDM3?=
+ =?utf-8?B?YzJ4UGdhWlJjSjA5ZHhxSTBEaUliN2x4VkJVREZoeHpaKytMZjV6UW1WMS9X?=
+ =?utf-8?B?eHhYQjAxSmhHSWxrN2UxVkNRQ2N3ZnVRWDNhMGtia09HdzNuVkt3NXhoNjRy?=
+ =?utf-8?B?Sm9kTHRpZm1DakJaQzF0M04welVnYlphOFI1YVR2dWdoRncvWmV3MkxIOVlE?=
+ =?utf-8?B?dXFZanJyREJBYzU4aklrMlkxMDlxMDJRQ1RCSnVsNUhielJpbllwM1dkSkJr?=
+ =?utf-8?B?Q0hrZ1YwN3ZZQ2FySXN4OWZyaWV5Q3dYVGlBYXZVb2M4dFZRN3VjN0RFYklF?=
+ =?utf-8?B?em9ITG5NcHJWUHBRM0tZQmhEWFlRMkQ4ZVllZmswWmZSV090MjQ4WS9QWFBz?=
+ =?utf-8?B?cnlvNTBHZFdUMEhvMGNiQ2JJamNWZXlwbU9OVE9odTZNbU9qZlhWRjQyUVE0?=
+ =?utf-8?B?RUlGNUZqWm8xTURiNzZpWGhkMVU1MlE2SkFpYXpDeWt0V3VVZ29HNGpld3kz?=
+ =?utf-8?B?WDJSOFpneTdoZXJwTUViKzVrNGxsYzhvaERlVUx6a3V4aXUzKzVYQnJIMS9t?=
+ =?utf-8?Q?Ry74uMnC7MJ5ec7dA9U8wAAfY4EtEEwS+DaBX2mMeCkyI?=
+X-MS-Exchange-AntiSpam-MessageData-1: J9VLM2MjfVR1kw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66a04ee4-180f-4576-097c-08dec3c92d0f
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2026 12:37:46.8685
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2026 12:43:15.0026
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4CJ5+5gkh6SSsBDlxJ/k+f24L1NtlrMxsMT7A5rkU0uVVufLQ0L4PAFEFczri8b1pjMWK51WZ+fDFzuSKvsQ2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOCP265MB8566
+X-MS-Exchange-CrossTenant-UserPrincipalName: BCfgu44Hzls1lA5fhwL33LmYgoF6lYt6UxXpnoqw9qlnr7VTel9zfNVcMSCRn4NlWhLBQHKq9kpBTc1oCJ6VcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5730
 
-On Sat Jun 6, 2026 at 1:27 PM BST, Miguel Ojeda wrote:
-> On Tue, Jun 2, 2026 at 6:40=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
->>
->> There is more developments this cycle than the last one, with a mix of
->> improvements and cleanups. No breaking changes to users expected.
->>
->> Tuple structs did not make it this cycle, I hope it'll finally land the =
-next
->> one. I have also been working on getting pin-init to support self-refere=
-ntial
->> types, which I plan to send next cycle (although unsure it can land in t=
-he next
->> one).
->>
->> The refactoring commits have been in linux-next for a while. There a few
->> patches taken later in the cycle, and they have all been in linux-next s=
-ince
->> 2026-06-01. Feel free to wait for a few more rounds before pulling if yo=
-u see
->> fit.
->
-> Merged into `rust-next` -- thanks!
->
-> I have reworded the merge message to use the style Linus expects for
-> merge commits, i.e. mainly using the imperative, like commit messages
-> -- please take a look!
+This is the continuation of the `bitfield!` macro which started
+alongside the `register!` one before being temporarily integrated into
+it [1].
 
-Hi Miguel,
+This series extracts `bitfield!` from `register!`, adds unit tests for
+the new macro, and replaces the `register!` macro rules with the
+extracted version.
 
-pin-init's CHANGELOG.md is following a passive voice style and I was follow=
-ing
-that style when writing the tag messages.
+I have removed the `nova-core` patches, because the Blackwell support
+that has been added this cycle (and thus not visible from `rust-next`)
+introduces more uses of the Nova-local `bitfield!` macro that this
+series intended to remove. If these new uses are not updated, then
+`nova-core` won't build, thus to avoid conflicts and/or build breakages
+I think it is preferable to merge them during the next cycle.
 
-I'll make sure to use imperative mood for the kernel side of tags next time=
-.
-(Maybe the pin-init changelog could use imperative mood too?)
+This version is based on `rust-next`, with [2] applied.
 
-Best,
-Gary
+A tree with this branch and its dependencies is available at [3].
 
->
-> (For future PRs, it would help if you can follow the style)
->
-> Cheers,
-> Miguel
+[1] https://lore.kernel.org/all/20260120-register-v1-0-723a1743b557@nvidia.com/
+[2] https://lore.kernel.org/all/20260417031531.315281-1-ynorov@nvidia.com/
+[3] https://github.com/Gnurou/linux/tree/b4/bitfield
 
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Changes in v5:
+- Squash the fixup patches into the one extracting the `bitfield!` macro.
+- Remove the `nova-core` patches to avoid a conflict/build breakage on
+  -rc1.
+- Improve the unit tests per Yury's feedback:
+  - Use a consistent test axis where each test focuses on a single thing.
+  - Rename members to generic name including range for readability.
+  - Add test exercising `try_with`.
+  - Add test checking that unallocated bits are left untouched.
+- Link to v4: https://patch.msgid.link/20260527-bitfield-v4-0-e8821d4efbde@nvidia.com
+
+Changes in v4:
+- Inline private bitfield accessor methods.
+- Fully qualify types in `bitfield!` macro.
+- Rename `RUST_KERNEL_BITFIELD_KUNIT_TEST` to `RUST_BITFIELD_KUNIT_TEST`.
+- Link to v3: https://patch.msgid.link/20260501-bitfield-v3-0-aa1076c3337d@nvidia.com
+
+Changes in v3:
+- Split patch 1 into the addition of the `bitfield!` macro and its use
+  in the `io` module.
+- Mention reserved field names in `bitfield!`'s doccomment.
+- Properly order fields in the KUnit test.
+- Add a Kconfig option for building the KUnit tests.
+- Document behavior on non-covered bits.
+- Document support for signed fields and storage types (TL;DR: not
+  supported).
+- Move `nova-core`'s `bitfield` module deletion into its own patch.
+- Link to v2: https://patch.msgid.link/20260409-bitfield-v2-0-23ac400071cb@nvidia.com
+
+---
+Alexandre Courbot (2):
+      rust: extract `bitfield!` macro from `register!`
+      rust: io: use the `bitfield!` macro in `register!`
+
+Joel Fernandes (1):
+      rust: bitfield: Add KUnit tests for bitfield
+
+ MAINTAINERS                |   7 +
+ rust/kernel/Kconfig.test   |  10 +
+ rust/kernel/bitfield.rs    | 862 +++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/io/register.rs | 246 +------------
+ rust/kernel/lib.rs         |   1 +
+ 5 files changed, 882 insertions(+), 244 deletions(-)
+---
+base-commit: 72d33b8bfeacbfdccf2cda4650e8e002def036f8
+change-id: 20260408-bitfield-6e18254f4fdc
+prerequisite-message-id: 20260417031531.315281-1-ynorov@nvidia.com
+prerequisite-patch-id: 403e34bb92b42d3f31ed972e11896d18902585e3
+prerequisite-patch-id: 42ae775aa6762a9e28ff31c5f69a0b65a7b40dcc
+prerequisite-patch-id: 19b3e535962348f7627ede57ea829b34abda08c7
+
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
 
