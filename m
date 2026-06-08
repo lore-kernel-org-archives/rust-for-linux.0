@@ -1,193 +1,109 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED8333F5AB;
-	Mon,  8 Jun 2026 11:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE76025D527;
+	Mon,  8 Jun 2026 11:47:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780916977; cv=none; b=NrkSnrsmjn0kKGApSyF83H8ge5KVk7SYBIBO+at2ptx453D/1lYkhrrLCBUT7bu3V0xdeWvxBvlxAyHDXxw/gcjddmZjwoda8soH39sIYniJrPMOn7UNTcTP2mwiMM05tterZHZVcmwpXf+HxIuiDJQfA5KuprsBgAap3A0LIoA=
+	t=1780919271; cv=none; b=RiviEgmlwLkDVoQyTdwabie8SaYK7WJtZvMu0/fw3cdDTtWSA2slXYCON0tXoqbLT6dnbF5etp4pge+u8r/wpt4W4xYHrS3BxfGdaiX9f+2XwhQoo2/cOkaAUFzijK9w7f9MAIyI4kC3xPNvk7IK6y51RgB1qWA2mWosuqSci/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780916977; c=relaxed/simple;
-	bh=ulh0evGVPPNjBy7iwCTYBFGX/Ds4y8hHb8LHBFs/1Uo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t9ABlyTNp0/s/fZ5TNfLdejM8DyVfSURj6xiN1dy1dd2n6dedyaIefMkDSmtgqiYe0sBeOZ3dtrbeXdUba2Y4ua0HtDQFADk9YB/pmBiIMulcD2LojgdzffXdruzT7Ozc7oahzTID2sPYHdsd3BQw6BzMHoop0AIemqPOeI9luU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=NsXeS3L0; arc=none smtp.client-ip=109.224.244.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1780919271; c=relaxed/simple;
+	bh=6pZUE6nr2ji/Ksxu2gPhVUmuM8hjJVCRFoi3291f6is=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sY8+h34a7rOgKLllHB4MIH1NQ89GzjK161LJVN0/VQKxryuzbLVZtc+5/GRfFaFEAOHxEUuz9LxoJkAz1QKSFpn6yIii90LNhKT3GJX83+XNZB3G8kSYTJuux4zHqn5D50B3Mr8ebK2Otw7jMdZ+yd0Aq3bY9cugVHQYBjH9cMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsIGLmOT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="NsXeS3L0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1780916965; x=1781176165;
-	bh=yE0kow4cPVmFeFmEU4SXwVIDnwzfPDzpouaEmX4Fpfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=NsXeS3L04i15iimqeQaZUZYdMfXHdM6AtyVzrrKg6DzkZAeUqnoVni7BzJWv9tRFy
-	 md3+OCdXghTfJSoR7pe0a32hH6HbsE3/WiSon673+Vzdp7zjehk0QrZuFh8V7JUADg
-	 VagBPktDkP4duqhHP0LKSf3pbngkzHAxrYI/+t66RRB2Nbbi/cMmjkNTxluw+wB1sz
-	 EqHNtng0Aw6ptyHkF0y/b0/bBKW/ke9ZZxYQ0Sym5HHdXGxDoN8veFLY/PYa/aUXO+
-	 QXLE2vECd+/1NoVCBvSNLCAPl+xobUREhrcqv0ZNrJ1kW7+EgxZHeVY7vGViw7Bi+N
-	 haetP5ApFakYg==
-X-Pm-Submission-Id: 4gYq755lFlz2ScNk
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Maurice Hieronymus <mhi@mailbox.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Drew Fustini <fustini@kernel.org>,
-	Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	=?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	linux-clk@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: clk: Add ExclusiveClk wrapper for clk_rate_exclusive_get
-Date: Mon,  8 Jun 2026 14:09:13 +0300
-Message-ID: <20260608110920.422773-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260605-rate-exclusive-get-th1520-v2-1-695640bf7249@mailbox.org>
-References: <20260605-rate-exclusive-get-th1520-v2-0-695640bf7249@mailbox.org> <20260605-rate-exclusive-get-th1520-v2-1-695640bf7249@mailbox.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsIGLmOT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CD71F00893;
+	Mon,  8 Jun 2026 11:47:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780919270;
+	bh=PxqUCT2KZyVSdTeReMYgFJQToW1ypSg2NFb0ug/hJT8=;
+	h=From:Date:Subject:To:Cc;
+	b=jsIGLmOT9M0s1bc7a4XF/FOVctP4I/pzgI/W07m3WUfARhHvDWVND6054fPqxXgiS
+	 /0p1cIkccy+CEE4jilZmsRaopAjqTD0mXBEoJIIF1pLmtiCOtGeF3KLRJTQKVDrWFo
+	 3ZgNawjkKpCmR/+BRrbbierbgVK1hrPtdvOMs4XFWCZ8jzhHXT82HtXSc8v6MgwsGM
+	 EOoRNBPSba485gqgcCZvHwyAv9wI+t9mIrHGpkqcITbyRwJngdv18DsmnBlfd6tAGp
+	 2IW587w5W0QoZ4vVTHFt90XelH/N8f3468oM+TN88JgcYbxP2H1S2Rnmg5oeXz/nHq
+	 1V+oPNUjai/ww==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Mon, 08 Jun 2026 13:47:35 +0200
+Subject: [PATCH] rust: alloc: add `NumaNode::id()` accessor
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260608-numa-node-id-v1-1-28480299c62d@kernel.org>
+X-B4-Tracking: v=1; b=H4sIANarJmoC/yXMywqAIBCF4VeJWSdYdJFeJVpYM9UEWWhFIL57V
+ suPw/k9OLJMDprEg6WLHW8mIksTGGZtJhKM0ZDLvJKVVMKcqxZmw3cQqkSqpcKCFEK87JZGvr9
+ c2/12Z7/QcLwNCOEBcdWqyHAAAAA=
+X-Change-ID: 20260608-numa-node-id-85de708d4e8d
+To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1147; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=6pZUE6nr2ji/Ksxu2gPhVUmuM8hjJVCRFoi3291f6is=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqJqvZb34EKyVvqWp18h1axxj7vVCjkq6F9+PqV
+ BZSW8s049qJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiar2QAKCRD6UCkIqsW9
+ 0ImvEAC3z0F7Az0dY/2pVv6iWHDf5fgxlPWwCrilnPuWUT9DHC0lqYfCWk+AnGmlv5Y5qRJ+Bas
+ eJRvNv4/AOd3jJAH7AJ/9jWEX+ZJegyfLU5Qp7aRhesmaLiphQSQ7V1q18uNQ9wb07gVpJS9/VQ
+ 9ncrtgApWwbDKse4TISVqWyRB7QTfOJIoa8yrh1W+njsfuf+golCmcM3vWLBodM6H7Wjs6T85IP
+ Orkr+Vbyh2k75/mFtH+dBKs/kdisZL8MtH6Gfa569oWoh8ST6O9DGfeuACJAhfkOPUFgXBTnf8i
+ 0JLtzfk/s7kw4/t3RxUoM5/MSzAZeFtGhs7Rbzs1QMExlV73nYiss9XAvK3kgosERT9pOkA7kQH
+ h1T2njFemtOrKU/w9WAhwDbBQrf0mm+W9Ws8waG/hxxPyIqJAkl29KXBHXUf9/Uu2YTP47YglU0
+ kw7yPa41B+hNGldy0J8dIdAJ/wNV5XwUImleZSXffXobV1S+F2RzyMbCnDxRZeORErj87EXWLG8
+ HukWFWKDUCKDUui8xPBdBg8f2fgi9c1kYlAFQabOk/gSxm5lTVCPnjOL77I2NWOlB1Yk4bJSAvR
+ cYUwuMNAgN7LX//aALKEhPuwqg3jPM/S74JugZgkxO7+TyKBOCRkwcGeQWTJK4Y7Mb+POH6/Kqf
+ dKlNRxGNjkVwpMg==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-On Fri, 05 Jun 2026 08:59:59 +0200=0D
-Maurice Hieronymus <mhi@mailbox.org> wrote:=0D
-=0D
-> Add Rust bindings for clk_rate_exclusive_get() and=0D
-> clk_rate_exclusive_put().=0D
-> =0D
-> Clk::rate_exclusive_get() consumes the Clk and returns an ExclusiveClk;=0D
-> the matching put is issued from its Drop impl. ExclusiveClk derefs to=0D
-> Clk so existing rate / prepare / enable APIs remain available on the=0D
-> locked handle.=0D
-> =0D
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>=0D
-> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>=0D
-> ---=0D
->  rust/kernel/clk.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++=0D
->  1 file changed, 60 insertions(+)=0D
-> =0D
-> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs=0D
-> index 7abbd0767d8c..f834f4833f18 100644=0D
-> --- a/rust/kernel/clk.rs=0D
-> +++ b/rust/kernel/clk.rs=0D
-> @@ -249,6 +249,22 @@ pub fn set_rate(&self, rate: Hertz) -> Result {=0D
->              // [`clk_set_rate`].=0D
->              to_result(unsafe { bindings::clk_set_rate(self.as_raw(), rat=
-e.as_hz()) })=0D
->          }=0D
-> +=0D
-> +        /// Acquire exclusive control over the clock's rate.=0D
-> +        ///=0D
-> +        /// Consumes the [`Clk`] and returns an [`ExclusiveClk`] that re=
-leases the exclusivity=0D
-> +        /// when dropped. While held, no other consumer may change the c=
-lock's rate.=0D
-> +        ///=0D
-> +        /// Equivalent to the kernel's [`clk_rate_exclusive_get`] API. M=
-ust not be called from=0D
-> +        /// atomic context.=0D
-> +        ///=0D
-> +        /// [`clk_rate_exclusive_get`]: https://docs.kernel.org/core-api=
-/kernel-api.html#c.clk_rate_exclusive_get=0D
-> +        pub fn rate_exclusive_get(self) -> Result<ExclusiveClk> {=0D
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid =
-argument for=0D
-> +            // [`clk_rate_exclusive_get`].=0D
-> +            to_result(unsafe { bindings::clk_rate_exclusive_get(self.as_=
-raw()) })?;=0D
-> +            Ok(ExclusiveClk(self))=0D
-> +        }=0D
-=0D
-We usually inline FFI wrappers.=0D
-=0D
->      }=0D
->  =0D
->      impl Drop for Clk {=0D
-> @@ -329,6 +345,50 @@ fn deref(&self) -> &Clk {=0D
->              &self.0=0D
->          }=0D
->      }=0D
-> +=0D
-> +    /// A [`Clk`] with exclusive control over its rate.=0D
-> +    ///=0D
-> +    /// While an [`ExclusiveClk`] exists, no other consumer of the same =
-clock may change its rate.=0D
-> +    /// Obtained by calling [`Clk::rate_exclusive_get`]; the exclusivity=
- is released automatically=0D
-> +    /// when the value is dropped, after which the inner [`Clk`] is drop=
-ped as usual.=0D
-> +    ///=0D
-> +    /// # Invariants=0D
-> +    ///=0D
-> +    /// An [`ExclusiveClk`] instance owns a [`Clk`] for which `clk_rate_=
-exclusive_get` has been=0D
-> +    /// called and the matching `clk_rate_exclusive_put` has not yet bee=
-n called.=0D
-> +    ///=0D
-> +    /// # Examples=0D
-> +    ///=0D
-> +    /// ```=0D
-> +    /// use kernel::clk::{Clk, ExclusiveClk};=0D
-> +    /// use kernel::device::Device;=0D
-> +    /// use kernel::error::Result;=0D
-> +    ///=0D
-> +    /// fn lock_rate(dev: &Device) -> Result<ExclusiveClk> {=0D
-> +    ///     let clk =3D Clk::get(dev, None)?;=0D
-> +    ///     clk.prepare_enable()?;=0D
-> +    ///     clk.rate_exclusive_get()=0D
-> +    /// }=0D
-> +    /// ```=0D
-> +    pub struct ExclusiveClk(Clk);=0D
-> +=0D
-> +    // Make [`ExclusiveClk`] behave like [`Clk`].=0D
-> +    impl Deref for ExclusiveClk {=0D
-> +        type Target =3D Clk;=0D
-> +=0D
-> +        fn deref(&self) -> &Clk {=0D
-> +            &self.0=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    impl Drop for ExclusiveClk {=0D
-> +        fn drop(&mut self) {=0D
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid =
-argument for=0D
-> +            // [`clk_rate_exclusive_put`] and balances the [`clk_rate_ex=
-clusive_get`] call from=0D
-> +            // [`Clk::rate_exclusive_get`].=0D
-=0D
-I think [`...`] wouldn't work on regular comments. They are only for=0D
-doc-comments.=0D
-=0D
-Thanks,=0D
-Onur=0D
-=0D
-> +            unsafe { bindings::clk_rate_exclusive_put(self.as_raw()) };=
-=0D
-> +        }=0D
-> +    }=0D
->  }=0D
->  =0D
->  #[cfg(CONFIG_COMMON_CLK)]=0D
-> =0D
-> -- =0D
-> 2.51.2=0D
-> =0D
+`NumaNode` wraps an `i32` but offers no way to read it back. Add a
+trivial `id()` getter so callers that need to pass the node id to a
+C binding can recover the underlying `c_int` without reaching into
+the private field.
+
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+This will be used by an upcoming change that adds a home node parameter to
+the block layer `TagSet::new()` constructor.
+---
+ rust/kernel/alloc.rs | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index e38720349dcf..c02290bb79d9 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -126,6 +126,11 @@ pub fn new(node: i32) -> Result<Self> {
+         }
+         Ok(Self(node))
+     }
++
++    /// Returns the raw NUMA node identifier as an `i32`.
++    pub fn id(&self) -> i32 {
++        self.0
++    }
+ }
+ 
+ /// Specify necessary constant to pass the information to Allocator that the caller doesn't care
+
+---
+base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+change-id: 20260608-numa-node-id-85de708d4e8d
+
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
+
+
