@@ -1,94 +1,94 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C4838F93B
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 07:04:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E4838F630
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 07:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780902256; cv=pass; b=Zv+LAVwcZTc4bvzTIxbN5hhATGwl0VQV8tTZlwjeJ1qlwa55oLiClZr9C5r2jihuSTt40la3A4FOd6+xBEVLF0idz7SOCRvF5JzJaQiZPoTjKVaLlka8fQEUvjkKobWrYFZ9qMzRMt8MtMq/dOPv4uUsjqzhHHS8IgfLBtw57fU=
+	t=1780902321; cv=pass; b=CXU61Us3ACyJwajY+tNPkpCbnfvyZ2m6eLhRKrGIZWnCWVaVJT9KuVbJ3KcsJcQoaJ7OTyyR1g2SHVX9dJ8XQG8FZ+pjMXNtG+2FT7Zs73hblBg1Qs0RmV7PtNf9hQitwq9CDAwYEkuysL75zp4mf1PgxifiAXfuJoylU5PfWGo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780902256; c=relaxed/simple;
-	bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
+	s=arc-20240116; t=1780902321; c=relaxed/simple;
+	bh=J6Z2RHY/NCDFoPrX7lhs4FTKKwpaOxpIvJqta3A6z60=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s5BZtoA0yDfZZxn+82OLeSgvpkq8wdDHUsk7dXOhcqmvUKNCNbzEsNehx7LZPkNNy4+NkH0CoCtg9jFE0V9rKwQ5rOZAWlGeUP24To0N5nGVWfhNRqZuAwF+VSQu7G9eyewjcaukDP+9nNJQXtPLbIeZZDVcQBTbc75rNffqRzI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StPljPRz; arc=pass smtp.client-ip=74.125.82.180
+	 To:Cc:Content-Type; b=BCCx4F8zhG36UlXirQ6n1bMDYXUp4YI5JcupistjhpkMy9BEJpibNa014OzH2rtXAkaTF3XHaEZ1BpQIewuc42cd9y0HcrPmwt8DU1Z+trSlZ2owQRLR3fjZfaekMPjpJasuwMFgBx2aDHI0wTyGPBYx2IJetzGRu2j6jQIJnoo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gW64x+L9; arc=pass smtp.client-ip=74.125.82.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StPljPRz"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-307b668e1f5so38131eec.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jun 2026 00:04:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780902254; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gW64x+L9"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-304dc707bfbso208559eec.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jun 2026 00:05:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780902319; cv=none;
         d=google.com; s=arc-20240605;
-        b=BDLD4B84bUnJkDySVlJvB4yx5wv3/URPb5qIdHTP7J3rffk4nAE1gRzRtKusnAJGqq
-         NuwxOPNu3PjsPpdOpCpiCdUkI6l8skkwx9J6ooH6qKbH9dlZEchX9wNrxaXnfx/00bnw
-         JiLpmE7WkQE14lJIteMhNlhumySB107KBK16PJT3YfyzvGIkJ5oQp2I1hkSArpyf5sD6
-         8GtpI4/BHVNJ7TjHj1Bcs8BON8xqL7aDgSKojVQTcJVJEIMXTT0cy26qsn6rcBsE6kH7
-         AH+y8Ol2doE/GJrPODj9SjgWADA9GHsBpaS9G7myq3LTO3vjTgSI3FP2tWBxwJOtkquE
-         j9Aw==
+        b=XrMvYxcwVZVKmLKtOl2JKz/deV6MhpfudetYuaGHOlEJucecdL8jleFndcXfcanw+M
+         67hJxFvobWjdtJ6jPt3we7lwggfDPR3jKOt0Td/Eg9liaQgKBpgW2m1xA3bCDm16gvuA
+         kuzITQ33FWgLGdwjgCUQoX/VTjZeeEuBZDszs5FML9GERjTu97Tus0qh+cIEh+2R56QB
+         QqJKlPM4aahjU7bp4IBYan3IzxLtRY9kvDxafHNcIs/tbRpGQPQu4RTA4MRITPtJlxKv
+         A+q/SKq1vl3t6bhqqFMpjRWCl3cMlqYmeL/6hxLFZ9mvHvzOSsQMCwV0ptBJI1qVCMU/
+         i0dQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
-        fh=/Kw9U/ww9t8sdN800LW+3IxANKDyUFdpXF2GzLihVAI=;
-        b=bFyDo7R1E6uhYTgUpv2XlTPCACCIwrHW37BrF0X2kwbs6PVpEHsWA3N6/tDXhR/xe4
-         hZFfzYKi/dK2GkRGemRE49wb9cfMVVLG0rmzOB3mqfuFczmetfSNl54QJOPwgeY+Z17L
-         kt47RHSXbktfIqX7jXv9j8tdmp3N4vCWsCr41Hw4wim7jA4uzcsEj8FKtzGfkfw+CTle
-         ABzQVvWl1yy8ulVYtmu46x1bUq2Uc8rq4wi0Tr+FXIK1E6ggf1m2KSmudBe/8HNw4aS2
-         DJ16aJp78xHx49mI9Ep1WAmCcVX6gq1eZqRxTFjKwZoHcOav08H4NmVzkjrH3rK/62/V
-         BJZA==;
+        bh=qXnP6T+INpylmBsxtscmRoES5uiMtsm/3pgjyt6Nko4=;
+        fh=O6qMHKIy61KR7HBRKZnL+UeKQTS2Gxf3fBVqH7qIbqo=;
+        b=fp2qlT91fSmRiHwyg9A1R3Y2jV876YLJp9PNvVcOWrCeO6n5nl2Pyi9F1tcEAxj/6h
+         YftYHSXSu5xtKXkas0kBX86Lju+TQ4TNuPyZddtdSxAkQg/BNNxupMOV1Nlel0Tmqciv
+         a8coflPFkNfYL6+LhiWhfgkRrBXh3PlcUCGTUIsSRFltOup0FagowYYfMJ7HcP92aCM1
+         WncutXVV1y6muwEhWR+8eWKcPO4Jjl1m5wB4+OR+gsn/aKCbOjaUBgQv03fATbBeS1Wh
+         qzohitEbdx8XkgRJXofFiFxboi/InM9svWyOJeMBXtj247/yz+m2RRueZ9aNCmxlbP3g
+         s8HQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780902254; x=1781507054; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1780902319; x=1781507119; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
-        b=StPljPRzyriQ6ljrCi232UNhcq1V3Wcmqkp/oL8cuDcgTOBmSHsK+4j9fRTDTWPfJj
-         8ukgjBQXg204HZgDLgxfi8JG1Oqf64puKlXFJNPMZ9vdQqK6SRC/xk84JJ6ieUZ9jLUO
-         NGvrTxumlJalIuKlE5WQ7hpg7pZtMdQiw7tW9z3vm2+j+oL1flljq2TZkaiWbAvw0zjf
-         x3MZVEoFT2LiYatCnFg3ARwEO3RPiT0U5S0NNC9NNn0LYZVTPj0Jdf2DO1pfWNq3hGfF
-         I01WmYeaoI8y1qnb87C8lUomtZFLYjbgoLlJOc/XR657cPkGKZmfnnhjxuUjJaBW02NI
-         Nxjg==
+        bh=qXnP6T+INpylmBsxtscmRoES5uiMtsm/3pgjyt6Nko4=;
+        b=gW64x+L92hygzkwVcHbOrih7mWyvRCP0fm9Q0guozA5Q6zxSZMmCnJYf4D7I1il/kC
+         5Yf3Z4Gr9jopiuU/8IQsjlRp4Vsmn7dVGgwT5iEM1f94Zhlu6U51UWGov68DtwfXWbGi
+         YcoV5pVAgDAdja4O+skFC+6g2ribkfBWF4wN9WmP98DzXzV6WC44w434DBgTOWhHJXgU
+         SFpeLBErQdZSFjlqYsrQgDbXjozyVmrSqkOgkVe30hPpXrloEdxXleZMwyrs/blRNtTJ
+         LfSazKDX1iDE87Fx6zm/6r9Wz/H2lyF3N7T8K292sGC/g79kPizEaVTGaYPvL1+tD5uF
+         Ax5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780902254; x=1781507054;
+        d=1e100.net; s=20251104; t=1780902319; x=1781507119;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
-        b=W8Q40i6JVbmU/zxZFlSsjW8U2PWVwuHioQ2mFc6lwvMRtT5epHh5+hp1PXOh5rdytz
-         a4JXxU9H4SmM664/8UdVYCRR7CpymMq2QHKurDRRSt6WSbyGrN/zrY9bXWPZkCRvPDUd
-         HwMZVVnPeoHYcgBIWWKCaavAeogdyckyCgJW9ssJfBV0IAHkRfPEUhc0vqCWRzoGeMcC
-         6jNxd8/kXivgiYVSydC9jV5gbuM+PtiluvuiHsJTJ96B8/2YV3ti8/fY1rqB+WQd1+P7
-         XItAgA0kZwVr9aSYwqFEq0a2OWBaYYWxaZYsGQvy3Az0MrgUK6P4nTAQZSoWxD1Vgp4g
-         uzMA==
-X-Forwarded-Encrypted: i=1; AFNElJ+uwY2VzCDv41w4UxrQy9ucLkPwOJjmwbIyFmR33YLgA6NjzTJYfytNgQhzrD6ChGO92FJCrXhvxEWwh5oP+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhb4Ndjm8xbw+542/ioeU8q24V2ueOC9BZjfhTttb+EEKdqiKx
-	ReHjLFFBKLe0ySENyRcPs4M9f3XLiGPS7Snr1Zqd8cgSkTi2yM+LdZkllbCRFuw4v2fdEMghQEk
-	yRikSjb8g7+EdPcXOQeX/Vrn+Bkqfh7U=
-X-Gm-Gg: Acq92OFWdDOXeWYcpEPKxME7RRLxR+BG733RkQdILr0HGlKxfwpzsCODoXUlx4C3aKh
-	bLfvkO4cJjXXVOVCO9dRId7aQXwd9BwOMmsDff2FtM5TSH5lE+GhnCN+M7FyJt3sQeBQW+bcWm3
-	BpbTRZuYQDkgQlHRgtbVdCWqpyqc2AJIc1BlykADwV1eFp7XKTQlCQEkPAP4n8s7CQTNdkyvlTg
-	A5ILj6RTG/LY3ARdgSRbA+s6wnh+3PVZR5C1bzMwyc7NMOA4DquDRPatUfqzkSEWjwVmmrOURWN
-	jetZUV5L+AqHS0DBIa+aGqCuy1RR7UhTVd3t2DawvsFisgV6ZddkTPqYxSThzb8PZdfdVUYoumE
-	A2e+9I4iepdnJnkWsrJPh24miJ4U0VJPLAA==
-X-Received: by 2002:a05:7300:fb91:b0:2e5:faa9:ca76 with SMTP id
- 5a478bee46e88-3077b437db7mr3385783eec.7.1780902253819; Mon, 08 Jun 2026
- 00:04:13 -0700 (PDT)
+        bh=qXnP6T+INpylmBsxtscmRoES5uiMtsm/3pgjyt6Nko4=;
+        b=cYAeiQFx2vtskK9m28Q7zUGxdT/JQPRfJe8FA6BGt9s9fijObWPFyOF85ETFBqC8qs
+         IDx05ZiS6Zz0ZlQHqNpT40FCiA1/XD65X+zqX5SK4f6DwIHZt7wc3Kf+VKr85roErgUy
+         AuezzHIK1M35Ls8BIMlKwxNopHg87hpFFrnDbCxTE9xC8y7ld3KKExaLcEnl7HiZVYpf
+         ltaK6VcXkmY2nJOcaXHr8RrHjPfMKuDVfn9JXb2t1OvRm84KftMMUcaMFuGq0IcvD3XZ
+         gS1GFCeXZT6r+gwErot/oM62Pr1pAQ2vFWaXd6aDLjZ8VGPxqsqcoc26HEhuGdlqiY2F
+         IkwQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/qDL8i6HxCmY7K2OqAdL7BWKCQ71jOSxdK/NPKbKbyU1/Gco0hiLx2eoV49d8OPTMAXmPfD1HH1XQ7VL1tBg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBJPaYwVp03HmH4Cf9pyDrMpSPY2XGWronPYTnPRcd5eu+Iahx
+	BJM4VfIdBD9y8zjFyxCnuWuvDKnCXhsOCXoPSySAkhMdL4FH/dNbCA6vAoDf3XC5KRsrwYhVdnE
+	edrmjBozliwDMBvez2HNeYoxxwZK4AFs=
+X-Gm-Gg: Acq92OHL5iASZXWKUre2O5WxMz/dDN8OO/h6K9SkP5vT9q1ucVMREwV6B9D33SLs8ye
+	1m8UcQ1ic/4GWjH47XQ/Fl9QwLvQqC6nESUcFTustoM/S/IGkDVYUtGuK+XOaHrZoU7+xhD6zZp
+	HbLokC9kEvpXZdrOQw/CNZdxsdUo2UlKioKWXKyNHP+UhQAm8QPaK8nF3stkZdpKQYSmkPPDkbF
+	//nLur1PHlHhaFzzyZ7BrykIHPGR2MUrZgSwYb4KNcyR1esUT8HqqMSHZjC4kQnUWz2bdq/b4RA
+	uNJrJ2wTSsDMh7Zr09UPmw7LW8w/nnyW+g/0YndkfLt8o5MJQ2GNq1G8qJtp5wd6kPaNCDPgDJl
+	BESHvptO7h46Bw7szjyq6/Kzhbh1JAgtF2A==
+X-Received: by 2002:a05:7300:134a:b0:304:4f23:4823 with SMTP id
+ 5a478bee46e88-3077b326a5dmr3445647eec.7.1780902319255; Mon, 08 Jun 2026
+ 00:05:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260417031531.315281-1-ynorov@nvidia.com> <20260417031531.315281-3-ynorov@nvidia.com>
-In-Reply-To: <20260417031531.315281-3-ynorov@nvidia.com>
+References: <20260417031531.315281-1-ynorov@nvidia.com>
+In-Reply-To: <20260417031531.315281-1-ynorov@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 8 Jun 2026 09:03:59 +0200
-X-Gm-Features: AVVi8CfkctqwQ1afnp5vGSX4F85MzXwCNBMwN2jWnjjuq3Ql_RpXAPCbCeRJJMk
-Message-ID: <CANiq72msu_mByr9DjW8kU9DWQg-0q5XqrboxRK1gOTwKs6QTjg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: testing: add Kconfig for KUnit test
+Date: Mon, 8 Jun 2026 09:05:06 +0200
+X-Gm-Features: AVVi8CdioJIDDz_cRAY1RuWSS0KDIb_lefz9KIF5grkUbE8JNDNatMTjZg__w7E
+Message-ID: <CANiq72kAmcLa6AJy_-Z7HOQHuQeDtd3aUNZUJ9q98FWF88knVA@mail.gmail.com>
+Subject: Re: [PATCH 0/3] rust: add Kconfig.test
 To: Yury Norov <ynorov@nvidia.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -115,25 +115,22 @@ On Fri, Apr 17, 2026 at 5:15=E2=80=AFAM Yury Norov <ynorov@nvidia.com> wrot=
 e:
 >
 > There are 6 individual Rust KUnit tests. All the tests are compiled
+> unconditionally now, which adds ~200 kB to the kernel image on my
+> x86_64 buld. As Rust matures, this bloating will inevitably grow.
+>
+> Add Kconfig.test, which provides a RUST_KUNIT_TESTS menu, and all
+> individual tests under it.
 
-I think here you mean "test suite", i.e. there are many more
-individual KUnit tests than that -- hundreds at the moment (mostly
-doctests).
+Applied to `rust-next` -- thanks everyone!
 
-> unconditionally now, which adds ~200 kB to the kernel image for me
-> on x86_64. As Rust matures, this bloating will inevitably grow.
+    [ Fixed capitalization. Used singular for "API" for consistency.
+      Reworded to clarify these are suites and that there exists
+      the doctests one (which is the biggest at the moment by
+      far). - Miguel ]
 
-Yeah, options for major/relevant sets sound good, even after we split
-the crate. Not sure about granularity, i.e. whether we will want a
-Kconfig for every single test suite, though... Especially because we
-can end up with a ton of Kconfig symbols; but I see there are a bunch
-of those already in the tree in the C side, so I guess this is
-expected/fine, especially given David's review.
-
-(By the way, KUnit is not intended for production kernels, so I am not
-sure it really counts as bloat in that sense.)
-
-Thanks!
+    [ Fixed the paragraph by moving the new sentence above. Added gate
+      in the other example as well. Applied proper formatting. Reworded
+      slightly. - Miguel ]
 
 Cheers,
 Miguel
