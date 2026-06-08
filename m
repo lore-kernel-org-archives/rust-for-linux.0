@@ -1,176 +1,117 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0729326928
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 16:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CBD314A65
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 17:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780935381; cv=none; b=mh4v2BS+060wzFSHUncrVYnfl1mMa+i+PMwQYygCht+9vEVVBKCDWAw0Qy2aDE70zR86xikzqGUSTRvpSNokVwFLvrsVNt0BuIFNqyBHMdylviAj1Spnb2/4AWimtPADkouE7DozN5Z8ZXbM8IYFFeTb4dC+o1lWfL/+/OSaCZc=
+	t=1780938626; cv=none; b=ekbddMmksa/IMD/SmYqPm91i5jWHLMElQKktdB1lGgTA7zowMiDkzpQoeUMIk7uSjFUgvQQHPAO/eevV0m1pMfC/nCUVl4AVUgG59CWoGAeObggXa7IVEvGNILDXPwAeGkTMYO8IHrLYKJ1P8XPV5pg9CYCJm+jUWqpVykSSq4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780935381; c=relaxed/simple;
-	bh=LuAuDPS2cefO9msY2v5Pfkr1UDB1Mok0w0xGu74ON4s=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZ7K+kmJDURGFUMDq9GhoMJXlFUvc+5JAvoWKLtGSj6VPwO41akThtYaWOl/rhbZTAtd50R06sTdcBc4dqTVdu9mg0SFwiPcnH9f9O46JwBMzFR5WL6dS+wtguGA2P0oXlCGE8xs9xR1bzJDyLUQnSqWKOplNmkBBEBTYxKRsYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LdaLvPH7; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780938626; c=relaxed/simple;
+	bh=1jvziielmBQRhjbGDR1LkdWpDfix4f9jfDw9HyW1EWo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZqJA+nV2wBmEPaPdyC5hpU/d6v/CSCUNF7nYFgNBgmf9k4i/w8h79eBiCh+DQVNYZ1xqmulxNt861nbH9R0KDB0HQ7f3kL5LGTSbwvpvzHu3EGNpPg71A/QCoXXvAU399NQw4/3fEouxKZX9jUnzmSTHiAMBM0sauviAnVQD96o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SFxAVRNq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LdaLvPH7"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7f015f87fddso15369767b3.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jun 2026 09:16:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780935379; x=1781540179; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ufh2a1IBnVjLV88sQqOB01oSzKTb2+dLoZi3jebbixU=;
-        b=LdaLvPH7vlhsr4OQHhgQRtSGtKNxul3Q69hhAgFtLnE6ymGnpnz8UfSyOnOer96cmH
-         JjOd8+m0Gunjy3AUkaFdVb8RTyXCaCN96m8NV7vYu+6GUj21DnFkvudRNGuXjUDX1Ehf
-         fKXP9Q1yZASdhERFdHtEMoMweQYTWmIKznWgHApR6JpYcx3jwzqMSE3m5Y7EvgES/lT1
-         d+CgRHdjr4W2bPja8tKA0jESbm7X+nZFy933kvexaYlbHdZ7CiWo2eFgeF2mv9SS4/Vv
-         w0fAxpwlKNBzA1jP4qDCPmUQyctW/YLPMorKYOVgtThaFa7eYyLDsNmTvLQXt2mJrNhp
-         MkIQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SFxAVRNq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780938623;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1jvziielmBQRhjbGDR1LkdWpDfix4f9jfDw9HyW1EWo=;
+	b=SFxAVRNqHLF8ytioa7bQZbX3IvwiaJCtxh5PWykM59Xvtj0+F1rGigTsuOgKmeP8IZ65eV
+	/710bYsdaufOV029jvk/BKXzZvBRFRcQTyRKxDq1htZDgtJKnH98pAe3UBEdDq1eVsasyt
+	l0LYhovUmhg4mxy5MVjl38TgSqHRVpI=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-352-iGt-3wqAOcidtZ-Xda8oLw-1; Mon, 08 Jun 2026 13:10:22 -0400
+X-MC-Unique: iGt-3wqAOcidtZ-Xda8oLw-1
+X-Mimecast-MFC-AGG-ID: iGt-3wqAOcidtZ-Xda8oLw_1780938621
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-9157f453a27so943244085a.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jun 2026 10:10:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780935379; x=1781540179;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ufh2a1IBnVjLV88sQqOB01oSzKTb2+dLoZi3jebbixU=;
-        b=W3JcKrO7QSt2Po1uaKuNpt7NFgEdut0xl9WlPTtv+VBm0Rs7/+Eh5k0HO7P5GeWZG7
-         lKYO4pUzJpufWwbrNvzFPb8Or3QZtT47h2UgHb2vuNjL84qWizGNl5ty3f51r9CC08zV
-         qLVfGwYQEoGZV9SDKWGiir9iV4Zng5M3q4FZ6jv2dZjww4Bw2OKoACB9DdyO3OU59Fm0
-         /UC4Xu10iIR5xp/C8DiSCg/yRpCsxWEQZ5yPTE/WnivMy8AGyp6JX4Ht4eiucsU8j1At
-         ZXCvQW6yzd5RIbSP16W+jF5vgNb8c1RJ9jTCMrQu83a4dntmHuyLWV8G3PwchJDDSTdT
-         J/ng==
-X-Forwarded-Encrypted: i=1; AFNElJ8c395AKUbpb1tTVm12K0l2hvvgVNT0i4n/TyLD2zpWmNjhwPXMdjBiBt2rIfgEVL2VBZFDDrU5UoWV5F6miw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHKvKCJszCBH04QG/srHGWF17eWz5qoj05oi0vpN4GnBtfScXJ
-	ZkYJZve/YhQhfuZq0F9N6JyffeT8PjWFTQA3TN4UjrfJ9Ntdmg/siB7n
-X-Gm-Gg: Acq92OHZPYEsB5qPre5lwjyOvOhSGxPLFdnHdyh7aTrlEiruWVaizoQsb6EMfjogpJx
-	HeYcNldYJl3tfUPZyFGHVSJWLs6wEF9CLecksIwGL0HCLM5hWSqLtqQJ19GCMTyZte5eHdbFDqn
-	Ov7ZokMOVhz8ZZzUa6+TPd05nMolAtjbT1IpRHWN+phED+UNJPPvOaQIAN21yyhYVf5+qBoastO
-	5wApP1TIGa7DuPCZD7+76u/WGB8M1kc2GS9tLC5PHzRHro1B94v6cQVwXnHiPOV1XvDydXxv5SK
-	BnnaxJE71gAopQrTpBDX+ib9/Mwe3ZX5IbZPaq+9UhO6vH3CF1ULyhvC7FsGFb7Zlg9wJWvYSKW
-	HBTvCAX3QBsXqwCaJGNp6X0P3NnCuR0cqRw2SVDm13HSrq1xWbWhbAE1R3AOZ6UpCqZyjMwxvrh
-	XpBe+Ens5DsHBVyTGqhItw39xBoIrq
-X-Received: by 2002:a05:690c:6612:b0:7bf:1433:8f92 with SMTP id 00721157ae682-7ed5028e59dmr109118667b3.7.1780935378548;
-        Mon, 08 Jun 2026 09:16:18 -0700 (PDT)
-Received: from localhost ([50.221.107.122])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7efb9b99e2dsm21305947b3.20.2026.06.08.09.16.17
+        d=1e100.net; s=20251104; t=1780938621; x=1781543421;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1jvziielmBQRhjbGDR1LkdWpDfix4f9jfDw9HyW1EWo=;
+        b=q4kSJM3CqX3orRoYmAmeRKEdIINrJhLW123s4g8jAGPdht5EvCz4cXZO6w7cWHOIQy
+         PC7zl1HiLoZgBDSe18gPwdw9wPHdkHeho+CVT+ezqk+3cCwpw3UktQ4SMiEb2K8DEjZA
+         ASma2/40S0YSEJHR6gLKmqXdyQyYRjuPbTp1AS7iBX9TTvHzCyQl/Q9BATmDCSIRjUf+
+         +Toozhd4OQYriFKKVgg8j6wBHKQVRBtIrIkycUCHnE6A8P4UUJH8JoewKe3AilK9ApdW
+         Pl5NcXhdzv1EpGyPc3k+0VbCsmuo7iDVlsdp1GnaFWTKeB4Ad9zEr4fKCSXfhvhlZRcc
+         Pdkw==
+X-Forwarded-Encrypted: i=1; AFNElJ/K3p1rp0PNPTc0oqwYk47Rv/1YW3wfxFftUoZSfYMqm0Rv3xd1zsu6gUK4OjO/YWBkSB2AUqOl2c32fFvHpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzExg0SVk2hpqCmmtNdOp3XlW17x5fkNpDFzWg5EGzPkax2z2Ta
+	OIOY+k/8OVevNhTs8gf80wy/H2L3i1f55UP9oOp6acIrLwDCJ+c7pyWteRjJgAvqptLXFbv/1+k
+	o6P4wqUz7+ZxUwnzZ6Y2DYwOD4YJ2XOAMtNwkluY702YnY764f54wY69hyArNmhCyqxN1
+X-Gm-Gg: Acq92OEyBgXQIHdM4dxxHsu30UwpsDqBBcd8zHSaLnHXXyRZ49pCLzoXrF9uEqZh/Iz
+	sLG8oc83OlxOBkX8EXv+wZ1LtQH4gV/lJoEPmq1Wg5cUAAT0Y+ZWoC1Eo8Pm5WgviAyVANFIGVa
+	Pd0Pw+1l/KV2ktKzQO1H4L+fkn0blH9nqNIhyHZxDzq2BbZtNa3AhGEO9DFr2tC9n82ovFP8u68
+	yfIhWNV5nktl4f6dYwGDaelWGyuGuwe8rW9QZ57ulLRWbFbgTjbTrJs7sKbm6MTgbDXC74efubX
+	dL/3b3gpIbY2b4lUOn1cisbvMZQG4ePDZ6txJK1nOfFH+FpT1p8sZoOYsEZ0dB0snduf+KkH3t9
+	gfDyOO/H5pgdznsBNxcWEFcVQAzJq
+X-Received: by 2002:a05:620a:254a:b0:915:9943:d760 with SMTP id af79cd13be357-915a9db892dmr2520125185a.43.1780938621254;
+        Mon, 08 Jun 2026 10:10:21 -0700 (PDT)
+X-Received: by 2002:a05:620a:254a:b0:915:9943:d760 with SMTP id af79cd13be357-915a9db892dmr2520115285a.43.1780938620617;
+        Mon, 08 Jun 2026 10:10:20 -0700 (PDT)
+Received: from [192.168.8.4] ([100.0.180.93])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a3bf5f9sm1822479085a.35.2026.06.08.10.10.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 09:16:17 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
-Date: Mon, 8 Jun 2026 12:16:17 -0400
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nova-gpu@lists.linux.dev, driver-core@lists.linux.dev,
-	Joel Fernandes <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v5 0/3] rust: add `bitfield!` macro
-Message-ID: <aibq0WVkvey9C4_W@yury>
-References: <20260606-bitfield-v5-0-b92188820914@nvidia.com>
+        Mon, 08 Jun 2026 10:10:19 -0700 (PDT)
+Message-ID: <00c7a09eac169e9da541b50396ceaa69ae978c10.camel@redhat.com>
+Subject: Re: [PATCH v18 1/4] rust: drm: gem: shmem: Add DmaResvGuard helper
+From: lyude@redhat.com
+To: Gary Guo <gary@garyguo.net>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Christian
+ =?ISO-8859-1?Q?K=F6nig?=	 <christian.koenig@amd.com>,
+ driver-core@lists.linux.dev, Miguel Ojeda	 <ojeda@kernel.org>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>,  Alice Ryhl
+ <aliceryhl@google.com>, Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org,  Sumit Semwal <sumit.semwal@linaro.org>,
+ linux-media@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Maxime Ripard
+ <mripard@kernel.org>, David Airlie <airlied@gmail.com>, Benno Lossin
+ <lossin@kernel.org>, linaro-mm-sig@lists.linaro.org, Danilo Krummrich
+ <dakr@kernel.org>,  Mukesh Kumar Chaurasiya	 <mkchauras@gmail.com>, Asahi
+ Lina <lina+kernel@asahilina.net>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Date: Mon, 08 Jun 2026 13:10:18 -0400
+In-Reply-To: <DJ2TB5AX540T.311A690IK8F9B@garyguo.net>
+References: <20260604192740.659240-1-lyude@redhat.com>
+	 <20260604192740.659240-2-lyude@redhat.com>
+	 <DJ2TB5AX540T.311A690IK8F9B@garyguo.net>
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260606-bitfield-v5-0-b92188820914@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: RkeTvm1lAxjtUh-91hUEZHL4pwYTStYAmpY6xkq5Agk_1780938621
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 06, 2026 at 09:43:03PM +0900, Alexandre Courbot wrote:
-> This is the continuation of the `bitfield!` macro which started
-> alongside the `register!` one before being temporarily integrated into
-> it [1].
-> 
-> This series extracts `bitfield!` from `register!`, adds unit tests for
-> the new macro, and replaces the `register!` macro rules with the
-> extracted version.
-> 
-> I have removed the `nova-core` patches, because the Blackwell support
-> that has been added this cycle (and thus not visible from `rust-next`)
-> introduces more uses of the Nova-local `bitfield!` macro that this
-> series intended to remove. If these new uses are not updated, then
-> `nova-core` won't build, thus to avoid conflicts and/or build breakages
-> I think it is preferable to merge them during the next cycle.
-> 
-> This version is based on `rust-next`, with [2] applied.
-> 
-> A tree with this branch and its dependencies is available at [3].
-> 
-> [1] https://lore.kernel.org/all/20260120-register-v1-0-723a1743b557@nvidia.com/
-> [2] https://lore.kernel.org/all/20260417031531.315281-1-ynorov@nvidia.com/
-> [3] https://github.com/Gnurou/linux/tree/b4/bitfield
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+I think I have just been defaulting to always for anything that seems
+like it should be unquestionably inlined - should I be defaulting to
+#[inline] instead?
 
-Thanks for the work!
+On Sun, 2026-06-07 at 13:22 +0100, Gary Guo wrote:
+> > +impl<'a, T: DriverObject, C: DeviceContext> DmaResvGuard<'a, T, C>
+> > {
+> > +=C2=A0=C2=A0=C2=A0 #[inline(always)]
+>=20
+> Why `always` here?
+>=20
+> Best,
+> Gary
 
-Reviewed-by: Yury Norov <ynorov@nvidia.com>
-
-> ---
-> Changes in v5:
-> - Squash the fixup patches into the one extracting the `bitfield!` macro.
-> - Remove the `nova-core` patches to avoid a conflict/build breakage on
->   -rc1.
-> - Improve the unit tests per Yury's feedback:
->   - Use a consistent test axis where each test focuses on a single thing.
->   - Rename members to generic name including range for readability.
->   - Add test exercising `try_with`.
->   - Add test checking that unallocated bits are left untouched.
-> - Link to v4: https://patch.msgid.link/20260527-bitfield-v4-0-e8821d4efbde@nvidia.com
-> 
-> Changes in v4:
-> - Inline private bitfield accessor methods.
-> - Fully qualify types in `bitfield!` macro.
-> - Rename `RUST_KERNEL_BITFIELD_KUNIT_TEST` to `RUST_BITFIELD_KUNIT_TEST`.
-> - Link to v3: https://patch.msgid.link/20260501-bitfield-v3-0-aa1076c3337d@nvidia.com
-> 
-> Changes in v3:
-> - Split patch 1 into the addition of the `bitfield!` macro and its use
->   in the `io` module.
-> - Mention reserved field names in `bitfield!`'s doccomment.
-> - Properly order fields in the KUnit test.
-> - Add a Kconfig option for building the KUnit tests.
-> - Document behavior on non-covered bits.
-> - Document support for signed fields and storage types (TL;DR: not
->   supported).
-> - Move `nova-core`'s `bitfield` module deletion into its own patch.
-> - Link to v2: https://patch.msgid.link/20260409-bitfield-v2-0-23ac400071cb@nvidia.com
-> 
-> ---
-> Alexandre Courbot (2):
->       rust: extract `bitfield!` macro from `register!`
->       rust: io: use the `bitfield!` macro in `register!`
-> 
-> Joel Fernandes (1):
->       rust: bitfield: Add KUnit tests for bitfield
-> 
->  MAINTAINERS                |   7 +
->  rust/kernel/Kconfig.test   |  10 +
->  rust/kernel/bitfield.rs    | 862 +++++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/io/register.rs | 246 +------------
->  rust/kernel/lib.rs         |   1 +
->  5 files changed, 882 insertions(+), 244 deletions(-)
-> ---
-> base-commit: 72d33b8bfeacbfdccf2cda4650e8e002def036f8
-> change-id: 20260408-bitfield-6e18254f4fdc
-> prerequisite-message-id: 20260417031531.315281-1-ynorov@nvidia.com
-> prerequisite-patch-id: 403e34bb92b42d3f31ed972e11896d18902585e3
-> prerequisite-patch-id: 42ae775aa6762a9e28ff31c5f69a0b65a7b40dcc
-> prerequisite-patch-id: 19b3e535962348f7627ede57ea829b34abda08c7
-> 
-> Best regards,
-> --  
-> Alexandre Courbot <acourbot@nvidia.com>
