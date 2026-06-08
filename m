@@ -1,109 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE76025D527;
-	Mon,  8 Jun 2026 11:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69840370AEC;
+	Mon,  8 Jun 2026 11:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780919271; cv=none; b=RiviEgmlwLkDVoQyTdwabie8SaYK7WJtZvMu0/fw3cdDTtWSA2slXYCON0tXoqbLT6dnbF5etp4pge+u8r/wpt4W4xYHrS3BxfGdaiX9f+2XwhQoo2/cOkaAUFzijK9w7f9MAIyI4kC3xPNvk7IK6y51RgB1qWA2mWosuqSci/Q=
+	t=1780919561; cv=none; b=j9RVnQLI+suSvMHg4ERNynAjGjS7lYoZ0MtrFTmls4tcND4g5EP8SCqDtSoLhkpv8F5LpW/2HOLv674+9b+/IfqzJWh/JEImyWRNs0bMJ3nDILDQIAqGs8AbmM3rDMUaBiq08G71CYd2ujfSaW9Ct/xzGV/oIKiOn9xlbtG91T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780919271; c=relaxed/simple;
-	bh=6pZUE6nr2ji/Ksxu2gPhVUmuM8hjJVCRFoi3291f6is=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sY8+h34a7rOgKLllHB4MIH1NQ89GzjK161LJVN0/VQKxryuzbLVZtc+5/GRfFaFEAOHxEUuz9LxoJkAz1QKSFpn6yIii90LNhKT3GJX83+XNZB3G8kSYTJuux4zHqn5D50B3Mr8ebK2Otw7jMdZ+yd0Aq3bY9cugVHQYBjH9cMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jsIGLmOT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780919561; c=relaxed/simple;
+	bh=lcIbECbsUj0IFQQBITkraegJET6kGL2W2wJlfCYMyR0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=kZ6pwkRM+zPOzvJkURvNzfvTbAf3vxUAouHELstvLhO9jMQaIhBLRhUnL3CpSdp64LlZZWyYytdgOrGYM0fo4pVMfTJIUMzc8wC6hb5wIj0TeGqxMgZRVwIXp/k3njE2mQiwxtqx9EzD60ZfqPCAAPmI34ZXyJB+k39RqdNlKws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WyF+RS9F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jsIGLmOT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CD71F00893;
-	Mon,  8 Jun 2026 11:47:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WyF+RS9F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF56F1F00898;
+	Mon,  8 Jun 2026 11:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780919270;
-	bh=PxqUCT2KZyVSdTeReMYgFJQToW1ypSg2NFb0ug/hJT8=;
-	h=From:Date:Subject:To:Cc;
-	b=jsIGLmOT9M0s1bc7a4XF/FOVctP4I/pzgI/W07m3WUfARhHvDWVND6054fPqxXgiS
-	 /0p1cIkccy+CEE4jilZmsRaopAjqTD0mXBEoJIIF1pLmtiCOtGeF3KLRJTQKVDrWFo
-	 3ZgNawjkKpCmR/+BRrbbierbgVK1hrPtdvOMs4XFWCZ8jzhHXT82HtXSc8v6MgwsGM
-	 EOoRNBPSba485gqgcCZvHwyAv9wI+t9mIrHGpkqcITbyRwJngdv18DsmnBlfd6tAGp
-	 2IW587w5W0QoZ4vVTHFt90XelH/N8f3468oM+TN88JgcYbxP2H1S2Rnmg5oeXz/nHq
-	 1V+oPNUjai/ww==
+	s=k20260515; t=1780919560;
+	bh=3KWuOy7voSP744PFUJMTm5c8hlbp5Ww8oclzL+Nyr48=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=WyF+RS9FIR/gagStaLWJmAjPujcI2J5fYQ8HiW21jj3UjSmcfzexSsU8Or1KjA3Rr
+	 jY4zyfsmUJbFWXl3Km1l9qePylngPWumBjEkdMEoNPDM0YmUpNUoNF0pEocQiamWNP
+	 1gp7MEa7LISgOpZJ/mGvQ8eg9Zk5mA4xjc0xd5bpe8ubXD5xnHHMHFpIxPfMZCIGlz
+	 sG5AWLzbwBrapVTPkXBt10E3K72/aj+tjyfHP1cRDpkjm8nKVbbS1g86BgsQ2uM2bm
+	 fLru4qiN5PZsLPneMucnUMEqjQz1cTO5ybfYH0U7K8Id3gjZtlKcEVtckmjfa+AAZH
+	 TJKinrZLQ+QeQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 08 Jun 2026 13:47:35 +0200
-Subject: [PATCH] rust: alloc: add `NumaNode::id()` accessor
+To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] rust: add a wrapper for the `nr_online_nodes` C
+ function
+In-Reply-To: <DJ3MAHWC1974.1MKBKAXGMNAJG@garyguo.net>
+References: <20260605-cpu-helpers-v2-0-0ad227f0d91b@kernel.org>
+ <20260605-cpu-helpers-v2-2-0ad227f0d91b@kernel.org>
+ <DJ3MAHWC1974.1MKBKAXGMNAJG@garyguo.net>
+Date: Mon, 08 Jun 2026 13:52:29 +0200
+Message-ID: <87wlw9gsg2.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260608-numa-node-id-v1-1-28480299c62d@kernel.org>
-X-B4-Tracking: v=1; b=H4sIANarJmoC/yXMywqAIBCF4VeJWSdYdJFeJVpYM9UEWWhFIL57V
- suPw/k9OLJMDprEg6WLHW8mIksTGGZtJhKM0ZDLvJKVVMKcqxZmw3cQqkSqpcKCFEK87JZGvr9
- c2/12Z7/QcLwNCOEBcdWqyHAAAAA=
-X-Change-ID: 20260608-numa-node-id-85de708d4e8d
-To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1147; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=6pZUE6nr2ji/Ksxu2gPhVUmuM8hjJVCRFoi3291f6is=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqJqvZb34EKyVvqWp18h1axxj7vVCjkq6F9+PqV
- BZSW8s049qJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaiar2QAKCRD6UCkIqsW9
- 0ImvEAC3z0F7Az0dY/2pVv6iWHDf5fgxlPWwCrilnPuWUT9DHC0lqYfCWk+AnGmlv5Y5qRJ+Bas
- eJRvNv4/AOd3jJAH7AJ/9jWEX+ZJegyfLU5Qp7aRhesmaLiphQSQ7V1q18uNQ9wb07gVpJS9/VQ
- 9ncrtgApWwbDKse4TISVqWyRB7QTfOJIoa8yrh1W+njsfuf+golCmcM3vWLBodM6H7Wjs6T85IP
- Orkr+Vbyh2k75/mFtH+dBKs/kdisZL8MtH6Gfa569oWoh8ST6O9DGfeuACJAhfkOPUFgXBTnf8i
- 0JLtzfk/s7kw4/t3RxUoM5/MSzAZeFtGhs7Rbzs1QMExlV73nYiss9XAvK3kgosERT9pOkA7kQH
- h1T2njFemtOrKU/w9WAhwDbBQrf0mm+W9Ws8waG/hxxPyIqJAkl29KXBHXUf9/Uu2YTP47YglU0
- kw7yPa41B+hNGldy0J8dIdAJ/wNV5XwUImleZSXffXobV1S+F2RzyMbCnDxRZeORErj87EXWLG8
- HukWFWKDUCKDUui8xPBdBg8f2fgi9c1kYlAFQabOk/gSxm5lTVCPnjOL77I2NWOlB1Yk4bJSAvR
- cYUwuMNAgN7LX//aALKEhPuwqg3jPM/S74JugZgkxO7+TyKBOCRkwcGeQWTJK4Y7Mb+POH6/Kqf
- dKlNRxGNjkVwpMg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain
 
-`NumaNode` wraps an `i32` but offers no way to read it back. Add a
-trivial `id()` getter so callers that need to pass the node id to a
-C binding can recover the underlying `c_int` without reaching into
-the private field.
+"Gary Guo" <gary@garyguo.net> writes:
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
-This will be used by an upcoming change that adds a home node parameter to
-the block layer `TagSet::new()` constructor.
----
- rust/kernel/alloc.rs | 5 +++++
- 1 file changed, 5 insertions(+)
+> On Fri Jun 5, 2026 at 1:54 PM BST, Andreas Hindborg wrote:
+>> This function returns the number of online NUMA nodes.
+>>
+>> The wrapper is needed by the Rust null block driver.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/kernel/lib.rs  |  1 +
+>>  rust/kernel/numa.rs | 19 +++++++++++++++++++
+>>  2 files changed, 20 insertions(+)
+>>
+>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+>> index b72b2fbe046d..00713b2adcac 100644
+>> --- a/rust/kernel/lib.rs
+>> +++ b/rust/kernel/lib.rs
+>> @@ -97,6 +97,7 @@
+>>  #[cfg(CONFIG_NET)]
+>>  pub mod net;
+>>  pub mod num;
+>> +pub mod numa;
+>>  pub mod of;
+>>  #[cfg(CONFIG_PM_OPP)]
+>>  pub mod opp;
+>> diff --git a/rust/kernel/numa.rs b/rust/kernel/numa.rs
+>> new file mode 100644
+>> index 000000000000..760db072a6c1
+>> --- /dev/null
+>> +++ b/rust/kernel/numa.rs
+>> @@ -0,0 +1,19 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! NUMA topology utilities.
+>> +//!
+>> +//! C header: [`include/linux/nodemask.h`](srctree/include/linux/nodemask.h)
+>> +
+>> +use crate::bindings;
+>> +
+>> +/// Returns the number of online NUMA nodes.
+>> +#[inline]
+>> +pub fn num_online_nodes() -> u32 {
+>> +    // NOTE: In some configurations, we can read this variable without an unsafe block.
+>> +    // SAFETY: When NUMA is enabled, this is a global mutable static. We do as C and just read it,
+>> +    // even though it might race.
+>
+> Can we do better and do a relaxed load instead?
 
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index e38720349dcf..c02290bb79d9 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -126,6 +126,11 @@ pub fn new(node: i32) -> Result<Self> {
-         }
-         Ok(Self(node))
-     }
-+
-+    /// Returns the raw NUMA node identifier as an `i32`.
-+    pub fn id(&self) -> i32 {
-+        self.0
-+    }
- }
- 
- /// Specify necessary constant to pass the information to Allocator that the caller doesn't care
+Yes, that sounds reasonable.
 
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260608-numa-node-id-85de708d4e8d
+But what are the semantics of a relaxed load when other writers are not
+using atomic primitives? Does it make a difference?
+
 
 Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
+Andreas Hindborg
+
 
 
