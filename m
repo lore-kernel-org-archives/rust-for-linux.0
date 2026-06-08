@@ -1,530 +1,139 @@
-Received: from mail-43172.protonmail.ch (mail-43172.protonmail.ch [185.70.43.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E8B38735D
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 06:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780899976; cv=none; b=oco7sD01d9RKIFL7o8xamVfyZQIaZFi92qbLMpiuTlvtv3jmZhZJiS76iX5oGPbzdkGk/eBzTsvLz0/oiPpDIwpihNSvn7wFKI0s8HvQi+nvNtekkEF0hBKNgS4WCtQ9tgkWZ5x64oVD1btMaCOpe/Q6oo9DyeoMGS0wp1MqJDc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780899976; c=relaxed/simple;
-	bh=wdK3SyoVg6YCb9SKn7mRWAWIrsb7QReN0JCWNJpWg7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y72Iz3X/k1a0spHfayNrm3HiX/50TpXnxeOxxKdOLxz1BitJsrOxzXNwvMnaB5fiUwOt3oXDGkktFEN718810rmx9FWZZFfVAh/F/fZyZnnYPXEflmL2khqrMjpjg3kqiOFnpo5hwY8CTAvEwjhdxWSwgGu46yE8y+N4dqWH0ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=JSPUI6h0; arc=none smtp.client-ip=185.70.43.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C4838F93B
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 07:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780902256; cv=pass; b=Zv+LAVwcZTc4bvzTIxbN5hhATGwl0VQV8tTZlwjeJ1qlwa55oLiClZr9C5r2jihuSTt40la3A4FOd6+xBEVLF0idz7SOCRvF5JzJaQiZPoTjKVaLlka8fQEUvjkKobWrYFZ9qMzRMt8MtMq/dOPv4uUsjqzhHHS8IgfLBtw57fU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780902256; c=relaxed/simple;
+	bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s5BZtoA0yDfZZxn+82OLeSgvpkq8wdDHUsk7dXOhcqmvUKNCNbzEsNehx7LZPkNNy4+NkH0CoCtg9jFE0V9rKwQ5rOZAWlGeUP24To0N5nGVWfhNRqZuAwF+VSQu7G9eyewjcaukDP+9nNJQXtPLbIeZZDVcQBTbc75rNffqRzI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StPljPRz; arc=pass smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="JSPUI6h0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1780899962; x=1781159162;
-	bh=MJr2296SR7nIQblS1Zm7bHsM76sxcLmiNUHGNEtI66Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=JSPUI6h0uDg5HhpyS65sKBAertV8/kInNYz9wiyhZT7VrfwUSJIe0QHask/jRtFFJ
-	 7oA96g1ORjO7FpPv57e0IHWjddKpNNWN+UOuaBxNUmQ3aY3DNYHQ+xUWbi2CmILojW
-	 xBibNcYiIvt/MufKqgZYAQqvolJo6iSRgLOcrDiN+hzizoCM1es8Y7DDjfP7n25oC3
-	 kbqwL22H6GERM2DI4Rxm0X3dPGLpfLjE3Qo9Mra+JLNsLyTBprsISCBVNwsaviCeSS
-	 vj5nNjlg+uEg1Hsqo45LDoZuk0rZARD83va8/dG4PizJx5Ii3f+0nqRC4hmJdguiQQ
-	 GSwfToqKflgIw==
-X-Pm-Submission-Id: 4gYhr53stKz1DDL0
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH v2] rust: add a ring buffer implementation
-Date: Mon,  8 Jun 2026 09:25:44 +0300
-Message-ID: <20260608062555.19400-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260605-ringbuffer-v2-1-99df02489185@kernel.org>
-References: <20260605-ringbuffer-v2-1-99df02489185@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StPljPRz"
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-307b668e1f5so38131eec.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jun 2026 00:04:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780902254; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BDLD4B84bUnJkDySVlJvB4yx5wv3/URPb5qIdHTP7J3rffk4nAE1gRzRtKusnAJGqq
+         NuwxOPNu3PjsPpdOpCpiCdUkI6l8skkwx9J6ooH6qKbH9dlZEchX9wNrxaXnfx/00bnw
+         JiLpmE7WkQE14lJIteMhNlhumySB107KBK16PJT3YfyzvGIkJ5oQp2I1hkSArpyf5sD6
+         8GtpI4/BHVNJ7TjHj1Bcs8BON8xqL7aDgSKojVQTcJVJEIMXTT0cy26qsn6rcBsE6kH7
+         AH+y8Ol2doE/GJrPODj9SjgWADA9GHsBpaS9G7myq3LTO3vjTgSI3FP2tWBxwJOtkquE
+         j9Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
+        fh=/Kw9U/ww9t8sdN800LW+3IxANKDyUFdpXF2GzLihVAI=;
+        b=bFyDo7R1E6uhYTgUpv2XlTPCACCIwrHW37BrF0X2kwbs6PVpEHsWA3N6/tDXhR/xe4
+         hZFfzYKi/dK2GkRGemRE49wb9cfMVVLG0rmzOB3mqfuFczmetfSNl54QJOPwgeY+Z17L
+         kt47RHSXbktfIqX7jXv9j8tdmp3N4vCWsCr41Hw4wim7jA4uzcsEj8FKtzGfkfw+CTle
+         ABzQVvWl1yy8ulVYtmu46x1bUq2Uc8rq4wi0Tr+FXIK1E6ggf1m2KSmudBe/8HNw4aS2
+         DJ16aJp78xHx49mI9Ep1WAmCcVX6gq1eZqRxTFjKwZoHcOav08H4NmVzkjrH3rK/62/V
+         BJZA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780902254; x=1781507054; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
+        b=StPljPRzyriQ6ljrCi232UNhcq1V3Wcmqkp/oL8cuDcgTOBmSHsK+4j9fRTDTWPfJj
+         8ukgjBQXg204HZgDLgxfi8JG1Oqf64puKlXFJNPMZ9vdQqK6SRC/xk84JJ6ieUZ9jLUO
+         NGvrTxumlJalIuKlE5WQ7hpg7pZtMdQiw7tW9z3vm2+j+oL1flljq2TZkaiWbAvw0zjf
+         x3MZVEoFT2LiYatCnFg3ARwEO3RPiT0U5S0NNC9NNn0LYZVTPj0Jdf2DO1pfWNq3hGfF
+         I01WmYeaoI8y1qnb87C8lUomtZFLYjbgoLlJOc/XR657cPkGKZmfnnhjxuUjJaBW02NI
+         Nxjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780902254; x=1781507054;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=d3hGf5H3nnzoC7ybJv4mmiJ6ITlnTZEvjcyvoKNqyjE=;
+        b=W8Q40i6JVbmU/zxZFlSsjW8U2PWVwuHioQ2mFc6lwvMRtT5epHh5+hp1PXOh5rdytz
+         a4JXxU9H4SmM664/8UdVYCRR7CpymMq2QHKurDRRSt6WSbyGrN/zrY9bXWPZkCRvPDUd
+         HwMZVVnPeoHYcgBIWWKCaavAeogdyckyCgJW9ssJfBV0IAHkRfPEUhc0vqCWRzoGeMcC
+         6jNxd8/kXivgiYVSydC9jV5gbuM+PtiluvuiHsJTJ96B8/2YV3ti8/fY1rqB+WQd1+P7
+         XItAgA0kZwVr9aSYwqFEq0a2OWBaYYWxaZYsGQvy3Az0MrgUK6P4nTAQZSoWxD1Vgp4g
+         uzMA==
+X-Forwarded-Encrypted: i=1; AFNElJ+uwY2VzCDv41w4UxrQy9ucLkPwOJjmwbIyFmR33YLgA6NjzTJYfytNgQhzrD6ChGO92FJCrXhvxEWwh5oP+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyhb4Ndjm8xbw+542/ioeU8q24V2ueOC9BZjfhTttb+EEKdqiKx
+	ReHjLFFBKLe0ySENyRcPs4M9f3XLiGPS7Snr1Zqd8cgSkTi2yM+LdZkllbCRFuw4v2fdEMghQEk
+	yRikSjb8g7+EdPcXOQeX/Vrn+Bkqfh7U=
+X-Gm-Gg: Acq92OFWdDOXeWYcpEPKxME7RRLxR+BG733RkQdILr0HGlKxfwpzsCODoXUlx4C3aKh
+	bLfvkO4cJjXXVOVCO9dRId7aQXwd9BwOMmsDff2FtM5TSH5lE+GhnCN+M7FyJt3sQeBQW+bcWm3
+	BpbTRZuYQDkgQlHRgtbVdCWqpyqc2AJIc1BlykADwV1eFp7XKTQlCQEkPAP4n8s7CQTNdkyvlTg
+	A5ILj6RTG/LY3ARdgSRbA+s6wnh+3PVZR5C1bzMwyc7NMOA4DquDRPatUfqzkSEWjwVmmrOURWN
+	jetZUV5L+AqHS0DBIa+aGqCuy1RR7UhTVd3t2DawvsFisgV6ZddkTPqYxSThzb8PZdfdVUYoumE
+	A2e+9I4iepdnJnkWsrJPh24miJ4U0VJPLAA==
+X-Received: by 2002:a05:7300:fb91:b0:2e5:faa9:ca76 with SMTP id
+ 5a478bee46e88-3077b437db7mr3385783eec.7.1780902253819; Mon, 08 Jun 2026
+ 00:04:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260417031531.315281-1-ynorov@nvidia.com> <20260417031531.315281-3-ynorov@nvidia.com>
+In-Reply-To: <20260417031531.315281-3-ynorov@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 8 Jun 2026 09:03:59 +0200
+X-Gm-Features: AVVi8CfkctqwQ1afnp5vGSX4F85MzXwCNBMwN2jWnjjuq3Ql_RpXAPCbCeRJJMk
+Message-ID: <CANiq72msu_mByr9DjW8kU9DWQg-0q5XqrboxRK1gOTwKs6QTjg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: testing: add Kconfig for KUnit test
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, Burak Emir <bqe@google.com>, 
+	Yury Norov <yury.norov@gmail.com>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Thomas Gleixner <tglx@kernel.org>, Douglas Anderson <dianders@chromium.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Christian Brauner <brauner@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Tamir Duberstein <tamird@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 05 Jun 2026 15:10:30 +0200=0D
-Andreas Hindborg <a.hindborg@kernel.org> wrote:=0D
-=0D
-> Add a fixed-capacity FIFO ring buffer. The implementation uses a circular=
-=0D
-> buffer with head and tail pointers, providing constant-time push and pop=
-=0D
-> operations.=0D
-> =0D
-> The module includes a few tests covering basic operations, wrap-around=0D
-> behavior, interleaved push/pop sequences, and edge cases such as=0D
-> single-capacity buffers.=0D
-> =0D
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>=0D
-> ---=0D
-> Changes in v2:=0D
-> - Move the module into `rust/kernel/alloc/`, next to `Vec` (Alice).=0D
-> - Drop the redundant `size` field; use `nodes.len()` instead (Alice).=0D
-> - Return `ENOMEM` when `capacity + 1` overflows `usize` instead of=0D
->   panicking inside `with_capacity` (Alice).=0D
-> - Simplify the `head < tail` branch of `free_count` to `tail - head`=0D
->   (Alice).=0D
-> - Remove the manual `Drop` impl; the backing `KVec` already drops the=0D
->   stored slots (Alice).=0D
-> - Make `RingBuffer` generic over the backing allocator. Add=0D
->   `KRingBuffer`, `VRingBuffer` and `KVRingBuffer` aliases and re-export=0D
->   them from `kernel::alloc`. The constructor now takes an additional=0D
->   `Flags` argument (Daniel, Danilo).=0D
-> - Link to v1: https://msgid.link/20260215-ringbuffer-v1-1-9b359758a1b6@ke=
-rnel.org=0D
-> =0D
-> To: Danilo Krummrich <dakr@kernel.org>=0D
-> To: Lorenzo Stoakes <ljs@kernel.org>=0D
-> To: Vlastimil Babka <vbabka@kernel.org>=0D
-> To: "Liam R. Howlett" <liam@infradead.org>=0D
-> To: Uladzislau Rezki <urezki@gmail.com>=0D
-> To: Miguel Ojeda <ojeda@kernel.org>=0D
-> To: Boqun Feng <boqun@kernel.org>=0D
-> To: Gary Guo <gary@garyguo.net>=0D
-> To: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>=0D
-> To: Benno Lossin <lossin@kernel.org>=0D
-> To: Andreas Hindborg <a.hindborg@kernel.org>=0D
-> To: Alice Ryhl <aliceryhl@google.com>=0D
-> To: Trevor Gross <tmgross@umich.edu>=0D
-> Cc: linux-kernel@vger.kernel.org=0D
-> Cc: rust-for-linux@vger.kernel.org=0D
-> ---=0D
->  rust/kernel/alloc.rs            |   6 +=0D
->  rust/kernel/alloc/ringbuffer.rs | 338 ++++++++++++++++++++++++++++++++++=
-++++++=0D
->  2 files changed, 344 insertions(+)=0D
-> =0D
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs=0D
-> index e38720349dcf..05eb0289b82b 100644=0D
-> --- a/rust/kernel/alloc.rs=0D
-> +++ b/rust/kernel/alloc.rs=0D
-> @@ -6,6 +6,7 @@=0D
->  pub mod kbox;=0D
->  pub mod kvec;=0D
->  pub mod layout;=0D
-> +pub mod ringbuffer;=0D
->  =0D
->  pub use self::kbox::Box;=0D
->  pub use self::kbox::KBox;=0D
-> @@ -18,6 +19,11 @@=0D
->  pub use self::kvec::VVec;=0D
->  pub use self::kvec::Vec;=0D
->  =0D
-> +pub use self::ringbuffer::KRingBuffer;=0D
-> +pub use self::ringbuffer::KVRingBuffer;=0D
-> +pub use self::ringbuffer::RingBuffer;=0D
-> +pub use self::ringbuffer::VRingBuffer;=0D
-> +=0D
->  /// Indicates an allocation error.=0D
->  #[derive(Copy, Clone, PartialEq, Eq, Debug)]=0D
->  pub struct AllocError;=0D
-> diff --git a/rust/kernel/alloc/ringbuffer.rs b/rust/kernel/alloc/ringbuff=
-er.rs=0D
-> new file mode 100644=0D
-> index 000000000000..09e1ce1d048e=0D
-> --- /dev/null=0D
-> +++ b/rust/kernel/alloc/ringbuffer.rs=0D
-> @@ -0,0 +1,338 @@=0D
-> +// SPDX-License-Identifier: GPL-2.0=0D
-> +=0D
-> +//! A fixed-capacity FIFO ring buffer.=0D
-> +//!=0D
-> +//! This module provides [`RingBuffer`], a circular buffer implementatio=
-n that=0D
-> +//! supports efficient push and pop operations at opposite ends of the b=
-uffer.=0D
-> +=0D
-> +use super::{=0D
-> +    allocator::{KVmalloc, Kmalloc, Vmalloc},=0D
-> +    Allocator, Flags, Vec,=0D
-> +};=0D
-=0D
-nit: Vertical style import missing.=0D
-=0D
-> +use kernel::prelude::*;=0D
-> +=0D
-> +/// A fixed-capacity FIFO ring buffer.=0D
-> +///=0D
-> +/// `RingBuffer` is a circular buffer that allows pushing elements to th=
-e head=0D
-> +/// and popping elements from the tail in constant time. The buffer has =
-a fixed=0D
-> +/// capacity specified at construction time and will return an error if =
-a push=0D
-> +/// is attempted when full.=0D
-> +///=0D
-> +/// The backing storage is provided by the allocator `A`. Type aliases a=
-re=0D
-> +/// provided for the common choices: [`KRingBuffer`], [`VRingBuffer`] an=
-d=0D
-> +/// [`KVRingBuffer`].=0D
-> +///=0D
-> +/// # Invariants=0D
-> +///=0D
-> +/// - `self.head` points at the next empty slot.=0D
-> +/// - `self.tail` points at the last full slot, except if the buffer is =
-empty.=0D
-> +/// - The buffer is empty when `self.head =3D=3D self.tail`.=0D
-> +/// - The buffer will always have at least one empty slot, even when ful=
-l.=0D
-> +pub struct RingBuffer<T, A: Allocator> {=0D
-> +    nodes: Vec<Option<T>, A>,=0D
-> +    head: usize,=0D
-> +    tail: usize,=0D
-> +}=0D
-> +=0D
-> +/// A [`RingBuffer`] backed by [`Kmalloc`].=0D
-> +pub type KRingBuffer<T> =3D RingBuffer<T, Kmalloc>;=0D
-> +=0D
-> +/// A [`RingBuffer`] backed by [`Vmalloc`].=0D
-> +pub type VRingBuffer<T> =3D RingBuffer<T, Vmalloc>;=0D
-> +=0D
-> +/// A [`RingBuffer`] backed by [`KVmalloc`].=0D
-> +pub type KVRingBuffer<T> =3D RingBuffer<T, KVmalloc>;=0D
-> +=0D
-> +impl<T, A: Allocator> RingBuffer<T, A> {=0D
-> +    /// Creates a new `RingBuffer` with the specified capacity.=0D
-> +    ///=0D
-> +    /// The buffer will be able to hold exactly `capacity` elements. Mem=
-ory is=0D
-> +    /// allocated during construction using `flags`.=0D
-> +    ///=0D
-> +    /// # Errors=0D
-> +    ///=0D
-> +    /// Returns an error if memory allocation fails.=0D
-> +    pub fn new(capacity: usize, flags: Flags) -> Result<Self> {=0D
-> +        let slots =3D capacity.checked_add(1).ok_or(ENOMEM)?;=0D
-> +        let mut this =3D Self {=0D
-> +            nodes: Vec::with_capacity(slots, flags)?,=0D
-> +            head: 0,=0D
-> +            tail: 0,=0D
-> +        };=0D
-> +=0D
-> +        for _ in 0..this.nodes.capacity() {=0D
-> +            this.nodes.push_within_capacity(None)?;=0D
-> +        }=0D
-> +=0D
-> +        Ok(this)=0D
-> +    }=0D
-> +=0D
-> +    /// Returns `true` if the buffer is full.=0D
-> +    ///=0D
-> +    /// When the buffer is full, any call to [`push_head`] will return a=
-n error.=0D
-> +    ///=0D
-> +    /// [`push_head`]: Self::push_head=0D
-> +    pub fn full(&self) -> bool {=0D
-> +        (self.head + 1) % self.nodes.len() =3D=3D self.tail=0D
-=0D
-Nit: This seems short enough to inline.=0D
-=0D
-Regards,=0D
-Onur=0D
-=0D
-> +    }=0D
-> +=0D
-> +    fn empty(&self) -> bool {=0D
-> +        self.head =3D=3D self.tail=0D
-> +    }=0D
-> +=0D
-> +    /// Returns the number of available slots in the buffer.=0D
-> +    ///=0D
-> +    /// This is the number of elements that can be pushed before the buf=
-fer=0D
-> +    /// becomes full.=0D
-> +    pub fn free_count(&self) -> usize {=0D
-> +        (if self.head >=3D self.tail {=0D
-> +            self.nodes.len() - (self.head - self.tail)=0D
-> +        } else {=0D
-> +            self.tail - self.head=0D
-> +        } - 1)=0D
-> +    }=0D
-> +=0D
-> +    /// Pushes a value to the head of the buffer.=0D
-> +    ///=0D
-> +    /// # Errors=0D
-> +    ///=0D
-> +    /// Returns [`ENOSPC`] if the buffer is full.=0D
-> +    pub fn push_head(&mut self, value: T) -> Result {=0D
-> +        if self.full() {=0D
-> +            return Err(ENOSPC);=0D
-> +        }=0D
-> +=0D
-> +        self.nodes[self.head] =3D Some(value);=0D
-> +        self.head =3D (self.head + 1) % self.nodes.len();=0D
-> +=0D
-> +        Ok(())=0D
-> +    }=0D
-> +=0D
-> +    /// Pops and returns the value at the tail of the buffer.=0D
-> +    ///=0D
-> +    /// Returns `None` if the buffer is empty. Values are returned in FI=
-FO=0D
-> +    /// order, i.e., the oldest value is returned first.=0D
-> +    pub fn pop_tail(&mut self) -> Option<T> {=0D
-> +        if self.empty() {=0D
-> +            return None;=0D
-> +        }=0D
-> +=0D
-> +        let value =3D self.nodes[self.tail].take();=0D
-> +        self.tail =3D (self.tail + 1) % self.nodes.len();=0D
-> +        value=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +#[kunit_tests(rust_kernel_ringbuffer)]=0D
-> +mod tests {=0D
-> +    use super::*;=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_new_buffer_is_empty() {=0D
-> +        let buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(5, GFP_KERNEL).expect("Failed to create buf=
-fer");=0D
-> +        assert!(!buffer.full());=0D
-> +        assert!(buffer.empty());=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_new_buffer_has_correct_capacity() {=0D
-> +        let capacity =3D 10;=0D
-> +        let buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(capacity, GFP_KERNEL).expect("Failed to cre=
-ate buffer");=0D
-> +        assert_eq!(buffer.free_count(), capacity);=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_push_single_element() {=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(5, GFP_KERNEL).expect("Failed to create buf=
-fer");=0D
-> +        assert!(buffer.push_head(42).is_ok());=0D
-> +        assert!(!buffer.empty());=0D
-> +        assert!(!buffer.full());=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_push_and_pop_single_element() {=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(5, GFP_KERNEL).expect("Failed to create buf=
-fer");=0D
-> +        buffer.push_head(42).expect("Failed to push");=0D
-> +        let value =3D buffer.pop_tail();=0D
-> +        assert_eq!(value, Some(42));=0D
-> +        assert!(buffer.empty());=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_push_and_pop_multiple_elements() {=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(5, GFP_KERNEL).expect("Failed to create buf=
-fer");=0D
-> +=0D
-> +        for i in 0..5 {=0D
-> +            buffer.push_head(i).expect("Failed to push");=0D
-> +        }=0D
-> +=0D
-> +        for i in 0..5 {=0D
-> +            assert_eq!(buffer.pop_tail(), Some(i));=0D
-> +        }=0D
-> +=0D
-> +        assert!(buffer.empty());=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_pop_from_empty_buffer() {=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(5, GFP_KERNEL).expect("Failed to create buf=
-fer");=0D
-> +        assert_eq!(buffer.pop_tail(), None);=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_buffer_full() {=0D
-> +        let capacity =3D 3;=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(capacity, GFP_KERNEL).expect("Failed to cre=
-ate buffer");=0D
-> +=0D
-> +        for i in 0..capacity {=0D
-> +            assert!(buffer.push_head(i as i32).is_ok());=0D
-> +        }=0D
-> +=0D
-> +        assert!(buffer.full());=0D
-> +        assert_eq!(buffer.free_count(), 0);=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_push_to_full_buffer_fails() {=0D
-> +        let capacity =3D 3;=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(capacity, GFP_KERNEL).expect("Failed to cre=
-ate buffer");=0D
-> +=0D
-> +        for i in 0..capacity {=0D
-> +            buffer.push_head(i as i32).expect("Failed to push");=0D
-> +        }=0D
-> +=0D
-> +        assert!(buffer.full());=0D
-> +        assert!(buffer.push_head(999).is_err());=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_free_count_decreases_on_push() {=0D
-> +        let capacity =3D 5;=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(capacity, GFP_KERNEL).expect("Failed to cre=
-ate buffer");=0D
-> +=0D
-> +        assert_eq!(buffer.free_count(), capacity);=0D
-> +=0D
-> +        for i in 0..capacity {=0D
-> +            buffer.push_head(i as i32).expect("Failed to push");=0D
-> +            assert_eq!(buffer.free_count(), capacity - i - 1);=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_free_count_increases_on_pop() {=0D
-> +        let capacity =3D 5;=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(capacity, GFP_KERNEL).expect("Failed to cre=
-ate buffer");=0D
-> +=0D
-> +        for i in 0..capacity {=0D
-> +            buffer.push_head(i as i32).expect("Failed to push");=0D
-> +        }=0D
-> +=0D
-> +        assert_eq!(buffer.free_count(), 0);=0D
-> +=0D
-> +        for i in 1..=3Dcapacity {=0D
-> +            buffer.pop_tail();=0D
-> +            assert_eq!(buffer.free_count(), i);=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_wrap_around_behavior() {=0D
-> +        let capacity =3D 3;=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(capacity, GFP_KERNEL).expect("Failed to cre=
-ate buffer");=0D
-> +=0D
-> +        // Fill the buffer.=0D
-> +        for i in 0..capacity {=0D
-> +            buffer.push_head(i as i32).expect("Failed to push");=0D
-> +        }=0D
-> +=0D
-> +        // Pop two elements.=0D
-> +        assert_eq!(buffer.pop_tail(), Some(0));=0D
-> +        assert_eq!(buffer.pop_tail(), Some(1));=0D
-> +=0D
-> +        // Push two more (should wrap around).=0D
-> +        buffer.push_head(10).expect("Failed to push");=0D
-> +        buffer.push_head(11).expect("Failed to push");=0D
-> +=0D
-> +        // Verify order.=0D
-> +        assert_eq!(buffer.pop_tail(), Some(2));=0D
-> +        assert_eq!(buffer.pop_tail(), Some(10));=0D
-> +        assert_eq!(buffer.pop_tail(), Some(11));=0D
-> +        assert!(buffer.empty());=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_fifo_order() {=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(10, GFP_KERNEL).expect("Failed to create bu=
-ffer");=0D
-> +=0D
-> +        let values =3D [1, 2, 3, 4, 5];=0D
-> +        for &value in &values {=0D
-> +            buffer.push_head(value).expect("Failed to push");=0D
-> +        }=0D
-> +=0D
-> +        for &expected in &values {=0D
-> +            assert_eq!(buffer.pop_tail(), Some(expected));=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_interleaved_push_pop() {=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(5, GFP_KERNEL).expect("Failed to create buf=
-fer");=0D
-> +=0D
-> +        buffer.push_head(1).expect("Failed to push");=0D
-> +        buffer.push_head(2).expect("Failed to push");=0D
-> +        assert_eq!(buffer.pop_tail(), Some(1));=0D
-> +=0D
-> +        buffer.push_head(3).expect("Failed to push");=0D
-> +        assert_eq!(buffer.pop_tail(), Some(2));=0D
-> +        assert_eq!(buffer.pop_tail(), Some(3));=0D
-> +=0D
-> +        assert!(buffer.empty());=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_buffer_state_after_fill_and_drain() {=0D
-> +        let capacity =3D 4;=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(capacity, GFP_KERNEL).expect("Failed to cre=
-ate buffer");=0D
-> +=0D
-> +        // Fill and drain twice.=0D
-> +        for _ in 0..2 {=0D
-> +            for i in 0..capacity {=0D
-> +                buffer.push_head(i as i32).expect("Failed to push");=0D
-> +            }=0D
-> +            assert!(buffer.full());=0D
-> +=0D
-> +            for _ in 0..capacity {=0D
-> +                buffer.pop_tail();=0D
-> +            }=0D
-> +            assert!(buffer.empty());=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn test_single_capacity_buffer() {=0D
-> +        let mut buffer: KRingBuffer<i32> =3D=0D
-> +            KRingBuffer::new(1, GFP_KERNEL).expect("Failed to create buf=
-fer");=0D
-> +=0D
-> +        assert_eq!(buffer.free_count(), 1);=0D
-> +        buffer.push_head(42).expect("Failed to push");=0D
-> +        assert!(buffer.full());=0D
-> +        assert_eq!(buffer.free_count(), 0);=0D
-> +=0D
-> +        assert_eq!(buffer.pop_tail(), Some(42));=0D
-> +        assert!(buffer.empty());=0D
-> +    }=0D
-> +}=0D
-> =0D
-> ---=0D
-> base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32=0D
-> change-id: 20260215-ringbuffer-42455964aaf2=0D
-> =0D
-> Best regards,=0D
-> --  =0D
-> Andreas Hindborg <a.hindborg@kernel.org>=0D
-> =0D
-> =0D
+On Fri, Apr 17, 2026 at 5:15=E2=80=AFAM Yury Norov <ynorov@nvidia.com> wrot=
+e:
+>
+> There are 6 individual Rust KUnit tests. All the tests are compiled
+
+I think here you mean "test suite", i.e. there are many more
+individual KUnit tests than that -- hundreds at the moment (mostly
+doctests).
+
+> unconditionally now, which adds ~200 kB to the kernel image for me
+> on x86_64. As Rust matures, this bloating will inevitably grow.
+
+Yeah, options for major/relevant sets sound good, even after we split
+the crate. Not sure about granularity, i.e. whether we will want a
+Kconfig for every single test suite, though... Especially because we
+can end up with a ton of Kconfig symbols; but I see there are a bunch
+of those already in the tree in the C side, so I guess this is
+expected/fine, especially given David's review.
+
+(By the way, KUnit is not intended for production kernels, so I am not
+sure it really counts as bloat in that sense.)
+
+Thanks!
+
+Cheers,
+Miguel
