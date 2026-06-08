@@ -1,113 +1,88 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133E339A7FD;
-	Mon,  8 Jun 2026 20:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780951869; cv=pass; b=i3lKMnlerumZSg7em50Ev2aVvNfB7higMD9hRo9hDdVXMK8xEZ7E1xtbsgpP2Y6Gka17pFVmt0seQWqk0EDf3gGebEfjDYzToM5waOSqCIjC0D/Xg+rhfvIZLgIR3b3qoz2tagvuANSmHO3KgljwwXWPpyzn4PDcrMV5+TPkhrM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780951869; c=relaxed/simple;
-	bh=+Vyx7KJnk0dsuda/GMVnXSw/LT/stfy1yBFTIoH1/cY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eCviQhS36ZySTX5VCW9p9jBCK2lHQexPpLuv2YCTbRVmW94MUMkAAP+Hz4EYhZFf2ZIgN1f6ecHPegig2Fy6OEzaOsfGyVPL4PcxVymTruWGtSpRmDjfYLqYqR/2FiubKIYmj1tejHAAuJuS/Y3V+Da7oYtbHGvfsYmBnuc48nM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=LluCYvea; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722B93A9628;
+	Mon,  8 Jun 2026 20:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780952400; cv=none; b=kmXzPK+qJbCTUBe6g1t9IRIYUYWJSKOPz6r9YX27r582QuNTdXgmRBDpvRcs4QjnR+j9VTeGBTSyNDkcrmzWAwSg+fkKK7ApEIHg6OWAz6rJJzZ2kQfYQBWxsVoQedO5MoJXCSrKPKzAYYbB2aEs0l+DJ0csxk8Fmm6qo1mJbVo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780952400; c=relaxed/simple;
+	bh=U+OfQweIOD1gShe2+QuxUov9IeGEl5ViBFprqcyr6fc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WkqZd7NvIe7UpGiCH5sRUcThSo7NTl2zOwSn/rEm5Hb+NSQCuIzQ4+LjgrlowTaaYOp5McjCwuYtc2pbt/rA7eP7FRHT0VvtvoFNFmnVXR+a3+TYwmPr3H7XjDaz9xDUW+tNYxHwUzVCPs4ALK7zxKcFUp8tpldwEButsJX8kzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=t+EDzGgf; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="LluCYvea"
-ARC-Seal: i=1; a=rsa-sha256; t=1780951851; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YUIoCuZWnZ6vXyqf16WXu/4w+iSebNO/5kZ9Bq1ZUIhryZ9Cem4xQpVbAfazmWURliYvuzhevQsCcoFwKo2cLj3EL74fJHzrng+OwzsSfkYjbUHr4hDcR2wwNV88S/l5mgLd15tVgXIO9b6LivT4fKoIQoSqOBS7W4A0tJA492c=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1780951851; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=orSHiGssWh9CUnwqRkVkOnj/qdpi42FFWxBmEUn5Els=; 
-	b=LH+hvVd1w8gndEa1Xj1jm9Aw6EMsknsgfF6qruItEEc07HVFnLD3QvCh8hO8gllGbnDYb+6WK/OcGz6esrPOgFfjD530mYwdhf75IqX1iafZGBt85TSR9bMMMlrz3HvQIkwOO8Wstfbn8muaWBH5Y136hRnxXbNNkrGc39pmiuY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1780951851;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=orSHiGssWh9CUnwqRkVkOnj/qdpi42FFWxBmEUn5Els=;
-	b=LluCYveaLpx5+v/KArXMSkkmtfn2ScduaRYumjbv43yNXxmokF67PuOYQbPbl/q0
-	TuDJE81IrhX6441ZeuTwRKys7iiU8ctqlSnl6LQvKqmOxbgGJ5APxJR2+y1M5WuQMio
-	Pfo31PnaONxi/6xzxYU2Kcg1j/y3sFoyILSxyg0A=
-Received: by mx.zohomail.com with SMTPS id 1780951848113484.6361367367341;
-	Mon, 8 Jun 2026 13:50:48 -0700 (PDT)
-Date: Mon, 8 Jun 2026 13:50:47 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com, daniel.almeida@collabora.com, acourbot@nvidia.com,
-	ecourtney@nvidia.com, ojeda@kernel.org, boqun@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, tmgross@umich.edu,
-	boris.brezillon@collabora.com, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/7] rust: drm: Add RegistrationData to drm::Driver
-Message-ID: <aicrJxmZNI_o4jCJ@um790>
-References: <20260603011711.2077361-1-dakr@kernel.org>
- <20260603011711.2077361-4-dakr@kernel.org>
- <aiC41_huOYhvacQD@um790>
- <DJ0BD0O60VAB.10S80F8N6MQPG@kernel.org>
- <aiINpEVaLW85LM5j@um790>
- <DJ1XEW84UTAU.28B9WK4VR0QLP@kernel.org>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="t+EDzGgf"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4gZ4DP2HrGz9tgY;
+	Mon,  8 Jun 2026 22:59:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1780952389;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U+OfQweIOD1gShe2+QuxUov9IeGEl5ViBFprqcyr6fc=;
+	b=t+EDzGgfSG0GZyqmiau5dOYEo2iquULVn1WY5kaoOiTUQLbnyd+XOiLbbHhU+PSqDz+LPx
+	F0x3PnkQYGji0n60ArWtDXnCapCtxIyEUvslOaayKtf8gwY3CE85Fv4MQFF5I5ZxLcu+8d
+	dHPTHBD10/43Cy7LXLo+kZTOxlV5nz5hrDHZ2nCADHPrKwYGhcUmk2aWXIo/QD93eMTTaL
+	WuLTjOuQ0l2QcUBjij1awUA5Tso8H/7a/35ZEHxSRl2utkFR5hqIN4u5hwzsaA70lsrfVi
+	LCiDpv/KkEhuBwur7VfmQpGwXDP7sr7usxqhJs+o93vDOqiIZ+VXFj/HCaSUsQ==
+Message-ID: <e99b78d7aea835ab2960517e0c308b08538146ea.camel@mailbox.org>
+Subject: Re: [PATCH v2 0/2] rust: clk: Add ExclusiveClk and use it in
+ pwm-th1520
+From: Maurice Hieronymus <mhi@mailbox.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?=
+ Roy Baron	 <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Drew Fustini	 <fustini@kernel.org>, Guo Ren
+ <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,  Michal Wilczynski
+ <m.wilczynski@samsung.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+ <ukleinek@kernel.org>, 	linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, 	linux-pwm@vger.kernel.org
+Date: Mon, 08 Jun 2026 22:59:36 +0200
+In-Reply-To: <140FE1B3-73CA-45EA-B978-648A1A48B577@collabora.com>
+References: 
+	<20260605-rate-exclusive-get-th1520-v2-0-695640bf7249@mailbox.org>
+	 <140FE1B3-73CA-45EA-B978-648A1A48B577@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJ1XEW84UTAU.28B9WK4VR0QLP@kernel.org>
+X-MBO-RS-ID: 4419fd374748a8af19f
+X-MBO-RS-META: 8quwtpkkm6yeim94go9bw3qkw9e67cnd
 
-On Sat, Jun 06, 2026 at 01:23:04PM +0200, Danilo Krummrich wrote:
-> On Fri Jun 5, 2026 at 1:43 AM CEST, Deborah Brouwer wrote:
-> > On Thu, Jun 04, 2026 at 03:53:32PM +0200, Danilo Krummrich wrote:
-> >> On Thu Jun 4, 2026 at 1:29 AM CEST, Deborah Brouwer wrote:
-> >> > Hi Danilo, could we use separate data arguments in UnregisteredDevice
-> >> > vs in the Registration? Basically we want to use the UnregisteredDevice
-> >> > to initialize and boot the firmware which we then store as registration
-> >> > data.
-> >> >
-> >> > Could you have a look at this patch, it applies on top of this series:
-> >> > https://lore.kernel.org/rust-for-linux/20260603-use_tyr_reg_data-v1-1-97f64e951cf6@collabora.com/
-> >> 
-> >> They already are separate -- UnregisteredDevice::new() takes T::Data and
-> >> Registration::new() takes the registration data independently. Your patch
-> >> demonstrates this correctly.
-> >
-> > Ah, true the arguments are different, but the issue for Tyr is we need
-> > iomem to initialize and boot the firmware before we have a registered
-> > device.
-> >
-> > Could you replace your Tyr with the changes i'm proposing here:
-> 
-> I don't see any change in your patch that belongs into this one. What exactly do
-> you have in mind?
-
-Since your patch is introducing a new type RegistrationData for
-drm::Driver it would be nice to show more realistically how we
-would use it in Tyr, specifically:
-* replace TyrDrmDeviceData with TyrDrmRegistrationData
-* pass no data argument to drm::UnregisteredDevice::new
-* pass TyrDrmRegistrationData to drm::Registration::new_with_lt()
-
-But also this has been a good exercise for me to understand how to
-use the new type with Tyr, so it's fine if you just want to proceed with
-your series as it is and then I will follow up right afterward with the
-more substantive changes.
-
-> 
-> Please note that this patch is about core infrastructure and should only touch
-> drivers for the minimum of mechanic changes required. IOW, your follow-up patch
-> already sits perfectly in this context.
-
-Ack.
-
-> 
-> > [PATCH v2] drm/tyr: move probe resources into registration data
-> > https://lore.kernel.org/rust-for-linux/20260604-use_tyr_reg_data-v2-1-f77a1ffcf08d@collabora.com/
+On Mon, 2026-06-08 at 08:08 -0300, Daniel Almeida wrote:
+> Hi Maurice,
+>=20
+> There is some ongoing work to convert Clks to a type state pattern
+> [0]
+>=20
+> I wonder if you would be willing to rebase on top of that?
+> I can push a new version if so.
+Definitely! Just let me know when you pushed a new version. Thanks for
+that.
+>=20
+> It seems like we are mostly in agreement with that series, and only
+> a few nits are missing.
+>=20
+> =E2=80=94 Daniel
+>=20
+> [0]:
+> https://lore.kernel.org/rust-for-linux/20260107-clk-type-state-v3-0-77d3e=
+3ee59c2@collabora.com/
