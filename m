@@ -1,91 +1,84 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C5438B148
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 10:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EEA3BD64C
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 10:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780913323; cv=none; b=iTbCx1an0CIpAV8+XVVjERFShzHzT7ZuAIAHOKIqFeWOqW+uwPWWhmaKFbkorFRQ4cO/jvJyo+GQk13X/BlTGlwUUpRdMryce3OvvPTbazcmY+7cmYGvVfbF7H9IQUURMbFhFUsuzOGZHRvfTDY2bd1c54due0pKy5PfX7H+mv0=
+	t=1780913677; cv=none; b=XgguKW6EQLQOMYIOELPyx1M8vIPI0ELcTt+OaWCqAobjXnsRcVpBmzLiDAJCitcEIh132bbGp4WpWRBomNFLWh7vA+WvVnvj8gohyABZIMxPG0SeW+ScbPy5R+Vx/pIp89g+chw3huln63GTWz+79wHf02gGdTU3Y23MZue5P80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780913323; c=relaxed/simple;
-	bh=UaS8P+BnNs30Wx3OCTtg2sP9AlLlbx00rCICGw91jA4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=TIK1PYrO0LvBZQBr7C16qMQwLJnGPH/f2Z5h3ZOoA4B8kRKcvmkJBzFpV5pBW3GymX+nF84oqYBzLgeEG1qVl3sLiMMFgsjoUzrgBVp71NsR1DLxW7jBfuen+HMmGKHjeGCVL527OuWUtK9adcj8O9uqe5F8rce+DKUt2mEjZkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=cLoF5su3; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1780913677; c=relaxed/simple;
+	bh=TAG+FJb1OmGkLdmZN/Vtoi2eMfsxCj3Wgm6iaqGmVUE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Frk7SS+iiTYFOiFquzXsuLvAa86fXGyvlPavVKeNLymH/Wola/IJFnzhDJD/b1zyLdD0JRzrX+E3iKEXxsgno2rOWDamFBT2BLlw2/kVVKwPO/sa2AZ9c0CSkB+Hgr28wDToHYhq4AkwRkVWwj4eD7fgRG0WOzsnuSD1XMYttbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtBSOdA+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="cLoF5su3"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260608100839euoutp01a46bf9082bb06c20462e5ee32180d347~3Ezp4glUl2079320793euoutp01B
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jun 2026 10:08:39 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260608100839euoutp01a46bf9082bb06c20462e5ee32180d347~3Ezp4glUl2079320793euoutp01B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1780913319;
-	bh=ScX6tmH+TYFIA4SdeDcX5TAQpdwZEO/9NVN1KgaB3hw=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=cLoF5su3stWT+hb6nfTtHwBwrrKHZLRDbQwUroh5t+iFCfiCUD0Z8tIlOkamuIlxG
-	 qeOHzEJ58YbyS317GkjyofK7fQ13HHHwF0legf9LOkfvpwVI1TCV7BT/w9fiu/TkE8
-	 lOCBfrOUmSVswJYFE8RtOExm4LjdPdpKByrpZFPY=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260608100839eucas1p26efb0e1085dba36943f16284a4fee98b~3EzpgqhjL2726127261eucas1p2t;
-	Mon,  8 Jun 2026 10:08:39 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260608100838eusmtip2364ad82459e2916175d35315bdcac074~3EzoopYD61119811198eusmtip2K;
-	Mon,  8 Jun 2026 10:08:38 +0000 (GMT)
-Message-ID: <2c036c0e-8246-4e55-90b0-97ba8ef46115@samsung.com>
-Date: Mon, 8 Jun 2026 12:08:37 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtBSOdA+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0AA1F00893;
+	Mon,  8 Jun 2026 10:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780913676;
+	bh=UpsohUrj9MGjkopMazUx2N4avwExDnI6+pCGiegcZ+o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=RtBSOdA+/5OgIN1ftJj7PhL6ZmezCcgCjG7hPfXXJYoyGq7ruqxHVDY97iEYMJ/vA
+	 r65qlGAuQNXLE2v/Rdgbly8Znz1V0Hbfm22/CnZBvZ2FuitCbQpJ4mXY8XASJqubIi
+	 uwyzKuEkNXyLgxqMyPU23SMWjBzmeirIY629bun2n6zSfIWB3cTjx4Cjyu9Z8A7NLq
+	 g7pPDvxKRLQO8F5EFUqiiqTcVjYlHHqGID0exAfuOHsP7WK9Enqiu4PS3kPlf0fpNV
+	 paXOnTX4/Enl/YbEvDroaidZRcaPhozkZFj/E3fQ1ugji6nf+J8SUbHIC/JCYY0TsL
+	 uoS39NER1cCGw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Yuan Tan <ytan089@ucr.edu>, ojeda@kernel.org, boqun@kernel.org,
+ rust-for-linux@vger.kernel.org
+Cc: zhiyunq@cs.ucr.edu, ardalan@uci.edu, pgovind2@uci.edu, dzueck@uci.edu,
+ Yuan Tan <ytan089@ucr.edu>
+Subject: Re: [PATCH 0/1] rust: block: mq: make GenDisk Send impl sound
+In-Reply-To: <87pl25i47i.fsf@kernel.org>
+References: <cover.1780633578.git.ytan089@ucr.edu> <87pl25i47i.fsf@kernel.org>
+Date: Mon, 08 Jun 2026 12:14:29 +0200
+Message-ID: <87zf15gwze.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] pwm: th1520: Lock clock rate with
- clk_rate_exclusive_get
-To: Maurice Hieronymus <mhi@mailbox.org>, Michael Turquette
-	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
-	<fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
-	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-pwm@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <20260605-rate-exclusive-get-th1520-v2-2-695640bf7249@mailbox.org>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260608100839eucas1p26efb0e1085dba36943f16284a4fee98b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260605070115eucas1p14ef31f75a9597be42bda6c6597fc7e38
-X-EPHeader: CA
-X-CMS-RootMailID: 20260605070115eucas1p14ef31f75a9597be42bda6c6597fc7e38
-References: <20260605-rate-exclusive-get-th1520-v2-0-695640bf7249@mailbox.org>
-	<CGME20260605070115eucas1p14ef31f75a9597be42bda6c6597fc7e38@eucas1p1.samsung.com>
-	<20260605-rate-exclusive-get-th1520-v2-2-695640bf7249@mailbox.org>
+Content-Type: text/plain
 
+Andreas Hindborg <a.hindborg@kernel.org> writes:
 
+> Hi,
+>
+> Yuan Tan <ytan089@ucr.edu> writes:
+>
+>> Hi Linux kernel maintainers,
+>>
+>> We are developing a tool called FerroLens to detect potential unsound
+>> behavior in Rust code in the Linux kernel. FerroLens reported the following
+>> bug in rust/kernel/gendisk.rs.
+>>
+>> Gendisk is marked as Send although the fields it contains may not be.
+>> Specifically, the QueueData held in the raw gendisk pointer may not be safe
+>> to send across threads. Therefore, sending the Gendisk from one thread to
+>> another and dropping on a different thread may cause unsound behavior.
+>>
+>> Additionally, Gendisk contains an Arc<TagSet<T>>. This Arc would be Send
+>> and Sync if the underlying TagSet<T> were Send and Sync. But this is not
+>> explicitly derived, although it can be, since the API does not modify the
+>> TagSet.
+>
+> Thanks for the patch. The `GenDisk` `Send` fix looks correct to me.
 
-On 6/5/26 09:00, Maurice Hieronymus wrote:
-> The driver derives period and duty cycle from the clock rate read at
-> probe, so a later rate change would silently miscompute waveforms.
-> Switch to the new ExclusiveClk wrapper to hold the rate for the lifetime
-> of the driver data and drop the corresponding TODO.
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
-> ---
->  drivers/pwm/pwm_th1520.rs | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
+Actually, I think we need a bound on the Arc as well:
 
-Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
+  unsafe impl<T> Send for GenDisk<T>
+  where
+      T: Operations,
+      T::QueueData: Send,
+      Arc<TagSet<T>>: Send,
+  {
+  }
+
+Best regards,
+Andreas Hindborg
+
 
