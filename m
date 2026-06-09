@@ -1,96 +1,147 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0337A3911C5;
-	Tue,  9 Jun 2026 11:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE9E40DFA0;
+	Tue,  9 Jun 2026 12:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781005808; cv=none; b=cGd6ZeKgRD24wTFDOWgPZTMx2jt8MQzYK8RxzYc0F2PloxZu36c0B5udb5ZnNClyRU5olbM07v/HtCT0a51hLmjKiF5iw4ajuZkN+PTmEHK26dIcS3BVzKNt1NBMVCftBp1OAkhaDUn+JEIheOIpi0U9BR1iKKITnkix4inER+I=
+	t=1781006625; cv=none; b=sQvMZJvw3MIOF4Kgq/g5ne8F1bRw7pWIbZkLmLaC+lmXG6XbsJToIp05mg0ic7YC45UY57/BlrqVq+itrLTM8aGjAp5OqS29j+3t9QKYnBSlAierwvmWBHDA2BUe0qWGqLs1zGuvwbsnljyNDLgDR9sS6jw0aOFIWTbTyL/dVH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781005808; c=relaxed/simple;
-	bh=j5lcrehjy3YZRC7ObybiUdgrUhBAZijdwkSsZmPZr/4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cg/To5nbUyh24AeqB6+79zHKY6iLNWuQCgoXb3FSk7GjEmpLrINqAsGkJpSUHIKnG5DlbPjuIvnEfeYlzgN+gMd4aeID3Z2IQ0/4L+WWJmsKVi/2DJL8hNGbkY0EnRKtcazyXnVVATIC5vfMgksu0OO+t/GOqarB1FoS9V8IyDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; arc=none smtp.client-ip=212.42.244.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
-Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.56.1)
-	(envelope-from <n.schier@fritz.com>)
-	id 6a27fb9e-044e-7f0000032729-7f0000019e16-1
-	for <multiple-recipients>; Tue, 09 Jun 2026 13:40:14 +0200
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Tue,  9 Jun 2026 13:40:14 +0200 (CEST)
-Date: Tue, 9 Jun 2026 13:40:14 +0200
-From: Nicolas Schier <n.schier@fritz.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Nicolas Schier <nsc@kernel.org>, Tamir Duberstein <tamird@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	s=arc-20240116; t=1781006625; c=relaxed/simple;
+	bh=0jDzoXbXA5y7sigPfJn3xlfnN+//USUGkyC73x6fxBM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mN8fRhFnG5vdyjCaQnLOwz14iYaiN+GXEqdB75fAhKWCbZBncqOVfEJhJuWgCji4j9kbY4wf/qHpGKR8EnzFgapB7o9cN3FRzzZYIayaoT6moZJ3oIhtH7zQ50ju92g9WNId0zAJx3aKCOErFge6PJNgOswFBk04ogCfaTdOrpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XEouUqJz; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XEouUqJz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB99F1F00893;
+	Tue,  9 Jun 2026 12:03:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781006622;
+	bh=zXaBrnRtySX1IlFYJBjrEKfdZ5VI4iuevTm3NEEmxIE=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=XEouUqJzJfjEs9scUHXDMuNi+eUnQF8oLNIaXZAcnm5aeo5mkbIx4Wp0TXBuJM3lO
+	 BqL0MFtIgfqtDZJnG0YLvR3j7cjJWkK05XiJc0bTvw7oK+txAEYWQXxXWu4Dx9BiGA
+	 J43e3Nn+9gbu6esxpnn3bM7KyPOQuBNv6Eb180mxxa8uQlq2wZ+dlEQ3d+RNVCScEu
+	 68BUgKEaD8RacvpWQYUr0Ac7lABn6qeyO0/1C/HUClSbvJm0CxrwEkuugfyr8IIbxK
+	 Sj6RFeobm9TAFVSwiYqd0mTP/mY5jC7VoMBRwsDthQVDxgFF1a/th2vbSr/RU8TMvJ
+	 oPXnB7YDOsxNw==
+From: Gary Guo <gary@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	Joshua Liebow-Feeser <joshlf@google.com>,
-	Jack Wrenn <jswrenn@amazon.com>
-Subject: Re: [PATCH 05/18] rust: kbuild: define `procmacro-extension` variable
-Message-ID: <20260609-hungry-rigorous-moth-e9f5ab@l-nschier-z2>
-References: <20260602172920.30342-1-ojeda@kernel.org>
- <20260602172920.30342-6-ojeda@kernel.org>
- <aibUgUSlz-p2oxvX@derry.ads.avm.de>
- <CANiq72nWBSTXz8VBkMuf_Bcs2MgZ31nocL3o_s7HYv=HbVK_-g@mail.gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH] rust: mem: add `Align` type
+Date: Tue,  9 Jun 2026 13:03:24 +0100
+Message-ID: <20260609120325.233721-1-gary@kernel.org>
+X-Mailer: git-send-email 2.54.0
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nWBSTXz8VBkMuf_Bcs2MgZ31nocL3o_s7HYv=HbVK_-g@mail.gmail.com>
-Organization: FRITZ! Technology GmbH
-x-ms-reactions: disallow
-X-purgate-ID: 149429::1781005214-D57F0962-6745A6D6/0/0
-X-purgate-type: clean
-X-purgate-size: 1313
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
 
-On Mon, Jun 08, 2026 at 05:40:02PM +0200, Miguel Ojeda wrote:
-> On Mon, Jun 8, 2026 at 5:10 PM Nicolas Schier <nsc@kernel.org> wrote:
-> >
-> > Where does the 'libname.%' pattern come from?  Looking at the current
-> > users of cmd_rustc_procmacro I'd expect a 'lib%' pattern instead.
-> 
-> Here, we want to extract the extension the operating system uses --
-> this was originally added for macOS build support (Cc Tamir), and is
-> `.so` in Linux but `.dylib` there (and if I recall correctly, we
-> couldn't force `rustc` in macOS to use a file with `.so` as the
-> extension, sadly).
-> 
-> In the commands, however, what we are trying to extract is the name of
-> the crate instead. So that is why one is `lib%` and the other
-> `libname.%` (a dummy library name).
-> 
-> Or do you mean something else?
+From: Gary Guo <gary@garyguo.net>
 
-Ah thanks!  If only that filename extension ('so' or 'dylib') is wanted, 
-I'd rather expected the use of the '$(suffix)' function instead, as it 
-may be easier to understand w/o knowing the name conversion rustc does:
+Rust's `repr(align())` only works with integers. Add an `Align` type so it
+can also be specified via const generics.
 
-  procmacro-extension := $(suffix $(call procmacro-name,dummy-crate-name))
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/kernel/lib.rs |  1 +
+ rust/kernel/mem.rs | 59 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+)
+ create mode 100644 rust/kernel/mem.rs
 
-but that's bike-shedding.
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 9512af7156df..0a12c3011c61 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -92,6 +92,7 @@
+ pub mod kunit;
+ pub mod list;
+ pub mod maple_tree;
++pub mod mem;
+ pub mod miscdevice;
+ pub mod mm;
+ pub mod module_param;
+diff --git a/rust/kernel/mem.rs b/rust/kernel/mem.rs
+new file mode 100644
+index 000000000000..32e2fe547cfd
+--- /dev/null
++++ b/rust/kernel/mem.rs
+@@ -0,0 +1,59 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Utilities handling things related to memory layouts.
++
++// TODO: `Alignment` should be moved here as well, Rust moved it upstream in 1.96.
++pub use crate::ptr::Alignment;
++
++/// Trait indicating that [`Align<N>`] is a valid alignment.
++pub trait ValidAlign {
++    #[doc(hidden)]
++    type Repr;
++}
++
++/// Zero-sized type that provides the alignment specified via the generic parameter.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::mem::Align;
++/// const ALIGN: usize = 128;
++/// struct MyStruct {
++///     align: Align<ALIGN>,
++/// }
++/// assert_eq!(align_of::<MyStruct>(), ALIGN);
++/// ```
++#[repr(transparent)]
++#[derive(Default)]
++pub struct Align<const N: usize>([<Self as ValidAlign>::Repr; 0])
++where
++    Self: ValidAlign;
++
++impl<const N: usize> Align<N>
++where
++    Self: ValidAlign,
++{
++    /// Create a new [`Align<N>`].
++    #[inline]
++    pub const fn new() -> Self {
++        Align([])
++    }
++}
++
++macro_rules! impl_align {
++    () => {};
++    ($a:literal $($rest:literal)*) => {
++        const _: () = {
++            #[repr(align($a))]
++            pub struct Repr;
++
++            impl ValidAlign for Align<$a> {
++                type Repr = Repr;
++            }
++        };
++
++        impl_align!($($rest)*);
++    }
++}
++
++impl_align!(1 2 4 8 16 32 64 128 256 512 1024 2048 4096);
 
-> Thanks a lot for the reviews! By the way, I sent a bit ago v2 (it
-> doesn't change much, so I will pick your tags from here :)
+base-commit: a87737435cfa134f9cdcc696ba3080759d04cf72
+prerequisite-patch-id: 0000000000000000000000000000000000000000
+-- 
+2.54.0
 
-Thanks.
-
-Kind regards,
-Nicolas
