@@ -1,165 +1,169 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012013.outbound.protection.outlook.com [40.107.209.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A980C3C5826;
-	Tue,  9 Jun 2026 06:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780985852; cv=none; b=YvjmNEI1d5dmozefgZmpiFAqGARhkUQKfe/ghmjddv6Vml58PcmbN6da2RCL+oHTMIb66voBkej5lRrRz4epFqToZvQXI3xCtZA5VrNBuy/VFKvwDe/Bg/a8LpADMzOUO9qcnw7JumHHf+VNyNhwbdN1iJVyszFk08r9vQuxRXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780985852; c=relaxed/simple;
-	bh=BNGAi2klR4o6SRU5NOaJL9B6wuV4cGmJYOoBPtuK2kw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WSytAXcoZ/TKvnzBOwPoqjjMNqR5xhIlJYHnXO0JOY3WZBni40/vpIQZhUEabh0tiwMu2OUp5g9oxT4QuBXKCNhQtnSF3UAPJr/rwfxn9d5sc0Ow3KsMXEkiLKfpEREwCG++4/IPiJc2lJ1R3RRa4DVVtYe/xuiJ3N3E/K4xOnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rNrQLgBP; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D6B2EAB72;
+	Tue,  9 Jun 2026 08:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780992251; cv=fail; b=jXs7tZiQ+yqRxqGkBw812L8QeTwBr35o1byeL/2OQltpMKo2Q/EW93aP8WoE9zF1d2b/4N9G2vY1uI2t0fIX8RHHAdsR0jebPAdmJtpVuBu1y13NZTUdk7Rftlufkn3GIlNjTsdA0BrjGX4Uc7YKJ3U6Kjj+hDvHsVs1ckkml0I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780992251; c=relaxed/simple;
+	bh=Ui6iz8NEI12cXtSoI/Parli7R3jwPOly/7qgTWe7Nu0=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=UjLjsZyRV9N5EeBjpo0eeYiV0etIGNX64vIkTvo37diRSR+Dyc2Gx4e2rz2AGw9OTjcHljIaK/eYZxJm470mpti70cOKL3fdbSVkcoc+hZ3KpjNgKvS704/3EV2yxJXGfwOtIDlE0k743DxOpeE7M5ExoWR7A7e0584oKQ9oXrI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pjgSKgl3; arc=fail smtp.client-ip=40.107.209.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rNrQLgBP"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658LNmu32576971;
-	Tue, 9 Jun 2026 06:17:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=vYXtbuwZCFv7ZT9E6kEl2YGw+gn2hm
-	JGFPGJGMMqylY=; b=rNrQLgBPU5lfJc3ZYpuJtQ+dXfrgosAq278z96ntCc9j4Q
-	y0LTg09Jbjqa//xiAsVGSAxBlzU4ghJFgm8PFRM6Eka+Sx3bXO8WxN8vpBilv72h
-	2LN0SQEEV9jkKPiGxtYAiSXP0ilmugCGSsZLqkSrC9EV2JHkXhOcU9Q+7CavZzcT
-	zxa3DZsy52cTDiYL4mCjJqPsJOQBXsWMBMnCRyzRo33Am94TEPcHk8F9apwSd9EU
-	ZP7RUeySKZIv6x4J7dAji6DnU14/RBHU7YFtwTH6kdrOV2N4YeACxwYxgWadxU06
-	anTYTPOqcLCV+PNqFSEhCMMz6EB8KM8dht8TSDyQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb23tr6b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jun 2026 06:17:01 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65964c85027266;
-	Tue, 9 Jun 2026 06:17:01 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en03g0ggs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jun 2026 06:17:00 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6596GvIq55640386
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Jun 2026 06:16:57 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 35F922004B;
-	Tue,  9 Jun 2026 06:16:57 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E3F2A20040;
-	Tue,  9 Jun 2026 06:16:55 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.22.45])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  9 Jun 2026 06:16:55 +0000 (GMT)
-Date: Tue, 9 Jun 2026 08:16:54 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Jan Polensky <japo@linux.ibm.com>
-Cc: Gary Guo <gary@garyguo.net>, Heiko Carstens <hca@linux.ibm.com>,
-        gor@linux.ibm.com, ojeda@kernel.org, peterz@infradead.org,
-        jpoimboe@kernel.org, jbaron@akamai.com, aliceryhl@google.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, boqun@kernel.org,
-        bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-        tmgross@umich.edu, dakr@kernel.org, rostedt@goodmis.org,
-        ardb@kernel.org, linux-s390@vger.kernel.org,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/6] s390: Enable Rust support and add required arch
- glue
-Message-ID: <628c4d30-f40c-4541-ab37-bec8dec23073-agordeev@linux.ibm.com>
-References: <20260601174625.2910233-1-japo@linux.ibm.com>
- <20260608142122.34400J00-hca@linux.ibm.com>
- <8f3c0ffc-adc3-493f-8347-9e7579f3cf99-agordeev@linux.ibm.com>
- <DJ3SBEPW21J5.2GMLCYBAKF7PW@garyguo.net>
- <aicOenHnHeFE2qlD@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pjgSKgl3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ml/7Ryqlq3O3xHDpQ2Yth66XDXDgFtZhQPAsbNYOPn3/Mg3p3N4Vkk0/tkXuf4PXBupuk4P3GoGeNII/P1xGwgdOfpI/dxW2whV3uTfWvmuVBE81FQRWLrspRqDF0k4uDMBa9oClmZS2n54NBmto9s3hPUviofpVoYjZG26oe+ojuOU1SzMLMeEh1KQp1jT7X5UKBZUTvuuZtZztCG+eVpZKH+PSEb9geSs6ipOssow62ket7vs71cmUiLyW41NHOs2hErCzg1RWTXEFgr781/hUMyBTc3c/Kn7G1X5glNCMdla0Ky2FDVV56B07TtOHXNU4IUGivbD8b8gnFaE24w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sbhWTdChncETU33rs0FbTA4wHX3/1u7JXAECFXsQUwQ=;
+ b=SkymgmfzrzSaDAKWAzSTI5rfs+8kDKG4hkZ0SzkhaIi/wT0wA6ocPhDW6WlZXrdOfkpPneelBzziBXqH5crFlYsDqFdQiMu4zCt9pRL9TpdnzllgwEljlNLIcuLAgSubWhqxprUdn5/eio9LIXXBKJ1beAjgIo6RT0xCfHDZRlkULS99DWk/J01QIyE7qCPhb8XtX+YuP6d65Bxou0f5uoNcYWsVC6v8oivxVZ0dV17OGoct4XlTD1dg54Ha9d78z4+BUfYdyGDPWJBR+wUBSuvyE1yVSQdbUTbeoSeDjIR1NC+GyuCXqA7znlf8frL+c58t4Z1ZUbrnaXMF2hAEsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sbhWTdChncETU33rs0FbTA4wHX3/1u7JXAECFXsQUwQ=;
+ b=pjgSKgl3/1Mp0san9ih00H7R8QupmvBXup1YIY4N7JCbN/nDAfqW/C0n3MoDk6WWkQaV2Z6J4x/hwIimvCPW3PwxHyjJjGyzvUDfujfn5jLOI9ER5+quJT/D9cWUP5btdOg0VjLhWI9Jk/rOnOJOfhyGImtfuIbuwL93wBjpE87gdH7jNKZf6Paq4+Oe7Q+6wsuT09OVWsgFDvg1A9FK+JkTnIug4NPMbZ+mGOoqAWG4gG8E6DX/7RQsT3fe30qtPLe7MC7KmFoyHOrn93dUPL/OVYtqG2rk0EwDjuXdyNykjCHjJeaxGPmP0jnAWMfDNETn54VdVxEOz078yaqwyw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SA1PR12MB5616.namprd12.prod.outlook.com (2603:10b6:806:22a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Tue, 9 Jun 2026
+ 08:04:05 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
+ 08:04:05 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH 0/4] gpu: nova-core: obtain and display VRAM amount
+Date: Tue, 09 Jun 2026 17:03:58 +0900
+Message-Id: <20260609-boot-vram-v1-0-d9382610507a@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QpAMBSA4VfRubY6Vpt4FbnADo5i2lhKe3fD5
+ Vd//w2eHJOHOrvBUWDPdkso8gyGudsmEmySQaLUqLESvbWHCK5bBaJRqMoCpVGQ+t3RyNf3atr
+ f/uwXGo53ADE+2JfaHW0AAAA=
+X-Change-ID: 20260609-boot-vram-00d5057102d5
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ Joel Fernandes <joelagnelf@nvidia.com>, John Hubbard <jhubbard@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: OS3P286CA0070.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:201::11) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aicOenHnHeFE2qlD@li-276bd24c-2dcc-11b2-a85c-945b6f05615c.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=b4uCJNGx c=1 sm=1 tr=0 ts=6a27afde cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8
- a=VnNF1IyMAAAA:8 a=8uiGNJKnyaWAJt-TsBYA:9 a=CjuIK1q_8ugA:10
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-ORIG-GUID: J5No0o4bbikNhV_27oEe8CGRfe8NWhAU
-X-Proofpoint-GUID: ot7GyVmc41_W9WsJD5fo0xayenJuks7-
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDA1NSBTYWx0ZWRfXzndsR5QbiajK
- ZvQWCEgzQTWVM2QXXzzPBmuLmhtKyq1c2qWdJZ53o3G0lYD5e5tGEFgPj5lSwnNuuVwluYWNbuJ
- X/ivIl7gRStXYNDmQjx6l+ehy7wMoZbl6P0vwzudAXB7xZoaBd1eifhpM2qoM5WflHSnWq/PRvQ
- kcYx5SeZiAuG7RN2ae4YdaOF8qQj8gouQJcD847/z1ZqNPc9NLKEKpb4oO2qhiTqxdp4LdUuPmK
- uaq+ckhLnYotfO8a7B7/+3Tnes6MHe24NvDKcA+fVvvF2FguarlkCpt1YS/LKRXN6qjCvCUtBBW
- S/D0HVpDsVHTIjwWOS8y3+ZjWYYG7gU2Q7bn9Y9o6EZzdGKvn4UOIt+Kqpjl4sAMm2RZQXY+TVA
- RKRafmOzy5ZJm3x//TElHffqGvt1HpnsrXv10ocyl7iWEFdQxF/gdr8p3KPRxeR77EumT/soq8A
- U2aBpjiw3LNeX3JsZDw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-09_01,2026-06-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090055
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB5616:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3026ddfd-046e-47c8-ebaa-08dec5fdacbd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|18002099003|6133799003|11063799006|56012099006|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	AjVlewtkZSVI0ykSPcU06SkDgbXcwlNJLAGZlNBfxmqScQBemIBLr/svioPCAMHIveut7U96bE0m3HNpdwb76KRvQb5ZoufHpw1TuE1LZgRMWVKRT8XObckEnyg17+kfOZ037DcjR/oyUwCDTMNtAQs66IEh5C6lGTrwDMHd+qxNGrIXs51J6hYLcubaIFB6y9PUkMhvlLyC45Jq4BqvU9o8xboF99aBFXQKFfp0uv7VDi/fNQPWt8gLL4jSk7azcjkjMQXrMn5lJ429sqmAr1d2PC9AU/fpjz8WXplo93p8mpkPFhn6Dw/jERJpfTQGa3NxaC7tYSSxKrcNGU7Dz6Fv7xgPt68h9WGf1DjNsmv5ZnoGAwIPiJywKSB4w3rKWvKnvX77AqW75TdbL56TU6rymYxty2xL2TM8nV82fxx+mwXcSLUbujLAm8Wu8fllZXpNeUAAv6uFnqQvg8SOW26W4D9AD7ScQmPnMJxLO8J04rgsW8dBtwgETtMApCRE2VqiE+TTodKa9Cusqzvlynq9PfUzX9X1CVgMNMifFx2sknaYlsiIATzftAgxg3CdHAkUIGblsRwuoQ0rVnU/QQ0YUNsIPACekx/pig4PAGZ8mmF8RRkLFkIWRQifyuUkdqu7np/QxZjsqxkuO1Lzp+pbCDMJyQ368uflw1tTFXi9tOmclf6+sWjno1W4jWmQ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(18002099003)(6133799003)(11063799006)(56012099006)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bFdKMVAzTjI3RFRVT1AyQWxidktJd2FIRzFrM25PaGFaMngxTk9iMmU2YkZy?=
+ =?utf-8?B?OUpsQi9rWHBuNDJSL1BLcUJmMzVzc01mLzdFYVl4OVN5c2dDREx1Ym52bC9u?=
+ =?utf-8?B?eTE1M3d6c3FiQ3N2dUhkVVp5YzZKSHdOQjNQU1BmKy9JOTZqc0tIOEVLZmFx?=
+ =?utf-8?B?UnlhZ0lRZ3B5RUh1Ly80MXdMWHowZ09pS0lKMGhkTUJ2SUF4ZTJIWExsTnd4?=
+ =?utf-8?B?K3c0cDh5ays3bUtka1ZBUzlaTW5ub1VkODVNdzNMZDVsaVNpSWVvTklBQmlH?=
+ =?utf-8?B?R3p0ZVNlVlpIYzRnTEMzMzZpSDVXamtIdzFzVVVIYWlEeWJzU2hQczFHY0xq?=
+ =?utf-8?B?dVBvMlI3VGo3Vjg1cHBvekhMUnovQnRBVmpCN2dmbERxZ0NUMml1aXkrTUhj?=
+ =?utf-8?B?enRNT2o1UG1UZXZ0eXBOcS9RWjNCYWhySEZFYk1oSElROHpmZjlqVUk3WThM?=
+ =?utf-8?B?K09zTzY2clJ2VEdLWkFOVnhwT2JiNi85TnU3ZlNHUnpFZ2VqenJ4Z0doV3hN?=
+ =?utf-8?B?TXNpQzZ2ZjBzUHU1RUIzSDBJeXhraXZGbGFNMHh2UzU5aEQyZFErOWF0T1dJ?=
+ =?utf-8?B?RmRoaXhrT05Wd3Y1UHpVMGkxOGF6Umo4d2RPUUc2dmk0VDRBZFY3aVBHbHgz?=
+ =?utf-8?B?SFlpTEtJVm0xTmZoR3d2RDZkTys2VXdMamNWM0dCR1NndVVQL3REdjhWMHYz?=
+ =?utf-8?B?UWhXTTF5bFhZQkxXMjdSYUhCNjhsSTMzcXhXQ1FQenIycnlSRjdvNDZxeGVt?=
+ =?utf-8?B?QWVpTVVhZ2h2VGVxRWt1THF4WUhXTDhYRERvYktubDRJeXl6Z09RZ2xwcVRj?=
+ =?utf-8?B?enIrRjhpeWFIb01YTG5EOVIvY2NCZFUvQlpTdzRaMXgyMGh6bHZLdDRTdDYz?=
+ =?utf-8?B?cmJSM0Z4UUlFRkEwYWIwRTQrNFBzTXNlSzlhYmRwRTVacHlndUNVc1BhNk1h?=
+ =?utf-8?B?MGhPK2IwTlR0aFBaaXFLRm4vSk0rRGNyeklJSzI2T2R5R2xydm1JeVVBcWp6?=
+ =?utf-8?B?T2RlQlQwMURPS0ZYaG9NdlFwQnBEK3BOWFAwc3huRElpcjdBOWFTdTRHU3BY?=
+ =?utf-8?B?SXpvN1piVWJxd1ZHOUwvdjQydzh1MW9QMHlqWUh5NVB6UWZhRVN0aGs2RWJI?=
+ =?utf-8?B?ZHcwT1kwOGMwRC9VQXQyV0xCUFAxSzc0YkRuZW5DK0ZWQjd4NE1UWmVNb1kv?=
+ =?utf-8?B?M3RUaWZYd2pvSDRPU04zOFB2UHVqcFVuWnRHN05hdWU5dGtXNVNuN005TXM2?=
+ =?utf-8?B?NkFwZmlJKy9taEFKN09UdHpnUWNNYW1oSzUxM0Roa3V0RElnc2lmcFpqeHRT?=
+ =?utf-8?B?a1c5bXZXaU9LVU05M2pDM2dqcnpmRndiWXNJaU1CQVg2OXN3M0JoMFFVdUdC?=
+ =?utf-8?B?Q1d0TUdTLzBPWDZIbmhRb3BKKzVRQXZWakdKTnFuanlQSk05R2doK3o1SVlq?=
+ =?utf-8?B?R2VUN2FjMFE0RWxhRVQrb0h0ZDRWMHAzTFFSM2dxb1hEb1NHYTJKZ2IrUi93?=
+ =?utf-8?B?dGNhbUtRRFlpMXIrRERYRFRiY1V3dkh3NVRaU2FoTldwK2ZzZVU5TnFsd0J4?=
+ =?utf-8?B?cHlVRWhKcERBTzZXdlFMZUlsT1dMQi9Ic2pldUxkcW9FRU1EVHVCbEE4cnZJ?=
+ =?utf-8?B?elNOeDRBdVYvWTE0dVpNTnlzRmxzb2l2N1NDNWQrd3pVYU1oV3hiZ3o2eGMr?=
+ =?utf-8?B?UmN1V2xqeW1RWlR3azdjOUh1dUlpWTI2ak8ydThON1dnMkhoRS85N29IaDlO?=
+ =?utf-8?B?Nkh4T3ZOdTBVNllHNyt0MXlXS01IaTd4NjNUY09BTUUvSGxqcGhBKzE0NWtx?=
+ =?utf-8?B?SG5LL2lpWTRacUUvZlY4RXY4UVdFSUVjZDFLQmorZDJaYkhyS240RFFDcWJ6?=
+ =?utf-8?B?ci8rbkNoekJ0TkR2czF0ejZrWmt6azJVcVpNZFpNTVBqM1lmdDZHV2F0cGEz?=
+ =?utf-8?B?VUpYbVpuUVgwNXdnT3VDQlcwMktRMkROdllER21MNkQ5N0YxUFoxMEI0TUJX?=
+ =?utf-8?B?UVZGcitQb0ZWN25oNEp1Ri83QWdaNXRMa05ORkY0dVdHL1BmWjFlRDlyTFBV?=
+ =?utf-8?B?Si9MZDh6dkdnbVRud0VvY3JBWWxQQkhvQTVVbGpCMTlveGdtMkd5NXd0ai9Z?=
+ =?utf-8?B?ZForTG5pUTB1OGplZGc3dGRINlBucWFrTWE2M0w2bXZwT25TMUtjdE9TTnUv?=
+ =?utf-8?B?dDZrbXpTdjA4YVJqR243bnhaa2F0L0xrSE1rVFFmb1J1c084eFBIK3h3QUtX?=
+ =?utf-8?B?eXNNVDd1bnN5Vm04dnd6YVB5R0xTYitWa05oQkJGa3lVZElFYXhyWXFCd29u?=
+ =?utf-8?B?RjVPVjBGZnA5dnFET2RpL01Jbit0SDdQQ1F4ZjVBRnAxai9oL2E1amdXU29j?=
+ =?utf-8?Q?qtRd1LUHXaX1qr4fe8bNCGuNeOGMg3jm5stlzD8Vh8RMG?=
+X-MS-Exchange-AntiSpam-MessageData-1: chNpb8cj8WtvIQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3026ddfd-046e-47c8-ebaa-08dec5fdacbd
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 08:04:05.1143
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VkDhbMZ4TaGPZzi8nrPxBf4dJ5R/yqEF3xLG/mZgFmV4+czfSK6LapBpPv3mAyooI2JAuf6w/ZJiqrI+W/iYMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5616
 
-On Mon, Jun 08, 2026 at 08:48:26PM +0200, Jan Polensky wrote:
-> On Mon, Jun 08, 2026 at 04:48:45PM +0100, Gary Guo wrote:
-> > On Mon Jun 8, 2026 at 3:36 PM BST, Alexander Gordeev wrote:
-> > > On Mon, Jun 08, 2026 at 04:21:22PM +0200, Heiko Carstens wrote:
-> > >> I guess Alexander will pick this up and route this via s390.
-> > >
-> > > Yes, I applied and scheduled it for -rc7.
-> > >
-> > > Two new files fall under the Rust maintainers scope:
-> > >
-> > >  rust/helpers/helpers.c | 1 +
-> > >  rust/helpers/string.c  | 8 ++++++++
-> > >
-> > > Please, let me know if someone is against it.
-> > > Otherwise, an ack would be ideal ;)
-> >
-> > Thes string.c is missing __rust_helper and it is also missing a trailing
-> > newline.
-> >
-> > Sashiko's report is accurate here:
-> > https://sashiko.dev/#/patchset/20260601174625.2910233-1-japo%40linux.ibm.com?part=4
-> >
-> > Best,
-> > Gary
-> >
-> > >
-> > > Thanks!
-> >
-> >
-> Hi Gary,
-> 
-> thanks for pointing this out.
-> 
-> I've added the missing __rust_helper. Regarding the trailing newline,
-> the file already ends with one locally:
-> 
->   $ tail -c2 rust/helpers/string.c | hexdump -C
->   00000000  7d 0a                                             |}.|
-> 
-> The other helpers are also mixed in this regard, so I kept it consistent.
-> If you prefer, I can send a v7 adjusting this as well.
+This series performs some light refactoring required to be able to
+initialize members of the `Gpu` struct from GSP commands, and makes use
+of that refactoring to obtain and store the amount of VRAM on the
+device.
 
-Looks like a whitespace damage:
+This is useful as probe-time information to be displayed, but will also
+become a parameter that can be queried from user-space once the nova-drm
+to nova-core bridge is established.
 
-$ tail -c2 rust/helpers/rbtree.c | hexdump -C
-00000000  7d 0a                                             |}.|
-00000002
-$ tail -c2 rust/helpers/rcu.c | hexdump -C
-00000000  7d 0a                                             |}.|
-00000002
-$ tail -c2 rust/helpers/string.c | hexdump -C
-00000000  0a 7d                                             |.}|
-00000002
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Alexandre Courbot (2):
+      gpu: nova-core: move GSP unload state to a pinned Gpu subobject
+      gpu: nova-core: move GPU static information acquisition to a GSP method
 
-> Best regards,
-> Jan
+Joel Fernandes (2):
+      gpu: nova-core: gsp: Extract usable FB region from GSP
+      gpu: nova-core: gsp: Expose total physical VRAM end from FB region info
+
+ drivers/gpu/nova-core/gpu.rs             | 107 ++++++++++++++++++++-----------
+ drivers/gpu/nova-core/gsp.rs             |  15 +++--
+ drivers/gpu/nova-core/gsp/boot.rs        |   7 --
+ drivers/gpu/nova-core/gsp/commands.rs    |  14 +++-
+ drivers/gpu/nova-core/gsp/fw/commands.rs |  47 +++++++++++++-
+ 5 files changed, 138 insertions(+), 52 deletions(-)
+---
+base-commit: bfd90545ad9ef8bed2ac7c157fa9db7604befb27
+change-id: 20260609-boot-vram-00d5057102d5
+
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
+
