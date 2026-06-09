@@ -1,90 +1,132 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1AA413629;
-	Tue,  9 Jun 2026 12:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DA140E8D6
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jun 2026 12:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781006923; cv=none; b=PIOtiXx80zfhQ14515IvT+ahD7szfxKoW32aQDUg0pYNfd/VO2C2MydDafwVScJs/C994Q7aKojbncpBk0zYKx855230FafpsfKmewbXb58blJYGpFZn0FxR161d5n5+IGEm0+0zFmuzVMFd+I1xA+kNULz693ocl6zYy+LQAtQ=
+	t=1781007685; cv=none; b=tmG0s++n8JovMPUpyn7GLDOV6523DUFNlfi6OKdOGMow17OM1SYesRa5IEI6+dWDLJaFPg2fD06S4ztdadCbFTwYMz0l2uy5ZG4sx5A/Ew8DtzJZYSTi4LvAmboEh855sBT5ytEBxseavl/d1+LwwiqsQre+OAOxuhWs5lbvbto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781006923; c=relaxed/simple;
-	bh=Nqf3YO87WrzNM7BINtAtbxa7Cdud+kVMGo0EvPdnscA=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=MFA4LwPqEkx4aze+omj2pn+XrMCKfDsu1b11Ad2dUj+8+Grf4HrkAA0TKwU6GKyllWqlEFvHi9nNgwMneNNv7Ct/A8leyDpouEAL0dUeyuHfalDLeGsQBqqydQpPoo8uGiHVFF0+2DUrufYW8043PQyDkoZbmIJJUZhE6SB1ADQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Y8ydkJ8Q; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1781007685; c=relaxed/simple;
+	bh=YQwcjbPT8reVmyJ4Ni2PAEuzpSPcjZjo1kuWv5v819E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QBZr69y1A1c103sMbyQByrkp1z/5urNwfpAbht3oqAsOSiF+5jujdkRPJtE8p5RzE6/rZPhfzUmN6/DoEV2jzIE4WRUaQq2KdMc9ZGW05EXHYlaJC47gUsmPtMZyzIRh0A/ihFVhIamVVlzdJs6lPENZiNQ+Bj1lJulEtObQDLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XPxF5Vx6; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Y8ydkJ8Q"
-Date: Tue, 09 Jun 2026 13:08:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781006918;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nqf3YO87WrzNM7BINtAtbxa7Cdud+kVMGo0EvPdnscA=;
-	b=Y8ydkJ8Q7hKiAkSBYm2L1fsTLlc7q6yC4yt9ROlmA5zV0wfixbVwGG4h3kcrF0VJE9qyem
-	cRZll3fqnQ1E6+MfCjXT/2NZo3P1ouC24Ja6X12spkE2gN/b9ldBiImbCB4/vt2H4ohG7b
-	CB6vy+umI997iqhYjb3f6Cyf5+YwVZ0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Igor Korotin <igor.korotin@linux.dev>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
- rust-for-linux@vger.kernel.org
-CC: Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
- linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [GIT PULL] rust-i2c-fixes for 7.1-rc7
-In-Reply-To: <aifcUBtuker3f9t2@shikoro>
-References: <9e49b71b-8b60-479e-93e7-5c12e352c78e@linux.dev> <aiZ0eD-A2F8woqTb@shikoro> <aifcUBtuker3f9t2@shikoro>
-Message-ID: <5633BA97-5666-45C8-A024-87A737A4086A@linux.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XPxF5Vx6"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490ace40f13so24456665e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jun 2026 05:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781007683; x=1781612483; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MhKYIwYQts4cq5+bkrj6bHMVfPH+f0iUocbJTvolkkk=;
+        b=XPxF5Vx6J43gPgH966aTb1Pf/987CPNmmpRBQkmHXHXC/89TJe+URp3LqmVgigbT5H
+         h9n/Z80K6IbCvPNMa+toVy6XVN2k7C55oEMyqPOUstjquJiIqZXjnkuQFK3eeoTNwcu+
+         jGGLMHkOMjc2GtBRXhcHa0rFCA7VdrmhN1lgy1iy2IeyEgPOK+x/1OrKxOg2HvJ53KB6
+         hx8wUgXXMq2N3AOE0ce/iu0Z3VQIqIfcyw5AwY2jOaSiyzrp8NnESJDBXU01RVRvSave
+         WWR0WxfJQjEXTxO+yQbvjUjQu/6uYZDjxHv50MsEAJUScld5zC3HqZd3QWRH8DIUolqw
+         CIOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781007683; x=1781612483;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MhKYIwYQts4cq5+bkrj6bHMVfPH+f0iUocbJTvolkkk=;
+        b=bEQW1kHcQrEoPw+JgSUzlleY9q/RWmM4gTtUt5RItBSDRkLULp6pXZvQcJUYuvlOjC
+         BfpmhWg0ZZHnXHvyGuWJLZVY0U+iCZ6x8ouAusA/dxKI6uVJAHv6ebZy7XlJmBcGlMWn
+         p5vDVamDdXpp7BJtpT03hlT/jqCfv8s+YuL7xW+CnAmq0KKBHctlu8r2a+A1jIvFuigr
+         m7SUzTf9czGaz/FTlbFJqEyg/14GhsMBKcZ/Tjmn9EL7tXxh8vcO1YXdgReHZbZ5tKaq
+         r/cpzNs360Om9nE+EGPmUzh73FMuBhVBwGnjaa2C4/lqaqg7f3Mf9/9z0/Ktuh9RURwR
+         9XHw==
+X-Forwarded-Encrypted: i=1; AFNElJ95nvCFFmsO/3eYpag2D+N7otv2xAHr96m4Ic1YMrO71FB1RM+LuP5mDBGcH7pmdvV5ozxYMsRPkZTJ5sdEtw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfD0YHPb40Y7Ld6uK8UIXFi4YztKySdHpSKUzVuHLqglhZOo67
+	SH4RH9yfkQvtekWxArsDJiQ3PLT0HkQeNtOdAWs+4ULS9nRtj8gXEHcoKFNGCm8/fnnI8piHgjX
+	V394fCdq91OTUYEDO/A==
+X-Received: from wrj11.prod.google.com ([2002:a5d:5a4b:0:b0:460:18e2:1418])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:b93:b0:48a:93f8:dd02 with SMTP id 5b1f17b1804b1-490c4e0414emr315540975e9.14.1781007682685;
+ Tue, 09 Jun 2026 05:21:22 -0700 (PDT)
+Date: Tue, 9 Jun 2026 12:21:21 +0000
+In-Reply-To: <20260608141439.182634-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+References: <20260608141439.182634-1-ojeda@kernel.org>
+Message-ID: <aigFQcq3JHtdpsIn@google.com>
+Subject: Re: [PATCH v2 00/19] `zerocopy` support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, Joshua Liebow-Feeser <joshlf@google.com>, 
+	Jack Wrenn <jswrenn@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-
-
-Hello Wolfram
-
-On June 9, 2026 10:26:40 AM GMT+01:00, Wolfram Sang <wsa+renesas@sang-engi=
-neering=2Ecom> wrote:
->Hi all,
+On Mon, Jun 08, 2026 at 04:14:19PM +0200, Miguel Ojeda wrote:
+> This patch series introduces support for `zerocopy`:
 >
->(adding a few more people to CC to have a potentially bigger discussion)
+>     Fast, safe, compile error. Pick two.
 >
->> Please be already aware that from 7=2E2 on, you will need send pull
->> requests to Andi who takes over the I2C subsystem=2E I will write a
->> seperate mail about the handover later today=2E
->
->Done now [1]=2E On a second thought, after pulling in the I2C abstraction=
-s
->a few times now, I wonder meanwhile if the Rust-tree wouldn't be the
->better path to upstream=2E The abstractions are way more Rust than they
->are I2C=2E And potential merge-conflicts come from generic Rust
->abstraction updates, not from I2C=2E
->
->This is Andi's choice now, of course=2E Just wanted to give my 2 cents
->here=2E=2E=2E
+>     Zerocopy makes zero-cost memory manipulation effortless. We write
+>     `unsafe` so you don't have to.
 
-Thanks for the heads-up on the handover =E2=80=94 noted, I'll direct pull =
-requests to Andi from 7=2E2 onward=2E
+I tried applying this and using it with Binder. I ran into one
+challenge, which is this uapi struct:
 
-On the Rust-tree question: I don't have a strong preference either way fro=
-m a workflow perspective, but technically your reasoning makes sense to me=
-=2E As long as the changes don't introduce or alter any I2C-specific behavi=
-or =E2=80=94 and so far they don't =E2=80=94 routing them through the Rust =
-tree seems like the more natural fit, and would avoid spurious merge confli=
-cts driven by generic abstraction updates rather than anything I2C-related=
-=2E
+struct binder_transaction_data {
+	/* The first two are only used for bcTRANSACTION and brTRANSACTION,
+	 * identifying the target and contents of the transaction.
+	 */
+	union {
+		/* target descriptor of command transaction */
+		__u32	handle;
+		/* target descriptor of return transaction */
+		binder_uintptr_t ptr;
+	} target;
+	binder_uintptr_t	cookie;	/* target object cookie */
+	...
+}
 
-Ultimately Andi's call, of course=2E Happy to adapt to whatever process wo=
-rks best=2E
+The problem is that when the union contains a handle, there are 4 bytes
+of padding in the union. Currently Rust Binder handles this by wrapping
+the uapi struct in MaybeUninit and using MaybeUninit::zeroed() to
+construct it, ensuring that even if padding is present, it is zeroed.
 
-Cheers
-Igor
+However, this trick relies on unsafely implementing AsBytes for
+BinderTransactionData with the safety comment being that the MaybeUninit
+actually always contains initialized data.
+
+To translate this to zerocopy, I'd have to do this:
+
+unsafe impl zerocopy::IntoBytes for $newname {
+    fn only_derive_is_allowed_to_implement_this_trait() {}
+}
+
+One fix could be to update the uapi header by explicitly adding the
+padding, but that's kind of awkward for a union like this, since I'd
+have to do it like this with an extra struct:
+
+	union {
+		/* target descriptor of command transaction */
+		struct {
+			__u32	handle;
+			__u32	_pad;
+		};
+		/* target descriptor of return transaction */
+		binder_uintptr_t ptr;
+	} target;
+
+It's not clear to me if changing the uapi headers like this is even
+allowed to begin with. It's a somewhat non-trivial change.
+
+Any better ideas?
+
+Alice
