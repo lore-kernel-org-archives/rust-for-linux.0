@@ -1,136 +1,203 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022132.outbound.protection.outlook.com [52.101.96.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FAB2DC32C
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jun 2026 14:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A004D42EEC8;
+	Tue,  9 Jun 2026 15:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.132
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781016812; cv=pass; b=YYJCtSYwMPnHtJ0jFKzbcQmAGMLbI+uRM7PcRl9z7Jxpqehsn8r+A5En2G6jBUKWa5u8UbMM9Hju0ctsW/ImpeJ4NA49FeHme0PKo6Pzg+OQXDgu5AgyGMwVDjToU3ASYz8eP9NP0wvwLlJJbOwA5oYS5FW/cYexRuyuRbV2CtY=
+	t=1781019545; cv=fail; b=Xr8h3BC9ZMHkuM/5pmIkVoCbCceQ0MRbyUp2NFQrLUG+5+sjen0nke04uu9JwY9SwqMLNEQ9in6bAN7yBJukCy+ZTlEuCC/Ft3wS+oHxUNRf6hHSK+ahEjVdqEnhKQJP9JEnx64dUnN1uW451yP91wP5iOd7YVSM+i786MLNhSM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781016812; c=relaxed/simple;
-	bh=X5Rl5lNzcPM/zxKVGRo0hD7K7rU/ElLrH3SqVAQTBl4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AaVWieu2sDY1I9HYcZshLBgL7m6E3hi1OqZpqyEwpPfdTusIP3bN8XW9/3Bf5aqCgzy5JyM5a94REI7cPFAJ+WnpdM2K8V8WFQWWGsUFrKH8KgnwAV0FOr1a2YdLaP3vW4hiegRWPsBF96koC9CrNMJ4+ngdGc9fNjFuHcdCHWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cAK5cc0e; arc=pass smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781019545; c=relaxed/simple;
+	bh=hxkwhVK5ToqxSCTusoVQ3qd9f1d4OmS/kjHIq5ZEPwU=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=csVZ2935YF6789S+GDYC187r3qesmp+pqhTLRcnkSY+NbqhjEtwenLFjebRglQRcoJudShA1svmeO8VOLoD0sLfyv5MZvLcE576fv4hKE9nOoOiXgw+VlO6NMlPpVgLHTLTEP6KA0aMoG1FEMBNRyWoPhycL9yn1Gl08qIwCu48=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=uEbHrJAz; arc=fail smtp.client-ip=52.101.96.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cAK5cc0e"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-137e836ccc8so404986c88.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jun 2026 07:53:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781016811; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TMQ4k4xwobq+9+5oMxpbBl/oPlsCpsT/Ll4v2Yr+yOpuyHWb3jI/zty/hCXtrUQgL0
-         rramPC5LFzy6bfRKC7SlMkmN2m4I5NxkexJ5kz9yAWEZw5bt5v1oyAUZ4HrgcpC/imr0
-         mk5aOyF7XDe4gY6BVicI4SSjwNa5llZxBkTUFMTshIwiIEAA1RhFY9vp1hWOtHlxl2c7
-         jV7LF7DQJwO+mlTXakUBzPYG8VPqr1T9LGVUQ+bC60B4xE6MxHzjt2CxZnLGy+9OnuHo
-         SQkjUNjVtFgce2C8mjacRYPrkHW35V2v4ikqgkctQOUrZpuFGrGtEYILAh9otDyR9SPG
-         qdVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EaC8nh7KYLS78yjACqQzX8jGGQc86wGruCKn4Ldsi2Y=;
-        fh=XvkbiekxxQTw74L0jrnYCwZIS3tiAt/aDMXQjWQGsls=;
-        b=R7hChN0TTGFF5/qJkoiOj11Zn/tJrtG9O251W6v2nVjm1IzAQTlvYNPnptkTUY3NPw
-         CuYEm34arO1myVUfE60mMEpWpbKUBi5/g0tEeUBOEuxlcK3/0Sc9yysBwtJNxyhH0lwF
-         gkbKMcBmu6vcoXviWLAdV5/SERx8CFzlcylgII9Uo/GtkOknaGc4o1vgvnBrMOhVeNx/
-         D3V9X18EdIXsvvMfHRXN7ftyPUGrQJgCqD4Z3ZHY4L1aFNDSGfAE2y9HIDqd3y8Ea1vt
-         r0RPlps5N9hDJPcT6XoBDLLrUlNOwjJMjD0UdOrhP4rIO6TAKAAGyRMStKRZojprWays
-         WNzg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781016811; x=1781621611; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EaC8nh7KYLS78yjACqQzX8jGGQc86wGruCKn4Ldsi2Y=;
-        b=cAK5cc0eQYsQTNqV+Dt2UxMVm5nawItI2QMVrlaAoTRFn7jdW0MCY8a+8tjSQgOD3x
-         K/xXjrKBno//iwndysRPsABes/R5T71vd+/YcVdv3EPNGqmF+7xiyrGgGkBszZLkXdLJ
-         WB7sue1QsJKIOOc0yMLpixYyxPRhuHgrYxSExgmqe53OUk9fftpy39HXgcnD8/HAlFgE
-         Vm8ZzVWrQiM1ar6oRqF5ndhDPhLqr6qwMrVaycCOclBqaFc8ilCk4pLZ75Wphdsv0hkC
-         0teZnFSyB7yYIL62O+wBqIrR4VgNsqr547h9VLwey3lvKw/YK+v/l2vfhXNqfpI7Vmcm
-         cnWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781016811; x=1781621611;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EaC8nh7KYLS78yjACqQzX8jGGQc86wGruCKn4Ldsi2Y=;
-        b=baW3OGLmtRoJhrDIfgc36r94Gwe5n3dDhLK4906OPd4a3y94gfV4iOT5KcREjCnS8k
-         P20W+LCkA9ScfqgQjcqdENj0yYuokEl0vJ2PUXDK3SAZVgSTAIB/v/zSTLcYkfs7krGi
-         34K1p1R1iujVtwHEimyrLzYscUTbeu5YlSMcjwneryAHVEAzlFYnJ79DsYc1HMcLL/7r
-         L/mUJWXFP/s0dZdnFFujO1tKfCk+MjN0khyr9Uy0fHHZFeZ6BNe1txXGeyYZatk8drnw
-         9NjYW2nRrfixtUhxfSDD/EgwPBInXkwZhh4ADUT7HZuZXnwW2XajKje/nDyjJHOWksx4
-         Cf/g==
-X-Forwarded-Encrypted: i=1; AFNElJ/jzgh6sHWN8C50s9bQY8tXkrxhdtoleg3bv3Tq4Hk40HgW2uT2jRZDOBejhtNlr4WauUHPutskM2d28jibkw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyMgj1eC1SJoPfdVaOUw1ZpBfXYPrFIaPcs3cXDGcXwRojOKsRP
-	SPMZZHxL9izUL7/NOH2g92f7dbgMwllsMOnmK1fOiLfo2dU9jsLWLIG31KJPYb+pdAfiDR/KTyp
-	UFVExuVQk4uWGjoPzPp4320Lst9jKe+A=
-X-Gm-Gg: Acq92OGI6poeUaT9Taxi0nlo3FnYLcaAAZhjwybUOkbP33eDgzWDutjl5ovaLHIM5C6
-	xgGQdDlMS7XvNDXuU/zaWIs620R21qldVGZyr6eWRJR4pFTQwWPDI72W9glUOY0WzPKxJ54v3Kh
-	i1rrZKmE6WDurkO1sPSLLAt9CIKwuy1wDbWENMLKt8U1mZHU0XBslWisP7L0eNQ0OPawkzvZWqn
-	roTpZurhTSuFX/uMvhJCGNMFHeHNDnqWFSVYP5U7iI0UIyIGgak5kF/CyGwjWjCCeddB32peZxM
-	trSuWXim1rzWOyWX+SsvWTctUXH6hJl4gBcG+lZ+3zunn2brkDFbsvYbdxjbufJvE7AUx+FDx+F
-	+yGgixYYfNoxjX1DUZq1fSDb6EPnjgh/J4w==
-X-Received: by 2002:a05:693c:2b06:b0:304:c73b:79fd with SMTP id
- 5a478bee46e88-307d602a15bmr1026912eec.5.1781016810809; Tue, 09 Jun 2026
- 07:53:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="uEbHrJAz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=t51RIwcSmoUyYid77iHAAfp/aUlReE7TLtLPg5TGZ9dYE1xAlRSbb4p+OocoDGkljhtd5zQyLOLqMCRsSGEuD9sOh15yjhqRZhfGRl0GHw72N3Y1hLYlqT8IFggBrbgan+FRggKVw6Jga5FIuwyYZ9GKonJFC9CZu2N8xZFLJfyMLb+eKIUxnLa3F21A+rhF9aeU1xrBKCiBDhtPpHy/7wmorgBWUMUdwZgdmKZleqUc246E7pYg7Q2BpGaGNDGc8sEw0GXJ3TWAJQnLEiI3A20xiyf3gDoFu2pvsx+N5QQ22JNec/ZncIiJ/lHwvde+akc/Rlde6rwNXbs7rVFDng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cs11+9v20TCLsH9iPRgwrmDC7+Bsj4F642mYa4OEs1Y=;
+ b=sWAvG+uuN6H1tZcpg0aMuQkt36/A/eneCggidn1AB+RXV7i9+cQj2YHQ9/0hcsxkSGi9HWboNIJjaX1ORj65AsIxZgZVBGKVhCL/M8RoHu5cL1jnh6DUD6MC1JI1eeOyu3i1HcQ75F3vSGJe5eftbem11MqISEZaVxjFL7kVUrW2tUhW9sYx+XzHvN1a75h4QOAR72oWVatJNdtSE1mj41CRY4kf8PGsk+RVrVj+Z+0sBgvY1xcCrXmsqn8PeWWDEt/znUw51ISXoP94lNz0mQ+7MtP3DLUm9vlr5eeHVj/B/NNPbSx5ocWxvbs6AijaH0sf79yWMzzmOufQarlUHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cs11+9v20TCLsH9iPRgwrmDC7+Bsj4F642mYa4OEs1Y=;
+ b=uEbHrJAzC/R/mnLdWN+yP6kaI5HODIgxevB5RYNj2KgkmVHILIT3mmZZGqfz/qJCgTS0C5u6/Nt8uhswJado+lqo6SgkNTRRFEVK+SEI/p40VYAzIyVZjF299Fx06Ycl3yQTOfU+P3jQ6btWG47vaN5u2oh2mQi/U9txysyfpgk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by CWLP265MB6167.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:183::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Tue, 9 Jun 2026
+ 15:38:58 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
+ 15:38:58 +0000
+From: Gary Guo <gary@garyguo.net>
+Date: Tue, 09 Jun 2026 16:38:37 +0100
+Subject: [PATCH v2 1/4] rust: sync: add helpers for mb, dma_mb and friends
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260609-rust-barrier-v2-1-30fcc48e1cd0@garyguo.net>
+References: <20260609-rust-barrier-v2-0-30fcc48e1cd0@garyguo.net>
+In-Reply-To: <20260609-rust-barrier-v2-0-30fcc48e1cd0@garyguo.net>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>
+Cc: Gary Guo <gary@garyguo.net>, Alan Stern <stern@rowland.harvard.edu>, 
+ Andrea Parri <parri.andrea@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, 
+ David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, 
+ Luc Maranget <luc.maranget@inria.fr>, 
+ "Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, 
+ Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>, 
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ lkmm@lists.linux.dev, Eliot Courtney <ecourtney@nvidia.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781019537; l=956;
+ i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
+ bh=hxkwhVK5ToqxSCTusoVQ3qd9f1d4OmS/kjHIq5ZEPwU=;
+ b=/vdsgPDVUL2v7ElWLurH28PEOGcuSP3l+PO2A9HIlW9mW5n5GmdKMdwW0V3A6kJGi/769oIP8
+ 3pljt/8rDGCDkYbAiNBdR45w2Cmgc/WxjZK2r85zng4yOeNXzY1M6/+
+X-Developer-Key: i=gary@garyguo.net; a=ed25519;
+ pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
+X-ClientProxiedBy: LO4P265CA0128.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c6::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <9e49b71b-8b60-479e-93e7-5c12e352c78e@linux.dev>
- <aiZ0eD-A2F8woqTb@shikoro> <aifcUBtuker3f9t2@shikoro> <5633BA97-5666-45C8-A024-87A737A4086A@linux.dev>
-In-Reply-To: <5633BA97-5666-45C8-A024-87A737A4086A@linux.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Jun 2026 16:53:17 +0200
-X-Gm-Features: AVVi8CcyoxeNZAw6PKYHOJrixFYdC9_ePz8ovPPuzL-S-mcsUN6BPoCRMB-LkRY
-Message-ID: <CANiq72=FY7XMRiH4skr9tuNkH+v2PhKEzQnqVsc5Z_vAnaROrQ@mail.gmail.com>
-Subject: Re: [GIT PULL] rust-i2c-fixes for 7.1-rc7
-To: Igor Korotin <igor.korotin@linux.dev>, Andi Shyti <andi.shyti@kernel.org>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, rust-for-linux@vger.kernel.org, 
-	Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB6167:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16eecfc0-3077-4be0-58b4-08dec63d3902
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|376014|366016|1800799024|921020|22082099003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	fwTgSu9in0NCj6gPUmTfHam5VQNce9YQ+vlFQS2lbNm387VkkoPvSP4ctrRDOp5iKCd12rj7hOqjXX0imV+jfvC7E98KYj7t9J3/Y9tO6CBv/4Sfayd+bQfTMNGj9Vm50gY0HhvxvFRRGY9P9noiGHSFcxE1i+n61P+D8Li4YEqjQ+YOiDhVhw3HyGrfo8zJuUuMd3FXeAFbSPevLtTviM7BoCmLRSTFgLbshoFeZ1UjqX3bKs7rY77UtdRFbwPvDJtZyvnfFXy9sLu6sNTwfYXpzLGJefeymK71pQRXU8k11WoTc/ixhrLehqWh+wLkK+8lnkmFU3t5u5U9+5b/x3lp/5jckRi5B5oBaf+4ZoSzcIWBRCB4JxC0WH3gknpL4mQePoNyZ7vMT3R21fbWynN5VCSbCrSsK7wcGctIjeJQttoT7xT+QMqIRPeFRF+h8IHBb+4UhS2hb3vRl8oWg5IXw77/gNmrZith5hQEctH5hxAyNaphXs53nAb84VRJFKgszV6JLZNSVNqPj2CToYVP/PUkwHklwEEKruPTtoNjJ6nNyzPDWzjeujZMj7LN9lX5SP0n43/L0wwKQwXnCSR5BRlWQO6tDEG1E2yUV/cKhUrBCHZHu8NbCI5ROJVtCYUngs3dHH8u9LJcXQZrkIztPWppCz030ZTMQ+zhdGu1gGF9O+XecMkerwJfNBbAadDtl6kqlPzEu0DJl2MxYynkOiv36Gk2HNpq9bsLrgM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(366016)(1800799024)(921020)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OWZNL3ZvMklDSG9xNWtwMVNrdmVvZGtQR3FNazlzUGhQN0VKYWp4dG5hbHpj?=
+ =?utf-8?B?YUZ0WEJUR21PeVVxcE8vRVhKdEpMM2Jna1UxdEdyVGhsQTVBTzFLenVIVU5j?=
+ =?utf-8?B?TTljbExOMTVpQnBXMzlHVDhiQmpkS3dqS3VlaDNsbnNDMWpOZENzUk8vTHFK?=
+ =?utf-8?B?ckNkWTM4V2V1WSt3Zlc2SDZydjZqRXgvKzVZT3VGdUErY01FbXk4Yjczc1Fk?=
+ =?utf-8?B?UVM0My9Eamd0cmg4R01IVFEvaDdvdEsxTUkreHhwNjM3V2x2RGgrNnFhWU5l?=
+ =?utf-8?B?Q2ZvZEVhZHhxU05STzRpQ2RMSWdsUXRuRW12ckVEcStZUHp6clhrUlVpNUhD?=
+ =?utf-8?B?Q2h3Zm1qQy9NUnRYVkpaamRoQjBnZEhEUTRMaTN1VVZlY3hBSHZISXdvNTIx?=
+ =?utf-8?B?dWV4ZC9VR0xpRk1iZXZSU04zblE2R1d1VCs3YnBUNml3aHA1ellHWDhRUlNL?=
+ =?utf-8?B?cUpCY2hNVlkwdGlTOVlaNzI1SlVaQ3dMU0hDbG9aZ1RBdVhHdTFGTS9ycitz?=
+ =?utf-8?B?amlaWStpWWtTNkNwamhNbUhkWWZYYkdxYU05eGRTV0JuTmdORkVObkFzZ0Rl?=
+ =?utf-8?B?L1BiU0w0a0hnMml5cXpCdWF4TGhFeTlTU3M1aFNEejI1S0YrQkZQZEZ2VXQz?=
+ =?utf-8?B?bWVuQkIwWjBZcm9BWTZKaG1aaUlHRythYTN3SmUxL21lMkxzSFJodWdLRzlu?=
+ =?utf-8?B?L2xPNllPUjhCS1RjQWpJWDRmNWdLVjVmMGNMYjhNbHdLUTh2MVJkUnUzYlNp?=
+ =?utf-8?B?VDNrZStqTUhpamlwcGdENzArS3lKZ3BvMDl6cmpMMGF1eTZ3NDY0RXZEQlJE?=
+ =?utf-8?B?WVprL25HWDNWdjdTMG5xaVQ5V2NpNW4xWDR3THYwcDRPT0ZyTzYrNDN0Yjls?=
+ =?utf-8?B?WGxNQnYrS09XQTdaTDRiSGNYU2V6azhwcHM5RXkwL1ppYVRBb1YwclFBVXc5?=
+ =?utf-8?B?VnR2YjlRNUVMTEc0bmVvcVhqeU9iZy9wV1QzNzhWY1NiWDB1S29lUVRZeDNn?=
+ =?utf-8?B?Qy9UMktiQnFCYk1CaW51eXhNWEN6cHNBTGxOLzhOU3ZwWXFNL1BPVENUOVVu?=
+ =?utf-8?B?Q0JHWnhpaGlydGhEUFJOUlM3MCt1aTk5VHVscldka0d5WWNtc0RLaEUxVjRH?=
+ =?utf-8?B?UDQ0Q2d5Z1RiemRUMU9rK2xrM0lQd3R3Y0JOY2dUb0FKcHNqbWRYSWtqNnk4?=
+ =?utf-8?B?Q1NlYnNESVU4Qjh2cjRXM25jZGY2aHhTbStmelB3M1ZSMGxyTnI5RDAwbm16?=
+ =?utf-8?B?RnlQbVJXL1NrR1BTUzZhQUJBOXA5UjBNSDczWU1mVWZHQUNxenEvaHozQ2U0?=
+ =?utf-8?B?cmJnVkRJak90SDltcDZCN09JcjhFRTA3ZHhxaFJqOFR4SWtjdnRib3F0U0U0?=
+ =?utf-8?B?dElSS3VlOVNKeHFvcWQwY0FvRE16d3g4ejg4TXlPM3p0bGxqVVRZOHBManhE?=
+ =?utf-8?B?dzIxakhhT3J6QjFzV3VyZUNXa3hMOURUZHgyRmZzTGJWZEl6TWdnMnJGbjU4?=
+ =?utf-8?B?Qll1U2xsWncxQ3ZTYzV0bkhpSE5TNEIxc1BRak9IcmhHM0RaNzJ5dlRrcjNH?=
+ =?utf-8?B?WFNBU0grUFFhQ0pWZWMwTHYvMVRmbytuV1BwREFkWE1XakV0aXpPdmtHeE95?=
+ =?utf-8?B?S2FHa1pPUWc2OVFoMGZxRzliODJjNG1rZWhScGxXTDkwVFNmWnlkWUgyekF4?=
+ =?utf-8?B?RU1WMTJYRHo5c0RmcUpKRlB3QklidkhVZmVkR3FPMDZpeXEyV2kvSVFqTmtM?=
+ =?utf-8?B?RDV5SU13V1hiMzYzNFFYS3dxK040aHpjWHh0VTVCTGNHdmlJUHNRemp6TFpi?=
+ =?utf-8?B?c2FkLzZKcTVtK05rWEFyRlg1cjd3RmpkMklnVFQxQjhFMk94ZTB3TDlVN2VN?=
+ =?utf-8?B?Y3FwL1plSTlQZzV5U2docEN5dXZnaEJIVDZkaE5SUDU5QzRCaWZ3d2k1NFlR?=
+ =?utf-8?B?U1Btc0xValFnVjdjOUUyRlhGL0FlVHFYT043U3JicHdyY09HYVR2REJrd1ZH?=
+ =?utf-8?B?eU95K2JYQ0F2OTlUTDFlbXRTZytJbHpiZzJLbnBmS2FpRDZhYjllbGFWa2xU?=
+ =?utf-8?B?VmtLNllzQ1dxdDBIRFZONy9kczhBL2xxdWJka3p3QWxvaythLzVmbDlhSkR5?=
+ =?utf-8?B?MTZQQ1FiWDJZbWV2NGNSai8vcEVsbzdpV1hrY2FEb1BaWThDUlorbHRvL2w2?=
+ =?utf-8?B?M3dOdjlIdFl2UU9CUzNBZVlEOVFGaEFJY2FiWTlTK0NjSmJkVGpWWXB4bm1h?=
+ =?utf-8?B?RWtjKzV2V0xQZW8zZHZWTG5aVDJZalBPN01kMlVTRGYyTmJpdEdiZ1B3VDhI?=
+ =?utf-8?B?YTkwVGw0K3Q0eDIyRi96N0J3TVZ4WlBVYy81LzBwcHpYS2tlUWQvZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16eecfc0-3077-4be0-58b4-08dec63d3902
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 15:38:58.5604
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5nBd3EaAq+zjZFc90Ohzhqssv1ooa6rqiAk0n8GiLN5nLQyM2B34kGXOpaNTmjtletQH/nN5KUlht+RDmrkltA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6167
 
-On Tue, Jun 9, 2026 at 2:15=E2=80=AFPM Igor Korotin <igor.korotin@linux.dev=
-> wrote:
->
-> On the Rust-tree question: I don't have a strong preference either way fr=
-om a workflow perspective, but technically your reasoning makes sense to me=
-. As long as the changes don't introduce or alter any I2C-specific behavior=
- =E2=80=94 and so far they don't =E2=80=94 routing them through the Rust tr=
-ee seems like the more natural fit, and would avoid spurious merge conflict=
-s driven by generic abstraction updates rather than anything I2C-related.
+They supplement the existing smp_mb, smp_rmb and smp_wmb.
 
-Yeah, this is a common question -- I hope I can clarify a bit...
+Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/helpers/barrier.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-It is true that in most cases Rust changes in abstractions do not need
-to change the C side, which is good (and something we tried to
-show/emphasize early on in Rust for Linux).
+diff --git a/rust/helpers/barrier.c b/rust/helpers/barrier.c
+index fed8853745c8..dbc7a3017c78 100644
+--- a/rust/helpers/barrier.c
++++ b/rust/helpers/barrier.c
+@@ -2,6 +2,36 @@
+ 
+ #include <asm/barrier.h>
+ 
++__rust_helper void rust_helper_mb(void)
++{
++	mb();
++}
++
++__rust_helper void rust_helper_rmb(void)
++{
++	rmb();
++}
++
++__rust_helper void rust_helper_wmb(void)
++{
++	wmb();
++}
++
++__rust_helper void rust_helper_dma_mb(void)
++{
++	dma_mb();
++}
++
++__rust_helper void rust_helper_dma_rmb(void)
++{
++	dma_rmb();
++}
++
++__rust_helper void rust_helper_dma_wmb(void)
++{
++	dma_wmb();
++}
++
+ __rust_helper void rust_helper_smp_mb(void)
+ {
+ 	smp_mb();
 
-However, the key part is catching changes in the other direction, i.e.
-on the C side of the subsystem that need to be reflected on the Rust
-one. And, more generally, coordinating the subsystem -- in a sense,
-the programming language is an implementation detail, and the experts
-of the subsystem and its subtleties are the maintainers there.
+-- 
+2.54.0
 
-So that is why, generally speaking, changes are meant to go through
-their respective trees. Sometimes we may take treewide changes through
-the Rust tree to simplify logistics. (The Rust tree can also act as a
-"fallback tree" when needed, and there can be exceptional cases where
-abstractions end up maintained in a subtree of the Rust one.)
-
-I have some more details in:
-
-  - https://rust-for-linux.com/contributing#the-rust-subsystem
-  - https://rust-for-linux.com/rust-kernel-policy
-
-(Cc' Andi, by the way)
-
-Cheers,
-Miguel
