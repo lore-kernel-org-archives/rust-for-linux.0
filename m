@@ -1,134 +1,106 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED343F20EE
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jun 2026 09:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAE13F8244;
+	Tue,  9 Jun 2026 10:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780997609; cv=none; b=XBdVryCVy9FNU6SaPmxf0HLihoirL3zDIeSOqUly4jR3z1I7lyvFgmUu9uD4Tg2C28qP4BXzFU3jYqLgT/aNPWmn9K9I2m2FNvZ154GqsWVcel3Cr2BogUKOIdrLwFTrdiS3pVHAmoi6OQQBnBLaDS/249binItGUVtZ9s/PElU=
+	t=1781000952; cv=none; b=BQNCLGkzXyoxthS5fd/6M5P72aPgEyjw72QTwBXgvJ5ob0uLXkSi4mJTGCoeSb7UsIzE/9F+86lHTI7c9af8/KnQV1xDQqreBFsCVwXr3o3W5FweQCtjetk6eS7PWb81uL0LKg2M9629GD+WjCuCQwXVyryjH8SFJYEKBRLoA+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780997609; c=relaxed/simple;
-	bh=VibeCWJP7CLzw6oJwFgI2q1e7QZeqUSaFos4WRC2Lr4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uDG2uuwH9nDgXOqWMgabKxtngjMAYRrJ4JVf6ha3dqHUuT8kc4RzQdIxhFgE62GRjg6GzW50HGmsfGf5cptTLArd3wZdxecy1EYkUe5r1t3ABJhBChum0aSfhZYGAqgwjrHjrqa9ya8h4S9AspITEkVU0JfOQJg5imcRfQKCKl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Stk3wFpj; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1781000952; c=relaxed/simple;
+	bh=po2PVYBoQHn3TVJ3gPK9zEXZO2IncL6RJxbmazHAy8A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=obgEcoWe5JLK72tBkl707jNtUQ/koN0cTFuwuqvE85J97EBa+AXKfOSQfDgzYdL6/x+rlV11APVD8rkd19lkfNfezBoP+F0lkIin9OjP3hn03pkJ5Eta630qDKh9fZkqbUeByeT4ObzrE2UO91OldPyvbDQb23G1yrSIBuoofQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReKNvMcD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Stk3wFpj"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490b9318944so37355585e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jun 2026 02:33:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780997607; x=1781602407; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xzKhLyD/l/6xsGgOU+UlnscvYNTC7uiogexaTKtSdVI=;
-        b=Stk3wFpjEelvYUM5R2C2LqQdzis6KOxIO+xP6Q9evqUv6sWG0SQkLdrVlF7AQzyQpW
-         58Nm9Y2mwwiKJ0XE8aeDSbeyzuOau50pk2CXRGgy96LC0g0cIaNH/AzvxrNHhvxRtVAS
-         8XcD7EFovVcnLmT2geunJ9CynTsaNvi7CmHecX5+Ap34iG6V06rfAM5iMlGQRpJx8KAY
-         QPRu0fSTYF2RPYwLCY3QpY84Qhj6UG8psbRA6T+H3s0jJUOfeWV9N1berRduyHLcyxuC
-         jkASgiCe+efMJxgnftrx+Er2TOMOHelwLBmrY4velnrk2/LFaIOCNtT3xAV+6inaXeP0
-         ZL1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780997607; x=1781602407;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xzKhLyD/l/6xsGgOU+UlnscvYNTC7uiogexaTKtSdVI=;
-        b=D/vunz6k2RWkt34eswzVgrunz/tHyK1fbjINHTYjs3yVKJYaMjRWR4ahnK61fV12Z9
-         ZUR/R4RMrqQLEX2OIGsSL+9W2Bs35lvrqUx66wIvJQDKBssK+RobmVqvPsy8Qk/ZXuQH
-         q6Gu92lJInQw/iQbKd70Vze7xrmJDlH/Y788gplEOSJkZFU3NOiYNNmpbBMZV+iEAsJY
-         DYggUb328CqTPA+iwkB/pFgH7lIyRADXBhAF4dDVINjEz0XPjIJE+1OoPWRZpKtr/z9d
-         Lgn1AMD1/+5poDXkpmSFrxW+Fm97ekIqITj7XWgwtYgHyb8YjiVau1GozoT3iCotaqbO
-         ZKfg==
-X-Forwarded-Encrypted: i=1; AFNElJ9zDEfGh3RIfMQVkcBMZmklbo51V50hvSjOjH2L/lYKRJ5lHoCe0Z7dIEkiGP1vIXTuBrVbSoCX4UkI9DC/xQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIjfLnawxKR3mg96Fv4B6aHSBW3WJ++HVJVV7MqCp8rIMLqDU5
-	hWz4f5pKlaBefkORLMXGwdBGitj+v25mWmEYtvm2ZxlDnwz9x8cU5jx7Tz3A6kk7ivqj8XIVPmX
-	HzjSacchKIy/2gwecUA==
-X-Received: from wmpd18.prod.google.com ([2002:a05:600c:4c12:b0:48e:6f63:7624])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d0a:b0:490:9d1b:f088 with SMTP id 5b1f17b1804b1-490d71ecc2dmr24052355e9.2.1780997606779;
- Tue, 09 Jun 2026 02:33:26 -0700 (PDT)
-Date: Tue, 09 Jun 2026 09:33:12 +0000
-In-Reply-To: <20260609-binder-noderefs-spin-v2-0-eafde2ff376c@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReKNvMcD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD1D1F00893;
+	Tue,  9 Jun 2026 10:29:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781000950;
+	bh=Tta0PE+TZa8mL2th0Lo4FOkqR6QU33gR5Ohh0rNcY3c=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To;
+	b=ReKNvMcDkiw28GD3JbvCn9EipMm3IlPfdSUWfJXpK9M22Lgm/K3GFU1SXdrhkXZEB
+	 5SdM69gC2r+NC3WYCbCyPuR0cxz1XkIOUgt6duIDMczoeCJR/yUOxNMDc0ndy4j1bL
+	 fhLRu560UpjLJ6CgASjX+dnsScqp81YH+hH9fCPxrUrbK58RdWMsNFEr7vDg5pBwVs
+	 35L1XnVoIyEwFAMW+axHlLAzHFwSMNxKWj5/H++TRdC8TACW8rcVaZM5dRKOPOwprT
+	 tAGhAihwORzRGf1hQKmxKcgbu/f1FfpH3ai4lC8Wc3KCMX/XVXkAO378gK1Np1FfBm
+	 cwCv4PY4W2rgg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260609-binder-noderefs-spin-v2-0-eafde2ff376c@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2214; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=VibeCWJP7CLzw6oJwFgI2q1e7QZeqUSaFos4WRC2Lr4=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqJ93bs4x3o621eyN0KM3tY6jPXmyqSEl+HpG3r
- sN95dNBCtCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaifd2wAKCRAEWL7uWMY5
- RpbuD/42dWmlN+dlMIfuNeSm3HW6KIkmFOHTPNdujfUvnDBP0OuI73k246Y5CoSTrfkadR2ErYU
- 3kiMaIC1Z6Q7tcyspGYj3aHnSBJNJalukdfZWKchD4WN/FfsRHQQPkrKTCTjox6qWL4eNxsD0Bv
- 61ggIEkT+YtczMfEhsrR4SXs8Dz8NMlHDe4Hhzshq+47+VodMt4Ypus1p9wfMnesKz3GMjXTf2V
- BRMkKK3bCJ7mQQNHOJ9MoMysc6rT8T038w/3EjbU9TjDtWu1nwnyYxti7flWmaV0rasGU9bQ+CZ
- ER7C9NjyC8EzMlk11Ph9knav/d0Qd/bgJqCng8P7H/biP6XIk74t7f0fqXNI9KXGDZ46zdheMXn
- sL9+a0M6A4Vfq3CUcj5p9OYLE8fu0XAGUP3wq8b++1Vi5XVREHKGhurv6JlkSmkeL0PKBfvWJnk
- cbDRUz7ZeiN0lioRTXnEOHyuTv0hueksMlDbf9QtXbJ1gA+ZVayIX5400EcSNqx5gmhJa5sGK77
- eb94P/nPjsD86i3geGNoaqkbq1JcArygt8Bw98xlAlybdOY6xIE+k6QLg2e5/Zc6QhJLy2kOXOe
- nOkTYMlEF/c1SkZn4CSzhSKUKiY7nxkbyhBJeIjfhdcljoVn7GEmBFhN0fHBHPQwXZU7tH81hy7 IkqnvDFzsKuMvRQ==
-X-Mailer: b4 0.14.3
-Message-ID: <20260609-binder-noderefs-spin-v2-6-eafde2ff376c@google.com>
-Subject: [PATCH v2 6/6] rust_binder: update Process::node_refs to use SpinLock
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 09 Jun 2026 12:29:02 +0200
+Message-Id: <DJ4G55S28THG.21SSZK5PQQVGL@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v5 0/4] Enable sysfs module symlink for more built-in
+ drivers
+Cc: "Shashank Balaji" <shashank.mahadasyam@sony.com>, "James Clark"
+ <james.clark@linaro.org>, "Alexander Shishkin"
+ <alexander.shishkin@linux.intel.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Shuah Khan" <skhan@linuxfoundation.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
+ <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Aaron
+ Tomlin" <atomlin@atomlin.com>, "Mike Leach" <mike.leach@arm.com>, "Leo Yan"
+ <leo.yan@arm.com>, "Thierry Reding" <thierry.reding@kernel.org>, "Jonathan
+ Hunter" <jonathanh@nvidia.com>, "Rahul Bukte" <rahul.bukte@sony.com>,
+ <linux-kernel@vger.kernel.org>, <coresight@lists.linaro.org>,
+ <linux-arm-kernel@lists.infradead.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>, "Daniel
+ Palmer" <daniel.palmer@sony.com>, "Tim Bird" <tim.bird@sony.com>,
+ <linux-modules@vger.kernel.org>, <linux-tegra@vger.kernel.org>, "Sumit
+ Gupta" <sumitg@nvidia.com>
+To: "Suzuki K Poulose" <suzuki.poulose@arm.com>
+References: <20260518-acpi_mod_name-v5-0-705ccc430885@sony.com>
+ <20260608222448.1353773-1-dakr@kernel.org>
+ <1c8e441a-6b33-465a-88f9-9552f346ae18@arm.com>
+In-Reply-To: <1c8e441a-6b33-465a-88f9-9552f346ae18@arm.com>
 
-Unfortunately the current use of a mutex for this lock leads to priority
-inversion. Traces have been observed where a process is trying to obtain
-this mutex for 22ms, but it's unable to do so because the thread holding
-the lock is scheduled out. Since this occurred on a UI thread, that is
-an extremely long delay.
+On Tue Jun 9, 2026 at 11:08 AM CEST, Suzuki K Poulose wrote:
+> On 08/06/2026 23:24, Danilo Krummrich wrote:
+>> On Mon, 18 May 2026 19:19:56 +0900, Shashank Balaji wrote:
+>>> [PATCH v5 0/4] Enable sysfs module symlink for more built-in drivers
+>>=20
+>> Applied, thanks!
+>>=20
+>>    Branch: driver-core-testing
+>>    Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/dri=
+ver-core.git
+>>=20
+>> [1/4] soc/tegra: cbb: Move driver registration from pure_initcall to cor=
+e_initcall
+>>        commit: cd6e95e7ab29
+>> [2/4] kernel: param: initialize module_kset in a pure_initcall
+>>        commit: c82dfce47833
+>> [3/4] coresight: pass THIS_MODULE implicitly through a macro
+>>        commit: efc22b3f89a3
+>> [4/4] driver core: platform: set mod_name in driver registration
+>>        commit: a7a7dc5c46a0
+>>=20
+>> The patches will appear in the next linux-next integration (typically wi=
+thin 24
+>> hours on weekdays).
+>>=20
+>> The patches are in the driver-core-testing branch and will be promoted t=
+o
+>> driver-core-next after validation.
+>
+> Apologies, I missed your emails. I am fine with those, happy to fixup=20
+> anything if the linux-next screams.
 
-Code paths that might sleep under this lock have already been updated in
-patches leading up to this one.
+Thanks for confirming! I did a test merge with linux-next and an allmodconf=
+ig
+arm64 build before picking it up, so it should be fine.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/process.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 268d78f8cfb3..82c34a93660e 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -30,7 +30,7 @@
-     sync::{
-         aref::ARef,
-         lock::{spinlock::SpinLockBackend, Guard},
--        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-+        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, SpinLock, UniqueArc,
-     },
-     task::Task,
-     uaccess::{UserSlice, UserSliceReader},
-@@ -455,7 +455,7 @@ pub(crate) struct Process {
-     // Node references are in a different lock to avoid recursive acquisition when
-     // incrementing/decrementing a node in another process.
-     #[pin]
--    node_refs: Mutex<ProcessNodeRefs>,
-+    node_refs: SpinLock<ProcessNodeRefs>,
- 
-     // Work node for deferred work item.
-     #[pin]
-@@ -510,7 +510,7 @@ fn new(ctx: Arc<Context>, cred: ARef<Credential>) -> Result<Arc<Self>> {
-                 cred,
-                 inner <- kernel::new_spinlock!(ProcessInner::new(), "Process::inner"),
-                 pages <- ShrinkablePageRange::new(&super::BINDER_SHRINKER),
--                node_refs <- kernel::new_mutex!(ProcessNodeRefs::new(), "Process::node_refs"),
-+                node_refs <- kernel::new_spinlock!(ProcessNodeRefs::new(), "Process::node_refs"),
-                 freeze_wait <- kernel::new_condvar!("Process::freeze_wait"),
-                 task: current.group_leader().into(),
-                 defer_work <- kernel::new_work!("Process::defer_work"),
-
--- 
-2.54.0.1064.gd145956f57-goog
-
+Thanks,
+Danilo
