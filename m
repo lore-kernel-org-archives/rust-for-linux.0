@@ -1,205 +1,156 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022099.outbound.protection.outlook.com [52.101.96.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952714183A9
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jun 2026 12:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781008600; cv=fail; b=mcDfa6DkW50TBrDjyTgG2rolR/+/7vbrjv1XgepklcNf+b64/OcwaQMvxRygg9VSO0m0FCNz9u7CLU+pX5WEJuB2FzoJ8pqVEKbOZmA2R2utZjR5335aC3/8PHBqtQR93tL0d6mtW7GVPRXTqx/7mwpA2XHn29uBWTXo025wCdQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781008600; c=relaxed/simple;
-	bh=huVVbm8sR0CoF7Pd7CepMC+wqZQ8ZItj0iDLibfqHVU=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ehTRu1eLcNy3i+ncDZPJ2ZVH1VtYWbebKUh3S95B8Qwr8wbhb0P5zs1K4/gnLYgbWLQBqC/N1vobvAb5ctVORyu4EEzgQyCAwFjkeZDEvm++/WTSEeKMbPY/ungat9zqqxAeILI4GS1avlteju0yFH2NzN42/mSsJg/RdzouCfo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Iy6U/S9J; arc=fail smtp.client-ip=52.101.96.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E45270545
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jun 2026 12:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781008987; cv=none; b=pug8uXM10PxVVIPIgVzdbL0Ee1wXSEDi9blZOPqYoA6Wwq93d69zEXKHHjzTvA5wg91q3Y7rnIL/b7AhYNaZ/PVBFXS7p/LTuCptOjkkMC6aYfC4nM0HQaG0Hv6QhxODuWiupAS3VaWzk6oUi2JIIPboAKePW6gDIcbucJ68TYU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781008987; c=relaxed/simple;
+	bh=XkAcUw/F6WpxG5TIMigB4KCs7H2QFh5WueaHsJwEGCU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=skkceh3iQrL0LHS3EkohkfJgvP9w0A8q8MT/SfB8R9dAd/IbTXiQiHxOCkqR1F3bnn/y8mMtRjuaa/WA/mZTTJT7tlk6OG76ZTgm7q7Q9jIQtY7+1i/63rPckhFjwSuhkt7xhmkorP4Zwd/e/hJ3SVjD1IJU+HpDq6Z/gat/g2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RCPTTBiP; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Iy6U/S9J"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dgk+2mdaPIHGYK1Q210+Q57uTdW13t6m8JJJmlGfWR/OsxROGKnntF0kYGqig9N1opT+wCgFZPk1FLCWjvi7aqCiNxtiDx22hhLhASrftMyUbTXWe86nkqMcWyaC7PZEnKeDYS2XnkkKjyXh/vHZJco09R+xIMS9XYdQpAClY4OxP/ahaJ12K2XglUdMHuA9Ct8pg7WdoGKJuib81yNDwvCzQ/wV24wVl5XXaBCt+in1JCQ1POvNfD/TJk/bLhkSL8crZiG7UFMnHR5wW5/tSfuIyR08qNkDZXkSgrA/Fzj1PryTnde1td6kil+uaeHybWSClTE7kZNoPJqHyEkYdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2xFOFDydhvatoB2BljPEF4PezTTF1SC+Cep8oRB9LDo=;
- b=UFU/EnJKbU45QRSq8W9ri+6Squ7V9BIowokrljY312Znt+Bsf2AMO/Mrb6DwRZ+Cwoc/jjQTS5vRrnAR4LEXS3hrcKpZDDVyjzDe4J1F8Aph1V/MoEg3EL1dP0h61yv62ZQ8tpT1div9XWFpj1w2LWUzl3vzx8gC3LPzy9wxYws7yzgZCK0Zj2adHVjGMs/QVbfreb18i3ZKUxG6J7YpeEx5uhCY91F4kIAsISLGOuJjZd5o0thvHET61rbgBm6a/r0hJ0H6OwC9y+gCabcg1bvoaqmIqZb51ebO+nVmhBK6UCFeKbGwIPhNJPNjOG5vc4UiTcDUkZd2QNDRzYojMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2xFOFDydhvatoB2BljPEF4PezTTF1SC+Cep8oRB9LDo=;
- b=Iy6U/S9Jj0VPKop3vDxG11P19Ovpmlq97n+ELRYTTDu7bFIdmke6aVx/MdJ3Mi7l837mmASdVKJWAmqmrSJBehFflykc3KcMHToSLaYVo4aB/ML7C5RVd1k+kIW89r9nPbIN9ydPuDo6ukefc1hMgcSoKxeQxaxf2j7bThYyq10=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2630.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:88::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Tue, 9 Jun 2026
- 12:36:29 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
- 12:36:29 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Jun 2026 13:36:29 +0100
-Message-Id: <DJ4IUQUEW8CM.XC423JF26458@garyguo.net>
-Cc: <ojeda@kernel.org>, <sashiko-reviews@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v4 01/11] rust: xarray: minor formatting fixes
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Tamir Duberstein"
- <tamird@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260604-xarray-entry-send-v4-1-965f6028790e@kernel.org>
- <Yb-tTMBfsrAuBw9NXgUPl-MY1hGnE7OrQD5JOEwzYuL2Af2BZYrfDg5FzWfVfmulrnBeioLiEacxVMKrswog9g==@protonmail.internalid> <20260604201631.450B51F00893@smtp.kernel.org> <87fr2wgew0.fsf@kernel.org>
-In-Reply-To: <87fr2wgew0.fsf@kernel.org>
-X-ClientProxiedBy: LO4P265CA0146.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c4::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RCPTTBiP"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6913c57024cso3813431a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jun 2026 05:43:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781008984; x=1781613784; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JOdxU++C7orsROtXy6rFJqw8HeOFrENXiHCvhnbwKRM=;
+        b=RCPTTBiPhzrwVSvIUc04einUleTbwhHNUDkQrfPCEoxliNsxYxNZCk3bAn2Q/wnw8H
+         e7NJosI0gFqClDhQklpX7hc9kBUjdVA4A8HdOWw4nioskP+93Gu+lK6L/fVdsEPJa+MR
+         3ZTPeONujPTeAKSTGDi+zEFuDj5ubNwPhFOJs06578RWZXPc+16ROhJIs3iEqEIAqaTD
+         KH1qngPvBaGgMkTw23ZsX3xTUSQYtqk+aZgTy1y/rPU/lm5PKQ/3Rm/5a049Ghgm3JWm
+         wvQBr+5BuP3iTl/x1NtMnv1/jI4lz61WrjUQa1k4HHNfW9PNOTGJ99zacqKJ6vWcf+nB
+         HEfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781008984; x=1781613784;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JOdxU++C7orsROtXy6rFJqw8HeOFrENXiHCvhnbwKRM=;
+        b=jJzcUh2j0X6dlOnzdDZUE09PRqMF8BbgQHHsTmOGqZRE6WBr1WLUasCX7rjWSyZUcL
+         D0ghRx6JsK9bhHnRy69ixRAk6vUNsK0WqSwidupE0oio6WGrig1ucQ5kif1vwmyzrfEH
+         dg9J7xknvy19jzYA6Zsvd1K5EWXlvw6F2VrITSmPY8N7k7kcWyf8Cy0nDqDVAwe66VZ0
+         RAg0SxYEBGVTgTe3zw8KwEVM6MjFBHRmAuNmHE/Yu3gGtJBXKdk41T4gd9V3MW4d5q0/
+         VljnqO8AFnafovPHUO3MO0lKfXztLP7thswNpzGHoGobSIKK1eqROCb/ou6Jjx8wpAQ4
+         EEfA==
+X-Forwarded-Encrypted: i=1; AFNElJ+8aTTeQVV8hgbo66HYk40cDdEddj1CCYgNeXR028JsZOOd7eNTW+c0l4gfit/taJ92CJd2R5fKZFsmqQ1Sgw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxio4CQADn0V+Y9FR8/iG1BJDaK9Yy8WmEIXlrKEEAnwosi7V1U
+	ffHC83lQYB+bOAvAOGeTm62fY0nMkN+kUX/ZFY9kvumMfV567XUBQ2l9MTVWm4ca856miN24sF9
+	LHe7X4iGGtIO6Liq3mQ==
+X-Received: from ejne20.prod.google.com ([2002:a17:907:24d4:b0:bec:16c4:606a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:60c7:b0:bee:7b51:8fdb with SMTP id a640c23a62f3a-bf37096dc5dmr634102366b.13.1781008984021;
+ Tue, 09 Jun 2026 05:43:04 -0700 (PDT)
+Date: Tue, 9 Jun 2026 12:43:03 +0000
+In-Reply-To: <aigFQcq3JHtdpsIn@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2630:EE_
-X-MS-Office365-Filtering-Correlation-Id: 850881ab-6608-4ce4-222d-08dec623bb16
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|10070799003|6133799003|18002099003|22082099003|56012099006|5023799004|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	S7glOJCE+Orx4RzvkVWsP0L5B3bw0oAmGFIoH82Mf2SO2CgZyqGd2hrKG1ilqxhD+TQXEQkJFQV9z5hiiA/0wDjiFP8S5+9dNSTfzcpl78TJIm2OHy4S9u+/RvFmtl3PBvUkQS09WPLmSwUpqxocCCXU40D4D0hiQXTn+8EyfGQYlKxjZ6+NbfcbC9/To60UODYLkFyHlbnOFoj2dM/LTg6y4f2LJ6vJNZ5bzhG1TFlCy3mg3Rwv1je2OaTV67ZEwoZUOy2AOBpvrRXj8BkY9vkXs/PGWF7KvigO/Xps6MjIIgIfMaCZ7Cdhn16LegvM1LBdFvs8qYZKQughZAIdqMNLg1e8kCY63KyjTtOLodnd+g56xGmNBbzKxlwjG6Gh6RQEOM5EC7fPOAfCWyed4UxFy417Hi12hNm/PqvELiGu76QLwci7rNQmTAnD/PFpEj/9wnf/ZtvjbdB9z0eRmWcThwMvhHfcXklxf+53nKrpSEGwz87XLmA8nTi8M7+gUF/sskdOU9lb6DaL2/G71tIFY4y8prlwrZx07w+LuIR2tBdGW+OgCFtN1gP8B0oAfUD/V8cluBEl9gPz6/x0DGSbtpyzKABWvR/LP0+H9f+daoM3MVRkTWQr7YXy16BdcjRSDoefI/RtIP+GScbgV6bZKWVaSnql5Y6IVRXZqsA9V/tncIYCWQoZeFonUUKM
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(10070799003)(6133799003)(18002099003)(22082099003)(56012099006)(5023799004)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?amg3d1VNbCtMaFdIN3ozQVdyWTg5WVJGM3NSV2sxUkI0S0RFbkU5RGJEYWJj?=
- =?utf-8?B?RXAzSXFLS29iL1ZzODVwcFBOdzR3QklKaTNScEthZ0QrZjQ4S3BOOFA4aGl2?=
- =?utf-8?B?cUdvS2orMjdOTHhtMFFtR0JrTmM0UDVTVHh1S05qbnI2VzFxTDVsbEZoZ252?=
- =?utf-8?B?QWc4Q2NmamdvQk5OV3hNMzhjLzVxTlVubVIvYkcyYjF4UmkzS0JNbFNJY0Ux?=
- =?utf-8?B?VitxMXpXaWlITWZLNDFGNWo5SEJCVkw2MDFPQ1Bwckd1ZlVBSHI1SVkrSEtE?=
- =?utf-8?B?blNQMTlLS3Bzc1FEMU8vUDNPUlFrZlE2cHhqalE1anozMHlkS25PR2hId0dY?=
- =?utf-8?B?K1M3b1diajJIUFAwVS96VnFxNzkzOUo1OUN3NlRmVzFFdnNuRW1TSXl2bzly?=
- =?utf-8?B?MkhJaGhnSXJqa2dLYm5PUkwvMmwrUkdxcUluNFJnOXp6WmR6TmxKMmxQV0Jr?=
- =?utf-8?B?T2o4RnFJWGJacnkzVzYvR0FyQXRZNGVNVDR1aVp0bVN4Z3BpZkZpa01BK0Z1?=
- =?utf-8?B?ZE9PcElGZFUyZkROamZtOG9EYmFXSkhyVVBuclF3RXRpWUVNdU5MUEhtVExR?=
- =?utf-8?B?VlR3cXkvUlNReFlJMWVJS2M1a2JHZUlWRmtZVUZSbWRqZ2pneE1abmtYaHRW?=
- =?utf-8?B?R2prMFhMZkx0TlhkWDhCQUxuSDNJOThyQithOWtFZmJBTWJvbktpOVcra3pI?=
- =?utf-8?B?RWQ5ZUVyaFJmaUFGVXFldnhpcW9wWDZlMG5ydVVBWTFjZ3FuOG5zbThmRDBa?=
- =?utf-8?B?SEZ0bjZ0UUlZT3c1ZWcvZGhBVGhOMkZndWlnaFZvYVoyYmJrbnlmNFRCbWNB?=
- =?utf-8?B?a0FaNG5wYTUrR2dYU2pEWlN6cHJwTFl3cjQvSGpzaHRTdHVXUHJMdGRUQXlY?=
- =?utf-8?B?TWgyd1ViVlFMUG51Y2VzZ0I3c3lTMi9FbDgybE1Yb1hpTjU3TEY1U0kybDFR?=
- =?utf-8?B?SEhiWW9SdXNlM0JhT09EZHR1NW5CdU03ZXBtN1F0Q2ppMTlaWW5rVkxOMlRL?=
- =?utf-8?B?MVBGOVNWQnpiRzRxVWhMQktCWEVDZXhkQjN6QVRBTmlaZkdXdW1pakhIWVRi?=
- =?utf-8?B?UFA0QlY2U0c4UEEyUmdZRDJFL3RwQWdoNGdlY3B6a0lrRWRPa1I5cmZKZms3?=
- =?utf-8?B?Y2dlZ2VEQjlqcjFtYVdOcXRRNkdTTklqNFJ2c0lSOWhHYmprV2daZGJRdGV4?=
- =?utf-8?B?VTQyM0RQY3J4Qzg4cHJDc0VZcUJSa092bXZhRHlLZzdVck9WUWxXV0FmOG5F?=
- =?utf-8?B?Vi91YlA3NGR4RUFMOHNEekNHMUNLM2ZrV0twQmMyZ0dqMlNBT2NhQURLNkR1?=
- =?utf-8?B?YThPcm12SUVtUzNiQ1E1YURKR3JJOTZnRWluWHMrckhsRGJUS3ZVb09lLzR3?=
- =?utf-8?B?RWEySFZHeURzSkduYmhmOC90dnZIcTI0QXBBK2xZcVg1TEpneC83enptZEtR?=
- =?utf-8?B?ak9BTVNVZFg4bmVKTVF6L1V0Qk5pZDMwcDJVTW0zamkyUjFWLzQwazN5Rk5Y?=
- =?utf-8?B?N1FHelJMbjE2V1FkQk44WlFRMUprdW9OV04vWTN4Sll2aEt6cDVNNnFhc2pR?=
- =?utf-8?B?MnVsNVl6Tjh1YUp2YnVKb0RUaVg2MGN1MndCVnZOd0VyaUhpUHFRTi92NDJ6?=
- =?utf-8?B?Y3FqdjZweE00dWtyM28vQXp6TmVtYy9weHUrZXd1S2h6V2pzdzdob3RsMGM0?=
- =?utf-8?B?UU1EYmpZTVhsWk96eGlIeUZZeWx2dmEycVNOOVhLbndaY2ppcEhrb0NLMFYv?=
- =?utf-8?B?UEpqQnJVaFc0RkdrT1NUMUZ4K3ZhUXEvWmFBYVNnN1NOM3c3c2ZHdXI4eVpV?=
- =?utf-8?B?ZElSRUZhckhja3pyaEtEczNZdVRrSW1pMTRxTTkwVUY0bEU1MHdzUk9hcGNS?=
- =?utf-8?B?ZHRSN1VqcUVuTWZPankwUUpuN3UrWUJvWGVZN0c5bk9lWkNtYTc0djA0T01n?=
- =?utf-8?B?WkI3dDhhM1F2b3NYcHVEMWZvTXBvL3llWFdXQm1veVZaMW9UekZVekNzLzVz?=
- =?utf-8?B?c3ZMSlFRL2RXZW05WjQ4K1RlK2o0RXpHYmtlRjBnNGhyeENlZjNjdXdHTWFV?=
- =?utf-8?B?bFJDZFNwbzZIS0lSZEtwSWxyWUsyaTJoTjhVWTByUk1sUnBsaStLSDVoUXNm?=
- =?utf-8?B?eXZkRW1ZY1BSNXZLR3BiVjFadkx3Q29PaG9YNk9seEkvRDV0aVdSeXVmTVFp?=
- =?utf-8?B?WUJZbU9hMytGOVFCZjNMZ2FJWHhKRmVXcHBwVVpPVlBTYnRScS9QaUk2WDJo?=
- =?utf-8?B?SHI5OHU5eEdGT29yWXFybFdoNzUyUklWb05XRkMwak5XdERTTkZqSnRUTEpn?=
- =?utf-8?B?bnkxSktseHc2bERDT0o0cHBEK2RRSG1RcWVUT3RvOUkvSm5xQlRJdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 850881ab-6608-4ce4-222d-08dec623bb16
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 12:36:29.8957
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: a1b81/PFrEHW8QhMxSFmVmsevzIFaIjvI8r/Bd45LsokvHF14hG05i4s3TDzOF+rtSDmb16vJMXPwN17m8YwfQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2630
+Mime-Version: 1.0
+References: <20260608141439.182634-1-ojeda@kernel.org> <aigFQcq3JHtdpsIn@google.com>
+Message-ID: <aigKVysaNhloK9bS@google.com>
+Subject: Re: [PATCH v2 00/19] `zerocopy` support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, Joshua Liebow-Feeser <joshlf@google.com>, 
+	Jack Wrenn <jswrenn@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue Jun 9, 2026 at 11:57 AM BST, Andreas Hindborg wrote:
-> <sashiko-bot@kernel.org> writes:
->
->> Thank you for your contribution! Sashiko AI review found 1 potential iss=
-ue(s) to consider:
->>
->> Pre-existing issues:
->> - [High] `Guard::store` temporarily drops the exclusive lock, violating =
-`Guard` mutual exclusion semantics.
->> --
->>
->> commit dd1e562319819f32e9d1d6de7db886673c5422d7
->> Author: Andreas Hindborg <a.hindborg@kernel.org>
->>
->> rust: xarray: minor formatting fixes
->>
->> Fix formatting in xarray module to comply with kernel coding guidelines.
->>
->>> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
->>> index 46e5f43223fe8..b80fb7a262d0c 100644
->>> --- a/rust/kernel/xarray.rs
->>> +++ b/rust/kernel/xarray.rs
->>
->> [ ... ]
->>
->>> @@ -44,7 +63,10 @@
->>>  /// *guard.get_mut(0).unwrap() =3D 0xffff;
->>>  /// assert_eq!(guard.get(0).copied(), Some(0xffff));
->>>  ///
->>> -/// assert_eq!(guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(), =
-Some(0xffff));
->>> +/// assert_eq!(
->>> +///     guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(),
->>> +///     Some(0xffff)
->>> +/// );
->>
->> [Severity: High]
->> This isn't a bug introduced by this patch, but since Guard::store calls
->> __xa_store which explicitly drops the xa_lock to allocate memory if call=
-ed
->> with blocking flags (like GFP_KERNEL here), doesn't this violate the exp=
-ected
->> mutual exclusion guarantee of the Guard?
->>
->> In Rust, a lock guard is fundamentally expected to provide strict, conti=
-nuous
->> mutual exclusion for its entire lifetime. Temporarily releasing the lock=
- while
->> a Guard is held breaks this invariant. Any caller relying on the Guard t=
-o
->> ensure atomicity (such as check-and-update patterns) will be exposed to =
-silent
->> Time-Of-Check to Time-Of-Use (TOCTOU) race conditions, as other threads =
-can
->> mutate the array while the lock is dropped.
->
-> Should we rename `Guard` to something else to clarify this, or do you
-> think it is enough with added documentation on `Guard`?
+On Tue, Jun 09, 2026 at 12:21:21PM +0000, Alice Ryhl wrote:
+> On Mon, Jun 08, 2026 at 04:14:19PM +0200, Miguel Ojeda wrote:
+> > This patch series introduces support for `zerocopy`:
+> >
+> >     Fast, safe, compile error. Pick two.
+> >
+> >     Zerocopy makes zero-cost memory manipulation effortless. We write
+> >     `unsafe` so you don't have to.
+> 
+> I tried applying this and using it with Binder. I ran into one
+> challenge, which is this uapi struct:
+> 
+> struct binder_transaction_data {
+> 	/* The first two are only used for bcTRANSACTION and brTRANSACTION,
+> 	 * identifying the target and contents of the transaction.
+> 	 */
+> 	union {
+> 		/* target descriptor of command transaction */
+> 		__u32	handle;
+> 		/* target descriptor of return transaction */
+> 		binder_uintptr_t ptr;
+> 	} target;
+> 	binder_uintptr_t	cookie;	/* target object cookie */
+> 	...
+> }
+> 
+> The problem is that when the union contains a handle, there are 4 bytes
+> of padding in the union. Currently Rust Binder handles this by wrapping
+> the uapi struct in MaybeUninit and using MaybeUninit::zeroed() to
+> construct it, ensuring that even if padding is present, it is zeroed.
+> 
+> However, this trick relies on unsafely implementing AsBytes for
+> BinderTransactionData with the safety comment being that the MaybeUninit
+> actually always contains initialized data.
+> 
+> To translate this to zerocopy, I'd have to do this:
+> 
+> unsafe impl zerocopy::IntoBytes for $newname {
+>     fn only_derive_is_allowed_to_implement_this_trait() {}
+> }
+> 
+> One fix could be to update the uapi header by explicitly adding the
+> padding, but that's kind of awkward for a union like this, since I'd
+> have to do it like this with an extra struct:
+> 
+> 	union {
+> 		/* target descriptor of command transaction */
+> 		struct {
+> 			__u32	handle;
+> 			__u32	_pad;
+> 		};
+> 		/* target descriptor of return transaction */
+> 		binder_uintptr_t ptr;
+> 	} target;
+> 
+> It's not clear to me if changing the uapi headers like this is even
+> allowed to begin with. It's a somewhat non-trivial change.
 
-It's fine. `MutexGuard::unlocked` exist for parking-lot crate, it's not tha=
-t
-we're introducing a new concept here.
+Hey Greg,
+Do you have any input on this from the C side?
 
-Documentation is sufficient.
+For context, zerocopy is a tool that helps convert raw bytes into
+structs and vice-versa. When I tried using zerocopy with Rust Binder to
+see if it helps there, I found that zerocopy is flagging that Rust
+Binder copied a uapi struct containing padding into userspace, which is
+of course dangerous since padding on the kernel stack may contain data
+we don't want to leak to userspace.
 
-Best,
-Gary
+Now, there's not actually a problem today because I'm using another
+strategy to ensure that the padding is zeroed when copying the output of
+the ioctl to userspace, but ideally I'd like to switch over to using
+zerocopy.
 
->
->
-> Best regards,
-> Andreas Hindborg
+How is this kind of thing usually handled on the C side? As far as I can
+tell, C Binder handles it by just being extra careful like this:
 
+	fp->binder = 0;
+	fp->handle = rdata.desc;
 
+where fp->binder and fp->handle are fields of the same union, with
+fp->binder being 8 bytes and fp->handle being 4 bytes. The first
+assignment ensures that the extra 4 bytes in the union are zeroed.
+
+Alice
