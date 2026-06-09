@@ -1,54 +1,54 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8823DF012
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jun 2026 09:33:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BB83E5A05
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jun 2026 09:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780997606; cv=none; b=O0X7qZJ7IR6yWiOVT2hzQSr/tXll40QIG9u50r4VISDufnURoTtUNxZzEJTP8rwkdTVnd3+nvUS6mKMxZhCi9wWvX8bXp2Tm6k2kU66q5iDEKZcwnD/kCt4OWRa6eRR6fN980DuHNvAnqDO9sUrymRxM9L9ELysTH+8jknXb69Q=
+	t=1780997606; cv=none; b=UvDxTCZxmt7f5PRHx0jVXyIpoU5/wO4OLwSFhHP+9IkRhHOflPyr4yQYze326lV1wgrY2mtmE7qufmHeHRqKcfv8Pk9MD9oW5n2K23F6KKyeebAUWcq+7nF+6ZigMQ0v/juIcOv+K1nNyAu0lgEAayYh94p4v9I2Aj+D6YIoWBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1780997606; c=relaxed/simple;
-	bh=i4lUMOvBW4IInX/kaLGSZGsHAq076tqR3LS3nXwBfz8=;
+	bh=k5OyUmvgzwfQoce0MXcCSkK8eKdCBFzMZYVZHbxSNss=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eOl4aer59fi/ixQnQsdTCPuXxK54F9+12B6E+5A3DsCe00hNBET1eITNDoqW09bTn12q6sJF/+JZP8ETIFfRYwhXlVsjHpF82sKXUlrQ+gvfo6AYVxgsO/zKCZ1xzvNwYClVF45aOa/Jr+SLn7l9txP0w8mFw52ASPxY77YVZjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pvcHhd7N; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=sowc/A6iSIpfmxr9ch8gWacRb9c7PWscOT6J8pJ/dQSe1Tr6M5JLVFqN+tm5gmq8xt1lwByo0Z9Ax8ncZvGp/+d9MRBpQOM4qFcCUxLNMIQDvvljguRHwFtmzpbQgPU0bD2fiEcY3xX4NubNQ5cmLh4GS5TAN0MiECrhdrjohIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d2V4xMaT; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pvcHhd7N"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-46011aa5000so2300108f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jun 2026 02:33:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d2V4xMaT"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490ab3f6e55so18943225e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jun 2026 02:33:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780997602; x=1781602402; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1780997603; x=1781602403; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QNWfi/EH6aA6qx0F+mbUFEPAfqMITAcxm9jr2u8jXw8=;
-        b=pvcHhd7NFgi2VjIPZfJoXRkMMbce+Ddc1KBoOglkQlZDcHcL7SpbtDTGMDU6xSdo4B
-         pc4DXOxgrSM5ICGZLpfsOYr4C1TDYJthvU10jrceBRPrvW+nKY/2v5EDtwBpkRSAZIeU
-         vCHf30oeah1bPxfGECtkJfR3QiXgRvjNajgMlZZIod/SYyz9aMGeUQAabJ8ROpLV7gJc
-         GcxdjIA2QWTthR1MyFtP7P1/HsSitAgJa8yfBtOqr1kNpdczUvk5ac98JFUxrvM18IQH
-         WHywl3zD9WcrZtIP4Q/6Nc1Wj198skmJHGmd7Zv8Bx6S1H985HkN03HdVve4RbTvxmq7
-         LAQQ==
+        bh=JSs0I7bRSPPwlvcDukxrz4wRY+Gjupfr/SkyGxTl4ww=;
+        b=d2V4xMaTWUWjhTPdgqtyc2MlsRCsypYh+xX0PZDIG68pqY/DeUNgfAgzWtW7DDXnUU
+         TP2GdUeduHQO1HR7nwhg6v80xMUYZ7NYOYpfuaR8ziXLAnDKDe3mhwSzwaPwTHmmA3Rm
+         QBe+YRmh0D8/DjQk3B1n2tXA/rW35xhRIpDS6At2z6y4xEUYKNl61M58mjjQOFs2i7oh
+         /h0fLKV0Kvk92p4dhKNm8WGl2cZhPzxODq3zjfsGwpWLRBRl4amUnFEdi1U5nNg9o5Y1
+         VL9gujL/F+Q6yalcZH7A4jN4nlp4POy/O4n7HLxH/p4T7F15LdUEQ1f1knUuICz6JDHJ
+         Ysdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780997602; x=1781602402;
+        d=1e100.net; s=20251104; t=1780997603; x=1781602403;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QNWfi/EH6aA6qx0F+mbUFEPAfqMITAcxm9jr2u8jXw8=;
-        b=oqg9NTrNHr9GUZHIDU5cMFnA0snKkit+oTDx18ztjP7V525HFF6995cntqTzpgZEFs
-         qkCX7zNIY6HetDj3JRU0c6VUeReMnnD8aK8G0Byp8bWKEb4jz0wi7THYPoep06KqLaya
-         VuGhDR4EJHVtOl+h7jFY2Q4XaIRWy5kGIwPXYgTkZVCNkrO5ak55rHxAcsdBlO89I0+A
-         zGnTEZhTEAU7PGe/AsUlZ9hDWBiohu9Dc9aZosme0nA1DuDySGryHNPxBOTHLMUH65HG
-         x0aUnoGGQLxJGZKNK41RewNkxA5PwNMh4JBJG/XSJTOWKlJBpR7EbuuJ8qN7QlqgFcKS
-         JTYw==
-X-Forwarded-Encrypted: i=1; AFNElJ9XEZTLRuZgaY2lAmeKwXVdZ+AH0tzV1YH7x6KnpxDdcUSp9uS2fdyqRIPT9GaIcuVNOtrnl5hqazpl+PIKhQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKN0eTeZG4WKgfK3pEvj/xZB/aDTmVftvTrGzpszS8loGI8Wol
-	6Hi2bi0WsfTkfSes90hZtP4+xb6PWOpasiFAy/Oe3WTW5zNKlBmzzAC+iUivGOn04HczfPnPqWc
-	aK8+7/tudWsgPst9xgg==
-X-Received: from wrwd3.prod.google.com ([2002:a5d:6443:0:b0:45e:f50a:d950])
+        bh=JSs0I7bRSPPwlvcDukxrz4wRY+Gjupfr/SkyGxTl4ww=;
+        b=N2Qglo3ZauFyuAU5voSF8h9y8YDl8SE5uBbhAiB7L0zQVJkI49F4rTK0zble54y6gd
+         BCQIO93KJPA/WffS2sTDc7NrRXreSLIxAF1kZXxM48T4LB+/8Wc+voCLpf1peuL8EGeX
+         JH8Q/DS7uXXZ9eticzFsbWU/EnNnOQvkUxEtjF/Fr7IM6D6mq/GXNNd3X8ExYpCdkzOf
+         WRtVBfteB9yk5wUTJZxKQm3PPV4Z7fRlHYDWRbiO7+Hah3vHfaVUmp4f6wHHVPMukBga
+         m7l6ya6y/oW9khbjkm/YMovD2riSz378TKcgMBQq0kTQQ17o+vj7xpqoTI45UDzui2Mc
+         +pkg==
+X-Forwarded-Encrypted: i=1; AFNElJ80QLPKKfmUzO9Rqre9NlwZ3ZUg7p3js2t9IErxnCdu/yZ2HzDRA6t0ZzRONX4zjdEppVVHpvFjMtngSqmLUA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1Ok+bVGhRNzG3mf1iou9uok89OSqjB04DWhN/iAkd02mSwUJJ
+	MJ7+ZG+60EJmqYxe2XN+HuRD7u/iuDZLEEU1to+3tlKFEAfT1vuTdC0/bTz6VZTJkjlkIb9X0zc
+	MHdJuZ/PmuOUoQ/6gQg==
+X-Received: from wmbjh14.prod.google.com ([2002:a05:600c:a08e:b0:490:b646:6e97])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5f44:0:b0:45e:e1a4:c4c3 with SMTP id ffacd0b85a97d-460302fd190mr30210789f8f.15.1780997601699;
- Tue, 09 Jun 2026 02:33:21 -0700 (PDT)
-Date: Tue, 09 Jun 2026 09:33:09 +0000
+ 2002:a05:600c:620b:b0:48a:53ea:140b with SMTP id 5b1f17b1804b1-490c25cf45bmr332471605e9.28.1780997603167;
+ Tue, 09 Jun 2026 02:33:23 -0700 (PDT)
+Date: Tue, 09 Jun 2026 09:33:10 +0000
 In-Reply-To: <20260609-binder-noderefs-spin-v2-0-eafde2ff376c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +58,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260609-binder-noderefs-spin-v2-0-eafde2ff376c@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1205; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=i4lUMOvBW4IInX/kaLGSZGsHAq076tqR3LS3nXwBfz8=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqJ93aRDGd/bmbVtsJ69BD/2ps0Ok8sLklu5grY
- UuefjNX7gyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaifd2gAKCRAEWL7uWMY5
- Rnd/D/wMUdMHXB51jJ6C/wZLcANpGQQ6gKzNzAVuGMTGp51VuTPF/Zulgm2OmxMlepAltm4gnrx
- H5G9bkcjprFFHC3pZt367RFb6nOSgJh/4fZTrCmAJXg/s6O2FmshWr2X/2/tMZiD0BsMr1Ul7AS
- HKC9eBvDsQGLbbkzrfx0Fs+YpPGLTyOW0p1lrXWIVl0L2lZKs15o/ywNSY/f20/0Fl/uTEoYeE/
- pEX0IUHmtouA9EhkhqNkuIFbf/jLgTZqMeaxb50/8zk46E6J3T+EOuuvqR4EiSDp0fFqwNGWsIg
- Zi4M2TSZNXnv9AvHSDGlyH1GcA2xSZH65Dd3/yGRITTcL+VzrkkJFrEmP+MYpCf/WLvBNYghLPG
- mTM2qd/RguK9ORomGaePfSIQnpHhbrnXBgQHzpJ2OFWTx0ERdWUM+H9WkP6/l8hBA7kgzCHPYd5
- KNP+ogFzpsJ9FwtbSm+8RjgaeA2hcg1iPEtepV6fqXecprief2Oh9oh/c0H2cF+2h7tY2OvdSP7
- rfa94Bf+QNmESX72xS9eduk37bvGy8tzBu6RYi4Bv01yKZwFcZ3hLdwhu5vLWnHYhn1yC47nsdJ
- YXu/Jew0ip3Cove13M5p08riEgG783YzhHXLqKqLXPESGXSCG0QT4HLgnpOoKL4PfTGFaM6tqyj rVaEqSkQsrqvv0Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1566; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=k5OyUmvgzwfQoce0MXcCSkK8eKdCBFzMZYVZHbxSNss=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqJ93bhYm8KNxscigH+sbifvizx8Bzr16NqAsFg
+ 32MBFL+l2GJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaifd2wAKCRAEWL7uWMY5
+ RjTbEAC60ETOd/Wp14fHqztO1iejb9N/bi5uPvVeLDLi1/M/808GV8/cMvIXdkNaopo+l+NsZ1s
+ jI1OgW54LWtLQHcmvpJmg30LXv8Mm1zNEQ86TTpIwDHTowE31w2ssYEvt9J9AB8IcA6KV5m5kNc
+ t1t0KxwW8RN1rbs8r/fbAkHDdK2G+6oKmBq7269CL9/PJ2VZyODvm+tbIvyUGSdnBhtaWAe+uwZ
+ oQXkgOkoRiL7InZycUxOj43rIUgkiYx4IBMzE7lQlWo0D1mfDdY9fxTWE7JWEEb91YXRRWU3gp+
+ tVpdJ17bDcQ+SCijlDLQc7A4VTU7mtD9gKklToaNKhPV241b0E6/+A+lRsKQRnBxMEmaslq4H8Q
+ WNrdVggzWb7ffHYvdwdQZRUPiWddYhtRGGFm1+R+1G896n577Mk9jL2sUJwcid7i5VilZAwIIeh
+ rDplS4yqT8red+2es+H+t6KLV1W2js1YT/Vgr4D64rNNXnvO7FvzaLGc/inZLAHQ4lkPTk49P6j
+ MdJKTHZdtgMssNEli7C7o6PfhCDyGajt3XTEBw3JaHEpL48VZKdYy8FzpQ6o9AhhCK//no4GXkE
+ 6d/N92xsMXBpS1KMTX13GweNLfl8nAPtrF02usCaOgY76PAN0SggGN1OqQ7DbkE41gTfYjObZhq XQPCE9BywU538fA==
 X-Mailer: b4 0.14.3
-Message-ID: <20260609-binder-noderefs-spin-v2-3-eafde2ff376c@google.com>
-Subject: [PATCH v2 3/6] rust_binder: schedule NodeDeath outside of node_refs lock
+Message-ID: <20260609-binder-noderefs-spin-v2-4-eafde2ff376c@google.com>
+Subject: [PATCH v2 4/6] rust_binder: keep NodeDeath in NodeRefInfo during
+ process cleanup
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -83,31 +84,39 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-There's no reason to hold the node_refs lock while scheduling the
-NodeDeath to the thread todo list, so don't. The call to set_cleared()
-is kept under the lock so that the state update is kept atomic.
+By keeping the NodeDeath inside the NodeRefInfo structure during process
+cleanup, we avoid running its destructor under the node_refs lock. It is
+still dropped shortly thereafter when the entire rbtree holding the
+NodeRefInfo objects is dropped, but that occurs outside of the lock.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/process.rs | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/android/binder/process.rs | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index f4f4d45e1ab7..a8836cb8b8cc 100644
+index a8836cb8b8cc..c8e9fd0d0472 100644
 --- a/drivers/android/binder/process.rs
 +++ b/drivers/android/binder/process.rs
-@@ -1289,7 +1289,10 @@ pub(crate) fn clear_death(&self, reader: &mut UserSliceReader, thread: &Thread)
+@@ -1375,13 +1375,11 @@ fn deferred_release(self: Arc<Self>) {
+             // SAFETY: We are removing the `NodeRefInfo` from the right node.
+             unsafe { info.node_ref2().node.remove_node_info(info) };
  
-         // Update state and determine if we need to queue a work item. We only need to do it when
-         // the node is not dead or if the user already completed the death notification.
--        if death.set_cleared(false) {
-+        let should_schedule = death.set_cleared(false);
-+        drop(refs);
-+
-+        if should_schedule {
-             if let Some(death) = ListArc::try_from_arc_or_drop(death) {
-                 let _ = thread.push_work_if_looper(death);
-             }
+-            // Remove all death notifications from the nodes (that belong to a different process).
+-            let death = if let Some(existing) = info.death().take() {
+-                existing
+-            } else {
+-                continue;
+-            };
+-            death.set_cleared(false);
++            // Clear death notifications from the nodes (that belong to a different process).
++            // No need to remove them from `info` as we clear info below.
++            if let Some(death) = info.death().as_ref() {
++                death.set_cleared(false);
++            }
+         }
+ 
+         // Clean up freeze listeners.
 
 -- 
 2.54.0.1064.gd145956f57-goog
