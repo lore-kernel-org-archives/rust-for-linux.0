@@ -1,114 +1,125 @@
-Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830212BEFE8
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jun 2026 05:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781070322; cv=none; b=AKuvoLP9vFoBvV9q1wLHWbAF/cHyj1jmqthUdjeMMw84/qr5VQH++3uI8+ILnSFfLM0iaCMgrdhhaDxTSM7jwk7yBFaOXqquNnNMMm3TP/1NgB7OngH/96m/Nxa3cH1h47iZrKROOIE4H5Edq+ZehEi8P0EMYpG9xbeCtRjN/wc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781070322; c=relaxed/simple;
-	bh=tt/RDb22dd0P7kzmAUcZ+vtQPgikjp/8jGyvBCf4bYo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hUJaYg4Siga6r9jb5OuwoXRMcc+zMH2I9/tpDvxThN6NFvESgD4VLEJa/MZvDAyFLZdFIuLlf7z5zlhXS/LFHRpejseogzh/EQaEigPV2lEfrR2gQIKEMNCcAj4crTZOTdmWrjxglEQEX8l6p1QjlhI7bHBetHJI4yxs/CwDVAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=sOOVaYAk; arc=none smtp.client-ip=109.224.244.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBA03438BD
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jun 2026 06:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781071692; cv=pass; b=DWv+uQmIiWv1bpMq926XWUG8XBkitLZ7ZngJAbDxYizi3HFpI6qQPfQfQEnBsRFbO8MXQuLmkNQsp0vRqwkYWFhnUZTRGMO34w9ciWhiD2z3H8QBK+1GbwlSfzTSgEcjhV42WmKmhE6Nl8fVZgM1rFqxurQuvXEFnaZNnVqCatU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781071692; c=relaxed/simple;
+	bh=Nph6yCs8a8h8hqSmLg1BRTrpdIlAAjy94jgoxYg+Sd8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CpSyl6xTOlD9rStx7uuwRpnZnHGjSuurC5tIPO9twie5rsv+1Zx3rXRm8CTQCh1bqhhpD5jQcxkK+aAwtDMpzNaoIUm+sKcSXHnrRgfrrD26h8vDb+G5j00106Lg6iS2Lg0J4QyugtIBFlxGeEKV/0MQ7523mXcw7NoONe6vxWM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T04yvRbe; arc=pass smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="sOOVaYAk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1781070310; x=1781329510;
-	bh=Uk0vQkRILjOBR9BGUB0z3EZ+4PZv5LilTXqelWKkVSM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=sOOVaYAk7ZFjL7hYc1xF7zVyv3xW9QOukFqxVjhzRB75xZRp+bv9uVxbEQuQsK7pn
-	 nn71tl7b8zlVxIHi9/XEgLYygV8RtyU5uZuQv0FUzMvFX3sa49sx+lUYeH+NK3xga8
-	 vhGcjs0G6R6tZnWsae/P2hfMvITYq1P0Pau7DsGLsE6L0Z3TucDF8Atvva9chzJLaj
-	 4Ue0jOKKqDY5j5aWyE4kiwpLtlQTdDOU18Co0Ws57gJK7Duu8/7F6Ybr9V6iYnG4Gy
-	 W5vaegeHiBjRQCjjQ+jWMHyaDDA3zDe9IKorslby9Y9rEaYxNmfaVhIPE1SLSCB6i/
-	 9Zzi/zFo6hcIg==
-X-Pm-Submission-Id: 4gZvr10trfz2Scps
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust_binder: add ownership assertion to Node::add_death
-Date: Wed, 10 Jun 2026 08:45:01 +0300
-Message-ID: <20260610054503.27046-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260610035544.3333022-1-georgeandrout13@gmail.com>
-References: <20260610035544.3333022-1-georgeandrout13@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T04yvRbe"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-304e86ecebfso395895eec.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jun 2026 23:08:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781071691; cv=none;
+        d=google.com; s=arc-20240605;
+        b=htDtqywr7MSsCK1Xlh1NZwU65+lo7DlQhRn59umuXY/O6lu0s9TN/7k1iWPq1xDbiI
+         2zPrCBOpP2d2p7Ia8+YU4Wo2nnUkZg5UqCOrgJyMcS/WW9x1rmpQ6D6Sc9M4VgHoAh3n
+         y8rdb0gGjItf+xYACSzofMwtqcK6gwg98D6Pz2GLh1PWi6z6oGB+W52FSpAglmN9hDlW
+         jn4JP1NOrBMf1cIw6+ba1OINU60BKXgBlT0Dbin1HCMRF36C54Bd+XnAgH3U5Y0iwIz/
+         TZwYM2FFsjqtctRRXZxSgjdEUNUsew9DEPnOo2CeHbmwiS+Bh5wNCUttDgW/c6QsFcXd
+         wv2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Nph6yCs8a8h8hqSmLg1BRTrpdIlAAjy94jgoxYg+Sd8=;
+        fh=7uUkmSTkd6dyWQNMxtrFEVtnjCRx2ZMdqvvJ2rqhgIM=;
+        b=EuB2Otgvbdc4PT62bxOZWhOsKSNwkeocJLcLvJmib8wVj/nb1SSvEp0qQn9RJd/yjw
+         PBYz94ZdnvE7sjgSoE2Vaw5iFIbhTv5ue2nlqiakNlWhgzZIaKKNRJ8LgmrPI3SEUXLV
+         AiImIi1v4zKy3fUQ6khSV5WsXOYX4EtAAnlK66reHYKAAC6P7zdqq/Ywk+aohcwJaZT2
+         8tOre4xZqZOXliNc6gPLDTsUbrNbty8wP628SgG/hOuBXKT10c0W/diLH69Qji2YO1CV
+         oJV+aynprDQ25kcGk7eu7iAG8nIhg+z0/y//24s+Pyh+Xw4vkbOfzoUZ2uWYLBtUbrRB
+         D0Jg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781071691; x=1781676491; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nph6yCs8a8h8hqSmLg1BRTrpdIlAAjy94jgoxYg+Sd8=;
+        b=T04yvRbeNVVn1gAtpTbsFbS9i0h1bCj6KJJzhT3/2gLykG1kw6WQPbO9Tl9XEMOKAg
+         /V+QrGQWfshq5LiEg3SmFUA7B4SxIxAQe19WIMMdLMuNbk/7RmhUwyPB8U04jchY+XWX
+         q9biN4dcbVtqb2fatgk0Z1xCBDu3uc8xblmcABethtQUZlODRE1tZ05e70OgEzHagrPx
+         nQ5SfP3GUY1m4xWRSS9WFb38eHqIEB0wgL+UzE1w5qeMrzPP5BpBOV0AGyeaG6egdaLv
+         HOK/Nc2KbllSIm1RcRequ8po7algFv3lPFzvti+E23UJKpM3ca6F66e7/F2mwbqyB9+7
+         h4pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781071691; x=1781676491;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Nph6yCs8a8h8hqSmLg1BRTrpdIlAAjy94jgoxYg+Sd8=;
+        b=pCCKA+mtxuJ065Hk32gj/mZXPSrC7VRWU2Z+ho92axCVWDhNFFfq12STus8QWlMBL3
+         cnV/9F78OfxN5FDYpu5THx3LvrCiqWHxADaYB60xj651XUpS/WZ/0ns1OAtOLlhrxxjn
+         3bW9QPy2Fu40BrA9HIDoOgo2WA0M+xRNcHNYasYNDh+LXbnGhuTuj7fQU6F4SVeiPFK2
+         1+Tdzfa0LtoQUiw32AUt1xE+S4rGZVnYzOV+f9UUGrp+sIz6zk/bWCVJcN46+1QrA0w6
+         nILEMvjayTTc3AKubLBX2viEeO4RcMDEDqf+4KkioNA0suLVx+54sU0AOkjD7XmnorjO
+         znng==
+X-Forwarded-Encrypted: i=1; AFNElJ+SQfKp0PeZgHlmyL72F5tVN9MbvShGzl1WNnXeNpo7gUiOe87HPZOz9gmpQffU0w5sjt5m8/ZBnBkpvRLxQw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZYMTIc0m/dYcAX+RGIUCnYLKfaSM+G2hR7a4pysITsHwR16n8
+	B+OX7Yh08HxP1bqjOGj2Dm7nxfCTLLD12XZdXzcn69k1sw+haCqnnmUoWW/UtRPO3LVV2+c7L3/
+	FWq7FExH+EJN6MMBLzXUmOXrOk4dbqxE=
+X-Gm-Gg: Acq92OHyzuISE2zAcl5zkDY0Q4tu0D9uulmCcKf5ZbOx82QBRHFW0edDN8P6la+bK5q
+	erIKgImrcADS+1gly8CRFIEAxp8Lq5RfBy6FKqb+wUwqQkuZARJi81eAN57yzzo3LDMtmbDZduE
+	o9YmncBrgoD6QQOOaAVPIW5pv7j1j19a1Ujn5VrerGEnYi6eiEm3JAzHGjB8VS+6PxvxTPatMKl
+	b0FuEmlu4C3QZBoGrybdLB/gY501pi2jn7hibpAC0TRT1Xjwu2JdwFe8jVCjVVhYLwd9lPlGg7U
+	S8jboxosDhFw0Ekk6UqBJ0GEGJogBsmTqIpOX7VlGTmaABdivSAGYtIOxvzC5YiiWXYbfrq2aIK
+	1BkQk09xlvyQD/LcZJCWmI+9Q3cH3aKIqgQ==
+X-Received: by 2002:a05:7300:3b07:b0:304:9b4b:3b9 with SMTP id
+ 5a478bee46e88-307d602d73bmr1918732eec.6.1781071690626; Tue, 09 Jun 2026
+ 23:08:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260610035544.3333022-1-georgeandrout13@gmail.com> <20260610054503.27046-1-work@onurozkan.dev>
+In-Reply-To: <20260610054503.27046-1-work@onurozkan.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 10 Jun 2026 08:07:57 +0200
+X-Gm-Features: AVVi8CfKNi6HAFnWE6OY6Sbf_jAhaYM29qAK270UZ8TOOAWOPRWPX8w6iBnSeqs
+Message-ID: <CANiq72mVH4NNfyQOESf8uPxZhvbDv0MoQY48Ad6K-yfmXFcY+Q@mail.gmail.com>
+Subject: Re: [PATCH] rust_binder: add ownership assertion to Node::add_death
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: Georgios Androutsopoulos <georgeandrout13@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 09 Jun 2026 23:55:44 -0400=0D
-Georgios Androutsopoulos <georgeandrout13@gmail.com> wrote:=0D
-=0D
-> The `// SAFETY:` comment in NodeDeath::set_cleared assumes that a=0D
-> NodeDeath is never inserted into the death list of any Node other than=0D
-> its owner. However, this invariant is not enforced by the safe function=0D
-> Node::add_death, which inserts NodeDeath into the death list without=0D
-> checking that death.node =3D=3D self, leaving a risk for future code that=
-=0D
-> may miss this implicit invariant and cause undefined behavior.=0D
-> =0D
-> Add an assertion to make this precondition explicit and catch potential=0D
-> violations early.=0D
-> =0D
-> Link: https://github.com/Rust-for-Linux/linux/issues/1237=0D
-> =0D
-> Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>=0D
-> ---=0D
->  drivers/android/binder/node.rs | 4 ++++=0D
->  1 file changed, 4 insertions(+)=0D
-> =0D
-> diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node=
-.rs=0D
-> index 69f757ff7461..20eaaefbd4cc 100644=0D
-> --- a/drivers/android/binder/node.rs=0D
-> +++ b/drivers/android/binder/node.rs=0D
-> @@ -333,6 +333,10 @@ pub(crate) fn add_death(=0D
->          death: ListArc<DTRWrap<NodeDeath>, 1>,=0D
->          guard: &mut Guard<'_, ProcessInner, SpinLockBackend>,=0D
->      ) {=0D
-> +        assert!(=0D
-> +            core::ptr::eq(self, &**death.node),=0D
-> +            "attempt to add NodeDeath to the wrong death list"=0D
-> +        );=0D
-=0D
-I think having a `debug_assert!` should be fine. That's also your suggestio=
-n in=0D
-the GH issue link above.=0D
-=0D
-Thanks,=0D
-Onur=0D
-=0D
->          self.inner.access_mut(guard).death_list.push_back(death);=0D
->      }=0D
->  =0D
-> =0D
-> base-commit: 287afdc7671a03081f48f3407bc59862c202bd4b=0D
-> -- =0D
-> 2.47.3=0D
-> =0D
+On Wed, Jun 10, 2026 at 7:45=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
+>
+> I think having a `debug_assert!` should be fine. That's also your suggest=
+ion in
+> the GH issue link above.
+
+Yeah, there seems to be confusion about the asserts.
+
+If there were a soundness issue, then an `assert!` may "fix" it, but
+it would usually the wrong way to do so, and a `debug_assert!`
+wouldn't be a fix it at all.
+
+And for other cases, `assert!` is typically too strong for Linux
+(outside const context, tests, special `cfg`s, etc.).
+
+In addition, please consider whether a `pr_warn(_once)!` or similar
+may be a good idea to pair with the `debug_assert!`.
+
+Cheers,
+Miguel
