@@ -1,208 +1,104 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022099.outbound.protection.outlook.com [52.101.96.99])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB7A348C70;
-	Wed, 10 Jun 2026 17:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781113554; cv=fail; b=KSKgZyguwLwpnwd1MdEASFcMs4IkHHVL3+fM1KQQQO1R0uYVGopdtqTcAOVmkpfE1pZvBY8xgyJ9/87pTAofQDb7tM8zsYrf50pkFc4eI+DucNAWh36NNH3IJJAJyYU2YBvn+6ZdFpYbsR+MC9QXA5QSW5+5ecV7ZJhspNviMD4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781113554; c=relaxed/simple;
-	bh=dqIcMt3YVP0gVz/sXDlqWeG9SmYicsd4UNx6NZTjJls=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=mroeC9PnUQz75mfLMBEWPIgI+WC3r8OcT0T6ny3C07Orqwyaw/Y9zMjDb96EqNGD5cakSH9WQ9sRfI6FMd94f6vvTM/4rAoKeec0+5aecSS7jvquzHV4Rsv4JI13zpQ1Qct9sw8wX6KYdsbHJDJLucaW7p8SMNjhUJxC5lxb8SY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=PByJtvA7; arc=fail smtp.client-ip=52.101.96.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681F930C629;
+	Wed, 10 Jun 2026 19:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781121046; cv=none; b=HOls0MHPYiCjYjIYy1637Z3iMEvWJTRiyQCHAip8CHRdGqHodQvhldPx/4yBp2tEXUUiL4gXZC7nekigE/ETgELLXNvOgMBCf7fUpu5x4uuc/BaIIMnP9bU/DcUcQZdDlaCybL/mTeCIgEG2K8dh51ZEvbn4UZas+SZGxB5iU8c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781121046; c=relaxed/simple;
+	bh=NNksoh7Ns2g1gqLHnb6MZ59thijmaV2sFavKgQ6aShA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ko4Q9YS0OVmfQUV0OBe8JNOtZ/1UiDrhPrGr9Ppxux8U4LwZmRfYKpbwL6kgyYFaA/9zvV6mC51fL9kuOUqLdKwksVBp6JNN3VFOtfz8iCFVpC2d9wtR1sNc89Ly5Wi4v17qSEZf4E3C2tM0J5JLf+ym3A1jyq1HMI1PgIEMZrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LUCOdF8Q; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="PByJtvA7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yaionnMH6uE/X733Is7Z7mHbeHuPuH39DY88a/Exvsa/3H7as/Y0U8kgKXd8FpBE92Tp/sAoFLeGO8sBSiMjubIBrbhqVgtDq911SXCOzDydV5lExxHllmoPBI7inlCAQtyNZE0DoI6VvEkBdhgMMzIYf/tdyTJFIAzhoGA3v4U1tGYyOxNhUCVZ6VzZDLHvxui0qMkBn18cvs1f6mDsrTz7NRvGLmMRzApt0z8jl4l+ZVcB57Su29yWxZoFS9fqvEYxbAxNhJLYHjtVQkIGyWet3BRd6xOSsR3mOoWeOYKPSQsP3gqJazDJBHdX8PZZb0oFr35hPs0fP4RVUHstAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sSqqkK5oePaebfrqX2UyhFv1D+oY56hkm2z3mXOid3U=;
- b=KPSDFA5lC7lgxChh4+iU8auJCM1PzijFtc1Ifbgf1Q/FVvYCF6pY9ixs6g5RyyCn0Iw5jQ5vkulWvhrSIctraCTd2FdpWze0LK2jLDhpp+6R0BqCjggHhD3MD2UsQWIRD7MGOyZMeyPn7+Hswq8ByPgWDrY5Zj7aNb/OprTUMdJwBh1lC6qscnE0NkOQUjsvDMmisFZtH+AbftbSnUfiTTgLC2xYAxNvYjy8UdenmOv4BdUjx5aytRTaxy9Y/nvEOdvifx3CXohf5SErVmFLUuN5AKlD3slKpWorgOg7BoGMpIvFPEjXKk9fAFGyyoV0vOy+Yigo1SDEaDbPekS8gg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sSqqkK5oePaebfrqX2UyhFv1D+oY56hkm2z3mXOid3U=;
- b=PByJtvA73avPyCm4MoJbZl9aCiYdOliCTAwUUi9kkhTr71+z4G523DsaY5fqnlTyFlkXBSAa4L53PuQQzc/PdmX2D91RYln5qoWF3J3rjpie4QlwiNFQTsUjIcre8vh77etwDIKCa5szPj6U5O4jS7s8GZ5//Ao6cJKbT+YinSg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
- by CWLP265MB6403.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1e1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Wed, 10 Jun
- 2026 17:45:49 +0000
-Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.21.0113.011; Wed, 10 Jun 2026
- 17:45:49 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Jun 2026 18:45:48 +0100
-Message-Id: <DJ5K24CQEBEV.2P4DD375FMQH7@garyguo.net>
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Danilo Krummrich" <dakr@kernel.org>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno
- Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] drm/tyr: remove imports available from prelude
-From: "Gary Guo" <gary@garyguo.net>
-To: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Gary Guo"
- <gary@kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260610141359.1033755-1-gary@kernel.org>
- <20260610174352.7818-1-work@onurozkan.dev>
-In-Reply-To: <20260610174352.7818-1-work@onurozkan.dev>
-X-ClientProxiedBy: LO4P123CA0303.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:196::20) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:400:27c::13)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LUCOdF8Q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781121046; x=1812657046;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NNksoh7Ns2g1gqLHnb6MZ59thijmaV2sFavKgQ6aShA=;
+  b=LUCOdF8QCa3t587tvEB6/Rf0gBjjoVdW5HRXrVtzLlXQhTLvHSpsKFiX
+   +51jwTZGscF7t1epclLlfteXB0ULoq9t7f/m1/xfQ1ySp6FJZ3HOqFxkR
+   Z2sIN4KWYEUO+d7RlUwUo8q+pxw/nH0P7QkDvHt5UUAcXKe0A52hA/OQr
+   7ahB9Wgwki+t0bmlJhiNyft2Zk4oxVHrLUKSChKjmQ9Ez1Mcacm1y1IGC
+   t44KE7fIUTNjAb7Tmmp9NX5ZE7WS+9l9EuJOgJ0ByNXzlZ2aMdsOezMfo
+   5x1IzqWGe4zNzG1CCNqJvnhuw5ZDZwToSK0eYJN8u410wNQUPa8+uE5RK
+   A==;
+X-CSE-ConnectionGUID: MP9QI3VQQbS44nJ0N5E/xg==
+X-CSE-MsgGUID: 5/fvOypgRe6UCOcZcCJtqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81902011"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="81902011"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 12:50:45 -0700
+X-CSE-ConnectionGUID: MNol4bm2Su26hykbOpkGTA==
+X-CSE-MsgGUID: QjEYvZrpRMO1aH1q6gDrCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="243312217"
+Received: from igk-lkp-server01.igk.intel.com (HELO 892db79562d4) ([10.211.93.152])
+  by fmviesa007.fm.intel.com with ESMTP; 10 Jun 2026 12:50:40 -0700
+Received: from kbuild by 892db79562d4 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wXOwf-000000003oP-4AsC;
+	Wed, 10 Jun 2026 19:50:37 +0000
+Date: Wed, 10 Jun 2026 21:50:06 +0200
+From: kernel test robot <lkp@intel.com>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, rcu@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, ojeda@kernel.org,
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org,
+	fujita.tomonori@gmail.com, tamird@kernel.org,
+	jiangshanlai@gmail.com, paulmck@kernel.org, josh@joshtriplett.org,
+	rostedt@goodmis.org, mathieu.desnoyers@efficios.com,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH v9 4/4] MAINTAINERS: add Rust SRCU files to SRCU entry
+Message-ID: <202606102148.n3zUlB8z-lkp@intel.com>
+References: <20260529134004.396743-5-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|CWLP265MB6403:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9d65e68-5d42-4892-e015-08dec7181ba3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|10070799003|366016|6133799003|18002099003|22082099003|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	xMdmaMWQ3zdpEx1jjTzW41wn1igdAi8De5S12TBPnLYN9KnIKVbyzp1tfqpw8x+hOnPZ0SnAPa48UmfVtaft7UXgFtq3frl8f1/8gcxsVCx7YDk5j+sP9z2W4As82BQ53LR80Z3Qz5CWCROTnFUatiAcbAPlOhNYVYMZTZj6YUvtnLxLnEwL2eQr/0BJLwZ0NxesnmRIckJdpdMIOc7uEGZczZhy7jgwLjOwKuL6HArwqE7a9ywQhrISEM2RTLLcrvslCMmagYAvpLc0rG703f6j8XQGlSV0sBmkbfHQ+LSjtL/siwVvxi/SJb9DGDPxqrGoQHUUptxxAPqMWQMQk0GeEu1Ut3RfVZpPyZBrdigkk1wMe45PX9JiQhtj2j+s+vi57YEdeQPHu4IMxdsHw1t9TMOcE5RiHAAdFH5JnYVmU/6tRO1rRNQswtd8Re4n0AKQKC/frwkn9p7y1xMGEo7TOAIHFg8TOG8wINmV2QwKmcjawD3O3elxtBbzsvEyIRgtM4GSW2QpUOBo3T0jB6+Qw/WZ1W1QQOBj0hwuWMcyZNXILUf0e9vCp4z/nZT6mN8lUT3JUTfuX5AWq0LXhayCwtCr52ZsH0Cw9I+K4DBAAX0wDayiwxWO8Me7XkzecCJ5Zkv/LFPxfnC3dj9ENXJ1ooC8Sc7b6Y+lmaJZkne1FUevdR7aGQiGB0vcgMpq
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(10070799003)(366016)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RmoxUVlFU0xSNmMyUFZ6MUtqSHNSQTJPWVI5QW5rV0RNRTg0SG4vbllGTUJi?=
- =?utf-8?B?OG43UitkUVpoclpXMG1UcVpNclM1TlY2N0lJZG9rdDFENjNEbyttZkIxTGpC?=
- =?utf-8?B?c00zMUdpb3hGMkVid01DUVBVRXhnYUpOOHpLR0JaM0lyYVBFSEZhZnVrZkZ0?=
- =?utf-8?B?R2MyQituUlg1MXViVzBOL3RLbnY1bzFBTWZIcG1lb3RUa2VtNFZCMFBxUTht?=
- =?utf-8?B?ZGV3WUZJbnE2T3NKVk9vK2VCUTJrVG5SeGpoN3IyNU9IOUd4SW50eDBjQzA3?=
- =?utf-8?B?VHJ3a2FhTm1JbzJrclpHdzZxS2F3b2NOZzQvMElObEhNWmdxd05TalNKdTYv?=
- =?utf-8?B?dWpBaGZCUUhwRWltSFBIMEZhandNeEo5aUtLcHBmdFlzbGh2ejNCSTVsRThl?=
- =?utf-8?B?emlnYTlTRWlQN3FxMEFwN1EyRUMwZjV1bVBpdERCZkJNS1lXNml2R3p3ZkxI?=
- =?utf-8?B?QlFyc3pIcmRVUGN6M1VteDFmU1U4OXp6bDdpRWZjRHVCdkY0emRRbC9IL3g2?=
- =?utf-8?B?aEhnUkI5ZUdqWUp4bXNHRnZWS2Zxc096ekRlakR3Z0ZwZ1NBRTRvcEh0VGtK?=
- =?utf-8?B?UnRudEVINzJNOS9ORWVwNW9JelV0QlYwdHk2WDVEdDFqdHFJajlsSDU0dHJD?=
- =?utf-8?B?V09WTDdQYVFHWDkzb0drU1VIRjErOGlub204b1E3UmhSVktzNzREYlF1ZVBF?=
- =?utf-8?B?c0RSQVorN0tyMituenNNQUVGTUMrZjJDZVRNaEQxN1JmUWJUenRuQVdwZHha?=
- =?utf-8?B?aXhsRWpwckdTV2xHWEFLNUxJbzdOY3l4a20zNjBHZG12VEJYcUhIZXlaOTJE?=
- =?utf-8?B?VUNaZXZTeFhnUG16VW1wT05GdUJiL0dZY1l4Q1FlNWlzRmZoNDhyNDB2WXJT?=
- =?utf-8?B?Q2ZPeGcvcytGZEwwL0tMUVBKYjRHVlFsUHpKME45TmZqWS90WlF1am1pZU45?=
- =?utf-8?B?NEpqU2FMQnBJRHl2ZDJVWTh3ZVZJVWF5RnpYQWxNKzJNeEt1a3Y4Uk1XV0JE?=
- =?utf-8?B?MElNUjAxNDRNUngvN0kxdDVvQmQwTHdYSjM4UVluamRhOW5tT0pPVDRqVkZN?=
- =?utf-8?B?WDBwMXFPL2V3bWZ1QXpSV1NHUVV5M3ZoZWNpdnd0d2dWM3FwYTlmMHdxRDZz?=
- =?utf-8?B?QlI2RnZyQ0tFdjF3VjBTUENrNTRNVE5WV1FqVit4THlCUWVhRkVGQWh5a1Zx?=
- =?utf-8?B?bXltYU5XZkhIQmRUWkZFRjh3eUljVkpWaVhDQ0o2eU1IdWFwakMydDVQOHds?=
- =?utf-8?B?bjNLUmNrWm5GUlRUaVdKUXFWNEwvRUNHTXREdmQzUUIrQzZVRDM3SklvamN0?=
- =?utf-8?B?SktuOFV6Nkt6VlFVc0JPeVRiNmxkSjh4anQ5L3VKZElUWUVCaFcrSUZwS0hw?=
- =?utf-8?B?ZTRKcE5IS1FYVlQwRGQ3anFOSnhWak1PcVdsYVNwTHVFVzdhZ0MyRmNCeXVG?=
- =?utf-8?B?L3Jjbi9lRzA3T1JSOTIzU2IzcVBQcFFlNWRpS3lOOEpQdERqbUhrMmY0UG90?=
- =?utf-8?B?ZnZ4SjgvaEhEK216QlBqNjkvTGFWOS9taU1rajQzbTcwN2dOV1AwOFpsbjV6?=
- =?utf-8?B?Qy9qcnh4dmNTRXVmMFVWOEJmNEI0ZGE1UU5iTklKWTdjZ0dTTGh3eXJVVnd4?=
- =?utf-8?B?QzhScW8vUEVBR3RvdFBkN3NQQmI5cHB5QWhqdlVTTmpHOHRVdFBIaWh6eGVj?=
- =?utf-8?B?UHJ0WUFBajV0RkJNVW5tOEtnWXUzdVhjbHJKQXBEQWt5S2dLUlhYeC9tMyt4?=
- =?utf-8?B?YlJtTGFKbm0rU1VpalBlMXJvZHhXMlRycjlQTVE5SlFZdjYyd3ZINHJNQU9h?=
- =?utf-8?B?dzZCQkY2aFNhS2dqbVMwRFFkdG1heTkweGJjbGMrQkNmV1hWVE9HRVdoNTNY?=
- =?utf-8?B?M1NsQ0VSV3p6eWJza1RhUCtDVXovMDdQR1V2U3hFRjkwdzhJRDdHeERtTlZO?=
- =?utf-8?B?REJjMlBTK284UzhvZitNZUtkZ2RiM056dXhZdWJweUZweUxRQXpDbUFlUkFp?=
- =?utf-8?B?TnBHVEVDc0RCVWlXU00walNtdlR2OFBuVFZYOStDUVNCU3JRcXRJNnlkZkpC?=
- =?utf-8?B?c2c5OHRFaVhGVjBnYWwzNFAwbkRtblBadUplVUVNbHpzc01NcllVSzY0Q3hU?=
- =?utf-8?B?dVFRSUJlalFVV0Mybzg0WkhRajZLQmZmc1ZNT1U5TU5DS3UvQlAva3RtbE96?=
- =?utf-8?B?OG9wUFlKOHZ6M3ROUVBGUlErRmpIcXRmdmhhOFhHQVpUTW0yOVg4dlpMWXdW?=
- =?utf-8?B?MHo5WTNBRWFYVGxHdjg4NVlvcVY0cEx6bGVGTlZEVEpwbTlJQWk4MHZOWFJC?=
- =?utf-8?B?RlJvUkJscEhIQXM3bkMrbVRoL0wzQVA0OHV2am10cnVJb1FlUGdyUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9d65e68-5d42-4892-e015-08dec7181ba3
-X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 17:45:49.1061
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NfIaTXhjEESgmKwL2lAII59KCTI2e3unrwNudymffk/WwzpSw3dNs75TDb3HD8LJ29KX23xcbcRVB6NBTMNpWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6403
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260529134004.396743-5-work@onurozkan.dev>
 
-On Wed Jun 10, 2026 at 6:43 PM BST, Onur =C3=96zkan wrote:
-> On Wed, 10 Jun 2026 15:13:58 +0100
-> Gary Guo <gary@kernel.org> wrote:
->
->> From: Gary Guo <gary@garyguo.net>
->>=20
->> No functional changes intended.
->>=20
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->> ---
->>  drivers/gpu/drm/tyr/regs.rs | 14 ++------------
->>  1 file changed, 2 insertions(+), 12 deletions(-)
->>=20
->> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
->> index 562023e5df2f..831357a8ef87 100644
->> --- a/drivers/gpu/drm/tyr/regs.rs
->> +++ b/drivers/gpu/drm/tyr/regs.rs
->> @@ -48,17 +48,12 @@ pub(crate) fn read_u64_no_tearing(lo_read: impl Fn()=
- -> u32, hi_read: impl Fn()
->>  /// These registers correspond to the GPU_CONTROL register page.
->>  /// They are involved in GPU configuration and control.
->>  pub(crate) mod gpu_control {
->> -    use core::convert::TryFrom;
->>      use kernel::{
->> -        error::{
->> -            code::EINVAL,
->> -            Error, //
->> -        },
->>          num::Bounded,
->> +        prelude::*,
->>          register,
->>          uapi, //
->>      };
->> -    use pin_init::Zeroable;
->> =20
->>      register! {
->>          /// GPU identification register.
->> @@ -964,14 +959,9 @@ pub(crate) mod mmu_control {
->>      ///
->>      /// This array contains 16 instances of the MMU_AS_CONTROL register=
- page.
->>      pub(crate) mod mmu_as_control {
->> -        use core::convert::TryFrom;
->> -
->>          use kernel::{
->> -            error::{
->> -                code::EINVAL,
->> -                Error, //
->> -            },
->>              num::Bounded,
->> +            prelude::*,
->>              register, //
->>          };
->> =20
->>=20
->> base-commit: 7d570075805918f5ec33f03949c6a7c610397340
->> --=20
->> 2.54.0
->>=20
->
-> We will probably run into this again in the future. I wonder whether ther=
-e is
-> any way to catch this kind of issues automatically. If not, I feel like t=
-his
-> prelude pattern is not doing a good job on helping.
->
-> Thanks,
-> Onur
+Hi Onur,
 
-This is all caught by klint.
+kernel test robot noticed the following build warnings:
 
-Best,
-Gary
+[auto build test WARNING on rcu/rcu/dev]
+[also build test WARNING on rust/rust-next linus/master v7.1-rc7 next-20260610]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Onur-zkan/rust-helpers-add-SRCU-helpers/20260529-214529
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rcu/linux.git rcu/dev
+patch link:    https://lore.kernel.org/r/20260529134004.396743-5-work%40onurozkan.dev
+patch subject: [PATCH v9 4/4] MAINTAINERS: add Rust SRCU files to SRCU entry
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260610/202606102148.n3zUlB8z-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project f43d6834093b19baf79beda8c0337ab020ac5f17)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260610/202606102148.n3zUlB8z-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606102148.n3zUlB8z-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: kernel/rcu/srcutree.c:305 expecting prototype for init_srcu_struct(). Prototype was for init_srcu_struct_generic() instead
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
