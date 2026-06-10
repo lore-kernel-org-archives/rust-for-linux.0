@@ -1,54 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638161D6BB;
-	Wed, 10 Jun 2026 09:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345953BED79;
+	Wed, 10 Jun 2026 09:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781082052; cv=none; b=fhxmte3QUU8ZjwvtUiiqOdULvL8haW6+ZWQqcrmaFMi5yP9l0E0tinuN5rifO3kpQF4IbxVIyS9NpkO4fuOTcho1GOyQvrG9YxjzgDIN9/tLYa1HAf+I2qBZFA/ULprJAgF0Erny8vOVfI1Pnmhs+GINSSH5mpGcY51X/XngjGE=
+	t=1781082056; cv=none; b=VEkMUQC3PvtaLqEsSSpiPvjtLCjyINg5Wn6tYpnQ/ihOKVv6OWScrBfu4oPEFaujYZk3naS33+qaTqXyeKMej2ka22c4jpD2ZtjSqm4IxN7JiCgtLq7yOXisV/ay3MsrNbzAPCF5uiL7EY/GZFV9/Ycqy1q1MS1HpB0F+psT4FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781082052; c=relaxed/simple;
-	bh=tiOydzZ3dGouBDJ5gNoI3WoKFWG5GSSkN9FaLALzY1E=;
+	s=arc-20240116; t=1781082056; c=relaxed/simple;
+	bh=aAAsEb6UdG89giLX+n0FCtwGNbkv8VVF3X+AdqGsfRQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZIZC7Lh26xHtt/3hiGDGj+wWXVsuxHBJyfjaZnmQt7Eft2m3Y1d0NTwF0JgNbcJ2ZNGrQKKn1WGxhJKPEV08IdAfVEO5/94QsmZegn9h7bPOLvZs/AbFgLzZKFqDuPgENGhbt7csRSci96Fuym7FQsyxq8IqweSS5o7DcJvUz38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oOrtrCec; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=GkEBevGL/HR5qduRgyqz9fopbjAz7Usg6vg850hzx5PkUQO+jyOBB+/4GBVYr61sUj+fDpzh56JyFLEFJjeROJ+9bcLomNRk7iXsAqXCVogp3n19nslaA0DJP5bDIUvjpgsNvgJrBY1jg8iJy4G3WwiLv5jGO7Nkvc5csRVQMMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuW3SZpe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oOrtrCec"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AD31F00893;
-	Wed, 10 Jun 2026 09:00:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuW3SZpe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24291F00899;
+	Wed, 10 Jun 2026 09:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781082051;
-	bh=tiOydzZ3dGouBDJ5gNoI3WoKFWG5GSSkN9FaLALzY1E=;
+	s=k20260515; t=1781082054;
+	bh=kMsVQi3orljSEvhMyPLIhta0ehH4Ys7jFOHwtglZDGE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=oOrtrCecZ1/1S/jm0lzpOyrLHHWmGV4pfQC7Asj81mRDFXy48a1f/rBtiLJk4WPpf
-	 g1eCPvVJ9DJMgC7WFpzHOeA2uvz415UEJiQY/rHi8pUm/RJBeRn8RMecGR8g1bO3yV
-	 eZwyZG92FRvD5X9r14yhr/SW6IyBBuG1E4GVPX2qrQfmK71uP0Jt9lTBtxRH6d53Ec
-	 P3+5gT1ya6f3i9Pu5Ulyi+19+wTV6bcQ9T+MwU+q/e4RqONNVDrYDXE0d3rzQtiwfp
-	 BsTM8LTK0r0d28/qEvIE6Zv1naanu9TWae+dpRiwVSeeO1qHpQXxcLPIreviq1Jw0N
-	 FZ4oyEYIrEzmg==
+	b=SuW3SZpeXtKywlRGQRqMf83GIMeoG+6cVyHrFeSymZAyFIDD0DsP9Tt660M7uk0X1
+	 eL6m/dpEGUaGSftJAx0Bh8I5enp+po3UrTt7xLoN6651ub22mu0WyYWkQOjnGlZ7Vf
+	 Pf+mJXDxqWpqnS2T3A4Zl4uxHaGFHiLDcPgfilY/EOddg7gDe068WdKfp4YdrrH+OR
+	 7yOPcTybmCdrEZufDNJM0FyyvjGhONtVwoJcm/FkAZklOo/WgD+7OkcYAOytRJ4yFH
+	 vRPrRIdiheiE1/7uGZgaldTvVh/EWjdnYbalQ+5b0h2Qcq8oBjdHfxharAcIyGu0u1
+	 f5bRctCuLIaWw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Yuan Tan <ytan089@ucr.edu>
-Cc: "Liam R. Howlett" <liam@infradead.org>, Alice Ryhl
- <aliceryhl@google.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>,
- Benno Lossin <lossin@kernel.org>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Boqun Feng <boqun@kernel.org>, Danilo
- Krummrich <dakr@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>, Gary Guo <gary@garyguo.net>,
- Jens Axboe <axboe@kernel.dk>, John Stultz <jstultz@google.com>, Lorenzo
- Stoakes <ljs@kernel.org>, Lyude Paul <lyude@redhat.com>, Miguel Ojeda
- <ojeda@kernel.org>, Stephen Boyd <sboyd@kernel.org>, Thomas Gleixner
- <tglx@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org, Priya Bala Govindasamy
- <pgovind2@uci.edu>, Dylan Zueck <dzueck@uci.edu>, Yuan Tan
- <ytan089@ucr.edu>
-Subject: Re: [PATCH v2 01/83] block: rust: fix `Send` bound for `GenDisk`
-In-Reply-To: <CABrc2FU9HuRp4tVEU_R1RdMMRkkS=tM4Uv70WG3UBTeho_C42Q@mail.gmail.com>
-References: <20260609-rnull-v6-19-rc5-send-v2-0-82c7404542e2@kernel.org>
- <20260609-rnull-v6-19-rc5-send-v2-1-82c7404542e2@kernel.org>
- <CABrc2FU9HuRp4tVEU_R1RdMMRkkS=tM4Uv70WG3UBTeho_C42Q@mail.gmail.com>
-Date: Wed, 10 Jun 2026 11:00:37 +0200
-Message-ID: <877bo6hiru.fsf@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Gary
+ Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Boqun
+ Feng <boqun@kernel.org>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: page: add `SafePage` for race-free page
+ access
+In-Reply-To: <CANiq72kZQxLEXnz1U7K82TZJWYUF=8f=wC=RtTL26ADfr9RQJw@mail.gmail.com>
+References: <20260605-page-additions-v2-0-03f04c8fdbbf@kernel.org>
+ <20260605-page-additions-v2-1-03f04c8fdbbf@kernel.org>
+ <HZuOc2PUMh5R8h7yC69l4I384agFUrcfrJrk7o9X2jR6aNPt9nrMOHWkc2G2ULw5H3iIbh6XL6ypXY4fmaqNDQ==@protonmail.internalid>
+ <CANiq72kZQxLEXnz1U7K82TZJWYUF=8f=wC=RtTL26ADfr9RQJw@mail.gmail.com>
+Date: Wed, 10 Jun 2026 10:46:53 +0200
+Message-ID: <87cxxyhjeq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,59 +54,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Yuan Tan <ytan089@ucr.edu> writes:
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-> On Tue, Jun 9, 2026 at 12:13=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
+> On Fri, Jun 5, 2026 at 2:49=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
 >>
->> The `Send` implementation for `GenDisk<T>` was conditioned on `T: Send`.
->> This constrains the wrong type. `T` is the `Operations` implementation,
->> which is typically a zero-sized marker type that carries no data, so `T:
->> Send` says nothing about whether the data a `GenDisk` actually owns can =
-be
->> moved to another thread.
->>
->> A `GenDisk<T>` owns the queue data `T::QueueData` (stored as the
->> `gendisk`'s `queuedata` and dropped when the `GenDisk` is dropped) and an
->> `Arc<TagSet<T>>`. These are the values transferred when a `GenDisk` is s=
-ent
->> across a thread boundary, so the `Send` bound must constrain exactly the=
-m.
->> Bound `T::QueueData: Send` and `Arc<TagSet<T>>: Send` instead.
->>
->> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
->> Suggested-by: Yuan Tan <ytan089@ucr.edu>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>
->> Please take patch from Yuan instead of this one, if they send a fixed
->> version [1].
->>
->> [1] https://lore.kernel.org/r/8839ddc5ff54bf454d508cde91d27d00fc3e2dd8.1=
-780633578.git.ytan089@ucr.edu
+>>      bindings,
+>> -    error::code::*,
+>> -    error::Result,
+>> +    error::{
+>> +        code::*,
+>> +        Result, //
+>> +    },
+>>      types::{
+>>          Opaque,
+>>          Ownable,
 >
-> My last email mistakenly enabled html. So I am here to resend it. Hope
-> it doesn't disturb anyone.
+>>  use core::{
+>>      marker::PhantomData,
+>>      mem::ManuallyDrop,
+>> -    ops::Deref,
+>> +    ops::{Deref, DerefMut},
+>>      ptr::{
+>>          self,
+>>          NonNull, //
 >
-> Sorry, I've been busy with other things and haven't had the chance to
-> send the fixed version.
+> The first hunk fixes the imports, but the second introduces an import
+> in the wrong style.
 >
-> Thank you very much for reviewing the patch and for preparing the v2 vers=
-ion.
->
-> Could you please add the following when applying this patch?
-> Reported-by: Priya Bala Govindasamy <pgovind2@uci.edu>
-> Reported-by: Dylan Zueck <dzueck@uci.edu>
->
-> I didn't discover this issue myself. I just helped write the patch and
-> I don't want them to lose their credit for it.
->
-> Please let me know if you would prefer that I send a v3 instead.
+> I think the first part should be in its own commit, and the second
+> should be here but with the correct style.
 
-I would absolutely encourage you to send a v3 so we can pick that one.
+This was sitting in my tree on top of already fixed imports. I probably
+made a mistake when I separated it for submission.
 
-Your emails are not arriving in my inbox though. I only see this one on
-the list. Please check your setup for outgoing email.
+I am looking forward to the day where rustfmt will be able to handle
+this for us without the added slashes.
+
+> But I just noticed the first part should also have been done as part
+> of your other patch I applied yesterday, so I just rebased to fix
+> that:
+>
+>   dea66841b9f8 ("rust: page: use the "kernel vertical" imports style").
+>
+
+Great, just the second part left then!
 
 Best regards,
 Andreas Hindborg
