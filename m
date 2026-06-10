@@ -1,67 +1,75 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012022.outbound.protection.outlook.com [40.107.200.22])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020084.outbound.protection.outlook.com [52.101.195.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FCB3DB633;
-	Wed, 10 Jun 2026 11:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6974401496;
+	Wed, 10 Jun 2026 11:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781090499; cv=fail; b=qJFLJf49t8pJ69g+qai/Svz8OGg7FeMuqTGqzGz6G0dImZc9LD4X0fqX5lwbHLOR0XHacd3BOPeCfw84CRSqUy/FYJ58qKu6HTykYRID0q6q8e/3z9XeUxmKPWxqQZy6mXJ8sfWa+475joG3+l2TKh53Skc2qnifWPCyFTDrIhM=
+	t=1781091753; cv=fail; b=a9+FsA70dg61I9D7+/nir3OL5rt2Mkqt+xXHXFsAqV0aSRLuoBbuVR5bLAUJCdEaesRTpCuvXHi4gxDN9wsbKCAJYOr44HN7nQ4eleVpu5u01iLljdUziO6tBfOZkAbEY/gOwMWVoKAZAUCp/+cRl3A8uZFAuUiO1CjzoN01nlQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781090499; c=relaxed/simple;
-	bh=6+t1AnIO36JARe7u0kp/3YJ1j9EjVxX4n92efszlbeA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=GiOtb/FNsZSdW/z8DIR/ap5k79GyVSmqoffxqJ54ZF5Ek9oDyO9FKcZc+CZ7Qs7wThe2CZQ7q+aRB0kXVFhYsoswvlF2+5X5MddqfgIWqtnXMga1ke7Np32JRDGPmuzUsus8UcpUN1HjsE4U8hSnoH0GYlUOVqVgNuoVNsQGwwE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Cda2vc0f; arc=fail smtp.client-ip=40.107.200.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1781091753; c=relaxed/simple;
+	bh=qWrzAa+99jyEwLkqeupNmH0kURQAtqY/f56Pom0QQEc=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=I5Y8aEhOYedWaOm3Al4RNrTuNCfBsierol5J4R772O63XsPsgJXzb0z77J63bGYbZ+ku4Q7HccGJ3/JPGqh7la9r6kHSx5iEjOkYZaPbXNruzvRs6L5lL6LlSZT5xlKYD3GhoZB7W5LA8kkY5KPhucsyDwEkG5Dze3izEYGphvM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=atL2JrMb; arc=fail smtp.client-ip=52.101.195.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Cda2vc0f"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="atL2JrMb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GsGa3M7O35bp+8hYKCUsmaS7z+W2St5tmjQfEO3QN9WCkf45b3lNgNRS0QvaTPlLW8eqynv8V0b/Ct9NEbszEPnzQhzbW4UUcoDJNpw39rdVkSQI5qY07xOLyodP7aB1ofjn/wfr/PGcWcNsR6/BCcYs9fMRCtPvs/owvbODZeO9ju1i1i5FkI6MHOmf2NW4jwLqPx+Nz4NLfGykIycOx7Tw3MgIQFXZTsSBTTGn+XZu1Nuw6rNahsaNeE6Go0Nqwq19yepIbDLGgyEcapi4FwJ1gJvPau3fHhQPwQFAUCCUu/1i8jVHN++GHy5nGW23bJsBwHiiEkm3er7vPNuKsQ==
+ b=NC8VIbncA75Le9pzXqPpqiXQO3CMpH0JwcTt/TRXz2OyDgCXM1OKE24g+fu8F9XCNgmkSJ2Qlw89tOdZ9YYR5vxLV9M+n6DwGgDsY93Xqa/4Ekr1+FdIZwB+bf4Wpis6WH7niP8FySPcP2EXTD4xE8eAA89a36ABElfPlsf1JKwjU88Cmo9VdWU+SYRgTU3fTzmG2tFUKDtX/jerH3hyZ2GRy1zlbQ9rDfFDdQUfLs1OEjEKobDVbBUmPpeYwEAB1qKtUEl4QEHJCZjEzgWE4/d973gRKgosoFYSkDnjOFEddzURYhOqJoRIaH5WZhewQjslkYeLmTrOg8Inhu7uJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+Ng56DucLzEki2woAZfq1g8gezr55yqJktihvObQIXM=;
- b=LSMlxyMNa0VR9kzvQPCZMrFZdKobD4pOj7kHREppEDGZ2R8P4HIY/RDw+H+goS7bYSvIRqBabxH/BBV2sEHT+TEznXDQt/spspmHuHQ+9Illqa6WxT/2kHY4LAboKGU3wKAHg53R+X6KJ9z0VZdlb4Fy0UxlbgJeDzgXoGdbyWAzt5oDvF7yY4JYkDTGX9z6xYMtBjh+M0Ow/QjDIDgJSF/S63reYqpSCbV1HoErji+Cq7vs18KrCo0p5phVbK0hMCePDSf7z6ugQ8OFdfXaiMh9TLSnnDSntTCNntEJszeZCP88PsxJMmAhc+OJeHs9hpU0FG0Yr/oF1fw4s5WLCA==
+ bh=SX/trqBV68VJdKO5l6OAlWbAPH2VpS7+W3TWbP+uxrk=;
+ b=TAp32pPsUS6KT8METtOhlOZpL7wg/KDpawY9d34KDQvlTWh21iSMRBOUyDMrtwUKODecKdY426k/ab4mMsp5f/fYfZQwCp5a9v+VpO9YqIVN2bls/0i4OZAHkqSb04MY/EdWt0woBlgd5zg4F+yQsRS7Hp0i0gwKFdybzAFxUEFT/4o4fFKvIEcQdfWRjmXJnI8MaLO5UOj5kWn3VL2bgpTKxlKxtS//E5ryi+ChIpNB1RNiaf5j4p74sWvb8dMrD1JTMB84rtNDKAJw967OXB27vOg/DvN+HWlj5O37E7cr4UJ+Q+13zM5UfNImbo0sZTsAXaVoVANNjH02xrI2/Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Ng56DucLzEki2woAZfq1g8gezr55yqJktihvObQIXM=;
- b=Cda2vc0fHjcHm/BHkv0cM1Ij7CJxr4o4eL2y44HxRaJyilzQ1Qv9aZ63ugpba9/uBzU3z94ia+Os2swt9HX7Zi09nAKtgA4dYO6AcNtUIczJr2PvFr2VndQjfy2NgTK+yJNv+by276mbVJkGerjcUHI8QSR8Fd/JEimUjhgT2luTW+wgi60aXOuJwuI7LZ8bf76HBBDbbw2VhT9jhCCehcxTp23DdYWzGOLrtDKcmsE4FC/xg7+A5h0doEqm+7lDwec/4EBr499bpR62JbfWw4kmblB4YOHit1/lz4qQq26z0HLRuV1HUUm+tHPEt8GDNnaoP3l/eEeB9GqRNn3AeA==
+ bh=SX/trqBV68VJdKO5l6OAlWbAPH2VpS7+W3TWbP+uxrk=;
+ b=atL2JrMb+n2TQ+ZlzPd3UEgjqqrR4Y2DEP/6ix7kLaPjorASwOSoc6EDM+fvb7TIFAU79M+55TFdfy96crTtlv9ZVc83fAUOowU35Fp/HkB4ZWbpGSytp0XwGKXtTsANYMDGvyM+0CQpjLrgLZjAORa3REEEvqmPlUEbaVvBkNo=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH0PR12MB8049.namprd12.prod.outlook.com (2603:10b6:510:28f::17) with
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27c::13)
+ by LO4P265MB3536.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1ac::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Wed, 10 Jun
- 2026 11:21:33 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0092.011; Wed, 10 Jun 2026
- 11:21:32 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 10 Jun 2026 20:21:29 +0900
-Message-Id: <DJ5BVV2M6N61.BW2CEGDHLZPL@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 1/4] gpu: nova-core: move GSP unload state to a pinned
- Gpu subobject
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-References: <20260609-boot-vram-v1-0-d9382610507a@nvidia.com>
- <20260609-boot-vram-v1-1-d9382610507a@nvidia.com>
- <DJ5AG8OR68WR.3U4JD92SWJKPU@garyguo.net>
-In-Reply-To: <DJ5AG8OR68WR.3U4JD92SWJKPU@garyguo.net>
-X-ClientProxiedBy: TYCP301CA0088.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:7b::16) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.16; Wed, 10 Jun
+ 2026 11:42:26 +0000
+Received: from CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995]) by CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::6c9e:93c8:10db:e995%6]) with mapi id 15.21.0113.011; Wed, 10 Jun 2026
+ 11:42:25 +0000
+From: Gary Guo <gary@garyguo.net>
+Date: Wed, 10 Jun 2026 12:42:22 +0100
+Subject: [PATCH v2] rust: mem: add `Align` type
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260610-const-align-v2-1-ccd12f0aedb7@garyguo.net>
+X-B4-Tracking: v=1; b=H4sIAJ1NKWoC/y2NQQ6CMBBFr0JmbUk7jW105T0Mi1rHMkpa0iKRE
+ O4uoMuXvP/+DIUyU4FzNUOmkQunuAIeKvCti4EE31cGlGikUVL4FMsgXMchCitROmu0sZ5gXfS
+ ZHvzZa9fmx+V9e5IftsRmtFyGlKf9blSb9y/Lk0Kp8Vij1haVUCK4PF1elCN1dcoBmmVZvsD7h
+ +6vAAAA
+X-Change-ID: 20260610-const-align-7020a76367ce
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781091745; l=3170;
+ i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
+ bh=qWrzAa+99jyEwLkqeupNmH0kURQAtqY/f56Pom0QQEc=;
+ b=oDN7OSxWBsoN2wrxaMzqOLiO4wf6DUmt15e1HQrecxlE3ZklohPxR0n06Eg6BHiushCtfZn22
+ feaEUOpmuGOAJzoabwwt4zI5kShhC17w1sCkVndOnym58/JyLrgIEMI
+X-Developer-Key: i=gary@garyguo.net; a=ed25519;
+ pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
+X-ClientProxiedBy: LO0P265CA0013.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:355::8) To CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:400:27c::13)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,157 +77,184 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH0PR12MB8049:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3068a2f-dd63-4891-2837-08dec6e26cd7
+X-MS-TrafficTypeDiagnostic: CW1P265MB8877:EE_|LO4P265MB3536:EE_
+X-MS-Office365-Filtering-Correlation-Id: 121bd85f-330a-4133-054c-08dec6e557d5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|376014|7416014|22082099003|18002099003|6133799003|4143699003|11063799006|56012099006|5023799004;
+	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|10070799003|56012099006|5023799004|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	j1FYG8KKFriQFjHVx+c0zuSEvvDObMVBFfFz/92gykNCPNTnqcu+E608NKFGjvzQVVFJHXxwGvEUFCyjl9ZCMGofiLV8K4/Weyf2W+rn2jQ/ai3M9pKgApQu+QQtbfEW5n6285lddL7XMrutK3Uck6LC60iR6DB7FqM+62h1ZlSdDGeOyDS74LEAIm2nz0yRlmn91WatN0lTrwIxAkrqq2Eh+E2Q2j26OK8BHGORS88vJEJzJJWy8oBr3IOri5bkC7nYlJykftIDjVtD+UPgd7n52ZB+TzFYY2ukxnmwjPxkLQtcpt7t6ZjFwhAnq9HzBVv8SRM98SXXGkDjWaL4Fu79otkw56QtAK5ONH1wv6dB2DwmpmDBDi79LIUf4MFmObzm2HqU4Bz7pMz+sIOhbTRAO9e0sEd9QAo5N56BalCh9GJWa/u7I8BqzUZ3EqgCMyQT4RxLgcuWZbXb473B4/DXmNk7XWmJYY3WjGQodOUcnpUbh0s0LxTo2sVyXlaI5aBiAk7ht4Q0aU87J3kfEIClTqPjqEtFp6UBcvWPFzuBLTIhGKTW9w6kvsS/gyadiUWfI2RD9GTJ3/SE/BN5CHNnFF4zFKnUx0ZBki2aJUVxM6QHUjg7iWlEmJKuB0cPsksVGSjN81i3fPKxGwRo9r1cu0vw2bILXVlRfv0Is00MhK/ZW68Ju1FzIkYRjNEi
+	i3//s4rWWymj+A6J9mPH7GMVbPDAPBpz8YBfRVTn4GdEVFOC1wqpQ1bAaYy1QrB5gz2B/Zgc9yeDKwJi+vGzYpYV5fzLyu8KslP7LrrMf9Oc9kuG0ci8reNyVrxtHh26dPmnPkZYqsnA66pITB/QfY5OyCxtObSRMmp7ATzAvISy51yD+etXBZ6b/sOW2B1M51M1W4lL/mUav4lHn9wwHaQG+52ur+bfQK/MTJ3mEf3eFdeTFJAOer/kD7hxHZUoQZ8l4PWXN06+xibCD6OMKU1PE1Fgi4lFbHHou6uX9Ff5ybyAu/BCFztfTZImcfKRp1j9JNEC0XxLZGVo3bqi4weEfC8DwDxfin4wks/N4LDn5sd9X5/KZEolgSq6HemXjPXpHigQtUZA/jfjflgAp10SbpbQ/RQlsIlNuODVKuZD7ch7eJPKJtDU7sava30dLRTo+kT0kwsavBpHxNW39LGwFQTOrh3cDUyHhvDBw/O4ZTO9xjwNmgOkXMo21Bhq0ZpTd8NG0v2fo4ChlFGWPkPwy0WrRoHRfWvIXhVIz9eACkEpvJFjPviglUxsPgdye/Zb17R6ahgtCGXw24fqeAYfFNuY12U1DQSUKA6HyK9xsHBSi9BV08+g42CX4fhvOjL3KCaLQ3l6j/tzX/sFEQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(376014)(7416014)(22082099003)(18002099003)(6133799003)(4143699003)(11063799006)(56012099006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(10070799003)(56012099006)(5023799004)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YWVKV3dOMUdMbXZnQ3h5c3NBTTNGUTBGZWFxM0xIbmZWM2xOR3hTK0Q1dTNE?=
- =?utf-8?B?azY1WjAycFZ1K1lSOUlPNDdLa2NaVjdkWkVIU1dXZGZZV3U0TU5SRkRLN2c5?=
- =?utf-8?B?MmV0WGhKbDdCOXlWZXp2c3BTMGgyYjh6STFIOUt1V081UXcvT1JPNlU5VzVY?=
- =?utf-8?B?MzJGZ0JxcW9jV1JjZDlOYTBUWXBmKy9iZ2xESHJlSUdnYi9JaWxzdGFEd3R1?=
- =?utf-8?B?dHlJSXBIV2I1NTU1cEJNbHIzNGNwREIxZURDVWZPdnJMcmlzWTJUeWRLZmVs?=
- =?utf-8?B?YlQ2eU1aQjAzZDNnK1ZpdGZBaHZZTlFBUnNIRzhKWkMzWjRVM2Q5bUhiZVpk?=
- =?utf-8?B?dUttd1EydDRxRHZFaEJMNWdmYmZSNnN6Y2YyQm5uNlZmU0tkM1ROMWJ2ZWFn?=
- =?utf-8?B?eEFmbUVJcFdiMlRXYWNKM0F6R09tZkY4dmdWR01sNDQ1Rm1hMWZZbU9LUVJL?=
- =?utf-8?B?UDU5RlY2SjlpRHZ6d2JXbjlhVVhpMGVEVm1PQnJGOUg2VEZhd2VybjhtY05I?=
- =?utf-8?B?OU9SNnZ1UnM5dkRFNlQrNnFYenoyRmExWm5vKzIrbjRxQTk5L3hOSzBLc1Qw?=
- =?utf-8?B?V0ljYThmMzJ4ZGloWVNPeldTQ0lHTDNKd3E4SXZoQTZxQUFOeDBGenh0Wnpt?=
- =?utf-8?B?V1EydEI2UERTaWlld0ZIcGFqdkErRG9LTndKNlBTUmsrVllHZ1pYaGpTTUpy?=
- =?utf-8?B?eGhiZmRjQVdGa3FOdEF0V1FVeEpzcGxleGxoSWhrTDVwYmY0VjBRb3pNb2xD?=
- =?utf-8?B?VTJWSnVkdVF4QWp0Y3NXay9CajFaeGhxT2x1RjBrSnZhbFIxUC9CZXQ4Unp3?=
- =?utf-8?B?WXptZEFOTzFRbmdvRUtIUWxrQnp5bHFhN2xvN1hUc0pvUXhIaDFobkVqZWd4?=
- =?utf-8?B?OWdFY3JNczhvNmdtdFZ4SFNwZjl4bzFxZ3pJa3ZHU0FOSWVlcUJFVHpvczhP?=
- =?utf-8?B?eXg3VHZlMEQzWlYzQzFUb2xSZ3hVYSsyVVlTR2hhL3dWNG1XZENYMUtJNm11?=
- =?utf-8?B?eTJBcDREeHpqMnhFTXJQT2FSUGJsaU5BZ1VxNExYSjJFdW50NVBUeFJHT0E2?=
- =?utf-8?B?Ky93NHZKck55N2FUUXJ2eUU2amtKNUt1elR3amlkVnQrckNPaGxGeVBaR1ky?=
- =?utf-8?B?RXRvV0xMZ05tdU8xYnRFYyszYkxaMlhYOWh4RlM0b2NIUHBqcFhHaHdkLzRJ?=
- =?utf-8?B?MDBLZTZvcElta1FnU1hiSTdaa1Z6SklhQzg0anZqclE2dTViWXVOeEppL0VI?=
- =?utf-8?B?dFVKQ3k5QUswUjMzWUgxdXhOb2Jxb1lPRUlWcTVOZFJwMUVENGE5Z29aU3Zo?=
- =?utf-8?B?YXhDemdkSmNPZVJsNEloR3FQYVpEeE5BanBtU0xhakNqaDdWVStOQkYwWkVw?=
- =?utf-8?B?TkdNYkMrbTI3YmJGVU9ZdlEza1pRRWRGb0swSm5RSHlhSE9WU3YyN2l0STBC?=
- =?utf-8?B?UDdQNXhkdWQ1dkRRV2szcUpjSkN1ZmNhRktIaC91NHlNNXJiUmFpb2JrNDVX?=
- =?utf-8?B?elZpeHFYL0FoNGI3L0VIN2I0RUU5VHBzTFAzNEtTdnBvZ1E5R1RxVjBvRlY4?=
- =?utf-8?B?aXQ2eXY4cTlFbXhwUjRmMjlnYVBRSXRLUUNpOVBqT3JJMDdsTVNndm9sL3dZ?=
- =?utf-8?B?cGlldEU3dWZzMHVCUXI4WURNdGNHYXJGTnlMY3B5NnlFT1IwYzZSdnJ6QXgx?=
- =?utf-8?B?UTZ6MEdEcWR3U3pvYnYwQjd0dEkxUkVDZGZiWkFndkhwOFpVd1Q0bnlaU2Zx?=
- =?utf-8?B?NXE3TjRtbDNWNEx3SWtyWWlXRDFuYStUVzBQbVZJYVdHUEVHWER2QkZBSm42?=
- =?utf-8?B?Nk91QTd0VGlYbzlNMWRuTXlzTkNnS3hXRnpLZ1dyOHJraXZSRE1Qa0lzWVNh?=
- =?utf-8?B?bVhLUC9xYjJaVWxtczVYaXN3ek56Tjk3c0pUTEFOeXdWVTBrSS9ld21Fb2pi?=
- =?utf-8?B?NHVHTEljSS9UczJ5cUJkOXBsVGJvYzBlZnJxbUZCRFU3WmRjcXJEQlJFdkVG?=
- =?utf-8?B?TWF4YWM1OHpTdE1MMWJETFRTQVBuMGIwck4vMW1sN2NHWkRqTzEzWmVtejYv?=
- =?utf-8?B?TmVrU2RQZG1hZUhHaWFtNUNkWXozZC9LQjF4WmRraWI5QU9kWjZBMWJhdG1H?=
- =?utf-8?B?SDhqb2JxOXRUMEU2UGJEVGkyZEFTQ1pSNHZBaE9Tc0pMaDhTQmxtQzFaRytR?=
- =?utf-8?B?RUJ3UmJiTkJYYmZCcGg5NGx6WExpNHhONW9ES0xxb0N5dlpFUzZTYkNyS29a?=
- =?utf-8?B?UkVMTDlwK1V1SDI2TXVTZ0RGUTNOcFZIcVR4UFdIZnUzdGd1S2V6R2NrbjBF?=
- =?utf-8?B?NUR2VHpUTnErUjF6WUxwTTRVTWNvNlZPZC9JRE5NNTMzMXVTVkhIQTUwWHJi?=
- =?utf-8?Q?BgFciSXPyHf4xExmwP3viqy2CJ0VEQOnR36XSx7agjqwT?=
-X-MS-Exchange-AntiSpam-MessageData-1: jZtc8DwitVkyPw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3068a2f-dd63-4891-2837-08dec6e26cd7
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+	=?utf-8?B?VEhYa2ZpZkpZR0lxOTBvM0tlRmhvRmtndUlmU2M4NlZxRmJKQ3h2V21md29y?=
+ =?utf-8?B?engxbFl6a3g4MWpWdGEzeEQ3MjRieGdCd0FiaFBBWFhxRnB6NHZWVXdod2s3?=
+ =?utf-8?B?OVN1aWtBUkJMQVBmcmJ3WkQydUdMOFZoVVJSL1hHVm1XUGNPeHVpRVhmSTJ2?=
+ =?utf-8?B?WksycXJQaHE2aERQR1pYZ2dIZHhCNE5XYmtoTFZsRVZyQXl1cTY0VzcvV1l2?=
+ =?utf-8?B?cnczMDNRSFNtTDViRzc2QlhUVkY2SFNQdlVIRWJTdy92RUlja2VZTnpUc251?=
+ =?utf-8?B?VEJOUnUvUmJnMnpyakNWK0tlMFU2dHdwcU1JV1I4d05PYTFFZHJlN0kwaVdn?=
+ =?utf-8?B?RDlncVM3L2xNaUVWcGZaeGRnQjlUakovSEFSNnNUdUwrQzBpSTVKUnB0NEdC?=
+ =?utf-8?B?azRyRTJSMXdIQlJSYitzQ3diT3BmN0dCYTJVV2VlUWxMdFpaY2ZWQXJBSkFE?=
+ =?utf-8?B?eVFjWm9kRVozaHY0T25tc0VDVGNhN2g2eVJtMDZveE5kYmpKTHRaandyNnJu?=
+ =?utf-8?B?aWRxWGhWZUtuNHFicXBLTHNncHVPbmtadkQ2Z1d0UnRpL0RXV3N4R2Jyakl2?=
+ =?utf-8?B?RDIvaXJnanlHbEI4dnhEblB0S2FRY3BKbE1ybjVFUGpSVHkxUEluQjc4c3B3?=
+ =?utf-8?B?bVZqSFI0NmVrcm85ZnI2allvejQyZWtGK0lPNy8rcHVjODZ0ZDdDVVhROXRR?=
+ =?utf-8?B?eGdHODNiZjFHVWoyWW5UNnJoOWl0ZDE2RXo2dnlhVTczOGZlbGg3ZHhJZVg2?=
+ =?utf-8?B?WjdjR2J6WmxVaHBFcVNwWkdXdUlXTVpPL3RGNFQwTUpNMGF6VE43bXNBai8w?=
+ =?utf-8?B?bnNsd3o5MFV2cEx0R2xLbG5sZFB3eEFocUV2di84eXF4NCswZUJCZ29pUDJM?=
+ =?utf-8?B?NVJ1c1dRM1NZVWhFcndWNHBTSWM0RWxsOGFBSklWUnJmb0RST2pTaWtWckhY?=
+ =?utf-8?B?cnVEUWVKaW1MU2FWZ1FJaEIrbHBIempUb0gxaFEwOUJxUFpEWURaVnNwQ1R1?=
+ =?utf-8?B?cEJudWJoZ3lCYm5GSHVUdlFXRkpNTkdQTWhFTWxLaXkyTk1IUldwbGJiYnhZ?=
+ =?utf-8?B?UnZab3ljVkpzeU5hK2FKaDNjc3M2dk4rR0F4bnRUTVF6TDZGUXlHeXZSYmJX?=
+ =?utf-8?B?SWlIaHhWTDBvZnpuZ253MkpVMS9lRG93V05RYUVHdm9BdXNFQk1nRWFET0kr?=
+ =?utf-8?B?WXBEbHJBQUFjcm9yZzF3R2l5UTF1VkxFcmJ5MnIvQXg4VHJCZHRYQkNDSWFs?=
+ =?utf-8?B?Yk9jMHZ2VzVxWmtleldQRTZ4MmZtSlFpUXhnNnRnRTRWcE1lb29FQTJ3L3Jw?=
+ =?utf-8?B?bVVkVTZ5TGhyTW91a2Y5VXA3bmFxUURTbnM4YzFhZkVjL1FNMG5YV04zNkdy?=
+ =?utf-8?B?WlRnVCtaVzNNUm8yeXVwUFFSeWYzRFlodWZpbUFuSFQ2NHdnQ2JvUXhDd040?=
+ =?utf-8?B?UjVKRWNJZVJQRzlTVElXcUM5bURJclA0WGZRalY5YVN2aXdRVjY5STNmUzNs?=
+ =?utf-8?B?dnY1cG4zVWJ1cUtMdnpNWjZNRllaNFFQRitzSXEwbERxaXBtcVRYZ3FpNERW?=
+ =?utf-8?B?Z0JUdWtxTjljNDNpNWxQenM4NlJOQ2hwR0ZwbHJWamVvUk1CNitZNEd0N3Zz?=
+ =?utf-8?B?T3ZRRGZpL1FTbGEwTjcwb0NSTXptYXdUYWxob0ZQUFY1bmo1Z0hLeWljd0ZK?=
+ =?utf-8?B?R1lYWUFnTEY1UGdwazltdGMza0RQdG9OalRBQ3dLSk5UWE1rakpWbWtPLzBZ?=
+ =?utf-8?B?eW1adlM4ald1dURlT3kxZlBEazR3elZBL3YyMzJZcnRQcW1Ja0RrQko1SXJT?=
+ =?utf-8?B?MjNPODAyMkVIZEl1QU1PdGRrN0J2R0lvWmxob0VWR2pPblBZSVRxS2d3UDR6?=
+ =?utf-8?B?TVBjVzFsUzlsZWNHMTlmVG9rdW5LbGowelV5ckpTamtlMS9PMmRCcDNCeXQz?=
+ =?utf-8?B?eUpFUlhSbVNHYU5kVTdPdVZvZ3hEOGRseXdwWHp3Q25YTkpvNEdFNXY5MjAv?=
+ =?utf-8?B?MDIvUitqQmU1RFExZHRLb01RS1BScDVEMWJZRncyTnFvZHBYWWoyMjd1ZzdJ?=
+ =?utf-8?B?dTVDYjA5TzBlSGtjajBUd0dCMGxuR0MxamlwTkFQZ29SS0pqVEFvT3dkOVhl?=
+ =?utf-8?B?ektYV3lJdm9GRXFMaVUzVGJ3WXRiZEhmeHNKWFFRMHBHT3VzOVZGTWtkMGlk?=
+ =?utf-8?B?NVpFbHpXQlVwZTJtSjE2aXlnT2QwV1VNVXI3MTVtazEvTzlVa3JaM2x1dTBz?=
+ =?utf-8?B?UTJ6SWx5TndsSVJEcVoyTUs2ZWt4TG5JV1Z3blFjRExVMTZkY0IxOWZuNFEv?=
+ =?utf-8?B?S0htU1duZW9takxGb29qKzNROWNFWVI2N1U4ZGYzRllUdFB0d0Y4QT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 121bd85f-330a-4133-054c-08dec6e557d5
+X-MS-Exchange-CrossTenant-AuthSource: CW1P265MB8877.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 11:21:32.6862
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 11:42:25.7531
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y/qjsT6jVPXOloyuUVs81ynYUB5kWICvW8WgEFx6bRWjVxD4AZKNwu8IHhaO0dkFh11nGlvCziF3Yj+ClC0WYw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8049
+X-MS-Exchange-CrossTenant-UserPrincipalName: JYnXls38+2wSHTKdRA35rXos2nbYvn/QTautZksxAT2WfJ8w+SuZ67unb6CJN5aJ1idy2nEY/lVscE3SNSUtJA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB3536
 
-On Wed Jun 10, 2026 at 7:14 PM JST, Gary Guo wrote:
-> On Tue Jun 9, 2026 at 9:03 AM BST, Alexandre Courbot wrote:
->> `Gpu` currently owns the state needed to unload the GSP directly. This
->> means that `unload_bundle` has to be the last initialized field: once GS=
-P
->> boot succeeds, any later initialization failure would leave `Gpu`
->> partially initialized, and its `PinnedDrop` implementation would not run=
-.
->>
->> This prevents adding fallible `Gpu` fields that need to query the GSP
->> after it has booted.
->>
->> Move the GSP state and unload bundle into a dedicated pinned
->> `GspResources` object. Once that subobject has been initialized, its
->> `PinnedDrop` implementation will run even if initialization of a later
->> `Gpu` field fails, ensuring that the GSP unload sequence is executed.
->>
->> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
->> ---
->>  drivers/gpu/nova-core/gpu.rs | 86 +++++++++++++++++++++++++------------=
--------
->>  1 file changed, 49 insertions(+), 37 deletions(-)
->>
->> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
->> index b3c91731db45..6b3e02c71dee 100644
->> --- a/drivers/gpu/nova-core/gpu.rs
->> +++ b/drivers/gpu/nova-core/gpu.rs
->> @@ -262,35 +262,59 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::=
-Result {
->>      }
->>  }
->> =20
->> -/// Structure holding the resources required to operate the GPU.
->> +/// Self-contained resources to operate and drop the GSP.
->>  #[pin_data(PinnedDrop)]
->> -pub(crate) struct Gpu<'gpu> {
->> +struct GspResources<'gpu> {
->>      /// Device owning the GPU.
->>      device: &'gpu device::Device<device::Bound>,
->> -    spec: Spec,
->>      /// MMIO mapping of PCI BAR 0.
->>      bar: Bar0<'gpu>,
->> -    /// System memory page required for flushing all pending GPU-side m=
-emory writes done through
->> -    /// PCIE into system memory, via sysmembar (A GPU-initiated HW memo=
-ry-barrier operation).
->> -    sysmem_flush: SysmemFlush<'gpu>,
->>      /// GSP falcon instance, used for GSP boot up and cleanup.
->>      gsp_falcon: Falcon<GspFalcon>,
->>      /// SEC2 falcon instance, used for GSP boot up and cleanup.
->>      sec2_falcon: Falcon<Sec2Falcon>,
->> -    /// GSP runtime data. Temporarily an empty placeholder.
->> +    /// GSP runtime data.
->>      #[pin]
->>      gsp: Gsp,
->>      /// GSP unload firmware bundle, if any.
->>      unload_bundle: Option<gsp::UnloadBundle>,
->
-> I suppose this field is for unloading only? If so, you could just create =
-a new
-> type that stores `device`, `bar`, `bundle` only, which works as `device` =
-and
-> `bar` are Copy.
->
-> struct UnloadGuard<'gpu> {
->     deivce: &'gpu device::Device<device::Bound>,
->     bar: Bar0<'gpu>,
->     unload_bundle: Option<gsp::UnloadBundle>,
-> }
->
-> impl Drop for UnloadGuard {
->     ...
-> }
->
-> This does mean that the `device` and `bar` are stored
-> repeatedly, but this way you get a very clean way of representing this: o=
-nce
-> `UnloadGuard` is created unload will happen.
+Rust's `repr(align())` only works with integers. Add an `Align` type so it
+can also be specified via const generics.
 
-For `UnloadGuard` to be able to run the unload sequence, it would also
-need a reference to the `Gsp` itself, and to the GSP and SEC2 falcons -
-which would basically turn it into `GspResources` unless I misunderstood
-your suggestion.
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+Andreas, could you see if this patch meets your need for cache-line
+aligning?
 
-(the falcons are owned by `GspResources` because I want to make their
-`load` and `run` methods take `&mut self` soon)
+Changes in v2:
+- Added `Clone`, `Copy`, `Debug` impl. (Sashiko)
+- Expand impl to 65536, i.e. PAGE_SIZE_64K. Kernel technically support
+  PAGE_SIZE_256K, but it's uncommon enough so I think there's no need to
+  support it unless a need arises. (Sashiko)
+- Use `_align` in example, as usually the field is not going to be
+  referenced.
+- Link to v1: https://patch.msgid.link/20260609120325.233721-1-gary@kernel.org
+---
+ rust/kernel/lib.rs |  1 +
+ rust/kernel/mem.rs | 70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+)
 
-`GspResources` also already stores `device` and `bar` in the fashion you
-suggested, for the same reason.
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 9512af7156df..0a12c3011c61 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -92,6 +92,7 @@
+ pub mod kunit;
+ pub mod list;
+ pub mod maple_tree;
++pub mod mem;
+ pub mod miscdevice;
+ pub mod mm;
+ pub mod module_param;
+diff --git a/rust/kernel/mem.rs b/rust/kernel/mem.rs
+new file mode 100644
+index 000000000000..7f7545c6e545
+--- /dev/null
++++ b/rust/kernel/mem.rs
+@@ -0,0 +1,70 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Utilities handling things related to memory layouts.
++
++// TODO: `Alignment` should be moved here as well, Rust moved it upstream in 1.96.
++pub use crate::ptr::Alignment;
++
++/// Trait indicating that [`Align<N>`] is a valid alignment.
++pub trait ValidAlign {
++    #[doc(hidden)]
++    type Repr: Copy;
++}
++
++/// Zero-sized type that provides the alignment specified via the generic parameter.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::mem::Align;
++/// const ALIGN: usize = 128;
++/// struct MyStruct {
++///     _align: Align<ALIGN>,
++/// }
++/// assert_eq!(align_of::<MyStruct>(), ALIGN);
++/// ```
++#[repr(transparent)]
++#[derive(Default, Clone, Copy)]
++pub struct Align<const N: usize>([<Self as ValidAlign>::Repr; 0])
++where
++    Self: ValidAlign;
++
++impl<const N: usize> Align<N>
++where
++    Self: ValidAlign,
++{
++    /// Create a new [`Align<N>`].
++    #[inline]
++    pub const fn new() -> Self {
++        Align([])
++    }
++}
++
++macro_rules! impl_align {
++    () => {};
++    ($a:literal $($rest:literal)*) => {
++        const _: () = {
++            #[repr(align($a))]
++            #[derive(Clone, Copy)]
++            pub struct Repr;
++
++            impl ValidAlign for Align<$a> {
++                type Repr = Repr;
++            }
++        };
++
++        impl_align!($($rest)*);
++    }
++}
++
++impl_align!(1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536);
++
++impl<const N: usize> core::fmt::Debug for Align<N>
++where
++    Self: ValidAlign,
++{
++    #[inline]
++    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
++        write!(f, "Align<{N}>")
++    }
++}
+
+---
+base-commit: a87737435cfa134f9cdcc696ba3080759d04cf72
+change-id: 20260610-const-align-7020a76367ce
+
+Best regards,
+--  
+Gary Guo <gary@garyguo.net>
+
