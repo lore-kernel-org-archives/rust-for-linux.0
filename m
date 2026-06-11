@@ -1,144 +1,147 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A867ACA5A;
-	Thu, 11 Jun 2026 00:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781136293; cv=pass; b=Fnxc8IwJBAyRviPy2GBoGvrEaiHYYbh71nQv53TJb3t1YLfIfOhIIhmknUajT36YlUQ37uT5LT0SIHRN+5V7CcDA5Oa8YjuTMnGqF9LqpivP2Iy/GdhZOYae77WO2y1uUggsoxPSVSu032pvGYhfqtsB85ZzBb0pMR/5PQH/grs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781136293; c=relaxed/simple;
-	bh=Z5dICKoYtg3SZFDSaCtPbh/+esEIauRulfuVQ2Z8Ijc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jrvm35Zu7WoowA0cc45XVJPU6yy5V5/+YocxUH4K4fvPY2qtvWL69WDmgF/FiCeTeTYudDF3kHjlYql7sNcQ2cQmXQTBVI75B1AVM98VuX/5H1zhIok1lsX5gSlNiSdC8WbOhZ+o/zPMOp9CwWhHhwAKx87f9Xi5EX5xGeM1O6g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=QkchJo/i; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A001519B4
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 00:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781137967; cv=none; b=hLVFt2YfOy7duQsWcU00m5YMq+745fKlRM8OAOSK09KpvTTIwAUbb8ZYf4vaM5ZVPlZqDsjHCA3JoXi95w5s2oOUERyaLZ0Dd67jsqdkNySY/z3XPPFd9eDaNKRr1fOHG1yx4H+c3ZBhTbbrTGJpqa1fGx2c4QQzJLcGYHSHtiM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781137967; c=relaxed/simple;
+	bh=S1tHIvOieTU4j9LzjzSL3pWXo6mgEStorgewiv2OtHA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WZ3MGtcEbaV9AXdDIbRMe98QNqAd8OANAP3/9noqf+LrbAyU+igKlD9iNrhlU7eC1s1ePVQy9/GIh9led+JnqR/1NSrbWqyKLx49GJm65VIvo8j/vCKkdgYexIjxJ6MVTJj6CAWF+AsXz2rE6hCvhWRR6IsjhMUftZYfybsozT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mf+JxGEF; arc=none smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="QkchJo/i"
-ARC-Seal: i=1; a=rsa-sha256; t=1781136275; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=hPqJDgC0pfM4wqY9wmjTC6HoTbkgO+Wq3ZWfvjIUyUhhCHJfMMVlDhN6eNxgoQcNisnER8/n4ldZOb1KX+tWw9FoPzukoZ3qpIxOTnxK+ZlNhMJGerzKzAlWHkjicyNAnrHENfpMk8RcS7eVlIekUlWbdLiOVyxpMp2jEoM0uw4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1781136275; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=08qklnwrYy3ybfK0Fq9VgJW7y6VO7BnPIkyUQ1yUUXc=; 
-	b=OhLmMo947erInw/VjdnGRXCj37bKbi9SyTY3pUHF7vHUDGK75wU7NPEWgBDU9UolIX/hZOO7F+XeOfqPuejtSvap9oaKzzTapcc50ovGM1BeBV7j1a6R7+GMKCzzQevqBh29ykdF7xcE4/4HIToGvhUBRrqmFG68l6mgtr1zizA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781136274;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=08qklnwrYy3ybfK0Fq9VgJW7y6VO7BnPIkyUQ1yUUXc=;
-	b=QkchJo/iF9jsHcMoYIHuvDf+RYMygrK2jqhXvyYaw8YIgyOSE6Vv9VEq3S6XRFuc
-	dY+mWLO+3fzaR61gDu1vOfWd2XmWxrwt0CgQj+4560/0dA2ziCiFtdZQn8lOHbzwVMF
-	o4CdRbaGKddjb6MYm7G7XLv5CKNkemzFwDhHoDaA=
-Received: by mx.zohomail.com with SMTPS id 1781136272832700.1664977279125;
-	Wed, 10 Jun 2026 17:04:32 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Wed, 10 Jun 2026 17:04:31 -0700
-Subject: [PATCH] rust: drm: gpuvm: add SmContext lifetime bound
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mf+JxGEF"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-137dd3af345so6929579c88.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jun 2026 17:32:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781137965; x=1781742765; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ToIQfCnhhxhc6DD1qH3fv/EmwmlVtSC2+ooZgMKNohQ=;
+        b=Mf+JxGEFIKFNCjg6fNlaCBusZ3U+nCRIzmTR+Yoe+Oa860cIhjKz2cGgSIEXTrk4s0
+         R78Sq3AKL0f9YAh2DiPUr4PhTLLwUM1MF5MI1qoMPHXS4yVFN6cw9Z/DgObqJ0QauMjc
+         rDKzpRexKDpDhimf4WUDBQEl1Yd8thOHPyWo+wHbWJ1OXxr8PKlyL0ESMw7TOf6lh07n
+         lGdrlUS2650MOmJLJMVBHSQnKeuzCIPFEyNwrnaX0OGpn0Tq/y/zY3pVIvwAk+jivrUw
+         OAbtjVXoJSoaLXkFuNMrHs0rZVo/eBa2+Ti9TRVSisOP7PneuNmo6illE6IScc8gcQBw
+         jAHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781137965; x=1781742765;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ToIQfCnhhxhc6DD1qH3fv/EmwmlVtSC2+ooZgMKNohQ=;
+        b=HyKOOBDsNRgYydJhRZMfs7/qcbnjnk2okbzzCJRmrhYVY0E1PLTVdBDimmSEYu0UlC
+         isgqGz+xxCDBieIhu7vSAxH1r7yeJiavL1hwDHeS9gtBcafi39QCCQ7CP4ILBIoRRkzq
+         dl9RFUexhd9M5PcyrTdwjm/A/HlQ1GB6h8tpf3XoGd0pIxwy6gNmyIAEkIOGsTZoukgF
+         WpZjXIl86oD+z9COoURcXgM1QGkqUXBYyUupUqA9tV8qMlYcodn1Mg2/XqaD+huHktle
+         Z6HjlUltt8IDmNe5E6WrCP2H+R52BT269YyZGi9m9ouBRW+P8Mv/pX7vmWgPc4mggmbp
+         s1jQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9LElRxu2+lhFlCHNUfe6ubfIT2gzedV3h+0qgylh6kLdGowckPY/fBtQCdJIs6FD3F1M+HewXgdrPS1WETtQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydL4s7WEt0D0TEgK+0rZFrTBnSg/KV+kFNdngB8+ONGh/bnmkf
+	D1Kc2nAU5es3l/crU4dEIali4KE8E7xQyCVPyEIGUDODzAJJf60Pqt51
+X-Gm-Gg: Acq92OEE5IIFCeMrFGEUnVgfqhPHsbf50fqEfu93hz30nQFHSNYNwyGjtP5ZaF+wZYt
+	f7V2amHJ5yb1zZAOh6EII96+8VJIwQaVHpy2T9kVcQIiNNHbFNfrUamm0HLk+HYO2hDaJH1J1dm
+	dSsLrYoac+WMWw+QPmp2Q7rt+G1qwtNXNerAkfU2He9lx+uVPjjFeAGpTAeTUNV1OD4W2oU0524
+	NSxtG3vUvLmEig8bwt+8FaDUcTUYRIG1xn2DC8MAumNIk8S/F3Q37i6CT1TpWNizIH82P8iinsE
+	Mnuc0fvFOEj8VZkXcSzbCnE7jeSZKhe5ciAeIc2VBGP/BEUqj2emJYCYuQg8irDvN9Asdi5kzV2
+	+TamqfLc9eVc2XnOD9GJ2c7uED0SgFRJqbQKrdM/Q5jZ+WgIXDNizS2HMG8WGrF3PZ+EBvpm99b
+	ycfmEdpnY2Oo2bfX+Ua5/iiLdx4w==
+X-Received: by 2002:a05:7022:3d86:b0:138:62a:270e with SMTP id a92af1059eb24-138421396afmr356720c88.11.1781137964641;
+        Wed, 10 Jun 2026 17:32:44 -0700 (PDT)
+Received: from homebox ([66.75.253.8])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13842ed1ccdsm208047c88.0.2026.06.10.17.32.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jun 2026 17:32:44 -0700 (PDT)
+From: Yuan Tan <yuantan098@gmail.com>
+To: a.hindborg@kernel.org
+Cc: boqun@kernel.org,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	zhiyunq@cs.ucr.edu,
+	ardalan@uci.edu,
+	pgovind2@uci.edu,
+	dzueck@uci.edu,
+	yuantan098@gmail.com,
+	Yuan Tan <ytan089@ucr.edu>
+Subject: [PATCH v3] block: rust: fix `Send` bound for `GenDisk`
+Date: Wed, 10 Jun 2026 17:32:20 -0700
+Message-ID: <20260611003220.3512652-1-yuantan098@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-gpuvm_smcontext_lifetime_bound_v1-v1-1-531e7d2ee7b4@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3N0QqEIBBA0V+JeU4YhY3qVyKk1bEdWDXUJIj+f
- WUfz8u9N2RKTBnm7oZElTPH0CD7DsxnCzsJts2gUA04SBT7cVavszcxFLqK/rKjwp70O57B6iq
- FG9Vk8GVHNBO0zpHI8fV/LOvz/ABK1ZvvcwAAAA==
-X-Change-ID: 20260610-gpuvm_smcontext_lifetime_bound_v1-f829c05d80c9
-To: Danilo Krummrich <dakr@kernel.org>, 
- Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, laura.nao@collabora.com, 
- samitolvanen@google.com, boris.brezillon@collabora.com, 
- Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2343;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=jHJAQB/EOHX4fGMtGmvkXai9pbOgWNCI48HlzZompPU=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmavyds/HHif3pBa8W7Bc4/Qh9yH1bcdCjgg4nFB+bVu
- Rsvimk/7ihlYRDjYpAVU2Q5a2/UI1713kh3/v9mmDmsTCBDGLg4BWAiv0UYGb7kyJUeuV4d/K02
- L/jA1v6MaW3i0heMj+TOa7X1e3JtrSkjw1nhiEar5ic7iu89LP47P2rexbN1T7nad5bpfpp+jzG
- ElxMA
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
+Content-Transfer-Encoding: 8bit
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Yuan Tan <ytan089@ucr.edu>
 
-If a DriverGpuVm implementation is lifetime-parameterized, its
-SmContext<'ctx> type may depend on lifetimes carried by that driver
-implementation. In this case, SmContext<'ctx> is only valid if the
-driver implementation outlives 'ctx.
+The `Send` implementation for `GenDisk<T>` was conditioned on `T: Send`.
+This constrains the wrong type. `T` is the `Operations` implementation,
+which is typically a zero-sized marker type that carries no data, so `T:
+Send` says nothing about whether the data a `GenDisk` actually owns can be
+moved to another thread.
 
-Add a Self: 'ctx bound to DriverGpuVm::SmContext<'ctx> to express that
-requirement. Then propagate the corresponding T: 'ctx bound to the GPUVM
-state machine helper types that store T::SmContext<'ctx>.
+A `GenDisk<T>` owns the queue data `T::QueueData` (stored as the
+`gendisk`'s `queuedata` and dropped when the `GenDisk` is dropped) and an
+`Arc<TagSet<T>>`. These are the values transferred when a `GenDisk` is sent
+across a thread boundary, so the `Send` bound must constrain exactly them.
+Bound `T::QueueData: Send` and `Arc<TagSet<T>>: Send` instead.
 
-This allows drivers to provide lifetime-parameterized implementations of
-DriverGpuVm.
-
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+Reported-by: Priya Bala Govindasamy <pgovind2@uci.edu>
+Reported-by: Dylan Zueck <dzueck@uci.edu>
+Suggested-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Yuan Tan <ytan089@ucr.edu>
 ---
- rust/kernel/drm/gpuvm/mod.rs    | 4 +++-
- rust/kernel/drm/gpuvm/sm_ops.rs | 4 ++--
- 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-index ae58f6f667c1..1ec649fa50ea 100644
---- a/rust/kernel/drm/gpuvm/mod.rs
-+++ b/rust/kernel/drm/gpuvm/mod.rs
-@@ -264,7 +264,9 @@ pub trait DriverGpuVm: Sized + Send {
-     type VmBoData;
- 
-     /// The private data passed to callbacks.
--    type SmContext<'ctx>;
-+    type SmContext<'ctx>
-+    where
-+        Self: 'ctx;
- 
-     /// Indicates that a new mapping should be created.
-     fn sm_step_map<'op, 'ctx>(
-diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs b/rust/kernel/drm/gpuvm/sm_ops.rs
-index 69a8e5ab2821..742c151b2540 100644
---- a/rust/kernel/drm/gpuvm/sm_ops.rs
-+++ b/rust/kernel/drm/gpuvm/sm_ops.rs
-@@ -3,7 +3,7 @@
- use super::*;
- 
- /// The actual data that gets threaded through the callbacks.
--struct SmData<'a, 'ctx, T: DriverGpuVm> {
-+struct SmData<'a, 'ctx, T: DriverGpuVm + 'ctx> {
-     gpuvm: &'a mut UniqueRefGpuVm<T>,
-     user_context: &'a mut T::SmContext<'ctx>,
- }
-@@ -20,7 +20,7 @@ struct SmMapData<'a, 'ctx, T: DriverGpuVm> {
+Changes in v3:
+  - Add Priya and Dylan's names to the `Reported-by` tags
+Link to v2:
+  - https://lore.kernel.org/all/20260609-rnull-v6-19-rc5-send-v2-1-82c7404542e2@kernel.org/
+Link to v1:
+  - https://lore.kernel.org/all/cover.1780633578.git.ytan089@ucr.edu/
+
+I am a bit unsure how to handle this v3.
+
+The change in this v3 is adding the missing trailers.
+Andreas' v2 already addresses the TagSet issue from my v1, and his commit
+message is also more appropriate. Therefore this v3 has no changes other
+than the trailers.
+
+I am not sure whether it is appropriate for me to take Andreas' patch and
+only adjust the trailers. Please correct me, and my apologies if this is
+not the right way to handle it.
+
+ rust/kernel/block/mq/gen_disk.rs | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 912cb805caf5..b36d24382cc3 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -199,8 +199,14 @@ pub struct GenDisk<T: Operations> {
  }
  
- /// The argument for [`UniqueRefGpuVm::sm_map`].
--pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm> {
-+pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm + 'ctx> {
-     /// Address in GPU virtual address space.
-     pub addr: u64,
-     /// Length of mapping to create.
-
----
-base-commit: 550dc7536644db2d67c6f8cf525bba682fba08d9
-change-id: 20260610-gpuvm_smcontext_lifetime_bound_v1-f829c05d80c9
-
-Best regards,
+ // SAFETY: `GenDisk` is an owned pointer to a `struct gendisk` and an `Arc` to a
+-// `TagSet` It is safe to send this to other threads as long as T is Send.
+-unsafe impl<T: Operations + Send> Send for GenDisk<T> {}
++// `TagSet`. It is safe to send this to other threads as long as these two are `Send`.
++unsafe impl<T> Send for GenDisk<T>
++where
++    T: Operations,
++    T::QueueData: Send,
++    Arc<TagSet<T>>: Send,
++{
++}
+ 
+ impl<T: Operations> Drop for GenDisk<T> {
+     fn drop(&mut self) {
 -- 
-Deborah Brouwer <deborah.brouwer@collabora.com>
+2.43.2
 
