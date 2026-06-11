@@ -1,105 +1,134 @@
-Received: from mail-244108.protonmail.ch (mail-244108.protonmail.ch [109.224.244.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6B4346791
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 06:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781159824; cv=none; b=g6HFJkCGO74GoTn/Zp3JJbOQBtqOciYr6uTIAIk4rwu4VeB/aZCTDGmAENS5/dTDFcbedEr2y58ouh/QkuajPAXw+7eAG3UEzW9KFhKOoznjl8xuW67va9vZbJqJI1vxalfRIO9homhxC5QJCfaQSZ3XTw72eeTZo03I0qk5hr8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781159824; c=relaxed/simple;
-	bh=f4W1mnT3t+bd7nqB26X40wjbSkk28Ws1Z4i5LHpTXoQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OniAr5vpgam7hNw2TWniFGZdoIE8vi1OZr88p0CT/vEhQD4Id+bec1y38Oh0nysD0O7s1LDPKqaevRmx1SZkMW/dZRp8klRUHbB5yxCmz6TFTDHqojH15uH+PTvydRCn0zDMjNbgCUH4cIa4ymMOw99HE0jQXXhVUhwMeQ5+pdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=MgBVcBdG; arc=none smtp.client-ip=109.224.244.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C2340D589
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 07:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781163185; cv=pass; b=pDTd20gS0IEulDEvDZJW+uKwK5KGKdRwmNgtcqRCnLJHKw9I+yfInt87dZ7KGoiw8e/GzjyG/rnHh23LVvadOGbEGeY9Ffvzgr09K0CembxRft01eQeuWfUHW3LebdIyoTKW8zyStEnILUxtWw3S7AJIxF02KqYlYUmvJIMELXY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781163185; c=relaxed/simple;
+	bh=Bn3EnBHfkP6gImyPH7TD72VAQaqad5HMgVHCeA3f1VQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZRze8jfeUh09to8bvwo4wjvEzkYpqllGs+FVj9I5A1Y7eP9EYzPu+g4HPRy/NJHqUIvaPCUhWM/PDgDwE1firBAc4W3I3WQkvMUoh+B1e8bc4dLLHTpzb0SnS+BW7ku2gAsi5zDphfqPSPWT9p9Cpy+1RDBW6qCbJXylSaYIwe0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H6D09883; arc=pass smtp.client-ip=74.125.82.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="MgBVcBdG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1781159813; x=1781419013;
-	bh=zrpUMMBgmVySR+SDu/7NWHyTD1iDiS/U48NtwSdHLKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=MgBVcBdGEWXPA7P2RQ66pxaR1DLn0TgCW6+BSNqP6XT9PmJyaqDlX/+97Gkp070jE
-	 7qh+C4rPeAU+tdml9qO5Kzw3mH/msqtynxP4lWqVA5uKF2u9DjJYiBeA+D2kzOG4q8
-	 81hNypVARHqLiYjybvzRnQBQMCvUVp5nH28Pwn/+DBujZj9hqLg2EPCtZeD3E0lsBP
-	 f0ayBIeIGs6RDqwwQ7klL0Yj6wxLWFJwCUwXafIWHiy1Yk3eQ2YgMzgYG6LtcLkEWS
-	 lyweGELFcdfvLzkyXrFw+fUOBL7zcEqPhLt7zpZieO+lMRNBxVyDU7kV3ah8rcYtwV
-	 wUIbBmTw1AdIg==
-X-Pm-Submission-Id: 4gbXxD6KY7z1DDLd
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	rust-for-linux@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH 4/4] MAINTAINERS: add Onur Özkan as Rust reviewer
-Date: Thu, 11 Jun 2026 09:36:43 +0300
-Message-ID: <20260611063646.4775-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260611055538.61425-4-ojeda@kernel.org>
-References: <20260611055538.61425-1-ojeda@kernel.org> <20260611055538.61425-4-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H6D09883"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-304eb0fc233so697604eec.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 00:33:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781163184; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BDlwYLkXyGmUwSj2jZHIUng53bcWlVfY6gad7+yeUgVNerWo8mor005ZXzWRlnpjTA
+         EVaCELDIxMSp66XwI0WAAEYlpk6NrZqpNM2yNFjNjRXOH9HDveCmbosP4WDayFS9TQVW
+         T4vIbwybYQpUBFH79hldFtVKc8ZW7FUwGL9MiVlogmuHYIiAc9Ql3oyaFEqmA7DCfTM3
+         UvwS5vb5Iyk8BGNmZUNLTNo2SoAgxrlExb2Bzyv0yqw8yWTBiWrcgXonn+TNw500FPTg
+         O6pDsRthAIDNcYusoppuyEcpKTL2tzF0vIg+uN7/5BvPviur0Jauf4ZPi2OFjQrydN9d
+         RoAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=s7aaFi9ftWqsXPgCpvnLACAdtxJeDiLmPHFUiwt4nVA=;
+        fh=NWb43u+R4M9GbvS+DyFdoIKTvmE5gbBkbb79PTsu72A=;
+        b=GzCPV1lm8yliYs2wt7nVL1c7KZpnvhuCI1WujyMHW8MJvKIdI7rdZFVKfr29BO8MzM
+         Tj71VQCjghKKUbOAEPlY2h3TGVi5ndzrkBMCpS58TPSIGuKszJFgYOdNM6FH4TveuqMN
+         waqHAjTmAtEEkDxIe/YbRkSuegEeXcRyZK2n3jVEwuNSueLOTaXAOtdTQe4Tup6INhAe
+         88O7EMIVA+NtafBhsYV4Hhc1hBgEG4s6Bcu5wBVFCcsp1W1kB4W1aOpM5xhl2p9FLNLE
+         uWQYK6+C5HxACzHD3euY0JHYb10JrJ1xhDsbj48Jc3+PhrMP/NoMRdYOjPrT4AhO0Dsk
+         EWYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781163184; x=1781767984; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s7aaFi9ftWqsXPgCpvnLACAdtxJeDiLmPHFUiwt4nVA=;
+        b=H6D09883bLMFNUI6huqoQxBNzoozIz6Ty0Cni0y5PVzMk+P9O1rXg4gxpvDTygxN8l
+         +z84uWORF/8RsEMc+lkiIddiLdbue2QlcTWyNjYX66rTHz2swxHGkZuizymPDAB4HLqB
+         5levxSVirtd6dPP36iDujBgKZ0K2iV2V3lwkL24G5RS5/o6n1JsDDIKEeLVPBm8etaP0
+         8quFLR9RmKax0kO+CfDYqlAUN002KkCnZ1YqYMQNv9UPfWP/AmkNx4juNafAWLz47WEf
+         ckEeA87nYhN75sibippt/S7Vie09BW3KMSrUdK44upK2NPhbrikKDywZf320ZKr4ucbS
+         wx+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781163184; x=1781767984;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=s7aaFi9ftWqsXPgCpvnLACAdtxJeDiLmPHFUiwt4nVA=;
+        b=M5zYhYexeGg8xbd1baqHKjqw9rKjf1L3676uPb3zT5hiCESBDM2OxxD9CDTOUxRbz+
+         /jGnRi89Y7nQ4Y2fS3Q6MvfwDP2NkdH8QHM3FnPcjaQBiamom3sLMy+SqX/yCAg3WDHd
+         tsckoIlC0RMFuCvK57gpcQAeI942+2bYLzzhklbTNGYN2Xx/fQ/HhOetfuBpdXfmGkIb
+         IQMZriG8/BJdl9O9vbhOWnAhdb3B5dQoKJVYWRM0nw8cyWWux0q4sUY6r/cJ5BMLqwBK
+         58CmB+4WAPs+utweRpAvV9DCDqPQx74ONsmxAB3L/Njt9gp1SB4DXciG5Jtwg/Eo3XIx
+         rtNw==
+X-Forwarded-Encrypted: i=1; AFNElJ9Mouky+dxWieRq1GgSGxvQK7DM4YN5VVwFJBvlM47KNFOR5dU89osN8fPXS6wvVebbTRsx8Qz1dukoAfW3eg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVmrd8HPN36RhgqWrCuEbWUXvgiqziwfITXYxTpZBKOGsdqhNh
+	Doywkpq7NfAw5AY9YJKWxDVQFtNx9KJHoBgIw2jLjepi8vKj7kPQizPYX8YLmhZCR0TWEk+K3Qx
+	Ay3jI/GFC4YL0QT6oo2Ow59iQ0ha4XeY=
+X-Gm-Gg: Acq92OFsJ6GrlY9+fQzGduBQ1tpuX5Q1E0iZ5snqF4YMl0rmFpc4nmjswgm6diYLiUf
+	atq5swfpR43IuJtjqjOLbZBtq9odBdNiiM6saXYhvv9PqE+/eY4xJAKmUt8hwY8cJtNVwZMwpWq
+	EGIC6Xt2Snn1Ka37ZYsZzWAatcLf12R6ESi4o5+nSxfjUW/+K1bL5XCj6kWWTfAeFPeuO2cZjgH
+	GklzPiq/n0nnUs9zTgg2L55be2YD9g1pEUTe0N4iUAImh5GNWd0nmol/e6qVHbkgAwnJYlShQxq
+	fHP6jzsProuAXL2iFg925jMJkhPO5DjkSkthfyTQ6GiK5Elgnz88HOcditYvXso/dPWQDDTX66Z
+	8qqxdvQxwzaBbInXbVJANr//gvuuSAuzCGg==
+X-Received: by 2002:a05:7300:8606:b0:304:8860:74dd with SMTP id
+ 5a478bee46e88-30804cd9ebbmr561035eec.8.1781163183579; Thu, 11 Jun 2026
+ 00:33:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260611003220.3512652-1-yuantan098@gmail.com>
+In-Reply-To: <20260611003220.3512652-1-yuantan098@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 11 Jun 2026 09:32:48 +0200
+X-Gm-Features: AVVi8Cco51ZUFpFSA8bcoUADhAgE8DZ9MPZ_w0DEB3uCKsG9ETpglatFmEhgDSc
+Message-ID: <CANiq72mJ7JuN_j7WwApewjULvhpW_G0Vya9NuNz3uAHYE7ONnA@mail.gmail.com>
+Subject: Re: [PATCH v3] block: rust: fix `Send` bound for `GenDisk`
+To: Yuan Tan <yuantan098@gmail.com>
+Cc: a.hindborg@kernel.org, boqun@kernel.org, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, zhiyunq@cs.ucr.edu, ardalan@uci.edu, 
+	pgovind2@uci.edu, dzueck@uci.edu, Yuan Tan <ytan089@ucr.edu>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 11 Jun 2026 07:55:38 +0200=0D
-Miguel Ojeda <ojeda@kernel.org> wrote:=0D
-=0D
-> Onur has been involved with the Rust for Linux project for a year now. He=
-=0D
-> works on the Tyr driver for Arm Mali GPUs [1] and has been driving the=0D
-> `ww_mutex` series and the SRCU abstractions, as well as improving the=0D
-> core Rust support in several areas.=0D
-> =0D
-> In addition, he is already a reviewer of the `RUST [SYNC]` entry and has=
-=0D
-> been involved with upstream Rust -- for instance, he led the bootstrap=0D
-> team for two years.=0D
-> =0D
-> His expertise with the language and its toolchain will be very useful to=
-=0D
-> have around in the future. Thus add him to the `RUST` entry as reviewer.=
-=0D
-> =0D
-> Link: https://rust-for-linux.com/tyr-gpu-driver [1]=0D
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>=0D
-> ---=0D
-=0D
-Thank you for your kind words!=0D
-=0D
-Acked-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
-=0D
->  MAINTAINERS | 1 +=0D
->  1 file changed, 1 insertion(+)=0D
-> =0D
-> diff --git a/MAINTAINERS b/MAINTAINERS=0D
-> index bf7a7a52e9a8..f925356a0b49 100644=0D
-> --- a/MAINTAINERS=0D
-> +++ b/MAINTAINERS=0D
-> @@ -23396,6 +23396,7 @@ R:	Danilo Krummrich <dakr@kernel.org>=0D
->  R:	Daniel Almeida <daniel.almeida@collabora.com>=0D
->  R:	Tamir Duberstein <tamird@kernel.org>=0D
->  R:	Alexandre Courbot <acourbot@nvidia.com>=0D
-> +R:	Onur =C3=96zkan <work@onurozkan.dev>=0D
->  L:	rust-for-linux@vger.kernel.org=0D
->  S:	Supported=0D
->  W:	https://rust-for-linux.com=0D
-> -- =0D
-> 2.54.0=0D
-> =0D
+On Thu, Jun 11, 2026 at 2:32=E2=80=AFAM Yuan Tan <yuantan098@gmail.com> wro=
+te:
+>
+> I am not sure whether it is appropriate for me to take Andreas' patch and
+> only adjust the trailers. Please correct me, and my apologies if this is
+> not the right way to handle it.
+
+It is OK to re-send a patch from someone else, but you need to make
+sure you give the proper attribution etc.
+
+In particular, you should keep the authorship from Andreas if he was
+the author of the actual fix (though it sounds like Andreas is OK with
+you as author due to v1 (?)), and you should also keep the existing
+Signed-off-by (again, assuming you were actually picking his patch,
+which I don't know if it is the case here), adding your own afterwards
+because you carried the patch. And if you make any changes to the
+patch, you are supposed to mention that too, inside square brackets,
+etc.
+
+Furthermore, if you reported the issue but you are not the author,
+then you should use Reported-by for yourself too (even if you have a
+Signed-off-by because you are re-sending his patch). Either way, a
+Link tag to the original report would be nice if one is available.
+
+In addition, the Fixes tag means there should likely be a Cc: stable
+tag too, given the hash covers other stable releases, unless it
+shouldn't be backported (in which case, it should be justified).
+
+The document that explains these tags etc. is at:
+
+  https://docs.kernel.org/process/submitting-patches.html
+
+I hope that helps!
+
+Cheers,
+Miguel
