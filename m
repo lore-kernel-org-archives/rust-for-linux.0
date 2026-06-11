@@ -1,141 +1,120 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D4C39DBE4
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 22:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4753D3939AF
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 22:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781216553; cv=pass; b=phBIFAXU4K/NwmH2+77OledlUucZUm6oIwTY7mvt8EzQuB5TGX4gBoriOFtJzsOrb5/kbMcOBy0hLgIefaDluHGHGDsGw8aRJoYOj5LcDLZCHCcGhOXtNuSNBb1AuJu3ES+HgdXgU+c7nfsh1DsKBWM84q+KY9sMxdJiG/42E/U=
+	t=1781216818; cv=pass; b=WMbAQvB6t5x1/yOc9PbbidtTbk5HKBiC0F3ZGR5WW8BYaFRGgRlzg9D9mlb3XzAUB9lBOF6ETGjQsT/X2uVeUStctlN/w7YH9GqEtopS1Z9ga+qSwN/hYBx87S9hLGG6oxkTPYDbS+5k6DsfESrWHNlLbXCfz3hXdwVsUkzSFSA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781216553; c=relaxed/simple;
-	bh=4NbiSofdu+oQiEoPxXUx0WP2dPkMul7SnL6x2pQKWPc=;
+	s=arc-20240116; t=1781216818; c=relaxed/simple;
+	bh=68rUWUAdGxpNjbkIhUuI3gw+TVNJHtNh9q0jDUnQv/U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fqIjFZViJPT99rY5LcOSn0j9bXThah474NdZTXrNmKUyeSmwsV1clQqMec6Bg+QaaWUSYunWketT2Xp/iHE1UcuHGhANtNg5TwOkDcGQKfzI1sY+8Uqtxn/3HEpEpbmLSNlMPswa1mj7WZVfiqUJgvOYzf2DfMjfyf2t4mLsiS0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k8jvzZ6I; arc=pass smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=j3h680XfqY/J8W9vtsUJUeeWHnvCOD9cErobwVN3slzsHoUd+Cp4v2z/WZQ/uBK7hqEziF+jdvOPPmNx09CD9Jo/bDewV3rG+v6MWyO71YZCC4Ift7TlD+hGXdENIbgfnIqiN+hQMXxig/q7f3nzRTanZv9a9fK3wiwMQQgTD6M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=akomxgcv; arc=pass smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k8jvzZ6I"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68ced08613aso4553a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 15:22:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781216547; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="akomxgcv"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490b3637b90so2083545e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 15:26:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781216812; cv=none;
         d=google.com; s=arc-20240605;
-        b=c4t5g1Exzv/CtYIgULJ1BYhuiKNtTg8WgFyvZ66HL12VaVXypTNxyGh2AR69nFoSkp
-         iE4acUn0ZdNA7jIjlqpPsJxDM4kYxUNxmS6UuBfYRGwWbyP+WSv+9gvcnwm7w02DHYNk
-         kifDaT2SrJc0g42+ljrnzguyDLihMcJNrqjVoNB/9ajd0j/crmN6O7WiqKwtr3beqA5W
-         vPQV5B8noHIj6b61K2jl8ziOJQsr2yQD793VMZSmTCQj01a5n5JAvNh0YsS7UsNBgmz3
-         fv40bhNyoTaDZzJCHmA4YsdRM4duP8NuubHWUb22LR7V8pwYcbhHWqiRXIQT65h0YS5a
-         CI3A==
+        b=YAaTd4pctsFyKPbZV2zygDiGT8q5gLNb+xdjkTB3vmc2hzKZwICI5QGElIx6WTQA03
+         e1iGPPv2WFceyh6MdN5cZz+wY14OB5/n4LF8n3q18a46YurvV33r56JHLcOkX9OiGDgA
+         gNoaEFAtv7XriDLcWpIh1Gc1FOhbwKqTeZigcytGw4fGP/a4YW/kBGkXPdLvFn1NDfeR
+         o5gYGVGyy16XpGXHVVm9ckcxt2kQ8yeJyZzILppmdd/Zatists4JIueB2FxOi0bBLErm
+         BzuIOxnOTdHgvkpm0AwEcFPT6zwOmT/HLJTFexpxBiAOrPqfbbOuGvBEZgxCkYEQC0qL
+         J5PQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=lfqrN4KSMEEPAzQGS+9nZt1nC6ftn23/eqH916a63u8=;
-        fh=ZUeWYoe3Rx8Qh08Ue7MpGG+RM+bEw/7wQ+poslulamc=;
-        b=TdHHjYgL6kKYLzA0TeN0U8wJibtVbzxNKJBlHLCQsqTvAAv8ECHiLO+fx3zj7DROnH
-         /hrhvbnFVk53khPqBYQnz7r4BpNbfqRuWedRAwpc/6wINvcrYqPVzWXKsub3yA6eQXC3
-         bopMyQBFUeNGnvRsmsPSwHAYQNZekV3v+0V+lMwREVFiPKj+6Qnm0EkU4EEVbjfzpgi/
-         IOmkypRgqfznglJlDnqSTmprAdruHIZg9CfSc8LLmiCMHxFwjyYlYVPfxw/moyGaTzn0
-         FJbf14DtSmP2qof2JPqApfTPwxo7Q9LNmuzqwpg7KICzS4d/GvvioqK6vyPh0HMgVv+o
-         p5Bg==;
+        bh=bUG5E+qMTSmk9Ixe5qRHn6pqSYcBNooBA+jeoM9km+E=;
+        fh=VMkH7CkdZPHcGjAOQvAd9F1GT5sKwDL3b6InKbZWCEU=;
+        b=I8mRKMi+6eA/hnYsPo8cbHXkY0d+8H9LqCJpHQW4VHh6ux7Sff76NK6LDMg5NBu3Zc
+         7hWRUYLLmWGq/dW79j1PYFLa2YTbkwu5y8N9LYC7BuhoCKrUoe98opxVIE2n4yrsYBgk
+         +umvJtz4l1s7dxVoakmLdRXnxLxs8ly0pPDnSn5kvJL+H9pmmgIX9jEeyev1sVFSEi/i
+         iRdIEcfEOl6m7dWak8TcrVOMsALaOowFdn7nMuxDLB+cB9iQtBCUUMAZg9XZTHT7hSqG
+         oUkaZMf234exP6KSa9uFnHP1qq1wl9+zq7dWVSSCuRjKbdv3zvuYJClCnEzTc5TmDlCS
+         5cXA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781216547; x=1781821347; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781216812; x=1781821612; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lfqrN4KSMEEPAzQGS+9nZt1nC6ftn23/eqH916a63u8=;
-        b=k8jvzZ6IUq6zILJ9deG9eD4RrPnAabsg8IbTHr5yeUmoxz7jA4OVGwcrtlgN6yTEoA
-         O6RlUD6r0e5r7vRgJ7xO5AiLYDauYsry6GEs9HtNtZ1wfXYaoWYhFx4ZTS5ftjueohEl
-         usVZxJUZGrERG0EPST+vcttjFD3BcjFEp3eqPB9nXA7wSxQitmqu1T0IaRRJZjZMsVkd
-         n5AEBHY8UPWwLZaPKK1ukbxnxp2psv+UDnDIJMDbEcF4lMLe078V9gh1HREHi/MC/6aO
-         aIC6ZALxGx8sQe/mHvoHs+qM5pSEST7qLZEfBwo3OD4BLtptT9E3iUK8GHwg/637d5qi
-         M7Ww==
+        bh=bUG5E+qMTSmk9Ixe5qRHn6pqSYcBNooBA+jeoM9km+E=;
+        b=akomxgcvi2LdX6G86ODQ10im+YC5CZiQuLJUYdSMNPNdSgyJTD7jbAK22hmwxqsxst
+         CcxZk3JPGzY5RTvj/b9knxo0p3YtBja5ywDYRvrtE0pnb5iai/d/OqsvOWLW5fPXcfeP
+         UJ3V0hT9WlJl1qitW3UeT7CpRZT6TMeOJBMRtjzqoN7LgGWpmtXKugAnTWRVAC2QBQsk
+         U6riRzQX8z6Yvg4MqlYATqifkbnGqF+PueZkQi9WCeWYHLQLgA3D74Xd62a3T9VyAVNg
+         arStExtJYdA8xGgN2U+FJNFDlt99nQ0lRF2LcpNvWQoDO5b5UZDE4OkAvGM10iq2IrbE
+         vp8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781216547; x=1781821347;
+        d=1e100.net; s=20251104; t=1781216812; x=1781821612;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=lfqrN4KSMEEPAzQGS+9nZt1nC6ftn23/eqH916a63u8=;
-        b=eI8ItwIaLOLatga3dU3B7/6SoYkao/64HJeUq7XBU39eaLbOudo24LwWeEf5YZMKwq
-         7ZUOPe1oxA4zcTpQhix24FlOPNCYk2mNAZjd+fbkINJt6di+RUvTDF5t11AQDKcpQHZv
-         flmoBnOZLRnqW++ISOw/MxayOxuAUf+NyBsQzXTkJ8c4z3QKN6ssN4Yj7Z7sfoVjLQ8L
-         Q8klDQKzrKWprGQGsQBjobsnFx0nqRgK6lg6hIPPxed7uRkTk4cK+Jpbfzt8D2SZPX7v
-         zwsT6G7zjfvu2BRt9uajbYYZPzLG4Zz2YVFr32Mg2eCRTJNNSurNF44bCBGjbRatfZz8
-         BxOg==
-X-Forwarded-Encrypted: i=1; AFNElJ+FgEcwA2zPVx/kEcbpWXWLkM+JcfIEMo+78F+PHlnbk8p93lxmTEv7HgJfC0Tlf+fIBM5SnK+iO5F/nb7HBg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBwWbklb7wAAOor18gia95LMrTtksnuhHbEU45L8dGjxEGaPL1
-	xQxVccn85D1FV9Sii52Y8siua5DfcX5GlNvXH/fwmAevMnFPlTiY4+/u04CDnxV0t6PsST2J5HK
-	L/QW9pl5L9Gb79WBxbR/jqWhcNAaRkgGViV/WLSX7
-X-Gm-Gg: Acq92OGrCnSdZMp9iaLkJb079MOJV1EoEazX8h19wfDfTJCcekKl9AF5EaL2fuwUdqb
-	aN8zj5eVUSVbs7PzYAX9nS7wWv8VYXwWJ4SB+m+IYsaKxFqcpq1W6OuXtUBBG7MXG+zR+s72oWa
-	oD+twJyl1MUXzlYka8nxItJpGDDJE54m512edcb5S1Hto91OyNaeAWR2wU8rV76m+L/mntNA5Gd
-	UnVxocs/tHdzXY28oWVJCMX/jWrpvZTEcY3nCSn9EPSIRhB++OtQ3jESBeY5P9DWbAoLV8xAMw5
-	L+YihmurR2veeOTvJfYXol0GBrF6Sfwe3RBF
-X-Received: by 2002:a05:6402:a15c:b0:691:9d2b:b856 with SMTP id
- 4fb4d7f45d1cf-6935dba2a1bmr15696a12.2.1781216546339; Thu, 11 Jun 2026
- 15:22:26 -0700 (PDT)
+        bh=bUG5E+qMTSmk9Ixe5qRHn6pqSYcBNooBA+jeoM9km+E=;
+        b=bcSfZNsZwe88iDRSOTRCrDlQePMVaio8P4CY6/bgzTO7WUvOMTtX0iUgXoFrn5mQyg
+         1OvqeUt8H0CWEZUrZjoScDYZRCoDlSSunA3WcfTaqr8Zz71NzV4nyfccKXFvDhHXik/n
+         AIAtui3t23rgx+uh42nc94XYE+eP8Rsjt3VFutqf6Xbf13sVvozRY5egM5ByJauzbGOx
+         2Jp5Ziu+jsIXlAyWLgmnBOmqUIdtUafZjb/sByu3ep8I2wR+QR0TSIWVx6v3U+dYdnCx
+         3f9fCZ8hzRj+XvHaj/tEIxRyDFCipXWSGHaju8LdJv0UJ5zd33ABRlX+ksu9oVm9Dy50
+         2JUw==
+X-Forwarded-Encrypted: i=1; AFNElJ++9Mluqf6iJNcxz08yKL1ks/WKXTwaqGqNRfnk2jCPpzrTpnobYPEfhwOHd7LOWAw8kKJFivlk/g449y72TQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywxp3Kb2JsMTGt3JO9KQp7hyWPXh9kbsZZ999srZu+CY8epw5J8
+	32EIfSxQPPHXW4PnUjCH8QIQz87QAASFJEdrWYaRQZI1KTnb2Agb2QMvkaOpf4NkfTlP7ul1So1
+	D4sZXmUMdY0FJvM9DLWxcF5Er/DPp5m8=
+X-Gm-Gg: Acq92OE3agcOC3MtdBsk6erC3L7A8fkK+1BkGQe3Uku4NttpyMddVBZ/cyHXuD+9ao/
+	bJwnxPNDz3yUGa88Wc3HbIqUVt77qOLL/7ZrTnCFbnjqQTrMVOCuTXcLkNohW5baIZaIEKaNxj5
+	Msl3aPjOosuZSYSf7go0e8AtEVQLdNJQsX3ZRW1SOKdBGEtbb0sZ87RsRsUjnT+tVGZx3awnf7I
+	ma5DHXFFxanyRDYv2ZYSj+/hUQyg/h5sPwao84BIVwAQRW7OvRKPPytvO7REtdDSUQbgTAVjF62
+	aqKDhw==
+X-Received: by 2002:a05:600c:3511:b0:490:6237:521d with SMTP id
+ 5b1f17b1804b1-490e55d38famr65774985e9.13.1781216811617; Thu, 11 Jun 2026
+ 15:26:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260609-binder-noderefs-spin-v2-0-eafde2ff376c@google.com> <20260609-binder-noderefs-spin-v2-3-eafde2ff376c@google.com>
-In-Reply-To: <20260609-binder-noderefs-spin-v2-3-eafde2ff376c@google.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Thu, 11 Jun 2026 15:22:14 -0700
-X-Gm-Features: AVVi8CewvbA1HqGKH46HhrqoGzdUV_7E_kBzYgEpiwfPm60P-rwAwoZUW5nkcOs
-Message-ID: <CAGSQo031FbDNfCE8Jjmkw=DBAkVM8Xo2vJPkGA8Nmq6Hq4HW8w@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] rust_binder: schedule NodeDeath outside of
- node_refs lock
+References: <20260610035544.3333022-1-georgeandrout13@gmail.com>
+ <20260610133241.374115-1-georgeandrout13@gmail.com> <aipm9QeAyhah1Vkh@google.com>
+In-Reply-To: <aipm9QeAyhah1Vkh@google.com>
+From: George Androutsopoulos <georgeandrout13@gmail.com>
+Date: Thu, 11 Jun 2026 18:26:40 -0400
+X-Gm-Features: AVVi8CeV-obS9QgeTzwxBGirzv_qaUHVCHVrBJxhaWiVnp5fi4Gpl4tqEUs6g0U
+Message-ID: <CAESH5ocW9Ks82fu=Unm1EWR-_=CfqUj5FGRiROeQe8zuU5oM9w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust_binder: add ownership assertion to Node::add_death
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 9, 2026 at 2:34=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> There's no reason to hold the node_refs lock while scheduling the
-> NodeDeath to the thread todo list, so don't. The call to set_cleared()
-> is kept under the lock so that the state update is kept atomic.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  drivers/android/binder/process.rs | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/p=
-rocess.rs
-> index f4f4d45e1ab7..a8836cb8b8cc 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-> @@ -1289,7 +1289,10 @@ pub(crate) fn clear_death(&self, reader: &mut User=
-SliceReader, thread: &Thread)
->
->          // Update state and determine if we need to queue a work item. W=
-e only need to do it when
->          // the node is not dead or if the user already completed the dea=
-th notification.
-> -        if death.set_cleared(false) {
-> +        let should_schedule =3D death.set_cleared(false);
-> +        drop(refs);
-> +
-> +        if should_schedule {
->              if let Some(death) =3D ListArc::try_from_arc_or_drop(death) =
-{
->                  let _ =3D thread.push_work_if_looper(death);
->              }
->
-> --
-> 2.54.0.1064.gd145956f57-goog
->
->
+On Thu, Jun 11, 2026 at 3:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+> If this assertion fails we should not continue. Either use a full panic,
+> or do a warn_on! and return without adding it.
 
-Reviewed-by: Matthew Maurer <mmaurer@google.com>
+Thank you for the feedback. Would you prefer we go back to the original pat=
+ch
+suggestion with the assert!() that contains the message, without pr_warn()?
+
+        assert!(
+            core::ptr::eq(self, &**death.node),
+            "attempt to add NodeDeath to the wrong death list"
+        );
+
+Best,
+Georgios
