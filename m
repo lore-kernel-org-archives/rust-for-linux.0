@@ -1,96 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D563D2FD681;
-	Thu, 11 Jun 2026 09:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8118B3B0ACB
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 09:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781169828; cv=none; b=bBqSKcSQABUjhNHRoZsgZyrj1A5/9rwX8b3jEx/i9SiG8T7Y3ixWIMbuSnz3HZc8qu6DznneTFu5xhNUqX4JwPfqHBfXk8TGDNCfgqlZMplJEtYypKc4NkrLK5K157N38hp+r/H4xI3/6iRyTPnhyQHW4+mdySjrCGGQPfslbYs=
+	t=1781170158; cv=none; b=ej26+df1r43z/giI5ASHBF0bX3oId1FVQachqtm8MB1nLOFd5B+gTgMvdnpS1EgGR4O4aqtttwy4owHdbwgVF5MwibNFcwUJ8MXZMCB/toqny5jf8Nl6YUgBOMg7ypd/0c9uK/PH62xWcAHBTBkwE+1arlG563F41Z4supKC+RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781169828; c=relaxed/simple;
-	bh=n4QyMGbFQbeSogIxTyg8g3splgIaIsH26BzlrHn773A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IvURTLBsrM8KpKxyf9Dcag9Z+YFLByf9ltiO4/mOby8PlIL/TLbt/hzCVIzptqYG9CD9uBaC6IPxK8Fg/LfhX/fxPd4hjdT/xHhSYIMz4Cra5oaQ+PIed7+dGNnwSXAL70R+fBRODZ1SUAV2bmbmUNhk6CX7Ra+Bm/xK7Z2b/f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JZOu5gQL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781170158; c=relaxed/simple;
+	bh=NPPOkTqT1TpRzJ6qc0T4Kx4BSxKkafhtrpIepKUY9MU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=beqN2rLFuuu/98nCCyheKh8jiNDELA1Sr8SbuL1dOYfz13hzfoNXiQ9+XZN7N2Fzq6G30+F//brHJwmnhXs7kuOggRDYtOIpcYGZdE6+1JFqIwFrqo1Bqv9PrA72/DLS2Wmb0ys1t7QBsqQNBVFE7rriD1l2qCeh2Uui8ThLP3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mQ5c+8Re; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JZOu5gQL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550271F00898;
-	Thu, 11 Jun 2026 09:23:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781169827;
-	bh=SLJxYuWn1JgaTUqmkYqvt9u1o2uLPDb56mE2MLV5Y8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JZOu5gQLyWUjcPodEFU369f++53aZ7WVUSj3nBTCo4m50DID9bK6QSwQEunjMzqbh
-	 IcZI7EzXcc1ulbDg73BaXe58hx0fNo9EhIT0NEFpffu2NNd9369h5sfQEqRnp8SnyE
-	 s1Gi62pU8yqneYYzZh+QRdq3ro6pt7Y22N3DWoPgiJL4QwDKbRZ1ZWWVy98OEGvV0H
-	 +rKnux9Cn681B+NieJsRKF34cv3Zc04zJhaAv6Bzi268J1iERVubctNW1fKCvcbeMz
-	 75FB6KPEPWCIWUUS2CL06vszvJmZryK2z7mSJogxHGILGmy4FZVpmQsyDIW9mJLata
-	 2tYb8Gwp18OOQ==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id F0D4D1AC56C6; Thu, 11 Jun 2026 10:23:44 +0100 (BST)
-Date: Thu, 11 Jun 2026 10:23:44 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-hardening@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] hardening: Default randstruct off with rust for
- better allmodconfig support
-Message-ID: <aip-oMvL_8zxRssJ@sirena.co.uk>
-References: <20260605-rust-reverse-randstruct-dep-v2-1-93d38023b6f9@kernel.org>
- <CANiq72mmzfBg0_y+TMTsUUuO0cJFE0=n60-ttwOynai06_y=zg@mail.gmail.com>
- <202606101339.66BFE3AA67@keescook>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mQ5c+8Re"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490b61243easo56223925e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 02:29:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781170155; x=1781774955; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=77PJbDzH6s4AcUzRmgwa48EFlfnKEYm+oI0aQbmApw0=;
+        b=mQ5c+8RecZk+r2DmLLO44a0zem5W3ABFMOeDYlxw/DRcpD+7QgDNULvgY4yKkk9MBh
+         17zliVLMYrr/2XWgO8EenXgsgq7L/0c9woREOAf3kt5t2QaCNKp4gihAQ25CmKg+dFlH
+         H4566xmvi7dXoNKPp/rr4KCo71rHO1RMzqQnOeyx0bl2ZTCyv7amX1lieG4I+zInoOuR
+         bRrBhI4G7EKuEkRxhLlXqx6rxBmMnT1t5XptcGWVZSFrhpvyW827fsNEfnhfpdTyPCJJ
+         M/uvRfdAwa9ucdjcuYLzkT4uGDDmYL3ycsNpmGWvxT2T37LHrETbgVZ0G5LU19H2+tbU
+         +flw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781170155; x=1781774955;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=77PJbDzH6s4AcUzRmgwa48EFlfnKEYm+oI0aQbmApw0=;
+        b=PwaHgliX5Gsso3c9FJG/vS4qaQwkUlXYQttazO9YfeAPGY4uhVGYXVBbxvdUduNaIi
+         b0Pf5GdB3X6l7MbahzUEPHcelq07kcwpxwdRVBdrfI+lcpTyOGlQd6Ft/zZS8FPu2P/F
+         3Q5yBbqtaPrtrwlc0eIgtqnQKI9Vj0jHAHm8TIeLK+depc4t7wGlLPh8eEbrdX9c+8hA
+         yYc2/LWwv+wuoqxXP9c0V/YZiZYJve1ulaAOUhgFCz1ORhVpfQsVIRAQgwdVX04v7IUs
+         zjxOfyA6Ar5o/RvnMpKSz2aKzD5OcaSI0W2A43/cknPWAf/PAkUprzoILkt3SeeTgsEK
+         zFyg==
+X-Forwarded-Encrypted: i=1; AFNElJ8SSyDwgdpQ2ROkT1zjRFy9/wLKzpe37wb3WnAsYy1XaMImxwD2AZQiRt85sBaHtCBpfD/hPXEz13upJqNfkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9WoJvmQ2/vTdiiWM7ZY4c3bkyqBHe0qtb/w9WUCtq54ypc9vM
+	yf/kiHIyQ5F773afLNzLCReRVcTcRvLOdBnA/Jng+ttmipSmQ/Q3jFqo9gZL+QM1ARf1+7kcHan
+	+mV0E2PHco/xDGPgvjw==
+X-Received: from wrpi6.prod.google.com ([2002:adf:efc6:0:b0:44f:ef6a:cd7b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f94:b0:490:ba61:7981 with SMTP id 5b1f17b1804b1-490e561d579mr26466145e9.23.1781170154874;
+ Thu, 11 Jun 2026 02:29:14 -0700 (PDT)
+Date: Thu, 11 Jun 2026 09:28:59 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8Pab7+dFsmnpIdTp"
-Content-Disposition: inline
-In-Reply-To: <202606101339.66BFE3AA67@keescook>
-X-Cookie: Leave no stone unturned.
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANt/KmoC/3WRXW+DIBSG/4rhemx8KerV/sfSC8CjJVGxYE2Xx
+ v++U5usnc1uCC/keQ95uJIE0UMidXYlERaffBgx5G8ZcUczdkB9g5kIJgrGuabnqYumATqFvqd
+ SAwijja6ahiAyRWj9Zav7OmA++jSH+L21L/x2+k/RwimjXFdKaqtto6rPLoSuh3cXBnJrWsSDF
+ lzuaIF0VSrDWstL1doXWj7onJU7WiLNXMGrFkpVQPlCqyda7GcrpNvcKqeVBuPEH3q9S4lwOqP
+ a+W6GWJOA4v3g5zpDzZEOPrmP3x0d4TKT5y+os216gW+3fmwg0jHgCm2iafIjlYaBY3lZMSVrd HVY1x/ltU3S2wEAAA==
+X-Change-Id: 20260117-upgrade-poll-37ee2a7a79dd
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2527; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=NPPOkTqT1TpRzJ6qc0T4Kx4BSxKkafhtrpIepKUY9MU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqKn/k0VsDI1YlwVHIuBynoWQyXjQ2MbaxToDHN
+ T0DTTq2l6uJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaip/5AAKCRAEWL7uWMY5
+ RvCSEACTilYFKqu328tHihyQKBYf70OHom7hLXE1ukpjytRpYRKm8Nth0LItBEwfpGGPLtItOoU
+ fFHqZx5tgiLt145rD0jmR4U8f2eZup1K5fcVMvHl4Oz3WB1Oau8U3+SJxza60xra5TM74owauTD
+ Tmj54dTgkLFQIrZUGBAIJKjQ7lKEsCQ5+muCgxFinp8Bs+aLgBtk7v1joWuW81vtxIaGRV7AQTj
+ R9iL4N4E2muAWPcUQaB+V3iQ/omWNZkKVOvVcHil2PgTLS09Y7IEtFCiPsErxjFb1zBRXgBkAJv
+ d/I3FwxVDRdbcOH9ZehR4uJA+KkfxzPap5uxlMeIqCoJk9fMRWIhPVFluL3MLpURqbbw0R/Iaf3
+ spB22xVG5yuX5WbulVif8nsB+nECZgVxQfYhP3l3x0uf0OzOcybOFEMCJURnFndZtHhlEPNZ8F2
+ QC8cgKxq1strwoBGDsrjcG41/HpJF2f9psfIhXYNZajuRqVFL/GWI4T6qFm+TpE7Dw+snngQ7jd
+ DAEyHC1Da+y8Gk28nMjg9lSstjblFeeAa4WhKoJeU38TuWzQnPE+oqHzZEv5KKqof2fx7ywwL5y
+ t+up8JYBYkGW0zIRy1AYJOKB7SF06PP1ViQl/Ral8uUJ/uA/TypR4oeWSHa6LAoJXpmezYAUj/1 zrDI2BE33KqTAEQ==
+X-Mailer: b4 0.14.3
+Message-ID: <20260611-upgrade-poll-v5-0-497a11c06828@google.com>
+Subject: [PATCH v5 0/2] Avoid synchronize_rcu() for every thread drop in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Christian Brauner <brauner@kernel.org>, Boqun Feng <boqun@kernel.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
+Right now Rust Binder calls synchronize_rcu() more often than is
+necessary. Most processes do not use epoll at all, so they don't require
+rcu here. Back in Kangrejos I came up with a way to avoid this. Idea is
+to move the value that needs rcu to a separate allocation that's easy to
+kfree_rcu(). We pay the allocation only when the proc uses epoll using
+an "upgrade" strategy - most processes don't.
 
---8Pab7+dFsmnpIdTp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v5:
+- Rebase on top of series converting node_refs to spinlock.
+- Reword comment claiming node_refs is a mutex.
+- Link to v4: https://lore.kernel.org/r/20260523-upgrade-poll-v4-0-f5b4c747eac2@google.com
 
-On Wed, Jun 10, 2026 at 01:41:19PM -0700, Kees Cook wrote:
+Changes in v4:
+- Use SetOnce for PollCondVar variable instead of storing inside
+  spinlock. This avoids calling poll_wait() under the spinlock.
+- Link to v3: https://lore.kernel.org/r/20260508-upgrade-poll-v3-0-0c619fe846e8@google.com
 
-> For the linux-next testing, are you doing GCC + llvm rustc builds? IIUC,
-> then the support patch mentioned, I think, doesn't actually solve the
-> problem?
+Changes in v3:
+- This series was almost entirely rewritten to use a different
+  implementation strategy. By moving the PollCondVar to the process we
+  can avoid the upgrade logic entirely.
+- Link to v2: https://lore.kernel.org/r/20260213-upgrade-poll-v2-0-984a0fb184fb@google.com
 
-No, the allmodconfig builds are currently using LLVM - there's other
-issues with rust+GCC, right now KASAN IIRC, and it generally seems like
-it'll be more reliable to use LLVM to get the coverage.  Both compilers
-need to work anyway.
+Changes in v2:
+- Change how Rust Binder handles the lock class key.
+- Rebase.
+- Link to v1: https://lore.kernel.org/r/20260117-upgrade-poll-v1-0-179437b7bd49@google.com
 
---8Pab7+dFsmnpIdTp
-Content-Type: application/pgp-signature; name="signature.asc"
+---
+Alice Ryhl (2):
+      rust: poll: use kfree_rcu() for PollCondVar
+      rust_binder: move (e)poll wait queue to Process
 
------BEGIN PGP SIGNATURE-----
+ drivers/android/binder/node.rs        |  4 +-
+ drivers/android/binder/process.rs     | 67 ++++++++++++++++++++++--------
+ drivers/android/binder/thread.rs      | 78 +++++++++++++++++------------------
+ drivers/android/binder/transaction.rs |  6 ++-
+ rust/kernel/sync/poll.rs              | 73 +++++++++++++++++++++++++++++++-
+ 5 files changed, 167 insertions(+), 61 deletions(-)
+---
+base-commit: da61573f783897ae5a96c8f1c71aad6242344feb
+change-id: 20260117-upgrade-poll-37ee2a7a79dd
+prerequisite-change-id: 20260608-binder-noderefs-spin-3a0ec0589043:v2
+prerequisite-patch-id: 3a1c4f545b2281e2e91ea0af7fe6c71f5ae0c08e
+prerequisite-patch-id: e1ae5f73b329080c0fcea1d2509c085e105f67c3
+prerequisite-patch-id: 63f2092c6fd9dd54b7adf93be8d5670d8490f401
+prerequisite-patch-id: 5811aeb4ca435a1d4d0bb347d4de9f3b2d91f814
+prerequisite-patch-id: 556e45c697f9888c8446245bbcf478422991fddf
+prerequisite-patch-id: f567ba2263108b12871013309ae7c482d500eeae
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoqfqAACgkQJNaLcl1U
-h9AxcAf9E/oP1ZL3Gu06qhTqh4nYLlsl2eB2tx/jFQdSn1OKhVsmDjbjczaKsgZy
-LHqGmINsqxdstTNwEx+dR+afTJbZApGKGddu2tiEsfvP0bptDaymDHebd1lVt5bG
-g/Hr00vkEXyGOMK+M3BuIkZyiooP+5q02FZK/MbBRMN7yPTpJa6ldkeYxQXN4PWR
-z0ValSlPt8JYhmZ7R2sHu62S7q962NfPx41a/6B4wk3vbcboSupITED6RKbjaBUO
-wGUwmj+NFXHC5ZSy/JAFwI+JEM7eglgRC+L/aKUFfDLmVC4nGRuSflrf7RBGU5D4
-XmLT0VzVKwbCySWEyK+zoLmP9sQK8w==
-=fG0k
------END PGP SIGNATURE-----
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
---8Pab7+dFsmnpIdTp--
