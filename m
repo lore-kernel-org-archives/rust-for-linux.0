@@ -1,43 +1,43 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF6A4C92;
-	Thu, 11 Jun 2026 00:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A867ACA5A;
+	Thu, 11 Jun 2026 00:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781136129; cv=pass; b=rVdtAK/C3ABgqrRM0MNM3QV2+gD+7rzll200+rIeXN2TOUqhJAPRGTyYLVzAw0SP+mopF95yoWTt7yP3q+QaoDCvN7r4dEYTqB3PExyGsYraRBTMzKiWUxHqpmM71BzD2su6T/IXzaTfrSX65x4sPxUV5G7svT3SD0a1NCLarC4=
+	t=1781136293; cv=pass; b=Fnxc8IwJBAyRviPy2GBoGvrEaiHYYbh71nQv53TJb3t1YLfIfOhIIhmknUajT36YlUQ37uT5LT0SIHRN+5V7CcDA5Oa8YjuTMnGqF9LqpivP2Iy/GdhZOYae77WO2y1uUggsoxPSVSu032pvGYhfqtsB85ZzBb0pMR/5PQH/grs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781136129; c=relaxed/simple;
-	bh=2zo0nAJbApWHFzHVP/4Qn3FawEkCJQAy+zNNwPSiIsA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MjKof8XIFVMnBmLCyPQcbopGa/qi8dsoglC7VnpypbZ/dpWHqlQNLg79HgC/sdMNVhqOKASN1/MIWhTE/mi5B2mYtFLG+w1QqI1uE8rbHNRhC4d5Pb7FvotX6YDzC7SVPndxiY3t8Xmd0CJqCvQB8PCkhoU/RdXer1/LCtvs8dM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=OoM5B34g; arc=pass smtp.client-ip=136.143.188.112
+	s=arc-20240116; t=1781136293; c=relaxed/simple;
+	bh=Z5dICKoYtg3SZFDSaCtPbh/+esEIauRulfuVQ2Z8Ijc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jrvm35Zu7WoowA0cc45XVJPU6yy5V5/+YocxUH4K4fvPY2qtvWL69WDmgF/FiCeTeTYudDF3kHjlYql7sNcQ2cQmXQTBVI75B1AVM98VuX/5H1zhIok1lsX5gSlNiSdC8WbOhZ+o/zPMOp9CwWhHhwAKx87f9Xi5EX5xGeM1O6g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=QkchJo/i; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="OoM5B34g"
-ARC-Seal: i=1; a=rsa-sha256; t=1781136110; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="QkchJo/i"
+ARC-Seal: i=1; a=rsa-sha256; t=1781136275; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=mTuGGxo3OhrSlrHy63qltSNjAbKwXA8RG7ZKPdsvHXPcR9aD1PX8sWyVkccIkFtlapnL1aDUIkn2cIn7dQZB9KWxau66V4frwv3PfycWnjCKf0KtgOh9dQfy8binzTPccMrouKBTVPYcpZOs218BSwhJ4R0vTWkynLKNBFlqWhE=
+	b=hPqJDgC0pfM4wqY9wmjTC6HoTbkgO+Wq3ZWfvjIUyUhhCHJfMMVlDhN6eNxgoQcNisnER8/n4ldZOb1KX+tWw9FoPzukoZ3qpIxOTnxK+ZlNhMJGerzKzAlWHkjicyNAnrHENfpMk8RcS7eVlIekUlWbdLiOVyxpMp2jEoM0uw4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1781136110; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=tzMSj5cjQidpv0zF/Q4oyjbLi4Xorc8wR2gOqNma8Y4=; 
-	b=js4wRfaXAwFNDOj0fFOR54WvYescTCCSuoPsNYXPhouuwh78G3qEKinSRTxNpdZ5HGfZbnUgu2xvPfMQ/sMimRmi9svQFqDs1qKwkeG9vl8TV4F7I0zSUqfMz5lrZzqkhrTDCRHSQyVS1wOkqplg3/fISesuhM6F3fSTIW8c+J4=
+	t=1781136275; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=08qklnwrYy3ybfK0Fq9VgJW7y6VO7BnPIkyUQ1yUUXc=; 
+	b=OhLmMo947erInw/VjdnGRXCj37bKbi9SyTY3pUHF7vHUDGK75wU7NPEWgBDU9UolIX/hZOO7F+XeOfqPuejtSvap9oaKzzTapcc50ovGM1BeBV7j1a6R7+GMKCzzQevqBh29ykdF7xcE4/4HIToGvhUBRrqmFG68l6mgtr1zizA=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781136110;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781136274;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=tzMSj5cjQidpv0zF/Q4oyjbLi4Xorc8wR2gOqNma8Y4=;
-	b=OoM5B34gmoQ1TU7Ynj+HhoyKHvOVco6LC/Pn1AtQYBYzIIgBHEG7hg+9CI0yfcNf
-	ObDwJHdfc0FNS8dAJgGQd78gnBbqlpuykcPlCQaHnj0qTB60ACEoIwH9NJKvYYoQHgs
-	f9R+0XB7WyizOmPI3egCsvV8DTw7stvREeCmzmi4=
-Received: by mx.zohomail.com with SMTPS id 1781136109785375.24266434750245;
-	Wed, 10 Jun 2026 17:01:49 -0700 (PDT)
+	bh=08qklnwrYy3ybfK0Fq9VgJW7y6VO7BnPIkyUQ1yUUXc=;
+	b=QkchJo/iF9jsHcMoYIHuvDf+RYMygrK2jqhXvyYaw8YIgyOSE6Vv9VEq3S6XRFuc
+	dY+mWLO+3fzaR61gDu1vOfWd2XmWxrwt0CgQj+4560/0dA2ziCiFtdZQn8lOHbzwVMF
+	o4CdRbaGKddjb6MYm7G7XLv5CKNkemzFwDhHoDaA=
+Received: by mx.zohomail.com with SMTPS id 1781136272832700.1664977279125;
+	Wed, 10 Jun 2026 17:04:32 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Wed, 10 Jun 2026 17:01:26 -0700
-Subject: [PATCH] rust: drm: gpuvm: update DriverGpuVm for DeviceContext
+Date: Wed, 10 Jun 2026 17:04:31 -0700
+Subject: [PATCH] rust: drm: gpuvm: add SmContext lifetime bound
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,11 +46,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-gpuvm_device_context_v1-v1-1-01a890b17448@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2M0QqEIBQFfyXuc4LXwmh/ZQlZ7FT3IQttJYj+P
- elxYGYuSoiCRJ/qoogsSbZQgOuK/PILM5SMhcloY7Vlreb9n1c3FtXD+S0cOA+XWTW284anvgW
- DSr1HTHK+5+9w3w9L4e2PaQAAAA==
-X-Change-ID: 20260610-gpuvm_device_context_v1-367c21f94e1e
+Message-Id: <20260610-gpuvm_smcontext_lifetime_bound_v1-v1-1-531e7d2ee7b4@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3N0QqEIBBA0V+JeU4YhY3qVyKk1bEdWDXUJIj+f
+ WUfz8u9N2RKTBnm7oZElTPH0CD7DsxnCzsJts2gUA04SBT7cVavszcxFLqK/rKjwp70O57B6iq
+ FG9Vk8GVHNBO0zpHI8fV/LOvz/ABK1ZvvcwAAAA==
+X-Change-ID: 20260610-gpuvm_smcontext_lifetime_bound_v1-f829c05d80c9
 To: Danilo Krummrich <dakr@kernel.org>, 
  Matthew Brost <matthew.brost@intel.com>, 
  =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
@@ -61,69 +61,82 @@ To: Danilo Krummrich <dakr@kernel.org>,
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
  Trevor Gross <tmgross@umich.edu>
 Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, samitolvanen@google.com, 
- laura.nao@collabora.com, boris.brezillon@collabora.com, 
+ linux-kernel@vger.kernel.org, laura.nao@collabora.com, 
+ samitolvanen@google.com, boris.brezillon@collabora.com, 
  Deborah Brouwer <deborah.brouwer@collabora.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1997;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2343;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=2zo0nAJbApWHFzHVP/4Qn3FawEkCJQAy+zNNwPSiIsA=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmav97Ue/BxR+mUsPmF+3HIxPA4X/dvPpQlEvxqxiY/W
- e49kzI6SlkYxLgYZMUUWc7aG/WIV7030p3/vxlmDisTyBAGLk4BmMj2Job/edvkL3bcNVJj+/a7
- pVImViSB7V5tvbZ28BP5b1FRzyvsGBk6sldZmbvqXXr0UnKv12nbPVeTfqacTNSatXTrVk3NWax
- 8AA==
+ bh=jHJAQB/EOHX4fGMtGmvkXai9pbOgWNCI48HlzZompPU=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmavyds/HHif3pBa8W7Bc4/Qh9yH1bcdCjgg4nFB+bVu
+ Rsvimk/7ihlYRDjYpAVU2Q5a2/UI1713kh3/v9mmDmsTCBDGLg4BWAiv0UYGb7kyJUeuV4d/K02
+ L/jA1v6MaW3i0heMj+TOa7X1e3JtrSkjw1nhiEar5ic7iu89LP47P2rexbN1T7nad5bpfpp+jzG
+ ElxMA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Since the introduction of DeviceContext, there is no longer a single
-driver object type to equate with the GPUVM object type.
+From: Boris Brezillon <boris.brezillon@collabora.com>
 
-Instead of threading DeviceContext through GPUVM, remove the strict
-identity between DriverGpuVm::Object and drm::Driver::Object and
-instead tighten the requirement that the DriverGpuVm::Object be an
-allocatable GEM object associated with the same DRM driver.
+If a DriverGpuVm implementation is lifetime-parameterized, its
+SmContext<'ctx> type may depend on lifetimes carried by that driver
+implementation. In this case, SmContext<'ctx> is only valid if the
+driver implementation outlives 'ctx.
 
-Also, make GpuVm::new() generic over DeviceContext so it can accept a
-drm::Device<T::Driver, Ctx>.
+Add a Self: 'ctx bound to DriverGpuVm::SmContext<'ctx> to express that
+requirement. Then propagate the corresponding T: 'ctx bound to the GPUVM
+state machine helper types that store T::SmContext<'ctx>.
 
+This allows drivers to provide lifetime-parameterized implementations of
+DriverGpuVm.
+
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- rust/kernel/drm/gpuvm/mod.rs | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ rust/kernel/drm/gpuvm/mod.rs    | 4 +++-
+ rust/kernel/drm/gpuvm/sm_ops.rs | 4 ++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-index ae58f6f667c1..a625fcd9b5f2 100644
+index ae58f6f667c1..1ec649fa50ea 100644
 --- a/rust/kernel/drm/gpuvm/mod.rs
 +++ b/rust/kernel/drm/gpuvm/mod.rs
-@@ -116,9 +116,9 @@ const fn vtable() -> &'static bindings::drm_gpuvm_ops {
+@@ -264,7 +264,9 @@ pub trait DriverGpuVm: Sized + Send {
+     type VmBoData;
  
-     /// Creates a GPUVM instance.
-     #[expect(clippy::new_ret_no_self)]
--    pub fn new<E>(
-+    pub fn new<E, Ctx: drm::DeviceContext>(
-         name: &'static CStr,
--        dev: &drm::Device<T::Driver>,
-+        dev: &drm::Device<T::Driver, Ctx>,
-         r_obj: &T::Object,
-         range: Range<u64>,
-         reserve_range: Range<u64>,
-@@ -252,10 +252,10 @@ fn raw_resv(&self) -> *mut bindings::dma_resv {
- /// The manager for a GPUVM.
- pub trait DriverGpuVm: Sized + Send {
-     /// Parent `Driver` for this object.
--    type Driver: drm::Driver<Object = Self::Object>;
-+    type Driver: drm::Driver;
+     /// The private data passed to callbacks.
+-    type SmContext<'ctx>;
++    type SmContext<'ctx>
++    where
++        Self: 'ctx;
  
-     /// The kind of GEM object stored in this GPUVM.
--    type Object: IntoGEMObject;
-+    type Object: drm::driver::AllocImpl<Driver = Self::Driver>;
+     /// Indicates that a new mapping should be created.
+     fn sm_step_map<'op, 'ctx>(
+diff --git a/rust/kernel/drm/gpuvm/sm_ops.rs b/rust/kernel/drm/gpuvm/sm_ops.rs
+index 69a8e5ab2821..742c151b2540 100644
+--- a/rust/kernel/drm/gpuvm/sm_ops.rs
++++ b/rust/kernel/drm/gpuvm/sm_ops.rs
+@@ -3,7 +3,7 @@
+ use super::*;
  
-     /// Data stored with each [`struct drm_gpuva`](struct@GpuVa).
-     type VaData;
+ /// The actual data that gets threaded through the callbacks.
+-struct SmData<'a, 'ctx, T: DriverGpuVm> {
++struct SmData<'a, 'ctx, T: DriverGpuVm + 'ctx> {
+     gpuvm: &'a mut UniqueRefGpuVm<T>,
+     user_context: &'a mut T::SmContext<'ctx>,
+ }
+@@ -20,7 +20,7 @@ struct SmMapData<'a, 'ctx, T: DriverGpuVm> {
+ }
+ 
+ /// The argument for [`UniqueRefGpuVm::sm_map`].
+-pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm> {
++pub struct OpMapRequest<'a, 'ctx, T: DriverGpuVm + 'ctx> {
+     /// Address in GPU virtual address space.
+     pub addr: u64,
+     /// Length of mapping to create.
 
 ---
 base-commit: 550dc7536644db2d67c6f8cf525bba682fba08d9
-change-id: 20260610-gpuvm_device_context_v1-367c21f94e1e
+change-id: 20260610-gpuvm_smcontext_lifetime_bound_v1-f829c05d80c9
 
 Best regards,
 -- 
