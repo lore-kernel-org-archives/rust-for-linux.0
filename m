@@ -1,138 +1,138 @@
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBD8380FD4
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 22:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781216273; cv=none; b=B1xIExZtufv7CXBmoTJ9aLTNkBH3+rsFboZhlp3xyjRYUgJHAbVkfiRh08oT9BN+3Z/g8kDwk4Fdmf75K+zQnBDRAN0UDImZ3tz29zrzYlhJEBz+DCNBT83AwecG5aDW53s5zu3vdXIDd6ZxzKUa+vK8763KZgavDjd1vAvutEE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781216273; c=relaxed/simple;
-	bh=aIlZgMUNKNufC7lHnIBNKRRC1i9doObz8JqJqJCXUFM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=uFZSH6vS7RKH8hz+cZl3nVxoXrAXHFa6br1/Gg5Y+3rNUtBsuD/O5mNzn5MJRS7Jp6Lvm8ikWbC6dQtwhAbdnlYcffEWy3mAU7IvchFsDKui0v9NccywJz9jV8B92l3mHj00tROiLpLXYNE3aW6MUgGv/1c9+1Neox77D4kyRhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wnm6YNqn; arc=none smtp.client-ip=74.125.82.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11CE2E7BD9
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 22:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781216352; cv=pass; b=Y7qlVl28kBiRptXEhn4pUifvfp6NIDzStnF7W0MGIixydvbWRe6KcKQzCbOtRRviAKlbApi1gXwaG7udaURXUV/ys3Tuc9plJD6v3P2W8L96S4ZgLPILXsa989pTUTfYTXse2q7dYSZxGfAnynMg0LWYKGkrRZwiChzZU9e+CIM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781216352; c=relaxed/simple;
+	bh=nu+Apx7F1ZgnKc/mjU9XFrNl1Fv4nI8R8tj/IjzBQn4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BK0B2i0ATPE38F8QlVgsu7Xf0kwhGqZ3rjcv16pK7fDm92Xev9HLRoJQk/YV/flaf03WeShmoDkUVqnUXZY75tP3uhxo5Y41JiQuz7s62DuKBdJZswTALVgpWkwudx5T1nB++wGQpciSxWCO4BOSuyJ/M90SIhSjd3chbWozvzM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TezzMrJZ; arc=pass smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wnm6YNqn"
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-138404c4b85so48245c88.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 15:17:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TezzMrJZ"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-68ced08613aso4526a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 15:19:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781216349; cv=none;
+        d=google.com; s=arc-20240605;
+        b=c13F5jkE2TBj9OzDSjl8a+h+zoF7DolYmZ3qIb0PcdRloqYNNTLUk1pK9QhL9rkjuu
+         e4m9BUQtywsD90HiA1qqG+t1NX5mf2W9JQmaAxFehyYpdrcBJUDBbTpULN55OE5Iqk0+
+         Il2diRFLLqVdfliG1phBOTi6xtNOKW71rYmPnGTwGU8Y4ATjEgHfPnLW654/Be/+8I3q
+         PczakSkjTGxLWa3LaE6KL7hEKjN6Z+FH7WuvJDgmUfuyFn+sCoMJbGdAiyVsxP/ZeABF
+         B+wmPZxeaOLRWwoDLQSkD1dKkPjdL+44IxiE7mcQhM8hP3Kpr/uarbi/MqLo90ngjJBZ
+         7vyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aworHy8v54LZi4xSigMxKXwDJ1U1sB+V8Vp2Jwnbihc=;
+        fh=UNKH/b4tRwZury1/Qmeg7e6g5moaKLQpZryiSy4VhHo=;
+        b=ksYP6mRBFGke/PP6ZJuDq/z+WIB7oFFBAtY35TokV68/a4U2O1eCuN7LtzqGjfJgOL
+         dTOv4VYkC5Yi7Wc1Ldh+5nRGS5uIkooVXQOmWtocSwS9SPG0C4BFlNw0KV7ybeeGprca
+         rfR1bGu8mR6CNiHDfyobiwKRa0MtgBPnsAAi1rhabnt9kOiCQOJBcS97JhDF4KPLcRYp
+         IRxbP7csCarc0nbPyr4XwbWLFOuJTh7KCcRd/tgLHnf8LbyruxWFj6iQpwWKLRFtCCuQ
+         u1rRXfZwR/t2FX/k2nQVZ6Q7sSm1wYgG3aCKRnfOtRVE1Y8RGNokmjvSOPoKpXFya14C
+         wwSw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781216271; x=1781821071; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qbvuNTpE/5/jucgEEn1bO0TMcbBFU2GHmZcATaLZr0I=;
-        b=Wnm6YNqnXNpKcIcRy2c0VQHAjUkCIqpR1J2VxSdMzrKnZa4Mg30aCJgcOcaCxr2TT0
-         jnw8gf/QjTl5+xpq1zRQZqmuh5jaEGANGEhmuA7sku2MZVcA7TLdvVwjdly69nHYtgne
-         xAx/3PrVOov3nm463bK5xeT2BLU7jShOr7dRoCoRQ1lNvkxiEH+WcYAgcJueo2MGxAUa
-         CvalH2Fo6IKZ01/5/5jl0S5Q4QV1oVE/SSJccw0Wq8Lw/Xx3PvAl7Q36gxP7e40yaFRd
-         GxRs60Rm22zh/dstiRGHtm0O4jkNyq46Alcq4hGYy31OwGWy30JSAfeh/Z7pk0WtwMlf
-         oPFQ==
+        d=google.com; s=20251104; t=1781216349; x=1781821149; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aworHy8v54LZi4xSigMxKXwDJ1U1sB+V8Vp2Jwnbihc=;
+        b=TezzMrJZBFL7fMdCpfIw3/cYNAUe9Rizrx63MFcU1D/nnZmNRJZmKyV9Tl1+YhTmuS
+         9BOVZa3jPkW2eseswWbTWwvR0mlsmq5rsj5QCkPfsFgCZFyOIzwxlNNvqxYS0/UtkXkT
+         p0VEi3Xd/mh5cIwuhSx4H3uNufEtoskyZ9k9szA9+xjxgqeSTIf6jagIXDMhTPFeI/LU
+         2IoSHzkc4xP8yANPMxQXsX+BccQvarCGS5TFYm6tnRNL/qpkrv0OYfujx6O5q1jLx5rx
+         RlEIf3G8IWwOWH3MINpyi64NgRlokVZljMb6qCd6rV4qK4nZz5MBGXt2X9iIlRH09V8a
+         CnEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781216271; x=1781821071;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qbvuNTpE/5/jucgEEn1bO0TMcbBFU2GHmZcATaLZr0I=;
-        b=cB2TKX0wsYkoAWMUFmP23KKZaU7zcHDEsOfhZycm9nQzT10eq+CrFeb2sxbuFeoiVK
-         c2hGkM1IiBNRF+9CAAyDRwUQz7d2jpv+eyzx2aaelrWqlWOmOXFjA7BJfm+WqNMTiFyV
-         8M6oSnfn6hwEDBRR8+pCeLdzSwmQyOAo8Aziu/LZ9ZJaarmJKg/gvcaz8ri56M44tLgn
-         z63lFThok44gqfZxEXdUXHzhO6FXVLq8zZX5QgAvWHJlfk+HejtX9J7WGp3B6BWzOH2E
-         dUg4F1Sz6bq6wcxwczSBRlsm9W/cUclRKrtVgrwJBv42hqLV+MRlEVg5JvjLVKZf0fj9
-         4pXA==
-X-Forwarded-Encrypted: i=1; AFNElJ+nF1UwrtwCQ/ZDqvErRvdZElxW1RGfH+Uv59GWxdZBjlDhD5/i57sSsFCPi9CAJsN33YVqLxO1AMCGGsnb8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhHFOUPls7WtmThfnsjPEOtSpGRVA8Ji/2Pk+FLWe4e1cO+UEB
-	1/cEkIdfiHBeQKLkd1a48mK0ThV/FwSqnJl7lcHfwIwTc933L8xfuSXOfKrD4i3VVv3dBhhrs8Q
-	cbzXj034Zz+JDIFab6RVBYhZ4x36UhA==
-X-Received: from dlbrh10.prod.google.com ([2002:a05:7022:f30a:b0:137:f748:fdbf])
- (user=samitolvanen job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7023:b86:b0:136:b67e:93e6 with SMTP id a92af1059eb24-1384bbae290mr82798c88.37.1781216270647;
- Thu, 11 Jun 2026 15:17:50 -0700 (PDT)
-Date: Thu, 11 Jun 2026 22:17:22 +0000
-In-Reply-To: <20260611-gpuvm-sync-send-v4-0-6c7f4ab2778a@google.com>
+        d=1e100.net; s=20251104; t=1781216349; x=1781821149;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aworHy8v54LZi4xSigMxKXwDJ1U1sB+V8Vp2Jwnbihc=;
+        b=pPVWQb4BPVWRfTuj+/fbYpGDHBAcGfd/0zXIzFA8Q+l/nIu38lnBMsOHEqtsg3Ijkp
+         d0+Z2EiRUbg6SQio5TIcSK1fkHFut6Z5PU6hfyQ4HE43lkdo3wAB5x4AVpKnYB4I+5bo
+         G0v8yHIVLV1cpKaNpikB1aLMpJ2EQSPvcuBVACFn6hYXpwCkB+bS+fVNgIQMPC1kbuio
+         7rfAQ8MDIDy9pkChB4Q6kHEpyG4KYALp7Z+Zw4+zwO2rntMQEh1kT5XTuqbv3KyoJIBP
+         WGZstn98FxCEFtsAgSrSUx/o25ONuyz5wqH+tAsZmRc5yGUzlSbGS7pNYW27UjX8v2rh
+         7LTw==
+X-Forwarded-Encrypted: i=1; AFNElJ+yD9yYWr5A3u1EcLib4pklL5CmSL0qhRZfD05hML51QLkCzKXamfPzM4CBG4/4JwJVaTyZW3KAnPcZmPaSsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZEgNpjObKLPA/VV1erdpeHBlljJrBb5yBZXsq+T2IL9IKTkWu
+	d8GO3KM4j9smnGMqmNaK2/VDEu7Q41+uFX4vVZsuVv7EUEb+O3iFZ2qHRSEoC4rBDe8E4PRlRac
+	Bu5sNZOkie8W8ZecRNqxJa68Aigf18BEPFTqCP6i9
+X-Gm-Gg: Acq92OHfar2wZAgP/jiZVvz+VWb0c4YRzujBQ91J+UB8EoWia6TqkAYT/H18gAg4OSy
+	LnwghA8KbWmIz5JcCk69JMaGvw17beBq1WhtcpTQfo7VjqXUnH2Y39hnXCuKtt0CfaqWWUhzBAd
+	4qLk7dGzXdIM1XkYWa+LGH8PlwNLSePtnlAHvQWomi88sTGvJ0IxVhBrthF7ScOCxDdJEgZjN/m
+	4UPovGqUycKECdop9ILTIiA/B0qsX9jYwTFcnXu0w7zqI6HH0qWben8YLHrvIq2wOc4c1ZvbAkv
+	FWBq/58AiRAbSRDFXmM8QG0ZXiGKT1VCUhrtfiaQuTCkzoE=
+X-Received: by 2002:aa7:d606:0:b0:67c:f3b6:5fef with SMTP id
+ 4fb4d7f45d1cf-6935e8e678amr17560a12.6.1781216348910; Thu, 11 Jun 2026
+ 15:19:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260611-gpuvm-sync-send-v4-0-6c7f4ab2778a@google.com>
-X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2570; i=samitolvanen@google.com;
- h=from:subject:message-id; bh=aIlZgMUNKNufC7lHnIBNKRRC1i9doObz8JqJqJCXUFM=;
- b=owGbwMvMwCUWxa662nLh8irG02pJDFnaxl93/9u237n8FQfTprXa9wpn6mo8mpt7svblCRW+/
- OI22YjdHaUsDGJcDLJiiiwtX1dv3f3dKfXV5yIJmDmsTCBDGLg4BWAid44zMjySvLxORzDi6A62
- 7Eu2HMY71h2b+pzntl2vyI3nDRc3/JvPyNA4LThjyyG5m6ttN6b869104bJV3dcLU63W3J5vdOj grQ88AA==
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260611-gpuvm-sync-send-v4-2-6c7f4ab2778a@google.com>
-Subject: [PATCH v4 2/2] rust: drm: gpuvm: implement Send and Sync for
- GpuVaAlloc and GpuVmBo
-From: Sami Tolvanen <samitolvanen@google.com>
-To: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Alice Ryhl <aliceryhl@google.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+MIME-Version: 1.0
+References: <20260609-binder-noderefs-spin-v2-0-eafde2ff376c@google.com> <20260609-binder-noderefs-spin-v2-1-eafde2ff376c@google.com>
+In-Reply-To: <20260609-binder-noderefs-spin-v2-1-eafde2ff376c@google.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Thu, 11 Jun 2026 15:18:57 -0700
+X-Gm-Features: AVVi8CddtPgrBSTSgy2Um_TDgeFa_cPP20hBuKaCSVlHppxKc43XpvGWxxK-VHo
+Message-ID: <CAGSQo010qRhYx3aEwVO4O3b4EtBOAJM914XN2LKdNG3e6cqNPA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] rust_binder: avoid allocating under node_refs for
+ freeze listeners
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Moving a GpuVaAlloc or GpuVmBo between threads currently forces drivers
-to write their own unsafe Send and Sync impls. Provide the markers in
-the abstraction instead.
+On Tue, Jun 9, 2026 at 2:46=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> The node_refs mutex needs to be changed to a spinlock, so in preparation
+> for that, update freeze.rs to avoid allocating under the node_refs lock.
+> This is done by adding a retry loop so that if add_freeze_listener()
+> requires reallocating the KVVec<_> of freeze listeners, the caller will
+> allocate a larger vector and retry.
+>
+> Analogously, the remove_freeze_listener() function is updated to return
+> the empty KVVec<_> when it is no longer needed, to avoid calling
+> kvfree() under the node_refs lock.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-GpuVaAlloc wraps only uninitialised memory and exposes none of it.
-GpuVmBo hands out the driver data and GEM object by shared reference and
-drops them in its deferred put; the DriverGpuVm trait already guarantees
-both are Send + Sync, so both impls are unconditional.
+Nit: Consider moving the clone to the success path at the end, since
+the cloned node is not used until then? It's probably cheap enough
+that it doesn't matter though.
 
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
----
- rust/kernel/drm/gpuvm/va.rs    | 8 ++++++++
- rust/kernel/drm/gpuvm/vm_bo.rs | 9 +++++++++
- 2 files changed, 17 insertions(+)
+>
+> +            node =3D node_ref.node.clone();
 
-diff --git a/rust/kernel/drm/gpuvm/va.rs b/rust/kernel/drm/gpuvm/va.rs
-index 0b09fe44ab39..b108ec7aa1bc 100644
---- a/rust/kernel/drm/gpuvm/va.rs
-+++ b/rust/kernel/drm/gpuvm/va.rs
-@@ -104,6 +104,14 @@ pub fn vm_bo(&self) -> &GpuVmBo<T> {
- /// The memory is zeroed.
- pub struct GpuVaAlloc<T: DriverGpuVm>(KBox<MaybeUninit<GpuVa<T>>>);
- 
-+// SAFETY: A `GpuVaAlloc` is an owned, uninitialised allocation with no live `T::VaData` and no
-+// thread-bound state.
-+unsafe impl<T: DriverGpuVm> Send for GpuVaAlloc<T> {}
-+
-+// SAFETY: A `GpuVaAlloc` has no `&self` method that reaches its contents, so a shared
-+// `&GpuVaAlloc` cannot access the allocation.
-+unsafe impl<T: DriverGpuVm> Sync for GpuVaAlloc<T> {}
-+
- impl<T: DriverGpuVm> GpuVaAlloc<T> {
-     /// Pre-allocate a [`GpuVa`] object.
-     pub fn new(flags: AllocFlags) -> Result<GpuVaAlloc<T>, AllocError> {
-diff --git a/rust/kernel/drm/gpuvm/vm_bo.rs b/rust/kernel/drm/gpuvm/vm_bo.rs
-index c064ac63897b..a30f838c11b8 100644
---- a/rust/kernel/drm/gpuvm/vm_bo.rs
-+++ b/rust/kernel/drm/gpuvm/vm_bo.rs
-@@ -19,6 +19,15 @@ pub struct GpuVmBo<T: DriverGpuVm> {
-     data: T::VmBoData,
- }
- 
-+// SAFETY: It is safe to send a `GpuVmBo<T>` to another thread: dropping it there drops
-+// `T::VmBoData` and the GEM `T::Object`, both `Send` by the `DriverGpuVm` bounds.
-+unsafe impl<T: DriverGpuVm> Send for GpuVmBo<T> {}
-+
-+// SAFETY: It is safe to share a `&GpuVmBo<T>` between threads: it effectively shares
-+// `&T::VmBoData` and the GEM `&T::Object` (both `Sync`), and any thread may upgrade to an
-+// `ARef` and ultimately drop them (both `Send`), per the `DriverGpuVm` bounds.
-+unsafe impl<T: DriverGpuVm> Sync for GpuVmBo<T> {}
-+
- // SAFETY: By type invariants, the allocation is managed by the refcount in `self.inner`.
- unsafe impl<T: DriverGpuVm> AlwaysRefCounted for GpuVmBo<T> {
-     fn inc_ref(&self) {
+This is wrapping a single line, and is only called once. Why add a
+separate function for it?
 
--- 
-2.54.0.1136.gdb2ca164c4-goog
+> +    pub(crate) fn resize_for_add_freeze_listener(
+> +        vec_alloc: &mut KVVec<Arc<Process>>,
+> +        target_size: usize,
+> +    ) -> Result {
+> +        *vec_alloc =3D KVVec::with_capacity(target_size.next_power_of_tw=
+o(), GFP_KERNEL)?;
+> +        Ok(())
+>      }
+
+Otherwise looks fine.
+
+Reviewed-By: Matthew Maurer <mmaurer@google.com>
