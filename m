@@ -1,70 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2D93DDDCC;
-	Thu, 11 Jun 2026 11:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461773D5226;
+	Thu, 11 Jun 2026 12:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781176849; cv=none; b=YbvLCrCGIXVps1Ory4e3t7Qk729Hadq/BpA5g4v0aDCihhM359Zezx/uY2L7VDfBfD9+4EkHHJsbXRhjJNhq5dJOnnaw+aMOOIqgrD404poxHIwoSoLiHSNWeMMUhiUsdHw7NghBNlMaShVhZ4xBOeraIVrud9GAhM5ZCbt1iYI=
+	t=1781179588; cv=none; b=f/lhXJDm2Pwcx/CSJImpumcwVcr1rYT6Q6LU9CCB4WlvGKT9sBZuniy0o5e6GP83wKJfGj2dNSR0lfss8IirfEhBrWq5cXQ325wDDY5rdKTQZQfyKnJHZyz91pzikBsdTmMVYFxlMX4laEvzyfRqjutWlqOIdFhFj70ptlhDVk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781176849; c=relaxed/simple;
-	bh=uANtolZsK/i1HvbTyMriqu1AMAi3Xc2bYpt6H9ahGt8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qFv445weAR9yk1gerVuXMNZclX6ydtzb5uIOQCOp2n6CwFuna8g7/KKW02rfeA9rgiFSPj33TSr2fsgBed+EnR7ttT5/IIj0Ch12IzHDz5sFk66MCSkSHuasICHPGmlsbG7FRcpYCq5iBS3gzwwdKJkiG4VIPTl+ZiV7MhuRf7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0oqBLon; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781179588; c=relaxed/simple;
+	bh=iicmZYcbWS+gki+Cy3qcP55HfbzqPR7+/MXz+XKglKk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=fuSjFsop1a5ZNeFzmX5MnmqikFHXDNKl1DkGkTMfjs2lw/lFtqThj3B+lPlEZg5p3ZxEnCU2TbYa72NQuutyjV2W80gd4hngaqZaq+5zWq5P4n2nWPkcQIAI57+WsKDAEX8RqtQWLRuHhQgeTOxHJXEq3vdA0/lW8Z1LN3KPSCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j5S4pfgy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0oqBLon"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F6E1F00893;
-	Thu, 11 Jun 2026 11:20:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j5S4pfgy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6BA1F00893;
+	Thu, 11 Jun 2026 12:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781176847;
-	bh=uANtolZsK/i1HvbTyMriqu1AMAi3Xc2bYpt6H9ahGt8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=J0oqBLonkxa8Pm/JBKAAQNoPcpeOXApE8vnSTtNGPqTn2AVrN5Ye3ghETxQbcTKMZ
-	 UngqAQsBC5Jf/no/pkP6OrFuOTBtC0gpe1dl16sypdOVdC8fHqO/xPVRmfLqetfYjN
-	 9TH4Q27M8M7eJtM7jL4gWBOCPCmgTX6K4+Otx6pR3+bALNaJRyE6cNWstFKvAQrgUS
-	 CInUBvvyIKs9TghP2jacQ5sM34XU3g9leDmW1b57Se0CPPC33S1LnRNgA4JDnnd66o
-	 36AqFehwQt7SoY+hoVChP+7m+s7msZeIzORoksa9qNZzmep8tNkKEfsV4zP1jK+HL5
-	 +E5fy9Dar+0Cw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Boqun Feng <boqun@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe
- <axboe@kernel.dk>, Daniel Almeida <daniel.almeida@collabora.com>,
- linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: block: require `Sync` for `Operations::QueueData`
-In-Reply-To: <CANiq72mGmRTfauU-HUOyBVSG0GM7q39=6aP8p1djN2cHr5C_Kw@mail.gmail.com>
-References: <20260608-queue-data-sync-v1-1-0efff051aaf3@kernel.org>
- <CANiq72mGmRTfauU-HUOyBVSG0GM7q39=6aP8p1djN2cHr5C_Kw@mail.gmail.com>
-Date: Wed, 10 Jun 2026 20:02:34 +0200
-Message-ID: <8733yugtol.fsf@kernel.org>
+	s=k20260515; t=1781179586;
+	bh=vcsE+Ll4t6tOK0zqdhAk30KTSJNudRT/Tk/a1RVLDDw=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=j5S4pfgy1wTzVXarkvRi9GoSaldgH2pdXFoAaPR8hHN+mZ0G4LkNezvYKDuiufKey
+	 iy74qmeGvmGgZcLb8vDjpJE8qv7lbN+Rx83wc7oWdoeVsSH//4tEUTCp9bwR6S0DsJ
+	 kAF/FD1e3BiDyIyTHo1/HXbO0N5sS9IAmShv8NZLq56bOKknMMiZ3wuqlEU8NmgGbf
+	 MqrHiYJDZDugg+pcZaOi8BI+FPSiryJb7wrU4gTwid89+e6YyS45ZuaPwEIPEbXvrQ
+	 SOMM+nl2R5xy6KFnPVGttNmZox3lr8VH57pxHXGoAA5bv3wKd7iQW+xXdTJ2n52Fyu
+	 dPULNCiXLWWvg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Jun 2026 14:06:20 +0200
+Message-Id: <DJ67GR3JEXOK.1ZSB4X97BV0MM@kernel.org>
+Subject: Re: [PATCH v20 0/4] Rust bindings for gem shmem
+Cc: <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, <driver-core@lists.linux.dev>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Simona Vetter" <simona@ffwll.ch>, <linux-kernel@vger.kernel.org>, "Sumit
+ Semwal" <sumit.semwal@linaro.org>, <linux-media@vger.kernel.org>, "Rafael J
+ . Wysocki" <rafael@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>,
+ "Maxime Ripard" <mripard@kernel.org>, "David Airlie" <airlied@gmail.com>,
+ "Benno Lossin" <lossin@kernel.org>, <linaro-mm-sig@lists.linaro.org>,
+ "Mukesh Kumar Chaurasiya" <mkchauras@gmail.com>, "Asahi Lina"
+ <lina+kernel@asahilina.net>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
+To: "Lyude Paul" <lyude@redhat.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260610162433.923550-1-lyude@redhat.com>
+In-Reply-To: <20260610162433.923550-1-lyude@redhat.com>
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+On Wed Jun 10, 2026 at 6:21 PM CEST, Lyude Paul wrote:
+> Lyude Paul (4):
+>   rust: drm: gem: shmem: Add DmaResvGuard helper
+>   rust: drm: gem: shmem: Add vmap functions
+>   rust: faux: Allow retrieving a bound Device
+>   rust: drm: gem: Introduce shmem::Object::sg_table()
 
-> On Mon, Jun 8, 2026 at 10:25=E2=80=AFAM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
->>
->> Fixes: 90d952fac8ac ("rust: block: add `GenDisk` private data support")
->
-> Should this be Cc: stable given the hash is old? i.e. 6.18.y+
-
-Yes it should have cc stable, sorry.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Acked-by: Danilo Krummrich <dakr@kernel.org>
