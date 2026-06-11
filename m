@@ -1,54 +1,54 @@
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6504435DA76
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 22:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBD8380FD4
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 22:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781216271; cv=none; b=ka/qAoMxEL2XmP6eNRDN8t++yw7sOm9rc+3U9HhnzvSNikJD+Sha0I24sPRD71xneYscj5FtvZPkm6L4wzVLkWzkVFDjOZzHsRQNapHbEsaEKrGPsA83QXU89iRGlxTH/xdultUKum/BVvV24h7lvsCmVEYoExkxA+H515e/NrQ=
+	t=1781216273; cv=none; b=B1xIExZtufv7CXBmoTJ9aLTNkBH3+rsFboZhlp3xyjRYUgJHAbVkfiRh08oT9BN+3Z/g8kDwk4Fdmf75K+zQnBDRAN0UDImZ3tz29zrzYlhJEBz+DCNBT83AwecG5aDW53s5zu3vdXIDd6ZxzKUa+vK8763KZgavDjd1vAvutEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781216271; c=relaxed/simple;
-	bh=GXST9+qaLqvKuvrCkRKeBSa0wUCsepCT9+RExmFeJvc=;
+	s=arc-20240116; t=1781216273; c=relaxed/simple;
+	bh=aIlZgMUNKNufC7lHnIBNKRRC1i9doObz8JqJqJCXUFM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VcBqydl+h3jJSRlvH/XIV6XOp4jHjmRj9MXA2ABdiPQlrQQhYY3VaOcC72X1gxWVA9juHLOZlvJGgDNDwMeWln4zTkwq1DwY8E5ytN1Bb4k+MLN+9wtNUUyHgYN7AeIkccorbVSQ5UMPPQ324LfR9Dg/CqYQlNsNh+t9uij+wes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RuN9tJoQ; arc=none smtp.client-ip=74.125.82.201
+	 To:Cc:Content-Type; b=uFZSH6vS7RKH8hz+cZl3nVxoXrAXHFa6br1/Gg5Y+3rNUtBsuD/O5mNzn5MJRS7Jp6Lvm8ikWbC6dQtwhAbdnlYcffEWy3mAU7IvchFsDKui0v9NccywJz9jV8B92l3mHj00tROiLpLXYNE3aW6MUgGv/1c9+1Neox77D4kyRhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wnm6YNqn; arc=none smtp.client-ip=74.125.82.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RuN9tJoQ"
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-304e7fc90b1so446772eec.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 15:17:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wnm6YNqn"
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-138404c4b85so48245c88.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jun 2026 15:17:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781216269; x=1781821069; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781216271; x=1781821071; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QhNQ1we6NOoqH0cCFXtN3A1WKb9ns/XyXQCVsvCLAxo=;
-        b=RuN9tJoQI82hcuhpy2jGnfnocECfHHyB3tdesHPBmjSWdxnE01lGsh4gYrheJNpaRs
-         mVo/WteW6oPjXRL0blRAF6FGUw3prU/ntlexfH4LTuQbXCrVAZ9VLxUzpf4e32mlJw1F
-         x+gHNxqGrUykAZRI2FpEOTSE/TS1YVqBG2K8nSIXlxgsFYr32zyATXD57pimW9+CNBHM
-         e8yjWEz/FU2vvsjojDdvMXS/IvjBdv40iHjaeNKjd5e7t937mb3ziHjKVTQ8g+RKjyDh
-         iX16JL28puiEtaqJc6lgO7JrAxCaUOEVBkqCcFpII4vAG4z7kwbCthteocxwYHf/MLT/
-         EVRg==
+        bh=qbvuNTpE/5/jucgEEn1bO0TMcbBFU2GHmZcATaLZr0I=;
+        b=Wnm6YNqnXNpKcIcRy2c0VQHAjUkCIqpR1J2VxSdMzrKnZa4Mg30aCJgcOcaCxr2TT0
+         jnw8gf/QjTl5+xpq1zRQZqmuh5jaEGANGEhmuA7sku2MZVcA7TLdvVwjdly69nHYtgne
+         xAx/3PrVOov3nm463bK5xeT2BLU7jShOr7dRoCoRQ1lNvkxiEH+WcYAgcJueo2MGxAUa
+         CvalH2Fo6IKZ01/5/5jl0S5Q4QV1oVE/SSJccw0Wq8Lw/Xx3PvAl7Q36gxP7e40yaFRd
+         GxRs60Rm22zh/dstiRGHtm0O4jkNyq46Alcq4hGYy31OwGWy30JSAfeh/Z7pk0WtwMlf
+         oPFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781216269; x=1781821069;
+        d=1e100.net; s=20251104; t=1781216271; x=1781821071;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QhNQ1we6NOoqH0cCFXtN3A1WKb9ns/XyXQCVsvCLAxo=;
-        b=Hba0VnKRLP7+40/HeTfBj+78b3DOvCMNXPNeZ4MZckJGMqa3rGYEu8pqYJYYSNa+x9
-         O66iWyZi2RaRM1lLpwmNPCEQkbAnVAl7coAQMI+zVmFouq+K0bhZ0v9QSsIwmtgoYqbZ
-         rpEXKmkFzaJLBFQ4qH/HVZRpMqVe9NcHu4qOAC3s7ptkKd2tlgW6oqw3L5TGHvRjhE5w
-         ATtOa0bSarbUthabqK9SQxoVFijTCnB/zEpmHB2GQFHdv1fS9mW4xE0t9a8QK+IH1y10
-         YsTBHwmU47jZff9u0lFTktR4IMajWeHR+uKlVXZyuLzWu6Wpz0Kt4bN4r8/xN5b4BnSp
-         DEGA==
-X-Forwarded-Encrypted: i=1; AFNElJ/UiO1jqxglrVcHYNobcdbJnqsOJALN3z09ArfN/mtismYFadZp/J7v3q900Uo6spKNXE01YChmStEU7c2MXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzmk13vmaTUH2K+G4OaVMmF2fvRdqZlJhyHZFoMtPL3DEn6lDb0
-	OHoD1VzhuheBvgWiSgQNOTannKXnF4wIMVPhbbc0CV8dA18PVND51EzCvICjgfYRuVmMfztp+MK
-	DwDjMPtVSp/iWo6jD4/Q1lBJhVTMPcw==
-X-Received: from dybbs28.prod.google.com ([2002:a05:7300:a21c:b0:307:bbdd:4346])
+        bh=qbvuNTpE/5/jucgEEn1bO0TMcbBFU2GHmZcATaLZr0I=;
+        b=cB2TKX0wsYkoAWMUFmP23KKZaU7zcHDEsOfhZycm9nQzT10eq+CrFeb2sxbuFeoiVK
+         c2hGkM1IiBNRF+9CAAyDRwUQz7d2jpv+eyzx2aaelrWqlWOmOXFjA7BJfm+WqNMTiFyV
+         8M6oSnfn6hwEDBRR8+pCeLdzSwmQyOAo8Aziu/LZ9ZJaarmJKg/gvcaz8ri56M44tLgn
+         z63lFThok44gqfZxEXdUXHzhO6FXVLq8zZX5QgAvWHJlfk+HejtX9J7WGp3B6BWzOH2E
+         dUg4F1Sz6bq6wcxwczSBRlsm9W/cUclRKrtVgrwJBv42hqLV+MRlEVg5JvjLVKZf0fj9
+         4pXA==
+X-Forwarded-Encrypted: i=1; AFNElJ+nF1UwrtwCQ/ZDqvErRvdZElxW1RGfH+Uv59GWxdZBjlDhD5/i57sSsFCPi9CAJsN33YVqLxO1AMCGGsnb8w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhHFOUPls7WtmThfnsjPEOtSpGRVA8Ji/2Pk+FLWe4e1cO+UEB
+	1/cEkIdfiHBeQKLkd1a48mK0ThV/FwSqnJl7lcHfwIwTc933L8xfuSXOfKrD4i3VVv3dBhhrs8Q
+	cbzXj034Zz+JDIFab6RVBYhZ4x36UhA==
+X-Received: from dlbrh10.prod.google.com ([2002:a05:7022:f30a:b0:137:f748:fdbf])
  (user=samitolvanen job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7301:3d19:b0:304:c651:bdea with SMTP id 5a478bee46e88-308200897c1mr113782eec.21.1781216268962;
- Thu, 11 Jun 2026 15:17:48 -0700 (PDT)
-Date: Thu, 11 Jun 2026 22:17:21 +0000
+ 2002:a05:7023:b86:b0:136:b67e:93e6 with SMTP id a92af1059eb24-1384bbae290mr82798c88.37.1781216270647;
+ Thu, 11 Jun 2026 15:17:50 -0700 (PDT)
+Date: Thu, 11 Jun 2026 22:17:22 +0000
 In-Reply-To: <20260611-gpuvm-sync-send-v4-0-6c7f4ab2778a@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,104 +58,81 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260611-gpuvm-sync-send-v4-0-6c7f4ab2778a@google.com>
 X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3599; i=samitolvanen@google.com;
- h=from:subject:message-id; bh=GXST9+qaLqvKuvrCkRKeBSa0wUCsepCT9+RExmFeJvc=;
- b=owGbwMvMwCUWxa662nLh8irG02pJDFnaxl+EFM+4Hze3WWenn2Py2/Dqfr6pJyJdjIyML/R1b
- /x5WH9NRykLgxgXg6yYIkvL19Vbd393Sn31uUgCZg4rE8gQBi5OAZgI+zFGhollz66/XhV/yq1O
- Y7lrpZDWBq25y9qs/iWyR0498/TWIh9GhqeL9JKtPv+8s19ofYX3i58i7ne5TW+eOHC4UmTOik4 xGQ4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2570; i=samitolvanen@google.com;
+ h=from:subject:message-id; bh=aIlZgMUNKNufC7lHnIBNKRRC1i9doObz8JqJqJCXUFM=;
+ b=owGbwMvMwCUWxa662nLh8irG02pJDFnaxl93/9u237n8FQfTprXa9wpn6mo8mpt7svblCRW+/
+ OI22YjdHaUsDGJcDLJiiiwtX1dv3f3dKfXV5yIJmDmsTCBDGLg4BWAid44zMjySvLxORzDi6A62
+ 7Eu2HMY71h2b+pzntl2vyI3nDRc3/JvPyNA4LThjyyG5m6ttN6b869104bJV3dcLU63W3J5vdOj grQ88AA==
 X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260611-gpuvm-sync-send-v4-1-6c7f4ab2778a@google.com>
-Subject: [PATCH v4 1/2] rust: drm: gpuvm: require Send + Sync for the driver's
- associated data
+Message-ID: <20260611-gpuvm-sync-send-v4-2-6c7f4ab2778a@google.com>
+Subject: [PATCH v4 2/2] rust: drm: gpuvm: implement Send and Sync for
+ GpuVaAlloc and GpuVmBo
 From: Sami Tolvanen <samitolvanen@google.com>
 To: Danilo Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
 	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Alice Ryhl <aliceryhl@google.com>, 
 	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, 
 	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Asahi Lina <lina+kernel@asahilina.net>
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>
 Cc: Deborah Brouwer <deborah.brouwer@collabora.com>, Sami Tolvanen <samitolvanen@google.com>, 
 	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-DriverGpuVm permitted !Send/!Sync associated data on an abstraction whose
-handles are shared and dropped across threads: obtain() runs from many
-threads and the VA API performs deferred cross-thread drops. That is
-unsound.
+Moving a GpuVaAlloc or GpuVmBo between threads currently forces drivers
+to write their own unsafe Send and Sync impls. Provide the markers in
+the abstraction instead.
 
-Require Send + Sync on the trait and its associated data so the GpuVm and
-UniqueRefGpuVm handle impls need no per-impl bounds.
+GpuVaAlloc wraps only uninitialised memory and exposes none of it.
+GpuVmBo hands out the driver data and GEM object by shared reference and
+drops them in its deferred put; the DriverGpuVm trait already guarantees
+both are Send + Sync, so both impls are unconditional.
 
-Fixes: 82b78182eacf ("rust: drm: add base GPUVM immediate mode abstraction")
 Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 ---
- rust/kernel/drm/gpuvm/mod.rs | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ rust/kernel/drm/gpuvm/va.rs    | 8 ++++++++
+ rust/kernel/drm/gpuvm/vm_bo.rs | 9 +++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/rust/kernel/drm/gpuvm/mod.rs b/rust/kernel/drm/gpuvm/mod.rs
-index a625fcd9b5f2..70cf11346cee 100644
---- a/rust/kernel/drm/gpuvm/mod.rs
-+++ b/rust/kernel/drm/gpuvm/mod.rs
-@@ -72,10 +72,12 @@ pub struct GpuVm<T: DriverGpuVm> {
-     data: UnsafeCell<T>,
+diff --git a/rust/kernel/drm/gpuvm/va.rs b/rust/kernel/drm/gpuvm/va.rs
+index 0b09fe44ab39..b108ec7aa1bc 100644
+--- a/rust/kernel/drm/gpuvm/va.rs
++++ b/rust/kernel/drm/gpuvm/va.rs
+@@ -104,6 +104,14 @@ pub fn vm_bo(&self) -> &GpuVmBo<T> {
+ /// The memory is zeroed.
+ pub struct GpuVaAlloc<T: DriverGpuVm>(KBox<MaybeUninit<GpuVa<T>>>);
+ 
++// SAFETY: A `GpuVaAlloc` is an owned, uninitialised allocation with no live `T::VaData` and no
++// thread-bound state.
++unsafe impl<T: DriverGpuVm> Send for GpuVaAlloc<T> {}
++
++// SAFETY: A `GpuVaAlloc` has no `&self` method that reaches its contents, so a shared
++// `&GpuVaAlloc` cannot access the allocation.
++unsafe impl<T: DriverGpuVm> Sync for GpuVaAlloc<T> {}
++
+ impl<T: DriverGpuVm> GpuVaAlloc<T> {
+     /// Pre-allocate a [`GpuVa`] object.
+     pub fn new(flags: AllocFlags) -> Result<GpuVaAlloc<T>, AllocError> {
+diff --git a/rust/kernel/drm/gpuvm/vm_bo.rs b/rust/kernel/drm/gpuvm/vm_bo.rs
+index c064ac63897b..a30f838c11b8 100644
+--- a/rust/kernel/drm/gpuvm/vm_bo.rs
++++ b/rust/kernel/drm/gpuvm/vm_bo.rs
+@@ -19,6 +19,15 @@ pub struct GpuVmBo<T: DriverGpuVm> {
+     data: T::VmBoData,
  }
  
--// SAFETY: The GPUVM api does not assume that it is tied to a specific thread. The destructor will
--// drop the `data` field, which is okay because it is guaranteed `Send` by the `DriverGpuVm` trait.
-+// SAFETY: It is safe to send a `GpuVm<T>` to another thread: all data reachable through it
-+// (`T`, `T::VmBoData`, and the GEM `T::Object`) is `Send` by the `DriverGpuVm` bounds.
- unsafe impl<T: DriverGpuVm> Send for GpuVm<T> {}
--// SAFETY: The GPUVM api is designed to allow &self methods to be called in parallel.
-+// SAFETY: It is safe to share a `&GpuVm<T>` between threads: `&self` methods only alias data
-+// that is `Sync` by the `DriverGpuVm` bounds, and any thread may drop that data, or upgrade the
-+// reference and ultimately drop `T`, which the same bounds make `Send`.
- unsafe impl<T: DriverGpuVm> Sync for GpuVm<T> {}
- 
- // SAFETY: By type invariants, the allocation is managed by the refcount in `self.vm`.
-@@ -250,18 +252,22 @@ fn raw_resv(&self) -> *mut bindings::dma_resv {
- }
- 
- /// The manager for a GPUVM.
--pub trait DriverGpuVm: Sized + Send {
-+pub trait DriverGpuVm: Sized + Send + Sync {
-     /// Parent `Driver` for this object.
-     type Driver: drm::Driver;
- 
-     /// The kind of GEM object stored in this GPUVM.
--    type Object: drm::driver::AllocImpl<Driver = Self::Driver>;
-+    type Object: drm::driver::AllocImpl<Driver = Self::Driver> + Send + Sync;
- 
-     /// Data stored with each [`struct drm_gpuva`](struct@GpuVa).
--    type VaData;
-+    ///
-+    /// Only `Send` is required: the data has a single owner at all times, moving
-+    /// between threads by value (handed back as a [`GpuVaRemoved`]) but never
-+    /// accessed by two threads concurrently.
-+    type VaData: Send;
- 
-     /// Data stored with each [`struct drm_gpuvm_bo`](struct@GpuVmBo).
--    type VmBoData;
-+    type VmBoData: Send + Sync;
- 
-     /// The private data passed to callbacks.
-     type SmContext<'ctx>;
-@@ -296,12 +302,10 @@ fn sm_step_remap<'op, 'ctx>(
- /// # Invariants
- ///
- /// Each `GpuVm` instance has at most one `UniqueRefGpuVm` reference.
-+// `Send`/`Sync` derive from `ARef<GpuVm<T>>`; the trait bounds make them correct for the unique
-+// handle's `&mut T` access.
- pub struct UniqueRefGpuVm<T: DriverGpuVm>(ARef<GpuVm<T>>);
- 
--// SAFETY: The GPUVM api is designed to allow &self methods to be called in parallel, and
--// concurrent access to `data` is safe due to the `T: Sync` requirement.
--unsafe impl<T: DriverGpuVm + Sync> Sync for UniqueRefGpuVm<T> {}
--
- impl<T: DriverGpuVm> UniqueRefGpuVm<T> {
-     /// Access the data owned by this `UniqueRefGpuVm` immutably.
-     #[inline]
++// SAFETY: It is safe to send a `GpuVmBo<T>` to another thread: dropping it there drops
++// `T::VmBoData` and the GEM `T::Object`, both `Send` by the `DriverGpuVm` bounds.
++unsafe impl<T: DriverGpuVm> Send for GpuVmBo<T> {}
++
++// SAFETY: It is safe to share a `&GpuVmBo<T>` between threads: it effectively shares
++// `&T::VmBoData` and the GEM `&T::Object` (both `Sync`), and any thread may upgrade to an
++// `ARef` and ultimately drop them (both `Send`), per the `DriverGpuVm` bounds.
++unsafe impl<T: DriverGpuVm> Sync for GpuVmBo<T> {}
++
+ // SAFETY: By type invariants, the allocation is managed by the refcount in `self.inner`.
+ unsafe impl<T: DriverGpuVm> AlwaysRefCounted for GpuVmBo<T> {
+     fn inc_ref(&self) {
 
 -- 
 2.54.0.1136.gdb2ca164c4-goog
