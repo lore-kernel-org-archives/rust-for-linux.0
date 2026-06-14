@@ -1,523 +1,187 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021108.outbound.protection.outlook.com [52.101.95.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576DE1917FB;
-	Sun, 14 Jun 2026 16:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781452843; cv=none; b=N5wXEX/wZd8xTjXb3pBQyzC8IS/HDnmfxDPY+AqcvQd3PmCs4SaVVBi6/1ok2WIlqyVmm+u0pIsf7CjOVN6dTUX7gzysPL3+lsGZFKtd8gft1pLtpEkD1jtEIEicgSMiXHB9QWknllmWMQeWzfmjdig+Ib6LNs8Rcy24Gvhe7I4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781452843; c=relaxed/simple;
-	bh=XQPsk8J2aCtm53Jnv0s9tQHstTFAlZMs43WuP9P85/w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cFiC9fNixGUA7gwSfa3X6fiZg32YyqqZSuvjhuipZb1L9IM9wf452ydzJoE5ydqhU3wE/NaQsJ6rmSBv0n55qC0JwiD3My9Pg2GG7yNS/2orWnRVZ75A9XF9Owfr0sItSt2o5qJMBHMaEZT2IYUg2Gvp/svQZyEuc+Zx65+jtHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ewzXwx8b; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=w0aSDEq0; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1120070830;
+	Sun, 14 Jun 2026 16:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.108
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781455656; cv=fail; b=NaYmNYi0Cot2RQIUBQyrC2haAgoODep8K9cAkIcQzDGGoj3xgQvsAdj5nKhpAeLwdI1IbMJZ3HiCU+WkKt+4DQ/V+Sz8o+yCoMszJ5DQTPJDPbSvMvmCewkIV//V3kCk49wuulZMX/1NiH25bEPmj6GbxCMhy4jnkvYc1KyBrqc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781455656; c=relaxed/simple;
+	bh=1vQ5MZvn0WFJVZrbCuae0wQQWKSRO/BdYaSzH42YiJ8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=fjUL3a5a7kzi9oquMua0HFdvCYV8gglKXmWg2s7DOwCxGsY1PQ0SPsm6tCwYrDqPb2uioowb6gSAzGETb8K605wErIajDLDS7iMiAULYfnpC2A3c/2pI3DIsCNsqbozJ8xjn4nheRnWZd4oIWiw0/yY2tPgfCTP7D1rVuhG0KeQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=t/91dph0; arc=fail smtp.client-ip=52.101.95.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ewzXwx8b";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="w0aSDEq0"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gddJQ216Rz9ty0;
-	Sun, 14 Jun 2026 18:00:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1781452838;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v6MiOt1VDULqFs1C4z9fRBNqC3Oc/DnkJINWTZywPLU=;
-	b=ewzXwx8by9SYJfkHF3dVAQZw7xYQDIdIiXYnqk5hj6qpVPY1tdvpEiGWwfhMmSYvByBixf
-	zEC5YPHCLgGxnuwPhLW1bb7l+Tp10ngiADNbBpy0T4A6//3ekPMweaBzo4WNmH1wjtC7du
-	8i7UUQyPM47hdr6hf50YZiSnKOUG1r/EWsG6t6A0QviChI0Fl7/tu9h0zX1moizELHm4Q4
-	MbE7Fl1GznbouCOCwsYSUrUVrT4HkPo74R+lc7NPl5OSeQHTgNs3kLH5oTHIF1JhaHhQbf
-	ve2esre42vLrHIRxDM+8OL9jqFpoG2fCBjnICFxHhy385LyuzAuSQ+7drwWWwg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=w0aSDEq0;
-	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=mhi@mailbox.org
-From: Maurice Hieronymus <mhi@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1781452836;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v6MiOt1VDULqFs1C4z9fRBNqC3Oc/DnkJINWTZywPLU=;
-	b=w0aSDEq0ox07xc4dxSAdRakJQ6cZAnaZdd4hS911UdONCy5K41VUZpO8yLe5mICZS60jKH
-	bQK0SodZ8kDY+z+ufVtFd53TZCbYHMpRrbbSinWG+M38vWXINxoVHsD39hXRSdb1L9RKIq
-	w3m4y0+WhmmgfiXQCwDNG+UggA898HoJ9UglqM6+/HuF25lYyES8odOTQo8N72k+kvnqyX
-	bFENbfzKuGBUDs/E57Oh9VAtHlBexHAAbVtYVyqhjaP6EztSUPiaRsdTpdDyj3tTeI5TLh
-	XcVcqcji8ppE5wU5Gp/gCwamQbkZff1vlnRxF5fs4cvldRfaimqbUhiGXdie+Q==
-Date: Sun, 14 Jun 2026 17:59:48 +0200
-Subject: [PATCH 4/4] rust: samples: add EDU PCI driver sample
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="t/91dph0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Bq/prgGJjYDbwKabXeI8RTAdMaqjiab1Lz7NUJ+UrZUc5s+vFJitR0l6E6hlwSXgrNZwqUI44z+yg27MS+Z7ePztttQyT8PEXW5BBCVa17WheO2z9VvxSYg4J6OQ5pUoI+v1eTTfcE4DzVaLtACVCsRM/Z/Vn206bBmgbbY8YGBjri1QCfh2Q5ROv+ggARiFRjY7ZGiqDLgh1NSunw/R4siNDd+sHNWJ9FKLzYgJcQjpHRfNJmxud9U5fxq8ACq7dS0ZNka5vUWm5GYh7xI5u5+gE+rmyLejnuor4dmpL3F8L4s6PyDXPh2jWs90sYGizhiVQLrwZJWwJ6ldwHuK1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+QxSPpu+dgx9avKmQ8MVJQtUbrCMOM8mg13WA7QoZfA=;
+ b=FMqHUMsleT6ndCZrLADlQUvZoZUkIzhMi6VFUQws5Zui71DTaP74OFFxa53zTICe7NsCNHc65ADES8egwRLN9Z7Waa0D6a6BnvZMfeGUWDkEAVnfmQwr4/ynkIXFJ7Rk7UT2UlH/7DYxuEnzFMVg1mbjSAbQVQZQ2xxvAp1VxATflMbWbnEPeGHLtI4Fd42y8QhTM8GoyWzXbAasBk57a0b+Z1r1HLQGwVEGb2HMvNPuNqYnpUWi8sYPDrkCOVzQgp2HNVQuMpNWPQ3PmAAmI86TBHOnoW46NIJN/DOBMeWSKTs/HFLPtOhtl0gfUSlvx1EdqES2XAuIT0u1KtsSXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+QxSPpu+dgx9avKmQ8MVJQtUbrCMOM8mg13WA7QoZfA=;
+ b=t/91dph0JQkVUz6gd2i0rTCwL3wryVOAdojMwgWcu6uEvtOxFya19ZJ6eEUdBImBKNjdEggEsvnm6OVVC2xHoDC/YtKcJro5VEatilpQwy4SJZIhpNyCmBJoycrkG9Gv88f8NoctLEcUfBNr6DVlpfXlLNRdcXB/mnkibgTi1oY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB2649.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:14b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Sun, 14 Jun
+ 2026 16:47:31 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0113.015; Sun, 14 Jun 2026
+ 16:47:31 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 14 Jun 2026 17:47:30 +0100
+Message-Id: <DJ8XBNXPA8N9.3BBS3GADLP5K6@garyguo.net>
+Cc: <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/4] rust: pci: make Vendor::from_raw() public
+From: "Gary Guo" <gary@garyguo.net>
+To: "Maurice Hieronymus" <mhi@mailbox.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>
+X-Mailer: aerc 0.21.0
+References: <20260614-b4-rust-pci-edu-driver-v1-0-e3f2471b595c@mailbox.org>
+ <20260614-b4-rust-pci-edu-driver-v1-1-e3f2471b595c@mailbox.org>
+In-Reply-To: <20260614-b4-rust-pci-edu-driver-v1-1-e3f2471b595c@mailbox.org>
+X-ClientProxiedBy: LO4P123CA0132.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:193::11) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260614-b4-rust-pci-edu-driver-v1-4-e3f2471b595c@mailbox.org>
-References: <20260614-b4-rust-pci-edu-driver-v1-0-e3f2471b595c@mailbox.org>
-In-Reply-To: <20260614-b4-rust-pci-edu-driver-v1-0-e3f2471b595c@mailbox.org>
-To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Maurice Hieronymus <mhi@mailbox.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781452788; l=13853;
- i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
- bh=XQPsk8J2aCtm53Jnv0s9tQHstTFAlZMs43WuP9P85/w=;
- b=JTwF7agxI4hREuBSurdcC7VMGFkHvBScSpVYshFLXc2AWURwuCRJU7P+OzKFhPAnFfShrpYnN
- SJQTxAY15xqAagCqe34/XMXJSr6qq3Db17ocjfQcEH9YGEMnYDDuI4Z
-X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
- pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
-X-MBO-RS-META: bg87styqgxxqg43htxzcgqudswer3xe5
-X-MBO-RS-ID: 0edf214a9ace9df6fb2
-X-Rspamd-Queue-Id: 4gddJQ216Rz9ty0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB2649:EE_
+X-MS-Office365-Filtering-Correlation-Id: fab5a278-c972-4a7c-52de-08deca34a0b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|23010399003|7416014|376014|22082099003|18002099003|921020|3023799007|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	vk6yA7LFsvVyUE7JbXmjkqy1qVeCsk9CkL9lwgZQP9Xhi7r3hYsNC4S719jc/Tp5HnhwX2eA/wa7vecD5YhUsZka2tZPfyn5aZlg/zcbFhqL8qbq5KPLu6rlLFqJ7dO8sWd704nm6aI1nDeEjNxOAPyWiXnozERrN+krx7bE9x17FqlixB7jE1tGb8Cv0NDIluzVEZV4lHFLxPJ4MEI1DJL7g2I9OjWimHE35ZSUpUGcivE7qSOPoO5Cb7Jzqutev4h4pLd7y5yx9URxAu8J/WdSA4F9NAp9eVFSZA3/BScvRRIGDy18b7pl33XTkbGWFTpt7IzcHfj1T3ZO9Sa3o6isnicJ6UoSSbEBHyjn4EWhgqtVFNW9vKNShKpM4GKJXboIoPr0VRg88IJt1p5eohKPEQwJLTNEDb44N+jPasbx3ntlNWCkIad4uOmx8+6RcEQS+5UR8VAw7sK+boC6MowuOmVzTB82RCMhBmPxzjqv9c9sShA59U16K2ZIIETvzDiVdI/60SxyNFjlfjo2aaSIRGRZ/KvISIFYx6ofZpb6Iwx/6hgekZ20/rExMCMK80rcxyo+kxDAxzLF8UjBy540SmbLSnMeOnOt4tULJ/4eF2qlzPElf5SqbUtOXwNSnFTiEI8c9ebD9/6ag8xyMKS8/VSLUSuuoXIVfnxPtV8bo0qIPGmoBiKHnATZyrcE2hVkacFXH/vbWf1rDtBBKRhobQnhoK+Sglsw/la6OSM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(23010399003)(7416014)(376014)(22082099003)(18002099003)(921020)(3023799007)(4143699003)(56012099006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Wlo1Wm9tZGFWSkhMaDU0cVpld2ZTRFZmcmFtMFJNaFJta3NycHF3TzAzeElQ?=
+ =?utf-8?B?ZUpLekt5OWdwSEZpZzM3dmVIVzI5VnQzN2t6TDNFSG5XeW5uUTdZdHBxVlZY?=
+ =?utf-8?B?UmcvVEVNTU9wU0FpQ29xblpQUWdzRDR2YmROZHhaT0pvK0x3TFZUZ0orRTdW?=
+ =?utf-8?B?UXVFZXpRcEFtNFAyY1lvekt4V1FvZHpmam01a3kwa0plTXlVWk1xVXBkOU9Z?=
+ =?utf-8?B?bDBMTlhJWnhDOTA4cW9tNTFsZG9ySmRGQzRzYkVzQ2VXQXlORW1FbFptclRr?=
+ =?utf-8?B?TUNxZlVaSHpUNUZtNS80UkdmWE9PdHIyZnZtb29tOFQ1aDdyQmgraDMwLytT?=
+ =?utf-8?B?R0ZPQ1FsVzEyNkY5aGlYaGR1MkRnYjZaczNwVnVyTjZKS3FzSjZGTE5GM0l0?=
+ =?utf-8?B?RFphQ0NINTY2YkRIRnVDZm5UWUNRMTJRbXRTeFo1ak50RkVMU05hMFhLajh6?=
+ =?utf-8?B?WE1RQ0FRNzc2Smx1QkliMGIzWEVJZENDTnJiM0FycDU2SXJkU0NrUzNlampS?=
+ =?utf-8?B?bDU4eDkyY1B5ekR6eWpMT01hRG96MS9pTFM5T0t6YTZVQUtsUWZjSHB4STNn?=
+ =?utf-8?B?TXRJcURsZHJBTXBUTSs5V1NHeTFWZXJ2eHVCbEpHakN3a3NQT3JqblJCZ2w4?=
+ =?utf-8?B?a3VndzRpT2R2REp0QjZlKzgzdVNQQVl5YVlWTFlyK3JpTlBKMHNGcmFJVmtz?=
+ =?utf-8?B?LzJtd25QRXRENWIwZUtaVWcwVjA2eEpid1F1QnZLOUgzM2xNaDF3N0hrbk5P?=
+ =?utf-8?B?RVgxN0F4SzkvczEycEdVQmFBb2VGS29sYm9NMmhuUnpNaXArdllWak1LVkJZ?=
+ =?utf-8?B?YXBYWDdKV1MxbjBFL1l3VG5jYWtOVlZBdG9iYXpybklnLy9OOENUdTFBWHFt?=
+ =?utf-8?B?dWRSZWRVK1pmN1hoNHN6UnZIbXpZQXBmSmFva2VtaG53QlVuMWc1cStyTFg3?=
+ =?utf-8?B?NEIvTFRmd0tPK2RvOUFGMGRsL0pRVDBuNXBjYzRpejgvWUd6TXhBZGhRM2Fu?=
+ =?utf-8?B?NlgyT1VWRVFEN3FCdU5tSFFkOFVEaGx5OG1xVEpOaVRndmkvVW1HSlIxRWhx?=
+ =?utf-8?B?YmEzcCtrc2EvUldocldGRlNxZERUem9iclF4akhJa3E0dzQ2TkpQaXZXbUph?=
+ =?utf-8?B?eWNZdmRIUFNlOFBQemFxTDFoM3BUVUVNNjBVdTh5ZWJwT2pXNVVlbmJhMUI4?=
+ =?utf-8?B?ajhwdU5UVnkyM05BMnZIamNIVm92VnZ5akpmMkRjajhNZWg3REdjZGxLL2Rw?=
+ =?utf-8?B?RTRjaXIwS29FVmg4bXhyWEFCYTN0VENWVmZ1NWs2OHZBeng4SUYwZUZIWVlz?=
+ =?utf-8?B?cUlVUEFNZUFCSjlhalh3d0VFSTltOU9ncWQvWWFXVTNRaDEweFpXYzlWUElC?=
+ =?utf-8?B?c01HZzVoS2p1NDByWFZ1SW15Y2lOVGJFT2NwMy9iUkNzK0d0eFprT2JhWnd3?=
+ =?utf-8?B?NEVCYTdnKzJ4djMwb1hLWVBRNXJUVUJTOUhVTURTbjBTbEZVS3dRMTNSQXhI?=
+ =?utf-8?B?aVRHQWZoMlNHYzFySTN3YXBFUDRmbGlRNEpDaVhrc3Z0ZVVtYldtMk0rWVFt?=
+ =?utf-8?B?MFpSS2dibmFWRWR0WEMzYjZKR3FJbG80aCtucjFUZ2VFUCtqc2hoSjRSZjFj?=
+ =?utf-8?B?NnhFVmdYUTdZRlRPMVg4YTVpdE82d01PdnpwRGdHWmpzczlBbGRGdDkwTEhs?=
+ =?utf-8?B?RkRBMC9rWjFhNXBjaDNhRkE3eDd3Z3ArTUFwNURVN3JMVVRJNWQ2cDVEVjBJ?=
+ =?utf-8?B?SDBmU2VJMzQxY3M0UExUZGpqeS9iSXJyc0VkSWRZcllzNTJMWjdVdEo5VUNz?=
+ =?utf-8?B?V1h6dU4rdElDWDhxRHE1cjRXeGgwZElYSXJ6TmVNZlVQM3ZMNG8zUlkwSklB?=
+ =?utf-8?B?MzVNRFRHb2UyUUU1WVRXTUxYamdpS1hDSktvTnZXZ2I2U1k2Vi9icmwva1Nr?=
+ =?utf-8?B?bWFLZjgvMnJoMmsxaE9IZDI2NFRvcDkyakFneHRDNWtBMXpFZmpWcGJzaDdy?=
+ =?utf-8?B?MkF5dDRySG1RdHNEUHNhdldmU1o3YkdUTHA4QURvSU5KN3ZGdk9TTExSYkdM?=
+ =?utf-8?B?blBVTnlBTm5IWFc5RFJSU3dMOWVJWXpHaWZSQjNLV0dqUTJmL0RnakxmMmRQ?=
+ =?utf-8?B?aFJoT09qYktaQnh0U3ZPSkY3V0pVYWgrSC85OUhJYzFmN2ZGVU5BSjhVNUlK?=
+ =?utf-8?B?SlZLR1dpVi9oRENrOGdLOGZuNVZVcm1iQXpidTBIbm8vUGRsYnVFbEVaT1d1?=
+ =?utf-8?B?RjY0K3lYZjJHQTdWT3FKNjVPcjRnSmFoV3pSQXYvNUg1ak9Wd28vNUVjSStV?=
+ =?utf-8?B?ZDlFTjExU0M1N1l0a1pSN2o1S0ZoMGo0czR0VUhxVVNQMlM2cERhZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: fab5a278-c972-4a7c-52de-08deca34a0b7
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2026 16:47:31.7333
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 18soypqyuqR6gF+NtUnhxCgpKeIrs0h4S/oQdoe+u9tQLtxrasxfYFS60L9t2gJ7RG5SYJIVwEE9wiaozQy42A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB2649
 
-Add a Rust sample driver for the QEMU EDU device, wired up via a new
-SAMPLE_RUST_DRIVER_EDU Kconfig option and the samples Makefile.
+On Sun Jun 14, 2026 at 4:59 PM BST, Maurice Hieronymus wrote:
+> Vendor::from_raw() is currently pub(super), so a Vendor can only be
+> obtained through the named constants generated from the PCI_VENDOR_ID_*
+> defines in <linux/pci_ids.h>. A driver therefore cannot match a device
+> whose vendor ID has no symbolic name.
 
-Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
----
- samples/rust/Kconfig            |  11 ++
- samples/rust/Makefile           |   1 +
- samples/rust/rust_driver_edu.rs | 379 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 391 insertions(+)
+nit: quote these code blocks inside commit text for visual clarity
+>
+> Such devices exist. QEMU's "edu" educational device and the legacy
+> qemu/Bochs stdvga both use vendor ID 0x1234, which is not registered in
+> pci_ids.h. Per the policy stated at the top of that header, IDs are only
+> added there when shared between multiple drivers; a single-driver ID is
+> expected to be open-coded in the driver instead. C drivers already do
+> this -- see drivers/gpu/drm/tiny/bochs.c, which matches with a bare
+> ".vendor =3D 0x1234".
+>
+> The Rust abstraction has no equivalent escape hatch: there is no public
+> way to express an unregistered vendor. Make Vendor::from_raw() public (an=
+d
+> const, so it can be used in the const device-ID tables built by
+> pci_device_table!) so that drivers can construct a Vendor from a raw ID,
+> matching what C drivers can already do.
+>
+> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
 
-diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
-index c49ab9106345..742c42262e9b 100644
---- a/samples/rust/Kconfig
-+++ b/samples/rust/Kconfig
-@@ -118,6 +118,17 @@ config SAMPLE_RUST_DRIVER_PCI
- 
- 	  If unsure, say N.
- 
-+config SAMPLE_RUST_DRIVER_EDU
-+	tristate "EDU Driver"
-+	depends on PCI
-+	help
-+	  This option builds the Rust EDU driver sample.
-+
-+	  To compile this as a module, choose M here:
-+	  the module will be called rust_driver_edu.
-+
-+	  If unsure, say N.
-+
- config SAMPLE_RUST_DRIVER_PLATFORM
- 	tristate "Platform Driver"
- 	help
-diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-index 6c0aaa58cccc..c24a328243b1 100644
---- a/samples/rust/Makefile
-+++ b/samples/rust/Makefile
-@@ -10,6 +10,7 @@ obj-$(CONFIG_SAMPLE_RUST_DMA)			+= rust_dma.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_I2C)		+= rust_driver_i2c.o
- obj-$(CONFIG_SAMPLE_RUST_I2C_CLIENT)		+= rust_i2c_client.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI)		+= rust_driver_pci.o
-+obj-$(CONFIG_SAMPLE_RUST_DRIVER_EDU)		+= rust_driver_edu.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_USB)		+= rust_driver_usb.o
- obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
-diff --git a/samples/rust/rust_driver_edu.rs b/samples/rust/rust_driver_edu.rs
-new file mode 100644
-index 000000000000..c092117473d3
---- /dev/null
-+++ b/samples/rust/rust_driver_edu.rs
-@@ -0,0 +1,379 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust EDU driver sample (based on QEMU's `edu`).
-+//!
-+//! To make this driver probe, QEMU must be run with `-device edu`.
-+
-+use kernel::{
-+    device::Bound,
-+    devres::Devres,
-+    dma::{Coherent, Device, DmaMask},
-+    io::{
-+        poll::read_poll_timeout,
-+        register,
-+        Io, //
-+    },
-+    irq::{self, Flags},
-+    pci::{self, IrqTypes},
-+    prelude::*,
-+    sync::{aref::ARef, Arc, Completion},
-+    time::Delta, //
-+};
-+
-+const QEMU_VENDOR_ID: u16 = 0x1234;
-+const QEMU_EDU_DEVICE_ID: u32 = 0x11e8;
-+const QEMU_EDU_DEVICE_MAGIC: u8 = 0xed;
-+const QEMU_DMA_BASE: u64 = 0x40000;
-+
-+const IRQ_MAGIC_VALUE: u32 = 42;
-+
-+/// Bit set in `IRQ_STATUS` when a DMA transfer has completed.
-+const DMA_IRQ: u32 = 0x100;
-+
-+mod regs {
-+    use super::*;
-+
-+    register! {
-+        pub(super) IDENTIFICATION(u32) @ 0x0 {
-+            31:24 major;
-+            23:16 minor;
-+            7:0 magic;
-+        }
-+
-+        pub(super) LIVENESS_CHECK(u32) @ 0x04 {}
-+
-+        pub(super) FACTORIAL(u32) @ 0x08 {}
-+
-+        pub(super) STATUS(u32) @ 0x20 {
-+            0:0 computing;
-+            7:7 raise_interrupt;
-+        }
-+
-+        pub(super) IRQ_STATUS(u32) @ 0x24 {}
-+        pub(super) IRQ_RAISE(u32) @ 0x60 {}
-+        pub(super) IRQ_ACK(u32) @ 0x64 {}
-+
-+        pub(super) DMA_SRC(u64) @ 0x80 {}
-+        pub(super) DMA_DST(u64) @ 0x88 {}
-+        pub(super) DMA_COUNT(u64) @ 0x90 {}
-+        pub(super) DMA_COMMAND(u64) @ 0x98 {
-+            0:0 start_transfer;
-+            1:1 direction;
-+            2:2 raise_irq;
-+        }
-+    }
-+
-+    pub(super) const END: usize = 0xA0;
-+}
-+
-+type Bar0 = pci::Bar<{ regs::END }>;
-+
-+#[pin_data(PinnedDrop)]
-+struct EduDriver {
-+    pdev: ARef<pci::Device>,
-+    data: Arc<EduDriverData>,
-+    #[pin]
-+    irq_handler: irq::Registration<Arc<EduDriverData>>,
-+}
-+
-+#[pin_data]
-+struct EduDriverData {
-+    #[pin]
-+    bar: Devres<Bar0>,
-+    #[pin]
-+    irq_test_completion: Completion,
-+    #[pin]
-+    irq_dma_completion: Completion,
-+    dma: Coherent<u64>,
-+}
-+
-+impl EduDriver {
-+    fn init(pdev: &pci::Device<Bound>, bar: &Bar0, data: &Arc<EduDriverData>) -> Result {
-+        Self::magic(pdev, bar)?;
-+        Self::liveness_check(pdev, bar)?;
-+        Self::factorial(pdev, bar)?;
-+        Self::test_irq(pdev, bar, data)?;
-+        Self::test_dma(pdev, bar, data)?;
-+        Ok(())
-+    }
-+
-+    fn magic(pdev: &pci::Device<Bound>, bar: &Bar0) -> Result {
-+        let identification = bar.read(regs::IDENTIFICATION);
-+
-+        let magic: u8 = identification.magic().into();
-+
-+        if magic != QEMU_EDU_DEVICE_MAGIC {
-+            dev_err!(
-+                pdev,
-+                "magic mismatch: expected {:#x} got {:#x}\n",
-+                QEMU_EDU_DEVICE_MAGIC,
-+                magic
-+            );
-+            return Err(ENODEV);
-+        }
-+
-+        dev_info!(
-+            pdev,
-+            "major: {:#x} minor: {:#x}\n",
-+            identification.major(),
-+            identification.minor()
-+        );
-+        Ok(())
-+    }
-+
-+    fn liveness_check(pdev: &pci::Device<Bound>, bar: &Bar0) -> Result {
-+        let test_value = 0xabcd;
-+
-+        bar.write(regs::LIVENESS_CHECK, test_value.into());
-+
-+        let inverse_value = bar.read(regs::LIVENESS_CHECK).into_raw();
-+
-+        if inverse_value != !test_value {
-+            dev_err!(
-+                pdev,
-+                "inverse mismatch: expected {:#x} got {:#x}\n",
-+                !test_value,
-+                inverse_value
-+            );
-+            return Err(ENODEV);
-+        }
-+
-+        dev_info!(pdev, "inverse test successful\n");
-+        Ok(())
-+    }
-+
-+    fn factorial(pdev: &pci::Device<Bound>, bar: &Bar0) -> Result {
-+        Self::wait_until_compute_has_finished(pdev, bar)?;
-+
-+        bar.write(regs::FACTORIAL, 4.into());
-+
-+        Self::wait_until_compute_has_finished(pdev, bar)?;
-+
-+        let result: u32 = bar.read(regs::FACTORIAL).into();
-+
-+        let expected = 24;
-+
-+        if result != expected {
-+            dev_err!(
-+                pdev,
-+                "factorial result wrong: expected {} got {}\n",
-+                expected,
-+                result
-+            );
-+            return Err(ENODEV);
-+        }
-+
-+        dev_info!(pdev, "factorial test successful\n");
-+        Ok(())
-+    }
-+
-+    fn test_irq(pdev: &pci::Device<Bound>, bar: &Bar0, data: &Arc<EduDriverData>) -> Result {
-+        dev_dbg!(pdev, "raising irq\n");
-+
-+        bar.write(regs::IRQ_RAISE, IRQ_MAGIC_VALUE.into());
-+
-+        data.irq_test_completion.wait_for_completion();
-+        Ok(())
-+    }
-+
-+    fn test_dma(pdev: &pci::Device<Bound>, bar: &Bar0, data: &Arc<EduDriverData>) -> Result {
-+        dev_dbg!(pdev, "testing dma\n");
-+
-+        let dma = &data.dma;
-+
-+        const DMA_VALUE: u64 = 42;
-+
-+        kernel::dma_write!(dma, , DMA_VALUE);
-+
-+        bar.write(regs::DMA_SRC, dma.dma_handle().into());
-+        bar.write(regs::DMA_DST, QEMU_DMA_BASE.into());
-+        bar.write(regs::DMA_COUNT, (dma.size() as u64).into());
-+        bar.write(
-+            regs::DMA_COMMAND,
-+            regs::DMA_COMMAND::zeroed()
-+                .with_start_transfer(true)
-+                .with_direction(false)
-+                .with_raise_irq(true),
-+        );
-+
-+        data.irq_dma_completion.wait_for_completion();
-+
-+        // Destroy previous value to test roundtrip
-+        kernel::dma_write!(dma, , 0);
-+
-+        bar.write(regs::DMA_SRC, QEMU_DMA_BASE.into());
-+        bar.write(regs::DMA_DST, dma.dma_handle().into());
-+        bar.write(regs::DMA_COUNT, (dma.size() as u64).into());
-+        bar.write(
-+            regs::DMA_COMMAND,
-+            regs::DMA_COMMAND::zeroed()
-+                .with_start_transfer(true)
-+                .with_direction(true)
-+                .with_raise_irq(true),
-+        );
-+
-+        data.irq_dma_completion.wait_for_completion();
-+
-+        let result = kernel::dma_read!(dma,);
-+
-+        if result != DMA_VALUE {
-+            dev_err!(
-+                pdev,
-+                "dma result wrong: expected {} got {}\n",
-+                DMA_VALUE,
-+                result
-+            );
-+            return Err(ENODEV);
-+        }
-+
-+        dev_info!(pdev, "dma test successful\n");
-+        Ok(())
-+    }
-+
-+    fn wait_until_compute_has_finished(pdev: &pci::Device<Bound>, bar: &Bar0) -> Result {
-+        if read_poll_timeout(
-+            || Ok(bar.read(regs::STATUS)),
-+            |status| status.computing() == 0,
-+            Delta::from_millis(10),
-+            Delta::from_millis(100),
-+        )
-+        .is_err()
-+        {
-+            dev_err!(pdev, "computation bit did not clear before timeout\n");
-+            return Err(ETIMEDOUT);
-+        }
-+        Ok(())
-+    }
-+}
-+
-+impl pci::Driver for EduDriver {
-+    type IdInfo = ();
-+
-+    const ID_TABLE: pci::IdTable<Self::IdInfo> = &PCI_TABLE;
-+
-+    fn probe(
-+        pdev: &pci::Device<kernel::device::Core>,
-+        _id_info: &Self::IdInfo,
-+    ) -> impl PinInit<Self, Error> {
-+        pin_init::pin_init_scope(move || {
-+            let vendor = pdev.vendor_id();
-+            dev_dbg!(
-+                pdev,
-+                "Probe Rust EDU driver sample (PCI ID: {}, 0x{:x}).\n",
-+                vendor,
-+                pdev.device_id()
-+            );
-+
-+            pdev.enable_device()?;
-+            pdev.set_master();
-+
-+            let mask = DmaMask::new::<28>();
-+
-+            // SAFETY: There are no concurrent calls to DMA allocation and mapping primitives.
-+            unsafe { pdev.dma_set_mask_and_coherent(mask)? };
-+
-+            let ca: Coherent<u64> = Coherent::zeroed(pdev.as_ref(), GFP_KERNEL)?;
-+
-+            let irq = pdev
-+                .alloc_irq_vectors(1, 1, IrqTypes::default().with(pci::IrqType::Msi))
-+                .inspect_err(|e| dev_err!(pdev, "alloc_irq_vectors failed: {:?}\n", e))?;
-+
-+            // State shared with the IRQ handler (the BAR and the completion the
-+            // handler signals) lives in an `Arc<EduDriverData>`. `EduDriverData`
-+            // itself implements `irq::Handler`, and the registration takes an
-+            // `Arc<T>` via the `impl Handler for Arc<T>` blanket impl. This keeps
-+            // the handler's state out of `EduDriver` and avoids a self-reference.
-+            let data = Arc::pin_init(
-+                try_pin_init!(EduDriverData {
-+                    bar <- pdev.iomap_region_sized(0, c"rust_driver_edu"),
-+                    irq_test_completion <- Completion::new(),
-+                    irq_dma_completion <- Completion::new(),
-+                    dma: ca,
-+                }),
-+                GFP_KERNEL,
-+            )?;
-+
-+            let req = irq::Registration::new(
-+                (*irq.start()).try_into()?,
-+                Flags::TRIGGER_NONE,
-+                c"rust_edu_irq",
-+                Ok(data.clone()),
-+            );
-+
-+            // Ordering matters: the handler is registered (`irq_handler <- req`)
-+            // *before* the `_:` block runs the self-tests, one of which raises an
-+            // interrupt and waits for the handler. Raising before the handler is
-+            // registered would hang (the completion is never signalled).
-+            Ok(try_pin_init!(Self {
-+                irq_handler <- req,
-+                // Side-effect block: run the staged self-tests against the mapped
-+                // BAR now that the handler is live. A failure here aborts probe.
-+                _: {
-+                    let bar = data.bar.access(pdev.as_ref())?;
-+                    EduDriver::init(pdev, bar, &data)?;
-+                    dev_info!(
-+                        pdev,
-+                        "rust_driver_edu successfully initialized\n",
-+                    );
-+                },
-+                data,
-+                pdev: pdev.into()
-+            }))
-+        })
-+    }
-+}
-+
-+impl irq::Handler for EduDriverData {
-+    fn handle(&self, pdev: &kernel::device::Device<Bound>) -> irq::IrqReturn {
-+        dev_dbg!(pdev, "irq handler called\n");
-+        // `access()` only fails on device mismatch, so this branch is
-+        // structurally unreachable here, but it must be handled.
-+        let Ok(bar) = self.bar.access(pdev.as_ref()) else {
-+            dev_err!(pdev, "cannot access bar register inside irq handler\n");
-+            return irq::IrqReturn::None;
-+        };
-+        let status: u32 = bar.read(regs::IRQ_STATUS).into();
-+
-+        // DMA_IRQ
-+        if status & DMA_IRQ != 0 {
-+            dev_dbg!(pdev, "handling dma completion in irq\n");
-+            bar.write(regs::IRQ_ACK, DMA_IRQ.into());
-+            self.irq_dma_completion.complete();
-+        }
-+
-+        // TEST_IRQ
-+        let magic = status & !DMA_IRQ;
-+        if magic == IRQ_MAGIC_VALUE {
-+            dev_dbg!(pdev, "handling test completion in irq\n");
-+            bar.write(regs::IRQ_ACK, magic.into());
-+            self.irq_test_completion.complete();
-+        }
-+
-+        irq::IrqReturn::Handled
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for EduDriver {
-+    fn drop(self: Pin<&mut Self>) {
-+        dev_dbg!(self.pdev, "Remove Rust EDU driver sample.\n");
-+    }
-+}
-+
-+kernel::pci_device_table!(
-+    PCI_TABLE,
-+    MODULE_PCI_TABLE,
-+    <EduDriver as pci::Driver>::IdInfo,
-+    [(
-+        pci::DeviceId::from_id(pci::Vendor::from_raw(QEMU_VENDOR_ID), QEMU_EDU_DEVICE_ID),
-+        ()
-+    )]
-+);
-+
-+kernel::module_pci_driver! {
-+    type: EduDriver,
-+    name: "rust_driver_edu",
-+    authors: ["Maurice Hieronymus"],
-+    description: "Rust EDU driver",
-+    license: "GPL v2",
-+}
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
--- 
-2.51.2
+> ---
+>  rust/kernel/pci/id.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/pci/id.rs b/rust/kernel/pci/id.rs
+> index 50005d176561..bd3cf17fd8de 100644
+> --- a/rust/kernel/pci/id.rs
+> +++ b/rust/kernel/pci/id.rs
+> @@ -156,7 +156,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Res=
+ult {
+>  impl Vendor {
+>      /// Create a Vendor from a raw 16-bit vendor ID.
+>      #[inline]
+> -    pub(super) fn from_raw(vendor_id: u16) -> Self {
+> +    pub const fn from_raw(vendor_id: u16) -> Self {
+>          Self(vendor_id)
+>      }
+> =20
+
 
