@@ -1,218 +1,324 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022073.outbound.protection.outlook.com [52.101.101.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D344B401484;
-	Mon, 15 Jun 2026 15:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C0A4028C3
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 15:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781536394; cv=fail; b=Vrd02BUH0VhsYIoYj1rQAV/ADXzhbGpqoBhvkXH6/p7sDD1ouDALXeb/ASZDO63lvnWWIyN/GFwUJ93yM9nMX6v6yxNbWBrmi0dkguUez1B/1Hu8cgg/JRFOzuYtPbym45Zu9mR6adkuZhHxjJQE+MRbLWzfwHEOuBA6aCbup/o=
+	t=1781536701; cv=pass; b=mILz8REDY56L4i9K7PMLraIfcMlNzhv1+WBsNINU8hq2yv5BSMzUWI6df/zTiwedI/u7u0PMIQhE2wIZeDwdTVdFxPduntYKR+FSzco31AvCeCgy8gq2stW4s4IpoUvvp7e82BBe4Qfsu6PoDnY8E5Z+yUN8Nmfz1ApMeyvbt4A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781536394; c=relaxed/simple;
-	bh=uzT7AJ1t75MbKZmH4Z7HiMjWbwki/Tv1UCe9li1FrT4=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=Uev5926FlFq7nVgmOLeJouTvFlT6luo9fwkwR8HW8iW6egM60dtzAC5az7BTiuYEOCgDzIv1PMGQAMbpGXF4ChANEFtwc3dRSpjf5TDzGSdnoZZm0OmunD8z1VVbkuy9QIvNDDXBD8PBzCPgElWiYA/N3gVfAPTCKuJe3cG96DI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=P4wKzmYP; arc=fail smtp.client-ip=52.101.101.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1781536701; c=relaxed/simple;
+	bh=+L2q32ym1Ls55gmGU/FbrxabrlkC927ToICUhLw9NUY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MHdyx6l8C4JuR9WNAQbtugjzanrX0123s1y71ObhHPVeYyf25jtOf4kOCXdv8CZCvE0I/7MDG625T1rWe+VyewO6sGybJY3kbBkfJOPcAUmFCAGqMWOmbghPgILEWaGIvnMDrpWCIy7S280RMJjQj4bu61WUnAd0Gri7VOUptns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XTRe7IF2; arc=pass smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="P4wKzmYP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Dl2ikhImH82hJFh5Rd+oe/1d51WL3cpjyaw0YeUGMNP4W++BXi7n2dXzBnUqmO8/BgyzO6jtLD9pRbcOjHXoBGDNkjHTebSIrzicUnw8jhy0MG9IX4jGEAuiV0ZoUHrEtUpQzYibb2m+F/FyDf5jCf533ycceteifBtO5dm4+EPw2sppE9ECoIlV2ZCyquNkQurmwL61zvR7iV2cAL5yBVIGe5cNUiO6oA4xSlRpENNzaPXQacewjajDMa0yo2rHt2QIv8+CgH5r6hpFYVNVfOcJoL1LUlW14Dh52uGjw7/kV/KKOaB9klUTN2MX2NhA5+ycxfRCp5bp8+ExcSIhDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jPgmbFGRGc+BgS+/4BR6ROcDXAkmehDIC/qNvCJJS6I=;
- b=w3/monCXno3NsASTH9k4ii0f7NNuypEMEgNGlysJVaI+xN0wHvcUo00EUUpvspH3ahokcDru378miGpkYfXtwfZY1Yj5TSEOh0gwuxWU2KlLbpCLQPOWwllmBQeulIjDINgdy32C0mh9WdlpC1tt+tflUL/OOJL9m5pf/Ve5NgxKGRZNg3lF6g4y+X6GvhtVqNbDhRB/4RGocX01FSxULPYvJY2Fhq/+I3Q3fK+Xcdb+lYvh5sSa4UmBEigsG/O2NUELKIHcZeRrqTyzt8qE7m1VwFmro+Fvqz26tXLi3/zESVN1Fq5D37CgczvEa6B/0EXRjjAgt/H9CHa9PL2B3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jPgmbFGRGc+BgS+/4BR6ROcDXAkmehDIC/qNvCJJS6I=;
- b=P4wKzmYPohQ7jnB/20Sa4AfuGFkswcodrIHuRK/3Q9/ebBYm5AdxlCsJ2mhIWfrOqAkVevNEC5uuA87QJvXVTQtufYSzt8Ven1HDFDBCdiq500udMMapB1EpwOLc2v4UseANmcOuK1jgfeHVpEkhEA/+LnYFwZxEZFEXRYzTv7c=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2487.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:9b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
- 2026 15:13:09 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
- 15:13:09 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Jun 2026 16:13:08 +0100
-Message-Id: <DJ9PXYB91UDG.3BV4EJJ10RIC4@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Abdiel
- Janulgue" <abdiel.janulgue@gmail.com>, "Robin Murphy"
- <robin.murphy@arm.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Danilo Krummrich" <dakr@kernel.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v4 07/20] rust: io: implement `Mmio` as view type
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260611-io_projection-v4-0-1f7224b02dcb@garyguo.net>
- <20260611-io_projection-v4-7-1f7224b02dcb@garyguo.net>
- <DJ9PI9NEJ92T.3D0E90RPSCXA2@nvidia.com>
-In-Reply-To: <DJ9PI9NEJ92T.3D0E90RPSCXA2@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0385.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18f::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XTRe7IF2"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-30807ba471bso9856033eec.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 08:18:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781536699; cv=none;
+        d=google.com; s=arc-20240605;
+        b=C1AbDFcdcRP+ZdORAVTIoNowygCIvLzc+No/I0EjVT97+Oi0wy9DdFqiaHvZZHScTC
+         3YOl9483FsAGfvcro5Lh5s/nLHR9emDy5edXLeFFhuzFV8i9Xe2wYg+7BAIY4Rv1s/Tt
+         O+5Dm+TFWWrwf4FQc6Ac4slZj1upT45Iv3lbOG0gNX8punq0nxjxU5zJwvEO26ihrexA
+         SXf1dmamaMCq/8HX1ntNxzzznXBdrOU7oLoAjln4wBfE28hy1FbdQyyE2/WG2D82rcVu
+         mbJ403rv7XL4lecP7cOi7Fip0ECoaV+EYtWXjk7zhLnQ1prqirCEIkQg2/Ec/0p42Y3n
+         mJzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NRO/elbpz2J1L/9Rw+mfy0s1ugyankpJgu1mEdjQHtQ=;
+        fh=oX64NSO9eHDpZloZYHqibThHYv5EJ/Q42HEevl/h4xc=;
+        b=L+1s3bohjS/budU3RtzU4pSLO8vZEHTkRVnid8OZktEOiCsoHMJsJI1rAMgu70nf0Z
+         bHi0MkqFHrXjtOLR01PJf87YyeTUlyuwLPBvurkkWwqiCuhio4LtYU+CYaYByK96xUDB
+         LJTakeGnhRpT7MiOVgONWW90nhoQb/aezbA3t07jPYSmxQb6icPEMdXGRljxYyrC3L9P
+         zoZeZwHYoHavhcYCtFQMoAv+0cSrMDDEOrLisYU+tokU96cLg520EbpLwZehJxCcYIVQ
+         2ufPRyeDx/F/tfjB/yw9UNrlTAoxHKTelZt5XPx4fTyRy2Wh2P6ee2WW5d9WD1s6mnfF
+         rE0w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781536699; x=1782141499; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NRO/elbpz2J1L/9Rw+mfy0s1ugyankpJgu1mEdjQHtQ=;
+        b=XTRe7IF2WiopdF3UpdtOKGb30mW5vN83eeE4Uf5FlMjLNkfWJaL0ohENqhCkFahYFS
+         RPcUVfhlLFxwzMQBP5+xnoo1F85W1MoF4KmhrRpncFHjG/Sx/WAGYGvNNe/AlCbM67LM
+         3017uNTSXteSD+agWRt8PpdA2t61RWeVohk2vEtYoagcK6snCXeq1vsN1yNxyKV51ylJ
+         4jiyicJzHb1F/bezNwbsYeURFF7fknZXHwGqpY93QPM4XK5jU2G7DENCkRYIdnayzxz5
+         ajHn7pIrYm/0Nnacgtk3eqbdslg/KABZXoh901xguJRkAZwDNrj328t/kQKSYSy740ft
+         pq9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781536699; x=1782141499;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NRO/elbpz2J1L/9Rw+mfy0s1ugyankpJgu1mEdjQHtQ=;
+        b=ZTZRT359Dn817LV5gCgt79TfZS+oyYnh2jif8oYJtkp0mOFN/0hh61t1b4hEWElWiP
+         PZapBYjRrpVBhb/WpQYfnFiSYffRdIsuwkQ05FJoY/FV+am8yef8QXWV0D7HTrG3jtB/
+         R3mo3mheyBWzQb8UZVDdRBGEIBI7jlOKANF0N/qRIfbOF4AGzUsykEbeoUMc6drGannG
+         HLWDQYdNAfz/HZtIAC8bwnRVUKr/aRRsKbYwWiR+5ncmhL+Wb488iuGrB4wPFKA6EqTb
+         FyHrBSgHl1k8GGZbvoMQQSmEApHRdIf+jx4Kd4lvmSfMZLPHpI55jgC547BtcXoXA8ri
+         Jj4A==
+X-Forwarded-Encrypted: i=1; AFNElJ8/Jt4eZMcGkKbijN8+44AcuP3A37LJd5Zh3g6BobONGDNCk5kNGZdULiJk7JPtsa92jjWa4S8KxXX6T10QFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNeOx361gacscUvkGzYHQY+zVZlTfNvWQdbF2PBOjANHN766NF
+	WrSYk6Z82IExZB7tJ+tdgUgdktg0aN6y9CjjOdBZ01b9F1MXKC9+yKKUbOFBz31FrTS/C83kt8w
+	7RL+YOEeQRfHj7rVyZA0j71CMn1C1bD+RX4Nc3QKi
+X-Gm-Gg: Acq92OEvV9asepq00UBAJS2hS/kDvkwC8zudnIp3ZTgQQ1OWWzt2Z+ecEXpH2xbovhS
+	QR9GyEpzhVETo9y313FLnHJ5A4njOTKCbrOJvk+5opZXvImDRV5DzCtNs97WXvm1seOuK67j684
+	AGqhwcL8LcKxdcXtfWKIrrCPxXHzalyCndExeQOam5pJK7O4+v32u3uobic4JYgy8Xhml56/Xl2
+	45g68r2TDi7q5j7nhKz4MLF7otjjAIxL81zq0mbykPr/sqYQywKSBID9++UKIcyLTSrrpza/vPf
+	vR1jDK/0gThSWIw0f/cr3tnw54c76nRa01JrOA==
+X-Received: by 2002:a05:7300:a10b:b0:2e7:c701:aa85 with SMTP id
+ 5a478bee46e88-30820054ddamr9157737eec.17.1781536697992; Mon, 15 Jun 2026
+ 08:18:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2487:EE_
-X-MS-Office365-Filtering-Correlation-Id: efd169a5-b8b8-4fd8-c406-08decaf09bcc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014|23010399003|22082099003|18002099003|4143699003|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	Up6QCLYUOv+PE9ogj+XSBPxzndc6AUTtMPVpe0m4C54yon1jSc+ogWLm80nDTIy4fS1FBSKCgIzOX/929bqqn6PlPQWBylkZKtHV6mYkxV0fVBR6+sFN58WOQ6PDkoPd5zwvXBJoeYq+BrFsEiDhQYYUaVLS5tn5m8trmJ77funGjz77a3Up5IpQJKZtS58MBcMKbWD1PADnEG8VWa0+BSB/AvTsfLeVsBkvHM1zEJMaBWynLmPIIYzCz36VZSWcm1iphwXxb3YM7PU0WsQynQWMTitmLDECYNpPGnwEI5e8V1Y3Nkat+4krz+AXNVFXk7FeAaGxR/jAilmkFzWgUuLTISVWQy5hAHt3bnxrkcbfJaq518BzYurrKqGMiXOrqGE2+PZlWfprj94uyDZJli4w7Dw8zfUne1zsS49C+Khyg0A1/7BvJzibDyaKBV6+1oTJuLVaDcMTlhoN4l71XgCygUO6KQ+TD+AqUGTJNBh/aiXXzrRUpqmNZW1lMHGtOoz27FwQyjBURzXAG4wAbJXBCnFgH6e0jmZ5vKT3GkGtrXtzRw65Xc8u4hBZqtfkzrjVHUYFZXnLnXkF0KhcwDxHTX013Ypp1OdcICNJqM/C+iJOGh/IgO+ujicAxU4ZdGfr3g/HjjLPvOXLGhfDOVSzBiTDfrY8yLATB9c3UgcHCAxCQ4rVkia478AAEVTw
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(4143699003)(56012099006)(6133799003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VzNwVlRoK0Q0VEg2b0gwdVI0eFcxaktzcmxvK2tnVFBpek9mSXFHSjFTa1pT?=
- =?utf-8?B?dDFXUnM2Ukc0NTR5WXVhQkVoZUhKdGhPV2VHRDkvN2wrR2VCZEl0a0JvUnJ6?=
- =?utf-8?B?WDZHcEpzR1I4TlBTSTFEeFNHaElkQ3p3a2ZMZ1FLUVpGU09PL3haNW9BMGVG?=
- =?utf-8?B?ckhvbUtwaHZvQzA1SWFZNkdTdGE3Z2VQMEdFSE53dFZDTE9vNmZaM2dmU1My?=
- =?utf-8?B?aEp4K0hGWnhjYWhhQ3d2UkF1cy9ZMVFwQnNZTXFBekVra2ptOUVsem0vWUhL?=
- =?utf-8?B?aEoybzBlNW15R3FVNjNiS2p6dENlcTJVeEllVUo0YllIMkpWYlFIQUxKQnlH?=
- =?utf-8?B?UTRWRUcvZkV1Z2l4NmdUQUF5MzBjYllzL1VRd29vUnBlMmtoUFgyN1UyQlJS?=
- =?utf-8?B?RXlTOHVzb3hpMmFXYVpOOStVWWR0MDdrSmk2WUxtR0J3Wml2SkE3b1BtTWFM?=
- =?utf-8?B?L0NNT21mRHIyMWYwMENyRFh2TjRCbDR5YXc4d3R1b2JTVDdpVE4zdEJ5NVIv?=
- =?utf-8?B?MUtseUlpcUorc0tjTmM3Q0VZV0Rxd01UZXl2NlNvL0hodDJuRDQ0QXN5OFZt?=
- =?utf-8?B?Qm1SY3lWdUp4bThSaFNlelJGeTJQZ0tRdVkyZHJ5WFNhUFprc0EzemJwMmJ1?=
- =?utf-8?B?c1VkVUR2ZmI0OTE2T3ltYzRnL1NmRk82TmN2THlRQjBQNWJCanljMWp2WE83?=
- =?utf-8?B?YWhnOFBFWkxrekQ4RFJmV3ZkSDlhMk5wMnpIWmlZQ2hzNmtYcmFuL1VZeDRo?=
- =?utf-8?B?NXduamZlRDJpL0RiQ1NLNXFrc05nWlRyaS9hZXpGem1JcGFYOWltWlZRWGlT?=
- =?utf-8?B?SEx0bjFEY0V2ZXVwR25WV3NUZjVlWHhjZS9PWkgzd3Yra3B1NE9vVHozREdy?=
- =?utf-8?B?dXIxMDZQY3BIS010SUtPVVlQUXFPWEt6RkNZb0YzZU03bUNPNlRWbkcyaWxr?=
- =?utf-8?B?bjZnNjl5VHhLeXhWY2NWaU9IdnlHOVdVOTRvODkvNkFWTVl4RllqSlRseGN1?=
- =?utf-8?B?WnBmajh0VlVVU0t3K2ZkdzZjTXFsMXhYc0lhS2tVMWdBLzFaNVJ0UEpLVHlS?=
- =?utf-8?B?aG1UMk15V0lMVEhBZWI4M1dHT21iSlNydGZjZldmZVZJdjNZRVIrU3lMMVg2?=
- =?utf-8?B?Mlg4TnpHbXFhZ01YV2NlT1Q2SEhFWVdZbDZUbFVjUkdubWRLa2xSZWFHNGsw?=
- =?utf-8?B?eW02OVlmQ3dJek1tMFNwSlk1cXc4M0ZVZjFhT2cwNWh1aXdKVVVZWXN3bmNz?=
- =?utf-8?B?WHliSnV2WHE3TlpyRkF4UERLSjBucW8rcWVWQWduRXNxeFFQbEhWMi9lQUVE?=
- =?utf-8?B?U3FjNi9HME1SVWZNTEU1dzluV0ZqWk83WHNJL1hrZy85Q1duR2FxU0ZwN1NV?=
- =?utf-8?B?QlFXalFmbWdRUWRxYi9UWHZ5NE5aY0V6djNqRXNvNWtXMU1DaENtb0t3MFY2?=
- =?utf-8?B?d2gyRllFdlV4a1Q1SUU4TnYwUDE3RDRyQldlMjBZQ0d0T1VIWUVXbGwxR2dl?=
- =?utf-8?B?eWVRblEzZHRhVUdRY3EzUUc2WnBYbHF1ZFQzeWphMVlWYjBrVTVUdlFBUzdN?=
- =?utf-8?B?VUoxNS9hdUc1NUZnYmdUV3NoRWlsNWtkd0RNM3JSbzFBNHgycDFNRzJyQllk?=
- =?utf-8?B?WUVCM0RWRXZZancxNEJxdjdLdFRYL1RlVjNPbUZYWURRdmRhVHE5MGxVSUc2?=
- =?utf-8?B?bGkzYkJiK01BdlRncTNma2Ywc2pRd0dZUWpIanpZeUVZREt1UDJSVGJyRFJ5?=
- =?utf-8?B?OVVWRmFpYnRVanluNE1SV2t5cmEzOU80U3NXdnMwelBKK0ladVR1eElCQ1Fm?=
- =?utf-8?B?TWlTUUxLSGpVQU94QnFmUHE4RXZNd1BEbnljSzRrYVgvc3k2NnJFQVlicjlr?=
- =?utf-8?B?VmZVYzVTUlhoZUc1UXFNOXo0Z1ZxVjFncENKcW5ieWNIQ2Y4RW1JejRBRFJP?=
- =?utf-8?B?WlN0NldSVnpFYXFuY25VRXJYd3EzdmpLSjl3RDFLTWlSQjIzYitJZ1lrTy93?=
- =?utf-8?B?LzNtTFl5WUVHK2pSeWNncWxJR1JWQ2JiS0ZHbGl1V3JhaHRpODZqWGYrTDF3?=
- =?utf-8?B?Z2tneXpxTXo3OU1oNFIwc2tsNk9RQ294UzdtTTY3ejFNVE5wS0FnMzY3aGdP?=
- =?utf-8?B?aWRHNW1Zb2ZWcE8yT0RRM2RWalJVNThvTE9kWXllRjZ3eVRnLzNXK3BFckYx?=
- =?utf-8?B?cVNLRGxTUTkwcjN1ZE8zWjA4amprS1daNW9Nd0tTRXd5eC9vU1RJU3FRbVUv?=
- =?utf-8?B?akhRYjVUd1JOZDRhd2tuWklOUzYwcERLdFVodFNvckpTYjJsQlhHVXRocnpr?=
- =?utf-8?B?VjRnc2JSOWZzTFJoNWJjWklXS0QvbUxtWEpIT0JnZmhsQ3lwdjFFdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: efd169a5-b8b8-4fd8-c406-08decaf09bcc
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 15:13:08.8885
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S37yepC3RpGCnwIy2+jJWzVwlUf88JLar7jx5pkQ4t9kMyoPSq3TE3ylCNY4kUeI1Ae8XHZ81P+Vd+fTsuHXaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2487
+References: <20260615115626.871457-1-work@onurozkan.dev>
+In-Reply-To: <20260615115626.871457-1-work@onurozkan.dev>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 15 Jun 2026 17:18:02 +0200
+X-Gm-Features: AVVi8Cco0IuKNDFpDgUYW6-kVGMio00siQ76PkEGRtNa5GyCfiWxsIgM7ch1Tmo
+Message-ID: <CAH5fLggQDAQ02YLibAO=NpQF8xxj_0GCEz5+cVZh8LmYo+xXvw@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: workqueue: add ScopedQueue for lifetime bound items
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	tj@kernel.org, jiangshanlai@gmail.com, ojeda@kernel.org, boqun@kernel.org, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Jun 15, 2026 at 3:52 PM BST, Alexandre Courbot wrote:
-> On Fri Jun 12, 2026 at 1:28 AM JST, Gary Guo wrote:
-> <...>
->> +/// A view of memory-mapped I/O region.
->> +///
->> +/// # Invariant
->> +///
->> +/// `ptr` points to a valid and aligned memory-mapped I/O region for th=
-e duration lifetime `'a`.
->> +pub struct Mmio<'a, T: ?Sized> {
->> +    ptr: *mut T,
->> +    phantom: PhantomData<&'a ()>,
->> +}
->> +
->> +impl<T: ?Sized> Copy for Mmio<'_, T> {}
->> +impl<T: ?Sized> Clone for Mmio<'_, T> {
->> +    #[inline]
->> +    fn clone(&self) -> Self {
->> +        *self
->> +    }
->> +}
->> +
->> +impl<'a, T: ?Sized> Mmio<'a, T> {
->> +    /// Create a `Mmio`, providing the accessors to the MMIO mapping.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// `raw` represents an valid and aligned memory-mapped I/O region =
-while `'a` is alive.
+On Mon, Jun 15, 2026 at 1:56=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
 >
-> typo: "a valid".
+> Add a workqueue wrapper for work items that are not 'static.
 >
-> <...>
->> -/// [`MmioOwned`] wrapper using relaxed accessors.
->> +/// [`Mmio`] but using relaxed accessors.
->>  ///
->>  /// This type provides an implementation of [`Io`] that uses relaxed I/=
-O MMIO operands instead of
->>  /// the regular ones.
->>  ///
->> -/// See [`MmioOwned::relaxed`] for a usage example.
->> -#[repr(transparent)]
->> -pub struct RelaxedMmio<const SIZE: usize =3D 0>(MmioOwned<SIZE>);
->> +/// See [`Mmio::relaxed`] for a usage example.
->> +///
->> +/// # Invariant
->> +///
->> +/// `ptr` points to a valid and aligned memory-mapped I/O region for th=
-e duration lifetime `'a`.
->> +pub struct RelaxedMmio<'a, T: ?Sized> {
->> +    ptr: *mut T,
->> +    phantom: PhantomData<&'a ()>,
->> +}
+> Tyr reset work is queued from a handle that owns a Controller<'bound>
+> where the work item holds references tied to the lifetime of the bound
+> device and its mapped IO state. The existing API only accepts 'static
+> work items which cannot express that relationship.
 >
-> Is there a reason for not just declaring `RelaxedMmio` as
+> Introduce ScopedQueue for this case. It owns the underlying workqueue
+> and ties enqueued work to the queue lifetime so borrowed state cannot
+> outlive the queue that may still run it.
 >
->     #[repr(transparent)]
->     pub struct RelaxedMmio<'a, T: ?Sized>(Mmio<'a, T>);
+> Construction is unsafe because the queue must not be leaked.
 >
-> similarly to what the original code did with `MmioOwned`?
+> `compile_fail` doc-tests are ignored for now as KUnit doesn't support
+> that. Enabling those tests as regular code block would raise this error:
 >
-> I tried locally and could build. This avoids declaring `Mmio` and
-> `RelaxedMmio` as basically identical types, and lets us remove the
-> explicit `Send` and `Sync` implementations. IIUC you can also reduce or
-> even remove the invariant section as it is enforced by `Mmio`.
+>     ERROR:root:error[E0597]: `data` does not live long enough
+>          --> rust/doctests_kernel_generated.rs:22029:44
+>           |
+>     22027 |         let data =3D ();
+>           |             ---- binding `data` declared here
+>     22028 |         // SAFETY: Queue is not leaked.
+>     22029 |         queue =3D unsafe { new_queue_with_lt(&data)? };
+>           |                                            ^^^^^ borrowed val=
+ue does not live long enough
+>     22030 |     }
+>           |     - `data` dropped here while still borrowed
+>     ...
+>     22034 | }
+>           | - borrow might be used here, when `queue` is dropped and runs=
+ the `Drop` code for type `ScopedQueue`
+>           |
+>           =3D note: values in a scope are dropped in the opposite order t=
+hey are defined
+>
+> which is exactly the constraint ScopedQueue is meant to enforce.
+>
+> This series is based on Alice's "Creation of workqueues in Rust" [1]
+> series.
+>
+> Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351=
+c38f@google.com [1]
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
+>  rust/kernel/workqueue/mod.rs          |   3 +
+>  rust/kernel/workqueue/scoped_queue.rs | 179 ++++++++++++++++++++++++++
+>  2 files changed, 182 insertions(+)
+>  create mode 100644 rust/kernel/workqueue/scoped_queue.rs
+>
+> diff --git a/rust/kernel/workqueue/mod.rs b/rust/kernel/workqueue/mod.rs
+> index e30c21214a81..5e2baa84c143 100644
+> --- a/rust/kernel/workqueue/mod.rs
+> +++ b/rust/kernel/workqueue/mod.rs
+> @@ -212,6 +212,9 @@
+>  mod builder;
+>  pub use self::builder::Builder;
+>
+> +mod scoped_queue;
+> +pub use self::scoped_queue::ScopedQueue;
+> +
+>  /// Creates a [`Work`] initialiser with the given name and a newly-creat=
+ed lock class.
+>  #[macro_export]
+>  macro_rules! new_work {
+> diff --git a/rust/kernel/workqueue/scoped_queue.rs b/rust/kernel/workqueu=
+e/scoped_queue.rs
+> new file mode 100644
+> index 000000000000..e0457b521a19
+> --- /dev/null
+> +++ b/rust/kernel/workqueue/scoped_queue.rs
+> @@ -0,0 +1,179 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Lifetime-scoped workqueues.
+> +//!
+> +//! Provides [`ScopedQueue`] for work items that may borrow data with so=
+me
+> +//! non-`'static` lifetime.
+> +//!
+> +//! Unlike [`Queue`] which only accepts `'static` work items, [`ScopedQu=
+eue`]
+> +//! owns its underlying queue and relies on that queue being dropped to =
+drain
+> +//! pending and running work before borrowed data can go out of scope.
+> +//!
+> +//! TODO: Remove `ignore` once KUnit supports `compile_fail` on doc-test=
+s.
+> +//! ```compile_fail,ignore
+> +//! use kernel::prelude::*;
+> +//! use kernel::workqueue::ScopedQueue;
+> +//!
+> +//! /// # Safety
+> +//! ///
+> +//! /// Returned queue must not be leaked.
+> +//! unsafe fn new_queue_with_lt<'bound>(_: &'bound ()) -> Result<ScopedQ=
+ueue<'bound>> {
+> +//!     // SAFETY: Caller guarantees that the returned queue is not leak=
+ed.
+> +//!     unsafe { ScopedQueue::new_ordered_with_lt(c"scoped_queue") }
+> +//! }
+> +//!
+> +//! fn queue_outlives_borrowed_data() -> Result {
+> +//!     let queue;
+> +//!
+> +//!     {
+> +//!         let data =3D ();
+> +//!         // SAFETY: Queue is not leaked.
+> +//!         queue =3D unsafe { new_queue_with_lt(&data)? };
+> +//!     }
+> +//!     // Here the `compile_fail` is fulfilled as `queue` would be drop=
+ped
+> +//!     // after `data`.
+> +//!     Ok(())
+> +//! }
+> +//! ```
+> +//!
+> +//! TODO: Remove `ignore` once KUnit supports `compile_fail` on doc-test=
+s.
+> +//! ```compile_fail,ignore
+> +//! use kernel::prelude::*;
+> +//! use kernel::sync::Arc;
+> +//! use kernel::workqueue::{
+> +//!     impl_has_work,
+> +//!     new_work,
+> +//!     ScopedQueue,
+> +//!     Work,
+> +//!     WorkItem,
+> +//! };
+> +//!
+> +//! #[pin_data]
+> +//! struct BorrowedWork<'bound> {
+> +//!     data: &'bound (),
+> +//!     #[pin]
+> +//!     work: Work<BorrowedWork<'bound>>,
+> +//! }
+> +//!
+> +//! impl_has_work! {
+> +//!     impl{'bound} HasWork<BorrowedWork<'bound>> for BorrowedWork<'bou=
+nd> { self.work }
+> +//! }
+> +//!
+> +//! impl<'bound> WorkItem for BorrowedWork<'bound> {
+> +//!     type Pointer =3D Arc<Self>;
+> +//!
+> +//!     fn run(_this: Arc<Self>) {}
+> +//! }
+> +//!
+> +//! impl<'bound> BorrowedWork<'bound> {
+> +//!     fn new(data: &'bound ()) -> Result<Arc<Self>> {
+> +//!         Arc::pin_init(
+> +//!             pin_init!(Self {
+> +//!                 data,
+> +//!                 work <- new_work!("BorrowedWork::work"),
+> +//!             }),
+> +//!             GFP_KERNEL,
+> +//!         )
+> +//!     }
+> +//! }
+> +//!
+> +//! struct Handle<'bound> {
+> +//!     work: Arc<BorrowedWork<'bound>>,
+> +//!     wq: ScopedQueue<'bound>,
+> +//! }
+> +//!
+> +//! impl<'bound> Handle<'bound> {
+> +//!     /// # Safety
+> +//!     ///
+> +//!     /// Returned handle must not be leaked.
+> +//!     unsafe fn new_with_lt(data: &'bound ()) -> Result<Self> {
+> +//!         Ok(Self {
+> +//!             work: BorrowedWork::new(data)?,
+> +//!             // SAFETY: Caller guarantees that the returned handle is=
+ not leaked.
+> +//!             wq: unsafe { ScopedQueue::new_ordered_with_lt(c"handle_w=
+q")? },
+> +//!         })
+> +//!     }
+> +//! }
+> +//!
+> +//! fn handle_outlives_borrowed_data() -> Result {
+> +//!     let handle;
+> +//!
+> +//!     {
+> +//!         let data =3D ();
+> +//!         // SAFETY: Handle is not leaked.
+> +//!         handle =3D unsafe { Handle::new_with_lt(&data)? };
+> +//!
+> +//!         let _ =3D handle.wq.enqueue(handle.work.clone());
+> +//!     }
+> +//!     // Here the `compile_fail` is fulfilled as `handle` would be dro=
+pped
+> +//!     // after `data`.
+> +//!     Ok(())
+> +//! }
+> +//! ```
+> +
+> +use super::{
+> +    OwnedQueue,
+> +    Queue,
+> +    RawWorkItem, //
+> +};
+> +
+> +use crate::{
+> +    bindings,
+> +    ffi,
+> +    prelude::*, //
+> +};
+> +
+> +use core::marker::PhantomData;
+> +
+> +/// An owned workqueue that can enqueue work items borrowing from `'scop=
+e`.
+> +///
+> +/// A `ScopedQueue` must not outlive data borrowed by its work items.
+> +pub struct ScopedQueue<'scope> {
+> +    inner: OwnedQueue,
+> +    _scope: PhantomData<&'scope mut &'scope ()>,
 
-This is what I did originally, but this would cause duplication for
-RelaxedMmioBackend, as now you have to do
+I think this can be contra-variant:
 
-     unsafe { bindings::$read_fn(view.0.ptr.cast_const().cast()) }
+_scope: PhantomData<fn(&'scope ())>,
 
-and the `.0` causes the macro not being shared with MmioBackend.
-
-Best,
-Gary
+Alice
