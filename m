@@ -1,54 +1,54 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6D63F0762
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 12:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2C93F39F6
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 12:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781527024; cv=none; b=SZ7OZRZkN2UUiKI+rHqVXUlLFteYKkOYGT+suMK3Fdpe5GI8i1oqtOtuaiUR9yXRryPCL6pp8PYmwYjsA4P6kTSvbJTT9qqJamnoOfAsooTkfX4mrMhg9dvjrqgJbndJstRpK4la2rbPpZrwXqE2poa5cXibo6MU16FhHJhvwXU=
+	t=1781527024; cv=none; b=KgkCh3a4FMzZHY7X0hlpMekp5qwV1H6jNWa1fU6DIKVupAJ8zDHIQ+EKKUQIpwOxN+bPxf7FeHBFvdzw/0Gd6FQU9jGrWfwnJtPLLuProMdS7/qSMfIkngmlu4Y6mnAO/+eFtk5OoEzZX5u9Oth6Up2mN1wa/7M4b/yqq9QzJIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1781527024; c=relaxed/simple;
-	bh=nU8CMklrZ4pzGEGPtJR5y5DoyOiug+EmYak7mSKNXJQ=;
+	bh=W/GN17J61uJOqwT6ccMv8DLfa681Ryd+FrRXb1/pB2k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UxHCtYK7mWnyU9nC4Dc+3qn88I4pMTAh2P8MT24xBy5HgR9YfnCjQF00Q4CGDGbRY0Q0oF9Tkk391axx/yinaSLZRxUSPmD5A0rUO2u6Eq8g03LTrqOtMuCnSyTauIPgUJyPC4eRHLoaGz/70d2eN3mDTELnxi4xqmgB9G0FUMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nPNwYLFg; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=o8f2DIgYfbqpd+qrNeCejt9dseIwpmHI2oLzlYnpQSSvX0Z/WRvudyVkT3yvlBAVgJMsAWUSURdHvm42oWbX6smQl7ucBOYGmUmBvxFIHrr1rjHXZh/Bvz/l31fK6Jay+tIH1nfXIHalgFQiv0WR/nzvnLy23+luulEQjgEtU5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H7U22f8j; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nPNwYLFg"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490ab3f6e55so18772325e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 05:36:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H7U22f8j"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-bf481a6e4e6so270417066b.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 05:37:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781527017; x=1782131817; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781527019; x=1782131819; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=v2gf6or+nNI5nNsuVDLEiXsD4C1ozOp69hEfNPSp0eM=;
-        b=nPNwYLFgLFL5UaQP7R1y3BZFFW+s9IjQdzzJvYCSchOTzGwa46+ESu3w0A/PtuBSgR
-         H4FEDGGKjmQ3zKYfEZJzbuHLKuhSpe92ssVsvbYypS4wi77v5CVyaPt8Q9JA8ihfqR6v
-         R3AiPigjLwp3hkdfOWE8k54lXJK4aodi+dufzpuHLJnJEdEldbLTCBRA0NKqPuvzGeSk
-         t0STl0UAj5WvTAGsbOHntrXE4BAY8POT4UeKUIevwedFvcQlDoIn7wCAL7E8huiSyv7/
-         otE4cG6x9UsQ/sMp982ZOmRcUzpNISj6HtQD2MPdXH/Ih6Zd4eMGvjkEvpL5fvdKKDQS
-         PFaw==
+        bh=PMsk5ACWJdbrMJtqBrFN8lRrYOilmz9ty4jGSL7MEp4=;
+        b=H7U22f8jqBE8C/6c3xR2msVcMdeKrFLOlJL5K7B4WkH3FOcyfsV8ChKL6e8KxTDTGp
+         RVIOV2FW+3pF0EJprqSQDXepZhyOiLQYT+YfFrFZ9WfwnDth5m+CiFX4d/4vUn84lifd
+         rDPibw0GG3rO1RXNK0HSTQ4wVKPcnI/XzfYOd7i2sByanlkPNDpLp9vJ8NYM7gUMvAk3
+         5yStQ84/+RbRrO+DwYMWwb1g7wmedMPU5nNvMedSW4+PqeMRTuF3r3qGm2oj31wYr6yu
+         rFnAC9oN/CUN7Y+Ihd3fTu8eX2jsTXBdWgf+eMEOy8Wwb/yS2gvmbRE52GBTAnSLsPue
+         0orA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781527017; x=1782131817;
+        d=1e100.net; s=20251104; t=1781527019; x=1782131819;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v2gf6or+nNI5nNsuVDLEiXsD4C1ozOp69hEfNPSp0eM=;
-        b=lCv8n6xLnADYIy3PYHyOauK3mQngL2SMiFfL3VD8MMa1mi+Qq1dsP7FRp1dzkxP46O
-         ZxibutA34uN4LZjWj34i6wpGG5Jkl2oxSuAxcPRVOdmiN74d6Msfwrvxc347Ym5J0MOc
-         +CIueeMUqliHzLkA4m8eme4rfT4k0ND+CW1s8NIGjH7Pv3qx4qGfAt1elV24jDEIBbk6
-         RUFmb8r//pKuFU6bzpLW9MbAlmhunUYJu/IoDWxfk+y+5kV67KcjOoQhEproDZH2cAo/
-         SDioZOs22BAn3kBTwlh1VmIFgsChtDy1REAkcv6I339W0C6G3mTtxIH760QEJ1mlatk7
-         tIEA==
-X-Forwarded-Encrypted: i=1; AFNElJ/pTfEXVaEx87Yplz1W98X0qtqHk+gKZ++tKYTrD62fBjX/hTHCpmvs6xqQvhvaIYtgBAZLlSsOwPGoL+oqpw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZEfv0VYKaZYMqXhuZNJmK0KyNQienQgf0EvDJNmnMHBE98LK8
-	LnJdTzeR99cJWUUdYvXI/+IVr5yM9jJ/k4GMWcOpxuurnDtnu5+G9ryafUu6NxfFOvU05zZTGZW
-	Af9RtQZZWtJMjsVkvLQ==
-X-Received: from wmqi7.prod.google.com ([2002:a05:600c:3547:b0:490:5e18:ff1c])
+        bh=PMsk5ACWJdbrMJtqBrFN8lRrYOilmz9ty4jGSL7MEp4=;
+        b=q8s2A6IYxEe5FryirQVUSrtwFiH7QD5spne3BBowJ0tOgsJV+6quqQ3zmop2bJpYkE
+         VUdK3QWYTnrdzhObzyZuHw4iFCAiaKyfi6H62NfHS5rnBejKTXPujBHrhEJGv+Jhq8Ff
+         iKtt0zrwdLZD4L6hy4AXUrdc0pH52dm/gz3tpFHltxivqMa3HX5zwZLTgM9EBjEr/xIQ
+         MhGn4Nju0/HxVj7RXByOgUqMXNX0LaptJfqcTRXPwae0Nv7LuFIxL2ieXXajSyKnvFtE
+         v13m0WdggR7Lg9NfXhdwbbGshENaxaX10t70Qax1ijUDlVI7Ip4/jIiauB2lgesQM4Z/
+         4ntg==
+X-Forwarded-Encrypted: i=1; AFNElJ8O3qX5YW73Z0N9MNKnoqF3FZ36h6MxYiUTtorR7qObiOoW/29XbOOOxWEzoPvRX+xpV4jRGOYzRfblN9KMpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIfV6T4brOqKOxKeiDgj7vzcqShQQaFxd0Cd1g5O7MZ38qSxDQ
+	oQq8TO/h2voJrIN9lDi57NKe66uF3KQG7aeAeMBeixSI7NEsNXF8jrjPXBbFA93yL2D1sEqMFbb
+	3lsNOR0HWpwFKdc/17A==
+X-Received: from ejei6.prod.google.com ([2002:a17:906:39c6:b0:bec:daff:36d8])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:314a:b0:490:da12:f1fa with SMTP id 5b1f17b1804b1-490ec503f0cmr164316725e9.31.1781527017056;
- Mon, 15 Jun 2026 05:36:57 -0700 (PDT)
-Date: Mon, 15 Jun 2026 12:36:41 +0000
+ 2002:a17:907:2d21:b0:beb:8ab8:30ce with SMTP id a640c23a62f3a-bff4a200875mr445206966b.20.1781527018553;
+ Mon, 15 Jun 2026 05:36:58 -0700 (PDT)
+Date: Mon, 15 Jun 2026 12:36:42 +0000
 In-Reply-To: <20260615-binder-noderefs-spin-v3-0-3235f5a3e0a0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,23 +58,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260615-binder-noderefs-spin-v3-0-3235f5a3e0a0@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8714; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=nU8CMklrZ4pzGEGPtJR5y5DoyOiug+EmYak7mSKNXJQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqL/HlQ7fchwgODwGJBHs0vFLh68QtTVjmTaV5Q
- QZVEd6dNrSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCai/x5QAKCRAEWL7uWMY5
- RtsxEACXdxI+z6PPVIUPO4GzFs5e6XDXd5UX/hL/+ztXZSzDrfsz5YsLjRIceMW7lSdwZzCAFXB
- 4FQx9MEOX1VzIuHzt0sLdgfSu0liiYRE1Ez34ytvTrCAcGQw3jtGEC2mg3YtCorICmBe2rUSPRC
- ASY7Ya23Bxf0/2NTSo3yajzs6hNODlOr7gNXUlVngt6iBEEHYHk8jlxN3LKIBlZ64/a0F0Tokoy
- ppnh7UUl1g/DEcQo4y3rJl/oeXhMIZ+DNWr9/1KzEi+0itqsSrih4kJRzdYgQjbtgzdKz0prbUr
- IgTnUzX4rBqhpNu69wRJlBPLs+/EsAGQghD5rU4tkJhh1HBTpV/8n14AZOBM5hihCQvvBjxHvbp
- ty6Km7/X2ejisxvXOCQWGtIGjaxUFLCaqqJoFwi0rQS91zvowPPXED5OJjRP4gmrltj4E1fxuAb
- PfoWeBSAXtWZyPjUCXYUREthtsd8oFfIyFDlp6r4KFTrBsk6nBxX0ZpN+ITxY+okF6ZC3wdrmkW
- VdHMu6UJh7j6+JMuko6RyCCqB8zNm1w2NGzmbl2UU0EUbXzjOygW98YtnpWPK08ONGBCMaFurG+
- BElV4kx8L+1wjBv6zPwunB0GTg/wYC23LSR1HFMt9OAh5DRVy1Fv0rFErueWJ6vLgd1C+3AISs5 Zz5ZUmY5sz7vw9g==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2731; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=W/GN17J61uJOqwT6ccMv8DLfa681Ryd+FrRXb1/pB2k=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqL/Hl2Sm6/ZSWm6dBjuEA656sm5XiqQTZj6rGt
+ VLEj4qxXKeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCai/x5QAKCRAEWL7uWMY5
+ RmojEACVeYEEaLobBIyE3t2e1QON6Ef0qRj+O4qeGJN4qDetmuKEHqRMfTYG+R8MtoBHxlxOm2c
+ QiKv642KRu6cbVP12oFTWyLYZ4I3obwWAv0AEPhOx0+chhAPiYmt7ABbUxG0wIRvYKPv5rDD3Oz
+ aXMDzHc2SjCLui7SYq+9l3cVTKVklqEPwkP1YJ5KqNOr53+Xn6sn0GJRBTQ3V4iOa8EWqLAmJg/
+ U7gakJsiy0CtdG+CGMlVR2YPvjfqxWmZk24eigDOgGWQdfZl6PwIQX1SKmW+87lsXP4Wn+YqYkM
+ THV1asxpXAgTA0YigzKunh4TMm+xJHCJ4ppzvnQU3+hHUFwYJbgPI0os67FHNYdEM1p0IVBe0vv
+ TDoZC37poTiURDOraN+rlvSWfcMEPOqa8bzsie2vwlWyo0MnerEiWPWR+InYnaXZEwsty/k4LbJ
+ x4ZeTfJGc7qTZJkk/JIJhWUcJcdCpZQglCdRA6b6h1DCX+TDdv9d8IDfbLjC3CGYOjeTkf3AVrF
+ f+QDO795qg4ndYR5O6OP/FUUEeetegKETifho/fJ11tNtbPQu70bK04jvwFXd2TQyYgxaoTEV/B
+ VY5O4CQT5GHCj282rzaV3kXW7CJwkcx0g14POMhjIJfS3pUrahySNP87Ie2inmWLesvQ/DtCfjp bDs9vKQ+GjCSITA==
 X-Mailer: b4 0.14.3
-Message-ID: <20260615-binder-noderefs-spin-v3-1-3235f5a3e0a0@google.com>
-Subject: [PATCH v3 1/6] rust_binder: avoid allocating under node_refs for
- freeze listeners
+Message-ID: <20260615-binder-noderefs-spin-v3-2-3235f5a3e0a0@google.com>
+Subject: [PATCH v3 2/6] rust_binder: avoid dropping NodeRef in update_ref()
+ under lock
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -84,194 +84,59 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	linux-kernel@vger.kernel.org, Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The node_refs mutex needs to be changed to a spinlock, so in preparation
-for that, update freeze.rs to avoid allocating under the node_refs lock.
-This is done by adding a retry loop so that if add_freeze_listener()
-requires reallocating the KVVec<_> of freeze listeners, the caller will
-allocate a larger vector and retry.
+In preparation for changing the node_refs lock to a spinlock, move the
+cleanup of NodeRefInfo in update_ref() so that it occurs without the
+node_refs lock held. This avoids dropping an Arc<Node> with the lock
+held. Furthermore, the NodeDeath field is kept in the NodeRefInfo to be
+dropped outside the lock as well.
 
-Analogously, the remove_freeze_listener() function is updated to return
-the empty KVVec<_> when it is no longer needed, to avoid calling
-kvfree() under the node_refs lock.
+The removal from the rbtree is updated to use remove_node(), which keeps
+the rbtree node allocation until after node_refs is unlocked as well.
+This is not strictly necessary as it just moves a kfree() outside the
+lock, but there's no reason to invoke the kfree() under the lock if we
+can easily avoid it, so avoid it.
 
 Reviewed-by: Matthew Maurer <mmaurer@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/freeze.rs | 65 +++++++++++++++++++++++++++-------------
- drivers/android/binder/node.rs   | 47 ++++++++++++++---------------
- 2 files changed, 67 insertions(+), 45 deletions(-)
+ drivers/android/binder/process.rs | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index 53b60035639a..2aef4f62cd11 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -173,36 +173,58 @@ pub(crate) fn request_freeze_notif(
-         let msg = FreezeMessage::new(GFP_KERNEL)?;
-         let alloc = RBTreeNodeReservation::new(GFP_KERNEL)?;
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 96b8440ceac6..f4f4d45e1ab7 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -942,13 +942,17 @@ pub(crate) fn update_ref(
  
-+        let mut afl_vec_alloc = KVVec::new();
-+        let mut info;
-+        let mut freeze_entry;
-         let mut node_refs_guard = self.node_refs.lock();
--        let node_refs = &mut *node_refs_guard;
--        let Some(info) = node_refs.by_handle.get_mut(&handle) else {
--            pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION invalid ref {}\n", handle);
--            return Err(EINVAL);
--        };
--        if info.freeze().is_some() {
--            pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION already set\n");
--            return Err(EINVAL);
--        }
--        let node_ref = info.node_ref();
--        let freeze_entry = node_refs.freeze_listeners.entry(cookie);
--
--        if let rbtree::Entry::Occupied(ref dupe) = freeze_entry {
--            if !dupe.get().allow_duplicate(&node_ref.node) {
--                pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION duplicate cookie\n");
-+        loop {
-+            let node_refs = &mut *node_refs_guard;
-+            info = match node_refs.by_handle.get_mut(&handle) {
-+                Some(info) => info,
-+                None => {
-+                    pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION invalid ref {}\n", handle);
-+                    return Err(EINVAL);
-+                }
-+            };
-+            if info.freeze().is_some() {
-+                pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION already set\n");
-                 return Err(EINVAL);
-             }
--        }
-+            let node_ref = info.node_ref();
-+            freeze_entry = node_refs.freeze_listeners.entry(cookie);
-+
-+            if let rbtree::Entry::Occupied(ref dupe) = freeze_entry {
-+                if !dupe.get().allow_duplicate(&node_ref.node) {
-+                    pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION duplicate cookie\n");
-+                    return Err(EINVAL);
-+                }
-+            }
+         // To preserve original binder behaviour, we only fail requests where the manager tries to
+         // increment references on itself.
++        let _to_free_by_handle;
++        let _to_free_by_node;
+         let mut refs = self.node_refs.lock();
+         if let Some(info) = refs.by_handle.get_mut(&handle) {
+             if info.node_ref().update(inc, strong) {
+                 // Clean up death if there is one attached to this node reference.
+-                if let Some(death) = info.death().take() {
++                //
++                // We remove the entire `info` below, so no need to remove `death` from `info`.
++                if let Some(death) = info.death().as_ref() {
+                     death.set_cleared(true);
+-                    self.remove_from_delivered_deaths(&death);
++                    self.remove_from_delivered_deaths(death);
+                 }
  
--        // All failure paths must come before this call, and all modifications must come after this
--        // call.
--        node_ref.node.add_freeze_listener(self, GFP_KERNEL)?;
-+            // Now we add to the node's freeze listener list, with retry and re-allocate if the
-+            // vector is full.
-+            //
-+            // To ensure that the node is added atomically, this is the first time we modify any
-+            // state. When this call succeeds, all other modifications must occur without the
-+            // possibility for any failure paths.
-+            match node_ref
-+                .node
-+                .add_freeze_listener(self, &mut afl_vec_alloc)?
-+            {
-+                Ok(()) => break,
-+                Err(resize_target) => {
-+                    drop(node_refs_guard);
-+                    afl_vec_alloc = KVVec::with_capacity(resize_target, GFP_KERNEL)?;
-+                    node_refs_guard = self.node_refs.lock();
-+                }
-+            }
-+        }
+                 // Remove reference from process tables, and from the node's `refs` list.
+@@ -957,8 +961,8 @@ pub(crate) fn update_ref(
+                 unsafe { info.node_ref2().node.remove_node_info(info) };
  
-         match freeze_entry {
-             rbtree::Entry::Vacant(entry) => {
-                 entry.insert(
-                     FreezeListener {
-                         cookie,
--                        node: node_ref.node.clone(),
-+                        node: info.node_ref().node.clone(),
-                         last_is_frozen: None,
-                         is_pending: false,
-                         is_clearing: false,
-@@ -273,6 +295,7 @@ pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader)
-         let handle = hc.handle;
-         let cookie = FreezeCookie(hc.cookie);
+                 let id = info.node_ref().node.global_id();
+-                refs.by_handle.remove(&handle);
+-                refs.by_node.remove(&id);
++                _to_free_by_handle = refs.by_handle.remove_node(&handle);
++                _to_free_by_node = refs.by_node.remove_node(&id);
+                 refs.handle_is_present.release_id(handle as usize);
  
-+        let _to_free_fl;
-         let alloc = FreezeMessage::new(GFP_KERNEL)?;
-         let mut node_refs_guard = self.node_refs.lock();
-         let node_refs = &mut *node_refs_guard;
-@@ -293,7 +316,7 @@ pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader)
-             return Err(EINVAL);
-         };
-         listener.is_clearing = true;
--        listener.node.remove_freeze_listener(self);
-+        _to_free_fl = listener.node.remove_freeze_listener(self);
-         *info.freeze() = None;
-         let mut msg = None;
-         if !listener.is_pending {
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index 69f757ff7461..53fc8ba42e86 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -657,33 +657,29 @@ fn do_work_locked(
-     pub(crate) fn add_freeze_listener(
-         &self,
-         process: &Arc<Process>,
--        flags: kernel::alloc::Flags,
--    ) -> Result {
--        let mut vec_alloc = KVVec::<Arc<Process>>::new();
--        loop {
--            let mut guard = self.owner.inner.lock();
--            // Do not check for `guard.dead`. The `dead` flag that matters here is the owner of the
--            // listener, no the target.
--            let inner = self.inner.access_mut(&mut guard);
--            let len = inner.freeze_list.len();
--            if len >= inner.freeze_list.capacity() {
--                if len >= vec_alloc.capacity() {
--                    drop(guard);
--                    vec_alloc = KVVec::with_capacity((1 + len).next_power_of_two(), flags)?;
--                    continue;
--                }
--                mem::swap(&mut inner.freeze_list, &mut vec_alloc);
--                for elem in vec_alloc.drain_all() {
--                    inner.freeze_list.push_within_capacity(elem)?;
--                }
-+        // If the vector needs to be resized, it's done via this argument.
-+        vec_alloc: &mut KVVec<Arc<Process>>,
-+    ) -> Result<Result<(), usize>> {
-+        let mut guard = self.owner.inner.lock();
-+        // Do not check for `guard.dead`. The `dead` flag that matters here is the owner of the
-+        // listener, not the target.
-+        let inner = self.inner.access_mut(&mut guard);
-+        let len = inner.freeze_list.len();
-+        if len == inner.freeze_list.capacity() {
-+            if len >= vec_alloc.capacity() {
-+                // Request the caller to reallocate.
-+                return Ok(Err((1 + len).next_power_of_two()));
-+            }
-+            mem::swap(&mut inner.freeze_list, vec_alloc);
-+            for elem in vec_alloc.drain_all() {
-+                inner.freeze_list.push_within_capacity(elem)?;
-             }
--            inner.freeze_list.push_within_capacity(process.clone())?;
--            return Ok(());
-         }
-+        inner.freeze_list.push_within_capacity(process.clone())?;
-+        Ok(Ok(()))
-     }
- 
--    pub(crate) fn remove_freeze_listener(&self, p: &Arc<Process>) {
--        let _unused_capacity;
-+    pub(crate) fn remove_freeze_listener(&self, p: &Arc<Process>) -> KVVec<Arc<Process>> {
-         let mut guard = self.owner.inner.lock();
-         let inner = self.inner.access_mut(&mut guard);
-         let len = inner.freeze_list.len();
-@@ -694,9 +690,12 @@ pub(crate) fn remove_freeze_listener(&self, p: &Arc<Process>) {
-                 p.pid_in_current_ns()
-             );
-         }
-+        // If the vector is empty it needs to be freed. However, we can't free it here because that
-+        // might sleep, so return it to the caller.
-         if inner.freeze_list.is_empty() {
--            _unused_capacity = mem::take(&mut inner.freeze_list);
-+            return mem::take(&mut inner.freeze_list);
-         }
-+        KVVec::new()
-     }
- 
-     pub(crate) fn freeze_list<'a>(&'a self, guard: &'a ProcessInner) -> &'a [Arc<Process>] {
+                 if let Some(shrink) = refs.handle_is_present.shrink_request() {
 
 -- 
 2.54.0.1136.gdb2ca164c4-goog
