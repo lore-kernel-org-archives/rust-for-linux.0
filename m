@@ -1,142 +1,199 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34462E6116
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 17:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781545863; cv=none; b=qt3bDpBfTm0r40EfycUih+qD+YLvici3woernkxU+vJj0T7x3lfwi85nbJV4ddXfJD1a1v6AvBUWAscGQI3H+3OGGJuK4Dne204NNzDfD6i4hh74OJz8RFz8z6f6HSZtX4iVgK1/P6jVPuMwQK6Wtwgyj6q0Byv/ge7Nfect3B0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781545863; c=relaxed/simple;
-	bh=z6JVWnpnoAzTcHqGzJTt/V7pg3kgKeB4QVs4SE6WBVQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FElNIufNCcsDXh5pXWfkCFZy5rn8UI+I435Jnku/chzS1rGhKVTUiMallLugXmo35rroU3/mcBbvpOr5RbrcXJ2iBIaz8qLZOgcAStMgm9Km3yl6SiVS+ZhJYbzegXtPt8bcfPfnMLgodJzmBTAo77jdUDyGsrC9uQtHHt+xZg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iHvm9C3I; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD336305666
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 18:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781547275; cv=pass; b=MCofOZ2/SHAAGGlt7o9HJOboHcu+bndwJMEhAAhQ7nHc2ECuBfJNMEnrMj5v+d8K4bp9xklpb1sJlvcBqjHKoo+5/7FrwNZE32EEhBbJpfSNJiCiK7xkAJsTAIGA3v1A/natZCmynxowXd7Jrwf3XTvV3jlGHSG5QDke0tKlLs0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781547275; c=relaxed/simple;
+	bh=7hpnGVu/jFCwPJirWTMx87mp5CGcb9SrnT0ncXevNCY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ichoz9/L1MXhaeYySKFrseyZwFuMNb4STKxhBTr9S9BitLIeZbMlE3zCMWhvtCY9VgFxNV6qpv9ID4NuDUOheVY+nptaZpRqgzR89cyIGIJkE6ryEpiJYxbsvhDpDHlch2NHABEdqBGluI8DZoAW0PdKU4P6htMG9Ad/fNMRB3w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CvOF67IW; arc=pass smtp.client-ip=74.125.224.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iHvm9C3I"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-37474afe908so1896819a91.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 10:51:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CvOF67IW"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-660e9ea26b9so3935417d50.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 11:14:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781547273; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XOfuXHMUEVEwQcgej0NMT3khPIJkOOthZkTbQC8BTASMgTTQz5ZHIZw4/Pc1JYyAND
+         EPgzBLM3Js5oDIQ2SSiiBPODiKjl60q/I8noAkDwK9C0uoD9qjoZIL1wfC4ZN/yieU8W
+         8vkyel0Qe1sax/Bt29dVRIALXR+/1b/TwZthvmLpF9Ak5QS6zfOjfgD47yO6AZzUHzlc
+         qLwiSW3G32jh3MSjgQwEOK/8IJd5ofJ22la2sWKhKSDlHrATlgwWszIoJzYuHoZ8XXJQ
+         Nq1hIujTKqVwrnGMI6wKXuoqeClbXMTG1d1guHifVfRsIpLFiIBOpRXE5E6sv8Mrc7a+
+         3lhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZgpdzSMC15GDZO9IdrqqPcFyAeKGL54ldux2hshhzHY=;
+        fh=sjCx6kWRn0gl2HZlXNA9jXPND/cjEgyxFKXKAeOmfNA=;
+        b=DP6Jrgc9E2l462J+AtZJOhIAn4JOIf1jKL9w++AFOshFT8qP/Hh+rUR1m/1jM3ruqm
+         B3IHPWb2NjiTGhrJBCwr0E1KQJewvQ1ifIrV218KJ5fDYr79pXAXZk/zPJHruk1pPFJ3
+         sumxNjLGySMKlD1F8hzrLLErO0gX6TFr/eWkCIfxqSo6ICwqWl8HizJOfulQt4/VG/ip
+         kvdN1Zc5aWr/+K/HKuBGsi3Hp40i2q4GRA3axCrmKmGz2KKlzpl9bkaAPMKvFmTYP+cz
+         AYBOLJJgk5RFbllsaxjOujQGk3ne0N8Z6gDehrUe4vtSTo4gerB2JI8Jrwzmo9ZA+5Kh
+         GQsQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781545860; x=1782150660; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qRUFn8KOUc1A2oW2ndxVxmtmBuKd5qxWa3f4Z6N5qk4=;
-        b=iHvm9C3IyMv6UH9UkdahEoIxeArAycRc/Dfe4xYxSeJ6Qbzhy+snJaehwX3iobGNYU
-         WtoRfVGtDPX00mq4TlnYJlLSVNdIOmtM+pYgldkUdDA8SpKoQuT24CwJgienmSHWydVD
-         IZf3+mQ05UNlrPbpved+RKJnJqtYOmmAtB8qwtTDi0Co1Xy2JKrC8rn/Z1GMfSqvFJfq
-         +/VR4NKPxlXzSlWgkyiVctOm8pYuYjhw/XqEHcNvBI3axtfxki4HimzLp8tv71pHTktr
-         Wwg3V5fz7OcgTjI3f1SbU7UtvN426RtSOTlyrzPPHaRh8g865FR3TYFF4gAx5v9qMEXU
-         IrcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781545860; x=1782150660;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781547273; x=1782152073; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qRUFn8KOUc1A2oW2ndxVxmtmBuKd5qxWa3f4Z6N5qk4=;
-        b=Bvtv3ynE7CjqH+gtFDQLsMZQ/M4+DQPbsy9NqVFop5eC8GoF19Ok2tPhS9Bh753lj0
-         EkXIAsPxgrEgBX31CaliIV9AEDCvd//B/tkekx1MC3GiEcf0r268MxSC99CSO8VzEW+F
-         jPr1dBgXl/AVdOMjsNW2K0BmP2m+DzTOL+fRV8GklIS/DtQdmtz4jKP+VjbSJlcwh0Vi
-         E3w+Rruxazf0log4V5p386JVVYNxFyA3kxSEn82H2rGdcMaF2jdcBmxBDDA7VHF19B5z
-         UDng5yvcMdaU56WUUMcFJDJ/w738zIKdBUlC9Xlpnc98BaIkj4Xwi3oEuzO7OYfIRqoW
-         GAUA==
-X-Forwarded-Encrypted: i=1; AFNElJ+UralIHYOVsHR6iIvfDHC+nxFicTCMVdDwqrKFa4AipXE2O85iBOElda+EVfQiawcm8JiPfjFEDbslTS9HLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3JHbjlgMnpfrQMz0pvGcJarF4f0yhkOXL7fRI7c/nTQ81hwKP
-	kHj/N+f+Px1pKSdxWO7FB0h6Uqqx7SUFq0SGcJRkwBTdGTsFsO4rdgL9
-X-Gm-Gg: Acq92OHAbAaoJIzVrHv3SEmfqc6i/MxfjSuiz0hok9tIbl5WW3ixzORLep6SDI5N480
-	q3TZvxAQWNq4gfRBYV08mMVMV+1yZlyrZGbDxX/dE3GeDdzKo3PA48W8c62eeZW8rdjS6VZQkcd
-	92wp5M6JBlNJ+Mowq9vlUgd25P4VDqRsqw200CnPLVbl/6fukUfa/QM9QJbHjW6YgPt3Q9uJPlD
-	MCTdqK1UJVJbmXFqLllz4JXIZYeLbeu4wRcn88QEJWvQQbt0lQPOqfzH1a7ySjr0ccGBGy3yyKC
-	5x7kK+M2XKxeoXdQIugooYU/nvEoOshZCFtlXhpId+rgg3zF7WS6OjdzutrGnOCB8OzNvjUuX5k
-	CCz1u0ANjLhGVT0er/2Mh6QVRKtGcf11CcqaT8mKAvSgYkM/ZX+MSG5+UsyIgyUlSz5GHsObr7p
-	hNOX63JT0/KmyJHtKSHKb2FL+aCd65QBgOSxgxwQLiST+f
-X-Received: by 2002:a17:90b:1fd0:b0:36d:bc0d:f789 with SMTP id 98e67ed59e1d1-37c2bd49493mr12505554a91.22.1781545860086;
-        Mon, 15 Jun 2026 10:51:00 -0700 (PDT)
-Received: from LAPTOP-TMVMP5FD.localdomain ([223.235.128.148])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521e76d1sm247058a91.8.2026.06.15.10.50.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 10:50:59 -0700 (PDT)
-From: syncrain <iganschel@gmail.com>
-To: gregkh@linuxfoundation.org,
-	arve@android.com,
-	tkjos@android.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	aliceryhl@google.com
-Cc: ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syncrain <iganschel@gmail.com>
-Subject: [PATCH] binder: synchronize Rust Binder stats with freeze commands
-Date: Mon, 15 Jun 2026 23:18:34 +0530
-Message-Id: <20260615174834.297-1-iganschel@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        bh=ZgpdzSMC15GDZO9IdrqqPcFyAeKGL54ldux2hshhzHY=;
+        b=CvOF67IWA2VAleeK5F0JWagOlxHh+loJhPJlqOXj3MWeBBMDiI+q/GeX6Q+vkCm82N
+         gSoZBMiTut31yXCcRxDHPvLeIWDOXRFXF3/d0AX6reEFl46oiqIpC/Jqn320lEMSHcMr
+         CdqKEfxGh4/x3FoOgPqkhDEDfFyMfjwdrxQEGVSSGnzolVYBikVzigzFfziPyC1G1tLZ
+         Voia1+ewAbsVtrAOySF+8J4iMik4NNX4d3wEL/6UqJzCWb7VEPNnWR5hohWSFTbVmRPc
+         cLLtzBUPjHw8erwcjUMtO4TjEuO4iVTFWeCPcPgeTzOHKLW0uKEgMTGuOBzTKbQRra17
+         YyEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781547273; x=1782152073;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZgpdzSMC15GDZO9IdrqqPcFyAeKGL54ldux2hshhzHY=;
+        b=P7EWNnEYBFOsH2HOVSL2T/BLuOyTyJgZDlt55oaPhUcsImKVjIf7rLxDvVXntliiNd
+         ZfWLuFY4FPJC1drsNFhpWyEIZ3cafbUzVcr46JUKD458SHdOu3Qx6+Kg09dKEA0hvnn2
+         cglis2GGeEgi2Cg7bQ+W0EjClGLkCPbXNFY+is6sVemPiQ1wBjxeaa9+tgX2z5C3Xw2R
+         LgK+WFIkpmIOtbod8ZyT+uupcNSABkxMZHTP81bNwiiD9r5GvBwxdyBQxgS8aoPAWM8/
+         qRjXHxbrztTw/1s66UcmQIkXhZ4s/zfJNXG6Z9PZ3RW+q896Dl5YGSy+2E6T+Xuz8JA0
+         t6eA==
+X-Gm-Message-State: AOJu0YzGXjdlo95lgLyG8z/d5rSWEt8wdbWM+v/32mxxoCYypZXulo2x
+	XGJUg7C5Zpae81YJ7fh7irpAoykSIeWP+EeVl/x4DPLvMsZJRCqmpziX12Nr7ARX78KP+lc3ihh
+	od4uUAqF68ydVOaj9lSofAsAUrTbdxvI=
+X-Gm-Gg: Acq92OFV0hojDYUmF1J5KyVepdaZOyLfXwuk0b2v4gayccPzDzW97huw+1l3282+9y4
+	JliZs+UA/er4ctQayNKPMYw33SuS6myf6DELU6kYmFQXaZzK7sCE/8HfEL13sbJZ8WjkmhBEYhz
+	KrL6EbRjWJz/SHjcyearG0HadOBX26VJ2S3d3H1JOiuIzwaiTzJaFshFkzjjMTvZ1sOZiPnTZXk
+	0C+azQdsZ+C9TtbjWhWT3WbF6BxNpErsmXpjtmGnOpODSC8/Yp4uBc5kq0Ebf5QUF7kgYAGthcM
+	EMylOIR/e6ugVPI=
+X-Received: by 2002:a05:690e:2441:b0:65e:5110:a584 with SMTP id
+ 956f58d0204a3-66284fd3ca2mr9047737d50.52.1781547272702; Mon, 15 Jun 2026
+ 11:14:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260522172558.137415-1-ekffu200098@gmail.com>
+In-Reply-To: <20260522172558.137415-1-ekffu200098@gmail.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Tue, 16 Jun 2026 03:14:21 +0900
+X-Gm-Features: AVVi8CciQYKrd4R4lUmHGKKKy_B-YteGnkA_cnKpt34HGlp4AmS18YwxkcTWGes
+Message-ID: <CABFDxMH8icJ2HAw0iTotg0ipYSGDX8ffiTv3e4SmXu1vQ798jg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: time: warn and assert out-of-range input in
+ fsleep() and udelay()
+To: a.hindborg@kernel.org, boqun@kernel.org, fujita.tomonori@gmail.com, 
+	frederic@kernel.org, lyude@redhat.com, tglx@kernel.org, 
+	anna-maria@linutronix.de, jstultz@google.com, sboyd@kernel.org
+Cc: rust-for-linux@vger.kernel.org, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Rust Binder stats use BC_COUNT and BR_COUNT to size the command and
-return counters, and use event string tables when printing debug
-statistics.
+Hello,
 
-The Binder protocol includes freeze-related commands and return codes,
-but the Rust Binder statistics code was not updated to cover them. As a
-result, those commands and return codes are not accounted for or printed
-by the stats debug output.
+On Sat, May 23, 2026 at 2:26=E2=80=AFAM Sang-Heon Jeon <ekffu200098@gmail.c=
+om> wrote:
+>
+> fsleep() documents out-of-range input as a bug but does not check
+> it, unlike udelay(). Add `debug_assert!` calls to catch it in
+> debug builds.
+>
+> Also add `pr_warn_once!` calls in both fsleep() and udelay() so
+> the clamped path is observable at runtime.
 
-Update the counts and event string tables so these commands and return
-codes are included in the debug statistics output.
+We're now in a new merge window.
+Gentle ping. Any feedback is welcome :)
 
-Signed-off-by: syncrain <iganschel@gmail.com>
----
- drivers/android/binder/rust_binder_events.c | 7 ++++++-
- drivers/android/binder/stats.rs             | 4 ++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
+Thanks.
 
-diff --git a/drivers/android/binder/rust_binder_events.c b/drivers/android/binder/rust_binder_events.c
-index 488b1470060c..5792aa59cc82 100644
---- a/drivers/android/binder/rust_binder_events.c
-+++ b/drivers/android/binder/rust_binder_events.c
-@@ -28,6 +28,9 @@ const char * const binder_command_strings[] = {
- 	"BC_DEAD_BINDER_DONE",
- 	"BC_TRANSACTION_SG",
- 	"BC_REPLY_SG",
-+	"BC_REQUEST_FREEZE_NOTIFICATION",
-+	"BC_CLEAR_FREEZE_NOTIFICATION",
-+	"BC_FREEZE_NOTIFICATION_DONE",
- };
- 
- const char * const binder_return_strings[] = {
-@@ -51,7 +54,9 @@ const char * const binder_return_strings[] = {
- 	"BR_FAILED_REPLY",
- 	"BR_FROZEN_REPLY",
- 	"BR_ONEWAY_SPAM_SUSPECT",
--	"BR_TRANSACTION_PENDING_FROZEN"
-+	"BR_TRANSACTION_PENDING_FROZEN",
-+	"BR_FROZEN_BINDER",
-+	"BR_CLEAR_FREEZE_NOTIFICATION_DONE",
- };
- 
- #define CREATE_TRACE_POINTS
-diff --git a/drivers/android/binder/stats.rs b/drivers/android/binder/stats.rs
-index ab75e9561cbf..ec81dc7747db 100644
---- a/drivers/android/binder/stats.rs
-+++ b/drivers/android/binder/stats.rs
-@@ -8,8 +8,8 @@
- use kernel::sync::atomic::{ordering::Relaxed, Atomic};
- use kernel::{ioctl::_IOC_NR, seq_file::SeqFile, seq_print};
- 
--const BC_COUNT: usize = _IOC_NR(BC_REPLY_SG) as usize + 1;
--const BR_COUNT: usize = _IOC_NR(BR_TRANSACTION_PENDING_FROZEN) as usize + 1;
-+const BC_COUNT: usize = _IOC_NR(BC_FREEZE_NOTIFICATION_DONE) as usize + 1;
-+const BR_COUNT: usize = _IOC_NR(BR_CLEAR_FREEZE_NOTIFICATION_DONE) as usize + 1;
- 
- pub(crate) static GLOBAL_STATS: BinderStats = BinderStats::new();
- 
--- 
-2.39.5
+> Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+> Changes from v1 [1]
+> - Add pr_warn_once to fsleep() and udelay()
+> - Add reviewed-by tag by Onur
+>
+> [1] https://lore.kernel.org/all/20260508173827.1123011-1-ekffu200098@gmai=
+l.com/
+> ---
+>  rust/kernel/time/delay.rs | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/rust/kernel/time/delay.rs b/rust/kernel/time/delay.rs
+> index b5b1b42797a0..557130ab84e6 100644
+> --- a/rust/kernel/time/delay.rs
+> +++ b/rust/kernel/time/delay.rs
+> @@ -8,6 +8,7 @@
+>  //! C header: [`include/linux/delay.h`](srctree/include/linux/delay.h).
+>
+>  use super::Delta;
+> +use crate::pr_warn_once;
+>  use crate::prelude::*;
+>
+>  /// Sleeps for a given duration at least.
+> @@ -18,8 +19,7 @@
+>  /// `delta` must be within `[0, i32::MAX]` microseconds;
+>  /// otherwise, it is erroneous behavior. That is, it is considered a bug
+>  /// to call this function with an out-of-range value, in which case the =
+function
+> -/// will sleep for at least the maximum value in the range and may warn
+> -/// in the future.
+> +/// will sleep for at least the maximum value in the range and warns onc=
+e.
+>  ///
+>  /// The behavior above differs from the C side [`fsleep()`] for which ou=
+t-of-range
+>  /// values mean "infinite timeout" instead.
+> @@ -32,10 +32,13 @@ pub fn fsleep(delta: Delta) {
+>      // overflow inside fsleep, which could lead to unintentional infinit=
+e sleep.
+>      const MAX_DELTA: Delta =3D Delta::from_micros(i32::MAX as i64);
+>
+> +    debug_assert!(delta.as_nanos() >=3D 0);
+> +    debug_assert!(delta <=3D MAX_DELTA);
+> +
+>      let delta =3D if (Delta::ZERO..=3DMAX_DELTA).contains(&delta) {
+>          delta
+>      } else {
+> -        // TODO: Add WARN_ONCE() when it's supported.
+> +        pr_warn_once!("attempted to fsleep() with out of range delta\n")=
+;
+>          MAX_DELTA
+>      };
+>
+> @@ -54,7 +57,8 @@ pub fn fsleep(delta: Delta) {
+>  ///
+>  /// `delta` must be within `[0, MAX_UDELAY_MS]` in milliseconds;
+>  /// otherwise, it is erroneous behavior. That is, it is considered a bug=
+ to
+> -/// call this function with an out-of-range value.
+> +/// call this function with an out-of-range value, in which case the fun=
+ction
+> +/// will delay for at least the maximum value in the range and warns onc=
+e.
+>  ///
+>  /// The behavior above differs from the C side [`udelay()`] for which ou=
+t-of-range
+>  /// values could lead to an overflow and unexpected behavior.
+> @@ -69,6 +73,7 @@ pub fn udelay(delta: Delta) {
+>      let delta =3D if (Delta::ZERO..=3DMAX_UDELAY_DELTA).contains(&delta)=
+ {
+>          delta
+>      } else {
+> +        pr_warn_once!("attempted to udelay() with out of range delta\n")=
+;
+>          MAX_UDELAY_DELTA
+>      };
+>
+> --
+> 2.43.0
+>
 
+Best Regards,
+Sang-Heon Jeon
