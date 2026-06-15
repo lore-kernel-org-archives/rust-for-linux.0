@@ -1,135 +1,210 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560563E7BDD
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 12:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF833EB0F2
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 13:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781527029; cv=none; b=pQ+5ixfmqKpKwZKgpQrA3He7krEspBNSZ+ZXUEeRagVaqZeprFukOkXzFSH0zUO+PQIjSJYaNuUMzdwxekL/GACOphDLUy8GxiK9iaCYIUSjhPBFB0h5xk6G5YK5VsfKlmCLwvpIsqxugTuaNJukdUq9HJ11FFqpKOQGj2qNXR8=
+	t=1781529232; cv=none; b=Y1G4+ekoCBpipqfNv0WtAa+mTgUXrdzi4IFdc/f00H3Ve44rc62GjEobYNMllQ61rhmLt1GuXahe1zd11hzz31LjDghtmfbLRgBxeg65Q0Gzi8XS8l2X01gOGryHEIFj5gETk0j3hNwVHyhHrVwWNCaamvFD2YPDOMS3hDoKoXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781527029; c=relaxed/simple;
-	bh=pRWHCKfc9EIDv8OD6Ag8tpxvHh3fSgM2IuS8g8uBlKs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bgYLcRTSpubNrJI5EHK8wz5rbeCeujP7bXciNqHU3D3k4AP+ARj4uVBmqmlIcXa3qArq5LZpDblnidCfkFeuiH0yNNPj9buZLHmvNaLtqNAg5m1uD5SPu5pL6FVEy6iuxstdADorZ3Qs2+LlHAJ3vw3IvVPEy6toJtQFxAeGvKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IRk11mmp; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1781529232; c=relaxed/simple;
+	bh=Flr0nvbGu2rzscCAqult96hCd87d8QCR9s4fxBiX2Dc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=eHEDniJG2gNgHFndQPesfRD0wAPyE0FmEQhbeVzKx+CJE8NQL2wSCh65okF9ekLnfevdhRCYNXa4OuyDX/zipRef6IO/1VDrgeO1hr91ZkGFEfiZ3up/xw20febG5e5NN9IiCbO87+s2+GLrYcmBvKHbeIwUjYAVcsvDshHKcJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uHaNjGPa; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IRk11mmp"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490b7959b9fso31972415e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 05:37:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uHaNjGPa"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-68c6649a135so2594367a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 06:13:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781527025; x=1782131825; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RNmtccmn4gsPTWx69maePoOlG2Lp/iRYXLRtIHek0ps=;
-        b=IRk11mmpW3WN5aaRGKMI32OmiaOoTe+w1si9RNkfx7sWN6tT8jVeNN9TVu6f30Meaz
-         sOYhrT4T2HNopLchQxChtVCYGnpUfR/f6glzsw9gOKTqSiBJOlzEU31ijeDtO/zpmMQk
-         VXzYQpflbtqFs7kP/W5j8LW0KxBJ1sogpZvHvsLUaLG+R5AUQfT7zOTUmPEzXoWWHbfK
-         KvSfL1OEQuIUGGrY4ZRO67L1JenKPbmtw38qOrWNDFyM0kLdB5veR5mpx6nu+LtwkqKu
-         A8+5HMqRZTHgn5uf34Pdg1C7ICf2kmKWDHNXPYsdSYMKX9+VfgCcW7t4RqWWwGixy5++
-         529Q==
+        d=google.com; s=20251104; t=1781529230; x=1782134030; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XleLdtW/J5DXsvoJgFXvims7MfxdiMmejRDtQ3BfezY=;
+        b=uHaNjGPavuSQhBIRcAn0QqXdlupL/CYKUqEumZRaJCWb26OpMO/U2vgZMIBE5QIdqc
+         F/SQlAppWBTJRqe7GnOta99jljH2oWns+bopkvets17kYPD96axQsgWg6FSM4tVC/sqU
+         lP36fGqEusTs9reYvxs7cdkcKzJAqtmYSp8mnXFdjb7cUsikLbiWr91Z025ir5KHw6Qm
+         9qzpEC0cOlSiEI49bSwQGDnSe05K1312nY9EGccS2SxfjJYKc/kVXsnas2ZW/P3w8sNU
+         grZ5z3dQ9hzAjhwuWnWWnj+DFhDDDIFur/QMbu4UD/bnoptaBux6945I1OKNIYP53BHe
+         A2Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781527025; x=1782131825;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RNmtccmn4gsPTWx69maePoOlG2Lp/iRYXLRtIHek0ps=;
-        b=Z3OsgwrJW2WogQ4gge/Hf+KkHnevBy+sx5yUoHqrbdWEZUWKdevEaf2GFnEcU3q2od
-         7Uyj0Y7oFBX9K9oArmdHRCarnUSw6wGrRNCHOskgfJMrFDzg9IsXrTzP3qDIMYMkMRJq
-         pWNFJBP/r4mkkmpO60uqGlubGBN4GvniVWVbrcDoy1AlQTz9vg7ICFS56obAdS8Dsqvl
-         QOXb6cdNVrYGRt+oFbQOe1PMXkzg2l5WDn/ZFBB8ATFwx4EKbtFwECLjGkmKcfZ2QnQ3
-         bB0nFXWzlFP/qo+1B2teC7jA229n+3Oyua7VqSqu+1SH3BcdRfidABCUAZCr/d/0X4qq
-         coqA==
-X-Forwarded-Encrypted: i=1; AFNElJ/G9vg2tPtbx5BxeI31JmaWCHxQAjpZn3mXwx0/8Kt54KV6SsE4X6i9TLt5o3Yz3XGjj3KcLrAtM+tFSqGzpw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yys8VBT0jzl3TcS2jOxmBEe1Dn1WNV+T9eRr3R6jX2EQtOAVBsf
-	V6BNJadOJsfEtZO8f5zOpfMSgYm6KkUotB6vdjhUVJUSSGgsWjsY/m3PnuLyjCUHejZrMs3+Mh+
-	2CV7M00pguCNBcwOZug==
-X-Received: from wmv21.prod.google.com ([2002:a05:600c:26d5:b0:48a:79a9:335c])
+        d=1e100.net; s=20251104; t=1781529230; x=1782134030;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XleLdtW/J5DXsvoJgFXvims7MfxdiMmejRDtQ3BfezY=;
+        b=pmFmwL59FHihxzqSRyPUo9Ars5hMf6hd9fL4DKiIzIONooCGCq8+hXBsepjtX2ZTmr
+         /wLM3hW2KqvQUNPkCY1py3o9aAgk7sCfxFYL7spxYdMnVh453n/NM6tAYItDbC5g45x4
+         P+fLul2ySK2rqpZeVgBhz4MOMBp42gd6yNl5pTSnMV53mOsJUz9/cZFWrHDBp/gvb2Dq
+         fl8zurWfQPbR6e0Yxt1aM7pbDwXn4anho4t8aQl1qS/Y88MIqNSKL+Btvzw4Q7naisUL
+         1i7UuoflUwL5YlsbkUuMOjXzoMQ4BnxPjqJQ4RhWCN2qfwiCRsDJ8lbySbMMGM2mE46X
+         bInw==
+X-Forwarded-Encrypted: i=1; AFNElJ/AJ6+QeoS3e07zAMHCAaDE0jeMk1/4ywV2YkHodev+rEt+H/GXgQu0HG403+svvTlcwFc6I8EVr0GSyF1YQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YydJ+l/rx5jt6wg6twnCXCg7Dmo1tEK/AUkrHmOPf/BuxqMzuEq
+	bubMq3u7+JdKZmSf9L0dFUhGEV/KhjEJ+bXjo3rB4DWjLVsGJbXKIGH8QNzaqEpdNsu+n8CUndR
+	ITkz6Uovnm0mtLejP7A==
+X-Received: from ejc6-n1.prod.google.com ([2002:a05:6938:a006:10b0:bec:48f5:cfdf])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b31:b0:490:e5c1:b8c6 with SMTP id 5b1f17b1804b1-490ec4b58ffmr188426625e9.8.1781527025206;
- Mon, 15 Jun 2026 05:37:05 -0700 (PDT)
-Date: Mon, 15 Jun 2026 12:36:46 +0000
-In-Reply-To: <20260615-binder-noderefs-spin-v3-0-3235f5a3e0a0@google.com>
+ 2002:a17:906:cc17:b0:bec:4b96:5fb4 with SMTP id a640c23a62f3a-bfe288ff5a2mr417289566b.11.1781529229357;
+ Mon, 15 Jun 2026 06:13:49 -0700 (PDT)
+Date: Mon, 15 Jun 2026 13:13:16 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260615-binder-noderefs-spin-v3-0-3235f5a3e0a0@google.com>
+X-B4-Tracking: v=1; b=H4sIAGv6L2oC/42Py27DIBREf8W6694ImxQ/Vv2PKgtjDw5SDSm4K
+ A/530OdROqyy5nFOTM3iggWkbriRgHJRutdDtVbQcOxdxPYjjlTJSollGg5YPYJbAJwBXv3Kpw
+ fwVKgroxReq9AGXEKMPa84T8Pjxzw/ZMty6Mk3Ufw4OfZLl2R6l3JYVD019491Q1r60aEzZS5k
+ ePJOpa9wCDem1bsZZck/WqONi4+XLZTqdw8/9ufSi7ZqNpI3WoD3XxM3k9f2OWFdFjX9Q4BGnM nMAEAAA==
+X-Change-Id: 20260609-remove-freeze-on-remove-node-30e72ff6b46e
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2264; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=pRWHCKfc9EIDv8OD6Ag8tpxvHh3fSgM2IuS8g8uBlKs=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqL/Hl1X0RgSrcndvnol2F3a+0v017sD4BwkVDB
- IvSuIzXN6eJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCai/x5QAKCRAEWL7uWMY5
- RhkuD/9/jr/IWWLyIfB5WJ9HV4oxIJfvJfIXimQpjmIYPf6oVPGOuoepGheTKSca2MSBwG6intq
- nleqrmRItTGEkk13zaKX+pLFVrww2Iem+hQHk+AllCePeqxQy215WF015iBMlKPIvN5U/uv6og4
- bLxdPUDjYsuv6Vfwj3QDCL9R7UbBkQDbRuzwoKigaioxqUKmB9ZwY9NcTZS3pZpuQvb9y6iUzgs
- p/mOux+Z+sy9cm6j4IVjhW3ACf+x9wT/B3SXs2t20PbZtfbM9nnwYeaZdK2dVXxzLjI9osLIt2W
- Zd4ybvvfNbtnoh9vW8YWVVGH4F/I7EZs0etMXjU2DTum2oQMGEYP1c20eFIeC+qxEo8mdTeuId1
- 6fGArzKft28cMhtJEl6wPLANeiI3F3B+/Ye9PlMTjjGbK7BSJ3nJtZLsAUzcgn7yJ5YmmLjaRH5
- SdxLzsIYfUhGKu65IIWY16Wrd1ooiRIB8oORwvu25oZpY/FEjLbW9c0YSWr8ghhaAwB0QM4o8U5
- D6jWrySdUP1lAYmit99i8HAKX59mlzbUGF8Mn7KrNa6gwWOOm8KPx2GmRf73YuUuU1lVBdTrHKV
- OO9wziwV7qlw5M9cdZCTo6mhIFFTMPAybhWb1wO+1m2BQV8OPoIdjU1psB1joUNllzJ9fMu4z10 X7GY1/wOJ+Cwsjg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5585; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Flr0nvbGu2rzscCAqult96hCd87d8QCR9s4fxBiX2Dc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqL/qHfvv3TIc1xFw6L3GGmJxAiV3UEEZxCM304
+ SMicUPpPQOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCai/6hwAKCRAEWL7uWMY5
+ RkbkEACN1796SqJ0mJiGrmx0GZ6CCzIb0Oq42Yj3VLI7JSVTO9m/qN3LTLxsmVcuRWBXgQpDZrT
+ 3+jKQm8gGJb1JOHviVF/R8WdGt+LfyhsQr66BXn6ZwcxuONetdxfCIuSVIZvrJ/NCypfIV3Yo2o
+ DrOvnr5T5XWKDYoOTufbeZRvxos6YqJbTZNEqghRhVJj2d6v55AwWw5aVhdosHJrL+daOzarLzA
+ PtL/sFK3pFnNoCtTyUOWnnXnLsvBuQ+1R7EKGOP8IdbC8KIzdI0/AFtcbsThsuNiotaU27+SXlG
+ TEers3ju1EmUdpF41V8JIr/FKxCI72fgWSmXkEUyjyVH+8FdN10mXDjFATJWa6xMfVVVMgNOWX1
+ ow4tZ9NSAsVjbLzqSR8Vrys3HpHX3Auz0e/1rFhJcwRKlrZrUwslRGP+8f3bfcAfS8grDP00Nz5
+ bT3LCN+Jnj9z3k0NYhjl5JI4EzQcElsmAH7Xd9poKTzb070hpGuliDScuf1NhVyhkXRBS0nDHRi
+ 58sDxKIMQQ1FN4M5zf37QIC09M3v9Mtnjb66MWtZBs/6Y3V8LmoLnFs4JFOM0sskq2V/CxoQ4Ln
+ Ez34/YKZvRQUmxQ6ftEr+C+JZNWXR8UrkGdPN/h0o8IYfmss2I3Jfs7kWREpv5iLcBijOWlj1vi Q1APMFG+COPPNnA==
 X-Mailer: b4 0.14.3
-Message-ID: <20260615-binder-noderefs-spin-v3-6-3235f5a3e0a0@google.com>
-Subject: [PATCH v3 6/6] rust_binder: update Process::node_refs to use SpinLock
+Message-ID: <20260615-remove-freeze-on-remove-node-v2-1-93b31766e7a8@google.com>
+Subject: [PATCH v2] rust_binder: clear freeze listener on node removal
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Matthew Maurer <mmaurer@google.com>
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-Unfortunately the current use of a mutex for this lock leads to priority
-inversion. Traces have been observed where a process is trying to obtain
-this mutex for 22ms, but it's unable to do so because the thread holding
-the lock is scheduled out. Since this occurred on a UI thread, that is
-an extremely long delay.
+Generally userspace is supposed to explicitly clear freeze listeners
+before they drop the refcount on the node ref to zero, but there's
+nothing forcing that. Currently, in this scenario the freeze listener
+remains in the freeze_listeners rbtree and in the remote node's freeze
+listener list, even though the ref for which the listener is registered
+is gone. This could potentially lead to a memory leak due to a refcount
+cycle. Thus, remove the freeze listener in this scenario.
 
-Code paths that might sleep under this lock have already been updated in
-patches leading up to this one.
-
-Reviewed-by: Matthew Maurer <mmaurer@google.com>
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/process.rs | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+This series is based on top of:
+https://lore.kernel.org/all/20260615-binder-noderefs-spin-v3-0-3235f5a3e0a0@google.com/
+---
+Changes in v2:
+- Rebase on v3 of parent series.
+- Link to v1: https://lore.kernel.org/r/20260609-remove-freeze-on-remove-node-v1-1-f67f3b9bfeb8@google.com
+---
+ drivers/android/binder/freeze.rs  | 11 +++++++++--
+ drivers/android/binder/node.rs    |  6 ++++--
+ drivers/android/binder/process.rs | 13 +++++++++++--
+ 3 files changed, 24 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
+index 2aef4f62cd11..5256f305e456 100644
+--- a/drivers/android/binder/freeze.rs
++++ b/drivers/android/binder/freeze.rs
+@@ -154,10 +154,17 @@ fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
+ }
+ 
+ impl FreezeListener {
+-    pub(crate) fn on_process_exit(&self, proc: &Arc<Process>) {
++    /// Called when this freeze listener is cleared abnormally.
++    ///
++    /// This occurs either because the process exited or because the process dropped its last
++    /// refcount on the node ref without explicitly removing the freeze listener first.
++    ///
++    /// The returned `KVVec` is just a value that should be dropped outside of the lock.
++    pub(crate) fn on_process_cleanup(&self, proc: &Process) -> KVVec<Arc<Process>> {
+         if !self.is_clearing {
+-            self.node.remove_freeze_listener(proc);
++            return self.node.remove_freeze_listener(proc);
+         }
++        KVVec::new()
+     }
+ }
+ 
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index 53fc8ba42e86..abcc979dceed 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -679,11 +679,13 @@ pub(crate) fn add_freeze_listener(
+         Ok(Ok(()))
+     }
+ 
+-    pub(crate) fn remove_freeze_listener(&self, p: &Arc<Process>) -> KVVec<Arc<Process>> {
++    pub(crate) fn remove_freeze_listener(&self, p: &Process) -> KVVec<Arc<Process>> {
+         let mut guard = self.owner.inner.lock();
+         let inner = self.inner.access_mut(&mut guard);
+         let len = inner.freeze_list.len();
+-        inner.freeze_list.retain(|proc| !Arc::ptr_eq(proc, p));
++        inner
++            .freeze_list
++            .retain(|proc| !core::ptr::eq::<Process>(&**proc, p));
+         if len == inner.freeze_list.len() {
+             pr_warn!(
+                 "Could not remove freeze listener for {}\n",
 diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 268d78f8cfb3..82c34a93660e 100644
+index 82c34a93660e..5802fbbaacd3 100644
 --- a/drivers/android/binder/process.rs
 +++ b/drivers/android/binder/process.rs
-@@ -30,7 +30,7 @@
-     sync::{
-         aref::ARef,
-         lock::{spinlock::SpinLockBackend, Guard},
--        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, Mutex, SpinLock, UniqueArc,
-+        Arc, ArcBorrow, CondVar, CondVarTimeoutResult, SpinLock, UniqueArc,
-     },
-     task::Task,
-     uaccess::{UserSlice, UserSliceReader},
-@@ -455,7 +455,7 @@ pub(crate) struct Process {
-     // Node references are in a different lock to avoid recursive acquisition when
-     // incrementing/decrementing a node in another process.
-     #[pin]
--    node_refs: Mutex<ProcessNodeRefs>,
-+    node_refs: SpinLock<ProcessNodeRefs>,
+@@ -950,6 +950,8 @@ pub(crate) fn update_ref(
+         // increment references on itself.
+         let _to_free_by_handle;
+         let _to_free_by_node;
++        let _to_free_freeze_listener;
++        let _to_free_freeze_listener_cleanup;
+         let mut refs = self.node_refs.lock();
+         if let Some(info) = refs.by_handle.get_mut(&handle) {
+             if info.node_ref().update(inc, strong) {
+@@ -965,8 +967,15 @@ pub(crate) fn update_ref(
  
-     // Work node for deferred work item.
-     #[pin]
-@@ -510,7 +510,7 @@ fn new(ctx: Arc<Context>, cred: ARef<Credential>) -> Result<Arc<Self>> {
-                 cred,
-                 inner <- kernel::new_spinlock!(ProcessInner::new(), "Process::inner"),
-                 pages <- ShrinkablePageRange::new(&super::BINDER_SHRINKER),
--                node_refs <- kernel::new_mutex!(ProcessNodeRefs::new(), "Process::node_refs"),
-+                node_refs <- kernel::new_spinlock!(ProcessNodeRefs::new(), "Process::node_refs"),
-                 freeze_wait <- kernel::new_condvar!("Process::freeze_wait"),
-                 task: current.group_leader().into(),
-                 defer_work <- kernel::new_work!("Process::defer_work"),
+                 // SAFETY: We are removing the `NodeRefInfo` from the right node.
+                 unsafe { info.node_ref2().node.remove_node_info(info) };
+-
+                 let id = info.node_ref().node.global_id();
++
++                if let Some(freeze) = *info.freeze() {
++                    if let Some(fl) = refs.freeze_listeners.remove(&freeze) {
++                        _to_free_freeze_listener_cleanup = fl.on_process_cleanup(&self);
++                        _to_free_freeze_listener = fl;
++                    }
++                }
++
+                 _to_free_by_handle = refs.by_handle.remove_node(&handle);
+                 _to_free_by_node = refs.by_node.remove_node(&id);
+                 refs.handle_is_present.release_id(handle as usize);
+@@ -1391,7 +1400,7 @@ fn deferred_release(self: Arc<Self>) {
+         // Clean up freeze listeners.
+         let freeze_listeners = take(&mut self.node_refs.lock().freeze_listeners);
+         for listener in freeze_listeners.values() {
+-            listener.on_process_exit(&self);
++            listener.on_process_cleanup(&self);
+         }
+         drop(freeze_listeners);
+ 
 
+---
+base-commit: 3bc831df9ee16fceee851872315161377ca1417d
+change-id: 20260609-remove-freeze-on-remove-node-30e72ff6b46e
+prerequisite-change-id:20260608-binder-noderefs-spin-3a0ec0589043:v3
+prerequisite-patch-id: 4984d542e1da65da603c302f0bccb423867f71c2
+prerequisite-patch-id: e1ae5f73b329080c0fcea1d2509c085e105f67c3
+prerequisite-patch-id: 63f2092c6fd9dd54b7adf93be8d5670d8490f401
+prerequisite-patch-id: 5811aeb4ca435a1d4d0bb347d4de9f3b2d91f814
+prerequisite-patch-id: 556e45c697f9888c8446245bbcf478422991fddf
+prerequisite-patch-id: f567ba2263108b12871013309ae7c482d500eeae
+
+Best regards,
 -- 
-2.54.0.1136.gdb2ca164c4-goog
+Alice Ryhl <aliceryhl@google.com>
 
