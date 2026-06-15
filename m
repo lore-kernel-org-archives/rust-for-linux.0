@@ -1,132 +1,121 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82863812CD
-	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 21:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32A62EEE68
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 21:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781557778; cv=pass; b=C3h+jA8qcKazFFDxM0Hp/w4jPn4TvtApWpEWvsMVLH+JwK1usGp4zKBUyajYhZdg5rvdDT9nPZ4FCuSFHSUL3Z29sutJ3vetwsc5FvSs8TPtPS45Yr5vVAmWh7OHSQToBpSkExlk4R7UN6ey1fLOqPwIfcUEi+ralpF8dm3tdm4=
+	t=1781557864; cv=pass; b=jJ43fngsPvaBD0Om7JSsJVfHnY/a8z8PX9QI1HpQv+IutXOmjZm/hbCJOgRu6kpf61iLcrbXjFAyca3LKVGFeuETea8BwQ1eon8h1MI7/InYht5/qSPfU2Ug+1athAzJx9semcqMRR0Nnv5QYpY3+jZe/36TTg/YOBszPaAN+04=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781557778; c=relaxed/simple;
-	bh=H3ZJW4HqHiLsHMCxCzHT8BiErgZo9V5ZdQhYfb+38cI=;
+	s=arc-20240116; t=1781557864; c=relaxed/simple;
+	bh=S3XcLirNxAvLlRiJ5yt/NCKiriSoKGGYF4k46mG8of8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oa118WE6EdN7O/wKmhS2SJUjqLkfnbCZbePHQwMIesebQ+JoOy+1gI0q9/+r4aU4Vk0jqvukLCS3bi2trnWA3hJ+xtrKdckPBtZRL+Q7jONycV+4bm469AOwp03E1X8vsTkz+9PdPFCvXdroHA2vBmlzPEKLpufcz7YB2KRxKIM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vPjDmxhJ; arc=pass smtp.client-ip=209.85.221.54
+	 To:Cc:Content-Type; b=toSz1ZdD/xoYqV0YMd9MLw+y6Eg6PaBNQRIzY3LjvH1YUhlUvlOBS0474KQ1e75KtbfTrl6g0jHWkuOlg5Lbag4TpFokrvPFpVgHFD5BwbHPcXHYMqBBdfL2e9MHoZoO21D+8tJKOdGgZftRnNSxU/N1e2nutYVSkj2Bn9kPa6c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A9wjj5A4; arc=pass smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vPjDmxhJ"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4600ddc4017so2863521f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 14:09:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781557774; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A9wjj5A4"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490cf3000f0so38176535e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 14:11:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781557861; cv=none;
         d=google.com; s=arc-20240605;
-        b=AseUhrAwAO1LI7evSZMgBATzbvqZNBiH3SxRqkf3fAacS+zA6AvJZxDv6OgnNTh0OQ
-         OJCvehxUCcPbr5SfY7ExHEiRYdX6/dCKLD5BlAajl/qKvXVHljOaGQLHYlwR6nDccUyP
-         hlTYnLst4RFNEdD7pILVUtjOb+yH/63nwCTajUotWy5pINZvQakkkuol12BWnS56t4TX
-         fDz139TCKXnuvMVEt1M8lGnPDg72iU54NkvWV59HW6OLosW7uZ3zLIBYhaH0mHy+LVNg
-         Qz1R9dxBS6DQosdeirxbdBOy/VcmtU4xibnlx6ydSRkuZOKF7UAEDpZjgqOUnNsBZrEM
-         epsg==
+        b=AEK0cBrj7Wsi8OfsDlQDbqtvF22CvTdOeZSTCsFYhtdqxhmnuMwc8PAmN7Ja8djh/Z
+         sIGjHBGWoG7j67r/UjR3UqSLYm0LmP0CMd4+Ues6dZ+zxKFkY4NtttVrpXabVygJC+bd
+         2vTGWh/Q604K+a8xeGrq+KHzvxlA6GkWnLICmkWWbggDqa4MwVnMYv09ytcYmEwz44UI
+         MDF+7vY4ow+VazH1IiqdhdnwrWfHFttbT7aKnv35ZM42eTS4aRtksG+wWHkF+5sY6thj
+         KVLjmPXV/mg+pDGMSgsIkS3Qe4fKj1X8zSDYB0hq4DsDonyRrsli3MQeMsMUVz+OzwnP
+         HY9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=H3ZJW4HqHiLsHMCxCzHT8BiErgZo9V5ZdQhYfb+38cI=;
-        fh=wspUwBY2aerWsRRsRx7Y4YIkjQ/H+a+Y5GSUUGHZlic=;
-        b=aqPDLSvOXBwQvmTFh+raZruZebNJmJAfvof2F2gaiNJgJMAGGfXmcssjXMgZrsrQF4
-         BQ7cK+Gu8+Pyew1wY3+HefulXhhjWWypG+vVloRc7lQGPibAGBTkUxlMQNVWfNBKZIYR
-         +qvfRWRtskWKfK1PTy3IET7IcbrrAbkgJzuK1+zbZYUuxm0XkCMDB1qHoEcgZy8egFA7
-         yYXbZPK+A+BCxHET3h9FmOuAYzrDSydUG/gpQf07fTHLwaSWfblrz9vxxvahocEuGhLr
-         xLPGQBqlptI8yxVQmgFKFyXg53gFnfP0p+ksjPW+MqJQLHjeuNJ+LY2SIwiTXpnDQQVM
-         XWdA==;
+        bh=S3XcLirNxAvLlRiJ5yt/NCKiriSoKGGYF4k46mG8of8=;
+        fh=HXTC1QJLEc4Qi1Lxq1dMLmtgIDeDrQu5UB5L99CXEPs=;
+        b=LBtZilwbWBtm/2/ShQ+L0uJj3JdafvJk9PxjuUmvWAxwJmMO2nunaeDKJUWLjbA9uz
+         qZP/e5l6eVshf7ExFA7ONFaEeUvoduHCDWBZzWhxxnk7sc4KwA27yyHM8jW8g6HsrOBk
+         Jlxa1lOEVod1Ce2uB0iW/giA0sATB9WHF483dyvWWvDxhggJpB8hI/vpU0UzNWss8VyJ
+         /bUtoVHyUT0niZQmAoVU5Kg4Vo6/j5j+Xyvvlh54d7dmis3MgEF8ZPR9iE0AAE+mpL3O
+         HA+M520D19Gzw4igAddw4qvog/Qo9SKEh0VEqWKixGxJwLP8IroDtGDlKZatTbCbpbGi
+         wI7A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781557774; x=1782162574; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1781557861; x=1782162661; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H3ZJW4HqHiLsHMCxCzHT8BiErgZo9V5ZdQhYfb+38cI=;
-        b=vPjDmxhJTL03tAeWOKNFgnbnFOxvlrIhcvCYhTOpuhuzkOWoDLktvFSE/oczbflDlA
-         ium46gFT7AtSns9IGYjwym/pSRIxH0mq/ffhvrpruP0nyESZgoNWO3BEH9OWTgde4Bl6
-         bBLh0fMiWYDnZzEe6sBYzNmzy44FPGErEvaaS07DWgwmqJlKkcq/dumSk0pBgBcaIXDY
-         l6HkdoBTvHoq5UIA1p9e8F0CwqlDtsJqktycV1Y3iwMjpOcJx3x/ZVYAab8LdX7Svhwi
-         yWpqMDjoYe0zwllQZWR76qCtCHswRo1bDMu9EeO3CD4PCxqmTrWOm+HJ0jWCz5fDVEwj
-         fQHg==
+        bh=S3XcLirNxAvLlRiJ5yt/NCKiriSoKGGYF4k46mG8of8=;
+        b=A9wjj5A4mR8BL8cKl6+bClhV7nW1jOVzR+7EqQWKbZgdylC9SROcOG6WwkiTl6io39
+         PDZdkmKMJgavFTGZRjQqcr97E7DH/T+wFfIni1NxeuXQXcUlDGBbwK8FyXVXd6NSMrXP
+         4yU4QJTfhWrckrezHBXWapVdANM5rmP7m5d4R01kkbSQXXn96QnkZ/KVo5OrFw+08Utj
+         +5qF6UDpnYHQSdzd+n/cTkqt+CV1H5Moig2HkjgFUwNPCr0V9LoOu78yqFQXV7pePu5F
+         gZdWhTtYY6g3yc9EfbJS/U4IzmTRP2Z8N2v+S65NO68Wma2CVpy2CvvuxvfzrwRpWO6J
+         sIqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781557774; x=1782162574;
+        d=1e100.net; s=20251104; t=1781557861; x=1782162661;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=H3ZJW4HqHiLsHMCxCzHT8BiErgZo9V5ZdQhYfb+38cI=;
-        b=RCHhmcXgdaKB7PvUZK98ATRixQTd5sOld90UvrDl02hoNXMCqnrCLDoq+EiFDNk2VJ
-         rKlP7e22MfBWx+8ZmqmvWNkpHSxwuWcnlF5qjjZggD3DiDgMcLsQvGqCAD45g6Y6/5aT
-         h+FfGZqH1ztYd+EejPPlwm7/bHXZZIUsayYyMZ5AHawNLC7c2yAwtvtSZN/q78UKHcRy
-         hDwBBOvDp9pR2QvXksXrjkt+L8mFvDQruz+ugiJd6HyNfNAKjhwCuidhkI9Pzpn9c9gG
-         o+wUjIf8+BivDw/rcw1hdNwszAbS5w1O3Auk9ZIiXqqxMqzw6zCWtheVzSqChh1sXwsx
-         w6pg==
-X-Forwarded-Encrypted: i=1; AFNElJ++Rv9wFDMTjLAaI7xhd6XG8SmPr3P8GKJMsHICU6tY7ltodk14IybV1AEGDZmK7AKSG4H8YWDjhNJK/O1ndA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyttboCR7WIubvcpX14rSmszJDYaUPiG9dyW47J/JuUeaJ9/wVh
-	WRZgxug9peqNwgiYidnVm+vkSDaXn7+LSEby3gZVUMmr+frlxD6mrTQokJ8lcMGyCti7a9qbJL5
-	CETRPx6rxp8RdJqcZpavlhdlN8Yqj7p1RMspo3RWC
-X-Gm-Gg: Acq92OEZAjvOelc9cO4h927URSxlX5cCgIqDFZn7LHYqBkPKX079KuFZC36gIsagoC8
-	qCeeMROrBrSGMVqYXRwGwXoMS52IRy36Q1wp4cveimimKP8OLMG1kwUFU9z4l/DnL/JaVlHDAG9
-	JULzjitKZaCycLW66gRum+1n/pwKbXx+YtQokJc27EwW3iDQ04TllPCcRZUosZf04XhbkxSZKfO
-	FvKXfVb9l2FaWI25StwCNzz2QsUcEHtp40ZGpLWwa8EfZyEsJ5hx2DTpvKt5frAGddc1V0IKnBn
-	vlRQByFYPKhtweVbPcQQvPvq6gjDuyp8HvLR1Q==
-X-Received: by 2002:a5d:60ce:0:b0:460:1233:ecf2 with SMTP id
- ffacd0b85a97d-4619f3b4511mr1310797f8f.30.1781557773680; Mon, 15 Jun 2026
- 14:09:33 -0700 (PDT)
+        bh=S3XcLirNxAvLlRiJ5yt/NCKiriSoKGGYF4k46mG8of8=;
+        b=dQWKyoeb/ZQ8ZSTBYTauwwprCc61F720pNH3ZNv4PpkBZTG+FX30eV2Qwf8C01lrM2
+         y7NWX7X0pmvC6WCyeDhkAttXuvDTisiFr7UmxbgzUSS/jM8T/AYe/eQxVvwLfNNGcYaa
+         qTRQWlQisC9YXF6RfCNmMhjSJm6AXZhTzu3jCXIG9jOaaolxs4XR3yxnQv81TK0ljuq4
+         /WY1EaYYbjutNFJaqOfc5rYeT1Cf1VUysHdn8xG5pelMc9lLTj79Um67pYbzt93WygQp
+         RDmnXhaEnAjtTlMUXwS2gHTZnlvB5K3HaFQxeLfSeCN7hexKmdq5NXn1i5ozQmxdJ0Rr
+         Gyaw==
+X-Forwarded-Encrypted: i=1; AFNElJ9LVlE8Bn8GGWOWjguB5X/UNQKtBg41Z7J3ocQas/Ym5pWHt6NRUtQ+iA2PK/ObO2iFCFFI4ga3QwOPeDFqdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+6LvG7VuozmCZIa46//FjjtdumbhTDW4yufTvjz7jY8xOpv7f
+	/QiGVMfuWjpNNJMi7jtpgEO9cKJdRW3zl6fsikbnDdUeOevEcrsh5kszHLaMUDuXP/bf7FsbMRL
+	YJYWuEP4ofZyRKz9ir4iLbxMb08CZth6c+odHkRWe
+X-Gm-Gg: Acq92OGVP81ZR50GzzYjVFqFYAzps1z+p6HwZc7E6CiVJgcLJrbiGzq9PWi07Nvrnoh
+	hAt/n8RHBA+nHQKtYyRNu+rRXSfYmPcImpB+ofGA1llAjtlAJZPIEIvVjdUH5b09XWAKHYdJjjH
+	UvIg5F2BUwB5wlVmT8Ziip5XKdGYyG7XSS1ZjrTdI5l46Bd0ezVNoIFy0PDSAmgYfMPdljyMw/7
+	RW6qbKll3bljvPtU/VtmZEzHrO44GEItZWhW0oAYkP3CgTKFD/mxpPRjlTwxarhiGJxwAUodkCU
+	6UuK1l2Dy3gj1u2TEc1D3BwVoT6sugBqDxJ1Og==
+X-Received: by 2002:a05:600c:4693:b0:490:cdb2:fb5e with SMTP id
+ 5b1f17b1804b1-490ec504d88mr247758815e9.22.1781557860744; Mon, 15 Jun 2026
+ 14:11:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260615201737.262-1-iganschel@gmail.com> <ajBiRJANx24mVNUW@google.com>
-In-Reply-To: <ajBiRJANx24mVNUW@google.com>
+References: <20260615201737.262-1-iganschel@gmail.com> <20260615210516.513-1-iganschel@gmail.com>
+In-Reply-To: <20260615210516.513-1-iganschel@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 15 Jun 2026 23:09:20 +0200
-X-Gm-Features: AVVi8Cfms6Dc7N0zmMsBTohuj53w8Wyll2D0j8yXgqQKxnGDnnDP3vSxmFKtPdI
-Message-ID: <CAH5fLgjiyMSordaYS5S73DUKF6czpZtZuPY94j3DYP8XQTXoPg@mail.gmail.com>
-Subject: Re: [PATCH] binder: synchronize Rust Binder stats with freeze commands
-To: Carlos Llamas <cmllamas@google.com>
-Cc: syncrain <iganschel@gmail.com>, gregkh@linuxfoundation.org, arve@android.com, 
-	tkjos@android.com, brauner@kernel.org, ojeda@kernel.org, 
+Date: Mon, 15 Jun 2026 23:10:48 +0200
+X-Gm-Features: AVVi8Cf54_BvplVdRbFsmkdVZNozPm3W-937vCiH3IxdrMIHTV5gXt6ubjD8MPw
+Message-ID: <CAH5fLghjsXYRnY1-Ytx5iqkeREkgpgVK_mLOKBv+ZDipJ_My5w@mail.gmail.com>
+Subject: Re: [PATCH v3] binder: synchronize Rust Binder stats with freeze commands
+To: Keshav Verma <iganschel@gmail.com>
+Cc: gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com, 
+	brauner@kernel.org, cmllamas@google.com, ojeda@kernel.org, stable@kernel.org, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 15, 2026 at 10:36=E2=80=AFPM Carlos Llamas <cmllamas@google.com=
-> wrote:
+On Mon, Jun 15, 2026 at 11:06=E2=80=AFPM Keshav Verma <iganschel@gmail.com>=
+ wrote:
 >
-> On Tue, Jun 16, 2026 at 01:47:37AM +0530, syncrain wrote:
-> > From: Keshav Verma <iganschel@gmail.com>
-> >
-> > Rust Binder stats use BC_COUNT and BR_COUNT to size the command and
-> > return counters, and use event string tables when printing debug
-> > statistics.
-> >
-> > The Binder protocol includes freeze-related commands and return codes,
-> > but the Rust Binder statistics code was not updated to cover them. As a
-> > result, those commands and return codes are not accounted for or printe=
-d
-> > by the stats debug output.
-> >
-> > Update the counts and event string tables so these commands and return
-> > codes are included in the debug statistics output.
-> >
-> > Signed-off-by: Keshav Verma <iganschel@gmail.com>
-> > ---
+> Rust Binder stats use BC_COUNT and BR_COUNT to size the command and
+> return counters, and use event string tables when printing debug
+> statistics.
 >
-> IIUC, this should have tags:
-> Cc: stable <stable@kernel.org>
+> The Binder protocol includes freeze-related commands and return codes,
+> but the Rust Binder statistics code was not updated to cover them. As a
+> result, those commands and return codes are not accounted for or printed
+> by the stats debug output.
+>
+> Update the counts and event string tables so these commands and return
+> codes are included in the debug statistics output.
+>
 > Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
->
->
-> But other than that, it LGTM so:
+> Cc: stable@kernel.org
 > Acked-by: Carlos Llamas <cmllamas@google.com>
+> Signed-off-by: Keshav Verma <iganschel@gmail.com>
 
-Patch itself LGTM, so:
+I noticed that the patch heading says binder: instead of rust_binder:.
+Can you update the prefix to match other Rust Binder changes?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-Thanks!
+Thanks
