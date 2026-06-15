@@ -1,150 +1,142 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021082.outbound.protection.outlook.com [52.101.100.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510AC413608;
-	Mon, 15 Jun 2026 17:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.82
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781544262; cv=fail; b=dXLqXbJE6qetTHnKO1BjkjbO6oo3sRzGQ6YRZ7J7ZDeq4ppek9bFrayooDZNXbaXim43Wh9Kw8p+nSsLPdwuCTnSVGKt/xZZZZitgvFHnZQqRIjCa0wwNkexmKgA44U0xv4fwatEU1I6omKlk/DZWnyjCElmt0/QvB1hb7wvntk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781544262; c=relaxed/simple;
-	bh=77y0+sTdFYjGm3EngiBNZy1IIlpSTRcIjZMuzZyDEJk=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=fPWfqE9yJf+KK6CzInOd0KlRSkFO4oGXUfruTBD+1xXntrEeT5m/gImcWuSHsBpEiLPXFeWlPPURJL6xAcx6H+TtQ1Ey3S1LFCbyNmFYSw1d1sfJVdnDKrqjg6yYDPwei+aRta4pWdYjTV1aqhUNmzcDNftqgLSpjEPRRN9gl04=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=OaO7aFkT; arc=fail smtp.client-ip=52.101.100.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34462E6116
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 17:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781545863; cv=none; b=qt3bDpBfTm0r40EfycUih+qD+YLvici3woernkxU+vJj0T7x3lfwi85nbJV4ddXfJD1a1v6AvBUWAscGQI3H+3OGGJuK4Dne204NNzDfD6i4hh74OJz8RFz8z6f6HSZtX4iVgK1/P6jVPuMwQK6Wtwgyj6q0Byv/ge7Nfect3B0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781545863; c=relaxed/simple;
+	bh=z6JVWnpnoAzTcHqGzJTt/V7pg3kgKeB4QVs4SE6WBVQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FElNIufNCcsDXh5pXWfkCFZy5rn8UI+I435Jnku/chzS1rGhKVTUiMallLugXmo35rroU3/mcBbvpOr5RbrcXJ2iBIaz8qLZOgcAStMgm9Km3yl6SiVS+ZhJYbzegXtPt8bcfPfnMLgodJzmBTAo77jdUDyGsrC9uQtHHt+xZg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iHvm9C3I; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="OaO7aFkT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jFNTRfCHsnJ8dsdoUI8IGsb4m05gAnc38kiDgDEpefZO7muoNdnLY1yAOh1wWRHB0t3gNsuKY25jwbVAcVhsfwqqaEbsSULBxj2qKFtW6gLuLAWKdyYqVbf1H4wmZIKUdyOnracBSoyYjeBZ56QRlbmrEorB26S+z3o+swz63QxkPQwClexawbz4Yylh6sSfT9wPY9sdLxVVzBAEOGvYEA3fNgibJ5mrK/VzyZrIKy1b3Ae4v9jzTpfhVaXqvwhtabEX1naQYbBmCy7tX46LLWN5RoboR/oFm7dB+2soxS+DKsifEHqt8bWAMKn5YaZ/gqAEmDo2aDrLxlY1oL6Rrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h/fbH3oTh4s5DUJn0KdUp5O8d01WkPoPM76oOz3dxEM=;
- b=tWdxMbdCFSesbiaQR1HrGIs547JuKmffanhabv+1CfMSvX5sQh68uMoh8mKUmrIXTCAp5sm4uCyTb2qg988knQ7NCau4oIKRwL16ujKOeegop11AuO3C6X4IvLkxxULW5fS/dVlJ0AEuACGdgHeG+IasvFWzEM4cIRGhQaeR5Ps6k9mDBNSlCejfQafLZhPgopKEc+rDCfuBpHiHeDpz7Lti3gLRtx6foDHBT5pPACZHaAu4mUArkMzHXyVo3rYhrikftjjhmRiB7erpqlkheKaK6Y+/UbIdZRcfPk7zHmpeBs+4KTYZ2XKvVKeJPtQYjcBoRfJHbhlSHHn42TGMWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h/fbH3oTh4s5DUJn0KdUp5O8d01WkPoPM76oOz3dxEM=;
- b=OaO7aFkT39vbBJktgy07Hpz86JizgSg5/q4K4pIpxDMucPHYEpXP7zG45JBZB/4sZKWaDz/DusirztDPcdCRVjKBkKYOdwSAwgBuSGd3Ulkd6nD5ht6M7Wzh7pLANZfPNVieO6vZ4UDD3o55w/leZvNW1SkRgxfJSWBvbJEYbss=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO0P265MB3385.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:168::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
- 2026 17:24:19 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
- 17:24:19 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Jun 2026 18:24:18 +0100
-Message-Id: <DJ9SQDVZDCBW.1KCX09EOWZ3CL@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
- <gary@garyguo.net>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 06/13] gpu: nova-core: fsp: move FMC firmware loading
- into wait_secure_boot
-X-Mailer: aerc 0.21.0
-References: <20260615-blackwell-fixes-v1-0-f2853e49ff7d@nvidia.com>
- <20260615-blackwell-fixes-v1-6-f2853e49ff7d@nvidia.com>
-In-Reply-To: <20260615-blackwell-fixes-v1-6-f2853e49ff7d@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0297.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:38f::6) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iHvm9C3I"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-37474afe908so1896819a91.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jun 2026 10:51:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781545860; x=1782150660; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qRUFn8KOUc1A2oW2ndxVxmtmBuKd5qxWa3f4Z6N5qk4=;
+        b=iHvm9C3IyMv6UH9UkdahEoIxeArAycRc/Dfe4xYxSeJ6Qbzhy+snJaehwX3iobGNYU
+         WtoRfVGtDPX00mq4TlnYJlLSVNdIOmtM+pYgldkUdDA8SpKoQuT24CwJgienmSHWydVD
+         IZf3+mQ05UNlrPbpved+RKJnJqtYOmmAtB8qwtTDi0Co1Xy2JKrC8rn/Z1GMfSqvFJfq
+         +/VR4NKPxlXzSlWgkyiVctOm8pYuYjhw/XqEHcNvBI3axtfxki4HimzLp8tv71pHTktr
+         Wwg3V5fz7OcgTjI3f1SbU7UtvN426RtSOTlyrzPPHaRh8g865FR3TYFF4gAx5v9qMEXU
+         IrcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781545860; x=1782150660;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qRUFn8KOUc1A2oW2ndxVxmtmBuKd5qxWa3f4Z6N5qk4=;
+        b=Bvtv3ynE7CjqH+gtFDQLsMZQ/M4+DQPbsy9NqVFop5eC8GoF19Ok2tPhS9Bh753lj0
+         EkXIAsPxgrEgBX31CaliIV9AEDCvd//B/tkekx1MC3GiEcf0r268MxSC99CSO8VzEW+F
+         jPr1dBgXl/AVdOMjsNW2K0BmP2m+DzTOL+fRV8GklIS/DtQdmtz4jKP+VjbSJlcwh0Vi
+         E3w+Rruxazf0log4V5p386JVVYNxFyA3kxSEn82H2rGdcMaF2jdcBmxBDDA7VHF19B5z
+         UDng5yvcMdaU56WUUMcFJDJ/w738zIKdBUlC9Xlpnc98BaIkj4Xwi3oEuzO7OYfIRqoW
+         GAUA==
+X-Forwarded-Encrypted: i=1; AFNElJ+UralIHYOVsHR6iIvfDHC+nxFicTCMVdDwqrKFa4AipXE2O85iBOElda+EVfQiawcm8JiPfjFEDbslTS9HLg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3JHbjlgMnpfrQMz0pvGcJarF4f0yhkOXL7fRI7c/nTQ81hwKP
+	kHj/N+f+Px1pKSdxWO7FB0h6Uqqx7SUFq0SGcJRkwBTdGTsFsO4rdgL9
+X-Gm-Gg: Acq92OHAbAaoJIzVrHv3SEmfqc6i/MxfjSuiz0hok9tIbl5WW3ixzORLep6SDI5N480
+	q3TZvxAQWNq4gfRBYV08mMVMV+1yZlyrZGbDxX/dE3GeDdzKo3PA48W8c62eeZW8rdjS6VZQkcd
+	92wp5M6JBlNJ+Mowq9vlUgd25P4VDqRsqw200CnPLVbl/6fukUfa/QM9QJbHjW6YgPt3Q9uJPlD
+	MCTdqK1UJVJbmXFqLllz4JXIZYeLbeu4wRcn88QEJWvQQbt0lQPOqfzH1a7ySjr0ccGBGy3yyKC
+	5x7kK+M2XKxeoXdQIugooYU/nvEoOshZCFtlXhpId+rgg3zF7WS6OjdzutrGnOCB8OzNvjUuX5k
+	CCz1u0ANjLhGVT0er/2Mh6QVRKtGcf11CcqaT8mKAvSgYkM/ZX+MSG5+UsyIgyUlSz5GHsObr7p
+	hNOX63JT0/KmyJHtKSHKb2FL+aCd65QBgOSxgxwQLiST+f
+X-Received: by 2002:a17:90b:1fd0:b0:36d:bc0d:f789 with SMTP id 98e67ed59e1d1-37c2bd49493mr12505554a91.22.1781545860086;
+        Mon, 15 Jun 2026 10:51:00 -0700 (PDT)
+Received: from LAPTOP-TMVMP5FD.localdomain ([223.235.128.148])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c521e76d1sm247058a91.8.2026.06.15.10.50.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 10:50:59 -0700 (PDT)
+From: syncrain <iganschel@gmail.com>
+To: gregkh@linuxfoundation.org,
+	arve@android.com,
+	tkjos@android.com,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	aliceryhl@google.com
+Cc: ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syncrain <iganschel@gmail.com>
+Subject: [PATCH] binder: synchronize Rust Binder stats with freeze commands
+Date: Mon, 15 Jun 2026 23:18:34 +0530
+Message-Id: <20260615174834.297-1-iganschel@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB3385:EE_
-X-MS-Office365-Filtering-Correlation-Id: c27c9d3e-2b78-4669-41d6-08decb02eed9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|10070799003|56012099006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	qe+kpipPCGKhx4+KcBnEoy8bPDMF5z924jz+Ei8uFa3ZT350JkbpFpmq5o18c8LuN90rgyGCGYylvQ0D1goXt+3sM5CajGaeM5UrxfuZRkcJgdt6EHsfPiT2o5Rl4495ZVUb5qmQkRMASahqgFhmU7s7Y/Hq0jnmGDQi8RdludHCZJ8yke8Vp77G0RzjQJZJbkufIOimqO+yHUL86N7pzkcwRpCvAkVZA3JfIiR/d5CU7DYGpZrCRMcqaq3LyLapQxLvYGOTLfB3TTqONBDj+Qs66meqvwA8yAxNfOwS61kjmIkNlJVDE5M49Yh4mRMmYto8ojtPiWUTkIsS7cV+zk8k0zzU3Gkr6o8V379mWx+XyAvLePUn55z3NJBPULNjZz5fudXUg5ltopE4dFAIWVEvd22q2/OYXEqhgvOQKXRv52PRqG3Ui5Y98GohSNKiM6XIgLAKvMaJwVZwEaSuaXJCXrhzp5U+tSxv1Nnc3COUorLRbaEB7SLkxaDVvkWgU6x1GSzgf37Ncx9fR6w1ypaHbirsPV7W5VskQBOdQh8UUcXlm6kW7OBA5uhFAZ4CBBit2iZ9mTW9CwZkt16rnQQqwToUu76SsXgDjI9PkFo6wCNbLj+pKG0TudmXLfCTKN4ulpY0hDObSLuOfylmEYvgyGEBFoSfqmFFFPlu53DG1LDveKRw+CrdUBuXO7ZS
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(10070799003)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzVCWjV3TFJKKzRhZk1PTmlQODhLSXk4MEZHVmVCaDN5c1U5dVR3bEc3VjBU?=
- =?utf-8?B?ZmIwd0lsZHA1NlAxaXRmNXRtdGZNc0FyL3FKWU00RFJ0bXFwclRMeElQbE1q?=
- =?utf-8?B?Q3F3U2lMWExpR05rWGQ5cnd3Y0hjczJxSHhEcVJlQkllWlJYL1FXakFBM3Z3?=
- =?utf-8?B?ckpGZ0FzYTRZVWtPay9YWTkvcmZnK0UzUENFc0owc29CMDJqdkNkeFhJeGVJ?=
- =?utf-8?B?dGhLdFlnOHBnSVp2Q2x2SE8xYWIwZDZyUFkyeHpmNTl5bnV2T3MwT2tRNFFz?=
- =?utf-8?B?OHlHTW5LcDdCSlpvWVdZRWhYZGNGajA5a0FmOC84ODJFcThxaVRqbmJYclRq?=
- =?utf-8?B?bmw4YWxpZ25uMTI5aHJ0cjZlN1dnODlTUzNlY3JyUkN4amI4RWZBT3htU1VF?=
- =?utf-8?B?ZXpiNGRUdHYzd0pNc2ZBa2MydGRiM1MyZ3d1bTFGdlpRQXFoYkprTzY3NlVk?=
- =?utf-8?B?R0lEUURheWxyRms2UFNpeCtxMkp3b21vN0crcnYra2hMWS9VN0hDdEZueXow?=
- =?utf-8?B?RFcySElVYmE4K2lOcnJDaVJpbUtMSzVPUlBHYktqWVovYzkrTVV1WWZXWVQy?=
- =?utf-8?B?WGhXd1ZTYTFWWlNxVmQ4TlVremdQR2JjV3NQOWxTbmgvL1A2RmFCK1A1VFI0?=
- =?utf-8?B?TkFGNnRvdU9naGc2aHZrRmxCMDdiYWNXV2tqUXJmYlo1dkxyMno3cGlXd2N5?=
- =?utf-8?B?NTdXbmRBNTM1N2FIT0l5RnJXazhLV25lWUhGR1gwblp6SkNVUVNsZi9TdjJC?=
- =?utf-8?B?Wkp5VHFraUtmRDlsQmRLVFg4c21tUmFtd3doMkpNbG9BSm9UZVlBelNkSFNp?=
- =?utf-8?B?RTNLUWhLTTh1TXYzQmkzL3RBeWszaC8vRytBSThGdmtOWlNHSU9oL09zQXdZ?=
- =?utf-8?B?WmdaOVF5Sy9FcjVFdWd1NDhKMjF5aGRxbFExanBkcVY2azNvV1N3VGZPdUVq?=
- =?utf-8?B?M1FGTFlkeDZmVmhBdUdyQWJ4MldTZndlSVUrSCtKNG1QdnlQTENvNk55RVBy?=
- =?utf-8?B?WXpjQi9DeThjcEtoMzBPbitRd0pNUUVlaVRwRThBTXhudnJGMmxpaG5PeWxj?=
- =?utf-8?B?bWdwQVhTUUFsb2E4L0NSbHhiYmMzZUtPUXlLOHdRWmJlVVBrYmRjK1VkcDVw?=
- =?utf-8?B?ZU1mRUtHRFpBM0EvNUFtTnlrSUtkaXY4MERuSUhaNW9LM1NXa1JRV08xMnh3?=
- =?utf-8?B?V0VQMzJGNUQ0dTltKzlWUDBibUJ5WTRRcElUN3VwVEU2MzR6SXdrOU1HRVpk?=
- =?utf-8?B?emloMDJ0YStuUzc3OXVWK2dzdFQrM0IrcFB2N2dveXgwZkV3bFpnaHNaaTdL?=
- =?utf-8?B?aTIwQnRYM3VmUmxUQU4xKzgzZ241Skk3aHVoU2FqdDRJVE5HUHJvRFlwUVlQ?=
- =?utf-8?B?M3FNN0krQnhGcGtLZitRSjkzZFRGV2F1WG9XU2JhMUVNY29Kc0NZYnJ3aGd4?=
- =?utf-8?B?ZFZ3WW0wNTFlMHFrckgwSTFLV0U4eVJrL1VSRlZFSXNLTDI4OUx6NTRxU3du?=
- =?utf-8?B?bzZ0cFhDMnVzSk04YjFoTTNkb2RYZnRiWHdDSmw1V3RnYmtsWWFuRkQ4aitL?=
- =?utf-8?B?NldwbzN6c1NaejhHV05UeFREWHJPOGhUVVduU0xYbWQzWkU0Vjc4WEFPaDll?=
- =?utf-8?B?cS9OWDIvUGN4djEwVnZTU3haakYvM01vTHVNeUc2T2ZMWXVVU1JIVDlRYXFz?=
- =?utf-8?B?YWhPQVJaV0FGdi95VnFTS1ZMelRyaGJYLy9qR3JkZUtlY0dvMHd5QTlQZ0NG?=
- =?utf-8?B?UHJpc1I1bUV5U2o4MElRQktpbGkyL2N6TDFTUCt0amY5b1JraElwNUJkSnJQ?=
- =?utf-8?B?cDNMeldWbm1hMTJHL0xVcW1yUmlxQjFhRG5HRERpYWh0ZUtscG4xaURCeG1N?=
- =?utf-8?B?cmZZVjMvdTlHQTlOMy9mSXdUNEFuL1F4VTc3dHJnaFphT1dXRGl2aUZhVjUr?=
- =?utf-8?B?aVlNU21NNTJLdytmRnBHY1dvcmtTWW12aUI1Q2I4NFVPV25PNHlRYzh4ZC93?=
- =?utf-8?B?ckxWayswdk5yZm9vSzBqM3pqWE9Fa3JrdUYyZG5WNmRCY21YbXIyMTNpR3pi?=
- =?utf-8?B?RXMxL053by9pTEswM2lEbm5yUk4zd1NJUUwzU01yMXIyYTFCelBieGI5TEhV?=
- =?utf-8?B?bndBQis5UnRYYVBra0xtNHE4aGJrZFd5TzdyOXVmeVFQaktQdHNYZEhLcGFT?=
- =?utf-8?B?aHJJbzI2VENLSGJwTzJ2VlhOVzduRUhSWDRCRzM5VTVGa0U3dFdnY2xvWHVW?=
- =?utf-8?B?cTRVenl5VWRmbVRlR3pmdTYrdVNycVFyWmRlRnpBOFFaZ05TQ1N6SmtUYjVz?=
- =?utf-8?B?aTlIc3c0OE4xbjdyK0RwTW53K1FlN0hmSDZVelR6Q3hMTjNwR0I4dz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c27c9d3e-2b78-4669-41d6-08decb02eed9
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 17:24:19.1511
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: anxFyHWDhXEJDaeH0iPZbOReNnsfNHUGWqfK3JiodQfMXEjsejoLWdgsytYvtv4rxW3gnUxtCOT/Zs5cuGoUsA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB3385
+Content-Transfer-Encoding: 8bit
 
-On Mon Jun 15, 2026 at 3:40 PM BST, Eliot Courtney wrote:
-> `FspFirmware` is constructed and immediately passed into `Fsp`. It makes
-> sense for `Fsp` to ask to load its firmware, so move it there.
->=20
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+Rust Binder stats use BC_COUNT and BR_COUNT to size the command and
+return counters, and use event string tables when printing debug
+statistics.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+The Binder protocol includes freeze-related commands and return codes,
+but the Rust Binder statistics code was not updated to cover them. As a
+result, those commands and return codes are not accounted for or printed
+by the stats debug output.
 
-> ---
->  drivers/gpu/nova-core/fsp.rs           | 11 +++++++----
->  drivers/gpu/nova-core/gsp/hal/gh100.rs |  8 +-------
->  2 files changed, 8 insertions(+), 11 deletions(-)
+Update the counts and event string tables so these commands and return
+codes are included in the debug statistics output.
+
+Signed-off-by: syncrain <iganschel@gmail.com>
+---
+ drivers/android/binder/rust_binder_events.c | 7 ++++++-
+ drivers/android/binder/stats.rs             | 4 ++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/android/binder/rust_binder_events.c b/drivers/android/binder/rust_binder_events.c
+index 488b1470060c..5792aa59cc82 100644
+--- a/drivers/android/binder/rust_binder_events.c
++++ b/drivers/android/binder/rust_binder_events.c
+@@ -28,6 +28,9 @@ const char * const binder_command_strings[] = {
+ 	"BC_DEAD_BINDER_DONE",
+ 	"BC_TRANSACTION_SG",
+ 	"BC_REPLY_SG",
++	"BC_REQUEST_FREEZE_NOTIFICATION",
++	"BC_CLEAR_FREEZE_NOTIFICATION",
++	"BC_FREEZE_NOTIFICATION_DONE",
+ };
+ 
+ const char * const binder_return_strings[] = {
+@@ -51,7 +54,9 @@ const char * const binder_return_strings[] = {
+ 	"BR_FAILED_REPLY",
+ 	"BR_FROZEN_REPLY",
+ 	"BR_ONEWAY_SPAM_SUSPECT",
+-	"BR_TRANSACTION_PENDING_FROZEN"
++	"BR_TRANSACTION_PENDING_FROZEN",
++	"BR_FROZEN_BINDER",
++	"BR_CLEAR_FREEZE_NOTIFICATION_DONE",
+ };
+ 
+ #define CREATE_TRACE_POINTS
+diff --git a/drivers/android/binder/stats.rs b/drivers/android/binder/stats.rs
+index ab75e9561cbf..ec81dc7747db 100644
+--- a/drivers/android/binder/stats.rs
++++ b/drivers/android/binder/stats.rs
+@@ -8,8 +8,8 @@
+ use kernel::sync::atomic::{ordering::Relaxed, Atomic};
+ use kernel::{ioctl::_IOC_NR, seq_file::SeqFile, seq_print};
+ 
+-const BC_COUNT: usize = _IOC_NR(BC_REPLY_SG) as usize + 1;
+-const BR_COUNT: usize = _IOC_NR(BR_TRANSACTION_PENDING_FROZEN) as usize + 1;
++const BC_COUNT: usize = _IOC_NR(BC_FREEZE_NOTIFICATION_DONE) as usize + 1;
++const BR_COUNT: usize = _IOC_NR(BR_CLEAR_FREEZE_NOTIFICATION_DONE) as usize + 1;
+ 
+ pub(crate) static GLOBAL_STATS: BinderStats = BinderStats::new();
+ 
+-- 
+2.39.5
 
