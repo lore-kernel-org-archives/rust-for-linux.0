@@ -1,175 +1,207 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012030.outbound.protection.outlook.com [40.93.195.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9E12DECC2;
-	Tue, 16 Jun 2026 08:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781596944; cv=fail; b=JAdNn7wW/B4bbznlfss4Z6GLVftEyzqwsJl7wJvbRrtCd/sLMUgcMK6XxBr088fRHByuTZpzslvOxRk0+2+r2nzPOITOcEeKIBbJw2otUJXlOYRb4wdXwijKKx3a64XHVgj4eMGREF4glIIXRCARhffkiokh+NoU/bma3gEG71c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781596944; c=relaxed/simple;
-	bh=v19bddlZ3C4ULBtJKs3+3cL7NYvIZNMeexouH2jplB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QlXSY4rph6jre+xeNsgYqIIb3nwoHoeLflZ4unZfKhsaw+hkTxQqpAyravH3UmRdgqmPHsqw5kTY02VurF6mpUESYWXdAx3uJua3RoEchSP9BvqxojB7SJm7R+6t3TxVO7mKro8C2whl0Nh2qTQCSBELqyJZsTBH1tznUiDr+F0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QCHP5lvD; arc=fail smtp.client-ip=40.93.195.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39BA3264FC;
+	Tue, 16 Jun 2026 08:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781598531; cv=none; b=ju8r4+A9w+15o/fF5LZZYkKEf1AwWnpp8AV9yRlE5mYP0uIxwTM+Xltyh51d2sqqjhIuFrrKrlQDTo024NfQ82K3wpSFBfkEd8F1dfBSpmnLEqZwSVm74tapyquah2TiNNKmUb18M2CYoUow+012YYGA4BbicHl3N1isJ4SNaAE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781598531; c=relaxed/simple;
+	bh=yZ08N+kRCPc3va6G4KH7wajQF4Eh36FakJDqJp1B6P4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YpSgm2nkgJPFjVq5geiH7ae4itX1eDli4JXQTwcCU/1W+6Ge3Mb2VOozZoUtt5Qq8YmbD5B+9qWU0+mgX6CXP7p0HmnM3u84dgxh/bLRdBLtwLn6rCAUGRQWDNXmhTW0ZGFPPdvl8nCny+4gakq604MH4aK7clW/Q2mjek69KrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QkAsvucu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QCHP5lvD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xm7HJTnTI50WTwadKrZajLX2g5KV3Ki2KeLFvOe81lMVDFVfRmLoJsCWGwVIraP5hcIw/xoM3vfjd2ElFfPBj/p9gOS5jEVzOhBc0xqL24pRNevT7ythxDrsRhRvYawHuaLYGYCsUZuzH3uKxCn4nMLCP/J9r0M8Yb9nKgx1jAeifKS6trYK21wSECTuXT/IFGzgbawEOuRTBcyYcUhLp1NxM2BUkEZyGf9diG+eDpPttYjDMhAo21c/M7pzAq1+bsv0jD8R9f7HQM61Ns2xdIDPXQ28T3NDmK0BDrCurnXkB0VQTemobSdIPXMn5+D0VlONcwyudNLo9wNVWXb7mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qG7/Fo0HXshbdurjZU6INnzuCq9FnmRv+02N+cbiTa0=;
- b=WHIDUDquI7505e83zyG/QyLZ/TV+IdIkyz2IJ2x9tb0UJyu2iOMjhcfIGZe0EaTDxlq4+hY3ICPqaF2b+e6c+S/Ufxa7s1roP00gRv6q5Q1CP4lnTsOUu17K4BvZq0CkdNnsjbaE0fbi468fApJc6b/V4dzhv4WyFiLeyHOUWew/E0suHHDVrt/7TB53ybnk2LpDXuMUxVrEbrqxUC2p83Vc1kC9YqfJM30f4DnikPCtMGuJPbJZFm+bcKAQ6G4a8/TJTMskYPIHqY82NkMbjSwS9/BtqOVGNTN+bqBD8QSbGQhjBlGrQ5RnlASqGk8/7DopNSWBqU0dWBGdrHo/LA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qG7/Fo0HXshbdurjZU6INnzuCq9FnmRv+02N+cbiTa0=;
- b=QCHP5lvDC5W98jrBeApI3ZV0lrOfo5gEgjsvNHwi38mGii4Wb0AAh8n8FY7UX7BeADEgknvNMzgmYIWBH/+uIExGEIMORuaZEslqK7ghY7TIkP9RhaDvEQbpGyU2aqZlA+CGgdJfgnrpdD0g/4b4W/MsMA9NkfTsqADn4W2UxI8AyuHp738M7V7G/T03gooqim53F2Gdei68ysBRFYb8yNVluAgbG1pO333fHCV+XQD17bv6o8L8GacYweivRZ/a9r9q1NzM31RHdExtDZ9TvWiXTW1qXS2kTO8tX76nKfKjLgBRruz+YHbnsa10pwzWTp2qbDPKiGMIbaEyOSySjw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- CH2PR12MB4264.namprd12.prod.outlook.com (2603:10b6:610:a4::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.18; Tue, 16 Jun 2026 08:02:18 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
- 08:02:18 +0000
-Date: Tue, 16 Jun 2026 18:02:13 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Alice Ryhl <aliceryhl@google.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, John Hubbard <jhubbard@nvidia.com>, 
-	Timur Tabi <ttabi@nvidia.com>, nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 04/13] gpu: nova-core: falcon: gsp: move PRIV target mask
- constants
-Message-ID: <ajECnjYY3i4IjW0Z@nvdebian.thelocal>
-References: <20260615-blackwell-fixes-v1-0-f2853e49ff7d@nvidia.com>
- <20260615-blackwell-fixes-v1-4-f2853e49ff7d@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615-blackwell-fixes-v1-4-f2853e49ff7d@nvidia.com>
-X-ClientProxiedBy: SY5P300CA0055.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:1fe::10) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QkAsvucu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8F21F000E9;
+	Tue, 16 Jun 2026 08:28:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781598530;
+	bh=m8gM8nnPJCjiAangsZ9/IeVwjm4OqGdrfi1ud6iCyJU=;
+	h=From:To:Cc:Subject:Date;
+	b=QkAsvucu5jVBrxPbQ8u+5R5lxBG11ubcXaiwrSb2lxhkkFLf1uhJ5ZLTByjYfYl10
+	 Km+xBtCajc2oZ0zio7LMIQqZUevR3pqn5SlEchcA9Av5Xig6ffnW2+m3gKt5yWPdoB
+	 7X7p0CARa5ezzjLCRwf0enDrMxal85axxOvaKlvetvSMoofhq4qWqyZpG84WOg8AkH
+	 fvlD6ma2HOUPiYJ1J9yMXH9zx6frs74LWbeKMyW4lWo/cNdZe0196Z37wQ2f5+kUOu
+	 5DxNBkF9of5nEFbtGAE47ZXOosInRjf4mrUgHuWNK2Ku3zFejjN9rfOHp6cgRDYdCL
+	 3bkjgA3l95OSg==
+From: Philipp Stanner <phasta@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Igor Korotin <igor.korotin@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	manos@pitsidianak.is,
+	Boris Brezillon <boris.brezillon@collabora.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rcu@vger.kernel.org
+Subject: [PATCH v2 0/6] rust / dma_buf: Add abstractions for dma_fence
+Date: Tue, 16 Jun 2026 10:28:12 +0200
+Message-ID: <20260616082819.2943886-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CH2PR12MB4264:EE_
-X-MS-Office365-Filtering-Correlation-Id: df3e0fd1-51d3-4943-8905-08decb7d9629
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|18002099003|22082099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	keKwuacKYkGGr0Tir0WcdmvMo+8Fh7Ruw+ztb8ZgKBCxnxekDmq3IgK4mCA9+G/J4x0MPOuo+tnO6g32rXkRjC2w9U5AcbrNJv36wl9ZIsImFOo/ayL9MWP+N1yAQ+XMMc3Z4pIApT/ESClCSTZzeslrMntXzU+Yi0WxCtAFMB+OYGUSHFvbHHPLeN5G7Khuji//o8MWnli59C/2gMOYFvGFQeOJdcxiF9tJ/Lpkw9gfbRx3o3OlcUVTjtJOdYZedfryuJVzvnfKyyb3t8vXgZYdds76t+HHGkZRDQXIJxFPKVQoz3BrcGCi6uPiof1BPwW3Ptw/fDkyLBFr0QarTGRGZ1/EkMAt73tIYUTRKs6zttv/MXHMxsMhLNgOdEIWViqV4vTQGp1/akZx7QSqk2aI5fuIyJQ9LLbHJfEm0dnpcmSikmd8Do94zKinR9AqlTxqTONDudAfFalPTuovmdRW9WSbclVCEBK96zG8jKYPtgLwAYkfpED7HmraiNS16fC82WD37sSQQZVfQvGJXLJ6IyFuwgz6xOTr+leSZHA/aAEaS3UdRnnl4hK+kUS68ZRXAslX/ABP7hjahtnGRT0yF687gjFRzMcjnHwhw//GW7EzUEKXJZEOpyCVjOOH0pqy5iwEj/uBQKsHOFaoQEBHmaMO6Qg/wvTAXDbrNisFvQiycOKhhOdUpGExxpTm
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AKnKg+/xx22HENvQPf99JXcUaSvo7XQrA6VtD4p4OyKLRnq+kVZOb/zWxOwQ?=
- =?us-ascii?Q?1pPH/rd3j3t3jh0OmSXywWrf7L74xtXUJVKTmxl36sMdotuihNfWYWrAdX2k?=
- =?us-ascii?Q?cnnsn67rkdiamcwQxYfiC8yxP//k35aI8b09f/Ve6FtGqOm6u2LP9bDWX5Wa?=
- =?us-ascii?Q?qtG9UE+nKtk1uWMdFKvo1r/ehO3RONjzdvPSkuuEs62yFbIB1O0T8dTuVPE4?=
- =?us-ascii?Q?vOfk0KEKxx0FAELeXYSYvP6gw5yHaHTy50maU7nvkvmhOhiRgJnDOGgWQoTt?=
- =?us-ascii?Q?Xoop0HDLe4XL9lg2SSzLQXdBH2444noSsh33F3dOELi3KbpmyjGMwiD3zRel?=
- =?us-ascii?Q?ICk8tMQlaMCieGoOT/cuwWZXuwA9jeTZZyi0hnhA0NAH6Pzkj+Fp6eT5MGQa?=
- =?us-ascii?Q?f9s22EsyA8JhFfebqcW+1/+TPQSAveBLd6o/dh/nAhq5ElRkwvKNp6PgWzxF?=
- =?us-ascii?Q?mQXHDGkl6Rjsc1FPAIZQDxviaCArH3vwYzDrWMEQj7xDvt0ZDXJWUp3IILvq?=
- =?us-ascii?Q?495KLuaexqUSooy4CQ9tiqMibzFFXwdhBaFRTHepwO4WxTV0GdjB2DpI54Lq?=
- =?us-ascii?Q?YKwmAnrbIemJ5CEyxvqgGv5JI8hmKwKp5ZkQ50PLjBKetMelqYe+ef2ixp+b?=
- =?us-ascii?Q?EPmWJGvaKUP/1fbNVs8ptBMgop3RXpvzWhePyNtb60wb5tiODSXUIRRv6AG2?=
- =?us-ascii?Q?sj0zz8B3rkZ3+++sM22Kf/A84yaOcXO4gC8sE0gkz43hXmC3kLDVZJYzhLqF?=
- =?us-ascii?Q?TWHB8kK53df7JNM4alDfAMRrSDNPZ5Su+t7Lu060iygKUIFXs8k9q1b+xhAK?=
- =?us-ascii?Q?lyCSOpHOdeXjQsJiRKmVrbt24+UIjk+pLSLS1Yf+VvzYDV2Smkav2I5beGY7?=
- =?us-ascii?Q?0BCGEVv7QXFZfy0lZOtnad2giSwoMQO19Qvn/jAxF2egpG9WqdwyWjohdIAz?=
- =?us-ascii?Q?wYshKNZP9jxpo+bXs1U02hUKiLPXv/rGyTI3EJji+Vk/cM0ibJOWhZqYlkDw?=
- =?us-ascii?Q?Lc6KgHQMg214Zqn2XtbKBPvZ+2QebjhAUlpiGqORbRRaP3Bb+x8COZqqbhu0?=
- =?us-ascii?Q?9lYIyxhlKq2di52H57gtRffKXVzuHo4Kc3zNL7K1R7v6+vd3+gaFbAJ/RX04?=
- =?us-ascii?Q?lcri5NPCnyZYbjFygc4DeeiI9cWT1AWsVSwUJfT+t2Mmt2YoHk+HPRTyYD4B?=
- =?us-ascii?Q?MqOmwXn3C2E6db96rimgMRkEloVZgqUZO0MOuv6R0mtuMHgsx5tjnOw84sUp?=
- =?us-ascii?Q?0J3sM3QLEApW03t3+MNam1ul2Ya8uB8HoNjG3f9xLZBPzzbbdadd7QwY9M1X?=
- =?us-ascii?Q?zYNAkvSszbc5/vRWYmZ95wBaw208dz/yHZGXbDV3Lse7Sbyk7BYvjbO+KP4c?=
- =?us-ascii?Q?iX/pXRtnvTrM/xNY/ZEQH2Sos8VYSnraCHsRggJRtaqHiCvW1K9rGtTiPYcP?=
- =?us-ascii?Q?C3EDhRlxkCKr+iK5E71CJlW1k8IFEF0XRapOUe5mjvTHax7c/dGFh6h6Jp1n?=
- =?us-ascii?Q?8NUjQ+MiT6Jhx8gC08yYjPyr343CxFeQWzGbp+ojyRmEjcKWith06/CY6Jxf?=
- =?us-ascii?Q?WdveR9LTT5bQe1eLXU4ajqaijaEEkD8Ug/ZK49RLKvfVCQlpfFlS99oJ3BBg?=
- =?us-ascii?Q?OCZAcKkJJ/Xj7EXuFdd5nKsyJFSuaN3E/nXzXN9NSTLXjcQtnAv/NMf/ImDg?=
- =?us-ascii?Q?HYZUSTRZdrFJh27wAXozLWAkaGd4fqS5GqfMOL3BxIjdVw7LzhQtUooz5pho?=
- =?us-ascii?Q?XIUEIs8/eA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: df3e0fd1-51d3-4943-8905-08decb7d9629
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 08:02:18.6398
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HzlC4GSuxciS4O0raoTKna1E7eQGTY/hU84wgr4eV80wzDHRVWjFahI33gspFJuFyBjAYWIu8oXcC0kdN2Ey2Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4264
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2026-06-16 at 00:40 +1000, Eliot Courtney <ecourtney@nvidia.com> wrote...
-> Small cleanup to move these constants which are only used once closer to
-> their use location.
-> 
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
->  drivers/gpu/nova-core/falcon/gsp.rs | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/nova-core/falcon/gsp.rs b/drivers/gpu/nova-core/falcon/gsp.rs
-> index d1f6f7fcffff..f788b87bd951 100644
-> --- a/drivers/gpu/nova-core/falcon/gsp.rs
-> +++ b/drivers/gpu/nova-core/falcon/gsp.rs
-> @@ -24,10 +24,6 @@
->      regs,
->  };
->  
-> -/// Pattern returned by GSP register reads while the PRIV target mask still blocks CPU access.
-> -const GSP_TARGET_MASK_LOCKED_PATTERN: u32 = 0xbadf_4100;
-> -const GSP_TARGET_MASK_LOCKED_MASK: u32 = 0xffff_ff00;
-> -
->  /// Type specifying the `Gsp` falcon engine. Cannot be instantiated.
->  pub(crate) struct Gsp(());
->  
-> @@ -70,10 +66,15 @@ pub(crate) fn riscv_branch_privilege_lockdown(&self, bar: Bar0<'_>) -> bool {
->  
->      /// Returns whether GSP registers can be read by the CPU.
->      pub(crate) fn priv_target_mask_released(&self, bar: Bar0<'_>) -> bool {
-> +        /// Pattern returned by GSP register reads while the PRIV target mask still blocks CPU
-> +        /// access. The low byte varies; the upper 24 bits are fixed.
-> +        const LOCKED_PATTERN: u32 = 0xbadf_4100;
-> +        const LOCKED_MASK: u32 = 0xffff_ff00;
+New version. Most significant change is regarding RCU. See changelog
+below. Also see [1].
 
-Confirmed this error code doesn't appear to be used more generically across our
-driver stack so agree it makes sense to localise it here.
+Changes since v1:
+  - Remove unnecessary mutable references (Alice)
+  - Split up unsafe comments where possible (Danilo)
+  - Remove PhantomData + implement FenceCtx ops trait (Boris)
+  - Consistently call FenceCtx generic data `T`. FenceDataType is
+    derived from that. (Boris)
+  - Add abstractions for call_rcu() and synchronize_rcu() (Danilo)
+  - Add ECANCELED error code in Rust (Alice)
+  - Remove the rcu_barrier() from FenceCtx::drop() – because we now use
+    call_rcu(), there can be no UAF access to the FenceCtx anymore. In
+    any case, it is illegal to use either call_rcu() or
+    synchronize_rcu() in FenceCtx::drop(), because our new
+    drop_driver_fence_data() can run in atomic context and might put the
+    last fence_ctx reference.
+    So we now only have to guard against module unload, which it seems
+    either the driver or Rust driver-core / module unload infrastructure
+    must solve.
+  - Minor formatting etc. changes
+  - Add C helpers to MAINTAINERS. (Danilo)
+  - Ensure that `Fence::is_signaled()` is fully synchronized, i.e., all
+    callbacks really have run. See [1] and [2]. (Myself, Christian
+    König)
 
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Changes since the RFCs:
+  - Include support for ForeignOwnable for ARef, so that a Fence can be
+    stuffed into an XArray et al. (Code by Danilo)
+  - Implement ForeignOwnable (with new borrow type) for DriverFence, so
+    that it can be stuffed into an XArray.
+  - Include the rcu::RcuBox data type to defer dropping data with RCU
+    (Cody by Alice)
+  - Port DmaFence to RcuBox to make UAF bugs through later, new dma_fence
+    callbacks (backend_ops) impossible.
+  - Force users to pass their fence data in an RcuBox (or have it not
+    need drop()) through a Sealed trait.
+  - Document the rules for the user's DriverFence::data's drop
+    implementation very clearly (deadlock danger).
+  - rustfmt, Clippy.
+  - Various style suggestions, safety comments, etc. (Önur)
+  - Add __rust_helper prefix to helper functions. (Önur)
 
-> +
->          let hwcfg2 = bar
->              .read(regs::NV_PFALCON_FALCON_HWCFG2::of::<Gsp>())
->              .into_raw();
->  
-> -        hwcfg2 != 0 && (hwcfg2 & GSP_TARGET_MASK_LOCKED_MASK) != GSP_TARGET_MASK_LOCKED_PATTERN
-> +        hwcfg2 != 0 && (hwcfg2 & LOCKED_MASK) != LOCKED_PATTERN
->      }
->  }
-> 
-> -- 
-> 2.54.0
-> 
+Changes in RFC v3:
+  - Omit JobQueue patches for now
+  - Completely redesign the memory layout: Instead of a Fence
+    refcounting a DriverFence, both now live in the same allocation to
+    allow for future support the dma_fence backend_ops callbacks which
+    need to do container_of. (mostly Boris's feedback)
+  - Allow for pre-allocating fences to avoid deadlocks when submitting
+    jobs to a GPU. (Boris)
+  - Simultaneously, allow for pre-preparing fence callback objects, so
+    the driver can allocate them when it sees fit. (code largely stolen
+    and inspired by Daniel).
+  - Signal fences on drop, ensure synchronization.
+  - Force users to set an error code when signalling.
+  - Write more documentation
+  - A ton of minor other changes.
+
+
+[1] https://lore.kernel.org/dri-devel/20260608142436.265820-2-phasta@kernel.org/
+[2] https://lore.kernel.org/dri-devel/20260612104251.2264707-2-phasta@kernel.org/
+
+
+Alright, so since the last RFCs did not reveal significant design
+issues, I decided to transition this series to a v1 and hope that we can
+get it upstream.
+
+This now includes code for more common infrastructure that dma_fence
+needs, contributed by Danilo and Alice.
+
+---
+
+Old cover letter for RFC:
+
+So, this is the spiritual successor of the first / second RFC [1]. v2
+also contained code for drm::JobQueue, but mostly to show how the fence
+code would be used. JobQueue is under heavy rework right now, so I don't
+want to bother your eyes with it. The docstring examples should show how
+Rust fences are supposed to be used, though.
+
+This v3 contains a huge amount of highly valuable feedback from a
+variety of people, notably Boris, but also from Alice, Gary and Danilo.
+
+There are some TODOs open (a better trait for fence backend_ops and RCU
+support), but my hope is that this effort is now finally approaching its
+end.
+
+I would greatly appreciate feedback and especially more information
+about what might be missing to make this usable, which is obviously
+where Daniel's and Boris's feedback will be valuable once more.
+
+Please regard this patch just as what it's titled: an RFC, to discuss a
+bit more and to inform a broader community about what the current state
+is and where this is heading at.
+
+Many regards,
+Philipp
+
+[1] https://lore.kernel.org/rust-for-linux/20260203081403.68733-2-phasta@kernel.org/
+
+Danilo Krummrich (1):
+  rust: types: implement ForeignOwnable for ARef<T>
+
+Philipp Stanner (5):
+  rust: sync: Add abstraction for rcu_barrier()
+  rust: sync: Add abstraction for synchronize_rcu()
+  rust: error: Add ECANCELED error code
+  rust: Add dma_fence abstractions
+  MAINTAINERS: Add entry for Rust dma-buf
+
+ MAINTAINERS                      |   3 +
+ rust/bindings/bindings_helper.h  |   1 +
+ rust/helpers/dma_fence.c         |  48 ++
+ rust/helpers/helpers.c           |   1 +
+ rust/kernel/dma_buf/dma_fence.rs | 884 +++++++++++++++++++++++++++++++
+ rust/kernel/dma_buf/mod.rs       |  14 +
+ rust/kernel/error.rs             |   1 +
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/sync/aref.rs         |  39 ++
+ rust/kernel/sync/rcu.rs          |  14 +
+ 10 files changed, 1006 insertions(+)
+ create mode 100644 rust/helpers/dma_fence.c
+ create mode 100644 rust/kernel/dma_buf/dma_fence.rs
+ create mode 100644 rust/kernel/dma_buf/mod.rs
+
+-- 
+2.54.0
+
