@@ -1,133 +1,137 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CAA364EAA
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 12:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7055A361DCB
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 12:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613052; cv=none; b=HSPTvxuijkW4b4//3kK54haVdwbFpkcZMP+Nhx69Z8AzzhJG7AU2p3NApdyVpfTzD3CGuEJPm0yGWxBrrFVIPoTJHFa2JxEKzegJua/NufDUHVZkK9BX/0e9T/rvA2vK+dzC3SIDrVu3koui4k9lYzjTGey09f1BqGw0wEwmFH4=
+	t=1781613682; cv=none; b=XbEji3ABYMOh7gSgzUts5J7tbqQpOIPoBU4Duwcz7aGOT9RHJ36RoWWHGStmO/aKGEQc0NThRBDwe+q8pSMCm6pBNvFbwn6UFTzcXp8uGyjYnfgMA/B1vQEgsP+5AthMY6wgy6sPz/Y/1JcTp9bgIRGaFsU/xauPNtzqU723b3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613052; c=relaxed/simple;
-	bh=u01briDAvKMUw8TivlKgvuC8V59Jv57qkAmI27kzRfs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mSbiP+5AQg2wjNYMXx/ZZTGtH91ct0TufZfu6qTiVIdpzFtOjV6y119Sf1OeaPxH3002IWi7rjy4339ZQ3kuy3gmDVoz2Xa0yFf6/1kpwIFwov8ZFeJw7zldYveILbzk6xadh82mSWWo4uWGiimbjSQo3YMp5sQxeg8HDYNtekY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TqHuPx4o; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1781613682; c=relaxed/simple;
+	bh=rSAH4O+tZcqeOkqF3iQTYI28bq9NtT1SGbjApEm24YQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b7dHF3sylkB050MuUKIP6X8jRqFdyPJ4etyayHDW9lml4PYxICnRBnS/6jGVbF0/aMndncxR88rsB1MmXBxVnQOCm/A9US0jrWbdVxfV8Odbm78FaX5B2zMd8vsYqUhQb4l3cEiIWxPjqJki6Lg4eLcYY8rz+8K8cKH086jPASo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBjAT3c9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TqHuPx4o"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490b3f53c81so19610995e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 05:30:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781613049; x=1782217849; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VQ+0+1VF0hgHTpAGgN4m5G21xwrV9nF9JpvOI7R2qy4=;
-        b=TqHuPx4oooyEMii9ZC3TDfUWwuUMaOwzj7Xnpz7+4+N1VvGrezJ1MKWDtbIR3VyBYl
-         pKdgHuNhv1Fxwm500QnM9Ey4Yp4dYyIUK9CaSjabhkIAfJfubsXibsRefOfjoR9u4G/R
-         1+2oQ7qKkYcVQwTKoUGmrhP87ztWpVwor2kv1DgYD151Py9GEVRAGyNTkELSPjqoNakT
-         MNC+nfUux1DHMFxJjXT/AIOHKczM8SGMXp7a/T7LYxOM8k+3byhQplOi0BnMizFn4eKi
-         gpqT8DP92Kp6O4mwSejsDtRmeRslz0+gk4Po9Q3yEO3Hc267noPVPwn6S5D8DQwcqlbR
-         JinA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781613049; x=1782217849;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VQ+0+1VF0hgHTpAGgN4m5G21xwrV9nF9JpvOI7R2qy4=;
-        b=MVSNTHjhH+neBJ6lYuvlkd0WXFcKHlsadg7SzB/ke/ccUh4Ch5XsOlgLEl5k4gzX+I
-         BPE/QLE0BDVHKrgR2fixXGzV1Uvq5Gdvrhdu0r3tx+z1MZ8D1RZ1OslXBuVs/dIx6M2I
-         xYIT64Veu1topIRbRJ3bfDuGAd6MFSvZvGnidNztW3gh3n8m6CtbEMVt+l6EC79MKipZ
-         Z9KE7UFSJJb8fhevtdtCFFB4f8uDA2hTMxONU6LtC4EUzXxEVpZQKcDGmLE19w60AuSY
-         MbOgIrzQk6XUAF3f3Lwy/e5yXzY14ciAeBHsBxxHDC6k1Gnn21ujIT7NOonxy9mnLgK0
-         HhyA==
-X-Forwarded-Encrypted: i=1; AFNElJ9/DtphnZ96UcY8NeBOWYnl0KJRyJzIrh3Dezke2ZF6aFOXcQch+vHREsQhL270VTjZbr0QziTkhFUWIoAibA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrMcfSojsigtEYe7Jr9vSC34h3cL196CwslLdudb1PdGiHxinA
-	eXfO8jnoVFlFpVGv5lJm55g5J76uz8xjESqNc50xXMnifw0FXHChrGKEZ7Hm+6NYHcmXMyUiGnb
-	kmxM4Mg0qHwwEKcBMRQ==
-X-Received: from wmbgz11.prod.google.com ([2002:a05:600c:888b:b0:490:c5d1:64bb])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a44:b0:490:e18f:d108 with SMTP id 5b1f17b1804b1-4922ffaf123mr50220475e9.19.1781613048245;
- Tue, 16 Jun 2026 05:30:48 -0700 (PDT)
-Date: Tue, 16 Jun 2026 12:30:38 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBjAT3c9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231A71F00A3A
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 12:41:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781613680;
+	bh=TSGXtFXwrd/juHF9iDmBndNScmq3rco7nSKLDRyMox4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=dBjAT3c9/qOZ/eszLnDjVaLz8Z/397w+AM0esLNk8MMQ1vYOdDScwiU2XmVZCEzNQ
+	 E8COqnkrn/hyprXp2nuJKdSlC0djIHoRcu2i9w79Nbeq/mdTP1QGzy8aQQsxCpVrt7
+	 si/F2P/XTDxqchQvQ9C8gWbAG0Knw1vM4wp2h/GLRbHBflMcKQjEKfP4SAIc+LlQyP
+	 prjUjfis2EiLS+kt+nIwU2LjtLwlpwiWXVA13+jtwlfJeqQnP+KlWfh46t8ScIlFLH
+	 Pi3lYDOWtQku0EtLv3XzlL96ljiiskF/OO/IMe9J3TOZMW5SsjDJr1MBEp7T6E5o5p
+	 R5MBPDfW9UsFQ==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aa63628d26so4389901e87.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 05:41:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8iBAGwfpDH7Qf0Dufvl/rUZTumFSHOE3ej+O4KueuqDIxhVJYNNEQmze3E0DzyKVau+bJcgoDlQtBD0JjXbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdWOEw4DibD7tvKaun5aN2RFwr/W+gH4HCx9b7xH5iJPHi2i+y
+	bOiSDTjs5rHuPYlsF9Plymzk7YEb9DUWrFnfwEGRRIC2VmcY9O9T8A7YeYdp/nUpIPMUA9tqaPr
+	3DQAxnNNYK8SxmcrE5c4R03dESnXZJjs=
+X-Received: by 2002:a05:6512:65ca:b0:5aa:7126:c637 with SMTP id
+ 2adb3069b0e04-5ad30d994c0mr2641108e87.1.1781613678820; Tue, 16 Jun 2026
+ 05:41:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAO1BMWoC/x2MywqAIBAAfyX23IKPMOhXooPYWnvIZI0IpH9PO
- s7ATIVCwlRg6ioI3Vz4TA1030HYfdoIeW0MRhmnnHYYxR+E+RKM/KAOdrQ22jC6AVqThZr+f/P yvh90RG/gXwAAAA==
-X-Change-Id: 20260616-frame-ptr-fix-1c3733f3c764
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1491; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=u01briDAvKMUw8TivlKgvuC8V59Jv57qkAmI27kzRfs=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqMUHybmE2Dd+mSNTjDirdx1pwtxCHN6jYdDZcE
- Bnf2ARtTOyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCajFB8gAKCRAEWL7uWMY5
- Rq0mD/9KWjAIESxGIflch1FpuvtpfCTx2LyT5cOF9tT6phtavw0gbI2paCTYZ46YpF00i25V1YE
- RfIaBEuyes86FVxhrcBNB2RxvaW16bTif1evuTX9oM4+tcSB+mDtVALgQLmdqCXu2s9p/WDyodn
- 5+f/mUHRCbRwPz0Ny5xaE4mAwuWs0N8YRtPq+6MRiKSzoAM5SL2+UFq+bkaVtr/NweGnkIb2XN+
- yfSNEHa9Arbqem0n1tf9Uhco4AcoWZgukvscRlTlBNdnDwAJmCBxe2nu4hLD9NiXAkASSHMP67C
- pQir4p6JFiMjuO4H3asQp96g8W8t+M0cHHqs7nI+LBcH9hCHJ8xV+tPa2ezjk6rMiC4ljeE0YRs
- NnLv/MO6Kof7ocLnEgByTIPYtL2xk7TtMRNw1KcQMsHxXvYGWvVdmMrO0kCjrrJJdELHElQADVU
- ggEKAdhbJhZAcM+LLDz2lG4EaxSko2luYkq1q7i5v0U4CNRIJy9cLi1VQQRS/M/vgX5yzPmjidy
- eDWillyxQ4wcrSxqKteGdTob4QkOWz+PKI8dUYlL0Z7mhp0SQ+OcBa1Vy5HQPp6vKQyS8ELo8mo
- ohie5fPKciySgfnb8oCCiZYgf/iw6S7P1t4DSVagN2Fx4GJ5W+xJBpaLzBohbU1XlE1Eo+sEy+7 3QOwc9At2IzLwaA==
-X-Mailer: b4 0.14.3
-Message-ID: <20260616-frame-ptr-fix-v1-1-dc6b29a631d9@google.com>
-Subject: [PATCH] rust: Kbuild: set frame-pointer llvm module flag for CONFIG_FRAME_POINTER
-From: Alice Ryhl <aliceryhl@google.com>
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+MIME-Version: 1.0
+References: <20260616-rust-kbuild-replace-procmacro-extension-v1-1-cad72998faee@fritz.com>
+In-Reply-To: <20260616-rust-kbuild-replace-procmacro-extension-v1-1-cad72998faee@fritz.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 16 Jun 2026 05:40:42 -0700
+X-Gmail-Original-Message-ID: <CAJ-ks9kk2kQ0JVf3deTtCqGnp_MFTTRxecAwFWe5H6FBHrA-tg@mail.gmail.com>
+X-Gm-Features: AVVi8CeHH7uUaOI6yXiAq2aRJmCNHDiUeQZZ8daZnAhd3q69LcW1L9DK3LXKyfA
+Message-ID: <CAJ-ks9kk2kQ0JVf3deTtCqGnp_MFTTRxecAwFWe5H6FBHrA-tg@mail.gmail.com>
+Subject: Re: [PATCH] rust: kbuild: Replace and dissolve procmacro-extension variable
+To: Nicolas Schier <n.schier@fritz.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Douglas Su <d0u9.su@outlook.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Fiona Behrens <me@kloenk.dev>, Sven Van Asbroeck <thesven73@gmail.com>, Kees Cook <kees@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev, stable@kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Nicolas Schier <nsc@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Due to a rustc bug, the -Cforce-frame-pointers=y flag only emits the
-frame-pointer annotation for functions, but not for the module. This
-means that functions generated by the LLVM backend such as
-'asan.module_ctor' do not receive the frame-pointer annotation.
+On Tue, Jun 16, 2026 at 7:26=E2=80=AFAM Nicolas Schier <n.schier@fritz.com>=
+ wrote:
+>
+> Use make's $(suffix) function [1] and substitution reference [2] instead
+> of $(patsubst) to extract crate names for rust procmacro targets.
 
-This is likely to lead to broken backtraces and may also cause issues
-with ftrace if these features are used with functions generated by the
-LLVM backend.
+The implementation uses `$(basename)`, not `$(suffix)`. Please update
+the commit message accordingly. Link [1] can remain, since it
+documents both functions.
 
-Thus, use -Zllvm_module_flag to work around this rustc bug if using a
-rustc without the fix.
+Otherwise this looks good to me.
 
-Cc: stable@kernel.org
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Link: https://github.com/rust-lang/rust/pull/156980
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+> As
+> there is only one user of the procmacro-extension variable, do the crate
+> name extraction in-place and remove procmacro-extension.
+>
+> The procmacro-extension variable is used to record the binary file
+> suffix of dynamically loadable rust libraries -- which is 'so' on Linux
+> and others and 'dylib' in MacOS -- to remove that very suffix from a
+> target file name for reconstructing the corresponding crate name in
+> cmd_rustc_procmacro.  Extracting the crate name from the target name
+> in-place is shorter and reduces complexity.
+>
+> Link: https://www.gnu.org/software/make/manual/html_node/File-Name-Functi=
+ons.html # [1]
+> Link: https://www.gnu.org/software/make/manual/html_node/Substitution-Ref=
+s.html # [2]
+> Signed-off-by: Nicolas Schier <n.schier@fritz.com>
+> ---
+> Link: https://lore.kernel.org/linux-kbuild/CANiq72nmPPF=3D6AUp5mcDJVni80O=
+RQr0AQ-4uCZaE+CzB5kV=3Deg@mail.gmail.com/
+> ---
+>  rust/Makefile | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 63b1e355321d..30f882ba7620 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -50,7 +50,6 @@ endif
+>  ifdef CONFIG_RUST
+>
+>  procmacro-name =3D $(shell MAKEFLAGS=3D $(RUSTC) --print file-names --cr=
+ate-name $(1) --crate-type proc-macro - </dev/null)
+> -procmacro-extension :=3D $(patsubst libname.%,%,$(call procmacro-name,na=
+me))
+>
+>  libzerocopy_derive_name :=3D $(call procmacro-name,zerocopy_derive)
+>  libmacros_name :=3D $(call procmacro-name,macros)
+> @@ -598,7 +597,7 @@ quiet_cmd_rustc_procmacro =3D $(if $(skip_clippy),RUS=
+TC,$(RUSTC_OR_CLIPPY_QUIET))
+>                 -Clink-args=3D'$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' =
+\
+>                 --emit=3Ddep-info=3D$(depfile) --emit=3Dlink=3D$@ --exter=
+n proc_macro \
+>                 --crate-type proc-macro -L$(objtree)/$(obj) \
+> -               --crate-name $(patsubst lib%.$(procmacro-extension),%,$(n=
+otdir $@)) \
+> +               --crate-name $(basename $(@F:lib%=3D%)) \
+>                 @$(objtree)/include/generated/rustc_cfg $<
+>
+>  # Procedural macros can only be used with the `rustc` that compiled it.
+>
+> ---
+> base-commit: b3f94b2b3f3e51ab880a51fc6510e1dafba654ed
+> change-id: 20260611-rust-kbuild-replace-procmacro-extension-22c459a24382
+>
+> Best regards,
+> --
+> Nicolas Schier
+>
 
-diff --git a/Makefile b/Makefile
-index 5e73bba74da3..4bfa87e2562a 100644
---- a/Makefile
-+++ b/Makefile
-@@ -966,6 +966,7 @@ KBUILD_CFLAGS += $(stackp-flags-y)
- ifdef CONFIG_FRAME_POINTER
- KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
- KBUILD_RUSTFLAGS += -Cforce-frame-pointers=y
-+KBUILD_RUSTFLAGS += $(if $(call rustc-min-version,109800),,-Zllvm_module_flag=frame-pointer:u32:2:max)
- else
- # Some targets (ARM with Thumb2, for example), can't be built with frame
- # pointers.  For those, we don't have FUNCTION_TRACER automatically
-
----
-base-commit: 0e0611827f3349d0a2ac121c023a6d3260dcecdb
-change-id: 20260616-frame-ptr-fix-1c3733f3c764
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Reviewed-by: Tamir Duberstein <tamird@kernel.org>
+Tested-by: Tamir Duberstein <tamird@kernel.org>
