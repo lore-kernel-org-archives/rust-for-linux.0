@@ -1,254 +1,133 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021087.outbound.protection.outlook.com [52.101.100.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF6B41C314;
-	Tue, 16 Jun 2026 11:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781610958; cv=fail; b=fsfJ2t23vFTu5fjSGaooCt+IAc+KXWxj88Nx4fNjnO3Xj1RIkReLQtslZqSTJIaVf9iMGsqfJclbF4Wm2XKPNNq1yGqJ6EdWmfG3+uVvENd2ruUjcWRfEXIGLMJjcW4RgU/aNYroLX4So3eFANBbPb38VtWEIzK55f3oWC/z51Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781610958; c=relaxed/simple;
-	bh=06NSxnf2apm0DCYwv+NGXGOAfRlkSkTIOCpcFekAYJ4=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=Da2ftCYPRUsBU156ti6vR467z2gwgu5KkRDept92Rp+F8uBK55LXas6A1ClxiA82mJcBlfBbC4QfXywZBGxe96U+kK6JSsDu/fv0qR3uipYpOI1y9e8edMxtCT3ggkyZki/92tQbQEd8Ju9BjUBlJsP26v+vOIMP3SKFmYMD1Jg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ECJlL/ND; arc=fail smtp.client-ip=52.101.100.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CAA364EAA
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 12:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781613052; cv=none; b=HSPTvxuijkW4b4//3kK54haVdwbFpkcZMP+Nhx69Z8AzzhJG7AU2p3NApdyVpfTzD3CGuEJPm0yGWxBrrFVIPoTJHFa2JxEKzegJua/NufDUHVZkK9BX/0e9T/rvA2vK+dzC3SIDrVu3koui4k9lYzjTGey09f1BqGw0wEwmFH4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781613052; c=relaxed/simple;
+	bh=u01briDAvKMUw8TivlKgvuC8V59Jv57qkAmI27kzRfs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mSbiP+5AQg2wjNYMXx/ZZTGtH91ct0TufZfu6qTiVIdpzFtOjV6y119Sf1OeaPxH3002IWi7rjy4339ZQ3kuy3gmDVoz2Xa0yFf6/1kpwIFwov8ZFeJw7zldYveILbzk6xadh82mSWWo4uWGiimbjSQo3YMp5sQxeg8HDYNtekY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TqHuPx4o; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ECJlL/ND"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WiASH47eSi/aIxZ7qR/KQo/j78oNqPwWUUfa1OWBAy4I65vzUKK+rXQGomUKPPnRlknliWlhqwf6ndb3xKf/MiDTFuZ7bf9KI4rGZV37DRm0nHatN6iRTZGIXGPuIWNgyLy40MYe91YdvuLG/y/NrWskkql6cYumfL7DmKSlvh436g7oCYXDcuvrOgvDUUD5BhqtYbsW9USXn7PCDK/B7J5nka48N2Og4GVEcYX+XwkNiLbjA7Co8XSCRs3S0JrwyiKJ9SfADV7jQy3FSTY5nHVc+yjJgRcm5h0FDnlkl8l6VyKiaZNtfjbyCZhNNbenwgXv9vKwB5ovmRLjvt+FqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o+PHvsyef5ecY47vB1MQKewJdzm0KSVB9RdjG34EUhw=;
- b=v8oeLeEEWnMMRG1RysmB9qqnLG59J5CT3R331a4ByCmsyMskOEi2qG2n5O9TQcixOLxBC6iLdThL4pOxrdAV+YvRtiNNaLev44oIHoJ080DFdYuftmq3bEEmVX26RTis9VsSZzI+jCkoAujtrcTCagFzOKG8zP9vRGqxju/KQ0YuRzIe2oaWXn8qedA66DT4HCNSaFQvdyZZZPfH0Cv1pxslu33+dsxEvZqkS5w0eEjtLsAj50Y6p/Iiltxyu0Qe/uL0S7Lbz5DZZlRzuxZGOte988BgJACwLKmDRzpWYKhvjDi9onEVq27PcFOY3Armq+xRI+IVgb/qe6X+1OTh4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o+PHvsyef5ecY47vB1MQKewJdzm0KSVB9RdjG34EUhw=;
- b=ECJlL/NDD4OasxBhriowz1k81X6PPnpzyxwT1mGNiNMMeQjn6Q0GXqMvRY8cSK7MHzuYzLiGoKcc0ln9gWfvhVqsFpdMH2wXRqQ8vfUnKeaoZMSWSXt9iWBwSJWlgFF5tA0QTBIJbKx4ysrHn5b5JDSDXhn/tg2GzvudxNbAUZc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CW1P265MB7593.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:211::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
- 2026 11:55:53 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
- 11:55:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Jun 2026 12:55:52 +0100
-Message-Id: <DJAGDGPKZ4HX.M47NMAU53PCJ@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
- Hallyn" <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner"
- <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Viresh Kumar" <vireshk@kernel.org>,
- "Nishanth Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Bjorn
- Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Igor
- Korotin" <igor.korotin@linux.dev>, "Pavel Tikhomirov"
- <ptikhomirov@virtuozzo.com>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <driver-core@lists.linux.dev>
-Subject: Re: [PATCH v17 03/10] rust: implement `ForeignOwnable` for `Owned`
-From: "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org>
- <20260604-unique-ref-v17-3-7b4c3d2930b9@kernel.org>
-In-Reply-To: <20260604-unique-ref-v17-3-7b4c3d2930b9@kernel.org>
-X-ClientProxiedBy: LO2P265CA0512.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:13b::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TqHuPx4o"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490b3f53c81so19610995e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 05:30:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781613049; x=1782217849; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VQ+0+1VF0hgHTpAGgN4m5G21xwrV9nF9JpvOI7R2qy4=;
+        b=TqHuPx4oooyEMii9ZC3TDfUWwuUMaOwzj7Xnpz7+4+N1VvGrezJ1MKWDtbIR3VyBYl
+         pKdgHuNhv1Fxwm500QnM9Ey4Yp4dYyIUK9CaSjabhkIAfJfubsXibsRefOfjoR9u4G/R
+         1+2oQ7qKkYcVQwTKoUGmrhP87ztWpVwor2kv1DgYD151Py9GEVRAGyNTkELSPjqoNakT
+         MNC+nfUux1DHMFxJjXT/AIOHKczM8SGMXp7a/T7LYxOM8k+3byhQplOi0BnMizFn4eKi
+         gpqT8DP92Kp6O4mwSejsDtRmeRslz0+gk4Po9Q3yEO3Hc267noPVPwn6S5D8DQwcqlbR
+         JinA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781613049; x=1782217849;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VQ+0+1VF0hgHTpAGgN4m5G21xwrV9nF9JpvOI7R2qy4=;
+        b=MVSNTHjhH+neBJ6lYuvlkd0WXFcKHlsadg7SzB/ke/ccUh4Ch5XsOlgLEl5k4gzX+I
+         BPE/QLE0BDVHKrgR2fixXGzV1Uvq5Gdvrhdu0r3tx+z1MZ8D1RZ1OslXBuVs/dIx6M2I
+         xYIT64Veu1topIRbRJ3bfDuGAd6MFSvZvGnidNztW3gh3n8m6CtbEMVt+l6EC79MKipZ
+         Z9KE7UFSJJb8fhevtdtCFFB4f8uDA2hTMxONU6LtC4EUzXxEVpZQKcDGmLE19w60AuSY
+         MbOgIrzQk6XUAF3f3Lwy/e5yXzY14ciAeBHsBxxHDC6k1Gnn21ujIT7NOonxy9mnLgK0
+         HhyA==
+X-Forwarded-Encrypted: i=1; AFNElJ9/DtphnZ96UcY8NeBOWYnl0KJRyJzIrh3Dezke2ZF6aFOXcQch+vHREsQhL270VTjZbr0QziTkhFUWIoAibA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrMcfSojsigtEYe7Jr9vSC34h3cL196CwslLdudb1PdGiHxinA
+	eXfO8jnoVFlFpVGv5lJm55g5J76uz8xjESqNc50xXMnifw0FXHChrGKEZ7Hm+6NYHcmXMyUiGnb
+	kmxM4Mg0qHwwEKcBMRQ==
+X-Received: from wmbgz11.prod.google.com ([2002:a05:600c:888b:b0:490:c5d1:64bb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a44:b0:490:e18f:d108 with SMTP id 5b1f17b1804b1-4922ffaf123mr50220475e9.19.1781613048245;
+ Tue, 16 Jun 2026 05:30:48 -0700 (PDT)
+Date: Tue, 16 Jun 2026 12:30:38 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7593:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3457848e-0f2b-4fc3-dc24-08decb9e37d1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|366016|376014|23010399003|10070799003|1800799024|56012099006|4143699003|6133799003|22082099003|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	ywg0hO6cdJbxJ+MWCMNAwvM/9Xym9x6OdouXwN/k9VaG9CjN/S009Cplhxv66RTwE9RbwRvC4AKhEUgZJAKnXiEmujN2CnUgqdtzy1Ty380td+JjmmYyOfmxakaA5+XcpDMbqBjT3R7eE+mHVaQQt4SRrb9pa9Zh9nNc3h+mgF2ppUqmKysSiYHDIECf9ySfVOxnkU+qhQtd9xUPe5UtZJIHRktRlXMYL0lcy+SSiLyd/NBosNi9LRJrxvVzQmJ8WL9LoC5PnycgnucQrbDLUs5cgNSzRbHBv5dD75X7PfEYjK84jsK6bPGb5BJR5gzput6yYIRh4UyASzp2m/9Rcy2zzTMNGd3nJGJJkwPxhqLJSnMm+sPxs7LDyI5RxmiSmrsCz98Kb4EMO5aoXCxSPDTGqsl60NUpcWqx/wXE5At0khdYvbnPGdSWDqE634bYYFJUuL8A1OdaBYUzo9bySUkpdotKWxRn0jlRpgiJvN4Ed8UZ8Sk5KH316lsOtdTBXy0qXQG2/XoC1xKfYfdwEdt3Ys2s9Gg6NxEcg7tzKl4eJv4W97GhSZU6s8dp4wEc/A7w3bdXqR6zk7xi6AEAbsM4KlHRnK8MsXnh16uEZEqjihXpM5WB++uKlkkM/E90tnm2HlS9p94Pzy+7LQHosxmzN5MRLTihO1W/M0LgK5Yvpb6DwiUUtbBLJE2pAQ0+vS7lKmUXqN0ddK0gSnVni++wYzsyuFfGqnUu4PPIhvc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(23010399003)(10070799003)(1800799024)(56012099006)(4143699003)(6133799003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UTh6d0VaQUs1cG1VQno4OEpNMUZSYlg0cjZUa0dNQ2ZZYnpzOTlKUzNRMlFJ?=
- =?utf-8?B?OURYN0U3S1o5blRSeFZnV2tGWXR0TTNGT25GRWNrS0ZBS01BRzRkcnI0Q2JH?=
- =?utf-8?B?cVpwMm1KdDZOdDgzcDB5b2QxeksrSnNVZFBiL21mUlBwcE8zTmtCSG5hcXFD?=
- =?utf-8?B?elY1bTU3ai9WdXNlb2dXNmlyR0hJY1phSWpUOGZ5c0JoMHQ2NUlaa3ZFR292?=
- =?utf-8?B?T2JvdGxnVkV6dEgzY1o5WExhL0wvdmNCK2ZmM3E5VGYxY1c3ZzIwT3RWVnRZ?=
- =?utf-8?B?eUZFcmZXcjAwa2g5NUlib3dUM1NjTlNZK01sT1JTbktYMTh5bnBFd1pVamxQ?=
- =?utf-8?B?cFhHRU9yWEphL09DM01uQ3hyMldmYmdDa3Fzd2JrajZwK3k1emhLWkpNUzRR?=
- =?utf-8?B?cXorR2pVQW9qeVpTa2VVUWQyMEx0Mm9kN2l6bTc3bng0WWF6TFNWNEM3RWZI?=
- =?utf-8?B?OHIxbitybVRucXl1aE9xMDkxaVhSeWJnOW5lV01pWFQwUEhWUHVwOGdLSEwz?=
- =?utf-8?B?N0dmUnR5Sk1mWTZrdElrVElGRTFMMG1INGxxenRsa2lIektMTkI4Z09VVjNq?=
- =?utf-8?B?bzA4ZjZ6NnpiSnY2UFVqb1dGMExlcmY2QlNmM1Z5TmdpaTNacXNrbXlmd0VW?=
- =?utf-8?B?WnVrYUdjMit4UHlZYitROGkrRENFVHhwTndtc05EVW9aME95U01IalYraXVN?=
- =?utf-8?B?RUV4S2IxdW5xc056NkxhdGZwajU4Q3NOQjZTMmRQNTFRenozTDVXTThkL1Rk?=
- =?utf-8?B?ZERoalRqb0NVSnRRUG9tbXhnaDB2VGtzcG5EUHFTMmFaMGJmRHA3YkZuNFFt?=
- =?utf-8?B?Z0QrQTh6aXUyT3hGNFAvdjh2Qy9wTldXNHQvOG5ISzZMamFnZ2IyZWJvaHVD?=
- =?utf-8?B?MGprM1JPNENyd0dLbnNoNVgrYXBmeUZYVjBDbkl3UmMzNWhIbGFuMlZGR2FE?=
- =?utf-8?B?bDR3ODd2dU9PcXA5TmJ6Sk84L1BOVUhWY3RSSGVhNkJ2clpEZmo2YVhHbEE0?=
- =?utf-8?B?VWVMSmZ5eS9qNUVIc2JMT1lmOVI2Rlh5dkFhbWFXeHYvQXlJOXVkQkxsTWk0?=
- =?utf-8?B?WXBzWE5Hd2FRUTR0MzNxczVhUkhGVTFoV2NsQlZtS0VZek9aZTBUYkpkbnZa?=
- =?utf-8?B?YTFEaDhPU3FpZ25mbWFQN3JYa2pyYjk5NjFqMTZSOXB6N0JCQWQ3c0pKTFNI?=
- =?utf-8?B?MDJNbGFBaVpJUG8yT0hBUVFqWm1waW9ka00vQTIvZU9wTkNsRjFLOHVqd2Q3?=
- =?utf-8?B?cSt4TGNJMmM1YytKbThqTmFqOU1leFlIT3VKTXdDSXNSZGZnNy9ncmVnVzJL?=
- =?utf-8?B?bXhXeUV0b2Fzb0JpZUFhSXhLUXNBdkRxcUtLQW05QlVYdGtvRXlUcXJ3V2xC?=
- =?utf-8?B?clhlVUpsbjM5dFFKdC96MDVMaFpDWjJQYkhHNmlibWs4anRwVXJCdWl4cVdN?=
- =?utf-8?B?V1dLbEt5QWh3czdNNmRCNW5aUjI3aElrL2h5WG1ubnp5Y09aRUNpaUNOZSs1?=
- =?utf-8?B?V1p4UURyaEk1TzFGaHgvak81a2x3L3g3Y2xreVVjdjQvcmtPMlFEMVhUcitu?=
- =?utf-8?B?WUtsQ0lHRWYzWGJxdzkvMFE4WSs1THo0NGdKbzR2WmZ5WXNld0w3VHVsbktO?=
- =?utf-8?B?eCsyK1dKSGVjWjZmeGVHVG5kNEx1Q0Y2R0U3bEZHT3RJMWNCMTNuU1hDM0Fn?=
- =?utf-8?B?elE4ZkpiS3ZXSi9iTEg4eXd6Z21mLzhhUlZvMWpQNWdjZG1ZQ0lCRjRVSXBu?=
- =?utf-8?B?cTRBNW13Skk1YTYyT2tSNjM5a1dCUEJHZ21zZU9NdjlVWTlZTXUybXYvWGMr?=
- =?utf-8?B?V3dXenlFbTZwTndGYnRSZXNDd3MwenpNSEdWbW1QMlBEb0F6akVmQjdGZHgy?=
- =?utf-8?B?OFZkRVdVcnlwTU53VG1icDJqVnZYVnZRdlpkZElaQ1dlWXE0YmJEZ2pPUDJS?=
- =?utf-8?B?OHR2V1NWRlNxVVNsL1htc0kwNlNnbEhpZDNDdzNkRGN2QWk1enB6SjlPZXlq?=
- =?utf-8?B?ZlovdGVyMG8yVnNFcnQ3bVlEYy9iMTgwbndQbHl0ckNrVXVsZUEzdWFFRGps?=
- =?utf-8?B?L21EZkdZS1RWZkxEQ2lpekxqOEVJR1hQTk8xMlhKcWdFWlpoZzR2aVFFWVpv?=
- =?utf-8?B?YWozeDZYWTZGSTZDNUc1dithdGZKY0Z3cUx4Mm5tK2VVYXRYV2plWXRvN1hv?=
- =?utf-8?B?d0M2VENLV2JaWkJjUTUvaldWYk45OGdqbTFEZHFOaWpLWmFTSWV3L3RvclRj?=
- =?utf-8?B?YzN6WHhtUFg3ZDVicmVReTBUSzF2SzY4dExkZU9PU3M0RVhzR0xHSWdhcExs?=
- =?utf-8?B?ODh3SUJ5WlZMejhDSm9KZmI0Q0lPcjBCNHZmcFhmY2dTN0FtekZwdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3457848e-0f2b-4fc3-dc24-08decb9e37d1
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 11:55:53.5940
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U0WU7QSlklUpsYgZNN5x1HSn09hUhovE0hWzquC6ZxGfRYbQrB0U6jtqdMUt4eR0YlAZ7mdKVX7LvR6d11Q0iA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7593
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAO1BMWoC/x2MywqAIBAAfyX23IKPMOhXooPYWnvIZI0IpH9PO
+ s7ATIVCwlRg6ioI3Vz4TA1030HYfdoIeW0MRhmnnHYYxR+E+RKM/KAOdrQ22jC6AVqThZr+f/P yvh90RG/gXwAAAA==
+X-Change-Id: 20260616-frame-ptr-fix-1c3733f3c764
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1491; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=u01briDAvKMUw8TivlKgvuC8V59Jv57qkAmI27kzRfs=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqMUHybmE2Dd+mSNTjDirdx1pwtxCHN6jYdDZcE
+ Bnf2ARtTOyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCajFB8gAKCRAEWL7uWMY5
+ Rq0mD/9KWjAIESxGIflch1FpuvtpfCTx2LyT5cOF9tT6phtavw0gbI2paCTYZ46YpF00i25V1YE
+ RfIaBEuyes86FVxhrcBNB2RxvaW16bTif1evuTX9oM4+tcSB+mDtVALgQLmdqCXu2s9p/WDyodn
+ 5+f/mUHRCbRwPz0Ny5xaE4mAwuWs0N8YRtPq+6MRiKSzoAM5SL2+UFq+bkaVtr/NweGnkIb2XN+
+ yfSNEHa9Arbqem0n1tf9Uhco4AcoWZgukvscRlTlBNdnDwAJmCBxe2nu4hLD9NiXAkASSHMP67C
+ pQir4p6JFiMjuO4H3asQp96g8W8t+M0cHHqs7nI+LBcH9hCHJ8xV+tPa2ezjk6rMiC4ljeE0YRs
+ NnLv/MO6Kof7ocLnEgByTIPYtL2xk7TtMRNw1KcQMsHxXvYGWvVdmMrO0kCjrrJJdELHElQADVU
+ ggEKAdhbJhZAcM+LLDz2lG4EaxSko2luYkq1q7i5v0U4CNRIJy9cLi1VQQRS/M/vgX5yzPmjidy
+ eDWillyxQ4wcrSxqKteGdTob4QkOWz+PKI8dUYlL0Z7mhp0SQ+OcBa1Vy5HQPp6vKQyS8ELo8mo
+ ohie5fPKciySgfnb8oCCiZYgf/iw6S7P1t4DSVagN2Fx4GJ5W+xJBpaLzBohbU1XlE1Eo+sEy+7 3QOwc9At2IzLwaA==
+X-Mailer: b4 0.14.3
+Message-ID: <20260616-frame-ptr-fix-v1-1-dc6b29a631d9@google.com>
+Subject: [PATCH] rust: Kbuild: set frame-pointer llvm module flag for CONFIG_FRAME_POINTER
+From: Alice Ryhl <aliceryhl@google.com>
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	Douglas Su <d0u9.su@outlook.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Fiona Behrens <me@kloenk.dev>, Sven Van Asbroeck <thesven73@gmail.com>, Kees Cook <kees@kernel.org>, 
+	Wedson Almeida Filho <wedsonaf@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev, stable@kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Jun 4, 2026 at 9:11 PM BST, Andreas Hindborg wrote:
-> Implement `ForeignOwnable` for `Owned<T>`. This allows use of `Owned<T>` =
-in
-> places such as the `XArray`.
->
-> Note that `T` does not need to implement `ForeignOwnable` for `Owned<T>` =
-to
-> implement `ForeignOwnable`.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/owned.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
->
-> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
-> index 456e239e906e..5eacdf327d12 100644
-> --- a/rust/kernel/owned.rs
-> +++ b/rust/kernel/owned.rs
-> @@ -15,6 +15,8 @@
->      ptr::NonNull, //
->  };
-> =20
-> +use kernel::types::ForeignOwnable;
-> +
->  /// Types that specify their own way of performing allocation and destru=
-ction. Typically, this trait
->  /// is implemented on types from the C side.
->  ///
-> @@ -108,6 +110,7 @@ pub trait Ownable {
->  ///
->  /// - Until `T::release` is called, this `Owned<T>` exclusively owns the=
- underlying `T`.
->  /// - The `T` value is pinned.
-> +#[repr(transparent)]
+Due to a rustc bug, the -Cforce-frame-pointers=y flag only emits the
+frame-pointer annotation for functions, but not for the module. This
+means that functions generated by the LLVM backend such as
+'asan.module_ctor' do not receive the frame-pointer annotation.
 
-AFAIT this `#[repr(transparent)]` isn't actually needed.
+This is likely to lead to broken backtraces and may also cause issues
+with ftrace if these features are used with functions generated by the
+LLVM backend.
 
->  pub struct Owned<T: Ownable> {
->      ptr: NonNull<T>,
->  }
-> @@ -185,3 +188,46 @@ fn drop(&mut self) {
->          unsafe { T::release(self.ptr.as_mut()) };
->      }
->  }
-> +
-> +// SAFETY: We derive the pointer to `T` from a valid `T`, so the returne=
-d
-> +// pointer satisfy alignment requirements of `T`.
-> +unsafe impl<T: Ownable + 'static> ForeignOwnable for Owned<T> {
+Thus, use -Zllvm_module_flag to work around this rustc bug if using a
+rustc without the fix.
 
-You should drop the `'static` bound and put where bound on the GAT below
-instead. See how `Box` is doing it.
+Cc: stable@kernel.org
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Link: https://github.com/rust-lang/rust/pull/156980
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best,
-Gary
+diff --git a/Makefile b/Makefile
+index 5e73bba74da3..4bfa87e2562a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -966,6 +966,7 @@ KBUILD_CFLAGS += $(stackp-flags-y)
+ ifdef CONFIG_FRAME_POINTER
+ KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
+ KBUILD_RUSTFLAGS += -Cforce-frame-pointers=y
++KBUILD_RUSTFLAGS += $(if $(call rustc-min-version,109800),,-Zllvm_module_flag=frame-pointer:u32:2:max)
+ else
+ # Some targets (ARM with Thumb2, for example), can't be built with frame
+ # pointers.  For those, we don't have FUNCTION_TRACER automatically
 
-> +    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<Owned<T>>();
-> +
-> +    type Borrowed<'a> =3D &'a T;
-> +    type BorrowedMut<'a> =3D Pin<&'a mut T>;
-> +
-> +    #[inline]
-> +    fn into_foreign(self) -> *mut kernel::ffi::c_void {
-> +        let ptr =3D self.ptr.as_ptr().cast();
-> +        core::mem::forget(self);
-> +        ptr
-> +    }
-> +
-> +    #[inline]
-> +    unsafe fn from_foreign(ptr: *mut kernel::ffi::c_void) -> Self {
-> +        Self {
-> +            // SAFETY: By function safety contract, `ptr` came from
-> +            // `into_foreign` and cannot be null.
-> +            ptr: unsafe { NonNull::new_unchecked(ptr.cast()) },
-> +        }
-> +    }
-> +
-> +    #[inline]
-> +    unsafe fn borrow<'a>(ptr: *mut kernel::ffi::c_void) -> Self::Borrowe=
-d<'a> {
-> +        // SAFETY: By function safety requirements, `ptr` is valid for u=
-se as a
-> +        // reference for `'a`.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    #[inline]
-> +    unsafe fn borrow_mut<'a>(ptr: *mut kernel::ffi::c_void) -> Self::Bor=
-rowedMut<'a> {
-> +        // SAFETY: By function safety requirements, `ptr` is valid for u=
-se as a
-> +        // unique reference for `'a`.
-> +        let inner =3D unsafe { &mut *ptr.cast() };
-> +
-> +        // SAFETY: We never move out of inner, and we do not hand out mu=
-table
-> +        // references when `T: !Unpin`.
-> +        unsafe { Pin::new_unchecked(inner) }
-> +    }
-> +}
+---
+base-commit: 0e0611827f3349d0a2ac121c023a6d3260dcecdb
+change-id: 20260616-frame-ptr-fix-1c3733f3c764
 
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
