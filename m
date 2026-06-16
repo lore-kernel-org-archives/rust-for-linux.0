@@ -1,126 +1,116 @@
-Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D603BED63;
-	Tue, 16 Jun 2026 14:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB1D43C05C;
+	Tue, 16 Jun 2026 15:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781621493; cv=none; b=XBv8Gd7aqgL0j3ptEA6CpCbPojrC/6fPcc0ajrw2b8PgQAiOHK+nk8Ywd7Ov5IS8HAfOua2CxSJbDl3IlH8UxkZzvDSIYszUxFn1VLvLQ0DzX0oKNV5bPVWI0pIOe0oVhjq9Eip+8+/BB8bqHz2EoX4NAlLaDXWFFA98up4nKoI=
+	t=1781623082; cv=none; b=Ud2r5d2bpiqlyNSpmFpIHVwvEi8BckKh9SAdRZwCUcGZX9JOLy7HUK43xaMB+3/cC3xurvXWxdxnKrL/yQaoY1GWoebIpoVGIT/dJXF8oPEb76u5JbwcIr2Pjf6IRbowA0mjmQebJGE2bCsHYz7AgSQu3aZ9DbYIiw6jaLLQywI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781621493; c=relaxed/simple;
-	bh=8lg0lMM++bEYHjTp0b5ME3AVk0YuMGGw60/KhELAHHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=isCRMQZ6qAEQDJlsPL54NGtRg0Gzb4yOfKeSyBl1d6usxuorSgwoadiUcIOHfo1o5G3Re61/APekULTU5KVCC/25uI6DlD9ngL1/1F7nuQuVd7aNY7h62RqLvZd0r7AsLH5ZnQQ+YWxzjYwGEX+CRj36Bdw0x9mBQBm8xBKwzMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=frlJVMVp; arc=none smtp.client-ip=79.135.106.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1781623082; c=relaxed/simple;
+	bh=DisUz3XIyZTl2EMC1uJewOLYWwucQvgVGjQ7xBm47os=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LCQd/uyjMeVgi9wm2VrLwBoOBrM4gurFi3nviEzRhN4190XVZgcjWHLCLUUqQtGQIXhv2T6tRBqKmV1sDfGyKWUVF9EtOzYOCAvlxa2mEoP95Mw5HVq5EYJ8tTSOEBP6HOvHGjAdmPMyTTwfrSGv6OiBVEC3gYiHesColhxLLDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=XcMKfEMd; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="frlJVMVp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1781621480; x=1781880680;
-	bh=8lg0lMM++bEYHjTp0b5ME3AVk0YuMGGw60/KhELAHHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=frlJVMVpec64vFDqx5fdB8XDPtgKB/tWL7HRxgIspC73pZxexP3/M6050v9LV+EBR
-	 5eU27vNdh69Jajt1fmYlyjG84fyrFsk0Gm7ZwrahvHwnuv1CtNkWd3EzOw9EECf/oV
-	 1f1LdftmcQxuBLZlGi+kMPfJ6hW1CkEF6lvNjKF5ivzHfukwBIB1QPns1GmJAMatjz
-	 hbXFPCA/0Nh1XVHUTEiCGmPJE0blabPn7rWYC4yPekp4CtWK6UNrC4IGvPWhphzQVV
-	 P68Zg0VJ9i0SkCm1ec/2B89kk1K9RwlSGc2ENeJz30CxDj2cr15Qnc5MBtyp6+racn
-	 TFN9SXPp7E7BQ==
-X-Pm-Submission-Id: 4gfqgP6Gpyz1DFGT
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Philipp Stanner <phasta@mailbox.org>
-Cc: Philipp Stanner <phasta@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Igor Korotin <igor.korotin@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Krishna Ketan Rai <prafulrai522@gmail.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	manos@pitsidianak.is,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rcu@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] rust: Add dma_fence abstractions
-Date: Tue, 16 Jun 2026 17:51:11 +0300
-Message-ID: <20260616145112.14201-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <d074d3105a2c1d4f594bc6d7b0b09e62757790d5.camel@mailbox.org>
-References: <20260616082819.2943886-2-phasta@kernel.org> <20260616082819.2943886-7-phasta@kernel.org> <20260616124755.460550-1-work@onurozkan.dev> <d074d3105a2c1d4f594bc6d7b0b09e62757790d5.camel@mailbox.org>
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="XcMKfEMd"
+From: Fiona Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1781622500;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gXXdM10231/qy+pBqCYwYBV52urE6a8n8HWmeoocXg0=;
+	b=XcMKfEMdLOhIqWuX7EYubU3YPR1V+eYjZac7FihyTe7klHoulhwatFWHzkH8Va/7O5EKHA
+	H1SlTjLu+7de32/CRCFIeuoyPiBfi5RAS19y0c+pHsXQ+LfosPvzvVbn05FOB/Zo6zaZzd
+	Jg9vyVHuGTj3bmXcJ/kqJVqvzSODCDU=
+To: Maurice Hieronymus <mhi@mailbox.org>
+Cc: Danilo Krummrich <dakr@kernel.org>,  Bjorn Helgaas
+ <bhelgaas@google.com>,  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>,
+  Miguel Ojeda <ojeda@kernel.org>,  Boqun Feng <boqun@kernel.org>,  Gary
+ Guo <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  Benno Lossin <lossin@kernel.org>,  Andreas Hindborg
+ <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,  Trevor Gross
+ <tmgross@umich.edu>,  Daniel Almeida <daniel.almeida@collabora.com>,
+  Tamir Duberstein <tamird@kernel.org>,  Alexandre Courbot
+ <acourbot@nvidia.com>,  Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+  linux-pci@vger.kernel.org,  rust-for-linux@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] rust: pci: add managed Device::enable_device()
+In-Reply-To: <20260614-b4-rust-pci-edu-driver-v1-2-e3f2471b595c@mailbox.org>
+	(Maurice Hieronymus's message of "Sun, 14 Jun 2026 17:59:46 +0200")
+References: <20260614-b4-rust-pci-edu-driver-v1-0-e3f2471b595c@mailbox.org>
+	<20260614-b4-rust-pci-edu-driver-v1-2-e3f2471b595c@mailbox.org>
+Date: Tue, 16 Jun 2026 15:08:18 +0000
+Message-ID: <8733ymbk0t.fsf@kloenk.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, 16 Jun 2026 16:38:51 +0200=0D
-Philipp Stanner <phasta@mailbox.org> wrote:=0D
-=0D
-> On Tue, 2026-06-16 at 15:47 +0300, Onur =C3=96zkan wrote:=0D
-> > On Tue, 16 Jun 2026 10:28:17 +0200=0D
-> > > +=0D
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // DriverFenceData is rep=
-r(C) and a Fence is its first member.=0D
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fence_data_ptr =3D fe=
-nce_ptr as *mut DriverFenceData<T>;=0D
-> > =0D
-> > Either the field ordering on the type or this code is wrong because the=
- first=0D
-> > member of DriverFenceData is `rcu_head`.=0D
-> =0D
-> Yeah, that's a bug introduced in this revision. Thx for pointing it=0D
-> out. Already fixed it downstream.=0D
-> =0D
-> I'm just wondering why my test did not blow up.=0D
-> =0D
-> > > =0D
-> > > +}=0D
-> > =0D
-> > I am unsure whether it is safe to cast the pointer in Fence::from_raw w=
-ithout=0D
-> > Fence being #[repr(transparent)] as the layout compatibility is not gua=
-ranteed=0D
-> > explicitly.=0D
-> =0D
-> Shouldn't #[repr(C)] do that trick, too? Do you need both?=0D
-> =0D
-> Who can answer that?=0D
-> =0D
-> =0D
-> P.=0D
-=0D
-You shouldn't use both and I think it wouldn't compile anyway. repr(C) only=
-=0D
-makes sense when the type have multiple fields.=0D
-=0D
-Thanks,=0D
-Onur=0D
+Maurice Hieronymus <mhi@mailbox.org> writes:
+
+> Add a managed counterpart to Device::enable_device_mem() that wraps
+> pcim_enable_device(). In addition to enabling the device, it registers a
+> pci_disable_device() cleanup that runs automatically when the device is
+> unbound from its driver, keeping the device's enable count balanced
+> across unbind/rebind cycles.
+>
+> The existing enable_device_mem() wraps the unmanaged
+> pci_enable_device_mem() and has no disable counterpart, so the enable
+> count is leaked on unbind. On the next probe pci_enable_device_flags()
+> sees a non-zero enable count and returns early, skipping the power-state
+> transition back to D0. For a device without a PCI power management
+> capability the power state cannot be re-read from hardware and stays
+> PCI_UNKNOWN, which makes __pci_enable_msi_range() reject the subsequent
+> MSI allocation with -EINVAL.
+
+I wonder if this is then also a good commit to further document this
+behaviour in `enable_device_mem`, so that consumers are not only finding
+the other variant and overlook this refcounting.
+
+>
+> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+
+Do favour the `#[inline]`, but for both version
+
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+
+> ---
+>  rust/kernel/pci.rs | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index af74ddff6114..ca04548c82c3 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -452,6 +452,22 @@ pub fn enable_device_mem(&self) -> Result {
+>          to_result(unsafe { bindings::pci_enable_device_mem(self.as_raw()) })
+>      }
+>  
+> +    /// Enable I/O and memory resources for this device, with automatic cleanup.
+> +    ///
+> +    /// This is the managed version of `pci_enable_device()`: it enables the device's I/O and
+> +    /// memory resources and registers a `pci_disable_device()` call that runs automatically
+> +    /// when the device is unbound from its driver. In contrast, [`Device::enable_device_mem`]
+> +    /// is unmanaged and only enables memory resources.
+> +    ///
+> +    /// The automatic cleanup keeps the device's enable count balanced across driver
+> +    /// unbind/rebind cycles. With an unbalanced (leaked) enable count, a re-probe skips the
+> +    /// power-state transition back to `D0`, which makes subsequent MSI allocation fail with
+> +    /// `EINVAL`.
+> +    pub fn enable_device(&self) -> Result {
+> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a valid `struct pci_dev`.
+> +        to_result(unsafe { bindings::pcim_enable_device(self.as_raw()) })
+> +    }
+> +
+>      /// Enable bus-mastering for this device.
+>      #[inline]
+>      pub fn set_master(&self) {
