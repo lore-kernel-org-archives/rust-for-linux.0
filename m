@@ -1,192 +1,156 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3CC3A9618
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 21:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5097B3D6478
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 22:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781644565; cv=none; b=D10rjGuiSf9uT7/i5eGAw2yRqgsKGW6lpyXbhbBdpeiT2efoMgarOAn5VrOn3BoUuUn1WFIPRp522BoBwcCGPngPAhpp594HKXd7A5JOTwWonyLRlrlITnuyoJMFMGb1IfV+6m3zkRAU2VRHJJTtCoZktqIVgMXGL8vdz5NJU3Y=
+	t=1781649394; cv=none; b=qo6ZmdPpS6N6Dpy4GrkhAT+C4VET5TNAe/DytBEQXdwYwRtSykOipv1C93rqQaMt1pkE2l6XhFF91dwtzedM98eJ12iQLE7i2v/Jg+n2f4HStZz3agAfkLTjyESguULdv9tXJzHO36YXUR6F24XmKM74VSakNk1l7hxMkDFvbgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781644565; c=relaxed/simple;
-	bh=8iEa6AxayqoL3IOipVUPJQnMkB6P+Ol3KruwnSZHwy4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=gfMHWG9vw6Gh6RXkKrNQaHotfF9Y9mI5mlcDqd18peLaqU1Z6jZAtssfyaS66nrXcnQaQqMrtyX2V6zNccNwtvz6BZ5K750v5X36kpw6nkSjbLgnjhxFy+BADi0G3+T1W1lo5USmqMtBkTrQ0wuDWkQaNgwdNB+4ufDZmqmoGbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kTPKoGbX; arc=none smtp.client-ip=74.125.82.177
+	s=arc-20240116; t=1781649394; c=relaxed/simple;
+	bh=NACjCW4uUizcEdB6sSH9ZQ3fbHHJa6g3OJEVl5rRkRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ddwythns4LSZe6n7EMrRN9qGoeYPoE+c4k6Cpe+eqURu+ikyOPUc4Dr0izt4Ty9EEqsmOA6ARAt4qiUKD2sdZgUYYdcuiIax+fsbXYQREcErSrFoLme/ETOgeYKA2Pv+1KllmU1t25EvyHIiRf5V4CSQZjEs39YxIK2BlziVhMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f65rhk5Q; arc=none smtp.client-ip=209.85.222.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kTPKoGbX"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-30bbe98c3f0so1228210eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 14:16:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f65rhk5Q"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-91591f19716so592805485a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 15:36:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781644563; x=1782249363; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NtwvoWGU/b/ZQgr5zJFahTctO9fhSyBnDK7Rgb5Kmzk=;
-        b=kTPKoGbXpfgrxY/fFNjgMntBRTZKUw7jenqnaWoBs0c+xF2ma4V4b1xEOBUzwgwgUO
-         t8P4vq9kvxnk86eMQCCyyWHT7XLxRDAmoi0dTGrp8RBf5PZJJwDmp1EPW8U01ONLfGQk
-         A2xosgaTOM2UtlGBU/opI0KpE8vf6/9a0MflUvOTvcZyKPjkrDBHFM/GSfoI+WePOvLl
-         AechwcmOt17B37LuRbpFNblJwQuKebOtKWuNh9ZtJ+brT04TLTIJsoqMzRZkaRay4el9
-         oDb6r+kjUMzD+36zBbIIG/FDVjhIUML7piwEeih4isc/mwH6Bw6GfCrnHWoaehBHw+J6
-         bmMw==
+        d=gmail.com; s=20251104; t=1781649391; x=1782254191; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5IoJP3ySdUx4DkxskDKQ8frRVgBTvEGDGFX0mngUY5c=;
+        b=f65rhk5Qpxy6hBTeYsoyvqHDyWSd//OWnTEB4KaOB60Uy0d0BkPW3C0AvHuKwkPvqA
+         Wrp121pKktWSnArwb3RTeLPFrR0sR5LrksdS3LardpfqG2OIXooEXO3d07R+vVuUEbPC
+         otu3BfH5YutDu+jm4eR2ggK8PrAbZI7tg2Y/ogeXwRK106h0uG3Yci3j9HVnACM0FkVe
+         cIa9roNp/jLSW2jtOAWYCAKquRat6hlkqv18LeyrkswxwFROe1TPVoeZI/XxCe3bVQno
+         g8nzebm2B5yGwNKGWjcOzVIBe49lzlqMHQ3xN6l5GeHz+Gs9TWUIMRCer13cJZNAXXhb
+         Ntaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781644563; x=1782249363;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NtwvoWGU/b/ZQgr5zJFahTctO9fhSyBnDK7Rgb5Kmzk=;
-        b=FCZEM3Yt3sebdp7JVUyhcenPCUNb9sj9ziAMnwUNlj1AZktKO7sp7/lMquXQWGRvOw
-         LD85fbvtkvOsksCin6NIwNrsiMm8xKMJ+qRShhQXdKg0R91Ktbajp+mobb2Torrymfnm
-         3AdZTKnxFcMO84pD5H/pr8vNG/ex9BEKZF94HwR73/vYDySUjCQohOrAzUxl6uZUUX6l
-         rEj73WrKjEFj1jB+Bj3FlNvOVXrRg9RjekR/npz3FlDqGqMGuXyc13LlQdsqahXj36D9
-         iH8OVkc4xVlFfXpC7ayl4K6zfcLDRmzoLtEqZKxmU6kx6fZTDHN0TaU9P8Ho3YAffV1H
-         ZFOA==
-X-Forwarded-Encrypted: i=1; AFNElJ+Z82BsbzoDURcbQGJOnzCA1QRLV7L70QjJDyDRJdD1cE+y4xT1S9v/tCMmz7AGB7DxOuVCzWCHci3Kway79A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+QJgG7wrjlnK6EN51mAs3WkQ+4fjKCEL/UOOyFXPT2WZ2Tzu2
-	xSpk9EVguFWTHqKTq9uZI7uOLOKRpFJCu7fRvGZSrJKthfL08PD6yuA=
-X-Gm-Gg: Acq92OH6iAMZXE/OdYcHbCp9YchcCPSW+R62TiDRBaiLqSZx9/662qQ1l45sNE8pDrR
-	IERT/Ksdu1jdAPf7mwonACx9PPkwprdvnuyMt5fnYKpaXsiJjq2lPvtktG9H6btB0L6AhhtSfIr
-	mM3xcC10G1ZU1jdaWsgHbiLUbvb8/LYUG0bhucEWoJCKFx5SRQpnV2vTX2vARFladQS8mc3ZQco
-	uuzpopof6GlhJ0eQDlq4CCrcou7kQBowvFrfdmlNGEQrNCc0tmYes8llwxXya5QNoiOImKZzyfF
-	d6LGHNcTxVZka2RvW6+KkJb4puiCdRsDxNUyU7nLMneHClHPlHyuIURvHdvYTuDTEqPLxAUVbpc
-	hMKes02cxZGLntcPPQSXkFuIUITV/tA2IX9RbPbHr1A7IguXlXAkU4lrjo3VomxQcxXxyyloPk0
-	V86GJImJN4+TkQGZtBVDo8N+60tNDxl9FL9UKVd87OIErE8VNsfIZp/xrJztc=
-X-Received: by 2002:a05:7301:1985:b0:307:2e1c:17f1 with SMTP id 5a478bee46e88-30bca0cebb2mr555246eec.25.1781644563069;
-        Tue, 16 Jun 2026 14:16:03 -0700 (PDT)
-Received: from localhost ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e4898c0sm21042251eec.3.2026.06.16.14.15.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jun 2026 14:16:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781649391; x=1782254191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5IoJP3ySdUx4DkxskDKQ8frRVgBTvEGDGFX0mngUY5c=;
+        b=grR+xXlXVGV+Lwz6eQpBDvbmrOt+mJ/Pwu+TGz2UjFZK94fn7LndMu/oBY1o8VryTH
+         4gl84v+y9rd/meEIvvVYTxpJFL+3RVS/o6ia/Y6RGLt40TMLH5w1X6OwIjcloqAGrsp8
+         36R3LIf2LEuBjlbRrqeDWHjsNtBmJ31tqxa3jTI1O4Ok40BDKBc6ZYChZq0PaH5Lj/nz
+         txyq4w6W+awObt6Ilid38+aUhC4WVjXJVn9hl14Q4t25WsSuzuHas0tpNHokWwvdMc0/
+         MP4EZ9xZ1WYtGQCVZS5oO/rlUt1HHmzIBE/NzdHhDzHNZEzDh1IoPqj48QxC0L7NeYv0
+         UaxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+t1cAf1RI6LdHnWazGzhd3u0Q4dI20BE3U7PS9zxg15Beq4VaIWSlxIQb7KmAxR8KNbDAZT3vedecLwD1EDQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0+jibUDebtEWHqM6Gmf5+Mh8dG05vyEWh9nNXICkjm7lI/cix
+	wxmtnW8EOwtvKaDof0IE5Pv7Y6/CVPL9bpw8SjNjWU+5dahyASNv/nw=
+X-Gm-Gg: Acq92OH3NClnblO5U5/OSRsUUAPuFL85lmc/W7XS+1LJxGZTe5SdFE3AJyUkoNqWHAw
+	fZZ4FfutOXnHEALVf0Q0rz8piuokIW4H3Gg0e+5IoP4Hkzy0tvV0vEtuFOJzQqcn0JyJ/JyKQ2y
+	zw+ibsYWG9+hn2N49GcmNcdWL4WqjkEkQgwLOkVPmUoe7AWWAsNYjP8W4O1QtShB1ZP7/S5CryN
+	sEiDOKtnbierokMQcz5rmFXRufMBsawD1i+ZybEEHY1vLH8cc6kw+mEVYGdA+jF2w1Y+MCf/Ofj
+	EEQeFUJag4apXCsWQBaOHQhcvfRAeS+95dqRZWOVPKIAouBBM6w5Sv/SiCNbELpCv1RL3fDZJGD
+	BDffoTNmjL/TYC9StArJKFXAQHZoYp7j0rBPoO2EN7CqJEcdbPlmbXucb3+4xPKJRnjqsiFqz2M
+	+09arKaWb2SkQJnfc/hyb1UomCllawdn7LYujgRCrMXu0VOnJhrYMAAgPT/Rru3S4yHASlGjvcS
+	yU=
+X-Received: by 2002:a05:620a:2908:b0:915:d32a:1cba with SMTP id af79cd13be357-91dbc52c4damr140872385a.27.1781649391215;
+        Tue, 16 Jun 2026 15:36:31 -0700 (PDT)
+Received: from localhost.localdomain ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9161a006ef0sm1524236585a.24.2026.06.16.15.36.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 15:36:30 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH] usb: rust: mark Device and Interface methods as inline
+Date: Tue, 16 Jun 2026 19:36:06 -0300
+Message-ID: <20260616223614.16444-1-nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Jun 2026 18:15:56 -0300
-Message-Id: <DJASAA3M7NVD.SCI2XIBWYTKT@gmail.com>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Benno
- Lossin" <lossin@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Boqun Feng" <boqun@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda"
- <ojeda@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Shuah Khan" <skhan@linuxfoundation.org>, "Tamir Duberstein"
- <tamird@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel-mentees@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Sashiko" <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] rust: i2c: avoid locking when calling
- I2cAdapter::inc_ref
-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-To: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>, "Igor
- Korotin" <igor.korotin@linux.dev>
-X-Mailer: aerc 0.20.0
-References: <20260615201141.8920-1-nico.antinori.7@gmail.com>
-In-Reply-To: <20260615201141.8920-1-nico.antinori.7@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hello,
+When building the kernel using llvm-19.1.7-rust-1.85.1-x86_64, the
+following symbols are generated:
 
-Please do not apply this patch.
+$ nm vmlinux | grep ' _R'.*usb.*Device | rustfilt
+...
+ffffffff823f2490 T <kernel::usb::Device as kernel::sync::aref::AlwaysRefCounted>::dec_ref
+ffffffff823f2470 T <kernel::usb::Device as kernel::sync::aref::AlwaysRefCounted>::inc_ref
+...
 
-On Mon Jun 15, 2026 at 5:10 PM -03, Nicol=C3=A1s Antinori wrote:
-> The current implementation of `<I2cAdapter as
-> AlwaysRefCounted>::inc_ref` relies on the C function `i2c_get_adapter`
-> to increment module and device counters. This function acquires a lock,
-> looks for the adapter in the IDR table, and, if found, increments the
-> counters before returning the adapter.
->
-> In the Rust API, the `I2cAdapter::get` method returns an
-> `ARef<I2cAdapter>` upon success. Incrementing this reference count in an
-> atomic context (for example, via `ARef::clone`, which relies on
-> `AlwaysRefCounted::inc_ref`) could trigger a sleep-in-atomic bug due to t=
-he
-> mutex locking inside `i2c_get_adapter`.
->
-> Since cloning an `ARef` implies we already hold a valid reference to
-> the adapter, the IDR table lookup and its associated lock are
-> unnecessary. The fix consists of bypassing `i2c_get_adapter` and
-> instead calling `__module_get` and `get_device` directly to increment
-> the counters.
->
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260524181151.24988-1-nico.antino=
-ri.7@gmail.com
-> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
-> ---
-> Citing the second part of Sashiko's report:
->
->> Furthermore, if the adapter is unregistered and removed from the IDR,
->> bindings::i2c_get_adapter() will return NULL and fail to increment the
->> reference count. Since inc_ref() ignores the return value, wouldn't drop=
-ping
->> that cloned ARef unconditionally call dec_ref() (i2c_put_adapter)?
->
-> `inc_ref` no longer relies on `i2c_get_adapter` to increment the
-> reference counts for the module and the device. Also, being able to
-> execute `<I2cAdapter as AlwaysRefCounted>::inc_ref` implies the
-> existence of a shared reference, meaning that the adapter is still
-> registered in the IDR.
->
->> Could this lead to an underflow, double-put, and a use-after-free of the
->> adapter and its module? Or if the IDR index was reused, might it increme=
-nt
->> the new adapter's refcount while decrementing the old one twice?
->
-> I don't believe this situation is possible.
->
-> When `i2c_del_adapter` is executed in `i2c-core-base.c`, the kernel waits=
- for
-> all references to be dropped prior to removing the device from the IDR.
->
-> This guarantees that no `ARef` is still alive when the IDR removal happen=
-s,
-> effectively eliminating the risk of an underflow, double-put, or calling
-> `dec_ref` on an invalid reference.
->
->  rust/kernel/i2c.rs | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->
-> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-> index 624b971ca8b0..d89c42691dfe 100644
-> --- a/rust/kernel/i2c.rs
-> +++ b/rust/kernel/i2c.rs
-> @@ -426,8 +426,11 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
->  // SAFETY: Instances of `I2cAdapter` are always reference-counted.
->  unsafe impl AlwaysRefCounted for I2cAdapter {
->      fn inc_ref(&self) {
-> -        // SAFETY: The existence of a shared reference guarantees that t=
-he refcount is non-zero.
-> -        unsafe { bindings::i2c_get_adapter(self.index()) };
-> +        // SAFETY: The existence of a shared reference guarantees that t=
-he refcounts are non-zero.
-> +        unsafe {
-> +            bindings::__module_get((*self.as_raw()).owner);
+$ nm vmlinux | grep ' _R'.*usb.*Interface | rustfilt
+ffffffff823f2450 T <kernel::usb::Interface as kernel::sync::aref::AlwaysRefCounted>::dec_ref
+ffffffff823f2430 T <kernel::usb::Interface as kernel::sync::aref::AlwaysRefCounted>::inc_ref
+...
 
-I got a reply for this patch from Sashiko pointing out that the bindings
-for `__module_get` won't generate if `CONFIG_MODULES=3Dn` or
-`CONFIG_MODULE_UNLOAD=3Dn` because the function is defined as static
-inline in those cases, which causes the build to fail. The diagnostic is
-correct.
+However, these Rust symbols are trivial wrappers around the
+`usb_get_dev`, `usb_put_dev`, `usb_get_intf` and `usb_put_intf`
+functions. It doesn't make sense to go through a trivial wrapper
+for these functions.
 
-I sincerely apologize for this oversight. I'll work on a v2 patch to fix
-this (I believe conditional compilation based on the config should be
-sufficient).
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+---
+ rust/kernel/usb.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Here's the review link:
-https://sashiko.dev/#/patchset/20260615201141.8920-1-nico.antinori.7@gmail.=
-com
-
-Regards
-
-> +            bindings::get_device(&raw mut (*self.as_raw()).dev);
-> +        }
->      }
->
->      unsafe fn dec_ref(obj: NonNull<Self>) {
-> --
-> 2.47.3
+diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+index 7aff0c82d0af..efbbee319b1a 100644
+--- a/rust/kernel/usb.rs
++++ b/rust/kernel/usb.rs
+@@ -393,6 +393,7 @@ fn as_ref(&self) -> &Device {
+ 
+ // SAFETY: Instances of `Interface` are always reference-counted.
+ unsafe impl AlwaysRefCounted for Interface {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The invariants of `Interface` guarantee that `self.as_raw()`
+         // returns a valid `struct usb_interface` pointer, for which we will
+@@ -400,6 +401,7 @@ fn inc_ref(&self) {
+         unsafe { bindings::usb_get_intf(self.as_raw()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+         // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+         unsafe { bindings::usb_put_intf(obj.cast().as_ptr()) }
+@@ -444,6 +446,7 @@ fn as_raw(&self) -> *mut bindings::usb_device {
+ 
+ // SAFETY: Instances of `Device` are always reference-counted.
+ unsafe impl AlwaysRefCounted for Device {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The invariants of `Device` guarantee that `self.as_raw()`
+         // returns a valid `struct usb_device` pointer, for which we will
+@@ -451,6 +454,7 @@ fn inc_ref(&self) {
+         unsafe { bindings::usb_get_dev(self.as_raw()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+         // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+         unsafe { bindings::usb_put_dev(obj.cast().as_ptr()) }
+-- 
+2.47.3
 
