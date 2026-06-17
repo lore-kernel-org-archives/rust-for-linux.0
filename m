@@ -1,105 +1,84 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.120])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7194B343888
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 07:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B2138E10F;
+	Wed, 17 Jun 2026 07:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781681719; cv=none; b=M5ptQ8gpnugphFGwF4uq0y0uu8m1GixQe/52rzYEPmI0vWu5na/vkY4c2O/jFe4pOXv3Uy5oF+g2wh8jB2DCs+AJaIMBriFKWeclkbwbFivqMbeimvA32zv1voV9WpqGy2NhSt6jwONv4aBsC1Q+n+ppbo+gHhDB+v2lZdGKkuY=
+	t=1781682443; cv=none; b=V0PSShBOk6ihJtoFRBZbfxQ4ebMo5CZ3NYW/lP/6tKQarOAwV6rr+k/1a1IDvXLAf77KQc587cN5WWO9eUcjOmpQzJ7BFLn8xgYp4J8hmqIbNpudsU/e+Nojd6wQ+793rSIR+N5fFPIf1W425pUV9djqhyafd1QZPTnIBmuwVno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781681719; c=relaxed/simple;
-	bh=0+urfASc2gfxIY6c/RRftPzs6EUNdqaNb5wjiCzOB5w=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ou0rDs41+XNzB+21joRTHGvehvput0gbsSnGdM2da1eiGJ9g3HkoO1kAnoxtbCpn6yM0sHeLBJa4CA/ydiQhqBwp17wAPUek5ThXskj1FBQQB8WHXpFDV7vA0Tk52zAFSgrOW5FlPrUG4REMwiuRDvoInRthlIDWLV+OVgv3NyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PXfI1Zm7; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PXfI1Zm7"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-45eec2badc4so2972236f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 00:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781681716; x=1782286516; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0+urfASc2gfxIY6c/RRftPzs6EUNdqaNb5wjiCzOB5w=;
-        b=PXfI1Zm70OSIYL/mmA/kTpbrk/VB/FGUft5CjJx3dTgRlJxL4vl4XRnN3GePtGAznf
-         GTBm53t9YArYUKQ7FL1syQrJVcDkfSaT+loeqFfKTkn/PuAKgLzqp4c1S1j0JvCo6ZGP
-         xkdh5n5OSVVcOihwwcD3PjlV79hzSv5YdqX79Cv8p0GrUbtrzWpTqHpc1943XBMzZanC
-         eyfvzZjqGmWgJ2Rsxii7bUiyqCsWlAosyh+ZZNjEYHs9SipbFcsTEsDcv6nwcD3V9rJC
-         vUlt3pf85S3QEEnzhHOi0Jz8Na9USglm474pH1HaWoDslJrsRQNLor919rKwxUF7AoxG
-         bZ5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781681716; x=1782286516;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=0+urfASc2gfxIY6c/RRftPzs6EUNdqaNb5wjiCzOB5w=;
-        b=ikFGv8gwBn2n5YbrDsJPFw9/hd6Ucj0vfCVH0sNZRfxl6g1W0XAih798Oi1Al8sFgQ
-         O5nQcse9uvKkwTxiiUA5Vv4brwgjJ2n3ekVrv5sMhnfTUtFdyEBN7BVm0IIrFGG5D0gt
-         7+w/VLtz4BVtEYd4Rmus5WIoBpPSFSLHxp5XggRRyj8aVwSJ8K/Qd++ndlrcySfxRV60
-         mkiRlWxFmkp8MX2++gL57vJqSPM6Uf4kzr2WDSwkTQVXEwnPg0PuhL4JflSdJcMJNSLG
-         pED86wLAZHHAhQ/nD6g/WFC5mJpn757e2EfOAbJLmk5lXAUPPsXREZ/O2UAAO6M+rG0h
-         6NQw==
-X-Forwarded-Encrypted: i=1; AFNElJ/jE+SxF98rMtVc/7Ug3mnOQzbYXYpJM8ovWXudbEydcMLJYVCRWC1lHprorS+G94TaNR2M6dgc1T3kyOyKIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9SPKTLM2zFEVVb6ImHdILdADkfG6IJZQrb06ZfvJzORObM66/
-	fIF2UJDs2SQVPc4IcJZd3SfCJG5SeGOgejAe5Fju1MN+QfwNoqnKTGiKWyOugYG89TTjMpUm3e9
-	FHZPMx8aQcNQmvQpljw==
-X-Received: from wrwo4.prod.google.com ([2002:a5d:6844:0:b0:45e:ed83:d3e7])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4906:b0:45e:9420:ed16 with SMTP id ffacd0b85a97d-462370e1644mr4713138f8f.10.1781681715479;
- Wed, 17 Jun 2026 00:35:15 -0700 (PDT)
-Date: Wed, 17 Jun 2026 07:35:13 +0000
-In-Reply-To: <20260616223614.16444-1-nico.antinori.7@gmail.com>
+	s=arc-20240116; t=1781682443; c=relaxed/simple;
+	bh=IiDvCNfelEukxghA9cDpClZV8Za061cU56laZEwSAzk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wk9sk6BGxI1cEWitc9J1rE6IffklZlLG1ZEVvE+bHb1v0C3l3FGhkpRA7wsfM5TJEJZYBAjAYMNjIu32ph79BBwM0X6KDwBF9qcWO5/RF9N38ulESl5BFklvpHvEAK+X7yfnmH0c+dk832V04KSSuxlvbyisioNhs1o2J/piVm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; arc=none smtp.client-ip=212.42.244.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
+Received: from [2001:bf0:244:244::78] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.56.1)
+	(envelope-from <n.schier@fritz.com>)
+	id 6a3250fe-044e-7f0000032729-7f000001b99e-1
+	for <multiple-recipients>; Wed, 17 Jun 2026 09:47:10 +0200
+Received: from mail-auth.fritz.com (unknown [IPv6:2001:bf0:244:244::78])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Wed, 17 Jun 2026 09:47:10 +0200 (CEST)
+Date: Wed, 17 Jun 2026 09:47:10 +0200
+From: Nicolas Schier <n.schier@fritz.com>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nicolas Schier <nsc@kernel.org>
+Subject: Re: [PATCH] rust: kbuild: Replace and dissolve procmacro-extension
+ variable
+Message-ID: <20260617-cordial-rousing-marten-0be55e@l-nschier-aarch64>
+References: <20260616-rust-kbuild-replace-procmacro-extension-v1-1-cad72998faee@fritz.com>
+ <CAJ-ks9kk2kQ0JVf3deTtCqGnp_MFTTRxecAwFWe5H6FBHrA-tg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260616223614.16444-1-nico.antinori.7@gmail.com>
-Message-ID: <ajJOMehwVZoX3o4J@google.com>
-Subject: Re: [PATCH] usb: rust: mark Device and Interface methods as inline
-From: Alice Ryhl <aliceryhl@google.com>
-To: "=?utf-8?Q?Nicol=C3=A1s?= Antinori" <nico.antinori.7@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Boqun Feng <boqun@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Tamir Duberstein <tamird@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel-mentees@lists.linux.dev
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAJ-ks9kk2kQ0JVf3deTtCqGnp_MFTTRxecAwFWe5H6FBHrA-tg@mail.gmail.com>
+Organization: FRITZ! Technology GmbH
+x-ms-reactions: disallow
+X-purgate-ID: 149429::1781682430-137E4962-D849FB0A/0/0
+X-purgate-type: clean
+X-purgate-size: 709
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
 
-On Tue, Jun 16, 2026 at 07:36:06PM -0300, Nicol=C3=A1s Antinori wrote:
-> When building the kernel using llvm-19.1.7-rust-1.85.1-x86_64, the
-> following symbols are generated:
+On Tue, Jun 16, 2026 at 05:40:42AM -0700, Tamir Duberstein wrote:
+> On Tue, Jun 16, 2026 at 7:26=E2=80=AFAM Nicolas Schier <n.schier@fritz.co=
+m> wrote:
+> >
+> > Use make's $(suffix) function [1] and substitution reference [2] instead
+> > of $(patsubst) to extract crate names for rust procmacro targets.
 >=20
-> $ nm vmlinux | grep ' _R'.*usb.*Device | rustfilt
-> ...
-> ffffffff823f2490 T <kernel::usb::Device as kernel::sync::aref::AlwaysRefC=
-ounted>::dec_ref
-> ffffffff823f2470 T <kernel::usb::Device as kernel::sync::aref::AlwaysRefC=
-ounted>::inc_ref
-> ...
->=20
-> $ nm vmlinux | grep ' _R'.*usb.*Interface | rustfilt
-> ffffffff823f2450 T <kernel::usb::Interface as kernel::sync::aref::AlwaysR=
-efCounted>::dec_ref
-> ffffffff823f2430 T <kernel::usb::Interface as kernel::sync::aref::AlwaysR=
-efCounted>::inc_ref
-> ...
->=20
-> However, these Rust symbols are trivial wrappers around the
-> `usb_get_dev`, `usb_put_dev`, `usb_get_intf` and `usb_put_intf`
-> functions. It doesn't make sense to go through a trivial wrapper
-> for these functions.
->=20
-> Link: https://github.com/Rust-for-Linux/linux/issues/1145
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
+> The implementation uses `$(basename)`, not `$(suffix)`. Please update
+> the commit message accordingly. Link [1] can remain, since it
+> documents both functions.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+uh yes, thanks!  My first attempt was based on $(suffix) but then I=20
+forgot to update that here, too.
+
+I am going to send a v2 in a few hours.
+
+> Otherwise this looks good to me.
+
+Thanks!
+
+Kind regards,
+Nicolas
