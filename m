@@ -1,323 +1,153 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D329839DBC0;
-	Wed, 17 Jun 2026 09:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B4C393DE6
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 09:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781687097; cv=none; b=LDLo9PG2EBMrF5amatQOVvQNEEMQDxv3LlR+gHKzQt6dmjUlS57zGNVKVTrXSxa/VZFwPqjrraYDgsWYMAG0N26YKqZNVdJc4Rj4qCMgfdvA8wI59rdb1ArqixevWDjNGdXfkkS2sLyUDXqPTjQKDOsxdAS72KK+WXrIgco6KY8=
+	t=1781687602; cv=none; b=B1+jOnDNEZMeA+Zm+l3Alb0NyAC/+gP7AqaNI6jjcHjTTkC7CYTUrzpErGTtJZWAE3its09kqlmnsOnAqgcDWRsd2HmCPQeudFajBc5M/c61TM44JZrIJBd163/XII1YmcgxHut6azR0wdn3VfPw+PkWOvbNcTkkUDBqsMPU4hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781687097; c=relaxed/simple;
-	bh=JpDMIE9eGFB6UyskqpSUvcOBKplfPJaAeEzY2PP6sTk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IoNiVTYSNQf+mX3kfh/MARcMZaWpKksRLq9kfUq7hfbk/ZyDneUyfpj8LVb0S3Noz/r49AIK+fx9eBCgKgME7BUMvM97jWBwSN/VmClDjiBLcUqQph7rL1BKUM+QTv7R3q4sPx9e++xMUG+Pq+j7LU8sOnFswwEDK1MIf5by5Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=HSE2mk+x; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1781687602; c=relaxed/simple;
+	bh=VNb8Oeo8fsnl2dNubUFSWKcRBi3wEZOagsaNZh7wB14=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lMYSVPdLiK+CjiKMtjR9y9n7y6iAIKUZ5F6LpYN9lTFRpMuk8V1212JI6vtNx0Xjw8PQ3XmHf3gaAnTvRryecC1Gi86XVDLqQApZZuyNepvC8Vp8XcJaZwUlcRqhylLEdmilLyqknyK+63RNf9ax8ID5IoerXLHC6d5akr04YmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CXPlLkEF; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="HSE2mk+x"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4ggHxF409Zz9sdD;
-	Wed, 17 Jun 2026 11:04:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1781687089; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JpDMIE9eGFB6UyskqpSUvcOBKplfPJaAeEzY2PP6sTk=;
-	b=HSE2mk+xfXWRZLWOFqEHRknfbUXr4MhEQI+xJvg73z4GYG3dVysTzHz9Rwzwz4wJ0lvVX7
-	wdqPu5JpGILM33tDMSHinc544+lZTXIFO9kYxQfCEsyOCWiVHObZd5UiQQD9k5XSOZaqKf
-	Fl73GDZl2vN8jnmt3MNwTUOjBBPoURLcqHPQuemxOvUzJjCquousLs3YNAp3pEfSc0t0uW
-	H4nxKvDB7soe92SzbhXJSlJfDibsDQ0n6B36OhisXgWtlFvwC79eznXv8XsLUIhEFbluE/
-	719v1p9t+eADPYqGLH77AeE5wjl8SgunVKi878w+frMz5z0B4F4yxsNtug7zVw==
-Message-ID: <e06228542e663bd8020cc91d7646bb7838a3a273.camel@mailbox.org>
-Subject: Re: [PATCH v2 5/6] rust: Add dma_fence abstractions
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Sumit Semwal	
- <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=	
- <christian.koenig@amd.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
- Frederic Weisbecker	 <frederic@kernel.org>, Neeraj Upadhyay
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Uladzislau Rezki	 <urezki@gmail.com>,
- Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers	
- <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
- Zqiang <qiang.zhang@linux.dev>, Daniel Almeida
- <daniel.almeida@collabora.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Igor Korotin <igor.korotin@linux.dev>,
- Lorenzo Stoakes	 <ljs@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- FUJITA Tomonori	 <fujita.tomonori@gmail.com>, Krishna Ketan Rai
- <prafulrai522@gmail.com>,  Shankari Anand <shankari.ak0208@gmail.com>,
- manos@pitsidianak.is, Boris Brezillon <boris.brezillon@collabora.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rcu@vger.kernel.org
-Date: Wed, 17 Jun 2026 11:04:32 +0200
-In-Reply-To: <20260616082819.2943886-7-phasta@kernel.org>
-References: <20260616082819.2943886-2-phasta@kernel.org>
-	 <20260616082819.2943886-7-phasta@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CXPlLkEF"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4921e4dd62dso5839265e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 02:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781687597; x=1782292397; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pdzEnJF2ilqo5mGBwtUC4XQR13hh+SJ7AGP/8bu8ACk=;
+        b=CXPlLkEF+mjs8vpLhTWd+Sc6t6QohlDW0zR+1qcMjm4Su3Jd32HU2gmk3tPPTWwaNP
+         p9ssRghKH/qE8kop/lDoIOGRnrReIUl1o2il41jH0H49gm4lnXzQzLptSBCUj5j9fKQv
+         EU+PWayJVz916sv4cYsraFktqAZx98W+EwtlHyw24vzczbsTM+LAoMcoHaSVW++876zX
+         P3iJ/62XtmEQ8fnKOLJvA6DPlQK+v2XT3snuEaU3mmisnQLKl5Q3dwRQBaDaX8slWqWS
+         RsyYUdHifQo7y0YeDmzP4nB0vvmJlfur2CQGxUonbu7xpZLhA88JF1/R/TwQYSve1V/l
+         ECxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781687597; x=1782292397;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pdzEnJF2ilqo5mGBwtUC4XQR13hh+SJ7AGP/8bu8ACk=;
+        b=OF8BfTsMNrZTtQsHqCuCTxE18XoJqJza6LO2TlHtjAKPmkxcE/yTVGJvsVU0sMZIdU
+         Z8CrSEFMIAmL+mL/AGMJVhf6LhVjO2YQ2jPKyb3Nt41Bv5HQPf5gEB8t3w5AgjrSLYL5
+         io/q1ViJqCPsZp0FzVOSTJJNryHQIxVLPZ28Ilnexbd5X3BcAydq+woDNO5jhqTKKG/o
+         mATQtxaia73SdaK4DkjIs8thFIBYwU2BKRgsgOFNxOa6vCIhS1XmSOLAvD7kwvbU/ig9
+         lfcYmAPCcD7g6twXpGWNxD2BLI2pzS0UUVSP/6kRUb8zfhC+3u0Z/VS3fF1ATKNv5gAE
+         PBdw==
+X-Forwarded-Encrypted: i=1; AFNElJ+NMRF64LbFcI2EbmlaZUYEv29nF9tl1JnMaJZQs1FBi1NKOmjrjoImrTC413TNWOgF5geOkk/+cTfeEUJfmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz85IxZvxnCHvxMYAkdBNsIYHvnXZ2McwNZ8ZtFT7AxLVFcHKDI
+	KMjtfcnD+m7LjvcIzkrSzrXnP+7s6BCsooUrjUZ09ZsnmTCM4IB2GiUz
+X-Gm-Gg: Acq92OE+XneZEpMJ8tguHjkLAEQmjxGw3EKdxJDZ0gUDqCUSNwzioc7apT+PHQEXP2x
+	y0XhyF4OmzB07ykpewIZ4/2K+zKeL8Q8RJv8H1DkBa9nco8v0np1jrx+9JNlbkZLfYAyadVoYw3
+	QBP1UEIiM8brqiTE82c/jkedM3NH5EjcZ5Qp3pipMhhz5Jm7HbKxhFGDZgVxB9KHv/i4QBZIkD4
+	N3Znv3E/wdM0AmuBvinO/2LKJfILBqjKkJ200BSTeptEUVXmZ9w0u3yyWcehWN6TNIFJgvzvE51
+	Z6QUWJwQIBKqfmng1toQDaDYvt2b/zlx5+ff8wF3Chj0Hg5/LaVkKmIMgTNB35qpQ2ZSWA0VfJx
+	0IiriD1SMw6XtPcQWqNP//zx+UAhyZUfrlwKihV6PZ0c2y/gCAlIuUoe19LH/2XbhFTlkts90CN
+	We+H3KmsygEgvndsI6blXAKYia1RZY7Wl+FT+59lNCPOwUNfoE5sjW
+X-Received: by 2002:a05:600c:5290:b0:490:af63:2cb1 with SMTP id 5b1f17b1804b1-492340c604emr29094785e9.7.1781687596953;
+        Wed, 17 Jun 2026 02:13:16 -0700 (PDT)
+Received: from [172.16.16.38] ([195.100.225.50])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a0e9e4sm130471915e9.0.2026.06.17.02.13.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jun 2026 02:13:16 -0700 (PDT)
+Message-ID: <75552e2d-0bc8-40a0-b783-fba64482aea9@gmail.com>
+Date: Wed, 17 Jun 2026 11:13:14 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 1aaf220002f8bf35872
-X-MBO-RS-META: 1dehra3zret1uhka4pzj76h5abd51hug
-
-On Tue, 2026-06-16 at 10:28 +0200, Philipp Stanner wrote:
->=20
->=20
-
-[=E2=80=A6]
-
-> Add abstractions for dma_fence in Rust.
->=20
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
-
-RFC for one thing I'm worried about below
-
-> ---
-> =C2=A0rust/bindings/bindings_helper.h=C2=A0 |=C2=A0=C2=A0 1 +
-> =C2=A0rust/helpers/dma_fence.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 48 ++
-> =C2=A0rust/helpers/helpers.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> =C2=A0rust/kernel/dma_buf/dma_fence.rs | 884 ++++++++++++++++++++++++++++=
-+++
-> =C2=A0rust/kernel/dma_buf/mod.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 14 +
-> =C2=A0rust/kernel/lib.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 1 +
-> =C2=A06 files changed, 949 insertions(+)
-> =C2=A0create mode 100644 rust/helpers/dma_fence.c
-> =C2=A0create mode 100644 rust/kernel/dma_buf/dma_fence.rs
-> =C2=A0create mode 100644 rust/kernel/dma_buf/mod.rs
->=20
->=20
->=20
-
-[=E2=80=A6]
-
-> +
-> +/// The receiving counterpart of a [`DriverFence`], designed to register=
- callbacks
-> +/// on, check the signalled state etc. A [`Fence`] cannot be signalled.
-> +/// A [`Fence`] is always refcounted.
-> +pub struct Fence {
-> +=C2=A0=C2=A0=C2=A0 /// The actual dma_fence passed to C.
-> +=C2=A0=C2=A0=C2=A0 inner: Opaque<bindings::dma_fence>,
-> +}
-> +
->=20
->=20
-
-[=E2=80=A6]
-
-> +
-> +#[repr(C)] // Necessary to guarantee that `inner` always comes first so =
-that we can cast.
-> +#[pin_data]
-> +struct DriverFenceData<T: Send + Sync + FenceCtxOps> {
-> +=C2=A0=C2=A0=C2=A0 /// Callback head for dropping this in a deferred man=
-ner through RCU.
-> +=C2=A0=C2=A0=C2=A0 rcu_head: bindings::callback_head,
-> +=C2=A0=C2=A0=C2=A0 #[pin]
-> +=C2=A0=C2=A0=C2=A0 /// The inner fence.
-> +=C2=A0=C2=A0=C2=A0 inner: Fence,
-> +=C2=A0=C2=A0=C2=A0 /// Pointer to access the FenceCtx. Useful for obtain=
-ing name parameters.
-> +=C2=A0=C2=A0=C2=A0 fctx: Arc<FenceCtx<T>>,
-> +=C2=A0=C2=A0=C2=A0 /// The API user's data. This must either not need dr=
-op, or must delay its
-> +=C2=A0=C2=A0=C2=A0 /// drop by a grace period. It is essential that the =
-data only performs
-> +=C2=A0=C2=A0=C2=A0 /// operations legal in atomic context in its [`Drop`=
-] implementation.
-> +=C2=A0=C2=A0=C2=A0 #[pin]
-> +=C2=A0=C2=A0=C2=A0 data: T::FenceDataType,
-> +}
-> +
->=20
->=20
->=20
-
-[=E2=80=A6]
-
-> +pub struct DriverFence<T: Send + Sync + FenceCtxOps> {
-> +=C2=A0=C2=A0=C2=A0 /// The actual content of the fence. Lives in a raw p=
-ointer so that its
-> +=C2=A0=C2=A0=C2=A0 /// memory can be managed independently. Valid until =
-both the [`DriverFence`]
-> +=C2=A0=C2=A0=C2=A0 /// and all associated [`Fence`]s have disappeared.
-> +=C2=A0=C2=A0=C2=A0 data: NonNull<DriverFenceData<T>>,
-> +}
-> +
-> +
->=20
-
-[=E2=80=A6]
-
-> }
-> +
-> +impl<T: Send + Sync + FenceCtxOps> Drop for DriverFence<T> {
-> +=C2=A0=C2=A0=C2=A0 fn drop(&mut self) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let fence =3D self.as_raw();
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let mut fence_flags: usize =
-=3D 0;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let flag_ptr =3D &raw mut fen=
-ce_flags;
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `fence` is valid u=
-ntil the `call_rcu()` below. `flag_ptr` is
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // merely a pointer to an int=
-eger, which lives as long as this function.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::dma_fence_=
-lock_irqsave(fence, flag_ptr) };
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // Use dma_fence_test_signale=
-d_flag() instead of dma_fence_is_signaled_locked()
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // because the C backend want=
-s to get rid of the latter.
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `fence` is valid u=
-ntil the `call_rcu()` below.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let signaled: bool =3D unsafe=
- { bindings::dma_fence_test_signaled_flag(fence) };
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if warn_on!(!signaled) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SA=
-FETY: `fence` is valid until the `call_rcu()` below. The fence
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // mu=
-st not have been signaled yet, which we check directly above.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsaf=
-e { bindings::dma_fence_set_error(fence, ECANCELED.to_errno()) };
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SA=
-FETY: `fence` is valid until the `call_rcu()` below. The lock must
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // be=
- held, which we acquired above.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsaf=
-e { bindings::dma_fence_signal_locked(fence) };
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `fence` is valid u=
-ntil the `call_rcu()` below. `flag_ptr` is
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // merely a pointer to an int=
-eger, which lives as long as this function.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // The lock must be held, whi=
-ch we acquired above.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::dma_fence_=
-unlock_irqrestore(fence, flag_ptr) };
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: Valid because `sel=
-f` is valid.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let rcu_head_ptr =3D unsafe {=
- &raw mut (*self.data.as_ptr()).rcu_head };
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // `DriverFenceData` but coul=
-d be accessed through some dma_fence callbacks
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // right now. Access is being=
- revoked in principle above by signalling
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // the fence, but since the C=
- backend does not guarantee perfect full
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // synchronization, we have t=
-o wait for one grace period to ensure that
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // all accessors of `DriverFe=
-nceData` (through the dma_fence_ops accessible
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // through a `Fence`) are gon=
-e.
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: `call_rcu()` is al=
-ways safe to be called. `rcu_head_ptr` was created
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // validly above. The module =
-must perform a `synchronize_rcu()` or
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // `rcu_barrier()` call to gu=
-ard against module unload.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsafe { bindings::call_rcu(r=
-cu_head_ptr, Some(drop_driver_fence_data::<T>)) };
-> +=C2=A0=C2=A0=C2=A0 }
-> +}
-> +
-> +// TODO:
-> +// The entire call_rcu() mechanism in the drop above and the code below =
-would be
-> +// unnecessary if C's dma_fence_signal() could be reworked in a way that=
- after it
-> +// ran, the caller knows that no fence_ops callbacks can be running anym=
-ore.
-> +// In other words, if the dma_fence backend would use its spinlock for f=
-ull
-> +// synchronization.
-> +//
-> +// Then we could move the drop_in_place() and dma_fence_put() upwards in=
-to the
-> +// drop() implementation and call it a day.
-> +
-> +/// Finally really drop this `DriverFence<T>`
-> +///
-> +/// # Safety
-> +///
-> +/// `head` references the `rcu_head` field of an `DriverFenceData<T>`. A=
-ll
-> +/// accessors to that `DriverFenceData<T>` must be gone by now. This mus=
-t be
-> +/// ensured by signalling the associated `DriverFence<T>` and then waiti=
-ng
-> +/// for a grace period until calling this function here.
-> +unsafe extern "C" fn drop_driver_fence_data<T: Send + Sync + FenceCtxOps=
->(
-> +=C2=A0=C2=A0=C2=A0 head: *mut bindings::callback_head,
-> +) {
-> +=C2=A0=C2=A0=C2=A0 // SAFETY: Caller provides a pointer to the `rcu_head=
-` field of a `DriverFenceData<C>`.
-> +=C2=A0=C2=A0=C2=A0 let fence_data =3D unsafe { container_of!(head, Drive=
-rFenceData<T>, rcu_head) };
-> +
-> +=C2=A0=C2=A0=C2=A0 // SAFETY: `fence_data` was created validly above. Al=
-l the fence's data will
-> +=C2=A0=C2=A0=C2=A0 // only drop below, but the raw pointer to the raw C =
-`dma_fence` remains
-> +=C2=A0=C2=A0=C2=A0 // valid because the reference count is only decremen=
-ted at the end of the
-> +=C2=A0=C2=A0=C2=A0 // function.
-> +=C2=A0=C2=A0=C2=A0 let fence =3D unsafe { (*fence_data).inner.inner.get(=
-) };
-> +
-> +=C2=A0=C2=A0=C2=A0 // SAFETY: A grace period has passed. All accessors t=
-o that `DriverFenceData`
-> +=C2=A0=C2=A0=C2=A0 // are gone now. We have exclusive access and can now=
- drop it.
-> +=C2=A0=C2=A0=C2=A0 unsafe { drop_in_place(fence_data) };
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rust: add procedural macro for declaring configfs
+ attributes
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Breno Leitao
+ <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Luis Chamberlain <mcgrof@kernel.org>,
+ Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-modules@vger.kernel.org
+References: <20260612-configfs-syn-v3-1-3292fbc5cc32@gmail.com>
+ <CANiq72=RX5V6W+1tj0GHxZusrk5OqYbZ5-xV=wvSssrx_CWXAA@mail.gmail.com>
+Content-Language: en-US, en-AU
+From: Malte Wechter <maltewechter@gmail.com>
+In-Reply-To: <CANiq72=RX5V6W+1tj0GHxZusrk5OqYbZ5-xV=wvSssrx_CWXAA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-Here we would drop DriverFenceData. We do it like that (RCU delay) now
-because of two-fold reasoning:
+On 6/13/26 12:41 PM, Miguel Ojeda wrote:
+> Hi Malte,
+>
+> Some quick notes...
+>
+> On Fri, Jun 12, 2026 at 3:29 PM Malte Wechter <maltewechter@gmail.com> wrote:
+>> +/// ```ignore
+> Empty /// before examples.
+>
+>> +///     // This will extract "foo: <field>" into a variable named "foo".
+> ` instead of "
+>
+> i.e. please use Markdown
+>
+>> +///```
+> Missing space indentation
+>
+>> +/// Expands the following output:
+>> +///    let item_type = {
+> Missing example block, both at the beginning and the end.
+>
+> Please double-check by generating the docs and looking at how they
+> appear in the browser.
+>
+> The prefix of the title should likely be `rust: configfs:`.
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
+As of now doc strings are not generated for private items in the macros 
+crate. I am moving the `parse_ordered_fields!` macro into 
+macros/helpers.rs but this means the doc strings are not generated for 
+the macro anymore. The `parse_ordered_fields!` macro is a larger helper 
+function, and the doc strings are relevant and helpful for macro 
+developers that wants to use it.
 
-a) dropping too soon could deallocate the FenceCtx, causing UAF.
+You can enable documenting private items:
 
-b) drop_in_place() invalidates the fctx pointer, so the Rust compiler
-could hypothetically write some random data for CPU pipelining etc.
-reasons into the pointer, despite it still being used from the backend
-functions.
+diff --git a/rust/Makefile b/rust/Makefile
+index b361bfedfdf0..b4239443307e 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -147,6 +147,7 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+      OBJTREE=$(abspath $(objtree)) \
+      $(RUSTDOC) $(filter-out $(skip_flags) --remap-path-scope=%,$(if 
+$(rustdoc_host),$(rust_common_flags),$(rust_flags))) \
+          $(rustc_target_flags) -L$(objtree)/$(obj) \
++        --document-private-items \
+          -Zunstable-options --generate-link-to-definition \
+          --output $(rustdoc_output) \
+          --crate-name $(subst rustdoc-,,$@) \
+
+But this enables _all_ private items to get rendered, which is not 
+ideal. How should i proceed?
+Best regards,
+
+Malte
 
 
-So what I'm wondering about is whether we also solved that problem for
-DriverFenceData.inner.inner, i.e., the C dma_fence which resides in
-that memory, which can be in use by an arbitrary number of refcounting
-Fence's
-
-Does Opaque guarantee that the backing memory within DriverFenceData
-will never be interfered with in an undefined behavior way? The
-documentation does not explicitly seem to state that.
-
-
-P.
