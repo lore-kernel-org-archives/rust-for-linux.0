@@ -1,67 +1,69 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DE3480DDA
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B218477E37
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781708469; cv=none; b=Wp3PPwD+WK1UGEo272YDdP/Rf7KygMxE8rk1n+FFG5uGkH4cEDkixuUFY8VhEYdror579E9MHjXoaXMJcwflSh08Mtqla6BYYkj6vf5IJSJLSN/28UYCxSWHEo0gN2cYoIviWTQu/D9W7lVbruANrobfOJHrTNmLpvFLUIwjEMM=
+	t=1781708512; cv=none; b=hSAQszk8nIBw2xDZhNhgyUv8lPCEkiGFQlxHJVmr0/xPl2Oow+TDaa56YUYG9i7hLYUOuPBgI8g3ZjdhhykqTn16kW127uISyMHroY3F9Jlxy2CDT+A5Cukc+QDniqvW3fpQymuYrYnFiru+pJV1Rr9apQ7oVj8SPl97bs2KWTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781708469; c=relaxed/simple;
-	bh=bt6zDaJ0vnaMQLoNWupzf/a3UM+UiIsrWDMomBp40HQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miF5RXhRY+mBsrWALRCzV+0jN1nWGp9sBYTM/R3vgHqz3Tof/hGKn5+VY6R6FnpRX852QI4tubDEwfAX3Vqb9OeJHnel8OuKA1WLNHQrbMHyh3pJsOVT9ll0h4Ly5zAdVQilxqMAZh0VMRa1y0q4FLfy3L+Y5YE2XSIzjt9U9YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=x7FnnYAe; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1781708512; c=relaxed/simple;
+	bh=v4HgzcMPKtCA1bfRUgCAIH2p6H7a1hFEIgPWyKO8bQc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ac1ODTrFPVxb92LTMQNYjJ7ZATF2paKk32PQbJf8VkAYnyKTKERcIpSgEPlR93i7pE9LbC05C4kV/GLmreSsf8wluT/MdeU79loIbcMogmPxrnkak9LOb7Ugtem7rBEER3LvXl+QDJEeZdeiZjoSQO0maLVjepRhy3dx+wmw4gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=hawcx6v7; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="x7FnnYAe"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-46255b269c2so833400f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:01:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="hawcx6v7"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3967738c801so51789921fa.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:01:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781708462; x=1782313262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KPoNdpy8AP15AC8CXF5QBgukG+bCqakvIlPx8NzDbIM=;
-        b=x7FnnYAeua8ZXl0g+lSVpHQsqLe7Yfo2//bOR4mNrOEbKsTO3ms5CEt1ndeEYCJkPo
-         1NKCwL1DKLy8qDbK+t6OpMwZmXCbbyxcD3cf5UA8nKWI92+hWpDtWQTufxxhzXKhRl/m
-         9CW4TUhaew48vezcy1PEi1fYYdI+gxK+OLFaCzAA1RKJ/XEhOeC0G+CTbnX0w+KQpYD6
-         khuW0Ed5xcwGsV677GhzvtpfsuBU7XVGAicNKN/klBSq1GLQRlaobeC6YclQzFSyP0nn
-         pA8KaYPPuwcNnPsnp7CxURjWhj0ZGIkSwK4DugNE+Ft7U74Ru8gIO2V/iLtnWPWp3sqU
-         v4HA==
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781708509; x=1782313309; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UTwZZKye4gPezAdX2S6YpGx1K71xdb9A7yBEG4t0T58=;
+        b=hawcx6v74GbT9EOTtbj8ucFsSSd0/pvWUbyL2gYhzzthroeu3qCtwzHeLc28sNz3ZN
+         tiiVnpOitW8xommw2DUavJ7v/+pykJMEI7MyL+YJpwkTaNf9WYsEufI4C6Jp3QlmgEJa
+         TKY+F/e2UWIc4Z27jKnJj76EnCfso0npuZ0XApFqj4YrCrVaD7IYzgq/W5KGUscEaZY1
+         3yl6AgFF6AHK5tZbFO7qLAFzT07B4Hkm3eay9Ktsi1df+Gxfh3NKC24Z2LHK84bsrUtr
+         70Xhg584bksqwcFGBOj/s28mWlHQT8oxFo1a5kNQ/S7me2euBVT92XCeaxQwUcnSa5Nk
+         DRxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781708462; x=1782313262;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KPoNdpy8AP15AC8CXF5QBgukG+bCqakvIlPx8NzDbIM=;
-        b=cG/vh2vN5RL648y/JJ5Y2bwsUCSSgh7Drmub23SQZuZUcaP2mixFHn+Z7UOlirwHG4
-         0vMPyQ8+kH/JhXLYXoa73d/sg/uQypxZjdZXOJw4ZHhJsst58icDM+7tR4qt8m7A765S
-         93X3+XS0MhFcUFYUCrPRnAYK4hCLY+xEgKECS31O8uMRemf/iSq9w2JSuIcqaKRj8O2n
-         8qY3uKxeBgW7AfRlOebH8BxwuteEvv+i0rrAnT5/3tfgDxE+/QEyPSWxYPhFBtfKieeB
-         WIFWDcIBHk+dQGm4wsS/xDi5jf+PkvIpF84949CpPODgIhgSaUN395sCBekATj3MuY4C
-         p63w==
-X-Gm-Message-State: AOJu0YxwJnDYMSWid/yS1QMqG8IFztjo+mCMlI3YPZJ9D9c0WWTtjWYJ
-	FmJVZRRMh4eVudLRcg3TzBBUmmS+kAkGzL/ZyrDg9GQFcLzy6v8dflilr28nnS6AH3mjBOz62qJ
-	TFGALwFdj
-X-Gm-Gg: Acq92OEOSOgq7BNYDgFJ8ohFvN/uUTRKWKHjLvAYBKWCKgIJcNXnGWGEXj+47Hwou9s
-	sy0MKuVO++esGj7z0fwwmqsvm3SSS86qyh6WDqQV4o48OTU8y0rIeHKPOR8y2bzyGkPW4/j1kBm
-	16Hs6jAS2YOURXj4CPbMPbq5lkU160whKmO2c0boUT/IbYTv0tIiBuFF7++t1WPVywWdTwgwIHH
-	adLdxpu7X2ms9SS3jgyREPSqiZ4o4EIfga7soAL0RJavCYJdjw6E9hzGveRMzx+jcrLsvucEH+o
-	JVEV32KezpZoyH1Aq2TeRuM/9KNmT2dbVxlBrkRt2VGs8SZ1fKh3tcEEvKNuGw8y7Y3p55AlKFy
-	zZfOl8DqhDIkZSJHIEXKsE/7RduVKqTOZfTjTEV/hLtBs0Y4MXHlwoipxJkNp+dr8bv2DZgeHUd
-	ntyAxjgZ0dFerYMojhSONrPXOEVpjydsMVAw/1ObSeehtHMKvYwCrcajKy
-X-Received: by 2002:a05:600c:6089:b0:490:b724:dbd6 with SMTP id 5b1f17b1804b1-492333ba29dmr75144445e9.6.1781708453371;
-        Wed, 17 Jun 2026 08:00:53 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781708509; x=1782313309;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UTwZZKye4gPezAdX2S6YpGx1K71xdb9A7yBEG4t0T58=;
+        b=L/vPaLX3zi0YmKQ2Qe8v1XpIbiHjtQuRyGDFLRdo+CCZaKVDsKluwhVgEBbH3fBQly
+         9xKtgRDKJ3P5DAY3yZXYaLcLk0LktbFLEFYIlaxmTEPkb5Bl6jzl9HG5dw2AiEMS64uY
+         fYkoxCnz/zLymUAGGE6n0Thjj9Z0bIPgFZDBFxpXvbOkdX3Icy9A0rgYH/e/TbuYyabw
+         ++MeonexVecsBLi9Cdr6DHyLp6pwNrD06BcnNcxx6PJ2rq3j5IihBUXYRrjx280Ta7p7
+         654aoxJUnNNeES2eMWHKxCBFTj6L/SN/DSCdDyfK3OdUr8iPqOaw/5B/xNFSlnSP5mcw
+         jW9g==
+X-Gm-Message-State: AOJu0YzjZNd/A3UmIUGJQGVYguR94vHAFflUH1GDYAHyZpOQNiHFWWPI
+	tMCovyosv5NWxNQjWtflz5nO7g/7fDQLN/6FLo9gQ8NLLK3j68pDedaPcXPQtI5dWuFxhWNoQuT
+	fmWSK/G59
+X-Gm-Gg: AfdE7ckSV6eSXcXFY9PLDSDjxh2+EL2YnzvyJdWXUjntD4NFJ11688ZJTKM+wJFxs3d
+	cRhSZsk0gY5iDgKiYP2Id9igcdbxVfmQZA7DJSnphpv7IT+mhCrq4r+z8QNGYnrnIqmQ/PaguTV
+	K5iWgggmNGuHzPEsxxc3kKCbvTsxOy7w667mdc/bJvwGjEdZAZAtTcEvW+60F1KeODrdwCxzKTN
+	/owKw9aeM8YgjN2JtZsfoZkyRSvDQ1nQqsst9H8CcQqbroEykDpiacGEveoiWYgsvu5rx3HaAIl
+	aKX4hK2mvmH0DSsm5RmS/6pFNS0BWOHCVUyuUye8mBPn5OOrYewiLh/lxPAD7exKb8WIwRUBm13
+	k7qcPfvrFI3I42tveqJvxMlhHeY3RkGzBVFdeZObGWx08G39kUqKnAdtMB17NdREKfqySCsR9H+
+	W6Cb0ZhIBUaU2klzf8dBKCppaF90knClVIGaOPNPfy504PsXhIsuJgyCxU
+X-Received: by 2002:a2e:b888:0:b0:38e:6:4f89 with SMTP id 38308e7fff4ca-39969c2feadmr11390881fa.25.1781708509077;
+        Wed, 17 Jun 2026 08:01:49 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922fa9f2c0sm203011965e9.15.2026.06.17.08.00.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-461abb44c3dsm13769159f8f.9.2026.06.17.08.01.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 08:00:52 -0700 (PDT)
+        Wed, 17 Jun 2026 08:01:48 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
-	linux-usb@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -71,79 +73,60 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 7/9] rust: usb: add usb::Device::reset_configuration()
-Date: Wed, 17 Jun 2026 15:59:19 +0100
-Message-ID: <20260617145946.1894-8-mike@fireburn.co.uk>
+Subject: [RFC PATCH 0/2] rust: crypto: library AES-128 / SHA-256 / HMAC + RSA
+Date: Wed, 17 Jun 2026 16:01:31 +0100
+Message-ID: <20260617150143.2152-1-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260617145946.1894-1-mike@fireburn.co.uk>
-References: <20260617145946.1894-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a safe wrapper over usb_reset_configuration() so a Rust driver can
-re-issue SET_CONFIGURATION for the device's current configuration,
-resetting every endpoint's data toggle and returning each interface to
-alternate setting 0 (clearing stalls) without re-enumerating the device.
-It sleeps, so it must be called from process context.
+This RFC series adds a small, reusable kernel::crypto module so in-kernel
+Rust code can hash, encrypt a single AES block, and do RSA public-key
+encryption:
 
-This is the in-kernel-coordinated way to recover a device whose endpoint
-toggles or stall state have become inconsistent with the host -- e.g.
-after another driver was forcibly unbound, after error recovery, or to
-return a multi-function device to a known state before re-driving it.
-Drivers must not open-code it by sending a raw SET_CONFIGURATION control
-request: usb_reset_configuration() also re-installs the host-side
-endpoint state and is serialised against the USB core, whereas a bare
-control transfer is not and is unsafe on a composite device.
+  1/2  sha256(), hmac_sha256(), Aes128 (single-block ECB)
+  2/2  Akcipher + rsa_pubkey_encrypt() over crypto_akcipher
 
-Because it re-issues SET_CONFIGURATION it resets the toggles of all the
-device's endpoints, so on a composite device it disturbs sibling
-functions; callers should treat it as a heavy reset, not a per-endpoint
-operation (for a single stalled endpoint, prefer clear_halt()).
+Patch 1 binds the library crypto (lib/crypto) functions directly
+(SHA-256 / HMAC-SHA256) and uses one rust_helper_ shim for aes_encrypt()
+(its transparent union is unbindable). It runs synchronously in the
+calling context with no allocation and is the independently-mergeable,
+self-contained contribution.
 
-Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
-Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
----
- rust/kernel/usb.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Patch 2 adds crypto::Akcipher, a thin wrapper over the asynchronous
+public-key API (crypto_akcipher) driven synchronously, and a
+crypto::rsa_pubkey_encrypt() convenience built on it: it DER-encodes the
+RSAPublicKey the "rsa" transform expects, runs one encrypt, and leaves
+padding to the caller. The request/scatterlist/completion plumbing (all
+static-inline or on-stack) plus a kmalloc bounce for the DMA data path
+live in one rust_helper_ shim; crypto_free_akcipher() and
+crypto_akcipher_set_pub_key() are exposed through 1:1 shims. Going
+through crypto_akcipher rather than the MPI math library means it
+composes with any registered RSA implementation, including hardware
+offload. It is kept a separate patch so the public-key surface can be
+reviewed (or deferred) on its own without touching patch 1.
 
-diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
-index c7bf4637ee90..5dc5b496b970 100644
---- a/rust/kernel/usb.rs
-+++ b/rust/kernel/usb.rs
-@@ -697,6 +697,23 @@ pub fn set_interface(&self, interface: u8, alternate: u8) -> Result {
-             bindings::usb_set_interface(self.as_raw(), interface.into(), alternate.into())
-         })
-     }
-+
-+    /// Re-issues `SET_CONFIGURATION` for the device's current configuration, resetting
-+    /// per-endpoint data toggles and returning every interface to alternate setting 0
-+    /// (clearing any stalls) WITHOUT re-enumerating the device.
-+    ///
-+    /// Wraps [`usb_reset_configuration()`]. This is a blocking, sleeping call and must
-+    /// only be invoked from process context. Note: it resets the toggles of ALL of the
-+    /// device's endpoints, so on a composite device it can disturb sibling-interface
-+    /// drivers that are mid-transfer.
-+    ///
-+    /// [`usb_reset_configuration()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_reset_configuration
-+    pub fn reset_configuration(&self) -> Result {
-+        // SAFETY: `self.as_raw()` is a valid `struct usb_device` by the type invariant;
-+        // `usb_reset_configuration()` only re-issues SET_CONFIGURATION and updates the
-+        // host-side endpoint state for this device.
-+        to_result(unsafe { bindings::usb_reset_configuration(self.as_raw()) })
-+    }
- }
- 
- // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
--- 
+Both were factored out of an out-of-tree in-kernel Rust DisplayLink DL3
+dock driver (which needs SHA/HMAC/AES for HDCP 2.2 and RSA for the AKE),
+but the module is generic. Compile-tested in-tree against drm-next.
+
+Mike Lothian (2):
+  rust: crypto: add library AES-128 / SHA-256 / HMAC-SHA256 bindings
+  rust: crypto: add RSA public-key encryption via crypto_akcipher
+
+ rust/bindings/bindings_helper.h |   3 +
+ rust/helpers/crypto.c           |  95 +++++++++++++++++++++++++++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/crypto.rs           | 255 ++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 5 files changed, 355 insertions(+)
+
+--
 2.54.0
-
