@@ -1,148 +1,197 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A373D28B7DA
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781709096; cv=pass; b=IaioCP15CWtIR9aoTbpujIVhMj8Hgw74XPjbD5WsHlKPoYAR/VNkrgx5T+DMpfAiXqEFx2VuUsIyvTH/nMUmzvPZ5aM0b2JayDf5JqLg1RKvNKAPfxxc1nuakY5q5yo7WEPyJDDApA2+t6Ql9BzXPZcN8pErJ6R4oL+/TBBDIF0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781709096; c=relaxed/simple;
-	bh=AH6TzLeaF9pIDFr0hAkgF7LI4JXf/uaA52xkp3m/Png=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gQS+l5t6Tcw4iVH8sZfpPcx8+ayALrOkNVgKNAj0Lv0F3XUEsJd444WRCvn7928zxj4Ux3jiZBh8+cN5vU38qgkHYf1yYysWRKc4NqEH5Z1h9uglvlXBzxD9TORhnyjjHicXhGGJirxD1R40yJ9fHFK1s/ivnb7dqdVYpmEqByw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HwLPHN7u; arc=pass smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C96C23D297
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781709180; cv=none; b=BB/HN8HukN2Lda7um7XVV1esP7dCkAjtm8U35tpkaw2KSjK8vyQ5Tq/X6DIcBJ7jf1w98bekCnWw+E3SXs9xOIF2u7iV/kQLCgYKbO37t41zaDDeUZ9Lpso62EQ6sNgR4xtLhZ0vR7FLK68UbA5r/2cp13RwCoMhJi8kSsbGN38=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781709180; c=relaxed/simple;
+	bh=olS3e394ZJ2jFIELScF6fCjQNACLyN4Qx8f9GOALydo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l0uDlymBvPq3hcl4lMWWZzKsmSn5eQ5Mn/juxVxy5LWUydwfAiBqDvqy9bk2tsCk0rQYsn7xUhK1kh0RgakHRLAbPll8WxwltIc90VGUItJeXSFkh46HC1C2jlcf1Qt/i+PlEcmCzBQMB6JuXVVuM5CeB9+AiRCbaFFo12U+OPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=OK7HEJwe; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HwLPHN7u"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1365eb2a773so272149c88.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:11:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781709095; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VexSM55VWIdE+GpYt6xLcdDzLjsDWS2ULCRJDhAAa2qnsBBjmqKu/r0oqdbslPHyIL
-         opxRb5nyAfsxP7I+tsZxhhWZp+ZKyjsiUT4mZvg+4KJuCrn038K0T5tyFWnDN1VCF4qX
-         s5NDTrXeLvS5nGeFVLU589Eu44NhOIRee+duSgmaPy8b9VyQtX85LrZfMZCcYu+YfZbM
-         suGk0p7kbs00uCAM2wC01p7QMx8PiNAiAjkzHY5d7OqzuquuzBPmC96/8zXE3MteGscG
-         txCDEUiMNLxMtYJIU4/yBxF1NZWxRDPu3z8lt4HZijt0U0EqnhDf4rt1AZkAVbEqo4QT
-         Fn2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AH6TzLeaF9pIDFr0hAkgF7LI4JXf/uaA52xkp3m/Png=;
-        fh=NSJg4XW8GIIV2fd059A3uAsanpzXeYC+ehbUI1GyiSc=;
-        b=lNAG4JOG6lOcQTVd92nczadkkqZG6Rzy4kcTqtO36WWl1GC9Vwh2Tz/TRQaUaqbKXX
-         fTAEFqMaPHPzGtPxNQkpJ+VVdbZZ5BrRJYYeu2FpwvGLj6L96YpfRUadzEOt42iK45v0
-         /EKxYvyFBDmTHjSKvNIr4wHhhh6SO0PaSOgY2yJJGFfOU+7FiIu9ZK6XysqLSqaSSxRl
-         w14viRZW5DTLCanBV4E9X2c/OUumuRkahIOL2dztBjnfxYfxBVb4V93vh0DqkArOXBD/
-         sTIzzrMcdPq+knCp5yhptp3vxBbIcwlv7qzOQgQTUn8MhDbojl8PDGw2AN36kdt5H+U7
-         SU5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="OK7HEJwe"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490ace40f4bso56319155e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:12:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781709095; x=1782313895; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AH6TzLeaF9pIDFr0hAkgF7LI4JXf/uaA52xkp3m/Png=;
-        b=HwLPHN7uBEVNJ8nZz5W8K5dg2p5jVSH58w7K6Iy91/u1k80meywY/enmc+PbjmhoB5
-         X4SvJrlGHAwaRqR4xgVEKh2EMwK8RuX7xY0cA3hkSyJheGNlzyyFiiLq6Fi3KOnuwsG8
-         nE4996zSmBE3jyWZvdP99tJM2qV/vPskBmHXPha62Hp0tL96VsoPVtF7OpJ2kHqwl6ep
-         OopNzFJVr1wG+LGx/vxJbcbfX2hBHuq05xaG8w940gMITYy5UpDMMc+yIH2zj6AlLeWK
-         seG9V9JVzMEgPikKjfRLype8wEbeGId9seatfIO/HwgdnY+CI7bUbObO6s9ezKU0gKwN
-         ABaQ==
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781709176; x=1782313976; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1mULv+koftw5O8PCqfx+7jD7KAbxdOhkeCix7/plmIA=;
+        b=OK7HEJwe5E0MKidBErzvmYxIIXFJTxIh06jUakjsgyVmtPF7BLRhbviTeIA4ywgVPF
+         o6J59DLd16VAZS6FYtHrGqxW1yInQYdnLyURWqjKL6XrJFC6m7LJMOzN8SmOcLOK7God
+         g0GoeOZ5nRysNH4PXdvgkozsKjwaB5/CJZqzTlsEmtZ/Bo48QkdvMjn7my3mP8h2+99p
+         EAEycVZXDRbpQMKIEV33AfZuXitNwXToxKaAFXza5azMF5V4xS5CgCZVNXOExR/hPOEn
+         1PHx0RchfDAP1782kxAniPM4QwWub8HWTTjOJ9XkK3EjTM5EwpHA/YP8C4VF8DMgDYSV
+         C5Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781709095; x=1782313895;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AH6TzLeaF9pIDFr0hAkgF7LI4JXf/uaA52xkp3m/Png=;
-        b=JeqJRqwqITtInA3rN9aVleDqJEUsGK0gd0jTXsb/488vW3nlHEac6FRChsbrbYk6QN
-         vcAy2kc2AAjfR1UkscHNAXTNuMkm8DoJYdsS5za8aGLWdayIpBDr19ggKQRnp8fcl5YN
-         a1jWbSwIzzagmxmHJdHBl89p00u58ixIGKVCI0n34EeKMKFjnLKTrc++N/KuEyTTfu/q
-         r0GleGNUBSdTYhKeuSYS78R7PF03nqHUY/zM1SHIpBTxiRagGH1ydaqH3i3Ha76VmyV3
-         FdSmzgHqY/HKW8osOpFtk4Up06f1G2TA5vWQdDFwL9sU/eCfQ5/OysSDZmV7It1m2snj
-         K9aw==
-X-Forwarded-Encrypted: i=1; AFNElJ+1ym7wHbgPedgZepNx0H6pJhKlgz4JZ0QRlQBK0pXcLK3tabTRqpmIe/yqyzgVYRrxwyDbXloQJKoSz8tfug==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyr/MemzoSjIo5HHY1/RApkVUBulOhgp8aMKMEu0OsBkhyK459h
-	+jeKE5lubDNMxACT04Ab2mwgQgf3kqExPTGrSgKFTmvf5a2vb6+jmPzlcVMOwINjRwf8y5+cRYY
-	2eZrOg7xQl/dR9nibpJnLpi1e7Coh4xk=
-X-Gm-Gg: AfdE7cmll6XpwkawIJwA194bFuoFQHG+VJtbKUwHq2gcTi6WWwe/lpaE5zVWP4s+oNs
-	tP5UgJ+pidiav2Kbq7TQCvJKCStETHwkprjSWDIyGcHe+OAewc5BTAjhlGYuvxUV7fXZ8boL4Iz
-	y5E70ALnNtk95cjzXJKRu1JzA1bwJusnSxlv/AFCs0WJ7ZAhI3Tmbv2Hl+8LWjFqLzWJzHYsnZv
-	sOn/bEAfijXLZkAxH/AumzCKX6gHMCnJuxKPZitBvN5dc9ewSQwCGtaeklj4cnZSCPhjtT4X8Vq
-	MRuVadaqO4py9YkUS04ruBBc7XnAnh9XWAlJba24XoPCchZmWtROzjBgPnT+YnazrfKWIR2+YV5
-	urq/RnWrOIIXa
-X-Received: by 2002:a05:7301:1298:b0:2f0:ddce:8468 with SMTP id
- 5a478bee46e88-30bca21caddmr933276eec.8.1781709094242; Wed, 17 Jun 2026
- 08:11:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781709176; x=1782313976;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1mULv+koftw5O8PCqfx+7jD7KAbxdOhkeCix7/plmIA=;
+        b=Xia2xy1xb44o3POhgcuwSRf02UKW9rezWJIQH+Mm9Hl8GzFlfTKrI0IHx5FKFSP/SM
+         ay+sugyaig2bMpJ+brt0cwo4oDvsYs26dJKIemeM1+M5Ne7Du3QA1IHfTg53lyeJlWcc
+         h631Ml+Qqqcy0vveF+Dl6p0pSydoVHtUs4GB+TSBZ0DjB0XjaGyWYmxNJLHaeqYpuUxl
+         zPoF08z1aDsa4w4vJDUedg1qeVk+XA17rP4L/iWHHu90P79HMgnH7Jve0Df3U0QojnsO
+         ZPeVHx66M4Z1QMz0bSF59kd2aAE6MxuYI0XBqBLoA7bCz8pNKkIuCL+B+plJ5H1r88Hk
+         xYsg==
+X-Forwarded-Encrypted: i=1; AFNElJ+Lu1mjoxJER9nj2ISywddbURkxlKJybaeFu9Ap4kL/uvhNLv/oNTj1l8OLJVNAjbYo7RyVJn+jnxNRBwpifw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUF04hpJUH9F1+v+yglBv1x/CaLRLdrJghj+ZsuYAzG4dUzFzq
+	ZLphP5xEHSVDWJMsxwItfjFqzRpDeISiBgCWQTTqCC1GTzZcCiHF04wLCOdWYHJdMQ==
+X-Gm-Gg: Acq92OEFn1hqcpRzti3nT1R0Ln3vI5KU9t0esK0valQ0i2jyL0qD6BEIHbysFYYthKG
+	MpwsEHFdJWAetVwryfWXRQlV/01jGapfdUBjYLW9nvlUMBn/4IVO0eY5J/h05zW6ImgxAg0G1ri
+	DZnl6znkjboKLsryLK17z7cwiE2OXOuQ0h4tlWRKAX/cHmVeyHoVJ79hHzIkwuZ49cTDiq1cKpT
+	22HZUAyelExcg4hN9UcsEpZB9uJ4rJLZcR9oC8xrurgNWb4xx7Bj8Zne5E6lKr2saBuDFPpt5Qm
+	cLhLT+0KzCLrQejATHsoe1TlkIViQfAuc7hZpEX/xl3W32BC0+EPugAlTs01JfCAKunhE+cwSyC
+	/bhLGXuc8UQ9RvMpQKIdYNd6EVnp8vjkw+TiJNHXQd0c3LDQ5Zr+UIo3c8stdqNBAK9A5yMYP9v
+	jMdl0hxe3MBAFPqqgF/8TfAiHmGrlR0AXbsMxNiPs0RObTCyOL2+22t5Bu
+X-Received: by 2002:a05:600c:828a:b0:490:3fdd:d353 with SMTP id 5b1f17b1804b1-492333a14c5mr76057075e9.8.1781709176515;
+        Wed, 17 Jun 2026 08:12:56 -0700 (PDT)
+Received: from axion.fireburn.co.uk ([137.220.119.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a9a399sm151019305e9.14.2026.06.17.08.12.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 08:12:55 -0700 (PDT)
+From: Mike Lothian <mike@fireburn.co.uk>
+To: dri-devel@lists.freedesktop.org
+Cc: Mike Lothian <mike@fireburn.co.uk>,
+	rust-for-linux@vger.kernel.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/7] drm/vino: DisplayLink DL3 dock driver (RFC, help wanted)
+Date: Wed, 17 Jun 2026 16:12:37 +0100
+Message-ID: <20260617151249.2937-1-mike@fireburn.co.uk>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260617150232.2210-1-mike@fireburn.co.uk>
-In-Reply-To: <20260617150232.2210-1-mike@fireburn.co.uk>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 17 Jun 2026 17:11:21 +0200
-X-Gm-Features: AVVi8CdZnL9JO8r2T42R7lYCwOeoWy3VmEc9cj3VyPuVSQ7bMcrxUVbNYko7up8
-Message-ID: <CANiq72=PBnUkJ6yGk-CiiR7972=oHTfv0ebw0EfRchVarwoEGw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/5] rust: drm: minimal KMS bindings, EDID read,
- rotation, HDCP defs
-To: mike@fireburn.co.uk
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Mike,
+Vino is a clean-room, in-kernel Rust DRM driver for DisplayLink DL3 USB
+docks (Dell Universal Dock D6000, 17e9:6006), a native replacement for
+the out-of-tree EVDI module plus the proprietary DisplayLinkManager
+userspace daemon. It is built on the in-tree Rust USB, crypto and DRM/KMS
+bindings, which are posted as their own prerequisite series; this series
+is the driver that consumes them and touches only drivers/gpu/drm/vino/
+plus the two drivers/gpu/drm/{Kconfig,Makefile} wiring lines.
 
-A few questions on the cover letter that may give context to
-readers... (for this and the other series you just sent)
+Prerequisite binding series (apply in this order before this one):
+  - [RFC PATCH 0/9] rust: usb: synchronous bulk/control transfers + helpers
+    https://lore.kernel.org/r/20260617145946.1894-1-mike@fireburn.co.uk
+  - [RFC PATCH 0/2] rust: crypto: library AES-128 / SHA-256 / HMAC + RSA
+    https://lore.kernel.org/r/20260617150143.2152-1-mike@fireburn.co.uk
+  - [RFC PATCH 0/5] rust: drm: minimal KMS bindings, EDID read, rotation, HDCP defs
+    https://lore.kernel.org/r/20260617150232.2210-1-mike@fireburn.co.uk
 
-On Wed, Jun 17, 2026 at 5:02=E2=80=AFPM Mike Lothian <mike@fireburn.co.uk> =
-wrote:
->
-> It is deliberately an RFC and interim: it does NOT add safe Rust KMS
-> abstractions (CRTC/plane/connector wrappers - an active upstream effort),
-> only the raw binding surface plus the trait/visibility tweaks a driver
-> needs to call the C helpers itself.
+It is posted as an [RFC] in a deliberately INCOMPLETE state to ask for
+help with one remaining blocker -- the control-plane engagement "wall"
+(see below and patch 3). It was previously a single ~5000-line patch; it
+has been split into one self-contained subsystem per patch so it is
+reviewable and so others can pick up and fix a single layer in isolation:
 
-Do you mean this is not meant to go upstream?
+  1. skeleton + USB bind + the plaintext connect handshake (proto);
+  2. the clean-room HDCP 2.2 AKE/LC/SKE (crypto, rng, hdcp, ake, golden);
+  3. the AES-CTR/AES-CMAC ("Dl3Cmac") control-plane seal + arm (cp);
+  4. the Vino RawRl mode-2 framebuffer codec (video);
+  5. the DRM/KMS device + EP08 framebuffer scanout (drm_sink);
+  6. DDC/CI brightness/contrast, DPMS power and DFU device-info;
+  7. KUnit self-tests for the protocol and crypto paths.
 
-Or do you actually want to land this interim state? If so, then it
-needs to be well-justified why we would want to make this exception.
+Each commit builds and the module loads on its own, so the series is
+bisectable. With the prerequisite binding series applied it is
+git-am-clean and checkpatch.pl --strict reports no errors (the only notes
+are the expected "does MAINTAINERS need updating?" on the new files and a
+few >100-column verbatim log strings).
 
-> drm::Device::as_raw() is made pub as a documented temporary escape hatch
-> for calling the C KMS helpers until safe wrappers exist. That is the part
-> most likely to draw objections, so it is split into its own patch (3/3):
-> the feature flags and header bindings in 1/3 and 2/3 are useful on their
-> own and can land even if the escape hatch is reworked or dropped (e.g.
-> replaced by narrow per-helper safe wrappers).
+Note on tooling: the implementation was AI-assisted (see the Assisted-by:
+trailers); the reverse-engineering, the hardware testing on a real D6000,
+and responsibility for the code under the DCO are the author's.
 
-Yeah... this sort of escape hatches aren't great. What is the reason
-for not directly working on safe abstractions?
+What works, all on real hardware (Dell Universal Dock D6000):
+ - the plaintext connect handshake over the Rust USB bulk + control API;
+ - the clean-room HDCP 2.2 AKE/LC/SKE -- H', L' and V' all verify against
+   the dock, establishing the shared session key;
+ - the AES-CTR + AES-CMAC control-plane seal, byte-exact against the
+   reference daemon's captured wire, plus the plaintext stream-open arm;
+ - registration of a real struct drm_device via an atomic KMS pipeline, so
+   the dock appears as a mode-settable GEM/dumb DRM card, with a live EP08
+   framebuffer-scanout hook on every page-flip.
 
-> Factored out of an out-of-tree in-kernel Rust DisplayLink DL3 dock driver
-> that drives a virtual connector and reads the dock's downstream EDID; but
-> the bindings are generic (the same path simpledrm/gud/udl use).
-> Compile-tested in-tree against drm-next.
+What does NOT work -- the wall (help wanted):
+ After the arm marker the driver sends the first encrypted control-plane
+ frame and the dock never acknowledges it (the wsub=0x45 ack count stays
+ 0), so the CP cipher never engages and no pixels flow. Every
+ host-observable channel has been matched to the reference daemon -- the
+ bulk wire is byte-identical through the arm and the first encrypted frame,
+ the AKE verifies, the seal/MAC/IV are byte-exact, the full EP0 control and
+ endpoint sets match, and the arm timing is tighter than the daemon's --
+ yet the dock silently drops our encrypted CP while engaging the daemon's.
+ The gate appears not to be visible on the host wire. If you have knowledge
+ of the DisplayLink DL3 control-plane engagement sequence, or ideas for
+ isolating a whole-bus timing/ordering property a per-channel diff cannot
+ see, help would be very welcome.
 
-What is the use case? It is an out-of-tree driver? If so, the
-maintainers may not be able to take the code unless there is an actual
-user in-tree.
+Not-for-merge as-is: the driver carries RE diagnostics behind pr_debug and
+a small captured plaintext cap-announce skeleton (golden) that a fully
+field-derived builder should eventually replace.
 
-Or is this driver expected to land upstream? Do you have a link to the
-source code?
+Mike Lothian (7):
+  drm/vino: add DisplayLink DL3 dock skeleton and plaintext bring-up
+  drm/vino: add the clean-room HDCP 2.2 AKE/LC/SKE
+  drm/vino: add the AES-CTR/AES-CMAC control-plane seal and arm
+  drm/vino: add the Vino (RawRl mode-2) framebuffer codec
+  drm/vino: register a DRM/KMS device and scan out to EP08
+  drm/vino: add DDC/CI brightness/contrast, DPMS power and DFU info
+  drm/vino: add KUnit self-tests for the protocol and crypto paths
 
-Thanks!
+ drivers/gpu/drm/Kconfig          |    2 +
+ drivers/gpu/drm/Makefile         |    2 +
+ drivers/gpu/drm/vino/Kconfig     |   21 +
+ drivers/gpu/drm/vino/Makefile    |    2 +
+ drivers/gpu/drm/vino/ake.rs      |  167 +++
+ drivers/gpu/drm/vino/cp.rs       |  686 ++++++++++
+ drivers/gpu/drm/vino/crypto.rs   |   81 ++
+ drivers/gpu/drm/vino/drm_sink.rs | 1466 +++++++++++++++++++++
+ drivers/gpu/drm/vino/golden.rs   |   69 +
+ drivers/gpu/drm/vino/hdcp.rs     |  167 +++
+ drivers/gpu/drm/vino/proto.rs    |   73 ++
+ drivers/gpu/drm/vino/rng.rs      |   12 +
+ drivers/gpu/drm/vino/video.rs    |  348 +++++
+ drivers/gpu/drm/vino/vino.rs     | 2053 ++++++++++++++++++++++++++++++
+ 14 files changed, 5149 insertions(+)
+ create mode 100644 drivers/gpu/drm/vino/Kconfig
+ create mode 100644 drivers/gpu/drm/vino/Makefile
+ create mode 100644 drivers/gpu/drm/vino/ake.rs
+ create mode 100644 drivers/gpu/drm/vino/cp.rs
+ create mode 100644 drivers/gpu/drm/vino/crypto.rs
+ create mode 100644 drivers/gpu/drm/vino/drm_sink.rs
+ create mode 100644 drivers/gpu/drm/vino/golden.rs
+ create mode 100644 drivers/gpu/drm/vino/hdcp.rs
+ create mode 100644 drivers/gpu/drm/vino/proto.rs
+ create mode 100644 drivers/gpu/drm/vino/rng.rs
+ create mode 100644 drivers/gpu/drm/vino/video.rs
+ create mode 100644 drivers/gpu/drm/vino/vino.rs
 
-Cheers,
-Miguel
+-- 
+2.54.0
+
