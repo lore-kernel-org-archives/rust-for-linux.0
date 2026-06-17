@@ -1,54 +1,87 @@
-Received: from mail-43170.protonmail.ch (mail-43170.protonmail.ch [185.70.43.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A343101A6
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 14:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65B147DD66
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781707628; cv=none; b=cxbK2kcEbIqi7iJm1oDJoGEJob8yKPLp7SOG/gbiSrF9hOl1PKZF7kNnmm/mdnR9MoZ311IPrlbW3XkZ9Z7noS5rbGjh1Li7/56V6obY8UfGflyKiSCjrOMAJd83pF34/X0s+wdZhtGPe7Fo05ZFFB96jAyTk9wOla2AefovKoI=
+	t=1781708453; cv=none; b=NT/4o6IxQEly9XhHNuIqfbozAx1TQy0dk4+AH0bG8byZve46oKJ7cfFrLLm7iO8axvdsHlxoujlBmXy6DNbrhyol9PAcK6k1siHvzZ/9XMwU7U80x3rKfl4kU19X9Z5ko9nA4GLEtTxRnplR30Y8S+CSGI1QGom1vkXkZUPgSPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781707628; c=relaxed/simple;
-	bh=AIOF1XTJNUiU0ND7JuxPp8kYSZdIAtXGqy23PQ8ZToU=;
+	s=arc-20240116; t=1781708453; c=relaxed/simple;
+	bh=jQXIbkZPTlx0Vgngv9dkw/KwltbenoRqDBTRSViQLkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chhUNxBBKJ1CH14CQAkxYqRGYY2oz2Qn1Y1octXQiLRgj71Zb2ddPE5VpVA3ZOS11fJTf/OE443COMFIy6Zk1GeP6RDZZ9Mz8vl4tSumKqBctU4iBbrCVslZrhkLlcXjzrxdt0gNuORqfUyYfpSFRYjXSnf7MP3XE8NSAjmlcLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=fN4PhD4o; arc=none smtp.client-ip=185.70.43.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	 MIME-Version:Content-Type; b=H8Yl80itkzO7YFtPaNu9xW64kMhGCqpUiQA2eNGbckyFdZmlozIxSjgceh4eNaw1gqEgLKKGlBm7fBUqCEMSbnYk9/tt1nBP6hgVLFvKsIk0jh1cflthJ3femmXHLUOED9h7UX0JgNo5axIaOCls+Ej2PKP9uF2XxyxRIWxWjfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=MCldw33q; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="fN4PhD4o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1781707618; x=1781966818;
-	bh=QpyGIfLTfesb0ihoF5DEL8tx4iqGHnCHojIjKNtaPu4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=fN4PhD4o01Cyx13JkOhvY2tlpuQme4ST0gUydbX0j6oxbrua1nGbJ2qThO2gYv5f2
-	 EE/H9o1hwWgvQipYaqklM3DHIaQAxU7Z7n/rF6+QmDTEDtYsFmAXQoZg/8yIqX48KD
-	 PARInfr2N2nv/ZKCXmdxyJDBibpEoVlN7AsGMB9yo7G23r2HqIg7bwu91QyNqDV9KR
-	 /95HRt0fq9R5nXaoUwbkL04szdVfI4XuinV0SfOzqOqOhjnv63ha2I2EpD9BJHx/bT
-	 nXQhGGrl/6IUJxy6U0sDXz9BzkxvSUxH7Y0bb8vqxNkQ9+yUQkoiPAzwGJEgBo9Jyr
-	 6iKI00ROp7sPw==
-X-Pm-Submission-Id: 4ggRWw3MqSz2Scmn
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="MCldw33q"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-461edb387ddso1467004f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:00:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781708446; x=1782313246; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NWZ98RGC+mUgaExZQOLC3zMe/TcesbqpVW9DuHmXdX0=;
+        b=MCldw33qJ/kR68GtxlNRVH8NyJNrrhTLinnkp7s7LQEPEP97W3qNXbVWo4J2bAaRWS
+         jHtvvPKaM7xp4KlMGsh/Gs6UhxGr352817hhF+0yskEQaLpKMpmcTV0+bJkhQGu2Kvsm
+         8Tx8kpD46r31BNFBuNIgO36ZJWdJkU8zOrl3TwGOla3AKACs0O3u3GScD2HKooJbmem/
+         cBGTq3uSuJrhuUnlEzxW8PNIO3MqMzMh8Qc2t34ges1dQqNYSt7Lm6hxsbWeHP5yNtag
+         rCZOIcU1KuA3blKwaHs2h31eKjZUrqX7XG7rpMvU59Fetj9bYO3U05tGr0bIQzRnwvl6
+         DsIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781708446; x=1782313246;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NWZ98RGC+mUgaExZQOLC3zMe/TcesbqpVW9DuHmXdX0=;
+        b=Cy/oH0Mf6ld3A7kH1lIu2I0YMB2fjsMRHquIvHBLFZ1mDbhCuyalIHhIkqNuko8fLs
+         xILdVR8mPGJFMvo+Ih2SoPB7kGhwtZ4xaop9uGtCbwkyCEaFY27y8qaE/+vh23kABDD6
+         MyTtzCzBn22bIoZdOwSzQ87vsk+U8O4PjGAvbXy9oJf7vRWKZCajB4RuYddmRSny+9Ay
+         GjIqxEupaLm9m8GEdkLA7ZxMM2UD10VFuq5GfPue/VeMELTz39YGgZxs6FtUDdlb0G9n
+         c23k8lZLkU3wAgJuQH+HMf58LnRHeHVLx23PIRJOT+RizC/ppbAfstkkexSf/Jhm/HPc
+         ElwA==
+X-Gm-Message-State: AOJu0Yz5J+l0fUlgQmJhKpbBtMiVd0UMqFFtLEkxyvsxIkP3EyPJP3sw
+	Z/bqZjH15YE1sa+xQBLRJfp9qLOBEcucnhGUkktLf6RqIx2Cxw4nGoM6auBsTwKqnCwugafMpfB
+	V3sIYrZLV
+X-Gm-Gg: Acq92OFOjLv742aRROtScUKign+NlWgOOkoAvkxUpObTZXoRSDaI/xD84LLJSq1yvfP
+	vJRSQAHPHxiiVZhr7Bar6ph862j9RkHqaBvm2j4K+im5Me1E7xUH00pYvEfSENy4gZhcYR1Bm9I
+	o82C2lzoLMH/6Uo995v/NeL+2Ym81IUPK1hjO/UgLQcu5ZSeI7/aLXiSTv9D0p7pkzO26QOh/r3
+	G2S4IlP/TBTQLRaz+MRE5BTmXC4Po9yY8rcw0qle598TNfgv37+KTjFA1+ZgiuvXZI+uvmtP5Dz
+	CFYAFrHSJlmlhlqR7/f30YB4oxPZCcSmibogNSA6iCApWZ8wCHIYNxEE+Ggn2/QPFIwYsHnscqc
+	9Wm7gLjgvZXQkkf2svB9TXeXgP9p2eAIic/D1w4ClYgIbao4mNqEOSPEEp0qNFfjw6x0sf7yzrb
+	BvOMnd0GChVhYMrADZArI6gFnDeGzUdN+4xlNkHeJYYyB4R6k/ReldiQEG
+X-Received: by 2002:a05:600c:e54a:10b0:490:e104:7943 with SMTP id 5b1f17b1804b1-492333e294dmr54936095e9.18.1781708445930;
+        Wed, 17 Jun 2026 08:00:45 -0700 (PDT)
+Received: from axion.fireburn.co.uk ([137.220.119.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4922fa9f2c0sm203011965e9.15.2026.06.17.08.00.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 08:00:45 -0700 (PDT)
+From: Mike Lothian <mike@fireburn.co.uk>
+To: rust-for-linux@vger.kernel.org
+Cc: Mike Lothian <mike@fireburn.co.uk>,
+	linux-usb@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
 	linux-kernel@vger.kernel.org
-Cc: ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	tamird@kernel.org,
-	daniel.almeida@collabora.com,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v2 1/1] rust: workqueue: add ScopedQueue for lifetime bound items
-Date: Wed, 17 Jun 2026 17:45:55 +0300
-Message-ID: <20260617144645.253444-2-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260617144645.253444-1-work@onurozkan.dev>
-References: <20260617144645.253444-1-work@onurozkan.dev>
+Subject: [RFC PATCH 1/9] rust: usb: add synchronous bulk transfer support
+Date: Wed, 17 Jun 2026 15:59:13 +0100
+Message-ID: <20260617145946.1894-2-mike@fireburn.co.uk>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260617145946.1894-1-mike@fireburn.co.uk>
+References: <20260617145946.1894-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,259 +91,184 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a workqueue wrapper for work items that are not 'static.
+The USB abstractions currently let a Rust driver bind a device
+(probe/disconnect) but provide no way to move data, so any real driver
+still has to drop to C. Add synchronous bulk IN/OUT transfers, the most
+common need, as safe methods on `usb::Device`.
 
-Tyr reset work is queued from a handle that owns a Controller<'bound>
-where the work item holds references tied to the lifetime of the bound
-device and its mapped IO state. The existing API only accepts 'static
-work items which cannot express that relationship.
+`Device` is made public and gains `bulk_send()` and `bulk_recv()`,
+wrappers over `usb_bulk_msg()`. The endpoint pipe is built with the
+`usb_sndbulkpipe()` / `usb_rcvbulkpipe()` macros, exposed to Rust via new
+`rust_helper_*` shims (they are function-like macros that bindgen cannot
+bind directly). Both methods take the endpoint's `bEndpointAddress` as it
+appears in the descriptor (e.g. 0x84) -- matching the later `clear_halt()`
+-- and use its low four bits as the endpoint number; the direction is
+fixed by the method. The transfer length and timeout are range-checked
+into the C `int` types, and the timeout is a `Delta` (a zero `Delta`, or
+any sub-millisecond value once truncated to whole ms, waits indefinitely,
+matching `usb_bulk_msg()`).
 
-Introduce ScopedQueue for this case. It owns the underlying workqueue
-and ties enqueued work to the queue lifetime so borrowed state cannot
-outlive the queue that may still run it.
+`usb_bulk_msg()` DMAs directly to/from the transfer buffer, which must
+therefore be kmalloc'd (DMA-capable) memory -- not the stack, `.rodata`
+or vmalloc. Rather than push that onto callers as an unenforced
+precondition (which would make these safe methods unsound for an
+arbitrary `&[u8]`), the payload is copied through a kmalloc'd bounce
+buffer internally, so any slice is accepted. A future zero-copy fast path
+could take a dedicated DMA-buffer type once one exists; feedback on that
+API shape is a main reason this is posted as an RFC.
 
-Construction is unsafe because the queue must not be leaked.
+Both methods block and sleep, so they must be called from process context
+only.
 
-`compile_fail` doc-tests are ignored for now as KUnit doesn't support
-that. Enabling those tests as regular code block would raise this error:
-
-    ERROR:root:error[E0597]: `data` does not live long enough
-	 --> rust/doctests_kernel_generated.rs:22029:44
-	  |
-    22027 |         let data = ();
-	  |             ---- binding `data` declared here
-    22028 |         // SAFETY: Queue is not leaked.
-    22029 |         queue = unsafe { new_queue(&data)? };
-	  |                                            ^^^^^ borrowed value does not live long enough
-    22030 |     }
-	  |     - `data` dropped here while still borrowed
-    ...
-    22034 | }
-	  | - borrow might be used here, when `queue` is dropped and runs the `Drop` code for type `ScopedQueue`
-	  |
-	  = note: values in a scope are dropped in the opposite order they are defined
-
-which is exactly the constraint ScopedQueue is meant to enforce.
-
-This series is based on Alice's "Creation of workqueues in Rust" [1]
-series.
-
-Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351c38f@google.com [1]
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
+Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
+Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
 ---
- rust/kernel/workqueue/mod.rs          |   3 +
- rust/kernel/workqueue/scoped_queue.rs | 187 ++++++++++++++++++++++++++
- 2 files changed, 190 insertions(+)
- create mode 100644 rust/kernel/workqueue/scoped_queue.rs
+ rust/helpers/usb.c | 12 ++++++
+ rust/kernel/usb.rs | 97 +++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 108 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/workqueue/mod.rs b/rust/kernel/workqueue/mod.rs
-index e30c21214a81..5e2baa84c143 100644
---- a/rust/kernel/workqueue/mod.rs
-+++ b/rust/kernel/workqueue/mod.rs
-@@ -212,6 +212,9 @@
- mod builder;
- pub use self::builder::Builder;
+diff --git a/rust/helpers/usb.c b/rust/helpers/usb.c
+index eff1cf7be3c2..d398eb2f6669 100644
+--- a/rust/helpers/usb.c
++++ b/rust/helpers/usb.c
+@@ -7,3 +7,15 @@ rust_helper_interface_to_usbdev(struct usb_interface *intf)
+ {
+ 	return interface_to_usbdev(intf);
+ }
++
++__rust_helper unsigned int
++rust_helper_usb_sndbulkpipe(struct usb_device *dev, unsigned int endpoint)
++{
++	return usb_sndbulkpipe(dev, endpoint);
++}
++
++__rust_helper unsigned int
++rust_helper_usb_rcvbulkpipe(struct usb_device *dev, unsigned int endpoint)
++{
++	return usb_rcvbulkpipe(dev, endpoint);
++}
+diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
+index 7aff0c82d0af..c9acadb2deaf 100644
+--- a/rust/kernel/usb.rs
++++ b/rust/kernel/usb.rs
+@@ -19,6 +19,7 @@
+     },
+     prelude::*,
+     sync::aref::AlwaysRefCounted,
++    time::Delta,
+     types::Opaque,
+     ThisModule, //
+ };
+@@ -426,7 +427,7 @@ unsafe impl Sync for Interface {}
+ ///
+ /// [`struct usb_device`]: https://www.kernel.org/doc/html/latest/driver-api/usb/usb.html#c.usb_device
+ #[repr(transparent)]
+-struct Device<Ctx: device::DeviceContext = device::Normal>(
++pub struct Device<Ctx: device::DeviceContext = device::Normal>(
+     Opaque<bindings::usb_device>,
+     PhantomData<Ctx>,
+ );
+@@ -435,6 +436,100 @@ impl<Ctx: device::DeviceContext> Device<Ctx> {
+     fn as_raw(&self) -> *mut bindings::usb_device {
+         self.0.get()
+     }
++
++    /// Issues a synchronous bulk OUT transfer of `data` to bulk endpoint
++    /// `endpoint` and returns the number of bytes actually transferred.
++    ///
++    /// This is a blocking, sleeping call and therefore must only be invoked from
++    /// a process (sleepable) context, never from atomic or interrupt context.
++    ///
++    /// `endpoint` is the endpoint's `bEndpointAddress` as it appears in the
++    /// descriptor (e.g. `0x02`); the transfer direction is fixed by the method
++    /// (OUT), so only the low four bits — the endpoint number — are used.
++    /// `timeout` is the maximum time to wait, rounded down to whole
++    /// milliseconds; a [`Delta`] of zero — or any non-zero value below 1 ms —
++    /// waits indefinitely (the `usb_bulk_msg()` `timeout == 0` contract).
++    ///
++    /// `usb_bulk_msg()` DMAs directly from the transfer buffer, so the buffer
++    /// must reside in DMA-capable (kmalloc'd) memory. `data` may be any slice —
++    /// it is copied into a kmalloc'd bounce buffer internally — so callers need
++    /// not arrange DMA-capable storage themselves.
++    ///
++    /// [`usb_bulk_msg()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_bulk_msg
++    pub fn bulk_send(&self, endpoint: u8, data: &[u8], timeout: Delta) -> Result<usize> {
++        let mut actual: kernel::ffi::c_int = 0;
++
++        // `usb_bulk_msg()` requires a DMA-capable buffer; `data` may live on the
++        // stack or in `.rodata`, so copy it into a kmalloc'd bounce buffer.
++        let mut buf = KVec::with_capacity(data.len(), GFP_KERNEL)?;
++        buf.extend_from_slice(data, GFP_KERNEL)?;
++
++        // SAFETY: `self.as_raw()` is a valid `struct usb_device` by the type invariant.
++        let pipe = unsafe { bindings::usb_sndbulkpipe(self.as_raw(), endpoint.into()) };
++
++        // SAFETY: `self.as_raw()` is valid by the type invariant; `buf` is a kmalloc'd
++        // buffer valid for reads of `buf.len()` bytes; `actual` is a valid out-pointer.
++        to_result(unsafe {
++            bindings::usb_bulk_msg(
++                self.as_raw(),
++                pipe,
++                buf.as_mut_ptr().cast::<kernel::ffi::c_void>(),
++                buf.len().try_into()?,
++                &mut actual,
++                timeout.as_millis().try_into()?,
++            )
++        })?;
++
++        Ok(actual as usize)
++    }
++
++    /// Issues a synchronous bulk IN transfer of up to `data.len()` bytes from bulk
++    /// endpoint `endpoint` into `data` and returns the number of bytes received.
++    ///
++    /// This is a blocking, sleeping call and therefore must only be invoked from a
++    /// process (sleepable) context, never from atomic or interrupt context.
++    ///
++    /// `endpoint` is the endpoint's `bEndpointAddress` as it appears in the
++    /// descriptor (e.g. `0x84`); the transfer direction is fixed by the method
++    /// (IN), so only the low four bits — the endpoint number — are used.
++    /// `timeout` is the maximum time to wait, rounded down to whole
++    /// milliseconds; a [`Delta`] of zero — or any non-zero value below 1 ms —
++    /// waits indefinitely (the `usb_bulk_msg()` `timeout == 0` contract).
++    ///
++    /// `usb_bulk_msg()` DMAs directly into the transfer buffer, so the buffer
++    /// must reside in DMA-capable (kmalloc'd) memory. The data is received into
++    /// a kmalloc'd bounce buffer internally and then copied into `data`, so
++    /// `data` may be any slice.
++    ///
++    /// [`usb_bulk_msg()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_bulk_msg
++    pub fn bulk_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result<usize> {
++        let mut actual: kernel::ffi::c_int = 0;
++
++        // `usb_bulk_msg()` requires a DMA-capable buffer; receive into a kmalloc'd
++        // bounce buffer and copy out, so `data` need not be DMA-capable itself.
++        let mut buf = KVec::from_elem(0u8, data.len(), GFP_KERNEL)?;
++
++        // SAFETY: `self.as_raw()` is a valid `struct usb_device` by the type invariant.
++        let pipe = unsafe { bindings::usb_rcvbulkpipe(self.as_raw(), endpoint.into()) };
++
++        // SAFETY: `self.as_raw()` is valid by the type invariant; `buf` is a kmalloc'd
++        // buffer valid for writes of `buf.len()` bytes; `actual` is a valid out-pointer.
++        to_result(unsafe {
++            bindings::usb_bulk_msg(
++                self.as_raw(),
++                pipe,
++                buf.as_mut_ptr().cast::<kernel::ffi::c_void>(),
++                buf.len().try_into()?,
++                &mut actual,
++                timeout.as_millis().try_into()?,
++            )
++        })?;
++
++        // `usb_bulk_msg()` never reports more than the requested length.
++        let n = (actual as usize).min(data.len());
++        data[..n].copy_from_slice(&buf[..n]);
++        Ok(n)
++    }
+ }
  
-+mod scoped_queue;
-+pub use self::scoped_queue::ScopedQueue;
-+
- /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
- #[macro_export]
- macro_rules! new_work {
-diff --git a/rust/kernel/workqueue/scoped_queue.rs b/rust/kernel/workqueue/scoped_queue.rs
-new file mode 100644
-index 000000000000..d4b9a03fd93c
---- /dev/null
-+++ b/rust/kernel/workqueue/scoped_queue.rs
-@@ -0,0 +1,187 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Lifetime-scoped workqueues.
-+//!
-+//! Provides [`ScopedQueue`] for work items that may borrow data with some
-+//! non-`'static` lifetime.
-+//!
-+//! Unlike [`Queue`] which only accepts `'static` work items, [`ScopedQueue`]
-+//! owns its underlying queue and relies on that queue being dropped to drain
-+//! pending and running work before borrowed data can go out of scope.
-+//!
-+//! TODO: Remove `ignore` once KUnit supports `compile_fail` on doc-tests.
-+//! ```compile_fail,ignore
-+//! use kernel::prelude::*;
-+//! use kernel::workqueue::ScopedQueue;
-+//!
-+//! /// # Safety
-+//! ///
-+//! /// Returned queue must not be leaked.
-+//! unsafe fn new_queue<'bound>(_: &'bound ()) -> Result<ScopedQueue<'bound>> {
-+//!     // SAFETY: Caller guarantees that the returned queue is not leaked.
-+//!     unsafe { ScopedQueue::new(c"scoped_queue") }
-+//! }
-+//!
-+//! fn queue_outlives_borrowed_data() -> Result {
-+//!     let queue;
-+//!
-+//!     {
-+//!         let data = ();
-+//!         // SAFETY: Queue is not leaked.
-+//!         queue = unsafe { new_queue(&data)? };
-+//!     }
-+//!     // Here the `compile_fail` is fulfilled as `queue` would be dropped
-+//!     // after `data`.
-+//!     Ok(())
-+//! }
-+//! ```
-+//!
-+//! TODO: Remove `ignore` once KUnit supports `compile_fail` on doc-tests.
-+//! ```compile_fail,ignore
-+//! use kernel::prelude::*;
-+//! use kernel::sync::Arc;
-+//! use kernel::workqueue::{
-+//!     impl_has_work,
-+//!     new_work,
-+//!     ScopedQueue,
-+//!     Work,
-+//!     WorkItem,
-+//! };
-+//!
-+//! #[pin_data]
-+//! struct BorrowedWork<'bound> {
-+//!     data: &'bound (),
-+//!     #[pin]
-+//!     work: Work<BorrowedWork<'bound>>,
-+//! }
-+//!
-+//! impl_has_work! {
-+//!     impl{'bound} HasWork<BorrowedWork<'bound>> for BorrowedWork<'bound> { self.work }
-+//! }
-+//!
-+//! impl<'bound> WorkItem for BorrowedWork<'bound> {
-+//!     type Pointer = Arc<Self>;
-+//!
-+//!     fn run(_this: Arc<Self>) {}
-+//! }
-+//!
-+//! impl<'bound> BorrowedWork<'bound> {
-+//!     fn new(data: &'bound ()) -> Result<Arc<Self>> {
-+//!         Arc::pin_init(
-+//!             pin_init!(Self {
-+//!                 data,
-+//!                 work <- new_work!("BorrowedWork::work"),
-+//!             }),
-+//!             GFP_KERNEL,
-+//!         )
-+//!     }
-+//! }
-+//!
-+//! struct Handle<'bound> {
-+//!     work: Arc<BorrowedWork<'bound>>,
-+//!     wq: ScopedQueue<'bound>,
-+//! }
-+//!
-+//! impl<'bound> Handle<'bound> {
-+//!     /// # Safety
-+//!     ///
-+//!     /// Returned handle must not be leaked.
-+//!     unsafe fn new(data: &'bound ()) -> Result<Self> {
-+//!         Ok(Self {
-+//!             work: BorrowedWork::new(data)?,
-+//!             // SAFETY: Caller guarantees that the returned handle is not leaked.
-+//!             wq: unsafe { ScopedQueue::new(c"handle_wq")? },
-+//!         })
-+//!     }
-+//! }
-+//!
-+//! fn handle_outlives_borrowed_data() -> Result {
-+//!     let handle;
-+//!
-+//!     {
-+//!         let data = ();
-+//!         // SAFETY: Handle is not leaked.
-+//!         handle = unsafe { Handle::new(&data)? };
-+//!
-+//!         let _ = handle.wq.enqueue(handle.work.clone());
-+//!     }
-+//!     // Here the `compile_fail` is fulfilled as `handle` would be dropped
-+//!     // after `data`.
-+//!     Ok(())
-+//! }
-+//! ```
-+
-+use super::{
-+    OwnedQueue,
-+    Queue,
-+    RawWorkItem, //
-+};
-+
-+use crate::{
-+    bindings,
-+    ffi,
-+    prelude::*, //
-+};
-+
-+use core::marker::PhantomData;
-+
-+/// An owned workqueue that can enqueue work items borrowing from `'scope`.
-+///
-+/// A `ScopedQueue` must not outlive data borrowed by its work items.
-+pub struct ScopedQueue<'scope> {
-+    inner: OwnedQueue,
-+    _scope: PhantomData<&'scope mut &'scope ()>,
-+}
-+
-+impl<'scope> ScopedQueue<'scope> {
-+    /// Creates an ordered scoped workqueue.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must not leak the returned queue or otherwise prevent its
-+    /// [`Drop`] implementation from running since dropping the queue drains
-+    /// pending and running work that may borrow from `'scope`.
-+    pub unsafe fn new(name: &'static CStr) -> Result<Self> {
-+        Ok(Self {
-+            inner: Queue::new_ordered().build(name)?,
-+            _scope: PhantomData,
-+        })
-+    }
-+
-+    /// Enqueues a work item on this scoped queue.
-+    pub fn enqueue<W, const ID: u64>(&self, work: W) -> W::EnqueueOutput
-+    where
-+        W: RawWorkItem<ID> + Send + 'scope,
-+    {
-+        let queue_ptr = self.inner.0.get();
-+
-+        // SAFETY:
-+        // - Closure returns `false` only if `queue_work_on` returns `false`
-+        //   and that means `work_ptr` is already in a workqueue.
-+        //
-+        // - `W: 'scope` and dropck keep borrowed data alive until this queue is
-+        //   dropped. The constructor requires that the queue is not leaked and
-+        //   dropping `inner` drains pending and running work so the function
-+        //   pointer is not called after any lifetime in `W` expires.
-+        //
-+        // - The last requirement of `__enqueue` is not relevant here because `W`
-+        //   is `Send`.
-+        unsafe {
-+            work.__enqueue(move |work_ptr| {
-+                bindings::queue_work_on(
-+                    bindings::wq_misc_consts_WORK_CPU_UNBOUND as ffi::c_int,
-+                    queue_ptr,
-+                    work_ptr,
-+                )
-+            })
-+        }
-+    }
-+}
-+
-+impl Drop for ScopedQueue<'_> {
-+    fn drop(&mut self) {
-+        // This impl makes dropck require `'scope` to outlive `OwnedQueue`.
-+        // See: https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking
-+        let _ = &self._scope;
-+    }
-+}
+ // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
 -- 
-2.51.2
+2.54.0
 
