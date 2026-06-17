@@ -1,130 +1,238 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013058.outbound.protection.outlook.com [40.93.201.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14659481FBE
-	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 23:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7523F18BBAE;
+	Wed, 17 Jun 2026 02:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781653057; cv=pass; b=UoD/tq6l9MLe2ED5tOqO55wNU5P7gMBpAPtteTFPuJBhEs/JNYYe25bhG3Rq7a+a8zUVLKt0ouFzQvntd7St47P50VTwS5HoWFblCO5wwVGVzMfY4sEXIMG0SpvdR6j2kV7UlXvbX2mmLeRJkeDMR9P4INMkfro2DmWhiXvFBFc=
+	t=1781664985; cv=fail; b=mIx9BdlhFeT1XYvAG9+4seJC/PFs+SEPDyUeUOFg1hWsHkrqRYI/f1lDKfPcqBrKiFa2AW0VdCzHH7UXBuYd9/nOfbCRTYE4xD/G0mOsa7ReYcBj6ejlU0OwvDYbkAb1ht1cBgSYVziea4d7UvyT7krJ/BbJr5V5lIXUOaff8jw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781653057; c=relaxed/simple;
-	bh=jtwlRufVYznWUtQgRFKXO56VVGrO9wQ2kvkfE050WwY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B4DUpqjzyIPaooH2ezS/swveMtry/8kMAm6nJtsaSwLg2Khykdtb4oQwku8hPjMIWnifLoJjPtUIANSeKuG2MPrYun2sfvtNSq+nYxWHWz3j39zqSgmttJA0DLx92aoCjdFd0wyZs9VivJcU6BPAQUAYlWn1K5URhi9iUMprSMQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=djWqg+KY; arc=pass smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781664985; c=relaxed/simple;
+	bh=uP/KgpqdLs7kd8ECVXhwyZdRzJskcQ9T71GNR0+fVtw=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=MWJqr4EDkqOp6BbHce/bq2Pz5KOEPduFd83xXM+oio8FjZvhzMZtIfOKvPk+ty68UQhGX0qOBO2uOQDmcrCAT09hUqU5YOB8uParT+6uk/T/0XPe5e9Wp6S1Xnf/fjsgrTZkEVm+XhwNwi+egdhlloAYyy04HBV13y3+sz0UL/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=trmZVwmw; arc=fail smtp.client-ip=40.93.201.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="djWqg+KY"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-30bc5fa5a2aso91315eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jun 2026 16:37:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781653050; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ahUqKo6XfkIDIh62VR5HKk9JBS/90S8dVfyZVEk9Ymvvq+a/Xnz/ukvDyevGyuCJOp
-         aVd8xjE5VpVBVCE6u+SdYoTF+lpyFzxgu6VjnOuhigJbk4h9ZI+Oy+IVUWDVKJi7VF1V
-         If/X2IqzPADCDvN4M8OWcfSb1+76OKW6vieyaEmgim5SyuJtxEgrKebW05EERj+TnegZ
-         QUm3M+wzct9rlMaVB2icOEKr0b/LmNmYvSn1LIIhRl4PFlIyCau3bj1UsgsUhQxXOxug
-         7BrPPbzNJcGHnHlz4HqrH/TLo7vEIrieDRFLTZL60Lwix2gB9GMQ+opBPuHWi3vE/W1O
-         Dq2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jtwlRufVYznWUtQgRFKXO56VVGrO9wQ2kvkfE050WwY=;
-        fh=sKa8MInmBHkBE52qY4Vtw0uOr2GmLWEHOUUPtth6D4k=;
-        b=N3smGJui5/Hnv83jFALLczy8rUHsoNPqApu1eeW82vLtLFfivjHSNzhnRBR9VrDl2M
-         QbxCa5gQx7Qqu8X9ip3ztmYv5FMAsDih34E05WoiJgIF8ZfJ/nHH/veHz1uzICWohyhV
-         gTdyFeqQyzlwDZosrzAgcMwjnSiP9VnejBxvxWIICrVULSMXzPFMMd0wxTsPE+GZ9lT0
-         tcN3r58U5f2b73hlPqsEwLP2Hr7QE18mrFLz5PxBBYm+cbVi+ndRONnB0XqMGRTlxQD/
-         OVVW01Ft6xhchsJ82u7aY9aAuWlTa5y69vZ2wlRBvrZ9owfI5fF+UjZLwlh3lkFgwkqn
-         DoWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781653050; x=1782257850; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jtwlRufVYznWUtQgRFKXO56VVGrO9wQ2kvkfE050WwY=;
-        b=djWqg+KYS3+7GD9tHVJg/0mvDMzuvUcb8tuuqt3djUzDmsPw2nGbStTh4KZMhZ1dPv
-         ZS9wxb6YWNo+BNbZeoMZGOFwg7iIOXsHxE6QHm8UfOmHEE+IWS6MQMMh1EREMrAhesi/
-         E2TBqP2bUyPSS+zDScE7m8ZSIRyZGPwY7zu3onanWZgVriv19LwI2J9r+iSN099NOsy3
-         otqawH2i76reZPZRzISM8EQJtBuma5IzV7WTXHv3goQpDMLhQ/3ESDsoJFLv0ff0i+8a
-         tKBjIBBDw28+EjW38GAYVpbc/rv8TlMTnOYDnM96lVkZA2xShOxfnJPmVIFlITM3Ng+m
-         Qgsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781653050; x=1782257850;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jtwlRufVYznWUtQgRFKXO56VVGrO9wQ2kvkfE050WwY=;
-        b=BgzM4dNr0zE28DH6TZzPbT3xqERV44H7/HAmYJr6+uNLfyGcq0a6jj4625Xdro+h39
-         Rb6/SxWb9PSpwz/HiI/LjhmwODyEeZvEPtXFiBzogXzZBdeq8/XdO6PDkVlHJ3YiC7sn
-         B31tnPok6btjNq6XxcfQGmdQb5IFJ6sY5wzNhgagk69GwxgmKh5XTsDYpJ6JTIddRNiD
-         IouMP/idYsSKCCOleePg12H1WhiQBP+XCm2JvkhYqX9544mfiT7p274cUrLIZgib6Ht1
-         3RmOXBe8x0cJsX1BLvBCDXyIRrJkMVFkYqjprsxUQrXFpIYfBo9Mr5jXlQY+VGqIaAv1
-         Nfzg==
-X-Forwarded-Encrypted: i=1; AFNElJ9XxH23vlcR0UPZxdJu7UvBTlwzjCJhtDy+ZOn9kEQLzaaZMCLIc5zW0oih6hkhDyu7GUEVnPa53Yryjufyjg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3ZKT+Gh/I5Hi6470kE33XN0SuUyNrqjj7sEsiG9L0CzeQNb88
-	yTuSMCMpF3nRRprRHVTxY0iHIzuZlq6+jyd1WV9ILO3PLy1vr3OgjLCoiQjGRIjkuCl3UJ2tTwg
-	NRT9q606QfICz/9bICQktUf9zFlXI3JY=
-X-Gm-Gg: AfdE7ck20Hhh3J2ulYvxBPVYc7bLmNzkn9S37CHEVCRWfC8V36+v0odrNB9gyBeJZcL
-	9Z0eVQvST7LlIdiM4EQthatwHdb1r1gn72nLsawQN2xtXnEv5BJnQXnV5XPKeshdqIdpu6C0Nnf
-	0mKMhq6lEMo0yoglDAc+NHZJSeZnsgV9/lJ3xaKbGa9CyhIm9zNgUOSwU9u1VxYs5J4iRMF6abH
-	Zli4Kzd0K5ls4YqSi5u+O6Q1j2Lo27bFWTW5lycYpjJmD/9wDRXegwZ+ZY4nGLbHh/Tu6/lvS1l
-	abjuz2sRQR99+R1VjIBgUVCTeCTa9uRk2Pradc5noDwpmPR8nq+dDjzMYrbKvzEgHkFEGVIwm/n
-	g1z9hLmAG2w4kJYW1tP3puhE=
-X-Received: by 2002:a05:7301:2926:b0:304:2af3:5fef with SMTP id
- 5a478bee46e88-30bca0d07c1mr357982eec.8.1781653050260; Tue, 16 Jun 2026
- 16:37:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="trmZVwmw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XuAIk76TT12WL4gTnRgwLsWbi4eD6R4q28dRPJWhgbMDx5ay9RwpY41sTsVfQcTFI8PS/XkafmNbR5BHF17hhakFskUuOGPcXxUGkjtdnf5dirnQtHoLu+y2cbZYy4ozwQt2YTUUyPl/E7q4lnVkhuEFsTBxtVEcVHyMqS5rYk5xuxOxqvfzX4hERZ57dtigWZc3L61xurOwcBwhYV4SAOzbiq2rALuF7F9Ggi/qV8/4QXF6uIKrPvgo0ryGMW3fk8OXB9rwBnkwKyxgyWTA4l49cJAgXE4v0Rwwgq04JYeuyXk7lTPNfxTAU+vlQF/LBmvaSN61xiEf3ZyZyU2QCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CkXtsPJnAP9dR3ey4TfFSYrRAO5lVq3pBzPayZcl9y0=;
+ b=VNucH2VqnjU2xrzuw7H5IjmIY3kEb3olxmqRdGL2yANk70WfZP55fbFjl6ALMHtTPsOTMNp+BSy4ErKY//qynv4vFstz+NBl7U5Zb9nOYtTih3c253DKHmxUg0BpnNDCzQ2GqVLXE4+kbwQEoXSJOIhhNlYEBiOwEsjW51v/9b340+OMtLipjbiFUWkOP34mHszL9dmFUwuPS/HYOtb4peBK3x3/iH3XvKw2L0IvQtoHdzPP4EGyXMW4Yt2AFlujyD4ogLGiiisg83gZPkb17cT3Z9q5bLbqkm4VoByNrF04+V6R5OQwn9FHsMlko9UpUHWOq08r/svtROa+4058eA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CkXtsPJnAP9dR3ey4TfFSYrRAO5lVq3pBzPayZcl9y0=;
+ b=trmZVwmwNzhXYLu/94KtvabmHr1nm/G1ULfj37oDeWBxkZIkGDVFFb9ChX14/fComBzjioy2kwNyyuw/GGKz89LXpOfD1naT5KbuaxVyYv62Z3c3848g/aqGJzauIAW+pJ6D6NSSnHi8ywKTCgPaqCU2ZY88mq/QPjnJKyBZCNF5xIqA3br1X4mLzZpRs/p4thTwMMpP4QBhMrYL+ydyMrShhxkMsa8PczBvMORQDnvv8UuNk8is6Ne6HnObCqoh7SSYXJPTeT2kCHWf5EdEcNMZ3e0bRCnvd+UQ10+lL/rsYleyLB46gXcLZit9F2WxI24fuj2D+g+YjFTIfRuvZQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN1PR12MB2368.namprd12.prod.outlook.com (2603:10b6:802:32::23)
+ by CY8PR12MB7291.namprd12.prod.outlook.com (2603:10b6:930:54::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Wed, 17 Jun
+ 2026 02:56:17 +0000
+Received: from SN1PR12MB2368.namprd12.prod.outlook.com
+ ([fe80::281e:52ee:b18e:ad42]) by SN1PR12MB2368.namprd12.prod.outlook.com
+ ([fe80::281e:52ee:b18e:ad42%7]) with mapi id 15.21.0113.015; Wed, 17 Jun 2026
+ 02:56:13 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 17 Jun 2026 11:55:45 +0900
+Message-Id: <DJAZIGJQ72A9.1688NC74RA4SY@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH 03/13] gpu: nova-core: fsp: try to enforce exclusive
+ access to FSP channel
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>, "Eliot Courtney" <ecourtney@nvidia.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Benno Lossin"
+ <lossin@kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260615-blackwell-fixes-v1-0-f2853e49ff7d@nvidia.com>
+ <20260615-blackwell-fixes-v1-3-f2853e49ff7d@nvidia.com>
+ <DJ9SKDFB5Z63.JPEV0D1Q60L@garyguo.net>
+In-Reply-To: <DJ9SKDFB5Z63.JPEV0D1Q60L@garyguo.net>
+X-ClientProxiedBy: TY4P286CA0123.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:37c::13) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260611190555.2298991-1-gary@kernel.org>
-In-Reply-To: <20260611190555.2298991-1-gary@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 17 Jun 2026 01:37:18 +0200
-X-Gm-Features: AVVi8Cd2g1BixVyFnUCKlxWV0ITtf0DI0-MVAVPVJRT_QwyDhy4RibBv6QkfcIY
-Message-ID: <CANiq72nXxOHT6_P5fqbeQoN6UyC1BRJYFK7nBCwkQo2gUAUo1Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: bitfield: mark `Debug` impl as `#[inline]`
-To: Gary Guo <gary@garyguo.net>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PR12MB2368:EE_|CY8PR12MB7291:EE_
+X-MS-Office365-Filtering-Correlation-Id: 72ea507f-0fb0-4375-58c0-08decc1bf279
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|10070799003|7416014|376014|4143699003|18002099003|56012099006|11063799006|3023799007|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	TajnioH8IKoT2T9S6sV9xCe5HzJX44lEgVdHPi1FXH06QQYBHHGFUXJMgffyTpDNeOY65AkAFa2pziJZHRc+PK79lc53In44DczFj4SYR2E6MO2/9wZzDg8uetNNrwAsGDbXVNpy6Vh09bn5hJymH2cGDqF8WDbkTIS3+OCWakfhtrDTZLMncQIUPDnDcOT2301qL9Xm3WG7q64Zk39dhRJA0A+Buqr9rZdWQgvvDpC+odsBZNYdlNSr4JgWpuxS5fRCApydDaK0FXMo+aBn/RQmFqbugnluQhpyUFfegRc43on9/qAruBLwus3ZqfwwXNanQ603NHyfmKDz2lO3CfNRgQAnWB/e2FPqAN55s7UnCQ8kXuHgJcBEMOcx7pyIQxUog+e9M/el1XicQq2TZ13fOa8fdsXbm0n1FCFxebarjh5Y6L81g55ygrHSpCS87Gr3rWHO5tZT4lBezQjai8TARNknqNklT8GaTPZLqxrZifPdbwOX+gIVDMp5vFsJWfkKD2FSEWJThvBHzY1MKMH6Brdyut17vCf2EfRl866wA0yfZyDt4Th4KDdW3lIu8LfXzGmLEEiSRbqdzu7z/xyoCo/AwCc7NBSuQ75owBGVf6Ic0KKpIPx2s1l5D3TU353Ms0otj8dtgPlPQbVnpqO0WF0+29BAsav6Gs3kFlxHHBvMyBmS9zeQ3Q7H5C22
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN1PR12MB2368.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(10070799003)(7416014)(376014)(4143699003)(18002099003)(56012099006)(11063799006)(3023799007)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SFh0OUpGV3F5TWx4RmtWNzdDOVQ1UW1CMkdHS1h6UWZsKzI0b1NpUWpjckdS?=
+ =?utf-8?B?QzlwYTd6b3pVaWM5TUc0ZW9aSDFVaVA2Q21ITjVwRXk1ZHQ3QWVxYzkxMG1K?=
+ =?utf-8?B?MGNvL1VmR1ZUYVlGa21GOUVSNEk0ZWVRTWk4WEg4OGwzQmFQdzVCdzAyeXls?=
+ =?utf-8?B?OWpXRkxJUEVxYWdnOEZLQ0NncVNsbXFVU0Q3d2Y2dEUzWi9qQXdjS0pNK2NP?=
+ =?utf-8?B?QjNzS1ZsS085TzdPTTMvbWQ5NElwVUR4bmhrSS9sQVBGWkFaNUswdFFKRjVU?=
+ =?utf-8?B?dmdBcDlQZjcxdWVkazRZUmVjZlBCeXc4RlRpakYraTBwYUxGTGVVMUFDR2I2?=
+ =?utf-8?B?SHhZWEhSSzNMbW1wK1paUkNINksrOEh4MEo0T3dyNFBMSEVyU01HTGdQem9l?=
+ =?utf-8?B?ejEyS2JEZ1VTQ0xXRGFEUHhSRStxWFllZjF2Ykw4L05xcjgxbFVyZWhpL3lz?=
+ =?utf-8?B?Ylp4VlhlZnlBTHBRODNBZk4zaDN1N3hjbVRrYTNobVNiTUEyMW9xQnp1SWlR?=
+ =?utf-8?B?NjF2djlsYnZiamZEZFBrL3BISUVndTk1Z3FjN1duQUQxQWVRMlFHbjdUWmNl?=
+ =?utf-8?B?eE0xVjhLSWRCRGR4RzFBWHBxQWRxc0lMT0Q5cnpONFp2Z3RMLzl0ckxobFND?=
+ =?utf-8?B?dXJyaE95WXczeFAyUU1ENm1ONEZTQ2pyYkVUZ3dDVWpCWDZXYktmL0hoYUhv?=
+ =?utf-8?B?Nmg4WWFCS1hqWnoyNzI4VWZnc2tTeHo0aWt0dzJ3VkNJRE0vYzMyZElPcnYy?=
+ =?utf-8?B?MXM0cjk1SlY4QVBRelpNWWd6M0tWSzhjbTZvYnFBYTNkWlZMYnI5WVhpQWdk?=
+ =?utf-8?B?QzFUMEZ3TGpwV2JZTzlpRjlMK3h1bmpkc1lCNWlFcmh6YnIxQ0ZlaE92empR?=
+ =?utf-8?B?VDM3ZnEwdy9IdmIrN1FJQW9MK2xMYW44UmNaN0FzNm5rR3JIMTVseUtrcERx?=
+ =?utf-8?B?SEdzUVNPYTA5TlhSalNUMXIwcnNCY2pKRDJBRSs0ZWhtKzI5SEorbFRSYXAw?=
+ =?utf-8?B?Rk5ZR2RVSjFnemhoUXhjOGhIcTA1eHlaWGFVYTVVWC96VXRTRFlJc0NkKzV6?=
+ =?utf-8?B?dkRFQVV0dTBvc21WY2lIRmZxRnp3V3BiOHRFNUxnL3hZdzBveEdydHY2SzRk?=
+ =?utf-8?B?Q3dQR3pHWXRsNXVVdkQzTTBVaTJrc1hGSmJXNXpXcUFrVjlQMTdCUlNUSkV0?=
+ =?utf-8?B?b2xMbUkvL0htTHhPSHRVNHhiZTJnSU1xcVpQRWpiczdwMXJtTFYzUDduN1I1?=
+ =?utf-8?B?S1F0ZXVraDFVN0VhWk5VaFZHTVkvNHJTREhnUSsyc05ZSlcrNVJlSnNQeHIx?=
+ =?utf-8?B?NFRBYWNaUFlVbEkycFd3SHhJeE5HWjNOZ0UvTjhWaU0vMTVPY3VMbHUyZGdD?=
+ =?utf-8?B?ak9JSmhqYTFsd0RCL2Y3cDl1OXlySzNDQ2cvRG51N3BBeWRub3YremE4MzR6?=
+ =?utf-8?B?SlY2VnczMyt4OTl4eUFSREhOY2xRQWpnWW9vWDAzSG1RcGxLRnBnaFFUeEY1?=
+ =?utf-8?B?RVdSYmozWnVEL2NKNXMvY3ZGV0wwYTB4d3J3c3pHVENsQW5LOXU1ajMvbUl2?=
+ =?utf-8?B?b0ZPN25jQVloQ1ZaMktRSVhvREVNOFF0T2Rnd0ZQMVdNSXo5bmJvQ0IzajhE?=
+ =?utf-8?B?Tks0d1Y0U2Z5Rmt3czdPMkxVeUNKbEp1SDFLeVUwc1kwNG1DTGFtdGY2WEt4?=
+ =?utf-8?B?YVFQR0F1bjJuY2FpRTduNTRrclZCS0U5TzMvM0tTVTdDOU11ekoxSGM1VFVy?=
+ =?utf-8?B?VzgzeVA0SllOSFJRMGx5bkFYU0JPWmt3eEFLeFBDUFkrSUE2UnQwOUp0TmZ6?=
+ =?utf-8?B?RUkrNmgrYmErcFpGMWRudzNGRUNXSFBTMGw0NzdCdzVTeGZOdmJqVkpXNG5W?=
+ =?utf-8?B?U1RYcmoxUjd3dzBPWXhwTFZ3RWZ6d2lqOWRuM01XL3ZUb3VXK2YzbzhnbFdB?=
+ =?utf-8?B?L1ZJR0RVZG4wL0g5bVorbmp2eGxibUV4RWwyb0RFMFA5WTRFc0xpTFpjTGd1?=
+ =?utf-8?B?bkFrQWtIdG92RlJPNWdjOW0wNTgxL0pkTXdwTGk3MEF2amx4OHJ0VXErWDJE?=
+ =?utf-8?B?QUpSa0VWQS9MQTdoQm1BNG1rczhmNWZFQXM0blZRTm5MU2YwVStRZ1hBamlO?=
+ =?utf-8?B?Z0lFQTMzQTNZcU1FbitDbWdQNW1BdUpKU2Y0WllVMytJNVRaNXlDN0dWeSsy?=
+ =?utf-8?B?eE1CYU1ZL1JqOWd5MzkvQWswbDgyblVWMVdLeHNFTVJQZ2VqWTlOcUU2Z3hv?=
+ =?utf-8?B?bXkzNFJCQkp3SDRYSDE3ZGV5TitwRFh5U1g0RUdQMVhCMEJEbzlveU1ERGFx?=
+ =?utf-8?B?dmhxTGJWRWVHbkhMcU82NzFVWDBsU01zRjUrbXRSWnFSK24vMCtaeTNmY1RN?=
+ =?utf-8?Q?ELFIposwkQeb4aue1D6NspWqe2kO+PCteivGOxXGknT17?=
+X-MS-Exchange-AntiSpam-MessageData-1: BYQvoOrwf2tETg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72ea507f-0fb0-4375-58c0-08decc1bf279
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2026 02:56:13.2521
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9QNw/OgF8utdwIk4BzHc6CSsrvDdBvInvYYqq6Ew++Hn1x6r4DBKt4WrS4tLaKgeZ8yB7EuHjVKrm/hZ/zPEUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7291
 
-On Thu, Jun 11, 2026 at 9:06=E2=80=AFPM Gary Guo <gary@kernel.org> wrote:
+On Tue Jun 16, 2026 at 2:16 AM JST, Gary Guo wrote:
+> On Mon Jun 15, 2026 at 3:40 PM BST, Eliot Courtney wrote:
+>> Currently, `send_msg` assumes that the channel to FSP is free to write
+>> into. But, it might not be. Both the kernel driver and GSP communicate
+>> with FSP. The way they should attempt to keep exclusive access to this
+>> channel to FSP is by making sure they don't try to start writing if
+>> there's pending data until the full round trip has finished.
+>>
+>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>> ---
+>>  drivers/gpu/nova-core/falcon/fsp.rs | 23 +++++++++++++++++++++++
+>>  1 file changed, 23 insertions(+)
+>>
+>> diff --git a/drivers/gpu/nova-core/falcon/fsp.rs b/drivers/gpu/nova-core=
+/falcon/fsp.rs
+>> index 21eaa8e261ce..cdb476894e1a 100644
+>> --- a/drivers/gpu/nova-core/falcon/fsp.rs
+>> +++ b/drivers/gpu/nova-core/falcon/fsp.rs
+>> @@ -125,6 +125,26 @@ fn poll_msgq(&self, bar: Bar0<'_>) -> Result<u32> {
+>>          }
+>>      }
+>> =20
+>> +    /// Both the kernel driver and GSP talk to FSP. Try to ensure exclu=
+sive access to the FSP is
+>> +    /// enforced by making sure there is not a pending message already =
+sent to FSP, and that there
+>> +    /// is no pending message from FSP to be read.
+>> +    fn wait_until_ready(&mut self, bar: Bar0<'_>) -> Result {
+>> +        read_poll_timeout(
+>> +            || {
+>> +                let qhead =3D bar.read(regs::NV_PFSP_QUEUE_HEAD::at(0))=
+.address();
+>> +                let qtail =3D bar.read(regs::NV_PFSP_QUEUE_TAIL::at(0))=
+.address();
+>> +                let mhead =3D bar.read(regs::NV_PFSP_MSGQ_HEAD::at(0)).=
+val();
+>> +                let mtail =3D bar.read(regs::NV_PFSP_MSGQ_TAIL::at(0)).=
+val();
 >
-> From: Gary Guo <gary@garyguo.net>
+> How does this prevent race between kernel and GSP when initiating FSP
+> communcation?
+
+You are right that it does not prevent it in the general case.
+
+This is the logic that openrm uses and locally, much earlier, I observed
+sometimes I did actually need this for reprobe to work. I think the
+reason (but it's been a while) is that before we did not wait for GSP to
+halt on unload and probe failure, which could mean there's a leftover
+message from FSP that is not consumed if you reprobe quickly after a
+failure. Now that we wait for GSP to halt it's much harder for this kind
+of issue to occur. Actually, it might be impossible currently for this
+kind of race to happen without a failure on unload (e.g. timeout of
+waiting for GSP to reset).
+
+The reason I thought to add this is more to match what appears to be
+the protocol that this transport uses (even if it might not be sound
+generally). I am curious what others think, if it's worth keeping this -
+IMO it is since it does appear to be part of the way the communication
+on the transport is meant to be done.
+
+At least the comments could be better, since it looks like my hedging
+"try to ensure" is confusing because it really doesn't in the general
+case.
+
 >
-> A `Debug` impl is for debugging and is normally not used, and therefore
-> should ideally not be code-generated unless used. However, Rust has no wa=
-y
-> of knowing if a dependent crate is going to use the trait impl or not, so
-> unless it is marked as `#[inline]`, it will be code-generated in the
-> defining crate (as it is not generic).
+> Best,
+> Gary
 >
-> Mark the impl generated by bitfield macro `#[inline]`, so they do not sta=
-y
-> in the binary unless used.
->
-> This reduces nova-core.o .text by 17% (from 151922 bytes to 125676 bytes)=
+>> +
+>> +                Ok(qhead =3D=3D qtail && mhead =3D=3D mtail)
+>> +            },
+>> +            |&ready| ready,
+>> +            Delta::from_millis(10),
+>> +            Delta::from_millis(FSP_MSG_TIMEOUT_MS),
+>> +        )?;
+>> +        Ok(())
+>> +    }
+>> +
+>>      /// Writes `packet` to FSP EMEM and updates the queue pointers to n=
+otify FSP.
+>>      ///
+>>      /// Returns `EINVAL` if `packet` is empty or its length is not 4-by=
+te aligned.
+>> @@ -133,6 +153,9 @@ pub(crate) fn send_msg(&mut self, bar: Bar0<'_>, pac=
+ket: &[u8]) -> Result {
+>>              return Err(EINVAL);
+>>          }
+>> =20
+>> +        // Try to make sure we have exclusive access to the FSP at this=
+ point.
+>> +        self.wait_until_ready(bar)?;
+>> +
+>>          self.write_emem(bar, packet)?;
+>> =20
+>>          // Update queue pointers. TAIL points at the last DWORD written=
 .
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-Applied to `rust-fixes` -- thanks!
-
-I am going to pick a couple actual fixes in the coming days, so I
-decided to pick this one too for the ride since it is trivial. I may
-still rebase though.
-
-Cheers,
-Miguel
