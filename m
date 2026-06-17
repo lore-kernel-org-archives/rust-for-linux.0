@@ -1,54 +1,53 @@
-Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38C1390CA9
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 13:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62473BA24F;
+	Wed, 17 Jun 2026 13:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781702263; cv=none; b=gCN0Ce4ncq0k2APgQ5OQhSnILN22sS5a612Wbh4mtaKbFZrQr7BFSTVc83tJRbUVXyLxS14BQZl7F1+IdqNc9OA9wPLyduhzAZBWG9heYTdngIXXtcNueryrtT2dT22aQVl1XmOmuiigfrY1NPBYY3Q39yHyNUDwbhRqdZOk6JE=
+	t=1781702549; cv=none; b=NpD4tRAcThpiEpkZJdsXgWfM9VUpD3BjEaOd/OuU5+s+/PnDGS/5WcOI8IhVBM2aTMIH+Yw23WVu9DRfoTPsWYTvKmllfEIRpCyaUuPqhJ5GjgxO5YxiBEoxGLgtPXClIrSFsxg+C2w+GsPrY4QPn6cowNz7IuqVoU/U2D8kKwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781702263; c=relaxed/simple;
-	bh=5ZOT7q+VZSyuoilbeVLYNjLhvLjxylDuZZ6cktv3VsA=;
+	s=arc-20240116; t=1781702549; c=relaxed/simple;
+	bh=3r6CKgn8nyTZvic3iG0g5qUJxE8vhV2v54VQLPTUFL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qiy6ZxJ7OyZYzMGdikafiXcDqQk6rodTWD4uzMm02uSxbzI7cFMX5DhWhm9Xl2jmIlpV60TeXe2Fxp6QhTgjrcWHYvuxOJXdAjm/ctgP+Q5GgKg25gnsbGgDKCaoTVuS6S88LNi6HK4oq7oSop65hrSRRWvEAHtRaqRW5ILOm24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=aCK/vXRH; arc=none smtp.client-ip=79.135.106.111
+	 MIME-Version:Content-Type; b=lyFlZt2fKwdfaBXWomMnycuCf4qc5BdR1fC3bL4i1reM+kqK2HP3WrLxQdchLsLnXy8NGfhM/aQ6ZHMRx+dmmxdA+nsNnc+OVX+VN3XRCiG6TpG3ZTDCWOsRh1sxfrjx0QQQ60Br+ICWqTAigAGevBTDb9WwCCM71pA44mNlzjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=r5aalIJY; arc=none smtp.client-ip=85.9.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="aCK/vXRH"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="r5aalIJY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1781702258; x=1781961458;
-	bh=aQmq+320ZlrjUsbNl8Nlgeg1Ert4VlTMrQpwat09u0w=;
+	s=protonmail; t=1781702530; x=1781961730;
+	bh=e8hgekmsRFbjPafdz60ovJVJ2wuE+3tlFSNeFk10NkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=aCK/vXRHTsNtJDIKo1DuOXwbcREyj4uPmp2RN8iFd0+3lfiDKI7VHph+qB4IrgAbU
-	 +A0CknpaDwpXEEcL6An9hFL2WnVtsLrH+pTf/2Szkbrcmy78LhvKXVyVJstOua7LMA
-	 QP1SwRaOzhmEzbx0FFYc6RxxQI96nTxppjRMDDoSN5vhYIW3C9QuF1ZI82cD9z7e8+
-	 +D5BLe4W5Ntx+y4c9pMtV0uHjwyTcRxkxA/nFB7iTGqryCkzHG4S5aUDAiLXdV/Cy4
-	 4Sm9k7eo58OcbeRSg7MCF49Lxxwz2TTRLP4L5JpF+wFYSxx7KCuwujwSMWH727FmFW
-	 Lkg8vTz6aUEyQ==
-X-Pm-Submission-Id: 4ggPXw0CV9z2ScqZ
+	b=r5aalIJYRzcc5l/3wdfHUovMx6awiH8Fyszz3q4FBpaN23dmingxd4BIcsIJE1f4F
+	 milye4gZkI5hVaeKATBZy4IASnKErmthzcWVLY0b7DsCTREs4mdGBoNke7tWS/S5x6
+	 ac+7FDqkzLXOvai6sVqrC9aAzGMPqwWjj2ItbEL940VdsylEHi4H6dz1KkCnh8biWy
+	 pByvb1i6RPIm4w2EACivrhYRHY6Zx3op8ILtE+AtBgTic2fBk3d4wjADR+PvGv0HQs
+	 Bt2LwMX9rs3fgimj/mhFQhdWJHhxX6f2fSytNYg01XMg4LeFlrmnXeZfREwmgxtfe+
+	 eHBeB3wnB3Alw==
+X-Pm-Submission-Id: 4ggPf86ndVz1DF7v
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ojeda@kernel.org,
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tj@kernel.org,
+	jiangshanlai@gmail.com,
+	ojeda@kernel.org,
 	boqun@kernel.org,
 	gary@garyguo.net,
 	bjorn3_gh@protonmail.com,
 	lossin@kernel.org,
 	a.hindborg@kernel.org,
 	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	tamird@kernel.org,
-	daniel.almeida@collabora.com,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v3 1/1] rust: workqueue: add cancel_sync support
-Date: Wed, 17 Jun 2026 16:17:20 +0300
-Message-ID: <20260617131731.145337-2-work@onurozkan.dev>
+	tmgross@umich.edu
+Subject: Re: [PATCH v1] rust: workqueue: add ScopedQueue for lifetime bound items
+Date: Wed, 17 Jun 2026 16:21:39 +0300
+Message-ID: <20260617132202.148411-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260617131731.145337-1-work@onurozkan.dev>
-References: <20260617131731.145337-1-work@onurozkan.dev>
+In-Reply-To: <DJBCL55WD43F.3VZBBK04AU3F1@kernel.org>
+References: <20260615115626.871457-1-work@onurozkan.dev> <DJBCL55WD43F.3VZBBK04AU3F1@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,172 +55,142 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Drivers can use this during teardown to cancel pending work and wait for
-running work to finish before dropping related resources.
-
-This is not implemented for Pin<KBox<T>> because queuing a boxed work
-item transfers ownership of the box to the workqueue. There is therefore
-no separate safe owner that can cancel the boxed work while it is pending.
-
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/workqueue.rs | 113 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 113 insertions(+)
-
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index 7e253b6f299c..f43822d5e673 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -471,6 +471,24 @@ pub trait WorkItem<const ID: u64 = 0> {
-     fn run(this: Self::Pointer);
- }
- 
-+/// Work item pointers that support cancellation.
-+///
-+/// # Safety
-+///
-+/// Implementers must ensure that `from_raw_work` rebuilds the exact ownership transferred
-+/// by a successful [`RawWorkItem::__enqueue`] call.
-+pub unsafe trait SupportsCancel<const ID: u64>: WorkItemPointer<ID> + Sized {
-+    /// Rebuild this work item's pointer from its embedded `work_struct`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided `work_struct` pointer must originate from a previous call to
-+    /// [`RawWorkItem::__enqueue`] where the `queue_work_on` closure returned true,
-+    /// ownership of the enqueued work item must already have been transferred back
-+    /// from the workqueue and the pointer must still be valid.
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self;
-+}
-+
- /// Links for a work item.
- ///
- /// This struct contains a function pointer to the [`run`] function from the [`WorkItemPointer`]
-@@ -537,6 +555,30 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
-         // the compiler does not complain that the `work` field is unused.
-         unsafe { Opaque::cast_into(core::ptr::addr_of!((*ptr).work)) }
-     }
-+
-+    /// Cancels this work item if it is pending and waits for any running execution to finish.
-+    ///
-+    /// On return, the work item is guaranteed to not be pending or executing as long as there are
-+    /// no racing re-enqueues.
-+    ///
-+    /// This should be called from a sleepable context if the work was last queued on a non-BH
-+    /// workqueue.
-+    #[inline]
-+    pub fn cancel_sync(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+        T::Pointer: SupportsCancel<ID>,
-+    {
-+        let ptr = self.work.get();
-+        // SAFETY: `ptr` is a valid embedded `work_struct`.
-+        if unsafe { bindings::cancel_work_sync(ptr) } {
-+            // SAFETY: A `true` return means the work was pending and got canceled, so the queued
-+            // ownership transfer performed by `__enqueue` is reclaimed here.
-+            Some(unsafe { T::Pointer::from_raw_work(ptr) })
-+        } else {
-+            None
-+        }
-+    }
- }
- 
- /// Declares that a type contains a [`Work<T, ID>`].
-@@ -725,6 +767,32 @@ pub unsafe fn raw_as_work(ptr: *const Self) -> *mut Work<T, ID> {
-         // CAST: Work and work_struct have compatible layouts.
-         wrk.cast()
-     }
-+
-+    /// Cancels this delayed work item if it is pending and waits for any running execution to
-+    /// finish.
-+    ///
-+    /// On return, the work item is guaranteed to not be pending or executing as long as there are
-+    /// no racing re-enqueues.
-+    ///
-+    /// This should be called from a sleepable context if the work was last queued on a non-BH
-+    /// workqueue.
-+    #[inline]
-+    pub fn cancel_sync(&self) -> Option<T::Pointer>
-+    where
-+        T: WorkItem<ID>,
-+        T::Pointer: SupportsCancel<ID>,
-+    {
-+        let ptr = self.dwork.get();
-+
-+        // SAFETY: `ptr` is a valid embedded `delayed_work`.
-+        if unsafe { bindings::cancel_delayed_work_sync(ptr) } {
-+            // SAFETY: A `true` return means the work was pending and got canceled, so the queued
-+            // ownership transfer performed by `__enqueue` is reclaimed here.
-+            Some(unsafe { T::Pointer::from_raw_work(&raw mut (*ptr).work) })
-+        } else {
-+            None
-+        }
-+    }
- }
- 
- /// Declares that a type contains a [`DelayedWork<T, ID>`].
-@@ -871,6 +939,24 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-     }
- }
- 
-+// SAFETY: `from_raw_work()` reconstructs exactly the `Arc<T>` ownership previously transferred by
-+// `Arc::into_raw()` in `RawWorkItem::__enqueue`, using the same `Work<T, ID>` field selected by
-+// `HasWork<T, ID>`.
-+unsafe impl<T, const ID: u64> SupportsCancel<ID> for Arc<T>
-+where
-+    T: WorkItem<ID, Pointer = Self>,
-+    T: HasWork<T, ID>,
-+{
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-+        // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-+        let ptr = ptr.cast::<Work<T, ID>>();
-+        // SAFETY: This computes the pointer that `__enqueue` got from `Arc::into_raw`.
-+        let ptr = unsafe { T::work_container_of(ptr) };
-+        // SAFETY: This pointer comes from `Arc::into_raw` and we've been given back ownership.
-+        unsafe { Arc::from_raw(ptr) }
-+    }
-+}
-+
- // SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
- // `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
- // the `delayed_work` has the same access rules as its `work` field.
-@@ -1013,6 +1099,33 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-     }
- }
- 
-+// SAFETY: `from_raw_work()` reconstructs exactly the `ARef<T>` ownership previously transferred by
-+// `ARef::into_raw()` in `RawWorkItem::__enqueue`, using the same `Work<T, ID>` field selected by
-+// `HasWork<T, ID>`.
-+unsafe impl<T, const ID: u64> SupportsCancel<ID> for ARef<T>
-+where
-+    T: AlwaysRefCounted,
-+    T: WorkItem<ID, Pointer = Self>,
-+    T: HasWork<T, ID>,
-+{
-+    unsafe fn from_raw_work(ptr: *mut bindings::work_struct) -> Self {
-+        // The `__enqueue` method always uses a `work_struct` stored in a `Work<T, ID>`.
-+        let ptr = ptr.cast::<Work<T, ID>>();
-+
-+        // SAFETY: This computes the pointer that `__enqueue` got from
-+        // `ARef::into_raw`.
-+        let ptr = unsafe { T::work_container_of(ptr) };
-+
-+        // SAFETY: The safety contract of `work_container_of` ensures that it
-+        // returns a valid non-null pointer.
-+        let ptr = unsafe { NonNull::new_unchecked(ptr) };
-+
-+        // SAFETY: This pointer comes from `ARef::into_raw` and we've been given
-+        // back ownership.
-+        unsafe { ARef::from_raw(ptr) }
-+    }
-+}
-+
- // SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
- // `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
- // the `delayed_work` has the same access rules as its `work` field.
--- 
-2.51.2
-
+On Wed, 17 Jun 2026 15:10:30 +0200=0D
+Danilo Krummrich <dakr@kernel.org> wrote:=0D
+=0D
+> On Mon Jun 15, 2026 at 1:56 PM CEST, Onur =C3=96zkan wrote:=0D
+> > Add a workqueue wrapper for work items that are not 'static.=0D
+> >=0D
+> > Tyr reset work is queued from a handle that owns a Controller<'bound>=0D
+> > where the work item holds references tied to the lifetime of the bound=
+=0D
+> > device and its mapped IO state. The existing API only accepts 'static=0D
+> > work items which cannot express that relationship.=0D
+> >=0D
+> > Introduce ScopedQueue for this case. It owns the underlying workqueue=0D
+> > and ties enqueued work to the queue lifetime so borrowed state cannot=0D
+> > outlive the queue that may still run it.=0D
+> >=0D
+> > Construction is unsafe because the queue must not be leaked.=0D
+> >=0D
+> > `compile_fail` doc-tests are ignored for now as KUnit doesn't support=0D
+> > that. Enabling those tests as regular code block would raise this error=
+:=0D
+> >=0D
+> >     ERROR:root:error[E0597]: `data` does not live long enough=0D
+> > 	 --> rust/doctests_kernel_generated.rs:22029:44=0D
+> > 	  |=0D
+> >     22027 |         let data =3D ();=0D
+> > 	  |             ---- binding `data` declared here=0D
+> >     22028 |         // SAFETY: Queue is not leaked.=0D
+> >     22029 |         queue =3D unsafe { new_queue_with_lt(&data)? };=0D
+> > 	  |                                            ^^^^^ borrowed value do=
+es not live long enough=0D
+> >     22030 |     }=0D
+> > 	  |     - `data` dropped here while still borrowed=0D
+> >     ...=0D
+> >     22034 | }=0D
+> > 	  | - borrow might be used here, when `queue` is dropped and runs the =
+`Drop` code for type `ScopedQueue`=0D
+> > 	  |=0D
+> > 	  =3D note: values in a scope are dropped in the opposite order they a=
+re defined=0D
+> >=0D
+> > which is exactly the constraint ScopedQueue is meant to enforce.=0D
+> >=0D
+> > This series is based on Alice's "Creation of workqueues in Rust" [1]=0D
+> > series.=0D
+> >=0D
+> > Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c3=
+51c38f@google.com [1]=0D
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> =0D
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>=0D
+> =0D
+> > +/// An owned workqueue that can enqueue work items borrowing from `'sc=
+ope`.=0D
+> > +///=0D
+> > +/// A `ScopedQueue` must not outlive data borrowed by its work items.=
+=0D
+> > +pub struct ScopedQueue<'scope> {=0D
+> > +    inner: OwnedQueue,=0D
+> > +    _scope: PhantomData<&'scope mut &'scope ()>,=0D
+> > +}=0D
+> > +=0D
+> > +impl<'scope> ScopedQueue<'scope> {=0D
+> > +    /// Creates an ordered scoped workqueue.=0D
+> > +    ///=0D
+> > +    /// # Safety=0D
+> > +    ///=0D
+> > +    /// The caller must not leak the returned queue or otherwise preve=
+nt its=0D
+> > +    /// [`Drop`] implementation from running since dropping the queue =
+drains=0D
+> > +    /// pending and running work that may borrow from `'scope`.=0D
+> > +    pub unsafe fn new_ordered_with_lt(name: &'static CStr) -> Result<S=
+elf> {=0D
+> =0D
+> I think the with_lt naming is a bit redundant; the ScopedQueue name and i=
+t's=0D
+> lifetime already implies that, so I think ScopedQueue::new_ordered() is=0D
+> sufficient.=0D
+> =0D
+> Also note that we only use the with_lt suffix when there's also a 'static=
+=0D
+> version called new().=0D
+=0D
+Perhaps new() alone would be better? ScopedQueue can only work with ordered=
+ queue=0D
+anyway.=0D
+=0D
+Onur=0D
+=0D
+> =0D
+> > +        Ok(Self {=0D
+> > +            inner: Queue::new_ordered().build(name)?,=0D
+> > +            _scope: PhantomData,=0D
+> > +        })=0D
+> > +    }=0D
+> > +=0D
+> > +    /// Enqueues a work item on this scoped queue.=0D
+> > +    pub fn enqueue<W, const ID: u64>(&self, work: W) -> W::EnqueueOutp=
+ut=0D
+> > +    where=0D
+> > +        W: RawWorkItem<ID> + Send + 'scope,=0D
+> > +    {=0D
+> > +        let queue_ptr =3D self.inner.0.get();=0D
+> > +=0D
+> > +        // SAFETY: `W: 'scope` and dropck keep borrowed data alive unt=
+il this=0D
+> > +        // queue is dropped. The constructor requires that the queue i=
+s not=0D
+> > +        // leaked and dropping `inner` drains pending and running work=
+.=0D
+> =0D
+> I think it is covered implicitly, but maybe we can spell out more explici=
+tly how=0D
+> this requirement is justified:=0D
+> =0D
+> 	/// If the work item type is annotated with any lifetimes, then you must=
+ not call the function=0D
+> 	/// pointer after any such lifetime expires. (Never calling the function=
+ pointer is okay.)=0D
+> =0D
+> Also, I think __enqueue() has three distinct safety requirements, so I th=
+ink it=0D
+> would be good to address them with separate bullet points.=0D
+> =0D
+> > +        unsafe {=0D
+> > +            work.__enqueue(move |work_ptr| {=0D
+> > +                bindings::queue_work_on(=0D
+> > +                    bindings::wq_misc_consts_WORK_CPU_UNBOUND as ffi::=
+c_int,=0D
+> > +                    queue_ptr,=0D
+> > +                    work_ptr,=0D
+> > +                )=0D
+> > +            })=0D
+> > +        }=0D
+> > +    }=0D
+> > +}=0D
