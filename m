@@ -1,123 +1,305 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9B13EA95C
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 11:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D2627A92D;
+	Wed, 17 Jun 2026 12:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781696196; cv=none; b=RIPWtnNXOn+q/pdOejRfMnp4/dXetujTrB/lAEgMpR4o5K1+zjHnR74Xqnx2IHpyRDRiTv902jd7QL/cF0HvkgeUH5X3vUsnd8UEshm0PeasQC8NOdWb/wKht0IDOBMZKateEopCD9EFjEjZekBr+bztbGCCDMbadEN4T+aKFxQ=
+	t=1781700563; cv=none; b=gSPTJVwuR3mUvNwqajFy9pNrrW0ViHWD1kUNyB+L7Va9jc76CXVXTOoEf0jM7gJvtLCQsaoDwFSUN83DA1DcCZKUU5J+XGtwYSXuCU85/n44efrg7h/8uWwjHuGoBNQbSxf8peZMHSceljgKEVPAL/2wmmYlNXa02rIBXnDm0gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781696196; c=relaxed/simple;
-	bh=rOcDjKNM7agwOLTLfbY1xAQ9bt9q2fdtORORxk4X9p0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=omnUS2y/y1KiVx45XiASDiP+6DrhDwijFNFY43BzjBL4che5J2s7LX5zSBLqwEAVP/y+OK+7/WYG0Liq1ZzxGtwh09x7UMjwxz0vwXu3Je/NlO7uyhWJtrotTTxQMRS0168XwdISeiLmzKdNCF9Fqj8kGVFPU5ur+I30ikAXZLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DO0PL1lz; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1781700563; c=relaxed/simple;
+	bh=WdqaRXxBTq+x4/+eQnowAM4kavcQPuh40r/TSehx4G4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FvkFq06egZm5aWLJhQXdxloc6J+gTaC4pIdw9+oAox0b0EOfi71/Er/6JdZ8CeKNgDS8ZGxBZXnzMj9oScLiSUpcLn0U1/38cOlgmTazgn3Hai5oWKjRkSfOSU2pwigehqH9/Ps5HRfCTBikDk5HQCex30sm+lspq6FK7VVKKpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=hhJguvz9; arc=none smtp.client-ip=109.224.244.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DO0PL1lz"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6959dedafe3so153847a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 04:36:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781696193; x=1782300993; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UYicJoYFI4w4qF8sCnn+jRXzXN1/GRmTZzaGc7Ox2u4=;
-        b=DO0PL1lz29qKPDyulPg8ifez7mjDclhJ1lmjNppxCX8OOS/xe8hvN1/XIWXHklL92+
-         asFHBAnT3gg97rxzzYW2ejWRkLpCJzpks6rhZVsQExYfsGOyzGby37HsAsWmx0HYU9W0
-         cEEDJIRqd9ybX0myXUevPrxqy4bt5RNU7LW1xsgVrGKCZwMZjDKU50PziLZfsTpjsrYd
-         mINieITCXsvsjwsleB8Bmtiuf51VrdH/VyMW+hgqOf2hRS5MDsSvqKYN3SxTnb7+Ec6w
-         FAQwf5rzp8gRPutt8WH3laCVwbanmd/imcEXAaD4aip6e3BKj4MrW6pB4M6IgjGimmkw
-         Ib+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781696193; x=1782300993;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UYicJoYFI4w4qF8sCnn+jRXzXN1/GRmTZzaGc7Ox2u4=;
-        b=Io2k7HGlBdsil8HrCTmdQsa00XdrLNkRtkUvSKBajp/WDGLEOzAj10Dr3ginNcQeCa
-         X4Zg4iqKK+/8aXRTTGj1N9eLg2wJaM3nD3D0+ODUURJLQaPTpUKGEuOPcXlf6GoZvQtT
-         wfgBREmLJu6Vxrzpxmv3vxImQkbqw+E8cfo42sfuhuTVnks1B7ub+qDW8YRznDfKykXb
-         iNx3PS54rU1Laj8vdDJC/LwEO7f46VxB03SYhsg402PbOyV8v/O0f/FODFVHNpUY0gyb
-         wtOT+93yNk5+fEMpmBlqdiiIUZ6QteCH0QMdsLqW3irLZtPUeB07Y1yxoNWwQs4T8RnF
-         Yzgg==
-X-Forwarded-Encrypted: i=1; AFNElJ80piVexXEIHBTE/Dos2XQ9LKjTbkWAEuvHkQoyBmYrZWseKokAE9r66TH/sVRSvUWnsPlVo5EWhN19BdOIdA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi2M5420bSVD+lxaCrhiWYuzk58bxUjJbVED/3JaU8bT9jkRRh
-	+hfZ5mzOIP/BDyoBunF/wPwdiyOIURs2B9Ab6zDH74QvJYlCIq1mdpzNjB8OG5lktogSuRE1lQF
-	j4VaygyPeO1fRvt1ZEQ==
-X-Received: from edea23.prod.google.com ([2002:a05:6402:a197:b0:695:72e1:a5a0])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a50:cbc1:0:b0:68f:9fd9:435a with SMTP id 4fb4d7f45d1cf-69554cac360mr960260a12.17.1781696192851;
- Wed, 17 Jun 2026 04:36:32 -0700 (PDT)
-Date: Wed, 17 Jun 2026 11:36:31 +0000
-In-Reply-To: <20260604-unique-ref-v17-5-7b4c3d2930b9@kernel.org>
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="hhJguvz9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1781700557; x=1781959757;
+	bh=LXbB1E5SgFEQsFOW/YQ+VPucXKNc2DeikSXXpDCPX1E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=hhJguvz9r2BtYo9QiEk8KJ5r8xhySueHYG69qxlSfjH5ln3IXFYxZXnLMfz1O7vC6
+	 sCbD6vIEhdjnkOg9oAlVHzxNN6uNAUV6b813zdXbQBXAQu/drm3eTKkv9H4/eynQ88
+	 fGKUDkHDPfSvJzU+qFfQPYYzlDISupqWNHi4T2qhjMUUrYKKn27rYzgWzG1IrcWPQ8
+	 5Qnyns13oihnFXpq8jWZPcPrlRvGRTXQd2wj/1jkVmwXXMHdJVoi1c8f+i0c8VwNil
+	 77GlYdJznA2vtPgrSMLuuZLLTfo0dMT+vMIpsHouDbExBmNhYs8n0xGg5cDre2ZMRx
+	 Ry4+s4P+FwWLA==
+X-Pm-Submission-Id: 4ggNw94HbDz2ScD0
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tj@kernel.org,
+	jiangshanlai@gmail.com,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org
+Subject: Re: [PATCH v1] rust: workqueue: add ScopedQueue for lifetime bound items
+Date: Wed, 17 Jun 2026 15:49:03 +0300
+Message-ID: <20260617124911.90218-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <CAH5fLggQDAQ02YLibAO=NpQF8xxj_0GCEz5+cVZh8LmYo+xXvw@mail.gmail.com>
+References: <20260615115626.871457-1-work@onurozkan.dev> <CAH5fLggQDAQ02YLibAO=NpQF8xxj_0GCEz5+cVZh8LmYo+xXvw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org> <20260604-unique-ref-v17-5-7b4c3d2930b9@kernel.org>
-Message-ID: <ajKGv5ioLSassmND@google.com>
-Subject: Re: [PATCH v17 05/10] rust: page: convert to `Ownable`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Viresh Kumar <vireshk@kernel.org>, 
-	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Igor Korotin <igor.korotin@linux.dev>, 
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, driver-core@lists.linux.dev, 
-	Asahi Lina <lina+kernel@asahilina.net>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 04, 2026 at 10:11:17PM +0200, Andreas Hindborg wrote:
-> From: Asahi Lina <lina@asahilina.net>
-> 
-> This allows Page references to be returned as borrowed references,
-> without necessarily owning the struct page.
-> 
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> [ Andreas: Fix formatting and add a safety comment. ]
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/page.rs | 38 +++++++++++++++++++++++++-------------
->  1 file changed, 25 insertions(+), 13 deletions(-)
-> 
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> index 3bdcee0e16a8..844c75e54134 100644
-> --- a/rust/kernel/page.rs
-> +++ b/rust/kernel/page.rs
-> @@ -10,6 +10,11 @@
->      bindings,
->      error::code::*,
->      error::Result,
-> +    types::{
-> +        Opaque,
-> +        Ownable,
-> +        Owned, //
-> +    },
->      uaccess::UserSliceReader, //
->  };
->  use core::{
-> @@ -105,7 +110,7 @@ pub const fn page_align(addr: usize) -> Option<usize> {
->  ///
->  /// [`VBox`]: kernel::alloc::VBox
->  /// [`Vmalloc`]: kernel::alloc::allocator::Vmalloc
-> -pub struct BorrowedPage<'a>(ManuallyDrop<Page>, PhantomData<&'a Page>);
-> +pub struct BorrowedPage<'a>(ManuallyDrop<NonNull<Page>>, PhantomData<&'a Page>);
-
-BorrowedPage<'a> is no longer needed because it's just &Page.
-
-Alice
+On Mon, 15 Jun 2026 17:18:02 +0200=0D
+Alice Ryhl <aliceryhl@google.com> wrote:=0D
+=0D
+> On Mon, Jun 15, 2026 at 1:56=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.d=
+ev> wrote:=0D
+> >=0D
+> > Add a workqueue wrapper for work items that are not 'static.=0D
+> >=0D
+> > Tyr reset work is queued from a handle that owns a Controller<'bound>=0D
+> > where the work item holds references tied to the lifetime of the bound=
+=0D
+> > device and its mapped IO state. The existing API only accepts 'static=0D
+> > work items which cannot express that relationship.=0D
+> >=0D
+> > Introduce ScopedQueue for this case. It owns the underlying workqueue=0D
+> > and ties enqueued work to the queue lifetime so borrowed state cannot=0D
+> > outlive the queue that may still run it.=0D
+> >=0D
+> > Construction is unsafe because the queue must not be leaked.=0D
+> >=0D
+> > `compile_fail` doc-tests are ignored for now as KUnit doesn't support=0D
+> > that. Enabling those tests as regular code block would raise this error=
+:=0D
+> >=0D
+> >     ERROR:root:error[E0597]: `data` does not live long enough=0D
+> >          --> rust/doctests_kernel_generated.rs:22029:44=0D
+> >           |=0D
+> >     22027 |         let data =3D ();=0D
+> >           |             ---- binding `data` declared here=0D
+> >     22028 |         // SAFETY: Queue is not leaked.=0D
+> >     22029 |         queue =3D unsafe { new_queue_with_lt(&data)? };=0D
+> >           |                                            ^^^^^ borrowed v=
+alue does not live long enough=0D
+> >     22030 |     }=0D
+> >           |     - `data` dropped here while still borrowed=0D
+> >     ...=0D
+> >     22034 | }=0D
+> >           | - borrow might be used here, when `queue` is dropped and ru=
+ns the `Drop` code for type `ScopedQueue`=0D
+> >           |=0D
+> >           =3D note: values in a scope are dropped in the opposite order=
+ they are defined=0D
+> >=0D
+> > which is exactly the constraint ScopedQueue is meant to enforce.=0D
+> >=0D
+> > This series is based on Alice's "Creation of workqueues in Rust" [1]=0D
+> > series.=0D
+> >=0D
+> > Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c3=
+51c38f@google.com [1]=0D
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>=0D
+> > ---=0D
+> >  rust/kernel/workqueue/mod.rs          |   3 +=0D
+> >  rust/kernel/workqueue/scoped_queue.rs | 179 ++++++++++++++++++++++++++=
+=0D
+> >  2 files changed, 182 insertions(+)=0D
+> >  create mode 100644 rust/kernel/workqueue/scoped_queue.rs=0D
+> >=0D
+> > diff --git a/rust/kernel/workqueue/mod.rs b/rust/kernel/workqueue/mod.r=
+s=0D
+> > index e30c21214a81..5e2baa84c143 100644=0D
+> > --- a/rust/kernel/workqueue/mod.rs=0D
+> > +++ b/rust/kernel/workqueue/mod.rs=0D
+> > @@ -212,6 +212,9 @@=0D
+> >  mod builder;=0D
+> >  pub use self::builder::Builder;=0D
+> >=0D
+> > +mod scoped_queue;=0D
+> > +pub use self::scoped_queue::ScopedQueue;=0D
+> > +=0D
+> >  /// Creates a [`Work`] initialiser with the given name and a newly-cre=
+ated lock class.=0D
+> >  #[macro_export]=0D
+> >  macro_rules! new_work {=0D
+> > diff --git a/rust/kernel/workqueue/scoped_queue.rs b/rust/kernel/workqu=
+eue/scoped_queue.rs=0D
+> > new file mode 100644=0D
+> > index 000000000000..e0457b521a19=0D
+> > --- /dev/null=0D
+> > +++ b/rust/kernel/workqueue/scoped_queue.rs=0D
+> > @@ -0,0 +1,179 @@=0D
+> > +// SPDX-License-Identifier: GPL-2.0=0D
+> > +=0D
+> > +//! Lifetime-scoped workqueues.=0D
+> > +//!=0D
+> > +//! Provides [`ScopedQueue`] for work items that may borrow data with =
+some=0D
+> > +//! non-`'static` lifetime.=0D
+> > +//!=0D
+> > +//! Unlike [`Queue`] which only accepts `'static` work items, [`Scoped=
+Queue`]=0D
+> > +//! owns its underlying queue and relies on that queue being dropped t=
+o drain=0D
+> > +//! pending and running work before borrowed data can go out of scope.=
+=0D
+> > +//!=0D
+> > +//! TODO: Remove `ignore` once KUnit supports `compile_fail` on doc-te=
+sts.=0D
+> > +//! ```compile_fail,ignore=0D
+> > +//! use kernel::prelude::*;=0D
+> > +//! use kernel::workqueue::ScopedQueue;=0D
+> > +//!=0D
+> > +//! /// # Safety=0D
+> > +//! ///=0D
+> > +//! /// Returned queue must not be leaked.=0D
+> > +//! unsafe fn new_queue_with_lt<'bound>(_: &'bound ()) -> Result<Scope=
+dQueue<'bound>> {=0D
+> > +//!     // SAFETY: Caller guarantees that the returned queue is not le=
+aked.=0D
+> > +//!     unsafe { ScopedQueue::new_ordered_with_lt(c"scoped_queue") }=0D
+> > +//! }=0D
+> > +//!=0D
+> > +//! fn queue_outlives_borrowed_data() -> Result {=0D
+> > +//!     let queue;=0D
+> > +//!=0D
+> > +//!     {=0D
+> > +//!         let data =3D ();=0D
+> > +//!         // SAFETY: Queue is not leaked.=0D
+> > +//!         queue =3D unsafe { new_queue_with_lt(&data)? };=0D
+> > +//!     }=0D
+> > +//!     // Here the `compile_fail` is fulfilled as `queue` would be dr=
+opped=0D
+> > +//!     // after `data`.=0D
+> > +//!     Ok(())=0D
+> > +//! }=0D
+> > +//! ```=0D
+> > +//!=0D
+> > +//! TODO: Remove `ignore` once KUnit supports `compile_fail` on doc-te=
+sts.=0D
+> > +//! ```compile_fail,ignore=0D
+> > +//! use kernel::prelude::*;=0D
+> > +//! use kernel::sync::Arc;=0D
+> > +//! use kernel::workqueue::{=0D
+> > +//!     impl_has_work,=0D
+> > +//!     new_work,=0D
+> > +//!     ScopedQueue,=0D
+> > +//!     Work,=0D
+> > +//!     WorkItem,=0D
+> > +//! };=0D
+> > +//!=0D
+> > +//! #[pin_data]=0D
+> > +//! struct BorrowedWork<'bound> {=0D
+> > +//!     data: &'bound (),=0D
+> > +//!     #[pin]=0D
+> > +//!     work: Work<BorrowedWork<'bound>>,=0D
+> > +//! }=0D
+> > +//!=0D
+> > +//! impl_has_work! {=0D
+> > +//!     impl{'bound} HasWork<BorrowedWork<'bound>> for BorrowedWork<'b=
+ound> { self.work }=0D
+> > +//! }=0D
+> > +//!=0D
+> > +//! impl<'bound> WorkItem for BorrowedWork<'bound> {=0D
+> > +//!     type Pointer =3D Arc<Self>;=0D
+> > +//!=0D
+> > +//!     fn run(_this: Arc<Self>) {}=0D
+> > +//! }=0D
+> > +//!=0D
+> > +//! impl<'bound> BorrowedWork<'bound> {=0D
+> > +//!     fn new(data: &'bound ()) -> Result<Arc<Self>> {=0D
+> > +//!         Arc::pin_init(=0D
+> > +//!             pin_init!(Self {=0D
+> > +//!                 data,=0D
+> > +//!                 work <- new_work!("BorrowedWork::work"),=0D
+> > +//!             }),=0D
+> > +//!             GFP_KERNEL,=0D
+> > +//!         )=0D
+> > +//!     }=0D
+> > +//! }=0D
+> > +//!=0D
+> > +//! struct Handle<'bound> {=0D
+> > +//!     work: Arc<BorrowedWork<'bound>>,=0D
+> > +//!     wq: ScopedQueue<'bound>,=0D
+> > +//! }=0D
+> > +//!=0D
+> > +//! impl<'bound> Handle<'bound> {=0D
+> > +//!     /// # Safety=0D
+> > +//!     ///=0D
+> > +//!     /// Returned handle must not be leaked.=0D
+> > +//!     unsafe fn new_with_lt(data: &'bound ()) -> Result<Self> {=0D
+> > +//!         Ok(Self {=0D
+> > +//!             work: BorrowedWork::new(data)?,=0D
+> > +//!             // SAFETY: Caller guarantees that the returned handle =
+is not leaked.=0D
+> > +//!             wq: unsafe { ScopedQueue::new_ordered_with_lt(c"handle=
+_wq")? },=0D
+> > +//!         })=0D
+> > +//!     }=0D
+> > +//! }=0D
+> > +//!=0D
+> > +//! fn handle_outlives_borrowed_data() -> Result {=0D
+> > +//!     let handle;=0D
+> > +//!=0D
+> > +//!     {=0D
+> > +//!         let data =3D ();=0D
+> > +//!         // SAFETY: Handle is not leaked.=0D
+> > +//!         handle =3D unsafe { Handle::new_with_lt(&data)? };=0D
+> > +//!=0D
+> > +//!         let _ =3D handle.wq.enqueue(handle.work.clone());=0D
+> > +//!     }=0D
+> > +//!     // Here the `compile_fail` is fulfilled as `handle` would be d=
+ropped=0D
+> > +//!     // after `data`.=0D
+> > +//!     Ok(())=0D
+> > +//! }=0D
+> > +//! ```=0D
+> > +=0D
+> > +use super::{=0D
+> > +    OwnedQueue,=0D
+> > +    Queue,=0D
+> > +    RawWorkItem, //=0D
+> > +};=0D
+> > +=0D
+> > +use crate::{=0D
+> > +    bindings,=0D
+> > +    ffi,=0D
+> > +    prelude::*, //=0D
+> > +};=0D
+> > +=0D
+> > +use core::marker::PhantomData;=0D
+> > +=0D
+> > +/// An owned workqueue that can enqueue work items borrowing from `'sc=
+ope`.=0D
+> > +///=0D
+> > +/// A `ScopedQueue` must not outlive data borrowed by its work items.=
+=0D
+> > +pub struct ScopedQueue<'scope> {=0D
+> > +    inner: OwnedQueue,=0D
+> > +    _scope: PhantomData<&'scope mut &'scope ()>,=0D
+> =0D
+> I think this can be contra-variant:=0D
+> =0D
+> _scope: PhantomData<fn(&'scope ())>,=0D
+=0D
+With that, lifetime of the queue is not restricted enough i.e. can live lon=
+ger=0D
+than expected.=0D
+=0D
+For instance, module doc-test should fail to compile when removing=0D
+`compile_fail,ignore` but it doesn't with your suggestion.=0D
+=0D
+Thanks,=0D
+Onur=0D
+=0D
+> =0D
+> Alice=0D
