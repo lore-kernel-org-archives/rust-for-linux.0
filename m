@@ -1,250 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395D438B7D9;
-	Wed, 17 Jun 2026 19:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123912EEE74
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 22:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781725269; cv=none; b=Qo1eJfUioFpE/PPsAh47PAG/CZfubK8n0go4gNh1FqVezx0BUIN/an9TTXvCGuWYPQZlQts5DF0WmofIW/n54Qc35WtKW3o2Vd5dTow6qooL4R9NXW7LQOcS7oReueuBflsXryfNTc9FE2KtD18ihvZSOtQDFgRRC8SgpUqM9oQ=
+	t=1781734871; cv=none; b=t3dyXcMfUyW2PtV7lAN7rUYWafercLEjH4DczLk37eimDMi8uCubdOSAZYg6DuumkF1PZIzXlhoW50zo5FDFQ4wqaqFnDhoJaSn1whouKCjVHw0r+f/FO7Y/x35Q9gApD0D4rCYSU7xeXBcA7QVaA1dXcVVol0zXjTd4/AKzRVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781725269; c=relaxed/simple;
-	bh=qfykWwOUu/ivugFSHe9XrwcsBop38fwcdbGCH8Y+oFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ipglDd6ofTMS4yATUk9+nJapPw/02Dg/8onJzXvhRjWBGTxDIqBUCEAjTIuOtHSG4RK+Z9dThmyKSD77U/nBrm/sg/01giA5911w2quEx0dbjpchE+majdy4xfMGW2df/NcTHSiM/7Gjr1sCsxIdsVO8DGAkEnlas6IVdkLAKn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4Kdz6vW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781734871; c=relaxed/simple;
+	bh=bS0M69pLW5nNr8CnRSLKfXmNPiMqndmz5nY6By+n/Z8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lFbg/sKgKtLJxv+bDilsLuVxvPCcW2RpaSA5oB4Hg8RE3jUWuQcA6rVvEELz04hGQ+nkdJrCEZwtCzOjxq56P+a3GwQCZ5ClAdTQc3qLRl3APWbKeZ430pW3uLAs7ck3RDSBR8xTQLDsXyJsZTyMpr9spkfGDocdC5kEek1/dvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oJwdRW4Z; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4Kdz6vW"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 577D61F000E9;
-	Wed, 17 Jun 2026 19:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781725267;
-	bh=yB3SrqMet3Fr/xkbHMXKRnsL+LEh/h0Mxg/9ZOQwj0Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=A4Kdz6vWBW+AJjv/Bi0LAOdWUT9EwBi6++FBDlHAaUi2tYEmXT4uKTMrFot9gcKga
-	 HwlFgiYYNP7e+0n9HYFlnRDDUUGWhuXA02o1ji66tOqY2JLQRG47v5OnZZmNfpE35l
-	 ZBVso3Nh7BojRncAK9A6jIFegR2uG/MZHHrHb18QFtCTHYPso93/0HUsDjqZ1tSLgW
-	 8HWpO3Sal32Xqm15FkvwGI80ua+h9exkxQtnxhJzH0e57qRlFPLRXn1wIEVkkEWz3I
-	 2ARKYa7WCwtvn0DkUxGpOeIVNLsei7fFCbaVO3P3DdGGKBNYeSssodt6ZsKYO6m9mT
-	 uJUJ5Q+b2z0AQ==
-Date: Wed, 17 Jun 2026 21:40:20 +0200
-From: Nicolas Schier <nsc@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Mohamad Alsadhan <mo@sdhn.cc>, Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oJwdRW4Z"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c89636920a3so774a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:21:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781734869; x=1782339669; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dQh4Om30hKfslky9yA/JMElL6tQQZ4ZZt3o5EqmRpQA=;
+        b=oJwdRW4Z3Bs2HRA5XWuj7VxmoVZx7kYf80rXwW0vSMauxpOJuWNktai/kJBLdv3icn
+         TbePgxsoo5gCtGMrxlhyd8+8tOmcdPvlBWLMptfZrnlwwqHe6OAdh3yAVhgXGcL1oy9E
+         oNbWP0Qd4tYDKF9suQLglAtRwcg1Pmt2qK4zh05+NhpHQXIYJ395SXuSPNDRv322cHoL
+         2LFrnHgNa5rqRjA0lvagcjY2LGHg93fjJ7zOIzrqPF3QbYEIbVkRkYh0Z3tsR/+j2cjW
+         gOvzj1l0ALFPLnFXxZzupd0JZ/CMtsCxohAqs06knPyifARxjiWtjezulCMOuBTSFPth
+         1v5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781734869; x=1782339669;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dQh4Om30hKfslky9yA/JMElL6tQQZ4ZZt3o5EqmRpQA=;
+        b=Q7/8W07HhHik0/ZQWI0IvXCmtn5yv43tQO4e+pZrjpQ7Iq+pn2f9LtOD7ixoQt8srV
+         gU0my5ZW7Q8dqTysOS7OtJIVLoWNL0dvGXjLbs5BnH2InNFbTJv89de+p4GeqdU4lNvj
+         /BG+mSl81R/fr8RVxJ7YkJ+3rRGyY4vof8Wu+NHapkqCwCu2iUauhI/m1tOgmGv6YCXL
+         tsQf9guQKdnTfyHnVAFZd9XbEzVP2i2Uv5AK/J9DHKR+JkiMxzI9p3m+gGLwHolk7NBh
+         49veMe7tzMzUCDQIh9MvqcQpS/5dGkQyvC8A0XIsDPZCig8bT3J63paao8W/3CFFaaDK
+         334g==
+X-Forwarded-Encrypted: i=1; AFNElJ93/W7o1yu5ugbO8XE/8nvLEoBOA96dRY4LVeanB899ksOJBscF0lbhd8PqZ85u7aeAKdTaT4cg1eQl2aro6Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxi9igcBDDaL/H+/MVoV6NDmX/BhGCymf1eRGyBQMmhzEL7+1tc
+	mx9r5s+WIhypqkMKmbBDzl1ZOs8bWa65NTc+rVzMkszUCXLBNS/Ae5vQ
+X-Gm-Gg: Acq92OGeXFnn5xf0VL+KuRSRikZPHHVLrtE7pXyuudjdSIaCb6GPOd5m7/KhRrtapwS
+	gsO7jvlVCPHO2XEelCFVG05TVMNY9jlniyAkto3oALVD1FAMhjO13aRgj6sNSQ2gv74p9LmPcCf
+	1dNDJq53Gx9uh4goSZ2wCyDSR8zu9hwEia1+kM22h1MdvzKzYIptGFViY6ijQ8MThD9LlR7PJTL
+	BCT2fk3JAlQu/uJN+q8KoTu+kVid/k0uWQyqRGPPHL2KP71KjvWeOIRxYNdcYG/CTh1D25+JTbw
+	B56a2IBxPnb5k6sFD8VZdTXYvS1876BK6DUZRsBN3o8nQ8yskQIi+oHcwoACXty9GSHw1/nw3bj
+	wUnCpkME98pxVIqTy5hzxdDFdvMLDvQKj1dWNiC95UiYfMHKqEQS2xxcIbVXs9pYcZ0Gccj1gos
+	doKqFtLxSDdEBJWeGWUyiEjZCYNTG8vdal2zHMkgw/LHQV
+X-Received: by 2002:a05:6a21:4688:b0:3b4:6a31:6d0f with SMTP id adf61e73a8af0-3b8b7ef5ca8mr5868738637.41.1781734869347;
+        Wed, 17 Jun 2026 15:21:09 -0700 (PDT)
+Received: from LAPTOP-TMVMP5FD.localdomain ([106.222.251.180])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8665186828sm14126000a12.21.2026.06.17.15.21.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jun 2026 15:21:08 -0700 (PDT)
+From: Keshav Verma <iganschel@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Carlos Llamas <cmllamas@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Yoann Congal <yoann.congal@smile.fr>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8] kbuild: host: use single executable for rustc -C
- linker
-Message-ID: <ajL4JBIUVHdYISsX@levanger>
-Mail-Followup-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Mohamad Alsadhan <mo@sdhn.cc>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Yoann Congal <yoann.congal@smile.fr>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20260509101939.27108-1-mo@sdhn.cc>
- <CANiq72=p+NG_JRuDBJPPtN2QkmFGJ0BuFNMWnQ=Vg+v8x9+0yg@mail.gmail.com>
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Keshav Verma <iganschel@gmail.com>
+Subject: [PATCH] rust_binder: check context manager before creating node
+Date: Thu, 18 Jun 2026 03:50:30 +0530
+Message-Id: <20260617222030.15189-1-iganschel@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=p+NG_JRuDBJPPtN2QkmFGJ0BuFNMWnQ=Vg+v8x9+0yg@mail.gmail.com>
 
-On Wed, Jun 10, 2026 at 03:18:54PM +0200, Miguel Ojeda wrote:
-> On Sat, May 9, 2026 at 12:20 PM Mohamad Alsadhan <mo@sdhn.cc> wrote:
-> >
-> > rustc's -C linker= option expects a single executable path. When
-> > HOSTCC contains a wrapper (e.g. "ccache gcc"), passing
-> > `-Clinker=$(HOSTCC)` results in the shell splitting the value into
-> > multiple words, and rustc interprets the additional word as an
-> > input filename:
-> 
-> I have been taking a look at this, and considered applying it since
-> Kbuild is OK with it (thanks a lot for all the work during the
-> different versions), but I am not sure if the following bits are all
-> intended:
-> 
->   - Shouldn't `HOSTRUSTC_LD` be documented in `Documentation/kbuild/kbuild.rst`?
+Rust Binder currently creates the Binder node before checking
+whether a context manager is already registered. If a context manager already
+exists, set_manager_node() returns -EBUSY after node state has already been
+created.
 
-Good catch, thanks.  Yes.
+Add a check before creating the node to match the C Binder ordering for
+the common already registered case. Keep the final checks in set_manager_node()
+so races with another caller are still handled after node creation.
 
+Signed-off-by: Keshav Verma <iganschel@gmail.com>
+---
+ drivers/android/binder/context.rs | 20 ++++++++++++++++++++
+ drivers/android/binder/process.rs |  1 +
+ 2 files changed, 21 insertions(+)
 
->   - Why do we do both `clean-files` and `CLEAN_FILES`?
-> 
->     + In fact, should we do it on `clean` or `mrproper`? Nicolas
-> originally suggested `MRPROPER_FILES`, but this is on `CLEAN_FILES`.
-> But more on that below, since I guess it depends on how we treat
-> out-of-tree modules...
-> 
->   - Was this tested with an out-of-tree module? I am asking because:
-> 
->     + It does create an unused wrapper in a `scripts/` folder in the
-> out-of-tree module directory (i.e. the one used is the in-tree one) --
-> is that intended?
-> 
->     + If we remove the wrapper during `clean` as the patch currently
-> does, then it means we cannot build Rust host programs in an
-> out-of-tree module (because it uses the in-tree one). Should it be in
-> `mrproper` instead, or should we generate a per-out-of-tree-module
-> one?
-> 
->       While I think the kernel generally expects that the same
-> toolchain is used for both the main build and out-of-tree modules (it
-> may happen to work otherwise, but as a policy it is not supposed to be
-> supported, or at least that is what I recall I was told), I am not
-> sure if it applies to host programs. I guess someone may want to use a
-> different host toolchain vs. the one used to build the main kernel,
-> and I guess things would generally work.
->
->   - The `filechk` could fail if we use Rust host programs in more
-> folders later on, i.e. if two submakes run it at the same time, and
-> one at the end deletes the (shared) temporary, then the other will
-> fail if it was in the middle of updating it.
-
-
-Uh, thanks for all those good questions.  I didn't even think about rust
-host progs being built in out-of-tree module trees.  And the concurrent
-filechk calls are really no good.
-
-
-Iff HOSTRUSTC_LD shall be kept stable for external kernel modules, a
-semi-simple solution might be to move rustc-wrapper rules to
-scripts/basic/ and use cmd_* instead of filechk.  Regarding the
-queations above, this would mean:
-
-
-  * ${KBUILD_OUTPUT}/scripts/basic/rustc-wrapper will be purged during
-    'mrproper'
-
-  * It will be generated only once, no matter who many in-tree folder
-    use it.
-
-
-Only roughly tested:
-
-
-diff --git a/Makefile b/Makefile
-index 8235b6a9b3cc..e3a82c344e69 100644
---- a/Makefile
-+++ b/Makefile
-@@ -661,6 +661,7 @@ export RCS_FIND_IGNORE := \( -name SCCS -o -name BitKeeper -o -name .svn -o    \
- PHONY += scripts_basic
- scripts_basic: KBUILD_HOSTCFLAGS := $(KBUILD_HOSTCFLAGS)
- scripts_basic: KBUILD_HOSTLDFLAGS := $(KBUILD_HOSTLDFLAGS)
-+scripts_basic: HOSTRUSTC_LD := $(HOSTRUSTC_LD)
- scripts_basic:
- 	$(Q)$(MAKE) $(build)=scripts/basic
+diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+index ddddb66b3557..562fb339b31f 100644
+--- a/drivers/android/binder/context.rs
++++ b/drivers/android/binder/context.rs
+@@ -4,6 +4,7 @@
  
-diff --git a/rust/Makefile b/rust/Makefile
-index 2fbdebb93bf2..d02002c50432 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -593,7 +593,7 @@ quiet_cmd_rustc_procmacro = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET))
-       cmd_rustc_procmacro = \
- 	$(rustc_target_envs) \
- 	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) $(rust_common_flags) $(rustc_target_flags) \
--		-Clinker-flavor=gcc -Clinker=$(HOSTCC) \
-+		-Clinker-flavor=gcc -Clinker=$(objtree)/scripts/basic/rustc-wrapper \
- 		-Clink-args='$(call escsq,$(KBUILD_PROCMACROLDFLAGS))' \
- 		--emit=dep-info=$(depfile) --emit=link=$@ --extern proc_macro \
- 		--crate-type proc-macro -L$(objtree)/$(obj) \
-@@ -610,12 +610,14 @@ $(obj)/$(libzerocopy_derive_name): $(src)/zerocopy-derive/lib.rs $(obj)/libproc_
- $(obj)/$(libmacros_name): private rustc_target_flags = \
-     --extern proc_macro2 --extern quote --extern syn
- $(obj)/$(libmacros_name): $(src)/macros/lib.rs $(obj)/libproc_macro2.rlib \
--    $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-+    $(obj)/libquote.rlib $(obj)/libsyn.rlib \
-+    scripts/basic/rustc-wrapper FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
+ use kernel::{
+     alloc::kvec::KVVec,
++    cred::Credential,
+     error::code::*,
+     prelude::*,
+     security,
+@@ -107,6 +108,25 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+         }
+     }
  
- $(obj)/$(libpin_init_internal_name): private rustc_target_flags = $(pin_init_internal-flags)
- $(obj)/$(libpin_init_internal_name): $(src)/pin-init/internal/src/lib.rs \
--    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib FORCE
-+    $(obj)/libproc_macro2.rlib $(obj)/libquote.rlib $(obj)/libsyn.rlib \
-+    scripts/basic/rustc-wrapper FORCE
- 	+$(call if_changed_dep,rustc_procmacro)
- 
- # `rustc` requires `-Zunstable-options` to use custom target specifications
-diff --git a/scripts/Makefile.host b/scripts/Makefile.host
-index c1dedf646a39..0be405efa38a 100644
---- a/scripts/Makefile.host
-+++ b/scripts/Makefile.host
-@@ -91,7 +91,8 @@ hostcxx_flags  = -Wp,-MMD,$(depfile) \
- # current working directory, which may be not accessible in the out-of-tree
- # modules case.
- hostrust_flags = --out-dir $(dir $@) --emit=dep-info=$(depfile) \
--		 -Clinker-flavor=gcc -Clinker=$(HOSTCC) \
-+		 -Clinker-flavor=gcc \
-+		 -Clinker=$(objtree)/scripts/basic/rustc-wrapper \
- 		 -Clink-args='$(call escsq,$(KBUILD_HOSTLDFLAGS))' \
-                  $(KBUILD_HOSTRUSTFLAGS) $(HOST_EXTRARUSTFLAGS) \
-                  $(HOSTRUSTFLAGS_$(target-stem))
-@@ -153,7 +154,7 @@ $(host-cxxobjs): $(obj)/%.o: $(obj)/%.cc FORCE
- quiet_cmd_host-rust	= HOSTRUSTC $@
-       cmd_host-rust	= \
- 	$(HOSTRUSTC) $(hostrust_flags) --emit=link=$@ $<
--$(host-rust): $(obj)/%: $(src)/%.rs FORCE
-+$(host-rust): $(obj)/%: $(src)/%.rs scripts/basic/rustc-wrapper FORCE
- 	+$(call if_changed_dep,host-rust)
- 
- targets += $(host-csingle) $(host-cmulti) $(host-cobjs) \
-diff --git a/scripts/basic/.gitignore b/scripts/basic/.gitignore
-index 07c195f605a1..d314c04fe131 100644
---- a/scripts/basic/.gitignore
-+++ b/scripts/basic/.gitignore
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- /fixdep
- /randstruct.seed
-+/rustc-wrapper
-diff --git a/scripts/basic/Makefile b/scripts/basic/Makefile
-index fb8e2c38fbc7..0aec1adc199b 100644
---- a/scripts/basic/Makefile
-+++ b/scripts/basic/Makefile
-@@ -19,3 +19,25 @@ always-$(CONFIG_RANDSTRUCT) += randstruct.seed
- $(obj)/../../include/generated/integer-wrap.h: $(srctree)/scripts/integer-wrap-ignore.scl FORCE
- 	$(call if_changed,touch)
- always-$(CONFIG_UBSAN_INTEGER_WRAP) += ../../include/generated/integer-wrap.h
++    pub(crate) fn check_manager(&self, cred: &Credential) -> Result {
++        let manager = self.manager.lock();
++        if manager.node.is_some() {
++            pr_warn!("BINDER_SET_CONTEXT_MGR already set");
++            return Err(EBUSY);
++        }
++        security::binder_set_context_mgr(cred)?;
 +
-+# rustc-wrapper: rustc's `-Clinker=` expects a single executable path, not a
-+# command line.  `HOSTCC` may be a multi-word command when wrapped (e.g.
-+# "ccache gcc"), which would otherwise be split by the shell and mis-parsed by
-+# rustc.  To work around this, we generate a script that invokes `HOSTRUSTC_LD`
-+# with the linker arguments appended so such commands can be used safely.
-+#
-+# Set `HOSTRUSTC_LD` for a different rustc linker command than `HOSTCC`
-+HOSTRUSTC_LD ?= $(HOSTCC)
++        // If the context manager has been set before, ensure that we use the same euid.
++        let caller_uid = Kuid::current_euid();
++        if let Some(ref uid) = manager.uid {
++            if *uid != caller_uid {
++                return Err(EPERM);
++            }
++        }
 +
-+quiet_cmd_rustc-wrapper = GEN     $@
-+      cmd_rustc-wrapper = \
-+	      printf '%s\n' '\#!/bin/sh' '$(addsuffix $(space),$(HOSTRUSTC_LD))"$$@"' >$@; \
-+	      chmod a+x $@
++        Ok(())
++    }
 +
-+$(obj)/rustc-wrapper: FORCE
-+	$(call if_changed,rustc-wrapper)
-+
-+always-$(CONFIG_RUST) += rustc-wrapper
-+ifneq ($(CONFIG_RUST),)
-+targets += rustc-wrapper
-+endif
-
-
+     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
+         let mut manager = self.manager.lock();
+         if manager.node.is_some() {
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 96b8440ceac6..d09facebddf6 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -741,6 +741,7 @@ fn set_as_manager(
+         } else {
+             (0, 0, 0)
+         };
++        self.ctx.check_manager(&self.cred)?;
+         let node_ref = self.get_node(ptr, cookie, flags as _, true, thread)?;
+         let node = node_ref.node.clone();
+         self.ctx.set_manager_node(node_ref)?;
 -- 
-Nicolas
+2.39.5
+
