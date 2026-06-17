@@ -1,98 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB81F33FE02;
-	Wed, 17 Jun 2026 17:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA462375F8E;
+	Wed, 17 Jun 2026 17:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781717365; cv=none; b=usImm+KDnNpagnnnSGdmYn64Cy0UvplCuBcEPuK/F/0kW2KLKn45+RkDDfmeYLKgrn1cxKrNIidmXcjctEmaAO20pzVS7QqI3nfMt+ZL8tf1dgiymYGAXhV10rjCXtCBm7Qbq9sZ2nxF8E2tekSkkAFdF190CjiVJuo3fcMhLXg=
+	t=1781718756; cv=none; b=TeA5yh6ZHt/236sXLPBZ6wIaJsZq8MR64Av/nIJRT8Ml7DOUCPamVnPDPBOJqL6zmB2CEyclnnyfrRDPVzpIVzjfYXAHrU/9vVlupKdTPhMqCaZ24Y1lg5QJATRFHpV9oV1qJXmmBIkWDi/Npx8w4Umzfe0rAZ1XQZgTH3e+vbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781717365; c=relaxed/simple;
-	bh=PaSTbLBcpUijmsTYXlKtssJdURQBgW1Gr+yISnMRViE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=tjLNk097z32U6neqhFnaM4Jb7PYt5cyK9QXGk7IYu2VCTCXPoSrkdZYIMTt/lx4f8K00S17uWc/vkFKWp5AlaOCUk3tGPLr0EClYODNsYYM8vaTtVFoL7NKnXHz2TmZqXzOqhfoQPraXArB08P/uAwfg2e7ju8slOEQ4eR1eQdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwx8WkGS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781718756; c=relaxed/simple;
+	bh=x7t8hhmqX9+kcaLwuSWvihabD9248t8+GAYxlxSb3QM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z9I6MdjmWr1FtLoCYJZUeWwZOAxs8rzZJPpqVC9RD7tfabDdVgmA3je7xGQNVR+n2a0s1GXdiiirrohzbLLoM0tPTAeQ6wpthNSKjcuKo9XFYSHjEhw+0Vj0lpzei4iTfmMePIwUslTCw1x8OUgGuG17cUhkg769TjSQ3reu6P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DcCogTJC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwx8WkGS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404C11F000E9;
-	Wed, 17 Jun 2026 17:29:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DcCogTJC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2021F000E9;
+	Wed, 17 Jun 2026 17:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781717363;
-	bh=+zlA4BqPCSjev3mf0pY8zrm54TbnnTIQPELdOZLAFjQ=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=kwx8WkGS1kc6njcvfu+JJ1uZB+En8dhUnRFw1UdH8aHoFBddSMRW4niWJxR03upAN
-	 GG4G7ZDq9HVNuA9y75ANZ2RhqxlC0FZckAGHYkwstg2vsUD7XKA4br8t6y3kJosm22
-	 YeZVCU282DQOGYOGQWTtvs+qbRhlOnnTO27qWi7uUykOxH72icNM27eLGr1XTa4FV4
-	 Xrio7K238hpCW0de5H0hT+6xyxKeGIzR1Si32ZlMVSISSZMbqXbMBgns6q1sXBpjjk
-	 07In06Zd83KhLA/OEgXlFax1ExxIHTNsWHwdFEmYHb9j9ixqOC6apo/hKuajY72Iih
-	 m3TypKoZ5usTA==
+	s=k20260515; t=1781718755;
+	bh=zlxyb6tK+cgT4hkcQSggGyv1AE7xUuhts4Aau+pWaZI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DcCogTJCn9XXFP1PANQFwGbAZOhA7dTrLW9o7KWrSM0ctdI2Sgx8Esu7pt7ZTrwxT
+	 Dj/rgCt1FLbtQAIxJYwBAIIdFUUdEyTW5+b5NPsBvsl6SffRE7kwahaLMpCfX0aw/I
+	 ywxMMg9un8dtVZNovkqm/C6J5KRN45h+uDluTTKeH9cQnHFgpkcDxObc30GXWr/C13
+	 4vpLn9ABy4e3Qqmgj6FcWtIfz2cY3+iuWHbW9FgcTWLgjVrCENSp2iU1q3MrEOMPMN
+	 P1cqyt2qaH5wL+VrqIyl1A9jotFUiUDfK+WJiBb/+/1WBbXqz4U/KrDAHkLxd2vOWw
+	 rA5CPs2gIf8fw==
+Date: Wed, 17 Jun 2026 17:52:33 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Mike Lothian <mike@fireburn.co.uk>
+Cc: rust-for-linux@vger.kernel.org, linux-crypto@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] rust: crypto: add RSA public-key encryption via
+ crypto_akcipher
+Message-ID: <20260617175233.GF785086@google.com>
+References: <20260617150143.2152-1-mike@fireburn.co.uk>
+ <20260617150143.2152-3-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 17 Jun 2026 19:29:19 +0200
-Message-Id: <DJBI3BA9L00H.3KOMQOPUO6BB4@kernel.org>
-To: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 1/1] rust: workqueue: add ScopedQueue for lifetime
- bound items
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <tamird@kernel.org>,
- <daniel.almeida@collabora.com>
-References: <20260617144645.253444-1-work@onurozkan.dev>
- <20260617144645.253444-2-work@onurozkan.dev>
-In-Reply-To: <20260617144645.253444-2-work@onurozkan.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260617150143.2152-3-mike@fireburn.co.uk>
 
-On Wed Jun 17, 2026 at 4:45 PM CEST, Onur =C3=96zkan wrote:
-> Add a workqueue wrapper for work items that are not 'static.
->
-> Tyr reset work is queued from a handle that owns a Controller<'bound>
-> where the work item holds references tied to the lifetime of the bound
-> device and its mapped IO state. The existing API only accepts 'static
-> work items which cannot express that relationship.
->
-> Introduce ScopedQueue for this case. It owns the underlying workqueue
-> and ties enqueued work to the queue lifetime so borrowed state cannot
-> outlive the queue that may still run it.
->
-> Construction is unsafe because the queue must not be leaked.
->
-> `compile_fail` doc-tests are ignored for now as KUnit doesn't support
-> that. Enabling those tests as regular code block would raise this error:
->
->     ERROR:root:error[E0597]: `data` does not live long enough
-> 	 --> rust/doctests_kernel_generated.rs:22029:44
-> 	  |
->     22027 |         let data =3D ();
-> 	  |             ---- binding `data` declared here
->     22028 |         // SAFETY: Queue is not leaked.
->     22029 |         queue =3D unsafe { new_queue(&data)? };
-> 	  |                                            ^^^^^ borrowed value does=
- not live long enough
->     22030 |     }
-> 	  |     - `data` dropped here while still borrowed
->     ...
->     22034 | }
-> 	  | - borrow might be used here, when `queue` is dropped and runs the `D=
-rop` code for type `ScopedQueue`
-> 	  |
-> 	  =3D note: values in a scope are dropped in the opposite order they are=
- defined
->
-> which is exactly the constraint ScopedQueue is meant to enforce.
->
-> This series is based on Alice's "Creation of workqueues in Rust" [1]
-> series.
->
-> Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351=
-c38f@google.com [1]
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+On Wed, Jun 17, 2026 at 04:01:33PM +0100, Mike Lothian wrote:
+> Add a Rust binding for the asynchronous public-key cipher API
+> (crypto_akcipher), driven synchronously, and a crypto::rsa_pubkey_encrypt()
+> convenience built on it.
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Could you keep the crypto_akcipher support private to the file and just
+expose rsa_pubkey_encrypt()?  I don't want the use of crypto_akcipher to
+be growing significantly.  It's a very bad API, as I think is clear by
+all the workarounds you had to implement to use it.  I'd like to replace
+it with lib/crypto/ APIs for RSA eventually.
+
+- Eric
