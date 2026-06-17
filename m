@@ -1,63 +1,63 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298212E7F38
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C923C1967
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781709184; cv=none; b=YrfjB3DYNgwxf3+NNV7i/ocARzflVKYoZVd3GPiOT6LVNFewvFCxPZB616xKyQSy1w9+J1fgesmghURG84i6UhK4sqArD8sXiS88cSsxlMHVGGUGxtO3XStOwyi1Kbo1KSgirKkkLrbmJUv1IUuomxODBT4fvTHTdjbVx6B5XY4=
+	t=1781709187; cv=none; b=oUt5wujtzTnEM6/CumOPXXgobTvEtdWYBElzV9bwtUD8fs+x2zqw5FtCFbFpUjpk67diodhBgeEa9XQEA0yxwZTTu7X7G1/PghpGYTNJjjP+jXOlj4OlHeGJ2PeYopnK+F0+nsiJ1XG9Li1Ocq5Mw0oWQB9eF6H07IYv+sS0yZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781709184; c=relaxed/simple;
-	bh=ueN6fZrU9PB5X3nGZcfdcoiLZ8tFMW/Jrh1Tg/vMAZc=;
+	s=arc-20240116; t=1781709187; c=relaxed/simple;
+	bh=hyASuwcpHjUUEJudCDY/0p29qtBcLa+lkhS8+eKq7mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAAQHxxqWUmDNxXV0M011JaiPw70/JnDyQ8l0UiagrQuLzA/jwRTLuN21PhYvzw4txKQvlPzETpiCB8WiXsNjaPj91S1VQqUFLj1BoNiUfvNB1oiryb7GhC+clGMCSWDtFZfGjIi/5GFWsdY4Uu8fytezZEQpLuvCZuj8f1/2Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ihSZX9wS; arc=none smtp.client-ip=209.85.221.46
+	 MIME-Version; b=lYEAqjbN1n2z6sDo/3zDbLgLUO+TrlcJyhneH66juZc2v/FHHc1RG723DQbai99qwlXDRQwgB2EU+/z7k/dfUnQCruuCjBdMu5sNj1IF+IOWnacl+6xdtRuqW1bgb6vWS2MChkDOXjXZGtOmsQaL4lcqv7iqVCtyubczpOtrQ34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=L3BEWTon; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ihSZX9wS"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4624c1409c9so728598f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:13:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="L3BEWTon"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-490b211ee6aso44905665e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:13:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781709180; x=1782313980; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781709183; x=1782313983; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w76xIb5GnheiQJOKySamgNdVUZz18qqNnPyn9wtgjk4=;
-        b=ihSZX9wSGizVQ/QyJ4kCZVxDTiZaYAF7dhNGU82MFshYv5vDF8L2hF/N0FIWvmsjgC
-         VvfM1DjaTWDOfxsi4R1+fneTar8kAfvClzASxXhpGV4eiYLRPXPCh/r0ZkUU237dieTj
-         RKHAXdO0/QqrGroDeZx8vrKLN4KSOxfsfsDPmqyWa7uNSWNR+rLHSPayyHrHzmFZPOQW
-         PrFRLHKMAJHpWqHgDxQfsX4834q1WFkjNeTjD9eaTUeshhy5TB+se5CLAOsobj3jMSXd
-         Tt2CB+F1KDB13j7Ex8EcSE1y46YNnwyQ7Vmz2eCdziVKiyt5w03Z2+Ox0zoANZGvbkR0
-         vtrA==
+        bh=bBJh96yZ5tI+OLjcOixK/FxhCGTpV3zo6wCj83uRRkQ=;
+        b=L3BEWTonu8TJVAoL/8CskJFILAiBPKQVkcCgk+J1gw6728/ojNfslPKJJvIDQrfytl
+         xICyd9VUKNmCSIhPC+IMDVb+8+fzJZ/Rc4R7zPX5CoF6z3SUhBa8gPsvhjwht6f4wLmF
+         XUqDIAyJJZnLZhGHnK+wXWXl6OFnULIoV0MpktgiM88e6bbRbGYqUMBin86AxiZMRBsD
+         j7Xo3dw6/0Cem/vtAZUc5mRlExd9HIhgN1DmduSGmgIW5FBlR746SPiDHWP7qvcv/VfC
+         HmgSJUUCiaXSu4D82XeOmOqgdIpCCPghUG6Du8YeMxwnZbGBnh0oTFIAuRjRjsxw5mwm
+         UevA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781709180; x=1782313980;
+        d=1e100.net; s=20251104; t=1781709183; x=1782313983;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=w76xIb5GnheiQJOKySamgNdVUZz18qqNnPyn9wtgjk4=;
-        b=jtmTWnkO1lZ0MWKn+we8uh6RZIcREAj/USa9vk2mf84kVy6QIk6kEqQgL8kZjWd475
-         JhX305QjPNadsF4wG4ddhZD3qswJ5m7nq0Ae65OM8go02n1bnbuTRRIWakH7oWzt3X5u
-         66j2pFwWxMPkM+VjW9F0KjX12A6uMT2+ggNY51GJeC2lwRivhrv884+uTO6QSPaCLYd1
-         wybWWOA6ueL7+xMnOQ8sVmNMNLOwRMe/MeCsNBMk6yhBLvD6WIThYzlbel738d4bQHJ/
-         JS/cZKOg40pvldUHbbTA2wlE2J1KOEtFozFeW0KAQwUjCzdx7c7o8YGZLb4v4kVGBgfY
-         TnmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9uEC0+gNTy1Ev3Fw+neqot9W8S/rwHtc7B1JEONlt4d9OjyfF6Mi3gMu6xR9rXf5hssFZ1UFXhk0ftFhRQTg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz069AH1MHbaYvS0cdvlAlY4guFW3V9i8L1pIYQST4CB8VH+g+R
-	clZ12lqje/4qkO0yfsuo8BMrRZS6lsn5wprZNZE+JoLou9YqylfWNnjpOHE6J5IjWg==
-X-Gm-Gg: Acq92OGMwHO4SWonzw5HvVhlEOObZcp1jCIxrdtNZR/FjBQJn29T61oo2paOASxITDS
-	zrhwcwCWSmI6wUyfw2jBnF/5EiuvgbfuREECSj9IM216vV2XMt7lSw+aG4b3vaHFciHc5dgOdDL
-	Ga2GfgnJtq1UUyw3YPm2K6+Us++0GNdvjieIR+ZfzUj+KdnnWg4PJK9i6C0jeopf4neXmv7Mz+9
-	qqB+RtbURYK+WuJ2nf5ut+QZXzAaOav4lG3XtufBEldfh8TZBTQlmPsH42c1p5tpdMyg6pWoB/b
-	Zx7MK5aRJLNySuaTu/dTF5gUe808k6pveXha6TaKfMZSJsgc5TfB+pSyMfqw6kQOhDWy2UTF7sf
-	LZe3RseQzKyOpEr1oLV0ggWqBOhbcqsr7kKpWqlRn1uWi7jzJyFs4znT5ijRYiUWv+0yu2T7lI3
-	assJTS61CsngHyQOX/7tsWtzDCqHOUrSN50XcFwzOpgsibITEx87wZyF4P
-X-Received: by 2002:a05:600c:190e:b0:490:c2a2:e91f with SMTP id 5b1f17b1804b1-492333e23d6mr80280475e9.35.1781709177927;
-        Wed, 17 Jun 2026 08:12:57 -0700 (PDT)
+        bh=bBJh96yZ5tI+OLjcOixK/FxhCGTpV3zo6wCj83uRRkQ=;
+        b=CrAH+Te0psfVH+Ii3ihw52v6QjKWzzALDH1TvyMCdXlgBI4R1SfpJSIhQNCizkDwqm
+         iAz47R0Mt9V+TvCbnM6FI+VyJRiBHQbUcKOET+nLmFWXfo1tgf38IT9i3GcAFZHQ7jS+
+         XuIRs1Gm+MvZ38rxMAjHICJz1abVLjawqVnkYl8DC8Di3gFT1o5qrXvN+UGfNny7O5Io
+         nWKKVf3Qza2DUh+F1ohcFxabtTry2qB9YKIth2+Dlpp1lg5ZyqYdQGn/s04s0OA0X1aw
+         loM6ORFX1YUbGJvtiZ1OoYIkgfkOwMM2JwZjHg0RCxxkjaQlocSDcFHnVEx7LEwUsGKZ
+         55pA==
+X-Forwarded-Encrypted: i=1; AFNElJ9BzQ1GpBbNjYfmN82L0Y4PJOr2mjzB0PcdoXqbUzCDi0KL74u0hzUowgK7cMdQbhypdvsM5frijTSuFaSXZQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf9MpRMi+sI11g/Q+zYL+iyvqb/vL2cZf1aLQ1Y65kkGxps5Ul
+	vnhJaLL5HHq1KSE7g7h3R+c3eI1EtDsfhvA09JPrOZfUN3nYjnEBssrKfSaR1ZL89w==
+X-Gm-Gg: Acq92OE+/VtrXJTnMDBrxwi9ptwqUhmGaoRuTwXsTQjS4E92QPbjkbR4XMTPfSKQiQR
+	RSfIS6JxR0z2IR0H7NvdQmszfzO1ywNyzNjJR5Okxu0vr/NvnwJc9tezS/1Y3kKxjjE8usfF6zu
+	vqhOD7FUbYNzGNg/pBZKg0gM1a7c91ggtM+f5Xj3F4qz6Hlk//Vrr0krGh0k8Go8UN5uToXEaOm
+	dadDVcK92EbAN/rHz673GyuVKePufQrKnXGyaf7zCR8kpKvDNC/f6WxAIKCTWkIPAKqCpEQezNt
+	ylFswGS7W4vsKIkM1uyYVdQhheEIgKlgun8RI6DptkbfcfaDI+rcqhdH4h7J/zpbOy87ykpYUbe
+	aLfvtyHe+4S3bqfFO67+cou/kmq9bs1d5DpftPUnyAaMGDPKQ/K6FuYxYkU51Nk0ryh6/2+krJy
+	sLjnJqvKuqOHUZlt2XL0YWc8aJfrXYTl2qOsN5163PACKs/aAtyAdBYqHY
+X-Received: by 2002:a05:600c:6089:b0:490:4663:691b with SMTP id 5b1f17b1804b1-492333ba290mr76302065e9.7.1781709182958;
+        Wed, 17 Jun 2026 08:13:02 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a9a399sm151019305e9.14.2026.06.17.08.12.56
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49230a9a399sm151019305e9.14.2026.06.17.08.13.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 08:12:57 -0700 (PDT)
+        Wed, 17 Jun 2026 08:13:02 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: dri-devel@lists.freedesktop.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
@@ -77,9 +77,9 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 1/7] drm/vino: add DisplayLink DL3 dock skeleton and plaintext bring-up
-Date: Wed, 17 Jun 2026 16:12:38 +0100
-Message-ID: <20260617151249.2937-2-mike@fireburn.co.uk>
+Subject: [RFC PATCH 4/7] drm/vino: add the Vino (RawRl mode-2) framebuffer codec
+Date: Wed, 17 Jun 2026 16:12:41 +0100
+Message-ID: <20260617151249.2937-5-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260617151249.2937-1-mike@fireburn.co.uk>
 References: <20260617151249.2937-1-mike@fireburn.co.uk>
@@ -91,575 +91,392 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Vino is a clean-room, in-kernel Rust DRM driver for DisplayLink DL3 USB
-docks (Dell Universal Dock D6000, 17e9:6006), a native replacement for
-the out-of-tree EVDI module plus the proprietary DisplayLinkManager
-userspace daemon. It is built on the in-tree Rust USB, crypto and DRM/KMS
-bindings (posted as their own prerequisite series).
+Add the video module: the RawRl ("Raw/RLX" mode-2) encoder, clean-room
+from the AArch64 reference-driver decompile, which emits packed-RGB565
+frames the dock decodes without the impractical Vino Walsh-Hadamard
+entropy codec. The encode/decode round-trip is unit-tested (keyframe,
+differential, >256-pixel multi-block and >255 RLE run-splits all
+reconstruct byte-exact); that round-trip is the correctness anchor, since
+no real mode-2 capture exists to diff against.
 
-This is posted as an [RFC] in a deliberately INCOMPLETE state to ask for
-help with one remaining blocker (see the final patch of this series for
-the full "help wanted" note).
-
-This first patch is the skeleton. It registers a usb::Driver for the
-D6000, binds the control interface (interface 0; interface 1 binds idle,
-the audio/Ethernet interfaces are declined so their class drivers claim
-them), and runs the plaintext connect handshake on a workqueue: the
-control-request preamble (device-open vendor reads, SET_INTERFACE, the
-0x24/0x22 pair) and the three bulk init messages over the Rust USB bulk +
-control transfer API, reading the single ACK.
-
-The wire framing and the plaintext init message builders live in the new
-proto module. The HDCP 2.2 AKE, the AES-CTR/AES-CMAC control plane, the
-Vino codec and the DRM/KMS sink are added in the following patches, one
-subsystem per patch, so each can be reviewed (and fixed) on its own.
+This is the codec library only; the DRM/KMS sink that drives it (vmap the
+framebuffer, encode, push to the EP08 video endpoint on each page-flip)
+is added in the next patch.
 
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
 ---
- drivers/gpu/drm/Kconfig       |   2 +
- drivers/gpu/drm/Makefile      |   2 +
- drivers/gpu/drm/vino/Kconfig  |  21 ++
- drivers/gpu/drm/vino/Makefile |   2 +
- drivers/gpu/drm/vino/proto.rs |  73 +++++++
- drivers/gpu/drm/vino/vino.rs  | 391 ++++++++++++++++++++++++++++++++++
- 6 files changed, 491 insertions(+)
- create mode 100644 drivers/gpu/drm/vino/Kconfig
- create mode 100644 drivers/gpu/drm/vino/Makefile
- create mode 100644 drivers/gpu/drm/vino/proto.rs
- create mode 100644 drivers/gpu/drm/vino/vino.rs
+ drivers/gpu/drm/vino/video.rs | 348 ++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/vino/vino.rs  |   1 +
+ 2 files changed, 349 insertions(+)
+ create mode 100644 drivers/gpu/drm/vino/video.rs
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 323422861e8f..8ea7f2bb9300 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -370,3 +370,5 @@ endif
- # Separate option because drm_panel_orientation_quirks.c is shared with fbdev
- config DRM_PANEL_ORIENTATION_QUIRKS
- 	tristate
-+
-+source "drivers/gpu/drm/vino/Kconfig"
-diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
-index e97faabcd783..8c6322df7c1f 100644
---- a/drivers/gpu/drm/Makefile
-+++ b/drivers/gpu/drm/Makefile
-@@ -256,3 +256,5 @@ quiet_cmd_hdrtest = HDRTEST $(patsubst %.hdrtest,%.h,$@)
- 
- $(obj)/%.hdrtest: $(src)/%.h FORCE
- 	$(call if_changed_dep,hdrtest)
-+
-+obj-$(CONFIG_DRM_VINO) += vino/
-diff --git a/drivers/gpu/drm/vino/Kconfig b/drivers/gpu/drm/vino/Kconfig
+diff --git a/drivers/gpu/drm/vino/video.rs b/drivers/gpu/drm/vino/video.rs
 new file mode 100644
-index 000000000000..234ce92736e4
+index 000000000000..bb5ea893575f
 --- /dev/null
-+++ b/drivers/gpu/drm/vino/Kconfig
-@@ -0,0 +1,21 @@
-+# SPDX-License-Identifier: GPL-2.0
-+config DRM_VINO
-+	tristate "DisplayLink DL3 (Vino) open driver"
-+	depends on USB = y
-+	depends on DRM
-+	depends on RUST
-+	select DRM_KMS_HELPER
-+	select DRM_GEM_SHMEM_HELPER
-+	select RUST_DRM_GEM_SHMEM_HELPER
-+	help
-+	  Open in-kernel Rust driver for DisplayLink DL3 USB docks (Dell
-+	  Universal Dock D6000 and relatives), reverse-engineered in this tree
-+	  (see vino-re/docs/00-canonical-guide.md).
-+
-+	  Phase 0 binds the dock over USB only. USB data transfer, the HDCP 2.2
-+	  control plane, mode-set, the Vino codec and the DRM/KMS sink are added
-+	  in later phases (see vino-kmod/README.md).
-+
-+	  To compile this as a module, choose M here: the module is called vino.
-+
-+	  If unsure, say N.
-diff --git a/drivers/gpu/drm/vino/Makefile b/drivers/gpu/drm/vino/Makefile
-new file mode 100644
-index 000000000000..6e39668040f3
---- /dev/null
-+++ b/drivers/gpu/drm/vino/Makefile
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0
-+obj-$(CONFIG_DRM_VINO) += vino.o
-diff --git a/drivers/gpu/drm/vino/proto.rs b/drivers/gpu/drm/vino/proto.rs
-new file mode 100644
-index 000000000000..cae6eae46b7a
---- /dev/null
-+++ b/drivers/gpu/drm/vino/proto.rs
-@@ -0,0 +1,73 @@
++++ b/drivers/gpu/drm/vino/video.rs
+@@ -0,0 +1,348 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! The DL3 "universal" wire framing and the plaintext session-init messages (sec 3/sec 4).
++//! RawRl (Raw/RLX) **mode-2 video encoder** -- clean-room from the AArch64 DLM
++//! decompile (sec 8.4 + `docs/decompile/arm64-blockencoder`/`-frame-markers`).
++//! Emits packed-RGB565 frames the dock decodes WITHOUT the impractical Vino
++//! Walsh-Hadamard entropy codec (sec 7.11). This is a **verbatim port** of the
++//! `vino-codec::rawrl` oracle, whose encode/decode round-trip is unit-tested
++//! (keyframe, differential, >256-pixel multi-block and >255 RLE run-splits all
++//! reconstruct byte-exact); keep the two in lockstep. No real mode-2 capture
++//! exists to diff against (sec 7.4), so that round-trip is the correctness anchor.
++//! NOT yet wired into `probe()`: sending a frame the dock rejects USB-resets the
++//! dock, so EP08 streaming is a supervised bring-up step.
++#![allow(dead_code)] // Encoder/Mode variants validated by KUnit; live scanout uses the RLE path
 +
 +use super::*;
 +
-+/// Append a sec 3-framed message to `out` with an explicit `sub_len_dw`: a 16-byte
-+/// little-endian header (`pad(2) | size(2)=total-4 | type(4) | sub_id(2) |
-+/// sub_len_dw(2) | seq(4)`) followed by `body`.
-+///
-+/// HDCP OUT messages (sec 5.1) carry DLM-fixed `sub_len_dw` values that are *not*
-+/// `body.len() / 4`, so the framer cannot derive it -- the caller passes it.
-+pub(super) fn push_frame_with(
-+    out: &mut KVec<u8>,
-+    msg_type: u32,
-+    sub_id: u16,
-+    sub_len_dw: u16,
-+    seq: u32,
-+    body: &[u8],
-+) -> Result {
-+    let size = ((16 + body.len()) - 4) as u16;
-+    out.extend_from_slice(&[0, 0], GFP_KERNEL)?;
-+    out.extend_from_slice(&size.to_le_bytes(), GFP_KERNEL)?;
-+    out.extend_from_slice(&msg_type.to_le_bytes(), GFP_KERNEL)?;
-+    out.extend_from_slice(&sub_id.to_le_bytes(), GFP_KERNEL)?;
-+    out.extend_from_slice(&sub_len_dw.to_le_bytes(), GFP_KERNEL)?;
-+    out.extend_from_slice(&seq.to_le_bytes(), GFP_KERNEL)?;
-+    out.extend_from_slice(body, GFP_KERNEL)?;
++pub(super) const MAGIC_RAW16: u16 = 0x68af;
++pub(super) const MAGIC_RLE16: u16 = 0x69af;
++/// Frame-init `0x40af` (`FUN_003330fc`: u32 `0xaf0440af` + u16 `0x0840`).
++pub(super) const FRAME_INIT: [u8; 6] = [0xaf, 0x40, 0x04, 0xaf, 0x40, 0x08];
++/// Bare `0xa0af` sync (`FUN_00332a38`).
++pub(super) const SYNC: [u8; 2] = [0xaf, 0xa0];
++/// Frame-end section->code table `DAT_005b7860`, indexed by `mode - 1`.
++pub(super) const SECTION_CODE: [u8; 7] = [0x01, 0x00, 0x03, 0x00, 0x05, 0x07, 0x07];
++pub(super) const MAX_BLOCK_PIXELS: usize = 256;
++
++/// Per-run strategy: mode 0 raw-only, 1 RLE-only, 2 adaptive (sec 8.4).
++#[derive(Clone, Copy)]
++pub(super) enum Mode {
++    Raw = 0,
++    Rle = 1,
++    Adaptive = 2,
++}
++
++/// Pack 8-bit RGB into RGB565 (the XRGB framebuffer reduced for the
++/// `0x68af`/`0x69af` path).
++pub(super) fn rgb565(r: u8, g: u8, b: u8) -> u16 {
++    ((r as u16 >> 3) << 11) | ((g as u16 >> 2) << 5) | (b as u16 >> 3)
++}
++
++/// 6-byte block header: magic LE, 24-bit coord BE, count u8 (256 -> 0).
++fn block_header(out: &mut KVec<u8>, magic: u16, coord: u32, count: usize) -> Result {
++    out.extend_from_slice(&magic.to_le_bytes(), GFP_KERNEL)?;
++    out.push(((coord >> 16) & 0xff) as u8, GFP_KERNEL)?;
++    out.push(((coord >> 8) & 0xff) as u8, GFP_KERNEL)?;
++    out.push((coord & 0xff) as u8, GFP_KERNEL)?;
++    out.push((count & 0xff) as u8, GFP_KERNEL)?;
 +    Ok(())
 +}
 +
-+/// `init_25` body (sec 4, verified 2026-05-27). Framed with `sub_len_dw=0` -- the
-+/// DLM-fixed value, NOT `body.len()/4` (the dock ignores/rejects otherwise).
-+pub(super) const INIT_25: [u8; 16] =
-+    [0x05, 0, 0x08, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-+/// `init_4` (Part A) body (sec 4), also framed with `sub_len_dw=0`.
-+pub(super) const INIT_4: [u8; 16] =
-+    [0x04, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-+/// The first HDCP-channel probe **body** (Part B of the init_4+probe transfer,
-+/// sec 4): a 32-byte body leading with `14 00 76 00`, the rest zero. It is wrapped
-+/// in its own type=4 sub=0x04 frame (`sub_len_dw=0x0a`) -- see [`init_4_probe`].
-+/// The dock only ACKs once this framed probe arrives.
-+pub(super) const PROBE_BODY: [u8; 32] = {
-+    let mut p = [0u8; 32];
-+    p[0] = 0x14;
-+    p[2] = 0x76;
-+    p
-+};
-+
-+/// `init_0`: 16-byte framing header only, empty body (sec 4).
-+pub(super) fn init_0() -> Result<KVec<u8>> {
-+    let mut buf = KVec::with_capacity(16, GFP_KERNEL)?;
-+    push_frame_with(&mut buf, 0x01, 0x00, 0, 0, &[])?;
-+    Ok(buf)
++fn encode_raw_into(out: &mut KVec<u8>, coord: u32, pix: &[u16]) -> Result {
++    block_header(out, MAGIC_RAW16, coord, pix.len())?;
++    for &p in pix {
++        out.extend_from_slice(&p.to_be_bytes(), GFP_KERNEL)?;
++    }
++    Ok(())
 +}
 +
-+/// `init_25`: type=2 sub=0x25, `sub_len_dw=0`, 32 bytes total (sec 4).
-+pub(super) fn init_25() -> Result<KVec<u8>> {
-+    let mut buf = KVec::with_capacity(32, GFP_KERNEL)?;
-+    push_frame_with(&mut buf, 0x02, 0x25, 0, 0, &INIT_25)?;
-+    Ok(buf)
++fn encode_rle_into(out: &mut KVec<u8>, coord: u32, pix: &[u16]) -> Result {
++    block_header(out, MAGIC_RLE16, coord, pix.len())?;
++    let mut i = 0;
++    while i < pix.len() {
++        let v = pix[i];
++        let mut run = 1;
++        while i + run < pix.len() && pix[i + run] == v && run < 255 {
++            run += 1;
++        }
++        out.push(run as u8, GFP_KERNEL)?;
++        out.extend_from_slice(&v.to_be_bytes(), GFP_KERNEL)?;
++        i += run;
++    }
++    Ok(())
 +}
 +
-+/// `init_4` + HDCP probe as one 80-byte transfer (sec 4): Part A (type=2 sub=0x04,
-+/// `sub_len_dw=0`, 32 B) concatenated with Part B -- the probe framed as type=4
-+/// sub=0x04 with `sub_len_dw=0x0a` over the 32-byte [`PROBE_BODY`] (48 B). This
-+/// is the message the dock ACKs.
-+pub(super) fn init_4_probe() -> Result<KVec<u8>> {
-+    let mut buf = KVec::with_capacity(80, GFP_KERNEL)?;
-+    push_frame_with(&mut buf, 0x02, 0x04, 0, 0, &INIT_4)?; // Part A
-+    push_frame_with(&mut buf, 0x04, 0x04, 0x0a, 0, &PROBE_BODY)?; // Part B (framed probe)
-+    Ok(buf)
++fn run_count(pix: &[u16]) -> usize {
++    let mut c = 0;
++    let mut i = 0;
++    while i < pix.len() {
++        let v = pix[i];
++        let mut j = i + 1;
++        while j < pix.len() && pix[j] == v {
++            j += 1;
++        }
++        c += 1;
++        i = j;
++    }
++    c
++}
++
++fn encode_run_into(out: &mut KVec<u8>, mode: Mode, coord: u32, pix: &[u16]) -> Result {
++    match mode {
++        Mode::Raw => encode_raw_into(out, coord, pix),
++        Mode::Rle => encode_rle_into(out, coord, pix),
++        Mode::Adaptive => {
++            let l = pix.len();
++            let c = run_count(pix);
++            if 2 * l < 3 * c + 1 {
++                encode_raw_into(out, coord, pix)
++            } else {
++                encode_rle_into(out, coord, pix)
++            }
++        }
++    }
++}
++
++/// Mode-2 frame encoder holding the shadow (previous-frame) buffer.
++pub(super) struct Encoder {
++    width: usize,
++    height: usize,
++    mode: Mode,
++    // vmalloc-backed: a `width*height` u16 buffer is ~4 MiB at 1080p, far above the
++    // contiguous-kmalloc order limit (the page allocator WARNs and fails on it).
++    shadow: VVec<u16>,
++}
++
++impl Encoder {
++    pub(super) fn new(width: usize, height: usize, mode: Mode) -> Result<Self> {
++        let shadow = VVec::from_elem(0u16, width * height, GFP_KERNEL)?;
++        Ok(Self { width, height, mode, shadow })
++    }
++
++    /// Encode `cur` (RGB565) into a mode-2 marker stream; updates the shadow.
++    /// Change-detection is per row; changed runs chunk into <=256-px blocks.
++    pub(super) fn encode(&mut self, cur: &[u16]) -> Result<KVec<u8>> {
++        let mut s = KVec::new();
++        self.encode_into(cur, &mut s)?;
++        Ok(s)
++    }
++
++    /// Like [`encode`](Self::encode) but appends the marker stream to a caller-owned
++    /// `out` instead of allocating a fresh `KVec`. The hot scanout path
++    /// ([`encode_and_send`](super::drm_sink::encode_and_send)) uses this to encode
++    /// straight into a buffer that already reserves the EP08 transport header, so a
++    /// frame costs one allocation with no separate framing copy.
++    pub(super) fn encode_into(&mut self, cur: &[u16], s: &mut KVec<u8>) -> Result {
++        s.extend_from_slice(&FRAME_INIT, GFP_KERNEL)?;
++        for y in 0..self.height {
++            let row = y * self.width;
++            let mut x = 0;
++            while x < self.width {
++                while x < self.width && cur[row + x] == self.shadow[row + x] {
++                    x += 1;
++                }
++                if x >= self.width {
++                    break;
++                }
++                let run_start = x;
++                while x < self.width && cur[row + x] != self.shadow[row + x] {
++                    x += 1;
++                }
++                let run_end = x;
++                let mut p = run_start;
++                while p < run_end {
++                    let n = (run_end - p).min(MAX_BLOCK_PIXELS);
++                    let coord = (((row + p) * 2) & 0xff_ffff) as u32;
++                    encode_run_into(s, self.mode, coord, &cur[row + p..row + p + n])?;
++                    p += n;
++                }
++                for k in run_start..run_end {
++                    self.shadow[row + k] = cur[row + k];
++                }
++            }
++        }
++        let code = SECTION_CODE[(self.mode as usize).saturating_sub(1).min(6)];
++        s.extend_from_slice(&SYNC, GFP_KERNEL)?;
++        s.extend_from_slice(&[0xaf, 0x20, 0x1f, code], GFP_KERNEL)?;
++        s.extend_from_slice(&[0xaf, 0x20, 0xff, 0x00], GFP_KERNEL)?;
++        s.extend_from_slice(&SYNC, GFP_KERNEL)?;
++        Ok(())
++    }
++}
++
++/// Vino (`0x2801`) Walsh-Hadamard codec -- the bandwidth-constrained / 4K path (the RLE path
++/// above is what the dock currently runs; this is the lossy transform codec DLM uses when raw/
++/// RLE won't fit the USB budget). See `docs/WHT-CODEC.md` + `docs/VIDEO.md`.
++///
++/// **Scope.** The colour transform, the quantizer, and the 2-level Walsh-Hadamard transform
++/// are reverse-engineered and **validated offline** (`white -> Y_DC=16320 -> quantized 1020`;
++/// achromatic -> `Cb=Cr=0`; uniform block -> DC=mean, AC=0). The token *bit format* (5-bit
++/// short
++/// 0..=30 / 17-bit long, MSB-first) and the **token-value mapping** are confirmed against DLM's
++/// own frida token trace (`captures/02-solid-white/tokens.jsonl`): the **token value is the
++/// quantized coefficient, directly** -- pure-white strips emit `L,1020` exactly where
++/// `quantize(16320, DC) = 1020`, so the rumoured "entropy codebook" is just this direct value
++/// encoding, not a lookup table (the 1641-byte expression-tree coder is the bit-packer). **What
++/// is still NOT generated here:** the per-strip *framing* -- a uniform strip wraps the DC in a
++/// constant prefix/suffix of framing tokens (`L,2048 L,3072 ... L,3 ... S,19 S,16 ...`) plus
++/// zero-run
++/// AC coding, and the dock's exact sequency ordering -- so a complete `Mode::Wht` would replay
++/// the recovered uniform-strip template with the DC substituted (the `docs/WHT-CODEC.md`
++/// structural model, ~90% desktop coverage). Until that framing is generalized + wired, the
++/// scanout path keeps using RLE.
++// Not yet wired into the scanout path (the per-strip framing template is recovered for white
++// but not yet generalized to arbitrary uniform colour / non-uniform content) -- RLE stays the
++// active codec; this module is validated by its KUnit tests + the frida-trace value mapping.
++#[allow(dead_code)] // Walsh-Hadamard codec: KUnit-validated, not yet on the live scanout path
++pub(super) mod wht {
++    use super::*;
++
++    /// 4x8 transform block geometry (`docs/VIDEO.md`): 4 rows x 8 columns = 32 samples.
++    pub(super) const ROWS: usize = 4;
++    pub(super) const COLS: usize = 8;
++    pub(super) const BLOCK: usize = ROWS * COLS;
++
++    /// Vino colour transform (`docs/VIDEO.md`, exact integer form, no rounding):
++    /// `Y = 16R + 32G + 16B`, `Cb = 64(R-G)`, `Cr = 64(B-G)`. Achromatic (R=G=B) ->
++    /// Cb=Cr=0.
++    pub(super) fn colour(r: u8, g: u8, b: u8) -> (i32, i32, i32) {
++        let (r, g, b) = (r as i32, g as i32, b as i32);
++        (16 * r + 32 * g + 16 * b, 64 * (r - g), 64 * (b - g))
++    }
++
++    /// Per-coefficient `(bias, step)` quantization table (`docs/VIDEO.md` `FUN_0077b140`),
++    /// keyed by coefficient position `0..64`.
++    fn bias_step(i: usize) -> (i32, i32) {
++        match i {
++            0..=2 => (8, 16),
++            3 => (16, 32),
++            4..=11 => (2, 4),
++            12..=15 => (4, 8),
++            16..=47 => (1, 2),
++            _ => (2, 4), // 48..=63
++        }
++    }
++
++    /// Quantize coefficient `coeff` at position `i`: `(coeff + bias) * (65536/step) >> 16`,
++    /// the fixed-point form of `(coeff + bias) / step` (`docs/VIDEO.md`). Clamped to the
++    /// 12-bit signed long-token range (the DC is wider than the +/-127 AC clip -- the
++    /// documented
++    /// `white -> 1020` vector is a 12-bit long token, not a +/-127 value).
++    pub(super) fn quantize(coeff: i32, i: usize) -> i32 {
++        let (bias, step) = bias_step(i);
++        let scale = 65536 / step;
++        (((coeff + bias) * scale) >> 16).clamp(-2048, 2047)
++    }
++
++    /// In-place 1-D Walsh-Hadamard (natural/Hadamard order) on a power-of-two slice,
++    /// unnormalized (pairwise sums/differences); the 2-D transform normalizes afterwards.
++    fn hadamard_1d(v: &mut [i32]) {
++        let n = v.len();
++        let mut h = 1;
++        while h < n {
++            let mut i = 0;
++            while i < n {
++                for j in i..i + h {
++                    let (a, b) = (v[j], v[j + h]);
++                    v[j] = a + b;
++                    v[j + h] = a - b;
++                }
++                i += 2 * h;
++            }
++            h *= 2;
++        }
++    }
++
++    /// 2-level separable Walsh-Hadamard transform of a 4x8 `block` (row-major), normalized so
++    /// the DC coefficient equals the block **mean** -- i.e. a uniform block yields `DC = the
++    /// per-pixel value` and all AC = 0 (`docs/VIDEO.md`). Returns 32 coefficients row-major.
++    /// (Natural Hadamard order; the dock's sequency reorder is not bit-matched -- see the
++    /// module note.)
++    pub(super) fn transform(block: &[i32; BLOCK]) -> [i32; BLOCK] {
++        let mut m = *block;
++        for r in 0..ROWS {
++            hadamard_1d(&mut m[r * COLS..r * COLS + COLS]);
++        }
++        let mut col = [0i32; ROWS];
++        for c in 0..COLS {
++            for r in 0..ROWS {
++                col[r] = m[r * COLS + c];
++            }
++            hadamard_1d(&mut col);
++            for r in 0..ROWS {
++                m[r * COLS + c] = col[r];
++            }
++        }
++        // Normalize by the block size (/32 = >>5) so DC = mean (uniform block -> DC = value).
++        for x in m.iter_mut() {
++            *x >>= 5;
++        }
++        m
++    }
++
++    /// MSB-first bit packer for the Vino token stream (`docs/VIDEO.md`): a 16-bit zero pad at
++    /// the start, then codewords packed most-significant-bit first across byte boundaries.
++    pub(super) struct TokenWriter {
++        out: KVec<u8>,
++        acc: u32,
++        nbits: u32,
++    }
++
++    impl TokenWriter {
++        pub(super) fn new() -> Result<Self> {
++            let mut w = Self { out: KVec::new(), acc: 0, nbits: 0 };
++            w.put(0, 16)?; // 16-bit zero pad at stream start
++            Ok(w)
++        }
++
++        /// Append the low `n` bits of `val` (n <= 24), MSB-first.
++        fn put(&mut self, val: u32, n: u32) -> Result {
++            self.acc = (self.acc << n) | (val & ((1u32 << n) - 1));
++            self.nbits += n;
++            while self.nbits >= 8 {
++                self.nbits -= 8;
++                self.out.push(((self.acc >> self.nbits) & 0xff) as u8, GFP_KERNEL)?;
++            }
++            Ok(())
++        }
++
++        /// Write one token *value* in the Vino short/long encoding: a 5-bit short token for
++        /// `0..=30`, else the 17-bit long token `0b11111` escape + 12-bit value. (The mapping
++        /// from a quantized coefficient to this `value` is the un-RE'd entropy codebook -- see
++        /// the module note -- so callers can only pack values they already know.)
++        pub(super) fn token(&mut self, value: u16) -> Result {
++            if value <= 30 {
++                self.put(value as u32, 5)
++            } else {
++                self.put(0b11111, 5)?;
++                self.put((value & 0x0fff) as u32, 12)
++            }
++        }
++
++        /// Flush any partial byte (zero-padded) and return the packed stream.
++        pub(super) fn finish(mut self) -> Result<KVec<u8>> {
++            if self.nbits > 0 {
++                let pad = 8 - self.nbits;
++                self.put(0, pad)?;
++            }
++            Ok(self.out)
++        }
++    }
++}
++
++/// Length of the EP08 transport header ([`write_ep08_header`]).
++pub(super) const EP08_HDR_LEN: usize = 16;
++
++/// Write the 16-byte EP08 transport header into `hdr` for a `payload_len`-byte codec
++/// stream: `type=4 sub=0x30 sub_len_dw=0` sec 3 framing (matches the live capture).
++/// `size = payload_len + 12`. Used by the in-place scanout path. `hdr` must be at
++/// least 16 bytes.
++pub(super) fn write_ep08_header(hdr: &mut [u8], payload_len: usize, seq: u32) {
++    hdr[0] = 0;
++    hdr[1] = 0;
++    hdr[2..4].copy_from_slice(&((payload_len + 12) as u16).to_le_bytes());
++    hdr[4..8].copy_from_slice(&4u32.to_le_bytes());
++    hdr[8..10].copy_from_slice(&0x30u16.to_le_bytes());
++    hdr[10..12].copy_from_slice(&0u16.to_le_bytes());
++    hdr[12..16].copy_from_slice(&seq.to_le_bytes());
 +}
 diff --git a/drivers/gpu/drm/vino/vino.rs b/drivers/gpu/drm/vino/vino.rs
-new file mode 100644
-index 000000000000..79f446041b64
---- /dev/null
+index ef44a625cb70..e9e6324b717b 100644
+--- a/drivers/gpu/drm/vino/vino.rs
 +++ b/drivers/gpu/drm/vino/vino.rs
-@@ -0,0 +1,391 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// SPDX-FileCopyrightText: Copyright (C) 2026 Mike Lothian
-+
-+//! Vino -- open in-kernel Rust driver for DisplayLink DL3 docks (Dell D6000, ...).
-+//!
-+//! This is an `[RFC]` work-in-progress, posted to ask for help. It is a clean-room
-+//! reverse-engineered replacement for the proprietary DisplayLinkManager userspace
-+//! daemon + the EVDI kernel module, written natively in Rust against the in-tree USB,
-+//! crypto and DRM/KMS bindings.
-+//!
-+//! This first patch is the skeleton: it binds the dock over USB and runs the plaintext
-+//! connect handshake (the control-request preamble and the three bulk init messages over
-+//! the Rust USB bulk + control transfer API). The HDCP 2.2 AKE, the AES-CTR/AES-CMAC
-+//! control plane, the Vino codec and the DRM/KMS sink are added in the following patches.
-+//!
-+//! Device: VID 0x17e9 (DisplayLink) / PID 0x6006 (Dell Universal Dock D6000).
-+
-+use kernel::{
-+    alloc::flags::GFP_KERNEL,
-+    device::{self, Core},
-+    error::code::ENODEV,
-+    prelude::*,
-+    sync::{aref::ARef, Arc},
-+    time::Delta,
-+    usb,
-+    workqueue::{self, impl_has_work, new_work, Work, WorkItem},
-+};
-+
-+/// DisplayLink vendor id.
-+const VID_DISPLAYLINK: u16 = 0x17e9;
-+/// Dell Universal Dock D6000 (DL3 family) product id.
-+const PID_D6000: u16 = 0x6006;
-+
-+/// Control + per-head bulk endpoints (guide sec 2).
-+const EP_CTRL_OUT: u8 = 0x02;
-+const EP_CTRL_IN: u8 = 0x84;
-+
-+/// USB transfer timeout used during bring-up.
-+fn timeout() -> Delta {
-+    Delta::from_millis(1000)
-+}
-+
-+mod proto;
-+
-+/// Per-bound-interface driver state.
-+struct VinoDriver {
-+    _intf: ARef<usb::Interface>,
-+}
-+
-+/// Deferred bring-up work item: the bring-up sequence run on the system workqueue instead
-+/// of inline in `probe()` (which would pin the driver-model probe thread on blocking USB
-+/// I/O while the card node is live). Holds a refcounted handle to the bound interface (and,
-+/// once the DRM sink exists, the DRM device), so they outlive `probe()`.
-+#[pin_data]
-+struct BringUp {
-+    intf: ARef<usb::Interface>,
-+    #[pin]
-+    work: Work<BringUp>,
-+}
-+
-+impl_has_work! {
-+    impl HasWork<Self> for BringUp { self.work }
-+}
-+
-+impl BringUp {
-+    fn new(intf: ARef<usb::Interface>) -> Result<Arc<Self>> {
-+        Arc::pin_init(
-+            pin_init!(BringUp {
-+                intf,
-+                work <- new_work!("vino::bring_up"),
-+            }),
-+            GFP_KERNEL,
-+        )
-+    }
-+}
-+
-+impl WorkItem for BringUp {
-+    type Pointer = Arc<BringUp>;
-+
-+    fn run(this: Arc<BringUp>) {
-+        let cdev: &device::Device = this.intf.as_ref();
-+        let dev: &usb::Device = this.intf.as_ref();
-+        // WIP scaffold: attempt the plaintext bring-up. Bind regardless of the outcome --
-+        // there is no display path yet (the HDCP AKE, control plane and DRM sink land in
-+        // the following patches).
-+        match VinoDriver::bring_up(dev) {
-+            Ok(()) => dev_info!(cdev, "vino: plaintext session init OK\n"),
-+            Err(e) => dev_info!(cdev, "vino: session init incomplete ({e:?}) -- WIP\n"),
-+        }
-+    }
-+}
-+
-+impl VinoDriver {
-+    /// Plaintext session bring-up (sec 4): control-request preamble then the three
-+    /// bulk init messages, reading the single ACK. Best-effort during scaffold
-+    /// bring-up -- errors are logged, not fatal.
-+    fn bring_up(dev: &usb::Device) -> Result {
-+        // Control-request preamble (sec 4): dock-id read, interface selection, then the
-+        // vendor_out 0x24 / vendor_in 0x22 pairs that kick off the HDCP path. (The
-+        // GET_DESCRIPTOR string reads DLM also issues look cosmetic and are omitted.)
-+        const VENDOR_OUT: u8 = 0x40; // host->dev, vendor, device
-+        const VENDOR_IN_IFACE: u8 = 0xc1; // dev->host, vendor, INTERFACE recipient (DLM's choice)
-+
-+        // The DLM-style vendor preamble (sec 4). Per the userspace oracle, every
-+        // control request here is **best-effort**: the dock legitimately STALLs
-+        // some of them (e.g. the cosmetic dock-id read) yet still advances its
-+        // host-identification state. The oracle tolerates each error and relies
-+        // on DLM's inter-request timing gaps -- without those gaps the dock may
-+        // not advance. So we log-and-continue on every control step and insert
-+        // the same delays; only the bulk init + ACK is treated as load-bearing.
-+        // GROUND-TRUTH 2026-06-13: at device-open DLM issues two vendor-IN reads on interface 1,
-+        // recipient 0xc1, BEFORE the SET_INTERFACE / 0x24 / 0x22 sequence (dlm-cold-20260611-123347
-+        // f708 `0xc1 0xfe wIdx=1` -> 16 B "RidgeDock" blob; f710 `0xc1 0xfc wIdx=1` -> 0 B). vino
-+        // skipped them; the earlier attempt used recipient 0xc0 (device) and STALLed, which was
-+        // misread as "the dock rejects 0xfe / DLM never sends it". Issue them here with the correct
-+        // 0xc1 recipient. Best-effort: log and continue (the dock may still short/stall 0xfc).
-+        let mut dock_id = [0u8; 16];
-+        match dev.control_recv(0xfe, VENDOR_IN_IFACE, 0, 1, &mut dock_id, timeout()) {
-+            Ok(()) => pr_info!("vino: step device-open 0xfe(iface1) OK = {:02x?}\n", dock_id),
-+            Err(e) => pr_info!("vino: step device-open 0xfe(iface1) non-fatal ({e:?})\n"),
-+        }
-+        let mut probe3 = [0u8; 3];
-+        match dev.control_recv(0xfc, VENDOR_IN_IFACE, 0, 1, &mut probe3, timeout()) {
-+            Ok(()) => pr_info!("vino: step device-open 0xfc(iface1) OK = {:02x?}\n", probe3),
-+            Err(e) => pr_info!("vino: step device-open 0xfc(iface1) non-fatal ({e:?})\n"),
-+        }
-+        // EXPERIMENT (2026-06-16): replay DLM's repeated STRING-descriptor reads at device-open.
-+        // Timing analysis of the paired cold capture (captures/paired-coldbus-20260615-220311)
-+        // shows DLM, beyond the distinct descriptor SET vino already issues, re-reads STRING idx0
-+        // (language-ID list) and idx3 (en-US product, langid 0x0409), 255 B each, at ~2/sec for the
-+        // ENTIRE 175 s session -- a 1 Hz host string-poll heartbeat. Engagement happens in the
-+        // first
-+        // second, so this is almost certainly NOT a pre-AKE gate (the distinct set already
-+        // matches),
-+        // but the repetition was never A/B-tested by replay the way the 0xfe/0xfc reads were. Issue
-+        // a
-+        // small burst here, BEFORE the AKE, to test whether the dock conditions CP engagement on
-+        // seeing the host poll its strings. Best-effort: the kernel reports EREMOTEIO on the
-+        // expected
-+        // short reply, but the GET_DESCRIPTOR still reaches the wire, which is all the experiment
-+        // needs.
-+        // RESULT 2026-06-16 (paired-coldbus-20260616-162650): the pre-arm GET_DESCRIPTOR delta is
-+        // USB ENUMERATION, not application protocol. Both captures contain an identical 3x 8-byte +
-+        // 7x 18-byte DEVICE-descriptor read sequence -- which no kernel driver issues (it is the
-+        // enumeration handshake the USB core runs each time the dock re-enumerates on the cold
-+        // plug, plus DisplayLink's leftover /opt/displaylink/udev.sh hook firing per uevent).
-+        // Proven to be enumeration, not the DLM daemon: the vino capture reproduces the SAME reads
-+        // with displaylink-driver.service masked and no DisplayLinkManager process running. It is
-+        // symmetric across both runs, so it is neither a DLM-vs-vino difference nor the engagement
-+        // gate. This speculative burst only ADDED vino-issued reads on top, so disable it.
-+        // -- LIBUSB-STYLE DEVICE-OPEN ENUMERATION (2026-06-17)
-+        // ----------------------------------
-+        // The clean paired capture (paired-coldbus-20260616-180401) isolated the LAST pre-AKE
-+        // divergence from DLM to ONE thing: DLM (libusb) re-reads the dock's full descriptor set
-+        // when it opens the device -- DEVICE(18), CONFIG(9 then full ~618), STRING langid(idx0),
-+        // then every STRING index the descriptors reference (~22x 255B) -- right before the AKE.
-+        // A
-+        // kernel driver normally skips this (the USB core cached it at enumeration), which is why
-+        // vino's pre-arm control stream was missing it (the "DLM-ONLY 255x22 / 618 / 40"
-+        // residual).
-+        // These reads are CP-irrelevant descriptor boilerplate. The cold-plug A/B proved the dock
-+        // does NOT gate CP on them (replaying them byte-for-byte still gave 0x wsub=0x45 -- see
-+        // project_get_descriptor_burst_experiment / the firmware-wall verdict), and the in-kernel
-+        // Windows (WDF) and macOS (IOUSBLib) drivers DON'T issue this burst either -- like vino
-+        // they run over an already-enumerated device and use the USB core's cached descriptors.
-+        // The burst is therefore a libusb-userspace artifact, not something the dock expects.
-+        // Default OFF so vino behaves like a native kernel driver; flip to `true` only to reproduce
-+        // DLM's libusb wire for a paired A/B diff. Best-effort throughout: a STALL/EREMOTEIO on an
-+        // absent index is fine -- EP0 auto-recovers and the SETUP still reaches the wire (all the
-+        // A/B diff needs). Reproduces (histogram diff DLM vs vino, paired-coldbus-20260616-180401):
-+        // DLM's libusb open adds CONFIG-full(618)x3, CONFIG-partial(40)x3, STRING(255)x22, with
-+        // no
-+        // extra DEVICE(18)/CONFIG(9).
-+        const CP_LIBUSB_OPEN_ENUM: bool = false;
-+        if CP_LIBUSB_OPEN_ENUM {
-+            let mut tmp = [0u8; 255];
-+            let mut cfg = KVec::from_elem(0u8, 618, GFP_KERNEL)?;
-+            // CONFIG full (618) x3 -- parse the first to find real string indices so the STRING
-+            // reads
-+            // below return data (matching DLM's byte counts), not just the SETUP counts.
-+            for _ in 0..3 {
-+                let _ = dev.control_recv(0x06, 0x80, 0x0200, 0, &mut cfg, timeout());
-+            }
-+            // CONFIG partial (40) x3.
-+            for _ in 0..3 {
-+                let _ = dev.control_recv(0x06, 0x80, 0x0200, 0, &mut tmp[..40], timeout());
-+            }
-+            // STRING idx0 = language-ID list (1st of the 22x 255 reads); adopt the dock's REAL
-+            // langid.
-+            let mut langid = 0x0409u16;
-+            if dev.control_recv(0x06, 0x80, 0x0300, 0, &mut tmp, timeout()).is_ok() && tmp[0] >= 4 {
-+                langid = (tmp[2] as u16) | ((tmp[3] as u16) << 8);
-+            }
-+            // String indices referenced by the config (iConfiguration @off6, iInterface @off8).
-+            let mut idxs = [0u8; 64];
-+            let mut ni = 0usize;
-+            let mut p = 0usize;
-+            while p + 2 <= cfg.len() {
-+                let blen = cfg[p] as usize;
-+                if blen == 0 {
-+                    break;
-+                }
-+                let btype = cfg[p + 1];
-+                if btype == 0x02 && p + 7 <= cfg.len() && cfg[p + 6] != 0 && ni < idxs.len() {
-+                    idxs[ni] = cfg[p + 6];
-+                    ni += 1;
-+                }
-+                if btype == 0x04 && p + 9 <= cfg.len() && cfg[p + 8] != 0 && ni < idxs.len() {
-+                    idxs[ni] = cfg[p + 8];
-+                    ni += 1;
-+                }
-+                p += blen;
-+            }
-+            // 21 more STRING(255) reads (idx0 above makes 22 total = DLM's count). Cycle the real
-+            // referenced indices so each returns data; DLM likewise re-reads indices.
-+            let mut nok = 0usize;
-+            for k in 0..21usize {
-+                let i = if ni > 0 { idxs[k % ni] as u16 } else { 1 + k as u16 };
-+                if dev
-+                    .control_recv(0x06, 0x80, 0x0300 | i, langid, &mut tmp, timeout())
-+                    .is_ok()
-+                {
-+                    nok += 1;
-+                }
-+            }
-+            pr_info!(
-+                "vino: libusb-open enum: config 618x3 + 40x3, langid={langid:#06x}, strings 22 ({nok} ok of {ni} refs)\n"
-+            );
-+        }
-+
-+        // SET_INTERFACE: DLM's two handshake SET_INTERFACEs target iface 1 (alt 0,
-+        // app-specific/DFU) then iface 0 (alt 0, vendor) -- confirmed by a clean cold
-+        // DLM usbmon capture (captures/dlm-cold-20260611-123347, t=52.079/52.085).
-+        // The old code set iface 4 (the microphone) which DLM NEVER touches in the
-+        // handshake (the 58 audio SET_INTERFACEs in a session are snd-usb-audio's, not
-+        // DLM's -- see project_cp_setinterface_is_audio_binding_fix).
-+        match dev.set_interface(1, 0) {
-+            Ok(()) => pr_info!("vino: step set_interface(1,0) OK\n"),
-+            Err(e) => pr_info!("vino: step set_interface(1,0) non-fatal ({e:?})\n"),
-+        }
-+        match dev.set_interface(0, 0) {
-+            Ok(()) => pr_info!("vino: step set_interface(0,0) OK\n"),
-+            Err(e) => pr_info!("vino: step set_interface(0,0) non-fatal ({e:?})\n"),
-+        }
-+        // vendor_out 0x24 (wValue=3, initial ack) then vendor_in 0x22 (state read,
-+        // wValue=1 -- DLM's exact values; wValue=0 STALLs). Both best-effort: the
-+        // dock advances state regardless and the oracle tolerates failure here.
-+        match dev.control_send(0x24, VENDOR_OUT, 3, 0, &[], timeout()) {
-+            Ok(()) => pr_info!("vino: step 0x24(wValue=3) OK\n"),
-+            Err(e) => pr_info!("vino: step 0x24(wValue=3) non-fatal ({e:?})\n"),
-+        }
-+        // 0xc1 = IN|vendor|INTERFACE recipient (NOT 0xc0, device recipient): DLM's cold capture
-+        // uses
-+        // bmRequestType=0xc1, wIndex=0 (interface 0). wValue=1 (DLM's value; 0 stalls). Uses the
-+        // function-scope `VENDOR_IN_IFACE` declared in the device-open preamble above.
-+        let mut state = [0u8; 28];
-+        match dev.control_recv(0x22, VENDOR_IN_IFACE, 1, 0, &mut state, timeout()) {
-+            Ok(()) => pr_info!("vino: step 0x22(wValue=1) OK = {:02x?}\n", state),
-+            Err(e) => pr_info!("vino: step 0x22(wValue=1) non-fatal ({e:?})\n"),
-+        }
-+
-+        // Plaintext session init (sec 4) in DLM's exact wire order. The dock only
-+        // ACKs once init_4+probe arrives, and it gates on DLM's fingerprint -- the
-+        // interleaved GET_DESCRIPTOR reads (CONFIGURATION before init_0, two STRING
-+        // reads between init_25 and init_4). Those reads are best-effort: the
-+        // kernel reports EREMOTEIO on the short reply but the request still hits the
-+        // wire (all we need). init_0/init_25/init_4+probe are separate transfers.
-+        const STD_IN: u8 = 0x80; // dev->host, standard, device
-+        let mut desc = KVec::from_elem(0u8, 618, GFP_KERNEL)?;
-+        let _ = dev.control_recv(0x06, STD_IN, 0x0200, 0, &mut desc[..40], timeout()); // CONFIG, 40
-+        let _ = dev.control_recv(0x06, STD_IN, 0x0200, 0, &mut desc, timeout()); // CONFIG, 618
-+
-+        // Log EP02's bulk wMaxPacketSize from the config descriptor. If it is 64 then a 64-byte
-+        // msg0/arm is an exact multiple and the in-kernel `usb_bulk_msg` path (unlike libusb's
-+        // LIBUSB_TRANSFER_ADD_ZERO_PACKET) won't auto-append the terminating ZLP -- the dock's SIE
-+        // would then wait for more data and never hand the frame to firmware. Rules the ZLP-trap
-+        // hypothesis in or out from data we already capture. Walk the standard descriptor chain
-+        // (bLength/bDescriptorType), find the ENDPOINT (0x05) descriptor for bEndpointAddress 0x02.
-+        {
-+            let total = ((desc[2] as usize) | ((desc[3] as usize) << 8)).min(desc.len());
-+            let mut i = 0usize;
-+            while i + 2 <= total {
-+                let blen = desc[i] as usize;
-+                if blen == 0 {
-+                    break;
-+                }
-+                if desc[i + 1] == 0x05 && i + 7 <= total && desc[i + 2] == EP_CTRL_OUT {
-+                    let wmax = (desc[i + 4] as u16) | ((desc[i + 5] as u16) << 8);
-+                    pr_info!("vino: EP02 bulk wMaxPacketSize = {wmax} (ZLP needed if msg0 is a multiple)\n");
-+                }
-+                i += blen;
-+            }
-+        }
-+
-+        let load_bearing = |label: &str, msg: &[u8]| -> Result {
-+            match dev.bulk_send(EP_CTRL_OUT, msg, timeout()) {
-+                Ok(_) => Ok(pr_info!("vino: step {label} OK ({} B)\n", msg.len())),
-+                Err(e) => {
-+                    pr_err!("vino: step {label} FAILED ({e:?})\n");
-+                    Err(e)
-+                }
-+            }
-+        };
-+        load_bearing("init_0", &proto::init_0()?)?;
-+        load_bearing("init_25", &proto::init_25()?)?;
-+        // DLM's two interleaved STRING reads between init_25 and init_4+probe.
-+        let _ = dev.control_recv(0x06, STD_IN, 0x0300, 0x0000, &mut desc[..255], timeout()); // STRING #0
-+        let _ = dev.control_recv(0x06, STD_IN, 0x0303, 0x0409, &mut desc[..255], timeout()); // STRING #3 en-US
-+        load_bearing("init_4+probe", &proto::init_4_probe()?)?;
-+
-+        // Read the single ACK that follows init_4+probe.
-+        let mut ack = KVec::from_elem(0u8, 1024, GFP_KERNEL)?;
-+        match dev.bulk_recv(EP_CTRL_IN, &mut ack, timeout()) {
-+            Ok(n) => Ok(pr_info!("vino: session-init ACK = {n} bytes: {:02x?}\n",
-+                &ack[..n.min(40)])),
-+            Err(e) => {
-+                pr_err!("vino: session-init ACK read FAILED ({e:?})\n");
-+                Err(e)
-+            }
-+        }
-+    }
-+
-+}
-+
-+kernel::usb_device_table!(
-+    USB_TABLE,
-+    MODULE_USB_TABLE,
-+    <VinoDriver as usb::Driver>::IdInfo,
-+    [(usb::DeviceId::from_id(VID_DISPLAYLINK, PID_D6000), ())]
-+);
-+
-+impl usb::Driver for VinoDriver {
-+    type IdInfo = ();
-+    // The driver instance is itself the per-bound device-private data.
-+    type Data<'bound> = Self;
-+    const ID_TABLE: usb::IdTable<Self::IdInfo> = &USB_TABLE;
-+
-+    fn probe<'bound>(
-+        intf: &'bound usb::Interface<Core<'_>>,
-+        _id: &usb::DeviceId,
-+        _info: &'bound Self::IdInfo,
-+    ) -> impl PinInit<Self, Error> + 'bound {
-+        let cdev: &device::Device<Core<'_>> = intf.as_ref();
-+        // The D6000 exposes several interfaces (0/1/5/6 match us; 2-4 are audio).
-+        // The control endpoints (0x02/0x84) and the whole HDCP session live on
-+        // interface 0 -- drive bring-up only there so we don't run the preamble and
-+        // AKE four times and pollute the dock's state machine. Other interfaces
-+        // bind (so usbcore doesn't hand them to another driver) but stay idle.
-+        let ifnum = intf.number();
-+        if ifnum != 0 {
-+            // Interface 1 (app-specific/DFU) is the only other one DLM claims; let everything else
-+            // (audio 2-4, Ethernet 5-6) fall through to its proper kernel driver. Returning ENODEV
-+            // tells usbcore this driver doesn't handle the interface, so it tries the next match.
-+            if ifnum != 1 {
-+                dev_info!(cdev, "vino: declining D6000 interface {ifnum} (left to its class driver)\n");
-+                return Err(ENODEV);
-+            }
-+            dev_info!(cdev, "vino: bound D6000 interface {ifnum} (idle -- control is iface 0)\n");
-+            return Ok(Self { _intf: intf.into() });
-+        }
-+        dev_info!(cdev, "vino: bound DisplayLink D6000 -- plaintext session bring-up\n");
-+
-+        // Bring-up is blocking synchronous USB I/O; hand it to the system workqueue so
-+        // probe() returns immediately and userspace stays responsive. The work item holds
-+        // a refcounted handle to the interface, so the bulk endpoints outlive probe(); USB
-+        // I/O after an intervening disconnect simply errors and is logged.
-+        let intf_ref: ARef<usb::Interface> = intf.into();
-+        match BringUp::new(intf_ref.clone()) {
-+            Ok(work) => {
-+                let _ = workqueue::system().enqueue(work);
-+                dev_info!(cdev, "vino: bring-up queued on system workqueue\n");
-+            }
-+            Err(e) => dev_info!(cdev, "vino: failed to queue bring-up ({e:?}) -- WIP\n"),
-+        }
-+
-+        Ok(Self { _intf: intf_ref })
-+    }
-+
-+    fn disconnect<'bound>(intf: &'bound usb::Interface<Core<'_>>, _data: Pin<&Self>) {
-+        let dev: &device::Device<Core<'_>> = intf.as_ref();
-+        dev_info!(dev, "vino: D6000 disconnected\n");
-+    }
-+}
-+
-+kernel::module_usb_driver! {
-+    type: VinoDriver,
-+    name: "vino",
-+    authors: ["Mike Lothian"],
-+    description: "DisplayLink DL3 (Vino) open driver",
-+    license: "GPL v2",
-+}
+@@ -86,6 +86,7 @@ fn timeout() -> Delta {
+ mod ake;
+ mod golden;
+ mod cp;
++mod video;
+ 
+ /// The shared secrets a completed HDCP 2.2 AKE leaves behind: the SKE session key
+ /// `ks` and content IV `riv` key the AES-CTR control plane (sec 6), and `kd` is kept
 -- 
 2.54.0
 
