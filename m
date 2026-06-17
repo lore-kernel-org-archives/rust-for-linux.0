@@ -1,72 +1,67 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82B43D8105
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA634657E7
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 15:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781708561; cv=none; b=OSwuHkONrx+JxM6D04AYIDjtlzGwglpmrf1S6H85sLMCKrD2fmnxpJ/Enu6ZbJFO8nBrZTi1AJd8Ns8CYTVy2Og6fC4Ly/eQGoVl5yKPrZkXhp1UeCSa9XGJRH4zwtoom+/gprJv6NVD6wvFXapkoS3A9yEOraV/F/cb4RZPUUk=
+	t=1781708564; cv=none; b=i5Aps1/QZXBOSdNCaRE70izMj+nc+jP+iJrejHDA99ATf0y2dpasfIL8wmsoJ7tfuqqaoju9Y1Zk0vxURIGU2BVCU+8CKUtJpAfBpM6qoIILueSWMeQHQPCjx8HYftJg5hKwMO8j6CCgF7Fgk6H/jJfr1FoEP3GNd+jxYokdgy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781708561; c=relaxed/simple;
-	bh=HgAsGPcIsWFm6yjX16LNzN20kh5XERUxvB1p3l7joy4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=q6PXQX6F9MeAHAQvObB3DW+0g+sZtFe/fqxAoAJ1rfMHcEztAnYZQ9akaqPBTLTa8EnBAiYqYLH9/+7wtFDp+kWmiWxmE0IAbsDxUQ5o8maJFSkB/TQT2x2k8TyKQaVKjycGtzba4WQgtd8AJUAW6UaII+hL/k1Z0grtvrdh0iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ddx+jn+2; arc=none smtp.client-ip=209.85.218.49
+	s=arc-20240116; t=1781708564; c=relaxed/simple;
+	bh=gqAtENKoqsguNMa3AdE14MaO9cSMGHCt0HIR5weHfzE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jcd4WRb0ShCEtIiRUAiVtf5bGNs9FxMuIRaQrxcAYakWE7/sxdB4nOardFsB4vxtSpBTjLOFzBHY1l+GRmbbZnQdnW2i7TVP53xJmiDnEdj8fOzx4djtVNl8CtpGAHAz6USZld8Ssh4veDc2frcm3gBHzUQpRrZIadqsTxEi9A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=QabgRW/o; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ddx+jn+2"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bf046d4da1fso567109466b.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:02:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="QabgRW/o"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49222fb062bso49387845e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 17 Jun 2026 08:02:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781708558; x=1782313358; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lCa0uenWWZ89F0YVTYC+LQ6UyP30FoInUSkltfqEQkI=;
-        b=ddx+jn+2Ey0M3UdwIGAyNFaDEcIRPMfiUm1oyXTWzi04qwqJtvQXGxoAEGSrQwwiH6
-         gIBgnpmeeME0l2nZ8gGGiQ+egwuwYizzWGfbZiof6PkQGM9MbbKCfYlvtMQ295JsYUNm
-         C4uAclvGyAeOO8uVRHRtv3YkFlohmmKRl92a9nlPX/wxCF2QHAanu9OE0rXLljSG2G38
-         WihDJG3uz8olGu0ZtbaZ0hYo/pBDC2xljJkdVIHaBCpAtL/7ZuTYelNjfTLvlFT7H7wb
-         yiDNoO9c0EQ+h7jNB79y8cGXZlcbxl5lyJHtZO8rT8liPv6vmFcI4tdKaLw5TgpWgT9H
-         m/rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781708558; x=1782313358;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1781708560; x=1782313360; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lCa0uenWWZ89F0YVTYC+LQ6UyP30FoInUSkltfqEQkI=;
-        b=pcIo7rRGGln1wuUk650+CQK3WJQwrRtgzedapAzqwMBHP8S1Pq3kXnMJmp88I0lu7b
-         a0W3m59am/vLt1zvblIkYjNgROzsCG5rITStUE3EwqemwkJLI5tOnBpf4lHCk0WnSH84
-         lynNV8qetRQaZmdSstjlsg9P8NN/WU6Z8DPQjC4yFPmPSzf1wdJQ79sbVKGWNkSOzVNF
-         2L4h+ijQqbO5gzE7xYCWj41hlZOQVkOCA8g44O7l0Bi/ksdIbD5l4HvykDJz4j1PgpT4
-         uaGHOLMc9SHeX9wSbXgfrWN2TKdUI0IUEl/rCwsUmVdrJ8fdiYaGl1GA0K4yOZ8Y6LKW
-         p0rg==
-X-Forwarded-Encrypted: i=1; AFNElJ8wcmbIIgVZhePvJXVVNsrQHD5ejGDBGxknsv/INlxhrvZjpPVJF2c/pkQ9mLhAv5pur2zQT0t4cRVFDIOBXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBF5NMjrnBvTmK9w4w5ilz4zenZtDKi8UFFVNhflxVzMU2IyVx
-	CEYrnUUi4JtukFkOXUWlSz5WnWIHtYSdzftLVOYEI15ENiS6TJ29Z0BFZsofU3rVQQ==
-X-Gm-Gg: Acq92OERtbNm9lUvEk45GrB/JcBrwEXAdu47IoKLa9pb6/4vuD16p0OM7y67GO4LFmV
-	/4d1Mdulc5Pb/Fj392zfX6AXf0luZst+EJvRmWg1mflSdxq4JroWZfIHh0AFBbI9mhe9vQHZUI8
-	TJxiH4GZyNvzPI8fhuxCzJztmOzrWunCkrjgsGfH4F8cdlxA9ZYjR5Xa7CBQDI/nl5trhJRW603
-	R40Ay+x+A1ucZII/jN2d4+lQYJIgiFIIhMczUzORcNa7wvxqyutukkb62D31Vsyzsg12/z0TxP/
-	RTaES3rR15QjqTBK58QzeTzXd4EZoL7qhvz519hBXqgbsWFiEWks/hl8sZO3FAfYqedw76yBQNR
-	iDD9QTZyJe4RQqBbyLgwMmTB9HbRCer1QWOKQEuzedn96xRkUslgQRgtoGbhuLuSkfrCsfsaGR7
-	nh+l5iSUN91iZgLTr61B+1Ugi+9nnuZSdLQYuQ2CWg/dm05XJF4A24TAWj
-X-Received: by 2002:a17:906:9fca:b0:c03:b8c6:cc27 with SMTP id a640c23a62f3a-c05a6bded8bmr287227266b.24.1781708557936;
-        Wed, 17 Jun 2026 08:02:37 -0700 (PDT)
+        bh=qmpePbxtzwGXfx66Hl40vv7cxeZbUjsiMgIwVm4k9pY=;
+        b=QabgRW/o8lgVxD2/D6qBhfQCjLjwpiYqWhXsRnvtsJRPN2YCeq7Bgnr1gJn4fejMA2
+         gSMpLsRO8QZWIEC5k9uBHFmS/p4DHwghkZwQqhLoCF2Kn6PkjAX/Pn4SkSDhUc2+CTKD
+         tEjQpw2m6Fuq6/TxhProm44b2IByUYudKLOOz6ZWQ62CvzzBRiNEfsfwhc6OwAsA52YP
+         qKY9sPsKuslHFCLN8xAZE3HeVQP4A2oBMIIUfAGTr1TwH680INR0HCcF1LStpWDF1g14
+         cJMtuxS6bkvPmy/M3yQ6OXf93eXDw66RHmFMJHzohezNSVuHvH1AKlEqty8TniU3KrpC
+         GXuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781708560; x=1782313360;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qmpePbxtzwGXfx66Hl40vv7cxeZbUjsiMgIwVm4k9pY=;
+        b=T5DjZJzHhOVvJ8TdBDnytlC4VGKlvjF9tkpnKKqNugcRFk95bDcWqdMuJR3mE99UiJ
+         eG1TIXrZJP3HodmDGIApLVShLKIHZsW8hfD1a/64qM+S23CQzTVM23A1rILNbTbqpDbb
+         /9DbEe1w7TirvzUI5Z38vTAckcW8EFDX8NromJ5CTeAu/hQvmKqkHaQEGFHFZkBFQj9D
+         5JwXpsSSi0ffQRGcAU3JKkjRtIDBbDwQquCnSzdQQ63RkvNUXJK3hwM3Ap6c9xrRV9tB
+         c0MtgDvCHq/qq8yP/NuHWc3TspqLoPqGjxWhsN8RzGjh5F4EtxwECRmYJiU8CUHkmzwL
+         F5Zg==
+X-Forwarded-Encrypted: i=1; AFNElJ+/wLzTkN6ws8e8QQ2g+n1lyltdxk0aG9DHuCooyr4CwLWv15PPsWAW2NG+8Tq5eDjz9vNlTuJ6Ve1h94MNbg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwswN5pUV08fb6CntRFpH/5amZnDFpG8qWz6Fb9DFxG66nW6jxt
+	ISPLlguVn+WSNHy+EvS1tKJH2XFsAXrTEa+fODvGnCmbLJRjIWorT/41D9zjccxiOg==
+X-Gm-Gg: Acq92OGkV/e+nhMl+mnooBT4HYCam1AsGmvEtnY7N4wd7c6iztfXfr3sG8FLSR7E7bO
+	Bo2or79uTCgo1+gv120Hc+a62Gxm9VR9CgYYMxgKpW7Q5pZ1SG9JlKUy2UStqZQzDN8fKINeRQS
+	UfY/wdG4iUU8k9GTYAKl6hYFWwjyV4N55DJOWuAKI34+x1RJ63rp1RE5KPwsxv0deJL4ZOnGbez
+	4K/aP2Q3zZ5S9sZ6zzcOTiLqEYRHi1nmIxgcpcmf6+X02/dsOlz3DqTXmolyYKZCwWA6P6XTxxZ
+	CwQMaioavO05Y0jRjRIQJhxIhxBPOEp9NtLLGKqK6xNJEMoaXgZms29wLSJ+NIqrX66Qi4Fl2dk
+	dvrY9e/lsLwKryVQgH+T18zz0zBpng0Wu2vorUmyudSEro5BcnPzVGLRi2nuJw5VkPwJ4eUTRBI
+	Dy3y5GAPy3FXUZsosU/SmXCXbq1W4MLP9RLYRfrmjr+5B7rIeCZH+ktt+r
+X-Received: by 2002:a05:600c:4e02:b0:490:c2a3:1781 with SMTP id 5b1f17b1804b1-492333f7765mr76370435e9.34.1781708559486;
+        Wed, 17 Jun 2026 08:02:39 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26f1cdsm57264311f8f.11.2026.06.17.08.02.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26f1cdsm57264311f8f.11.2026.06.17.08.02.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2026 08:02:36 -0700 (PDT)
+        Wed, 17 Jun 2026 08:02:38 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: dri-devel@lists.freedesktop.org
 Cc: Mike Lothian <mike@fireburn.co.uk>,
 	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Lyude Paul <lyude@redhat.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -75,84 +70,149 @@ Cc: Mike Lothian <mike@fireburn.co.uk>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 0/5] rust: drm: minimal KMS bindings, EDID read, rotation, HDCP defs
-Date: Wed, 17 Jun 2026 16:02:22 +0100
-Message-ID: <20260617150232.2210-1-mike@fireburn.co.uk>
+Subject: [RFC PATCH 1/4] rust: drm: add minimal KMS bindings for simple-display-pipe drivers
+Date: Wed, 17 Jun 2026 16:02:23 +0100
+Message-ID: <20260617150232.2210-2-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260617150232.2210-1-mike@fireburn.co.uk>
+References: <20260617150232.2210-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This RFC series exposes enough of the C KMS API to Rust for a driver to
-bring up an atomic mode-setting pipeline with the drm_simple_display_pipe
-helper (one CRTC + primary plane + encoder) and install a real EDID read
-off its own transport:
+The Rust DRM abstractions currently cover GEM and the device/driver
+registration boilerplate, but expose nothing of the KMS (mode-setting)
+API, so a Rust driver cannot bring up a display pipeline without
+dropping to C. Add the minimum needed to drive an atomic mode-setting
+pipeline built on the drm_simple_display_pipe helper (one CRTC + a
+primary plane + encoder), the same path simpledrm/gud/udl use.
 
-  1/4  KMS headers + Driver::FEAT_MODESET/FEAT_ATOMIC
-  2/4  <drm/drm_edid.h>: drm_edid_alloc/_connector_update/_add_modes
-  3/4  pub drm::Device::as_raw() escape hatch (separate, contentious bit)
-  4/4  <drm/drm_blend.h> (atomic plane rotation property) + a rust_helper
-       for drm_atomic_get_new_crtc_state() (inspect proposed CRTC state
-       from a mode_config atomic_check)
+Two pieces:
 
-It is deliberately an RFC and interim: it does NOT add safe Rust KMS
-abstractions (CRTC/plane/connector wrappers - an active upstream effort),
-only the raw binding surface plus the trait/visibility tweaks a driver
-needs to call the C helpers itself.
+ - bindings_helper.h: pull in the KMS headers (drm_atomic_helper,
+   drm_connector, drm_gem_atomic_helper, drm_gem_framebuffer_helper,
+   drm_managed, drm_modes, drm_modeset_helper_vtables,
+   drm_probe_helper, drm_simple_kms_helper) so bindgen emits the
+   drm_simple_display_pipe, drm_connector, drm_display_mode and helper
+   bindings a KMS driver calls (drm_simple_display_pipe_init,
+   drm_connector_init, drm_helper_probe_single_connector_modes,
+   drm_gem_fb_create, drm_cvt_mode and the drm_atomic_helper_* family).
 
-FEAT_MODESET / FEAT_ATOMIC follow the existing FEAT_RENDER idiom exactly
-(per-feature bool associated consts folded into compute_features()), so
-GEM-only drivers are unaffected.
+ - drm::driver: add FEAT_MODESET / FEAT_ATOMIC and the matching
+   Driver::FEAT_MODESET / Driver::FEAT_ATOMIC associated consts, folded
+   into compute_features() exactly like the existing FEAT_RENDER. They
+   default to false, so GEM-only drivers are unaffected.
 
-drm::Device::as_raw() is made pub as a documented temporary escape hatch
-for calling the C KMS helpers until safe wrappers exist. That is the part
-most likely to draw objections, so it is split into its own patch (3/3):
-the feature flags and header bindings in 1/3 and 2/3 are useful on their
-own and can land even if the escape hatch is reworked or dropped (e.g.
-replaced by narrow per-helper safe wrappers).
+No safe CRTC/plane/connector wrappers are added here; this is the raw
+binding surface a driver needs to call the C helpers itself, and is
+meant to be superseded by the in-progress safe KMS layer. The raw
+drm_device pointer those helpers need is exposed by a separate follow-up
+patch ("expose drm::Device::as_raw()") so the escape hatch can be
+reviewed on its own.
 
-drm_blend.h (4/4) exposes drm_plane_create_rotation_property() so a
-driver can offer the standard atomic rotation property, and adds a
-rust_helper for the static-inline drm_atomic_get_new_crtc_state() so a
-driver can read a CRTC's proposed state during atomic_check() (the vino
-driver uses it to reject a multi-head modeset that would exceed the USB
-bandwidth). Like the rest of the series it is interim raw-binding surface.
-
-drm_hdcp.h (5/5) exposes <drm/display/drm_hdcp.h> so a Rust HDCP driver
-can use the canonical HDCP 2.2 message IDs, length constants and hdcp2_*
-message structs instead of redefining them (the vino driver runs HDCP 2.2
-over a vendor USB transport and reuses only the message definitions, not
-the drm_hdcp_helper state machine). It only pulls in <linux/types.h>.
-
-Note: a related but independent fix - using drm_dev_unplug() instead of
-drm_dev_unregister() in Registration::drop, which closes a real
-use-after-free for Rust DRM drivers on a hot-removable bus - is sent as a
-standalone, non-RFC patch ("rust: drm: unplug the device on Registration
-drop") rather than buried in this RFC, since it stands alone and should
-not be gated on the KMS-surface discussion.
-
-Factored out of an out-of-tree in-kernel Rust DisplayLink DL3 dock driver
-that drives a virtual connector and reads the dock's downstream EDID; but
-the bindings are generic (the same path simpledrm/gud/udl use).
-Compile-tested in-tree against drm-next.
-
-Mike Lothian (3):
-  rust: drm: add minimal KMS bindings for simple-display-pipe drivers
-  rust: drm: expose drm_edid.h for reading connector EDID
-  rust: drm: expose drm::Device::as_raw()
-  rust: drm: expose drm_blend.h and the atomic new-CRTC-state helper
-  rust: drm: expose <drm/display/drm_hdcp.h> HDCP 2.2 message definitions
-
- rust/bindings/bindings_helper.h | 10 ++++++++++
- rust/kernel/drm/device.rs       | 18 +++++++++++++++++-
+Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
+Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
+---
+ rust/bindings/bindings_helper.h |  9 +++++++++
+ rust/kernel/drm/device.rs       |  8 ++++++++
  rust/kernel/drm/driver.rs       | 17 +++++++++++++++++
- 3 files changed, 44 insertions(+), 1 deletion(-)
+ 3 files changed, 34 insertions(+)
 
---
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 14671e1825bb..877f82b927a0 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -32,13 +32,22 @@
+ 
+ #include <linux/acpi.h>
+ #include <linux/gpu_buddy.h>
++#include <drm/drm_atomic_helper.h>
++#include <drm/drm_connector.h>
+ #include <drm/drm_device.h>
+ #include <drm/drm_drv.h>
+ #include <drm/drm_file.h>
+ #include <drm/drm_gem.h>
++#include <drm/drm_gem_atomic_helper.h>
++#include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_gem_shmem_helper.h>
+ #include <drm/drm_gpuvm.h>
+ #include <drm/drm_ioctl.h>
++#include <drm/drm_managed.h>
++#include <drm/drm_modes.h>
++#include <drm/drm_modeset_helper_vtables.h>
++#include <drm/drm_probe_helper.h>
++#include <drm/drm_simple_kms_helper.h>
+ #include <kunit/test.h>
+ #include <linux/auxiliary_bus.h>
+ #include <linux/bitmap.h>
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+index 477cf771fb10..1d3319b713e2 100644
+--- a/rust/kernel/drm/device.rs
++++ b/rust/kernel/drm/device.rs
+@@ -165,6 +165,14 @@ const fn compute_features() -> u32 {
+             features |= drm::driver::FEAT_RENDER;
+         }
+ 
++        if T::FEAT_MODESET {
++            features |= drm::driver::FEAT_MODESET;
++        }
++
++        if T::FEAT_ATOMIC {
++            features |= drm::driver::FEAT_ATOMIC;
++        }
++
+         features
+     }
+ 
+diff --git a/rust/kernel/drm/driver.rs b/rust/kernel/drm/driver.rs
+index 25f7e233884d..6a79594510fd 100644
+--- a/rust/kernel/drm/driver.rs
++++ b/rust/kernel/drm/driver.rs
+@@ -22,6 +22,10 @@
+ pub(crate) const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
+ /// Driver supports render nodes, i.e.: /dev/dri/renderDXX devices.
+ pub(crate) const FEAT_RENDER: u32 = bindings::drm_driver_feature_DRIVER_RENDER;
++/// Driver supports mode setting (KMS).
++pub(crate) const FEAT_MODESET: u32 = bindings::drm_driver_feature_DRIVER_MODESET;
++/// Driver supports atomic mode setting.
++pub(crate) const FEAT_ATOMIC: u32 = bindings::drm_driver_feature_DRIVER_ATOMIC;
+ 
+ /// Information data for a DRM Driver.
+ pub struct DriverInfo {
+@@ -131,6 +135,19 @@ pub trait Driver {
+     /// usable from the render node (i.e. marked DRM_RENDER_ALLOW), whereas
+     /// userspace processes using the master node can invoke any ioctl.
+     const FEAT_RENDER: bool = false;
++
++    /// Sets the `DRIVER_MODESET` feature for this driver.
++    ///
++    /// When enabled, the driver advertises kernel mode-setting (KMS): it owns a
++    /// `drm_mode_config` and drives CRTCs, planes, encoders and connectors. Leave
++    /// `false` for a render-only (GEM) driver.
++    const FEAT_MODESET: bool = false;
++
++    /// Sets the `DRIVER_ATOMIC` feature for this driver.
++    ///
++    /// When enabled, the driver advertises the atomic mode-setting uAPI. It only
++    /// has an effect together with [`Driver::FEAT_MODESET`].
++    const FEAT_ATOMIC: bool = false;
+ }
+ 
+ /// The registration type of a `drm::Device`.
+-- 
 2.54.0
+
