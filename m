@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EC44963AA;
-	Wed, 17 Jun 2026 15:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F0447F2E0;
+	Wed, 17 Jun 2026 16:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781711748; cv=none; b=t27xS18IVUqX5YWipFepMhZtpme0zaZFs7MTGhyGmgekmOrZ4kjZXFFW9RzBHLYssXAOJA9551nQDvizzXbCdCZkPtZj4rE0RcXDpI/Fc4D0C+bH/Wpj4ILNEDrFzqL2ArpXq1ABFzX9dhzJAmJRdVmCXM1tcaY/V+MiaxIFWbU=
+	t=1781712455; cv=none; b=EpPq74tpG6tlKqWK9gl/XaTMfj40T4HEvNVWsSsXw72e9+znS+80wE2apSKjXTBBx837CmIRi84hIJamFMRawixVHUysdNjtZcjolBqLl7v21BehvbzxjzhLZTF/xsAfQtzxaAuOTj5zjHMtWvnFqxR7k4O9H+kP6mZxp6Zxk9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781711748; c=relaxed/simple;
-	bh=UxHXRm9jMwJA5BlesA133RonrTw5FL2lCqSNssk6n7k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=fcZOppYjkhrpedwZBJMpkNSq8LfZhtJ7ArZMRISnL+ixchquINQTeRgkbwHbgE+KMZ0yz6nhqak0zpTd1wiSVQCftCyc/ZOfMJB6bjzNjFYW5DaxRl+PyXhCO9jvKv64pTQs21knPPrY4nRrpXQQUsIkA1yw4QCw8VThr2f+cxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGGy4P2c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781712455; c=relaxed/simple;
+	bh=aWq/QEkoGDmxlMTijslmCtGIfeSHPIRFDWrnl4URJvg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=D6woxVOuP+6LIJ8mZn8K7qxOywloXskjeE9Y0ZiQvI+mJk6QQ2HLK27Fkjz3xhxwz06l94SdnXfSBF/nPi03quuRCt31Iit5BbyZ0MbYl9MyB0p1iJ3g3VKugfwESFWE/cA4yo61Dou3xCrwbfU2LBPUku18BjQubOYP73lp8g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DqbIEveb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGGy4P2c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91DE1F000E9;
-	Wed, 17 Jun 2026 15:55:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DqbIEveb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41E91F00A3A;
+	Wed, 17 Jun 2026 16:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781711735;
-	bh=UxHXRm9jMwJA5BlesA133RonrTw5FL2lCqSNssk6n7k=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=WGGy4P2c+B1NGlSISCV9f3mNdHaajGKcqSU2yJOXPfgvslwrXWUGyTyyMQLs9XnFR
-	 hBIKbhMPWPJnX9g+zuqcFSR2Ef+WHR+8j6ilLLJCSGFruSJ1ZRkA4qL/kBUr3lyG7i
-	 Eje84tz7bg2kNzP/kghKfOFfJu8bNuWr9ZpZLwRWsj7YadaTBcFvmSQ2X+Odgjc3TN
-	 daKEiPDMgC6kTE53cbIPnLAO5RoT3+FmLrZjTY0cWgUkikIYzYOQSh0iLs2Oo6GJ0J
-	 Wr5924hCuHSMimLGr60XhhUEYtfj4bltF4bki7dNDvQfCpXAoaViVvuUBBVaClXqOE
-	 Ft+62nAh34qzA==
+	s=k20260515; t=1781712445;
+	bh=53P62tPSkAqWcCKSZdxa4fBnQU0Jt3G/vZE9f4lZBwo=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=DqbIEveba3gCtTg+OHfPtLQmG/Mzqnj4ghMcqdOO0H0ttJdsf07Y4ScXnzXOO+6SF
+	 oo2+2KoLDqLgD8TXactIT0+JVkR8CAWV3zuSzKTHi3gcYj9g06ysWZBz/NqX7rGfIj
+	 KkRwB+vAzsX+Ao3VYOYkQ/CSRUGqVTn0Rotz+1krzdi+meNs0f4kFqAVUGXMSD5811
+	 oReMN1c+r2SEGBb95U0p8Yh3Xnd+gtHcXRw9vINdCr2yzDNbZW0rEhAX5xkyBzb0Xv
+	 4NhuO4y0G6vwtTiM/TD1FPw6SjB8JGRlh3F5yVDjVaGufZ5GLX7j9qlrij5ffzVU2f
+	 sAec4KqZTdYmQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,53 +34,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 17 Jun 2026 17:55:30 +0200
-Message-Id: <DJBG3H7N9GS9.7AMMRJIHGHRN@kernel.org>
-Cc: <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel
+Date: Wed, 17 Jun 2026 18:07:21 +0200
+Message-Id: <DJBGCJZ3CMEX.3ORMLBEQE87LS@kernel.org>
+Subject: Re: [RFC PATCH 1/9] rust: usb: add synchronous bulk transfer
+ support
+Cc: <rust-for-linux@vger.kernel.org>, <linux-usb@vger.kernel.org>, "Miguel
  Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>, "Lyude
- Paul" <lyude@redhat.com>
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ "Shankari Anand" <shankari.ak0208@gmail.com>,
+ <linux-kernel@vger.kernel.org>
 To: "Mike Lothian" <mike@fireburn.co.uk>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [RFC PATCH 0/7] drm/vino: DisplayLink DL3 dock driver (RFC,
- help wanted)
-References: <20260617151249.2937-1-mike@fireburn.co.uk>
-In-Reply-To: <20260617151249.2937-1-mike@fireburn.co.uk>
+References: <20260617145946.1894-1-mike@fireburn.co.uk>
+ <20260617145946.1894-2-mike@fireburn.co.uk>
+In-Reply-To: <20260617145946.1894-2-mike@fireburn.co.uk>
 
-(Cc: Lyude)
+On Wed Jun 17, 2026 at 4:59 PM CEST, Mike Lothian wrote:
+> @@ -426,7 +427,7 @@ unsafe impl Sync for Interface {}
+>  ///
+>  /// [`struct usb_device`]: https://www.kernel.org/doc/html/latest/driver=
+-api/usb/usb.html#c.usb_device
+>  #[repr(transparent)]
+> -struct Device<Ctx: device::DeviceContext =3D device::Normal>(
+> +pub struct Device<Ctx: device::DeviceContext =3D device::Normal>(
 
-On Wed Jun 17, 2026 at 5:12 PM CEST, Mike Lothian wrote:
-> Vino is a clean-room, in-kernel Rust DRM driver for DisplayLink DL3 USB
-> docks (Dell Universal Dock D6000, 17e9:6006), a native replacement for
-> the out-of-tree EVDI module plus the proprietary DisplayLinkManager
-> userspace daemon.
+Please see commit 22d693e45d4a ("rust: usb: keep usb::Device private for no=
+w"),
+this shouldn't be needed for writing a usb::Interface driver; please also s=
+ee
+[1].
 
-Interesting project!
+[1] https://lore.kernel.org/all/DD08HWM0M68R.2R74OSODBIWSZ@kernel.org/
 
-> It is built on the in-tree Rust USB, crypto and DRM/KMS bindings, which a=
-re
-> posted as their own prerequisite series;
+> +    pub fn bulk_send(&self, endpoint: u8, data: &[u8], timeout: Delta) -=
+> Result<usize> {
 
-The KMS series you refer to is really just including the C headers for bind=
-gen,
-while the driver messes with all C KMS APIs directly.
-
-Lyude already works on proper KMS infrastructure for Rust; can you please w=
-ork
-with her to get your driver reworked to use the safe infrastructure?
-
-Also, I recommend looking at this series [1], which should very much simpli=
-fy
-dealing with device resources.
-
-Thanks,
-Danilo
-
-[1] https://lore.kernel.org/dri-devel/20260603011711.2077361-1-dakr@kernel.=
-org/
+This should only be exposed for a usb::Interface<Bound>, i.e. note the Boun=
+d
+device context.
