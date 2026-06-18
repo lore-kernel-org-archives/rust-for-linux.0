@@ -1,158 +1,163 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FDE800
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 15:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781795262; cv=pass; b=K23S7UeHbbO9DDuzM6BMnz2r1UENU03d6TS+fftEFMi3VahiXiqI16gSeHZz6NvcCinMBjQYkLFW4gxjQ3AxiGFI2NmHlqUeC3yLnwr5jwyM+lXl7U9F4i0UFzXUWyC7bkxuwxb6Z8HW0YjdBC8TZ0yFInCfGvVOM/50y/dEtwo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781795262; c=relaxed/simple;
-	bh=oqojXc1/gGyRKZZBJpvbn3qnQfO0iMRjzOLegsFVCgM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lQvYl3iGUuio6euzFCEO/RMQEHz0swoTYJyT7U/xoM8L3w4wLvSgqM8YYN8EmPWosut4yDobKJYsEVtMbv5/nuwC9iZoZ1lbo6IB/KuodZhqE+RAs8uMVJp9uRTr0beSf238yz4ylNTJ5r3RAT/NBTRE5gup9fBpZnPvH5Cl6q4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KCe9ASQD; arc=pass smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DEE32E6BC
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 15:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781796762; cv=none; b=NGnTUXngza+8be2Jy8IERgyLglL5pbOizPt3jgz5yzDS0Cis5VU46MMcshh74F7PJF/LYv3X//opo8zdOXAK3O19rBGDg8zSysQp1oYzJalX+dKd0fEpMCMMxQ5K4K+SpoTEYbQ4u3hF/ZDVZ/TI24l4hNCy6TKojwAJjaZ9oUY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781796762; c=relaxed/simple;
+	bh=kJtsp1IazgSMj1nbHUhrUJKr18wuS2KWcV03+qv/vOw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Gwcqb32a8mkVFiQdnm0uFL5cTQ09KufoJhF5UrLv8++dI80p7wFrOmYUpX+b4h6RxUTaogqNi/5D7i9Tz8YjpQtdfhnpjGwuvuobMHxpE3ogExLXVhjq7iobZ04Yh7FiITzNUDgH+wOly5uXqywctV9C3xu7rymEcp+s3xfLJfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hCMMjNch; arc=none smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KCe9ASQD"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-bec450b950dso147463766b.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 08:07:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781795260; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YZ7ywA3WfhlYL7MJZBMzk/MhpF2ROT9l9lW6ajjhCDY7r7Vv4dF2n+6IX4pBtAaXns
-         dI4oBNtHpsY0mdPDkdm1HgxaLFeCdDtrg7Hsv2zyUOqKTuvbM/KvWyTHJat5k+3LIWYU
-         FJgJeRaVaU3F0d5U6UF/jpCDRl7GZexrgPxlehhKPqrkA96W4oqUVOOs03H6CgpPBPDh
-         NNVvpSUSdFxJzn5j48thrWq4iw9TttJfeXfJd9Nac2zcAJlrTHXdLWT657bC8iYL0rUu
-         715zN//hHNhuW2h3EiS+gPNxvwYKRDHhnRZ0Bpj6CpHrTSelivdvuU6JY1tvDW91zQPq
-         GazQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NYfGyus+VhVBHeY1TmmYU+r9XB2t30QhuWaxH/6OPAg=;
-        fh=vYg7xY/lx6wTaNdtYORFYh3mfJ5p79H4fD7LO+qrsz0=;
-        b=MQfr4gNMsejVGLqmYV50aHq/Ben0F7PzqV2g6JNjJS5/AYk3P98+nwv46zuxs0GABc
-         bjeSwAoLxM6I0yRZG2m/PWOAd7y1QudK1UcLpoat3GI8MHAfDwyG24srNRrbXrG5LLhj
-         w/uu4h2xWGVpvUcktfg1Z2H1ySFiBYtnC29DCFPeWN5/onMylGKAfNoTokY5W2ZV2RZf
-         CAKGXppM52Q1cLBPVUkDoo0fpQ7kAljyPW/pDJc+7j8W8oSZTVAiOvOOAFW1UMAimMrE
-         SYYwnKQzcJ1PvEoH+wCglO+5Zl1Yj3mri3ol7doQU7oEaygx0rtgQ/cqOHCUZEmNm7r7
-         PUkA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCMMjNch"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-137335bc3caso1613418c88.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 08:32:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1781795260; x=1782400060; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781796759; x=1782401559; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NYfGyus+VhVBHeY1TmmYU+r9XB2t30QhuWaxH/6OPAg=;
-        b=KCe9ASQDBwiH0ECiU8N5i5XECpdsvhaVGmLC7JMfrXp05K9hMilflk+QRvx81Fg2Th
-         ePOpJtui9eB1AkouOeZOMpZcrwVQT/qK79iGZlj1ag8dHeeuy0Dz0GgjMnEywPqB4aPg
-         G4bJ+0BEhfGTg21qJffuNtq1sOLILr0mgy6MA5n3QPVCDT9ty8pFLa4pBAY4hJZZhCih
-         Ipt2nhz3KDDTf1hxpmxaZnh3VLTkI9odOodfE9qTLB7NppWpE2/snO7mZXX7N/z1JdXV
-         C8gckzGFWbzrioccnDClHIiMOov363CpgXeXs5V7gnPruILQcwyAVL3oP1iJO4CbFT/b
-         5Jkw==
+        bh=ZP2Cpfm9UZ2KtOTUXD2ERtet4jXDhXqiOeuJJjteN/I=;
+        b=hCMMjNch8sQeQCnvEEYb2kmp9IObLcmUVeenDwP1KeKxnmEn6Hii0X+DxfkfYt3Iq0
+         IFZYzXpwCESDrjL++JoiSIz5gDrriumDq5heBUcPyk8cde3kXQhqIY7Txao5kySuHvuX
+         rdYRVGksC3GK0+hWM7/iab13qsAiEi5CgX6nQ50MJIwGLiHKP6ZKX+829J8NzX1/N8Lx
+         uYMLP4KAXB8EK0vpce/Jq1Gk2ZcrWVDlc02dkMXZVDHHND78LLJoBYhtugDYxmLSE2pD
+         ZZEO2D4rQA9PDVTJC1hJXwR8kxDszIxjelvygNzsjGq7IYA5TNWmYMCybaDr1i/Z/M16
+         AL6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781795260; x=1782400060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NYfGyus+VhVBHeY1TmmYU+r9XB2t30QhuWaxH/6OPAg=;
-        b=hkq2s+f88cwNmLycwd4YPpxVxmz8SNd7AyBNn1rKe7awq0p8PFgv4XkvNAb/o+scrg
-         jojCKWGzdkPD30OhjU3xTTorLenjrNEZKnN9Iea2CMsrAybfH4EU6xaj5p5PTuAhLJM9
-         S25d+v3oPnIhTG8h6xQTeAlKxifSo0Jz9Kc5Bv/9lZJ4ViZWqIZxDIxMcMJiNk4+mejt
-         knXioCh763ygdxHpyQy72rnvFo60xtAr8/MixRaGcDMo9vMdqO8AgfNwHMint/Hrq6pU
-         eX/rem2BDUedPNldXU9wQaGdBpo0GuqwT87jyljMNcXfZyTYY0fOyby2eoH+Ucr8rMuJ
-         iBGw==
-X-Forwarded-Encrypted: i=1; AFNElJ/jOw+SvU/I3GGwPKQ1/9w1t0k1OW751yAV1tIxuwGFLb5nnrGhr0gXTtsScYPgC1iT7s/EI2g9boNhA86dvA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/o182DeL9Qp4vxAL6fvZtV8xOBzZrLN2/hcO0+xiPWuOrVsc7
-	s5rvj9YMSvyl1vaRtxeh8mv1Bu5bQHEs2Z5kGJBRK8fjUqdXw1uY/ORu7m9o3ZArfXTeL4u0sCC
-	9dRA/TEG0Ws6LbNRanxUhizffEKvAVnVTxo4ptvJWdw==
-X-Gm-Gg: AfdE7cnulgUytr1sThcuZpoZ24XcQgR4/EGakdG8MWttPbiUyLLPEo/2disaNiYMiEL
-	XaEBb6GgUq1N8/diPxbOnSGBFVRF6ib68YlaEKVfZDuvmo05FP037RB1DVlWSghbByelViRHujl
-	3qkt+lq1cXFqQMI/yVXCimwOMzW03hZLy96X5sgwd/j8DT+UUETn4tDwWScq3U3AEkRUjC05HAp
-	mFu2lidtr7hFuxXMz/0QQTqKwEMk6IZtlFAWPbb7YSADYA/hihFflHO7KoJZeLIZldVKBuzRVjB
-	qGTS3x5jK4oTt5zCBt8ORH6JEA==
-X-Received: by 2002:a17:907:98c:b0:bfe:ed06:565f with SMTP id
- a640c23a62f3a-c05d2ebb73cmr565480566b.52.1781795259736; Thu, 18 Jun 2026
- 08:07:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1781796759; x=1782401559;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZP2Cpfm9UZ2KtOTUXD2ERtet4jXDhXqiOeuJJjteN/I=;
+        b=VfMRFmBYSkg0Vi18IXVprqpKQn6cWDsgGcf52CxEg2/qFEscx3Yhw+H3dw7thwJQKV
+         5yDevZibiz8nFh824uQnJHF6HK+ZTEKFSHupLipbav63ry5zKrQyXxdLU7cx4xQCQdGD
+         QMZBqZjsL3OVujNoIrskUe1LqotaIdAGB1m7PrybpYwioitxg3Dko/0ryhmvQWzn4tjc
+         w7UMyq8btXbijqCzcHMONyGaWlviSn0eF9wm63i1nE+LMniHnOmbRoNe3YyaH8Jc+9Vm
+         pI61s0JLPBElBDCyyY9rPFZFWas5DWvk8Fh4cnaxne5jtt6DaUnoCJAD9RzzVHshl5/p
+         mYog==
+X-Forwarded-Encrypted: i=1; AFNElJ8djOyIzNJTQBBCqkt/qn6vq+W5l8dsS7n7b+17XvJmtFv1D5h7JKNX4skHlhT1+q3BoJJkDQ8Hm2ua+OukyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIy+Cn6NQkCkRaXFRrydsxZeDLleFahE0rWWEYv3wxBFNjtuXA
+	pVedTlbQLDBPDy0OMk0tQZaA4fTEixd4Sl7Sl2lC7hDCIB0Pixkc6eU=
+X-Gm-Gg: AfdE7clvFanPzp/Ry+gJB1njI/CA3oAY9ZwAhq8XuW4UFu5vWfbE4HvKTWlTkwgOEpi
+	wZuYtNcmTnY7SMD4kn++rPuUHQ5rqlhnDWhW3tTnRV+gcxTWM4L4zZ+x0jg8nuUUEvx/BW2R8cF
+	weJT6V/DgCtVqbdBZT05vrjvh75/hZFhXdMQXo46EriNTMqUGr5TYjCUFNMgnoYlXEQ2v5UBsVI
+	5n2NvIwkeAM5oQQBFhP3d5jq8QquTsFDRIOCviMEx7HtQEf/kZHDsuG9eQO+QEGUlcmOTEkHksT
+	YRVvyYdk7k74m3h0gOvnfgAYsCp+luhQmdGDT3VmBh6SJpDhj+8cki7J5cTfA/bcw8IqRbkPiyp
+	lRnydkw4rLDv9W35al30rp+q7ARhd501kLIdL2jWmqJ7w+kIC9VNk5ijitogL7dA2SJH2iTqbfp
+	mpTNT9ETuFJk9NowjWc5liRrUR2RcCbe5tTLkfuVf/kPOXs01I
+X-Received: by 2002:a05:7022:69a3:b0:138:3613:dc6 with SMTP id a92af1059eb24-139a205f34bmr134839c88.14.1781796758001;
+        Thu, 18 Jun 2026 08:32:38 -0700 (PDT)
+Received: from localhost ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1384b964862sm19182868c88.10.2026.06.18.08.32.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jun 2026 08:32:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260618132628.3811068-2-phasta@kernel.org> <20260618132628.3811068-6-phasta@kernel.org>
- <923343e7-1f11-4e29-8278-917fc65c75eb@amd.com>
-In-Reply-To: <923343e7-1f11-4e29-8278-917fc65c75eb@amd.com>
-From: Sumit Semwal <sumit.semwal@linaro.org>
-Date: Thu, 18 Jun 2026 20:37:28 +0530
-X-Gm-Features: AVVi8CdVSitERASSjLlXjGMzf8QWomu8u5eVZoymDD14ZtOhmnelZ1EXdDXW5pQ
-Message-ID: <CAO_48GGKOGMr5bexkW3+d9AsF=RYkZeaU6+nWgnaJxzXVLft2Q@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] MAINTAINERS: Add entry for Rust dma-buf
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Asahi Lina <lina+kernel@asahilina.net>, Matthew Maurer <mmaurer@google.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Burak Emir <bqe@google.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Krishna Ketan Rai <prafulrai522@gmail.com>, 
-	Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Mirko Adzic <adzicmirko97@gmail.com>, 
-	Alistair Francis <alistair.francis@wdc.com>, Shankari Anand <shankari.ak0208@gmail.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 18 Jun 2026 12:32:30 -0300
+Message-Id: <DJCA8F2F93US.1KMA54SKQ364K@gmail.com>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Benno
+ Lossin" <lossin@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Boqun Feng" <boqun@kernel.org>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, <linux-kernel-mentees@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Sashiko"
+ <sashiko-bot@kernel.org>
+Subject: Re: [PATCH] rust: i2c: avoid locking when calling
+ I2cAdapter::inc_ref
+From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+To: "Gary Guo" <gary@garyguo.net>, "Igor Korotin" <igor.korotin@linux.dev>
+X-Mailer: aerc 0.20.0
+References: <20260615201141.8920-1-nico.antinori.7@gmail.com>
+ <DJBDWVUWH3OT.1GDEIJT0R4UTK@garyguo.net>
+In-Reply-To: <DJBDWVUWH3OT.1GDEIJT0R4UTK@garyguo.net>
 
-On Thu, 18 Jun 2026 at 19:00, Christian K=C3=B6nig <christian.koenig@amd.co=
-m> wrote:
->
-> On 6/18/26 15:26, Philipp Stanner wrote:
-> > Rust does now have abstractions for dma_fence. These abstractions are
-> > quite complicated and require expertise with both the C and the Rust
-> > side. Therefore, using the existing entry also for maintenance of the
-> > Rust code appears reasonable.
-> >
-> > Philipp volunteers to help maintain the dma_fence abstractions. Add a
-> > corresponding MAINTAINERS entry.
-> >
-> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
->
-> Acked-by: Christian K=C3=B6nig <christian.koenig@amd.com>
-fwiw,
-Acked-by: Sumit Semwal <sumit.semwal@linaro.org>
->
-> > ---
-> >  MAINTAINERS | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 4ae6919454c3..8b03eb2c578a 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -7535,6 +7535,7 @@ F:      fs/dlm/
-> >  DMA BUFFER SHARING FRAMEWORK
-> >  M:   Sumit Semwal <sumit.semwal@linaro.org>
-> >  M:   Christian K=C3=B6nig <christian.koenig@amd.com>
-> > +M:   Philipp Stanner <phasta@kernel.org>
-> >  L:   linux-media@vger.kernel.org
-> >  L:   dri-devel@lists.freedesktop.org
-> >  L:   linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
-> > @@ -7548,6 +7549,8 @@ F:      include/linux/dma-buf.h
-> >  F:   include/linux/dma-buf/
-> >  F:   include/linux/dma-resv.h
-> >  F:   rust/helpers/dma-resv.c
-> > +F:   rust/helpers/dma_fence.c
-> > +F:   rust/kernel/dma_buf/
-> >  K:   \bdma_(?:buf|fence|resv)\b
-> >
-> >  DMA GENERIC OFFLOAD ENGINE SUBSYSTEM
->
+Hello Gary,
 
+On Wed Jun 17, 2026 at 11:12 AM -03, Gary Guo wrote:
+> On Mon Jun 15, 2026 at 9:10 PM BST, Nicol=C3=A1s Antinori wrote:
+>> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+>> index 624b971ca8b0..d89c42691dfe 100644
+>> --- a/rust/kernel/i2c.rs
+>> +++ b/rust/kernel/i2c.rs
+>> @@ -426,8 +426,11 @@ pub fn get(index: i32) -> Result<ARef<Self>> {
+>>  // SAFETY: Instances of `I2cAdapter` are always reference-counted.
+>>  unsafe impl AlwaysRefCounted for I2cAdapter {
+>>      fn inc_ref(&self) {
+>> -        // SAFETY: The existence of a shared reference guarantees that =
+the refcount is non-zero.
+>> -        unsafe { bindings::i2c_get_adapter(self.index()) };
+>> +        // SAFETY: The existence of a shared reference guarantees that =
+the refcounts are non-zero.
+>> +        unsafe {
+>> +            bindings::__module_get((*self.as_raw()).owner);
+>> +            bindings::get_device(&raw mut (*self.as_raw()).dev);
+>
+> Instead of open coding this sequence, it would be better to add a C API t=
+hat
+> does exactly this (getting another reference from existing one).
 
-Best,
-Sumit.
+I based this solution on the logic used in I2cClient (where only
+get_device is needed) and by verifying which counters the C
+implementation (i2c_get_adapter) increments.
+
+The i2c_get_adapter function in i2c-core-base.c performs two increments
+(module increment is done by calling try_module_get, but in this case,
+because inc_ref operates on an already live instance, unconditionally=20
+incrementing the count with `__module_get` should be safe).
+
+If I understand correctly, the idea would be to introduce a helper=20
+function on the C side, for example:
+void i2c_adapter_increment(struct i2c_adap *adap);
+
+We would perform the increments there and call it from Rust. Using this=20
+in inc_ref would be safe because the existence of &self guarantees that=20
+we already have a valid, live instance.
+
+Is there any concern regarding this function beign exposed to the C
+side? To use it safely in C, callers would have to ensure that *adap
+points to a valid instance.
+
+>
+> That said, is there an actual user that needs this, or are we just implem=
+enting
+> AlwaysRefCounted preemptively?
+
+The only user I could find at the moment is the example driver
+(impl platform::Driver for SampleDriver ..) in
+samples/rust/rust_i2c_client.rs.
+
+Implementing AlwaysRefCounted is required for types wrapped in ARef,
+which is an smart pointer that handles custom reference counting.
+Since I2cAdapter::get returns an ARef<I2cAdapter> upon success, the=20
+trait must be implemented.
+
+Thank you!
+
+>
+> Best,
+> Gary
+>
+>> +        }
+>>      }
+>>
+>>      unsafe fn dec_ref(obj: NonNull<Self>) {
+>> --
+>> 2.47.3
+
