@@ -1,79 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58D0231835;
-	Thu, 18 Jun 2026 12:18:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DECC3F58E7;
+	Thu, 18 Jun 2026 12:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781785114; cv=none; b=dkWT4ypN9wTpOuVJ/j2cWjUTp4RmJemzI9D0niRmlUUL8MKM0iZdBxp55G5lf6mrIEJ0BA/tG8mqoaa85IQ4QMCK5vRskVfuKFfu+DVwpbHMYjPmWaOkojIVdyGet1aUEjm+sy8NjX2Qy/JUGOIgeMWoqUsey7t4ts6QR5s3G6k=
+	t=1781786861; cv=none; b=gYoCB+nibqnH6GWWMyJiBNYw1Ls/to6NGnGZuxfGWy3uORRkXwnR2EngYj2b1YUbXXpV02dIsgKYA9gqPqnScCOSKbJdy8ato75n7jgY3Y0rMEbLCu2tY3hQ8lYtV36MS/zzMLm006Poi1ggkNCWaVWHdKtc+aNiZHItHPktyKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781785114; c=relaxed/simple;
-	bh=YbjCMA5TYkGRYIkU4h3+DQu1gNQFqhtJ5eNZoJIb5jY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PFq1/EauXwV3N48tiBMhKbdj0zQD4Ba9rGKHdMkhavdXoE1x8YlUXfUaRd7lEX9dQ9xU7IqOBwKGb3+sVo3kp5ZVjtmq2HoPfYhLYDfdIRMUU59QsKWT5k6goe3V6aEdA1RtsNegUEtQuMPhuseZpsveZRTj58I2M21kbK6XxZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+R6G+9O; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781786861; c=relaxed/simple;
+	bh=9QDuDUPn/qp1WTN9rrbLR5TYf7RBhyTeasebaxUk7ys=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mjDZ49KFIJsXHExWE9H20+PpZCgBzMJab0QuPDURKLFURUur8GbyHvsdl3iycQ/LMUvmd+Hy/kiY2oT2jDDbVAV3vfGS1zvdTuOLcjo8VM2YGVwmY+x9WFxsbbaXa8oJpug7rYq3imbie0sKh6KqAoq99mQUKA69YYnkukfqOlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ejymsP0B; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+R6G+9O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60BE1F00A3A;
-	Thu, 18 Jun 2026 12:18:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781785113;
-	bh=YbjCMA5TYkGRYIkU4h3+DQu1gNQFqhtJ5eNZoJIb5jY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=S+R6G+9OqC99ywOs6Z0hxuK2gGg6+ZqiWW4BbjjEPMETtj24mm6d8y/5TsOVSa8S4
-	 cvOPHRHEmmE7+frePgq0EvAdssTNa/7p2NRLmsvjPSGTPvf/zGQMG+aN7prLm1moYV
-	 ezHedjpEmx48pZE6ECeWnYgjGu22C9iUGrxjsBgKSBqs4Zv3HqEwrxSGdcVrPrHgib
-	 Ozqk5f2wdmzl9SQp58kOvZPjpcmA9kdRPH1qKXzwYvl041soJrFrqCFlWfRg3Tvypz
-	 9sXJ/P5QbmgcaRgI+iewfts7F+N9MbyTJDlQjVoJRV3dJhshyIVuhkcCbfrEXzqytx
-	 aKvQME2MUMCLg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu
- <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Daniel Almeida <daniel.almeida@collabora.com>, Arnd
- Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, Breno
- Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>
-Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org,
- nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, linux-block@vger.kernel.org, Alvin Sun
- <alvin.sun@linux.dev>
-Subject: Re: [PATCH v2 3/7] rust: doctest: add LocalModule fallback for
- #[vtable] ThisModule
-In-Reply-To: <20260521-fix-fops-owner-v2-3-fd99079c5a04@linux.dev>
-References: <20260521-fix-fops-owner-v2-0-fd99079c5a04@linux.dev>
- <20260521-fix-fops-owner-v2-3-fd99079c5a04@linux.dev>
-Date: Thu, 18 Jun 2026 14:13:41 +0200
-Message-ID: <87fr2kf3m2.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ejymsP0B"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gh0qp753Vz9vD9;
+	Thu, 18 Jun 2026 14:47:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1781786855; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9QDuDUPn/qp1WTN9rrbLR5TYf7RBhyTeasebaxUk7ys=;
+	b=ejymsP0BX2pyuCwdyqHd8uqZFPQYMuft36MslBYHfEVVQ4gNON5IeHK2182C6tS3ItjAlA
+	+aOLMppeSFjCJNxcmvC9dqSgtmSxJdo4fu5eb27Ey4Tlu67G0YfKvCst3w4JotnasBpHhd
+	M/LBUxMd9vizx9o+X5E2kN9QoztA017/FR0JCZcCdtPShp73NTI2OZQFMY1BXlkfUKlnz6
+	VOKio+H8lGJXSUI2VFqwEYirbILhKfMDJU//pftG9qI1wD2GnKbclLg4QeubZwEqQgF55W
+	2h5UJ81UoY1d35EgxK6QEhmrcFw24MD5Xw88gCuy25tJ2K3cdznC6OXKogWtqA==
+Message-ID: <81c530248789f79da265da772a6f248a0d524eed.camel@mailbox.org>
+Subject: Re: [PATCH 1/3] rust: sync: Add abstraction for synchronize_rcu()
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Alice Ryhl <aliceryhl@google.com>, phasta@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+	 <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich	 <dakr@kernel.org>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	
+ <work@onurozkan.dev>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lyude Paul
+ <lyude@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic
+ Weisbecker <frederic@kernel.org>, Neeraj Upadhyay	
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt	 <rostedt@goodmis.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>,  Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang@linux.dev>, Christian Schrefl	
+ <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ rcu@vger.kernel.org
+Date: Thu, 18 Jun 2026 14:47:22 +0200
+In-Reply-To: <ajPa4_U_gcxr8SKO@google.com>
+References: <20260618095952.3687099-1-phasta@kernel.org>
+	 <20260618095952.3687099-2-phasta@kernel.org>
+	 <15e81f5bf354cbe3cde765526762e4ebb3ef6970.camel@mailbox.org>
+	 <ajPa4_U_gcxr8SKO@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MBO-RS-ID: 6c77894625fed4cbbd8
+X-MBO-RS-META: jk46pjimor85d6j9p35yhyttdo7smzm9
 
-Alvin Sun <alvin.sun@linux.dev> writes:
+On Thu, 2026-06-18 at 11:47 +0000, Alice Ryhl wrote:
+> On Thu, Jun 18, 2026 at 01:40:05PM +0200, Philipp Stanner wrote:
+> > Moreover, this would be an opportunity to change the naming convention
+> > to rcu::synchronize()
+> >=20
+> > But since Boqun & Alice are pushing for rcu::RcuKBox for the reason
+> > that it seems desirable to explicitly highlight that that's a special
+> > Box, I guess we should be consistent with that and also have "rcu" in
+> > the name here.
+>=20
+> I prefer the naming of synchronize_rcu() here.
 
-> Add a `LocalModule` struct with a null-pointer `ModuleMetadata` impl
-> in the doctest harness, so that `crate::LocalModule` (auto-inserted
-> by `#[vtable]`) resolves correctly when there is no `module!` macro.
->
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+We might be tempted to at least call it rcu_synchronize(), though. It's
+also RcuKBox, not KBoxRcu.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-Does this need to be ordered before the vtable auto insert in the patch series?
-
-Best regards,
-Andreas Hindborg
+But I don't have hard emotions on that topic.
 
 
+P.
+
+>=20
+> Alice
