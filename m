@@ -1,73 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C103B19B9
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 09:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CDE33A9DA;
+	Thu, 18 Jun 2026 10:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781776632; cv=none; b=FNUwIeg2+5i3R+3qXikb/7hi12t6lCzAoXeGUJBLR9LlXXReTx58p1a1L0p7lfpb4f0eWNbYC49+GiBYPJGr6PkGAuGco8jf6GhtHpLZzEUHcs/QTOANEbf/53bAS6F0pR7E0V4X3LycVirC8viq/diHxaKQg4+oF5zlkERtDxQ=
+	t=1781776864; cv=none; b=kzfrrbrWSnfVMwORRyxqr2qnM7VL8MnEZWeuwfVbOVErHuHuoq0asLkZNe9wqZxhSXkwpNMwK1M9zJh+lfbF8XNREotj4ELOeprKp/T26EvYpKcon/Nhx8qU6yybyO79iHCGPBZR24XNP2MfI1w2wDKOvsZHTcnl3XQCY0OOlhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781776632; c=relaxed/simple;
-	bh=wlnOszqCIG3PNQxA44gwvGsTlBrPUHMea1uzcISIDi8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fJKifWCN41kxAv/Wcdmxxvac3NxRQ42sLRCU7XfAKzE2OukbkrbBMEvhEcjy1X8/jw475WbeFclGuJFshxRiUMXVPtcUpDxroAxqwLzJCb8UynVVceinp1/LaFKqjs0yKO99K2ysN/4gkkO1lIMU7j36LJV/69PcfuysXhTG8nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgqmURuf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781776864; c=relaxed/simple;
+	bh=E7S1fQzcP2I2A1AQY6o5E+7hsqHhXDbi10ke0u2w5wM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=szPbcwbwJuM6xkVa2TBMFj4nqZr68xrozGmwLaMFnbLnJwQPG3oGojaZ3W8QQfVttNMgczi08t5gZYwYgENDNh0u4aapFH/n41A+3uUG/9bxYmsagtvZM3v6sjkJrbkJLJdBZ9htqSM7aVPwyrklilWA2hnR8RTpNAei0DFE/Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqMaJQkR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgqmURuf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8846C1F000E9;
-	Thu, 18 Jun 2026 09:57:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqMaJQkR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055B11F000E9;
+	Thu, 18 Jun 2026 10:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781776631;
-	bh=wlnOszqCIG3PNQxA44gwvGsTlBrPUHMea1uzcISIDi8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=hgqmURuf2qlEMh5Dx0beTLY9+RNJAM0xRhBOHFcvWVFvqgLwYySwy2jw2Tde35nSy
-	 vNbFhae0/N4AxA1rvLdZPf0op+Rwcd+FijbSkegAeARwj7dgxPizunSTItnELT/pkz
-	 bDXXsRayjBtF/lmAxgS161aH3i1+cL0uW3uKybkD4SDY9wI3BbxWBZSnBlhOdfz2oL
-	 0lEosbIHe0z3feNGsNRSm1qtJ/rLsDHzfUngPoFYhu7/JKZb21sdrRXAVX/YVqgl6E
-	 ddyQx3Tz4mm+ZZgZdeIFV2dCFDMpjMHH3BHg0Dwvh4Ea2NGLorWosT382NrFShnvTG
-	 A6mGv4zPYgTpA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@aliasing.net>, ojeda@kernel.org, gary@garyguo.net
-Cc: dirk.behme@de.bosch.com, aliceryhl@google.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
- lyude@redhat.com, sboyd@kernel.org, tglx@kernel.org, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org, FUJITA Tomonori
- <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v3] rust: hrtimer: Restrict expires() to safe contexts
-In-Reply-To: <20260303061000.73970-1-tomo@aliasing.net>
-References: <hGNrgHLZgzaLAav_TQCJaAHYX3aWSPyoHeXEf7u3ioJunfoFTIPF9Q8PnCvfRKXq2SS-fNdOn35uMiTaF90nKA==@protonmail.internalid>
- <20260303061000.73970-1-tomo@aliasing.net>
-Date: Thu, 18 Jun 2026 11:56:59 +0200
-Message-ID: <87y0gcf9xw.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1781776863;
+	bh=MmcbLodhRJVgyyIVTS06NmgSyFYXSZhBdNpRmqsOMdc=;
+	h=From:To:Cc:Subject:Date;
+	b=IqMaJQkRi6GQBGVGKzRMkiE+gD0Cut6gKG2IAxByx/4xnKbuUdJ2KxqgtPP9Tg+ec
+	 ZqhP9vv5dtWMXiDz583Lo2hKTbdNybWSFkvVS8Bguu7tQSXX8+kSgaRhHxtfrvcHbj
+	 nlcolojixkT1SdDvoo7ftK4DYdoLqt6MWOSUsO12vDxoeeA64Tg4TzgNEape0Be18A
+	 d4hwD+Is9HqchTRsgZzH1w+HoCU9mKAOK1MxXjnoY4NHJPRExNmzS8JK964Rto79A0
+	 LDeZlE3JlOsFFGfYdmIjxvMPi/fJWbvptgqbTXrd+VXPfdQfI++yzrLiSsWLs8bUyF
+	 DrB5i52Wkom9g==
+From: Philipp Stanner <phasta@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Lyude Paul <lyude@redhat.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Philipp Stanner <phasta@kernel.org>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	rcu@vger.kernel.org
+Subject: [PATCH 0/3] Add and use abstraction for synchronize_rcu()
+Date: Thu, 18 Jun 2026 11:59:49 +0200
+Message-ID: <20260618095952.3687099-1-phasta@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"FUJITA Tomonori" <tomo@aliasing.net> writes:
+Just compile tested this series, but I did use commit 1 in my DmaFence
+and it worked well.
 
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->
-> HrTimer::expires() previously read node.expires via a volatile load, which
-> can race with C-side updates. Rework the API so it is only callable with
-> exclusive access or from the callback context.
->
-> Introduce expires_unchecked() with an explicit safety contract, switch
-> HrTimer::expires() to Pin<&mut Self>, add
-> HrTimerCallbackContext::expires(), and route the read through
-> hrtimer_get_expires() via a Rust helper.
->
-> Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
-> Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-host-address-is-not-set/
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Philipp Stanner (3):
+  rust: sync: Add abstraction for synchronize_rcu()
+  rust: revocable: Use safe synchronize_rcu() abstraction
+  rust: sync: Use safe synchronize_rcu() abstraction in poll
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+ rust/kernel/revocable.rs | 5 ++---
+ rust/kernel/sync/poll.rs | 6 ++----
+ rust/kernel/sync/rcu.rs  | 8 ++++++++
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-Best regards,
-Andreas Hindborg
 
+base-commit: 43a393185e33e573a374c1d4f7ddf6481484ef8d
+-- 
+2.54.0
 
