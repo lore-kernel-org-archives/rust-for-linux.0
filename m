@@ -1,72 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B322609E3;
-	Thu, 18 Jun 2026 10:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CD23385B2;
+	Thu, 18 Jun 2026 11:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781779324; cv=none; b=BRXZwQlDD24CHGJkIoDUYP/YXcucaZ6uiOHL5l8Ug6X/pn5mkEXswFeIvzT+u/O8pwvlCuIznONRr8AjNJXnwcYI7Ra+uvlwm4jKDNSaY6Kfj3nl9yKJczyAHyVSImCi772O7YtgR8qS7zIrKUAyWs4P+UIrh1VfbIA9APcdIYE=
+	t=1781782192; cv=none; b=CU6udQ9p+0KzT+nymCdZYD/N9tdJnDYOfkB+2Yc1nW44KQp3m71EFWjXVXbwKB0ndF5cYAYKanY572cdZgj0itJTWTNOJErO7SWge0uMsZ+EsmDL43OOBGosOtzIkkIjeoqfWPhNqPxOliOSTmYTUit/B5RIYMnpTcSWFgjoPpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781779324; c=relaxed/simple;
-	bh=36J+0U9ym2f+2scfvGRRidPyWrejCq4VO3qCfykcdFk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=g2OXY32vQFhCjvl3LRSXL2NeAUR3dj/r98eoUXke2xQZaKxXlwWeMAdmPlvKFj6hqCGI9eD4HSFerVaihlg+9YFfK6+qKNMHieRuUiJQYRCJhbkIuzzjDY0OAm8bnJTwXxg3C8LrYt3u6Qaj79U+FTRKLgQ1QT8Z00yT8SevWZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ksi4nwo5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781782192; c=relaxed/simple;
+	bh=/2b1rsuQLSB/OhV3gMOCWFphGVo823JFcWST11NZS4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=saH+8WLge3ui7gJOa3eIGcXQg3obRD9CR4H8UvrWjezKLf/gHejRpAx92YZlPi+ay35fjJotpxHhkAvU6CmGcDnkJmGTI+YJADazGH3j0lWZiJg4Qb4TXBHRlxlALXmMQawMhapz/qDBW8VwONsTEMer/tFLDOtS4hsM9Re77kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+2Sl29a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ksi4nwo5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73CA1F000E9;
-	Thu, 18 Jun 2026 10:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781779322;
-	bh=36J+0U9ym2f+2scfvGRRidPyWrejCq4VO3qCfykcdFk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Ksi4nwo5tAD+eRsLnAplEWkdaKBG+y+Obo15GgBzN2K13c32gauJpbGtF4P4q6/DK
-	 440+B1Oc3LYInkmxbbMdErIfa8Vr2DUzXCKEQbxvFojgjnts3PQn9ly2BzV822Lnd5
-	 Z4fzb24UZyIvDBxmTufQ4T/+pDdp/q41FdqGJ6PGvfjzeJVI+WEylqJp7unDf04oNO
-	 vkstGv6CawpK/z+rRcWQbhzYaJkkBXfD/FfjpsOcvofThwhMO9lQR3I9pZSiPO3d9E
-	 HVPpJynWEPu0DYgnv50cWqW+iQekndcVKG35ufMkOOaTrC7jZ/XjwLMIaspwxR2VXg
-	 bvwLkjnRR/BZg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Alvin Sun <alvin.sun@linux.dev>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun
- Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, Brendan
- Higgins <brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, Rae
- Moar <raemoar63@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, Alvin
- Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v3 6/7] rust: block: rnull: use vertical import style
-In-Reply-To: <20260521-miscdev-use-format-v3-6-56240ca70d0c@linux.dev>
-References: <20260521-miscdev-use-format-v3-0-56240ca70d0c@linux.dev>
- <0PiZH74SfWsWu8rrtNNGSXiguyGA-RS0v47NHp-o95E3pnz6cvuI0ellv5ot27YxuiD5hbtO2AhgGz8lOA-LYQ==@protonmail.internalid>
- <20260521-miscdev-use-format-v3-6-56240ca70d0c@linux.dev>
-Date: Thu, 18 Jun 2026 12:41:41 +0200
-Message-ID: <87pl1of7ve.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+2Sl29a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD211F000E9;
+	Thu, 18 Jun 2026 11:29:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781782190;
+	bh=lrhsD9SdGkxfQQd7qdON8b4VPGYnREvEyfcjoDkoYV4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=c+2Sl29afTMWk3XqqIVGr7ud556x688cm8MOzHx7wzuuSThGAiykYYOIvmLec1llL
+	 G4Zu7Rm81MwFidK8rAPcUDHIcnSuuTcmiD0Q7gDI1yykGsDu4bbBiDk+LpWdsvWx+T
+	 zLSQsOFXHIZEEGf/JKU6eNQWSotU7/FykRJ6eAmo=
+Date: Thu, 18 Jun 2026 13:28:45 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Keshav Verma <iganschel@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust_binder: check context manager before creating node
+Message-ID: <2026061858-frugally-upload-17ab@gregkh>
+References: <20260617222030.15189-1-iganschel@gmail.com>
+ <2026061856-rare-envoy-d585@gregkh>
+ <CAPE_3zLCOwqa8Yb21oAb8i9AHW-UPqW=+9848fUtuTKK6wAZDA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPE_3zLCOwqa8Yb21oAb8i9AHW-UPqW=+9848fUtuTKK6wAZDA@mail.gmail.com>
 
-"Alvin Sun" <alvin.sun@linux.dev> writes:
+A: http://en.wikipedia.org/wiki/Top_post
+Q: Were do I find info about this thing called top-posting?
+A: Because it messes up the order in which people normally read text.
+Q: Why is top-posting such a bad thing?
+A: Top-posting.
+Q: What is the most annoying thing in e-mail?
 
-> Convert `use` imports to vertical layout for better readability and
-> maintainability.
->
-> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+A: No.
+Q: Should I include quotations after my reply?
 
+http://daringfireball.net/2007/07/on_top
 
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+On Thu, Jun 18, 2026 at 04:49:31PM +0530, Keshav Verma wrote:
+> Thanks, I will fix the line wrapping and add the appropriate Fixes tag in
+> v2.
 
+Also, you sent html email which the lists reject :(
 
-Best regards,
-Andreas Hindborg
+> This can be triggered after the normal context manager has already been
+> registered. A second process can open /dev/binder and call
+> BINDER_SET_CONTEXT_MGR_EXT with a local BINDER_TYPE_BINDER object. The
+> ioctl returns -EBUSY because the context manager already exists.
+> 
+> Repeating this with unique ptr/cookie values triggers the warning each time.
+> 
+> Since this is easy to trigger from userspace, should I drop the pr_warn!() from
+> the check in v2 and just return -EBUSY there?
 
+If userspace can trigger this, then please remove it so that it doesn't
+cause a denial-of-service on the kernel log.
 
+thanks,
+
+greg k-h
