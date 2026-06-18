@@ -1,135 +1,212 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7258C3F8223
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 13:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781788023; cv=pass; b=bjCxFrG8NWheNS2MkBBYDf/3cYZkS/Wcfw9qI928x0AGFX0JtnxJKRklUS4X1z2OW3LZ3V6kDdjkP/wzByIFeUMSBnR12HQ1LPESYtKbUKaC4yazV/DK++sD5FOG5rdeNkoN5CoBPxbViKNO2CDbSWHfS8XQPV+AMgDLH3YM9U0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781788023; c=relaxed/simple;
-	bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jJ7FYHpHHcnv5gRcMkI56YLt4fiZEzmcTQaSW4/cs7G/Jh6A/nJGlxZrHXjt03nCcBCZQHFJkskv4Hc3dNOZ0ojm+RS1YSQOCI+ZkEeUC8oGQq7FUOcaBC0jz7cU2WwygROsaWyO3yD4vUPsErG/oWGTioXraeNl1yaS1tKy4kk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TtMY2Ngd; arc=pass smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1113ECBD7;
+	Thu, 18 Jun 2026 13:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781789213; cv=none; b=ZfxYxNuLGXIwnC+Sh/wYDcT7BtN0n1zWganf33RsIKJ8CMr7uF6A9p/7ud/bXa828SqsUhSsHZxi9gQ3mAwZZZC+NtydqeanIgpIw/My4IrGaFDBJgQh0zp/wWPZia+BScno1AQ8K3DQlfV1841U3mvNU5RP0J3yPGpZTzLoqn4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781789213; c=relaxed/simple;
+	bh=OiAlseOnOobXOrgahLTxofnt0QMnpQXsZCUAV2BSRHg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FGTvuB2Hnb/H9G1sYFrk/Ibb6MU2j+poLGW9y4TR6CXPX4+yyGdDahhQFKGTQ1EiwM7+ZIio27pjXr6LC7RZGTxfbCO+e0NrkdZRFD5JSNDMDX+Iwo6LeeSq7lcoHzR/t5zXT13KGxP9EzocodN7lLLz6Dx1BehoJK0S8MOUlfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNj5jIAN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TtMY2Ngd"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490ac357c55so8289935e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 06:07:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781788021; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QQAyfPy+VM2Bzx0Iv//m4vZBmlG5Fx3SVAN1o0M7yCaQBRZXOuRaouKKxo2t77Bo9T
-         QH7InOplUAPLwwgsqTe3TQwi9Vxt623tGXNzLLxGtYSNPToC/oa/13WDMKM8RBzGV9J9
-         wmLx7i6QYABol1ZsEsXYYt+CKW/OcB3hSEjG0GJWBfy3ygAnKvUJbF4q3ioZqGoOlT/Z
-         yWRKyaRSyz2QQ5OoV4WPH4eVS5KqQffBPvsGxNsxT3aUB21wqZ4pfJoHyWjzMoCnBNsA
-         OPix1jMo33kZ3dwP5JOjKDxV8NiBrzEAst1UbqOCF/znxI1uGDw/vNeb3KsKe8Wm+9PV
-         JYRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
-        fh=gUyJrxlrJeFrr3paRtLSLdF2+yJMkHaYLek8pQcYSeY=;
-        b=Vz1jdNsYgvokLVD1tc8GI2MflWwBYQGrPHpF02FX0x8HiFexkOX+OecZ8XYYvPzkn1
-         9MXZ2F8rHBhbTzekB2CwL31athZQpQidN9s31EZ8K5lfQi2I8CZc4yDBTRCsE/WN4YaK
-         9k8yabuzdD2prscwlEdZG/tUMNhQoULHQ/J7L1osTHYqh0kXhdJlglnxzn1qvx6TwRvc
-         YMP/2LxYJ+V5B2olmWS7EzDZ8ye4Jc3P7rM1e78w8pnjgbArucM/cTE7B/54vjujAfz6
-         Ekb9jUJ/0cOh9/rr7hExZxqibx91rkxHfoPDnVwjiJlWpkTIzZPehBW8nGDFN20dF4ge
-         A3qw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781788021; x=1782392821; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
-        b=TtMY2Ngdb1sGxR7NWU5wrnWHaPWlwbhatx3KIrmFxc40lldg3ynkDML56ZrDvKKRoN
-         2M1cw3lKMqP7w0oPa7tFW9XafJoGkS7SqitZOh32VYodI7J0d7MhWGhjV/PHpwRU4eox
-         fvgh4U1JQWCAitWzxKPf2A9WlQ1bHXJWZU82FTjMhZsRf1AiNAXKk3c2JB7IVVWjChhn
-         YqpFF8TcftE2Vr+EnBOnCClrwT1G3nWb516PHZQ/ShHakueJEeTQAnJdVmFXTcH8Ti9X
-         ZI1N9HHI9BqGnUVd50Zh8E2AFufI6uBpAA/rn3Yz+dHVLzSdbRpnN2hT65cE5PaN99cW
-         e6aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781788021; x=1782392821;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
-        b=VmsitEv6vJSTTtOAyGZSpFMmi1j576nsxmZBykzLdAE1/E1AESSLpZIzUsyzo+fHhb
-         xa+msDK5YqqHq7kjb501pGkx8QrS4Vyg35BYAMO/92Q3L6nuuYZYEjmqGzhjJudLNHEg
-         +FkoSmB1zIS3z0l59BdJpM6lwF3sXB6H/KljIfFW94aSyzUP6V7dd0Vsl/8Fmfuc9Jlm
-         Z/3N67rqLx+lOyczwnha9MmgKvfYZjBR1qhfmHj6IiP4Bsczf+GKX02XE6gwPVt7iR8J
-         vD1eorCK7QjSjpA7roGF8MbOa8vQVKnzDSEfQ8+nuIo8iFdoSlhbHkFRj2X2FIyrQdZ/
-         5RZA==
-X-Forwarded-Encrypted: i=1; AFNElJ8eAz1tR+GLYkxd65K79B9T314jjOCBQtq53NH0qgp44v1AKm8zNnlDuow/p9GkZiizjLlT9pj3SQ2SaxSPgA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNj2LDBxA7bQkxlLr01f1mYFFXHP3M4Z04QISiPCeHgkm/9GBm
-	Kvi0MnYTEOO+XbzcU/TiCPxD2x2/SvepvYcYs0wVSeohBBYRcOzSU2uj32oXwvoeKj0JLMauRVq
-	E2wOLf8m0swz5koiJX/EjLxt9v6MbLJ5qUP2NWlJT
-X-Gm-Gg: AfdE7cng8Gu9LVLQqXZZCwzmAE0kMMf3pnDRbJq0MrGYfeiK6b4ZcW++RkwLW/aj6me
-	gBESMtnwBIKqnYqrlrZN526r8aYdOAddWXHMOJmEz7XNbke0Wg4moyfomr6fMMhvI4HCPMHFngL
-	NGEUlKWiCQs5ZFQdoql3GoLF+DM9pcYi2TUNABCR+LpH/wmh68b3p/nkmEjLZdidBNSP++v0B8z
-	NS1COVD0yVPZPZ6kOmz29WsHNbTMTEhd2prcAl2GWi9c4NKKLJDVKTTxrHVlouuz781z5qnvKbi
-	OvTkNiPSgLzMd52aqQC1QpkX5MbEaC0duCpl79GnUiJdRNmWqie5Aa1ROPROjssO5Ptwgw==
-X-Received: by 2002:a05:600c:4c09:b0:490:b355:9c8c with SMTP id
- 5b1f17b1804b1-492333ca42bmr96135075e9.23.1781788019918; Thu, 18 Jun 2026
- 06:06:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNj5jIAN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAE71F00A3F;
+	Thu, 18 Jun 2026 13:26:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781789211;
+	bh=S+IeYBLjthQLC8tOuLtmAcLP+oVJRPiahAFEOiMpnYg=;
+	h=From:To:Cc:Subject:Date;
+	b=dNj5jIANF9Sv/hGj5kge8706lvEAzwTHLBs15jjN3QXBEVkhsMiPxRBMqHNWKbjLj
+	 Ym5FVNoPb0EKnVNzmfHdRatMS4xNi9FvkuhVbu6jxWvrwlr8j4UalbTG3u/55bnjZY
+	 B9lsCKUBhvWkRzmCDiPXL8HV6zQ17rDiCVujV9OmAUrd/yoSgPu+PUmLcx7JXraV/g
+	 JYtBBfTeL7jaCkEvrOvN3/NS/puI4OuQwdSnSuaxbpd9LFqr9X+KW2S801mXfUaSsz
+	 kUIYomaOGoByJW1/3h7j3stqGavTUltKWWDbptKzaiRY1a+PSu4hHwtPjJh3KO2Ftn
+	 aJT6FgqRMhGMQ==
+From: Philipp Stanner <phasta@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Matthew Maurer <mmaurer@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Burak Emir <bqe@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Mirko Adzic <adzicmirko97@gmail.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH v3 0/4] rust / dma_buf: Add abstractions for dma_fence
+Date: Thu, 18 Jun 2026 15:26:23 +0200
+Message-ID: <20260618132628.3811068-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260618095952.3687099-1-phasta@kernel.org> <20260618095952.3687099-2-phasta@kernel.org>
- <15e81f5bf354cbe3cde765526762e4ebb3ef6970.camel@mailbox.org>
- <ajPa4_U_gcxr8SKO@google.com> <81c530248789f79da265da772a6f248a0d524eed.camel@mailbox.org>
-In-Reply-To: <81c530248789f79da265da772a6f248a0d524eed.camel@mailbox.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 18 Jun 2026 15:06:47 +0200
-X-Gm-Features: AVVi8CeK2MScB-t7m9DsXQaFm4-l0PDopN55uoi7q9D_cmJhkYOY8sxrgmKJWI0
-Message-ID: <CAH5fLghB3Q-Mc4YzVMX3nGVSTzfh=jqFzsLMcXqXLTiVcgxhKg@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: sync: Add abstraction for synchronize_rcu()
-To: phasta@kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Lyude Paul <lyude@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Zqiang <qiang.zhang@linux.dev>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 18, 2026 at 2:47=E2=80=AFPM Philipp Stanner <phasta@mailbox.org=
-> wrote:
->
-> On Thu, 2026-06-18 at 11:47 +0000, Alice Ryhl wrote:
-> > On Thu, Jun 18, 2026 at 01:40:05PM +0200, Philipp Stanner wrote:
-> > > Moreover, this would be an opportunity to change the naming conventio=
-n
-> > > to rcu::synchronize()
-> > >
-> > > But since Boqun & Alice are pushing for rcu::RcuKBox for the reason
-> > > that it seems desirable to explicitly highlight that that's a special
-> > > Box, I guess we should be consistent with that and also have "rcu" in
-> > > the name here.
-> >
-> > I prefer the naming of synchronize_rcu() here.
->
-> We might be tempted to at least call it rcu_synchronize(), though. It's
-> also RcuKBox, not KBoxRcu.
->
-> But I don't have hard emotions on that topic.
+Changes since v2:
+  - Don't drop DriverFenceData as a whole, but only the members we
+    really want to drop. Gives more robustness. (Gary).
+  - Break apart large pin_init_from_closure(). (Danilo, Onur)
+  - Remove rcu_barrier() and synchronize_rcu() from FenceCtx::drop().
+    FenceCtx might drop in atomic context, where you must not perform
+    those operations. With the current way C dma_fence is designed, the
+    driver must wait for a grace period manually until it unloads.
+  - Repair the DriverFenceBorrow implementation, properly injecting a
+    life time into it. (Danilo)
+  - Fix memory layout bug for rcu_head. (Onur)
+  - Drop RCU patches, since this series doesn't need them anymore.
 
-I don't think we should change the C name without quite good reasons.
+Changes since v1:
+  - Remove unnecessary mutable references (Alice)
+  - Split up unsafe comments where possible (Danilo)
+  - Remove PhantomData + implement FenceCtx ops trait (Boris)
+  - Consistently call FenceCtx generic data `T`. FenceDataType is
+    derived from that. (Boris)
+  - Add abstractions for call_rcu() and synchronize_rcu() (Danilo)
+  - Add ECANCELED error code in Rust (Alice)
+  - Remove the rcu_barrier() from FenceCtx::drop() – because we now use
+    call_rcu(), there can be no UAF access to the FenceCtx anymore. In
+    any case, it is illegal to use either call_rcu() or
+    synchronize_rcu() in FenceCtx::drop(), because our new
+    drop_driver_fence_data() can run in atomic context and might put the
+    last fence_ctx reference.
+    So we now only have to guard against module unload, which it seems
+    either the driver or Rust driver-core / module unload infrastructure
+    must solve.
+  - Minor formatting etc. changes
+  - Add C helpers to MAINTAINERS. (Danilo)
+  - Ensure that `Fence::is_signaled()` is fully synchronized, i.e., all
+    callbacks really have run. See [1] and [2]. (Myself, Christian
+    König)
 
-Alice
+Changes since the RFCs:
+  - Include support for ForeignOwnable for ARef, so that a Fence can be
+    stuffed into an XArray et al. (Code by Danilo)
+  - Implement ForeignOwnable (with new borrow type) for DriverFence, so
+    that it can be stuffed into an XArray.
+  - Include the rcu::RcuBox data type to defer dropping data with RCU
+    (Cody by Alice)
+  - Port DmaFence to RcuBox to make UAF bugs through later, new dma_fence
+    callbacks (backend_ops) impossible.
+  - Force users to pass their fence data in an RcuBox (or have it not
+    need drop()) through a Sealed trait.
+  - Document the rules for the user's DriverFence::data's drop
+    implementation very clearly (deadlock danger).
+  - rustfmt, Clippy.
+  - Various style suggestions, safety comments, etc. (Önur)
+  - Add __rust_helper prefix to helper functions. (Önur)
+
+Changes in RFC v3:
+  - Omit JobQueue patches for now
+  - Completely redesign the memory layout: Instead of a Fence
+    refcounting a DriverFence, both now live in the same allocation to
+    allow for future support the dma_fence backend_ops callbacks which
+    need to do container_of. (mostly Boris's feedback)
+  - Allow for pre-allocating fences to avoid deadlocks when submitting
+    jobs to a GPU. (Boris)
+  - Simultaneously, allow for pre-preparing fence callback objects, so
+    the driver can allocate them when it sees fit. (code largely stolen
+    and inspired by Daniel).
+  - Signal fences on drop, ensure synchronization.
+  - Force users to set an error code when signalling.
+  - Write more documentation
+  - A ton of minor other changes.
+
+
+[1] https://lore.kernel.org/dri-devel/20260608142436.265820-2-phasta@kernel.org/
+[2] https://lore.kernel.org/dri-devel/20260612104251.2264707-2-phasta@kernel.org/
+
+
+Alright, so since the last RFCs did not reveal significant design
+issues, I decided to transition this series to a v1 and hope that we can
+get it upstream.
+
+This now includes code for more common infrastructure that dma_fence
+needs, contributed by Danilo and Alice.
+
+---
+
+Old cover letter for RFC:
+
+So, this is the spiritual successor of the first / second RFC [1]. v2
+also contained code for drm::JobQueue, but mostly to show how the fence
+code would be used. JobQueue is under heavy rework right now, so I don't
+want to bother your eyes with it. The docstring examples should show how
+Rust fences are supposed to be used, though.
+
+This v3 contains a huge amount of highly valuable feedback from a
+variety of people, notably Boris, but also from Alice, Gary and Danilo.
+
+There are some TODOs open (a better trait for fence backend_ops and RCU
+support), but my hope is that this effort is now finally approaching its
+end.
+
+I would greatly appreciate feedback and especially more information
+about what might be missing to make this usable, which is obviously
+where Daniel's and Boris's feedback will be valuable once more.
+
+Please regard this patch just as what it's titled: an RFC, to discuss a
+bit more and to inform a broader community about what the current state
+is and where this is heading at.
+
+Many regards,
+Philipp
+
+[1] https://lore.kernel.org/rust-for-linux/20260203081403.68733-2-phasta@kernel.org/
+
+Danilo Krummrich (1):
+  rust: types: implement ForeignOwnable for ARef<T>
+
+Philipp Stanner (3):
+  rust: error: Add ECANCELED error code
+  rust: Add dma_fence abstractions
+  MAINTAINERS: Add entry for Rust dma-buf
+
+ MAINTAINERS                      |   3 +
+ rust/bindings/bindings_helper.h  |   1 +
+ rust/helpers/dma_fence.c         |  48 ++
+ rust/helpers/helpers.c           |   1 +
+ rust/kernel/dma_buf/dma_fence.rs | 852 +++++++++++++++++++++++++++++++
+ rust/kernel/dma_buf/mod.rs       |  14 +
+ rust/kernel/error.rs             |   1 +
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/sync/aref.rs         |  39 ++
+ 9 files changed, 960 insertions(+)
+ create mode 100644 rust/helpers/dma_fence.c
+ create mode 100644 rust/kernel/dma_buf/dma_fence.rs
+ create mode 100644 rust/kernel/dma_buf/mod.rs
+
+
+base-commit: 848bf57e98e1678ce7a49eb4e0bf0502da95dc07
+-- 
+2.54.0
+
