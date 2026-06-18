@@ -1,166 +1,136 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB6E28D8DA;
-	Thu, 18 Jun 2026 19:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782BD1F7575;
+	Thu, 18 Jun 2026 21:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781811609; cv=none; b=ujRDc+JqMCGJ7rmYeRDvT9eR2NmU/9JGj0RA316ptCO9A2fRT7tps9pycfhOS/PoVu3TqkDMUeFxl5xBCLEyzoSuD4TstB5iYmV+fFzAhyNcGA9L6sGbHLlrTLgCK9YiKjzw8LFag3Fho3q5df38Nj5SarqdMbEGeGIIIfV+CFE=
+	t=1781818530; cv=none; b=iC5Go3DmI6j6lOHgAhk152Soskw8y02C9dC46j9x9QfdQhIvpfH0k/dghfDrpc2hAHOlGD/QjGRaFDF5jtTpzSRoz9iMrMddOSXpX0c6QsYRJJiPfpNbMfFJXiWnA+gIcygG+tbV1XSpYLKK128IO9+5CwvYniw+asXVXndGWZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781811609; c=relaxed/simple;
-	bh=FmoXqA5LOBKUgctaZXzL4RumfuwPXIN4XJyzEfsWuho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXFr7CYnGKSoWDX636ksaoOUhTXFnJl6kpjsVq44dRiyV2hNQvbXLTyKd07YN3muW/YjDqpq+ueTb+WhMTvdURI1OsOadve4wxA9y1CklLZ7JhputLyMK8tQ31zX8/CgECKYe48u00VTOU2yzCzoX1v95KD41HL5owvT+nr/dlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efiGhOff; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781818530; c=relaxed/simple;
+	bh=BJTA1SJINh8QjjGqCnPxManFF1esMCyXGVVbEO/W0Ek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qxqrvw1/UmC4Jgm4RLIZ7qkuqW4flD+VqLlvD6NE9GVMRTcjB2DGYCwInEJDSf9sifGVKhTo8Nk+Llvhu2OXULoiUnLfWtzvR0npJFGv53laAWr14UNhkU7O5GrEnZyRQ3tbqQ6+sH3BJuPHY3VsXwSLdOZ5Lz9Pucqs/5Ybcr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QB6aeWQA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efiGhOff"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989E31F000E9;
-	Thu, 18 Jun 2026 19:40:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QB6aeWQA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAD21F000E9;
+	Thu, 18 Jun 2026 21:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781811608;
-	bh=UzLTD0LraVmy0o5iyS49odOxFiNfs8wnUQiTnlIyr2Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=efiGhOffLuRTIPipF3vRAqw+0L7VjFMvHCC/dgo/x50DMT+LBxOYfoZUkTSTednjt
-	 xy/QGJJPGxEaOl6VZl215vd3kP31J60TqDW5/qF/fvCQ54Dh5AEiEyFEv0k46eOxRK
-	 8C8jwt+gDTmG+Q8rTU4WWu91zNsJmx1n15ErvbJ+lmNXxE56UNBp24VwPdKih8fLIa
-	 zuvVIOj1ZBl2BwfymaPOcnCJwKPzdtT0eiEmHW/SHQNJgoouZkifZ3QsZqQFKEgKhg
-	 tUChKhOCOT3bZ3DfIAuO5OVxAW0X5GiLNcT8AiFWu/lpaglL6+jHtWpDhYWTU/gOMV
-	 +0k5Gw9IJRmxA==
-From: Danilo Krummrich <dakr@kernel.org>
-To: lossin@kernel.org,
-	gary@garyguo.net,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	bjorn3_gh@protonmail.com,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	lyude@redhat.com,
-	deborah.brouwer@collabora.com
-Cc: rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	stable@vger.kernel.org,
+	s=k20260515; t=1781818528;
+	bh=zmSQ5/Kef24VChpTyiGbY9lG+wUNBMtY3H2EPqgOMec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QB6aeWQAPBmTnJBPH1Zi2g95X5IV/uzTd0ffD8eVfQko25cCfp5Wllzzu0dv6kdKh
+	 x9VUQaSUT7juKJW4pqErLop98auM9bZ/j/yXUK3pGza4XzpkIorNGvpW5GKrULIdvw
+	 FgRF37Vsu5h9YXzMnMutt8PrE/pjoo9zsW7hSdMxfNM9chfmgKHmPq927Xcgp1Xuc3
+	 x2LU/daQp7ynKD4/GjvmzMal1dP5VZAEw8d6KGSaZMzXBvHfo1jOMRf3gBT5CQ3qBE
+	 7GcSDByIX73xhvMW3W3rkVHzBR9ZTaax0ftlOBtObS0r/W5aD5A+6r42+FtlfSRNii
+	 QlZIhDMBjo5nw==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D66E9F40072;
+	Thu, 18 Jun 2026 17:35:26 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Thu, 18 Jun 2026 17:35:26 -0400
+X-ME-Sender: <xms:nmQ0asm41JR4g2SxSwTIneetUEwtePKAYOnEvPD7vCp2hll4hvHe-w>
+    <xme:nmQ0ajz62ScBlLC5kO8BWhXYGNrv89WWUNRgV8ZQjHWAhy4RE3DpDMr0YURunsSH4
+    WCrjI_o7BQePWjItGlYEfOfodNn6DBx_DQcwGsRXnbC_N1QTZG8LQ>
+X-ME-Received: <xmr:nmQ0ah19l5tNyWqmoklb8DNB5J36mN122nSSHsg9iWdwJA1NuaN4N4jjlfWzWdyjY92l01clR6qF0ADvLuujyztUu6124kdI>
+X-ME-Proxy-Cause: dmFkZTEtHF4oNSejv4x+CZMGJFwI1mcILDHxvbFxtmFlokkfkWG6eZOripul+SulmTdRna
+    SrKg0p02oqdK7Tbs4WrcVLhKd/1F9KXpfcjbCeFbqr9x5ulJV5P13uLxTTfMZZiGALIKEG
+    aXurplv31qP+6zDumS7dTogYcQ1dbnoUsef08ttgugpyOlfUJp4OAkYVakMJqHcUYZV1Eq
+    I4g4O6G4aKhKDcUW5rL92nsjtqp6p2BpnQYdQJXUtI5f2WszMVc080C5qE7a8EA9HOD02M
+    1iVc/sR7QujHoPZdPO3PxXWX5qnq3+LKxUjKCI0l1sXn9cRIfCLExqmlYhenRTj19yoOTq
+    IbCJQhUjhdeAQAx6wFUqu1DJWngNDnHQU3ZTMSu5RR+qYNdavaJcMJAJAHeJFTQuc5bDeb
+    Rzw6079uvFdqIfSZvv06HdHG2lwRSBYA6cT2PRmCJCHly/ITopVZhC/aLcxdgj5SHAEFb1
+    BqCMQNHLEL0qjrP2eu8F5p0zhM+5a1vr6wxG7xl4Ux+EDrGQpYLITIgdFoKrY9WYaU6ks6
+    GVenPVlA01mj8jjAJEu4Hh9d9x/rPlLqdjWNjWpvI6TRg8K4H6TcTbH7KD75xp6TklJpzl
+    o60GAEa1rKKNKaSEp7FBRB7o52wg9Ug4bAb+fLlWHF1uO6DYAeG+/2V7g0lQ
+X-ME-Proxy: <xmx:nmQ0avCwh-v-luvrB2ifmb_34CuMi1Fb9Y7rJhpDIUlV62PuYN0c5A>
+    <xmx:nmQ0am9I7SAGJts3dwX3XXVJOUGoaquoyeRoKclkB8nPwc6MwMm8iw>
+    <xmx:nmQ0al_JJWF0q0uaTLZnjCE68kLaShmKI7UrBZZrGvDM9pURmBv5ug>
+    <xmx:nmQ0au0L9W_Kl8FRyrt609Lk686ajDsK0iCDHueAlf_PSrYs3CR64g>
+    <xmx:nmQ0al_ZWtWW1c6mIR6g_fel5pVs2EJFM9A6iHbG4OxUlg5OZZDRS5rg>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 18 Jun 2026 17:35:26 -0400 (EDT)
+Date: Thu, 18 Jun 2026 14:35:25 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: lossin@kernel.org, gary@garyguo.net, ojeda@kernel.org,
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu,
+	daniel.almeida@collabora.com, tamird@kernel.org,
+	acourbot@nvidia.com, work@onurozkan.dev, lyude@redhat.com,
+	deborah.brouwer@collabora.com, rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev, stable@vger.kernel.org,
 	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH 2/2] rust: revocable: fix race between concurrent revokers
-Date: Thu, 18 Jun 2026 21:32:59 +0200
-Message-ID: <20260618193951.601239-3-dakr@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260618193951.601239-1-dakr@kernel.org>
+Subject: Re: [PATCH 2/2] rust: revocable: fix race between concurrent revokers
+Message-ID: <ajRknQIsXaHtDzzJ@MacBook-0RXW5>
 References: <20260618193951.601239-1-dakr@kernel.org>
+ <20260618193951.601239-3-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618193951.601239-3-dakr@kernel.org>
 
-There is a potential race condition when two paths try to revoke a
-Revocable concurrently.
+On Thu, Jun 18, 2026 at 09:32:59PM +0200, Danilo Krummrich wrote:
+> There is a potential race condition when two paths try to revoke a
+> Revocable concurrently.
+> 
+> It can happen with e.g. Devres, where the driver core's
+> devres_release_all() calls Revocable::revoke() via the devres callback,
+> while Devres::drop() calls revoke_nosync() on another CPU.
+> 
+> The revoker that does not claim the is_available swap returns
+> immediately, but the revoker that did may still be executing
+> drop_in_place() on the inner data. This can cause a use-after-free when
+> the other revoker's caller proceeds to drop adjacent resources that
+> drop_in_place() still references (e.g., Devres<DmaMappedSgt> racing with
+> SGTable freeing the backing sg_table and pages).
+> 
+> Fix this by adding a Completion to Revocable. The revoker that claims
+> the swap signals the Completion after drop_in_place() finishes, and any
+> concurrent revoker waits for it before returning. This ensures the
+> wrapped object is fully torn down before either path continues.
+> 
 
-It can happen with e.g. Devres, where the driver core's
-devres_release_all() calls Revocable::revoke() via the devres callback,
-while Devres::drop() calls revoke_nosync() on another CPU.
+I'm not sure this issue is a Revocable issue or even Devres issue,
+because normally if you have a
 
-The revoker that does not claim the is_available swap returns
-immediately, but the revoker that did may still be executing
-drop_in_place() on the inner data. This can cause a use-after-free when
-the other revoker's caller proceeds to drop adjacent resources that
-drop_in_place() still references (e.g., Devres<DmaMappedSgt> racing with
-SGTable freeing the backing sg_table and pages).
+struct Foo {
+    revoke: Revocable<T>
+    data: U
+}
 
-Fix this by adding a Completion to Revocable. The revoker that claims
-the swap signals the Completion after drop_in_place() finishes, and any
-concurrent revoker waits for it before returning. This ensures the
-wrapped object is fully torn down before either path continues.
+and if `revoke` referenced `data`, then `T` will have a refcount on `U`
+(of course this requires `U` to be a `Arc` or `ARef`, not very
+effecient, but correct). And we won't have this issue because either
+revoker will be responsible for the finally drop.
 
-If needed, a revoke_no_wait() variant that does not wait for concurrent
-revocations to complete can be added in the future.
+This issue happens particularly when we want to save the extra refcount
+(and indirect reference), and I think this is the issue that `Foo`
+should handle instead of `Revocable`. So maybe we should move the fix
+into `Devres` layer? Thoughts?
 
-Cc: stable@vger.kernel.org
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/dri-devel/20260612202841.2577C1F000E9@smtp.kernel.org/
-Suggested-by: Gary Guo <gary@garyguo.net>
-Fixes: 05aa6fb1c21d ("rust: scatterlist: Add abstraction for sg_table")
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/revocable.rs | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+(I'm still hoping there could be some lightweight usage of Revocable
+other than Devres, hence the ask.)
 
-diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-index 0f4ae673256d..6d9d6ecccba1 100644
---- a/rust/kernel/revocable.rs
-+++ b/rust/kernel/revocable.rs
-@@ -7,7 +7,15 @@
- 
- use pin_init::Wrapper;
- 
--use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    sync::{
-+        rcu,
-+        Completion, //
-+    },
-+    types::Opaque,
-+};
- use core::{
-     marker::PhantomData,
-     ops::Deref,
-@@ -67,6 +75,8 @@
- pub struct Revocable<T> {
-     is_available: AtomicBool,
-     #[pin]
-+    revocation: Completion,
-+    #[pin]
-     data: Opaque<T>,
- }
- 
-@@ -85,6 +95,7 @@ impl<T> Revocable<T> {
-     pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-         try_pin_init!(Self {
-             is_available: AtomicBool::new(true),
-+            revocation <- Completion::new().map_err(|e| match e {}),
-             data <- Opaque::pin_init(data),
-         }? E)
-     }
-@@ -168,6 +179,10 @@ unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
-             // SAFETY: We know `self.data` is valid because only one CPU can succeed the
-             // `compare_exchange` above that takes `is_available` from `true` to `false`.
-             unsafe { drop_in_place(self.data.get()) };
-+
-+            self.revocation.complete_all();
-+        } else {
-+            self.revocation.wait_for_completion();
-         }
- 
-         revoke
-@@ -179,7 +194,8 @@ unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
-     /// expecting that there are no concurrent users of the object.
-     ///
-     /// Returns `true` if `&self` has been revoked with this call, `false` if it was revoked
--    /// already.
-+    /// already. In the latter case, this function waits for the concurrent revocation to complete
-+    /// before returning.
-     ///
-     /// # Safety
-     ///
-@@ -200,7 +216,8 @@ pub unsafe fn revoke_nosync(&self) -> bool {
-     /// function waits for the concurrent access to complete before dropping the wrapped object.
-     ///
-     /// Returns `true` if `&self` has been revoked with this call, `false` if it was revoked
--    /// already.
-+    /// already. In the latter case, this function waits for the concurrent revocation to complete
-+    /// before returning, ensuring the wrapped object has been fully dropped.
-     pub fn revoke(&self) -> bool {
-         // SAFETY: By passing `true` we ask `revoke_internal` to wait for the grace period to
-         // finish.
--- 
-2.54.0
+Regards,
+Boqun
 
+> If needed, a revoke_no_wait() variant that does not wait for concurrent
+> revocations to complete can be added in the future.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/dri-devel/20260612202841.2577C1F000E9@smtp.kernel.org/
+> Suggested-by: Gary Guo <gary@garyguo.net>
+> Fixes: 05aa6fb1c21d ("rust: scatterlist: Add abstraction for sg_table")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+[...]
