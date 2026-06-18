@@ -1,81 +1,79 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013011.outbound.protection.outlook.com [40.93.201.11])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020095.outbound.protection.outlook.com [52.101.195.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83BE3D3D15;
-	Thu, 18 Jun 2026 13:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8373B2FC2;
+	Thu, 18 Jun 2026 14:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.95
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781789454; cv=fail; b=pdGNUby1Id1P9pnx0ccAV7FIgbn2uaYw3dHOYmzXMgc3u4oC1lvKforGpy9troQHIj8FRwH5/f+RsDg9ZGcuo2atbHNrxniWRALPsbgkIH3fry9DTenxL0k+vKKnMl2NtqAm+DKqG0FmI5Dk+e9PGzAPc9wF2XvRG3UZr9ILefU=
+	t=1781792006; cv=fail; b=ZVM8sg7m2ZV4UebzYDTUDIc4lLDDL7PArupXukYFQSs3CMSBjeXNduj2Ke6pRHRhs2hA7GQxNiN33cqRn49DRHOWjuzc1miXEZs9bVyqQR9HZJE49MCflDbugm5UltRnQbDCXFMchLjPaX/dcLrMr8lla9OcdDxQpgZZH8iVhvc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781789454; c=relaxed/simple;
-	bh=UroORANzGrx2NxyyMgxe8+AYO9CSvtGO4GO4SweX7R4=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Jf+icVYuFV+TmRv0GjvmnxDlXBHHQi988C/ZFxk8jYwfaeF+hDp7p2cpVa6IR8JuzzL0+1neY0/IzyZ3bDClQN2B927aAMoFDBQIVaZzMS+9TZaGGvv1uU98pgSof1NMI0KVpCKKuYFJnNoT6J+FyPUfufcFV8gUPuDjIMsCg1E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZEVc6j22; arc=fail smtp.client-ip=40.93.201.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1781792006; c=relaxed/simple;
+	bh=LGguICoG0DF2qdEGyvXd0jTj91Rt8S4MX8i6dxzVZas=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=DmWBjgPwvQv6UkEfq8HNB/Bm8jSNCfcAcGgp6Z/FUfm5vnnqSj8rHt9WsBT24m2bx7PBeyMUTq1QfeGXLMuj4NIvgznASw8ji94u7DCcc3Uq0jNam4qg9yG8dj2urW6jVOOqgOLF9+r0xMWNiBIL6ScoExO70TeZSgaKVFHrlsM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ti0Nan3a; arc=fail smtp.client-ip=52.101.195.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZEVc6j22"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ti0Nan3a"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ebt+n/zutTVeweY3QZFGmOCm83xVOGGZsr51aRJlXH6dr/WjqeQDoRAWuPKQ1oymFnirXjaHNFtBn6oFIBqNiRyMRkjpQ1eEDa1WiJ9XGDFsymgFhAwwwF7y+WH0i7llPUV5VOHxZqqV/M8s8BQ7iN7BWInZt/QxLlogWPwh7NQAoK39kTrpF4m6rFDWCbi2L9I49eUkpOUSJiW+nMvEhy2U5Y8ij4gsuW9HrSRAJtlGWsCVJcWOA9njkXwmUY7teULaqUL2qCl0yar5do5fUvSF2zBotc77P9NGH5I1zp1mFH4d87RpcUMS7v7hGOoKIy47qInk7mS8qMyeali9RQ==
+ b=D9K1pv/iVb3NCHdopAtmDFsT8KbIO/c1LP5LzOfhOQvwKYsSs07GihWcjEewxqnlawSI7UE/u2/VpuTcc/xMx3ogBLr+OhBIs3e0ppNdHqTYEKSWNCRf5ujhyuisBn3VZg9/lxQWMDvJCRwDzZq8Ohrpqla2KX/y7p5aklMr+/e45m6AuS+bNI5C+0HaDy3iNe2gLIx0XiY1C+0epdS6OWfLnnIbl4jCJ2bDRahJxLb6v2MYYOMuXDHkXdXgiEgOliZEVECySxurzg3Fge0q6gz6CDNmR/e/mkwJCzD2ELbM1FKj0gPUhbB+cJauPzeIx62TQebM+ZUcxQFVk2K81Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=523uGqr3hkd6Edk7MI8EhXOuaEmOd/y4Vwb14kHf+dc=;
- b=Lv9tyhRhiJXUpZ71t1Pnx2ScDSmcmUT2q7K4fWDakMMZHYxCBwll+LtgZhBHZK4Q5Qx9qD1fueECOqIN97rt6NxsVOLBtfu+JwSXfofdj3rIT3Ne/pSNkdJWyQcubcGwZgiH0gar4JE1O+fG5IFc1qqiGkwnNV4xCmwXsd3R/puJ/NkS84Qhua6dPonsxxsERcTs25N/ks20zP+JOc8IDtrJe0Ga7z3wosDMXa3u3JAIHH5eVr0SpokTsuLcJYihdyUPjo7ucYunLKlXyOHRTWbYkR8JTnO6HIpzaq+TH656IPVWYKJT2Chw1MjOdCAl02NhkXcRSZnamD+I6DE10A==
+ bh=GK4+LIHrLyMlwALjwaWbLzPn16Y6El+RtbotrA9WKec=;
+ b=binkMd4Q1uINy58xhfCVme5Ue26A6fTSTiewIPgSae/kcalgOktXeC6XMgyTu3+BQUw+fFNpdhfQYTvHvhWQFdI/XJ9NMcEtNCaZrha7hyBxX/6Ax/P9it9rszlNVH+Y7ilyJF/VYmMyH/rkqEpGNP/RJfhyeO4HDSpv0qc/YUXduShvtoDvp0jfj1BYWcXEQqpU8OfauI7n7nyXUP+VnODYOQ3L0j+fITrSJhOkuilDjN2mVzNfA0V5xy58frBxw9+/Wn1jG0q6ItMyxplbjxaNR2S5JuthKRYjULBMj9UEcgc+YEB2AzpvJG3tjm4MVAWhKhJbkkX9d8hoNzi3Xw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=523uGqr3hkd6Edk7MI8EhXOuaEmOd/y4Vwb14kHf+dc=;
- b=ZEVc6j22sdgRv34/ZGNdnbpPUJK7SvsVt3YR2XyTZemp4dL04+48UtF7ruNHNnr04RiXILQ2vm8EEZTmoZ9XrQi0Z0Yi35VtUMm46Neg8VCo9zcBsTwe2EdJTvYhYlUSnP5gRGFMrqPgiZGidHJvU6KGa1SOOkPD4sOr+N/K1Fw=
+ bh=GK4+LIHrLyMlwALjwaWbLzPn16Y6El+RtbotrA9WKec=;
+ b=ti0Nan3aN6nYtMGc6lQK9ARcXL7OIPvPCCkGLKkhvoaC+rJlEeD0GsFzN7JCzUJk8rizWXdAEQqaE8oOiVZnRM3u2KCIGwNqAYCBnrUAGL3mVIDSP7vzt8o0w4yP4j1/YYOKUzA5pCNRt0sT+qX8Ry+BZlQw/FUdUGvdcgbdvUc=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by IA0PR12MB8421.namprd12.prod.outlook.com (2603:10b6:208:40f::5) with
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO0P265MB6005.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:28c::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.12; Thu, 18 Jun
- 2026 13:30:44 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.21.0113.015; Thu, 18 Jun 2026
- 13:30:44 +0000
-Message-ID: <923343e7-1f11-4e29-8278-917fc65c75eb@amd.com>
-Date: Thu, 18 Jun 2026 15:30:35 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] MAINTAINERS: Add entry for Rust dma-buf
-To: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Asahi Lina <lina+kernel@asahilina.net>, Matthew Maurer <mmaurer@google.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>,
- Burak Emir <bqe@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Krishna Ketan Rai <prafulrai522@gmail.com>,
- Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, Eliot Courtney <ecourtney@nvidia.com>,
- Mirko Adzic <adzicmirko97@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Shankari Anand <shankari.ak0208@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org
-References: <20260618132628.3811068-2-phasta@kernel.org>
- <20260618132628.3811068-6-phasta@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20260618132628.3811068-6-phasta@kernel.org>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.13; Thu, 18 Jun
+ 2026 14:13:21 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0139.009; Thu, 18 Jun 2026
+ 14:13:21 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MN2PR11CA0008.namprd11.prod.outlook.com
- (2603:10b6:208:23b::13) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+Date: Thu, 18 Jun 2026 15:13:20 +0100
+Message-Id: <DJC8JSYDERVX.2QI76YCBHDA93@garyguo.net>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-modules@vger.kernel.org>,
+ <driver-core@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <nova-gpu@lists.linux.dev>, <linux-kselftest@vger.kernel.org>,
+ <kunit-dev@googlegroups.com>, <linux-block@vger.kernel.org>
+Subject: Re: [PATCH v2 2/7] rust: macros: auto-insert ThisModule in
+ #[vtable]
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alvin Sun" <alvin.sun@linux.dev>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez" <da.gomez@kernel.org>, "Sami
+ Tolvanen" <samitolvanen@google.com>, "Aaron Tomlin" <atomlin@atomlin.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Brendan Higgins" <brendan.higgins@linux.dev>,
+ "David Gow" <david@davidgow.net>, "Rae Moar" <raemoar63@gmail.com>, "Breno
+ Leitao" <leitao@debian.org>, "Jens Axboe" <axboe@kernel.dk>
+X-Mailer: aerc 0.21.0
+References: <20260521-fix-fops-owner-v2-0-fd99079c5a04@linux.dev>
+ <20260521-fix-fops-owner-v2-2-fd99079c5a04@linux.dev>
+In-Reply-To: <20260521-fix-fops-owner-v2-2-fd99079c5a04@linux.dev>
+X-ClientProxiedBy: LO4P265CA0062.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2af::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,105 +81,205 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA0PR12MB8421:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7a7e656c-616d-4148-f15a-08decd3dcc8f
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO0P265MB6005:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb0ef11f-41c8-4747-6405-08decd43c0b1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|921020|18002099003|22082099003|4143699003|11063799006|56012099006;
+	BCL:0;ARA:13230040|10070799003|23010399003|7416014|376014|366016|1800799024|56012099006|6133799003|22082099003|18002099003|3023799007|4143699003|921020;
 X-Microsoft-Antispam-Message-Info:
-	uqAV7HxmCbtEYyqkEhbggntUNNNEraKL1SaptGU1I5RZ3sy+uP5rOeaGL3H3M/7bw5+qqHzrElwtHIqCd2UaUMzRoLBUupKiE8CxV8S7d2vWPoDM7Sq/XWhoCxeAvuYud+aOhAAUcwozNf1CsIM2W+qaKeXtlVeUQx2Y1CBYTQRAtQWXTh2NJzgoHsiXzP8juflTyM0aVKS/JTophOAYZ22mrh1HGR5UnfO5pIj8SZcnoh9sKhQwu4xX1e3iS7Vj22heT0FzLGLv5HI6iGGEFVx/owzcAral4mTgrdh/uQ3/lSNARPFkuiHUXKL4S3j80yhQdUT/Sl+1OuCct6KVJN5Nj8y8KjCY8MPzKyZhlcyLk2FYpP+85MDPzIndfx+2LAGiOg5K/wF87RyV9wDB3x6sZwWE8lneOpl7/SB++DVqYWrlIaqG2ugVtY/TywugL5Zga6vlWDDA6K6ZeUrzOWUKfa0SHk0aN5kVCgB7bs2bUvmSxEtRoE5Kp3y65Y3i3+LXOXEPnO3dKEI+Pi4xX0bu0pvQqrEdcQXozcod5w8xQIOfRcgkeri3n3BMMBGkpK3oUDsgWTiu0c5OF1Ina9rFOTbLJ9yF++peyP/FuzqVCsJB/phks6Y4Wlg93SZ+iQJ5m/MLakHtvzCTF2U+qMwZpBfjKRWkQfwamJWIeohUeWm84KWfP5k/ZmOjUEOqQ++9lc/tqKMz+sMH9Tiq/OchZd8MgDfqj2ZWEjLufz0=
+	M9P1Q3ZFMfeH7cBrlfiJTP9clnxe22iNRBfdm16oiruTiT+6M2gvKglBhwZT/VnaDHNpday4cP6uy52SBL0qeLGQnS/UCkWXiW+gXPFSn1FO7qtEFHJvf+cLI9YxcsyLn92/2EcU09dxJDeJemAmbD90Bnjbxa14PaJG33tzlpiiqPxGvOPnIele4a+7DNoqdVe0ejQeTh5YSypOyIGaE8KFlEfjiqpRHdTwT0ahZ2I6dHgybAwr+lavVK1DooBjseBPvUn9O/zvdSIzKnA+PGgniQpr3UOSlsg50FBOTshANEWoc4m8LR2l9bZUBlhHUxumd5t+JeOUKI8fWWhw97robOrfl385ZiJBc0hkCA1PZx/KYr5qiu495yPp5X9M+OY3+5LF2hdFZQVpwp4VgqzZinFmPDud010U2iPOvVRnkdS4dKk76q3hABYuU85PN7KllvjFXh/2AkAlXVBV7ntGuSFIeYjBA5usb3E7XhhLws/ljiCazrP85kIjv88HpFD8Ecd3NJZBw9Ga/wuM1/8ebhWRBiObK6xAtzYhZ6rQEiwcTyeUzlnleNzJExZR1yRW3OHahfqQ+rCaCsrjJdY7d/qQX9D5EQpUquMZwosQeCBH5Zk8KjSaWJZrfrGM0HNYvIyIxrDJLMyg0hXxt2Pc9RceDELEve23Cl+4Vq0H3ciTW65LWgFsTQ8JP8kea/BgXBP1YtruRhYS3cXDhSi+TjUFP+SKFqbU8FGD3GkoPupH+sN52qncuU8saTQp
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(921020)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(7416014)(376014)(366016)(1800799024)(56012099006)(6133799003)(22082099003)(18002099003)(3023799007)(4143699003)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QUdET1lhOGExbkI1YnVJWVIyV0NOdGtuVzdDOC93dUhtS0NRSmpFMDZsM0Fr?=
- =?utf-8?B?QXMzUXRla09MNzR5ZXR5RkRPYzFjdXc3Y2lqdmRSbS9wdUsxY1FHRmR2amtU?=
- =?utf-8?B?NTBYM1c0SDhaZHlrWXp6WFZWeVY1a3V1ME5KeDBxVFZGYW9Fb21OazRtME1K?=
- =?utf-8?B?eTVFcWptUW9XNzJhdFh0VXpJLzZIZEsyb2pkZ2FHaXBuM0NEMlo3TUhvbHhM?=
- =?utf-8?B?aU5ad3B0cGVWVWUrRnZ1eHFhWktvZ3MxVkJHUlRNRzdVdElERlBSMUpoc0RQ?=
- =?utf-8?B?bmdWWlBIUndFNUFvRnAzMUR6R1V3LzRRd09OZUo5UGlvangrNU1Rb3ZOYUl4?=
- =?utf-8?B?Qy9YcjlYalBhNnlrOW53Y0xYcnZEdzF6YXY2VE5Tb1JoTnUxeVptazBhcDRv?=
- =?utf-8?B?ZHhMaTAxblZmWnM5TjljNjRsM3RBampiRkc2blhOcHRPaHMzbHBab3BPTWpT?=
- =?utf-8?B?T2ZrNGVtSmx1R2EwQjBMbjE1ekxXYmF6UURnQThrUGNaUDQvcURSUFJRaEts?=
- =?utf-8?B?dENweWxXaU9sdmI2MDUyVW5XSitrcG1TSmlOMUF2NS83RnZvVEFldnRXN2pW?=
- =?utf-8?B?b1pzSTRBZGFDM3dpb2U2aE9EYUVzSmt2ZWpxOHYwTHZtOFJ5R3RMMU1MWTlD?=
- =?utf-8?B?d2pnY2w3NDVKNklUZmQwclpuUjVocVZiU0dGS3VydEdoQ1JMRXhIVURUQ08x?=
- =?utf-8?B?REFrZHJkODNieXFUL2pUZ2dWS1F6SVNrSWcxUlNQYjVzaG1GZTFjelIxY2E2?=
- =?utf-8?B?NUxtam1WLzRKc3E2TVBVV1p2NHJ1Vll6V1lFVW5rSUVEcHpCNWNDZUpRYm0y?=
- =?utf-8?B?NCtCWXNNWWNuMnNmd1NHNW9JM3c2NHRXWGlsNzZFQUw1WTlIN0owRmFGeXV0?=
- =?utf-8?B?VXFBbEtSN1ZTWEhDZlBoNkZxNEFTSVRvUVpYTGpVQjVXQWYxUHpIREJPWU1F?=
- =?utf-8?B?dHZDU0lSZkFBUjQ2NEdKbVVtbHYrRXVOc2hMT2tDOTRtWm1ucHB3Y1QyL2RJ?=
- =?utf-8?B?T2dkQ040RFBudEw2V2s2WTQ1N0pKdTZUK1puT2ZnbTY2M2xsbnArZmsreWRT?=
- =?utf-8?B?Q2pHZXNnVlNvUDFWRWNBK2dlS3pSQVgySTBQUit2NVhhWnA0dFVTR0RKTE9i?=
- =?utf-8?B?bU1RbjlCaTh3VHF5N3gwTDNmek56MkxMODBsSGVsNXF0K2d4aHlaVnJ4N0lG?=
- =?utf-8?B?ZmR1MmwwaUdVYVFiaGtpY0RVTEFNNFBqTVJ2cTArUGdJOVJoZVROQk5iY0pN?=
- =?utf-8?B?UmxlVHBvdjVkazBEcytmQWpYRkhhQkZLVDZEMGlQYVRqNjRPV2lFNEJxRFhU?=
- =?utf-8?B?b2tNYnpBVzVaa0RKQUJLOGZWWTJsWlUyT0E0ajVRS2ZtRWIwYmpLbm4xTm5P?=
- =?utf-8?B?ZEYvY2Z5dTUxRy9iOC82SkZGUGdXZEFMclExcU53SHdCM2JKdkExdFFIRmpE?=
- =?utf-8?B?cDFiQURPdjMwOVRLczZHbWYzQVJ4NHViaFZiN25uRWFEQkN4ZytWejNZcGJh?=
- =?utf-8?B?dUdZSGtEM0NKZ21GSUlsVmZaMmlYam0xd1hUNjVCQWVZZ3RLS2h5N21talU0?=
- =?utf-8?B?Wk82OWY1RlU3ejFDZnB2UFkzMWZDb2pwK1cwMC9kRkRoVnRHRzhYWGUvU2ZT?=
- =?utf-8?B?N0xDbGRhUjMxK2R3Q2tVWGhqc09ubU92Vlhoelk4Nk10NmgzK3diNm9sY1I1?=
- =?utf-8?B?cGpUcUR5MWpwL1pQNXRmUVZZYTNwRW9ibzdwc1c3YjZ2VDF5b3g1d2dQYTYv?=
- =?utf-8?B?eGQ3UXd3RFRJNjRLWUx3U0cyNEYzNFd4d3ZHb0F3Z252bjE1ZkM3Y1FyUU1v?=
- =?utf-8?B?a1Mzb3Q5ZVc3R2U5WFpFMFlZajU0U3A2ZXVrd28xbStMSm1SMUV1am9sa3J2?=
- =?utf-8?B?OTNkN1lpeUZDeXFma21veUd3TmZUM2E0N1hPV0ZHSDU3R0Z5blB6TFl3VUln?=
- =?utf-8?B?SDZRSHJiV2Q5dStNNC9mY1BIZTNCZXBuYWloVmNTa3NRWk5wVEE2T1NSb0tj?=
- =?utf-8?B?M2Q2UnErVDhoYVZZenEyTVFkNzhteE9IM2syQUZtYWRNQ2JFYTdJQkR5ZDlY?=
- =?utf-8?B?SEpPQVl4bUNVRFJEbXJWWGlXTzYxeUN5cjBBZVorRC9Fajcwd3FkajY3SzQ3?=
- =?utf-8?B?VXJqNER0S2hWZktnSFRabVcvZG1SOU5PUFpSRmtQQXg4L1FGRVEzRG1Ydk9o?=
- =?utf-8?B?TW9YZElaL3ZoZDI3SGdJb3hZWjVYOUZ6WUpqbWM3ekt5OEhYbEZ3VVBZckIw?=
- =?utf-8?B?VTZ2eU5MZEh3R1Z0dFM4T2d5TnpLaHR5MU5mbDFKME9uUk94b2EyalZ2U3gx?=
- =?utf-8?Q?q05kQxhXJPauM5CZd6?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a7e656c-616d-4148-f15a-08decd3dcc8f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+	=?utf-8?B?aytGdjNsOThLL0JuU3hZV3JjZzZoWjcxVWp0V25ZTUYrdFhJY3EyclJqc3J4?=
+ =?utf-8?B?d3BLYklyZGlyQWdsc2c2SlZYUytSY1g4aXF6SWk3cWJGM280Q3Q0b25rUno3?=
+ =?utf-8?B?THZZQWpTT1Y4d3c1SVFRd0hJeVh0Z2NINDZaWnBEMnN6V1lUWHB5cjlPQWt0?=
+ =?utf-8?B?QzdhMTZoVHZ2bEZDa2JRK0J6a05MUm5GMFdmSU02YWQxZXQxNnJEbzI5OHVT?=
+ =?utf-8?B?U3N6eGhha2Vnb2hlZG9mYVBxZmZjUFY5S3VpcmRzd0VZenR3Nk0vMm1DcWoz?=
+ =?utf-8?B?dy9SNFIySVUzbEhvbjF0RktJYVI4dElWMnpKLyt3bVdmMS94cjRIb1RmY1Fs?=
+ =?utf-8?B?ZnBJdVlobEFVcml1UVJ6NlRvS1RuRmI1MG9acUJkKy9yeEljSmw4RXluYXVT?=
+ =?utf-8?B?bUplNUUzbGhGTGtkNmoydkR4Y29oZ2NqaEVhRzlQR3dpZzNNMFdkYWVtUUlS?=
+ =?utf-8?B?Rnk1aWdqcitQK1FFdVpkSVIxOFExUjJDY0RnYzVWTnl0eDBjTWdITFdKc1li?=
+ =?utf-8?B?dVB5RUN4VzBOcGxwODA3eVhWVlE0UEQyTWlWV2VYNFpMbUZjUU04eldvNVVp?=
+ =?utf-8?B?K0Qxbm9kRzFQN1JUdi9qTFZ4emRPSnVZcXo5SG9YVGI0NU5UQUs1TjRwcFU1?=
+ =?utf-8?B?NEVGbjJlZWlDSGRxWkttalFWNDErdUdTTmpLVXh1RlF5aFBhZGpIZWNtWTFo?=
+ =?utf-8?B?SDBOTVg5TmVhRVdRQWxWOUdPbXorSTR0VVJzVnN5L2c5SUo1Sk1XeEMybmRm?=
+ =?utf-8?B?L0xGcXJ5dis5RExpTWRZWkZXbnV0dkZrSEJSOHBxanFxY3hGQnRDUjZnQUpI?=
+ =?utf-8?B?aG52SlNMczdTQUNxblpJd3JtZWk4Q0F4b0FBWDAyWTdEN25taFpkMjh2ckxh?=
+ =?utf-8?B?R2lEdTRjdmJVMkpmaHRoZnZycFdIdkxVVGpLa1NJajBUbWRpUTM3L2w5dWxE?=
+ =?utf-8?B?czNlYjhUSnNUMjlCT2hXT3Z2aDlTaTNBQXgzM0FVSkU4L0xWeTdHUXlzdmJ2?=
+ =?utf-8?B?VGViMEhQQkRqc29LSnRSdDJuYkFvcHBCUG5BMHZpWDhYVFd5OFp4RmZTWFgz?=
+ =?utf-8?B?cHk0S0x5Wm9LMWttTU9EK1J5MWpjL0pRaGFsYkZGTyt2M1hTSXRsVnhsN1Rz?=
+ =?utf-8?B?YXEvbU96akpNZEZhbk5OaW1ZYjVIakJKTEt3SGlrSEtnL1dtMDdQL3M1QXRU?=
+ =?utf-8?B?STVmZTJqVkl2M0wyWFgvNDBqdWJZekpta21BbUZVZWpvRWhQbjlLeHhJeDZs?=
+ =?utf-8?B?U3VmN3NDK0toMmhBekdac1ZySEY0dC9sUnlkSUxrZmlQb3U3dWkyMEJqTE16?=
+ =?utf-8?B?SXpaQ1FIbGkxSkFxcGF2aER5d0lUWkZ0K0ExR0ZYZDlpZFY4ZjZ4bzFJZ1JQ?=
+ =?utf-8?B?bTVZd2xrNXVjZmFCd3B6Q2hlKzNRV0N0Wk55eWhvSnlaa0tScFJXYzBaTzFx?=
+ =?utf-8?B?ZUlhaVAyZ1lSb2hoU1JyUDNGM2JlM0lkcnVBbjkwVHFVWVluMEVhMVF1dlA3?=
+ =?utf-8?B?VjRLNFFiRVlPVlI5QjZOZWhacnBJSFVyUFlLMW91NHR6WmQ0OGI4SUg1d3FB?=
+ =?utf-8?B?cmNqeXJ5Z09FZjNwK0NzZFg2cFJlYWFoZkJCR3JEQmY4TmlGeWpTTVBSSHVM?=
+ =?utf-8?B?UDFEMWc1S2lOcWxPZ0ttZWVJVE5mYVZseXUyT2RDRjdKYnVRTTZEZFVpd3dS?=
+ =?utf-8?B?eEZVaFg3eWFwUWV0ckVFLzc2ZVVCV2psOVZVbCtnOEpNZ2g3WTdISW5IOEVB?=
+ =?utf-8?B?ck1HbDdkdy90WXFwS1NPbFFRaTg2S0ZnTkhwUW5IVEZyOXZxc2R1bWNkTmNP?=
+ =?utf-8?B?TCtxWWVoc1NVZXRwYk16cnU2WlhjWTh1aUVudjhHeTFIWDM5dWI1N2hsU3o4?=
+ =?utf-8?B?QmF3ZjdJTVp6UG1aM3pDUStUZUxCWStBTFZrbkJQY1RsUUNQbDhzOFhGR3FK?=
+ =?utf-8?B?SmZZOHdjdjBUZ0VBWmFGK3BvWWVxQStXL0h0Y2dSTmNYUzhOSFRHbGZBNmdF?=
+ =?utf-8?B?eXNUb3d0UzlVcUVVdHV3Rklub25qb1BrQVhuRi9MbFNHN1VzYzYrRU5lcGxt?=
+ =?utf-8?B?WUNwZjR3ZS9HYTZRRG1ncG83NThQRjFlWU5ralFybHVvZll5TGxaM3JMZXF3?=
+ =?utf-8?B?VTdlK0t3UTdMTGJzV0xmTktEWkxqS3JHVUtkWWtuamRzOGZaTlIyMDNEZTZJ?=
+ =?utf-8?B?NytuOHZTYnhmcFU2RlNvNnI4U3paL0hRNHRTN05mc0wrbzRRMWpkd2J5T0Zn?=
+ =?utf-8?B?MUt1WkRmSzl2MG9nTWFaSzNHaDFYdUs0WmpRRVc5RDRSbzk1SkM2Q2lPRmNP?=
+ =?utf-8?B?TXZQellOYUtMR0tDTGlBUlYzQ3ptMUMycUtVaUxYUXVIbkx3SFZzdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb0ef11f-41c8-4747-6405-08decd43c0b1
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 13:30:44.3721
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 14:13:21.3433
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8DfUYwXvs56n+KsauFzwM+EMWtareSTC9dzHesgFyi1mfYEDBRZl3+pUs9BQzy2d
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8421
+X-MS-Exchange-CrossTenant-UserPrincipalName: LGpr8v49BJS1CPRuhnL96ZLkMpGNJcb39+0vqcU9FeijWbxGslEnBjxVGCBKCLZMM+RQ4D4PV8K3aqK1BNsuSQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6005
 
-On 6/18/26 15:26, Philipp Stanner wrote:
-> Rust does now have abstractions for dma_fence. These abstractions are
-> quite complicated and require expertise with both the C and the Rust
-> side. Therefore, using the existing entry also for maintenance of the
-> Rust code appears reasonable.
-> 
-> Philipp volunteers to help maintain the dma_fence abstractions. Add a
-> corresponding MAINTAINERS entry.
-> 
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+On Thu May 21, 2026 at 8:52 AM BST, Alvin Sun wrote:
+> Auto-add `type ThisModule: ::kernel::ModuleMetadata;` as a required
+> associated type on the trait side if not already defined, and
+> auto-insert `type ThisModule =3D crate::LocalModule;` on the impl side
+> if not explicitly provided, eliminating the need to manually declare
+> and implement `ThisModule` in every vtable trait and impl.
+>
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 
-Acked-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Gary Guo <gary@garyguo.net>
+Link: https://lore.kernel.org/all/DIMMWHUOLPSH.13JFRHDKDQJGO@garyguo.net
 
 > ---
->  MAINTAINERS | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 4ae6919454c3..8b03eb2c578a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7535,6 +7535,7 @@ F:	fs/dlm/
->  DMA BUFFER SHARING FRAMEWORK
->  M:	Sumit Semwal <sumit.semwal@linaro.org>
->  M:	Christian König <christian.koenig@amd.com>
-> +M:	Philipp Stanner <phasta@kernel.org>
->  L:	linux-media@vger.kernel.org
->  L:	dri-devel@lists.freedesktop.org
->  L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
-> @@ -7548,6 +7549,8 @@ F:	include/linux/dma-buf.h
->  F:	include/linux/dma-buf/
->  F:	include/linux/dma-resv.h
->  F:	rust/helpers/dma-resv.c
-> +F:	rust/helpers/dma_fence.c
-> +F:	rust/kernel/dma_buf/
->  K:	\bdma_(?:buf|fence|resv)\b
->  
->  DMA GENERIC OFFLOAD ENGINE SUBSYSTEM
+>  rust/macros/lib.rs    |  6 ++++++
+>  rust/macros/vtable.rs | 38 +++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 43 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index 2cfd59e0f9e7c..d35e45ea745c0 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -176,6 +176,12 @@ pub fn module(input: TokenStream) -> TokenStream {
+>  ///
+>  /// This macro should not be used when all functions are required.
+>  ///
+> +/// Additionally, this macro automatically handles the `ThisModule`
+> +/// associated type: on the trait side, `type ThisModule: ModuleMetadata=
+;`
+> +/// is added as a required associated type if not already defined; on th=
+e
+> +/// impl side, `type ThisModule =3D LocalModule;` is automatically inser=
+ted
+> +/// if not explicitly defined.
+> +///
+>  /// # Examples
+>  ///
+>  /// ```
+> diff --git a/rust/macros/vtable.rs b/rust/macros/vtable.rs
+> index c6510b0c4ea1d..d3d0e9cbd7172 100644
+> --- a/rust/macros/vtable.rs
+> +++ b/rust/macros/vtable.rs
+> @@ -23,6 +23,7 @@
+> =20
+>  fn handle_trait(mut item: ItemTrait) -> Result<ItemTrait> {
+>      let mut gen_items =3D Vec::new();
+> +    let mut has_this_module =3D false;
+> =20
+>      gen_items.push(parse_quote! {
+>           /// A marker to prevent implementors from forgetting to use [`#=
+[vtable]`](vtable)
+> @@ -30,6 +31,28 @@ fn handle_trait(mut item: ItemTrait) -> Result<ItemTra=
+it> {
+>           const USE_VTABLE_ATTR: ();
+>      });
+> =20
+> +    // Detect existing type ThisModule so we don't add a duplicate.
+> +    for i in &item.items {
+> +        if let TraitItem::Type(type_item) =3D i {
+> +            if type_item.ident =3D=3D "ThisModule" {
+> +                has_this_module =3D true;
+> +            }
+> +        }
+> +    }
+> +
+> +    // Add `type ThisModule: ModuleMetadata` as a required associated ty=
+pe if
+> +    // the trait does not already define it. No default is used because
+> +    // `associated_type_defaults` is unstable (issue #29661).
+
+I don't think this is relevant. What's the sensible default anyway?
+
+> +    if !has_this_module {
+
+Perhaps just make this an one liner :
+
+    if !item.items.iter().any(|i| matches!(item, TraitItem::Type(t) if t.id=
+ent =3D=3D "ThisModule")) {
+
+> +        gen_items.push(parse_quote! {
+> +            /// The module implementing this vtable trait.
+> +            ///
+> +            /// Automatically set to `crate::LocalModule` by the `#[vtab=
+le]`
+> +            /// impl macro.
+> +            type ThisModule: ::kernel::ModuleMetadata;
+> +        });
+> +    }
+> +
+>      for item in &item.items {
+>          if let TraitItem::Fn(fn_item) =3D item {
+>              let name =3D &fn_item.sig.ident;
+> @@ -58,18 +81,31 @@ fn handle_trait(mut item: ItemTrait) -> Result<ItemTr=
+ait> {
+>  fn handle_impl(mut item: ItemImpl) -> Result<ItemImpl> {
+>      let mut gen_items =3D Vec::new();
+>      let mut defined_consts =3D HashSet::new();
+> +    let mut defined_types =3D HashSet::new();
+
+I'd just rename `defined_consts` to `defined_items` to reuse the same set a=
+s
+there cannot be assoc items with same name anyway.
+
+Best,
+Gary
+
+> =20
+> -    // Iterate over all user-defined constants to gather any possible ex=
+plicit overrides.
+> +    // Iterate over all user-defined constants and types to gather any p=
+ossible explicit overrides.
+>      for item in &item.items {
+>          if let ImplItem::Const(const_item) =3D item {
+>              defined_consts.insert(const_item.ident.clone());
+>          }
+> +        if let ImplItem::Type(type_item) =3D item {
+> +            defined_types.insert(type_item.ident.clone());
+> +        }
+>      }
+> =20
+>      gen_items.push(parse_quote! {
+>          const USE_VTABLE_ATTR: () =3D ();
+>      });
+> =20
+> +    // Auto-insert `type ThisModule =3D crate::LocalModule` if not expli=
+citly defined.
+> +    // `crate::LocalModule` resolves to the real module type (via `modul=
+e!`) or a
+> +    // dummy fallback in non-module contexts (e.g., doctests).
+> +    if !defined_types.contains(&parse_quote!(ThisModule)) {
+> +        gen_items.push(parse_quote! {
+> +            type ThisModule =3D crate::LocalModule;
+> +        });
+> +    }
+> +
+>      for item in &item.items {
+>          if let ImplItem::Fn(fn_item) =3D item {
+>              let name =3D &fn_item.sig.ident;
+
 
