@@ -1,131 +1,120 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B38F19DF55
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 11:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781782428; cv=pass; b=Eod9g8huY/7Ixc7XAXbzIFsc5EEE+SgS+OZQLupWNzusj23GIsWtYPzdRtrq7w5dcy3Wvwsp5xr0cetBKf/mJcXI1bCCZ8wZjSR8Wbz5GDHdQlIl/DVX/JiqpbTreMUtE/ON0aokKMlqsYivhP64w8MnkS+9O1+6ZT/IVL7v8qg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781782428; c=relaxed/simple;
-	bh=pLX9nF6wyLQALK/ZUGoRyTb2nZxeHbaEKDsHeK/exyw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nTXBB1qv7qk/IcDydoJQgfo0EVIHePVRO+w2RU5lQBNjK4ptAuN3k51kf5wl0tDFN+i98WweJBm3Lt6hG58igYzY6NAQkW5aJOMbAPHPeKvElyeMmixEXhxiLySiOOg3eUiQA9HTlkFSFYCfeKLshyl+J+jaYkeOnd86uC20PJ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4FfMunL; arc=pass smtp.client-ip=74.125.82.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4282F37C0EB;
+	Thu, 18 Jun 2026 11:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781782828; cv=none; b=IZym5e3A+xtzmB8u5ld4zyNPbAqDGsgwSrAUHUigEKtYtpl0bang90kFqSECVPStXeEPMkcS3f3c03+jz3dJlCQozIGwwBPlai5QK7FRJY+Y/a8aIOJhAJUqLkd9kzfEkzE0yf7xUqPkZYDczDd6F17zA16RrCx3dkJYbfUfAC0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781782828; c=relaxed/simple;
+	bh=A8rtBmtWshlcmcY1Vqpwg0EZtW2bh3KslsKA5KSWBrQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FQqq4uprLsJZ+kwFXFfbrkNSwvBILSmLVel1nfeDHx2baEZpFXON3Th54bCE/wpZSWqpjO+/HVAlJVTpoCRVzk80eTgd4Bs/Y7rEgdwdKxYLt1hJmpDf2cpqHocMOZsyUNm037igQLgl3TpkdqBDWS7WFhejAIdlXmBmSTaIagw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Gj/X7PrN; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4FfMunL"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-30bce0dcbceso88561eec.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 04:33:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781782426; cv=none;
-        d=google.com; s=arc-20240605;
-        b=H/f8l7+FWqz8AX1o1z8dGdOW8XdQZG7gQhTowfcPyhv/DoYMb8kCg5oBhrk+WjfwnI
-         5lUKVbqJHtUlkgvklk5vBuYUh5tbRGL2BMyfihAueH4YapJOtQZ75NmZNZD3wpRco1wP
-         G5t8+xs7RfJUe0QMp5umxXwdf1KuO1doR9F660l8TbPeun/tQoNdJ/PmfL3oCngI2aKH
-         IGUVkGTA2GoXiKBm8+K0l6dPMiKCR5spGscEuKHMwsddwl8nScdLmGpvjg18tH+csXPk
-         ipAMoGl5GmqT8VQnvvOe3LEaXGX1ZrJCO8qe8t+ZIosz5HOs66S8T+9ySYQgZqLKrJt5
-         ZMAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=pLX9nF6wyLQALK/ZUGoRyTb2nZxeHbaEKDsHeK/exyw=;
-        fh=5hiwnZryhlLPeREIH8XhYqFa9/mAaeMnyA63OI1jGHk=;
-        b=DhKoenI0xiGDOc4S+t+bKt3ieWXZTRUep3WX0XbL2O3faxVj+jh66Zh/mlKJBMFhLw
-         SJhyxIxPRdmjlWxJpkd4E1nYfxqrE1HYdvQTah1HttNB+Jk5rnX6ghNCNw24amN6nQTf
-         Myy+0IoRkCdgGe7PakK4Lp2py7cGd22ZJNP7UO4VZc451sfVwWbrA2eY79VFUBtDXREI
-         soxC9oKYu2U1WH5FKoLiq29m3RvG6ZvO3/H4IwJpJYi3NbjYefP7Ofd4/TfZ0tABtJvC
-         +NiFzNEzNxEsGCle9seb+UhtP8i/brcepyDjLB/YkR/1n3l0cHOaBqt98rfK2wTq8hgK
-         i3Kw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781782426; x=1782387226; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pLX9nF6wyLQALK/ZUGoRyTb2nZxeHbaEKDsHeK/exyw=;
-        b=S4FfMunL7MHuHYQ/1jFdZgTgnn7n/n5wwPULrBRsA+Uf8Wet0B5vovInntDYW1js3K
-         WCuCHzMTlMzWD9imzUkBNCNpYjj26PDxgTqu/p1jschos87MSSMKt4ipI2NhXanQF3fX
-         91RMGi9XveEPeDmYwEOs0/Ets7S6Qp7/eVQYkn1H/CCvp/JyNT4kvWZPbj+Q3KU1wg3G
-         Dx9VzU/ne0A2NXcASBIEBfDaFTbUfNVCyF6DVFdlHtpwed5SrZm2BQZrC4bxHIy7KWeM
-         jeW6r52/afQ0qBLrnUt/HhOxuIUU1orBZAT027KScQreWDwsraa4wjlD+lccBdxvJYUQ
-         +GNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781782426; x=1782387226;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pLX9nF6wyLQALK/ZUGoRyTb2nZxeHbaEKDsHeK/exyw=;
-        b=caEvEZ08wRvNPbL4JNZbVFkzRWCrsgG2heXWfYAdDPi04q4Scf0vCWzEsIDqVId+EQ
-         8XrVFRBm97qZ5ySYkR5tPsH2nR8TotX7aY70nTFQE7wQSCTG2d3Rr3NQ5GwT64IX3kRj
-         ja/XJDLK6MLFFCYPR1As1AJ4B6Z5h8pmfl4jBo0C/8zIpe1YJV/dFLszYFfXDX+wlkNw
-         NqNe1S2ey6YFoae1Usa558Syf8zrEKUHVIYIjL2l267tAzoXAFRQrm8TGdktkBmwIYR8
-         Chh+G/A7OSX0NHRLqor6TKUB3VrT8cIAJsw1FHGjNH8iYrkpytbbEcMzDQipA6PhFUcf
-         +H3A==
-X-Forwarded-Encrypted: i=1; AFNElJ+ldu/QBh9dkx/qai8CAsZLcdzW/WMJ06iw8fji7Sz6xOSTVZJP0ypqa5+09hJAKWXdimFCs6T1JfJQ8UXF3g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztO8yD/PBYT2uP/iFDCSadtS4MoLdQnguJrkLOx8b9L8IuXFiE
-	euR7xKT01ffxqkmCU8mhMit+2AGTRAz5h/p8tOzdGz6p0l2O/npBhLVGl+6mSmJKPd89wESyURc
-	GHppUg9RV4+AYiUgnE7xCdFzR8tQdsdA=
-X-Gm-Gg: AfdE7ck9jj2NUDRkMIPP2ZPYH230FlEKch6z8x7+wJDMWONgLR++oTdqlMKhM3rn7q7
-	YrHcvPQ+ptoRX4jkUefNao53NWZNHym834IVm+XkdiQKaoMD2MUAH3z8ptfJEcakQlkZJDfJk9O
-	JL/tKYo6hVfgLaNlT4jhLMVYiBhHFJsPn+K7jAM3rca9Fg/1/3s6RJ+RcD7BqMiFFmCl6BESrcT
-	fMF6gC2/OhZnKP6d9szNi9pN0YaC+sP+3Az4S49sn348WQcM1B9n/iEKQoIVUUNWGdXALIAatTa
-	fhZvILXVjMBDPwJkuTliK6U9GZvxBaVR6oboYlDZmzPid1JdRFAlmI1N+q8/UbClrrkeUG6rtpc
-	P6ZM1gjRm5dS+
-X-Received: by 2002:a05:7300:7c16:b0:304:c73b:79ea with SMTP id
- 5a478bee46e88-30bf098280emr1006464eec.3.1781782426603; Thu, 18 Jun 2026
- 04:33:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Gj/X7PrN"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4ggzLG2lCtz9tSP;
+	Thu, 18 Jun 2026 13:40:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1781782822; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A8rtBmtWshlcmcY1Vqpwg0EZtW2bh3KslsKA5KSWBrQ=;
+	b=Gj/X7PrNU6EyYrro3L+oJgoixsaQ2Neqbudv00zua6Geht6auHc3ccaQVA+gjV8vF+nniW
+	TpIk1yvRGCX7lbJ4+uNIUyM2w9labPzzW8n3NICX6PitNhMon8edjtZ2uAE//e9OwBFxnx
+	3I9DuGBKck0uSMdJWzXym2HtALvGwxTMVasQZaD1FOH+KWCgwuHZ7AABT0CwKQAqbsUeIC
+	lnQSXjsj7KtY8h9+dvp6QpltuV5pBdPQDOBmEArn+jxaztN6iffKykaKwYe7ICXdb/zxDj
+	S2cMp0u/IOETPc3v+LnQppBgU8wf2G+OwbUkVeHZJpnD0AxN4fGE+Rzz2QDZkg==
+Message-ID: <15e81f5bf354cbe3cde765526762e4ebb3ef6970.camel@mailbox.org>
+Subject: Re: [PATCH 1/3] rust: sync: Add abstraction for synchronize_rcu()
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Philipp Stanner <phasta@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	 <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg	 <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross	 <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Daniel Almeida	
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>, Alexander Viro	 <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Jan Kara	 <jack@suse.cz>, Lyude Paul
+ <lyude@redhat.com>, "Paul E. McKenney"	 <paulmck@kernel.org>, Frederic
+ Weisbecker <frederic@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett	 <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt	 <rostedt@goodmis.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>,  Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang@linux.dev>, Christian Schrefl	
+ <chrisi.schrefl@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, rcu@vger.kernel.org
+Date: Thu, 18 Jun 2026 13:40:05 +0200
+In-Reply-To: <20260618095952.3687099-2-phasta@kernel.org>
+References: <20260618095952.3687099-1-phasta@kernel.org>
+	 <20260618095952.3687099-2-phasta@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260617222030.15189-1-iganschel@gmail.com> <2026061856-rare-envoy-d585@gregkh>
- <CAPE_3zLCOwqa8Yb21oAb8i9AHW-UPqW=+9848fUtuTKK6wAZDA@mail.gmail.com>
-In-Reply-To: <CAPE_3zLCOwqa8Yb21oAb8i9AHW-UPqW=+9848fUtuTKK6wAZDA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 18 Jun 2026 13:33:34 +0200
-X-Gm-Features: AVVi8CexWNgW9TjIyYG6gd67RhjGZYJsb01u0dXy4_cp4AOjk5vrhjHHhLkdXdY
-Message-ID: <CANiq72kP5cTg=M-L6UCf_P5huUsZS7F13yDLF76mRC_YTG7dGw@mail.gmail.com>
-Subject: Re: [PATCH] rust_binder: check context manager before creating node
-To: Keshav Verma <iganschel@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Carlos Llamas <cmllamas@google.com>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-META: eu18ycrf7gkspftrdip7ubxxpc8g4ua8
+X-MBO-RS-ID: 3b31cc664c5f18c2c1f
 
-On Thu, Jun 18, 2026 at 1:19=E2=80=AFPM Keshav Verma <iganschel@gmail.com> =
-wrote:
->
-> Thanks, I will fix the line wrapping and add the appropriate Fixes tag in=
- v2.
+On Thu, 2026-06-18 at 11:59 +0200, Philipp Stanner wrote:
+> synchronize_rcu() is a frequently used C function which is always safe
+> to be called.
+>=20
+> Add a safe abstraction for synchronize_rcu().
+>=20
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> ---
+> =C2=A0rust/kernel/sync/rcu.rs | 8 ++++++++
+> =C2=A01 file changed, 8 insertions(+)
+>=20
+> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+> index a32bef6e490b..9b9addf8fedf 100644
+> --- a/rust/kernel/sync/rcu.rs
+> +++ b/rust/kernel/sync/rcu.rs
+> @@ -50,3 +50,11 @@ fn drop(&mut self) {
+> =C2=A0pub fn read_lock() -> Guard {
+> =C2=A0=C2=A0=C2=A0=C2=A0 Guard::new()
+> =C2=A0}
+> +
+> +/// Wait for one RCU grace period.
+> +///
+> +/// You typically do this to wait for everyone holding a [`Guard`].
+> +pub fn synchronize_rcu() {
 
-Please consider (depending on the hash that this fixes) whether it
-needs Cc: stable@ too.
+Hm, should it actually be #[inline]?
 
-> Repeating this with unique ptr/cookie values triggers the warning each ti=
-me.
->
-> Since this is easy to trigger from userspace, should I drop the pr_warn!(=
-) from the check in v2 and just return -EBUSY there?
+In C nowadays usage of inline is discouraged ("compiler knows better").
+Unsure how Rust handles it; is its compiler different?
 
-If it is something that is expected to be able to be triggered from
-userspace, then printing is a bad idea, and at the very least it may
-need to be `pr_warn_once!` if you somehow think it can be useful for
-users.
+Moreover, this would be an opportunity to change the naming convention
+to rcu::synchronize()
 
-Now, for things that are truly logic errors, i.e. things that in
-principle should not be possible to trigger from userspace unless
-there is a bug in the kernel, you may consider `pr_warn_once!` +
-`debug_assert!(false);` in that path. But only if you are truly sure
-that it not meant to be hit.
+But since Boqun & Alice are pushing for rcu::RcuKBox for the reason
+that it seems desirable to explicitly highlight that that's a special
+Box, I guess we should be consistent with that and also have "rcu" in
+the name here.
 
-I hope that helps.
 
-Cheers,
-Miguel
+P.
+
+> +=C2=A0=C2=A0=C2=A0 // SAFETY: `synchronize_rcu()` is always safe to be c=
+alled. It just waits for a grace period.
+> +=C2=A0=C2=A0=C2=A0 unsafe { bindings::synchronize_rcu() };
+> +}
