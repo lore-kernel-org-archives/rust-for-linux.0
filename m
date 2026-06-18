@@ -1,96 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A963ED3B8;
-	Thu, 18 Jun 2026 10:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5965E3BBA1E;
+	Thu, 18 Jun 2026 10:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781778462; cv=none; b=M5SidQ1Vb1fiDsTWt8rGP3mseehUM3PFvAuWCReMQuNDzcDpFXSjwk4jhjuPx8WZkzSyEclPPsPn1BuHzrUhgs8lV0hfRbEAoUMm9i/wyHqW7Xeq42Gz7+uABCpqDksaoYikRxbQ5wLXcsHOplVcT/R8S8AUkNrsLQ/T8dvGGqU=
+	t=1781778774; cv=none; b=XlcVfCUnIz/Stdwd6t/KQmmahB0odp+4dlNFrDQu7lRJ541rlKRBa202rjy1etntcqepkf3b/8tvfiEWu4SscqB4xlyiOpO1hX11ac3w1I4Zoge5PsFBPiiohKcwFBvANM++rIFBYbCJCtKpuDWoSKphsNaVC7IL+bz20pp3nqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781778462; c=relaxed/simple;
-	bh=gGxlW616bQvWkS1YZzDs+Xa5Zk1p7L+bf/uejdCVSv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=daOX/6Md5bHoJ1VyQ87v9ZbyF02/AzPy+17hbxKTTQMOpHJ0rbN655vGdpAbL+fi0U1Tgp71nIwAaVuxczyWv4arxJ76B1KLuEF1Sj7xW0q/H09bdT4sCvQ1HiRb1u7m3QVLM0jFDiVXcOPm9pSw5nRT11o0lA3SUBDkpblCIgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOiMGIj0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781778774; c=relaxed/simple;
+	bh=Mhrt51U/3Bst1MWMhW1jqJPyTksxpuMd96R5jg+Xe0A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pDFBkUau7FAGK9cyOGwSYE9s53tjiceGs6XarXWLzaE1Dt+5ib4/y1u59cjoJrWmhj6A+/mWXkXpUROGTViKfD/B8HctwKjMtQNwer3npHAXuSmKRNtfuH6iZQm9HsqF/5m5gO9ARy+FBPl+URU9trjF3Gq5YOdvj3GB9I2Wxt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWToeEld; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOiMGIj0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51801F00A3A;
-	Thu, 18 Jun 2026 10:27:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781778456;
-	bh=+UvTI2UZGqM+Kypp27f0k5H4+0ROiGCOi+pSil6qG90=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hOiMGIj0BVW07cTNKPJFK/YLkejfDVla8CHfojt0IORmQnvym8FVBedVZM8i9COuh
-	 3vIcbIn2skC5D/uMD8OwIZRIWYaw4mEgvWxbtcfUajSl0AWyGyYnWMgLWyOHK4B6j4
-	 0xGU6akXz5D8dDhjpEztFg6ZxsB95R2ch4ptOpkg=
-Date: Thu, 18 Jun 2026 12:27:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Keshav Verma <iganschel@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust_binder: check context manager before creating node
-Message-ID: <2026061856-rare-envoy-d585@gregkh>
-References: <20260617222030.15189-1-iganschel@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWToeEld"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6761C1F000E9;
+	Thu, 18 Jun 2026 10:32:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781778771;
+	bh=Mhrt51U/3Bst1MWMhW1jqJPyTksxpuMd96R5jg+Xe0A=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=JWToeEldL94Uxy4bw13SddCruUAAGoHq8yGE8wawQT9pPLc9w3a4D0Dz6E18FvpJk
+	 fERcATt9rlw5myELakU9CQ0PgBfkJQrySMHHC97a8s67XYaQcNLzqCw3IeHXTTFoSY
+	 GZUo33r7yDePj9pc6dk2Sy8lFihyAbRnxBubn+vD1pauLRzw5WK8rHE6HQvcS9MNS9
+	 wtBAXv2RU2jnS/DnsZYZD2DzbwD5M2Ha6vMfiNeamlwwV/AMqjxW1COMorE0ZM8d9s
+	 DDDRIwRDw8Fn5aw/CNnB8Y6G3JTIdev9LhasZCUyWQi0Vnn7GatSCWgbTJ1VHq4qAQ
+	 b9RYPtErqEkNw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Alvin Sun <alvin.sun@linux.dev>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-block@vger.kernel.org, Alvin
+ Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v2 5/5] rust: block: mq: remove redundant imports and
+ format
+In-Reply-To: <20260520-miscdev-use-format-v2-5-64dc48fc1345@linux.dev>
+References: <20260520-miscdev-use-format-v2-0-64dc48fc1345@linux.dev>
+ <ftIkd4Azz8dKfEHMvhxOqdNT0WY0ptvcD4_qdkWPSSzGOZyLcAMD7ECCFojCPMt_Eej80uTQAFCA9wGaRWzWmw==@protonmail.internalid>
+ <20260520-miscdev-use-format-v2-5-64dc48fc1345@linux.dev>
+Date: Thu, 18 Jun 2026 12:32:40 +0200
+Message-ID: <87se6kf8af.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260617222030.15189-1-iganschel@gmail.com>
+Content-Type: text/plain
 
-On Thu, Jun 18, 2026 at 03:50:30AM +0530, Keshav Verma wrote:
-> Rust Binder currently creates the Binder node before checking
-> whether a context manager is already registered. If a context manager already
-> exists, set_manager_node() returns -EBUSY after node state has already been
-> created.
+"Alvin Sun" <alvin.sun@linux.dev> writes:
 
-Odd line-wrapping :(
+> Drop `Result`, `Pin`, `pin_data`, `pinned_drop`, `PinInit`, and
+> `try_pin_init` imports already provided by `kernel::prelude`.
+>
+> Simplify `error` imports and flatten parameters formatting.
+>
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 
-> 
-> Add a check before creating the node to match the C Binder ordering for
-> the common already registered case. Keep the final checks in set_manager_node()
-> so races with another caller are still handled after node creation.
-> 
-> Signed-off-by: Keshav Verma <iganschel@gmail.com>
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
 
-What commit id does this "fix"?
+@Jens can you pick 4/5 and 5/5?
 
-> ---
->  drivers/android/binder/context.rs | 20 ++++++++++++++++++++
->  drivers/android/binder/process.rs |  1 +
->  2 files changed, 21 insertions(+)
-> 
-> diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
-> index ddddb66b3557..562fb339b31f 100644
-> --- a/drivers/android/binder/context.rs
-> +++ b/drivers/android/binder/context.rs
-> @@ -4,6 +4,7 @@
->  
->  use kernel::{
->      alloc::kvec::KVVec,
-> +    cred::Credential,
->      error::code::*,
->      prelude::*,
->      security,
-> @@ -107,6 +108,25 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
->          }
->      }
->  
-> +    pub(crate) fn check_manager(&self, cred: &Credential) -> Result {
-> +        let manager = self.manager.lock();
-> +        if manager.node.is_some() {
-> +            pr_warn!("BINDER_SET_CONTEXT_MGR already set");
 
-How can this be triggered?
+Best regards,
+Andreas Hindborg
 
-thanks,
-
-greg k-h
