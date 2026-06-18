@@ -1,99 +1,135 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DECC3F58E7;
-	Thu, 18 Jun 2026 12:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781786861; cv=none; b=gYoCB+nibqnH6GWWMyJiBNYw1Ls/to6NGnGZuxfGWy3uORRkXwnR2EngYj2b1YUbXXpV02dIsgKYA9gqPqnScCOSKbJdy8ato75n7jgY3Y0rMEbLCu2tY3hQ8lYtV36MS/zzMLm006Poi1ggkNCWaVWHdKtc+aNiZHItHPktyKA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781786861; c=relaxed/simple;
-	bh=9QDuDUPn/qp1WTN9rrbLR5TYf7RBhyTeasebaxUk7ys=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mjDZ49KFIJsXHExWE9H20+PpZCgBzMJab0QuPDURKLFURUur8GbyHvsdl3iycQ/LMUvmd+Hy/kiY2oT2jDDbVAV3vfGS1zvdTuOLcjo8VM2YGVwmY+x9WFxsbbaXa8oJpug7rYq3imbie0sKh6KqAoq99mQUKA69YYnkukfqOlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ejymsP0B; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7258C3F8223
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 13:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781788023; cv=pass; b=bjCxFrG8NWheNS2MkBBYDf/3cYZkS/Wcfw9qI928x0AGFX0JtnxJKRklUS4X1z2OW3LZ3V6kDdjkP/wzByIFeUMSBnR12HQ1LPESYtKbUKaC4yazV/DK++sD5FOG5rdeNkoN5CoBPxbViKNO2CDbSWHfS8XQPV+AMgDLH3YM9U0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781788023; c=relaxed/simple;
+	bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jJ7FYHpHHcnv5gRcMkI56YLt4fiZEzmcTQaSW4/cs7G/Jh6A/nJGlxZrHXjt03nCcBCZQHFJkskv4Hc3dNOZ0ojm+RS1YSQOCI+ZkEeUC8oGQq7FUOcaBC0jz7cU2WwygROsaWyO3yD4vUPsErG/oWGTioXraeNl1yaS1tKy4kk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TtMY2Ngd; arc=pass smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ejymsP0B"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gh0qp753Vz9vD9;
-	Thu, 18 Jun 2026 14:47:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1781786855; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9QDuDUPn/qp1WTN9rrbLR5TYf7RBhyTeasebaxUk7ys=;
-	b=ejymsP0BX2pyuCwdyqHd8uqZFPQYMuft36MslBYHfEVVQ4gNON5IeHK2182C6tS3ItjAlA
-	+aOLMppeSFjCJNxcmvC9dqSgtmSxJdo4fu5eb27Ey4Tlu67G0YfKvCst3w4JotnasBpHhd
-	M/LBUxMd9vizx9o+X5E2kN9QoztA017/FR0JCZcCdtPShp73NTI2OZQFMY1BXlkfUKlnz6
-	VOKio+H8lGJXSUI2VFqwEYirbILhKfMDJU//pftG9qI1wD2GnKbclLg4QeubZwEqQgF55W
-	2h5UJ81UoY1d35EgxK6QEhmrcFw24MD5Xw88gCuy25tJ2K3cdznC6OXKogWtqA==
-Message-ID: <81c530248789f79da265da772a6f248a0d524eed.camel@mailbox.org>
-Subject: Re: [PATCH 1/3] rust: sync: Add abstraction for synchronize_rcu()
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Alice Ryhl <aliceryhl@google.com>, phasta@kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
-	 <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich	 <dakr@kernel.org>, Daniel Almeida
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	
- <work@onurozkan.dev>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lyude Paul
- <lyude@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic
- Weisbecker <frederic@kernel.org>, Neeraj Upadhyay	
- <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
- Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
- Steven Rostedt	 <rostedt@goodmis.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>,  Lai Jiangshan <jiangshanlai@gmail.com>,
- Zqiang <qiang.zhang@linux.dev>, Christian Schrefl	
- <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- rcu@vger.kernel.org
-Date: Thu, 18 Jun 2026 14:47:22 +0200
-In-Reply-To: <ajPa4_U_gcxr8SKO@google.com>
-References: <20260618095952.3687099-1-phasta@kernel.org>
-	 <20260618095952.3687099-2-phasta@kernel.org>
-	 <15e81f5bf354cbe3cde765526762e4ebb3ef6970.camel@mailbox.org>
-	 <ajPa4_U_gcxr8SKO@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TtMY2Ngd"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490ac357c55so8289935e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jun 2026 06:07:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781788021; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QQAyfPy+VM2Bzx0Iv//m4vZBmlG5Fx3SVAN1o0M7yCaQBRZXOuRaouKKxo2t77Bo9T
+         QH7InOplUAPLwwgsqTe3TQwi9Vxt623tGXNzLLxGtYSNPToC/oa/13WDMKM8RBzGV9J9
+         wmLx7i6QYABol1ZsEsXYYt+CKW/OcB3hSEjG0GJWBfy3ygAnKvUJbF4q3ioZqGoOlT/Z
+         yWRKyaRSyz2QQ5OoV4WPH4eVS5KqQffBPvsGxNsxT3aUB21wqZ4pfJoHyWjzMoCnBNsA
+         OPix1jMo33kZ3dwP5JOjKDxV8NiBrzEAst1UbqOCF/znxI1uGDw/vNeb3KsKe8Wm+9PV
+         JYRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
+        fh=gUyJrxlrJeFrr3paRtLSLdF2+yJMkHaYLek8pQcYSeY=;
+        b=Vz1jdNsYgvokLVD1tc8GI2MflWwBYQGrPHpF02FX0x8HiFexkOX+OecZ8XYYvPzkn1
+         9MXZ2F8rHBhbTzekB2CwL31athZQpQidN9s31EZ8K5lfQi2I8CZc4yDBTRCsE/WN4YaK
+         9k8yabuzdD2prscwlEdZG/tUMNhQoULHQ/J7L1osTHYqh0kXhdJlglnxzn1qvx6TwRvc
+         YMP/2LxYJ+V5B2olmWS7EzDZ8ye4Jc3P7rM1e78w8pnjgbArucM/cTE7B/54vjujAfz6
+         Ekb9jUJ/0cOh9/rr7hExZxqibx91rkxHfoPDnVwjiJlWpkTIzZPehBW8nGDFN20dF4ge
+         A3qw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781788021; x=1782392821; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
+        b=TtMY2Ngdb1sGxR7NWU5wrnWHaPWlwbhatx3KIrmFxc40lldg3ynkDML56ZrDvKKRoN
+         2M1cw3lKMqP7w0oPa7tFW9XafJoGkS7SqitZOh32VYodI7J0d7MhWGhjV/PHpwRU4eox
+         fvgh4U1JQWCAitWzxKPf2A9WlQ1bHXJWZU82FTjMhZsRf1AiNAXKk3c2JB7IVVWjChhn
+         YqpFF8TcftE2Vr+EnBOnCClrwT1G3nWb516PHZQ/ShHakueJEeTQAnJdVmFXTcH8Ti9X
+         ZI1N9HHI9BqGnUVd50Zh8E2AFufI6uBpAA/rn3Yz+dHVLzSdbRpnN2hT65cE5PaN99cW
+         e6aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781788021; x=1782392821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xLDEczlFg03N7NCLGvlcEdzsmuKKaWL0tH9EnNveSys=;
+        b=VmsitEv6vJSTTtOAyGZSpFMmi1j576nsxmZBykzLdAE1/E1AESSLpZIzUsyzo+fHhb
+         xa+msDK5YqqHq7kjb501pGkx8QrS4Vyg35BYAMO/92Q3L6nuuYZYEjmqGzhjJudLNHEg
+         +FkoSmB1zIS3z0l59BdJpM6lwF3sXB6H/KljIfFW94aSyzUP6V7dd0Vsl/8Fmfuc9Jlm
+         Z/3N67rqLx+lOyczwnha9MmgKvfYZjBR1qhfmHj6IiP4Bsczf+GKX02XE6gwPVt7iR8J
+         vD1eorCK7QjSjpA7roGF8MbOa8vQVKnzDSEfQ8+nuIo8iFdoSlhbHkFRj2X2FIyrQdZ/
+         5RZA==
+X-Forwarded-Encrypted: i=1; AFNElJ8eAz1tR+GLYkxd65K79B9T314jjOCBQtq53NH0qgp44v1AKm8zNnlDuow/p9GkZiizjLlT9pj3SQ2SaxSPgA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNj2LDBxA7bQkxlLr01f1mYFFXHP3M4Z04QISiPCeHgkm/9GBm
+	Kvi0MnYTEOO+XbzcU/TiCPxD2x2/SvepvYcYs0wVSeohBBYRcOzSU2uj32oXwvoeKj0JLMauRVq
+	E2wOLf8m0swz5koiJX/EjLxt9v6MbLJ5qUP2NWlJT
+X-Gm-Gg: AfdE7cng8Gu9LVLQqXZZCwzmAE0kMMf3pnDRbJq0MrGYfeiK6b4ZcW++RkwLW/aj6me
+	gBESMtnwBIKqnYqrlrZN526r8aYdOAddWXHMOJmEz7XNbke0Wg4moyfomr6fMMhvI4HCPMHFngL
+	NGEUlKWiCQs5ZFQdoql3GoLF+DM9pcYi2TUNABCR+LpH/wmh68b3p/nkmEjLZdidBNSP++v0B8z
+	NS1COVD0yVPZPZ6kOmz29WsHNbTMTEhd2prcAl2GWi9c4NKKLJDVKTTxrHVlouuz781z5qnvKbi
+	OvTkNiPSgLzMd52aqQC1QpkX5MbEaC0duCpl79GnUiJdRNmWqie5Aa1ROPROjssO5Ptwgw==
+X-Received: by 2002:a05:600c:4c09:b0:490:b355:9c8c with SMTP id
+ 5b1f17b1804b1-492333ca42bmr96135075e9.23.1781788019918; Thu, 18 Jun 2026
+ 06:06:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 6c77894625fed4cbbd8
-X-MBO-RS-META: jk46pjimor85d6j9p35yhyttdo7smzm9
+References: <20260618095952.3687099-1-phasta@kernel.org> <20260618095952.3687099-2-phasta@kernel.org>
+ <15e81f5bf354cbe3cde765526762e4ebb3ef6970.camel@mailbox.org>
+ <ajPa4_U_gcxr8SKO@google.com> <81c530248789f79da265da772a6f248a0d524eed.camel@mailbox.org>
+In-Reply-To: <81c530248789f79da265da772a6f248a0d524eed.camel@mailbox.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 18 Jun 2026 15:06:47 +0200
+X-Gm-Features: AVVi8CeK2MScB-t7m9DsXQaFm4-l0PDopN55uoi7q9D_cmJhkYOY8sxrgmKJWI0
+Message-ID: <CAH5fLghB3Q-Mc4YzVMX3nGVSTzfh=jqFzsLMcXqXLTiVcgxhKg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: sync: Add abstraction for synchronize_rcu()
+To: phasta@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Lyude Paul <lyude@redhat.com>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Zqiang <qiang.zhang@linux.dev>, Christian Schrefl <chrisi.schrefl@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2026-06-18 at 11:47 +0000, Alice Ryhl wrote:
-> On Thu, Jun 18, 2026 at 01:40:05PM +0200, Philipp Stanner wrote:
-> > Moreover, this would be an opportunity to change the naming convention
-> > to rcu::synchronize()
-> >=20
-> > But since Boqun & Alice are pushing for rcu::RcuKBox for the reason
-> > that it seems desirable to explicitly highlight that that's a special
-> > Box, I guess we should be consistent with that and also have "rcu" in
-> > the name here.
->=20
-> I prefer the naming of synchronize_rcu() here.
+On Thu, Jun 18, 2026 at 2:47=E2=80=AFPM Philipp Stanner <phasta@mailbox.org=
+> wrote:
+>
+> On Thu, 2026-06-18 at 11:47 +0000, Alice Ryhl wrote:
+> > On Thu, Jun 18, 2026 at 01:40:05PM +0200, Philipp Stanner wrote:
+> > > Moreover, this would be an opportunity to change the naming conventio=
+n
+> > > to rcu::synchronize()
+> > >
+> > > But since Boqun & Alice are pushing for rcu::RcuKBox for the reason
+> > > that it seems desirable to explicitly highlight that that's a special
+> > > Box, I guess we should be consistent with that and also have "rcu" in
+> > > the name here.
+> >
+> > I prefer the naming of synchronize_rcu() here.
+>
+> We might be tempted to at least call it rcu_synchronize(), though. It's
+> also RcuKBox, not KBoxRcu.
+>
+> But I don't have hard emotions on that topic.
 
-We might be tempted to at least call it rcu_synchronize(), though. It's
-also RcuKBox, not KBoxRcu.
+I don't think we should change the C name without quite good reasons.
 
-But I don't have hard emotions on that topic.
-
-
-P.
-
->=20
-> Alice
+Alice
