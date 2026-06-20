@@ -1,147 +1,144 @@
-Received: from mail-244106.protonmail.ch (mail-244106.protonmail.ch [109.224.244.106])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011013.outbound.protection.outlook.com [52.101.62.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1B1342173;
-	Sat, 20 Jun 2026 09:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.106
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781949250; cv=none; b=k0fKKnArKTw7Z93Aa14KgTotKvXcPlpbMbBs032V4QUWFRijOLQkoNdG6Z1OFMVFmH139SwMrl/qCbSGTJyyoB5kOgsV6JoyzmJFQwsuEHvshjVGIC6zjmHvSCStHXokryE4oDb6IfrR6GF08xkndmNMv/5dg0GQbdQ5AD0ek+g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781949250; c=relaxed/simple;
-	bh=S1Yk1RKcx99ZYDTfGzKBDCZLgxl3y4+wT6KE2GgVEvM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EXjhTDEzBEnfhefUR9GW7bezVZhSHMCN4EcQGqOElluroR8M4N79xCTHcbJZr+Cj+Kbkid6KmaP5DlI5rrahTvM6L862wjLQ6RyDnf7lnsZ1Nwxp0nSKthg5zOzatSx/QPhTUam4ODbtFPFflUepVufqplu+q+RYiw3dtHA84aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=kAPJAHIu; arc=none smtp.client-ip=109.224.244.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4793E212FAD;
+	Sat, 20 Jun 2026 10:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781952490; cv=fail; b=P60VegmGKdLZ/VgqTMc4kFL/p/SoLl3F3jSoq9P7ylnEli4yXxS+ogfgxCbAoeH19PXRtnntTLIqA07yw4phx4PeAHb637N4f5EA/yq+h7eChoeBeClNBeURfKW/QpyEZSWFF47fD+EHFzSkJAL47gmjiO4VKHFP0yw+uIUolsE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781952490; c=relaxed/simple;
+	bh=65qqXEXgqsD6IavO6LxCnlSco0gD2LgyKy9qJJwV8Yg=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=nWetrQDkNYjY6xu1war1yFWp4981WE7ojJGf65/LQNbETYV8wZFo8FH665noTJfbbpnqhcwaESamazdpWSRbMWibxJKgykuC4K3L0F8+P2QfRfLklXiy0Bci+8kRBMZl6Qa3NBX6Ld0W0C8DZBhK4NvCMyrAY3IGtO/t4CH8nz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cBrD2vID; arc=fail smtp.client-ip=52.101.62.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="kAPJAHIu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1781949247; x=1782208447;
-	bh=HhMhzTTdG0bq+IWYn9DgAeFO+tTJcpZXFm0kMCHL9sw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=kAPJAHIuCeBdE6T4PJ/Fjb5k2o9/E/sw+758xjEShNh+DQln8RsJEQKcfE2/h9QY8
-	 CdD8AvNcA+F40uz9yw/gkLG53gtmmC6Vva6gJ7jVj1yKpNnDYSdfePYk95gGiM4een
-	 JW/mmNkCRMEFBAlu8Seq1BnZ0iSjpxYHRSp3q5RrhCdGCoKTi8qhz/TrIWj9XbXzWD
-	 JxTizOGNtMeWJxWgdH0KrfS8GF3xFtdEapHAARhsSwBSY2JyG+GjTq8135DNl96hua
-	 +pr3M7x+5OJwmnrSfZ+07NnO7dodyOvrkX0GHKcbtm67QL5ITUDja9uvsxh7TbTaod
-	 XF63IEgV8D+fg==
-X-Pm-Submission-Id: 4gj8tf6dxLz2ScPh
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Maurice Hieronymus <mhi@mailbox.org>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Lyude Paul <lyude@redhat.com>,
-	linux-pci@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fiona Behrens <me@kloenk.dev>
-Subject: Re: [PATCH v2 2/4] rust: pci: add managed Device::enable_device()
-Date: Sat, 20 Jun 2026 12:54:00 +0300
-Message-ID: <20260620095401.11939-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260620-b4-rust-pci-edu-driver-v2-2-6fd6684f2c14@mailbox.org>
-References: <20260620-b4-rust-pci-edu-driver-v2-0-6fd6684f2c14@mailbox.org> <20260620-b4-rust-pci-edu-driver-v2-2-6fd6684f2c14@mailbox.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cBrD2vID"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fu1AD07j4EIC0jV/vNIW+inGmNoSF+c15cIkuVnmpp2ywNUo05adCH5DokE+hSILTBPPs0Za4JunH7SMF/zw9nAd2gK5voYXUMf/fb4Dssc86jSilE+8NX9NGy/4lUZxecbg79pzqvJ+pLVrVqT2wsxpBI0SSTVE6+lclMifYPOQR7BJntB4Gh9WY8jsu6nkfzWISWenJbb1rhJ/+Yk364h5aYxcTu25pNRLwl9eMtz1Pq0wLOtuR3+iOCHZ4xBBV1Ui0lbCNOmdKSM1QWgYEulFlRZngokd236qZEsx84LKuU/M5zzx4e2fYbJz790NhaCE3qomgEYUk+n0QCuMEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=65qqXEXgqsD6IavO6LxCnlSco0gD2LgyKy9qJJwV8Yg=;
+ b=nbH45CXBWUJmt4xxtQxso7gOmejFL802urjHRt1rnT/Cnu9dLZWS3pnfRgHKld8pF9ce2wy1Qsue12tsllBwpM7uXyav3IDZUmRbxFmIKsqWFdHlN4tNe1fIRGNUicRmBZiUA8DwRbjTWy7IvJAYRVvvXTpuixbUEH1BlXWacoc6x29y2Lt+FfnExKSaY4BuKYcMUQsvnP3QXI5XVTh8TIL/mlyFpHiebzEvuQOfbaaGbJTmSQomX3NoGUJH1MRrjYyw2SGoKYJa+zMmM31nvVuSgX2om62FFOcrABWG29fTxSryAmb6bRwGHsZP3oqpUUY+u30FoVnHjR+hFtLdjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=65qqXEXgqsD6IavO6LxCnlSco0gD2LgyKy9qJJwV8Yg=;
+ b=cBrD2vIDPRKA121vTavhdYfJmqUq+2vTbvUAtAXY5Wj+2tnQYOImSBNh7HFOtrKKzb42zV4EYfWq7/bKMFFxslJTnWhO01GkM2AUq9FhWhscFNCCjT177EJ44EiElzBdAKs/0GkEJOg3rzGPrtR9Z3Y92iQcGjBeAUXkGAEGcfaYPdnuZ8yNuXo2vsxVfCS7IRxHoVfG3zK4EJpFu6FT3mC4vUx0U6pYN8X69i6810Td+0GBrase0l0+Ci2cqyKib5SvZxdWUGqQF+iCdy2ZyUqfnLL7V9Y8L+OSFvTIB2ePI0XgyD5SeH1lubdY4G4fGb925CHy3m+fCCrVD8ZOpg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SN7PR12MB7809.namprd12.prod.outlook.com (2603:10b6:806:34e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Sat, 20 Jun
+ 2026 10:48:05 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0139.009; Sat, 20 Jun 2026
+ 10:48:05 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 20 Jun 2026 19:48:01 +0900
+Message-Id: <DJDTFOOD6BDC.2MOEQNMG8K4CY@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 04/13] gpu: nova-core: falcon: gsp: move PRIV target
+ mask constants
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+References: <20260615-blackwell-fixes-v1-0-f2853e49ff7d@nvidia.com>
+ <20260615-blackwell-fixes-v1-4-f2853e49ff7d@nvidia.com>
+In-Reply-To: <20260615-blackwell-fixes-v1-4-f2853e49ff7d@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0273.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c9::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB7809:EE_
+X-MS-Office365-Filtering-Correlation-Id: 209846cc-da43-432c-f656-08deceb9682a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|23010399003|1800799024|376014|7416014|366016|4143699003|18002099003|11063799006|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	KHKS7kgzRAUxpr59R90LpxxfYDMPjacOB6Vj/84fnZgKv8Gri0UpccvfH4pLWfIhXChYvU2IlM9yK5Kt5lv62c+Ec2wpwDpARV1Z9PtYcXMfPhrnAK9S+wwBUkFTpCy8CJ05yF7WpfYHjpT8cRNLrQnyYp/Hp2QrIcUNbQj5NjWUMyT/3k34cHMeeDwYmspTUvqylzLPwtfbVZHVEFG4lQax802r5gH4QH9UZkGQa+B1hIY9y1+8c/Fe/61qIF8JFiBOzE2o1Z2BX1RDpSq5y/t7hNwI/z9kTgBfPo7Fy436PnS7DPK7CnGfmOfbspXKDu6L3cJ1iWJMVouqSsjoSjxua/tWEoJmjwHQLh4t1BOm7jl8tDBSBmVJN6y4o1v/OubHdI762tXOnw9qs8j7x8S8PwX+LDWPoYLhsSjLd8lTYFO/mWghgfj865kO5byP3GWQoS8nO6PVYRY+1COXVARm5NQyHoHXcwpX7hDfM+ZAM1n1oay2SnNqm7kQS5c57FyXDz57ymhsndRX37jORz0hzuNyGOzIt5/0sSSuP167brJrvswe34M0rjX8e+ZRYJgejBAm4VZnSc1hpCXnz7cIlQNFXslf1WOZ+8BEBo92ou1tYIL2aSerLlEcE0qZObD3VCPRCr4O48k2Z5xEslkcgaU33lACxAdWQOA/Brk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(1800799024)(376014)(7416014)(366016)(4143699003)(18002099003)(11063799006)(22082099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RWJ3NUtGRWU4UGpzQmZ4anNZZlV3YVhSSURyZkdtY1NaR2I5cjJGT2hBVGp6?=
+ =?utf-8?B?RE84eGNvVjk5bnlqc0NMQldFZzNiY1M2NFpQQklOa3dxcDROR1V6R1oySkNP?=
+ =?utf-8?B?RmRoMW1mRm5ONHo4Y05SenBUbysraWhleTNDWTd5VjRaWG42R1ZRTHN1SHha?=
+ =?utf-8?B?a2lkZk9wMXpzMDZrM1BQYXFTUEJKQk82Sm00TVRHdlE3cmlJdWN2Zk9Gb2xl?=
+ =?utf-8?B?NXBHcytaZjZEVjcxeDF5NFVJeTMxaUZSd08rdWFBbzF5Q2EzaW11bTZXZXNR?=
+ =?utf-8?B?Z2ZqQUZqcVlMRVpnSVFwRHl3ZlZ3NHZGQ1dTTFNYU3YvVzNEMTd1YW9jSnRh?=
+ =?utf-8?B?cTc1cFp5aWFwdzEzMW0rL0ZZQTA5VVorUFJ6YlUvZktaNHJRMzhkdGlGTXpu?=
+ =?utf-8?B?RmFCd21PR04wOXNUVnFlMGl1aW4zVVFFS1BDMWJGdFBXajVlbitwQWp5aU9o?=
+ =?utf-8?B?MTJ4QkFPZHQ2NS9UeVRWZlN0TllLTVl6Z3hDU2tweWpzUkJ6WTN4VFFsNFJI?=
+ =?utf-8?B?SzRGU3FqOTFZZWFGeTNyd28xL0xKd3NxaVZZc05xOXE1VnNJM0RCajJHWE9N?=
+ =?utf-8?B?WGxHNGdmOUpOeHFiWk5va3hVWXZJL3pHQS9qOTZhZVYxZWVQTlRZaFdsQ3FW?=
+ =?utf-8?B?Yys0alZNaHlkTUFkYklLMUZ3aUF6VmI2ZlF1WHpLTXZXMmVyU1dLZXF5YWV1?=
+ =?utf-8?B?ZnRBeitLZDRJWjMvZWhXK0RTajlhTTlwL3ZqRGZ0dFBidDBrUC9RT2tYeTNU?=
+ =?utf-8?B?VUZlangwajd3d1QrcmtYdlNiUmhQcjRORnFUSmEvQm1DeW9hZjlUOFRyQmMr?=
+ =?utf-8?B?OWZlYkxmdWZMR2ROYjZhOUJRSkR5K2tBQnRqRlRTY1FUVkVJTE5BYjBTU2Zh?=
+ =?utf-8?B?anFEbFdkS1p5bStYd3VxTXJ3bmFFa2JlVFZUK3IyZjlOR2xYZExUUXZQeG8x?=
+ =?utf-8?B?S0JwR1NSZFV1OS80UTQwR3F0UVpTOHN1T0w2bzM3VXdFRHQ4NFZsc0JNYStt?=
+ =?utf-8?B?ZlAxZVUyd0tOWGF6eEw5WEMzZXFiRWpYRTcrY3Mxc0I1eDhtMmlJbnhJY2g1?=
+ =?utf-8?B?ZDFrelg1QVFtUWYyaDYyZUVGelBsZjZ4TTVQM1V1YVJQVDhrLy91NWp3UXlS?=
+ =?utf-8?B?SFJ0R1Z5RTk5RjVocVl0dElBS0ZyRjh3VVJWQ1RoVmhBaW9qNms2cDBMT2wz?=
+ =?utf-8?B?MVJrbWdyT2RKbDBCeHZnSDNFQThTTWgrWnZ1b0xjVXN3a0Y2QTRaaEpkMVd0?=
+ =?utf-8?B?T3B2YVVmOEoyVmowWXJDMzZCK1VGdmpZYktUK1J3Q2NqcDRFZHZHc09sdnBl?=
+ =?utf-8?B?T21pVUt1bk5TT1pvVFNXUXNwcHNIR05uSE9rOUtVY0lqRFA3aFRxVWtRSW5K?=
+ =?utf-8?B?ejkyL08wMXhZSjBsMjFLS0VZZ002QSt6Zm56NjUvNzQxUTE5cG9YS04xeWZF?=
+ =?utf-8?B?S2lCbHBLd1lLRFdrWVZBMW5qcTRBWWo5ZzIzWUFXYm9oMFdPTlZta2ljdnVO?=
+ =?utf-8?B?Q2xwM0tEbHFwTWxxUDByT01vc0ZkQXdsY2h4LzdJVE96V1Z1dTdwbGJnS083?=
+ =?utf-8?B?NGJJQ1ZDcXMyWXYvUW9oTlJhWjRQa0J1OW1rVWRQbXkzWHR6Ull6YlRwLzBx?=
+ =?utf-8?B?SmZ6Qzc5MGRoWERCZi96NXdldjNBa1BxS2pUVlVxc04zYnhqcEgxSU50L1Vz?=
+ =?utf-8?B?V3pSYXRBOUh4QS9KcjAxOVQzdHpjdWc0OU5rMjlOTGdHeS9FUzBwbENsTDJw?=
+ =?utf-8?B?U29tMlFUSUdNVlRaMFlDcG5sL2N6WE5wc1cvUytqbFMvSlgzZ0Nja2Q4MEVI?=
+ =?utf-8?B?OTc4Zm9ZOXUyVzNDNXBaVC9DTzhYZExnOGIySktsUnJjVWVvdlZDMzFlQVIr?=
+ =?utf-8?B?NWx0MTFVd3JPeitERkFGREo5T3hBTUN2dXdZNkxuMVlObG9lNmdmb3VCZkZV?=
+ =?utf-8?B?TE5oWmZPeXZLczg1ZVllSWFRcVBTL2hmSE11ekowbHo2QmVRenhDaURjeWo3?=
+ =?utf-8?B?NDN5aldCZWZoLzErTzM1YlEyNWVQR1RoK1lYS3dNbTRpYlFTK05BYU1XQkFa?=
+ =?utf-8?B?SDc4L1IzakhBZnh1bUR5aE4rUGluWXNZS01VOHZvcUhPUDVBdmFGSEMwWS84?=
+ =?utf-8?B?a1NEN2hRbGJuYTR6Y3Q3aWp0OTRMOEYvVGhtL25hTTNKdVVzcGYxMFBBaUlh?=
+ =?utf-8?B?d0prbThaeUk0azh4d0VlWjZObDh0cjlJODY5YTVrUnlxR0lzd2RYaXVUdWN4?=
+ =?utf-8?B?elg5am5zR2trQVNpNk9EOU9mYy81Slo5SEdQb21nWklraUR5SDlZM013LytL?=
+ =?utf-8?B?WlcrRkNrcXp0Qng2bzhlV2dSYy93YU42MG1pU0lvT3FOazV0d2RyWGtxOVgw?=
+ =?utf-8?Q?Wi9V4zZwCPIP0R/tw82UXgQyrr65qliRBodILhgqt0ku0?=
+X-MS-Exchange-AntiSpam-MessageData-1: 9H+JuO/fZK/Uew==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 209846cc-da43-432c-f656-08deceb9682a
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2026 10:48:04.8462
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0CjviiUjVXNfpaAMNsOTHElWn1+UnM28JELkigkeV/JU6QHllY/eU4j3hMcMbmgDh/zdpigO4g9Kp13rU9p0uQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7809
 
-On Sat, 20 Jun 2026 10:45:46 +0200=0D
-Maurice Hieronymus <mhi@mailbox.org> wrote:=0D
-=0D
-> Add a managed counterpart to Device::enable_device_mem() that wraps=0D
-> pcim_enable_device(). In addition to enabling the device, it registers a=
-=0D
-> pci_disable_device() cleanup that runs automatically when the device is=0D
-> unbound from its driver, keeping the device's enable count balanced=0D
-> across unbind/rebind cycles.=0D
-> =0D
-> The existing enable_device_mem() wraps the unmanaged=0D
-> pci_enable_device_mem() and has no disable counterpart, so the enable=0D
-> count is leaked on unbind. On the next probe pci_enable_device_flags()=0D
-> sees a non-zero enable count and returns early, skipping the power-state=
-=0D
-> transition back to D0. For a device without a PCI power management=0D
-> capability the power state cannot be re-read from hardware and stays=0D
-> PCI_UNKNOWN, which makes __pci_enable_msi_range() reject the subsequent=0D
-> MSI allocation with -EINVAL.=0D
-> =0D
-> Furthermore, make `enable_device_mem` inline and add a reference to=0D
-> `enable_device` in the docs.=0D
-> =0D
-> Reviewed-by: Fiona Behrens <me@kloenk.dev>=0D
-> Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>=0D
-> ---=0D
->  rust/kernel/pci.rs | 16 ++++++++++++++++=0D
->  1 file changed, 16 insertions(+)=0D
-> =0D
-> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs=0D
-> index 5071cae6543f..d076a3691091 100644=0D
-> --- a/rust/kernel/pci.rs=0D
-> +++ b/rust/kernel/pci.rs=0D
-> @@ -454,11 +454,27 @@ pub fn pci_class(&self) -> Class {=0D
->  =0D
->  impl<'a> Device<device::Core<'a>> {=0D
->      /// Enable memory resources for this device.=0D
-> +    ///=0D
-> +    /// This function is unmanaged and does not perform any cleanup when=
- the device is unbound.=0D
-> +    /// For a managed function take a look at [`Device::enable_device`].=
-=0D
-> +    #[inline]=0D
->      pub fn enable_device_mem(&self) -> Result {=0D
->          // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
-d `struct pci_dev`.=0D
->          to_result(unsafe { bindings::pci_enable_device_mem(self.as_raw()=
-) })=0D
->      }=0D
->  =0D
-> +    /// Enable I/O and memory resources for this device, with automatic =
-cleanup.=0D
-> +    ///=0D
-> +    /// This is the managed version of `pci_enable_device()`: it enables=
- the device's I/O and=0D
-> +    /// memory resources and registers a `pci_disable_device()` call tha=
-t runs automatically=0D
-> +    /// when the device is unbound from its driver. In contrast, [`Devic=
-e::enable_device_mem`]=0D
-> +    /// is unmanaged and only enables memory resources.=0D
-> +    #[inline]=0D
-> +    pub fn enable_device(&self) -> Result {=0D
-> +        // SAFETY: `self.as_raw` is guaranteed to be a pointer to a vali=
-d `struct pci_dev`.=0D
-> +        to_result(unsafe { bindings::pcim_enable_device(self.as_raw()) }=
-)=0D
-> +    }=0D
-> +=0D
-=0D
-How about adding `_managed` and `_unmanaged` suffixes to the function names=
-?=0D
-=0D
-- Onur=0D
-=0D
->      /// Enable bus-mastering for this device.=0D
->      #[inline]=0D
->      pub fn set_master(&self) {=0D
-> =0D
-> -- =0D
-> 2.51.2=0D
-> =0D
+On Mon Jun 15, 2026 at 11:40 PM JST, Eliot Courtney wrote:
+> Small cleanup to move these constants which are only used once closer to
+> their use location.
+>
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+
+Pushed to drm-rust-next, thanks!
