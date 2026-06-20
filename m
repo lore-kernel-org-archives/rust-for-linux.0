@@ -1,146 +1,251 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012024.outbound.protection.outlook.com [52.101.53.24])
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB502BD030;
-	Sat, 20 Jun 2026 10:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781952575; cv=fail; b=t46PSCI3mOdxg8Wv9+zNWNuGWRCQZH5EqZT3z/I9maESdy6xuuljlBiQ/PmwSeYDvUqhhZu4Jf5P1MEyGBxLRxIwwK+Zbi2aSv2dzAtI7MeC02agBh1dxd5YE/Nghhn8e7OOviMRWk8fRonmig7Hv/wWNZwENUa9pjYwzwN/RsU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781952575; c=relaxed/simple;
-	bh=+3uSx185j40MJDDLeHOWsTf6nRiO8m9jCYQo3tHNwkA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=qqCKI8F0xPmTHLxYC/pGwp2gyIl9ouE1o1TpqEzFCiozsVQoSU1snxgxGaZ694eQ48BsNDFIeW5xhnK5MXT0Do8tKnwi5/X4YUNhE5xfToHr2QEWi2yhWgvaeYXQ2uIoGacu4rtVJHDG7SR3qfC4vVeAVurFYz0n/dnsd97sQO0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ria9f3Jh; arc=fail smtp.client-ip=52.101.53.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ria9f3Jh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WVU4M7MnhNO6yNI5UnBhU8I6fBlOSvhM4M+vws0HJm9dehQtYuhcHsRvqPROMD1sj4N6ogNPm+7WDHF2RpOlMDimtYlrGVLeY9uzxppVPDsKWbiaK784Z2SCYRTdMI/RjoRSaBOqdHWfi9dy8Z3eq7T4KE0F0gVNurh4DybcbHMsW08Pbj9Dt6BwP7iSbAplLFw6cCbhl/nXaBri8YS7zBOHNGhzf3M11qZhcwHDey9tZUTCffNp3ystuxMRovFxYz2CKGatC1uCzBDEoiCDxaTGUmUjzKtcQNng2fTTm549S4Q2JEcU3LAtT2ylpDdUzvhAWYAd5umwynwJ8JlsRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AfEmHr5MuGyoApF1oKQxe/XbPvHuFe+6CaoyTginfUA=;
- b=Pbhp+Fs1NKW6JYjBy05K8NQuLAIQ9wZbQ1vWrIaozuPiQ9WJLxNLjLk8iCJCuX6M0lOljL4D7bPwhx+C6n+3hpA0PPCDIIGKI8wCGrnIQaWx3wdY1ML2eNvLpITDNjrJh5OtPsshB9vQOw3PC9HgGRsIrLo9Hy21pJvxHdVfdzboMObnBvIla/KmTGLWE7nisj9RD/EgRQ9PjQbfhp7qQct/Ac/npv96pCt1p0tqv3izwBuGj6v2/xW4FrNx5KvlzMVYmtufuBAb1ckwUJbpPjNhJaHgfUlNVoQctQnhkzsS/Ege94jF3LeTcwWLy4PskfyuBd8Ijkr1eGxikTb+xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AfEmHr5MuGyoApF1oKQxe/XbPvHuFe+6CaoyTginfUA=;
- b=ria9f3JhhJHCjRMz0qFv6kPkU8gKyDe/uP16Y9AR1+fxMrXG6cK2S6sSlycNf8+fTdQe+JDr8mLL9IQArmIGgpVc7ENvpICiau/1bHT0ApjGLz08GLfwiSCOdFofMzKTmMP3a1Q5ypuZ7Gtcqpxqj1kxVgo/515jmXdcLa9s0Y7jX1Lv65G8jbhS3bsZt0rfe6E5Q+3BDjcrTTRP6/niOfGJHqKnbXRREphUU2ejFvA7JKcxc1vu7nyTddCaMIc5ZNS2ZA/lThqqeRhs63HNBH+jsGOUfKCAHUPhAJ8gCrdeZ8sdApXIzomuRGUtK4OeEMmuE6NdvAziFWKjDmgeLg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SN7PR12MB7809.namprd12.prod.outlook.com (2603:10b6:806:34e::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Sat, 20 Jun
- 2026 10:49:30 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0139.009; Sat, 20 Jun 2026
- 10:49:30 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 20 Jun 2026 19:49:26 +0900
-Message-Id: <DJDTGS1Q6GK8.2C969852M7Q2X@nvidia.com>
-Cc: <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>
-Subject: Re: [PATCH v3 0/3] gpu: nova-core: obtain and display VRAM amount
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
- <gary@garyguo.net>
-References: <20260617-boot-vram-v3-0-20b9ec5fe9f2@nvidia.com>
-In-Reply-To: <20260617-boot-vram-v3-0-20b9ec5fe9f2@nvidia.com>
-X-ClientProxiedBy: TY6P301CA0035.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:3ba::16) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CD131813A;
+	Sat, 20 Jun 2026 11:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781953668; cv=none; b=tfW0GbIicTn/ePDPoJlanfTZb/C4ZBSiDJHgLgi1vJdLux92ygJnUYzmr+7myjABJSUISddU03E0qELFSzuu4Pmw6DG7O50QqQBEslAA+4+Tr5ZMlPZlX69pAb77t4VF3SDpVy24ZK+/40Urihiw6nHr69XgbqIuIV7HzuyL+eU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781953668; c=relaxed/simple;
+	bh=XN01UbbGA2FdQ/af7XvdvFWe0up1fhvoxgHVmw1i3Sw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J6hQrh/3eyRroKTwbMq4A8wovwqEfuhwRrvS8bbshYFHI6QVVCIHDMQw4dqS9yrHZUY/6XxZRdtYfIZInf/xxkpIlTA4KdtuhXqnQUmsAFmypRUJ6+6jgQtSU7ZRla5nzrbPqdDLW5IXo8/Jobxz/Msd6i/k/su1P5FWwLV9D8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id 005061EA341; Sat, 20 Jun 2026 19:07:37 +0800 (AWST)
+X-Spam-Level: 
+Received: from [IPV6:2001:8003:8810:ea00::9c4] (unknown [IPv6:2001:8003:8810:ea00::9c4])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id A3F3D1EA331;
+	Sat, 20 Jun 2026 19:07:31 +0800 (AWST)
+Message-ID: <fa276fee-c173-4595-a5c7-e0342c555990@davidgow.net>
+Date: Sat, 20 Jun 2026 19:07:29 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB7809:EE_
-X-MS-Office365-Filtering-Correlation-Id: bae6c7ba-3af1-4fd2-4515-08deceb99b8d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|23010399003|1800799024|376014|7416014|366016|18002099003|11063799006|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	QgXCABJsxLVg4u42v61n7Vj6mU9+VeX5Bzt+IrNpVoJaGD7tlTeIhTpT4wCsGIcCEizczqRLcLtcK08xtjXFjHJHsrtWNZGEx/GzvkipaFTYIkBVc4R+BiS8WxmVIBaUO6YeV1oWC8qJy9hhimE5F7AZuxzhExauWvYAGruCchvJ1BaYxJepzdjAWQSMjKekV2h8BOUBXXStcIKoC0mvyC+z42X9v4zy8Zf6VuC3CI1TXjYJph+Q85m8Mkt5bjiqlhaQkWYcWyoqkHaTSv4nZEpob55MNtWCUlubIfb1N+N6EaiV4NSKczuM+7uACjcXAm9VYPXgGukejpB0jNmfhhul4neH75p3Q83oJe4J7Qg+2HzWWba9TaVB22jN56CnCpOvek03Np7HVVKkRv3Hi+AGymx9G+AX/PDWis60Hfr03LzahYbW5F03FR9QY63UFjSrFz7+rweNhfxRSsO6KbWTb+fgXcWVlBijjAP0G78gog1geO+9RKMecPictUPYViPQIfjylSM4JFfr7i5Muu96LXNF5le9CGpSJSmsv8lXiZNA7wrqrQIpW6iSnA5JHj8hLqGM+WY5KzZWmFPf1Hn8LQPnesCXVTnuA+8Mg8DRTYM/ihe3fVsIofNw4FvaGDSXJCJmjyngV2dX6d4yjM7b1VidKVb1cN5uXto5cW8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(1800799024)(376014)(7416014)(366016)(18002099003)(11063799006)(22082099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VisvUkE1Tk96RWJ5TWVCVHZnTmswSGRTam0wRzk5Z0dCZzFoQVpzd0F0TGZC?=
- =?utf-8?B?YUJhQVVyVmFPb09SVkdPUGRwczZFTUdtMHc2T0J5NzRPeGw3c0tBT2ZkOEl0?=
- =?utf-8?B?OXlYWFNwc044eUE3b0pTbEMxZlZWd0pja0oxR3NjTzNXOFRhV1cwTWZTdzhJ?=
- =?utf-8?B?R0l1MnJWN05RcW5VaWMzRStMcy9nc1lTWGhaY2dqRVFhWWpWSHd3SzlmLzl2?=
- =?utf-8?B?ZWFMU1B6UjUwdjhmL2hOcWlIcEtQU3lJem9lcjB6ZmdiQmhHeUR1LzIzcHNz?=
- =?utf-8?B?dTkwS0hrUXluVkFLUTE0aTA1eXJMYWNvWHllSGMrd0JoTXMyZ1NiN3p2MmNn?=
- =?utf-8?B?VkFqWUIydGdwMEdBVm5jZXBwOFVDdDBNdUpQUjdFN1ZZemI5RTdNN1M2SG9u?=
- =?utf-8?B?NEpvdE1KS04ycEJ4a0VBdlN6OXZuY0Y1VUUzTnEzaUNxMUdUN0RKRWxmUmFn?=
- =?utf-8?B?VzZLSC9tb2NWUElsZkhScmNlbFc2S0QyNk8zaStQODZNWFQ4N0hBSEhrUkl4?=
- =?utf-8?B?ckJLN1A4cWNsOGpuTWxEMzhtM2ZTRFpnMytFbjQwVDBJYWVyc1lzcyt3UDVr?=
- =?utf-8?B?dWhNTlhINkFoak5QdWoxeUI3Z2RhaFN1eE9pT3piazBsL2tOakVtdG9BQWl4?=
- =?utf-8?B?THJPaUJzdUkwZncxcjJlUDA1dFpLNi80YnZ1RG0yRFRBdnF2L2Z2VHdtRi9n?=
- =?utf-8?B?VnYzU0Y2bEh6ZXJpMi96QmFXOFVDU0NmRjIyMGM0Tm1TbGlTNXVYYkt5Qldr?=
- =?utf-8?B?UDNpZ2o2YXRPeVUxeFFqTE9UaFRCM0Fnd2l4RENGaDdQaEV5NUwwZEJLbmJX?=
- =?utf-8?B?UjlyaGRwU2JPR1AwUGhRVEEwMkpCcE9lNUZBdDVKYmJ3TEdOVWFqK01HdzRh?=
- =?utf-8?B?T1RRNitSN1FKQzZEbVpIOVJzV1dtWDFOQ3o2b2J3elhWbTV6dVBOaUpHUlhm?=
- =?utf-8?B?enVYQ3d5YXB1WGt0NmRaSnh0OXNRM3hRN2YvRCttR0NnRlBXNGJwcDh2UW5P?=
- =?utf-8?B?MUJvendXLzZBMHJObEZ0bCttbGxxemdWSVppOWZYTE5EajlKVUdZTldrZXlF?=
- =?utf-8?B?aDJIVU5QQStoQWlZVWJWeGdsNGppaXlOcTRSYlhjMEpXUUcrbEQwNk82dENt?=
- =?utf-8?B?SktSZjN5bFg5M1FNYjg1NHZFU2dOYXBpUGxVck4ySC9hbW5jY2NzTDlrS01o?=
- =?utf-8?B?ME5NQTUxbzVPTFV4RVhQYm9FN0R6Y1pHazhsQ0NwT2NrRU9kaVVXUzVhWTlX?=
- =?utf-8?B?SzJQajF0SlF2UytDV2hyenFpNUdxY0tWMkoyMyswbXVHbm9qWk1jVE1UU055?=
- =?utf-8?B?TEduSzhtQ0VjV3dRN2E4eXNVaTJBMzZGNlA1OUxXY2k1OGRPaXBrak5pZFRM?=
- =?utf-8?B?c1ZlQUxNeTBnMm4zT1JlcWdFd05lSkZCNWhMSUdLQmo4bVFpZzB1WUFJT3pK?=
- =?utf-8?B?aW9jdnVuUnd0K3dBUUpkMjFiS0xCY2lRSHJmVlZzRithNk9mNzJLczlaVVVu?=
- =?utf-8?B?L2Z1YjBtdUJpaTNNSVNBZG9lbVl4dE4zVFlHR3lNcVVPblB2eEpoMDQ2SUZw?=
- =?utf-8?B?SEdyanA1N3pUTC9nRHBiWm8rS3FtU2JicmFHT0UvZHhJUUhEQkpxSUQraDdT?=
- =?utf-8?B?akYrRWRvNVZTYkt5cGtnbEVFY0FyQjNCZVJCdFRUbTJDRE5XdVJPVm8vWlkv?=
- =?utf-8?B?U2c3Z0RQVDNJd29wUFNQUUY2eHNpUzRxQVZKNTd1Y25rZ2hhSUhITGo2SC9t?=
- =?utf-8?B?Tkh2S2hYZlJQcWtwMU5Ca0o0N2tlWVg0NEREajM3a0toSSszNDFUOE5QL2V0?=
- =?utf-8?B?UHRBZmtMWGNQNWFEWmZoWnZPTTFPNGFOUTRVbDU0aHBrV3d6QlVTamcwV091?=
- =?utf-8?B?OGNLdzgvdEgyc1hmZ3V5aXY1T0IyM2RYRE1VRjRaNjJFMnV0cmVZbmo5QXR1?=
- =?utf-8?B?SzZKa0EwclpWMW1hdTR6VUo0VWpRdytyc2VoeHVaR29yN3hLc01TeGIyTTE0?=
- =?utf-8?B?VU9MTUMrdEdaajVYZmU5a2RuemZMd2tTN0FXOWIyQmpCL0lac1RMRGFnYThi?=
- =?utf-8?B?T2VGd2ZsTzVzM0RWY2MxRmE1NmdwMzJxM3l4NkVGWUVjbzJrc01vZ3U2SkZ1?=
- =?utf-8?B?Njg2QVNYbjU4TXdNMEREY3JLYzhpVWg5UStRWFRheTYwK1ppajl6eXBsOE9L?=
- =?utf-8?B?blVsSmRZZGFGTXNLSXg2d3RudE0wemsrVnU3SjcydGYvUXZiU1FKVmZvYllH?=
- =?utf-8?B?NHVnVmx4S29IYS9hN0xLSnBWbkpqMC8yUisvMDBURXVxZm1BbVoyV2JLcUx6?=
- =?utf-8?B?dXM3THlkSG1LTnIvejBVWXFuV0RPMjJJZnFUdVBNWmx2ckFpZVNJOC84bkZj?=
- =?utf-8?Q?94eeyvo+xAOxQiZ2oF0lykF0k1+GN+CLykq8AUD+3Qz3g?=
-X-MS-Exchange-AntiSpam-MessageData-1: e8su986xN2OFAA==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bae6c7ba-3af1-4fd2-4515-08deceb99b8d
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2026 10:49:30.8884
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vD2DOMDBEw4IMTAZQwBQT8jQ87338k+dF3Ofox09A8QcJ8F7GjI8reaoipj+nECtWipPrwx5LOUUxouFdh/9gQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7809
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] rust: kunit: use `file!()` inside `kunit_assert!`
+To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
+References: <20260616-kunit-v1-0-b191604a8d6b@garyguo.net>
+ <20260616-kunit-v1-1-b191604a8d6b@garyguo.net>
+From: David Gow <david@davidgow.net>
+Content-Language: fr
+In-Reply-To: <20260616-kunit-v1-1-b191604a8d6b@garyguo.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed Jun 17, 2026 at 10:24 PM JST, Alexandre Courbot wrote:
->       gpu: nova-core: move GSP unload state to a pinned Gpu subobject
->       gpu: nova-core: move GPU static information acquisition to a GSP me=
-thod
+Le 16/06/2026 à 11:24 PM, Gary Guo a écrit :
+> This parameter is needed currently because doctests want to override the
+> file. Simplify it by changing it to use `file!()`. Have doctests override
+> `file!()` macro to achieve the current behavior.
+> 
+> This allows us to remove the `file` helper and associated Kconfig options.
+> 
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
 
-These two pushed to drm-rust-next, thanks!
+Looks good to me.
 
->       gpu: nova-core: gsp: Extract and display usable FB regions from GSP
+Reviewed-by: David Gow <david@davidgow.net>
 
-Waiting for a review tag to push this one as well, since it has changed
-a bit.
+Cheers,
+-- David
+
+>  Documentation/rust/general-information.rst |  4 ++--
+>  init/Kconfig                               |  3 ---
+>  rust/kernel/kunit.rs                       |  9 +++++----
+>  rust/macros/helpers.rs                     | 16 ----------------
+>  rust/macros/kunit.rs                       |  5 ++---
+>  rust/macros/lib.rs                         |  5 -----
+>  scripts/rustdoc_test_gen.rs                | 10 ++++++++--
+>  7 files changed, 17 insertions(+), 35 deletions(-)
+> 
+> diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+> index 09234bed272c..20e3178ebfd4 100644
+> --- a/Documentation/rust/general-information.rst
+> +++ b/Documentation/rust/general-information.rst
+> @@ -157,5 +157,5 @@ numerical comparisons, one may define a new Kconfig symbol:
+>  
+>  .. code-block:: kconfig
+>  
+> -	config RUSTC_HAS_SPAN_FILE
+> -		def_bool RUSTC_VERSION >= 108800
+> +	config RUSTC_HAS_FILE_AS_C_STR
+> +		def_bool RUSTC_VERSION >= 109100
+
+Are we using RUSTC_FILE_AS_C_STR for this? I know it's used elsewhere,
+and it makes sense to replace RUSTC_HAS_SPAN_FILE with something that's
+used _somewhere_, but I do see a hardcoded c_str!(file!()) below. I'm
+assuming that RUSTC_FILE_AS_C_STR isn't something useful there.
+
+(This is just out of my own curiosity, rather than an actual suggestion.)
+
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 5230d4879b1c..e118fdb9df11 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -178,9 +178,6 @@ config LD_CAN_USE_KEEP_IN_OVERLAY
+>  	# https://github.com/llvm/llvm-project/pull/130661
+>  	def_bool LD_IS_BFD || LLD_VERSION >= 210000
+>  
+> -config RUSTC_HAS_SPAN_FILE
+> -	def_bool RUSTC_VERSION >= 108800
+> -
+>  config RUSTC_HAS_UNNECESSARY_TRANSMUTES
+>  	def_bool RUSTC_VERSION >= 108800
+>  
+> diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+> index cdee5f27bd7f..157fd0634708 100644
+> --- a/rust/kernel/kunit.rs
+> +++ b/rust/kernel/kunit.rs
+> @@ -58,14 +58,15 @@ pub fn info(args: fmt::Arguments<'_>) {
+>  #[doc(hidden)]
+>  #[macro_export]
+>  macro_rules! kunit_assert {
+> -    ($name:literal, $file:literal, $diff:expr, $condition:expr $(,)?) => {
+> +    ($name:literal, $diff:expr, $condition:expr $(,)?) => {
+>          'out: {
+>              // Do nothing if the condition is `true`.
+>              if $condition {
+>                  break 'out;
+>              }
+>  
+> -            static FILE: &'static $crate::str::CStr = $file;
+> +            // Use `file!()` instead of `::core::file!()` here so it can be overridden.
+> +            static FILE: &'static $crate::str::CStr = $crate::c_str!(file!());
+>              static LINE: i32 = ::core::line!() as i32 - $diff;
+>              static CONDITION: &'static $crate::str::CStr = $crate::c_str!(stringify!($condition));
+>  
+> @@ -164,10 +165,10 @@ unsafe impl Sync for UnaryAssert {}
+>  #[doc(hidden)]
+>  #[macro_export]
+>  macro_rules! kunit_assert_eq {
+> -    ($name:literal, $file:literal, $diff:expr, $left:expr, $right:expr $(,)?) => {{
+> +    ($name:literal, $diff:expr, $left:expr, $right:expr $(,)?) => {{
+>          // For the moment, we just forward to the expression assert because, for binary asserts,
+>          // KUnit supports only a few types (e.g. integers).
+> -        $crate::kunit_assert!($name, $file, $diff, $left == $right);
+> +        $crate::kunit_assert!($name, $diff, $left == $right);
+>      }};
+>  }
+>  
+> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+> index d18fbf4daa0a..8cc9a20f470e 100644
+> --- a/rust/macros/helpers.rs
+> +++ b/rust/macros/helpers.rs
+> @@ -38,22 +38,6 @@ pub(crate) fn value(&self) -> String {
+>      }
+>  }
+>  
+> -pub(crate) fn file() -> String {
+> -    #[cfg(not(CONFIG_RUSTC_HAS_SPAN_FILE))]
+> -    {
+> -        proc_macro::Span::call_site()
+> -            .source_file()
+> -            .path()
+> -            .to_string_lossy()
+> -            .into_owned()
+> -    }
+> -
+> -    #[cfg(CONFIG_RUSTC_HAS_SPAN_FILE)]
+> -    {
+> -        proc_macro::Span::call_site().file()
+> -    }
+> -}
+> -
+>  /// Obtain all `#[cfg]` attributes.
+>  pub(crate) fn gather_cfg_attrs(attr: &[Attribute]) -> impl Iterator<Item = &Attribute> + '_ {
+>      attr.iter().filter(|a| a.path().is_ident("cfg"))
+> diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
+> index ae20ed6768f1..936eff014870 100644
+> --- a/rust/macros/kunit.rs
+> +++ b/rust/macros/kunit.rs
+> @@ -109,12 +109,11 @@ pub(crate) fn kunit_tests(test_suite: Ident, mut module: ItemMod) -> Result<Toke
+>          // Before the test, override usual `assert!` and `assert_eq!` macros with ones that call
+>          // KUnit instead.
+>          let test_str = test.to_string();
+> -        let path = CString::new(crate::helpers::file()).expect("file path cannot contain NUL");
+>          processed_items.push(parse_quote! {
+>              #[allow(unused)]
+>              macro_rules! assert {
+>                  ($cond:expr $(,)?) => {{
+> -                    kernel::kunit_assert!(#test_str, #path, 0, $cond);
+> +                    kernel::kunit_assert!(#test_str, 0, $cond);
+>                  }}
+>              }
+>          });
+> @@ -122,7 +121,7 @@ macro_rules! assert {
+>              #[allow(unused)]
+>              macro_rules! assert_eq {
+>                  ($left:expr, $right:expr $(,)?) => {{
+> -                    kernel::kunit_assert_eq!(#test_str, #path, 0, $left, $right);
+> +                    kernel::kunit_assert_eq!(#test_str, 0, $left, $right);
+>                  }}
+>              }
+>          });
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index 4a48fabbc268..6b00f9789772 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -8,11 +8,6 @@
+>  
+>  // Stable since Rust 1.87.0.
+>  #![feature(extract_if)]
+> -//
+> -// Stable since Rust 1.88.0 under a different name, `proc_macro_span_file`,
+> -// which was added in Rust 1.88.0. This is why `cfg_attr` is used here, i.e.
+> -// to avoid depending on the full `proc_macro_span` on Rust >= 1.88.0.
+> -#![cfg_attr(not(CONFIG_RUSTC_HAS_SPAN_FILE), feature(proc_macro_span))]
+>  
+>  mod concat_idents;
+>  mod export;
+> diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
+> index d61a77219a8c..37f4877f52e2 100644
+> --- a/scripts/rustdoc_test_gen.rs
+> +++ b/scripts/rustdoc_test_gen.rs
+> @@ -169,12 +169,18 @@ fn main() {
+>              r#"/// Generated `{name}` KUnit test case from a Rust documentation test.
+>  #[no_mangle]
+>  pub extern "C" fn {kunit_name}(__kunit_test: *mut ::kernel::bindings::kunit) {{
+> +    /// Overrides the usual [`file!`] macro with one that expands to the real path.
+> +    #[allow(unused)]
+> +    macro_rules! file {{
+> +        () => {{ "{real_path}" }}
+> +    }}
+> +
+>      /// Overrides the usual [`assert!`] macro with one that calls KUnit instead.
+>      #[allow(unused)]
+>      macro_rules! assert {{
+>          ($cond:expr $(,)?) => {{{{
+>              ::kernel::kunit_assert!(
+> -                "{kunit_name}", c"{real_path}", __DOCTEST_ANCHOR - {line}, $cond
+> +                "{kunit_name}", __DOCTEST_ANCHOR - {line}, $cond
+>              );
+>          }}}}
+>      }}
+> @@ -184,7 +190,7 @@ macro_rules! assert {{
+>      macro_rules! assert_eq {{
+>          ($left:expr, $right:expr $(,)?) => {{{{
+>              ::kernel::kunit_assert_eq!(
+> -                "{kunit_name}", c"{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right
+> +                "{kunit_name}", __DOCTEST_ANCHOR - {line}, $left, $right
+>              );
+>          }}}}
+>      }}
+> 
+
