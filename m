@@ -1,151 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DE31D5CC9;
-	Sat, 20 Jun 2026 00:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DB119E839;
+	Sat, 20 Jun 2026 08:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781917200; cv=none; b=TbkRZpuM2nYCoc1kWOkg7P9ehaGdvRdPyzksYori9sl1B6KQZV6SRaHfgrNOarfJ38riHVtZPLJn3fQ694F6Pm317EbX+OWslbMOSqivOe78D1bJ3VA6hxzuARypjqeFszEkYPGfwuHBnWEOO+CJ6+RWR6eY2xhRn8jPA0tdYDQ=
+	t=1781945176; cv=none; b=c3L8ibwBXIdx5ouec6m5YI215EHyOdYtiNpilm+oiCjpsqh0Zf5TAwOV7IQEc3+QSMBBJLUB2ZTz+Nj602LCecIqulbW7TRoqZwO8Wj3i46agaugeC9Wy/LDJMGZX9xJctxRHGKuZgA4l79tRjQi+lIQxywSbmLbv5joppBNbl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781917200; c=relaxed/simple;
-	bh=jg5Ksuuku/c/aP17iXhr4AJE19Q2SMqJ9kR5JuLclew=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebEsDDfPHozGksgJfZE5ecipNGT7RJkEUBVeCOTUd9a8f/GYLFNRcRwZ9Fc1WV9YmXAZHG5fXyQcaYr6c9guA2+ToJYywy+3gvaDWGKTldoptfGDVTJhip5nup62N6yOH45o3vJmQVnWt+I0ae81o5mSTi2C4n/iGuBg40XTsCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfs4BO3H; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781945176; c=relaxed/simple;
+	bh=wWL8LdZ8p4aRtAGdqUW1tSP9c40+jKKSJIYzFD6h5m8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IGV0moK8YxxXMrCbAaU0Gq7gmI+MyDUj9GbI5s2DPhnwPStrDIm32f//yHhnAyJOxzcmmsOWsdZqlEls+zvjvsNRjFE/xvXRwGeanz4OpR5aHHvU484cGHlg13vv65bx1tGWysdRak/X3tNUMMgjZoTZBYzTFHQKO6eWOffytss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=fxWiveI2; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pfauJrGm; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfs4BO3H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444511F00A3A;
-	Sat, 20 Jun 2026 00:59:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781917199;
-	bh=kXEnwZ2kzXB5ckA55mlOUIcDkhGQPesnafeAN2RBfmU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mfs4BO3HDnjbNckFX8C+i/62Rmf6+SmBZDTvI710/tbzpTNoVbtodu/GqWPyxNGMw
-	 psayJl3wLo5yAGj+xZ1cTWxhR5RVvRnrp9naGp7ifjoZcfumD0DdJvJuqKmq1NUxht
-	 wthP0yarTnbvJG5NhphWPBNYvyedb5XMpsA64zDBYYhiuIH0gVfJYIeeisRyB73tAY
-	 d9XkZPChwuR91bGg/ZoLj/jJ+JtOp7g6X1Y/eIOYGq4LoqXfBFo7TENQz2/3iKNqNL
-	 9NnHbQo/ORaJkubflz+9CR+LRR00s6ZdIX1za4zYcu5OJOe8BrhrSTD9ueDU1d2mN7
-	 mG8yBXeTU+WMw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	acourbot@nvidia.com,
-	ecourtney@nvidia.com,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	deborah.brouwer@collabora.com,
-	boris.brezillon@collabora.com,
-	lyude@redhat.com
-Cc: driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 13/13] drm: nova: Use drm::Device<Registered> to access the parent bus device
-Date: Sat, 20 Jun 2026 02:51:25 +0200
-Message-ID: <20260620005431.1562115-14-dakr@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260620005431.1562115-1-dakr@kernel.org>
-References: <20260620005431.1562115-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="fxWiveI2";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pfauJrGm"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gj7NM3ykXz9v6h;
+	Sat, 20 Jun 2026 10:46:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1781945171;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sujkIHpCAn/P2Px/kJYkXpvSw+/f/JlIbR14Ld5FEb0=;
+	b=fxWiveI2fizhsyOs9HqVFWiYT6XU/XpJT/bioUbwjDMvYuvoqrw3nboYalViV2VjVnFGvK
+	ES9GmBS4Iic9kez9GIAOEM1oq9f+Kdv9K20zhLZJU3/7nSOLWo2AHkI0iPaNyOkNGrV4pI
+	OpxfZdLjrSA2a41o/T/HOgMkYh5X2yQB4MAn5wQ+AEWEiBOSR+DWiKW4uyfGrume42ZK0Q
+	NigaoPVSIXe54ddPjXzFXLYJryM2CmuWZQdcitWtedLHwkLt1NAfeP5i81rp6809AwJ2K3
+	VR/w9ZaMyD6warMBt4Bq+UlTZft/LR8mOF1zdtGUDeeCGFUHuWBQ8uysvo1BlA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=pfauJrGm;
+	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=mhi@mailbox.org
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1781945169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sujkIHpCAn/P2Px/kJYkXpvSw+/f/JlIbR14Ld5FEb0=;
+	b=pfauJrGm0N1+8OxBEZb8Yq8Hvgb+fl0KLTalys64voJURC48BcGkU6oCL4+ZO5O02gdGm3
+	lATyXGDp86Td0mOF7XIEdTMddDFu7vX8/wtirxTK4g3Lj0ExuOBEc0x0iY4tSiduK28hi6
+	XOTX4cnNUAhql5RfemE+kty/rji++XnFj76wN4g4AHlt/TqhZt2MPtMJDRJgQRSp1qASjH
+	CsXYWLlpot6TY0LTJTW127fuFJwDKzsMzfXS59+ZJxxTyojUUN5uWfQ+v/msoFDMI3E7L8
+	g2+gHkinOqLkuW4l1/hQ1JawkoUQuNrRW1KTwP58msad7bV8eaVSWrjL9aRlcA==
+Date: Sat, 20 Jun 2026 10:45:45 +0200
+Subject: [PATCH v2 1/4] rust: pci: make Vendor::from_raw() public
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260620-b4-rust-pci-edu-driver-v2-1-6fd6684f2c14@mailbox.org>
+References: <20260620-b4-rust-pci-edu-driver-v2-0-6fd6684f2c14@mailbox.org>
+In-Reply-To: <20260620-b4-rust-pci-edu-driver-v2-0-6fd6684f2c14@mailbox.org>
+To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Lyude Paul <lyude@redhat.com>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Maurice Hieronymus <mhi@mailbox.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1781945156; l=1721;
+ i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
+ bh=wWL8LdZ8p4aRtAGdqUW1tSP9c40+jKKSJIYzFD6h5m8=;
+ b=IxYXCDevSmZ+UJodbENZDw2iLhVyKKOFUgn33Mc8+mXgAK5oly95kL7yVXlfZsGDCRsgkUvww
+ DV4AkMFXEvNAV2IWHjzlglxl99F1zN75LXFR0tSVTSOlihXEI39Dzsj
+X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
+ pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
+X-MBO-RS-ID: 03af0b95e58ef934e50
+X-MBO-RS-META: et4xw4cc74r1kdsw3f57tq4x6pdbbqmg
+X-Rspamd-Queue-Id: 4gj7NM3ykXz9v6h
 
-The get_param ioctl needs access to the parent auxiliary device. Since
-ioctl handlers run inside a RegistrationGuard, accept
-&NovaDevice<Registered> to obtain &auxiliary::Device<Bound> via as_ref()
-directly. This removes the need for drm::Device data, hence set it to
-().
+`Vendor::from_raw()` is currently `pub(super)`, so a Vendor can only be
+obtained through the named constants generated from the
+`PCI_VENDOR_ID_*` defines in `<linux/pci_ids.h>`. A driver therefore
+cannot match a device whose vendor ID has no symbolic name.
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Such devices exist. QEMU's "edu" educational device and the legacy
+qemu/Bochs stdvga both use vendor ID 0x1234, which is not registered in
+`pci_ids.h`. Per the policy stated at the top of that header, IDs are
+only added there when shared between multiple drivers; a single-driver
+ID is expected to be open-coded in the driver instead. C drivers already
+do this -- see `drivers/gpu/drm/tiny/bochs.c`, which matches with a bare
+".vendor = 0x1234".
+
+The Rust abstraction has no equivalent escape hatch: there is no public
+way to express an unregistered vendor. Make `Vendor::from_raw()` public
+(and const, so it can be used in the const device-ID tables built by
+`pci_device_table!`) so that drivers can construct a Vendor from a raw
+ID, matching what C drivers can already do.
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
 ---
- drivers/gpu/drm/nova/driver.rs | 11 ++---------
- drivers/gpu/drm/nova/file.rs   | 15 ++++++++++-----
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ rust/kernel/pci/id.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index 131212df94d3..81df8158d83b 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -30,11 +30,6 @@ pub(crate) struct Nova<'bound> {
- /// Convienence type alias for the DRM device type for this driver
- pub(crate) type NovaDevice<Ctx = drm::Normal> = drm::Device<NovaDriver, Ctx>;
+diff --git a/rust/kernel/pci/id.rs b/rust/kernel/pci/id.rs
+index dbaf301666e7..fe3b0047179b 100644
+--- a/rust/kernel/pci/id.rs
++++ b/rust/kernel/pci/id.rs
+@@ -156,7 +156,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+ impl Vendor {
+     /// Create a Vendor from a raw 16-bit vendor ID.
+     #[inline]
+-    pub(super) fn from_raw(vendor_id: u16) -> Self {
++    pub const fn from_raw(vendor_id: u16) -> Self {
+         Self(vendor_id)
+     }
  
--#[pin_data]
--pub(crate) struct NovaData {
--    pub(crate) adev: ARef<auxiliary::Device>,
--}
--
- const INFO: drm::DriverInfo = drm::DriverInfo {
-     major: 0,
-     minor: 0,
-@@ -65,9 +60,7 @@ fn probe<'bound>(
-         adev: &'bound auxiliary::Device<Core<'_>>,
-         _info: &'bound Self::IdInfo,
-     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
--        let data = try_pin_init!(NovaData { adev: adev.into() });
--
--        let drm = drm::UnregisteredDevice::<Self>::new(adev, data)?;
-+        let drm = drm::UnregisteredDevice::<Self>::new(adev, Ok(()))?;
-         // SAFETY: `reg` is stored in `Nova` and dropped when the driver is unbound; it is
-         // never forgotten.
-         let reg = unsafe { drm::Registration::new(adev.as_ref(), drm, (), 0)? };
-@@ -81,7 +74,7 @@ fn probe<'bound>(
- 
- #[vtable]
- impl drm::Driver for NovaDriver {
--    type Data = NovaData;
-+    type Data = ();
-     type RegistrationData = ForLt!(());
-     type File = File;
-     type Object = gem::Object<NovaObject>;
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-index 4c9fa409a8be..e0e79b571983 100644
---- a/drivers/gpu/drm/nova/file.rs
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -4,7 +4,13 @@
- use crate::gem::NovaObject;
- use kernel::{
-     alloc::flags::*,
--    drm::{self, gem::BaseObject},
-+    auxiliary,
-+    device::Bound,
-+    drm::{
-+        self,
-+        gem::BaseObject,
-+        Registered, //
-+    },
-     pci,
-     prelude::*,
-     uapi,
-@@ -23,14 +29,13 @@ fn open(_dev: &NovaDevice) -> Result<Pin<KBox<Self>>> {
- impl File {
-     /// IOCTL: get_param: Query GPU / driver metadata.
-     pub(crate) fn get_param(
--        dev: &NovaDevice,
-+        dev: &NovaDevice<Registered>,
-         _reg_data: &(),
-         getparam: &mut uapi::drm_nova_getparam,
-         _file: &drm::File<File>,
-     ) -> Result<u32> {
--        let adev = &dev.adev;
--        let parent = adev.parent();
--        let pdev: &pci::Device = parent.try_into()?;
-+        let adev: &auxiliary::Device<Bound> = dev.as_ref();
-+        let pdev: &pci::Device<Bound> = adev.parent().try_into()?;
- 
-         let value = match getparam.param as u32 {
-             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
+
 -- 
-2.54.0
+2.51.2
 
