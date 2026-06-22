@@ -1,129 +1,231 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011025.outbound.protection.outlook.com [40.107.208.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6C23101A5
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jun 2026 14:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782140324; cv=none; b=fl5K5pbxaWZ0wiL82O9IeZAZ4AVYSQQe7m/1d2yh3k5x8GYyzK3iHY4xttA7R/YywMd04CoksM5q7JCkWIpAkdS+ZZfTqfUPGSYtbsAxw2Dp5VaadeEGBw1JXakRQdm27i0BnLSWXd/JOzbhVtM6PJq105VpQGIYfcj7zjQmb18=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782140324; c=relaxed/simple;
-	bh=kFaJpOvweTrf7dqHJQ8KVk+Qw/ICdIEILNTk/HC7aZI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uqMfvRBBMhvxOmphcaJEVslYB/3SxZKTiW+Db0ESKLPxqgzGUM5Xus80d0FByeHanhTqjWSGiR7IRm17NhyMWukXn7LyfzzLsKjZL61PiHAMpLZC8bEeRwaM/nvOntpSK69KhTtTRGKSLsMxVgaMfGcZBy8vhwGxABel+FS6PU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4jRBcds; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A7A3101C8;
+	Mon, 22 Jun 2026 15:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782140693; cv=fail; b=VzXPS8xohOmq+Dng+++Nc3+lw9Ly4ZUVKJeOmfxFr5rh58c0l4xPA2yGOgo1NBe9X/XuRLQZXiOQ/+cz0dbobQh7+0BwZ2o+lTurCRBbEHJ4//Hx7g8PyElSmRhUPh/L/DZNyrWaIUwP8lVskZ+rrizJ5hzwYf06QoHPk3WUWFQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782140693; c=relaxed/simple;
+	bh=jdcSaSlWnk3El478l4Fy6nJ1Rf4GW8P48+G2CkWod7U=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=T9waHCeJE3p/zEVPN+KD4vvgci8PU5+g/aOEFqUiv0h2pW/RTTL/HceZ9tjv8TF/79raKbBxZayS7We9eDnPR7ZY/2lbsIZFQ6w9nbl03SeSXbEq+Lr8g6Uv7mwbEKPjbof9MAkXODQC9HPYitHwDID6lSyZapVjHE6RFISKqbY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=j3xWgp1n; arc=fail smtp.client-ip=40.107.208.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4jRBcds"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c6c57c5bcfso37858225ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jun 2026 07:58:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782140322; x=1782745122; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bgy6/tlhwdndpj65fs2+faECMzbDJTKSLOfGWTpUBH8=;
-        b=b4jRBcdsS3/t0dbvG4Cse8l6f/bnkhJCTv0zQCciq6Js3PIwomYVJ1gtZMryYh9SNr
-         A/VDojRhTVPU09QPMFYZ82PkmUs0Sc2iFd+8khgYIvNkDKIRqGr5ubCCqt+WU6ZD0e4Z
-         sw3g6WGmIg6j93COkRWgTqHLBKyCFAfVVImkyhTd31BZqdtWJTVU8XXZ19JRohhtj5bw
-         t+aylt2zy3QLc3SYQO1is4ssBFlxGEUjb8KfPsgrIZkfE6H5MV3u95cDrBEdj2mcUMtz
-         pCkDehWEvavEQuSdIOo7iwwr0pBW0Rx/g3miXaPzAuHmixr5BTNyTHNqNXH12UKp9RUc
-         quOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782140322; x=1782745122;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Bgy6/tlhwdndpj65fs2+faECMzbDJTKSLOfGWTpUBH8=;
-        b=YM0xsikR5dHNmPq9la0eDU0WKtNokaQvfykJ2XN9LHa4WdtZ/HuC0PRPFjJrRTGUks
-         6YbqhgABwA1y8VOcPbXtf0rTzV9E52OswjMxU92mvR5owcutw/GFvpRkiBnJJSD0UCZb
-         hRCmjPe/2qiLDlpwH8CUuW6ZNxRQSXjszkvvUltESSc16QQuP3deYWF4MMpTThqEoun3
-         FdBmHjM3GS6h1FpQZ0nDS3Z08gcBYSGKy339SJY5XL52g0Dljb7N8/0k4YVWo+oa/xZs
-         uuXjr1HUkinDUdeiodaFUiSJur4cF6Q3k6lG+XgBNNLv23Ttq2IqFewI+0BdpIH/fXwf
-         PbsQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrMfauon//hDcCdBt2cevRKPp2PmgE8sIPConwSWK4Ed+EJOqsOG/kGkLslLMANNySJ4gXZLjhu84hLHwTw9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6d1AnOnvBHsbfgAhhsYrSfv6oSKWMgOGLky0Uj1K2TAeWs+/m
-	EDvv/UPFLRjtXdWRS7YtucFXCd+uLOeGjLNoclhzzllJ4BSrcRnSwroD
-X-Gm-Gg: AfdE7clsWCvrN2nvUAScUbMredbi3TwlNwds7em6PXmte+S/W7sBQGRaMMXk0AtkSgP
-	NiZi6M1ss4FuZeBAhpWtp1Nm1iJLmCD2ViDABj4FUL7t15joB2p6coCDVZdv+L3z1pg9iXzj6AZ
-	rnwDtwVMjbNcsvhDYSMEeU89XX9pJ20M4QrCu+ES5k8ETXct5kgw4B6QXsQ35jvmgyIUAtgmMhX
-	V8xRxvK54Tf35e1ChMQ2p0BMEOri+i/5l1a7JSMA/owxfpp0ZjssA/u6MCMul4pbIM2Ya+UH4lz
-	/VdqOtMn7xsoyVb6j+bH2OsPVCiE9dTIZO6cfXRA9ubZk/PnmhaPHjqYq/xhBAIJb3K1KsFw9bX
-	A11cHffaD69BEzbCmwX9opbutWs1boL2oyZMa7zUW2ARevaLS69TsK3u14CvoB6TCy7A9jRU4yf
-	vEWww9cLqv4rFeM+dNNuNnRoP8dWt76jGQSQ==
-X-Received: by 2002:a17:903:2f84:b0:2c6:a99a:52a9 with SMTP id d9443c01a7336-2c718cc243bmr172793895ad.7.1782140322386;
-        Mon, 22 Jun 2026 07:58:42 -0700 (PDT)
-Received: from LAPTOP-TMVMP5FD.localdomain ([106.222.250.238])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436d5bd6sm97023705ad.22.2026.06.22.07.58.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 07:58:42 -0700 (PDT)
-From: Keshav Verma <iganschel@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Keshav Verma <iganschel@gmail.com>,
-	stable@kernel.org
-Subject: [PATCH v2] rust_binder: reject context manager self-transaction
-Date: Mon, 22 Jun 2026 20:28:01 +0530
-Message-Id: <20260622145801.344-1-iganschel@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260621210134.441-1-iganschel@gmail.com>
-References: <20260621210134.441-1-iganschel@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="j3xWgp1n"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=j4zzIyYdbBJqtIZTlTYvPceniRp/hjGuT+L/UE1oHF9qScmpBlbJC1ve115B1hPn5x65JLBk2NSo+8pIiQQMxzque1AB3WGQcNFU3i/k0loD1MLcDhllW1kigoQ3Mr3WaVTIvmBFsfCc3TidnJ0neuaWiTYQ/uxGSnOJXO1bTQaU6LFQvpCByde15Ei5ZgEKlmnuIZeAWPW8iDw+bEmBHKujZ6JYcUkMY8WKVubBVTBXXa/GLyS7JNEtpDZBTlg13glEtfgkQ8xRI1x+3Leltx0Wah72cAR9QIy+VUxh1WYJx0jkTAV3r8lx7J29WrQyCRx0hEazh7aKAsiZfXnfSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c4dAB//9V3Nx8nEkHHY8I/OXoQ0E+/8k7aGIZLFpYic=;
+ b=nMcQRI2/FK6iKceMNgw4Pemw20igRv8d/SvjxZBCb+bGCiiWgkmm/8Q10Dd5ifUOdIiOntVMR+91BfTFhy1UbDKTN9C1a6G2iQNpcTeqhSuF+SUwNrdnK9ljhTBBYHfr8r0YbgVeR4ywAI///knVHTcP9BggiCUi+xvRyyYm0jaDm0FToUVrTL948iTesMv/A5d4823BkjXQjzCOk/f2/8ls+5XsZ4FKszmy0bcaeD0DjIns7Dd9dKrn6QUIrXIWwH5N1boLeuXyyONHeEXVQfX3pNoSgBBmIAoNnhhHSKijsrJxPDL2LMbFuBoiT/iIMgP7G2OsDWysZucmkL897g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c4dAB//9V3Nx8nEkHHY8I/OXoQ0E+/8k7aGIZLFpYic=;
+ b=j3xWgp1nFzNTPMsS7hMpIT+ajeR+EvMk9NJ/BcygPplkiHEQ5s2Hxm2PRPFoPQuZZkntGnqszAmkhAVdTIIkXxqL/8nm0HPC1D1ypae3EzM8haGksnUm4aqaNVZGD5UKUscw9Njb2BqJ8tVZUjcxJ47bxtjvWcUTzls+W/OEZUKehPLXNVM3DJ8g+SZLfaHewfVPEtiOsPkHnQEA9d+EmzftjbY1vtr4x5TpuQJeKnVhNY7D22Dq+wGbSuLjuZmeYlgfM8v1wnR/CtLJQgwhIkUh1Msu4XGe9iN3XYo4fcLcIdop8bXxGcLaKWtaY1BH2v1zKNrRmnKdJeFOJOeaXQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DM6PR12MB4313.namprd12.prod.outlook.com (2603:10b6:5:21e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Mon, 22 Jun
+ 2026 15:04:44 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
+ 15:04:44 +0000
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 23 Jun 2026 00:04:40 +0900
+Message-Id: <DJFO5A5XN2EO.22B58J2O6D4JG@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Eliot Courtney" <ecourtney@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Gary Guo" <gary@garyguo.net>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH 3/6] gpu: nova-core: gsp: move boot code into local
+ closure
+Content-Transfer-Encoding: quoted-printable
+References: <20260619-nova-bootcontext-v1-0-45193cd0a2e5@nvidia.com>
+ <20260619-nova-bootcontext-v1-3-45193cd0a2e5@nvidia.com>
+ <DJFF1W6VGY4Q.2PV5MEPMFXIDB@nvidia.com>
+In-Reply-To: <DJFF1W6VGY4Q.2PV5MEPMFXIDB@nvidia.com>
+X-ClientProxiedBy: TY4P286CA0044.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:36e::15) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM6PR12MB4313:EE_
+X-MS-Office365-Filtering-Correlation-Id: d97c30b5-26b4-4e6b-cf7e-08ded06f97ab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|1800799024|366016|376014|7416014|56012099006|3023799007|11063799006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	+umEuMKCRAT1akODWznMpao2a4wH+orpRZGbB38A6Y+d08F1If6ZlgsMxhYz39VyuDDjCjxl9EPirAe3tFAUnSwW2EL2drrAiDrnK8ce0aiU4Rym9BxGINXIK0vOuoZbE8p3N3fTc1w2qzc0IGJLOlpJ4SlEPxg6UIDumHoZOCE6nhYsI2N4v+Fwq5Piiks7IImOSHBPOyHuKC/HeqXA9OT1I2AS9h/7i1wyK4ehTCC6G99NgVKL6+Z0MFmkqgJ6ISuJLs171O9ex9vvQjomRjNZZJZUJqJhJsz3ulSmt7YJ/Xq7qzvIyWOfJFutUT1vjglGRcSbUIib6cNyfshXAHrOmpmppLCvHcZkH2+4kvRo4OsMvqsDyzN+32dbOt/f5mIh8LayrTc/3PtlaiF9ehkAck/hDlPXsljCrdHuaqOcgPYREmR1Heyvt4AyZIbYggQv/W4gyHWD8St1A9c2R3ejJ3x7jjf8l+M7LBv2/rOhexNcYCRF2lTn3l0O64saM0duxZOJaaKynprb732ISLRcO/21NGrxPapkK+YJhbSVcAWw3QLBb6fvO/WVmDctglzvzpp3bOxadoRy8my2NXG2xla7plX0/T9fzHWHKwz7BZG+bzMBeMSHsJSzXkN3g1mPdrW6nsCqkL1Lg9yFUM9ZMiWONoIVvUNuSkGKuB4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(1800799024)(366016)(376014)(7416014)(56012099006)(3023799007)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?M1R1MzZIR092V3BINUZWMjM4R21BaUd6Q091V2pWc0RWWGU1SlZtTk9ETG13?=
+ =?utf-8?B?TGdRU2ZkN1lERGdtZjZ0eWl2bUtiNTdxZ29tZ3NOb1VuYlNjdFJFUnltYXVM?=
+ =?utf-8?B?SmQ3NmZId3VLc1JZU2k0SWlacXRneVdvTHRSd2pJSG5nYmdoOXFsRzlKTTQr?=
+ =?utf-8?B?d081NCtQa2w0bkY1WWEvUFYwWThTOXNkTWZnNktvSnQxREVMbHVkNWtUdW4r?=
+ =?utf-8?B?TTZraDBFTEVaMzN3V2xibURSUzFJWjZEbjVod1dyRmpxcVY4MFZZbWd1ZkdH?=
+ =?utf-8?B?RE9aOGVUamEvRlQweGFRenZyTHhtNm92Y2daNGNHY1BBcldEQzdnV1d3U1Jj?=
+ =?utf-8?B?Z3dsVnIwemZ5cExMVmo2WXlKck41WHNSdGVkcEJCaDhSc215QzJJT1ZoRkpr?=
+ =?utf-8?B?V0ZhUC9OS25aRmpOamswdnlVaUwxWUdCR2p2N2NoY0xmRjBZQ3JHVWdBQkdL?=
+ =?utf-8?B?ckx1TVFYOE9JRXJkWllYMmRPZm5KQlZPQ0xLN1lDTGJWek00b0hkMHh5SG91?=
+ =?utf-8?B?TG82aWxFcCszWDJRNVRERWwzdFBFMDJsZmRaWWszaVJlR2plSlE4UEtYK0Fr?=
+ =?utf-8?B?QTAzUXhlQlZ4OE5qMGxydmFsdkljOHptWDd5dVVyNGdkSFYxaVZNTFVIN1Fk?=
+ =?utf-8?B?MVUrVk9FSGJNRG1qdWlYMGtIOVl3dGlwVlA1VHZvS2h2V3Y4MytrdUUrMjc0?=
+ =?utf-8?B?enFvOGR2T0NXRmVwS2NKNkw0Rm5HNzNqMUJoNTBBbndKeDE2aEdSd3MzRFNG?=
+ =?utf-8?B?N2FVYzVFVjNiV0I2NWVROVJzR3I5aU1vZWhrNGZTVUJrZG1TUHM3WUcxSFRj?=
+ =?utf-8?B?aU5MMXZ6SkVwaXRoMXRCbVhFc3FjbDhNakc4c2p3S0JvZDJOdWRvdGpUTnRF?=
+ =?utf-8?B?OTNvb3FuVWt2YkNQbGhDb3NranUxdnQyTDFhUzdPaE5pcVUvbUJqZmpPVUtR?=
+ =?utf-8?B?Z1lwT3ppNW8zM1RoQW5rUFV4RXpNd0NJVTV3YStXZlhaK3Jwb2g4MUNYMzBH?=
+ =?utf-8?B?OHBzNzM0dkRIU283Q3BaRlB5Nzlkd0hrOHVRY3JBbVREV0p2SlVOR3N0Mmlv?=
+ =?utf-8?B?UHl5QitHeHFzbG9BRnFjK0JOcGsvZnpmY1l1MDY4Rnh3RHREdXBpZWNjemdl?=
+ =?utf-8?B?RDFEMWpwZWZTWFJ5WUxXLzY1Mmdxajg4S2lXSGVPWW4vTXpkZ0trQkZkWkRt?=
+ =?utf-8?B?b0JXNG45L3oxeUdNb3gvb1ZncHJxVWlRc1RONmg1OWxiM1F0dnkrbEVrQ0ts?=
+ =?utf-8?B?cUV1dUR0NDhaeUQyOUFmUXpHcmVLeGw3K2VCb01US0VoZmV4Q1JHZ3d5OVN6?=
+ =?utf-8?B?NjN1b2ViMEdtNCtleXB4WkhJVmhobnVGeU9MUFNIY2VrbXU0cXlUNm5hN3JD?=
+ =?utf-8?B?VlJEZGRRZncwenY2S1JFRGc5czNBUmFjWWNFV2V5bm01SzJVU0NBcGVVcjBE?=
+ =?utf-8?B?b1ZGZ3NPakNwSStjZy9aSnBaZTRqbERJR1c2QUc5ZG5TcTkwaWQxUlZONkto?=
+ =?utf-8?B?VDEwR0VJdkVEZWJRTlNXN2ZjdERRZ01IQlBLZXA4Rlp0L1NkUUU0N3NadTF0?=
+ =?utf-8?B?dU9vSkY2VVcvRFZxRFBoV1dWTE4xS0hUNDBVT2dsOVNtUXc2elVnSEpWYzV4?=
+ =?utf-8?B?OGkrVWsyVDUyZVZ0STVBRGtQSHRNYytLa01DbzVoYmozWVllbGp6WjkybVMr?=
+ =?utf-8?B?dFlLc1d4ZU5lRjgvZEtWR2Y0TzNEUnBXcWN3RzRTSXpBTXBLcFlMVXR4ajIv?=
+ =?utf-8?B?elgvcm9nallCeTd0b0t1czNpRnFHVXRJNWdhYnJ4V0xhNkxBaFZqMzkvN2VF?=
+ =?utf-8?B?UkJGODhRMC9SM1hLa3lTRDlNVFRiSUZtaTFTcC9uRXNYVE9hSTREcEtDSFhx?=
+ =?utf-8?B?ckRQNTVkMzhneGg3VUxRMEJGOUZsUXJRWGlGRjF1TEVjRW5SRDY0WkVDTDVJ?=
+ =?utf-8?B?Vnp6dlhKMWRoeldyblVsdDM0M0xrWitMMGZkdVY2aFpOZ0tLZHNVbWF0cWhx?=
+ =?utf-8?B?NnlSeW5ZeHB1ZlJiNTVsUFJ5UTlKeEpqZkdnK0Vid0Z4RWF2TkhLeW5zVGc0?=
+ =?utf-8?B?c0VOYTl2SWxmYUNMT1lJS0s0NEpHRk9rbkgwbGdoQnBFSzZhOTI4WGtOTzBl?=
+ =?utf-8?B?aHNEUEJSRnNnL2lzcDZGSG1pcUZScGpKdWV6VWx4R0NsQ1h5bll4c2twaXBP?=
+ =?utf-8?B?Vm83RXdzdUpwcm95RXBEV2t3TTRNbUlrOHIvU3lJdWxDSy9sME16RXNZVHlQ?=
+ =?utf-8?B?cVhxdU5GZk96YWJyeXBYMXZZd0J0Q1NrMHFKMkpEZmtLMHlHZUt4a3Ruamti?=
+ =?utf-8?B?dVRSRUVTZHZ0WG82Qkt4ZjF2SXczY3crQ1JJV0tmYVBINnBTU2I1QXpCKzBa?=
+ =?utf-8?Q?vbyVKB+tGQxxkiEFA5S2Ot5nVP/xcLRKMSttWM8S1WCOq?=
+X-MS-Exchange-AntiSpam-MessageData-1: yh1dY9EwfJIZcg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d97c30b5-26b4-4e6b-cf7e-08ded06f97ab
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 15:04:44.1625
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kRDgp5DLGq52PDXD5uPOSXHPPiTNpeTMxtCg+jmVci75JqjkWd9FLy8FSES78+Kyxmb0ZQvMhacfuI8V+mPrSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4313
 
-Rust binder resolved handle 0 to the context manager node, but it does not
-reject the case where the caller owns the same node.
+On Mon Jun 22, 2026 at 4:57 PM JST, Eliot Courtney wrote:
+> On Fri Jun 19, 2026 at 10:42 PM JST, Alexandre Courbot wrote:
+>> The next patch aims at replacing the cumbersome `BootUnloadGuard` with a
+>> more local and less intrusive mechanism to run the GSP unload sequence
+>> upon GSP boot failure. Doing so requires running the boot code in a
+>> local closure, which changes its indentation and would make other
+>> changes difficult to track in the diff. Thus, this preparatory patch
+>> moves said boot code into a local closure that is run upon construction,
+>> so the next patch does not need to re-indent code that changes.
+>>
+>> This is a mechanical preparatory patch to make the next patch easier to
+>> read. No functional change intended.
+>>
+>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>> ---
+>
+> I agree with removing BootUnloadGuard, but I think it's not great to do
+> a bunch of lifting into closures then manually handling the result. It's
+> error prone imo (we already had several bugs relating to this kind of
+> thing). Instead, what about just using ScopeGuard directly? This lets us
+> avoid lifting into closures (which is a bit noisy) and avoids manual
+> result handling for failures (which is a bit error prone). With the
+> `GspBootContext` it's fairly easy to do now:
+>
+> ```
+> let unload_guard =3D ScopeGuard::new_with_data(unload_bundle, |unload_bun=
+dle| {
+>     let _ =3D gsp.unload(ctx, unload_bundle);
+> });
+> ```
 
-The C binder driver rejects transactions from the context-manager process
-to handle 0 after resolving the target node. Match that behavior in Rust
-Binder by rejecting handle 0 transactions when the resolved context-manager
-node is owned by the calling process.
+Yes, initially I wanted to use `ScopeGuard` but ran into issues when
+trying to make the references mutable. However it looks like you have
+been able to overcome these issues, thanks for taking the time to craft
+a patch!
 
-This applies to both synchronous and oneway transactions because both paths
-resolve the target through Process::get_transaction_node().
+>
+> I confirmed that it's also compatible with the v2 of this series that
+> has the mutable Fsp - you can stash the context inside the ScopeGuard
+> data (then making a &mut reference to the stashed context for brevity)
+> or have a separate unload context type that doesn't use FSP or something
+> (could later be type parametrized along with Gsp, for example).
+>
+> For example here is a rough diff on top of this patch series (you can
+> change the Result<Option<UnloadBundle>> returns to like
+> Result<Result<UnloadBundle>> if you want to centralise teh error
+> handling of a failed unloadbundle although currently it can only fail in
+> one location):
 
-Cc: stable@kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Keshav Verma <iganschel@gmail.com>
----
-Changes in v2:
-- Compare the underlying OS process task instead of Rust Binder `Process` object.
+Yes, looking at it it looks like a cleaner approach than using closures.
 
- drivers/android/binder/process.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+The only thing that I saw as a regression is that now each HAL needs to
+call `Gsp::unload` itself in its own `ScopeGuard`. I don't think that's
+the HAL's work - `Gsp::boot` should be the centralized point where this
+happens.
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index d09facebddf6..13ecd3048b89 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -901,7 +901,11 @@ pub(crate) fn insert_or_update_handle(
-     pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
-         // When handle is zero, try to get the context manager.
-         if handle == 0 {
--            Ok(self.ctx.get_manager_node(true)?)
-+            let node_ref = self.ctx.get_manager_node(true)?;
-+            if self.task == node_ref.node.owner.task {
-+                return Err(EINVAL.into());
-+            }
-+            Ok(node_ref)
-         } else {
-             Ok(self.get_node_from_handle(handle, true)?)
-         }
--- 
-2.39.5
+But we can make both work if `unload_bundle` is passed as an output
+argument to `GspHal::boot` instead of being returned:
 
+    let mut guard =3D ScopeGuard::new_with_data((ctx, None), ...);
+    let (ctx, unload_bundle) =3D &mut *guard;
+
+    // `unload_bundle` is a mutable reference to the
+    // `Option<UnloadBundle>` in `guard`.
+    hal.boot(&self, ctx, unload_bundle, &fb_layout, &wpr_meta)?;
+
+The boot method can fill `unload_bundle` early, and if it returns an
+error then the `ScopeGuard` will be able to use it. Also, and that's
+nice, the HALs don't need to use `ScopeGuard`. But output arguments
+aren't really something we expect to see in Rust.
+
+Another alternative would be to separate the unload bundle construction
+from `GspHal::boot`:
+
+    let unload_bundle =3D hal.build_unload_bundle(ctx, ...);
+    let guard =3D ScopeGuard::new_with_data((ctx, unload_bundle), ...);
+
+    hal.boot(...)?;
+
+It removes the "1 boot -> 1 unload bundle" symmetry, but on the other
+hand it also splits concerns more clearly. And it removes the awkward
+return type of `GspHal::boot`, which come to think of it was another
+smell that things were not in the right place.
+
+The main drawback I see is that we now need to build `Vbios` twice for
+TU102, since it is needed both for the unload bundle and for booting.
+But the solution is the same as what the v2 of this series does to
+`Fsp`: the BIOS is a GPU-wide subdevice that is likely to be used
+elsewhere, not something to be confined in a GSP HAL. So I say, let's
+extract it and make it also part of `GspBootContext`.
+
+How does that sound?
