@@ -1,363 +1,226 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010069.outbound.protection.outlook.com [52.101.61.69])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4B63B5837;
-	Mon, 22 Jun 2026 13:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782135091; cv=fail; b=QPSmZWQnWoCL/jEozZ0CVb6WkRJhD42EDUr7fThU4yuNJJApgHPz06pHoTtRuSP6l8A+TRhoLTmKHWKjAL3T82p9HUy7ElthmmSteOLxVajL4GATjLwCt7sR91yfywj67+6gy4K3HBDFLY9wd6STRrRWPjtALpUEtbKIx3qGWTc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782135091; c=relaxed/simple;
-	bh=hn2uG/yUNGo7cQbYAFcDQpTaWTTLYiSlz2Px2cSihG8=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=k29+AsEsYPmo/tkPZRZ24+I97F2a1Bfk8+q5kUZXfck1PY+4MlHH0DP6AgkWhAcfyuEryoWEFDYhCyo7LWpBNUTg3/XZKYPwnhHpoOy6Vi+8u2OnCaekYuZr4vbvaUujkGLHVhOR63DP+DM3o3d7QntqZ9lz9SPsoa4lOe71KOg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=f9W+FLDq; arc=fail smtp.client-ip=52.101.61.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B483B3BF2;
+	Mon, 22 Jun 2026 13:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782136628; cv=none; b=qAocaLLyr8+cvppq11/ggUXqpIWskuO0S5Uv2B89RoeWLL5at0oKo6mXITOJ6UeVyfXVGtfuI6f7w21rfDsmnRH9ayaVnNPS8tp5Ci8PuR6zxxFeXXGXcpGbOyx+qtyMQyfHXK//FLk/XbCnzcgUgJJOVRhcpLEgFbvofVN8e9c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782136628; c=relaxed/simple;
+	bh=K+YdelZmd3eUDrHaLUCksYUjT73IDd95xdcNJFXv/QY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DQ+IQpdU8mDjOK9F++nHdc5LNsWYuRxclyXYGUcSOGYG0r8VtduPV0ThKl7dBIWkcnLd+WdyXzqMgyaiPNBLoMpnzYADihLut0iWKs+y81AhSIJqy7ODAoJUtpFPdxgKHOQrDpaF+zPWNUsm0dl3UT5+IG6oZivHa09yb1IRdHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNPcUcVm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="f9W+FLDq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OkfMOkL9wA9GOxO22K3XXpzAnw7q6oSWdWMDPzEa9/QJFUdSDR32aJBkEyZc89XGvhfT7qAw2g1gx6PLsd8DCfNK8B/2ln3dyxySD9UzR/peEHFrnsIHkAUifZDd9EpQus1UQ1AWOJcDVb1ZzMlKx+lDItZMdjrbxd5cF8QtOHFAM/ZLaeUg7Lt+w4GTcJGE9G7JqIpR3Cf6+97N8xJ71bKLkIanKkyfhukMWx9EwW1HxJVQyn65MDuSUAm9y39K+vIV5mI9BeUwk1IJ5IYtAX3+VUwVBbLRuKxKsScc61tke5h9nJfn2YnQfHsWP+h05EuAK3ffUDvW4xB8wdsMlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QUexRHiCA4nsNmSiG0gPz111RnpIKIxPZqFUfnnbhkg=;
- b=Pgkl3+Cy2LO45ID9ca9QrZZ1/kBzhIWxxGH4oqV0gy+eHoPdZ2wAzVSzWDPwIy+QKCEufHibW9jOZzwymvo4oNnLDxLLfWztX+I7DevFog2WDGVpn9t8NE1hVg2F0ccOg5o9qh5HQo/mTLpWQuKJUARuFESv3zdxUBSLfBVB2f/qrOZSUQp7t29AdvpmYBBRlGO7iIJeWf7XRRgbvBpHa9f0mbE+xU8jN14AC083uf9U6hsnjD1l2sXPsvNqfN9LjVqbzGpys+Ud6TSfRNLEqV+QhIpViPWZ7vFwv9P5G43l8+TAKvYFyIKxVp3HU4wBwYpfRowcG24Iad1sZoY1qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QUexRHiCA4nsNmSiG0gPz111RnpIKIxPZqFUfnnbhkg=;
- b=f9W+FLDqaziFFkKu7aPJN3i/VYKMt6fHLv/7/S4DAEgGBKBQXGXCBzJ6uQjvbbw33blb/Umwe1UZTWdDkthf43Uwt9Ocy3i9V+HSmaYseDWdQv8Eojgb/iBmBgJFKFw8bg151oNhM4Jetk3pIKoc2V8G9jT8yxHFIV7Y2Ps8jC2Vv6Z9ll2Y9f1M3shJq/ifcpfGKbmvJdEs04Ru5IvTyqk9THOsj0WoalvC4C4EYglbC9cHHncr1vguWYygU8BWCYwgxqxF4rmpcDRTS2ilUYu0h1eupZ420kvS0/fpRha+r5mRk3YgRXAxSfWDwTgDWz1qP6IDX6DfTwPeMiHeRQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DS2PR12MB9774.namprd12.prod.outlook.com (2603:10b6:8:270::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Mon, 22 Jun
- 2026 13:30:54 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
- 13:30:54 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Mon, 22 Jun 2026 22:30:11 +0900
-Subject: [PATCH POC v5 5/5] gpu: drm: nova: demonstrate interaction with
- nova-core
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260622-nova-exports-v5-5-6191773fc977@nvidia.com>
-References: <20260622-nova-exports-v5-0-6191773fc977@nvidia.com>
-In-Reply-To: <20260622-nova-exports-v5-0-6191773fc977@nvidia.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>
-Cc: John Hubbard <jhubbard@nvidia.com>, 
- Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
- Zhi Wang <zhiw@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev, 
- dri-devel@lists.freedesktop.org, Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: b4 0.15.2
-X-ClientProxiedBy: TY4P301CA0106.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:37b::17) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNPcUcVm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C151F000E9;
+	Mon, 22 Jun 2026 13:57:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782136626;
+	bh=PlD1S0B/XpvNY8RPXUN/r3O5F8csNHGTI9Ji1I9li8U=;
+	h=From:To:Cc:Subject:Date;
+	b=VNPcUcVmDqH3JSCMcD7c8Kx4NWf9WvL6KSSzNhplQRCfFnIRX0m8FO8A90L7ckJU+
+	 Te+WwEPOk1K5nWjKioYVJgKqSgMVDFU+6Q5ZOXErJWJzacEHyM+4Das0t7xB9G9CM8
+	 Ew1Dkx6cS/IrE3WewqMCiDKHk9me6x/g+uc0UUSML69R3pfbI9GO36ibWqq079PxKJ
+	 xbM1vHUxesPYm8hnTKpBd8H8bhlZXaMnJOeij9NjtFUhnj47NeiB+Y/BRmy0KRpro/
+	 iNUkxJ9auT7bXUWNPTcnW50LxSug0bze2srBJbetGi/6czkb5kZblz5+p+A5FJaQDQ
+	 ZXftLg7EOQBjQ==
+From: Philipp Stanner <phasta@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Matthew Maurer <mmaurer@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Burak Emir <bqe@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	Mirko Adzic <adzicmirko97@gmail.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH v4 0/5] rust / dma_buf: Add abstractions for dma_fence
+Date: Mon, 22 Jun 2026 15:56:48 +0200
+Message-ID: <20260622135654.334961-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS2PR12MB9774:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f6da6e8-9a69-42a7-5390-08ded0627bf0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|10070799003|376014|366016|1800799024|921020|7136999003|56012099006|6133799003|11063799006|22082099003|18002099003|11062099010;
-X-Microsoft-Antispam-Message-Info:
-	A03SRXAWoQMRszBgrdv+Hr4Sv/Xx2J+gX4rMF4imn5mZC8XR9Y8d+5C5wxeZe0JXgzh4hMm3i3vxtLP8ja55Kjr48n83y0I5W6oVUWE7CN+Wt9q8XNtp9bhyndPDQuUyNWiA8ONDVg7Mt3AFKC4Xn99ArTG6ndXdA6Wm0Patb2AUdMVPBLkD5pgQxpE3KMgQeI/0DTDm1QdwDQOrO7fg1plVFu9ki81xwe7bWpuVeoYszLZMyVgdrZgO9IuXvz63XOMH39gthWF0R+9pV3AwG0qdoaOc9rqekJnxcGUGB2mnf/5H0aj/SK3Y3nFsI4Bjqujk4ffqnFoUpz190x/tGvW4h0chP9EqTlRjXcD7Cu+fEvsvQcJcWRQXkZWkZATqrfbsAQsz5wi8fM5+hpSG+Midj7si+CAR8Ozy0kWT8qvcXemj3g9EuOxVISbB87l3O4YFH1ESUfL8GWXauXHSglux7kh+Q4pzlCeliBPPo+xPtx8XD1M2lH8Cd9lkC8w/nKXlz85S5URaPU2HJVCzxhzOTzFjuF0dVQoiarLIE3V5kYj2MV+hK9itrZFhpAHg/U2Eq4dhWYZlEPavy1lcF9GRFfvIvDYy6yKolk0gJJ7V0GCTBbszA6K7BBWG4y5pCCpItb3H6ULakIiHvfaJoKdNpT7/KGFT/tY23IsP1E13XJEV55pDOoyo/g3Gaq13oK2R+TtA0VUk+etLmf6FmA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(10070799003)(376014)(366016)(1800799024)(921020)(7136999003)(56012099006)(6133799003)(11063799006)(22082099003)(18002099003)(11062099010);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZUpFV0JNV2t5NmJoSmNhZ3ZaUzVubWpjNmx6YTRHRXRzU3c0ZHFWNG0zaVp0?=
- =?utf-8?B?UHdGcEs5QndIY2h3LzNnZENXWEJoU3QveFNzRXlZOFpYUWRFVWpFOUg3N2ZM?=
- =?utf-8?B?eXFiTjlDMXpPVnVDT0JobDlOZnFuNDZ1T2t5SENiOGZoSm51YUJUam9SckR5?=
- =?utf-8?B?R3hjM05ZZE9yVTJiZ0tuazMvZ2JHa0wydU9rZWtMdzlZTjFZYzlBMjB6MUxF?=
- =?utf-8?B?QWM4enBtRXZRUXBZNDg3enBvYzVRNHVFQ2dBUVdlc2d6UEdqbS94ZDRSNFBJ?=
- =?utf-8?B?d216R2dDczUvbm5rQkpEbzRpUU16SnR5LzZ2MFQzLzQ4R3RZREpFVCtSU29i?=
- =?utf-8?B?U0tyMVdWOE1kbUt0Z0ZieDFIRDd3VWFZcjNOcXg2VjBrcU0veEp5RXpFRzJp?=
- =?utf-8?B?YXhzYlZKOGpLSnh5NUFqSWxVaEFpNG1WT24yNGxjT0pxY3lOYjNpSmM3Rlhl?=
- =?utf-8?B?d080QzQ2aFlqMjlBcS9BcGxhN3oxVWlWS0ZjRXFUMlRzS3VRYWpsSXI5NzJ1?=
- =?utf-8?B?L1pCS3RoeWN3QXlhWjNPSWNMRkNGR3NkWmh3RmxXYUs1WTU1Q0htVml0MUZB?=
- =?utf-8?B?K3d1SXdmNVY0dWZsWHMxYitpczFML3FXVy9KdHZvTUdkdmhYS3prRi9yZUxO?=
- =?utf-8?B?a3puY25IanQyUHJKaUltRFFJblE1Uk1iVUdUeEkvVHRDMyt1MDMxalBha2xI?=
- =?utf-8?B?WU5pVDhQeldSQ2V3WFkvRkYyL0VQRUZSRk5id092QnlXWkNuR01ydmhQWFdI?=
- =?utf-8?B?VzN0ZHRjL3ZSc1lad2pMdndySUYyRVdWWGJjbWFpRXh0SmlzSmw3U05ocXIx?=
- =?utf-8?B?UkIreUVPSUJQMXEyVzlPMEhVMW02MWUrbFlzSk5PbGkrM2t2RWxEK0pTa2hl?=
- =?utf-8?B?QjdmRHZ1OCszd2pEK2RHZEgyYUxpWG5WNzBYYjZ2Q1h3YjBsSUM0blg0Y1p0?=
- =?utf-8?B?b1NaRlg4TWt2S2JXVkIvc2QzMVVWOEp3L2xSMHVSbDB0UEhBWEhQTENEQnM4?=
- =?utf-8?B?S2JkM1Y5aFJvMlI4aW9RaWtXKy8zaEZYVXR0T2NxSGlaQ0dKaEhJYzVFUkZD?=
- =?utf-8?B?ZUpuRWk0LzFiQ1ZhbzI5bDZjejVzaHd2U0k0VmxZQ2RhT1pjOEJHOVlYdytq?=
- =?utf-8?B?Q0EzMk5PMmswZktGUFUzM29QOFUrUHJEd053UUU5dkViaFZIcnp5WitJbjFv?=
- =?utf-8?B?c0NETlVoK0FFdkcrWnc2SlBGZmd2a1p4K0Q5SHdRcis3aWJ2UE5BZStzZkhP?=
- =?utf-8?B?U041NldaVDQ4S1NuMFhldEpsanBUYlhGb3E4dVB3NFBDbjJidElBUnNQZzc0?=
- =?utf-8?B?cG5RZHBIVGRXS3VlUU5sUXEzR0pieGNGbDlyY0tJdHV4c3JVVDRZbVpNOVdn?=
- =?utf-8?B?QjNzdWU4Y0IrUEl0bzMwNTBlckdRZWNncWtuRlZQakUzdnJxSVo1MlREK1Za?=
- =?utf-8?B?VjBFd1Jub3NjS2ZmMGQ0TmZBZkg2N3dpaHNwRFkvSUlscFRsSEx2TEZYM0xT?=
- =?utf-8?B?WjVnWXhoZ1FXdUtoVXNUWUJDMFN3eWM2aUdENFY2aDFaNXEyS29mWkdwNURL?=
- =?utf-8?B?a0JQdTBhRXgvUXI0ckNBNmt2am9Jc0I3VFhBN2UvVlN5QTIyaWVPeHJKd3NC?=
- =?utf-8?B?VHlNZnBmWU0xY3pHVzR2T3Y5KzRYcEU3SVF3V0phZm1lanV5RU9qMEx5RVBz?=
- =?utf-8?B?ZUtnRkpzQ2lZUXNmTFl3ZU5hT1MrbmVZTFZvSS8ybU12M1o1NjBYcjlpUUtL?=
- =?utf-8?B?TUE5dUhLSWRQbHdiSUFmU3hTandiR2ZMU0ZySjZVWlpXMDNXdGJtdmFvZUZY?=
- =?utf-8?B?ci9hUkxQRjZobld1KytZMHNJcTJObE45dk1Tb1cwUkdpSENUUVIzc1dFR2Fq?=
- =?utf-8?B?N3NYZ21QNHFuenZSNUx0Z0lvRFNDOHJvWU5GODhGUGFNS3lHczBXcUl6QkNo?=
- =?utf-8?B?M1FxWnYvOTBUQ0o1NzhaNlIzeEdEaGZIM0pObW1KRkMyZWpmNWJKZDlMUVNX?=
- =?utf-8?B?clQyS2NJWDhBUnd6amVrN0E3YjNROXM5NlpEVFFjWGgzS2pWVU9hS0hnWFhp?=
- =?utf-8?B?TVhQd0RMcTVrREt1S2VobFBFMnFTVVI4WFBDc3FXRFc0c3hySnAxR3FDRTVW?=
- =?utf-8?B?UCtmMlVoTzJBMHo3TWlwa2YwSDMxTlZXeDkvcFl3NUpGUHRUTTZ5SlFGNnNa?=
- =?utf-8?B?cDRSN1hsZy9JM3lubEluektQdUMxTWtwMVRDUDAxcG1xRDB1MW4xaHZOTGts?=
- =?utf-8?B?RC95TnZnU3lwd2MyeHZDY1NDZENWSHdKRGs1TUp6bXNhNTJwaWdoWk5OWkhy?=
- =?utf-8?B?eWd0dFpzZmE4d0poYmxyL0VBWHhNaTdpY0xxOG1SUGFOZ3c5cXQ4M2o4TFAv?=
- =?utf-8?Q?2JX+49nM4Fe+BOy/2garBDskTTAU13PrhIdXdmFYgZT6e?=
-X-MS-Exchange-AntiSpam-MessageData-1: 5ApR2erJ0tHdJg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f6da6e8-9a69-42a7-5390-08ded0627bf0
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 13:30:53.9554
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XHtwz/hI+FHDxUpTacXPj5tYpZ/Q9JwyaJxBryRZeU87papDlBUU0xjZ6qyVzC54rDYSJdKvvACPsaTeyJfNrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9774
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Export a few items from nova-core and use them from nova-drm in order to
-print the chipset of the GPU being probed.
+Changes since v3:
+  - Add a FIXME for an encountered Rust compiler bug. (Gary)
+  - Add new Rust files also to DRM drivers & common infrastructure
+    MAINTAINERS file. (Danilo)
+  - Reposition ECANCELED error code. (Miguel)
+  - Replace refcounted FenceCtx in DriverFenceData with a reference plus
+    life time. (Boris)
+  - Re-add rcu_barrier() patch, since we now can use it for dropping the
+    fence context. (Danilo)
+  - Add forgotten R-b from Alice, and Acks for MAINTAINERS from
+    Christian and Sumit.
 
-Some documentation items are added to make Clippy happy.
+Changes since v2:
+  - Don't drop DriverFenceData as a whole, but only the members we
+    really want to drop. Gives more robustness. (Gary).
+  - Break apart large pin_init_from_closure(). (Danilo, Onur)
+  - Remove rcu_barrier() and synchronize_rcu() from FenceCtx::drop().
+    FenceCtx might drop in atomic context, where you must not perform
+    those operations. With the current way C dma_fence is designed, the
+    driver must wait for a grace period manually until it unloads.
+  - Repair the DriverFenceBorrow implementation, properly injecting a
+    life time into it. (Danilo)
+  - Fix memory layout bug for rcu_head. (Onur)
+  - Drop RCU patches, since this series doesn't need them anymore.
 
-This is only meant for demonstration purposes, and won't be merged.
+Changes since v1:
+  - Remove unnecessary mutable references (Alice)
+  - Split up unsafe comments where possible (Danilo)
+  - Remove PhantomData + implement FenceCtx ops trait (Boris)
+  - Consistently call FenceCtx generic data `T`. FenceDataType is
+    derived from that. (Boris)
+  - Add abstractions for call_rcu() and synchronize_rcu() (Danilo)
+  - Add ECANCELED error code in Rust (Alice)
+  - Remove the rcu_barrier() from FenceCtx::drop() – because we now use
+    call_rcu(), there can be no UAF access to the FenceCtx anymore. In
+    any case, it is illegal to use either call_rcu() or
+    synchronize_rcu() in FenceCtx::drop(), because our new
+    drop_driver_fence_data() can run in atomic context and might put the
+    last fence_ctx reference.
+    So we now only have to guard against module unload, which it seems
+    either the driver or Rust driver-core / module unload infrastructure
+    must solve.
+  - Minor formatting etc. changes
+  - Add C helpers to MAINTAINERS. (Danilo)
+  - Ensure that `Fence::is_signaled()` is fully synchronized, i.e., all
+    callbacks really have run. See [1] and [2]. (Myself, Christian
+    König)
 
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Changes since the RFCs:
+  - Include support for ForeignOwnable for ARef, so that a Fence can be
+    stuffed into an XArray et al. (Code by Danilo)
+  - Implement ForeignOwnable (with new borrow type) for DriverFence, so
+    that it can be stuffed into an XArray.
+  - Include the rcu::RcuBox data type to defer dropping data with RCU
+    (Cody by Alice)
+  - Port DmaFence to RcuBox to make UAF bugs through later, new dma_fence
+    callbacks (backend_ops) impossible.
+  - Force users to pass their fence data in an RcuBox (or have it not
+    need drop()) through a Sealed trait.
+  - Document the rules for the user's DriverFence::data's drop
+    implementation very clearly (deadlock danger).
+  - rustfmt, Clippy.
+  - Various style suggestions, safety comments, etc. (Önur)
+  - Add __rust_helper prefix to helper functions. (Önur)
+
+Changes in RFC v3:
+  - Omit JobQueue patches for now
+  - Completely redesign the memory layout: Instead of a Fence
+    refcounting a DriverFence, both now live in the same allocation to
+    allow for future support the dma_fence backend_ops callbacks which
+    need to do container_of. (mostly Boris's feedback)
+  - Allow for pre-allocating fences to avoid deadlocks when submitting
+    jobs to a GPU. (Boris)
+  - Simultaneously, allow for pre-preparing fence callback objects, so
+    the driver can allocate them when it sees fit. (code largely stolen
+    and inspired by Daniel).
+  - Signal fences on drop, ensure synchronization.
+  - Force users to set an error code when signalling.
+  - Write more documentation
+  - A ton of minor other changes.
+
+
+[1] https://lore.kernel.org/dri-devel/20260608142436.265820-2-phasta@kernel.org/
+[2] https://lore.kernel.org/dri-devel/20260612104251.2264707-2-phasta@kernel.org/
+
+
+Alright, so since the last RFCs did not reveal significant design
+issues, I decided to transition this series to a v1 and hope that we can
+get it upstream.
+
+This now includes code for more common infrastructure that dma_fence
+needs, contributed by Danilo and Alice.
+
 ---
- drivers/gpu/drm/nova/driver.rs     |  9 +++++-
- drivers/gpu/nova-core/driver.rs    | 59 +++++++++++++++++++++++++++++---------
- drivers/gpu/nova-core/gpu.rs       |  9 ++++--
- drivers/gpu/nova-core/gsp/hal.rs   |  2 +-
- drivers/gpu/nova-core/nova_core.rs |  4 +--
- 5 files changed, 62 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index 48933d86ddda..6b01ecefab43 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -9,9 +9,12 @@
-         ioctl, //
-     },
-     prelude::*,
--    sync::aref::ARef, //
-+    sync::aref::ARef,
-+    types::ForLt, //
- };
- 
-+use nova_core::driver::AuxData;
-+
- use crate::file::File;
- use crate::gem::NovaObject;
- 
-@@ -60,6 +63,10 @@ fn probe<'bound>(
-         adev: &'bound auxiliary::Device<Core<'_>>,
-         _info: &'bound Self::IdInfo,
-     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-+        let aux_data = adev.registration_data::<ForLt!(AuxData<'_>)>()?;
-+
-+        pr_info!("Chipset from nova-core: {}\n", aux_data.chipset());
-+
-         let data = try_pin_init!(NovaData { adev: adev.into() });
- 
-         let drm = drm::UnregisteredDevice::<Self>::new(adev.as_ref(), data)?;
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 5738d4ac521b..a214860f20de 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+//! Main driver module.
-+
- use kernel::{
-     auxiliary,
-     device::Core,
-@@ -18,18 +20,36 @@
-     types::ForLt,
- };
- 
--use crate::gpu::Gpu;
-+use crate::gpu::{
-+    Chipset,
-+    Gpu, //
-+};
- 
- /// Counter for generating unique auxiliary device IDs.
- static AUXILIARY_ID_COUNTER: Atomic<u32> = Atomic::new(0);
- 
-+/// Data passed to the auxiliary device registration, for the sibling driver to use.
-+pub struct AuxData<'bound> {
-+    gpu: &'bound Gpu<'bound>,
-+}
-+
-+impl AuxData<'_> {
-+    /// Returns the chipset of this GPU.
-+    pub fn chipset(&self) -> Chipset {
-+        self.gpu.spec.chipset
-+    }
-+}
-+
-+/// Driver-associated data.
- #[pin_data]
--pub(crate) struct NovaCore<'bound> {
-+pub struct NovaCore<'bound> {
-+    // Fields are dropped in declaration order: unregister the auxiliary device before dropping
-+    // `gpu`, and drop `gpu` before `bar` because `AuxData` borrows `gpu` and `Gpu` borrows `bar`.
-+    #[allow(clippy::type_complexity)]
-+    _reg: auxiliary::Registration<'bound, ForLt!(AuxData<'_>)>,
-     #[pin]
-     pub(crate) gpu: Gpu<'bound>,
-     bar: pci::Bar<'bound, BAR0_SIZE>,
--    #[allow(clippy::type_complexity)]
--    _reg: auxiliary::Registration<'bound, ForLt!(())>,
- }
- 
- pub(crate) struct NovaCoreDriver;
-@@ -78,7 +98,7 @@ fn probe<'bound>(
-             pdev.enable_device_mem()?;
-             pdev.set_master();
- 
--            Ok(try_pin_init!(NovaCore {
-+            Ok(try_pin_init!(&this in NovaCore {
-                 bar: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"nova-core/bar0")?,
-                 // TODO: Use `&bar` self-referential pin-init syntax once available.
-                 //
-@@ -86,15 +106,26 @@ fn probe<'bound>(
-                 // (`try_pin_init!()` initializes fields in declaration order), lives at a pinned
-                 // stable address, and is dropped after `gpu` (struct field drop order).
-                 gpu <- Gpu::new(pdev, unsafe { &*core::ptr::from_ref(bar) }),
--                _reg: auxiliary::Registration::new(
--                    pdev.as_ref(),
--                    c"nova-drm",
--                    // TODO[XARR]: Use XArray or perhaps IDA for proper ID allocation/recycling. For
--                    // now, use a simple atomic counter that never recycles IDs.
--                    AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
--                    crate::MODULE_NAME,
--                    (),
--                )?,
-+                // SAFETY: `NovaCore` is dropped when the device is unbound; i.e. `mem::forget()` is
-+                // never called on it.
-+                _reg: unsafe {
-+                    auxiliary::Registration::new_with_lt(
-+                        pdev.as_ref(),
-+                        c"nova-drm",
-+                        // TODO[XARR]: Use XArray or perhaps IDA for proper ID allocation/recycling.
-+                        // For now, use a simple atomic counter that never recycles IDs.
-+                        AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
-+                        crate::MODULE_NAME,
-+                        AuxData {
-+                            // TODO: Use `&gpu` self-referential pin-init syntax once available.
-+                            //
-+                            // SAFETY: `this.gpu` is initialized before this expression is
-+                            // evaluated, lives at a pinned stable address, and is dropped after
-+                            // `_reg` (struct field drop order).
-+                            gpu: &(*this.as_ptr()).gpu,
-+                        },
-+                    )?
-+                },
-             }))
-         })
-     }
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index b3c91731db45..bceed4652508 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+//! Core types for the driver.
-+
- use core::ops::Range;
- 
- use kernel::{
-@@ -35,7 +37,8 @@ macro_rules! define_chipset {
-     {
-         /// Enum representation of the GPU chipset.
-         #[derive(fmt::Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq)]
--        pub(crate) enum Chipset {
-+        #[allow(missing_docs)]
-+        pub enum Chipset {
-             $($variant = $value),*,
-         }
- 
-@@ -203,7 +206,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- /// Structure holding a basic description of the GPU: `Chipset` and `Revision`.
- #[derive(Clone, Copy)]
- pub(crate) struct Spec {
--    chipset: Chipset,
-+    pub(crate) chipset: Chipset,
-     revision: Revision,
- }
- 
-@@ -267,7 +270,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
- pub(crate) struct Gpu<'gpu> {
-     /// Device owning the GPU.
-     device: &'gpu device::Device<device::Bound>,
--    spec: Spec,
-+    pub(crate) spec: Spec,
-     /// MMIO mapping of PCI BAR 0.
-     bar: Bar0<'gpu>,
-     /// System memory page required for flushing all pending GPU-side memory writes done through
-diff --git a/drivers/gpu/nova-core/gsp/hal.rs b/drivers/gpu/nova-core/gsp/hal.rs
-index 04f004856c60..5f2d4a0c25cc 100644
---- a/drivers/gpu/nova-core/gsp/hal.rs
-+++ b/drivers/gpu/nova-core/gsp/hal.rs
-@@ -36,7 +36,7 @@
- /// The GSP unload code might run in a situation where we cannot load firmware dynamically (e.g.
- /// because we are in shutdown and the file system is not accessible anymore). Thus, the firmware
- /// required for unloading is prepared at load time, and stored here until it needs to be run.
--pub(super) trait UnloadBundle: Send {
-+pub(super) trait UnloadBundle: Send + Sync {
-     /// Performs the steps required to properly reset the GSP after it has been stopped.
-     fn run(
-         &self,
-diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
-index 9f0199f7b38c..77f647b8862a 100644
---- a/drivers/gpu/nova-core/nova_core.rs
-+++ b/drivers/gpu/nova-core/nova_core.rs
-@@ -13,12 +13,12 @@
- #[macro_use]
- mod bitfield;
- 
--mod driver;
-+pub mod driver;
- mod falcon;
- mod fb;
- mod firmware;
- mod fsp;
--mod gpu;
-+pub mod gpu;
- mod gsp;
- mod mctp;
- #[macro_use]
+Old cover letter for RFC:
 
+So, this is the spiritual successor of the first / second RFC [1]. v2
+also contained code for drm::JobQueue, but mostly to show how the fence
+code would be used. JobQueue is under heavy rework right now, so I don't
+want to bother your eyes with it. The docstring examples should show how
+Rust fences are supposed to be used, though.
+
+This v3 contains a huge amount of highly valuable feedback from a
+variety of people, notably Boris, but also from Alice, Gary and Danilo.
+
+There are some TODOs open (a better trait for fence backend_ops and RCU
+support), but my hope is that this effort is now finally approaching its
+end.
+
+I would greatly appreciate feedback and especially more information
+about what might be missing to make this usable, which is obviously
+where Daniel's and Boris's feedback will be valuable once more.
+
+Please regard this patch just as what it's titled: an RFC, to discuss a
+bit more and to inform a broader community about what the current state
+is and where this is heading at.
+
+Many regards,
+Philipp
+
+[1] https://lore.kernel.org/rust-for-linux/20260203081403.68733-2-phasta@kernel.org/
+
+Danilo Krummrich (1):
+  rust: types: implement ForeignOwnable for ARef<T>
+
+Philipp Stanner (4):
+  rust: error: Add ECANCELED error code
+  rust: sync: Add abstraction for rcu_barrier()
+  rust: Add dma_fence abstractions
+  MAINTAINERS: Add entry for Rust dma-buf
+
+ MAINTAINERS                      |   5 +
+ rust/bindings/bindings_helper.h  |   1 +
+ rust/helpers/dma_fence.c         |  48 ++
+ rust/helpers/helpers.c           |   1 +
+ rust/kernel/dma_buf/dma_fence.rs | 870 +++++++++++++++++++++++++++++++
+ rust/kernel/dma_buf/mod.rs       |  14 +
+ rust/kernel/error.rs             |   1 +
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/sync/aref.rs         |  39 ++
+ rust/kernel/sync/rcu.rs          |   6 +
+ 10 files changed, 986 insertions(+)
+ create mode 100644 rust/helpers/dma_fence.c
+ create mode 100644 rust/kernel/dma_buf/dma_fence.rs
+ create mode 100644 rust/kernel/dma_buf/mod.rs
+
+
+base-commit: 848bf57e98e1678ce7a49eb4e0bf0502da95dc07
 -- 
 2.54.0
 
