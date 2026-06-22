@@ -1,126 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388403B635B;
-	Mon, 22 Jun 2026 13:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6C23101A5
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jun 2026 14:58:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782136660; cv=none; b=fU0SQ+NbvOrYCNcdmM0C2ef9BJIb0KMSovZIdIs0Sl5WeyJYYNorew722NtHDSVpNzFReDAezshQwp14blJoV7gTRIdgxbk1UPYXDSRvGXwJWIKOM9uFlHxwd1Ouc/Nzsj0fbM7l7uhJnMe+XoitnJF00WOjijV12xR5MUSNHUA=
+	t=1782140324; cv=none; b=fl5K5pbxaWZ0wiL82O9IeZAZ4AVYSQQe7m/1d2yh3k5x8GYyzK3iHY4xttA7R/YywMd04CoksM5q7JCkWIpAkdS+ZZfTqfUPGSYtbsAxw2Dp5VaadeEGBw1JXakRQdm27i0BnLSWXd/JOzbhVtM6PJq105VpQGIYfcj7zjQmb18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782136660; c=relaxed/simple;
-	bh=UhBh6z2v7MHKUkRNzNMgby6LZKIxiWH+7/a0OQtnrFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eJOWh5aOFRW39aVryFNXCaP1Wo3ezrx0+qi/TsoT5u+WUV4mzBU8NgcxTkf6bkxvO7aUAng+I6EuV88i7cL5K2L/fqj9C9X2T0EdJqmWVS80aYGdEROV+fB6zQhVWzrh2AiyUtZjCspR3MM52TICQfLoJNwt7/lavXCyv1CGKoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6jCfbKX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782140324; c=relaxed/simple;
+	bh=kFaJpOvweTrf7dqHJQ8KVk+Qw/ICdIEILNTk/HC7aZI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=uqMfvRBBMhvxOmphcaJEVslYB/3SxZKTiW+Db0ESKLPxqgzGUM5Xus80d0FByeHanhTqjWSGiR7IRm17NhyMWukXn7LyfzzLsKjZL61PiHAMpLZC8bEeRwaM/nvOntpSK69KhTtTRGKSLsMxVgaMfGcZBy8vhwGxABel+FS6PU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4jRBcds; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6jCfbKX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91151F000E9;
-	Mon, 22 Jun 2026 13:57:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782136658;
-	bh=CYt/5Q9wC22TpyC2hwnohHNnEJLHfU3qajK8+GnOgDY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h6jCfbKX/KIMhr10OotZiT8v4wHK/xpzHoCIq/nEMvYswq6jh9XqD9OL1iedLDoLv
-	 jSr7W+yoM6QPH71MBWpdgq4CggpY4zxu1UMC+wmqY4mkRqN9FzVwB6Tkk/C3Is9noB
-	 V0XyVELa7o7rMYlcA+WZEysxWipJpo1KhOPwQA3+mPCPMyCEvGy59rA2N1g4qzwsxO
-	 wilN6xL28IIugn7456EYor9MkCVOMYYxTtI1Lp2r6UaGlv7VV77uSs1XCKAd/f46+0
-	 2O9bf7khpGkxuQp2UXjOgTXRflGGCWX8F86kKT/byuu7V4CMblp7AOuqZILReDZl+V
-	 X4sJGpjmZmgFQ==
-From: Philipp Stanner <phasta@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4jRBcds"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c6c57c5bcfso37858225ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jun 2026 07:58:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782140322; x=1782745122; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bgy6/tlhwdndpj65fs2+faECMzbDJTKSLOfGWTpUBH8=;
+        b=b4jRBcdsS3/t0dbvG4Cse8l6f/bnkhJCTv0zQCciq6Js3PIwomYVJ1gtZMryYh9SNr
+         A/VDojRhTVPU09QPMFYZ82PkmUs0Sc2iFd+8khgYIvNkDKIRqGr5ubCCqt+WU6ZD0e4Z
+         sw3g6WGmIg6j93COkRWgTqHLBKyCFAfVVImkyhTd31BZqdtWJTVU8XXZ19JRohhtj5bw
+         t+aylt2zy3QLc3SYQO1is4ssBFlxGEUjb8KfPsgrIZkfE6H5MV3u95cDrBEdj2mcUMtz
+         pCkDehWEvavEQuSdIOo7iwwr0pBW0Rx/g3miXaPzAuHmixr5BTNyTHNqNXH12UKp9RUc
+         quOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782140322; x=1782745122;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Bgy6/tlhwdndpj65fs2+faECMzbDJTKSLOfGWTpUBH8=;
+        b=YM0xsikR5dHNmPq9la0eDU0WKtNokaQvfykJ2XN9LHa4WdtZ/HuC0PRPFjJrRTGUks
+         6YbqhgABwA1y8VOcPbXtf0rTzV9E52OswjMxU92mvR5owcutw/GFvpRkiBnJJSD0UCZb
+         hRCmjPe/2qiLDlpwH8CUuW6ZNxRQSXjszkvvUltESSc16QQuP3deYWF4MMpTThqEoun3
+         FdBmHjM3GS6h1FpQZ0nDS3Z08gcBYSGKy339SJY5XL52g0Dljb7N8/0k4YVWo+oa/xZs
+         uuXjr1HUkinDUdeiodaFUiSJur4cF6Q3k6lG+XgBNNLv23Ttq2IqFewI+0BdpIH/fXwf
+         PbsQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrMfauon//hDcCdBt2cevRKPp2PmgE8sIPConwSWK4Ed+EJOqsOG/kGkLslLMANNySJ4gXZLjhu84hLHwTw9Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6d1AnOnvBHsbfgAhhsYrSfv6oSKWMgOGLky0Uj1K2TAeWs+/m
+	EDvv/UPFLRjtXdWRS7YtucFXCd+uLOeGjLNoclhzzllJ4BSrcRnSwroD
+X-Gm-Gg: AfdE7clsWCvrN2nvUAScUbMredbi3TwlNwds7em6PXmte+S/W7sBQGRaMMXk0AtkSgP
+	NiZi6M1ss4FuZeBAhpWtp1Nm1iJLmCD2ViDABj4FUL7t15joB2p6coCDVZdv+L3z1pg9iXzj6AZ
+	rnwDtwVMjbNcsvhDYSMEeU89XX9pJ20M4QrCu+ES5k8ETXct5kgw4B6QXsQ35jvmgyIUAtgmMhX
+	V8xRxvK54Tf35e1ChMQ2p0BMEOri+i/5l1a7JSMA/owxfpp0ZjssA/u6MCMul4pbIM2Ya+UH4lz
+	/VdqOtMn7xsoyVb6j+bH2OsPVCiE9dTIZO6cfXRA9ubZk/PnmhaPHjqYq/xhBAIJb3K1KsFw9bX
+	A11cHffaD69BEzbCmwX9opbutWs1boL2oyZMa7zUW2ARevaLS69TsK3u14CvoB6TCy7A9jRU4yf
+	vEWww9cLqv4rFeM+dNNuNnRoP8dWt76jGQSQ==
+X-Received: by 2002:a17:903:2f84:b0:2c6:a99a:52a9 with SMTP id d9443c01a7336-2c718cc243bmr172793895ad.7.1782140322386;
+        Mon, 22 Jun 2026 07:58:42 -0700 (PDT)
+Received: from LAPTOP-TMVMP5FD.localdomain ([106.222.250.238])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436d5bd6sm97023705ad.22.2026.06.22.07.58.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 07:58:42 -0700 (PDT)
+From: Keshav Verma <iganschel@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Carlos Llamas <cmllamas@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Matthew Maurer <mmaurer@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Burak Emir <bqe@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Krishna Ketan Rai <prafulrai522@gmail.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Mirko Adzic <adzicmirko97@gmail.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org
-Subject: [PATCH v4 5/5] MAINTAINERS: Add entry for Rust dma-buf
-Date: Mon, 22 Jun 2026 15:56:53 +0200
-Message-ID: <20260622135654.334961-7-phasta@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260622135654.334961-2-phasta@kernel.org>
-References: <20260622135654.334961-2-phasta@kernel.org>
+	Keshav Verma <iganschel@gmail.com>,
+	stable@kernel.org
+Subject: [PATCH v2] rust_binder: reject context manager self-transaction
+Date: Mon, 22 Jun 2026 20:28:01 +0530
+Message-Id: <20260622145801.344-1-iganschel@gmail.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260621210134.441-1-iganschel@gmail.com>
+References: <20260621210134.441-1-iganschel@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Rust does now have abstractions for dma_fence. These abstractions are
-quite complicated and require expertise with both the C and the Rust
-side. Therefore, using the existing entry also for maintenance of the
-Rust code appears reasonable.
+Rust binder resolved handle 0 to the context manager node, but it does not
+reject the case where the caller owns the same node.
 
-Philipp volunteers to help maintain the dma_fence abstractions. Add a
-corresponding MAINTAINERS entry.
+The C binder driver rejects transactions from the context-manager process
+to handle 0 after resolving the target node. Match that behavior in Rust
+Binder by rejecting handle 0 transactions when the resolved context-manager
+node is owned by the calling process.
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Acked-by: Christian König <christian.koenig@amd.com>
-Acked-by: Sumit Semwal <sumit.semwal@linaro.org>
+This applies to both synchronous and oneway transactions because both paths
+resolve the target through Process::get_transaction_node().
+
+Cc: stable@kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Keshav Verma <iganschel@gmail.com>
 ---
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+Changes in v2:
+- Compare the underlying OS process task instead of Rust Binder `Process` object.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4ae6919454c3..ef2cb1173c66 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7535,6 +7535,7 @@ F:	fs/dlm/
- DMA BUFFER SHARING FRAMEWORK
- M:	Sumit Semwal <sumit.semwal@linaro.org>
- M:	Christian König <christian.koenig@amd.com>
-+M:	Philipp Stanner <phasta@kernel.org>
- L:	linux-media@vger.kernel.org
- L:	dri-devel@lists.freedesktop.org
- L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
-@@ -7548,6 +7549,8 @@ F:	include/linux/dma-buf.h
- F:	include/linux/dma-buf/
- F:	include/linux/dma-resv.h
- F:	rust/helpers/dma-resv.c
-+F:	rust/helpers/dma_fence.c
-+F:	rust/kernel/dma_buf/
- K:	\bdma_(?:buf|fence|resv)\b
- 
- DMA GENERIC OFFLOAD ENGINE SUBSYSTEM
-@@ -8536,7 +8539,9 @@ T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git
- F:	drivers/gpu/drm/nova/
- F:	drivers/gpu/drm/tyr/
- F:	drivers/gpu/nova-core/
-+F:	rust/helpers/dma_fence.c
- F:	rust/helpers/gpu.c
-+F:	rust/kernel/dma_buf/
- F:	rust/kernel/drm/
- F:	rust/kernel/gpu.rs
- F:	rust/kernel/gpu/
+ drivers/android/binder/process.rs | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index d09facebddf6..13ecd3048b89 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -901,7 +901,11 @@ pub(crate) fn insert_or_update_handle(
+     pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
+         // When handle is zero, try to get the context manager.
+         if handle == 0 {
+-            Ok(self.ctx.get_manager_node(true)?)
++            let node_ref = self.ctx.get_manager_node(true)?;
++            if self.task == node_ref.node.owner.task {
++                return Err(EINVAL.into());
++            }
++            Ok(node_ref)
+         } else {
+             Ok(self.get_node_from_handle(handle, true)?)
+         }
 -- 
-2.54.0
+2.39.5
 
