@@ -1,187 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE429ACC6;
-	Tue, 23 Jun 2026 11:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C2A3D5C2C;
+	Tue, 23 Jun 2026 12:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782215018; cv=none; b=LUcXJj/z2uaey+jKwxGkoj3eDgh7Q1Dqb/g5hQfDaxJU9aRPuDdPpBzjMEVP9YmhjjLCj2cmuO6o47TYih35VBmKnvlABqPXsa3+SwvvFI+aKLoZ0vGiqfehuBcOCNJjsz6wXw/mcDKHEOaZvyWVIq/2V0QzFeUOHq67R1fvp1Y=
+	t=1782217749; cv=none; b=VjlCMG3XAUo6hJqpuuleemVZ8J+LmV53q2KRbC6Z70LuXOazH47xv7pF5rNwJzZNGxo8yrNfsZ8711iaQVwh/Z+qnKSB8PEVu1StSXUOHShKSqWcreLccO23rHAE7E4ncJbbdUxbIvxgCpUUXtCsIEWWPNzOK+zVP+EHo/G5v38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782215018; c=relaxed/simple;
-	bh=TZUcykR8ZPPFN4AOl3Orik2Cxh3eQtwWGALViz9NVmM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=inQkjYgazW8g2tLvebkrOXNlAjWWqdME3AswizWKHsHmSrv49JR+XIkhFyFC+qD+nRAE8FD5Th71IMIJ+60ZEyypQT70ktRgHMIl0ibcl1Eo+6/LJwYyZjbZ4z2bjHlehivrMcWiZYahaqqZnLzTbrdyccOskbYOLz1kBQMsNyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rw0wY6tX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782217749; c=relaxed/simple;
+	bh=AZA/n+oIZ2Se/sfqnbOS30FAegm93+h0Gc+iPEdrR9E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=edOmXCcGAW7GTw5pZTgaItkQAXPrvzaW3AJ2tzvjqKACzehyGIkR9eZca04AapPWXjVLAteLE1GcWIqOZLg8RXbxDD8bHMgSk3bJ3vKrgCpbpqe2Zh5pCguJJlfomvV2ZiHiRgw9NkihB4kBqFAX2XhwZFvjp1n/xTYN2PiUE08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6yzmLij; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rw0wY6tX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99F81F00A3A;
-	Tue, 23 Jun 2026 11:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782215017;
-	bh=MIYLLXEdXx7L4o6dYJYDdrb0D5HpwPqotDGYXKoVR5s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=rw0wY6tXv+5a5BRQ63p93wABtbFhv2RtKPXr5/x5aQ4PYasTgBb/Y9xDHp1xkp4zk
-	 N3CLzRvVPAYdvGj6Fv5XbXutveX54MBQsEAJE7CaAEnYDsbdedNny6QTxLdg89ZFPJ
-	 JnQ49sQlBZuFEglkXvXApvgS7ZIuKPiTuwtYrb/I=
-Date: Tue, 23 Jun 2026 13:42:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xiaobo Liu <cppcoffee@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, akpm@linux-foundation.org,
-	david@fromorbit.com, qi.zheng@linux.dev, roman.gushchin@linux.dev,
-	muchun.song@linux.dev, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2] rust: helpers: move list_lru and task_work helpers
- out of binder.c
-Message-ID: <2026062302-girdle-entrench-11bb@gregkh>
-References: <CANiq72=sSkApehxg6eEpAoNU8zSsRAfqD+RVymM3UQGuvfKyeQ@mail.gmail.com>
- <20260623102431.3577627-1-cppcoffee@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6yzmLij"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D2B1F000E9;
+	Tue, 23 Jun 2026 12:28:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782217747;
+	bh=AZA/n+oIZ2Se/sfqnbOS30FAegm93+h0Gc+iPEdrR9E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=O6yzmLijucxjukp8wJnRR+NnH7jWmeLbGZLSi7ID5Xqueatpz5RfE53EnooxphSh8
+	 3SoCZaVVuswt/P87OrDPW0N6PmZ6d7up5nC4ecUF+RSqo4BulCblqzW8da4PYW7UuY
+	 kqxfJ4CJ11IlDfDX6SvVeIO/ODsiUsea1c3NMTKhIqKQ10+zDYK+rgu6VUeYACwPj/
+	 wlZ8s/w4tPJG9CjVa5eSJXbcQupy99Mr6qC/9qF1NITLq4SreJXHntjxUUQrS0XdRC
+	 9K2NPy7aiRVEUCBFO8jWs8scJhI3/idu1LxKN4vcz3GJxHHdbMgeSxg2WexdLeP4Ke
+	 QB9i+qE0bLoGQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alvin Sun <alvin.sun@linux.dev>, Miguel Ojeda <ojeda@kernel.org>, Boqun
+ Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
+ =?utf-8?Q?n?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
+ <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
+ <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu
+ <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+ <simona@ffwll.ch>, Daniel Almeida <daniel.almeida@collabora.com>, Arnd
+ Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, Breno
+ Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, Dave Ertman
+ <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, Igor Korotin <igor.korotin@linux.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, Arve
+ =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Christian
+ Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
+ driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org,
+ kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v4 2/9] rust: module: add `THIS_MODULE` const to
+ `ModuleMetadata` trait
+In-Reply-To: <20260623-fix-fops-owner-v4-2-0daf5f077d5c@linux.dev>
+References: <20260623-fix-fops-owner-v4-0-0daf5f077d5c@linux.dev>
+ <20260623-fix-fops-owner-v4-2-0daf5f077d5c@linux.dev>
+Date: Tue, 23 Jun 2026 14:28:50 +0200
+Message-ID: <87bjd1e8zh.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623102431.3577627-1-cppcoffee@gmail.com>
+Content-Type: text/plain
 
-On Tue, Jun 23, 2026 at 06:24:31PM +0800, Xiaobo Liu wrote:
-> The helpers in binder.c wrap generic list_lru and task_work inline
-> functions and have nothing to do with binder. Move each of them to a
-> file named after its own C header:
-> 
->   - list_lru helpers move to list_lru.c,
->   - init_task_work moves to task_work.c.
-> 
-> Add the new list_lru.c to the SHRINKER entry in MAINTAINERS, which
-> already covers include/linux/list_lru.h.
-> 
-> Signed-off-by: Xiaobo Liu <cppcoffee@gmail.com>
-> ---
->  MAINTAINERS                           |  1 +
->  rust/helpers/helpers.c                |  3 ++-
->  rust/helpers/{binder.c => list_lru.c} |  7 -------
->  rust/helpers/task_work.c              | 13 +++++++++++++
->  4 files changed, 16 insertions(+), 8 deletions(-)
->  rename rust/helpers/{binder.c => list_lru.c} (72%)
->  create mode 100644 rust/helpers/task_work.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index ba45953bb..428992431 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -24590,6 +24590,7 @@ S:	Maintained
->  F:	Documentation/admin-guide/mm/shrinker_debugfs.rst
->  F:	include/linux/list_lru.h
->  F:	include/linux/shrinker.h
-> +F:	rust/helpers/list_lru.c
->  F:	mm/list_lru.c
->  F:	mm/shrinker.c
->  F:	mm/shrinker_debug.c
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 998e31052..ea34101b9 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -43,7 +43,6 @@
->  #include "atomic_ext.c"
->  #include "auxiliary.c"
->  #include "barrier.c"
-> -#include "binder.c"
->  #include "bitmap.c"
->  #include "bitops.c"
->  #include "blk.c"
-> @@ -69,6 +68,7 @@
->  #include "jump_label.c"
->  #include "kunit.c"
->  #include "list.c"
-> +#include "list_lru.c"
->  #include "maple_tree.c"
->  #include "mm.c"
->  #include "mutex.c"
-> @@ -93,6 +93,7 @@
->  #include "string.c"
->  #include "sync.c"
->  #include "task.c"
-> +#include "task_work.c"
->  #include "time.c"
->  #include "uaccess.c"
->  #include "usb.c"
-> diff --git a/rust/helpers/binder.c b/rust/helpers/list_lru.c
-> similarity index 72%
-> rename from rust/helpers/binder.c
-> rename to rust/helpers/list_lru.c
-> index a2327f1b3..3b88d1a96 100644
-> --- a/rust/helpers/binder.c
-> +++ b/rust/helpers/list_lru.c
-> @@ -5,7 +5,6 @@
->   */
->  
->  #include <linux/list_lru.h>
-> -#include <linux/task_work.h>
->  
->  __rust_helper unsigned long rust_helper_list_lru_count(struct list_lru *lru)
->  {
-> @@ -19,9 +18,3 @@ __rust_helper unsigned long rust_helper_list_lru_walk(struct list_lru *lru,
->  {
->  	return list_lru_walk(lru, isolate, cb_arg, nr_to_walk);
->  }
-> -
-> -__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
-> -					      task_work_func_t func)
-> -{
-> -	init_task_work(twork, func);
-> -}
-> diff --git a/rust/helpers/task_work.c b/rust/helpers/task_work.c
-> new file mode 100644
-> index 000000000..cb961cd22
-> --- /dev/null
-> +++ b/rust/helpers/task_work.c
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright (C) 2025 Google LLC.
-> + */
-> +
-> +#include <linux/task_work.h>
-> +
-> +__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
-> +					      task_work_func_t func)
-> +{
-> +	init_task_work(twork, func);
-> +}
-> -- 
-> 2.34.1
-> 
-> 
+Alvin Sun <alvin.sun@linux.dev> writes:
 
-Hi,
+> Since `const_refs_to_static` has been stable as of the MSRV bump, a
+> `ThisModule` pointer can now be used in const contexts.
+>
+> Add a `THIS_MODULE` const to the `ModuleMetadata` trait so that modules
+> can provide their `ThisModule` pointer in const contexts such as static
+> `file_operations`.
+>
+> Add a `this_module()` helper to retrieve the `THIS_MODULE` pointer of a
+> given module type, and update `__init` to use it instead of the
+> `THIS_MODULE` static generated by the `module!` macro.
+>
+> The `static THIS_MODULE` generated by the `module!` macro is retained
+> for backwards compatibility with existing users and removed in a later
+> patch once all references have been migrated.
+>
+> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-You are receiving this message because of the following common error(s)
-as indicated below:
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+Best regards,
+Andreas Hindborg
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
 
-thanks,
 
-greg k-h's patch email bot
