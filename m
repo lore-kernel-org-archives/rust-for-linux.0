@@ -1,179 +1,134 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F0F37F01A
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 19:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782241898; cv=none; b=qYGlbFmfRDnmI+NsWABev6c8dOaEnsE79qrNwqvdQ2La1v1KFI7d7Ee9Xyau6LIxQ2a3DjGLp/sfiz4yUdRJWpJbdpLG6r8yCQ3zr5D+w8OIIR/D/gw7aQX0bPxBODcHslax299DvD2Ou4Vz5p87548Z1sgsT7g10TnDEKe8FcM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782241898; c=relaxed/simple;
-	bh=+Y27FDTSK4rsR5zxu5ujscwAfskV8IQNJkXptPOCUso=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aCt+Te8dx0HPFXagYCtBQjOeyonQQISpm2PciI8vlmFmDvO1zonus4y0aRr2ADu/f/yrvcI7BDuRl0cs2mcpstRxWvdFYfohlYRnv6OKxKoArmeU+3s/ujoqfq9Gbz+/YW8YUjv4B3hF3lfJhiMX9agOt8PBRcYF9IYldxmCZh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vFVR3EHb; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0723932EE
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 19:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782243131; cv=pass; b=JMySQT8QnXWDHFJptcjd41qz4iDX7krrYhoZEHJnJB2XY7RebcAWmVNStc1UWWRQ2ET8qdju/MNR65xsQk31z+JHPokRISUoTIbTQL8bgp2ED7551sJ5yJYoXjUjE4Wmgq931PPkQowwee8q3kOWA8Y5/COBff8P2r4V1+lMMn0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782243131; c=relaxed/simple;
+	bh=ImXM48uO7c1xvqZ1F/r+LQ9zXIkL9GZsbrJhD1U0PSA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f3H4oZis7lN2xZ0rrrdEi3O/s9w+91jWpo5FOQ5dTx4ZiFt629JnAB7ZIigCJIsi8dPZHv70D28/mnIT6rCmZm6vy+wAUzN1okSptvCoMm5JxWYBzMNiViNNilx0A8iO/H2bGE5BR/1G2FvIQf50d7dWTEsgJOe//ofUN5S6KNI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HwpU+su9; arc=pass smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vFVR3EHb"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4923411f041so1543075e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 12:11:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HwpU+su9"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-1365eb2a773so23007c88.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 12:32:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782243130; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GWVoDNXUDZ3NG0NucX4gubQqxpUnbnT45Cnyx0gdDoDzdAcoIQfJ/yo340Dn17xmid
+         Y7zcn87WdnoRAlbBf6Izv3uGLSXN0tgDKzkpUo3CrmuGrsARMoXX3pyhJuV5RJ5mqq3Y
+         hv+Gnpaa6y5tY7r3liH1iSG5tNPgQRLiLBnPgTrD49He2m6D21xoZcis5iweXSd3KSSi
+         VBwZiHOZ3gsAtlD0RPU+3Q0YRQM3yYvJMBynF1kzgn0DuPd8bwrO7VpmkTKLSe4mwc10
+         HgcJUpVlHebSVt2QgqgPkMflnDslql0W8ESIgEYcekKN9k9aSLozb2IG6vHBQInNb/v6
+         Xgng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wWlOVTMXJECjjihBC+4xDrHlQOqq/HlWBN8NOFc7uWA=;
+        fh=Nd8sR5/9Azl+jRaAy/8wig7Q4YQD7GPc/8aHs6vvKrQ=;
+        b=j/FgiDav1XiagvPt/Iyj5t9MEZLOMevpbzYO2qP+sJaGWVBieddZsvObiyxwMXhxAq
+         MvYUI2PLQnQ3crX2ifBhFLYrifqkNzQmBhOVoBacO+5EdPFTEv7d/t8OTMUmzXSbWbDM
+         PbQ1+JSLbBHRRGfVvTv25WD+qNvWgDTROMHXw+7lpAPcyU03pdFIlRrL8JniWzNaNrLE
+         rpULkTub5Kis3m7QEVCYiA6IJEFD+3ZCSan1eLwaqvOifHy6tn53eKeII3IM6wEqo7Pr
+         xiiBrFxQO8kN6pXRpVpKHFLou47biFDAflXcwWUSpc9rjaHLOVcn4N9J/HK4x2RuSgIL
+         mBlQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782241896; x=1782846696; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EiXmLfx9cRA5lHogf+PWimXq8w1jjNSNV3y3Td+ltF4=;
-        b=vFVR3EHbSF1K055xxh5SVgsbXClkZKjC3XWKdcGKiRVgWhAz0cAD1iuC1WhUbinZBR
-         G55hYtInTi/+Tw4FgFExvjseIEvAUxg716ijmut2KfXFrSfgm0uCDXXyKtG6Gf5y6tXe
-         5ABuHAP8H68Lr4lVgjjvd/xsDx49DAVXRUu/oYZneOcauugClVcFBx5CcpKIzv+HXTIr
-         ZkYIipxepnQEYVrEnE6nDPU+BHYzZ/IgcyD53CspSFLqqpNaMze3X6duJqBB9BEyPn9O
-         SJC7ha/YE6+KcJ8pf6mUcs6i0eGpHyhOj41gvJ8D94p01cCS/w8vCe0sbb+SkL5AV6kB
-         iIQQ==
+        d=gmail.com; s=20251104; t=1782243130; x=1782847930; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wWlOVTMXJECjjihBC+4xDrHlQOqq/HlWBN8NOFc7uWA=;
+        b=HwpU+su9HePt8fkar3RhfHBuXklip35fU4uNphfAvqYB/E7XPWJoFkBJ8LK87Y6k37
+         1+31MN5mvrzV1m0WTDJZPvNJoTjo2jcnQB8Pin4jFdcBg8At4Xhpwi8P4Hy3MU7CQwFO
+         ZNTbwV9CazYAeY5wVmBX6VS4IlcFKsJlmNFk8y/iajNZmceVnqOnrHYN6BXWJS+jgHBH
+         /4cCt+9tFYDmg8wQnDGfmMAx3QZG3SI7F1LXwtGV98K4QGjoPvonAPNJvc6LAbbk6Uzx
+         yerwajezLRv7IWR3+czs5CPhJLCjPaDyaThLjQVyBGmagXHSROrYAOyFjp4n8zLgGHmi
+         SCwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782241896; x=1782846696;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EiXmLfx9cRA5lHogf+PWimXq8w1jjNSNV3y3Td+ltF4=;
-        b=tScvJXl4fuOP4AnxESqvX+6AnvKEesg0KkaJZbHiCJJIwtdOml5xDx1LZYXtXVw/5g
-         9f2BFCpD+eVpp9vo1/3c4MfYY0AZX6JRMcmEcPXeRTDprtOIowYf/lJOS404/5CJyFZo
-         qxxlFqEqnn+1cUJOBR2YLIu+lulmzJPkD6RqWtmP6C9B5H56RGdiGIZtwDfmjpdrtgCv
-         +v6T6bENecD8GQL2jPdP0eoykF5tyofxLBjZR/vmjrxLhzO+35b5IM28/wEwIuN9TJnl
-         8H9ZxCeH8QnwYAmWJ87jf4bPWXW8CyWjNLxm4li6GhkyKRE32EkinVl6wAcMdPlTyjXJ
-         4cQg==
-X-Forwarded-Encrypted: i=1; AFNElJ/cQr1RhJtCOR3VWRMCi7qb99mrF67Md2jqSZlEdgHqH5vRehAsEpgeu+N2Kb9kdrpZwOoRDFx7A7aucoCPzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz0k6L+tSjQVkGwzzNe4Tj2bpI/iyi144XP/gGS1VmF25Oz7Bv
-	M9eBGVem7GEtwoaIgTRdghism768/uCablx952rJmDHx062KSgkZUOpV03AB8QqtDOAL3Jw7XXb
-	ThyuZcXEUEAD2oh34ww==
-X-Received: from wmju9.prod.google.com ([2002:a7b:cb09:0:b0:490:af39:157a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:540f:b0:492:5e21:458b with SMTP id 5b1f17b1804b1-4925e21459fmr39461755e9.8.1782241895636;
- Tue, 23 Jun 2026 12:11:35 -0700 (PDT)
-Date: Tue, 23 Jun 2026 19:11:34 +0000
-In-Reply-To: <DJGJURFV9NCB.25MLPQBQTL9WR@garyguo.net>
+        d=1e100.net; s=20251104; t=1782243130; x=1782847930;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wWlOVTMXJECjjihBC+4xDrHlQOqq/HlWBN8NOFc7uWA=;
+        b=eHGz8BA/9KIRvO6YW2uEuUq+c1pdHKNLy2TqDMOzLC/DiKwZMOfocqieiS70VROBhB
+         9w+SPNJ1Hp8ZZTgQCzYch5wJlcL0+6omVArKoaLyjudfO0GuM4F0XRvgOkuWJdr8W/8S
+         ayAxnTkCiM5BoIwSw1NnvPY1qsZvEEQJ3RVLL35xpgedg+Qf1bEmDRKrz+7vRU3GAtII
+         fqnt9LFVbGLOeY0a5/swbUy52Nky5Zx13NfCWCzKEnmsO7wkl8xu2qVzghnMmGFxlwm8
+         XE5Shwx/1Z3LrkMexvscOdr+BMR2T3rOW39SdSXYTporYTLvksJJJo9x8WSKO2aXdkVO
+         kmMw==
+X-Forwarded-Encrypted: i=1; AHgh+RoWz8yBbYWfhDBS4exMcw12ZJY8iHaOZieIL4aJgHg9YcVI1hV5BHLwiRL9KtzfMrOJcH4BQtJpnAq2dNNkVw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9eZ+iypKyRD27VZ4+PJ5Os6ZSkrBMnfhQpIDsoY0n4UsA5vM6
+	rVoZGZsekQO8Xs08MG9uB/2BWPQGjiDHiBS937SqZP2EsOblz9DClW3QczXV0JdVKK9efhoH4mJ
+	u8SKPCNNhwtMANcs6F1m614l5QOfKSwc=
+X-Gm-Gg: AfdE7ckX/MnObK9JC5uV874VJluVASQVWhReYA4fd89DpH3674aB3zhERdm06DwQQek
+	6WrOZ+l5kI+ijNfQz3VtTZdHb3GKUjtifpwruLVPzFJRWF2O3F72rcSvBrIfjtUqcQjT0tHlTyP
+	ym1iofPzW9dWJzh0D5aO6GKgwPmA/jDmmoRAQccBoPomvA/ewVlnCpRJujUozQ+F6dZeIbNVfKf
+	Tf+Bc17NoZxMXxIjBD/Si0dm9bbpjf78Aad88R6H01ZApzlVznziH0by4GIMtuxyEwaaTP8pCqW
+	293RDDScLJOMXREjwRX0o9//gDuuQEr5EaQt1O4cvEmLaPCy06gJMDNyFwxmz52QJwVcnjXS058
+	j6Ea8ffXu6njY
+X-Received: by 2002:a05:693c:25c8:b0:30c:496e:982e with SMTP id
+ 5a478bee46e88-30c496ea017mr2930193eec.6.1782243129704; Tue, 23 Jun 2026
+ 12:32:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
- <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com> <DJGJURFV9NCB.25MLPQBQTL9WR@garyguo.net>
-Message-ID: <ajraZiML5mkjUZGq@google.com>
+MIME-Version: 1.0
+References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com> <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com>
+In-Reply-To: <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 23 Jun 2026 21:31:53 +0200
+X-Gm-Features: AVVi8Ccs7OEPdkGKWeH8eRzdTeG5uWuJbI9jE4mrLkT6b1MRUrbOGe_15K6dgoU
+Message-ID: <CANiq72k-TZyORAaHyB+hWNuG8atBdoGgDNk7gUyc1MXjsyu2gg@mail.gmail.com>
 Subject: Re: [PATCH 3/5] rust: add pr_*_ratelimit! macros for printing
-From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
+To: Alice Ryhl <aliceryhl@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Boqun Feng <boqun@kernel.org>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Trevor Gross <tmgross@umich.edu>, 
+	Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 23, 2026 at 04:55:31PM +0100, Gary Guo wrote:
-> On Tue Jun 23, 2026 at 4:38 PM BST, Alice Ryhl wrote:
-> > Printing can be very expensive if it occurs often, so printing that can
-> > be triggered by userspace should be rate limited. For this purpose, add
-> > a Rust wrapper around `struct ratelimit_state` and use it in the new
-> > macros.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/helpers/helpers.c   |   1 +
-> >  rust/helpers/ratelimit.c |  14 ++++
-> >  rust/kernel/lib.rs       |   1 +
-> >  rust/kernel/prelude.rs   |   8 ++
-> >  rust/kernel/ratelimit.rs | 202 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  5 files changed, 226 insertions(+)
-> >
-> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> > index d17eaec76450..2184b11c927f 100644
-> > --- a/rust/helpers/helpers.c
-> > +++ b/rust/helpers/helpers.c
-> > @@ -80,6 +80,7 @@
-> >  #include "processor.c"
-> >  #include "property.c"
-> >  #include "pwm.c"
-> > +#include "ratelimit.c"
-> >  #include "rbtree.c"
-> >  #include "rcu.c"
-> >  #include "refcount.c"
-> > diff --git a/rust/helpers/ratelimit.c b/rust/helpers/ratelimit.c
-> > new file mode 100644
-> > index 000000000000..e5052f568b81
-> > --- /dev/null
-> > +++ b/rust/helpers/ratelimit.c
-> > @@ -0,0 +1,14 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <linux/ratelimit.h>
-> > +
-> > +__rust_helper void rust_helper_ratelimit_state_init(struct ratelimit_state *rs,
-> > +						    int interval, int burst)
-> > +{
-> > +	ratelimit_state_init(rs, interval, burst);
-> > +}
-> > +
-> > +__rust_helper void rust_helper_ratelimit_state_exit(struct ratelimit_state *rs)
-> > +{
-> > +	ratelimit_state_exit(rs);
-> > +}
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index b72b2fbe046d..ba65ab4f0b8c 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -111,6 +111,7 @@
-> >  pub mod ptr;
-> >  #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
-> >  pub mod pwm;
-> > +pub mod ratelimit;
-> >  pub mod rbtree;
-> >  pub mod regulator;
-> >  pub mod revocable;
-> > diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> > index 44edf72a4a24..5a66028dd973 100644
-> > --- a/rust/kernel/prelude.rs
-> > +++ b/rust/kernel/prelude.rs
-> > @@ -89,13 +89,21 @@
-> >      },
-> >      init::InPlaceInit,
-> >      pr_alert,
-> > +    pr_alert_ratelimited,
-> >      pr_crit,
-> > +    pr_crit_ratelimited,
-> >      pr_debug,
-> > +    pr_debug_ratelimited,
-> >      pr_emerg,
-> > +    pr_emerg_ratelimited,
-> >      pr_err,
-> > +    pr_err_ratelimited,
-> >      pr_info,
-> > +    pr_info_ratelimited,
-> >      pr_notice,
-> > +    pr_notice_ratelimited,
-> >      pr_warn,
-> > +    pr_warn_ratelimited,
-> >      static_assert,
-> >      str::CStrExt as _,
-> 
-> I really want this to be just a variant of pr_, not a entire new family of
+On Tue, Jun 23, 2026 at 5:38=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Printing can be very expensive if it occurs often, so printing that can
+> be triggered by userspace should be rate limited. For this purpose, add
+> a Rust wrapper around `struct ratelimit_state` and use it in the new
 > macros.
-> 
-> Last time I raise this in
-> https://lore.kernel.org/rust-for-linux/20260108125523.5c7810ae.gary@garyguo.net/
-> , I was suggesting unifying pr_ and dev_ too, which might be a step too much. 
-> 
-> But I think just making ratelimited a keyword in `pr_` macro should be alright?
-> 
-> pr_info!("foo"); // pr_info("foo\n");
-> pr_info!(once, "foo"); // pr_info_once("foo\n");
-> pr_info!(ratelimited, "foo"); // pr_info_ratelimited("foo\n");
-> dev_info!(dev, "foo"); // dev_info(dev, "foo\n");
-> dev_info!(dev, once, "foo"); // dev_info_once(dev, "foo\n");
-> dev_info!(dev, ratelimited, "foo"); // dev_info_ratelimited(dev, "foo\n");
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-I did it this way for consistency with the existing pr_*_once!.
+Link: https://github.com/Rust-for-Linux/linux/issues/122
 
-Alice
+(I back-linked to this thread from there too.)
+
+> +            // SAFETY: This is a repr(transparent) wrapper, and the inva=
+riants are satisfied.
+
+`repr(transparent)`
+
+> +    /// Returns `true` if the action is allowed, and `false` if it shoul=
+d be suppressed.
+
+[`true`]
+[`false`]
+
+I can change all these on apply.
+
+Cheers,
+Miguel
