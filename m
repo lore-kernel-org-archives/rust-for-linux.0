@@ -1,85 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F5F34BA50;
-	Tue, 23 Jun 2026 11:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDD23D45C1
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 11:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782213421; cv=none; b=oHX2a5wRB2nBUtvx2fhKwA0eWFdWFX0VDypTXvrAI3cyKwiudhl2mDRL73EaOhl3AXUPEfxC/0BjoU5sgoAdAJi+Rgjn+TBZwO6RCrQoMcPY+idpEbiRQ9nx6Ve5sEl1gk20js17Dj+yLeIItVRE72AhhfUmrHOlrkVvDlgeJX4=
+	t=1782214636; cv=none; b=kPF2Y5h0Uo7v4GV/nUNfNrvCF5FvhTC5AfhHzjK1FEBjBh0himxPse1WB30hKSw/vYewjAmxNhUXOdDCknWpMa52B9KOSwMVXybDrsY4a5gRBXJ4D5f4KsLE9WGYsVdah5RS7J8337L1BnsEV2M59uCdP1Omtq7HV2SRgXWu55o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782213421; c=relaxed/simple;
-	bh=+PKArGvkgKV9hQ6UYF3rddykA5jy/ezmBTSvvA0P4Ac=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=E04FwuhByzUJkolVnYUVlN+JDSSRoM5cAL7bbsif3ae9a4RYPr0w5VvvpqLO1ZnP4ruL5myjfLzSJfi08OIRT6CssB2ZXXduCsYGodkBIMfFOgzNCo1LGqCa3Y1a5ilC+/BSjk1P2T7vy0N43cUo23CF8IJmNkFV240gkAnuBBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnoJusIn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782214636; c=relaxed/simple;
+	bh=lra4pcJ/vKRB8CVYqb5bH1lHUYNPrtqwXyzo6vWU0V8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=JVY7/83bDyC7GiS/lnGbWCLdAerSvHreqI7seOV6WTQhQ48qBTRxAp1nZYDZTIySoe230fGGTeIPLBN6JZCHGG7LLUNTN/Yc8nY/V4coYkbdmP/Q/tSAdSxM6p8cWEu88SZ7SirfA6CF1euirUzZVy23cNdSD5GOksfV6qTfoGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GNsBaq8j; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnoJusIn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA561F000E9;
-	Tue, 23 Jun 2026 11:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782213420;
-	bh=+PKArGvkgKV9hQ6UYF3rddykA5jy/ezmBTSvvA0P4Ac=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=JnoJusInSLUUqbs7lMQyVsWIUsrz2NkYyE+g0b5TRmbXifE9FDqYu90tXm+l1mnbi
-	 NbTOnnnv3s7F/R6x+Xebmyhy2vas+dPJINWJgSWC9ZN6zCdRKDdw3Uhb05EJTTj66M
-	 lUJ0RV8Ih95UVLMDAzfgBqKMXB5LQcv8yZfiLjLUqNLe+k409EC3xs76VL2cvtDM+M
-	 PSSZ12KeA+Mr+RAIkEdecrkt/gVjIEraWpgIk+GrlEcbJVxxltGy5oCy9RxehVMgYd
-	 dy/3GOb7Z7Ky1owlSguXfzJ1q+v1DwTJzDpltIUD5DaHzZ6Sqyly9GqlWLUsWRTLic
-	 QHkz2pdHfXWkw==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GNsBaq8j"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4924207e640so24958205e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 04:37:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782214633; x=1782819433; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=avMSkvtdj5olX4vyz/UDjZnR1hYBFduxY4Z2gcaqz28=;
+        b=GNsBaq8j/XJaOISIbd2ZEGiCZjWmXsBDA4f69LGf9qLeai2BPP1AtRE/Ej2KT/Li5Y
+         CJqDAvEs9WTXZJnfYQXJicK/UMRDgDTZLX3vswS0pLHHj6kCxYfAqnUeNNDCC2t1Moca
+         pA+EyStuDrqmtYb2XFFZ3MssCpoW9S3DsrO7lbkMUDvSfis+ISAcppHnCJtyek2i0wWf
+         0viZwvNOoslZ9EqGTOxrbjZMCwpLnxL78zIlzuTHd8mrTcdt+v3pVHmRxweU0iQtLifg
+         jLNFHJ97rkHHC/7cc2WfDFC+6tYfA1MGwI6gKcD4eA0x8HiIZRUKQgjoqyfCivRjTFqU
+         fJMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782214633; x=1782819433;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=avMSkvtdj5olX4vyz/UDjZnR1hYBFduxY4Z2gcaqz28=;
+        b=IiDEUJyeTQ+k0G4jpnj94lX+USCToUCNDCj2bWRGd79FE1j/vVd+OtXqlVhRLeO8R7
+         B/7rmZhxoj7D+78/m5kgbOwdKzOYKTgECAVV9z7+/RQMiqL8JlgITv4MVlPBZFASlx9H
+         okce7mx2LfBSmQqXLK9uqm63v4PtotJVHBRm8CeYXjzHZkRmYY4WhAqilr3ie+X+XBMa
+         xDsBlftOn857DJtTmcpZ2UzAuthYCWtHUk4EJVVdoUBBi1VdjwYJ9Q+zr5EZnUzTbQSF
+         P7p1slmnD4MPlRzboDpNiZTHOb/1ePevgJIRj1ZmaZUNlA/ZAmJPDPqZbvMOTrNCE3u5
+         l3Gg==
+X-Forwarded-Encrypted: i=1; AFNElJ/laWgyoKWP1u5QQ7fsiR2RJrXf4CZNh2Nfj8dAi/U78o6OaZ3FH2PVrSmAVU0KpEkt2iRJ2zIHA/jj3ik8PQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrwDngAHfq4OeSuFVuk+VPmbn3G3z6wbm/cTAp3kPZ2ApPGIn8
+	B70XCCr3xVqYugMVcP/nOAlAE542FU9tku27Z419G6LnPUtj05GMu1c95p8ROTb+ydEuxfczVap
+	fTZE13lpyvp3PWQirrQ==
+X-Received: from wma7.prod.google.com ([2002:a05:600c:8907:b0:492:42f9:b559])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3113:b0:48a:5565:ec3d with SMTP id 5b1f17b1804b1-492490a790cmr199392115e9.22.1782214633089;
+ Tue, 23 Jun 2026 04:37:13 -0700 (PDT)
+Date: Tue, 23 Jun 2026 11:37:11 +0000
+In-Reply-To: <20260622145801.344-1-iganschel@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 23 Jun 2026 13:16:51 +0200
-Message-Id: <DJGDXEJXXWC8.1PT6LZH1ZLGB0@kernel.org>
-Subject: Re: [PATCH v2 1/3] rust: sync: Add abstraction for
- synchronize_rcu()
-Cc: <phasta@kernel.org>, "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, "Pedro Falcato" <pfalcato@suse.de>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Jan
- Kara" <jack@suse.cz>, "Lyude Paul" <lyude@redhat.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, "Frederic Weisbecker" <frederic@kernel.org>, "Neeraj
- Upadhyay" <neeraj.upadhyay@kernel.org>, "Joel Fernandes"
- <joelagnelf@nvidia.com>, "Josh Triplett" <josh@joshtriplett.org>,
- "Uladzislau Rezki" <urezki@gmail.com>, "Steven Rostedt"
- <rostedt@goodmis.org>, "Mathieu Desnoyers"
- <mathieu.desnoyers@efficios.com>, "Lai Jiangshan" <jiangshanlai@gmail.com>,
- "Zqiang" <qiang.zhang@linux.dev>, "Christian Schrefl"
- <chrisi.schrefl@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <rcu@vger.kernel.org>
-To: "Philipp Stanner" <phasta@mailbox.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260622173250.411377-2-phasta@kernel.org>
- <20260622173250.411377-3-phasta@kernel.org>
- <ajpJmjTST-Hoxutb@pedro-suse.lan>
- <908762cb7fd90df1df70eda28363a0015c404527.camel@mailbox.org>
- <CANiq72knGU+PUCXUATOkA7225++0nvALNByoJa8gaV_EuyHx6g@mail.gmail.com>
- <b94b2ef73d70652fba062331aa902c8f89034d7f.camel@mailbox.org>
-In-Reply-To: <b94b2ef73d70652fba062331aa902c8f89034d7f.camel@mailbox.org>
+References: <20260621210134.441-1-iganschel@gmail.com> <20260622145801.344-1-iganschel@gmail.com>
+Message-ID: <ajpv5xkakp06ArMj@google.com>
+Subject: Re: [PATCH v2] rust_binder: reject context manager self-transaction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Keshav Verma <iganschel@gmail.com>
+Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue Jun 23, 2026 at 1:04 PM CEST, Philipp Stanner wrote:
-> with a hyper-strict definition (note that I'm unsure whether calling
-> synchronize_rcu() in atomic context is actually even defined behavior;
-> I think it is. I'm just brainstorming here)
+On Mon, Jun 22, 2026 at 08:28:01PM +0530, Keshav Verma wrote:
+> Rust binder resolved handle 0 to the context manager node, but it does not
+> reject the case where the caller owns the same node.
+> 
+> The C binder driver rejects transactions from the context-manager process
+> to handle 0 after resolving the target node. Match that behavior in Rust
+> Binder by rejecting handle 0 transactions when the resolved context-manager
+> node is owned by the calling process.
+> 
+> This applies to both synchronous and oneway transactions because both paths
+> resolve the target through Process::get_transaction_node().
+> 
+> Cc: stable@kernel.org
+> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> Signed-off-by: Keshav Verma <iganschel@gmail.com>
+> ---
+> Changes in v2:
+> - Compare the underlying OS process task instead of Rust Binder `Process` object.
 
-From the Rust side of things this is well defined; please see [1] and [2].
+I would prefer to compare the Binder Process object. Rejecting
+transactions between different fds owned by the same process doesn't
+really have any benefit and makes fuzz testing much harder.
 
-However, given the kernel context, things such as deadlocks have more
-consequences than in userspace. Which is why it is still desirable to catch=
- them
-(e.g. with tools like klint).
-
-[1] https://doc.rust-lang.org/reference/behavior-considered-undefined.html
-[2] https://doc.rust-lang.org/reference/behavior-not-considered-unsafe.html
+Alice
