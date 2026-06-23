@@ -1,94 +1,187 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDD23D45C1
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 11:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAE429ACC6;
+	Tue, 23 Jun 2026 11:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782214636; cv=none; b=kPF2Y5h0Uo7v4GV/nUNfNrvCF5FvhTC5AfhHzjK1FEBjBh0himxPse1WB30hKSw/vYewjAmxNhUXOdDCknWpMa52B9KOSwMVXybDrsY4a5gRBXJ4D5f4KsLE9WGYsVdah5RS7J8337L1BnsEV2M59uCdP1Omtq7HV2SRgXWu55o=
+	t=1782215018; cv=none; b=LUcXJj/z2uaey+jKwxGkoj3eDgh7Q1Dqb/g5hQfDaxJU9aRPuDdPpBzjMEVP9YmhjjLCj2cmuO6o47TYih35VBmKnvlABqPXsa3+SwvvFI+aKLoZ0vGiqfehuBcOCNJjsz6wXw/mcDKHEOaZvyWVIq/2V0QzFeUOHq67R1fvp1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782214636; c=relaxed/simple;
-	bh=lra4pcJ/vKRB8CVYqb5bH1lHUYNPrtqwXyzo6vWU0V8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JVY7/83bDyC7GiS/lnGbWCLdAerSvHreqI7seOV6WTQhQ48qBTRxAp1nZYDZTIySoe230fGGTeIPLBN6JZCHGG7LLUNTN/Yc8nY/V4coYkbdmP/Q/tSAdSxM6p8cWEu88SZ7SirfA6CF1euirUzZVy23cNdSD5GOksfV6qTfoGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GNsBaq8j; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1782215018; c=relaxed/simple;
+	bh=TZUcykR8ZPPFN4AOl3Orik2Cxh3eQtwWGALViz9NVmM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=inQkjYgazW8g2tLvebkrOXNlAjWWqdME3AswizWKHsHmSrv49JR+XIkhFyFC+qD+nRAE8FD5Th71IMIJ+60ZEyypQT70ktRgHMIl0ibcl1Eo+6/LJwYyZjbZ4z2bjHlehivrMcWiZYahaqqZnLzTbrdyccOskbYOLz1kBQMsNyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rw0wY6tX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GNsBaq8j"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4924207e640so24958205e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 04:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782214633; x=1782819433; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=avMSkvtdj5olX4vyz/UDjZnR1hYBFduxY4Z2gcaqz28=;
-        b=GNsBaq8j/XJaOISIbd2ZEGiCZjWmXsBDA4f69LGf9qLeai2BPP1AtRE/Ej2KT/Li5Y
-         CJqDAvEs9WTXZJnfYQXJicK/UMRDgDTZLX3vswS0pLHHj6kCxYfAqnUeNNDCC2t1Moca
-         pA+EyStuDrqmtYb2XFFZ3MssCpoW9S3DsrO7lbkMUDvSfis+ISAcppHnCJtyek2i0wWf
-         0viZwvNOoslZ9EqGTOxrbjZMCwpLnxL78zIlzuTHd8mrTcdt+v3pVHmRxweU0iQtLifg
-         jLNFHJ97rkHHC/7cc2WfDFC+6tYfA1MGwI6gKcD4eA0x8HiIZRUKQgjoqyfCivRjTFqU
-         fJMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782214633; x=1782819433;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=avMSkvtdj5olX4vyz/UDjZnR1hYBFduxY4Z2gcaqz28=;
-        b=IiDEUJyeTQ+k0G4jpnj94lX+USCToUCNDCj2bWRGd79FE1j/vVd+OtXqlVhRLeO8R7
-         B/7rmZhxoj7D+78/m5kgbOwdKzOYKTgECAVV9z7+/RQMiqL8JlgITv4MVlPBZFASlx9H
-         okce7mx2LfBSmQqXLK9uqm63v4PtotJVHBRm8CeYXjzHZkRmYY4WhAqilr3ie+X+XBMa
-         xDsBlftOn857DJtTmcpZ2UzAuthYCWtHUk4EJVVdoUBBi1VdjwYJ9Q+zr5EZnUzTbQSF
-         P7p1slmnD4MPlRzboDpNiZTHOb/1ePevgJIRj1ZmaZUNlA/ZAmJPDPqZbvMOTrNCE3u5
-         l3Gg==
-X-Forwarded-Encrypted: i=1; AFNElJ/laWgyoKWP1u5QQ7fsiR2RJrXf4CZNh2Nfj8dAi/U78o6OaZ3FH2PVrSmAVU0KpEkt2iRJ2zIHA/jj3ik8PQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrwDngAHfq4OeSuFVuk+VPmbn3G3z6wbm/cTAp3kPZ2ApPGIn8
-	B70XCCr3xVqYugMVcP/nOAlAE542FU9tku27Z419G6LnPUtj05GMu1c95p8ROTb+ydEuxfczVap
-	fTZE13lpyvp3PWQirrQ==
-X-Received: from wma7.prod.google.com ([2002:a05:600c:8907:b0:492:42f9:b559])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3113:b0:48a:5565:ec3d with SMTP id 5b1f17b1804b1-492490a790cmr199392115e9.22.1782214633089;
- Tue, 23 Jun 2026 04:37:13 -0700 (PDT)
-Date: Tue, 23 Jun 2026 11:37:11 +0000
-In-Reply-To: <20260622145801.344-1-iganschel@gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rw0wY6tX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99F81F00A3A;
+	Tue, 23 Jun 2026 11:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782215017;
+	bh=MIYLLXEdXx7L4o6dYJYDdrb0D5HpwPqotDGYXKoVR5s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=rw0wY6tXv+5a5BRQ63p93wABtbFhv2RtKPXr5/x5aQ4PYasTgBb/Y9xDHp1xkp4zk
+	 N3CLzRvVPAYdvGj6Fv5XbXutveX54MBQsEAJE7CaAEnYDsbdedNny6QTxLdg89ZFPJ
+	 JnQ49sQlBZuFEglkXvXApvgS7ZIuKPiTuwtYrb/I=
+Date: Tue, 23 Jun 2026 13:42:25 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xiaobo Liu <cppcoffee@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, akpm@linux-foundation.org,
+	david@fromorbit.com, qi.zheng@linux.dev, roman.gushchin@linux.dev,
+	muchun.song@linux.dev, boqun@kernel.org, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] rust: helpers: move list_lru and task_work helpers
+ out of binder.c
+Message-ID: <2026062302-girdle-entrench-11bb@gregkh>
+References: <CANiq72=sSkApehxg6eEpAoNU8zSsRAfqD+RVymM3UQGuvfKyeQ@mail.gmail.com>
+ <20260623102431.3577627-1-cppcoffee@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260621210134.441-1-iganschel@gmail.com> <20260622145801.344-1-iganschel@gmail.com>
-Message-ID: <ajpv5xkakp06ArMj@google.com>
-Subject: Re: [PATCH v2] rust_binder: reject context manager self-transaction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Keshav Verma <iganschel@gmail.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623102431.3577627-1-cppcoffee@gmail.com>
 
-On Mon, Jun 22, 2026 at 08:28:01PM +0530, Keshav Verma wrote:
-> Rust binder resolved handle 0 to the context manager node, but it does not
-> reject the case where the caller owns the same node.
+On Tue, Jun 23, 2026 at 06:24:31PM +0800, Xiaobo Liu wrote:
+> The helpers in binder.c wrap generic list_lru and task_work inline
+> functions and have nothing to do with binder. Move each of them to a
+> file named after its own C header:
 > 
-> The C binder driver rejects transactions from the context-manager process
-> to handle 0 after resolving the target node. Match that behavior in Rust
-> Binder by rejecting handle 0 transactions when the resolved context-manager
-> node is owned by the calling process.
+>   - list_lru helpers move to list_lru.c,
+>   - init_task_work moves to task_work.c.
 > 
-> This applies to both synchronous and oneway transactions because both paths
-> resolve the target through Process::get_transaction_node().
+> Add the new list_lru.c to the SHRINKER entry in MAINTAINERS, which
+> already covers include/linux/list_lru.h.
 > 
-> Cc: stable@kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Signed-off-by: Keshav Verma <iganschel@gmail.com>
+> Signed-off-by: Xiaobo Liu <cppcoffee@gmail.com>
 > ---
-> Changes in v2:
-> - Compare the underlying OS process task instead of Rust Binder `Process` object.
+>  MAINTAINERS                           |  1 +
+>  rust/helpers/helpers.c                |  3 ++-
+>  rust/helpers/{binder.c => list_lru.c} |  7 -------
+>  rust/helpers/task_work.c              | 13 +++++++++++++
+>  4 files changed, 16 insertions(+), 8 deletions(-)
+>  rename rust/helpers/{binder.c => list_lru.c} (72%)
+>  create mode 100644 rust/helpers/task_work.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ba45953bb..428992431 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -24590,6 +24590,7 @@ S:	Maintained
+>  F:	Documentation/admin-guide/mm/shrinker_debugfs.rst
+>  F:	include/linux/list_lru.h
+>  F:	include/linux/shrinker.h
+> +F:	rust/helpers/list_lru.c
+>  F:	mm/list_lru.c
+>  F:	mm/shrinker.c
+>  F:	mm/shrinker_debug.c
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 998e31052..ea34101b9 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -43,7 +43,6 @@
+>  #include "atomic_ext.c"
+>  #include "auxiliary.c"
+>  #include "barrier.c"
+> -#include "binder.c"
+>  #include "bitmap.c"
+>  #include "bitops.c"
+>  #include "blk.c"
+> @@ -69,6 +68,7 @@
+>  #include "jump_label.c"
+>  #include "kunit.c"
+>  #include "list.c"
+> +#include "list_lru.c"
+>  #include "maple_tree.c"
+>  #include "mm.c"
+>  #include "mutex.c"
+> @@ -93,6 +93,7 @@
+>  #include "string.c"
+>  #include "sync.c"
+>  #include "task.c"
+> +#include "task_work.c"
+>  #include "time.c"
+>  #include "uaccess.c"
+>  #include "usb.c"
+> diff --git a/rust/helpers/binder.c b/rust/helpers/list_lru.c
+> similarity index 72%
+> rename from rust/helpers/binder.c
+> rename to rust/helpers/list_lru.c
+> index a2327f1b3..3b88d1a96 100644
+> --- a/rust/helpers/binder.c
+> +++ b/rust/helpers/list_lru.c
+> @@ -5,7 +5,6 @@
+>   */
+>  
+>  #include <linux/list_lru.h>
+> -#include <linux/task_work.h>
+>  
+>  __rust_helper unsigned long rust_helper_list_lru_count(struct list_lru *lru)
+>  {
+> @@ -19,9 +18,3 @@ __rust_helper unsigned long rust_helper_list_lru_walk(struct list_lru *lru,
+>  {
+>  	return list_lru_walk(lru, isolate, cb_arg, nr_to_walk);
+>  }
+> -
+> -__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
+> -					      task_work_func_t func)
+> -{
+> -	init_task_work(twork, func);
+> -}
+> diff --git a/rust/helpers/task_work.c b/rust/helpers/task_work.c
+> new file mode 100644
+> index 000000000..cb961cd22
+> --- /dev/null
+> +++ b/rust/helpers/task_work.c
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (C) 2025 Google LLC.
+> + */
+> +
+> +#include <linux/task_work.h>
+> +
+> +__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
+> +					      task_work_func_t func)
+> +{
+> +	init_task_work(twork, func);
+> +}
+> -- 
+> 2.34.1
+> 
+> 
 
-I would prefer to compare the Binder Process object. Rejecting
-transactions between different fds owned by the same process doesn't
-really have any benefit and makes fuzz testing much harder.
+Hi,
 
-Alice
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
+
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
