@@ -1,117 +1,179 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C954348C42
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 18:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F0F37F01A
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 19:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782241099; cv=none; b=uMAK2HIWWmtF7bPvO9lyRmOt+e6UeigS8ermCdA9Ch+wlLZGNGVb+HI89A0HEOPmoxWnluCqdqc5a2UglqWpK9l711dLZsOMbxclRCGwO3WwVYoBZU4/qMHJKxLv77VSAz1L9zzJm5JznEip+5z77bk5KQfVM8Ci1ByBt54FqgY=
+	t=1782241898; cv=none; b=qYGlbFmfRDnmI+NsWABev6c8dOaEnsE79qrNwqvdQ2La1v1KFI7d7Ee9Xyau6LIxQ2a3DjGLp/sfiz4yUdRJWpJbdpLG6r8yCQ3zr5D+w8OIIR/D/gw7aQX0bPxBODcHslax299DvD2Ou4Vz5p87548Z1sgsT7g10TnDEKe8FcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782241099; c=relaxed/simple;
-	bh=6sizoAgwRLvjCh7zqg/EnqZzQNrUHjNmth2MBnONupo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kb4ygNUdsSFwMuqpe5pQp8n47xqxG/M+Gk0TYNYSL34wpX9D/wgwcQFg0wR1lT4uRB53kECrKt6ehOrncdllLd2YUvhg4FKg30hDUYCEZAI/wKuGlWUTse+mQEvhX9P8d8/ixnvdSE9lkYx2v7kUErK6x2741RWpBpMm7a71jo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OBFa+vr7; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782241898; c=relaxed/simple;
+	bh=+Y27FDTSK4rsR5zxu5ujscwAfskV8IQNJkXptPOCUso=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aCt+Te8dx0HPFXagYCtBQjOeyonQQISpm2PciI8vlmFmDvO1zonus4y0aRr2ADu/f/yrvcI7BDuRl0cs2mcpstRxWvdFYfohlYRnv6OKxKoArmeU+3s/ujoqfq9Gbz+/YW8YUjv4B3hF3lfJhiMX9agOt8PBRcYF9IYldxmCZh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vFVR3EHb; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OBFa+vr7"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4633193af19so188722f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 11:58:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vFVR3EHb"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4923411f041so1543075e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 12:11:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782241097; x=1782845897; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=2fiFg69bZvG7eLHGu12BMJgm2iLA1vS/lgB2cc2WLrE=;
-        b=OBFa+vr7LV6XYWQs/BbCkXg61dyzgwY+FE7mroZoDqF9yRQ/XL27w7KC1MfwLmwr4p
-         Ea9zjNSSrVTbiC4BL72Chf/hrlMUcFYZ33j0+aaDmHkymxJiCZm/529O2rnuB/4/WRAh
-         JapYutkIavZBvhIARtAvlr4rWPltl1dAdMEEJ7ClA6U9/iP2fLxf6GnUXpUxO8+VoeDt
-         o4IyThWskguQKptwuwQKDRsK4e4l23oEv826UyCykbq4Vu0/nOQRpwPfXVYyJNNEWinU
-         1kqelNVu2gVPWUBRjHpvEF37rCi7wQ9UB8dy4c9KllrZGo8XbmLq7zcIW5WAbt5zfGcV
-         4bjw==
+        d=google.com; s=20251104; t=1782241896; x=1782846696; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EiXmLfx9cRA5lHogf+PWimXq8w1jjNSNV3y3Td+ltF4=;
+        b=vFVR3EHbSF1K055xxh5SVgsbXClkZKjC3XWKdcGKiRVgWhAz0cAD1iuC1WhUbinZBR
+         G55hYtInTi/+Tw4FgFExvjseIEvAUxg716ijmut2KfXFrSfgm0uCDXXyKtG6Gf5y6tXe
+         5ABuHAP8H68Lr4lVgjjvd/xsDx49DAVXRUu/oYZneOcauugClVcFBx5CcpKIzv+HXTIr
+         ZkYIipxepnQEYVrEnE6nDPU+BHYzZ/IgcyD53CspSFLqqpNaMze3X6duJqBB9BEyPn9O
+         SJC7ha/YE6+KcJ8pf6mUcs6i0eGpHyhOj41gvJ8D94p01cCS/w8vCe0sbb+SkL5AV6kB
+         iIQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782241097; x=1782845897;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2fiFg69bZvG7eLHGu12BMJgm2iLA1vS/lgB2cc2WLrE=;
-        b=fyl97xShwwZMF0Dg/gxRA3adMaOSp4UkCv31ada3gnesQPyJMe0qskyw9P62yJa4hT
-         78OTVotfDkRg+Tc02IM+ctUdvbJ7SIoYZVknz0MneMW7kHGco6lZ5lNrG0OKzWMisilU
-         EOV/BKivPBOFGo2Xc7E9ZJDFckmabQyXDqbF2F/sTsyQdrk1VcWq2mrSYCBtkJ9rNKAo
-         LU8UoYbyGQ3dpKtqfhcURkEF+ciSCukhcZZOptQILyNKOAV0Vzk+V8teBfdJv8ITe6zL
-         trZXc7YfpfK2sEJV9Za3BLRhakOYDkg6y91Ehyp2CSxmjHtTJsDBwfyRN7odwlBChJaZ
-         8tAw==
-X-Forwarded-Encrypted: i=1; AHgh+RotF47djTOclN7jRUjwtmOcGRscgB0hyl2JvZM169l8XeOcpMiv8YqH51rnS9jMZB0HWtn7xxcTQGOmWY9P6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNw2B01Sa5ugB4qN28oscu/wO5GiwO62aRUSRBNHibpgvZErs7
-	ceqcJKJBvEOlF6M+DHtfqGzAUigtRNk0/nU9fz6JkgDa+El/1UXo8Ye0
-X-Gm-Gg: AfdE7clcjndtg5YxReQXbzBjuY5N7RHYvaC5RmY23TKrm9epEjVtk3LpCSPR6ZaVX/5
-	mo8QxmDdLahfFpHtsVSMIxpKPeCfrmCDMnbPVirDagxyHPRU307W2Facvr4blpD/Rsi6NiVWRGo
-	/QP0OsWjYobiGfKl3qEOVwFeAf4YhtiyGIAAogJBGIQTBZyBK3Yu+CJfgvhBkSQJ5n+JMqwMoTn
-	pkTcc6vLtuFjH/uofbyihsNBmuVnsbs1veKk98YWRXtMBlltR9MJyWMEu3/lb0qSW69sgB4Hcon
-	cD7gkaXkRkR4zk8SL+aqWkpn//Sz+pbSWgRlwGhPon4og0Zsg6Yxq44loGJSZQW9Ja3ASUV+NlD
-	jvOuekp5WNrjwQeeSog/5yJ7H0JxJVceLdN8U76wbfQnqkc1JhvgitQ0ONKUoK7Gc1Loo+Clt4w
-	tAv/8mDPBnHDnQQY34j9g+2zYfPxIr5WF8hqxBaDZlO9BnFzMRxRU4V3pJjbjJfILEnboS0kqbV
-	sVxRCmJ
-X-Received: by 2002:a5d:5f91:0:b0:462:1a7a:9846 with SMTP id ffacd0b85a97d-4666074429emr23730834f8f.8.1782241096893;
-        Tue, 23 Jun 2026 11:58:16 -0700 (PDT)
-Received: from [10.128.11.131] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46666c57ba0sm38525006f8f.32.2026.06.23.11.58.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jun 2026 11:58:15 -0700 (PDT)
-Sender: Julian Braha <julian.braha@gmail.com>
-Message-ID: <e48a5c7f-2d9d-4202-be59-2e84120dfe11@gmail.com>
-Date: Tue, 23 Jun 2026 19:58:14 +0100
+        d=1e100.net; s=20251104; t=1782241896; x=1782846696;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EiXmLfx9cRA5lHogf+PWimXq8w1jjNSNV3y3Td+ltF4=;
+        b=tScvJXl4fuOP4AnxESqvX+6AnvKEesg0KkaJZbHiCJJIwtdOml5xDx1LZYXtXVw/5g
+         9f2BFCpD+eVpp9vo1/3c4MfYY0AZX6JRMcmEcPXeRTDprtOIowYf/lJOS404/5CJyFZo
+         qxxlFqEqnn+1cUJOBR2YLIu+lulmzJPkD6RqWtmP6C9B5H56RGdiGIZtwDfmjpdrtgCv
+         +v6T6bENecD8GQL2jPdP0eoykF5tyofxLBjZR/vmjrxLhzO+35b5IM28/wEwIuN9TJnl
+         8H9ZxCeH8QnwYAmWJ87jf4bPWXW8CyWjNLxm4li6GhkyKRE32EkinVl6wAcMdPlTyjXJ
+         4cQg==
+X-Forwarded-Encrypted: i=1; AFNElJ/cQr1RhJtCOR3VWRMCi7qb99mrF67Md2jqSZlEdgHqH5vRehAsEpgeu+N2Kb9kdrpZwOoRDFx7A7aucoCPzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz0k6L+tSjQVkGwzzNe4Tj2bpI/iyi144XP/gGS1VmF25Oz7Bv
+	M9eBGVem7GEtwoaIgTRdghism768/uCablx952rJmDHx062KSgkZUOpV03AB8QqtDOAL3Jw7XXb
+	ThyuZcXEUEAD2oh34ww==
+X-Received: from wmju9.prod.google.com ([2002:a7b:cb09:0:b0:490:af39:157a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:540f:b0:492:5e21:458b with SMTP id 5b1f17b1804b1-4925e21459fmr39461755e9.8.1782241895636;
+ Tue, 23 Jun 2026 12:11:35 -0700 (PDT)
+Date: Tue, 23 Jun 2026 19:11:34 +0000
+In-Reply-To: <DJGJURFV9NCB.25MLPQBQTL9WR@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/21] lib: rspdm: Initial commit of Rust SPDM
-To: alistair23@gmail.com, akpm@linux-foundation.org,
- rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org, jic23@kernel.org,
- bhelgaas@google.com, lukas@wunner.de, alistair@alistair23.me,
- linux-cxl@vger.kernel.org, djbw@kernel.org, linux-kernel@vger.kernel.org,
- Jonathan.Cameron@huawei.com
-Cc: boqun.feng@gmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
- bjorn3_gh@protonmail.com, gary@garyguo.net, wilfred.mallawa@wdc.com,
- aliceryhl@google.com, ojeda@kernel.org, alex.gaynor@gmail.com,
- tmgross@umich.edu
-References: <20260623045406.2589547-1-alistair.francis@wdc.com>
- <20260623045406.2589547-10-alistair.francis@wdc.com>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260623045406.2589547-10-alistair.francis@wdc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
+ <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com> <DJGJURFV9NCB.25MLPQBQTL9WR@garyguo.net>
+Message-ID: <ajraZiML5mkjUZGq@google.com>
+Subject: Re: [PATCH 3/5] rust: add pr_*_ratelimit! macros for printing
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Boqun Feng <boqun@kernel.org>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Hi Alistair,
+On Tue, Jun 23, 2026 at 04:55:31PM +0100, Gary Guo wrote:
+> On Tue Jun 23, 2026 at 4:38 PM BST, Alice Ryhl wrote:
+> > Printing can be very expensive if it occurs often, so printing that can
+> > be triggered by userspace should be rate limited. For this purpose, add
+> > a Rust wrapper around `struct ratelimit_state` and use it in the new
+> > macros.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/helpers/helpers.c   |   1 +
+> >  rust/helpers/ratelimit.c |  14 ++++
+> >  rust/kernel/lib.rs       |   1 +
+> >  rust/kernel/prelude.rs   |   8 ++
+> >  rust/kernel/ratelimit.rs | 202 +++++++++++++++++++++++++++++++++++++++++++++++
+> >  5 files changed, 226 insertions(+)
+> >
+> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> > index d17eaec76450..2184b11c927f 100644
+> > --- a/rust/helpers/helpers.c
+> > +++ b/rust/helpers/helpers.c
+> > @@ -80,6 +80,7 @@
+> >  #include "processor.c"
+> >  #include "property.c"
+> >  #include "pwm.c"
+> > +#include "ratelimit.c"
+> >  #include "rbtree.c"
+> >  #include "rcu.c"
+> >  #include "refcount.c"
+> > diff --git a/rust/helpers/ratelimit.c b/rust/helpers/ratelimit.c
+> > new file mode 100644
+> > index 000000000000..e5052f568b81
+> > --- /dev/null
+> > +++ b/rust/helpers/ratelimit.c
+> > @@ -0,0 +1,14 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/ratelimit.h>
+> > +
+> > +__rust_helper void rust_helper_ratelimit_state_init(struct ratelimit_state *rs,
+> > +						    int interval, int burst)
+> > +{
+> > +	ratelimit_state_init(rs, interval, burst);
+> > +}
+> > +
+> > +__rust_helper void rust_helper_ratelimit_state_exit(struct ratelimit_state *rs)
+> > +{
+> > +	ratelimit_state_exit(rs);
+> > +}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index b72b2fbe046d..ba65ab4f0b8c 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -111,6 +111,7 @@
+> >  pub mod ptr;
+> >  #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+> >  pub mod pwm;
+> > +pub mod ratelimit;
+> >  pub mod rbtree;
+> >  pub mod regulator;
+> >  pub mod revocable;
+> > diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> > index 44edf72a4a24..5a66028dd973 100644
+> > --- a/rust/kernel/prelude.rs
+> > +++ b/rust/kernel/prelude.rs
+> > @@ -89,13 +89,21 @@
+> >      },
+> >      init::InPlaceInit,
+> >      pr_alert,
+> > +    pr_alert_ratelimited,
+> >      pr_crit,
+> > +    pr_crit_ratelimited,
+> >      pr_debug,
+> > +    pr_debug_ratelimited,
+> >      pr_emerg,
+> > +    pr_emerg_ratelimited,
+> >      pr_err,
+> > +    pr_err_ratelimited,
+> >      pr_info,
+> > +    pr_info_ratelimited,
+> >      pr_notice,
+> > +    pr_notice_ratelimited,
+> >      pr_warn,
+> > +    pr_warn_ratelimited,
+> >      static_assert,
+> >      str::CStrExt as _,
+> 
+> I really want this to be just a variant of pr_, not a entire new family of
+> macros.
+> 
+> Last time I raise this in
+> https://lore.kernel.org/rust-for-linux/20260108125523.5c7810ae.gary@garyguo.net/
+> , I was suggesting unifying pr_ and dev_ too, which might be a step too much. 
+> 
+> But I think just making ratelimited a keyword in `pr_` macro should be alright?
+> 
+> pr_info!("foo"); // pr_info("foo\n");
+> pr_info!(once, "foo"); // pr_info_once("foo\n");
+> pr_info!(ratelimited, "foo"); // pr_info_ratelimited("foo\n");
+> dev_info!(dev, "foo"); // dev_info(dev, "foo\n");
+> dev_info!(dev, once, "foo"); // dev_info_once(dev, "foo\n");
+> dev_info!(dev, ratelimited, "foo"); // dev_info_ratelimited(dev, "foo\n");
 
-On 6/23/26 05:53, alistair23@gmail.com wrote:
+I did it this way for consistency with the existing pr_*_once!.
 
-> +config RSPDM
-> +	bool "Rust SPDM"
-> +	depends on RUST
-> +	select CRYPTO
-> +	select X509_CERTIFICATE_PARSER
-> +	help
-> +	  The Rust implementation of the Security Protocol and Data Model (SPDM)
-> +	  allows for device authentication, measurement, key exchange and
-> +	  encrypted sessions.
-> +
-> +	  Crypto algorithms negotiated with SPDM are limited to those enabled
-> +	  in .config.  Users of SPDM therefore need to also select
-> +	  any algorithms they deem mandatory.
-This patch introduces an unmet dependency bug when the user enables
-RSPDM without enabling ASYMMETRIC_PUBLIC_KEY_SUBTYPE:
-
-WARNING: unmet direct dependencies detected for X509_CERTIFICATE_PARSER
-  Depends on [n]: CRYPTO [=y] && ASYMMETRIC_KEY_TYPE [=n] &&
-ASYMMETRIC_PUBLIC_KEY_SUBTYPE [=n]
-  Selected by [y]:
-  - RSPDM [=y] && RUST [=y]
-
-- Julian Braha
+Alice
