@@ -1,63 +1,63 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061A53A7F51
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 04:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8681E3A8FE1
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 04:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782190635; cv=none; b=n/y35XdW6Osv89yWAchXakkvuR5zs0vSdUgKvs2LDz/1qWQnq3ZXLqG3t7uIjE/29YQBkThiaoLTUXUr7/RZIOJwSMvTJweQLQr5hxtSYd+xbfCRF8z6jgL/620xKSok+LZ0er9yEf2Ydk4FgmVy7+uBwh14fxjNjcKoLZfTDlA=
+	t=1782190643; cv=none; b=fII3K7O+Dd7umvepcx/N8e3cOBsjplhr9hftswCGNOv+LFgdo0Bu809hYGSSMA4GlfZPNURb80wpWqfjW+WYve1zwkyaX+ojh3u8bDGCD679PCL5E6fvwnR8p2c9J9B9LQGxGnGqIZrHzGnDCMHoGcerxvXubA+QvcVsVsUXaLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782190635; c=relaxed/simple;
-	bh=Mw8NkYsmBR6ESAc0dqr5Ove/VUU44rijqa5ICCADj4o=;
+	s=arc-20240116; t=1782190643; c=relaxed/simple;
+	bh=b1p8QYDJtGAUMfQOZ7yKfgv3g86cSUtLRbu9pIoZySA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MO4fRZRXjhQZ7quKKEfRf8UrGLFQCYiL4eeXXf50gxQc6LV+srHsot8H3bFRzM7Q/HypstlyQ7jOl04QkQnRZuUVZsmCY+M3o9HIp3HD4aYSqhxerNmIiO9Wqv9QB4u8tyIanoHKt/EYJQnwfV7QmByyPeXFdqthCoe5f7djDGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=coISZFD4; arc=none smtp.client-ip=209.85.214.177
+	 MIME-Version; b=K/fm7lu9+atzTJA9y+Ihif+tq/LkeaNEf6XsWg/yzOm0/E58daGfcMuw+HnSZRZPEzisMgDvInTWrJO42dgPOMIeNvxX5qJTgulS9m8tapsqDWxMa1b3Au/jsIa5vNmbZl0s/x1PvmQB8uQAVCGnLbrXNEKb3hW5IgvdXojzNl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q7w8ssGZ; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="coISZFD4"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c6fcfcdb2bso40183155ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jun 2026 21:57:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q7w8ssGZ"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c40397e3caso49720155ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jun 2026 21:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782190633; x=1782795433; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782190642; x=1782795442; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KkeA6BX6Sh1BZCRARlyEG/YVG0LIDez0LrcQTOxN6Ic=;
-        b=coISZFD4jR8XYSQQDXgAuYDBFBcldRNWk6sSQaXOpAWiQ0v79DNMUgcdxKcuRXQPWY
-         7Hnam7427zVxjf4ONBH5xqU3vWcfppsczvQGjDlaQPShIM/AnH+q8Rdh/IFc4yjzyeD0
-         MKaHPr9arsZ5HzEUZO25tfG5Kouml3jAvADh257GOlz5eKlVH772nwDaAQ5hC6Y7qkyq
-         XJA2DbtwkeKQ8uyGLajb1zMBAA8CbDRqD1nIzfVZiJj2cuQ66Mj/SKyzXaPV2LU7ePK/
-         Q2wOrIQQ3pTDJynCluV8KHmtJHvWbD820iSDWB+7zhiaXIcBCuQGJLmGEDHT1a4mC0mq
-         wPRw==
+        bh=Xk8SrCAuPrpKQay4vKvsDXzhAFJImT5ZIR9RIcxuUy8=;
+        b=Q7w8ssGZZupMkR2wFzIAww+68cYnEOyRtEja//m35Pr2fnc17UvxpsbMjZ6xhUxSok
+         weggbBQiS2LOqg+WEvjaaJjN7Ad6R0vkv9UrjGHDdH+0whVG7qgj5mZg4B7Z9J7j6iZa
+         7fRcB2C3DVFuWphbqQ3HxBEG9NPkIPP1Nc6z/6HlyjkRfEgQrrSk69B1LyNEhJxEBdLZ
+         hXRN10j206jvmbuIz1deqpZc7BE7TYCniKwgKtP8CFsv7I8apLubV9BJ7H/owG2tXixD
+         jD3gtJX4r3borNlw5m5QB+gFr7nZ/6VrRwfpQy9qCRw6V5auORLXEUcllqOrXpp08eMy
+         k6Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782190633; x=1782795433;
+        d=1e100.net; s=20251104; t=1782190642; x=1782795442;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KkeA6BX6Sh1BZCRARlyEG/YVG0LIDez0LrcQTOxN6Ic=;
-        b=KDjsKeaCsaJ9Gb6hQ4/wABekfDDHBMKbu/lty3ZadF4aiLkB9p/McCLbaa+sDCabgO
-         v/Fn8WJY7BH0l7csL4FYGaJJKnu3JXE1z5PiuxxdaBbMDl/dj6I3h1HIUqyr/OT185A6
-         oJjeQPTr0oKWwIRUfH890+qKMpY1RXPOvSd8Pk0LAErBGetyjJZJnM7SXncQTfB4QnLF
-         QSEI+5h3s6vOnbAvDirASgFk8qXqaqbEyoPTwvQiYPBvjPxEDoYyycXjxcDDx68PLK+V
-         eilfDsO7UsbkX/UgKkf7gO1C/gRZklPLvKNFnhirmQ/cfDgi1qWwOCMV+xO750ayMV5z
-         066Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqkSxipvlzkd4yiIsHwmo17dItO0HR9QgmHxf9hNBu+pxHteUk8dF9qFS7SONTYJgK6ogKF2mwFJeRYzL4sfQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxX6FQl1YUXlGuS+uUX3B+lEBfUuhDSJTHwJYb/PxpfxsU1AeYK
-	q+DpYvkFW9zvjINU37qNv4Bv405zJdTS7bjsbw4rVJ5rfQ4gHzxlw4YF
-X-Gm-Gg: AfdE7clGN7zppFb6wk4Ag3ERDdVIyva6TxV0vR2ERn47a3OHgaiL7j1wOe+5+fLQkgw
-	7MLCGfC0uoQ9y13XFS5hayXTyYO+8BWsTIv+t/Y5dsdh0y0uM6TSglhB0fkYZLt87lLDfDGlVg5
-	AR1C240K64sV3rhQbUxr8CdSy8wiecLew8lup3Pw4+Koq5cuR1xOf4R9uVdrIJXFYfUKO2mhO5a
-	SG/CUSniL7F+O76bt7n1yIdGmUVrryd3xa3jtvPXzz+4Z81SzwLFgGiynTa89jIHTtxQth5I52W
-	itg/dF8SwLLIP13JTHV0n3rRMdA1TFy1Ziyb/ZQqazJgjYt6QpV0HeE6ypY+DYVTNmAQmYGev6V
-	3lzs3udhYpqd7kivJ0ME/hBAUn9+Tp2fTJZSoNud0P2/q69E2FQP6j2M3P/lQrqYw2Gje0HNXC5
-	Jbm8b7pZbpyEYqoF4LrNLdx2/SOUMsbw==
-X-Received: by 2002:a17:903:240b:b0:2c6:937a:249 with SMTP id d9443c01a7336-2c7c76d4a85mr14161265ad.29.1782190633329;
-        Mon, 22 Jun 2026 21:57:13 -0700 (PDT)
+        bh=Xk8SrCAuPrpKQay4vKvsDXzhAFJImT5ZIR9RIcxuUy8=;
+        b=saYNhGV6ML0cKR4waNKnyWpqrt792EMUI6A0IE7QPBAFl2h+1S1rCVNaCxc8rKObnJ
+         5faNmjfVxH5PIkUznHDtxGDWG018cX/5vtb/QCm7rXrxpiuTnRgR86PUgIcuTV4R8AOa
+         A15os6LfToXd+bMp2cvTHECbDnQ4uJu73OsdsEulVFRS8NGMbWVivoRmTGgtFVLjU0Zt
+         qkMh9y7pcU+cisYDMIbzJcFcc0FR1mxwWbQ86BPs64JXgQf3EFoBE+6N6C0DD/08o7Zr
+         d2RJkRnTJ4eIG1uaBV+PLdyBThngm4JzK4fWUWBKc88qSHnPv4la9Yg9YBPUUbVfqwlX
+         cLVg==
+X-Forwarded-Encrypted: i=1; AHgh+RoidXVBF/D6mpwMImTTAd/pu5o9MXLP678GTL2JNZ2GG86lzeL93aSHyHKX2xcE7fgBTfQTiZYBs5rpBrkUuA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzjhmfTsiOF4QCtdnkaGe1pYpdLeW7D3R7UHjbifCacMtcSe57
+	W2y68tK2viBaDRgXCFALAAf03x4q3n1QmxonYZlCo60QouMldXjPpB+C
+X-Gm-Gg: AfdE7cmTLxVrQjCG56KdochExEEolP1tNSku46wykdwLcRYiAIjr9vjRxwFjLSbDwY3
+	KlwVdTQHtdyjXTMXcJj1JTvJkx/wLumQa+dt+sErkvOFGEMOx+vCKDrCcdVBP+PTZTgoZH2MKpt
+	W5/hUb3fTWsb0FxxHhnZzXuGOyzjGpKUasXIWV3rlkPPn8Zzs+Avq+4unjTqp+2PtcR+Z9fXLzd
+	XgE5n/FEyJRppmVALQrvHj16qvJsgXPThcGjOqYR0V6MtD20W+AhRW0mThhQSOiq8JLbxK/YFGG
+	ZlVUq7crk7VE1Oeo/KGOOcHN4P9N2zRoctgPTME2Aoc81x7jtgITC2+bV/aE35J4dv/IZJS0Ik+
+	IGqyYxOxI5civLNf9yEGFRQfKEmVR8FwmV95PCjRSppouFubkmppPWE363vCKZ1xjBOwFBlABJx
+	6qf3Bftv7lVmGDT0PbPsIvB1ZwKr8751jZNTXb2+UK
+X-Received: by 2002:a17:903:2b07:b0:2bf:2e06:2ebf with SMTP id d9443c01a7336-2c7c76d610dmr15796005ad.31.1782190641888;
+        Mon, 22 Jun 2026 21:57:21 -0700 (PDT)
 Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f8cf0sm89734785ad.50.2026.06.22.21.57.04
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f8cf0sm89734785ad.50.2026.06.22.21.57.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 21:57:11 -0700 (PDT)
+        Mon, 22 Jun 2026 21:57:21 -0700 (PDT)
 From: alistair23@gmail.com
 X-Google-Original-From: alistair.francis@wdc.com
 To: akpm@linux-foundation.org,
@@ -82,9 +82,9 @@ Cc: alistair23@gmail.com,
 	ojeda@kernel.org,
 	alex.gaynor@gmail.com,
 	tmgross@umich.edu
-Subject: [PATCH v2 19/21] lib: rspdm: Support SPDM certificate validation
-Date: Tue, 23 Jun 2026 14:54:04 +1000
-Message-ID: <20260623045406.2589547-20-alistair.francis@wdc.com>
+Subject: [PATCH v2 20/21] rust: allow extracting the buffer from a CString
+Date: Tue, 23 Jun 2026 14:54:05 +1000
+Message-ID: <20260623045406.2589547-21-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260623045406.2589547-1-alistair.francis@wdc.com>
 References: <20260623045406.2589547-1-alistair.francis@wdc.com>
@@ -98,246 +98,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Alistair Francis <alistair@alistair23.me>
 
-Support validating the SPDM certificate chain. This only performs basic
-sanity checks on the chain before we continue on. This does not ensure
-that the root CA is trusted, we leave that for userspace to check and
-enforce. Instead we just make sure that the chain is correct, uses
-supported signatures and that it isn't blacklisted in the kernel.
-
-We then store the first leaf certificate for use later.
+The kernel CString is a wrapper aroud a KVec. This patch allows
+retrieving the underlying buffer and consuming the CString. This allows
+users to create a CString from a string and then retrieve the underlying
+buffer.
 
 Signed-off-by: Alistair Francis <alistair@alistair23.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 ---
- lib/rspdm/lib.rs                |  12 +++
- lib/rspdm/state.rs              | 142 +++++++++++++++++++++++++++++++-
- rust/bindings/bindings_helper.h |   2 +
- rust/kernel/error.rs            |   1 +
- 4 files changed, 156 insertions(+), 1 deletion(-)
+ rust/kernel/str.rs | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
-index 488203be821d..fa5513e8bd4e 100644
---- a/lib/rspdm/lib.rs
-+++ b/lib/rspdm/lib.rs
-@@ -129,6 +129,18 @@ pub extern "C" fn spdm_authenticate(state_ptr: *mut spdm_state) -> c_int {
-         provisioned_slots &= !(1 << slot);
-     }
- 
-+    let mut provisioned_slots = state.provisioned_slots;
-+    while (provisioned_slots as usize) > 0 {
-+        let slot = provisioned_slots.trailing_zeros() as u8;
-+
-+        if let Err(e) = state.validate_cert_chain(slot) {
-+            pr_err!("Certificate in slot {slot} failed to verify: {e:?}\n");
-+            return e.to_errno() as c_int;
-+        }
-+
-+        provisioned_slots &= !(1 << slot);
-+    }
-+
-     -(EPROTONOSUPPORT as i32)
- }
- 
-diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-index 9138df30e138..e381cf3f75f9 100644
---- a/lib/rspdm/state.rs
-+++ b/lib/rspdm/state.rs
-@@ -109,7 +109,8 @@
- ///  H in SPDM specification.
- /// @certs: Certificate chain in each of the 8 slots. Empty KVec if a slot is
- ///  not populated. Prefixed by the 4 + H header per SPDM 1.0.0 table 15.
--#[expect(dead_code)]
-+/// @leaf_key: Public key portion of leaf certificate against which to check
-+///  responder's signatures.
- pub(crate) struct SpdmState<'a> {
-     pub(crate) dev: *mut bindings::device,
-     pub(crate) transport: bindings::spdm_transport,
-@@ -138,10 +139,20 @@ pub(crate) struct SpdmState<'a> {
- 
-     // Certificates
-     pub(crate) certs: [KVec<u8>; SPDM_SLOTS],
-+    pub(crate) leaf_key: Option<*mut bindings::public_key>,
- }
- 
- impl Drop for SpdmState<'_> {
-     fn drop(&mut self) {
-+        if let Some(leaf_key) = self.leaf_key.take() {
-+            // SAFETY: `leaf_key` was extracted from a x509 certificate
-+            // in `validate_cert_chain()` so it is valid to pass to
-+            // `public_key_free()`.
-+            unsafe {
-+                bindings::public_key_free(leaf_key);
-+            }
-+        }
-+
-         if let Some(desc) = self.desc.take() {
-             // SAFETY: `self.shash` is a valid handle
-             let desc_len = core::mem::size_of::<bindings::shash_desc>()
-@@ -198,6 +209,7 @@ pub(crate) fn new(
-             desc: None,
-             hash_len: 0,
-             certs: [const { KVec::new() }; SPDM_SLOTS],
-+            leaf_key: None,
-         }
-     }
- 
-@@ -831,4 +843,132 @@ pub(crate) fn get_certificate(&mut self, slot: u8) -> Result<(), Error> {
- 
-         Ok(())
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index a556788bcc5e..3fd8a218547f 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -870,6 +870,12 @@ pub fn try_from_fmt(args: fmt::Arguments<'_>) -> Result<Self, Error> {
+         // exist in the buffer.
+         Ok(Self { buf })
      }
 +
-+    pub(crate) fn validate_cert_chain(&mut self, slot: u8) -> Result<(), Error> {
-+        let cert_chain_buf = &self.certs[slot as usize];
-+        let cert_chain_len = cert_chain_buf.len();
-+        // We skip over the RootHash
-+        let header_len = 4 + self.hash_len;
-+
-+        let mut offset = header_len;
-+        let mut prev_cert: Option<*mut bindings::x509_certificate> = None;
-+
-+        while offset < cert_chain_len {
-+            // SAFETY: `cert_chain_buf[offset..]` is a non-empty slice of
-+            // bytes valid for at least `cert_chain_len` bytes.
-+            let cert_len = unsafe {
-+                bindings::x509_get_certificate_length(
-+                    &cert_chain_buf[offset..] as *const _ as *const u8,
-+                    cert_chain_len - offset,
-+                )
-+            };
-+
-+            if cert_len < 0 {
-+                pr_err!("Invalid certificate length\n");
-+
-+                if let Some(prev) = prev_cert {
-+                    // SAFETY: `prev_cert` is the previously parsed
-+                    // certificate from a prior loop iteration.
-+                    unsafe { bindings::x509_free_certificate(prev) };
-+                }
-+
-+                to_result(cert_len as i32)?;
-+            }
-+
-+            // SAFETY: `cert_chain_buf[offset..]` is a non-empty slice of
-+            // bytes valid for at least `cert_len` bytes.
-+            let cert_ptr = unsafe {
-+                match from_err_ptr(bindings::x509_cert_parse(
-+                    &cert_chain_buf[offset..] as *const _ as *const c_void,
-+                    cert_len as usize,
-+                )) {
-+                    Err(e) => {
-+                        if let Some(prev) = prev_cert {
-+                            // SAFETY: `prev_cert` is the previously parsed
-+                            // certificate from a prior loop iteration.
-+                            bindings::x509_free_certificate(prev);
-+                        }
-+                        return Err(e);
-+                    }
-+                    Ok(c) => c,
-+                }
-+            };
-+            // SAFETY: Cast the `struct x509_certificate` to a Rust binding
-+            let cert = unsafe { *cert_ptr };
-+
-+            if cert.unsupported_sig || cert.blacklisted {
-+                pr_err!("Certificate was rejected\n");
-+
-+                if let Some(prev) = prev_cert {
-+                    // SAFETY: `prev_cert` is the previously parsed
-+                    // certificate from a prior loop iteration.
-+                    unsafe { bindings::x509_free_certificate(prev) };
-+                }
-+                // SAFETY: `cert_ptr` was just returned by
-+                // `x509_cert_parse()`.
-+                unsafe { bindings::x509_free_certificate(cert_ptr) };
-+
-+                return Err(EKEYREJECTED);
-+            }
-+
-+            if let Some(prev) = prev_cert {
-+                // SAFETY: `prev_cert` is the previously parsed
-+                // certificate from a prior loop iteration.
-+                let rc = unsafe { bindings::public_key_verify_signature((*prev).pub_, cert.sig) };
-+
-+                if rc < 0 {
-+                    pr_err!("Signature validation error\n");
-+
-+                    // SAFETY: `prev_cert` is the previously parsed
-+                    // certificate from a prior loop iteration.
-+                    unsafe { bindings::x509_free_certificate(prev) };
-+
-+                    // SAFETY: `cert_ptr` was just returned by
-+                    // `x509_cert_parse()`.
-+                    unsafe { bindings::x509_free_certificate(cert_ptr) };
-+
-+                    to_result(rc)?;
-+                }
-+            }
-+
-+            if let Some(prev) = prev_cert {
-+                // SAFETY: `prev_cert` is the previously parsed
-+                // certificate from a prior loop iteration.
-+                unsafe { bindings::x509_free_certificate(prev) };
-+            }
-+
-+            prev_cert = Some(cert_ptr);
-+            offset += cert_len as usize;
-+        }
-+
-+        if let Some(prev) = prev_cert {
-+            if let Some(validate) = self.validate {
-+                // SAFETY: Call the `validate` function provided.
-+                let rc = unsafe { validate(self.dev, slot, prev) };
-+                if let Err(e) = to_result(rc) {
-+                    // SAFETY: `prev_cert` is the previously parsed
-+                    // certificate from a prior loop iteration.
-+                    unsafe { bindings::x509_free_certificate(prev) };
-+                    return Err(e);
-+                }
-+            }
-+
-+            // The leaf key is the same for all slots, so just store the first one.
-+            if self.leaf_key.is_none() {
-+                // SAFETY: `prev_cert` is the previously parsed
-+                // certificate from a prior loop iteration.
-+                self.leaf_key = unsafe { Some((*prev).pub_) };
-+                // SAFETY: `prev_cert` is the previously parsed
-+                // certificate from a prior loop iteration. We are setting
-+                // the `pub` key to null so it isn't freed below
-+                unsafe { (*prev).pub_ = core::ptr::null_mut() };
-+            }
-+
-+            // SAFETY: `prev_cert` is the previously parsed
-+            // certificate from a prior loop iteration.
-+            unsafe { bindings::x509_free_certificate(prev) };
-+        }
-+
-+        Ok(())
++    /// Return the internal buffer while consuming the original [`CString`]
++    #[inline]
++    pub fn into_vec(self) -> KVec<u8> {
++        self.buf
 +    }
  }
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index d63ad2b03362..e9736162c904 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -38,6 +38,8 @@
- #include <drm/drm_gem_shmem_helper.h>
- #include <drm/drm_gpuvm.h>
- #include <drm/drm_ioctl.h>
-+#include <keys/asymmetric-type.h>
-+#include <keys/x509-parser.h>
- #include <kunit/test.h>
- #include <linux/auxiliary_bus.h>
- #include <linux/bitmap.h>
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 6413de18df80..10700a17eedc 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -95,6 +95,7 @@ macro_rules! declare_err {
-     declare_err!(EINPROGRESS, "Operation now in progress.");
-     declare_err!(EPROTO, "Protocol error");
-     declare_err!(EPROTONOSUPPORT, "Protocol not supported");
-+    declare_err!(EKEYREJECTED, "Key was rejected by service");
- }
  
- /// Generic integer kernel error.
+ impl Deref for CString {
 -- 
 2.54.0
 
