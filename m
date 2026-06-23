@@ -1,125 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AC73C4574;
-	Tue, 23 Jun 2026 06:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129463CF213
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 08:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782196210; cv=none; b=C7d7vbJEPt9ctmxrOu8Q25MJNWXKVNMxpc3dVRCFWwvHW1gChNLhM29JxOcbyovbXtCTbtPntpGfqQr0HBfbNcmVCo36E9gaIzbk5cNLv+NyrTUifknwV2cEj+dEPkSUyiQ+XirMYX3f5tyb0mh9EzCQu7X1Tjqc0aCwU31yMqM=
+	t=1782204987; cv=none; b=PG7n9WR/w5x5agY2fLvllmO3wJWKUTR+SrKQT/ncMaqyRJTKFeQnMXBUFr0Rxz+Gm6FHqw6Yo6KZ3wGICREJTscoXj9EV5WPC5Kk2b9bfxB7lf4+yloJD41bTxzWHyFOkdtj3N/wTCSl/v5HV4udYFayxvn3bun+kTGUPLPjPLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782196210; c=relaxed/simple;
-	bh=MUwIWDeyTGINk8eYw/EGHpKhVS1I+NdvU8holZVt0xA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Kzm68zNURm59gDMijgazd1akU7alfsq43tUN2PtwLOtPYgksyLEMSqAO9vJW5szO5jvyIyx4e+1peWSRNFKoh0xI/zo+tuTO+H0dCmmJMEn+cYpbkniRkpZBqeLKgxcThAofo9816Z9nvtoNpfQBMtUne5FEusuKvXn3K5FapaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PAv1VDXO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1782204987; c=relaxed/simple;
+	bh=j48XOqJXqdBy0t6+5bMRFjEtYFPZ1a1t8zNhjhq0jAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YU647jYASIY7nUWJ1Vcs6NPmOvXIbdU5w6s0NR+uRnrGF894HhUYjYYyTZn5o20zF3Wu1u98gGkgxmMPplftNSlby3kc5MKk+ddUcw9l1T0Ix8P25TaIlIgt6SF1VAxmhnHVpffUd6wBVhT9HevQiT3w6xr3Vf77quZs94vZeq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jhRSUjLS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/R2XyAJ2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jhRSUjLS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/R2XyAJ2; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PAv1VDXO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F3761C2BCF4;
-	Tue, 23 Jun 2026 06:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1782196210; bh=MUwIWDeyTGINk8eYw/EGHpKhVS1I+NdvU8holZVt0xA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=PAv1VDXOr8Qlr+kw2XWmVLWj7Ohn8obhw/SMc51GYgwovjV4wXwochWzR/xEPZvTz
-	 Hb7JOuny4CVUFshzLaFWQ7uozBN4TJ7K7xQFX2OQliz5tknQMoMsznG/NsFSod5+Z3
-	 Jox6mFJmaw5Ld9Eqkt3/yiHYHUA9VCKgoMRNbQh4=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4F43CDB47D;
-	Tue, 23 Jun 2026 06:30:09 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Date: Tue, 23 Jun 2026 14:29:52 +0800
-Subject: [PATCH v4 9/9] rust: macros: remove `THIS_MODULE` static from
- `module!`
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jhRSUjLS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/R2XyAJ2";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jhRSUjLS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/R2XyAJ2"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 359A575D0A;
+	Tue, 23 Jun 2026 08:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782204984; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=98JU/eaXzv4ypgm1+tqmYP6YjnYiWrEb4y3aPJfCIvQ=;
+	b=jhRSUjLSpT/Vd3QyMd9TiFUrmwrMmGv23HWnHILSNlB3vfPP+Dq8+OB0uM8Zpme1g3CvB4
+	LGBzAs8EC8nTYWS3jpBZejcA4suIiOd3zeA+227ca3S+97xpCAmoNSYv0CPHF6lDRoKm1l
+	77wDELrZALYKHHfZiM7xAJL6UY34GYo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782204984;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=98JU/eaXzv4ypgm1+tqmYP6YjnYiWrEb4y3aPJfCIvQ=;
+	b=/R2XyAJ2ZBwrSTygCV1fYX+tk12GzE5H6g9xFqQA3EzNzTzAFYKOGMoPnc40IFdarSyVeU
+	j534ivrpuxGJTBCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jhRSUjLS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/R2XyAJ2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782204984; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=98JU/eaXzv4ypgm1+tqmYP6YjnYiWrEb4y3aPJfCIvQ=;
+	b=jhRSUjLSpT/Vd3QyMd9TiFUrmwrMmGv23HWnHILSNlB3vfPP+Dq8+OB0uM8Zpme1g3CvB4
+	LGBzAs8EC8nTYWS3jpBZejcA4suIiOd3zeA+227ca3S+97xpCAmoNSYv0CPHF6lDRoKm1l
+	77wDELrZALYKHHfZiM7xAJL6UY34GYo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782204984;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=98JU/eaXzv4ypgm1+tqmYP6YjnYiWrEb4y3aPJfCIvQ=;
+	b=/R2XyAJ2ZBwrSTygCV1fYX+tk12GzE5H6g9xFqQA3EzNzTzAFYKOGMoPnc40IFdarSyVeU
+	j534ivrpuxGJTBCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 20B86779A8;
+	Tue, 23 Jun 2026 08:56:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id RpFLBDZKOmoCZgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 23 Jun 2026 08:56:22 +0000
+Date: Tue, 23 Jun 2026 09:56:20 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Philipp Stanner <phasta@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Lyude Paul <lyude@redhat.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, rcu@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] rust: sync: Add abstraction for synchronize_rcu()
+Message-ID: <ajpJmjTST-Hoxutb@pedro-suse.lan>
+References: <20260622173250.411377-2-phasta@kernel.org>
+ <20260622173250.411377-3-phasta@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260623-fix-fops-owner-v4-9-0daf5f077d5c@linux.dev>
-References: <20260623-fix-fops-owner-v4-0-0daf5f077d5c@linux.dev>
-In-Reply-To: <20260623-fix-fops-owner-v4-0-0daf5f077d5c@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
- Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Igor Korotin <igor.korotin@linux.dev>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org, 
- kunit-dev@googlegroups.com, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782196206; l=1634;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=MUwIWDeyTGINk8eYw/EGHpKhVS1I+NdvU8holZVt0xA=;
- b=3Wu3lIDcbXp8WsWvNgwJtUDQdTKQMZngklAC5s7CH/cFu9Cyeb9s51Rij3zkvfLA0qhWG9IcI
- ouIq1J6XJzTANQBX3W3FalWDRrlJ9IrTCoWrCUXWjUsEHt4I+HcHlQ/
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260622173250.411377-3-phasta@kernel.org>
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 359A575D0A
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,protonmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[33];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,collabora.com,nvidia.com,onurozkan.dev,zeniv.linux.org.uk,suse.cz,redhat.com,joshtriplett.org,gmail.com,goodmis.org,efficios.com,linux.dev,vger.kernel.org];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLzijfi9nboexiud4o8afph5gt)];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-All users have been migrated to `ModuleMetadata::THIS_MODULE` const or
-`this_module::<LocalModule>()` helper. The `static THIS_MODULE`
-generated by the `module!` macro is no longer referenced anywhere,
-so remove it to avoid having two sources of the same `ThisModule`
-pointer.
+On Mon, Jun 22, 2026 at 07:32:49PM +0200, Philipp Stanner wrote:
+> synchronize_rcu() is a frequently used C function which is always safe
+> to be called.
+> 
+> Add a safe abstraction for synchronize_rcu().
+> 
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> ---
+>  rust/kernel/sync/rcu.rs | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+> index a32bef6e490b..0d438ef31766 100644
+> --- a/rust/kernel/sync/rcu.rs
+> +++ b/rust/kernel/sync/rcu.rs
+> @@ -50,3 +50,12 @@ fn drop(&mut self) {
+>  pub fn read_lock() -> Guard {
+>      Guard::new()
+>  }
+> +
+> +/// Wait for one RCU grace period.
+> +///
+> +/// You typically do this to wait for everyone holding a [`Guard`].
+> +#[inline]
+> +pub fn synchronize_rcu() {
+> +    // SAFETY: `synchronize_rcu()` is always safe to be called. It just waits for a grace period.
 
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- rust/macros/module.rs | 16 ----------------
- 1 file changed, 16 deletions(-)
-
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index aa9a618d5d19e..23b6a1b456b80 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -497,22 +497,6 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
-         /// Used by the printing macros, e.g. [`info!`].
-         const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
- 
--        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
--        // freed until the module is unloaded.
--        #[cfg(MODULE)]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            extern "C" {
--                static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
--            };
--
--            ::kernel::ThisModule::from_ptr(__this_module.get())
--        };
--
--        #[cfg(not(MODULE))]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
--        };
--
-         /// The `LocalModule` type is the type of the module created by `module!`,
-         /// `module_pci_driver!`, `module_platform_driver!`, etc.
-         type LocalModule = #type_;
+Commething randomly here (I know as much rust as the next not-knowing-rust-guy, sadly),
+but synchronize_rcu() is not always safe to be called. You cannot call it if
+you have the rcu read lock, or cannot sleep for any reason. I don't know if
+you can encode these in the rust type system though.
 
 -- 
-2.43.0
-
-
+Pedro
