@@ -1,54 +1,54 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830052F8E9C
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 15:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF30E2E8B82
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 15:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782229098; cv=none; b=dI+U+S2htud/wQQ8yBUF0Pi8QtUbjfixgWfVMMVoKrjt/Yb1GYZ8Z6NmjXXYPu+8IwRQckjfH8WLF7viRkyp8i8GiavOHu1wt/1zs2gR5rX+m/2I5YUJb2mh//40UjSlD3/jHyDy1iWZBF3vRF2mkPojMiCg3zEeDlwwGHeb0Uw=
+	t=1782229100; cv=none; b=mtNSNtiWjBvBsw9zvZZAZiZLBFoTG6RAdp88UfDVlPttopjwgJioJR7Bjj2bHAZYTJoHiUWPkDK9X9aeHGmK65S6afUUgXBb9Ndyso1XSrXLx6V3q/XwXs5yf5KO9mgVgNalJXA1GuKg5Zv5PbeQWLEijopqoFUSDeMh1D1rX64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782229098; c=relaxed/simple;
-	bh=sEQdxcu9HGG50KUtI+Yfq3UE5aDnJQn2IehrjvSaf+0=;
+	s=arc-20240116; t=1782229100; c=relaxed/simple;
+	bh=9jF5leQM7fhJ6qx5b4DTkepz5UIc5ydWzqSPxEgarhM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XySqnt3jzzof7WtHaf1TIUsz/dTpsRHuBS/j5o7l5g/k2pzqnliLpgkkZb0RYpA4l7jjZ5yPLNk3dz0ir4DcBJ6m4DtuXCJQkuQIAfqpVTfisdz25GmZcxYJGKqr6WxrszoeQ01hwkkWFTlvfhKUBCsLydR31l7lSykplPtcC1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W1zOcbSz; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=ezFqc0tu8dz/v4QGgyGBEyTpDNfojyDM4nSXCfhGUfHUZQcszsen6j//ZSttXeOkmLtFI1ptPwDSBxYxOfA06Pj8N/wMxAKLLmLkwvdRzM9JsRWosmSd5iW8aRhnviQUM2dTc2/Z+uVCf3nKUb8uE6YQw45VhAs8NQPls8szvbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mqkl+rZQ; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W1zOcbSz"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-462c1cf9003so24451f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 08:38:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mqkl+rZQ"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-695796f97aeso6059250a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 08:38:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782229095; x=1782833895; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782229096; x=1782833896; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fhj+S01Z5M3KHkLhUrinNT/zcDOEFzaUBDPoel20ve0=;
-        b=W1zOcbSze3VzTnCVQNjpmDLHERsyhJ1Fo5j9JQ6G6Z0yiOjQl85TXrMQ05VPoID3YH
-         Kf0b0rmfIcsxq3FWAoD+SXjqhNk9kFtGNBjk9/MX8WL6I/m+CeFoiHjnjEZ0oAXEZC/w
-         h2oZB7BUh4I6KA89x0wbzZh11NvD6Ebf3guG4oDASiUtPOh8ps42rcdzjlupodkmdoDe
-         1pW7fChkmyq3XD8PPPG/78AwGNUaQlhKWEVTlZoiv7EXAPokcozimM3HE7n7CoX/Sa6a
-         aICkch9ZCeHaT6LRCUgGKWV7zCK9FG5tonphSE1+E6wla95dVKFIi91Hms4fdXOHJEEA
-         XUFw==
+        bh=Q6OS66yqSTVH7SnBJixlBZKon1LrkOKu0gmbWPYRXCQ=;
+        b=Mqkl+rZQ3hPtf2x4Y6HCHhDM24uz2eilJK7CZl+aVnK8ew5vUMFRiKZaDauVgBweAy
+         8T2j+4bMKFUIM6k7CmRBkErOF3iuqnQCwd5m2+/VkyplPws0Zzn8RdO6F1I8mDmrzk68
+         w0lectObjSjtUhp/nEd9r0cfi2aN56tKs7/Hr1ETUkRrKypOhI9+2AFCAzk86TP/p5dL
+         msxxTPzSyyDkplSDEVo6php4GT1yGI01S+NNgEzWKSNJ0aOY0w3bUe4U7EQWwm1809kq
+         OW6cTTijlfDRyzhdYoNNYR4yaGfyzvBnszRfARLZG5Q3EYFi7lv/+fnll9qQ7l+Kt+oR
+         r2DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782229095; x=1782833895;
+        d=1e100.net; s=20251104; t=1782229096; x=1782833896;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fhj+S01Z5M3KHkLhUrinNT/zcDOEFzaUBDPoel20ve0=;
-        b=UGKPzK07LGBGc9+dMJtLAYFlGwjZwRTjYvIzJ60n9cqtRXeLeszSWZcnJu+3jA6Bmb
-         Npay9Z6gzLcVpzpwVYVNORz4TzH5bEfnxKwxi6DvVGk8Rl3u/otkf9WvHaTnhKWdfkkY
-         FRdborTIbWeQhhH3WgKNrSJoT8wacLzNTc6wpY3P4G84X63I174K49R0Mcd70C/FXeSJ
-         Sgyqy65660bG91lhf9aKs4VGYL1cYcT1KGyUCWrz4ESKTQ2mUOE9z/ub+5KIz4W01bBM
-         7kkmlUUW1Pg/tYT1/rz4kLHCDP6fwIGNKCCP8WzKV7WiIfEvC9PmGzaimDmlA+ovPYwX
-         wzvg==
-X-Forwarded-Encrypted: i=1; AFNElJ9f7HOpfiaGwZoPyAMHHYp856u+qstodZV+EjNekhs5gvep0SNadkDlHkPKSi8McuI9w3Jaf/z+3YZVRhMrKw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBaIAenwU45iS2FzQwMiteJ1vmthFc8EG9tbCCczCaQO3ywKZS
-	+rxGkq/Il5wXk9DuosYqk8T3fdaokLVbJmStvNwcndKwAF0Z1GefP2tVFZguKLrbosVmJyzHRIa
-	S9TIfOCM+gdHigWFBdQ==
-X-Received: from wrpu2.prod.google.com ([2002:adf:f882:0:b0:46a:9cd4:74ef])
+        bh=Q6OS66yqSTVH7SnBJixlBZKon1LrkOKu0gmbWPYRXCQ=;
+        b=Es/Vffrg+1tEJCCPtEaEEIHmtQ689iqCLurv03mwGHAt0+zJXvz/rNke0FvuxEEVCY
+         df0/65gO62vczAY5eRsW8SfSzcQsLQGzl0RJCsWgb4amHNd59Gu4/b1d2D89TxOJhL+1
+         vD/3IQki/Gn1EMfyaLd9XpfNMWrPCsDee8nVo4kRDK6laXN/3SoKJjkXJFBNGo/sRpZE
+         aXwBK8dcYburvqARzo6UxllM6kgoOBjrfmhlN8tNdmjRAMomRMP1bfe0KL+eS1AQ7+K9
+         A+TUYbIQDBRLC8gN+D5iibxBUfdIkiBJOQezfGoblQMNhDQem1rbeN5hBBOFkpxs/nXx
+         nuIw==
+X-Forwarded-Encrypted: i=1; AFNElJ+SLJg8jxFgR4X0QjMBxWt+78qt/iv8RmNI8nfHM49LYq9Jq24odJPyiDpavhfcyS4SpPvzsArlJe31JlyjNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7PGoCU7SBRCdyjGuf0BiPbRLYfsIS/4Pp3aIPQO9ZJUPjeXMD
+	JLP6YdbNYn2/r+D0/zQ7z5T5QwpGW7qRDxIEInPodu8V39MMADdCSWoCBMtkcSKyEzDjWC1dhKI
+	iHpKD6ti45CsZ0dKsrA==
+X-Received: from edfy12.prod.google.com ([2002:a05:6402:a3cc:b0:697:d55a:76a8])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:524d:b0:490:9588:bdb6 with SMTP id 5b1f17b1804b1-4925b38cccfmr44921415e9.33.1782229094535;
- Tue, 23 Jun 2026 08:38:14 -0700 (PDT)
-Date: Tue, 23 Jun 2026 15:38:06 +0000
+ 2002:a05:6402:144d:b0:697:4e2c:c8ce with SMTP id 4fb4d7f45d1cf-697dbb3b56amr2084527a12.15.1782229095935;
+ Tue, 23 Jun 2026 08:38:15 -0700 (PDT)
+Date: Tue, 23 Jun 2026 15:38:07 +0000
 In-Reply-To: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,22 +58,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9438; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=sEQdxcu9HGG50KUtI+Yfq3UE5aDnJQn2IehrjvSaf+0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqOqhgqM9WK2vQmR3P/AxFCBVGZn8550S2s+9/t
- Oezn2vaUmWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCajqoYAAKCRAEWL7uWMY5
- RveiD/9RL56fCKylr5DFRQI7iTzz2pfNO1NjLymLwdmyL23fjS25pOxcrHSij2VyY4PnL+5ZZFN
- RaIt39fBzYc3HEwl/3MeAdD+3NjO3ctud/wmEYhAbuaRhkESY1ZQ8Li3d2DotQoC0iiGP/aIZXB
- pMcaDVqbjBLzeASU55bCLigGonIdcPk7znQeROA1yQ9aXih4mhFMVW72+U2n4PPBeQwmBUNAJAk
- NLRioLXVLoX2WCkJswkKlVmqHfDnjATo+SkE2z2OE5kJqLddLtJu7wEybc+npiH2g49qvQHyJ7s
- M7sYo5nxSCDI2RAMA7PQ6UGD+2Ye1/jAHwghPApum/04ixQG05dKba4FtSlbVYvMYAcdIEtsePE
- thrqKhcxemu5VjG6k0gCiIOdtHPJ8NZyIo/qKbQQImLt/MM4fxE+O7Ay4przlolpNWqfFVZ9B/n
- wzDyntxsKWm6Ht/RGtX4erSt23Y7JLdP8e5D8RTWY0Ix8fl8opgwEXDJOr6aQhF4LUKHHR6Nc0x
- KNl4qncAgC/PpL462bSbsofhSydxtLCWVVkhhlBJXDD0jsHJE+jDs+Z/cifRGj7Z3JrTB3ou/7A
- gtrFp8Gm25VzedZ/YC0jTqir4H+xENo+QF2kNg84dHmtshBS/VVku5aVPAEzXBgYE8t5vEEhlVG yWkyP9Y9fJxLl5A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8896; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=9jF5leQM7fhJ6qx5b4DTkepz5UIc5ydWzqSPxEgarhM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqOqhgEJmSTuo5dmkeWd3MY+3aZS1MGmTpuAMaF
+ ypHQdDos7mJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCajqoYAAKCRAEWL7uWMY5
+ RnASD/wMFe5FEHC0OLIIIGNi1y1s3PNIT7GSYVQFKOnxlOYkgnVnedSuyOZirOJAGcj4p14wRRR
+ UaXDtApoOCkLHZm/HcQPho08SXSSIRaITVcSUlhaGS/vQktNdgGwpby5H6Ae7KOoPA39KyY4It6
+ x5hWrP8d7CaQqQUXPn81b/Qbe8V9ngFsQA9JWijJB7RBnbfJbQznpLUbTZvwjAVeDI3IqWTVbrr
+ G7UjElB4jxQ97Oquz1OjCU0vocvVqPM5qj06zNh2FlPO8r2FhOZCoHdBSZOIt+WDA/eIfWYUCIW
+ ER5+GaHI8CgMrTt4i3NMEKvKJdCM5r7DzVTNxR/s+KsCTEUoUuKVga4GQh7/xOtuRF9rjl61Awk
+ IBTkvi3//1N7yCk+b6lhbabWaAAlu5pjtb31Z+5R5OGAFzGpVl7kBpSAS6/1ZBEhuGHuEiRkBCn
+ MOWQjrubnYt6x8Bmi9CUtYF83scCzIO+wvtt+3d5wDhUx8XwJ4i0a3l4R2VjQjP+SPp3QnN75+e
+ XL8mpRvW8HTQU1okocTnmT3tLIgdqvLKjoKc8juNZEAVy+kX9QssQveysI2D9voIZgTEEtSl/uL
+ MEL46Ka8cSpuFU1Q9fy9/M0om1XsYs6Zwntt3uq354vpE02mt5HjSkwinU9XOpEBaWADNOMOAZH bHy7EiQ17eODajQ==
 X-Mailer: b4 0.14.3
-Message-ID: <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com>
-Subject: [PATCH 3/5] rust: add pr_*_ratelimit! macros for printing
+Message-ID: <20260623-pr-ratelimited-v1-4-cc922f544dc0@google.com>
+Subject: [PATCH 4/5] rust_binder: consolidate transaction failure prints
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>
@@ -87,298 +87,217 @@ Cc: "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Andreas Hindborg <a.hind
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Printing can be very expensive if it occurs often, so printing that can
-be triggered by userspace should be rate limited. For this purpose, add
-a Rust wrapper around `struct ratelimit_state` and use it in the new
-macros.
+When a transaction fails, it currently hits multiple pr_warn!
+invocations meaning that a single failure can result in several lines in
+the kernel log. This is unnecessary, so consolidate them into one print
+used for all transaction failures.
+
+For ENOSPC errors we want to know the transaction size, so a field is
+added to TransactionInfo that bubbles up this information to the new
+print location.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/helpers/helpers.c   |   1 +
- rust/helpers/ratelimit.c |  14 ++++
- rust/kernel/lib.rs       |   1 +
- rust/kernel/prelude.rs   |   8 ++
- rust/kernel/ratelimit.rs | 202 +++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 226 insertions(+)
+ drivers/android/binder/error.rs       |  4 ---
+ drivers/android/binder/thread.rs      | 59 ++++++++++++++++++++---------------
+ drivers/android/binder/transaction.rs | 21 +++----------
+ rust/kernel/error.rs                  |  2 +-
+ 4 files changed, 39 insertions(+), 47 deletions(-)
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index d17eaec76450..2184b11c927f 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -80,6 +80,7 @@
- #include "processor.c"
- #include "property.c"
- #include "pwm.c"
-+#include "ratelimit.c"
- #include "rbtree.c"
- #include "rcu.c"
- #include "refcount.c"
-diff --git a/rust/helpers/ratelimit.c b/rust/helpers/ratelimit.c
-new file mode 100644
-index 000000000000..e5052f568b81
---- /dev/null
-+++ b/rust/helpers/ratelimit.c
-@@ -0,0 +1,14 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
+index 1296072c35d9..aed1c747640b 100644
+--- a/drivers/android/binder/error.rs
++++ b/drivers/android/binder/error.rs
+@@ -37,10 +37,6 @@ pub(crate) fn new_frozen_oneway() -> Self {
+             source: None,
+         }
+     }
+-
+-    pub(crate) fn is_dead(&self) -> bool {
+-        self.reply == BR_DEAD_REPLY
+-    }
+ }
+ 
+ /// Convert an errno into a `BinderError` and store the errno used to construct it. The errno
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index def00edce9c4..a5b038877747 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -25,7 +25,7 @@
+ use crate::{
+     allocation::{Allocation, AllocationView, BinderObject, BinderObjectRef, NewAllocation},
+     defs::*,
+-    error::BinderResult,
++    error::{BinderError, BinderResult},
+     process::{GetWorkOrRegister, Process},
+     ptr_align,
+     stats::GLOBAL_STATS,
+@@ -1018,18 +1018,9 @@ pub(crate) fn copy_transaction_data(
+                 .ok_or(ENOMEM)?,
+             size_of::<u64>(),
+         );
++        info.debug_total_size = len;
+         let secctx_off = aligned_data_size + offsets_size + buffers_size;
+-        let mut alloc = match to_process.buffer_alloc(debug_id, len, info) {
+-            Ok(alloc) => alloc,
+-            Err(err) => {
+-                pr_warn!(
+-                    "Failed to allocate buffer. len:{}, is_oneway:{}",
+-                    len,
+-                    info.is_oneway(),
+-                );
+-                return Err(err);
+-            }
+-        };
++        let mut alloc = to_process.buffer_alloc(debug_id, len, info)?;
+ 
+         let mut buffer_reader = UserSlice::new(info.data_ptr, data_size).reader();
+         let mut end_of_previous_object = 0;
+@@ -1259,6 +1250,15 @@ fn read_transaction_info(
+ 
+         info.debug_id = super::next_debug_id();
+ 
++        // We don't yet know the real message size because it depends on the secctx size, so for
++        // now write an estimate. When the real value is computed, this estimate is replaced.
++        // Writing an estimate here ensures that the approx message size can still be printed if
++        // the transaction fails before it is computed exactly.
++        info.debug_total_size = info
++            .data_size
++            .saturating_add(info.offsets_size)
++            .saturating_add(info.buffers_size);
 +
-+#include <linux/ratelimit.h>
-+
-+__rust_helper void rust_helper_ratelimit_state_init(struct ratelimit_state *rs,
-+						    int interval, int burst)
-+{
-+	ratelimit_state_init(rs, interval, burst);
-+}
-+
-+__rust_helper void rust_helper_ratelimit_state_exit(struct ratelimit_state *rs)
-+{
-+	ratelimit_state_exit(rs);
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b72b2fbe046d..ba65ab4f0b8c 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -111,6 +111,7 @@
- pub mod ptr;
- #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
- pub mod pwm;
-+pub mod ratelimit;
- pub mod rbtree;
- pub mod regulator;
- pub mod revocable;
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index 44edf72a4a24..5a66028dd973 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -89,13 +89,21 @@
-     },
-     init::InPlaceInit,
-     pr_alert,
-+    pr_alert_ratelimited,
-     pr_crit,
-+    pr_crit_ratelimited,
-     pr_debug,
-+    pr_debug_ratelimited,
-     pr_emerg,
-+    pr_emerg_ratelimited,
-     pr_err,
-+    pr_err_ratelimited,
-     pr_info,
-+    pr_info_ratelimited,
-     pr_notice,
-+    pr_notice_ratelimited,
-     pr_warn,
-+    pr_warn_ratelimited,
-     static_assert,
-     str::CStrExt as _,
-     try_init,
-diff --git a/rust/kernel/ratelimit.rs b/rust/kernel/ratelimit.rs
-new file mode 100644
-index 000000000000..da0a49412023
---- /dev/null
-+++ b/rust/kernel/ratelimit.rs
-@@ -0,0 +1,202 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rate limiting support.
-+//!
-+//! C header: [`include/linux/ratelimit.h`](srctree/include/linux/ratelimit.h)
-+
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    types::Opaque, //
-+};
-+
-+/// Defines a `static` containing a [`Ratelimit`].
-+#[macro_export]
-+macro_rules! ratelimit_state_init {
-+    ($name:ident, $interval:expr, $burst:expr $(,)?) => {
-+        static $name: $crate::ratelimit::Ratelimit = {
-+            let init: $crate::bindings::ratelimit_state = $crate::bindings::ratelimit_state {
-+                lock: $crate::sync::lock::spinlock::raw_spin_lock_unlocked($crate::c_str!(
-+                    ::core::stringify!($name)
-+                )),
-+                interval: $interval,
-+                burst: $burst,
-+                // SAFETY: This type can be zeroed.
-+                ..unsafe { ::core::mem::zeroed() }
+         Ok(())
+     }
+ 
+@@ -1277,6 +1277,9 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+             self.transaction_inner(&mut info)
+         };
+ 
++        // This runs when return work is passed to the caller. This is not
++        // always the same as the transaction failing, as reply errors are
++        // delivered to the remote process.
+         if let Err(err) = ret {
+             self.push_return_work(err.reply);
+             if err.reply != BR_TRANSACTION_COMPLETE {
+@@ -1290,13 +1293,6 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+                             ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
+                     }
+                 }
+-
+-                pr_warn!(
+-                    "{}:{} transaction to {} failed: {err:?}",
+-                    info.from_pid,
+-                    info.from_tid,
+-                    info.to_pid
+-                );
+             }
+         }
+ 
+@@ -1305,8 +1301,27 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+             // useful in case the transaction failed with BR_TRANSACTION_PENDING_FROZEN.
+             info.report_netlink(BR_ONEWAY_SPAM_SUSPECT, &self.process.ctx);
+         }
++        // This runs when the transaction failed.
+         if info.reply != 0 {
+             info.report_netlink(info.reply, &self.process.ctx);
++            let err = BinderError {
++                reply: info.reply,
++                source: Error::try_from_errno(info.errno),
 +            };
-+            // SAFETY: This is a repr(transparent) wrapper, and the invariants are satisfied.
-+            unsafe { ::core::mem::transmute(init) }
-+        };
-+    };
-+}
-+pub use ratelimit_state_init;
-+
-+/// Rate limiter state.
-+///
-+/// # Invariants
-+///
-+/// The `inner` field contains an initialized `struct ratelimit_state`.
-+#[pin_data(PinnedDrop)]
-+#[repr(transparent)]
-+pub struct Ratelimit {
-+    #[pin]
-+    inner: Opaque<bindings::ratelimit_state>,
-+}
-+
-+// SAFETY: `Ratelimit` is safe to be sent to any task.
-+unsafe impl Send for Ratelimit {}
-+
-+// SAFETY: `Ratelimit` is safe to be accessed concurrently as it is protected by an internal
-+// spinlock.
-+unsafe impl Sync for Ratelimit {}
-+
-+impl Ratelimit {
-+    /// Constructs a [`Ratelimit`] with the specified configuration.
-+    ///
-+    /// If `interval` is zero, then no rate limit is applied.
-+    #[inline]
-+    pub fn new(interval: i32, burst: i32) -> impl PinInit<Self> {
-+        // INVARIANT: This creates a `Ratelimit` containing an initialized `struct ratelimit_state`
-+        pin_init!(Self {
-+            inner <- Opaque::ffi_init(|slot: *mut bindings::ratelimit_state| {
-+                // SAFETY: `slot` is a valid pointer to an uninitialized `struct ratelimit_state`.
-+                // The memory is pinned so it remains valid until `ratelimit_state_exit` is called.
-+                unsafe { bindings::ratelimit_state_init(slot, interval, burst) };
-+            }),
-+        })
-+    }
-+
-+    /// Constructs a [`Ratelimit`] with the default configuration.
-+    #[inline]
-+    pub fn new_default() -> impl PinInit<Self> {
-+        Ratelimit::new(Ratelimit::DEFAULT_INTERVAL, Ratelimit::DEFAULT_BURST)
-+    }
-+
-+    /// The default interval used for rate limiting.
-+    pub const DEFAULT_INTERVAL: i32 = bindings::DEFAULT_RATELIMIT_INTERVAL as i32;
-+
-+    /// The default burst size.
-+    pub const DEFAULT_BURST: i32 = bindings::DEFAULT_RATELIMIT_BURST as i32;
-+
-+    /// Check if an action should be rate-limited.
-+    ///
-+    /// Returns `true` if the action is allowed, and `false` if it should be suppressed.
-+    #[inline]
-+    pub fn ratelimit(&self) -> bool {
-+        // We don't set `RATELIMIT_MSG_ON_RELEASE`, so the function name parameter is not used.
-+        //
-+        // SAFETY: `self.inner.get()` is a valid pointer to a `struct ratelimit_state`.
-+        // The lifetime of `func` ensures the pointer remains valid for the duration of the call.
-+        // The C function `___ratelimit` handles its own internal locking, so it is safe to call
-+        // concurrently.
-+        unsafe { bindings::___ratelimit(self.inner.get(), c"Rust".as_char_ptr()) != 0 }
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for Ratelimit {
-+    #[inline]
-+    fn drop(self: Pin<&mut Self>) {
-+        // SAFETY: By the type invariants, this struct contains an initialized `struct
-+        // ratelimit_state`.
-+        unsafe { bindings::ratelimit_state_exit(self.inner.get()) };
-+    }
-+}
-+
-+/// Helper macro to implement ratelimited printing.
-+#[macro_export]
-+#[doc(hidden)]
-+macro_rules! print_ratelimited {
-+    ($print_macro:ident, $($arg:tt)*) => {{
-+        $crate::ratelimit::ratelimit_state_init!(
-+            _rs,
-+            $crate::ratelimit::Ratelimit::DEFAULT_INTERVAL,
-+            $crate::ratelimit::Ratelimit::DEFAULT_BURST,
-+        );
-+        if $crate::ratelimit::Ratelimit::ratelimit(&_rs) {
-+            $crate::$print_macro!($($arg)*);
-+        }
-+    }};
-+}
-+
-+/// Prints an emergency-level message (level 0) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_emerg_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_emerg, $($arg)*)
-+    )
-+);
-+
-+/// Prints an alert-level message (level 1) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_alert_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_alert, $($arg)*)
-+    )
-+);
-+
-+/// Prints a critical-level message (level 2) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_crit_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_crit, $($arg)*)
-+    )
-+);
-+
-+/// Prints an error-level message (level 3) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_err_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_err, $($arg)*)
-+    )
-+);
-+
-+/// Prints a warning-level message (level 4) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_warn_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_warn, $($arg)*)
-+    )
-+);
-+
-+/// Prints a notice-level message (level 5) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_notice_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_notice, $($arg)*)
-+    )
-+);
-+
-+/// Prints an info-level message (level 6) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_info_ratelimited (
-+    ($($arg:tt)*) => (
-+        $crate::print_ratelimited!(pr_info, $($arg)*)
-+    )
-+);
-+
-+/// Prints a debug-level message (level 7) if allowed by a rate limiter.
-+///
-+/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
-+#[macro_export]
-+macro_rules! pr_debug_ratelimited (
-+    ($($arg:tt)*) => (
-+        if cfg!(debug_assertions) {
-+            $crate::print_ratelimited!(pr_debug, $($arg)*)
-+        }
-+    )
-+);
++            pr_warn!(
++                "{}:{} {} to {} failed: {err:?}, {} bytes\n",
++                info.from_pid,
++                info.from_tid,
++                if info.is_reply {
++                    "reply"
++                } else if info.is_oneway() {
++                    "oneway"
++                } else {
++                    "transaction"
++                },
++                info.to_pid,
++                info.debug_total_size
++            );
+         }
+ 
+         Ok(())
+@@ -1374,12 +1389,6 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+             // At this point we only return `BR_TRANSACTION_COMPLETE` to the caller, and we must let
+             // the sender know that the transaction has completed (with an error in this case).
+ 
+-            pr_warn!(
+-                "{}:{} reply to {} failed: {err:?}",
+-                info.from_pid,
+-                info.from_tid,
+-                info.to_pid
+-            );
+             let param = err.source.as_ref().map_or(0, |e| e.to_errno());
+             let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
+             orig.from
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index 9aefa01599fb..316627e5f9ac 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -39,6 +39,7 @@ pub(crate) struct TransactionInfo {
+     pub(crate) offsets_ptr: UserPtr,
+     pub(crate) offsets_size: usize,
+     pub(crate) buffers_size: usize,
++    pub(crate) debug_total_size: usize,
+     pub(crate) target_handle: u32,
+     pub(crate) errno: i32,
+     pub(crate) reply: u32,
+@@ -138,21 +139,13 @@ pub(crate) fn new(
+         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
+         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
+         let to = node_ref.node.owner.clone();
+-        let mut alloc = match from.copy_transaction_data(
++        let mut alloc = from.copy_transaction_data(
+             to.clone(),
+             info,
+             info.debug_id,
+             allow_fds,
+             txn_security_ctx_off.as_mut(),
+-        ) {
+-            Ok(alloc) => alloc,
+-            Err(err) => {
+-                if !err.is_dead() {
+-                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
+-                }
+-                return Err(err);
+-            }
+-        };
++        )?;
+         if info.is_oneway() {
+             if from_parent.is_some() {
+                 pr_warn!("Oneway transaction should not be in a transaction stack.");
+@@ -193,13 +186,7 @@ pub(crate) fn new_reply(
+         allow_fds: bool,
+     ) -> BinderResult<DLArc<Self>> {
+         let mut alloc =
+-            match from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None) {
+-                Ok(alloc) => alloc,
+-                Err(err) => {
+-                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
+-                    return Err(err);
+-                }
+-            };
++            from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None)?;
+         if info.flags & TF_CLEAR_BUF != 0 {
+             alloc.set_info_clear_on_drop();
+         }
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 05cf869ac090..89c247f150b3 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -137,7 +137,7 @@ pub fn from_errno(errno: crate::ffi::c_int) -> Error {
+     /// Creates an [`Error`] from a kernel error code.
+     ///
+     /// Returns [`None`] if `errno` is out-of-range.
+-    const fn try_from_errno(errno: crate::ffi::c_int) -> Option<Error> {
++    pub const fn try_from_errno(errno: crate::ffi::c_int) -> Option<Error> {
+         if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
+             return None;
+         }
 
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
