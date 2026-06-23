@@ -1,619 +1,290 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012016.outbound.protection.outlook.com [52.101.48.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBEA34574B
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jun 2026 04:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782190653; cv=none; b=AnB4FYhfdmVFJeAdDmZAQW+vIwTVixXfdGALIocjf+tyq/OlFCe4l6AoF0OOFwu1/2YOLEok9+QSAZqyLRH3+KbIiHbA+QPXgXN4mMU5cZoQMdva4/GQbd6o/F3YgC4hoO0UVk3O1DWl78dxT9jqG5TJkLIzg7C7bDL0LZEo1/c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782190653; c=relaxed/simple;
-	bh=lDhryqf83+O+bDTnRsPef/3xGLXUCE+66wHu8gOn1dI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5kTLsU1EB4LplT40XI/OqhmQ2EMV2GnrWuYc4WG18BmvxzRZ0mlt+ASg1zuZrLfpKuHif89Id2uhz2LTuVfhCAx+eyZ4B02bf/L7twZ+4w8O9cc7lh4AwEP/OfGAKweHpJ5InSMSTncEsxQGnmdU0vzckbcInNBzZcb+cJqaMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I/7PKtQh; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3592EA732;
+	Tue, 23 Jun 2026 05:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782193253; cv=fail; b=kGWAE+IaTjuA6RAsPBgIaGOmXDTXst5Pna0y2oirIs0i0hImh4KJryElWBOtf8Eg6FuFlJpLSjmpi+hS/mlp3mm+JaRePaZC6WlrXo0Ul/1DRjFT8Rnk6AZrjhi1AkbcM0CxRsNE/Q86HLy2rBZNXvyqkhSd71tdzI2tp906eb0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782193253; c=relaxed/simple;
+	bh=boFVxDo7AvEp5P6qEihMKD1sIwkfssNVSiqr0+a2euw=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=NCtaq+Wkre6KR0qZWBsB9Axl2y3dJlAmXhD6WCBF3PlCGgwKcPZEZhLp6CyLr/axMo7hBIhdNiLva5IKX5zcaC3MyWX4OKVDYvvZUIGOFU1X4kBSTmmELCSvOpV9SaRhFZ3rPddmnPUC3fwjQX0uhMwsAas4GE52Rw/bhZTyRMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=M7pNPP72; arc=fail smtp.client-ip=52.101.48.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I/7PKtQh"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c74383c93cso30218945ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jun 2026 21:57:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782190651; x=1782795451; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+q0PdMuHk5BHt6EoZKEdURb4DF/NqVqU6sV1r/Fjses=;
-        b=I/7PKtQhS6MZuCKjb9AryyyaNwpRJWTKEgyyT807O63F6ZVt1nFPrKSo9FEVUZtGKH
-         VNUb4lvrYuvlH1a9rVsXYPRRQqBTZqTDJoLO7jiFiCcmZ5BZeXUnVGwIZbjKQeiYPOJZ
-         9psoHTPtMpbfJFeM9SNgWvY3DqeWI7nMb5tkGuryogKKjaxyJj90w/dQFerXXRz1xzIV
-         EKcCmAQ67E90ShzNmtThs0yo2zzSmxIcOXeO7Yt92rd8fqXpGgwrLKyVkpNV8Oj8PGIa
-         zwCLr3LgrjtURBSTc7Y0V2/oW/qMuUkUkmKGEZ/vuQc1Yv+OpMCEuAHnnZhZFeqvD0wj
-         1IDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782190651; x=1782795451;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+q0PdMuHk5BHt6EoZKEdURb4DF/NqVqU6sV1r/Fjses=;
-        b=YeFEBWLvyTIkPSNGbJf1/Rnlsz22Yjmhlzqi4jkhQI4QarcXkHk2SFbkWpW0F+mmEb
-         6hogJfbbv4uQ+94qsnPikeb/9YVbGUP9R492hFz5+3bkfTSp4uueqT/gxiaXUI92rxgF
-         BAKow2tD/IC2z6hDvLLo9q6hleghj67QcyCFKm/KvXJVZy1yDPF/His14WVrWl2fE1mF
-         94Uqi51MpBdvq46uHlmlDYadaP5NjDJZhnW3CKq0XGRQUUUQrlEub+UUl4FGn8K7BqtX
-         1znB8ga96Pid3lo5D2nwjpVt+oWVKVVjAdR7S7v52PwJwJVlmVgh1pDpEFYA7WH8KXCE
-         Ns4w==
-X-Forwarded-Encrypted: i=1; AHgh+RqihgN4VP31NippuDBzfrBbY0yCLtcnCzKLBMLhWFE0BcJDh0RDjJFMVxcKJe4kBDX23mqdMyf/jvIS91PT/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ0sNwDOuNkhRc7vCjN44qzAuZI1BhgjUdgQpnpS40LoDVKMxf
-	q7MifPredD/AJcWHktehjqOPzwLtnAGq2x4d9QbBD27fzEsKUT4mijgF
-X-Gm-Gg: AfdE7cku0vrwh5aphKo2+dIoRn5tSSoOy65X1a0DaWjSrQg60P4XPiqXf2CDW4plYeu
-	gFySF/PvBy4Vh2Lgnf8thrqeSbKNp1g0UsdUSLX//rjzzhmNzQP6ZV+1gcXp26mQXIDVnPqi+Xc
-	jCgxMq/0Cr0HEzbUC18rZUNhJs3pBjgfM0VU097k8LnXmaWXA4IG6wfGf5rjs4XK/MIO+mKIzoD
-	xEQEbr456TXFXJOGxwCJAEQ3DafcoWEA/XaH1WH4U8R0mJefz1lcbxTuJPpk+3Y7MVB1JyxN/Zz
-	mJQECqfLDA6BM13otxfWKC6O/4Dxrvj+nPVyCnWQm/m70FagW7+0mBGQgSXQ2L/g3kfTdwWyq1y
-	FDmmPo8pH8G2rgBOWmX83Bekz+Dwe8KpMWpVFtQLwDYecEJ7oa4vIDMweEFXiTVU+6AuZNgQBzK
-	VcoqlhdIC+mG5yNQ2Nfh3NGxe9RQncbA==
-X-Received: by 2002:a17:902:e84a:b0:2b4:656b:aeb0 with SMTP id d9443c01a7336-2c7c9ab067bmr8797275ad.35.1782190650742;
-        Mon, 22 Jun 2026 21:57:30 -0700 (PDT)
-Received: from toolbx.alistair23.me ([2403:581e:fdf9:0:13b2:851f:d9cb:44c5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f8cf0sm89734785ad.50.2026.06.22.21.57.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 21:57:29 -0700 (PDT)
-From: alistair23@gmail.com
-X-Google-Original-From: alistair.francis@wdc.com
-To: akpm@linux-foundation.org,
-	rust-for-linux@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	jic23@kernel.org,
-	bhelgaas@google.com,
-	lukas@wunner.de,
-	alistair@alistair23.me,
-	linux-cxl@vger.kernel.org,
-	djbw@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jonathan.Cameron@huawei.com
-Cc: alistair23@gmail.com,
-	boqun.feng@gmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	bjorn3_gh@protonmail.com,
-	gary@garyguo.net,
-	wilfred.mallawa@wdc.com,
-	aliceryhl@google.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	tmgross@umich.edu
-Subject: [PATCH v2 21/21] lib: rspdm: Support SPDM challenge
-Date: Tue, 23 Jun 2026 14:54:06 +1000
-Message-ID: <20260623045406.2589547-22-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260623045406.2589547-1-alistair.francis@wdc.com>
-References: <20260623045406.2589547-1-alistair.francis@wdc.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="M7pNPP72"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Kwyn6/knYHpp0XhViKE0zJSn4+o1dX3Rx68LFDfFIBfxYDNxTAH2Snk262tg1FJv/buYVynSlmVIFhhmv+OL9i+SNjgbN+GdFJR/cQiXLdapcDDlKGS2gJXbga2qz3EW++POco6O4vL/mEecCvKAg7noGX2fiiSQd2WMbIjJQ4E6Mkjcxm9WMq0zgr89Nu0S8aHRNXB9UckNQFn/3QZXTSybOKwFvUiGhyoNJoVLpQWmjC2oyEnb/8bHkCK9xiBS4ApOkq5XaVY+X48qDIqFlAFNw2Ttrp+nRC7HWtsB6r6FqBIN9AdnDHPtrx7HHtcThUBCVcjpVzccEP+u8nUKCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GT1WjYlARq7nqR7ctJBqu7VbYrVOr7gION/DzEkfQNU=;
+ b=ZEzbwWRfu1s+usDn4aaQxZMglnPSfEJImF4TkYiCXbY2ZkBkhvIYLPiHz7ZqgPkDXrkAM3m/r2iCm2yWB8Zx0lvD7nGJfj3verJ0r7jc5jyNxjfubHw0dXgjtAthGp5xQzQik17Pk6qR5AsrVb/Sgu/yKs2+qR5g0UHp8ZIlfQ5B/zX9mTjbR3bKba6J0XTb40Eof3ScBStp8H5fenZP8OW1TBEpX2V8OgWBtbrWsNL92JvRcfux7Ris/Pj7m77NR3w11yFUceZ0xUqx6azMr9U9/OH3umcoF7KotZzaw9n56F3hN71Ouax44Rq4H7NYf0ch8v2gY8EdRLk6IJ1SmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GT1WjYlARq7nqR7ctJBqu7VbYrVOr7gION/DzEkfQNU=;
+ b=M7pNPP72IjDn/UnAkB692K30kGfW1npCkyeDA90F08DNqKV3ODOOsQIrom94rNTRuTFnHg8Ss7Xn8iexlXFp0hHC3RRv8RiFCUbEp7pNTNeENy0E2wusxyb9e1ob0Zb0q5kchLupIDK+33xQOgU4/Ih9GuicyUJ/fbduXlbWqp2ultkFhUgDK58FLc1XEcAOPVQkhMNqPjJRf1ZP+bvxtA7PjM7sk/xBEDATYx03DdDDAQ7DQoYSU1ydpetho6BU9guiqbNJp5MzzJfy4K5V4/vm+Hllmiuzm7TLkTX4OhbAYxo4TpxNOLEDVeyM2asTvfpwnU+6gAxV2+sq5G0LqQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
+ by BN7PPF28614436A.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6c9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Tue, 23 Jun
+ 2026 05:40:48 +0000
+Received: from BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
+ ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0139.018; Tue, 23 Jun 2026
+ 05:40:48 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 23 Jun 2026 14:40:44 +0900
+Message-Id: <DJG6S20KHJK3.TKRZLBYUPGG2@nvidia.com>
+Subject: Re: [PATCH 3/6] gpu: nova-core: gsp: move boot code into local
+ closure
+From: "Eliot Courtney" <ecourtney@nvidia.com>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Gary Guo" <gary@garyguo.net>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260619-nova-bootcontext-v1-0-45193cd0a2e5@nvidia.com>
+ <20260619-nova-bootcontext-v1-3-45193cd0a2e5@nvidia.com>
+ <DJFF1W6VGY4Q.2PV5MEPMFXIDB@nvidia.com>
+ <DJFO5A5XN2EO.22B58J2O6D4JG@nvidia.com>
+In-Reply-To: <DJFO5A5XN2EO.22B58J2O6D4JG@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0095.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4::18) To BL0PR12MB2353.namprd12.prod.outlook.com
+ (2603:10b6:207:4c::31)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|BN7PPF28614436A:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ec67916-77ec-4355-849c-08ded0e9faaa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|23010399003|366016|376014|7416014|18002099003|22082099003|11063799006|3023799007|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	AhkgnPsQ+XotbLgsJnzG2u/+q6RzkGi5jEzDn5380BxtFWIe4ihDb6VdeGxyPLHtzlEo6J2OxcNExOqdagqNGpL+j6qozv1l2DQ7sfR+gkyWLj9EpUw1u2VkfV4mmLMuU6C/uaBZ7CO6OUGdmgJXHzKROPCErz/aqdd9m8YYl64GNgQI2KD1SJ+hbJpi26Mt0Qz7Uib9Cz2Be399u2M4HgNg9/z71WeyRmcTpDlBO6RnKqRc8F7yjhmK2BNhbo49s/Xbesu0+38tZUPM0o+Jc5bC+ifbQ0MCpwqybWqdHRWe3iQAqrciN5/hejshsPrIT+FRp3ctJwvMF+5QiwkL9ZZCgY4Gg9ZHU86bXrS3jnnnlcg/C5tFeBY4EMuVsY7VbJxo67qnaSEjnwX3iARhRwCbMapif+2KYYtfFbS+pPGQE+4b9FsCu+u7WngnyNZFy6pMUSrRcz2jjOA6k50ZyoW/mH9ofeI6WwO/cL+ArXnmJDidNxtibYv8whno2oM8o/ocTM4/Gh8SZ39HRn1JO81Lxab3NuKR8bVjAV6IkrDuWQEA7aj16W8FORBvgbAarIUot7+WRxtixYZKyJFheu/OS3WsgIxnS+hrvYYRcKl++oLanx5Bff5q5RCkpq8b3uVjYGwnRm0JGzPBSWuve5VZfK9G6S2a7W+RYWZhcYk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(23010399003)(366016)(376014)(7416014)(18002099003)(22082099003)(11063799006)(3023799007)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L2hON1dxQ3JaV0NWcUN4MTJBYk44WC9WbU0xaTNWREVuWmlxcU9BOExVb2U4?=
+ =?utf-8?B?ZFIwK1NRMWRjbHRZQWtaNlRYZFNGaXVubTAyU2VtS3N0UG5Vckt5cnZYVmZ6?=
+ =?utf-8?B?ZWJyRm9xc1lOUUV3NGZPMWtUQ2xqZWkyV3V1V0YyZExwUFpIRW50eEZtR1V5?=
+ =?utf-8?B?eS9FWXlUK1NseUVPaUZLd2FGQ0pFc2FwVXhrZUlRVGF5TnUxd2FQR3oyRGp5?=
+ =?utf-8?B?NmRHOFlUTWgzY3IyWTZhdjYvV25TcFE5UWlLNUlKdUc1WWg5TTRTM2lZZEV2?=
+ =?utf-8?B?M2VRNUo2aXZ2NGR6M2ljaTZkbHYwSGRFZjRYZ2Q0NXprOGhaejh5WTJWaGtL?=
+ =?utf-8?B?ajFFbkpDQTRTOWtKYWV5TjM4QU8zTmNkaWhudHZaZWp3NmdCd1JxYmptRElH?=
+ =?utf-8?B?d3NwdHpWYjFoUnJhZlhNRjNFT0hxWUlTck8rUitWcVhDdWFZVUxzWmdnK3RW?=
+ =?utf-8?B?enR5Y1ROTTh3V1JkbW4xM1RPL0p2bnZyUnNaU01FYWdjWTdmaTdQRnl5SzRv?=
+ =?utf-8?B?MTNHMGJsd1gxclVpMW0xdmxMdEl2UUFoUnF5SXlNaUJHYWFYYkp6UHhBMnJX?=
+ =?utf-8?B?aUFHSnJPRW85aWxBNnhYaGFHSGlFemJYUXR6TXVMVnhueGliMGZ6VkwxaHJP?=
+ =?utf-8?B?NmpCVVh0anltRVlSandjQ3JGdGRCSzdjVzNFcGZQQXlSYU9Sa1d3SFdYYXll?=
+ =?utf-8?B?aU1PU2gwamx3SDZCbXNVb2V1ZHY0dEF1Rm9iSEp0M3lreUU2cDFaWGV1K3B1?=
+ =?utf-8?B?L3E1VXdzVGg5VWE5U0tsVGE2cFJEdHl3LzBzd1JsaFRrQTc5WWwyTkE3WEhB?=
+ =?utf-8?B?M2N4T0x3Vm0rNVp4WlRKeXRwazZVSC84b3hPVEhtN2dxbFluZ3lpYXQ2SHNI?=
+ =?utf-8?B?ekhKb2REVkVtVnFFUElQanZHWkgyTkU1VlVOZXBQZ2U3M1R2Z1U3cnVXOUVK?=
+ =?utf-8?B?R2cwbTN1bTFac3Zlb0NSRXM1aHBjQ1YwZFcydytHRy9kUXVuLytFZVRzeC9X?=
+ =?utf-8?B?djJ6MVoxZnpBNXFKYVpXa3BSZUdtWTh5V0w3TElTT0dOQk9sQXd3MEsrdGRl?=
+ =?utf-8?B?WkVZTnN6RW5hb1U3eG95K1VQMEpSUmJJWVdUSVErVDFLVjlsa2ZocytyS3VI?=
+ =?utf-8?B?QUhIcXlZSmg0bVAxdXR6a0ladFpoMkRnME5OQUZLY1ZlYkFoM2ZXd3QyQ2pO?=
+ =?utf-8?B?emRXTGdqYXFFZzFqWEU0aW00SDhielh6Q3hxYVRQOUlhNEY5aENoL3VnK1A5?=
+ =?utf-8?B?Nk12ZmZqbms5S2V5bGdod0Q1dWFEUzVleVJCS2RFRllvbXlhcE5EUk9qRGZw?=
+ =?utf-8?B?Z1ZqUjdCOFg5T0p0Smg1SG1RbGpnRmJ6NzBEN2FscWJnVlVBd2llVUtEbHd0?=
+ =?utf-8?B?OTY5a1o0WHFYUmtYWlBNQ0FQM01jVUFzSGxKZWV5Y09LNUNLOU1RNkliOWlE?=
+ =?utf-8?B?TzBCcUhjMUxDdXM1NTFaNEk0WXp3NHdieWpoVy9xWTl4ZzdqY2JFZWlDTG9D?=
+ =?utf-8?B?R0xHdEx5UlJnVGZPQmdKZ1g3ZGtEQ1dZVzBOYzhGbWhrWldOem8xZTlKRE9J?=
+ =?utf-8?B?RS94SWx0cTFwSWxnYnBSdk81RmttRzJOVWxVeEZjaEV3ZGdtNmFFM1JDZ1J0?=
+ =?utf-8?B?MVJPZktOVTFsbmtBL1FUWHIxb0NUclRHSGoxd3Z5ODVramg4eWpaTU5KTE1r?=
+ =?utf-8?B?RWVYQnltNVFMVDdBa2s3WGxzZ0F3QWxTS3BMK1pZcWQxd255Nitnb1ArakVD?=
+ =?utf-8?B?TGs3bmtxL3NRc3kyamtWSUpBSk9iU054blJEYnNrV3NhNTlQSW90SEtYandP?=
+ =?utf-8?B?RFBRSVQzdFQvbUdxV0l0aDRZWVg0S3pCTmxHQ0dFQ0tJd2l5NloyZDBJcGlw?=
+ =?utf-8?B?TkdIR0NGRDVUWk5kakI1VUtJT2xBUEZoMmk3VHhlT1hCcDcyb0lMaWJaekEw?=
+ =?utf-8?B?bG9acXBLeWpobDZRd055Sjd0dEhLcXF0VWd3cTVVR015c3RyRU03WUUvSUJX?=
+ =?utf-8?B?d2FEb3YzR010dHdiaExBWEVRQWtRMTl3SXp6T1RFSWVZWUR0aTF0MUNiVlYr?=
+ =?utf-8?B?UmRQUktVVmtsQ1U5S3ZWZk9MUjJWS1pXWkVSdURLS3NlZTJJZ0JseTFERCtj?=
+ =?utf-8?B?WUZuKzI0anNoTzk5S0c5ZHZFUXVlMU02YzFEM3B3b09hdnNKT3Y0Tm9WNDQ1?=
+ =?utf-8?B?TEhhQTczWSt1YndJTU1DWnIrR1gvcGpVNVVNQlpKTitHUzNrL3E4RGRKOHdk?=
+ =?utf-8?B?OEpRSWdlUUNiRTNqYmF2RUNBdCt3ZUNWcW8xS3BOZGhsV0I0QXg1NGRPV3VF?=
+ =?utf-8?B?TVB1OUdYOUhqYysyYWdXMDVaZXBXV1p0TmFzYjJhSnhLYTh3a25vNWFlRHJL?=
+ =?utf-8?Q?AYdVBsdSHYEoVJWyZKFqmfQRLU5VhiCco7WCJoa9xB+or?=
+X-MS-Exchange-AntiSpam-MessageData-1: NtBGQV2pMqLPEA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ec67916-77ec-4355-849c-08ded0e9faaa
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 05:40:48.6319
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RhZyeiFF9O7HGlHUfTXFujpJYwW9X4jmm1HMRDezTEc+U3WhstoNFETkx6SeRYI0FePc2PFXUVGhX/ASnbTjuQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF28614436A
 
-From: Alistair Francis <alistair@alistair23.me>
+On Tue Jun 23, 2026 at 12:04 AM JST, Alexandre Courbot wrote:
+> On Mon Jun 22, 2026 at 4:57 PM JST, Eliot Courtney wrote:
+>> On Fri Jun 19, 2026 at 10:42 PM JST, Alexandre Courbot wrote:
+>>> The next patch aims at replacing the cumbersome `BootUnloadGuard` with =
+a
+>>> more local and less intrusive mechanism to run the GSP unload sequence
+>>> upon GSP boot failure. Doing so requires running the boot code in a
+>>> local closure, which changes its indentation and would make other
+>>> changes difficult to track in the diff. Thus, this preparatory patch
+>>> moves said boot code into a local closure that is run upon construction=
+,
+>>> so the next patch does not need to re-indent code that changes.
+>>>
+>>> This is a mechanical preparatory patch to make the next patch easier to
+>>> read. No functional change intended.
+>>>
+>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>> ---
+>>
+>> I agree with removing BootUnloadGuard, but I think it's not great to do
+>> a bunch of lifting into closures then manually handling the result. It's
+>> error prone imo (we already had several bugs relating to this kind of
+>> thing). Instead, what about just using ScopeGuard directly? This lets us
+>> avoid lifting into closures (which is a bit noisy) and avoids manual
+>> result handling for failures (which is a bit error prone). With the
+>> `GspBootContext` it's fairly easy to do now:
+>>
+>> ```
+>> let unload_guard =3D ScopeGuard::new_with_data(unload_bundle, |unload_bu=
+ndle| {
+>>     let _ =3D gsp.unload(ctx, unload_bundle);
+>> });
+>> ```
+>
+> Yes, initially I wanted to use `ScopeGuard` but ran into issues when
+> trying to make the references mutable. However it looks like you have
+> been able to overcome these issues, thanks for taking the time to craft
+> a patch!
+>
+>>
+>> I confirmed that it's also compatible with the v2 of this series that
+>> has the mutable Fsp - you can stash the context inside the ScopeGuard
+>> data (then making a &mut reference to the stashed context for brevity)
+>> or have a separate unload context type that doesn't use FSP or something
+>> (could later be type parametrized along with Gsp, for example).
+>>
+>> For example here is a rough diff on top of this patch series (you can
+>> change the Result<Option<UnloadBundle>> returns to like
+>> Result<Result<UnloadBundle>> if you want to centralise teh error
+>> handling of a failed unloadbundle although currently it can only fail in
+>> one location):
+>
+> Yes, looking at it it looks like a cleaner approach than using closures.
+>
+> The only thing that I saw as a regression is that now each HAL needs to
+> call `Gsp::unload` itself in its own `ScopeGuard`. I don't think that's
+> the HAL's work - `Gsp::boot` should be the centralized point where this
+> happens.
+>
+> But we can make both work if `unload_bundle` is passed as an output
+> argument to `GspHal::boot` instead of being returned:
+>
+>     let mut guard =3D ScopeGuard::new_with_data((ctx, None), ...);
+>     let (ctx, unload_bundle) =3D &mut *guard;
+>
+>     // `unload_bundle` is a mutable reference to the
+>     // `Option<UnloadBundle>` in `guard`.
+>     hal.boot(&self, ctx, unload_bundle, &fb_layout, &wpr_meta)?;
+>
+> The boot method can fill `unload_bundle` early, and if it returns an
+> error then the `ScopeGuard` will be able to use it. Also, and that's
+> nice, the HALs don't need to use `ScopeGuard`. But output arguments
+> aren't really something we expect to see in Rust.
+>
+> Another alternative would be to separate the unload bundle construction
+> from `GspHal::boot`:
+>
+>     let unload_bundle =3D hal.build_unload_bundle(ctx, ...);
+>     let guard =3D ScopeGuard::new_with_data((ctx, unload_bundle), ...);
+>
+>     hal.boot(...)?;
+>
+> It removes the "1 boot -> 1 unload bundle" symmetry, but on the other
+> hand it also splits concerns more clearly. And it removes the awkward
+> return type of `GspHal::boot`, which come to think of it was another
+> smell that things were not in the right place.
+>
+> The main drawback I see is that we now need to build `Vbios` twice for
+> TU102, since it is needed both for the unload bundle and for booting.
+> But the solution is the same as what the v2 of this series does to
+> `Fsp`: the BIOS is a GPU-wide subdevice that is likely to be used
+> elsewhere, not something to be confined in a GSP HAL. So I say, let's
+> extract it and make it also part of `GspBootContext`.
+>
+> How does that sound?
 
-Support the CHALLENGE SPDM command.
+I think that currently it's confusing because we have two concepts in
+use with very similar names. We have "unloadbundle" meaning what we need
+to run to unload the driver, and we have "unload_guard" which is for
+running unwind stuff if we error. And for the most part these things are
+the same, but they might not be (e.g. in my other series where we need
+to keep certain DMA allocations alive just for the error path, but not
+for an unload later, or when we are partially loaded). So it might be
+nice to make these two things more separate.
 
-Signed-off-by: Alistair Francis <alistair@alistair23.me>
----
- lib/rspdm/consts.rs             |   6 +
- lib/rspdm/lib.rs                |  10 +-
- lib/rspdm/state.rs              | 232 +++++++++++++++++++++++++++++++-
- lib/rspdm/validator.rs          |  61 +++++++++
- rust/bindings/bindings_helper.h |   1 +
- 5 files changed, 305 insertions(+), 5 deletions(-)
+I think that trying to build the unload bundle separately
+(`build_unload_bundle`) is confusing because e.g. hal.boot() still needs
+to handle unwinding its state in case of error, so it adds a strong
+assumption that unloading in success is the same as unwinding in error.
 
-diff --git a/lib/rspdm/consts.rs b/lib/rspdm/consts.rs
-index 2fbc4ab41869..e67be8e6b057 100644
---- a/lib/rspdm/consts.rs
-+++ b/lib/rspdm/consts.rs
-@@ -148,6 +148,8 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
- 
- pub(crate) const SPDM_GET_CERTIFICATE: u8 = 0x82;
- 
-+pub(crate) const SPDM_CHALLENGE: u8 = 0x83;
-+
- // If the crypto support isn't enabled don't offer the algorithms
- // to the responder
- #[cfg(CONFIG_CRYPTO_RSA)]
-@@ -176,3 +178,7 @@ fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
- pub(crate) const SPDM_HASH_ALGOS: u32 = SPDM_HASH_SHA2_256 | SPDM_HASH_SHA2_384_512;
- 
- pub(crate) const SPDM_OPAQUE_DATA_FMT_GENERAL: u8 = bit_u8(1);
-+
-+pub(crate) const SPDM_PREFIX_SZ: usize = 64;
-+pub(crate) const SPDM_COMBINED_PREFIX_SZ: usize = 100;
-+pub(crate) const SPDM_MAX_OPAQUE_DATA: usize = 1024;
-diff --git a/lib/rspdm/lib.rs b/lib/rspdm/lib.rs
-index fa5513e8bd4e..33c16f7ffb46 100644
---- a/lib/rspdm/lib.rs
-+++ b/lib/rspdm/lib.rs
-@@ -11,8 +11,7 @@
- //! from other subsytems.
- 
- use crate::bindings::{
--    spdm_state,
--    EPROTONOSUPPORT, //
-+    spdm_state, //
- };
- use core::ffi::{
-     c_int,
-@@ -141,7 +140,12 @@ pub extern "C" fn spdm_authenticate(state_ptr: *mut spdm_state) -> c_int {
-         provisioned_slots &= !(1 << slot);
-     }
- 
--    -(EPROTONOSUPPORT as i32)
-+    let provisioned_slots = state.provisioned_slots.trailing_zeros();
-+    if let Err(e) = state.challenge(provisioned_slots as u8) {
-+        return e.to_errno() as c_int;
-+    }
-+
-+    0
- }
- 
- /// spdm_destroy() - Destroy SPDM session
-diff --git a/lib/rspdm/state.rs b/lib/rspdm/state.rs
-index e381cf3f75f9..7341d9d8a931 100644
---- a/lib/rspdm/state.rs
-+++ b/lib/rspdm/state.rs
-@@ -8,6 +8,7 @@
- //! <https://www.dmtf.org/dsp/DSP0274>
- 
- use core::ffi::c_void;
-+use core::mem::offset_of;
- use core::slice::from_raw_parts_mut;
- use kernel::prelude::*;
- use kernel::{
-@@ -19,6 +20,7 @@
-         Error, //
-     },
-     str::CStr,
-+    str::CString,
-     validate::Untrusted,
- };
- 
-@@ -31,6 +33,7 @@
-     SPDM_ASYM_RSASSA_2048,
-     SPDM_ASYM_RSASSA_3072,
-     SPDM_ASYM_RSASSA_4096,
-+    SPDM_COMBINED_PREFIX_SZ,
-     SPDM_ERROR,
-     SPDM_GET_VERSION_LEN,
-     SPDM_HASH_ALGOS,
-@@ -38,10 +41,12 @@
-     SPDM_HASH_SHA_384,
-     SPDM_HASH_SHA_512,
-     SPDM_KEY_EX_CAP,
-+    SPDM_MAX_OPAQUE_DATA,
-     SPDM_MAX_VER,
-     SPDM_MIN_DATA_TRANSFER_SIZE,
-     SPDM_MIN_VER,
-     SPDM_OPAQUE_DATA_FMT_GENERAL,
-+    SPDM_PREFIX_SZ,
-     SPDM_REQ,
-     SPDM_RSP_MIN_CAPS,
-     SPDM_SLOTS,
-@@ -51,6 +56,8 @@
-     SPDM_VER_13, //
- };
- use crate::validator::{
-+    ChallengeReq,
-+    ChallengeRsp,
-     GetCapabilitiesReq,
-     GetCapabilitiesRsp,
-     GetCertificateReq,
-@@ -65,6 +72,8 @@
-     SpdmHeader, //
- };
- 
-+const SPDM_CONTEXT: &str = "responder-challenge_auth signing";
-+
- /// The current SPDM session state for a device. Based on the
- /// C `struct spdm_state`.
- ///
-@@ -111,6 +120,12 @@
- ///  not populated. Prefixed by the 4 + H header per SPDM 1.0.0 table 15.
- /// @leaf_key: Public key portion of leaf certificate against which to check
- ///  responder's signatures.
-+/// @transcript: Concatenation of all SPDM messages exchanged during an
-+///  authentication or measurement sequence.  Used to verify the signature,
-+///  as it is computed over the hashed transcript.
-+/// @next_nonce: Requester nonce to be used for the next authentication
-+///  sequence.  Populated from user space through sysfs.
-+///  If user space does not provide a nonce, the kernel uses a random one.
- pub(crate) struct SpdmState<'a> {
-     pub(crate) dev: *mut bindings::device,
-     pub(crate) transport: bindings::spdm_transport,
-@@ -140,6 +155,10 @@ pub(crate) struct SpdmState<'a> {
-     // Certificates
-     pub(crate) certs: [KVec<u8>; SPDM_SLOTS],
-     pub(crate) leaf_key: Option<*mut bindings::public_key>,
-+
-+    transcript: VVec<u8>,
-+
-+    pub(crate) next_nonce: KVec<u8>,
- }
- 
- impl Drop for SpdmState<'_> {
-@@ -210,6 +229,8 @@ pub(crate) fn new(
-             hash_len: 0,
-             certs: [const { KVec::new() }; SPDM_SLOTS],
-             leaf_key: None,
-+            transcript: VVec::new(),
-+            next_nonce: KVec::new(),
-         }
-     }
- 
-@@ -325,13 +346,15 @@ fn spdm_err(&self, rsp: &SpdmErrorRsp) -> Result<(), Error> {
-     /// The data in `request_buf` is sent to the device and the response is
-     /// stored in `response_buf`.
-     pub(crate) fn spdm_exchange(
--        &self,
-+        &mut self,
-         request_buf: &mut [u8],
-         response_buf: &mut [u8],
-     ) -> Result<i32, Error> {
-         let header_size = core::mem::size_of::<SpdmHeader>();
-         let request: &SpdmHeader = Untrusted::new(&request_buf[..]).validate()?;
- 
-+        self.transcript.extend_from_slice(request_buf, GFP_KERNEL)?;
-+
-         let transport_function = self.transport.ok_or(EINVAL)?;
-         // SAFETY: `transport_function` is provided by the new(), we are
-         // calling the function.
-@@ -381,6 +404,8 @@ pub(crate) fn get_version(&mut self) -> Result<(), Error> {
-         request.version = SPDM_MIN_VER;
-         self.version = SPDM_MIN_VER;
- 
-+        self.transcript.clear();
-+
-         // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
-         let request_buf = unsafe {
-             from_raw_parts_mut(
-@@ -400,6 +425,16 @@ pub(crate) fn get_version(&mut self) -> Result<(), Error> {
-         response_vec.truncate(rc);
- 
-         let response: &GetVersionRsp = Untrusted::new(response_vec.as_slice()).validate()?;
-+        let rsp_sz = core::mem::size_of::<SpdmHeader>()
-+            + 2
-+            + response.version_number_entry_count as usize * 2;
-+
-+        if rsp_sz > response_vec.len() {
-+            return Err(EIO);
-+        }
-+
-+        self.transcript
-+            .extend_from_slice(&response_vec[..rsp_sz], GFP_KERNEL)?;
- 
-         let mut foundver = false;
-         let entry_count = response.version_number_entry_count;
-@@ -463,12 +498,15 @@ pub(crate) fn get_capabilities(&mut self) -> Result<(), Error> {
-         let rc = self.spdm_exchange(request_buf, response_vec.as_mut_slice())? as usize;
- 
-         // The transport must report a length within the buffer we provided.
--        if rc > response_vec.len() {
-+        if rc > response_vec.len() || rc > rsp_sz {
-             pr_err!("Overflowed capabilities response\n");
-             return Err(EIO);
-         }
-         response_vec.truncate(rc);
- 
-+        self.transcript
-+            .extend_from_slice(&response_vec[..rsp_sz], GFP_KERNEL)?;
-+
-         let response: &mut GetCapabilitiesRsp = Untrusted::new(&mut response_vec).validate()?;
- 
-         self.rsp_caps = u32::from_le(response.flags);
-@@ -625,6 +663,9 @@ pub(crate) fn negotiate_algs(&mut self) -> Result<(), Error> {
- 
-         let response: &NegotiateAlgsRsp = Untrusted::new(response_vec.as_slice()).validate()?;
- 
-+        self.transcript
-+            .extend_from_slice(&response_vec, GFP_KERNEL)?;
-+
-         self.base_asym_alg = u32::from_le(response.base_asym_sel);
-         self.base_hash_alg = u32::from_le(response.base_hash_sel);
-         self.meas_hash_alg = u32::from_le(response.measurement_hash_algo);
-@@ -674,6 +715,14 @@ pub(crate) fn get_digests(&mut self) -> Result<(), Error> {
-         response_vec.truncate(len);
- 
-         let response: &GetDigestsRsp = Untrusted::new(response_vec.as_slice()).validate()?;
-+        let rsp_sz = core::mem::size_of::<SpdmHeader>() + response.param2 as usize * self.hash_len;
-+
-+        if rsp_sz > response_vec.len() {
-+            return Err(EIO);
-+        }
-+
-+        self.transcript
-+            .extend_from_slice(&response_vec[..rsp_sz], GFP_KERNEL)?;
- 
-         if len
-             < core::mem::size_of::<GetDigestsRsp>()
-@@ -731,6 +780,14 @@ fn get_cert_exchange(
-         response_vec.truncate(len);
- 
-         let response: &GetCertificateRsp = Untrusted::new(response_vec.as_slice()).validate()?;
-+        let rsp_sz = core::mem::size_of::<SpdmHeader>() + 4 + response.portion_length as usize;
-+
-+        if rsp_sz > response_vec.len() {
-+            return Err(EIO);
-+        }
-+
-+        self.transcript
-+            .extend_from_slice(&response_vec[..rsp_sz], GFP_KERNEL)?;
- 
-         if len
-             < core::mem::size_of::<GetCertificateRsp>()
-@@ -971,4 +1028,175 @@ pub(crate) fn validate_cert_chain(&mut self, slot: u8) -> Result<(), Error> {
- 
-         Ok(())
-     }
-+
-+    pub(crate) fn challenge_rsp_len(&mut self, nonce_len: usize, opaque_len: usize) -> usize {
-+        // No measurement summary hash requested (MSHLength == 0)
-+        let mut length =
-+            core::mem::size_of::<SpdmHeader>() + self.hash_len + nonce_len + opaque_len + 2;
-+
-+        if self.version >= SPDM_VER_13 {
-+            length += 8;
-+        }
-+
-+        length + self.sig_len
-+    }
-+
-+    fn verify_signature(&mut self, signature: &mut [u8]) -> Result<(), Error> {
-+        let mut sig = bindings::public_key_signature::default();
-+        let mut mhash: KVec<u8> = KVec::new();
-+
-+        sig.s = signature as *mut _ as *mut u8;
-+        sig.s_size = self.sig_len as u32;
-+        sig.encoding = self.base_asym_enc.as_ptr() as *const u8;
-+        sig.hash_algo = self.base_hash_alg_name.as_ptr() as *const u8;
-+
-+        let mut m: KVec<u8> = KVec::new();
-+        m.extend_with(SPDM_COMBINED_PREFIX_SZ + self.hash_len, 0, GFP_KERNEL)?;
-+
-+        if let Some(desc) = &mut self.desc {
-+            desc.tfm = self.shash;
-+
-+            unsafe {
-+                to_result(bindings::crypto_shash_digest(
-+                    *desc,
-+                    self.transcript.as_ptr(),
-+                    (self.transcript.len() - self.sig_len) as u32,
-+                    m[SPDM_COMBINED_PREFIX_SZ..].as_mut_ptr(),
-+                ))?;
-+            };
-+        } else {
-+            return Err(EPROTO);
-+        }
-+
-+        if self.version <= SPDM_VER_11 {
-+            sig.m = m[SPDM_COMBINED_PREFIX_SZ..].as_mut_ptr();
-+        } else {
-+            let major = self.version >> 4;
-+            let minor = self.version & 0xF;
-+
-+            let output = CString::try_from_fmt(fmt!("dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*dmtf-spdm-v{major:x}.{minor:x}.*"))?;
-+            let mut buf = output.into_vec();
-+            let zero_pad_len = SPDM_COMBINED_PREFIX_SZ - SPDM_PREFIX_SZ - SPDM_CONTEXT.len() - 1;
-+
-+            buf.extend_with(zero_pad_len, 0, GFP_KERNEL)?;
-+            buf.extend_from_slice(SPDM_CONTEXT.as_bytes(), GFP_KERNEL)?;
-+
-+            m[..SPDM_COMBINED_PREFIX_SZ].copy_from_slice(&buf);
-+
-+            mhash.extend_with(self.hash_len, 0, GFP_KERNEL)?;
-+
-+            if let Some(desc) = &mut self.desc {
-+                desc.tfm = self.shash;
-+
-+                unsafe {
-+                    to_result(bindings::crypto_shash_digest(
-+                        *desc,
-+                        m.as_ptr(),
-+                        m.len() as u32,
-+                        mhash.as_mut_ptr(),
-+                    ))?;
-+                };
-+            } else {
-+                return Err(EPROTO);
-+            }
-+
-+            sig.m = mhash.as_mut_ptr();
-+        }
-+
-+        sig.m_size = self.hash_len as u32;
-+
-+        if let Some(leaf_key) = self.leaf_key {
-+            unsafe { to_result(bindings::public_key_verify_signature(leaf_key, &sig)) }
-+        } else {
-+            return Err(EPROTO);
-+        }
-+    }
-+
-+    pub(crate) fn challenge(&mut self, slot: u8) -> Result<(), Error> {
-+        let mut request = ChallengeReq::default();
-+        request.version = self.version;
-+        request.param1 = slot;
-+
-+        let nonce_len = request.nonce.len();
-+
-+        if self.next_nonce.len() > 0 {
-+            let request_nonce_len = request.nonce.len();
-+
-+            if self.next_nonce.len() == request_nonce_len {
-+                request
-+                    .nonce
-+                    .copy_from_slice(&self.next_nonce[..request_nonce_len]);
-+            } else {
-+                return Err(EINVAL);
-+            }
-+
-+            self.next_nonce.clear();
-+        } else {
-+            unsafe {
-+                bindings::get_random_bytes(&mut request.nonce as *mut _ as *mut c_void, nonce_len)
-+            };
-+        }
-+
-+        let req_sz = if self.version <= SPDM_VER_12 {
-+            offset_of!(ChallengeReq, context)
-+        } else {
-+            core::mem::size_of::<ChallengeReq>()
-+        };
-+
-+        let rsp_sz = self.challenge_rsp_len(nonce_len, SPDM_MAX_OPAQUE_DATA);
-+
-+        // SAFETY: `request` is repr(C) and packed, so we can convert it to a slice
-+        let request_buf = unsafe { from_raw_parts_mut(&mut request as *mut _ as *mut u8, req_sz) };
-+
-+        let mut response_vec: KVec<u8> = KVec::from_elem(0u8, rsp_sz, GFP_KERNEL)?;
-+
-+        let rc = self.spdm_exchange(request_buf, response_vec.as_mut_slice())? as usize;
-+
-+        // The transport must report a length within the buffer we provided.
-+        if rc < core::mem::size_of::<ChallengeRsp>() {
-+            pr_err!("Truncated challenge response\n");
-+            return Err(EIO);
-+        }
-+        response_vec.truncate(rc);
-+
-+        let _response: &ChallengeRsp = Untrusted::new(response_vec.as_slice()).validate()?;
-+
-+        // MSHLength is 0 as no measurement summary hash requested
-+        let opaque_len_offset = core::mem::size_of::<SpdmHeader>() + self.hash_len + nonce_len;
-+
-+        if opaque_len_offset + 2 > response_vec.len() {
-+            return Err(EIO);
-+        }
-+
-+        let opaque_len = u16::from_le_bytes(
-+            response_vec[opaque_len_offset..(opaque_len_offset + 2)]
-+                .try_into()
-+                .unwrap_or([0, 0]),
-+        );
-+
-+        let rsp_sz = self.challenge_rsp_len(nonce_len, opaque_len as usize);
-+
-+        if rsp_sz > response_vec.len() {
-+            pr_err!("Truncated challenge response\n");
-+            return Err(EIO);
-+        }
-+
-+        self.transcript
-+            .extend_from_slice(&response_vec[..rsp_sz], GFP_KERNEL)?;
-+
-+        /* Verify signature at end of transcript against leaf key */
-+        let sig_start = rsp_sz - self.sig_len;
-+        let signature = &mut response_vec[sig_start..rsp_sz];
-+
-+        match self.verify_signature(signature) {
-+            Ok(()) => {
-+                pr_info!("Authenticated with certificate slot {slot}\n");
-+                Ok(())
-+            }
-+            Err(e) => {
-+                pr_err!("Cannot verify challenge_auth signature: {e:?}\n");
-+                Err(EPROTO)
-+            }
-+        }
-+    }
- }
-diff --git a/lib/rspdm/validator.rs b/lib/rspdm/validator.rs
-index 4e78683d7b22..2541758953c5 100644
---- a/lib/rspdm/validator.rs
-+++ b/lib/rspdm/validator.rs
-@@ -28,6 +28,7 @@
- 
- use crate::consts::{
-     SPDM_ASYM_ALGOS,
-+    SPDM_CHALLENGE,
-     SPDM_CTEXPONENT,
-     SPDM_GET_CAPABILITIES,
-     SPDM_GET_CERTIFICATE,
-@@ -482,3 +483,63 @@ fn validate(unvalidated: &[u8]) -> Result<Self, Self::Err> {
-         Ok(rsp)
-     }
- }
-+
-+#[repr(C, packed)]
-+pub(crate) struct ChallengeReq {
-+    pub(crate) version: u8,
-+    pub(crate) code: u8,
-+    pub(crate) param1: u8,
-+    pub(crate) param2: u8,
-+
-+    pub(crate) nonce: [u8; 32],
-+    pub(crate) context: [u8; 8],
-+}
-+
-+impl Default for ChallengeReq {
-+    fn default() -> Self {
-+        ChallengeReq {
-+            version: 0,
-+            code: SPDM_CHALLENGE,
-+            param1: 0,
-+            param2: 0,
-+            nonce: [0; 32],
-+            context: [0; 8],
-+        }
-+    }
-+}
-+
-+#[repr(C, packed)]
-+pub(crate) struct ChallengeRsp {
-+    pub(crate) version: u8,
-+    pub(crate) code: u8,
-+    pub(crate) param1: u8,
-+    pub(crate) param2: u8,
-+
-+    pub(crate) cert_chain_hash: __IncompleteArrayField<u8>,
-+    pub(crate) nonce: [u8; 32],
-+    pub(crate) message_summary_hash: __IncompleteArrayField<u8>,
-+
-+    pub(crate) opaque_data_len: u16,
-+    pub(crate) opaque_data: __IncompleteArrayField<u8>,
-+
-+    pub(crate) context: [u8; 8],
-+    pub(crate) signature: __IncompleteArrayField<u8>,
-+}
-+
-+impl Validate<Untrusted<&[u8]>> for &ChallengeRsp {
-+    type Err = Error;
-+
-+    fn validate(unvalidated: &[u8]) -> Result<Self, Self::Err> {
-+        if unvalidated.len() < mem::size_of::<ChallengeRsp>() {
-+            return Err(EINVAL);
-+        }
-+
-+        let ptr = unvalidated.as_ptr();
-+        // CAST: `ChallengeRsp` only contains integers and has `repr(C)`.
-+        let ptr = ptr.cast::<ChallengeRsp>();
-+        // SAFETY: `ptr` came from a reference and the cast above is valid.
-+        let rsp: &ChallengeRsp = unsafe { &*ptr };
-+
-+        Ok(rsp)
-+    }
-+}
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index e9736162c904..1479f9c6604a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -31,6 +31,7 @@
- #include <linux/acpi.h>
- #include <linux/gpu_buddy.h>
- #include <crypto/hash.h>
-+#include <crypto/public_key.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
--- 
-2.54.0
+If we switch to a model where the caller owns Gsp::unload, we need to
+support prolonging some state until gsp.unload() finishes, e.g. in my
+blackwell fixes series, we need to prolong DMA allocation in the error
+case for `FmcBootArgs`. It's doable to prolong the DMA allocation
+because the callee currently owns running the Gsp::unload. But we would
+need to do some gymnastics if the caller owns running Gsp::unload and I
+can't figure out a nice way to do this. In general, if we have partially
+initialized hardware, it seems likely to me we will have to handle
+keeping a certain set of resources alive until we can guarantee they are
+not accessed anymore (gsp inactive being a clear marker).
 
+Separately, I think it would be good to explicitly define the semantics
+of what the state should be in after each one of these calls in
+Gsp::boot. For example:
+
+"Callees that fail should call gsp.unload(ctx, unwind_bundle) to unload
+if it's required. If it succeeds, return an unload bundle."
+
+For state that should be unwound *before* Gsp::unload, I think the HAL
+methods should handle it internally (regardless of what we decide for
+caller vs callee ownership of running gsp.unload). But we do have to
+deal with unwind that needs to happen after gsp shutdown unfortunately.
+It might be nice to make this more explicit.
+
+So it kinda sucks to have to repeat Gsp::unload in HALs, but also I
+think that whether Gsp::unload is required depends on how far we have
+initialized, so HALs may not want to actually call it. So IMO it makes
+some sense there too to have them decide. (e.g. if we only loaded Vbios
+so far).
+
+So concretely, IMO:
+1. Keep gsp.unload() the responsibility of the callees, because they may
+   need to prolong state until after gsp.unload, and, maybe we are not
+   initialized enough to want to call gsp.unload yet and callees know
+   this best.
+2. Through naming, explicitly differentiate between unload and unwind.
+
+WDYT?
