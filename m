@@ -1,27 +1,28 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011055.outbound.protection.outlook.com [52.101.62.55])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011009.outbound.protection.outlook.com [40.93.194.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25943A16BD;
-	Wed, 24 Jun 2026 09:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C153A1CEA;
+	Wed, 24 Jun 2026 09:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782292809; cv=fail; b=kShWd+e3gnsHft5PStn6+Kie+i/RbBruT9ltjYim6xbOubCqgO+mwQdeIry/GRGwrF6UYnSVLoWYv0Kqss5i6vXNrLgPHANYPf0v74SzDYAw8KbFSJaY7uwgzlHNDt1Z8vN1f1uo/NNQxP1UchXxz9DXc37uTTdvy1U2rkROKY4=
+	t=1782292813; cv=fail; b=ocKKZiKS14eTR+eB1HZqw4QNPj2TCFhIn/LxFQ5SCX6UM3I52qGF8aZMAGcN6qDZg+3MpPd1jNwMOAo4zOd6HenoIo6sZ3wjTZQg4nFPnQekIJow6snLG+dvevSBo0E0i6oSNHYYuXJYq6vCgyod93y9iGGo9qoie1Y2AqdtIxI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782292809; c=relaxed/simple;
-	bh=2Urp+fwoY8UI92Xb7H22zvxx7z2pOhTC5JdtusOIY6I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eKfeJaceU27Su5DnOrRylRO4duMIbe1z78narC7FWhMbiozwAu0NBRFomjzprqbLhf0lgDYUym96hEnVawBPDJoTsn6RXN0C/i1mfUTimxwXzPQ1r9N+IgYhFy6YL16WjsklFZCvqfo6+51VIiSySU2YILFKMincuHjuOKHdqUo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gHKGsh0H; arc=fail smtp.client-ip=52.101.62.55
+	s=arc-20240116; t=1782292813; c=relaxed/simple;
+	bh=yW/nPKz0IsT9SdQxuX5OX59KXDjXTSx8IWBunYogre0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V6wpG+zqRYZEesEZPAnefSB5nztdoSlqlJLBJ86VypSdskD2lSuH+nLlH+t1uf7aJ4b26moYWS59wMqCv9MGXmMmJ1+TUwMgcfUKxMds3rPCDmG1new/ij3pbe1zYbPA9XogDE8+4iY1xkeec3mOvTks3XVaY5zjVb56ouf8MQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KBIf5aR5; arc=fail smtp.client-ip=40.93.194.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gHKGsh0H"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KBIf5aR5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MHEkGDU5C2SxiyNeuXBj9eqpxQHtZ7Ch97oioE6hF/J3mBYQmZYd70kHgb0iD46jBKqD1FHTuICYkdvqaJ0pRV/jx5Nr509T+G6Fpt0cwRF0oSGJLtJChNgDSZ/5H+8MLcAT3DtqCMOjB3Vo73Agbe4XnWIoMaJr1/8s9IyG37mW4lnX70KWppAsPyNQWldilzp6PlQjuGIvAAV+erSuRNfctjDJqMEsXooELVPuASLJeOvAh7w+pZT0t3A8M/5FpIc7oyWbBoKdUOiTfXyEtOrEylxtPhKNoMtLfppTEhujQBoFQUSApQS3sOAuMguYLR41XzH6TeWPh81h6M/+1Q==
+ b=sfRMeimDOhI9+Qyfn34hexC/yMu0+PAwF2uoZ8T7ltiXqkcQgspaI5DSJXOYToSnfRYFQELKDt1CYfuO+EIyn9ORd/86gRfWo/84LoAz7SRk1Zu2XEtYaxLivekPIOuyUNAYEwiB13xw357Qi+Ri2dEbaLHJ7QW9wCcM0Zk1yIT2fRvlCmySDoQH3wKYDKCv4WihlmOMHYYkuGd6FpV1J0x8elK4jiYOuqcxo4KyPqwCLhg5dNem5KrGGo5jd6g3JzdAueIeeyrRF13syWuGJmhRK7EKYwAmy5plcj2HQf2vajpc3VueJ7mzVOTKCriSTjydXWcJkohTQ4exQGj6/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2CHZpqoBVdJae4IG3z/F233ni+FspIPjpnLMWh54e64=;
- b=Pg8zvmo/EjVeWRxX+UMCajK7KXSa3RnOU8CAanA6UUAq41OUJ4Phd5yJLljFb2sSQa/ByaWgvZNF1ikngUJnIzN7uGlbafgkjvqbjUCEqACvq8nsxEngn0k8dSV7WlbwCFUfkNkC75cvFkvpPahbm2MtdkXD1bvKNzJDHQafZXOqhZ3C98o1+W482PtIkzA+pk+phZnAHNa1Sv/gW9z3d+8fY3CFDm21Grg1N3GfC/qID1TKD/5jgmPCXGIQ7H4yq/THIrx1rDmYhjTcFRIca3i4mbh2Fs3CLmj+q6LsXQozBuAOZLl//NEwZmVikdXxLSa8G8TSBztn/2GN7vnaiQ==
+ bh=GdML71pZw0+pJCGsqDKVQ40o8EkBpouiIjYZlJkeRl8=;
+ b=aZmZr0GEakrWKeiH1zDRBJV/t1d7qz2dZt164DYFOizJY2vxTLCvZavFByLXcCYv7lIlurwfdRsuJMBHtzGApiduZIuuVt5t6++uaBr75diy2dS2wsvfqnREryq6+nigdSRQW8UK32x2Y+71x8sB2O4ZwEFhNtHIjLELsIuqEJjoe6cimeMPXcHBczY8bb0s7mJfAq+wlTPvR7S8a3+83UrkKJSs4VcYsBvedDO01hkJLffEsijZoSCK5OOkHu27G8bjkLKpz+qNZbV+izJpn7NXdsTHGjUaVSOg7gK9avzKmHp+Zq7D2xrVqsTB4q8hFL1FRTbWveD6fnPhkTm5uw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.118.232) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -29,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2CHZpqoBVdJae4IG3z/F233ni+FspIPjpnLMWh54e64=;
- b=gHKGsh0HtWDGCt6gZ+MminJ7m2eLTG3A/psZeTsblECu4VuW/Q1cJjzYM0SgBpYL+GIbOF2PXcgIe4vBzogEdgu++88Cn8dbiu/AOW4ooraXadxN7v0nwZ7GeMHSTDnKUVrPzSm9BhgRL2a0wZtbD9JBlv/IgaOzEUNgW9WHKCno0SVx4HhmRudOnCGb3csif4bbiYoKHwre7WhiM+LNWhxSIPOiR2btxHpNJCkfounwBpXWA/CjolJQl18/VqdxQ5BvOQLZdu3yikd/+EzqANnEroQVvMpHomUWI36l1/yDyNGJbK+feoPIy7Sx9aKzb7OsUxq3JvpsHc74jjiTPA==
-Received: from SJ0PR03CA0073.namprd03.prod.outlook.com (2603:10b6:a03:331::18)
- by MN0PR12MB5881.namprd12.prod.outlook.com (2603:10b6:208:379::12) with
+ bh=GdML71pZw0+pJCGsqDKVQ40o8EkBpouiIjYZlJkeRl8=;
+ b=KBIf5aR5i/QsY8eHbLzT8NjqyKBwNbnOyQMaoYhsFp+eUblWT7yCaIg5TPUMDmAJY7pb3zEf/HpVTCzpppZeJmFO7kEawJD0MIdh+6/LSxffIpK+Va3+YznVsBOGkY2kV1JF+m4rOYEIt2QDW5prFuZx6SZBVTE2hed3kObPq9Ofjz1188ea1nGcSu9NK+anCOX7vKWGfmDK9pTaEd3cMu3aq92HJVk7mvBIhGPyW+iedjn3kaWr4WloFKeIWs+m0hNRnnvu1zq0/v3b7Zw4siM23JPq5nbgIhIczsNeYlpDpr1oLW3jJ9ckhcKnJIyE50QPNMijV+gxPfeh3xNCAA==
+Received: from MW4PR04CA0096.namprd04.prod.outlook.com (2603:10b6:303:83::11)
+ by BY5PR12MB4066.namprd12.prod.outlook.com (2603:10b6:a03:207::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Wed, 24 Jun
- 2026 09:19:52 +0000
-Received: from SJ1PEPF00002327.namprd03.prod.outlook.com
- (2603:10b6:a03:331:cafe::14) by SJ0PR03CA0073.outlook.office365.com
- (2603:10b6:a03:331::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.12; Wed, 24 Jun
+ 2026 09:20:01 +0000
+Received: from SJ1PEPF00002321.namprd03.prod.outlook.com
+ (2603:10b6:303:83:cafe::48) by MW4PR04CA0096.outlook.office365.com
+ (2603:10b6:303:83::11) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.13 via Frontend Transport; Wed,
- 24 Jun 2026 09:19:52 +0000
+ 24 Jun 2026 09:20:01 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -48,20 +49,20 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.118.232 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.118.232) by
- SJ1PEPF00002327.mail.protection.outlook.com (10.167.242.90) with Microsoft
+ SJ1PEPF00002321.mail.protection.outlook.com (10.167.242.91) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.159.10 via Frontend Transport; Wed, 24 Jun 2026 09:19:52 +0000
+ 15.21.159.10 via Frontend Transport; Wed, 24 Jun 2026 09:20:01 +0000
 Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
  (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Wed, 24 Jun
- 2026 02:19:39 -0700
+ 2026 02:19:48 -0700
 Received: from drhqmail201.nvidia.com (10.126.190.180) by
  drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Wed, 24 Jun 2026 02:19:38 -0700
+ 15.2.2562.20; Wed, 24 Jun 2026 02:19:47 -0700
 Received: from inno-dell.home (10.127.8.9) by mail.nvidia.com (10.126.190.180)
  with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Wed, 24
- Jun 2026 02:19:31 -0700
+ Jun 2026 02:19:39 -0700
 From: Zhi Wang <zhiw@nvidia.com>
 To: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <dakr@kernel.org>, <jgg@nvidia.com>, <gary@garyguo.net>,
@@ -73,10 +74,12 @@ CC: <dakr@kernel.org>, <jgg@nvidia.com>, <gary@garyguo.net>,
 	<targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
 	<acourbot@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
 	<daniel.almeida@collabora.com>, Zhi Wang <zhiw@nvidia.com>
-Subject: [PATCH v4 0/2] rust: introduce abstractions for fwctl
-Date: Wed, 24 Jun 2026 12:17:56 +0300
-Message-ID: <20260624091758.1678092-1-zhiw@nvidia.com>
+Subject: [PATCH v4 1/2] fwctl: add device release hook
+Date: Wed, 24 Jun 2026 12:17:57 +0300
+Message-ID: <20260624091758.1678092-2-zhiw@nvidia.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260624091758.1678092-1-zhiw@nvidia.com>
+References: <20260624091758.1678092-1-zhiw@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,163 +91,69 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002327:EE_|MN0PR12MB5881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f3f9e98-648d-4d26-0ab1-08ded1d1bf40
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002321:EE_|BY5PR12MB4066:EE_
+X-MS-Office365-Filtering-Correlation-Id: df2d75be-3304-48cb-6472-08ded1d1c4c2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|7416014|1800799024|36860700016|23010399003|13003099007|18002099003|56012099006|11063799006|6133799003|3023799007;
+	BCL:0;ARA:13230040|7416014|376014|82310400026|23010399003|1800799024|36860700016|11063799006|5023799004|56012099006|6133799003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	V61RTW8rNh5U/EX/MUWZ+r1xzKyBRVYb7GrUI4ReqheNCan+gI42DuV5CPg2m44VPCtmPxZTNhyZq72/y5LhcQnvOr4Rb1+YBtit80bZ2LskHvhEk0XWugQnwoax0aMOVj+4jP9zVrPrtQJnfmVypxP1Jyyxc+Ue0H4IXOjNeI84RKhrgY6BH1R9rU0p81UclI0QLaiFSl3zZx65SMDVzd+fYxhvqDuykouVBKHUUZ2HyPH/GxKNa+IATCUx7ropnDrNl8LF/1hBlw8bNstV6JhbHlMRegP1fxTg/ZkrN0luHdKI2UNsDdqiX+19v2/dVtMuoGtsxLS4hVuBltJMN6+2Uan/pFj1KHa7lshMWwXWhNmmfDfVhj4E1TG7GLAIjrUspk3IXuUmCb435Iu12ZH49L875PtJP/88k0SMMu/QeRFzSxzHmYlI4Tq4zAFz5DwwcRBp77zGTNiiolWbq/yZeY76wyTHM0dG88TlofzimoH6cfzSoU+fTqYJDBSgn13l9z27Vr5GF4Dr39PHQJCtyf7GRhOfTvUKUuZqh5Alg+vBujSlhwh9+WzKv9OgYumKJoZaQkxXX8cb8IBDIcK5czcPoMcB8PKyUq5zBmRTzDJzEfKDCVQ2WX/vz3/X0pv+NCOKQpH0oqwNbNwylm2FSJ14iQ1/3A0mrnss7HOUA8h8smDVNIgcvKp7sWAvMeTLHbhF10wI1rZUGRpkKw==
+	Tdy1MQqT2BOXNGRs6/q+NWNNAZFDhyafEPYN/F2AIOZHKcHEtSdRPNORh1WyBs6tGRW4VH6v/9tl9jtMvsEIHIKS78cbTsM94kWI59StwZhxksqD08AQ2bpfINj4aeRlZouIVJKPaLOR58q1xoCsCxhR6NZCfGkWo+V3zzSvSbyqUYYfMC5w90LTeIUx58kgc5fz/1Wl+4oP8OLJDCBEbxM187US/p9gsAVhojBcVWakw5C7uNsXl7Ywj0BvGb1rAcKkTdMKBHHJkqTGs62xbmtFrwCKsxrafssK2ISidqEwGiZzeovXQwSf8EBCBmE50VTVSd2dAS3pWkqSCqK46o/Zll1MoK3yCdiPIHPycUDna41lBv72sRElNF/MjBaedu80TJHWnm8s/7b5Zi/eP5yDQJho7dnEodpmZCqAz5AZQtss7iVrU3bHx8RhwPCbyOe/Ma/X5PZutypFCY1BhhyRVLelIIaez0ZwSn2i2ElREGP/2lzNgPplRJ7ZqTF7Pe3OW1exTPmuCv+UXYu8gr2HJ9Hoqc7SNiXeoi2TPbPmbBwjxsgWHhcHamjiVU409CwOljMlyHuhuRzt4cy+9r2gTjzvFZz1A6vRhG5h3AHjA0IrlLaV5HsPi4y9A54oN157e0GVcxpqxWdgfU74XCAz5IuHTQ1zfDIEh9+QdT0epAS8Mb51sAqPxqXoz8+hIcZyqwIylULyKgX6A5pu3g==
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(7416014)(1800799024)(36860700016)(23010399003)(13003099007)(18002099003)(56012099006)(11063799006)(6133799003)(3023799007);DIR:OUT;SFP:1101;
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(23010399003)(1800799024)(36860700016)(11063799006)(5023799004)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	o7PE1E4XQXTSbdPZtlmS9qjdxgrKhkLNxjePYJYgxd2IFMZZvxHpNlKnuENPGDbYEgkjIsG3AkeqQomxg6CxozKzuI4B+jCVQrqltlMSsfzfvPVFDFNfwAglGAa5WovzLHUD/ha/5C9th8Ek4L0yKug59DdleLfCnXPDUd1V3apf8eANBBmSAGpNmVE1U8n18JF0UAfdz3FZkffZNGq9ZXsE5P3Q2T4L6jqSuU9zwSeqC8PSocUt+vHW9FoCw0MOPKX7DOJAJJ0AkDEjNaGg3LzSyQ8rzQMJzivh5zhyX/l+UiNWjjUU0jcKanLLZcx7fk6AFjYtvDj1/8taUB2WSCd9ruoJxaqucUGO1MzAk/9ZDkflXYzOABiRH1OfSPxrH9UeYRCps+GciwXu8fJcHg5SnA3TPI/yxjK446NLD+dOjaRPup+pU2XuLi6f6NZQ
+	z72uoU0TZdZGIRS4cFxLpjU+tAUdmrkjPeJVfbKX0oFU+7YHfji79svUH2WxxkiM6YEZb+1yn6Dr6v8RFXvojzGWOHpHa+jd2VvE5NM6tzZmeAdGyHeab211dxkxMwSjT3uLrLpMN+RgMKTRTkTDcFqxY9DhKOfRNPibGbBf9g8rMlGf5UG3fw+EjEJwHoPdTj6HKE9IQcYEuuY/IXvlqBx+p/k3gZIp/Dn7fm0ZkVLoFX+7gzvcFd8EWgQ9CluMnyct+8T+06+X9EEiTmwXD7IAq89ejhphB1vj4LE64AgsgBYvPa9dsTyluzUjF/ISmO5lOyr1M8fbuDAKvp1cY5ebvgnxutT6Vad+5fxjOLvGvBGDYmyKV65AePL5HiNEsN9RqApWxB3quoa+2SOsGsPnND/RLle/iPRRdeAA34jbRqRf0NNzdYRi5FoYLkNK
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 09:19:52.0049
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 09:20:01.2327
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f3f9e98-648d-4d26-0ab1-08ded1d1bf40
+X-MS-Exchange-CrossTenant-Network-Message-Id: df2d75be-3304-48cb-6472-08ded1d1c4c2
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002327.namprd03.prod.outlook.com
+	SJ1PEPF00002321.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5881
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4066
 
-In the NVIDIA vGPU RFC [1], the vGPU type blobs must be provided to the GSP
-before userspace can enumerate available vGPU types and create vGPU
-instances. The original design relied on the firmware loading interface,
-but fwctl is a more natural fit for this use case, as it is designed for
-uploading configuration or firmware data required before the device becomes
-operational.
+Add an optional per-device release callback to struct fwctl_device and
+invoke it from fwctl_device_release() before kfree().
 
-This series introduces a Rust abstraction over the fwctl subsystem,
-providing safe and idiomatic bindings.
+This gives higher-level abstractions a final teardown point for tail data
+that requires explicit destruction.
 
-Patch 1 adds a small fwctl core release hook for private tail data. Rust
-wrappers need such a hook to run drop glue for data embedded in the fwctl
-allocation before the allocation is freed.
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+---
+ drivers/fwctl/main.c  | 2 ++
+ include/linux/fwctl.h | 2 ++
+ 2 files changed, 4 insertions(+)
 
-Patch 2 adds the Rust fwctl module. It allows Rust drivers to integrate with
-the existing C-side fwctl core through a typed trait interface. It provides:
-
-  - `Operations` trait: defines driver-specific callbacks: `open()`,
-    `close()`, `info()`, and `fw_rpc()`. The implementing type itself
-    serves as the per-FD user context, one instance per open().
-
-  - `Device<T>`: wraps `struct fwctl_device` with embedded driver-specific
-    data (`T::DeviceData`). The data is dropped from the fwctl device
-    release hook.
-
-  - `Registration<T>`: safe registration and automatic unregistration of
-    `struct fwctl_device` objects, living inside `Devres` to ensure teardown
-    before the parent device unbinds.
-
-  - `RpcScope` / `FwRpcResponse`: type-safe enums for RPC scope and response
-    handling, keeping unsafe pointer manipulation confined to the abstraction
-    layer.
-
-`rust/kernel/lib.rs` is updated to conditionally include this module under
-`CONFIG_RUST_FWCTL_ABSTRACTIONS`.
-
-v4:
-
-- Rebase on top of the current drm-rust-next.
-- Split out the fwctl core release hook before the Rust abstraction.
-- Drop the fwctl init-ordering change from this series; it is already in
-  drm-rust-next as commit a55f80233f38 ("fwctl: Fix class init ordering to
-  avoid NULL pointer dereference on device removal").
-- Add compile-time layout checks for the embedded `struct fwctl_device` and
-  `struct fwctl_uctx` offset assumptions. (Jason)
-- Use `const_assert!()` for generic layout assertions. (Zhi)
-- Require `Operations` and its `DeviceData` to be `Send + Sync`. (Danilo)
-- Pass pinned shared references to `info()` and `fw_rpc()`. (Danilo)
-- Make `Operations::open()` return an initializer directly and report open
-  failures through the initializer error path. (Danilo)
-- Drop `DeviceData` from the fwctl device release hook.
-- Fix clippy warnings for raw pointer casts and unsafe blocks. (Danilo)
-- Fix the rustdoc broken link warning. (Danilo)
-
-Link to v3: [2]
-
-v3:
-
-Quite some updates in this version. Here you can find the example
-nova-core fwctl driver [3]. The interface is still WIP so it is just to
-demonstrate the use of the rust fwctl abstractions.
-
-Comments from folks:
-
-- Use an enum for the return of fw_rpc. (Joel)
-- Remove FWCTL_DEVICE_TYPE_RUST_FWCTL_TEST together with the sample
-  driver. (Jason)
-- Remove DeviceType:Error. (Gary)
-- Add __rust_helper for fwctl_get/fwctl_put. (Gary)
-- Refine the design of the device private data. Now it has a similar
-  device private data structure as DRM. (Danilo)
-- Separate fwctl alloc and register in the abstractions. (Jason)
-- Registration::new() now takes &fwctl::Device<T> and the parent
-  &Device<Bound> to align with other class device abstractions. (Danilo)
-- Update the Registration SAFETY comments. (Danilo & Jason)
-- Take self as per-FD user context in callbacks. (Danilo)
-- {open, close}_uctx -> {open, close}(). open() now takes &Device<Self>.
-  (Danilo)
-
-Updates from me:
-
-- Introduce enums for fwctl RPC scope.
-- Introduce AlwaysRefCounted to avoid hacks after introducing the
-  refined flow of device private data.
-- Introduce default implementation of close()/info().
-- Fix a leak: Drop T::UserCtx in the close_uctx_callback explicitly.
-
-v2:
-
-- Don't open fwctl_put(). Add a rust helper. (Jason/Danilo)
-- Wrap Registration with Devres to guarantee proper lifetime management.
-  (Jason/Danilo)
-- Rename FwctlOps to Operations, FwctlUserCtx to UserCtx, FwctlDevice to
-  Device. (Danilo)
-- Use fwctl::DeviceType enum instead of raw u32 for DEVICE_TYPE. (Danilo)
-- Change fwctl_uctx field in UserCtx to Opaque<bindings::fwctl_uctx> and
-  make it private. (Danilo)
-- Provide Deref and DerefMut implementations for UserCtx::uctx. (Danilo)
-- Add UserCtx::parent_device_from_raw() to simplify parent device access.
-- Use cast() and cast_mut() instead of manual pointer casts. (Danilo)
-- Implement AlwaysRefCounted for Device and use ARef<Device> in
-  Registration. (Danilo)
-- Add rust_helper_fwctl_get() for reference counting.
-- Improve safety comments for slice::from_raw_parts_mut() in
-  fw_rpc_callback. (Danilo)
-- Convert imports to vertical style.
-- Fix all clippy warnings.
-
-v1:
-
-- Initial submission introducing fwctl Rust abstractions.
-
-[1] https://lore.kernel.org/all/20250903221111.3866249-1-zhiw@nvidia.com/
-[2] https://lore.kernel.org/all/20260217204909.211793-1-zhiw@nvidia.com/
-[3] https://github.com/zhiwang-nvidia/nova-core/commit/2068da7e8caf58da9584b0aa6c81fed8f547d59f
-
-Zhi Wang (2):
-  fwctl: add device release hook
-  rust: introduce abstractions for fwctl
-
- drivers/fwctl/Kconfig           |  12 +
- drivers/fwctl/main.c            |   2 +
- include/linux/fwctl.h           |   2 +
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/fwctl.c            |  17 ++
- rust/helpers/helpers.c          |   3 +-
- rust/kernel/fwctl.rs            | 486 ++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs              |   2 +
- 8 files changed, 524 insertions(+), 1 deletion(-)
- create mode 100644 rust/helpers/fwctl.c
- create mode 100644 rust/kernel/fwctl.rs
-
+diff --git a/drivers/fwctl/main.c b/drivers/fwctl/main.c
+index 098c3824ad75..7bc76e3a5306 100644
+--- a/drivers/fwctl/main.c
++++ b/drivers/fwctl/main.c
+@@ -275,6 +275,8 @@ static void fwctl_device_release(struct device *device)
+ 
+ 	ida_free(&fwctl_ida, fwctl->dev.devt - fwctl_dev);
+ 	mutex_destroy(&fwctl->uctx_list_lock);
++	if (fwctl->release_data)
++		fwctl->release_data(fwctl);
+ 	kfree(fwctl);
+ }
+ 
+diff --git a/include/linux/fwctl.h b/include/linux/fwctl.h
+index 5d61fc8a6871..25834f6b79a8 100644
+--- a/include/linux/fwctl.h
++++ b/include/linux/fwctl.h
+@@ -79,6 +79,8 @@ struct fwctl_device {
+ 	 */
+ 	struct rw_semaphore registration_lock;
+ 	const struct fwctl_ops *ops;
++	/* Optional release hook for driver-private tail data. */
++	void (*release_data)(struct fwctl_device *fwctl);
+ };
+ 
+ struct fwctl_device *_fwctl_alloc_device(struct device *parent,
 -- 
 2.51.0
 
