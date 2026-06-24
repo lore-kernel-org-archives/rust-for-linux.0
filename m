@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165413CBE7E;
-	Wed, 24 Jun 2026 14:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01F43CAA38;
+	Wed, 24 Jun 2026 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782312414; cv=none; b=jOvgqCl+wqrKGje3dy12YXZElVwTLA1Dw41Uv2cnWBZgM1UG33G0yZB5gdLTYgwgATyGRwDw9EPZv4eObosOY2uTtK3M/X7z4PXwbt0iOpgw7htl6QcO+Z5/dBgtMhuvWRL1wzNb25sdh0qfYw9A0XgRvWoUYbE0f8tYVNbVoHA=
+	t=1782312458; cv=none; b=naDzbaC03tC2KuO8abRNhLjojO4iHkQPRbr/EGb+G+OK+p7M8+ZeB9JHUFi0qWHlrcI6KSELB4BAFpVQu5qBU9onXOyLZqq8rDgtzcQfUNuZG79zF4ejTXvQMrSj4bwtp8RrfHcJeeUp/wTsE4oJZxRiuLc7PZEIaVciTmYZTMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782312414; c=relaxed/simple;
-	bh=MR+gwR2P1PNjxaYBzlK+kF3MMOvH87OkGOsVb1Yc+r0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fVIaPdpLr20Fwq0nrwB9PvfEU+EqWT8eS/N3TaG93r0bisHla6IkNxGx+QaVePiGKQLFdQMco8wrz27+eGA8Md4aWfbMK7bHJ7zjAGfsdzoIvzM3nVaxvjtGJcBxPnuSbW/dLhZKP67VNrKNgqwV+W5k+h6T8pU7OfdJ9anG9xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DxHjQ0D+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782312458; c=relaxed/simple;
+	bh=HJ83tHQM6Vat4zk6Ng/99jMee9mhfcf5GJAJqLOwuhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P7XbMIcCEcwZ14dh6uI4bju9m/go5+2WqmevDskb1rSln5iKumJQ6g+mtBXepOPRZE9leXIsZMAqkd4ke80izC0R7pBRiH69ya3/l5TV+0dHIaHFr66SIyJ9popU2wGggywY9iaeNEBAhF0rCvJ3+2U6xODxgIVaZpBHFxTShwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lKC6y+Fq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxHjQ0D+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8CD1F000E9;
-	Wed, 24 Jun 2026 14:46:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lKC6y+Fq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746B71F000E9;
+	Wed, 24 Jun 2026 14:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782312411;
-	bh=XlvwlYx2ewXx2v0IQzNF1hFUUrg8x9v/7/vdvjs4WRs=;
+	s=k20260515; t=1782312456;
+	bh=CuJT24i1XOj/n9t6IZP3TIM+JJraZUQPkGFMg4oK0zI=;
 	h=From:To:Cc:Subject:Date;
-	b=DxHjQ0D+MdO5HvWKeID3Vj0Zy7UP9Gcz3eFT7yo5QBl7sl0KuQLFsQjaf4I2ARbFi
-	 c85gd3GXVFYkND8qkti4KsEbK/0qV10wwH2iMWr7Sy9DLpcioE+9ANj8BMVkWj+vKR
-	 Bmc+k4DEv8jZsTkazyWBr7evZUcQYBy90Ku15gk0KXWSgTQqDMyC/J5a+jxqUhhWb3
-	 U4EkFcD6TkN4qilWPBhuZ20Q0ofUV3NEFCCaihByrpXx/fUB2pS/o0n1f2l7YidnlI
-	 BSojTpbEVj5ObNHJ0uP3K4AMcrPfpkVRwCLSIVol9WDoiInlbOIhzl+U/IbcpQpxf2
-	 esurqLFcrUTqA==
+	b=lKC6y+FqihoFCjMGf1ofUFI8VPZLVu8UoSc0SKvRVFUbgKnLYscxk1QV279F9/tvG
+	 fOXfSDStT8ruEQq/fukuVCs2b3IJoPII2PKKCHoOjKFokI9aTBUJkMDiP/5f8cTlf9
+	 v3KX/w0XMbTYRrCpNhp/5FQhkwZ6FKpYYeOz9FWkdAhZDZyfB2vjijpLn0yIKgrRBk
+	 ErXtIVFMUYexk25yyB2wXyHZZzuN6TSDTBOwyDavNZHaPzuDHCoT/LgppR4N0K4bPn
+	 +tp/6v+qvMy9knI/nHFRmSNcxIhSI9TwSg/2B0qemgbA9D8lWaB489i0m9B1ArQss4
+	 uW8BpuXiae1Ww==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>,
@@ -42,9 +42,9 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 7.2
-Date: Wed, 24 Jun 2026 16:46:30 +0200
-Message-ID: <20260624144630.585128-1-ojeda@kernel.org>
+Subject: [GIT PULL] Rust for v7.2 (addendum)
+Date: Wed, 24 Jun 2026 16:47:13 +0200
+Message-ID: <20260624144713.585327-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,15 +55,15 @@ Content-Transfer-Encoding: 8bit
 
 Hi Linus,
 
-Please pull these fixes for Rust.
+This is the "second, tiny PR later in the merge window with a small
+patch to simplify cross-tree development for the next cycle" that I
+mentioned in the normal Rust PR.
 
-They have been in linux-next for a few rounds.
+The commit has been in linux-next for a week.
 
 No conflicts expected.
 
-I will likely send another fixes PR later in the cycle.
-
-Thanks!
+Please pull -- thanks!
 
 Cheers,
 Miguel
@@ -74,35 +74,24 @@ The following changes since commit 6b5a2b7d9bc156e505f09e698d85d6a1547c1206:
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.2
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-7.2-2
 
-for you to fetch changes up to 191f49f1e38b1c10eb44b0f967c6175c884ef7db:
+for you to fetch changes up to 43a393185e33e573a374c1d4f7ddf6481484ef8d:
 
-  rust: Kbuild: set frame-pointer llvm module flag for CONFIG_FRAME_POINTER (2026-06-19 10:00:06 +0200)
+  rust: prelude: add `zerocopy{,_derive}::IntoBytes` (2026-06-17 00:32:42 +0200)
 
 ----------------------------------------------------------------
-Rust fixes for v7.2
-
-Toolchain and infrastructure:
-
- - Work around a 'rustc' bug by setting the 'frame-pointer' LLVM module
-   flag under 'CONFIG_FRAME_POINTER'. The upcoming Rust 1.98.0 is fixed.
-
- - Doctests: fix incorrect replacement pattern.
+Rust changes for v7.2 (addendum)
 
 'kernel' crate:
 
- - Mark 'Debug' impl as '#[inline]'.
+ - 'prelude' module: add 'zerocopy{,_derive}::IntoBytes'.
+
+   This will simplify using 'zerocopy' in several trees next cycle.
 
 ----------------------------------------------------------------
-Alice Ryhl (1):
-      rust: Kbuild: set frame-pointer llvm module flag for CONFIG_FRAME_POINTER
+Gary Guo (1):
+      rust: prelude: add `zerocopy{,_derive}::IntoBytes`
 
-Gary Guo (2):
-      rust: bitfield: mark `Debug` impl as `#[inline]`
-      rust: doctest: fix incorrect pattern in replacement
-
- Makefile                        |  3 +++
- rust/kernel/bitfield.rs         |  1 +
- scripts/rustdoc_test_builder.rs | 16 ++++++++++------
- 3 files changed, 14 insertions(+), 6 deletions(-)
+ rust/kernel/prelude.rs | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
