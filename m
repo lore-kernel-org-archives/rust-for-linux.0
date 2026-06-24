@@ -1,154 +1,108 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012061.outbound.protection.outlook.com [52.101.53.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4806F3CA49D;
-	Wed, 24 Jun 2026 14:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782311852; cv=fail; b=R4wqEIvqsIQlhG4KWQhWj0N0+oTcULzbtTT4UDbW9SuNgrU0ViyspB8/NybiRKiDi0P6dE8+2CkfDBzw+Qn9lidWtiq8qkDPLKWh+rncFs9cYeM0y4cS8cE4xmRl+kgcVWZ9Nja/MtYOYlq3ndwOlnLCq5qq207NhjhgpRUk4Go=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782311852; c=relaxed/simple;
-	bh=jHrWph5jC3Znt5pZe3tKT2R90fIpAl5Qa1oqRB9HHiY=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=FItBJT9lAxYIHUfBrA4dSWBZ0eq58cxLoso9DVb1Wq5mw0KCLL83TceluxaIQjZUaCyLlBUqK7Hnm3cL/OWpk176zYjL2HOavZQjCSq0UleW6umL9rVA3+0iO3mkCreRXS7bXKlKhPiAuFIMRBDLZSMkMLWtBgWQswzNARdOqBg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nqVJeOyi; arc=fail smtp.client-ip=52.101.53.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165413CBE7E;
+	Wed, 24 Jun 2026 14:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782312414; cv=none; b=jOvgqCl+wqrKGje3dy12YXZElVwTLA1Dw41Uv2cnWBZgM1UG33G0yZB5gdLTYgwgATyGRwDw9EPZv4eObosOY2uTtK3M/X7z4PXwbt0iOpgw7htl6QcO+Z5/dBgtMhuvWRL1wzNb25sdh0qfYw9A0XgRvWoUYbE0f8tYVNbVoHA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782312414; c=relaxed/simple;
+	bh=MR+gwR2P1PNjxaYBzlK+kF3MMOvH87OkGOsVb1Yc+r0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fVIaPdpLr20Fwq0nrwB9PvfEU+EqWT8eS/N3TaG93r0bisHla6IkNxGx+QaVePiGKQLFdQMco8wrz27+eGA8Md4aWfbMK7bHJ7zjAGfsdzoIvzM3nVaxvjtGJcBxPnuSbW/dLhZKP67VNrKNgqwV+W5k+h6T8pU7OfdJ9anG9xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DxHjQ0D+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nqVJeOyi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oS15h7kH7QZ7Z/DKLP1v/qtqwBElUknw5eCApbS76cuNr6qzIxBm5bnkaiL6mz4ibp/GvogV89HApfbtZzIV8ldZYhXLlPDC9H+l3fVyEPg004GBnUiXwxy5H/+gB1h8AKDERzvwhIGDWG/psUBDzvA54yp04GIKZSyqWuAYEI0ejeEMem56X0Wi+kcNGlyKhzNO55BlRuvwAIyctKlBgqzMsDZgA/CI3PzhZKnsd34jstosuNRBmd/d4mEABYgybQ6WBA0M5BEvXjRxinHioZfE+gWOxInhRywbsxUZZyw3PH2PRnihWnEtXPK3HUp96uE7bvD/Px187HiDK+fF1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CKdumspuygYXVLwHwMpa70utUOHXlvLR8SuGYLuuTxE=;
- b=sVksYEpGnhsdpbPLf8VlHE8dHSw5bp+0poRWLl5s7uFgr2qoeVAVuc/K+kEtTSqfE5g/d8k+3X5sUySdlS7KMch+LiI71ooBcHp+vq1tnOZzoy+XGGhKukKs6K+YCJ9iEGoMilRaSYl1O7/kAoY9k9cSlVQFsVj/FstcUGEn6N/6iAGia+Gk0GdnfVds6W5gekczFeg8VNapgXzVyRsFu+dh8H8ufn6bpCZQDicvRlKOpusC+BdtHpidmSNE7HLqQhJgJN1rAMcG+EMZJ7rUvmfmUdZ7AjiQLm0CjzyoEs4WjGkpxBMas438nxZFnjhHI9ItWyKyKqfLTyOnJqbn1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CKdumspuygYXVLwHwMpa70utUOHXlvLR8SuGYLuuTxE=;
- b=nqVJeOyiJbSDW5HLAOuJyLMgHuKTTFswZGs9nBkStMDUb98Feehut6OavsvhHOY1qwi5ITcUuLTBUWf5xmRo2Dk34xCIHVDr1LoMW6Prf9Fq8cX+3rrTHcEih67rs8BPClEyFFQBxGMIn5x1KYXf0OUTpyDTUNvFqnu5Saq4qj7oID2B/wGYafCfxnqXJ+MMFhbHmuiroY0dVWGXpFSZkjuCPBvoVE78ZSSbDLcbuY5pZ7n507s/HQ57Ob5pobsdqq8t3gqFBYl/67+tQYW0dG754/dHq7FOyHLvkptDk0F+XtRxZQwqJXejXW+wEb5dkpxSgGdXJrzC3OEES10hmA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH2PR12MB4294.namprd12.prod.outlook.com (2603:10b6:610:a9::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.13; Wed, 24 Jun
- 2026 14:37:22 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0159.013; Wed, 24 Jun 2026
- 14:37:22 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Jun 2026 23:37:18 +0900
-Message-Id: <DJHCTF7HPDW4.2N3NCSD35MKXN@nvidia.com>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <ecourtney@nvidia.com>, <m.wilczynski@samsung.com>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <daniel.almeida@collabora.com>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>, <driver-core@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-pwm@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 4/7] rust: auxiliary: sample: demonstrate ForLt with
- invariant Mutex type
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-References: <20260618230834.812007-1-dakr@kernel.org>
- <20260618230834.812007-5-dakr@kernel.org>
-In-Reply-To: <20260618230834.812007-5-dakr@kernel.org>
-X-ClientProxiedBy: TYCP286CA0314.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38b::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxHjQ0D+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8CD1F000E9;
+	Wed, 24 Jun 2026 14:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782312411;
+	bh=XlvwlYx2ewXx2v0IQzNF1hFUUrg8x9v/7/vdvjs4WRs=;
+	h=From:To:Cc:Subject:Date;
+	b=DxHjQ0D+MdO5HvWKeID3Vj0Zy7UP9Gcz3eFT7yo5QBl7sl0KuQLFsQjaf4I2ARbFi
+	 c85gd3GXVFYkND8qkti4KsEbK/0qV10wwH2iMWr7Sy9DLpcioE+9ANj8BMVkWj+vKR
+	 Bmc+k4DEv8jZsTkazyWBr7evZUcQYBy90Ku15gk0KXWSgTQqDMyC/J5a+jxqUhhWb3
+	 U4EkFcD6TkN4qilWPBhuZ20Q0ofUV3NEFCCaihByrpXx/fUB2pS/o0n1f2l7YidnlI
+	 BSojTpbEVj5ObNHJ0uP3K4AMcrPfpkVRwCLSIVol9WDoiInlbOIhzl+U/IbcpQpxf2
+	 esurqLFcrUTqA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 7.2
+Date: Wed, 24 Jun 2026 16:46:30 +0200
+Message-ID: <20260624144630.585128-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH2PR12MB4294:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3e1bfa9-95f7-45da-b6cb-08ded1fe1a14
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|376014|7416014|22082099003|18002099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	EZXNRlvo9vU5l9OlNn5l0AGtpjRt+5kCH79mxVSBCKtxEkEho9tBVeIx8kt7r4byJcT0i/Rc5T+wmIb/KGpftWMvpUHr6D87fZ2K6u44F7kZQFOlDackzG0BY5W5YFjs5pkUcicLtRAskWZDDBoH2ouVymhstSrd9YxB7CIgOUc/OaaXqknNq8679o9OlR8/oMlr9oU369vraQKcW8zFOB/AWWE5G44C58ovg7iSO6rSbk/Ad6xbXfETqiyZbUfkLdM7XIuLPA10hfmzn6hN4ZEeMfaObCS+zaNtpiGPH12gaoqZ7GrIYurMBVdP7T0JX0snxjJ6N5/Y+9h3DTETHJrGZFffN62btKXDEf+uTWvjF8Sar9SUnetTGYAXxrRGZ5u7yz8rEnv3xc+FfZeEGBWJ5diwAoLDC9/4wfFW4vQv8XMLf/Cb16WLtqTwKb4IGeA3ZTtq5HGo6Ob7INP+OLG3skZYnFYwulXYNemuipM6yuyUVlnKUmlaFStaRdzYisC3IJfvzsLkSM83TYFd6D1mP4EGRqlkVfEV784c+wVUwpccsrU1tgnF2geopcsKSbOZG0p4bpT6SHCoEAapQRhPWsMXYkz8JvAVkUziFb2nQ/UBdLLxJO8wDNAV2iunyDph+CPLfaXYM/qCGrhr32JYR03GvNCNJ45v/fyKdrQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(376014)(7416014)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZEJRVjNWUDgwS01WZExBZkFZQ0w3WUREcDZHUzlKN1BhYUwydWRXa25jWWs5?=
- =?utf-8?B?L3p0Q2JWRmw0S3lMR1lUMG9RMWhWVWRsUm1WbjFFWjZiWG1lbVNGRkhSd2VY?=
- =?utf-8?B?U0lpd1dCMGswbjhaTVY2MFJxcURZWHJjREFJeUdVZmsvSXdLUndDWXU2MlhE?=
- =?utf-8?B?NGpXTi9VYlVEQ095VEJvTFRoZlZMU1Z6WC8ySTc3SUhPbHY2RTFHTUZObTZ6?=
- =?utf-8?B?RkR4YUpnYXhpUXlnNDBrSXh4b1luaVZEVDY4T1JvYndGR3V1Qm9zZ2I3dFIv?=
- =?utf-8?B?L3lxeU0wMmxWZlJjUXVldnorQlc2SVMweWowL24waVFMeXMvRXFaeWxLMDRu?=
- =?utf-8?B?bTZqUUxLSGp0UUVkdlUzRzNVbXE2L0xWSjFNRWRPMzRkK3RPUzdxaThRTW9I?=
- =?utf-8?B?Y2Ewc2RsTEg4aWEyaHVBZHNrWVhMQkt5KzRYTG9ubllZdjB5SVg4TFJldVkz?=
- =?utf-8?B?VDZlZlczV2dBQWVwRUF4ckJrSnJlaHFlUTl4R25lS05iYUtEN05YUkF1Nmlv?=
- =?utf-8?B?djhxbU5TN1VzSkdMNUxMVTgwRWlSbGkvTmROR1JjNEZ1OHR5VGQyazBZVjdE?=
- =?utf-8?B?WEVlWGVvbS9CUElPRmZTa2lGZjFNQzRLS2hERXRZdmpmdjREcU9iKy9hVThZ?=
- =?utf-8?B?eDdFZ1IxSGxKZjdaUFFGTFluZVdoTXA3bWpydjVhd0JnKzZ6bjJnTHMrd21I?=
- =?utf-8?B?QkZvR0JEZGRubE9pSHovejduR2RaVzRBcW1WdFVSNGFERS9pcUN4Uis0a3ZI?=
- =?utf-8?B?b3NHVGdHb3N1UlZUbGkraDdQWk5qRll2a2ZhT1ByZUdmRVNWWUhERmQyQ3lj?=
- =?utf-8?B?TUlxQ2c0czR0M2ticHl3bXpZQ2d2dEpZcDVGZnZSaE9aTk5mVFJKa2Y4RHhk?=
- =?utf-8?B?Z1NHdVFxOVhpdENVNjRMVjBNNDBINmRBQWpacWpMZlZ6M2xWNGNtbGNZWE04?=
- =?utf-8?B?a1dpTVIyd0dBK2l4dTZodDdvMkxQSHQ1dmFqa3dYV1lSeEhTQnRrSThLYjZv?=
- =?utf-8?B?U3dsK2xyWHppU1RPOWRTc25rTkVvVExHN0NlWUpqQWhNSFFWM21BZWlhU1BP?=
- =?utf-8?B?VzI0YXlhdGE4QmhzRFdsd2tGN0dkd2dHWmxveU04VFhadERUaEc5STNyRml6?=
- =?utf-8?B?RXlVbFJob0FVWGJEQ1NzczA1RTRkSkZzc1NIT0J1ajhoeisrb0xpRGtBOEU3?=
- =?utf-8?B?Zzhsd2lBeUtqcDR5WVNXQzBybHpiOHVFV2RjKzRFV1JQV2YxeHhSb01VTGtp?=
- =?utf-8?B?U3duSWdDcGJIN1p3ZUswSHcwSHpDaENIR2VuZ2RJcys1anozNnZwdjJoazgz?=
- =?utf-8?B?THhnRG01UHFPMnR5c3ZJaTJ2TysrMUVnNWZBNVc1czRiUG5yR0owU091QWdy?=
- =?utf-8?B?VWJhN0tzTTJJWkJ4OG1oUGh3RXpEOUlDNXAxNVpMMG9CY29yMCtIZGZXa1Y3?=
- =?utf-8?B?MnpieXZmbStSK25OSnpxaUpQaWJSK1NSUGZOVVpZVE84NnZkT3lEUjJwYytk?=
- =?utf-8?B?T2ZkcDRTWEZCUEdDSml1aVR5VU1CWGEzK25JVm1laDZYR0NYVlE2dlgvUmI3?=
- =?utf-8?B?WjBURWI5UStjK0dSVlhVQXdxckRsSUVGRFE5eFFsbUlqalJpeC9IcGpWVUsw?=
- =?utf-8?B?Vjh5dXFnS05aM3lFZE81eGd4K0hlNWM2aDY1UTN4WVFPa25kQ0JTL0FPWUo0?=
- =?utf-8?B?d0dnVWJQMnFyMzNWdHBncmxmcnYraDM1QXVQWXhVeUc3QmpITE40YUJFRkpu?=
- =?utf-8?B?KzlGQjlpcGFiMmx1MVJMbVdzY1dkdkdBV2pZWmgyVllFZWlNQ0p4cDN1UWk0?=
- =?utf-8?B?emhOcXFQZ1lKQ1V3My9RTTJERmF4enpnNG9YSURRMFdWOXM2TllFQmRHdUxU?=
- =?utf-8?B?TytpSWtrZjlmbXFEcVZpYnMwRk91V3RaZFBENHFxTEQzOFVpaU54akhsVEl5?=
- =?utf-8?B?QUgwQjJPWjhoRXlLckE4b21hdXJrdU1LWnRBaVFoT0NhZ0JLZlR4NTlpSW01?=
- =?utf-8?B?MGJFNU0veUlock1hVzRUR3NSa0VWcG16MUx5OFJjWmNFUVRuV2FpQlBpSHB1?=
- =?utf-8?B?a09sT1d2RmtmMEpKOThMZUdSYzZ2aGZJY2JicmV5Q1NGU2xLekhlWDZDZERV?=
- =?utf-8?B?aFp3L29hYnN1RUxlSGhYU0xmUE8rVVduRkVrTS9Lc1Rud0RxVTJNKzNVeHlZ?=
- =?utf-8?B?bnBxaXpFWU0yM3FWTjBKZ0JoT1U5YmZ2am1MVXNVaWJrV3VTUVR6SFA5UDdI?=
- =?utf-8?B?djEwQXNBTnNjU3B3d2gvRmdnOUtUOHVUdVMxd0hpNUwyemNRYUhKbnVNZTRp?=
- =?utf-8?B?R1l1Ujl6SVJnc0RzUGthYW1GTHJQakdReVcwVk5UQnNvOXhGWEVrZ041RDlO?=
- =?utf-8?Q?WjnDMxNJ/cngvxowk1PxcWrlu8VP2RliIQLhnK1U5kJMD?=
-X-MS-Exchange-AntiSpam-MessageData-1: ywGEd0yuTqZkew==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3e1bfa9-95f7-45da-b6cb-08ded1fe1a14
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 14:37:22.3832
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ULoHcAjSydWdO4DUCDVgCuDjeZhh19/1tyfwyZnV674mGIKdSe54PaBXSTbdTnSi2zYqq/n9J/0ENH0cJncUDw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4294
+Content-Transfer-Encoding: 8bit
 
-On Fri Jun 19, 2026 at 8:08 AM JST, Danilo Krummrich wrote:
-> Extend the auxiliary driver sample to demonstrate both access patterns:
->
->   - registration_data() with CovariantForLt!(Data<'_>) for the covariant
->     data type that holds a plain &'bound reference.
->
->   - registration_data_with() with ForLt!(MutexData<'_>) for an invariant
->     data type that wraps a Mutex<&'bound Device>. Since Mutex<T> is
->     invariant over T, MutexData cannot implement CovariantForLt and must
->     use the closure-based accessor.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Hi Linus,
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Please pull these fixes for Rust.
+
+They have been in linux-next for a few rounds.
+
+No conflicts expected.
+
+I will likely send another fixes PR later in the cycle.
+
+Thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 6b5a2b7d9bc156e505f09e698d85d6a1547c1206:
+
+  Merge tag 'trace-tools-v7.2' of git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace (2026-06-16 17:50:34 +0530)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.2
+
+for you to fetch changes up to 191f49f1e38b1c10eb44b0f967c6175c884ef7db:
+
+  rust: Kbuild: set frame-pointer llvm module flag for CONFIG_FRAME_POINTER (2026-06-19 10:00:06 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v7.2
+
+Toolchain and infrastructure:
+
+ - Work around a 'rustc' bug by setting the 'frame-pointer' LLVM module
+   flag under 'CONFIG_FRAME_POINTER'. The upcoming Rust 1.98.0 is fixed.
+
+ - Doctests: fix incorrect replacement pattern.
+
+'kernel' crate:
+
+ - Mark 'Debug' impl as '#[inline]'.
+
+----------------------------------------------------------------
+Alice Ryhl (1):
+      rust: Kbuild: set frame-pointer llvm module flag for CONFIG_FRAME_POINTER
+
+Gary Guo (2):
+      rust: bitfield: mark `Debug` impl as `#[inline]`
+      rust: doctest: fix incorrect pattern in replacement
+
+ Makefile                        |  3 +++
+ rust/kernel/bitfield.rs         |  1 +
+ scripts/rustdoc_test_builder.rs | 16 ++++++++++------
+ 3 files changed, 14 insertions(+), 6 deletions(-)
