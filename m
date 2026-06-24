@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBBE3D9DAC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7BA3DA7C2;
 	Wed, 24 Jun 2026 15:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782313245; cv=none; b=cvFPvNWVi1gX27SNocd7saQySZ5xCUkZeObv0PwCYNPNchU2lk1GYOyXqjg5RmBlbas2Dajnr92jUVz94TNqby2HY2axDmJ7irSV330MNzQ7peYai5Dxy1DTYdXhVwUVCdYIOg0bsaa3H3dGJa4CKs6ZQnm/7ZQl1QOq04PJop4=
+	t=1782313245; cv=none; b=nnKtvarIuxrodPqnkiOBGXLpD16Cz0ULQG9HFT2O0GsUIJm9OAnvsYuwDyEGrELdnRrG+4gukHeKnCwKUfA0ruibAr7c5INkc7g4vG3ivtn5CHSena4ZeLyfsjHLzp6Y9679g0xSjnNTFBabgL7+zb1Q2Zk4Y00HmJiu9UZchLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1782313245; c=relaxed/simple;
-	bh=et7aLWDdt16IGyYP6zeuD/W5wjktc0zJWIypSVqeW1w=;
+	bh=gU6gZs9B/IA8ULZetqvCr1eysZf16s5NNe4fRGEWm7c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LbLJtN0e4VrNTnoZ35p0yhMKWJy5IksxOXcxGy/Iu9I7LlPsQ8tith72TkuTveM92/KGK0pw6gON+FRJ+K6IQPWrJAfeNideaF8uYA7+/cRBcpqxfzKAGsp3Sv3VD4fvqgqze4/Gl/H2Qsr/FMocivG7IJo4lemCeOvogaIjq0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ke5ZYuOX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=hIt9vmypXCUgrBVYgMtrwaiAXW8HXB8UvYdt3X1nmSNXdco7sxs6xyod2xI77cQOc4CY2eJ91dXfbkT4xD2MB6ssAyXaTBhHjSRuQwFrOQdjE00IB1qtAQ16/11U2WZ+edeA0fhouTQYi8GtdfE9iZw6BI1m2GOFQFDTxsJMSS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ed2xAtHc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ke5ZYuOX"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DE656C4AF0F;
-	Wed, 24 Jun 2026 15:00:44 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ed2xAtHc"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 41F2CC2BCF6;
+	Wed, 24 Jun 2026 15:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1782313244; bh=et7aLWDdt16IGyYP6zeuD/W5wjktc0zJWIypSVqeW1w=;
+	t=1782313245; bh=gU6gZs9B/IA8ULZetqvCr1eysZf16s5NNe4fRGEWm7c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Ke5ZYuOXe1o81Qo6QJPeYC++4RKYOIxLC9Ye6JOzi/auqcmkJJiaUD4kY5MOFFdvg
-	 mqVvsWm5djKSXGktZTlAopTcHVyno+i6vN/Y30UKKTRXCIAC49I9HV+pDMceYB7ECD
-	 3VMIWD2Q7+ulX/CJcMCA1s4HBDDO7Q4q75JD847o=
+	b=ed2xAtHcrCLW03Pn2SBHDYoUbR+7hr1tR2KbsavAbaoxY8isMurzjvmAqiPvUf5hD
+	 zEQqB99QE0pKMjgF4CURbzmlTwq+tBaHSTxOZPUemfB/3uDwkzQReQmRNJ6vNAexpy
+	 hzFZQVuMjB8Sm8UyTHHqRU8jZr9JlyAFWdz8pTDg=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDA85CDE003;
-	Wed, 24 Jun 2026 15:00:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D49ECDB47F;
+	Wed, 24 Jun 2026 15:00:45 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Date: Wed, 24 Jun 2026 23:00:04 +0800
-Subject: [PATCH v6 05/10] rust: drm: set fops.owner from driver module
- pointer
+Date: Wed, 24 Jun 2026 23:00:06 +0800
+Subject: [PATCH v6 07/10] rust: configfs: use `LocalModule` for
+ `THIS_MODULE`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +37,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260624-fix-fops-owner-v6-5-5295e333cb3e@linux.dev>
+Message-Id: <20260624-fix-fops-owner-v6-7-5295e333cb3e@linux.dev>
 References: <20260624-fix-fops-owner-v6-0-5295e333cb3e@linux.dev>
 In-Reply-To: <20260624-fix-fops-owner-v6-0-5295e333cb3e@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -70,61 +70,79 @@ Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
  linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782313241; l=1926;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782313241; l=2650;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=et7aLWDdt16IGyYP6zeuD/W5wjktc0zJWIypSVqeW1w=;
- b=py8n95enhJhr28HhwdF3waMrjIllKjZ/0N1NbzewaVaA6qPOrmQxCdWZ2hJ+VDuF45a3jo1WR
- 6ceBA3z+uS3AIpb+TiEJTa8GyQneQgHDpvNc6CfXdR+R7QueIRnY7yK
+ bh=gU6gZs9B/IA8ULZetqvCr1eysZf16s5NNe4fRGEWm7c=;
+ b=MVvdIxw7WXMiycv+EFc0egEcg9YYNpWs+fDj5SvSJ457mR4yww5ZNTNGgBIkNmEHmLmMxhPf1
+ HXh6n2Q2HMhBZXTflKkkt+WTEY7/ywaCb2Sou/EVFnsiFHl+Oz30KJT
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
 
-Change `create_fops()` to accept an owner module pointer instead of
-hardcoding `null_mut()`, ensuring the kernel correctly tracks the
-module owning the DRM device's file operations.
+Replace the `THIS_MODULE` static reference in the `configfs_attrs!`
+macro with `this_module::<LocalModule>()`, and update
+rnull to import `LocalModule` instead of `THIS_MODULE`, consistent
+with the move of `THIS_MODULE` into the `ModuleMetadata` trait.
 
 Assisted-by: opencode:glm-5.2
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
 Acked-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- rust/kernel/drm/device.rs  | 3 ++-
- rust/kernel/drm/gem/mod.rs | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/block/rnull/configfs.rs | 6 ++----
+ rust/kernel/configfs.rs         | 8 +++++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 403fc35353c74..d92cacb665366 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -111,7 +111,8 @@ impl<T: drm::Driver> Device<T> {
-         fops: &Self::GEM_FOPS,
-     };
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index c10a55fc58948..b2547ad1e5ddd 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -1,9 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
  
--    const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
-+    const GEM_FOPS: bindings::file_operations =
-+        drm::gem::create_fops(crate::module::this_module::<T::OwnerModule>().as_ptr());
+-use super::{
+-    NullBlkDevice,
+-    THIS_MODULE, //
+-};
++use super::NullBlkDevice;
++use crate::LocalModule;
+ use kernel::{
+     block::mq::gen_disk::{
+         GenDisk,
+diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+index 2339c6467325d..c31d7882e216d 100644
+--- a/rust/kernel/configfs.rs
++++ b/rust/kernel/configfs.rs
+@@ -875,7 +875,7 @@ fn as_ptr(&self) -> *const bindings::config_item_type {
+ ///                 configfs::Subsystem<Configuration>,
+ ///                 Configuration
+ ///                 >::new_with_child_ctor::<N,Child>(
+-///             &THIS_MODULE,
++///             ::kernel::module::this_module::<crate::LocalModule>(),
+ ///             &CONFIGURATION_ATTRS
+ ///         );
+ ///
+@@ -1021,7 +1021,8 @@ macro_rules! configfs_attrs {
  
-     /// Create a new `drm::Device` for a `drm::Driver`.
-     pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) -> Result<ARef<Self>> {
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 01b5bd47a3332..9a203efc59116 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -357,10 +357,10 @@ impl<T: DriverObject> AllocImpl for Object<T> {
-     };
- }
+                     static [< $data:upper _TPE >] : $crate::configfs::ItemType<$container, $data>  =
+                         $crate::configfs::ItemType::<$container, $data>::new::<N>(
+-                            &THIS_MODULE, &[<$ data:upper _ATTRS >]
++                            $crate::module::this_module::<LocalModule>(),
++                            &[<$ data:upper _ATTRS >]
+                         );
+                 )?
  
--pub(super) const fn create_fops() -> bindings::file_operations {
-+pub(super) const fn create_fops(owner: *mut bindings::module) -> bindings::file_operations {
-     let mut fops: bindings::file_operations = pin_init::zeroed();
+@@ -1030,7 +1031,8 @@ macro_rules! configfs_attrs {
+                         $crate::configfs::ItemType<$container, $data>  =
+                             $crate::configfs::ItemType::<$container, $data>::
+                             new_with_child_ctor::<N, $child>(
+-                                &THIS_MODULE, &[<$ data:upper _ATTRS >]
++                                $crate::module::this_module::<LocalModule>(),
++                                &[<$ data:upper _ATTRS >]
+                             );
+                 )?
  
--    fops.owner = core::ptr::null_mut();
-+    fops.owner = owner;
-     fops.open = Some(bindings::drm_open);
-     fops.release = Some(bindings::drm_release);
-     fops.unlocked_ioctl = Some(bindings::drm_ioctl);
 
 -- 
 2.43.0
