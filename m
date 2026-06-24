@@ -1,483 +1,130 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021098.outbound.protection.outlook.com [52.101.95.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1ED3BBFB6;
-	Wed, 24 Jun 2026 15:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.98
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782314414; cv=fail; b=tClcWEjtcV+Sij3RoDcs0ZM6rsWzhvrdqKYiPwcf6qsCnJ021sQmLvMjG95yJeZ1zJsunBbaCBVkmOapF4bgmyP01lah24aiL1qQhdH5eZUxZVDmKplTnriZ1zwtuAWgAKH9PVz8m0jQ7kpL5NlRKufORYQgowEV5CDNm4eky10=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782314414; c=relaxed/simple;
-	bh=Dx48sCOIeEjqKJjcrrJ6DsMcmjD+jH3EaguOGpRi0nk=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=WvCUQIsnBPEOdvhcHjwxwzqwDsVXAFDN4EQvY5Pug0sAMpUs47ZXIlSd8Du+uau6QfwYmSlKCmYtclrGCwry4avohFWv1Ao4P5GwNvz+aDmKhzXaWkWmH40li2yjNUUF1z/AW+IUKbxjuDJxsrEwFHiaaAVxlyCU76UL/cnpEyE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=gx/qBGvU; arc=fail smtp.client-ip=52.101.95.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E285A2F1FE3;
+	Wed, 24 Jun 2026 15:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782315011; cv=none; b=ehKRmoTRuZfxE5+XArzp9zsuRA7N0RFJuyVoS2Y7TMUYNF0WkOW+rA/6FXlcxPzxZoDjD+HRevKOD0IES2fZXv5C/QMz42QKIPzsFwzd07FFn9Wn0qtEPssQsRsu7v63PcMx5krhBojvVAMrl+tEaRnetgX4Bj/SX/OgahadY1E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782315011; c=relaxed/simple;
+	bh=pmmtEPC9g5MGaKsNYUTo67D6mks85z6RLJHFeAN+7fE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PsvkpyXJrYjemUWlaM5g9Wm8T3QnFihF7y4Gqz174ZAEwE9UaeRJTjSlo7WSHEF1GeAkvWwYGoDR5NvcDCC+qimV/N8bjMzuvA2QFJkHLVavDgSS48TrvMh3iKXxYw/8/jjD0ysPfTx6pWQrNTqbLmVXOlUvilSgRUSPx2dY4TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBN67H3L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="gx/qBGvU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Bb/wZaDVkLfzgFLkrw4eAe/jbbDKicQey9eHX4YFLE8OBaKIWPzEofZZ7clczSWjEnBIyod3U1BN9yhQ61PWYI2MS+h7/P9uqTy67DFQOEhecllpi7G0wOBExQK8Z0Kplt+efy2msdvjBVLlK3G/FCUi35kyzOZKrH/TxwN0AqHMtFqCHhPh9LvpH3GA82ZDdTQclH90UoTrhvQYRtO/lg5D09k34c+WNuHH0myhx/MWx7bMe77R14TNHrio4St8IC8svFRHcWOUaaFJTjGgC3lxlDp2tIpcv/4r0/TbrBnHl82ETbCJXS3WWFGQFB0XWjQbdsZVIpT3dbLwwLLBzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NCoYQiqkZfZzH44wEnYPeuGbEmBt7NgPy/jp4tF8hVA=;
- b=FVAX9rtA/qPn0zjvRN4Td6pDlptReOvkt/Rgpcp8qADDRVWYSWHEUG1jZeSxZxj+XalQM8BP1puRB74KFC3WIQma5AielFAZbJMs0VswdXQ+DIHU+eR4MIVbmWxOdfVxshnQs2ZybmGWT1B4ei8ohkAl1sZQDpxTczb7Sw2v6JF2Gow+JHkchyQXszVy7630H/YSAcrju4IXPcvAeVC1FMIsyWhR6js4F5OE454yCDLee8oS1azXDsewrgf2IoTj7t5zkZhAEBQroz3soDyGyfS5WVVsZzx7IArdk+II13KED4DOwI05zEKFK43GmVEkxRGHXg+745tjghVOMyxiAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NCoYQiqkZfZzH44wEnYPeuGbEmBt7NgPy/jp4tF8hVA=;
- b=gx/qBGvUgZDCEDNbdlfn87XzQllYzR0KsQjcCJDNQ4oJT4ouJPV3WHLylX0UQB0yBqqBMTNuABlbiP2sAEvIy066gcZkIsLwe+NCALCiWGIJVOlOYPW4RMvZ8klnTY8dmHK9u9a2ydIUsCJ6ndGb0N56yQZpzarQRstpSZSuuek=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB6476.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d2::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Wed, 24 Jun
- 2026 15:20:09 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0159.007; Wed, 24 Jun 2026
- 15:20:09 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Jun 2026 16:20:08 +0100
-Message-Id: <DJHDQ7X94BXR.2XYSWSK79USDB@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <acourbot@nvidia.com>, <ecourtney@nvidia.com>, <m.wilczynski@samsung.com>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <daniel.almeida@collabora.com>, <bhelgaas@google.com>,
- <kwilczynski@kernel.org>
-Cc: <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pwm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 2/7] rust: types: introduce ForLt base trait for
- CovariantForLt
-X-Mailer: aerc 0.21.0
-References: <20260618230834.812007-1-dakr@kernel.org>
- <20260618230834.812007-3-dakr@kernel.org>
-In-Reply-To: <20260618230834.812007-3-dakr@kernel.org>
-X-ClientProxiedBy: LO4P123CA0331.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18c::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBN67H3L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5991F00A3D;
+	Wed, 24 Jun 2026 15:30:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782315010;
+	bh=Li4nztR+A12EYU4xZ5b8siyZgrruzFPS0/NXxkt+6aY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hBN67H3L8Lwpc0kPjobstT1Gh3zKgHeLOZXd0RurZ4LZOrnCG9FmLe8qetKyFgOvf
+	 zm/Usb/t7CUAKD1YFZ90rEluFJ3gG1dg+gbBfJzka1BtGKOm7hucHvVdwjjW2hMkCj
+	 WuFso98CylVurmqduwxh9PTuNNMTayGkIzBGr/gFVkMQ/FB32lUmpezoVtiQvif80e
+	 pOG99BqFK4zsVRmJMsyM8H3q+mKi1a+ew4//d0ZLqiYR5SSiE13C+CRrm41erU9tuE
+	 UEGyalp1anRYAxZj9QxsyXJ4HrwBW8B7P24lIiQiiP1d+Ms3A8FH7VJfOYaD4unx13
+	 P37jGDvFfKK7g==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6BE79F4008A;
+	Wed, 24 Jun 2026 11:30:08 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 24 Jun 2026 11:30:08 -0400
+X-ME-Sender: <xms:APg7avl2El18ZvjsLLqi41y-NcMzu7zWHxEkwf2uyP0T85qWMkKFHg>
+    <xme:APg7atNFvXFz7IlcL4fboigVKfOyeRfDZacQY7IXWL_zOz2pUbxBZZJJa2IV1isB0
+    VuvbWLIqPz2Y8gcL4y8X30Mi5JngRqDeagmL0uoT-5wLlRvCvRJKME>
+X-ME-Received: <xmr:APg7ahPOr27CmAS2-KqHOn8-i1WEPnb8627zF6gxBVpMSd8NzY6LpIvR_A>
+X-ME-Proxy-Cause: dmFkZTFtltOdSru0hacfIxjeZeIqVbTllkh4J8PrQiAW55tOkDIZMe8XCZ/MYw1oswj1we
+    S0Ikq1euKxkTbjLFt4xoyCbyOp0PgORxM0HXyn/TG1Kx6VniyKO850YyyB/hrMU2F7T+es
+    K895rON2kZrqt7HaUajcd3QFomOMBuS+mubwCSkn4hr7U71THTHfBfA8LlYEqokYS9mt3f
+    I6Qxy6wWUg811B+3FVQQ2QEkW3oCxOAm9aaiBrzET+Ac6rt7GxCc4pHnJl9r0VlxQRR2nq
+    U94gEM22P+SpJjHg/wqzj3KDiuMpk4/Ng5YOqPoVWOaeGXkIyPSYTDkAVW0JxOzSfEwOjH
+    KK24qW8tIW8zsHrUogsnkkyTuSIdL+yNIStygKeoff/EYV/td8giZgqUwafvVPfHgS9Iuf
+    zjw/U9VTLpXkVlZCvAFBGgIwA+A5O+byQHppAzjIWf09C3cwoIF5lVSablMMoTOKsN7dKi
+    fMZonDDOApItZOScOFLokN1ZthU5HpEG6Rh9/Sr9AfJ2aVAu6qpIpKiwRZTCEL7Juw9rKQ
+    RYtIXc6En6yeriTb3VBjczhVj6hDgXs2CSDDlMOFx3Z1+1aAAQ9f/5BrFKdEurCgURuHFE
+    9goXoWqpJuD6Dj/EDFIplr1HGExMIeLWM9KKLVL8QvDE2thriEXE2fdXaCBQ
+X-ME-Proxy: <xmx:APg7ahmLI9Xp0vO8wu4A4PDycs-5iCqvyYjwhVNgY5cthi-AjgDckg>
+    <xmx:APg7anpBX2fIIQ_Yjc3iGCleFDpbEw2aDHEmCEEPfnsKLi7GpArt0Q>
+    <xmx:APg7al5JApNgCW8vnhrp3YMI59yb-qg49khT_-9AQLWLhg1YtEN-2w>
+    <xmx:APg7ahJpc9avZ5RLho8K6TciC_6ZU6H1uetFPO90QktO53BuqQ6baw>
+    <xmx:APg7aplpsVsZ7l9fU7VLbsYRODaaK5RCUHZF7KepUHNIn0MaTii1wcGl>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Jun 2026 11:30:06 -0400 (EDT)
+Date: Wed, 24 Jun 2026 08:30:00 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Philipp Stanner <phasta@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Lyude Paul <lyude@redhat.com>,	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, rcu@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] Add and use abstraction for synchronize_rcu()
+Message-ID: <ajv3-Jkp67yJ8MQ6@MacBook-0RXW5>
+References: <20260624150704.1504001-2-phasta@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB6476:EE_
-X-MS-Office365-Filtering-Correlation-Id: dcc07a11-6909-46ae-53a3-08ded2041415
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|10070799003|366016|18002099003|22082099003|6133799003|921020|56012099006|4143699003|5023799004;
-X-Microsoft-Antispam-Message-Info:
-	84EU6Q6JjoUx8oyzB1oyP3j0CpLFYTl80S7Wz1Je0QnwGepj7qnRqR/pMDMu2s978I9t9Sp7JLH1rFitBhuTqnG3achDMLV+88s2C8XY2++8cZ/g4EOK5/KTmqe7ssjRXvGIUxvsypKMp21zT0DCivZWppH2sWBB2GxC0Gl7nQzpXRohTCxAyj/G7RP18SsoDALGnEMi3GekqAbncYuhZKU8CLF4sxEpFgTrMkXsFsJTAWlQAkpAfPUuQ/5DmA8xICCgZTcq3SopToIJ6eRXMPQbFbwBPqeZk2vmEt+4dFSv1ef2KT03k/YrXURVEmx5/jRaPdHLiF9mAd89ZxdJpkTX4rZpD0V/o+M2zwCn58BJzx2AOZcvmdx2XfYUFK+rBP7oGZBMndQ4PSDagBqJfxkGF5v0SD+v+A+BGHpuXt3sBu0vT/bnIkDvMisBgitIT/mWQNkYbi+lxRfIjDTSeea2GBh0OgX7mDuyLZ/uUNtfv276U1+S6jVnHqLCh0rBBLgJQk8uvGypapOxeAU4zf0HJauQKUxSY1+7l6dSRGXpps32FDQIw+wSLxfXpZfueVqGYIaD0b1SB6dHS3RMELAzyrGFuym1MDP5UitByZK8Y+W1Wb6eKKkdCTMNyLcmz2E1QG2hnRdEvx+VQ73qyV0/g5ytAqkBtJrO6dLSkRnoU01MhOe/Fh+v08fL9KAlHhGquQdznstRiWAvzwqG2w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(10070799003)(366016)(18002099003)(22082099003)(6133799003)(921020)(56012099006)(4143699003)(5023799004);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OWZSN2N4dExLR01SNmpYcG1IK2ZzZGtEYUFKaWhxbHExRTNyR0ZvRS93bnJC?=
- =?utf-8?B?SGJjUkFyYlFBbXlmSGpMdjQxSEZTVk9yc3RYWFR4NEgzd1l3M0Mxam5MZ3I5?=
- =?utf-8?B?S1BRclBsdU9YeHRsMXpidVBDK01YVlFWYWFYcTBZOVZNNjdoVEU0Zk5mcStS?=
- =?utf-8?B?c0tETE0rMW1jZUNNazFXN21MaUJwcGp0UlY3S0dJcHU1emtuQXNtK2VRVi82?=
- =?utf-8?B?L083b1VqVk5lSWc1KzB5ODJYS20yL21FQjdVNGF5eTB2ZkliMmJESFAreXRC?=
- =?utf-8?B?cGJOK2dkN1dJRE0zZU5BM1B5MEVXQlpQenJHMHZyS1MxeE91VjZqOEV3SlNs?=
- =?utf-8?B?MmlSbTBMcEEwcG5Wc1k1ZmFJbGwxSTFxMEdjU1RJUGR4bXpEblprV0hXWlFj?=
- =?utf-8?B?czZJazRRWjZ0clFKWFZ0TW53T0NoYWlqN2kyM3BKTjl1WVNMckVsbHcrZ1I3?=
- =?utf-8?B?NDlDVnlBNnNEMFNVZDYxZGZnekNCM2ZlQUo3WnpHcjM0dUxuaHJUMnVWNXlt?=
- =?utf-8?B?NUE1VDdnRW8wSFVpN3VmZFhaT3liRVV6cndwbG96MUp3THNPQkhxanBjZjFp?=
- =?utf-8?B?Vzk1d1REUElWb3h6czNkNHk5QkVvSVh2clduN1g1RWdlTDE3c3RSa1RIZnVF?=
- =?utf-8?B?V0pVdkpGNDVhWVJPblRQSE5DbnpPdG9ENnZabkp6UHFSQzlPV1U4cW13NE50?=
- =?utf-8?B?RUlVN3FPa0x6Sk1IS2ZWY1p2SFhkc3JSNHhtakkrNTdrNG02eWN0ejBYMUt6?=
- =?utf-8?B?UjlFYTRGLzJFNzlIMkN0WWlESldoeFdEa1NYUStKNXFZS3pUR2J5NjBkaFhI?=
- =?utf-8?B?YWt0ZU9QdExtZnZ1cG9zMEI5ZlJORlZZek9mZEFGYmpUVitPa3hqUjA3RFJu?=
- =?utf-8?B?UHVMYlJDOThiNU5UZWpMOFlGTFBSYkJpQlhMRXRJOCt0cEVROUhlUEpOSXF2?=
- =?utf-8?B?TlplTHBXalhUWXR2clJwUEFMR0Q0SzNMMDBZK1VhR0h3TkpCT0xNM1VpL01q?=
- =?utf-8?B?ekZPcFJZY0tCMjN1NTJnTGh6UmZvVE8zQUFhb2laNVFWUERkN0dvK3I4S3Bq?=
- =?utf-8?B?OS9yV2JsTXczTlBGaGpOck1tWVp4MkJGbE1iY09xRlhEYWxBaWNaQ0h4UThv?=
- =?utf-8?B?a2JVZlJlNHh6a1dTekgrYkk0RzkrRW9aNlBXNXc2SExydHdKZlN3S3R1aUhL?=
- =?utf-8?B?aEw2OGFQd25wWmk5YUNBTjVSTHhpZlRKWU1vdHdWL0ptTDhBWE5WUlFnSXM4?=
- =?utf-8?B?Q0hGRlhYMEhmWm13VHQ0ZncvSUxmMlR3M3EwNXRSR05NSUpJRUhLVC9pQ25E?=
- =?utf-8?B?bHJVRUY4OVpzYWpRNFJsTTlXYVBvRStzc0VwZ0lXMldqbXhHUjc3Y3p5RG9H?=
- =?utf-8?B?aFpDbElyUWMxbGtNZm5iQTU5Z2Q4YXVMeWQvdmFFcGNXeTNqdk9zbVB2SGYx?=
- =?utf-8?B?WFpvTE42VHhuT1lQeUhlV2xzbGJWRnBaZDBPaU56QWYvUmd6aXptSUhNNzFM?=
- =?utf-8?B?NG5LWVdtNUsxSEV3b21KL1F2aWRzL0FqeTJJRG1UYTJjeXIwbDZPdnpVWXFh?=
- =?utf-8?B?QlNEaDhLeXBEV0dZL2x0Nk01ZXJFWTZBdEJWWEFUZElmRTZVR3M3RjBkaTJ4?=
- =?utf-8?B?ZmllNHNPdDR5ei9hcXZzV2xTUUZpOTF0aFlCYS9vUkh3aGtYVmd3aDZ0Smc1?=
- =?utf-8?B?NDNvM2ZIa1hDTTB0MTc0bEptaWlDeGEzcmRGaHZ2VmtCWjJTSDFLNnRZRFIx?=
- =?utf-8?B?b1cwVnVweVJXQnRGdU9BSFRRbGM2LzN3OVduN3AweTNQK0tJZHpSY2UxQUg4?=
- =?utf-8?B?VzRaYUNCQW5HVHhCR1lHVTZNc1BHL0MwcU9haDRsSnhseVdQS0c5TTZ5b3hO?=
- =?utf-8?B?RDlQZmhSbFVYb1p5QTZuWkx5SFNiV29iRVJOY2FsN256cXkycEx5V25xTWhn?=
- =?utf-8?B?dzdKVGZmZFBady81dEd0amFYZUpOL3p3OXg0TVZYbVVJNEVGWGRZenNLMytl?=
- =?utf-8?B?cm55ZlJxNkpIYnlVek9zSFQ5RnB0ZCtWM2FYVVhjWEMwMHNWRmRnbDF4SFZY?=
- =?utf-8?B?Vjg0Wk1USjFRbCs4S1ZoN3BGSllYNDBwazZhVmxjclozWlZqaVRVVitRajdm?=
- =?utf-8?B?OFZYaFZEY3lNTUJ1d3dmd1VwT2pibGgwZ2ZqVzB4SjdFU3JYeExYa3V1SkQw?=
- =?utf-8?B?NDd6bEttdS8wM0R0S3YrREFVNmRtc1hCbVNoWGp4Z2RERlgwek5TTDhoZGN5?=
- =?utf-8?B?MHJLT2tYTlBzR3ZweHEvWE1RZ3F0WUhuRlFTODFPMTRWeWUrNzlPcjBRNVJW?=
- =?utf-8?B?THBMd0FHMGZoNUtJNU9GTWFvRkNCaUR4WHp5TXUzcnlieGJoRWVQUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: dcc07a11-6909-46ae-53a3-08ded2041415
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 15:20:09.2432
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z80bL53yR99oPAAL0AePucF7auXoOjELhTsLiUCLOQDcdOBC/9l689AHIISwwJUfnl2k3SyCXwnNXTLComs5Sg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6476
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260624150704.1504001-2-phasta@kernel.org>
 
-On Fri Jun 19, 2026 at 12:08 AM BST, Danilo Krummrich wrote:
-> Add a new ForLt trait as a base for CovariantForLt:
->
->   - ForLt (non-unsafe): represents a type generic over a lifetime, with
->     no covariance guarantee.
->
->   - CovariantForLt (unsafe): becomes a subtrait of ForLt that
->     additionally proves the type is covariant over its lifetime
->     parameter, providing a safe cast_ref() method.
->
-> This split allows non-covariant types (e.g. types behind a Mutex) to
-> implement ForLt and participate in DevresLt / registration data patterns
-> that use HRTB closures for sound access, without requiring a covariance
-> proof that would fail to compile.
->
-> Both macros share the UnsafeForLtImpl helper type, distinguished by
-> a const generic N: ForLt! emits N =3D 0 (no covariance proof),
-> CovariantForLt! emits N =3D 1 (with compile-time covariance proof).
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/types.rs        |  1 +
->  rust/kernel/types/for_lt.rs | 72 +++++++++++++++++++++++++++++--------
->  rust/macros/for_lt.rs       | 53 +++++++++++++++++++++------
->  rust/macros/lib.rs          | 19 +++++++++-
->  4 files changed, 118 insertions(+), 27 deletions(-)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index cbe6907042d3..c1ed05d1046c 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -14,6 +14,7 @@
->  #[doc(hidden)]
->  pub mod for_lt;
->  pub use for_lt::CovariantForLt;
-> +pub use for_lt::ForLt;
-> =20
->  /// Used to transfer ownership to and from foreign (non-Rust) languages.
->  ///
-> diff --git a/rust/kernel/types/for_lt.rs b/rust/kernel/types/for_lt.rs
-> index a11f7509633c..0b53494080b7 100644
-> --- a/rust/kernel/types/for_lt.rs
-> +++ b/rust/kernel/types/for_lt.rs
-> @@ -1,17 +1,59 @@
->  // SPDX-License-Identifier: Apache-2.0 OR MIT
-> =20
-> -//! Provide implementation and test of the `CovariantForLt` trait and ma=
-cro.
-> +//! Provide implementation and test of the `ForLt` and `CovariantForLt` =
-traits and macros.
->  //!
-> -//! This module is hidden and user should just use `CovariantForLt!` dir=
-ectly.
-> +//! This module is hidden and users should just use `ForLt!` / `Covarian=
-tForLt!` directly.
-> =20
->  use core::marker::PhantomData;
-> =20
->  /// Representation of types generic over a lifetime.
->  ///
-> -/// The type must be covariant over the generic lifetime, i.e. the lifet=
-ime parameter
-> -/// can be soundly shortened.
-> +/// # Macro
-> +///
-> +/// It is not recommended to implement this trait directly. `ForLt!` mac=
-ro is provided to obtain a
-> +/// type that implements this trait.
->  ///
-> -/// The lifetime involved must be covariant.
-> +/// The full syntax is
-> +///
-> +/// ```
-> +/// # use kernel::types::ForLt;
-> +/// # fn expect_lt<F: ForLt>() {}
-> +/// # struct TypeThatUse<'a>(&'a ());
-> +/// # expect_lt::<
-> +/// ForLt!(for<'a> TypeThatUse<'a>)
-> +/// # >();
-> +/// ```
-> +///
-> +/// which gives a type so that `<ForLt!(for<'a> TypeThatUse<'a>) as ForL=
-t>::Of<'b>`
-> +/// is `TypeThatUse<'b>`.
-> +///
-> +/// You may also use a short-hand syntax which works similar to lifetime=
- elision.
-> +/// The macro also accepts types that do not involve a lifetime at all.
-> +///
-> +/// ```
-> +/// # use kernel::types::ForLt;
-> +/// # fn expect_lt<F: ForLt>() {}
-> +/// # struct TypeThatUse<'a>(&'a ());
-> +/// # expect_lt::<
-> +/// ForLt!(TypeThatUse<'_>) // Equivalent to `ForLt!(for<'a> TypeThatUse=
-<'a>)`.
-> +/// # >();
-> +/// # expect_lt::<
-> +/// ForLt!(&u32) // Equivalent to `ForLt!(for<'a> &'a u32)`.
-> +/// # >();
-> +/// # expect_lt::<
-> +/// ForLt!(u32) // Equivalent to `ForLt!(for<'a> u32)`.
-> +/// # >();
-> +/// ```
-> +pub trait ForLt {
-> +    /// The type parameterized by the lifetime.
-> +    type Of<'a>: 'a;
-> +}
-> +pub use macros::ForLt;
-> +
-> +/// [`trait@ForLt`] subtrait for types that are covariant over their lif=
-etime parameter.
-> +///
-> +/// Provides a safe [`cast_ref`](CovariantForLt::cast_ref) method for ty=
-pes that are proven to be
-> +/// covariant. The `CovariantForLt!` macro syntax is the same as `ForLt!=
-`.
->  ///
->  /// # Macro
->  ///
-> @@ -84,10 +126,7 @@
->  /// # Safety
->  ///
->  /// `Self::Of<'a>` must be covariant over the lifetime `'a`.
-> -pub unsafe trait CovariantForLt {
-> -    /// The type parameterized by the lifetime.
-> -    type Of<'a>: 'a;
-> -
-> +pub unsafe trait CovariantForLt: ForLt {
->      /// Cast a reference to a shorter lifetime.
->      #[inline(always)]
->      fn cast_ref<'r, 'short: 'r, 'long: 'short>(long: &'r Self::Of<'long>=
-) -> &'r Self::Of<'short> {
-> @@ -99,25 +138,28 @@ fn cast_ref<'r, 'short: 'r, 'long: 'short>(long: &'r=
- Self::Of<'long>) -> &'r Sel
-> =20
->  /// This is intended to be an "unsafe-to-refer-to" type.
->  ///
-> -/// Must only be used by the `CovariantForLt!` macro.
-> +/// Must only be used by the `ForLt!` / `CovariantForLt!` macros.
->  ///
->  /// `T` is the magic `dyn for<'a> WithLt<'a, TypeThatUse<'a>>` generated=
- by macro.
->  ///
->  /// `WF` is a type that the macro can use to assert some specific type i=
-s well-formed.
->  ///
->  /// `N` is to provide the macro a place to emit arbitrary items, in case=
- it needs to prove
-> -/// additional properties.
-> +/// additional properties. `ForLt!` emits `N =3D 0`; `CovariantForLt!` e=
-mits `N =3D 1` after a
-> +/// covariance proof.
->  #[doc(hidden)]
->  pub struct UnsafeForLtImpl<T: ?Sized, WF, const N: usize>(PhantomData<(W=
-F, T)>);
-> =20
-> -// This is a helper trait for implementation `CovariantForLt` to be able=
- to use HRTB.
-> +// This is a helper trait for implementation of `ForLt` / `CovariantForL=
-t` to be able to use HRTB.
->  #[doc(hidden)]
->  pub trait WithLt<'a> {
->      type Of: 'a;
->  }
-> =20
-> -// SAFETY: In `CovariantForLt!` macro, a covariance proof is generated w=
-hen naming
-> -// `UnsafeForLtImpl` and it will fail to evaluate if the type is not cov=
-ariant.
-> -unsafe impl<T: ?Sized + for<'a> WithLt<'a>, WF> CovariantForLt for Unsaf=
-eForLtImpl<T, WF, 0> {
-> +impl<T: ?Sized + for<'a> WithLt<'a>, WF, const N: usize> ForLt for Unsaf=
-eForLtImpl<T, WF, N> {
->      type Of<'a> =3D <T as WithLt<'a>>::Of;
->  }
-> +
-> +// SAFETY: In `CovariantForLt!` macro, a covariance proof is generated i=
-n the `N` const generic
-> +// and it will fail to evaluate if the type is not covariant. Only `N =
-=3D 1` gets this impl.
-> +unsafe impl<T: ?Sized + for<'a> WithLt<'a>, WF> CovariantForLt for Unsaf=
-eForLtImpl<T, WF, 1> {}
-> diff --git a/rust/macros/for_lt.rs b/rust/macros/for_lt.rs
-> index e1233701d6cc..d5f728a464ca 100644
-> --- a/rust/macros/for_lt.rs
-> +++ b/rust/macros/for_lt.rs
-> @@ -176,8 +176,10 @@ fn prove(&mut self, ty: &'a Type) {
->      }
->  }
-> =20
-> -pub(crate) fn covariant_for_lt(input: HigherRankedType) -> TokenStream {
-> -    let (ty, lifetime) =3D match input {
-> +/// Resolve the higher-ranked type into a concrete `(ty, lifetime)` pair=
-, expanding elided
-> +/// lifetimes as needed. Shared by both `for_lt` and `covariant_for_lt`.
-> +fn resolve_hrt(input: HigherRankedType) -> (Type, Lifetime) {
-> +    match input {
->          HigherRankedType::Explicit { lifetime, ty, .. } =3D> (ty, lifeti=
-me),
->          HigherRankedType::Implicit { ty } =3D> {
->              // If there's no explicit `for<'a>` binder, inject a synthet=
-ic `'__elided` lifetime
-> @@ -188,7 +190,42 @@ pub(crate) fn covariant_for_lt(input: HigherRankedTy=
-pe) -> TokenStream {
->              };
->              (ty.expand_elided_lifetime(&lifetime), lifetime)
->          }
-> -    };
-> +    }
-> +}
-> +
-> +/// Produce the `'static`-substituted type for the WF check. Shared by b=
-oth macros.
-> +fn ty_static(ty: &Type, lifetime: &Lifetime) -> Type {
-> +    ty.replace_lifetime(
-> +        lifetime,
-> +        &Lifetime {
-> +            apostrophe: Span::mixed_site(),
-> +            ident: format_ident!("static"),
-> +        },
-> +    )
-> +}
-> +
-> +pub(crate) fn for_lt(input: HigherRankedType) -> TokenStream {
-> +    let (ty, lifetime) =3D resolve_hrt(input);
-> +
-> +    // Make sure that the type is wellformed when substituting lifetime =
-with `'static`.
-> +    //
-> +    // Currently the Rust compiler doesn't check this, see the `ProveWf`=
- documentation in
-> +    // `covariant_for_lt` below.
-> +    //
-> +    // We prefer to use this way of proving WF-ness as it can work when =
-generics are involved.
-> +    let ty_static =3D ty_static(&ty, &lifetime);
-> +
-> +    quote!(
-> +        ::kernel::types::for_lt::UnsafeForLtImpl::<
-> +            dyn for<#lifetime> ::kernel::types::for_lt::WithLt<#lifetime=
-, Of =3D #ty>,
-> +            #ty_static,
-> +            0,
-> +        >
+On Wed, Jun 24, 2026 at 05:07:01PM +0200, Philipp Stanner wrote:
+> Changes since v2:
+>   - Compromise docu for "RCU versus atomic context" a bit better
+>   - Add respective R-b's
+> 
+> Changes since v1:
+>   - Vertically format imports. (Onur)
+>   - Make the new function #[inline]. (Alice)
+>   - Add Alice's R-b.
+> 
+> Philipp Stanner (3):
+>   rust: sync: Add abstraction for synchronize_rcu()
+>   rust: revocable: Use safe synchronize_rcu() abstraction
+>   rust: sync: Use safe synchronize_rcu() abstraction in poll
+> 
+>  rust/kernel/revocable.rs |  9 ++++++---
+>  rust/kernel/sync/poll.rs | 10 ++++++----
+>  rust/kernel/sync/rcu.rs  | 16 ++++++++++++++++
+>  3 files changed, 28 insertions(+), 7 deletions(-)
+> 
 
-This is still unsound, as I mentioned in the last version that the prover m=
-ust
-be kept.
+Queue it in rust-sync
 
-`'static` helps with a specific case where it ensures that `ForLt!(for<'a> =
-&'a T)`
-requiress `T: 'static`, but when another lifetime (that is not 'static is
-involved) the prover is still needed.
+	https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/ rust-sync
 
-A very simple case
+Thank you all!
 
-    fn test_for_lt<'a>(x: &'a ()) {
-        let _: ForLt!(for<'b> &'a &'b ());
-    }
+Regards,
+Boqun
 
-this needs to fail the build because 'a and 'b are unrelated (otherwise fro=
-m the
-type you would be able to obtain `'b: 'a` from nowhere).
-
-Best,
-Gary
-
-> +    )
-> +}
-> +
-> +pub(crate) fn covariant_for_lt(input: HigherRankedType) -> TokenStream {
-> +    let (ty, lifetime) =3D resolve_hrt(input);
-> =20
->      let mut prover =3D Prover(&lifetime, Vec::new());
->      prover.prove(&ty);
-> @@ -226,13 +263,7 @@ fn #cov_proof_name<'__short, '__long: '__short>(
->      // Currently the Rust compiler doesn't check this, see the above `Pr=
-oveWf` documentation.
->      //
->      // We prefer to use this way of proving WF-ness as it can work when =
-generics are involved.
-> -    let ty_static =3D ty.replace_lifetime(
-> -        &lifetime,
-> -        &Lifetime {
-> -            apostrophe: Span::mixed_site(),
-> -            ident: format_ident!("static"),
-> -        },
-> -    );
-> +    let ty_static =3D ty_static(&ty, &lifetime);
-> =20
->      quote!(
->          ::kernel::types::for_lt::UnsafeForLtImpl::<
-> @@ -241,7 +272,7 @@ fn #cov_proof_name<'__short, '__long: '__short>(
->              {
->                  #(#proof)*
-> =20
-> -                0
-> +                1
->              }
->          >
->      )
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 2167cb270928..e970769609f3 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -491,11 +491,28 @@ pub fn kunit_tests(attr: TokenStream, input: TokenS=
-tream) -> TokenStream {
->          .into()
->  }
-> =20
-> -/// Obtain a type that implements [`CovariantForLt`] for the given highe=
-r-ranked type.
-> +/// Obtain a type that implements [`ForLt`] for the given higher-ranked =
-type.
-> +///
-> +/// Please refer to the documentation of the [`ForLt`] trait.
-> +///
-> +/// [`ForLt`]: trait.ForLt.html
-> +#[proc_macro]
-> +#[allow(non_snake_case)]
-> +pub fn ForLt(input: TokenStream) -> TokenStream {
-> +    for_lt::for_lt(parse_macro_input!(input)).into()
-> +}
-> +
-> +/// Obtain a type that implements [`CovariantForLt`] (and [`ForLt`]) for=
- the given higher-ranked
-> +/// type.
-> +///
-> +/// Unlike [`ForLt!`], this macro additionally proves that the type is c=
-ovariant over the lifetime,
-> +/// providing a safe [`CovariantForLt::cast_ref`] method.
->  ///
->  /// Please refer to the documentation of the [`CovariantForLt`] trait.
->  ///
->  /// [`CovariantForLt`]: trait.CovariantForLt.html
-> +/// [`CovariantForLt::cast_ref`]: trait.CovariantForLt.html#method.cast_=
-ref
-> +/// [`ForLt`]: trait.ForLt.html
->  #[proc_macro]
->  #[allow(non_snake_case)]
->  pub fn CovariantForLt(input: TokenStream) -> TokenStream {
-
-
+> 
+> base-commit: 43a393185e33e573a374c1d4f7ddf6481484ef8d
+> -- 
+> 2.54.0
+> 
