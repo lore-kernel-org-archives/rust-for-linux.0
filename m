@@ -1,61 +1,63 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FBA2DCC13
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 20:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0093672A9
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 20:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782420745; cv=none; b=fhDQsbzCcDzKrOGyZ6zJcRCwJuWm2VDkSoDZS3tUgPkg2918smzj0RpbHNfAP40z6OOsX7pisxQ1m4G1U/okn+YgZ7t4yGtYY4jruPdVXzojR4jigYSIg3/bSjRA4pkk+lQbgcrEcyKwskWygggFLs7jiXnOuOiuUT+DteA38Ac=
+	t=1782420747; cv=none; b=O+uOuNVkIQYa4rvLja6IhLevT2PThTQiIXZZ8GYK4JiLtDMwuSSAWHFXDWAbKr87LhEghXnSLXdvhKRRe0rs6X30gO5BKZQt6Xs5vRZdjqGq8jcNOXuzDiaLfhNh+FgpCe5E+1Kv5B8MZ+OhY2Cz5YwboIYEtDyaCAR0+Un2NiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782420745; c=relaxed/simple;
-	bh=4eGTOJouLCjXQq5nAUTm3nn6eAB8ZLfoiC2TTPgqwOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k57naQ7GA+31qjC8hEjSclr/mwKOnM0N243XTAJw0GPCVcnTpn4An1PFp6JqiwxmTO2kj+x6NHx8TiRrKnoE6j0/pq9A+CXL0DsT1Kfwq/EvdRsBdTA+bjz5LbKs6Mm38mwqIL29ZmfnC5ZZwGH143bNYEtMiINTf4b+Z4olfqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=oVrtu3GM; arc=none smtp.client-ip=74.125.82.43
+	s=arc-20240116; t=1782420747; c=relaxed/simple;
+	bh=JezChDeKmz4e6ACoehqELifx3PLlNWERcu3SGBqd3G8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Vm7TP+NZDtemfbXHvnGCfgz6dkCY3TbgAMDsgh3QBy8Piho37dpiuHDV6BsDVoClOSugeCvxThfcuV3/bJUAYuqSa9POSSwQ1kqXp4G99PA9uJMiQh1ofVD9gQstDipeBRTBWPBHo73WdECUryzR6P2xMLHg/v8EMFY2JEKjBvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=wmRVesjX; arc=none smtp.client-ip=74.125.82.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="oVrtu3GM"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-139d5c9a495so830337c88.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 13:52:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="wmRVesjX"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-30bc871ecdfso431550eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 13:52:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1782420740; x=1783025540; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OruPioe6tbdNpycRDGam1892gPF8sbvYnG0WqG8AtiQ=;
-        b=oVrtu3GMeBOjMSVpjiPWGjwrs63SvpvC5WfXmBctZkYRm8EuYARf1SfbwvVMSAsLWB
-         z0aT3cZFTJH6RFRTq9hBDIK//SbKVRiThspjUPRXQHwyNp1dd8KtDw8p2rxP8NezMQUa
-         R90NbOWG7PJvmIbQCWIBT5qqfuX8fdw4g+/bNKw6EK8ozbJu7/73OOiO798b6+kwm5hP
-         iGv9N3BY96OCrThfRO0rSKZHDkcF2klvO1e/XtyIRB5iGGPErAsTz1T0I17Frs17VH8F
-         UCGBDjSAtxcMDAKbOCVu+gk8rpaS5JEOmKZqnKll1U9wN3/oLX4hcWftmVXmtQL03XW2
-         xRcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782420740; x=1783025540;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=usp.br; s=usp-google; t=1782420745; x=1783025545; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OruPioe6tbdNpycRDGam1892gPF8sbvYnG0WqG8AtiQ=;
-        b=oVHgYQ/d4WB/H/dtl4ncrFH20pqJS7ZhH2AKchiTnyIQIiZtO/4SGcEy8YG4IIrWzO
-         q6DABj9XhF66wEG9QnixQSAe3VfcIPmzsjs7rGGpgEgc5pwr2LdDN1FRkug3w5G49JHU
-         Pi5lb9RZl93zVXcYpeTV8P3VdOZXark+mL0HAVbJ8zFO30lQxiFB+99V0/QM3ha7tjiq
-         L52C6qoqx3MqgHdgWj4OzeB+Q1Vym9B9bbIOK71YCFK4U8hlKEC4FKlC6449ySGiCGpS
-         dGS2h7D3N9FwnLZMJ5S9X40a9e5gN7S9+hwCa2OObJXog1xhqJO6SSa4cxrfE0v7UZh6
-         jbAw==
-X-Forwarded-Encrypted: i=1; AHgh+RpPq+62p/1pZtOU3yt6/LtMusZ9tr2r/Ra6D6q64ZosZ3NNETMPc27reGgSis//5PYbXjS4cyMDejEYZlpbqA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0pxoJqUxjKYZ/5qZ8iOopzFu1I5yJ5pO5x1OwY4a7dU+aANSs
-	dqFd50oVLq/lAqI8AsaIeIai8KfdYeGmIa36v9F118Tz3NRXN8XcePHIu4f5f0E9zeE=
-X-Gm-Gg: AfdE7cnIb46XGiV3V8af9SZ8H4PlQzSKTRPjLaDz2LbXmp2haNAi6qVu+PlDqZkzQLf
-	oUbFMlrKWQ6LNAyEDmAPo+wBN7w9AopMa670DBbdG2jYvGjGjkMGl86NQaaEfVYqCgud59a+6BF
-	LrydmO7KZJFT3hQZdkmFpLdzmsqU9SL7T15Hbw7zY1zBxCab+Qemg64qWY+o2Yrgi+NNJ/VRgY5
-	wQGdLsi1Sgh7L5LrI5lO5WqQ109HproG5zOzuyK4lmCe1o0H0Aq4OVcdHstCQYFzMZGooBeSEaf
-	n3vVa0oEuIbNvlA3jCFFizyun5GjI2WjpqUwFqlQTaiMm95VgnKjK46b6PXM8KFL+lUyO+MAOm3
-	CpsgQSqN8p5YG3oQToigwgOHREJ7B21LLJckK7tk0BW2OipUooFDjAMEqq/viQHWhUiRweH3bU5
-	BWLLdrNz2ESaeUW00jd5P4/U0OYA==
-X-Received: by 2002:a05:7300:cb83:b0:30c:d60:a879 with SMTP id 5a478bee46e88-30c84eea4a0mr4233861eec.35.1782420740087;
-        Thu, 25 Jun 2026 13:52:20 -0700 (PDT)
+        bh=3AKNe+HW/iOAU2SHoyF/WHAkP5lgz/mE/XVIjRk/zXs=;
+        b=wmRVesjXLLWSIE2i4VTRO6lCSO/6P3PI+3lIt7HxW+Z22XC61HLIkEOKlaK5gRPtwg
+         3sM2/eA5YmVoUMdTSWu9T73z/FqPKZ4XTmPE/Qfd7b7vJyGWY1zswIOQykBydufe3Job
+         4YNJyfUror7LLVnccGCQAuNsQghIy7mGi1njyOUwWaDZXYz50S6c8r4M84/IWZy6Bcix
+         0ZN1ehezFSI2HrdgDsIBZqY6kGzRsL1TwchYkAkNhJhE08YU969iFjEMAD4v9IKiG9OB
+         iOeYrU59kRvkF5tYmY0YmyEmc2O9cYm7c7deHDkjN/gtqAR4trmf2YHgDqGyLxUWeq6R
+         Dyyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782420745; x=1783025545;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3AKNe+HW/iOAU2SHoyF/WHAkP5lgz/mE/XVIjRk/zXs=;
+        b=B/6BAstM0vuiFHupDDYzH+oqh/f7rALVQQanTj4QJS/tqOAiZqmAkXyuLOICNaRw3a
+         aymJmFj0olJp42JD2Gs6RC44BF+Bksh0KEV62xH/rkEdN9vCEH1rhb+x5AOgelUyyeEz
+         q3aT+NUJJln6XTmWBdbhPOxjZRieND0PTM/REr1JTIv9Kh/174HhNjuFZYHFjaA0mDdc
+         4ylKTxhDZIB1skoQnUk0PsVyRLgFO/gYqu1+3mXJcsubKoinTUhgEwO3vmQE1PbuHHxp
+         LDS/VAiDowdnLGge0WYsetmW8ICNAGoFY4ee7i5DP+xsOompWtpUI53iwL9HXzQ1oRi1
+         Owwg==
+X-Forwarded-Encrypted: i=1; AHgh+RoSKOMYr2260574LX02+4SWZPeURUP3W14qe+4hao06f8Xe0Ik2n8ilYo8Ld96cqAaEzX4PxO8xtoBXNxTXHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy21po6vsF6pmq6DkzBi8oP/2f4EO2ZHy9k3r8iDTXSlH5h3mYt
+	P0ZAtTJ+gcF/e7+jIcMa7ZwLD89+YRNfNL0wm5iAdjY+eg1jT3bgGZF8PMauWpzb8HY=
+X-Gm-Gg: AfdE7clvPPwiyzqOrmkoVAMLY845ATIp65MHOrCKg4uZByItkejmDvUBy+O9DMHeNwz
+	SnmS3Po29vtzJzpDZqducDB1T0Hbbl2Q8JlitTy6mEU4JrcZIG4upnKneR4UIl4EdXRU0gvxKlo
+	UZqjzqZx5fHHDm8/r64KntF8wHOCTbRYYqLzU0f5TplIab3DbXu5tAE9fvHdOIiv6If6/1uaTUd
+	4s8V4ptxuleyD/ScHBBHd/uyV0p2/oLbdvsAXJrEHoq5h2BiJZUp/6+06E/42LKe+MmthdDP+Vs
+	Yy/Sv9kbhn+MAGWHl/+JE+aN0sBbdRmXts4h4Ae/IwSGwE0GGsE78whdLfhWgmz5HJBhwVrWS2j
+	wGNiGWdnc7eL7TrCWUyZPgaIxs9gyrNC1KIw84BhLyRCRXaMArGANtaPQkmQKdAZUKokZEbIFSM
+	pFjjW+7STumfnWTq+LyTOg8sIy8g==
+X-Received: by 2002:a05:7300:190e:b0:30c:4f01:2239 with SMTP id 5a478bee46e88-30c84d572f2mr4100921eec.9.1782420744677;
+        Thu, 25 Jun 2026 13:52:24 -0700 (PDT)
 Received: from niyudi-linux.. (179-242-249-142.3g.claro.net.br. [179.242.249.142])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c691dsm10981525eec.5.2026.06.25.13.52.16
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c691dsm10981525eec.5.2026.06.25.13.52.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 13:52:19 -0700 (PDT)
+        Thu, 25 Jun 2026 13:52:24 -0700 (PDT)
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 X-Google-Original-From: Pedro Yudi Honda
 To: dakr@kernel.org,
@@ -68,10 +70,12 @@ Cc: aliceryhl@google.com,
 	ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Pedro Yudi Honda <niyudi.honda@usp.br>
-Subject: [RESEND PATCH 0/7] drm/nova: replace `transmute` with `zerocopy`
-Date: Thu, 25 Jun 2026 17:51:39 -0300
-Message-Id: <20260625205146.5047-1-niyudi.honda@usp.br>
+Subject: [PATCH 1/7] drm/nova: use `zerocopy` in firmware.rs
+Date: Thu, 25 Jun 2026 17:51:40 -0300
+Message-Id: <20260625205146.5047-2-niyudi.honda@usp.br>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260625205146.5047-1-niyudi.honda@usp.br>
+References: <20260625205146.5047-1-niyudi.honda@usp.br>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -82,49 +86,122 @@ Content-Transfer-Encoding: 8bit
 
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 
-This series follows the introduction of `zerocopy` to rust-next and
-replaces `transmute` traits with `zerocopy` traits. These changes are
-mechanical and don't alter functionality.
+In firmware.rs, replace the following `transmute` traits with their
+`zerocopy` equivalents:
 
-Specifically, the trait `transmute::FromBytes` is replaced by
-`zerocopy::FromBytes` and the trait `transmute::AsBytes` is replaced
-by `zerocopy::IntoBytes`. Additional traits such as
-`zerocopy::Immutable` and `zerocopy::KnownLayout` are implemented as
-necessary.
+- `transmute::FromBytes` -> `zerocopy::FromBytes`
 
-This does not replace the trait implemented in newtypes over
-bindings. Currently, the only solution I can think of is mirroring
-the bindings into another type and transmuting when necessary, but
-that does not seem practical. Another issue is a type like
-`gsp::cmdq::GspMem` that explicitly does not meet the requirements
-for `FromBytes`, but unsafely implements the trait anyway because it
-knows all of its uses. Unsafely implementing `zerocopy::FromBytes` is
-not allowed, and implementing `zerocopy::TryFromBytes` would add
-unnecessary overhead.
+Update call sites accordingly.
 
-Feedback from the maintainers on the direction in these cases would
-be appreciated.
+Note that the module `elf` is untouched, as the bindings generated by
+bindgen do not implement `FromBytes` for the structs.
 
-Resent due to incorrect maintainer email address in previous submission.
+Signed-off-by: Pedro Yudi Honda <niyudi.honda@usp.br>
+---
+ drivers/gpu/nova-core/firmware.rs                | 16 ++++------------
+ .../gpu/nova-core/firmware/fwsec/bootloader.rs   |  4 +++-
+ drivers/gpu/nova-core/vbios.rs                   |  4 ++--
+ 3 files changed, 9 insertions(+), 15 deletions(-)
 
-Pedro Yudi Honda (7):
-  drm/nova: use `zerocopy` in firmware.rs
-  drm/nova: use `zerocopy` in vbios.rs
-  drm/nova: use `zerocopy` in booter.rs
-  drm/nova: use `zerocopy` in fwsec.rs
-  drm/nova: use `zerocopy` in bootloader.rs
-  drm/nova: use `zerocopy` in riscv.rs
-  drm/nova: remove unused trait in commands.rs
-
- drivers/gpu/nova-core/firmware.rs             | 16 ++---
- drivers/gpu/nova-core/firmware/booter.rs      | 26 +++-----
- drivers/gpu/nova-core/firmware/fwsec.rs       | 47 ++++-----------
- .../nova-core/firmware/fwsec/bootloader.rs    | 16 ++---
- drivers/gpu/nova-core/firmware/riscv.rs       | 10 +---
- drivers/gpu/nova-core/gsp/commands.rs         |  9 +--
- drivers/gpu/nova-core/vbios.rs                | 60 ++++++-------------
- 7 files changed, 49 insertions(+), 135 deletions(-)
-
+diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
+index 1e89390209f5..1eae03344a61 100644
+--- a/drivers/gpu/nova-core/firmware.rs
++++ b/drivers/gpu/nova-core/firmware.rs
+@@ -11,8 +11,7 @@
+     device,
+     firmware,
+     prelude::*,
+-    str::CString,
+-    transmute::FromBytes, //
++    str::CString, //
+ };
+ 
+ use crate::{
+@@ -88,7 +87,7 @@ pub(crate) struct FalconUCodeDescV2 {
+ 
+ /// Structure used to describe some firmwares, notably FWSEC-FRTS.
+ #[repr(C)]
+-#[derive(Debug, Clone)]
++#[derive(Debug, Clone, FromBytes)]
+ pub(crate) struct FalconUCodeDescV3 {
+     /// Header defined by `NV_BIT_FALCON_UCODE_DESC_HEADER_VDESC*` in OpenRM.
+     hdr: u32,
+@@ -119,10 +118,6 @@ pub(crate) struct FalconUCodeDescV3 {
+     _reserved: u16,
+ }
+ 
+-// SAFETY: all bit patterns are valid for this type, and it doesn't use
+-// interior mutability.
+-unsafe impl FromBytes for FalconUCodeDescV3 {}
+-
+ /// Enum wrapping the different versions of Falcon microcode descriptors.
+ ///
+ /// This allows handling both V2 and V3 descriptor formats through a
+@@ -351,7 +346,7 @@ fn no_patch_signature(self) -> FirmwareObject<F, Signed> {
+ 
+ /// Header common to most firmware files.
+ #[repr(C)]
+-#[derive(Debug, Clone)]
++#[derive(Debug, Clone, FromBytes)]
+ struct BinHdr {
+     /// Magic number, must be `0x10de`.
+     bin_magic: u32,
+@@ -367,9 +362,6 @@ struct BinHdr {
+     data_size: u32,
+ }
+ 
+-// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+-unsafe impl FromBytes for BinHdr {}
+-
+ // A firmware blob starting with a `BinHdr`.
+ struct BinFirmware<'a> {
+     hdr: BinHdr,
+@@ -385,7 +377,7 @@ fn new(fw: &'a firmware::Firmware) -> Result<Self> {
+ 
+         fw.get(0..size_of::<BinHdr>())
+             // Extract header.
+-            .and_then(BinHdr::from_bytes_copy)
++            .and_then(|b| BinHdr::read_from_bytes(b).ok())
+             // Validate header.
+             .filter(|hdr| hdr.bin_magic == BIN_MAGIC)
+             .map(|hdr| Self { hdr, fw })
+diff --git a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs b/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
+index 039920dc340b..13af1c381df1 100644
+--- a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
++++ b/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
+@@ -29,6 +29,8 @@
+     },
+ };
+ 
++use zerocopy::FromBytes as _;
++
+ use crate::{
+     driver::Bar0,
+     falcon::{
+@@ -154,7 +156,7 @@ pub(crate) fn new(
+         let hdr = fw
+             .data()
+             .get(0..size_of::<BinHdr>())
+-            .and_then(BinHdr::from_bytes_copy)
++            .and_then(|b| BinHdr::read_from_bytes(b).ok())
+             .ok_or(EINVAL)?;
+ 
+         let desc = {
+diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
+index c6e6bfcd6a1f..e6d144587c4e 100644
+--- a/drivers/gpu/nova-core/vbios.rs
++++ b/drivers/gpu/nova-core/vbios.rs
+@@ -935,8 +935,8 @@ pub(crate) fn header(&self) -> Result<FalconUCodeDesc> {
+                 Ok(FalconUCodeDesc::V2(v2))
+             }
+             3 => {
+-                let v3 = FalconUCodeDescV3::from_bytes_copy_prefix(data)
+-                    .ok_or(EINVAL)?
++                let v3 = FalconUCodeDescV3::read_from_prefix(data)
++                    .map_err(|_| EINVAL)?
+                     .0;
+                 Ok(FalconUCodeDesc::V3(v3))
+             }
 -- 
 2.34.1
 
