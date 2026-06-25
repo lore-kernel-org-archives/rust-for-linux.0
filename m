@@ -1,163 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E990316192;
-	Thu, 25 Jun 2026 20:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FBA2DCC13
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 20:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782420132; cv=none; b=Ca1qL2uc1gcQbVS8iqPlVTgMbLPFKo1hwv3YIaQtExN9tXl4dqTOuKxXgGTjRB3siJJYyBQiIyedQZU8YUkvqklXHnvv927ZtKj7Wou8OsJAKJA+INV+8OaUHfugW9W0eR41+0LAeQBFvtQ7tbHBxjop0eZ85mW2ua5M65+uD9A=
+	t=1782420745; cv=none; b=fhDQsbzCcDzKrOGyZ6zJcRCwJuWm2VDkSoDZS3tUgPkg2918smzj0RpbHNfAP40z6OOsX7pisxQ1m4G1U/okn+YgZ7t4yGtYY4jruPdVXzojR4jigYSIg3/bSjRA4pkk+lQbgcrEcyKwskWygggFLs7jiXnOuOiuUT+DteA38Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782420132; c=relaxed/simple;
-	bh=9KmYKTZYm6BLoZCbAkb58dXWN3V3G68n8k2r+SKYfig=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Ojb+DNvyK8q+7NJ+HQwph4tU9YULQGntHsL1Hxx/O7yGzUuIQXxvbIgXVU7iVOgCzVNaL9tubbwu3SDdrHEgBW4EOwR3rjygyDD+Sf4gy6GBYUcU9y/MiLNuyy6P6plAYGi9VYrDLTj/7zLK4cvy6Q+B2jdt9C5pg9SB1NePUDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J42nwSbC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782420745; c=relaxed/simple;
+	bh=4eGTOJouLCjXQq5nAUTm3nn6eAB8ZLfoiC2TTPgqwOQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k57naQ7GA+31qjC8hEjSclr/mwKOnM0N243XTAJw0GPCVcnTpn4An1PFp6JqiwxmTO2kj+x6NHx8TiRrKnoE6j0/pq9A+CXL0DsT1Kfwq/EvdRsBdTA+bjz5LbKs6Mm38mwqIL29ZmfnC5ZZwGH143bNYEtMiINTf4b+Z4olfqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=oVrtu3GM; arc=none smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J42nwSbC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6161F000E9;
-	Thu, 25 Jun 2026 20:42:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782420131;
-	bh=JvlsNB+ervCF+sSkJEPbN4Ijm830xLpfVQiWgPNgpJk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=J42nwSbCRvM0JMjF02PGznrxY18hUTDWVZ7tp9Th64egsofZWFuK/7UwkXSOiRMWZ
-	 JFb4QbKQRBo1ee2fgXL4731g8g5ZKzhOektm+yfvSxklJkQC5qdKNXM7OsyGK4z/tY
-	 7jjlUpMGk4xKRsvKVa6Ep/nb13JWkOg5psKsGHVL12oqfaiiky+CVSym81jwqCaUJd
-	 l0RSq4P99yJkSjwmgCdMrOVUExxK7WZ1uEcahg8Pc27XeAso/gLvzUpXefzzEJr9fg
-	 eaOccN7Oxpq5Nq5P16tkAeJOKLakhws44CZBq+jtnWPcBaYjoZ+eeFOMpFoUsZb9wW
-	 GGmRDKHSaUNGg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Danilo Krummrich <dakr@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Uladzislau
- Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Almeida
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>,
- Lyude Paul <lyude@redhat.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=
- <arve@android.com>, Todd Kjos
- <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, Carlos Llamas
- <cmllamas@google.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Paul Moore
- <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Igor Korotin
- <igor.korotin@linux.dev>, Viresh Kumar <vireshk@kernel.org>, Nishanth
- Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>,
- Pavel
- Tikhomirov <ptikhomirov@virtuozzo.com>, Michal Wilczynski
- <m.wilczynski@samsung.com>
-Cc: Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- driver-core@lists.linux.dev, linux-block@vger.kernel.org,
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v18 3/8] rust: implement `ForeignOwnable` for `Owned`
-In-Reply-To: <DJI5ZY2TPFSW.BEKOVZYRSTQZ@garyguo.net>
-References: <20260625-unique-ref-v18-0-4e06b5896d47@kernel.org>
- <20260625-unique-ref-v18-3-4e06b5896d47@kernel.org>
- <DJI5ZY2TPFSW.BEKOVZYRSTQZ@garyguo.net>
-Date: Thu, 25 Jun 2026 21:47:35 +0200
-Message-ID: <87y0g2h06g.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="oVrtu3GM"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-139d5c9a495so830337c88.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 13:52:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=usp.br; s=usp-google; t=1782420740; x=1783025540; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OruPioe6tbdNpycRDGam1892gPF8sbvYnG0WqG8AtiQ=;
+        b=oVrtu3GMeBOjMSVpjiPWGjwrs63SvpvC5WfXmBctZkYRm8EuYARf1SfbwvVMSAsLWB
+         z0aT3cZFTJH6RFRTq9hBDIK//SbKVRiThspjUPRXQHwyNp1dd8KtDw8p2rxP8NezMQUa
+         R90NbOWG7PJvmIbQCWIBT5qqfuX8fdw4g+/bNKw6EK8ozbJu7/73OOiO798b6+kwm5hP
+         iGv9N3BY96OCrThfRO0rSKZHDkcF2klvO1e/XtyIRB5iGGPErAsTz1T0I17Frs17VH8F
+         UCGBDjSAtxcMDAKbOCVu+gk8rpaS5JEOmKZqnKll1U9wN3/oLX4hcWftmVXmtQL03XW2
+         xRcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782420740; x=1783025540;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OruPioe6tbdNpycRDGam1892gPF8sbvYnG0WqG8AtiQ=;
+        b=oVHgYQ/d4WB/H/dtl4ncrFH20pqJS7ZhH2AKchiTnyIQIiZtO/4SGcEy8YG4IIrWzO
+         q6DABj9XhF66wEG9QnixQSAe3VfcIPmzsjs7rGGpgEgc5pwr2LdDN1FRkug3w5G49JHU
+         Pi5lb9RZl93zVXcYpeTV8P3VdOZXark+mL0HAVbJ8zFO30lQxiFB+99V0/QM3ha7tjiq
+         L52C6qoqx3MqgHdgWj4OzeB+Q1Vym9B9bbIOK71YCFK4U8hlKEC4FKlC6449ySGiCGpS
+         dGS2h7D3N9FwnLZMJ5S9X40a9e5gN7S9+hwCa2OObJXog1xhqJO6SSa4cxrfE0v7UZh6
+         jbAw==
+X-Forwarded-Encrypted: i=1; AHgh+RpPq+62p/1pZtOU3yt6/LtMusZ9tr2r/Ra6D6q64ZosZ3NNETMPc27reGgSis//5PYbXjS4cyMDejEYZlpbqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0pxoJqUxjKYZ/5qZ8iOopzFu1I5yJ5pO5x1OwY4a7dU+aANSs
+	dqFd50oVLq/lAqI8AsaIeIai8KfdYeGmIa36v9F118Tz3NRXN8XcePHIu4f5f0E9zeE=
+X-Gm-Gg: AfdE7cnIb46XGiV3V8af9SZ8H4PlQzSKTRPjLaDz2LbXmp2haNAi6qVu+PlDqZkzQLf
+	oUbFMlrKWQ6LNAyEDmAPo+wBN7w9AopMa670DBbdG2jYvGjGjkMGl86NQaaEfVYqCgud59a+6BF
+	LrydmO7KZJFT3hQZdkmFpLdzmsqU9SL7T15Hbw7zY1zBxCab+Qemg64qWY+o2Yrgi+NNJ/VRgY5
+	wQGdLsi1Sgh7L5LrI5lO5WqQ109HproG5zOzuyK4lmCe1o0H0Aq4OVcdHstCQYFzMZGooBeSEaf
+	n3vVa0oEuIbNvlA3jCFFizyun5GjI2WjpqUwFqlQTaiMm95VgnKjK46b6PXM8KFL+lUyO+MAOm3
+	CpsgQSqN8p5YG3oQToigwgOHREJ7B21LLJckK7tk0BW2OipUooFDjAMEqq/viQHWhUiRweH3bU5
+	BWLLdrNz2ESaeUW00jd5P4/U0OYA==
+X-Received: by 2002:a05:7300:cb83:b0:30c:d60:a879 with SMTP id 5a478bee46e88-30c84eea4a0mr4233861eec.35.1782420740087;
+        Thu, 25 Jun 2026 13:52:20 -0700 (PDT)
+Received: from niyudi-linux.. (179-242-249-142.3g.claro.net.br. [179.242.249.142])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c691dsm10981525eec.5.2026.06.25.13.52.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 13:52:19 -0700 (PDT)
+From: Pedro Yudi Honda <niyudi.honda@usp.br>
+X-Google-Original-From: Pedro Yudi Honda
+To: dakr@kernel.org,
+	acourbot@nvidia.com,
+	nova-gpu@lists.linux.dev
+Cc: aliceryhl@google.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Pedro Yudi Honda <niyudi.honda@usp.br>
+Subject: [RESEND PATCH 0/7] drm/nova: replace `transmute` with `zerocopy`
+Date: Thu, 25 Jun 2026 17:51:39 -0300
+Message-Id: <20260625205146.5047-1-niyudi.honda@usp.br>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Gary Guo" <gary@garyguo.net> writes:
+From: Pedro Yudi Honda <niyudi.honda@usp.br>
 
-> On Thu Jun 25, 2026 at 11:15 AM BST, Andreas Hindborg wrote:
->> Implement `ForeignOwnable` for `Owned<T>`. This allows use of `Owned<T>` in
->> places such as the `XArray`.
->>
->> Note that `T` does not need to implement `ForeignOwnable` for `Owned<T>` to
->> implement `ForeignOwnable`.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/owned.rs | 53 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 53 insertions(+)
->>
->> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
->> index 7fe9ec3e55126..9c92d4a83cc1b 100644
->> --- a/rust/kernel/owned.rs
->> +++ b/rust/kernel/owned.rs
->> @@ -15,6 +15,8 @@
->>      ptr::NonNull, //
->>  };
->>  
->> +use kernel::types::ForeignOwnable;
->> +
->>  /// Types that specify their own way of performing allocation and destruction. Typically, this trait
->>  /// is implemented on types from the C side.
->>  ///
->> @@ -186,3 +188,54 @@ fn drop(&mut self) {
->>          unsafe { T::release(self.ptr) };
->>      }
->>  }
->> +
->> +// SAFETY: We derive the pointer to `T` from a valid `T`, so the returned
->> +// pointer satisfy alignment requirements of `T`.
->> +unsafe impl<T: Ownable> ForeignOwnable for Owned<T> {
->> +    const FOREIGN_ALIGN: usize = core::mem::align_of::<T>();
->> +
->> +    type Borrowed<'a>
->> +        = &'a T
->> +    where
->> +        Self: 'a;
->> +    type BorrowedMut<'a>
->> +        = Pin<&'a mut T>
->> +    where
->> +        Self: 'a;
->> +
->> +    #[inline]
->> +    fn into_foreign(self) -> *mut kernel::ffi::c_void {
->> +        let ptr = self.ptr.as_ptr().cast();
->> +        core::mem::forget(self);
->> +        ptr
->
-> I think the pattern in `into_raw` is better:
->
->     ManuallyDrop::new(self).ptr.as_ptr().cast()
->
-> Or perhaps this can just use `Self::into_raw(self).as_ptr().cast()`.
->
->> +    }
->> +
->> +    #[inline]
->> +    unsafe fn from_foreign(ptr: *mut kernel::ffi::c_void) -> Self {
->> +        // INVARIANT: By the function safety contract, `ptr` was returned by `into_foreign`, which
->> +        // gave up exclusive ownership of a valid, pinned `T`; we retake that ownership here.
->> +        Self {
->> +            // SAFETY: By function safety contract, `ptr` came from
->> +            // `into_foreign` and cannot be null.
->> +            ptr: unsafe { NonNull::new_unchecked(ptr.cast()) },
->> +        }
->> +    }
->
-> Same here, could be using `Self::from_raw`.
->
-> However, the current code looks correct to me regardless, so:
->
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+This series follows the introduction of `zerocopy` to rust-next and
+replaces `transmute` traits with `zerocopy` traits. These changes are
+mechanical and don't alter functionality.
 
-I'll defer to `{into,from}_raw`. Keeping your tag.
+Specifically, the trait `transmute::FromBytes` is replaced by
+`zerocopy::FromBytes` and the trait `transmute::AsBytes` is replaced
+by `zerocopy::IntoBytes`. Additional traits such as
+`zerocopy::Immutable` and `zerocopy::KnownLayout` are implemented as
+necessary.
 
+This does not replace the trait implemented in newtypes over
+bindings. Currently, the only solution I can think of is mirroring
+the bindings into another type and transmuting when necessary, but
+that does not seem practical. Another issue is a type like
+`gsp::cmdq::GspMem` that explicitly does not meet the requirements
+for `FromBytes`, but unsafely implements the trait anyway because it
+knows all of its uses. Unsafely implementing `zerocopy::FromBytes` is
+not allowed, and implementing `zerocopy::TryFromBytes` would add
+unnecessary overhead.
 
-Best regards,
-Andreas Hindborg
+Feedback from the maintainers on the direction in these cases would
+be appreciated.
 
+Resent due to incorrect maintainer email address in previous submission.
 
+Pedro Yudi Honda (7):
+  drm/nova: use `zerocopy` in firmware.rs
+  drm/nova: use `zerocopy` in vbios.rs
+  drm/nova: use `zerocopy` in booter.rs
+  drm/nova: use `zerocopy` in fwsec.rs
+  drm/nova: use `zerocopy` in bootloader.rs
+  drm/nova: use `zerocopy` in riscv.rs
+  drm/nova: remove unused trait in commands.rs
+
+ drivers/gpu/nova-core/firmware.rs             | 16 ++---
+ drivers/gpu/nova-core/firmware/booter.rs      | 26 +++-----
+ drivers/gpu/nova-core/firmware/fwsec.rs       | 47 ++++-----------
+ .../nova-core/firmware/fwsec/bootloader.rs    | 16 ++---
+ drivers/gpu/nova-core/firmware/riscv.rs       | 10 +---
+ drivers/gpu/nova-core/gsp/commands.rs         |  9 +--
+ drivers/gpu/nova-core/vbios.rs                | 60 ++++++-------------
+ 7 files changed, 49 insertions(+), 135 deletions(-)
+
+-- 
+2.34.1
 
