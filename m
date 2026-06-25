@@ -1,63 +1,63 @@
 Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC76332EC1
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 20:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC417332EC1
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 20:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782420770; cv=none; b=g0VJiOhkdvH7CG68wZ/+xLmbNQYlyfGWgSPnsP4LBKZQo7lXpMoXtzWeYDyEpPjiuSFtANbWv8EpSM6kCOVSxixIX8W84ekjEZE4z9xNwkLWwcPNlaL/C7/Zy0SRvpFq8bkXIno3DasEcOaa82So7mYfMWI8oy4chNuhvQrJwbw=
+	t=1782420774; cv=none; b=Bc5wVlbc96VBz9W+cyfcwxo6zwcJW8/CHXxyxe/UTho3RatJo2beK3at0RM3Z+0cB9z6DKN3nhTKH8oyjkYBR5YfRLEDxaIA7eEAdof5zavcBTw0/4e/5F4SMizaOITS9aPdSshnfMLzfiqovXW0fr8XkNALJ12v+ZsZ45Y4xDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782420770; c=relaxed/simple;
-	bh=t2q8xrLgb+cVvPOt0w87a6e9ZSmUQFB6Nqn9L1La7ZE=;
+	s=arc-20240116; t=1782420774; c=relaxed/simple;
+	bh=D32koSWvgoGvKS8jYYXh314Q9RalPXe3O5ZeUWipDO0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C4ZaezMyoLMGfobyTuUMiLsO5+DkSEaC/PxYwEL5VHhS0XoExuVBjC35Xda1h2PtSxnwrUTZXN/uEuLTwCllhuxHNFVhz9flPZIf8Hf2LsEFC/JpslzXjWeudZZURvnT2pzXJ9OpZHHFyLGgOdoyj5j4XvhJ8DeWdnexOWZvypw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=jGpgMplU; arc=none smtp.client-ip=74.125.82.172
+	 MIME-Version; b=BOXeva4X5LTXvJvBhAdFhdqw7f2zpWbh7t0IKacBQbSLnMS1yIwrZ8b8KqfQfZ7D7VHtgNIveoTb/P4Vm+vwy4B5E9dZ2J0zh4nnZwmySvWqe6k619lsPyigwSFUhGsgEpn8smL8ZcbcyC9qZqAfoq/OkgcLL5lkpTqTy8fYSCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=UjCASfa9; arc=none smtp.client-ip=74.125.82.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="jGpgMplU"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-30c965eab27so864086eec.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 13:52:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="UjCASfa9"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-30bc806fcf8so403269eec.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 13:52:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1782420768; x=1783025568; darn=vger.kernel.org;
+        d=usp.br; s=usp-google; t=1782420772; x=1783025572; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9cVZWX31i00/Q+AQyz7DVfvfVMzM7hxRZQOP4HWyMgo=;
-        b=jGpgMplUv4xa1SMzzkc7iMRG8jbTbuI3Or/A0+lrOIlwgH7nSVz7MVZnYb57/qJabF
-         s+pW2vxTk0cVuXZepRJA87UBGbhLq4p/QWGb9Wl+BLrszMDScbfiQtS3mHc9QFxYAnYv
-         EesW6dWF0tAcDW1d+ymYgS4mtTHlEbiBLOWyoyoxHdxViMZgto9YaJhx0Wohl+RSs09v
-         L/ZW4mPba/wFpcvsveEcsRcRemOSeDR7qRAbH0bPXgntOxr4ZXH1n6CJ+mTBcWiRnpV/
-         eCLX+6kCvqk795weWzgrQ1dBscW7drapRPGEJUl/A2FkNA+vEG8plx6aeo1YcDdiNxjV
-         nGfg==
+        bh=90Bh++27PWYhH7a1Hqb3PFYlIq7kRvjS/VwtSAfZ+kU=;
+        b=UjCASfa9jGEedxFtTLnYj5nBa0QgMj/rQdka3gyOLWL4ab4pJlBZ4GXppEGb9z/Cyv
+         7GUHsAQtnRh4e0+RRKcR6r9YX4PrPizJYBi9smaHteCVVlW9bFmOEib3UTrUTPi6lcgh
+         TZAz55pVr8ViURctV3SISiN6F+R02NDaJbx2b3XGNyFJbb4+p1olgEdy3e8CuaCms5iK
+         Ne/cPc3HPo29ATsmMixX5plIwPqbcXB6d4HTGU+LWmLuD/rxgPXmy3Pukqt3/TOChM+d
+         QT9GBXgyIQBPNGHA3SaHMaMntQ7hxOYfrXQcYygzVjzSUCl+fdlxefmOD7JVICQY7lL6
+         Hz6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782420768; x=1783025568;
+        d=1e100.net; s=20251104; t=1782420772; x=1783025572;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9cVZWX31i00/Q+AQyz7DVfvfVMzM7hxRZQOP4HWyMgo=;
-        b=gWNNTBpJlQYjZuWKmc9iZqyPMbs8ifPVN8OUkCwxnremTJG7Hq7CO0+Gg+UE8p6QH8
-         tP239nOrn5p5qi3fGfW4927fM3IwOtyA4LXxB1/nF7X+heGsXZPjV9r97/r0LnPy+TKG
-         bO2gd7kptNqOaqxbQYz8Pz2s6/Jv3TYZ7CKMUp4HgLGKx0faOTlHJdfaLj0YXY8Z4Cc9
-         1VrWSgcJxQZtOGALNzo0JtPTyNjJjRTCP0SV66Cj823Jev1BfaOiZ+eZvu005rTsQRlx
-         oqQ/k6ctp9a1iVIWidCiMVxWeHfXCgowYZmn2IoRJQKPlMPxEzwzQbawXlRSLhFoWoTh
-         SfAA==
-X-Forwarded-Encrypted: i=1; AHgh+RqujkHNrrvnmlQvI5nEDyf0rkQGdppc6bBzbgNI+099yeSikNZ16MtV1QzvvEwrMcwMwHt37iFpGphNE03Ehg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydMuGzs/YChi4RESJh8Msrlzpl6mHBfCyVGa3RAOz/7a4S4Lk7
-	Hl9zZsIekhSvh9RkxdUDC8BovuSgQq/wDfFmlibKAT9zfMWz/BQxf2FObA7hT5KGXlk=
-X-Gm-Gg: AfdE7ckkXFrakfhk3Wb+XEW3dYqHqE8H7yUVWbWwbfSh9vou9ZPxpYQERRXXqSvT225
-	iUgiQLfnk1z6zZTOchO6Pkfw+BNe5/SUbES8PnkuA0Bn/gupnoR3zo5u62Ry9sxmBknX/BnI2QA
-	kbbKxNS8Lm4rpskxryC5ybw7e30bZZYgG6MXmddGXAQyG+HV7mluBqmrwWZsQ/9Rt7olMO+uy0m
-	sVF+Wk1IfA8c33j1vPbt2ncbX24rpe0e+xNewUgG3s+I6itUZx3vU6+Smwa8HPCWvsx6tRnAWLb
-	jL+dfAqJyUzAbw8HFaZN67bjtSByi/wlF5bWnkvmaIQ/Q7LAVffCoD9qxOKOkpmWlnvyh+0JCUB
-	dG0vJ7A8dK804rT2CiwP3+pevrIkl7V0e5ERe4HoTofalasMNZ2yHIjLjcDDbBCzMS7xbZOO/h5
-	scCZ/YmLQea77ntS1BcpQ1jl2QEoPs/9MYaF3X
-X-Received: by 2002:a05:7300:a497:b0:307:3a6c:ecea with SMTP id 5a478bee46e88-30c84b95570mr4109057eec.1.1782420767666;
-        Thu, 25 Jun 2026 13:52:47 -0700 (PDT)
+        bh=90Bh++27PWYhH7a1Hqb3PFYlIq7kRvjS/VwtSAfZ+kU=;
+        b=BHztTnz30/1J0DW3K6fMD4uwdcARkXq+kQVDFZ/bZkOfyCc3uBZahse01uOdNPbJvL
+         xfu0acfqk4OjHSThs/KuDmspNISxx7HszGpMoDWuSd+mcf0fgnNl5l4KwtsGuC/b4NrC
+         +2G56P7STaWUBXhZ1rRpKwpfSG31anTJm4kdC6+erDEM/pIbtSto6xphF+nJlX/dnzmo
+         CjsnPb3dGg/zpjq8rKhpCrw2riTX6WBEfYxHYY3NFq5RXEJRvQwDNMfgXuNwCx3StApR
+         EFFOeyY/B0xLI09maXSquQKhp/AokF6AvdCF30Iq854uvOuhUb+9nIfNn+/Iv/CMyKUG
+         GRuA==
+X-Forwarded-Encrypted: i=1; AHgh+Rrcvcf6Csqogxp9QLACy+Vf08oln1EGIq8uhPhH+UxSantiOLbfKGP8ZfWMw5Xqta/Ixqn75byi9OZNbHINpg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBqA2371M4lHuNgtGBoZBSmXWLcBqzwfyQQfFg0jNjbhAfrhU1
+	lHq2Iqps20EtYau+7VdpMKRtzazHP3LIz7l5Te7qY9gXO8KrXgW+Zlk2sFe6GX72sic=
+X-Gm-Gg: AfdE7ckSpVvvif+vdgTYuhJxgUkmhYSF3X0OyEsv7o7+qDsl8YNCSclMMtdgPkgtLNP
+	lIPlDgb+FZDrZ/dfwOaqKdKj8uIhVP9+cznwrfzWByZREb6dzeLke0D5PkRpPUxqFw6bjEWJuQG
+	nbZ560J/DhklT2sNYqIVlttqkE9gtUrT53fAyWN/rcvFFlZDMHE7gjNLFlhh9UmxOVRwbgl6SOo
+	mYMlyfCIgNLzDUOoYoC4X3GE0H7SNBGRwNr6yt/LxteeOIT/ecB9VKu4f7psd+g9iOjL6lG4S7p
+	wobRt37xxLk3hgjo/7dC9Z3/DGY3tQwDGSl84xRtAC9x9FDwmzj1aXPbly++joBFACrxNXiMQt6
+	G6Wc/Kn2Jqcj2IKJZ3kizeWUxRI5WGJpC7cCrNiLN4RcnfHRKHqmp6CnU1j/+SwFhT80YWG3K0N
+	x2roUYZZiLc+HzLfwxteXuQfUHVA==
+X-Received: by 2002:a05:7301:9c95:b0:304:e587:5063 with SMTP id 5a478bee46e88-30c84b6f548mr4769384eec.12.1782420771923;
+        Thu, 25 Jun 2026 13:52:51 -0700 (PDT)
 Received: from niyudi-linux.. (179-242-249-142.3g.claro.net.br. [179.242.249.142])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c691dsm10981525eec.5.2026.06.25.13.52.42
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c691dsm10981525eec.5.2026.06.25.13.52.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 13:52:47 -0700 (PDT)
+        Thu, 25 Jun 2026 13:52:51 -0700 (PDT)
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 X-Google-Original-From: Pedro Yudi Honda
 To: dakr@kernel.org,
@@ -70,9 +70,9 @@ Cc: aliceryhl@google.com,
 	ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Pedro Yudi Honda <niyudi.honda@usp.br>
-Subject: [PATCH 6/7] drm/nova: use `zerocopy` in riscv.rs
-Date: Thu, 25 Jun 2026 17:51:45 -0300
-Message-Id: <20260625205146.5047-7-niyudi.honda@usp.br>
+Subject: [PATCH 7/7] drm/nova: remove unused trait in commands.rs
+Date: Thu, 25 Jun 2026 17:51:46 -0300
+Message-Id: <20260625205146.5047-8-niyudi.honda@usp.br>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260625205146.5047-1-niyudi.honda@usp.br>
 References: <20260625205146.5047-1-niyudi.honda@usp.br>
@@ -86,60 +86,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 
-In riscv.rs, replave the following `transmute` traits with their
-`zerocopy` equivalents:
-
-- `transmute::FromBytes` -> `zerocopy::FromBytes`
-
-Update call sites accordingly.
+In gsp/commands.rs, remove unused `transmute::FromBytes` implementation.
 
 Signed-off-by: Pedro Yudi Honda <niyudi.honda@usp.br>
 ---
- drivers/gpu/nova-core/firmware/riscv.rs | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/gpu/nova-core/gsp/commands.rs | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/firmware/riscv.rs b/drivers/gpu/nova-core/firmware/riscv.rs
-index 2afa7f36404e..ba56bc7d4188 100644
---- a/drivers/gpu/nova-core/firmware/riscv.rs
-+++ b/drivers/gpu/nova-core/firmware/riscv.rs
-@@ -7,8 +7,7 @@
+diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
+index f84de9f4f045..a3c0b7fa3b9e 100644
+--- a/drivers/gpu/nova-core/gsp/commands.rs
++++ b/drivers/gpu/nova-core/gsp/commands.rs
+@@ -12,10 +12,7 @@
      device,
-     dma::Coherent,
-     firmware::Firmware,
--    prelude::*,
--    transmute::FromBytes, //
-+    prelude::*, //
+     pci,
+     prelude::*,
+-    transmute::{
+-        AsBytes,
+-        FromBytes, //
+-    }, //
++    transmute::AsBytes//
  };
  
  use crate::{
-@@ -18,7 +17,7 @@
+@@ -149,10 +146,6 @@ fn init_variable_payload(
+ /// Message type for GSP initialization done notification.
+ struct GspInitDone;
  
- /// Descriptor for microcode running on a RISC-V core.
- #[repr(C)]
--#[derive(Debug)]
-+#[derive(Debug, FromBytes)]
- struct RmRiscvUCodeDesc {
-     version: u32,
-     bootloader_offset: u32,
-@@ -36,9 +35,6 @@ struct RmRiscvUCodeDesc {
-     monitor_code_size: u32,
- }
- 
--// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
--unsafe impl FromBytes for RmRiscvUCodeDesc {}
+-// SAFETY: `GspInitDone` is a zero-sized type with no bytes, therefore it
+-// trivially has no uninitialized bytes.
+-unsafe impl FromBytes for GspInitDone {}
 -
- impl RmRiscvUCodeDesc {
-     /// Interprets the header of `bin_fw` as a [`RmRiscvUCodeDesc`] and returns it.
-     ///
-@@ -50,7 +46,7 @@ fn new(bin_fw: &BinFirmware<'_>) -> Result<Self> {
-         bin_fw
-             .fw
-             .get(offset..end)
--            .and_then(Self::from_bytes_copy)
-+            .and_then(|b| Self::read_from_bytes(b).ok())
-             .ok_or(EINVAL)
-     }
- }
+ impl MessageFromGsp for GspInitDone {
+     const FUNCTION: MsgFunction = MsgFunction::GspInitDone;
+     type InitError = Infallible;
 -- 
 2.34.1
 
