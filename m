@@ -1,63 +1,63 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0DA332EC1
-	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 20:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270E5332EC1
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 20:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782420752; cv=none; b=srPApXEAH32NSwGpSogwt9rQpqDXPBCMLG2Q0tcUZeJBrDYsBczN2dluNhGPV38BQoG481txa0j/fBjw6utzpmfu5IraBnJ46MZ1scmASGy+bt3fjoV0KaDaNxYZ9XOuRV20ApHG/JZVkQ1cfC3j20O1Ix2a9c78Bj87nYwJvu8=
+	t=1782420754; cv=none; b=S2VimUgQ7cgBfvLusjD/xbeT71gS3IO7gC0glm8zNl/BF1fzciRsJNCm5/TEpqqdsEoVoOh7ZL6haPkPr1aFr7p8nQvcqSLoLtiJikPah0syvqMGlAmUe2BlENdhjkS6ML3cy/GdDhFXke7vCj6oHX9Se4mM+P9ZfSHE0zXEV28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782420752; c=relaxed/simple;
-	bh=vHMxSHmRYtB8dudop2zEkGg1YGFOjPM9nPcrTfdgb7s=;
+	s=arc-20240116; t=1782420754; c=relaxed/simple;
+	bh=xTBnnZIRHNXyqcH/AMqAc+n4pvXKuXvBMMdPOnty8dA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=huYlQTl6TdxFWC5KBjQoS9svH++W2oXzjdq2kMFI0XG+kZ3wXonuwSKJnvNBaKccNKXXKQ1KM41/PpdWWVl1tzBlgBh425JnLc9hOVW8DcVRPPpyix1rz7pccV2Szx2G37Bh4rJEbndwA2NGkMffETsbJXzYsJ5EOMMwKtz1F/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=Oa2sloXI; arc=none smtp.client-ip=74.125.82.178
+	 MIME-Version; b=ArMqIUJgi90bmIyYYmfbmcKwX+ZmBHo1hy0Y/NGx7M0pvUvE24IW1I2mEnrw4BuviObkxtlkzlXPN7u6bm01YNe3Os8xuSeVDMvRzo6wD4ZmCkXm7P2Fm0yqkQGh7X8Qcf5RdmNZZrfVnMnFHx5Z8V6aA8VQoDjj1PJOnKInLR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=jytkFqpE; arc=none smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="Oa2sloXI"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-3078e0dcd67so528622eec.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 13:52:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="jytkFqpE"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-304f590dd91so425797eec.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 13:52:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1782420749; x=1783025549; darn=vger.kernel.org;
+        d=usp.br; s=usp-google; t=1782420752; x=1783025552; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JbsiPBhRXELXlciyn8qdhc91HfKLi4Tf8gGbIsDN50U=;
-        b=Oa2sloXI+Ze5I3Secnwc5FYnfPRXbXnyRX1cfTWL7khIt5uXUdov/lKfImNHSBrzNh
-         qN/w12R9bglrb3EJmqPZWh92/c/8+hgvbxR12bkaSEZcOxxhCPAp8JVUfKCU3TTw9aLF
-         8FMtmbASZtqYd1zVdZV0e59iq+guvHwLBzaYAFyJTDBNzjjm9K/V4Y1IOIldoRga0RrF
-         8/+ZwCfpHYlps/HsjJMSBGcn6OdNyJ516A2vdbtKFSC/0b2t9pIFjQPSyJeCwDTnoPZ9
-         cgeQQbJQPp9LeClWWH08NntPDdhs45OKGI465SNLZ0/2XU2V7hWVAGgQIxqRWO+jb/9A
-         xivQ==
+        bh=WOafAK7HDkFPoXdNsVBZ8vVOqlRlb6xT0ugQxmB4YIM=;
+        b=jytkFqpEt1UofZwIFpe+yrYXEVh8pZK7StAK+Ds/YXJq5mptwVqKEn1mGRnlENZM6u
+         ajWX6LcElffmSssH1N4Z20M3tqltMYCS/3PJRwNagh6aNbssR2fjqf2N8gGyaDeAn2S6
+         9n3TLSllGbWTBZpHcoDB3RsIxiNy+zwGqr8n0n8oNEpMyRQJ0Oo8cmY38n4TFzCkvwhD
+         U00Ny7bDRThdyipb+RiirThOnAguP37uO2CuSBAxUhyuFb3PauIQoiw5p6lZvz1HpvZB
+         eXhyD+NTOW1lXwYFanNaYW2uxFTgwvB7jvZqI7fVqbRmmLuIwVrDv+2E+46DWNoGiHRX
+         Wg5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782420749; x=1783025549;
+        d=1e100.net; s=20251104; t=1782420752; x=1783025552;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JbsiPBhRXELXlciyn8qdhc91HfKLi4Tf8gGbIsDN50U=;
-        b=VuwQXKo+B3PcDIQVbGC6+S82QeuH+Rhkkj/V4KUPTHeXxuydavlrfms3O9cec1WNM0
-         lUYduqQIDpae3DP+rpfzjVg1C4jFf32kffctjnk1bDbRo01yorn76JFVVRpR1H2ufvjX
-         9eHryyUkKSvfPg+5+sW9etguXstHfsOUWO0Q0x5D47DE4HQXdJ/yMFLz0QLOngJJYflm
-         krbT2GWJXp6xMg6TU9R5mIo37rvEn2huClQZ017XeW9+m77I8Ggyk8+uzxV3v4O4Av5K
-         ZQ1ZyJmXwpa3VPmlOaoH4L0kIX/wHll1n75D1q96gWuxGg/CTg/VBKKu6t8ScC0HpgoR
-         tzNA==
-X-Forwarded-Encrypted: i=1; AHgh+RpaRJwsEaZiWtGLLeDFkh2d8A+Z7tGlFi+7ajRjr926kjMC2R1k3BItFGmxenycb5ErjIVM2rnz5i6I9QicFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOR5GLaWnfXuvEKmV3AcimKJVDW3BCkx1I+4G/gTKN+b8hQcAU
-	TXpbpZPkf3DqQxj6Ki1K+MwKHhIM5WEHFRwMNOAjfBBHSt+kjzOhbwOHxnB/67iGKhY=
-X-Gm-Gg: AfdE7ckdkqUQD+DXAMAu1AfxJzq4Id8Qr9B8qKkMyBBEkZLPuBr3V8F67OndJQ4EB+6
-	pas9u8xIyZI24IN5aK5T45AueKGb9SHxYdWFL9vKx8NaIO6Mw5Qy45QQz+LM7lTct5efEIvaJ6h
-	5IzQkCNVum8V2wXRSI3yNA0MneoqrLttGjywJ0AMZIhrQHu1Uk/AITg2UML+F1RZD48ASXjEKjW
-	Hj45ADKUcPSlQdOV0tUEFOXZIxjdR/lAMC1c8TQHQ3Hwc9VIaFkUsqx7Iwns4sAhfmsZ1BilEAV
-	5h8Kxgq7kwN4PrjRqsmTUmqZ2D8543uQeuDR6IyV2HnxlNwffsOfPW+vNcCDkmh3geRe7z0LzKg
-	ZW30ZTm1ewwDlF6vY77mGKyBgGhGzYisUvFsbrOQv2MmvSYTKp1L968TrYvkmaoonI/WQ81UUpq
-	+sx5/d0+CdfycMeKmLPIrcW0AnoA==
-X-Received: by 2002:a05:7300:7242:b0:304:dd1c:737e with SMTP id 5a478bee46e88-30c84d0e939mr4353344eec.16.1782420748745;
-        Thu, 25 Jun 2026 13:52:28 -0700 (PDT)
+        bh=WOafAK7HDkFPoXdNsVBZ8vVOqlRlb6xT0ugQxmB4YIM=;
+        b=VoDyD84j0sPsH9myJ9OR6sZ8MCyWhBVJZzsHFv8Ofo4Qx9qt3KHaQl4vzOGXeSq1dq
+         7lbjOxsvqrFnnY1xlw67F4/vQLFXs0T+5pn5JPCQD4wq3VwHeNSl/XK5c8rGQ7f49pQd
+         C+jAcIuRIh11lb5GVf6QrvPbeQBRQyb0+YDPTVwfqINXTqj+ks0I3lUM89UsG9tsr1Zo
+         EWnT0LtViFhsGPXPKZ/Z3LjiNy58ZHBSp3+ftkj8EunYPWS9RPsGk4Hu+Vqc6Eluk2yi
+         AewMjCYPla6Pv9GNeGn8wZWLxaiPJqQXKNJkuMzg2LJeFXQbbwoBjpO2MtNYPsf+wbhg
+         np8Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqTYAXSwb0c6f68VXESwKE/IuQ5sZTjlkhTBKpilpp9RB/gMJiZ241MOOhqAxjjsvKgb7jyk/VCluJSIS5oXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPs97E358vBnMnsax76a5AuKdkqMnv4a7GDZ2+C5KIiIaPefAc
+	XMXv4vw/K0YVMYaZbCaQyqt0x03QHpQfEv3ufRCSvRqbdeYJp/Vh9MVAfZmtzUWx+bU=
+X-Gm-Gg: AfdE7cmENJzR7/9WcQCZElE8BxfKZuBRM495egMmlScUvAWPekT5XgNpM/650FZd/Gy
+	JmgzTyoJJQXUVgsMtFqoRpxDW/eYZd+Iw0tyz9q/54CuUvRWORjdCgv/Kgk7beEbefp5/V3EK2U
+	B1bGizuShSm2QsF/0K0dy16ht7ohwhe+5vGMH38YKFftZHGfyxqCaOWDjWWVJe3p93WEqmFU/+I
+	WoWKjnAEa3F9WrXNJZm/PZpRNRwjqe2SiA/BdDHEkqbGNd9cUAOlWqyEkPR45sGeqFAtMeXA1+C
+	A+9v+2WarnrPR6QCnYjmC6TCRYbSC7bAw30LqQYSy5XGlG6HfvSdHOYb0Nn4JjbMGvSFmm7YbYJ
+	RNeg8J3wQ0IZaqVU2l8PqTnJt7RIBG2Zo8fp3HAEWk0pz5c7tjz/OeoAYgMPR3CNIaSCJvylqTb
+	M2NGmvTiV0cBwQ8Sthp85rG6qm3SDC1JZf9Yfr
+X-Received: by 2002:a05:7300:8c2c:b0:30c:2af0:1cc with SMTP id 5a478bee46e88-30c84fdf0c5mr4811586eec.34.1782420752189;
+        Thu, 25 Jun 2026 13:52:32 -0700 (PDT)
 Received: from niyudi-linux.. (179-242-249-142.3g.claro.net.br. [179.242.249.142])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c691dsm10981525eec.5.2026.06.25.13.52.25
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c691dsm10981525eec.5.2026.06.25.13.52.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 13:52:28 -0700 (PDT)
+        Thu, 25 Jun 2026 13:52:31 -0700 (PDT)
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 X-Google-Original-From: Pedro Yudi Honda
 To: dakr@kernel.org,
@@ -70,9 +70,9 @@ Cc: aliceryhl@google.com,
 	ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Pedro Yudi Honda <niyudi.honda@usp.br>
-Subject: [PATCH 2/7] drm/nova: use `zerocopy` in vbios.rs
-Date: Thu, 25 Jun 2026 17:51:41 -0300
-Message-Id: <20260625205146.5047-3-niyudi.honda@usp.br>
+Subject: [PATCH 3/7] drm/nova: use `zerocopy` in booter.rs
+Date: Thu, 25 Jun 2026 17:51:42 -0300
+Message-Id: <20260625205146.5047-4-niyudi.honda@usp.br>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260625205146.5047-1-niyudi.honda@usp.br>
 References: <20260625205146.5047-1-niyudi.honda@usp.br>
@@ -86,8 +86,8 @@ Content-Transfer-Encoding: 8bit
 
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 
-In vbios.rs, replave the following `transmute` traits with their
-`zerocopy` equivalents:
+In firmware/booter.rs, replace the following `transmute` traits with
+their `zerocopy` equivalents:
 
 - `transmute::FromBytes` -> `zerocopy::FromBytes`
 
@@ -95,218 +95,115 @@ Update call sites accordingly.
 
 Signed-off-by: Pedro Yudi Honda <niyudi.honda@usp.br>
 ---
- drivers/gpu/nova-core/vbios.rs | 56 +++++++++++-----------------------
- 1 file changed, 17 insertions(+), 39 deletions(-)
+ drivers/gpu/nova-core/firmware/booter.rs | 26 +++++++-----------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index e6d144587c4e..a3c0c06f6818 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -13,11 +13,8 @@
-     register,
-     sizes::SZ_4K,
-     sync::aref::ARef,
--    transmute::FromBytes,
+diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-core/firmware/booter.rs
+index d9313ac361af..0cda2c50fbbe 100644
+--- a/drivers/gpu/nova-core/firmware/booter.rs
++++ b/drivers/gpu/nova-core/firmware/booter.rs
+@@ -10,8 +10,7 @@
+ use kernel::{
+     device,
+     dma::Coherent,
+-    prelude::*,
+-    transmute::FromBytes, //
++    prelude::*, //
  };
  
--use zerocopy::FromBytes as _;
--
  use crate::{
-     driver::Bar0,
-     firmware::{
-@@ -359,7 +356,7 @@ pub(crate) fn fwsec_image(&self) -> &FwSecBiosImage {
+@@ -44,7 +43,7 @@ fn frombytes_at<S: FromBytes + Sized>(slice: &[u8], offset: usize) -> Result<S>
+     let end = offset.checked_add(size_of::<S>()).ok_or(EINVAL)?;
+     slice
+         .get(offset..end)
+-        .and_then(S::from_bytes_copy)
++        .and_then(|b| S::read_from_bytes(b).ok())
+         .ok_or(EINVAL)
  }
  
- /// PCI Data Structure as defined in PCI Firmware Specification
+@@ -53,7 +52,7 @@ fn frombytes_at<S: FromBytes + Sized>(slice: &[u8], offset: usize) -> Result<S>
+ /// Such firmwares have an application-specific payload that needs to be patched with a given
+ /// signature.
+ #[repr(C)]
 -#[derive(Debug, Clone)]
 +#[derive(Debug, Clone, FromBytes)]
- #[repr(C)]
- struct PcirStruct {
-     /// PCI Data Structure signature ("PCIR" or "NPDS")
-@@ -388,15 +385,12 @@ struct PcirStruct {
-     max_runtime_image_len: u16,
+ struct HsHeaderV2 {
+     /// Offset to the start of the signatures.
+     sig_prod_offset: u32,
+@@ -76,9 +75,6 @@ struct HsHeaderV2 {
+     header_size: u32,
  }
  
--// SAFETY: all bit patterns are valid for `PcirStruct`.
--unsafe impl FromBytes for PcirStruct {}
+-// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+-unsafe impl FromBytes for HsHeaderV2 {}
 -
- impl PcirStruct {
-     /// The bit in `last_image` that indicates the last image.
-     const LAST_IMAGE_BIT_MASK: u8 = 0x80;
- 
-     fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
--        let (pcir, _) = PcirStruct::from_bytes_copy_prefix(data).ok_or(EINVAL)?;
-+        let (pcir, _) = PcirStruct::read_from_prefix(data).map_err(|_| EINVAL)?;
- 
-         // Signature should be "PCIR" (0x52494350) or "NPDS" (0x5344504e).
-         if &pcir.signature != b"PCIR" && &pcir.signature != b"NPDS" {
-@@ -432,7 +426,7 @@ fn image_size_bytes(&self) -> usize {
- /// This is the head of the BIT table, that is used to locate the Falcon data. The BIT table (with
- /// its header) is in the [`PciAtBiosImage`] and the falcon data it is pointing to is in the
- /// [`FwSecBiosImage`].
--#[derive(Debug, Clone, Copy)]
-+#[derive(Debug, Clone, Copy, FromBytes)]
- #[repr(C)]
- struct BitHeader {
-     /// 0h: BIT Header Identifier (BMP=0x7FFF/BIT=0xB8FF)
-@@ -451,12 +445,9 @@ struct BitHeader {
-     checksum: u8,
- }
- 
--// SAFETY: all bit patterns are valid for `BitHeader`.
--unsafe impl FromBytes for BitHeader {}
--
- impl BitHeader {
-     fn new(data: &[u8]) -> Result<Self> {
--        let (header, _) = BitHeader::from_bytes_copy_prefix(data).ok_or(EINVAL)?;
-+        let (header, _) = BitHeader::read_from_prefix(data).map_err(|_| EINVAL)?;
- 
-         // Check header ID and signature
-         if header.id != 0xB8FF || &header.signature != b"BIT\0" {
-@@ -468,7 +459,7 @@ fn new(data: &[u8]) -> Result<Self> {
- }
- 
- /// BIT Token Entry: Records in the BIT table followed by the BIT header.
--#[derive(Debug, Clone, Copy)]
-+#[derive(Debug, Clone, Copy, FromBytes)]
- #[repr(C)]
- struct BitToken {
-     /// 00h: Token identifier
-@@ -481,9 +472,6 @@ struct BitToken {
-     data_offset: u16,
- }
- 
--// SAFETY: all bit patterns are valid for `BitToken`.
--unsafe impl FromBytes for BitToken {}
--
- impl BitToken {
-     /// BIT token ID for Falcon data.
-     const ID_FALCON_DATA: u8 = 0x70;
-@@ -508,7 +496,7 @@ fn from_id(image: &PciAtBiosImage, token_id: u8) -> Result<Self> {
-                 .and_then(|data| data.get(..entry_size))
-                 .ok_or(EINVAL)?;
- 
--            let (token, _) = BitToken::from_bytes_copy_prefix(entry).ok_or(EINVAL)?;
-+            let (token, _) = BitToken::read_from_prefix(entry).map_err(|_| EINVAL)?;
- 
-             // Check if this token has the requested ID
-             if token.id == token_id {
-@@ -525,7 +513,7 @@ fn from_id(image: &PciAtBiosImage, token_id: u8) -> Result<Self> {
+ /// Heavy-Secured Firmware image container.
  ///
- /// This header is at the beginning of every image in the set of images in the ROM. It contains a
- /// pointer to the PCI Data Structure which describes the image.
--#[derive(Debug, Clone, Copy)]
-+#[derive(Debug, Clone, Copy, FromBytes)]
+ /// This provides convenient access to the fields of [`HsHeaderV2`] that are actually indices to
+@@ -145,6 +141,7 @@ fn signatures_iter(&'a self) -> Result<impl Iterator<Item = BooterSignature<'a>>
+ 
+ /// Signature parameters, as defined in the firmware.
  #[repr(C)]
- struct PciRomHeader {
-     /// 00h: Signature (0xAA55)
-@@ -536,13 +524,10 @@ struct PciRomHeader {
-     pci_data_struct_offset: u16,
++#[derive(FromBytes)]
+ struct HsSignatureParams {
+     /// Fuse version to use.
+     fuse_ver: u32,
+@@ -154,9 +151,6 @@ struct HsSignatureParams {
+     ucode_id: u32,
  }
  
--// SAFETY: all bit patterns are valid for `PciRomHeader`.
--unsafe impl FromBytes for PciRomHeader {}
+-// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+-unsafe impl FromBytes for HsSignatureParams {}
 -
- impl PciRomHeader {
-     fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
--        let (rom_header, _) = PciRomHeader::from_bytes_copy_prefix(data)
--            .ok_or(EINVAL)
-+        let (rom_header, _) = PciRomHeader::read_from_prefix(data)
-+            .map_err(|_| EINVAL)
-             .inspect_err(|_| dev_err!(dev, "Not enough data for ROM header\n"))?;
+ impl HsSignatureParams {
+     /// Returns the signature parameters contained in `hs_fw`.
+     ///
+@@ -171,14 +165,14 @@ fn new(hs_fw: &HsFirmwareV2<'_>) -> Result<Self> {
+         hs_fw
+             .fw
+             .get(start..end)
+-            .and_then(Self::from_bytes_copy)
++            .and_then(|b| Self::read_from_bytes(b).ok())
+             .ok_or(EINVAL)
+     }
+ }
  
-         // Check for valid ROM signatures.
-@@ -564,7 +549,7 @@ fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
- /// PCI Data Structure. It contains some fields that are redundant with the PCI Data Structure, but
- /// are needed for traversing the BIOS images. It is expected to be present in all BIOS images
- /// except for NBSI images.
+ /// Header for code and data load offsets.
+ #[repr(C)]
 -#[derive(Debug, Clone)]
 +#[derive(Debug, Clone, FromBytes)]
+ struct HsLoadHeaderV2 {
+     // Offset at which the code starts.
+     os_code_offset: u32,
+@@ -192,9 +186,6 @@ struct HsLoadHeaderV2 {
+     num_apps: u32,
+ }
+ 
+-// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+-unsafe impl FromBytes for HsLoadHeaderV2 {}
+-
+ impl HsLoadHeaderV2 {
+     /// Returns the load header contained in `hs_fw`.
+     ///
+@@ -206,7 +197,7 @@ fn new(hs_fw: &HsFirmwareV2<'_>) -> Result<Self> {
+ 
+ /// Header for app code loader.
  #[repr(C)]
- struct NpdeStruct {
-     /// 00h: Signature ("NPDE")
-@@ -579,15 +564,12 @@ struct NpdeStruct {
-     last_image: u8,
+-#[derive(Debug, Clone)]
++#[derive(Debug, Clone, FromBytes)]
+ struct HsLoadHeaderV2App {
+     /// Offset at which to load the app code.
+     offset: u32,
+@@ -214,9 +205,6 @@ struct HsLoadHeaderV2App {
+     len: u32,
  }
  
--// SAFETY: all bit patterns are valid for `NpdeStruct`.
--unsafe impl FromBytes for NpdeStruct {}
+-// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+-unsafe impl FromBytes for HsLoadHeaderV2App {}
 -
- impl NpdeStruct {
-     /// The bit in `last_image` that indicates the last image.
-     const LAST_IMAGE_BIT_MASK: u8 = 0x80;
- 
-     fn new(dev: &device::Device, data: &[u8]) -> Option<Self> {
--        let (npde, _) = NpdeStruct::from_bytes_copy_prefix(data)?;
-+        let (npde, _) = NpdeStruct::read_from_prefix(data).ok()?;
- 
-         // Signature should be "NPDE" (0x4544504E).
-         if &npde.signature != b"NPDE" {
-@@ -784,7 +766,7 @@ fn falcon_data_offset(&self, dev: &device::Device) -> Result<usize> {
-         let data = &self.base.data;
-         let (ptr, _) = data
-             .get(offset..)
--            .and_then(u32::from_bytes_copy_prefix)
-+            .and_then(|b| u32::read_from_prefix(b).ok())
-             .ok_or(EINVAL)?;
- 
-         usize::from_safe_cast(ptr)
-@@ -814,6 +796,7 @@ fn try_from(base: BiosImage) -> Result<Self> {
- /// The [`PmuLookupTableEntry`] structure is a single entry in the [`PmuLookupTable`].
- ///
- /// See the [`PmuLookupTable`] description for more information.
-+#[derive(FromBytes)]
- #[repr(C, packed)]
- struct PmuLookupTableEntry {
-     application_id: u8,
-@@ -821,9 +804,6 @@ struct PmuLookupTableEntry {
-     data: u32,
- }
- 
--// SAFETY: all bit patterns are valid for `PmuLookupTableEntry`.
--unsafe impl FromBytes for PmuLookupTableEntry {}
--
- impl PmuLookupTableEntry {
-     /// PMU lookup table application ID for firmware security license ucode.
-     #[expect(dead_code)]
-@@ -836,6 +816,7 @@ impl PmuLookupTableEntry {
- }
- 
- #[repr(C)]
-+#[derive(FromBytes)]
- struct PmuLookupTableHeader {
-     version: u8,
-     header_len: u8,
-@@ -843,9 +824,6 @@ struct PmuLookupTableHeader {
-     entry_count: u8,
- }
- 
--// SAFETY: all bit patterns are valid for `PmuLookupTableHeader`.
--unsafe impl FromBytes for PmuLookupTableHeader {}
--
- /// The [`PmuLookupTableEntry`] structure is used to find the [`PmuLookupTableEntry`] for a given
- /// application ID.
- ///
-@@ -857,7 +835,7 @@ struct PmuLookupTable {
- 
- impl PmuLookupTable {
-     fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
--        let (header, _) = PmuLookupTableHeader::from_bytes_copy_prefix(data).ok_or(EINVAL)?;
-+        let (header, _) = PmuLookupTableHeader::read_from_prefix(data).map_err(|_| EINVAL)?;
- 
-         let header_len = usize::from(header.header_len);
-         let entry_len = usize::from(header.entry_len);
-@@ -872,8 +850,8 @@ fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
- 
-         let mut entries = KVVec::with_capacity(entry_count, GFP_KERNEL)?;
-         for i in 0..entry_count {
--            let (entry, _) = PmuLookupTableEntry::from_bytes_copy_prefix(&data[i * entry_len..])
--                .ok_or(EINVAL)?;
-+            let (entry, _) = PmuLookupTableEntry::read_from_prefix(&data[i * entry_len..])
-+                .map_err(|_| EINVAL)?;
-             entries.push(entry, GFP_KERNEL)?;
-         }
- 
+ impl HsLoadHeaderV2App {
+     /// Returns the [`HsLoadHeaderV2App`] for app `idx` of `hs_fw`.
+     ///
 -- 
 2.34.1
 
