@@ -1,226 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D22B3B8111;
-	Fri, 26 Jun 2026 18:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD8D1684BE
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 20:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782499040; cv=none; b=h20FWLXUyY89qqNIxPa5cAWDfxmLjh9rsVlJ2M+o1rvkcOa75zTe+yxO3iqLcGRhkrOBDKnDAvW6KUn9zDA0yoMDDTcxzWcevL5XUwo+x4MkJI/6DKMgPeu/p4LdMRCkwYDp3C4UQ8NXzfIwTBZtCv2ncheOeitgNeTzBeTJf/g=
+	t=1782505614; cv=none; b=V45LOJD6q0db9HR7ydEV1jWur7KSv+smc1DCliUv4FuhVxIZwwtPXjSlLEOvBRn4pPkjyFjy8xxSoET14RvtiX6ZFkPblYhQMkxrY6v1DIbuTJV1pjaHy2Md1/NFFrymJcOCi35b0hsLTi9tVnR5Q2hHTZwQUt01qHOjvVo7xAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782499040; c=relaxed/simple;
-	bh=3vq6P1Iw4sXv6SGnFg+bbfLw4+Lb6O7oa2Gy0xr+WUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skztqXmdepYju6xIzqTW+g75B1Lz6AjIDfZ8H86bKiVY3sc8Yi71Z5OoyR7IXEovBgqFdKJ2dRGN+PXmfeSyeEQ7adRi5TvwQjVIFm51P8v5B2TI5vO7kOrOsbUPM63ARgtcMTpuzer3i9VhLBus0aNGbYsqgVuj5Gbv+bVWZnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pjv0/M6B; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782505614; c=relaxed/simple;
+	bh=btuFgTEw0REOFIy4E0WYoAD5GrPsY6+Ubc6FSSkUlCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BOj8hGTt0z4fyQUeH8CQ9EONGYgxQOk6rXLMti7oV33Djljg3XPMRDJjC3u9VsKKMMEFo3srk5Q4Fce7pR/RIf0FHjYHLQrnCANsb7eoshUrAgEwSP4KqITFzXGqjbbQ6e2c35tJpjfL36a7PKMmhCJ7XRrW4BfeIwM4xeYccRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gn+6fCjl; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pjv0/M6B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DAE1F000E9;
-	Fri, 26 Jun 2026 18:37:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782499038;
-	bh=6+T5BgRhhhJbLfHU3dWuWHcFHzu9JMvhs9bH+sGOzcE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pjv0/M6BH1x/qeOi+9+m9NhNlLI7UO8quiwwWdGBBrUTndUHXbs1IByZ61m65CDig
-	 4oo2Klw+IJUWAVXBrCwg+/FLlcQEwjW1ZRiLAbjSZmytMME/6ymQwP3meiUQyUkmt/
-	 8Z8i0iz6QzWeZwppzrlA5dKKxJYZ0TNpYJ1prNC4ZnpwBI1prw42WPRpdPf0pq5ZBi
-	 2c/R46UcwDIFu0Jff0150P//Sfwkk2CE2MwABxsFw+b4oUWycczdR0zVD7jmSKaCX2
-	 8cNSHv/PrmAtgfZodt20iSd5Zs+15a6abPVR6EVtOsvqdgXyLnKPHLdC0M6hiUnxU8
-	 HdrrE5vy4Wufw==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	acourbot@nvidia.com,
-	ecourtney@nvidia.com,
-	m.wilczynski@samsung.com,
-	david.m.ertman@intel.com,
-	ira.weiny@intel.com,
-	leon@kernel.org,
-	daniel.almeida@collabora.com,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org
-Cc: driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	linux-pwm@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gn+6fCjl"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c813a45a65so2405ad.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 13:26:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782505613; x=1783110413; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AzrBRNLhR0I6k4uRpbreKeFVMARQYKyxgDfOLGtLkVU=;
+        b=Gn+6fCjlGh+n74Y0GTb2YirUMeOOdRjVX+TuBBfBG1yCVyTF03r0qJbs2sZWcS7bnL
+         +KUYii2Iv3l9x/e/ipvqxgzvqwLWZpgxx7DdAtbINl/AOHK2MXr8enBwFApkT5jE3S7v
+         EYWLMS/gzj3Af2LWiRpXHJJKrhHTEviPjDU6K143sOgtiyAiLH2WppWM3LCRpVw2lm/O
+         gs2iNhCHjZYUVGN10vWZYAO3fjEdPpx3dWOP/PmdOCMWmVtLJMT4pBK9BXNVlEbcduqr
+         Vb0ZLw2wTYuoW2QTLEACpqN3kOOr7LXyRzvqqjoUdBix3EGJqE/gPyeCy0cgVKKA9QAV
+         JiNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782505613; x=1783110413;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AzrBRNLhR0I6k4uRpbreKeFVMARQYKyxgDfOLGtLkVU=;
+        b=Uxt6eZQVmNVlFHJ1n97MCt2uRfltNmK9HIp80cfG+xeZ/QQo7CwEd8K0FeWQLr5qBH
+         HkWWUkoAte7yL3kiROz3BGMj6nxKh7T2ektS12vcCFaI1cssB92wzwbw50mmDhw3zYZL
+         CBbMypZVQ1AnBIiMck2qkTR7rH8BVNkEy4a/0FKlV9m7b9URddcF9gCbvGgVPQ8Lisjo
+         Z3mPB1UE1sBbyOq84CN5fyQ9j1ndothpLAq3ziEMZ49A4qEsvkiIj/48orC9w49vItzK
+         4jJLmiIzJnZEVGjOWT/yIT4WFThoq2EZVt0p9iC6IjyR1AmRnjCKYtBfaR2mvNJpuCTG
+         w+Iw==
+X-Forwarded-Encrypted: i=1; AHgh+RoH7AKNRvPzXeVPE4E+yypNioLHLwNgx/DF8ltBImSwIJufSllaJ80xkFoqXEbfO61TIzh/HfHcdS9euf1Vzg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfa8ucrSyzmNHjdPXaiRX7i88YmIUBYdCkzDGdq+26SeQ/ET8d
+	V2jODw+IZhw0yCoDPZunRxhRrkJSaIdNnzdPWEj5stTB7aSHgHdZRAE3JRrJPmUhzw==
+X-Gm-Gg: AfdE7cmF5XdWkGmfi8cDQd51jg9IATItIuBRu5Mf/VIHUU+QcODrPCZr3Pdxo7NYAVt
+	FN3GNHA1lG3zoGckfZUFz8J59ahsUDBZeWTKx/5bFlzoCvpLFPZMrK4vGNf5S8zEcaK71vvDArZ
+	vvqxeVWqXr8en51ni53DuuCOIaTS/ly+vwsJc+637c/y3M1RjyGEhFLkaq8NohANlcAtr7anh4z
+	NG8CWljD35ZBaIEOQJuoJVQ9jglhNO05F0vKzejxVqa4CC4T+axw9dscT8aS7+HKQcXWs5d35Nx
+	JpnDHVxa+mO1peSv4/NIMM7z6HQdHkBx28+r7f154jJpeOjE9pzcwxrSRm4rZjPWgCX+KFgm015
+	bvY+/mSI/Bpj8ayUD0NElklQN/ftBomYL3N8ReKKY+zilTuXDMSFJaUlKyQG2jPLm6Zrh6MKk8H
+	NRHsjhlKksEevcdY1R3WEIHC2Uf30Bcp0/95RRwCVx2AGlTUuBmV2hLqzShqme7HbscknASUC8T
+	52ikoB9TKiF4ECJYbxGWeOffbNrmNrajnk=
+X-Received: by 2002:a17:903:2282:b0:2c4:3ba1:9b26 with SMTP id d9443c01a7336-2c9a235caaemr524215ad.0.1782505612571;
+        Fri, 26 Jun 2026 13:26:52 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63d09f0sm46943405ad.56.2026.06.26.13.26.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 13:26:51 -0700 (PDT)
+Date: Fri, 26 Jun 2026 20:26:47 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 7/7] rust: io: mem: return DevresLt from IoMem/ExclusiveIoMem::into_devres()
-Date: Fri, 26 Jun 2026 20:36:14 +0200
-Message-ID: <20260626183630.2585057-8-dakr@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260626183630.2585057-1-dakr@kernel.org>
-References: <20260626183630.2585057-1-dakr@kernel.org>
+Subject: Re: [PATCH 1/5] rust: sync: move lockdep types to
+ rust/kernel/sync/lockdep.rs
+Message-ID: <aj7gh_1_6g6a5kHY@google.com>
+References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
+ <20260623-pr-ratelimited-v1-1-cc922f544dc0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623-pr-ratelimited-v1-1-cc922f544dc0@google.com>
 
-Implement ForLt and CovariantForLt for IoMem<'static, SIZE> and
-ExclusiveIoMem<'static, SIZE> so that DevresLt can shorten the stored
-'static lifetime back to the caller's borrow lifetime.
+On Tue, Jun 23, 2026 at 03:38:04PM +0000, Alice Ryhl wrote:
+> The lockdep types are currently stored directly in rust/kernel/sync.rs,
+> but there are starting to be too many of them to keep them in that file.
+> Thus, move them to a submodule.
+> 
+> For commonly used lockdep logic it's useful to keep re-exports in
+> kernel::sync, and this also avoids the need to update any users.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
 
-CovariantForLt is sound because both types only hold &'a Device<Bound>,
-which is covariant over 'a.
+Looks good to me,
 
-Since DevresLt::new() handles the lifetime transmutation internally,
-into_devres() no longer needs an explicit transmute to 'static.
-
-Add DevresIoMem<SIZE> and DevresExclusiveIoMem<SIZE> type aliases.
-
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- drivers/pwm/pwm_th1520.rs |  5 ++-
- rust/kernel/io/mem.rs     | 65 +++++++++++++++++++++++++++------------
- 2 files changed, 47 insertions(+), 23 deletions(-)
-
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index 3e3fa51ccef9..7102c60fd14b 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -24,9 +24,8 @@
- use kernel::{
-     clk::Clk,
-     device::{Bound, Core, Device},
--    devres,
-     io::{
--        mem::IoMem,
-+        mem::DevresIoMem,
-         Io, //
-     },
-     of, platform,
-@@ -86,7 +85,7 @@ struct Th1520WfHw {
- #[pin_data(PinnedDrop)]
- struct Th1520PwmDriverData {
-     #[pin]
--    iomem: devres::Devres<IoMem<'static, TH1520_PWM_REG_SIZE>>,
-+    iomem: DevresIoMem<TH1520_PWM_REG_SIZE>,
-     clk: Clk,
- }
- 
-diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-index fc2a3e24f8d5..4691a01a3cf7 100644
---- a/rust/kernel/io/mem.rs
-+++ b/rust/kernel/io/mem.rs
-@@ -9,7 +9,7 @@
-         Bound,
-         Device, //
-     },
--    devres::Devres,
-+    devres::DevresLt,
-     io::{
-         self,
-         resource::{
-@@ -20,6 +20,10 @@
-         MmioRaw, //
-     },
-     prelude::*,
-+    types::{
-+        CovariantForLt,
-+        ForLt, //
-+    },
- };
- 
- /// An IO request for a specific device and resource.
-@@ -172,6 +176,19 @@ pub struct ExclusiveIoMem<'a, const SIZE: usize> {
-     _region: Region,
- }
- 
-+impl<const SIZE: usize> ForLt for ExclusiveIoMem<'static, SIZE> {
-+    type Of<'a> = ExclusiveIoMem<'a, SIZE>;
-+}
-+
-+// SAFETY: `ExclusiveIoMem<'a, SIZE>` is covariant over `'a`; it holds an `IoMem<'a, SIZE>`,
-+// which holds `&'a Device<Bound>`, which is covariant.
-+unsafe impl<const SIZE: usize> CovariantForLt for ExclusiveIoMem<'static, SIZE> {}
-+
-+/// A device-managed exclusive I/O memory region.
-+///
-+/// See [`ExclusiveIoMem::into_devres`].
-+pub type DevresExclusiveIoMem<const SIZE: usize> = DevresLt<ExclusiveIoMem<'static, SIZE>>;
-+
- impl<'a, const SIZE: usize> ExclusiveIoMem<'a, SIZE> {
-     /// Creates a new `ExclusiveIoMem` instance.
-     fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
-@@ -198,15 +215,13 @@ fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
- 
-     /// Consume the `ExclusiveIoMem` and register it as a device-managed resource.
-     ///
--    /// The returned `Devres<ExclusiveIoMem<'static, SIZE>>` can outlive the original lifetime
--    /// `'a`. Access to the I/O memory is revoked when the device is unbound.
--    pub fn into_devres(self) -> Result<Devres<ExclusiveIoMem<'static, SIZE>>> {
--        // SAFETY: Casting to `'static` is sound because `Devres` guarantees the
--        // `ExclusiveIoMem` does not actually outlive the device -- access is revoked and the
--        // resource is released when the device is unbound.
--        let iomem: ExclusiveIoMem<'static, SIZE> = unsafe { core::mem::transmute(self) };
--        let dev = iomem.iomem.dev;
--        Devres::new(dev, iomem)
-+    /// The returned [`DevresExclusiveIoMem`] can outlive the original borrow and be stored in
-+    /// driver data. Access to the I/O memory is revoked automatically when the device is unbound.
-+    pub fn into_devres(self) -> Result<DevresExclusiveIoMem<SIZE>> {
-+        let dev = self.iomem.dev;
-+        // SAFETY: `ExclusiveIoMem` only holds a device reference and an I/O mapping, both of
-+        // which remain valid for the device's full bound scope, not just for `'a`.
-+        unsafe { DevresLt::new(dev, self) }
-     }
- }
- 
-@@ -232,6 +247,19 @@ pub struct IoMem<'a, const SIZE: usize = 0> {
-     io: MmioRaw<SIZE>,
- }
- 
-+impl<const SIZE: usize> ForLt for IoMem<'static, SIZE> {
-+    type Of<'a> = IoMem<'a, SIZE>;
-+}
-+
-+// SAFETY: `IoMem<'a, SIZE>` is covariant over `'a`; it holds `&'a Device<Bound>`,
-+// which is covariant.
-+unsafe impl<const SIZE: usize> CovariantForLt for IoMem<'static, SIZE> {}
-+
-+/// A device-managed I/O memory region.
-+///
-+/// See [`IoMem::into_devres`].
-+pub type DevresIoMem<const SIZE: usize> = DevresLt<IoMem<'static, SIZE>>;
-+
- impl<'a, const SIZE: usize> IoMem<'a, SIZE> {
-     fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
-         // Note: Some ioremap() implementations use types that depend on the CPU
-@@ -271,16 +299,13 @@ fn ioremap(dev: &'a Device<Bound>, resource: &Resource) -> Result<Self> {
- 
-     /// Consume the `IoMem` and register it as a device-managed resource.
-     ///
--    /// The returned `Devres<IoMem<'static, SIZE>>` can outlive the original
--    /// lifetime `'a`. Access to the I/O memory is revoked when the device
--    /// is unbound.
--    pub fn into_devres(self) -> Result<Devres<IoMem<'static, SIZE>>> {
--        // SAFETY: Casting to `'static` is sound because `Devres` guarantees the `IoMem` does not
--        // actually outlive the device -- access is revoked and the resource is released when the
--        // device is unbound.
--        let iomem: IoMem<'static, SIZE> = unsafe { core::mem::transmute(self) };
--        let dev = iomem.dev;
--        Devres::new(dev, iomem)
-+    /// The returned [`DevresIoMem`] can outlive the original borrow and be stored in driver data.
-+    /// Access to the I/O memory is revoked automatically when the device is unbound.
-+    pub fn into_devres(self) -> Result<DevresIoMem<SIZE>> {
-+        let dev = self.dev;
-+        // SAFETY: `IoMem` only holds a device reference and an I/O mapping, both of which
-+        // remain valid for the device's full bound scope, not just for `'a`.
-+        unsafe { DevresLt::new(dev, self) }
-     }
- }
- 
--- 
-2.54.0
-
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
