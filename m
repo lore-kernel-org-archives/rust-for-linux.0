@@ -1,152 +1,171 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010037.outbound.protection.outlook.com [52.101.201.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356B83D5235;
-	Fri, 26 Jun 2026 06:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782454761; cv=fail; b=NBlAXMJciLzO7a/G0W6CRem4aZFAfvTev2uNT1/JG4KgqurHkJAa0U+sjHbQuNDHoMJ/nMVr1NEEKG00W/tpcYZkSty5E+1GT4m5ttqMjKHs6S1smPcafrZ7EcFsn7YhxBrv1mCBUoR9Ld53T0fnhgg21RM1xixIs17puvXZGNc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782454761; c=relaxed/simple;
-	bh=JMjJ4g7Q7MqtH/Y+8ICI0X012BvqR7uvA6V0JTfQpc4=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=KVeu2Q81ePpfrMPFhCZauxU9y7wFZDuVtwdNV/gjVAgiKwoR1lLCazFi6PSZLtyXIKbtyX0d0cHDllwrDBm6CgfG/HF+VbGwuS/eEw6Wm9e9ZvrBGsJ1DdSxIaOErJsHdpmqXoft+FkCD1uiDlhIH127t3NGNwN5Mnf8L0w0zSw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DA2RRu5e; arc=fail smtp.client-ip=52.101.201.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3A213D53C
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 06:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782456629; cv=none; b=BFjNqFdDkdZnfyU/3PK58Ta0n+VIHP9p7NZL8lDg3GBxEXCRWN15MR9WyAFdC0clep9abkJuzF9/8EL5pbK3U8QQTnB4ubpHuppfWs0MmHSoi03HQuYRrG8wbXmQ8oF1iTNqRreja7xblpN5Yxlar8gkcPFn9fpcea6FyX6E1eY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782456629; c=relaxed/simple;
+	bh=9qlvLTNPPsGGqeXnLIbL2glNyTP3E/9dVfxeXOSkHIY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ttv9ZKdnxuJvhD27oL/MeNRAWKRZX8gzjHNu449pAgLC1nR4RCTdgRC+Tu32vCzYZk3o0S7+25cxj1BcddWqmEtd4Zu23gdIpty0svmVymOeBARVL4dFYVDycVQ//t+WGm0vCZWSHEjCz5H2mrHk8clsj9og88j25Qy7OPj9IXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PpWYoxiR; arc=none smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DA2RRu5e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=blII3NEmpcyFwrO6iNlNbr+i6uztOTZAqYDx4KuJhXUmp9dNFGsnwO+F+lyHJyPm0zwyrNsmKOl6Df79FNY26au3c6I0Gtf3mkZr6QplKGDL2lgm313UJvOfy/IUxHBHzauxeM0bz7U4EhH6LBUimrmdPPu0yzGhItcEP0kxVlG9NRssn5GWDH1SWWlgYBdgXBGt0RDs1IOLdVmUoAi49cDhwmC1tN6LouTe59jtWccm3oYJ5Q+lqATtqOiqUeMtdX2cTctql2PJgKggWLsDpVKzzaFCO4FbcrRyT7+ghTeIuK0m8YlTcsM25EVih/2f/5xtfRt0iSOU+d+hwYPRVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JMjJ4g7Q7MqtH/Y+8ICI0X012BvqR7uvA6V0JTfQpc4=;
- b=DOcxb+upLuT1xvynrZggVky36Izop6me1OkFVDnBdEXh8bXDp3tGy4BM93Zbb2lTA4TpKVvkQamK/tm7sQfMefrBTvhAR0ZOHp09dAGSvnBMZIEPSS+X1uPNl+UD6bXnMO8YU6ZyaFpqMPSEX+wtWx1FBJmtYA7NzP92i5C2KKyjf7WaFsydRAXYJWgWjxoHd0+cCNNoXyEK4rueyMg6KKxcXRVF6ISFGmu9N73UfMX9uff3omc1GfudIo4inN3uc9yuhlbf5D4lLEG41md3/n5aYv1YLTzmJtfl0KbJnozMK8iYng5i3Q5UajK6RpM6pv9dFkQrRnEN8N/FcnHeEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JMjJ4g7Q7MqtH/Y+8ICI0X012BvqR7uvA6V0JTfQpc4=;
- b=DA2RRu5ezHS2iUV6QXyLz6Xt0upm/rfkSBqS+CptrGHdMzund3QSbK3P6lzwz7AgTfdYBLTrmZQut6F1zDlkGfrZuKzBHl5Gx5J+0RtnZ+ilrmSy+mcLXh0pqegyKrU/kPDuIsZ7X7C13nDbcS/EuNzGsfyvdZYDTmzHRAbpMN1l0+PftavfVlgB5E9JzRkxPS7ByhDaAcSEc+CM7IBAD3Hg+nzJ1n29XDZt9nZLZABTnHt19crldz+sON9vA23kFu9g3bB7t/z6xpR4aDdXHElwjFBvhdNNqbbISligOUsWmiNigFHG2D7Jq0VtUB0VqvOEd01KocB0ZOEwKi7kZQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MW4PR12MB6707.namprd12.prod.outlook.com (2603:10b6:303:1ee::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Fri, 26 Jun
- 2026 06:19:14 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
- 06:19:14 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Jun 2026 15:19:09 +0900
-Message-Id: <DJIRH3MNGBR0.1N2M71G4C60KO@nvidia.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Benno Lossin" <lossin@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Boqun Feng"
- <boqun@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
- <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <linux-usb@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel-mentees@lists.linux.dev>
-Subject: Re: [PATCH] usb: rust: Use pin_init::zeroed for usb_device_id
- initialization
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-References: <20260625224927.404258-1-nico.antinori.7@gmail.com>
-In-Reply-To: <20260625224927.404258-1-nico.antinori.7@gmail.com>
-X-ClientProxiedBy: TYCP301CA0038.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:380::13) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PpWYoxiR"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-304f590dd91so880343eec.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jun 2026 23:50:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782456628; x=1783061428; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Aba3H/t6EYUlyXlaVKq50Xkb65xKw4DsCtr12qP1nzs=;
+        b=PpWYoxiRbj/hfZqDYBq8QFP26t2rgqtIUONUyrMz/SU1veorBAK2g553TndRK9n8zX
+         aECEgMzoIY/tYZr+GA8xvz2/NnFhUqeykmbDsU3n4RJn0TVXBgf7l+/EoDkpGs3R0j7Y
+         dwyti4LbNnT2o79ujJo+uYpKVnWrLvVcJS6HS7/RpjKhBgDLJDskSO6EAOCbZm4wQkjs
+         GAE+SvpEuRDAAl21PK6vdROSn/WjdvY3BZ8eCZKNSOfuZg6WlLtSutsX6k7u5RR4uxPu
+         m8k9RkCL7gBbMMSPH1UBp4o7ozxFnPi8gbyj7YI6oRz7Pi9uo7x+vMG/E0eZzcuiXJkN
+         we8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782456628; x=1783061428;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Aba3H/t6EYUlyXlaVKq50Xkb65xKw4DsCtr12qP1nzs=;
+        b=qm5taaLSEvk7wVRqILnUXtNPUh9HqzpjhbOHpua8Mw/BnfhhBeezML5LhUOmEmopLP
+         swzQInbE1WoX0xYZsShpDuwTEX8bER+5Iq5Kabk2yuIFLDqsxIvQ06rH0YMIfYSHjbR3
+         +IwdHS5omzB2rEGE/fhl4HA/u5KkH0UOZg7cCcKmLWXsjNzWfl03npxuo/XYD3sk/l0A
+         XSIv/x0cH8gQRZwm5iTdWtDwoafLs9ww9sVH7J4vJpQjuO1r/6g7WmVCxDjQqeEPEgcG
+         vpL5UuZhTSeNWg93MGqGvPyQrAWu2BTEkZEmFOwqalbbHj2GfQThw84zYDlkcTxt7gTJ
+         o7sQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr2vmHonkCO4j6LVQjCJZI5gIPhBR7dAWGrKfloSmCpjce8pjXqszNsIOnrXkCOxicIR00HQVPya/5miq4/rQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX9tVlpgjQ57DtAE/Fs9LYq4qYrg/9DS8OBZgCpKPNs7YG6hfH
+	p/qoIofIffK1EFSgNrRkreoy5EiTS8lo/L40nhAC27ACu7DuLbhN/LXD
+X-Gm-Gg: AfdE7ck7+sCG5Zal+zsCdMQX3Q1sGB3JdeEnbJgv12tcgB83v1W2gmmwJO5EWDAgllu
+	3Q4p5BJ7D/pWZTZjoDih4mNqOnXQqEbGCxtCNpUZnLUEHuok8r9Bxat3KaQH0imnRa4pzz9Uu6P
+	psLxHK2h1V1HUTKkNKba9E+my8tAvjucIdOYMj0l+Q17JlhUv0MNKXEjXGAq0nqr6fgD0XOERP1
+	vQdPMrj6ITXW5xM91jM+Z7/l25c3ox9JA8QenR8SSY54Ju1wKyiQoUhLs6VX0iX1Xy4Y/aG82V7
+	Uunz1RObT4AmRtDMCpXoFIOOE4cZTP+Kh3gDgkQ7ntF8+98ObH5qDuDjbMp/DZrTO8MNM8ZSRjn
+	NL5aFVpRpH/ZIEZZzWy1/v2dM33KQ+pd6k3kVyzC/APSqTgcpx4a28XQwV6FW6PFzd4YivTKZXq
+	laoPCqxF3yVYtZKiZ6Dq0/dMvqN28SmUbNKaX+Ffk/QN1JGgZsHaNX0wV6xfKj
+X-Received: by 2002:a05:7300:8c15:b0:30c:1147:ccc3 with SMTP id 5a478bee46e88-30c84fdbbaemr6195163eec.33.1782456627484;
+        Thu, 25 Jun 2026 23:50:27 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.236])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c9faab3casm2579526eec.1.2026.06.25.23.50.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 23:50:26 -0700 (PDT)
+Date: Fri, 26 Jun 2026 12:20:11 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
+	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
+	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
+	daniel.almeida@collabora.com, acourbot@nvidia.com, fujita.tomonori@gmail.com, 
+	gregkh@linuxfoundation.org, prafulrai522@gmail.com, tamird@kernel.org, kees@kernel.org, 
+	lyude@redhat.com, airlied@gmail.com, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH V16 4/7] rust/powerpc: Set min rustc version for powerpc
+Message-ID: <aj4gAdy2siBxONpo@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+References: <20260520064630.1785283-1-mkchauras@gmail.com>
+ <20260520064630.1785283-5-mkchauras@gmail.com>
+ <CANiq72nPOMkZXpMpwTLFg4xjFfmyf_O_x2FN_nrNBsxeNu178Q@mail.gmail.com>
+ <ahVb4k-2rC4EYZF9@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB6707:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76b21c49-645f-4c6a-f65d-08ded34ad780
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|23010399003|376014|7416014|56012099006|22082099003|18002099003|11063799006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	jGt39F05+VPUEp+RR0GArMsYWRRPta5z6vFlxy/+kKW4g76XnhWP6SZog2QPJPfZZwpUujjKvKm/9T6SblPeSsuAHVUoiFlJIR3irOYjORQxAD3LJ9JCZlF+DiiNlnU03Zp9zaEHm+gV/GsFa+JNZJ18vwKjyLYZQrPuVbbSIDAjOg3x4E1N+LOAwRW8wfW19lRpUwAKYJ30ydV5/mX8eZ2hMh9Yovv+FHFbkVfmM1eWEmh+gvY7WcsZzxL0qUjY5uVSTh2R1l0hlJnMfF81IXKrWBK8DYUjbHIbfRnkf1BovYEvZ44QoodXrnzqg2LpT4VB9HVoJYRAPSBNWCYlmufhAbjus0WZB7H4X7GYbTE7mIuExRX+oYr9Zmf+FmdyJRRgNCyV9G+MtBPL4QNHsNNh1J9LS/k9N3rsQgRTaVsNwlwI9HaOhFm80EsLhnrll33kAu/iB/6EuuumC+gvF0BucIDFQIJvY3kq0H6CGICtpGPch67n+I6MwYrCVrc/dXJ5GHrhOMr+LF/gU/fyGolVXGqf6eznVNx5k8g5kh7yCjXrgAili1VT44A2Yby1sg9e4y6iPu5rNz+PniP11W6bDxh1undP+LXpdm4Vb+Pu5ojrmXhxPvcXwneNKXrqWL/ZJM89Ym1ZEr19rthZFmDQN3Sywe6AoXkZ4DY/qIQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(23010399003)(376014)(7416014)(56012099006)(22082099003)(18002099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aks5YlE3T3o0M0NMQWNJdWo3eVNMenI0U0hrT1J4N3I2YnFsd3g1ZGVqZ0ZP?=
- =?utf-8?B?OWI2TUdMOEtZWlQ4dG9Hd0w3a3l2enNaZk5kclU1MTI4TmN1dWtGOHZiLzBs?=
- =?utf-8?B?bVZOdTRRVWNZWFFRTDZ0Sk9mVDFMdGxxR3BsWWowZEVhTjgxWWFQOGZPVU1N?=
- =?utf-8?B?aDJoaTdib21WN1pINUtWdzRrMzZ2MkJJdFVKSHNoS2tJYjFYYWQ5L20vMTFQ?=
- =?utf-8?B?Y2tod1ExbjdUQjk2M1FISlFPRFB0SVJHdS9EazIzZndWeWpLNkdaNlFXbEFt?=
- =?utf-8?B?YW55VlY1U0hJaTJpbExOUVB2NWZZYnJaa3hTdEY1dWJWTjdRdHcwK0JxZGxN?=
- =?utf-8?B?cmtHWFRKMjFRd3ZIQnBDODFjMyt4bDlQaHZJNndMY1o3VDEzZ0EzU0RzV3VD?=
- =?utf-8?B?SkVBYTVVaEVUcURkNjBrR1RZYXJsZDNUMnBkbWNwMnpPdW5aL0RpTVFGcm5L?=
- =?utf-8?B?UzJaZ1NrQlEvT0F3MUVuMjF2ZGw1cGM0bTVMTkVUZmpNaHU3UHlPQ05mazA5?=
- =?utf-8?B?bkIzRmpIeWxiVFkzdkE1SWRwVWZMOWFjY0tMNDBMUlBkVFFOVnZTTURNUlNi?=
- =?utf-8?B?UktBNEhXWVByc2pWeFZ3VHovUHlHRC82Zk04aHhwdFVzUC9xTkRKMVh0RVRJ?=
- =?utf-8?B?QUFzVGNWdS9yTVcydmtoRWtpb2cySStvVmpSRk5QbWxqMU1MOWcyTWVzeEla?=
- =?utf-8?B?QWFLa1RRdkh3c1o5OGxrL3ZOZU9ZbzNnNUhDR3JGVVpzUlk0bG1lTG0vc2l0?=
- =?utf-8?B?Q2hsQVFoVXBIVTRmQVlOZHZxSnpFRlNJOXBRcEl2YTBNL2JYZGErd2loSSti?=
- =?utf-8?B?UFhkdkQ5RGd2bXY2M3pNVW5uUzlrMEJ4eHBoakpWcGhtcTEzR0IxblNENE84?=
- =?utf-8?B?VUlvbHhaemFCZTVDRFBFRzhDOFE2UFpWRE8yK2xESTZ2UnNrRnh3RXZwS21a?=
- =?utf-8?B?MHl5cnhyNmxLdmxHdTF4WVhHaHovSFRXK2xVZDVLeGo0d2dJOHl5VDNjREpE?=
- =?utf-8?B?dGRNTlQrOUpDbmdYUWQrbjhRZVo4NVBPNmdpdkZxRExyaFJyTDV3WXJWOE1M?=
- =?utf-8?B?TDBtTkt3ZVBtekpwOU1mdnAyT1dNZUIxOUVkbkp6NU81SWRhVUV1ZmwweHVz?=
- =?utf-8?B?WitGWWdVSFlrN0dUNlJ6aXdnM0ZOaFQyQzk3OUIrVFhpazZFZmx4WHFUbDVa?=
- =?utf-8?B?NmRCdmxrS1Rmb1VabUdZb0lTQ2UwOFZVY2xyRWgxblVOR2k4bFV6MEdlVG5x?=
- =?utf-8?B?ZVozMUw0dVVkUTdYNmE3OXptOHZqNW9nNWdYZ0FFQU9JTlkyaGNiS2ZUOFVT?=
- =?utf-8?B?anRMQngweEtURVRERWZtVHpia00zemhjZFdCblpVUGpsTUlMdVd5RFVMMlYw?=
- =?utf-8?B?clU1M3ppS2pOVGUyazNoQlVKWjhaaExuVUNRMlR1NVZqb1ZoNC9uODVQZUkr?=
- =?utf-8?B?N2VrZTZ1ajd4dXVuNTNrRnZISXlRWGN0SUVUZkZmMTBJTGJ0TUU3ZkZ2Z2Qw?=
- =?utf-8?B?L2lBM3BpTlZCQndldnFYUm9JVDg4clMwZkQvcncxbncwNUNFQUx6Nk80WHpx?=
- =?utf-8?B?UCszWmNVQ0xJOXBaeUJMc3VqdFVJc21ieklwclYzR2NBL0x4OVU4N1htSW9m?=
- =?utf-8?B?Nnl6cU5FSkR3VjJlYkNhMjhYT1l5cHc0eWZUcGFxSXI2SjRLa2VaL3NFdFhH?=
- =?utf-8?B?NmtVbGZQZG5vakxlT21PRk5TSUxudVQ0WitLKzF1Mk50QnlKcDdDWHBtOGhJ?=
- =?utf-8?B?NGxRTWk5ZlVjcWZDci9iVFdBZGRnWmV2S2x1WnF4c1Vmd1Q1djZEWktPdFBv?=
- =?utf-8?B?bld4eVlpKzZOa1NvN1pQbUxLTkNIM092bzZDLytoMC9lZnFnREFmM005ZllK?=
- =?utf-8?B?MjhnZU0zNWJ4VUk2N25haVdyalEzQlJUdTh5SUpLejVsOW5NUWNCQU43S1ZS?=
- =?utf-8?B?QVYrOHdwbkxLT2lBM1R4d09zSml2NDZGMENUVnBHdHJic2hyaUZmMDFteTBq?=
- =?utf-8?B?NHkxSlZkNGlFay8yNUhab0dCVlE3d2JJMHpFWVN0K2dXQ25FbVhPeE4zYmp0?=
- =?utf-8?B?K2lXbngySm1YWkpCS3NxZjNEUlFyeDlRMEN3VlpNODdkQytqS014SGRJRzVS?=
- =?utf-8?B?SHZORStMTml4TEkrREF6M1czTVpRdFdGS1RqUGFEM1RyK0QxZStJWUtIbHRw?=
- =?utf-8?B?aVROZWo1ME1nMlhPR09VMjlkTjROY29zQWdZYnNlamFQSVdWa2Jna28wZTNh?=
- =?utf-8?B?aklVODhxdS9nYlJQMUZqUlNoWDBoRi8xT2gybzZWUDNld2JPNEZVVUI0UUVD?=
- =?utf-8?B?QlJBL1lwZDlHTmhoRUZpVUc1Ymp2WFVicWQwMWJEZmFYZUpHZmRXc1pHNktL?=
- =?utf-8?Q?OIBG03EybBw0UUl+N3fSgWpKNJpm25pC0aeuK+eMqYNiL?=
-X-MS-Exchange-AntiSpam-MessageData-1: cdxY+MNFKooXCQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76b21c49-645f-4c6a-f65d-08ded34ad780
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 06:19:14.0035
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qfGXS7EpRmKrgHYl+e1vzNnYSrQGynYGW5FLSstOoGOyoerqXnt4ZNOCbmFCQ4hGWpkMdTkWVlcSqw1OS9kgtw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6707
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ahVb4k-2rC4EYZF9@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 
-On Fri Jun 26, 2026 at 7:49 AM JST, Nicol=C3=A1s Antinori wrote:
-> All types in `bindings` implement `Zeroable` if they can. This enables
-> using `pin_init::zeroed()` for `usb_device_id` initialization instead
-> of relying on `..unsafe { MaybeUninit::zeroed().assume_init() }`.
->
-> This change improves readability and removes unnecessary unsafe blocks.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1189
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
+On Tue, May 26, 2026 at 02:22:49PM +0530, Mukesh Kumar Chaurasiya wrote:
+> On Mon, May 25, 2026 at 08:16:53PM +0200, Miguel Ojeda wrote:
+> > On Wed, May 20, 2026 at 8:48 AM Mukesh Kumar Chaurasiya (IBM)
+> > <mkchauras@gmail.com> wrote:
+> > >
+> > > Minimum `rustc` version required for powerpc is 1.95 as some critical
+> > > features required for compiling rust code for kernel are not there.
+> > 
+> > Which critical features?
+> Hey Miguel,
+> 
+> Right now i can only think of inline asm. I can rerun the whole thing
+> with 1.85 and figure out the issues with 1.85. I'll get back on this.
+> 
+> >
+> > > For example Stable inline asm support which got merged in 1.95.
+> > 
+> > It is not needed that the support is stable, but rather that
+> > everything you may need works.
+> > 
+> I wanted inline asm be stable, I was skeptical about inline asm to be
+> unstable and potentially messing up the whole system. That's the reason
+> I waited for the stable support to get merged before sending out this
+> patch series.
+> 
+> > From a quick test (with a dummy example that may not be
+> > representative), ppc64 inline assembly seems to work for a long time,
+> > way before Rust 1.95.
+> > 
+> > So, which is the actual version that it is needed? i.e. 1.95.0 doesn't
+> > seem to be required at least due to that.
+> > 
+> Yeah it may be true. I'll test out the 1.85 rustc and come back with the
+> results.
+> 
+> > That is why I am asking about the critical features above, because it
+> > may be that this works since earlier versions.
+> > 
+> > (I wonder if this patch and s390's similar one influenced each other?)
+> >
+> I am not aware of s390x way of approaching support for rust so can't say
+> anything about that.
+> 
+> > Thanks!
+> > 
+> > Cheers,
+> > Miguel
+> 
+> Regards,
+> Mukesh
+> 
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Hey Miguel,
+
+Sorry about delayed response on this.
+I ran it with rustc 1.85.1.
+CONFIG_RUSTC_VERSION_TEXT="rustc 1.85.1 (4eb161250 2025-03-15)"
+
+I got a linker error with this.
+ld.lld: error: undefined symbol: __subsf3
+>>> referenced by core.7dc3da321ed68c1f-cgu.0
+>>>               rust/core.o:(<core::core_arch::powerpc::altivec::vector_float as core::ops::arith::Neg>::neg) in archive vmlinux.a
+>>> referenced by core.7dc3da321ed68c1f-cgu.0
+>>>               rust/core.o:(<core::core_arch::powerpc::altivec::vector_float as core::ops::arith::Neg>::neg) in archive vmlinux.a
+>>> referenced by core.7dc3da321ed68c1f-cgu.0
+>>>               rust/core.o:(<core::core_arch::powerpc::altivec::vector_float as core::ops::arith::Neg>::neg) in archive vmlinux.a
+>>> referenced 1 more times
+make[2]: *** [scripts/Makefile.vmlinux:72: vmlinux.unstripped] Error 1
+make[1]: *** [/home/mkchauras/src/linux/Makefile:1367: vmlinux] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+This corresponds to a floating point instruction. Although we have
+disabled fpu, vsx and altivec we are still generating these. Seems like
+we have some issue with the rustc here. I didn't dive deeper into this.
+
+Is it ok if we keep 1.95 as base for powerpc64le?
+
+Regards,
+Mukesh
+
+
