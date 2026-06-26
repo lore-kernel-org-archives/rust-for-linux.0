@@ -1,249 +1,127 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085963BF694
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 20:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEE61684BE
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 21:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782507182; cv=none; b=ak/RAvvwYX9ZAS3Q7/On6vgNMsaTwZuewVqZ0AU76jOtl/v50w5VuqCPSCfb2FddemxQMo4YLUxI44PhXz7fBXKV4xgDRl2442lmBHk2yx4VAIVMlm6dJqWywQh0q5Pslmo8CcdC3eruk9HvsGwuZvCzOXCv5wIVqsozndJ6xcE=
+	t=1782510265; cv=none; b=bYZDc6hDVkl5SwsPN/Buap+InzkO+lQT4dleci8ji1W2MhHmukVEcvp54so3zc5AWTZEav+ug9sWbqkr6N/3czXZkBt5UBEfR9nFnuQzfCzTJEwpWGUMO+va5WUoBYW0aeZP95n0k0XbZUlB7neGs9xBmbTTK79eeqG8gsM9TtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782507182; c=relaxed/simple;
-	bh=gXW3dCe4WC3+rTR/lWPp+8k43M2LpCggBbClN6estak=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nZtIvX23ve/YvDxG+/grk8US1ymxrpTQ9L18IsbwVq/fk7cbzKYdL6EMjtknt0oxakxhJRGgHMBxVoHAJgKH2Q47S/dkRiKt2ClQW6Axr3BbOfCk491joWl042Fv5YZmi/IhvURi6CIGWSZFDasKg6tBoaKAsfoaxD9AXDLya0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UH/IrBm2; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1782510265; c=relaxed/simple;
+	bh=gAB96cfT1IycU58GOBhvZ0xJjVQuojZ8XH82whF8zpE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uTuqmtHs4bgO/nu02Ep+bf5AWp4GvI5FRodCchXP5Z7wl7kUwhZ0zMsQJ4YQvZgfNdKrP6gE/sx8k+P2lTNv8P8hBb/A2STxHlSvWxaRyKYnHxpukTqaByrLnEuq/ctN8rQ63GOW+WTgHGeVfN6M24empxogoZBN+DjJyZbWUKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HH4scS7H; arc=none smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UH/IrBm2"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c813a45a65so3535ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 13:53:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HH4scS7H"
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-3078e0dcd67so2432509eec.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 14:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782507180; x=1783111980; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dS/M2HRldoM7WFjsowGr4rjNFpNg1xpcvyBkf4LjNgo=;
-        b=UH/IrBm2vfd8OYeKRXL99VXP94ysFVLpUY1uWJzuHw42MLYkeMfaA908PaKk75SKxM
-         98tzaRxUn9xiKrQ0P5IA85o+CbOr27Ihjbei37uX6lEa0EYxZznhkjNBmT78GeCKBBxY
-         UL3/5ICgq45Zhz4FjJxsD0zJSvT5qUxILloDU6id4Qmo4AfEXQLmowVWl0+XvELKyaTP
-         sjUuRnat7aPq46yuI/AnJvOGpVFRIeKYznVFphZPpGufr61HD4jF04wNpA2xe7N+Imng
-         vaw6ON1jEmYhAOR1nY8bK3TCd7PHPgF2s6N7OVbwsNiVmQjSC1D1iVeI689RJQeQNpvY
-         z+Xw==
+        d=gmail.com; s=20251104; t=1782510263; x=1783115063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HYKtyKNxfrDbmxryHnfUDB/E5Eu6wwHMT69rmwfje3I=;
+        b=HH4scS7HWacL8zYZ0yD7v65VySkBoSipGcqrOu3OLQSZkTsWma5gBLH0IUK+rW4zfv
+         R6OX52KbWapgPKIih/3Sw9w8eqrndRKcLn2LPtjTJPX6YtGmR9rNz8FrR8aH4u8nNBU7
+         ril26KxdOhAwgB3W43gauY6+oVbwbC9DcS0iym3xcqvBn9+E5oXBCZmuEgzkjGbohYnu
+         g0lIvI/LxqJRTlI9ljdvosFVKER2Jaxopjg1HyMgK01LpLGKwV5mZzG3e5XnmHwd+OPr
+         alVQT/o3xC59soeG+zIQO7wXDPFeeZIYm9Jyf3bRsxJtZJPKmL+T4OYlSuCzDPBqs+bR
+         aLGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782507180; x=1783111980;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dS/M2HRldoM7WFjsowGr4rjNFpNg1xpcvyBkf4LjNgo=;
-        b=IzKMJtC5o1Fu1Li1KjyUSI+f7wcIIhybabnVk4AOpAOnrHR1j8aFLGoyBHq4zwAX95
-         U3o5wnEhhvbgegy2WeH4lEwOuBsZJFcJBVuvh2AdVw8Egg9P84pc5ixtZiCQlAxob9lo
-         OLrufDfSAjtpwKF/3ob95rj1ODALBY8s2U9yF9aC5Ebf37Z/dgiDpCGfzJN8OglpVIl/
-         4oF7t8iiDqlPoQrS+2K+lZJ9OSMWOEYLAMe0AFHHH1NPhPMTalXUS983C85j+NYIKTjx
-         gTYtbNEC5LPuZZoSxCdiv69phg1zPZe8iEddAFIh24s0w+uKYkpDMpZ0dzWExhOHVFmQ
-         3nNA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro2HqOvykD8hZJEYD1jIfCeNEzatxq+6MIIcvUs44lqkjl5ix1rVVvZqChZNDyWh87TKTNn6fjLZG3cHuepSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3t3Ew3GO30ZWqSJRxDhPeRURkTBfJVw9CmjSveiHC6zbIPWQU
-	Bbwe580PHBszKMhN2e6lidYtevuKiDJ+Wadt+/Z5JhHfr4WFTpU2QbM+hzUKYDB3Rw==
-X-Gm-Gg: AfdE7cmhZ5Rk1pYq5Vvh5pvocoYxmkeDkx7BjJfYmldzgXHSASaH8gtc+YRSpXIPvuB
-	XWQUHcYqvYt217OTMLuK8qBM1+Gmd5DWgN3tF2H2aFnn9iUGeGFNNlNA5ad1ioYqglM3jHcC8+A
-	2LiVRMZp6HqehRUtP4qSlRcylbTTYfkR2LkDbBaPO/7FsDtzGKBg8AImPCWdBenMwrB+n6hNf7n
-	H+zJ2UBOmfM+UNr/+zzdJPRqF3k4T9kPqRXNW53Zey4wMh3E/OXpBFVnIIyMKq7ujaMxoqQT2za
-	mUxglsDixnWBsGivlcVFAgcNdIPwXP2i+OdL3NQfNMlk6eWy2CbzNEVM41I2o+t8f7Wgsq/2uHc
-	MS4ye3a/BRqBiNT4unYctZitZ2S9GzXD5zeYF9R07idNby+thTZrGYzbGqT+MEIfFaPz6KoODHF
-	66cALRiCBz0r9+ZOj/Otr9DBj86BlnmpHrKkPLMbPFjmPXPaNtaT+yvx3uO2lIoZaR6e8Ksu+vT
-	H+AtpJcR5D//F5e7TOEHZQUkmoMNKw0iCo=
-X-Received: by 2002:a17:903:2ad0:b0:2bd:6dad:3dfb with SMTP id d9443c01a7336-2c9ae984803mr129675ad.25.1782507179731;
-        Fri, 26 Jun 2026 13:52:59 -0700 (PDT)
-Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f5afb1e0sm46815795ad.29.2026.06.26.13.52.58
+        d=1e100.net; s=20251104; t=1782510263; x=1783115063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HYKtyKNxfrDbmxryHnfUDB/E5Eu6wwHMT69rmwfje3I=;
+        b=srzbzpxPaeSEMkTaV90PoRppiYtxAKP4kP5ffgcS80EaHXkUnv1IHJQxWuhunlGi4b
+         xDx+V31LVFG7hmRajwEQPy3OwHdKt8CP2RwXLWiv5m2G1DmSn6xSYpkIIrjOSCunvVSF
+         F3YIr4PT0FNu5ihuxXPUP/+tCW03lVHjEwx/rV13/l/TX8Rk5j3MlDgv0zRJ9pZpcm0f
+         6SqGrzqUCuYvTAvMC6nxUoJSO6mha0DR1RTIkOot9dzZw2Hy9bOQ3hgMePwT3PSbDzKi
+         6/TSzL1ODGvJ+Bt/0vuUGlD62i6DJjyEB6DfFVrT+aaleUKxZfXj+NVuzx9u9bxo0onY
+         /8pQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpgxmi89+8vnc+85c5BCQUSNvuWWBPO4p578GfTrPQVB1OWMdRsRJKgOsGZwQXxM3HroOMOwUspmdHb08Kvyg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKr8RHopNWyV46rJBDmVybAqM5hsOBcrfOrF92x/i5aGlVdybV
+	DLojGigGojsNwGyWtjc388n6PB3FxI9aMmlGXd7hMzh6pPYS+HeRwqI=
+X-Gm-Gg: AfdE7cmL9okuVLKD21wI4x8L26+Brrv0u7XSTA0FKLm8gZyxWNQ/bZ3U/k8xV1Y71M0
+	7yfwd8VFd4MWhiGBQBTO8bD23Z84vp+B1BXEVTP9EuSVOwngemLR2mYy6xjceCRbiQihcrLK1UT
+	OEytXguS9Xu3uGdmqPh+MHIVQCkyiMMWY01QwRRWENcYSD6C9dzA8fJjnRpZBU5sYjZ0wXwOoUi
+	YbITN1u8e+8qkYpIgvod/dKwWsKgp8blh1IxzPEvyHM9ycn+4Twjli+sK1VnvxLwsyfuVhLfBS3
+	KJMD90WOc9LCIrcZY1CIU1Gt/tv9H1vbZ6VMFihdN1sYvz+u1/fWBJCzOiOYCmW+/sOiI4BnUvi
+	9MPNIgaZVYrAB1+2F7hITpb4aF9d+T9jD/hwMUXRi5xxKB7E5TbAIg8VlgFgAPmbAg2L8DGcbQd
+	p1VsUV/sgEAfJlb5cwubKdcVnPyEbPgaE2ENdF6T77yGdBuNQlE/QFJmF2IcFmjm8nV1S41YUd8
+	3I=
+X-Received: by 2002:a05:7300:e801:b0:2f2:6dde:df54 with SMTP id 5a478bee46e88-30c84e0bb70mr7188051eec.33.1782510263309;
+        Fri, 26 Jun 2026 14:44:23 -0700 (PDT)
+Received: from localhost.localdomain ([186.158.238.108])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c8b1a80sm20580189eec.18.2026.06.26.14.44.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 13:52:58 -0700 (PDT)
-Date: Fri, 26 Jun 2026 20:52:54 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+        Fri, 26 Jun 2026 14:44:22 -0700 (PDT)
+From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <christian@brauner.io>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Benno Lossin <lossin@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/5] rust: sync: add const constructor for raw_spinlock_t
-Message-ID: <aj7mpkvobbQVLLcx@google.com>
-References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
- <20260623-pr-ratelimited-v1-2-cc922f544dc0@google.com>
+	Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: [PATCH] rust_binder: use pin_init::zeroed for file_operations initialization
+Date: Fri, 26 Jun 2026 18:44:02 -0300
+Message-ID: <20260626214404.852685-1-nico.antinori.7@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623-pr-ratelimited-v1-2-cc922f544dc0@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 23, 2026 at 03:38:05PM +0000, Alice Ryhl wrote:
-> The abstractions for pr_*_ratelimited! need to construct a global
-> `struct ratelimit_state`, which contains a `raw_spinlock_t` field. Thus,
-> add a const constructor for the `raw_spinlock_t` type.
-> 
-> The SPINLOCK_OWNER_INIT constant isn't mirrored via a const helper
-> because bindgen generates a 'static mut' instead of a constant from the
-> pointer constant.,
-> 
-> The __ARCH_SPIN_LOCK_UNLOCKED constant cannot be translated by bindgen
-> because it's a define for a struct without type annotations, so it's
-> explicitly declared in Rust.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  include/linux/spinlock_types_raw.h |  4 ++++
->  rust/bindings/lib.rs               | 24 ++++++++++++++++++++++++
->  rust/kernel/sync/lock/spinlock.rs  | 29 +++++++++++++++++++++++++++++
->  rust/kernel/sync/lockdep.rs        | 22 ++++++++++++++++++++++
->  4 files changed, 79 insertions(+)
-> 
-> diff --git a/include/linux/spinlock_types_raw.h b/include/linux/spinlock_types_raw.h
-> index e5644ab2161f..942c229c90bb 100644
-> --- a/include/linux/spinlock_types_raw.h
-> +++ b/include/linux/spinlock_types_raw.h
-> @@ -11,6 +11,10 @@
->  
->  #include <linux/lockdep_types.h>
->  
-> +/*
-> + * Keep in sync with rust/kernel/sync/lock/spinlock.rs
-> + */
-> +
->  context_lock_struct(raw_spinlock) {
->  	arch_spinlock_t raw_lock;
->  #ifdef CONFIG_DEBUG_SPINLOCK
-> diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-> index 854e7c471434..adde41e41edc 100644
-> --- a/rust/bindings/lib.rs
-> +++ b/rust/bindings/lib.rs
-> @@ -77,3 +77,27 @@ mod bindings_helper {
->          None
->      }
->  };
-> +
-> +// Explicitly list architectures where this logic is checked correct.
-> +#[cfg(any(
-> +    CONFIG_ARM,
-> +    CONFIG_ARM64,
-> +    CONFIG_LOONGARCH,
-> +    CONFIG_PPC,
-> +    CONFIG_RISCV,
-> +    CONFIG_S390,
-> +    CONFIG_X86,
-> +))]
+All types in `bindings` implement `Zeroable` if they can. This enables
+using `pin_init::zeroed()` for `file_operations` initialization instead
+of relying on `unsafe { core::mem::MaybeUninit::zeroed().assume_init() }`.
 
-I guess this is done explicitly because we can't test if
-__ARCH_SPIN_LOCK_UNLOCKED is defined by the arch?
+This change improves readability and removes an unnecessary unsafe
+block.
 
-> +pub const __ARCH_SPIN_LOCK_UNLOCKED: arch_spinlock_t = {
-> +    // SAFETY: The `arch_spinlock_t` type can be zeroed.
-> +    #[allow(unused_mut)]
-> +    let mut lock: arch_spinlock_t = unsafe { core::mem::zeroed() };
-> +
-> +    #[cfg(not(CONFIG_SMP))]
-> +    #[cfg(CONFIG_DEBUG_SPINLOCK)]
-> +    {
-> +        lock.slock = 1;
-> +    }
-> +
-> +    lock
-> +};
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index ef76fa07ca3a..8babfb79098f 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -4,6 +4,8 @@
->  //!
->  //! This module allows Rust code to use the kernel's `spinlock_t`.
->  
-> +use kernel::prelude::*;
-> +
->  /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
->  ///
->  /// It uses the name if one is given, otherwise it generates one based on the file name and line
-> @@ -144,3 +146,30 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
->          unsafe { bindings::spin_assert_is_held(ptr) }
->      }
->  }
-> +
-> +/// Helper for creating a raw unlocked `bindings::raw_spinlock_t`.
-> +///
-> +/// For use in statics containing raw spinlocks.
-> +pub const fn raw_spin_lock_unlocked(name: &'static CStr) -> bindings::raw_spinlock_t {
-> +    // Silence unused variable warnings.
-> +    #[cfg(not(CONFIG_DEBUG_LOCK_ALLOC))]
-> +    let _ = name;
-> +
-> +    bindings::raw_spinlock_t {
-> +        raw_lock: bindings::__ARCH_SPIN_LOCK_UNLOCKED,
-> +
-> +        #[cfg(CONFIG_DEBUG_SPINLOCK)]
-> +        magic: bindings::SPINLOCK_MAGIC,
-> +        #[cfg(CONFIG_DEBUG_SPINLOCK)]
-> +        owner_cpu: u32::MAX,
-> +        #[cfg(CONFIG_DEBUG_SPINLOCK)]
-> +        owner: usize::MAX as *mut c_void,
-> +
-> +        #[cfg(CONFIG_DEBUG_LOCK_ALLOC)]
-> +        dep_map: kernel::sync::lockdep::raw_lockdep_map(
-> +            name,
-> +            kernel::sync::lockdep::LD_WAIT_SPIN,
-> +            kernel::sync::lockdep::LD_WAIT_INV,
-> +        ),
-> +    }
-> +}
+Link: https://github.com/Rust-for-Linux/linux/issues/1189
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+---
+ drivers/android/binder/rust_binder_main.rs | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-This seems identical to the __RAW_SPIN_LOCK_UNLOCKED equivalent.
+diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+index dc1941cd2407..7f07fb5e171b 100644
+--- a/drivers/android/binder/rust_binder_main.rs
++++ b/drivers/android/binder/rust_binder_main.rs
+@@ -314,8 +314,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
+ #[no_mangle]
+ #[used]
+ pub static rust_binder_fops: AssertSync<kernel::bindings::file_operations> = {
+-    // SAFETY: All zeroes is safe for the `file_operations` type.
+-    let zeroed_ops = unsafe { core::mem::MaybeUninit::zeroed().assume_init() };
++    let zeroed_ops = pin_init::zeroed();
 
-> diff --git a/rust/kernel/sync/lockdep.rs b/rust/kernel/sync/lockdep.rs
-> index 784821cc2a39..c0f8b196c084 100644
-> --- a/rust/kernel/sync/lockdep.rs
-> +++ b/rust/kernel/sync/lockdep.rs
-> @@ -137,3 +137,25 @@ macro_rules! optional_name {
->          $crate::c_str!($name)
->      };
->  }
-> +
-> +/// Not checked, catch all.
-> +pub const LD_WAIT_INV: u8 = bindings::lockdep_wait_type_LD_WAIT_INV as u8;
-> +/// Spin loops, `raw_spinlock_t` etc
-> +pub const LD_WAIT_SPIN: u8 = bindings::lockdep_wait_type_LD_WAIT_SPIN as u8;
-> +
-> +/// Helper for declaring a raw `struct lockdep_map` for locks in statics.
-> +///
-> +/// It's up to the caller to use the returned `struct lockdep_map` correctly.
-> +#[cfg(CONFIG_LOCKDEP)]
-> +pub const fn raw_lockdep_map(
-> +    name: &'static CStr,
-> +    wait_type_inner: u8,
-> +    wait_type_outer: u8,
-> +) -> bindings::lockdep_map {
-> +    // SAFETY: All zeros is valid for this type.
-> +    let mut map: bindings::lockdep_map = unsafe { core::mem::zeroed() };
-> +    map.name = kernel::str::as_char_ptr_in_const_context(name);
-> +    map.wait_type_inner = wait_type_inner;
-> +    map.wait_type_outer = wait_type_outer;
-> +    map
-> +}
-> 
-> -- 
-> 2.55.0.rc0.799.gd6f94ed593-goog
-> 
+     let ops = kernel::bindings::file_operations {
+         owner: THIS_MODULE.as_ptr(),
+--
+2.47.3
 
-Looks good to me,
-
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
