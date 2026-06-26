@@ -1,125 +1,249 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE9437F727
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 20:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085963BF694
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 20:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782505904; cv=none; b=UYXCTsNoz3LHvjD3F/E+Y5+8U2DMOk81uSiivNX++biTpN2lIXU+0blWen0ZUGUD9mOwW6PYxk4970zQ0no0Xslw25dqp2cqm5amgbydgTYybI/R7d1DIxrn3uN2lnLx2l9/z8mYxgmsp52TRqREyehtHTrslXS8h7HSICXIY6M=
+	t=1782507182; cv=none; b=ak/RAvvwYX9ZAS3Q7/On6vgNMsaTwZuewVqZ0AU76jOtl/v50w5VuqCPSCfb2FddemxQMo4YLUxI44PhXz7fBXKV4xgDRl2442lmBHk2yx4VAIVMlm6dJqWywQh0q5Pslmo8CcdC3eruk9HvsGwuZvCzOXCv5wIVqsozndJ6xcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782505904; c=relaxed/simple;
-	bh=8COOnbZMJUxF4xVAYNoIlb7bDxzTG9J03+R0KaoyutE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sBGO3ex/eD2zZyFsnNsvIGUE3gf3mABKV9zwyo3r5Glzj5kC7xTP0cRWe7jI03caogF1KNfB24JBFawz4R4hwPr0ghSUNw0CPfWIxcZYMI08nGVRIyX6OySdYZvjVJQfphaUKUM9cs1OEsNwQwlt13D08wi03dnTxYU4vcwi+Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RIYHK+8W; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782507182; c=relaxed/simple;
+	bh=gXW3dCe4WC3+rTR/lWPp+8k43M2LpCggBbClN6estak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nZtIvX23ve/YvDxG+/grk8US1ymxrpTQ9L18IsbwVq/fk7cbzKYdL6EMjtknt0oxakxhJRGgHMBxVoHAJgKH2Q47S/dkRiKt2ClQW6Axr3BbOfCk491joWl042Fv5YZmi/IhvURi6CIGWSZFDasKg6tBoaKAsfoaxD9AXDLya0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UH/IrBm2; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RIYHK+8W"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-30c9c8c2697so1508548eec.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 13:31:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UH/IrBm2"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c813a45a65so3535ad.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 13:53:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782505902; x=1783110702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=saLU0AoA9Cmy1VJ6xB3QXKeFOZEGeKiaAK6r/QB287s=;
-        b=RIYHK+8W1lur2g/OqyILUgWtB99o8VsTMh4Y4lUo8Qa3qSVD0gNiUxd0+VDL7VuMOc
-         czE/reXvEu3akGeg+ySOerOcnDj6Q6II6POolDgaNJIB65tbck587m5BRrqWaqXG7hc7
-         1CzCa6MgLwx+LxfErg/HAH/yuP92YOv6GwCicCDIzYoT7EiNT4V+muUpsBu+dgUy7sLj
-         ph7FbZ+WUTnkWh9nMZrqg25JB3sYPqOTSvK5X6teT45HmlpXaP3Grkntes/ebk51A40c
-         ko/R2+zb2D14emMP0DcpD6kphKJqBn9mhOdA4mJtTLrYYsyP97Q+ITroi3KllT9jpINk
-         A9hA==
+        d=google.com; s=20251104; t=1782507180; x=1783111980; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dS/M2HRldoM7WFjsowGr4rjNFpNg1xpcvyBkf4LjNgo=;
+        b=UH/IrBm2vfd8OYeKRXL99VXP94ysFVLpUY1uWJzuHw42MLYkeMfaA908PaKk75SKxM
+         98tzaRxUn9xiKrQ0P5IA85o+CbOr27Ihjbei37uX6lEa0EYxZznhkjNBmT78GeCKBBxY
+         UL3/5ICgq45Zhz4FjJxsD0zJSvT5qUxILloDU6id4Qmo4AfEXQLmowVWl0+XvELKyaTP
+         sjUuRnat7aPq46yuI/AnJvOGpVFRIeKYznVFphZPpGufr61HD4jF04wNpA2xe7N+Imng
+         vaw6ON1jEmYhAOR1nY8bK3TCd7PHPgF2s6N7OVbwsNiVmQjSC1D1iVeI689RJQeQNpvY
+         z+Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782505902; x=1783110702;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=saLU0AoA9Cmy1VJ6xB3QXKeFOZEGeKiaAK6r/QB287s=;
-        b=iLa+0Hjx+7xAm4XZILueKSY7tDSjzNU5ljKZfppAbY5tzGsRyEGidUrlj2x9UbvnEV
-         IR8pZvgNjktCpsIRreprfkR0YebToeRy+6xGybA+AByVigPerAcVFbdURxmqPXIjXruY
-         oZOXUDfyMV70t1lDAo9Utw2fWPYHHsFiKBdGIcTCCi6zF8XgCHXsKyz/kipZ6Q2Jy5i8
-         oad8ZjvrGE5p2BaAsyXR8H9fi/MSXp7iNjRykyBlZIbar0j2AcPYfT505on/GZCSp2kQ
-         akNVcQMw/8+DDX7rj9XnCFDDNp/Bq3bEJCHS2mGVkzic9YzfbdK2yFCSypXIjZVKDV4A
-         s7hg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq6AE9Kch5OEC9ldrxqTc+2ZnimhcJK/iwxbeuXMwoWw977SPsAv+B6EeeL9uyMN0BBUU3mY/rWIaCEtv6IIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgvcyGS8+GMIcFBzSPTbQcfI2ORNP3kUWZIv8qMA2tOuSBfyqQ
-	i0qr66Jm2DG5BdYKQ1ssxLkLqJ+HBymf1LNtDAFi47nShLbEHw1DaDU=
-X-Gm-Gg: AfdE7clGOVDuKxBGOlMnw3bCNQN1qMJpP47aA36pNVQnCjZJfh64m6yoKt+Bvct5g3y
-	XAfjcZUM5ynVsfGtCy7TPo2gR3iWaiddQem5SsV+i7tM6bL8khJg0KwXSGNikMx2a1p9f2dFch2
-	5hPehRogroOhgJgo5LcHmySYPmqOuWTulmlq9b085WsoG0pP4doNi8lAZzDO34sUojK6LVK+s4W
-	oo2r827gO4qcVUQhpcvSTa4+b9+pVickEX2EdreWMFWQrDoOVQ5VTXhZN6Bkhgrg5YaG3zAzrMj
-	qB82GamYf1Pwjb2Wd2+sEg1e7gzXl7ZAHgd44dntNfdL2mCa8wVtWVSZJOG+qXlWByW4HChruod
-	c7mVacdLP9dHc/Yo9jqnOOLcEsScDnh8CqAggzFaLNBH8IMSptsQszLm0jAhIIO/XcxpWeeCs6y
-	ZAvN4A3O9nTqX+WE9EX27tDcASV/8c+qf2uk9lqfRkLWNOglepjgHC9rrU7WsK2qM3
-X-Received: by 2002:a05:7300:7246:b0:304:630d:e4ec with SMTP id 5a478bee46e88-30c84dc428cmr8616976eec.28.1782505901801;
-        Fri, 26 Jun 2026 13:31:41 -0700 (PDT)
-Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c58831asm22580134eec.13.2026.06.26.13.31.37
+        d=1e100.net; s=20251104; t=1782507180; x=1783111980;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dS/M2HRldoM7WFjsowGr4rjNFpNg1xpcvyBkf4LjNgo=;
+        b=IzKMJtC5o1Fu1Li1KjyUSI+f7wcIIhybabnVk4AOpAOnrHR1j8aFLGoyBHq4zwAX95
+         U3o5wnEhhvbgegy2WeH4lEwOuBsZJFcJBVuvh2AdVw8Egg9P84pc5ixtZiCQlAxob9lo
+         OLrufDfSAjtpwKF/3ob95rj1ODALBY8s2U9yF9aC5Ebf37Z/dgiDpCGfzJN8OglpVIl/
+         4oF7t8iiDqlPoQrS+2K+lZJ9OSMWOEYLAMe0AFHHH1NPhPMTalXUS983C85j+NYIKTjx
+         gTYtbNEC5LPuZZoSxCdiv69phg1zPZe8iEddAFIh24s0w+uKYkpDMpZ0dzWExhOHVFmQ
+         3nNA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro2HqOvykD8hZJEYD1jIfCeNEzatxq+6MIIcvUs44lqkjl5ix1rVVvZqChZNDyWh87TKTNn6fjLZG3cHuepSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3t3Ew3GO30ZWqSJRxDhPeRURkTBfJVw9CmjSveiHC6zbIPWQU
+	Bbwe580PHBszKMhN2e6lidYtevuKiDJ+Wadt+/Z5JhHfr4WFTpU2QbM+hzUKYDB3Rw==
+X-Gm-Gg: AfdE7cmhZ5Rk1pYq5Vvh5pvocoYxmkeDkx7BjJfYmldzgXHSASaH8gtc+YRSpXIPvuB
+	XWQUHcYqvYt217OTMLuK8qBM1+Gmd5DWgN3tF2H2aFnn9iUGeGFNNlNA5ad1ioYqglM3jHcC8+A
+	2LiVRMZp6HqehRUtP4qSlRcylbTTYfkR2LkDbBaPO/7FsDtzGKBg8AImPCWdBenMwrB+n6hNf7n
+	H+zJ2UBOmfM+UNr/+zzdJPRqF3k4T9kPqRXNW53Zey4wMh3E/OXpBFVnIIyMKq7ujaMxoqQT2za
+	mUxglsDixnWBsGivlcVFAgcNdIPwXP2i+OdL3NQfNMlk6eWy2CbzNEVM41I2o+t8f7Wgsq/2uHc
+	MS4ye3a/BRqBiNT4unYctZitZ2S9GzXD5zeYF9R07idNby+thTZrGYzbGqT+MEIfFaPz6KoODHF
+	66cALRiCBz0r9+ZOj/Otr9DBj86BlnmpHrKkPLMbPFjmPXPaNtaT+yvx3uO2lIoZaR6e8Ksu+vT
+	H+AtpJcR5D//F5e7TOEHZQUkmoMNKw0iCo=
+X-Received: by 2002:a17:903:2ad0:b0:2bd:6dad:3dfb with SMTP id d9443c01a7336-2c9ae984803mr129675ad.25.1782507179731;
+        Fri, 26 Jun 2026 13:52:59 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f5afb1e0sm46815795ad.29.2026.06.26.13.52.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 13:31:41 -0700 (PDT)
-From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-To: Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>
-Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
+        Fri, 26 Jun 2026 13:52:58 -0700 (PDT)
+Date: Fri, 26 Jun 2026 20:52:54 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	iommu@lists.linux.dev,
-	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH] rust: iommu: replace core::mem::zeroed with pin_init::zeroed
-Date: Fri, 26 Jun 2026 17:31:19 -0300
-Message-ID: <20260626203122.713317-1-nico.antinori.7@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/5] rust: sync: add const constructor for raw_spinlock_t
+Message-ID: <aj7mpkvobbQVLLcx@google.com>
+References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
+ <20260623-pr-ratelimited-v1-2-cc922f544dc0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623-pr-ratelimited-v1-2-cc922f544dc0@google.com>
 
-All types in `bindings` implement `Zeroable` if they can. This enables
-using `pin_init::zeroed()` for `io_pgtable_cfg` initialization instead
-of relying on `..unsafe { core::mem::zeroed() }`.
+On Tue, Jun 23, 2026 at 03:38:05PM +0000, Alice Ryhl wrote:
+> The abstractions for pr_*_ratelimited! need to construct a global
+> `struct ratelimit_state`, which contains a `raw_spinlock_t` field. Thus,
+> add a const constructor for the `raw_spinlock_t` type.
+> 
+> The SPINLOCK_OWNER_INIT constant isn't mirrored via a const helper
+> because bindgen generates a 'static mut' instead of a constant from the
+> pointer constant.,
+> 
+> The __ARCH_SPIN_LOCK_UNLOCKED constant cannot be translated by bindgen
+> because it's a define for a struct without type annotations, so it's
+> explicitly declared in Rust.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  include/linux/spinlock_types_raw.h |  4 ++++
+>  rust/bindings/lib.rs               | 24 ++++++++++++++++++++++++
+>  rust/kernel/sync/lock/spinlock.rs  | 29 +++++++++++++++++++++++++++++
+>  rust/kernel/sync/lockdep.rs        | 22 ++++++++++++++++++++++
+>  4 files changed, 79 insertions(+)
+> 
+> diff --git a/include/linux/spinlock_types_raw.h b/include/linux/spinlock_types_raw.h
+> index e5644ab2161f..942c229c90bb 100644
+> --- a/include/linux/spinlock_types_raw.h
+> +++ b/include/linux/spinlock_types_raw.h
+> @@ -11,6 +11,10 @@
+>  
+>  #include <linux/lockdep_types.h>
+>  
+> +/*
+> + * Keep in sync with rust/kernel/sync/lock/spinlock.rs
+> + */
+> +
+>  context_lock_struct(raw_spinlock) {
+>  	arch_spinlock_t raw_lock;
+>  #ifdef CONFIG_DEBUG_SPINLOCK
+> diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+> index 854e7c471434..adde41e41edc 100644
+> --- a/rust/bindings/lib.rs
+> +++ b/rust/bindings/lib.rs
+> @@ -77,3 +77,27 @@ mod bindings_helper {
+>          None
+>      }
+>  };
+> +
+> +// Explicitly list architectures where this logic is checked correct.
+> +#[cfg(any(
+> +    CONFIG_ARM,
+> +    CONFIG_ARM64,
+> +    CONFIG_LOONGARCH,
+> +    CONFIG_PPC,
+> +    CONFIG_RISCV,
+> +    CONFIG_S390,
+> +    CONFIG_X86,
+> +))]
 
-This change improves readability and removes an unnecessary unsafe
-block.
+I guess this is done explicitly because we can't test if
+__ARCH_SPIN_LOCK_UNLOCKED is defined by the arch?
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
----
- rust/kernel/iommu/pgtable.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> +pub const __ARCH_SPIN_LOCK_UNLOCKED: arch_spinlock_t = {
+> +    // SAFETY: The `arch_spinlock_t` type can be zeroed.
+> +    #[allow(unused_mut)]
+> +    let mut lock: arch_spinlock_t = unsafe { core::mem::zeroed() };
+> +
+> +    #[cfg(not(CONFIG_SMP))]
+> +    #[cfg(CONFIG_DEBUG_SPINLOCK)]
+> +    {
+> +        lock.slock = 1;
+> +    }
+> +
+> +    lock
+> +};
+> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+> index ef76fa07ca3a..8babfb79098f 100644
+> --- a/rust/kernel/sync/lock/spinlock.rs
+> +++ b/rust/kernel/sync/lock/spinlock.rs
+> @@ -4,6 +4,8 @@
+>  //!
+>  //! This module allows Rust code to use the kernel's `spinlock_t`.
+>  
+> +use kernel::prelude::*;
+> +
+>  /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+>  ///
+>  /// It uses the name if one is given, otherwise it generates one based on the file name and line
+> @@ -144,3 +146,30 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
+>          unsafe { bindings::spin_assert_is_held(ptr) }
+>      }
+>  }
+> +
+> +/// Helper for creating a raw unlocked `bindings::raw_spinlock_t`.
+> +///
+> +/// For use in statics containing raw spinlocks.
+> +pub const fn raw_spin_lock_unlocked(name: &'static CStr) -> bindings::raw_spinlock_t {
+> +    // Silence unused variable warnings.
+> +    #[cfg(not(CONFIG_DEBUG_LOCK_ALLOC))]
+> +    let _ = name;
+> +
+> +    bindings::raw_spinlock_t {
+> +        raw_lock: bindings::__ARCH_SPIN_LOCK_UNLOCKED,
+> +
+> +        #[cfg(CONFIG_DEBUG_SPINLOCK)]
+> +        magic: bindings::SPINLOCK_MAGIC,
+> +        #[cfg(CONFIG_DEBUG_SPINLOCK)]
+> +        owner_cpu: u32::MAX,
+> +        #[cfg(CONFIG_DEBUG_SPINLOCK)]
+> +        owner: usize::MAX as *mut c_void,
+> +
+> +        #[cfg(CONFIG_DEBUG_LOCK_ALLOC)]
+> +        dep_map: kernel::sync::lockdep::raw_lockdep_map(
+> +            name,
+> +            kernel::sync::lockdep::LD_WAIT_SPIN,
+> +            kernel::sync::lockdep::LD_WAIT_INV,
+> +        ),
+> +    }
+> +}
 
-diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs
-index c88e38fd938a..8faa1d8d9fad 100644
---- a/rust/kernel/iommu/pgtable.rs
-+++ b/rust/kernel/iommu/pgtable.rs
-@@ -102,8 +102,7 @@ pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable
-             coherent_walk: config.coherent_walk,
-             tlb: &raw const NOOP_FLUSH_OPS,
-             iommu_dev: dev.as_raw(),
--            // SAFETY: All zeroes is a valid value for `struct io_pgtable_cfg`.
--            ..unsafe { core::mem::zeroed() }
-+            ..pin_init::zeroed()
-         };
+This seems identical to the __RAW_SPIN_LOCK_UNLOCKED equivalent.
 
-         // SAFETY:
---
-2.47.3
+> diff --git a/rust/kernel/sync/lockdep.rs b/rust/kernel/sync/lockdep.rs
+> index 784821cc2a39..c0f8b196c084 100644
+> --- a/rust/kernel/sync/lockdep.rs
+> +++ b/rust/kernel/sync/lockdep.rs
+> @@ -137,3 +137,25 @@ macro_rules! optional_name {
+>          $crate::c_str!($name)
+>      };
+>  }
+> +
+> +/// Not checked, catch all.
+> +pub const LD_WAIT_INV: u8 = bindings::lockdep_wait_type_LD_WAIT_INV as u8;
+> +/// Spin loops, `raw_spinlock_t` etc
+> +pub const LD_WAIT_SPIN: u8 = bindings::lockdep_wait_type_LD_WAIT_SPIN as u8;
+> +
+> +/// Helper for declaring a raw `struct lockdep_map` for locks in statics.
+> +///
+> +/// It's up to the caller to use the returned `struct lockdep_map` correctly.
+> +#[cfg(CONFIG_LOCKDEP)]
+> +pub const fn raw_lockdep_map(
+> +    name: &'static CStr,
+> +    wait_type_inner: u8,
+> +    wait_type_outer: u8,
+> +) -> bindings::lockdep_map {
+> +    // SAFETY: All zeros is valid for this type.
+> +    let mut map: bindings::lockdep_map = unsafe { core::mem::zeroed() };
+> +    map.name = kernel::str::as_char_ptr_in_const_context(name);
+> +    map.wait_type_inner = wait_type_inner;
+> +    map.wait_type_outer = wait_type_outer;
+> +    map
+> +}
+> 
+> -- 
+> 2.55.0.rc0.799.gd6f94ed593-goog
+> 
 
+Looks good to me,
+
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
