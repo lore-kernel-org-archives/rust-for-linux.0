@@ -1,857 +1,1864 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-43101.protonmail.ch (mail-43101.protonmail.ch [185.70.43.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCA11F1513;
-	Thu, 25 Jun 2026 23:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DB0282F2C
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 02:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782429581; cv=none; b=s80d3R57+WkMmZyhd3ZjDBSBK23ZpsuJKvrmO36STQJH80AKuUlrR1hgRkwJvNozddwXAJZ6a+Ijy88eOilKCUmBJBBMk8KgQPAQfJMktf3lJTRAI8Yr7yJjtKWU8Bpenma6Q+zV1IJxmzyV0m6WruAevljfnXf5VqmpH9TcDO8=
+	t=1782440401; cv=none; b=KTQ2aOJlFZDbbQ4idNv3hGyx/FFqkpF79GzY19fDT4QL2Mdsq4kCvz+B+9W3UpxF6wX42HlWrCTZychda51UHWs0GxZNGg6XHEOYufJo+ENj0Go0SuowQjagaw9xQLUkw8pBXZOifdoF1GJXQydo2UB/78Nlnw2ss82xaVWCLUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782429581; c=relaxed/simple;
-	bh=4ZdQF5PaWIAJH2NU4yp5CTGILnX2pt563pzW29Kgrx4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MWvelmkmra1VgZxQ/zsa/YUyPJAITpiNM2ETq+IdeVrC0o+Ib1rIJMx0mlq7Z8VlgZLgx+Rf5dJjnJEa4b7v0EcBvHHuUqFZe6x8uZ+WkvOTcykzrIDnLT9iuQcYQ/10JNC9CYbdfA1QMst8YBdtQN6Uto6bTsuE8+r62bVPHeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a0hwFgqO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782440401; c=relaxed/simple;
+	bh=t/mjBz/RpVdE1ZzlAPFc4zsc+FTff/BVl2GJA5vZr40=;
+	h=Date:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=APhklNrs6n8ByOf7SC/2KWlts/56ABuZQmHkg7gnk1Cm/daZUE7TJyExKA+3PMDMyd6/HQAheo/7IigMc1nR0pT9WGG3f+UmGPCI9Wm6khnFldGOyJ/WWxuqb+o0TYfAs9G8elQ6YBdTJuu4tYno2XZFlAH5mLfWfr7hc6vn1Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MPpKuaSH; arc=none smtp.client-ip=185.70.43.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a0hwFgqO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8DD1F000E9;
-	Thu, 25 Jun 2026 23:19:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782429579;
-	bh=oQ54RLDWHFZcxYWugghhJdyNuIy5ideEiGksPNVPvyI=;
-	h=From:To:Cc:Subject:Date;
-	b=a0hwFgqONo3+KElDgr2HR3jR+tZkLodJP7/Lw4lmws4orpXyt3cBXvoJfERXJSP0G
-	 2pTBAavy3SPYQSiArxKG9dw6Fy+CJzgJOedC7Ao7FV2kF0ox8q5VppsS0e4ULLJB3Z
-	 U+7hhtyzFu3R4davl5W3ZHwDJfTSVQUeRR6VHYP5MvTthOWCH4n31lPJN4fe6T8pqx
-	 ctuEO/AJR7ZqexcthZnZ4Q8vOW3VMpRRbNVbTpCl51oCvMvBtPbjyjWfwJLi/d7u4Q
-	 pY5yHuBJag5/bisALFrOTlvZaX6rVyUbLEdCXGCV0NHJhvqOLE1ycgknWUya0Dg966
-	 LbAHJeGsv3iHQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	Jesung Yang <y.j3ms.n@gmail.com>,
-	linux-kbuild@vger.kernel.org,
-	Joshua Liebow-Feeser <joshlf@google.com>,
-	Jack Wrenn <jswrenn@google.com>
-Subject: [PATCH] rust: zerocopy: update to v0.8.52
-Date: Fri, 26 Jun 2026 01:19:19 +0200
-Message-ID: <20260625231919.692444-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MPpKuaSH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1782440386; x=1782699586;
+	bh=ZwFAqeXcsDXH97frF8MY7ipcPEZX/tUmD+0qnOX+1II=;
+	h=Date:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=MPpKuaSHik6KzkeHUoCWZJj/RI1DlYI4aRj/fle0ErvFkzitvAbTh3+Y5t5KDSGkD
+	 gRbuKZIgMxcILJ1NhK0pGRTspJa4eIPbNpJ4u5LNhkYJI93Cj9xxidQ9/BFhcNk6x5
+	 V8qjZ+x58zjuA3JkppDnqBoor2RGyfca2CQVrxMn7OPVmEPIgx3ZRRl1bwSe/iTvMB
+	 zoM3lbgEvOZ/+J60kcGq7RIMjtzhK6j20IvdawmdXeLJ+3qzCkRGkE5opvvWscS6Kw
+	 R9alwTqLMRdVEfoOiiWpsvPAo27tIsm1fow7zFBHBbAb3fC3CREZhY6km6O/AHNY41
+	 RsN2nzpd4xrIg==
+Date: Fri, 26 Jun 2026 02:19:39 +0000
+From: Tim Kovalenko <tim.kovalenko@proton.me>
+Cc: nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, rust-for-linux@vger.kernel.org, Tim Kovalenko <tim.kovalenko@proton.me>
+Subject: [PATCH v2] gpu: nova-core: falcon: store bar and dev in falcon
+Message-ID: <20260625-drm-bar-refactor-v2-1-a64e81bf5632@proton.me>
+Feedback-ID: 96458489:user:proton
+X-Pm-Message-ID: 876b7eb26efba33275162415aec0c7d0c341397f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Update our vendored copy of `zerocopy` (and `zerocopy-derive`) to v0.8.52.
+Store the bound device and `BAR0` mapping in `Falcon` instead of passing
+them through every `Falcon` operation. This simplifies the `Falcon` API and
+removes repeated `dev`/`bar` plumbing from reset, load, boot, mailbox, DMA,
+and GSP/FSP-specific Falcon helpers.
 
-Most SPDX identifiers have been added upstream at our request [1]
-(without parentheses -- supporting them is an issue on the kernel side,
-but it does already reduce our differences). The CSS one for `rustdoc`
-was added too [2], but will be picked up in a later version.
+`FalconHal` now receives a reference to a `Falcon` and uses its methods and
+members instead of passing them individually.
 
-For `zerocopy`, enable `--cfg no_fp_fmt_parse`, which was added at our
-request to avoid our local workaround [3]. This means one less difference,
-thus indicate so in our `README.md`.
-
-For `zerocopy-derive`, enable `--cfg zerocopy_unstable_linux`. This
-allows us to use `#[derive(zerocopy_derive::most_traits)]`, a new feature
-upstream added for us [4]. We noticed a minor doc render bug [5], which
-will be fixed for a future version too.
-
-The following script may be used to check for the remaining differences:
-
-    for path in $(cd rust/zerocopy-derive/ && find . -type f ! -name README.md); do
-        curl --silent --show-error --location \
-            https://github.com/google/zerocopy/raw/v0.8.52/zerocopy/zerocopy-derive/src/$path |
-            git diff --no-index - rust/zerocopy-derive/$path &&
-            echo $path: OK
-    done
-
-    for path in $(cd rust/zerocopy/ && find . -type f ! -name README.md); do
-        curl --silent --show-error --location \
-            https://github.com/google/zerocopy/raw/v0.8.52/zerocopy/$path |
-            git diff --no-index - rust/zerocopy/$path &&
-            echo $path: OK
-    done
-
-Cc: Joshua Liebow-Feeser <joshlf@google.com>
-Cc: Jack Wrenn <jswrenn@google.com>
-Link: https://github.com/google/zerocopy/issues/3428 [1]
-Link: https://github.com/google/zerocopy/issues/3457 [2]
-Link: https://github.com/google/zerocopy/issues/3426 [3]
-Link: https://github.com/google/zerocopy/pull/3416 [4]
-Link: https://github.com/google/zerocopy/issues/3466 [5]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/509436-Nova/topi=
+c/Storing.20driver-bound.20references.20into.20sub-devices/near/599137882
+Signed-off-by: Tim Kovalenko <tim.kovalenko@proton.me>
 ---
- rust/Makefile                                 | 16 ++++--
- rust/zerocopy-derive/README.md                | 14 +++---
- rust/zerocopy-derive/derive/from_bytes.rs     |  2 +-
- rust/zerocopy-derive/derive/into_bytes.rs     |  2 +-
- rust/zerocopy-derive/derive/known_layout.rs   |  3 +-
- rust/zerocopy-derive/derive/mod.rs            | 20 +++++---
- rust/zerocopy-derive/derive/try_from_bytes.rs |  6 +--
- rust/zerocopy-derive/derive/unaligned.rs      |  2 +-
- rust/zerocopy-derive/lib.rs                   | 36 +++++++++++++-
- rust/zerocopy-derive/repr.rs                  |  2 +-
- rust/zerocopy-derive/util.rs                  | 34 ++++++++++---
- rust/zerocopy/README.md                       | 15 +++---
- rust/zerocopy/src/byte_slice.rs               |  2 +-
- rust/zerocopy/src/byteorder.rs                | 49 +++++++++++++++----
- rust/zerocopy/src/deprecated.rs               |  2 +-
- rust/zerocopy/src/error.rs                    |  2 +-
- rust/zerocopy/src/impls.rs                    |  4 +-
- rust/zerocopy/src/layout.rs                   |  2 +-
- rust/zerocopy/src/lib.rs                      | 13 +++--
- rust/zerocopy/src/macros.rs                   |  2 +-
- rust/zerocopy/src/pointer/inner.rs            |  2 +-
- rust/zerocopy/src/pointer/invariant.rs        |  2 +-
- rust/zerocopy/src/pointer/mod.rs              |  2 +-
- rust/zerocopy/src/pointer/ptr.rs              |  2 +-
- rust/zerocopy/src/pointer/transmute.rs        |  2 +-
- rust/zerocopy/src/ref.rs                      |  2 +-
- rust/zerocopy/src/split_at.rs                 |  2 +-
- rust/zerocopy/src/util/macro_util.rs          |  2 +-
- rust/zerocopy/src/util/macros.rs              |  2 +-
- rust/zerocopy/src/util/mod.rs                 |  2 +-
- rust/zerocopy/src/wrappers.rs                 |  2 +-
- 31 files changed, 174 insertions(+), 76 deletions(-)
+Changes in v2:
+- Removed the ad-hoc `set_fbif_transcfg_phys_sysmem` method in falcon, it c=
+an be re-implemented
+  in a better way in the future.
+- Made `FalconHal` receive `Falcon` instead of `bar` and/or `falcon`
+  separately. This allows for simpler usage of the said hal.
+- Link to v1: https://lore.kernel.org/r/20260624-drm-bar-refactor-v1-1-7062=
+899163c5@proton.me
+---
+ drivers/gpu/nova-core/falcon.rs                    | 195 +++++++++--------=
+----
+ drivers/gpu/nova-core/falcon/fsp.rs                |  44 ++---
+ drivers/gpu/nova-core/falcon/gsp.rs                |  21 +--
+ drivers/gpu/nova-core/falcon/hal.rs                |  14 +-
+ drivers/gpu/nova-core/falcon/hal/ga102.rs          |  29 +--
+ drivers/gpu/nova-core/falcon/hal/tu102.rs          |  24 +--
+ drivers/gpu/nova-core/firmware/booter.rs           |  25 +--
+ drivers/gpu/nova-core/firmware/fwsec.rs            |  19 +-
+ drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |  15 +-
+ drivers/gpu/nova-core/fsp.rs                       |  23 ++-
+ drivers/gpu/nova-core/gpu.rs                       |   9 +-
+ drivers/gpu/nova-core/gsp.rs                       |   4 +-
+ drivers/gpu/nova-core/gsp/boot.rs                  |  22 +--
+ drivers/gpu/nova-core/gsp/hal.rs                   |   4 +-
+ drivers/gpu/nova-core/gsp/hal/gh100.rs             |  32 ++--
+ drivers/gpu/nova-core/gsp/hal/tu102.rs             |  68 +++----
+ drivers/gpu/nova-core/gsp/sequencer.rs             |  31 ++--
+ 17 files changed, 263 insertions(+), 316 deletions(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index a870d1616c71..835cf10e1c0b 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -84,11 +84,15 @@ core-flags := \
-     --edition=$(core-edition) \
-     $(call cfgs-to-flags,$(core-cfgs))
- 
-+zerocopy-cfgs := \
-+    no_fp_fmt_parse
-+
- zerocopy-flags := \
--    --cap-lints=allow
-+    --cap-lints=allow \
-+    $(call cfgs-to-flags,$(zerocopy-cfgs))
- 
- zerocopy-envs := \
--    CARGO_PKG_VERSION=0.8.50
-+    CARGO_PKG_VERSION=0.8.52
- 
- proc_macro2-cfgs := \
-     feature="proc-macro" \
-@@ -128,11 +132,15 @@ syn-flags := \
-     --extern quote \
-     $(call cfgs-to-flags,$(syn-cfgs))
- 
-+zerocopy_derive-cfgs := \
-+    zerocopy_unstable_linux
-+
- zerocopy_derive-flags := \
-     --cap-lints=allow \
-     --extern proc_macro2 \
-     --extern quote \
--    --extern syn
-+    --extern syn \
-+    $(call cfgs-to-flags,$(zerocopy_derive-cfgs))
- 
- pin_init_internal-cfgs := \
-     kernel USE_RUSTC_FEATURES
-@@ -644,9 +652,11 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- rust-analyzer:
- 	$(Q)MAKEFLAGS= $(srctree)/scripts/generate_rust_analyzer.py \
- 		--cfgs='core=$(core-cfgs)' $(core-edition) \
-+		--cfgs='zerocopy=$(zerocopy-cfgs)' \
- 		--cfgs='proc_macro2=$(proc_macro2-cfgs)' \
- 		--cfgs='quote=$(quote-cfgs)' \
- 		--cfgs='syn=$(syn-cfgs)' \
-+		--cfgs='zerocopy_derive=$(zerocopy_derive-cfgs)' \
- 		--cfgs='pin_init_internal=$(pin_init_internal-cfgs)' \
- 		--cfgs='pin_init=$(pin_init-cfgs)' \
- 		--envs='zerocopy=$(zerocopy-envs)' \
-diff --git a/rust/zerocopy-derive/README.md b/rust/zerocopy-derive/README.md
-index 110f4a401778..2a3dcf1212af 100644
---- a/rust/zerocopy-derive/README.md
-+++ b/rust/zerocopy-derive/README.md
-@@ -1,14 +1,14 @@
- # `zerocopy-derive`
- 
--These source files come from the Rust `zerocopy-derive` crate, version v0.8.50
--(released 2026-05-31), hosted in the <https://github.com/google/zerocopy>
-+These source files come from the Rust `zerocopy-derive` crate, version v0.8.52
-+(released 2026-06-09), hosted in the <https://github.com/google/zerocopy>
- repository, licensed under "BSD-2-Clause OR Apache-2.0 OR MIT" and only
--modified to add the SPDX license identifiers and to remove the generation of
-+modified to tweak the SPDX license identifiers and to remove the generation of
- non-ASCII identifiers.
- 
- For copyright details, please see:
- 
--    https://github.com/google/zerocopy/blob/v0.8.50/README.md?plain=1
--    https://github.com/google/zerocopy/blob/v0.8.50/LICENSE-BSD
--    https://github.com/google/zerocopy/blob/v0.8.50/LICENSE-APACHE
--    https://github.com/google/zerocopy/blob/v0.8.50/LICENSE-MIT
-+    https://github.com/google/zerocopy/blob/v0.8.52/README.md?plain=1
-+    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-BSD
-+    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-APACHE
-+    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-MIT
-diff --git a/rust/zerocopy-derive/derive/from_bytes.rs b/rust/zerocopy-derive/derive/from_bytes.rs
-index d693a63b7645..66d820f6ad4c 100644
---- a/rust/zerocopy-derive/derive/from_bytes.rs
-+++ b/rust/zerocopy-derive/derive/from_bytes.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- use proc_macro2::{Span, TokenStream};
- use syn::{
-     parse_quote, Data, DataEnum, DataStruct, DataUnion, Error, Expr, ExprLit, ExprUnary, Lit, UnOp,
-diff --git a/rust/zerocopy-derive/derive/into_bytes.rs b/rust/zerocopy-derive/derive/into_bytes.rs
-index ad52a6b45d28..0103a78d087f 100644
---- a/rust/zerocopy-derive/derive/into_bytes.rs
-+++ b/rust/zerocopy-derive/derive/into_bytes.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- use proc_macro2::{Span, TokenStream};
- use quote::quote;
- use syn::{Data, DataEnum, DataStruct, DataUnion, Error, Type};
-diff --git a/rust/zerocopy-derive/derive/known_layout.rs b/rust/zerocopy-derive/derive/known_layout.rs
-index fddffd167c82..d0c4cecfff15 100644
---- a/rust/zerocopy-derive/derive/known_layout.rs
-+++ b/rust/zerocopy-derive/derive/known_layout.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- use proc_macro2::TokenStream;
- use quote::quote;
- use syn::{parse_quote, Data, Error, Type};
-@@ -87,7 +87,6 @@ fn pointer_to_metadata(ptr: *mut Self) -> <Self as #zerocopy_crate::KnownLayout>
-     };
- 
-     let inner_extras = {
--        let leading_fields_tys = leading_fields_tys.clone();
-         let methods = make_methods(*trailing_field_ty);
-         let (_, ty_generics, _) = ctx.ast.generics.split_for_impl();
- 
-diff --git a/rust/zerocopy-derive/derive/mod.rs b/rust/zerocopy-derive/derive/mod.rs
-index 665ba7da55a8..b3839fcf73c9 100644
---- a/rust/zerocopy-derive/derive/mod.rs
-+++ b/rust/zerocopy-derive/derive/mod.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- pub mod from_bytes;
- pub mod into_bytes;
- pub mod known_layout;
-@@ -15,8 +15,8 @@
-     util::{Ctx, DataExt, FieldBounds, ImplBlockBuilder, Trait},
+diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon=
+.rs
+index 94c7696a6493..78948cc8bff3 100644
+--- a/drivers/gpu/nova-core/falcon.rs
++++ b/drivers/gpu/nova-core/falcon.rs
+@@ -5,10 +5,7 @@
+ use hal::FalconHal;
+=20
+ use kernel::{
+-    device::{
+-        self,
+-        Device, //
+-    },
++    device,
+     dma::{
+         Coherent,
+         CoherentBox,
+@@ -24,7 +21,6 @@
+         Io,
+     },
+     prelude::*,
+-    sync::aref::ARef,
+     time::Delta,
  };
- 
--pub(crate) fn derive_immutable(ctx: &Ctx, _top_level: Trait) -> TokenStream {
--    match &ctx.ast.data {
-+pub(crate) fn derive_immutable(ctx: &Ctx, _top_level: Trait) -> Result<TokenStream, Error> {
-+    Ok(match &ctx.ast.data {
-         Data::Struct(strct) => {
-             ImplBlockBuilder::new(ctx, strct, Trait::Immutable, FieldBounds::ALL_SELF).build()
-         }
-@@ -26,7 +26,7 @@ pub(crate) fn derive_immutable(ctx: &Ctx, _top_level: Trait) -> TokenStream {
-         Data::Union(unn) => {
-             ImplBlockBuilder::new(ctx, unn, Trait::Immutable, FieldBounds::ALL_SELF).build()
-         }
--    }
-+    })
+=20
+@@ -358,41 +354,47 @@ pub(crate) trait FalconFirmware {
  }
- 
- pub(crate) fn derive_hash(ctx: &Ctx, _top_level: Trait) -> Result<TokenStream, Error> {
-@@ -97,16 +97,20 @@ pub(crate) fn derive_split_at(ctx: &Ctx, _top_level: Trait) -> Result<TokenStrea
-     match &ctx.ast.data {
-         Data::Struct(_) => {}
-         Data::Enum(_) | Data::Union(_) => {
--            return Err(Error::new(Span::call_site(), "can only be applied to structs"));
-+            return ctx
-+                .error_or_skip(Error::new(Span::call_site(), "can only be applied to structs"));
-         }
-     };
- 
-     if repr.get_packed().is_some() {
--        return Err(Error::new(Span::call_site(), "must not have #[repr(packed)] attribute"));
-+        return ctx.error_or_skip(Error::new(
-+            Span::call_site(),
-+            "must not have #[repr(packed)] attribute",
-+        ));
+=20
+ /// Contains the base parameters common to all Falcon instances.
+-pub(crate) struct Falcon<E: FalconEngine> {
++pub(crate) struct Falcon<'a, E: FalconEngine> {
+     hal: KBox<dyn FalconHal<E>>,
+-    dev: ARef<device::Device>,
++    dev: &'a device::Device<device::Bound>,
++    bar: Bar0<'a>,
+ }
+=20
+-impl<E: FalconEngine + 'static> Falcon<E> {
++impl<'a, E: FalconEngine + 'static> Falcon<'a, E> {
+     /// Create a new falcon instance.
+-    pub(crate) fn new(dev: &device::Device, chipset: Chipset) -> Result<Se=
+lf> {
++    pub(crate) fn new(
++        dev: &'a device::Device<device::Bound>,
++        chipset: Chipset,
++        bar: Bar0<'a>,
++    ) -> Result<Self> {
+         Ok(Self {
+             hal: hal::falcon_hal(chipset)?,
+-            dev: dev.into(),
++            dev,
++            bar,
+         })
      }
- 
-     if !(repr.is_c() || repr.is_transparent()) {
--        return Err(Error::new(
-+        return ctx.error_or_skip(Error::new(
-             Span::call_site(),
-             "must have #[repr(C)] or #[repr(transparent)] in order to guarantee this type's layout is splitable",
-         ));
-@@ -116,7 +120,7 @@ pub(crate) fn derive_split_at(ctx: &Ctx, _top_level: Trait) -> Result<TokenStrea
-     let trailing_field = if let Some(((_, _, trailing_field), _)) = fields.split_last() {
-         trailing_field
-     } else {
--        return Err(Error::new(Span::call_site(), "must at least one field"));
-+        return ctx.error_or_skip(Error::new(Span::call_site(), "must at least one field"));
-     };
- 
-     let zerocopy_crate = &ctx.zerocopy_crate;
-diff --git a/rust/zerocopy-derive/derive/try_from_bytes.rs b/rust/zerocopy-derive/derive/try_from_bytes.rs
-index a3e4a75631a5..44f083328786 100644
---- a/rust/zerocopy-derive/derive/try_from_bytes.rs
-+++ b/rust/zerocopy-derive/derive/try_from_bytes.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- use proc_macro2::TokenStream;
- use quote::quote;
- use syn::{
-@@ -531,8 +531,8 @@ fn project(slf: #zerocopy_crate::pointer::PtrInner<'_, Self>) -> *mut <Self as #
-                 data,
-                 Trait::ProjectField {
-                     variant_id: variant_id.clone(),
--                    field: field.clone(),
--                    field_id: field_id.clone(),
-+                    field,
-+                    field_id,
-                     invariants: parse_quote!((Aliasing, Alignment, #zerocopy_crate::invariant::Initialized)),
-                 },
-                 FieldBounds::None,
-diff --git a/rust/zerocopy-derive/derive/unaligned.rs b/rust/zerocopy-derive/derive/unaligned.rs
-index d6dea0a11f1e..7c97d62e2dcb 100644
---- a/rust/zerocopy-derive/derive/unaligned.rs
-+++ b/rust/zerocopy-derive/derive/unaligned.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- use proc_macro2::{Span, TokenStream};
- use syn::{Data, DataEnum, DataStruct, DataUnion, Error};
- 
-diff --git a/rust/zerocopy-derive/lib.rs b/rust/zerocopy-derive/lib.rs
-index c517ea7db1eb..88599e750894 100644
---- a/rust/zerocopy-derive/lib.rs
-+++ b/rust/zerocopy-derive/lib.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2019 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-@@ -129,6 +129,40 @@ fn into_ts(self) -> proc_macro2::TokenStream {
- derive!(ByteEq => derive_eq => crate::derive::derive_eq);
- derive!(SplitAt => derive_split_at => crate::derive::derive_split_at);
- 
-+#[cfg_attr(zerocopy_unstable_linux, doc(hidden))]
-+#[proc_macro_derive(most_traits, attributes(zerocopy))]
-+pub fn most_traits(ts: proc_macro::TokenStream) -> proc_macro::TokenStream {
-+    let ast = syn::parse_macro_input!(ts as DeriveInput);
-+    let ctx = match Ctx::try_from_derive_input(ast) {
-+        Ok(ctx) => ctx,
-+        Err(e) => return e.into_compile_error().into(),
-+    }
-+    .skip_on_error();
-+
-+    // top-level traits for which to attempt a derive
-+    let derives: [(fn(&Ctx, Trait) -> _, _); 6] = [
-+        (crate::derive::known_layout::derive, Trait::KnownLayout),
-+        (crate::derive::derive_immutable, Trait::Immutable),
-+        (crate::derive::from_bytes::derive_from_bytes, Trait::FromBytes),
-+        (crate::derive::into_bytes::derive_into_bytes, Trait::IntoBytes),
-+        (crate::derive::derive_split_at, Trait::SplitAt),
-+        (crate::derive::unaligned::derive_unaligned, Trait::Unaligned),
-+    ];
-+
-+    let mut tokens = proc_macro2::TokenStream::new();
-+    for (derive, t) in derives {
-+        tokens.extend(derive(&ctx, t))
-+    }
-+
-+    // We wrap in `const_block` as a backstop in case any derive fails
-+    // to wrap its output in `const_block` (and thus fails to annotate)
-+    // with the full set of `#[allow(...)]` attributes).
-+    let ts = const_block([Some(tokens)]);
-+    #[cfg(test)]
-+    crate::util::testutil::check_hygiene(ts.clone());
-+    ts.into()
-+}
-+
- /// Deprecated: prefer [`FromZeros`] instead.
- #[deprecated(since = "0.8.0", note = "`FromZeroes` was renamed to `FromZeros`")]
- #[doc(hidden)]
-diff --git a/rust/zerocopy-derive/repr.rs b/rust/zerocopy-derive/repr.rs
-index 74fd376d9fda..1525e94302d1 100644
---- a/rust/zerocopy-derive/repr.rs
-+++ b/rust/zerocopy-derive/repr.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2019 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy-derive/util.rs b/rust/zerocopy-derive/util.rs
-index 5ba5228e2a44..5c5e9d3bdcb8 100644
---- a/rust/zerocopy-derive/util.rs
-+++ b/rust/zerocopy-derive/util.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2019 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-@@ -98,6 +98,11 @@ pub(crate) fn with_input(&self, input: &DeriveInput) -> Self {
-         }
+=20
+     /// Resets DMA-related registers.
+-    pub(crate) fn dma_reset(&self, bar: Bar0<'_>) {
+-        bar.update(regs::NV_PFALCON_FBIF_CTL::of::<E>(), |v| {
++    pub(crate) fn dma_reset(&self) {
++        self.bar.update(regs::NV_PFALCON_FBIF_CTL::of::<E>(), |v| {
+             v.with_allow_phys_no_ctx(true)
+         });
+=20
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>(),
+             regs::NV_PFALCON_FALCON_DMACTL::zeroed(),
+         );
      }
- 
-+    pub(crate) fn skip_on_error(mut self) -> Self {
-+        self.skip_on_error = true;
-+        self
-+    }
-+
-     pub(crate) fn core_path(&self) -> TokenStream {
-         let zerocopy_crate = &self.zerocopy_crate;
-         quote!(#zerocopy_crate::util::macro_util::core_reexport)
-@@ -106,20 +111,21 @@ pub(crate) fn core_path(&self) -> TokenStream {
-     pub(crate) fn cfg_compile_error(&self) -> TokenStream {
-         // By checking both during the compilation of the proc macro *and* in
-         // the generated code, we ensure that `--cfg
--        // zerocopy_unstable_derive_on_error` need only be passed *either* when
-+        // zerocopy_unstable_linux` need only be passed *either* when
-         // compiling this crate *or* when compiling the user's crate. The former
-         // is preferable, but in some situations (such as when cross-compiling
-         // using `cargo build --target`), it doesn't get propagated to this
-         // crate's build by default.
--        if cfg!(zerocopy_unstable_derive_on_error) {
-+        if cfg!(zerocopy_unstable_linux) {
-             quote!()
-         } else if let Some(span) = self.on_error_span {
-             let core = self.core_path();
--            let error_message = "`on_error` is experimental; pass '--cfg zerocopy_unstable_derive_on_error' to enable";
-+            let error_message =
-+                "`on_error` is experimental; pass '--cfg zerocopy_unstable_linux' to enable";
-             quote::quote_spanned! {span=>
-                 #[allow(unused_attributes, unexpected_cfgs)]
-                 const _: () = {
--                    #[cfg(not(zerocopy_unstable_derive_on_error))]
-+                    #[cfg(not(zerocopy_unstable_linux))]
-                     #core::compile_error!(#error_message);
-                 };
-             }
-@@ -612,6 +618,20 @@ fn bound_tt(ty: &Type, traits: impl Iterator<Item = Trait>, ctx: &Ctx) -> WhereP
-             }
+=20
+     /// Reset the controller, select the falcon core, and wait for memory =
+scrubbing to complete.
+-    pub(crate) fn reset(&self, bar: Bar0<'_>) -> Result {
+-        self.hal.reset_eng(bar)?;
+-        self.hal.select_core(self, bar)?;
+-        self.hal.reset_wait_mem_scrubbing(bar)?;
++    pub(crate) fn reset(&self) -> Result {
++        self.hal.reset_eng(self)?;
++        self.hal.select_core(self)?;
++        self.hal.reset_wait_mem_scrubbing(self)?;
+=20
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>(),
+-            regs::NV_PFALCON_FALCON_RM::from(bar.read(regs::NV_PMC_BOOT_0)=
+.into_raw()),
++            regs::NV_PFALCON_FALCON_RM::from(self.bar.read(regs::NV_PMC_BO=
+OT_0).into_raw()),
+         );
+=20
+         Ok(())
+@@ -404,18 +406,14 @@ pub(crate) fn reset(&self, bar: Bar0<'_>) -> Result {
+     /// Write a slice to Falcon IMEM memory using programmed I/O (PIO).
+     ///
+     /// Returns `EINVAL` if `img.len()` is not a multiple of 4.
+-    fn pio_wr_imem_slice(
+-        &self,
+-        bar: Bar0<'_>,
+-        load_offsets: FalconPioImemLoadTarget<'_>,
+-    ) -> Result {
++    fn pio_wr_imem_slice(&self, load_offsets: FalconPioImemLoadTarget<'_>)=
+ -> Result {
+         // Rejecting misaligned images here allows us to avoid checking
+         // inside the loops.
+         if load_offsets.data.len() % 4 !=3D 0 {
+             return Err(EINVAL);
+         }
+=20
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>().at(Self::PIO_PORT),
+             regs::NV_PFALCON_FALCON_IMEMC::zeroed()
+                 .with_secure(load_offsets.secure)
+@@ -426,13 +424,13 @@ fn pio_wr_imem_slice(
+         for (n, block) in load_offsets.data.chunks(MEM_BLOCK_ALIGNMENT).en=
+umerate() {
+             let n =3D u16::try_from(n)?;
+             let tag: u16 =3D load_offsets.start_tag.checked_add(n).ok_or(E=
+RANGE)?;
+-            bar.write(
++            self.bar.write(
+                 WithBase::of::<E>().at(Self::PIO_PORT),
+                 regs::NV_PFALCON_FALCON_IMEMT::zeroed().with_tag(tag),
+             );
+             for word in block.chunks_exact(4) {
+                 let w =3D [word[0], word[1], word[2], word[3]];
+-                bar.write(
++                self.bar.write(
+                     WithBase::of::<E>().at(Self::PIO_PORT),
+                     regs::NV_PFALCON_FALCON_IMEMD::zeroed().with_data(u32:=
+:from_le_bytes(w)),
+                 );
+@@ -445,18 +443,14 @@ fn pio_wr_imem_slice(
+     /// Write a slice to Falcon DMEM memory using programmed I/O (PIO).
+     ///
+     /// Returns `EINVAL` if `img.len()` is not a multiple of 4.
+-    fn pio_wr_dmem_slice(
+-        &self,
+-        bar: Bar0<'_>,
+-        load_offsets: FalconPioDmemLoadTarget<'_>,
+-    ) -> Result {
++    fn pio_wr_dmem_slice(&self, load_offsets: FalconPioDmemLoadTarget<'_>)=
+ -> Result {
+         // Rejecting misaligned images here allows us to avoid checking
+         // inside the loops.
+         if load_offsets.data.len() % 4 !=3D 0 {
+             return Err(EINVAL);
+         }
+=20
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>().at(Self::PIO_PORT),
+             regs::NV_PFALCON_FALCON_DMEMC::zeroed()
+                 .with_aincw(true)
+@@ -465,7 +459,7 @@ fn pio_wr_dmem_slice(
+=20
+         for word in load_offsets.data.chunks_exact(4) {
+             let w =3D [word[0], word[1], word[2], word[3]];
+-            bar.write(
++            self.bar.write(
+                 WithBase::of::<E>().at(Self::PIO_PORT),
+                 regs::NV_PFALCON_FALCON_DMEMD::zeroed().with_data(u32::fro=
+m_le_bytes(w)),
+             );
+@@ -477,29 +471,28 @@ fn pio_wr_dmem_slice(
+     /// Perform a PIO copy into `IMEM` and `DMEM` of `fw`, and prepare the=
+ falcon to run it.
+     pub(crate) fn pio_load<F: FalconFirmware<Target =3D E> + FalconPioLoad=
+able>(
+         &self,
+-        bar: Bar0<'_>,
+         fw: &F,
+     ) -> Result {
+-        bar.update(regs::NV_PFALCON_FBIF_CTL::of::<E>(), |v| {
++        self.bar.update(regs::NV_PFALCON_FBIF_CTL::of::<E>(), |v| {
+             v.with_allow_phys_no_ctx(true)
+         });
+=20
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>(),
+             regs::NV_PFALCON_FALCON_DMACTL::zeroed(),
+         );
+=20
+         if let Some(imem_ns) =3D fw.imem_ns_load_params() {
+-            self.pio_wr_imem_slice(bar, imem_ns)?;
++            self.pio_wr_imem_slice(imem_ns)?;
+         }
+         if let Some(imem_sec) =3D fw.imem_sec_load_params() {
+-            self.pio_wr_imem_slice(bar, imem_sec)?;
++            self.pio_wr_imem_slice(imem_sec)?;
+         }
+-        self.pio_wr_dmem_slice(bar, fw.dmem_load_params())?;
++        self.pio_wr_dmem_slice(fw.dmem_load_params())?;
+=20
+-        self.hal.program_brom(self, bar, &fw.brom_params());
++        self.hal.program_brom(self, &fw.brom_params());
+=20
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>(),
+             regs::NV_PFALCON_FALCON_BOOTVEC::zeroed().with_value(fw.boot_a=
+ddr()),
+         );
+@@ -513,7 +506,6 @@ pub(crate) fn pio_load<F: FalconFirmware<Target =3D E> =
++ FalconPioLoadable>(
+     /// `sec` is set if the loaded firmware is expected to run in secure m=
+ode.
+     fn dma_wr(
+         &self,
+-        bar: Bar0<'_>,
+         dma_obj: &Coherent<[u8]>,
+         target_mem: FalconMem,
+         load_offsets: FalconDmaLoadTarget,
+@@ -571,7 +563,7 @@ fn dma_wr(
+=20
+         // Set up the base source DMA address.
+=20
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>(),
+             regs::NV_PFALCON_FALCON_DMATRFBASE::zeroed().with_base(
+                 // CAST: `as u32` is used on purpose since we do want to s=
+trip the upper bits,
+@@ -579,7 +571,7 @@ fn dma_wr(
+                 (dma_start >> 8) as u32,
+             ),
+         );
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>(),
+             regs::NV_PFALCON_FALCON_DMATRFBASE1::zeroed().try_with_base(dm=
+a_start >> 40)?,
+         );
+@@ -590,23 +582,23 @@ fn dma_wr(
+=20
+         for pos in (0..num_transfers).map(|i| i * DMA_LEN) {
+             // Perform a transfer of size `DMA_LEN`.
+-            bar.write(
++            self.bar.write(
+                 WithBase::of::<E>(),
+                 regs::NV_PFALCON_FALCON_DMATRFMOFFS::zeroed()
+                     .try_with_offs(load_offsets.dst_start + pos)?,
+             );
+-            bar.write(
++            self.bar.write(
+                 WithBase::of::<E>(),
+                 regs::NV_PFALCON_FALCON_DMATRFFBOFFS::zeroed().with_offs(s=
+rc_start + pos),
+             );
+=20
+-            bar.write(WithBase::of::<E>(), cmd);
++            self.bar.write(WithBase::of::<E>(), cmd);
+=20
+             // Wait for the transfer to complete.
+             // TIMEOUT: arbitrarily large value, no DMA transfer to the fa=
+lcon's small memories
+             // should ever take that long.
+             read_poll_timeout(
+-                || Ok(bar.read(regs::NV_PFALCON_FALCON_DMATRFCMD::of::<E>(=
+))),
++                || Ok(self.bar.read(regs::NV_PFALCON_FALCON_DMATRFCMD::of:=
+:<E>())),
+                 |r| r.idle(),
+                 Delta::ZERO,
+                 Delta::from_secs(2),
+@@ -617,12 +609,7 @@ fn dma_wr(
+     }
+=20
+     /// Perform a DMA load into `IMEM` and `DMEM` of `fw`, and prepare the=
+ falcon to run it.
+-    fn dma_load<F: FalconFirmware<Target =3D E> + FalconDmaLoadable>(
+-        &self,
+-        dev: &Device<device::Bound>,
+-        bar: Bar0<'_>,
+-        fw: &F,
+-    ) -> Result {
++    fn dma_load<F: FalconFirmware<Target =3D E> + FalconDmaLoadable>(&self=
+, fw: &F) -> Result {
+         // DMA object with firmware content as the source of the DMA engin=
+e.
+         let dma_obj =3D {
+             let fw_slice =3D fw.as_slice();
+@@ -630,7 +617,7 @@ fn dma_load<F: FalconFirmware<Target =3D E> + FalconDma=
+Loadable>(
+             // DMA copies are done in chunks of `MEM_BLOCK_ALIGNMENT`, so =
+pad the length
+             // accordingly and fill with `0`.
+             let mut dma_obj =3D CoherentBox::zeroed_slice(
+-                dev,
++                self.dev,
+                 fw_slice.len().next_multiple_of(MEM_BLOCK_ALIGNMENT),
+                 GFP_KERNEL,
+             )?;
+@@ -642,24 +629,20 @@ fn dma_load<F: FalconFirmware<Target =3D E> + FalconD=
+maLoadable>(
+             dma_obj.into()
          };
- 
-+        let zerocopy_bounds =
-+            field_type_bounds
-+                .into_iter()
-+                .chain(padding_check_bound)
-+                .chain(self_bounds)
-+                .map(|bound| {
-+                    if self.ctx.skip_on_error {
-+                        parse_quote!(for<'zc> #bound)
-+                    } else {
-+                        bound.clone()
-+                    }
-+                })
-+                .collect::<Vec<_>>();
-+
-         let bounds = self
-             .ctx
-             .ast
-@@ -621,9 +641,7 @@ fn bound_tt(ty: &Type, traits: impl Iterator<Item = Trait>, ctx: &Ctx) -> WhereP
-             .map(|where_clause| where_clause.predicates.iter())
-             .into_iter()
-             .flatten()
--            .chain(field_type_bounds.iter())
--            .chain(padding_check_bound.iter())
--            .chain(self_bounds.iter());
-+            .chain(zerocopy_bounds.iter());
- 
-         // The parameters with trait bounds, but without type defaults.
-         let mut params: Vec<_> = self
-diff --git a/rust/zerocopy/README.md b/rust/zerocopy/README.md
-index 99e6cad0e26c..712b0317df25 100644
---- a/rust/zerocopy/README.md
-+++ b/rust/zerocopy/README.md
-@@ -1,14 +1,13 @@
- # `zerocopy`
- 
--These source files come from the Rust `zerocopy` crate, version v0.8.50
--(released 2026-05-31), hosted in the <https://github.com/google/zerocopy>
-+These source files come from the Rust `zerocopy` crate, version v0.8.52
-+(released 2026-06-09), hosted in the <https://github.com/google/zerocopy>
- repository, licensed under "BSD-2-Clause OR Apache-2.0 OR MIT" and only
--modified to add the SPDX license identifiers and to remove `Display`
--for `f32` and `f64`.
-+modified to tweak the SPDX license identifiers.
- 
- For copyright details, please see:
- 
--    https://github.com/google/zerocopy/blob/v0.8.50/README.md?plain=1
--    https://github.com/google/zerocopy/blob/v0.8.50/LICENSE-BSD
--    https://github.com/google/zerocopy/blob/v0.8.50/LICENSE-APACHE
--    https://github.com/google/zerocopy/blob/v0.8.50/LICENSE-MIT
-+    https://github.com/google/zerocopy/blob/v0.8.52/README.md?plain=1
-+    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-BSD
-+    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-APACHE
-+    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-MIT
-diff --git a/rust/zerocopy/src/byte_slice.rs b/rust/zerocopy/src/byte_slice.rs
-index a5ded4a18b39..b7f85098dbc4 100644
---- a/rust/zerocopy/src/byte_slice.rs
-+++ b/rust/zerocopy/src/byte_slice.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/byteorder.rs b/rust/zerocopy/src/byteorder.rs
-index 8f70048f1eb0..ecf95e38eebd 100644
---- a/rust/zerocopy/src/byteorder.rs
-+++ b/rust/zerocopy/src/byteorder.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2019 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-@@ -164,6 +164,42 @@ fn fmt(&self, _: &mut Formatter<'_>) -> fmt::Result {
- /// A type alias for [`LittleEndian`].
- pub type LE = LittleEndian;
- 
-+macro_rules! impl_dbg_trait {
-+    ($name:ident, $native:ident) => {
-+        impl<O: ByteOrder> Debug for $name<O> {
-+            #[inline]
-+            fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-+                // This results in a format like "U16(42)".
-+                f.debug_tuple(stringify!($name)).field(&self.get()).finish()
-+            }
-+        }
-+    };
-+}
-+
-+macro_rules! impl_dbg_traits {
-+    ($name:ident, $native:ident, "floating point number") => {
-+        #[cfg(not(no_fp_fmt_parse))]
-+        impl_dbg_trait!($name, $native);
-+
-+        #[cfg(no_fp_fmt_parse)]
-+        impl<O: ByteOrder> Debug for $name<O> {
-+            #[inline]
-+            fn fmt(&self, _f: &mut Formatter<'_>) -> fmt::Result {
-+                panic!("floating point support is turned off");
-+            }
-+        }
-+    };
-+    ($name:ident, $native:ident, "unsigned integer") => {
-+        impl_dbg_traits!($name, $native, @all_types);
-+    };
-+    ($name:ident, $native:ident, "signed integer") => {
-+        impl_dbg_traits!($name, $native, @all_types);
-+    };
-+    ($name:ident, $native:ident, @all_types) => {
-+        impl_dbg_trait!($name, $native);
-+    };
-+}
-+
- macro_rules! impl_fmt_trait {
-     ($name:ident, $native:ident, $trait:ident) => {
-         impl<O: ByteOrder> $trait for $name<O> {
-@@ -177,6 +213,8 @@ fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
- 
- macro_rules! impl_fmt_traits {
-     ($name:ident, $native:ident, "floating point number") => {
-+        #[cfg(not(no_fp_fmt_parse))]
-+        impl_fmt_trait!($name, $native, Display);
-     };
-     ($name:ident, $native:ident, "unsigned integer") => {
-         impl_fmt_traits!($name, $native, @all_types);
-@@ -687,16 +725,9 @@ fn eq(&self, other: &$native) -> bool {
-             }
+=20
+-        self.dma_reset(bar);
+-        bar.update(regs::NV_PFALCON_FBIF_TRANSCFG::of::<E>().at(0), |v| {
+-            v.with_target(FalconFbifTarget::CoherentSysmem)
+-                .with_mem_type(FalconFbifMemType::Physical)
+-        });
++        self.dma_reset();
++        self.bar
++            .update(regs::NV_PFALCON_FBIF_TRANSCFG::of::<E>().at(0), |v| {
++                v.with_target(FalconFbifTarget::CoherentSysmem)
++                    .with_mem_type(FalconFbifMemType::Physical)
++            });
+=20
+-        self.dma_wr(
+-            bar,
+-            &dma_obj,
+-            FalconMem::ImemSecure,
+-            fw.imem_sec_load_params(),
+-        )?;
+-        self.dma_wr(bar, &dma_obj, FalconMem::Dmem, fw.dmem_load_params())=
+?;
++        self.dma_wr(&dma_obj, FalconMem::ImemSecure, fw.imem_sec_load_para=
+ms())?;
++        self.dma_wr(&dma_obj, FalconMem::Dmem, fw.dmem_load_params())?;
+=20
+-        self.hal.program_brom(self, bar, &fw.brom_params());
++        self.hal.program_brom(self, &fw.brom_params());
+=20
+         // Set `BootVec` to start of non-secure code.
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<E>(),
+             regs::NV_PFALCON_FALCON_BOOTVEC::zeroed().with_value(fw.boot_a=
+ddr()),
+         );
+@@ -668,10 +651,10 @@ fn dma_load<F: FalconFirmware<Target =3D E> + FalconD=
+maLoadable>(
+     }
+=20
+     /// Wait until the falcon CPU is halted.
+-    pub(crate) fn wait_till_halted(&self, bar: Bar0<'_>) -> Result<()> {
++    pub(crate) fn wait_till_halted(&self) -> Result<()> {
+         // TIMEOUT: arbitrarily large value, firmwares should complete in =
+less than 2 seconds.
+         read_poll_timeout(
+-            || Ok(bar.read(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>())),
++            || Ok(self.bar.read(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>())=
+),
+             |r| r.halted(),
+             Delta::ZERO,
+             Delta::from_secs(2),
+@@ -681,16 +664,17 @@ pub(crate) fn wait_till_halted(&self, bar: Bar0<'_>) =
+-> Result<()> {
+     }
+=20
+     /// Start the falcon CPU.
+-    pub(crate) fn start(&self, bar: Bar0<'_>) -> Result<()> {
+-        match bar
++    pub(crate) fn start(&self) -> Result<()> {
++        match self
++            .bar
+             .read(regs::NV_PFALCON_FALCON_CPUCTL::of::<E>())
+             .alias_en()
+         {
+-            true =3D> bar.write(
++            true =3D> self.bar.write(
+                 WithBase::of::<E>(),
+                 regs::NV_PFALCON_FALCON_CPUCTL_ALIAS::zeroed().with_startc=
+pu(true),
+             ),
+-            false =3D> bar.write(
++            false =3D> self.bar.write(
+                 WithBase::of::<E>(),
+                 regs::NV_PFALCON_FALCON_CPUCTL::zeroed().with_startcpu(tru=
+e),
+             ),
+@@ -700,16 +684,16 @@ pub(crate) fn start(&self, bar: Bar0<'_>) -> Result<(=
+)> {
+     }
+=20
+     /// Writes values to the mailbox registers if provided.
+-    pub(crate) fn write_mailboxes(&self, bar: Bar0<'_>, mbox0: Option<u32>=
+, mbox1: Option<u32>) {
++    pub(crate) fn write_mailboxes(&self, mbox0: Option<u32>, mbox1: Option=
+<u32>) {
+         if let Some(mbox0) =3D mbox0 {
+-            bar.write(
++            self.bar.write(
+                 WithBase::of::<E>(),
+                 regs::NV_PFALCON_FALCON_MAILBOX0::zeroed().with_value(mbox=
+0),
+             );
          }
- 
-+        impl_dbg_traits!($name, $native, $number_kind);
-         impl_fmt_traits!($name, $native, $number_kind);
-         impl_ops_traits!($name, $native, $number_kind);
--
--        impl<O: ByteOrder> Debug for $name<O> {
--            #[inline]
--            fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
--                // This results in a format like "U16(42)".
--                f.debug_tuple(stringify!($name)).field(&self.get()).finish()
--            }
--        }
-     };
- }
- 
-diff --git a/rust/zerocopy/src/deprecated.rs b/rust/zerocopy/src/deprecated.rs
-index 24bafbf9adeb..59ddd35c77c6 100644
---- a/rust/zerocopy/src/deprecated.rs
-+++ b/rust/zerocopy/src/deprecated.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-diff --git a/rust/zerocopy/src/error.rs b/rust/zerocopy/src/error.rs
-index 7cb08c31d452..5eb30de934f3 100644
---- a/rust/zerocopy/src/error.rs
-+++ b/rust/zerocopy/src/error.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-diff --git a/rust/zerocopy/src/impls.rs b/rust/zerocopy/src/impls.rs
-index 22fd6c3d5d94..62e234c5202b 100644
---- a/rust/zerocopy/src/impls.rs
-+++ b/rust/zerocopy/src/impls.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-@@ -1359,7 +1359,7 @@ mod $mod {
-         #[cfg(not(no_zerocopy_aarch64_simd_1_59_0))]
-         simd_arch_mod!(
-             #[cfg(all(
--                target_arch = "aarch64", 
-+                target_arch = "aarch64",
-                 any(
-                     target_endian = "little",
-                     not(no_zerocopy_aarch64_simd_be_1_87_0)
-diff --git a/rust/zerocopy/src/layout.rs b/rust/zerocopy/src/layout.rs
-index 6015d0f2de52..942d35db8957 100644
---- a/rust/zerocopy/src/layout.rs
-+++ b/rust/zerocopy/src/layout.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-diff --git a/rust/zerocopy/src/lib.rs b/rust/zerocopy/src/lib.rs
-index 3302d67602ab..700fece1b728 100644
---- a/rust/zerocopy/src/lib.rs
-+++ b/rust/zerocopy/src/lib.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2018 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-@@ -12,7 +12,7 @@
- // After updating the following doc comment, make sure to run the following
- // command to update `README.md` based on its contents:
- //
--//   cargo -q run --manifest-path tools/Cargo.toml -p generate-readme > README.md
-+//   (cd .. && cargo -q run --manifest-path tools/Cargo.toml -p generate-readme) > README.md
- 
- //! ***<span style="font-size: 140%">Fast, safe, <span
- //! style="color:red;">compile error</span>. Pick two.</span>***
-@@ -174,7 +174,7 @@
- //!
- //! [Miri]: https://github.com/rust-lang/miri
- //! [Kani]: https://github.com/model-checking/kani
--//! [soundness policy]: https://github.com/google/zerocopy/blob/main/POLICIES.md#soundness
-+//! [soundness policy]: https://github.com/google/zerocopy/blob/main/zerocopy/POLICIES.md#soundness
- //!
- //! # Relationship to Project Safe Transmute
- //!
-@@ -203,7 +203,7 @@
- //!
- //! See our [MSRV policy].
- //!
--//! [MSRV policy]: https://github.com/google/zerocopy/blob/main/POLICIES.md#msrv
-+//! [MSRV policy]: https://github.com/google/zerocopy/blob/main/zerocopy/POLICIES.md#msrv
- //!
- //! # Changelog
- //!
-@@ -435,6 +435,9 @@
-     WARNING
+=20
+         if let Some(mbox1) =3D mbox1 {
+-            bar.write(
++            self.bar.write(
+                 WithBase::of::<E>(),
+                 regs::NV_PFALCON_FALCON_MAILBOX1::zeroed().with_value(mbox=
+1),
+             );
+@@ -717,21 +701,23 @@ pub(crate) fn write_mailboxes(&self, bar: Bar0<'_>, m=
+box0: Option<u32>, mbox1: O
+     }
+=20
+     /// Reads the value from `mbox0` register.
+-    pub(crate) fn read_mailbox0(&self, bar: Bar0<'_>) -> u32 {
+-        bar.read(regs::NV_PFALCON_FALCON_MAILBOX0::of::<E>())
++    pub(crate) fn read_mailbox0(&self) -> u32 {
++        self.bar
++            .read(regs::NV_PFALCON_FALCON_MAILBOX0::of::<E>())
+             .value()
+     }
+=20
+     /// Reads the value from `mbox1` register.
+-    pub(crate) fn read_mailbox1(&self, bar: Bar0<'_>) -> u32 {
+-        bar.read(regs::NV_PFALCON_FALCON_MAILBOX1::of::<E>())
++    pub(crate) fn read_mailbox1(&self) -> u32 {
++        self.bar
++            .read(regs::NV_PFALCON_FALCON_MAILBOX1::of::<E>())
+             .value()
+     }
+=20
+     /// Reads values from both mailbox registers.
+-    pub(crate) fn read_mailboxes(&self, bar: Bar0<'_>) -> (u32, u32) {
+-        let mbox0 =3D self.read_mailbox0(bar);
+-        let mbox1 =3D self.read_mailbox1(bar);
++    pub(crate) fn read_mailboxes(&self) -> (u32, u32) {
++        let mbox0 =3D self.read_mailbox0();
++        let mbox1 =3D self.read_mailbox1();
+=20
+         (mbox0, mbox1)
+     }
+@@ -743,54 +729,43 @@ pub(crate) fn read_mailboxes(&self, bar: Bar0<'_>) ->=
+ (u32, u32) {
+     ///
+     /// Wait up to two seconds for the firmware to complete, and return it=
+s exit status read from
+     /// the `MBOX0` and `MBOX1` registers.
+-    pub(crate) fn boot(
+-        &self,
+-        bar: Bar0<'_>,
+-        mbox0: Option<u32>,
+-        mbox1: Option<u32>,
+-    ) -> Result<(u32, u32)> {
+-        self.write_mailboxes(bar, mbox0, mbox1);
+-        self.start(bar)?;
+-        self.wait_till_halted(bar)?;
+-        Ok(self.read_mailboxes(bar))
++    pub(crate) fn boot(&self, mbox0: Option<u32>, mbox1: Option<u32>) -> R=
+esult<(u32, u32)> {
++        self.write_mailboxes(mbox0, mbox1);
++        self.start()?;
++        self.wait_till_halted()?;
++        Ok(self.read_mailboxes())
+     }
+=20
+     /// Returns the fused version of the signature to use in order to run =
+a HS firmware on this
+     /// falcon instance. `engine_id_mask` and `ucode_id` are obtained from=
+ the firmware header.
+     pub(crate) fn signature_reg_fuse_version(
+         &self,
+-        bar: Bar0<'_>,
+         engine_id_mask: u16,
+         ucode_id: u8,
+     ) -> Result<u32> {
+         self.hal
+-            .signature_reg_fuse_version(self, bar, engine_id_mask, ucode_i=
+d)
++            .signature_reg_fuse_version(self, engine_id_mask, ucode_id)
+     }
+=20
+     /// Check if the RISC-V core is active.
+     ///
+     /// Returns `true` if the RISC-V core is active, `false` otherwise.
+-    pub(crate) fn is_riscv_active(&self, bar: Bar0<'_>) -> bool {
+-        self.hal.is_riscv_active(bar)
++    pub(crate) fn is_riscv_active(&self) -> bool {
++        self.hal.is_riscv_active(self)
+     }
+=20
+     /// Load a firmware image into Falcon memory, using the preferred meth=
+od for the current
+     /// chipset.
+-    pub(crate) fn load<F: FalconFirmware<Target =3D E> + FalconDmaLoadable=
+>(
+-        &self,
+-        dev: &Device<device::Bound>,
+-        bar: Bar0<'_>,
+-        fw: &F,
+-    ) -> Result {
++    pub(crate) fn load<F: FalconFirmware<Target =3D E> + FalconDmaLoadable=
+>(&self, fw: &F) -> Result {
+         match self.hal.load_method() {
+-            LoadMethod::Dma =3D> self.dma_load(dev, bar, fw),
+-            LoadMethod::Pio =3D> self.pio_load(bar, &fw.try_as_pio_loadabl=
+e()?),
++            LoadMethod::Dma =3D> self.dma_load(fw),
++            LoadMethod::Pio =3D> self.pio_load(&fw.try_as_pio_loadable()?)=
+,
+         }
+     }
+=20
+     /// Write the application version to the OS register.
+-    pub(crate) fn write_os_version(&self, bar: Bar0<'_>, app_version: u32)=
+ {
+-        bar.write(
++    pub(crate) fn write_os_version(&self, app_version: u32) {
++        self.bar.write(
+             WithBase::of::<E>(),
+             regs::NV_PFALCON_FALCON_OS::zeroed().with_value(app_version),
+         );
+diff --git a/drivers/gpu/nova-core/falcon/fsp.rs b/drivers/gpu/nova-core/fa=
+lcon/fsp.rs
+index 52cdb84ef0e8..53b1079843ae 100644
+--- a/drivers/gpu/nova-core/falcon/fsp.rs
++++ b/drivers/gpu/nova-core/falcon/fsp.rs
+@@ -21,7 +21,6 @@
  };
- 
-+#[doc(hidden)]
-+#[cfg(all(any(feature = "derive", test), zerocopy_unstable_linux))]
-+pub use zerocopy_derive::most_traits;
- /// Implements [`KnownLayout`].
- ///
- /// This derive analyzes various aspects of a type's layout that are needed for
-@@ -2832,7 +2835,7 @@ fn try_ref_from_suffix_with_elems(
-     /// ```
+=20
+ use crate::{
+-    driver::Bar0,
+     falcon::{
+         Falcon,
+         FalconEngine,
+@@ -48,18 +47,18 @@ impl RegisterBase<PFalcon2Base> for Fsp {
+=20
+ impl FalconEngine for Fsp {}
+=20
+-impl Falcon<Fsp> {
++impl<'a> Falcon<'a, Fsp> {
+     /// Writes `data` to FSP external memory at offset `0`.
      ///
-     /// [`try_mut_from_bytes`]: TryFromBytes::try_mut_from_bytes
--    ///  
-+    ///
-     #[doc = codegen_header!("h5", "try_mut_from_bytes_with_elems")]
+     /// `data` is interpreted as little-endian 32-bit words. Returns `EINV=
+AL`
+     /// if the `data` length is not 4-byte aligned.
+-    fn write_emem(&mut self, bar: Bar0<'_>, data: &[u8]) -> Result {
++    fn write_emem(&mut self, data: &[u8]) -> Result {
+         if data.len() % 4 !=3D 0 {
+             return Err(EINVAL);
+         }
+=20
+         // Begin a write burst at offset `0`, auto-incrementing on each wr=
+ite.
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<Fsp>(),
+             regs::NV_PFALCON_FALCON_EMEMC::zeroed().with_aincw(true),
+         );
+@@ -68,7 +67,7 @@ fn write_emem(&mut self, bar: Bar0<'_>, data: &[u8]) -> R=
+esult {
+             let value =3D u32::from_le_bytes([chunk[0], chunk[1], chunk[2]=
+, chunk[3]]);
+=20
+             // Write the next 32-bit `value`; hardware advances the offset=
+.
+-            bar.write(
++            self.bar.write(
+                 WithBase::of::<Fsp>(),
+                 regs::NV_PFALCON_FALCON_EMEMD::zeroed().with_data(value),
+             );
+@@ -81,20 +80,23 @@ fn write_emem(&mut self, bar: Bar0<'_>, data: &[u8]) ->=
+ Result {
      ///
-     /// See [`TryFromBytes::try_ref_from_bytes_with_elems`](#method.try_ref_from_bytes_with_elems.codegen).
-diff --git a/rust/zerocopy/src/macros.rs b/rust/zerocopy/src/macros.rs
-index b801d86a8fa6..ec67c03a44fc 100644
---- a/rust/zerocopy/src/macros.rs
-+++ b/rust/zerocopy/src/macros.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-diff --git a/rust/zerocopy/src/pointer/inner.rs b/rust/zerocopy/src/pointer/inner.rs
-index 5db08080141f..949b60a3f83e 100644
---- a/rust/zerocopy/src/pointer/inner.rs
-+++ b/rust/zerocopy/src/pointer/inner.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/pointer/invariant.rs b/rust/zerocopy/src/pointer/invariant.rs
-index 1802d23563db..7ff0d43dad5e 100644
---- a/rust/zerocopy/src/pointer/invariant.rs
-+++ b/rust/zerocopy/src/pointer/invariant.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/pointer/mod.rs b/rust/zerocopy/src/pointer/mod.rs
-index 3461f7f5ca80..d6eacc52febe 100644
---- a/rust/zerocopy/src/pointer/mod.rs
-+++ b/rust/zerocopy/src/pointer/mod.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2023 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/pointer/ptr.rs b/rust/zerocopy/src/pointer/ptr.rs
-index b7c4ea56d2b2..7213f6f4a04e 100644
---- a/rust/zerocopy/src/pointer/ptr.rs
-+++ b/rust/zerocopy/src/pointer/ptr.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2023 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/pointer/transmute.rs b/rust/zerocopy/src/pointer/transmute.rs
-index a534984b70d3..ef9836698203 100644
---- a/rust/zerocopy/src/pointer/transmute.rs
-+++ b/rust/zerocopy/src/pointer/transmute.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2025 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/ref.rs b/rust/zerocopy/src/ref.rs
-index 860066d75196..e49f2a887ffa 100644
---- a/rust/zerocopy/src/ref.rs
-+++ b/rust/zerocopy/src/ref.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2024 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-diff --git a/rust/zerocopy/src/split_at.rs b/rust/zerocopy/src/split_at.rs
-index 9a67d5acbb0d..d7778425a31d 100644
---- a/rust/zerocopy/src/split_at.rs
-+++ b/rust/zerocopy/src/split_at.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2025 The Fuchsia Authors
- //
- // Licensed under the 2-Clause BSD License <LICENSE-BSD or
-diff --git a/rust/zerocopy/src/util/macro_util.rs b/rust/zerocopy/src/util/macro_util.rs
-index 1abb0fbeb46e..ceeb80432b0b 100644
---- a/rust/zerocopy/src/util/macro_util.rs
-+++ b/rust/zerocopy/src/util/macro_util.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2022 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/util/macros.rs b/rust/zerocopy/src/util/macros.rs
-index 43e4fd64ee15..7e63e3a54fc4 100644
---- a/rust/zerocopy/src/util/macros.rs
-+++ b/rust/zerocopy/src/util/macros.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2023 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/util/mod.rs b/rust/zerocopy/src/util/mod.rs
-index d6d4c6c2fcd9..f8affbbd336c 100644
---- a/rust/zerocopy/src/util/mod.rs
-+++ b/rust/zerocopy/src/util/mod.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2023 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
-diff --git a/rust/zerocopy/src/wrappers.rs b/rust/zerocopy/src/wrappers.rs
-index 266aec25fa58..1a8cf2b41d55 100644
---- a/rust/zerocopy/src/wrappers.rs
-+++ b/rust/zerocopy/src/wrappers.rs
-@@ -1,5 +1,5 @@
- // SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT
--
-+//
- // Copyright 2023 The Fuchsia Authors
- //
- // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
+     /// `data` is stored as little-endian 32-bit words. Returns `EINVAL` i=
+f
+     /// the `data` length is not 4-byte aligned.
+-    fn read_emem(&mut self, bar: Bar0<'_>, data: &mut [u8]) -> Result {
++    fn read_emem(&mut self, data: &mut [u8]) -> Result {
+         if data.len() % 4 !=3D 0 {
+             return Err(EINVAL);
+         }
+=20
+         // Begin a read burst at offset `0`, auto-incrementing on each rea=
+d.
+-        bar.write(
++        self.bar.write(
+             WithBase::of::<Fsp>(),
+             regs::NV_PFALCON_FALCON_EMEMC::zeroed().with_aincr(true),
+         );
+=20
+         for chunk in data.chunks_exact_mut(4) {
+             // Read the next 32-bit word; hardware advances the offset.
+-            let value =3D bar.read(regs::NV_PFALCON_FALCON_EMEMD::of::<Fsp=
+>()).data();
++            let value =3D self
++                .bar
++                .read(regs::NV_PFALCON_FALCON_EMEMD::of::<Fsp>())
++                .data();
+             chunk.copy_from_slice(&value.to_le_bytes());
+         }
+=20
+@@ -107,9 +109,9 @@ fn read_emem(&mut self, bar: Bar0<'_>, data: &mut [u8])=
+ -> Result {
+     ///
+     /// The FSP message queue is not circular. Pointers are reset to 0 aft=
+er each
+     /// message exchange, so `tail >=3D head` is always true when data is =
+present.
+-    fn poll_msgq(&self, bar: Bar0<'_>) -> u32 {
+-        let head =3D bar.read(regs::NV_PFSP_MSGQ_HEAD::at(0)).val();
+-        let tail =3D bar.read(regs::NV_PFSP_MSGQ_TAIL::at(0)).val();
++    fn poll_msgq(&self) -> u32 {
++        let head =3D self.bar.read(regs::NV_PFSP_MSGQ_HEAD::at(0)).val();
++        let tail =3D self.bar.read(regs::NV_PFSP_MSGQ_TAIL::at(0)).val();
+=20
+         if head =3D=3D tail {
+             return 0;
+@@ -122,20 +124,20 @@ fn poll_msgq(&self, bar: Bar0<'_>) -> u32 {
+     /// Writes `packet` to FSP EMEM and updates the queue pointers to noti=
+fy FSP.
+     ///
+     /// Returns `EINVAL` if `packet` is empty or its length is not 4-byte =
+aligned.
+-    pub(crate) fn send_msg(&mut self, bar: Bar0<'_>, packet: &[u8]) -> Res=
+ult {
++    pub(crate) fn send_msg(&mut self, packet: &[u8]) -> Result {
+         if packet.is_empty() {
+             return Err(EINVAL);
+         }
+=20
+-        self.write_emem(bar, packet)?;
++        self.write_emem(packet)?;
+=20
+         // Update queue pointers. TAIL points at the last DWORD written.
+         let tail_offset =3D u32::try_from(packet.len() - 4).map_err(|_| EI=
+NVAL)?;
+-        bar.write(
++        self.bar.write(
+             Array::at(0),
+             regs::NV_PFSP_QUEUE_TAIL::zeroed().with_address(tail_offset),
+         );
+-        bar.write(
++        self.bar.write(
+             Array::at(0),
+             regs::NV_PFSP_QUEUE_HEAD::zeroed().with_address(0),
+         );
+@@ -148,9 +150,9 @@ pub(crate) fn send_msg(&mut self, bar: Bar0<'_>, packet=
+: &[u8]) -> Result {
+     ///
+     /// Returns `ETIMEDOUT` if no message was available until timeout, or =
+a regular error code if a
+     /// memory allocation error occurred.
+-    pub(crate) fn recv_msg(&mut self, bar: Bar0<'_>) -> Result<KVec<u8>> {
++    pub(crate) fn recv_msg(&mut self) -> Result<KVec<u8>> {
+         let msg_size =3D read_poll_timeout(
+-            || Ok(self.poll_msgq(bar)),
++            || Ok(self.poll_msgq()),
+             |&size| size > 0,
+             Delta::from_millis(10),
+             Delta::from_millis(FSP_MSG_TIMEOUT_MS),
+@@ -160,11 +162,13 @@ pub(crate) fn recv_msg(&mut self, bar: Bar0<'_>) -> R=
+esult<KVec<u8>> {
+         let mut buffer =3D KVec::<u8>::new();
+         buffer.resize(msg_size, 0, GFP_KERNEL)?;
+=20
+-        self.read_emem(bar, &mut buffer)?;
++        self.read_emem(&mut buffer)?;
+=20
+         // Reset message queue pointers after reading.
+-        bar.write(Array::at(0), regs::NV_PFSP_MSGQ_TAIL::zeroed().with_val=
+(0));
+-        bar.write(Array::at(0), regs::NV_PFSP_MSGQ_HEAD::zeroed().with_val=
+(0));
++        self.bar
++            .write(Array::at(0), regs::NV_PFSP_MSGQ_TAIL::zeroed().with_va=
+l(0));
++        self.bar
++            .write(Array::at(0), regs::NV_PFSP_MSGQ_HEAD::zeroed().with_va=
+l(0));
+=20
+         Ok(buffer)
+     }
+diff --git a/drivers/gpu/nova-core/falcon/gsp.rs b/drivers/gpu/nova-core/fa=
+lcon/gsp.rs
+index f788b87bd951..ae32f401aeb0 100644
+--- a/drivers/gpu/nova-core/falcon/gsp.rs
++++ b/drivers/gpu/nova-core/falcon/gsp.rs
+@@ -14,7 +14,6 @@
+ };
+=20
+ use crate::{
+-    driver::Bar0,
+     falcon::{
+         Falcon,
+         FalconEngine,
+@@ -37,20 +36,20 @@ impl RegisterBase<PFalcon2Base> for Gsp {
+=20
+ impl FalconEngine for Gsp {}
+=20
+-impl Falcon<Gsp> {
++impl<'a> Falcon<'a, Gsp> {
+     /// Clears the SWGEN0 bit in the Falcon's IRQ status clear register to
+     /// allow GSP to signal CPU for processing new messages in message que=
+ue.
+-    pub(crate) fn clear_swgen0_intr(&self, bar: Bar0<'_>) {
+-        bar.write(
++    pub(crate) fn clear_swgen0_intr(&self) {
++        self.bar.write(
+             WithBase::of::<Gsp>(),
+             regs::NV_PFALCON_FALCON_IRQSCLR::zeroed().with_swgen0(true),
+         );
+     }
+=20
+     /// Checks if GSP reload/resume has completed during the boot process.
+-    pub(crate) fn check_reload_completed(&self, bar: Bar0<'_>, timeout: De=
+lta) -> Result<bool> {
++    pub(crate) fn check_reload_completed(&self, timeout: Delta) -> Result<=
+bool> {
+         read_poll_timeout(
+-            || Ok(bar.read(regs::NV_PGC6_BSI_SECURE_SCRATCH_14)),
++            || Ok(self.bar.read(regs::NV_PGC6_BSI_SECURE_SCRATCH_14)),
+             |val| val.boot_stage_3_handoff(),
+             Delta::ZERO,
+             timeout,
+@@ -59,19 +58,21 @@ pub(crate) fn check_reload_completed(&self, bar: Bar0<'=
+_>, timeout: Delta) -> Re
+     }
+=20
+     /// Returns whether the RISC-V branch privilege lockdown bit is set.
+-    pub(crate) fn riscv_branch_privilege_lockdown(&self, bar: Bar0<'_>) ->=
+ bool {
+-        bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<Gsp>())
++    pub(crate) fn riscv_branch_privilege_lockdown(&self) -> bool {
++        self.bar
++            .read(regs::NV_PFALCON_FALCON_HWCFG2::of::<Gsp>())
+             .riscv_br_priv_lockdown()
+     }
+=20
+     /// Returns whether GSP registers can be read by the CPU.
+-    pub(crate) fn priv_target_mask_released(&self, bar: Bar0<'_>) -> bool =
+{
++    pub(crate) fn priv_target_mask_released(&self) -> bool {
+         /// Pattern returned by GSP register reads while the PRIV target m=
+ask still blocks CPU
+         /// access. The low byte varies; the upper 24 bits are fixed.
+         const LOCKED_PATTERN: u32 =3D 0xbadf_4100;
+         const LOCKED_MASK: u32 =3D 0xffff_ff00;
+=20
+-        let hwcfg2 =3D bar
++        let hwcfg2 =3D self
++            .bar
+             .read(regs::NV_PFALCON_FALCON_HWCFG2::of::<Gsp>())
+             .into_raw();
+=20
+diff --git a/drivers/gpu/nova-core/falcon/hal.rs b/drivers/gpu/nova-core/fa=
+lcon/hal.rs
+index 89b56823906b..ee4a017f3a4c 100644
+--- a/drivers/gpu/nova-core/falcon/hal.rs
++++ b/drivers/gpu/nova-core/falcon/hal.rs
+@@ -3,7 +3,6 @@
+ use kernel::prelude::*;
+=20
+ use crate::{
+-    driver::Bar0,
+     falcon::{
+         Falcon,
+         FalconBromParams,
+@@ -34,7 +33,7 @@ pub(crate) enum LoadMethod {
+ /// registers.
+ pub(crate) trait FalconHal<E: FalconEngine>: Send + Sync {
+     /// Activates the Falcon core if the engine is a risvc/falcon dual eng=
+ine.
+-    fn select_core(&self, _falcon: &Falcon<E>, _bar: Bar0<'_>) -> Result {
++    fn select_core(&self, _falcon: &Falcon<'_, E>) -> Result {
+         Ok(())
+     }
+=20
+@@ -42,24 +41,23 @@ fn select_core(&self, _falcon: &Falcon<E>, _bar: Bar0<'=
+_>) -> Result {
+     /// falcon instance. `engine_id_mask` and `ucode_id` are obtained from=
+ the firmware header.
+     fn signature_reg_fuse_version(
+         &self,
+-        falcon: &Falcon<E>,
+-        bar: Bar0<'_>,
++        falcon: &Falcon<'_, E>,
+         engine_id_mask: u16,
+         ucode_id: u8,
+     ) -> Result<u32>;
+=20
+     /// Program the boot ROM registers prior to starting a secure firmware=
+.
+-    fn program_brom(&self, falcon: &Falcon<E>, bar: Bar0<'_>, params: &Fal=
+conBromParams);
++    fn program_brom(&self, falcon: &Falcon<'_, E>, params: &FalconBromPara=
+ms);
+=20
+     /// Check if the RISC-V core is active.
+     /// Returns `true` if the RISC-V core is active, `false` otherwise.
+-    fn is_riscv_active(&self, bar: Bar0<'_>) -> bool;
++    fn is_riscv_active(&self, falcon: &Falcon<'_, E>) -> bool;
+=20
+     /// Wait for memory scrubbing to complete.
+-    fn reset_wait_mem_scrubbing(&self, bar: Bar0<'_>) -> Result;
++    fn reset_wait_mem_scrubbing(&self, falcon: &Falcon<'_, E>) -> Result;
+=20
+     /// Reset the falcon engine.
+-    fn reset_eng(&self, bar: Bar0<'_>) -> Result;
++    fn reset_eng(&self, falcon: &Falcon<'_, E>) -> Result;
+=20
+     /// Returns the method used to load data into the falcon's memory.
+     ///
+diff --git a/drivers/gpu/nova-core/falcon/hal/ga102.rs b/drivers/gpu/nova-c=
+ore/falcon/hal/ga102.rs
+index cf6ce47e6b25..fe821ded5fa1 100644
+--- a/drivers/gpu/nova-core/falcon/hal/ga102.rs
++++ b/drivers/gpu/nova-core/falcon/hal/ga102.rs
+@@ -115,33 +115,34 @@ pub(super) fn new() -> Self {
+ }
+=20
+ impl<E: FalconEngine> FalconHal<E> for Ga102<E> {
+-    fn select_core(&self, _falcon: &Falcon<E>, bar: Bar0<'_>) -> Result {
+-        select_core_ga102::<E>(bar)
++    fn select_core(&self, falcon: &Falcon<'_, E>) -> Result {
++        select_core_ga102::<E>(falcon.bar)
+     }
+=20
+     fn signature_reg_fuse_version(
+         &self,
+-        falcon: &Falcon<E>,
+-        bar: Bar0<'_>,
++        falcon: &Falcon<'_, E>,
+         engine_id_mask: u16,
+         ucode_id: u8,
+     ) -> Result<u32> {
+-        signature_reg_fuse_version_ga102(&falcon.dev, bar, engine_id_mask,=
+ ucode_id)
++        signature_reg_fuse_version_ga102(falcon.dev, falcon.bar, engine_id=
+_mask, ucode_id)
+     }
+=20
+-    fn program_brom(&self, _falcon: &Falcon<E>, bar: Bar0<'_>, params: &Fa=
+lconBromParams) {
+-        program_brom_ga102::<E>(bar, params);
++    fn program_brom(&self, falcon: &Falcon<'_, E>, params: &FalconBromPara=
+ms) {
++        program_brom_ga102::<E>(falcon.bar, params);
+     }
+=20
+-    fn is_riscv_active(&self, bar: Bar0<'_>) -> bool {
+-        bar.read(regs::NV_PRISCV_RISCV_CPUCTL::of::<E>())
++    fn is_riscv_active(&self, falcon: &Falcon<'_, E>) -> bool {
++        falcon
++            .bar
++            .read(regs::NV_PRISCV_RISCV_CPUCTL::of::<E>())
+             .active_stat()
+     }
+=20
+-    fn reset_wait_mem_scrubbing(&self, bar: Bar0<'_>) -> Result {
++    fn reset_wait_mem_scrubbing(&self, falcon: &Falcon<'_, E>) -> Result {
+         // TIMEOUT: memory scrubbing should complete in less than 20ms.
+         read_poll_timeout(
+-            || Ok(bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>())),
++            || Ok(falcon.bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>(=
+))),
+             |r| r.mem_scrubbing_done(),
+             Delta::ZERO,
+             Delta::from_millis(20),
+@@ -149,7 +150,9 @@ fn reset_wait_mem_scrubbing(&self, bar: Bar0<'_>) -> Re=
+sult {
+         .map(|_| ())
+     }
+=20
+-    fn reset_eng(&self, bar: Bar0<'_>) -> Result {
++    fn reset_eng(&self, falcon: &Falcon<'_, E>) -> Result {
++        let bar =3D falcon.bar;
++
+         let _ =3D bar.read(regs::NV_PFALCON_FALCON_HWCFG2::of::<E>());
+=20
+         // According to OpenRM's `kflcnPreResetWait_GA102` documentation, =
+HW sometimes does not set
+@@ -162,7 +165,7 @@ fn reset_eng(&self, bar: Bar0<'_>) -> Result {
+         );
+=20
+         regs::NV_PFALCON_FALCON_ENGINE::reset_engine::<E>(bar);
+-        self.reset_wait_mem_scrubbing(bar)?;
++        self.reset_wait_mem_scrubbing(falcon)?;
+=20
+         Ok(())
+     }
+diff --git a/drivers/gpu/nova-core/falcon/hal/tu102.rs b/drivers/gpu/nova-c=
+ore/falcon/hal/tu102.rs
+index 3aaee3869312..34bf9f3f44c7 100644
+--- a/drivers/gpu/nova-core/falcon/hal/tu102.rs
++++ b/drivers/gpu/nova-core/falcon/hal/tu102.rs
+@@ -13,7 +13,6 @@
+ };
+=20
+ use crate::{
+-    driver::Bar0,
+     falcon::{
+         hal::LoadMethod,
+         Falcon,
+@@ -34,31 +33,32 @@ pub(super) fn new() -> Self {
+ }
+=20
+ impl<E: FalconEngine> FalconHal<E> for Tu102<E> {
+-    fn select_core(&self, _falcon: &Falcon<E>, _bar: Bar0<'_>) -> Result {
++    fn select_core(&self, _falcon: &Falcon<'_, E>) -> Result {
+         Ok(())
+     }
+=20
+     fn signature_reg_fuse_version(
+         &self,
+-        _falcon: &Falcon<E>,
+-        _bar: Bar0<'_>,
++        _falcon: &Falcon<'_, E>,
+         _engine_id_mask: u16,
+         _ucode_id: u8,
+     ) -> Result<u32> {
+         Ok(0)
+     }
+=20
+-    fn program_brom(&self, _falcon: &Falcon<E>, _bar: Bar0<'_>, _params: &=
+FalconBromParams) {}
++    fn program_brom(&self, _falcon: &Falcon<'_, E>, _params: &FalconBromPa=
+rams) {}
+=20
+-    fn is_riscv_active(&self, bar: Bar0<'_>) -> bool {
+-        bar.read(regs::NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS::of::<E>()=
+)
++    fn is_riscv_active(&self, falcon: &Falcon<'_, E>) -> bool {
++        falcon
++            .bar
++            .read(regs::NV_PRISCV_RISCV_CORE_SWITCH_RISCV_STATUS::of::<E>(=
+))
+             .active_stat()
+     }
+=20
+-    fn reset_wait_mem_scrubbing(&self, bar: Bar0<'_>) -> Result {
++    fn reset_wait_mem_scrubbing(&self, falcon: &Falcon<'_, E>) -> Result {
+         // TIMEOUT: memory scrubbing should complete in less than 10ms.
+         read_poll_timeout(
+-            || Ok(bar.read(regs::NV_PFALCON_FALCON_DMACTL::of::<E>())),
++            || Ok(falcon.bar.read(regs::NV_PFALCON_FALCON_DMACTL::of::<E>(=
+))),
+             |r| r.mem_scrubbing_done(),
+             Delta::ZERO,
+             Delta::from_millis(10),
+@@ -66,9 +66,9 @@ fn reset_wait_mem_scrubbing(&self, bar: Bar0<'_>) -> Resu=
+lt {
+         .map(|_| ())
+     }
+=20
+-    fn reset_eng(&self, bar: Bar0<'_>) -> Result {
+-        regs::NV_PFALCON_FALCON_ENGINE::reset_engine::<E>(bar);
+-        self.reset_wait_mem_scrubbing(bar)?;
++    fn reset_eng(&self, falcon: &Falcon<'_, E>) -> Result {
++        regs::NV_PFALCON_FALCON_ENGINE::reset_engine::<E>(falcon.bar);
++        self.reset_wait_mem_scrubbing(falcon)?;
+=20
+         Ok(())
+     }
+diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-co=
+re/firmware/booter.rs
+index d9313ac361af..acb7f4d8a532 100644
+--- a/drivers/gpu/nova-core/firmware/booter.rs
++++ b/drivers/gpu/nova-core/firmware/booter.rs
+@@ -15,7 +15,6 @@
+ };
+=20
+ use crate::{
+-    driver::Bar0,
+     falcon::{
+         sec2::Sec2,
+         Falcon,
+@@ -293,8 +292,7 @@ pub(crate) fn new(
+         kind: BooterKind,
+         chipset: Chipset,
+         ver: &str,
+-        falcon: &Falcon<<Self as FalconFirmware>::Target>,
+-        bar: Bar0<'_>,
++        falcon: &Falcon<'_, <Self as FalconFirmware>::Target>,
+     ) -> Result<Self> {
+         let fw_name =3D match kind {
+             BooterKind::Loader =3D> "booter_load",
+@@ -339,11 +337,8 @@ pub(crate) fn new(
+             } else {
+                 // Obtain the version from the fuse register, and extract =
+the corresponding
+                 // signature.
+-                let reg_fuse_version =3D falcon.signature_reg_fuse_version=
+(
+-                    bar,
+-                    brom_params.engine_id_mask,
+-                    brom_params.ucode_id,
+-                )?;
++                let reg_fuse_version =3D falcon
++                    .signature_reg_fuse_version(brom_params.engine_id_mask=
+, brom_params.ucode_id)?;
+=20
+                 // `0` means the last signature should be used.
+                 const FUSE_VERSION_USE_LAST_SIG: u32 =3D 0;
+@@ -405,18 +400,14 @@ pub(crate) fn new(
+     pub(crate) fn run<T>(
+         &self,
+         dev: &device::Device<device::Bound>,
+-        bar: Bar0<'_>,
+-        sec2_falcon: &Falcon<Sec2>,
++        sec2_falcon: &Falcon<'_, Sec2>,
+         wpr_meta: &Coherent<T>,
+     ) -> Result {
+-        sec2_falcon.reset(bar)?;
+-        sec2_falcon.load(dev, bar, self)?;
++        sec2_falcon.reset()?;
++        sec2_falcon.load(self)?;
+         let wpr_handle =3D wpr_meta.dma_handle();
+-        let (mbox0, mbox1) =3D sec2_falcon.boot(
+-            bar,
+-            Some(wpr_handle as u32),
+-            Some((wpr_handle >> 32) as u32),
+-        )?;
++        let (mbox0, mbox1) =3D
++            sec2_falcon.boot(Some(wpr_handle as u32), Some((wpr_handle >> =
+32) as u32))?;
+         dev_dbg!(dev, "SEC2 MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
+=20
+         if mbox0 !=3D 0 {
+diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-cor=
+e/firmware/fwsec.rs
+index 199ae2adb664..95e0dd77746b 100644
+--- a/drivers/gpu/nova-core/firmware/fwsec.rs
++++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+@@ -27,7 +27,6 @@
+ };
+=20
+ use crate::{
+-    driver::Bar0,
+     falcon::{
+         gsp::Gsp,
+         Falcon,
+@@ -320,8 +319,7 @@ impl FwsecFirmware {
+     /// command.
+     pub(crate) fn new(
+         dev: &Device<device::Bound>,
+-        falcon: &Falcon<Gsp>,
+-        bar: Bar0<'_>,
++        falcon: &Falcon<'_, Gsp>,
+         bios: &Vbios,
+         cmd: FwsecCommand,
+     ) -> Result<Self> {
+@@ -337,7 +335,7 @@ pub(crate) fn new(
+                 .ok_or(EINVAL)?;
+             let desc_sig_versions =3D u32::from(desc.signature_versions())=
+;
+             let reg_fuse_version =3D
+-                falcon.signature_reg_fuse_version(bar, desc.engine_id_mask=
+(), desc.ucode_id())?;
++                falcon.signature_reg_fuse_version(desc.engine_id_mask(), d=
+esc.ucode_id())?;
+             dev_dbg!(
+                 dev,
+                 "desc_sig_versions: {:#x}, reg_fuse_version: {}\n",
+@@ -390,21 +388,16 @@ pub(crate) fn new(
+     /// This must only be called on chipsets that do not need the FWSEC bo=
+otloader (i.e., where
+     /// [`Chipset::needs_fwsec_bootloader()`](crate::gpu::Chipset::needs_f=
+wsec_bootloader) returns
+     /// `false`). On chipsets that do, use [`bootloader::FwsecFirmwareWith=
+Bl`] instead.
+-    pub(crate) fn run(
+-        &self,
+-        dev: &Device<device::Bound>,
+-        falcon: &Falcon<Gsp>,
+-        bar: Bar0<'_>,
+-    ) -> Result<()> {
++    pub(crate) fn run(&self, dev: &Device<device::Bound>, falcon: &Falcon<=
+'_, Gsp>) -> Result<()> {
+         // Reset falcon, load the firmware, and run it.
+         falcon
+-            .reset(bar)
++            .reset()
+             .inspect_err(|e| dev_err!(dev, "Failed to reset GSP falcon: {:=
+?}\n", e))?;
+         falcon
+-            .load(dev, bar, self)
++            .load(self)
+             .inspect_err(|e| dev_err!(dev, "Failed to load FWSEC firmware:=
+ {:?}\n", e))?;
+         let (mbox0, _) =3D falcon
+-            .boot(bar, Some(0), None)
++            .boot(Some(0), None)
+             .inspect_err(|e| dev_err!(dev, "Failed to boot FWSEC firmware:=
+ {:?}\n", e))?;
+         if mbox0 !=3D 0 {
+             dev_err!(dev, "FWSEC firmware returned error {}\n", mbox0);
+diff --git a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs b/drivers/g=
+pu/nova-core/firmware/fwsec/bootloader.rs
+index ac1558a83b83..d9fafd2eea5b 100644
+--- a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
++++ b/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
+@@ -12,10 +12,7 @@
+         Device, //
+     },
+     dma::Coherent,
+-    io::{
+-        register::WithBase, //
+-        Io,
+-    },
++    io::{register::WithBase, Io},
+     prelude::*,
+     ptr::{
+         Alignable,
+@@ -50,7 +47,7 @@
+         FIRMWARE_VERSION, //
+     },
+     gpu::Chipset,
+-    num::FromSafeCast,
++    num::FromSafeCast, //
+     regs,
+ };
+=20
+@@ -278,15 +275,15 @@ pub(crate) fn new(
+     pub(crate) fn run(
+         &self,
+         dev: &Device<device::Bound>,
+-        falcon: &Falcon<Gsp>,
++        falcon: &Falcon<'_, Gsp>,
+         bar: Bar0<'_>,
+     ) -> Result<()> {
+         // Reset falcon, load the firmware, and run it.
+         falcon
+-            .reset(bar)
++            .reset()
+             .inspect_err(|e| dev_err!(dev, "Failed to reset GSP falcon: {:=
+?}\n", e))?;
+         falcon
+-            .pio_load(bar, self)
++            .pio_load(self)
+             .inspect_err(|e| dev_err!(dev, "Failed to load FWSEC firmware:=
+ {:?}\n", e))?;
+=20
+         // Configure DMA index for the bootloader to fetch the FWSEC firmw=
+are from system memory.
+@@ -301,7 +298,7 @@ pub(crate) fn run(
+         );
+=20
+         let (mbox0, _) =3D falcon
+-            .boot(bar, Some(0), None)
++            .boot(Some(0), None)
+             .inspect_err(|e| dev_err!(dev, "Failed to boot FWSEC firmware:=
+ {:?}\n", e))?;
+         if mbox0 !=3D 0 {
+             dev_err!(dev, "FWSEC firmware returned error {}\n", mbox0);
+diff --git a/drivers/gpu/nova-core/fsp.rs b/drivers/gpu/nova-core/fsp.rs
+index 4b97d1fb505e..574e1627e63c 100644
+--- a/drivers/gpu/nova-core/fsp.rs
++++ b/drivers/gpu/nova-core/fsp.rs
+@@ -224,27 +224,27 @@ pub(crate) fn boot_params_dma_handle(&self) -> u64 {
+ /// An `Fsp` is produced by [`Fsp::wait_secure_boot`], which only returns =
+once FSP secure boot
+ /// has completed. It owns the FSP falcon and the FMC firmware, which are =
+used for the subsequent
+ /// Chain of Trust boot.
+-pub(crate) struct Fsp {
+-    falcon: Falcon<FspEngine>,
++pub(crate) struct Fsp<'a> {
++    falcon: Falcon<'a, FspEngine>,
+     fsp_fw: FspFirmware,
+ }
+=20
+-impl Fsp {
++impl<'a> Fsp<'a> {
+     /// Waits for FSP secure boot completion, then returns the [`Fsp`] int=
+erface.
+     ///
+     /// Polls the thermal scratch register until FSP signals boot completi=
+on or the timeout
+     /// elapses. Returning an [`Fsp`] only on success guarantees, at the A=
+PI level, that the
+     /// interface is not used before secure boot has completed.
+     pub(crate) fn wait_secure_boot(
+-        dev: &device::Device<device::Bound>,
+-        bar: Bar0<'_>,
++        dev: &'a device::Device<device::Bound>,
++        bar: Bar0<'a>,
+         chipset: Chipset,
+-    ) -> Result<Fsp> {
++    ) -> Result<Fsp<'a>> {
+         /// FSP secure boot completion timeout in milliseconds.
+         const FSP_SECURE_BOOT_TIMEOUT_MS: i64 =3D 5000;
+=20
+         let hal =3D hal::fsp_hal(chipset).ok_or(ENOTSUPP)?;
+-        let falcon =3D Falcon::<FspEngine>::new(dev, chipset)?;
++        let falcon =3D Falcon::<FspEngine>::new(dev, chipset, bar)?;
+         let fsp_fw =3D FspFirmware::new(dev, chipset, FIRMWARE_VERSION)?;
+=20
+         read_poll_timeout(
+@@ -262,13 +262,13 @@ pub(crate) fn wait_secure_boot(
+=20
+     /// Sends a message to FSP and waits for the response.
+     /// Returns the full response buffer on success.
+-    fn send_sync_fsp<M>(&mut self, dev: &device::Device, bar: Bar0<'_>, ms=
+g: &M) -> Result<KVec<u8>>
++    fn send_sync_fsp<M>(&mut self, dev: &device::Device, msg: &M) -> Resul=
+t<KVec<u8>>
+     where
+         M: MessageToFsp,
+     {
+-        self.falcon.send_msg(bar, msg.as_bytes())?;
++        self.falcon.send_msg(msg.as_bytes())?;
+=20
+-        let response_buf =3D self.falcon.recv_msg(bar).inspect_err(|e| {
++        let response_buf =3D self.falcon.recv_msg().inspect_err(|e| {
+             dev_err!(dev, "FSP response error: {:?}\n", e);
+         })?;
+=20
+@@ -330,7 +330,6 @@ fn send_sync_fsp<M>(&mut self, dev: &device::Device, ba=
+r: Bar0<'_>, msg: &M) ->
+     pub(crate) fn boot_fmc(
+         &mut self,
+         dev: &device::Device<device::Bound>,
+-        bar: Bar0<'_>,
+         fb_layout: &FbLayout,
+         args: &FmcBootArgs,
+     ) -> Result {
+@@ -341,7 +340,7 @@ pub(crate) fn boot_fmc(
+             GFP_KERNEL,
+         )?;
+=20
+-        let _response_buf =3D self.send_sync_fsp(dev, bar, &*msg)?;
++        let _response_buf =3D self.send_sync_fsp(dev, &*msg)?;
+=20
+         dev_dbg!(dev, "FSP Chain of Trust completed successfully\n");
+         Ok(())
+diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
+index 4d76be429e75..43c3f4f8df71 100644
+--- a/drivers/gpu/nova-core/gpu.rs
++++ b/drivers/gpu/nova-core/gpu.rs
+@@ -273,9 +273,9 @@ struct GspResources<'gpu> {
+     /// MMIO mapping of PCI BAR 0.
+     bar: Bar0<'gpu>,
+     /// GSP falcon instance, used for GSP boot up and cleanup.
+-    gsp_falcon: Falcon<GspFalcon>,
++    gsp_falcon: Falcon<'gpu, GspFalcon>,
+     /// SEC2 falcon instance, used for GSP boot up and cleanup.
+-    sec2_falcon: Falcon<Sec2Falcon>,
++    sec2_falcon: Falcon<'gpu, Sec2Falcon>,
+     /// GSP runtime data.
+     #[pin]
+     gsp: Gsp,
+@@ -351,10 +351,11 @@ pub(crate) fn new(
+                 gsp_falcon: Falcon::new(
+                     pdev.as_ref(),
+                     spec.chipset,
++                    bar
+                 )
+-                .inspect(|falcon| falcon.clear_swgen0_intr(bar))?,
++                .inspect(|falcon| falcon.clear_swgen0_intr())?,
+=20
+-                sec2_falcon: Falcon::new(pdev.as_ref(), spec.chipset)?,
++                sec2_falcon: Falcon::new(pdev.as_ref(), spec.chipset, bar)=
+?,
+=20
+                 gsp <- Gsp::new(pdev),
+=20
+diff --git a/drivers/gpu/nova-core/gsp.rs b/drivers/gpu/nova-core/gsp.rs
+index 73e93403601c..b4ac4156056e 100644
+--- a/drivers/gpu/nova-core/gsp.rs
++++ b/drivers/gpu/nova-core/gsp.rs
+@@ -57,8 +57,8 @@ pub(crate) struct GspBootContext<'a> {
+     pub(crate) pdev: &'a pci::Device<device::Bound>,
+     pub(crate) bar: Bar0<'a>,
+     pub(crate) chipset: Chipset,
+-    pub(crate) gsp_falcon: &'a Falcon<GspFalcon>,
+-    pub(crate) sec2_falcon: &'a Falcon<Sec2Falcon>,
++    pub(crate) gsp_falcon: &'a Falcon<'a, GspFalcon>,
++    pub(crate) sec2_falcon: &'a Falcon<'a, Sec2Falcon>,
+ }
+=20
+ impl<'a> GspBootContext<'a> {
+diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/=
+boot.rs
+index bb2000b7a78b..ab0491b57944 100644
+--- a/drivers/gpu/nova-core/gsp/boot.rs
++++ b/drivers/gpu/nova-core/gsp/boot.rs
+@@ -37,8 +37,8 @@ pub(super) struct BootUnloadArgs<'a> {
+     gsp: &'a super::Gsp,
+     dev: &'a device::Device<device::Bound>,
+     bar: Bar0<'a>,
+-    gsp_falcon: &'a Falcon<Gsp>,
+-    sec2_falcon: &'a Falcon<Sec2>,
++    gsp_falcon: &'a Falcon<'a, Gsp>,
++    sec2_falcon: &'a Falcon<'a, Sec2>,
+     unload_bundle: Option<super::UnloadBundle>,
+ }
+=20
+@@ -56,8 +56,8 @@ pub(super) fn new(
+         gsp: &'a super::Gsp,
+         dev: &'a device::Device<device::Bound>,
+         bar: Bar0<'a>,
+-        gsp_falcon: &'a Falcon<Gsp>,
+-        sec2_falcon: &'a Falcon<Sec2>,
++        gsp_falcon: &'a Falcon<'a, Gsp>,
++        sec2_falcon: &'a Falcon<'a, Sec2>,
+         unload_bundle: Option<super::UnloadBundle>,
+     ) -> Self {
+         Self {
+@@ -120,17 +120,17 @@ pub(crate) fn boot(
+         // Perform the chipset-specific boot sequence, and retrieve the un=
+load bundle.
+         let unload_guard =3D hal.boot(&self, &ctx, &fb_layout, &wpr_meta)?=
+;
+=20
+-        gsp_falcon.write_os_version(bar, gsp_fw.bootloader.app_version);
++        gsp_falcon.write_os_version(gsp_fw.bootloader.app_version);
+=20
+         // Poll for RISC-V to become active before continuing.
+         read_poll_timeout(
+-            || Ok(gsp_falcon.is_riscv_active(bar)),
++            || Ok(gsp_falcon.is_riscv_active()),
+             |val: &bool| *val,
+             Delta::from_millis(10),
+             Delta::from_secs(5),
+         )?;
+=20
+-        dev_dbg!(pdev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active(b=
+ar),);
++        dev_dbg!(pdev, "RISC-V active? {}\n", gsp_falcon.is_riscv_active()=
+,);
+=20
+         self.cmdq
+             .send_command_no_wait(bar, commands::SetSystemInfo::new(pdev, =
+chipset))?;
+@@ -149,7 +149,7 @@ pub(crate) fn boot(
+     fn shutdown_gsp(
+         cmdq: &Cmdq,
+         bar: Bar0<'_>,
+-        gsp_falcon: &Falcon<Gsp>,
++        gsp_falcon: &Falcon<'_, Gsp>,
+         mode: commands::PowerStateLevel,
+     ) -> Result {
+         // Command to shut the GSP down.
+@@ -158,7 +158,7 @@ fn shutdown_gsp(
+         // Wait until GSP signals it is suspended.
+         const LIBOS_INTERRUPT_PROCESSOR_SUSPENDED: u32 =3D bits::bit_u32(3=
+1);
+         read_poll_timeout(
+-            || Ok(gsp_falcon.read_mailbox0(bar)),
++            || Ok(gsp_falcon.read_mailbox0()),
+             |&mb0| mb0 & LIBOS_INTERRUPT_PROCESSOR_SUSPENDED !=3D 0,
+             Delta::from_millis(10),
+             Delta::from_secs(5),
+@@ -173,8 +173,8 @@ pub(crate) fn unload(
+         &self,
+         dev: &device::Device<device::Bound>,
+         bar: Bar0<'_>,
+-        gsp_falcon: &Falcon<Gsp>,
+-        sec2_falcon: &Falcon<Sec2>,
++        gsp_falcon: &Falcon<'_, Gsp>,
++        sec2_falcon: &Falcon<'_, Sec2>,
+         unload_bundle: Option<super::UnloadBundle>,
+     ) -> Result {
+         // Shut down the GSP. Keep going even in case of error.
+diff --git a/drivers/gpu/nova-core/gsp/hal.rs b/drivers/gpu/nova-core/gsp/h=
+al.rs
+index 51a277fe97bb..d3e47ef206de 100644
+--- a/drivers/gpu/nova-core/gsp/hal.rs
++++ b/drivers/gpu/nova-core/gsp/hal.rs
+@@ -42,8 +42,8 @@ fn run(
+         &self,
+         dev: &device::Device<device::Bound>,
+         bar: Bar0<'_>,
+-        gsp_falcon: &Falcon<GspEngine>,
+-        sec2_falcon: &Falcon<Sec2>,
++        gsp_falcon: &Falcon<'_, GspEngine>,
++        sec2_falcon: &Falcon<'_, Sec2>,
+     ) -> Result;
+ }
+=20
+diff --git a/drivers/gpu/nova-core/gsp/hal/gh100.rs b/drivers/gpu/nova-core=
+/gsp/hal/gh100.rs
+index 2187e11168b2..1d06405a32f6 100644
+--- a/drivers/gpu/nova-core/gsp/hal/gh100.rs
++++ b/drivers/gpu/nova-core/gsp/hal/gh100.rs
+@@ -42,10 +42,10 @@ struct GspMbox {
+=20
+ impl GspMbox {
+     /// Reads both mailboxes from the GSP falcon.
+-    fn read(gsp_falcon: &Falcon<GspEngine>, bar: Bar0<'_>) -> Self {
++    fn read(gsp_falcon: &Falcon<'_, GspEngine>) -> Self {
+         Self {
+-            mbox0: gsp_falcon.read_mailbox0(bar),
+-            mbox1: gsp_falcon.read_mailbox1(bar),
++            mbox0: gsp_falcon.read_mailbox0(),
++            mbox1: gsp_falcon.read_mailbox1(),
+         }
+     }
+=20
+@@ -60,8 +60,7 @@ fn combined_addr(&self) -> u64 {
+     /// either condition should stop the poll loop.
+     fn lockdown_released_or_error(
+         &self,
+-        gsp_falcon: &Falcon<GspEngine>,
+-        bar: Bar0<'_>,
++        gsp_falcon: &Falcon<'_, GspEngine>,
+         fmc_boot_params_addr: u64,
+     ) -> bool {
+         // GSP-FMC normally clears the boot parameters address from the ma=
+ilboxes early during
+@@ -71,15 +70,14 @@ fn lockdown_released_or_error(
+             return self.combined_addr() !=3D fmc_boot_params_addr;
+         }
+=20
+-        !gsp_falcon.riscv_branch_privilege_lockdown(bar)
++        !gsp_falcon.riscv_branch_privilege_lockdown()
+     }
+ }
+=20
+ /// Waits for GSP lockdown to be released after FSP Chain of Trust.
+ fn wait_for_gsp_lockdown_release(
+     dev: &device::Device<device::Bound>,
+-    bar: Bar0<'_>,
+-    gsp_falcon: &Falcon<GspEngine>,
++    gsp_falcon: &Falcon<'_, GspEngine>,
+     fmc_boot_params_addr: u64,
+ ) -> Result {
+     dev_dbg!(dev, "Waiting for GSP lockdown release\n");
+@@ -88,14 +86,14 @@ fn wait_for_gsp_lockdown_release(
+         || {
+             // While the PRIV target mask is still locked to FSP, GSP regi=
+ster and mailbox reads
+             // are not meaningful. Wait until HWCFG2 says the CPU can read=
+ them.
+-            Ok(match gsp_falcon.priv_target_mask_released(bar) {
++            Ok(match gsp_falcon.priv_target_mask_released() {
+                 false =3D> None,
+-                true =3D> Some(GspMbox::read(gsp_falcon, bar)),
++                true =3D> Some(GspMbox::read(gsp_falcon)),
+             })
+         },
+         |mbox| match mbox {
+             None =3D> false,
+-            Some(mbox) =3D> mbox.lockdown_released_or_error(gsp_falcon, ba=
+r, fmc_boot_params_addr),
++            Some(mbox) =3D> mbox.lockdown_released_or_error(gsp_falcon, fm=
+c_boot_params_addr),
+         },
+         Delta::from_millis(10),
+         Delta::from_secs(30),
+@@ -122,13 +120,13 @@ impl UnloadBundle for FspUnloadBundle {
+     fn run(
+         &self,
+         dev: &device::Device<device::Bound>,
+-        bar: Bar0<'_>,
+-        gsp_falcon: &Falcon<GspEngine>,
+-        _sec2_falcon: &Falcon<Sec2>,
++        _bar: Bar0<'_>,
++        gsp_falcon: &Falcon<'_, GspEngine>,
++        _sec2_falcon: &Falcon<'_, Sec2>,
+     ) -> Result {
+         // GSP falcon does most of the work of resetting, so just wait for=
+ it to finish.
+         read_poll_timeout(
+-            || Ok(gsp_falcon.is_riscv_active(bar)),
++            || Ok(gsp_falcon.is_riscv_active()),
+             |&active| !active,
+             Delta::from_millis(10),
+             Delta::from_secs(5),
+@@ -176,9 +174,9 @@ fn boot<'a>(
+             false,
+         )?;
+=20
+-        fsp.boot_fmc(dev, bar, fb_layout, &args)?;
++        fsp.boot_fmc(dev, fb_layout, &args)?;
+=20
+-        wait_for_gsp_lockdown_release(dev, bar, gsp_falcon, args.boot_para=
+ms_dma_handle())?;
++        wait_for_gsp_lockdown_release(dev, gsp_falcon, args.boot_params_dm=
+a_handle())?;
+=20
+         Ok(unload_guard)
+     }
+diff --git a/drivers/gpu/nova-core/gsp/hal/tu102.rs b/drivers/gpu/nova-core=
+/gsp/hal/tu102.rs
+index f8a8541704ee..ff71b45b5432 100644
+--- a/drivers/gpu/nova-core/gsp/hal/tu102.rs
++++ b/drivers/gpu/nova-core/gsp/hal/tu102.rs
+@@ -62,12 +62,11 @@ impl FwsecUnloadFirmware {
+     /// Loads the FWSEC SB firmware, as well as its bootloader if `chipset=
+` requires it.
+     fn new(
+         dev: &device::Device<device::Bound>,
+-        bar: Bar0<'_>,
+         chipset: Chipset,
+         bios: &Vbios,
+-        gsp_falcon: &Falcon<GspEngine>,
++        gsp_falcon: &Falcon<'_, GspEngine>,
+     ) -> Result<Self> {
+-        let fwsec_sb =3D FwsecFirmware::new(dev, gsp_falcon, bar, bios, Fw=
+secCommand::Sb)?;
++        let fwsec_sb =3D FwsecFirmware::new(dev, gsp_falcon, bios, FwsecCo=
+mmand::Sb)?;
+=20
+         Ok(if chipset.needs_fwsec_bootloader() {
+             Self::WithBl(FwsecFirmwareWithBl::new(fwsec_sb, dev, chipset)?=
+)
+@@ -81,10 +80,10 @@ fn run(
+         &self,
+         dev: &device::Device<device::Bound>,
+         bar: Bar0<'_>,
+-        gsp_falcon: &Falcon<GspEngine>,
++        gsp_falcon: &Falcon<'_, GspEngine>,
+     ) -> Result {
+         match self {
+-            Self::WithoutBl(fw) =3D> fw.run(dev, gsp_falcon, bar),
++            Self::WithoutBl(fw) =3D> fw.run(dev, gsp_falcon),
+             Self::WithBl(fw) =3D> fw.run(dev, gsp_falcon, bar),
+         }
+     }
+@@ -101,22 +100,20 @@ impl Sec2UnloadBundle {
+     /// Load and prepare the resources required to properly reset the GSP =
+after it has been stopped.
+     fn build(
+         dev: &device::Device<device::Bound>,
+-        bar: Bar0<'_>,
+         chipset: Chipset,
+         bios: &Vbios,
+-        gsp_falcon: &Falcon<GspEngine>,
+-        sec2_falcon: &Falcon<Sec2>,
++        gsp_falcon: &Falcon<'_, GspEngine>,
++        sec2_falcon: &Falcon<'_, Sec2>,
+     ) -> Result<KBox<dyn UnloadBundle>> {
+         KBox::new(
+             Self {
+-                fwsec_sb: FwsecUnloadFirmware::new(dev, bar, chipset, bios=
+, gsp_falcon)?,
++                fwsec_sb: FwsecUnloadFirmware::new(dev, chipset, bios, gsp=
+_falcon)?,
+                 booter_unloader: BooterFirmware::new(
+                     dev,
+                     BooterKind::Unloader,
+                     chipset,
+                     FIRMWARE_VERSION,
+                     sec2_falcon,
+-                    bar,
+                 )?,
+             },
+             GFP_KERNEL,
+@@ -131,8 +128,8 @@ fn run(
+         &self,
+         dev: &device::Device<device::Bound>,
+         bar: Bar0<'_>,
+-        gsp_falcon: &Falcon<GspEngine>,
+-        sec2_falcon: &Falcon<Sec2>,
++        gsp_falcon: &Falcon<'_, GspEngine>,
++        sec2_falcon: &Falcon<'_, Sec2>,
+     ) -> Result {
+         // Run FWSEC-SB to reset the GSP falcon to its pre-libos state.
+         // Log errors but keep going if it fails.
+@@ -148,13 +145,12 @@ fn run(
+                 return Ok(());
+             }
+=20
+-            sec2_falcon.reset(bar)?;
+-            sec2_falcon.load(dev, bar, &self.booter_unloader)?;
++            sec2_falcon.reset()?;
++            sec2_falcon.load(&self.booter_unloader)?;
+=20
+             // Sentinel value to confirm that Booter Unloader has run.
+             const MAILBOX_SENTINEL: u32 =3D 0xff;
+-            let (mbox0, _) =3D
+-                sec2_falcon.boot(bar, Some(MAILBOX_SENTINEL), Some(MAILBOX=
+_SENTINEL))?;
++            let (mbox0, _) =3D sec2_falcon.boot(Some(MAILBOX_SENTINEL), So=
+me(MAILBOX_SENTINEL))?;
+             if mbox0 !=3D 0 {
+                 dev_err!(dev, "Booter Unloader returned error 0x{:x}\n", m=
+box0);
+                 return Err(EINVAL);
+@@ -183,7 +179,7 @@ fn run(
+ fn run_fwsec_frts(
+     dev: &device::Device<device::Bound>,
+     chipset: Chipset,
+-    falcon: &Falcon<GspEngine>,
++    falcon: &Falcon<'_, GspEngine>,
+     bar: Bar0<'_>,
+     bios: &Vbios,
+     fb_layout: &FbLayout,
+@@ -202,7 +198,6 @@ fn run_fwsec_frts(
+     let fwsec_frts =3D FwsecFirmware::new(
+         dev,
+         falcon,
+-        bar,
+         bios,
+         FwsecCommand::Frts {
+             frts_addr: fb_layout.frts.start,
+@@ -216,7 +211,7 @@ fn run_fwsec_frts(
+         fwsec_frts_bl.run(dev, falcon, bar)?;
+     } else {
+         // Load and run FWSEC-FRTS directly.
+-        fwsec_frts.run(dev, falcon, bar)?;
++        fwsec_frts.run(dev, falcon)?;
+     }
+=20
+     // SCRATCH_E contains the error code for FWSEC-FRTS.
+@@ -286,18 +281,17 @@ fn boot<'a>(
+         //
+         // If the unload bundle creation fails, the GPU will need to be re=
+set before the driver can
+         // be probed again.
+-        let unload_bundle =3D
+-            Sec2UnloadBundle::build(dev, bar, chipset, &bios, gsp_falcon, =
+sec2_falcon)
+-                .inspect_err(|e| {
+-                    dev_warn!(dev, "Failed to prepare unload firmware: {:?=
+}\n", e);
+-                    dev_warn!(dev, "The GSP won't be able to unload proper=
+ly on unbind.\n");
+-                    dev_warn!(
+-                        dev,
+-                        "The GPU will need to be reset before the driver c=
+an bind again.\n"
+-                    );
+-                })
+-                .ok()
+-                .map(crate::gsp::UnloadBundle);
++        let unload_bundle =3D Sec2UnloadBundle::build(dev, chipset, &bios,=
+ gsp_falcon, sec2_falcon)
++            .inspect_err(|e| {
++                dev_warn!(dev, "Failed to prepare unload firmware: {:?}\n"=
+, e);
++                dev_warn!(dev, "The GSP won't be able to unload properly o=
+n unbind.\n");
++                dev_warn!(
++                    dev,
++                    "The GPU will need to be reset before the driver can b=
+ind again.\n"
++                );
++            })
++            .ok()
++            .map(crate::gsp::UnloadBundle);
+=20
+         // Wrap the unload bundle into a drop guard so it is automatically=
+ run upon failure.
+         let unload_guard =3D
+@@ -308,13 +302,10 @@ fn boot<'a>(
+             run_fwsec_frts(dev, chipset, gsp_falcon, bar, &bios, fb_layout=
+)?;
+         }
+=20
+-        gsp_falcon.reset(bar)?;
++        gsp_falcon.reset()?;
+         let libos_handle =3D gsp.libos.dma_handle();
+-        let (mbox0, mbox1) =3D gsp_falcon.boot(
+-            bar,
+-            Some(libos_handle as u32),
+-            Some((libos_handle >> 32) as u32),
+-        )?;
++        let (mbox0, mbox1) =3D
++            gsp_falcon.boot(Some(libos_handle as u32), Some((libos_handle =
+>> 32) as u32))?;
+         dev_dbg!(dev, "GSP MBOX0: {:#x}, MBOX1: {:#x}\n", mbox0, mbox1);
+=20
+         dev_dbg!(
+@@ -328,9 +319,8 @@ fn boot<'a>(
+             chipset,
+             FIRMWARE_VERSION,
+             sec2_falcon,
+-            bar,
+         )?
+-        .run(dev, bar, sec2_falcon, wpr_meta)?;
++        .run(dev, sec2_falcon, wpr_meta)?;
+=20
+         Ok(unload_guard)
+     }
+diff --git a/drivers/gpu/nova-core/gsp/sequencer.rs b/drivers/gpu/nova-core=
+/gsp/sequencer.rs
+index e0850d21adca..13983d42b12b 100644
+--- a/drivers/gpu/nova-core/gsp/sequencer.rs
++++ b/drivers/gpu/nova-core/gsp/sequencer.rs
+@@ -133,9 +133,9 @@ pub(crate) struct GspSequencer<'a> {
+     /// `Bar0` for register access.
+     bar: Bar0<'a>,
+     /// SEC2 falcon for core operations.
+-    sec2_falcon: &'a Falcon<Sec2>,
++    sec2_falcon: &'a Falcon<'a, Sec2>,
+     /// GSP falcon for core operations.
+-    gsp_falcon: &'a Falcon<Gsp>,
++    gsp_falcon: &'a Falcon<'a, Gsp>,
+     /// LibOS DMA handle address.
+     libos_dma_handle: u64,
+     /// Bootloader application version.
+@@ -213,16 +213,16 @@ fn run(&self, seq: &GspSequencer<'_>) -> Result {
+             GspSeqCmd::DelayUs(cmd) =3D> cmd.run(seq),
+             GspSeqCmd::RegStore(cmd) =3D> cmd.run(seq),
+             GspSeqCmd::CoreReset =3D> {
+-                seq.gsp_falcon.reset(seq.bar)?;
+-                seq.gsp_falcon.dma_reset(seq.bar);
++                seq.gsp_falcon.reset()?;
++                seq.gsp_falcon.dma_reset();
+                 Ok(())
+             }
+             GspSeqCmd::CoreStart =3D> {
+-                seq.gsp_falcon.start(seq.bar)?;
++                seq.gsp_falcon.start()?;
+                 Ok(())
+             }
+             GspSeqCmd::CoreWaitForHalt =3D> {
+-                seq.gsp_falcon.wait_till_halted(seq.bar)?;
++                seq.gsp_falcon.wait_till_halted()?;
+                 Ok(())
+             }
+             GspSeqCmd::CoreResume =3D> {
+@@ -231,35 +231,32 @@ fn run(&self, seq: &GspSequencer<'_>) -> Result {
+                 // sequencer will start both.
+=20
+                 // Reset the GSP to prepare it for resuming.
+-                seq.gsp_falcon.reset(seq.bar)?;
++                seq.gsp_falcon.reset()?;
+=20
+                 // Write the libOS DMA handle to GSP mailboxes.
+                 seq.gsp_falcon.write_mailboxes(
+-                    seq.bar,
+                     Some(seq.libos_dma_handle as u32),
+                     Some((seq.libos_dma_handle >> 32) as u32),
+                 );
+=20
+                 // Start the SEC2 falcon which will trigger GSP-RM to resu=
+me on the GSP.
+-                seq.sec2_falcon.start(seq.bar)?;
++                seq.sec2_falcon.start()?;
+=20
+                 // Poll until GSP-RM reload/resume has completed (up to 2 =
+seconds).
+-                seq.gsp_falcon
+-                    .check_reload_completed(seq.bar, Delta::from_secs(2))?=
+;
++                seq.gsp_falcon.check_reload_completed(Delta::from_secs(2))=
+?;
+=20
+                 // Verify SEC2 completed successfully by checking its mail=
+box for errors.
+-                let mbox0 =3D seq.sec2_falcon.read_mailbox0(seq.bar);
++                let mbox0 =3D seq.sec2_falcon.read_mailbox0();
+                 if mbox0 !=3D 0 {
+                     dev_err!(seq.dev, "Sequencer: sec2 errors: {:?}\n", mb=
+ox0);
+                     return Err(EIO);
+                 }
+=20
+                 // Configure GSP with the bootloader version.
+-                seq.gsp_falcon
+-                    .write_os_version(seq.bar, seq.bootloader_app_version)=
+;
++                seq.gsp_falcon.write_os_version(seq.bootloader_app_version=
+);
+=20
+                 // Verify the GSP's RISC-V core is active indicating succe=
+ssful GSP boot.
+-                if !seq.gsp_falcon.is_riscv_active(seq.bar) {
++                if !seq.gsp_falcon.is_riscv_active() {
+                     dev_err!(seq.dev, "Sequencer: RISC-V core is not activ=
+e\n");
+                     return Err(EIO);
+                 }
+@@ -345,9 +342,9 @@ pub(crate) struct GspSequencerParams<'a> {
+     /// LibOS DMA handle address.
+     pub(crate) libos_dma_handle: u64,
+     /// GSP falcon for core operations.
+-    pub(crate) gsp_falcon: &'a Falcon<Gsp>,
++    pub(crate) gsp_falcon: &'a Falcon<'a, Gsp>,
+     /// SEC2 falcon for core operations.
+-    pub(crate) sec2_falcon: &'a Falcon<Sec2>,
++    pub(crate) sec2_falcon: &'a Falcon<'a, Sec2>,
+     /// Device for logging.
+     pub(crate) dev: &'a device::Device,
+     /// BAR0 for register access.
 
-base-commit: 4edcdefd4083ae04b1a5656f4be6cd83ae919ef4
--- 
-2.54.0
+---
+base-commit: fa8cc4e3067f958ea2057f37a8a6f9c6b10a9c03
+change-id: 20260624-drm-bar-refactor-90435f04c9ea
+
+Best regards,
+--=20
+Tim Kovalenko <tim.kovalenko@proton.me>
+
 
