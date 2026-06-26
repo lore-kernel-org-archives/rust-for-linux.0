@@ -1,126 +1,152 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010037.outbound.protection.outlook.com [52.101.201.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3B013D53C
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 03:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782442961; cv=none; b=FqHKv1bZnG/iKdeQ9h+OkjwnvHOsPi3qQODzziGZlK+MEvkCBLG7/tIgjtdD5xekdaf3TyDO6FddrmIzRiocrJDIKXMNSBmUcKtdV7KRPOa4IxTJgJpEscIRKEJOyrO3y+O34HJblVWnvmT71MF5fKUxAnNCCBLIcK9avZn6F8A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782442961; c=relaxed/simple;
-	bh=ZcsBLTieoNkA9TEUBhYNrRlE05FDe1x3P3jRfh8SjQ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=li7KNFVrSxwoCP+zWZrTDqcfS5IK2IgVYKEZTaVeALwyFqe5M7q48YDu4r3Kk4y+A6GuMZuNLgpRCRb9KwTNXzEM8UkaMi+LFwEl419M2I6vgMbSVSmAV3MsK7y5cSvTKiupA0xIqH4ypa8Pzwt/YRo8A1zca4hJftCuLJ5ZPG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Q3DWILNq; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356B83D5235;
+	Fri, 26 Jun 2026 06:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782454761; cv=fail; b=NBlAXMJciLzO7a/G0W6CRem4aZFAfvTev2uNT1/JG4KgqurHkJAa0U+sjHbQuNDHoMJ/nMVr1NEEKG00W/tpcYZkSty5E+1GT4m5ttqMjKHs6S1smPcafrZ7EcFsn7YhxBrv1mCBUoR9Ld53T0fnhgg21RM1xixIs17puvXZGNc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782454761; c=relaxed/simple;
+	bh=JMjJ4g7Q7MqtH/Y+8ICI0X012BvqR7uvA6V0JTfQpc4=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=KVeu2Q81ePpfrMPFhCZauxU9y7wFZDuVtwdNV/gjVAgiKwoR1lLCazFi6PSZLtyXIKbtyX0d0cHDllwrDBm6CgfG/HF+VbGwuS/eEw6Wm9e9ZvrBGsJ1DdSxIaOErJsHdpmqXoft+FkCD1uiDlhIH127t3NGNwN5Mnf8L0w0zSw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DA2RRu5e; arc=fail smtp.client-ip=52.101.201.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Q3DWILNq"
-Message-ID: <6d2b7611-41ec-45f0-a155-3b5c90c5d883@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782442947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f271ICHhBS5Ku8NbvazkeutM3PKmnGfN//6w5jBctrk=;
-	b=Q3DWILNq4rp7hL2oZ6zGRWnQi51EjKsSeNeF9gJ2kjLwYticVzg/5adTwdCkossO18oJMv
-	IX52h1GK1926K2SnQvL/RfDBYyDo0cmHpp2mWBjWBwBXYlPzRxN9/ESbADYOUha3RRcoHu
-	ysyaxxln8iygLQDFXJyQQTJeou2c7/8=
-Date: Fri, 26 Jun 2026 11:01:48 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DA2RRu5e"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=blII3NEmpcyFwrO6iNlNbr+i6uztOTZAqYDx4KuJhXUmp9dNFGsnwO+F+lyHJyPm0zwyrNsmKOl6Df79FNY26au3c6I0Gtf3mkZr6QplKGDL2lgm313UJvOfy/IUxHBHzauxeM0bz7U4EhH6LBUimrmdPPu0yzGhItcEP0kxVlG9NRssn5GWDH1SWWlgYBdgXBGt0RDs1IOLdVmUoAi49cDhwmC1tN6LouTe59jtWccm3oYJ5Q+lqATtqOiqUeMtdX2cTctql2PJgKggWLsDpVKzzaFCO4FbcrRyT7+ghTeIuK0m8YlTcsM25EVih/2f/5xtfRt0iSOU+d+hwYPRVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JMjJ4g7Q7MqtH/Y+8ICI0X012BvqR7uvA6V0JTfQpc4=;
+ b=DOcxb+upLuT1xvynrZggVky36Izop6me1OkFVDnBdEXh8bXDp3tGy4BM93Zbb2lTA4TpKVvkQamK/tm7sQfMefrBTvhAR0ZOHp09dAGSvnBMZIEPSS+X1uPNl+UD6bXnMO8YU6ZyaFpqMPSEX+wtWx1FBJmtYA7NzP92i5C2KKyjf7WaFsydRAXYJWgWjxoHd0+cCNNoXyEK4rueyMg6KKxcXRVF6ISFGmu9N73UfMX9uff3omc1GfudIo4inN3uc9yuhlbf5D4lLEG41md3/n5aYv1YLTzmJtfl0KbJnozMK8iYng5i3Q5UajK6RpM6pv9dFkQrRnEN8N/FcnHeEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JMjJ4g7Q7MqtH/Y+8ICI0X012BvqR7uvA6V0JTfQpc4=;
+ b=DA2RRu5ezHS2iUV6QXyLz6Xt0upm/rfkSBqS+CptrGHdMzund3QSbK3P6lzwz7AgTfdYBLTrmZQut6F1zDlkGfrZuKzBHl5Gx5J+0RtnZ+ilrmSy+mcLXh0pqegyKrU/kPDuIsZ7X7C13nDbcS/EuNzGsfyvdZYDTmzHRAbpMN1l0+PftavfVlgB5E9JzRkxPS7ByhDaAcSEc+CM7IBAD3Hg+nzJ1n29XDZt9nZLZABTnHt19crldz+sON9vA23kFu9g3bB7t/z6xpR4aDdXHElwjFBvhdNNqbbISligOUsWmiNigFHG2D7Jq0VtUB0VqvOEd01KocB0ZOEwKi7kZQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MW4PR12MB6707.namprd12.prod.outlook.com (2603:10b6:303:1ee::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Fri, 26 Jun
+ 2026 06:19:14 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
+ 06:19:14 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Jun 2026 15:19:09 +0900
+Message-Id: <DJIRH3MNGBR0.1N2M71G4C60KO@nvidia.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Benno Lossin" <lossin@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Boqun Feng"
+ <boqun@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
+ <linux-usb@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel-mentees@lists.linux.dev>
+Subject: Re: [PATCH] usb: rust: Use pin_init::zeroed for usb_device_id
+ initialization
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+References: <20260625224927.404258-1-nico.antinori.7@gmail.com>
+In-Reply-To: <20260625224927.404258-1-nico.antinori.7@gmail.com>
+X-ClientProxiedBy: TYCP301CA0038.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:380::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 10/10] rust: module: update MAINTAINERS to cover
- module.rs
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann
- <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
- Igor Korotin <igor.korotin@linux.dev>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org,
- nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260624-fix-fops-owner-v6-0-5295e333cb3e@linux.dev>
- <20260624-fix-fops-owner-v6-10-5295e333cb3e@linux.dev>
- <DJI7HR91X68U.3BVK3U4OJC18B@garyguo.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <DJI7HR91X68U.3BVK3U4OJC18B@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW4PR12MB6707:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76b21c49-645f-4c6a-f65d-08ded34ad780
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|10070799003|23010399003|376014|7416014|56012099006|22082099003|18002099003|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	jGt39F05+VPUEp+RR0GArMsYWRRPta5z6vFlxy/+kKW4g76XnhWP6SZog2QPJPfZZwpUujjKvKm/9T6SblPeSsuAHVUoiFlJIR3irOYjORQxAD3LJ9JCZlF+DiiNlnU03Zp9zaEHm+gV/GsFa+JNZJ18vwKjyLYZQrPuVbbSIDAjOg3x4E1N+LOAwRW8wfW19lRpUwAKYJ30ydV5/mX8eZ2hMh9Yovv+FHFbkVfmM1eWEmh+gvY7WcsZzxL0qUjY5uVSTh2R1l0hlJnMfF81IXKrWBK8DYUjbHIbfRnkf1BovYEvZ44QoodXrnzqg2LpT4VB9HVoJYRAPSBNWCYlmufhAbjus0WZB7H4X7GYbTE7mIuExRX+oYr9Zmf+FmdyJRRgNCyV9G+MtBPL4QNHsNNh1J9LS/k9N3rsQgRTaVsNwlwI9HaOhFm80EsLhnrll33kAu/iB/6EuuumC+gvF0BucIDFQIJvY3kq0H6CGICtpGPch67n+I6MwYrCVrc/dXJ5GHrhOMr+LF/gU/fyGolVXGqf6eznVNx5k8g5kh7yCjXrgAili1VT44A2Yby1sg9e4y6iPu5rNz+PniP11W6bDxh1undP+LXpdm4Vb+Pu5ojrmXhxPvcXwneNKXrqWL/ZJM89Ym1ZEr19rthZFmDQN3Sywe6AoXkZ4DY/qIQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(23010399003)(376014)(7416014)(56012099006)(22082099003)(18002099003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aks5YlE3T3o0M0NMQWNJdWo3eVNMenI0U0hrT1J4N3I2YnFsd3g1ZGVqZ0ZP?=
+ =?utf-8?B?OWI2TUdMOEtZWlQ4dG9Hd0w3a3l2enNaZk5kclU1MTI4TmN1dWtGOHZiLzBs?=
+ =?utf-8?B?bVZOdTRRVWNZWFFRTDZ0Sk9mVDFMdGxxR3BsWWowZEVhTjgxWWFQOGZPVU1N?=
+ =?utf-8?B?aDJoaTdib21WN1pINUtWdzRrMzZ2MkJJdFVKSHNoS2tJYjFYYWQ5L20vMTFQ?=
+ =?utf-8?B?Y2tod1ExbjdUQjk2M1FISlFPRFB0SVJHdS9EazIzZndWeWpLNkdaNlFXbEFt?=
+ =?utf-8?B?YW55VlY1U0hJaTJpbExOUVB2NWZZYnJaa3hTdEY1dWJWTjdRdHcwK0JxZGxN?=
+ =?utf-8?B?cmtHWFRKMjFRd3ZIQnBDODFjMyt4bDlQaHZJNndMY1o3VDEzZ0EzU0RzV3VD?=
+ =?utf-8?B?SkVBYTVVaEVUcURkNjBrR1RZYXJsZDNUMnBkbWNwMnpPdW5aL0RpTVFGcm5L?=
+ =?utf-8?B?UzJaZ1NrQlEvT0F3MUVuMjF2ZGw1cGM0bTVMTkVUZmpNaHU3UHlPQ05mazA5?=
+ =?utf-8?B?bkIzRmpIeWxiVFkzdkE1SWRwVWZMOWFjY0tMNDBMUlBkVFFOVnZTTURNUlNi?=
+ =?utf-8?B?UktBNEhXWVByc2pWeFZ3VHovUHlHRC82Zk04aHhwdFVzUC9xTkRKMVh0RVRJ?=
+ =?utf-8?B?QUFzVGNWdS9yTVcydmtoRWtpb2cySStvVmpSRk5QbWxqMU1MOWcyTWVzeEla?=
+ =?utf-8?B?QWFLa1RRdkh3c1o5OGxrL3ZOZU9ZbzNnNUhDR3JGVVpzUlk0bG1lTG0vc2l0?=
+ =?utf-8?B?Q2hsQVFoVXBIVTRmQVlOZHZxSnpFRlNJOXBRcEl2YTBNL2JYZGErd2loSSti?=
+ =?utf-8?B?UFhkdkQ5RGd2bXY2M3pNVW5uUzlrMEJ4eHBoakpWcGhtcTEzR0IxblNENE84?=
+ =?utf-8?B?VUlvbHhaemFCZTVDRFBFRzhDOFE2UFpWRE8yK2xESTZ2UnNrRnh3RXZwS21a?=
+ =?utf-8?B?MHl5cnhyNmxLdmxHdTF4WVhHaHovSFRXK2xVZDVLeGo0d2dJOHl5VDNjREpE?=
+ =?utf-8?B?dGRNTlQrOUpDbmdYUWQrbjhRZVo4NVBPNmdpdkZxRExyaFJyTDV3WXJWOE1M?=
+ =?utf-8?B?TDBtTkt3ZVBtekpwOU1mdnAyT1dNZUIxOUVkbkp6NU81SWRhVUV1ZmwweHVz?=
+ =?utf-8?B?WitGWWdVSFlrN0dUNlJ6aXdnM0ZOaFQyQzk3OUIrVFhpazZFZmx4WHFUbDVa?=
+ =?utf-8?B?NmRCdmxrS1Rmb1VabUdZb0lTQ2UwOFZVY2xyRWgxblVOR2k4bFV6MEdlVG5x?=
+ =?utf-8?B?ZVozMUw0dVVkUTdYNmE3OXptOHZqNW9nNWdYZ0FFQU9JTlkyaGNiS2ZUOFVT?=
+ =?utf-8?B?anRMQngweEtURVRERWZtVHpia00zemhjZFdCblpVUGpsTUlMdVd5RFVMMlYw?=
+ =?utf-8?B?clU1M3ppS2pOVGUyazNoQlVKWjhaaExuVUNRMlR1NVZqb1ZoNC9uODVQZUkr?=
+ =?utf-8?B?N2VrZTZ1ajd4dXVuNTNrRnZISXlRWGN0SUVUZkZmMTBJTGJ0TUU3ZkZ2Z2Qw?=
+ =?utf-8?B?L2lBM3BpTlZCQndldnFYUm9JVDg4clMwZkQvcncxbncwNUNFQUx6Nk80WHpx?=
+ =?utf-8?B?UCszWmNVQ0xJOXBaeUJMc3VqdFVJc21ieklwclYzR2NBL0x4OVU4N1htSW9m?=
+ =?utf-8?B?Nnl6cU5FSkR3VjJlYkNhMjhYT1l5cHc0eWZUcGFxSXI2SjRLa2VaL3NFdFhH?=
+ =?utf-8?B?NmtVbGZQZG5vakxlT21PRk5TSUxudVQ0WitLKzF1Mk50QnlKcDdDWHBtOGhJ?=
+ =?utf-8?B?NGxRTWk5ZlVjcWZDci9iVFdBZGRnWmV2S2x1WnF4c1Vmd1Q1djZEWktPdFBv?=
+ =?utf-8?B?bld4eVlpKzZOa1NvN1pQbUxLTkNIM092bzZDLytoMC9lZnFnREFmM005ZllK?=
+ =?utf-8?B?MjhnZU0zNWJ4VUk2N25haVdyalEzQlJUdTh5SUpLejVsOW5NUWNCQU43S1ZS?=
+ =?utf-8?B?QVYrOHdwbkxLT2lBM1R4d09zSml2NDZGMENUVnBHdHJic2hyaUZmMDFteTBq?=
+ =?utf-8?B?NHkxSlZkNGlFay8yNUhab0dCVlE3d2JJMHpFWVN0K2dXQ25FbVhPeE4zYmp0?=
+ =?utf-8?B?K2lXbngySm1YWkpCS3NxZjNEUlFyeDlRMEN3VlpNODdkQytqS014SGRJRzVS?=
+ =?utf-8?B?SHZORStMTml4TEkrREF6M1czTVpRdFdGS1RqUGFEM1RyK0QxZStJWUtIbHRw?=
+ =?utf-8?B?aVROZWo1ME1nMlhPR09VMjlkTjROY29zQWdZYnNlamFQSVdWa2Jna28wZTNh?=
+ =?utf-8?B?aklVODhxdS9nYlJQMUZqUlNoWDBoRi8xT2gybzZWUDNld2JPNEZVVUI0UUVD?=
+ =?utf-8?B?QlJBL1lwZDlHTmhoRUZpVUc1Ymp2WFVicWQwMWJEZmFYZUpHZmRXc1pHNktL?=
+ =?utf-8?Q?OIBG03EybBw0UUl+N3fSgWpKNJpm25pC0aeuK+eMqYNiL?=
+X-MS-Exchange-AntiSpam-MessageData-1: cdxY+MNFKooXCQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76b21c49-645f-4c6a-f65d-08ded34ad780
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 06:19:14.0035
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qfGXS7EpRmKrgHYl+e1vzNnYSrQGynYGW5FLSstOoGOyoerqXnt4ZNOCbmFCQ4hGWpkMdTkWVlcSqw1OS9kgtw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6707
 
-
-On 6/25/26 22:39, Gary Guo wrote:
-> On Wed Jun 24, 2026 at 4:00 PM BST, Alvin Sun wrote:
->> Module types now live in `rust/kernel/module.rs` alongside
->> `rust/kernel/module_param.rs`. Update the MODULE SUPPORT file pattern
->> from `rust/kernel/module_param.rs` to `rust/kernel/module*.rs` so both
->> files are covered.
->>
->> Assisted-by: opencode:glm-5.2
-> Did you actually use a LLM for this patch even? :)
-
-Yes, I've created a skill that generates commit messages for the code I 
-modify
-manually.
-
+On Fri Jun 26, 2026 at 7:49 AM JST, Nicol=C3=A1s Antinori wrote:
+> All types in `bindings` implement `Zeroable` if they can. This enables
+> using `pin_init::zeroed()` for `usb_device_id` initialization instead
+> of relying on `..unsafe { MaybeUninit::zeroed().assume_init() }`.
 >
->> Link: https://lore.kernel.org/rust-for-linux/8ea21b29-9baf-4926-a16f-7d21c5a1a1b8@suse.com
->> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
-> This patch should probably be squashed into the actual move, i.e. patch 1.
-
-Sure. Looking at the change history of the `MAINTAINERS` file, the 
-modifications
-are always in standalone commits, so I followed the same convention.
-
-Best regards,
-Alvin
-
+> This change improves readability and removes unnecessary unsafe blocks.
 >
-> Best,
-> Gary
->
->> ---
->>   MAINTAINERS | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index e035a3be797c4..74733de3e41ee 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -17984,7 +17984,7 @@ F:	include/linux/module*.h
->>   F:	kernel/module/
->>   F:	lib/test_kmod.c
->>   F:	lib/tests/module/
->> -F:	rust/kernel/module_param.rs
->> +F:	rust/kernel/module*.rs
->>   F:	rust/macros/module.rs
->>   F:	scripts/module*
->>   F:	tools/testing/selftests/kmod/
->
+> Link: https://github.com/Rust-for-Linux/linux/issues/1189
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
+
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
