@@ -1,77 +1,111 @@
-Received: from mail-4327.protonmail.ch (mail-4327.protonmail.ch [185.70.43.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BA615B998
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Jun 2026 13:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DC43AEF3A;
+	Sat, 27 Jun 2026 13:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782566366; cv=none; b=TGmRifSqU8BBEpeb1vAvxGL/uB/quajH5ezE2Qt7XL5fBmGah0VIgjXLK2pekV+NzZ0qJ8f3CUA2MN2Wbl8tMNd5kfAuGrHAcoW8LNvfrrdU7ihN/POVCqxPkynmdQf7QbjMQ5OYUyZ2Qlalxxgw+CgfUuhCZ5W0JAObrxETiEY=
+	t=1782568291; cv=none; b=go1VQqZBufjGtRX+Z/HXQo23KbeBRix76v7osrAMxbirBG9ZGCr/hWrHTndZ++aTRrdkB6tQMcUCZ5ed7uWYroyLCeHRYdT47z+LHnLdJOHMPZf9wi1LOPIsvi8Hhmbx7L0YfJaqdPvzQHzSNFdfvFp4Yu/rP7qVFg0NIwh4+lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782566366; c=relaxed/simple;
-	bh=of29jqyHyB5qWxXSuuS59R998CMlMwheJGLVdsXX7Ik=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GQtat5cwWSdgYiTtFdc2L6zIXmYKMKC5ccOz7lOzaZjEmoq7wm9W1LmTVpBvTb7Ia9Bv0GiZKWj+N+9JmSx354niqWkUOssBb/SdLps10wI+WTfaH1PQDwVWpFP0jptddN06iA1/yv6k6FW6ARXALWZWREDgfhsEKVyLGp+F88Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=antoniohickey.com; arc=none smtp.client-ip=185.70.43.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antoniohickey.com
-Date: Sat, 27 Jun 2026 13:18:56 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Antonio Hickey <contact@antoniohickey.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Cote <danielstonecote@gmail.com>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] rust: kernel: create `overflow_assert!` macro
-Message-ID: <38c93322-946d-4b7a-bd20-934c3c335f8c@antoniohickey.com>
-In-Reply-To: <CANiq72mYBkEi2yAYjDa3vxNkROa7xp2bt88TFnbvHjPR59dXOg@mail.gmail.com>
-References: <20250819003824.23019-1-contact@antoniohickey.com> <20250819003824.23019-2-contact@antoniohickey.com> <CANiq72mYBkEi2yAYjDa3vxNkROa7xp2bt88TFnbvHjPR59dXOg@mail.gmail.com>
-Feedback-ID: 144211621:user:proton
-X-Pm-Message-ID: 5e7b631ea9ac83a5ca9dffe33afb7de73b3f4582
+	s=arc-20240116; t=1782568291; c=relaxed/simple;
+	bh=Mp3HhFnT4Dn5tymA/irC+FaVJe06bKlOkR6goezdd/I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=JA/ASURRJbw2H6Xc6ggFjiYk88QPq+CO1DXupRyGBk1USWmd4EF3HPpOqucV7JXpMXhLBhxKmejoTG9nQi32XEWGRJIuDUw44g1Fq06SZm1bZVtYgiKsJwjaUsNBLQ4AxAZskubl7NAxnYYpfhZWfXd936eG1XtnRfMeA1TxhDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEuj47Vk; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEuj47Vk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D076D1F000E9;
+	Sat, 27 Jun 2026 13:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782568289;
+	bh=sZ7kMHOM/UusQZj89sqfP5ZckFAGYTvVqUakUPkV1uQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=aEuj47VkimWwfxAw2ZHAEfGEMZKtEMZ6WNWLDw+s3570SNvTizAl0ILVOI17i2A7L
+	 AYudOp4K9ZVQti0oj3sp0GHOY0v4wg9twuayqUoC0Jz8/xQZJVi+PWbRe1rcVUcme0
+	 23YyTXp4+62dyWzGDNBhKH2kKEDhJpJ9iOPCebxN+YhIKYhKB+vSuhClJuLo0ZnDcP
+	 r1yz3J+EducA4gN7IrvtGppM1/3YMfsdh7g816Lb13ia+OwEkpPtg4uviqtif2YGp2
+	 jYR49KtLMnGOr/62DXdveI87ZGy85POyH0eHlU74bdr0niz5rL0MFYESyY7yLZ7OX6
+	 2Vh7Ryq7ce8VA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 27 Jun 2026 15:51:23 +0200
+Message-Id: <DJJVPW8H183T.1927SIBS40Z40@kernel.org>
+Subject: Re: [PATCH v4 2/7] rust: types: introduce ForLt base trait for
+ CovariantForLt
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <acourbot@nvidia.com>, <ecourtney@nvidia.com>,
+ <m.wilczynski@samsung.com>, <david.m.ertman@intel.com>,
+ <ira.weiny@intel.com>, <leon@kernel.org>, <daniel.almeida@collabora.com>,
+ <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pwm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260626183630.2585057-1-dakr@kernel.org>
+ <20260626183630.2585057-3-dakr@kernel.org>
+ <CANiq72=0OOgc6NtbpF0Ysdk3ytRWCGGbWg00u0Le2AzQmKGKxg@mail.gmail.com>
+In-Reply-To: <CANiq72=0OOgc6NtbpF0Ysdk3ytRWCGGbWg00u0Le2AzQmKGKxg@mail.gmail.com>
 
+On Sat Jun 27, 2026 at 2:26 PM CEST, Miguel Ojeda wrote:
+> If this goes in at the same time as the move (as I assume), then am I
+> understanding it right that if someone else was using `ForLt`
+> (trait/macro) things would either break at compile-time (which is OK)
+> or, in the covariant type case with no `cast_ref()`, it would build,
+> but someone could in principle have relied on `ForLt` providing the
+> covariance guarantee in unsafe code?
 
-> Hi Antonio,
->
-> Someone asked about this old issue in GitHub -- let me take the chance
-> to give a couple comments to resurrect this series...
+If someone would have unsafely asserted covariance for ForLt it would break=
+ at
+compile-time like this:
 
-Hey Miguel,
+	error[E0199]: implementing the trait `types::for_lt::ForLt` is not unsafe
+	   --> rust/kernel/pci/io.rs:158:1
+	    |
+	158 | unsafe impl<const SIZE: usize> ForLt for Bar<'static, SIZE> {
+	    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	    |
+	help: remove `unsafe` from this trait implementation
+	    |
+	158 - unsafe impl<const SIZE: usize> ForLt for Bar<'static, SIZE> {
+	158 + impl<const SIZE: usize> ForLt for Bar<'static, SIZE> {
+	    |
+=09
+	error: aborting due to 1 previous error
 
-I've been getting back up to speed on this patch series.
+The only way this could silently break would be to use ForLt!(), but then d=
+on't
+use the explicitly provided safe cast_ref() method, and instead open-code i=
+t
+with an unsafe transmute() assuming covariance from ForLt!().
 
-> On Tue, Aug 19, 2025 at 2:39=E2=80=AFAM Antonio Hickey
-> <contact@antoniohickey.com> wrote:
->> Link: https://github.com/Rust-for-Linux/linux/issues/1159
-> It seems you didn't reorder the tags as mentioned in v4? Was there a
-> reason for that?
+Even though very unlikely, I do however have an eye on whether another user=
+ of
+this API appears.
 
-I don't see any valid reason other than just naively missing this on my=20
-end, but I'll make sure my v6 reorders the tags as mentioned.
+(The whole series also goes into a topic branch based on -rc1 anyway, so I =
+can
+also always provide a signed tag with just patch 1 and 2 based on -rc1 shou=
+ld
+the need arise.)
 
-> +/// A guard before doing a size computation that could overflow:
-> +/// ```
-> +/// fn reserve_for_concat(curr: usize, to_add: usize, cap: usize) {
-> +///     // If enabled, catch obvious overflow logic errors early:
-> +///     overflow_assert!(curr <=3D cap, "curr=3D{} > cap=3D{}", curr, ca=
-p);
-> +///     overflow_assert!(to_add <=3D cap - curr, "would exceed cap: {}+{=
-} > {}", curr, to_add, cap);
-> +///     // ... then proceed to grow/append
-> +/// }
-> +/// ```
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-As I'm re-reviewing my patch for a v6, what are your thought's on this=20
-example in the doc's of the macro?
+Thanks!
 
-My main worry is the placeholder comments make the example seem=20
-incomplete, or are these kind of partial function examples normal?
+> We could take the chance to add some missing intra-doc links, but I
+> can add a good first issue.
 
-Cheers,
+I can add them on apply, or we leave them as good first issue, as you prefe=
+r.
 
-Antonio Hickey
-
-
+Thanks,
+Danilo
