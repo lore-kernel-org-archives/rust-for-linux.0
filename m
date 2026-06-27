@@ -1,129 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E7339734D;
-	Sat, 27 Jun 2026 09:28:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782552528; cv=none; b=g6MedUNOt4TkuscDSNUTyBWfcNh5eTeLUBwR5Xf7R0wqDZII2W4Vh/ljFXrdvsIE6XH+KcarV0FR4HhN61TyhW2lTNODYFUu7TOK/tl7UqMja1QeZpirF+VjYYS9V33vEaytwXMRCJ8jUucR+WQrccYV9ywr1aBsy5LJmeboYmg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782552528; c=relaxed/simple;
-	bh=DgPxSWJm3yP+ocMCPSZPYulAvRJygW/tBHfG7di1GFE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R8hC7J1dMZIbywrP5Xva3AA0Y0xl2eb00Xv1XVbchlBsCbUNoIVPtXW5cC7t0SneC41zy61rvCT5hwiVeDzfnTEiWzF/zU9VeX+czI30W3Ggz6f1oVznIUf+XUSgS01uR5AB0P9NaBX6UfQ2GSIbmoBVF3+E8N7QOvYHmK+UDHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cHZIOzf/; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5316B3AC0C5
+	for <rust-for-linux@vger.kernel.org>; Sat, 27 Jun 2026 10:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782557985; cv=pass; b=aSXvRvNraKVFAO9n6dm0KDbcuUZcoSMC5qOwyrIWvCHoihUbFY1xLBww9biiyq0MigvPqioIJeAp3Ua0d9SLshQX1WJ0vOF0dX9HYNd7KFsZpXaAQLkupFD/Al7bl+nqPisvKqI1aaNCViELxWMmaxldfbrXx1WsDYSYkdlxW34=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782557985; c=relaxed/simple;
+	bh=n+nDLLPZ6wEr/4dq0uqyhXXPZoefpLj+VqCWxHyZNrQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mUAmr4T8TPfR6gUQM3/oBKwd3va9y/I5lv1MWyqJBObgSl8It138+s+Uj0Pj00dGLO3gEbMru49MG4cZ74TZBWdzgClEO1rhrehTOkweGcghdYY5Gml5/+BsxLNWsIfaQSNq4K9+TMys++A1eQnhY4hj4K7aLvZrSSlUkdPIMAo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTCC5J/A; arc=pass smtp.client-ip=74.125.82.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cHZIOzf/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5F8EDC4AF0E;
-	Sat, 27 Jun 2026 09:28:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1782552528; bh=DgPxSWJm3yP+ocMCPSZPYulAvRJygW/tBHfG7di1GFE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=cHZIOzf/zNQ6qo66OJvGfI5idaqipbfpXtvK0r2IGLpkNmf9TG+TM69s1F2B0ucfC
-	 4naO/JUR+5UytSJccKDTZSe8vkaENnkZZY+gthhT5Bt/uCBhbuwL0d0mA0CkXp5uVx
-	 Udmz/SEbz8SX1yQf3ZiBw+faUNJLpfQUtcwr2dZ8=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5545EC43458;
-	Sat, 27 Jun 2026 09:28:48 +0000 (UTC)
-From: Alvin Sun <alvin.sun@linux.dev>
-Date: Sat, 27 Jun 2026 17:28:47 +0800
-Subject: [PATCH v7 09/10] rust: macros: remove `THIS_MODULE` static from
- `module!`
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTCC5J/A"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-30c91a3fdddso104277eec.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 27 Jun 2026 03:59:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782557982; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NxL2yFaozowxGrrdotMJswpXFFemAmEQ08bG3UaeykrYT/JcXrZQDmb+56eMgVvFL4
+         1CTFP+p5nTYNpDYjxfpoOVjC19Ee0TEZlexAcMQEnUTt5JInrFkw85mdQaqyf/gbHnPC
+         xD5x93kiU7vQuGanQAWk51x3lzTuXQELZ2KAoS+W3g1BKbYsZtyuDl1S1Ad961PTX4rf
+         TfOHjc2G4x/i+G/1zrehYKvxGj5Xc0NDyXOvtbbP9nKn2u7w2njvIWxoH1860/Z0Srqs
+         coRYzZpFgO8Kb1Be2K2RI/QczLIWIfl9GQQeH72HwLKSlv+z6UIK3vtPdyOZSeuWoRuN
+         lN7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=n+nDLLPZ6wEr/4dq0uqyhXXPZoefpLj+VqCWxHyZNrQ=;
+        fh=MGwrwDe2KH0owG37XXKug/ULaD2dNfQlKk6kfglDTIU=;
+        b=fxbchh0oe1RtA5WPCCfmM4/r0ZkJaAbQcwaHl/KPvMq2zx11JcN53bgLUC1tZ20OB2
+         dj7QOXqxxQSxdf8oAWkhziKtLML9JnpBi+Ngr3IYeb7/E+g20OHdcTS7pFQjS8DFJe3f
+         MZcmvaSy6QflY6EGk1+Q0GUBkkVYjY6UAtLPrXc+PpjZe6qEG+5H7Mh/kbKoBOhgm8mk
+         T6m9Q8zFFYLa86PLtVFEr1vqdsQST3/Es1aSoYY0pVH9oEi+/bORwVO0xBTKSure1aWt
+         0wOduWEyHEZqwGx0F7mlM71C2cwX1ckRQrqrOmAHMLhtAVnAgsjqrNgWZYqv2O1iqN1j
+         B2ow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782557982; x=1783162782; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=n+nDLLPZ6wEr/4dq0uqyhXXPZoefpLj+VqCWxHyZNrQ=;
+        b=LTCC5J/AlHwNTPg3a/mufaYZZQPgXwVTgs8fczt2lpRLNdTwoqGRwRbAMpfKUYBqRF
+         tS+tNysbuvGGWZzcCg+xlQHqX6oxURMOkm0IBSolgrgzokVninhfx9uT68qbSBthVTUX
+         b7FYU3JxaNZyP17nYb4cQCoOeiZempuB+c86YataOpL/Hv8EaNKn3WUyYRfSKzTRbrQF
+         uGDgTU8R83YbRtGgCiqUNEdyUb6PJ55IWB1r5Nb2Tx08r8w78OF7EKKdmjW+YLvEPoLV
+         fvW/aaULnlXJ4iZ8cIZoBbMK0rOoNWgQGCYROfV4m+nLdPEOclvLuVSGxmo9MxiX5+Dc
+         P6hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782557982; x=1783162782;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=n+nDLLPZ6wEr/4dq0uqyhXXPZoefpLj+VqCWxHyZNrQ=;
+        b=HpW4eCKN8W9yR5n5rOzqhgVnIPEIY/8Iwj+DOuwargeRUzu0husQFzYNMFC6rYEmmQ
+         8ENCCxQEDDz1wSMG13VGA1Az+UzfylW/p1zOO112O47k8P4Vbtfx+mqW07FJbYVPg4Xf
+         9eqHQORLfiJDVNxDokQbvttDKxY/otZDPkFdOKG3aBzsunA+k1E8y3eqgOw54GByOkLh
+         p2YnTb9EPcFABa10L9fXRUFHwcOyAzMebNS8113g6cczWi88+yCL0fwxwGPPeQTnYnXu
+         9cMjmXHxOvwD38YOUkMxEjgTCUx0i+gztU5JdGbF9AAbaRDZ38/WAPJrVLsP6gQonvYr
+         QEDg==
+X-Forwarded-Encrypted: i=1; AHgh+RqziHbyAFlaV3kuRDtiBXCM0DW39ihonuIc7PY+o6wFbEvdccvEfoBYV3nGAyZeWconE9cCXGAM6LssLrpOWA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvLDtr/X+puHSs5ambEIyHNciFMKhpqKDj/8+COPxlVFZM+cvF
+	W1jPFsEa2Sf5561LsG7y3RMSD6JS2ldbtYjrN9kyWoKRFuWjQsH4rfeElvJBcxGQhUBACrqXSYW
+	upQz47e84EnDKZAEw9XgW8VqdjgQT9Hk=
+X-Gm-Gg: AfdE7cnSHFeIyb6m/PJeSljnJRgpfNtkxNTwrGArVZL8Xk9yQiu9//LDeIE+5D9TNNZ
+	Nv1TgRGKMVli2mWGYELRycliWJszMyAEl78faqR1PMmCaZ5SdHIeM40hyiw0c9SLHM8R2auPl4u
+	vOo44tgsRG/UTt4sUHvjnBIrtnB1kRISNauZJGiku1uMW4zHbiIrQYXQp6wYwcc+BYfNDyn6Ypu
+	31E0BPEgD+HO1huvxsQVRvYf7dO9NJy7SBLikbCPp0O4/1e4xJ1+Xd5okB5czWYx26STebZO0pK
+	7eWKzvRkTWSChWwP7BJh1XwPc/FbU4MroHug4bCPSqCG30mMiDcpl3umHFcoJc+DdBTWfS1QCWN
+	VIXAKqZuBSbN0
+X-Received: by 2002:a05:7300:6144:b0:30b:c021:5045 with SMTP id
+ 5a478bee46e88-30c84ce60f7mr4014070eec.5.1782557982397; Sat, 27 Jun 2026
+ 03:59:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260627-fix-fops-owner-v7-9-33cd3990edf0@linux.dev>
-References: <20260627-fix-fops-owner-v7-0-33cd3990edf0@linux.dev>
-In-Reply-To: <20260627-fix-fops-owner-v7-0-33cd3990edf0@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
- Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Igor Korotin <igor.korotin@linux.dev>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org, 
- kunit-dev@googlegroups.com, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782552525; l=1808;
- i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=DgPxSWJm3yP+ocMCPSZPYulAvRJygW/tBHfG7di1GFE=;
- b=V3RdXZoofrhhOZP8IjcsNVEO2G03/RaQ4PkznYXdod+CYixYfB0z1tQLsui2AwFFBr42tj43O
- gVZQ+2v+VKzAJZnN0WubBLcV0/IU2AmKWBvhzMROh8fopFUWVON0whX
-X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
- pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
-X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
- auth_id=684
+References: <20260626183630.2585057-1-dakr@kernel.org> <20260626183630.2585057-2-dakr@kernel.org>
+In-Reply-To: <20260626183630.2585057-2-dakr@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 27 Jun 2026 12:59:30 +0200
+X-Gm-Features: AVVi8Ce3MkIh0ONlyKuy1KTbQ-yG1BEWeg6mkrKBipEfxJFXZQzFaNA4SZvKL0c
+Message-ID: <CANiq72mT0sAUX0Ob0RHzqS3QOzRxkc9=UoOuPTTyH=nAa8D40w@mail.gmail.com>
+Subject: Re: [PATCH v4 1/7] rust: types: rename ForLt to CovariantForLt
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, acourbot@nvidia.com, ecourtney@nvidia.com, 
+	m.wilczynski@samsung.com, david.m.ertman@intel.com, ira.weiny@intel.com, 
+	leon@kernel.org, daniel.almeida@collabora.com, bhelgaas@google.com, 
+	kwilczynski@kernel.org, driver-core@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, 
+	dri-devel@lists.freedesktop.org, linux-pwm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-All users have been migrated to `ModuleMetadata::THIS_MODULE` const or
-`this_module::<LocalModule>()` helper. The `static THIS_MODULE`
-generated by the `module!` macro is no longer referenced anywhere,
-so remove it to avoid having two sources of the same `ThisModule`
-pointer.
+On Fri, Jun 26, 2026 at 8:36=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> Rename ForLt to CovariantForLt to prepare for the introduction of a new
+> ForLt base trait that does not require covariance.
+>
+> The existing ForLt trait requires covariance, which enables the safe
+> cast_ref() method. This rename preserves the same semantics under a more
+> precise name, making room for a weaker ForLt trait in a subsequent
+> commit.
+>
+> No functional change.
+>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Assisted-by: opencode:glm-5.2
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
----
- rust/macros/module.rs | 16 ----------------
- 1 file changed, 16 deletions(-)
+I don't see anyone else in linux-next using it, so this is likely fine
+-- if we expect others this cycle, they may need a merge.
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index aa9a618d5d19e..23b6a1b456b80 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -497,22 +497,6 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
-         /// Used by the printing macros, e.g. [`info!`].
-         const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
- 
--        // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
--        // freed until the module is unloaded.
--        #[cfg(MODULE)]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            extern "C" {
--                static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
--            };
--
--            ::kernel::ThisModule::from_ptr(__this_module.get())
--        };
--
--        #[cfg(not(MODULE))]
--        static THIS_MODULE: ::kernel::ThisModule = unsafe {
--            ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
--        };
--
-         /// The `LocalModule` type is the type of the module created by `module!`,
-         /// `module_pci_driver!`, `module_platform_driver!`, etc.
-         type LocalModule = #type_;
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
--- 
-2.43.0
-
-
+Cheers,
+Miguel
