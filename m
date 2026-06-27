@@ -1,147 +1,156 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010042.outbound.protection.outlook.com [52.101.201.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624EA28E0F
-	for <rust-for-linux@vger.kernel.org>; Sat, 27 Jun 2026 00:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782518454; cv=none; b=Mk1xFTjGB3eISUYx2liie0M7umuqYvxIfVrJLyvmzKJOM4dxc70TbgIx4u4RH9Rls7CMDJKNK5mlCxVlLXj5P+hNHw9mxjajD6IFFW9Ug8aO+WkI+qYK4Pur5SYu3KID7tSzy01aDwZzNGwvmtwzjpuwAC3VvBRwPh9giW6ejaQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782518454; c=relaxed/simple;
-	bh=tGIQHoq4qK5Eb4FAZpd/KMB8JhWc6zGurunEeF1Sxg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BvYVoVvXHeY56gt0cySlKk1l3albh7WPX2VyszqEQib9meU9FaScxIu8o0ioKpQR501ksjQ5h90NniCOangVrxxtkKjShuSkJ/2T1OOKa0KCLUUwPFmLSU2qvAQP+mAdhLqhIKLmcyxld6U2b0Ib6dgoksbIN42w6AF7CxZHwhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l5damnCH; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED42C17D6;
+	Sat, 27 Jun 2026 08:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782548720; cv=fail; b=qqbifzVy6R/9V/V4FCfGG+DfPVoVwOAfsZXBfiH5QAyL4VcSDhtYKjZ6aGQQqmC+jJS5dMhyo3+JyqE4s+blRIuz1N2I85JMwhtmMbPfgU4XiDZBhXQ/Oympp1/VNifFblp1A5stz+4Of5VjisID1bqSl+Q/FUsABpIXjHxB4vY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782548720; c=relaxed/simple;
+	bh=dhwJ69csyHcF0vRh0hz76XNOa7wezsGaBkYzFY0DuKA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=lZDGm67kGuR2wDz6LOqV0drz98oTQom4ZGCEvlvW1oHQ/hOYWJPK7wdoczon3tIOFphIEtGVZ16xMsRMNER7PGlwSco1fyKQiltqt+5cgOC7HX1Kh+C0+lUI++qRk8ZRFHMlhWWweq7eCL4WFzDnYPofBVy8qJ7VGsiuKVN8ycQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mKt2LFlc; arc=fail smtp.client-ip=52.101.201.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l5damnCH"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c9b2ac97cdso825ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jun 2026 17:00:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782518453; x=1783123253; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QqDPPLJzwuxTB89us7bsdVJAmyNxYkv4BpfCzxYJck0=;
-        b=l5damnCH21c52U4xUKOm6SbLFVDsXUmSrT0CBS9sAHcDHYexifr8aH7AXLtNV9mDXT
-         u47nuU0LlCSlBLh38P2xXdOi3xwxAtm4hpwVoMq+ERCsOJxLSpcAOgIbAU74i7IDgQKC
-         MHN5NlIUTS2t1lh5AWDvj9YtSzNCrNhHNbTqf1WtjNn5AQmHx9GOll9Dm+wvcfapkQJc
-         E6IN4lBAUWIJfckcMo/bZ/hBk2E+vsc/FN0xbnbLNZdkYWWfDTj2nSnHzIcNMb5vExeR
-         qF7UVXk/EiA9Et+Ac7kxHyi+V945x7IEi4kCqpwhRdXFp+R7ohDlxTldUAtpA0gUjVli
-         NJVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782518453; x=1783123253;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=QqDPPLJzwuxTB89us7bsdVJAmyNxYkv4BpfCzxYJck0=;
-        b=EmOz7VQioXPkoNm9T9v61pmzVPm1wbNCrYjqqeJ3S99aVBWxKbG7LtyaQIXZYXj9dK
-         qSGwETP4oey5p1J9MLZlqpJLmzGPgwZMsGeIgP8V+Sg3d87nQjxfNpQ5DpKkBm02yJ9H
-         5l21EW8nN6FHZ4ZqTPelwIywjrC8/796Ep0dXccvtDT3Nfg56IrP6e01+MHY0mml5/BA
-         heLE9OCAGhaSoa1Y2W9zGx8vArxNKvUfYd6TxqYnLgw7GhMIXEgiZxVEy7Z+9+7vHqcf
-         z4jUsADbmCKrIxK864+4okxiYg0KwnvdwfuyHnIVYTTKGWyryGTLJrAInjFTGIFumKOI
-         7PHQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp7Z1rEiZFCiF8PkmClB+beOib2lUM5ESr/liQ7rHQhsIac5XuTBgRJsHb9JrMuBRz3uMSp/ZBdvyiw7UJPBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrwS2/2sHYMYGBJTnw/ulgkPT8lD6FLvYE1x6kuYq83OHXr/qf
-	/RGE+3qjBKeuTzFl3hsAq5MP/gqn+V40pap/pUCJDkxKfVqA/WFJWo1wn1g8XP97Ew==
-X-Gm-Gg: AfdE7ckLt6Io6U+DNiJ8PwiJlqt/c78MCYbHU9v/vN4SOqTSs/Y1sfx44ktj0fuvMJS
-	pmjVEl0IZm0kMcs/mU512QD3+zLGG/c3pHmPzpZ2LQVK/OgA2oM0kx1wf3rZYiKIqI8a8snez5g
-	x5IvUSsqfnd6TduhmfDX/LN/Q0Iv6bzT6GVpcfi/eoWRr7j4OBOgEEbbo0yoaHZP8eM8071oQo0
-	lzDSJ6jiKqBbWatQ6bqlICown9GCSHmGXxcSGWOyVQfaoLCYBMeLd6OdWYq0xZuEaGeMQMRNr/P
-	yZUmurOW3S8EcGuFgdwqW0ARntQRcq+Ioeat7g6sInHQGr7gF1j7XDrsITFqNR9ZKYzWvhJFbh4
-	yFGRU5pwMC2H5SU+Kk9fr9c1iyRXfrfLaHHfExBY/LmqefERar0BcXqKKpYpJUDnQh0BrBCVOXT
-	LweKZvNHQ+dKRhvOphQmGlbNj0vXHgk2p5725jJBFo00vo32fVXDdytAIEfFcdw5rV1lzNGj1VU
-	8wvGY2Ii67cV2ajjatfCwP7cNjnKgToEy8=
-X-Received: by 2002:a17:902:f612:b0:2c7:9e6a:1a8d with SMTP id d9443c01a7336-2c9a24512fcmr1139135ad.12.1782518452128;
-        Fri, 26 Jun 2026 17:00:52 -0700 (PDT)
-Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c81aa46aeasm20037615ad.17.2026.06.26.17.00.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 17:00:51 -0700 (PDT)
-Date: Sat, 27 Jun 2026 00:00:46 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>, aliceryhl@google.com
-Cc: gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
-	brauner@kernel.org, aliceryhl@google.com, mo@sdhn.cc,
-	wedsonaf@gmail.com, Liam.Howlett@oracle.com,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] rust_binder: use a u64 stride when cleaning up the
- offsets array
-Message-ID: <aj8Srto26mBb3vQ6@google.com>
-References: <ahw3tFhLz9bMMJAO@v4bel>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mKt2LFlc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H4I54e2X2EdNER48mM3zfjRt1Y3c5gNNBMcY1W8DXbutqXnRYMqk93lDU9fNylJAy7EQdoj4LW2j5r2W7oaltYAd61EUMAJoy7xeuIPSBwwizBw7JEEpRx2kTqA/TOMmMupGSGgR1USoicxqUuzO5gtVGNX7L17fZik0dHmzLHx+bJZACyuN7M3lm/O9MCa6khJ42Y1iUiKJ+prK5FAETgPDJ4yaY/FMPvEVrqXxATut69qOURjbyjW+Bh/jgImR4xdy7YqLLVRIHaxcLtoB6vWUzOPLp361enim8428egSnJD+nHg7hcxtpfHjtIQ6ltBMjSf6HfEubI/e3hPL1PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dhwJ69csyHcF0vRh0hz76XNOa7wezsGaBkYzFY0DuKA=;
+ b=VUqSOeUC1SpVvsgGhcitwBoPYNmnU8QNn4zvyQa5C3ZscVgSAIQU17UhJ5agH1iFOEebObuOW8tiZ6rPHG5Ryk0uQlYDc9nIjt8YNK8z0IsOCbnG7zweFGeIiVGbTvFPvUYEJFIuXUrUoxxfthaz9+DUmmmNzEjv3xvncdcTAEePrDjopE5t5J/CD8e3obn+Oo/QBojT/JYqunFkeoF/3OzEWCSKDmbR9RKs66oorSFKzH7f0Esh3dlBo94+QjCC65F7UOsD6HInmk4sFHPHOzLAhOBYPJw05RP3lh/DEe7duKBovcFG4FuywKDT8uTokyQvVwKKdCUte/lrrAbTew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dhwJ69csyHcF0vRh0hz76XNOa7wezsGaBkYzFY0DuKA=;
+ b=mKt2LFlcqURzSuudxn+KTSWtd7F2PTRZnHjQhA0L80yXH/rzW0cLJ6jg06XwSmGQlZ25wW8LxuIPz3PBEG+1mq5hF+mO9I+cHwU7+B2yjbfJI7MRR20LyWYewHpqYtQMCrdPm2ZwpwX6URwdtKPyPcWTSdUtl55EGy+uFSlj1Aae0NQirFm2PCs/AmmAAdmiU737h3NM53+oA+M6vpzh7Om1jHASoejM7CQ9IFLQXyZHeabYchtsMfQO2ncqGIVqTX04gl/20PXAguEeD2jfc4OOSfhJmIk8BtHMh2rHvYiEXmaJKF6aGX3kUmOOzMx4fn5ul8EobgJK0h2w+1drNA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SN7PR12MB8103.namprd12.prod.outlook.com (2603:10b6:806:355::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.18; Sat, 27 Jun
+ 2026 08:25:15 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0159.016; Sat, 27 Jun 2026
+ 08:25:15 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 27 Jun 2026 17:25:11 +0900
+Message-Id: <DJJOS525HN6Q.3LNJ2EPYWH2YV@nvidia.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, "Todd Kjos"
+ <tkjos@android.com>, "Christian Brauner" <christian@brauner.io>, "Carlos
+ Llamas" <cmllamas@google.com>, "Alice Ryhl" <aliceryhl@google.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Benno Lossin" <lossin@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Boqun Feng" <boqun@kernel.org>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel-mentees@lists.linux.dev>
+Subject: Re: [PATCH] rust_binder: use pin_init::zeroed for file_operations
+ initialization
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+References: <20260626214404.852685-1-nico.antinori.7@gmail.com>
+In-Reply-To: <20260626214404.852685-1-nico.antinori.7@gmail.com>
+X-ClientProxiedBy: TYCPR01CA0183.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b0::19) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahw3tFhLz9bMMJAO@v4bel>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB8103:EE_
+X-MS-Office365-Filtering-Correlation-Id: e6c04cf7-7fd8-4344-542f-08ded4259d0c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003|23010399003|22082099003|18002099003|6133799003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	66pabIPffO3PphIxyUlIhzsev2NitcbcFWSVyjG5wz9tAt+N5tkCIdKRmwyI2KJV0/8+TOcaIhoI5VnxQHSOUDJBcAsa2B7x77JQdRZIkJX3X2bQG2/gFjuKO81QUpjyFB2bE30Sezsq7hWdWizcwp1RbCiXx5XtrauAjT5RtCh4YzBikbywaZuGaBgJP4nItoFcEI6avoGHCw+SaqyGQKG8kp0kx7ENq5HA0gDj9S1FPIeU8sFLpFmOgOzxr+P3N54Xpt36QFMyZvPW6zkYVq42nlIqYjVCpT6rj49eD3W3ByjO3unIhadDsarzzLjXUDKiG9vh5pl3usjH6MY68PFoC7ST88dD3mQHZ35wHgDvfkLg5n36iHL1E3C41NKVizrKNMNZV7FQGNp8DqKSLjQ9AFHTDXn7moE/9ivRDPz3g8AWKloo0RabEm78AFb5btgK7urs+lG45dVkOKjBnoZQ1ShdAAgPZRaeBhjlKh3sl3ZT+BsPB3Rc9Oi+3M5dvIeRLLCKz2U03yu+Hx2T3UGdYiscDoIYADvwalFK3hfTB5SyZm9s1TsHjvDa3rbAc1x6Tlg0R7P9AomxRz/mEoxONg9Y3L+mSUlfwbXeln/FdQaoAkIVh7AD5lYE5xHBb1c80bF0+/xJdJJQ0euOzMFKm9hHzi02zWWqtKkOumQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003)(23010399003)(22082099003)(18002099003)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aDI4RjE4WlZNTk9JQXF6Q01WMitWV05xWE8xNXRUYlc5KzVObEp1ZjhYbGxn?=
+ =?utf-8?B?cXRnYy8xSVVxRmQ5ekJRaUsxU1RsZzdPZ09VMHgzN1N1WXVxbzkyWlJJdHJl?=
+ =?utf-8?B?ZTl2Y3ZSNzluc0xKL0x2WGFzUUpEd1dXM1BVemVWRTVZUXk3YnZndTE1cmRD?=
+ =?utf-8?B?Rm9kczBXRTNYc2E2UmpQbjFub3dsKytucGowRHEraGRzNzNwajNxYTQvM21L?=
+ =?utf-8?B?UnhzcXdNMGQ3NldqTms5OFljVkx2VFJnMUxOWm9JcXRVZ2pnbVRWZmdSUWtl?=
+ =?utf-8?B?V1FlWllDRENNV2xHUWlLNFRxK0wwd0hSS3Z2SVBXc2I2blpVL0N4OUlCMGh0?=
+ =?utf-8?B?TlNrbkpvNEZFTmlJaVp3V2dKejhWSE0wclcyMHJ4NUZJc1pEcE51TVpVU0h6?=
+ =?utf-8?B?MTJQbk4rdGlQdFJuQTNFT1U4enMvM2VoSTJyaTBhcDN1a2VsaVNmWjBnVWhQ?=
+ =?utf-8?B?b3hVejdRdnIyWStocnRXN1RJazJueDgzUHUwYmp2bHR5U3RUMDRWUXhIaHRs?=
+ =?utf-8?B?V20xN2Z2TzMrbHlaS2YyQ1gxYUlqYVZRYkdHQm85QjJZREhYN0JObmdDVnFj?=
+ =?utf-8?B?U0hpcm9hbVUvNnRrVXdPdm5JZHJFVWErUm9MZmtjdlVndXpnOHpsNzRvdmVU?=
+ =?utf-8?B?U2xsQmJiNWhBOEVVN2MvcU1lLzBVOG9ISFZMRVFpV3M4N0hoOXhZUnFqZ3U1?=
+ =?utf-8?B?ak9XK3I4Y1hSSWxzYldVcEtEVS9DMmhnT1JMbk8rdzBrRjU2OUVpNHZqS0cy?=
+ =?utf-8?B?ZzdKWlNzRHhhQVgzeTVuNm5tZEhraVVzblJXTC9zVEhxbnpNby9VWDU2NGVU?=
+ =?utf-8?B?ZjVMUkFBaUNRMjdrcjgyWXljK3FkbEtQU01kTnIwWXFWdm5xVlo0aXRiUnI2?=
+ =?utf-8?B?Mi80c1JOMSt0UU0wai9KZ1pBUE5ISE42UDIxeFF6K0IzOW5mV3Z5blE4OWV0?=
+ =?utf-8?B?M2R0QnU1V1k4ckNKZVhjOHJ1MFNJcDd2MkUzTXEwQkNNUmw3TGw4UEp0Y0JM?=
+ =?utf-8?B?NjNxdm9UbmhvMG1VZGZhR0gxZmlrblRxQUNHWUM1eXJsazgzRzh4OWVCc2Jo?=
+ =?utf-8?B?MlZVcDdrdGZLbmZPR1FMQzhsSlBtZXo1TkdUZTJSazVsRktwb2RNRER5dDBT?=
+ =?utf-8?B?bkg3N0N6c3lVYU1mcUhlR1ZHcHhXZVNtdWVLbkU0Q3JHbFlRSDk0cGRSVUpm?=
+ =?utf-8?B?UjNUTVp6VGtpREdaTUExS3kxRmRLUkZsdUREK002MHVjeHE4TWs4dTRNU2Zt?=
+ =?utf-8?B?WXRLZGFPVEVaU1pxWFRocStCOXRkQVcybEJHU3dsd3VFR2NWbFBoRDdCNkxz?=
+ =?utf-8?B?T3lRVzZ2bEt2eFhWWFFraXlra2FrUUZOZWc5YlN4bzJMT2RqSVBra0dPMFNz?=
+ =?utf-8?B?eVcyVFgvMHRhUG9OSFdBd09Qai9IN3B3V1p6Y2ZJbGN1WFdkb0p3bUlzdVh5?=
+ =?utf-8?B?dGRFM2ZoWUpQblBQbklWTjZhSEZQTFlZaTd6MGJic3FucU5tVkFxMHYzNWVu?=
+ =?utf-8?B?dVowU2JkM1AxeUUveURkMUsyckJwUUVOSm1FZXk1MXN6SFFQRkRvcVZVZ2Fa?=
+ =?utf-8?B?ejA1SG9RaFdXNlVuZmlPdmo5VzZ5YWZBUkk4UWtpeFR1SElMTy8xZXJxODRn?=
+ =?utf-8?B?TGhIOUVkN2pmMEZ5dmg1U2FDWUtYS2ptNjJDeklOUU5nZ1BycUpabDhDUVdi?=
+ =?utf-8?B?T0NJNGhPNUNRL3ptSDNIUk5zL2NLalkyTUR1TldNVTFIT1BINjlWQVhXbVZp?=
+ =?utf-8?B?M01tU0FVOU5EaHZSOEZFRkVMRUVXbzJqeTBUU2tTYmRiQThXKzFtL25uRlls?=
+ =?utf-8?B?T1lENWRlRlFwbkxEMWFPdzNuWW50dTZjWGFzZkdNb0ZVYlFWWkZMVGN4aUJT?=
+ =?utf-8?B?T2xhL0M5NWN5Zm9HYU80di9BK1JRRGNBd0JJR3hDK2VHdXJ0cHFqTDlsTmls?=
+ =?utf-8?B?L1NtZFliNkVUMlpMWlRSOS90anRaM29LT2RtWFVTcTVJQ001RlJxQ21JaUZN?=
+ =?utf-8?B?dXlnVzhpYnU3UjNXdzJKNE9vVlBlZ01yT2Y4eXRVS25TN0RSdERGaEFGSFVv?=
+ =?utf-8?B?UmEyYUJsSnJFMWd0NVl1eVlzbUNacGNaQjRydVNsZXI3YVdpR3Z2NVY5WDZz?=
+ =?utf-8?B?WU1OQ2tBMEljNVV1eGdldDFEQmJ5WXNvR3Nja2lXUzNiRHVYVWc2ejRUU05W?=
+ =?utf-8?B?K3dEcmMzMUdrMnFWWG5OR0dlMVFHYTRseFpsZG4rM1ZPdlpuY1VTTWsxQVk0?=
+ =?utf-8?B?QTJTTURTak5tdGZ4M1NoQmNzNERSdmorTFNMSkh6dU1GY3pnK1dZNzBLY0V6?=
+ =?utf-8?B?WUtZRFgrZlNXeGttZHlXSjJ1MUtPc2g3U0NDb0oxdXZkeDA5Nkc5TEpyMHNy?=
+ =?utf-8?Q?XOF01CNDMt31fhl2wUzL3zB9OTmLkbo5A2mX6Q33eZi6c?=
+X-MS-Exchange-AntiSpam-MessageData-1: MwV28ZB+7+6fWw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e6c04cf7-7fd8-4344-542f-08ded4259d0c
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2026 08:25:15.0081
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: URha8vZP+3D4fqSuKtqxmh+fPIWmI847CU0WZQPOdBQDrccMTLwnmHtm41kNs3pg2YapBLdDQChZnlJ+OjVyHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8103
 
-On Sun, May 31, 2026 at 10:29:24PM +0900, Hyunwoo Kim wrote:
-> Allocation's Drop walks the offsets array (binder_size_t = u64 entries),
-> cleaning up the objects, but it used usize instead of u64 for both the
-> stride and the per-entry read.
-> 
-> On 64-bit kernels (usize == u64) this is harmless, but on 32-bit kernels
-> it walks the 8-byte entries in 4-byte steps, iterating an N-entry array
-> 2N times, and reads the always-zero high word as offset 0, cleaning up
-> the object at offset 0 N extra times. As a result the referenced node or
-> handle ends up with a lower reference count than it actually has (a
-> refcount over-decrement), and binder's reference accounting is corrupted;
-> for example, the owner can be notified of a strong reference release
-> (BR_RELEASE) even though references still remain.
-> 
-> Change the stride to u64, and read each entry as a u64, narrowing it to
-> usize with try_into().
-> 
-> On 32-bit ARM, when this over-decrement would drive a count below zero,
-> the driver's existing refcount guard refuses it and fires:
-> 
->   rust_binder: Failure: refcount underflow!
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
-> Changes in v2:
-> - reformat to satisfy rustfmt, as pointed out by the kernel test robot
-> - v1: https://lore.kernel.org/all/ahjpn-3WQTywTdyj@v4bel/
-> ---
->  drivers/android/binder/allocation.rs | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
-> index b7b05e72970a..ea5846e4da16 100644
-> --- a/drivers/android/binder/allocation.rs
-> +++ b/drivers/android/binder/allocation.rs
-> @@ -259,7 +259,7 @@ fn drop(&mut self) {
->  
->              if let Some(offsets) = info.offsets.clone() {
->                  let view = AllocationView::new(self, offsets.start);
-> -                for i in offsets.step_by(size_of::<usize>()) {
-> +                for i in offsets.step_by(size_of::<u64>()) {
->                      if view.cleanup_object(i).is_err() {
->                          pr_warn!("Error cleaning up object at offset {}\n", i)
->                      }
-> @@ -420,7 +420,8 @@ pub(crate) fn transfer_binder_object(
->      }
->  
->      fn cleanup_object(&self, index_offset: usize) -> Result {
-> -        let offset = self.alloc.read(index_offset)?;
-> +        let offset = self.alloc.read::<u64>(index_offset)?;
-> +        let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
->          let header = self.read::<BinderObjectHeader>(offset)?;
->          match header.type_ {
->              BINDER_TYPE_WEAK_BINDER | BINDER_TYPE_BINDER => {
-> -- 
-> 2.43.0
-> 
+On Sat Jun 27, 2026 at 6:44 AM JST, Nicol=C3=A1s Antinori wrote:
+> All types in `bindings` implement `Zeroable` if they can. This enables
+> using `pin_init::zeroed()` for `file_operations` initialization instead
+> of relying on `unsafe { core::mem::MaybeUninit::zeroed().assume_init() }`=
+.
+>
+> This change improves readability and removes an unnecessary unsafe
+> block.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1189
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Signed-off-by: Nicol=C3=A1s Antinori <nico.antinori.7@gmail.com>
 
-Hey Alice, have you seen this? This looks correct to me so,
-
-Acked-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
