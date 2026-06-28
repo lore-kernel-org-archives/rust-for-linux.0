@@ -1,79 +1,57 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D154C2F8EA1
-	for <rust-for-linux@vger.kernel.org>; Sun, 28 Jun 2026 18:22:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E185426ED3A;
+	Sun, 28 Jun 2026 20:03:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782670971; cv=none; b=oMT9KNgJHJYxJcNy0kv+QCQ+Y4KwKfVy9V5Zea9GRL1A1Dj0DhwHi3L3kG/jIPZL3uT/bP0QaDfnG6eWpT6ZiU1opi4SijPYOzqBa5Q8fjrmI4vd1NJ5M4GJ1sAznA0AmtqxpF328nXPoAc2jqmbmy0s6IJnYjmAXdeWRyoXYLM=
+	t=1782677024; cv=none; b=KLz4SzecHHE83/XWq2EFSlz1XcUwmg8VBdvi8CnUbg2rMgBrwIYTmWMK/grwHFgNsuT4dCQkJk5tU74FLsLilzVBTaBztNfC6J1IXnvf1FXwYMp/Nfwro1oLWhrCRI07ZKu6LEKg1qyUYewiPUsCuZKZS5Fq8hAipcvbt+MBe7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782670971; c=relaxed/simple;
-	bh=Z0DQ9dWZ2koMQA8ywoE0uWtSaYihQ0LX5J4USq5K1Kc=;
+	s=arc-20240116; t=1782677024; c=relaxed/simple;
+	bh=2cHFFPC0mGiShryppd4erFEhd715CSn0cr9WuI8tDwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXa61KMx/g+82kqncwP3UJfqW1stigkJiJ5noZvQ+hHOAkxCWUcs1Ru30hXa0wA/nYUJpq8owdLKgzZYlBhCgJRkvpyr5AfqRFX6FSyxWHra3rEI/G9bKDRqhNijuTlQVxXSpgf3lN2nucYJtum5UTD8DFSyIvdp56R0kigGFdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLlqydcy; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version; b=oHLztqzeL11E3asXK2yhDLTIjcJL1hwP7r9U5cDfWG62O60bLKxPYBEzQS8crofewsEoxIdc6km6RBO5X+Vb8S5w3LWZBVXQrWFd1+uCiURIUqulrNzS3pyaupr3d8tgZ0do5hWBNUicjs1CLGwOomiG6xRvDuquBB568l68dM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUefJOWn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLlqydcy"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-37f7a5a217fso807440a91.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 28 Jun 2026 11:22:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782670969; x=1783275769; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z0DQ9dWZ2koMQA8ywoE0uWtSaYihQ0LX5J4USq5K1Kc=;
-        b=VLlqydcyw0+l4LFGZdN2F1iIepQqaVCMDuXrI/AsiNSG3ni9sKh1WpkR6BSiTKtsaR
-         xobFiwvvCMQTh1pO7C36QyTGsRPvUlGBmEheeVQdCLltI99DWD5u42sA9ZACVR+aT4US
-         98zQD92YKxBH2lxrqd7ugMrQ7D5wiLvUIMQc6qZ4npYD/1ST3CBjnKd3fI+5lbsu1/Tr
-         KizlX1gsvn3GQfODVQpySOzuD/5YZDoQXnVFUEKnDrDphr0viLQV1Z5uhSatYhweclxg
-         gnelFDnkH9wzKFOAhH4S7fsHM3nPsFV8DBXKnFe+Jxber2k2GnpofpM4gnrSUbd1+vFP
-         F9NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782670969; x=1783275769;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Z0DQ9dWZ2koMQA8ywoE0uWtSaYihQ0LX5J4USq5K1Kc=;
-        b=rYs8HMQlFiCqcsM77PY9AD76Y2xTulSA0HVcTbvxH2YGkpT6OT1Ve5bRIYKTIqG+Rb
-         KCi3NnsOxWfdSoNgYxWtXwO1MzuTVCUrcONYIdu6NRXPq+ZPV6tpxA1cPppaexbBIM9B
-         frlCcdveyydp8mptQd7WEV0pXRBT8sjtY9xIXEYuI2G2IFxfp7Vf+zRGgdl3ENU93Hv9
-         tIeNEvpRdHZzo7oB2xfxq2VR0/vujed0ho4f8BsCmhcuxqcCmfPJE7W3U9P147NfTmPa
-         nRnxYj+Uuso9XddF/3nhlLkCvan6ITiLhw68Kh9Wta9OYroNTFVXRfA2NXu7YINLWXb5
-         q8HQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqj2WDpwUfDePOrCRu1jL3kL5yvvqNtI/8GMYs91CmtCmPxCWiRLQhFt7rM+4QQVdgAsi4rWq1pNO2v4QwF4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWcNo3U2ciGIR07O1v/TluATLhUglDUPVasomt4k194NQZp0IE
-	FC5zU8J4v8a9j5EbnAAi/UZPv0wtaAIjlilXOMthDfTkSEGYHPjJv38d
-X-Gm-Gg: AfdE7cl8G03nPOiR9Cw4tx7G6qViVwaOygTYAOA9WZrnKqTMrkdy1cP5L+/FohVU3tU
-	E0GJxrmLykyBse/MNpecQMwHoLFVjGzK1GQr/zyM9gqd1cybestl6wKooew6teOV2VbXe7vZqNP
-	dpBxo7FliuOa/X0rd1hwZbBOhR1+B3URP8oIdxRnjV2RSF7ncU8OONotnZNXrcKqBfLOTI5uw87
-	B2dLKZOK/9kWJdVvOBu03lR6PepoCfJlex0SIeaPxhI89MNO4HbH2ZARbdFyu/nL5pZEkC8m5hx
-	TGTn9usqjOhyVopeDAYKzgddASIw/Gd6XMl8tiuFsgoHjJ3RlsAcJLy9i9W4yCUNObW4/5igfbC
-	ued0UykgX57GWJyhFJWmJEsLUg0SIi4MwJNGfq2edv5R8tq2KyaAqwKjhcznbaW+O9tPuiXVCHv
-	wuBAPLx2JUyqXZ6yp2YMzBh3QPsI+UvELHRFAXHQUVhYDTISZN0tRFnKMuUBAU4Pk6qsjON6iyq
-	rpExFZbVgcr9SRyw7uADaJd7h+imTL+9IHQlw==
-X-Received: by 2002:a17:90a:da84:b0:37f:a915:1c29 with SMTP id 98e67ed59e1d1-37fa9151d83mr6068848a91.19.1782670969047;
-        Sun, 28 Jun 2026 11:22:49 -0700 (PDT)
-Received: from libra11 ([143.248.188.236])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37ffdc238c8sm781779a91.6.2026.06.28.11.22.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2026 11:22:48 -0700 (PDT)
-From: SeungJong Ha <engineer.jjhama@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: ojeda@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	acourbot@nvidia.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUefJOWn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45F21F000E9;
+	Sun, 28 Jun 2026 20:03:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782677023;
+	bh=frHiRHw3H3PdxqJsD/24F7Lnivb422p6BVK/wWW5Mbk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZUefJOWnvAoMOrDkIhK5EMO40alzCC8qdERZwVUADNk5MnC/x8PlBBRt4Vs6GUx0A
+	 WO5VuPnH7/WjWdXQf9CG9/q3tOLJNg5wBk9ilqEGhIf+LzjZXc5B2KlV8VE37YxdhS
+	 uvNDNPPwimy0fknr3DrvSLIvKmh/3BTLmOXE9erjRrXODfbDvUwDYjwb8xHlQobK9u
+	 5D9CqKxPWiVNZtL2BRr5aaFS2FMhenx6+6w+ujJs/zNS10+J6ByHjeVLxiI7A+LcHw
+	 /BnhqRN5ZIOyMCq+6atdHqEnMYWVDyJpr24YNHBUjDYb89l5kn3aZQIWa3aUbVDDhX
+	 bqEdAfiR9T13A==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
 	dakr@kernel.org,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	daniel.almeida@collabora.com,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	lyude@redhat.com
+Cc: driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	SeungJong Ha <engineer.jjhama@gmail.com>
-Subject: Re: [PATCH RFC 4/4] gpu: nova-core: gsp: convert GspMem to zerocopy via the transmute bridge
-Date: Sun, 28 Jun 2026 18:21:54 +0000
-Message-ID: <20260628182154.712621-1-engineer.jjhama@gmail.com>
+	stable@vger.kernel.org
+Subject: [PATCH] rust: devres: ensure revocation is complete before device finishes unbinding
+Date: Sun, 28 Jun 2026 22:02:53 +0200
+Message-ID: <20260628200304.2365598-1-dakr@kernel.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260628172200.B116D1F000E9@smtp.kernel.org>
-References: <20260628-dma-zerocopy-bridge-v1-0-9a2895ebe30d@gmail.com> <20260628-dma-zerocopy-bridge-v1-4-9a2895ebe30d@gmail.com> <20260628172200.B116D1F000E9@smtp.kernel.org>
+In-Reply-To: <20260628174451.2275679-1-dakr@kernel.org>
+References: <20260628174451.2275679-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -82,10 +60,58 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is pre-existing and not changed by this patch: it only makes
-explicit (via a checked `zerocopy` derive) what the previous `unsafe
-impl transmute::{FromBytes, AsBytes}` already allowed implicitly -- the
-layout is byte-identical and the message-handling path is untouched -- so
-it neither introduces nor addresses this. I'm not familiar enough with
-the GSP threat model to judge whether the TOCTOU is in scope here; if it
-is worth noting, I can add a TODO comment near the affected reads.
+Now that the revocation Completion is in place, also address the
+symmetric case. When Devres::drop() wins the is_available swap and the
+devres callback loses, the callback returns to devres_release_all()
+without waiting. This means device unbinding can complete while
+Devres::drop() is still executing drop_in_place() on another CPU, which
+is a problem if T's destructor accesses device state.
+
+Make the synchronization bidirectional. Whichever side performs
+drop_in_place() signals the Completion, and the other side waits.
+
+This does not reintroduce the nested Devres deadlock fixed by commit
+ba268514ea14 ("rust: devres: fix race condition due to nesting"),
+because that deadlock was caused by drop waiting for the release
+callback to return (the old 'devm' Completion). Here, both sides only
+wait for drop_in_place() to finish, which completes within the current
+call chain. The Arc<Inner<T>> keeps the Inner allocation alive
+independently.
+
+Cc: stable@vger.kernel.org
+Fixes: ba268514ea14 ("rust: devres: fix race condition due to nesting")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/devres.rs | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 11d862f1e6de..f112c7e8bc3b 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -264,6 +264,11 @@ fn data(&self) -> &Revocable<T> {
+ 
+         if inner.data.revoke() {
+             inner.revocation.complete_all();
++        } else {
++            // Devres::drop() is concurrently revoking; wait for it to finish `drop_in_place()`
++            // before returning to `devres_release_all()`, ensuring `T` is fully torn down before
++            // the device finishes unbinding.
++            inner.revocation.wait_for_completion();
+         }
+     }
+ 
+@@ -364,6 +369,8 @@ fn drop(&mut self) {
+         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
+         // anymore, hence it is safe not to wait for the grace period to finish.
+         if unsafe { self.data().revoke_nosync() } {
++            self.inner.revocation.complete_all();
++
+             // We revoked `self.data` before devres did, hence try to remove it.
+             if self.remove_node() {
+                 // SAFETY: In `Self::new` we have taken an additional reference count of `self.data`
+
+base-commit: 6cb8c4e26a3684c9df382a350f06bfbe2a197e5e
+-- 
+2.54.0
+
