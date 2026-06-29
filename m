@@ -1,381 +1,294 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3780140F8FC
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 14:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC689413256
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 14:21:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782742823; cv=none; b=CY9QQwLqN1k48mhWdCFhMS0DlBst/ZOp/YRyXxlvyNkKjHL/zFDpqRKECerzw+Tjl9cpCVSxtacnxgghcQ/An/v+uD33GcCbV1lkBl16SNiwqOGczbbonqdRIc9vgJckJotbeYbiFUFxEZcgugsuLq6HBhPYvEgtcxOciuhwOKs=
+	t=1782742902; cv=none; b=BOogG/ubijYwgOD6izpFJkIY/D6YXsXJohIf8htEABb3wy0G5jPN1jJcVzo7U8uuGUDmR3tAvZ7Ga8guzKI8LuC16iECtA8feTLaAEMcbGqwfP9IB/Blj70MKGKarIi3auF8KINbWWjBiap0P7R0KAsXHmOzZfOjhRimvXpakTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782742823; c=relaxed/simple;
-	bh=x++pQE5GKKnJe3Jn2ShXEdP1AjYJx61jjswnatHuIlA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M5qFJsXrexcFLta0zymzHaRjbeUcnj5win8t4tvTQ2aHwVfJDKFpFB4GR+3jsZJWhZhHrHqh5kyi8lkaOdw+Z9//D0OPDR5f9smY0UFExD4Ba+Cy+cii3gPWiqY8Hdv1fDaTbxUgqNlNhI3XSEn2usEFPZ4nmOFLFnReUVjAFOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbtatKl/; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782742902; c=relaxed/simple;
+	bh=qLlH50DsPBHxPs+lphtz4ADgANwwLqfu3+0Z85rFfgc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LlDbIGjFHsBnREE3FjzsiMkvGLEsohjq597kX3OCYbr6CJvZB1MhAjCU2aPQtM6eUAgAq7c1Ox29Y7YmqHUn7t32InYU85gR9rIQ1SRZfS9c2VoklPSb6RDk+SSiEZrTZI4c5VYj1mJ1LN9/Jmb9W1ReM/1X7Oxcvu8AqzqXEUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=aTAeiVxG; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbtatKl/"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30bf8b2bd20so6710064eec.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 07:20:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782742821; x=1783347621; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AupvSFaqPtFwZHXXd++aD6dS9DxYuU7xGlZB7kUfSKk=;
-        b=nbtatKl/U8Mea1aMgN11eEP1pyZHfIMSslIBIexeX/nl5/VoI8inHw7FajFKKpURD6
-         CpseRcBRVo+u2vkCkotpZ4/FKDC7e+48kSgcMfaMnLuuTrZ3CRmcOlqg6A3yaT5AEK/H
-         9mZMe9DdanAG/vE537prgUL2mo/TZGsgM1GggGZBiVkKxwEMbLp0vi0k0bkozbZ0R05w
-         3t8iMzc+pSlOC99ICuFwhH9mMU5EQ68ax8xCBZMIF6ScP+fotbpQ12cFEsy0mPAdd8Qp
-         w45yvU6ek2UD5cEqDMoOTYLy2VVUHI6mpcxPJlUfcjkswH3AcIr/kY8xEYSEdszULUG4
-         TRsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782742821; x=1783347621;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AupvSFaqPtFwZHXXd++aD6dS9DxYuU7xGlZB7kUfSKk=;
-        b=Mo6SPFyd+e5hw2IhWFbZSiywYMT3B98A7+YljOBcc4DRde4JsGqZAhbzodvbaeQZ00
-         91WdazsY8PmEJerUcwGlHFf0smKJaNWTw8DbMlLcLQe4ZdNa4Iw4KyVhc2vzOcsM2+nn
-         rAJnhwk9FHsjRFa0W/jJMecaAKFI8M1Q68RHa/YTMNuEAn1Alfkxmo7r9+cjCSQzCXWT
-         1c/csIiwBdElQo1Ysvw8SXahuwQoX9Mn+ZA4SdNvsqe5dm/EYe1qfRSi7W9QO3MJCm47
-         SQKxXxzpnS9FQzdwHubz6he57wBM1ydGUPlwJAc7ZrYUFIEd98URHg+xvXU5Di3ykZgN
-         cQVw==
-X-Forwarded-Encrypted: i=1; AHgh+RrzzBKSQZxqWNUdzsLVMDBfzNKLnJnk1rlAMY9hFc25p2rDF79L0eccXIUcb6KxrXFDSwPV9Rk8mLW+8Msefw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3ZBkqhw+DMZ/kVEEU05T98NSFTtO/OwvxP8npWd97XX2Vw2kd
-	UFmppQYJh5wyQsxjzSrvzKxXs/X+sL2LMRJnTpBLoC8k1/sdz0K2TpM=
-X-Gm-Gg: AfdE7cmVGUm8Mj6IZA8Dsm/QDFstYPrF4N7NaSObhMTHMhUMJ8L23ll1eKrNBaNGKz+
-	0oJ5RYA3SnAOb3eI7Pz6QxBm2l9p4X0vN3VyJke29IDRE9UU/TBZOaAIkNvsy/PSYeNaf5L8gZ8
-	ncCkwwSSGCe2bAoRO7uHJe7rs0FPtVgiG5p14wyAnX4z8+nU0oKJ69ny4y23y2PnMmyYKZXWJo7
-	nx2+rW8Oi8cs0jL4G3NCPHJrmkZTDTNlFCRaJ4tWvr1Bbbdd9Y7f6kuA9R8FrI6+F8gRMnCMyEb
-	OVviqYAPkvlcXyzzQk60ponEx6R97XVR6qQvu+ncMhMAU+oa6sJcGn8b55lnBE18+qdH14cV6m2
-	bz/8eiiMgEefqwfZ/KYkXqMDO9RbqXNdx3CyCUpkFDZKOhmIa2LJdbVmNbkyNGqK4idw8kfQd6s
-	GB23FiCCCaouSBh9wOmOrgMsMg63HI6v2xmrywwWmvIK4Bu85JRuw3jVdRoS1DVmyg
-X-Received: by 2002:a05:693c:88cd:10b0:30c:ab97:d7b3 with SMTP id 5a478bee46e88-30cab97dc2dmr6285271eec.45.1782742821002;
-        Mon, 29 Jun 2026 07:20:21 -0700 (PDT)
-Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c52eed6sm44396852eec.9.2026.06.29.07.20.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 07:20:20 -0700 (PDT)
-From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>
-Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	David Airlie <airlied@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Pedro Yudi Honda <niyudi.honda@usp.br>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	nova-gpu@lists.linux.dev
-Subject: [PATCH v2] gpu: nova-core: parse structs via zerocopy
-Date: Mon, 29 Jun 2026 11:20:05 -0300
-Message-ID: <20260629142007.269873-1-nico.antinori.7@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="aTAeiVxG"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id D25A4240103
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 16:21:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1782742895; bh=gIcbkjb2wutZUnDm3LaOG+Uc5Hy+tJ2frk8lfaReGAY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=aTAeiVxGY7KC0pNmtMd8sxaFQ6WDjwo85pQTxSC0mleII2xyfcZNHJHhfl22LnNxL
+	 OJdZQhRDn3SZWOpKVZZzTLCeRtnqTyNuptCD4PqbPGVLidUyqXIJJOqLaQt/y+ry3T
+	 SEP9kyAEAwwZz7PSX9YupQlHYGpr+p1ulMhgFD42jqcOeI5puvUPvQ00kD+6LRIZEb
+	 A1q6aj/pPOKOo/YDwUo+303rj+LPCGr+igf0wW+nhYaF0FrpT+JFEWsofX6dx1yLhP
+	 R4hbfHTokMoX5v2BbwGjdHXmPwoxPWTR+KqvDB8raEQVjk5UXnyPyVG0zRRgy4SSXK
+	 vyKAPMYDg2sLw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4gppP76nzzz9rxd;
+	Mon, 29 Jun 2026 16:21:31 +0200 (CEST)
+From: Markus Probst <markus.probst@posteo.de>
+Subject: [PATCH v15 0/2] Introduce Synology Microp driver
+Date: Mon, 29 Jun 2026 14:21:34 +0000
+Message-Id: <20260629-synology_microp_initial-v15-0-4b3d7367c7cf@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XUzY7bIBAH8FeJfC4RA8NXTvseVRVhGLLWJnHW9
+ lqNVnn3YudQZDfuEaT5MQx/+7vqqWuorw6776qjsemb9poXoH7sqvDurydiTcwbleBCc8k16+/
+ X9tye7sdLE7r2dmyuzdD4M+PJRB9MbdDpKlffOkrN75n++eu57ujzK58wPDerC/W9nw847GZeS
+ Q5SGKn3Ujir0DFg0X90bx/UXem8b7tTVfY1lykQYFj31Q/HfJdIIyNSaIEctyocRhD/qgHAZ82
+ ZYs+8Uy6ZIJJJ7jAKmCpq3xML7eXSDIfdaPaCdQGq6SbvTT+03X2e2QjzVf47nREYZymkRJE0o
+ g1vt7YfqN1Hms1RlI597YjsOGmd0zJJCGrpyMIB+dqR2fFR+4BaesFh6WDhCP7awexwFDLG2sr
+ gcemo0nGvHZUdYUJteR2Tcqt+9F8HuXrt6KkfmyKhwVoHt3RM4QC8dsw0Zy89d0gmj2jp2MLZm
+ o/NjnGovQOBuL6XK52N93LZQW+VlMka4mbpAC8h3Ahing8jq0QUSVLtVx0BlJLZkKZMuwB1VF5
+ nK64kUUobjw9TqpF7rriUQQu+kopY57/EhjTn2ou6dkFpSqvvDLCUNgIAU7JBGhNRqFpgXUqPx
+ +MPPrdR7TsFAAA=
+X-Change-ID: 20260306-synology_microp_initial-0f7dac7b7496
+To: Hans de Goede <hansg@kernel.org>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>, 
+ Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7339;
+ i=markus.probst@posteo.de; h=from:subject:message-id;
+ bh=qLlH50DsPBHxPs+lphtz4ADgANwwLqfu3+0Z85rFfgc=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqQn9rFD5nLSotFcztOv7cxwwIgYms95PMdR6oY
+ N6RdFQx/o+JAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCakJ/axsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9LZ4Q//RxgIeDL9ri01R9A7yR/CFR37QpP3IvS
+ T4ADmI3k8kQ73Jsp/saM1KxeOHaqeh3kgWCQUL6x2Ukxal8Do/neFLhXW/iDV4hHY8vjVm1ZGNC
+ nkq0cnxC4T628bEOsrbWv8CKmeP0I43ruGSdrh7T1+v94lOeZdhdOHPm0HklKpx/ZVVis4ttBEn
+ dmy88qs1DfcrJCdsePK7Od1H7tpcj7bVU7dc7QVjwh2hoqqXS2halUyBGwk6QcjVqOLGT+Z4qDZ
+ 3Zc9J/uoef1GDWmgnSbKtPRc3r3ObDwJY/lMFkPCFgceA9Yk7oGTyLE7j1Tm/iCBVCB1pR5scLb
+ 0135SLI262VuYzL8KjS0RaIShn73LO1KipecXGoTwBXPN/nqBpOejr+KvJqfATzNkOyeTeuYqOY
+ dt5b6Qm4W/rypzKvoLP0V0tC2BLyPVa/wB81zc9x3Vzuh3LQy9D2Fd8V9UvRcX59iC38xX9BBZr
+ iS+MwfYoE6LEcnHtWiZc0AkzeexPzG9FrI64nV+hIBHAnQXIekC0jg9iu9H8JlxuvOjVxVN0z5V
+ PtyURMCMGoKpj9QIpQ2W2ed952vAKavkD07icEx+UanXlPH1rZgNiXFKxmd7vI2xSpNI5/rO5RF
+ B2LpHbGpO2YkL0PHBRp0PAmwrWsJeYt3bImj+aiPH/X73RtM7Ft0=
+X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
+ fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
+Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
+  keydata=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
+  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
+OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Replace the unsafe `kernel::transmute::FromBytes` trait implementation
-for the `FalconUCodeDescV3`, `PcirStruct`, `BitHeader`, `BitToken`,
-`NpdeStruct`, `PciRomHeader`, `PmuLookupTableEntry` and
-`PmuLookupTableHeader` structs with the derivable `zerocopy::FromBytes`
-trait.
+Synology uses a microcontroller in their NAS devices connected to a
+serial port to control certain LEDs, fan speeds, a beeper, to handle
+proper shutdown and restart, buttons and fan failures.
 
-This change eliminates the manual unsafe implementations in favor of a
-derivable trait. When this trait is derived, validity checks are
-performed at compile time to ensure that the type can safely implement
-`FromBytes`.
+This patch series depends on the rust led abstraction [1] and the rust
+serdev abstraction [2].
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1241
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
+This is only a initial version of the driver able to control LEDs.
+The following rust abstractions would be required, to implement the
+remaining features:
+- hwmon (include/linux/hwmon.h)
+- input (include/linux/input.h)
+- sysoff handler (include/linux/reboot.h)
+
+[1] https://lore.kernel.org/rust-for-linux/20260629-rust_leds-v21-0-4f0f19579db5@posteo.de/
+[2] https://lore.kernel.org/rust-for-linux/20260603-rust_serdev-v12-0-3400ffb88b12@posteo.de/
+
+Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
-Changelog:
-v2:
- - Rebased on top of drm-rust-next
- - Added derive macro FromBytes for BitToken, PciRomHeader, and
-   PmuLookupTableEntry
-v1: Link to lore [1]
+Changes in v15:
+- adapted to rust led abstractiopn v21
+- Link to v14: https://patch.msgid.link/20260531-synology_microp_initial-v14-0-1377d425b24b@posteo.de
 
-NOTE: Compile-tested only. I don't own a piece of hardware where I can
-test the nova driver.
+Changes in v14:
+- adapt to led abstraction v18 and serdev abstraction v11
+- Link to v13: https://patch.msgid.link/20260530-synology_microp_initial-v13-0-aa2bb9c56efc@posteo.de
 
-NOTE 2: In firmware.rs, the BinHdr struct is another user of
-transmute::FromBytes, but that conversion is intentionally omitted
-here as it is handled in Pedro's patch series [2].
+Changes in v13:
+- adapted to driver-lifetime v5 patch series.
+- set blink = false as initial power led state, as set_blink hasn't been
+  called yet (even though the led is blinking at startup)
+- Link to v12: https://patch.msgid.link/20260429-synology_microp_initial-v12-0-40a05033c620@posteo.de
 
-[1]: https://lore.kernel.org/nova-gpu/20260621143647.264770-1-nico.antinori.7@gmail.com/
-[2]: https://lore.kernel.org/nova-gpu/20260625205146.5047-2-niyudi.honda@usp.br/
+Changes in v12:
+- adapted to driver-lifetime patch series. The driver can't take
+  advantage of it, until class devices like led also make use of it.
+- Link to v11: https://patch.msgid.link/20260427-synology_microp_initial-v11-0-9c1bd5a6f3ed@posteo.de
 
- drivers/gpu/nova-core/firmware.rs |  6 +--
- drivers/gpu/nova-core/vbios.rs    | 64 +++++++++----------------------
- 2 files changed, 20 insertions(+), 50 deletions(-)
+Changes in v11:
+- rebased on top of 7.1-rc1
+- add "synology" as devicename to led, like it is done in existing dts
+  files in the kernel
+- fix color for led being orange instead of amber. I personally can't
+  clearly tell them apart, but apparently its amber.
+- replaced MCU with EC in Kconfig help
+- Link to v10: https://patch.msgid.link/20260424-synology_microp_initial-v10-0-e852d2f3eba1@posteo.de
 
-diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-index 80e948bf7511..a94820a3b335 100644
---- a/drivers/gpu/nova-core/firmware.rs
-+++ b/drivers/gpu/nova-core/firmware.rs
-@@ -88,7 +88,7 @@ pub(crate) struct FalconUCodeDescV2 {
+Changes in v10:
+- resolved issues reported by Sashiko Bot:
+  - removed unneeded include from device tree
+  - fix typo in of device table
+  - fix blink not set to false, if delay_off or delay_on is 0
+- Link to v9: https://patch.msgid.link/20260423-synology_microp_initial-v9-0-4a8533f87e07@posteo.de
 
- /// Structure used to describe some firmwares, notably FWSEC-FRTS.
- #[repr(C)]
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, FromBytes)]
- pub(crate) struct FalconUCodeDescV3 {
-     /// Header defined by `NV_BIT_FALCON_UCODE_DESC_HEADER_VDESC*` in OpenRM.
-     hdr: u32,
-@@ -119,10 +119,6 @@ pub(crate) struct FalconUCodeDescV3 {
-     _reserved: u16,
- }
+Changes in v9:
+- separate fallback and front compatibles in dt schema
+- remove front compatibles from of id table, if all functionality is
+  by covered by the fallback
+- remove TODO file
+- add platform-driver-x86@vger.kernel.org to Maintainers file entry
+- use `Delta` type in `BLINK_DELAY` const
+- Link to v8: https://patch.msgid.link/20260420-synology_microp_initial-v8-0-7946a9124491@posteo.de
 
--// SAFETY: all bit patterns are valid for this type, and it doesn't use
--// interior mutability.
--unsafe impl FromBytes for FalconUCodeDescV3 {}
--
- /// Enum wrapping the different versions of Falcon microcode descriptors.
- ///
- /// This allows handling both V2 and V3 descriptor formats through a
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index c6e6bfcd6a1f..c03650ee5226 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -13,11 +13,8 @@
-     register,
-     sizes::SZ_4K,
-     sync::aref::ARef,
--    transmute::FromBytes,
- };
+Changes in v8:
+- removed unnecessary Copy and Clone derive
+- added `BLINK_DELAY` constant
+- added compatible id fallbacks
+- moved dt schema patch before the driver
+- added ds411p
+- Link to v7: https://lore.kernel.org/r/20260411-synology_microp_initial-v7-0-9a3a094e763a@posteo.de
 
--use zerocopy::FromBytes as _;
--
- use crate::{
-     driver::Bar0,
-     firmware::{
-@@ -359,7 +356,7 @@ pub(crate) fn fwsec_image(&self) -> &FwSecBiosImage {
- }
+Changes in v7:
+- remove list of compatible ids from commit msg
+- explain what makes the different models not compatible in the commit msg
+- remove unnecessary examples
+- Link to v6: https://lore.kernel.org/r/20260405-synology_microp_initial-v6-0-08fde474b6c9@posteo.de
 
- /// PCI Data Structure as defined in PCI Firmware Specification
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, FromBytes)]
- #[repr(C)]
- struct PcirStruct {
-     /// PCI Data Structure signature ("PCIR" or "NPDS")
-@@ -388,15 +385,12 @@ struct PcirStruct {
-     max_runtime_image_len: u16,
- }
+Changes in v6:
+- moved devicetree bindings patch at the end of the set
+- remove several patches
+- move of id table from model.rs to synology_microp.rs
+- remove the model! macro
+- use if blocks in devicetree schema to narrow down the
+  fan-failure-gpios property
+- add multiple devicetree examples to test if blocks
+- Link to v5: https://lore.kernel.org/r/20260329-synology_microp_initial-v5-0-27cb80bdf591@posteo.de
 
--// SAFETY: all bit patterns are valid for `PcirStruct`.
--unsafe impl FromBytes for PcirStruct {}
--
- impl PcirStruct {
-     /// The bit in `last_image` that indicates the last image.
-     const LAST_IMAGE_BIT_MASK: u8 = 0x80;
+Changes in v5:
+- add esata led support
+- use different compatible for each model
+- add visibility modifier to of_device_table macro
+- fix match data missing when using PRP0001
+- Link to v4: https://lore.kernel.org/r/20260320-synology_microp_initial-v4-0-0423ddb83ca4@posteo.de
 
-     fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
--        let (pcir, _) = PcirStruct::from_bytes_copy_prefix(data).ok_or(EINVAL)?;
-+        let (pcir, _) = PcirStruct::read_from_prefix(data).map_err(|_| EINVAL)?;
+Changes in v4:
+- convert to monolithic driver and moved it into drivers/platform
+- removed mfd rust abstraction
+- moved dt-bindings to embedded-controller
+- Link to v3: https://lore.kernel.org/r/20260313-synology_microp_initial-v3-0-ad6ac463a201@posteo.de
 
-         // Signature should be "PCIR" (0x52494350) or "NPDS" (0x5344504e).
-         if &pcir.signature != b"PCIR" && &pcir.signature != b"NPDS" {
-@@ -432,7 +426,7 @@ fn image_size_bytes(&self) -> usize {
- /// This is the head of the BIT table, that is used to locate the Falcon data. The BIT table (with
- /// its header) is in the [`PciAtBiosImage`] and the falcon data it is pointing to is in the
- /// [`FwSecBiosImage`].
--#[derive(Debug, Clone, Copy)]
-+#[derive(Debug, Clone, Copy, FromBytes)]
- #[repr(C)]
- struct BitHeader {
-     /// 0h: BIT Header Identifier (BMP=0x7FFF/BIT=0xB8FF)
-@@ -451,12 +445,9 @@ struct BitHeader {
-     checksum: u8,
- }
+Changes in v3:
+- remove `default n` from Kconfig entry, as n is the default already.
+- select RUST_SERIAL_DEV_BUS_ABSTRACTIONS in Kconfig
+- add mfd rust abstraction
+- split core and led parts into their own driver. It should now be considered a
+  MFD device.
+- split led part of dt binding into its own file
+- Link to v2: https://lore.kernel.org/r/20260308-synology_microp_initial-v2-0-9389963f31c5@posteo.de
 
--// SAFETY: all bit patterns are valid for `BitHeader`.
--unsafe impl FromBytes for BitHeader {}
--
- impl BitHeader {
-     fn new(data: &[u8]) -> Result<Self> {
--        let (header, _) = BitHeader::from_bytes_copy_prefix(data).ok_or(EINVAL)?;
-+        let (header, _) = BitHeader::read_from_prefix(data).map_err(|_| EINVAL)?;
+Changes in v2:
+- fix missing tabs in MAINTAINERS file
+- remove word binding from patch subject
+- add missing signed-off-by
+- add missing help entry in Kconfig
+- add missing spdx license headers
+- remove no-check{,-cpu}-fan properties from the dt-bindings and replace
+  them with the check_fan module parameter
+- use patternProperties for leds in dt-bindings
+- license dt-binding as GPL-2.0-only OR BSD-2-Clause
+- move driver from staging tree into mfd tree and mark it as work in
+  progress inside Kconfig
+- only register alert and usb led if fwnode is present
+- Link to v1: https://lore.kernel.org/r/20260306-synology_microp_initial-v1-0-fcffede6448c@posteo.de
 
-         // Check header ID and signature
-         if header.id != 0xB8FF || &header.signature != b"BIT\0" {
-@@ -468,7 +459,7 @@ fn new(data: &[u8]) -> Result<Self> {
- }
+---
+Markus Probst (2):
+      dt-bindings: embedded-controller: Add synology microp devices
+      platform: Add initial synology microp driver
 
- /// BIT Token Entry: Records in the BIT table followed by the BIT header.
--#[derive(Debug, Clone, Copy)]
-+#[derive(Debug, Clone, Copy, FromBytes)]
- #[repr(C)]
- struct BitToken {
-     /// 00h: Token identifier
-@@ -481,9 +472,6 @@ struct BitToken {
-     data_offset: u16,
- }
-
--// SAFETY: all bit patterns are valid for `BitToken`.
--unsafe impl FromBytes for BitToken {}
--
- impl BitToken {
-     /// BIT token ID for Falcon data.
-     const ID_FALCON_DATA: u8 = 0x70;
-@@ -508,7 +496,7 @@ fn from_id(image: &PciAtBiosImage, token_id: u8) -> Result<Self> {
-                 .and_then(|data| data.get(..entry_size))
-                 .ok_or(EINVAL)?;
-
--            let (token, _) = BitToken::from_bytes_copy_prefix(entry).ok_or(EINVAL)?;
-+            let (token, _) = BitToken::read_from_prefix(entry).map_err(|_| EINVAL)?;
-
-             // Check if this token has the requested ID
-             if token.id == token_id {
-@@ -525,7 +513,7 @@ fn from_id(image: &PciAtBiosImage, token_id: u8) -> Result<Self> {
- ///
- /// This header is at the beginning of every image in the set of images in the ROM. It contains a
- /// pointer to the PCI Data Structure which describes the image.
--#[derive(Debug, Clone, Copy)]
-+#[derive(Debug, Clone, Copy, FromBytes)]
- #[repr(C)]
- struct PciRomHeader {
-     /// 00h: Signature (0xAA55)
-@@ -536,13 +524,10 @@ struct PciRomHeader {
-     pci_data_struct_offset: u16,
- }
-
--// SAFETY: all bit patterns are valid for `PciRomHeader`.
--unsafe impl FromBytes for PciRomHeader {}
--
- impl PciRomHeader {
-     fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
--        let (rom_header, _) = PciRomHeader::from_bytes_copy_prefix(data)
--            .ok_or(EINVAL)
-+        let (rom_header, _) = PciRomHeader::read_from_prefix(data)
-+            .map_err(|_| EINVAL)
-             .inspect_err(|_| dev_err!(dev, "Not enough data for ROM header\n"))?;
-
-         // Check for valid ROM signatures.
-@@ -564,7 +549,7 @@ fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
- /// PCI Data Structure. It contains some fields that are redundant with the PCI Data Structure, but
- /// are needed for traversing the BIOS images. It is expected to be present in all BIOS images
- /// except for NBSI images.
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, FromBytes)]
- #[repr(C)]
- struct NpdeStruct {
-     /// 00h: Signature ("NPDE")
-@@ -579,15 +564,12 @@ struct NpdeStruct {
-     last_image: u8,
- }
-
--// SAFETY: all bit patterns are valid for `NpdeStruct`.
--unsafe impl FromBytes for NpdeStruct {}
--
- impl NpdeStruct {
-     /// The bit in `last_image` that indicates the last image.
-     const LAST_IMAGE_BIT_MASK: u8 = 0x80;
-
-     fn new(dev: &device::Device, data: &[u8]) -> Option<Self> {
--        let (npde, _) = NpdeStruct::from_bytes_copy_prefix(data)?;
-+        let (npde, _) = NpdeStruct::read_from_prefix(data).ok()?;
-
-         // Signature should be "NPDE" (0x4544504E).
-         if &npde.signature != b"NPDE" {
-@@ -784,7 +766,7 @@ fn falcon_data_offset(&self, dev: &device::Device) -> Result<usize> {
-         let data = &self.base.data;
-         let (ptr, _) = data
-             .get(offset..)
--            .and_then(u32::from_bytes_copy_prefix)
-+            .and_then(|p| u32::read_from_prefix(p).ok())
-             .ok_or(EINVAL)?;
-
-         usize::from_safe_cast(ptr)
-@@ -814,6 +796,7 @@ fn try_from(base: BiosImage) -> Result<Self> {
- /// The [`PmuLookupTableEntry`] structure is a single entry in the [`PmuLookupTable`].
- ///
- /// See the [`PmuLookupTable`] description for more information.
-+#[derive(FromBytes)]
- #[repr(C, packed)]
- struct PmuLookupTableEntry {
-     application_id: u8,
-@@ -821,9 +804,6 @@ struct PmuLookupTableEntry {
-     data: u32,
- }
-
--// SAFETY: all bit patterns are valid for `PmuLookupTableEntry`.
--unsafe impl FromBytes for PmuLookupTableEntry {}
--
- impl PmuLookupTableEntry {
-     /// PMU lookup table application ID for firmware security license ucode.
-     #[expect(dead_code)]
-@@ -836,6 +816,7 @@ impl PmuLookupTableEntry {
- }
-
- #[repr(C)]
-+#[derive(FromBytes)]
- struct PmuLookupTableHeader {
-     version: u8,
-     header_len: u8,
-@@ -843,9 +824,6 @@ struct PmuLookupTableHeader {
-     entry_count: u8,
- }
-
--// SAFETY: all bit patterns are valid for `PmuLookupTableHeader`.
--unsafe impl FromBytes for PmuLookupTableHeader {}
--
- /// The [`PmuLookupTableEntry`] structure is used to find the [`PmuLookupTableEntry`] for a given
- /// application ID.
- ///
-@@ -857,7 +835,7 @@ struct PmuLookupTable {
-
- impl PmuLookupTable {
-     fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
--        let (header, _) = PmuLookupTableHeader::from_bytes_copy_prefix(data).ok_or(EINVAL)?;
-+        let (header, _) = PmuLookupTableHeader::read_from_prefix(data).map_err(|_| EINVAL)?;
-
-         let header_len = usize::from(header.header_len);
-         let entry_len = usize::from(header.entry_len);
-@@ -872,8 +850,8 @@ fn new(dev: &device::Device, data: &[u8]) -> Result<Self> {
-
-         let mut entries = KVVec::with_capacity(entry_count, GFP_KERNEL)?;
-         for i in 0..entry_count {
--            let (entry, _) = PmuLookupTableEntry::from_bytes_copy_prefix(&data[i * entry_len..])
--                .ok_or(EINVAL)?;
-+            let (entry, _) = PmuLookupTableEntry::read_from_prefix(&data[i * entry_len..])
-+                .map_err(|_| EINVAL)?;
-             entries.push(entry, GFP_KERNEL)?;
-         }
-
-@@ -929,15 +907,11 @@ pub(crate) fn header(&self) -> Result<FalconUCodeDesc> {
-         let ver = data.get(1).copied().ok_or(EINVAL)?;
-         match ver {
-             2 => {
--                let v2 = FalconUCodeDescV2::read_from_prefix(data)
--                    .map_err(|_| EINVAL)?
--                    .0;
-+                let (v2, _) = FalconUCodeDescV2::read_from_prefix(data).map_err(|_| EINVAL)?;
-                 Ok(FalconUCodeDesc::V2(v2))
-             }
-             3 => {
--                let v3 = FalconUCodeDescV3::from_bytes_copy_prefix(data)
--                    .ok_or(EINVAL)?
--                    .0;
-+                let (v3, _) = FalconUCodeDescV3::read_from_prefix(data).map_err(|_| EINVAL)?;
-                 Ok(FalconUCodeDesc::V3(v3))
-             }
-             _ => {
---
-2.47.3
+ .../synology,ds918p-microp.yaml                    | 100 +++++++
+ MAINTAINERS                                        |   7 +
+ drivers/platform/Kconfig                           |   2 +
+ drivers/platform/Makefile                          |   1 +
+ drivers/platform/synology_microp/Kconfig           |  13 +
+ drivers/platform/synology_microp/Makefile          |   3 +
+ drivers/platform/synology_microp/command.rs        |  54 ++++
+ drivers/platform/synology_microp/led.rs            | 297 +++++++++++++++++++++
+ drivers/platform/synology_microp/model.rs          |  49 ++++
+ .../platform/synology_microp/synology_microp.rs    |  91 +++++++
+ 10 files changed, 617 insertions(+)
+---
+base-commit: 728e68a889bcf257b1e67298b12c360e5c3a13e0
+change-id: 20260306-synology_microp_initial-0f7dac7b7496
+prerequisite-message-id: 20260530132736.3298549-1-dakr@kernel.org
+prerequisite-patch-id: 310c6bee038ca3909a8e5e58ec12b74f7189b869
+prerequisite-patch-id: 92812c3d42b29504838e6dc66c307ff5c035bb5e
+prerequisite-change-id: 20251217-rust_serdev-ee5481e9085c:v12
+prerequisite-patch-id: 059e43aa20628647ba98a0e5582444a5a7b68ec4
+prerequisite-patch-id: 310c6bee038ca3909a8e5e58ec12b74f7189b869
+prerequisite-patch-id: 92812c3d42b29504838e6dc66c307ff5c035bb5e
+prerequisite-patch-id: a75cb3f900db0e765351b773cbfffaeb9a01a107
+prerequisite-patch-id: 19eb53ce0c653c1406f8f192f6ad158fb4bd8d8f
+prerequisite-patch-id: 55d6a70baf3be7f4da36b82cf02a5a7d59457520
+prerequisite-change-id: 20251114-rust_leds-a959f7c2f7f9:v21
+prerequisite-patch-id: d6a2bb314f215e3c6bd3a3ac87b991a33e3d6256
+prerequisite-patch-id: 50bfe4b15f07d3733d4fc4b4520ce74cbac2cf4f
+prerequisite-patch-id: ec48c2616ea8f0bd8f71cec858f1d5d0fdb2bac0
 
