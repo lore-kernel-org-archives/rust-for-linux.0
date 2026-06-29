@@ -1,165 +1,199 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010053.outbound.protection.outlook.com [52.101.61.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5392472AF
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 01:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782696064; cv=none; b=citAk1cuNjyVufTFdRGLIqhAMGPQo8ZVi/d/zruOW7pFOioIr5Vg6mfdXTjYQxYNsZpguT4AvQ019qIr7QyyUd6gDlo7PSr41bU8+tx6XlRO3iHb5LUx9IehWrUQS4h0ibZN3xk32xHFOHyo7We1fywwm7nK8RDwvO+arWJQYtg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782696064; c=relaxed/simple;
-	bh=duso3N9cRCBmR6eoNPBbJ50Wxreg9YrNsz9B0cwAr7M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JeQT3jTGA05+2Bf+6HGZtAqvNEMCIRwEatOk9OSBGUuNGcwB0e3+QlebCXN5dh2fo/Sz4RTnhUE32TQVGZ/FXWjpzmI5f6/Xs2dPkDfL1W47mdAh0gCbImA27X9jfhx0nn8E0jIiKxA6X4jbvgD4u16+SKA4Slo+tbXMMRtg6xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=EzH+WLho; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573F240D58A;
+	Mon, 29 Jun 2026 02:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782701556; cv=fail; b=cni/IqB6AqBwXicUSlfaNlzxmvnwWG+SnvfMGnN+O9/9CdXnrmMU2RPxharMzejKXNRGvMfE0WqFHhWIQ3U3rPP4BgIdTnmbTE5NXfAUf9+CcTshXJy6FFKMw5yynBNc8H5kSh2sOl1CfGEicmkpv0QEfWFmpzMhhIwwqqJ78tI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782701556; c=relaxed/simple;
+	bh=CkyY3dDF66C4SEYKeqO1vHEbFLNppgheZcD1eWMMHms=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=QHuAL3SiWIEfDKKf/1qQUf9tGmQAJTcOWA/BVaqWseiPsnuVqalowXM+3YlCkyQc8dogxby3WNybyfpiro7NS9KmqPAuVgn0d5q4/7QAAt8kWSYD910DxyxoChGkHMa364VY3jXOoTCwqpqHOAihIyXMeEu1TfpGiM+vhLhSZfM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EIaQVX1I; arc=fail smtp.client-ip=52.101.61.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="EzH+WLho"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 2D8E1240106
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 03:14:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1782695691; bh=mI3bO/vDwGQUXhJEcf7M5J9zd8wRvREydDgGb4y7qy0=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=EzH+WLhoZ75mTBe9S2P+1U4pyYKawyByn8g4pNFU+qSciSoDNtMYiRsdfuywnTLvS
-	 WOB2JQQZfFkQOUxCeTBbmUeHMUPKOmeSuXuiBPW7n2ecAxfZreWUW0/1wYt9BNNkof
-	 VJgDdTdkqIMXXL2iTTf74DDflHKeAqcUcNNkOYEuw8Z82trWDC6GzCbRNl39bxfk5b
-	 w8Iup+FDZruSzsylL3pKkQGHPMSJ9iX5B2mzlg+GeR54bDPDPIG569ARnPwV4RqBzH
-	 hWy1Pf3Iltf+2x0kdwyTMhG8ct4Bkw1IC9zEPdGZcOMQGinihSr8Pf1eX7zRNYedvq
-	 KIQnLvqWbdR1A==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4gpSxP10vkz6tvq;
-	Mon, 29 Jun 2026 03:14:48 +0200 (CEST)
-Message-ID: <5ba4f96f57c1e096bd2d4e6c10e02b4d824f0634.camel@posteo.de>
-Subject: Re: [PATCH 1/2] rust: device: add BoundInternal device context and
- InternalBoundContext trait
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, beata.michalska@arm.com
-Cc: driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Date: Mon, 29 Jun 2026 01:14:50 +0000
-In-Reply-To: <20260530132736.3298549-1-dakr@kernel.org>
-References: <20260530132736.3298549-1-dakr@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=mQINBGiDvXgBEADAXUceKafpl46S35UmDh2wRvvx+UfZbcTjeQOlSwKP7YVJ4JOZrVs93
- qReNLkOWguIqPBxR9blQ4nyYrqSCV+MMw/3ifyXIm6Pw2YRUDg+WTEOjTixRCoWDgUj1nOsvJ9tVA
- m76Ww+/pAnepVRafMID0rqEfD9oGv1YrfpeFJhyE2zUw3SyyNLIKWD6QeLRhKQRbSnsXhGLFBXCqt
- 9k5JARhgQof9zvztcCVlT5KVvuyfC4H+HzeGmu9201BVyihJwKdcKPq+n/aY5FUVxNTgtI9f8wIbm
- fAjaoT1pjXSp+dszakA98fhONM98pOq723o/1ZGMZukyXFfsDGtA3BB79HoopHKujLGWAGskzClwT
- jRQxBqxh/U/lL1pc+0xPWikTNCmtziCOvv0KA0arDOMQlyFvImzX6oGVgE4ksKQYbMZ3Ikw6L1Rv1
- J+FvN0aNwOKgL2ztBRYscUGcQvA0Zo1fGCAn/BLEJvQYShWKeKqjyncVGoXFsz2AcuFKe1pwETSsN
- 6OZncjy32e4ktgs07cWBfx0v62b8md36jau+B6RVnnodaA8++oXl3FRwiEW8XfXWIjy4umIv93tb8
- 8ekYsfOfWkTSewZYXGoqe4RtK80ulMHb/dh2FZQIFyRdN4HOmB4FYO5sEYFr9YjHLmDkrUgNodJCX
- CeMe4BO4iaxUQARAQABtCdNYXJrdXMgUHJvYnN0IDxtYXJrdXMucHJvYnN0QHBvc3Rlby5kZT6JAl
- QEEwEIAD4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQSCdBjE9KxY53IwxHM0dh/4561
- D0gUCaIZ9HQIZAQAKCRA0dh/4561D0pKmD/92zsCfbD+SrvBpNWtbit7J9wFBNr9qSFFm2n/65qen
- NNWKDrCzDsjRbALMHSO8nigMWzjofbVjj8Nf7SDcdapRjrMCnidS0DuW3pZBo6W0sZqV/fLx+AzgQ
- 7PAr6jtBbUoKW/GCGHLLtb6Hv+zjL17KGVO0DdQeoHEXMa48mJh8rS7VlUzVtpbxsWbb1wRZJTD88
- ALDOLTWGqMbCTFDKFfGcqBLdUT13vx706Q29wrDiogmQhLGYKc6fQzpHhCLNhHTl8ZVLuKVY3wTT+
- f9TzW1BDzFTAe3ZXsKhrzF+ud7vr6ff9p1Zl+Nujz94EDYHi/5Yrtp//+N/ZjDGDmqZOEA86/Gybu
- 6XE/v4S85ls0cAe37WTqsMCJjVRMP52r7Y1AuOONJDe3sIsDge++XFhwfGPbZwBnwd4gEVcdrKhnO
- ntuP9TvBMFWeTvtLqlWJUt7n8f/ELCcGoO5acai1iZ59GC81GLl2izObOLNjyv3G6hia/w50Mw9MU
- dAdZQ2MxM6k+x4L5XeysdcR/2AydVLtu2LGFOrKyEe0M9XmlE6OvziWXvVVwomvTN3LaNUmaINhr7
- pHTFwDiZCSWKnwnvD2+jA1trKq1xKUQY1uGW9XgSj98pKyixHWoeEpydr+alSTB43c3m0351/9rYT
- TTi4KSk73wtapPKtaoIR3rOFHLQXbWFya3VzLnByb2JzdEBwb3N0ZW8uZGWJAlEEEwEIADsWIQSCd
- BjE9KxY53IwxHM0dh/4561D0gUCaIO9eAIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCR
- A0dh/4561D0oHZEACEmk5Ng9+OXoVxJJ+c9slBI2lYxyBO84qkWjoJ/0GpwoHk1IpyL+i+kF1Bb7y
- Hx9Tiz8ENYX7xIPTZzS8hXs1ksuo76FQUyD6onA/69xZIrYZ0NSA5HUo62qzzMSZL7od5e12R6OPR
- lR0PIuc4ecOGCEq3BLRPfZSYrL54tiase8HubXsvb6EBQ8jPI8ZUlr96ZqFEwrQZF/3ihyV6LILLk
- geExgwlTzo5Wv3piOXPTITBuzuFhBJqEnT25q2j8OumGQ+ri8oVeAzx24g1kc11pwpR0sowfa5MvZ
- WrrBcaIL7uJfR/ig7FyGnTQ1nS3btf3p0v8A3fc4eUu/K2No3l2huJp3+LHhCmpmeykOhSB63Mj3s
- 3Q87LD0HE0HBkTEMwp+sD97ZRpO67H5shzJRanUaDTb/mREfzpJmRT1uuec0X2zItL7a6itgMJvYI
- KG29aJLX3fTzzVzFGPgzVZYEdhu4y53p0qEGrrC1JtKR6DRPE1hb/OdWOkjmJ75+PPLD9U5IuRd6y
- sHJWsEBR1F0wkMPkEofWsvMYJzWXx/rvTWO8N4D6HigTgBXAXNgbc3IHpHlkvKoBJptv6DRVRtIrz
- 0G0cfBY0Sm7he4N2IYDWWdGnPBZ3rlLSdj5EiBU2YWgIgtLrb8ZNJ3ZlhYluGnBJDGRqy2jC9s1jY
- 66sLA9rQZMHhJTzMyIDwweGlvMzJAcG9zdGVvLmV1PokCbQQTAQgAVxYhBIJ0GMT0rFjncjDEczR2
- H/jnrUPSBQJpa71VGxSAAAAAAAQADm1hbnUyLDIuNSsxLjExLDIsMgIbAwULCQgHAgIiAgYVCgkIC
- wIEFgIDAQIeBwIXgAAKCRA0dh/4561D0gKJD/9uOQKYlsDoQX65Gd0LiMT0C+5vXgr3VI0PHDOwcv
- 51fJ3A1vNyPZRFPGrz8+mDEXUQOF/INfnz5Tu1QHwf+iYcWcTGAN/FHgVR6ET6VBNU2hJaKhu+Ggo
- kjYyJTOvyX+3yNRUfSny0GjTjIPuPTErjqmHF+BtjXslpgwqnNMznf3lRIuUjRORupos6p3k1DndE
- 5vzUTmXSvMyXyOD2KhBl/kL76k0bHYyAQytZPag12pltrtFbA/r2phDGN2si8PooDT99bSTJjaM45
- MTAAHbHKJfvgfK41bNFD5mMtpWpL195XRtS0Nrxdg3PaYBxN5gtTG0RyZfpYRlkdEhm+jj/8RxuSG
- i/qdhRdbiI7K2IELWeQVHSNDi9JabR/UzlR4NSnhfAjRIVlRM+eFbUl8XwxwVrAkojF5IraH2qRvg
- VCmuFsHUW07FUlrDrzpjXsD73cKppoFGDCdDR0BHJepXbFLS9+AqkT+guRJlnCTg2p+TQtnbwPgKp
- Vj98JixovCl99zRYTsL2bRNU5+q8iET65VMJ1ydyNanvLd5vI/NqDkXhlXLsGmdaDTtu4R21PkToX
- dQNGrZ91M9nlIBKw8Y7c7xZ4098qX2b8JX/CxD+gC1r4C8vuA3GkhFLx+KlkON7LyiJPkrePp6Qky
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-1/RZWNM0jMaVFlFyCHre"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EIaQVX1I"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DJVhswnGr3uYLj9zG7tvQv8oWr/4rbN4evBhBPRmWy+vRaO9tMqLSM6sBXnYtC+HU+wPhdzY4JjNAqyNCqQQotRBfI2c7Wn3wS2VZdABLbHcC4u6OyWxtNO7/pSZQaTUlqpG7w0Z2EMCs7mXkvL84VUmClMV1NpxBYrcAKb/OEqsWs7hH9uD2QwG6/9RCNet2fKauEZwksiACNT6o3AFyb+Ds9DLGqIRPlQSQAP6TYGawG0zJ0MnxJoo/V0Xfp5vbKip9oP5a5y8lkgpxvqNho2fKzj+rUIpMnPE7zJ8QHzCC1YxMm484xZ5751hV2WBquwZZDWOyK+d8U9Xt5DEhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sUs9ajevj7324qSJ3QjeDbQ6Pk1xYozMBy79lzEP1p4=;
+ b=GT7VB2WT8Iz4Mc+9rXbp4EwZNgaPCUK3P+tFff5UsliVdrP/n9xrqoogIn06fktaQluKiZKfm6prelPhFYydeN+56TStAzKfCBB+vzns2SufF+rQfN8tqbj7P82FuY6nAT+NwKOCVC8qglXezNlaocQ8LDs8Ebdv1zlt8c2V7xhkuqHGH2eCrNYUKw85m35tAcOmulV1miaVBxzo7zPRrqvelow0eStdC391dWqan2h3092QIfoyuB/G8Bv3O2l80ZsU6ORKq65QYCIyauR95WM45rnRpoMgsvLCpl8ySmYLvQoKEoQdqcCMw/fNcn1qQZwq/BL5HZizXgX7TRsiTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sUs9ajevj7324qSJ3QjeDbQ6Pk1xYozMBy79lzEP1p4=;
+ b=EIaQVX1ImfeRLZkWayRyXWqyS92bQBFBvPer6nwBwrYsCODHpCFB3Af3ADnJjH/7dzSkBdNzn6EEpLIFjGAZ1VTMmU9vFPRo0ygVIM3vPuBO5pyBr7i2zb3d++Z7GuDxKj2DTcfxZG9G3iecp4XE0l05IxXMRjkayzp+9VmUj02830z0brSvC+/ZLgqQxmqgASJyvczXUKykuqpZ7RdHUWAyNqdbF/tDjWTQYNux2TOgoQROTmufz/CEmllk3Wg1KE9kYj2p/trAHLxQVy0B++Yc+0cIiXzW9Ip7l+4gsL0ni+Awz7vU81Z4EIBfuVbdKEgIbqwX1vnFMdv1+ijd0g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SN7PR12MB7954.namprd12.prod.outlook.com (2603:10b6:806:344::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.159.19; Mon, 29 Jun 2026 02:52:30 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 02:52:30 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: acourbot@nvidia.com
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	=?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
+	"David Airlie" <airlied@gmail.com>,
+	"Shuah Khan" <skhan@linuxfoundation.org>,
+	"Simona Vetter" <simona@ffwll.ch>,
+	"Gary Guo" <gary@garyguo.net>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	"Tamir Duberstein" <tamird@kernel.org>,
+	"Trevor Gross" <tmgross@umich.edu>,
+	Pedro Yudi Honda <niyudi.honda@usp.br>,
+	SeungJong Ha <engineer.jjhama@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	nova-gpu@lists.linux.de
+Subject: [PATCH 0/1] nova-core: Convert bindings to use zerocopy
+Date: Mon, 29 Jun 2026 12:52:18 +1000
+Message-ID: <20260629025220.1935622-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SYYP282CA0008.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:b4::18) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SN7PR12MB7954:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ae13d94-4e05-44ba-3fc5-08ded58975c7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|18002099003|11063799006|56012099006|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	QhiHKsbWDfyL0vsUuLAWoVXT65nuLyKmxpBayeh2LTpJj9kSVihfGIZMGPYt20NqkfNW7AMR9TEUtQIqLZEDCBC3PygFC97g4eTHsQoJALpFrT020KFnR7PJ+TvVscbTb8EB+66edOvswdlB3c1fDzTSYVrk1tgEHmwBOZvlM3dhZPPmMRMDKqrjgn5xn+HYQ/p4/6FhsqilxPvddrugE7/EbdzUbu/0XdD8JGZSuYlKxveJmm0KLSOQrOGBjN0HVFGtqQejssGG0gfPLgGrEhZhiGSSxjIsPzqfDwo5SEqFFCm+/Sf0Iu/nDBkIdhRE57T4IjPVGYAi6eZELNr1fxeM+OqzW05YhvZInUU22MCpwRJaTLdr2Q6LOGwvk6noQjVc0YPKfKj63ghVRMKDFXuZL9MpYQSpGTLkVCT03GMcApALMzF6AkzNKchT1w3brNOOJRfpNQRj9FdFFtHN3e3YK2OWwFsOtdr+uqWwlZksCQgkekQqMLtZSE1Yg1Jme4hKI9qkUzJ6sYRxfN8VSsulrnzKl9RcinS8hK2MznUNb19B/v960WZvvunbLELDneygbk4kGWhOIU2cem13afJFpieRSKFrKSBgY5ksy7bf9whFGEM7QmkZYAtwLt9GplSb0LlS9TgqXd90k+rxhTKoPHM/hjJrnuJWVjQS//Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(18002099003)(11063799006)(56012099006)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TjdmOU03dWw3d2o4TXRTUnB6WmswQ1lzZlpKTS9WUkx3cm9kQmY4VzQvamQ3?=
+ =?utf-8?B?c0piUUpnaTN2T3Y2MURTWmZYdi96NVZUeTZJeW1GM293eXRVQmFYNWFFZjRn?=
+ =?utf-8?B?Q1ZLZ0tEVXNlb21ramFVRzYzQjRtcC9MVFNPZUZWS3dUY29RVmFyenkvYVVF?=
+ =?utf-8?B?RnZqZmRRMXlyYWhHeXlKaFIxc05xYUdBMVZEaFZwMFFxUlM1QmdOSjNpbGw0?=
+ =?utf-8?B?aUgyZzRDRFFtb3pzWHZXa09RV0RJUFZrTkNBSkZOckdISkRvdUxacFpJOW1P?=
+ =?utf-8?B?VERmVmI3MXJxRFBNdis1UVBBYThXN3FQejRTY1J6TGxPWU9OaFp4VjFYT1d0?=
+ =?utf-8?B?TS9LdG5pa0x2bUQzQW5yRXcyRXVBV1d4RVlIY1UzUTlXZkFaOENmZWNJZHBy?=
+ =?utf-8?B?ZnV5WVZuR3VjUVh5MERkZjVTNmJnU3VHeXFUdFJmbWVMWGtiS2dpMDI4bEJN?=
+ =?utf-8?B?VkUxdFVxU3RQZUdWYU5aK1lyWC9kSXc2ODJuS1ZRcWdSWHdXQURjQTZ0R09G?=
+ =?utf-8?B?cGdUV0dZMkttK25sTmZuWVMxL001WHgxQSs4TXRoVExuV29UalBKZEo4d0pP?=
+ =?utf-8?B?Qm51dFVJSjFRV00xc0VqTUhQNnhSQmFVZDVNa3FPSUV5d0ptSEdTYW1qOU1C?=
+ =?utf-8?B?aDVlSGR6ODRHdkgxVmlzRHoxRXBhNk9TdDdGUVNnelhpVGdDTTZ6cTNYaTNL?=
+ =?utf-8?B?NUo2SVgyeFh6S3RRYTRLazhUV2V6ZzIrdzJaNFRqa3pFdCt0UXRnZnVvL01H?=
+ =?utf-8?B?bXJsQitzMUZVWk82a2J0bXhmRXFRTklWKzBBQ1RoWkx5dFdLNlhEQXpHeVZU?=
+ =?utf-8?B?VDZiOXZScE9sR3pHTWo1dmlkbFlRZkZ4U1BtNTErY3BVRjhweFpYZnQ0M0NX?=
+ =?utf-8?B?bC9PeVljNDM4RFFOWEZKc2Z0cUFacUVabTlPdXk3dTlpaDVqNEJ3TzIvZTNG?=
+ =?utf-8?B?Zm5Eck40QzQ4Q2NiRStzUVBSZHJ5L2wvMTJBZEovKzdpZjNLL2krazZYc0t2?=
+ =?utf-8?B?SXB3MHNjejQxcDBUeDdmRGpwT1VEZUZXWU1zSVBXSTluY005ZU92b3Fwc0RR?=
+ =?utf-8?B?Uy9VbzVrYlZOeU9hUlNJbXZsU2lJb2JEaktqWlVvMktsOVpSRVg3WmhFdjU1?=
+ =?utf-8?B?bDEzbnlLOURrZmhiNXIzQ2Y4QUlvTFROME9rKzNoWHZKK2YyYWJHV0IvMHpP?=
+ =?utf-8?B?bkhhLzh6d2lzek5vMXhoakVLdTZ1UHl0ZjQzWnJ4Y1o4WTRaTjRJc1AyM0Jw?=
+ =?utf-8?B?ZlptYmxlYnlOV0pIelVXY2NFU00vYnhtd3JQYVVCVjlZZjhycTIrL0ppWldO?=
+ =?utf-8?B?RVAwT0tHVTlJSElIcUExU3VNUjJmd3hoQmpVSEkvbEg5S3V3ekZxYWswVlE0?=
+ =?utf-8?B?bXJCNlpMUmplc2dzNWxUYnZVOHNnZlpIRlZtZ2lXM25kbkZTZFI4aHIrMyt4?=
+ =?utf-8?B?UU9SdlJxS0Z6K3BDYVFpN3VxOVBJQ3R3dktqRkswelZzYlIxTFlkc0tGMW8w?=
+ =?utf-8?B?YVlQY2hQaVJQZnYrZmlKcklLbS9iTUNMeGNGZWdiQmlNcFlXcyszQnRrcVdH?=
+ =?utf-8?B?SXNzTWxNZDg1ZWZwYXRuNW1uUjFRVWVBRHFSb2xVS2h0bjN2RUxTSjlUN29E?=
+ =?utf-8?B?cVFHcDR3dmk3bWtHVDgwbWRkUTBlSjE1bVBqbjlkZ1FQUEI1UTNON0R2ODcr?=
+ =?utf-8?B?UllPOTc1UE1Fek4ycWhVYkZ0UHhzUXp2cFFHWVRqVTNQY2g2Q1JOVUVDb2Fl?=
+ =?utf-8?B?K3RoWWt2d29WM3Z4bXhJMllRZExxMDBHQ2p3WVVwN1FWZFgvRUEvejdKLzJk?=
+ =?utf-8?B?NXlmVENCSk1RNm0rVVdoUkdDTnNIcUFubUlCOWJsZC90Mmk2ZWFqbFFIUnRV?=
+ =?utf-8?B?YTMvc1d0dW1HL1h6amIwWS9lM3VPTmtvMklvVUQ2WnZRNExyV3VZcm1ieVVJ?=
+ =?utf-8?B?VWxqT1B2a0VndFI0aGxkTjh3Qk9PaFM0R2cxeWREYjIwWmJEcjZHU1MxcDVM?=
+ =?utf-8?B?VlVTeVplbno5UG5DZnFTUHFwUVFpWFdtU1FWZTdxT2w2U3dDWjFUeFFGbFoz?=
+ =?utf-8?B?eUZEMEdhT1hyQlp2TGNJMHNYenI0UDYvZU5UVVdHdmRmbHpLV0NQMlRScHA3?=
+ =?utf-8?B?N3UyaU5xZ0VVYktpNGFpd3VUYUFyNHd1MkRHbUwwcEZ4TDRxeWEzUEcrTDZu?=
+ =?utf-8?B?NHdVdFhRL1BGZE5ZcDNvVWVDTnNFMm8vRi9zN2FrcVFyVkI3UCtQNkY0VkYw?=
+ =?utf-8?B?UFpqRUhMOG5MQk1iempxekRxMEhCL2ZBZTl1bHZ3Tld3Tmdlc3Nnd09IV243?=
+ =?utf-8?B?eDlKOVNIZFEzZDZlWFZqTWZNb29TM3JrQjdsT1ZwRnpORnpZZEJjdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ae13d94-4e05-44ba-3fc5-08ded58975c7
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 02:52:29.8637
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ViBjJwz3Amk8rafTXEqCc3DivBvisJKSpfrtzopc8Dc2STseuKzrjSEJJUDyXatkTljamBbNdH1EKzbM2M/z9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7954
 
+This patch converts all the bindings to use the new zerocopy library. Bindings
+are currently generated using a fairly simple bindgen script[1]. This is a
+temporary solution until the bindings have been stablisied but for now upstream
+should be kept in sync with the resulting output.
 
---=-1/RZWNM0jMaVFlFyCHre
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Note that this does not completely remove all users of the transmute
+From/AsBytes traits from nova-core, leaving some ambiguity with when referring
+to FromBytes. However others have recently posted patches[2][3][4] to remove
+the majority of other uses which should allow us to remove transmute::FromBytes
+entirely from nova-core.
 
-On Sat, 2026-05-30 at 15:27 +0200, Danilo Krummrich wrote:
-> Add a new BoundInternal device context type for cases where bus
-> abstractions need access to internal device infrastructure, where
-> CoreInternal would not be justified.
->=20
-> Introduce the InternalBoundContext marker trait, implemented by both
-> CoreInternal and BoundInternal, to allow methods that require internal
-> bus abstraction access to a bound device to be generic over both
-> contexts.
->=20
-> The deref hierarchy now has two branches:
->   - CoreInternal<'a> =3D> Core<'a> =3D> Bound =3D> Normal
->   - BoundInternal =3D> Bound =3D> Normal
->=20
-> Update impl_device_context_deref! and impl_device_context_into_aref!
-> macros to emit the BoundInternal =3D> Bound deref and the corresponding
-> ARef conversion.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-> This is needed by both the serdev bus code [1] and the runtime PM series =
-[2].
->=20
-> [1] https://lore.kernel.org/driver-core/DIW1B4FUIXO7.28GSUA0CEA4EV@kernel=
-.org/
-> [2] https://lore.kernel.org/driver-core/DIKIJ81CV55B.3TA7PV8N4BN0E@kernel=
-.org/
-> ---
->  rust/kernel/device.rs | 43 +++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 41 insertions(+), 2 deletions(-)
+Given the inevitable conflicts that will arise from trying to merge several
+different series doing bits of the same thing I'm happy if someone wants to take
+this patch and the others and roll them into a single series. Alternatively I am
+happy to take that on - hopefully Alex can provide some guidance here for what
+would be preferred.
 
-Reviewed-By: Markus Probst <markus.probst@posteo.de>
+[1] - https://github.com/apopple-nvidia/nova-gsp-binding-generator/tree/zerocopy
+[2] - https://lore.kernel.org/rust-for-linux/20260628-dma-zerocopy-bridge-v1-0-9a2895ebe30d@gmail.com/
+[3] - https://lore.kernel.org/rust-for-linux/20260625205146.5047-1-niyudi.honda@usp.br/
+[4] - https://lore.kernel.org/rust-for-linux/20260621143647.264770-1-nico.antinori.7@gmail.com/
 
-Thanks
-- Markus Probst
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org
+Cc: "Nicolás Antinori" <nico.antinori.7@gmail.com>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>
+Cc: "David Airlie" <airlied@gmail.com>
+Cc: "Shuah Khan" <skhan@linuxfoundation.org>
+Cc: "Simona Vetter" <simona@ffwll.ch>
+Cc: "Gary Guo" <gary@garyguo.net>
+Cc: "Onur Özkan" <work@onurozkan.dev>
+Cc: "Tamir Duberstein" <tamird@kernel.org>
+Cc: "Trevor Gross" <tmgross@umich.edu>
+Cc: Pedro Yudi Honda <niyudi.honda@usp.br>
+Cc: SeungJong Ha <engineer.jjhama@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: rust-for-linux@vger.kernel.org
+Cc: nova-gpu@lists.linux.de
 
---=-1/RZWNM0jMaVFlFyCHre
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+Alistair Popple (1):
+  nova-core: Update firmware bindings to use zerocopy traits
 
------BEGIN PGP SIGNATURE-----
+ drivers/gpu/nova-core/Makefile                |   4 +
+ drivers/gpu/nova-core/gsp/cmdq.rs             |  21 +-
+ .../gpu/nova-core/gsp/cmdq/continuation.rs    |  16 +-
+ drivers/gpu/nova-core/gsp/commands.rs         |  19 +-
+ drivers/gpu/nova-core/gsp/fw.rs               |  54 +----
+ drivers/gpu/nova-core/gsp/fw/commands.rs      |  50 ++---
+ drivers/gpu/nova-core/gsp/fw/r570_144.rs      |  41 ++++
+ .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 185 ++++++++++++------
+ drivers/gpu/nova-core/gsp/sequencer.rs        |   5 +-
+ scripts/Makefile.build                        |   4 +-
+ 10 files changed, 223 insertions(+), 176 deletions(-)
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmpBxwgbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSmkgP/RQYwIHPV14g7+Zx8lIV
-kkT3KaOl4g80ntmQz9JJR4Al14yRNQIicfDntH/MSTKn6LnDlZjwLE8SWjqwH68e
-Vqo1SmIln3mGlq4Fl2x685hhC/ZHUtbTWG/Y5E7IGzCi3QYrg1Z5ENToUKOLg1no
-YXr0m9GAHha0sl00b4IYg5bqsFbEddVnGfPUx3Z3J3VLUY3SBknbCjJPbAPtpKdi
-rb4C76+Pdy2gRvSbzI7LoZzo2E+2xw7t5EAeUTR7Whdoby8Bfdh7T/1YGGMowqRa
-ABE0s1QZTCItkGgKtd6k8CDIPaSwWDiHPbUspe6JY/MR+pb904tSjIRei5mAAxHv
-Jc5GsK5WFg/94y00FRn5PjbIaCiIgtH0aqUxGkvn+ucwWgxF7dxuZBnjbclkZLFA
-OMt0FaXuJH9r6YJNFDflZgCFnFcPhQAt2Otdl5DxzHYsKEumGpB94NYbcXxVRFIP
-sH5ChH2jqEMXtLSjU58hgPEM0zCOtBji4cISbvwq8QqONtnhvwkO8mb8XLyq0/Kp
-JbE+j+JAgBBxmfhWCYcHRcI8B1xyAqhxkrBL2kvMYy3atQmVcWATElKoii2wn8cm
-vwyCYBalkwG7By9rwJrUqNNA4HgagdJIdIrkivRgpb/PuyEqOPlC6NkeXqHNcj4d
-w95KKrmFWE72Xh1xXMZ/NlNT
-=6iIU
------END PGP SIGNATURE-----
+-- 
+2.54.0
 
---=-1/RZWNM0jMaVFlFyCHre--
