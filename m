@@ -1,64 +1,64 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACE53955E7
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 11:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FC73FBEA7
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 11:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782731824; cv=none; b=Q/QohmZJR/X9RlHenbKyqhZKld/NTop2qv+jrxFJNMhck2jaZ/KDAkpaY0xpJiJF8q1pWNj2+widK5hwVStN1JFjIj2agspe4lQ6uD4fuXQlsAjCS7aKLiKFt83XPiaxR7dVu5SH8w2lREprhVvqy4iuwG8aCZh8754L63TlCTE=
+	t=1782733093; cv=none; b=NX1uUd8dzgG94x4eH81k5fipwyUJDC1gL93Gu0uphq2VSqxWse1jL3JLll5OfDx0S6JrywYPuDxGoL+MfVoZQ3nPlwEp74mZZD1rb8XU+IRxw8h+UOIOAo4IxEjThUn+26l3kc6TQ8oXHS4mWAnEB9H280jTgwAfK1BWZKRDhBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782731824; c=relaxed/simple;
-	bh=eXKifjwGmgyNkfNyz4AW5WzTlql2ov9lymuZ6YjJItM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=WA0ZOG2oPbFsT8H86XzsF9DGhbTeSHUxO7kuh2R0ipYMaOIiUdhn5qg/GfTVlD9XLEsieKQD95Hxumk970oPL9g67hzKRW2JUo9ly88l9p2G5/C0PVuopuEMPZyHcj33YosnLlclGuyweM9twHiSrmFKEi7Csl8JaXgGlBWYT6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8yud0QA; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1782733093; c=relaxed/simple;
+	bh=TePgk28pw9nEpIK9yqXWWcC9xjXv9gsRt+7mXvf+SgM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=dVvtA9EB9ks01t+Jf7VM6B866k28ZdiHP8pvWtBZvFyX54KQBilvns+jvLJ+0x+GmRfPqhBMx3VOix/Qa8op9iyQsxX/UdcWuXgLrlyaRFMRADF+lQiIwzt4vrq70iaZzE49oAT7TP66kHCX28zhX5UHIV/3EQwpjwlz5AykV4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r9wGwaS0; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z8yud0QA"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-37e0fb87b75so2655146a91.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 04:17:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r9wGwaS0"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-37d82f3a244so1287983a91.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 04:38:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782731822; x=1783336622; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20251104; t=1782733091; x=1783337891; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sf9modGDEu51qoKMDfa6F2dR4atoz1mf0fTmi7rEwIc=;
-        b=Z8yud0QAYGzTRcOp/qtfnqTIy06lXcmiWSS4F2c8vSJ+bEGZyba5nT7YfrMnBJ1kse
-         H5CG/3Ct8FPm86B49i3cTYRcm9uJtZvLjYGMjlCk+WgdE2oecL+z/PGF2qeC509LK1Y8
-         cSUy36WCtaXjdk7hnNeWNSINIRcsxPBzZAp7Usuh94NXDo8cVc95hU5T6YvrufQAMiZ9
-         boGbEoOv1G8afUd67r/P3BXLpxHVLeR2sj6QxqTIX69Na5kRdRG/uOohPdvFxeZWKWkA
-         EgwXbIMr4BboRfv0rO8ZrZ0Lrw+Qbhumfs9rJ41uEzuz5oQvqP9pwyzRb+C4zt53ypcs
-         l0Jw==
+        bh=TePgk28pw9nEpIK9yqXWWcC9xjXv9gsRt+7mXvf+SgM=;
+        b=r9wGwaS0mIZO8U5jQa8rZLxOeBXBWqe0VrryZJoNgpeyozQNHjsX/y52Dvnk3X2ohs
+         7yDRn/vX9+s46FWxF6pgQH7OdSsDWTVTV/iHXd2x0FWAlT75LHAepL8fENS9d5szsZfp
+         5Cm+R4OsKpUsQcDC2zjjjG6AKRzWG8Fo20oo7NMaRY1XgAb7xJU10jlGH4YqMZOWXYWu
+         eHZoiro8gJZ55yP4cQNIIi5PHv9LJwXc67I2v9GgjlMwNz9hVllkS7SRaL70k5bHOAZX
+         WhF4O8HL7nqZeZLGZ33GOo+5L5dkgW6o8A6Wx2Q5m0Z7YEXx+rZD/mWpCXbxogSyFlHw
+         57Mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782731822; x=1783336622;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20251104; t=1782733091; x=1783337891;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=sf9modGDEu51qoKMDfa6F2dR4atoz1mf0fTmi7rEwIc=;
-        b=G8YIYh6sk7xGn3L4DGgfohcMg13N1E10Sn3Pjl5b3vdUYM8pIl3aTHjmpdIY2RfeF9
-         z2trA3IiS8trsiKU8uOM5PTsYz/0sqZP1Wwkq/3fKQaESfuPVtE7UEWoBY4sBSN3zax0
-         NDf3LRForIyE+wrIKVTnhsDBD+FMStottpHRSu8I6TZ5Bl9DamS4qXVrdEBL8pkCQWW3
-         P/lNedXf4VDZDTc1Kdpuh9gXH7eZLaJMEyNgUF4fl+EAbWbelBUYFA3qfmfisHMhciNx
-         NNEhooFUdIswDud78HtsJOK8OVRweYKu7+EpvSPlRAPizsPtQJVLLG8AXryLwh3oCArc
-         qngA==
-X-Forwarded-Encrypted: i=1; AHgh+RqoxdKkHbWfgPAYdImNC5C1dFxXRGlXStZZLbLRZVRQIFMR0SbL/Qv7b4PoTHkeSIdPeQ7X5QOX5CFTrETZRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5y5oq3sKRYjbbz+ZqJTH/8h4OhEmOYtlQ9+Vkmf7dP6g65Brt
-	XwhHBIg3fyvr8CWJ5mEkLLuB7vyisRUhUXAhaI8zUQGDpBFEi0Zigw/C
-X-Gm-Gg: AfdE7cmJbzu6aWIQvSaO/ONbrfeUYEzQ53VEgejsZYzAT8kovSUWWVAt9QaAdsCNbnv
-	Mut32hs6q/7Tvd3oDvZcH2D3LSO38tTDL6GmlNUdhGoDh8ifJkLc1ZGidw+MH+l91AS0SR+caR0
-	GdHOymnl9ZpmJiEVnZOlGqKdwPFCtlcYhsJNtc8XCIr1sFH8k7CQY/pBmf82KRoBz1LQu3r8qy2
-	QtkQXZ/+er8E4E1AqkuUNopHwxI2TL8x99CUYEX5vUXWJnlK5EpEC3G354+NPGw/KUkw8y9THVe
-	F5A+FfQ0aq8WvyUOTjzJXSRiNhvghr9XGd40sYM2jPtT/hzsEHYGXuXo2cr9w19MkdBp0DWwqmP
-	gnEOVFRa474PGSJil3FWq2ZGyF3tFGDCdXl/Z9zmzfwfq9jjaaRWRfEMwDHt39J2ALQKR3UtnbE
-	HuV8Bdl+Cz2ZS8haaSkUdD/W7EyM+xtQTqj/duC9kdrkSu779wY/1oPHAaCu8GWOPPtUQPREmrH
-	mSqu3KITm5GN6p0oTmcyx0x2gUmHxdqVOsjpk92
-X-Received: by 2002:a17:90b:5830:b0:380:38d2:80bb with SMTP id 98e67ed59e1d1-38038d2824cmr453534a91.8.1782731822431;
-        Mon, 29 Jun 2026 04:17:02 -0700 (PDT)
+        bh=TePgk28pw9nEpIK9yqXWWcC9xjXv9gsRt+7mXvf+SgM=;
+        b=gspo4u8KguINUOIMZfXcs3ZEt8xwDDfAyKtrJh/3XuyoJvC77KfFTWM2IBbIsjbaof
+         UkloofAf0wCozDMg28m2LPRNx44xn80bTqBC2VQODceiCR4mKP1IFWhx5wFTJ/1l+3VK
+         SdXEgLV1xEm/+b3dSsytxNiFN59HhAflh1508o9LBBERx72utO52Wu1c0TUJsr4IwdoS
+         Uyck3krTrQOa5Nnkd8lzgThCcu7dTibJ5LsYr1NwHnMMTk6PedY+IHIQ8WtpmGcZIJrc
+         1H/f1SKkKvu/7/d6QCbc9hDAcQkVK2YpPx0AzwY28Vo9vKvKK+osWB6YKtDgpWbKG6CC
+         i5WA==
+X-Forwarded-Encrypted: i=1; AHgh+RpZk8m39jn3I/aLJ1BVqgFHeP2MwFw8IZXYR3SQwjFLp/spPKvH/wEP/M3l32NIigRZUz5DTC0qmPDrTFCiRQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkED/lZDSAcB29HqxLs5ggEjpfgMMZ77PEIv8FKKgkmRTBUbyS
+	u/YtPRSgcRaMmtqFad3yZRmSZyLwbz3Gj+xLDeXStqSaIQJrrvKDmzUz
+X-Gm-Gg: AfdE7clibg4bT3C6XdK7L2K04SxMOz1OtjgAcVkyAvsIuOxUZpL8MfTFLGvZwBcBaRi
+	UxtGSmwZa5jSf/aO7aYPG0jE4PYWsNSxcQeDH+PuHZJCdEjb7ZtortC1QjDHoNqDpStLy/NG0tm
+	ZrFrO0gWnqC5PFNIJNGTLySqDebyJkSJAO9fthSUKAgJwl/6nOjm/xVFzvBWf9n1FykkorZgW/W
+	v6rMBc5wHcUx2oAgoiAgANvPskrN6i/pancrU0WsSVck29+nEFce3PcN4UaC8nbKvWFgJw7R2Y+
+	L8u2Ii4j0nqFaIdO0YA9v15Var3JKWPkhtpGEhY7FzkdXbdr2fbvaGLZ12E5PqcGxtgWtLTN6p2
+	vXYp+V3mbBb+8guI48uouR1QguVBeG1Ydlc8LMZlc862Xo+x1aKt+2RV99UpQpsHsD0jAYdvRS3
+	eyc1F3v6QJnwuEUwZxjfnLuiX410iyH5k+vou1bkyRTqTwaaupt1MyKy7ThIb4BZMxfQkr/4THn
+	51HpxmFx2fC25SIj6DPfkMtXZHA2qDeXBWBFcpG
+X-Received: by 2002:a17:90b:560f:b0:37e:1cac:d2f7 with SMTP id 98e67ed59e1d1-37f7a557912mr8306827a91.6.1782733091454;
+        Mon, 29 Jun 2026 04:38:11 -0700 (PDT)
 Received: from localhost ([143.248.188.236])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f5ac7c9asm91594835ad.4.2026.06.29.04.16.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37e24b13458sm5549594a91.13.2026.06.29.04.38.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 04:17:02 -0700 (PDT)
+        Mon, 29 Jun 2026 04:38:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,66 +67,63 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 Jun 2026 11:16:56 +0000
-Message-Id: <DJLHOQA5UAP4.340P2TKXGMME5@gmail.com>
-Cc: <engineer.jjhama@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
+Date: Mon, 29 Jun 2026 11:38:04 +0000
+Message-Id: <DJLI4X05N1Y9.322KEILB5Z6RG@gmail.com>
 Subject: Re: [PATCH RFC 0/4] rust: dma: bridge zerocopy-derived types into
  the transmute byte-safety bound
 From: "SeungJong Ha" <engineer.jjhama@gmail.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "SeungJong Ha via B4 Relay"
- <devnull+engineer.jjhama.gmail.com@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Alistair Popple"
+ <apopple@nvidia.com>
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "SeungJong Ha via B4 Relay"
+ <devnull+engineer.jjhama.gmail.com@kernel.org>,
+ <engineer.jjhama@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
 X-Mailer: aerc 0.21.0
 References: <20260628-dma-zerocopy-bridge-v1-0-9a2895ebe30d@gmail.com>
  <DJLCLH7GDSBW.28J4PZW0FD60B@nvidia.com>
-In-Reply-To: <DJLCLH7GDSBW.28J4PZW0FD60B@nvidia.com>
+ <akIpejFWuKZ61n_v@nvdebian.thelocal>
+ <DJLEQ0UIBOQ4.2AQ93XKMH49X0@kernel.org>
+In-Reply-To: <DJLEQ0UIBOQ4.2AQ93XKMH49X0@kernel.org>
 
-On Mon Jun 29, 2026 at 7:17 AM UTC, Alexandre Courbot wrote:
-> On Mon Jun 29, 2026 at 2:10 AM JST, SeungJong Ha via B4 Relay wrote:
->> DMA-coherent allocations (CoherentAllocation/Coherent/dma::Pool) bound
->> their element type on kernel::transmute::{AsBytes, FromBytes}. This RFC
->> lets a type satisfy that bound by deriving zerocopy's byte-safety traits
->> instead of a hand-written unsafe impl.
+On Mon Jun 29, 2026 at 8:57 AM UTC, Danilo Krummrich wrote:
+> On Mon Jun 29, 2026 at 10:20 AM CEST, Alistair Popple wrote:
+>> I think the context is in the description for patch 1. It's not directly=
+ related
+>> to the bindings generator. Basically the problem is that these bindings =
+are a
+>> little bit unique in that we access them using the dma_write/read macros=
+. In
+>> other words we use these with Dma::Coherent which still requires the tra=
+nsmute
+>> rather than zerocopy trait bounds to be implemented.
 >>
->> The bound cannot be switched to zerocopy wholesale (some DMA structs are
->> unions that IntoBytes cannot derive), and a blanket bridge impl is
->> rejected by coherence. So the series bridges the two per type:
->>
->>   1. add the bridge macro impl_transmute_via_zerocopy!, which emits the
->>      transmute impls only for a zerocopy-derived type.
->>   2. re-export zerocopy::Immutable from the prelude.
->>   3-4. worked example: convert nova-core's GspMem and msgq POD types.
+>> That said I think the correct long-term fix here would be to fix Dma::Co=
+herent
+>> to make it work with the zerocopy traits. Not sure if anyone is looking =
+at that
+>> or not.
 >
-> Can you give more details about what the macro is for? My understanding
-> is that it is a temporary fix for the generated bindings; if so, I'd
-> prefer to apply a definitive solution (like using
-> `#[derive(zerocopy_derive::most_traits)]`, or updating the bindings
-> generator tool) rather than something that will be removed later.
+> I think it can just be done short term, please also see [1]. We can just =
+convert
+> the DMA code right away, no need for the proposed indirection.
+>
+> [1] https://lore.kernel.org/all/DJLEHDNJCUD0.38PFZ5773D6BX@kernel.org/
 
-This macro is giving safe manual derive from zercopy traits to
-transmute. However, it is not necessary if the transmute is going to
-be fully replaced with zerocopy. I found it seems to be true [1].
+Same here [2], It'll be better to make full transition from transmute after=
+ the new
+version of zerocopy[3] and auto derive is merged.
 
-> But intuitively I'd say that we can (and should) probably do without
-> this intermediate step. But please let me know if there is something I
-> missed.
-
-I agree. The only useful parts remain in this RFC patch is explicit
-padding in GspMem. AFAIK it is still necessary after the auto
-derivaiton of `most_traits`.
-
-Best Regards
-
+Best Regards,
 SeungJong
 
-[1] https://lore.kernel.org/all/DJLEHDNJCUD0.38PFZ5773D6BX@kernel.org/
+[2] https://lore.kernel.org/all/DJLHOQA5UAP4.340P2TKXGMME5@gmail.com/
+[3] https://lore.kernel.org/all/20260625231919.692444-1-ojeda@kernel.org/
 
