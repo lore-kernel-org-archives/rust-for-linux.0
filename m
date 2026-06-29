@@ -1,71 +1,71 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012046.outbound.protection.outlook.com [52.101.53.46])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013046.outbound.protection.outlook.com [40.93.196.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F080E3C2769;
-	Mon, 29 Jun 2026 07:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1C5344D80;
+	Mon, 29 Jun 2026 07:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782717465; cv=fail; b=NcQ0B4/mAE916CNu9/dOj1BhDG1MvxvqSzD33NyRvPTFG6nyng7AwvK6cTqwns+GVyBx68NxlZ/3PY3CBuiP6Aijmx4rFbIkFDoQoeeIO9dSOeltrf7RHaKGVGd7iQQGzrJj0eE+o7ZEob+yV2CSfIEVhauGa6K30kNtx3lWces=
+	t=1782718629; cv=fail; b=RexeFsLCTk2loxclkMKVcAwKV+D0lt6e0pYt+E/p4Dk8ijUstImuJPNHWtAMMVhLD/qzvXrJmQdqoQncLJuljbU59z7tULCJ4R40kv7+AsKC70TVSliclhe7Dc9ON2GcLg9G5ZSJ5xxAT9H1gziuM2rOMB6lzaUGowM9W0NPybw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782717465; c=relaxed/simple;
-	bh=rNEQjPlzSCtwBskO0ZocS2SJVCEtdhK0pkuKh4HKHaE=;
+	s=arc-20240116; t=1782718629; c=relaxed/simple;
+	bh=O4AbHfWREiTM1ahwMxCpY83v5nbNwV31wQ8EdkhWF8w=;
 	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=aSOh+s2BmQsrHYO4APcWVyF5dp6DOHzusRoEnZj4MTL9/DO7YXTKcd0hYqmAXogYvHfq2LB79jWENBmYABjwOGgsgy59VF7WwxC/L5Dg7x1R0ME9HsObNybYjSQQS/Ke2OHj8YOdVyZkviCJE2/5aOFy9QEYtqnDqGfo1dKWHug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CzCOQs35; arc=fail smtp.client-ip=52.101.53.46
+	 In-Reply-To:MIME-Version; b=g4CApbdFLlPnx1mY+Bp7wkqSQxUPyrO2B8ckRVLZ4OYBPZFMAzt3/Y5L+3Z9AkGGAi906BDwhq7zMGvLwj9LBOt8dCz2oGbDpHhrTCB/2Jz9s0tFT+a7m0WkkrwCuBdsXQ7fSORWlvc6gmXS7JQF5c+PNN1zgBpxS5MUmeH5R70=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LJ2Xf1tH; arc=fail smtp.client-ip=40.93.196.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CzCOQs35"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LJ2Xf1tH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KUN8R+a4wtK392bRb5F47kcfavKSS2bs5JiAEsbY8tNqRIc2Uj50hF8Tjtj6KXO2a+0HUW+gHy1sD7m142ZZM6xX8PJ8Od14/sSWhJq0ur1RtrJbtZ92aaqGhx9KTfPN9vsvu8RFjA9OFiSUS1cvobhJgf9uwZJ9BRgytveHLa2+lfm61qt8f483OTLwpXIo4TMYgNKaJX/KGuaqREGshR2P3UwO7P3W++FvLt9kDSMftXy3GdJbIzGBYdGs4Ma7OmL+RVgT6pxE3qHcLXDRPr6I0q9Ut/HmUwTHj2BMLD+OS848X43hduxrv0PG4kZcBD0O7gLofO+0HstvSO+FWQ==
+ b=q3Xc8ogqDgOgwNllmGFi4skNGzsrZOD2642X4HagjqX/8exJPmh0itKcDjSc31CgCWNx/WnzR84uAB6lNoZyGMNiNvWYZgs6DPsl6GkK1rlnfvbdiZztEg48t+n8fP7SIK/YLiBz/6iKQljJTRM1EtWJBlJHNavWtqMi+INGLdl13YfhKiesVFOU6lEmRGGyrbnpnXCw6mBm6nD7s0Ip0S9qn3jeDdWDYP0eDR1dX+XUX7MoetlOgBgIvqzbRZ4F9Dk4Ob1dLekimduInBIHB5iFaaKvdTph7T8A2PiNMIZ81Ym4pLmPCNRV90iBqmB4j8AZgX2wJrZ8+LlhwaAYEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/X4253alAa6pstqYuuUv6nkI9Q19klW9YmygxHrYT4w=;
- b=LWWFDkb7LtIPmPa3wZYjKMjpMcHxvMkV5gj5RoUBp47k2QJRSn7lBK7JExNbe4MOrwBA19SkAZ5ttAEzEzirH5u+KoM8o9t01E06D8L7aY27kSE3SwqXaLWb7bvxp0qSY83oW94rxCRFDvnDjnRvdyeOi+jY2jlxxpVqQDsm7vyIdE3/B8y0AQdwzIMffjE4xofTg0giQxQTqglaKqwUXwOO3PGwPEMQfDJgnzAIcgzF7xHPM3e370uGj0uE1pzHYfC+c32XJofN4ZF5dUBjEVDYz1+TXwXQ27ZHZu0qT6IMNsU2A8ZXtwC4OJCT+merpv30bWtrqgUvEGBGrqiCxQ==
+ bh=hjeoBFDxo64/UMnywcPePEk0o0Sqjtlw4iQCm2hkV6w=;
+ b=uFcXH50wJj3h9s6RX6iFMuBmJ67DSYwE2nFYr46EQcZyH02A7x/99D6yMxNOUJKRPIJ8fUJAsD+cVgPG8y3fnSTAOm81CpDbP+fmUPh8vrmgArFPr94gTaNUhiyirpQYdColuuyxMgQqIGTvlliSXcdYWIZ5onpZ5apAalbsPhSonJPw0yT0vi9XZ2YTfN2urA0/nDcSTk7UqRLCRHBGXUuidt2S6Zbikk1vQQNYtXBGuv8rvjJpNvlfmbkx211tzdVpYhmZ4KDsew4E5Y+i6L4EKmjOU4SxJ6OAcfyJS1VHkyhKlem4TuKhA58uFevfIMMwRhT4g5n+isqH0sO+lg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/X4253alAa6pstqYuuUv6nkI9Q19klW9YmygxHrYT4w=;
- b=CzCOQs35IjjSIdgZo2by0Rw6ClcuhC8v3clRMq4F4MALQ/j5uxZ+VgUYgJfZg83WlGifoqKyR+cmVNbzApH4ScLp0FsgMnfs8UzYGYnIyWGdKTIyo5IoWJS6q0fcxJHiZmMYTIWypUAqyYwUcIgBRO9PAa4lg5/p/6ZwwR0gz+YI201lvixmaSKGESKHTsfKgjN8KAAYpvkyofA6APSLIGn4PsgO4Zi3QL2f6LyWqsf4mvTwPP2raYeU6uQe0bJqBkmMecidhk3GwahFZKRPVKDB/N/wNvc+l8FpDn6LWWEVNy5qYH444p0Mi8qo1MpvhR85I+oxG+zdCodqMs7YeA==
+ bh=hjeoBFDxo64/UMnywcPePEk0o0Sqjtlw4iQCm2hkV6w=;
+ b=LJ2Xf1tH/D/VtlXhPxYB/eip1Qsx5g4UnigWRO+Fqa49QrDZlOsy2tzj8kBwGMU1lgXcGtiAK7r59AN01rSA+t6FAd/JFXz6BAkknqd4+s+tQ9UM2pPTxoUFsH5aDNG8LnRjYNg9WusSZrE1a7XHnDYQxFdZvRJdjEpixj+G1xzPSAeDfRDkhJh0bz6IK0qNC6j1TOT05bXbg+O3HEv+4GLYN2B6UhB5XIRJymF87B5PTM3PomQqQWwJOjFv9UM5RMiQ5RL2otml+yukDlqiLCq1rHNzAQT1SgB2gSfTp5fZWEF+OS0cPLgKVCM1FfipuZPTzwZtO3ZoZj42d2cUPw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BL4PR12MB9533.namprd12.prod.outlook.com (2603:10b6:208:58f::21) with
+ by PH8PR12MB7328.namprd12.prod.outlook.com (2603:10b6:510:214::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 07:17:39 +0000
+ 2026 07:37:02 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 07:17:39 +0000
+ 07:37:02 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 Jun 2026 16:17:35 +0900
-Message-Id: <DJLCLH7GDSBW.28J4PZW0FD60B@nvidia.com>
-Cc: <engineer.jjhama@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH RFC 0/4] rust: dma: bridge zerocopy-derived types into
- the transmute byte-safety bound
+Date: Mon, 29 Jun 2026 16:36:58 +0900
+Message-Id: <DJLD0BCHI6LK.20SNCG6M3E1D1@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, =?utf-8?q?Nicol=C3=A1s_Antinori?=
+ <nico.antinori.7@gmail.com>, "David Airlie" <airlied@gmail.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Simona Vetter" <simona@ffwll.ch>, "Gary
+ Guo" <gary@garyguo.net>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "Tamir Duberstein" <tamird@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Pedro Yudi Honda" <niyudi.honda@usp.br>, "SeungJong Ha"
+ <engineer.jjhama@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <nova-gpu@lists.linux.de>
+Subject: Re: [PATCH 1/1] nova-core: Update firmware bindings to use zerocopy
+ traits
 From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "SeungJong Ha via B4 Relay"
- <devnull+engineer.jjhama.gmail.com@kernel.org>
-References: <20260628-dma-zerocopy-bridge-v1-0-9a2895ebe30d@gmail.com>
-In-Reply-To: <20260628-dma-zerocopy-bridge-v1-0-9a2895ebe30d@gmail.com>
-X-ClientProxiedBy: TY4P301CA0111.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:37b::10) To CH2PR12MB3990.namprd12.prod.outlook.com
+To: "Alistair Popple" <apopple@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>
+References: <20260629025220.1935622-1-apopple@nvidia.com>
+ <20260629025220.1935622-2-apopple@nvidia.com>
+In-Reply-To: <20260629025220.1935622-2-apopple@nvidia.com>
+X-ClientProxiedBy: TY6P286CA0009.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:3b8::7) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -74,96 +74,264 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BL4PR12MB9533:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9de2e158-953a-409d-ae2c-08ded5ae80b2
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH8PR12MB7328:EE_
+X-MS-Office365-Filtering-Correlation-Id: ff413ac6-6b1c-4b52-2963-08ded5b13579
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|376014|7416014|1800799024|366016|6133799003|56012099006|11063799006|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|10070799003|376014|7416014|56012099006|6133799003|3023799007|4143699003|22082099003|5023799004|11063799006|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	OHX/pO0OxdgHr8uGDMKWb4husl/V+xrzTzCrtBCtPg/swM/odfyZ1GBFZ3TuDLqa/iNfbX793qQYrHa4LPrmoxxpyj+3efFgXKT+VcJge6uq/d+oa/98+aPDBlU+zRQt11gaeS7VjMtWNUNsgyriOzNo0GCgIwo6j1KN40RE9O2VL9Bx/9a8MpxUJRDToUiKsf27gT4l9gLw2QDgVrxuYZA/v5j5puMrnuDB6ALFhuKEgXsa+4Y0ljR/5/eJ+vpUB+LjxedOiiWrs2jpKTms5ZmjdcchRjFCbvQIKBgrIWmIiG8WiTePwJOzPxHIb0JAkWTJD7JPqaVYDdOpA4oEPagpxphb2x0t4troC2lmcoNTGETBAQu6A/neSNsw91DHQ+p4htYwL+E3whaitSovy+rPiPEKnFCq/x++5ucAkLNtJbiCmV9RHw92kuKpy2apmJcQlHjoaROl3GrkXPDjDVxub1RNM3sOAF3ys3b9TKIXYGNYckvXGVmYtoac7cLNFDKc3n6TuKdMiN6lN0Jh+CO25EAFvoUv587qupXsL029XSDlQ/38RzYXbp2JB3fU+UswDbDOoEbQKINnXAs6ptZTGKtpP0Qrh70/DTwRssW2Zl7FnnyreNyISef5u0doMVQsFRlkb8+QWJX+pE0U/fXtVA1Ol4gdWI3poOd+2Uw=
+	Wia4pyAh/z8QTIED9ZirSVp7EUkLLBfhBIB7iB4FjueL/tYC+kJmkRp1IISXFpPG8P3cQWLbP5FZbAq/vL0wtCreVvzykjy7DG6Et8UUNUkTuS1CCr0BOoUCQMdqlsB78HWVP1vKvCawnM9t3+6HKf6VifRgETRGbrGKmP9tP5AKOVRZO+iPomP8gI5DFI47Yobk6NineHd2ulbCuT8FWa+I8zvI3S/j7qyOr0LgC3GCsb27qJOhU1nM4atrChsinQ++0mOrsGYkvslvPZkZJ7fdjMbe7tBoE0SigeojUjXMpR9LHnncCrj81QNrReYZzVk3YFqrJ6Z2ayH2u09bL2F8oPwk18OvnasU1+NE9IyE2Z9WN6EC4rJ6/hsnEpQoq+nf1ia/RP3g4DAZLJsVvuqxIpo316FxSg7XUedsw7H4cqk45mfwOdN/YGp/z7rajvEl5u/PaqBp1MCEPK92thtCMpW65RB+8/F4B0qBd6sJ4yNNslLNlPdWnnOhJzREFk9IjqVXMB5vhQyA2NG/9CcRK6eiCdWuOW56jcCneuUpWnfHJfHaoit0ai9jal67YRFDMKfisGH5WJGXzO29DsJ02l9rIr/b84Sp3Kx7tl1hSlwE2UO8y6IvYODx9x0O9xcCJ3EeZn48f424fMGHtXdrGvyXewqQPdIpR5pzCP8=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(376014)(7416014)(1800799024)(366016)(6133799003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(10070799003)(376014)(7416014)(56012099006)(6133799003)(3023799007)(4143699003)(22082099003)(5023799004)(11063799006)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OWMvNG9UUVo5NXpwcE1FVFBnSFQ1YzVwSzFaeGoyMEJxM25GclVFTnRHUEZ4?=
- =?utf-8?B?dERvcWZWZUFsdVNNRVB0ZHUrRlM5aUN2c2pJT0NRbmZzaHgzckpibXpPc2R0?=
- =?utf-8?B?cmdVWC9pdlZoS24zcktJZEE4N1pyUHdRdUxHNmpZeU1tNFBTNGJQbTR6YVNM?=
- =?utf-8?B?U3FoN01XMk45dGxoemc1UW01WXhmNkpJVEJwSXNtOGNCVVhpNWxSVm4raHNT?=
- =?utf-8?B?cUtLYVRVMys0ZlQ2YjJFTnhoTTcyL2pMeGQyWGdWb0xudjBPeWVhS21vTi83?=
- =?utf-8?B?dDFWR09lenBZZWI4QlhOb2NIa1piUnRDTjkwV0tWd29GYkZ1aUJHc1Urd2Rs?=
- =?utf-8?B?Y21kMWhoK01ITUUydDdnT2tlU01YK2VIbE5WVEo2aWpqY1JicHFaN2hyZkRq?=
- =?utf-8?B?UjdrcENrMzlMU2JITzc4SjFJZ2hONFczL2FNeHZRT3BmbEkwbUNvZCt3VUww?=
- =?utf-8?B?NnBXUTVlOFgwV1BEdWJ0SGhmMmYrUENMT0hnUGdNcnhMeEtBSjBBS0JZKzlM?=
- =?utf-8?B?Uldtc01BOVcvMkdKR3hhdW40Vmp5eWw0RlR5MSs1TFFMRlpQNy9mSGV1bEhY?=
- =?utf-8?B?WHArU3A1d3R5YUZsT1dRUnBUMnI3aTZaUXZtSWlWcVp0YjVHVk1DajUzV3dI?=
- =?utf-8?B?NUhwOTdYYXdIVzhseHBaSHpsYmlzOXlNQ0dRamZlVTlyeXFtclhyYnpnUGpW?=
- =?utf-8?B?WHh2SXlKM09VSG53RjRjOGdiV25xOEZUYXRUYkR5Vm0rSFVGZlM5KzhLRlNL?=
- =?utf-8?B?UGxxOWwrMEgvbHMvbm1ad2RIN2NTcW9QVUQvZURyaWhuNm81UWZSd1JQd3R4?=
- =?utf-8?B?YklUditzaXhhbTkxZU9RYlNDMWVMSzBmM0w2SU5Gb0lWSXdkNW9kSmZhQ0tT?=
- =?utf-8?B?dzhjWnZmZkJNTXozTDhWenhHVUtua2prVUhON1o1eW1jZERxR1BTbWdlYW1C?=
- =?utf-8?B?NDIvM0dzOGVUU2MyUXFYTnVGNWh1dXdrazlqcnQ0NmJyU2pRaUswcU4vS3lv?=
- =?utf-8?B?alV6QXdrUzliazFSNTZVa0o0dXRla0VLMjFBYjQ1Y2FsUjZoRlIzc1VVckp2?=
- =?utf-8?B?bWNxZHJ5V3JQR0tNbzB5OURzNmhvOXVnZjgzQVAyQVQxbnRVTFh0ekt5S3da?=
- =?utf-8?B?aWxBZ2NEUUpnWDBXTGFwbFpFRzQ1c2IwTm1Gb21TeGpUWTJrdUQ3Z1RMMllT?=
- =?utf-8?B?MFVrUHIxN1pGS3J6d0tJaVVscE9ydXUvUklMMHpaK0g0TkdLYWZrWnJQeURt?=
- =?utf-8?B?TTRVeDgwUWw4UE1IajZoUWsySEpKazRoMlhGbEYxQUZtMkRESXlXT043RXZB?=
- =?utf-8?B?bC9FYmxyYWhHUmltZlNjbSsxZnpZU3l4VFYwdVdTOW9CQTcxN3JLcWtEUDZR?=
- =?utf-8?B?NE5ERkY4bzU4ODRGTThyREViVXlrSHBGNGhwQjJOWkpqWGoxVTVRa3FDWXZX?=
- =?utf-8?B?SENCMkt0SStOY0JwL2xJM0YwZ2ZTZXVvNzNwNjJJRU1aa1M2ckx5WVZuV3pr?=
- =?utf-8?B?ckhyNkUrdlYxWEltTExhQ0V5RzA5aUFyTGgvc1Rqb1hhdTg2Yk5RZVBtZ1NS?=
- =?utf-8?B?RFc0ZjgzcFUxdk1Nc2tCaW0xVDhiOWlpTWwxZ012RDRsNmJITzhoYVBUNDQy?=
- =?utf-8?B?YmFPTG14R2hyNFY1V3QrcFFNZzhJb2p5RkxySVBPRU01Vkx1UmdrSWRxVTJH?=
- =?utf-8?B?VGtndGpUNmVvbjlJT0hTYkRQNFFFMytCcGlmalQ2TGFaZmJDNU4wdytsLy9D?=
- =?utf-8?B?QUduOXk1b2ducmg2ZytLMlJaSU55NVNSODdYcTU1Vnp5NThwbExuUUJFeVJo?=
- =?utf-8?B?TG9lR2FkUVRzU1NSRjdJTWViV3l3ZWR5bllNc1JHTDFhamhWTDF3RVlFRWxG?=
- =?utf-8?B?L2JOemYzZGFRdm5Vd1ExQ3JPYTBlMHhZbmdVcmF2WlBIQlptbHRJRFZ4bVUz?=
- =?utf-8?B?V20ycldFNmIrS3Vwb2FkZGdvUzF6WWJXVFZFaDd2a2pITjNOelozQ3N5VHJq?=
- =?utf-8?B?cHp4SlhiTDBYUVl2Q2pIeTZKcHAvdEJGYVV6NGovbjBpSncra1dzNDNlNjBF?=
- =?utf-8?B?emxZUWlMNDBtZnNqNm0vLzRyNVdhTzA2enkzbWwzWUZudmI4bWtEeGJXejBJ?=
- =?utf-8?B?VXR0dGZRQk55YXBvTmRyMEx0K1IvV1lmUjZvYTdJaytwcmJFblQ5TGI0d2l1?=
- =?utf-8?B?Z0tmbExmVmUvK2FSUnREM1habFVtV05ReStNZEduUFhkQXVsU3A5dDZPVFhm?=
- =?utf-8?B?NUdsRHFlZkNDMTIvbFV1MkdIQXk1TkNGK3pmTlNzQlpvS3dGeTJPTHo0Kzl5?=
- =?utf-8?B?M1ZwNkRveDFKNXF6SlNvQVg2bzZRTE45c3NINFFVUHpTUWxobTJhVWZyOUdK?=
- =?utf-8?Q?ZC+GkIPj4nf7Nz8pZswzBpoj4Jq1Ik+T7L2DxWTVWRs/E?=
-X-MS-Exchange-AntiSpam-MessageData-1: aDOyATptAP0Nsw==
+	=?utf-8?B?Rkt0cmpMdUlPQ25nU2pXellnd2xyK2tuRnJEdlBSMzdWc3R2M0tGdEJqeXpw?=
+ =?utf-8?B?ZnhXYXhjbGdnVUtjNkhtQVBYdzVQWWlNbHJUYUliMjV6NWRLaHF5Y2hXS0ZF?=
+ =?utf-8?B?cnZ0Q05sS3ZpTW5FNjNaRXlNdE55MUpmdjFOZk9ZbG5VdGlydHdwYlIrYmJa?=
+ =?utf-8?B?R2Q2OVpzdVBCZHorNk5GNVhMVDQ4TUk1OHlLbldLVHRzSTdHQUxWU242RWF6?=
+ =?utf-8?B?NUhBOWl5OVlJa2cweXZYUDdraitET1ZZMnU2L2tVRTdVVVY2TGZxSHpzU3p4?=
+ =?utf-8?B?OWIvSFRJYkRsbit6ZXZNZzJmK1F0Mkk5bEYzV3B3V2xvcFZla0VqNFFYR1gw?=
+ =?utf-8?B?SnV6TDhvbkgybWptVEIvME1lNllONXpPcisydWlIbnJPOGRzTm1pZ1FRVGpX?=
+ =?utf-8?B?NnJ6SjhpQkd3b2kyN1NXN0F0YW9vb2pKeTh2M0NHZmhxdGNVTkE3RlllY3Q1?=
+ =?utf-8?B?aERlU051TG54NGtjWUF5TE9KNWFZc1kxN0VuSzBLWWpNRGhvN1NvaHk4RGRh?=
+ =?utf-8?B?S3czamR5QUJBZzZjZkhjSThJZTRobUh4WEU5ajlWV2lWSkZNR0c3WTY1cEpV?=
+ =?utf-8?B?R3lxQmk3TEpMTitKWjBja0IvYTIvRnNwdWNMWXQ0ZDNzdkpEV09CWGpmU1JS?=
+ =?utf-8?B?a3RvbW1XZ1VQOWdMV0UwZTEwZVJnZmhQL2d0bGlZZ0Z0ZGdkV3ZMVHUyMG51?=
+ =?utf-8?B?cWNxNzNQb01ZTUdJZzFCVHdsVWpmRjR5U2dwREVQSlJ0ejBXdGsrUExpYVlZ?=
+ =?utf-8?B?Q25iRHlKYWNZbnB2Y05udFZpQXdwQlJNdGVsVVBhRHlPZ3NEMnBFZTh1TlZP?=
+ =?utf-8?B?YS9JWTl1Vi9HUHBHYVBaNDY1SmgvaFdqZ0tUV3BLV2Qrb213VzFpNjNoOWs3?=
+ =?utf-8?B?NmNWWVRHUEVoK3hCeG1QV1hZclJSVUZwY1lrRTROYStOMW5EdVQ2Z1VxMDJE?=
+ =?utf-8?B?dHdCNERIKytUWXQxUkRZN3V0STRQTGVXYXA5UVdqUVU4VEhzdWdNZ1JvbG5V?=
+ =?utf-8?B?WHV3eWhTS21ocnVieWxqS2ZDeW1vc09FRjJzUDFCNVdCclUrOXhENnMwWGoy?=
+ =?utf-8?B?NjFsdWh2QnFZWHNNb3JsUkJFVmMwWFN6VVhvS3pONkN3MTdIaHAzdEtxT2g4?=
+ =?utf-8?B?UGdLUWtQZ01pcjduK3BZQjlPWHA0dk1QUlRxMUZhN2hobG5PbWgyRXFjU2dU?=
+ =?utf-8?B?UitXMjFrRmpsbWUyczRVbE1aS1Nnakx4KzEyTlBUV0JsR0hJVHh4WmFvM1JK?=
+ =?utf-8?B?MXlLQ2Y5d3h3NVl6MDBVWnAxdXZURHVPbWxobXJ5N0Q2VXhNTlYyOVQzNzVv?=
+ =?utf-8?B?SjBpbTBKZXY2VDNubThqKzR1UUEvSlV3SzFrV1BPdkljVmJJSXpXcjVSQ0Zk?=
+ =?utf-8?B?Vk5Tbk9DdktwVit4b20zaWo0dW5qTkV3QXZDU25raGF3NVZjY2F3Z1M3d2RU?=
+ =?utf-8?B?eUowdFFjMXMyYjhHRjRuYlFjSXFWT2ZGaU9TWWE5K0c4aEtKeThUODlrLzU5?=
+ =?utf-8?B?Yjlxc3J1bWpwSWR0V3NkYVVMUlRhMnRDTUhTUGRBem5LL3p6Ly9vVHBiUllG?=
+ =?utf-8?B?SXB5Y3JnUERiQ0cxWW5QN3FEQ3VqQkFQMUJpcytvb2g1NEVPK0txcndPS3Qx?=
+ =?utf-8?B?d25KcUp4Ny9McWIyd1RlNjVjYkhnVUt3TmJicFpteDVYeDNielBTQUlWWjgy?=
+ =?utf-8?B?Ny9SeHlVMndnOTdZQ01HQVY3b0xOT3ZubGx2aVlSL2hZOENDcmc4Q1FsZG5n?=
+ =?utf-8?B?WDU4cWtRbmZwWWdTcTNsOGpIb3hUMnQ4V2pIWUJUN0tuRXBNZGM5V0EyeDdG?=
+ =?utf-8?B?d0JhM21aN3lkVjIrNk1URFdTRXloS3htZXZqL1NkdHg0UTJ1K2ZGV0ozbzgr?=
+ =?utf-8?B?L3k4dlh0UVlyWHdyU0V1R1U3VGRuZUdrQ3FTblpOU0dPNlpkVkRUOEFSekp1?=
+ =?utf-8?B?SXRxaXZPTE93Q0pUWitKVlhmS0ZQZ21lRktMZEpBa3dMSVNGWCtFQVAwbVBT?=
+ =?utf-8?B?aXhKaEYrZ0FCbi9BTDUzcC96MVh3WThiM0N0SVdpT2VuM3J6eXdDUHdaZ3pY?=
+ =?utf-8?B?V1huSnZ3WlFzaXZaL3NhOTFXd0dHb1ZQbkpiWllrRm5xUmFyZXdXcldBNHIr?=
+ =?utf-8?B?WE5zRWtQOE9kRTBxR2hROVMvK3pKMmhMSjMyRUpLd0lJWjZNak5EQXRMZ0lp?=
+ =?utf-8?B?cGJNaG1qQXVBYjZLc2I4TEtpOUUvNUcrMk1sZC9UZ3FmWDlPTlRxQ1dYb3Nw?=
+ =?utf-8?B?b3NlaHVZZW83cTNBNWFZVTVOYVd3ZU1KREYxdGllczZ2U0tDQ1VSdTFiWThY?=
+ =?utf-8?B?MWQwMWRXWDBnQ0lGTVlMUnQrdHVycWRmQkxuVDNhVkxjNDBKMFQxZVJPQTZj?=
+ =?utf-8?Q?Tfwc4WIYIc09CEZzf9kwGjfgJnOj2m6KtAg++pIaI2Gxz?=
+X-MS-Exchange-AntiSpam-MessageData-1: G5Je8WxKR9lKzA==
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9de2e158-953a-409d-ae2c-08ded5ae80b2
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff413ac6-6b1c-4b52-2963-08ded5b13579
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:17:39.5081
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 07:37:02.0772
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Uvj4rAvua7BL1wGVhhSrDdtxKtqen9aWBAzQ8xzeCI7TvVDewsFM9xAMtYtucyo1dqR5NhRRl9jreFVr3b+gQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9533
+X-MS-Exchange-CrossTenant-UserPrincipalName: /50IcJhah18aE70gBqc9OegOCptTkHWydx20IeyXV2c28Z+l9umcfAB4vqdyU/oU5C4XIz2+dLzho92sQi3WMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7328
 
-On Mon Jun 29, 2026 at 2:10 AM JST, SeungJong Ha via B4 Relay wrote:
-> DMA-coherent allocations (CoherentAllocation/Coherent/dma::Pool) bound
-> their element type on kernel::transmute::{AsBytes, FromBytes}. This RFC
-> lets a type satisfy that bound by deriving zerocopy's byte-safety traits
-> instead of a hand-written unsafe impl.
+On Mon Jun 29, 2026 at 11:52 AM JST, Alistair Popple wrote:
+> Currently most of nova-core uses unsafe implementations of AsBytes and
+> FromBytes in order to read and write GSP commands using the generated
+> bindings. Whilst this is generally safe in practice there is nothing
+> that actually guarantees or checks this.
 >
-> The bound cannot be switched to zerocopy wholesale (some DMA structs are
-> unions that IntoBytes cannot derive), and a blanket bridge impl is
-> rejected by coherence. So the series bridges the two per type:
+> This is exactly what the zerocopy library was introduced to do - provide
+> compile-time checks ensuring From/AsBytes is safe. Make use of these
+> checks by converting all our generated bindings to derive the required
+> traits for the zerocopy checks, removing many unsafe implementations in
+> the process.
 >
->   1. add the bridge macro impl_transmute_via_zerocopy!, which emits the
->      transmute impls only for a zerocopy-derived type.
->   2. re-export zerocopy::Immutable from the prelude.
->   3-4. worked example: convert nova-core's GspMem and msgq POD types.
+> Note this does require the use of an unstable feature - trivial_bounds
+> - as some bindings end up needing to derive zerocopy::Unaligned.
+> A work-around is also required in the bindings to make some of the
+> __IncompleteArrayField<T> ZSTs monomorphic as the check macro can not
+> prove a generic type is aligned and thus forces T to derive
+> zerocopy::Unaligned, which is not satisfied by all types.
+>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
-Can you give more details about what the macro is for? My understanding
-is that it is a temporary fix for the generated bindings; if so, I'd
-prefer to apply a definitive solution (like using
-`#[derive(zerocopy_derive::most_traits)]`, or updating the bindings
-generator tool) rather than something that will be removed later.
+I have counted and this removes 28 unsafe statements. :) (it also adds
+2 tbf)
 
-I also notice that the macro is in the Rust `transmute` module, but the
-only user is Nova; so it should have been either be Nova-local, or used
-by other Rust modules.
+> ---
+>  drivers/gpu/nova-core/Makefile                |   4 +
+>  drivers/gpu/nova-core/gsp/cmdq.rs             |  21 +-
+>  .../gpu/nova-core/gsp/cmdq/continuation.rs    |  16 +-
+>  drivers/gpu/nova-core/gsp/commands.rs         |  19 +-
+>  drivers/gpu/nova-core/gsp/fw.rs               |  54 +----
+>  drivers/gpu/nova-core/gsp/fw/commands.rs      |  50 ++---
+>  drivers/gpu/nova-core/gsp/fw/r570_144.rs      |  41 ++++
+>  .../gpu/nova-core/gsp/fw/r570_144/bindings.rs | 185 ++++++++++++------
+>  drivers/gpu/nova-core/gsp/sequencer.rs        |   5 +-
+>  scripts/Makefile.build                        |   4 +-
+>  10 files changed, 223 insertions(+), 176 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/Makefile b/drivers/gpu/nova-core/Makef=
+ile
+> index 4ae544f808f4..27a5752c4cf9 100644
+> --- a/drivers/gpu/nova-core/Makefile
+> +++ b/drivers/gpu/nova-core/Makefile
+> @@ -1,4 +1,8 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> =20
+> +# The GSP firmware bindings derive zerocopy's `IntoBytes` on `#[repr(C)]=
+`
+> +# unions, which is gated behind the `zerocopy_derive_union_into_bytes` c=
+fg.
+> +rustflags-y +=3D --cfg zerocopy_derive_union_into_bytes
+> +
+>  obj-$(CONFIG_NOVA_CORE) +=3D nova-core.o
+>  nova-core-y :=3D nova_core.o
+> diff --git a/drivers/gpu/nova-core/gsp/cmdq.rs b/drivers/gpu/nova-core/gs=
+p/cmdq.rs
+> index 0671ee8a9960..6e79ec688983 100644
+> --- a/drivers/gpu/nova-core/gsp/cmdq.rs
+> +++ b/drivers/gpu/nova-core/gsp/cmdq.rs
+> @@ -29,6 +29,14 @@
+>      },
+>  };
+> =20
+> +// TODO: Remove `as` once FromBytes is removed completely
+> +use zerocopy::{
+> +    FromBytes as ZCFromBytes,
 
-But intuitively I'd say that we can (and should) probably do without
-this intermediate step. But please let me know if there is something I
-missed.
+Since zerocopy's `FromBytes` is the one we will keep long-term, should
+we rather rename the one from `transmute`?
+
+<...>
+> --- a/drivers/gpu/nova-core/gsp/fw/r570_144.rs
+> +++ b/drivers/gpu/nova-core/gsp/fw/r570_144.rs
+> @@ -23,9 +23,50 @@
+>  )]
+>  use kernel::ffi;
+>  use pin_init::MaybeZeroable;
+> +use zerocopy_derive::{
+> +    FromBytes,
+> +    Immutable,
+> +    IntoBytes,
+> +    KnownLayout, //
+> +};
+> =20
+>  include!("r570_144/bindings.rs");
+> =20
+>  // SAFETY: This type has a size of zero, so its inclusion into another t=
+ype should not affect their
+>  // ability to implement `Zeroable`.
+>  unsafe impl<T> kernel::prelude::Zeroable for __IncompleteArrayField<T> {=
+}
+> +
+> +/// Monomorphic version of [`__IncompleteArrayField<PACKED_REGISTRY_ENTR=
+Y>`].
+> +///
+> +/// zerocopy's `IntoBytes` derive can only run its compile-time no-paddi=
+ng check
+> +/// on a concrete type; for the generic `__IncompleteArrayField<T>` it f=
+alls back
+> +/// to requiring every field be `Unaligned`, which `PACKED_REGISTRY_ENTR=
+Y`
+> +/// does not satisfy. Specializing to a concrete type lets the derive su=
+cceed.
+> +#[repr(C)]
+> +#[derive(Debug, Default, FromBytes, Immutable, IntoBytes, KnownLayout, M=
+aybeZeroable)]
+> +pub struct __IncompletePackedRegistryEntry(
+> +    ::core::marker::PhantomData<PACKED_REGISTRY_ENTRY>,
+> +    [PACKED_REGISTRY_ENTRY; 0],
+> +);
+> +impl __IncompletePackedRegistryEntry {
+> +    #[inline]
+> +    pub const fn new() -> Self {
+> +        __IncompletePackedRegistryEntry(::core::marker::PhantomData, [])
+> +    }
+> +    #[inline]
+> +    pub fn as_ptr(&self) -> *const PACKED_REGISTRY_ENTRY {
+> +        self as *const _ as *const PACKED_REGISTRY_ENTRY
+> +    }
+> +    #[inline]
+> +    pub fn as_mut_ptr(&mut self) -> *mut PACKED_REGISTRY_ENTRY {
+> +        self as *mut _ as *mut PACKED_REGISTRY_ENTRY
+> +    }
+> +    #[inline]
+> +    pub unsafe fn as_slice(&self, len: usize) -> &[PACKED_REGISTRY_ENTRY=
+] {
+> +        ::core::slice::from_raw_parts(self.as_ptr(), len)
+> +    }
+> +    #[inline]
+> +    pub unsafe fn as_mut_slice(&mut self, len: usize) -> &mut [PACKED_RE=
+GISTRY_ENTRY] {
+> +        ::core::slice::from_raw_parts_mut(self.as_mut_ptr(), len)
+> +    }
+> +}
+
+Yikes, this is a one-shot so I guess we can live with that if neeeded.
+
+> diff --git a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs b/drivers/=
+gpu/nova-core/gsp/fw/r570_144/bindings.rs
+> index ea350f9b2cc4..9c85c93f6eee 100644
+> --- a/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+> +++ b/drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs
+> @@ -1,7 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+> =20
+>  #[repr(C)]
+> -#[derive(Default)]
+> +#[derive(Default, FromBytes, IntoBytes, Immutable, KnownLayout)]
+
+This is the part my other email [1] was about: are we going, long-term,
+to replace this with a `#[derive(zerocopy_derive::most_traits)]`? If the
+Nova's bindings generator program can take care of producing the correct
+traits for each generated type then maybe that's even better, but at the
+same time I am wondering whether the kernel's bindgen invocation isn't
+going to automatically derive `most_traits` on all generated types. In
+this case, we could end up with duplicate implementations.
+
+I think this point needs to be clarified before we can decide when to
+merge this patch.
+
+[1] https://lore.kernel.org/all/DJLCF3LR0KMN.1TMKMZEZWKN8O@nvidia.com/
+
+<...>
+>  #[repr(C)]
+> -#[derive(Debug, Default, MaybeZeroable)]
+> +#[derive(Debug, Default, MaybeZeroable, FromBytes, Immutable, KnownLayou=
+t, IntoBytes)]
+>  pub struct PACKED_REGISTRY_TABLE {
+>      pub size: u32_,
+>      pub numEntries: u32_,
+> -    pub entries: __IncompleteArrayField<PACKED_REGISTRY_ENTRY>,
+> +    pub entries: __IncompletePackedRegistryEntry,
+
+This is part of the generated bindings, right? How does the generator
+program know it needs to use `__IncompletePackedRegistryEntry`?
+
+<...>
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -314,10 +314,12 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+>  #   - Stable since Rust 1.89.0: `feature(generic_arg_infer)`.
+>  #   - Expected to become stable: `feature(arbitrary_self_types)`.
+>  #   - To be determined: `feature(used_with_arg)`.
+> +#   - Required by nova-core's zerocopy firmware bindings, whose derives =
+emit
+> +#     trivial `where` bounds: `feature(trivial_bounds)`.
+>  #
+>  # Please see https://github.com/Rust-for-Linux/linux/issues/2 for detail=
+s on
+>  # the unstable features in use.
+> -rust_allowed_features :=3D arbitrary_self_types,asm_goto,generic_arg_inf=
+er,used_with_arg
+> +rust_allowed_features :=3D arbitrary_self_types,asm_goto,generic_arg_inf=
+er,used_with_arg,trivial_bounds
+
+This also might be something that will land soon through the Rust tree;
+Miguel, do you know what the plan is by any chance?
