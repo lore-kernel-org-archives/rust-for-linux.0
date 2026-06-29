@@ -1,736 +1,136 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011037.outbound.protection.outlook.com [52.101.52.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8273410D09
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 14:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782742913; cv=none; b=drWw5RxVhHlgj/ict3epSBGQ/I6gRpcQ7quyzrDDNQM4vWrj2aksS/8ix16Wt5MiKizmEzYeWTu+HDxFIty05oHCAp9sUGPmI7zPam4PzzmoYiJtfMcx/7/w5+7YDo7iSszLyuAbdsWhsb/bIAh8z3gUw+leH5PInldcpITTqpE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782742913; c=relaxed/simple;
-	bh=X3kOsZ1uceBJYxj0DogOGNBekqSjHTTCN7zPO5goXmc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qMuu1G4gm1MCNL4K4IANGjVGMtrvMQxHnw0139wyZ4Q2EYGPPZEJUuKPnO8UsQkeojbaGBHju+NrNuxC0EqHy2/u5VFWYdJ8/7tU6OSW9iFjHgbSYyuT9SAHiu17Ai3IkTafOQgNjsCp/owd0Y4ZIlhML7xz1ui4USNulGdW5hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=Ye30qJcU; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73673FBEA5;
+	Mon, 29 Jun 2026 14:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782743271; cv=fail; b=FAjRrcWfD7Srn1hHTFezKRBTxD6guRws3uHxgvNyBueUB0nHUxJUXRnrho2awM/arhjDwMuYkBxuSUJFwRHTYsZZU+pdNpVXi2omfAiiE896hslEjgF1ZmYYB/9WUm9bZENE7msPo7/+3mrP0wXoyEu8yB1Uy4xGE2nIVYd/A5Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782743271; c=relaxed/simple;
+	bh=JEdz6eg36hZ1Ve49aKNiZ/Wt7o2au/2pl8PvQDpSbRQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZyKaTf8Je3ggNzDervF6kjU2R8unC9m9ne8PGXPYYWaT7RzCdLRhFXVKIzet0dkm1NsYUesfWqZSssND+QtnxhqPUsnLIRSUqozVN/zbxmw+REo7cAEYskIeMqc5vBqgyZKhdgQ6LD1+OIK3vZ59biphRB4QT+8Nvc2P6w5uyAY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i/BDRNmh; arc=fail smtp.client-ip=52.101.52.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="Ye30qJcU"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 0DDE3240104
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 16:21:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
-	t=1782742900; bh=YxRKQS7+EXh25wQPQsisNkKEvi9rld30cwV/bcO/nds=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=Ye30qJcUmYncsbPbXmr8W+OaQggIZUQ5qJBPRSWx1fQelrVQ48WvjaQpwZ2GwwRg6
-	 3clL8QmiJ+47zPSIHSURNyRgqLhxR8BV9M5eXHJnxMaLscF96zvABaxc0RKy1Mmwe5
-	 1xumR9jLc0Ne+/X57x+HUtSYUaI44fO1NpOVhIMHcIshDYh9YsOpV5PYhy/lJiGbMC
-	 6anAr/Ulm3LSGf5+kewEqLZGqF2e4uguZ24llVR/+3cFBR+2jE3Rklwwfj8erFtW7d
-	 zCmteVzobv61xIPiPPwF6LKiKoqpO5p/CXLNIc1xSS2sieDTRQ0qxMyYNof4rfuwMn
-	 kLdkXi81WZd9Q==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4gppPF0MLjz9rxL;
-	Mon, 29 Jun 2026 16:21:37 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Mon, 29 Jun 2026 14:21:38 +0000
-Subject: [PATCH v15 2/2] platform: Add initial synology microp driver
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i/BDRNmh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KkgjPqrkegHWDZWJSSyG4YHK3ZAI9yWng8pB0mmkxjY4L5pmF2X2THpumUcriXq9OWzUp7fNfwKQv925ATcJ9qUwdWsZMDp5p9cekKDrItWGFV4W8s+Mv5KN2I5enofH1a9qHWnfHluwFX99LQ+DxOFMSii2bFcqtZzkZ0KdHJP3x+rAI7dQFIlNDBnN/dpioKOuPNicvDrKX/OlkwcyxdsftG9lasi7ZM0e86kPQxSDmDl9CwWqRfZx59mmK9Xx+uERIwSEC4bClC3iOV6nsIGFvSuRfDWjVwP5TRE32QI7t/aebpP8WElgDp2Lq/EaXxU1f9q5xAZ45DwOaNr6Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q7/DJ2SVojtCSKVBujVCcuMr6W0vTKYg5l4+HH0+VMk=;
+ b=E/Q6G+FCkkdkSrAzB6NuWy2S8bwk18T6Sw5Wqfa0tfL17w2gtto9ATBRES5+cusyKZKo1KUhE7JC/kng7cOioX7GIxlTXD6KUPPcerBCalhkTeSSXFuAN2JUMf3vb1DBX6nBmBm/cfjsjljwuU79doJTZHzMQYWMOed+GTmoDNFsWWjwvNnoz76unGD14LNYuuVSs4yWvQfcdwMh6tI2rX5sD4Pbtb3JpaXQl/W57xffgE1E7bmg9XVAuZcwTvowGK/OlvdwHlQqLZacNilAR73IB9ZLtU4GnfqL1r1rhYBlmeBhT+fbM0wEUVDSlhixg5RHM448tOUITSWMKI27Nw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q7/DJ2SVojtCSKVBujVCcuMr6W0vTKYg5l4+HH0+VMk=;
+ b=i/BDRNmhdZfzUOjY2F7Gvcd1juH6rFUaR6YeLMaI6B69hc0lM5XQxUR2chWNdTAxIt/1gjd7U3A8jdh4f2G+I7n0s3U52TutqF861OK5pkLihXVGEAINe7HTOYUGvg9wbfarWsuHTfgLTwEm3wg9jjCBag3JH5DT12smVFX5s81tExn4jz3Jy2v8+LnXyYfcS3Xms/wIuVb2icg2iJ3gOyOfWA6YRYQzPpRogod2KMLLZYV2rugehWyE887g9oJG23/7Lbl0SJ+/9yun0XUB/VE0Ao3dc3S6WQQfeyqJqUw59kMX5IUiwmpAWVUbCxCyJ9aOVejOo9/ldAbjcfFrMA==
+Received: from BLAPR05CA0042.namprd05.prod.outlook.com (2603:10b6:208:335::22)
+ by PH7PR12MB7819.namprd12.prod.outlook.com (2603:10b6:510:27f::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 14:27:39 +0000
+Received: from BL6PEPF0001AB57.namprd02.prod.outlook.com
+ (2603:10b6:208:335:cafe::93) by BLAPR05CA0042.outlook.office365.com
+ (2603:10b6:208:335::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Mon, 29
+ Jun 2026 14:27:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BL6PEPF0001AB57.mail.protection.outlook.com (10.167.241.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 14:27:39 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 29 Jun
+ 2026 07:27:23 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 29 Jun 2026 07:27:23 -0700
+Received: from inno-dell (10.127.8.12) by mail.nvidia.com (10.126.190.181)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Mon, 29 Jun 2026 07:27:17 -0700
+Date: Mon, 29 Jun 2026 17:27:14 +0300
+From: Zhi Wang <zhiw@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<jgg@nvidia.com>, <dave.jiang@intel.com>, <saeedm@nvidia.com>,
+	<jic23@kernel.org>, <gary@garyguo.net>, <joelagnelf@nvidia.com>,
+	<aliceryhl@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <acourbot@nvidia.com>,
+	<jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v5 0/1] rust: introduce abstractions for fwctl
+Message-ID: <20260629172714.23433d7c@inno-dell>
+In-Reply-To: <DJLJ3UNHDAU3.14K32FFFAHY8A@kernel.org>
+References: <20260629103946.3117152-1-zhiw@nvidia.com>
+	<DJLJ3UNHDAU3.14K32FFFAHY8A@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-synology_microp_initial-v15-2-4b3d7367c7cf@posteo.de>
-References: <20260629-synology_microp_initial-v15-0-4b3d7367c7cf@posteo.de>
-In-Reply-To: <20260629-synology_microp_initial-v15-0-4b3d7367c7cf@posteo.de>
-To: Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, Lee Jones <lee@kernel.org>, 
- Pavel Machek <pavel@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: platform-driver-x86@vger.kernel.org, linux-leds@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19587;
- i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=X3kOsZ1uceBJYxj0DogOGNBekqSjHTTCN7zPO5goXmc=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqQn9rWOF8aYbRkAt68eYT+xG391Ym6k9IS9sZJ
- 6SBuUv1H56JAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCakJ/axsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9LMVxAAqDwXUMEhJCILvme+87JAAOOrJaI9KDU
- 43av8ZIefskqEC8x9a5PpSpjysPQqTbKGkg7XbFQvHp5OvheAVqhg0Rrm9/o7R3dG9fa1ZliJgA
- dnV1jd+cBy9NktrsgJXbeGMCOuvbrR1S89ds+GcgeE36jffaXAhV9RL9ya4ZUwm9awTWwRZ2XTX
- JX+6zFf81S34z6NV0N2msLbHI0YBvrdVWKhYpqT0f1E2hR1L2Z8/XXs5qX5cWSaW8bFgVKMNnB2
- hD41nrHKK5EaSASdl56/Q4uODeHf32GwuA2JG/28KhseUGgcSMJWCr0JuqbIwrlRBsIk5BYeYy9
- NgDDsEGyfoydBQcxMFo9Hrd6eYRw6E+X1VxsAiwr2lmvxdqh9C+Q+7AAQhlPvOUrhnvzZ2vgeuo
- He4Azx0cqTHfqo7onS4HpXt/vAsdo0cdovUPfot87xR5XlDKW9WCaNkvvjpsWRXgLLaObgmaj9N
- Hd07oGwVexUcd3qPZVS9SUZY45bZnYcTop0erWaEg21XkXNAqW4htT7K3d8buF2kFI8E6VgjnYL
- MLin27Ac+bo8JOPqb5p9T+B7D97xmgWbz0ulDPhvr/HdSfHaovff8Aoj8AtAEs5rw+cMSxGjACp
- 6yd1nkqHrdEya+qSiG1zxsF0LDuysVHVz6W7mkdTfw4lRk6n52gs=
-X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
- fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=xsFNBGiDvXgBEADAXUceKafpl46S35UmDh2wRvvx+UfZbcTjeQOlSwKP7YVJ4JOZrVs93qReNLkO
-  WguIqPBxR9blQ4nyYrqSCV+MMw/3ifyXIm6Pw2YRUDg+WTEOjTixRCoWDgUj1nOsvJ9tVAm76Ww+
-  /pAnepVRafMID0rqEfD9oGv1YrfpeFJhyE2zUw3SyyNLIKWD6QeLRhKQRbSnsXhGLFBXCqt9k5JA
-  RhgQof9zvztcCVlT5KVvuyfC4H+HzeGmu9201BVyihJwKdcKPq+n/aY5FUVxNTgtI9f8wIbmfAja
-  oT1pjXSp+dszakA98fhONM98pOq723o/1ZGMZukyXFfsDGtA3BB79HoopHKujLGWAGskzClwTjRQ
-  xBqxh/U/lL1pc+0xPWikTNCmtziCOvv0KA0arDOMQlyFvImzX6oGVgE4ksKQYbMZ3Ikw6L1Rv1J+
-  FvN0aNwOKgL2ztBRYscUGcQvA0Zo1fGCAn/BLEJvQYShWKeKqjyncVGoXFsz2AcuFKe1pwETSsN6
-  OZncjy32e4ktgs07cWBfx0v62b8md36jau+B6RVnnodaA8++oXl3FRwiEW8XfXWIjy4umIv93tb8
-  8ekYsfOfWkTSewZYXGoqe4RtK80ulMHb/dh2FZQIFyRdN4HOmB4FYO5sEYFr9YjHLmDkrUgNodJC
-  XCeMe4BO4iaxUQARAQABzRdtYXJrdXMucHJvYnN0QHBvc3Rlby5kZcLBkQQTAQgAOxYhBIJ0GMT0
-  rFjncjDEczR2H/jnrUPSBQJog714AhsDBQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEDR2
-  H/jnrUPSgdkQAISaTk2D345ehXEkn5z2yUEjaVjHIE7ziqRaOgn/QanCgeTUinIv6L6QXUFvvIfH
-  1OLPwQ1hfvEg9NnNLyFezWSy6jvoVBTIPqicD/r3FkithnQ1IDkdSjrarPMxJkvuh3l7XZHo49GV
-  HQ8i5zh5w4YISrcEtE99lJisvni2Jqx7we5tey9voQFDyM8jxlSWv3pmoUTCtBkX/eKHJXosgsuS
-  B4TGDCVPOjla/emI5c9MhMG7O4WEEmoSdPbmraPw66YZD6uLyhV4DPHbiDWRzXWnClHSyjB9rky9
-  lausFxogvu4l9H+KDsXIadNDWdLdu1/enS/wDd9zh5S78rY2jeXaG4mnf4seEKamZ7KQ6FIHrcyP
-  ezdDzssPQcTQcGRMQzCn6wP3tlGk7rsfmyHMlFqdRoNNv+ZER/OkmZFPW655zRfbMi0vtrqK2Awm
-  9ggobb1oktfd9PPNXMUY+DNVlgR2G7jLnenSoQausLUm0pHoNE8TWFv851Y6SOYnvn488sP1Tki5
-  F3rKwclawQFHUXTCQw+QSh9ay8xgnNZfH+u9NY7w3gPoeKBOAFcBc2BtzcgekeWS8qgEmm2/oNFV
-  G0ivPQbRx8FjRKbuF7g3YhgNZZ0ac8FneuUtJ2PkSIFTZhaAiC0utvxk0ndmWFiW4acEkMZGrLaM
-  L2zWNjrqwsD2zsFNBGiDvXgBEADCXQy1n7wjRxG12DOVADawjghKcG+5LtEf31WftHKLFbp/HArj
-  BhkT6mj+CCI1ClqY+FYU5CK/s0ScMfLxRGLZ0Ktzawb78vOgBVFT3yB1yWBTewsAXdqNqRooaUNo
-  8cG/NNJLjhccH/7PO/FWX5qftOVUJ/AIsAhKQJ18Tc8Ik73v427EDxuKb9mTAnYQFA3Ev3hAiVbO
-  6Rv39amVOfJ8sqwiSUGidj2Fctg2aB5JbeMln0KCUbTD1LhEFepeKypfofAXQbGwaCjAhmkWy/q3
-  IT1mUrPxOngbxdRoOx1tGUC0HCMUW1sFaJgQPMmDcR0JGPOpgsKnitsSnN7ShcCr1buel7vLnUMD
-  +TAZ5opdoF6HjAvAnBQaijtK6minkrM0seNXnCg0KkV8xhMNa6zCs1rq4GgjNLJue2EmuyHooHA4
-  7JMoLVHcxVeuNTp6K2+XRx0Pk4e2Lj8IVy9yEYyrywEOC5XRW37KJjsiOAsumi1rkvM7QREWgUDe
-  Xs0+RpxI3QrrANh71fLMRo7LKRF3Gvw13NVCCC9ea20P4PwhgWKStkwO2NO+YJsAoS1QycMi/vKu
-  0EHhknYXamaSV50oZzHKmX56vEeJHTcngrM8R1SwJCYopCx9gkz90bTVYlitJa5hloWTYeMD7FNj
-  Y6jfVSzgM/K4gMgUNDW/PPGeMwARAQABwsF2BBgBCAAgFiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IF
-  AmiDvXgCGwwACgkQNHYf+OetQ9LHDBAAhk+ab8+WrbS/b1/gYW3q1KDiXU719nCtfkUVXKidW5Ec
-  Idlr5HGt8ilLoxSWT2Zi368iHCXS0WenGgPwlv8ifvB7TOZiiTDZROZkXjEBmU4nYjJ7GymawpWv
-  oQwjMsPuq6ysbzWtOZ7eILx7cI0FjQeJ/Q2baRJub0uAZNwBOxCkAS6lpk5Fntd2u8CWmDQo4SYp
-  xeuQ+pwkp0yEP30RhN2BO2DXiBEGSZSYh+ioGbCHQPIV3iVj0h6lcCPOqopZqyeCfigeacBI0nvN
-  jHWz/spzF3+4OS+3RJvoHtAQmProxyGib8iVsTxgZO3UUi4TSODeEt0i0kHSPY4sCciOyXfAyYoD
-  DFqhRjOEwBBxhr+scU4C1T2AflozvDwq3VSONjrKJUkhd8+WsdXxMdPFgBQuiKKwUy11mz6KQfcR
-  wmDehF3UaUoxa+YIhWPbKmycxuX/D8SvnqavzAeAL1OcRbEI/HsoroVlEFbBRNBZLJUlnTPs8ZcU
-  4+8rq5YX1GUrJL3jf6SAfSgO7UdkEET3PdcKFYtS+ruV1Cp5V0q4kCfI5jk25iiz8grM2wOzVSsc
-  l1mEkhiEPH87HP0whhb544iioSnumd3HJKL7dzhRegsMizatupp8D65A2JziW0WKopa1iw9fti3A
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB57:EE_|PH7PR12MB7819:EE_
+X-MS-Office365-Filtering-Correlation-Id: 862a848f-1392-4b16-8420-08ded5ea92c8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700016|82310400026|1800799024|23010399003|4143699003|11063799006|22082099003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	Jb9mVYCrpBQbHGrTG5TkeROMNeljqjVHI+/VcUIZ+Rv+WrMbW3UafdfRb226JeI6ajlPNCQycmKbIYynTeCS1B7b6lJ24mrKi/8OLi3cXJXn19Owl3oyFHG9VNnAqnb2YOF8gfR8IYt2oHosHpfjf3zdkylaxXFTDvKPCiEghwplRlF0Wg00v84PNaksWOGmgoREjMGwq5xs/NqkejmHSJ/Cxm/whKm70utpzIZg7AZi73MbohMjK2kD+J6rz1yc7UlmvTrQcm9eOc6Uk5XLdq7ezKXadxkCnjppnoF0Nga8T9pRwoq9R2Z4cEWhEwI2WrO+tYFCEUDRQvWK/pWE2FfmnIXiVnfDK8p+QEjIlkq8oX/acv2iDTkLSWrEpwarwBh3sHPKxPiWxhr0ueyubDzbhe1Cl4wCC4tuD80nQejvWTAsTKsQ9EYMFExGSAtc8VT+SQsywob+mzOW71zmVtc40AcyutsFboQcwd3QSMMDEgNbl2IeaIBJh2lwplStKDX2RHJzs+Owd+UpQQbkuyInUvp/DGzZcg5ZQTj97ITvBitFxWc/c1npXfJLXVk66Bp0iNXSCBvqqCfWORU8tKuB+3mv7kMA05Aj4TFpWbhbKHvLhGYupcHHI48RjJD81zipLnEgWAwRxxOQIfIodZfRSBrGCBmZOxyUBw/ltMLWQZ6+r8DGMlNEdHz2+t53Uiu7KWH5L2yhcXDiGLof8Q==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700016)(82310400026)(1800799024)(23010399003)(4143699003)(11063799006)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	hQaaLGdGic+v5RpmkaTTEZ/0UN/VzELZ+Huti+02Hukifq2NWcNFcnLzSJO1EhJmv5fAFuxFQ0oJIiKX7E628ZBjFmfA716bgURC76jSqvxlhfJAJ4x8GxJM5rQzC0W89rDEdgoT2KTOFonDASNA+MrYXaLByDXtYPZzJBTYtVvw4NePxzI3TlZJRdCN2GbP6ih8+7VL5CesZCZ+ioqPl0pNETsE4gWuxnvN+9577l7AEp+VLkQJaU+DW0XExi0qkmkHWekh4RpQeTypw7on57oF/CINX8Rbkt+lgVQY7hg+yj4+VKVO9jbtxBumYxfO1ThLLlEVo7clH1WsM66nKX9O+uDiiiywdtNdNOZoBNGjHzn6aTK7FMwqvecIljp/CzFz1DJtMlmJenaPadJo9f3K8MzMaWjPJmu29Ibv/V6MFvya1XtSrLMpTPvDbSRo
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 14:27:39.3133
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 862a848f-1392-4b16-8420-08ded5ea92c8
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB57.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7819
 
-Add a initial synology microp driver, written in Rust.
-The driver targets a microcontroller found in Synology NAS devices. It
-currently only supports controlling of the power led, status led, alert
-led and usb led. Other components such as fan control or handling
-on-device buttons will be added once the required rust abstractions are
-there.
+On Mon, 29 Jun 2026 14:23:42 +0200
+"Danilo Krummrich" <dakr@kernel.org> wrote:
 
-This driver can be used both on arm and x86, thus it goes into the root
-directory of drivers/platform.
+> On Mon Jun 29, 2026 at 12:39 PM CEST, Zhi Wang wrote:
+> > - Adopt Danilo's higher-ranked lifetime model for callback-visible
+> >   registration data.
+> 
+> Thanks! Have you seen my subsequent reply in [1], which achieves the
+> same thing without requiring ForLt, but uses a GAT lifetime instead?
 
-Tested successfully on a Synology DS923+.
+Ah. Sorry, I missed it. Let me re-spin it. Do you mind if I put a
+Co-developed-by tag in the patch? since for Lt and GAT idea are mostly
+from you. :)
 
-Signed-off-by: Markus Probst <markus.probst@posteo.de>
----
- MAINTAINERS                                        |   7 +
- drivers/platform/Kconfig                           |   2 +
- drivers/platform/Makefile                          |   1 +
- drivers/platform/synology_microp/Kconfig           |  13 +
- drivers/platform/synology_microp/Makefile          |   3 +
- drivers/platform/synology_microp/command.rs        |  54 ++++
- drivers/platform/synology_microp/led.rs            | 297 +++++++++++++++++++++
- drivers/platform/synology_microp/model.rs          |  49 ++++
- .../platform/synology_microp/synology_microp.rs    |  91 +++++++
- 9 files changed, 517 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4c1b8e5105d0..95bc19811a0f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26141,6 +26141,13 @@ F:	drivers/dma-buf/sync_*
- F:	include/linux/sync_file.h
- F:	include/uapi/linux/sync_file.h
- 
-+SYNOLOGY MICROP DRIVER
-+M:	Markus Probst <markus.probst@posteo.de>
-+L:	platform-driver-x86@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/embedded-controller/synology,ds918p-microp.yaml
-+F:	drivers/platform/synology_microp/
-+
- SYNOPSYS ARC ARCHITECTURE
- M:	Vineet Gupta <vgupta@kernel.org>
- L:	linux-snps-arc@lists.infradead.org
-diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
-index 312788f249c9..996050566a4a 100644
---- a/drivers/platform/Kconfig
-+++ b/drivers/platform/Kconfig
-@@ -22,3 +22,5 @@ source "drivers/platform/arm64/Kconfig"
- source "drivers/platform/raspberrypi/Kconfig"
- 
- source "drivers/platform/wmi/Kconfig"
-+
-+source "drivers/platform/synology_microp/Kconfig"
-diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
-index fa322e7f8716..2381872e9133 100644
---- a/drivers/platform/Makefile
-+++ b/drivers/platform/Makefile
-@@ -15,3 +15,4 @@ obj-$(CONFIG_SURFACE_PLATFORMS)	+= surface/
- obj-$(CONFIG_ARM64_PLATFORM_DEVICES)	+= arm64/
- obj-$(CONFIG_BCM2835_VCHIQ)	+= raspberrypi/
- obj-$(CONFIG_ACPI_WMI)		+= wmi/
-+obj-$(CONFIG_SYNOLOGY_MICROP)	+= synology_microp/
-diff --git a/drivers/platform/synology_microp/Kconfig b/drivers/platform/synology_microp/Kconfig
-new file mode 100644
-index 000000000000..8878cfb7bcdd
---- /dev/null
-+++ b/drivers/platform/synology_microp/Kconfig
-@@ -0,0 +1,13 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+config SYNOLOGY_MICROP
-+	tristate "Synology Microp driver"
-+	depends on LEDS_CLASS && LEDS_CLASS_MULTICOLOR
-+	depends on RUST_SERIAL_DEV_BUS_ABSTRACTIONS
-+	help
-+	  Enable support for the EC found in Synology NAS devices.
-+
-+	  This is needed to properly shutdown and reboot the device, as well as
-+	  additional functionality like fan and LED control.
-+
-+	  This driver is work in progress and may not be fully functional.
-diff --git a/drivers/platform/synology_microp/Makefile b/drivers/platform/synology_microp/Makefile
-new file mode 100644
-index 000000000000..63585ccf76e4
---- /dev/null
-+++ b/drivers/platform/synology_microp/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-y += synology_microp.o
-diff --git a/drivers/platform/synology_microp/command.rs b/drivers/platform/synology_microp/command.rs
-new file mode 100644
-index 000000000000..58cb2f3cb3da
---- /dev/null
-+++ b/drivers/platform/synology_microp/command.rs
-@@ -0,0 +1,54 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use kernel::{
-+    device::Bound,
-+    error::Result,
-+    serdev, //
-+};
-+
-+use crate::led;
-+
-+#[expect(
-+    clippy::enum_variant_names,
-+    reason = "future variants will not end with Led"
-+)]
-+pub(crate) enum Command {
-+    PowerLed(led::State),
-+    StatusLed(led::StatusLedColor, led::State),
-+    AlertLed(led::State),
-+    UsbLed(led::State),
-+    EsataLed(led::State),
-+}
-+
-+impl Command {
-+    pub(crate) fn write(self, dev: &serdev::Device<Bound>) -> Result {
-+        dev.write_all(
-+            match self {
-+                Self::PowerLed(led::State::On) => &[0x34],
-+                Self::PowerLed(led::State::Blink) => &[0x35],
-+                Self::PowerLed(led::State::Off) => &[0x36],
-+
-+                Self::StatusLed(_, led::State::Off) => &[0x37],
-+                Self::StatusLed(led::StatusLedColor::Green, led::State::On) => &[0x38],
-+                Self::StatusLed(led::StatusLedColor::Green, led::State::Blink) => &[0x39],
-+                Self::StatusLed(led::StatusLedColor::Amber, led::State::On) => &[0x3A],
-+                Self::StatusLed(led::StatusLedColor::Amber, led::State::Blink) => &[0x3B],
-+
-+                Self::AlertLed(led::State::On) => &[0x4C, 0x41, 0x31],
-+                Self::AlertLed(led::State::Blink) => &[0x4C, 0x41, 0x32],
-+                Self::AlertLed(led::State::Off) => &[0x4C, 0x41, 0x33],
-+
-+                Self::UsbLed(led::State::On) => &[0x40],
-+                Self::UsbLed(led::State::Blink) => &[0x41],
-+                Self::UsbLed(led::State::Off) => &[0x42],
-+
-+                Self::EsataLed(led::State::On) => &[0x4C, 0x45, 0x31],
-+                Self::EsataLed(led::State::Blink) => &[0x4C, 0x45, 0x32],
-+                Self::EsataLed(led::State::Off) => &[0x4C, 0x45, 0x33],
-+            },
-+            serdev::Timeout::Max,
-+        )?;
-+        dev.wait_until_sent(serdev::Timeout::Max);
-+        Ok(())
-+    }
-+}
-diff --git a/drivers/platform/synology_microp/led.rs b/drivers/platform/synology_microp/led.rs
-new file mode 100644
-index 000000000000..ce57adfd307f
---- /dev/null
-+++ b/drivers/platform/synology_microp/led.rs
-@@ -0,0 +1,297 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use kernel::{
-+    device::Bound,
-+    led::{
-+        self,
-+        LedOps,
-+        MultiColorSubLed, //
-+    },
-+    new_mutex,
-+    prelude::*,
-+    serdev,
-+    str::CString,
-+    sync::Mutex,
-+    time::Delta, //
-+};
-+use pin_init::pin_init_scope;
-+
-+use crate::{
-+    command::Command,
-+    model::Model, //
-+};
-+
-+#[pin_data]
-+pub(crate) struct Data<'bound> {
-+    #[pin]
-+    status: led::MultiColorDevice<'bound, StatusLedHandler>,
-+    power_name: CString,
-+    #[pin]
-+    power: led::Device<'bound, LedHandler>,
-+    alert: Option<Pin<KBox<led::Device<'bound, LedHandler>>>>,
-+    usb_copy: Option<Pin<KBox<led::Device<'bound, LedHandler>>>>,
-+    esata: Option<Pin<KBox<led::Device<'bound, LedHandler>>>>,
-+}
-+
-+impl<'bound> Data<'bound> {
-+    pub(super) fn register<'a>(
-+        dev: &'bound serdev::Device<Bound>,
-+        model: &'a Model,
-+    ) -> impl PinInit<Self, Error> + 'a
-+    where
-+        'bound: 'a,
-+    {
-+        pin_init_scope(move || {
-+            Ok(try_pin_init!(Self {
-+                status <- led::DeviceBuilder::new()
-+                    .color(led::Color::Multi)
-+                    .name(c"synology:multicolor:status")
-+                    .build_multicolor(
-+                        dev,
-+                        try_pin_init!(StatusLedHandler {
-+                            blink <- new_mutex!(false),
-+                        }),
-+                        &[
-+                            MultiColorSubLed::new(led::Color::Green).initial_intensity(1),
-+                            MultiColorSubLed::new(led::Color::Amber),
-+                        ],
-+                    ),
-+                power_name: CString::try_from_fmt(fmt!(
-+                    "synology:{}:power",
-+                    model.led_power.as_c_str().to_str()?
-+                ))?,
-+                power <- led::DeviceBuilder::new()
-+                    .color(model.led_power)
-+                    .name(power_name)
-+                    .build(
-+                        dev,
-+                        try_pin_init!(LedHandler {
-+                            blink <- new_mutex!(false),
-+                            command: Command::PowerLed,
-+                        }),
-+                    ),
-+                alert: {
-+                    if let Some(color) = model.led_alert {
-+                        let name = CString::try_from_fmt(fmt!(
-+                            "synology:{}:alarm",
-+                            color.as_c_str().to_str()?
-+                        ))?;
-+                        Some(KBox::pin_init(
-+                            led::DeviceBuilder::new().color(color).name(&name).build(
-+                                dev,
-+                                try_pin_init!(LedHandler {
-+                                    blink <- new_mutex!(false),
-+                                    command: Command::AlertLed,
-+                                }),
-+                            ),
-+                            GFP_KERNEL,
-+                        )?)
-+                    } else {
-+                        None
-+                    }
-+                },
-+                usb_copy: {
-+                    if model.led_usb_copy {
-+                        Some(KBox::pin_init(
-+                            led::DeviceBuilder::new()
-+                                .color(led::Color::Green)
-+                                .name(c"synology:green:usb")
-+                                .build(
-+                                    dev,
-+                                    try_pin_init!(LedHandler {
-+                                        blink <- new_mutex!(false),
-+                                        command: Command::UsbLed,
-+                                    }),
-+                                ),
-+                            GFP_KERNEL,
-+                        )?)
-+                    } else {
-+                        None
-+                    }
-+                },
-+                esata: {
-+                    if model.led_esata {
-+                        Some(KBox::pin_init(
-+                            led::DeviceBuilder::new()
-+                                .color(led::Color::Green)
-+                                .name(c"synology:green:esata")
-+                                .build(
-+                                    dev,
-+                                    try_pin_init!(LedHandler {
-+                                        blink <- new_mutex!(false),
-+                                        command: Command::EsataLed,
-+                                    }),
-+                                ),
-+                            GFP_KERNEL,
-+                        )?)
-+                    } else {
-+                        None
-+                    }
-+                },
-+            }))
-+        })
-+    }
-+}
-+
-+#[derive(Copy, Clone)]
-+pub(crate) enum StatusLedColor {
-+    Green,
-+    Amber,
-+}
-+
-+#[derive(Copy, Clone)]
-+pub(crate) enum State {
-+    On,
-+    Blink,
-+    Off,
-+}
-+
-+#[pin_data]
-+struct LedHandler {
-+    #[pin]
-+    blink: Mutex<bool>,
-+    command: fn(State) -> Command,
-+}
-+
-+/// Blink delay measured using video recording on DS923+ for Power and Status Led.
-+///
-+/// We assume it is the same for all other leds and models.
-+const BLINK_DELAY: Delta = Delta::from_millis(167);
-+
-+#[vtable]
-+impl LedOps for LedHandler {
-+    type Bus = serdev::Device<Bound>;
-+    type Mode = led::Normal;
-+    const BLOCKING: bool = true;
-+    const MAX_BRIGHTNESS: u32 = 1;
-+
-+    fn brightness_set<'bound>(
-+        &self,
-+        dev: &'bound Self::Bus,
-+        _classdev: &led::Device<'bound, Self>,
-+        brightness: u32,
-+    ) -> Result<()> {
-+        let mut blink = self.blink.lock();
-+        (self.command)(if brightness == 0 {
-+            *blink = false;
-+            State::Off
-+        } else if *blink {
-+            State::Blink
-+        } else {
-+            State::On
-+        })
-+        .write(dev)?;
-+
-+        Ok(())
-+    }
-+
-+    fn blink_set<'bound>(
-+        &self,
-+        dev: &'bound Self::Bus,
-+        _classdev: &led::Device<'bound, Self>,
-+        delay_on: &mut usize,
-+        delay_off: &mut usize,
-+    ) -> Result<()> {
-+        let mut blink = self.blink.lock();
-+
-+        (self.command)(if *delay_on == 0 && *delay_off != 0 {
-+            *blink = false;
-+
-+            State::Off
-+        } else if *delay_on != 0 && *delay_off == 0 {
-+            *blink = false;
-+
-+            State::On
-+        } else {
-+            *blink = true;
-+            *delay_on = BLINK_DELAY.as_millis() as usize;
-+            *delay_off = BLINK_DELAY.as_millis() as usize;
-+
-+            State::Blink
-+        })
-+        .write(dev)
-+    }
-+}
-+
-+#[pin_data]
-+struct StatusLedHandler {
-+    #[pin]
-+    blink: Mutex<bool>,
-+}
-+
-+#[vtable]
-+impl LedOps for StatusLedHandler {
-+    type Bus = serdev::Device<Bound>;
-+    type Mode = led::MultiColor;
-+    const BLOCKING: bool = true;
-+    const MAX_BRIGHTNESS: u32 = 1;
-+
-+    fn brightness_set<'bound>(
-+        &self,
-+        dev: &'bound Self::Bus,
-+        classdev: &led::MultiColorDevice<'bound, Self>,
-+        brightness: u32,
-+    ) -> Result<()> {
-+        let mut blink = self.blink.lock();
-+        if brightness == 0 {
-+            *blink = false;
-+        }
-+
-+        let amber_brightness = classdev.subleds()[1].brightness();
-+
-+        let (color, subled_brightness) = if amber_brightness == 0 {
-+            (StatusLedColor::Green, classdev.subleds()[0].brightness())
-+        } else {
-+            (StatusLedColor::Amber, amber_brightness)
-+        };
-+
-+        Command::StatusLed(
-+            color,
-+            if subled_brightness == 0 {
-+                State::Off
-+            } else if *blink {
-+                State::Blink
-+            } else {
-+                State::On
-+            },
-+        )
-+        .write(dev)
-+    }
-+
-+    fn blink_set<'bound>(
-+        &self,
-+        dev: &'bound Self::Bus,
-+        classdev: &led::MultiColorDevice<'bound, Self>,
-+        delay_on: &mut usize,
-+        delay_off: &mut usize,
-+    ) -> Result<()> {
-+        let mut blink = self.blink.lock();
-+        *blink = true;
-+
-+        let amber_intensity = classdev.subleds()[1].intensity();
-+
-+        let (color, subled_intensity) = if amber_intensity == 0 {
-+            (StatusLedColor::Green, classdev.subleds()[0].intensity())
-+        } else {
-+            (StatusLedColor::Amber, amber_intensity)
-+        };
-+        Command::StatusLed(
-+            color,
-+            if *delay_on == 0 && *delay_off != 0 {
-+                *blink = false;
-+                State::Off
-+            } else if subled_intensity == 0 {
-+                State::Off
-+            } else if *delay_on != 0 && *delay_off == 0 {
-+                *blink = false;
-+                State::On
-+            } else {
-+                *delay_on = BLINK_DELAY.as_millis() as usize;
-+                *delay_off = BLINK_DELAY.as_millis() as usize;
-+
-+                State::Blink
-+            },
-+        )
-+        .write(dev)
-+    }
-+}
-diff --git a/drivers/platform/synology_microp/model.rs b/drivers/platform/synology_microp/model.rs
-new file mode 100644
-index 000000000000..715d8840f56b
---- /dev/null
-+++ b/drivers/platform/synology_microp/model.rs
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use kernel::led::Color;
-+
-+pub(crate) struct Model {
-+    pub(crate) led_power: Color,
-+    pub(crate) led_alert: Option<Color>,
-+    pub(crate) led_usb_copy: bool,
-+    pub(crate) led_esata: bool,
-+}
-+
-+impl Model {
-+    pub(super) const fn new() -> Self {
-+        Self {
-+            led_power: Color::Blue,
-+            led_alert: None,
-+            led_usb_copy: false,
-+            led_esata: false,
-+        }
-+    }
-+
-+    pub(super) const fn led_power(self, color: Color) -> Self {
-+        Self {
-+            led_power: color,
-+            ..self
-+        }
-+    }
-+
-+    pub(super) const fn led_alert(self, color: Color) -> Self {
-+        Self {
-+            led_alert: Some(color),
-+            ..self
-+        }
-+    }
-+
-+    pub(super) const fn led_esata(self) -> Self {
-+        Self {
-+            led_esata: true,
-+            ..self
-+        }
-+    }
-+
-+    pub(super) const fn led_usb_copy(self) -> Self {
-+        Self {
-+            led_usb_copy: true,
-+            ..self
-+        }
-+    }
-+}
-diff --git a/drivers/platform/synology_microp/synology_microp.rs b/drivers/platform/synology_microp/synology_microp.rs
-new file mode 100644
-index 000000000000..f7168309e611
---- /dev/null
-+++ b/drivers/platform/synology_microp/synology_microp.rs
-@@ -0,0 +1,91 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Synology Microp driver
-+
-+use kernel::{
-+    device,
-+    led::Color,
-+    of::{
-+        DeviceId,
-+        IdTable, //
-+    },
-+    of_device_table,
-+    prelude::*,
-+    serdev, //
-+};
-+use pin_init::pin_init_scope;
-+
-+use crate::model::Model;
-+
-+pub(crate) mod command;
-+mod led;
-+mod model;
-+
-+kernel::module_serdev_device_driver! {
-+    type: SynologyMicropDriver<'static>,
-+    name: "synology_microp",
-+    authors: ["Markus Probst <markus.probst@posteo.de>"],
-+    description: "Synology Microp driver",
-+    license: "GPL v2",
-+}
-+
-+#[rustfmt::skip]
-+of_device_table!(
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    Model,
-+    [
-+        // apollolake
-+        (DeviceId::new(c"synology,ds918p-microp"), Model::new()),
-+
-+        // evansport
-+        (DeviceId::new(c"synology,ds214play-microp"), Model::new()),
-+
-+        // geminilakenk
-+        (DeviceId::new(c"synology,ds225p-microp"), Model::new().led_usb_copy()),
-+
-+        // pineview
-+        (DeviceId::new(c"synology,ds710p-microp"), Model::new().led_esata()),
-+        (DeviceId::new(c"synology,ds1010p-microp"), Model::new().led_alert(Color::Amber)),
-+
-+        // rtd1296
-+        (DeviceId::new(c"synology,ds118-microp"), Model::new()),
-+
-+        // rtd1619b
-+        (DeviceId::new(c"synology,ds223-microp"), Model::new().led_usb_copy()),
-+
-+        // v1000
-+        (DeviceId::new(c"synology,ds1823xsp-microp"), Model::new()),
-+        (DeviceId::new(c"synology,rs1221p-microp"), Model::new().led_power(Color::Green)),
-+    ]
-+);
-+
-+#[pin_data]
-+struct SynologyMicropDriver<'bound> {
-+    #[pin]
-+    led: led::Data<'bound>,
-+}
-+
-+#[vtable]
-+impl serdev::Driver for SynologyMicropDriver<'_> {
-+    type IdInfo = Model;
-+    type Data<'bound> = SynologyMicropDriver<'bound>;
-+    const OF_ID_TABLE: Option<IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe<'bound>(
-+        dev: &'bound serdev::Device<device::Core<'_>>,
-+        model: Option<&'bound Model>,
-+    ) -> impl PinInit<Self::Data<'bound>, kernel::error::Error> + 'bound {
-+        pin_init_scope(move || {
-+            let model = model.ok_or(EINVAL)?;
-+
-+            dev.set_baudrate(9600).map_err(|_| EINVAL)?;
-+            dev.set_flow_control(false);
-+            dev.set_parity(serdev::Parity::None)?;
-+
-+            Ok(try_pin_init!(SynologyMicropDriver {
-+                led <- led::Data::register(dev, model),
-+            }))
-+        })
-+    }
-+}
-
--- 
-2.53.0
-
+Z.
