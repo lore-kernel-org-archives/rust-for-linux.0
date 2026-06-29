@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E165A2571C0;
-	Mon, 29 Jun 2026 08:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5334430EF9B;
+	Mon, 29 Jun 2026 08:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782722782; cv=none; b=AAU/nY4dn2T/muLNJRelVkWafKNFgzt8MkokWpIY7MgvM8TR95W73/A9aMvVnlZJMZpWmGDhYYBTWFyh8W3laE8ld4OSr+IdrCL1e5F0j7KBu/aG8IRgnCduyaRhtGcSTKiMtQBNK3R757atX/9/XDSIwd6eheK1YhI8358JHr8=
+	t=1782723461; cv=none; b=UV/dNYwqPMfow8FQIQXhWjWDT4Xsik9KDvtxalFOgD+bzn/ybcMffS9S4PKqLx5skVJpF8bMRH3Ncda5H/5DMiaECju2FBN0YFrXYFLlk/HdGFSeGbx5u0eG7qa3TKHCVM/RXxKcZ0s6iolEVdBS8EpWlKTQPZEz0EqF1hnOag4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782722782; c=relaxed/simple;
-	bh=FftD6cxtaLafMa5Abl1ZmNF0gUSqDocLlPF/xc6INGg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=bs22QGd55CyIwoLLEosrx+9hgqbllnRDuce0Ai/JqzHVErQWfzPB46828Xos4M96IV92XAa9iUuR+J73QZmRtUG94+j3CLPpg4aU86/HgZ01ox6JxrAZsi1VYi8DXMvdh1mFGLH5zN7y4XssCp4ijoB1rt6EnZiXBj6b4+gieuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmKZe48j; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782723461; c=relaxed/simple;
+	bh=QTibYdJqVWSTGzvV/onMSu755yQ9D+ntsE5qpG8XJu0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=QlwTv73ZAWCCt7dWuaJFvh3EVz3BIETbs/9CaLPfXBd3mzX2jX6l7kIWABzeb9s/SQd+HjqOQHTH/2lRh9xSJTS5FIRPzZ6pw6b0eKMM68xMD2OrZd+lBXWdSzD/mYHn/ZMWoYjBPPPzoANQjMQF2qVc/jBlbtA3Ya3ihRm1T/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxGN01TN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmKZe48j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D771F00A3A;
-	Mon, 29 Jun 2026 08:46:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxGN01TN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64781F000E9;
+	Mon, 29 Jun 2026 08:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782722781;
-	bh=FftD6cxtaLafMa5Abl1ZmNF0gUSqDocLlPF/xc6INGg=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=bmKZe48jTpzSYweb3znBgB9zJA0plSnh6pv6hWFbEM6xIEUkWpqQN3FvxltFX7QpI
-	 dBSAT4LeFgAB8iiNyyl39hvw10sMbXeNHfjwSM9RLgh6xm/KbRJ/sHA8Ee4uoJwmHl
-	 DdKP9Koswd09L81TeRzkj7wpgYBYlRae75a1bwU2clmA8W0GPbaBFrRtaop/WIVMbh
-	 zYPICgbE2fK7f3uop4FDLlleL4EoSNYzXCg4NbK1YzQcI28/wEOBvB+qF2v1+y3fUp
-	 asI7QrzqaHBD7mz41gcvbA1NCqCca7psPgTR5C5D5Mp1pRbbW24fnYyaFy0t4bEYpK
-	 7RM1+jvDTsGng==
+	s=k20260515; t=1782723459;
+	bh=QTibYdJqVWSTGzvV/onMSu755yQ9D+ntsE5qpG8XJu0=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To;
+	b=IxGN01TNcsg1xJOrtvaKfEkVrKhRCnfkwmM6SfAxXxVEyK/8k/fEQs+tWKZqV4xlN
+	 l39SwKbo1C+4lKQUZl2bxevVn4ymAR7SDJ5mglfQPPrePMshdMS+OaCV5E+6yrL39x
+	 co7U1EQKHKJXByQlL9GvJil+DVdy1CEW3BgPHqrxvt62jAGXLC9w+fXCDL4rMc2qi0
+	 DV3wAYZOhmHRj/RwNnEXYcimAnbyPjDhIjxEsZsSvdH5Rz3lmOuEgx6/aFghSJcQWb
+	 T2gL0BLJYGgKrrF+ul/Bb1IpBkZ5p0a9BW1zqbqSnihvm6zRu3QdLCrqXQkPfjjaiN
+	 ACRM5ovHObfhw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,47 +34,48 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 Jun 2026 10:46:16 +0200
-Message-Id: <DJLEHDNJCUD0.38PFZ5773D6BX@kernel.org>
-Subject: Re: [PATCH 0/1] nova-core: Convert bindings to use zerocopy
-Cc: "SeungJong Ha" <engineer.jjhama@gmail.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>,
- =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>, "David
- Airlie" <airlied@gmail.com>, "Shuah Khan" <skhan@linuxfoundation.org>,
- "Simona Vetter" <simona@ffwll.ch>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Tamir Duberstein"
- <tamird@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Pedro Yudi Honda"
- <niyudi.honda@usp.br>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <nova-gpu@lists.linux.de>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
+Date: Mon, 29 Jun 2026 10:57:34 +0200
+Message-Id: <DJLEQ0UIBOQ4.2AQ93XKMH49X0@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260629025220.1935622-1-apopple@nvidia.com>
- <DJLAUOEDW6HT.39URSU30Z0HT9@gmail.com>
- <DJLCF3LR0KMN.1TMKMZEZWKN8O@nvidia.com>
-In-Reply-To: <DJLCF3LR0KMN.1TMKMZEZWKN8O@nvidia.com>
+Subject: Re: [PATCH RFC 0/4] rust: dma: bridge zerocopy-derived types into
+ the transmute byte-safety bound
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "SeungJong Ha via B4 Relay"
+ <devnull+engineer.jjhama.gmail.com@kernel.org>,
+ <engineer.jjhama@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
+To: "Alistair Popple" <apopple@nvidia.com>
+References: <20260628-dma-zerocopy-bridge-v1-0-9a2895ebe30d@gmail.com>
+ <DJLCLH7GDSBW.28J4PZW0FD60B@nvidia.com>
+ <akIpejFWuKZ61n_v@nvdebian.thelocal>
+In-Reply-To: <akIpejFWuKZ61n_v@nvdebian.thelocal>
 
-On Mon Jun 29, 2026 at 9:09 AM CEST, Alexandre Courbot wrote:
-> Since there is no particular urgency to switch from transmute to
-> zerocopy, I think it makes sense to merge things in an order that limits
-> churn as much as possible.
+On Mon Jun 29, 2026 at 10:20 AM CEST, Alistair Popple wrote:
+> I think the context is in the description for patch 1. It's not directly =
+related
+> to the bindings generator. Basically the problem is that these bindings a=
+re a
+> little bit unique in that we access them using the dma_write/read macros.=
+ In
+> other words we use these with Dma::Coherent which still requires the tran=
+smute
+> rather than zerocopy trait bounds to be implemented.
 >
-> This means the conversion should probably be done bottom-to-top,
-> starting with the bindings, then the types that embed them. For the
-> bindings, `#[derive(zerocopy_derive::most_traits)]` should be landing
-> soon [1] and I would like us to understand first whether that is
-> something we want to use with the bindings; if so, let's wait for it to
-> be available (unless there is a good reason to convert quickly) as each
-> change to `bindings.rs` is almost 200 LoCs.
+> That said I think the correct long-term fix here would be to fix Dma::Coh=
+erent
+> to make it work with the zerocopy traits. Not sure if anyone is looking a=
+t that
+> or not.
 
-Doing another subsequent conversion to most_traits seems trivial. The upsid=
-e
-would be that we could remove the transmute::* types from nova entirely, wh=
-ich
-also allows us to switch the DMA code to zerocopy.
+I think it can just be done short term, please also see [1]. We can just co=
+nvert
+the DMA code right away, no need for the proposed indirection.
 
-No need to go for it with might and main, but a minor inconvinience like th=
-e
-above might be worth taking, as switching to zerocopy in core infrastructur=
-e can
-simplify backports.
+[1] https://lore.kernel.org/all/DJLEHDNJCUD0.38PFZ5773D6BX@kernel.org/
