@@ -1,94 +1,94 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CF81A6838
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 10:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F843FE674
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 11:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782730561; cv=pass; b=Kpl74prmL2ADphADEIJbx6n0sUoEJDmG/JTQWvdImqPOZZ70QqRPYd/Dagewz0RVSv1cUAjsF9x5Nb7Trr3qIfkllEgHU/P3easWhLo54i68pdal3CFguKVDJ5lClXIF9qIBovd54f3YvtdcIzbK30kDSK1N/BzNvT1zgZlkGY8=
+	t=1782731385; cv=pass; b=eME31Le0zFM39bvu7jCmoOnKI8D9/3WOoCQjt6x7ROpoRGfK9Qv0LL4nYak8EFD9LGs7kdDtodyW0C9/dtkwJwAWgag+HyuvHxFyOfODQ8zM1MeSBwFoOKLyVq2uxZ5nK63ZRIpi8X3TCdR8lxT09Bp7YFjAlZ45zpqlxsSwYhQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782730561; c=relaxed/simple;
-	bh=QzJoRm+vbiHGAm79sx+SGnsX7SKEikNC3+uwNsaEejE=;
+	s=arc-20240116; t=1782731385; c=relaxed/simple;
+	bh=py9B5accco/thyjWkEedZD3OS7UlmqMbMYkKNGFZ8BY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZZAvI5Kk+VKF5+RzfLjG+aBbQmj75B6IgcsVW44tFNqAXdFa+hYwitPvPTuOhg0HtFASwRaE1Bd57UDRgpBkgqNA9QYkQh/CYVGBHg00IR8pOAyCncMVl06aABgByXzDId2qU8L/8bi9Zv+w5bbl5UO2wvIawnKo3q4qHj6xGBU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AsvVs/SC; arc=pass smtp.client-ip=74.125.82.171
+	 To:Cc:Content-Type; b=EVV/2UVxfv8WtDrtjYhjuLz9SXOqyMnT+l3LoPYc6S2MylUuXV8SjPtfbyKKoT4sR3wCp7sU07LtFpj9XrWafHt3aYwL184G/NDhU//O05QBszY+HhHFhF4vwQrflnDf62tO8wpcMNFHNXaVD6QKlPgYXkEzqTZt1ospaioNx9Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A+vWCBQU; arc=pass smtp.client-ip=74.125.82.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AsvVs/SC"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-30c7ec13248so147058eec.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 03:56:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782730559; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A+vWCBQU"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-30bb87c90deso374324eec.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 04:09:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782731384; cv=none;
         d=google.com; s=arc-20260327;
-        b=E8h8tSVaED9sD7YwprXG/YJAxlM9tm5QReTQEDhq9FB3/Q3pXhS97Ilgs/4jAB3d2j
-         1fZWjRaDHR7dFeoeBY9z+8asMwcCKj8JhtMmROqrJvJQ+JlnlqV9tcf2VyFwi41KG3r7
-         9jiZIxjJFSWE61i7x7gvBDT5/SWLFKBNkG1/ZWJat5hkasgZZDcnJ3WT0V4iN8/B4dYZ
-         cOHsGxqw6WGST/+eqQsF8l05h141fs4GDdk0FxtKNbPcksA2THgL8q34D3sZJZn/f6Ds
-         O+Rpt0794TkHtGR+E/SfKsXPMkgOjz3YZRFMa0mmewZbL8/JshFEdy4AYLq2eTNhsvt4
-         KfAg==
+        b=UXBRBAOtmUwDnWy4cL6b162wqQSOkyE3J5Keonpxha5ofBewF9WNRo8FhPbX/DTWu9
+         vtP6XYNBA0q6LhUkoJP1476tBoCNovVOEv5XmovTExCd4qvJwL6rRpxDXMdvUjrXICI9
+         mUgeH7Re63rAC6tu2vB4i6dzckFWSk1sFhSnKDNvU1JnYSmK7qdOg9exHyLOZbUDG9lY
+         odzBrbWLaho7H5S0Q20zyR9uUMRkAylruJZGUwPhRqnFvk6pnNPbYY6pTBFxbzBOkwDG
+         nLhjMt0aklmZEOOGSJBdZ/ikQG9CXiuhQUm6Q5Oosw74aYLLAuJPUjB12kAakPuRc+F6
+         aW/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZI90vBIjTstqPW5yvvTDQ/fPx7wSFck6qeQRo20qS4c=;
-        fh=Vje+Vrm22zG5piUEvlY3C9FNiDQYFqQg0Pt7kMDrSPQ=;
-        b=iKl6jXsdkkdYnYaVXBI1ygTKcPXRWTDIObFfYZ3oEHW+JUmg/jHBIlR4lf+39HNNpu
-         wJGBmsvwQmIHMiJH3bzKkUNveVb1WiP/WbgiJokkRblTixqkoYd/CeD1RkuBjn9ribDk
-         Pdb3XKHlcvyQYSMdThY6s1qhxQRnb5Ni47iop+IjVRJJ4D6gvdCqYwDPC1zJIo85kTLv
-         uHLCV5LoJE1jr/zqTUOR7mzo1m3Mm5dC1AQGu/KdT7sWZP8UOB2zuFGZ9mgXgrP6BJF8
-         fbpPVRHOYnKdEAoL12ba+jLTMPYuujQ+56enhpHIRafVanb4xh0yyqbqQi1pR5JxaQSb
-         jlwA==;
+        bh=E5Bg//wVpgZ3o88HsuMkHRByvtJq9hdlSqcfr11qWuU=;
+        fh=3BzhOUsjJhKsChSCuxzwxIKIY560uK2BCpdpVNKjSrE=;
+        b=XtdrtNGjjdnkk2AAc2pD9o98xDisGUuytCUSPQaRNUFK1O3SmngQuHjwUNtV2mpj9t
+         3K32reOx+sKb8dVD7dtIa8H7tvWqcBvIbtXc7OsaCRI5Fv+uOE4FTHHP2wiPECFlxVsd
+         eAj0yin1n8KtJ6n/3u6sP9NhAZvconqzpFTeC0MHuIOZZQf0QpOI+HOT9Rbn2mZOG35c
+         86GeT040iWBFBaOechmSmzDjBRDmmgPq6YlbtI8w2PhntNOKzrufq6quybvK/ieJAch0
+         46G4sjDHLiewNaTUoQGceV5iL7W2D4niTEXSZz9OkpbCpsrBOkJ/Fuoz8ohd2MbUXCUE
+         q5tw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782730559; x=1783335359; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1782731384; x=1783336184; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ZI90vBIjTstqPW5yvvTDQ/fPx7wSFck6qeQRo20qS4c=;
-        b=AsvVs/SCwhEUPFDTWjb6IHgkvabaBPUEeEejSdeLTGURSfIkNhTsuzVWHVXzDmsP7Y
-         MlkzH6ijXBN0pcSHPlk6voUmaDF6uQcia1StyoWHpsA6+H+m+uTHQXK/Bcmm8W0uKSAw
-         Z+zj8I4c89qRvAijhOJPfdFai/lYbZkvSV6u2k39WnYiSdzn0yVvqGN3maCxCqFPpgtv
-         XBjbKccI+ZX1JB1VY/KIriu9cO2itxv7y9hgD/L6U9dTPjNGnxDdANsbFDTce9dfkJl6
-         9l7cyp4BnkIchIF0EmVyYp9ob/NrkgdRyF5DgCkLO3nbQvhENimQ7dbClHxlqw/Bw9F/
-         +0aQ==
+        bh=E5Bg//wVpgZ3o88HsuMkHRByvtJq9hdlSqcfr11qWuU=;
+        b=A+vWCBQU6pp/AX0oXtJlBmBnkHk12b2g2jviBZcXrI3h0+3NESIQuTUV8p72m7hYuW
+         PQ4Pg9OQ2/LPjxl5HQTwQfmI6XW490QWg74ArrjbrUXgaN45uDgdRSweQcCq50Khlle1
+         YQLjJi6no5ylesaTeEmRbsAGEmcLxaG1okLiJcOi/+Cejj9tIBrKNa+uKlY0opJpho7V
+         Iw/keBUiRyTIDclS+Cyc6E8xwZVH3C8ysIYbfXQpiFUDiRmwEYNC7D5rk+hFG373Ezz5
+         IvWP8O71e6dfBqklQ+TnTSwEeJ+6FWGvLIDSTgikwIj8Dw8VYKHJme15uqqIn0wlKC2G
+         thCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782730559; x=1783335359;
+        d=1e100.net; s=20251104; t=1782731384; x=1783336184;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZI90vBIjTstqPW5yvvTDQ/fPx7wSFck6qeQRo20qS4c=;
-        b=q41RUBfDoLs1bgKTsYhAd0idWkZhscfU5aDhV5zMKwXWc7WUXrmg34MVyhiahPzdzu
-         grm7o56D28YlRntzdSM0FHnF+pfQ+78q3ucX3svHzj5rrfq0dgEaWduoWWh4dgeEC7Q8
-         BiCuvBPn5GashLdN2AGW6P4X7ff87gAL2sBcmp9uqtohvWTZTdpJXQRJ4IT95fb+BoBq
-         9bLaaUPFGzEMc44xX72PPo8r0IlkIidTbZcDpTSqBnEZId4nTtw/SoS58LIFhXmLwbWL
-         MHrfo+ResXm8QLY4bbJQC4LnIrdEZAkaciuUwrnXpnXwdI4J7slVGIcJp/xjXUWWEISI
-         MRKQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoQaAuFUk3RANm2OlXd+Nr9wqKJpqaRSZ9v0TPbDJ2ofJ7NeHJc+OSobrKdf4twSYuGoMVqlJvt5YZDXfQR8g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxBMZAuXeOXxXsYUqYwT9vCcBanvj7bIu0pg/pW+OR+Z6fMH6P
-	01iqzyZGf6336tiMhE79y8Y/UznClu/znb+kSbI5AmhkMGGl/NMnm8FbWuSU6BCFIhF3zsC4m8s
-	s3mOc6vt21OvdffDevPXST9RrPSgpJ4w=
-X-Gm-Gg: AfdE7ckj1yeS9ysTgtnBAfrvPZDHzYu1bOi2goVoueOU9vdm5BbzmpO3/gLUlO09g8J
-	HPFEBo1r1gJHKO6/FYefb2XQIUlqQyS2cIVEL2xAIxqTNENOwKPewJTeD8+1asJ5Sa/pai9aHyK
-	av5QYBTG7CI4u5jmY3FT3vvzU1jjf71hZ68v4V9kU5lpxDyKa8iw+cdn2nOQrmRKRWfTz5ErQY7
-	rZluNFvBsGjyXi8j0RIvT1i7k+nTFmu4DUYRb6DNn5MLUevJ3j91nf7ZnG7d64Xe8xM+hLARxJ3
-	vVAt5UQMCObBbyvWXke6LxJCG0o/+a3jPzwnjRB++tLhnluo5AtlQchbBtHWQzodVT/rhhkEQN+
-	nuO39514c+ZCa
-X-Received: by 2002:a05:7301:6502:b0:304:e327:aef8 with SMTP id
- 5a478bee46e88-30c84b1570amr6442790eec.2.1782730559225; Mon, 29 Jun 2026
- 03:55:59 -0700 (PDT)
+        bh=E5Bg//wVpgZ3o88HsuMkHRByvtJq9hdlSqcfr11qWuU=;
+        b=mCHE5dS0miwvSttXWucBke63obvVfPRHuqeYACb72n3wyfiyGSOCfQ0eOFNAHiNmCU
+         /yvXdThdtg7OuGSnDmD1aVquneo48HWl5FyICPvGvDitDmjQBZ68eQoXJ9g83otAQetQ
+         M7nnHaciU6rI0aw+ZH5THRMyxGuOGMyOdM0rBJkFVfPLb9U2VedRum6zTOTDyGyatpLt
+         B2dmLUNUC6ehbi9H3fRN2JKf6ERflGrWqMvUYAtgfhoIaRcZoeqQolSCnzpeUgZFvxiL
+         +MBosfytAZrUMd+co+jRpjfDn5MuEreUoehGINfdGzdB8iAzHbXXJWVEoZumfBQ5h+AG
+         JGPQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrHX8VAtMtTFjNRC+WCkKqrHvCJNBBVS4/cL8OddsdAl/CkAZebEj79beTdbBwEDid+VvHlBI/2u9FIXOoPAQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRmUtXCMB9wH0xGIVY2DeXq70rSrpZZMlQxnXL7eDWnfDuJXc2
+	Mp6+lyCfJa98AYBele1hvFKbUSl0sBTKA6LT7jY7tpwCuwQQQwdePZRQB4h/9sUD4qP94zcCKbr
+	JzwURkqE9oafvSZTB5JhrH6MoXFPgSJ4=
+X-Gm-Gg: AfdE7cnA60z9KTbzphrfHVAJh14HPlx6OM/biAoXyv9pn0t/4WLQB8akLqBdN9DFKTh
+	DAztLDbBbwgEJlJoOSEYuODPXs1ONtXZsQJ/3+npTq4SJ3bvX+o27BvoP732UQS3s1VupqCokB9
+	NpXqBLZh4wBPtcMEqPdk69T9CZE8LVKF+MnV4BZsDQq9ist4Jg23jd41UAzbMTgpS8Rr+zYlsb8
+	fXuPsGy7BJoXxtcIjmDBGcQWZkmyvMH/yr9TBQRHuCF33vPyN4uCg3GVq5QPCfjhvaY5Pf3zMOi
+	dY1Dpqq681ojGoFtKv7IBCH+n6FO40QxJF8lDxTRYhD0+r7EVaWsqo2tfZieNZbmLJEPdeUPPVn
+	WHtdxRzWBrpVu
+X-Received: by 2002:a05:7300:8609:b0:30c:b42d:47d4 with SMTP id
+ 5a478bee46e88-30cb42d4aa6mr4017286eec.3.1782731383800; Mon, 29 Jun 2026
+ 04:09:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260615143225.471756-1-ojeda@kernel.org>
-In-Reply-To: <20260615143225.471756-1-ojeda@kernel.org>
+References: <20260615143225.471756-1-ojeda@kernel.org> <CANiq72=QWC2XXbf7Pf80c8FcGjV16Jyzgm7Yt5S5aEBxpgWX=A@mail.gmail.com>
+In-Reply-To: <CANiq72=QWC2XXbf7Pf80c8FcGjV16Jyzgm7Yt5S5aEBxpgWX=A@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 29 Jun 2026 12:55:45 +0200
-X-Gm-Features: AVVi8CdXufg4rKJzModjJj53zc9BlhbJkLuAlU-RHHjegTEupJdv7x4x-E61lY8
-Message-ID: <CANiq72=QWC2XXbf7Pf80c8FcGjV16Jyzgm7Yt5S5aEBxpgWX=A@mail.gmail.com>
+Date: Mon, 29 Jun 2026 13:09:30 +0200
+X-Gm-Features: AVVi8CeQ72lJRMDTDBhqujhOZjNokkqKm_yKMOBn5DRee4qRVbyIayOf1EOjpZo
+Message-ID: <CANiq72nVzfgb-Zm6RvwCqXNDzFhBwxUa6j7jW9OOvPr=qu-dCw@mail.gmail.com>
 Subject: Re: [PATCH] rust: allow `suspicious_runtime_symbol_definitions` lint
  for Rust >= 1.98
 To: Miguel Ojeda <ojeda@kernel.org>
@@ -103,73 +103,18 @@ Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 15, 2026 at 4:32=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Mon, Jun 29, 2026 at 12:55=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> Starting with Rust 1.98.0 (expected 2026-08-20), Rust is introducing a
-> couple new lints, `invalid_runtime_symbol_definitions` (deny-by-default)
-> and `suspicious_runtime_symbol_definitions` (warn-by-default), which chec=
-k
-> the signature of items whose symbol name is a runtime symbol expected by
-> `core`.
+> Applied to `rust-fixes` -- thanks everyone!
 >
-> Our build hits the second one, i.e. the warning:
->
->     error: suspicious definition of the runtime `strlen` symbol used by t=
-he standard library
->          --> rust/bindings/bindings_generated.rs:20018:5
->           |
->     20018 |     pub fn strlen(s: *const ffi::c_char) -> usize;
->           |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->           |
->           =3D note: expected `unsafe extern "C" fn(*const i8) -> usize`
->                   found    `unsafe extern "C" fn(*const u8) -> usize`
->           =3D help: either fix the signature or remove any attributes lik=
-e `#[unsafe(no_mangle)]`, `#[unsafe(export_name =3D "strlen")]`, or `#[link=
-_name =3D "strlen"]`
->           =3D help: allow this lint if the signature is compatible
->           =3D note: `-D suspicious-runtime-symbol-definitions` implied by=
- `-D warnings`
->           =3D help: to override `-D warnings` add `#[allow(suspicious_run=
-time_symbol_definitions)]`
->
->     error: suspicious definition of the runtime `strlen` symbol used by t=
-he standard library
->          --> rust/uapi/uapi_generated.rs:14236:5
->           |
->     14236 |     pub fn strlen(s: *const ffi::c_char) -> usize;
->           |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->           |
->           =3D note: expected `unsafe extern "C" fn(*const i8) -> usize`
->                   found    `unsafe extern "C" fn(*const u8) -> usize`
->           =3D help: either fix the signature or remove any attributes lik=
-e `#[unsafe(no_mangle)]`, `#[unsafe(export_name =3D "strlen")]`, or `#[link=
-_name =3D "strlen"]`
->           =3D help: allow this lint if the signature is compatible
->           =3D note: `-D suspicious-runtime-symbol-definitions` implied by=
- `-D warnings`
->           =3D help: to override `-D warnings` add `#[allow(suspicious_run=
-time_symbol_definitions)]`
->
-> Thus `allow` the lint in `bindings` and `uapi`.
->
-> A more targeted alternative to avoid `allow`ing it would be to pass
-> `--blocklist-function strlen` to `bindgen`, but we would perhaps need
-> to adjust if other C headers end up adding more (or Rust checking more).
-> Since it is just the less critical one that we hit, and since eventually
-> this should be properly fixed by getting upstream Rust to provide a flag
-> like GCC/Clang's `-funsigned-char` [2][3], just `allow` it for now.
->
-> Cc: Urgau <urgau@numericable.fr>
-> Link: https://github.com/rust-lang/rust/pull/155521 [1]
-> Link: https://github.com/rust-lang/rust/issues/138446 [2]
-> Link: https://github.com/Rust-for-Linux/linux/issues/355 [3]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> The PR got merged upstream a couple days ago and is now triggering
+> with the latest couple Rust nightlies.
 
-Applied to `rust-fixes` -- thanks everyone!
+By the way, added:
 
-The PR got merged upstream a couple days ago and is now triggering
-with the latest couple Rust nightlies.
+  Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is
+pinned in older LTSs).
 
 Cheers,
 Miguel
