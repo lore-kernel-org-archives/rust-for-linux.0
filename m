@@ -1,68 +1,69 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010034.outbound.protection.outlook.com [52.101.201.34])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010004.outbound.protection.outlook.com [52.101.61.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A943B6362;
-	Mon, 29 Jun 2026 08:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318003B52F4;
+	Mon, 29 Jun 2026 08:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.4
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782720351; cv=fail; b=hwz0fFLbeXCtQU2N9bUBtlCHduozsBX0qFDlwUWEtBOd9sWV83SoV5eGORDUIQRYD3utx9KvMOPV1vbiku0oIuwkFZBiOa/edRZ6hhr7Ol8JxHGQDQVErcZBgVWTvmGmka/MpxlTq26dkv7XVrqw0rDle/G/ID0vimLsXmZ28tc=
+	t=1782721254; cv=fail; b=p3VOzngyQIlH55ltwX3mEZfSDeM/6su3ZzyCnI363gMM+YD/Cc9ZqbIVw2vtoh23E7SnZnT3LtEMs2ifVTQClrcyYUBdltQ43wlQDNFrLLGjIeDEq1gXG/uebwYLi1NSv5gpw1Kh86hTYZFr3eChZWF8rw9zyf/zg2hkB+wpRQ8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782720351; c=relaxed/simple;
-	bh=oLlHmuSts4P/gORUPsQimTqq6Bk34aH8GHwbVTAzQrs=;
+	s=arc-20240116; t=1782721254; c=relaxed/simple;
+	bh=//6Qi4XKzMQzJtgloJcIdkBm0er2FwWMqCSFRYPIopc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fbDRlIL3T1ohQNvfww/T+1yZDOm3vgP2H29QslroqkPadymDndnpK61wrIdoVrrKA6U/bd4KhA5Pf+BI57dpWfMGxeLut/g11feVFUNYODU3l2CcpUOhrvVFHVz39Z/NVjXnzjw1UH205twAhiBark0xJwpthybIAT1dw/7HCUY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=txfiaKoA reason="signature verification failed"; arc=fail smtp.client-ip=52.101.201.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fjsusepLyfjA4y/WWNcnCmKqFxfv3HlhZPd5QcdNDuIv0ggfxoq0asC5EOJ67dDZ3s8inUC+SXB7NAmVe+oPLpWL6nCj116nuhg4ngDm8hUIX0dFXXLZNKH0IBM8AezV+J7lXgkksTGM6acJjnntIkRJ425zsoT/81efJe3Ax78=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nlOLv6xY; arc=fail smtp.client-ip=52.101.61.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="txfiaKoA"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nlOLv6xY"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tBJV7S+RGAyAsl4LhJa6wvXs3xpZaWn3OIfuYgyqskzZ/vdy9ZdwQ6CFyTwZ+O38JyEJMcprGFRlNVmUh38fPNQpPiiWDC3aP8qyhBnUHn2Ajs75/Slsfy6QFLos7whHfELNWHFS85ldmbVqnMhum6Qpoy1kYO/2SqnLRF6Bf1znEgbPLRu2P8tf0m9BFKYIK4twxJKoSmL0n1Mfiwx0yt66OdPTm/HBNQiwOInVXiERjeLK3ScOs1C6cGb7Xr4Vgj0f6yA1HngPfcpyKUaZlsnBz1J7JwxSCKzoJ/2gQaVPuYkhnKglr6qx9y6HAmriFlecu4bla+NT6nEfF/zyQQ==
+ b=j676VRpvNPOZPHbUi/LngoQJ5lkYirZShixA2uslOfTSYgblHi0OThP6+0U1NsPUQL9lEajejkW6M4IhH6kUaaLgI3CyQ9KQIZPT9tQzBNvv0jbCeKdxeH0KcTFEAedd2CUqjJevZFv+9/9+CSkA8m4BW75im6y1Teojche+Fvz/eda44Lofe2Ig0utcn555Lwlb6wekchzcpIQBzF6aN21+fhJHwHsFHQSjXOsGRE0yFGMGgkAqN0ppy2+MMekhMEi+skR0GfdaR6kFjR4wZOflO2IDyi0Y0DxIDBhbgiK7Sdt5MA75xq+vlMd7JFp+k945YhF4zUnyjHKSfnmfgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GcXduUeMpYbP4PreoFVZfyYJXgDuegIE2OO/dqR5hbg=;
- b=EX9FjKG1N+6hldWexjHQlFPlNlgmqL7zdShGfiPvhBBRb+joTsc9MNq1Tk5p1cm/QjhB7rMxH3L3nL7JDvRPnuSBN7KyNRg001uNYsZupyanR4YvZOgsaj9etDT5nZNrMBNIYXMVOg5odFN5CcqCCDcj5wpZmDLq02k8ESizYbc/6FKhh7dyQq7WJkBVMT2N0fMFZNfJz8EbgYvfYoojHZDOsn7jd230qkFmZv/dYh5TgvBEv6So/6IzfhiX8AyFMURIcxwpmZR9kB+TzWZs1NYAkGJV0HthnRgFh5ejlnMCQQ6vHU8+na6v+whPydyma3Il0m9ualzbHBHtc2sQtw==
+ bh=wE9BPr18iekWpfpDI8LXOVBLcXwz+8wEKmyo4IS1Lh4=;
+ b=TtM1/NltBUeiFQa9E54aCJlDtfNHsEYr+q7+k+qf0NmxkHsyh7gHzSiU+9Ri9viEBd+Oy7XJTs7F9wDdwQoKmX/yK+biYo6RS3jH+3FvJWbnxqnGraAOc0HiiOuDSASWvAB0k759ebwJbBAssOBbG7X3P25QlpinxwEtMv4hAUNPyi47dMOUtfr00c2rBluL9f/bCg5Ie1y+xg5FGh+KeDQ4d+3a6w8Qb2n6bgRB365NgmL9ETuyuCwwMgaWWoMUm5R4A/wZPB5RALKafI9ko2bt3x1c9gwM98lljSlysEklCGXG7pzZwq+NcGML169zaT9GWBpotVSZFmuu+4PLxQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GcXduUeMpYbP4PreoFVZfyYJXgDuegIE2OO/dqR5hbg=;
- b=txfiaKoABHhgLcu3DEHaV4ISwFCD3vTRfLBDft+p967EEAH0+aWN9zLcMnafkLYhAG1WGLuBzQ4JAKTJlAkEcUTzoYA6w8nVHqMP7999rCYRCl8CijzPKwda0xpAuPWbi3X8UWfHqHpCSkZPU9kZay9baFI1wRMzKsMrWckROL97OXVISzD5mNhQ8X6ysrsEgfSgY403pPderMUoECuWGYrS8YM6Vg7f32MrnyT5Rdz8KXThXqOrV+10RUDoVKUObBFHQzVNCrfcSg6es/ZdfIcbgZI9F6fyZTv+rCacwIXJ2LSbNrzylhP+VCqh3HfpL3N6UoS4HhX7xlX88rckJg==
+ bh=wE9BPr18iekWpfpDI8LXOVBLcXwz+8wEKmyo4IS1Lh4=;
+ b=nlOLv6xYZU8cFneB75l2s5Ly+OB7636Ji5VLr4UonQYZdPB9h/lnYXdxb/+Ph2rzoE/x7ilEcwp8OebQwZZvCU3hy/aYV0xD7H2L0TG+y3Zaf0uSTrMPLTzlMs22WJFJDVjcWU26HpulcfwNX84G1TCZI36jflRC4wIqx6i/d2uzg5MC1CJ60K3s3St1GF5zzugL9gD47rxRrHbIEGBSym3xAF/FhQIsGL/yIIkUvSNIoEfBEK/6REIL5X4Fw8DZFTKC/xB+5ZP6+/W3rco49BvNcYB6oyczhz20ihfdpNLYWFN6Qa67rUp7g/TIoWVtphMwx0qXNHik4tpCC3oPkw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- DM6PR12MB4401.namprd12.prod.outlook.com (2603:10b6:5:2a9::15) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.159.16; Mon, 29 Jun 2026 08:05:44 +0000
+ LV3PR12MB9167.namprd12.prod.outlook.com (2603:10b6:408:196::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 08:20:47 +0000
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 08:05:44 +0000
-Date: Mon, 29 Jun 2026 18:05:39 +1000
+ 08:20:44 +0000
+Date: Mon, 29 Jun 2026 18:20:38 +1000
 From: Alistair Popple <apopple@nvidia.com>
 To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: SeungJong Ha <engineer.jjhama@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	=?utf-8?Q?Nicol=C3=A1s?= Antinori <nico.antinori.7@gmail.com>, David Airlie <airlied@gmail.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Simona Vetter <simona@ffwll.ch>, Gary Guo <gary@garyguo.net>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Tamir Duberstein <tamird@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Pedro Yudi Honda <niyudi.honda@usp.br>, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	nova-gpu@lists.linux.de
-Subject: Re: [PATCH 0/1] nova-core: Convert bindings to use zerocopy
-Message-ID: <akIlXpFeexxttlV_@nvdebian.thelocal>
-References: <20260629025220.1935622-1-apopple@nvidia.com>
- <DJLAUOEDW6HT.39URSU30Z0HT9@gmail.com>
- <DJLCF3LR0KMN.1TMKMZEZWKN8O@nvidia.com>
-Content-Type: text/plain; charset=iso-8859-1
+Cc: SeungJong Ha via B4 Relay <devnull+engineer.jjhama.gmail.com@kernel.org>, 
+	engineer.jjhama@gmail.com, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH RFC 0/4] rust: dma: bridge zerocopy-derived types into
+ the transmute byte-safety bound
+Message-ID: <akIpejFWuKZ61n_v@nvdebian.thelocal>
+References: <20260628-dma-zerocopy-bridge-v1-0-9a2895ebe30d@gmail.com>
+ <DJLCLH7GDSBW.28J4PZW0FD60B@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DJLCF3LR0KMN.1TMKMZEZWKN8O@nvidia.com>
-X-ClientProxiedBy: SY5P300CA0018.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:1ff::6) To DS0PR12MB7726.namprd12.prod.outlook.com
+In-Reply-To: <DJLCLH7GDSBW.28J4PZW0FD60B@nvidia.com>
+X-ClientProxiedBy: SY4P282CA0018.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:a0::28) To DS0PR12MB7726.namprd12.prod.outlook.com
  (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -71,112 +72,99 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DM6PR12MB4401:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68d480c6-822b-4a30-2c73-08ded5b5381b
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|LV3PR12MB9167:EE_
+X-MS-Office365-Filtering-Correlation-Id: f6e5c3d4-ba81-4591-cc9c-08ded5b75064
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|22082099003|11063799006|56012099006|4143699003|18002099003;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|4143699003|56012099006|6133799003|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	E8uoJHNCGuKN8VRSPeZ7Haw+X9qK5oDRZq9qEXc+lneyts11L2PudR64dcZJQ+y10U6d9m6fAXnSjVlxM7ty42nGGX4SWRoVfXW64wRwXxtapGB1I2v0BvK19J/tbIHHcKVLGa94jKxHUTKrWD4hsm+i8ZUqnKMI1aT4CNX7cI9B4GMKrBJ9pSIlHhN9lf4sSp0t1JZHCCvzHMmTzQTxBJOXxrLF7vMVHTerHl6fgBRdmheEw4y38nfjC2oo/AwAhBTIjMb5FobMzbWiS0+4iRLvNrUqdaJm8hmNFKW+VMjWtDSGLtTbeq4my6lGGGULpew3d4cqR8m9lT4gwTOrAd/byAh3utiPbPOiwib5VzWYa12zowPT3cSwV8IuzmV0y9qd6mmkLrZQlGFGJkP9xxEKJGcLNGR8oP5AZj1+QYeL7EeC7ef9RzP9qtyttgVpZHhaQvzH1vPnY1pKIFltLqRmvsDfc6mj67+b1lj8uhtLMtykcq0+gcuMhcWf+WkIHTecs/fRFDZZC0wbTUJETvS/isNlEzosYqmATo787qVqH/TdE68m6IRTeaKt1YYGoHdLxxIAfavKbKnwvVUKWdD5tFdJlGDDE3Tk2RzJN44/kCgi5XXlD5qurnVZ/C08CwVU5brNZpk3/R29IntOkSJ8WpEZZPlXNKn4lqEln4Y=
+	K5cvsCvRbpOBSj7tS2a6o+6iGerXKoWjbhgU4BD4HMnWC/UC9D9Zr3x03o4LisNQsG8ezrEJ2Xx2/p+9S4jXDsFEw4mfS012/LRBF2UqJEz+NDwx1V/7I0YQboTQlgPMNre+hi+Znij6pSBd5A4RQ3tJta+t5lq+5TyPLikTsX/U0f1WKDHuCKpzbhB8Us9GNUufsBqNPYXxeXwyZrP0Rtv0MyCcoVOwmUirvGgp/PfRS1pVhkUzOsCEOAKi1gjsyEOrs3XTmB7lHTsmXnRlKxr9dm3CLxYRpFbdG7ORyQAeRHvcC3div/0+Lofh6OC5jZ7YM+KyoI9ouws2foMyT21rIH46cW/C2PCZHPJIVIxu5jixyx39B0d+Wj5gKjB5O2ma8CfbOt+SLDpA+qIbxkzzfRZfwnLoYkUWCtyC0Dednz7hFlyaChFjmS1VJ7N1oQ3I8+DSNBPSgwxXcYeHsQ3FIv4IswqNsXCtAv+P7MECYLB2/RnmLrdOyqLcqrwWsftVeJmGqZE7haylAJRxugafyy1jPIs+9WvAqy0jK/37lF8HAFyhk9OM+51Q1y1oNcqC651gRp9spC5TRIWpGJzUVbc63AJu3dlwPSaF9bDQOXGrIeL/8/RnS4yC1aBbA6E93pAnWjoLqkQk/s3oNjR5rBQmtZII0bfr4CeptWY=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(22082099003)(11063799006)(56012099006)(4143699003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(4143699003)(56012099006)(6133799003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?NYEjQPxafBCaoL1jtvqNI8zZen1lxzxKn+ligYPDehCPRbAzEbKXL55Btj?=
- =?iso-8859-1?Q?1NI1mzWESq+BJ7iV5ladSEwzoyrXrvw9VtsHaqzNBPUtvtM2rCjUSVnPZn?=
- =?iso-8859-1?Q?y2m8bvz9L3i+XpJiHTjOTDzQD5Tbffz8OZ5709ciD4kaohUpQs5RT/utrH?=
- =?iso-8859-1?Q?Obwyp//iIeAj7N5lt2QSTE0qG4Q7UZ2cEmDb5lO+ueb99vWsZWxszJrnVY?=
- =?iso-8859-1?Q?Q7sEXmlhtNZBJWTgbxhUTjJq33JiQDsl5v0RsyQVY/qSMWxgvX4JHvMRza?=
- =?iso-8859-1?Q?kBKai9O5KEP2JO6OPMqsdum5OXwVLyEGxQMoRLByyxxfl3MMphVa4AHxfB?=
- =?iso-8859-1?Q?GE9E4Fxn2ysDNIsMcllG5WnyHyu+AEMFqnulxXt4sAOPF3f5RKsI2pKiCE?=
- =?iso-8859-1?Q?WiQ08qps7n4hE6d+/OTfKRiwFcEaK21m1JK8pyL2NaHJijoEjZZFl4KYFw?=
- =?iso-8859-1?Q?7E2bn1GHqqYZhI7Fwg+8SMEC1ybzlHYyKEkqPL8rNjGpdof/O4a1ZH6UxO?=
- =?iso-8859-1?Q?5n0sdvberQ5wMPxp5GFhNzhRdjRrOkxjgqnjscvUYaES0CIQh7psvgcS1c?=
- =?iso-8859-1?Q?957fcgouwhnDT969ZRP3lHEbaLdoqfz1lPh759Jyf5DL95OZ52siPlg4Yq?=
- =?iso-8859-1?Q?W6K1JcSG4vtl1iYsIJwrDHXsjcFFmbYSu4Relfh/qMmdRSmKMhQcEsnrgf?=
- =?iso-8859-1?Q?rlehT3GcPMk1gxmbTCRNrxCLug91BXPXf7IUQofZremjZsO3u4BPAHKxyp?=
- =?iso-8859-1?Q?OECHdkWWbOai8/ns6CehcQh6WP01CBMNPoSGissUFbs8sdcS+gwlMgKHY/?=
- =?iso-8859-1?Q?easJezvozT0uP5oMtoXpKFImeNvx2lCUbqqwn51ECsXlVxhd0xl/Rg0B6k?=
- =?iso-8859-1?Q?NztVKEjV9FZkTfsvSV0Gb+T27hNUsuQzCoqqtwbx3t/NfZ2F5v5C/7tKej?=
- =?iso-8859-1?Q?9f1nuE4aEy2zd+UTRYkh8CKFIL3rgKRtBcnQ6o/ST5XiP/YL+gxUm6YNLx?=
- =?iso-8859-1?Q?sTJP1JrT/QYRIrWPGJ01Ub0QkqnUC++EU62dAQyh3ch2WnwWkTM5AXEfBS?=
- =?iso-8859-1?Q?fmbPH79LXei6z2+NDPQyksFA2Uc/WRlmchd5s8l2kPljJnD0oCIX4uf01k?=
- =?iso-8859-1?Q?jSxFy9lwH9Sk92OgHACcH2UEed3pDiO1vMhowxTkwJ5imRCvekQSHQXoTW?=
- =?iso-8859-1?Q?YOARg2Bo4ooj9Kjn8ruspUMkq1ChWEObb4pCpB9gjgo3HNvUPgEzhquapI?=
- =?iso-8859-1?Q?5t9jWUDgFcb5j3l9KlGFiCFRR5I/mAsXGJnDKD7tyjkgy9e1F/6iRurN0E?=
- =?iso-8859-1?Q?cjka695bzuNGc1BHcjb7TPNWJrFfMpfrW5nciT9huha+jVUQtD4uCuP4E/?=
- =?iso-8859-1?Q?80eTYAyUcxOXVtnec2pz8wu4+lAAPg3oGu0ryt5G55RXwo4mDA0gbREonx?=
- =?iso-8859-1?Q?PtOGzFpoVDimuUB+D9cgZvO+SLyzHmNrTDkEyQuPBnzjGlBaq82jNrr7jd?=
- =?iso-8859-1?Q?kIGOyGnfDIk9dw3xLCocER0KjlyhpBrFdQcXojT8Ogfa0RyU0Sj5MXElp0?=
- =?iso-8859-1?Q?30p+4PIVxu6ZrrqWZWsp4foWxE8YRU4p+beFfzRzwrSbY9sUUnh8NO3Au0?=
- =?iso-8859-1?Q?axa5IEEoz34eOcQRCODatm4XYocjlFosXiQ8wCRLJAsK4XN4K/EB5esrd3?=
- =?iso-8859-1?Q?DKQLxO7276Z4mNuPTO9oYYpa0lLBjbY1/CS5nELvaqRBCIMeR615kvbxGf?=
- =?iso-8859-1?Q?olnpY3grmi+x5Jzhg8RiRp0k/2w8PALSiYuU6RyQOs+uEDT1eBDnFC339w?=
- =?iso-8859-1?Q?I53fXklr7Q=3D=3D?=
+	=?us-ascii?Q?FibKasfyZEsA4n0O5TRQFHprf9lnV3OIzNqjX2Yvfeow+CuDjRuohXzwU1Lb?=
+ =?us-ascii?Q?URBtLvPtlojLYuMQdJhdj5aO83AA4NXsvTk2mPd5X9s4mTuQ3/WBsU1IQtYj?=
+ =?us-ascii?Q?5NCrT1xcuxcwVCPXOuWfpDIP5WekI6eCw6i8sZpDN1n+eES6YPBu3TxU/jIb?=
+ =?us-ascii?Q?SlBESyV4i5LIj8vhAhDJ5UiPkTL18PV3We1e0A9I8ojFn5N9/ZzTYYtEAMEy?=
+ =?us-ascii?Q?JPjaCbJZPQsnBf1RKhX0rULm+cQIdVRsYi3lWHXvt/PHlLwGJA2n1nlfNKRz?=
+ =?us-ascii?Q?TcNufHcsFrxUR/xCtzAZIuwCt84vRDaQIvpN5V8QhMjAIEDyI6VYPk++aiE8?=
+ =?us-ascii?Q?8/PbagKZFrtLW70SKI2MBaF7ZVx6Dj7PoT3hLdhHji/V8+DzjhonSjm7vBYY?=
+ =?us-ascii?Q?v6BwXw/m7ahuuqaG+uJNonc/Qa5s7KnStz+7cEhcDu8I1TnpzkaS3OkubJP8?=
+ =?us-ascii?Q?awiiJXbB5ZaAYF9vqjHbg2TJiHE31EOMRlex+Id4Ca/FnB4I+zAJwPJn1Hid?=
+ =?us-ascii?Q?K2o+1piJBlaSOlHLBJj/kqyJahHXTvbRNh3Qq10JqyYEVH2KtHqqQ4H6yB+C?=
+ =?us-ascii?Q?jZhwnibPgDTkJR58snlS4k9PZSai4DxVoAia7wH827vrvdKFRsXEJn5W9A8h?=
+ =?us-ascii?Q?A7Q0oaMzIscr2gC5tZFZs0W7JoFAEyfiLZQ1JO/tEcPf6GX84yJ0KczEH6e3?=
+ =?us-ascii?Q?A9oPHKnx7mx/s+CZu2JQFraEtYRRuqcEYQtRpowDIPpkm/urYGnBj/aCD44C?=
+ =?us-ascii?Q?VBBURz3fAAMipZsa+acCxXQrSSpN5PlQaujUZXFuDwRcPjxOAeV0y9kLy0Cq?=
+ =?us-ascii?Q?iiy60883x5tmN7+/IfKxq0tHq9kEBbVRAYqkxuWCgbgi7VMjxXvAPjfp/5GX?=
+ =?us-ascii?Q?n8X9M0hbrkiCHfg0r1jUe64AEfU9R03PkTxFQF+W3vvQOqsfuzpID/oxrIoo?=
+ =?us-ascii?Q?pDyrzGUgYQCvOEW7nrLc3zuYwzZqy4+BQxMZzLAzHPECt9fo6sRQJu5nxlXM?=
+ =?us-ascii?Q?tuPjQn8qpq0TLRO4uEulLHPTXiELQszffx93sysfGlS7t5khL/LMN4x8DbNO?=
+ =?us-ascii?Q?EW7oWbpzW3y/NOcpG+Q4qFvCCMPzCT8W5LMFe5UBEXzDtheab50FH+15R6SU?=
+ =?us-ascii?Q?BvwwfmrAb6/sl5W9bh+mIR6JLvaLiffK+f0ItRpl2R3OUPVCQ8U/xrXe77jE?=
+ =?us-ascii?Q?w3MUvyOOwIksTEHc4F8WLSVe3V2UI+WlqnkrxikTPggMp5hu5EeWZcpJJRmA?=
+ =?us-ascii?Q?kA1vHxZImWq9PTDwS6t5WoldzrDBTeDLqfT+ofr5J7BGB8GcwayGm+OMIbxk?=
+ =?us-ascii?Q?BvkKHQzY3xtihcsQH0s6cJIQPdQtnls6gwuYImWCssovFx4Ao2Gm7HuEOQfo?=
+ =?us-ascii?Q?A6ZJypmI2i6IeQNGSjxyMTVIEmamyYQtDqSf0nCtOpK24zrTs9y6aRrBbxCG?=
+ =?us-ascii?Q?Op4G3MlGH/cl8csdf0K61aByuc1PX6XQlV18YW3xlJ+3sqchiSOJuZYRmdI5?=
+ =?us-ascii?Q?6acAs1r5aF/m3IZpsLfmBxcy0tH54EJaS4KW2EHicn6ytlD6NbwvQpIbg+Cq?=
+ =?us-ascii?Q?F7DXFWHXAlEHxKmm9Ax6laE4V2Zh/Dxr+etzwnEygFsXX7LVPSeQkqvi4gwW?=
+ =?us-ascii?Q?Rx1oGDxKo4DttOjnatVE5+ipLkrgUTq7TNSg9iB7F9sgZtP6kB1PRVcmv6Zq?=
+ =?us-ascii?Q?FYlISLLui3hF+Bl8jg0KukzLLoVDmWEYwedbpi4PTrP/R6ptaxmi3hw9YlVi?=
+ =?us-ascii?Q?GGQyDRCiNw=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68d480c6-822b-4a30-2c73-08ded5b5381b
+X-MS-Exchange-CrossTenant-Network-Message-Id: f6e5c3d4-ba81-4591-cc9c-08ded5b75064
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 08:05:44.1452
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 08:20:43.9379
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MhnOiRte4suZMAaBEid/owmDY8omKujT6n9wG2EHlMkyeq/qew0fzlmvGDXbKpCdCNotU+FaeJA/mfP/BUAQGg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4401
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8Wk4pdhLcJTbLix7X3Sx5prp1fBzSHJWBwHNq9o0k/ddm9tvLwZDmUYJ600HeqqP0wisflzTz9Er/VYMFJBrcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9167
 
-On 2026-06-29 at 17:09 +1000, Alexandre Courbot <acourbot@nvidia.com> wrote...
-> On Mon Jun 29, 2026 at 2:55 PM JST, SeungJong Ha wrote:
-> > On Mon Jun 29, 2026 at 2:52 AM UTC, Alistair Popple wrote:
-> >> Given the inevitable conflicts that will arise from trying to merge several
-> >> different series doing bits of the same thing I'm happy if someone wants to take
-> >> this patch and the others and roll them into a single series. Alternatively I am
-> >> happy to take that on - hopefully Alex can provide some guidance here for what
-> >> would be preferred.
+On 2026-06-29 at 17:17 +1000, Alexandre Courbot <acourbot@nvidia.com> wrote...
+> On Mon Jun 29, 2026 at 2:10 AM JST, SeungJong Ha via B4 Relay wrote:
+> > DMA-coherent allocations (CoherentAllocation/Coherent/dma::Pool) bound
+> > their element type on kernel::transmute::{AsBytes, FromBytes}. This RFC
+> > lets a type satisfy that bound by deriving zerocopy's byte-safety traits
+> > instead of a hand-written unsafe impl.
 > >
-> > Agreed it should be one series. Happy to help or fold in my part --
-> > whatever Alex prefers.
+> > The bound cannot be switched to zerocopy wholesale (some DMA structs are
+> > unions that IntoBytes cannot derive), and a blanket bridge impl is
+> > rejected by coherence. So the series bridges the two per type:
+> >
+> >   1. add the bridge macro impl_transmute_via_zerocopy!, which emits the
+> >      transmute impls only for a zerocopy-derived type.
+> >   2. re-export zerocopy::Immutable from the prelude.
+> >   3-4. worked example: convert nova-core's GspMem and msgq POD types.
 > 
-> Since there is no particular urgency to switch from transmute to
-> zerocopy, I think it makes sense to merge things in an order that limits
-> churn as much as possible.
-> 
-> This means the conversion should probably be done bottom-to-top,
-> starting with the bindings, then the types that embed them. For the
-> bindings, `#[derive(zerocopy_derive::most_traits)]` should be landing
-> soon [1] and I would like us to understand first whether that is
-> something we want to use with the bindings; if so, let's wait for it to
-> be available (unless there is a good reason to convert quickly) as each
-> change to `bindings.rs` is almost 200 LoCs.
+> Can you give more details about what the macro is for? My understanding
+> is that it is a temporary fix for the generated bindings; if so, I'd
+> prefer to apply a definitive solution (like using
+> `#[derive(zerocopy_derive::most_traits)]`, or updating the bindings
+> generator tool) rather than something that will be removed later.
 
-I think it makes sense to wait, if only to avoid churn on the generated
-bindings.
+I think the context is in the description for patch 1. It's not directly related
+to the bindings generator. Basically the problem is that these bindings are a
+little bit unique in that we access them using the dma_write/read macros. In
+other words we use these with Dma::Coherent which still requires the transmute
+rather than zerocopy trait bounds to be implemented.
 
-> Since Alistair maintains the tool generating the bindings [2], I think
-> it would make sense if he takes care of that part (bindings and anything
-> embedding them) as well.
-
-Agreed.
-
-> There are also types in nova-core that do not depend on bindings at all;
-> for these I think it is fine to take the patches that have been already
-> submitted if they apply cleanly and build, as these are good
-> opportunities for first contributions. Nicolás was first to send
-> something for vbios/firmware [3] so I'd like to consider his v2 first
-> now that `-rc1` is tagged.
-
-Yep - given the interest from other contributors I'm going to leave all the
-non-binding related conversions alone. In other words anything that does not
-require changes to drivers/gpu/nova-core/gsp/fw/r570_144/bindings.rs would be
-good for others to look at, and thanks for the contributions!
+That said I think the correct long-term fix here would be to fix Dma::Coherent
+to make it work with the zerocopy traits. Not sure if anyone is looking at that
+or not.
 
  - Alistair
 
-> For the rest, I'm happy to merge anything that applies - small patches
-> limited to a single module should be easier to process and less likely
-> to conflict.
+> I also notice that the macro is in the Rust `transmute` module, but the
+> only user is Nova; so it should have been either be Nova-local, or used
+> by other Rust modules.
 > 
-> [1] https://lore.kernel.org/all/20260625231919.692444-1-ojeda@kernel.org/
-> [2] https://github.com/apopple-nvidia/nova-gsp-binding-generator/
-> [3] https://lore.kernel.org/all/20260621143647.264770-1-nico.antinori.7@gmail.com/
+> But intuitively I'd say that we can (and should) probably do without
+> this intermediate step. But please let me know if there is something I
+> missed.
+> 
