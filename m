@@ -1,120 +1,128 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DFA1E2834
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 19:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782762362; cv=none; b=Z4cwP+6I/oQrwLjiooJbysilmB0VV/SXhctZyzo7NQkRDiorjZMk0V/eTG2oJyXIZzMjwskHJjIENVzMOE0aHwQHfutCDjO6WtNebARpUFp0MyN5LSlCLBDwJ+Au+qAKNJtiHxtcWBDq/C8Ds45h4a7MaB/dGOY1bUuWMyyjHGs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782762362; c=relaxed/simple;
-	bh=hY4JgavGrEWhCJWnwiRyUiQPfJQ1CdLm+cvupsbV5M4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Eb1E9Sw+ASbxZvfPL4EViSJFQR//QN2zz7k344e+PsgssuQcZKSmM9ENXf054tOB2i4PXDpyM6x3u0m5hoZmMKs3Ede5GhbNP/082h6vuFAd380pukya2WUnctiRwTRUQ15+IqmOvQnI2Z2M8dAFuVwWOE4bHNGUxHeCig1V/5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nr75oke4; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95B827816C
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 19:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782762678; cv=pass; b=S94V1eL3R7e/+ezlc+pROBlTPycXt6YS/SRbS4eK8Lz7Xw9Hd9CIS0GERM8Z2TAEg/dh5c85LQvS2I29je9tbINTRKP4oYF6NTVwL1t5yVx9VGXfOK2GGK0juQuL6K+QsB68WCurCHDkz3ZQu2O/T++5kts3RtgQQ0DCdK6PgDE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782762678; c=relaxed/simple;
+	bh=GYvQZtHKiSZ9Cl/h8gn/k3hLFG3jFxoOR3EaXdOu6tA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J4TPbRR2bR26m/yiq+bM3uBh2izBZhcQR8Gn3aG5qP5wc3+hoC8YMMj3TKS9tVl1Dgz2fAVNsGN+vC80yq0TDlfQF15Woufoj9S9TWKeCz+GiI1Ytof0UJnKuGIjOj7Y/cENIFqQE+GwKHqKCtCfAazKTMV/uN/HkP5InWySESY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWSQtuh0; arc=pass smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nr75oke4"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-13986d61b4fso5192383c88.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 12:46:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWSQtuh0"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-30e869ebc19so184476eec.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 12:51:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782762677; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BkWxfbH2p3LjxIer9CJ5Vjwdml7nl/GrdquL8B6y0+S2cMxHMWN6yN5/P9nKWx2qDb
+         Iith1qKf6jPiESDXz6pIy0czJG9ner3kDBM1ewMXurG6eeOLxi2VTxURW06llIaKoXre
+         P66vCJgdJbzsN1ERKeYj0ymcqciwLzEXT06do0mk8lVaRStTL/uZTMiU91QG/ShGD44N
+         Fc2R587TN1T0OW0URobpU+2p0Ub7tIgIouF3V4QCsClJkN6WNETg/tQvoWZPtVTQx70s
+         31CZIpEAlwLXd/QL6CiD9GGRMVCNJyO9bH8kX+jvuCdL1PuMzfWQFD955FSp+kGBf71p
+         fjzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GYvQZtHKiSZ9Cl/h8gn/k3hLFG3jFxoOR3EaXdOu6tA=;
+        fh=V1CNvy4l8Sg6xX4yMkgeCsiiWFZCD/51O+nl1XbrGPM=;
+        b=pLsY0wCgQBIq7LB5JiA2kVkOK/fwg+uTlMQBK760nFA7xlNyqEca1IEGx0F9t/NmyF
+         rO181I45f13huQELDzMo4aEUGk0RBjlFwPsXDoBjBiyNxVjU7g0fDB3dAc4nP2gRTSBq
+         jzEhSsOBm/Q6ZZt56D10rBMAE1uZh5BmFI8XeNWRRQbVpikWBll/s205eQlc/BiEO4OB
+         kahiC8IqLv7+snuxa7HxFgpjPfyPGaPM58JJRjoTYLhhi2ZgD7FiLS8NCfrEtvYmNV1s
+         uzv868TC7/uToG54EjFF4QRruqMKp2ApnAX9SyzmOukUvhZfPom14j0J6l+7vBkl/5Sj
+         PQOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782762360; x=1783367160; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hY4JgavGrEWhCJWnwiRyUiQPfJQ1CdLm+cvupsbV5M4=;
-        b=Nr75oke43xuIG76aPGPf/erhsH33PKy2YEVTL1A9sqNAYOC4JM4lWFJjtcdg3Pt9Qt
-         ua2mEIDRGtInGXs+sR20ZUrCJE6hAtqOTuI1k8aB+KXUpPsjFGwGwfL04HQ14FIzNrkc
-         3xVs/avSDIDArvDmCZkwo6y9vrYGOkiOo7QfjWoqPQKqiJqZqjnv8j/zNSgLVQzjskFC
-         oStK2PlbM9CxvLwWcmrbPJxZe/bF6GOrCpYll5vhsWSLnUKMMHh/KqUPcFFcU8KeZMvf
-         psWqyX21o9sd8/s2aczwFVRZDQdTeKoi51treTjdEieH3xlT7MbMrcS0EexylRUZC64K
-         VUAw==
+        d=gmail.com; s=20251104; t=1782762677; x=1783367477; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GYvQZtHKiSZ9Cl/h8gn/k3hLFG3jFxoOR3EaXdOu6tA=;
+        b=FWSQtuh0UJpDJu1mNYhBzOPYoKwbuKvmzBlNUiOErkzhkMa41en/UIDgULg/UtlRdq
+         uh7rvF5ViOV+NPdw/pF4bdQaQNiVAXcC0/G6yyc+E5Zj2sL4kkJuptbebASYhcH9W3bG
+         bEKJai5XSclVrC81x+7bJGon0C0KGyLGN1J8Biq2VmOmP+B4GYudOH2OKUZTfyf9QHkA
+         Njl82L4RkdoB7VsbfOrmJYlTiplNfigk0GvRVc9g8PcCYsmjK+v44ZRJ1RRMdmsPflp9
+         GRxk6x2xGl3sBKGO8BKG5x36IrEKI3PY9EI4D7ewFazSn1qkDnK20bJGanp0iV8jto0p
+         oIiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782762360; x=1783367160;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hY4JgavGrEWhCJWnwiRyUiQPfJQ1CdLm+cvupsbV5M4=;
-        b=jpnD8Izrl7tqM0a+0F9aVyH3Y84f1PczIAxPX7BeZv+4BhhqHcmW+Mvi11/U/SbIC+
-         047jSA/f7vzb06XcImNdeyHmZHC/VSlKgdULaUpbsCFhsAcHBS9NSMkcrz2tm3wu0nBw
-         ZKmf1xzOHQtGdqJ+UTSKXNG/s1HXZqZmOp+ApxYGGemj0yf2eA/YjOAvFQMtnSxkpnfp
-         EtWExkTcJTMZTACkfqUvrz6gycbYCyuC9wgTAJ4FwAv0DwV3L7kTiolcrxRFIn5GuR5V
-         5shgSiEG/XKsj4HZ3A4P2VAWA4Nlfa+etunVjvnHEx/8UxbH59jcXYj4x80sKQgD4yER
-         tVSA==
-X-Forwarded-Encrypted: i=1; AFNElJ/OaePpeuwXVaHpFKCdL1ICqu2IltPvBml1gCjXaWgMBE3gXPUm3sHRF2dAWJbPBAi4+2HnVJ67xHve7hVjsg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywlq80kZUV2Fy+qK7ewp0Ccyj94pRh6h+DvwASnOXmb4wFEUhYE
-	1SYbKEDVDNdv9pEaPeejUQosyM+Zq178qMlolCDKqG97I+zkC8rQe1M=
-X-Gm-Gg: AfdE7clfWrzGEzCXHfjHLglrZLwj2l3SG/60c3FEInNtbp28dmV/XBnoB43DkSUwI74
-	67B/TbF3jmttGQSg3sLJ0xMllema+VYTd0pErq19u9sDA7O5hHQQofhIqkbRuF/hNWSa4+qjwBD
-	da4v+s4nkNhOOeE+rq+hIrpodeUvrsVQm4IVw7FNlyAt0hqBtSTle+BP1+KFlxmLd5VnimyGa9n
-	uGFcscqK2J8e5soH4oY+5AdjTlqKIy6iSenSH4uNhyx2eehz3eo5Da1DAYQIAXRSqwE7L2nKnWN
-	hCj//2N+gktlPL9JTmD33YkGmGEVpqfBp+Khaetdy42Xpu58iVQ2plu3GW1KFNZDnWVG3O3sOxq
-	pm2rnJSAwShjsQQxigm0cJ0zJRIkwW/PC0oKtGYJDeCvwJNaWEt3RiAR2qRMCUVyZxJEvvbNxCz
-	KwNB8y+GN3U5N+4XMMXdeCc/U7R6UvDX5FF30Kpi1s/QrPt2sX
-X-Received: by 2002:a05:7022:41a6:b0:136:e639:9c05 with SMTP id a92af1059eb24-13b2a1af5cemr407270c88.31.1782762360212;
-        Mon, 29 Jun 2026 12:46:00 -0700 (PDT)
-Received: from localhost ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b2ab30047sm571436c88.8.2026.06.29.12.45.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 12:45:59 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782762677; x=1783367477;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GYvQZtHKiSZ9Cl/h8gn/k3hLFG3jFxoOR3EaXdOu6tA=;
+        b=dujRmI7TAOJR6x9cQgpg25RqBaU7ciiQurDahRMhSQxGrUR+J9ieReQpplrtxD8Air
+         qEsyKqCSacUgeAsxQvbWEZ2aG70E3/HPzQJQlcJFlRFmcIVEJxs4EQSIiqTvbOVJGEnL
+         LdbdJqqXSqUuLUbdZW686kFWfdVriSqoys/N5Dle7WCltUwoj3RZ4oWt56nw/4scry27
+         iuG4qQrAbNNCxfN4ojvUJQvGZm9mftGhDSbREbQj4uyEqK2Xu92U+TBQ1jPAj3H0n3NP
+         coqkINYg6FMe70DxYFvcRZuSwPpCv8mVw0PhTAzkWmp0gP+eLVYerjHek8j+TsWsNNPr
+         nKhg==
+X-Forwarded-Encrypted: i=1; AHgh+RqIwKbHKUTOJbfyBzurspnrLo90LqNLoi5AWN9wzS2Djhra9DBjJyQ41TJ6UDryHnLOmaZoaEzosUqZhMPVpw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjWN7dmJhDKe6RwrufiQqyNWiBEApfBqhhQ07m5RF1ro9LV/bv
+	A47F7cGwQls5mYeF8s3nj7TkL+tKx6HgGu+vhZ/TqEOgLRCiu3/G5IwDh7qkgi31+3ClryEUwTk
+	qKPArM9O95GvAd9/6QGJpKkCyChBIaJA=
+X-Gm-Gg: AfdE7clB+gVuf6F6QwbvXJm4D5Ru0cpqmbFnzx0fGjaKTkgDVzyAm3Y7Hqus05WeS/h
+	HptWLvUtRaLdXdb2cymlKiJDJkNmnTHBGv6bDEe6+f6Gtr/HO/soAAd2wevbH/VKvvaINzXIgHe
+	GeU1F5VV+icVZDsSOZp2TQNkDyXhlArIXssF2meRBMlBCN2Q0YU9CdPW5tmD0sUdhELexjJZCVr
+	behji0K4bQuMyuSCAz47i0g8P5+8jZazahPSgft8IJ8H5VIgzsH7kXjP29sMwMZ17CLzpVE34dt
+	6zPq8WCMM5MfJi3gOAgXiZ/TU30hKE9iP+jxudvK8ZAmk6qO6BhvYcB2DvZlOW4gdNCMLCXaUlC
+	5Dm4mdelkBzIwpczMZNGgBxc=
+X-Received: by 2002:a05:7300:3f27:b0:30c:6a54:3fe6 with SMTP id
+ 5a478bee46e88-30ee147fc23mr224426eec.8.1782762676955; Mon, 29 Jun 2026
+ 12:51:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 Jun 2026 16:45:53 -0300
-Message-Id: <DJLSIEZ5OBYX.APFOKYYKPU5C@gmail.com>
-Cc: "Joerg Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Boqun Feng" <boqun@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda"
- <ojeda@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Robin Murphy" <robin.murphy@arm.com>, "Shuah Khan"
- <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <iommu@lists.linux.dev>,
- <linux-kernel-mentees@lists.linux.dev>
-Subject: Re: [PATCH] rust: iommu: replace core::mem::zeroed with
- pin_init::zeroed
-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
- <gary@kernel.org>
-X-Mailer: aerc 0.20.0
+MIME-Version: 1.0
 References: <20260626203122.713317-1-nico.antinori.7@gmail.com>
- <DJJOZNFW51LZ.IKTXQ8ZIVO55@nvidia.com>
- <CANiq72kdCAyRUmXFcqQfkHpk1miG8Gagsn0_5U8p4WpKxv9d_g@mail.gmail.com>
-In-Reply-To: <CANiq72kdCAyRUmXFcqQfkHpk1miG8Gagsn0_5U8p4WpKxv9d_g@mail.gmail.com>
+ <DJJOZNFW51LZ.IKTXQ8ZIVO55@nvidia.com> <CANiq72kdCAyRUmXFcqQfkHpk1miG8Gagsn0_5U8p4WpKxv9d_g@mail.gmail.com>
+ <DJLSIEZ5OBYX.APFOKYYKPU5C@gmail.com>
+In-Reply-To: <DJLSIEZ5OBYX.APFOKYYKPU5C@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 29 Jun 2026 21:51:02 +0200
+X-Gm-Features: AVVi8CdBhkO1DZcCDL2isjLxHOFx3Y1StSa9vQ4O39-R9Hyrw-U-_JqScw702ps
+Message-ID: <CANiq72m80vip+hz5RngvgH4VxU30amzS-ePr6KVKwKvhf3=Ycg@mail.gmail.com>
+Subject: Re: [PATCH] rust: iommu: replace core::mem::zeroed with pin_init::zeroed
+To: =?UTF-8?Q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Benno Lossin <lossin@kernel.org>, Gary Guo <gary@kernel.org>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Robin Murphy <robin.murphy@arm.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-kernel-mentees@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun Jun 28, 2026 at 7:31 AM -03, Miguel Ojeda wrote:
-> On Sat, Jun 27, 2026 at 10:35=E2=80=AFAM Alexandre Courbot <acourbot@nvid=
-ia.com> wrote:
->>
->> Note that you can also use `..Zeroable::zeroed()` here since we are not
->> in const context. Not sure which one we prefer in this case, but I'd
->> personally err on the side of not referring to `pin_init` unless we are
->> dealing with a pinned object or need to because of a const requirement.
+On Mon, Jun 29, 2026 at 9:46=E2=80=AFPM Nicol=C3=A1s Antinori
+<nico.antinori.7@gmail.com> wrote:
 >
-> That sounds reasonable -- Benno/Gary, any comments?
->
-> By the way, speaking of that: the docs of `zeroed()` (both of them)
-> could mention the existence of the other (and the `const fn`
-> difference).
+> If it is ok, I can send a patch modifying the doc comments to link both
+> functions, noting that the const version should be used in const
+> contexts/pinned objects and that `Zeroable::zeroed()` should be
+> preferred when possible (as Gary commented in [1]).
 
-If it is ok, I can send a patch modifying the doc comments to link both=20
-functions, noting that the const version should be used in const=20
-contexts/pinned objects and that `Zeroable::zeroed()` should be=20
-preferred when possible (as Gary commented in [1]).
+Of course, please always feel free to send a patch (it depends if the
+maintainers end up accepting it, in this case Benno/Gary, but sending
+is OK :)
 
-I'll send a v2 with `..Zeroable::zeroed()` shortly.
+You can also send it as a PR to the pin-init repository -- I think
+they still accept both patches here and PRs there, but a PR there may
+be easier for them.
 
-Thank you all for the comments!
+Thanks!
 
-[1] https://lore.kernel.org/rust-for-linux/DJKV3IQ0SXA1.30T5Y71AL6KV7@garyg=
-uo.net/
+Cheers,
+Miguel
