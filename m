@@ -1,291 +1,80 @@
-Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742B93F1AD5
-	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jun 2026 08:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E165A2571C0;
+	Mon, 29 Jun 2026 08:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782721795; cv=none; b=FFU6sZ+h+CDLClDHS8ZOiCpcSYg1ru46BSySB+MWEB+Pk05/jFZMv1QAg9XradwZG/r8Hyq7QqI2+OQmbgsQBNi6uyMyp2MCCSe6fhWtdXwORT0YG7zE9kTaK07GvcbYgNZ9Z1brZzYGRYrAaFwACyi48TN3QoQlJSr06NnzOlQ=
+	t=1782722782; cv=none; b=AAU/nY4dn2T/muLNJRelVkWafKNFgzt8MkokWpIY7MgvM8TR95W73/A9aMvVnlZJMZpWmGDhYYBTWFyh8W3laE8ld4OSr+IdrCL1e5F0j7KBu/aG8IRgnCduyaRhtGcSTKiMtQBNK3R757atX/9/XDSIwd6eheK1YhI8358JHr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782721795; c=relaxed/simple;
-	bh=Id9xLPNKbg5OWIdweCc1COuge7p5Pn8IIzoY8l3TedA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IjGbDEMCevESA4nqEtKvg4qwDdIwrnsQHSdI1Krl/xA7lPOBxETRzd/9uObf8iLPviy6h21ZBiW3l3UC8VGh6UZwgfpVRBi102SU4Zzwgtw13YwZ0oKQmcHriseu+QxabY7evzHWMK7WVR2+t11qIOKI9TCAz7asxLAS6QKfJbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=rqtdQ7f+; arc=none smtp.client-ip=57.129.93.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1782722782; c=relaxed/simple;
+	bh=FftD6cxtaLafMa5Abl1ZmNF0gUSqDocLlPF/xc6INGg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=bs22QGd55CyIwoLLEosrx+9hgqbllnRDuce0Ai/JqzHVErQWfzPB46828Xos4M96IV92XAa9iUuR+J73QZmRtUG94+j3CLPpg4aU86/HgZ01ox6JxrAZsi1VYi8DXMvdh1mFGLH5zN7y4XssCp4ijoB1rt6EnZiXBj6b4+gieuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmKZe48j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="rqtdQ7f+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1782721775; x=1782980975;
-	bh=WbqvebtWAj0YtJohER5RHxaa/NC/OEAtmPKk+oAJGis=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=rqtdQ7f+5623PJZgD/6ikZQAA82lmfhviw31P8LaCrMIubC/1CLAU+eWVgvdJduAM
-	 eW0cyroTlKOYgK2ZAr+HrpbtL4Z+MCMqG3+tNZB/UFVqaPzkq+cF75NDsIf48AJIAX
-	 AuBYHy+/kL7XIPmbsqMpsrFq3TOPWqmWsmieubd2VBHSKFb/kQ1qB+CSV9rytIJT+a
-	 qO2K1t7jKE8416lJmREy7bwYZzR1HVirsix0uXh1t2iUGg+umXq/V05GZwsI1zw3hx
-	 FltgKv98KhEM0mAd9k0t9+Ney+BXoUrEy9PhM33xmDj+jRmJ2bHBXqNWkN62slRa7d
-	 6ypYQXY5zwfbg==
-X-Pm-Submission-Id: 4gpfZz39P0z1DDqt
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: leixiang <leenollei@gmail.com>
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	ojeda@kernel.org
-Subject: Re: [RFC PATCH] KVM: rust: add Rust reimplementation of eventfd
-Date: Mon, 29 Jun 2026 11:29:05 +0300
-Message-ID: <20260629082930.23182-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260626083212.39611-1-leixiang@kylinos.cn>
-References: <20260626083212.39611-1-leixiang@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmKZe48j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D771F00A3A;
+	Mon, 29 Jun 2026 08:46:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782722781;
+	bh=FftD6cxtaLafMa5Abl1ZmNF0gUSqDocLlPF/xc6INGg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=bmKZe48jTpzSYweb3znBgB9zJA0plSnh6pv6hWFbEM6xIEUkWpqQN3FvxltFX7QpI
+	 dBSAT4LeFgAB8iiNyyl39hvw10sMbXeNHfjwSM9RLgh6xm/KbRJ/sHA8Ee4uoJwmHl
+	 DdKP9Koswd09L81TeRzkj7wpgYBYlRae75a1bwU2clmA8W0GPbaBFrRtaop/WIVMbh
+	 zYPICgbE2fK7f3uop4FDLlleL4EoSNYzXCg4NbK1YzQcI28/wEOBvB+qF2v1+y3fUp
+	 asI7QrzqaHBD7mz41gcvbA1NCqCca7psPgTR5C5D5Mp1pRbbW24fnYyaFy0t4bEYpK
+	 7RM1+jvDTsGng==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 29 Jun 2026 10:46:16 +0200
+Message-Id: <DJLEHDNJCUD0.38PFZ5773D6BX@kernel.org>
+Subject: Re: [PATCH 0/1] nova-core: Convert bindings to use zerocopy
+Cc: "SeungJong Ha" <engineer.jjhama@gmail.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>, "David
+ Airlie" <airlied@gmail.com>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Simona Vetter" <simona@ffwll.ch>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Pedro Yudi Honda"
+ <niyudi.honda@usp.br>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <nova-gpu@lists.linux.de>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260629025220.1935622-1-apopple@nvidia.com>
+ <DJLAUOEDW6HT.39URSU30Z0HT9@gmail.com>
+ <DJLCF3LR0KMN.1TMKMZEZWKN8O@nvidia.com>
+In-Reply-To: <DJLCF3LR0KMN.1TMKMZEZWKN8O@nvidia.com>
 
-On Fri, 26 Jun 2026 16:29:34 +0800=0D
-leixiang <leenollei@gmail.com> wrote:=0D
-=0D
-> From: ninol <leenollei@gmail.com>=0D
-> =0D
-> Introduce a Rust reimplementation of virt/kvm/eventfd.c, providing=0D
-> irqfd (interrupt injection via eventfd) and ioeventfd (MMIO/PIO write=0D
-> to eventfd signal) functionality with full C ABI compatibility.=0D
-> =0D
-> The Rust implementation leverages RAII guards for SRCU, mutex, and=0D
-> spinlock management, reducing the risk of resource leaks on error=0D
-> paths. It is selectable via CONFIG_RUST_KVM_EVENTFD and replaces=0D
-> the C eventfd.o with a shim providing only weak default functions.=0D
-> =0D
-> Signed-off-by: ninol <leenollei@gmail.com>=0D
-> ---=0D
-> =0D
-> Hi all,=0D
-> =0D
-> This is an experimental/exploratory RFC for a Rust reimplementation of=0D
-> virt/kvm/eventfd.c. It is intended as a learning exercise and a proof=0D
-> of concept to explore whether Rust can be practically applied to KVM=0D
-> subsystem components.=0D
-> =0D
-> I fully understand this may not be the direction the KVM community=0D
-> wants to take. If you feel this is not worth your time, please ignore=0D
-> it entirely. If, however, you find this approach interesting or have=0D
-> any feedback on the implementation, I would greatly appreciate=0D
-> your comments.=0D
-> =0D
-> The patch provides functionally equivalent irqfd and ioeventfd support,=0D
-> gated behind CONFIG_RUST_KVM_EVENTFD. It uses RAII guards for lock and=0D
-> resource management and maintains full ABI compatibility with the C=0D
-> implementation.=0D
-> =0D
-> Testing: Built and boot-tested on x86_64 with KVM enabled.=0D
-> =0D
-> Thanks for your time.=0D
-> =0D
->  rust/bindgen_parameters         |    2 +=0D
->  rust/bindings/bindings_helper.h |   18 +=0D
->  rust/helpers/eventfd.c          |   34 +=0D
->  rust/helpers/helpers.c          |    7 +=0D
->  rust/helpers/kvm.c              |  221 +++++=0D
->  rust/helpers/seqcount.c         |   30 +=0D
->  rust/kernel/kvm/eventfd.rs      | 1419 +++++++++++++++++++++++++++++++=0D
->  rust/kernel/kvm/mod.rs          |    8 +=0D
->  rust/kernel/lib.rs              |    2 +=0D
->  virt/kvm/Kconfig                |   15 +=0D
->  virt/kvm/Makefile.kvm           |    7 +-=0D
->  virt/kvm/eventfd_shim.c         |   52 ++=0D
->  12 files changed, 1814 insertions(+), 1 deletion(-)=0D
->  create mode 100644 rust/helpers/eventfd.c=0D
->  create mode 100644 rust/helpers/kvm.c=0D
->  create mode 100644 rust/helpers/seqcount.c=0D
->  create mode 100644 rust/kernel/kvm/eventfd.rs=0D
->  create mode 100644 rust/kernel/kvm/mod.rs=0D
->  create mode 100644 virt/kvm/eventfd_shim.c=0D
-> =0D
-> diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters=0D
-> index 6f02d9720ad2..c433a6ca5336 100644=0D
-> --- a/rust/bindgen_parameters=0D
-> +++ b/rust/bindgen_parameters=0D
-> @@ -14,6 +14,8 @@=0D
->  --opaque-type alt_instr=0D
->  --opaque-type x86_msi_data=0D
->  --opaque-type x86_msi_addr_lo=0D
-> +--opaque-type hv_.*=0D
-> +--opaque-type IO_APIC_route_entry=0D
->  =0D
->  # If SMP is disabled, `arch_spinlock_t` is defined as a ZST which trigge=
-rs a Rust=0D
->  # warning. We don't need to peek into it anyway.=0D
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h=0D
-> index 446dbeaf0866..2d65f2b1672d 100644=0D
-> --- a/rust/bindings/bindings_helper.h=0D
-> +++ b/rust/bindings/bindings_helper.h=0D
-> @@ -65,8 +65,12 @@=0D
->  #include <linux/io-pgtable.h>=0D
->  #include <linux/ioport.h>=0D
->  #include <linux/iosys-map.h>=0D
-> +#include <linux/irqbypass.h>=0D
->  #include <linux/jiffies.h>=0D
->  #include <linux/jump_label.h>=0D
-> +#include <kvm/iodev.h>=0D
-> +#include <linux/kvm_host.h>=0D
-> +#include <linux/kvm_irqfd.h>=0D
->  #include <linux/mdio.h>=0D
->  #include <linux/mm.h>=0D
->  #include <linux/miscdevice.h>=0D
-> @@ -94,6 +98,20 @@=0D
->  #include <linux/xarray.h>=0D
->  #include <trace/events/rust_sample.h>=0D
->  =0D
-> +#ifdef CONFIG_RUST_KVM_EVENTFD=0D
-> +/* Custom helpers for eventfd.rs */=0D
-> +unsigned long rust_helper_spin_lock_irqsave(spinlock_t *lock);=0D
-> +void rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long =
-flags);=0D
-> +void rust_helper_hlist_add_head_rcu(struct hlist_node *n, struct hlist_h=
-ead *h);=0D
-> +void rust_helper_hlist_del_init_rcu(struct hlist_node *n);=0D
-=0D
-[...]=0D
-=0D
-> +#[cfg(CONFIG_LOCKDEP)]=0D
-> +#[inline(always)]=0D
-> +unsafe fn spin_acquire(=0D
-> +    map: *mut bindings::lockdep_map,=0D
-> +    subclass: c_int,=0D
-> +    trylock: c_int,=0D
-> +    ip: core::ffi::c_ulong,=0D
-> +) {=0D
-> +    // SAFETY: Caller holds the corresponding lock; this is a lockdep an=
-notation only.=0D
-> +    unsafe { bindings::rust_helper_spin_acquire(map, subclass, trylock, =
-ip) }=0D
-> +}=0D
-> +=0D
-> +// RAII Guards=0D
-> +=0D
-> +/// RAII Guard for SRCU read lock.=0D
-> +struct SrcuGuard {=0D
-> +    srcu: *mut bindings::srcu_struct,=0D
-> +    idx: core::ffi::c_int,=0D
-> +    _not_thread_safe: crate::types::NotThreadSafe,=0D
-> +}=0D
-> +=0D
-=0D
-> +impl SrcuGuard {=0D
-> +    /// # Safety=0D
-> +    /// Caller must ensure `srcu` is a valid pointer.=0D
-> +    unsafe fn new(srcu: *mut bindings::srcu_struct) -> Self {=0D
-> +        // SAFETY: Caller guarantees `srcu` is valid.=0D
-> +        let idx =3D unsafe { bindings::srcu_read_lock(srcu) };=0D
-> +        Self {=0D
-> +            srcu,=0D
-> +            idx,=0D
-> +            _not_thread_safe: crate::types::NotThreadSafe,=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl Drop for SrcuGuard {=0D
-> +    fn drop(&mut self) {=0D
-> +        // SAFETY: We hold the lock `idx` on `srcu`.=0D
-> +        unsafe { bindings::srcu_read_unlock(self.srcu, self.idx) };=0D
-> +    }=0D
-> +}=0D
-=0D
-You are adding things that are already being implemented in much better way=
-. For=0D
-example, for SRCU we already have v10 [1]. But even before that I think thi=
-s=0D
-patch has even more serious problems. It has multiple fundamental issues an=
-d=0D
-things seem to be placed randomly all around.=0D
-=0D
-Regards,=0D
-Onur=0D
-=0D
-[1]: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan.dev=
-=0D
-=0D
-> +=0D
-> +/// RAII Guard for mutex lock.=0D
-> +struct MutexGuard {=0D
-> +    lock: *mut bindings::mutex,=0D
-> +}=0D
-> +=0D
-> +impl MutexGuard {=0D
-> +    /// # Safety=0D
-> +    /// Caller must ensure `lock` is a valid pointer.=0D
-> +    unsafe fn new(lock: *mut bindings::mutex) -> Self {=0D
-> +        // SAFETY: Caller guarantees `lock` is valid.=0D
-> +        unsafe { bindings::mutex_lock(lock) };=0D
-> +        Self { lock }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +impl Drop for MutexGuard {=0D
-> +    fn drop(&mut self) {=0D
-> +        // SAFETY: We hold the lock.=0D
-> +        unsafe { bindings::mutex_unlock(self.lock) };=0D
-> +    }=0D
-=0D
-[...]=0D
-=0D
-> +#include <linux/kvm_irqfd.h>=0D
-> +#include <linux/irqbypass.h>=0D
-> +=0D
-> +bool __weak kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *ar=
-gs)=0D
-> +{=0D
-> +	return true;=0D
-> +}=0D
-> +=0D
-> +int __weak kvm_arch_set_irq_inatomic(=0D
-> +				struct kvm_kernel_irq_routing_entry *irq,=0D
-> +				struct kvm *kvm, int irq_source_id,=0D
-> +				int level,=0D
-> +				bool line_status)=0D
-> +{=0D
-> +	return -EWOULDBLOCK;=0D
-> +}=0D
-> +=0D
-> +#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)=0D
-> +void __weak kvm_arch_irq_bypass_stop(=0D
-> +				struct irq_bypass_consumer *cons)=0D
-> +{=0D
-> +}=0D
-> +=0D
-> +void __weak kvm_arch_irq_bypass_start(=0D
-> +				struct irq_bypass_consumer *cons)=0D
-> +{=0D
-> +}=0D
-> +=0D
-> +void __weak kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd=
-,=0D
-> +					  struct kvm_kernel_irq_routing_entry *old,=0D
-> +					  struct kvm_kernel_irq_routing_entry *new)=0D
-> +{=0D
-> +}=0D
-> +#endif=0D
-> +=0D
-> +/*=0D
-> + * The Rust implementation provides kvm_irq_has_notifier via #[no_mangle=
-].=0D
-> + * Symbol export for KVM-internal use must be done from C.=0D
-> + */=0D
-> +extern bool kvm_irq_has_notifier(struct kvm *kvm, unsigned int irqchip,=
-=0D
-> +				 unsigned int pin);=0D
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_irq_has_notifier);=0D
-> -- =0D
-> 2.43.0=0D
-> =0D
+On Mon Jun 29, 2026 at 9:09 AM CEST, Alexandre Courbot wrote:
+> Since there is no particular urgency to switch from transmute to
+> zerocopy, I think it makes sense to merge things in an order that limits
+> churn as much as possible.
+>
+> This means the conversion should probably be done bottom-to-top,
+> starting with the bindings, then the types that embed them. For the
+> bindings, `#[derive(zerocopy_derive::most_traits)]` should be landing
+> soon [1] and I would like us to understand first whether that is
+> something we want to use with the bindings; if so, let's wait for it to
+> be available (unless there is a good reason to convert quickly) as each
+> change to `bindings.rs` is almost 200 LoCs.
+
+Doing another subsequent conversion to most_traits seems trivial. The upsid=
+e
+would be that we could remove the transmute::* types from nova entirely, wh=
+ich
+also allows us to switch the DMA code to zerocopy.
+
+No need to go for it with might and main, but a minor inconvinience like th=
+e
+above might be worth taking, as switching to zerocopy in core infrastructur=
+e can
+simplify backports.
