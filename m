@@ -1,323 +1,154 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010027.outbound.protection.outlook.com [52.101.201.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D98339708
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 07:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782803819; cv=none; b=mfQ02wNOjyiyelcf2XjNgHDFp4he/0NXKiORxmHtm2cGadkxji1vKgsE49VEOtIwAHhfjuT4pcQWyLxIug8K9lEWlk9EZej0WqqCM6fQ8aJURwuAF7amdE6f11gKawuwfvRKYnWXpDoQbmXBfl9IEAfiE9j4LYvBogI41TVxERc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782803819; c=relaxed/simple;
-	bh=pOOemPkiRmVrNw736454WE7iU9wJf2OhG+4ZzNrZOYs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sy4Tm3k/rh9QybdDuI5CijXlmodIpN2ZkWteX1tUBffoKioklNJDdygkIYFKr4QbZF3p+uDbsfsw0Pz5zfaEaVski3fweenjzO89q+NfA7INh9Du+jlFkKr61ZG2QmnPjfCAiv5M63dkSvazYSLEzrHHglDJmuX0RdqPFF5eloA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c1g+ocJd; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8A128DC4
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 08:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782808316; cv=fail; b=qstVQw83H3aD4+0NjG0jPTdxYFlnqSjXoyel4lSYQJYQwzOzH0UfJZ8UBiEabFkAUQThBZIGSldG1ku/HGW40eedSDIHuYp13LVN17q+cAAGAFCy9+ITsnaKmhRrb4DXxGNPuH4QAaX9QQoUPGw8vD8Sxb4KYV9uY51MhMSeOXI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782808316; c=relaxed/simple;
+	bh=WEZ004OqG5U8l0bUXf+V9mKD1YmOiamnJJXSyvq7FJ8=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=WcjWw2wPuWGzIJS9vwBZg7EBZNMWc/r8iRkzsRPHiLaxQjYt8h9S2vifdJjdNSTfd6eHt4uUMCOdlUTCjJ2Vjq/LqPnj/LzVfxKnOoYd9oty3rmCS/9Wh7fSck6cFyhJHMI9vFQHxE4rm2rSltoXGE9AMKI7waKjVlvA9i9QPoQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=c3JqZVHZ; arc=fail smtp.client-ip=52.101.201.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c1g+ocJd"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c821a50615so21023705ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 00:16:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782803817; x=1783408617; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CYyn+xEil0xBM3TxCBPpfEJHabNu7Ptyac8XpJ/du0M=;
-        b=c1g+ocJdQzazLnnZUFrRkofNfRH3QfI3AOh029LM94d02z8xlVzliMeCMdY22haFsg
-         VqCVwjJkm9QDXfWmI6nprfxMsKaXFnf0t7ko5GOioHeru1Gfwgs7lEDqHQomR2F2ut77
-         49dJSrYxOa0ivgjcQpxrAQYwpaMru7JIp0L27Jqxn3xySuzOrIM8CsXVQ8aTYc5A1Ta7
-         xZfFq659GQJ1l60OiNWE0N1Aq9O9luH4PDQPElmC5Jz+tfXXeQNhGwwWhy05E7ZHJx71
-         EwMPUxdT9jXQ142OCvx3+nbt8yr80VEz9dijseJgstaWh+aazjZQbEMOKHJ3XtvF2rRC
-         7pEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782803817; x=1783408617;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CYyn+xEil0xBM3TxCBPpfEJHabNu7Ptyac8XpJ/du0M=;
-        b=NHa7WTLOnT5vt+ehEU+ebAgZFGfZqwKfr8Yul9fpc3eBo7Jz0YvzD30VMnRemkcYT+
-         WOxr73dncdxkwPXSZqUCFI9Yrr/QBO62FErUDRKBtWQQ/z/vH5sd2rlCAzgse1Kvf+Jz
-         ycBg88kXplRjiac/yvv8OnbT7/yZMK06jAnb1oCmUIJHTiIY9fmx0ZDJojjsUoES01Yx
-         K4RdKRbYAWWXDSUPbeIRqoZlInG1hfKfKZ610Qpl1YH2mJbrEC1gdUbQY/ekMvdmE6Jc
-         CYaz+bv5ha6HOjLVcyWx58tTePgerI9bZfxko4U6OYhNR+eVpAcQ+596bLStb8WdiagP
-         wtJA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrtz8vv7RjbY4/aMypWgBqE4FY/+IzISyMJNrNyzypLUs8wXmN3GsAItaZQp1hVmNn/GXEpklJa39Bqxd1i0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyMMQwcl+9Nn0Sh4rscLaoRI6eIpsPjJBR0rhqupsf9SjUq6Tu
-	skv62ke2nnTz2iLr3x0QXT2mOWaZ1aEhJQSweRog5UlzfODCCQlEiUly
-X-Gm-Gg: AfdE7ck7UKA8J06wZp/H4vcOL7W1rqQE/dJ2LTdJoBn0XZj/esmhsCeWXbqPo/77soj
-	Kf7HXeci0ryPK/gxnMLI8Hl8n3zRS4EY0xo97K/uQsvyN2TKlilfpL5XMf4GrGKcNHPTAr+oWqa
-	vuNnh5XQyKZgNGx8t0GKTY+441D+z7SGyEW6Jdjq23AWNttlyeLMHaOlQKsPKTsO/4DsAy/a9lh
-	60P5vOSjmMwV3XJ7/1Wn++1zTY4UJEcuVkG7Lzmo2ufiWxPQ+tVBEVmjzDGO8r8Vp2QeKVys9BX
-	f7b6lviB26xEEJX5zK2X8GYaDOFEEdNvDFvbu8lx1bSinC05O4oJtUFNXSZ/pXvoCWIoSOGw7UE
-	8aTWnG1gC5l5FQNfnLZAthZZacEG8sDQbTnPR6WZfMD7y+NzRacpcnDSvD5yZezucG2mJ7N7SnX
-	wLcN1sj68neQp1cU2H
-X-Received: by 2002:a17:903:4b4c:b0:2c1:ea95:8297 with SMTP id d9443c01a7336-2ca2d52b530mr17635735ad.7.1782803816961;
-        Tue, 30 Jun 2026 00:16:56 -0700 (PDT)
-Received: from [10.42.12.77] ([116.128.244.169])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a70c37sm7870915ad.5.2026.06.30.00.16.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 00:16:56 -0700 (PDT)
-Message-ID: <a0e5782a-e1ee-4e12-8f78-d202184568f8@gmail.com>
-Date: Tue, 30 Jun 2026 15:16:49 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="c3JqZVHZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iR3yIth3kIZVzVdE4NHrEG5kdbbpOSkf2dEqtceVMZMw6JkL8kXVC522Z048qXE2JnIn1veBLKfJWMsTej+3PbAZoZMHSh94OrOEwCM3LzhJICzSK5ppGFOKb6TSjoFQhkituaYQyTCFUAV4Mn9rZ+AkA2W+/8jj47FozaQQbVXY97ckcESZSeJ/OVZQ9m+aajEtdWvpLQ0h77NWBArTzvKxYUP6DDOz6Y95AMV/OM2Fyy627am1l3bJHlBd7CcITxKbPT6shRPH1L+5wPXV8N3T3mAPnFRHWpfUI5ahVlmpsuivDcdvHTO7RY/VHwPMRg8+d1gXNnTDMcjpIRU36Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eTlCPrTqNPEq37bBO4okSzsGbVHlGno1JLl30auYMGo=;
+ b=fh5Qlyc9NwCyBVcoHHiaF8XGx3AJmd61i/DY4bvNGFuTby35rQIDkfT0Dwaw5rqfCSlr+6WwED2cMKc6IgZLtQljPe032jfgLsWOtAFWQ739qgGTMBoiyUTKAzT9EHLGxsP4CfAJvg2h7byMWATwc4GY7JaDUUq4uf2aIuDkZ6kn+Xv5eg3cvpL2AKDDfzWSTz+WgpiQcFDAyfr4fZ5rLJ1cHTGx+HHJVJ4wNKcEZykIYcBrgeyfHs1/vp72P/BNBuUIhyqkIQAI5TwXcZMZC7eO4p/usd3uLsiAv0IhO6Df1XDvZUlq/7LuLYH8eZKaSKVyotQo7lAVBnGFwjNTNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eTlCPrTqNPEq37bBO4okSzsGbVHlGno1JLl30auYMGo=;
+ b=c3JqZVHZYa90keO44cfaPOgL9Khm+tJKVmD80p6Cy+jkW4jtcJuHzsp1tNRdyeonoguINNxbmTYGxxFV4lfsJW9sN+O7KK2sUKfZb9DqQ0EmZmCrZLT3h/a/U+4DNJjVnx4EvAGOMouq5hI8o7DYfjQgjbCvnZz2TGYvR/0K0NLXURSH/LHn3gzUcqvDcxG0Bg8NtPrHykmCw/p1NQp4ujNfclPfXUd6MU9mTWsX+Qzq2pJIb/veTeCwXlUZv1SKw0XqTgHiPb05jxjlzjmPRZgt86o8/3Zepj7EWHm+EEltIdJg9MVaHyc9KCGtVrf3jLs2UQUsbopHml0XT3gCTQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN2PR12MB4142.namprd12.prod.outlook.com (2603:10b6:208:1dd::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
+ 2026 08:31:49 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0159.018; Tue, 30 Jun 2026
+ 08:31:48 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 30 Jun 2026 17:31:44 +0900
+Message-Id: <DJM8SSFIWO1F.XXJVWIMPWWV2@nvidia.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: error: add remaining error codes
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Timur Tabi" <ttabi@nvidia.com>
+References: <20260629183022.2709524-1-ttabi@nvidia.com>
+In-Reply-To: <20260629183022.2709524-1-ttabi@nvidia.com>
+X-ClientProxiedBy: TYCP301CA0055.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:384::6) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] KVM: rust: add Rust reimplementation of eventfd
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
- ojeda@kernel.org
-References: <20260626083212.39611-1-leixiang@kylinos.cn>
- <20260629082930.23182-1-work@onurozkan.dev>
-Content-Language: en-US
-From: ninol <leenollei@gmail.com>
-In-Reply-To: <20260629082930.23182-1-work@onurozkan.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN2PR12MB4142:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd3695c2-ee92-47ce-f78d-08ded682069b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|23010399003|1800799024|366016|18002099003|22082099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	EbJC6BVEbaoaq2+wjuS1rO5IAc5QHIJ7ajk1l20zHXLHcf3Hj9oKiFN8wlrK0wk/zLV+nbV73qMXLG/nkECsRTMk/EFt0xs7farKaTCrlQk2K1K8kZw3/xEXVcQQlh6rdeN7k7NH1JUWogGRbBmGqX/mhrxkY5TIqfzLi9G0W8Ll9QE4xqmPv14uz+yVc9m1s6729n6QkocxGw7BWIx4IwiN5uSWHwbWLgDHU1Ok3c9bbzkZFzBGM7yL8jjGnKVlCw0k/CRftqiIMfeKGcIzMbcYbSq9Ly997NJs7IVPDbvhj19ZNF6rX7tMaYiqbeTgljYB6fxz8l9wojANGwAdcVdKOXBjdkyShLAys4ebXMejYh4xp8XoLZeXFJytyqKGhx3lhn4pEH++Mg/q7EuD5KiRnhSgN7O+RFTCijc7sj6MotK3fXskOvAHxmZLU8SHRlm+0JJwjfq6r7jvlyWH3rmw8dgtH4eY7NkiCNTEOP2Okf/yGFyL1WO9TlpLWZiR8JCRSDgLN1MDmzvHeg5r2ZSzGolCLf4LTnzz6jJ9qF9gVmR6fxe2MGYn6RkOYiKRRJyxZYuuMwoSAT79c9DNI/XQ2Ly+XNcmpvapQV5HAxisntULnX0UzFiCWsKREspWG7AOC2w5xnX4y89zg97zK1ipCKGVsiBHolqaaQeTypo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(23010399003)(1800799024)(366016)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZWpTSkxIMTZJaDZLSCtTc1ByeXF2d0F4M0I5ckIwNStPMkErMjJuWEMzUUo5?=
+ =?utf-8?B?UXNTSWtCRjNpZkdhU0tSV3BKR1A2d1BlSzdBTmZrS3lndDlSTWZNQ0VXK2tM?=
+ =?utf-8?B?Z1VET1R5dHFCRXRQY29RQjRDOWUwQWVYR2hXY2tUUWd1R1JadnI3OFV1Ynd1?=
+ =?utf-8?B?QzZTZWhwazhOOHpUcXBheWxFOUxod1JkS1FGbnRUN1h2K3F2QXNxRWV5VU5N?=
+ =?utf-8?B?Tmd1NWxCNGc3S1gxN0c3T2Y5VXF0MTNvMlpUSlB6SWtHZmErUFZtTk83Y2xx?=
+ =?utf-8?B?OGNqNm12RkljbVRlbVhDOXVSV21tb2JrZ0lBMFVWVGtHSDJkYkdFSjRPYlZC?=
+ =?utf-8?B?czdHdFN5S3h4bWVGMTNQL096WWUyZmIxaUZub3EwR3RTTjhJMnFsOEVmd1J4?=
+ =?utf-8?B?WEJ3WURxcUJON1hndEVBWHJyRFE2ZU5JaVZ2T2xtbUpJVEhjRm5jZ1ZnWTRW?=
+ =?utf-8?B?SGRCMTh3ejVPajZkQ0luUGR4dWx6VUVnYmFVWXZ1R3RFclhQcVZaMjllcVlX?=
+ =?utf-8?B?Smc0N25wYXI3d1JoWDFhMHNxRDNHUnBrRjlMcDRLdFJvNDFJQ0dhMnVHRFo5?=
+ =?utf-8?B?dVFDT28rdHNoL09HSHprVXVldjNYYW5IUzhiZ04veTIrRWlBQjJkdE51KzdU?=
+ =?utf-8?B?azUwVG0zTHlaZEc4c05zNmIzNTFJMEVXa1NnM1VaYWVFRVJZZVZSOWkyN0ly?=
+ =?utf-8?B?amRIaXJnWVF4R0V0UzRVYXJsT08vMHpKc0FtYTdxanFidU9FUEFyRUNTdTE4?=
+ =?utf-8?B?eWlpTGN1ZmxLcS84THU5dnBKN3lDa0Y5Z0xORkY0OFdkbWQzVkdQWWxVdFdW?=
+ =?utf-8?B?c3VzT2hndnhWMlV1UXBLckdTeEh0ME15NEV1Z09XUWpGeWlvUUx5elVtbjNt?=
+ =?utf-8?B?dGJwdDFWcGR2bVp6OXR6dVhCUmRuUld3MGVjN2UveStrNmgrQnZqQXZ0b2Zu?=
+ =?utf-8?B?aElmd3BKR0ttZUdHWmttZlpSRm1PeklSWWhUQ05VZ0laMUZZdW1OUzNuRy9S?=
+ =?utf-8?B?azRwSXFUMHY2M1Q4ZXUvNFFEZ1E1U2JaZFllWGh5ODhIbE15Y0JJR25qZHNM?=
+ =?utf-8?B?bTYvbVJ1NVN0VkRYVHhsOE8zcGF4K0lCTEQ0L2Rmc1paVDRtSmNoSFJ3TDdo?=
+ =?utf-8?B?SzNRWk56OXJhckNha1VPdFNjc3VUYmlPQVhYeGNDZWNxQjZlQzJVaVhJU0pL?=
+ =?utf-8?B?ckxHSlBXV0ZSVHBmaUpyMHRubDNwdS9OK1hrNTdaZ3lPbTh1YVR4bEpQOFJQ?=
+ =?utf-8?B?L2VOYnVzVG1mQXM2ZTVtU3llYVJRR0svM3RNb2JES1ZvUityRTVhbUZtODNu?=
+ =?utf-8?B?ZVdMemxaekgrRDdHVktLSGFEc05US0x4WTRCekZ1clZxVnMwNFpHbyt1VjZy?=
+ =?utf-8?B?Z2Yrd3hPcTh2VjVta1Q0QWZtbXNDdlVQTGlBalpEdGFpNzNRRUsvVFFYOStz?=
+ =?utf-8?B?MitwOWFxc1lZd0RFdUlkQ0grcFFZZ3FHaGhubWl1TzE2eURucVFFNVVuSE1O?=
+ =?utf-8?B?STF1VTNSY2kwRnpndlBXaXJXTm91UGNnUGp3VEt0SjVKY1Z3Z2F1YUtGa2sy?=
+ =?utf-8?B?Ui95a085bXhHMDI5ZFZsZ3hjVmFYdXpkQmsrOUtjUyt3VG0zS000dzVYZm9C?=
+ =?utf-8?B?UUx0bFQ5WTdpNSs3cXFyd1BOWk8xV0Fqa3JSL1hWRTk4UzA4N1RGRGpULzV4?=
+ =?utf-8?B?eFc3My94YlFUeWc0L3VaclRjVHhuUlJMYzFZVkJGMGcxZEJqaU96eDBRQnRl?=
+ =?utf-8?B?d1hibjNzTE9aUVhDOTJEcVRtNDBCNXJqTVllcjlZR2Y5VkZaVVBQNDhiNzZ5?=
+ =?utf-8?B?a0xMTkRzWU0yaS8vYUtqY2srZkRqakt6VGtTbFo1TCszUXQ3WWs1dDduckc1?=
+ =?utf-8?B?UjZoK2VSWlZlbjZlRXBnUTRCOTJMSjUxTHZZRU04akt3SzJUdnlmWVlEaXRC?=
+ =?utf-8?B?OUtxWE9MRTJrUFNiOFVqdDVnS285b3hLSW9YWFlkanUyVVVVbU9sVFY1a0Vz?=
+ =?utf-8?B?Q2g3SUhJbWhhVkNZTFZBemw4M24yd2FZMUxGYXZuYjY4c21Fbm9XenI0bFls?=
+ =?utf-8?B?V2ZsemVtM2pxOGxHa3Q0YVNVVHorcm9lU3paUGhWMUxFcytvMG93aDllK2tv?=
+ =?utf-8?B?TUREMHhNTHhGRjR5REdaKy8vdGUxejZjenFWT1Y2N1d0MmthQ0p5ck0xa2JY?=
+ =?utf-8?B?V2VCTzlSVXFITXRTL0IyMGJTb1pQSW8yclZnY3ovZllqMWpjWVFIa25MQm9V?=
+ =?utf-8?B?b2NsaGxNRWswaUkyeC8zdlhYWGRBc0JDdUZmcFMyOWRpVThxc1ZVREJFaHhn?=
+ =?utf-8?B?bHBTS0c4NHNscHl4RnJiOTJOMUJHb0hkWWlROFh6eStPNExTNlMxbCs3Tjkr?=
+ =?utf-8?Q?fT2KD1N7ZseQjO0nOmp2TBGc9oG/KVcPE8WFAIDDtwEKA?=
+X-MS-Exchange-AntiSpam-MessageData-1: crSoB2goPWxsEQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd3695c2-ee92-47ce-f78d-08ded682069b
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 08:31:48.5592
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aWdZ7fOS5GvA0mcCTxlWDYsektKrbx47ZE/tZKxQlGYSdmYPNC3GaxVKTnARr9AlzEdNxK6jl8FDRb9DrsCZrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4142
 
+On Tue Jun 30, 2026 at 3:30 AM JST, Timur Tabi wrote:
+> Add all of the remaining error codes from include/uapi/asm-generic/errno.=
+h.
+>
+> Previous updates to error.rs have been piecemeal -- adding single error
+> codes as needed.  Instead, we can avoid future problems by adding all
+> the remaining error code in one swoop.
+>
+> EDEADLOCK and EWOULDBLOCK are intentionally left out: they are just
+> deprecated compatibility aliases of EDEADLK and EAGAIN, kept around for
+> non-Linux/POSIX code, and have no use in new kernel code.
+>
+> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 
-On 6/29/26 16:29, Onur Özkan wrote:
-> On Fri, 26 Jun 2026 16:29:34 +0800
-> leixiang <leenollei@gmail.com> wrote:
-> 
->> From: ninol <leenollei@gmail.com>
->>
->> Introduce a Rust reimplementation of virt/kvm/eventfd.c, providing
->> irqfd (interrupt injection via eventfd) and ioeventfd (MMIO/PIO write
->> to eventfd signal) functionality with full C ABI compatibility.
->>
->> The Rust implementation leverages RAII guards for SRCU, mutex, and
->> spinlock management, reducing the risk of resource leaks on error
->> paths. It is selectable via CONFIG_RUST_KVM_EVENTFD and replaces
->> the C eventfd.o with a shim providing only weak default functions.
->>
->> Signed-off-by: ninol <leenollei@gmail.com>
->> ---
->>
->> Hi all,
->>
->> This is an experimental/exploratory RFC for a Rust reimplementation of
->> virt/kvm/eventfd.c. It is intended as a learning exercise and a proof
->> of concept to explore whether Rust can be practically applied to KVM
->> subsystem components.
->>
->> I fully understand this may not be the direction the KVM community
->> wants to take. If you feel this is not worth your time, please ignore
->> it entirely. If, however, you find this approach interesting or have
->> any feedback on the implementation, I would greatly appreciate
->> your comments.
->>
->> The patch provides functionally equivalent irqfd and ioeventfd support,
->> gated behind CONFIG_RUST_KVM_EVENTFD. It uses RAII guards for lock and
->> resource management and maintains full ABI compatibility with the C
->> implementation.
->>
->> Testing: Built and boot-tested on x86_64 with KVM enabled.
->>
->> Thanks for your time.
->>
->>  rust/bindgen_parameters         |    2 +
->>  rust/bindings/bindings_helper.h |   18 +
->>  rust/helpers/eventfd.c          |   34 +
->>  rust/helpers/helpers.c          |    7 +
->>  rust/helpers/kvm.c              |  221 +++++
->>  rust/helpers/seqcount.c         |   30 +
->>  rust/kernel/kvm/eventfd.rs      | 1419 +++++++++++++++++++++++++++++++
->>  rust/kernel/kvm/mod.rs          |    8 +
->>  rust/kernel/lib.rs              |    2 +
->>  virt/kvm/Kconfig                |   15 +
->>  virt/kvm/Makefile.kvm           |    7 +-
->>  virt/kvm/eventfd_shim.c         |   52 ++
->>  12 files changed, 1814 insertions(+), 1 deletion(-)
->>  create mode 100644 rust/helpers/eventfd.c
->>  create mode 100644 rust/helpers/kvm.c
->>  create mode 100644 rust/helpers/seqcount.c
->>  create mode 100644 rust/kernel/kvm/eventfd.rs
->>  create mode 100644 rust/kernel/kvm/mod.rs
->>  create mode 100644 virt/kvm/eventfd_shim.c
->>
->> diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
->> index 6f02d9720ad2..c433a6ca5336 100644
->> --- a/rust/bindgen_parameters
->> +++ b/rust/bindgen_parameters
->> @@ -14,6 +14,8 @@
->>  --opaque-type alt_instr
->>  --opaque-type x86_msi_data
->>  --opaque-type x86_msi_addr_lo
->> +--opaque-type hv_.*
->> +--opaque-type IO_APIC_route_entry
->>  
->>  # If SMP is disabled, `arch_spinlock_t` is defined as a ZST which triggers a Rust
->>  # warning. We don't need to peek into it anyway.
->> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
->> index 446dbeaf0866..2d65f2b1672d 100644
->> --- a/rust/bindings/bindings_helper.h
->> +++ b/rust/bindings/bindings_helper.h
->> @@ -65,8 +65,12 @@
->>  #include <linux/io-pgtable.h>
->>  #include <linux/ioport.h>
->>  #include <linux/iosys-map.h>
->> +#include <linux/irqbypass.h>
->>  #include <linux/jiffies.h>
->>  #include <linux/jump_label.h>
->> +#include <kvm/iodev.h>
->> +#include <linux/kvm_host.h>
->> +#include <linux/kvm_irqfd.h>
->>  #include <linux/mdio.h>
->>  #include <linux/mm.h>
->>  #include <linux/miscdevice.h>
->> @@ -94,6 +98,20 @@
->>  #include <linux/xarray.h>
->>  #include <trace/events/rust_sample.h>
->>  
->> +#ifdef CONFIG_RUST_KVM_EVENTFD
->> +/* Custom helpers for eventfd.rs */
->> +unsigned long rust_helper_spin_lock_irqsave(spinlock_t *lock);
->> +void rust_helper_spin_unlock_irqrestore(spinlock_t *lock, unsigned long flags);
->> +void rust_helper_hlist_add_head_rcu(struct hlist_node *n, struct hlist_head *h);
->> +void rust_helper_hlist_del_init_rcu(struct hlist_node *n);
-> 
-> [...]
-> 
->> +#[cfg(CONFIG_LOCKDEP)]
->> +#[inline(always)]
->> +unsafe fn spin_acquire(
->> +    map: *mut bindings::lockdep_map,
->> +    subclass: c_int,
->> +    trylock: c_int,
->> +    ip: core::ffi::c_ulong,
->> +) {
->> +    // SAFETY: Caller holds the corresponding lock; this is a lockdep annotation only.
->> +    unsafe { bindings::rust_helper_spin_acquire(map, subclass, trylock, ip) }
->> +}
->> +
->> +// RAII Guards
->> +
->> +/// RAII Guard for SRCU read lock.
->> +struct SrcuGuard {
->> +    srcu: *mut bindings::srcu_struct,
->> +    idx: core::ffi::c_int,
->> +    _not_thread_safe: crate::types::NotThreadSafe,
->> +}
->> +
-> 
->> +impl SrcuGuard {
->> +    /// # Safety
->> +    /// Caller must ensure `srcu` is a valid pointer.
->> +    unsafe fn new(srcu: *mut bindings::srcu_struct) -> Self {
->> +        // SAFETY: Caller guarantees `srcu` is valid.
->> +        let idx = unsafe { bindings::srcu_read_lock(srcu) };
->> +        Self {
->> +            srcu,
->> +            idx,
->> +            _not_thread_safe: crate::types::NotThreadSafe,
->> +        }
->> +    }
->> +}
->> +
->> +impl Drop for SrcuGuard {
->> +    fn drop(&mut self) {
->> +        // SAFETY: We hold the lock `idx` on `srcu`.
->> +        unsafe { bindings::srcu_read_unlock(self.srcu, self.idx) };
->> +    }
->> +}
-> 
-> You are adding things that are already being implemented in much better way. For
-> example, for SRCU we already have v10 [1]. But even before that I think this
-> patch has even more serious problems. It has multiple fundamental issues and
-> things seem to be placed randomly all around.
-> 
-> Regards,
-> Onur
-> 
-> [1]: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan.dev
-> 
+Nice, no more ad-hoc patches to add newly required error codes! :) I
+remember having some of these conflict in the past.
 
-Hi Onur,
-
-Thanks for the review.
-
-I'm sorry that I hadn't seen the SRCU v10 series [1] before sending,
-so the custom guards and the scattered structure are reinventing what's
-already in flight. I'll rethink this on top of the existing work and
-do my best to ensure that my patch is bug-free.
-
-Have a very nice day,
-ninol
-
->> +
->> +/// RAII Guard for mutex lock.
->> +struct MutexGuard {
->> +    lock: *mut bindings::mutex,
->> +}
->> +
->> +impl MutexGuard {
->> +    /// # Safety
->> +    /// Caller must ensure `lock` is a valid pointer.
->> +    unsafe fn new(lock: *mut bindings::mutex) -> Self {
->> +        // SAFETY: Caller guarantees `lock` is valid.
->> +        unsafe { bindings::mutex_lock(lock) };
->> +        Self { lock }
->> +    }
->> +}
->> +
->> +impl Drop for MutexGuard {
->> +    fn drop(&mut self) {
->> +        // SAFETY: We hold the lock.
->> +        unsafe { bindings::mutex_unlock(self.lock) };
->> +    }
-> 
-> [...]
-> 
->> +#include <linux/kvm_irqfd.h>
->> +#include <linux/irqbypass.h>
->> +
->> +bool __weak kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args)
->> +{
->> +	return true;
->> +}
->> +
->> +int __weak kvm_arch_set_irq_inatomic(
->> +				struct kvm_kernel_irq_routing_entry *irq,
->> +				struct kvm *kvm, int irq_source_id,
->> +				int level,
->> +				bool line_status)
->> +{
->> +	return -EWOULDBLOCK;
->> +}
->> +
->> +#if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
->> +void __weak kvm_arch_irq_bypass_stop(
->> +				struct irq_bypass_consumer *cons)
->> +{
->> +}
->> +
->> +void __weak kvm_arch_irq_bypass_start(
->> +				struct irq_bypass_consumer *cons)
->> +{
->> +}
->> +
->> +void __weak kvm_arch_update_irqfd_routing(struct kvm_kernel_irqfd *irqfd,
->> +					  struct kvm_kernel_irq_routing_entry *old,
->> +					  struct kvm_kernel_irq_routing_entry *new)
->> +{
->> +}
->> +#endif
->> +
->> +/*
->> + * The Rust implementation provides kvm_irq_has_notifier via #[no_mangle].
->> + * Symbol export for KVM-internal use must be done from C.
->> + */
->> +extern bool kvm_irq_has_notifier(struct kvm *kvm, unsigned int irqchip,
->> +				 unsigned int pin);
->> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_irq_has_notifier);
->> -- 
->> 2.43.0
->>
-
+Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
