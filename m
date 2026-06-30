@@ -1,131 +1,115 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34E32C0261
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 21:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782853851; cv=pass; b=s1bev0EDEhHguLXw0n8X4rFfIROfHNaJTQVz++tBp6tgfFOZbjco6sHqSreX/ArunwXlkeo7l6nWJvQn3+VgkWrPzK4DFe2m065jKkj6MuRLd6pqhwdcJ1j7ZkL6jPiye8u0MFy2xY2BQJ+dgWl9cYVHs8RilUT3bPO+/7xmMJA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782853851; c=relaxed/simple;
-	bh=5dsrgWIujQVyYPAJxjo26QszGIbfe51KgRR/xv8ZIgY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VnhhNryYocigzENCpnwGTtpx7D1unWptUWDj4zqGc/7kWd+VLacxqj5gDiuCAsJza/lOq0zjKqy4w/kAyPyretqHTe58bhj3pRB0SQp856kctbKyYy/E5uWkMrg97FYSNzgOm93QmkpFx68gT0H4wzD2FV8UTF+92RbiykzG5S8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DO52yT5r; arc=pass smtp.client-ip=74.125.82.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E6C2D5C7A;
+	Tue, 30 Jun 2026 21:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782854829; cv=none; b=SVB1qrQ87CZ9XwbxSnndZnCQYctQ13PuegxEmeysCkRzAXbeE5XEIivDGzNQuXKD4DaMJ/0hnXk00WS3BJskuPUFi7noWFdjAfbIcHAB3AphJ4Gf4m2OksxqP6o34Qzkk/rkL7lPwspoVP1ZlIFPbJN5VLDjBSE+sMVh/vPfHt4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782854829; c=relaxed/simple;
+	bh=/InUm6RHkv772UffL3kodbWj9NWhKSLf/9Owm0zEcnE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=CcZMvq7C9j2M+lYol3hdScPcAIg3kNjjCk8futfuJWdoQvHqFd8I+4Gm2o/5E+9ekHJHKv37cFvzc8UcL61NcxJD3xB7j+ksBuw1kwIF+uaOO1NgFM/k6+9zT/FNiWkn7xvf/XoYapjqYYg+6FOOuKMDKoaaWHjoqrgBj9R+pLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmhlD5yf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DO52yT5r"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-13b345dc7f7so1041c88.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 14:10:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782853850; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JOFZWgJ9BPE3efE+cIGZKZbsAddmFMcWQcZXm/osHyqVwoSFXmCnaoDRoaOZ/FVZop
-         +mvnUgMcSh/l/CzcTUt3/Acgg6zRIUwFMu9O+C8hNSLR7VxGg4EZvNiFe17TpTEC9lQW
-         Li7155pfKCNA+LbH9imaBSjoM1iARl3ugTMUGGwp3tfvnL68FuO10mFQULb3tHR/E0qE
-         td74oloo0K9sGFzR3OgKqrOKA/FyXCjSCJVRFWCbO5Nv/wstxEKZRQN6zNTKqS1U2Flu
-         g1b2NOHE+3iSXh3mgdkeCs8zyTSFNVMWcBmA04dh/fap1yUG9FHZ01Va+9Du74UBUVhB
-         m57g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7SSqL1E+p7WgGd8ZO/9M9ZdneV3Ml3dOx3/qlpyHxCQ=;
-        fh=ipW896+8k/QzH1UNVb4LRbZT/sxycaij3F1XwJkwodM=;
-        b=CIoAVcDY4ukl4NOO/ASAOH3NpkDmU4s+6b2tLsjNp3lLtvaekluLEhLxTti23+Pg63
-         VzyGX/svuiuNoctquF6FG4ivn+9iLaGVE7R8B5aMLnsbvCgbI/59o4V5/CHNJFOjRDJL
-         bR/3ZRcbYGvGtCZu5rlyGRepp+LAFw+/5FKNrToSMEuEKMe/kW3G3K5Pz8WhZ5eEmugV
-         1Hvr9nft/ShpLSNm/JMPEafR67IEZr59dVPy7qgA9+1QK9Rkuq/YLsrhUtzpkaRGe6so
-         mUeqLthU9a2Nn/XXd1WWrLwwoNINvLmtTQFw2UcaS95+x8cca9NyXEvhJPm4HskW4WW2
-         CRyw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782853850; x=1783458650; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7SSqL1E+p7WgGd8ZO/9M9ZdneV3Ml3dOx3/qlpyHxCQ=;
-        b=DO52yT5ruTo36vSsGQYwQcxu3xU7jCVEOLh3LVxCo3RdgYEmOWNu9CA1vH9mprTran
-         D7y49XEbZZ092ERV40w44PUTlNgqmLqogfx/9E5SQXIgIdSr/NEbus3iAvdaZSJcu9Jj
-         VmbdX3ils3yreKpZ3uoJ2WJOQjpFthUt6X4VZlBrDXkPx7xC2N9kTHvqUmsvy0PvUgCj
-         h14lo0WHagJ+q3KZMTNcuaLyCUjgfPngnIfvOCBnlD2d9MdCR0Y0JxvAwVdPoapDqtZu
-         U+OhjJH+6+HyyDvneYxL4+OLcd3Lxs3mah7ooDvouor8ruokLe6HwKLdmH/mNE+1nm43
-         P6Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782853850; x=1783458650;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7SSqL1E+p7WgGd8ZO/9M9ZdneV3Ml3dOx3/qlpyHxCQ=;
-        b=JJmrQCMn78X+OiUYHSYauugYefQcCo5uIWBuQ0Yh7Okbt+yQDCN+SAYn9tNNtwnkK2
-         DtRganfoiGOkSXALLgpVzwUa7imMaF/gzsb5dsB7OUSkIpDQ3Wf8edo/lpOAv2dRKcEs
-         2Ia5cFJMz4iJKFqQhWXjFZdhu4UL/dRbU/FamfiKL2zBSLxtC0GN1mbnLcSC7IGOIELH
-         HaCVdKk4nDyAl/inM53Z5z/xDuHmsFMQuyHQnxIl94OxBOTOJEnESvSKsnEtYlIoMutN
-         t5L/DF9As8DYVGKrpaSF7FKc3OrRyr4R8n5pRtWGZjaX6rzz2bAYUx2oFiCdM/9QKE31
-         62qA==
-X-Forwarded-Encrypted: i=1; AFNElJ+UAn7PQZhzvGQvJmAtDl6AWq84Jsy1t8vdaEGKJGWe0AjEaRBdcTAypuHmlhksivVujkrsDpk/rFVe+jhlcw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5REipyWSFOhxQeqfHwxzRq1buhnwnUZdfnfbof3Zopjo6DJ7E
-	l+og75CmNn2m1RSMAwqo6m7B56938glbf7cUNRco0zXa/9/Rd1B6VtPuxiZPKmQpYAPiYyBPVqU
-	HGDkckn+9zVgxPXcGmVmyxCPJxKlCq6A=
-X-Gm-Gg: AfdE7cmwVHzXOxLm7K+bNc0BAzhtCyIZBzeSdNftEEobL9lS4/ZYikB4+LrkZD7P6oq
-	0DaRrctpzMEgB2KCD1yk5V2caWUNWAWj3W5Z750ZpmPIHYhqVNCc+s0h53kfYaQzZsVfpa7JhC4
-	s0Anas6wThq4uW1bH9HvKuuV4IAajvNOqonWeYNN/N5EqIrPL2MqYNakdiQGImS7ZosZrfCoXqJ
-	JBjfklY4nAzHvKbthB/BdcC95afEosZGPwwo+Ui7vvd0ZSonUrFwMCWJJlKtR5Vqrg43HxQkoGW
-	G73b46IkouNHwpa7Nay7Jk/y+PUI79kNCPMvDRmDnnClHYHnTIdB9etCMMAa6DVnT1su7+QiGFg
-	oHpL9GMV+lJ+r
-X-Received: by 2002:a05:7022:688b:b0:137:e391:1ae2 with SMTP id
- a92af1059eb24-13b2a1ab955mr1757879c88.6.1782853849895; Tue, 30 Jun 2026
- 14:10:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmhlD5yf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011441F000E9;
+	Tue, 30 Jun 2026 21:27:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782854828;
+	bh=QwXyVJSl4nmAXDcVsI6fa2y+BOMVig082sl359P4SMQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=YmhlD5yf+yWapR3J0b5UOTjTyCpMdp0QRE1x5jTMimJmUZTAk3zUTcm5TTT61mOlI
+	 zmIhPkk7DpmJdiOJ4ymb/S+lEW3AbRaQ1DE+8GO+cQ17xeqlMySE8k+6SNrTeyiuIN
+	 p9LF9AnEEll18qaPK42xYF8lkCEuf2wKmW0iFYhUSBEHyYTt+tH4miGsXWt4Fbtonc
+	 w0sdiRij+lXjh/LgSsx7D3/vwxsfBYQY6UPUWdhdzJG+qZOICqgs/xG4Ysc6IkdEbg
+	 xKBp+l32uv0Yz7tND+wbdApALP6MZZsetb8pTqHIb3GbLEsrOy3rcABtBkPoTdXIjQ
+	 9BjdIL+/n2ZGw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260630210445.23103-1-breno3011alves@gmail.com>
-In-Reply-To: <20260630210445.23103-1-breno3011alves@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 30 Jun 2026 23:10:37 +0200
-X-Gm-Features: AVVi8Cfjoi3T3EKFkCwXhsv0BrkYg3IOIGvLrRnFevnovSKeBOUhSVdqZIWPxgE
-Message-ID: <CANiq72nFchJZVE8sr=oRnh8wR_DxefJNBUV=OwOs7hShZXApTQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: core: implement rx580 state optimization engine
- and c-to-rust char dev
-To: Breno Rodrigues Alves <breno3011alves@gmail.com>
-Cc: alexander.deucher@amd.com, gregkh@linuxfoundation.org, ojeda@kernel.org, 
-	christian.koenig@amd.com, arnd@arndb.de, rust-for-linux@vger.kernel.org, 
-	amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 30 Jun 2026 23:27:04 +0200
+Message-Id: <DJMPAFJHWAMI.1SAJ3TCR5SYCI@kernel.org>
+Subject: Re: [PATCH v2 2/7] gpu: nova-core: add TLV parser for firmware
+ files
+Cc: <driver-core@lists.linux.dev>, <nova-gpu@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>
+To: "Timur Tabi" <ttabi@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260630194749.1209490-1-ttabi@nvidia.com>
+ <20260630194749.1209490-3-ttabi@nvidia.com>
+In-Reply-To: <20260630194749.1209490-3-ttabi@nvidia.com>
 
-On Tue, Jun 30, 2026 at 11:04=E2=80=AFPM Breno Rodrigues Alves
-<breno3011alves@gmail.com> wrote:
->
-> diff --git a/Documentation/rust/alves_guidelines.rst b/Documentation/rust=
-/alves_guidelines.rst
-> new file mode 100644
-> index 000000000..f6afa63de
-> --- /dev/null
-> +++ b/Documentation/rust/alves_guidelines.rst
-> @@ -0,0 +1,3 @@
-> +# Rust for Linux - Core Guidelines
-> +- Style: Linear, pragmatic, flat, Linus Torvalds style.
-> +- Constraints: Zero-cost abstractions, strict RAII, no binary bloat.
+On Tue Jun 30, 2026 at 9:47 PM CEST, Timur Tabi wrote:
+> +Tags and Length
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +TLV tags are always four-character words, with all letters being upper c=
+ase.
+> +Duplicate tags are not allowed.
 
-What is this? And how is it possible that you changed this file (and
-also tested the typo) within minutes of v2 submission?
+Technically this isn't enforced by the constructor.
 
-Is this submission generated with AI? Please see:
+Maybe a good reason to implement a HashMap? :) Just kidding, I think it sho=
+uld
+be good enough to document for the constructor that it doesn't check for
+duplicates and that if duplicate tags are present, the first occurrence is =
+used.
 
-  https://docs.kernel.org/process/generated-content.html
-  https://docs.kernel.org/process/coding-assistants.html
+> +/// /// Iterator over the [`TlvBlock`]s of a [`Tlv`].
 
-Please observe the ~week delay between submissions. Also please add
-changelogs for your submissions etc. Please see:
+Stray '///'.
 
-  https://docs.kernel.org/process/submitting-patches.html
+> +///
+> +/// # Invariants
+> +///
+> +/// `pos` is a byte offset into `tlv.data` that always lies on a block b=
+oundary (in the sense
+> +/// of the [`Tlv`] invariant): it is either the start of a well-formed b=
+lock, or equal to
+> +/// `tlv.data.len()` (end of iteration).
+> +struct TlvIter<'tlv, 'a> {
+> +    tlv: &'tlv Tlv<'a>,
+> +    pos: usize,
+> +}
 
-Thanks!
+[...]
 
-Cheers,
-Miguel
+> +#[allow(dead_code)]
+> +pub(crate) struct Tlv<'a> {
+> +    data: &'a [u8],
+> +}
+> +
+> +#[allow(dead_code)]
+
+Please use expect.
+
+> +impl<'a> Tlv<'a> {
+
+[...]
+
+> +    pub(crate) fn get_string(&self, tag: &[u8; 4]) -> Result<&'a str> {
+> +        let tlv =3D self.find(tag)?;
+> +
+> +        let bytes =3D tlv.value;
+> +
+> +        // To make sure the value actually is a string, make sure it's a=
+ll ASCII.
+> +        if !bytes.is_ascii() {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        core::str::from_utf8(bytes).map_err(|_| EINVAL)
+
+Technically, the error path is unreachable after the is_ascii() check, but =
+I'd
+keep it as is anyway.
