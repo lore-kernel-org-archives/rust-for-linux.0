@@ -1,111 +1,176 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013065.outbound.protection.outlook.com [40.107.201.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03081450909
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 15:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782834213; cv=none; b=VodLOtJ4L8rBT4QutNZ+LIw616hVETpVC9yWAbN1eFLUPBOpTXO70N8moKwcLf0l4DPsb+MrfNnqs19usQ1Jz4piEk6/oP3HhdD40EVPNwUQv7R7s6fJ8KGeEaF/ODlg18GO8CE4k46qr6U7rhmvY/P4a3UepmxJzPX+/eeBos0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782834213; c=relaxed/simple;
-	bh=aqUwzODJXitno7dT5jgjJUU9tcfO6dAji0U1J60gUM0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=lxKwhLbE3QhKZwRYjVfwif9hLH6cQRF6nsVm4M5Uq8rGpxRv/jR762Ktj6Cx3KnxNTnEdkjwXJtK2+Yjb41xyM5gh+3oTupic3dZ7yppMUmKj6sieHGEODYi03DSAXzboop1mtsHNQjGMtU+tg1Hg/Z+w4hzpz0bPmCY16XPp5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bkHpQ7XT; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17827367B93
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 19:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782848910; cv=fail; b=eG0h1r+2zNK2V/wpaYAlYBhwerlTuWjkLFfpFZ8ogrrJgzHKKJS+0zLFIdYiYGexCP6K6E10Ez92+Bi1IkIWti6tBzJB1QLYpAbmco/a3bGmsQKaTMMpMz8CVadPTI6TUQ0xDsQxxg1/t32AOaUXc5XVtV71Gxfk5S2d/kcnUJc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782848910; c=relaxed/simple;
+	bh=1zV7DAsAlXJsdgZmSLl+6BcFXfIqGXD7YtMpNsA14DU=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dwMtTinOl/tnU8GmDoe+RPB0/pEltmLTgAIs9WqV76hg9f/gDA7/Ekd543mU54ESWBA58O5w8+ne9/iy+wx6+2s8kUlOyAS/PA7q9Ood5USsM50wFnfvBYTpFRAOlP9m8ffcu8gkFd79LFB4QuhCQo+PBWXPAR/J6sQbd1td3h8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MzcCWOhM; arc=fail smtp.client-ip=40.107.201.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bkHpQ7XT"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-30bbe98c3f0so954651eec.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jun 2026 08:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782834211; x=1783439011; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YX8g/k8yrBFhKJutLCj94XGUjlLYYTnZwSVrPSJLJUA=;
-        b=bkHpQ7XTLK7GvmJ10AKZ1hhZw9qRzWHOPb4CP0jeHBRdWvf/7/KDFE+nEbQ61h/MUC
-         3/0GtYQDrynanppsgk2AOE+e/sHi91xcP7jmSnkr5QDHjWQa6FvRrtFlMl/mBP8d1o3y
-         XuKkyk0bxqMeRZJDFlxxDpn77VIVXcFx/ACMBEYqEmS7Vp4c/01Gs+lTEmSYQz2gW8g9
-         2gM4OZuMcKVtXZ1qGjty65aThqSeEicGaVsBzBVEKnIcNZj6zA5+8Bl9COvgLgTi49UV
-         XIbIK26vHZrvHCn1BrXnlqlxMHpuOSHhYHwQjtmjtcjlZVc2nrzbrQWldAwblFpaZkAD
-         4UwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782834211; x=1783439011;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YX8g/k8yrBFhKJutLCj94XGUjlLYYTnZwSVrPSJLJUA=;
-        b=RFCo7qwJD7iQp2GzikT2Xo5Ncb8zpNajlIo3FHcRNnVwTlnrHxRnEIuMrdyLUc6Yrb
-         HXaPmGHNYWNgNtN37BEQoTLGR7Uyn00XsbC1tHfNB/kghbsZevRa5xfZGD01Ul1o7R+h
-         lns8GMsbJQfBmTttv0BFUblk3u7BbOQC07y59oseu34EKEDtsGGz1kDfh+ETpmtozrWy
-         OjdkyiE/8HQLNNlKWxblQyQks50tZgdF3mDjpgAnjDGt3aMoxQS+Btc0bXSya4I8W/Av
-         OZsI7nV8znOWVuefGH3M4a8/fTFXXpUV+LD0lJGuyX3FCc9D0BA+XXHAfl2LYH0uFrjN
-         iR2A==
-X-Forwarded-Encrypted: i=1; AHgh+Rq0YWN10wPttFSCWdlDvreWzSkv5s1HXq6V5J9mYzsAyhLH0J3Wol3d5c+tyunL4EGVxbkSsgnpY23oyUYW7Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0QJasfqpkYzTO5fMTF/LV8tA9UVkoEdlbvpuKBndFHK45CPpO
-	M4IE+R0VYGb5CkLAfCXw4BtedkDrBwLspZZKSOiTBTcUGT2bMcMtFb0=
-X-Gm-Gg: AfdE7ckQPvjxVjGMwT2xSFyB7+GifyyeraJxwKviOK9SX4xJx8eL3v+V6uvnN1WKqEg
-	xxaWr2z0SlKEATwwx7Zi9XzKeF09mgFa3me52MNWZtJRQ6wMCbqWAMyIKUbXIdeHJUpnSfQehn2
-	h2S/quh1qNS2dUbGuZSoMobjkqeKDVG9SEcIHTUW15+gRrkzrKxH1BGl+lPntYT27++IORwWVb9
-	2OOHgcYcZ7VeTMZqwz/ObFSDllodiJFCBJx+9cZ7+3qo6v3+pP88bVgZ89XUYQneFGOjIf/w9bD
-	HwShWfySjT9IdOEP3DzF0yV8mhLDxwyeko6tW4//I/b4qBDQvkvFpWtiHw5oUFUkb1OPkGayFPv
-	Z08J2zZ89+aDbjmHPiUGxHuDVjh7wFnqBVo1r47wICAxzX6ZTyCplfoUFS7Xl1n9zdm6YV2Xg+y
-	53sxOLoXTX97+YUBKory7xOkamXpTJQ58oxD7PNJ6VA+yK7F7v
-X-Received: by 2002:a05:7300:2325:b0:30e:d236:57b5 with SMTP id 5a478bee46e88-30ee128cd0fmr3421948eec.16.1782834211044;
-        Tue, 30 Jun 2026 08:43:31 -0700 (PDT)
-Received: from localhost ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30ee2f5c4c3sm9520156eec.2.2026.06.30.08.43.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 08:43:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MzcCWOhM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vGGI0PV6yxx044TVRByA4iwMKOQHGxz565fSNsmXaQ2nMB2ZYVHV817YIyLwpr3FyA7v+dBln7DfLWqdSn9BwURQ3s825sXHYPOUz6UcDkUZ65V57WHonbSN9cp0Z9tv/DpjjV0PTMOUNAOJ5gPU8r/oo6KB0pjjfqD3bbFFM7l5g76FEe8K9vEX1lIrioy6pfqWgJu7sY/SP+SFWMREUr4z8wzEZO9maDnHDQ43esc2WOcgu5Dy1L8/DioSlKkt15BmsCFrTEkoftrOOKxvUlrzhgle3Uv32ngysNW0KHq8DXw7evmXOOc2ZdwZ0pQXyy435+c1eaqiURsiEao6Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/2L+RCeNYqRVS/jqFy/a/UJGffI/6tIssGhCxPQ8gY4=;
+ b=gfBCF9kViatXvYOuyONzM9auAhSaulDxrKDe5jIgeKKIjjNcixs9tXkF8C18qT2YvxwC5LdydR5b/fRj24h+7EjSA+IIvubXE5ngI+8ah57woQ4dkFF954SkOWd8qnlcrGdhaDnFzbT7X1Yf1RmauDS6eu5UCn1xJ4HcxmsuK5LNs+qWJkyp7A/HL2TMLG7SyNyur65clXKd4BYlD62zZWlK+yjpKWvOaTnMU1yrJFrYNrGwRp9P+aybpYI8SVm5T7BSY6GlVhgwZGHEpOORUg750WLJ+rnHoxoJ67AeE22aWgSEwRcEGWmdM0RJq31LSZ6bTwoSzO6oOFZgWz2bjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/2L+RCeNYqRVS/jqFy/a/UJGffI/6tIssGhCxPQ8gY4=;
+ b=MzcCWOhM/0VahziuBs/xJ0qJpOrVRG6rXVqdMrUpU35rRy5nB7TGPJ7Ueyc56b/biQy+MJibAOA2hDdfCslLMYVRROy+bqjO4t70xpDXR9tZtUze650up1VyPOc/73GQUtoiCIWphJbpGRiS76RHhp9O6Tvksgrck2xenINPqdnt0OVVAsdIRnerYFGUKKE8aZAuj1tC1VUCfmloVRWTa97zPpopDXU4RDVFROXmYBTPULWMyOIrBDHSO+6vAbz3pU/AbI6DcCZsKT99joMlRBmw/iQcCijYnWdC7NnKha30DeLinHrxjx8o43UiQr6EXqDayIS5CBtOPURAj9YnlQ==
+Received: from SJ0PR13CA0236.namprd13.prod.outlook.com (2603:10b6:a03:2c1::31)
+ by CH1PPFC596BECF8.namprd12.prod.outlook.com (2603:10b6:61f:fc00::621) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
+ 2026 19:48:22 +0000
+Received: from SJ5PEPF000001CD.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c1:cafe::a5) by SJ0PR13CA0236.outlook.office365.com
+ (2603:10b6:a03:2c1::31) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.8 via Frontend Transport; Tue, 30
+ Jun 2026 19:48:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ5PEPF000001CD.mail.protection.outlook.com (10.167.242.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Tue, 30 Jun 2026 19:48:22 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 30 Jun
+ 2026 12:48:06 -0700
+Received: from ttabi.nvidia.com (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 30 Jun
+ 2026 12:48:05 -0700
+From: Timur Tabi <ttabi@nvidia.com>
+To: <driver-core@lists.linux.dev>, <nova-gpu@lists.linux.dev>,
+	<rust-for-linux@vger.kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>, Eliot Courtney <ecourtney@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, "Luis
+ Chamberlain" <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>,
+	"Miguel Ojeda" <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>
+Subject: [PATCH v2 1/7] rust: firmware: add request_into_buf()
+Date: Tue, 30 Jun 2026 14:47:43 -0500
+Message-ID: <20260630194749.1209490-2-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260630194749.1209490-1-ttabi@nvidia.com>
+References: <20260630194749.1209490-1-ttabi@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jun 2026 12:43:25 -0300
-Message-Id: <DJMHZB23PNGV.2SM0ER4JFQYI@gmail.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, "Todd Kjos"
- <tkjos@android.com>, "Christian Brauner" <christian@brauner.io>, "Carlos
- Llamas" <cmllamas@google.com>, "Alice Ryhl" <aliceryhl@google.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Benno
- Lossin" <lossin@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Boqun Feng" <boqun@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
- <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel-mentees@lists.linux.dev>
-Subject: Re: [PATCH] rust_binder: use pin_init::zeroed for file_operations
- initialization
-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: aerc 0.20.0
-References: <20260626214404.852685-1-nico.antinori.7@gmail.com>
- <CANiq72k8KOmVLrHGOa9SidU=vYqGUqi5dmyW9J1auVMnqaQAeg@mail.gmail.com>
-In-Reply-To: <CANiq72k8KOmVLrHGOa9SidU=vYqGUqi5dmyW9J1auVMnqaQAeg@mail.gmail.com>
+MIME-Version: 1.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CD:EE_|CH1PPFC596BECF8:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ee01803-ec1a-47d5-9400-08ded6e08ab8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|23010399003|6133799003|18002099003|11063799006|22082099003|56012099006|921020;
+X-Microsoft-Antispam-Message-Info:
+	G2wHrDoKJasjZHdZB98v+xPBm2+3jlYK9EYmNhnZ1hbXdY1RB5nM3MhEXN2g3GDLv62xEBMTJG6tyKdJpob+FuS30KoS2h8jZ1KbB2Gsn7nLJnCZNZYNX9if/X3u+kXL6mHSV2Eztr4rjMFdebhmvqewnym3SMM3ZLHFQD5fhHqeGZ3REuHQ1F/s5iHBGQWArCAv24wrRajSQ1RkUXeEKCrp0kkElJNtylYkwEJl6Gj+PiNUgdFfjl9fvxIMcy/UJNuofde4ZxU33SYLJTFyY8+i3vIN3e0+tZv3HABWPecyl+9w5dHEAsDJYhU9R6uI/1arMY9wqiRGXPti6rCTj6coHxN2+eLrnZAnfiflcTPhnV6bBGJID4tjcsBu0gISCrB4YipNvUYZ9FuLUWq0XIEJa6jP2td+KCpytbxzel9CYiC96wYt34ZI1o7ZUmC2s7aWuKneCtBxK8AbbFAhWihWbC7GgTqToRkL+WUviEmHIRnnVPHQy4QRyM1lvrA8zBAMb8+ipxzyOzh28VdIAc+wctxEoqZyWNbBFPHSrJlF0NT99rLYwvh56v4VczXI1bcwZXw+mA3gpZRkrGCuYFS6Y/hYlJDM2plLrh+46QVAyK0ofprGZW6/zUfPwXYUOxp5sxn1z+wfUZHnyMi0PYmn0zNdXllh8bl9s0HNiSMBRXDo7rs3uGSOWCSv66PO5cfF0j8xMJogeophSYw6dV+eOa0o/p/40Suela2s/ohhfjuHUL6IgZzHrj0bqFP5
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(23010399003)(6133799003)(18002099003)(11063799006)(22082099003)(56012099006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	iSKD7Lm4DBWIi7pfdH5YWATnLEkc/7sS+2r1fljOY+zm8aXerivsKVAdaaiPN2gJs7yIcFq2rACW7532Zgfl79q1yYywb+bBXlsVOg1QPRC1Bcg/4msEf56kOPeR6CwE29g6c+zjLsGyR3aa1w/Fwy6CqnXfB7ppvlLOj5AMbOtCJ7dh4MhdAPcZzNT/VvNd3hGdAik/d05l1owu714jCIi1uGSkeCmv1qQXfhM2HBbL6u2HxcbCUvmbywLJHh/PhUcFTJB57QXCjcHdt8o18McrtOeh8WSwY0LCpjnkWJwAt2/y0k43SMnboyrvqXp1ng0V9/B0r1acaTu48TAburC0vHXIHmsqJOnirYOU7CoQ95au8ybI+prhEXasCckn5BkSnEd6bchS5zuJ/l6ixpV/AmWWOQYlBxhvrJ2EuV5pPHaKuuBoVz493WAbFJjX
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 19:48:22.1199
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ee01803-ec1a-47d5-9400-08ded6e08ab8
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CD.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFC596BECF8
 
-On Sun Jun 28, 2026 at 7:16 AM -03, Miguel Ojeda wrote:
-> On Fri, Jun 26, 2026 at 11:44=E2=80=AFPM Nicol=C3=A1s Antinori
-> <nico.antinori.7@gmail.com> wrote:
->>
->> -    // SAFETY: All zeroes is safe for the `file_operations` type.
->> -    let zeroed_ops =3D unsafe { core::mem::MaybeUninit::zeroed().assume=
-_init() };
->> +    let zeroed_ops =3D pin_init::zeroed();
->
-> I would just remove the variable and put `zeroed()` directly in the
-> fops initializer like we do in other cases, but it is fine of course.
+Add request_into_buf(), a Rust wrapper around the
+request_firmware_into_buf() function. This variant loads the firmware
+image directly into a caller-provided buffer rather than a
+kernel-allocated one.
 
-I thought of that as well but I tried to touch as little as possible (I
-assumed that was in a variable for a reason). I can send a v2 if that is=20
-preferred!
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+---
+ rust/kernel/firmware.rs | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-Thank you,
-Nicol=C3=A1s
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index 71168d8004e2..14934605ad98 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -120,6 +120,45 @@ fn drop(&mut self) {
+     }
+ }
+ 
++/// Load firmware directly into the caller-provided `buf`.
++///
++/// On success the firmware image has been copied into `buf`; the caller accesses the data
++/// through `buf` itself.
++/// See also `bindings::request_firmware_into_buf`.
++///
++/// This is intentionally a stand-alone function rather than a `Firmware` constructor. For
++/// the `into_buf` path, the firmware data lives in the caller's `buf`, not in a
++/// kernel-owned buffer, so returning a `Firmware` would expose `Firmware::data()` as a
++/// second handle aliasing `buf` (and `release_firmware()` does not free `buf` anyway).
++pub fn request_into_buf(name: &CStr, dev: &Device, buf: &mut [u8]) -> Result {
++    let mut fw: *mut bindings::firmware = core::ptr::null_mut();
++    let pfw: *mut *mut bindings::firmware = &mut fw;
++    let pfw: *mut *const bindings::firmware = pfw.cast();
++
++    // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
++    // `name` and `dev` are valid as by their type invariants. `buf` is a valid writable
++    // buffer of `buf.len()` bytes.
++    let ret = unsafe {
++        bindings::request_firmware_into_buf(
++            pfw,
++            name.as_char_ptr(),
++            dev.as_raw(),
++            buf.as_mut_ptr().cast(),
++            buf.len(),
++        )
++    };
++    if ret != 0 {
++        return Err(Error::from_errno(ret));
++    }
++
++    // The firmware bytes are now in `buf`, which the caller owns, so we don't need
++    // the kernel to hang on to it any more.
++    // SAFETY: `fw` is a valid pointer returned by `request_firmware_into_buf`.
++    unsafe { bindings::release_firmware(fw) };
++
++    Ok(())
++}
++
+ // SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, which is safe to be used from
+ // any thread.
+ unsafe impl Send for Firmware {}
+-- 
+2.54.0
+
