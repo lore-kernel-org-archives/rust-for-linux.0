@@ -1,163 +1,107 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013002.outbound.protection.outlook.com [40.107.201.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B8B33ADB2;
-	Wed,  1 Jul 2026 18:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782931191; cv=fail; b=tgTBrcG03O0biiyJuUthqr4jaXVNhXgvsG5yDYeN08JJZuZ16tu53i6GENgngCOt3h7XwulTxCCPwjTBWGjoNSmsUhiIQtx2utnOpP7WJYPIJ5MfSVX7m3THlT6GaRFR7BPKjA16lIc9ORa7ijS5qFrwQv8P8b0uz9rfxwirpuo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782931191; c=relaxed/simple;
-	bh=8qZAH2ui98IawntXTYcy+1QKhj4CCsKpKDSnj24440g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KxQgb45pcPgdvE3ARbYSMbwts/v2fwWn3IutdNYCh97/LSegUecTmqApvY7YCUVsm/ym4g7qh2dBtUTO45nNVfK+wKGnvpug/rTTxkt58ofw8vAmHZXkn4z++zRC0ItayKpCFToJ3y3qPAGSlPhFx9LM9RFfr70QOMq7TFqSJZk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=acuAVfns; arc=fail smtp.client-ip=40.107.201.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AA7391E60;
+	Wed,  1 Jul 2026 19:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782934206; cv=none; b=sLT3+frbdPwA71/7GCZPkt96biKDNrwdzketm+kGv9OER5mXO6XjfskJ1IDbUmUg/MFqQATg3Imy4XHSFq5KhtSoTNhAJ7YDvqygmSXGS6+io/raeyaoMOtaXgn6BezvVxkAFg8bswtyv7OGLCfGcf5kqP7PyFgZb9hxTePaji4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782934206; c=relaxed/simple;
+	bh=Ng4JK/soXLWRpzbjD29o5BbqJKZoZLQgcfAvz/N8Up0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LV53aNDXVRQzD1/iRglncUwT+irKA5GUUsKZyIKLZHZb8k6Fjqx5vXm2diYoI0uDikGN68qCBOwhT8QQ+sQPaGHBVFuabozj4cPXcODXpur4IsbVnK6qUvrjNs+2nAXInt319G/kDx2o+HodKqz/xoy+67BVN0r5eFslfVL6BMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVJGMj+P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="acuAVfns"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EcGYz1dPq4TqLYXmZqrqfhBX3xMxRazsOX5vVuH377tIxLWSgKHa+r4JpoypIJ+bsFLwpu1A6UdinzvJ4P30WiNQQRujnwZPZfTMt8qFH+0G18bvXURsjRibfubnDl9Yv0wAS5M7xNbFSb6QmHfrp6bUEw4AVAiTJpebXKl3LqPPLGgDqw3WOcsEQbBm2nu7Y23U+gw9gS6rrgP73suajBbDEUhdE8U1bDryDomjp107zWBIOdJ5PkPWqNC/5trvrzOCANwqkXsnfbpYfj+rkZHE0P3KBDo6ThjZ1HfKJ/T6TKigQ0jlA6M7X3py3L6qGhoovp3M684E3ssM5CZJdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8qZAH2ui98IawntXTYcy+1QKhj4CCsKpKDSnj24440g=;
- b=QFxDC1ZDeDzvi5zO2BURE0KlU0o/pLyBHDNBsz0dkDkhmfzHHrP2m3SV8qb+7zPoVjSI90jQXsRHPYjsxo1zQlHh3e1bPvuWS8vkZT+Yb6HwUOFl6rYmQ3HjFSZMGJWWupKFnI1QDxZrbTe0nhrYevn5ueMVOUfmzylCLhtJSdi5TysxULKBK+M7BvxTZ2AOi5D/bicKiH0vsqpm26E5roBfQedSm6ro+sUDizwR+/ESUOkNVPKarIpNQhW0lfm8yiN1aPS8EF5isoa5Y5jnjOdhA+EpIMkMABI51KfsHiAaglH2Z1B+0nxoJtAf2l5dKYE0yQuKVKLz+x18dK6ngg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8qZAH2ui98IawntXTYcy+1QKhj4CCsKpKDSnj24440g=;
- b=acuAVfnshWiOG2Mq040ya8my2fOhQpXY9g+oQydzIUccUT/siI02u9ICtAKGNHLEdXp8V5sgsVlMMl5ZgsQKvGOr+yI7s4KnmCFCncPZCV9PPbRQbtg+iZA/itXTTMvNXOfefKtAUBbIUkWvZc8dDJoFEWZXH1RHRJtb/mBhI5sAuswO4tBR1JPTt6oLXMRUU1D3yDCJLIcYo2oDwEENV+iRbQ8bK92XKnX8n1e925+vK7fPtgatbneGBZ8BDqAuZkW8rMua+5OzCEGZYNWWDXfNCjXgvoC7pEfr/k0zE1Dw0xbGE4k3kN9ld0DMf6ebR7ssUOHvoZCzbFLPi0G50g==
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
- by BL1PR12MB5850.namprd12.prod.outlook.com (2603:10b6:208:395::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 1 Jul 2026
- 18:39:43 +0000
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970%5]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
- 18:39:43 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>, "lossin@kernel.org"
-	<lossin@kernel.org>, "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
-	"ojeda@kernel.org" <ojeda@kernel.org>, Zhi Wang <zhiw@nvidia.com>,
-	"simona@ffwll.ch" <simona@ffwll.ch>, "tmgross@umich.edu" <tmgross@umich.edu>,
-	"boqun@kernel.org" <boqun@kernel.org>, "daniel.almeida@collabora.com"
-	<daniel.almeida@collabora.com>, John Hubbard <jhubbard@nvidia.com>,
-	"work@onurozkan.dev" <work@onurozkan.dev>, "bjorn3_gh@protonmail.com"
-	<bjorn3_gh@protonmail.com>, "tamird@kernel.org" <tamird@kernel.org>, Eliot
- Courtney <ecourtney@nvidia.com>, "airlied@gmail.com" <airlied@gmail.com>,
-	"aliceryhl@google.com" <aliceryhl@google.com>, "gary@garyguo.net"
-	<gary@garyguo.net>, "dakr@kernel.org" <dakr@kernel.org>, Alistair Popple
-	<apopple@nvidia.com>
-CC: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"nova-gpu@lists.linux.dev" <nova-gpu@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] gpu: nova: fix rust-analyzer generation
-Thread-Topic: [PATCH] gpu: nova: fix rust-analyzer generation
-Thread-Index: AQHdCSSXS/VQQcrMY0OMvBcXjlvhZrZY/6oA
-Date: Wed, 1 Jul 2026 18:39:43 +0000
-Message-ID: <433402bc0b73dd9bbe77496703c8e98f7525af45.camel@nvidia.com>
-References: <20260701-nova-rust-analyzer-v1-1-5209f486f10d@nvidia.com>
-In-Reply-To: <20260701-nova-rust-analyzer-v1-1-5209f486f10d@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.56.2-9 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|BL1PR12MB5850:EE_
-x-ms-office365-filtering-correlation-id: 4348a7fc-8e90-48bb-5eff-08ded7a01e19
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|376014|1800799024|7416014|366016|38070700021|921020|11063799006|22082099003|56012099006|18002099003;
-x-microsoft-antispam-message-info:
- Ec91ZdjMx5fnT2fQKEnQLtr2NQ7drItZ603HQYHDyx8hIRJIKrp2SWtHDpOeiapjr1rc9smHNiBMWgwdcr8wDk7UqvrqD2MeBFtlObQXl+m/7g9cmVgjN2wTT9kfotSUhhqX9hvzJOcyA+y4Gbm2LtodNC0Nj299r4waTSNtVRKtjTl73mUE1P6f9xn3kMp51DyhJLBBQLIX2P7zNPBZ/mAFBT8EwXeu+YH+KSDyIBx0lS42Jnpy5SaSAL3iOTo5nuGVkyjyWtmG2cX/Q+fTisFYP56yAe/zwYdv5LnrKBWDyQagZXAmnuFTnMx16Gc4yYqWUCaPfysFRAw2fVaPfAHu/ifa9H+MmCyqqzjVhstTTI+y3wvzKannFghql9cM4JFQL9YV1AXWypMRbnZUB04EDjQ/aGdypFaN9zHJC+Xz04QpaWdHixsanwkM6V1ySpSObg7Xz4nehJJGArs9Gi84TlvuoZS+BZKWssmREl++Lw5kVgJcxuNPWGfDxAuhrwyVaeiJM02r9K8bsXN3eWDQggr4ezrmU00aDLi/pq3/Dqb30Pxe55/y0ADHKDkNzR/4CfkIqKYPenk/R2m6xKm7IOItjEnzlwMkDn9c9CoHY7597KCir2wjLjwHh2TlgjbtV/GWbbjep1oX1C/37kTBZ2bL0rRxQFluyMX1klXPx2Hij6YTQpwxbLbn/zJKRJZxTTKzxeL1AfJ9kfM1NlWK9UNhnfanGsXrZwNKxyiz41f8lxbTA6lLCfESnRQn
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(7416014)(366016)(38070700021)(921020)(11063799006)(22082099003)(56012099006)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NEJ5Zk04KzdQQTZBQURQYXZkMWxMZlQyT0htaG11MS9RVmxuai9sb3VMcTN2?=
- =?utf-8?B?cFRuQWw2RHFLTlFEdXprVFlxSURONnJuamNRMkh4a3dRbVEyNG8xcDBsZlMx?=
- =?utf-8?B?SDNzV1l4Q3VaMmpQR1RrK3cwODM5NzhhQ2wzcXh0WGZMNFpHZmRmd1JVNmpY?=
- =?utf-8?B?NTZIVUUwMTlqdW5McnhKckpxL044Rm5WU0VDRVQ0VFFRdHZra1FBMUZwRXJ6?=
- =?utf-8?B?Qko0K2dXb0VuNlFPSDJjd3orazJyc3JPQmxFVmgrVnVBQzRWc2hOK0hOQjNY?=
- =?utf-8?B?RTVQdkFwajhHSlFPcW00Sng1VUZ1aEk1aEdvUy9uK1ROYy9ZN1FxV0Q2RlIx?=
- =?utf-8?B?bklMTUJJakZ1a0s1OHNjSFhTdURybFI0UklheGxUcEhKemd1eUtUclBWdCtH?=
- =?utf-8?B?alFCWEMzbjBDdWZITm1oZmlSanBWaGN6N0dUMTRrM29EWVlTSkFRcitsYlFh?=
- =?utf-8?B?c0tRVG5JcEJiMmVwdXgrVERmT0FMckZkYThXNDFldHhVMmRnbzVnUzhJY2Uw?=
- =?utf-8?B?VzhnS0RsdURLRzdjWFZBaWRGMWlXaGxYTzJ6T3lYWlEza2NKQURFNkNXcjJr?=
- =?utf-8?B?eFRnVC95RkVnVndKeE1ncGZDQk1Bbnd5OWpEaHlVcUtJVmxHdjdsMDZTWkVB?=
- =?utf-8?B?bG1nUmtiRUx2MUFnMFBqUjdwb0dxS0FtMjFhTHkvTkE5RzFGWUJHZTBhNnNN?=
- =?utf-8?B?elo0R0dobFdFU0t3RnU5ODZmYnVDNUhUdWN2SFp5d0pNM0k0LzJGWG82NU9V?=
- =?utf-8?B?b2hhNlI1VjNTQWNEZTFEY25mK3hjQURzdVdvZS9LRE1JeENWdThSMWZWUnRP?=
- =?utf-8?B?QWhlamQxWEYvVW5Bd3lMaUZLbjBEb2hjVXpXRzluV1VTRWZ6S0M3bmIvQVda?=
- =?utf-8?B?YXJoVldSUHMzUEpDMm9nZ29FUmdGZ3E2SVdKSWdWTlIyZUplV1RwN21sZXRF?=
- =?utf-8?B?VDFVWHBFbzVDc3NmT1BLNnpEcFR4RUp2eWg2aGVHOVp1Q1hQQlVyY3FSRUZU?=
- =?utf-8?B?TXJUTlk5WFVJanp3ZWs2L2FNUHlYMGJpdUJkczFhUVlOeGdaQm1TR2xTbFhz?=
- =?utf-8?B?Ym9zQTVVR0tjb1ljbC9BLzRGeXdtdlB5U3V5VkhHNzNSejFmd1c3QlRXcmlm?=
- =?utf-8?B?T3U3NkVkNGJhSUdWQ2VIckpyNnMvMy81SFpFUXRIK1U0d2x5WHB4dDlYVHB3?=
- =?utf-8?B?U09mMDY5UmFvYWpoS1FzYmNLb1pxWVdyclpWN1BjZ2VqdFFRajNtUE9FTjRm?=
- =?utf-8?B?aGpua0pFRmg4RUh2R01ScnJuOXBoTU5PcXEvNWoyQk1oK3Q5VWxRdlI3Uytv?=
- =?utf-8?B?MFprdGdZWEV2cytuOFNQbFErL0QxQmhpY1BLV2NFMHdCMmpVYm9tRkVqaHZw?=
- =?utf-8?B?S2drM0ZJekVMMmdYVDFmdGlzNHdSYk1CcjZvL0ZhWkp5RjBGWlFwNldOWlhN?=
- =?utf-8?B?NHovN3cybCtwSHJLRkUyUzlwdkU2Qm0zeDNjcS9FcUlUVkVmNkFUbGsrcm0x?=
- =?utf-8?B?OVFLZFYraXNoRFlXUzk2WjJnekZHUnNjZ0szK0dhNUt4RG9FeXc3cis4YUFw?=
- =?utf-8?B?RloyYTlZd0V0RXlvcnJMeFN2YktWazl3bTFoV0dvNFkrYTdkYmZKd0o5d3hQ?=
- =?utf-8?B?eWRkTWdBcGJ6UUtjV3NXb0Q5QUpFRXFwT0tsODFCYVZOOEE0QmlCYmdyWGtM?=
- =?utf-8?B?L0RjYk1tMWZEQXZxa21iWnZqL2pqSmtVRi9TbnNqTGNUd0JyOGNDYUZaNVN6?=
- =?utf-8?B?VDRwbkFaSXZiOWs3d0dDVW9xNFJYY256VVE2a0oveHpPRDVEYjU2TTVmOUVn?=
- =?utf-8?B?aG5XbDV6MG44b2wyeG1mTExvZzkzdk1BaFhKdi9rcTNEeDJnRkVFMzc0OU1J?=
- =?utf-8?B?ZW4rd3U5VFdxWTdhOEhJaW5mNjBKSjNRSE1yNW00bHA2SUNNZEtHT3pvVFNK?=
- =?utf-8?B?dm1mZGZqRTY4eFpNejc3VDNablRFTE9CU2lXVG1JeVpHNThJYkZZVkxYN0lh?=
- =?utf-8?B?UTU3Qnh6TGd0Y3dHQUhqQzBsYjRsdGw1Tk5GOUdVQ2lJOUs1RkZjSW9QeGFa?=
- =?utf-8?B?ZlFLYXh5R0dSYnlBWDM5MENsWHdDcnhyWXlzNnJoVlNDQkZSRGgxM2xibkZH?=
- =?utf-8?B?cHZINUwyTlJvVE9hN1RQOXZnQi9sOXBKTUhQblR2TjhsVUdLMmhpdU90bHRB?=
- =?utf-8?B?cGdDVTRFRWdFZnpEakR3cEl1OXpBcVpzUEY4Y3ZDdkc2ejFaTE1DU3FxUTJ6?=
- =?utf-8?B?a2x3clZDRDdHazdoOHltMytRcXU3N1pybW43cUhPZm1mbDQwcTcxeUxYWWtE?=
- =?utf-8?B?eDdTME1iL0Q5bm1QdFZWQ3ZxRzFnMkVlUFNHS0RpS0hqK3ZHSU9pZz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1B806EB703B67F40BB276D3A019C779A@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVJGMj+P"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id E4E691F000E9;
+	Wed,  1 Jul 2026 19:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782934205;
+	bh=lWiFZEHyRzD59TqfLFkopBI9Chn0g1KOvTkDIM0N5YE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SVJGMj+P4H+dPiVpSmVpwuTNjZ/uk/LYg23NULeGVvx7HDzm2UMiH8YbJqtAmWid6
+	 x6F9Q8tKV4XvOWuIvseGMAvbGdzARogailcxW1TRs0UkQcUSDSr4tqUpAHgk03vCLP
+	 dPpGNpcD+4v9mIqe0GXi5h27RuVbwGnJFolyjyC7aG37UAjS+Zal6L9JDC5bxU6/hv
+	 APNKai4wdXWvBZhJjD1qIQumIqQ8guFKUyljHx+xuWAVUuSl2rRc6KKbv/2ZYomqna
+	 AGzux1K+iw5lpzu7YDgQYdYd2QLvTiCirH3uSIXnLAgEe0eaanKQCDpRl1JLMPWCi4
+	 D0TdAdWB70u9A==
+Date: Wed, 1 Jul 2026 21:01:54 +0200
+From: Nicolas Schier <nsc@kernel.org>
+To: Sergei Litvin <litvindev@gmail.com>
+Cc: miguel.ojeda.sandonis@gmail.com, nathan@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, ojeda@kernel.org
+Subject: Re: [PATCH v4] scripts/tags.sh: fix "make COMPILED_SOURCE=1 cscope"
+ command ends up with *.rlib, *.rmeta, *.so filenames in cscope.files
+Message-ID: <akVkIrcpNxZrrfii@levanger>
+Mail-Followup-To: Sergei Litvin <litvindev@gmail.com>,
+	miguel.ojeda.sandonis@gmail.com, nathan@kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, ojeda@kernel.org
+References: <20260601211850.3378-1-litvindev@gmail.com>
+ <20260602121521.11650-1-litvindev@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4348a7fc-8e90-48bb-5eff-08ded7a01e19
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2026 18:39:43.1348
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tX4liuefQCr2n18k9m+3mBxiYS5RDuO7ZJ+BXy0h8XMFUYKPPie2SsdTCrIpsjCqE/sbgBaNzyhKJUDXpclHvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5850
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260602121521.11650-1-litvindev@gmail.com>
 
-T24gV2VkLCAyMDI2LTA3LTAxIGF0IDE1OjQwICswOTAwLCBBbGV4YW5kcmUgQ291cmJvdCB3cm90
-ZToNCj4gVGhlIHJ1c3QtYW5hbHl6ZXIgZ2VuZXJhdG9yIHNjcmlwdCByZWNvZ25pemVzIGEgY3Jh
-dGUgd2hlbiBpdHMNCj4gY29ycmVzcG9uZGluZyBgLm9gIGFwcGVhcnMgaW4gdGhlIFJ1c3Qgc291
-cmNlIGZpbGUncyBpbW1lZGlhdGUgYE1ha2VmaWxlYA0KPiBvciBgS2J1aWxkYCBmaWxlLg0KPiAN
-Cj4gQ29tbWl0IGNhNTI0ZTI3M2M0MyAoImdwdTogYnVpbGQgbm92YS1jb3JlIGFuZCBub3ZhLWRy
-bSBmcm9tDQo+IGRyaXZlcnMvZ3B1L01ha2VmaWxlIikgbW92ZXMgdGhlIGJ1aWxkIHJ1bGVzIGZv
-ciBgbm92YS1jb3JlYCBhbmQNCj4gYG5vdmEtZHJtYCBpbnRvIGBkcml2ZXJzL2dwdS9NYWtlZmls
-ZWAsIHdoaWNoIHJlc3VsdHMgaW4gdGhlIGdlbmVyYXRvcg0KPiBzY3JpcHQgaWdub3JpbmcgdGhl
-c2UgY3JhdGVzLg0KPiANCj4gRml4IHRoaXMgYnkgbmFtaW5nIHRoZSBjcmF0ZXMnIG1vZHVsZSBh
-cyBhIGNvbW1lbnQgaW4gdGhlaXIgcmVzcGVjdGl2ZQ0KPiBgTWFrZWZpbGVgOyB0aGlzIGlzIGVu
-b3VnaCBmb3IgdGhlIHNjcmlwdCB0byBwaWNrIHRoZW0gdXAgYW5kIHJlc3RvcmUNCj4gYHJ1c3Qt
-YW5hbHl6ZXJgIGZ1bmN0aW9uYWxpdHkgb24gdGhlbS4NCj4gDQo+IEZpeGVzOiBjYTUyNGUyNzNj
-NDMgKCJncHU6IGJ1aWxkIG5vdmEtY29yZSBhbmQgbm92YS1kcm0gZnJvbSBkcml2ZXJzL2dwdS9N
-YWtlZmlsZSIpDQo+IFNpZ25lZC1vZmYtYnk6IEFsZXhhbmRyZSBDb3VyYm90IDxhY291cmJvdEBu
-dmlkaWEuY29tPg0KDQpUZXN0ZWQtYnk6IFRpbXVyIFRhYmkgPHR0YWJpQG52aWRpYS5jb20+DQoN
-ClRoYW5rcyBmb3IgZml4aW5nIHRoaXMgYnVnIHNvIHF1aWNrbHkuICBJdCB3YXMgZHJpdmluZyBt
-ZSBjcmF6eS4NCg==
+Hi Sergei,
+
+On Tue, Jun 02, 2026 at 02:15:21PM +0200, Sergei Litvin wrote:
+> PROBLEM
+> 
+> (1) When executing the command `make COMPILED_SOURCE=1 cscope`, the
+> `cscope.files` file generated by it includes filenames with the
+> extensions *.rlib, *.rmeta, and *.so (taken from *.cmd files, which, in turn,
+> are generated from *.d dependency files by the `fixdep` utility).
+> 
+> (2) When executing the command `make cscope`, the `cscope.files` file generated
+> by it includes only filenames with the extensions *.h, *.c, *.S and not includes
+> filenames with *.rs extensions.
+> 
+> SOLUTION
+> 
+> (1) Modify the regular expression in the `all_compiled_sources()` function so
+> that only files with the extensions *.h, *.c, *.S, and *.rs are accepted.
+> 
+> This causes `make COMPILED_SOURCE=1 cscope` command to generate the
+> `cscope.files` file that contains only files with the extensions *.h, *.c, *.S,
+> and *.rs.
+> 
+> (2) Modify the functions `find_arch_sources()`, `find_arch_include_sources()`,
+> `find_include_sources()`, and `find_other_sources()` so that they can accept an
+> unlimited number of filename patterns as parameters for the search. Add the
+> `setup_name_pattern()` function to convert these filename pattern parameters
+> into a list of parameters that can be passed to the `find` utility via the new
+> `pattern` variable.
+> 
+> This causes `make cscope` command to generate a `cscope.files` file that
+> contains *.rs files along with *.h, *.c, *.S
+> 
+> Signed-off-by: Sergei Litvin <litvindev@gmail.com>
+> 
+> ---
+
+thanks for the patch, the actual diff looks good to me!  Just two formal
+nits:
+
+1. Your patch contains two reasonable fixes that are valuable each by
+themselves; in general it's better to have single patches for single
+logical changes.  That helps also for the second nit:
+
+2. The subject line is too long:
+Documentation/process/submiting-patches.rst recommends 70-75 characters
+with regard to workflows and tools; splitting simplifies writing short subjects, e.g.:
+
+  scripts/tags.sh: Prevent binary files appearing in cscope.files
+  scripts/tags.sh: Add support for rust source files
+
+
+Kind regards,
+Nicolas
