@@ -1,160 +1,192 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012071.outbound.protection.outlook.com [52.101.43.71])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561A8394464;
-	Wed,  1 Jul 2026 06:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782888732; cv=fail; b=aOEJPL/gDcH3BviBJbrwTWt0kLnsR5asCNJfdZXHoXw0hjoGPED81sCarLoiRhHmhs0ryMTdx8ynaIqbwmYPOeg4B00+QxRKozP1euArlAwoWsOw9eFJs/jEtw314dfMyrGm8gMIvKdeXbtDwoNYuDF8UjumOd6CjK/k00sSVEk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782888732; c=relaxed/simple;
-	bh=ZW/AKxORGBTU/Dpk1U2+S5rpWSXl+iR1Tc9z4DOygKU=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=np9G3yDkatZVlPs+p+PwXMU3vqRJtyjw7P6b9nCuPrCHY+Ff39hJId7UIZaEa3UtMeL6DjCrInTKdHFknfk/jSuT09kxWtgwMP4zZj9hkt9AuvikltCmVahNGBqWvsSh+PveDkKu/7LxNWX+vPAa3/reem4xbOLBEnPavcIdors=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=J8Eo/35g; arc=fail smtp.client-ip=52.101.43.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C13E40627B;
+	Wed,  1 Jul 2026 10:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782901984; cv=none; b=iQeGJvN7KbW4BDSKBm+vaga+2X49UqWHMhRXmRoMJICMwy1e96G86ljQ0ncpY5F2EkvbarzCLrQ+oVgmfOy6hxmGrnWWvJQYwtGeVjUW4OGGe6rN4I1Gl03sPNwiqVDZeEX+5X3Zh8mztqo1n3eFdYKyED/m9WLGCT21UdpTTEQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782901984; c=relaxed/simple;
+	bh=egZJFXBmMN8JlydboxnMffQODIZ7sYmQUJvgFbm0n4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SX7jYmIDz4I7lBPzwVlPkcFVzh7gLtFfAfBCfSvR3tp+5ZsvsD4XXuz4ct1LE4CzV0f85Tgpr0B1HdODqMLjSVRJQ/61c2xvZZR43jYf6mDOooP1kKh2h4p+ylF7hPWBoMHieEfl6CJNMllOKFP9JnGEutfe1gyVEiUhVcD2Ec4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7kBGXlS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="J8Eo/35g"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mWMXNxkcWdrpLo39AglWpYMyrDGBMhwpBfqomPgTep+9/0+OyLcLXQcf5DPWIUDIG6MV8eOdPfXy0MEZiZxmA3TSVXH+BZzqS5S8X89SJpuND4TJxur2e4VEFZne4e9TTVaKS3c6a2hRyLZxwZyA0YajbVZKVQcPA+EiQnQdwhNw8vk/USRe2adZN66CoAtdHupAvMndR9WcQqi8PPdyXobMxZh2RaNsesBliVSAGVDAd4INwAzozPl3PrNVNW4J9xOqj/iyHa2np4fhrWQhSpHwMcBzorjPKJw2QZbXQcnivrumKSHeihjDkZv0+G0+aKw6TGdAGXll4xujzRSkQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZW/AKxORGBTU/Dpk1U2+S5rpWSXl+iR1Tc9z4DOygKU=;
- b=P8DQYe3X2g7m+wHWucH4cT4mHxVLMkzPqtp9qJVe1j58VwMnKwcUyf8XL0xFdB3jx03ruA8CvxgELQU1EQfiu08KSpBPCvlddYHI5UHRwn9I7TIyxRaTnAcfzGkjZWTghO9GkG0rEgZTEr0Meu55oV+Dd49ZUA9sak2ZzbEpgGKXlDgJcVxjZDixvq4WcBGoM6ZnsuEOcaIQkd8+D8B/pTznDJiLO/mr0xbkx/2oj3yTpTvBYoTraDTV5HxaF6HnaSgvZY65+1WE00BSUqEN66pRIWG5AaIiBdkUN5Af9AY3DplJjW/Zh3M7a5sINfCraJ42KiJRcTeDFlbsWvDMrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZW/AKxORGBTU/Dpk1U2+S5rpWSXl+iR1Tc9z4DOygKU=;
- b=J8Eo/35gQHMWDDm+UpAul053sFRx0JNqqzoVCLWnySWFPP8o97NvWksIAYUmQszwJHHq0V6LvATLOwvVXf4AoUN1cPFEuzBbtkdAkjcsj7WOATwkds8wcBqN76r69cU5IZret626SNwM1JO5PDB6+/NJ7MzLJnptOqB8/84srHfbBwQs69AqbJEf0kQmYkTlXVjAaCxbb7Youy8kc69XZud0Vmvjh5jjDMKtRCxQOsC6vJp8MK1IgdyuUfM+m3ex2j6gogaG1RVp+Kk5YYd/D2yZCot5cRCRXUHND0cvsB+24k+q2CTuEiu1GD5h8gQaABWedFtK2TFOz3m43PkMkg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by SN7PR12MB7451.namprd12.prod.outlook.com (2603:10b6:806:29b::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Wed, 1 Jul
- 2026 06:52:06 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0181.008; Wed, 1 Jul 2026
- 06:52:06 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 01 Jul 2026 15:52:03 +0900
-Message-Id: <DJN1B0CUXFLF.18XU6RRRYZO9O@nvidia.com>
-Cc: <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- "dri-devel" <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v4 12/13] gpu: nova-core: gsp: separate context and GPU
- lifetimes in GspBootContext
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Gary Guo"
- <gary@garyguo.net>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260629-nova-bootcontext-v4-0-5539d8469590@nvidia.com>
- <20260629-nova-bootcontext-v4-12-5539d8469590@nvidia.com>
-In-Reply-To: <20260629-nova-bootcontext-v4-12-5539d8469590@nvidia.com>
-X-ClientProxiedBy: DS7PR05CA0075.namprd05.prod.outlook.com
- (2603:10b6:8:57::16) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7kBGXlS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD1C1F000E9;
+	Wed,  1 Jul 2026 10:33:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782901981;
+	bh=aTZX0gXiTEE7JDt7/JZtMtv5Tbg1fdLtCyTAywHrS8c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=v7kBGXlSYYVGshBfp+N1nKM+kvPQ/oC8Ib7Am3whQXZVLiX3RI4/pYFF7m+ppYLJx
+	 YS9xHEqgZ2mlgbhr2IvgL3Tfu5nw4bBgD0cAdedyVNxuvfHoNkjn1Rz0Da0OopuC4R
+	 BI285oLaLgyRzX1cBz+0WCYfZII6uWAzv0zhxjiA=
+Date: Wed, 1 Jul 2026 12:32:57 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Breno Rodrigues Alves <breno3011alves@gmail.com>
+Cc: alexander.deucher@amd.com, ojeda@kernel.org, christian.koenig@amd.com,
+	arnd@arndb.de, rust-for-linux@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: core: implement rx580 state optimization engine
+ and c-to-rust char dev
+Message-ID: <2026070136-unbent-mothball-49ba@gregkh>
+References: <20260630210445.23103-1-breno3011alves@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|SN7PR12MB7451:EE_
-X-MS-Office365-Filtering-Correlation-Id: 334d0ee6-9cc6-43c1-e8a4-08ded73d4377
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|23010399003|7416014|376014|1800799024|366016|921020|22082099003|18002099003|11063799006|56012099006|5023799004|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	t9uVeY9gX/OnqA09YWfdqxosqz6gLYnKjG2qccdn8pU22HYlXBLi+iwCHcQ/DF0l8QJy2SMX9uO3cZcpf4Q4zv5Py3fwdTJMv+OR6meHCgx/xLKyfEvo/lT4+JtWbfyBbVpb+mmqjF+FVrprxQphgVOKyKJZLHbgA+dPf1VgquoDjGDBBC3xyGhdX6iojxiIeNV5cStvgCxS4SVCBS54JyXqejBNPWkdFYCEAqp5TFC41pVYWn0OFgTkg0JOdp79t24TX6kWFFglq1IiiyaKX9tvPj3xwUTKy86k75+gewS9DMQNMfWi+yEsNCtf9r2hSNVwBn4XB/yFHfuLnNffe/pSxm1NP9RIyK/ENCjFA1HHAxYUUfG175Fus2n2F0GfSgLGPSDf91V7yGmZpNMhjn+ImksLdr6Mij6NU7VSf4/+FAJ5a/5RvvXTqvD8zCPzUU47+LkDTN0Sdo/PCCiO+s3z630c/6hZNeVFPjV3XrRH6czGz9tJ3MBaHlJMnxwTyetHf6pNStBzqsJLTtPfaiGQitXcbh8TddJY0pdSydLAsIkS6jXpdUXrFW3Lt4lJ3r0FxDauODFw2rPYSSpFpFRh5Iu9rWbApR2H9/ejAs3mcbS3uH4MGOWXiZqdz9CXZptwChNgGOLv5l6Q56E6+hPy/e1bypOhPzL3+IzN5uWP+6s4oe9SsyhiJt1AVcGbAloeN1RHlvpWnlySDYTYUA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(7416014)(376014)(1800799024)(366016)(921020)(22082099003)(18002099003)(11063799006)(56012099006)(5023799004)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bk5NNFRHbWorYzFScUl6eVg0MWdTc214dXlBOW5wRmdTN1ROR21zN1ZtQ1ZO?=
- =?utf-8?B?ZnNTTmNhSE1QUk1nOHBZL3hWcGVzdnYxS3pwMW5MMDZic3JrU3dLUGwrd3lY?=
- =?utf-8?B?UFpEYlUyeEtpbUUzUm1ITGVhNG1JV1cwWHBKd0h3NG1ENktRNGhCOVJQLzZl?=
- =?utf-8?B?S05VL1luQzd0MkVMN3BsWWs5TFNLT1Q3OW5nTU1ONzAzOHBzNnJvUkFKU2F2?=
- =?utf-8?B?Q2hKckdzc2tkbExMbjBvNmZOczlKN3dacnRvTjBtemJIWVJYUkx5ME9ldGhy?=
- =?utf-8?B?aXI5bXRGTXVEM3dWS2ZHWm5DRm8yVGM1U29lMmwrYW5PZndCOHNOLys5L3dI?=
- =?utf-8?B?OW9QRXlES1NQK09qTnZoZTJKc294aWhQajR0cFhDNWpCVGV4QUhiUEJJRHN3?=
- =?utf-8?B?NjFKd25wd1RPVmsxSnVxZzJNT2NkQzRrUGhpaW42VnlzWnd6OGhoUHNMOG1m?=
- =?utf-8?B?eEJSK0hLcTFRTEpSMTc5cVJYZWhsSmlVc0YzTkU5VnkvNTAyUDVhOStrRUtm?=
- =?utf-8?B?d0J6RTdPUzFSWUpkUkdhUWlTUmJsK0ZIVW9rUVRMcDVvM2lDZkhYdUQ3WVow?=
- =?utf-8?B?cFRlQk1PYitOMFJJTVppMEMyY2VTeDhGWmRPNXVqQ2tJOHJQbWVzNHR5SXAv?=
- =?utf-8?B?UStjV0JzNWJWa0JsbUpSRTM3MDgwZmxCbXJ1UStObTNBSjFvUUpBbzV1NHNU?=
- =?utf-8?B?VzQzOUJRTlBGU0EvOTVsanJRRldLY3JnVmZPQ0ZoTnREcVRSN1FNRDRMM1pG?=
- =?utf-8?B?WUptejE4MytlajQyVW1GWUF6b2NhdVNjeDVDbWxEV2R4VTY5Sml1YWJQUmIy?=
- =?utf-8?B?azBvSmZ3QzdoQit4RW13b3YxL1hXekF3Ty9GaHZVSUxoc1lnV1BoWDVVdlIw?=
- =?utf-8?B?eWQ2YWVpZWhpUElFWGpzdzkxaWIyY3NwZW1pL2hoL1Y5YzFsd1lnNENGTGFU?=
- =?utf-8?B?N2U3TWJpcnZjRHRLZzdxTUFPWHoxMm10V1kwRXZ4bTZvTFR5RlBKM3VIcHpi?=
- =?utf-8?B?RmhqRG8xbHRadHFpUGpSMkNrVEVhSFhUZ1hHenNaeWhMblRTb2JONm1uN2sx?=
- =?utf-8?B?MG94dEJPSEFqd2doK0NjV0MveFEzT1IweXlyMlBBazdva01PSlZQaG9xRk8r?=
- =?utf-8?B?UFZTWkZqOHZHYlpTL1JUWk40Rm9GUFFhaitib3dNR3hYRTFXcDNQSDlBY3Np?=
- =?utf-8?B?c3dOSThjWFNzclVhYVJIQThyZ1E5SVc5Q1hISHFlOWQyMHFxc1pBVXRvNzU2?=
- =?utf-8?B?Y1FHZDBGWTJyOWdOZUY0VjVZMEQ0bzU4ZWNLdTgxZkRsL2VudUlRdHcvdnRu?=
- =?utf-8?B?eFJZWUg4eGw2bTVmREZZOStOZWZEbHJVaTZqYTF3L2RwY1I2YlNWVWJpRGJi?=
- =?utf-8?B?RUhSc0FlR1o4TFVPY0tleVpoVjcrMHhaNFgwdExNTXZmTVlETzY5a2xrd0dT?=
- =?utf-8?B?dllnS2paUktPTlp4elBFQmNyQUlFMHY2VWVEMy9aQnRuZ3BnT3BSVUVyN3Mv?=
- =?utf-8?B?TnpLUkc3SnNBek5FMXBlUGVKNU5Pd0grRktHMCt1ZklpNE1HU1FaOUh1dldj?=
- =?utf-8?B?SVNSKzdicndnS3RHbkJjRnQ0TDdLbHY0NDUwSUoyeXBkUHlSdm0wc2FRRFdG?=
- =?utf-8?B?U082NHliUDRKSk9zVXVNRmFIeEplL0VncHUxOFg5a1FkTjB1MjYrY2M5Y0dn?=
- =?utf-8?B?R1RWWm8ycVk2SDBqa2ZHKzhxN1UrKzI3YXNtYks0dTl6MWMxM0VuUmFhK1hl?=
- =?utf-8?B?dVdYTDhkemVPY1FrOUhpTmF1MWJCOHJxTjlrMUE5NE1QMitybmV4NzlQU2tO?=
- =?utf-8?B?VUJDdUFQZ1NqVEZ3ZC93WU5sbTJub09vZ05MLzJsdEJIV3hQMWY1cWQ4VnRU?=
- =?utf-8?B?ODlPZ0JhaHZxQndZb0JQYXJaQ0VDcVNIc2lVOWU2UUlVcDg3a2JIbmk3VW5u?=
- =?utf-8?B?SThJN3gvbkkzblZBQ3BsbkZmbUNpRmVUSy9hU1owOEQ3UlJUQ2Z3VHM4NDVt?=
- =?utf-8?B?VkJzUktLczlrclRKTzA0K1Q4Zk4zTXBSQVlWK0xwMmhwMUZVUzZpSGVsc3Q3?=
- =?utf-8?B?bGRIdlp3U3p3NmVYTlRYQkNXaGtzdEJTYTU4Z2ZjbmI5ckkrNGxhQjNSR0Vr?=
- =?utf-8?B?OGtzejlYZ3Y1REtnYjd1TWNXRmR4eFFtUXJ6RWRvRzNIakVzTnc5VHJ0aHRK?=
- =?utf-8?B?NlVtTUxydVN3M29rc2diVUpXcnJrcE9rZStCY3Y4Q0JSR3JtNmZHRGp6TVNr?=
- =?utf-8?B?YXRuM3ZlOTJSRmJwY2ZLS1U1cFJOQm1xUHArOTV0b3lPMXYralVJSzVpVnB6?=
- =?utf-8?B?MEQvSlB0dWd1T2t2NFN3R1JKRkx3ZUhVRUpEaWVwOGdiek5lMURZbWgwRnhz?=
- =?utf-8?Q?rKAISpmNBjATQug4JtFeuEf5knQf2lcfWyQNX3zdt/023?=
-X-MS-Exchange-AntiSpam-MessageData-1: 54ttxZxDEbE+bw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 334d0ee6-9cc6-43c1-e8a4-08ded73d4377
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2026 06:52:06.1720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uctdNBt2aBeL/MG5OZ5Xhri3U9jvyVB3ORj1kzNL0QXnUYHmqUadGpStkkuJ6noPjXdDYxj36U6rigSPsh6g+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7451
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630210445.23103-1-breno3011alves@gmail.com>
 
-On Mon Jun 29, 2026 at 11:09 PM JST, Alexandre Courbot wrote:
-> `Falcon` instances retain references tied to the lifetime of the bound
-> GPU. `GspBootContext` currently uses that same lifetime for its own
-> borrows of the `Falcon` instances and other references.
->
-> But these lifetimes are independent: the references captured by a
-> `Falcon` remain valid for the GPU lifetime, while the context only
-> borrows the `Falcon` for the duration of a boot or unload operation.
-> This distinction is hidden for shared references by covariance, but
-> cannot be ignored anymore if the context carries mutable references to
-> GPU subdevices, as will happen for the `Fsp` and the `Falcon`s.
->
-> Thus, give `GspBootContext` separate lifetimes for its subdevice borrows
-> and the GPU resources captured by those subdevices, and update its users
-> accordingly.
->
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+On Tue, Jun 30, 2026 at 06:04:45PM -0300, Breno Rodrigues Alves wrote:
+> This patch introduces an automated indexed state mechanism to optimize
+> VRAM latency and command loops for the Radeon RX 580 architecture.
+> Additionally, it provides a converted C-to-Rust sample char driver.
+> 
+> Signed-off-by: Breno Rodrigues Alves <breno3011alves@gmail.com>
 > ---
+>  Documentation/rust/alves_guidelines.rst  |  3 ++
+>  drivers/char/Kconfig                     |  7 +++++
+>  drivers/char/alves_char_dev.rs           | 31 +++++++++++++++++++
+>  drivers/gpu/drm/amd/amdgpu/Makefile      |  1 +
+>  drivers/gpu/drm/amd/amdgpu/alves_core.rs | 38 ++++++++++++++++++++++++
+>  5 files changed, 80 insertions(+)
+>  create mode 100644 Documentation/rust/alves_guidelines.rst
+>  create mode 100644 drivers/char/alves_char_dev.rs
+>  create mode 100644 drivers/gpu/drm/amd/amdgpu/alves_core.rs
+> 
+> diff --git a/Documentation/rust/alves_guidelines.rst b/Documentation/rust/alves_guidelines.rst
+> new file mode 100644
+> index 000000000..f6afa63de
+> --- /dev/null
+> +++ b/Documentation/rust/alves_guidelines.rst
+> @@ -0,0 +1,3 @@
+> +# Rust for Linux - Core Guidelines
+> +- Style: Linear, pragmatic, flat, Linus Torvalds style.
+> +- Constraints: Zero-cost abstractions, strict RAII, no binary bloat.
+> diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+> index 9865227af..ace4df826 100644
+> --- a/drivers/char/Kconfig
+> +++ b/drivers/char/Kconfig
+> @@ -372,3 +372,10 @@ config ADI
+>  	  driver include crash and makedumpfile.
+>  
+>  endmenu
+> +config ALVES_CHAR_DEV
+> +	tristate "Alves C-to-Rust Character Device Driver"
+> +	depends on RUST
+> +	help
+> +	  This is a character device driver migrated from C to Rust.
+> +	  It acts as a core showcase of 2% module conversions.
+> +	  Say Y or M here if you want to test the Rust infrastructure.
+> diff --git a/drivers/char/alves_char_dev.rs b/drivers/char/alves_char_dev.rs
+> new file mode 100644
+> index 000000000..5ccb80ea4
+> --- /dev/null
+> +++ b/drivers/char/alves_char_dev.rs
+> @@ -0,0 +1,31 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +//! Simple Character Device converted from legacy C to Rust using core Miscdev API.
 
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+Where is the original C code?
 
+And what is going to interact with this in userspace?  And how?
+
+> +
+> +use kernel::prelude::*;
+> +use kernel::miscdev;
+> +
+> +module! {
+> +    type: AlvesCharDevice,
+> +    name: "alves_char_dev",
+> +    author: "Breno Rodrigues Alves",
+> +    description: "Pragmatic C-to-Rust converted character device driver",
+> +    license: "GPL OR MIT",
+> +}
+> +
+> +struct AlvesCharDevice {
+> +    _dev: miscdev::Registration<AlvesCharDevice>,
+> +}
+> +
+> +#[vtable]
+> +impl miscdev::Options for AlvesCharDevice {
+> +    const NAME: \&"static CStr = c_str!("alves_char_dev");
+> +}
+> +
+> +impl kernel::Module for AlvesCharDevice {
+> +    fn init(module: \&"static ThisModule) -> Result<Self> {
+> +        pr_info!("Alves C-to-Rust module initialized successfully
+> +");
+> +        let dev = miscdev::Registration::new_reg(module)?;
+> +        Ok(AlvesCharDevice { _dev: dev })
+> +    }
+> +}
+
+This code doesn't actually do anything at all, how was it tested?
+
+
+> diff --git a/drivers/gpu/drm/amd/amdgpu/Makefile b/drivers/gpu/drm/amd/amdgpu/Makefile
+> index ba80542ea..b9f98c3e4 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/Makefile
+> +++ b/drivers/gpu/drm/amd/amdgpu/Makefile
+> @@ -349,3 +349,4 @@ include $(AMD_GPU_RAS_FULL_PATH)/Makefile
+>  amdgpu-y += $(AMD_GPU_RAS_FILES)
+>  
+>  obj-$(CONFIG_DRM_AMDGPU)+= amdgpu.o
+> +amdgpu-y += alves_core.o
+> diff --git a/drivers/gpu/drm/amd/amdgpu/alves_core.rs b/drivers/gpu/drm/amd/amdgpu/alves_core.rs
+> new file mode 100644
+> index 000000000..aa436763e
+> --- /dev/null
+> +++ b/drivers/gpu/drm/amd/amdgpu/alves_core.rs
+> @@ -0,0 +1,38 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +//! AMDGPU RX 580 State Optimization Engine (Turing-inspired state machine)
+> +//!
+> +//! Copyright (C) 2026 Breno Rodrigues Alves.
+> +
+> +use kernel::prelude::*;
+> +
+> +#[derive(Copy, Clone, PartialEq, Eq)]
+> +#[repr(u8)]
+> +enum GpuState {
+> +    Idling = 0,
+> +    LowPower = 1,
+> +    ComputeActive = 2,
+> +    VramMaxPerf = 3,
+> +}
+> +
+> +struct Rx580Engine {
+> +    current_state: GpuState,
+> +}
+> +
+> +impl Rx580Engine {
+> +    fn transition(&mut self, symbol: u8) {
+> +        self.current_state = match (self.current_state, symbol) {
+> +            (GpuState::Idling, 0x01) => GpuState::LowPower,
+> +            (GpuState::LowPower, 0x02) => GpuState::ComputeActive,
+> +            (GpuState::ComputeActive, 0x03) => GpuState::VramMaxPerf,
+> +            (GpuState::VramMaxPerf, 0x00) => GpuState::Idling,
+> +            (state, _) => state,
+> +        };
+> +    }
+> +}
+> +
+> +#[no_mangle]
+> +pub extern "C" fn amdgpu_rust_rx580_optimize(register_sample: u32) {
+> +    let mut engine = Rx580Engine { current_state: GpuState::Idling };
+> +    let symbol = (register_sample \& 0xFF) as u8;
+> +    engine.transition(symbol);
+> +}
+
+Same here, this code doesn't do anything that I can tell.  How was it
+tested?
+
+confused,
+
+greg k-h
