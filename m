@@ -1,63 +1,63 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6055047CC80
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 12:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40F848AE11
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 12:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782993952; cv=none; b=UKKEwKGGsnxIWQUui/WISHQYbAW+8R9nNnfiDe0niTVFNkitesQLtZ8fdE67fzbuca8gP2aPeWVbFA7LkN44B2/U7bMb+hdr1iJQHh8mm1QK83PDUPYvowLs/GhDHYPI/Nkw0+YeRe7TQLZxbF8kgT28T7fKKonulWLHc9/Vn1Q=
+	t=1782993957; cv=none; b=mBSdNQpt4gFg0KzD+HTlccopttLxixBR7OLjuTg7acuk4btzKBTLmwRgYjYcXQt/CmcyT/PCzYyi81lm38k9ztINiJJCrFSYQVyVEl4ppkjFfJY2TChzq0tMByFOswm82L6Ozu2W+Iv08w+K+kDA1uCWCaMtxJheoK8sH9rMNIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782993952; c=relaxed/simple;
-	bh=j6gduB0AvMpfaZ6PkGQqj85oN4E9h+Fs6tZSvCEwBnI=;
+	s=arc-20240116; t=1782993957; c=relaxed/simple;
+	bh=3p2PCVJY3rtxvx93jEL/7MqbNyX0OX+xPKx+baJG+yo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eKL/+iPe4fNIou6rJv4XoZM/7kX9L3zpmKxamUQC4YoAR5qzL/wQzFdqH+KFAqcHpXnoVQ9RfpNwgGOyU9pHOJyNWcxXzkvX/Cotjzcm7iKbUKXQzB58AmrzIB+wLhjAXt0Ha5RMkM8PZlYOTwKcX56xo7Kj8k2pldgxwBCQHHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=LUPwW6kc; arc=none smtp.client-ip=209.85.221.170
+	 MIME-Version; b=hbih0/Tg/q2t4AN9li6klGIS5XfXS9EzUPhDMYrJ/ctpvMBDVJkh6/iVZyR0GNo9cS9E0kSfvlCNoOZZvmXF5Nd941rQCGzOwdtqQC9t7uSvM0VrsisqSHbcSlcJVwzqyGFcpyD5NCAIi5t7Hwb511SF8XsG4FHvqifJCGx4d8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=gELbD21b; arc=none smtp.client-ip=209.85.221.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="LUPwW6kc"
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-59d07df448bso758185e0c.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 05:05:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="gELbD21b"
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5bbc6c99b5cso437136e0c.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 05:05:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1782993947; x=1783598747; darn=vger.kernel.org;
+        d=usp.br; s=usp-google; t=1782993952; x=1783598752; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZzHdYWFcDkZu4PsS/Wd20QSDadRqyTQZHFMjtpnEEdU=;
-        b=LUPwW6kcnyOZOXOlPEukS+4keGv8KPQsQSaXWD8hdv/1I1BjlxxiquvnJMD1w6mz3k
-         5RYwhS/ESgj2i4EPlyuGzXvQYDlHH6GctyOhXjlGTw/63M+exDIKQn4Qmy/zhZg2FRVD
-         cHwZAicB0GidZAMg4pMuKZ2taUDojmNlhOVRRLycWEC9Cxyr8j/tbt3eLEeE4efJyr93
-         fwh4vi8jgeka3fHs2xGoDfM+dJ1SrjNfVB9pFoY1Z1meXCklFNgfksR+iLb88RdJVanJ
-         ec7KNyd6S2I1wvR5/sf/n5UC85ManRSDrhEeJO+tgy4AEDDvswcgR0ra5dBL9qj67Kol
-         Et4w==
+        bh=KFceAFuK036YUVrKWQ2ER28PIOKf2Yja+50h/9H1BAo=;
+        b=gELbD21bdwPgwih7W5HKGpcJYl7MWiFaDRvjPQOTdVfO5hS3XQti3DwFD+xS167yfc
+         ozt4Wtx+mXIn5zUMtOBFbzq9qZGs2GAZph3GFe/sx5NnLPvgrhpTAp7jE2cDoWutmFjs
+         yXaVBp3+eKr6wT9LOC1bzPZljtnLh4CjAnIU02U5aGPegl7KwYBzytvLnxIFqAP/4uvl
+         /oOjkO/GjRejH1/MIQ5NDpVTrCg6dqJR5RxkZEJYjD2t3psYHwQANY/kKNH4G0aVoYGw
+         7+Jmt3ng43H2sVHdSTAwqsbfyMDw+WocCq7QkWR3Y6fXRaoiTdcGDijMgMGPlN7HZDaL
+         ACVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782993947; x=1783598747;
+        d=1e100.net; s=20251104; t=1782993952; x=1783598752;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ZzHdYWFcDkZu4PsS/Wd20QSDadRqyTQZHFMjtpnEEdU=;
-        b=EXTIFRZlNCI9BOVtvJiFojqs+5rDw6/iUR01xbwSw8q4CAVdzN0sZ1TZ35X9jHEXNv
-         bYMn3YMYdcsBab30htNjdsa/FhiMGH5/z66Rqbp24dXwl63FVa9J0gXMFtY4hJ1AvVWu
-         woRxoJDLTISUKAMX29a1kKTpydzcBJI5KQHARrLf2uqQZpoqFjcVYs8e+yuK8pYNx9gG
-         cBfvUX0yf9oPdgbDN5x2wjCgdQB5qWYlbG5e5TgxWvJdJ1/Fq3aWoeeTtOuC4cIh91Vd
-         pCcT79Wy6rf1g0gB8gUAZQVxLRGS+pGRdHqSS8MtyRYmrhcp2ovaLo2eqpGmgVTHgk4D
-         DjmQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrGFGL9kChfVEqGdkInrXFlD+0xLTXU0f+ifNlMKb3HgIY3W550L1UNhICz1k3FooxtYG4r/b3+Bd0EcvSGNA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfMnpY6HbABaZhw81sDe66qVdA3IPFtDBFHJgEgMGjlgpcHMRQ
-	UdtPLKaZjZcRqA7BB2wwfLJjGwxSOIKn3EbzZSo7GltMijq5wo6Bnlii4ad837HsVaI=
-X-Gm-Gg: AfdE7cnXffnv6Io7FzOzkE1jdE0Gxyev6ze1SY1Metjywbud5Ibgs5PG+ywpNJUPwqs
-	j1c6Vqs8pTIFt5NKgIRHJFJHGg6C9w21axj2VOhy/DFo6UmQ8mUW6UFkzX8x5k6zwob44w2tREN
-	nBHh8Tg6beSOAS163+3lZwHLGp5Ouw/+3Nblc6ecQcJj8GZv8Qiq8p3JusNg/TZB4f+j359ke3j
-	RLYiXSM3Hmb7pA4MpJVb1OJUaYzdnKk5baxNMi5HEBucfkZKTPwMEW193k6iHUAI1ZSwnRRbM+L
-	BT6jHMFsjavSLDmuN3EXNWuWxGfpdz69Dsf8i4qpUHNFhTZ5CZpuMWG2rDFqdapJxCe6a/SKDUU
-	Q9s2Bap0VROpTNPKDoe8zUd1f4Hi3falSeZjTkXWxXsc05KRwwlGcZLmD62fRpT9NCYMwHIlw9J
-	MUp41PosBVMb+EOyU=
-X-Received: by 2002:a05:6102:5125:b0:737:2ce5:7b2d with SMTP id ada2fe7eead31-73da8a57499mr2742053137.9.1782993946770;
-        Thu, 02 Jul 2026 05:05:46 -0700 (PDT)
+        bh=KFceAFuK036YUVrKWQ2ER28PIOKf2Yja+50h/9H1BAo=;
+        b=aktHpVWZIptofgJhkmgKZdj+6uaPTddFlaPM2kkV5TATcqLzGp/3HErw5yaJwL72GV
+         ctEyh/oLtNx4VFgCcmgEfwEwUQ/RVIRtoycToQASBDtp3DYNoeb6br1dyAFXXRIhbneA
+         aYWqTk8aL1/qYj+B8QjShMQdvbx34gJEoTobn+2lKoaukGKVeodYAkQ9x+xJKFuW7kZ9
+         RLbGkFh/RWSHTwzAc0kD1z83vtWNytwgXuPMXqIL3tjkH1tFdhveJM1mQcPz53eE8B2V
+         gISDfUhAzh1sY5JZoJGG8BXgEXgyYQ8YEjnQXlnppHe0SrMJo1cEpyZSO6+6LpuDgvHh
+         hiog==
+X-Forwarded-Encrypted: i=1; AHgh+RpkG8tJx4ldz1lu3gJ+kOMaCzelNmI5OAoJWtkJfZgJKpiBBl0bsUiEkwxUFBDZwTTiFgboVvGNlsnKZadAEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+m4/0d1DB+jnPkgbtfAeGmENmUmuNwYVzDPRXagbatEgLuuZp
+	nyPWoTH+O5Qo5QcHjW26+IoZq428CKa7wEod1nIxbTX54+K7P521rI3DvcDSLn1sihI=
+X-Gm-Gg: AfdE7clysTujSLcFBodA4II1U4erlJosLPc3K+YWAzQqtdnaNVY5UTWRrUKZhkqbhzn
+	3dTUOUknOJqWNsEjVspbQ3TueNjmsbkeO4xmtI//kP2XfKxWyBNZY9QBFfQf3oSSljHI4eivwgE
+	twQGRF5/SdY0ezGCR5QntSGwBRmR/UcXgFPeaQDlrLMrly5x0xBCmXuiCzItONU2jmqkvjkK/ut
+	FFhnOTN0K/pBfNKJ5+K60twHSaUlIRrf1g7qMOvdTWs1DJIu/nwrAgk+Bb+kUiB0zd7YUDdaRX6
+	brKFdy5DRLLUJt//euwD1VsxjXySrrVfRpLlyZY41PawCk113pmQ6dyb9gCFEU3BgZ1SyYSGJaY
+	wBHoqrrbfsEuCOm5mJNoRbmQqkVoZpj3OjwL1Ymstib0jJGYTP59NKkyqr7HfgvfGKQi44L6mcQ
+	Q48uU7i7Xh5eZO+msZAX0AdxPwbQ==
+X-Received: by 2002:a05:6102:689a:b0:73a:2195:4386 with SMTP id ada2fe7eead31-73daacc3e92mr2255449137.24.1782993951555;
+        Thu, 02 Jul 2026 05:05:51 -0700 (PDT)
 Received: from niyudi-linux.semfio.usp.br (nat.ime.usp.br. [143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-73e1caf43casm1182470137.11.2026.07.02.05.05.42
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-73e1caf43casm1182470137.11.2026.07.02.05.05.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 05:05:46 -0700 (PDT)
+        Thu, 02 Jul 2026 05:05:51 -0700 (PDT)
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 X-Google-Original-From: Pedro Yudi Honda
 To: dakr@kernel.org,
@@ -72,9 +72,9 @@ Cc: nico.antinori.7@gmail.com,
 	rust-for-linux@vger.kernel.org,
 	nova-gpu@lists.linux.dev,
 	Pedro Yudi Honda <niyudi.honda@usp.br>
-Subject: [PATCH v2 2/5] drm/nova: use `zerocopy` in booter.rs
-Date: Thu,  2 Jul 2026 09:03:21 -0300
-Message-Id: <20260702120324.40388-3-niyudi.honda@gmail.com>
+Subject: [PATCH v2 3/5] drm/nova: use `zerocopy` in fwsec.rs
+Date: Thu,  2 Jul 2026 09:03:22 -0300
+Message-Id: <20260702120324.40388-4-niyudi.honda@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260702120324.40388-1-niyudi.honda@gmail.com>
 References: <20260702120324.40388-1-niyudi.honda@gmail.com>
@@ -88,124 +88,168 @@ Content-Transfer-Encoding: 8bit
 
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 
-In firmware/booter.rs, replace the following `transmute` traits with
+In firmware/fwsec.rs, replace the following `transmute` traits with
 their `zerocopy` equivalents:
 
 - `transmute::FromBytes` -> `zerocopy::FromBytes`
+- `transmute::AsBytes` -> `zerocopy::IntoBytes`
+- add `zerocopy::KnownLayout` where necessary
 
 Update call sites accordingly.
 
 Signed-off-by: Pedro Yudi Honda <niyudi.honda@usp.br>
 ---
- drivers/gpu/nova-core/firmware/booter.rs | 26 +++++++-----------------
- 1 file changed, 7 insertions(+), 19 deletions(-)
+ drivers/gpu/nova-core/firmware/fwsec.rs | 49 ++++++-------------------
+ 1 file changed, 12 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-core/firmware/booter.rs
-index acb7f4d8a532..fe9389b84b90 100644
---- a/drivers/gpu/nova-core/firmware/booter.rs
-+++ b/drivers/gpu/nova-core/firmware/booter.rs
-@@ -10,8 +10,7 @@
- use kernel::{
-     device,
-     dma::Coherent,
+diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
+index 95e0dd77746b..1b75cdc02256 100644
+--- a/drivers/gpu/nova-core/firmware/fwsec.rs
++++ b/drivers/gpu/nova-core/firmware/fwsec.rs
+@@ -19,11 +19,7 @@
+         self,
+         Device, //
+     },
 -    prelude::*,
--    transmute::FromBytes, //
+-    transmute::{
+-        AsBytes,
+-        FromBytes, //
+-    },
 +    prelude::*, //
  };
  
  use crate::{
-@@ -43,7 +42,7 @@ fn frombytes_at<S: FromBytes + Sized>(slice: &[u8], offset: usize) -> Result<S>
-     let end = offset.checked_add(size_of::<S>()).ok_or(EINVAL)?;
-     slice
-         .get(offset..end)
--        .and_then(S::from_bytes_copy)
-+        .and_then(|b| S::read_from_bytes(b).ok())
-         .ok_or(EINVAL)
- }
+@@ -49,26 +45,22 @@
+ const NVFW_FALCON_APPIF_ID_DMEMMAPPER: u32 = 0x4;
  
-@@ -52,7 +51,7 @@ fn frombytes_at<S: FromBytes + Sized>(slice: &[u8], offset: usize) -> Result<S>
- /// Such firmwares have an application-specific payload that needs to be patched with a given
- /// signature.
  #[repr(C)]
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, FromBytes)]
- struct HsHeaderV2 {
-     /// Offset to the start of the signatures.
-     sig_prod_offset: u32,
-@@ -75,9 +74,6 @@ struct HsHeaderV2 {
-     header_size: u32,
+-#[derive(Debug)]
++#[derive(Debug, FromBytes)]
+ struct FalconAppifHdrV1 {
+     version: u8,
+     header_size: u8,
+     entry_size: u8,
+     entry_count: u8,
  }
+-// SAFETY: Any byte sequence is valid for this struct.
+-unsafe impl FromBytes for FalconAppifHdrV1 {}
  
--// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
--unsafe impl FromBytes for HsHeaderV2 {}
--
- /// Heavy-Secured Firmware image container.
- ///
- /// This provides convenient access to the fields of [`HsHeaderV2`] that are actually indices to
-@@ -144,6 +140,7 @@ fn signatures_iter(&'a self) -> Result<impl Iterator<Item = BooterSignature<'a>>
+ #[repr(C, packed)]
+-#[derive(Debug)]
++#[derive(Debug, FromBytes)]
+ struct FalconAppifV1 {
+     id: u32,
+     dmem_base: u32,
+ }
+-// SAFETY: Any byte sequence is valid for this struct.
+-unsafe impl FromBytes for FalconAppifV1 {}
  
- /// Signature parameters, as defined in the firmware.
- #[repr(C)]
+-#[derive(Debug)]
++#[derive(Debug, FromBytes, IntoBytes, zerocopy_derive::KnownLayout)]
+ #[repr(C, packed)]
+ struct FalconAppifDmemmapperV3 {
+     signature: u32,
+@@ -89,12 +81,8 @@ struct FalconAppifDmemmapperV3 {
+     ucode_cmd_mask1: u32,
+     multi_tgt_tbl: u32,
+ }
+-// SAFETY: Any byte sequence is valid for this struct.
+-unsafe impl FromBytes for FalconAppifDmemmapperV3 {}
+-// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
+-unsafe impl AsBytes for FalconAppifDmemmapperV3 {}
+ 
+-#[derive(Debug)]
++#[derive(Debug, FromBytes, IntoBytes, zerocopy_derive::KnownLayout)]
+ #[repr(C, packed)]
+ struct ReadVbios {
+     ver: u32,
+@@ -103,12 +91,8 @@ struct ReadVbios {
+     size: u32,
+     flags: u32,
+ }
+-// SAFETY: Any byte sequence is valid for this struct.
+-unsafe impl FromBytes for ReadVbios {}
+-// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
+-unsafe impl AsBytes for ReadVbios {}
+ 
+-#[derive(Debug)]
++#[derive(Debug, FromBytes, IntoBytes, zerocopy_derive::KnownLayout)]
+ #[repr(C, packed)]
+ struct FrtsRegion {
+     ver: u32,
+@@ -117,22 +101,15 @@ struct FrtsRegion {
+     size: u32,
+     ftype: u32,
+ }
+-// SAFETY: Any byte sequence is valid for this struct.
+-unsafe impl FromBytes for FrtsRegion {}
+-// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
+-unsafe impl AsBytes for FrtsRegion {}
+ 
+ const NVFW_FRTS_CMD_REGION_TYPE_FB: u32 = 2;
+ 
+ #[repr(C, packed)]
++#[derive(FromBytes, IntoBytes, zerocopy_derive::KnownLayout)]
+ struct FrtsCmd {
+     read_vbios: ReadVbios,
+     frts_region: FrtsRegion,
+ }
+-// SAFETY: Any byte sequence is valid for this struct.
+-unsafe impl FromBytes for FrtsCmd {}
+-// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
+-unsafe impl AsBytes for FrtsCmd {}
+ 
+ const NVFW_FALCON_APPIF_DMEMMAPPER_CMD_FRTS: u32 = 0x15;
+ const NVFW_FALCON_APPIF_DMEMMAPPER_CMD_SB: u32 = 0x19;
+@@ -151,11 +128,9 @@ pub(crate) enum FwsecCommand {
+ 
+ /// A single signature that can be patched into a FWSEC image.
+ #[repr(transparent)]
 +#[derive(FromBytes)]
- struct HsSignatureParams {
-     /// Fuse version to use.
-     fuse_ver: u32,
-@@ -153,9 +150,6 @@ struct HsSignatureParams {
-     ucode_id: u32,
- }
+ pub(crate) struct Bcrt30Rsa3kSignature([u8; BCRT30_RSA3K_SIG_SIZE]);
  
--// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
--unsafe impl FromBytes for HsSignatureParams {}
+-/// SAFETY: A signature is just an array of bytes.
+-unsafe impl FromBytes for Bcrt30Rsa3kSignature {}
 -
- impl HsSignatureParams {
-     /// Returns the signature parameters contained in `hs_fw`.
-     ///
-@@ -170,14 +164,14 @@ fn new(hs_fw: &HsFirmwareV2<'_>) -> Result<Self> {
-         hs_fw
-             .fw
-             .get(start..end)
--            .and_then(Self::from_bytes_copy)
-+            .and_then(|b| Self::read_from_bytes(b).ok())
-             .ok_or(EINVAL)
-     }
- }
+ impl From<[u8; BCRT30_RSA3K_SIG_SIZE]> for Bcrt30Rsa3kSignature {
+     fn from(sig: [u8; BCRT30_RSA3K_SIG_SIZE]) -> Self {
+         Self(sig)
+@@ -228,7 +203,7 @@ fn new_fwsec(bios: &Vbios, cmd: FwsecCommand) -> Result<Self> {
  
- /// Header for code and data load offsets.
- #[repr(C)]
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, FromBytes)]
- struct HsLoadHeaderV2 {
-     // Offset at which the code starts.
-     os_code_offset: u32,
-@@ -191,9 +185,6 @@ struct HsLoadHeaderV2 {
-     num_apps: u32,
- }
+         let hdr = ucode
+             .get(hdr_offset..)
+-            .and_then(FalconAppifHdrV1::from_bytes_prefix)
++            .and_then(|b| FalconAppifHdrV1::read_from_prefix(b).ok())
+             .ok_or(EINVAL)?
+             .0;
  
--// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
--unsafe impl FromBytes for HsLoadHeaderV2 {}
--
- impl HsLoadHeaderV2 {
-     /// Returns the load header contained in `hs_fw`.
-     ///
-@@ -205,7 +196,7 @@ fn new(hs_fw: &HsFirmwareV2<'_>) -> Result<Self> {
+@@ -246,7 +221,7 @@ fn new_fwsec(bios: &Vbios, cmd: FwsecCommand) -> Result<Self> {
  
- /// Header for app code loader.
- #[repr(C)]
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, FromBytes)]
- struct HsLoadHeaderV2App {
-     /// Offset at which to load the app code.
-     offset: u32,
-@@ -213,9 +204,6 @@ struct HsLoadHeaderV2App {
-     len: u32,
- }
+             let app = ucode
+                 .get(entry_offset..)
+-                .and_then(FalconAppifV1::from_bytes_prefix)
++                .and_then(|b| FalconAppifV1::read_from_prefix(b).ok())
+                 .ok_or(EINVAL)?
+                 .0;
  
--// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
--unsafe impl FromBytes for HsLoadHeaderV2App {}
--
- impl HsLoadHeaderV2App {
-     /// Returns the [`HsLoadHeaderV2App`] for app `idx` of `hs_fw`.
-     ///
+@@ -263,7 +238,7 @@ fn new_fwsec(bios: &Vbios, cmd: FwsecCommand) -> Result<Self> {
+ 
+             let dmem_mapper = ucode
+                 .get_mut(dmem_mapper_offset..)
+-                .and_then(FalconAppifDmemmapperV3::from_bytes_mut_prefix)
++                .and_then(|b| FalconAppifDmemmapperV3::mut_from_prefix(b).ok())
+                 .ok_or(EINVAL)?
+                 .0;
+ 
+@@ -281,7 +256,7 @@ fn new_fwsec(bios: &Vbios, cmd: FwsecCommand) -> Result<Self> {
+ 
+             let frts_cmd = ucode
+                 .get_mut(frts_cmd_offset..)
+-                .and_then(FrtsCmd::from_bytes_mut_prefix)
++                .and_then(|b| FrtsCmd::mut_from_prefix(b).ok())
+                 .ok_or(EINVAL)?
+                 .0;
+ 
 -- 
 2.34.1
 
