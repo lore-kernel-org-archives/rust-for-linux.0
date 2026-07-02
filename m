@@ -1,143 +1,176 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806E838944E
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 20:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783025896; cv=none; b=ph5bDsUEXEWLVh88NKYAX0vgQi7EzoVWaDE9VaouvyeY9W4uFabSUyjlQN/Sv5FWvFedo1vaoIaOp5iLndVBEiU3jgcydFQoZVmkLDzCvd+wAoU9NOXrdvIVH2Z5njSCWm4oKZtlIAkXnfft/RqE2Pbgm6BF+4K3qveWtZfd22Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783025896; c=relaxed/simple;
-	bh=eF5D6+Wt5BLWEeYKq/RyVR1wdlMPFm78cz7Uq2W8x2c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yrd2BtzmAM1cY2ahtEf10NFdpKayEtF+khsF5eU8Sd0b+IY1/6V2CEcBBxDC6Lvgzevm0EB72/f0wLf3wDxd6YvvegzRSAPuQXWB/B4EwQE0XxdRybL+kZOESTNzz5RofhETl6x6cLlKjdVpxDmZYQ4g3BrNRBD3TkEAaHDFajg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KmuwK51o; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C028386443
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 21:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783026786; cv=pass; b=SyEhh1TZQv3WYuiZHgsibQOg9BkaA9MFPVZ2CGOGDd2RJzdPSi10jUCL+Y+mYrTEoGRO7DAyb4teuGbRCfGpksgOnqwue4I1tEK4NT/VrtP/4okBrQWw6Fws8rFOLPiWWI7DnpNyBaCsg1PuiNf1bvMkRgkcCxJLZtbhCCBQg9E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783026786; c=relaxed/simple;
+	bh=6cZbDjgOL37MD41a4mUgO48Jw/rtoj/VLkwNf4EshIs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rmE3FsSVWI7vkvHmE9oRkaOOQAqGluHD9RNGWf2t+X7VneCDDDLFZVBjP1/+mVebvAfqFLqPjgXAMMQjCzfG+CSa9ssrVaYYyU5Wh6ouIdE/FHqrvgVYL+/4+puwNU0azRL5LVGFITgMb4t13sQyg03o4AjOZnmsbXnmP7Bsskw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=Ck61Fc5T; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KmuwK51o"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-37d46e0d246so2073108a91.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 13:58:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="Ck61Fc5T"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cacb8416a1so4763145ad.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 14:13:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783026784; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GzJa0/CAy1OmlOCIEIqWhF0cY10O1su1VbKJy22tpbgghfmt4v5ocwRwJGZ7lOyHGO
+         YJYDxKjOWbRbJ/bHdrtAz/LDvONX/nSFYFadHOtklXwC7XqFSmSyncZJpEpy5P4BDPvb
+         +IwJopEa9k1lmzoxH7RntkUwabn8muV8t+xvZIi0UdEFNPFTdhDr94L3xyQB3yjfYPb4
+         Ixcz6i0xTeJfGnohY2iDxOhAA2AjZW97WYGBFctLjPKWPlt5vbyao2La9nWOp6BzyVsR
+         srPhD5ei3WaZIdP+xdBU2O9sueCl9/NORvOyQUXPfbPf2eBfeXD9Ekefg2ErNqJ1gZR0
+         jgoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AyIW9b1L4RTcWNQ05u8o4YPVZ1U+N1SMUlgeq725Esc=;
+        fh=zH8V38siJbv7ntDDyyWJUAMIoq7OfLvZBeegRtSKesY=;
+        b=Tcw6fYZaQ3SEgdnX8nfcJ/Q+bVAv8+tFOlEPvfrvkDA55VQnxjzE4mE5yNDjtzlcRm
+         D56LhpdMTtA1DWuRPabFLEHjZX/HXCcyiMtQFgy0Sxt9Sz4vbsPoBDY8L9WlXO3roiTY
+         fK2vJrxeWi0DoKbtxGwmSBaN2jHlzWR2su1ETU9x0l5mpbNwhc2WJXrSCVScWBSMrGTV
+         Z1R9vlV6+rzrUK5G0avaLyte8XOi5k2QEVNZo3UdUPRw7GIb9WEIJMdOLSWgMTAPTqif
+         bhxAKNyK+beIu+HrB2cOxN98AyyPgI9HTSNlFIcb+qEvE271p0hY2X9+GoOGl9aTwjF2
+         AGHQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783025894; x=1783630694; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kCqGLz9eDC84KN5xIK2F/aNKUXkei/tGGB2b27ruMZU=;
-        b=KmuwK51oJew668MsbUlM+71qQf+PeZ0+VW+MmCrVwyyho3ojvI4rYaM5vNiHYaHaY0
-         lfs6oM4UFJbyZvkASCWC5IHnSgnWIGAtJz0j3Y0NFGmSd3nRIs+mMMx2vPkI1fdZrL0p
-         UQQlNO+BSWNOO7Gut2WlLO3nfeHvWHRl2P9RA//v6Oa+32deNZ1aQnSUYYo4nRZSYf6j
-         yqcAoPX2VC32B8i1PEN1JPjJ1Sqn68zc5Z8mJWyUyT6pGiX+dCt6lBfZqZ6+JLEz5BKw
-         MHlpBpJvaIUvahjV0zJp4WgtH8zXt/4HUi8rlmjUKFBzPhBBrLMAa9w1Y032P7jJosjI
-         TfgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783025894; x=1783630694;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=paul-moore.com; s=google; t=1783026784; x=1783631584; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kCqGLz9eDC84KN5xIK2F/aNKUXkei/tGGB2b27ruMZU=;
-        b=fWI3uCmRNlnWGYPkzvIY5AE832m90dNZ0gvKsQ0leGPWXlrcdjMSqkGMD5sE6nay4l
-         72CykI7wqClCzq+QhZy2jDSp4X+VC9d7DXM0hzIKKh/7aFjzKTJM2PDo067R7kukA0DS
-         sJeFOEj9/rvUhXR4D2DebQXGzl8ndaQcy2G9aPhIftG2h77IOAvmiVRSUAIvStMvM/nk
-         CMHz3HYpM+HIdD/bT/NCHgH3avNopeXn+ImVBiRG90s9UOHNktAFWIbzEWXCSQwDP7M+
-         n1Wmxvv/U44nBfWt/RPXcJ/rtm6/80eI+EAOZ0OFt1I70vnihmnsr/nE+oyhH0tdu98D
-         4VSA==
-X-Forwarded-Encrypted: i=1; AFNElJ+ccDJVRcX+gaSSurPCcZFTyVNH7j7Ty0KXsp3kz387oeqAuj9FbrAS/oVPql9RL6+HYkZkan6RYx339p+pmA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlNsVezvNUPbjyYxJgDPw7GtdayczD39b1xvtx2g0EZcq3t4G3
-	p75ijHPb4aKNbVpsVqjsPgB2LmbC0byWqoeFYi5cwr7HDEno6kCLpAQ=
-X-Gm-Gg: AfdE7ckArmAIpp+k+4sz/5zuCwr7+ueQv2BB4KJav2q+2+iTgnHO+lAxbFRBqBzfnsD
-	t1pTjLYtedPYypqEfG+znDoIM6LypwNBuuGpCZ2/Jea16KzKaI5tcseAiFh0+90Xsdiqd7Xp1E8
-	mqGgrBXVl1z34GWbjxNbXcV08gb9+lsUgecrd9ISHApLkbTno9wtiPUdPCYwo0M8/8tv+QGGjr+
-	G+KUKWnDIdEBFZ+0uzHDvF10kZIYM+hAkgIS4ikcXP7V+P0U3VKdtnRUwKxOh1jlkudbeoNru5V
-	rFLBt6AvTlIgrlMm7TbGpaspxqhw90UrcT0ELOox7fB+fdmxElMpU9QSzjgoDqAMnMePcQkHr84
-	Q2rw6kj9NpHDWgJSvAsQ1ztowOUt7G47kHD4sjos0AUz6R6bBsD51oysvAwWFNRy6aoK4jOm9sX
-	806tg81rsU+nW/A+UAW2Wg9KOCADIS2VcADi49UwaY2oKBSE6iA2hFPWNj80iSujjP
-X-Received: by 2002:a05:6a20:734f:b0:3bf:e2f1:1b17 with SMTP id adf61e73a8af0-3bfed5d84b3mr8082450637.50.1783025893429;
-        Thu, 02 Jul 2026 13:58:13 -0700 (PDT)
-Received: from localhost.localdomain ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f0bc3ea61sm13220729eec.30.2026.07.02.13.58.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 13:58:13 -0700 (PDT)
-From: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <christian@brauner.io>,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: =?UTF-8?q?Nicol=C3=A1s=20Antinori?= <nico.antinori.7@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev
-Subject: [PATCH v2] rust_binder: use pin_init::zeroed for file_operations initialization
-Date: Thu,  2 Jul 2026 17:58:00 -0300
-Message-ID: <20260702205803.552476-1-nico.antinori.7@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        bh=AyIW9b1L4RTcWNQ05u8o4YPVZ1U+N1SMUlgeq725Esc=;
+        b=Ck61Fc5TJzIU09+axx+e6RLYwDfGVqprsoe1m2tRj4enLqm0IA8/WvBxd04tQAaBIB
+         9lQUsZEYbaCGOpP8E4rC242gtPQnirRjBU+EOLWNY36xMxvff1qytC3d15QIMGCFTVRf
+         n4mfpzQmQkbbOaEdaNFIzkkh3I6RmvoL09K4bkE2wlrV0k6U4oBom/XqLGIalWKessfp
+         AG43lp7KJrk47m3/UJeuw13uKE7hVwwvGDiW7VmPyJF7aoC3JiTALcaHuF6uQf4i3jKt
+         6ko+xoobjCKjtpAymZl/QgRORh21J4ihVvZXnWIaR5iRpxt+vFRhM2mg1MBaFMTzsO1e
+         b8Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783026784; x=1783631584;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AyIW9b1L4RTcWNQ05u8o4YPVZ1U+N1SMUlgeq725Esc=;
+        b=c2Xp7zq5+BpJ6nfODPM3LZ9Oeg86fBs095fsny+ic9ZLyKOD3tsXiKjy91blFuVy05
+         EFJFQktySVMg5BKR+KwfPSI+ZNhDxKJObHhjgm2AH6Lh+0j3S7ONTOrawWHJIFo/TVnG
+         s9rCm0ugaQ2M5oI6inIqru3D0Mzrs9d/RA8o5vQnILo8152cSN1TFw6xa+/a6xFRUKXS
+         IdOOr1G/sxQUDwA4qF1ICKQlRVcT3h+AUthy0E9REkiKfjhfXp2giEJNguz5gCzsZddn
+         7qjRwYLJjx1IXFk/JTdpN3CdIZ65qgN0AxuNOwQ6I15wrIX6uJajz91PWL+I+Vk9/B6W
+         yUfA==
+X-Forwarded-Encrypted: i=1; AHgh+RrLQz0z+dWx8Dprc7k2YGB9j0zRVIf9NDHkCl5R09+NRiG7JSLg7jTrJKfCmK1qUYSnFxGKSXMZUl6THD9qMg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPN1GQ8Z91IVakqlRzNcvc2/i3BJD3Z12PaPlegiaMeA/Gvv8K
+	pGP0U4Ob7u59moQUaSypjbH6ZSIFn2em5HAFtB+TsxFqJM8EgXtDitGT5i0/jbqmv63+i7A5fH3
+	AFyU3h+Iw6oKUlONg4NEjOh9ROYJ5YQhV9AXxiXpt
+X-Gm-Gg: AfdE7cnrmYJMRHDcuOk3PF6SooBnor9QEyKuditzI2QuipiOu5qHpTZNHd346yhWBLo
+	RyaxiqMl65plueUNdWY+gcrj915cHk0j9oLnNgyY5+yVOEv9CJIiMilvDNYmQKy6gnK1ra5yJRC
+	09LJTsmpCp6AL6mycxzFYDNGtbdtkqzbUhicUDniIBkwWqpZiXCQE+dX0gQnulJFBj7wijgCqqP
+	gL6znqE6n+FjF78Q473lfVLEtry+c50cW8rgMpLN0OKrqWhHr9gecPdMh2eXb2xbss/N8ho
+X-Received: by 2002:a17:902:f710:b0:2c9:854b:d53c with SMTP id
+ d9443c01a7336-2ca911f9311mr68892545ad.36.1783026784472; Thu, 02 Jul 2026
+ 14:13:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260529-remove-task-euid-v4-0-07cbdf3af980@google.com>
+ <CAHC9VhR5Ca+WyP2OiNGtL1SqHn0SwLe=M9SB8D2bxtdS52quhg@mail.gmail.com>
+ <ah51DY5yfaNZejBd@google.com> <CAHC9VhQyNzxJgdMkmEsOeAQ7Wt2L+eW6aNLjeoYmnCQLmcYRnw@mail.gmail.com>
+ <CAH5fLghJaFXheAZqKyM9Cdo6iqTw1W=haA79POhmZWEfuKujRA@mail.gmail.com>
+In-Reply-To: <CAH5fLghJaFXheAZqKyM9Cdo6iqTw1W=haA79POhmZWEfuKujRA@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 2 Jul 2026 17:12:52 -0400
+X-Gm-Features: AVVi8Cc226agFjsV3IzoL0ZtqLK8mwQAJ-H8dg4RuGGydr2Hd_jseubNHLDGNTk
+Message-ID: <CAHC9VhTfOnOgOzGk9==wJYKx5gAi3Zf3oTwbj183o0_xxrfKag@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] Delete task_euid()
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Serge Hallyn <sergeh@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, 
+	Dongliang Mu <dzm91@hust.edu.cn>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-All types in `bindings` implement `Zeroable` if they can. This enables
-using `pin_init::zeroed()` for `file_operations` initialization instead
-of relying on `unsafe { core::mem::MaybeUninit::zeroed().assume_init() }`.
+On Wed, Jun 3, 2026 at 1:05=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+> On Wed, Jun 3, 2026 at 6:05=E2=80=AFPM Paul Moore <paul@paul-moore.com> w=
+rote:
+> >
+> > On Tue, Jun 2, 2026 at 2:15=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> > > On Mon, Jun 01, 2026 at 07:13:37PM -0400, Paul Moore wrote:
+> > > > On Fri, May 29, 2026 at 5:33=E2=80=AFAM Alice Ryhl <aliceryhl@googl=
+e.com> wrote:
+> > > > >
+> > > > > The task_euid() method is a very weird method, and Binder was the=
+ only
+> > > > > user. As of commit 65b672152289 ("binder: use current_euid() for
+> > > > > transaction sender identity") Binder doesn't use task_euid() anym=
+ore,
+> > > > > so we can delete this method.
+> > > >
+> > > > Given the problems from last time, it seems like it might be pruden=
+t
+> > > > to let the commit have some time to "breathe" in a proper release, =
+I'd
+> > > > suggest merging this not for the upcoming v7.2 merge window but
+> > > > instead waiting for v7.3.
+> > >
+> > > Sure, that makes sense. I'll resend after the merge window.
+> >
+> > No need to resend if there are no changes (see below), it's in
+> > patchwork and I'm tracking it so you're all set.  I'll send another
+> > notice when I merge it.
+> >
+> > > > > My suggestion would be to merge this through the LSM tree.
+> > > >
+> > > > That's fine with me.  I'd also suggest updating the commit descript=
+ion
+> > > > in patch 1/2 to indicate that binder is no longer using task_euid()=
+;
+> > > > it currently reads like it is still being used.
+> > >
+> > > I guess this occurred because when patch 1 was written, it really *wa=
+s*
+> > > still being used.
+> >
+> > Yeah, I understand the world has changed since patch 1/2 was written,
+> > which is okay, we just need to update the commit description ... which
+> > should be a trivial task.
+> >
+> > > Perhaps we could pick up only patch 1 now since even
+> > > if we run into problems and Binder has to go back to using task_euid(=
+),
+> > > clarifying the docs is still useful.
+> >
+> > I assumed that was one of the reasons for splitting the changes across
+> > two patches (reverting patch 2/2 leaves patch 1/2 intact).
+> > Regardless, we're at -rc6 and with patch 1/2 being purely a comment
+> > update I don't see an urgent rush on this, especially considering that
+> > if I did pick it up now, it would be for the v7.2 merge window and the
+> > binder/current_euid() change will ship in v7.1.
+> >
+> > Let's update the commit description - you've got a couple of weeks to
+> > do that - and then we'll merge everything once the v7.2 merge window
+> > closes.
+>
+> Sounds good, thanks!
 
-This change improves readability and removes an unnecessary unsafe
-block.
+Just wanted to check in and see if this is still on your todo list?
+No rush, we are only at -rc1, but I was reminded of this while merging
+other patches and just wanted to check ;)
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1189
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Nicolás Antinori <nico.antinori.7@gmail.com>
----
-Changelog:
-
-v2: Removed zeroed_ops variable and moved pin_init::zeroed() inside the
-struct initialization. This is just a code style change suggested in
-the previous patch.
-
-v1: https://lore.kernel.org/rust-for-linux/20260626214404.852685-1-nico.antinori.7@gmail.com/T/#u
-
- drivers/android/binder/rust_binder_main.rs | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index dc1941cd2407..cc9b10e41807 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -314,9 +314,6 @@ unsafe impl<T> Sync for AssertSync<T> {}
- #[no_mangle]
- #[used]
- pub static rust_binder_fops: AssertSync<kernel::bindings::file_operations> = {
--    // SAFETY: All zeroes is safe for the `file_operations` type.
--    let zeroed_ops = unsafe { core::mem::MaybeUninit::zeroed().assume_init() };
--
-     let ops = kernel::bindings::file_operations {
-         owner: THIS_MODULE.as_ptr(),
-         poll: Some(rust_binder_poll),
-@@ -326,7 +323,7 @@ unsafe impl<T> Sync for AssertSync<T> {}
-         open: Some(rust_binder_open),
-         release: Some(rust_binder_release),
-         flush: Some(rust_binder_flush),
--        ..zeroed_ops
-+        ..pin_init::zeroed()
-     };
-     AssertSync(ops)
- };
---
-2.47.3
-
+--=20
+paul-moore.com
