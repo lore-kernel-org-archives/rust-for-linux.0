@@ -1,99 +1,99 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3D3C0A1A
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 10:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DB1367B67
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 10:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782988084; cv=none; b=ih0t7JOZyQy86pRFiu5TyNw6r6vOGTRbvXsSZAt+RFj+6Ab4cbjyzW07sg85/4OxRE1qKfuuKbvGVpx9zb3GZFt9lX6dt8NanyM+PsBcW6Pv36bY0rmRtgUWfdAHiMCvrq5kzi3YqgIeiAU8AhDaGCaUmr2UjmrRk9Qi0q1G49c=
+	t=1782988426; cv=none; b=VXIGqbgXOlmQVAMvFkEry6jnNNf45C1EZP6CXcpxMCw+xiLumw93ZNhThRlN4LEndKuveSfWKcPMoAfe2E213HJEZ6EbQbYkJVJfFuHUsrYhIXuslna80Dv0nwSrkl9/INbUbJMnVx8ZPYrSCTUQ8cJzTPVhwZZs1pDPFkIuhDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782988084; c=relaxed/simple;
-	bh=He6nWqhkIDYGYE7ioFM7h6bIHX16EX1TUFeH5DSmEPE=;
+	s=arc-20240116; t=1782988426; c=relaxed/simple;
+	bh=dU/JhXcw9C+3bxVyhCk433RwAWlu/+DSj3wRiplg67w=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PlzaSAk1lw7ZUPd0byClaVID+HzkqkZups3kgVmMsGdGsU4SJvF+vH1KaNid3temFfADPPFhUScHPJtP1rX5e97Er/NeX7NbhpWZSeIDeso4KEKWf1e4zvgObpshEHEm1CMN/bKI0nXpSa3tY3BjPzquX7NtBVJx+ZWMpGpRjJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nIwzxBpl; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=sYlIe18u/sPxBafkbKsFGubZ7+rZo6TbP2/w/blcM6Mv3wX9FOK/RMNePZpoArOZ8JNHAke8BXPG5/TZHX2Yhn5UsJcS/IZTyXrFlnrIvXZwu1cGikq99LGhWo41KTdxFYGriP//SNZl1JqB0lEXFHA8lwcX+ueOeqTPePa50Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DlnyGN6g; arc=none smtp.client-ip=209.85.218.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nIwzxBpl"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-47345535410so1535793f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 03:28:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DlnyGN6g"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-c126de56711so179907066b.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 03:33:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782988082; x=1783592882; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1782988424; x=1783593224; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NMtazuX0bc66JaizzdMVIGRkh949Y63EIq5B+vLN6Nw=;
-        b=nIwzxBplT0MtvOyljtPrF6GLqXRTS6h2DmoVZYyOF9lIzDT/vGExFoxK8J4bRp6Xmf
-         CSUh9MWENdC2XACDHM/a9CLRVH1nvNzU/sjC5ILUDQpkd1k8rM4zWIsjRxufblVE+CKe
-         5QND0ia9zye8GTAhHy8GXik9jISn35Cr842GWgWPELaT1zn07yhG/UQso8aBM5M4YGnE
-         5grp4kUFhyQNhM0dtziDKYS3HDe7/A9J4WGmKL/OTboJgmQcCn16Z7chYtMyy4XoRBEq
-         RkJ1x0Fg1q5YvBCKt5foYgC5EdO6vhCZ5wTXeRrlTSpRP9ksNxf5kFna3ASIDVcFsYKT
-         GBKA==
+        bh=lSBXWVP6cFuS41+bLzi/68MzajKJS5Rgon/65yIMPQ4=;
+        b=DlnyGN6g9tvWkuWfVDZzKtjbR/v7hFljcRPYucvfsFeS/1S1Zb5obZF5Xb5+oDWTwl
+         C397p2jqUlXd/Mef+brDL/Psj8y/SVLrXOBuEDb0hg09TbCJZ2MKv049uKx/miy/3V3s
+         2ArJzxPRicgaPH9jU2B0xN+JYZEHPUzu/9EtGkkSqxB6AvGpAiTHUJR39BGpJSiIn8Xu
+         smM/UK3gk5wQQ0h/j61wgZqkoEu2JYwn8dodsHae+LitBGqF5kmQWYh+NQC+mV5G9tJJ
+         zsG5rKoiA7+1dBg1eJ0Zuv6Ol3RhIYE4Sfonz1uRrFSvhDywrVW3oYMwUcDH8yPhWuUN
+         QKUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782988082; x=1783592882;
+        d=1e100.net; s=20251104; t=1782988424; x=1783593224;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NMtazuX0bc66JaizzdMVIGRkh949Y63EIq5B+vLN6Nw=;
-        b=GvsBCX2PBEb7+lDiXqWLyCNUKjF7s+nP989/gfO7UQiTc0iNnA80IzNuLetRf1I9f4
-         6COm/Ojc4R156ftrChtkZE7JMZR6E6Aae/Z6iatrpMBnXAZhW0l0EUsuDeXL1OBCDtED
-         xVlkvv8O19kbA7l0plxhCwdfNn1xtocs1C05yLVc6Qb1F265oPeLa2sOse/Q+0Mm8GJN
-         5v65GFJOa+LD2Dn4sWXRsMrUG3xWUuXsoCV7vfoPg3oeEyR74a3w9rIjjmoyo1u5rdRo
-         AqFk+MLMgNDlD8tSnIC9OzC2qwvmuT94hvHr643tbP9ojrM9swBWCvTtPTcMt7afx15+
-         FFMg==
-X-Forwarded-Encrypted: i=1; AHgh+RoKyzp7t8tSL05lyhVOJQAkVRSC6CNypfJEjK3JLN5jzwYJkACIkKBVIHxW/+nJdEmdm2AuNKqn+08Lz3vwYg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwYf87JXae5E7CuMlbWIj3CpzGa8J+VkMIU8xp7l2X1Ba7hy2G
-	CN1oCVEejQIU2JxTuySB+LrFeJb2hfDwYNMmq0IJGqT4tEcC2Ylo7VzVoKLnOeXFUf1/aqFkOof
-	3WCSTeuDYw2g2gSREtg==
-X-Received: from wrbdo18.prod.google.com ([2002:a05:6000:c52:b0:46f:1272:763])
+        bh=lSBXWVP6cFuS41+bLzi/68MzajKJS5Rgon/65yIMPQ4=;
+        b=hLHvZhcwdDdoEbZPg1RWw3fZVhFz1MtLUCm8c6XIbU6aqJdMjNqQ6AdN2hOnWwuHNJ
+         i9/0BN9MCHCG7SCNSfrbhEvIDNX51BLgc7CiaeCPiv9xEfxoK18TLvEZctjzx/ydLg/s
+         cYAnaNU9/s47qDF7Pe/wCJQqobcVoKO9oe537sAj3g+A2SV0jY9XCI7ll+gzU0WPRalL
+         JOpmnxlC0gmKBPxDf3XTS82wyzaVzXm4CSf5VKZES+NGBZKRs1HFDGNbvVUWhaLsCqI9
+         ioKtAWJrtRLhhix6O0J0t72bUxQDNI0CVPRVNOEG4/N3EqJOee4bpFMBTJDyXITMElBS
+         sApw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6VZtJ3r2TGKng3KXDrsun024uj0mw4pIVwXD56NLscuCCmyA+e35ZHeSWmA0IOyKsLlnEyJYhzvqQfMvuQg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQc+XQv+QLsWfuEUPnhpV5o1vJqMsReaps403DgsoJzPyd2qs4
+	gh3q7qO7dAbuUiXrKB4ig9hJdodkZfxbaYxS1XugnngZ7vdSmI02yYKRNoCU8nFO3o4qssSm+hC
+	CNC4YCdx4C/JfkRkVVQ==
+X-Received: from ejsc14.prod.google.com ([2002:a17:906:694e:b0:c12:4bb6:ec57])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5e86:0:b0:460:1957:1b33 with SMTP id ffacd0b85a97d-47759c267a7mr8258289f8f.3.1782988081493;
- Thu, 02 Jul 2026 03:28:01 -0700 (PDT)
-Date: Thu, 2 Jul 2026 10:27:59 +0000
-In-Reply-To: <ahw3tFhLz9bMMJAO@v4bel>
+ 2002:a17:907:3f85:b0:c12:add7:b97b with SMTP id a640c23a62f3a-c12add7bc23mr240698066b.29.1782988423378;
+ Thu, 02 Jul 2026 03:33:43 -0700 (PDT)
+Date: Thu, 2 Jul 2026 10:33:42 +0000
+In-Reply-To: <20260628174451.2275679-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <ahw3tFhLz9bMMJAO@v4bel>
-Message-ID: <akY9L2CUlTFHA0dM@google.com>
-Subject: Re: [PATCH v2] rust_binder: use a u64 stride when cleaning up the
- offsets array
+References: <20260628174451.2275679-1-dakr@kernel.org>
+Message-ID: <akY-hn0upJuaeS8i@google.com>
+Subject: Re: [PATCH] rust: devres: fix race between concurrent revokers
 From: Alice Ryhl <aliceryhl@google.com>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com, 
-	brauner@kernel.org, cmllamas@google.com, mo@sdhn.cc, wedsonaf@gmail.com, 
-	Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, stable@vger.kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	a.hindborg@kernel.org, tmgross@umich.edu, daniel.almeida@collabora.com, 
+	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, lyude@redhat.com, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Sun, May 31, 2026 at 10:29:24PM +0900, Hyunwoo Kim wrote:
-> Allocation's Drop walks the offsets array (binder_size_t = u64 entries),
-> cleaning up the objects, but it used usize instead of u64 for both the
-> stride and the per-entry read.
+On Sun, Jun 28, 2026 at 07:44:38PM +0200, Danilo Krummrich wrote:
+> There is a potential race condition when two paths try to revoke a
+> Devres concurrently.
 > 
-> On 64-bit kernels (usize == u64) this is harmless, but on 32-bit kernels
-> it walks the 8-byte entries in 4-byte steps, iterating an N-entry array
-> 2N times, and reads the always-zero high word as offset 0, cleaning up
-> the object at offset 0 N extra times. As a result the referenced node or
-> handle ends up with a lower reference count than it actually has (a
-> refcount over-decrement), and binder's reference accounting is corrupted;
-> for example, the owner can be notified of a strong reference release
-> (BR_RELEASE) even though references still remain.
+> The driver core's devres_release_all() calls Revocable::revoke() via the
+> release callback, while Devres::drop() calls revoke_nosync() on another
+> CPU.
 > 
-> Change the stride to u64, and read each entry as a u64, narrowing it to
-> usize with try_into().
+> The revoker that does not claim the is_available swap returns
+> immediately, but the revoker that did may still be executing
+> drop_in_place() on the inner data. This can cause a use-after-free when
+> the other revoker's caller proceeds to drop adjacent resources that
+> drop_in_place() still references (e.g., Devres<DmaMappedSgt> racing with
+> SGTable freeing the backing sg_table and pages).
 > 
-> On 32-bit ARM, when this over-decrement would drive a count below zero,
-> the driver's existing refcount guard refuses it and fires:
-> 
->   rust_binder: Failure: refcount underflow!
+> Fix this by adding a Completion. The release callback signals the
+> Completion after revoke() finishes, and Devres::drop() waits for it when
+> it loses the is_available swap. This ensures the wrapped object is fully
+> torn down before Devres::drop() returns.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-
-Thanks!
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/dri-devel/20260612202841.2577C1F000E9@smtp.kernel.org/
+> Fixes: 05aa6fb1c21d ("rust: scatterlist: Add abstraction for sg_table")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
