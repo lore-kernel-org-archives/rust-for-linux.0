@@ -1,227 +1,120 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FE93EDE5E
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 11:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCA8480DE8
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 12:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782991336; cv=none; b=WMM4nKF5Ya5FvCtC4OiT9MGlTANMZST1CpIpod8dR2UTmPkjOibtWP/Dph0wmiH1dER4zl1YPwyk8TsWwvLS+fnEAsPP5DixBdJzKrzKRxZglLpM12ys466sNFH4e2IV71KQ/VE9NJEJkd71XCPFRsJKsQnmQfqfFDn2mXyIS+M=
+	t=1782993944; cv=none; b=iQCIYO6QjodGzcn9nYk+fraBaCa47BZpXhCqs9lpQr5Lyhyiy2wOOUlxDzkEWMGqZaSnHxZDOiPB7Nf9KJIIpkXDl6hcLXBVK/N9yjnMRaQcJfYiQwkw4RhivJxm/ikGakeYrf6tr0+0oz7wikPhLUohPzedG1hGTwxwhAdeleE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782991336; c=relaxed/simple;
-	bh=h6Hjsd6YIlOqO7foxw2433GlwA8x369rcvFYjko/x58=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=C+zuggKxYq0unMMS7zzbJlatkwVueaJ07+IDo3pip6M008G6lZfKDcgvtnL40A8zLFwOlkY1FRJtFtvMPdZWYksxk7spuefyjlHfACEtxqbIa4HYCXpkadqr9PKYPnbkrBkxSIGGKJSxv4sso9Ifs0yYSAsDEVY1F0Dqq+nauTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Eh2EkCxu; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1782993944; c=relaxed/simple;
+	bh=uPWMq9cV1DRbmfYuy2RpOefsvDQwRIf5lBPq18Iz3CI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=s5WeMbg3KALVWwxEXPbS/XKwUoxanEP5HM72sz+t4cRl7FiPLAL2D6n8MUeiM0vzfeyke2KWbnjEsL0DGSg4TVtXQOiI/8HcG0U3iNpMPgdD5JvwNBNIiGoahOMKBg82XKS5rKFMaAh3EZ3IMndBDuDhpW0AAwgPFP0znhY2qtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=TrjV3Sex; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Eh2EkCxu"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490a767b782so15938385e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 04:22:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="TrjV3Sex"
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-967327a0c7dso429067241.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 05:05:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782991332; x=1783596132; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ABHfhQD3F9b+S3MG2pxSXvPENP4iWnPQjn40BCzCts=;
-        b=Eh2EkCxu6qZaJYcrUBXnS9AuMYDsFND6PrC+RoQUbqMBDifg7NevnSTSeHURJQnrur
-         OAGxKYr2D+ZGlabR/kgftOQxLFOq+mf7DzZJwYpY2kgKvxDiC44fxLD/9FLcyjgEj+T0
-         +0G1Lkbpj/UfJq1T1PqP747p8ea09be5ibpZ8IMxDCnFTtSzKUesLOgL5mbJQY50iiuo
-         ux1LYd7LP5X/rNWJptrRvIlansMcf7dJab04zuUstN2M3JSEjxWUYOuUBi4Sqhx0IJrs
-         JSluHPP9tv2ibPa8J7VVPCx5blFWBKNyTuK4IkIceXMDAR8T9D+v/Dl59fyREvXQg46P
-         9cqg==
+        d=usp.br; s=usp-google; t=1782993937; x=1783598737; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rmBb3AiIVPGFeOn7V5UKb1QDdSuVN0QXacb3HjQ+rKU=;
+        b=TrjV3SexLH7pNka6WxoWWiDNeo0ASij9DuWurDGbds5beQ4wP6pkhnvyovDlEkEHSr
+         weT7HtvC0qi0BkhSQk+/9MIzhIdONV5tsm/Rga/7QMdEifx6LLJ4ZvRpPL3DBpqLBGmq
+         OtSOfSYi/LXEvnTN9rxdUWwE172VENN8u99r9UQ1+eZ8skT4DgRiWzAJh/pZRwgOld0o
+         sDRPIr6ldDK0bVjMROPl0MV8vtGdPe7e5nwua7lnfoaNztiD4wpSP2PM3Yq3wXavdX+N
+         9aVzVt0MVimrJDwHJ2hYRhuPhGlZgqU95iv8v0FKHShhCVrSS1HMrFevxDa+ZAlzGejx
+         e8nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782991332; x=1783596132;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2ABHfhQD3F9b+S3MG2pxSXvPENP4iWnPQjn40BCzCts=;
-        b=hFef9XIwIpLlOdK9VyDHA15if+PIGgPjNqOKID1CwUQ3R1wN5hxj7L61xaF6SvGjYO
-         Ofm5IEy5w+TkGTbp4ZxCccxWt4pmSYN7IKizasY02MEshrKHM7nsN4gJrtrbqb9Tb+bu
-         yD2vg2g5ptGIGTE7eNaPf1dwa0WAqZmZ/oQxK13oSZSebire8xDz/Vekxt/7R/BlcmKx
-         Ru+tXKV6S70vAGO4TksK+KqPODGd9dsYJxpVoo0gfmKANS4a+OE27y7oMLOzqCKJg58c
-         NR0ktWbDvNafZTzZ09t96Jk1HFzeDi4odEsuYYcuVXHfyhLD54uRbnhnme1568hK9v2W
-         BweA==
-X-Forwarded-Encrypted: i=1; AFNElJ+x9tfYqn69vZMcYSyofoYJJo7IYiF0ODITCVNNTvE0gAWRYfLcfEG3cxqfebizmRTN/P7Nczwo41C6xaRoKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+Sx77LxpRnNYciN8nkZv1oHXdIEnibfvcZdF97SqZUXrJBQCP
-	1ACsanEVVf4rsy4Hm75sA8sYb/82HpIV/u/a2Rba42mRFEdI50sods4WVHfNQ061l22q78r9YSO
-	tbiFWPGAUe9BQ/j/QfQ==
-X-Received: from wmby21.prod.google.com ([2002:a05:600c:c055:b0:493:bd67:3b3e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:524a:b0:493:af0d:484c with SMTP id 5b1f17b1804b1-493c3df2fb5mr67180355e9.34.1782991332107;
- Thu, 02 Jul 2026 04:22:12 -0700 (PDT)
-Date: Thu, 2 Jul 2026 11:22:10 +0000
-In-Reply-To: <9e020dbc48fa9f209248864cdd1b7b9ebf2eecc4.camel@posteo.de>
+        d=1e100.net; s=20251104; t=1782993937; x=1783598737;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rmBb3AiIVPGFeOn7V5UKb1QDdSuVN0QXacb3HjQ+rKU=;
+        b=T2TYNQBgM1vt9atfm8LcJJCv1Mmu5laQuHaJ5xqhYjlhxJ4oXWitJ0XK3/M3kWjqZW
+         upri7KdlqaM2hBZmyqJLU8N8Tutdbb2wNZ8iCmwWyyxt/b8JDKQg5KqEq3ruyRXMyTZc
+         ygZu1gDTl0aW9IoynxKn6GuqmKI+ePUNM7SM8avlhMa9WkaD9ssoRfFTCiN7VaJyuT1d
+         sTMo+5ssQbSLNqBB4yyzjE+Uvp7URpQeymgaHOiddz4lSgL5wLoxqHeofXvNA15ayXh1
+         vozMCTVlWMjngQ2SuN8IHn0chcK7PUJm5uVco8YUBN1vV45/01w9WR1Y02UxcnhLjaMM
+         Rm8w==
+X-Forwarded-Encrypted: i=1; AHgh+RqyG9fEoNEX3w7Pr21V8NMHqWs9DJ4FX1icceZgZcUf+b3tYzGXNFV63o9Ea81oAQAtZe/zYaeb5g25O2bncw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHMGsRYBU9EnTxZ2fhTQgya6i849RD2QUzSt6dLShf7f2LhuCG
+	LQpOcjttw3diZ2/72swYR+Z0fOUhqzecpeZev8lybBuZAOhBQNXYaX+nSZPlDNBD36c=
+X-Gm-Gg: AfdE7cm/+QRGrvGMaGNdeouDbYMRkyxvpcq2+ABXfVCDqtIT5AUf3svjlqQlga+yUAZ
+	ESTRcE0ml+PWGzDs1ZNllZQLddpZPgxrf8IVZJLLK8tqcydmPNIpchFEYy66V1vGa8nBEHfq8JP
+	DVyNadafq27B9Hr74ww/xF9pO0Hnrp3+H2FT5FN1VB6kIgu/sCDqYZb4u3coj/G9QFETmaOm/si
+	hmIIkP09YiafQQIJjoj3nxJrZ3fW/eUusU+IKcp7YVszw+BNKOM6BVws9u7fB7set66Wj+PVnvt
+	SObxJrpIlbN/DAx+1S07EHy8qgIuksz0fwtSMCi8hTm8+/5J+8aMV4wpEfvcl2RNoWsJzwKBEv2
+	67v2KfRscW+lPDpkt+fRp7+f+mWc64KfGoITaw6zN2W6Etx1ZfAvIGQQdY2eNR+yqDXdVnLjaZV
+	0SiFWEqM4iaZsfPN9yCIslksdV/Q==
+X-Received: by 2002:a05:6102:54a4:b0:736:e617:b4f7 with SMTP id ada2fe7eead31-73dabb35dd4mr2370159137.21.1782993937394;
+        Thu, 02 Jul 2026 05:05:37 -0700 (PDT)
+Received: from niyudi-linux.semfio.usp.br (nat.ime.usp.br. [143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-73e1caf43casm1182470137.11.2026.07.02.05.05.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 05:05:36 -0700 (PDT)
+From: Pedro Yudi Honda <niyudi.honda@usp.br>
+X-Google-Original-From: Pedro Yudi Honda
+To: dakr@kernel.org,
+	acourbot@nvidia.com,
+	apopple@nvidia.com
+Cc: nico.antinori.7@gmail.com,
+	aliceryhl@google.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	Pedro Yudi Honda <niyudi.honda@usp.br>
+Subject: [RESEND PATCH v2 0/5] drm/nova: replace `transmute` with `zerocopy`
+Date: Thu,  2 Jul 2026 09:03:19 -0300
+Message-Id: <20260702120324.40388-1-niyudi.honda@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260629-rust_leds-v21-0-4f0f19579db5@posteo.de>
- <20260629-rust_leds-v21-1-4f0f19579db5@posteo.de> <akZBsBrMlxd4qbBl@google.com>
- <9e020dbc48fa9f209248864cdd1b7b9ebf2eecc4.camel@posteo.de>
-Message-ID: <akZJ4l3LzX4dEBOe@google.com>
-Subject: Re: [PATCH v21 1/3] rust: leds: add basic led classdev abstractions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Markus Probst <markus.probst@posteo.de>
-Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	"Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=" <kwilczynski@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, Ira Weiny <iweiny@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 02, 2026 at 11:00:30AM +0000, Markus Probst wrote:
-> On Thu, 2026-07-02 at 10:47 +0000, Alice Ryhl wrote:
-> > On Mon, Jun 29, 2026 at 01:10:28PM +0000, Markus Probst wrote:
-> > > Implement the core abstractions needed for led class devices, including:
-> > > 
-> > > * `led::LedOps` - the trait for handling leds, including
-> > >   `brightness_set`, `brightness_get` and `blink_set`
-> > > 
-> > > * `led::DeviceBuilder` - the builder for the led class device
-> > > 
-> > > * `led::Device` - a safe wrapper around `led_classdev`
-> > > 
-> > > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > > ---
-> > >  MAINTAINERS               |   8 ++
-> > >  rust/kernel/led.rs        | 288 ++++++++++++++++++++++++++++++++++++++++++++++
-> > >  rust/kernel/led/normal.rs | 230 ++++++++++++++++++++++++++++++++++++
-> > >  rust/kernel/lib.rs        |   1 +
-> > >  4 files changed, 527 insertions(+)
-> > > 
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index 15011f5752a9..ceb2285366ff 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -14662,6 +14662,14 @@ F:	drivers/leds/
-> > >  F:	include/dt-bindings/leds/
-> > >  F:	include/linux/leds.h
-> > >  
-> > > +LED SUBSYSTEM [RUST]
-> > > +M:	Markus Probst <markus.probst@posteo.de>
-> > > +L:	linux-leds@vger.kernel.org
-> > > +L:	rust-for-linux@vger.kernel.org
-> > > +S:	Maintained
-> > > +F:	rust/kernel/led.rs
-> > > +F:	rust/kernel/led/
-> > > +
-> > >  LEGO MINDSTORMS EV3
-> > >  R:	David Lechner <david@lechnology.com>
-> > >  S:	Maintained
-> > > diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
-> > > new file mode 100644
-> > > index 000000000000..c92d99d68497
-> > > --- /dev/null
-> > > +++ b/rust/kernel/led.rs
-> > > @@ -0,0 +1,288 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +//! Abstractions for the leds driver model.
-> > > +//!
-> > > +//! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
-> > > +
-> > > +use core::{
-> > > +    marker::PhantomData,
-> > > +    mem::transmute,
-> > > +    ptr::NonNull, //
-> > > +};
-> > > +
-> > > +use crate::{
-> > > +    container_of,
-> > > +    device::{
-> > > +        self,
-> > > +        property::FwNode,
-> > > +        AsBusDevice,
-> > > +        Bound, //
-> > > +    },
-> > > +    error::{
-> > > +        from_result,
-> > > +        to_result,
-> > > +        VTABLE_DEFAULT_ERROR, //
-> > > +    },
-> > > +    macros::vtable,
-> > > +    prelude::*,
-> > > +    str::CStrExt,
-> > 
-> > CStrExt is in the prelude. Please check for unnecessary imports.
-> There is a
-> `use super::*;` in rust/kernel/led/normal.rs and
-> rust/kernel/led/multicolor.rs, which both make use of CStrExt.
-> The latter being in patch 3.
+From: Pedro Yudi Honda <niyudi.honda@usp.br>
 
-I understand that you are using it. However, it's still unnecessary
-because you also imported prelude::*.
 
-> > > diff --git a/rust/kernel/led/normal.rs b/rust/kernel/led/normal.rs
-> > > new file mode 100644
-> > > index 000000000000..2769f690bb24
-> > > --- /dev/null
-> > > +++ b/rust/kernel/led/normal.rs
-> > > @@ -0,0 +1,230 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +//! Led mode for the `struct led_classdev`.
-> > > +//!
-> > > +//! C header: [`include/linux/leds.h`](srctree/include/linux/leds.h)
-> > > +
-> > > +use super::*;
-> > > +
-> > > +/// The led class device representation.
-> > > +///
-> > > +/// This structure represents the Rust abstraction for a led class device.
-> > > +#[pin_data(PinnedDrop)]
-> > > +pub struct Device<'bound, T: LedOps + 'bound> {
-> > > +    #[pin]
-> > > +    ops: T,
-> > > +    #[pin]
-> > > +    classdev: Opaque<bindings::led_classdev>,
-> > > +    _p: PhantomData<&'bound ()>,
-> > > +}
-> > > +
-> > > +impl<'a, S: DeviceBuilderState> DeviceBuilder<'a, S> {
-> > > +    /// Registers a new [`Device`].
-> > > +    pub fn build<'bound: 'a, T: LedOps + 'bound>(
-> > > +        self,
-> > > +        parent: &'bound T::Bus,
-> > > +        ops: impl PinInit<T, Error> + 'a,
-> > > +    ) -> impl PinInit<Device<'bound, T>, Error> + 'a {
-> > 
-> > I think it would be useful to separate out the two lifetimes more
-> > clearly. You have two sets of lifetimes:
-> > 
-> > * 'bound which is the duration in which the bus device is bound.
-> > * 'a which is the duration in which the `name`/`devicename` fields are
-> >   valid.
-> > 
-> > And these have different constraints because 'bound is much larger than
-> > 'a. The 'bound lifetime is longer than the entire Device struct, but the
-> > 'a lifetime only needs to last for the duration of the initialization
-> > because (I assume) the strings are copied by `led_classdev_register_ext`
-> > 
-> > So under that logic, I would rename 'a to 'name or something like that
-> > to indicate what it's the lifetime of.
-> Preferably 'init, which can be used in other class device abstractions
-> as well if needed.
+This series follows the introduction of `zerocopy` to rust-next and
+replaces `transmute` traits with `zerocopy` traits. These changes are
+mechanical and don't alter functionality.
 
-Sounds good.
+This series is built upon Nicolás' recent patch, and does not touch
+gsp bindings.
 
-> > 
-> > Note that if I'm wrong about the lifetime of the name strings, then this
-> > code should be changed accordingly. It looks like you're actually
-> > stashing the pointers in the led_classdev, and if that outlives this
-> > initializer, then the current lifetimes are wrong, and Device must also
-> > be annotated with 'name to indicate this additional lifetime.
-> name and devicename only need to be valid for the duration of
-> `led_classdev_register_ext`.
+Specifically, the trait `transmute::FromBytes` is replaced by
+`zerocopy::FromBytes` and the trait `transmute::AsBytes` is replaced
+by `zerocopy::IntoBytes`. Additional traits such as
+`zerocopy::Immutable` and `zerocopy::KnownLayout` are implemented as
+necessary.
 
-Great.
+Resent because of wrong target list and wrong email in "From:".
 
-Alice
+Pedro Yudi Honda (5):
+  drm/nova: use `zerocopy` in firmware.rs
+  drm/nova: use `zerocopy` in booter.rs
+  drm/nova: use `zerocopy` in fwsec.rs
+  drm/nova: use `zerocopy` in bootloader.rs
+  drm/nova: use `zerocopy` in riscv.rs
+
+ drivers/gpu/nova-core/firmware.rs             | 10 ++--
+ drivers/gpu/nova-core/firmware/booter.rs      | 26 +++-------
+ drivers/gpu/nova-core/firmware/fwsec.rs       | 49 +++++--------------
+ .../nova-core/firmware/fwsec/bootloader.rs    | 18 ++-----
+ drivers/gpu/nova-core/firmware/riscv.rs       | 10 ++--
+ 5 files changed, 30 insertions(+), 83 deletions(-)
+
+-- 
+2.34.1
+
