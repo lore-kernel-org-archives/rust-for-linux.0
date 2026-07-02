@@ -1,63 +1,63 @@
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F4048B39A
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 12:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EC548BD45
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 12:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782993961; cv=none; b=mip5RrC80EyWIgoR7iQJrku3iyY3FGxXZ/+qIJRwZ6+iCyWVFuEOXhppsPc4eFao1n7g8TZn7jJnvWLXjGunCIeyUvR5sQuz8NwJetZ8I9OeX4X4vWjk3X/FRQel8kpGeJgq0AP1XPYDF/oqWHm1kEeAVIu5d3vHMZHjQxO9MTY=
+	t=1782993966; cv=none; b=ckUOg0rcBZixOpem+Q1+sTa6+j/Lmbt8YOkejFRSZUpFPlwf6gR3DhEFALyqUr79anjkvJTi/pMoYRwiOhGQJf2z34Un1ChxGfwsr9d688APw0VWASEfOjfXa+ulesKXDtkb4ReHyPt9LAq2e1xG5Lymb7mmb/aD+VovLKPlOhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782993961; c=relaxed/simple;
-	bh=g7R8tEi4i6Q6H+mFQbeH+wY/GGgNqL+C96OYgFFuf/g=;
+	s=arc-20240116; t=1782993966; c=relaxed/simple;
+	bh=t2q8xrLgb+cVvPOt0w87a6e9ZSmUQFB6Nqn9L1La7ZE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nc3LrKGGZ+Odr/cSwBFHoDlAioizWlADEfSS4ilG8WgZMr4B8yTnt+U17yhE+2hZnm8CwMspksx9qKJevnGIPzAziiaB1lAr+xtgacNkt/Qb6EMZGAfQiwirwjorEOo+eoLTsiHplkgu7ZJdhIeksJO9NTnPXyDLPa3ZaETeYAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=JfHk2BHA; arc=none smtp.client-ip=209.85.222.52
+	 MIME-Version; b=EJk6BCPO7pQpjBrIPWIXNaXsqXP37VOtRNHocDLcKw05SykRYtQn/FAEynKVncy8iDViwqYkz5+UBIVg1dZrdDCeemYXEdakEdXmCTEtOV9W2YzdLJ8s+AO8extaJ6RJH/2zB5DZRN3UCNnuVIjro4I1aALo3H9N/DGFr8McwZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=r/+o0rgI; arc=none smtp.client-ip=209.85.222.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="JfHk2BHA"
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-969524c1a63so1061708241.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 05:05:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="r/+o0rgI"
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-969524c1a63so1061749241.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 05:06:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1782993956; x=1783598756; darn=vger.kernel.org;
+        d=usp.br; s=usp-google; t=1782993961; x=1783598761; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UGgdNIxUjLSQ4UNZW/FdSoJV4OLj/5NQZw2raQ+vfnI=;
-        b=JfHk2BHASpp8yBLkIZwHAkbgteQVlsEwz9wr88oxQWA2x/eSXAoxwqMpoVnpFnE+pm
-         4ZtnfsOJPJ6gGydFapx6pOr9aoV79Jheb5/MEOZDM7hzKwdoisLkeJneT1vKwHEW1YIb
-         r8hGnG9Syiy06jz1qabzKvCNQ0/iUCnC4rNVBZ9NV7f4TNaKk3WmVu44L4/7d65/njmr
-         uWowDAQJROkGvmjVmd6x0u7wn6PfakEeGv+V641yrJdNC8fjdTncrnrzQque123T6liI
-         rLCj9hhoUGxFXtVFz278JBLYmQpFkX+45LLD2Cgy1iLZ0zeaNSDEPVRT94sq9MJ4yvf2
-         ahDQ==
+        bh=9cVZWX31i00/Q+AQyz7DVfvfVMzM7hxRZQOP4HWyMgo=;
+        b=r/+o0rgIb6fRkErhCwmHWdlnOctpq2gA0Ca5A5zn3HE7iFr6oDFWopkRuPYBFHB7z0
+         k8/RViRpUJYaKPEw3dft+d47j8C5gWQNCCtvb+qgV8yJLe33YSvZ4UpEOWGmeGH12KMr
+         YmAQd1Ijs/uHpzoxfmo7iYdrJ+FjtGqz9jMThuMGr5fau3HXh2V1t81eRni7udissNFJ
+         AktBsI1AXioxKwKkedwRdGux0/VvbfETmhbXiGxh4JZxn+IC6djcYFTxdUwzBW2Ub2Ay
+         SirYMk+UICMlPAzWSgNluZ+DwN2e8RBrrzc+OVTdQ8jeOqtqcK4LbvVw/8jtE9VLc3W9
+         UxxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782993956; x=1783598756;
+        d=1e100.net; s=20251104; t=1782993961; x=1783598761;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UGgdNIxUjLSQ4UNZW/FdSoJV4OLj/5NQZw2raQ+vfnI=;
-        b=ElirL2Rrs2jH95knmfG3cAIvIlZ9oedDuBeMKVN9taaFwVLc9uqlSP/+jW/bv10thk
-         sBe+CEi3aTBDySE/jOatCdz5/FoO8+WLkKd+UQbA4H0LQkzi2Zx1eyJ10WYtpFhP7Gi3
-         qFNZp+zD5pHoOK04yZGPxD80bn9m2bn3yNq+iCRhmSPzOv8fItVdc0i+q02eZCNkb7xh
-         wumyTxJW1hscqtyQMQw9mdmRGS8+6b63GpXWt8dq6Z6hZcFXc4R9DZquBEfGOkfpOCCH
-         t6DuGE8w0/j99hTUirNkr7wLa/axXLqCafFhHrYOpt6AVsr4NGNemjDaP1DGwERiG0EV
-         +HgA==
-X-Forwarded-Encrypted: i=1; AHgh+RrOxoT436MjxNPNX3Nph6tRNHhAJmJffkVz1fwCaNTGvCrf0Mbo50dUc22BkSr7zvXnY4+icDSt6gnG6ar03Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDapO2wF1bjp+Av90O9apNNBDEDPHdaK35EB521Bs1FaTMi0Jy
-	6FJWGG4Y8WL8tQXyaLYH/TfowSj0FGvd9Aj1wRAJillGgc6lSI28DVXOLP9zhq36afA=
-X-Gm-Gg: AfdE7clEjO91HqVgcS3J0fsACbG6+jz8KZjb57AESJ3gjtJ15YqEkwHfPkPCUzi75Ni
-	I/L8x6kMyDMG5KTtV62p53F+CZ+zdE0zak91I/9mOysP+ZvK2V3cYcuenRt9k4T2iFwoEQlQDBb
-	De1p2UG4iDrmn9aPBAme0Yuc1EpDJraMd+iKOb6BZ+/ey5NtdLHlX0PERKlb9/ZImhJFesEe9kY
-	A7G/40uJRfsV5mHabbKJOWeqNA0XJ7XmAPbxf0z8ZUxJPy17IsI+7b4n1JljtbMhNso5rQ6m0El
-	fx1RVAy0+XP2OKwXbzsyU5xfcDF8vAPacqeYAOoOhrF5qfxu5CkuYdSCWaW1mTh8kTErQlhEkfL
-	V3c1bP0RUODSq9gq8AAs/Wj7cQFVrrjxE7Sl6BfqTrYENww37fdZ6sn5TPTRpmr/HAo6Vj2nKEB
-	HT7ZwwMmTCvPIxb6U=
-X-Received: by 2002:a67:e95b:0:b0:73e:8694:c6da with SMTP id ada2fe7eead31-73e8694ccf7mr500231137.24.1782993956039;
-        Thu, 02 Jul 2026 05:05:56 -0700 (PDT)
+        bh=9cVZWX31i00/Q+AQyz7DVfvfVMzM7hxRZQOP4HWyMgo=;
+        b=gA71d3SJIzsg0q2jRsvxmZB/DGiV8TAjhCGT59v8Csmwkqq5sAzSbqczUWiCUFDjgh
+         lZmzchkKxuoXFaOSHW/icYr0VBrqUWwmPYk5ximvVPnI6+T5TRiDzfWW6YMSiKV4kcAX
+         9GQH1wfllGgBN/q4SOO+s0B8OsbgU3mwQ9VGCzS4B0nkhErTcbqDikVmAWXbLu2OuLwx
+         2loECfLkggt570EAZZzumDnencHVzaEsm4R4dujCY65+wfC3eVq5MbZ3Tdx6/hddhiqe
+         0INAndfiqeCAzSrrWD0xOwKzbAaow9o7rkY2r+G/ZH6rmGsu9EEfKJvJdmRLg65B+Mhi
+         n4eQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqxLQoEnQu6d76BB9J1V2xJ8og2qbxVX6dqd8iXWUB2W9ohjMHaJbEOdQOoE6T8FToBr50R6m9HCoTJn2yOOQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7+SDhy23vegF8B6JhVhGHBfrc11XWuH1ChghGjD+7CQvplq13
+	2v4ukfCnko8Ux9kRZHBHCt034fRuJhs3S/F53Dd6CNGsOEEx9G1MVdaSDETivfNbu0w=
+X-Gm-Gg: AfdE7cnlHDnFIpfSzlxTVHa0/4VuZ0JRyG5vliHk5PsPFrQqGEROMTGMk9T0tCuz3Ow
+	iJBlj4t98J1M9aZdJV1JHriZKX24jJQxNlMBOH/QA3rGWNXZK++cQhqCCL2nlNU8bUtm/oJPpXs
+	wVxlh5K9e5lCq9tbEO34bZPqiaGrsFaLAkSjZjhqX4uDlcN+19YYhz/aivgfa35+ofwslfMPeh4
+	jhDnnF6xReTQ5iwlw37gCvJHepacLh7O7mR9VVI9/BlvecmyhA11irTQevBh4D1ijyCFEM7mFKp
+	isAY1WFJzlthQxNPMiJ6X1sjT3Ap86O2V6xAX7zzqI1plGUV6HwcHTG+521z2EsUMZGFzmhLrkw
+	nwCFAv8oRRg2cr0stiPXrc3U9sbZ1izysPjegG6PKV2xvS5YfnOUNoFA83UCb1bkj31E1K8WUcB
+	/yAkeE5G7gqqvv42A=
+X-Received: by 2002:a05:6102:304c:b0:737:783d:1912 with SMTP id ada2fe7eead31-73dbe560d03mr2566154137.12.1782993960866;
+        Thu, 02 Jul 2026 05:06:00 -0700 (PDT)
 Received: from niyudi-linux.semfio.usp.br (nat.ime.usp.br. [143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-73e1caf43casm1182470137.11.2026.07.02.05.05.52
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-73e1caf43casm1182470137.11.2026.07.02.05.05.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 05:05:55 -0700 (PDT)
+        Thu, 02 Jul 2026 05:06:00 -0700 (PDT)
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 X-Google-Original-From: Pedro Yudi Honda
 To: dakr@kernel.org,
@@ -72,9 +72,9 @@ Cc: nico.antinori.7@gmail.com,
 	rust-for-linux@vger.kernel.org,
 	nova-gpu@lists.linux.dev,
 	Pedro Yudi Honda <niyudi.honda@usp.br>
-Subject: [PATCH v2 4/5] drm/nova: use `zerocopy` in bootloader.rs
-Date: Thu,  2 Jul 2026 09:03:23 -0300
-Message-Id: <20260702120324.40388-5-niyudi.honda@gmail.com>
+Subject: [PATCH v2 5/5] drm/nova: use `zerocopy` in riscv.rs
+Date: Thu,  2 Jul 2026 09:03:24 -0300
+Message-Id: <20260702120324.40388-6-niyudi.honda@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260702120324.40388-1-niyudi.honda@gmail.com>
 References: <20260702120324.40388-1-niyudi.honda@gmail.com>
@@ -88,85 +88,60 @@ Content-Transfer-Encoding: 8bit
 
 From: Pedro Yudi Honda <niyudi.honda@usp.br>
 
-In firmware/fwsec/bootloader.rs, replace the following `transmute`
-traits with their `zerocopy` equivalents:
+In riscv.rs, replave the following `transmute` traits with their
+`zerocopy` equivalents:
 
 - `transmute::FromBytes` -> `zerocopy::FromBytes`
-- `transmute::AsBytes` -> `zerocopy::IntoBytes`
-- add `zerocopy::Immutable` where necessary
 
 Update call sites accordingly.
 
 Signed-off-by: Pedro Yudi Honda <niyudi.honda@usp.br>
 ---
- .../gpu/nova-core/firmware/fwsec/bootloader.rs | 18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ drivers/gpu/nova-core/firmware/riscv.rs | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs b/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
-index 66b9f4d1b41c..03d3090bd9ef 100644
---- a/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
-+++ b/drivers/gpu/nova-core/firmware/fwsec/bootloader.rs
-@@ -18,15 +18,9 @@
-         Alignable,
-         Alignment, //
-     },
--    sizes,
--    transmute::{
--        AsBytes,
--        FromBytes, //
--    },
-+    sizes, //
+diff --git a/drivers/gpu/nova-core/firmware/riscv.rs b/drivers/gpu/nova-core/firmware/riscv.rs
+index 2afa7f36404e..ba56bc7d4188 100644
+--- a/drivers/gpu/nova-core/firmware/riscv.rs
++++ b/drivers/gpu/nova-core/firmware/riscv.rs
+@@ -7,8 +7,7 @@
+     device,
+     dma::Coherent,
+     firmware::Firmware,
+-    prelude::*,
+-    transmute::FromBytes, //
++    prelude::*, //
  };
  
--use zerocopy::FromBytes as _;
--
  use crate::{
-     driver::Bar0,
-     falcon::{
-@@ -57,7 +51,7 @@
- ///
- /// Most of its fields appear to be legacy and carry incorrect values, so they are left unused.
+@@ -18,7 +17,7 @@
+ 
+ /// Descriptor for microcode running on a RISC-V core.
  #[repr(C)]
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, FromBytes)]
- struct BootloaderDesc {
-     /// Starting tag of bootloader.
-     start_tag: u32,
-@@ -73,15 +67,13 @@ struct BootloaderDesc {
-     /// Size of data section in the image. Unused as we build the data section ourselves.
-     _data_size: u32,
+-#[derive(Debug)]
++#[derive(Debug, FromBytes)]
+ struct RmRiscvUCodeDesc {
+     version: u32,
+     bootloader_offset: u32,
+@@ -36,9 +35,6 @@ struct RmRiscvUCodeDesc {
+     monitor_code_size: u32,
  }
--// SAFETY: any byte sequence is valid for this struct.
--unsafe impl FromBytes for BootloaderDesc {}
  
- /// Structure used by the boot-loader to load the rest of the code.
- ///
- /// This has to be filled by the GPU driver and copied into DMEM at offset
- /// [`BootloaderDesc.dmem_load_off`].
- #[repr(C, packed)]
--#[derive(Debug, Clone)]
-+#[derive(Debug, Clone, IntoBytes, zerocopy_derive::Immutable)]
- struct BootloaderDmemDescV2 {
-     /// Reserved, should always be first element.
-     reserved: [u32; 4],
-@@ -120,8 +112,6 @@ struct BootloaderDmemDescV2 {
-     /// Arguments to be passed to the target firmware being loaded.
-     argv: u32,
+-// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+-unsafe impl FromBytes for RmRiscvUCodeDesc {}
+-
+ impl RmRiscvUCodeDesc {
+     /// Interprets the header of `bin_fw` as a [`RmRiscvUCodeDesc`] and returns it.
+     ///
+@@ -50,7 +46,7 @@ fn new(bin_fw: &BinFirmware<'_>) -> Result<Self> {
+         bin_fw
+             .fw
+             .get(offset..end)
+-            .and_then(Self::from_bytes_copy)
++            .and_then(|b| Self::read_from_bytes(b).ok())
+             .ok_or(EINVAL)
+     }
  }
--// SAFETY: This struct doesn't contain uninitialized bytes and doesn't have interior mutability.
--unsafe impl AsBytes for BootloaderDmemDescV2 {}
- 
- /// Wrapper for [`FwsecFirmware`] that includes the bootloader performing the actual load
- /// operation.
-@@ -160,7 +150,7 @@ pub(crate) fn new(
- 
-             fw.data()
-                 .get(desc_offset..)
--                .and_then(BootloaderDesc::from_bytes_copy_prefix)
-+                .and_then(|b| BootloaderDesc::read_from_prefix(b).ok())
-                 .ok_or(EINVAL)?
-                 .0
-         };
 -- 
 2.34.1
 
