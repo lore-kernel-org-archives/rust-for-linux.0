@@ -1,131 +1,98 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from mail-07.mail-europe.com (mail-07.mail-europe.com [188.165.51.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C99431E44
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 01:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7F81FF7C7
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 02:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782955105; cv=none; b=f6IzhZJdXKj8tCvuPTBsPpisdNnBnVFQqRHpiTjnw4vkipNqmYFbQv6XyygzbL3J3ZnTgMbUhOunq1r2txA5GnvN4+mD2MX1Il3oJOU6GcB8HNR3u6Fk8FQD3SOv6inNdtslvPEPzTeUct6NmoU9Jh5mFANOY5ZohJdcN6rDKOo=
+	t=1782958723; cv=none; b=Ncn51tdWWUy+/dlarfHMTo6b2gTltr6Nec6F+MmKLN3YZ3QlOJPqEUDC2vw8wTW36vpVOcSANEjmFKr5QsCB/3yockD1NkxN/bL/o/LgDC+YR2m103kP9ftgTJ8Pd5Ayh7p6F9XARZrF65hlKgaDe+ic86eHiea24YUBE0RZH10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782955105; c=relaxed/simple;
-	bh=krBtYq4sF++LKUazcnPP7HUYInxFSBi0y04BiJIwrNc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=MjQmOoIYYF1q9Jf6tEZxyq0KvNAwHlLDT68gDiEgYZTXBSXJtkO7yvfzIxi2pAffyCYymlVLj+hXbdWuMALGttO/FSLYKPVzVMLzBb9PyG2Jc5iKF62Gh89E09m3p2eMJ6UAHW0P0bVTGmh7TrGINX2ZiMjfS9+MXxZN7vouPBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OExTzm9W; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OExTzm9W"
-Message-ID: <40998dfe-1f0d-42a4-a974-2f59bdbd00d4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782955092;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aE/uPNiRfrzMVB4ucs55buovN9ayC9dNOCrKcDVqti8=;
-	b=OExTzm9W4j2ce5w80nAtQp6w6Zd8YP1V0oT/OT9/BAkKnZRM4CqoRWkgsZNYD7sHBPWY4p
-	YH26ZpNxZ42rtLrE7FYAaHfLE714c+KLj3aZ7ypAGDGo/yN+RIFSpEonH7UdW0LHH3LP7I
-	C6GpGlpiFLUC5a8mV5thi9wgHxE3PCk=
-Date: Thu, 2 Jul 2026 09:18:00 +0800
+	s=arc-20240116; t=1782958723; c=relaxed/simple;
+	bh=lYiR7rQkRVJN1VUz3Knaa5NcP8pvAG3IeSXd0OaQJKk=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=E5vqE25PFIhE1OQVc8XjwjJa7n+U/X1vPPPRjAGQMAlSNO7t8ErLK92heHp4g0rAKtZb+AaMs/gp7CZeYqnsmLAjWmnr2tE5BKxM6sbwifgASFQVY+h3fJhXnQiTaxS93uVkwADHgXWxDHDIdg3osgMLWjEEwdyofq8eXUjst48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=antoniohickey.com; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antoniohickey.com
+Date: Thu, 02 Jul 2026 02:18:23 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+From: Antonio Hickey <contact@antoniohickey.com>
+Cc: Antonio Hickey <contact@antoniohickey.com>, Daniel Cote <danielstonecote@gmail.com>, Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org
+Subject: [PATCH v6 0/2] rust: `overflow_assert!` macro
+Message-ID: <20260702021811.758731-1-contact@antoniohickey.com>
+Feedback-ID: 144211621:user:proton
+X-Pm-Message-ID: c6b56666b42d95e4be34cf9f32185949eb6977db
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/7] rust: firmware: add request_into_buf()
-To: Timur Tabi <ttabi@nvidia.com>, driver-core@lists.linux.dev,
- nova-gpu@lists.linux.dev, rust-for-linux@vger.kernel.org,
- Alexandre Courbot <acourbot@nvidia.com>, Danilo Krummrich <dakr@kernel.org>,
- Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- John Hubbard <jhubbard@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Russ Weight <russ.weight@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
- Gary Guo <gary@garyguo.net>
-References: <20260630194749.1209490-1-ttabi@nvidia.com>
- <20260630194749.1209490-2-ttabi@nvidia.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <20260630194749.1209490-2-ttabi@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+This patch set introduces a macro for overflow assertions, the use of
+this macro will avoid local `#ifdef`s by encapsulating the conditional
+behavior to the macro. In addition this macro also allows us to document
+the intent of the assertion more clearly.
+
+Changes in v6:
+- Fixed the order of tags.
+- Improved the documentation of the `overflow_assert!` macro.
+- Added missing review tags.
+- Link to v5: https://lore.kernel.org/all/20250819003824.23019-1-contact@an=
+toniohickey.com/
+
+Changes in v5:
+- Refactored the `overflow_assert!` macro  to forward all tokens
+  to the `assert!`, allowing full message formatting and parity
+  with `debug_assert!`.
+- Improved the documentation of the `overflow_assert!` macro.
+- Updated example use patch to also use a custom message.
+- Link to v4: https://lore.kernel.org/all/20250629024310.97937-1-contact@an=
+toniohickey.com/
+
+Changes in v4:
+- Added the ability for callers to supply a custom message to the
+  overflow assertion.
+- Small change to verbage in documentation.=20
+- Link to v3: https://lore.kernel.org/all/20250621230231.100181-1-contact@a=
+ntoniohickey.com/
+
+Changes in v3:
+- Made the `overflow_assert!` macro take in expressions instead of
+  values.
+- Fixed path in macro to fully qualify.
+- Refactor macro to make the conditional compilation as local as
+  possible.
+- Refactor macro to utilize the `cfg!` macro like the standard library
+  does to reduce boilerplate.
+- Added an example use case of the `overflow_assert!` macro
+- Link to v2: https://lore.kernel.org/rust-for-linux/20250504165612.86459-1=
+-contact@antoniohickey.com/
+
+Changes in v2:
+- Fixed example doc comment so it doesn't panic.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20250504164349.84149-1=
+-contact@antoniohickey.com/
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1159
+Co-developed-by: Daniel Cote <danielstonecote@gmail.com>
+Signed-off-by: Daniel Cote <danielstonecote@gmail.com>
+Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+Cc: Tamir Duberstein <tamird@gmail.com>
+
+Antonio Hickey (2):
+  rust: kernel: create `overflow_assert!` macro
+  rust: uaccess: refactor to use `overflow_assert!`
+
+ rust/kernel/lib.rs             |  1 +
+ rust/kernel/overflow_assert.rs | 43 ++++++++++++++++++++++++++++++++++
+ rust/kernel/uaccess.rs         |  4 ++--
+ 3 files changed, 46 insertions(+), 2 deletions(-)
+ create mode 100644 rust/kernel/overflow_assert.rs
+
+--=20
+2.54.0
 
 
-On 7/1/26 03:47, Timur Tabi wrote:
-> Add request_into_buf(), a Rust wrapper around the
-> request_firmware_into_buf() function. This variant loads the firmware
-> image directly into a caller-provided buffer rather than a
-> kernel-allocated one.
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->   rust/kernel/firmware.rs | 39 +++++++++++++++++++++++++++++++++++++++
->   1 file changed, 39 insertions(+)
->
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index 71168d8004e2..14934605ad98 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -120,6 +120,45 @@ fn drop(&mut self) {
->       }
->   }
->   
-> +/// Load firmware directly into the caller-provided `buf`.
-> +///
-> +/// On success the firmware image has been copied into `buf`; the caller accesses the data
-> +/// through `buf` itself.
-> +/// See also `bindings::request_firmware_into_buf`.
-> +///
-> +/// This is intentionally a stand-alone function rather than a `Firmware` constructor. For
-> +/// the `into_buf` path, the firmware data lives in the caller's `buf`, not in a
-> +/// kernel-owned buffer, so returning a `Firmware` would expose `Firmware::data()` as a
-> +/// second handle aliasing `buf` (and `release_firmware()` does not free `buf` anyway).
-> +pub fn request_into_buf(name: &CStr, dev: &Device, buf: &mut [u8]) -> Result {
-> +    let mut fw: *mut bindings::firmware = core::ptr::null_mut();
-> +    let pfw: *mut *mut bindings::firmware = &mut fw;
-> +    let pfw: *mut *const bindings::firmware = pfw.cast();
-> +
-> +    // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
-> +    // `name` and `dev` are valid as by their type invariants. `buf` is a valid writable
-> +    // buffer of `buf.len()` bytes.
-> +    let ret = unsafe {
-> +        bindings::request_firmware_into_buf(
-> +            pfw,
-> +            name.as_char_ptr(),
-> +            dev.as_raw(),
-> +            buf.as_mut_ptr().cast(),
-> +            buf.len(),
-> +        )
-> +    };
-> +    if ret != 0 {
-> +        return Err(Error::from_errno(ret));
-> +    }
-
-You can simplify the code using `to_result`:
-
-to_result(unsafe {
-     bindings::request_firmware_into_buf(
-         pfw,
-         name.as_char_ptr(),
-         dev.as_raw(),
-         buf.as_mut_ptr().cast(),
-         buf.len(),
-     )
-})?;
-
-Best regards,
-Alvin
-
-> +
-> +    // The firmware bytes are now in `buf`, which the caller owns, so we don't need
-> +    // the kernel to hang on to it any more.
-> +    // SAFETY: `fw` is a valid pointer returned by `request_firmware_into_buf`.
-> +    unsafe { bindings::release_firmware(fw) };
-> +
-> +    Ok(())
-> +}
-> +
->   // SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, which is safe to be used from
->   // any thread.
->   unsafe impl Send for Firmware {}
