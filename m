@@ -1,170 +1,263 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012026.outbound.protection.outlook.com [52.101.48.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B1235AC05;
-	Thu,  2 Jul 2026 07:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7603C3C65F0
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 07:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782977385; cv=fail; b=CztQ4/0Ir+mmcpalQaEXWbemlBj6CJILLf+EDRXYg1+6T7gFJxfYjPsmc3qvbJBsnqslX2qsSY+9FdX5o+UrJTAMfDSirb9fHjyvSnclFs9PkN65QEezeP5IwLZv7hgmnXwbmnwLD9QLdZa7aAYKgBIYhZhnBw8h+F3VubCIOk4=
+	t=1782978644; cv=pass; b=BX7UpL+/1MhRBMsZuAQe/N61G56ZcNgGNzqQ1vrnie0ON14GN43TQI1eV1l6jMyQABn6J4kY0CTWRbtEiI8SDZBVCTMR2RiBae/m1K3jj7aQC07udYJZ2L3wVU1/l3yyXAQFU2emiTH3S9Goz1bCbtldO9cuuww1GRcHfPyHjVI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782977385; c=relaxed/simple;
-	bh=AfZ+us7yt1krKoHCiuf8CElk4xuWfl6JiOYbV35DNHA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Pbiv5FI34YKcnZJPGon241wtvvRV/hQNUyteY7V4HlXTD+AjwIOhifzEcEVGd36usOnmcvIFbiiog8m1m+29Bqg4sVaIaRgKBdSa6DjzioGlOi9UFuWWOV1ZNjrMc5qhqweTSLaTgfO1tVjACQXU5WzE5BtQNOMPu9BQKCNyR+Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BzNqgOiW; arc=fail smtp.client-ip=52.101.48.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1782978644; c=relaxed/simple;
+	bh=pHrVcQLlOK1t5nKGdXPSLGw9nctg1pcpYD1ve12gl1g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KcOSB1pNcJEPQ7PvcJ1AVNYdWyNgz4hRTdaKNXxBj0clyIhtWXHQo9iQtrVGmpkVi6ERsX7Y8rCAQ0nMOGhzaHrDleMg32MhynokZSMEDZ+hyO5lZXLoozZAP3ysk9HfNTt8Mf5spUTo40UUdbFn6N2t0Oh67haeOzJj4b2bTEg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E6yMhZHN; arc=pass smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BzNqgOiW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pELJe5u1ntYXG9ct6MNV+xPjpticYVHvY8yHcal1Yf2iLmOWngSIudREGKM9H8zJt8ro52NPFEd2hIMoBn7wopUle3C3ULac6KsSeo6EWgl14FXouiw8s9dEvMT7oKYlWrwFLsHgo+H5EytS+WkOVsoxh5KltlGZ429uIsVSZQyyXisnCbYiqBzpHxdeZ9PP7DkqnI7K/Lxx6WpugGE4vnbbQAgoUSKDIxonKVCIMPBKSTOkYQLK2rjbkvnEQ4NMiQxKIsmC5xBiZMR0wOCIQJpMqlpLTbYyYZcr5XU35DyZYF2QTOdkyAJrQjDBr7SMnWRfPEbgyrTL/CkqUSRUIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f6B91nlpWq+aahSMBvbBd/jW0rguaHNKoBiXmnS4w/E=;
- b=OBU/gFI6q8ob1u/5BKOAH7mXLlfTnqOFW7T4MvT8lJSXHePK3KLmIWlqrboHfDaSpzynGmvgg3X4Ycr75HPNXoW5VXW5m+i4wrx8XTO4oHu8lzzc5/0eY3QKahTbA7OTAc+z4w+UR+R6RT0sUGmuGVUXjWZ3gWi99pvNDK+279fSv32z9MJjYqubb6RbMgMU8qmCPgMYxdPdBjOeoJT2q3AJRiqmfJ2dWchO7Eg7Rdv0Mtxpf8MwWPtQJ3KiwiO3YJkO19uw5XDydU9RkNP49DhwrlVuWQ97SaJbgz8X+aNpWrcG1JFfU1OEVVjSiftKVdq63PkwTSrRbmPKJTPQMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f6B91nlpWq+aahSMBvbBd/jW0rguaHNKoBiXmnS4w/E=;
- b=BzNqgOiWCx811fQxVkzPFlXzfQDtc+n+7drEK2FjOnEcrHWYooRlkB4s6hEiOCPkyuH0LCbqAkPArp+LdHVX3MZXCTyRK+RCYBogMin8Zbye8h9EDYPv2xqeOzjKD098NXVEuqaqOee9kKphPXUNcCz60XCrmCMOCfmYc4a2FSchwTDYV1lwDLHVlDahgIuJcFQPaOmGCvnNQonILat7ShgAj/hDs9JfW7Q68y380PeYOpT8hL8n+anMtCexCItpu4yrvp2qCy08oLiUY93Rm1Z5ZyAIOYAURjxXvd1ZF3YA6rABwhSk+yU8WmIxJqtQX+DaLKIwHTOEfunlj4s3mA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA0PR12MB7462.namprd12.prod.outlook.com (2603:10b6:806:24b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.18; Thu, 2 Jul
- 2026 07:29:39 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0181.008; Thu, 2 Jul 2026
- 07:29:39 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Jul 2026 16:29:34 +0900
-Message-Id: <DJNWQA2PE5I7.TCF08DZTLSLV@nvidia.com>
-Cc: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
- <ecourtney@nvidia.com>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <deborah.brouwer@collabora.com>, <boris.brezillon@collabora.com>,
- <lyude@redhat.com>, <driver-core@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v5 19/19] drm: nova: Use drm::Device<Registered> to
- access the parent bus device
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260628145406.2107056-1-dakr@kernel.org>
- <20260628145406.2107056-20-dakr@kernel.org>
-In-Reply-To: <20260628145406.2107056-20-dakr@kernel.org>
-X-ClientProxiedBy: OS3P286CA0061.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:200::17) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E6yMhZHN"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so10155475e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 00:50:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782978637; cv=none;
+        d=google.com; s=arc-20260327;
+        b=p5kVvPE0vdOjfO8sv7Dc3oR7J6q4iTQCwZzRUVexH6DE5WNy+p4nzLNaam6T6JbvcE
+         bFE4eJy1dTtm3Kq8cK/8sIdKZ10XL23AyYBqP/5LOY7a9FuX3FNb41k+N7Om29RQjGf8
+         i3XdMssagc2mVmRDbb6XvjI3MeWqmecnhNlRmi3qEa0bKtfB+/zXvzIHBYyxjAh0171C
+         t4oxLhWccfWZZa2zU/V4Bp7WB/YNFwHgIABkZYZvIiw2wvtfSeMHOHRNDUNHBcFH+fGW
+         Lgtagrmp9fAsuE9z908DquMAXane9T3EVhYXvGAqel5HP9bwCZ8DqixpwyIejddK1bxf
+         ogzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k+WIPEoOjs50ah6fC22Zhfdijp2GKQNWxcgboLZ4NOo=;
+        fh=h/jdtxS3bqugaam3PGUEqpuv5vFx/NgSjHHDpECiebQ=;
+        b=M0GvwEwkIa3aMMhmmjdoG9CQa2bFyl63/YEeUNfu5eJZBH/xKrELgO4RVOd8uo4Btn
+         l6b/+4vVPefKh9jUmI6RxnTs0ZdseqYBQDILEYmGfaa+XejhsfEbDXbK53EnQvdhrMCb
+         dI7niH4JhrEo2t8o9tArjPM3fDzGGszVEUNDN68R/yVAv4WuYw9Jp6mzb6RsIg0nKtbv
+         1cFqT8ZJJcH4iF8F2iBAm/Tw6hAxtdCUKuDGuWNF235FWgtFV/QCkKJamXNyvyAtJJMV
+         BJAyUBGC5Sa7hqzdSA6Zwq+gih0kW6VjDUxFp04YXn6eC5xuPusRjG5Y0RGNeb9QsDcd
+         QuZQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782978637; x=1783583437; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k+WIPEoOjs50ah6fC22Zhfdijp2GKQNWxcgboLZ4NOo=;
+        b=E6yMhZHNRwKDOkA5gpZs4Vh0B2MclNLn9OuphjDoS0whjLntf8hvCdFdq5aJSnfdgV
+         ssDu/2dI7JnUi8nICDWpXVfw4WCu9vLd9GAeEvWyMeChpaZoj/ODBaGgSBhikb0qf9T7
+         tkvjnEB4fG42F5XMK0lp0fJbH7/ADYtc7qyqXgYTEqUE+JAJpI72NwkhPrpBpF83bLi+
+         KRR7MbUWff6NhFOgv0ESNCdfcPeMWe18HPxZFo991slFKvQz8ruA/jPpUJyDdbMv7n9l
+         5pFmOHa4YyCGMUIHDRqjXY1iYIR6Rpi3mRiS8JngRjR1atDAWPGJaWjEzptLgCl0ft3l
+         ZK1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782978637; x=1783583437;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=k+WIPEoOjs50ah6fC22Zhfdijp2GKQNWxcgboLZ4NOo=;
+        b=dszydhlnkW0vO4V0M+mIw9se2HvbxN4UbDMDGVS/WdRgEmaQbYjQfxejObs46RD1Zh
+         us/qxT1DBnfYGRXOXbuHdX1ezSFEBENn0CT/vNFHkglrQmz2NfRs7+fNcXB+DButBzKi
+         DQVobieIumNNjgVD7kbKEO/d2Lr1P+yAzHSQ4m7U1qLzYipWw/UNbcrDxAAnDRRdEuax
+         sKTL+geq0HdEiFUV+UOG9UO2sWqkcQuReSXkHzWHekdhLK+Q9+KaO8na6Xjtic6U0oa+
+         HYwK9Sl7JCM9KlDVMx+p97/hhs8hosVkmmjAyheRCFSTUofXVelLztL/KI5yLh7cWRzP
+         vc7A==
+X-Forwarded-Encrypted: i=1; AFNElJ8FF4vh5CL/59XRzSY6tZiveYR7aGMy1PR1jI1kC+sSLopA3j+t59dl823HsOU5ynRq/CLE5MWujHU1/mr28Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQuLB2YcrITQmNZjxy7pD8CtWPoXj5cMJQmERtV5btGs1kGybc
+	ukoBUgSC3GSl69FwB7BRoDA0Wk/AwWEcrY/hA89TJ0equz33kb5qlE2bmrqCZboXD2pYkaWro13
+	66iN6XxlrRFIqtVAZEHAUxw4LQkV6x2n5b/0NIH9c
+X-Gm-Gg: AfdE7cmJ+9t2VjDqVh7Ac1Y1Ai7J64j6I0MOL+6NIjcQUQXfHqTGF2/nAD+almsihO9
+	m2Y4sIA2yECiqmQnlimL7A9HZpegfhXeFcCzcNmR8CjXbuHq7hmoeRdb5J+VjH/Lgu1y2yxW5lq
+	Blo/ov7uIJoGMFT2v03LyfOVBgh7oRZ1T/pKV6fJrTfid1LqkMPPxt4y5vNON12f0lwV0eKvVoJ
+	BYjKzPxXpldP9+2zVWPM1TpnykSpYn/malOXD+d6K8vMQ9IxupP/KmdhatCcsxo/7IQ3FeXnadh
+	hLHG5xVzmT+ynpr9TPktu9eUzbg=
+X-Received: by 2002:a05:600c:8217:b0:493:bc88:ddcf with SMTP id
+ 5b1f17b1804b1-493c2b7d9a3mr66570055e9.23.1782978636026; Thu, 02 Jul 2026
+ 00:50:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA0PR12MB7462:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d1e48bb-f6c2-4a60-4bd1-08ded80bacba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|10070799003|11063799006|22082099003|56012099006|18002099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	qlVpbG2NSW600nbEKbnLJ/IxS7ZZKJ9NkM/rcR9caSDN0dl8OG3O65/hcFYXUf3CDe3zCM/PDhxyKEcVsbQcgLNAAl62f6bswLPWwM/t0Toz3inEudbbG3Luve2iQIE8x+RxsjPKHi7cIqUOO6ZYZHOmjWBH2UjUlrO9wJeIShWgFj9z6Abv62NyTrDM7FTDr48FVLiUo9g1Oa9jzsXA3ZZA7CLoFrUiD6FcOfvlcEsnK3KRnUx+LVf/XJOON64OrIM0ZuEx6yKgbptcLkuZ1JOq25NxdwV7fv1sY7UbA9Cicp9RsM6Dk2l7M01xOFBaQodLFrulJemXvECUZUny+KmEwnX7ZzBefJAXbXIlsUhQePVcdFJX+a3n5givIyefh4WLasFcnTOPg+euHMcJoYkCbIiMoQh38jaY2MYr/9E7bLB3iZPJcYh6O1lDdj4YME4L5H5ln09sxPEVeparSZoHSOo6YFO3jrA6z62rsAJv68LvWzp3kVITdVE1nXhTHm95zd4vIsTjNCcolL/XFFd+5LrC4wTZCC2yB85ZAyWpJAFBmtLFx3hiiTgEIJgffxtcNoxyIjJ7NNlTaVD7HUQr/ulhBHIvL49gxU+3nSOnAkssCVlabZQ+yHmoGCYF6XJaTE+rO/sjE3s6RkFotcXY58BKd6Zm8cWuLoWf+ss=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(10070799003)(11063799006)(22082099003)(56012099006)(18002099003)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ejlrMXZEVThYL3RKKzdpNStWdS8vYnNTRnhyeWFHYk5xdWVSdm1LZ1RKWFVr?=
- =?utf-8?B?VjhuWTZibTdaTzkzOG9QQlZReko1WnArWnVrMnFqdE9HdFBBdUdqQ1VCUFJj?=
- =?utf-8?B?NStDRFpkY0ZaLzEyaFU0Vk85NUJ2UkkwVXdiZThXSjJBTW5CeUdiVFhrakVq?=
- =?utf-8?B?N1hKaDAwM2psMHdCbGVyTGZwZmh0OEx0dDl6TDFmL2ozdjBnZS9Ua0VwK0x6?=
- =?utf-8?B?U2MxemZnK0pnMmpreDEzK1NnU2c3VVlEczhaRFBoUG1MUDNENFJjaDFYWjdO?=
- =?utf-8?B?ckpUcGN1ZDdva3lIdUJzcGEzV3R3bEFSZE53bE1vZmJ3a2ZrLzQrV2NsZGhh?=
- =?utf-8?B?SFNDVTl2d08rOXMvM1NBQmprbG5EWWdjQjdsSEZBanRja1pwRTYwamwvVHVU?=
- =?utf-8?B?TkNPVTl5UkRZN2srR291cEVqUlorSHRRcG9kOTdPOXJoS2VPQURMV1I5MGNO?=
- =?utf-8?B?M251ZFp4TjhpVnlPci91M1FXdXExcnQ4Wm0yaDBTQzE5cWlqbjFyd1RhUDU4?=
- =?utf-8?B?ZWdGbFljSG54SDhSeHozbWp4SVJyc015TE81TUt5SWt0cHZkMkx6S0YxSXhk?=
- =?utf-8?B?V2dtaXNwVFkxc1ZmNGlHZnpBLzYyeWtlMEZVRFJmSkJpN092ZjJ1dGV6NlRK?=
- =?utf-8?B?eEN2a2cxcmI2SEZyREZPWDR2bE9WaTgxalNCdUVTWXdhMW9sbWdXQWNaeVNh?=
- =?utf-8?B?cUtIb2xQOHVWNUxIb0xGaHJZWjFROXVLdEphdjdsTVIrN3FBMVFoNGpqb0lX?=
- =?utf-8?B?YTlqcHo1WVBJMkRyVXdqTVVoZkRTQUhWVFV5dnYvNmpxeWhyLzgvMEN6NTRI?=
- =?utf-8?B?WUJETWRvckZ6Z1hZd1ZWd3NDa292QWlXREhidDJqRUd1SjBkMHhITXlQNkhY?=
- =?utf-8?B?UW9vTWo4WXNPVStSbnhXdzNYdjZLYWxqYWo1RGd1dHpFR3lqUzMySnJFRnR2?=
- =?utf-8?B?R05sbnFpeGI0cFhvczZOZzVVSUdDeVl3bDd0TmtVeVEzd3J3QTVpNHMzU2p6?=
- =?utf-8?B?MDBxTHZsK3NmcWJTOG1jUy9RYWppSXlvUWpCT0xkVEhTYVNpajZlcERBaysw?=
- =?utf-8?B?cTl3RVBpbDU3Z2pwZ01qRTFOTmM4WHArSXEyaFFxYmFmTm1iU1dkZkVzRmh0?=
- =?utf-8?B?ZUEwcGR2R2dHcE5BbTY4QUw2a3dMWDN1RythUHUyWFhTajJYaGZsL1ZHSTVk?=
- =?utf-8?B?NkhCSTNVbThuRkdubS8yeVdiRkh1ODRSQ3RwTFZLaUl5R1V5bitkaVJhOXlO?=
- =?utf-8?B?bE81cHRUYTlMZjV6SmMvbExXRGYxZlhNL0NNR0VhZ1pRcUJITDZKSFZIbGVy?=
- =?utf-8?B?V0Y4QThEYk5vaFl0OVFYYW5uRVpscG50SjdiK21jTXZrc3FLNEQvYUZEZW4y?=
- =?utf-8?B?TnBHRVIwNXFQRjFuc3lldXdKbnpFaVVYUTVGYmF3bW5Pc0R5dDFNdDhVdDVL?=
- =?utf-8?B?RzY0WFMwZXRWUXhHUzBxV0RocW5TU2NJcDl6UWVSZ2Rzb1NPcUZ4NnJIM2FE?=
- =?utf-8?B?TDIrNjVnaTY3UEFuUW12a01zYXdrc3RoY2pka24wQVpORmZCbTdGR1h1WElx?=
- =?utf-8?B?Ly9sempRZzYwSXB0cXowMzl0aXNUa3lscDIyR0VvMFF2NEVsdEtHQ2NINzRR?=
- =?utf-8?B?RmE4M3c4Ni9jWGtHT0REcy80dG0yK3lWeEg1TUpYWUNnNEduUGpUcDJvd1Fy?=
- =?utf-8?B?SjNjaXFzVWJsQmRoMHEvQWFFaTc3anl2K25EREhXTXN6MWZHbTNoSlA5V0R6?=
- =?utf-8?B?akwwa1pqT25NSDFuWVhDb2N1d0JpaTNwZ0gyMm44L1RVYXBnNXQ4SnNhcVY1?=
- =?utf-8?B?SzJEUTVsUGFTWHBuYU1WMHRpTzZXNmREOWhaTWY1WFRCRXJMMDBENjByUXFz?=
- =?utf-8?B?cjV0c1BqeUNvemp5SkV5Um5hOExPeHV1UURvb3pqUUlLeUE0Qms4SUlXK2dF?=
- =?utf-8?B?RnhQSHkraGNnaUpHWU5ERGVxdzRMRmJqY2I5QWR5a2dwRDJ1NXlqY2NxUDcz?=
- =?utf-8?B?ZWoxVytoZ0pHbnoxbW5uUGM0RHg3S1VHcXBjNklrcTc5SnlVQXJwaW9WclY5?=
- =?utf-8?B?TjVqeGZad0dlcW5jamNtbVdiMjI2VUhzZDRzc0krZ3g1Y09QU1EvYXExTGxE?=
- =?utf-8?B?cHBkQkZGUGVzRnF5WmhQdU9WSnpPeEczamdkcUZacG5sdGtPb2Vkc0hJWFhO?=
- =?utf-8?B?QUNmVVlCUi9jQ3Q4UVVtYTQwb0k1MnM1dk5tOC9jRDZVeXRSOTQyMUE1R0Rx?=
- =?utf-8?B?THBab2w2SVJpSkZjdGdyR2ZTQUJFL0Y2czYyQ2twVHRLNWlFR253c0hka0dP?=
- =?utf-8?B?S0Z5WEM0ZXFhZlVLcVkvUXAvTldqSld4SzBlSWpmVE11a2J5d0ZPdS9yTnhi?=
- =?utf-8?Q?ycL1EuyVIxpdK//W82PiC8nPk6/BcAlqC1sGlDLm7SLM8?=
-X-MS-Exchange-AntiSpam-MessageData-1: +vmBJ991FQip6Q==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d1e48bb-f6c2-4a60-4bd1-08ded80bacba
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 07:29:38.9216
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KMb2E3qQC4w/cMLomaqrdrrXmqSLrDNTLi5UJ08U4PIN7GfTp38/VDJXnoL5UNqd/t4KRo4K/ygRuz3TaiB5gQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7462
+References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
+ <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com> <DJNDEDDBYJXW.1KX1X9QINHSQS@garyguo.net>
+ <CAH5fLgjDAgwoCo3w2n0AF9NsY2mBkddG9=21Ame9qxiAY2W9iw@mail.gmail.com> <DJNEJSFRKDMZ.1J9DIN32Q9FXI@garyguo.net>
+In-Reply-To: <DJNEJSFRKDMZ.1J9DIN32Q9FXI@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 2 Jul 2026 09:50:22 +0200
+X-Gm-Features: AVVi8Ccq0waCoMYvA9Yvmgf3Niq2vNvIS4qn8q5XjVK_Z5DoB2S-0CNupb6uhZo
+Message-ID: <CAH5fLgiUwN_K4-dwf=WQNEk6kyzS051HGy5BQKZVtfS6HrtXug@mail.gmail.com>
+Subject: Re: [PATCH 3/5] rust: add pr_*_ratelimit! macros for printing
+To: Gary Guo <gary@garyguo.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Trevor Gross <tmgross@umich.edu>, 
+	Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun Jun 28, 2026 at 11:53 PM JST, Danilo Krummrich wrote:
-> The get_param ioctl needs access to the parent auxiliary device. Since
-> ioctl handlers run inside a RegistrationGuard, accept
-> &NovaDevice<Registered> to obtain &auxiliary::Device<Bound> via as_ref()
-> directly. This removes the need for drm::Device data, hence set it to
-> ().
+On Wed, Jul 1, 2026 at 7:14=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  drivers/gpu/drm/nova/driver.rs | 11 ++---------
->  drivers/gpu/drm/nova/file.rs   |  7 ++++---
->  2 files changed, 6 insertions(+), 12 deletions(-)
+> On Wed Jul 1, 2026 at 6:02 PM BST, Alice Ryhl wrote:
+> > On Wed, Jul 1, 2026 at 6:20=E2=80=AFPM Gary Guo <gary@garyguo.net> wrot=
+e:
+> >>
+> >> On Tue Jun 23, 2026 at 4:38 PM BST, Alice Ryhl wrote:
+> >> > Printing can be very expensive if it occurs often, so printing that =
+can
+> >> > be triggered by userspace should be rate limited. For this purpose, =
+add
+> >> > a Rust wrapper around `struct ratelimit_state` and use it in the new
+> >> > macros.
+> >> >
+> >> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> >> > ---
+> >> >  rust/helpers/helpers.c   |   1 +
+> >> >  rust/helpers/ratelimit.c |  14 ++++
+> >> >  rust/kernel/lib.rs       |   1 +
+> >> >  rust/kernel/prelude.rs   |   8 ++
+> >> >  rust/kernel/ratelimit.rs | 202 ++++++++++++++++++++++++++++++++++++=
++++++++++++
+> >> >  5 files changed, 226 insertions(+)
+> >> >
+> >> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> >> > index d17eaec76450..2184b11c927f 100644
+> >> > --- a/rust/helpers/helpers.c
+> >> > +++ b/rust/helpers/helpers.c
+> >> > @@ -80,6 +80,7 @@
+> >> >  #include "processor.c"
+> >> >  #include "property.c"
+> >> >  #include "pwm.c"
+> >> > +#include "ratelimit.c"
+> >> >  #include "rbtree.c"
+> >> >  #include "rcu.c"
+> >> >  #include "refcount.c"
+> >> > diff --git a/rust/helpers/ratelimit.c b/rust/helpers/ratelimit.c
+> >> > new file mode 100644
+> >> > index 000000000000..e5052f568b81
+> >> > --- /dev/null
+> >> > +++ b/rust/helpers/ratelimit.c
+> >> > @@ -0,0 +1,14 @@
+> >> > +// SPDX-License-Identifier: GPL-2.0
+> >> > +
+> >> > +#include <linux/ratelimit.h>
+> >> > +
+> >> > +__rust_helper void rust_helper_ratelimit_state_init(struct ratelimi=
+t_state *rs,
+> >> > +                                                 int interval, int =
+burst)
+> >> > +{
+> >> > +     ratelimit_state_init(rs, interval, burst);
+> >> > +}
+> >> > +
+> >> > +__rust_helper void rust_helper_ratelimit_state_exit(struct ratelimi=
+t_state *rs)
+> >> > +{
+> >> > +     ratelimit_state_exit(rs);
+> >> > +}
+> >> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> >> > index b72b2fbe046d..ba65ab4f0b8c 100644
+> >> > --- a/rust/kernel/lib.rs
+> >> > +++ b/rust/kernel/lib.rs
+> >> > @@ -111,6 +111,7 @@
+> >> >  pub mod ptr;
+> >> >  #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+> >> >  pub mod pwm;
+> >> > +pub mod ratelimit;
+> >> >  pub mod rbtree;
+> >> >  pub mod regulator;
+> >> >  pub mod revocable;
+> >> > diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> >> > index 44edf72a4a24..5a66028dd973 100644
+> >> > --- a/rust/kernel/prelude.rs
+> >> > +++ b/rust/kernel/prelude.rs
+> >> > @@ -89,13 +89,21 @@
+> >> >      },
+> >> >      init::InPlaceInit,
+> >> >      pr_alert,
+> >> > +    pr_alert_ratelimited,
+> >> >      pr_crit,
+> >> > +    pr_crit_ratelimited,
+> >> >      pr_debug,
+> >> > +    pr_debug_ratelimited,
+> >> >      pr_emerg,
+> >> > +    pr_emerg_ratelimited,
+> >> >      pr_err,
+> >> > +    pr_err_ratelimited,
+> >> >      pr_info,
+> >> > +    pr_info_ratelimited,
+> >> >      pr_notice,
+> >> > +    pr_notice_ratelimited,
+> >> >      pr_warn,
+> >> > +    pr_warn_ratelimited,
+> >> >      static_assert,
+> >> >      str::CStrExt as _,
+> >> >      try_init,
+> >> > diff --git a/rust/kernel/ratelimit.rs b/rust/kernel/ratelimit.rs
+> >> > new file mode 100644
+> >> > index 000000000000..da0a49412023
+> >> > --- /dev/null
+> >> > +++ b/rust/kernel/ratelimit.rs
+> >> > @@ -0,0 +1,202 @@
+> >> > +// SPDX-License-Identifier: GPL-2.0
+> >> > +
+> >> > +//! Rate limiting support.
+> >> > +//!
+> >> > +//! C header: [`include/linux/ratelimit.h`](srctree/include/linux/r=
+atelimit.h)
+> >> > +
+> >> > +use crate::{
+> >> > +    bindings,
+> >> > +    prelude::*,
+> >> > +    types::Opaque, //
+> >> > +};
+> >> > +
+> >> > +/// Defines a `static` containing a [`Ratelimit`].
+> >> > +#[macro_export]
+> >> > +macro_rules! ratelimit_state_init {
+> >> > +    ($name:ident, $interval:expr, $burst:expr $(,)?) =3D> {
+> >> > +        static $name: $crate::ratelimit::Ratelimit =3D {
+> >> > +            let init: $crate::bindings::ratelimit_state =3D $crate:=
+:bindings::ratelimit_state {
+> >> > +                lock: $crate::sync::lock::spinlock::raw_spin_lock_u=
+nlocked($crate::c_str!(
+> >> > +                    ::core::stringify!($name)
+> >> > +                )),
+> >> > +                interval: $interval,
+> >> > +                burst: $burst,
+> >> > +                // SAFETY: This type can be zeroed.
+> >> > +                ..unsafe { ::core::mem::zeroed() }
+> >> > +            };
+> >> > +            // SAFETY: This is a repr(transparent) wrapper, and the=
+ invariants are satisfied.
+> >> > +            unsafe { ::core::mem::transmute(init) }
+> >>
+> >> Hmm, I don't see anything that prohibit this from being a const fn? Wh=
+at have  I
+> >> missed?
+> >>
+> >> It looks like this type is move-initializable.
+> >
+> > I believe that the lock class key this implicitly creates is only
+> > valid in static memory, and not for a Ratelimit stored anywhere else.
 >
-> diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver=
-.rs
-> index bd2a55405db8..739690bc2db5 100644
-> --- a/drivers/gpu/drm/nova/driver.rs
-> +++ b/drivers/gpu/drm/nova/driver.rs
-> @@ -29,11 +29,6 @@ pub(crate) struct Nova<'bound> {
->  /// Convienence type alias for the DRM device type for this driver
->  pub(crate) type NovaDevice<Ctx =3D drm::Normal> =3D drm::Device<NovaDriv=
-er, Ctx>;
-> =20
-> -#[pin_data]
-> -pub(crate) struct NovaData {
-> -    pub(crate) adev: ARef<auxiliary::Device>,
-> -}
+> Perhaps create a
+>
+>     /// # Safety
+>     ///
+>     /// The created `Ratelimit` must be stored in a static.
+>     pub const unsafe fn new_static() -> Self {
+>     }
+>
+> ?
 
-Went through all of this series to see that! :)
+Ok, will do.
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Alice
