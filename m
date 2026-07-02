@@ -1,157 +1,367 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013045.outbound.protection.outlook.com [40.107.201.45])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AC434389D;
-	Thu,  2 Jul 2026 06:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782972408; cv=fail; b=Lqr6L4XwyG9yNRC2c14VS62RP1zzZSMvuWi29FpHqdTwWuK9FDFUtZpXHUh73uie0m49ODM3sV/ghQhtcSVrXZn4/t9jBiGYaR8QjZmuUfre9ZDRRoKtcUDgxAw5H5mb7sA2P9nHfo2LzPKcC+z0v1v7S6WbSzvwCd8N98RWS6A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782972408; c=relaxed/simple;
-	bh=x/CFyiHgs16pCDMXSYfho9x0pUFEh6Gabm/WviKlDWU=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=QsedlVBnc8qPFaFaYt5xhoqKJFsouVXblwlJDVw+/K/FO7j7mdTPnDX7IwcYdRI4le6QcpkZe0QRBrwoAA10h0N2xqh9H2bCZeHtRVkUopEVe/Evb3iC3J0sZeXvL+mJrREPR+QvIbgsiEQd035t3HvDuEk1jMIJ5MMXeFup3BE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jNXFY/sj; arc=fail smtp.client-ip=40.107.201.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBC5382292
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 06:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782972962; cv=none; b=YSFMGf4NzUaim/YgC8XO7BL/5DYQVGOV1O0nO1ByS815VYdR68DVMDL520Me/BN3Hb63N9U+CWyzNW6MoNwGI7mSE5ourdKcqAhDFdN39h6+SHbmfng1sOFi/Ww6bUBUwma1vtYYp1xgumYAlTBYwUKuCFJmgd5CCjJsk2PESAY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782972962; c=relaxed/simple;
+	bh=IwDRwtP8oGlX4obhtjzUxymqLmxMTMzx2NsBHtVHeD4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lGLpev5N6hAcsSUguMhRYNqtRhGDOttWQd2qtVECQMuF0OHODCD7COVaVqWuT+padRK6vC8HEN4iWN1zZ/0XNeNMpI3Iw6kUwPzBpBwVXwzb8zC62bAK6iKzhJ3YFfskbWliGSlzQWRk2QGNiYhS9c57NFk6D1x686z2mGcdtaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VyDoednx; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jNXFY/sj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vRMYtJAZ/Ftyvh2UxbS00FHFdmMWn8sOjs0Z+SiSuGT/pxfICg/kOeuS9iA3RoErIjvqg4iWfowMsNLLTiasroSR6kFnIsFqZbQ22017vOSmf4Gxt9f5to+BvsH4EzKDZL/ciShvjVO8cjVVTbTNZrCXDgyCcCQ3uXi2DvBfVAq62Mzhj2sgvc0w/SNv/7JNdUTZzvwLlqoPV0ArgxmEeL8lj52oSxHSN0NkRyE+3k5n5RVycj/2UxyP3VqC2Q1eH5VD3BQoolA4LO0nhTysKjj/w4SYfygDKxkgeTyyQVI9iG87gjI5KF6lqOsmVDqBtzL0KhmiN1o2Rkuqlrk1zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x/CFyiHgs16pCDMXSYfho9x0pUFEh6Gabm/WviKlDWU=;
- b=h4JHdTzdDTXZyAfnMXhbGt+P+GcB6QryQxWd9GO5Y+0LRH1xWo3657+fKNIwGi8Ntu7llClVSpazTDz/2J5inK+Xsf09L/oEJfrkQ2hyJKuRyICzzz8+JDpuQFOtKcMz4j46lmkSq0TS1690nXqWpZ3wUITM+kOKMm0CH1P62edWSatizmP66JazBkoanyJwh59iP8hQo7L8Bs2BKN7B8X2mZCvq1QSTcozsM9OOZsoEYTXUv9YVqme7bvbeOtqt8qq8Bz7eE2YotPYDG6+ie/2niG/ih2m/2e18mqrfn8rCHVrEkXgP+iiOtEycn4HyvAJjzvsw0TOAwNmqY+hBtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x/CFyiHgs16pCDMXSYfho9x0pUFEh6Gabm/WviKlDWU=;
- b=jNXFY/sjaKtNptAbTgfaUK6IMcLIsFoq3LdzfxSl+v9OmH+LxtHMDXuXnMMDQMwZKGwF8Am9muoGqxQZ3f2Hb1BMWxIZsdYbf6k1194VQ89ARUnygunkjJAiIj6h1buGxpdV2UEiNR3yfI3bTg2Gqlpvo57F1dgSh+aoaDvnHf7v0C8m/ook1qcJ5igamtT9SjvKTHM8O5/5y2CN2X07cg0qRsQkpSNyMKfkCOr/+nQTGcoivzSZqhUXyY7t/7oOjPMxifqYA2syU6JePuYk/Yz5SLvfscKjEzT5IYCJzAASge58MAfRRA1s1wHlSCAvW7/URmngraNB0I92/gX9hg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MN0PR12MB5810.namprd12.prod.outlook.com (2603:10b6:208:376::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Thu, 2 Jul
- 2026 06:06:41 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0181.008; Thu, 2 Jul 2026
- 06:06:41 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Jul 2026 15:06:37 +0900
-Message-Id: <DJNUYRYSQH1A.1BK8JMIIB7T9J@nvidia.com>
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: <aliceryhl@google.com>, <daniel.almeida@collabora.com>,
- <ecourtney@nvidia.com>, <ojeda@kernel.org>, <boqun@kernel.org>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <deborah.brouwer@collabora.com>, <boris.brezillon@collabora.com>,
- <lyude@redhat.com>, <driver-core@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v5 12/19] rust: drm: Add RegistrationGuard for
- drm_dev_enter/exit critical sections
-References: <20260628145406.2107056-1-dakr@kernel.org>
- <20260628145406.2107056-13-dakr@kernel.org>
-In-Reply-To: <20260628145406.2107056-13-dakr@kernel.org>
-X-ClientProxiedBy: TY4PR01CA0037.jpnprd01.prod.outlook.com
- (2603:1096:405:2bd::10) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VyDoednx"
+Message-ID: <d63a68b2-4301-4ce2-a28c-637f4c6bf4fa@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782972958;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=slumhpyAGNKpDFdXehOK+5VyY4jZ2CXXkK8OCRvrkJQ=;
+	b=VyDoednx4nMubMdjK6GUY/XhGeNqlq/88ByP4XNElz6dFY9XK1Ey2jA0lkjnuomS2VyPA2
+	sug89u20WJY4A6wS98I69zEDTPIHPGvXHySL6CDwqP+afYBFKS0NHTUF/0aaOSfgNUFJTc
+	jTWrjHfzxRIce8d/WVxj157Nw0gTeOQ=
+Date: Thu, 2 Jul 2026 14:15:35 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN0PR12MB5810:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52cbcf6c-490f-4989-6b66-08ded800157f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|10070799003|6133799003|4143699003|18002099003|56012099006|11063799006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	wESL3AzgbLpfcgDzMbt89Gvm7SVE827iLz8dGXRvtljAp/UIgnfKaG39jo5O9xoiO0fcu3WO2W6DX6T8+WUU7l0nf3LmdL+wLVNU/h/Z8RczgdThx7RDtzOlNdwRcOE/f3bU5RfFl+2oMiaWPHwe6b6/xEpZzK07cwmqINZn4nFz3CEZ46MY6TIZP37eao0h+euGciP/8044x0+cwWhB2XJRGQJNuTsT6E2HJ+9NlczW60MslzAsvZKpUVzdoBGPxCuAVoDwNYdR37oYT0vMLpV69e5C+VpyaH3JXw/DOP6CquKlaTDxFERdb0hc9Vk6UJ7DH6rGeEBoClbM2FWT9bVQPCq6FHpSoBWxMoV/LPGZcIUd/iefQypmS2tj2WfJ8LD/X2qQcNY3HZQGtUXkx0/yaqPEYjKOUOUHJ5xL50279LswhFQcfgd6f7W0fSCYkwCA6Z+TXIMEEUTREnDmLQFF//fdYNsoK1u7usXz5L/YUENfGG5NbYJF0Bg214NTZU23/YEQ0gM10lqmESVbUSPcPv7H6hZ+1a1Slp13C1GitYuhbZGk3/1E7CACJ147OmmVtwT68Je5SbNl2sI342Zavv4KMJs+iM+RqfFztPoWd4tCe+yEk76bJwnI24H2pGRQwMmS16AQvbE8J37nyZImBR5fgXBn3xXWm18uKtI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(10070799003)(6133799003)(4143699003)(18002099003)(56012099006)(11063799006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RXZOa0pURW9CWWJlZDJtNGd2UzZuZlBkcWdWWjh0SkcwalVOMWdsTkFJVW92?=
- =?utf-8?B?WTJ4VmZROStQRE9qK08xLzFxVEg5bXhoSmRGaW5CUFREQ3B2YlVWZVRGUGg2?=
- =?utf-8?B?UXlXWkZseC9nQnpWSXRxQks5Y2dGY1k0TzFneUpPdVBsWnNxejFEeFJqRURE?=
- =?utf-8?B?RTRodlNzeC9sQzlaV0Z0N3ZEdVJncTQ3RUlPYXYzT1p2Qm1QWjRvWUZEVGJT?=
- =?utf-8?B?ZU9kR2RicW9RZ21ycENnazVlejVFNFJJQzFKL1FHajAvb3NydzI0TG0rV1ZT?=
- =?utf-8?B?MWc2cWhaci9NcC9xbmx5Ykt1Tkk4clI2NGd0L3FnZnAzU2c2aGxzRWdDNHdp?=
- =?utf-8?B?RGRnRUZEY0xXSHdUNnFwTjZUL3pFU2RCSklMM3k1TU9VUTZOMWpmS3BtVzRX?=
- =?utf-8?B?VzFBazVLbnVpQ1dCZmdLTGFtNlJDaldia1RqOFVoUkl3ZE96ME1MN2hjd2dE?=
- =?utf-8?B?bnpPYlMvSUE5bncrQ2dhZU9TTkJFUnJ1NDFvZXJRcWdDeVZVMld2YVQyT0RW?=
- =?utf-8?B?Z0EwZzl6YUQ0MmRPR3JuVTdYRGFGKzB2TnpiRUxBbHR5aUNhM2ZnNmVrSXpk?=
- =?utf-8?B?SlBUem5ESVk1NlRhK3NPYS9mNDBRN3FVM0hLSDJmbnJldmxPREQ0cmJVeUo2?=
- =?utf-8?B?OWhJcmxJdUhpZHloWEdlRUZCeWlaeXNTcG9xdzFiYzhhUzhkWFlaTy9zQnBB?=
- =?utf-8?B?cnBGM2hFZ0ltdXR4TzAvMzNDRXJab0xkZ0E1cGJyVmpZRXVDUU5XTS9RUWU3?=
- =?utf-8?B?TGw1ZnIrN296MU1DbS9uL1l6djUrNU5DTXozSXp0TnVxMjdZaWxocmVBaHBQ?=
- =?utf-8?B?QUtwTEZyemhrMHNpVXpIQzkwZVNBN0hvQmZwZVNKaDRjWmREYlEwZFhZQXdS?=
- =?utf-8?B?R2FuZE9VWUF3aUE0RUJSU05FcDQ0dVlacm1sN0tGWlJQaURsUGRCQndZQ2Fh?=
- =?utf-8?B?U2ZvQzkxN0xnWlpya1VyOHRZa29tKy95bWxrT2dISVNuQm12aGloVVdWWTY3?=
- =?utf-8?B?NEE5cCtkVXB1MzlEZ00yOTlhejJPSGtzNTNTVUVjNUlNNjk0cVgrTjkvdzVP?=
- =?utf-8?B?Vis1NU5SZ3ZzS3RJZm9TNnVRejB3bGpGRjM5N1lVS3BvZGxJZU9qSTg5dmYr?=
- =?utf-8?B?UW1PRk5rMFBPSVZUa2kraU1aVS93ckxBcU5KZjZoaWJNanE0Y2hmNGFtVGZn?=
- =?utf-8?B?bDg5VE1icUJ3Z0U4V0NIZ2hiRmVlZjBFZnEvQTNsZW9JcEpZZjR6aXVkbXRM?=
- =?utf-8?B?aGcvSDBLL2lWeDNqZ3dMbEo1Q0REOTVwNjdUekxxZ0x6ZHJEL3BxVWxlMDZK?=
- =?utf-8?B?YUduTG1yNXBoeGxKUEhITmpRVWUrU3hIQVIwOG1LRVJvTjRqSEN1Ykllb09B?=
- =?utf-8?B?cnJ0eVg5dFFsbThsNWExRTdTTERzLytXOHdMZ1g0UjBwZ0lmT2ZDRUhSN1NB?=
- =?utf-8?B?V2NYc3J4ZXRjdEZQR3VjVG41RTUycGp1N3RXRHZqd0t1bkY5ZGN1cDNHczdt?=
- =?utf-8?B?em5JSHM3d0paeXMvcUYzNzVYb1dHTE9uLzNoSGQySTlnVEJZN2xKZThxUzZF?=
- =?utf-8?B?OXB3NnpkOVJrM25QNVFGZFdhZUk4aFdMV1RCd0pDWkcvL2oyYnRvTHNkVU1h?=
- =?utf-8?B?b2dkWlE2VkVVSzcwckJpTTNvK2UvMlBWeFRiS3dxZjB4MWNRQ2EzQmdMZ25h?=
- =?utf-8?B?clc4WjJjR3BBVlNxMDNsUVJyWlZ2OHVFNWhNeVpYVnplUXdvWklsYzcvMmVs?=
- =?utf-8?B?VXdkTU45VlNQclR1UlpUQWdMajNxeWJjRTNVenZVQlRadHlIV01CSUpHTjE0?=
- =?utf-8?B?anBPdlNhWkh1SGtnNTkwN3lGODdOYUxoZUhJUU5zb01pcFNmZVFnUnZoZGtl?=
- =?utf-8?B?aHBhT1VNSkJrTTNqTlVVMkVnR09oZmVkNkkxNE96OWlhUEVRT01mUGdGZmU5?=
- =?utf-8?B?VVE2OEl5alNJOFVTaG5qL1RtMHdrYzJENEx4KzA3ZWpwNVpST0U1Ynk5R1ky?=
- =?utf-8?B?b2FUV3VsY1Z1S3pTMUFzd3l5TXIrbUZXUEVjRXBpVmNveFNTMzNyOG5tU1FM?=
- =?utf-8?B?VGVPMkZ0Q3FnN2lCdzZSZFRyMHJReit4NEtqM2U3ZmUxU0hYVXlwMEF1aG84?=
- =?utf-8?B?WWt4LzZOTUZrM3Y5OCsrV1hoSnBWYXpRektpbitsSjJKTTlteFFUbUxKYzVE?=
- =?utf-8?B?Y29CSDJsQStNZzlmT2NtTlMrazI2Y3NDbkV0UE90N2RhMzN4TWRVN3JXL1VF?=
- =?utf-8?B?ZGJRMXRxVUNXTVFFVk9lTElLa3F1eFcwem1HU2xEaWNkSHAveVhqelcxL0RZ?=
- =?utf-8?B?V1ovbS9QdTVSaWlBTEFOYlFpOXN1NG55cDVMQzUxVEpTR2FKeXNvQk9QMHF6?=
- =?utf-8?Q?Mv9fWg5GRTiSCtt9eQfLKpyPthjTfgYncoulsCSK7T8TK?=
-X-MS-Exchange-AntiSpam-MessageData-1: xhQj+4/7XIhA0A==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52cbcf6c-490f-4989-6b66-08ded800157f
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 06:06:40.8853
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jEVTFx/8RgWf4gw+ZBgqavlDoyN/xZpYWGRnw7/dEvwGb0hh1546tpyPEjjuOcukWG55ciu+g83gfNYDjTg+gQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5810
+Subject: Re: [PATCH 3/5] rust: add pr_*_ratelimit! macros for printing
+To: Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Carlos Llamas <cmllamas@google.com>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>
+Cc: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Trevor Gross <tmgross@umich.edu>,
+ Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
+ <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sun Jun 28, 2026 at 11:53 PM JST, Danilo Krummrich wrote:
-> DRM ioctls do not guarantee that the parent bus device is still bound.
-> However, since DRM device registration is managed through Devres, using
-> drm_dev_unplug() on unregistration ensures that between drm_dev_enter()
-> and drm_dev_exit() the parent device must be bound.
->
-> Add RegistrationGuard, a guard object representing a drm_dev_enter/exit
-> SRCU critical section that dereferences to &Device<T, Registered>. The
-> guard is obtained from Device<T, Ioctl> and proves at runtime that the
-> device is still registered.
->
-> Switch Registration::drop from drm_dev_unregister() to drm_dev_unplug()
-> to provide the SRCU barrier that RegistrationGuard's safety argument
-> relies on.
->
-> Reviewed-by: Lyude Paul <lyude@redhat.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+On 6/23/26 23:38, Alice Ryhl wrote:
+> Printing can be very expensive if it occurs often, so printing that can
+> be triggered by userspace should be rate limited. For this purpose, add
+> a Rust wrapper around `struct ratelimit_state` and use it in the new
+> macros.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+
+Tested-by: Alvin Sun <alvin.sun@linux.dev>
+
+The binder-related patches couldn't be applied to the mainline
+repository. I wrote a simple misc device to test pr_warn_ratelimited:
+
+[   80.655483] misc misc_test: Opening Rust Misc Test Device
+[   80.655546] Rust: 1990 callbacks suppressed
+[   80.656102] rust_misc_test: pr_warn_ratelimited triggered (0) from 
+/dev/misc_test
+[   80.656137] rust_misc_test: pr_warn_ratelimited triggered (1) from 
+/dev/misc_test
+
+> ---
+>   rust/helpers/helpers.c   |   1 +
+>   rust/helpers/ratelimit.c |  14 ++++
+>   rust/kernel/lib.rs       |   1 +
+>   rust/kernel/prelude.rs   |   8 ++
+>   rust/kernel/ratelimit.rs | 202 +++++++++++++++++++++++++++++++++++++++++++++++
+>   5 files changed, 226 insertions(+)
+>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index d17eaec76450..2184b11c927f 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -80,6 +80,7 @@
+>   #include "processor.c"
+>   #include "property.c"
+>   #include "pwm.c"
+> +#include "ratelimit.c"
+>   #include "rbtree.c"
+>   #include "rcu.c"
+>   #include "refcount.c"
+> diff --git a/rust/helpers/ratelimit.c b/rust/helpers/ratelimit.c
+> new file mode 100644
+> index 000000000000..e5052f568b81
+> --- /dev/null
+> +++ b/rust/helpers/ratelimit.c
+> @@ -0,0 +1,14 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/ratelimit.h>
+> +
+> +__rust_helper void rust_helper_ratelimit_state_init(struct ratelimit_state *rs,
+> +						    int interval, int burst)
+> +{
+> +	ratelimit_state_init(rs, interval, burst);
+> +}
+> +
+> +__rust_helper void rust_helper_ratelimit_state_exit(struct ratelimit_state *rs)
+> +{
+> +	ratelimit_state_exit(rs);
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index b72b2fbe046d..ba65ab4f0b8c 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -111,6 +111,7 @@
+>   pub mod ptr;
+>   #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+>   pub mod pwm;
+> +pub mod ratelimit;
+>   pub mod rbtree;
+>   pub mod regulator;
+>   pub mod revocable;
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index 44edf72a4a24..5a66028dd973 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -89,13 +89,21 @@
+>       },
+>       init::InPlaceInit,
+>       pr_alert,
+> +    pr_alert_ratelimited,
+>       pr_crit,
+> +    pr_crit_ratelimited,
+>       pr_debug,
+> +    pr_debug_ratelimited,
+>       pr_emerg,
+> +    pr_emerg_ratelimited,
+>       pr_err,
+> +    pr_err_ratelimited,
+>       pr_info,
+> +    pr_info_ratelimited,
+>       pr_notice,
+> +    pr_notice_ratelimited,
+>       pr_warn,
+> +    pr_warn_ratelimited,
+>       static_assert,
+>       str::CStrExt as _,
+>       try_init,
+> diff --git a/rust/kernel/ratelimit.rs b/rust/kernel/ratelimit.rs
+> new file mode 100644
+> index 000000000000..da0a49412023
+> --- /dev/null
+> +++ b/rust/kernel/ratelimit.rs
+> @@ -0,0 +1,202 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Rate limiting support.
+> +//!
+> +//! C header: [`include/linux/ratelimit.h`](srctree/include/linux/ratelimit.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    prelude::*,
+> +    types::Opaque, //
+> +};
+> +
+> +/// Defines a `static` containing a [`Ratelimit`].
+> +#[macro_export]
+> +macro_rules! ratelimit_state_init {
+> +    ($name:ident, $interval:expr, $burst:expr $(,)?) => {
+> +        static $name: $crate::ratelimit::Ratelimit = {
+> +            let init: $crate::bindings::ratelimit_state = $crate::bindings::ratelimit_state {
+> +                lock: $crate::sync::lock::spinlock::raw_spin_lock_unlocked($crate::c_str!(
+> +                    ::core::stringify!($name)
+> +                )),
+> +                interval: $interval,
+> +                burst: $burst,
+> +                // SAFETY: This type can be zeroed.
+> +                ..unsafe { ::core::mem::zeroed() }
+> +            };
+> +            // SAFETY: This is a repr(transparent) wrapper, and the invariants are satisfied.
+> +            unsafe { ::core::mem::transmute(init) }
+> +        };
+> +    };
+> +}
+> +pub use ratelimit_state_init;
+> +
+> +/// Rate limiter state.
+> +///
+> +/// # Invariants
+> +///
+> +/// The `inner` field contains an initialized `struct ratelimit_state`.
+> +#[pin_data(PinnedDrop)]
+> +#[repr(transparent)]
+> +pub struct Ratelimit {
+> +    #[pin]
+> +    inner: Opaque<bindings::ratelimit_state>,
+> +}
+> +
+> +// SAFETY: `Ratelimit` is safe to be sent to any task.
+> +unsafe impl Send for Ratelimit {}
+> +
+> +// SAFETY: `Ratelimit` is safe to be accessed concurrently as it is protected by an internal
+> +// spinlock.
+> +unsafe impl Sync for Ratelimit {}
+> +
+> +impl Ratelimit {
+> +    /// Constructs a [`Ratelimit`] with the specified configuration.
+> +    ///
+> +    /// If `interval` is zero, then no rate limit is applied.
+> +    #[inline]
+> +    pub fn new(interval: i32, burst: i32) -> impl PinInit<Self> {
+> +        // INVARIANT: This creates a `Ratelimit` containing an initialized `struct ratelimit_state`
+> +        pin_init!(Self {
+> +            inner <- Opaque::ffi_init(|slot: *mut bindings::ratelimit_state| {
+> +                // SAFETY: `slot` is a valid pointer to an uninitialized `struct ratelimit_state`.
+> +                // The memory is pinned so it remains valid until `ratelimit_state_exit` is called.
+> +                unsafe { bindings::ratelimit_state_init(slot, interval, burst) };
+> +            }),
+> +        })
+> +    }
+> +
+> +    /// Constructs a [`Ratelimit`] with the default configuration.
+> +    #[inline]
+> +    pub fn new_default() -> impl PinInit<Self> {
+> +        Ratelimit::new(Ratelimit::DEFAULT_INTERVAL, Ratelimit::DEFAULT_BURST)
+> +    }
+> +
+> +    /// The default interval used for rate limiting.
+> +    pub const DEFAULT_INTERVAL: i32 = bindings::DEFAULT_RATELIMIT_INTERVAL as i32;
+> +
+> +    /// The default burst size.
+> +    pub const DEFAULT_BURST: i32 = bindings::DEFAULT_RATELIMIT_BURST as i32;
+> +
+> +    /// Check if an action should be rate-limited.
+> +    ///
+> +    /// Returns `true` if the action is allowed, and `false` if it should be suppressed.
+> +    #[inline]
+> +    pub fn ratelimit(&self) -> bool {
+> +        // We don't set `RATELIMIT_MSG_ON_RELEASE`, so the function name parameter is not used.
+> +        //
+> +        // SAFETY: `self.inner.get()` is a valid pointer to a `struct ratelimit_state`.
+> +        // The lifetime of `func` ensures the pointer remains valid for the duration of the call.
+> +        // The C function `___ratelimit` handles its own internal locking, so it is safe to call
+> +        // concurrently.
+> +        unsafe { bindings::___ratelimit(self.inner.get(), c"Rust".as_char_ptr()) != 0 }
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for Ratelimit {
+> +    #[inline]
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY: By the type invariants, this struct contains an initialized `struct
+> +        // ratelimit_state`.
+> +        unsafe { bindings::ratelimit_state_exit(self.inner.get()) };
+> +    }
+> +}
+> +
+> +/// Helper macro to implement ratelimited printing.
+> +#[macro_export]
+> +#[doc(hidden)]
+> +macro_rules! print_ratelimited {
+> +    ($print_macro:ident, $($arg:tt)*) => {{
+> +        $crate::ratelimit::ratelimit_state_init!(
+> +            _rs,
+> +            $crate::ratelimit::Ratelimit::DEFAULT_INTERVAL,
+> +            $crate::ratelimit::Ratelimit::DEFAULT_BURST,
+> +        );
+> +        if $crate::ratelimit::Ratelimit::ratelimit(&_rs) {
+> +            $crate::$print_macro!($($arg)*);
+> +        }
+> +    }};
+> +}
+> +
+> +/// Prints an emergency-level message (level 0) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_emerg_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        $crate::print_ratelimited!(pr_emerg, $($arg)*)
+> +    )
+> +);
+> +
+> +/// Prints an alert-level message (level 1) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_alert_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        $crate::print_ratelimited!(pr_alert, $($arg)*)
+> +    )
+> +);
+> +
+> +/// Prints a critical-level message (level 2) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_crit_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        $crate::print_ratelimited!(pr_crit, $($arg)*)
+> +    )
+> +);
+> +
+> +/// Prints an error-level message (level 3) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_err_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        $crate::print_ratelimited!(pr_err, $($arg)*)
+> +    )
+> +);
+> +
+> +/// Prints a warning-level message (level 4) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_warn_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        $crate::print_ratelimited!(pr_warn, $($arg)*)
+> +    )
+> +);
+> +
+> +/// Prints a notice-level message (level 5) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_notice_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        $crate::print_ratelimited!(pr_notice, $($arg)*)
+> +    )
+> +);
+> +
+> +/// Prints an info-level message (level 6) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_info_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        $crate::print_ratelimited!(pr_info, $($arg)*)
+> +    )
+> +);
+> +
+> +/// Prints a debug-level message (level 7) if allowed by a rate limiter.
+> +///
+> +/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
+> +#[macro_export]
+> +macro_rules! pr_debug_ratelimited (
+> +    ($($arg:tt)*) => (
+> +        if cfg!(debug_assertions) {
+> +            $crate::print_ratelimited!(pr_debug, $($arg)*)
+> +        }
+> +    )
+> +);
+>
