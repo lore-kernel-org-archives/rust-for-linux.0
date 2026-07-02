@@ -1,210 +1,152 @@
-Received: from mail-06.mail-europe.com (mail-06.mail-europe.com [85.9.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276754A2E13
-	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 13:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.210.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783000444; cv=none; b=GnSruJp9XAMqqgwwdJmjr6kAEKLRrj8ZB2AeIB3ipMy6rAstM+njaddDhSpMqlat8fn153BjGEg59hSaK+zS0l8QQBqgy0fbA/LFfuspdx6t7FiwkAGP4/Sreh54O3lvXv2O5S9aszIzjO9oOia2cOcvbncUTytH2hsmz7iwjdI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783000444; c=relaxed/simple;
-	bh=Qzxj6NI2eUmZ85Vo5IDuitsP548Din1ADw5yilcFrZY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NPcjA5iC2ZkWEWcZEU8FkvmtlQVTF4VWmYO7iWn9iGBl9I1IhVCQqJSw3vf44mw8HdU3xWHmGh6sNcwH4InscQlR9yazg9hqvCYYs1MkBobrvs2DZYWmL1LV/nkp3KVARIxvPRXzQT0lmHyfM3gLiqKDUCb11r9TGiZ52Mtqzko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Ky/aebPr; arc=none smtp.client-ip=85.9.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8BD4A2E2A
+	for <rust-for-linux@vger.kernel.org>; Thu,  2 Jul 2026 14:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783000808; cv=pass; b=jKqHYCT/uquOywru6EGN/MtlupaSOpyuM2aTZrq39LYh03q7WAKQnvoDT4wFhj1eADUTkx8p4MVoCeqTdL3A75lWV6qc0sVNH4B6Mb6vdPRUB/r2XrnfBTj1tGh9o5ZgC9oLe2iKzvQlygDUfhZLn5np+Q60HT5AE4O9jfgoFeE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783000808; c=relaxed/simple;
+	bh=utoARpDnvA3c3vaCWBg5H9ujL8C1Fui0A2kGFCJI2Kw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tMybHpnCwFuBx3IR1EkDr2OQQocvMOBZdlC2tkBw8wRcjhYHO9KbybDPcJoHkqa8NUeLDLCsothF2EXolcLaITg1A74Bh0nXDyhUdCavsRpS0i0WqGUaZswIOWSchFIwdqsZypGQMl+2bCvuimIxdUVIepqpl1pfgmUrDQpsD8U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f/zslAEX; arc=pass smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Ky/aebPr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1783000432; x=1783259632;
-	bh=hQEN5Te5oy2MY7ORwmZkU4gkU3OPngbAM52hvRw8m1k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Ky/aebPrcEOKWs0UNABK6w5WERQ3tRoGofjMV54LY6DIzZBiTrbwjEAQlG9wK53/x
-	 kbEpG4EWc0xnP2fsC3IZONP2ty9CGrVDVYiiRQh01S8xIak0wXVEChrJSGSf1GxJ92
-	 nHVRLugJKk5yvZH1nutp23cMRZL/DIWLPzT0e5gBU4Y4SNLRYVp2lvXUdHE5byvDgI
-	 bpmsEjXy2lGP+nyvcTdWKwSL3CuIWDVflF33hR2sP++qbek0qhI8iAlwp+2esNPYVD
-	 S+ksurCCmV0QeCqpNa9q5x7c5+NYkRMO5tuIQ5McYMwA0gGFzf5zVmEmk1ovVljR2X
-	 KeYx3RGmRl0IQ==
-X-Pm-Submission-Id: 4grddl4mlvz2Sd37
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Cc: rcu@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	peterz@infradead.org,
-	fujita.tomonori@gmail.com,
-	tamird@kernel.org,
-	jiangshanlai@gmail.com,
-	paulmck@kernel.org,
-	josh@joshtriplett.org,
-	rostedt@goodmis.org,
-	mathieu.desnoyers@efficios.com
-Subject: Re: [PATCH v10 0/5] rust: add SRCU abstraction
-Date: Thu,  2 Jul 2026 16:53:34 +0300
-Message-ID: <20260702135345.44303-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260613065348.96750-1-work@onurozkan.dev>
-References: <20260613065348.96750-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f/zslAEX"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493b6f1b14bso8287365e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 07:00:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783000805; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L6hR5G5ML0rMte7vAbcVDpdJLEd99MDqwefa/B+IOTTnJNbR6Mo8yQ7DhwqcqXv322
+         OeC3WZpNhaPtOQcL5GRJe6ei1he+pOmyNd6F56RG5TiwnTTuuaKvgPn5GwFehrTo1dau
+         qseMZESdvvFn9jQHBWuBstZ9di8iQjAG8Fm/GXYEJoP9fjN4dgP4vTnyYQZqFdMOFvK5
+         8/ddTrfgCMaCI4ZZFK/lveQ8WsD19/oFQfrDmgz3WURIwgWDlAkd0vGkUOodabV90EJE
+         sK3TabPBEMacNNtaba6mnrxRY46NhSOG+jSCJLg8orX4KluwBkPYPTqaIWRNKHKDEh3h
+         SyNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Ad3f158zhv32TxrF7aQY3I8idlfk4/6P43hesQy1Oiw=;
+        fh=IkJE4wlplvG0ScINp89Fj8bPa6m2ZWia57DdPMzDUjc=;
+        b=UUkscBzoSQvOSDep7AL3Fq47nqP5iKhlRPhJPKoa+vOgnu84o7wvPqOP6kK47mi0aa
+         yIdTd7EQh9dIWiK2//bmmG7+C751MpUzFKQAVSI1+OFI5JFXtQS6CzJozEDJ+vozUd5m
+         9CcOtkueGEEHKosoCvn0YxFT9sus1W3+hblSjfNrRXrdesWsnJ6L343B06Kikr29M3NM
+         51QywT/8Zy63iCoxoVMBMdgvRAKX7bj6+xuMLRkUbugaILF+nNYXM3lMflQiqPjVHgZk
+         wB9TQF/VrjFJEAFfKmwxoNlPFUC5djMiF6IwF7dkidtVfRXMHKA89NfsWmz64z9RxYjv
+         Ho0Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783000805; x=1783605605; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ad3f158zhv32TxrF7aQY3I8idlfk4/6P43hesQy1Oiw=;
+        b=f/zslAEXD61r9zZiS52Jiu3U4UMDUK2QUdPU3m3pjiFjQUm6iq14SZxwXzWEBDlzPy
+         k7qJVXKZY4iyA9MzD4WfmX/au/Rb6rbm0YYM5sFpPGu46ZeMQG7zUt0z6wjypkJRnGzK
+         Zx8BF4hOzrvd2kB0VRmN3WZQ+8ClQf3ImnEDwz4urhlZcfK0TM4Dp7bNjK329kPL1A1V
+         Wwp2z+/+oel6WlZWx5Gh2nxQmf/Yq6ka2D1/3Cow25n3snN2+2fyub7nF6X4ZRNW1PWx
+         4YBxG0dQJYU3ZTvWaX2cPMHgB67Ih9Pob6CWlheS9Pr7mslWCJr/p3aZMcwmTVSvHcHh
+         ZZIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783000805; x=1783605605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ad3f158zhv32TxrF7aQY3I8idlfk4/6P43hesQy1Oiw=;
+        b=JIpS7wH0OIA+7XWx/89P0jkPwntO8WRxtMs8rGzMJTSYGTe5++PjMKcBTBefZkNCh/
+         BprD20huvVQGsapgju7fmnYTsDxf6YykTBTaX8g548jQ1A0YaQ0lb6kKTXGmX50QyGRk
+         ehf39KOKoNKiyHuyPBWJQzi09vuq9bYx0kF17ufkNLVGo0LBKFLwBTbuZ9Q/85zyvfFm
+         jN4Jnf/NRCbnm+Hk5EzLPAx6t7qkxHmLEjntITs6CC+a7UVcZhcLmn4fD11ecPQk2UNb
+         r28W/uHYbjtc31uksvT4u2MWomq1NgKRP3VErCU9yuJ/Nv6sreYd0mJ6JNujqern26PP
+         q2lg==
+X-Forwarded-Encrypted: i=1; AFNElJ8L1kviEgU4l1iyY3fxSJxRwTif+bAZjb/GQ88Ku1NSHXPihLVuim+f+6pehUltoZ3K/csHBalWksyb4DPDkg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYo+4ZJXm//1SFdKP80X5SIVIXinwOZSo4tBHzXjXFQCc+cbEc
+	wVZhAUv2bJDyhuhwkdRb9ZOZXxjjSi21OV+3pLfYH35VYvwZeQJF+q8JWALXV78qOjVgDRsJTvT
+	Dp4ZoFrt9bUKm5UQPIylO4PxMSrr4yuLxIqMD252K
+X-Gm-Gg: AfdE7cm4kUsH8MBPMtcuFq/OxIfvtS/y3tB8bJDa9hXkyhGG0m+Jtvm5uKHmHHU2UnE
+	KB2GZDyNLmQzFd//Vuz8nyFEWKjNxhDHlcbSAQM5ejz/x8+U7YVujR2BakxaogCdiIgEQA2pD9Z
+	Q49my1GrpwCsKujIdeCfB8pMkE7Hu5LYuinIACbF4SQNOtLGx4ebYsYOD1Wymf4Iw4lxzAAULu1
+	DosJEM58R4uf0icgBJ0NKd6jEcwMszpauuhchJbDAgwHMjr65pjAbirGXZ/3labirxQUMu2jSx3
+	SwISMdKqFYndy8DAz0hIpf54GVQ=
+X-Received: by 2002:a05:600c:5296:b0:492:6efc:7c60 with SMTP id
+ 5b1f17b1804b1-493c2b99781mr85583495e9.28.1783000804786; Thu, 02 Jul 2026
+ 07:00:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260702-idtable-rename-asptr-v1-1-e0927273c71a@google.com> <DJO4SC0M6BCM.B7RP36WUWCM9@garyguo.net>
+In-Reply-To: <DJO4SC0M6BCM.B7RP36WUWCM9@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 2 Jul 2026 15:59:50 +0200
+X-Gm-Features: AVVi8CexQdyFEd0R-YBeb950WefW10NhAupPBjQ8CXL2XbC1XoogGwE5GSAY5zY
+Message-ID: <CAH5fLgjz_FTzv7rFsxcvt2N-3ehPxa2kHJqUHKDBv56OZw5UVA@mail.gmail.com>
+Subject: Re: [PATCH] rust: device_id: rename IdTable::as_ptr to as_raw_id_table()
+To: Gary Guo <gary@garyguo.net>
+Cc: Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <iweiny@kernel.org>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Igor Korotin <igor.korotin@linux.dev>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linaro-mm-sig@lists.linaro.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 13 Jun 2026 09:40:06 +0300=0D
-Onur =C3=96zkan <work@onurozkan.dev> wrote:=0D
-=0D
-> The immediate motivation is the Tyr reset infrastructure [1] which needs=
-=0D
-> to serialize reset sensitive hardware access against reset and teardown=0D
-> paths. That reset series started to require many independent dependencies=
-=0D
-> so this SRCU support is split out as a standalone Rust API to keep the=0D
-> reset series focused on the reset logic and easier to review, rebase and=
-=0D
-> land.=0D
-> =0D
-> =0D
-> Changes since v9:=0D
-> =0D
-> - SRCU initialization restructuring is now a separate patch (the first=0D
->   one in this series).=0D
-> - Comment fix on C initialization functions.=0D
-> =0D
-> =0D
-> Changes since v8:=0D
-> =0D
-> - Refactor srcu init handling to provide better init API (motivated by=0D
->   the "mutex.h" initializers.=0D
-> - Use warn_on! instead of pr_warn! on leaked guard detection.=0D
-> =0D
-> =0D
-> Changes since v7:=0D
-> =0D
-> - Moved synchronize_srcu() call inside "if srcu_readers_active()"=0D
->   condition in "impl PinnedDrop for Srcu".=0D
-> - Improved comments on the synchronize_srcu() call in=0D
->   "impl PinnedDrop for Srcu".=0D
-> =0D
-> =0D
-> Changes since v6:=0D
-> =0D
-> - Removed "CONFIG_DEBUG_LOCK_ALLOC" condition from "rust/helpers/srcu.c"=
-=0D
->   and created a simple wrapper inside "include/linux/srcu.h" for it.=0D
-> =0D
-> =0D
-> Changes since v5:=0D
-> =0D
-> - Created separate srcu_readers_active() variants for "srcutiny.h" and=0D
->   "srcutree.h".=0D
-> =0D
-> =0D
-> Changes since v4:=0D
-> =0D
-> - Exposed srcu_readers_active from C side and wired it to the Rust=0D
->   helpers.=0D
-> - Used srcu_readers_active() in SRCU drop and logged with pr_warn if=0D
->   there are leaked guards during the drop.=0D
-> =0D
-> =0D
-> Changes since v3 (which are for Sashiko notes [2]):=0D
-> =0D
-> - Added rust helpers for srcu_barrier() and synchronize_srcu_expedited()=
-=0D
->   so the abstraction builds with CONFIG_TINY_SRCU, where these are=0D
->   static inline functions.=0D
-> - Added missing INVARIANT comment in Srcu::new() about why the type=0D
->   invariants hold after successful initialization.=0D
-> =0D
-> =0D
-> Changes since v2:=0D
-> =0D
-> - Removed closure-based API.=0D
-> - Added #[doc(hidden)] on new_srcu macro.=0D
-> - Added #[must_use..] on srcu::Guard.=0D
-> - Improved the clean-up path (PinnedDrop implementation) which=0D
->   eventually made read_lock safe with leaked guards.=0D
-> =0D
-> =0D
-> Changes since v1:=0D
-> =0D
-> - Made the owned SRCU read-side guard API unsafe and added a safe closure=
-=0D
->   based helper for callers that do not need to keep the guard. This is to=
-=0D
->   avoid UB on the C side cleanup_srcu_struct where the SRCU struct is fre=
-ed=0D
->   while there are still active guards, which can happen if the caller lea=
-ks=0D
->   the guard e.g., with mem::forget().=0D
-> - Improved doc comments.=0D
-> =0D
-> =0D
-> v1: https://lore.kernel.org/all/20260428103437.156236-1-work@onurozkan.de=
-v=0D
-> v2: https://lore.kernel.org/all/20260502162833.34334-1-work@onurozkan.dev=
-=0D
-> v3: https://lore.kernel.org/all/20260522054228.114814-1-work@onurozkan.de=
-v=0D
-> v4: https://lore.kernel.org/all/20260525175706.124910-1-work@onurozkan.de=
-v=0D
-> v5: https://lore.kernel.org/all/20260527174120.510447-1-work@onurozkan.de=
-v=0D
-> v6: https://lore.kernel.org/all/20260527203615.163688-1-work@onurozkan.de=
-v=0D
-> v7: https://lore.kernel.org/all/20260528062810.256212-1-work@onurozkan.de=
-v=0D
-> v8: https://lore.kernel.org/all/20260529114449.112066-1-work@onurozkan.de=
-v=0D
-> v9: https://lore.kernel.org/all/20260529134004.396743-1-work@onurozkan.de=
-v=0D
-> =0D
-> [1]: https://lore.kernel.org/all/20260416171728.205141-1-work@onurozkan.d=
-ev=0D
-> [2]: https://sashiko.dev/#/patchset/20260522054228.114814-1-work@onurozka=
-n.dev?part=3D2=0D
-> =0D
-> Onur =C3=96zkan (5):=0D
->   srcu: make init_srcu_struct() consistently wrap __init_srcu_struct()=0D
->   rust: helpers: add SRCU helpers=0D
->   srcu: expose srcu_readers_active()=0D
->   rust: sync: add SRCU abstraction=0D
->   MAINTAINERS: add Rust SRCU files to SRCU entry=0D
-> =0D
->  MAINTAINERS              |   3 +=0D
->  include/linux/srcu.h     |  29 ++++---=0D
->  include/linux/srcutiny.h |  13 +++=0D
->  include/linux/srcutree.h |  24 ++++++=0D
->  kernel/rcu/srcutiny.c    |  14 ++--=0D
->  kernel/rcu/srcutree.c    |  36 ++-------=0D
->  rust/helpers/helpers.c   |   1 +=0D
->  rust/helpers/srcu.c      |  35 ++++++++=0D
->  rust/kernel/sync.rs      |   2 +=0D
->  rust/kernel/sync/srcu.rs | 171 +++++++++++++++++++++++++++++++++++++++=0D
->  10 files changed, 282 insertions(+), 46 deletions(-)=0D
->  create mode 100644 rust/helpers/srcu.c=0D
->  create mode 100644 rust/kernel/sync/srcu.rs=0D
-> =0D
-> -- =0D
-> 2.51.2=0D
-> =0D
-=0D
-A gentle ping on this series. Are there any remaining concerns with v10?=0D
-=0D
-Regards,=0D
-Onur=0D
+On Thu, Jul 2, 2026 at 3:48=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Thu Jul 2, 2026 at 1:30 PM BST, Alice Ryhl wrote:
+> > The current name of `as_ptr` is very generic, and if you attempt to
+> > invoke `foo.as_ptr()` on a type for which this method is missing, then
+> > an error along these lines will be printed:
+> >
+> >       error[E0599]: no method named `as_ptr` found for reference `&DmaB=
+uf` in the current scope
+> >          --> linux/rust/kernel/dma_buf/buf.rs:54:38
+> >           |
+> >        54 |         ptr::eq(self.as_ptr(), other.as_ptr())
+> >           |                                      ^^^^^^ method not foun=
+d in `&DmaBuf`
+> >           |
+> >           =3D help: items from traits can only be used if the trait is =
+implemented and in scope
+> >       note: `device_id::IdTable` defines an item `as_ptr`, perhaps you =
+need to implement it
+> >          --> linux/rust/kernel/device_id.rs:165:1
+> >           |
+> >       165 | pub trait IdTable<T: RawDeviceId, U> {
+> >           | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> >
+> > Suggesting the IdTable trait when an as_ptr() method is missing is not
+> > useful. Renaming it to `as_raw_id_table` makes the method name unique t=
+o
+> > this trait and avoids these bad suggestions.
+>
+> I think the name is fine. Functions of this sort is named `as_ptr()` and =
+I don't
+> see why it should differ just because it's on traits.
+>
+> I'd rather say this is a Rust deficiency. Perhaps there needs to be a
+> improvement of `#[diagnostic::do_not_recommend]` so it can be sticked to =
+methods
+> or traits as well.
+
+I had a similar thought:
+https://internals.rust-lang.org/t/do-not-recommend-for-traits-themselves/24=
+431
+
+Alice
