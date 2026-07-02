@@ -1,147 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3078638B12A;
-	Thu,  2 Jul 2026 21:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783028835; cv=none; b=mQbqrMezHbVoCtLJttRCtR1D4NQgxEf78MXCqpA1aFvQ9RLXdeQ4ZCyrnH3knzDA4YNeWSiZtNEfdIgyTpJ0vWJ6rAh6ruBdKSXLdMCw8Ss1irSuhIq/YKl/Jxe8XwThiDE0XBCL+USy2x6LtPKlhuonVx9xT/GLxPXIAOJ1FO0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783028835; c=relaxed/simple;
-	bh=kVWMa+5idqRpE6t03UroD1b7PjdnCpBR6QQkXH6ANqo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=koubMuFB/CnWYrHl0KJ9NZnIZHXpY2SIkIJOnEfJcycd6sgD20UTgix165jKNTb0lrtJzQT5X4jyaAmpbPqMVF8cci4eMMtCPTSNYK0RLEyNmMmiZslCNBY3KyKwBQO9dphi0oogsFdad/SJPmonTSEokruidhPiV+1EWokHOHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxFTIjT0; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3C83CA4AD;
+	Thu,  2 Jul 2026 23:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783036092; cv=pass; b=rFvF/+Oioh4j0B/GDKWucsGSMUjMORYDyX6tN32xe8ozakLjGdUA0v7xaBlgLnmwStNa6kEZYEAk+vRu1g6u2GiLq92A0c5AH+cmQnzamUwQ+Dh2M8LiK2NeJBJBzdhI8tVu+/YSircl7GcewXAeGXiwhRMdcJyBZPYmNMcR1WE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783036092; c=relaxed/simple;
+	bh=aBumc0wGxxCOdrgpftfUMvirYJvjxNQ1AjJ9HYWhWk0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WpGPGPdGtt4/zrZbRWWcG4mrhs+8xSe+O5Y+GAIvElGHe0Qh1cVlBI7Zz+nm1uWnDkE8Ms9oVXvY4vhBkrX/I6SK+6h1uOCb67jpnI0Vtb6EDhKsYrmvgT5GZWYBaVkeHVPPIiRSo7dhu0MGpaMZA4EDpVIQ6MRJYKZ9e5b05ys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=VrWxuUnf; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxFTIjT0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED501F000E9;
-	Thu,  2 Jul 2026 21:47:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783028833;
-	bh=KT5HdsNfDV/GF6jjLE9pPi+2j+UMB4nG5h2CmRBqWMo=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=YxFTIjT0Owbu7L6cLqITHQ3wj+b1b7kmmi1DGamwmMCBXFIJhjUUU1pJaym7fFb4D
-	 aT9lsziOwhoBrCXO4M/hIe5S4uLx6MEzltbv7WL0fITNQr3XFD1h33YryHjapOCCgU
-	 5gxBqgp398u8cTy4abPLdXPR1EKKEAqgGRCAVEzcplvjZ/nmtlooxVI5w+TVaHQm/B
-	 fbpDhUYCdHQOAXByoz1UDdYCRcz844a3i9M91z+CxR7Xe7zgpl+OOriZP4SubAfVQC
-	 +eXP+3YaXf5VX6F9OtN8RipaKCYNy/iLT1poUHpbTk06wFbFS9uywdgqNrCahLGBM/
-	 eXSF8a0yDvAcQ==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="VrWxuUnf"
+ARC-Seal: i=1; a=rsa-sha256; t=1783036076; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=C6FybWWGTRwbtg2zrn9aR2t3ZHnc+UU7SEmT6BeaPALb98TUftZFcZIVBEWmJtGWrlPQRxnLV/79ShSZC5/niZ3Yi7lRHjnmPjTLoB5Shef1fIHBtYV9CV3iy/R0CGaCW+BE9579BtyclvMxn0KZI5bR3G0iAOfJyAFbJ0OV7Ak=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783036076; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=KFVTo7RfLpFVVazK+3bL5ArPbL18Ps/MhpevEmhVSJk=; 
+	b=n/btbTYe+M+7Zbn29Al8asDwj089nfx69gD2ZpGjG9fIsfXd4hShoaJWfQGGWvx3TrjD/zEkz2JxRDMMHKy+T1aV4/1h3KZZFvQRqjlmD6aKvO/EgaHAEUr6hsa9kfGmwLliI4+mLG5d2WNbjReMWzL69ClPAi+Cwo0ueQpvxT8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783036076;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=KFVTo7RfLpFVVazK+3bL5ArPbL18Ps/MhpevEmhVSJk=;
+	b=VrWxuUnfF+88pI9N0+mTuhwMMHQQqsNcDwRpdas+M1Sjz8AfXbj604/8PNFghZ84
+	WzG23Meyl7leCsru0Xin4P/D4qO6wxzoKcRLfjDYEEK2frb3ufZ+ZeisqgOfDIYX47o
+	zKbGiwVTQ0XemQr4tNCZuVUtat8JA9QAe5RyKynM=
+Received: by mx.zohomail.com with SMTPS id 1783036074721243.51256091292396;
+	Thu, 2 Jul 2026 16:47:54 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Thu, 02 Jul 2026 16:47:39 -0700
+Subject: [PATCH] rust: iommu: add device lifetime to IoPageTable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Jul 2026 23:47:07 +0200
-Message-Id: <DJOEYVBS17MJ.1YD3TNGQBWHNK@kernel.org>
-To: "Maurice Hieronymus" <mhi@mailbox.org>, "Bjorn Helgaas"
- <bhelgaas@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: pci: rework device enabling API
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Beata Michalska"
- <beata.michalska@arm.com>
-References: <20260702-rust-pci-enable-device-managed-v1-1-75bc4ff2935c@mailbox.org>
-In-Reply-To: <20260702-rust-pci-enable-device-managed-v1-1-75bc4ff2935c@mailbox.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260702-pgtable_lt_v1-v1-1-18d9c9812a1a@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDcwMj3YL0ksSknNT4nJL4MkNdY4PUNBPTVANDyzQTJaCegqLUtMwKsHn
+ RsbW1AMO95HhfAAAA
+X-Change-ID: 20260702-pgtable_lt_v1-30ef45e019f4
+To: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: iommu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, samitolvanen@google.com, 
+ boris.brezillon@collabora.com, laura.nao@collabora.com, 
+ daniel.almeida@collabora.com, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4554;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=aBumc0wGxxCOdrgpftfUMvirYJvjxNQ1AjJ9HYWhWk0=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFluP1Z6bf2YJsRTcHijucW3oEjvIv32f6fPrfp+UTHE7
+ JDF/1fxHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAExEkI+R4crFBNWUv+whAlrV
+ OyfelOFrmHT7aa/d3mIzw0UfT3h/Oc3w3zlWwUArvHVR4HYnqxs5zjevrlq18/STu60Mv477bGX
+ QYQIA
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-(Cc: Beata, runtime PM consideration at the end)
+Currently, using a raw IoPageTable is unsafe because the returned
+IoPageTable is not tied to the device driver binding lifetime.
 
-On Thu Jul 2, 2026 at 11:32 AM CEST, Maurice Hieronymus wrote:
-> - `enable_device_managed()`, wrapping `pcim_enable_device()`, which
->   registers a `pci_disable_device()` cleanup that runs on unbind; this
->   is what drivers should normally call in `probe()`.
+Since device drivers now receive a lifetime parameter <'bound>
+representing the interval during which a device driver is bound to its bus
+device, add this lifetime parameter to IoPageTable. This ensures that
+the returned IoPageTable cannot outlive the bus device binding.
 
-The concern pointed out by Sashiko that pcim_enable_device() silently also =
-sets
-pdev->is_managed =3D true, which also influences the behavior of other unma=
-nged
-PCI paths is valid.
+Also temporarily remove the option to create a page table as a device
+resource since currently Devres is not compatible with resources that have
+a lifetime parameter. This option can be restored once the lifetime-aware
+wrapper for devres is available.
 
-Of course, we could easily overcome this if we have to, but on second thoug=
-ht I
-think it would be nice to just not have the managed version at all.
+Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ rust/kernel/iommu/pgtable.rs | 32 ++++++++++----------------------
+ 1 file changed, 10 insertions(+), 22 deletions(-)
 
-(Note that I also have a patch in my queue to convert IrqVectorRegistration=
- to
-use lifetimes instead of Devres, which will also address the topic in [1].)
+diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs
+index c88e38fd938a..d4a16283b5a7 100644
+--- a/rust/kernel/iommu/pgtable.rs
++++ b/rust/kernel/iommu/pgtable.rs
+@@ -16,7 +16,6 @@
+         Bound,
+         Device, //
+     },
+-    devres::Devres,
+     error::to_result,
+     io::PhysAddr,
+     prelude::*, //
+@@ -59,15 +58,16 @@ pub struct Config {
+ /// # Invariants
+ ///
+ /// The pointer references a valid io page table.
+-pub struct IoPageTable<F: IoPageTableFmt> {
++pub struct IoPageTable<'bound, F: IoPageTableFmt> {
+     ptr: NonNull<bindings::io_pgtable_ops>,
++    _dev: PhantomData<&'bound Device<Bound>>,
+     _marker: PhantomData<F>,
+ }
+ 
+ // SAFETY: `struct io_pgtable_ops` is not restricted to a single thread.
+-unsafe impl<F: IoPageTableFmt> Send for IoPageTable<F> {}
++unsafe impl<F: IoPageTableFmt> Send for IoPageTable<'_, F> {}
+ // SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
+-unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<F> {}
++unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<'_, F> {}
+ 
+ /// The format used by this page table.
+ pub trait IoPageTableFmt: 'static {
+@@ -75,25 +75,12 @@ pub trait IoPageTableFmt: 'static {
+     const FORMAT: io_pgtable_fmt;
+ }
+ 
+-impl<F: IoPageTableFmt> IoPageTable<F> {
+-    /// Create a new `IoPageTable` as a device resource.
+-    #[inline]
+-    pub fn new(
+-        dev: &Device<Bound>,
+-        config: Config,
+-    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
+-        // SAFETY: Devres ensures that the value is dropped during device unbind.
+-        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
+-    }
++impl<'bound, F: IoPageTableFmt> IoPageTable<'bound, F> {
++    // TODO: Create a new `IoPageTable` as a device resource when DevresLt is available.
+ 
+     /// Create a new `IoPageTable`.
+-    ///
+-    /// # Safety
+-    ///
+-    /// If successful, then the returned `IoPageTable` must be dropped before the device is
+-    /// unbound.
+     #[inline]
+-    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable<F>> {
++    pub fn new_raw(dev: &'bound Device<Bound>, config: Config) -> Result<IoPageTable<'bound, F>> {
+         let mut raw_cfg = bindings::io_pgtable_cfg {
+             quirks: config.quirks,
+             pgsize_bitmap: config.pgsize_bitmap,
+@@ -118,6 +105,7 @@ pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable
+         // INVARIANT: We successfully created a valid page table.
+         Ok(IoPageTable {
+             ptr: NonNull::new(ops).ok_or(ENOMEM)?,
++            _dev: PhantomData,
+             _marker: PhantomData,
+         })
+     }
+@@ -240,7 +228,7 @@ extern "C" fn rust_tlb_flush_walk_noop(
+ ) {
+ }
+ 
+-impl<F: IoPageTableFmt> Drop for IoPageTable<F> {
++impl<F: IoPageTableFmt> Drop for IoPageTable<'_, F> {
+     fn drop(&mut self) {
+         // SAFETY: The caller of `Self::ttbr()` promised that the page table is not live when this
+         // destructor runs.
+@@ -255,7 +243,7 @@ impl IoPageTableFmt for ARM64LPAES1 {
+     const FORMAT: io_pgtable_fmt = bindings::io_pgtable_fmt_ARM_64_LPAE_S1 as io_pgtable_fmt;
+ }
+ 
+-impl IoPageTable<ARM64LPAES1> {
++impl IoPageTable<'_, ARM64LPAES1> {
+     /// Access the `ttbr` field of the configuration.
+     ///
+     /// This is the physical address of the page table, which may be passed to the device that
 
-The advantage of not having to store another object in the bus device priva=
-te
-data is minor, and a lifetime annotated guard is the more idiomatic solutio=
-n
-anyway.
+---
+base-commit: dd8a3c6cd531dca5917111a94fa3074077f6ba5a
+change-id: 20260702-pgtable_lt_v1-30ef45e019f4
 
-	pub struct DeviceEnableGuard<'a> {
-	    dev: &'a pci::Device<Bound>,
-	}
+Best regards,
+-- 
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
-Note that obtaining this guard would still require a &Device<Core>, but dro=
-pping
-it can only be ensured from a bound scope, which &'a pci::Device<Bound> ens=
-ures.
-
-This is the tricky part, as this would imply that pci_disable_device() can =
-be
-called concurrently with another DeviceEnableGuard being acquired and
-concurrently with pci_set_master() and pci_clear_master(), etc., which give=
-n the
-current implementation on the C side would be UB.
-
-It would be interesting to dig into this and see if we can find a solution =
-to
-this problem (which might also include improvements on the C side).
-
-For instance, struct pci_dev has a C bitfield that also includes the
-is_busmaster field, which can race with all the other bits being accessed i=
-n the
-same bitfield.
-
-I think (most of) the fields should be in the same locking domain (the devi=
-ce
-lock, which is held in bus callbacks and in Rust represented by the Core de=
-vice
-context state).
-
-But there might already be issues with this, e.g. it seems to me that
-block_cfg_access is protected through a different locking domain, the same =
-goes
-for a few other fields I think.
-
-Bjorn, any insights on this?
-
-(We had a similar C bitfield in the driver core, which we recently replaced=
- by
-using bitops, as there were subtle race conditions.)
-
-> - an unmanaged `enable_device()`/`disable_device()` pair, wrapping
->   `pci_enable_device()`/`pci_disable_device()`, e.g. for runtime PM
->   paths.
-
-If we could find a solution to the above, we could probably avoid having "r=
-aw"
-accessors that can potentially lead to an unbalanced enable count and inste=
-ad
-could consider something like a DeviceDisableGuard<'a> which could be deriv=
-ed
-from a DeviceEnableGuard<'a> for the duration of a suspend.
-
-The runtime PM Rust infrastructure could provide a storage container which
-lifetime wise spans suspend =3D> resume, where this guard (and other data t=
-hat
-must be restored on resume) could be stored.
-
-[1] https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/top=
-ic/Re-configuring.20interrupt.20vectors/with/577596401
