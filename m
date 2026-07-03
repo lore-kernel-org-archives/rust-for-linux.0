@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1F141736A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78E0417369;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783092566; cv=none; b=NcGbT4umBJxMwGn3cZTXYp+B5YqSMfjhNXzKdPDwMLymVk8JQnWajLAHQyEKQSWnKzwapzqT2FAnE6Qhhl2CTN3GTe8jg5dbt74TIXbXucvCnGPmh/Zl5cum015g4ea5/KqDjUvxmgMn0zPRmbrKr3G3lQAda9ANNQCw8b+QSFM=
+	t=1783092566; cv=none; b=KCdabzkxdKK7KBi2O/c0BDt/dRKHBOkLUsrpTV/jCtdJCErPTRixOc2mvX9FB6cXMO+V4h4fyL9Ad/IkJphRfEoLOAxvJL78YjsRibrZtbNKAk/DOHaTuQFtWxE2Mh765hXf0gaPbZGefu7/euxfDZvdKvM1tjRNZ2Bw1ybdDw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783092566; c=relaxed/simple;
-	bh=l3aM6qOa6QZAObUQfUG31TWFqSC9AVMmjt3twmfcLak=;
+	bh=igdIr9B5zTsbJwFvy8SzkksQSD0m2hgF5c/PuaXwcRU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NXPeg+AABgJ0AgkfNAUS8ZmYF5ABsTJT2l/9yKIDthVmmR5syX3A7E/HCor8bZyTb3eeAzPmvCyL3fZgeLYIJgCKlATjYZrVtpWHQyBokpWlPicAUi2x3iyzFccXIJhe+bAqdN1+3OO1J444I20Y/xdFicE/OOx2UQfznZ4Elno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gw5oQBo6; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=iWyWMGifw5jD7qczC6ig4p09f2wRD6iRSsj61OUCHqYg+7NMAB32lr+xGu8R+RbSKCWk8FRu6+/jXvmxbi8RIjW15UDZ4lzqaQzm0mjmnJ4Oz9xZG4GycwI259Q32fj7rr4cYS7FU5udTJ+UAP/wmyVp7MvckLV4qKkNFB5JL1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFtcpctP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gw5oQBo6"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B4C7CC2BD04;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFtcpctP"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 99979C2BCB8;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783092565;
-	bh=l3aM6qOa6QZAObUQfUG31TWFqSC9AVMmjt3twmfcLak=;
+	bh=igdIr9B5zTsbJwFvy8SzkksQSD0m2hgF5c/PuaXwcRU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gw5oQBo6euExPS62uBUawMhhT13dUsB9eY+GiyI9Z4e57ZJccswB/4GRXAJB4M8tn
-	 Uv0GY3T5ocaYZYBq/M3S8+6pQxfoUgFgvrGOKhMawoTwDDG/c2x80IHnFvir6TrLGz
-	 PMjpOPWTWdMBetlC9thkgMX7II06KOeznE+DxV25WhBqJ511t5ElAv6RQoMxDQG4sv
-	 qFymoGcHCTIgAxUgYsMGrWlJjLfeGi6HTetL/M0uDWDcNa8Db6ecWx+f7hgxVLSvyZ
-	 8LKMuwqfZ8QQyBEAPhRznmjxvQ2Wy+sJg4bWqmCBmspe6cULrUO14MFZHHxQM19LAr
-	 KDWR5G/0XlXoQ==
+	b=WFtcpctPX3qhLN5iwSHQTumC+dI3UeVCYugRkvrqPNiSDXpVV6L+qI6eSWQ2devOM
+	 ErKMyWFCXoojudtMuX+5UiY/NA1BPBt6z7GhZ7/29KeltyQR01WwyYH/wDL7RkA9Kf
+	 6rflL56LDOQ892a0x07zWzNfPbIv7wYze1wtI8/aeUDQqDvyjH9XY2MsInXA9YYwof
+	 v3KGTI+/CN02RgLkmzR7FMm7lVUtBmXILJwwWGLc3yAk/yS6SrI1AafiUbxOsIs+5Z
+	 rSNoiyeRQRv+1uc65hFb9HnuIjKwjIjkMCpOQzvPFd9LaXH5OvXKiJ5ENkQo3VvK/g
+	 b5x64PRswG4cg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9997EC43458;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87477C43602;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Fri, 03 Jul 2026 15:29:25 +0000
-Subject: [PATCH 4/7] rust_binder: Implement the BINDER_DEBUG_USER_ERROR
- logging mask for transaction parsing and protocol validation failures
+Date: Fri, 03 Jul 2026 15:29:24 +0000
+Subject: [PATCH 3/7] rust_binder: Implement the BINDER_DEBUG_USER_ERROR
+ logging mask for reference counting and death notification operations
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-rust_binder_debug_mask-v1-4-9bdf12b5325c@google.com>
+Message-Id: <20260703-rust_binder_debug_mask-v1-3-9bdf12b5325c@google.com>
 References: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 In-Reply-To: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -60,11 +60,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=9574;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=6269;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=rtNHxB4vjfIuxKSvuYNWGRnSLX4qWj6HY18AAyIfobM=;
- b=LbOnZm9gjDvJxeTauRY6od7Hhaooky+UsM7Xa+hFdPc9TA/CrUz4FVMwonfKFlb1PYSQNH1pB
- DMpQcypkM8NCUuZtb3HnMLKJPCINP/3AgUVVuH6MdTfRW8GkkFtpJoC
+ bh=wYISGUiZ62G1sUQWRaNcvf79MLZFjEl4Cs5iopGT7K8=;
+ b=JPXSZ3Y4gbZxwTwC4+JLWq4QE45Eq1a4pyD0ZHgE/Wx9ST1J8H4mlJs+Ish07v1UT+TEu/ngX
+ GO+s3g34mMMBmEEHXwzGa2/9iCAxh4KafmR54N53vU+nRxPUiauER9J
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -74,204 +74,159 @@ Reply-To: jahnavimn@google.com
 
 From: Jahnavi MN <jahnavimn@google.com>
 
-This adds dynamic debug logs in `thread.rs` for:
-- File descriptor array (FDA) parent offset and parent buffer address
-  alignment misalignments.
-- Memory copy, write, and translation failures during transaction
-  serialization (including out-of-bounds pointer fixups).
-- Incoming transactions or replies that do not match the expected
-  thread calling stack (such as out-of-order replies).
+This adds dynamic debug logs for:
+- Decrementing handle reference counts that are already zero.
+- Mismatched reference states (calling inc_ref_done with no active
+  inc_refs, or using a weak reference as a strong reference).
+- Requesting or clearing death notifications on invalid references,
+  already active notifications, or with mismatched cookies.
 
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
- drivers/android/binder/thread.rs | 88 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 73 insertions(+), 15 deletions(-)
+ drivers/android/binder/node.rs    | 16 +++++++++---
+ drivers/android/binder/process.rs | 53 +++++++++++++++++++++++++++++++--------
+ 2 files changed, 55 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index c908dde5796a..ecf05cebcb3e 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -721,11 +721,12 @@ fn translate_object(
-                 let alloc_offset = match sg_state.unused_buffer_space.claim_next(obj_length) {
-                     Ok(alloc_offset) => alloc_offset,
-                     Err(err) => {
--                        pr_warn!(
--                            "Failed to claim space for a BINDER_TYPE_PTR. (offset: {}, limit: {}, size: {})",
-+                        binder_debug!(
-+                            crate::debug::BINDER_DEBUG_USER_ERROR,
-+                            "failed to claim space for a BINDER_TYPE_PTR (offset: {}, limit: {}, size: {})",
-                             sg_state.unused_buffer_space.offset,
-                             sg_state.unused_buffer_space.limit,
--                            obj_length,
-+                            obj_length
-                         );
-                         return Err(err.into());
-                     }
-@@ -804,6 +805,10 @@ fn translate_object(
-                 let fds_len = num_fds.checked_mul(size_of::<u32>()).ok_or(EINVAL)?;
- 
-                 if !is_aligned(parent_offset, size_of::<u32>()) {
-+                    binder_debug!(
-+                        crate::debug::BINDER_DEBUG_USER_ERROR,
-+                        "FDA parent offset not aligned correctly"
-+                    );
-                     return Err(EINVAL.into());
-                 }
- 
-@@ -822,6 +827,10 @@ fn translate_object(
-                 };
- 
-                 if !is_aligned(parent_entry.sender_uaddr, size_of::<u32>()) {
-+                    binder_debug!(
-+                        crate::debug::BINDER_DEBUG_USER_ERROR,
-+                        "FDA parent buffer not aligned correctly"
-+                    );
-                     return Err(EINVAL.into());
-                 }
- 
-@@ -905,8 +914,9 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
- 
-                 let target_offset_end = fixup_offset.checked_add(fixup_len).ok_or(EINVAL)?;
-                 if fixup_offset < end_of_previous_fixup || offset_end < target_offset_end {
--                    pr_warn!(
--                        "Fixups oob {} {} {} {}",
-+                    binder_debug!(
-+                        crate::debug::BINDER_DEBUG_USER_ERROR,
-+                        "fixups oob {} {} {} {}",
-                         fixup_offset,
-                         end_of_previous_fixup,
-                         offset_end,
-@@ -918,18 +928,31 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
-                 let copy_off = end_of_previous_fixup;
-                 let copy_len = fixup_offset - end_of_previous_fixup;
-                 if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
--                    pr_warn!("Failed copying into alloc: {:?}", err);
-+                    binder_debug!(
-+                        crate::debug::BINDER_DEBUG_USER_ERROR,
-+                        "failed copying into alloc: {:?}",
-+                        err
-+                    );
-                     return Err(err.into());
-                 }
-                 if let PointerFixupEntry::Fixup { pointer_value, .. } = fixup {
-                     let res = alloc.write::<u64>(fixup_offset, pointer_value);
-                     if let Err(err) = res {
--                        pr_warn!("Failed copying ptr into alloc: {:?}", err);
-+                        binder_debug!(
-+                            crate::debug::BINDER_DEBUG_USER_ERROR,
-+                            "failed copying ptr into alloc: {:?}",
-+                            err
-+                        );
-                         return Err(err.into());
-                     }
-                 }
-                 if let Err(err) = reader.skip(fixup_len) {
--                    pr_warn!("Failed skipping {} from reader: {:?}", fixup_len, err);
-+                    binder_debug!(
-+                        crate::debug::BINDER_DEBUG_USER_ERROR,
-+                        "failed skipping {} from reader: {:?}",
-+                        fixup_len,
-+                        err
-+                    );
-                     return Err(err.into());
-                 }
-                 end_of_previous_fixup = target_offset_end;
-@@ -937,7 +960,11 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
-             let copy_off = end_of_previous_fixup;
-             let copy_len = offset_end - end_of_previous_fixup;
-             if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
--                pr_warn!("Failed copying remainder into alloc: {:?}", err);
-+                binder_debug!(
-+                    crate::debug::BINDER_DEBUG_USER_ERROR,
-+                    "failed copying remainder into alloc: {:?}",
-+                    err
-+                );
-                 return Err(err.into());
-             }
-         }
-@@ -1041,7 +1068,10 @@ pub(crate) fn copy_transaction_data(
-                 let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
- 
-                 if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
--                    pr_warn!("Got transaction with invalid offset.");
-+                    binder_debug!(
-+                        crate::debug::BINDER_DEBUG_USER_ERROR,
-+                        "got transaction with invalid offset"
-+                    );
-                     return Err(EINVAL.into());
-                 }
- 
-@@ -1066,7 +1096,11 @@ pub(crate) fn copy_transaction_data(
-                 ) {
-                     Ok(()) => end_of_previous_object = offset + object.size(),
-                     Err(err) => {
--                        pr_warn!("Error while translating object.");
-+                        binder_debug!(
-+                            crate::debug::BINDER_DEBUG_USER_ERROR,
-+                            "error while translating object: {:?}",
-+                            err
-+                        );
-                         return Err(err);
-                     }
-                 }
-@@ -1087,14 +1121,22 @@ pub(crate) fn copy_transaction_data(
- 
-         if let Some(sg_state) = sg_state.as_mut() {
-             if let Err(err) = self.apply_sg(&mut alloc, sg_state) {
--                pr_warn!("Failure in apply_sg: {:?}", err);
-+                binder_debug!(
-+                    crate::debug::BINDER_DEBUG_USER_ERROR,
-+                    "failure in apply_sg: {:?}",
-+                    err
-+                );
-                 return Err(err);
-             }
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index 69f757ff7461..d71f55739772 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -343,7 +343,10 @@ pub(crate) fn inc_ref_done_locked(
+     ) -> Option<DLArc<Node>> {
+         let inner = self.inner.access_mut(owner_inner);
+         if inner.active_inc_refs == 0 {
+-            pr_err!("inc_ref_done called when no active inc_refs");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "inc_ref_done called when no active inc_refs"
++            );
+             return None;
          }
  
-         if let Some((off_out, secctx)) = secctx.as_mut() {
-             if let Err(err) = alloc.write(secctx_off, secctx.as_bytes()) {
--                pr_warn!("Failed to write security context: {:?}", err);
+@@ -818,6 +821,10 @@ pub(crate) fn get_count(&self) -> (usize, usize) {
+ 
+     pub(crate) fn clone(&self, strong: bool) -> Result<NodeRef> {
+         if strong && self.strong_count == 0 {
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "tried to use weak ref as strong ref"
++            );
+             return Err(EINVAL);
+         }
+         Ok(self
+@@ -858,9 +865,10 @@ pub(crate) fn update(&mut self, inc: bool, strong: bool) -> bool {
+             *count += 1;
+         } else {
+             if *count == 0 {
+-                pr_warn!(
+-                    "pid {} performed invalid decrement on ref\n",
+-                    kernel::current!().pid()
 +                binder_debug!(
 +                    crate::debug::BINDER_DEBUG_USER_ERROR,
-+                    "failed to write security context: {:?}",
-+                    err
-+                );
-                 return Err(err.into());
++                    "performed invalid decrement on ref (strong: {})",
++                    strong
+                 );
+                 return false;
              }
-             **off_out = secctx_off;
-@@ -1283,7 +1325,10 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
-         {
-             let mut inner = self.inner.lock();
-             if !transaction.is_stacked_on(&inner.current_transaction) {
--                pr_warn!("Transaction stack changed during transaction!");
-+                binder_debug!(
-+                    crate::debug::BINDER_DEBUG_USER_ERROR,
-+                    "got new transaction with bad transaction stack"
-+                );
-                 return Err(EINVAL.into());
-             }
-             inner.current_transaction = Some(transaction.clone_arc());
-@@ -1306,8 +1351,21 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index c13a04a3afcb..db929cc35585 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -898,10 +898,23 @@ pub(crate) fn insert_or_update_handle(
      }
  
-     fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
--        let orig = self.inner.lock().pop_transaction_to_reply(self)?;
-+        let orig = match self.inner.lock().pop_transaction_to_reply(self) {
-+            Ok(orig) => orig,
+     pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
+-        if handle == 0 {
+-            Ok(self.ctx.get_manager_node(true)?)
++        // When handle is zero, try to get the context manager.
++        let res = if handle == 0 {
++            self.ctx.get_manager_node(true)
+         } else {
+-            Ok(self.get_node_from_handle(handle, true)?)
++            self.get_node_from_handle(handle, true).map_err(Into::into)
++        };
++
++        match res {
++            Ok(node_ref) => Ok(node_ref),
 +            Err(err) => {
 +                binder_debug!(
 +                    crate::debug::BINDER_DEBUG_USER_ERROR,
-+                    "got reply transaction with no transaction stack"
++                    "got transaction to invalid handle {}",
++                    handle
 +                );
-+                return Err(err.into());
++                Err(err)
 +            }
-+        };
-         if !orig.from.is_current_transaction(&orig) {
+         }
+     }
+ 
+@@ -969,10 +982,13 @@ pub(crate) fn update_ref(
+                     }
+                 }
+             }
+-        } else {
+             // All refs are cleared in process exit, so this warning is expected in that case.
+             if !self.inner.lock().is_dead {
+-                pr_warn!("{}: no such ref {handle}\n", self.pid_in_current_ns());
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_USER_ERROR,
++                    "no such ref {}",
++                    handle
++                );
+             }
+         }
+         Ok(())
+@@ -1225,13 +1241,20 @@ pub(crate) fn request_death(
+         })?;
+         let mut refs = self.node_refs.lock();
+         let Some(info) = refs.by_handle.get_mut(&handle) else {
+-            pr_warn!("BC_REQUEST_DEATH_NOTIFICATION invalid ref {handle}\n");
 +            binder_debug!(
 +                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "got reply transaction with bad transaction stack"
++                "BC_REQUEST_DEATH_NOTIFICATION invalid ref {}",
++                handle
 +            );
-             return Err(EINVAL.into());
+             return Ok(());
+         };
+ 
+         // Nothing to do if there is already a death notification request for this handle.
+         if info.death().is_some() {
+-            pr_warn!("BC_REQUEST_DEATH_NOTIFICATION death notification already set\n");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_REQUEST_DEATH_NOTIFICATION death notification already set"
++            );
+             return Ok(());
+         }
+ 
+@@ -1268,17 +1291,27 @@ pub(crate) fn clear_death(&self, reader: &mut UserSliceReader, thread: &Thread)
+ 
+         let mut refs = self.node_refs.lock();
+         let Some(info) = refs.by_handle.get_mut(&handle) else {
+-            pr_warn!("BC_CLEAR_DEATH_NOTIFICATION invalid ref {handle}\n");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_CLEAR_DEATH_NOTIFICATION invalid ref {}",
++                handle
++            );
+             return Ok(());
+         };
+ 
+         let Some(death) = info.death().take() else {
+-            pr_warn!("BC_CLEAR_DEATH_NOTIFICATION death notification not active\n");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_CLEAR_DEATH_NOTIFICATION death notification not active"
++            );
+             return Ok(());
+         };
+         if death.cookie != cookie {
+             *info.death() = Some(death);
+-            pr_warn!("BC_CLEAR_DEATH_NOTIFICATION death notification cookie mismatch\n");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_CLEAR_DEATH_NOTIFICATION death notification cookie mismatch"
++            );
+             return Ok(());
          }
  
 
