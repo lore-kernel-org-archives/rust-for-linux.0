@@ -1,233 +1,144 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010023.outbound.protection.outlook.com [52.101.56.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0850359A6F;
-	Fri,  3 Jul 2026 06:45:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783061158; cv=fail; b=lW89Qupop0Y6Hh1ytIoFccWbx6XcBn/+dpDD1iPh0Md5GXpzaRS7sCbrldBU2Az20xyOeJu2ruvdacOMucfKE5SbKy9J2tdMI/tX6qKjH6Ix1sompALA6w9n9YJJ2INet/L9ix7DElqz226dpPCg1XmCZLSegqtKRP3aFfSsp5U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783061158; c=relaxed/simple;
-	bh=zLgETKzTNBxdL+8jnvVFlM7JF0UTJd8EmuTgA86awaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FyGKqzl8WXgjoYAy8BBckp8DlAzTlA7naJG36ia/y3e3YWtW7ief3tFCt5jkMikjBgeQ/at5/tDoZ5YHVwZ9tlmjgDciTzUy4GWnrngi+pMGvm1I23xRgWKjTfGpXoJh5q+OHIVNc+DmZn3nMnu6a0CggQfKknGizNXr1C9V11s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TuDdf7WR; arc=fail smtp.client-ip=52.101.56.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321A73876A1
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 06:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783061833; cv=none; b=r8oXtRDdZ/5nZrLw3/gl8PyGsxYkCsyUGEt0WGDsPUEvVJM68p8RpVPfc8Mi26OeqB4o3mMAvCNVjBpAt9RnGOB6LsEAA6peWhuINCSLLSBFHreaF+7+oWjH90VUEpHXOyYghYptehnEEheyYDt91FFNExzgBTMzWmbA8k2hBuo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783061833; c=relaxed/simple;
+	bh=nScf5netnt1NjDVQidgpbeNPyFsk+SnFXpkUx7OAXGA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RhUV+CB+hkNeatIZmwyVDX0+Stt4X/zVfp+/OiCoi+F3MRwtpFMxSXXQ/b6jD/5i3ixfvKEnczzLQxzUS+aIa4eXcl9B8DEDIGoGY6jBdXLFjjA+ZNYkMTnIxsXi0D7S3keJJHbwX1kBzwjC8Nt6Mcc/E6EbTAH+nLuwo9qBQcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c42UBbw2; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TuDdf7WR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=alA5xfTbhfEOlvoCXKJjmmQbrI4Fu/cjhXaB9ikSBiSnI+1uAKpve4b+aHbk/YXoiE66jMvgtM+Y1iB6tAq6OawewWny23FsJHoWzvv/eWTDMo9VJjZTZAyp5znI54xdPt50fbn1IGOxNHP8ulmWXm0QtwaUEOq79JmqSUCc/TZ/jxK+H+eo7tiUH+3yL+E639CVATNBQ4EblbrX3+AeTigVGzkCfh90q6Z7lSkwCxPOh6QpAj8iVgDwvaQKvenIkKkVYXL0j5eOutW+UXna1BFgOvkQujHGNYWflO/zJ9NvOnjNeDQSk/UaQ0ZEkdqto2tNRXPEUVeDBCEvkWu/PQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8gazZfLbOEHbNdQObfLhaN9fdGuRRm3X5EG2vJHtOEk=;
- b=jLLhJOFcHXKMstcCQfjIwY1VxI1ErST+lVOrBrFdiL6YCySfFjQBr3WXvmHMUwqeeE8y3p9uaG668jbzCMCqkDYYnq7PYT9MXnfrSnOj/f2BmExQKeAoFuvladtw4wKubNcL3BaVPBG2iDDxgSievAqRvsXBNrdX7Y97EQfzity9jV5XiJJumulKpYy4LMP9ZF8WrRSlyE/B0235gTbvceQokZnlqdyeP8zvaBE4hkYW+x3mHx3AaBmDVTVJeyKkLe1086Ml/Wk5xelD8PooLg88LYTmHJOADdNQxTDr+OqekCsGULdTQPPfM6IcicQZmpbuLutSxZUBTvJJNP694w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8gazZfLbOEHbNdQObfLhaN9fdGuRRm3X5EG2vJHtOEk=;
- b=TuDdf7WRRSpz9k2SRDcV1wTlNy+nYR41KdDPlMWlhj9y6yBYcYuZSyQ6XftnUPftL4kRWgik380n8IPCu6rAikpt0Na6kDrNDT8+TtKeClRVKuQf/ZAj0IDxoQA8E/y9zRwu8vyY8DlYExbcauj8gwC2eV5a9uucY0wpv24tFiPunuOHhb+P7N0iQm9nmyqw37b6VkDfmSPve36B+yL5i8p2Y6tb37cgYRhy+r39xxPgM9NepeykscF9wgOYo21LTmoo2NLcxSxOCPq+vXwZJRKpCOhxXB+tCNzbu0J8AvHUiJirZ1IYWTsn8zfgjkz51YHN8X6AW5iDBM23FlLw8A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- SA1PR12MB5637.namprd12.prod.outlook.com (2603:10b6:806:228::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Fri, 3 Jul 2026
- 06:45:53 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Fri, 3 Jul 2026
- 06:45:53 +0000
-From: Alistair Popple <apopple@nvidia.com>
-To: nova-gpu@lists.linux.dev
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	David Airlie <airlied@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: [RFC 3/3] drm: nova: Add a GETPARAM parameter to read usable VRAM size
-Date: Fri,  3 Jul 2026 16:45:26 +1000
-Message-ID: <20260703064526.3630668-4-apopple@nvidia.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260703064526.3630668-1-apopple@nvidia.com>
-References: <20260703064526.3630668-1-apopple@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SY5P300CA0064.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:247::17) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c42UBbw2"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-493bf840a69so1757025e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 23:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783061830; x=1783666630; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BhiXOxf+bZWI18LM0Dx3pOu8Mks9Sw1XqPANu+yyKx4=;
+        b=c42UBbw2vIa1ioj39shj824X91NUhmLordhn71LW1QE4VyJ9fy0jvumI9eWCuw4Ov5
+         L+kuway3F7nusP5czEpWDmH91089MjzQ/N2HbLLHkL6RJBDYkzr10pN+SDDCGNQoEk7U
+         2I0wPY3WeY7gT8+x15q7PUQ/sP78AyTA2zoV0EtpvcaqjkJnVwMsHuAQiJmPC9i7b8RH
+         twVKlD+oyroy8NtdofK8ivEv6gxFlXnbKvnd9PGJjnhK004xUjOxSMdDeQ9qvUicZxPB
+         n42mKKjjkEXHdPJQWEIL0T39RFPufhkWRG4sL23LI8fkPPsRlt/Mj3pJq0nzPw1zbwxp
+         3uEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783061830; x=1783666630;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BhiXOxf+bZWI18LM0Dx3pOu8Mks9Sw1XqPANu+yyKx4=;
+        b=UKh/e2EpU54NlFBzNIx+RtgGumSiSK0pSlQs2uOM/xDN+ejKp7o8/p+2hbDptZhYsg
+         ej+4pg7Sz5GbpoqRvheM7Bh4GJvuRMbyAmZ/KnvYVss5SJzOBMyuzpV8qT9sfUkKM0xE
+         iYQgjatPrim8h0SItDqsPO3+R9GAFYxNnArQ2RYPqAhtS9auy37MlqC536W+ryXvsyA2
+         oaL4NZC8Hh1DPwNQRBJIN+MN58/sme0TOG+2nXIRIvqtb9PE13e9oMPe4lGd92VpMup9
+         pWnBhVvF17ghmiQajsqXf66SphqOklSxoc3lLeuMo0ECntTMyBdJrxJ7VxPEn8hR1Nnn
+         IJZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Yb977MYnGlFtzt7GyQc0zLr3TgfXFZg3VvWMllgSH5CZ9aDB37Kc0qyfUDAaSdups4TdWWITN/wD5XLFeYg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmTRw7E7PND4vZhkXBhhxKVhNJ9ruex+awhMw99rj7U3kAn+bj
+	SValbBrSP/+grbXDtSABEBxE3zjWfMmIVNcUt6zkvQ3enAmxFu8YCnoGGhX1DmaNboXmLfV0IhQ
+	QW4Ep+DLdi+zfjcCdlQ==
+X-Received: from wmdn10.prod.google.com ([2002:a05:600c:294a:b0:493:b4c4:536f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5010:b0:493:72d3:4a81 with SMTP id 5b1f17b1804b1-493c2b5161emr120210055e9.16.1783061830358;
+ Thu, 02 Jul 2026 23:57:10 -0700 (PDT)
+Date: Fri, 03 Jul 2026 06:57:00 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SA1PR12MB5637:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce6c3422-c6c8-49f2-1b29-08ded8ceba08
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|18002099003|22082099003|11063799006|3023799007|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	JcWoMFbjmR3INTVHE033hfkwWc299fizrFxITp56DHhfNjMgHSvtjJYOucaMm0+TLvwdhMscSXe3cm3C88bbRyr8kCdMruWqH+xd9Tt7Xrwe5YSfQjXUNkVzrrOeFf/BR7Yioa3Q58EP/zE5lx1rDKx7MCit5Q/Bt4Jw+8ok2pe42N69iWX6I/mYt4iw0ZGhT3hDPTAWFqhY1iY7G0BaIFygNPYnCE5lKNPy+zUoHJA+mCdwJGSEbadKy2FvKvbNuSDil94t2cTRrm0HDUzvZseGIsQBsCN/RHh/ky2qW3S/1PMutA60TnS8mLDq3YPzRF1WIJQToQROmXxjTTNgVqfmFwFUaI3JcmECiNcGu6MYNvKtyV+TTWJFRsbcrTQDJIQgdmHySEdce9T2qJSu0BHY4ciR0Mrb5C/eTiBoSZhZ4nPI7/sXbYebgQ0FXMFKxXYaMCwH2lYjAKR/SVne1J1r8S+DfWmIMcdd4Cu8geZCOOcV59Wtfx/BfL31/jU9XrV+SAie7H4bTVC0Qvn+7M2OtaNUPPZ9XQSjRQL94B5oTm2GfqvwD9JxFjOMqU+Jyd8K1EbGjvRf7VL3zUG6cyslwMR04Q7e2HT2BVk6qSMC69GdovxPTmas8E6B+dBj84714pygQWxoaMByMKAZsZF8qT6V2Y6i4D445xfGYhE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(11063799006)(3023799007)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PxzRz8gQgZfozw7ChWvin4inpANvViFgXysKGS9x/HmlMshIQc98pi9MFj9z?=
- =?us-ascii?Q?Ep4qFGGV4QDL7vPdIP1jiZjUqdizB77FncoNmEQaLesHPTI/7kLqd5FCy0lg?=
- =?us-ascii?Q?TXZwFVUg91afvAENBNDVBr2F1XN1q0IIaX0e3aS12soL2uUGnDpEQqRKkw1+?=
- =?us-ascii?Q?+3fbcMpG/7CIbZadX1jxnzPy98g+jOIqxO9jsq87K3/vQ5TJGikfbbCG+ztu?=
- =?us-ascii?Q?gs65iUXC/9WNhtw+V1RFhS8Nhf+IfIEi8qCXmweHdbMio4h4Vbp8w1dfRvJp?=
- =?us-ascii?Q?vo7KGFXruN9QMtWwIVFub2O7izOsYXdio63y4NpPE+k/dFFxkKPKFws0hoeZ?=
- =?us-ascii?Q?2wod0rMrbzZVMQaSRpeOC2GWdIJDIWuVvPXp4RK3ZzVB/069vNHtcDZ+hEFN?=
- =?us-ascii?Q?gdYk1kqxsfpfxsIoDoBYaNrVZYnhaHTu92FfnUckcJ633bchnh3QrNMWjWKR?=
- =?us-ascii?Q?GBi5cX5GODr69ik32QMM26TOOUf+aYz13JgxGqKSow2Xsc/ZXFBxSlwZ3gAa?=
- =?us-ascii?Q?Vxk/bBku/mr7j5ox64BvNcKtpleXpEgddGzLme8WiwM514xxPhd6eUQ0FWmA?=
- =?us-ascii?Q?0a97tJlqa21Ymh7EgMkHzf3yAfzdNgXUkzDU2DDbti1Phs6z6gpNh1l/4G3s?=
- =?us-ascii?Q?xV8Z43Tgsm2MohNWjagKcX8Kd65LosQ61E02JlkC/b4dMgDtgJfS4z5/OILV?=
- =?us-ascii?Q?MF39S5mqakYOTB22CSxBuKZHYARaGjTtB3aImgLiFu8TaC8pPwOomm7w0Qvl?=
- =?us-ascii?Q?zAr7oXR8yFS/J+3jnyh+UcLrVRp/EiEio5o2Z945sjQXhZUlJ1Dku0HAVkEE?=
- =?us-ascii?Q?IaGMKKerWa2r888Df7dXQG+T/zmMJZnSqAy2SEP1lAzvv9I6jpaw5s2DQ4KE?=
- =?us-ascii?Q?08grfkNG7Y3twnEG0JUi1JAddtNh33NXr2D+qmXvC5tibYyOmzMMW1ps20fY?=
- =?us-ascii?Q?o5Lamf2ZL0dWl5TmxFMIEvMC8Cco/JOxw8IVwvWzO775n80uCM/Ik/driPcR?=
- =?us-ascii?Q?SqNmdLXTmxgQRi9Tbe0U6D/1McPIch+5RRo38tyjWW4YIJHj5HdyHgkVfrYq?=
- =?us-ascii?Q?VS/2Qti8Fk75mDPBFxt92SrWSGnmKubB1sEVu8pL5QCTExDkQd6oBdd7cQxr?=
- =?us-ascii?Q?jtvJgz06+2XH1WXOCTF4P9zoJLVSQSqqnp3wxlQNP+YqBhZHvx8QYtdlsNDo?=
- =?us-ascii?Q?RF2YvilGlz7Gdt9m7k1oBo/8eeoGHwlz5i7RQluy2QJjgspKHh3w5WZNEkuK?=
- =?us-ascii?Q?nbv9IGDxWOtKeHSPu41zcpI+5UFyjQFEIhmbIZH26/09u6lnfk9jdqRInSAr?=
- =?us-ascii?Q?m0dztHrFh3wEmcI4r0GelZG7GAcRz/7qgBBhGBKNAFZdhWU7/7Tzy4cC8SrR?=
- =?us-ascii?Q?ye6xSw1jZ77xyWsiShUzm3rjwlAxruhrdiFy4JNB5+aVFL1iT4Mf79bSl8ZQ?=
- =?us-ascii?Q?BUqETs69B5HVFve7r0glvyAxYv4feTuQQJw1QhauVLTO+Ga9pfKvcbuJEwml?=
- =?us-ascii?Q?gI8mxJamVEhohr/BtbPqj53y4sYwbiMdyghGIR4YKBLkbRvXLP50O/vBCxSn?=
- =?us-ascii?Q?dl95wAv9x7iiTYFYd1wZ2/cajTQD0HYvYSH27DoFbRpRvLAejY48/xa6kuKf?=
- =?us-ascii?Q?EOBbTjVhdeTins9m1+VQmxSa5QjpwtLuPzOeNegYHv3LXZn9SOvlE2w8beQV?=
- =?us-ascii?Q?EdDcA9rzziKuH2lcvwcpyxY9hElhewcgIVXlZ6B5IZVwWwnuXwPlIZbcA2wt?=
- =?us-ascii?Q?m7MNnVvV5w=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce6c3422-c6c8-49f2-1b29-08ded8ceba08
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 06:45:53.1109
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Wy3wj+nxjP5A64fwaS82ZRsDR/XJtSr4eniwg2uUp+3lUZxlV1QYNm/QEueVzS9DSS8hK+8cmu8QtEBTisx2mw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5637
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAD1dR2oC/33PTU7DMBAF4KtUXjNoPM6fWXEPxMJ2xqkFrcFOL
+ VCVu+OURYsasXxPmu9pziJzCpzF0+4sEpeQQzzW0D7shNub48QQxpoFIXVIUkPiQywMs8lvwKc
+ wgtTcWETLbFnUs4/EPnxdyJfX35z481Tl+VruQ55j+r7MFrm2/ywUCRI0NtjhQB1j/zzFOL3zo
+ 4sHsWqFbgTqNwRaBaPdgGYgtt2doK5Ci1uCAgTqPZFXqnXk7oTmRqCtL5oqYO/s6JXxesA/wrI sPwkc0nyMAQAA
+X-Change-Id: 20260219-remove-task-euid-19e4b00beebe
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1932; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=nScf5netnt1NjDVQidgpbeNPyFsk+SnFXpkUx7OAXGA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqR11ApXczXX2Gek2J+6VC5z6Iuc4bHt3uT0qa3
+ oQletGsubiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCakddQAAKCRAEWL7uWMY5
+ RnYREACES2fWRH58RUZ8ijCGO0nid0c3qD6986tFCKqRXA2+AKL/DwrN05zSGi/BGr1Q6p9VNLC
+ z6yK0MiUwXmZICs5E4UOKWBAIsAtDmwK6LfhY0ipAnISJwL8AlheQOBdgzBInbzV2/NM0d1VbPw
+ Z/xhGMZtUel0kUJ9DH+Im3mT9xj3TVGD/huCvsbo5sHHH6AI1MJFFJx2pqHErUgCO69nuGG6G4x
+ CCoDwoPGAYVUfxXRylBKOxEzmkSlK75dvX9YicD+GFsFNSR38F2dNlzQdYSy6I2N91gfS94Notl
+ 8Kha95efuMsWSKFmKZeMRUlMFF+eWUNPOB1DNl1t5oY70wcYFefpj0ffrx8gcBs2n1bUNLTOClU
+ 2Ii1YcOEAGsbVxxTljxttKsCT6Q0x6yq+jHtegU1CzCcTcYxZTF/OkylwoZZPWeKH1+/lsqRnja
+ BqRijzyxA/3M5azKjTLdMzERNVIwAddUiD+G7Z9EtzJGr2a72A3qbDXd3heu+5IbOJvgBK1uhRH
+ wXuvvJagFdu7Q7Nihky8l4pWlgDEJtlMGIQ0w7wxAf2ai7dx+fZgmLuEE3hFfBJiMVcC2lRxrbD
+ Dsq+YHG1CvpCCz+g9NRM6qGl0t9Zn7cM/cFc7Fxut8hEG9+5YmlPGyFBEG4QdZagSFBK0VAS4Oh R+wqLG+8mV38XTw==
+X-Mailer: b4 0.14.3
+Message-ID: <20260703-remove-task-euid-v5-0-c90c7e2ddf54@google.com>
+Subject: [PATCH v5 0/2] Delete task_euid()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Alex Shi <alexs@kernel.org>, 
+	Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Add a GET_PARAM ioctl to return the total usable framebuffer size. The
-usable framebuffer excludes GSP carveouts and other protected regions so
-may differ in size from BAR size and total physical VRAM.
+The task_euid() method is a very weird method, and Binder was the only
+user. As of commit 65b672152289 ("binder: use current_euid() for
+transaction sender identity") Binder doesn't use task_euid() anymore,
+so we can delete this method.
 
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
+My suggestion would be to merge this through the LSM tree.
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/gpu/drm/nova/file.rs          | 1 +
- drivers/gpu/nova-core/auxdata.rs      | 5 +++++
- drivers/gpu/nova-core/gpu.rs          | 6 ++----
- drivers/gpu/nova-core/gsp/commands.rs | 8 ++++++++
- include/uapi/drm/nova_drm.h           | 7 +++++++
- 5 files changed, 23 insertions(+), 4 deletions(-)
+Changes in v5:
+- Rebase on v7.2-rc1.
+- Reword patch 1 commit message to take into account that usage has now
+  been removed from Binder.
+- Pick up Gary's Reviewed-by.
+- Link to v4: https://lore.kernel.org/r/20260529-remove-task-euid-v4-0-07cbdf3af980@google.com
 
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-index 8147dfb366d8..d6f7e21fbc48 100644
---- a/drivers/gpu/drm/nova/file.rs
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -44,6 +44,7 @@ pub(crate) fn get_param(
-         let value = match getparam.param as u32 {
-             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
-             uapi::NOVA_GETPARAM_GPU_CHIPSET => data.chipset() as u64,
-+            uapi::NOVA_GETPARAM_VRAM_SIZE => data.vram_size(),
-             _ => return Err(EINVAL),
-         };
- 
-diff --git a/drivers/gpu/nova-core/auxdata.rs b/drivers/gpu/nova-core/auxdata.rs
-index cd8a3511293b..0a07a10da327 100644
---- a/drivers/gpu/nova-core/auxdata.rs
-+++ b/drivers/gpu/nova-core/auxdata.rs
-@@ -17,4 +17,9 @@ impl AuxData<'_> {
-     pub fn chipset(&self) -> Chipset {
-         self.gpu.spec.chipset
-     }
-+
-+    /// Returns the total usable VRAM size of this GPU in bytes.
-+    pub fn vram_size(&self) -> u64 {
-+        self.gpu.gsp_static_info.vram_size()
-+    }
- }
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index d4a71a1be6f1..a089843f6d0a 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -288,7 +288,7 @@ struct GspResources<'gpu> {
- pub(crate) struct Gpu<'gpu> {
-     pub(crate) spec: Spec,
-     /// Static GPU information as provided by the GSP.
--    gsp_static_info: GetGspStaticInfoReply,
-+    pub(crate) gsp_static_info: GetGspStaticInfoReply,
-     /// GSP and its resources.
-     #[pin]
-     gsp_resources: GspResources<'gpu>,
-@@ -388,9 +388,7 @@ pub(crate) fn new(
-                     dev_dbg!(
-                         pdev,
-                         "Total usable VRAM: {} MiB\n",
--                        info.usable_fb_regions.iter().fold(0u64, |res, region| res
--                            .saturating_add(region.end - region.start))
--                            / u64::SZ_1M
-+                        info.vram_size() / u64::SZ_1M
-                     );
-                 }
- 
-diff --git a/drivers/gpu/nova-core/gsp/commands.rs b/drivers/gpu/nova-core/gsp/commands.rs
-index 86a3747cd31c..e41227fc015d 100644
---- a/drivers/gpu/nova-core/gsp/commands.rs
-+++ b/drivers/gpu/nova-core/gsp/commands.rs
-@@ -242,6 +242,14 @@ pub(crate) fn gpu_name(&self) -> core::result::Result<&str, GpuNameError> {
-             .to_str()
-             .map_err(GpuNameError::InvalidUtf8)
-     }
-+
-+    /// Returns the total usable VRAM size in bytes, i.e. the summed lengths of all usable FB
-+    /// regions.
-+    pub(crate) fn vram_size(&self) -> u64 {
-+        self.usable_fb_regions
-+            .iter()
-+            .fold(0, |size, region| size.saturating_add(region.end - region.start))
-+    }
- }
- 
- pub(crate) use fw::commands::PowerStateLevel;
-diff --git a/include/uapi/drm/nova_drm.h b/include/uapi/drm/nova_drm.h
-index 63440f5dca9b..eb98817906a8 100644
---- a/include/uapi/drm/nova_drm.h
-+++ b/include/uapi/drm/nova_drm.h
-@@ -32,6 +32,13 @@ extern "C" {
-  */
- #define NOVA_GETPARAM_GPU_CHIPSET	0x2
- 
-+/*
-+ * NOVA_GETPARAM_VRAM_SIZE
-+ *
-+ * Query the total usable VRAM size in bytes.
-+ */
-+#define NOVA_GETPARAM_VRAM_SIZE	0x3
-+
- /**
-  * struct drm_nova_getparam - query GPU and driver metadata
-  */
+Changes in v4:
+- Reword 'euid' -> 'effective UID' in 'Kuid::current_euid()' docs.
+- Link to v3: https://lore.kernel.org/r/20260507-remove-task-euid-v3-0-27f22f335c2c@google.com
+
+Changes in v3:
+- Include 'task' clarification commit in series.
+- Rebase and resend.
+- Link to v2: https://lore.kernel.org/r/20260227-remove-task-euid-v2-1-9a9c80a82eb6@google.com
+
+Changes in v2:
+- Update translation as per Alex Shi.
+- Pick up Reviewed-by Gary.
+- Update commit title to use cred: prefix.
+- Link to v1: https://lore.kernel.org/r/20260219-remove-task-euid-v1-1-904060826e07@google.com
+
+---
+Alice Ryhl (1):
+      cred: delete task_euid()
+
+Jann Horn (1):
+      rust: task: clarify comments on task UID accessors
+
+ Documentation/security/credentials.rst                    |  6 ++----
+ Documentation/translations/zh_CN/security/credentials.rst |  4 +---
+ include/linux/cred.h                                      |  1 -
+ rust/helpers/task.c                                       |  5 -----
+ rust/kernel/task.rs                                       | 11 ++---------
+ 5 files changed, 5 insertions(+), 22 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260219-remove-task-euid-19e4b00beebe
+
+Best regards,
 -- 
-2.54.0
+Alice Ryhl <aliceryhl@google.com>
 
