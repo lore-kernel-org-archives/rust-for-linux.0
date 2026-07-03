@@ -1,39 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1773941735C;
-	Fri,  3 Jul 2026 15:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D1B41736C;
+	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783092566; cv=none; b=YZHqBzF3He7HUeqmpC4/Y/YZ55JfPy/zRUTMq6vyCB8+5KQYlNW9PqYjCNfrRhLRyPHbRvAHdd7ieQX+sahyBmMxz7hvE6GqKqdhegScVSTB1P3oAjxvh5XdCPuW/dbib5NfESTvhNqnJ9Jk+9wMpC0RdnH4TridtemzOm2XtHI=
+	t=1783092566; cv=none; b=V50rb68ydCb7WW4BjII02rV3wJposF++5jfy2corxEn5i8BbFPm3G2guHfCLNznADmrdzKxDXWDUtXMmfOgyeUYQPC6MDfW1wluUZ0guyPrXIVIpWs5+KbL94xuCV++Ak43EMY53F4omBiOXKhhBMDsbeGYl123FxzNhUcntdpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783092566; c=relaxed/simple;
-	bh=gDy1xUtpnN3CJR11tR1CYZk1CojcI7CgRZfqoEvJaY0=;
+	bh=RyS2wURh21mTeoz5CI3KKh78yIHLSp24HPxf9dLKbeo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lRG9jtBCe2q1de7P72MiyL5ODYey0qf1HJrVE7y7T9PnJl27SVSdlDP/GXrh+S1TB3JWqvpwn3+YRxNbbLyU0vcZOcOthrUWGZtzM36tEFXmGdkzCFustQsqcly9IG4DyKqiFvzIEUPZKowhB2SP5Rein4wWGhBG6vMHz3CeB0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaXSnLPq; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=EiotgbEUKvBWB8PoZUgsz+0f/N0Rnds4j2wnHfVD20HXA+SP3Kp6YxXg5Uu9RmTd/gMiUmPAq7VVBLWOS/pJpfF3A/AjjK6YEoSDN5kJp6VFXVXmlHLh/38KMPy1gIXDCJnTbxTe3ebDc63ZsTXPIdMKtxaoNErtp3lFwvshOok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wzlj+gBI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaXSnLPq"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DEDA4C2BCB9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wzlj+gBI"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C1BA1C4AF15;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783092565;
-	bh=gDy1xUtpnN3CJR11tR1CYZk1CojcI7CgRZfqoEvJaY0=;
+	bh=RyS2wURh21mTeoz5CI3KKh78yIHLSp24HPxf9dLKbeo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CaXSnLPqG4J36GfVPhT0PCR1UHJ+qQaYeepBt1rznwmthKnrqRl0oHG18+bBaEirf
-	 Cro5/HfY6Poy+AGZUfMAt58YBbarAN/0LQcPCN+5k705BkypRVysM6qW3fVyVM9Vhr
-	 faBIlZwJXsQKOfG5ax08rGbfWQIrwvYJB0kyGrjh5OuS+dGHknZwcLAopeTFEL0Pl3
-	 EzhMwRg4xriF4Up0wvDJ+75aYRPg1ZBu6/8L+GiKZp3Uoz1CsEkgpyK5Vn1oNi6Fbq
-	 bAM5Ceksr/9XkAjuX9VS2RW+hHb5g1A1FxGTTQJ6L4yrKxwZr8ZQno0mlpIpiJpq70
-	 pIZtQwSgZTTdQ==
+	b=Wzlj+gBIyPxHRt8mlOhKHuQtCF5rkSsCrZNcqQMpHG00rJ/ZE825OdAvTfzTlnQa9
+	 JQ2HUY8s0xHfcaTQK4v28lzoQT5jrv40RQM4QtFnLOzXhbFqIgbnvMF9hsu18fnjre
+	 lO/0BGBx2Go9I5oGpE04IOPwZ5VB3bdTCFF1VqjiEe4navkmRuZ7NPXbRlYp0WL+t3
+	 NDNJ5P5E2PbH3hmHMTtsgeu8VOz5xO8szzN2F+D+7+PJsWv4z8qDaOT7pkUZ/P5KO1
+	 EUNdweVeVllYqTMldEAdIPPhrr+cy6Crn3oTXVjoMswAW+VAikQSEkUKEzPgralt4V
+	 B5UG0cFhQCRag==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD9CBC44502;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ACEE0C44500;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Fri, 03 Jul 2026 15:29:28 +0000
-Subject: [PATCH 7/7] rust_binder: Implement the
- BINDER_DEBUG_DEAD_TRANSACTION logging mask to trace in-flight
- cancellations during teardown
+Date: Fri, 03 Jul 2026 15:29:26 +0000
+Subject: [PATCH 5/7] rust_binder: Implement the
+ BINDER_DEBUG_FAILED_TRANSACTION logging mask for transaction parsing and
+ routing failures
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,7 +42,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-rust_binder_debug_mask-v1-7-9bdf12b5325c@google.com>
+Message-Id: <20260703-rust_binder_debug_mask-v1-5-9bdf12b5325c@google.com>
 References: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 In-Reply-To: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -61,11 +61,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=4740;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=3866;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=cZ5Gq3UUFmklkL9ONpnQ9DYqlGgROrO2oyaIaFpTyWM=;
- b=nYZFLCuzdDzrqp5yO8rsDLVoelnyEoApAGvqB0atDyEWol2zqv6MHBWrBtpgpQkXr9gauxbZl
- m4AjiJwvkHxCNBQAjmyR1VDmRA3xRi52pu2e2MLKof7aUz58axHOKLt
+ bh=lhDwr5z2mnm33UNmF+M4c23cZnU/CATsdD2Yk/m7PNc=;
+ b=6BMbdtWnti5RyUjf1XQ7kTBHHQOposUDX1b0Wz267ejokT8u+c8FyQu0nwtB8A+7pbDRGGjFz
+ ePqcrCX7aiFBOotN2ZX9iJJ6nJk26D/Z1urJzdCFqSaCLq1M7RwCUgw
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -76,134 +76,100 @@ Reply-To: jahnavimn@google.com
 From: Jahnavi MN <jahnavimn@google.com>
 
 This adds dynamic debug logs for:
-- Releasing active transactions during thread stack unwinding.
-- Discarded transaction error codes when a thread exits.
-- Undelivered transaction acknowledgments (TRANSACTION_COMPLETE)
-  upon thread exit.
-- Undelivered process death and freeze notifications when processes
-  exit or die.
-- Undelivered transactions canceled due to target process death.
+- Failed replies, target process deaths, and error code deliveries.
+- Detailed transaction failure diagnostics (including sender/receiver
+  PIDs, TIDs, transaction IDs, buffer sizes, and error codes).
+- File descriptor (FD) array validation and translation errors.
 
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
- drivers/android/binder/freeze.rs           |  8 +++++++-
- drivers/android/binder/node.rs             |  8 +++++++-
- drivers/android/binder/rust_binder_main.rs |  9 ++++++++-
- drivers/android/binder/thread.rs           | 18 +++++++++++++++++-
- drivers/android/binder/transaction.rs      |  6 ++++++
- 5 files changed, 45 insertions(+), 4 deletions(-)
+ drivers/android/binder/thread.rs      | 40 +++++++++++++++++++++++++++++++----
+ drivers/android/binder/transaction.rs |  5 +++++
+ 2 files changed, 41 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index d0559ed308ef..b60fbad0f2f3 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -140,7 +140,13 @@ fn do_work(
-         }
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        binder_debug!(
-+            crate::debug::BINDER_DEBUG_DEAD_TRANSACTION,
-+            "undelivered freeze notification, {:016x}",
-+            self.cookie.0
-+        );
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index d71f55739772..1d6d623072df 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -1120,7 +1120,13 @@ fn do_work(
-         Ok(cmd != BR_DEAD_BINDER)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        binder_debug!(
-+            crate::debug::BINDER_DEBUG_DEAD_TRANSACTION,
-+            "undelivered death notification, {:016x}",
-+            self.cookie
-+        );
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index bf15021524a4..8b8992411cd7 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -262,7 +262,14 @@ fn do_work(
-         Ok(true)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        if !self.skip.load(Relaxed) {
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_DEAD_TRANSACTION,
-+                "undelivered TRANSACTION_COMPLETE"
-+            );
-+        }
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
 diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 1656e0c70fef..43bc146505cc 100644
+index ecf05cebcb3e..1656e0c70fef 100644
 --- a/drivers/android/binder/thread.rs
 +++ b/drivers/android/binder/thread.rs
-@@ -1150,6 +1150,13 @@ fn unwind_transaction_stack(self: &Arc<Self>) {
-             let mut inner = thread.inner.lock();
-             inner.pop_transaction_to_reply(thread.as_ref())
-         } {
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_DEAD_TRANSACTION,
-+                "release process {} transaction {} in, still active",
-+                self.process.task.pid(),
-+                transaction.debug_id
-+            );
-+
-             let reply = Err(BR_DEAD_REPLY);
-             if !transaction.from.deliver_single_reply(reply, &transaction) {
-                 break;
-@@ -1728,7 +1735,16 @@ fn do_work(
-         Ok(true)
-     }
+@@ -1191,6 +1191,11 @@ fn deliver_single_reply(
+             }
  
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        let code = self.error_code.load(Relaxed);
-+        if code != BR_OK {
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_DEAD_TRANSACTION,
-+                "undelivered TRANSACTION_ERROR: {}",
-+                code
-+            );
-+        }
-+    }
+             if inner.is_dead {
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_FAILED_TRANSACTION,
++                    "send failed reply for transaction {}, target dead",
++                    transaction.debug_id
++                );
+                 return true;
+             }
  
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index f8756c5dfba4..3cb0cb9694de 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -485,6 +485,12 @@ fn cancel(self: DArc<Self>) {
-         if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
-             let reply = Err(BR_DEAD_REPLY);
-             self.from.deliver_reply(reply, &self);
-+        } else {
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_DEAD_TRANSACTION,
-+                "undelivered transaction {}, process died",
-+                self.debug_id
-+            );
+@@ -1198,7 +1203,18 @@ fn deliver_single_reply(
+                 Ok(work) => {
+                     inner.push_work(work);
+                 }
+-                Err(code) => inner.push_reply_work(code),
++                Err(code) => {
++                    if code == BR_FAILED_REPLY || code == BR_DEAD_REPLY {
++                        binder_debug!(
++                            crate::debug::BINDER_DEBUG_FAILED_TRANSACTION,
++                            "send failed reply for transaction {} to {}:{}",
++                            transaction.debug_id,
++                            self.process.task.pid(),
++                            self.task.pid()
++                        );
++                    }
++                    inner.push_reply_work(code)
++                }
+             }
          }
  
-         self.drop_outstanding_txn();
+@@ -1297,11 +1313,27 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+                     ee.param = source.to_errno();
+                 }
+ 
+-                pr_warn!(
+-                    "{}:{} transaction to {} failed: {source:?}",
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_FAILED_TRANSACTION,
++                    "{}:{} transaction {} to {}:{} failed {}/{}/{}, code {} size {}-{} line {}",
+                     info.from_pid,
+                     info.from_tid,
+-                    info.to_pid
++                    if info.is_reply {
++                        "reply"
++                    } else if info.is_oneway() {
++                        "async"
++                    } else {
++                        "call"
++                    },
++                    info.to_pid,
++                    info.to_tid,
++                    info.debug_id,
++                    err.reply,
++                    info.errno,
++                    info.code,
++                    info.data_size,
++                    info.offsets_size,
++                    line!()
+                 );
+             }
+         }
+diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+index f9285eb93fc0..f8756c5dfba4 100644
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -405,6 +405,11 @@ fn do_work(
+         } else {
+             // On failure to process the list, we send a reply back to the sender and ignore the
+             // transaction on the recipient.
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_FAILED_TRANSACTION,
++                "transaction {} fd fixups failed",
++                self.debug_id
++            );
+             return Ok(true);
+         };
+ 
 
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
