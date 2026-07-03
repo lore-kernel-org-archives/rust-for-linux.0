@@ -1,63 +1,63 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9D62BF3F4
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92502C0296
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047746; cv=none; b=Viy5+7ucKeRprh75f9npOUfB/yTSMuMumluiK3eRyfXJdQ4tXMqvH0+YE9dxe5S4QuuAOFLXTKpkpJKIWqlNhiVrGPYzQvYUHmaiZWItbb4e58LFJFh6q0BiRZbmiTdSNsdJ5TEf9kLG9Qj8eW9ODgfoV/5a1Qzbcu0UZ9MFZUg=
+	t=1783047747; cv=none; b=CKCGow08n+oSlhMuO8UHZFqdxaPgVi6liRjayxQIzSEFmhS9vCJ1uxjnqZmrc8GTgJoIERXqCbH0jeadYsOseZilzM6KPZtgy0YvFxRBNvc2gxNC3KPaAVdamobgCoun0Jbgo6Xpx/a9Z1fpZfMNg9+wRuxTYtwDaFDzUg3ebaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047746; c=relaxed/simple;
-	bh=HYrBDSzN90nJE0FNJnWKJ6iX4fI4UTQy5O60mKWyI9I=;
+	s=arc-20240116; t=1783047747; c=relaxed/simple;
+	bh=21OK0r52Fwsr1ntIRVr5Z+6fcj9LL5bBy08aine1eak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5vTUEwn8xFz0EURpTUHMVL1bAJy5YNdFJging2SJDlyxg3kg1kO2s4J1Z4PdqAItTt2Q9OuK6jZE6qlx1jRRUqUhhFrZqO4VX2tG/u/GVLFb0TRii7sK7G/J2kiPkAF5lWgnn0qEwZVRvS/m7uQxckOFudgIbNxx1cmr4cwXjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=T7xOy1NY; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version; b=TL/R7CvVF8z6kcI/xeZ26pSE3tGpswhQH3vNmXXCDnnFMstvyTvghcwx7FvCZ2G/MNHXL8LrtESPYu0DLVsTPaX2Rgw61I7waXE9cSpyI+4q8ZddBvPeilQTzq+lC59DOaUdrgoudU5qtuvYnxFg1an8+T7lp0zKY+oofdhg1e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ivz+NjT0; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="T7xOy1NY"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-475cb71a4ebso99686f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ivz+NjT0"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493c55d5c7aso493865e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047743; x=1783652543; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047744; x=1783652544; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HsUqz/Qkq/LceV8TelFggUzjDk1o9pU0ZJGrnJynFBo=;
-        b=T7xOy1NY/9etKIOuGN8ZgOo6A0dINgr0bkyWrGMP8COV24zDZT7aOsHf/BtKsyYq8u
-         Ki4EdKCxwyiHo9JQO3W36zV86Gk8FunmnCeBY88Q3NukJRRCP8b4/zG0hsEtEtXX6xVg
-         qMxY2uPNH1dDX4vtTZajgeKmOIqJxxm3CpkWhL538LpjH2YJ7oqdmD/aX9cCQt6RRMq/
-         XlpwhlKY0FglxyrdXYqX4PEa9YkzYpifAhwYtODQQwzsG7bpJhkVkfT2a8lHybJnIeWv
-         VL041hJXiBoCLrj3/e0WObTVcDatOHoLYWRY9b6FsDGf01HVE/t/Ks7EwUKGeQt8rHM6
-         UESg==
+        bh=TTiNa+jNO/J0asM7nu8zy4yxLpKOaf8IK3J1xe9aBJI=;
+        b=ivz+NjT0bNt26az7QF5TxPWqH9J5HjUxHv6MQlZ8ZmbbrvSAOAlxR1Ov0WlXtQF8NK
+         BdCZNe7EN72mmzIE4BzIRsH8mcZ1tRJAuwUQ7xjlhl4KoCd7+bIQgJOMZVPI+3ZPL+q3
+         xiQ/79BjDF7EJXHo3K4mBplRsyQdj6Yr/TdnZeAPgGttEA2R+JB9jGct8FhBGIeOGJ97
+         eDTl2dFGefZdMKIlyciW3m8GEm1cGztOnQ8JSIu9URAriiirHBGcmO0+RbVLprUv3Tox
+         NUVEQS3HDmJZ9IfYCINfFSEYFI8KHRUsWCgUOY284uAIcNWm06yPC9Bw+8nDATeDRxmf
+         aPdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047743; x=1783652543;
+        d=1e100.net; s=20251104; t=1783047744; x=1783652544;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=HsUqz/Qkq/LceV8TelFggUzjDk1o9pU0ZJGrnJynFBo=;
-        b=QB9BUuzBAjq3YJCMrDknPbMVaQ/vgegN8f3itW+BRgMEz1XdI0CjpKJcN15zVO6cSS
-         CXPaQ6eZaJZA7gl/gwJJmkgqkwKLEB9yC5VWYm+5HFjWTdQvdDkHWN8o9/D5ZcMbjpRb
-         NKevkI6Zb3rDkZ/VWLS1xfjPdeBzboen9UqOUqyOnGE7M7qEzM92df0+ELu8xtFikRMW
-         p1tjAtRJ8XR7KsKrOCtW5whSXgmWiJIGpYtVV562KCPN0Oa4b5LeOBQYQaFE8Wtoauq1
-         mCkcfHjWDLOJrerGdjpq5+xnL7gG/XHrSN53gMpx0vMC4kx8Sjzk/1iZRPXP7wVEoF7N
-         aXhg==
-X-Gm-Message-State: AOJu0YxYEcbC5CjFr3RYUy1ex283mw7Va8Ca8rhbNopnqN2hG/7acnCD
-	0i50C7AA8AKaslKqGWOmkPaRMctFWW6+TuDrMRUO/EgisLkKIcAcL7Ly6+UHNSMXZ1xEJgi9sTk
-	rnUjjCtuh
-X-Gm-Gg: AfdE7cn3iFX/yMFoohnvYQQ0jFCzpyANQIamDWyYedLWYBjtWD3D9tYOfmNO80v51ue
-	yCM+OC2Y3ItVOYqnIAojxo3pa1c1IfqAOO99F99ZTrZkTPZdAxuPDOBNZoP8JEsLdYE1dkNrKxf
-	hp71EY+YHZ9cZoI4i8UrnTO9XtpeT0rR+mOQE16LQZWhDjFJF428H/jw+MaZf2EUo20bGQk/8Wf
-	00oZ12VpAIK0BOnP9wuQJm/dQgGDCFjt/z0lcrySSI/BMV0O7sjKfYxSFBd7qM8S+KNMicbSM6G
-	RlZ6Zj7hENhZDii5Z8oraUTq8EPaDh5NhEtqwOKmALvbbigiiYYpVssMQWklf+yXZaFqyw5CNtu
-	MaRTzGe2VHUhdy+PZjPnLkUK8MGyHlnmkpWbacU4Cbbmbx7St3qlz6/8cbELHN0Y3ympcMKyVEL
-	wtfZU4ZZKQ/SUVf8CVec4/YKl8vrgOHbFcb561DYsCxFfwgMhRnKazr1agOmop/AmXv50=
-X-Received: by 2002:a05:600c:8b61:b0:493:c47f:3c55 with SMTP id 5b1f17b1804b1-493c47f3c63mr88463955e9.5.1783047742662;
-        Thu, 02 Jul 2026 20:02:22 -0700 (PDT)
+        bh=TTiNa+jNO/J0asM7nu8zy4yxLpKOaf8IK3J1xe9aBJI=;
+        b=fm5pd2v1HLKBtcb3eAKBFOtko4///jKemyNE2K2XW9OhCm4qEX4j8MxH41XgXKB6vh
+         cKmO5Gz59T+K3D90uHyhQjp3yrqPoTpqsvWcw2sdQMHjksbJ4wYyQhZAubeckVW21NzV
+         pq/CFZ2KqKsZTybPnmkMEZKyi9X/wmwBg29ErK7PFN94Khz+vw4yS9YiSEU8K1jh7mm7
+         OXQUYgKDkU8biXIsMJYt9QY0Ws50JoywB2SAv+Vqg8aXouKXpYMYEBUfu8M07FmLWE6h
+         JpOccbSHEoIpe74GQHl6aBN1q7LGdWS6N8R+X74yU/NlEwmqjYsWiSu954c5Y5N1lege
+         9GWg==
+X-Gm-Message-State: AOJu0YwiE9s0+sC3kn9kQSV0TfimONuyn2QjO0HvYD8WXHGmes+XrrgE
+	Yyu3qGI1A4VtELwmI9dl9eUcqA2eXN2D56GxUlRiVFuJPxYelaUKgBP5jTfu7PzleOjxNL9wdqz
+	9Td8JlFkf
+X-Gm-Gg: AfdE7ckLrQSRPBYoovnyIoCnaVegiYucZ0bnOqOPkkT5ohwpIpetl1OuAiNwa2A3ufH
+	Ozf0znWo36Mzp9QJZIVp7y13nm2a/90BRk9JKWK8cmNQ8VjDbF8OkZdl3JvBoY97CfwIoZLMCUJ
+	E2RD5tr5HZprw48LB1v3NL58WfZDIdo+nNMlJUeWBkZ4UHKXhMKt+prCBXGqpCOnXDYIQSp36BR
+	peW+AP9h+digogQSqXWsDOLilMv9LFT7n8s6CQQN4ruPLa+kbDZNRZeX3HIFM6cRnhEUpkc1FHB
+	CEZoPlZBZSYNruQBg2ZTCzrtfbXrf2MdljUfHGtOQIINVZHc7EQCkDNDiWL4hqknmRG7AkInvbv
+	bSs2HqWm9pmfk7tapbR/0mZ7miEyHmweEw/uJhLHSvxJ7dOmwGGjLCLhACN5XtnSBjCZP3bLgky
+	3I7rY/9E3ZjReAQS2lPa1WmLmKqAcP/h4HUbT3J49UNcVOUvRJSuni3fI/ZtpHEQrpvCA=
+X-Received: by 2002:a05:600c:1554:b0:493:a435:d870 with SMTP id 5b1f17b1804b1-493c2b902bdmr122406295e9.27.1783047744028;
+        Thu, 02 Jul 2026 20:02:24 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493be4a343csm141233875e9.0.2026.07.02.20.02.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493be4a343csm141233875e9.0.2026.07.02.20.02.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:02:22 -0700 (PDT)
+        Thu, 02 Jul 2026 20:02:23 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -78,12 +78,13 @@ Cc: dri-devel@lists.freedesktop.org,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 00/10] drm/vino: DisplayLink DL3 dock driver
-Date: Fri,  3 Jul 2026 04:02:05 +0100
-Message-ID: <20260703030217.2886-1-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 01/10] drm/vino: add DisplayLink DL3 dock skeleton and protocol framing
+Date: Fri,  3 Jul 2026 04:02:06 +0100
+Message-ID: <20260703030217.2886-2-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260617151249.2937-1-mike@fireburn.co.uk>
+In-Reply-To: <20260703030217.2886-1-mike@fireburn.co.uk>
 References: <20260617151249.2937-1-mike@fireburn.co.uk>
+ <20260703030217.2886-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -92,144 +93,186 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is v2 of the vino RFC: an in-kernel Rust driver for DisplayLink
-DL3 docks (Dell D6000, 17e9:6006), replacing the out-of-tree EVDI
-module plus the DisplayLinkManager userspace daemon.
+New drm/vino driver for DisplayLink DL3 USB docks (Dell D6000,
+17e9:6006), replacing the out-of-tree EVDI module plus the
+DisplayLinkManager userspace daemon.
 
-Still an RFC in the same place v1 was: the dock never engages its
-content-protection channel for vino, so no pixels flow yet. What's
-different is everything underneath it. v1's review said, in short,
-"work on safe KMS abstractions instead of raw C KMS + as_raw()" --
-that's the bulk of this round (see the drm series cover for the
-detail), plus the driver picked up several months of hardware-testing
-fixes since v1 that had nowhere to land until now.
+This patch adds the module skeleton (Kconfig/Makefile, registered in
+drivers/gpu/drm/{Kconfig,Makefile}) and two small standalone pieces:
+proto.rs (the DL3 USB wire framing this driver builds every message on
+top of) and rng.rs (a thin wrapper over the kernel RNG for HDCP nonces).
+Neither depends on anything else added by later patches in this series.
 
-   1/10  skeleton + USB bind + plaintext bring-up          (proto, rng)
-   2/10  clean-room HDCP 2.2 AKE/LC/SKE                     (crypto, hdcp, ake, golden)
-   3/10  AES-CTR/AES-CMAC control-plane seal + arm          (cp)
-   4/10  Vino framebuffer codec                             (video)
-   5/10  DRM/KMS sink, on the safe KMS mode-object layer    (drm_sink)
-   6/10  the driver itself: USB bind, bring-up, KUnit tests (vino)
-   7/10  the hardware cursor plane (cursor_atomic_update -> CP)      (drm_sink)
-   8/10  CRTC gamma, plane rotation and DDC/CI monitor controls      (drm_sink, cp)
-   9/10  two heads, 90/270 rotation, damage clips, connector probe   (drm_sink)
-  10/10  hrtimer-driven software vblank for refresh-rate pacing      (drm_sink)
-
-What's here and works, HW-verified: USB bind + plaintext session init;
-HDCP 2.2 AKE (H'/L'/V'); AES-CTR + Dl3Cmac control-plane seal, byte-exact
-against the reference daemon's wire traffic; the stream-open arm marker
-that gets the dock processing our encrypted CP for the first time; a
-registered DRM/KMS card (CRTC + primary plane + virtual connector/
-encoder, GEM-shmem dumb buffers); the Vino codec's DC plane and 8x8
-transform, byte-exact against captured hardware output.
-
-What's missing / why it's still RFC:
- - No live pixels. Every host-observable byte we put on the wire now
-   matches the daemon -- verified down to paired full-bus USB captures
-   and xHCI TRB completion codes -- but the dock still won't ack the
-   first encrypted control-plane frame. Current read is a dock-firmware
-   gate unreachable from the host; a hardware USB analyser is the one
-   untried next step. See docs/BLOCKER.md in the source tree for the
-   full trail of what's been ruled out.
- - The codec's AC coefficient entropy grammar is reverse-engineered but
-   not finished (EOB/scan/context still open), so the WHT colour path
-   only covers 64x16-aligned geometry; other modes use the RLE
-   fallback. Not fabricating the rest until it's verified against
-   hardware.
- - Per-head EDID and per-head mode-set/DDC. Two heads are wired (patch
-   9), each scanned out to its own video endpoint with its own cursor,
-   but the bring-up only reads head 0's EDID, and the CP mode-set has no
-   decoded head/stream field -- so a head is conveyed on the wire only by
-   which endpoint its frames go to. Real dual-monitor use past the CP
-   wall needs those captured.
- - Two known-open items from v1's automated review, unresolved because
-   fixing them properly needs more of the safe-KMS work above: some CP
-   message builders (cursor/mode-set) still GFP_KERNEL-allocate from a
-   path DRM considers atomic-commit context, and CP_ENGAGED/scanout
-   state are still module-global statics rather than per-device (the
-   driver is single-instance throughout, so this only matters for a
-   theoretical multi-dock case).
-
-Depends on the safe KMS mode-object layer landing (posted alongside,
-"[RFC PATCH v2 00/18] rust: drm: safe KMS mode-object layer + evdi
-bindings") and, transitively, on the locking/DRM-registration
-prerequisite postings that series depends on -- see that cover letter
-for exactly what and why. This series won't build without them.
-
-Source, HDCP/HDMI specs referenced, and the full RE trail:
-  https://github.com/FireBurn/vino-scripts
-  https://github.com/FireBurn/linux/tree/vino
-  https://gitlab.freedesktop.org/FireBurn/linux/-/tree/vino
-
-Changes since v1:
- - Rebuilt on the safe KMS mode-object layer instead of raw C KMS +
-   as_raw() (Danilo, Miguel) -- see the drm series cover.
- - Folded in the v1 review fixes that survive independently of the KMS
-   rework: in-tree AES-CMAC + key-prepared-once AES (Eric Biggers);
-   Interface<Bound> threading + cancel_work_sync() of the bring-up work
-   in disconnect() (fixes a dropped-work-handle UAF); EP08 16-bit
-   length overflow rejected; codec SECTION_CODE mode indexing fixed;
-   encoder shadow committed only on full-frame success; cursor_image
-   checked arithmetic; EP84_BUF-sized cap reads; pace_cap_ack/
-   lockstep_reply no longer abort on short frames; Kconfig depends on
-   USB (was USB=y); #[cfg(CONFIG_KUNIT)] (was the always-false
-   CONFIG_KUNIT = "y"); a redundant Kconfig select dropped (Julian
-   Braha). All from the Sashiko bot + human review on v1.
- - Added the byte-exact Vino colour codec (DC plane + 8x8 transform)
-   and the real EP08 wire-record framing, from continued hardware
-   testing since v1.
- - Re-added the hardware cursor plane (patch 7) and, now that the safe
-   KMS layer exposes them, the CRTC gamma LUT, plane rotation property
-   and DDC/CI brightness/contrast/DPMS controls (patch 8) that v1's
-   raw-KMS driver had.
- - Added a second display head, 90/270 rotation, damage-clipped repaint
-   and connector detect()/mode_valid() (patch 9), consuming the new
-   drm-series bindings. The KMS feature set now exceeds v1's.
- - Added hrtimer-driven software vblank (patch 10): the CRTC now paces
-   page-flips to the display's refresh rate instead of completing them
-   immediately, using the safe KMS layer's VblankSupport.
-
-Mike Lothian (10):
-  drm/vino: add DisplayLink DL3 dock skeleton and protocol framing
-  drm/vino: add the clean-room HDCP 2.2 AKE/LC/SKE handshake
-  drm/vino: add the AES-CTR/AES-CMAC control-plane seal and arm sequence
-  drm/vino: add the Vino framebuffer codec
-  drm/vino: add the DRM/KMS sink, built on the safe KMS mode-object
-    layer
-  drm/vino: add the DisplayLink DL3 dock driver
-  drm/vino: wire the hardware cursor plane
-  drm/vino: wire CRTC gamma, plane rotation and DDC/CI monitor controls
-  drm/vino: two heads, 90/270 rotation, damage clips and connector probe
-  drm/vino: hrtimer-driven software vblank
-
- drivers/gpu/drm/Kconfig          |    1 +
- drivers/gpu/drm/Makefile         |    1 +
- drivers/gpu/drm/vino/Kconfig     |   20 +
- drivers/gpu/drm/vino/Makefile    |    2 +
- drivers/gpu/drm/vino/ake.rs      |  173 ++
- drivers/gpu/drm/vino/cp.rs       |  733 +++++++++
- drivers/gpu/drm/vino/crypto.rs   |   48 +
- drivers/gpu/drm/vino/drm_sink.rs | 1173 +++++++++++++
- drivers/gpu/drm/vino/golden.rs   |   69 +
- drivers/gpu/drm/vino/hdcp.rs     |  167 ++
- drivers/gpu/drm/vino/proto.rs    |   73 +
- drivers/gpu/drm/vino/rng.rs      |   12 +
- drivers/gpu/drm/vino/video.rs    | 1229 ++++++++++++++
- drivers/gpu/drm/vino/vino.rs     | 2640 ++++++++++++++++++++++++++++++
- 14 files changed, 6341 insertions(+)
+Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
+Assisted-by: Claude:claude-sonnet-5 [Claude-Code]
+---
+ drivers/gpu/drm/Kconfig       |  1 +
+ drivers/gpu/drm/Makefile      |  1 +
+ drivers/gpu/drm/vino/Kconfig  | 20 ++++++++++
+ drivers/gpu/drm/vino/Makefile |  2 +
+ drivers/gpu/drm/vino/proto.rs | 73 +++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/vino/rng.rs   | 12 ++++++
+ 6 files changed, 109 insertions(+)
  create mode 100644 drivers/gpu/drm/vino/Kconfig
  create mode 100644 drivers/gpu/drm/vino/Makefile
- create mode 100644 drivers/gpu/drm/vino/ake.rs
- create mode 100644 drivers/gpu/drm/vino/cp.rs
- create mode 100644 drivers/gpu/drm/vino/crypto.rs
- create mode 100644 drivers/gpu/drm/vino/drm_sink.rs
- create mode 100644 drivers/gpu/drm/vino/golden.rs
- create mode 100644 drivers/gpu/drm/vino/hdcp.rs
  create mode 100644 drivers/gpu/drm/vino/proto.rs
  create mode 100644 drivers/gpu/drm/vino/rng.rs
- create mode 100644 drivers/gpu/drm/vino/video.rs
- create mode 100644 drivers/gpu/drm/vino/vino.rs
 
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 323422861e8f..8fb9c9f787ba 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -361,6 +361,7 @@ source "drivers/gpu/drm/vgem/Kconfig"
+ source "drivers/gpu/drm/virtio/Kconfig"
+ source "drivers/gpu/drm/vkms/Kconfig"
+ source "drivers/gpu/drm/vmwgfx/Kconfig"
++source "drivers/gpu/drm/vino/Kconfig"
+ source "drivers/gpu/drm/xe/Kconfig"
+ source "drivers/gpu/drm/xen/Kconfig"
+ source "drivers/gpu/drm/xlnx/Kconfig"
+diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+index e97faabcd783..42a04359cc63 100644
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -185,6 +185,7 @@ obj-$(CONFIG_DRM_VC4)  += vc4/
+ obj-$(CONFIG_DRM_VMWGFX)+= vmwgfx/
+ obj-$(CONFIG_DRM_VGEM)	+= vgem/
+ obj-$(CONFIG_DRM_VKMS)	+= vkms/
++obj-$(CONFIG_DRM_VINO)	+= vino/
+ obj-$(CONFIG_DRM_NOUVEAU) +=nouveau/
+ obj-$(CONFIG_DRM_NOVA) += nova/
+ obj-$(CONFIG_DRM_EXYNOS) +=exynos/
+diff --git a/drivers/gpu/drm/vino/Kconfig b/drivers/gpu/drm/vino/Kconfig
+new file mode 100644
+index 000000000000..f5fe6670a488
+--- /dev/null
++++ b/drivers/gpu/drm/vino/Kconfig
+@@ -0,0 +1,20 @@
++# SPDX-License-Identifier: GPL-2.0
++config DRM_VINO
++	tristate "DisplayLink DL3 (Vino) open driver"
++	depends on USB
++	depends on DRM
++	depends on RUST
++	select DRM_KMS_HELPER
++	select RUST_DRM_GEM_SHMEM_HELPER
++	select CRYPTO_LIB_RSA
++	help
++	  Open in-kernel Rust driver for DisplayLink DL3 USB docks (Dell
++	  Universal Dock D6000 and relatives).
++
++	  It binds the dock over USB, runs the HDCP 2.2 control plane, mode-set
++	  and the Vino codec, and registers a DRM/KMS sink that scans out to the
++	  dock's video endpoints.
++
++	  To compile this as a module, choose M here: the module is called vino.
++
++	  If unsure, say N.
+diff --git a/drivers/gpu/drm/vino/Makefile b/drivers/gpu/drm/vino/Makefile
+new file mode 100644
+index 000000000000..6e39668040f3
+--- /dev/null
++++ b/drivers/gpu/drm/vino/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_DRM_VINO) += vino.o
+diff --git a/drivers/gpu/drm/vino/proto.rs b/drivers/gpu/drm/vino/proto.rs
+new file mode 100644
+index 000000000000..cae6eae46b7a
+--- /dev/null
++++ b/drivers/gpu/drm/vino/proto.rs
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! The DL3 "universal" wire framing and the plaintext session-init messages (sec 3/sec 4).
++
++use super::*;
++
++/// Append a sec 3-framed message to `out` with an explicit `sub_len_dw`: a 16-byte
++/// little-endian header (`pad(2) | size(2)=total-4 | type(4) | sub_id(2) |
++/// sub_len_dw(2) | seq(4)`) followed by `body`.
++///
++/// HDCP OUT messages (sec 5.1) carry DLM-fixed `sub_len_dw` values that are *not*
++/// `body.len() / 4`, so the framer cannot derive it -- the caller passes it.
++pub(super) fn push_frame_with(
++    out: &mut KVec<u8>,
++    msg_type: u32,
++    sub_id: u16,
++    sub_len_dw: u16,
++    seq: u32,
++    body: &[u8],
++) -> Result {
++    let size = ((16 + body.len()) - 4) as u16;
++    out.extend_from_slice(&[0, 0], GFP_KERNEL)?;
++    out.extend_from_slice(&size.to_le_bytes(), GFP_KERNEL)?;
++    out.extend_from_slice(&msg_type.to_le_bytes(), GFP_KERNEL)?;
++    out.extend_from_slice(&sub_id.to_le_bytes(), GFP_KERNEL)?;
++    out.extend_from_slice(&sub_len_dw.to_le_bytes(), GFP_KERNEL)?;
++    out.extend_from_slice(&seq.to_le_bytes(), GFP_KERNEL)?;
++    out.extend_from_slice(body, GFP_KERNEL)?;
++    Ok(())
++}
++
++/// `init_25` body (sec 4, verified 2026-05-27). Framed with `sub_len_dw=0` -- the
++/// DLM-fixed value, NOT `body.len()/4` (the dock ignores/rejects otherwise).
++pub(super) const INIT_25: [u8; 16] =
++    [0x05, 0, 0x08, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
++/// `init_4` (Part A) body (sec 4), also framed with `sub_len_dw=0`.
++pub(super) const INIT_4: [u8; 16] =
++    [0x04, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
++/// The first HDCP-channel probe **body** (Part B of the init_4+probe transfer,
++/// sec 4): a 32-byte body leading with `14 00 76 00`, the rest zero. It is wrapped
++/// in its own type=4 sub=0x04 frame (`sub_len_dw=0x0a`) -- see [`init_4_probe`].
++/// The dock only ACKs once this framed probe arrives.
++pub(super) const PROBE_BODY: [u8; 32] = {
++    let mut p = [0u8; 32];
++    p[0] = 0x14;
++    p[2] = 0x76;
++    p
++};
++
++/// `init_0`: 16-byte framing header only, empty body (sec 4).
++pub(super) fn init_0() -> Result<KVec<u8>> {
++    let mut buf = KVec::with_capacity(16, GFP_KERNEL)?;
++    push_frame_with(&mut buf, 0x01, 0x00, 0, 0, &[])?;
++    Ok(buf)
++}
++
++/// `init_25`: type=2 sub=0x25, `sub_len_dw=0`, 32 bytes total (sec 4).
++pub(super) fn init_25() -> Result<KVec<u8>> {
++    let mut buf = KVec::with_capacity(32, GFP_KERNEL)?;
++    push_frame_with(&mut buf, 0x02, 0x25, 0, 0, &INIT_25)?;
++    Ok(buf)
++}
++
++/// `init_4` + HDCP probe as one 80-byte transfer (sec 4): Part A (type=2 sub=0x04,
++/// `sub_len_dw=0`, 32 B) concatenated with Part B -- the probe framed as type=4
++/// sub=0x04 with `sub_len_dw=0x0a` over the 32-byte [`PROBE_BODY`] (48 B). This
++/// is the message the dock ACKs.
++pub(super) fn init_4_probe() -> Result<KVec<u8>> {
++    let mut buf = KVec::with_capacity(80, GFP_KERNEL)?;
++    push_frame_with(&mut buf, 0x02, 0x04, 0, 0, &INIT_4)?; // Part A
++    push_frame_with(&mut buf, 0x04, 0x04, 0x0a, 0, &PROBE_BODY)?; // Part B (framed probe)
++    Ok(buf)
++}
+diff --git a/drivers/gpu/drm/vino/rng.rs b/drivers/gpu/drm/vino/rng.rs
+new file mode 100644
+index 000000000000..8720d55174ae
+--- /dev/null
++++ b/drivers/gpu/drm/vino/rng.rs
+@@ -0,0 +1,12 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Cryptographically-secure randomness for the per-session HDCP nonces/keys
++//! (`rtx`, `km`, `rn`, `ks`, `riv`, the OAEP seed).
++#![allow(dead_code)] // RNG helpers; some are reached only on the post-engagement CP path
++
++/// Fills `buf` with random bytes from the kernel CSPRNG (`get_random_bytes`).
++pub(super) fn fill(buf: &mut [u8]) {
++    // SAFETY: `buf` is valid for writes of `buf.len()` bytes; `get_random_bytes`
++    // writes exactly that many and never sleeps/faults on a kernel buffer.
++    unsafe { kernel::bindings::get_random_bytes(buf.as_mut_ptr().cast(), buf.len()) };
++}
 -- 
 2.55.0
 
