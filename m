@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E784E417368;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1F141736A;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783092566; cv=none; b=MUPPgVFfWeyRMufhWrO4j/GC1RThvEC5/zwT7nqEbGI8sH5rRnTwlhZ5NW5AmY2ZLRzpkSz2k8AsIj4+EjN/n745jQ5xg7PbaZh3qJsxfwS3WSM46hPQ9CcbmgtxZHTgLbll0qHQdRqLfFz+6YGXMCV61t4DQG/k0Yid7wYVtDk=
+	t=1783092566; cv=none; b=NcGbT4umBJxMwGn3cZTXYp+B5YqSMfjhNXzKdPDwMLymVk8JQnWajLAHQyEKQSWnKzwapzqT2FAnE6Qhhl2CTN3GTe8jg5dbt74TIXbXucvCnGPmh/Zl5cum015g4ea5/KqDjUvxmgMn0zPRmbrKr3G3lQAda9ANNQCw8b+QSFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783092566; c=relaxed/simple;
-	bh=tYeL/EzsTr+oMHICp3nBN2RBAmqQUWA8dxNAnXZVunI=;
+	bh=l3aM6qOa6QZAObUQfUG31TWFqSC9AVMmjt3twmfcLak=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jFd63fOcQstkQUEHO+KPoayxJvsTJMuJU1GS6YhyyXjR5L9vCiDp9cy+ZBExiUhK2cZnIyDexQGwbY+veU4PzlfvO4DOMCa/EPb03uLsKxEcqAP3JuzISazecXAERAyeRTVyGwcVUq16yt6flti9A0pMGDW4gQTe3SRi/x79mq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOsgEACi; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=NXPeg+AABgJ0AgkfNAUS8ZmYF5ABsTJT2l/9yKIDthVmmR5syX3A7E/HCor8bZyTb3eeAzPmvCyL3fZgeLYIJgCKlATjYZrVtpWHQyBokpWlPicAUi2x3iyzFccXIJhe+bAqdN1+3OO1J444I20Y/xdFicE/OOx2UQfznZ4Elno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gw5oQBo6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOsgEACi"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 90BB6C2BCFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gw5oQBo6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B4C7CC2BD04;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783092565;
-	bh=tYeL/EzsTr+oMHICp3nBN2RBAmqQUWA8dxNAnXZVunI=;
+	bh=l3aM6qOa6QZAObUQfUG31TWFqSC9AVMmjt3twmfcLak=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sOsgEACiyrjcdG8ELp5uXJgZK4uYgvicDsmnlrrBBdMAsuReaQK3ijp60WznG3i6H
-	 CqSeidPm22qJ04ug7gGOVSYRIWtBUbwW0WgFVVvGr1QEDAIewGUVw557ROG446j7DE
-	 5kl/oVrTDnaL+zC5VDFuG3kHi4a9IBaEHFH014HMvwKU7KhOF4ui8zWMr/YtLy8e05
-	 jmNnOV0mNVbS1ifPHQYCKsXxYWcEvePhXda+RwlCRATT/py2P4UzC2W2u8SdDK+rSh
-	 eyqqAc3yW/A5T62V4nDVkQP+SjtJ2cJE7++Sm1C+WVqnDUF/wU0szJK2k7/bJSCWbk
-	 EuP3Y/QPIo6rg==
+	b=gw5oQBo6euExPS62uBUawMhhT13dUsB9eY+GiyI9Z4e57ZJccswB/4GRXAJB4M8tn
+	 Uv0GY3T5ocaYZYBq/M3S8+6pQxfoUgFgvrGOKhMawoTwDDG/c2x80IHnFvir6TrLGz
+	 PMjpOPWTWdMBetlC9thkgMX7II06KOeznE+DxV25WhBqJ511t5ElAv6RQoMxDQG4sv
+	 qFymoGcHCTIgAxUgYsMGrWlJjLfeGi6HTetL/M0uDWDcNa8Db6ecWx+f7hgxVLSvyZ
+	 8LKMuwqfZ8QQyBEAPhRznmjxvQ2Wy+sJg4bWqmCBmspe6cULrUO14MFZHHxQM19LAr
+	 KDWR5G/0XlXoQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75FAEC44501;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9997EC43458;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Fri, 03 Jul 2026 15:29:23 +0000
-Subject: [PATCH 2/7] rust_binder: Implement the BINDER_DEBUG_USER_ERROR
- logging mask for freezer-related operation
+Date: Fri, 03 Jul 2026 15:29:25 +0000
+Subject: [PATCH 4/7] rust_binder: Implement the BINDER_DEBUG_USER_ERROR
+ logging mask for transaction parsing and protocol validation failures
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-rust_binder_debug_mask-v1-2-9bdf12b5325c@google.com>
+Message-Id: <20260703-rust_binder_debug_mask-v1-4-9bdf12b5325c@google.com>
 References: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 In-Reply-To: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -60,11 +60,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=5227;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=9574;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=+HqU/jcA5ROFNMDlUkYMxvVpht0ffASbIoUaPo8UaYk=;
- b=KFo052RBUFaYKi8znQFQd7RpFO05e99sbaY0tX3BGLjoGqD2sMZ5NylvaP667/2DXopUarkmI
- EJfQIvjYlT4CXkNUwA+mM1e+G9guCAWaR3Eqiqcjr6ASbt6aIPWmIVU
+ bh=rtNHxB4vjfIuxKSvuYNWGRnSLX4qWj6HY18AAyIfobM=;
+ b=LbOnZm9gjDvJxeTauRY6od7Hhaooky+UsM7Xa+hFdPc9TA/CrUz4FVMwonfKFlb1PYSQNH1pB
+ DMpQcypkM8NCUuZtb3HnMLKJPCINP/3AgUVVuH6MdTfRW8GkkFtpJoC
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -74,118 +74,206 @@ Reply-To: jahnavimn@google.com
 
 From: Jahnavi MN <jahnavimn@google.com>
 
-This adds dynamic debug logs for:
-- Requesting freeze notifications on invalid references, duplicate
-  cookies, or already active registrations.
-- Completing freeze notifications that are not pending or not found.
-- Clearing freeze notifications on invalid references, inactive
-  notifications, or cookie mismatches.
+This adds dynamic debug logs in `thread.rs` for:
+- File descriptor array (FDA) parent offset and parent buffer address
+  alignment misalignments.
+- Memory copy, write, and translation failures during transaction
+  serialization (including out-of-bounds pointer fixups).
+- Incoming transactions or replies that do not match the expected
+  thread calling stack (such as out-of-order replies).
 
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
- drivers/android/binder/freeze.rs | 49 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 39 insertions(+), 10 deletions(-)
+ drivers/android/binder/thread.rs | 88 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 73 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index 53b60035639a..d0559ed308ef 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -176,11 +176,18 @@ pub(crate) fn request_freeze_notif(
-         let mut node_refs_guard = self.node_refs.lock();
-         let node_refs = &mut *node_refs_guard;
-         let Some(info) = node_refs.by_handle.get_mut(&handle) else {
--            pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION invalid ref {}\n", handle);
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "BC_REQUEST_FREEZE_NOTIFICATION invalid ref {}",
-+                handle
-+            );
-             return Err(EINVAL);
-         };
-         if info.freeze().is_some() {
--            pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION already set\n");
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "BC_REQUEST_FREEZE_NOTIFICATION already set"
-+            );
-             return Err(EINVAL);
-         }
-         let node_ref = info.node_ref();
-@@ -188,7 +195,10 @@ pub(crate) fn request_freeze_notif(
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index c908dde5796a..ecf05cebcb3e 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -721,11 +721,12 @@ fn translate_object(
+                 let alloc_offset = match sg_state.unused_buffer_space.claim_next(obj_length) {
+                     Ok(alloc_offset) => alloc_offset,
+                     Err(err) => {
+-                        pr_warn!(
+-                            "Failed to claim space for a BINDER_TYPE_PTR. (offset: {}, limit: {}, size: {})",
++                        binder_debug!(
++                            crate::debug::BINDER_DEBUG_USER_ERROR,
++                            "failed to claim space for a BINDER_TYPE_PTR (offset: {}, limit: {}, size: {})",
+                             sg_state.unused_buffer_space.offset,
+                             sg_state.unused_buffer_space.limit,
+-                            obj_length,
++                            obj_length
+                         );
+                         return Err(err.into());
+                     }
+@@ -804,6 +805,10 @@ fn translate_object(
+                 let fds_len = num_fds.checked_mul(size_of::<u32>()).ok_or(EINVAL)?;
  
-         if let rbtree::Entry::Occupied(ref dupe) = freeze_entry {
-             if !dupe.get().allow_duplicate(&node_ref.node) {
--                pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION duplicate cookie\n");
+                 if !is_aligned(parent_offset, size_of::<u32>()) {
++                    binder_debug!(
++                        crate::debug::BINDER_DEBUG_USER_ERROR,
++                        "FDA parent offset not aligned correctly"
++                    );
+                     return Err(EINVAL.into());
+                 }
+ 
+@@ -822,6 +827,10 @@ fn translate_object(
+                 };
+ 
+                 if !is_aligned(parent_entry.sender_uaddr, size_of::<u32>()) {
++                    binder_debug!(
++                        crate::debug::BINDER_DEBUG_USER_ERROR,
++                        "FDA parent buffer not aligned correctly"
++                    );
+                     return Err(EINVAL.into());
+                 }
+ 
+@@ -905,8 +914,9 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
+ 
+                 let target_offset_end = fixup_offset.checked_add(fixup_len).ok_or(EINVAL)?;
+                 if fixup_offset < end_of_previous_fixup || offset_end < target_offset_end {
+-                    pr_warn!(
+-                        "Fixups oob {} {} {} {}",
++                    binder_debug!(
++                        crate::debug::BINDER_DEBUG_USER_ERROR,
++                        "fixups oob {} {} {} {}",
+                         fixup_offset,
+                         end_of_previous_fixup,
+                         offset_end,
+@@ -918,18 +928,31 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
+                 let copy_off = end_of_previous_fixup;
+                 let copy_len = fixup_offset - end_of_previous_fixup;
+                 if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
+-                    pr_warn!("Failed copying into alloc: {:?}", err);
++                    binder_debug!(
++                        crate::debug::BINDER_DEBUG_USER_ERROR,
++                        "failed copying into alloc: {:?}",
++                        err
++                    );
+                     return Err(err.into());
+                 }
+                 if let PointerFixupEntry::Fixup { pointer_value, .. } = fixup {
+                     let res = alloc.write::<u64>(fixup_offset, pointer_value);
+                     if let Err(err) = res {
+-                        pr_warn!("Failed copying ptr into alloc: {:?}", err);
++                        binder_debug!(
++                            crate::debug::BINDER_DEBUG_USER_ERROR,
++                            "failed copying ptr into alloc: {:?}",
++                            err
++                        );
+                         return Err(err.into());
+                     }
+                 }
+                 if let Err(err) = reader.skip(fixup_len) {
+-                    pr_warn!("Failed skipping {} from reader: {:?}", fixup_len, err);
++                    binder_debug!(
++                        crate::debug::BINDER_DEBUG_USER_ERROR,
++                        "failed skipping {} from reader: {:?}",
++                        fixup_len,
++                        err
++                    );
+                     return Err(err.into());
+                 }
+                 end_of_previous_fixup = target_offset_end;
+@@ -937,7 +960,11 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
+             let copy_off = end_of_previous_fixup;
+             let copy_len = offset_end - end_of_previous_fixup;
+             if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
+-                pr_warn!("Failed copying remainder into alloc: {:?}", err);
 +                binder_debug!(
 +                    crate::debug::BINDER_DEBUG_USER_ERROR,
-+                    "BC_REQUEST_FREEZE_NOTIFICATION duplicate cookie"
++                    "failed copying remainder into alloc: {:?}",
++                    err
 +                );
-                 return Err(EINVAL);
+                 return Err(err.into());
              }
          }
-@@ -238,7 +248,11 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
-         let mut node_refs_guard = self.node_refs.lock();
-         let node_refs = &mut *node_refs_guard;
-         let Some(freeze) = node_refs.freeze_listeners.get_mut(&cookie) else {
--            pr_warn!("BC_FREEZE_NOTIFICATION_DONE {:016x} not found\n", cookie.0);
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "BC_FREEZE_NOTIFICATION_DONE {:016x} not found",
-+                cookie.0
-+            );
-             return Err(EINVAL);
-         };
-         let mut clear_msg = None;
-@@ -248,8 +262,9 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
-             freeze.num_cleared_duplicates += 1;
-         } else {
-             if !freeze.is_pending {
--                pr_warn!(
--                    "BC_FREEZE_NOTIFICATION_DONE {:016x} not pending\n",
+@@ -1041,7 +1068,10 @@ pub(crate) fn copy_transaction_data(
+                 let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
+ 
+                 if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
+-                    pr_warn!("Got transaction with invalid offset.");
++                    binder_debug!(
++                        crate::debug::BINDER_DEBUG_USER_ERROR,
++                        "got transaction with invalid offset"
++                    );
+                     return Err(EINVAL.into());
+                 }
+ 
+@@ -1066,7 +1096,11 @@ pub(crate) fn copy_transaction_data(
+                 ) {
+                     Ok(()) => end_of_previous_object = offset + object.size(),
+                     Err(err) => {
+-                        pr_warn!("Error while translating object.");
++                        binder_debug!(
++                            crate::debug::BINDER_DEBUG_USER_ERROR,
++                            "error while translating object: {:?}",
++                            err
++                        );
+                         return Err(err);
+                     }
+                 }
+@@ -1087,14 +1121,22 @@ pub(crate) fn copy_transaction_data(
+ 
+         if let Some(sg_state) = sg_state.as_mut() {
+             if let Err(err) = self.apply_sg(&mut alloc, sg_state) {
+-                pr_warn!("Failure in apply_sg: {:?}", err);
 +                binder_debug!(
 +                    crate::debug::BINDER_DEBUG_USER_ERROR,
-+                    "BC_FREEZE_NOTIFICATION_DONE {:016x} not pending",
-                     cookie.0
-                 );
-                 return Err(EINVAL);
-@@ -277,19 +292,33 @@ pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader)
-         let mut node_refs_guard = self.node_refs.lock();
-         let node_refs = &mut *node_refs_guard;
-         let Some(info) = node_refs.by_handle.get_mut(&handle) else {
--            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION invalid ref {}\n", handle);
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "BC_CLEAR_FREEZE_NOTIFICATION invalid ref {}",
-+                handle
-+            );
-             return Err(EINVAL);
-         };
-         let Some(info_cookie) = info.freeze() else {
--            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION freeze notification not active\n");
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "BC_CLEAR_FREEZE_NOTIFICATION freeze notification not active"
-+            );
-             return Err(EINVAL);
-         };
-         if *info_cookie != cookie {
--            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION freeze notification cookie mismatch\n");
-+            binder_debug!(
-+                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "BC_CLEAR_FREEZE_NOTIFICATION freeze notification cookie mismatch"
-+            );
-             return Err(EINVAL);
++                    "failure in apply_sg: {:?}",
++                    err
++                );
+                 return Err(err);
+             }
          }
-         let Some(listener) = node_refs.freeze_listeners.get_mut(&cookie) else {
--            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION invalid cookie {}\n", handle);
+ 
+         if let Some((off_out, secctx)) = secctx.as_mut() {
+             if let Err(err) = alloc.write(secctx_off, secctx.as_bytes()) {
+-                pr_warn!("Failed to write security context: {:?}", err);
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_USER_ERROR,
++                    "failed to write security context: {:?}",
++                    err
++                );
+                 return Err(err.into());
+             }
+             **off_out = secctx_off;
+@@ -1283,7 +1325,10 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
+         {
+             let mut inner = self.inner.lock();
+             if !transaction.is_stacked_on(&inner.current_transaction) {
+-                pr_warn!("Transaction stack changed during transaction!");
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_USER_ERROR,
++                    "got new transaction with bad transaction stack"
++                );
+                 return Err(EINVAL.into());
+             }
+             inner.current_transaction = Some(transaction.clone_arc());
+@@ -1306,8 +1351,21 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
+     }
+ 
+     fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+-        let orig = self.inner.lock().pop_transaction_to_reply(self)?;
++        let orig = match self.inner.lock().pop_transaction_to_reply(self) {
++            Ok(orig) => orig,
++            Err(err) => {
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_USER_ERROR,
++                    "got reply transaction with no transaction stack"
++                );
++                return Err(err.into());
++            }
++        };
+         if !orig.from.is_current_transaction(&orig) {
 +            binder_debug!(
 +                crate::debug::BINDER_DEBUG_USER_ERROR,
-+                "BC_CLEAR_FREEZE_NOTIFICATION invalid cookie {}",
-+                handle
++                "got reply transaction with bad transaction stack"
 +            );
-             return Err(EINVAL);
-         };
-         listener.is_clearing = true;
+             return Err(EINVAL.into());
+         }
+ 
 
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
