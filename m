@@ -1,36 +1,36 @@
 Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022118.outbound.protection.outlook.com [52.101.101.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25303DA7D9;
-	Fri,  3 Jul 2026 13:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611943DD86F;
+	Fri,  3 Jul 2026 13:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.118
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783086464; cv=fail; b=eUlhfZQ9dWPjVxzgacCtKAPKuA4/E1NrZdYMK2WR2R95VSoFDLuU1l9iLyZawzt6BJj4JkCs9XzPZqNvroJGhdoz23WCoLcVEn0vUHsP5q1yCQOkXi6/soHRBAOCU88F32Z9RUjlZPbIEMWq7I/bEd/wc62fclal7JYG790yPVc=
+	t=1783086469; cv=fail; b=gHdDRNbmDN8OzTfhHIj51pAPo9mfAKZe05lULBNx0ub40snhe5YeFvKK2PBXnSKKhBr86EcF9D6EnzkFfgiQWVYwspbl5ZBVQj1kSDWPH3AvUvcjgspa14nm43L5nJ57lIq3kQM17yCBGPxpJ8NZitCOm0qAryfbDogSxoP3a0U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783086464; c=relaxed/simple;
-	bh=mDpVdhOmrpvZNwVS4aLQT4hqtCY3ELL85uHg6nKymTE=;
+	s=arc-20240116; t=1783086469; c=relaxed/simple;
+	bh=cdoN+b+0MGWc9+ZpJ5k7UEJmBP2KRgwOFXk9+s5+hIs=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=CrwheM/jdMXNnYGYG/hJhb0CBqvsGHQHScngDPGIwv2C7sLHArIFR4AzPLwQUraGfEQLzS1rK7mtbucAFDG5NUeQxPe2JtVFftsecuYQ5gtQrzanOEaFAM+Vo6Plm4ofU2s/w0LOSQwXIFi+7xThC1QPcAXsbvZ/vnAysszhcs8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=cUrlXGsR; arc=fail smtp.client-ip=52.101.101.118
+	 To:Cc:MIME-Version; b=At109p25WVnnFH8Zcv6zuVm6d4WTCDdhp5t3szeJK4I9+/vgvdem9aH+rv1m7N9o4SQaGq8w6/8glYF9xvUHPGBaylwXHCUFgHCMcAr5VoXgDJbcKsskUqxUPTDHgj5fnzggC0vQ5edufJ1Qn9y9IRU+gHg8OhtyWhGsuXGF7vU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=HkLQkaU0; arc=fail smtp.client-ip=52.101.101.118
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="cUrlXGsR"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="HkLQkaU0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k1NjMwv7fWtIuamWlpZwAOAPThbRldSNINAksdPRKzG8nKECScy/p9IJqR9ugxasV7IoW/Ol1ye6w+Fnt1oXp8nY+bS+rRKs9Xbsj6KgoAJRTcrggCZbg9zp7DaQLgOiIZPUVoZbrvy56cJHU2h1UGVwqnvoyut+ROXdPnUITmWG1bLPkmYUSDo5J1UiUVK4t6X9C9QzZ+JRxHIF7/1pW1W4S5hXLsYCuXtd5Of4t8mGPbzMg8lzXiagQM+8qp1xELoYuZ1Ra5LPvnnYSNxXx6Ogq2zJaZOW8SExmKz5ZvKAiDS4Q2szQM+W855zJ2S1g141UWf2IhVispQVLwZnqw==
+ b=HMR1XCKttiIBRmIm0WZKdjwKuizQo3kemJHzjipmqlMsy29tR9GKceE2gmAk/s2wiXyqCuDD+lMH/fyFx9HHnGlcayJbzr/b2m7p41CIsVuLJb14/VzE34EKYCkKzdHXpgaWA/snzNe0O0JdQmYQ+cNbxqr9d9YCHC7Y3CnzGp2CNfA1nuRmVRXoMVWvubspT8kHgoFk2InRPDBbu+pkgLnqid+5i+ZwFQulPFylNSBTUaj3NXvWRPIwaWoAui7t7dH7nojJrh9lpTWyCrMe3ikJjy+f85mmxodKergA2NJ+/lJIfepKDcSMOVwvn+ppax9YMTZkXyKae5PO2BL09Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MeXDBqaZTNi+iE/pOQv8spo0XqEEdwKXNo9fgs8h5M4=;
- b=XOHTiJ4QNH2e578aKpX7+kMeUNG4uhgJh1mYngzcbuy41FtZZAFiBAEbDDP6Po142VMUbz+DShTI9eEL7/oQ32S0ru1fqtFRyR93u5cgmb6k54eE55RwQTuQzJMfXa09456Bvkzz/Xt6YZ0+go6veLpYEUcqG7ULC/FWtYa65yRfsZVgvRoFgiWLxI5JE/OpeyAzIoZ57Ayjsa874EgKPtBg4pclogL9Q62O2TzGQvKcqmt7Y46rOAQ4iaG42KvfnNzaggvwmBCiwolSWF6AUJzPbH/iQJ11rdwLyy2Vh2HF4C2LVHJPmuAuvqAhWIQn5MF8ClzwkgJtzDN1GSwpSw==
+ bh=N/8QG9OXlQ1XcY0KfuvpjrQcS/R2P36tUqTRFVtNAg4=;
+ b=ZpirVTx1mT7DsLMStbaXoSDIdBPcjnPiMMSRCBQ8PSUyJHct1EPDlCgH/kXAIKeMkEFHhprtXK7AJ5L1eQkJlS/I8iCHkAS0r7aYD/vCkZjSNrrnXoePtR7N5x71Zc4q2xoTqR72lUsDEkxkF5CBH/gbqpsttLQ3pXyIfJlcX2ohlCsEcsW09VFB+fbp+HSiDU3qfUltWcTIfbihvrnoPoEvR+Jp7gbpe5i0PGUsWc36ebhCLgyHq41VFwme3ixB2c3d4lyU72VyFF8qb/f8/dBkgPEqWjOKgtdcQS74rP8Ut0hXd340TOr6tXKeLh48hrfduPB1c1WWW5r1oAQg3g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MeXDBqaZTNi+iE/pOQv8spo0XqEEdwKXNo9fgs8h5M4=;
- b=cUrlXGsRWcuWEH0Bky4/D6eSssyehg94+1x7sBEay2fHW89Yv2Bt8cZQM1um69HLlGjFE7DZvGmofnHCARvpvBi9lT3p7BvPXbV3xJGb624kEr/NoL66xRfm7KtAaddhYjNU+XzAtWWlNYD/5CG0PR9eA5zXt6ZBR3KpvT3Yf3o=
+ bh=N/8QG9OXlQ1XcY0KfuvpjrQcS/R2P36tUqTRFVtNAg4=;
+ b=HkLQkaU051lEzyBPwVk9uaslPORgcZVDdODjc9Q8Wee8CApR2OWkcSOszD3bGYaV74lbmplLc1nNpW89BabH3cXXnxNo3WeVWrklcmFEih4g9+DBgXhpzbi40xkf+AJGcglTusHeRMocjjrQOHRt3LFvfsveXKTOkBTLziwtchQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
@@ -43,12 +43,12 @@ Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Fri, 3 Jul 2026
  13:47:32 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Fri, 03 Jul 2026 14:47:27 +0100
-Subject: [PATCH RFC 2/2] lockdep: delegate Rust lock class printing to Rust
- code
+Date: Fri, 03 Jul 2026 14:47:26 +0100
+Subject: [PATCH RFC 1/2] rust: sync: introduce a way to create lock class
+ from caller
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260703-rust_lockdep-v1-2-1c21c62d0341@garyguo.net>
+Message-Id: <20260703-rust_lockdep-v1-1-1c21c62d0341@garyguo.net>
 References: <20260703-rust_lockdep-v1-0-1c21c62d0341@garyguo.net>
 In-Reply-To: <20260703-rust_lockdep-v1-0-1c21c62d0341@garyguo.net>
 To: Boqun Feng <boqun@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
@@ -66,11 +66,11 @@ To: Boqun Feng <boqun@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783086451; l=6862;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783086451; l=5592;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=mDpVdhOmrpvZNwVS4aLQT4hqtCY3ELL85uHg6nKymTE=;
- b=6m5A4zPP54DIqP3iQqhIM7yLtryCy2eeCJTfkAoNqoRXiciOeFNraEY76jF3Ivr0zeRt+X6EZ
- h/KkHHk44rIAjfKLQQAId+9sYYxuPrf6xowOoL8T/4hL2s8jLOAZ4dQ
+ bh=cdoN+b+0MGWc9+ZpJ5k7UEJmBP2KRgwOFXk9+s5+hIs=;
+ b=qWTgghzXb4Drp6r0KQ3nVWZ3QsKKhRkMNttVQU25q48DlmgcrlEkOdGy+6/RX5jyGNllfXkxe
+ oDJRZMjsuOhDC7UTpvbFMLrEriiH7Iev0cljkHj7oU26HtDSCDrnAn6
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO4P123CA0502.GBRP123.PROD.OUTLOOK.COM
@@ -84,244 +84,206 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB7305:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0793be7e-327b-4b30-6da5-08ded909a1b9
+X-MS-Office365-Filtering-Correlation-Id: 0797230b-6964-4b7d-cfad-08ded909a180
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|1800799024|10070799003|23010399003|376014|7416014|6133799003|18002099003|56012099006|22082099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	kJadFTteNvT6KDcIcRSz1X3Re/8vnpv04JOKHEmQFXSW4Jni/2Ws/QBcqqhG2g13vxmdraTjEhj4pH2UFInFZuEBfXeERmz5EMl/EvdQLFIWkmz98Ff5RDumBlYziWvapPzFAZwV8u4fYTVzjB6oWFAALfuQmw5U0qQXbjrZk7VZPua4eKR2sMICmI33q+mHMTKlwrmiXxyXnmzh5KmL1THOG8+p03V50ejuWen8ijRgEUHPi5sumS4xKcdGQ1E80DPZfJWuVJXHWOXaJDq8epiB4FUxCA+DlcY9IxwTbRLV4HQp6pHfE8vwhsyu+NKBcIr5a8XqGDfxsVt1LMld/nQJ4kP4uIJFZIQ2/3jhwN/MDidIBfvqUD1wBULkCGEGdOVZ4dsd9h2wgW9t5ThB9YcI7CKSSfyW9cxqA/J4gvEIO+zS6L8PMcOKhSKWne/IlEXfNm0u0HX8HPQ1lGmtenVTQrEwC889gGgAdPFMbXbcGmhThLuTIvHhxmI0+VcTlLqMJdByPH5gLYjABD6/prWsuwXTY+23wa8ju4NKNcvR2I6Kn1GwYD3mDdl85sPVtqhMQef1510DGSFWuIpZ7Tps+DCAU6w4DXlToZGoMVyYtI1eGHumtg5CVm+A+rjNJ0uYLyL+FFxohqegj2raQ6ne8hmqwQPiUwj7kiKKhEfFo8uFLoO/MSzoqDJIgSvagLfXvtrkHndsNO9aXvCXLQ==
+	669woihJ3rlxdFMhP4j0HSkYNXYSXjZ/umkO7CMw8+XC/iSZuqAjjB1Q+z3HEEBbFISrgbmtVY9BYFQh9jT7hkA/3WkX5z5Goje8sE8dUK/vuFJ8jOWBV7UaChJ9KDgOo1aJ+Exoh8PAK3wWIPCDw7rJ1eVc/z03jwL9rwPyXbZE4MvreFT+TZv8fb6J1+tTGsxnl4zg78FakMgwYbToR711izqLU+Tl+fV8AMCyjEP1/By2sQATcHi9LXBLe5/gEwqx27YObv1Wj3IuwgA8lfPTEV1GFtRfSjIFClAjUuBKjPdvoOLpOWqKkXAdQof0MZJUOb0PFlIhx2QezNvs4tM9WF7TNVe7cFL/s6I8uentxSqILOK1G+aPke3470VqW1RfHi2Qcue75J3m9BxNPKyt8pyh53k/p1iDfZH9DcN/cc9yS9ZI5KELxNtfkOgkwxUrBGmlveDRHGwyYYJaFfv4u8I97yK234qIV9gChkrnlK6YYKsgpJGEycK21R2SpMK2a+wmLVQEXUMwP2dJ4sFYQASdgbsNtq1pQ+b1kbDiqM7vYGNXvIBf+iQQnu6kC08CwOn1BC+QryE+bXxYYUDEXVmlVnLTYUbG0ol6ryUjB/f4QfWzHU6vbQYNx3xRPdWAXO7UwyNnfvDttPRI3qmhzSHr0L8JfPxf99gBE/QlcYCS+8umNSNhOJFjwqLjh680oBMlDzbwqqYEiDTXTA==
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(23010399003)(376014)(7416014)(6133799003)(18002099003)(56012099006)(22082099003)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c3YxWUlRU3NTVjNoRHlLdUs2VlFMV0NHcEZBa0NOTis3dTA0NEIrTTlOb0cr?=
- =?utf-8?B?dEVXVVpoREEvZ3VrZERySGpwT1BnZTVnSlVOMmEzTmp4ZTRWVXdLL2Zzcmtz?=
- =?utf-8?B?cFo0WHBHR3gzRkdmbkgxN2x0RUhPTEQyUXRBaFBPVm9QY1NXdFA2WHNBY0VQ?=
- =?utf-8?B?MDR1eld2WmQzZXZlcFhBQUJnUElaM2xET1hDd3NMUkZueWtLMGhZNFJEbFEz?=
- =?utf-8?B?dW1tYitmcU9tcm5EbHAwTzg4VnZ1RUdtemtiait0UnMrajBIb2Q1aHJZUUpu?=
- =?utf-8?B?TitaQnZDSXlkNFVzL1Q3Z0dBdEY4ZVdBL0RoS3Y4QjV4QkxFMnBHbDk0SjNE?=
- =?utf-8?B?OGU3RFpTK0tGL1JWRW1DN3VFTVBYS1BRSWpaQ0pFckozaS9tdThXT2w3bVd3?=
- =?utf-8?B?ZzJwam5QUjdiNXFsSHNpZFhudkdzUkJjNmltdkNyWldEbmtQbE5tRUFON3ZF?=
- =?utf-8?B?VU9VeXhZU3F6NDZlN0ZRNDRtY0tKa2pYeThNVTV4ZWRCeE5xK040SHhzbUFD?=
- =?utf-8?B?dk4xcGRJL2oyQjdNM1JpVWVUQ2kxQUluU2paN04wT0NHU2JIaHdLUWJlYitn?=
- =?utf-8?B?cHQzWDVOdGNsNCtZK3BBMldIY3NvK2JxbUc5WXZBc1Jycm1WV3piajhNaXNF?=
- =?utf-8?B?MkZKSW4zY3BqL2R1cExzTXAzU0s4cWNRWUNod0lxN0VscXR1THJaYU1SaE5R?=
- =?utf-8?B?SG9qcFAyVVlqd1lRdHZnR05teFVyQzhjTXFtSDZrNzVqMm10V3lMb0ZPaHNX?=
- =?utf-8?B?MVh0L3FRc2c4V3lENytLUldMbFlYdURGbGY4ZFRTVDNPVzlhYitHdzdvYWRI?=
- =?utf-8?B?MTFKcFR4ZFYvR3dqT3VSbFZBUzNMRVJOVnFtNU8rdDdaQzZWWUtEcFFPSU50?=
- =?utf-8?B?UGsyaFh3MnAyUi82R1FCRGZxc2krdjdCKzVLU1pBeWNVc2gvYlZCWjRDQngr?=
- =?utf-8?B?SWI5cisxMGtNZzJGSk1ZV3YzblNJYmlkbFFXTzdsbFR1SW9pYjdIdElGWFVL?=
- =?utf-8?B?ZlR1SzFOR3h2VHd6dXZuejNoVk9PRW82RHZUMDQ5VUVJd0JiemNRYUFFU3Bi?=
- =?utf-8?B?NTNHWmRZR0dMamlBdnhGcUdIeWtmRnJBMjVwZVZsOEttb3BURkJlYmUyL3Zu?=
- =?utf-8?B?TGdxUExpSHB2Rkx0UkZQQlFuUXZIV2FydlBmeFRWeFdibGlXWTc1dDBYRDhy?=
- =?utf-8?B?Szh5WmlKNlJ1ZXBTd1I2UWIzQURHRzhVSlFqRDVEMU5IOSszblQyTkwyTGRC?=
- =?utf-8?B?OWZTYm1sa084emNGMHY0TzRuelBjVWN5Y1RMZ2tUWWRrUElaZmhUSW5LSStu?=
- =?utf-8?B?bzNDRStiQitYSVpKSm1wNnk2eDNaKzlFWktkclF0K0R6TG51U0Jjc2wxQ0Iy?=
- =?utf-8?B?VU1yQjN6cmI3eWdjS1F5TEYrVGhwU1QyUHFMOGorbnNHUTVJZ1JRL1dQZ3cx?=
- =?utf-8?B?Umt1QjZzWkY1Zmp6c1RxODRpV3Rob3pnUHFMRGpTQ0RUZ0N5MkpqSTBhakly?=
- =?utf-8?B?ajk4OUxjMTcwRVBFYTliYVZ6RS9Pbkcrc0xWOWJSbXhwSzhPS0VadFppMjVQ?=
- =?utf-8?B?R1FqMmVRR2VkTGFmYXVUU3pwb1ExQXF0RTNQeHBvNTkwT2ZMcWNxTzg2Tk1X?=
- =?utf-8?B?V0dsajlPUllFTGE1eFlYbThzc0owVjJQN1VuRlZRTkY5czVYVEpRbEM2V0JJ?=
- =?utf-8?B?STJpbEVsN2cxdDE1bWlxenlObmMxWUszSUVwUmtxd0FWdURrMmFpQ3J0RENl?=
- =?utf-8?B?Y0RQVnZMekR3T1gwbG5pMlplNXBFVjA5SDdvZW5JRGdpRnFoVDZVSmJ0VlFz?=
- =?utf-8?B?TzJsYlNzNWFJUE5jUEdBTmpKc2g4ODFJZURiZ3Z2SWRlNzNXRysvay9JUHU1?=
- =?utf-8?B?N1FIUmFpdTRmUjhWTjBLWUdFKzVRcTJKVHhxYTdRL3prdEVXUlJTNFhVVHZL?=
- =?utf-8?B?U3d5MTVidlgwNHJSZitLU2hrdVZxLzVsM3B2WlJ6UWNPcWtqOVNyQ3lxQTBq?=
- =?utf-8?B?YURGNjVOenVDdVIzU3BjQkRpazdJZ21XU29lWE9UMmM5YU5ONVV2VVk2Qk1l?=
- =?utf-8?B?QzZTRVJENXRnTm9MRXRyeGxmcHNPVGcyeE1VaCt5bGZmVVFNLzB1RnpkU29L?=
- =?utf-8?B?bXExZGRzRXBJUlZVZUEvRlk5LzhXQUh2aTlWTmZEVmZ3T08reld3bUFkeGhF?=
- =?utf-8?B?V2NtM095R1VGV1Bzd3J0aUk5bDhCK0NSbkFzVVNFSlVBMmJuR3FEYVRsTXdX?=
- =?utf-8?B?T1R3c2JidlhTckFyWndBQnJDdVpad0t1MkttRVF0SlBzRzJvSldibHF5V1Vr?=
- =?utf-8?B?MnlqMlZCK0k5QjhOYjNSWStJT3ZWTHQ2MkdBMHlZZmFNb3ByYVlJQT09?=
+	=?utf-8?B?c2lyZGF6ZlJaS2dkUHNORUlML1VnTDgyVkNKelVGYmdOYmczdGdRRlVZd05N?=
+ =?utf-8?B?QWk3OFhLRnE0d1pqUEdDRTNaRER0bjh4b1p3QXlZRUxBYUFrNVhHdEwwVXNG?=
+ =?utf-8?B?OHQrUXQwN3hzMkNwdWdtNldoM3JQSFkyOWdES1BsTkNwaFVsVkhKbEIxY2tv?=
+ =?utf-8?B?L0hzSVNzb3ZPV0J5bEpzSnZGalVVbFBmRzdLM2Y3ZGZtSkluWmZOd3l2Q0tJ?=
+ =?utf-8?B?N1pnUDBSL0loYU5lRk55eU9uS1k2Q0lhVGtGRktndTJySnFYTlZza3JiTFVC?=
+ =?utf-8?B?bmNnTmJxMm96bXVoeXFQRE5INjRVVlE4S0VFN2x1NVRVbHNvbkgrYlc2Slhs?=
+ =?utf-8?B?TnpZMG5CY2tkeEZMVGFkMHlUdXZBMUhTckd4QkgxdXZlUnVtQW52S0pRY3Nv?=
+ =?utf-8?B?V1NkcmdKNVBSRVAweHlDcXpiWEpyUk9ETnU0QWdqM3l1NnhrQ2l6eldLOFFH?=
+ =?utf-8?B?bW5ySEVuMW8zVjBUbVV0eStienU1RUJGMHZieVYrNmNoQThyQ1ExSE5ZdGNN?=
+ =?utf-8?B?NEphWFUzSmc2N1luam8vVUxKYWJYVzBCQTZJMmhUcFhROURMRXBrcXMrc1l6?=
+ =?utf-8?B?dTIzUWptSWZtaUNTRm5Zbmp2U1liTjFEdzJ3Ny9KM1FVTUdQakVxa1ZwK3Jw?=
+ =?utf-8?B?R2IwNzdjaHJLNysvWlZyUC9hYVd5ZmhRdHdydnNnWUMyTVBvVzBBYmZ4eHI1?=
+ =?utf-8?B?L0V6UmovckYvWnV3cDgrVi9oSkR5a29RVy91aEVXTVA3cUtRMy9ReDZSWEM2?=
+ =?utf-8?B?OTVscWJjQm1sVGxURFlQQ2JxRzllcUp0MVZTVU0xbC96bStCTldUTDM1Z3Ix?=
+ =?utf-8?B?M3B0dkFiTThOd1JrMmRGOUVFOEhya2FqaFgvU3JqZzhQZVl6Z1VXWlQ2OHFF?=
+ =?utf-8?B?NHNOSjQ2bkxQNmExVUE0QURaM1JUUnNYMDlRNGo4Njl6RmlnLzNKazlCTEFs?=
+ =?utf-8?B?WFo1VnFnMjVyeFVvR0JwNkFZa1Noc0ZtZ0xsaUJwMlg3b290TWxZRzlQWkdQ?=
+ =?utf-8?B?OXVqTXhNVStCZjd6TDRNTW0rRGpSalIxbXc1TVNHc3JPanpVL2J1VDllTE50?=
+ =?utf-8?B?NGNWdnUzUXBMQzNOa09SU1RLZzJoa2NMcDRGQnVlTFI3d3RERVI5VTJSL000?=
+ =?utf-8?B?TVQ0V01UOTZyMTNJd0RwYVNHMzRlTFBqS2M0TmxHVFg2M1VJVkFua0Q4Yjlu?=
+ =?utf-8?B?R1RqTW9CM0xUbXhjbmxycHVDazdSTWc3OVEyTVp1VlM2TWJ1c2d0WUNjcEtU?=
+ =?utf-8?B?YUR0VGcrODNyTDFINDh2QWRURTdUaXpEVjJjdHpZUmZrbWt0c051ZGd1WXhv?=
+ =?utf-8?B?Z0pMM3dhQVpoMTh0bmcwcitVaDJIZmw3RFZRaVpKNEdDOGgzc0dVRUpYV2wx?=
+ =?utf-8?B?Z0l3NEMxS1lDeHd3QXFjYmU5ZlhEdzhSRzNrTWVHOGZzbjB4Zjd5aXM3aXBw?=
+ =?utf-8?B?eGNhZ0kvQXZLY2ZsTG5maDFmM1lBZWJGMWgvbnF1MmdiRTZsTU5tMUNiZ090?=
+ =?utf-8?B?M0ZPcjloTWUxSWVBSHFjT2lJTzh5QUlMMGVZdDdCRHNnblRybW95SlpFWkQw?=
+ =?utf-8?B?YzM4Vnh3ZFN6elZ4ZzkyUFVaanJpTWkvZmdrQVZCYUNPcWk3ZXNNTmJLRkRa?=
+ =?utf-8?B?UXd5dGZKb0V3aEl6MWZiOGxqT0ZPT3paa2pwOW1pN0xyRHpsNUdWTXdFQTcx?=
+ =?utf-8?B?S1RoaXgzMmdYT2RYeHM3V3FCT0tmaTBHVUpyUzB0ZTFqSTFKV1YxYU5WZ3p0?=
+ =?utf-8?B?UEFwM1p3TEhLV0dGZFhsY0pXeWJvMFlPLzZxOWp3OTRnT1lxTDhQcVc4Qmth?=
+ =?utf-8?B?anJGSU5weEhYdlNrb2dhTGNuWFM3dm9aRTh1amxVSlJOV3RRcHFBWGxVMTJK?=
+ =?utf-8?B?RXBQVEh4c0wyRjNYWExKamFFK3QwcGlZLzFocksvcS93NE5EV1Vjbmp1T2do?=
+ =?utf-8?B?azRrVFFSa3Z5MUhEeWhkQzgvSERNU3EwSklCdFVOdUIyRzhRRHFtaVhzVVFk?=
+ =?utf-8?B?blcxekpUN013UEVxbTRFZ3hYdXBUS0VZNHZrWmh1TisxUTR4ZFZVQVAyK0lz?=
+ =?utf-8?B?VS84UTdaU01jSkp0dWpuckg1TUE0ZnQrc042QkxIcGZMdXRjcVdjZTBMSXJX?=
+ =?utf-8?B?VlZINkVQZ0IxRmtLMkRFcHgyaHFScEo0bFJuNjRZYjJlQnBjVjZ2RzN4ZVh5?=
+ =?utf-8?B?Q3lsSTgrSThoZjg3TzNWbDRpMWlLU3ZhbnlZaWlTNjlrVGtVK2Jobm5zQ3ZV?=
+ =?utf-8?B?TllBU1NNUTlFbTJ0T1JvY1U2dUkvbXZVTm5zQVgwU3lxbXN0ZUEwdS9HQTR3?=
+ =?utf-8?B?Ym9ZWW1lcS9zZnFGdndwYmV2bjRVbmFrREV6a0FBdEFHMTNHMlQ0dz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0793be7e-327b-4b30-6da5-08ded909a1b9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0797230b-6964-4b7d-cfad-08ded909a180
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 13:47:32.5033
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 13:47:32.1457
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d8Sq4arXEvfnG00IEsfIkWQQUQmGN/zLP4PN0edc/EaJohL7sBF5TG1XuUKAYCWyeP0lK71LZO+AL58ZC7pFNQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8ElaxRPId9dZVfPDJ0deXFS7xtPdryW2Y8I7vQKUXmmK+nuq5ffzM1TLU5u5IOUHvZXHcujf5RR8NudcqAV5uw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7305
 
-Add a special "(rust)" name which means that the lock class comes from Rust
-`#[track_caller]` and thus should be delegated to Rust code to print the
-name.
+Rust provides a `#[track_caller]` mechanism that can be used to identify
+callers from callees. This also works across multiple level of calls.
+As lockdep only needs the address for static key classes, the address of
+these `&'static Location` can be used as unique lock class keys.
+This allows a more implicit way of creating lock classes without having to
+use macros.
 
-This allows locks to be created with usual constructor syntax and does not
-need macros anymore.
+Create `LockClassKey::from_caller`, and use it for mutex and spinlocks.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- kernel/locking/lockdep.c           |  7 ++++++-
- kernel/locking/lockdep_internals.h |  3 +++
- rust/kernel/sync.rs                | 24 ++++++++++++++++++++++++
- rust/kernel/sync/lock.rs           |  8 ++++++++
- rust/kernel/sync/lock/mutex.rs     |  8 ++++----
- rust/kernel/sync/lock/spinlock.rs  |  8 ++++----
- 6 files changed, 49 insertions(+), 9 deletions(-)
+ rust/kernel/sync.rs               | 37 +++++++++++++++++++++++++++++++++----
+ rust/kernel/sync/lock.rs          | 13 +++++++++++--
+ rust/kernel/sync/lock/mutex.rs    |  3 +--
+ rust/kernel/sync/lock/spinlock.rs |  3 +--
+ 4 files changed, 46 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 2d4c5bab5af8..1e05d51e710f 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -724,7 +724,12 @@ static void __print_lock_name(struct held_lock *hlock, struct lock_class *class)
- 		name = __get_key_name(class->key, str);
- 		printk(KERN_CONT "%s", name);
- 	} else {
--		printk(KERN_CONT "%s", name);
-+		if (CONFIG_RUST && class->name == lockdep_rust_name)
-+			lockdep_print_rust_name((struct lock_class_key *)(
-+				class->key - class->subclass
-+			));
-+		else
-+			printk(KERN_CONT "%s", name);
- 		if (class->name_version > 1)
- 			printk(KERN_CONT "#%d", class->name_version);
- 		if (class->subclass)
-diff --git a/kernel/locking/lockdep_internals.h b/kernel/locking/lockdep_internals.h
-index 0e5e6ffe91a3..d18d50f7fd99 100644
---- a/kernel/locking/lockdep_internals.h
-+++ b/kernel/locking/lockdep_internals.h
-@@ -134,6 +134,9 @@ extern void get_usage_chars(struct lock_class *class,
- extern const char *__get_key_name(const struct lockdep_subclass_key *key,
- 				  char *str);
- 
-+extern const char lockdep_rust_name[];
-+extern void lockdep_print_rust_name(struct lock_class_key *key);
-+
- struct lock_class *lock_chain_get_class(struct lock_chain *chain, int i);
- 
- extern unsigned long nr_lock_classes;
 diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index cf76fb37c460..cf35858469d1 100644
+index 993dbf2caa0e..cf76fb37c460 100644
 --- a/rust/kernel/sync.rs
 +++ b/rust/kernel/sync.rs
-@@ -8,6 +8,7 @@
- use core::panic::Location;
+@@ -5,8 +5,12 @@
+ //! This module contains the kernel APIs related to synchronisation that have been ported or
+ //! wrapped for usage by Rust code in the kernel.
  
- use crate::{
-+    pr_cont,
-     prelude::*,
-     types::Opaque, //
- };
-@@ -150,6 +151,29 @@ fn drop(self: Pin<&mut Self>) {
-     }
- }
- 
-+// We want this to be completely unique so lockdep can identify when lock classes are generated with
-+// `new_static` mechanism, hence making this `static` and attach a `link_section` so it cannot be
-+// merged with other constants.
-+#[export_name = "lockdep_rust_name"]
-+#[link_section = ".rodata"]
-+static LOCKDEP_RUST_NAME_BYTES: [u8; 7] = *b"(rust)\0";
+-use crate::prelude::*;
+-use crate::types::Opaque;
++use core::panic::Location;
 +
-+// This should only be used in conjunction of `LockClassKey::from_caller`.
-+const LOCKDEP_RUST_NAME: &CStr = match CStr::from_bytes_with_nul(&LOCKDEP_RUST_NAME_BYTES) {
-+    Ok(v) => v,
-+    Err(_) => unreachable!(),
++use crate::{
++    prelude::*,
++    types::Opaque, //
 +};
+ use pin_init;
+ 
+ mod arc;
+@@ -66,6 +70,31 @@ impl LockClassKey {
+         }
+     }
+ 
++    /// Obtain a statically allocated lock class key identified by the caller's location.
++    ///
++    /// Different caller locations will be guaranteed to have different lock class keys; however for
++    /// the same caller location, this may return different keys, e.g. if the caller is instantiated
++    /// in different object files.
++    #[inline]
++    #[track_caller]
++    pub const fn from_caller() -> Pin<&'static Self> {
++        static_assert!(size_of::<Location<'_>>() >= size_of::<LockClassKey>());
 +
-+#[cfg(CONFIG_LOCKDEP)]
-+#[expect(clippy::missing_safety_doc)]
-+#[no_mangle]
-+unsafe extern "C" fn lockdep_print_rust_name(key: *mut bindings::lock_class_key) {
-+    // SAFETY: `rust_print_lockdep_name` is called when the lock name is a reserved value indicating
-+    // that the lock_class_key is static and backed by a `Location`.
-+    let location = unsafe { &*key.cast::<Location<'_>>() };
-+    pr_cont!("{}:{}", location.file(), location.line());
-+}
++        #[cfg(CONFIG_LOCKDEP)]
++        {
++            let caller = Location::caller();
++            // SAFETY: For static objects, lockdep does not touch the underlying memory, and only
++            // the address matters. `Location::caller()` is in rodata so it meets the requirement.
++            // The size check above makes sure that it does not overlap with other lock class keys.
++            unsafe { Pin::new_unchecked(&*core::ptr::from_ref(caller).cast::<Self>()) }
++        }
 +
- /// Defines a new static lock class and returns a pointer to it.
++        // A separate version if lockdep is disabled to avoid unnecessary `Location` being
++        // generated.
++        #[cfg(not(CONFIG_LOCKDEP))]
++        static_lock_class!()
++    }
++
+     /// Initializes a dynamically allocated lock class key.
+     ///
+     /// In the common case of using a statically allocated lock class key, the
+@@ -83,7 +112,7 @@ impl LockClassKey {
+     /// let key_ptr = key.into_foreign();
+     ///
+     /// {
+-    ///     stack_pin_init!(let num: SpinLock<u32> = SpinLock::new(
++    ///     stack_pin_init!(let num: SpinLock<u32> = SpinLock::new_with_lock_class(
+     ///         0,
+     ///         c"my_spinlock",
+     ///         // SAFETY: `key_ptr` is returned by the above `into_foreign()`, whose
+@@ -129,7 +158,7 @@ fn drop(self: Pin<&mut Self>) {
+ /// use kernel::sync::{static_lock_class, Arc, SpinLock};
  ///
- /// # Examples
+ /// fn new_locked_int() -> Result<Arc<SpinLock<u32>>> {
+-///     Arc::pin_init(SpinLock::new(
++///     Arc::pin_init(SpinLock::new_with_lock_class(
+ ///         42,
+ ///         c"new_locked_int",
+ ///         static_lock_class!(),
 diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index 447fec291cdf..66d51c860483 100644
+index 10b6b5e9b024..447fec291cdf 100644
 --- a/rust/kernel/sync/lock.rs
 +++ b/rust/kernel/sync/lock.rs
-@@ -127,6 +127,14 @@ unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
+@@ -127,8 +127,17 @@ unsafe impl<T: ?Sized + Send, B: Backend> Send for Lock<T, B> {}
  unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
  
  impl<T, B: Backend> Lock<T, B> {
+-    /// Constructs a new lock initialiser.
+-    pub fn new(
 +    /// Constructs a new lock initialiser with a custom name.
 +    #[inline]
 +    #[track_caller]
-+    pub fn new(t: impl PinInit<T>) -> impl PinInit<Self> {
++    pub fn new_with_name(t: impl PinInit<T>, name: &'static CStr) -> impl PinInit<Self> {
 +        let key = LockClassKey::from_caller();
-+        Self::new_with_lock_class(t, super::LOCKDEP_RUST_NAME, key)
++        Self::new_with_lock_class(t, name, key)
 +    }
 +
-     /// Constructs a new lock initialiser with a custom name.
-     #[inline]
-     #[track_caller]
++    /// Constructs a new lock initialiser with a custom name and lock class key.
++    #[inline]
++    pub fn new_with_lock_class(
+         t: impl PinInit<T>,
+         name: &'static CStr,
+         key: Pin<&'static LockClassKey>,
 diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-index 3675ce244e08..c730196b9d2d 100644
+index cda0203efefb..3675ce244e08 100644
 --- a/rust/kernel/sync/lock/mutex.rs
 +++ b/rust/kernel/sync/lock/mutex.rs
-@@ -24,8 +24,8 @@ macro_rules! new_mutex {
- ///
- /// Since it may block, [`Mutex`] needs to be used with care in atomic contexts.
- ///
--/// Instances of [`Mutex`] need a lock class and to be pinned. The recommended way to create such
--/// instances is with the [`pin_init`](pin_init::pin_init) and [`new_mutex`] macros.
-+/// Instances of [`Mutex`] need to be pinned. You can create such instances with the
-+/// [`pin_init`](pin_init::pin_init).
- ///
- /// # Examples
- ///
-@@ -33,7 +33,7 @@ macro_rules! new_mutex {
- /// contains an inner struct (`Inner`) that is protected by a mutex.
- ///
- /// ```
--/// use kernel::sync::{new_mutex, Mutex};
-+/// use kernel::sync::Mutex;
- ///
- /// struct Inner {
- ///     a: u32,
-@@ -51,7 +51,7 @@ macro_rules! new_mutex {
- ///     fn new() -> impl PinInit<Self> {
- ///         pin_init!(Self {
- ///             c: 10,
--///             d <- new_mutex!(Inner { a: 20, b: 30 }),
-+///             d <- Mutex::new(Inner { a: 20, b: 30 }),
- ///         })
- ///     }
- /// }
+@@ -11,8 +11,7 @@
+ #[macro_export]
+ macro_rules! new_mutex {
+     ($inner:expr $(, $name:literal)? $(,)?) => {
+-        $crate::sync::Mutex::new(
+-            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
++        $crate::sync::Mutex::new_with_name($inner, $crate::optional_name!($($name)?))
+     };
+ }
+ pub use new_mutex;
 diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 091167ceda66..f8bec26f1cee 100644
+index ef76fa07ca3a..091167ceda66 100644
 --- a/rust/kernel/sync/lock/spinlock.rs
 +++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -22,8 +22,8 @@ macro_rules! new_spinlock {
- /// one at a time is allowed to progress, the others will block (spinning) until the spinlock is
- /// unlocked, at which point another CPU will be allowed to make progress.
- ///
--/// Instances of [`SpinLock`] need a lock class and to be pinned. The recommended way to create such
--/// instances is with the [`pin_init`](pin_init::pin_init) and [`new_spinlock`] macros.
-+/// Instances of [`SpinLock`] need to be pinned. You can create such instances with the
-+/// [`pin_init`](pin_init::pin_init).
- ///
- /// # Examples
- ///
-@@ -31,7 +31,7 @@ macro_rules! new_spinlock {
- /// contains an inner struct (`Inner`) that is protected by a spinlock.
- ///
- /// ```
--/// use kernel::sync::{new_spinlock, SpinLock};
-+/// use kernel::sync::SpinLock;
- ///
- /// struct Inner {
- ///     a: u32,
-@@ -49,7 +49,7 @@ macro_rules! new_spinlock {
- ///     fn new() -> impl PinInit<Self> {
- ///         pin_init!(Self {
- ///             c: 10,
--///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
-+///             d <- SpinLock::new(Inner { a: 20, b: 30 }),
- ///         })
- ///     }
- /// }
+@@ -11,8 +11,7 @@
+ #[macro_export]
+ macro_rules! new_spinlock {
+     ($inner:expr $(, $name:literal)? $(,)?) => {
+-        $crate::sync::SpinLock::new(
+-            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
++        $crate::sync::SpinLock::new_with_name($inner, $crate::optional_name!($($name)?))
+     };
+ }
+ pub use new_spinlock;
 
 -- 
 2.54.0
