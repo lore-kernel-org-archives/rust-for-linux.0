@@ -1,66 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19A42E62B4;
-	Fri,  3 Jul 2026 16:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783097605; cv=none; b=dBvajaCRDJYrbr6hke4XwrUP2MVWbix5CnYfatIfCLcR/UrHpQuO0XI5+aIdpJL0gacaUVlPgjzkv/imE90ZGc+cOpIS2TinNSjYoo0A6dkTFMuzoISG8+EqjWbcHSXp8jXUQq7cUXdgRJkas1FndTCVd7t39rRCKq+quZAy35c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783097605; c=relaxed/simple;
-	bh=+wm7iBGV6NG9r5LEc21MHyCO5EAWcpaPW8H0ZcGzVDk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ULKd42SElmNL8ZhicaAaVWzv/LWzGv9BSpdDEiSxwdvC5hzD5dFcu+n9wnWkNdwdlOcBJJfaiK+hKSbHGb9tBnOCq0LXxnr78PHRHV2NdfHpdgvUySTXyFD8geReNKUS6edvrd7Wi1Vk+7MeI+Z5DRDrf3+azlTLlqc1PIpkZpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+g5ZKeE; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6782247291;
+	Fri,  3 Jul 2026 18:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783104788; cv=pass; b=j9oeIiuay32omJ2nhq/9YoqmLTGKkuJ0j/i8e0Vfsc+vrxBMphDG3th1+sy/5UO/4sr+ukrDKV9zd6b5LyfHXwUg8OZD0lFcG8aDtLm1WNKUXbez4gkp4Wdr1BCWhfST2PWyYIcFp/vUk6EOyQwdo0zAnEa+bP5I/+z9QYuDC0U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783104788; c=relaxed/simple;
+	bh=XVuPdvip7/qY1K9b34f//yC+Sfd/Qm9mPtikcodSiDM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=I8WTdYuqxd0/b9v8tKXKfeFemDxYnloqnRWD0ZMKOf12y0NOX7TxFlCPGWRMTkHX2Ol/g0TCilMOk2ffRF6bNh3ejPaBwQ8/1iXC5z8VF6+mX//g9OYk7H+Q1LWc9htuVovXCBZhxL/dYIy/89BRRkkED1IDrhUrxXz2u391DRk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=jA2qgwFg; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+g5ZKeE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36041F000E9;
-	Fri,  3 Jul 2026 16:53:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783097604;
-	bh=+wm7iBGV6NG9r5LEc21MHyCO5EAWcpaPW8H0ZcGzVDk=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=J+g5ZKeEgpx9BLtfXznjokAYfMUTXTTvcKTTEuoPuD3uLTDHClnsSmvZ/g7E/gOxh
-	 AVTRL2Tn14up6KFfzO3It/ay0VpJlAuoI3rUJDtiVbIJrdkt5Dp7HlIy6zmF0Uy7VU
-	 ywF2uVjKMGSK+NXFD9HDhHOzQN1bZwocouVxXuS0WxspT+TaVlD++dOk5v7xnWU0bj
-	 CRO/vJMUF2ieTRwYBe/7yYiBEwlXBplv+AHe8FlumbBRdEXfYYagtysKDgGHIrBUtH
-	 CEo6X/Dq7pcRHMKBUnX/PnE+A9HbKVneDQbx2CogK1uVo6iPXQBzYT1Y4YdBLbIEcG
-	 3h9ygMVYPMfQA==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="jA2qgwFg"
+ARC-Seal: i=1; a=rsa-sha256; t=1783104765; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=AdkyPW+BUsDA1E2I5NcOJ0y0/On1jyiLmk+qPcHErmYdAcdbfCJAQv2tN1RrTnt5/6iSmDGRlzpFYMk/yhIhxijxVIbLZvX7233bBkwHTqJIqS9m1YDMeXIrdP1U2LwIuevZtXaTMsdqyBYvnhsltVbHXBHoLR7f0spqqp6xeqY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783104765; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=RuC5EaV26foRNr0Sjv0RFI1x7h8Dc+6JlS0DhVM8/pI=; 
+	b=X890O7JrQxMyVy1Ji9jlz34VBcPsMFlvI8bkwB/ICCMr0NToGIFnFp6KLjwg6Sk0bSAr1EwDbOGE1O+Z4lDa4e/GREMjG4V/+XSvRfFPoIHTuIF7fex4YtUHBMTm2JNn1b3IxNTOVtj/R3ySw16asZVeCzDh++N4GBReYjvcdJY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783104764;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=RuC5EaV26foRNr0Sjv0RFI1x7h8Dc+6JlS0DhVM8/pI=;
+	b=jA2qgwFghu5ZrYFDDqwsHIPL0zeWTsJmaxDWFRp+k6UF6oKKUalmvk6AVqz0379V
+	JjW5+LwXfhICeffTBUmkC3vO6MciK0y7A9W7PQ2Iv0aG/CHLswBa2ZYHps54ZL9ZiNK
+	Sxev2F+A7bEGH+q5CsA/h6ThHroMPnF3JT8E6vds=
+Received: by mx.zohomail.com with SMTPS id 1783104762344360.55967240986513;
+	Fri, 3 Jul 2026 11:52:42 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Fri, 03 Jul 2026 11:52:17 -0700
+Subject: [PATCH v2] rust: iommu: add device lifetime to IoPageTable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Jul 2026 18:53:19 +0200
-Message-Id: <DJP3CGLE438Q.1EM46SY9PWLHB@kernel.org>
-Subject: Re: [PATCH] rust: iommu: add device lifetime to IoPageTable
-Cc: "Deborah Brouwer" <deborah.brouwer@collabora.com>, "Joerg Roedel (AMD)"
- <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy"
- <robin.murphy@arm.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <iommu@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <samitolvanen@google.com>, <boris.brezillon@collabora.com>,
- <laura.nao@collabora.com>, <daniel.almeida@collabora.com>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260702-pgtable_lt_v1-v1-1-18d9c9812a1a@collabora.com>
- <akdaMa7hQbAjWbox@google.com>
-In-Reply-To: <akdaMa7hQbAjWbox@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260703-pgtable_lt_b4-v2-1-f14da6d4106d@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHQUlJIzE
+ vPSU3UzU4B8JSMDIzMDcwNj3YL0ksSknNT4nJL4JBNdc6OUJCOTlMQU48Q0JaCegqLUtMwKsHn
+ RsbW1ADJeYYBfAAAA
+X-Change-ID: 20260703-pgtable_lt_b4-72db24dad3af
+To: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: iommu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, laura.nao@collabora.com, 
+ boris.brezillon@collabora.com, daniel.almeida@collabora.com, 
+ samitolvanen@google.com, Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4774;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=XVuPdvip7/qY1K9b34f//yC+Sfd/Qm9mPtikcodSiDM=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkeLB92GbFt9nq/b2aoIPOCillXowT+e7X1T7uVcaP5w
+ JL3ybZsHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAExE8BHD/0DzQ/92z3/R4Cr3
+ fZuU+fqTxyUj735+/uPz0UlO23ReSwsz/K/5+M6B9cu5vAtMK3w1IvyCuLPNH9fP1p9xemF2UKD
+ 8aSYA
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-On Fri Jul 3, 2026 at 8:44 AM CEST, Alice Ryhl wrote:
-> I would suggest renaming this method to just `new()`.
+Currently, using a raw IoPageTable is unsafe because the returned
+IoPageTable is not tied to the device driver binding lifetime.
 
-Agreed.
+Since device drivers now receive a lifetime parameter <'bound>
+representing the interval during which a device driver is bound to its bus
+device, add this lifetime parameter to IoPageTable. This ensures that
+the returned IoPageTable cannot outlive the bus device binding.
 
-> As for creating a device resoure version with DevresLt, I think that can
-> be the secondary constructor and be called `new_devres()` or similar.
+Also temporarily remove the option to create a page table as a device
+resource since currently Devres is not compatible with resources that have
+a lifetime parameter. This option can be restored once the lifetime-aware
+wrapper for devres is available.
 
-Other device resources use an into_devres() method consuming self. However,=
- I
-wouldn't add it until we have a valid use-case anyway.
+Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+Changes in v2:
+- Renamed new_raw() to new(), since the constructor is now safe.
+
+Link to v1:
+https://lore.kernel.org/rust-for-linux/20260702-pgtable_lt_v1-v1-1-18d9c9812a1a@collabora.com/
+---
+ rust/kernel/iommu/pgtable.rs | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
+
+diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs
+index c88e38fd938a..48bfb72eead6 100644
+--- a/rust/kernel/iommu/pgtable.rs
++++ b/rust/kernel/iommu/pgtable.rs
+@@ -16,7 +16,6 @@
+         Bound,
+         Device, //
+     },
+-    devres::Devres,
+     error::to_result,
+     io::PhysAddr,
+     prelude::*, //
+@@ -59,15 +58,16 @@ pub struct Config {
+ /// # Invariants
+ ///
+ /// The pointer references a valid io page table.
+-pub struct IoPageTable<F: IoPageTableFmt> {
++pub struct IoPageTable<'bound, F: IoPageTableFmt> {
+     ptr: NonNull<bindings::io_pgtable_ops>,
++    _dev: PhantomData<&'bound Device<Bound>>,
+     _marker: PhantomData<F>,
+ }
+ 
+ // SAFETY: `struct io_pgtable_ops` is not restricted to a single thread.
+-unsafe impl<F: IoPageTableFmt> Send for IoPageTable<F> {}
++unsafe impl<F: IoPageTableFmt> Send for IoPageTable<'_, F> {}
+ // SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
+-unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<F> {}
++unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<'_, F> {}
+ 
+ /// The format used by this page table.
+ pub trait IoPageTableFmt: 'static {
+@@ -75,25 +75,13 @@ pub trait IoPageTableFmt: 'static {
+     const FORMAT: io_pgtable_fmt;
+ }
+ 
+-impl<F: IoPageTableFmt> IoPageTable<F> {
+-    /// Create a new `IoPageTable` as a device resource.
+-    #[inline]
+-    pub fn new(
+-        dev: &Device<Bound>,
+-        config: Config,
+-    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
+-        // SAFETY: Devres ensures that the value is dropped during device unbind.
+-        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
+-    }
++impl<'bound, F: IoPageTableFmt> IoPageTable<'bound, F> {
++    // TODO: Provide the option to return `IoPageTable` as a device resource
++    // when DevresLt is available.
+ 
+     /// Create a new `IoPageTable`.
+-    ///
+-    /// # Safety
+-    ///
+-    /// If successful, then the returned `IoPageTable` must be dropped before the device is
+-    /// unbound.
+     #[inline]
+-    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable<F>> {
++    pub fn new(dev: &'bound Device<Bound>, config: Config) -> Result<IoPageTable<'bound, F>> {
+         let mut raw_cfg = bindings::io_pgtable_cfg {
+             quirks: config.quirks,
+             pgsize_bitmap: config.pgsize_bitmap,
+@@ -118,6 +106,7 @@ pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable
+         // INVARIANT: We successfully created a valid page table.
+         Ok(IoPageTable {
+             ptr: NonNull::new(ops).ok_or(ENOMEM)?,
++            _dev: PhantomData,
+             _marker: PhantomData,
+         })
+     }
+@@ -240,7 +229,7 @@ extern "C" fn rust_tlb_flush_walk_noop(
+ ) {
+ }
+ 
+-impl<F: IoPageTableFmt> Drop for IoPageTable<F> {
++impl<F: IoPageTableFmt> Drop for IoPageTable<'_, F> {
+     fn drop(&mut self) {
+         // SAFETY: The caller of `Self::ttbr()` promised that the page table is not live when this
+         // destructor runs.
+@@ -255,7 +244,7 @@ impl IoPageTableFmt for ARM64LPAES1 {
+     const FORMAT: io_pgtable_fmt = bindings::io_pgtable_fmt_ARM_64_LPAE_S1 as io_pgtable_fmt;
+ }
+ 
+-impl IoPageTable<ARM64LPAES1> {
++impl IoPageTable<'_, ARM64LPAES1> {
+     /// Access the `ttbr` field of the configuration.
+     ///
+     /// This is the physical address of the page table, which may be passed to the device that
+
+---
+base-commit: dd8a3c6cd531dca5917111a94fa3074077f6ba5a
+change-id: 20260703-pgtable_lt_b4-72db24dad3af
+
+Best regards,
+-- 
+Deborah Brouwer <deborah.brouwer@collabora.com>
+
