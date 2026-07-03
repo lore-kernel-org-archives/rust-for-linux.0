@@ -1,165 +1,170 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010053.outbound.protection.outlook.com [52.101.56.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C52383325
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 06:44:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783061046; cv=none; b=qCix0Fqe/QssFPfg4a9ERwK9B6OeYxISfI9JZnz96VP96UMiIf9jsZ8FdOVCgMqBCxFLyl/5GyTx9wvHizPiSGXF1RGMO1tMFn3Wa0nakfowiYOWCm5a95TjsjnSbaKJtkQUIFGiwOn1lUqDu6KS9lAC3Z4GYXFtZyM6BHzHZZ0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783061046; c=relaxed/simple;
-	bh=Pf5q80ck+5U2ixrJWHV1AI8ArmR0ZtcwQp0edbeGpww=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u8hxmjnHYIJD2issVdKTu1qtDk1+v7PF12JwbUpvdnMMebC2gelmxw/I3MNGnlY8Z9czmOGWQo8cRIZDGzxL7US+7GTXs1RU6810aeswStsgdxhfSZ3fzrNd1UIezDDW827F9tcaxCY7Z6XyOjgtt6nJPlgBFKGDZo9HaVcapWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W+FmElDN; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FF5346E60;
+	Fri,  3 Jul 2026 06:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783061141; cv=fail; b=WnVCK1TLGsJ7eQN9h7GqHS33qxy2/wMDbkYVmh7qpIVgKpfVVWcDdhWkTyT0Xi3oCkbMY8YdWECd1reJ4JI9+eAjL1tMGuTm0fpt/dcfscsQv2pyb3fBRWQThqOTh9goxpCcSu5VK0aZSMhe4b7KD3/JdJFO1dP8Dud/OV2FuHo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783061141; c=relaxed/simple;
+	bh=uMasqmZP/eA0KQ8X2+isrwLJ8//i79sbq65m0AcmBe4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=if+UFVDsYt57C0tBquN82TtalGy5LaWJpERsoW32rxTycWId7sil/9/EHtOjSGqCaQBgtQez5CDWKAL8P5Yx+OYlt5y5+t3AcfLME24gC27U3byouKGRQXDEtd2Xxrjrpv31udnHyMPpYchv6MPb2E8jcnsZmgur/4K1ij54rmU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TLjjxWxQ; arc=fail smtp.client-ip=52.101.56.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W+FmElDN"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-c125ef89f4eso18920066b.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 23:44:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783061044; x=1783665844; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7jmn19R8R/PMFgOwF2vvch2Q5bX9NRBwJ66kDptBPuo=;
-        b=W+FmElDN4VaaCXPTn0XY0hv5l51N0X3byqc05enxGVDIPNLvdQ2UQn+TswXto1cl1V
-         5SAeNRmYNu5+ZFtWbLh/lnfc/KtidHCBQil+T8Cacb+JrYJjROfhV64Bvc2d8D9QVXZ2
-         f/La56Kr1MAU72ogAS3QxgLN7li2xd0jJ0IZnV0EY+m2iCnrWdsWxT+ykEP0kJjbEh9i
-         6RZZ1RqpA+b+m6pR0T24QwgnogHInabzSh7UUmidbdGE+JPPhjb9Mf7006FYzyqRM+3G
-         698y8/CysbtS0Jnr6orXpNMX1BZ8ky8XRJQkOEacss8f+fGMT9J8StYBvZtla8g9RtsW
-         nqvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783061044; x=1783665844;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7jmn19R8R/PMFgOwF2vvch2Q5bX9NRBwJ66kDptBPuo=;
-        b=g236slyMOGFXo6xVfYjx/sKnG1RJe2oBLgMFpRVFYqpEJ46HAOrgn4hHZ165VA2h1H
-         8aGdZTukSvL5mgZYG49JkBDTVigglT9yE9xH3mLUD8CEzr40Bbh69KADctwcXllLzwWZ
-         msZvUbV4LBl2s9T6uCGh6G67QVkv0do1Jszkf67SYxd2wf8pVpZ6jdzKN945QuwEvzKC
-         gCrmLDj1Yd1ajjQBR+nhFEwUHr7FLidSpSXc5iCWge1p3nQrRc0MGfSwWlzpr6Wumk+R
-         238ZxFzxE4KjZnGY8MZQTvmG07sj0Rj9ium8GdibSbVxRAuqiLYvPl+cYHGbEbRzprO/
-         6PSg==
-X-Forwarded-Encrypted: i=1; AHgh+RoAeHYfkyH87zkTsms5aIN1a4kHgKN8Bfnk9EOsiMxXYbk5KGrnAmVeQYJnlamz6xVcRBEiAVCzzk4yrx8dAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRfcuff81N5JoLxSnW8Q+QlxqPYFOXI/h/GM9FD045A0t3v2ui
-	HhwwwJyz6CIJWCEtoP2LP/OEtSZwBJnlAupg8V/zt0Q4Tif6cZiJ+h6gIn7pB4VSnweEtVlRo6w
-	aYcsO+ZLQgeZmQV128w==
-X-Received: from ejj11-n1.prod.google.com ([2002:a17:906:a34b:10b0:c12:d541:2b1])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:970e:b0:c10:256:3d6a with SMTP id a640c23a62f3a-c12aa1b0166mr449505466b.31.1783061043110;
- Thu, 02 Jul 2026 23:44:03 -0700 (PDT)
-Date: Fri, 3 Jul 2026 06:44:01 +0000
-In-Reply-To: <20260702-pgtable_lt_v1-v1-1-18d9c9812a1a@collabora.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TLjjxWxQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LrbACNXYhWnsF/xSgPjwvZTEjfrzgkGRkC4S6y4eDS2oQ95dX01ZfisnDdApuEEf5J6O3YiyUN593NpbyGcY1fdR82+/WU+rmZBTxH6Ua5txrilTdICRjbHy74ty/R3HYbPjjKsg8SV6UTwSxU8HCDDp9phtJdU6tIAAouLnA4JtDD+2u/RReYFP33Czo9CaZVdrNwTIPd2JrtDtlfs9FY0ltj4OKvdiouuXQl3NYuZgCutNlniqhm+KYirij2ubiBCM3zVbw+fETmg5YTh/eFs5CWKYB8dSdozb1vgSLkK1Yw6wq2cnFgitrxqgYvEDDHPfArgsM6VjUdSn0KLnzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uNbNAiuzbMxK4pYloK60TOIjE8rMlAR2UK/tZ5xb52I=;
+ b=bzd1UiaVz66u2WLzbE6z5IeAo8DlE2qOx/Yjg7J6ky76rbv8b7+rfG1OSEyeSANF+dB1CNFa6VOc53XPoyjCQXTGWkA74XgypRw/8KvP80CwsMNVX8cFN1gacQs2iD25JLdxojSAOMNUrbE9VEQ5keLIJgjaxRAD4mc+DB78OWtbOsnzhFqn9p3X1Fg6AV4L/qNSjdO03pXUYq/Vc+/ChGlHbmT4CORDIhSwL8a/uQPAO0cbKljNwm+xfH1cYS7E8CrwSSXZEiKrz9+ba6VYMUr9prNCsovysM8jhidrOTb7Ey3vbuaulzUIvLQJfHRmz141yYLgZrTt6jrY0j8aXw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uNbNAiuzbMxK4pYloK60TOIjE8rMlAR2UK/tZ5xb52I=;
+ b=TLjjxWxQljCFrKSg5t16ybJQa+/ZeY0IEYOJuNE2lVJRd/VYAlRcALk+HMcr+HoEK7R7LaEmhuof8XcHEnshwHKBTn1TT3RfNBJOCEWwBp2vicMkv0m3JW9h2VsqtjrpmKqBkqul9LFEZ2cHe1EvZEhwIv+JBRrMw8ePCkkY7lqe75rB4uwLYuLCbRhQpdHKGV/zRzAUaLuKt/oDOImhkEFnhf+edQlSkpkNzFW7I+AhJ8WOub7qx41wI//isi6B+tPVIxoyw/cg3NZdnLUOXJfytOHWHjwY30LjaUeSlyj49fLW8zPRh+OhWYA1+henwIpH9tlo+0JF0FUoOXOEyg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SA1PR12MB5637.namprd12.prod.outlook.com (2603:10b6:806:228::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Fri, 3 Jul 2026
+ 06:45:36 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Fri, 3 Jul 2026
+ 06:45:36 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: nova-gpu@lists.linux.dev
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	David Airlie <airlied@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: [RFC 0/3] gpu: nova: Export parameters from nova-core to nova-drm
+Date: Fri,  3 Jul 2026 16:45:23 +1000
+Message-ID: <20260703064526.3630668-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SY6PR01CA0091.ausprd01.prod.outlook.com
+ (2603:10c6:10:111::6) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260702-pgtable_lt_v1-v1-1-18d9c9812a1a@collabora.com>
-Message-ID: <akdaMa7hQbAjWbox@google.com>
-Subject: Re: [PATCH] rust: iommu: add device lifetime to IoPageTable
-From: Alice Ryhl <aliceryhl@google.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, samitolvanen@google.com, 
-	boris.brezillon@collabora.com, laura.nao@collabora.com, 
-	daniel.almeida@collabora.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SA1PR12MB5637:EE_
+X-MS-Office365-Filtering-Correlation-Id: e463fa71-e9d6-4d4c-44fe-08ded8ceafb8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|18002099003|11063799006|3023799007|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	LifRJ6P9AKdNXFCrl+NOB6bTG244N7LmF/txlewxsE2KqBI2n0z764cbz8oHVkxZZrPjp2+Aj+nMFnQ0QAMUz4l385zlr4OpaCR66ezpmg4JMMsHk4P/w2VanMlw9ocAOeHfto/4YFDpz8QAtNZT01STzPNAC/Ye44qd63JJY4KzypcqD0OZ8iODGPNZatHLwZCUgwJK+3XZhWYXZvezps+rmPND51ZIsOyWPQfFqW9IVXg55ziNKugalMuTcEVWvqq2+WnGY5oD0bJVHCycSEaiJbeCNYj7VsShGjUEQbQgiovCI8UzTdwqE54pA5b+0TwytbtCF1mYT099lkWfsWCsbZToc6mw9HoSD1V2EG3VUsrVTgBMf6DExLSEZBMkcj2O9kEgqKk90wdiGwgydG32UKWbGqx6zxoXe8M7F3tMvxVvlg006fwdoV1c3JSiFZtL4oJ0CIljz76osY4oumasFMjtSfn8FjSnSymrZcJIpXq5dY39JonEBuDMdz72tAmS/0qI9kEbhH4ngiGH46R0mgG7hK3MADcOq2xUZiHJEPC/wYoAnT2g7jhkL5QOylkIO4otVif9viAPCsky+Jiv8HctUOcp7EcxDOTwzuOkwsT6rdgs7CAaUuAJRONkOUs2NOZsX4ZK9UAgLCv0RDWpacOnzwanSbvrymsJyFY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(18002099003)(11063799006)(3023799007)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mcreizLcTpajWItInKVzHPigOpEQUEmTLaUY+pG521kIbdMQXGgWdK6o9a4l?=
+ =?us-ascii?Q?HiHNS9+jpLyGM5ipg3zmHw1bCqwZeL8PNV9YdH9bKRiPSSlZQHPTHZJUEG4+?=
+ =?us-ascii?Q?LPcPcsilWY1VOk0RCmBhxNMTD5r2hAtT6qAZQDd8CKdUQQz1HAqbuVUbsmKk?=
+ =?us-ascii?Q?LijvWrQYem6w839rlLQmoBEpgSkVUy74Km1ACexX3SuvkFCdULx3UVWYUWaZ?=
+ =?us-ascii?Q?mxHa8w3gqBfQoLpgzMbp3VXAKX3yNR2xrbfB9b5T5efteYRfTIVRGyFsXij0?=
+ =?us-ascii?Q?QwLuriW9wi3RDw0bsn3uNEB5hi1eKykXFU1o2w8DmDLO3rVouGW2jK0yBN6X?=
+ =?us-ascii?Q?aAErFUy+XEdKpKV0XRUdlZWvBue4L8ULArv5vXx8G8CtL6pSYsrrYTpBrAtj?=
+ =?us-ascii?Q?X5fCHEmHAwMZXdz7HZtAACO5A8RHgQNcPXdP/5NYjQwIQ+Omhx2aD8oXVUi9?=
+ =?us-ascii?Q?k71UbnVDqwR2NKLnnqii4Re+Axd1eQjMuzXD1ioolv7JhVatL+wD8V7Frkay?=
+ =?us-ascii?Q?KdziDd2oG5Oe6ZG7REvnFvGWuuQZrvJWP4iKIWOTZroopATAgdEZyxjbPVLz?=
+ =?us-ascii?Q?JKjpzDIgEbnhfJJhsQ9s0HPEJbWiC3MN6KqhaVQaoWgmQTHa/uHqk5RKGa5D?=
+ =?us-ascii?Q?rtojRLlJVHdHMFimPOEdvPquAdn23H3nWEmsScjx2PcEn9A4lwSvbwTsDFc9?=
+ =?us-ascii?Q?aQwxS5whJgFOFTA+qlMaSYVVrVxQ1uuf4B+aYWmN0OcQPtxHr30Imz4jEibC?=
+ =?us-ascii?Q?a8EGmmQac6p4Jq3YFfDBz9P0gHyy8b6hq40BS6WfMeGzqHsriJFS+ZCaJp9M?=
+ =?us-ascii?Q?WthhBa/dEk8nWwk1Wa7QIKc6Jsrx4mg1ULKYhBvFGi0U2As0xI08L2Zl42r0?=
+ =?us-ascii?Q?JWinE/76YwDFBMz3nEtzdEK3nr1IQMOoSL9HU1ITGpw28Mpl1bJWxUIRiygO?=
+ =?us-ascii?Q?wngRmlAITe8WwOvpnioxS/VUKlRYFcBAnkr21iqyR5b9afLUH54Tpkl5EmZL?=
+ =?us-ascii?Q?+2HkNmxnKKmGY6UKWCrmRRph23BQv0xw9K6RFfhniyhqghoANoHYLqGinF+n?=
+ =?us-ascii?Q?bt5XenjsU1ForzsjMLR92APYbR+IWBBgJlxlHN2O1ras2KymLs3Dr6d7Dskn?=
+ =?us-ascii?Q?vY88TI8+ihcEsFCB1ksTfBN8xBJURZVbHFiVXzPbeRMYhITBVB9H78mgdUnX?=
+ =?us-ascii?Q?ZuGX6sHTQPKQdGPDraxilEUpw7SNNWbMticslFrEQs+kE4Q64i59HBNPzfvu?=
+ =?us-ascii?Q?/7u5GJXz6aVcL8wF7GeHYQadU5THXZ9QLjqejdtXlnvk4k1MVaLoHVMbUGu0?=
+ =?us-ascii?Q?HKGBhDh/3+Nimc+N7XZmCdT1MD6ZkNWGO80XeSpXZ0R5zewKPeDLUbbhvV9f?=
+ =?us-ascii?Q?LLZNOw7FJtXQ5A19bBMGPMOFK1nqKlv6525NH7nZbASd2Y6VSSjXvhC4e+9K?=
+ =?us-ascii?Q?9H/ku00haKSmudyJDdmGzDmy4LbBQccfSb6HCClXNBRuEpt1vmPmMl0kDncy?=
+ =?us-ascii?Q?8wb0Q8X1wFD8shl1hLmDrXVapJAuHzfkL6rXmst1q7pHKn7euCgoZ38xRGvx?=
+ =?us-ascii?Q?c4b3nPA3I076gzEsIYmz4obdxhXv75uc0jckC4BGOPydTra/XsZvBm9CCuNa?=
+ =?us-ascii?Q?q9xar71xRSodG48ltYGwWH/YT2K2cZKRV+a7VSqCDgjfzkFc99LB6USXFMlZ?=
+ =?us-ascii?Q?cSTz321pvJrocr+7KEp1jp7ceeXKTEhBikGnv2Q97yaLbOylXvyMsdWyZgl1?=
+ =?us-ascii?Q?cDVdQDm4Qw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e463fa71-e9d6-4d4c-44fe-08ded8ceafb8
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 06:45:35.8481
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fI8HwN49CsDJuJcxB4MpkBohON6gxV2IoFc8vy3mSUYGDiXKp9KU/YU8DfWO3HeiWoIsl9SGt+hXivaOeHqUGw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5637
 
-On Thu, Jul 02, 2026 at 04:47:39PM -0700, Deborah Brouwer wrote:
-> Currently, using a raw IoPageTable is unsafe because the returned
-> IoPageTable is not tied to the device driver binding lifetime.
-> 
-> Since device drivers now receive a lifetime parameter <'bound>
-> representing the interval during which a device driver is bound to its bus
-> device, add this lifetime parameter to IoPageTable. This ensures that
-> the returned IoPageTable cannot outlive the bus device binding.
-> 
-> Also temporarily remove the option to create a page table as a device
-> resource since currently Devres is not compatible with resources that have
-> a lifetime parameter. This option can be restored once the lifetime-aware
-> wrapper for devres is available.
-> 
-> Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
->  rust/kernel/iommu/pgtable.rs | 32 ++++++++++----------------------
->  1 file changed, 10 insertions(+), 22 deletions(-)
-> 
-> diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs
-> index c88e38fd938a..d4a16283b5a7 100644
-> --- a/rust/kernel/iommu/pgtable.rs
-> +++ b/rust/kernel/iommu/pgtable.rs
-> @@ -16,7 +16,6 @@
->          Bound,
->          Device, //
->      },
-> -    devres::Devres,
->      error::to_result,
->      io::PhysAddr,
->      prelude::*, //
-> @@ -59,15 +58,16 @@ pub struct Config {
->  /// # Invariants
->  ///
->  /// The pointer references a valid io page table.
-> -pub struct IoPageTable<F: IoPageTableFmt> {
-> +pub struct IoPageTable<'bound, F: IoPageTableFmt> {
->      ptr: NonNull<bindings::io_pgtable_ops>,
-> +    _dev: PhantomData<&'bound Device<Bound>>,
->      _marker: PhantomData<F>,
->  }
->  
->  // SAFETY: `struct io_pgtable_ops` is not restricted to a single thread.
-> -unsafe impl<F: IoPageTableFmt> Send for IoPageTable<F> {}
-> +unsafe impl<F: IoPageTableFmt> Send for IoPageTable<'_, F> {}
->  // SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
-> -unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<F> {}
-> +unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<'_, F> {}
->  
->  /// The format used by this page table.
->  pub trait IoPageTableFmt: 'static {
-> @@ -75,25 +75,12 @@ pub trait IoPageTableFmt: 'static {
->      const FORMAT: io_pgtable_fmt;
->  }
->  
-> -impl<F: IoPageTableFmt> IoPageTable<F> {
-> -    /// Create a new `IoPageTable` as a device resource.
-> -    #[inline]
-> -    pub fn new(
-> -        dev: &Device<Bound>,
-> -        config: Config,
-> -    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
-> -        // SAFETY: Devres ensures that the value is dropped during device unbind.
-> -        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
-> -    }
-> +impl<'bound, F: IoPageTableFmt> IoPageTable<'bound, F> {
-> +    // TODO: Create a new `IoPageTable` as a device resource when DevresLt is available.
->  
->      /// Create a new `IoPageTable`.
-> -    ///
-> -    /// # Safety
-> -    ///
-> -    /// If successful, then the returned `IoPageTable` must be dropped before the device is
-> -    /// unbound.
->      #[inline]
-> -    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable<F>> {
-> +    pub fn new_raw(dev: &'bound Device<Bound>, config: Config) -> Result<IoPageTable<'bound, F>> {
+This patch series adds some basic GPU properties to the existing nova-drm
+GETPARAM ioctl. It builds on top of the "drm: Higher-Ranked Lifetime private
+data" series[1] to correctly manage lifetimes of registration data shared
+between DRM, auxbus and nova-core.
 
-The name new_raw() indicates that this is something you only use in rare
-cases when you are doing weird stuff. But with this change, I no longer
-think that's the case.
+Properties are exported via a new AuxData type which implements methods to read
+data from the GPU. This has been implemented in a separate module to make the
+public API implementations obvious and to keep them in one place.
 
-I would suggest renaming this method to just `new()`.
+[1] - https://lore.kernel.org/rust-for-linux/20260628145406.2107056-1-dakr@kernel.org/
 
-As for creating a device resoure version with DevresLt, I think that can
-be the secondary constructor and be called `new_devres()` or similar.
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Eliot Courtney <ecourtney@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: nova-gpu@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org
+Cc: rust-for-linux@vger.kernel.org
 
-Otherwise LGTM.
+Alistair Popple (3):
+  gpu: nova-core: Add auxiliary bus registration data to nova-core
+  drm: nova: Add GETPARAM parameter to read the GPU chipset
+  drm: nova: Add a GETPARAM parameter to read usable VRAM size
 
-Alice
+ drivers/gpu/drm/nova/file.rs          |  6 ++++
+ drivers/gpu/nova-core/auxdata.rs      | 25 +++++++++++++++
+ drivers/gpu/nova-core/driver.rs       | 45 ++++++++++++++++++++-------
+ drivers/gpu/nova-core/gpu.rs          | 16 +++++-----
+ drivers/gpu/nova-core/gsp/commands.rs |  8 +++++
+ drivers/gpu/nova-core/gsp/hal.rs      |  2 +-
+ drivers/gpu/nova-core/nova_core.rs    |  1 +
+ include/uapi/drm/nova_drm.h           | 14 +++++++++
+ 8 files changed, 95 insertions(+), 22 deletions(-)
+ create mode 100644 drivers/gpu/nova-core/auxdata.rs
+
+-- 
+2.54.0
+
