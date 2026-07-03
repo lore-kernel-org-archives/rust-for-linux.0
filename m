@@ -1,159 +1,232 @@
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB54349B02
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 06:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC20935675B;
+	Fri,  3 Jul 2026 07:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783061858; cv=none; b=fFVQiOvySVOvBhn8UVqa/szqlCHLSE2E5DgaaQ4XVrgHNJ1eLdLYM6z56WPIuE2FQxQphE8GLnPSWwpiPugQ6qJaT1q+lLK03Abz5qkeq9NUrYugeJhrhmxBrpVhpdAohSWkR09tzWobYa/o4cCXHcL4zCkwFiOdcsd2zSxHGvk=
+	t=1783063918; cv=none; b=effD2ubVzNXLhc6HfytbnAMqA70k/6p+lKKhjZNnb0Z9fVWg1xwbcq/p23z41+0Lu4enFeJ6kZXS7yAxos+XdxfG7YyuEAmbU+EiurDpEQ9ksCrFS5gS5GRihpyXz6OsWEVB2QG3Eb0J4ytIY7BmtKIH/o8kCa5px3mZtM4ctWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783061858; c=relaxed/simple;
-	bh=/K8f1udQw9YJBO1Ie1ZbJE3mShr1BbOgfVubnfUn+a0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Uj1x3hBAoTQCMT9a12rcWwhYok2bu1Q8QvxAnVMVy3Yc70HSHeatl/8eVFLXOT/pAlQFbSXDPYDGgZde/lzQufo+fE+TpARkz4Y/aj23SGZO3FxhCuWYVhLkoZQBGw6j2E7vxASS1Lo4Q4Nzrlvdf4KcDF2NM5lknWihgg/mYUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fQ5ENlte; arc=none smtp.client-ip=209.85.218.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1783063918; c=relaxed/simple;
+	bh=TwZ8q8nNokvqzONpRAtozWrTZacMy6q2lio+ecc9QBI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s9c6VStrI6V6zVb1xgO3jfsewdEHeKDxe3G59FQPF737k3Y68Sxk/zltWnDlDAiQxt/RwGlE45WIEib8MF7tyrZClBBAsRkTKzviUwT3U505xtmq/6zPNwI1/0Rv2tveV/OaWs31eN5BJ5TzsvgOPBFylTiCQZSl5AaHi7eCUP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVp3M63D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fQ5ENlte"
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-c1250de9035so21053166b.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 23:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783061856; x=1783666656; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iGF8vWJ8SJ2AhYQyBR0BCmWZSL8eN4zr4YEd9ugRFUM=;
-        b=fQ5ENlteeHRojCcl7rna3uyXJOUJ+VhtayTgyJQGMkUIRgJ5DJYR4Qn/zrSobfHVWa
-         hNFSBIXt+EVeOzgjilyAUixC0M1e0rT5GyW4Vb0UEGO9F7ONOHKoKRRbte7k67nZ/WPe
-         +6N7uxW3J4K2rSeHu6wjOSP3qcm4ERAe7wBkuFIvIcx1i+5rGO2V5FP8/fedUu8JWYR1
-         9oDya3UVpGf7zS/AQAl9fAGjUgF27rAyodAcmy8U9I4PFZxvGEAGIbCgZ6zoGOfC07tq
-         VF2kA5SpssNHaM++BY1U+HH8GyQXGOnidjgktZuYWjozyRgTsa3B/rx/OL+7KhB47J/V
-         LJeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783061856; x=1783666656;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=iGF8vWJ8SJ2AhYQyBR0BCmWZSL8eN4zr4YEd9ugRFUM=;
-        b=n1HDNcjC10nOe1AuLqgiYi8K8SR3p1MKJ6NDZ6Gn/K1xhxFpkPgrVPDuWeiEkU8sYR
-         PHuP37KQc7ZT1+9+YnoG3uBwNKjJVjFVpuuDBl7DSCXuGAnQcjuK3nrltOiJo7/GvQH0
-         UXFTVFlyBUXH+WLwdT1gSn1Ib0OXJrmEnOvsCDxLrAqt82ufYNndxX1NCfHiFwiCw0iq
-         BeMElJsR37t0cHaZlyvFbiUasogIrI7MPn92cziSw7r0DW8TcJoEGzL7TcmCVNXdlI7d
-         xZo9qM6N3JjXNRjVSM6QSR9j+CYBHC/oXVJHiJhqUHH4xdJ/Zzei33Nj0vNcwkkVs0GN
-         LZsA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0nqZvhvKwnhX5uHVA3bgd3y5E/T8cfWrbhkFUQRAjoaUf8498wlNxmF7R1LWhdQ1wccFXCi/yjHrlF8Si+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyN3LLumoFZSFIeYaP3sKDjCUDRZaFU/SimKBUAtAZ/LuIp+F0X
-	rmFaE8S7ooRbawtwFIgwKRsxIWhCbvqmcE+CVST4cIH4aKjP9+UOXAKimA5T6cC8M6ZCpezPXwJ
-	Mnk+6VIEXSHVsYnwP9w==
-X-Received: from ejbjz10.prod.google.com ([2002:a17:906:bb0a:b0:c12:69ca:d115])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:e143:b0:c12:3590:2bcd with SMTP id a640c23a62f3a-c12a9db678cmr282670666b.29.1783061855361;
- Thu, 02 Jul 2026 23:57:35 -0700 (PDT)
-Date: Fri, 3 Jul 2026 06:57:34 +0000
-In-Reply-To: <CAHC9VhTfOnOgOzGk9==wJYKx5gAi3Zf3oTwbj183o0_xxrfKag@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVp3M63D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0321F000E9;
+	Fri,  3 Jul 2026 07:31:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783063916;
+	bh=/Q35Kz8rnHTlztuEzAc6H/zjCpTCgNlLgkoLPJocPqU=;
+	h=From:To:Cc:Subject:Date;
+	b=AVp3M63DD0e95DW4tUg0nqz5ICrc11z0qwfLukiLelal34W6eQierdGmwrQDFgPD/
+	 w0M+TJhceHu0d/jIAA66j/dPKUUFlRM3uV0LyT1gg0z4njponE5dUG+KWEdfVecXmg
+	 OzhkfS3+rAe/gHByPCeXpNfdFeDa8pyD4wX7LjAZ7tm6F3lVr6GrCiFR3zeqDuYsds
+	 TnxLov5SP01NK7Io0eyYfydzZzz8/tXblQCo++S3qOVH50wUsAntCm3Syi47lWlRVG
+	 wA8OdFkJIbwpmsDeLnbgzDkyXO3CugnK7uSs/+e3/3y6LS93Prx4LramSeDdUH/cfn
+	 PaoIPvjCK9G1A==
+From: Philipp Stanner <phasta@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Burak Emir <bqe@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Mirko Adzic <adzicmirko97@gmail.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH v5 0/5] rust / dma_buf: Add abstractions for dma_fence
+Date: Fri,  3 Jul 2026 09:31:36 +0200
+Message-ID: <20260703073141.3962604-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260529-remove-task-euid-v4-0-07cbdf3af980@google.com>
- <CAHC9VhR5Ca+WyP2OiNGtL1SqHn0SwLe=M9SB8D2bxtdS52quhg@mail.gmail.com>
- <ah51DY5yfaNZejBd@google.com> <CAHC9VhQyNzxJgdMkmEsOeAQ7Wt2L+eW6aNLjeoYmnCQLmcYRnw@mail.gmail.com>
- <CAH5fLghJaFXheAZqKyM9Cdo6iqTw1W=haA79POhmZWEfuKujRA@mail.gmail.com> <CAHC9VhTfOnOgOzGk9==wJYKx5gAi3Zf3oTwbj183o0_xxrfKag@mail.gmail.com>
-Message-ID: <akddXpXia0GI2Xvy@google.com>
-Subject: Re: [PATCH v4 0/2] Delete task_euid()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Serge Hallyn <sergeh@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, 
-	Dongliang Mu <dzm91@hust.edu.cn>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
-	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 02, 2026 at 05:12:52PM -0400, Paul Moore wrote:
-> On Wed, Jun 3, 2026 at 1:05=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
-> > On Wed, Jun 3, 2026 at 6:05=E2=80=AFPM Paul Moore <paul@paul-moore.com>=
- wrote:
-> > >
-> > > On Tue, Jun 2, 2026 at 2:15=E2=80=AFAM Alice Ryhl <aliceryhl@google.c=
-om> wrote:
-> > > > On Mon, Jun 01, 2026 at 07:13:37PM -0400, Paul Moore wrote:
-> > > > > On Fri, May 29, 2026 at 5:33=E2=80=AFAM Alice Ryhl <aliceryhl@goo=
-gle.com> wrote:
-> > > > > >
-> > > > > > The task_euid() method is a very weird method, and Binder was t=
-he only
-> > > > > > user. As of commit 65b672152289 ("binder: use current_euid() fo=
-r
-> > > > > > transaction sender identity") Binder doesn't use task_euid() an=
-ymore,
-> > > > > > so we can delete this method.
-> > > > >
-> > > > > Given the problems from last time, it seems like it might be prud=
-ent
-> > > > > to let the commit have some time to "breathe" in a proper release=
-, I'd
-> > > > > suggest merging this not for the upcoming v7.2 merge window but
-> > > > > instead waiting for v7.3.
-> > > >
-> > > > Sure, that makes sense. I'll resend after the merge window.
-> > >
-> > > No need to resend if there are no changes (see below), it's in
-> > > patchwork and I'm tracking it so you're all set.  I'll send another
-> > > notice when I merge it.
-> > >
-> > > > > > My suggestion would be to merge this through the LSM tree.
-> > > > >
-> > > > > That's fine with me.  I'd also suggest updating the commit descri=
-ption
-> > > > > in patch 1/2 to indicate that binder is no longer using task_euid=
-();
-> > > > > it currently reads like it is still being used.
-> > > >
-> > > > I guess this occurred because when patch 1 was written, it really *=
-was*
-> > > > still being used.
-> > >
-> > > Yeah, I understand the world has changed since patch 1/2 was written,
-> > > which is okay, we just need to update the commit description ... whic=
-h
-> > > should be a trivial task.
-> > >
-> > > > Perhaps we could pick up only patch 1 now since even
-> > > > if we run into problems and Binder has to go back to using task_eui=
-d(),
-> > > > clarifying the docs is still useful.
-> > >
-> > > I assumed that was one of the reasons for splitting the changes acros=
-s
-> > > two patches (reverting patch 2/2 leaves patch 1/2 intact).
-> > > Regardless, we're at -rc6 and with patch 1/2 being purely a comment
-> > > update I don't see an urgent rush on this, especially considering tha=
-t
-> > > if I did pick it up now, it would be for the v7.2 merge window and th=
-e
-> > > binder/current_euid() change will ship in v7.1.
-> > >
-> > > Let's update the commit description - you've got a couple of weeks to
-> > > do that - and then we'll merge everything once the v7.2 merge window
-> > > closes.
-> >
-> > Sounds good, thanks!
->=20
-> Just wanted to check in and see if this is still on your todo list?
-> No rush, we are only at -rc1, but I was reminded of this while merging
-> other patches and just wanted to check ;)
+Changes since v4:
+  - Fix an uninitialized memory bug for FenceCbRegistration with
+    ManuallyDrop.
+  - Return FenceCtx as impl PinInit
+  - Make FenceCtx return an impl PinInit<T, Error> (Danilo)
+  - Reformat some comments
+  - Adjust the docu for rcu_barrier(), so that it matches the C side's
+    docu and our docu for rcu::synchronize_rcu().
 
-Resent!
+Changes since v3:
+  - Add a FIXME for an encountered Rust compiler bug. (Gary)
+  - Add new Rust files also to DRM drivers & common infrastructure
+    MAINTAINERS file. (Danilo)
+  - Reposition ECANCELED error code. (Miguel)
+  - Replace refcounted FenceCtx in DriverFenceData with a reference plus
+    life time. (Boris)
+  - Re-add rcu_barrier() patch, since we now can use it for dropping the
+    fence context. (Danilo)
+  - Add forgotten R-b from Alice, and Acks for MAINTAINERS from
+    Christian and Sumit.
 
-Alice
+Changes since v2:
+  - Don't drop DriverFenceData as a whole, but only the members we
+    really want to drop. Gives more robustness. (Gary).
+  - Break apart large pin_init_from_closure(). (Danilo, Onur)
+  - Remove rcu_barrier() and synchronize_rcu() from FenceCtx::drop().
+    FenceCtx might drop in atomic context, where you must not perform
+    those operations. With the current way C dma_fence is designed, the
+    driver must wait for a grace period manually until it unloads.
+  - Repair the DriverFenceBorrow implementation, properly injecting a
+    life time into it. (Danilo)
+  - Fix memory layout bug for rcu_head. (Onur)
+  - Drop RCU patches, since this series doesn't need them anymore.
+
+Changes since v1:
+  - Remove unnecessary mutable references (Alice)
+  - Split up unsafe comments where possible (Danilo)
+  - Remove PhantomData + implement FenceCtx ops trait (Boris)
+  - Consistently call FenceCtx generic data `T`. FenceDataType is
+    derived from that. (Boris)
+  - Add abstractions for call_rcu() and synchronize_rcu() (Danilo)
+  - Add ECANCELED error code in Rust (Alice)
+  - Remove the rcu_barrier() from FenceCtx::drop() – because we now use
+    call_rcu(), there can be no UAF access to the FenceCtx anymore. In
+    any case, it is illegal to use either call_rcu() or
+    synchronize_rcu() in FenceCtx::drop(), because our new
+    drop_driver_fence_data() can run in atomic context and might put the
+    last fence_ctx reference.
+    So we now only have to guard against module unload, which it seems
+    either the driver or Rust driver-core / module unload infrastructure
+    must solve.
+  - Minor formatting etc. changes
+  - Add C helpers to MAINTAINERS. (Danilo)
+  - Ensure that `Fence::is_signaled()` is fully synchronized, i.e., all
+    callbacks really have run. See [1] and [2]. (Myself, Christian
+    König)
+
+Changes since the RFCs:
+  - Include support for ForeignOwnable for ARef, so that a Fence can be
+    stuffed into an XArray et al. (Code by Danilo)
+  - Implement ForeignOwnable (with new borrow type) for DriverFence, so
+    that it can be stuffed into an XArray.
+  - Include the rcu::RcuBox data type to defer dropping data with RCU
+    (Cody by Alice)
+  - Port DmaFence to RcuBox to make UAF bugs through later, new dma_fence
+    callbacks (backend_ops) impossible.
+  - Force users to pass their fence data in an RcuBox (or have it not
+    need drop()) through a Sealed trait.
+  - Document the rules for the user's DriverFence::data's drop
+    implementation very clearly (deadlock danger).
+  - rustfmt, Clippy.
+  - Various style suggestions, safety comments, etc. (Önur)
+  - Add __rust_helper prefix to helper functions. (Önur)
+
+Changes in RFC v3:
+  - Omit JobQueue patches for now
+  - Completely redesign the memory layout: Instead of a Fence
+    refcounting a DriverFence, both now live in the same allocation to
+    allow for future support the dma_fence backend_ops callbacks which
+    need to do container_of. (mostly Boris's feedback)
+  - Allow for pre-allocating fences to avoid deadlocks when submitting
+    jobs to a GPU. (Boris)
+  - Simultaneously, allow for pre-preparing fence callback objects, so
+    the driver can allocate them when it sees fit. (code largely stolen
+    and inspired by Daniel).
+  - Signal fences on drop, ensure synchronization.
+  - Force users to set an error code when signalling.
+  - Write more documentation
+  - A ton of minor other changes.
+
+
+[1] https://lore.kernel.org/dri-devel/20260608142436.265820-2-phasta@kernel.org/
+[2] https://lore.kernel.org/dri-devel/20260612104251.2264707-2-phasta@kernel.org/
+
+
+Alright, so since the last RFCs did not reveal significant design
+issues, I decided to transition this series to a v1 and hope that we can
+get it upstream.
+
+This now includes code for more common infrastructure that dma_fence
+needs, contributed by Danilo and Alice.
+
+---
+
+Old cover letter for RFC:
+
+So, this is the spiritual successor of the first / second RFC [1]. v2
+also contained code for drm::JobQueue, but mostly to show how the fence
+code would be used. JobQueue is under heavy rework right now, so I don't
+want to bother your eyes with it. The docstring examples should show how
+Rust fences are supposed to be used, though.
+
+This v3 contains a huge amount of highly valuable feedback from a
+variety of people, notably Boris, but also from Alice, Gary and Danilo.
+
+There are some TODOs open (a better trait for fence backend_ops and RCU
+support), but my hope is that this effort is now finally approaching its
+end.
+
+I would greatly appreciate feedback and especially more information
+about what might be missing to make this usable, which is obviously
+where Daniel's and Boris's feedback will be valuable once more.
+
+Please regard this patch just as what it's titled: an RFC, to discuss a
+bit more and to inform a broader community about what the current state
+is and where this is heading at.
+
+Many regards,
+Philipp
+
+[1] https://lore.kernel.org/rust-for-linux/20260203081403.68733-2-phasta@kernel.org/
+
+Danilo Krummrich (1):
+  rust: types: implement ForeignOwnable for ARef<T>
+
+Philipp Stanner (4):
+  rust: error: Add ECANCELED error code
+  rust: sync: Add abstraction for rcu_barrier()
+  rust: Add dma_fence abstractions
+  MAINTAINERS: Add entry for Rust dma-buf
+
+ MAINTAINERS                      |   5 +
+ rust/bindings/bindings_helper.h  |   1 +
+ rust/helpers/dma_fence.c         |  48 ++
+ rust/helpers/helpers.c           |   1 +
+ rust/kernel/dma_buf/dma_fence.rs | 894 +++++++++++++++++++++++++++++++
+ rust/kernel/dma_buf/mod.rs       |  14 +
+ rust/kernel/error.rs             |   1 +
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/sync/aref.rs         |  40 ++
+ rust/kernel/sync/rcu.rs          |  20 +
+ 10 files changed, 1025 insertions(+)
+ create mode 100644 rust/helpers/dma_fence.c
+ create mode 100644 rust/kernel/dma_buf/dma_fence.rs
+ create mode 100644 rust/kernel/dma_buf/mod.rs
+
+
+base-commit: a73a398a68ca9b9e5116a617562471f16b8310c4
+-- 
+2.54.0
+
