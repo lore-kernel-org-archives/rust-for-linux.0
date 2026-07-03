@@ -1,63 +1,63 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5BA30676C
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FFD309DB5
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047727; cv=none; b=iATEC3G2u1dfFw274o2jDu/Ce7HxGFAdU0MhD1fNoxaRvM2f1GXCMF2dnSyyznJr9QAtuR+ymMVPWaz5O/Gy33APJBpPThc8tOuOQzlTKkhJy1kgRlk/AtWC56EBFctdTTwpq96MyveQhMsBbq1YWnsrpouIe1bYnTsrnISZVlY=
+	t=1783047730; cv=none; b=SvJLhyRTO8xGGd7L4dl/3IoOZhBKEE2dpQj/sfhtgAO0gh8xeEx6LOtKbmv1kp+Bl3gyl5GwuTeyMubRszGWJ/+PVKUpd5HJIz4AfQ84SoRr79ph4vPbLUyQnVkyvC0O/XmuYso1vzcg07UBtkmC1SKA00XvLhVBDm7TFCZtQzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047727; c=relaxed/simple;
-	bh=kaMRhV66jMxQvqjeQ7Ar6Cr8aJCEeWtJrustTtJxVZ0=;
+	s=arc-20240116; t=1783047730; c=relaxed/simple;
+	bh=v6gmILxfvkjXayLD55FjNvwdivBIkeFnwRzUoGkyJz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tUBPSp0FfcMpHHVDJFPxEIbA3KqtGknr64ESZoZEfWIXy7wG5qhPaQq8H9cikQfAYPGJfyW3eE5JZxs32Zd9/yzGgy17BP+GTmJO3XJEUzgC4suMU1VE4ySUWo8MfWEzGlhkffhSQOaL+qPhK20698m3YfY9zdBELR0gLK9Tz28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=S66R4TAc; arc=none smtp.client-ip=209.85.221.46
+	 MIME-Version; b=Ua2vfKLDdR8SlhsGYpGlq9L9aN3ztFgOgN/jTOiizXA2I4p0oiDClRmEpBRhCSQr/K37tYHRWujgiPhWJra/GcMxniXo00anMe0HfA6+b0D7hqPos8IuI2+e67Z6MbxjVZURVQyYW9Lpx/APlaL57No7YJBZU5pHNTo8WdPblJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=pebhLvAF; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="S66R4TAc"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-476d8e647e9so91414f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="pebhLvAF"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493bab44440so355835e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047724; x=1783652524; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047726; x=1783652526; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=031sIZWe4JTCBupEXr5DXAC9PJaWSnyeiEEKJDEA+7w=;
-        b=S66R4TAcwlWQDggJCgyL/uL76w8ZbflNo0DH9z/OI80kTnixJn7tGrLJobYBcSHt9T
-         2rqBFSiBZZgof8jb1/y8UJvc42S/w70QCIevvJp4QCS80FCBkP3FdC1qiUAyLf/PxSTz
-         qDQ4m2hAZEcp06PPlQMQzM1Ml7n/bLQLCvo3L3F4/lJfS4Xjt/7E+yyMQmqLmLtM4wz7
-         PdE3kifL0v2ZepqF/B+Le5SnFlQMNCxK0JT0z3XBMBmJRoYUUhV42OPGIcRPIxVoYBoT
-         keHMIlrnB1907zYRYX6JN5D33yQg/T+EPLFMhrAN1bjlUWzqGTFcJmEhmQmtlzqpb7XL
-         WdRA==
+        bh=rwRdstWb2Ca9k/qyCFyUDUWmOvWt84KgtkInv8204cw=;
+        b=pebhLvAFYbh0RsavtZtp4b+TZlWb13FnKfkhLcTPkzfUv3Fa6WQx4aY4mfgEdAtEGu
+         VVqXBg5ocxL7uHzplbCTkFXUTTDyGixMW39PZxl8hmP5FFvv5l5N40cKaSeDeYCHYsfK
+         6Z3QUE11c9w3Ll5HNzi2yAbJK9GCRuKMexB0VAeePLJWkNI38oDnO01+cUK+anNHmMc6
+         tBzGmG0ZTX7avt85pAQT2s1BPK0a0nZBQgxGEy7tt2p0wUpdkDDN71BpEG0jcHQno1Dj
+         eONII8+T1IVRy+Ii08dtYgFTca1thXmvovHGzH8N9bAuL7euzlAvthfhzbaB3AJeUPxo
+         MjZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047724; x=1783652524;
+        d=1e100.net; s=20251104; t=1783047726; x=1783652526;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=031sIZWe4JTCBupEXr5DXAC9PJaWSnyeiEEKJDEA+7w=;
-        b=WULIA6rO7LJavYtkycEpce++zkcpTzvUy7R32j8dy9MSONQRBzUs/tn4qXqMEoJpGo
-         N7dnbFxZ2S68kfI+9k0Pf2vnz5qHoyS9tHqf6QoIQiUau7nj2xgMYDzSMKqB5FFgK+Xf
-         kNDQ1xOyZjK5huoFJ5hT+kZQAUXZ9pzVouANYCY+NKRmS1Fv+PKIl6JD1l73brCkAIUw
-         VPCfMWmQA77FY8ZNirAlgKVw6ARMNfHtRoYMxEmQEGt0ZY2Wqv8i2gPCUcAQ26Cx45TY
-         FU77D/wNPhFStU5qsBo+AtcRYGIEIxmAURX1/Bbixc3AlNsLIFcKw+ApZqk6WM7N0eta
-         iKbQ==
-X-Gm-Message-State: AOJu0YzIPn0PrhDyLfCkHEZnyiDsr0r38hiTI/a5n0jgn9gppnFbOnhb
-	BtDyjVsT6etAaaInO0NoaOwbz3j/nKDXjcKpkVkZP8galbiTyjnX5M927L8kF8f9G2OJxG/8z+t
-	rl1EJKn5W
-X-Gm-Gg: AfdE7ckjyxLLf6xSLWM3XcK8TbmP52adkjInyI/HCavkgog6m4EHJGDwUbKGy2YStzt
-	VtiqoXq3L1jpmiUkNSro9b404PuQ6QGwutebTMRO3LXNMnjHfjH7O786TgS3pNjBpTRfpSQSil7
-	yCvEW5LF9yMBAmsWvH2bHY3TmhPph5TmECu6CO+uBEg7rvaTm1kfZ/6IyOh6YCzkb71z7DajoA5
-	VmstBmb3mOXc9pOsjMOLdt7hW0E5p6ivbbFfGHuApJV/PKoXA4/mprZimd4ebySq6CTO11Lv5dS
-	rcZauhQY7bL8WnjlUDFwR3ggg14XoFndm0mThcbDwd1KNz+D1ekGR4mPHRAa3jj6j3Cq2+m3hCN
-	DkQ3gb7CvMLYhfZNFOxeSTS+vkRPy+K2SWwXW7rekx3AwhLxdeNnKBisqunzbdXmAUvBkd4+4Zr
-	AAxArjrs15AddllO09uTjCHWAlBud9jDWgs/sGmOV95zNkzxIoqQZePgtpe+3VvalLd2E=
-X-Received: by 2002:a5d:50c9:0:b0:475:5e4b:588f with SMTP id ffacd0b85a97d-4775a2eff42mr10021826f8f.16.1783047724132;
-        Thu, 02 Jul 2026 20:02:04 -0700 (PDT)
+        bh=rwRdstWb2Ca9k/qyCFyUDUWmOvWt84KgtkInv8204cw=;
+        b=GNl3Q8nvDDaY+uRzzPNjq2s4/wasS0FONPgT3Kb/EsHHDJtH9W08WH5pU0QNZD0CeZ
+         ujFZZ3vWvfsC6Ob5buFvACGKODk29qWn7bfAZc1m+INWpHB0NjGpLc0lT6b1oVtN/ict
+         1Gl64zFztJeJTO+a48TGO3L472A+NMPJgv25rjjR9IupM7N+jwdsUU94TvfgML4GII8H
+         y6cgQfaVb4r2YhtFO+hs2GX3EQ8i1uEkS2ubXIfwzTEDqC9ladkpt0fyV/RZUzahbpJp
+         BCZ0qCRpWC/gvSBy10m6zB/QDV3EWlTKnc7k9KQpWRXlP+pQVjyjSIb/0/C/QZuKaxAy
+         CArQ==
+X-Gm-Message-State: AOJu0YyBcEuGEzxnk7LLOBpJtZ/pzZJnVtTjEPK1lZdE1ju0gReEo/8i
+	/rvgkpNgoBqvnsa3P0KxASVKouICloRdfc7GfIUa3L3Tabv8FyOWP1HaAc6xS966Dxj6HgYq5ZV
+	CXGjgnTLh
+X-Gm-Gg: AfdE7cmoQ7Xpz49wpJNYE6UNCsb4EeeMIH27pal7fllh9r7FC08axVopoqXDkeHXyI8
+	miZgT1i91C/p3s8jW/W7s+uk2GxJ5enUF/wIx6FoCHyrctcliw6JdFmDI465a8Sc0VFF/yG58S5
+	3KDt0xZSRQUYlfaRcjf1KZblEJd4zYzRKP9AhXw3bHo5+37MHuTR498ZkF12t0mNOj6rO43+JWM
+	q55S0aEYW6XaIi0WW8Z+y1yiYumPw5M/YpwVGhASAsfFUxvVZ44dNALHhw41ZImvQspgPPhxGog
+	245Z99TejMUP1OKrdbpQ1qvGGzzH6C13TCvQrmTSa9ZKkp9RzJyVA22EtHQ3vxiuS9OafGB7uci
+	aTzjEDvGHbIy0h6XACTyrb706AChgOnIA2uvZFyz6Oyi31ldMYW78R2yXAqEbi13i6yjVNXq7kz
+	ktbRbgfoJCTKem//AnnlRoqKBiji9bBXRzjqIcZ4ictQw4IqbwrEFNrzxO
+X-Received: by 2002:a05:600c:34ca:b0:490:b26c:64ad with SMTP id 5b1f17b1804b1-493c9b4d759mr26290045e9.5.1783047726415;
+        Thu, 02 Jul 2026 20:02:06 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:02:02 -0700 (PDT)
+        Thu, 02 Jul 2026 20:02:04 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -75,9 +75,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 13/18] rust: i2c: add adapter-provider (bus controller) registration
-Date: Fri,  3 Jul 2026 04:01:00 +0100
-Message-ID: <20260703030123.2814-14-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 14/18] rust: add sysfs device attribute groups
+Date: Fri,  3 Jul 2026 04:01:01 +0100
+Message-ID: <20260703030123.2814-15-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260703030123.2814-1-mike@fireburn.co.uk>
 References: <20260617150232.2210-1-mike@fireburn.co.uk>
@@ -90,225 +90,288 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The I2C abstraction can register an I2C *client* driver (i2c::Driver), but not
-provide a bus. A driver that presents a virtual I2C bus and services the
-transfers itself -- e.g. DisplayLink's evdi, which exposes a DDC/CI channel so
-userspace monitor-control tools can reach the display -- needs the controller
-side.
+A driver that exposes control files under sysfs -- for instance DisplayLink's
+evdi, whose /sys/devices/evdi/{count,add,remove_all} files let the daemon create
+and destroy virtual display cards -- had no safe way to do so from Rust.
 
-Add i2c::BusController (a trait with master_xfer/functionality over a
-driver-supplied Context) and i2c::BusAdapter, which fills a struct i2c_adapter
-whose i2c_algorithm dispatches to the trait via trampolines, calls
-i2c_add_adapter() on creation and i2c_del_adapter() on drop. i2c::Msg is a
-#[repr(transparent)] view over struct i2c_msg exposing addr/flags/is_read and
-the payload as a (mutable) byte slice, so a transfer routine needs no unsafe.
-FUNC_I2C is exported for the common functionality() return.
+Add a sysfs module: a driver implements DeviceAttributes (an ATTRS list plus
+show()/store(), dispatched by attribute name) for the type it stores as a
+device's driver data, and AttributeGroup::register_root() creates a standalone
+root device (root_device_register(), under /sys/devices/<name>) hosting the
+files. Reads and writes trampoline to show()/store() with the driver data
+recovered from the device; the file mode (Attr::ro/wo/rw) gates access. The group
+removes the files, reclaims the driver data and unregisters the device on drop.
 
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
 ---
- rust/kernel/i2c.rs | 192 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 192 insertions(+)
+ rust/kernel/lib.rs   |   1 +
+ rust/kernel/sysfs.rs | 245 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 246 insertions(+)
+ create mode 100644 rust/kernel/sysfs.rs
 
-diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-index 624b971ca8b0..5cde59a3ce46 100644
---- a/rust/kernel/i2c.rs
-+++ b/rust/kernel/i2c.rs
-@@ -601,3 +601,195 @@ unsafe impl Send for Registration {}
- // SAFETY: `Registration` offers no interior mutability (no mutation through &self
- // and no mutable access is exposed)
- unsafe impl Sync for Registration {}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 8baa13079071..13729ec06333 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -128,6 +128,7 @@
+ pub mod std_vendor;
+ pub mod str;
+ pub mod sync;
++pub mod sysfs;
+ pub mod task;
+ pub mod time;
+ pub mod tracepoint;
+diff --git a/rust/kernel/sysfs.rs b/rust/kernel/sysfs.rs
+new file mode 100644
+index 000000000000..f6df17c5013d
+--- /dev/null
++++ b/rust/kernel/sysfs.rs
+@@ -0,0 +1,245 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+// ===========================================================================
-+// I2C adapter (bus controller / provider) side
-+// ===========================================================================
++//! Sysfs device attributes.
++//!
++//! A driver can expose a set of named sysfs files on a device by implementing [`DeviceAttributes`]
++//! for the type it stores as that device's driver data, and registering an [`AttributeGroup`].
++//! Reads and writes are dispatched by attribute name to the type's [`show`](DeviceAttributes::show)
++//! and [`store`](DeviceAttributes::store) methods; the file mode (see [`Attr`]) controls which are
++//! reachable from userspace.
++//!
++//! [`AttributeGroup::register_root`] additionally creates a standalone "root" device
++//! (`root_device_register()`, appearing under `/sys/devices/<name>`) to host the group -- the shape
++//! DisplayLink's evdi uses for its `add`/`remove`/`count` control files.
++//!
++//! C headers: [`include/linux/sysfs.h`](srctree/include/linux/sysfs.h),
++//! [`include/linux/device.h`](srctree/include/linux/device.h)
 +
-+/// A single I2C message presented to a [`BusController`]'s transfer routine.
-+///
-+/// Wraps a `struct i2c_msg`; `#[repr(transparent)]` so a C `i2c_msg` array can be viewed directly
-+/// as a `[Msg]`.
-+#[repr(transparent)]
-+pub struct Msg(Opaque<bindings::i2c_msg>);
++use crate::{
++    bindings,
++    error::{from_err_ptr, to_result},
++    page::PAGE_SIZE,
++    prelude::*,
++    types::ForeignOwnable,
++    ThisModule,
++};
 +
-+impl Msg {
-+    /// The 7-bit (or 10-bit) target address.
-+    #[inline]
-+    pub fn addr(&self) -> u16 {
-+        // SAFETY: `self.0` is a valid `i2c_msg` for the callback's duration.
-+        unsafe { (*self.0.get()).addr }
++/// Definition of one sysfs attribute file: its name and permission mode (e.g. `0o444` read-only,
++/// `0o200` write-only, `0o644` read-write).
++pub struct Attr {
++    /// The file name.
++    pub name: &'static CStr,
++    /// The permission bits (`umode_t`).
++    pub mode: u16,
++}
++
++impl Attr {
++    /// A read-only (`0o444`) attribute.
++    pub const fn ro(name: &'static CStr) -> Self {
++        Self { name, mode: 0o444 }
 +    }
-+
-+    /// The message flags (`I2C_M_*`).
-+    #[inline]
-+    pub fn flags(&self) -> u16 {
-+        // SAFETY: as above.
-+        unsafe { (*self.0.get()).flags }
++    /// A write-only (`0o200`) attribute.
++    pub const fn wo(name: &'static CStr) -> Self {
++        Self { name, mode: 0o200 }
 +    }
-+
-+    /// Whether this is a read (`I2C_M_RD`) rather than a write.
-+    #[inline]
-+    pub fn is_read(&self) -> bool {
-+        self.flags() & (bindings::I2C_M_RD as u16) != 0
-+    }
-+
-+    /// The message length in bytes.
-+    #[inline]
-+    pub fn len(&self) -> usize {
-+        // SAFETY: as above.
-+        unsafe { (*self.0.get()).len as usize }
-+    }
-+
-+    /// Whether the message is empty.
-+    #[inline]
-+    pub fn is_empty(&self) -> bool {
-+        self.len() == 0
-+    }
-+
-+    /// The message payload of a write, as a read-only slice.
-+    #[inline]
-+    pub fn buf(&self) -> &[u8] {
-+        // SAFETY: `buf` points to `len` bytes valid for the callback's duration.
-+        unsafe { core::slice::from_raw_parts((*self.0.get()).buf, self.len()) }
-+    }
-+
-+    /// The message buffer of a read, as a mutable slice to fill with the reply.
-+    #[inline]
-+    pub fn buf_mut(&mut self) -> &mut [u8] {
-+        // SAFETY: `buf` points to `len` writable bytes valid for the callback's duration.
-+        unsafe { core::slice::from_raw_parts_mut((*self.0.get()).buf, self.len()) }
++    /// A read-write (`0o644`) attribute.
++    pub const fn rw(name: &'static CStr) -> Self {
++        Self { name, mode: 0o644 }
 +    }
 +}
 +
-+/// `I2C_FUNC_I2C`: the adapter supports plain I2C (not just SMBus) transfers.
-+pub const FUNC_I2C: u32 = bindings::I2C_FUNC_I2C;
-+
-+/// A Rust-implemented I2C bus adapter (the controller/provider side).
++/// The show/store behaviour of a device's sysfs attribute group.
 +///
-+/// This is the counterpart to the [`Driver`] trait above: rather than binding to an I2C client on
-+/// an existing bus, an implementer *is* a bus and services transfers. Virtual buses -- e.g. the
-+/// DDC/CI channel DisplayLink's evdi exposes so userspace monitor-control tools can reach the
-+/// display -- use this.
-+pub trait BusController: 'static {
-+    /// Per-adapter driver context, made available to the transfer callbacks.
-+    type Context: Send + Sync;
++/// Implemented by the type a device stores as its driver data. A shared reference to it is handed
++/// to [`show`](Self::show)/[`store`](Self::store), dispatched by the attribute `name`.
++pub trait DeviceAttributes: Send + Sync + 'static {
++    /// The attributes exposed by this group.
++    const ATTRS: &'static [Attr];
 +
-+    /// Transfer `msgs` on the bus, returning the number of messages successfully transferred
-+    /// (as the C `master_xfer` does), or an error.
-+    fn master_xfer(ctx: &Self::Context, msgs: &mut [Msg]) -> Result<usize>;
++    /// Handle a read of attribute `name`, writing up to one page into `buf` and returning the
++    /// number of bytes written. Only called for readable (`ro`/`rw`) attributes.
++    fn show(&self, name: &CStr, buf: &mut [u8]) -> Result<usize> {
++        let _ = (name, buf);
++        Err(EINVAL)
++    }
 +
-+    /// Report the bus functionality bitmask (`I2C_FUNC_*`).
-+    fn functionality(ctx: &Self::Context) -> u32;
++    /// Handle a write of `buf` to attribute `name`. Only called for writable (`wo`/`rw`)
++    /// attributes.
++    fn store(&self, name: &CStr, buf: &[u8]) -> Result {
++        let _ = (name, buf);
++        Err(EINVAL)
++    }
 +}
 +
-+/// An owned, registered I2C adapter driven by a [`BusController`].
++/// A registered sysfs attribute group hosted on a `root_device_register()` device.
 +///
-+/// [`BusAdapter::new`] fills a `struct i2c_adapter` (pointing its algorithm at trampolines that
-+/// dispatch to `T`) and calls `i2c_add_adapter()`; dropping it calls `i2c_del_adapter()`.
-+#[pin_data(PinnedDrop)]
-+pub struct BusAdapter<T: BusController> {
-+    #[pin]
-+    adapter: Opaque<bindings::i2c_adapter>,
-+    #[pin]
-+    algo: Opaque<bindings::i2c_algorithm>,
-+    ctx: T::Context,
-+    registered: core::sync::atomic::AtomicBool,
++/// Dropping it removes the files, reclaims the driver data, and unregisters the root device.
++pub struct AttributeGroup<T: DeviceAttributes> {
++    root: *mut bindings::device,
++    /// Backing storage for the `device_attribute`s handed to `device_create_file()`; must stay
++    /// alive (and not move) for as long as the files exist, so it lives in this heap allocation.
++    attrs: KVec<bindings::device_attribute>,
++    _p: core::marker::PhantomData<T>,
 +}
 +
-+// SAFETY: the adapter is internally synchronized by the I2C core; `ctx` is `Send + Sync`.
-+unsafe impl<T: BusController> Send for BusAdapter<T> {}
++// SAFETY: the root device and its attributes are internally synchronized by the driver core; `T`
++// is `Send + Sync`.
++unsafe impl<T: DeviceAttributes> Send for AttributeGroup<T> {}
 +// SAFETY: see `Send`.
-+unsafe impl<T: BusController> Sync for BusAdapter<T> {}
++unsafe impl<T: DeviceAttributes> Sync for AttributeGroup<T> {}
 +
-+impl<T: BusController> BusAdapter<T> {
++impl<T: DeviceAttributes> AttributeGroup<T> {
 +    /// # Safety
-+    /// `adap` is a valid adapter whose `algo_data` points to a live `T::Context`.
-+    unsafe extern "C" fn xfer_trampoline(
-+        adap: *mut bindings::i2c_adapter,
-+        msgs: *mut bindings::i2c_msg,
-+        num: crate::ffi::c_int,
-+    ) -> crate::ffi::c_int {
-+        // SAFETY: by the invariant established in `new`, `algo_data` points to the `T::Context`.
-+        let ctx = unsafe { &*((*adap).algo_data as *const T::Context) };
-+        // SAFETY: the I2C core passes `num` valid `i2c_msg`s; `Msg` is `#[repr(transparent)]`.
-+        let slice = unsafe { core::slice::from_raw_parts_mut(msgs.cast::<Msg>(), num as usize) };
-+        match T::master_xfer(ctx, slice) {
-+            Ok(n) => n as crate::ffi::c_int,
-+            Err(e) => e.to_errno(),
++    /// `dev`'s driver data is a live `T` set via [`device::Device::set_drvdata`].
++    unsafe extern "C" fn show_trampoline(
++        dev: *mut bindings::device,
++        attr: *mut bindings::device_attribute,
++        buf: *mut crate::ffi::c_char,
++    ) -> isize {
++        // SAFETY: `dev` is a valid device with `T` driver data (invariant of `register_root`).
++        let ctx = unsafe { borrow_ctx::<T>(dev) };
++        // SAFETY: the attribute name is a valid C string for the callback's duration.
++        let name = unsafe { as_cstr((*attr).attr.name) };
++        // SAFETY: sysfs guarantees `buf` is a writable page.
++        let slice = unsafe { core::slice::from_raw_parts_mut(buf.cast::<u8>(), PAGE_SIZE) };
++        match T::show(ctx, name, slice) {
++            Ok(n) => core::cmp::min(n, PAGE_SIZE) as isize,
++            Err(e) => e.to_errno() as isize,
 +        }
 +    }
 +
 +    /// # Safety
-+    /// `adap` is a valid adapter whose `algo_data` points to a live `T::Context`.
-+    unsafe extern "C" fn func_trampoline(adap: *mut bindings::i2c_adapter) -> u32 {
-+        // SAFETY: by the invariant established in `new`, `algo_data` points to the `T::Context`.
-+        let ctx = unsafe { &*((*adap).algo_data as *const T::Context) };
-+        T::functionality(ctx)
++    /// `dev`'s driver data is a live `T` set via [`device::Device::set_drvdata`].
++    unsafe extern "C" fn store_trampoline(
++        dev: *mut bindings::device,
++        attr: *mut bindings::device_attribute,
++        buf: *const crate::ffi::c_char,
++        count: usize,
++    ) -> isize {
++        // SAFETY: as in `show_trampoline`.
++        let ctx = unsafe { borrow_ctx::<T>(dev) };
++        // SAFETY: the attribute name is a valid C string for the callback's duration.
++        let name = unsafe { as_cstr((*attr).attr.name) };
++        // SAFETY: sysfs guarantees `buf` holds `count` readable bytes.
++        let slice = unsafe { core::slice::from_raw_parts(buf.cast::<u8>(), count) };
++        match T::store(ctx, name, slice) {
++            Ok(()) => count as isize,
++            Err(e) => e.to_errno() as isize,
++        }
 +    }
 +
-+    /// Create and register a new I2C adapter named `name`, parented to `parent`, with driver
-+    /// context `ctx`.
-+    pub fn new(
++    fn make_attr(a: &Attr) -> bindings::device_attribute {
++        let mut da: bindings::device_attribute = bindings::device_attribute::default();
++        da.attr.name = a.name.as_char_ptr();
++        da.attr.mode = a.mode;
++        da.__bindgen_anon_1.show = Some(Self::show_trampoline);
++        da.__bindgen_anon_2.store = Some(Self::store_trampoline);
++        da
++    }
++
++    /// Create a root device named `name` and expose `T`'s attributes on it.
++    ///
++    /// `T` becomes the device's driver data; the attribute callbacks recover it by name-dispatch.
++    pub fn register_root(
 +        name: &CStr,
-+        parent: &device::Device,
-+        ctx: T::Context,
-+    ) -> Result<Pin<KBox<Self>>> {
-+        let this = KBox::try_pin_init(
-+            try_pin_init!(Self {
-+                adapter <- Opaque::ffi_init(|slot: *mut bindings::i2c_adapter| {
-+                    // SAFETY: `slot` is valid, uninitialized storage; a zeroed adapter is a valid
-+                    // starting point (self-referential fields are set below, after pinning).
-+                    unsafe { *slot = bindings::i2c_adapter::default() };
-+                }),
-+                algo <- Opaque::ffi_init(|slot: *mut bindings::i2c_algorithm| {
-+                    // SAFETY: `slot` is valid, uninitialized storage.
-+                    unsafe {
-+                        *slot = bindings::i2c_algorithm::default();
-+                        (*slot).__bindgen_anon_1.master_xfer = Some(Self::xfer_trampoline);
-+                        (*slot).functionality = Some(Self::func_trampoline);
-+                    }
-+                }),
-+                ctx: ctx,
-+                registered: core::sync::atomic::AtomicBool::new(false),
-+            }),
-+            GFP_KERNEL,
-+        )?;
++        module: &'static ThisModule,
++        ctx: impl PinInit<T, Error>,
++    ) -> Result<KBox<Self>> {
++        // Build the attribute array up front (no external resources yet, so a failure here needs
++        // no cleanup).
++        let mut attrs: KVec<bindings::device_attribute> =
++            KVec::with_capacity(T::ATTRS.len(), GFP_KERNEL)?;
++        for a in T::ATTRS {
++            attrs.push(Self::make_attr(a), GFP_KERNEL)?;
++        }
++        // Box the context; its foreign pointer becomes the device's driver data.
++        let ctx_ptr = KBox::pin_init(ctx, GFP_KERNEL)?.into_foreign();
 +
-+        // `this` now has a stable address; wire the self-referential adapter fields and register.
-+        let adap = this.adapter.get();
-+        // Copy the name without its NUL into the fixed 48-byte array (capped at 47 so the
-+        // already-zeroed array stays NUL-terminated even if the name is over-long).
-+        let name_bytes = name.to_bytes();
-+        let n = core::cmp::min(name_bytes.len(), 47);
-+        // SAFETY: `adap`/`algo`/`ctx` live for `this`'s (pinned) lifetime; `name_bytes` is valid
-+        // for `n <= 47` bytes; `parent` is a valid device.
-+        unsafe {
-+            (*adap).algo = this.algo.get();
-+            (*adap).algo_data = (&this.ctx as *const T::Context).cast_mut().cast();
-+            core::ptr::copy_nonoverlapping(
-+                name_bytes.as_ptr(),
-+                (*adap).name.as_mut_ptr().cast::<u8>(),
-+                n,
-+            );
-+            (*adap).dev.parent = parent.as_raw();
++        // SAFETY: `name` is a valid C string; `module` is this module.
++        let root = match from_err_ptr(unsafe {
++            bindings::__root_device_register(name.as_char_ptr(), module.as_ptr())
++        }) {
++            Ok(r) => r,
++            Err(e) => {
++                // Reclaim the context box we have not attached anywhere yet.
++                // SAFETY: `ctx_ptr` came from `into_foreign()` above and was not consumed.
++                drop(unsafe { <Pin<KBox<T>> as ForeignOwnable>::from_foreign(ctx_ptr) });
++                return Err(e);
++            }
++        };
++        // SAFETY: `root` is a freshly-registered, valid device; `ctx_ptr` is its driver data now.
++        unsafe { bindings::dev_set_drvdata(root, ctx_ptr) };
++
++        // Register each file against its stable slot in `attrs`.
++        for da in attrs.iter() {
++            if let Err(e) = to_result(unsafe { bindings::device_create_file(root, da) }) {
++                // `root_device_unregister` (device_del) removes any files created so far;
++                // reclaim the context box first.
++                Self::teardown(root);
++                return Err(e);
++            }
 +        }
 +
-+        // SAFETY: `adap` is a fully-initialized adapter.
-+        to_result(unsafe { bindings::i2c_add_adapter(adap) })?;
-+        this.registered
-+            .store(true, core::sync::atomic::Ordering::Release);
-+        Ok(this)
++        match KBox::new(
++            Self {
++                root,
++                attrs,
++                _p: core::marker::PhantomData,
++            },
++            GFP_KERNEL,
++        ) {
++            Ok(group) => Ok(group),
++            Err(e) => {
++                Self::teardown(root);
++                Err(e.into())
++            }
++        }
++    }
++
++    /// Reclaim the driver-data box and unregister the root device (which removes its files).
++    fn teardown(root: *mut bindings::device) {
++        // SAFETY: `root` is a valid registered device whose driver data is a `Pin<KBox<T>>` (or
++        // NULL); `dev_get_drvdata` returns the pointer stashed in `register_root`.
++        let ptr = unsafe { bindings::dev_get_drvdata(root) };
++        if !ptr.is_null() {
++            // SAFETY: `ptr` came from `Pin::<KBox<T>>::into_foreign`.
++            drop(unsafe { <Pin<KBox<T>> as ForeignOwnable>::from_foreign(ptr) });
++        }
++        // SAFETY: `root` was created by `__root_device_register` and not yet unregistered.
++        unsafe { bindings::root_device_unregister(root) };
 +    }
 +}
 +
-+#[pinned_drop]
-+impl<T: BusController> PinnedDrop for BusAdapter<T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        if self.registered.load(core::sync::atomic::Ordering::Acquire) {
-+            // SAFETY: the adapter was successfully registered with `i2c_add_adapter` and has not
-+            // been deleted yet.
-+            unsafe { bindings::i2c_del_adapter(self.adapter.get()) };
++impl<T: DeviceAttributes> Drop for AttributeGroup<T> {
++    fn drop(&mut self) {
++        for da in self.attrs.iter() {
++            // SAFETY: each `da` was passed to `device_create_file` on `self.root` and not removed
++            // since.
++            unsafe { bindings::device_remove_file(self.root, da) };
 +        }
++        // Reclaim the driver-data box and unregister the root device.
++        Self::teardown(self.root);
 +    }
++}
++
++/// Borrow the `T` driver data of the device `ptr`.
++///
++/// # Safety
++/// `ptr` is a valid `struct device` whose driver data is a `Pin<KBox<T>>` stashed by
++/// [`AttributeGroup::register_root`], valid for the returned reference's lifetime.
++unsafe fn borrow_ctx<'a, T>(ptr: *mut bindings::device) -> &'a T {
++    // SAFETY: `ptr` is a valid device by the contract.
++    let data = unsafe { bindings::dev_get_drvdata(ptr) };
++    // SAFETY: `data` is the pointer `Pin<KBox<T>>::into_foreign` returned, i.e. a valid `*mut T`
++    // live for the borrow.
++    unsafe { &*(data as *const T) }
++}
++
++/// # Safety
++/// `ptr` is a valid, NUL-terminated C string for the returned reference's lifetime.
++#[inline]
++unsafe fn as_cstr<'a>(ptr: *const crate::ffi::c_char) -> &'a CStr {
++    // SAFETY: by the contract, `ptr` is a valid NUL-terminated C string. `crate::ffi::c_char` is
++    // `u8` while `core::ffi::CStr::from_ptr` takes `*const i8`, so cast the pointer.
++    unsafe { CStr::from_ptr(ptr.cast()) }
 +}
 -- 
 2.55.0
