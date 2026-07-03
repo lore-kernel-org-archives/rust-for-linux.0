@@ -1,63 +1,63 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA7D30CD89
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A4B30D3FE
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047737; cv=none; b=GN61AqRYuWgqHmZU8raZ/o6IcH6OTCe/ZMuhfG//V+6gebRWuIF1/XilF4c9Nai4tudr7EmG0pOeexV7MvengG32oTn0XWMXzmTHZmdHB92iMvw673G6wyI43C6lRv9KV8O2+Cc4W0XaNhMI7CbxKj4KTLjQ+AEvD8PZRsFDv5E=
+	t=1783047738; cv=none; b=V+u3V0DQ2gz95ZKNZQYzC/NETSa4kz143b8q+8tR9N0xUZPNOUb1WUn/cvEEtz6ohK6OdADISdF6GtPX40qHSb7YKmFAFG/wVy2J470HkUhJ9JR9F6AfMEOIak3L78RR7/MRTZyXdyp692aT7hdYd0M4etonRrV8ZNmd5HQGnwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047737; c=relaxed/simple;
-	bh=fRfRWSbJImzHZruC9DYmRbxAwGAifNOTfVGD9HhsIVk=;
+	s=arc-20240116; t=1783047738; c=relaxed/simple;
+	bh=GwvU+9h7Qtl04FVjBGVuSwmPigpE3mB+Cvb7wXRtfdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ud6RXzUAoJmjqM90fJmvS7Em9v96hAl+IX+uh1dyyNrwTaN9V8En6EhbhYsUYJCDAiXCWPE0LrIoLmY5r8U3h77vyWL/bwa2l5Zq5+/1/OtX41sq4SmDaGvK6sCZqFAM7qvXPpj98NucNybM0h00MhEFEeuKV81dXsZkz5/pP90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=srvPcAMv; arc=none smtp.client-ip=209.85.221.45
+	 MIME-Version; b=uUhIVC8h5cdlxCD4g67Fx50JtxWXuHyTmn2qqTX601YRaZIye0fLAAZoMsztTRCqh4p/QR6TyEpMQwkLVyhkV7nDpCqlqosk9XJ+yUy4NfNCLYfEkp7kix1CaAsy5/vyoywd9/seTUNRzyLKvifZHKOvoW/NUxbQqxdcnUTy81o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=cozcn3t9; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="srvPcAMv"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-475881b9a4bso79217f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="cozcn3t9"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493c733f15aso528205e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047734; x=1783652534; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047735; x=1783652535; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=676W53NrP+v1JtRit87SUFwRygfrhSqyRXaV/N96IbY=;
-        b=srvPcAMvJV6eIG2uXRn0NaCQU2kG5pcrL+ZCt95nD1uaDp2DnBmuAfqO4+QAR8qqxr
-         uXPXiGsg819zb/VTTyLt93QQ42IhCBIOkI8IHCI03KtN54gtCaqOftWjG04oeWipqE6A
-         bl9+aHBvy6XbxHCHX5EwLG9PJzDfAW+2ABU6jxUegoswHK38kfNP0TYeyVsiTJicebjO
-         86VSPt+7TDtXcl/V8b2tB7lWH5wO2XTw2W003w4FgxpPtMXF2F61T9Ru61Tm4q7G5mIa
-         XFrPZhojuyTQ69bj6ayZoyd6oioZZ1Vvz2OUElgaqWq8xxYSPQb2Nbs1s8td/4gekhiC
-         vjRA==
+         :message-id:reply-to;
+        bh=qmuYxCXQJW79g/7IjZ0oN+EYDyNRyHCs4/1RFHrUzwg=;
+        b=cozcn3t9bYk+iR2nNPKsnG7WqefYv0xWBD2Sy/aG5++WHSS1MydUSfVoOAa2Y/0WaM
+         jyE7HoUupwBvg/mrSKD2TlRvL2gxlxfdtHUxS1h4h9KgBySY7y2E+Zng5fAN6clmWyEM
+         cxZbMfI+O8te5rcszV3OCgGEHG/E4y9Mknif4JNisAvuNVBfxMq6mKgIKdjpwSAaxOjF
+         oMvJXNiAOKrno0vM324GPiw17Ad00+I9N2le9+mqzAgQ9yiyDiaW3PNU45oqOk8a4wRA
+         boXjTNzrWE0Z8FqjFenvdZltG62bMPW68RoW44jPhXUUSzEWbgwEgeQJY63Lop+sB2Q4
+         k0fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047734; x=1783652534;
+        d=1e100.net; s=20251104; t=1783047735; x=1783652535;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=676W53NrP+v1JtRit87SUFwRygfrhSqyRXaV/N96IbY=;
-        b=nbFERyUhR7A60ytq3UkEHypxdakY9ipKlliRe8QIvIhrIBqvFpkc8gRoIbBWkOL0Fb
-         +Ui/4z/xSIA/vnw0VKDd8GwwbR0UvJgoFLTNVhrXP8ZdfBBzVBO12CdEsEANAlqqhM6a
-         42bAyCRQ0kXT6hWIzxuHHlFfYlDUT5xBwHn8VOPh4ggXer9CE13M3hg1bWJvyEcjCl7I
-         dixPIPRXdSSONeziE12qxvnJ8ej38X9bu2oJy85KEIBfsRoQgdXSURpzLhMh64EQZlYX
-         WGXSd8WcWZp1MERoohD+uJw+n4eGLAAxP12n/GqRhOu7pSE4F37m+6VSZh7wMB3a0F/s
-         KLQw==
-X-Gm-Message-State: AOJu0YyWKmAIcvO96Ch1A1X8IQQEK83HcF6Jl/sZCXNUeCQYAJwhQ5a9
-	/57O1KKYkAJhTGq9xUwIwRzIliJCw6xIaEgzZxg+qGNJo3jLmLECLMv6BiYBnoreVTcc6Sp06s1
-	kmRJeNWOI
-X-Gm-Gg: AfdE7cl6rlpSlCl0L4BapBquXeUodCoqnDtBoazjAQdYnMyQpxpAWlGN53kWWRP05nr
-	SQ1MtvUJPo2TBDNWQ+JIn+M2YO1MP8+FEj+slfAitXzop+sMg+87JLEEi8bb1roHDncA9BIBhEm
-	F/Se6ZSFJJdzUd9ynVjhNUkpbfcxki12LWmFbqPMTQAqTo9m2GUjx1vTURE2RPiPMY2EwYNbosM
-	Yl7KoCLauUUb1Em0/pJkWHqLYOy9jJUcW+hh7ZlgvJwYsuxUxJ8ovVEaF0PaQlJ8T2newqnhNcw
-	zw9nGZBc0wUO/IKr0SsLe2LElYD4Ae+1lYLOJhkiPvzwUF6/OSWwuOePjfPJ3vOZ5yxfw2sqB08
-	MVKEk/3jLi8eNBavOypdUSnyGwDY6RIL6TRQYaFKb1qA6wyLaeRWd1s0Joy8JAI5P5b/dv7zxkE
-	cFDRh5VuABC26p9YfFVWvqXx9+938ZZeTL/EeAPznnpzLgXWOn3ukBsrH9
-X-Received: by 2002:a5d:5588:0:b0:475:f100:35f5 with SMTP id ffacd0b85a97d-477b5c415a8mr9292156f8f.50.1783047733914;
-        Thu, 02 Jul 2026 20:02:13 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qmuYxCXQJW79g/7IjZ0oN+EYDyNRyHCs4/1RFHrUzwg=;
+        b=XZ89Epyr0Yss6DO+ZsJEQrXSuZ55ocgAuVwzjxmcbK2vVpHRCojfsKakr/0OZIZooj
+         OBLVIK5CHWsL+nVsjrfHpnF+z4dTtTuEG8HhiYYqbZEqzA+WFcBr0d+OTkEfJ/7dch1E
+         +Zs3xkF+rDYfDJ6CHODwgxOoFoMIX3ojJXrHpe6xPB9pICn2QQ1+XLB0QjZH4ewlEys6
+         XA+LtqUmiSg8XVJ0ZVq0zq/krlrOrgtLEXJrtqOkgB3dFfOZFhEdmSxaOo2I2xb+zNeJ
+         kXxQwSlV1gLLHcBHtBIGT2/wufKwUnxHrlEY1UUUv13ptS+MTui0kswHV5lt5HDhyhGX
+         rdNg==
+X-Gm-Message-State: AOJu0YyFxMbaeMDa52M+mqbp3JY/YaJQMRFCjeXSQre72xhFyeS4Bmfc
+	TZ8V7F834pCzcaXrhIXrxe99RLEttw6NXMcPanD5PbiLfzb/07nErqZiPuVZnUUoBEk4ZqNybeW
+	aMB/b9RzW
+X-Gm-Gg: AfdE7cmYwuxn3njeE3HvdHabfxvhX7vQEKgEW7YO5ZyDz4hXD3a9ah5kCARorRH3Fba
+	HgdBA6qz3t6XMhAoS+QDDYpNUym4j5zD8E2vcYxchw+kwuVRUo+CaSJ/2mUrnooG0JBTnKaICqE
+	f/5Qh3RbhMT5KV/c4EpaUjjZWOFG79QUytjC6PnYJFptqzmlQhIRoeExiK8U3PQ/DgbZ8dhE/3c
+	Ad+m8VkWWq2CmFJlVXCo6fbGrlvKQMNjx0mRNv8y2ZSvgt8eUvVv/xDR10Zui1ev6anuZ2Jdvi5
+	6hirVxIeaTCQ1apjIpNVafPtiJ+txueRCDI5AfEd1caV8JaxebpF5Rjt4opGEBcYKEA6gx7p86Q
+	axhzVCajCzID5arqMEPxF4tbb4jSyf7RqOf5D0qOVi6XYo2J2HjIhaLoNZqXApDhN4d1U4MdwKx
+	5OubVkOo/FjzMsTXD8wBKXH9Kv4EEVUza5NtUhDMjIXFmhoH9axJFm8lPU
+X-Received: by 2002:a05:600c:a404:b0:493:b783:ad59 with SMTP id 5b1f17b1804b1-493c2b374c7mr103666075e9.14.1783047735339;
+        Thu, 02 Jul 2026 20:02:15 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.11
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:02:13 -0700 (PDT)
+        Thu, 02 Jul 2026 20:02:14 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -75,9 +75,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 17/18] rust: drm: kms: add connector detect() and mode_valid() hooks
-Date: Fri,  3 Jul 2026 04:01:04 +0100
-Message-ID: <20260703030123.2814-18-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 18/18] rust: drm: kms: add plane damage-clip accessors
+Date: Fri,  3 Jul 2026 04:01:05 +0100
+Message-ID: <20260703030123.2814-19-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260703030123.2814-1-mike@fireburn.co.uk>
 References: <20260617150232.2210-1-mike@fireburn.co.uk>
@@ -90,171 +90,168 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The safe connector layer only exposed get_modes(), so a driver couldn't
-report hotplug state or prune modes it can't drive. Add two optional
-DriverConnector hooks, gated the same way as the plane/CRTC optionals
-(registered in the vtable only when the driver overrides them):
+A driver whose "scanout" is an expensive encode-and-send (like a USB
+display) wants to repaint only the region a client marked dirty rather
+than the whole framebuffer every flip. Add two RawPlaneState accessors
+over the client's FB_DAMAGE_CLIPS (relative to the old plane state), both
+intersected with the visible source area:
 
-  - detect(&Connector, force) -> Status, wired to
-    drm_connector_funcs.detect, returning a new Status enum
-    (Connected/Disconnected/Unknown mapping to enum drm_connector_status).
+  - damage_merged(), wrapping drm_atomic_helper_damage_merged(): merges the
+    clips into one rectangle and returns it as a new Rect type (with
+    width()/height() helpers). None means nothing to repaint; if the client
+    supplied no clips, the full plane rectangle is returned, so a driver can
+    always treat Some as "repaint this box".
 
-  - mode_valid(&Connector, &DisplayMode) -> ModeStatus, wired to
-    drm_connector_helper_funcs.mode_valid, returning a new ModeStatus enum
-    (Ok/Bad/ClockHigh/ClockLow, a common subset of enum drm_mode_status).
+  - for_each_damage_clip(), driving drm_atomic_helper_damage_iter: invokes a
+    closure once per individual clip (the rectangles damage_merged() collapses
+    into one), so a driver that forwards each changed region separately -- e.g.
+    over USB -- can repaint just those rectangles instead of their bounding box.
 
-Both leave DRM's default behaviour (always connected, all modes valid)
-unchanged for connectors that don't implement them.
+drm_atomic_helper_damage_{merged,iter_*} live in <drm/drm_damage_helper.h>,
+so add that to bindings_helper.h.
 
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
 ---
- rust/kernel/drm/kms/connector.rs | 98 +++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 3 deletions(-)
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/drm/kms/plane.rs    | 105 ++++++++++++++++++++++++++++++++
+ 2 files changed, 106 insertions(+)
 
-diff --git a/rust/kernel/drm/kms/connector.rs b/rust/kernel/drm/kms/connector.rs
-index 591153de7ab4..a66243db8868 100644
---- a/rust/kernel/drm/kms/connector.rs
-+++ b/rust/kernel/drm/kms/connector.rs
-@@ -5,7 +5,8 @@
- //! C header: [`include/drm/drm_connector.h`](srctree/include/drm/drm_connector.h)
- 
- use super::{
--    atomic::*, encoder::*, KmsDriver, ModeConfigGuard, ModeObject, ModeObjectVtable, Sealed
-+    atomic::*, encoder::*, modes::DisplayMode, KmsDriver, ModeConfigGuard, ModeObject,
-+    ModeObjectVtable, Sealed,
- };
- use crate::{
-     alloc::KBox,
-@@ -72,6 +73,43 @@ pub enum Type {
-     USB         as Usb
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 7d04abec1215..b8675642c1a8 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -39,6 +39,7 @@
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_connector.h>
+ #include <drm/drm_crtc.h>
++#include <drm/drm_damage_helper.h>
+ #include <drm/drm_blend.h>
+ #include <drm/drm_edid.h>
+ #include <drm/drm_encoder.h>
+diff --git a/rust/kernel/drm/kms/plane.rs b/rust/kernel/drm/kms/plane.rs
+index ead875316829..4ae11cec88a4 100644
+--- a/rust/kernel/drm/kms/plane.rs
++++ b/rust/kernel/drm/kms/plane.rs
+@@ -605,6 +605,49 @@ pub trait FromRawPlaneState: AsRawPlaneState {
+     unsafe fn from_raw_mut<'a>(ptr: *mut bindings::drm_plane_state) -> &'a mut Self;
  }
  
-+/// The connection status of a [`Connector`], as returned by [`DriverConnector::detect`].
++/// A rectangle in a plane's source (pixel) space, as produced by
++/// [`RawPlaneState::damage_merged`].
 +///
-+/// This is identical to [`enum drm_connector_status`].
++/// The box is inclusive on the top-left and exclusive on the bottom-right (`[x1, x2)` by
++/// `[y1, y2)`), matching [`struct drm_rect`].
 +///
-+/// [`enum drm_connector_status`]: srctree/include/drm/drm_connector.h
++/// [`struct drm_rect`]: srctree/include/drm/drm_rect.h
 +#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+#[repr(u32)]
-+pub enum Status {
-+    /// The connector is connected to a display and a mode list can be retrieved.
-+    Connected = bindings::drm_connector_status_connector_status_connected,
-+    /// The connector has no display attached.
-+    Disconnected = bindings::drm_connector_status_connector_status_disconnected,
-+    /// The connection state could not be determined (treated as connected for probing).
-+    Unknown = bindings::drm_connector_status_connector_status_unknown,
++pub struct Rect {
++    /// Left edge, inclusive.
++    pub x1: i32,
++    /// Top edge, inclusive.
++    pub y1: i32,
++    /// Right edge, exclusive.
++    pub x2: i32,
++    /// Bottom edge, exclusive.
++    pub y2: i32,
 +}
 +
-+/// The result of validating a display mode against a [`Connector`], as returned by
-+/// [`DriverConnector::mode_valid`].
-+///
-+/// This mirrors a small, commonly-used subset of [`enum drm_mode_status`]; use [`ModeStatus::Bad`]
-+/// for a generic rejection, or the clock-specific variants when a mode is out of the driver's
-+/// pixel-clock range.
-+///
-+/// [`enum drm_mode_status`]: srctree/include/drm/drm_modes.h
-+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+#[repr(i32)]
-+pub enum ModeStatus {
-+    /// The mode is usable.
-+    Ok = bindings::drm_mode_status_MODE_OK,
-+    /// The mode is rejected for an unspecified reason.
-+    Bad = bindings::drm_mode_status_MODE_BAD,
-+    /// The mode's pixel clock is above what the driver can drive.
-+    ClockHigh = bindings::drm_mode_status_MODE_CLOCK_HIGH,
-+    /// The mode's pixel clock is below what the driver can drive.
-+    ClockLow = bindings::drm_mode_status_MODE_CLOCK_LOW,
-+}
-+
- /// The main trait for implementing the [`struct drm_connector`] API for [`Connector`].
- ///
- /// Any KMS driver should have at least one implementation of this type, which allows them to create
-@@ -105,14 +143,22 @@ pub trait DriverConnector: Send + Sync + Sized {
-             atomic_destroy_state: Some(atomic_destroy_state_callback::<Self::State>),
-             destroy: Some(connector_destroy_callback::<Self>),
-             force: None,
--            detect: None,
-+            detect: if Self::HAS_DETECT {
-+                Some(detect_callback::<Self>)
-+            } else {
-+                None
-+            },
-             fill_modes: Some(bindings::drm_helper_probe_single_connector_modes),
-             debugfs_init: None,
-             oob_hotplug_event: None,
-             atomic_duplicate_state: Some(atomic_duplicate_state_callback::<Self::State>),
-         },
-         helper_funcs: bindings::drm_connector_helper_funcs {
--            mode_valid: None,
-+            mode_valid: if Self::HAS_MODE_VALID {
-+                Some(mode_valid_callback::<Self>)
-+            } else {
-+                None
-+            },
-             atomic_check: None,
-             get_modes: Some(get_modes_callback::<Self>),
-             detect_ctx: None,
-@@ -151,6 +197,28 @@ fn get_modes<'a>(
-         connector: ConnectorGuard<'a, Self>,
-         guard: &ModeConfigGuard<'a, Self::Driver>,
-     ) -> i32;
-+
-+    /// The optional [`drm_connector_funcs.detect`] hook for this connector.
-+    ///
-+    /// Drivers may implement this to report whether a display is currently attached. If not
-+    /// implemented, the connector is always considered connected (DRM's default with no `detect`
-+    /// hook). `force` is set when userspace explicitly requested a forced probe.
-+    ///
-+    /// [`drm_connector_funcs.detect`]: srctree/include/drm/drm_connector.h
-+    fn detect(_connector: &Connector<Self>, _force: bool) -> Status {
-+        build_error::build_error("This should not be reachable")
++impl Rect {
++    #[inline]
++    fn from_raw(r: &bindings::drm_rect) -> Self {
++        Self {
++            x1: r.x1,
++            y1: r.y1,
++            x2: r.x2,
++            y2: r.y2,
++        }
 +    }
 +
-+    /// The optional [`drm_connector_helper_funcs.mode_valid`] hook for this connector.
-+    ///
-+    /// Drivers may implement this to reject modes they cannot drive (for example, a mode whose
-+    /// pixel clock exceeds the hardware's budget). Returning anything other than [`ModeStatus::Ok`]
-+    /// prunes the mode from the probed list. If not implemented, every mode is accepted.
-+    ///
-+    /// [`drm_connector_helper_funcs.mode_valid`]: srctree/include/drm/drm_modeset_helper_vtables.h
-+    fn mode_valid(_connector: &Connector<Self>, _mode: &DisplayMode) -> ModeStatus {
-+        build_error::build_error("This should not be reachable")
++    /// The width of the rectangle in pixels.
++    #[inline]
++    pub fn width(&self) -> i32 {
++        self.x2 - self.x1
 +    }
- }
- 
- /// The generated C vtable for a [`DriverConnector`].
-@@ -464,6 +532,30 @@ impl<T: AsRawConnector> RawConnector for T {}
-     T::get_modes(connector.guard(&guard), &guard)
- }
- 
-+unsafe extern "C" fn detect_callback<T: DriverConnector>(
-+    connector: *mut bindings::drm_connector,
-+    force: bool,
-+) -> bindings::drm_connector_status {
-+    // SAFETY: This is safe via `DriverConnector`s type invariants.
-+    let connector = unsafe { Connector::<T>::from_raw(connector) };
 +
-+    T::detect(connector, force) as bindings::drm_connector_status
++    /// The height of the rectangle in pixels.
++    #[inline]
++    pub fn height(&self) -> i32 {
++        self.y2 - self.y1
++    }
 +}
 +
-+unsafe extern "C" fn mode_valid_callback<T: DriverConnector>(
-+    connector: *mut bindings::drm_connector,
-+    mode: *const bindings::drm_display_mode,
-+) -> bindings::drm_mode_status {
-+    // SAFETY: This is safe via `DriverConnector`s type invariants.
-+    let connector = unsafe { Connector::<T>::from_raw(connector) };
-+
-+    // SAFETY: DRM guarantees `mode` points to a valid `drm_display_mode` for the duration of this
-+    // callback, and only passes us shared access to it.
-+    let mode = unsafe { DisplayMode::as_ref(mode) };
-+
-+    T::mode_valid(connector, mode) as bindings::drm_mode_status
-+}
-+
- /// A [`struct drm_connector`] without a known [`DriverConnector`] implementation.
+ /// Common methods available on any type which implements [`AsRawPlane`].
  ///
- /// This is mainly for situations where our bindings can't infer the [`DriverConnector`]
+ /// This is implemented internally by DRM, and provides many of the basic methods for working with
+@@ -691,6 +734,68 @@ fn atomic_helper_check<S, D>(
+         })
+     }
+ 
++    /// Merge all frame-damage clips on this (new) plane state -- relative to `old` -- into a
++    /// single bounding rectangle, intersected with the plane's visible source area.
++    ///
++    /// Returns [`None`] when the plane is not visible or there is nothing to update. If the client
++    /// supplied no explicit damage clips, the full plane rectangle is returned, so a driver can
++    /// always treat [`Some`] as "repaint this rectangle" and fall back to a full-frame update.
++    /// Coordinates are integer pixels in the plane's source space.
++    ///
++    /// [`drm_atomic_helper_damage_merged`]: srctree/include/drm/drm_damage_helper.h
++    fn damage_merged(&self, old: &impl AsRawPlaneState) -> Option<Rect> {
++        let mut rect = bindings::drm_rect {
++            x1: 0,
++            y1: 0,
++            x2: 0,
++            y2: 0,
++        };
++
++        // SAFETY:
++        // - `old` and `self` are valid initialized `drm_plane_state`s via their type invariants.
++        // - `drm_atomic_helper_damage_merged` only reads the two states (to gather the damage
++        //   clips and the source rectangle) and writes the merged result into `rect`; it does not
++        //   mutate the plane state, so deriving a `*mut` from our shared reference is sound.
++        let visible = unsafe {
++            bindings::drm_atomic_helper_damage_merged(
++                core::ptr::from_ref(old.as_raw()),
++                core::ptr::from_ref(self.as_raw()).cast_mut(),
++                &mut rect,
++            )
++        };
++
++        visible.then(|| Rect::from_raw(&rect))
++    }
++
++    /// Invoke `f` once per frame-damage clip on this (new) plane state relative to `old`, each
++    /// intersected with the plane's visible source area -- i.e. the individual rectangles that
++    /// [`Self::damage_merged`] collapses into one. If the client supplied no explicit damage clips,
++    /// `f` is called once with the full plane rectangle. Coordinates are integer pixels in the
++    /// plane's source space.
++    ///
++    /// This lets a driver forward each changed region separately (e.g. to a remote display) instead
++    /// of the bounding box of them all.
++    ///
++    /// [`drm_atomic_helper_damage_iter`]: srctree/include/drm/drm_damage_helper.h
++    fn for_each_damage_clip(&self, old: &impl AsRawPlaneState, mut f: impl FnMut(Rect)) {
++        let mut iter = bindings::drm_atomic_helper_damage_iter::default();
++        let mut clip = bindings::drm_rect::default();
++        // SAFETY:
++        // - `old` and `self` are valid initialized `drm_plane_state`s via their type invariants.
++        // - `drm_atomic_helper_damage_iter_init` only reads the two states to set up `iter`, and
++        //   `_next` only reads `iter` and writes `clip`; neither escapes a pointer.
++        unsafe {
++            bindings::drm_atomic_helper_damage_iter_init(
++                &mut iter,
++                core::ptr::from_ref(old.as_raw()),
++                core::ptr::from_ref(self.as_raw()),
++            );
++            while bindings::drm_atomic_helper_damage_iter_next(&mut iter, &mut clip) {
++                f(Rect::from_raw(&clip));
++            }
++        }
++    }
++
+     /// Return the framebuffer currently set for this plane state
+     #[inline]
+     fn framebuffer<D>(&self) -> Option<&Framebuffer<D>>
 -- 
 2.55.0
 
