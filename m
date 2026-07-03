@@ -1,328 +1,165 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012069.outbound.protection.outlook.com [40.93.195.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856F2383991;
-	Fri,  3 Jul 2026 06:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783060760; cv=fail; b=FjwLXldM691+7MzdSLNA4yaVRZSeAOt65nX1IFM7NrrCKExrobYthkuEGXffybp75w71T6oaM7jIMSWZ3LpIuYyQKGPha+l2rcrblM5KbwbmEwoKW4U+JIkxdRJHiyujC1HBx8JOST+8YMYLL9OylEg56mR6S3B+NbcR2HWFjyE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783060760; c=relaxed/simple;
-	bh=3gma7G7+GaF9cUf6bVeuM7JT9v0h9hLD3852ncQlEK8=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=AlVOcxkZPOMU5glS76YWoIAgFwdyflRvzXsNxIdklRkUjwKObj3xrkW2+1SE1zL22ZBfLYjZXlha3uXLn5HeEdc9kLPYTNxS6YIPKroMe9Z/Tyi/Rzruo7lTcxEHlwce/aH8PALVL2jlrGTcPJIVjsB/Y2jdBMs3QZj0YlWEFzY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UgxMte0y; arc=fail smtp.client-ip=40.93.195.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C52383325
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 06:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783061046; cv=none; b=qCix0Fqe/QssFPfg4a9ERwK9B6OeYxISfI9JZnz96VP96UMiIf9jsZ8FdOVCgMqBCxFLyl/5GyTx9wvHizPiSGXF1RGMO1tMFn3Wa0nakfowiYOWCm5a95TjsjnSbaKJtkQUIFGiwOn1lUqDu6KS9lAC3Z4GYXFtZyM6BHzHZZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783061046; c=relaxed/simple;
+	bh=Pf5q80ck+5U2ixrJWHV1AI8ArmR0ZtcwQp0edbeGpww=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=u8hxmjnHYIJD2issVdKTu1qtDk1+v7PF12JwbUpvdnMMebC2gelmxw/I3MNGnlY8Z9czmOGWQo8cRIZDGzxL7US+7GTXs1RU6810aeswStsgdxhfSZ3fzrNd1UIezDDW827F9tcaxCY7Z6XyOjgtt6nJPlgBFKGDZo9HaVcapWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W+FmElDN; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UgxMte0y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SYyyxkRC1EQoHVfwiCLOGN09kOy9Q/+00Pnctvaro4tiamiI5BF9GALBmjfzxvO+gJ4+2RLLqA9pHfHqM0/4ohsD+5oPHC+K8oguxhfMUB5bMA9zf98/0s8zitB/IovNAHV1XUwZ+xXjXjLSckNG9eMIFxR5k7SaICf5ZcBya/AWWYxTmsFVEq4jXBIBEn/R9j4FKL7/3hF48c2R6BbjQ6xr+9Fmm4Vpp4Sc38LlYaC3G8fYVyeJg47egkb1ND35xACaGVptd/dLY43IuyXAH/JnCnVUmwAfXuBvjhEZtcH6oulmssoyWQBw9NUF8TYc9m1FajOddZNCsyJThVjSpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4OjOUjATYzSrZliGqpZ6BsaH5CrDw72EFgXxjBfguKA=;
- b=nDvXZcrcIY8FMpyE20hhmYqYT+D/PdDbBe5THp3ZHebDbjpYB8zqbvbs/UK11KOE1BVzmwtnL+lOpz/rO6ZR/GF7SfM7hX00ILwSmx0cDvc80naZwAZ1p2MEKukvrVgfr+ym36xeEa70CuC816o/SzGWYdtwKBsTRV1jVP3R/cO1a0MlT7v7FoUsOzQ8Rr5ywgkmuT9/VkR3HSdlvbudmMtyignRAN7gYYLdUkKB+tMGF8+KJyyPJGssMYrlHWT2ZVrvpz9ceX8we4IWdOksi18BkmzsqzqZuNu6txzcP9Lo4Q9iU9Zc2nvoahhiqhtMDw5QUc6Jcnj2qcYjfCoI8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4OjOUjATYzSrZliGqpZ6BsaH5CrDw72EFgXxjBfguKA=;
- b=UgxMte0yXbSgfwkO2P+Vlrw7js4+lkwjk2L0z1hDOV5p9+nzebsJuAHSqYLYC7rKUZM0Bo5NxnRe4C3nxYvkq5cvYiupZS7vImjvzeF+CdbdCG2o0CHalbPr5DeYwpGyBS9sl341A3kkO+VsPXbRPXTmZpvLRfOxmUh3bwBG3rhKOsHO15mQcvLmuKfMrMs24xIqXLqdJBFpSlmJYOp0ibko15SGHHJyxDAY75dOC8XKJt1oXKO3+0h+u3Qd62dOsz8fb640/x9/kW+oGO+DnayxdSVQUe+QBd3zrG9ecXn0v9vD5P4q+DH/Ga5nh/fN8ccKEjYws2gmzbCV3il0iA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH3PR12MB7524.namprd12.prod.outlook.com (2603:10b6:610:146::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Fri, 3 Jul
- 2026 06:39:11 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0181.008; Fri, 3 Jul 2026
- 06:39:11 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Jul 2026 15:39:07 +0900
-Message-Id: <DJOQA74PU76T.21U7Q7N1J4XNK@nvidia.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
- "Robin Murphy" <robin.murphy@arm.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Michal Wilczynski"
- <m.wilczynski@samsung.com>, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH v5 13/20] rust: io: add projection macro and methods
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Gary Guo" <gary@garyguo.net>
-Content-Transfer-Encoding: quoted-printable
-References: <20260626-io_projection-v5-0-d0961471ae50@garyguo.net>
- <20260626-io_projection-v5-13-d0961471ae50@garyguo.net>
-In-Reply-To: <20260626-io_projection-v5-13-d0961471ae50@garyguo.net>
-X-ClientProxiedBy: OSTPR01CA0079.jpnprd01.prod.outlook.com
- (2603:1096:604:218::8) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W+FmElDN"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-c125ef89f4eso18920066b.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 23:44:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783061044; x=1783665844; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7jmn19R8R/PMFgOwF2vvch2Q5bX9NRBwJ66kDptBPuo=;
+        b=W+FmElDN4VaaCXPTn0XY0hv5l51N0X3byqc05enxGVDIPNLvdQ2UQn+TswXto1cl1V
+         5SAeNRmYNu5+ZFtWbLh/lnfc/KtidHCBQil+T8Cacb+JrYJjROfhV64Bvc2d8D9QVXZ2
+         f/La56Kr1MAU72ogAS3QxgLN7li2xd0jJ0IZnV0EY+m2iCnrWdsWxT+ykEP0kJjbEh9i
+         6RZZ1RqpA+b+m6pR0T24QwgnogHInabzSh7UUmidbdGE+JPPhjb9Mf7006FYzyqRM+3G
+         698y8/CysbtS0Jnr6orXpNMX1BZ8ky8XRJQkOEacss8f+fGMT9J8StYBvZtla8g9RtsW
+         nqvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783061044; x=1783665844;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7jmn19R8R/PMFgOwF2vvch2Q5bX9NRBwJ66kDptBPuo=;
+        b=g236slyMOGFXo6xVfYjx/sKnG1RJe2oBLgMFpRVFYqpEJ46HAOrgn4hHZ165VA2h1H
+         8aGdZTukSvL5mgZYG49JkBDTVigglT9yE9xH3mLUD8CEzr40Bbh69KADctwcXllLzwWZ
+         msZvUbV4LBl2s9T6uCGh6G67QVkv0do1Jszkf67SYxd2wf8pVpZ6jdzKN945QuwEvzKC
+         gCrmLDj1Yd1ajjQBR+nhFEwUHr7FLidSpSXc5iCWge1p3nQrRc0MGfSwWlzpr6Wumk+R
+         238ZxFzxE4KjZnGY8MZQTvmG07sj0Rj9ium8GdibSbVxRAuqiLYvPl+cYHGbEbRzprO/
+         6PSg==
+X-Forwarded-Encrypted: i=1; AHgh+RoAeHYfkyH87zkTsms5aIN1a4kHgKN8Bfnk9EOsiMxXYbk5KGrnAmVeQYJnlamz6xVcRBEiAVCzzk4yrx8dAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRfcuff81N5JoLxSnW8Q+QlxqPYFOXI/h/GM9FD045A0t3v2ui
+	HhwwwJyz6CIJWCEtoP2LP/OEtSZwBJnlAupg8V/zt0Q4Tif6cZiJ+h6gIn7pB4VSnweEtVlRo6w
+	aYcsO+ZLQgeZmQV128w==
+X-Received: from ejj11-n1.prod.google.com ([2002:a17:906:a34b:10b0:c12:d541:2b1])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:970e:b0:c10:256:3d6a with SMTP id a640c23a62f3a-c12aa1b0166mr449505466b.31.1783061043110;
+ Thu, 02 Jul 2026 23:44:03 -0700 (PDT)
+Date: Fri, 3 Jul 2026 06:44:01 +0000
+In-Reply-To: <20260702-pgtable_lt_v1-v1-1-18d9c9812a1a@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH3PR12MB7524:EE_
-X-MS-Office365-Filtering-Correlation-Id: b872bf6f-9980-4a5e-7015-08ded8cdca82
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|10070799003|22082099003|18002099003|56012099006|11063799006|5023799004|4143699003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	exbgZ5v+QSPZnx1GL33j35dNf4ScQ66gxbixSbXkJvgTCe8114R5RhzbVhqXLKqhOgO2Rwn0NuC0q94cIVMFlPYzB2ZiGjKh+aJBrFPiczhOVLy4qXflsynVJerCyAlBw0JJdV6P5O4Fkhlj/O2nO6Q7TgJLbIo7RL9hvysjqkbml5a6vi42w6tALjb4sUAdUGpUJZgh4qo64TJsATr4Ne3Xqu8aWqXRSrX+gk1H4N68DyBuvClRvUeC0hfuupUyfdE8USG9lDX1TK3CVjhnTBcseSTPYFeBa6+fqr/6z0EpDamVStps8VTrrMs8JKykbTxlQoAd9tlfeQcc7HqdS3lKCjr0UbSWZ1e34rmHI6K4GjEatYTPDynX2kB6PiVDHqawF2hzY3fnIUioxFmJDOaSpOEclCIG1KKkG+cW02MlFfmTCvONbjfP4qOSf5xu5mJ3uHL+YT0fpXqWGJzVMXa1CgScSF3BJkR/XFwh0algDbw9/28lXHhlFcijKo+Hzxd9CmYrIk2FgaBNzsq1q4hk3tTynTACvaCUczEKF1s1H8zWBJ0rbHXpnJ1NftmGyVw6nkK40BhKU7VWPEmDTp378u9GnRLlzLTZ69GIjHmpLLfhecgAD5MrRF1J/CdhWRMq8KpxQzsrZ+Jae8OC4ltBpFu5RCelOVHwUZy1URw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(10070799003)(22082099003)(18002099003)(56012099006)(11063799006)(5023799004)(4143699003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Uk93SkYrcGg3YTl1STdiM3FvTldPOXczNzNKR3RzQXJ0eTVoQ3FLeGJETUlU?=
- =?utf-8?B?RVZPNDg3MnJUdnA0cnVQYllhRzg1OVk4cjVCREJTUmtzYmc0U1lGZ1pwZGQ1?=
- =?utf-8?B?NUZiNnhhdjVNVXc1OWtTamsySXVZeHA2YlVaMnRxN2xiOU9CNDUwRVVzYUdV?=
- =?utf-8?B?QmY3MU1tazIzSmFtdGNaTWFJZVYramxqRHF2Rk9wRTRSaFR2dTV6Vm1nSmIy?=
- =?utf-8?B?THQrcWZmTnRaY01TbW8rdHJORHZrY3pqSWt1c0pHRFJDdS9TMytiREJ2eDd4?=
- =?utf-8?B?TThsTkxKRUVpa2tQeXBKSkJzZTVMaktMOEdwMm1jY0xabnpLaHhVZS94TC9L?=
- =?utf-8?B?RWFGalJDa3BWeXY4elZQY2hvVGU1cVZUREgvWlRkRDZlM1F6WExGNkVSTThC?=
- =?utf-8?B?SjFFTGdSM25SODBaTFZaNDNwZ3ZRcm53VSthUDNOclhsWkF1Uk12MnVabHQ0?=
- =?utf-8?B?eWNOVFhsMjl4bEZmWmxlRWFiWXpId2VrTzJ1NkRmVFFtcytLcnFTbDlLc24w?=
- =?utf-8?B?SkwwL3B5Uk9hZnRIMTRSYXkyd1JtSWlmVXhwcGxJQTBpNW9ERGpJQStHL3o4?=
- =?utf-8?B?Zmxud2FydDA0NHdTUTVSMDBJazAva3VMN2NoTnVhUytWcUVReW00aERrMlB1?=
- =?utf-8?B?NUptMjMyUC8vQ2lwSlBKSjVROFNSd2VDUldnRnhmNWQ5am91UkNJUTRCK2sx?=
- =?utf-8?B?RHV2a1lxMW1MaHhSWUthbjM4WktJTEM2S2pZYVJpMCtBUE1lamhqTjQwT2JE?=
- =?utf-8?B?M0hPdEFjSHl3WjFKMDlmS2RPR2trSnJwQ2NEQ3BtSi9OSkRlaml2L0ltQWtQ?=
- =?utf-8?B?VFZ0RjNCUW0zZnh4NmJjMXRLMmc1bFhQZUpuZW56dUxZQkVLU01SVFdUR2pQ?=
- =?utf-8?B?ZmZ4a3Z5elJOK3VNeTdud0JXcnB5WmlKT3JpcGRCS1hrcEY0M2dqU1dnQUVR?=
- =?utf-8?B?blRiT3owdU5qNVE2ZTdJZGNjYjJFTVZ0ckdUaVZqaGdIV09ESGhLSGtqaDM3?=
- =?utf-8?B?eU1Pck1mVmFwTzd0UEFmenF0ZjdDQ01lYXlEY2NPVDhYU3p2NFRJMTdxdDYr?=
- =?utf-8?B?RzdxQzZ0dGNaM2pIZzc2MnJpdjQwQWRyUjZKenN3QUhZUGlibU1TVlc3czZP?=
- =?utf-8?B?cVFjVjNia1B2amdJU3pOZG8wbitWZ0ZsVFdqcktLcEdyejZRMnVJR0J1UWJr?=
- =?utf-8?B?TnZEVDhueWZnRUIzbDlGazlMaFNQOVhrNUEzM1JlWDdxd3BrV3ZqWnZySWU3?=
- =?utf-8?B?WlBUSys4TmtGSTlaaDYwUXVZZzlEVjFZMkF5N2pqSnFQNmNNVXFGUVFxSmhL?=
- =?utf-8?B?WTlyOXZNLzNNZUpkNUg2T1Y4THlYVUcyTmMvQ0FYVXhWYlViZmpmRXhhQjlX?=
- =?utf-8?B?Z1hIWFpvMUc4NTVhVlRROGs5ekdHWWh0bG0xTC9mejI4SkhMcHQ0cmZxVjJa?=
- =?utf-8?B?UUxFbmlFVEpMeVBma3p3Zzd3cmJnUzNNa01wUXdrU0c3WnR0NThoS0xTQ3Nq?=
- =?utf-8?B?emtKazF2L2tlWG1tRXNwZUl2ZG5tK0VXRGlCVFFwaSs5elVVVWpMUXFVc0Fu?=
- =?utf-8?B?bFc1bHZUN25mUjlNdHd6UXlRTkJmV3RGT2YrQjRzV3dadTBodzBZNHVKOHJ6?=
- =?utf-8?B?Q05pYjVhQWR2a0FLZy9SUnViQ0VYb3VkNlR1alVaQjgxRTF2QzVYKzFVQWdt?=
- =?utf-8?B?Y2xVeTJNZU9FbGNwUlFJRWxhcFYwdjlNUmtiTXllY0pUUVd2OE8rTU1DNXdr?=
- =?utf-8?B?MHRnTjhCRXJZblNBdm1MVVBOY0FqM0xQc0ZOSXRLQVh5NXdGMXhnbFZMSDl6?=
- =?utf-8?B?a2tHT0xsUEphOEgrL25sVS9jc3FZSE1Xb3lJZ0xwMll6ODIreW10bVlVS2NV?=
- =?utf-8?B?N3hkZXoybzFXcks3VGVmMk9hQzRUcDhJZXh4SytrMHhIQUF1ZUh6Vk50UmN4?=
- =?utf-8?B?a0IyR3YzNncwdGdZNEZtWjVJQndKUlFtMTB4bE5lZFhkUEQrdEx3dGdhTzdn?=
- =?utf-8?B?aUtJK1RTSE42S0RJb0NDOEFDUE9VZnNXdnRpZUZ1VVUwRTYzMDFqNjYxeEdr?=
- =?utf-8?B?SG9sUHhrajFkdHMzblpzZFd6dGRDaTM3RmlldExRaVFBeUsxSzRQMk1wQVdi?=
- =?utf-8?B?ZTF5RFNwWDdIZldRcXRseEg2cXJnSEdqVEhPVzR4Q01xYjNLbGRiRjYxWHc4?=
- =?utf-8?B?YkZ5dktLQlZpMjlXbW9IRkpFazNiZFFJKzI5TlM1QmFveUEzVmp2SXhoZ3ZG?=
- =?utf-8?B?MlJ6VzB3aHFQOGJIb1NTTUtuY0RoRHIyNlE5Mml0MlordkxsYmZBajNVczd1?=
- =?utf-8?B?OGhXd3BQYkkrSGxiUnV6eGxYYTJGclFwM1VSRDg3K3UvcHg0WFhGMGNIUHFi?=
- =?utf-8?Q?2vc0h1M2aMiFJhuDWNEk7uAhsHV0Cu7WgjzEgskF2o4M1?=
-X-MS-Exchange-AntiSpam-MessageData-1: 8IFbjJUt/gzLKg==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b872bf6f-9980-4a5e-7015-08ded8cdca82
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 06:39:11.5349
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hEioprEn9Q8fS6N6oxVisK2+125leK4rdl4cbavG6FgHXzekZu1VG0R1NVZM+In7UuYlfirLZvrNySz4fBrCtg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7524
+Mime-Version: 1.0
+References: <20260702-pgtable_lt_v1-v1-1-18d9c9812a1a@collabora.com>
+Message-ID: <akdaMa7hQbAjWbox@google.com>
+Subject: Re: [PATCH] rust: iommu: add device lifetime to IoPageTable
+From: Alice Ryhl <aliceryhl@google.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, samitolvanen@google.com, 
+	boris.brezillon@collabora.com, laura.nao@collabora.com, 
+	daniel.almeida@collabora.com
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Jun 26, 2026 at 11:45 PM JST, Gary Guo wrote:
-> Add an `io_project!()` macro allows projection from `Io` to a subview of
-
-nit: "to allow projection"?
-
-> it, using the pointer projection mechanism to perform compile-time checks=
-.
->
-> For cases where type-casting is required, the `try_cast()` function may b=
-e
-> used where the size and alignment checks are performed at runtime.
->
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On Thu, Jul 02, 2026 at 04:47:39PM -0700, Deborah Brouwer wrote:
+> Currently, using a raw IoPageTable is unsafe because the returned
+> IoPageTable is not tied to the device driver binding lifetime.
+> 
+> Since device drivers now receive a lifetime parameter <'bound>
+> representing the interval during which a device driver is bound to its bus
+> device, add this lifetime parameter to IoPageTable. This ensures that
+> the returned IoPageTable cannot outlive the bus device binding.
+> 
+> Also temporarily remove the option to create a page table as a device
+> resource since currently Devres is not compatible with resources that have
+> a lifetime parameter. This option can be restored once the lifetime-aware
+> wrapper for devres is available.
+> 
+> Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 > ---
->  rust/kernel/io.rs | 124 ++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 124 insertions(+)
->
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index 0746b0d209ef..96962498af77 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -49,6 +49,7 @@
->  /// - Size of the region is at least as large as the `SIZE` generic para=
-meter.
->  /// - Size of the region is multiple of 4.
->  #[repr(C, align(4))]
-> +#[derive(FromBytes)]
->  pub struct Region<const SIZE: usize =3D 0> {
->      inner: [u8],
->  }
-> @@ -90,6 +91,16 @@ fn size(p: *const Self) -> usize {
->      }
->  }
-> =20
-> +// SAFETY: Values read from I/O are always treated as initialized.
-> +//
-> +// This cannot be derived as `derive(IntoBytes)` does not know that this=
- type is padding free (given
-> +// `repr(align(4))`).
-
-In that case the `SAFETY` comment should probably also justify that
-there is no padding by citing the invariant of `Region` (which will also
-allow us to remove the second paragraph).
-
-> +unsafe impl<const SIZE: usize> IntoBytes for Region<SIZE> {
-> +    #[inline]
-> +    #[allow(unused)] // Rust 1.87+ stops requiring this and will emit un=
-used warnings.
-> +    fn only_derive_is_allowed_to_implement_this_trait() {}
-> +}
-> +
->  /// Raw representation of an MMIO region.
+>  rust/kernel/iommu/pgtable.rs | 32 ++++++++++----------------------
+>  1 file changed, 10 insertions(+), 22 deletions(-)
+> 
+> diff --git a/rust/kernel/iommu/pgtable.rs b/rust/kernel/iommu/pgtable.rs
+> index c88e38fd938a..d4a16283b5a7 100644
+> --- a/rust/kernel/iommu/pgtable.rs
+> +++ b/rust/kernel/iommu/pgtable.rs
+> @@ -16,7 +16,6 @@
+>          Bound,
+>          Device, //
+>      },
+> -    devres::Devres,
+>      error::to_result,
+>      io::PhysAddr,
+>      prelude::*, //
+> @@ -59,15 +58,16 @@ pub struct Config {
+>  /// # Invariants
 >  ///
->  /// `MmioRaw<T>` is equivalent to `T __iomem *` in C.
-> @@ -339,6 +350,49 @@ fn size(self) -> usize {
->          KnownSize::size(Self::Backend::as_ptr(self.as_view()))
->      }
-> =20
-> +    /// Try to convert into a different typed I/O view.
-> +    ///
-> +    /// The target type must be of same or smaller size to current type,=
- and the current view must
-> +    /// be properly aligned for the target type.
+>  /// The pointer references a valid io page table.
+> -pub struct IoPageTable<F: IoPageTableFmt> {
+> +pub struct IoPageTable<'bound, F: IoPageTableFmt> {
+>      ptr: NonNull<bindings::io_pgtable_ops>,
+> +    _dev: PhantomData<&'bound Device<Bound>>,
+>      _marker: PhantomData<F>,
+>  }
+>  
+>  // SAFETY: `struct io_pgtable_ops` is not restricted to a single thread.
+> -unsafe impl<F: IoPageTableFmt> Send for IoPageTable<F> {}
+> +unsafe impl<F: IoPageTableFmt> Send for IoPageTable<'_, F> {}
+>  // SAFETY: `struct io_pgtable_ops` may be accessed concurrently.
+> -unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<F> {}
+> +unsafe impl<F: IoPageTableFmt> Sync for IoPageTable<'_, F> {}
+>  
+>  /// The format used by this page table.
+>  pub trait IoPageTableFmt: 'static {
+> @@ -75,25 +75,12 @@ pub trait IoPageTableFmt: 'static {
+>      const FORMAT: io_pgtable_fmt;
+>  }
+>  
+> -impl<F: IoPageTableFmt> IoPageTable<F> {
+> -    /// Create a new `IoPageTable` as a device resource.
+> -    #[inline]
+> -    pub fn new(
+> -        dev: &Device<Bound>,
+> -        config: Config,
+> -    ) -> impl PinInit<Devres<IoPageTable<F>>, Error> + '_ {
+> -        // SAFETY: Devres ensures that the value is dropped during device unbind.
+> -        Devres::new(dev, unsafe { Self::new_raw(dev, config) })
+> -    }
+> +impl<'bound, F: IoPageTableFmt> IoPageTable<'bound, F> {
+> +    // TODO: Create a new `IoPageTable` as a device resource when DevresLt is available.
+>  
+>      /// Create a new `IoPageTable`.
+> -    ///
+> -    /// # Safety
+> -    ///
+> -    /// If successful, then the returned `IoPageTable` must be dropped before the device is
+> -    /// unbound.
+>      #[inline]
+> -    pub unsafe fn new_raw(dev: &Device<Bound>, config: Config) -> Result<IoPageTable<F>> {
+> +    pub fn new_raw(dev: &'bound Device<Bound>, config: Config) -> Result<IoPageTable<'bound, F>> {
 
-Maybe "Returns `EINVAL` if the target type..." to make it clear this is
-runtime-checked and not a static requirement.
+The name new_raw() indicates that this is something you only use in rare
+cases when you are doing weird stuff. But with this change, I no longer
+think that's the case.
 
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```no_run
-> +    /// use kernel::io::{
-> +    ///     io_project,
-> +    ///     Mmio,
-> +    ///     Io,
-> +    ///     Region,
-> +    /// };
-> +    /// #[derive(FromBytes, IntoBytes)]
-> +    /// struct MyStruct { field: u32, }
+I would suggest renaming this method to just `new()`.
 
-Do we want to make this `#[repr(C)]` to give the right example to
-driver authors looking for inspiration here?
+As for creating a device resoure version with DevresLt, I think that can
+be the secondary constructor and be called `new_devres()` or similar.
 
-> +    ///
-> +    /// # fn test(mmio: &Mmio<'_, Region>) -> Result {
-> +    /// // let mmio: Mmio<'_, Region>;
-> +    /// let whole: Mmio<'_, MyStruct> =3D mmio.try_cast()?;
-> +    /// # Ok::<(), Error>(()) }
-> +    /// ```
-> +    #[inline]
-> +    fn try_cast<U>(self) -> Result<<Self::Backend as IoBackend>::View<'a=
-, U>>
-> +    where
-> +        Self::Target: FromBytes + IntoBytes,
-> +        U: FromBytes + IntoBytes,
-> +    {
-> +        let view =3D self.as_view();
-> +        let ptr =3D Self::Backend::as_ptr(view);
-> +
-> +        if size_of::<U>() > KnownSize::size(ptr) {
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if ptr.addr() % align_of::<U>() !=3D 0 {
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        // SAFETY: We have checked bounds and alignment, so this is a va=
-lid projection.
-> +        Ok(unsafe { Self::Backend::project_view(view, ptr.cast()) })
-> +    }
-> +
->      /// Fallible 8-bit read with runtime bounds check.
->      #[inline(always)]
->      fn try_read8(self, offset: usize) -> Result<u8>
-> @@ -979,3 +1033,73 @@ pub fn relaxed(self) -> RelaxedMmio<'a, T> {
->  // MMIO regions on 64-bit systems also support 64-bit accesses.
->  #[cfg(CONFIG_64BIT)]
->  impl_mmio_io_capable!(RelaxedMmioBackend, u64, readq_relaxed, writeq_rel=
-axed);
-> +
-> +// This helper turns associated functions to methods so it can be invoke=
-d in macro.
-> +// Used by `io_project!()` only.
-> +#[doc(hidden)]
-> +#[derive(Clone, Copy)]
-> +pub struct ProjectHelper<T>(pub T);
-> +
-> +impl<'a, T> ProjectHelper<T>
-> +where
-> +    T: Io<'a, Backend: IoBackend<View<'a, T::Target> =3D T>>,
-> +{
-> +    // These helper methods must not have symbols present in binary to a=
-void confusion.
+Otherwise LGTM.
 
-nit: "in the binary", lest the reader thinks we are talking about
-symbols spelled with 0s and 1s. :)
-
-> +    #[inline(always)]
-> +    pub fn as_ptr(self) -> *mut T::Target {
-> +        T::Backend::as_ptr(self.0)
-> +    }
-> +
-> +    /// # Safety
-> +    ///
-> +    /// Same as `IoBackend::project_view`
-> +    #[inline(always)]
-> +    pub unsafe fn project_view<U: ?Sized + KnownSize>(
-> +        self,
-> +        ptr: *mut U,
-> +    ) -> <T::Backend as IoBackend>::View<'a, U> {
-> +        // SAFETY: Per safety requirement.
-> +        unsafe { T::Backend::project_view::<T::Target, _>(self.0, ptr) }
-> +    }
-> +}
-> +
-> +/// Project an I/O type to a subview of it.
-> +///
-> +/// The syntax is of form `io_project!(io, proj)` where `io` is an expre=
-ssion to a type that
-> +/// implements [`Io`] and `proj` is a [projection specification](kernel:=
-:ptr::project!).
-> +///
-> +/// In addition to projecting from [`Io`], you may also project from a [=
-`View`] of an [`Io`].
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::io::{
-> +///     io_project,
-> +///     Mmio,
-> +/// };
-> +/// struct MyStruct { field: u32, }
-
-Same remark about `#[repr(C)]`.
-
-With these considered,
-
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+Alice
