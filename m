@@ -1,63 +1,63 @@
 Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4963D304BB3
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5BA30676C
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047725; cv=none; b=nhNFoAL6cYbOaS71kEwPiEFGXJg4SqSORq8iub71zeiwpQQE8xN3yTrzm/1E7bnU4ZVRltYEWt9oIqpTV5zog8Iz1Aen8Ze6uKeQT3cdilRktWoVjo0O55d7/iRVZcQkWUtWHZGbIVN0+2FqYoN7l/9wL3cRLUf7vdwvLjkgXfQ=
+	t=1783047727; cv=none; b=iATEC3G2u1dfFw274o2jDu/Ce7HxGFAdU0MhD1fNoxaRvM2f1GXCMF2dnSyyznJr9QAtuR+ymMVPWaz5O/Gy33APJBpPThc8tOuOQzlTKkhJy1kgRlk/AtWC56EBFctdTTwpq96MyveQhMsBbq1YWnsrpouIe1bYnTsrnISZVlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047725; c=relaxed/simple;
-	bh=SJ+2KGFnHCovNgowJ8J8TKTzxcye2f9b6WfXIPwMW1Q=;
+	s=arc-20240116; t=1783047727; c=relaxed/simple;
+	bh=kaMRhV66jMxQvqjeQ7Ar6Cr8aJCEeWtJrustTtJxVZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fASu8UlhQw7WUWzxPxGw2ErZyF0pf6AA/OPmuUdqu9e08NbOPjsiWEBFJjY7BarJ5ddztukHCOrvyTRyFMRk/ulPRz0yrWNiAF2wlMBLIT9Z8q8/LCHCgBec2y6tbFUSswG5YgG1fxeno01l5BkpHwT0V2CBIKPu0GUIoG2dEeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=KPuWr3DW; arc=none smtp.client-ip=209.85.221.46
+	 MIME-Version; b=tUBPSp0FfcMpHHVDJFPxEIbA3KqtGknr64ESZoZEfWIXy7wG5qhPaQq8H9cikQfAYPGJfyW3eE5JZxs32Zd9/yzGgy17BP+GTmJO3XJEUzgC4suMU1VE4ySUWo8MfWEzGlhkffhSQOaL+qPhK20698m3YfY9zdBELR0gLK9Tz28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=S66R4TAc; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="KPuWr3DW"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-47640541585so52824f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="S66R4TAc"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-476d8e647e9so91414f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047722; x=1783652522; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047724; x=1783652524; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LUgBn6zBfsTbi2CLsMgn9qh9uhx+O3ZRcBIzQDpiX/c=;
-        b=KPuWr3DWQASF5qWkn68ePpcYzO5ICfirsARHKWY54kwkbK1v7GdMVAi12c8Jjr9dmU
-         Vl1qxGZpYrjLLHZwQ8gzNVa2VsEEaX/P//Wn5iKxw0f+3Cf0cg3CVltXjDtLlQCiLyZ+
-         VEclAe3vuj9j+WWDDr2VdPe+KK/uJdWKa44+yYDNpZxIF861hxAxgy4jLVjiubxdxCTW
-         8yPB5YP5giuTeqvUsnfhY229bo74GEoejAKZO+91tK/ErlI3ZVnim0DbuztZ9X3ncCCX
-         a+tAk2ZtzNUT1Z1vkvalUuIdvxKyIs9eQ/4c1sJmPET1dYoyKBvgYQQ+3aEhef79rqnm
-         xMlw==
+        bh=031sIZWe4JTCBupEXr5DXAC9PJaWSnyeiEEKJDEA+7w=;
+        b=S66R4TAcwlWQDggJCgyL/uL76w8ZbflNo0DH9z/OI80kTnixJn7tGrLJobYBcSHt9T
+         2rqBFSiBZZgof8jb1/y8UJvc42S/w70QCIevvJp4QCS80FCBkP3FdC1qiUAyLf/PxSTz
+         qDQ4m2hAZEcp06PPlQMQzM1Ml7n/bLQLCvo3L3F4/lJfS4Xjt/7E+yyMQmqLmLtM4wz7
+         PdE3kifL0v2ZepqF/B+Le5SnFlQMNCxK0JT0z3XBMBmJRoYUUhV42OPGIcRPIxVoYBoT
+         keHMIlrnB1907zYRYX6JN5D33yQg/T+EPLFMhrAN1bjlUWzqGTFcJmEhmQmtlzqpb7XL
+         WdRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047722; x=1783652522;
+        d=1e100.net; s=20251104; t=1783047724; x=1783652524;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LUgBn6zBfsTbi2CLsMgn9qh9uhx+O3ZRcBIzQDpiX/c=;
-        b=mwVxKPcGX8z8iQ1bGTBAsNTvfKuoKkRRrIUrNQ2OPESqyu8hWq6DKbKwKjxC+SsaB+
-         zWUaMJkhiZDBWcR2Y0Q4ZdORF2fruDtygBIeQgbE2a34gGOTBI/rBmMgtSsxyMHbnOQj
-         pHtj6kpLDfZeUVDwjH0H5K70cKRX8PzpK+j+IO4NT70nkWfCn4Zp9EvzwaWiQHQ6T9g/
-         mdqaYcIAxUmn5aI+HO9q3fnolB359168HNMKK9jOxxC+3Hjbenw7jj4nH7qdkWyzsbD3
-         55xvLU9a2yoVql63Zrlce2WUI4gcIRYUroA1ywgyW0PmhycRHNz8l09uyTFNdg4scLxI
-         BDTg==
-X-Gm-Message-State: AOJu0Yw6yw1xj6QtyoXazl0y51feUYLEzbIrcl6EFfXLYiWpSeewYYcL
-	aXy+kOd7CRzZwbmoE8ohDvHTW3tahEi5VaKGTWb4lfJlezzef9RGH/tP+rl8qo8TlUuQKCZVvpA
-	abwz6D+uf
-X-Gm-Gg: AfdE7ckP8rVRQ1hSCvtX3Tg6hYvDqa+Sr5r+bFhMHzhSfhtyQpC7atGgBfLcvZaQxkk
-	Vjekv0leQqUEW80b8AuRvSf41lCk4ZXhWYaXKz0OUBe0ArlJixNN+O9SgdlVtHlGZruUvekqpm+
-	WHLXuzs2Sk+F1l9EUHpYibSX4XiGFIhOjqdOQnpA4BKZwCF93y3I7IB/OsdnPJgzwy2k+W2LdV8
-	ELDX1BGxtq3CtTgDJrPB4scNZzGwYMIVHeYjat6XlTzjYnZsZyHtgVjd55FbhddNmMa/7a9rnWc
-	QuQkncqGd6LwE+sG8uZ9OH/5e7zwcvRZyb6AcN9vYXslCF1N9alNkwpTbtPGEYwjxpDQx0V2vln
-	/kP+b15dELsN1pQQebvEb+wuyE35fsFZRj0B2YwcVWxRh3Y4l0rfwjM9pbZX1KQ/cY3sCumio9y
-	r0+U/SlhJdoxoFCS53IskFP6J0veQ1T+E0kAB48JcMd0QnKPJlc7xoU+8u
-X-Received: by 2002:a5d:5f54:0:b0:472:3090:d878 with SMTP id ffacd0b85a97d-477571cb785mr12685227f8f.4.1783047721804;
-        Thu, 02 Jul 2026 20:02:01 -0700 (PDT)
+        bh=031sIZWe4JTCBupEXr5DXAC9PJaWSnyeiEEKJDEA+7w=;
+        b=WULIA6rO7LJavYtkycEpce++zkcpTzvUy7R32j8dy9MSONQRBzUs/tn4qXqMEoJpGo
+         N7dnbFxZ2S68kfI+9k0Pf2vnz5qHoyS9tHqf6QoIQiUau7nj2xgMYDzSMKqB5FFgK+Xf
+         kNDQ1xOyZjK5huoFJ5hT+kZQAUXZ9pzVouANYCY+NKRmS1Fv+PKIl6JD1l73brCkAIUw
+         VPCfMWmQA77FY8ZNirAlgKVw6ARMNfHtRoYMxEmQEGt0ZY2Wqv8i2gPCUcAQ26Cx45TY
+         FU77D/wNPhFStU5qsBo+AtcRYGIEIxmAURX1/Bbixc3AlNsLIFcKw+ApZqk6WM7N0eta
+         iKbQ==
+X-Gm-Message-State: AOJu0YzIPn0PrhDyLfCkHEZnyiDsr0r38hiTI/a5n0jgn9gppnFbOnhb
+	BtDyjVsT6etAaaInO0NoaOwbz3j/nKDXjcKpkVkZP8galbiTyjnX5M927L8kF8f9G2OJxG/8z+t
+	rl1EJKn5W
+X-Gm-Gg: AfdE7ckjyxLLf6xSLWM3XcK8TbmP52adkjInyI/HCavkgog6m4EHJGDwUbKGy2YStzt
+	VtiqoXq3L1jpmiUkNSro9b404PuQ6QGwutebTMRO3LXNMnjHfjH7O786TgS3pNjBpTRfpSQSil7
+	yCvEW5LF9yMBAmsWvH2bHY3TmhPph5TmECu6CO+uBEg7rvaTm1kfZ/6IyOh6YCzkb71z7DajoA5
+	VmstBmb3mOXc9pOsjMOLdt7hW0E5p6ivbbFfGHuApJV/PKoXA4/mprZimd4ebySq6CTO11Lv5dS
+	rcZauhQY7bL8WnjlUDFwR3ggg14XoFndm0mThcbDwd1KNz+D1ekGR4mPHRAa3jj6j3Cq2+m3hCN
+	DkQ3gb7CvMLYhfZNFOxeSTS+vkRPy+K2SWwXW7rekx3AwhLxdeNnKBisqunzbdXmAUvBkd4+4Zr
+	AAxArjrs15AddllO09uTjCHWAlBud9jDWgs/sGmOV95zNkzxIoqQZePgtpe+3VvalLd2E=
+X-Received: by 2002:a5d:50c9:0:b0:475:5e4b:588f with SMTP id ffacd0b85a97d-4775a2eff42mr10021826f8f.16.1783047724132;
+        Thu, 02 Jul 2026 20:02:04 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.01.59
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:01:59 -0700 (PDT)
+        Thu, 02 Jul 2026 20:02:02 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -75,9 +75,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 12/18] rust: drm: framebuffer: add geometry accessors, refcounting and a byte-slice vmap
-Date: Fri,  3 Jul 2026 04:00:59 +0100
-Message-ID: <20260703030123.2814-13-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 13/18] rust: i2c: add adapter-provider (bus controller) registration
+Date: Fri,  3 Jul 2026 04:01:00 +0100
+Message-ID: <20260703030123.2814-14-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260703030123.2814-1-mike@fireburn.co.uk>
 References: <20260617150232.2210-1-mike@fireburn.co.uk>
@@ -88,149 +88,228 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-A driver that reads back a framebuffer's pixels (e.g. DisplayLink's evdi, whose
-scanout is pulled by userspace via a GRABPIX ioctl rather than pushed to
-hardware) needs three things the Framebuffer binding did not provide:
+The I2C abstraction can register an I2C *client* driver (i2c::Driver), but not
+provide a bus. A driver that presents a virtual I2C bus and services the
+transfers itself -- e.g. DisplayLink's evdi, which exposes a DDC/CI channel so
+userspace monitor-control tools can reach the display -- needs the controller
+side.
 
-  - width()/height()/pitch() geometry accessors;
-
-  - reference counting, so the framebuffer flipped in during an atomic commit can
-    be held (ARef<Framebuffer>) and mapped later from an ioctl -- add
-    AlwaysRefCounted backed by new drm_framebuffer_get()/put() helpers;
-
-  - a way to read the mapping without unsafe in the driver -- add
-    FramebufferVmap::as_bytes(), returning the plane-0 mapping as a &[u8] of
-    height * pitch(0) bytes, valid for the guard's lifetime.
+Add i2c::BusController (a trait with master_xfer/functionality over a
+driver-supplied Context) and i2c::BusAdapter, which fills a struct i2c_adapter
+whose i2c_algorithm dispatches to the trait via trampolines, calls
+i2c_add_adapter() on creation and i2c_del_adapter() on drop. i2c::Msg is a
+#[repr(transparent)] view over struct i2c_msg exposing addr/flags/is_read and
+the payload as a (mutable) byte slice, so a transfer routine needs no unsafe.
+FUNC_I2C is exported for the common functionality() return.
 
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
 ---
- rust/helpers/drm/drm.c             |  1 +
- rust/helpers/drm/framebuffer.c     | 13 +++++++
- rust/kernel/drm/kms/framebuffer.rs | 54 ++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+)
- create mode 100644 rust/helpers/drm/framebuffer.c
+ rust/kernel/i2c.rs | 192 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 192 insertions(+)
 
-diff --git a/rust/helpers/drm/drm.c b/rust/helpers/drm/drm.c
-index 5d700d75c0c9..24c531841ba1 100644
---- a/rust/helpers/drm/drm.c
-+++ b/rust/helpers/drm/drm.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include "atomic.c"
-+#include "framebuffer.c"
- #include "gem.c"
- #include "vma_manager.c"
- #include "vblank.c"
-diff --git a/rust/helpers/drm/framebuffer.c b/rust/helpers/drm/framebuffer.c
-new file mode 100644
-index 000000000000..280538ffb82c
---- /dev/null
-+++ b/rust/helpers/drm/framebuffer.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
+index 624b971ca8b0..5cde59a3ce46 100644
+--- a/rust/kernel/i2c.rs
++++ b/rust/kernel/i2c.rs
+@@ -601,3 +601,195 @@ unsafe impl Send for Registration {}
+ // SAFETY: `Registration` offers no interior mutability (no mutation through &self
+ // and no mutable access is exposed)
+ unsafe impl Sync for Registration {}
 +
-+#include <drm/drm_framebuffer.h>
++// ===========================================================================
++// I2C adapter (bus controller / provider) side
++// ===========================================================================
 +
-+void rust_helper_drm_framebuffer_get(struct drm_framebuffer *fb)
-+{
-+	drm_framebuffer_get(fb);
++/// A single I2C message presented to a [`BusController`]'s transfer routine.
++///
++/// Wraps a `struct i2c_msg`; `#[repr(transparent)]` so a C `i2c_msg` array can be viewed directly
++/// as a `[Msg]`.
++#[repr(transparent)]
++pub struct Msg(Opaque<bindings::i2c_msg>);
++
++impl Msg {
++    /// The 7-bit (or 10-bit) target address.
++    #[inline]
++    pub fn addr(&self) -> u16 {
++        // SAFETY: `self.0` is a valid `i2c_msg` for the callback's duration.
++        unsafe { (*self.0.get()).addr }
++    }
++
++    /// The message flags (`I2C_M_*`).
++    #[inline]
++    pub fn flags(&self) -> u16 {
++        // SAFETY: as above.
++        unsafe { (*self.0.get()).flags }
++    }
++
++    /// Whether this is a read (`I2C_M_RD`) rather than a write.
++    #[inline]
++    pub fn is_read(&self) -> bool {
++        self.flags() & (bindings::I2C_M_RD as u16) != 0
++    }
++
++    /// The message length in bytes.
++    #[inline]
++    pub fn len(&self) -> usize {
++        // SAFETY: as above.
++        unsafe { (*self.0.get()).len as usize }
++    }
++
++    /// Whether the message is empty.
++    #[inline]
++    pub fn is_empty(&self) -> bool {
++        self.len() == 0
++    }
++
++    /// The message payload of a write, as a read-only slice.
++    #[inline]
++    pub fn buf(&self) -> &[u8] {
++        // SAFETY: `buf` points to `len` bytes valid for the callback's duration.
++        unsafe { core::slice::from_raw_parts((*self.0.get()).buf, self.len()) }
++    }
++
++    /// The message buffer of a read, as a mutable slice to fill with the reply.
++    #[inline]
++    pub fn buf_mut(&mut self) -> &mut [u8] {
++        // SAFETY: `buf` points to `len` writable bytes valid for the callback's duration.
++        unsafe { core::slice::from_raw_parts_mut((*self.0.get()).buf, self.len()) }
++    }
 +}
 +
-+void rust_helper_drm_framebuffer_put(struct drm_framebuffer *fb)
-+{
-+	drm_framebuffer_put(fb);
-+}
-diff --git a/rust/kernel/drm/kms/framebuffer.rs b/rust/kernel/drm/kms/framebuffer.rs
-index 1ec6779ba7de..c7089b12d0d1 100644
---- a/rust/kernel/drm/kms/framebuffer.rs
-+++ b/rust/kernel/drm/kms/framebuffer.rs
-@@ -9,6 +9,7 @@
-     drm::device::Device,
-     error::{code::EINVAL, to_result},
-     prelude::*,
-+    sync::aref::AlwaysRefCounted,
-     types::*,
- };
- use bindings;
-@@ -46,6 +47,23 @@ fn raw_mode_obj(&self) -> *mut bindings::drm_mode_object {
- }
- 
- // SAFETY: References to framebuffers are safe to be accessed from any thread
-+// SAFETY: `struct drm_framebuffer` is refcounted via `drm_framebuffer_get()`/`drm_framebuffer_put()`,
-+// which are the correct increment/decrement operations for it.
-+unsafe impl<T: KmsDriver> AlwaysRefCounted for Framebuffer<T> {
-+    #[inline]
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees the refcount is non-zero.
-+        unsafe { bindings::drm_framebuffer_get(self.as_raw()) };
-+    }
++/// `I2C_FUNC_I2C`: the adapter supports plain I2C (not just SMBus) transfers.
++pub const FUNC_I2C: u32 = bindings::I2C_FUNC_I2C;
 +
-+    #[inline]
-+    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee the refcount is non-zero; `Framebuffer<T>` has
-+        // the same layout as `struct drm_framebuffer`.
-+        unsafe { bindings::drm_framebuffer_put(obj.as_ptr().cast()) };
-+    }
++/// A Rust-implemented I2C bus adapter (the controller/provider side).
++///
++/// This is the counterpart to the [`Driver`] trait above: rather than binding to an I2C client on
++/// an existing bus, an implementer *is* a bus and services transfers. Virtual buses -- e.g. the
++/// DDC/CI channel DisplayLink's evdi exposes so userspace monitor-control tools can reach the
++/// display -- use this.
++pub trait BusController: 'static {
++    /// Per-adapter driver context, made available to the transfer callbacks.
++    type Context: Send + Sync;
++
++    /// Transfer `msgs` on the bus, returning the number of messages successfully transferred
++    /// (as the C `master_xfer` does), or an error.
++    fn master_xfer(ctx: &Self::Context, msgs: &mut [Msg]) -> Result<usize>;
++
++    /// Report the bus functionality bitmask (`I2C_FUNC_*`).
++    fn functionality(ctx: &Self::Context) -> u32;
 +}
 +
- unsafe impl<T: KmsDriver> Send for Framebuffer<T> {}
- // SAFETY: References to framebuffers are safe to be accessed from any thread
- unsafe impl<T: KmsDriver> Sync for Framebuffer<T> {}
-@@ -79,6 +97,30 @@ pub(crate) fn as_raw(&self) -> *mut bindings::drm_framebuffer {
-         self.0.get()
-     }
- 
-+    /// The framebuffer's width in pixels.
-+    #[inline]
-+    pub fn width(&self) -> u32 {
-+        // SAFETY: `as_raw()` is a valid framebuffer; `width` is set at creation and immutable.
-+        unsafe { (*self.as_raw()).width }
++/// An owned, registered I2C adapter driven by a [`BusController`].
++///
++/// [`BusAdapter::new`] fills a `struct i2c_adapter` (pointing its algorithm at trampolines that
++/// dispatch to `T`) and calls `i2c_add_adapter()`; dropping it calls `i2c_del_adapter()`.
++#[pin_data(PinnedDrop)]
++pub struct BusAdapter<T: BusController> {
++    #[pin]
++    adapter: Opaque<bindings::i2c_adapter>,
++    #[pin]
++    algo: Opaque<bindings::i2c_algorithm>,
++    ctx: T::Context,
++    registered: core::sync::atomic::AtomicBool,
++}
++
++// SAFETY: the adapter is internally synchronized by the I2C core; `ctx` is `Send + Sync`.
++unsafe impl<T: BusController> Send for BusAdapter<T> {}
++// SAFETY: see `Send`.
++unsafe impl<T: BusController> Sync for BusAdapter<T> {}
++
++impl<T: BusController> BusAdapter<T> {
++    /// # Safety
++    /// `adap` is a valid adapter whose `algo_data` points to a live `T::Context`.
++    unsafe extern "C" fn xfer_trampoline(
++        adap: *mut bindings::i2c_adapter,
++        msgs: *mut bindings::i2c_msg,
++        num: crate::ffi::c_int,
++    ) -> crate::ffi::c_int {
++        // SAFETY: by the invariant established in `new`, `algo_data` points to the `T::Context`.
++        let ctx = unsafe { &*((*adap).algo_data as *const T::Context) };
++        // SAFETY: the I2C core passes `num` valid `i2c_msg`s; `Msg` is `#[repr(transparent)]`.
++        let slice = unsafe { core::slice::from_raw_parts_mut(msgs.cast::<Msg>(), num as usize) };
++        match T::master_xfer(ctx, slice) {
++            Ok(n) => n as crate::ffi::c_int,
++            Err(e) => e.to_errno(),
++        }
 +    }
 +
-+    /// The framebuffer's height in pixels.
-+    #[inline]
-+    pub fn height(&self) -> u32 {
-+        // SAFETY: `as_raw()` is a valid framebuffer; `height` is set at creation and immutable.
-+        unsafe { (*self.as_raw()).height }
++    /// # Safety
++    /// `adap` is a valid adapter whose `algo_data` points to a live `T::Context`.
++    unsafe extern "C" fn func_trampoline(adap: *mut bindings::i2c_adapter) -> u32 {
++        // SAFETY: by the invariant established in `new`, `algo_data` points to the `T::Context`.
++        let ctx = unsafe { &*((*adap).algo_data as *const T::Context) };
++        T::functionality(ctx)
 +    }
 +
-+    /// The byte stride (pitch) of colour plane `index`.
-+    ///
-+    /// A `drm_framebuffer` has at most four colour planes; `index` is masked into `0..=3`.
-+    #[inline]
-+    pub fn pitch(&self, index: usize) -> u32 {
-+        // SAFETY: `pitches` has four elements; `index & 3` keeps the access in bounds. The pitches
-+        // are set at creation and immutable.
-+        unsafe { (*self.as_raw()).pitches[index & 3] }
-+    }
++    /// Create and register a new I2C adapter named `name`, parented to `parent`, with driver
++    /// context `ctx`.
++    pub fn new(
++        name: &CStr,
++        parent: &device::Device,
++        ctx: T::Context,
++    ) -> Result<Pin<KBox<Self>>> {
++        let this = KBox::try_pin_init(
++            try_pin_init!(Self {
++                adapter <- Opaque::ffi_init(|slot: *mut bindings::i2c_adapter| {
++                    // SAFETY: `slot` is valid, uninitialized storage; a zeroed adapter is a valid
++                    // starting point (self-referential fields are set below, after pinning).
++                    unsafe { *slot = bindings::i2c_adapter::default() };
++                }),
++                algo <- Opaque::ffi_init(|slot: *mut bindings::i2c_algorithm| {
++                    // SAFETY: `slot` is valid, uninitialized storage.
++                    unsafe {
++                        *slot = bindings::i2c_algorithm::default();
++                        (*slot).__bindgen_anon_1.master_xfer = Some(Self::xfer_trampoline);
++                        (*slot).functionality = Some(Self::func_trampoline);
++                    }
++                }),
++                ctx: ctx,
++                registered: core::sync::atomic::AtomicBool::new(false),
++            }),
++            GFP_KERNEL,
++        )?;
 +
-     /// Map this framebuffer's plane-0 backing pages into the kernel address space for CPU
-     /// access, for the duration of the returned guard.
-     ///
-@@ -123,6 +165,18 @@ pub fn as_ptr(&self) -> *const u8 {
-         // SAFETY: set non-null in `Framebuffer::vmap`; `vaddr` is the active union member.
-         (unsafe { self.map[0].__bindgen_anon_1.vaddr }) as *const u8
-     }
++        // `this` now has a stable address; wire the self-referential adapter fields and register.
++        let adap = this.adapter.get();
++        // Copy the name without its NUL into the fixed 48-byte array (capped at 47 so the
++        // already-zeroed array stays NUL-terminated even if the name is over-long).
++        let name_bytes = name.to_bytes();
++        let n = core::cmp::min(name_bytes.len(), 47);
++        // SAFETY: `adap`/`algo`/`ctx` live for `this`'s (pinned) lifetime; `name_bytes` is valid
++        // for `n <= 47` bytes; `parent` is a valid device.
++        unsafe {
++            (*adap).algo = this.algo.get();
++            (*adap).algo_data = (&this.ctx as *const T::Context).cast_mut().cast();
++            core::ptr::copy_nonoverlapping(
++                name_bytes.as_ptr(),
++                (*adap).name.as_mut_ptr().cast::<u8>(),
++                n,
++            );
++            (*adap).dev.parent = parent.as_raw();
++        }
 +
-+    /// Plane 0's mapped pixels as a byte slice.
-+    ///
-+    /// The slice covers `height * pitch(0)` bytes — the full extent of colour plane 0 — and is
-+    /// valid for the guard's lifetime. This lets callers read the scanout buffer without `unsafe`.
-+    #[inline]
-+    pub fn as_bytes(&self) -> &[u8] {
-+        let len = self.fb.height() as usize * self.fb.pitch(0) as usize;
-+        // SAFETY: `drm_gem_fb_vmap` mapped colour plane 0 contiguously at `as_ptr()` for at least
-+        // `height * pitch(0)` bytes, and the mapping is live for `self`'s lifetime.
-+        unsafe { core::slice::from_raw_parts(self.as_ptr(), len) }
++        // SAFETY: `adap` is a fully-initialized adapter.
++        to_result(unsafe { bindings::i2c_add_adapter(adap) })?;
++        this.registered
++            .store(true, core::sync::atomic::Ordering::Release);
++        Ok(this)
 +    }
- }
- 
- impl<'a, T: KmsDriver> Drop for FramebufferVmap<'a, T> {
++}
++
++#[pinned_drop]
++impl<T: BusController> PinnedDrop for BusAdapter<T> {
++    fn drop(self: Pin<&mut Self>) {
++        if self.registered.load(core::sync::atomic::Ordering::Acquire) {
++            // SAFETY: the adapter was successfully registered with `i2c_add_adapter` and has not
++            // been deleted yet.
++            unsafe { bindings::i2c_del_adapter(self.adapter.get()) };
++        }
++    }
++}
 -- 
 2.55.0
 
