@@ -1,63 +1,63 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F46F27FD4F
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA7D30CD89
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047735; cv=none; b=XXG/kGga2dOddvKVlZnIGw2IdauSvFoAPP2S5DKoZLwHJKrmv4HenwMjSQQu5XEOaj3kSxeBoYbS7283W/ZxEJhRIOGUd9mivnJMj+dW2UX5dbBMa3LKHT3QVON1VcwA4mxpsGI0dQ4CIkcB3kO+pFgj90HPayAiP/D8HOCX6jI=
+	t=1783047737; cv=none; b=GN61AqRYuWgqHmZU8raZ/o6IcH6OTCe/ZMuhfG//V+6gebRWuIF1/XilF4c9Nai4tudr7EmG0pOeexV7MvengG32oTn0XWMXzmTHZmdHB92iMvw673G6wyI43C6lRv9KV8O2+Cc4W0XaNhMI7CbxKj4KTLjQ+AEvD8PZRsFDv5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047735; c=relaxed/simple;
-	bh=1uqvohIdAq62wj82E4SBuODnbfJ/O9m3po4KKTfsvrc=;
+	s=arc-20240116; t=1783047737; c=relaxed/simple;
+	bh=fRfRWSbJImzHZruC9DYmRbxAwGAifNOTfVGD9HhsIVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaLFJ4BnxZQ/M8WJBIw+V6yeSNwfgX7B/aRBaXW3oC+6XcUcsiPKj4PcDClZvBLZM7AndNncMGd5oek/XRrxxK2yJ51zsPMWGuHF9Sm2xUhQf/YOwS98nf3RRAB8ax5TaxRqT5ZvwQeWTaKGCN2cg7aNegWROcnziAlm9VRQ7L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ctZhMcDM; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version; b=Ud6RXzUAoJmjqM90fJmvS7Em9v96hAl+IX+uh1dyyNrwTaN9V8En6EhbhYsUYJCDAiXCWPE0LrIoLmY5r8U3h77vyWL/bwa2l5Zq5+/1/OtX41sq4SmDaGvK6sCZqFAM7qvXPpj98NucNybM0h00MhEFEeuKV81dXsZkz5/pP90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=srvPcAMv; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ctZhMcDM"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4631679f204so721668f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="srvPcAMv"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-475881b9a4bso79217f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047732; x=1783652532; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047734; x=1783652534; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4TbX8MznRE/lSK8zDxNF2GQ6yML1Vz7QFki+Q6IYGOU=;
-        b=ctZhMcDMevIzW+mS5Rvag5U8rR5tNjs9JVPYOv57Ars2gaXMpSLYaKYtNk8cWJ8h4J
-         jlXSAYneoRmLXOAc/JrLBZac5Nw+hrvGEecGDr+aFmjr5t+tdUeb3JDXOcZjpg1pDvoD
-         YcMJU/zc4fUpYGWlA/KREpGWIaE5Ykg63jYrKvq9wKMWe3JuoHKKg2ctGdP9QBA886VL
-         Hj05xheaR6LBTR1UHUW4I8i/513EGEriNYxR+mORqZamLWZO28UfNGhqbkkXGkVRi1KH
-         I9C72EBkTEEP9Yf01u+/c84ShXfd7LPAPeZ8b8VJeB0+nO6UoNd8Lp+zVmoK4l5Ne9ET
-         QFZQ==
+         :message-id:reply-to:content-type;
+        bh=676W53NrP+v1JtRit87SUFwRygfrhSqyRXaV/N96IbY=;
+        b=srvPcAMvJV6eIG2uXRn0NaCQU2kG5pcrL+ZCt95nD1uaDp2DnBmuAfqO4+QAR8qqxr
+         uXPXiGsg819zb/VTTyLt93QQ42IhCBIOkI8IHCI03KtN54gtCaqOftWjG04oeWipqE6A
+         bl9+aHBvy6XbxHCHX5EwLG9PJzDfAW+2ABU6jxUegoswHK38kfNP0TYeyVsiTJicebjO
+         86VSPt+7TDtXcl/V8b2tB7lWH5wO2XTw2W003w4FgxpPtMXF2F61T9Ru61Tm4q7G5mIa
+         XFrPZhojuyTQ69bj6ayZoyd6oioZZ1Vvz2OUElgaqWq8xxYSPQb2Nbs1s8td/4gekhiC
+         vjRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047732; x=1783652532;
+        d=1e100.net; s=20251104; t=1783047734; x=1783652534;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4TbX8MznRE/lSK8zDxNF2GQ6yML1Vz7QFki+Q6IYGOU=;
-        b=GdXWf4hoSZh4A0XYoXogoT2A+SEb0AmuZPOlDy5U3hWEYew8L4UiLgmQZJwbe7UXHp
-         TRiDQtsh12Dw7trRD3dwu8afyKAC0sbkON1GVBEVb6uNAB7xS3omApFof1bDzstU/qxj
-         sItlc1/9t3ajnwJNUTY7OocEiKrFJDLldoicoUQXw3XLKIGx8EQRG1+moTGI4ZCfIYSI
-         Px8BtBfUF10Z6ny3f+Z7xzu+S0LCTQ0JLOBZb1J2CmZjA6i1grTi7Loh+gMaLEGfKU9o
-         mrc4WLSezmNvI5W3wV2iFZ3c0+kF2spg7RsWxslvuz9fyvXcu96CejYub5jzPMAqjw0F
-         nU6Q==
-X-Gm-Message-State: AOJu0YwarXc9QLVEEu6F4iCMJ6mq1K4iC4FyjN2k7u+ZUM0kkQJ2cXmQ
-	ocbWfOUlsBtxsijC5ID8hawcpZVTf3UwxBCCxGejLNO9xi2+pKm5/8pq2UmUeOQrtmIFcKjlKjm
-	Q+iLvaQlu
-X-Gm-Gg: AfdE7ckZ36BDV9qGAfqK6FejAzoxBY3ZwG52lgxOhV5FSqR1OV8SHzVk0povdLibBEs
-	t4EkkzZk0WBlri9DgTXOUUtt/DZRC+USs7fTD7Kl7Z1Woq2wPMlgYoEFLV/CdYMLjLbo+SD+HLV
-	OfFvu/NADiwT0fFuk28+hbavafvgbCwVrvAKxltbRAKRRbvChJfi2klnp2JJnGc9wyfuNhh0eiX
-	Oxz/FxKhHl6R56C6Qz7npAo2oSW8T1DMyd/Z0OnSKJy9PPVdP1Q5Jk8b5os6sipfaxRkQvk5Jbh
-	szLlpWSk+y0BXkjcImjjf70V88EkRyaHlUIArwkfhKjCgdgjyWpDjqgzJvxXdMel5vu+lbnL67F
-	nAcxGvXXayvIe3o59+AgnrkhYsCYIx9DhNpSvaQ0D63Q0tzg8e15BEsz6UCrAK8FsRwI+nOQvzr
-	t0EHCJj18MyCb3ItW3FHgdQc6PwnWDgeOgqGUDxxxoh60JlBgFsfy+1cz7
-X-Received: by 2002:a05:6000:41fe:b0:46f:8561:fe60 with SMTP id ffacd0b85a97d-4793685fe58mr3081792f8f.17.1783047731472;
-        Thu, 02 Jul 2026 20:02:11 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=676W53NrP+v1JtRit87SUFwRygfrhSqyRXaV/N96IbY=;
+        b=nbFERyUhR7A60ytq3UkEHypxdakY9ipKlliRe8QIvIhrIBqvFpkc8gRoIbBWkOL0Fb
+         +Ui/4z/xSIA/vnw0VKDd8GwwbR0UvJgoFLTNVhrXP8ZdfBBzVBO12CdEsEANAlqqhM6a
+         42bAyCRQ0kXT6hWIzxuHHlFfYlDUT5xBwHn8VOPh4ggXer9CE13M3hg1bWJvyEcjCl7I
+         dixPIPRXdSSONeziE12qxvnJ8ej38X9bu2oJy85KEIBfsRoQgdXSURpzLhMh64EQZlYX
+         WGXSd8WcWZp1MERoohD+uJw+n4eGLAAxP12n/GqRhOu7pSE4F37m+6VSZh7wMB3a0F/s
+         KLQw==
+X-Gm-Message-State: AOJu0YyWKmAIcvO96Ch1A1X8IQQEK83HcF6Jl/sZCXNUeCQYAJwhQ5a9
+	/57O1KKYkAJhTGq9xUwIwRzIliJCw6xIaEgzZxg+qGNJo3jLmLECLMv6BiYBnoreVTcc6Sp06s1
+	kmRJeNWOI
+X-Gm-Gg: AfdE7cl6rlpSlCl0L4BapBquXeUodCoqnDtBoazjAQdYnMyQpxpAWlGN53kWWRP05nr
+	SQ1MtvUJPo2TBDNWQ+JIn+M2YO1MP8+FEj+slfAitXzop+sMg+87JLEEi8bb1roHDncA9BIBhEm
+	F/Se6ZSFJJdzUd9ynVjhNUkpbfcxki12LWmFbqPMTQAqTo9m2GUjx1vTURE2RPiPMY2EwYNbosM
+	Yl7KoCLauUUb1Em0/pJkWHqLYOy9jJUcW+hh7ZlgvJwYsuxUxJ8ovVEaF0PaQlJ8T2newqnhNcw
+	zw9nGZBc0wUO/IKr0SsLe2LElYD4Ae+1lYLOJhkiPvzwUF6/OSWwuOePjfPJ3vOZ5yxfw2sqB08
+	MVKEk/3jLi8eNBavOypdUSnyGwDY6RIL6TRQYaFKb1qA6wyLaeRWd1s0Joy8JAI5P5b/dv7zxkE
+	cFDRh5VuABC26p9YfFVWvqXx9+938ZZeTL/EeAPznnpzLgXWOn3ukBsrH9
+X-Received: by 2002:a5d:5588:0:b0:475:f100:35f5 with SMTP id ffacd0b85a97d-477b5c415a8mr9292156f8f.50.1783047733914;
+        Thu, 02 Jul 2026 20:02:13 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:02:09 -0700 (PDT)
+        Thu, 02 Jul 2026 20:02:13 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -75,9 +75,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 16/18] rust: drm: add CRTC gamma LUT and plane rotation property bindings
-Date: Fri,  3 Jul 2026 04:01:03 +0100
-Message-ID: <20260703030123.2814-17-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 17/18] rust: drm: kms: add connector detect() and mode_valid() hooks
+Date: Fri,  3 Jul 2026 04:01:04 +0100
+Message-ID: <20260703030123.2814-18-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260703030123.2814-1-mike@fireburn.co.uk>
 References: <20260617150232.2210-1-mike@fireburn.co.uk>
@@ -90,140 +90,171 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Two more mode-object properties a real driver reaches for, and the last
-the DisplayLink vino driver needs to match its pre-safe-KMS feature set:
+The safe connector layer only exposed get_modes(), so a driver couldn't
+report hotplug state or prune modes it can't drive. Add two optional
+DriverConnector hooks, gated the same way as the plane/CRTC optionals
+(registered in the vtable only when the driver overrides them):
 
-  - CRTC gamma: UnregisteredCrtc::enable_gamma()
-    (drm_crtc_enable_color_mgmt, creating a GAMMA_LUT property) and
-    RawCrtcState::gamma_lut() to read the set ramp back as a
-    &[drm_color_lut].
+  - detect(&Connector, force) -> Status, wired to
+    drm_connector_funcs.detect, returning a new Status enum
+    (Connected/Disconnected/Unknown mapping to enum drm_connector_status).
 
-  - Plane rotation: UnregisteredPlane::create_rotation_property()
-    (drm_plane_create_rotation_property) and RawPlaneState::rotation() /
-    crtc_x()/crtc_y()/hotspot_x()/hotspot_y() to read the plane's
-    placement and orientation.
+  - mode_valid(&Connector, &DisplayMode) -> ModeStatus, wired to
+    drm_connector_helper_funcs.mode_valid, returning a new ModeStatus enum
+    (Ok/Bad/ClockHigh/ClockLow, a common subset of enum drm_mode_status).
 
-drm_plane_create_rotation_property lives in <drm/drm_blend.h>, so add
-that to bindings_helper.h.
+Both leave DRM's default behaviour (always connected, all modes valid)
+unchanged for connectors that don't implement them.
 
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/drm/kms/crtc.rs     | 33 +++++++++++++++++++++++++++++++++
- rust/kernel/drm/kms/plane.rs    | 29 +++++++++++++++++++++++++++++
- 3 files changed, 63 insertions(+)
+ rust/kernel/drm/kms/connector.rs | 98 +++++++++++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 3 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index e5cfda610781..7d04abec1215 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -39,6 +39,7 @@
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_connector.h>
- #include <drm/drm_crtc.h>
-+#include <drm/drm_blend.h>
- #include <drm/drm_edid.h>
- #include <drm/drm_encoder.h>
- #include <drm/drm_framebuffer.h>
-diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
-index fbe113676e2f..b5128ae1ca95 100644
---- a/rust/kernel/drm/kms/crtc.rs
-+++ b/rust/kernel/drm/kms/crtc.rs
-@@ -356,6 +356,17 @@ pub fn new<'a, 'b: 'a, PrimaryData, CursorData>(
-         // SAFETY: We just allocated the crtc above, so this pointer must be valid
-         Ok(unsafe { &*this })
-     }
+diff --git a/rust/kernel/drm/kms/connector.rs b/rust/kernel/drm/kms/connector.rs
+index 591153de7ab4..a66243db8868 100644
+--- a/rust/kernel/drm/kms/connector.rs
++++ b/rust/kernel/drm/kms/connector.rs
+@@ -5,7 +5,8 @@
+ //! C header: [`include/drm/drm_connector.h`](srctree/include/drm/drm_connector.h)
+ 
+ use super::{
+-    atomic::*, encoder::*, KmsDriver, ModeConfigGuard, ModeObject, ModeObjectVtable, Sealed
++    atomic::*, encoder::*, modes::DisplayMode, KmsDriver, ModeConfigGuard, ModeObject,
++    ModeObjectVtable, Sealed,
+ };
+ use crate::{
+     alloc::KBox,
+@@ -72,6 +73,43 @@ pub enum Type {
+     USB         as Usb
+ }
+ 
++/// The connection status of a [`Connector`], as returned by [`DriverConnector::detect`].
++///
++/// This is identical to [`enum drm_connector_status`].
++///
++/// [`enum drm_connector_status`]: srctree/include/drm/drm_connector.h
++#[derive(Copy, Clone, Debug, PartialEq, Eq)]
++#[repr(u32)]
++pub enum Status {
++    /// The connector is connected to a display and a mode list can be retrieved.
++    Connected = bindings::drm_connector_status_connector_status_connected,
++    /// The connector has no display attached.
++    Disconnected = bindings::drm_connector_status_connector_status_disconnected,
++    /// The connection state could not be determined (treated as connected for probing).
++    Unknown = bindings::drm_connector_status_connector_status_unknown,
++}
 +
-+    /// Enable colour management on this CRTC, creating a `GAMMA_LUT` property of `gamma_size`
-+    /// entries that userspace can program (no degamma LUT, no CTM). The set LUT is then readable
-+    /// from the CRTC state via [`RawCrtcState::gamma_lut`].
++/// The result of validating a display mode against a [`Connector`], as returned by
++/// [`DriverConnector::mode_valid`].
++///
++/// This mirrors a small, commonly-used subset of [`enum drm_mode_status`]; use [`ModeStatus::Bad`]
++/// for a generic rejection, or the clock-specific variants when a mode is out of the driver's
++/// pixel-clock range.
++///
++/// [`enum drm_mode_status`]: srctree/include/drm/drm_modes.h
++#[derive(Copy, Clone, Debug, PartialEq, Eq)]
++#[repr(i32)]
++pub enum ModeStatus {
++    /// The mode is usable.
++    Ok = bindings::drm_mode_status_MODE_OK,
++    /// The mode is rejected for an unspecified reason.
++    Bad = bindings::drm_mode_status_MODE_BAD,
++    /// The mode's pixel clock is above what the driver can drive.
++    ClockHigh = bindings::drm_mode_status_MODE_CLOCK_HIGH,
++    /// The mode's pixel clock is below what the driver can drive.
++    ClockLow = bindings::drm_mode_status_MODE_CLOCK_LOW,
++}
++
+ /// The main trait for implementing the [`struct drm_connector`] API for [`Connector`].
+ ///
+ /// Any KMS driver should have at least one implementation of this type, which allows them to create
+@@ -105,14 +143,22 @@ pub trait DriverConnector: Send + Sync + Sized {
+             atomic_destroy_state: Some(atomic_destroy_state_callback::<Self::State>),
+             destroy: Some(connector_destroy_callback::<Self>),
+             force: None,
+-            detect: None,
++            detect: if Self::HAS_DETECT {
++                Some(detect_callback::<Self>)
++            } else {
++                None
++            },
+             fill_modes: Some(bindings::drm_helper_probe_single_connector_modes),
+             debugfs_init: None,
+             oob_hotplug_event: None,
+             atomic_duplicate_state: Some(atomic_duplicate_state_callback::<Self::State>),
+         },
+         helper_funcs: bindings::drm_connector_helper_funcs {
+-            mode_valid: None,
++            mode_valid: if Self::HAS_MODE_VALID {
++                Some(mode_valid_callback::<Self>)
++            } else {
++                None
++            },
+             atomic_check: None,
+             get_modes: Some(get_modes_callback::<Self>),
+             detect_ctx: None,
+@@ -151,6 +197,28 @@ fn get_modes<'a>(
+         connector: ConnectorGuard<'a, Self>,
+         guard: &ModeConfigGuard<'a, Self::Driver>,
+     ) -> i32;
++
++    /// The optional [`drm_connector_funcs.detect`] hook for this connector.
 +    ///
-+    /// Call this during [`KmsDriver::probe`](crate::drm::kms::KmsDriver::probe), before the device
-+    /// is registered.
-+    pub fn enable_gamma(&self, gamma_size: u32) {
-+        // SAFETY: `as_raw()` is a valid, not-yet-registered CRTC.
-+        unsafe { bindings::drm_crtc_enable_color_mgmt(self.as_raw(), 0, false, gamma_size) };
++    /// Drivers may implement this to report whether a display is currently attached. If not
++    /// implemented, the connector is always considered connected (DRM's default with no `detect`
++    /// hook). `force` is set when userspace explicitly requested a forced probe.
++    ///
++    /// [`drm_connector_funcs.detect`]: srctree/include/drm/drm_connector.h
++    fn detect(_connector: &Connector<Self>, _force: bool) -> Status {
++        build_error::build_error("This should not be reachable")
++    }
++
++    /// The optional [`drm_connector_helper_funcs.mode_valid`] hook for this connector.
++    ///
++    /// Drivers may implement this to reject modes they cannot drive (for example, a mode whose
++    /// pixel clock exceeds the hardware's budget). Returning anything other than [`ModeStatus::Ok`]
++    /// prunes the mode from the probed list. If not implemented, every mode is accepted.
++    ///
++    /// [`drm_connector_helper_funcs.mode_valid`]: srctree/include/drm/drm_modeset_helper_vtables.h
++    fn mode_valid(_connector: &Connector<Self>, _mode: &DisplayMode) -> ModeStatus {
++        build_error::build_error("This should not be reachable")
 +    }
  }
  
- // SAFETY: We inherit all relevant invariants of `Crtc`
-@@ -686,6 +697,28 @@ fn mode(&self) -> &DisplayMode {
-         // interface can ensure this access is serialized.
-         unsafe { DisplayMode::as_ref(&(*self.as_raw()).mode) }
-     }
-+
-+    /// Returns the CRTC's gamma LUT for this state as an array of [`drm_color_lut`] entries, or
-+    /// [`None`] if no gamma LUT is programmed. Requires gamma to have been enabled on the CRTC
-+    /// (see [`UnregisteredCrtc::enable_gamma`]).
-+    ///
-+    /// [`drm_color_lut`]: bindings::drm_color_lut
-+    fn gamma_lut(&self) -> Option<&[bindings::drm_color_lut]> {
-+        // SAFETY: `as_raw()` is a valid `drm_crtc_state`.
-+        let blob = unsafe { (*self.as_raw()).gamma_lut };
-+        if blob.is_null() {
-+            return None;
-+        }
-+        // SAFETY: a non-null gamma_lut blob is valid for the state's lifetime.
-+        let (data, length) = unsafe { ((*blob).data, (*blob).length) };
-+        let n = length / core::mem::size_of::<bindings::drm_color_lut>();
-+        if data.is_null() || n == 0 {
-+            return None;
-+        }
-+        // SAFETY: the blob's `data` holds `n` contiguous `drm_color_lut` entries (the blob length
-+        // is a multiple of the entry size), valid for the state's lifetime.
-+        Some(unsafe { core::slice::from_raw_parts(data.cast::<bindings::drm_color_lut>(), n) })
-+    }
- }
- impl<T: AsRawCrtcState> RawCrtcState for T {}
- 
-diff --git a/rust/kernel/drm/kms/plane.rs b/rust/kernel/drm/kms/plane.rs
-index fcaa8ba550fe..ead875316829 100644
---- a/rust/kernel/drm/kms/plane.rs
-+++ b/rust/kernel/drm/kms/plane.rs
-@@ -328,6 +328,28 @@ pub fn new<'a, 'b: 'a>(
-         // SAFETY: We just allocated the plane above, so this pointer must be valid
-         Ok(unsafe { &*this })
-     }
-+
-+    /// Attach a rotation property to this plane, advertising `supported_rotations` (a bitmask of
-+    /// `DRM_MODE_ROTATE_*` | `DRM_MODE_REFLECT_*`) with initial value `default_rotation`. The
-+    /// selected value is then readable from the plane state via
-+    /// [`RawPlaneState::rotation`](crate::drm::kms::plane::RawPlaneState::rotation).
-+    ///
-+    /// Call this during [`KmsDriver::probe`](crate::drm::kms::KmsDriver::probe), before the device
-+    /// is registered.
-+    pub fn create_rotation_property(
-+        &self,
-+        default_rotation: u32,
-+        supported_rotations: u32,
-+    ) -> Result {
-+        // SAFETY: `as_raw()` is a valid, not-yet-registered plane.
-+        to_result(unsafe {
-+            bindings::drm_plane_create_rotation_property(
-+                self.as_raw(),
-+                default_rotation,
-+                supported_rotations,
-+            )
-+        })
-+    }
+ /// The generated C vtable for a [`DriverConnector`].
+@@ -464,6 +532,30 @@ impl<T: AsRawConnector> RawConnector for T {}
+     T::get_modes(connector.guard(&guard), &guard)
  }
  
- /// A trait implemented by any type that acts as a [`struct drm_plane`] interface.
-@@ -625,6 +647,13 @@ fn hotspot_y(&self) -> i32 {
-         self.as_raw().hotspot_y
-     }
- 
-+    /// The plane's rotation/reflection (`DRM_MODE_ROTATE_*` | `DRM_MODE_REFLECT_*` bitmask), for a
-+    /// plane with a rotation property (see
-+    /// [`UnregisteredPlane::create_rotation_property`]). Defaults to `DRM_MODE_ROTATE_0`.
-+    fn rotation(&self) -> u32 {
-+        self.as_raw().rotation
-+    }
++unsafe extern "C" fn detect_callback<T: DriverConnector>(
++    connector: *mut bindings::drm_connector,
++    force: bool,
++) -> bindings::drm_connector_status {
++    // SAFETY: This is safe via `DriverConnector`s type invariants.
++    let connector = unsafe { Connector::<T>::from_raw(connector) };
 +
-     /// Return the current [`OpaqueCrtc`] assigned to this plane, if there is one.
-     fn crtc<'a, 'b: 'a, D>(&'a self) -> Option<&'b OpaqueCrtc<D>>
-     where
++    T::detect(connector, force) as bindings::drm_connector_status
++}
++
++unsafe extern "C" fn mode_valid_callback<T: DriverConnector>(
++    connector: *mut bindings::drm_connector,
++    mode: *const bindings::drm_display_mode,
++) -> bindings::drm_mode_status {
++    // SAFETY: This is safe via `DriverConnector`s type invariants.
++    let connector = unsafe { Connector::<T>::from_raw(connector) };
++
++    // SAFETY: DRM guarantees `mode` points to a valid `drm_display_mode` for the duration of this
++    // callback, and only passes us shared access to it.
++    let mode = unsafe { DisplayMode::as_ref(mode) };
++
++    T::mode_valid(connector, mode) as bindings::drm_mode_status
++}
++
+ /// A [`struct drm_connector`] without a known [`DriverConnector`] implementation.
+ ///
+ /// This is mainly for situations where our bindings can't infer the [`DriverConnector`]
 -- 
 2.55.0
 
