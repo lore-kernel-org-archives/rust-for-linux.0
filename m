@@ -1,63 +1,63 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A8C30B521
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F46F27FD4F
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047732; cv=none; b=GJrCXZjYjW3yOapZXbhTg3Y0XztDz2eHXQ/6fdauzCrt7BsJHLc6ntfPUMw+uFOf+E8DLLztSH5F1obeZThOTQvJCEhZs0ZIsdoxSsBh4FvMUPmP/Q/GntVqLSb/m3VN95Ptzp8MaWzWaqIuo19fi9p4Ho7kjdMgZCggX23Cn1Y=
+	t=1783047735; cv=none; b=XXG/kGga2dOddvKVlZnIGw2IdauSvFoAPP2S5DKoZLwHJKrmv4HenwMjSQQu5XEOaj3kSxeBoYbS7283W/ZxEJhRIOGUd9mivnJMj+dW2UX5dbBMa3LKHT3QVON1VcwA4mxpsGI0dQ4CIkcB3kO+pFgj90HPayAiP/D8HOCX6jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047732; c=relaxed/simple;
-	bh=Nh4vxX4TO7iCe3TREKyhNo31iLUcbd6JX2zPn7QBx4c=;
+	s=arc-20240116; t=1783047735; c=relaxed/simple;
+	bh=1uqvohIdAq62wj82E4SBuODnbfJ/O9m3po4KKTfsvrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gmcY+KWbrkuNIX2Qt7vSyrba8mC0/H6XrdT5RiYTjoUTrLtWSoX3rLmR9QsPJkSDjfPBiqI4nF32ywbAWdVkn60yl2NQoZ6BCrMmEWL55w0D8AABLjvqIIo9LjWEJLekUcyTGyyJcUvKhZH/8UiIzdfwV359Zn283cl5XAol26g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=Yk5ejc3b; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=VaLFJ4BnxZQ/M8WJBIw+V6yeSNwfgX7B/aRBaXW3oC+6XcUcsiPKj4PcDClZvBLZM7AndNncMGd5oek/XRrxxK2yJ51zsPMWGuHF9Sm2xUhQf/YOwS98nf3RRAB8ax5TaxRqT5ZvwQeWTaKGCN2cg7aNegWROcnziAlm9VRQ7L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=ctZhMcDM; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="Yk5ejc3b"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493c2c0b9a8so440735e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="ctZhMcDM"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4631679f204so721668f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:02:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047729; x=1783652529; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047732; x=1783652532; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oJo7TDfciSOR3fPsvfGRU1Um27ufdThVMtKgOOefwMI=;
-        b=Yk5ejc3bnzQWdcjNAu8GSG25nF/vaLy3eZdWHP37KAc961R1r6kKmfHsi2OPhQTDm3
-         MEMpXiGGISEF9LnF5WWVljeGAOmshp7n/ALmrIlIHi/q8Lr0JVZtMVQB7Iwho4DPRgi5
-         Ab1S5s1eq0ODzxL/GEiPoOWhVN8ZnT+/LTNRC6fuUph2sRbZGfpEp2NjzPeLPrG6e+0f
-         B3kj/OPbxOwHusCLI4BQeik11T+B8cF/eyJQ2P9atSi2L/CdFbf8oCQ4QLEOTnn97KUB
-         dpS4Hw8DE4VMZOdoto+UG04J9BzfsDa4RfWbXdFf/rDYxhAmykufs/gRmFChy/Ej28y/
-         UXgA==
+        bh=4TbX8MznRE/lSK8zDxNF2GQ6yML1Vz7QFki+Q6IYGOU=;
+        b=ctZhMcDMevIzW+mS5Rvag5U8rR5tNjs9JVPYOv57Ars2gaXMpSLYaKYtNk8cWJ8h4J
+         jlXSAYneoRmLXOAc/JrLBZac5Nw+hrvGEecGDr+aFmjr5t+tdUeb3JDXOcZjpg1pDvoD
+         YcMJU/zc4fUpYGWlA/KREpGWIaE5Ykg63jYrKvq9wKMWe3JuoHKKg2ctGdP9QBA886VL
+         Hj05xheaR6LBTR1UHUW4I8i/513EGEriNYxR+mORqZamLWZO28UfNGhqbkkXGkVRi1KH
+         I9C72EBkTEEP9Yf01u+/c84ShXfd7LPAPeZ8b8VJeB0+nO6UoNd8Lp+zVmoK4l5Ne9ET
+         QFZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047729; x=1783652529;
+        d=1e100.net; s=20251104; t=1783047732; x=1783652532;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oJo7TDfciSOR3fPsvfGRU1Um27ufdThVMtKgOOefwMI=;
-        b=o0ymm1MMMjI2P3pwVlS+AikKMRGaFff86e7OigXal+C5n4IZttmyXXjT5JSna26JrJ
-         MN+lWpYTXWuYlGir06S9bP+wipuZOXPfOZksvXTENAD+ltvRzKjqtjcWS7XZwbRcoM8e
-         FkqKC9R3lwAWZreyn4oj/lW3/FuRgrxmPLev8sas+0d8rww0/8nKXAb0GyIuCQOsgnti
-         fhmUmxwkzXzbdsoNEpKb9iBzGwTFXp/9YujPPeW3qz5ERGSjSbgiHATKNlo8u6M0ovUu
-         pev8lVX/p1p8XTkmicY/OQbBVpDuE6nYmZYU+YX3sq+1mVqA60VibKggr/31F+26rYOw
-         GhUA==
-X-Gm-Message-State: AOJu0Yzy6NUrgjlYCA7U6hRwzrs0ZRBvS04mbK2uJK7Buu//S7hGxE80
-	0hcxnNMckx4f9rmtkK0nG5W4hkTbtn/MFjg1vt4vgmr0ZDvsaFiSMB8ZxSPslEe6MjE+CvsCIP8
-	4KoXYK/8/
-X-Gm-Gg: AfdE7cnnGcsxjoXN6tS1AiPsag1H8oClA/RNkNI+8pKk113zo7Gmy624ljsZXhrpayZ
-	ur5kbPl7vEDMs/X3uGRXohKsGV8yU8AdSVbQt8/r7Jh7E0B0MZ/1VKgUyP0o7QFtFk7PBLms3bJ
-	cs4sEPW8OuPG3pDHgKCe8sVaSjTPUVS+qHTga5YfHGHfWNbunYbAsF09Y5fpHg1wLE3a0bedPVQ
-	yQfYHF/ZwvV5sva0VSaLWjb+dkRxGg2USkua23PUwDPbse4avM18GdDeN8ATb5Rc30WRMaun9Rd
-	U/ghOxAbVojH/Btn1T0phoyV04srkhlCML33b7bZNQvj+53yZHH7sGWU4o6GBAfXX0xpJpd7SxX
-	3olwLiWbvGulCd6xne+w/nd3w7rPbU1028u5HPJezsCxnwyno/1EpK5iMW/wt+ZxmAYi7dLwRXQ
-	i9sTnPrKBFndLpNM1fjTYt1UexGYuB6avwZAMTRD2xcegMfGEyyIppdph4
-X-Received: by 2002:a7b:c34e:0:b0:493:ad8a:e7fd with SMTP id 5b1f17b1804b1-493c3cd9d76mr72546515e9.14.1783047729025;
-        Thu, 02 Jul 2026 20:02:09 -0700 (PDT)
+        bh=4TbX8MznRE/lSK8zDxNF2GQ6yML1Vz7QFki+Q6IYGOU=;
+        b=GdXWf4hoSZh4A0XYoXogoT2A+SEb0AmuZPOlDy5U3hWEYew8L4UiLgmQZJwbe7UXHp
+         TRiDQtsh12Dw7trRD3dwu8afyKAC0sbkON1GVBEVb6uNAB7xS3omApFof1bDzstU/qxj
+         sItlc1/9t3ajnwJNUTY7OocEiKrFJDLldoicoUQXw3XLKIGx8EQRG1+moTGI4ZCfIYSI
+         Px8BtBfUF10Z6ny3f+Z7xzu+S0LCTQ0JLOBZb1J2CmZjA6i1grTi7Loh+gMaLEGfKU9o
+         mrc4WLSezmNvI5W3wV2iFZ3c0+kF2spg7RsWxslvuz9fyvXcu96CejYub5jzPMAqjw0F
+         nU6Q==
+X-Gm-Message-State: AOJu0YwarXc9QLVEEu6F4iCMJ6mq1K4iC4FyjN2k7u+ZUM0kkQJ2cXmQ
+	ocbWfOUlsBtxsijC5ID8hawcpZVTf3UwxBCCxGejLNO9xi2+pKm5/8pq2UmUeOQrtmIFcKjlKjm
+	Q+iLvaQlu
+X-Gm-Gg: AfdE7ckZ36BDV9qGAfqK6FejAzoxBY3ZwG52lgxOhV5FSqR1OV8SHzVk0povdLibBEs
+	t4EkkzZk0WBlri9DgTXOUUtt/DZRC+USs7fTD7Kl7Z1Woq2wPMlgYoEFLV/CdYMLjLbo+SD+HLV
+	OfFvu/NADiwT0fFuk28+hbavafvgbCwVrvAKxltbRAKRRbvChJfi2klnp2JJnGc9wyfuNhh0eiX
+	Oxz/FxKhHl6R56C6Qz7npAo2oSW8T1DMyd/Z0OnSKJy9PPVdP1Q5Jk8b5os6sipfaxRkQvk5Jbh
+	szLlpWSk+y0BXkjcImjjf70V88EkRyaHlUIArwkfhKjCgdgjyWpDjqgzJvxXdMel5vu+lbnL67F
+	nAcxGvXXayvIe3o59+AgnrkhYsCYIx9DhNpSvaQ0D63Q0tzg8e15BEsz6UCrAK8FsRwI+nOQvzr
+	t0EHCJj18MyCb3ItW3FHgdQc6PwnWDgeOgqGUDxxxoh60JlBgFsfy+1cz7
+X-Received: by 2002:a05:6000:41fe:b0:46f:8561:fe60 with SMTP id ffacd0b85a97d-4793685fe58mr3081792f8f.17.1783047731472;
+        Thu, 02 Jul 2026 20:02:11 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.02.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:02:07 -0700 (PDT)
+        Thu, 02 Jul 2026 20:02:09 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
 Cc: dri-devel@lists.freedesktop.org,
@@ -75,9 +75,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	Trevor Gross <tmgross@umich.edu>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 15/18] rust: drm: support hardware cursor planes with sleepable event delivery
-Date: Fri,  3 Jul 2026 04:01:02 +0100
-Message-ID: <20260703030123.2814-16-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 16/18] rust: drm: add CRTC gamma LUT and plane rotation property bindings
+Date: Fri,  3 Jul 2026 04:01:03 +0100
+Message-ID: <20260703030123.2814-17-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260703030123.2814-1-mike@fireburn.co.uk>
 References: <20260617150232.2210-1-mike@fireburn.co.uk>
@@ -88,351 +88,137 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-A driver that forwards a hardware cursor plane's contents to userspace (e.g.
-DisplayLink's evdi, whose daemon composites the cursor itself) needs to hand the
-client a GEM handle for the cursor bitmap on each update. drm_gem_handle_create()
-may sleep, so the connected file must be reachable from sleepable context -- but
-drm::event::EventChannel stored the receiver under the device event_lock (a
-spinlock).
+Two more mode-object properties a real driver reaches for, and the last
+the DisplayLink vino driver needs to match its pre-safe-KMS feature set:
 
-Rework EventChannel to guard the receiver with a Mutex instead: send() holds it
-across the event_lock-protected reserve+queue (so delivery still cannot race a
-close), and a new with_receiver() runs a closure with the connected File while
-holding the mutex, allowing a sleepable GEM-handle creation without the file
-closing underneath it (notify_close() takes the same mutex). new() now takes a
-lock class so the class lives in the driver module. connect/disconnect/
-notify_close/is_connected no longer need the device.
+  - CRTC gamma: UnregisteredCrtc::enable_gamma()
+    (drm_crtc_enable_color_mgmt, creating a GAMMA_LUT property) and
+    RawCrtcState::gamma_lut() to read the set ramp back as a
+    &[drm_color_lut].
 
-Add the accessors such a cursor consumer needs:
-  - plane state crtc_x()/crtc_y() (cursor position) and hotspot_x()/hotspot_y();
-  - Framebuffer::format() (FourCC) and Framebuffer::create_handle() (a GEM handle
-    for plane-0 in a given file).
+  - Plane rotation: UnregisteredPlane::create_rotation_property()
+    (drm_plane_create_rotation_property) and RawPlaneState::rotation() /
+    crtc_x()/crtc_y()/hotspot_x()/hotspot_y() to read the plane's
+    placement and orientation.
+
+drm_plane_create_rotation_property lives in <drm/drm_blend.h>, so add
+that to bindings_helper.h.
 
 Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
 Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
 ---
- rust/kernel/drm/event.rs           | 179 +++++++++++++++--------------
- rust/kernel/drm/kms/framebuffer.rs |  28 +++++
- rust/kernel/drm/kms/plane.rs       |  20 ++++
- 3 files changed, 138 insertions(+), 89 deletions(-)
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/drm/kms/crtc.rs     | 33 +++++++++++++++++++++++++++++++++
+ rust/kernel/drm/kms/plane.rs    | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 63 insertions(+)
 
-diff --git a/rust/kernel/drm/event.rs b/rust/kernel/drm/event.rs
-index 39d65d2a8fb2..dadb38c7df20 100644
---- a/rust/kernel/drm/event.rs
-+++ b/rust/kernel/drm/event.rs
-@@ -13,8 +13,8 @@
- //! target `struct drm_file` must be valid for that whole critical section. Reading the target file
- //! pointer outside the lock is a classic source of use-after-free/NULL-deref crashes (a driver's
- //! flush worker racing a client disconnect). [`EventChannel`] encodes that rule in its API: the
--//! receiver file is only ever touched while `event_lock` is held, so registration, teardown and
--//! delivery cannot race.
-+//! receiver file lives behind a mutex and [`send`](EventChannel::send) holds it across the whole
-+//! `event_lock`-protected reserve+queue, so registration, teardown and delivery cannot race.
- //!
- //! C header: [`include/drm/drm_file.h`](srctree/include/drm/drm_file.h)
- 
-@@ -29,8 +29,9 @@
-     error::to_result,
-     interrupt,
-     prelude::*,
-+    sync::{LockClassKey, Mutex},
- };
--use core::{cell::UnsafeCell, mem};
-+use core::mem;
- 
- /// A driver-defined DRM event payload.
- ///
-@@ -63,94 +64,101 @@ struct EventStorage<T: EventPayload> {
- 
- /// A per-device channel that delivers driver events to the [`File`] registered as the receiver.
- ///
--/// The receiver pointer is stored under the owning device's `event_lock` — the same lock the DRM
--/// core requires held while queuing events — so [`connect`](Self::connect),
--/// [`disconnect`](Self::disconnect), [`notify_close`](Self::notify_close) and [`send`](Self::send)
--/// are all serialized against each other and against the core's own event handling. This makes the
--/// "send to a file that just disconnected" race unrepresentable.
-+/// The receiver `drm_file` is stored behind a [`Mutex`], not the device `event_lock`, so it can be
-+/// touched from sleepable context — in particular so a driver can create a GEM handle for the
-+/// connected client (`drm_gem_handle_create` may sleep) via [`with_receiver`](Self::with_receiver).
-+/// [`send`](Self::send) still acquires the device's `event_lock` (as the DRM core requires) while
-+/// holding the mutex, so the receiver pointer is valid for the whole reserve+queue and cannot race
-+/// [`disconnect`](Self::disconnect)/[`notify_close`](Self::notify_close). This makes the classic
-+/// "deliver to a file that just closed" use-after-free unrepresentable.
- ///
--/// A channel is bound to exactly one [`Device`]: always pass the same device to every method.
-+/// A channel is bound to exactly one [`Device`]: always pass the same device to [`send`](Self::send).
- /// Drivers must call [`notify_close`](Self::notify_close) from their `postclose` hook (and/or
- /// [`disconnect`](Self::disconnect) when tearing the logical connection down) so the receiver
- /// pointer never outlives the file it refers to.
-+#[pin_data]
- pub struct EventChannel {
--    /// The receiver `drm_file`, or null when no client is connected.
-+    /// The receiver `drm_file` address, or `0` when no client is connected.
-     ///
--    /// Only ever accessed while the owning device's `event_lock` is held.
--    receiver: UnsafeCell<*mut bindings::drm_file>,
-+    /// A `usize` (not a raw pointer) so the `Mutex` is `Send`/`Sync` on its own; the value is only
-+    /// ever turned back into a `*mut drm_file` while the mutex is held.
-+    #[pin]
-+    receiver: Mutex<usize>,
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index e5cfda610781..7d04abec1215 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -39,6 +39,7 @@
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_connector.h>
+ #include <drm/drm_crtc.h>
++#include <drm/drm_blend.h>
+ #include <drm/drm_edid.h>
+ #include <drm/drm_encoder.h>
+ #include <drm/drm_framebuffer.h>
+diff --git a/rust/kernel/drm/kms/crtc.rs b/rust/kernel/drm/kms/crtc.rs
+index fbe113676e2f..b5128ae1ca95 100644
+--- a/rust/kernel/drm/kms/crtc.rs
++++ b/rust/kernel/drm/kms/crtc.rs
+@@ -356,6 +356,17 @@ pub fn new<'a, 'b: 'a, PrimaryData, CursorData>(
+         // SAFETY: We just allocated the crtc above, so this pointer must be valid
+         Ok(unsafe { &*this })
+     }
++
++    /// Enable colour management on this CRTC, creating a `GAMMA_LUT` property of `gamma_size`
++    /// entries that userspace can program (no degamma LUT, no CTM). The set LUT is then readable
++    /// from the CRTC state via [`RawCrtcState::gamma_lut`].
++    ///
++    /// Call this during [`KmsDriver::probe`](crate::drm::kms::KmsDriver::probe), before the device
++    /// is registered.
++    pub fn enable_gamma(&self, gamma_size: u32) {
++        // SAFETY: `as_raw()` is a valid, not-yet-registered CRTC.
++        unsafe { bindings::drm_crtc_enable_color_mgmt(self.as_raw(), 0, false, gamma_size) };
++    }
  }
  
--// SAFETY: `receiver` is only accessed while holding the owning device's `event_lock`, which
--// serializes all access across threads.
--unsafe impl Send for EventChannel {}
--// SAFETY: See `Send`.
--unsafe impl Sync for EventChannel {}
--
- impl EventChannel {
-     /// Create a new, disconnected channel.
--    pub const fn new() -> Self {
--        Self {
--            receiver: UnsafeCell::new(core::ptr::null_mut()),
--        }
-+    ///
-+    /// `key` is the lock class for the receiver mutex; pass
-+    /// [`static_lock_class!()`](crate::sync::static_lock_class) from the driver so the class lives
-+    /// in the driver module.
-+    #[inline]
-+    pub fn new(key: Pin<&'static LockClassKey>) -> impl PinInit<Self> {
-+        pin_init!(Self {
-+            receiver <- Mutex::new(0, c"EventChannel::receiver", key),
-+        })
+ // SAFETY: We inherit all relevant invariants of `Crtc`
+@@ -686,6 +697,28 @@ fn mode(&self) -> &DisplayMode {
+         // interface can ensure this access is serialized.
+         unsafe { DisplayMode::as_ref(&(*self.as_raw()).mode) }
      }
- 
-     /// Register `file` as the receiver for events sent through this channel.
-     ///
--    /// Any previously registered file is replaced. Runs under `dev`'s `event_lock`.
--    pub fn connect<D: drm::Driver, C: DeviceContext, F: DriverFile>(
--        &self,
--        dev: &Device<D, C>,
--        file: &File<F>,
--    ) {
--        let irq = interrupt::local_interrupt_disable();
--        let _guard = dev.event_lock().lock_with(&irq);
--        // SAFETY: `receiver` is only accessed under `event_lock`, which is held here.
--        unsafe { *self.receiver.get() = file.as_raw() };
-+    /// Any previously registered file is replaced.
-+    pub fn connect<F: DriverFile>(&self, file: &File<F>) {
-+        *self.receiver.lock() = file.as_raw() as usize;
-     }
- 
-     /// Clear the receiver, dropping any future events on the floor until the next
--    /// [`connect`](Self::connect). Runs under `dev`'s `event_lock`.
--    pub fn disconnect<D: drm::Driver, C: DeviceContext>(&self, dev: &Device<D, C>) {
--        let irq = interrupt::local_interrupt_disable();
--        let _guard = dev.event_lock().lock_with(&irq);
--        // SAFETY: `receiver` is only accessed under `event_lock`, which is held here.
--        unsafe { *self.receiver.get() = core::ptr::null_mut() };
-+    /// [`connect`](Self::connect).
-+    #[inline]
-+    pub fn disconnect(&self) {
-+        *self.receiver.lock() = 0;
-     }
- 
-     /// Clear the receiver if it is `file`.
-     ///
-     /// Intended to be called from the driver's `postclose` hook so the stored pointer never
--    /// outlives the file. Runs under `dev`'s `event_lock`.
--    pub fn notify_close<D: drm::Driver, C: DeviceContext, F: DriverFile>(
--        &self,
--        dev: &Device<D, C>,
--        file: &File<F>,
--    ) {
--        let irq = interrupt::local_interrupt_disable();
--        let _guard = dev.event_lock().lock_with(&irq);
--        // SAFETY: `receiver` is only accessed under `event_lock`, which is held here.
--        unsafe {
--            if *self.receiver.get() == file.as_raw() {
--                *self.receiver.get() = core::ptr::null_mut();
--            }
-+    /// outlives the file.
-+    pub fn notify_close<F: DriverFile>(&self, file: &File<F>) {
-+        let mut recv = self.receiver.lock();
-+        if *recv == file.as_raw() as usize {
-+            *recv = 0;
-         }
-     }
- 
--    /// Whether a receiver is currently connected. Runs under `dev`'s `event_lock`.
--    pub fn is_connected<D: drm::Driver, C: DeviceContext>(&self, dev: &Device<D, C>) -> bool {
--        let irq = interrupt::local_interrupt_disable();
--        let _guard = dev.event_lock().lock_with(&irq);
--        // SAFETY: `receiver` is only accessed under `event_lock`, which is held here.
--        !unsafe { *self.receiver.get() }.is_null()
-+    /// Whether a receiver is currently connected.
-+    #[inline]
-+    pub fn is_connected(&self) -> bool {
-+        *self.receiver.lock() != 0
-+    }
 +
-+    /// Run `f` with the connected receiver [`File`], if any, returning its result.
++    /// Returns the CRTC's gamma LUT for this state as an array of [`drm_color_lut`] entries, or
++    /// [`None`] if no gamma LUT is programmed. Requires gamma to have been enabled on the CRTC
++    /// (see [`UnregisteredCrtc::enable_gamma`]).
 +    ///
-+    /// The receiver mutex is held for the duration, so `f` may sleep (e.g. to create a GEM handle
-+    /// in the client's file with [`Framebuffer::create_handle`](crate::drm::kms::framebuffer::Framebuffer::create_handle))
-+    /// without the file being closed underneath it: [`notify_close`](Self::notify_close) takes the
-+    /// same mutex and so blocks until `f` returns. Returns [`None`] if no client is connected.
-+    ///
-+    /// # Type parameter
-+    ///
-+    /// `F` must be the same [`DriverFile`] type the receiver was [`connect`](Self::connect)ed with.
-+    pub fn with_receiver<F: DriverFile, R>(&self, f: impl FnOnce(&File<F>) -> R) -> Option<R> {
-+        let recv = self.receiver.lock();
-+        let raw = *recv as *mut bindings::drm_file;
-+        if raw.is_null() {
++    /// [`drm_color_lut`]: bindings::drm_color_lut
++    fn gamma_lut(&self) -> Option<&[bindings::drm_color_lut]> {
++        // SAFETY: `as_raw()` is a valid `drm_crtc_state`.
++        let blob = unsafe { (*self.as_raw()).gamma_lut };
++        if blob.is_null() {
 +            return None;
 +        }
-+        // SAFETY: `raw` was stored from a live `File<F>` by `connect`; it stays valid because
-+        // `notify_close`/`disconnect` (which clear it) take this same mutex, held here.
-+        let file = unsafe { File::<F>::from_raw(raw) };
-+        Some(f(file))
-     }
- 
-     /// Deliver `payload` to the connected receiver.
-     ///
-     /// Allocates the backing event, fills its `drm_event` header, and hands it to the DRM core
--    /// under `event_lock`. If no receiver is connected the event is silently dropped and `Ok(())`
--    /// is returned (mirroring the C drivers, which cannot deliver to a closed client). If the
--    /// client has no space left in its event queue this returns `Err(ENOMEM)` and the event is
--    /// dropped; the caller may retry later.
-+    /// under `event_lock` (acquired while the receiver mutex is held). If no receiver is connected
-+    /// the event is silently dropped and `Ok(())` is returned (mirroring the C drivers, which
-+    /// cannot deliver to a closed client). If the client has no space left in its event queue this
-+    /// returns `Err(ENOMEM)` and the event is dropped; the caller may retry later.
-     pub fn send<D: drm::Driver, C: DeviceContext, T: EventPayload>(
-         &self,
-         dev: &Device<D, C>,
-@@ -175,41 +183,34 @@ pub fn send<D: drm::Driver, C: DeviceContext, T: EventPayload>(
-         storage.pending.event = ev_ptr;
-         let pending: *mut bindings::drm_pending_event = &raw mut storage.pending;
- 
--        let irq = interrupt::local_interrupt_disable();
--        let guard = dev.event_lock().lock_with(&irq);
--
--        // SAFETY: `receiver` is only accessed under `event_lock`, which is held here.
--        let receiver = unsafe { *self.receiver.get() };
-+        // Hold the receiver mutex across the whole reserve+queue so the file can't close underneath
-+        // us, then take `event_lock` as the C API requires.
-+        let recv = self.receiver.lock();
-+        let receiver = *recv as *mut bindings::drm_file;
-         if receiver.is_null() {
--            drop(guard);
--            // `storage` is dropped here, freeing the allocation.
-+            // No client; `storage` is dropped here, freeing the allocation.
-             return Ok(());
-         }
- 
-         let dev_raw = dev.as_raw();
--        // SAFETY: `dev_raw` and `receiver` are valid; `pending`/`ev_ptr` point into a live
--        // allocation; `event_lock` is held as required by the C API.
--        let ret = unsafe {
--            bindings::drm_event_reserve_init_locked(dev_raw, receiver, pending, ev_ptr)
--        };
--        if ret != 0 {
--            drop(guard);
--            // Reservation failed, so `pending` was never queued: `storage` frees the allocation.
--            return to_result(ret);
-+        let irq = interrupt::local_interrupt_disable();
-+        {
-+            let _ev = dev.event_lock().lock_with(&irq);
-+            // SAFETY: `dev_raw`/`receiver` are valid; `pending`/`ev_ptr` point into a live
-+            // allocation; `event_lock` is held as required by the C API.
-+            let ret = unsafe {
-+                bindings::drm_event_reserve_init_locked(dev_raw, receiver, pending, ev_ptr)
-+            };
-+            if ret != 0 {
-+                // Reservation failed, so `pending` was never queued: `storage` frees it.
-+                return to_result(ret);
-+            }
-+            // SAFETY: The event is reserved against `receiver`; hand ownership of the allocation to
-+            // the DRM core, which frees it (via `kfree` of the `drm_pending_event` at offset 0)
-+            // once delivered or the file closes. `event_lock` is held as required.
-+            unsafe { bindings::drm_send_event_locked(dev_raw, pending) };
-         }
--
--        // SAFETY: The event is reserved against `receiver`; hand ownership of the allocation to the
--        // DRM core, which frees it (via `kfree` of the `drm_pending_event` at offset 0) once the
--        // event is delivered or the file is closed. `event_lock` is held as required.
--        unsafe { bindings::drm_send_event_locked(dev_raw, pending) };
-         let _ = KBox::into_raw(storage);
--        drop(guard);
-         Ok(())
-     }
- }
--
--impl Default for EventChannel {
--    fn default() -> Self {
--        Self::new()
--    }
--}
-diff --git a/rust/kernel/drm/kms/framebuffer.rs b/rust/kernel/drm/kms/framebuffer.rs
-index c7089b12d0d1..e12fa7a24e15 100644
---- a/rust/kernel/drm/kms/framebuffer.rs
-+++ b/rust/kernel/drm/kms/framebuffer.rs
-@@ -121,6 +121,34 @@ pub fn pitch(&self, index: usize) -> u32 {
-         unsafe { (*self.as_raw()).pitches[index & 3] }
-     }
- 
-+    /// The framebuffer's pixel format as a FourCC code (`DRM_FORMAT_*`).
-+    #[inline]
-+    pub fn format(&self) -> u32 {
-+        // SAFETY: a valid framebuffer always has a non-null, immutable `format` descriptor.
-+        unsafe { (*(*self.as_raw()).format).format }
-+    }
-+
-+    /// Create a GEM handle for this framebuffer's plane-0 backing object in `file`'s handle space,
-+    /// returning it.
-+    ///
-+    /// This lets a driver hand a userspace client (e.g. via an event) a handle to a buffer the
-+    /// client did not create itself -- for instance a cursor bitmap set by a compositor that a
-+    /// separate control daemon needs to read. May sleep.
-+    pub fn create_handle<F: crate::drm::file::DriverFile>(
-+        &self,
-+        file: &crate::drm::File<F>,
-+    ) -> Result<u32> {
-+        // SAFETY: `as_raw()` is a valid framebuffer; `obj[0]` is its plane-0 GEM object.
-+        let obj = unsafe { (*self.as_raw()).obj[0] };
-+        if obj.is_null() {
-+            return Err(EINVAL);
++        // SAFETY: a non-null gamma_lut blob is valid for the state's lifetime.
++        let (data, length) = unsafe { ((*blob).data, (*blob).length) };
++        let n = length / core::mem::size_of::<bindings::drm_color_lut>();
++        if data.is_null() || n == 0 {
++            return None;
 +        }
-+        let mut handle = 0u32;
-+        // SAFETY: `file` and `obj` are valid; `drm_gem_handle_create` initializes `handle`.
-+        to_result(unsafe { bindings::drm_gem_handle_create(file.as_raw().cast(), obj, &mut handle) })?;
-+        Ok(handle)
++        // SAFETY: the blob's `data` holds `n` contiguous `drm_color_lut` entries (the blob length
++        // is a multiple of the entry size), valid for the state's lifetime.
++        Some(unsafe { core::slice::from_raw_parts(data.cast::<bindings::drm_color_lut>(), n) })
 +    }
-+
-     /// Map this framebuffer's plane-0 backing pages into the kernel address space for CPU
-     /// access, for the duration of the returned guard.
-     ///
+ }
+ impl<T: AsRawCrtcState> RawCrtcState for T {}
+ 
 diff --git a/rust/kernel/drm/kms/plane.rs b/rust/kernel/drm/kms/plane.rs
-index 3863dfe1b84c..fcaa8ba550fe 100644
+index fcaa8ba550fe..ead875316829 100644
 --- a/rust/kernel/drm/kms/plane.rs
 +++ b/rust/kernel/drm/kms/plane.rs
-@@ -605,6 +605,26 @@ fn crtc_h(&self) -> u32 {
-         self.as_raw().crtc_h
+@@ -328,6 +328,28 @@ pub fn new<'a, 'b: 'a>(
+         // SAFETY: We just allocated the plane above, so this pointer must be valid
+         Ok(unsafe { &*this })
+     }
++
++    /// Attach a rotation property to this plane, advertising `supported_rotations` (a bitmask of
++    /// `DRM_MODE_ROTATE_*` | `DRM_MODE_REFLECT_*`) with initial value `default_rotation`. The
++    /// selected value is then readable from the plane state via
++    /// [`RawPlaneState::rotation`](crate::drm::kms::plane::RawPlaneState::rotation).
++    ///
++    /// Call this during [`KmsDriver::probe`](crate::drm::kms::KmsDriver::probe), before the device
++    /// is registered.
++    pub fn create_rotation_property(
++        &self,
++        default_rotation: u32,
++        supported_rotations: u32,
++    ) -> Result {
++        // SAFETY: `as_raw()` is a valid, not-yet-registered plane.
++        to_result(unsafe {
++            bindings::drm_plane_create_rotation_property(
++                self.as_raw(),
++                default_rotation,
++                supported_rotations,
++            )
++        })
++    }
+ }
+ 
+ /// A trait implemented by any type that acts as a [`struct drm_plane`] interface.
+@@ -625,6 +647,13 @@ fn hotspot_y(&self) -> i32 {
+         self.as_raw().hotspot_y
      }
  
-+    /// The X position of this plane's destination rectangle within the CRTC (`crtc_x`).
-+    fn crtc_x(&self) -> i32 {
-+        self.as_raw().crtc_x
-+    }
-+
-+    /// The Y position of this plane's destination rectangle within the CRTC (`crtc_y`).
-+    fn crtc_y(&self) -> i32 {
-+        self.as_raw().crtc_y
-+    }
-+
-+    /// The cursor hotspot X offset (`hotspot_x`), for a virtualized cursor plane.
-+    fn hotspot_x(&self) -> i32 {
-+        self.as_raw().hotspot_x
-+    }
-+
-+    /// The cursor hotspot Y offset (`hotspot_y`), for a virtualized cursor plane.
-+    fn hotspot_y(&self) -> i32 {
-+        self.as_raw().hotspot_y
++    /// The plane's rotation/reflection (`DRM_MODE_ROTATE_*` | `DRM_MODE_REFLECT_*` bitmask), for a
++    /// plane with a rotation property (see
++    /// [`UnregisteredPlane::create_rotation_property`]). Defaults to `DRM_MODE_ROTATE_0`.
++    fn rotation(&self) -> u32 {
++        self.as_raw().rotation
 +    }
 +
      /// Return the current [`OpaqueCrtc`] assigned to this plane, if there is one.
