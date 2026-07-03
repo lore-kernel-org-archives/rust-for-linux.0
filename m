@@ -1,175 +1,152 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022104.outbound.protection.outlook.com [52.101.101.104])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9553BCD33;
-	Fri,  3 Jul 2026 15:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.104
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783091616; cv=fail; b=StOePWSIV1PiayFs68RNYStK/uKUyRWes1stU3cn8vMQtrZvMBx8mhYqEmgybVm0BwxtqXYqkaWFYN70PJYIvt0GEqJoOCaJsgnQoE6KuCXkex465FhcQU+9axFFVo4B5zRhDvnxwXuRCCbfEK+95Dx8Cs6BGk5LitibQUhmglM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783091616; c=relaxed/simple;
-	bh=8dqGt1mCx6Aa7VlXQfBjFj0iGnV+zSmTZ2biLOV7wrQ=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=kBGTQXvVS26Oqb/BcUaSCZGgRAeA7YcC6gffF0lLU3dXP8XRWGBv7uRa5+1I7F5GpFUnY53VUjuqajJzeYH9aE7gDDSKbHtePFI2Ms+qrG456dGSuqIiSxiXYbf+bZCOJK46cMbp59ptirX5wLJaP624pA/Zty4rVEQkG6o2bO4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=NbwWkxN4; arc=fail smtp.client-ip=52.101.101.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41903F4DE2;
+	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783092565; cv=none; b=Ngko5wF0hjzPkM+/RNN5+hrdC0zj/9fTR/ANzY+Gzp/Phul3wcd28B0Krbn8KkBo3ZoNEoreo5DhUuMe/w+upx2n6cZ8v7OTVWXgS6uIOkAj0sagGgctUvIuUIfQBugWTwbHggSbGRZkLERcUSFUuA0KRhHORvvrJxUhoSROYok=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783092565; c=relaxed/simple;
+	bh=209Nac/iJ9paij4wD2LYPworVIG6Ys3P+mfxV+DyI3U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M63YW8BVUqfmc0nNrdT0e8DZ6PbshSurdQb0gLPujsb3tfWDVQGA1yGNRJiN3CitWJ8WqWCCHdf0Hz3Ml/+W+dvLv8/aIjp+Z8TfPt6WLV0/XJJbcD8DPLJo3Q1S5AWY/rgMnLYkRXwbUjJWM4/Ov2sl3K7gomUxZtYYUOUqllU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9OnOj+5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="NbwWkxN4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r6kfctgoJiNd+2BO9ja9o7+JQVwA2epkrxVOtkOfkmj0iWr3NQguoKPlk1+GxlGrxdynnnejuv8psw4YBMrcJe6SqbMxr/4F5S/9nGHSY6XM930YuCVrw1S06XcViB/BxWl62byBrD2MoxVVHGH5WpHnzjB7Vp/LMJo9rDX+DjK3NG67D6DdSs8Q3iXmPOTe3CFPdbR7UZpP68lm4SQSBb0QV7iM9EsDEcEPqvElp06AQ2hiF6S0UtJ6aYF7Fv4Iy88CmDr/f376vxJtarn54gSJ43o87s+9+kDi3hj2FZ6s8jlBn6ykJBTwtY/MDLyHsP0OAn1FKU5CDQ2ZVfxgFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8dqGt1mCx6Aa7VlXQfBjFj0iGnV+zSmTZ2biLOV7wrQ=;
- b=bakWRE8x2atXkWPf+NrgbAMrFKcgFc0KLmP77bp2UfZu+4p4pqdDmdQK9hh2oYn41/bwc53bgUFEjfVcEGs0EELxgrZVBTe32oxtKB3EjHNu5dZW2dUmYyf5jiwpZL/Nlh12dGqwm0aIwREsba0jKRKxisNm6e7BOjjnT3kWVkJSjD0B1cKm3c67ZM2JhV4lLYNAEfHsZrSNn2rCPKi2fNcIUalR1zPpbM7u29swNyXVhkvo63JbqlLTPYvqBxwIqmklPEQzx2kjeTIgvdsDS4GIXMEAFdX2Jr5aRHUo3W3P4XSGyPw+on32ptddwJKslkIBTUyqtD9qmgJxpJWQog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8dqGt1mCx6Aa7VlXQfBjFj0iGnV+zSmTZ2biLOV7wrQ=;
- b=NbwWkxN4LsRjOIdaY07PfsW+1x806UArWR+S5VeXI0vy4hpcjrOpHPuzYlUQzpqIFPMaoBYR8H5YQsyU1MLfdpSOFn3bTsSOARk/h8PnajXTyR+qKbQ/EjdxH2MawTIHXhC1fuEL6/0k1UH0bx/VrAlwUWUN6MSh5aScpP7rUYQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO9P265MB7512.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:39e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Fri, 3 Jul
- 2026 15:13:29 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Fri, 3 Jul 2026
- 15:13:29 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Jul 2026 16:13:28 +0100
-Message-Id: <DJP180IRGOC4.IWGRMGLJRH61@garyguo.net>
-Subject: Re: [PATCH v5 17/20] gpu: nova-core: use I/O projection for cleaner
- encapsulation
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
- "Robin Murphy" <robin.murphy@arm.com>, "David Airlie" <airlied@gmail.com>,
- "Simona Vetter" <simona@ffwll.ch>, "Michal Wilczynski"
- <m.wilczynski@samsung.com>, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pwm@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260626-io_projection-v5-0-d0961471ae50@garyguo.net>
- <20260626-io_projection-v5-17-d0961471ae50@garyguo.net>
- <DJP0N5VGKR7L.2EFP81KLCP9UK@nvidia.com>
-In-Reply-To: <DJP0N5VGKR7L.2EFP81KLCP9UK@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0112.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:192::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9OnOj+5"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 67588C2BCB9;
+	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783092565;
+	bh=209Nac/iJ9paij4wD2LYPworVIG6Ys3P+mfxV+DyI3U=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=t9OnOj+52UAxLUKpf15800ldIMquK0qO/H5cAFNdlt5xINy6GoEBC5rJzbnUxTJLn
+	 x3eh9f9dD88n5W7G784TT072Iptca46D7uU9casrqs+Y6uFiH4ujM0ms9VDN6fn09l
+	 FH3FA5+XAjBmJOKQqToulgmeApm8QX72mGQw2Ol+0cTKWOb+FSUD/SyuWfNl8+LFlR
+	 3dh07Sks2h4AIbW/vYi+g315CAfKMEtwnouUSTDZU9+z0fAKqPLJDXofcDqcYXMu8K
+	 PPq8ksUqR69LwEtubNZ/X+1AQB9j2Pl17Ai8o6CRN8iQHyd8Kvl4OEe+n2xb4986R0
+	 menCRSBFTFRPw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5280CC43458;
+	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
+From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
+Subject: [PATCH 0/7] rust_binder : Implement dynamic debug logging mask
+Date: Fri, 03 Jul 2026 15:29:21 +0000
+Message-Id: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO9P265MB7512:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48460807-ad77-4efb-8aeb-08ded915a342
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|7416014|376014|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	3jiRN5CUN+0e5HJRKf0f0+CIHGZ1u0CAhLwhYVTJGHcgvgzdNLuXdUS/JNzJ6kP2KwVuJTLotB1DJEqv+VHAwn/DdTiVtXQFnReDSeJfBBUqCOJsUah37AVaMguWX/5PNx0PTOpEab3lj4SAywpIDN4/20eWcrTHRQ1sr6anDBlSSfZfjfGDg6MoC2cY2p3TJGaGqwkWPPhOJKU198CREzuYwPoKPDFiKnWCMhA66cFGPqkmeHSZpr/YkcCXWKl/yG/2/I+/qB5DO/e9aNRaQC04TympwEila9ne76IW6Pol9W4qkKcgaBGXm8+OO4oASqL0l/HUUYl0j7/CET0wBT5CH2czYBUQdGEi9Gh0GNY63OBYhlRLDsyoQ5mFYJ9fxS+QEuXMRn8bsJiSGJpI+qObIHAgDSASz+f6OKPIdI/HKpIc8iII2eIbI8ZokqI3Q/y9fQaFYrIMHdaOrwSuVfTh7kQL3dqNeFlTNBiOK0y9oe77Fos9gYBI84bSAXLas0qs1LgLvQSUtBAxn20RY1ZPTopG2Rv5qnw46XkMMBaGLEcqD9MX0/+vOJ2D/SRf8VUNozm95AqzQEgbqBvAHsakfgtEOZ9LPYYASLH4J+WO2roOgjunpH5KhtHm5nwam4wbW9r6v8prx4sTib0yeSyr6kzxJQc7nnDNisRmURI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(7416014)(376014)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OUtuaTJYdGNtcC9Hd3AycXdSbmVhcHJvemJMUVNuR1o3WUx1ZkRTcFFuYSsr?=
- =?utf-8?B?VHpuOVAwWTRDZHZzeWZyRDZxTStONEZES1JhWjhDWFQ3cDRQd0cwU2V2aEli?=
- =?utf-8?B?THI4Mk1GV3Fidy9JSGp2TG9tcFZIM3hubGNKNnJucTczVlN5bDMvNWgzSWZa?=
- =?utf-8?B?d0V2d0lFcXVlbm9HeWtLNEwyOHJhL25zZmZRenBnSGtxUk53aWZaK2ptb21Q?=
- =?utf-8?B?T2xzd2pQNDNvSWpwN0w3d0ZGaUdxQ3pzQXVIblo3dzlNSEdNcHBKRVVVMHhL?=
- =?utf-8?B?em02M29DeiszU282Qm5FUGhJbDZlNWtTemtjUk94ZmUwUDJSU2NLOGpUUnA0?=
- =?utf-8?B?b25BSysvYWp3YWhGRTQya2JVWnovdlZrVXVlNFBGaGFxM0VWb1k1a2VJakh3?=
- =?utf-8?B?SGpXRFkzZlovY1l1RCtjTHNLV1c5ZU1qYnlNRjc0bmhLTktIQlQ5N0pYc21V?=
- =?utf-8?B?SmNTcklTbFJwNEpoNW9jeVFWZmpxdlEySEl4SnJhTitwY2lHQXVOaWZib1ln?=
- =?utf-8?B?NFpncnkzdXQ1UGxQanlKKzNpNXhERDBJY3ZnR1dJc0hCK3ZZRHRkazNnZkpl?=
- =?utf-8?B?b0dDWVM2aXR0N01PMWZXQTNWMUlxZVFJdFJLd0FzNGhqQXdhMzhZZ3NJcVpI?=
- =?utf-8?B?TjhWcW1NWjFNRUpiSTFUNCtsdks3QmQ2UE9kRjZoakxBMW82djVLemhRWnRR?=
- =?utf-8?B?QlhDRnhLVU9sOEU0OG9GVGdoRWp3cStYdGxheU9nWXlDNlZzdndUUit6aFZm?=
- =?utf-8?B?bktRU1kyS1YrUmwyenRTVmxuUjFmQytraWY0NHhkSW5haU5xSkJVN2svZlBr?=
- =?utf-8?B?czdFT0kxTTdnRFFJOWpTdHE0UEo4Q2Z3Q3N3TjNza1l2dWhlQ2ZkSk8zdkxJ?=
- =?utf-8?B?RjFEVHFHYzVBcktCRzBPMDRlaDdMWS9zb3VoaTJoQkhpdGo3bEFwQWlXbHRM?=
- =?utf-8?B?L3NXZ2FTbTcvSXVFY0t1SzNhdFV5NVZlRU1INDZmeFFxNEtiZEJQU25HWlN0?=
- =?utf-8?B?WWw3RWUxNlBKRk5MTE41NFJhSW1UTzNsaG1iNGxza2Vpc2hUUXc1bm1RRWE3?=
- =?utf-8?B?M1NqWVRCcFVOYTBUOU1Ra09yTGV4Vk54aUo1ZHAwTGVQNExjamtiV1JJMFRu?=
- =?utf-8?B?dVNQYmszWUFycmNmR0xtOXFLbE1TY214WVBZR0JUZFdHRHdZaU4vWENWcGlE?=
- =?utf-8?B?WTNWMzhOODlVZWdCTlRnSnJ6V2c4VzF6aGFWU3hTbDZ3Q05BbTZvMVZybXRY?=
- =?utf-8?B?ZG15VnMzdUJQOWg1OEZ1YWx1NU1nZTVaU01IUCtHQTBjM1RJTDdGNFNpYy8w?=
- =?utf-8?B?ZHV1aHJIR2tWTHV3TjNsOVFDZFk5Q1loY0VlenlZZkNhNmVSeEtlenRkYnFC?=
- =?utf-8?B?YnNFMnRuZ2gyK1dPSnhibFpIOXZFbkVaQmw3V21MQVN2SXdOWXZXcWpBV21Q?=
- =?utf-8?B?WmJQQVVsQkxkaGkxWjVHNmZkZTFqSStkWEJOL05iNWxTcFZzVXdsMGhaQXVy?=
- =?utf-8?B?RWkwUm5wYTNpMzZlSFhZNGF5NzQrUWFVMTU0VUZUeUlyNzc1aWZreEppdXE4?=
- =?utf-8?B?ZnpUdml1TUswMm9yVFZlNTFubUovTXNXcU1VQ1FRcnFBdStDM1F1VG5yUFNM?=
- =?utf-8?B?N3hzZUJZU1k5ZUlJSytNWnNnTzVuRWV3a0Nxd05CV1A0T2p4eHhid0d2ME8v?=
- =?utf-8?B?Q2NMcWtZSTNEMVRsemRjOVAyZjY2RFR5elBab01QRVFWNzBDcVFFTHFMK1hu?=
- =?utf-8?B?SWdXenR5RzVLWFBydHkrakJaMGh2ZE1Qc2hIanlxeFdBMHBGOStvTGEzcU5R?=
- =?utf-8?B?bTJ4Q1RrN1h5TGRpNmJERTNZYUdldDFuSkVsS3NZL3JwOGEwTzBqWWd5cmlF?=
- =?utf-8?B?NGJwcFowZFptUUdRMnROTXlvajlVR3VFdlRCckhTWm5EWktlT2JUUjJhaW5j?=
- =?utf-8?B?RlhRcGJDWW95S055YnVYVlR3MStBUUtpejh4OS9CQkxTTlRGOEJHR3dZUWtD?=
- =?utf-8?B?cHQybGVkZTRTSUR6WnIxd1ltQ0ZQYUxBY3JTU1ZqQURZVDVqSktiMTRNWUxK?=
- =?utf-8?B?SDFvQStaZGxXNUozaXFqM1F1TUhqMWx4Q3FYMHNMOGFsMUlTR2trZW16Vytv?=
- =?utf-8?B?WnI2Z1ZKUmtMUGNIckRJclEvU1BLUU0zVTZTaUpIMzV6VHpNUTl1em8xOWZ4?=
- =?utf-8?B?VUFLbGU4YTBWTVhwaGtZR3hPSXNHWjFESEhuSTMxQ3o2Zms4S3JRVFVDQlU5?=
- =?utf-8?B?V0dkUGMvR011Y0N2aVg3RXlHd1Y3a2dQemNwZFlHaWloRCs1cDVvTkR2TzRi?=
- =?utf-8?B?UzMycHBwaENEbUdRUjRUcVhoSU5mVG12eUpRTUl5b0t5WEllQWlGZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48460807-ad77-4efb-8aeb-08ded915a342
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 15:13:29.0739
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4Xa3Nw5lQ3PHHQ2v0WlDbuWeBzPJ5sWhMwfNqmmimXMXGWqCSf/pObIde+KLX6CgcZjlH9FMXqQ8T9/7L+Wu4w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO9P265MB7512
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFHVR2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDcwMj3aLS4pL4pMy8lNSi+JTUpNL0+NzE4mxdM2Mzc2NzA0NTMyMTJaD
+ mgqLUtMwKsMHRsbW1AJF2f9hoAAAA
+X-Change-ID: 20260702-rust_binder_debug_mask-636737015624
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Jahnavi MN <jahnavimn@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=4101;
+ i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
+ bh=209Nac/iJ9paij4wD2LYPworVIG6Ys3P+mfxV+DyI3U=;
+ b=MORHRCvDgYndUEdGZgXgwmaLFx7DWtaLBbhbEpXc09UDEQCTNg1U3MLVlzCs9O6OrPKN5pvGy
+ Nf/juQn40K2CuQlBR5ncjlTRvbSdCIv0F7PfcrfJkkeVYcezeneLF7U
+X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
+ pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
+X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
+ auth_id=849
+X-Original-From: Jahnavi MN <jahnavimn@google.com>
+Reply-To: jahnavimn@google.com
 
-On Fri Jul 3, 2026 at 3:46 PM BST, Alexandre Courbot wrote:
-> On Fri Jun 26, 2026 at 11:45 PM JST, Gary Guo wrote:
->> Use `io_project!` for PTE array and message queues to restore the proper
->> encapsulation.
->>
->> The remaining `dma_read!` and `dma_write!` is now only acting on
->> primitives; thus replace by `io_read!` and `io_write!`.
->>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->
-> This is beautiful. :_)
->
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
->
-> (the memory barrier concern raised by Sashiko looks real - and IIUC was
-> already discussed before - but not introduced by this series so let's
-> address that separately)
+Why we implemented this feature : 
 
-See https://lore.kernel.org/rust-for-linux/20260609-rust-barrier-v2-3-30fcc=
-48e1cd0@garyguo.net.
+While working with and testing the Rust implementation of the Binder 
+driver (rust_binder), we realized that diagnosing transaction failures 
+and protocol errors was extremely difficult. When a user-space application 
+sends malformed data or makes a lifecycle mistake, the driver rejects it 
+with a generic error code (like `-EINVAL`). Without internal logs, the 
+driver acts as a "black box," forcing developers to guess which check 
+failed.
 
-Boqun already queued the first two patches for 7.3; Nova can start using it=
- next
-cycle.
+In the legacy C Binder driver, this issue is solved using a dynamic 
+`debug_mask` module parameter that toggles verbose logs for specific 
+subsystems. This series brings the same critical capability to the Rust 
+Binder driver to provide developers with clear, real-time feedback.
 
-Best,
-Gary
+How this helps and simplifies debugging : 
+Instead of rebuilds, reboots, or guessing:
+- Developers can enable logs instantly on a running device by writing to 
+  `/sys/module/rust_binder/parameters/debug_mask`.
+- It prints the exact reason for failures (such as alignment errors, 
+  mismatched call stacks, or invalid handle references) directly into 
+  `dmesg`, reducing debugging time from hours to seconds.
+- It protects system logs by keeping logging off by default and only 
+  enabling it when developers are actively troubleshooting.
+
+Code development approach : 
+We built this system in a structured, progressive approach:
+1. Infrastructure Bridging (C/Rust FFI) :
+   Because the Rust `module!` macro cannot yet declare parameters, we 
+   declared `debug_mask` in a C companion file and linked to it in Rust via 
+   FFI. We used volatile memory reads to ensure changes to the mask are 
+   detected instantly at runtime.
+   
+2. Verification Setup :
+   We created a `binder_debug!` macro and instrumented process `open`, 
+   `flush`, and `release` calls under the `BINDER_DEBUG_OPEN_CLOSE` mask. 
+   These low-frequency events allowed us to verify the setup without log 
+   flooding.
+   
+3. Targeted Instrumentation :
+   We then systematically added detailed logs across 3 major categories:
+   - User Error : Captures API misuse like misaligned FD arrays, 
+     negative reference count transitions, and invalid death/freeze 
+     notifications.
+   - Failed Transaction : Dumps a complete diagnostics log on 
+     transaction errors (IDs, PIDs, sizes, OOM states, and line numbers).
+   - Dead Transaction : Logs in-flight cancellations, aborted 
+     replies, and notification cleanups when processes exit prematurely.
+
+Signed-off-by: Jahnavi MN <jahnavimn@google.com>
+---
+Jahnavi MN (7):
+      rust_binder: Add dynamic debug logging mask
+      rust_binder: Implement the BINDER_DEBUG_USER_ERROR logging mask for freezer-related operation
+      rust_binder: Implement the BINDER_DEBUG_USER_ERROR logging mask for reference counting and death notification operations
+      rust_binder: Implement the BINDER_DEBUG_USER_ERROR logging mask for transaction parsing and protocol validation failures
+      rust_binder: Implement the BINDER_DEBUG_FAILED_TRANSACTION logging mask for transaction parsing and routing failures
+      rust_binder: Implement BINDER_DEBUG_FAILED_TRANSACTION logging for death notification allocation failures
+      rust_binder: Implement the BINDER_DEBUG_DEAD_TRANSACTION logging mask to trace in-flight cancellations during teardown
+
+ drivers/android/binder/debug.rs            |  49 ++++++++++
+ drivers/android/binder/freeze.rs           |  57 ++++++++---
+ drivers/android/binder/node.rs             |  24 ++++-
+ drivers/android/binder/process.rs          |  71 +++++++++++---
+ drivers/android/binder/rust_binder_main.rs |  11 ++-
+ drivers/android/binder/rust_binderfs.c     |   3 +
+ drivers/android/binder/thread.rs           | 147 +++++++++++++++++++++++++----
+ drivers/android/binder/transaction.rs      |  16 +++-
+ 8 files changed, 328 insertions(+), 50 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260702-rust_binder_debug_mask-636737015624
+
+Best regards,
+-- 
+Jahnavi MN <jahnavimn@google.com>
+
+
