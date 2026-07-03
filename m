@@ -1,68 +1,70 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF6E2B9A4
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6332C375A
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047659; cv=none; b=gBMKVi1aQBTroht8Hi7nE5MGcnLzqnVz1KI64bJMDMN03gTtvs+9YjlR9bAw5u7e6ls+uzpEVjwcFisG762zDB58ziTT9EdB9T98XzpR5/3rMh36tt/nEmTFOClPhFsPekjKOH6idJc0Knrhuzsf2+ekGJwp5nb1y0s7oGUPk2A=
+	t=1783047664; cv=none; b=VtSnC5RLMU6wpMUtDK8Pj9q/PR53IvwPrbgtOE+uCcPCaPd/aGkRO7B4+qrYhOg57LzJdHxX1XygWXLKXaYQquBmBlAUhovOR/VkHEXw2lOQvoiVZeJfj27RrXo7QZ7+TTlPRzTJ8NgnTDP1nQTlQQ2+Job+XehF456feX3SmKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047659; c=relaxed/simple;
-	bh=aCC4q/ul6R6V+JxntXyLk1yBb3Ole6vI5dzaz+cOBTA=;
+	s=arc-20240116; t=1783047664; c=relaxed/simple;
+	bh=6NjfDtvfguHyET98XVCFvMjKd8ovYZdUgW7vZatG5EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F7pZWEOg4Rpr18b97B0/JH4G70DC8bf4QbCo0bgYTLqXc5EPSOMGs26o35Ass/R5zLpKnZCqrC72HWLmBKs3sJ6RGtJkBl7CM6yuRYFAnfTbiDfgYM3wjkyltBDe+ZVI7FnoDTHJHrxfy/GjAfFVhuOmNeYgTtWf3iDUwuL/tT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=TPFj+2hp; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=i3Y3kttcRCBK0Z3jzhLgP0gGnjlMJaHWugLXpx3jcSYAgkCerS0Rj6euK90j9AU/ACRypVq00bqM0dCSHnisLs3H0+finYPrxysyfVyZAN40hNBbHkPwMCblEfEOqoxi4rCLayVItSgRQ+QOBloXcx+g8hWdA8eT215/kxSajjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=YWMb62w4; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="TPFj+2hp"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493bfe9f886so266125e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:00:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="YWMb62w4"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493c54e205aso464035e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047651; x=1783652451; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047661; x=1783652461; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZsZ4yoLHgQH5Efxe8E/7tqABE1F1gZe/Y3PpKR4M7ck=;
-        b=TPFj+2hpRSRL++l580BsyA0ZTHqb0/raezsK5zOxt6aV36embzExRB6XafR8/IlDPU
-         NqDdCyDZ1XaKQbLuz6E3dTxzxuTeXPkyn91VfO7rxakBnxftX5+TQWYq/h2haV4wnWTx
-         V2tVMQsI8vIceabD0yIiCMJ8NmjVDeyG8trRuek0Mog5cviAyzeaHYQsygIyXw/LsfBn
-         ihkOxDE2BD1KsM8VOrYa41HPL06kjAMnlC+chOSDmv2p4I4peQhdnDEfuEioOV330yjF
-         nc/3JVP5+nszkCp9qHoPC017r+FDCQYVquZ5o1diQt7dRiDHt+A3MtbPUjF0O85wLB2v
-         jZ9w==
+         :message-id:reply-to:content-type;
+        bh=yTs/XtijO8c54KRJepqsfIing448R27R7obvVm8uj2U=;
+        b=YWMb62w4LgZS/WeqADa/plP29wbXVWRvJUCIeWTp8eTl8SRn3iohCU58xHX812eB/H
+         PuU6NllLTxpo5fBCBJZ9n7O4scCY/nYPiH0KQtyfxRB0aLaErR3wa4teTCa5OzQIF5Sp
+         hLdji4C2E/zC2l/e1mXyehuqEbcWeIsrxYAKj9Ezr3B/pd3ba3aydYxu0+eGt6VHoEl9
+         F7OY500wgs3Jc6LINYK9oFmuraeNH9vFNSmBoY7qB2EPTMhQIQNCM7WV1ATGLFBCJgcq
+         anokeRj62+e31rOFKJ7kMHvrt8kbw/A/5fgXaNekYl7SoCM4BC35Qn/Mfq0jeGZrPMb3
+         9mdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047651; x=1783652451;
+        d=1e100.net; s=20251104; t=1783047661; x=1783652461;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZsZ4yoLHgQH5Efxe8E/7tqABE1F1gZe/Y3PpKR4M7ck=;
-        b=AShfzPirVjPnaA9yXauqErQwSyMpNKDLRwNuKRjjYLziepxTtsek6KxLhnEqu3Zy6j
-         DqiXQf/uWTWpqjOED6iC/owWcmXoI6vLZegPbsubIzLI2U/5IoKulK8j+SpwylVaZ2L2
-         foK/d5famWS73TMnFi/NU8q9sAln2P0rFUTqR94cseHO1pc/5Ba8FnSEtrpgAVuoaBpd
-         OoxigmQsLiLFK0tlMgLO8v5LmWqfM0h8rnzRJqNswLKsoT6uU1zL6kc2ecpe5SNCbZkt
-         rLWi4JgrqTEwUaY/T7s2PL7ITznalKlmwXrC72UItS180IrRUOiIK82txU2Tgbm3G4JF
-         40lA==
-X-Gm-Message-State: AOJu0YzlH2cn+KtJ3Acli+2DqG0/z7UMzF2JO8oe4pEWK+eb7p8nkKG4
-	JBigjZE3/zygGP6i0rQjstIMzVd1htQeP+zG4a5UeDWn+f+b4hFwuEh3ORaz7/nj3y7ckzQKeZK
-	ieFPE6b39
-X-Gm-Gg: AfdE7ckTw+cQHx7ReUe9KV/rGyDFpKMUjBr+437etC62PggMPq4YglU9uFmfwB1KppO
-	J6cHReGmy0ot5rWeOQfPJ17VLTwN6W0Jp5BP0yzPpP+1Vpor4W4QFSgipAycrHzWlrv6BQoyXm0
-	Zh1gVfY+X1JGdphrcM/ELY9DMAdjlx9uJfIuhVLDDWR/rMZCKcXb0l3WslUwtIKdRUulWo5DHZe
-	EJP9EHCZWI2pzuimimBhi9qs+cCVPVpFVO++HRilyGxbORwR1Q+z2XE4ivJKAsXHhlOMQeCRr54
-	s6QAG5KmpUHvG6pvSW72GRSKYiTn9zHL4jcyCbNd1fn7OQz+k7U3HUNTfs974XEMTHCwOGIlof6
-	Q64n5GjCaUO3VTJ/3oEF5d0qGegTYLy4TB104BTN9oRHESl/5c94UAn+MXq0RnR2nGggp4upsnT
-	uPp5gInZZqpKM9h1uio0/f/2D/lzdZ29Zeep3VBlDPFukFRBiSjxCMQag6e01YDSFq2zQ=
-X-Received: by 2002:a05:600c:6d8c:b0:492:68f5:6b30 with SMTP id 5b1f17b1804b1-493c2b57006mr81105875e9.17.1783047650780;
-        Thu, 02 Jul 2026 20:00:50 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yTs/XtijO8c54KRJepqsfIing448R27R7obvVm8uj2U=;
+        b=ZssRG6HZx920wSFD47ctY7LIaxdgb0+yqrNSfID5FWeRdWY7V2cRX4Aq8n86T3zhwV
+         hwUpyRceice3/myN0/XD3Cw9K5sujC1R6HmnqNpkOvy8Wh9nDw4xCsC+1/GD4Spc3S2H
+         0vIcIBgXqxB1P49dz1xD2YenKy0igLVJidSuRK1coabJbqu/Tiq0tLXscVv5KljfOB/g
+         qytAY8sZPSBL47IcfKnT1w5TxJc8liWhMFBprE0FcAWoZDJbmAUrHpZAGAJ/bd9DaA28
+         3ZPj3iO/6osNOjLTlI/xf5QbZ8LFEARKisptI+wATg1/H1YKbur8DNj015mVJMxeUHmD
+         Fchw==
+X-Gm-Message-State: AOJu0YxJ0s9oQoH6shZDWxzU/4B093tYUx+zN+fZ/Vovk2dwJHJpbwk3
+	JoIQpUtzNFjsYgy+MiRrpgwZBQo7LGtLEXO69qOauugFeapSzn27pFR7uVOr3UdXX8k6HfM7NM+
+	z7sixh8Yn
+X-Gm-Gg: AfdE7ckuU8jLa/Hh88Ibq4f/1ES1aHPHFk3XwDN6s/7cPLzAmnX4zayslrZGsn7pOI4
+	kGEItijVcRgHNujSYd90c/lyTWIDdmtE3pAsJGTuldGLQrPNR/JK6zbQfHwkYOq6FHSj5mORaB9
+	Q7EXAzEbSEabkWYQIjYmebRkhfD0JHGzgDafODYkMA6J9tI3cNhnrXd2jR1lsJa7jA+hi4woyam
+	j9BjdKiRH+95C5lWPpGSPHRPAZJPu3ATqjGFuFl2mXyyV3BRMSwgbxPKUmlHOAt+7ZrX1tUUc6Z
+	lnECHy2sYMTXNE1338rLFiFjkcRQkFQfpaypBNpM4i0jm7DnHcf6xxGEPwVFbxT3P14Jv9W1OK3
+	LAYunL9QGHuRRxCeFR0+MOTrBBBKgy1osur+y5zarCeuV6viHf38MHSvqTkMDnGhhebQv9ta6Cz
+	hcnEd4rOgeoY1eiCw1/DhzMCYFnqHoRCjTjmXGZ4D8pfR2j3h/HxHLn8W0
+X-Received: by 2002:a05:600c:2e43:b0:493:c14a:a1ca with SMTP id 5b1f17b1804b1-493c3cd4aeemr75130465e9.3.1783047660863;
+        Thu, 02 Jul 2026 20:01:00 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db8a44d7sm13128569f8f.9.2026.07.02.20.00.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bef183e7sm199495015e9.2.2026.07.02.20.00.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:00:49 -0700 (PDT)
+        Thu, 02 Jul 2026 20:00:59 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
-Cc: linux-usb@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
+Cc: linux-crypto@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -72,313 +74,97 @@ Cc: linux-usb@vger.kernel.org,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 10/11] rust: usb: keep usb::Device private and gate transfers on Interface<Bound>
-Date: Fri,  3 Jul 2026 04:00:14 +0100
-Message-ID: <20260703030020.2694-11-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 0/3] rust: crypto: library AES-128 / SHA-256 / HMAC + RSA
+Date: Fri,  3 Jul 2026 04:00:50 +0100
+Message-ID: <20260703030056.2763-1-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260703030020.2694-1-mike@fireburn.co.uk>
-References: <20260617145946.1894-1-mike@fireburn.co.uk>
- <20260703030020.2694-1-mike@fireburn.co.uk>
+In-Reply-To: <20260617150143.2152-1-mike@fireburn.co.uk>
+References: <20260617150143.2152-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Address the v1 RFC review (Danilo Krummrich):
+This is v2 of the crypto bindings, rebased onto current drm-next --
+no functional change from the version prepared but never sent after
+v1's review (see "Changes since v1" below for what that review fixed).
+It adds a small, reusable kernel::crypto module so in-kernel Rust code
+can hash, MAC, encrypt a single AES block, and do RSA public-key
+encryption:
 
- - Do not make `usb::Device` public. Writing a `usb::Interface` driver should
-   not require naming the underlying `usb::Device` (cf. commit 22d693e45d4a
-   ("rust: usb: keep usb::Device private for now")), so the struct is
-   private again and the device-wide transfer operations are exposed on
-   the interface.
+  1/3  sha256(), hmac_sha256(), Aes128 (key-prepared-once block cipher)
+  2/3  aes_cmac() over the in-tree AES-CMAC library
+  3/3  rsa_pubkey_encrypt() over a new lib/crypto RSA primitive
 
- - Gate the transfer methods (`bulk_send`/`bulk_recv`/`interrupt_recv`/
-   `control_send`/`control_recv`/`set_interface`/`reset_configuration`/
-   `clear_halt`/`bulk_in_queue`/`bulk_out_queue`) on `Interface<Bound>`, so a
-   transfer cannot be issued before the interface's device is bound to the
-   driver. Each forwards to the (now private) `Device` helper.
+Patch 1 binds the library crypto (lib/crypto) functions directly
+(SHA-256 / HMAC-SHA256) and uses one rust_helper_ shim for aes_encrypt()
+(its transparent union is unbindable). It runs synchronously in the
+calling context with no allocation and is the independently-mergeable,
+self-contained contribution.
 
- - Add `Interface::as_bound()` for drivers that keep a refcounted
-   `ARef<Interface>` and perform transfers from a deferred context (a work
-   item), with a safety contract requiring the work be flushed before unbind.
+Patch 2 adds crypto::aes_cmac() over the in-tree AES-CMAC library
+(<crypto/aes-cbc-macs.h>) -- the one mode of operation the consumer needs
+that lib/crypto already ships -- rather than building CMAC out of bare
+AES. The 128-bit key is prepared once and wiped after use.
 
-Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
-Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
----
- rust/kernel/usb.rs | 162 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 140 insertions(+), 22 deletions(-)
+Patch 3 adds an RSA public-key primitive. Rather than bind crypto_akcipher
+(which Eric flagged as a very bad API not to grow), it adds a small
+lib/crypto entry point -- lib/crypto/rsa.c, rsa_pubkey_encrypt(), the bare
+RSAEP primitive c = m^e mod n [RFC8017 sec 5.1.1] over the MPI library --
+and binds that directly: no akcipher tfm, DER key encoding, scatterlists or
+async completion. The caller applies its own padding (RSAES-OAEP, ...). It
+is gated by a new bool CONFIG_CRYPTO_LIB_RSA (selects MPILIB); because the
+Rust wrapper is exported from the built-in kernel crate the symbol must be
+in vmlinux, so the option is a bool and the wrapper is
+#[cfg(CONFIG_CRYPTO_LIB_RSA)]-gated -- a kernel that does not configure it
+gains no dependency. A from-scratch constant-time/allocation-free lib/crypto
+RSA (Eric's longer-term direction) is left as future work.
 
-diff --git a/rust/kernel/usb.rs b/rust/kernel/usb.rs
-index 6c49de422b30..1fcaf34433cc 100644
---- a/rust/kernel/usb.rs
-+++ b/rust/kernel/usb.rs
-@@ -368,6 +368,130 @@ pub fn number(&self) -> u8 {
-             (*altsetting).desc.bInterfaceNumber
-         }
-     }
-+
-+    /// Returns a [`Bound`](device::Bound)-context view of this interface, on which
-+    /// the device-wide transfer operations (`bulk_send`, `control_recv`, …) become
-+    /// callable.
-+    ///
-+    /// During `probe()` the interface is already available in a bound context
-+    /// ([`Core`](device::Core) dereferences to [`Bound`](device::Bound)), so this
-+    /// is only needed by drivers that keep a refcounted [`ARef<Interface>`] and
-+    /// perform transfers from a deferred context (e.g. a work item).
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure the interface stays bound to this driver for the
-+    /// entire lifetime of the returned reference — for example by cancelling and
-+    /// flushing any such deferred work in `disconnect()`. Issuing a transfer on an
-+    /// unbound interface is undefined behaviour.
-+    ///
-+    /// [`ARef<Interface>`]: crate::sync::aref::ARef
-+    pub unsafe fn as_bound(&self) -> &Interface<device::Bound> {
-+        // SAFETY: `Interface<Ctx>` is `#[repr(transparent)]` over the same
-+        // `Opaque<usb_interface>` regardless of the `Ctx` marker, so this cast only
-+        // changes the zero-sized context type; the caller upholds boundness.
-+        unsafe { &*(self as *const Self as *const Interface<device::Bound>) }
-+    }
-+}
-+
-+/// Device-wide USB transfer operations, exposed only on a [`Bound`](device::Bound)
-+/// interface so a transfer cannot be issued before the interface's device is bound
-+/// to this driver. Each method forwards to the (sleeping) USB core helper for the
-+/// interface's [`struct usb_device`]; all must be called from process context.
-+impl Interface<device::Bound> {
-+    fn device(&self) -> &Device {
-+        // SAFETY: `self.as_raw()` is a valid `struct usb_interface` by the type
-+        // invariant; `interface_to_usbdev()` returns its valid `struct usb_device`,
-+        // and `Device` is `#[repr(transparent)]` over `Opaque<usb_device>`. The
-+        // borrow is tied to `&self`, which keeps the interface (and device) alive.
-+        let usb_dev = unsafe { bindings::interface_to_usbdev(self.as_raw()) };
-+        // SAFETY: `usb_dev` is a valid `struct usb_device` pointer (see above).
-+        unsafe { &*(usb_dev.cast::<Device>()) }
-+    }
-+
-+    /// Clears a halt/stall on bulk `endpoint` (both the device-side stall and the
-+    /// host-side data toggle). The direction is taken from bit 7 of the endpoint
-+    /// address, so it works for IN and OUT endpoints. Sleeps.
-+    pub fn clear_halt(&self, endpoint: u8) -> Result {
-+        self.device().clear_halt(endpoint)
-+    }
-+
-+    /// Issues a synchronous bulk OUT transfer of `data` to `endpoint`, returning
-+    /// the number of bytes transferred. `data` must be DMA-capable. Sleeps.
-+    pub fn bulk_send(&self, endpoint: u8, data: &[u8], timeout: Delta) -> Result<usize> {
-+        self.device().bulk_send(endpoint, data, timeout)
-+    }
-+
-+    /// Issues a synchronous bulk IN transfer into `data`, returning the number of
-+    /// bytes received. `data` must be DMA-capable. Sleeps.
-+    pub fn bulk_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result<usize> {
-+        self.device().bulk_recv(endpoint, data, timeout)
-+    }
-+
-+    /// Issues a synchronous interrupt IN transfer into `data`, returning the number
-+    /// of bytes received. `data` must be DMA-capable. Sleeps.
-+    pub fn interrupt_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result<usize> {
-+        self.device().interrupt_recv(endpoint, data, timeout)
-+    }
-+
-+    /// Issues a synchronous control OUT transfer on the default control endpoint.
-+    /// The buffer is copied internally, so `data` need not be DMA-capable. Sleeps.
-+    pub fn control_send(
-+        &self,
-+        request: u8,
-+        request_type: u8,
-+        value: u16,
-+        index: u16,
-+        data: &[u8],
-+        timeout: Delta,
-+    ) -> Result {
-+        self.device()
-+            .control_send(request, request_type, value, index, data, timeout)
-+    }
-+
-+    /// Issues a synchronous control IN transfer on the default control endpoint,
-+    /// filling `data` with exactly `data.len()` bytes. Sleeps.
-+    pub fn control_recv(
-+        &self,
-+        request: u8,
-+        request_type: u8,
-+        value: u16,
-+        index: u16,
-+        data: &mut [u8],
-+        timeout: Delta,
-+    ) -> Result {
-+        self.device()
-+            .control_recv(request, request_type, value, index, data, timeout)
-+    }
-+
-+    /// Selects alternate setting `alternate` of interface `interface`
-+    /// (`SET_INTERFACE`). Sleeps.
-+    pub fn set_interface(&self, interface: u8, alternate: u8) -> Result {
-+        self.device().set_interface(interface, alternate)
-+    }
-+
-+    /// Re-issues `SET_CONFIGURATION` for the current configuration, resetting all
-+    /// endpoint data toggles without re-enumerating the device. Sleeps.
-+    pub fn reset_configuration(&self) -> Result {
-+        self.device().reset_configuration()
-+    }
-+
-+    /// Opens a persistently-queued asynchronous bulk IN reader on `endpoint`
-+    /// ([`BulkInQueue`]). Must be called from process context.
-+    pub fn bulk_in_queue(&self, endpoint: u8, depth: usize, buf_len: usize) -> Result<BulkInQueue> {
-+        self.device().bulk_in_queue(endpoint, depth, buf_len)
-+    }
-+
-+    /// Opens an asynchronous, pipelined bulk OUT writer on `endpoint`
-+    /// ([`BulkOutQueue`]). Must be called from process context.
-+    pub fn bulk_out_queue(
-+        &self,
-+        endpoint: u8,
-+        depth: usize,
-+        buf_len: usize,
-+    ) -> Result<BulkOutQueue> {
-+        self.device().bulk_out_queue(endpoint, depth, buf_len)
-+    }
- }
- 
- // SAFETY: `usb::Interface` is a transparent wrapper of `struct usb_interface`.
-@@ -392,17 +516,6 @@ fn as_ref(&self) -> &device::Device<Ctx> {
-     }
- }
- 
--impl<Ctx: device::DeviceContext> AsRef<Device> for Interface<Ctx> {
--    fn as_ref(&self) -> &Device {
--        // SAFETY: `self.as_raw()` is valid by the type invariants.
--        let usb_dev = unsafe { bindings::interface_to_usbdev(self.as_raw()) };
--
--        // SAFETY: For a valid `struct usb_interface` pointer, the above call to
--        // `interface_to_usbdev()` guarantees to return a valid pointer to a `struct usb_device`.
--        unsafe { &*(usb_dev.cast()) }
--    }
--}
--
- // SAFETY: Instances of `Interface` are always reference-counted.
- unsafe impl AlwaysRefCounted for Interface {
-     fn inc_ref(&self) {
-@@ -431,6 +544,11 @@ unsafe impl Sync for Interface {}
- /// The implementation abstracts the usage of a C [`struct usb_device`] passed in
- /// from the C side.
- ///
-+/// It is kept private to this module: a `usb::Interface` driver should never need
-+/// to name the underlying `usb::Device`. The device-wide transfer operations are
-+/// instead exposed on [`Interface<Bound>`](Interface), which proves the interface
-+/// (and thus its device) is bound to this driver for the duration of the call.
-+///
- /// # Invariants
- ///
- /// A [`Device`] instance represents a valid [`struct usb_device`] created by the C portion of the
-@@ -438,7 +556,7 @@ unsafe impl Sync for Interface {}
- ///
- /// [`struct usb_device`]: https://www.kernel.org/doc/html/latest/driver-api/usb/usb.html#c.usb_device
- #[repr(transparent)]
--pub struct Device<Ctx: device::DeviceContext = device::Normal>(
-+struct Device<Ctx: device::DeviceContext = device::Normal>(
-     Opaque<bindings::usb_device>,
-     PhantomData<Ctx>,
- );
-@@ -454,7 +572,7 @@ fn as_raw(&self) -> *mut bindings::usb_device {
-     /// address (`USB_DIR_IN`), so this works for both bulk IN and bulk OUT endpoints.
-     /// Must be called from process context (it sleeps). Needed e.g. when another
-     /// driver left a streaming endpoint stalled.
--    pub fn clear_halt(&self, endpoint: u8) -> Result {
-+    pub(crate) fn clear_halt(&self, endpoint: u8) -> Result {
-         // `usb_clear_halt()` must be given a pipe whose direction matches the endpoint:
-         // it issues CLEAR_FEATURE to that endpoint address and resets the matching data
-         // toggle. Build an IN or OUT pipe from the `USB_DIR_IN` bit of the address;
-@@ -491,7 +609,7 @@ pub fn clear_halt(&self, endpoint: u8) -> Result {
-     /// not arrange DMA-capable storage themselves.
-     ///
-     /// [`usb_bulk_msg()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_bulk_msg
--    pub fn bulk_send(&self, endpoint: u8, data: &[u8], timeout: Delta) -> Result<usize> {
-+    pub(crate) fn bulk_send(&self, endpoint: u8, data: &[u8], timeout: Delta) -> Result<usize> {
-         let mut actual: kernel::ffi::c_int = 0;
- 
-         // `usb_bulk_msg()` requires a DMA-capable buffer; `data` may live on the
-@@ -537,7 +655,7 @@ pub fn bulk_send(&self, endpoint: u8, data: &[u8], timeout: Delta) -> Result<usi
-     /// `data` may be any slice.
-     ///
-     /// [`usb_bulk_msg()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_bulk_msg
--    pub fn bulk_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result<usize> {
-+    pub(crate) fn bulk_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result<usize> {
-         let mut actual: kernel::ffi::c_int = 0;
- 
-         // `usb_bulk_msg()` requires a DMA-capable buffer; receive into a kmalloc'd
-@@ -579,7 +697,7 @@ pub fn bulk_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result
-     /// milliseconds; a [`Delta`] of zero, or any non-zero value below 1 ms, waits indefinitely.
-     ///
-     /// [`bulk_recv`]: Self::bulk_recv
--    pub fn interrupt_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result<usize> {
-+    pub(crate) fn interrupt_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> Result<usize> {
-         let mut actual: kernel::ffi::c_int = 0;
- 
-         // `usb_interrupt_msg()` requires a DMA-capable buffer; receive into a kmalloc'd
-@@ -623,7 +741,7 @@ pub fn interrupt_recv(&self, endpoint: u8, data: &mut [u8], timeout: Delta) -> R
-     /// non-zero value below 1 ms — waits indefinitely.
-     ///
-     /// [`usb_control_msg_send()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_control_msg_send
--    pub fn control_send(
-+    pub(crate) fn control_send(
-         &self,
-         request: u8,
-         request_type: u8,
-@@ -658,7 +776,7 @@ pub fn control_send(
-     /// rules are as for [`Device::control_send`].
-     ///
-     /// [`usb_control_msg_recv()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_control_msg_recv
--    pub fn control_recv(
-+    pub(crate) fn control_recv(
-         &self,
-         request: u8,
-         request_type: u8,
-@@ -691,7 +809,7 @@ pub fn control_recv(
-     /// a blocking, sleeping call and must only be invoked from process context.
-     ///
-     /// [`usb_set_interface()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_set_interface
--    pub fn set_interface(&self, interface: u8, alternate: u8) -> Result {
-+    pub(crate) fn set_interface(&self, interface: u8, alternate: u8) -> Result {
-         // SAFETY: `self.as_raw()` is a valid `struct usb_device` by the type invariant.
-         to_result(unsafe {
-             bindings::usb_set_interface(self.as_raw(), interface.into(), alternate.into())
-@@ -708,7 +826,7 @@ pub fn set_interface(&self, interface: u8, alternate: u8) -> Result {
-     /// drivers that are mid-transfer.
-     ///
-     /// [`usb_reset_configuration()`]: https://docs.kernel.org/driver-api/usb/usb.html#c.usb_reset_configuration
--    pub fn reset_configuration(&self) -> Result {
-+    pub(crate) fn reset_configuration(&self) -> Result {
-         // SAFETY: `self.as_raw()` is a valid `struct usb_device` by the type invariant;
-         // `usb_reset_configuration()` only re-issues SET_CONFIGURATION and updates the
-         // host-side endpoint state for this device.
-@@ -734,7 +852,7 @@ pub fn reset_configuration(&self) -> Result {
-     ///
-     /// [`bulk_recv`]: Self::bulk_recv
-     /// [`BulkInQueue::recv`]: BulkInQueue::recv
--    pub fn bulk_in_queue(&self, endpoint: u8, depth: usize, buf_len: usize) -> Result<BulkInQueue> {
-+    pub(crate) fn bulk_in_queue(&self, endpoint: u8, depth: usize, buf_len: usize) -> Result<BulkInQueue> {
-         let dev = self.as_raw();
- 
-         // SAFETY: `dev` is a valid `struct usb_device` by the type invariant; take a
-@@ -818,7 +936,7 @@ pub fn bulk_in_queue(&self, endpoint: u8, depth: usize, buf_len: usize) -> Resul
-     /// [`bulk_in_queue`]: Self::bulk_in_queue
-     /// [`bulk_send`]: Self::bulk_send
-     /// [`send`]: BulkOutQueue::send
--    pub fn bulk_out_queue(
-+    pub(crate) fn bulk_out_queue(
-         &self,
-         endpoint: u8,
-         depth: usize,
--- 
+All three were factored out of an in-kernel Rust DisplayLink DL3 dock
+driver (which needs SHA/HMAC/AES-CMAC for HDCP 2.2 and RSA for the AKE),
+posted alongside as drm/vino ("[RFC PATCH v2 00/6] drm/vino: DisplayLink
+DL3 dock driver"); the intent is to land both upstream. The module is
+generic. Compile-tested in-tree against current drm-next. Source:
+  https://github.com/FireBurn/vino-scripts
+  https://github.com/FireBurn/linux/tree/vino
+  https://gitlab.freedesktop.org/FireBurn/linux/-/tree/vino
+
+Changes since v1 (Eric Biggers):
+ - Drop the bare single-block ECB helper that re-expanded the key per block;
+   Aes128 now prepares the key schedule once and reuses it for a keystream.
+ - Add aes_cmac() over the in-tree AES-CMAC library (<crypto/aes-cbc-macs.h>)
+   instead of building CMAC out of bare AES (now patch 2/3); the vino driver
+   drops its hand-rolled CMAC for it.
+ - RSA no longer binds crypto_akcipher. v1 exposed an Akcipher transform;
+   following Eric's guidance to drop that API, v2 adds a small lib/crypto RSA
+   primitive instead (lib/crypto/rsa.c, now patch 3/3) and binds it directly.
+   A full constant-time lib/crypto RSA is left as future work.
+ - Rebased onto current drm-next; no other functional change.
+
+Mike Lothian (3):
+  rust: crypto: add library AES-128 / SHA-256 / HMAC-SHA256 bindings
+  rust: crypto: use the in-tree AES-CMAC library
+  rust: crypto: add an RSA public-key primitive in lib/crypto
+
+ include/crypto/rsa.h            |  15 +++
+ lib/crypto/Kconfig              |   9 ++
+ lib/crypto/Makefile             |   3 +
+ lib/crypto/rsa.c                | 102 +++++++++++++++++++
+ rust/bindings/bindings_helper.h |   4 +
+ rust/helpers/crypto.c           |  37 +++++++
+ rust/helpers/helpers.c          |   1 +
+ rust/kernel/crypto.rs           | 169 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 9 files changed, 341 insertions(+)
+ create mode 100644 include/crypto/rsa.h
+ create mode 100644 lib/crypto/rsa.c
+ create mode 100644 rust/helpers/crypto.c
+ create mode 100644 rust/kernel/crypto.rs
+
+--
 2.55.0
-
