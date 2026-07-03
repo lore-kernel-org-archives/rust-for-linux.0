@@ -1,70 +1,70 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAAE2D6E5A
-	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9816233937
+	for <rust-for-linux@vger.kernel.org>; Fri,  3 Jul 2026 03:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783047669; cv=none; b=nQBBryy09t5Bi5xFLBfOXZ3d/bZ/bAWLguwc3w0pWSUn0dzheWC/xpPMe4SZwpaFv732bwGmX77vBCXt2vdgo8THftOefnkNHNVUkdb0saOXbmCivZxpUG4gTh3cpJXiLmYdI6wv5CiOjDGZAFVzpNwgLsnBC5ENJDpF+uYCeZU=
+	t=1783047692; cv=none; b=f+vtyZUWFefCrxWnkjC1pQxQV55hCihxn3bBiQpAzZgjicrtkBJv6FSvkoicQZ5HqTdbfL25QI5IJqZI8ZtEPwiUcT//4XajggcpXLkSuuGZO/r328ziT67yXj05JagbHho0Gpbjni7TJa3097Z+pL7dcc9r+inCnP21Z4oeAsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783047669; c=relaxed/simple;
-	bh=vNMwT10aUyIs/UOUOeCfpeIMwXxkHRgS5Z5j0voWgjU=;
+	s=arc-20240116; t=1783047692; c=relaxed/simple;
+	bh=bTT3UewH84oFlv+N91pARaSXy4M1clHs06A4Qw65npk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WPjQcKb8k0DiLDniIRVr+XqC2bCSWLDPPSSsgOv71xMHJDV9WCpOqBzzi67PVG60q3Fbrm2Imd4rrJXxNhSRTjI5tUECBL0SupwT3Ys1KWCbw+gpfp1BK5n4zLjpDr9Al5afx4rp0j4BOUuFGur/8pqG1Ie11oa9Q25KPm7+5aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=M1JHDGGu; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version; b=XAUN1RToRP9Wkx6Vw6K5BGJDGSD914cI5tAO6FO8dL0vKp5qjXFCi4Vh0T3vLlz6/M0FPKKoY2+nk5rvcbOoBCdmJV9cjXW0iWzpx4vdrngqzmDwVrl+uFfaAzUMx7+11blNcfYhcdi1vPUWGmzFdxk+3IsgNIfRU3okEi7koIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b=yxOymGny; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="M1JHDGGu"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493ae59eca6so332635e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:01:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20251104.gappssmtp.com header.i=@fireburn-co-uk.20251104.gappssmtp.com header.b="yxOymGny"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493b77b150aso298235e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 02 Jul 2026 20:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047665; x=1783652465; darn=vger.kernel.org;
+        d=fireburn-co-uk.20251104.gappssmtp.com; s=20251104; t=1783047689; x=1783652489; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vFxVq+fsBKcws494QRfz2Vi1lFIC+br0mAAxV3ScsVg=;
-        b=M1JHDGGuH/yeWD7ZoZS1518kHzSk/KMusnuNjFQuo4lYkev92pQLtL/m+i+EtlnAvH
-         OEa3ALUYqHZlqITQpBH/n+3nMQI/t37TDaEbvA82RzQUQ/y7aMziyqHq3/cV5gJlQzPl
-         KoDJuMWBhakcMyXmgrMFuz22d+LYYvBEztilExNfCctMXtZuled3mS8oqleRJTccLKrV
-         1yy53Hj5AgMXHc4hf6BflNTzBrPUHi/s0FwII6ImdPpteBt7aS9XzfVOXqO6R4Rawhtj
-         cjBlxbx/IpbqB7cepLGDkK9IdJOaiU2PzXIXlysx5Q2ziBg8iLshbkcZ1o6C7iIkz+ds
-         594w==
+         :message-id:reply-to:content-type;
+        bh=Pr/YmJjDdgpK4Qlz5+9N1Q+bYdAf7XuFT6hP4TTZuSg=;
+        b=yxOymGnyP7cRwZtVkp2F3iobxcrvaqpQODvKm/dahyvplVURdPynxi1+WyoOz4nBE9
+         IzUHq1i2gktL9RZ5K1qjqSggnzxDsTu5AcnF6ti0jqUFEcE740GzPLxoHDdTL3GyS/+9
+         wLcJ706qjCZZYkfZlGv7SeqfR4IO+NGK4dxsCv4A+E+kn40/6Q4h0xw1FAnpz3uWeiVv
+         JmKgh/9Y8qCJo8lH9r7a9yu8vcuA1av7xbGjIrnhTpJq0Dxq1aw/y5FP8NZ9q+NqH/aY
+         qviQMZWLgbyYDqFJMXDK1zfSr2CPcNoxaR+6frhSHnSVlYIscwdgiaC2TDRQAadDlACf
+         v/nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783047665; x=1783652465;
+        d=1e100.net; s=20251104; t=1783047689; x=1783652489;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vFxVq+fsBKcws494QRfz2Vi1lFIC+br0mAAxV3ScsVg=;
-        b=VieXDt9u2fOvBGD9Z1mjHAPCrdrgzeP5UTe4jMswuIvmSfH0eRM2H63UpTsLYjfULB
-         UYAmcSO5rsmgexPHupKSIRhtjr7uVaYbgG4ezjNIifoRi+po0CMyob2mobOnISTGQxOH
-         zZAfcN0Jz1pPKpEAJ+rIsuzfbagSkqAs2q9w5fZPYnpzsAU6bkIu7WXdBhwZqP+ZSAx8
-         M/CmSvVgW4G4TF9KFcB4WcANT4vYLkSVSIMkAC7UxkYd5oDK6MO3d5V4wzWKCajFMCvl
-         40DlC+GPu4rubHnRlCz3yDb9Fq1s2mZGIeBkHK4KSCKSLxk55tlH+0aijqUHNKXIqVH8
-         +PJQ==
-X-Gm-Message-State: AOJu0YwPM78l7M/u+DAtlxA396xy/k1BpMiiYdYOq9cTiHrcix6S3sEO
-	fiKmkvgXtxJR0mrex7nbhZUbvTTlApKD+2axB26HVEXV8yWgKuJcYwQ9d6RVuhdNzhYjlJPnPl9
-	DSXwlHM2D
-X-Gm-Gg: AfdE7ckUPpNMfgQb3N4+2Nx5yYFXvI5FaztQPsN/cQRf5WKaiR0wR5YXNyt9BAcsU1U
-	9AnSPwsaJN6h16P6P80Yq9MR8QgCw2lMgtIdVSzEnX17sEeZrBvs+KtlFc7Gh6ZQXSpDo0z7n4q
-	CBFO+JTNg38VKa6Xjsb3noJdxaTgmSHbKbCbNCMOCK72EpL6tZHvNA5uRXxQqgB40bQgBpwkX1x
-	txQaTF+eeR6uZvNJGtK0zy1ranssTpDsviyIXjo4I6LUtLLGlbp6EwCqWrQui7NwQF4BaJ24bgH
-	VFZzT6zNaBaNcAKPzFL1H/xNXpFyho5C9E3nKeVK78fP2o8W139av89WvE+xAMDk/+g4D+jJAyh
-	Ja40bOWgl9fERpSKQqLRd5VBeFaPErP9l6JtFhrqqFP4zsSuU9SZOj2ztun/A2vMf/yyY6Sh9+5
-	KNJFthZo5rUR9u7xwiUJ5qdQAIehrK2NLiuMT01UiZAOyV0Gw1CeB6g0SN/z9SZz/jihg=
-X-Received: by 2002:a05:600c:524a:b0:493:af0d:484c with SMTP id 5b1f17b1804b1-493c3df2fb5mr108882145e9.34.1783047665359;
-        Thu, 02 Jul 2026 20:01:05 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Pr/YmJjDdgpK4Qlz5+9N1Q+bYdAf7XuFT6hP4TTZuSg=;
+        b=oKzppeVzFmTtjXHa/G/kudE7xxQap95VzetKZWuRa7AY5WWmkFbM+Gfc9SVcHisduF
+         jzflTjwAfUmL2C9MbMQoMzQyJG6CbjD8N9hr4vtxp7tgh4ygSBlTVToZ/IIm3hWl3dCb
+         7HasLt5xsecZZ37sQLE7zXBKzgk4qQulUr+Yq/wjHi6phsaClF6zxD3OvQ8s2FCIPJFw
+         RvhcWNAB23zhaT52k8OFieY7UCV549Wr8nsOAhRWUsxeKha9WggI2WNMEdPv36btXgf/
+         td48XHrpwucVX2gQbP6jcRpiD0ISICWsfjeHQvF5Evd2rAoncGri0sR6MlP2yS0VYpb9
+         X3Gw==
+X-Gm-Message-State: AOJu0YzStYA6NJy4WqQ29SIBK57gcOKhgVH055OtyLWkJfkMjxfIDnDn
+	G4OArFJ4EKWBbrOpTLp06qDqisGzA1TfNOPPpetwWdyh/qR8V7WW6T3Fy+MtaOt82uVY9iy8f8/
+	1iQgwOzRV
+X-Gm-Gg: AfdE7clVAHv5t6oxvPaPVXe2HaVRKu0OVrgAPXAFtVreZISoP5cw0x+bsPxKOal/Ydl
+	AacUlNQC5TbI2LkweY6RjO7zvRIZw0FetxaTmcxIj/6NLcvY4zmFtCTb2wRiOJZRPF23UvvrQC/
+	OVT8RImV2go4Gn7hTmRNAQ2832BR9Ke0Td+cadE8bp8YpwP9zCLv+V/sdR7+4zR+qgvIrLH3dd+
+	sCSLWIf+JXbW5nBoT8DyYvfEEdKdBqYJO/zgHO5N++nR0z14sfywtFrNKM/xauTLzUeccllUl7c
+	V2MedRrCCT41OfCIgfSZljMwoo/BNkxO4tMv0GveBrJyTcCbn19Tx13Uiqa/sIjJOGK28QUSsTQ
+	yf1FTaL2ORciK0ClnrNzUdQo/PYifbZXHMp9+c9tJgKJ2H9lkAD4SH29mPwT7TH9MitWDeP5ds4
+	UbDB7Q01t4ehmXWuw3BcPkQ90UpNA6fB/0BFXot1Q4rLrRjIrZ79wLzEdM
+X-Received: by 2002:a05:600c:34c8:b0:493:a5f9:d345 with SMTP id 5b1f17b1804b1-493c3cf0a35mr114126905e9.26.1783047688971;
+        Thu, 02 Jul 2026 20:01:28 -0700 (PDT)
 Received: from axion.fireburn.co.uk ([137.220.119.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bef183e7sm199495015e9.2.2026.07.02.20.01.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-477db3dbacbsm14466500f8f.4.2026.07.02.20.01.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 20:01:04 -0700 (PDT)
+        Thu, 02 Jul 2026 20:01:27 -0700 (PDT)
 From: Mike Lothian <mike@fireburn.co.uk>
 To: rust-for-linux@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Ard Biesheuvel <ardb@kernel.org>,
+Cc: dri-devel@lists.freedesktop.org,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lyude Paul <lyude@redhat.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
@@ -73,303 +73,218 @@ Cc: linux-crypto@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Mike Lothian <mike@fireburn.co.uk>
-Subject: [RFC PATCH v2 3/3] rust: crypto: add an RSA public-key primitive in lib/crypto
-Date: Fri,  3 Jul 2026 04:00:53 +0100
-Message-ID: <20260703030056.2763-4-mike@fireburn.co.uk>
+Subject: [RFC PATCH v2 00/18] rust: drm: safe KMS mode-object layer + evdi bindings
+Date: Fri,  3 Jul 2026 04:00:47 +0100
+Message-ID: <20260703030123.2814-1-mike@fireburn.co.uk>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260703030056.2763-1-mike@fireburn.co.uk>
-References: <20260617150143.2152-1-mike@fireburn.co.uk>
- <20260703030056.2763-1-mike@fireburn.co.uk>
+In-Reply-To: <20260617150232.2210-1-mike@fireburn.co.uk>
+References: <20260617150232.2210-1-mike@fireburn.co.uk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Address the v1 RFC review (Eric Biggers): rather than binding
-crypto_akcipher ("a very bad API"), add the RSA public-key operation as a
-small lib/crypto primitive and bind that.
+v1 of this series took the "raw C KMS + Device::as_raw() escape hatch"
+route because Lyude Paul's safe Rust KMS mode-object layer wasn't
+landable yet. Both Danilo and Miguel pushed back on that in review: work
+on the safe abstractions instead, coordinate with Lyude. This v2 does
+that -- and in the meantime upstream itself moved: drm::Driver's base
+trait now requires a Kms associated type routed through exactly that safe
+layer, so the v1 approach doesn't compile against current drm-next at all
+any more. Posting the real port is the only way to keep a KMS driver
+building.
 
-New lib/crypto/rsa.c exports
+  1/18 rust: drm: kms: forward-port the safe mode-object layer
+  2/18 rust: drm: kms: adapt the port to current drm-next
+  3/18 rust: drm: kms: break the Driver* trait well-formedness cycle
+  4/18 rust: drm: kms: build the kernel crate clean under -Znext-solver
+  5/18 rust: drm: expose <drm/display/drm_hdcp.h> HDCP 2.2 messages
+  6/18 rust: drm: kms: add a Framebuffer::vmap() guard
+  7/18 rust: drm: kms: add safe accessors for common state and modes
+  8/18 rust: drm: tyr: add the Kms associated type
+  9/18 rust: drm: add drm_event delivery
+ 10/18 rust: drm: allow drivers to declare ioctls from their own uAPI module
+ 11/18 rust: platform: add runtime platform device creation
+ 12/18 rust: drm: framebuffer: geometry accessors, refcounting, byte-slice vmap
+ 13/18 rust: i2c: add adapter-provider (bus controller) registration
+ 14/18 rust: add sysfs device attribute groups
+ 15/18 rust: drm: support hardware cursor planes (sleepable event delivery)
+ 16/18 rust: drm: add CRTC gamma LUT and plane rotation property
+ 17/18 rust: drm: kms: add connector detect() and mode_valid() hooks
+ 18/18 rust: drm: kms: add plane damage-clip accessors
 
-  int rsa_pubkey_encrypt(const u8 *n, size_t n_len, const u8 *e, size_t
-			 e_len, const u8 *in, size_t in_len, u8 *out,
-			 size_t out_len);
+Patches 1-4 are a from-scratch forward-port of Lyude's rvkms-slim safe
+KMS mode-object layer (CRTC/plane/connector/encoder/vblank/atomic state)
+onto her newer rust-stuck typestate Device design, which isn't in mainline
+yet either -- see the companion "rust: sync/drm: locking and
+DRM-registration prerequisites" postings this depends on. It's a
+mechanical type-level port with one real problem: the ported mode-object
+traits are mutually recursive in a way the (then-current) trait solver
+can't evaluate without unbounded memory. Patch 3 pins the associated-state
+types to break the infinite projection regress; that trades it for a
+coinductive cycle the old solver still can't resolve, which patch 4 fixes
+by scoping -Znext-solver to the kernel crate only (core/alloc stay on the
+old solver, since core.o ICEs under -Znext-solver on this toolchain).
+rust/kernel.o then builds clean, safe KMS layer included.
 
-the bare RSAEP primitive c = m^e mod n [RFC8017 sec 5.1.1], computed with
-the MPI big-integer library (the same arithmetic crypto/rsa.c uses) but
-without the akcipher tfm, DER key encoding, scatterlists or async
-completion. It rejects m >= n (which mpi_powm() would otherwise silently
-reduce, yielding an undecryptable ciphertext), writes the result
-fixed-width big-endian left zero-padded to out_len, and zeroes out on
-every error path. Callers apply their own padding (RSAES-OAEP, ...).
-Declared in include/crypto/rsa.h, gated by a new CONFIG_CRYPTO_LIB_RSA
-(selects MPILIB).
+Patches 5-7 are what vino needed once it started using the ported layer:
+patch 5 re-adds the HDCP 2.2 message-ID header v1 carried; patch 6 adds a
+Framebuffer::vmap() RAII guard; patch 7 adds safe accessors for the handful
+of raw drm_kms fields and helpers a real driver reaches for
+(drm::Device::hotplug_event(), CRTC-state mode(), plane-state
+crtc_w()/crtc_h(), DisplayMode geometry getters, connector EDID modes) so
+vino needs no raw escape hatch at all. v1's Device::as_raw() escape hatch
+is dropped entirely.
 
-crypto::rsa_pubkey_encrypt() wraps it directly. Because the wrapper is
-compiled into and exported from the built-in kernel crate, the C symbol
-must live in vmlinux: CONFIG_CRYPTO_LIB_RSA is therefore a bool (a select
-forces it built-in) and the wrapper is #[cfg(CONFIG_CRYPTO_LIB_RSA)]-gated
-so no vmlinux dependency is introduced for kernels that do not configure
-it. A consumer (e.g. the vino driver) selects it.
+Patch 8 is base drift: tyr predates the Kms associated type becoming
+required and needed PhantomData<Self> added, same as nova already had.
 
-A from-scratch constant-time/allocation-free RSA is out of scope; this is
-the lib/crypto entry point that lets a Rust caller avoid crypto_akcipher.
+Patches 9-18 are new in v2: generic bindings a *second* DRM driver needs
+beyond the safe KMS layer. Alongside vino we are rewriting DisplayLink's
+out-of-tree evdi module in Rust (it presents virtual displays whose
+scanout is pulled by a userspace daemon over a drm_event + ioctl ABI), and
+patches 9-15 are the seven things it needs that the layer did not provide,
+none of them evdi-specific:
 
-Signed-off-by: Mike Lothian <mike@fireburn.co.uk>
-Assisted-by: Claude:claude-opus-4-8 [Claude-Code]
----
- include/crypto/rsa.h            |  15 +++++
- lib/crypto/Kconfig              |   9 +++
- lib/crypto/Makefile             |   3 +
- lib/crypto/rsa.c                | 102 ++++++++++++++++++++++++++++++++
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/crypto.rs           |  43 ++++++++++++++
- 6 files changed, 173 insertions(+)
- create mode 100644 include/crypto/rsa.h
- create mode 100644 lib/crypto/rsa.c
+  9/18  drm::event -- a safe EventChannel/EventPayload for delivering
+        drm_events to a userspace client, with the receiver drm_file only
+        ever touched under the device event_lock so a send can't race a
+        file close (the classic NULL/UAF flush bug). event_lock() moves to
+        the core drm::Device since events are DRM-core, not KMS.
+ 10/18  declare_drm_ioctls_ext! -- declare_drm_ioctls! resolves argument
+        types and numbers from the in-tree kernel::uapi crate, which an
+        out-of-tree driver with its own ioctl range can't extend; the _ext
+        variant takes the type and number per entry instead. The original
+        macro is untouched.
+ 11/18  platform::RegisteredDevice -- the provider side of the platform
+        bus (create/register a platform_device at runtime), so a virtual
+        driver can spawn its own devices; platform.rs previously only bound
+        to existing ones.
+ 12/18  Framebuffer geometry accessors, reference counting (ARef via
+        drm_framebuffer_get/put helpers) and FramebufferVmap::as_bytes(),
+        so a driver can hold a flipped-in framebuffer and read its pixels
+        back without unsafe -- what evdi's GRABPIX does.
+ 13/18  i2c::BusController/BusAdapter -- the controller (provider) side of
+        the I2C bus, so a driver can present a virtual bus and service the
+        transfers; i2c.rs previously only registered I2C client drivers.
+        Both evdi and vino use it for their DDC/CI channel.
+ 14/18  sysfs::DeviceAttributes/AttributeGroup -- expose sysfs control files
+        on a root device with name-dispatched show/store; evdi uses it for
+        its /sys/devices/evdi/{count,add,remove_all} card-lifecycle files.
+ 15/18  hardware cursor support -- rework drm::event to guard the receiver
+        with a mutex so a GEM handle for the cursor bitmap can be created
+        for the client (sleepable), plus plane position/hotspot and
+        framebuffer format/handle accessors; both evdi and vino advertise a
+        cursor plane.
 
-diff --git a/include/crypto/rsa.h b/include/crypto/rsa.h
-new file mode 100644
-index 000000000000..c11d7b5cae9a
---- /dev/null
-+++ b/include/crypto/rsa.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * RSA public-key primitive (RSAEP), library interface.
-+ *
-+ * Copyright (c) 2026 Mike Lothian <mike@fireburn.co.uk>
-+ */
-+#ifndef _CRYPTO_RSA_H
-+#define _CRYPTO_RSA_H
-+
-+#include <linux/types.h>
-+
-+int rsa_pubkey_encrypt(const u8 *n, size_t n_len, const u8 *e, size_t e_len,
-+		       const u8 *in, size_t in_len, u8 *out, size_t out_len);
-+
-+#endif /* _CRYPTO_RSA_H */
-diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
-index 591c1c2a7fb3..04655c104e65 100644
---- a/lib/crypto/Kconfig
-+++ b/lib/crypto/Kconfig
-@@ -45,6 +45,15 @@ config CRYPTO_LIB_AESGCM
- config CRYPTO_LIB_ARC4
- 	tristate
- 
-+config CRYPTO_LIB_RSA
-+	bool
-+	select MPILIB
-+	help
-+	  The RSA public-key primitive (RSAEP, out = in^e mod n), built on the
-+	  MPI big-integer library. The bare primitive only; callers apply their
-+	  own padding. Bool rather than tristate: the in-kernel consumer is the
-+	  built-in Rust crypto bindings, so it must live in vmlinux.
-+
- config CRYPTO_LIB_GF128MUL
- 	tristate
- 
-diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
-index f1e9bf89785f..486557df59e3 100644
---- a/lib/crypto/Makefile
-+++ b/lib/crypto/Makefile
-@@ -69,6 +69,9 @@ libaesgcm-y					:= aesgcm.o
- obj-$(CONFIG_CRYPTO_LIB_ARC4)			+= libarc4.o
- libarc4-y					:= arc4.o
- 
-+obj-$(CONFIG_CRYPTO_LIB_RSA)			+= librsa.o
-+librsa-y					:= rsa.o
-+
- obj-$(CONFIG_CRYPTO_LIB_GF128MUL)		+= gf128mul.o
- 
- ################################################################################
-diff --git a/lib/crypto/rsa.c b/lib/crypto/rsa.c
-new file mode 100644
-index 000000000000..21c1d6c9ea26
---- /dev/null
-+++ b/lib/crypto/rsa.c
-@@ -0,0 +1,102 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * RSA public-key primitive (RSAEP) [RFC8017 sec 5.1.1].
-+ *
-+ * A minimal synchronous library entry point for the RSA public-key operation,
-+ * built on the MPI big-integer library (the same arithmetic the crypto_akcipher
-+ * "rsa" transform uses), but without the akcipher tfm allocation, DER key
-+ * encoding, scatterlists or asynchronous completion machinery. It performs only
-+ * the bare RSAEP primitive; callers apply any encoding/padding (RSAES-OAEP,
-+ * RSAES-PKCS1-v1_5, ...) themselves.
-+ *
-+ * Copyright (c) 2026 Mike Lothian <mike@fireburn.co.uk>
-+ */
-+
-+#include <crypto/rsa.h>
-+#include <linux/errno.h>
-+#include <linux/export.h>
-+#include <linux/mpi.h>
-+#include <linux/module.h>
-+#include <linux/string.h>
-+
-+/**
-+ * rsa_pubkey_encrypt() - RSA public-key operation, out = (in ^ e) mod n
-+ * @n: modulus, unsigned big-endian
-+ * @n_len: length of @n, in bytes
-+ * @e: public exponent, unsigned big-endian
-+ * @e_len: length of @e, in bytes
-+ * @in: input, unsigned big-endian; already padded by the caller
-+ * @in_len: length of @in, in bytes
-+ * @out: output buffer; receives the result big-endian, left zero-padded to
-+ *	 exactly @out_len bytes
-+ * @out_len: size of @out; pass the modulus length (e.g. 128 for RSA-1024)
-+ *
-+ * Computes the bare RSAEP primitive c = m^e mod n, where m is @in interpreted
-+ * as a big-endian integer. This is the raw public-key operation [RFC8017 sec
-+ * 5.1.1]; the caller is responsible for any message encoding/padding.
-+ *
-+ * @in interpreted as an integer must be numerically less than @n, as RSA
-+ * requires: a larger value would be silently reduced mod n by the modular
-+ * exponentiation and yield a ciphertext the peer cannot decrypt, so it is
-+ * rejected. On any error path @out is zeroed, so it never retains data from a
-+ * partial computation.
-+ *
-+ * Return: 0 on success; -EINVAL on a malformed key or out-of-range input;
-+ * -EOVERFLOW if the result does not fit in @out_len; -ENOMEM on allocation
-+ * failure.
-+ */
-+int rsa_pubkey_encrypt(const u8 *n, size_t n_len, const u8 *e, size_t e_len,
-+		       const u8 *in, size_t in_len, u8 *out, size_t out_len)
-+{
-+	MPI mn, me, mbase, mres;
-+	unsigned int nbytes;
-+	int ret = -ENOMEM;
-+
-+	if (!n_len || !e_len || !in_len || !out_len)
-+		return -EINVAL;
-+
-+	mn = mpi_read_raw_data(n, n_len);
-+	me = mpi_read_raw_data(e, e_len);
-+	mbase = mpi_read_raw_data(in, in_len);
-+	mres = mpi_alloc(0);
-+	if (!mn || !me || !mbase || !mres)
-+		goto out;
-+
-+	/*
-+	 * RSA requires 0 <= m < n; reject m >= n rather than let mpi_powm()
-+	 * silently reduce it and produce an undecryptable ciphertext.
-+	 */
-+	if (mpi_cmp(mbase, mn) >= 0) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	ret = mpi_powm(mres, mbase, me, mn);
-+	if (ret)
-+		goto out;
-+
-+	/*
-+	 * mpi_read_buffer() writes the minimal big-endian form left-aligned
-+	 * (and returns -EOVERFLOW without writing if @out_len is too small);
-+	 * right-align it into the fixed-width output and zero-pad the front.
-+	 */
-+	ret = mpi_read_buffer(mres, out, out_len, &nbytes, NULL);
-+	if (ret)
-+		goto out;
-+	if (nbytes < out_len) {
-+		memmove(out + (out_len - nbytes), out, nbytes);
-+		memset(out, 0, out_len - nbytes);
-+	}
-+out:
-+	if (ret)
-+		memzero_explicit(out, out_len);
-+	mpi_free(mn);
-+	mpi_free(me);
-+	mpi_free(mbase);
-+	mpi_free(mres);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(rsa_pubkey_encrypt);
-+
-+MODULE_DESCRIPTION("RSA public-key primitive (RSAEP)");
-+MODULE_LICENSE("GPL");
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 60effaf3af16..7bb04d68f9d2 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -29,6 +29,7 @@
- #include <linux/hrtimer_types.h>
- 
- #include <crypto/aes.h>
-+#include <crypto/rsa.h>
- #include <crypto/sha2.h>
- 
- #include <linux/acpi.h>
-diff --git a/rust/kernel/crypto.rs b/rust/kernel/crypto.rs
-index 7d96c1c710a4..b6836e771cfa 100644
---- a/rust/kernel/crypto.rs
-+++ b/rust/kernel/crypto.rs
-@@ -9,8 +9,12 @@
- //! synchronously in the calling context with no allocation; the hashes and the
- //! MAC are infallible.
- //!
-+//! Also exposes the `lib/crypto` RSA public-key primitive
-+//! ([`rsa_pubkey_encrypt`]) for callers that do their own padding.
-+//!
- //! C headers: [`include/crypto/aes.h`](srctree/include/crypto/aes.h),
- //! [`include/crypto/aes-cbc-macs.h`](srctree/include/crypto/aes-cbc-macs.h),
-+//! [`include/crypto/rsa.h`](srctree/include/crypto/rsa.h),
- //! [`include/crypto/sha2.h`](srctree/include/crypto/sha2.h).
- 
- use crate::{bindings, error::to_result, prelude::*};
-@@ -124,3 +128,42 @@ fn drop(&mut self) {
-         unsafe { core::ptr::write_volatile(&mut self.0, core::mem::zeroed()) };
-     }
- }
-+
-+/// Computes the RSA public-key primitive `out = (input ^ exponent) mod modulus`
-+/// using the in-tree `lib/crypto` RSA library (`rsa_pubkey_encrypt()` in
-+/// [`lib/crypto/rsa.c`](srctree/lib/crypto/rsa.c)).
-+///
-+/// All buffers are unsigned big-endian. `out` is written fixed-width to exactly
-+/// `out.len()` bytes (left zero-padded); pass `out.len()` equal to the modulus
-+/// size (e.g. 128 for RSA-1024). This is the bare primitive: the caller applies
-+/// any padding (PKCS#1 v1.5, EME-OAEP, …) to `input` first.
-+///
-+/// `input` interpreted as an integer must be less than `modulus`, as RSA
-+/// requires; otherwise an error is returned. On any error `out` is zeroed by the
-+/// library, so it never retains data from a partial computation.
-+///
-+/// Only available when `CONFIG_CRYPTO_LIB_RSA` is enabled (a consumer selects
-+/// it); the backing library is then built into the kernel.
-+#[cfg(CONFIG_CRYPTO_LIB_RSA)]
-+pub fn rsa_pubkey_encrypt(
-+    modulus: &[u8],
-+    exponent: &[u8],
-+    input: &[u8],
-+    out: &mut [u8],
-+) -> Result {
-+    // SAFETY: each slice is valid for its stated length; the library function
-+    // reads `modulus`/`exponent`/`input` and writes exactly `out.len()` bytes
-+    // into `out` (left zero-padded), zeroing it on any error.
-+    to_result(unsafe {
-+        bindings::rsa_pubkey_encrypt(
-+            modulus.as_ptr(),
-+            modulus.len(),
-+            exponent.as_ptr(),
-+            exponent.len(),
-+            input.as_ptr(),
-+            input.len(),
-+            out.as_mut_ptr(),
-+            out.len(),
-+        )
-+    })
-+}
+Patches 16-18 round out the KMS feature set with more generic mode-object
+support the pre-safe-KMS vino driver had that the ported layer didn't:
+patch 16 a CRTC GAMMA_LUT (drm_crtc_enable_color_mgmt + a gamma_lut()
+state accessor) and a plane rotation property
+(drm_plane_create_rotation_property + rotation()/placement accessors);
+patch 17 optional connector detect()/mode_valid() hooks (report hotplug
+state, prune modes the driver can't drive), gated in the vtable like the
+plane/CRTC optionals; patch 18 the RawPlaneState::damage_merged() and
+for_each_damage_clip() accessors over drm_atomic_helper_damage_merged() /
+drm_atomic_helper_damage_iter() so a driver can repaint only the region(s)
+a client marked dirty. All three are generic KMS, not vino-specific.
+
+vino uses patches 1-8 and 16-18; 9-15 are included here (rather than a
+separate series) because they are small DRM/platform/i2c/sysfs binding
+additions of the same kind and share this series' base. The evdi driver is
+posted as a separate companion series ("[RFC PATCH] drm/evdi: a Rust EVDI
+virtual display") -- a second, working consumer of these same bindings.
+
+Known gaps, not fixed here: the connector layer has no detect_ctx()/
+writeback support; no per-plane alpha/blend-mode property yet.
+
+The primary consumer is drm/vino, posted alongside ("[RFC PATCH v2 00/9]
+drm/vino: DisplayLink DL3 dock driver"). Source:
+  https://github.com/FireBurn/vino-scripts
+  https://github.com/FireBurn/linux/tree/vino
+  https://gitlab.freedesktop.org/FireBurn/linux/-/tree/vino
+
+Changes since v1:
+ - Dropped the raw C KMS approach (FEAT_MODESET/FEAT_ATOMIC, drm_edid.h,
+   drm_blend.h, Device::as_raw()); replaced by the safe KMS layer
+   (patches 1-4), Framebuffer::vmap() (6) and safe accessors (7).
+ - Kept the HDCP header (patch 5).
+ - Added the evdi/vino bindings (patches 9-18): drm_event delivery,
+   out-of-uAPI ioctls, platform-device creation, framebuffer accessors,
+   i2c adapter-provider, sysfs attributes, hardware cursor, CRTC gamma /
+   plane rotation, connector detect()/mode_valid(), and plane damage-clip
+   accessors.
+
+Mike Lothian (18):
+  rust: drm: kms: forward-port the safe mode-object layer onto the
+    typestate device
+  rust: drm: kms: adapt the port to current drm-next
+  rust: drm: kms: break the Driver* trait well-formedness cycle
+  rust: drm: kms: build the kernel crate clean under -Znext-solver
+  rust: drm: expose <drm/display/drm_hdcp.h> HDCP 2.2 message
+    definitions
+  rust: drm: kms: add a Framebuffer::vmap() guard
+  rust: drm: kms: add safe accessors for common state and connector
+    modes
+  rust: drm: tyr: add the Kms associated type
+  rust: drm: add drm_event delivery
+  rust: drm: allow drivers to declare ioctls from their own uAPI module
+  rust: platform: add runtime platform device creation
+  rust: drm: framebuffer: add geometry accessors, refcounting and a
+    byte-slice vmap
+  rust: i2c: add adapter-provider (bus controller) registration
+  rust: add sysfs device attribute groups
+  rust: drm: support hardware cursor planes with sleepable event
+    delivery
+  rust: drm: add CRTC gamma LUT and plane rotation property bindings
+  rust: drm: kms: add connector detect() and mode_valid() hooks
+  rust: drm: kms: add plane damage-clip accessors
+
+ drivers/gpu/drm/tyr/driver.rs      |    1 +
+ rust/Makefile                      |    6 +-
+ rust/bindings/bindings_helper.h    |   11 +
+ rust/helpers/drm/atomic.c          |   32 +
+ rust/helpers/drm/drm.c             |    3 +
+ rust/helpers/drm/framebuffer.c     |   13 +
+ rust/helpers/drm/vblank.c          |    8 +
+ rust/kernel/drm/device.rs          |   31 +-
+ rust/kernel/drm/driver.rs          |    8 +-
+ rust/kernel/drm/event.rs           |  216 +++++
+ rust/kernel/drm/ioctl.rs           |   86 ++
+ rust/kernel/drm/kms.rs             |  432 +++++++++-
+ rust/kernel/drm/kms/atomic.rs      |  865 +++++++++++++++++++
+ rust/kernel/drm/kms/connector.rs   | 1109 +++++++++++++++++++++++++
+ rust/kernel/drm/kms/crtc.rs        | 1152 ++++++++++++++++++++++++++
+ rust/kernel/drm/kms/encoder.rs     |  409 +++++++++
+ rust/kernel/drm/kms/framebuffer.rs |  217 +++++
+ rust/kernel/drm/kms/modes.rs       |  151 ++++
+ rust/kernel/drm/kms/plane.rs       | 1230 ++++++++++++++++++++++++++++
+ rust/kernel/drm/kms/vblank.rs      |  461 +++++++++++
+ rust/kernel/drm/mod.rs             |    1 +
+ rust/kernel/i2c.rs                 |  192 +++++
+ rust/kernel/lib.rs                 |    1 +
+ rust/kernel/platform.rs            |   77 ++
+ rust/kernel/sysfs.rs               |  245 ++++++
+ 25 files changed, 6930 insertions(+), 27 deletions(-)
+ create mode 100644 rust/helpers/drm/atomic.c
+ create mode 100644 rust/helpers/drm/framebuffer.c
+ create mode 100644 rust/helpers/drm/vblank.c
+ create mode 100644 rust/kernel/drm/event.rs
+ create mode 100644 rust/kernel/drm/kms/atomic.rs
+ create mode 100644 rust/kernel/drm/kms/connector.rs
+ create mode 100644 rust/kernel/drm/kms/crtc.rs
+ create mode 100644 rust/kernel/drm/kms/encoder.rs
+ create mode 100644 rust/kernel/drm/kms/framebuffer.rs
+ create mode 100644 rust/kernel/drm/kms/modes.rs
+ create mode 100644 rust/kernel/drm/kms/plane.rs
+ create mode 100644 rust/kernel/drm/kms/vblank.rs
+ create mode 100644 rust/kernel/sysfs.rs
+
 -- 
 2.55.0
 
