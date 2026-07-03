@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41903F4DE2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E784E417368;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783092565; cv=none; b=Ngko5wF0hjzPkM+/RNN5+hrdC0zj/9fTR/ANzY+Gzp/Phul3wcd28B0Krbn8KkBo3ZoNEoreo5DhUuMe/w+upx2n6cZ8v7OTVWXgS6uIOkAj0sagGgctUvIuUIfQBugWTwbHggSbGRZkLERcUSFUuA0KRhHORvvrJxUhoSROYok=
+	t=1783092566; cv=none; b=MUPPgVFfWeyRMufhWrO4j/GC1RThvEC5/zwT7nqEbGI8sH5rRnTwlhZ5NW5AmY2ZLRzpkSz2k8AsIj4+EjN/n745jQ5xg7PbaZh3qJsxfwS3WSM46hPQ9CcbmgtxZHTgLbll0qHQdRqLfFz+6YGXMCV61t4DQG/k0Yid7wYVtDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783092565; c=relaxed/simple;
-	bh=209Nac/iJ9paij4wD2LYPworVIG6Ys3P+mfxV+DyI3U=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M63YW8BVUqfmc0nNrdT0e8DZ6PbshSurdQb0gLPujsb3tfWDVQGA1yGNRJiN3CitWJ8WqWCCHdf0Hz3Ml/+W+dvLv8/aIjp+Z8TfPt6WLV0/XJJbcD8DPLJo3Q1S5AWY/rgMnLYkRXwbUjJWM4/Ov2sl3K7gomUxZtYYUOUqllU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9OnOj+5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1783092566; c=relaxed/simple;
+	bh=tYeL/EzsTr+oMHICp3nBN2RBAmqQUWA8dxNAnXZVunI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jFd63fOcQstkQUEHO+KPoayxJvsTJMuJU1GS6YhyyXjR5L9vCiDp9cy+ZBExiUhK2cZnIyDexQGwbY+veU4PzlfvO4DOMCa/EPb03uLsKxEcqAP3JuzISazecXAERAyeRTVyGwcVUq16yt6flti9A0pMGDW4gQTe3SRi/x79mq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOsgEACi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9OnOj+5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 67588C2BCB9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOsgEACi"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 90BB6C2BCFB;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783092565;
-	bh=209Nac/iJ9paij4wD2LYPworVIG6Ys3P+mfxV+DyI3U=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=t9OnOj+52UAxLUKpf15800ldIMquK0qO/H5cAFNdlt5xINy6GoEBC5rJzbnUxTJLn
-	 x3eh9f9dD88n5W7G784TT072Iptca46D7uU9casrqs+Y6uFiH4ujM0ms9VDN6fn09l
-	 FH3FA5+XAjBmJOKQqToulgmeApm8QX72mGQw2Ol+0cTKWOb+FSUD/SyuWfNl8+LFlR
-	 3dh07Sks2h4AIbW/vYi+g315CAfKMEtwnouUSTDZU9+z0fAKqPLJDXofcDqcYXMu8K
-	 PPq8ksUqR69LwEtubNZ/X+1AQB9j2Pl17Ai8o6CRN8iQHyd8Kvl4OEe+n2xb4986R0
-	 menCRSBFTFRPw==
+	bh=tYeL/EzsTr+oMHICp3nBN2RBAmqQUWA8dxNAnXZVunI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=sOsgEACiyrjcdG8ELp5uXJgZK4uYgvicDsmnlrrBBdMAsuReaQK3ijp60WznG3i6H
+	 CqSeidPm22qJ04ug7gGOVSYRIWtBUbwW0WgFVVvGr1QEDAIewGUVw557ROG446j7DE
+	 5kl/oVrTDnaL+zC5VDFuG3kHi4a9IBaEHFH014HMvwKU7KhOF4ui8zWMr/YtLy8e05
+	 jmNnOV0mNVbS1ifPHQYCKsXxYWcEvePhXda+RwlCRATT/py2P4UzC2W2u8SdDK+rSh
+	 eyqqAc3yW/A5T62V4nDVkQP+SjtJ2cJE7++Sm1C+WVqnDUF/wU0szJK2k7/bJSCWbk
+	 EuP3Y/QPIo6rg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5280CC43458;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75FAEC44501;
 	Fri,  3 Jul 2026 15:29:25 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Subject: [PATCH 0/7] rust_binder : Implement dynamic debug logging mask
-Date: Fri, 03 Jul 2026 15:29:21 +0000
-Message-Id: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
+Date: Fri, 03 Jul 2026 15:29:23 +0000
+Subject: [PATCH 2/7] rust_binder: Implement the BINDER_DEBUG_USER_ERROR
+ logging mask for freezer-related operation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,10 +41,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFHVR2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDcwMj3aLS4pL4pMy8lNSi+JTUpNL0+NzE4mxdM2Mzc2NzA0NTMyMTJaD
- mgqLUtMwKsMHRsbW1AJF2f9hoAAAA
-X-Change-ID: 20260702-rust_binder_debug_mask-636737015624
+Message-Id: <20260703-rust_binder_debug_mask-v1-2-9bdf12b5325c@google.com>
+References: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
+In-Reply-To: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
  Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
@@ -60,11 +60,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=4101;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783092563; l=5227;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=209Nac/iJ9paij4wD2LYPworVIG6Ys3P+mfxV+DyI3U=;
- b=MORHRCvDgYndUEdGZgXgwmaLFx7DWtaLBbhbEpXc09UDEQCTNg1U3MLVlzCs9O6OrPKN5pvGy
- Nf/juQn40K2CuQlBR5ncjlTRvbSdCIv0F7PfcrfJkkeVYcezeneLF7U
+ bh=+HqU/jcA5ROFNMDlUkYMxvVpht0ffASbIoUaPo8UaYk=;
+ b=KFo052RBUFaYKi8znQFQd7RpFO05e99sbaY0tX3BGLjoGqD2sMZ5NylvaP667/2DXopUarkmI
+ EJfQIvjYlT4CXkNUwA+mM1e+G9guCAWaR3Eqiqcjr6ASbt6aIPWmIVU
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -72,81 +72,122 @@ X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
 X-Original-From: Jahnavi MN <jahnavimn@google.com>
 Reply-To: jahnavimn@google.com
 
-Why we implemented this feature : 
+From: Jahnavi MN <jahnavimn@google.com>
 
-While working with and testing the Rust implementation of the Binder 
-driver (rust_binder), we realized that diagnosing transaction failures 
-and protocol errors was extremely difficult. When a user-space application 
-sends malformed data or makes a lifecycle mistake, the driver rejects it 
-with a generic error code (like `-EINVAL`). Without internal logs, the 
-driver acts as a "black box," forcing developers to guess which check 
-failed.
-
-In the legacy C Binder driver, this issue is solved using a dynamic 
-`debug_mask` module parameter that toggles verbose logs for specific 
-subsystems. This series brings the same critical capability to the Rust 
-Binder driver to provide developers with clear, real-time feedback.
-
-How this helps and simplifies debugging : 
-Instead of rebuilds, reboots, or guessing:
-- Developers can enable logs instantly on a running device by writing to 
-  `/sys/module/rust_binder/parameters/debug_mask`.
-- It prints the exact reason for failures (such as alignment errors, 
-  mismatched call stacks, or invalid handle references) directly into 
-  `dmesg`, reducing debugging time from hours to seconds.
-- It protects system logs by keeping logging off by default and only 
-  enabling it when developers are actively troubleshooting.
-
-Code development approach : 
-We built this system in a structured, progressive approach:
-1. Infrastructure Bridging (C/Rust FFI) :
-   Because the Rust `module!` macro cannot yet declare parameters, we 
-   declared `debug_mask` in a C companion file and linked to it in Rust via 
-   FFI. We used volatile memory reads to ensure changes to the mask are 
-   detected instantly at runtime.
-   
-2. Verification Setup :
-   We created a `binder_debug!` macro and instrumented process `open`, 
-   `flush`, and `release` calls under the `BINDER_DEBUG_OPEN_CLOSE` mask. 
-   These low-frequency events allowed us to verify the setup without log 
-   flooding.
-   
-3. Targeted Instrumentation :
-   We then systematically added detailed logs across 3 major categories:
-   - User Error : Captures API misuse like misaligned FD arrays, 
-     negative reference count transitions, and invalid death/freeze 
-     notifications.
-   - Failed Transaction : Dumps a complete diagnostics log on 
-     transaction errors (IDs, PIDs, sizes, OOM states, and line numbers).
-   - Dead Transaction : Logs in-flight cancellations, aborted 
-     replies, and notification cleanups when processes exit prematurely.
+This adds dynamic debug logs for:
+- Requesting freeze notifications on invalid references, duplicate
+  cookies, or already active registrations.
+- Completing freeze notifications that are not pending or not found.
+- Clearing freeze notifications on invalid references, inactive
+  notifications, or cookie mismatches.
 
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
-Jahnavi MN (7):
-      rust_binder: Add dynamic debug logging mask
-      rust_binder: Implement the BINDER_DEBUG_USER_ERROR logging mask for freezer-related operation
-      rust_binder: Implement the BINDER_DEBUG_USER_ERROR logging mask for reference counting and death notification operations
-      rust_binder: Implement the BINDER_DEBUG_USER_ERROR logging mask for transaction parsing and protocol validation failures
-      rust_binder: Implement the BINDER_DEBUG_FAILED_TRANSACTION logging mask for transaction parsing and routing failures
-      rust_binder: Implement BINDER_DEBUG_FAILED_TRANSACTION logging for death notification allocation failures
-      rust_binder: Implement the BINDER_DEBUG_DEAD_TRANSACTION logging mask to trace in-flight cancellations during teardown
+ drivers/android/binder/freeze.rs | 49 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 39 insertions(+), 10 deletions(-)
 
- drivers/android/binder/debug.rs            |  49 ++++++++++
- drivers/android/binder/freeze.rs           |  57 ++++++++---
- drivers/android/binder/node.rs             |  24 ++++-
- drivers/android/binder/process.rs          |  71 +++++++++++---
- drivers/android/binder/rust_binder_main.rs |  11 ++-
- drivers/android/binder/rust_binderfs.c     |   3 +
- drivers/android/binder/thread.rs           | 147 +++++++++++++++++++++++++----
- drivers/android/binder/transaction.rs      |  16 +++-
- 8 files changed, 328 insertions(+), 50 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260702-rust_binder_debug_mask-636737015624
+diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
+index 53b60035639a..d0559ed308ef 100644
+--- a/drivers/android/binder/freeze.rs
++++ b/drivers/android/binder/freeze.rs
+@@ -176,11 +176,18 @@ pub(crate) fn request_freeze_notif(
+         let mut node_refs_guard = self.node_refs.lock();
+         let node_refs = &mut *node_refs_guard;
+         let Some(info) = node_refs.by_handle.get_mut(&handle) else {
+-            pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION invalid ref {}\n", handle);
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_REQUEST_FREEZE_NOTIFICATION invalid ref {}",
++                handle
++            );
+             return Err(EINVAL);
+         };
+         if info.freeze().is_some() {
+-            pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION already set\n");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_REQUEST_FREEZE_NOTIFICATION already set"
++            );
+             return Err(EINVAL);
+         }
+         let node_ref = info.node_ref();
+@@ -188,7 +195,10 @@ pub(crate) fn request_freeze_notif(
+ 
+         if let rbtree::Entry::Occupied(ref dupe) = freeze_entry {
+             if !dupe.get().allow_duplicate(&node_ref.node) {
+-                pr_warn!("BC_REQUEST_FREEZE_NOTIFICATION duplicate cookie\n");
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_USER_ERROR,
++                    "BC_REQUEST_FREEZE_NOTIFICATION duplicate cookie"
++                );
+                 return Err(EINVAL);
+             }
+         }
+@@ -238,7 +248,11 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
+         let mut node_refs_guard = self.node_refs.lock();
+         let node_refs = &mut *node_refs_guard;
+         let Some(freeze) = node_refs.freeze_listeners.get_mut(&cookie) else {
+-            pr_warn!("BC_FREEZE_NOTIFICATION_DONE {:016x} not found\n", cookie.0);
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_FREEZE_NOTIFICATION_DONE {:016x} not found",
++                cookie.0
++            );
+             return Err(EINVAL);
+         };
+         let mut clear_msg = None;
+@@ -248,8 +262,9 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
+             freeze.num_cleared_duplicates += 1;
+         } else {
+             if !freeze.is_pending {
+-                pr_warn!(
+-                    "BC_FREEZE_NOTIFICATION_DONE {:016x} not pending\n",
++                binder_debug!(
++                    crate::debug::BINDER_DEBUG_USER_ERROR,
++                    "BC_FREEZE_NOTIFICATION_DONE {:016x} not pending",
+                     cookie.0
+                 );
+                 return Err(EINVAL);
+@@ -277,19 +292,33 @@ pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader)
+         let mut node_refs_guard = self.node_refs.lock();
+         let node_refs = &mut *node_refs_guard;
+         let Some(info) = node_refs.by_handle.get_mut(&handle) else {
+-            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION invalid ref {}\n", handle);
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_CLEAR_FREEZE_NOTIFICATION invalid ref {}",
++                handle
++            );
+             return Err(EINVAL);
+         };
+         let Some(info_cookie) = info.freeze() else {
+-            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION freeze notification not active\n");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_CLEAR_FREEZE_NOTIFICATION freeze notification not active"
++            );
+             return Err(EINVAL);
+         };
+         if *info_cookie != cookie {
+-            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION freeze notification cookie mismatch\n");
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_CLEAR_FREEZE_NOTIFICATION freeze notification cookie mismatch"
++            );
+             return Err(EINVAL);
+         }
+         let Some(listener) = node_refs.freeze_listeners.get_mut(&cookie) else {
+-            pr_warn!("BC_CLEAR_FREEZE_NOTIFICATION invalid cookie {}\n", handle);
++            binder_debug!(
++                crate::debug::BINDER_DEBUG_USER_ERROR,
++                "BC_CLEAR_FREEZE_NOTIFICATION invalid cookie {}",
++                handle
++            );
+             return Err(EINVAL);
+         };
+         listener.is_clearing = true;
 
-Best regards,
 -- 
-Jahnavi MN <jahnavimn@google.com>
+2.55.0.rc0.799.gd6f94ed593-goog
 
 
