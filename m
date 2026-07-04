@@ -1,287 +1,265 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021105.outbound.protection.outlook.com [52.101.95.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB2A1DED40;
-	Sat,  4 Jul 2026 17:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.105
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783187200; cv=fail; b=ZklooRcY4x1dRBnB7wxJvu5h0DDU2sDADVy8OEkuOHXSijbu8GZdvBxsEZhuu+jrD7U2dP7FWQhAl9KDx8ZVRUZlg6+3N6N6dgsogfztsERr9OnIbZfNB4eJSiL9j8LEmSJQ222l5W80HfkAcK0Gy7hoJpoWCfsovcspQv4ZOWw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783187200; c=relaxed/simple;
-	bh=WnesFMKsQ0x43Bzbn3+PdE796o0M73jel083ZaNvxhY=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=bCfF4jwtbDi0BeI0y3EBlnmFTsVsS/EaAtZr8c/Cqn99Dt4XVR07Zu9bBwRr0c/uVrDq7zPUH5sH4VRigeqwn+JyvBvtN8iZnr969iZQkUSJuiyWqlJ196ED6lx0qiewm927ymRQK9ANE36LGtykzdGM0CLHSwmY8KU5HwsVedQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=p4nR9Kn6; arc=fail smtp.client-ip=52.101.95.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0170D1C84AB;
+	Sat,  4 Jul 2026 19:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783194188; cv=none; b=jr6kCLvUSESpDdMCCtgd3PmYLfQDtg2DmS5UYiRQQNRWFxUBgnHh1SP/qTyaNuLsTYZIb6G2d7T0+U1eQnLGTat4JVSdr/9jwv/ZWPg2+twGlzw935VQsoQmm5QRJiM9ZnL7tF6QcTSlYbRlSY9qk1Dv0ScBillwMr5V7/Y0V/g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783194188; c=relaxed/simple;
+	bh=qs1U9E+DEVGmR2Z8Xd4ZQW6556SE0U/dQuPWkOLO4H4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=pfzFcdKtdyqfqkOqaQT0jjauWjr58euLnW1V7sEw/OTEFz5Dyyk+493ucFDrnN0Lo9LSJaRKYiQsGN40enFReY6OlbUhfb0yh41E7JzB2bOFk5rc1CdOpecdn5ThTgQS70TmTNnmEP/nfMsxlmoz9cgq0S6HvEKaVcbCB1gGi7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRTC+dY/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="p4nR9Kn6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HehpCcxEJTTGs/11ZK98y7MOIzt76SVrVo0BSlolPI+d0d8YIgB9hojijIg/XH92lYcMAPqdVW1NnWJkOPwu5kGg7zQdYkZGyo2l7u1UV1fAXJultIw3wPu0x9UL+fTY3l6C7MZ+hzEO5wUkAdbeTM6jjT3LPBSOLwKwA6mAeL8/SzHfTBallltPNk7MxUyb33DzI6p39g0eqM/1bFB5ZfCsX21D8Yq5Rgt0bJpr78C52t3c061pu41jn/6sjE6oQjQUwu2/uiAs+q0VMW3Ee0vnR9ju3+/v2KgQv9b7oeeGKVFQ+yPpt0nQCyLWUAVQA8sGpSY87+xmmbNR+fLT7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cmlIfWzzSfrEuRLlkgBsk+RqQaDInP6taCtyFFD/Uyc=;
- b=djTSdOxdFRP6JUVjMQqUIRPOG3nF1iLHPTf2VSig7gtDHxkPvEfC6JHr/HP/kFymq0H6lGxUG/75GDdl5/2iOnQ6Tc0NLPI+5pHUG69Ca3ozAUGrOk8KBUx3GtciQWqG5yyP28CQ7OoxoOEE7bf0FOHuFPiJFMfWd/N3CCa5p8aANLmClzyhgDCzLRmAP9EE/XsmqQn+/Y4srQ8h3aB9LKDlRa8kQGFLALvZPEu5dMiH0uTsqSkjwfKOwMDYFqZm7+FyzLTlcgwKPNeQvl5QwoxgnJ6EhYs2C0wKxlhJMZvTs8WC1+uAN9ILA23cRp6TqQ6FvLem56+en8LRDzIzdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cmlIfWzzSfrEuRLlkgBsk+RqQaDInP6taCtyFFD/Uyc=;
- b=p4nR9Kn6ceblyj8ifHHXBbR3eKSKhZ3HBRWaMjzlvc8pdlrFV3ZiUF64xg5EbGo7Xp3pMfQVKK5lVed8ol4rPTvsBxvwMX+5q7MOCaNBSJWVLjRe1kwkVuGhlLs0VoRuA1uCxXQ697ba/he9JdViucehssO4jc9Ud5DNBhnqmpk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO2P265MB7170.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:32d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Sat, 4 Jul 2026
- 17:46:35 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Sat, 4 Jul 2026
- 17:46:33 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 Jul 2026 18:46:33 +0100
-Message-Id: <DJPZ3RKZWJZS.1EOKOZA3WE6GZ@garyguo.net>
-Cc: "Boqun Feng" <boqun@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Lyude Paul" <lyude@redhat.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Miguel Ojeda" <ojeda@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Tamir
- Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Ingo Molnar" <mingo@redhat.com>, "Will Deacon" <will@kernel.org>, "Waiman
- Long" <longman@redhat.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH RFC 0/2] rust: sync: create lock class using
- `#[track_caller]`
-From: "Gary Guo" <gary@garyguo.net>
-To: "Peter Zijlstra" <peterz@infradead.org>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260703-rust_lockdep-v1-0-1c21c62d0341@garyguo.net>
- <20260703140140.GE651302@noisy.programming.kicks-ass.net>
- <DJP06ILK15W3.2XGWM3VAKNF04@garyguo.net>
- <20260703223242.GS751831@noisy.programming.kicks-ass.net>
- <DJPXYGA9HD3B.30I15MLPUM7DR@garyguo.net>
- <20260704171042.GT751831@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260704171042.GT751831@noisy.programming.kicks-ass.net>
-X-ClientProxiedBy: LO4P123CA0196.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a4::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRTC+dY/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1173A1F000E9;
+	Sat,  4 Jul 2026 19:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783194186;
+	bh=dXIVdqBmXDiJE5zH9LVS4v2TAK0M3+aAqTPABU0tdTk=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=kRTC+dY/R28i61BTfosQ3WoW+S6BphqMIrosgRBcgz2tAJ8D0+b8qjBKKPyGWeceH
+	 pGrVAtKOKIue+DedQOgE+SIQ80bW1tHKoTC5vkN+yE9LmTe1yNQqyNdBcLZylIrQXa
+	 RVKfeJ15z/wGKbxXmx35hkqMEPqKETXZC8iMmiIC0Yq+ASu1aNbPJILVVLSkg0bqSY
+	 zZZSmfWXfXzjjzXdBm5R2W9T8JN7Sbu+vAEcwAiujCpuGf/qds347XPb2ll89Qu/nq
+	 HXFHfnzk1UVmODasIxXicufLk8Tz/1R7n7Pi64rUb6sEQ8w0d4OSmaTC9j9mgfjJ6N
+	 /mq4uGdGSh+Hg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB7170:EE_
-X-MS-Office365-Filtering-Correlation-Id: a603ec67-04a3-470d-70ae-08ded9f4302b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|10070799003|1800799024|366016|376014|23010399003|18002099003|22082099003|56012099006|4143699003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	ZZDIUxbNa924eFNdLdxwBZZ0xu6F/p8Ytj7EjEmju9PVapajQfwsOE+VANm5yt9iWa+83CPHDz5e5Q/r7A5cup1Tash/JkdftqBkBTFqEBRDA9zTnCLOuZk9jrpfJa//KeVP6OkwkCOOZdf2w2uhjCIAGmHyBmPZppcqUhLyT9P+zpEO0tdS/0FWdVy7EPpILqGu8KP6Bp+jk1HLWqPhhotb3q/Pd6tJiqOwM0UojMQspFFrIGYxcr8k0jTXPIo9eI3a388ZmwYNn3q8CZCL63bc+kLw5eKvl3FpGWYmNLq2y1BHD/xSEvvAbsFjTGFBPexDv3Drm+PKO12A6o2tzUoI9rSraC9o/i0UnNywlsIzwTYRIor58G+i7F8eWGMfsALKuPdtgJ2l1StzwHnlEVojLz5KFGqlsg1xgIQUc0eiGFDNW/2QohLSDl4jvUCaLOctjs/N6oEzSFzmcRCFwqQjUGTHop441z5SDifjulYBOiqqB3b8+gPsEAxu+Advy6tY0HvkaUfCgcJaMLjJ7IdL5LPn+HKd8KRJfmqeQpPkluJfMgoeOeichPfzxbEXilQu6HMG4azWrRNgpylc+84l0iBeekmXiImrVkoW1t/0Q/HHMGD4fKYWTtWCgw+rzDY94hAgeb6h1m6i6YRdfhf+v+EoMCJssPg6T/ZcC3o=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(10070799003)(1800799024)(366016)(376014)(23010399003)(18002099003)(22082099003)(56012099006)(4143699003)(6133799003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bzZzaHBPYXVpRE4zd3VHWHlBczNNMk5QeEtVQ2pCZUFpT2xVb3NUaFZVSzV2?=
- =?utf-8?B?djBzczY0K3FZWExFSENRNWQwaUwvZGNoSzY1ekRpS01KbVNKc3ZGQWsrNHln?=
- =?utf-8?B?bEJNL1hmM0k0TllyaXgrbmFhc3BDRTIwdUtvZkd3WWx6dHRPUEh0dGwySVpO?=
- =?utf-8?B?Rmd1Y1Q0TnJseXo5K2c4ZWVDY282dmsxeHcvenZhc2lGdmNSQjRCRkkrdXhE?=
- =?utf-8?B?YnFjb3pSdnE0T2RxYXVOemJxNUw5UVNuREFpUjUxc3NRS2x0VVhYQWt5Zitr?=
- =?utf-8?B?NWhkQ2dYUG42WnJoRFFKaGNBeUZ5eWFVNHIydlgwYWh6L0RpcUpJOFh4eTQ2?=
- =?utf-8?B?SHBkK2k5c01ReDFlamlBZXdzK2RvT2ZxMjFMaXFFR1dKcmZyUEFIbk5Fa1pn?=
- =?utf-8?B?UHhMMVdGeFlDZURwdkN5Y2FxbUFXOFVkN0crUnpxMjZ5dU5lWUN2cUtvTVBk?=
- =?utf-8?B?MS93WDRXVXlEaFJ3WGJlWFphT2lURkxweXBtNlpndk5DY1c4SmdxRXBZZUl5?=
- =?utf-8?B?SVc1SEh2dGVTOUxLWUpFRU1ZMGF4YjRmcEtFdHRmYU40QXcvWWdrNW5KMllv?=
- =?utf-8?B?aTNjMzByMVVvaWoyckU4YmV1cVVTWE1oNGRhWXllSTJFczY2d1YwaktueDgv?=
- =?utf-8?B?elIwS0gweGplbldWRlBndThnOVRzdUhBZDlMUWc4bTRVVmZDM0IrdndiL0xs?=
- =?utf-8?B?VWRrVmFrWE00V3VJYTBqVDJtWUJoTHUyVGpwYUJiLy9UQ3M3TmEzZ3BHS2Vx?=
- =?utf-8?B?aW9WWnVlVEFJOGhKSFVNd3dVK0hSLzFtRzl3ZGlFTWxmRFRJMm9UU0RLc3JG?=
- =?utf-8?B?QWpsaUlmSTYyS24zRm9ZcTV3STJhVWJEenJrVWJWdkxaWDlOVmN4aXRaSUFS?=
- =?utf-8?B?S0xkTWNOZTV1bVI3V2UxMy94VDluUWM4eVlZYnZaeWVYMDhWb0xRU2tjR3ZU?=
- =?utf-8?B?OW9KSFpqYTZvRE9sNUhiV28vKzl4bzdhZ3liMHRoMXNvdzhwb2VGeXI3NnQ1?=
- =?utf-8?B?WUN4K0xzQ1hmZm95UlhCUCtYNHd3RlVXVjZUYmQ5Q0IvbDkxMGwyNERZSFZU?=
- =?utf-8?B?bm8xcVlCaTU4K0t6VmZoNEp3SlZua0daUUVVK2VOUWp2K2dhV1JYdjlJa2Jh?=
- =?utf-8?B?VnE4S05zMVRnREdSeDZYdXVNOHBhOVdsb3lpVTQ4YyszRytLY2N2U29lanBC?=
- =?utf-8?B?Nm9SRDZicXh4U2Rvblg5YWNqalh1bmVNT0hBZmpCUERvWDRGVm5iUHA5VXRw?=
- =?utf-8?B?ck8vZnBJUlVocmMyNGE1d1lpRXRuZWJRQXFYbWFkMVR3TjZMc3FOMkJwYXRY?=
- =?utf-8?B?eWp6WEZjTEJIZ0lubFk1RDI5MUZRUVJqRExxdUdZOE5jWlowaVBsQ1haQzFS?=
- =?utf-8?B?ZEFac3Y2OGl4cUFoVklzdVBYU2ltMmEvNURBWnlrZmYxSmt3aGk5Y3RIS0FS?=
- =?utf-8?B?a1JROW5JT0hJM2NVaTlVL05GNkk5R0NkaEp0azIxY1ByMU5xbm50ckFtQ05m?=
- =?utf-8?B?UDVBTEFvT3lXb25XY3htZEl3NGprSGJ1SmZpSDU0UDhuK1VhNm5ONTFuSWE3?=
- =?utf-8?B?VHZYYzBydnBVNUlESCtSUWhXbnp6MjRtTzFrZkRaNDdWeHpkRmlYNXYyZUxT?=
- =?utf-8?B?NGxSZkNhbzZTSEwzWDc5dnlENDdUclZkNS9tQzgvUnR4ZzJLTnlJV2QwWmJF?=
- =?utf-8?B?NXBCbVJnR0dwWGU4dkFDV1Rlbnd3M3piVUlLMXo5cWgyNW1pSklsSDc3N2tW?=
- =?utf-8?B?Z2pKV3hVZFZ6eWdncGFBR2N2anMwUW1NSmRGMkduU0VGTFU3VU9kVnRpK0c2?=
- =?utf-8?B?N1VuQzR3U1JkbSsyaTZwVUFYdWw0MmZsNjFmSC94aTNXbFVyK0FTRmhHbTdD?=
- =?utf-8?B?QXN3UzFMMmtYcE84UTRQbUtaSTE0d095dTBoeU5KOVViRmFJSi91VDlKa2tw?=
- =?utf-8?B?TEFWQURIKzJPVmJNcVptdlhRKy82ckQwNktmYkwvcFBQVTlUYVVVS2cyTW9O?=
- =?utf-8?B?czVnYmZvdGllaXBNV0JhakZWVWdvQWZBYUFVUFdKQ3kvNncrd0VmWWYwYzU2?=
- =?utf-8?B?ZUhnV29JcFhTSlQ3NWZOc0RKUklhNnJqSzdMdmhuUGZnN2FzY0U1ZmJ1MTRB?=
- =?utf-8?B?OXlXRzZ3aUVacFVsUDNod0F6NEdtUFdmWjV0YnVvMk5sbTBrMGFreXF6Njh4?=
- =?utf-8?B?VkNHVmRYV1p6YThrNGhNRkttVVdWbnZoQVlQQS9vdzdDaFVNb1RGdG15RUtC?=
- =?utf-8?B?clpIdkRma0M1eFBBV1ByUkp6eUhzTk40OGRvbzBrdWZTSXJITG9GTmVlTkJx?=
- =?utf-8?B?YVJHbFo1aTdyUFhyTGRrdDdGTUZWbmthYUR6ZXpDLzd2YWNVK1Bvdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a603ec67-04a3-470d-70ae-08ded9f4302b
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2026 17:46:33.7349
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3cBvrSaZD9hhzkqmydT308PEopgNSVCw0bNAFugFyl47SJUDFy1wQrJ9vt4GHG7m/rPqcH9AfD2TPwUv3xpVuA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB7170
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 04 Jul 2026 21:42:59 +0200
+Message-Id: <DJQ1KX0O60J7.Q3RUZ46V153O@kernel.org>
+Subject: Re: [PATCH v6 1/1] rust: introduce abstractions for fwctl
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <dave.jiang@intel.com>, <saeedm@nvidia.com>, <jic23@kernel.org>,
+ <gary@garyguo.net>, <joelagnelf@nvidia.com>, <aliceryhl@google.com>,
+ <kwilczynski@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <cjia@nvidia.com>,
+ <smitra@nvidia.com>, <ankita@nvidia.com>, <aniketa@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <kjaju@nvidia.com>,
+ <alkumar@nvidia.com>, <acourbot@nvidia.com>, <jhubbard@nvidia.com>,
+ <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
+To: "Zhi Wang" <zhiw@nvidia.com>, <jgg@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260629150156.3169384-1-zhiw@nvidia.com>
+ <20260629150156.3169384-2-zhiw@nvidia.com>
+In-Reply-To: <20260629150156.3169384-2-zhiw@nvidia.com>
 
-On Sat Jul 4, 2026 at 6:10 PM BST, Peter Zijlstra wrote:
-> On Sat, Jul 04, 2026 at 05:52:35PM +0100, Gary Guo wrote:
->> On Fri Jul 3, 2026 at 11:32 PM BST, Peter Zijlstra wrote:
->> > On Fri, Jul 03, 2026 at 03:24:29PM +0100, Gary Guo wrote:
->> >> [snip] On the lockdep side,
->> >> essentially the name will be "(rust)", while the actual name can be r=
-etrieved
->> >> from the lock class key.
->> >>=20
->> >> So for
->> >>=20
->> >>     let foo =3D KBox::pin_init(Mutex::new(42));
->> >>=20
->> >> in, say, foo.c:123
->> >>=20
->> >> it will eventually call
->> >>=20
->> >>     struct rust_location *loc =3D /* static generated by the Rust com=
-piler */;
->> >>     mutex_init_lockdep(foo, "(rust)", (struct lock_class_key *)loc)
->> >>=20
->> >> And when "(rust)" is encountered as lock class name, instead of print=
-ing the
->> >> string as is, lockdep will call
->> >>=20
->> >>     lockdep_print_rust_name(loc)
->> >>=20
->> >> which will be doing essentially
->> >>=20
->> >>     pr_cont("foo.c:123");
->> >
->> > That seems quite terrible. The C names are based on the expression use=
-d
->> > to initialize the class and are thus somewhat descriptive. But file:li=
-ne
->> > combos are horrid identifiers for locks.
->> >
->> > Why would you want to do this?
->>=20
->> I do think this is not ideal, however the current code is already doing =
-this.
->> This RFC series isn't changing the name at all, just represent this in a
->> different way.
->>=20
->> The reason that file:line is used for names is due to the fundamental di=
-fference
->> between initialization in C and Rust. In C you create something uninitia=
-lized
->> first, and then initialize it, and it'll be UB if the value is used befo=
-re
->> initialization or (for some types) initialize a value twice. In Rust we =
-use
->> pin_init to ensure that a value cannot be used uninitialized.
->>=20
->> The way the syntax is write out currently is something like
->>=20
->>     pin_init!(MyStruct {
->>         my_mutex <- new_mutex!(initial_data),
->>     })
->>=20
->> [
->>     which this series is turning it to
->>=20
->>     pin_init!(MyStruct {
->>         my_mutex <- Mutex::new(initial_data),
->>     })
->> ]
->>=20
->> as you can see the `new_mutex!` or `Mutx::new` does not know where it is=
- going
+On Mon Jun 29, 2026 at 5:01 PM CEST, Zhi Wang wrote:
+> Introduce safe Rust wrappers around struct fwctl_device and
+> struct fwctl_uctx. This lets Rust drivers register fwctl devices and
+> implement firmware RPC callbacks through a typed trait interface.
 >
-> To be frank, no I don't see. I have absolutely no frigging clue what any
-> of that means :-(
->
->> to be initialized to, because we prevent people from being able to name =
-a
->> yet-to-be-initialized place.
->>=20
->> It is possible to use the C approach (which early days of Rust-for-Linux=
- does
->> use), but doing so require a lot of unsafe keywords because you are rely=
-ing on
->> the programmer to not mess things up, instead of having the compiler che=
-ck.
->>=20
->> So the best alternative that we can use for the name under this constrai=
-nt is
->> the file:line combo. It is less descriptive, but at least it does tell y=
-ou where
->> the lock class is used, so you can still trace it back. Given lockdep is=
- a
->> debugging feature, I think the less descriptive name, albeit inconvenien=
-t, is
->> not a dealbreaker.
->
-> People already struggle to make sense of lockdep reports, this isn't
-> going to make it better :/
->
->> The trade off here is the convenience of creating a lock (safely) vs the
->> descriptiveness of the name, and I think the former is more important. I=
-t is
->> still possible to explicit give a name if it helps (Binder is actually d=
-oing
->> this already), but this currently cannot be implicitly created.
->
-> Like I said, Rust is still line noise to me, and I really don't
-> understand anything you've just tried to tell me.=20
->
-> Now, I do speak (some) C++, and the new thing you mention got me
-> thinking you're talking about a constructor. Are you trying to say that
-> since the invocation of the constructor is somewhat implicit, there is
-> no good way to stringize the structure member name and store it?
-
-It's indeed somewhat similar to a C++ constructor (the actual mechanism is
-different, but conceptually they're similar). You do get explicit invocatio=
-n
-(there's no implicit invocation of constructors like C++, you can see this =
-as
-similar to C++'s constructor with "explicit" keyword).
-
-But the gist here is correct, there's no good way to stringify the structur=
+> The abstraction keeps lifetime and reference-count handling inside the
+> wrapper, exposes pinned per-FD user contexts to drivers, and validates th=
 e
-member name.
+> layout assumptions required by the C fwctl allocation model.
+>
+> Registration owns driver private data with a lifetime tied to the bound
+> parent device. fwctl callbacks access that data through the Registration
+> lifetime, while Device remains only the refcounted fwctl object. This
+> avoids requiring Rust drop glue from the fwctl_device release path after
+> unregister or module teardown.
+>
+> Co-developed-by: Danilo Krummrich <dakr@kernel.org>
 
-> That said, in C++ you can mandate a string be handed to the constructor;
-> this would mean everybody would need to explicitly provide a descriptive
-> name, surely Rust can do this same? Every !debug build could then
-> instantly ignore that string, but at least it'd be there.
+This also needs:
 
-It's certainly possible to give explicit names (this is what patch 1/2's
-"new_with_name" function is for). To mandate names being provided we just n=
-eed
-to remove the constructor function without the name. That said, I am not su=
-re
-that we want everyone to explicitly give names. Especially for types like
-delayed_work where it needs two lock classes and names, it's somewhat
-leaky abstraction if the constructor asks to user to provide a name for its
-work completion and a name for its timer (as it's not possible to concat st=
-rings
-without allocation without using macros).
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Best,
-Gary
+> Link: https://lore.kernel.org/r/DJJW7X4ESDSM.QCVYK2FC7ZR3@kernel.org
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+
+Few remaining nits below.
+
+Jason, would you be fine if I take this through the DRM tree, so Nova can b=
+uild
+on top of it right away, or do you want to take it through your fwctl tree?
+
+> ---
+>  drivers/fwctl/Kconfig           |  12 +
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/fwctl.c            |  17 +
+>  rust/helpers/helpers.c          |   3 +-
+>  rust/kernel/fwctl.rs            | 546 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   2 +
+>  6 files changed, 580 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/helpers/fwctl.c
+>  create mode 100644 rust/kernel/fwctl.rs
+
+
+The MAINTAINERS file needs an update.
+
+> +/// Represents a fwctl device type.
+> +///
+> +/// Corresponds to the C `enum fwctl_device_type`.
+> +#[repr(u32)]
+> +#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+> +pub enum DeviceType {
+> +    /// Mellanox ConnectX (mlx5) device.
+> +    Mlx5 =3D bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_MLX5,
+> +    /// CXL (Compute Express Link) device.
+> +    Cxl =3D bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_CXL,
+> +    /// AMD/Pensando PDS device.
+> +    Pds =3D bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_PDS,
+> +    /// Broadcom NetXtreme (bnxt) device.
+> +    Bnxt =3D bindings::fwctl_device_type_FWCTL_DEVICE_TYPE_BNXT,
+> +}
+
+NIT: Do we want to add all device types even though they do not (plan to) h=
+ave a
+Rust driver?
+
+> +/// Trait implemented by each Rust driver that integrates with the fwctl=
+ subsystem.
+> +///
+> +/// The implementing type **is** the per-FD user context: one instance i=
+s
+> +/// created for each `open()` call and dropped when the FD is closed.
+> +///
+> +/// Each implementation corresponds to a specific device type and provid=
+es the
+> +/// vtable used by the core `fwctl` layer to manage per-FD user contexts=
+ and
+> +/// handle RPC requests.
+> +pub trait Operations: Sized + Send + Sync + 'static {
+> +    /// Data owned by the [`Registration`] and accessible during callbac=
+ks.
+> +    ///
+> +    /// The lifetime `'a` is tied to the [`Registration`] scope (which l=
+ives within the parent bus
+> +    /// device binding scope). Drivers use it to store references to res=
+ources bound to this scope,
+> +    /// such as PCI BARs or typed bus device references.
+> +    type RegistrationData<'a>: Send + Sync + 'a
+> +    where
+> +        Self: 'a;
+> +
+> +    /// fwctl device type identifier.
+> +    const DEVICE_TYPE: DeviceType;
+> +
+> +    /// Called when a new user context is opened.
+> +    ///
+> +    /// Returns a [`PinInit`] initializer for `Self`. The instance is dr=
+opped
+> +    /// automatically when the FD is closed (after [`close`](Self::close=
+)).
+> +    fn open<'a>(
+> +        device: &'a Device<Self>,
+> +        reg_data: &'a Self::RegistrationData<'a>,
+> +    ) -> impl PinInit<Self, Error>;
+
+I think this can just be
+
+	fn open<'a>(
+	    device: &Device<Self>,
+	    reg_data: &Self::RegistrationData<'a>,
+	) -> impl PinInit<Self, Error>;
+
+> +impl<T: Operations> Device<T> {
+> +    /// Allocate a new fwctl device.
+> +    ///
+> +    /// Returns an [`ARef`] that can be passed to [`Registration::new()`=
+]
+> +    /// to make the device visible to userspace.
+> +    pub fn new(parent: &device::Device<device::Bound>) -> Result<ARef<Se=
+lf>> {
+> +        const_assert!(
+> +            core::mem::offset_of!(Self, dev) =3D=3D 0,
+> +            "struct fwctl_device must be at offset 0"
+> +        );
+> +
+> +        let ops =3D core::ptr::from_ref::<bindings::fwctl_ops>(&VTable::=
+<T>::VTABLE).cast_mut();
+> +
+> +        // SAFETY: `ops` is static, `parent` is bound, and `size` covers=
+ the full `Device<T>`.
+> +        let raw =3D unsafe {
+> +            bindings::_fwctl_alloc_device(parent.as_raw(), ops, core::me=
+m::size_of::<Self>())
+> +        };
+> +
+> +        if raw.is_null() {
+> +            return Err(ENOMEM);
+> +        }
+> +
+> +        let this =3D raw.cast::<Self>();
+> +
+> +        // INVARIANT: Set `registration_data` to dangling (no registrati=
+on yet).
+> +        // SAFETY: `this` points to the allocation just returned by fwct=
+l.
+> +        unsafe {
+> +            core::ptr::addr_of_mut!((*this).registration_data)
+
+Here and in a few other places, this can use &raw mut instead.
+
+> +/// Static vtable mapping Rust trait methods to C callbacks.
+> +pub struct VTable<T: Operations>(PhantomData<T>);
+
+Why does this need public visibility?
+
+> +
+> +impl<T: Operations> VTable<T> {
+> +    /// The fwctl operations vtable for this driver type.
+> +    pub const VTABLE: bindings::fwctl_ops =3D bindings::fwctl_ops {
+> +        device_type: T::DEVICE_TYPE as u32,
+> +        uctx_size: core::mem::size_of::<UserCtx<T>>(),
+> +        open_uctx: Some(Self::open_uctx_callback),
+> +        close_uctx: Some(Self::close_uctx_callback),
+> +        info: Some(Self::info_callback),
+> +        fw_rpc: Some(Self::fw_rpc_callback),
+> +    };
+
+Same here.
+
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `uctx` must be a valid `fwctl_uctx` embedded in a `UserCtx<T>` w=
+ith
+> +    /// sufficient allocated space for the uctx field.
+> +    unsafe extern "C" fn open_uctx_callback(uctx: *mut bindings::fwctl_u=
+ctx) -> ffi::c_int {
+> +        const_assert!(
+> +            core::mem::offset_of!(UserCtx<T>, fwctl_uctx) =3D=3D 0,
+> +            "struct fwctl_uctx must be at offset 0"
+> +        );
+> +
+> +        // SAFETY: fwctl sets this pointer before calling `open_uctx`.
+> +        let raw_fwctl =3D unsafe { (*uctx).fwctl };
+> +        // SAFETY: Rust fwctl devices use the offset-0 `Device<T>` layou=
+t.
+> +        let device =3D unsafe { Device::<T>::from_raw(raw_fwctl) };
+> +
+> +        // SAFETY: open_uctx is called under registration_lock read; the=
+ device is registered.
+> +        let reg_data =3D unsafe { device.registration_data_unchecked() }=
+;
+> +
+> +        let initializer =3D T::open(device, reg_data);
+> +
+> +        let uctx_offset =3D core::mem::offset_of!(UserCtx<T>, uctx);
+> +        // SAFETY: `uctx_size` reserves space for the full `UserCtx<T>`.
+> +        let uctx_ptr: *mut T =3D unsafe { uctx.cast::<u8>().add(uctx_off=
+set).cast() };
+
+This can use byte_add() instead.
+
+> +            Ok(FwRpcResponse::NewBuffer(kvec)) =3D> {
+> +                let (ptr, len, _cap) =3D kvec.into_raw_parts();
+> +                // SAFETY: `out_len` is valid.
+> +                unsafe { *out_len =3D len };
+> +                ptr.cast::<ffi::c_void>()
+
+This probably needs a kvec.is_empty() check, since an empty vector contains=
+ a
+dangling pointer.
