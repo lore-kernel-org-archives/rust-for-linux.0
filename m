@@ -1,123 +1,183 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0602C028F
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Jul 2026 20:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783195440; cv=pass; b=MMmssujh2Wzs8Td3JfvwMuYS+FaY5rLK81ilKTtLL9WHCTOEw2GDej/3Ok0CW9HC2flsR9NjfNwf1w2/R6hWshRG44Px8UUebaTh68S4CVTuwaLOY1tC1JNgRSACs7yIDNPg37muGGQfgIL3pPsYJwWLm2Mh0UOvkkR9Onhx/hY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783195440; c=relaxed/simple;
-	bh=v5PqFB1Y0oh5ESreAXnamDZHFxXnu8xnSZ7Myi2Y0Xk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jCQFx2AwE+Eu7EzHdA4s+eOoS4wrCqD+cIANh9oOqP6XpIrVG8gwKpjcQrhylbjnbfvOjuglWYJqSOSlZak3cC7GZYGVMZUTK8v9U7tYmPS+Zpit3IF/Nma//Hd1nQwvVHC5RaG9FU9wM8/KBOVjGBK48Uw29zckVvXXOlZsuo0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0nAKuNO; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DB8184540
+	for <rust-for-linux@vger.kernel.org>; Sat,  4 Jul 2026 21:03:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783199004; cv=none; b=egsbkBFgzF3Y6Y1jr9ApX3Czp7Ulf3Jc2pjQs2oUgQKkbHY6bMASjTlOD9yxVgMXCk/acQKLIPETYauN/0Uo9jHDvYyJHGgUZh9iHZD43AYZIH5PxrmpM7C9C9HPNIaSssWar3nBrz/ttbuu3pNdPe6L8kY8t8ah4KmbhC4ZoAc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783199004; c=relaxed/simple;
+	bh=Ck4JJaZmgkoCl/I+djI8TbJbk2wJ29zl60Y1stgczUA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tUJu3A6HrEveCWWBySpsqdOdxeRdvAoGnTH+1KB1k9hd89yp+buzEpumMPIoByOEB8sW8+/Z31d5LVB0Af7lt2r6H8de96qBMqbwUnTs0Nq41IEF/7bK4EFYD8199LHRQYQkYMwHVWCDSwO+S7CSHFHMzvtipIga1BJz1n0Qz44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vU6DJ9Ug; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0nAKuNO"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c7ab2b9dceso3623585ad.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Jul 2026 13:03:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783195439; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Gcac1L+2IuoSFsWctr/eoi4tZwjyoBpdxDWASSAwgOzOtbQEPvv0z208H3Z8THBEYW
-         AP66vvjI3i8ae8EDDQCc+6HaCBGuKXc2UMO98EREWI4gow7DvZQjNBs6xmUyofANMOoL
-         caR4I0wfbKxkOZFewpJLf15DpDHl8GKXlc0OySVAVHnOybUkna++7APThkNo/IPqxsio
-         shBhfpJ5K4jlABCMk2uNOvokdG+23TWzq0dN9lXvbnl4p+i7D1rzBsCnjA+kx+Y1azLQ
-         OAIfGKv5xsyEY4qQSFSlsIADzd6pCe6w+g8EAof0ewkC4niJJFrfLWdA+K4CFGbsuYMM
-         VhVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IBXJ7/+RUGm1s6ccqkZL/lkqHdcUyRDSsk0BOOmv0yU=;
-        fh=dkQNeyGXDeTHZHH3DQN1teTVExhguKBybbcSfaBCTB4=;
-        b=NCk0D7KpxSiqdG2vIHbJzLgZV0cyIRDPdw6epxkvK0rU496rRcSd1dASEJRDFn+Kkg
-         9np2aqZH+Bf2Sa1WiS9kdXrU5CzOM3MTsH4Fu2dqlP6aDRDRGrxlyeU0N2qL71fine25
-         q5h8IpgtD0gTaPEzww0cxp7QEdgFqKYjwXMF9S6f/iIH2UZ90th+7m0Abp81OHl/oEoT
-         P+jKtME1ZgqfdCbSHKB7P19Z/jZ/jv5AmhkGd0tT69T5xdmGMoK+NYRYOun0hQl0Z3NG
-         fQNHXoNd2aJba91icetfOXONBz5CDzbuCckd1f3KH7fmKGof16gCrvwI5bPQFUnbiSh0
-         yhoQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vU6DJ9Ug"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-697d51ced1cso1595887a12.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 04 Jul 2026 14:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783195439; x=1783800239; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IBXJ7/+RUGm1s6ccqkZL/lkqHdcUyRDSsk0BOOmv0yU=;
-        b=g0nAKuNOYFQTOgaNZqyJaVAjNhcMubBVOIbD/qBRRfLcZW7TKYsgi/QiRVZvTMiuWb
-         3GV0st63gX8tcuCivUlycnWiYVmh7ZnnsoQZ1rUP0CACv++2+BNxEl0tiwdTaA/pbgaN
-         oWOdMX4fjEpaiASksPxCN4kmEC3lEiFJ92yd2LMce8WYXNlwyc1PuvCPMqlojgwl5TJ6
-         mO8NI5XNYmP9YzPygg6eHCJYd9DpqcJccwkViac27RHirDVdjpYoPU2SQc7zt4gGEuWM
-         znXh9ZJJXPf/bFTqjUWqyHmGT8Oe66dNZYM5z2v04KluhI704CmdL+AEdeVutx8m+n9w
-         DZlw==
+        d=google.com; s=20251104; t=1783199001; x=1783803801; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ug4GAW6hRxP0V0DrpHgPLZXGFh1mzzQejcgwIy96G7s=;
+        b=vU6DJ9Ug18ETh0nOMy9EYiHEtqsG9HWS//Q70llrG9vFSWApsKZVEhO5iQPvhtR32r
+         R5vkFh9mS7IUo/rc8nZffdFEzpjU953LxYM2K+Dojmd3jgjp7Es28+22lHCVW26l4QKC
+         YQsX0DndmI4Y85Dse++KvXxACqUxUO9WgWXXtxh3dW1C2KdrM65+jlvQzmhI0gDsFZxP
+         iQR6D39NFRWrNMq24xX2rWmlQd23gb7V0NHCo/yuy8A3z21UbmB44HP0XMwdX3SbZrqC
+         nIS0+PyYte82bJ4HILWbmNeP5jHDx9IvN57AQGxGz1TNFID1sz8Q/1aaTfMLderjrlvX
+         iKbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783195439; x=1783800239;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IBXJ7/+RUGm1s6ccqkZL/lkqHdcUyRDSsk0BOOmv0yU=;
-        b=B9Gw9649lRNIOMx1AhMcElHC2H3u4Xgs3dzVsc9mA0aE42zIhNWczDLvVsc5T4LkX4
-         JnlkRGO0CEmOLDH23y1/KI566yfTHGR0FRl0sa60Gr3DX8eCE8hGj1FvDKu11/Qh4gyr
-         WO5rUQcaiQDKAYkcM1fHH974oiK3d0Z9+acODREyFXkjzac2a+9/3E4Ip2wktyojJCql
-         WAM5YJ9scKhNgPpiEjucC5CJVecwjViMKa1By40YtkaER9768fPHBD/Qhe/H7jBJmg7Y
-         2j7IjMjYJ66sZiW8h656XvE9C109mHEUMH1IpCE4bCPTV+agQX8U6txXOml/bssdUXzz
-         9s2w==
-X-Forwarded-Encrypted: i=1; AHgh+RrzjsDuSE0R208v7078lcQlCpOIKbdx1lBOI8sNGcUC9PJlBwLxsuwHwyvJejgyVCjTmYQf7y/NngiW2UgwUw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV5DJKXgxyUOvUcpVN+dF1ZmDu66yEY/3fq95acO7LV3NApXjh
-	rHLnXksM9PyrIj6rrguW1sIsPKXVJkdMjJbPf2Km2gjwr6nNipi0GpJok7/ufibp+lGp6XamvyW
-	4hBGRws/aAedCBGyaZWrrWAcnQYGtp+I=
-X-Gm-Gg: AfdE7cnWsKxHmh7/UmRta3OSSGNFPZsKyglvfJkHnPjpztpuBqMEZIzVwbb3TiF9pZt
-	83aPPQdlDkPLlNCQjRfVcySSwvLLpi05Xb+vIRyyg0N4QeBSmYA9f/QqumFDcyk/YSkmDHa4C3U
-	RTwpubdD7Nxk137MnI6HIMBfcy+l1U4U7eWZVDkZg18wuvLXRRPNyFg4QpS9NO1GSp/Cz8IhSPx
-	St9gy7tXjmMsVRTW3vt+cYEHbpRmOuM01wqcEEMYkl0K4CL+hJZxNfX1Eo5XDWyt/i/vQVmSdkD
-	M9B6vbq4R1J/8Q5JIh+q/2NL+dvYbqy9D9xE6TCcQBg++eR40wOmfSp2nC9J7wIuWWmCcRrU1Bf
-	juTR2xwu+QXeWaIRG6j2zIsE=
-X-Received: by 2002:a17:90a:d406:b0:37f:ea8e:ab79 with SMTP id
- 98e67ed59e1d1-382802bea9emr2668947a91.2.1783195438981; Sat, 04 Jul 2026
- 13:03:58 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783199001; x=1783803801;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ug4GAW6hRxP0V0DrpHgPLZXGFh1mzzQejcgwIy96G7s=;
+        b=Z/qIdM/IT7mis8kcb2o7NB5vXPHpSo112DgcR3vHsZB4gQcfnswGjWcY4vBx0Pj8Ov
+         31cE78tcmuvqD6whoce2uSqw/RsZ29ZwcZjly8GKOWKnDK6uTVcSqh3jnn5gNlFkFPZp
+         l7J4LkrvFX802DzkYrje07XkTYDNdTANesL+ZQ5tIcIY2KeoQJWL4GYqyFo9X6RTtUV3
+         KE+1GUZcPWHEoikBz5xRngAVOrUkaebrwLUK0baiHxwacgG8rO7dWPXLUo5E7hIcU2rf
+         hbWQ4Xl/1bkwUlPrte3c1/5pKDpVUgywIEgHKkiCCEAt/MmGynq4HJVwIucW1zsml3d5
+         qK1Q==
+X-Forwarded-Encrypted: i=1; AHgh+Ros2v96MyhllVbHT8hPw3Lr2oFWar80gnWDa9p9aJ6uLR+QSoriWISlTXfztWowxlAz1Gglx0W4VgK3YOQ7cg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRtwNMbV9DB+O7ZaG5U5RBkF+a27zY5lMjSiOrNX3kea4zM6da
+	xMwXKW8rg9oZh816glHuAWEr/hVmiMG6aBFPkEUmmJjGquMIehtpWpLKYx1YWEdaOTD0kwXaSOk
+	mj0MkXghshTJIRAx2YQ==
+X-Received: from ejju21.prod.google.com ([2002:a17:906:4095:b0:c12:4bf3:86c1])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:ba8c:b0:c12:8798:7bf9 with SMTP id a640c23a62f3a-c12e6c1ec1dmr126199966b.46.1783199000441;
+ Sat, 04 Jul 2026 14:03:20 -0700 (PDT)
+Date: Sat, 4 Jul 2026 21:03:19 +0000
+In-Reply-To: <20260703-rust_binder_debug_mask-v1-1-9bdf12b5325c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260204155037.325482-1-marco.crivellari@suse.com>
-In-Reply-To: <20260204155037.325482-1-marco.crivellari@suse.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 4 Jul 2026 22:03:42 +0200
-X-Gm-Features: AVVi8CcUUSPTNL14m_AbtPIhw7HQ8BruGSVxi6EN1oHwyw-_3RU1tmDpZziaG-A
-Message-ID: <CANiq72mmBmdKsXDZuRvcm2_MfjHKzGphdv8_n1FvoV20va4dPA@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] Add new workqueue wrapper and enqueue on cpu functions
-To: Marco Crivellari <marco.crivellari@suse.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
-	Frederic Weisbecker <frederic@kernel.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com> <20260703-rust_binder_debug_mask-v1-1-9bdf12b5325c@google.com>
+Message-ID: <akl1F-3IiZYnHEcX@google.com>
+Subject: Re: [PATCH 1/7] rust_binder: Add dynamic debug logging mask
+From: Alice Ryhl <aliceryhl@google.com>
+To: Jahnavi MN <jahnavimn@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Feb 4, 2026 at 4:50=E2=80=AFPM Marco Crivellari
-<marco.crivellari@suse.com> wrote:
->
-> Recently the workqueue code has been changed introducing two new workqueu=
-e,
-> system_percpu_wq and system_dfl_wq, as a future replacement for system_wq=
- and
-> system_unbound_wq respectively.
+On Fri, Jul 03, 2026 at 03:29:22PM +0000, Jahnavi MN wrote:
+> Implement a dynamic debug logging mask (`debug_mask`) for the
+> `rust_binder` module to allow dynamic runtime configuration of log
+> levels. This enables parity with the legacy C driver's debug mask.
+> 
+> Since the Rust `module!` macro in the current kernel build does not yet
+> support declaring module parameters directly in Rust, we define the
+> `debug_mask` variable in a C companion file to expose it to the kernel
+> runtime and import it using FFI with volatile reads.
+> 
+> To verify the setup, instrument process lifecycle events (open, flush,
+> and release) in `process.rs` under the new `BINDER_DEBUG_OPEN_CLOSE`
+> logging mask. These entry-point events are chosen for initial validation
+> because they represent the start of the Binder lifecycle and occur
+> at low frequency, allowing simple runtime verification of the dynamic
+> toggle without log noise.
+> 
+> Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 
-The C side merged the warning, and now this triggers in on of our doctests:
+> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+> index 96b8440ceac6..c13a04a3afcb 100644
+> --- a/drivers/android/binder/process.rs
+> +++ b/drivers/android/binder/process.rs
+> @@ -898,7 +898,6 @@ pub(crate) fn insert_or_update_handle(
+>      }
+>  
+>      pub(crate) fn get_transaction_node(&self, handle: u32) -> BinderResult<NodeRef> {
+> -        // When handle is zero, try to get the context manager.
+>          if handle == 0 {
+>              Ok(self.ctx.get_manager_node(true)?)
+>          } else {
 
-  workqueue: work func _R...sync_completion_rs_18... enqueued on deprecated
-  workqueue. Use system_{percpu|dfl}_wq instead.
+Removing this comment appears to be a spurious change.
 
-Should we move forward with this, then?
+> @@ -1314,6 +1313,11 @@ pub(crate) fn lock_with_nodes(&self) -> WithNodes<'_> {
+>      }
+>  
+>      fn deferred_flush(&self) {
+> +        binder_debug!(
+> +            crate::debug::BINDER_DEBUG_OPEN_CLOSE,
+> +            "binder_flush: process {}",
+> +            self.pid_in_current_ns()
+> +        );
+>          let inner = self.inner.lock();
+>          for thread in inner.threads.values() {
+>              thread.exit_looper();
+> @@ -1321,6 +1325,11 @@ fn deferred_flush(&self) {
+>      }
+>  
+>      fn deferred_release(self: Arc<Self>) {
+> +        binder_debug!(
+> +            crate::debug::BINDER_DEBUG_OPEN_CLOSE,
+> +            "binder_deferred_release: process {}",
+> +            self.pid_in_current_ns()
+> +        );
 
-(By the way, please run `make ... rustfmt` on the patchset).
+Since you included the pid in the binder_debug! macro itself, you can
+remove it from these two println statements.
 
-Thanks!
+Also, I think it'd be nicer to word these as "flushing process" and
+"releasing process".
 
-Cheers,
-Miguel
+> diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+> index 97d5f31e8fe3..c908dde5796a 100644
+> --- a/drivers/android/binder/thread.rs
+> +++ b/drivers/android/binder/thread.rs
+> @@ -1222,6 +1222,7 @@ fn read_transaction_info(
+>          info.buffers_size = td.buffers_size as usize;
+>          // SAFETY: Above `read` call initializes all bytes, so this union read is ok.
+>          info.target_handle = unsafe { td.transaction_data.target.handle };
+> +        info.debug_id = super::next_debug_id();
+>          Ok(())
+>      }
+>  
+> diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
+> index 1d9b66920a21..f9285eb93fc0 100644
+> --- a/drivers/android/binder/transaction.rs
+> +++ b/drivers/android/binder/transaction.rs
+> @@ -42,6 +42,7 @@ pub(crate) struct TransactionInfo {
+>      pub(crate) reply: u32,
+>      pub(crate) oneway_spam_suspect: bool,
+>      pub(crate) is_reply: bool,
+> +    pub(crate) debug_id: usize,
+>  }
+>  
+>  impl TransactionInfo {
+> @@ -93,7 +94,7 @@ pub(crate) fn new(
+>          from: &Arc<Thread>,
+>          info: &mut TransactionInfo,
+>      ) -> BinderResult<DLArc<Self>> {
+> -        let debug_id = super::next_debug_id();
+> +        let debug_id = info.debug_id;
+>          let allow_fds = node_ref.node.flags & FLAT_BINDER_FLAG_ACCEPTS_FDS != 0;
+>          let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
+>          let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
+> @@ -152,7 +153,7 @@ pub(crate) fn new_reply(
+>          info: &mut TransactionInfo,
+>          allow_fds: bool,
+>      ) -> BinderResult<DLArc<Self>> {
+> -        let debug_id = super::next_debug_id();
+> +        let debug_id = info.debug_id;
+
+It looks like this change to move debug_id so that it's present in
+TransactionInfo is happening in the wrong patch. Ideally this change
+would be part of the patch that actually needs to read debug_id from
+TransactionInfo.
+
+Alice
