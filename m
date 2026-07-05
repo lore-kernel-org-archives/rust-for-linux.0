@@ -1,462 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0CD2E06EF;
-	Sun,  5 Jul 2026 17:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECE830171C
+	for <rust-for-linux@vger.kernel.org>; Sun,  5 Jul 2026 17:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783271402; cv=none; b=scNAhV8cI5l7SfrwwBHgd8doqRV8fvj9O1CS8wL3DdsDD0C4JLABWjJaEdowrU9sLrHFLS7DWTut2U0gWv3k1Twhc0W0E5Vx1m+lE3+An7cah6BYkLCHGw82KNPmuuiB9rSB5zwuuUAY4IqVU/SqehG/m/ICNVTIg3L27Ea012w=
+	t=1783274385; cv=none; b=mCkARHmAXwc3EclAiOjDWlRSH1Y8vCuZAHQDP3KXNNgJt5jCBkEHKFFpOqxio5JgacOzuLrZ13CHBHFbCy6tZTwQ3j0U1F/FvZ+hCEJCQIDjdh1fDayu7x73KmF2ov5RxEOs4Kk0LYyTkt/Ms+zq6xXTDgM2OIZwnY3bfDhCyhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783271402; c=relaxed/simple;
-	bh=bvXmqRv0t3FmZjDizI0XjhtEgt6kbnUSiIb5EaxPF/s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MVvIAWEy9VhYQSI26dZAG1+Y+aYyYEvOvPfH1oZcXH3URAzcIebu6pYeRpOtjBfRNzeZo/xHzKeS+N+hUhe09oLXFh/ZK5jwRLq2v+KZZJdhAZ1N74eTZG0xb1IDdSVLVAqmQ22UJKH2V7lCkX6A0GoRdXvp3YBj8C9owQTZxrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcyxY1m2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783274385; c=relaxed/simple;
+	bh=wxt1DZW7D4hVvbkLcQ+lyPgqvCFI9lv+zU8l4HAu82U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mVjkbFsP9QlIJIvUzw8MEPxGGMip7lRjDtRXaFlefkNJJODtbUHUxDWiJSx28UsQucDghX9wI1O6G5k+jHiKj3Q1NBNQ0vH3KFRW+1rsKCE+gcuR3EWfKnetmRpTECBwVKQ05EWiRwqHa6RQsg9YcK60/Vvg4REeQVG5rN/oc2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DKSk83LV; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcyxY1m2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D667A1F000E9;
-	Sun,  5 Jul 2026 17:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783271400;
-	bh=mcoXwyCDIViVanQXi5iL1opkmjhsI27kJo5T08QRKJw=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=KcyxY1m2uFCsMd7ivwACp4mtffcdKs/HI09z7yxBa7SZny9nOPUTNxXpDZuqeWI/H
-	 TinrGE1ilyY8+I6h6OhqYgIdpjJ8Lbo+mv1HU4fshPR8zP1WBiH50F3Uw8/qv+NO/V
-	 hx7Gt0+ui9LDTEZFTNMfupfKcFVgcSQ3pX6UEz/otErFuBERBRZzSpdQV4L+5fPWZY
-	 8Z9HPyTM5E4ru/YBExHsFxRivHuHD8hbcA7D2xvw6Sh/ioBx6/9rRTibth7F6lzLSq
-	 Sy1FUOwlKWkmi7dmLMkqLYTs3XpWTvEufIxzIy+2OcY1rbl6/Cfyn0EHbjEiX9S39f
-	 raHt2ao5yeI5Q==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DKSk83LV"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493b61b52b6so14479725e9.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 05 Jul 2026 10:59:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783274382; x=1783879182; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tV5ibFxxEGFY5w9PuVHtNxk5YR5ShLb2875PXplyBGA=;
+        b=DKSk83LVU13Pfw7gS84WHTdiKOHA/HV6RXnIYqQTzHwnYH3/MVhyT7GLmvmgPDNz0G
+         0hGSSffVRLr5OZKulPQl7H0cFMNxLTP352Gj4rIvwuWTjvPn9TUZKrAYh4RoSN5Nt0GS
+         JrqoGc0oKMSv86O7Nl//LzRqfw358gYiE+bq6xCNF2nEAD/H4x7bDQsQQsZ8SZab28qK
+         TTb/7/hAbDi7r3wpt0hSEeRTvi5M8BUhlSpkt9cbU6RC2BFyj1ilZHCGKo88NTdf8Oj4
+         3OQcvpsKHsgbfJ+zmK8LUG8a1MsAD8WuhbgfhT3BeJZoU0hNVe7gwvvqp/pq4Js6vWZ4
+         2njQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783274382; x=1783879182;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tV5ibFxxEGFY5w9PuVHtNxk5YR5ShLb2875PXplyBGA=;
+        b=kAK3D4iIenpyJsE6x08gWHS86Vv1NQnCWnNz7Qm/KTEwsVyF6GAsg27osntCCp4/xZ
+         to+qXJ7R7Qr6J3eYZbu/7n+LF3/uYGp08hRt8XbKf+rzq8z1rK4TDbs1GYHGaSVrhXqv
+         9GxGnSP+2g2YIGWn8GYD78iJmwVmp2aAezhYRPpxgpvl7vvqxOUyE0tcGFnAyQfBaWFS
+         yPHSR76wfTnImcSZ1OUe3Erc8xjQNlgjBpk1MSNQQQ4LzcaB912pEL2jzpRRU85ONBJP
+         6eP+wJPVPC6tsDLK8wV49nwtqAosET9z7kzYnfR3SJ7QYVI/y89hCtD153onyLjILMng
+         bNkA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5XyecLRJqtCX6mXKn0cG7avIi3ln9o1Kub080Qm9Esu7/CcTBP6AxQJ0FetM3X4kxgPlHxl3n9SUsm5h8/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRRpZZp3Cf/0t8nYP/nfGZ80us+8zdqZDkzTdklczhQO3VSGCX
+	gBBKStHLR/DXhpovTkvA/E5u44qqaHlo9MMVy9mhqIrta/GUlPwTI+OA
+X-Gm-Gg: AfdE7cm3KK1jtV/YOveJ2/z7F+h0xIQ+npwCpeqNELhx2j+dkpCiu5LpQU9G0/BbUDi
+	pwkyL5ZvMmaXA3R0MM53TKclSMyp68C5TmaPpMwDNfFXaXIqN+vbsd7pmyV0QOImsL4g5P6kHvv
+	/G+SJiftdIfP2jw9CmeZu6xTEqMXotyC8dP7xan5htQ1EQ8O7d1uynfZ088mHYexIQ2/ZAZhoN9
+	CDyXxowfEo0iCjlDTzJ6AtZwmQcBtoauBmT5eohlAwHpUYlYaY2dl1L1Q3yduH5M1exw1TWz3d9
+	YG4zmYWPgc8CZPp77xqgtPZugexezfY5RraAX1MvQ+anRo6mtR1a6D740M5XDe7hacOYRgke4AS
+	838PIR9O3XzUCT5VLjhnJEWQHIzo55BcHX+R3mUsBk3/dh034gVE8Wr2Kl2Htu8TOt4zLGyvCvF
+	Byg5QmxanFg5lfGKdVYBI=
+X-Received: by 2002:a05:600d:8489:20b0:492:6447:7a7f with SMTP id 5b1f17b1804b1-493d11cf2b5mr62215445e9.6.1783274381659;
+        Sun, 05 Jul 2026 10:59:41 -0700 (PDT)
+Received: from localhost (a89-182-201-232.net-htp.de. [89.182.201.232])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47a9b4d850dsm18636736f8f.0.2026.07.05.10.59.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Jul 2026 10:59:41 -0700 (PDT)
+From: Sergei Litvin <litvindev@gmail.com>
+To: nsc@kernel.org
+Cc: miguel.ojeda.sandonis@gmail.com,
+	nathan@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	ojeda@kernel.org,
+	Sergei Litvin <litvindev@gmail.com>
+Subject: [PATCH] scripts/tags.sh: Prevent binary files appearing in cscope.files
+Date: Sun,  5 Jul 2026 19:59:36 +0200
+Message-ID: <20260705175936.4653-1-litvindev@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <https://lore.kernel.org/lkml/akVkIrcpNxZrrfii@levanger/>
+References: <https://lore.kernel.org/lkml/akVkIrcpNxZrrfii@levanger/>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 05 Jul 2026 19:09:56 +0200
-Message-Id: <DJQSY9ZY5M5F.3VI537GS00E1G@kernel.org>
-Subject: Re: [RFC 1/3] gpu: nova-core: Add auxiliary bus registration data
- to nova-core
-Cc: <nova-gpu@lists.linux.dev>, "Alice Ryhl" <aliceryhl@google.com>, "David
- Airlie" <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260703064526.3630668-1-apopple@nvidia.com>
- <20260703064526.3630668-2-apopple@nvidia.com>
- <DJQNN9FRZN3C.3DQE4H9HAZ8W6@kernel.org>
-In-Reply-To: <DJQNN9FRZN3C.3DQE4H9HAZ8W6@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sun Jul 5, 2026 at 3:00 PM CEST, Danilo Krummrich wrote:
-> On Fri Jul 3, 2026 at 8:45 AM CEST, Alistair Popple wrote:
->> diff --git a/drivers/gpu/nova-core/auxdata.rs b/drivers/gpu/nova-core/au=
-xdata.rs
->> new file mode 100644
->> index 000000000000..266b5ce4ee89
->> --- /dev/null
->> +++ b/drivers/gpu/nova-core/auxdata.rs
->
-> I think it'd just call it something along the lines of api.rs, as this is=
- going
-> to be the file where the entry points into nova-core will live.
->
->> @@ -0,0 +1,12 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Nova-core auxbus data. Contains all the methods used by the auxbus =
-drivers
->> +//! to interact with nova-core.
->> +
->> +use crate::gpu::Gpu;
->> +
->> +/// Auxiliary bus registration data. Used by the auxbus drivers to call=
- methods on
->> +/// the GPU.
->> +pub struct AuxData<'bound> {
->
-> Since this will also be the data type that will be exposed as an API entr=
-y point
-> into nova-core, I'd rather call it e.g. NovaCoreApi.
->
-> We should provide an assoicated function NovaCoreApi::of(), which takes a=
-n &'a
-> auxiliary::Device<Bound> as argument and returns &'a NovaCoreApi<'a> (at =
-least
-> as long as the type remains covariant).
->
-> This makes it a bit cleaner since it keeps the type assertion local to a =
-single
-> place and makes it transparent to nova-drm that this also is the
-> auxiliary::Registration private data of nova-core.
->
-> (I'm already working on getting rid of the type ID check, but going throu=
-gh
-> NovaCoreApi::of() is cleaner regardless.)
+PROBLEM
 
-Thinking a bit more about this, I'm still not convinced about a design wher=
-e the
-auxiliary::Device itself carries the type information. However, I think wit=
-h the
-new lifetime design this isn't necessary in the first place.
+When executing the command `make COMPILED_SOURCE=1 cscope`, the resulting
+`cscope.files` file contains filenames with the extensions *.rlib, *.rmeta,
+and *.so.
 
-We can just call NovaCoreApi::of() once from nova-drm's probe() function an=
-d
-subsequently store the struct NovaCoreApi<'a> in the bus device private dat=
-a,
-DRM registration data, etc. Such that the only fallible path is in probe().
+SOLUTION
 
-Please see [1] for reference, there's also a branch in [2].
+Modify the regular expression in the `all_compiled_sources()` function so
+that only files with the extensions *.h, *.c, *.S, and *.rs are accepted.
 
-Note that this only works for a covariant NovaCoreApi, once it becomes inva=
-riant
-we'll need something like this:
+---
 
-	/// Closure-based API handle for invariant registration data types.
-	pub struct NovaCoreApiHandle<'a> {
-	    adev: &'a auxiliary::Device<Bound>,
-	}
-=09
-	impl<'a> NovaCoreApiHandle<'a> {
-	    fn of(adev: &'a auxiliary::Device<Bound>) -> Result<Self> {
-	        adev.registration_data_with::<ForLt!(NovaCoreApi<'_>), ()>(|_| ())=
-?;
-	        Ok(Self { adev })
-	    }
-=09
-	    /// Access the [`NovaCoreApi`] through a closure.
-	    pub fn with<R>(&self, f: impl for<'b> FnOnce(Pin<&'b NovaCoreApi<'b>>)=
- -> R) -> R {
-	        // PANIC: TypeId was validated in `of()`, cannot fail.
-	        self.adev
-	            .registration_data_with::<ForLt!(NovaCoreApi<'_>), R>(f)
-	            .unwrap()
-	    }
-	}
+This is the first part of this patch:
+https://lore.kernel.org/lkml/20260602121521.11650-1-litvindev@gmail.com/
 
-We can still improve this a bit from the auxiliary API side, but in general=
- this
-should be fine (added this to the branch in [2] as well).
+which I have split into two parts, as suggested by Nicolas Schier here:
+https://lore.kernel.org/lkml/akVkIrcpNxZrrfii@levanger/
 
-With this the access patterns becomes
+Signed-off-by: Sergei Litvin <litvindev@gmail.com>
+---
+ scripts/tags.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	// Once from probe(), calls NovaCoreApiHandle::of() internally.
-	let handle =3D NovaCoreApi::handle(adev)?;
+diff --git a/scripts/tags.sh b/scripts/tags.sh
+index 243373683f98..c9dc2763a505 100755
+--- a/scripts/tags.sh
++++ b/scripts/tags.sh
+@@ -100,7 +100,7 @@ all_compiled_sources()
+ 	{
+ 		echo include/generated/autoconf.h
+ 		find $ignore -name "*.cmd" -exec \
+-			grep -Poh '(?<=^  )\S+|(?<== )\S+[^\\](?=$)' {} \+ |
++			grep -Poh '(?<=^  )\S+\.([chS]|rs)(?=\s)|(?<== )\S+\.(?1)(?=$)' {} \+ |
+ 		awk '!a[$0]++'
+ 	} | xargs realpath -esq $([ -z "$KBUILD_ABS_SRCTREE" ] && echo --relative-to=.) |
+ 	sort -u
+-- 
+2.54.0
 
-and from anywhere else
-
-	handle.with(|api| api.chipset());
-
-[1]
-
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.r=
-s
-index 739690bc2db5..89da0f6c3ba5 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
-=20
-+use core::pin::Pin;
-+
- use kernel::{
-     auxiliary,
-     device::{
-@@ -17,6 +19,7 @@
-=20
- use crate::file::File;
- use crate::gem::NovaObject;
-+use nova_core::api::NovaCoreApi;
-=20
- pub(crate) struct NovaDriver;
-=20
-@@ -26,6 +29,11 @@ pub(crate) struct Nova<'bound> {
-     _reg: drm::Registration<'bound, NovaDriver>,
- }
-=20
-+/// DRM registration data, accessible from ioctl handlers via the registra=
-tion guard.
-+pub(crate) struct DrmRegData<'bound> {
-+    pub(crate) api: Pin<&'bound NovaCoreApi<'bound>>,
-+}
-+
- /// Convienence type alias for the DRM device type for this driver
- pub(crate) type NovaDevice<Ctx =3D drm::Normal> =3D drm::Device<NovaDriver=
-, Ctx>;
-=20
-@@ -59,10 +67,15 @@ fn probe<'bound>(
-         adev: &'bound auxiliary::Device<Core<'_>>,
-         _info: &'bound Self::IdInfo,
-     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-+        let api =3D NovaCoreApi::of(adev)?;
-+
-         let drm =3D drm::UnregisteredDevice::<Self>::new(adev, Ok(()))?;
-+
-+        let drm_data =3D DrmRegData { api };
-+
-         // SAFETY: `reg` is stored in `Nova` and dropped when the driver i=
-s unbound; it is
-         // never forgotten.
--        let reg =3D unsafe { drm::Registration::new(adev.as_ref(), drm, ()=
-, 0)? };
-+        let reg =3D unsafe { drm::Registration::new(adev.as_ref(), drm, dr=
-m_data, 0)? };
-=20
-         Ok(Nova {
-             drm: reg.device().into(),
-@@ -74,7 +87,7 @@ fn probe<'bound>(
- #[vtable]
- impl drm::Driver for NovaDriver {
-     type Data =3D ();
--    type RegistrationData<'a> =3D ();
-+    type RegistrationData<'a> =3D DrmRegData<'a>;
-     type File =3D File;
-     type Object =3D gem::Object<NovaObject>;
-     type ParentDevice<Ctx: DeviceContext> =3D auxiliary::Device<Ctx>;
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-index 57df54ba27bd..2488825c78cf 100644
---- a/drivers/gpu/drm/nova/file.rs
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -1,7 +1,14 @@
- // SPDX-License-Identifier: GPL-2.0
-=20
--use crate::driver::{NovaDevice, NovaDriver};
--use crate::gem::NovaObject;
-+use crate::{
-+    driver::{
-+        DrmRegData,
-+        NovaDevice,
-+        NovaDriver, //
-+    },
-+    gem::NovaObject,
-+};
-+
- use kernel::{
-     alloc::flags::*,
-     auxiliary,
-@@ -16,9 +23,6 @@
-     uapi,
- };
-=20
--use kernel::types::CovariantForLt;
--use nova_core::auxdata::AuxData;
--
- pub(crate) struct File;
-=20
- impl drm::file::DriverFile for File {
-@@ -33,18 +37,17 @@ impl File {
-     /// IOCTL: get_param: Query GPU / driver metadata.
-     pub(crate) fn get_param(
-         dev: &NovaDevice<Registered>,
--        _reg_data: &(),
-+        reg_data: &DrmRegData<'_>,
-         getparam: &mut uapi::drm_nova_getparam,
-         _file: &drm::File<File>,
-     ) -> Result<u32> {
-         let adev: &auxiliary::Device<Bound> =3D dev.as_ref();
--        let pdev: &pci::Device<Bound> =3D adev.parent().try_into()?;
--        let data =3D adev.registration_data::<CovariantForLt!(AuxData<'_>)=
->()?;
-+        let pdev: &pci::Device<_> =3D adev.parent().try_into()?;
-=20
-         let value =3D match getparam.param as u32 {
-             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE =3D> pdev.resource_len(1)?,
--            uapi::NOVA_GETPARAM_GPU_CHIPSET =3D> data.chipset() as u64,
--            uapi::NOVA_GETPARAM_VRAM_SIZE =3D> data.vram_size(),
-+            uapi::NOVA_GETPARAM_GPU_CHIPSET =3D> reg_data.api.chipset() as=
- u64,
-+            uapi::NOVA_GETPARAM_VRAM_SIZE =3D> reg_data.api.vram_size(),
-             _ =3D> return Err(EINVAL),
-         };
-=20
-@@ -56,7 +59,7 @@ pub(crate) fn get_param(
-     /// IOCTL: gem_create: Create a new DRM GEM object.
-     pub(crate) fn gem_create(
-         dev: &NovaDevice<Registered>,
--        _reg_data: &(),
-+        _reg_data: &DrmRegData<'_>,
-         req: &mut uapi::drm_nova_gem_create,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
-@@ -70,7 +73,7 @@ pub(crate) fn gem_create(
-     /// IOCTL: gem_info: Query GEM metadata.
-     pub(crate) fn gem_info(
-         _dev: &NovaDevice<Registered>,
--        _reg_data: &(),
-+        _reg_data: &DrmRegData<'_>,
-         req: &mut uapi::drm_nova_gem_info,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
-diff --git a/drivers/gpu/nova-core/api.rs b/drivers/gpu/nova-core/api.rs
-new file mode 100644
-index 000000000000..ba99d5a27805
---- /dev/null
-+++ b/drivers/gpu/nova-core/api.rs
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Nova Core API for auxiliary bus child drivers.
-+
-+use core::pin::Pin;
-+
-+use kernel::{
-+    auxiliary,
-+    device::Bound,
-+    prelude::*,
-+    types::CovariantForLt, //
-+};
-+
-+use crate::gpu::{
-+    Chipset,
-+    Gpu, //
-+};
-+
-+/// API handle for auxiliary bus child drivers to interact with nova-core.
-+pub struct NovaCoreApi<'bound> {
-+    pub(crate) gpu: Pin<&'bound Gpu<'bound>>,
-+}
-+
-+impl NovaCoreApi<'_> {
-+    /// Obtain a [`NovaCoreApi`] handle from an auxiliary device registere=
-d by nova-core.
-+    pub fn of(adev: &auxiliary::Device<Bound>) -> Result<Pin<&NovaCoreApi<=
-'_>>> {
-+        adev.registration_data::<CovariantForLt!(NovaCoreApi<'_>)>()
-+    }
-+
-+    /// Returns the chipset of this GPU.
-+    pub fn chipset(&self) -> Chipset {
-+        self.gpu.spec.chipset
-+    }
-+
-+    /// Returns the total usable VRAM size of this GPU in bytes.
-+    pub fn vram_size(&self) -> u64 {
-+        self.gpu.gsp_static_info.vram_size()
-+    }
-+}
-diff --git a/drivers/gpu/nova-core/auxdata.rs b/drivers/gpu/nova-core/auxda=
-ta.rs
-deleted file mode 100644
-index 0a07a10da327..000000000000
---- a/drivers/gpu/nova-core/auxdata.rs
-+++ /dev/null
-@@ -1,25 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--//! Nova-core auxbus data. Contains all the methods used by the auxbus dri=
-vers
--//! to interact with nova-core.
--
--use crate::gpu::Chipset;
--use crate::gpu::Gpu;
--
--/// Auxiliary bus registration data. Used by the auxbus drivers to call me=
-thods on
--/// the GPU.
--pub struct AuxData<'bound> {
--    pub(crate) gpu: &'bound Gpu<'bound>,
--}
--
--impl AuxData<'_> {
--    /// Returns the chipset of this GPU.
--    pub fn chipset(&self) -> Chipset {
--        self.gpu.spec.chipset
--    }
--
--    /// Returns the total usable VRAM size of this GPU in bytes.
--    pub fn vram_size(&self) -> u64 {
--        self.gpu.gsp_static_info.vram_size()
--    }
--}
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver=
-.rs
-index 8b0bebee0bdf..9cb2eecfae1c 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
-=20
-+use core::pin::Pin;
-+
- use kernel::{
-     auxiliary,
-     device::Core,
-@@ -18,7 +20,7 @@
-     types::CovariantForLt,
- };
-=20
--use crate::auxdata::AuxData;
-+use crate::api::NovaCoreApi;
- use crate::gpu::Gpu;
-=20
- /// Counter for generating unique auxiliary device IDs.
-@@ -30,7 +32,7 @@ pub(crate) struct NovaCore<'bound> {
-     // device before dropping `gpu`, and drop `gpu` before `bar` because `=
-Gpu`
-     // borrows `bar`.
-     #[allow(clippy::type_complexity)]
--    _reg: auxiliary::Registration<'bound, CovariantForLt!(AuxData<'_>)>,
-+    _reg: auxiliary::Registration<'bound, CovariantForLt!(NovaCoreApi<'_>)=
->,
-     #[pin]
-     pub(crate) gpu: Gpu<'bound>,
-     bar: pci::Bar<'bound, BAR0_SIZE>,
-@@ -82,7 +84,7 @@ fn probe<'bound>(
-             pdev.enable_device_mem()?;
-             pdev.set_master();
-=20
--            Ok(try_pin_init!(&this in NovaCore {
-+            Ok(try_pin_init!(NovaCore {
-                 bar: pdev.iomap_region_sized::<BAR0_SIZE>(0, c"nova-core/b=
-ar0")?,
-                 // TODO: Use `&bar` self-referential pin-init syntax once =
-available.
-                 //
-@@ -105,14 +107,16 @@ fn probe<'bound>(
-                         // For now, use a simple atomic counter that never=
- recycles IDs.
-                         AUXILIARY_ID_COUNTER.fetch_add(1, Relaxed),
-                         crate::MODULE_NAME,
--                        AuxData {
-+                        NovaCoreApi {
-                             // TODO: Use `&gpu` self-referential pin-init =
-syntax once available.
-                             //
--                            // SAFETY: `this.gpu` is initialized before th=
-is expression is evaluated
-+                            // SAFETY: `gpu` is initialized before this ex=
-pression is evaluated
-                             // (`try_pin_init!()` initializes fields in de=
-claration order), lives at
-                             // a pinned stable address, and is dropped aft=
-er `_reg` (struct field
-                             // drop order).
--                            gpu: &*core::ptr::from_ref(&this.as_ref().gpu)=
-,
-+                            gpu: Pin::new_unchecked(
-+                                &*core::ptr::from_ref(gpu.as_ref().get_ref=
-()),
-+                            ),
-                         },
-                     )?
-                 },
-diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nov=
-a_core.rs
-index d00c8804269d..9463ae038e81 100644
---- a/drivers/gpu/nova-core/nova_core.rs
-+++ b/drivers/gpu/nova-core/nova_core.rs
-@@ -10,7 +10,7 @@
-     InPlaceModule, //
- };
-=20
--pub mod auxdata;
-+pub mod api;
- mod driver;
- mod falcon;
- mod fb;
-
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=
-=3Dnova-api
