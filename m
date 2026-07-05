@@ -1,107 +1,161 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from out-12.smtp.spacemail.com (out-12.smtp.spacemail.com [198.54.127.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0EB175A87
-	for <rust-for-linux@vger.kernel.org>; Sat,  4 Jul 2026 21:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ACB18DB1A;
+	Sun,  5 Jul 2026 00:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783199855; cv=none; b=RPXHHVP+WgWon7hMMGmH7rRqFy7uRJLmZlyTS7kp8HFme5EdBtDfylW55XRmIyTXQwS9v0AWF3dvDs6aUvTDoUupgBVhXq8U27pEpnqJbpzcamkMe5U+5hJ1bjZl1k7s530+4eUnISxRds0AUPgclQEkfHLV4bDmb7EVkCShmZs=
+	t=1783211925; cv=none; b=pEUsoh9k8nDpcccw9eJlG/qCfiIKz1hIp4rptKVm+tTCoSYXSttDdICY9r9bVRrSz2o5SZqpNSLSCbJvqnXSqjGdNKlFxWjWcywWhlDq0hpwjPuhY4Zr/nEQlX+C3aCH7gW0TUyoUGpYfv9KKxzs8oljVyZxRBXL/bqD++SdH7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783199855; c=relaxed/simple;
-	bh=YQuOv3kEOL5nz8Tb8D97x8mzxzheNgE0w0WiLLpxVN0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=n+QJHBLYzWqDK0NeR7oBPgT7I9AX+Va9/av09KPkvNP9/7tw45jN6cDWr/Z9DvDT4fwBybR+so8Z3ZGq8FLW+4YpvZjn2yzHWAaajSSaoPewMObklRJnpRNTNO/gKyPgIFxfTrZ2DlXnrl6GzBx6PmX8yt38FKpBqs82o+Hb1Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OQs6aIMV; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1783211925; c=relaxed/simple;
+	bh=7SA06ppJXAjnwTFQhfShgMBi+M6CQvRcfOhns8TQ+vI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sn5A0pQ254s9MVg9JBMTJoctZak/sABmEgPpJFFWgIMbKHMatQwzG6xYGTxQVdYWpKUydq55FvV1HdFnf3x3m2cQ/sdVixYtpk9Hn0U+gAXhUPjl4OwOrB1z9kw8jbe3HCXiPQ9hHFcy2M+MlPdxxi4ev5mxcnuTMwIYWBpn9wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev; spf=pass smtp.mailfrom=gurudas.dev; dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b=NSAOyNTL; arc=none smtp.client-ip=198.54.127.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gurudas.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OQs6aIMV"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493c1bc7a70so13737435e9.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 04 Jul 2026 14:17:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783199853; x=1783804653; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QEJOUNDaVqSs8FShBgBc9kvN5/igQUMIR4A1NbIcv9U=;
-        b=OQs6aIMVF4ynSgCeSzt1u7bNBagV21jtaKujRi0aUH+MxvmIYtvsMwzj63fjAlTRjl
-         kUv0vCQn/s2xyjhHMfZeJUmRDMgrxFAExolBSsHTT8FqsWe58wc4Pyiq2pRCHxp4mmAm
-         vBWx5sqAkLkYgbR3qVHzMzktxi6ab8acJEW3d6XG8s1SKbbjHK6hQD6PO6qbN4jHsdMs
-         VjyJX4lJ73d/Fl4wyevlnF9712aeLp7qqk1VfiGGM566zBhDF4gXqNr4javrvB+3fZGu
-         2iiVGNPyzOI4f8JxSkqs0SUOw++mJPvjO5tdMPChkQDT99dc/rbSGDV0HANWU11IsMIP
-         A85A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783199853; x=1783804653;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QEJOUNDaVqSs8FShBgBc9kvN5/igQUMIR4A1NbIcv9U=;
-        b=p4cOVxnetPMSDHkWjARrf/4kasV0FuzA3eM80GwydcNKIWEyT0LwMg5fL99zCC2AEL
-         LMhLVhURBACViyqojkKtRDbW91hPPKQUbg05sJkubIIptVQPMzkYEISKUfqCzldS51SQ
-         0rERdTbgWmQqopzE0l5q9uLwlFx3fRhsaMgDwfXrK1i/yaUdLNTNbTj5HVtqNIGueru9
-         XJ9A651m4I0Z1GTYK/qAuxtGiJ8lNenHDlokRQlmBTHSDivfqeANW6TDf+Ww6+ZoL8cs
-         o1LVZpN/zJvNviHHiijsRHMOL3CwU5E6MGWvulEckAi7KCqTVlp35g2AuRemg/us4yyq
-         m0gA==
-X-Forwarded-Encrypted: i=1; AFNElJ/GCLKI+LaVxw2IBig8M0ubVMi039f44NlbaSIsnvp3qvhBKaIEns87bYMGqKhkVNqpl85vpqEq+ohxl4Olrg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi941QU7lHC7lyMIHhNjswaXxFCQxgw0H/hLCuqPje3Z9tMK7A
-	mjP6sl9jBVoRQDHaxHJdfPbByxLyOZjXTicAXG1ZvzOSZ2xm1C+ceJ+qIw1WnvFORQctIZ1ILx+
-	9vwOKc7xB7kyJn96rrg==
-X-Received: from wmsk9-n2.prod.google.com ([2002:a05:600d:8489:20b0:492:3466:f89b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:a48:b0:492:4a56:690b with SMTP id 5b1f17b1804b1-493d1204c58mr55839725e9.35.1783199852501;
- Sat, 04 Jul 2026 14:17:32 -0700 (PDT)
-Date: Sat, 4 Jul 2026 21:17:31 +0000
-In-Reply-To: <20260703-rust_binder_debug_mask-v1-6-9bdf12b5325c@google.com>
+	dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b="NSAOyNTL"
+Received: from gurudas.dev (107-194-158-19.lightspeed.sntcca.sbcglobal.net [107.194.158.19])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4gt7rn4SRMz2x99;
+	Sun, 05 Jul 2026 00:38:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gurudas.dev;
+	s=spacemail; t=1783211915;
+	bh=M633SL93BCN0PrL2e/cwx2xlbDs4y1U/AlCmHMhb3AI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NSAOyNTLPtXZ/k1vM23d4mp6kcF0MfY7hjEozE9ESHWUStbSSsqzbmiiD9bT9KmME
+	 xnAufNEJYHbKrfK7MERrVnvmbFeMgkIx6GxHLHSyiCFyy3RCzqYObOgb2IM2gkSkEl
+	 n5ETauFMijv8KmS/jXdluLdYQvgxUilcbOPVqAPT8FXUj6yRzgydyIO9gJ4MdAtdnt
+	 cxQgrF191paqd10Z5zniDfAmO76GJCGEoWxy3mQV3UO+ca0IHbz6G7bc9o/6KLFbTN
+	 eEaQWUGbFQiNK5sG4hbYbqVp7dDxT5pfkoyvnPCLpGPi6eDF8GCzqSTJ/ZeBQ4F+xV
+	 T2FbStM6b4UEQ==
+Date: Sat, 4 Jul 2026 17:38:31 -0700
+From: Guru Das Srinagesh <linux@gurudas.dev>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	driver-core@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-block@vger.kernel.org, netdev@vger.kernel.org,
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 0/7] rust: Use kernel style vertical imports in various
+ drivers
+Message-ID: <akmnh0AKFfu9-OYn@gurudas.dev>
+Mail-Followup-To: Andrew Lunn <andrew@lunn.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	driver-core@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-pwm@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-block@vger.kernel.org, netdev@vger.kernel.org,
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+References: <20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev>
+ <c89a1bc8-6cc1-4e16-ac95-add389e45a2b@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com> <20260703-rust_binder_debug_mask-v1-6-9bdf12b5325c@google.com>
-Message-ID: <akl4a_OiswNKTOpH@google.com>
-Subject: Re: [PATCH 6/7] rust_binder: Implement BINDER_DEBUG_FAILED_TRANSACTION
- logging for death notification allocation failures
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jahnavi MN <jahnavimn@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c89a1bc8-6cc1-4e16-ac95-add389e45a2b@lunn.ch>
+X-Envelope-From: linux@gurudas.dev
 
-On Fri, Jul 03, 2026 at 03:29:27PM +0000, Jahnavi MN wrote:
-> This adds dynamic debug logs for:
-> - Memory allocation failures when registering process death
->   notifications due to out-of-memory (OOM) conditions.
+On Mon, Jun 29, 2026 at 04:06:36PM +0200, Andrew Lunn wrote:
+> On Sun, Jun 28, 2026 at 08:38:14PM -0700, Guru Das Srinagesh wrote:
+> > Came across a recent commit bc58905eb07 ("samples: rust_misc_device: use
+> > vertical import style") and found a few more locations that could
+> > benefit from this cleanup. No functional changes.
+> > 
+> > Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
+> > ---
+> > Guru Das Srinagesh (7):
+> >       samples: rust_dma: use vertical import style
+> >       pwm: th1520: use vertical import style
+> >       cpufreq: rcpufreq_dt: use vertical import style
+> >       block: rnull: use vertical import style
+> >       net: phy: ax88796b: use vertical import style
+> >       net: phy: qt2025: use vertical import style
+> >       drm/nova: use vertical import style
 > 
-> Signed-off-by: Jahnavi MN <jahnavimn@google.com>
-> ---
->  drivers/android/binder/process.rs | 5 +++++
->  1 file changed, 5 insertions(+)
+> You have multiple subsystems here, so you need to split this patch
+> setup, per subsystem, and submit them separately. Maintainers only
+> accept patchsets for their own subsystems.
 > 
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-> index db929cc35585..4c200d3d5604 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-> @@ -1238,6 +1238,11 @@ pub(crate) fn request_death(
->          // Queue BR_ERROR if we can't allocate memory for the death notification.
->          let death = UniqueArc::new_uninit(GFP_KERNEL).inspect_err(|_| {
->              thread.push_return_work(BR_ERROR);
-> +            binder_debug!(
-> +                crate::debug::BINDER_DEBUG_FAILED_TRANSACTION,
-> +                "process {} BC_REQUEST_DEATH_NOTIFICATION failed",
-> +                self.pid_in_current_ns()
-> +            );
+> For netdev, please take a read of:
+> 
+> https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+> 
+> You need to get the correct tree, and set the Subject: line correctly.
+> 
+>     Andrew
 
-I think the error code BINDER_DEBUG_FAILED_TRANSACTION is a bit weird
-here. Shouldn't it be BINDER_DEBUG_DEATH_NOTIFICATION?
+Hi Andrew,
 
-Also, since you changed binder_debug! to already include the pid, you
-can take it out here.
+Thanks for the feedback.
 
-Alice
+I was aware of the per-subsystem rule, but reasoned that since these changes are
+purely about Rust import formatting coding style with no functional impact on any
+subsystem, they might go through the rust-for-linux tree with acks from the
+respective subsystem maintainers. The Rust coding style is independent of any
+subsystem-specific guidelines.
+
+Is that reasoning off-base, or is the right path to split these out per subsystem
+regardless?
+
+Miguel, could you please indicate if you have a preference here?
+
+Thank you.
