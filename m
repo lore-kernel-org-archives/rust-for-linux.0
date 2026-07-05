@@ -1,125 +1,162 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B4B1BC08F
-	for <rust-for-linux@vger.kernel.org>; Sun,  5 Jul 2026 18:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783274740; cv=pass; b=RJnLx33hOpKge+g1M+bdz01WJdXUXs9Ij7O10W9hOqur+qdVWHoUSBLQ5mQbWy88YOMdEB/RFhxwLjgzJRkDr4Obg7SMdX1d8YZ4jMlmovXBjsROMW/5mgawJfiqBppk34IHLcoGZCHkiUKvkWnh9rUu//Ix630VjxQgrTFFJ68=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783274740; c=relaxed/simple;
-	bh=jq9TRorttzCZADcEBFzimD0zM8K9y0TwzNpsSFh7QT8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W3gYyGzoZqu6OdgszWXbCTcZJLZUxcSmQ33DHtWFO2rhil1AIu4J0H1FHGR56rVwDpszXXja4Qg7opof8+igozjBIdjReqcIA3MCV7A5go/paf3WgOlMPXG93RLjN9+sSePhXj+wt3EIW/rCwW+ofZSPEWnwpMY0HXduBKU1MYs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ANoX993i; arc=pass smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA4B372B2F;
+	Sun,  5 Jul 2026 21:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783285480; cv=none; b=bjyP9QSTq44j9W4BoLJiNn+HO9shPM4u1cxkUfbk/6iOI//70tAJ3AnM993IdPZ65WPThcrEcdoSP3sdTtcGq4BLbCgGcnakuXC+b+OEDMRATOyo8HO/jrHNeF0RHEahdHtnjaAKD7nCYOKmpN1sWjk3Z/yyhSequ/Kkz8QHu20=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783285480; c=relaxed/simple;
+	bh=M50I3n3w3B3Qw2Xt+aE8IvOIHTSsmNyn7SZOcezmrkY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=dqUfpNqJDfgNhxPk84Of+OR0wlMSg09SEjJBy+Oxyqh56tzIkbqbb2DTT9IfKiEa6HJXIAx1AGerxnZxoNpOG7CpaQccyhQgxYF2TClhwF802sd5cZP6W66TvmgduyB+cIm1D/k9AvYEqAe7pP4rq5mQFs758ot4l+7GHd+EwXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=N1TOEk6r; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ox9UKedO; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ANoX993i"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2caa0551d8bso7300945ad.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 05 Jul 2026 11:05:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783274739; cv=none;
-        d=google.com; s=arc-20260327;
-        b=oeDCxZdfLms1SkM9qfq7+2zp7ufN2+ckM7MOKywnZdJmuW7YyTEEqKCdiY6zGolVsJ
-         uvDX76jYBJW7089Vp9pgHLxxNg7YiDXWOADpcokYXjW3aKYSApKTiWlSlTarkSgFBn+L
-         R7sBaThcHRQmpFN/R37M0i4nM+hn1WMVXnGdn/tqpkyZ8OIws72T+mXT8k/R3AabQ6F3
-         kM5gtLsGXL//axnjPm6J3W4DmwoFfBsom/XYNhbFV2P09pDNgVJM5WQENkmo4Mqwkyrx
-         yN13SfzTwNnsugyj5tG8p+9m6Jv9dQ3Gm4+HJdIBmqGRfF2ZoyOhF9wa8JzmbCkblqRl
-         ZTRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jq9TRorttzCZADcEBFzimD0zM8K9y0TwzNpsSFh7QT8=;
-        fh=3s1OQ5kouBQ7roJRKs8DpQukSUaFWxC48DmQdj1xxSU=;
-        b=FIH/do5qPadifIeqjWMxmm7KXEXxJ6KYCwKm7zW0ZSTB5Oc9LytAg5beZmnzcJbhE0
-         A4AkhvCK8ggbb9Wc5DAkAQLxDpfpHHYIyAFNFsTdSi2HhFO/2W/7riSuGmRzlV59knK/
-         YTldPTs/tYdJ4Ho8YmToKLPN2gYf9tP9vStlheH/iqyusdT58Vut2FuQKp3ef/zIthk4
-         FAVDp403S4jVIXu9QIi1SU2q5AMrYUs5QPE17O1yfKz3ssMjOEhTaAUoSFe5zSqBGpng
-         DwcZovjG32OYpfj6WKleiYOkPPXaD0Av7Lah5scEN6hIqjF2zQniscG2Y1NPBgTWfwPZ
-         zJRg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783274739; x=1783879539; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jq9TRorttzCZADcEBFzimD0zM8K9y0TwzNpsSFh7QT8=;
-        b=ANoX993iN5Bw9Boi2Fbflfe1/TBZzYaSDNdbPcBkb7CY0TLfMVEkXO7J+iC7QQeXa2
-         9GUMKBkIi8XUESirgwj1u6rZ/dsyMbLiEyEoQjm4uI5rcsyxCBcMdue7CchoZONClqwy
-         0h0uNy/WwGNpkqdFniZ1ruWnJFhRTVI0blW5rX+6wNnWc/5VTOfpMLJSrgnCkXiM9sV2
-         mZYiq03hHg12QwhzwcZ0RlYddzCM7ugvrTLCgOis1yK8WzmeG3V/kFkUdGzOCA6FQjwZ
-         xENZHGiz83hRyz7U2ebe4GtdyJuc+GL3Mbh6iy03xRrdJmCi1LNJiJXlEH65gHwDmURE
-         EeOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783274739; x=1783879539;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jq9TRorttzCZADcEBFzimD0zM8K9y0TwzNpsSFh7QT8=;
-        b=pHe7HoadX7LHjZPt3U7hB6H52C42s2uG6r8M8G8SLgblL8565OMWm+7P1ePTtEB6eN
-         HPyZKVR1q8eg10U32lmmPVqaspuY2kB9X8Q8Wnk12RsgjDH1z9IU+kTuipX2kyJJw2JZ
-         NWlt1zYPM5haANJGx9ltLQETB8tCwthMtJ4yeJpS/WnCv5BT5WxdEBUuedQmP257g0UH
-         3DFUF32pftZ6V6D+epjBOTHB2ijhtibda/T/d94CjLm7oTj6hoBZgIhfLlQSB9nLw7mf
-         pts4hpnMxMOZ8OlOrifOEc3NwF2ixHaTlTqniCXT4SLM86BUQyturDucHwTu9j0sKn2v
-         B+zQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqP2fvWwSdxNB0EOPPHL4aAcFldLd/EksdLh0JJkAAvqvUIvsecHEvGQg2+XemWmfcLzC+JCX/Q3PKS3bhD+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdmHxa78zRQ3WxLggkbT680BtbT4LiAbsr5u3ZXGO1kJOufd+2
-	hob5ys0VDWneRPo9jY0g/YIzThVfrYnqMmXCHSeKpEAKZgOiBf74ARU/3pOHQokEbcc+TwPxoo2
-	Al2StMASZMi4IpKs5tpy9TbXD82FOXDI=
-X-Gm-Gg: AfdE7cmcKR8L+ekJOhXlyjKNy8iIpssS6B1kH/eWoFdmXDIUpinlk7iAFzHdNQVAGZB
-	MBQQhQXwOGj9dwDNl7WvHY9t+a45Kfsi04bT++jGwYJS65ukhlQejiTF8jBxTUZDVlfUTjevyk8
-	JEoG8y5EcSoelxQFVjoY77HzWfJpR+GmFjSYxhfnGAfiOxOh5xFHZpSv3aIyk9phXjUKnVULrgM
-	RGnS03aXzTkdUadVOVxaOK6MtcA3mb6Z05sCYeGaxcvwLool8qghYq5xWipC3Az7P0vYE2KgogZ
-	pIgvnZJ75DsGzYz1dsdZf2v+bzloprACu2SCCNzSpJyQ0AcnxoQ9xz4mZRKaKAo2TknLbhWmiML
-	HANjcld4C0taC
-X-Received: by 2002:a17:90a:e7c5:b0:36b:9323:c726 with SMTP id
- 98e67ed59e1d1-38281d6e749mr4462314a91.4.1783274738743; Sun, 05 Jul 2026
- 11:05:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="N1TOEk6r";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ox9UKedO"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4gtg3T0LJKz9tMN;
+	Sun,  5 Jul 2026 23:04:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783285477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mHe1v9wyuo5Lk+X3GCHEgJYsvRIiV7EdK30xd6IgQy8=;
+	b=N1TOEk6rE5CPnX4VmzhzAfqstKOhenaBXKr6jz1ygvvVfSaSyQgoLzLt94g6ZgRwg+AsM4
+	1LiBQDXJFa+2URWuUknoU9UkftU6RjaAmw6k1nKPOG7YTvR0Sp53XTmubfd4TCkvj9pyr+
+	7afTUhIXiEdjvuayS4rgY84cVTFTojU21+oygEKNgOWHvHgaZaayIcoRVPfHRxRXsZPMgv
+	/TbwS07HY4vx2EAnvuGag8ljjvxIC+on60p+0rzDkrsS3KBhuPM4XXaiR5KiqATSmFIgl1
+	nPjTL2sF3UgInyz4oXT3/3kB9/ByB4HpUh/IK6e+BN5xeUrnlEQ5H6ef2izskA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=ox9UKedO;
+	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=mhi@mailbox.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260705175936.4653-1-litvindev@gmail.com>
-In-Reply-To: <20260705175936.4653-1-litvindev@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 5 Jul 2026 20:05:25 +0200
-X-Gm-Features: AVVi8CfW8czBZAbVgtBunA05HKx4DZMhyQptG7lgNqArj3IYRbN9fursU_DRyYU
-Message-ID: <CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com>
-Subject: Re: [PATCH] scripts/tags.sh: Prevent binary files appearing in cscope.files
-To: Sergei Litvin <litvindev@gmail.com>
-Cc: nsc@kernel.org, nathan@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, ojeda@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783285475;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mHe1v9wyuo5Lk+X3GCHEgJYsvRIiV7EdK30xd6IgQy8=;
+	b=ox9UKedOM2bzIq4O5zPltGLCJCbT7RoRlh58QTw4ms9I2vvnJKVqZ/D7qZWh5OPvX+6Dyg
+	L/d66JKpl2UO+EDPkxA6Cs/0oecpl2KfJ9AxSTlqe5YgiTt7SxeouLHP/j3gRZc/PXj+PC
+	cs3tJXa7YbWew3638RtT2s5nkg6suKqv23lcsalblNQCSDHaiwdP7Jhz3ZC5PjpV1hZ2Ed
+	qkDt/FKwuczlv6nNMxXATrs2kaLvlkDmDmtRQbrAVok7seYufmbv9NZRQQm5A5Gx2rviEU
+	0Ykxr+3SRN1ywG7vBGI9T/t0WLQLrfZ9+LXiUMLkPhB+Zhm3zkn9vLqlj2eRIg==
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 05 Jul 2026 23:04:29 +0200
+Message-Id: <DJQXXV5KC973.1XAINGJFCKSWE@mailbox.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, "Beata Michalska"
+ <beata.michalska@arm.com>
+Subject: Re: [PATCH] rust: pci: rework device enabling API
+From: "Maurice Hieronymus" <mhi@mailbox.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Maurice Hieronymus"
+ <mhi@mailbox.org>, "Bjorn Helgaas" <bhelgaas@google.com>
+References: <20260702-rust-pci-enable-device-managed-v1-1-75bc4ff2935c@mailbox.org> <DJOEYVBS17MJ.1YD3TNGQBWHNK@kernel.org>
+In-Reply-To: <DJOEYVBS17MJ.1YD3TNGQBWHNK@kernel.org>
+X-MBO-RS-META: hqsfhii54pcetpzmcwahhbn58s3iz4fg
+X-MBO-RS-ID: 3cf13b6ab1d6585148c
+X-Rspamd-Queue-Id: 4gtg3T0LJKz9tMN
 
-On Sun, Jul 5, 2026 at 7:59=E2=80=AFPM Sergei Litvin <litvindev@gmail.com> =
-wrote:
+On Thu Jul 2, 2026 at 11:47 PM CEST, Danilo Krummrich wrote:
+
+> The concern pointed out by Sashiko that pcim_enable_device() silently als=
+o sets
+> pdev->is_managed =3D true, which also influences the behavior of other un=
+manged
+> PCI paths is valid.
 >
-> PROBLEM
+> Of course, we could easily overcome this if we have to, but on second tho=
+ught I
+> think it would be nice to just not have the managed version at all.
+>
+> (Note that I also have a patch in my queue to convert IrqVectorRegistrati=
+on to
+> use lifetimes instead of Devres, which will also address the topic in [1]=
+.)
+>
+> The advantage of not having to store another object in the bus device pri=
+vate
+> data is minor, and a lifetime annotated guard is the more idiomatic solut=
+ion
+> anyway.
+>
+> 	pub struct DeviceEnableGuard<'a> {
+> 	    dev: &'a pci::Device<Bound>,
+> 	}
+>
+I agree. I'll implement the guard once the bitfield question below is
+resolved.
 
-> SOLUTION
+> For instance, struct pci_dev has a C bitfield that also includes the
+> is_busmaster field, which can race with all the other bits being accessed=
+ in the
+> same bitfield.
+>
+> I think (most of) the fields should be in the same locking domain (the de=
+vice
+> lock, which is held in bus callbacks and in Rust represented by the Core =
+device
+> context state).
+>
+> But there might already be issues with this, e.g. it seems to me that
+> block_cfg_access is protected through a different locking domain, the sam=
+e goes
+> for a few other fields I think.
+>
+broken_parity_status can be set via sysfs at any time
+(broken_parity_status_store() in drivers/pci/pci-sysfs.c), without any
+lock the other writers of that bitfield word take. Racing that against
+e.g. pci_set_master() from a runtime PM callback (which runs without
+the device lock, e.g. nouveau_pmops_runtime_resume()) is a data race
+on the shared word - triggerable from userspace today.
 
-We don't typically use titles like these in commits. (Same for the other pa=
-tch.)
+> (We had a similar C bitfield in the driver core, which we recently replac=
+ed by
+> using bitops, as there were subtle race conditions.)
+>
+I looked at a7cc262a1135 ("driver core: Replace dev->offline +
+->offline_disabled with accessors") and would offer to convert
+pci_dev->is_busmaster as a first step, so the Rust device enabling
+API can make progress; more bitfields could follow the same pattern
+later.
 
-> This causes `make cscope` command to generate a `cscope.files` file that
-> contains *.rs files along with *.h, *.c, *.S
+The one question is where the bit should live. pci_dev already has
+priv_flags, but its bit definitions and accessors are private to
+drivers/pci, while is_busmaster is accessed directly from outside:
+xen-pciback writes it, lpfc and sfc read it. So either priv_flags
+grows public accessors for this bit, or struct pci_dev gets a public
+flags bitmap with an accessor macro, like struct device.
 
-Missing Signed-off-by -- the one you wrote is below, in the part that
-doesn't go into the commit, i.e. after the `---` line. (Same for the
-other patch.)
+Bjorn, would you take such a patch, and which of the two would you
+prefer?
 
-Also consider using `-v2` in `git format-patch` to annotate which version i=
-t is.
+Best,
 
-By the way, this sounds like it could be backported? i.e. perhaps we
-want a Fixes: tag and Cc: stable@vger.kernel.org.
-
-Thanks!
-
-Cheers,
-Miguel
+Maurice
