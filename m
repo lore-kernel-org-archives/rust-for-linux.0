@@ -1,142 +1,103 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDF02E737D
-	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jul 2026 13:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783345556; cv=pass; b=W5IKOlV1857Lb6KtuapPYenr9xVMJrR0fdq/Pm177FT6hMQ8Wz8OlKl+/bsdS0GmEPW9CKqnxr17/hdkfjgdiYITptQR5yFcy0f84O0ljaJjHqlIwTD5Km/rzkLdJ9pUrnF5b/51yjkbxjs66hvUGe2xEfk16U8ulCZfrzl2350=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783345556; c=relaxed/simple;
-	bh=gnhdwSxs/2dEIXlbIYVInombO0ZsUEz3/h6snH5BdRU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cpykh1CmAnEv8lnXN3nYInp0F0DcpCKB//QeDeQSnau7gFYDVi/6f5LDN4ydudn5GPR8v0izTm48Uq90gI7xwLyfaLs50NMpYf36vkU1K6Y7b6NtEbI87RM4wI3f/h1sLeS48A7dm3a1jgwSMDWiS8jyz07ztfnL5Nym7klo4IY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T5+BuZ2O; arc=pass smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AD6332621
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jul 2026 13:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783345610; cv=none; b=LlXUbtMIc1UgmrWoLtWbSKXlQ4TMfhCDhYEzWsYRawKXUj5qrkL+AZWXxRs1yF1b5kriPk6P1t0bTFdczeFJsWtKFbcmpRPbDJWZt1wqCjWBnQjcs9ECobMdKb9AJk/Ej9uxB7vj453wqeEw9KmNWvoewVOoo+Yg66NmHX7CsAQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783345610; c=relaxed/simple;
+	bh=joPYbp0ZP02DybuDa2CY3O03ozNssWKlSYod55rT1yw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SYN6KNsooTiP1WW3FhG9b4rUTzM9Q1ZWzWdxtLn4AUjMP73DFeU5+VfBRHTvsVX49rPf6jOAb4F1Xxixwc0a+S0wPDtaMzdLvC9FFwhT0D7Db9Y8PdfHGa5IukaWTh/TzGMgFdnjIxoTroKoxd1rZ/Eb+zgr6FnsY7/fD2nfsKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=ny9BCBTx; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T5+BuZ2O"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4758b2a9e2aso1880895f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jul 2026 06:45:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783345553; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Xzzur5Lwza+19MPuYqudTVbzOeruijGEZHgH1gGkm+CQXiqWeEfAqbyEej9v9xLOpI
-         sSeJwSa8C8zKp9LhVJmFGWQ6bPY8ajmO4CfmAwYMhELVfoOOxMRTJ3/0UGqwBBxyUE+R
-         9qzbm3LfNWpZHrtvZqYBw6Wbu+ghmfky+aJs+GADMCZCuCCvGUpZY7Ag5cD6f7UZWEPL
-         lkqy24bo3HnR7TGY7pG23TwAqmsMarw3qdupM3txDZNzYEvC/1FEWi14cTS6+SIiXX2h
-         w7yFsYBitcq4G/OP6S0Imw1o8HpQ3iMAgwSX2iCooCV7DjtVUPLZyBHA2c8oQGP/x93E
-         7ZhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kcEQsIAK9WaEKSN1vaaZZgykO19KS7IvBARm/eZyWas=;
-        fh=mjTT0tNajRszTid+bXAqSz802Sf+pJLG75gdWYprYpg=;
-        b=D37g2Q/hNL/nh+jdynKohqNWq9rpnVyTsZuIrfXcOIB3iR2AJRsI9HRxEUrvfGzPEi
-         0T2BIKf5BmwTlBfWHBfzHNZ9ep1DOcfub4Tt8Kmvq3YERQm35/bEBEhgaUYTdKK5ExZn
-         axATRhlvgRCzqN+srM8IKIDtZ3gAtke/dr5qYKOuFIP7sx9CqzSmIEKZc6nveHqtIuPh
-         0DYTTDAl1n/fsJnFAAld+H4ZBFTiY/1RhOzJB+7E8Iywt/q/kWeY50Imrc7XAuIDdR5L
-         nmHjhYgRoeW24aluDDljTMIngZX+3+pWykVhQEoon9E/rXhuJsZKIzUtuTL6HR//01+G
-         1TAw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="ny9BCBTx"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e7c6ec9dbso127107685a.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jul 2026 06:46:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783345553; x=1783950353; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kcEQsIAK9WaEKSN1vaaZZgykO19KS7IvBARm/eZyWas=;
-        b=T5+BuZ2OUGykjQkrwU+MwdTf5WS65efsJVqdh4WEqcfBUEpFXR8HuHwZfBUpdwdIsc
-         An/QMkj2N0BGJQ8e0hqL57aRAi2jRDYao6+LCZqdl5o3NW0EE1T0x8+tdGRTR4nYvwWt
-         gfy+4V+tp57og7N/n2oDFCo4jEQhNR+y08brrsfCGFYwxnbO3nK8Sq/UZ23QZnxwcjY+
-         hsuX184I3UyiFUlmszho7Onkbex7ZO71gqOPbS/KbECsQ1nYggw72EvBj0NC36VCkJLA
-         h+AkaxQoFrtQ8+6u5pbgNgBNO/0p4LPe6W3OKz7L5Ez6T6VBcFq+90f7q/KtfHOtr6yc
-         4B6Q==
+        d=rowland.harvard.edu; s=google; t=1783345608; x=1783950408; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MLLNMmJfCjN+k7kJeesIpc1+87YvCV+RyOBXDpUSJNQ=;
+        b=ny9BCBTxZVqeOn7UOLSMwYjmTp9GRXxzN95DzqprsyYH0k5Ru5V+B3FoDEif3Dwi/R
+         vI6AH8ly6DdeqBU45VpqIIEwEhsa492yT+XLv3jwiCemi5bFmsqRwwTD1t5QdBhmSgBU
+         8+zNzspfqi0JCAn+QHZYwZovZZxFWkvLCNAq5n0O/oYh7XXCUMhJH35ahIEqAXaB+yAe
+         Z2/31tBY5bSqCy4pyZagoGQeTjWxqkVxFLe1rTkcTWBpZmKHcKZWJi+5yvxk3nptIgpP
+         u1sovfaI1n3MmlZPPY1SkLZfc4VLD0ew/uNmlaT6dJzSe/z6pUJzTPSIIspnhwXaxITJ
+         joCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783345553; x=1783950353;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kcEQsIAK9WaEKSN1vaaZZgykO19KS7IvBARm/eZyWas=;
-        b=aW7i0FiAVqavtymLtsR2Iu3I6S5AG8oLom6VChDI9y5OaRbtM8q8wDQfW5V6SRkMZu
-         uUP4AIvh95/nCNoFk9J5sdN7a8I+W5MMcpXvEH9br6GqFpdEvkenlWmuhRSJ2qk+HkeC
-         RpCwZ8ojfe+VlYmZZFBAIVQnURwdCiibHifYlO53XUqSfbJStXfCKXPTixAMF0QpB5Qi
-         sn8d3TujCv1nBKk1/T7X2nFTFxQPWbIVOXVlohhNspIqORybneQAUnqSZRb5Wdf5KIJX
-         RAUSMm18rx0BjqgcbyQ02QzVQYsRKFK/xx4wVr0HBFeihLPhcIOEZGZtDxfdp1xSfkGd
-         S0EA==
-X-Forwarded-Encrypted: i=1; AHgh+RqrxgHKoLqXqxcU1p7MDYLcS4+ClsFJgONr154k+NFjVbmnYLrsSiY3T5aHFtwQ8aQ00wDBgZvojyYSWus1/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyidIRulney4zTUwv2Q/nGl/ywo+0MfS6yUTUjwo+V+t3uDJlOb
-	KpjG66YYxjUzCcXdzoq/IsC3MiJ7i7V0uO7c9GcyGcxFXxJBp2dtH6e0oyDVqkNQK/EP6IXmR5i
-	SMpLpACHkDCdJ8MsfGWiEa4KQJFBXhgi7Td9VGijD
-X-Gm-Gg: AfdE7cm9BpaVIrdUkolF5qCzJj4sWuQbqkS8H0Ah1nY/ajWO0HIOsFcdpXsS4hfLjs8
-	1tJIL2ORyZ+KYiy5UP1EIbru8kY2jUtSl6nk90YzE7Jy5NIDzzJ5b8Rt21FETKgmvWIpA2XTg70
-	pHipcHhegni1gpa5iTsh423eQVH7t5wHIlxZdCRkv+OKYD6wEda9G+bv98I1icZ61iIcc5GWEpO
-	rynfJlKmEZnb1sZjn5u5my0nmlWDVC3TRmQqApcPUAwQlI4yOep/kO7ysctrAPqPYGWYBaDibAj
-	EJ+AiL85ayiAy9IGv49WaNM8PgZn17mBKLOUcfdG3Io9/tMeGZvuFCWEE0s=
-X-Received: by 2002:adf:f590:0:b0:477:6874:542c with SMTP id
- ffacd0b85a97d-47de66a2fe0mr238935f8f.22.1783345552952; Mon, 06 Jul 2026
- 06:45:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783345608; x=1783950408;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MLLNMmJfCjN+k7kJeesIpc1+87YvCV+RyOBXDpUSJNQ=;
+        b=G+OJTirMOOD2k6cnJFP5NYzEbeS97RfOGmwYOhOhnAyR7jBV3HnuVjo8jY7Pk7HhyN
+         4Tz2HO/eshHJ1xpVx/AiJrcxs+/wNXDhUoWF80K+9dvKyW/yGp/CY4EEPBeLWQvNihaH
+         IHu25jRTFFoE+bJlJy9W+l6vZNUQETjRBeH3sIlcx7bstpUAhjVfnUeEZCPgcVYRIHrE
+         jBOkIVmbU8gCRKrYuiXGlGnt2i/4e6IBsZNzg/JEZH87+10MqWmwadrt34r9f0cUrxVU
+         H5MkA8YayZfoNLrPKP4sGs1tE4PCZaVPVbBjpJJYdmW0NDKJtf1FjpLbHqx91CxkYkcK
+         eQTA==
+X-Forwarded-Encrypted: i=1; AHgh+RqUG7P3O2jG0UsMLzpjDkPRDn2PB+EPjqnjtvOWlbv9ohFTeNsCYR2aZcWIWIv0SB7O+YyfwW9NaKMoRo7zJg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQwxB9O7ZInx5YjmwONEWuW/qIHLhn9PErhHOsc3QqbwXF7LV6
+	HrIFh6ALFaYIZenOpVLeh/hmMJW2OICsLRcVAwu4ccG9GzjKHWKNlPXqzf0tp7PYeA==
+X-Gm-Gg: AfdE7clxjA9kasVAO9f/fUl5SOTQiWhSjDx06zGisbDoYsQSUwSpBkZnROMMHprmIUf
+	tSooU09cylrpAeFo8oU5ipI1cS/JoGUlIcEnJV6858mI7hPvdh3QA5hyI1Ktx2/hgJQ2TgUFMxq
+	rk/5uEv6YLMPfpCjxNih+L2F+ESGlf1+l4N3gfp7yoCnQcT+m9Qo5vozbp1eQ851UvkVN/XG/6t
+	pOt4/OHKjmIpz06n17VxmrmGX303RMNNbUAM8gMAY2CExSqPRZ2CIasqYrRSpNfrr9IBzHwNhPM
+	BwZUEm0y7w0j+2TqL0NP4PgsMvaEz85xLH19K++Pi6MNSja1kQzanXocyaJcRQAERpXU90m/2JC
+	EdwnViIWIftozEc/NBGaWG8j1hk4kGTWue8F0Uhn3TyIYRMQpsglRKgbQYRRpuaUw65oaoxkhJM
+	DNrU56FAXOYF0iOg==
+X-Received: by 2002:a05:620a:40d5:b0:915:8bf1:bb10 with SMTP id af79cd13be357-92ebb4c76e3mr86066985a.10.1783345607509;
+        Mon, 06 Jul 2026 06:46:47 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:d01:d210::883a])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90b804ccsm938566485a.10.2026.07.06.06.46.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 06:46:46 -0700 (PDT)
+Date: Mon, 6 Jul 2026 09:46:43 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Oliver Neukum <oneukum@suse.com>, Mike Lothian <mike@fireburn.co.uk>,
+	rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 10/11] rust: usb: keep usb::Device private and
+ gate transfers on Interface<Bound>
+Message-ID: <24196da3-62e8-4707-8024-d989bcd5d3a8@rowland.harvard.edu>
+References: <20260617145946.1894-1-mike@fireburn.co.uk>
+ <20260703030020.2694-1-mike@fireburn.co.uk>
+ <20260703030020.2694-11-mike@fireburn.co.uk>
+ <fddbeaed-ff21-4962-b09f-d975c96cd926@suse.com>
+ <DJRF98V7SMXT.14BS8WGBEESZ8@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260705-net-vert-imp-v1-0-95a35ddff411@gurudas.dev>
- <20260705-net-vert-imp-v1-1-95a35ddff411@gurudas.dev> <8376fc86-be9d-4e3a-a51e-4d9ecda1b648@lunn.ch>
-In-Reply-To: <8376fc86-be9d-4e3a-a51e-4d9ecda1b648@lunn.ch>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 6 Jul 2026 15:45:40 +0200
-X-Gm-Features: AVVi8CcfJ5T4Eksw8-ONpuN0gs2vDftnttVKE4h_kMWH2y7YBxV5vjR4JqCNsAk
-Message-ID: <CAH5fLggGdcMr-ARGpg150_ojhBUnNaV0weyfk_M0D3AP_Qhw1Q@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] net: phy: ax88796b: Use vertical import style
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Guru Das Srinagesh <linux@gurudas.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Trevor Gross <tmgross@umich.edu>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DJRF98V7SMXT.14BS8WGBEESZ8@kernel.org>
 
-On Mon, Jul 6, 2026 at 3:17=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Sun, Jul 05, 2026 at 10:38:40PM -0700, Guru Das Srinagesh wrote:
-> > Convert `use` imports to vertical layout for better readability and
-> > maintainability.
-> >
-> > Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
-> > ---
-> >  drivers/net/phy/ax88796b_rust.rs | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796=
-b_rust.rs
-> > index 2d24628a4e58..5a21fe09bd62 100644
-> > --- a/drivers/net/phy/ax88796b_rust.rs
-> > +++ b/drivers/net/phy/ax88796b_rust.rs
-> > @@ -5,7 +5,12 @@
-> >  //!
-> >  //! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796=
-b.c)
-> >  use kernel::{
-> > -    net::phy::{self, reg::C22, DeviceId, Driver},
-> > +    net::phy::{
-> > +        self,
-> > +        reg::C22,
-> > +        DeviceId,
-> > +        Driver, //
-> > +    },
->
-> A question from somebody who does not know rust. Does the order of the
-> elements in the list matter?
->
-> Linux has a pattern of sorting multi line lists, because it reduces
-> merge conflicts. Can this list be sorted?
+On Mon, Jul 06, 2026 at 12:38:40PM +0200, Danilo Krummrich wrote:
+> AFAIK, it is not necessarily valid to assume that if an interface is bound to an
+> interface driver, the parent USB device is also bound to a USB device driver
+> (which is what usb::Device<Bound> represents).
 
-No, the order does not matter. But rustfmt will complain if it's not
-sorted. Note that rustfmt prefers ordering lower-case before
-upper-case so it is currently sorted in the order preferred by the tool.
+If we're talking about the same thing, then yes -- this is a valid 
+assumption.  If a USB device isn't bound to a driver then it can't be 
+configured, and a device in the unconfigured state doesn't have any 
+interfaces.
 
-
-Alice
+Alan Stern
