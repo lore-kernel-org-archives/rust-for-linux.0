@@ -1,71 +1,68 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022097.outbound.protection.outlook.com [52.101.96.97])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021130.outbound.protection.outlook.com [52.101.100.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A2941F7CC;
-	Mon,  6 Jul 2026 12:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2205D42F6F2;
+	Mon,  6 Jul 2026 12:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.130
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783339248; cv=fail; b=VseYHSsOqTROLUMY5sOUJNEsEB9TiM3w1Ub7wK8r3WGZL2n8Kw/Nb8TKT5wNnlqtqEkT4GO6rzMU/CdOYmamvBtssa0OVFfC8cd8HHi/PwN/BB7IXzRx1ahZ+lEGsDvBeHEnN8oJoy7DW14UFMnf85te8eltyxaPN3DnIm7HWig=
+	t=1783341592; cv=fail; b=EI01E0/gweQ7j8bd5eqNz4EyFqHaejfShpzfOfzYuAJ68eXIc5Rgw86kelTNnBkWXBuRE3rF5Y/cG5HJNr8mpLb8Lw4DwXMO5Ic2CrEL7RCbKzqE9uDsQKXnD0cfuFWzdIFTOCMoKndsNUBEjJGSfAjFyQEf3EW3DpAXgGDjSSw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783339248; c=relaxed/simple;
-	bh=EH6XY6JMxRHP1UAn95VoursXMFFzFvgiwoygGzJqAWI=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=ANBJ4Auf6bVirxryT4X7QRev9pD+U2KSFQ6NvcFQQEMzSNWrV2lDVLzusYHr9nprrN8e9npnKC4dgsXTMjq63cxbeSkh7QfEiTHvCSoMcdoZLUXRxHvFxsc2J1aqqIOwzj5vG3YI3UH9wmLP+zpyy9d12Kjci559JKN6rLsXdN0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=JoQ7BNfB; arc=fail smtp.client-ip=52.101.96.97
+	s=arc-20240116; t=1783341592; c=relaxed/simple;
+	bh=7Kcv+tZ52AaqDNMW1W48SaUUp+30aLI99P1oiSn7rfM=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=F1hsOy5QEecIo1Qm+jdw90b0f0xFzTOig8qEqVLlE6q+DEf+nSmwE63Tgg130k26WlObPY8Fc3a9VEodtRxD1Y0pDE7fcIn8Mi/jhRVg9sFnGByaBY8OSqiK5gY9HaLPTr5IOvZf9MYA5sp2S9n/w51R2Bm70rvc6bMi329DefE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=vXloD79+; arc=fail smtp.client-ip=52.101.100.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="JoQ7BNfB"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="vXloD79+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kVb8QZH4n6kimYawnm5qw6UX7Oe+XqArgNZz81T/1zLa31dqvoqrFQ1dvWpxn2raw3iwEqIXpFkF4A6qxuJWH+ykbu7A33Nr1WX3MI0CyLluwfy2ChIBD3KXi9+sKN5RZwY5uOf0Vpq0kHikCtnYSFxAKI7ETsJx0D7+760GlaTqiZH/MSUjE+r7F65rHigjSfhIxbMzWRlg+/S8YjRj7+npMa0DMjeOH+npMusn9tZCb4JNMGDRlr5E1/6jL0q6tO4/uRwjyZ+/d0zeUEeU+/Wf11+J6LZKW9YtL9P9hHC7AbPJLgb5BDjPEftPo+aTDIkuth3j8DPmoTDKaSiJ0A==
+ b=LgSy+lhiHtnhw8PSqxLSOOjCghEH95+se3dfjz8k56ilWXrDBaSPC4OnJv+vCRPdCP4BqCkUTGdTYhQU/9maoZkOyf6RM986sQnk5aBz5ENeXbvjLS2WJNnpb4D76fihRRtDqaUDGwE7sCDEjSfmKLcZk5svsmVnAhDCumu05r8XB9/w6kChP7aWRkh72UCvgG1KU0MsULS7w4/fmlm+8/3rOSp9X4WFfBTEM7A5O9FE48UqeaeaWMZR+acmyeR0wbU/7/leb2XIOA+7VqsxI53f9BEWUKWT3q31toOxMH7c7uic5U1KekNiODnmXFo7+bLRwsyHNjTe7jALLeOmmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WX/QoWC0JAd+YUGlTBDmPWvhtUY4ijWAcW9nDe/fpxQ=;
- b=pBI7OtVeSnI0Ke9kKxo1jnJCbN5GUEuWvGg3qeGkYgjBGHF+hWZDbi2BWHEYms5qtYP1RHim8BC6fjhg0zAnRN2UslyGhuuEBTji9uP9CvLCoqu/99fFs9SnN+1/1O878Lut6Bir+MXzY0sxxPfV60aW7TXSL5mOKiQQhrKi5aPVSbsAY6ZQYXL4moAOKIYM+HI9pJo8gZvZTXEkJvpgY8nObwZ89HxzPooySRwpJDIFOSzGvxOrG71Sz8wkFlT0XK0qDE6HP++3GMWU6N9NQScmv6oQjM3i1bnzR0qO6m1yjxAC1iKZrsuqaM+Sm5pn+wbP6yraMn4KCikBkAhB3Q==
+ bh=p78VHKSNRETrkYr3aySf6Dwdwbd1/4uSmwe3iM3Tgxs=;
+ b=UTN97fclXFJFH1etZRGzNVQ/TXWyiN8dloOi6DySuJ+Rwhf88qvkwQn4N7mkkn1igcmWbJXLMTWnKAGMIrDOqBqOlUgvfjuvbupy0VhUJHPRQRllsC3Zf7JQ+FXVXMvbLca0XTteWYk5XXnmTHuCD+VbjFGwDNfXutseKRoEgi5KQwMiiXPA6V6t9oUf5Y/wpJ2AVzGcuyLPSddSo2GaGm3+2+PQMktlnu+wHJrvpornpBFa2Lzt2FAomasbD7YAliiYO/BN5WSsP4xMRBA8yTE/CGf7rrbW1PQyUYRHY/wixLiKRN+xxLyfmABhsxD1XY1vibLos+KMJ4B1GY5Jzg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WX/QoWC0JAd+YUGlTBDmPWvhtUY4ijWAcW9nDe/fpxQ=;
- b=JoQ7BNfBPFivLzIh29iSiMWcAbt20Wy83lOcMMPvkVHoYvZmMWmtb3NFe998TjjyRjg7QMZV6h8gtY2ce3OhohdkG9hD7xXlXHmtGGJJNS/CqNdERtfl84aPnEDzhjXrVhEOtG0Zj4w+oXchHdUvikLxb4TGoRf4WWna1Qifqag=
+ bh=p78VHKSNRETrkYr3aySf6Dwdwbd1/4uSmwe3iM3Tgxs=;
+ b=vXloD79+sz59ZpE3wIcu632qjjnH+EAqUbdHTeCvLwLHLVIgRYWFY77fwV7OowYkMfocCXPqexPfxyj9KZR7n06avakJKeEynrS0oCKbKrrtDQI98JyQtU0icNXCUY+/biVPLCVjs25v/sT+CrUME23tbAp+3hDBE6qIbYQY7L0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB2883.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:cd::14) with
+ by LOBP265MB8756.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:48c::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Mon, 6 Jul
- 2026 12:00:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
+ 12:39:47 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 12:00:43 +0000
+ 12:39:47 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Jul 2026 13:00:42 +0100
-Message-Id: <DJRH022OWTTK.1KPQDQHKG7CTF@garyguo.net>
-Subject: Re: [PATCH v6 1/1] rust: introduce abstractions for fwctl
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <dakr@kernel.org>, <jgg@nvidia.com>, <dave.jiang@intel.com>,
- <saeedm@nvidia.com>, <jic23@kernel.org>, <gary@garyguo.net>,
- <joelagnelf@nvidia.com>, <aliceryhl@google.com>, <kwilczynski@kernel.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+Date: Mon, 06 Jul 2026 13:39:47 +0100
+Message-Id: <DJRHTZ6KPOFC.FEE1KH7W6SQS@garyguo.net>
+To: "Alice Ryhl" <aliceryhl@google.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <boqun@kernel.org>
+Cc: <rcu@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>, <gary@garyguo.net>,
  <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
+ <tmgross@umich.edu>, <dakr@kernel.org>, <peterz@infradead.org>,
+ <fujita.tomonori@gmail.com>, <tamird@kernel.org>, <jiangshanlai@gmail.com>,
+ <paulmck@kernel.org>, <josh@joshtriplett.org>, <rostedt@goodmis.org>,
+ <mathieu.desnoyers@efficios.com>
+Subject: Re: [PATCH v10 4/5] rust: sync: add SRCU abstraction
+From: "Gary Guo" <gary@garyguo.net>
 X-Mailer: aerc 0.21.0
-References: <20260629150156.3169384-1-zhiw@nvidia.com>
- <20260629150156.3169384-2-zhiw@nvidia.com>
- <DJR76RV8NEKN.2MP5M9Z66U4TY@nvidia.com>
-In-Reply-To: <DJR76RV8NEKN.2MP5M9Z66U4TY@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0054.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ac::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260613065348.96750-1-work@onurozkan.dev>
+ <20260613065348.96750-5-work@onurozkan.dev> <akuXpnwb_y4R7ekV@google.com>
+In-Reply-To: <akuXpnwb_y4R7ekV@google.com>
+X-ClientProxiedBy: LO4P302CA0034.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:317::17) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -74,173 +71,152 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB2883:EE_
-X-MS-Office365-Filtering-Correlation-Id: a40e3590-01c5-490e-5265-08dedb5634aa
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LOBP265MB8756:EE_
+X-MS-Office365-Filtering-Correlation-Id: be7c5742-2b8a-494d-50cb-08dedb5baa20
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|10070799003|22082099003|18002099003|4143699003|56012099006|6133799003;
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|10070799003|6133799003|4143699003|5023799004|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	ekVVVMN9f1C7EFbGGhgvE303a2Q/AS34LWubfHASc4KlaSgtsgUEWGO+fbydqe5uU3XCPWW2PvY/TD1OTyw2c6YFuigA/DoL6J/pd/zI8elVVwFjJ0eA40Ter5WeSDhXJz25eknqW96fWPGTPWKFS5O9p3mjuWV8zKDxw+6zDLMmU8LLkBVJzQPSVCFreBCOiu7G1BJRE3GspSTJ7QA6s/p5WBoFFEKsGhSyjXI1NPb4p4rLmmmEqd8q4+SJku3K98QMsWhkBy7KxiCv1wSKRtrrPavNJI637R6GaQpTtpwt8Yy2nG5PvS2ESn+1kj1pjxOot2Hs7sLTq4T0/p3Sv4Gheb7n6jChivnG/VwsYPq4JFSl2g1Xcr4/9AoFzc8PuF5dkcaG+AILoRC1aTSTTj3anzAiCRRIgQ7uZWxVYA9giv65FDnfH5aFgfCKmtCuxHH+YbPGDgtd8InzQvr3ffg++ecRbYC/z5PLhf1cYA1Zb3zh247Pbu7YGj9sVWX/ib3h7wbeu0UARdn7ueRPL1uEtU27oHWuNpx3XbAPTcWkOKDjhsle+94zmG8cKOi/+qmel5O212+zoVgZIUBBRdPF6oSBgr/ES5/uMLfwLscRY/mI/0nWtt6OTRUdz9ONVcFhkZe9/kyn++ahs+4IYdV2VATeVZscQ+VSUWZgrSg=
+	WBKzF/hSyh7Ot9TwR7/xluw1yQDEDV5UDxW8ePt11SFEexwBMRNhoxeCeQvi9wO208UwuB/z5gnXXmJB9k57kAwyJ5yKxEP+cZiuzKplmb99us75bhpLyb7OywcyAeT+cjHWhqKu1pDH9NHdJzI3s/2C/P8aNwulItPd7nbtgfcUkl37hXlQzWgAfPGslGJy0qQnQ+lOHKVNjokat+eZ/UMUCtU68Wn7T1jyl/HKvYhGlQAiC7CdKew577l5R4s2a5a8hoBipj1c4A1+1ddQMlqFWKdDAhoEY7ke9rTFda+0/NeGsLTgOX7pmsRIifAJWdta4Nm7J+rzUe+JuO6Us7Ic97Qf/CecWhTVuyfKqV16mp2ZWuejnXh9cM42Htg9T0uDurC6dUvI6l8grJp/IzwP/hNNkgkEZ09Y5jJMpA6AX07BTxI2ff29qR/DJ4s1CZ44sYy2y24gptozPJ/v7qmyUXnEZBCoZEqNp0Z8+U475QRwizI1S4phGievSne4+9yEUkIl2tqgx3tbi5UF78yENRBUmSAjE66ceHPqT9/u18jjdS/z4NJqV5fY9eoWOiLf/zJ4ejKnxh27OJxUlmlEBdiUbMrjFjwRcO3YbvOejp0T287rtPKaakNNnqdI2mvgHJP/G0k88LSTO19Qd2kBapYBwrB39lbQ3Yzsavc=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(10070799003)(22082099003)(18002099003)(4143699003)(56012099006)(6133799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(10070799003)(6133799003)(4143699003)(5023799004)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?djZNOUNpVzk0cWN4YkFkTEI4WlI4RTRVUEwyUTgwTW5rdHN5L0xlUkxvS0Jm?=
- =?utf-8?B?ZVBZMmRuNDh0OFVrK2hqWGZwV1ZFNWpDaVI0aU9BaDB0RDlPMkxRR0dWSlNP?=
- =?utf-8?B?MWtVKzJJdVVYRnR4SnNRRytsSlRJV1l5c2VnT055S0FkSDFlVHFmbGdTd1d4?=
- =?utf-8?B?eHlOdnlpMlZRVXdEOGZ0WHNORXpPdEF6NUFjWXZVeSt5Yi80OG1ZdVVYTHkz?=
- =?utf-8?B?RE1SOEExMWJCVmh3ZUhSMkFUdk9vcGRqUWRRR0o3NW5IYWhyNi9mWFc4TnZ6?=
- =?utf-8?B?dHNDcE9XQzZPZVg1Z0gyT2xYZk1RSTZNaTJ3clE3M1gxY3NnQVpBakp6ZitT?=
- =?utf-8?B?V2tpVVVMQXNwNGY4NS8yMDRIMjRNZVU5Z0UrSDN0aGRSaHdHdU9GMnNMbFMv?=
- =?utf-8?B?ZExpVEQ2S1RjbGxScFNReFVHVnpxZGYrRXRuZ09MVDRNNkcxVDMwZmFXOVdR?=
- =?utf-8?B?NXRxeUdYRnM4bHpVY3RZU0tNazBabTZVbjlyYnUzY1FLUC81YUxoM0JjTnhW?=
- =?utf-8?B?QkVyTExSenpBby83QXVMWXBDR1FOTGRSTWE4WlhyVDVBeER6aFUvV21Nd1J6?=
- =?utf-8?B?NU16RmE1TVhGN1BzUWhkK3I5M25yUkJSMkxlcitqUVMyaVJkS3pZZnZuNXBU?=
- =?utf-8?B?WDRLazl4Wmx6TS83Tk9YZ3hNUlBzelNiaHN4dXhrWitoYzJnQndpL0o4MjhO?=
- =?utf-8?B?U0E5S3lSd3lpVFdyZkZTeTB3MlpMWVIwVGQ0N0NoVHJVYnZvRHNhakZlaEhs?=
- =?utf-8?B?eUlFbHRubDNQbXdyRHVtTzNWcGFSNEJ0TjB6MERwVXQzdlBNbDhaTEN3WUoz?=
- =?utf-8?B?a2prdU96aDN0TmFva2NOeTlaRTNaYXpnUnhWVTFCUkVRNm5wT2x4R2crdTk4?=
- =?utf-8?B?Q29JUEU5cTdwbVg4dEsyZWxTN25teXYwL0Z0UkEwZTZUdEFseHpEU2wxcEx0?=
- =?utf-8?B?d0dFTUVCRU1WS3VtWkI3dkw4d2xhaFRCM0VST09SbTRsM0MwMW55S3dZOEtN?=
- =?utf-8?B?TEg5ZjlUNHQ1RnJoTUkvNC9lTUdSQ1k2K1c0bzRINlE5WitscnMva3pUVWhk?=
- =?utf-8?B?S1UxTXpQZmtUSjJmRFdrUlBkd0gzdDJuM2lLRUIyU0lRV1VGdUtiMS9mQis3?=
- =?utf-8?B?SVJGU3drWFYyell5MWE5dXJnMm1hMHA4VU5hNlNjckZ5MjgxQ3htQmkrRkxV?=
- =?utf-8?B?UWhxVnJzZ1ZDS20zNUcxTFBKZ3ZWT1EvYWRzZ2VjckdidWMxaEJmOXNCQWhn?=
- =?utf-8?B?VTYvemtvYjlnUURNamZ0TEVqdDFENDMyb3hZbmFnL2c1OVQxQU54dGhEU1Jn?=
- =?utf-8?B?TXZlbExWZG9oTzdDOHloZFNBMi9Ubk9nS2NJdTAwV2g4K1RvZ1NGaFIxbmxT?=
- =?utf-8?B?K2ViTFo3SjY0bTdMZXduVS81Tnl1dnZ1R3Vkelh5cEFHcnorOGNLUXlpUzNU?=
- =?utf-8?B?SFlwR3N4ZEN4b3dCMXcrVnV1L3JjYlh1S2JqZWVmdWtKZkNkdW54VWhTbTFn?=
- =?utf-8?B?VzFuSDRac25wOS9NQUZjSW9FWjE2R0pDeE4xYVVJSHZGWnBZZmpDVlp0VEo5?=
- =?utf-8?B?eVJEa0h4TGIwWUdEWTEvelhCQ1J1ckJWY3FBbk93OVpRZ2QyWVY4dytaclN2?=
- =?utf-8?B?citvODlvM3VjMTIxV2hvWW83RTl4eWE0cElUMmlRajcyeEh4VzlXcWw0NzBX?=
- =?utf-8?B?SmhOUTdUc2haK25QbWR6NHBRd3o3SUtKSkpROEFrVEFHbTNmSXowV1dQd0Vi?=
- =?utf-8?B?Sml4MFV5ZXV6aW1GbVhHWUVLTDd2TFB6TFlJbWhUU2pMMHRidWd3d0poWXZk?=
- =?utf-8?B?QURPWVFwaUxldEc0RG1FcDJzcnlPNU1DRkJoNXZ1K2xPYzh0aVJ3NVJxM3Z1?=
- =?utf-8?B?L0NhcFZ5T0NuaGR1dzlnUXlHb0xWK2FVaCtoNDdPdmtYTlF6NURmcHVCYllG?=
- =?utf-8?B?MTRPWVpjOW5GTENQQkQ0b3ZNSTBmUTVoZDdmV2ZYZyttY3pkTWhkTHJJSGVm?=
- =?utf-8?B?SXBKWFZHbUlBTHY5WllYSTlDckdqSiswSSs1Z21NRzQ0OHc1SURCMzFQS2xz?=
- =?utf-8?B?TnJPYlZ6YnNOdll3ZHMyVFZIdXN2OG9hTDZZamg3Tk1PbnFGa0M1Z05QMS9G?=
- =?utf-8?B?VjdPTG9FWEFabVVtS1VUc01sb2dqdm83WjMvQ0xQY0VwQWhYNkFzcFlUSy9l?=
- =?utf-8?B?cWR2YnIvWW80VVEvYTFpWEs4TERzUk8wSERTRGlhazh3SHcySVBlMzNhbzhB?=
- =?utf-8?B?elpUZk8wczBISy9hNUg5OG54T054OENTVTlCOXZuRHV1MGVGcFVYWFhJSEZa?=
- =?utf-8?B?WWM5SDF0MFJ4NHlIcU9YV3pPMnM1cXd4MS9iMzU0WmJRaTM2dkdYUT09?=
+	=?utf-8?B?REtXdDlOU3d6SjFpS2w4YWRxbWpPN1YxREw2dit0azdJT0Z1RjhGLzdNZ1hl?=
+ =?utf-8?B?aGVjODFJdHhjME1HTXlvZmh5R1JkK0NPYjlUYWF0b05XcXhDRDRLbk1rM3B0?=
+ =?utf-8?B?K3BVcFhRSEE2d0JkNnlLUkREcmpoSmZOTzljeitGWW4zS2g4QUxidTgrOEJo?=
+ =?utf-8?B?dUJxcG1vME5WWG1STkM4cnJ4Y1dUYVpCWGdNRGpRZ0NVVk4vN2ZNNDU1VzZj?=
+ =?utf-8?B?eWFCMGdxWUJFdEVHL3NUNjN6UUtQOVdSY1greXlOUk8wdHpWRHB2QjJTUzVQ?=
+ =?utf-8?B?TTg5RWwwMEp3NmdOMWxHWFlGQ2NjSkVFRGxWbDF1T0N1S3BJNGp4eUlyTnBn?=
+ =?utf-8?B?OUJkWFU3STV4dmltTU9uVnV0S0wxS2QzaDE5ZVBPYXpkUCtJV2wwQmZoaTBR?=
+ =?utf-8?B?eXhZaEpaZTBLc0lwZFVtQndXVklaZGl0YUhWZ2ExbjlrcGRKRFdycHBJUEI2?=
+ =?utf-8?B?ZndVTGtBT2lYS2o1SkhZZnVtNU40V0E3RXlCRnIwYnhkalRzZlNvR1puRnVQ?=
+ =?utf-8?B?SG5GOU9TU3JOT1Y5NXFNWlNMMHFqRWFIdTZMRGR5TnVHVVFhMHJHbVQ2MjJZ?=
+ =?utf-8?B?WllBa3loQlc2UUNNRHpyZVJaSjIzK3hMYkhxeVpiczdNZnQyZUh2cWpVTkxV?=
+ =?utf-8?B?QVBsa1RLSVBta0oxdjVyLzBsa3dud3RzbzJHNDJmUW8rWUIrd2hQNzEvdFo2?=
+ =?utf-8?B?MjdRelVLWHRGMHpYVDNQYzRMWUNjekZkZDBnSHdSY2V6aG02NEV3VlZUbXlG?=
+ =?utf-8?B?NVhyblNVYVlxejVsZGxPZHUraXV0c2RScktRN09CN3pyK1RNVSszUmFTYXBP?=
+ =?utf-8?B?dGwydGk0RkZqdU11ZlRrb1RWUVVJcmFVWFZFUkFTdjdyb255RGFBWXpiM0pB?=
+ =?utf-8?B?WGwzZ0NBM1ptR0ZhQWkrZXUzQWltdW5EdkErb0N1aHZCMHJ6UzcwTWhNMmd3?=
+ =?utf-8?B?bVhkYTJSQU1sNU1iVFVIWFhET2h0TDZjN2tqeXI1QmVrY3p4MnNOQkhLQ3pa?=
+ =?utf-8?B?UG5xV0c2eHBEaDBmK0loTHFHVnlnaU5kaWZDclE1V1A3VGRJWk43VXZvVXFS?=
+ =?utf-8?B?cHlJaHVyS21mQk5HQ1A3dVdGOGZkOThVSTJWUnF1MTRocUppdkgvdU53MlJJ?=
+ =?utf-8?B?Q2RsZ0IwVmFnZGl5V0xoWmRQSzVjSWNIU0VPbFpPNC9qZmwyeGl2NHdPdE5C?=
+ =?utf-8?B?Q0F0L0FhY0tHU2gxM1RRVVQrWXB4eEpQbXMxcDdNdGI2dDhLYUZ0WUJlQ05X?=
+ =?utf-8?B?VDFhaG1nbDVoODQyYVVGbncxNGNyQTU3RXcxUVlqZGdtVnJoZ1NWNzFJNE5j?=
+ =?utf-8?B?cWV3KzRrT1NhWElNQmRIZHJ6UngyWnY2QjRycXlUZlRBblJ4NjlnTWdQNlls?=
+ =?utf-8?B?VSttU1FnZjVmWjRaSGUzSG9oblVheVhBTlNFTi9qQVQ4K1lFdjVXUExaNHJn?=
+ =?utf-8?B?UjF6WVYvK1AvcWRJaHNzRjBIUmo1cCtnVGpxNGoyb2l1T3RNSVhZcEFjVlND?=
+ =?utf-8?B?SXcvOGw1Q2V0bG9LdEViL2YzY1RvSEtBK2ZIODViU2tVVUwwOVMwaVZuOVhs?=
+ =?utf-8?B?YkoyaWNqaUMra2pQL1Q4QWZyK0pxMGdSbzZaSDNtSDlPckhOUVRPWnR0SHpM?=
+ =?utf-8?B?Y0lVNDloRVczZUxjTnVobnEzK21raGI1Nit5SndHelRGVytwdU9zWkl4K0po?=
+ =?utf-8?B?QTlSU2lOaCtzQzhsaElKMnNjKzlwOGtnelRkeGRJR2tJRGRHcXJvTmw0cXha?=
+ =?utf-8?B?Uy93ZTVNQzlHdGVhQmtseFFhUGNWUmJlOGNlbXhWNVU5WEtzdU9DYjNSelF6?=
+ =?utf-8?B?dFlIcGNzNExaOGM5TVRGRERVRmUvUWdpOHdJdmkrMnQ5TXlZQkZmazN0YkRY?=
+ =?utf-8?B?L0lxSzh3VDFpTlluOE9kOHRUem81d01STnhlb2tUMDVpNkk4NDJMUVUvZUJr?=
+ =?utf-8?B?NzZ4VENSTjdDMWpRUnpVNCtBRnF1RlJPck1UZStPN2VDWGN0WnRld0NhbWJW?=
+ =?utf-8?B?Z0tuNkdqK25BMDZKMnp2SURMZEVWZng2ZWpSOTNVdVo2ci9pMkYrcHlUMnlj?=
+ =?utf-8?B?VWVUUDN5MVN6eHJOTTVFZU00WFNrUlh3bHZUSUh3cVpzcEwwME1HYy9oNUE4?=
+ =?utf-8?B?aFNoMkd2alhqNVVCT3dGUFVDNkE5L3JaMEwwNGg0WEdqM05wdWtIc3hzSkFl?=
+ =?utf-8?B?Y1dMM3laVnFuSzdJcFpMNWFTaGkyQTFIRml5ZWsyQitEUTZ2K1RBTnBSTDNY?=
+ =?utf-8?B?MDZNSzN2NVpReHZ5cWI1R1d6dW1Sazlab2dQYWlhUlRFNW81anEwWUtJV0Qx?=
+ =?utf-8?B?WHJzdEg4R3FoSlA1VDJQZW9pbGdEYk5VNk1yeDlLb0NiMTAreXBhdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: a40e3590-01c5-490e-5265-08dedb5634aa
+X-MS-Exchange-CrossTenant-Network-Message-Id: be7c5742-2b8a-494d-50cb-08dedb5baa20
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 12:00:43.1335
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 12:39:47.7231
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DKj5FYqhfs6QAisyT4l/PlEdj+ytel9Rzzj0dBFfhTpwGCr1lQN8yb6N/Qof1Q64o4JaGU6F8L5VXQ0o/XGHhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2883
+X-MS-Exchange-CrossTenant-UserPrincipalName: Aj5WozWBUXIUbqi61tvNsmOYLzD/ep1wxgbQynMo5VnsjGVFsaYboE4lELUzdzcL+JXlLg3kmmsARzTWABO0yg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LOBP265MB8756
 
-On Mon Jul 6, 2026 at 5:19 AM BST, Alexandre Courbot wrote:
-> Hi Zhi,
->
-> This is looking pretty good to me overall, a few remarks/questions
-> below. None of these should require big changes.
->
-> On Tue Jun 30, 2026 at 12:01 AM JST, Zhi Wang wrote:
-> <...>
->> +/// A fwctl device.
->> +///
->> +/// `#[repr(C)]` with the `fwctl_device` at offset 0, matching the C `f=
-wctl_alloc_device()` layout
->> +/// convention. Contains a pointer to the [`Registration`]'s data, set =
-at registration time and
->> +/// cleared on unregistration.
->> +///
->> +/// # Invariants
->> +///
->> +/// - `dev` is embedded at offset 0 and is initialised by fwctl.
->> +/// - The fwctl refcount owns the allocation lifetime.
->> +/// - `registration_data` is either `NonNull::dangling()` (before regis=
-tration / after
->> +///   unregistration) or points to valid data owned by the [`Registrati=
-on`].
->> +#[repr(C)]
->> +pub struct Device<T: Operations> {
->> +    dev: Opaque<bindings::fwctl_device>,
->> +    registration_data: UnsafeCell<NonNull<T::RegistrationData<'static>>=
->,
->> +}
+On Mon Jul 6, 2026 at 12:55 PM BST, Alice Ryhl wrote:
+> On Sat, Jun 13, 2026 at 09:40:10AM +0300, Onur =C3=96zkan wrote:
+>> +#[pinned_drop]
+>> +impl PinnedDrop for Srcu {
+>> +    fn drop(self: Pin<&mut Self>) {
+>> +        let ptr =3D self.inner.get();
 >> +
->> +impl<T: Operations> Device<T> {
->> +    /// Allocate a new fwctl device.
->> +    ///
->> +    /// Returns an [`ARef`] that can be passed to [`Registration::new()=
-`]
->> +    /// to make the device visible to userspace.
->> +    pub fn new(parent: &device::Device<device::Bound>) -> Result<ARef<S=
-elf>> {
->> +        const_assert!(
->> +            core::mem::offset_of!(Self, dev) =3D=3D 0,
->> +            "struct fwctl_device must be at offset 0"
->> +        );
->> +
->> +        let ops =3D core::ptr::from_ref::<bindings::fwctl_ops>(&VTable:=
-:<T>::VTABLE).cast_mut();
->> +
->> +        // SAFETY: `ops` is static, `parent` is bound, and `size` cover=
-s the full `Device<T>`.
->> +        let raw =3D unsafe {
->> +            bindings::_fwctl_alloc_device(parent.as_raw(), ops, core::m=
-em::size_of::<Self>())
->> +        };
->> +
->> +        if raw.is_null() {
->> +            return Err(ENOMEM);
+>> +        if crate::warn_on!(
+>> +            // SAFETY: By the type invariants, `self` contains a valid =
+and pinned `struct srcu_struct`
+>> +            // and `srcu_readers_active()` only checks the active reade=
+r count.
+>> +            unsafe { bindings::srcu_readers_active(ptr) }
+>> +        ) {
+>> +            // `cleanup_srcu_struct()` may return early if there are st=
+ill active readers.
+>> +            // This should only happen if a guard was leaked with `mem:=
+:forget`, which is
+>> +            // "WRONG" code and may cause a UAF because Rust will free =
+the `srcu_struct`
+>> +            // while it is still referenced from the C side (e.g. by `c=
+all_srcu()` callbacks).
+>> +            //
+>> +            // Another consequence of leaking guards is that `call_srcu=
+()` callbacks will
+>> +            // never run because the grace period can never complete du=
+e to permanently
+>> +            // active readers (i.e. leaked guards).
+>> +            //
+>> +            // If this ever happens, that means the guard was leaked by=
+ mistake and the
+>> +            // caller must fix the bug. Sleeping here is intentional an=
+d less harmful
+>> +            // than risking a UAF.
+>> +            //
+>> +            // SAFETY: By the type invariants, `self` contains a valid =
+and pinned
+>> +            // `struct srcu_struct`.
+>> +            unsafe { bindings::synchronize_srcu(ptr) };
 >> +        }
 >> +
->> +        let this =3D raw.cast::<Self>();
->> +
->> +        // INVARIANT: Set `registration_data` to dangling (no registrat=
-ion yet).
->> +        // SAFETY: `this` points to the allocation just returned by fwc=
-tl.
->> +        unsafe {
->> +            core::ptr::addr_of_mut!((*this).registration_data)
->> +                .write(UnsafeCell::new(NonNull::dangling()));
->> +        };
->> +
->> +        // SAFETY: `raw` owns the initial reference.
->> +        Ok(unsafe { ARef::from_raw(NonNull::new_unchecked(this)) })
+>> +        // Ensure all SRCU callbacks have been finished before freeing.
+>> +        // SAFETY: By the type invariants, `self` contains a valid and =
+pinned `struct srcu_struct`.
+>> +        unsafe { bindings::srcu_barrier(ptr) };
 >
-> How about replacing from `if raw.is_null() ...` with something more
-> functional-style:
+> Hmm. It's not entirely clear to me that synchronize_srcu() is needed
+> here. If there are calls to srcu_read_lock() that do not have a matching
+> unlock due to use of mem::forget(), then either there is a pending
+> call_srcu() callback in the queue, in which case srcu_barrier() already
+> sleeps forever, or there are no such callbacks in which case I don't
+> think this actually leads to UAF.
 >
->     NonNull::new(raw.cast::<Self>())
->         .map(|this| {
->             // INVARIANT: Set `registration_data` to dangling (no registr=
-ation yet).
->             // SAFETY: `this` points to the allocation just returned by f=
-wctl.
->             unsafe {
->                 (&raw mut (*this.as_ptr()).registration_data)
->                     .write(UnsafeCell::new(NonNull::dangling()))
->             };
->             // SAFETY: `this` owns the initial reference.
->             unsafe { ARef::from_raw(this) }
->         })
->         .ok_or(ENOMEM)
+> Thoughts?
 
-I would rather do
+If srcu_readers_active returns true, then `cleanup_srcu_struct` will hit on=
+e of
+the "leak it" code path, and the question is whether that is okay.
 
-    let this =3D NonNull::new(raw.cast::<Self>()).ok_or(ENOMEM);
-    // use this
+My analysis in https://lore.kernel.org/all/DI9ADEUBBUD2.22OR0R12PKVQL@garyg=
+uo.net/:
+>
+> But after taking another look, I am not even sure if this is needed. A qu=
+ick
+> glance of the code it appears that __srcu_read_unlock doesn't do anything=
+ apart
+> from adjusting the counter, and the SRCU grace period and thus the timers=
+ won't
+> actually start unless there's a pending grace period, which won't start u=
+nless
+> there's a call_srcu or sychronize_srcu. And we *know* that none of them w=
+ould
+> happen, as the lifetime guarantees that nothing accesses the `Srcu` struc=
+t when
+> `drop` starts, and inside drop we have already invoked `srcu_barrier()`.
+>
+> So I think, even if we hit the "Just leak it" scenario, we can still safe=
+ly
+> deallocate the backing storage of `srcu_struct` and nothing should break?
 
-for a more linear style. Map shouldn't be needed.
+So I _think_ it is not needed, but this is quite heavily related to interna=
+ls of
+SRCU implementation.
 
 Best,
 Gary
-
->
-> It's not just cosmetic: it removes one call to an unsafe method
-> (`NonNull::new_unchecked`), carries the fact that `this` is not NULL in
-> the type system from the get-go (instead of relying on an explicit
-> check), and makes the transition steps from the raw pointer to the
-> `ARef` more explicit.
-
