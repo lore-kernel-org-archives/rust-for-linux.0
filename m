@@ -1,160 +1,130 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021116.outbound.protection.outlook.com [52.101.100.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8F422548;
-	Mon,  6 Jul 2026 11:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783338809; cv=fail; b=YTgLzfM3WsXOUQ5Q9LBvuqQFIzO3468agIv1OwD6AmZeS8cbBTvTfnnaGsG85STx+7AQoYk2mTLTy6tvGs+c2Zwk+q+AKiC1x/N3idSvDp2g5QBONdytZwmtBplpKfANKEUeuJpgi6TyQvrUvktrHyQi+40JjyzCFZVnqJOG1MA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783338809; c=relaxed/simple;
-	bh=+LbckhpD0qhz7qg1cg0ip87zc0vznypv3t6bfsQ2ZX4=;
-	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
-	 In-Reply-To:MIME-Version; b=Kt92em47b0gOD+RB40rEOce36b4o/OwPJkhbiRrxZThW5tDMi0alBo52gNP5cnP4tSL8Lo3AMXAPNagtjYRZfM88Z4JmmShT8ivMzXvUut+Z5t2JU6Ys0VF6hP0y85aFoMmCtPycmW6aSmfxGHkeHprgyzTC/fMzqy7mjwxhUGI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=kCPTib+4; arc=fail smtp.client-ip=52.101.100.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F9F421EFB
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jul 2026 11:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783338923; cv=none; b=f8n5cJOPy3sB+krF+kZdwQuh/Jc1WgoqFezMttlY9URTLxmCxoPAceWELut54EyQuc1QhWWmDLih+6x7CoYqPdJTrCdhqeSbgQO003tU4NxZvHxpxXbCUn3mXUP+h1nnBKgJ88e1Lr+ibz+jlkqV4qFWYS1ISidLFtTn5EJ4UFk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783338923; c=relaxed/simple;
+	bh=KEJuQka/lAHPOXYTPGsjyTGS14JS8/uSiPEYD0VW2SM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sdT8e70GVHd49/7XVMFgdpviD57jABnn6TwF5Du0E/JjEwtXIp1u38aKhGHjv7xY7BpQGGwam/6d7SUFLrNxBaP+HALCNs4ffcJTUc2LZAKdsWjjb9kwWajevJof9WAh8iHGAWWtbBpqAR1AxeQfHEhdtDeYSBzuAKxsq2Jk0bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uSN7xqnk; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="kCPTib+4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iIgpFxlC2tPXihRrXOLrjba1NMXlRAg9h1CAE1hqkgJ5w0mvxFjHQexMwGNKqODht6DolMxQK8EjVk1xJ+cCGeZ9w5JliqmoqVN2YH07euUOxA1lYoM1Ts4E8K1/QckXHxu4mvAWBNWm2f6YReJprs+9mShjRdIei4GML3Ryc1LC/vRNpiUpFk7TbYS7r0F1YV7ugX3WTDUAHqNhH3W4QZDHrz4NyTD4ZARDt+ienUVt9Zd3EXrQ77+z/ygNAFeVSgcv41KA0AjX12HoA650+n0nHAzdz/vnwRuODd4n5f5VnjDNXxsd4smM7ZUZVDKZ0UPw4Holy+i7kOcCIk6IRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+LbckhpD0qhz7qg1cg0ip87zc0vznypv3t6bfsQ2ZX4=;
- b=VDWbS6I4x0d3/hRfxdrLErVT35HeOhZSTeCy9mWz5Wp3l0YvlW5Q7ppzRK64C3LRoePSzAsPFXgvkz2i7Eota/R73NH/5rjctjaONpp+1MspIn965TOUoMi7lbuoH1FShYYfuTHcP3l0Y7yIPPqMEZKezX6Vup8I/nWw1tHkhCroXBT4GWgKtUQC2tKqZ6S3GN1VxRJ0dqPcbpRDg20YoYH2gcl7WbybjBSpH5UsyzNnnBnMs80N9cBfAWuwnb2NUe/F3dPfRlxHgIzf09Q13F9V8Yy0nSLikOOawhsJsswBdTIjSxXVrHT2JNRw4dhxMCrQ9CtDBNM5bsrvdy6t5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+LbckhpD0qhz7qg1cg0ip87zc0vznypv3t6bfsQ2ZX4=;
- b=kCPTib+4yZbECfrnmM5WMXqahqP6Qt0T7AyRqy/stg9zon5u5tCZeedySLnMD526g3zdyY9mtBqNS1UJT1mz0nw76UPN1rLV8DkthfULk4/PJR2umvsb9AmALLjMbW2p4dpWuxAwUwL3HFF2HCB2FRKWvG7h4otZRP2veFJ15nI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO8P265MB7966.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3a8::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Mon, 6 Jul
- 2026 11:53:25 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 11:53:25 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Jul 2026 12:53:24 +0100
-Message-Id: <DJRGUGMD8CNG.8DWRHJ3PRH3Q@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-Cc: "Burak Emir" <bqe@google.com>, "Yury Norov" <yury.norov@gmail.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang"
- <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH 0/4] rust: Add support for reserving of ranges of IDs
-X-Mailer: aerc 0.21.0
-References: <20260703-chid-v1-0-84fe8259e46e@nvidia.com>
- <akuV_GRAM4QPqf-o@google.com>
-In-Reply-To: <akuV_GRAM4QPqf-o@google.com>
-X-ClientProxiedBy: LO4P123CA0603.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:295::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uSN7xqnk"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso23498365e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jul 2026 04:55:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783338920; x=1783943720; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GzTwFKT3REdJ6G5TZ0YBDl2Hm1+LCDk4PNVrne4DR6c=;
+        b=uSN7xqnk7pglCGzZA3+zabybvU1be2oNlPjXzag0Czr6+3vr+fa9VhxhSB63T4lBJM
+         puDU4C6lTNreqYe3sojxCEv0EbpKBtpFtBbHD9oKFq6AbOdJRYP3g8WJu+rjhYzzjVEo
+         ibTAOQbbAodkLe/OYkTktQR39myu2LA0/ujrT/kVaGupwqOXS0Rt7EdpuSaLO1fXxvEa
+         FAML8G4dJxQKeLL/A1v2tXLm9fq4/f3V3fytVk0MrjEpp/S0osojN4qG77D84YfdpHsa
+         hTldNIpjnBjZLcZvWwjPYOrglV/gkUO7v43KzrEH4jn0jt6R5j7qKo7zSuUkwm7U1ykH
+         vsJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783338920; x=1783943720;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GzTwFKT3REdJ6G5TZ0YBDl2Hm1+LCDk4PNVrne4DR6c=;
+        b=cA2z+MPGXM2mnIGXzO1KNJWOposjSkVWOmNjZIFN9AP/txT2AEkuZS6vjjJekwVKCs
+         2nj/vX5JoudAyPBMIWRE55n5wsOrWQWrOX+Xt2DK3FSqUa0Qby08mARhNEbXbTzzKP3D
+         NWw2+OFDUnF7U0h+L400UxLzh/kwzaXA4fLkZjOi4uhFiuhYernimQYIYDpVVRK2qPI5
+         L8xs7zRyCHxUVqHc0EduGSWGJa3RARgvcAj26GPXvfImbSawgxicc4oG082FFo85hmqo
+         80lkSwkpXJyEnVTHw/YrDhtdlUUXNV513ZNVOq4cecUCjyLcqFAHL+8u6DidvfNY6W5f
+         G9aw==
+X-Forwarded-Encrypted: i=1; AHgh+RpdFaPkbIjV2BBgckZybVjrZtC/NdtUf5lrpVvFchZ9e2/cdUnbfo+f3fwSUCbff4mH9Zl/ygRtPOwlmHX0vg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNMirM43xqw7Uvnn7kIijbIO/fUMkZYOTvbSFb+ThQCH8E5qHo
+	qMZSApdawm8cxMqUQSjnrQniwlIGIdGzVN/g4Y7TD0ZtmrzluKpWssLWjhPD9WcP9ZNJ41oOtSJ
+	+nHfA9hT3Mp7voPsqRQ==
+X-Received: from wmjl19.prod.google.com ([2002:a7b:c353:0:b0:493:bdba:620b])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:34d6:b0:493:aa0a:45b0 with SMTP id 5b1f17b1804b1-493df08f925mr889185e9.23.1783338919855;
+ Mon, 06 Jul 2026 04:55:19 -0700 (PDT)
+Date: Mon, 6 Jul 2026 11:55:18 +0000
+In-Reply-To: <20260613065348.96750-5-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO8P265MB7966:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12702f04-27b0-4502-5d83-08dedb552f7e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|23010399003|376014|7416014|1800799024|18002099003|22082099003|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	IvPZxypExuhMeWXwu2bXz6XBVUacTB0mfK5aroKdnJfkdhwmNiGh2pFtxUAC0InfFXqmFHEkXz92xaPpIUpVRMzwMorJHBOX6DzGhVzxVgFiPfuV9pjbqjRrHI6d5gegkCfKdX7dQXqfTyRo/OEktNjM3khsVxDJNQcCoopz+p7XyhsQ5CLuBX6+RVZs/Vp2mwRdQXZzOrOKCzNRef+F+0r11GwyK5NSzwBbcA0OG6Q+D20845z5ZtEXLdTodnT+Uh6PwXbAX7omlj5kSbKeeZ3kU2HwM9L8A2aQkNfMGFsdy1ZCH6TZXchI+c6N35klfRdoJXeduihfq9AHcTN1xRP4BGztploEAhkM7/onuhnu4m/zJZpqHL0zU5Qf8UGSzHVCK431D3GJO3S+dlAAkzd37hnsi7q3NqiUK5ocBe+tLcw9BkjxgLmccbLfxzU1PSV5uX6m1V7APZHr10RbeBzdixjcKgKgb6//4CVxqQLw5ijZrBOAC9v9Gzi6BS4dsLwEwIlEudXU2PhHFRq6mp58zUjlPeKx1D0aUvTYJd3RsoYGsF7UzZfMfxKxBfQsI8NTDVlhYc1fli3OFJ4kdPeIHi1YzUqDeIB9q9dHrME9GXjB23MO57M2LQ+iUU95M1LoKRiIPU8i6EfSFQKNfguMF+JJsO6gOtHSN/MK03I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(23010399003)(376014)(7416014)(1800799024)(18002099003)(22082099003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aGl4MHJCeHJlOHQwZ1pvcGp0cC8wejNQaFo1aXNNRERLc3J3VkJ0U3U4bFMv?=
- =?utf-8?B?dUNMUnJta2Z5aHpIYkhBUXdiN0tkSUNqeVFCNDljOVZ1bk4wSWdGbVFGOWJl?=
- =?utf-8?B?TldoK1VqN2dyM2dCdEM3c0tKS1BwWGJBZUc3OWsxZmFnV3BtekhVdlhiVGRX?=
- =?utf-8?B?Ni9Pcnh3a056aWQveE5UeHhmU1U3eHJhWlhITmZhS0E0U3BtZ1NCak1hcGEw?=
- =?utf-8?B?ejdZdTg3cjNwSnJzdkpRSUlPZEo5a3ZkSkM0OHA1RWFuc243cTNtMjl2KzYx?=
- =?utf-8?B?QWFYeVZpS2xaSVlIUnBlM2UzTFFjSWxJbWhLM2VwK1BWQmNZeGxTME94aTNY?=
- =?utf-8?B?S0tlbG9WOFRmdFd1M0wrZjVYYTl1R3JJRGE1QUxwTGRRaFRyN1FqMnFRcURt?=
- =?utf-8?B?d3hxRCs0dzhhaU5xTEI2cUNUREQ5emJyd1dFblRDUFBHanpqcHRJUytqM0Rr?=
- =?utf-8?B?RGFKLzBjaENjbVdJdDJ2MU1vVnhnS3BoS3JjUDJoU21BMlQxek5VNWV6TFVz?=
- =?utf-8?B?STV6Q2czdmxqZHhGYVBKM1Z6aG5vSGhyb2ZuN3ZJQVI5Q08yMDJmVzNGY0xx?=
- =?utf-8?B?OU5aZDNiVDEraVRVQ1lHdVJUSEdFbDZKT2NwS0wzMmh6d0RWc0x3cUw4ZXF4?=
- =?utf-8?B?b1g4UERyelNFdG1yOVVxK2IxYUdNUTJ4Z2Q3OUlnNzZic2dKVytOb256cUxp?=
- =?utf-8?B?ZWdrb29FOVpDaUtOMFV6cG9BOG1vWGNnTWV0WnpxRUZrWHh5WjB2RCtEWXI2?=
- =?utf-8?B?RVBxVnhQMDRqTFdLc2VWR0RnYUpxVUEvS3BDWEFjUnM0RHFteURNZFRpMDIy?=
- =?utf-8?B?L2JoR1Z5dmNoanorenpqUkV4VDlTRlBlNVRuVUcrdWpicnI5RExPWDd6bUZL?=
- =?utf-8?B?MGJCa2E4TjhFNGY4NW41eWRmeWNDUEIyYi9QeTFWQ3d1THdtMUE1eDI2Tmd1?=
- =?utf-8?B?aVEzUm5BK0tTWEZSSlNTeFhCQTQzTWsyNk92Y3ZIbmY3ejU2S1VSa2YvN3Rq?=
- =?utf-8?B?aklDQUt2Zm93d2cxbGlTQ2swdXVpWExlcWpRWHZIai9ZNEJEVFRrTm8yZUhm?=
- =?utf-8?B?ZWozUHZLcEJxb2ZUVmZ5aDBqYngxRFM4Y0FnUFM4RDhGTG9ab3pDQ3dIb3hu?=
- =?utf-8?B?NlZiT3hZME1hclE2ajdRNXltZ0o5MDVTU21pdkZNL1FHTXVEQVk5Y2o0R2JH?=
- =?utf-8?B?RTZlcjhhTTlQRlhRT3lUcncxZGxzZmpqZWhwYTRHdGhaWHNsK0ZhVlNhVi9B?=
- =?utf-8?B?S0lrZDJXdVdjK0FtaFJ1dkQ0Sm9Odk1DUFJoK0MyTHlwTkt0ODZQTjhWZEgy?=
- =?utf-8?B?aHJyZWVQNStSakFQRFRDblFuN1MraStvam5UT0lsbTl1bGRMTDNvMlBzRlhN?=
- =?utf-8?B?UExCUTVYMldDb3pGV0ZOUlJkZG1qdlBlQmpETXNOWkVCVmFRL0ZYTzQrMmZ0?=
- =?utf-8?B?R2dwWVBpSEdDNmNlaTVXSysvd25jTFJyaWhyVks0cnhIS2JmUXdmMXpjQ2dv?=
- =?utf-8?B?RGhRWUhjS3dwTzREMU56OVNTVkh0YjNjVGZRUEd3dE5LcjZZS2xQaXdTWE1x?=
- =?utf-8?B?cHE0c3BsZUN4QjlzQmExMlZKaEZEc2hSWFJDYUkyNzRIK1Q5ZXFMTzZTOFBX?=
- =?utf-8?B?YXBJL2kyNUZSSC95cVNXdGFwTUNlUVFMYkx4SlA5ZkRpeU1YWS8xUE02V2pG?=
- =?utf-8?B?OGlqYXFCVXRDdHhrQllIQlBNN0xsaXBTTThCTGxSem8yZ0tISFg5UG5HZHZk?=
- =?utf-8?B?cDdOOEthYityOEN1QmdTejlQOURrdHliUVJKcG81NVhzUzhDTVFUOXVIY1Bi?=
- =?utf-8?B?U0RWVnlwV3lXZElzN2Y5b2kwS2lqMm92Y3dZbTdxTmtkcjhEMEdCdWJRV3Va?=
- =?utf-8?B?dGUxY1IxOEw0OW9RTjdSVXBWYXVaN3VLSlVuVnYvNmVtQ2FkU1Fpd2hGUjdX?=
- =?utf-8?B?T1l1VGo5WEpYVC9TWk1BcUllS3lvc041T1B3UHFCVDRIY2g0b3J2WjZNNktK?=
- =?utf-8?B?VG9tdmc5a3JPcTg2eVRRKzBnUVlXTTdsZUZjam4vNkpWMXFjV2JpZFhKb0NC?=
- =?utf-8?B?OVZvY1JzakNEeU9kZ3VwUFVhOFRuZERQTHZ3VS9nT1ZOdkxFNUpTemxRdXZ3?=
- =?utf-8?B?b1NHV21qam1QcjJHNXJ4bHhQTW5wTE5CRVl1ZjRxRzBSZnkvUnEzY3kwNUhV?=
- =?utf-8?B?VmlNUit3VGZIZFkvcjZxc0JrL0xWMVpoMGNabHkzdUZhWTRBbm5TazVqaTdH?=
- =?utf-8?B?ZHlJZGtOZDE0TURpalZqRU9PcGtjejE5NWVmckVtNVVaWGVvbHpIMnV4MjFl?=
- =?utf-8?B?M3BwbFB6bHYybWVvdG9EcUhKWUp1VS8wVWoveWdSMXhKUE5wbnhzQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12702f04-27b0-4502-5d83-08dedb552f7e
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 11:53:24.9540
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KkCxUWR2TSZiQ6qLlWDlMnLZI9lhfaQ3ySpwj/uc0LLRp25wYN1cUMgU7px0f1iQRdzP3k4BncRMaCIOOtFN0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7966
+Mime-Version: 1.0
+References: <20260613065348.96750-1-work@onurozkan.dev> <20260613065348.96750-5-work@onurozkan.dev>
+Message-ID: <akuXpnwb_y4R7ekV@google.com>
+Subject: Re: [PATCH v10 4/5] rust: sync: add SRCU abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, boqun@kernel.org
+Cc: rcu@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, 
+	fujita.tomonori@gmail.com, tamird@kernel.org, jiangshanlai@gmail.com, 
+	paulmck@kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, 
+	mathieu.desnoyers@efficios.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Jul 6, 2026 at 12:48 PM BST, Alice Ryhl wrote:
-> On Fri, Jul 03, 2026 at 07:16:03PM +0900, Eliot Courtney wrote:
->> Add support for reserving of ranges of IDs, with a usage in nova-core
->> for channel IDs. This entails adding the helpers+users of the C bitmap
->> API for ranges of bits, then users of that in `IdPool`, and finally a
->> user of `IdPool` in nova-core, `ChannelIdPool`.
->
-> If you need ranges of IDs, perhaps you want the maple tree instead?
->
-> Alice
+On Sat, Jun 13, 2026 at 09:40:10AM +0300, Onur =C3=96zkan wrote:
+> +#[pinned_drop]
+> +impl PinnedDrop for Srcu {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        let ptr =3D self.inner.get();
+> +
+> +        if crate::warn_on!(
+> +            // SAFETY: By the type invariants, `self` contains a valid a=
+nd pinned `struct srcu_struct`
+> +            // and `srcu_readers_active()` only checks the active reader=
+ count.
+> +            unsafe { bindings::srcu_readers_active(ptr) }
+> +        ) {
+> +            // `cleanup_srcu_struct()` may return early if there are sti=
+ll active readers.
+> +            // This should only happen if a guard was leaked with `mem::=
+forget`, which is
+> +            // "WRONG" code and may cause a UAF because Rust will free t=
+he `srcu_struct`
+> +            // while it is still referenced from the C side (e.g. by `ca=
+ll_srcu()` callbacks).
+> +            //
+> +            // Another consequence of leaking guards is that `call_srcu(=
+)` callbacks will
+> +            // never run because the grace period can never complete due=
+ to permanently
+> +            // active readers (i.e. leaked guards).
+> +            //
+> +            // If this ever happens, that means the guard was leaked by =
+mistake and the
+> +            // caller must fix the bug. Sleeping here is intentional and=
+ less harmful
+> +            // than risking a UAF.
+> +            //
+> +            // SAFETY: By the type invariants, `self` contains a valid a=
+nd pinned
+> +            // `struct srcu_struct`.
+> +            unsafe { bindings::synchronize_srcu(ptr) };
+> +        }
+> +
+> +        // Ensure all SRCU callbacks have been finished before freeing.
+> +        // SAFETY: By the type invariants, `self` contains a valid and p=
+inned `struct srcu_struct`.
+> +        unsafe { bindings::srcu_barrier(ptr) };
 
-Any reason that the current ID pool is implemented directly on top of bitma=
-p
-rather than using IDA?
+Hmm. It's not entirely clear to me that synchronize_srcu() is needed
+here. If there are calls to srcu_read_lock() that do not have a matching
+unlock due to use of mem::forget(), then either there is a pending
+call_srcu() callback in the queue, in which case srcu_barrier() already
+sleeps forever, or there are no such callbacks in which case I don't
+think this actually leads to UAF.
 
-Best,
-Gary
+Thoughts?
+
+Alice
