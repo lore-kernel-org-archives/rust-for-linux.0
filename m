@@ -1,82 +1,152 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740E818C008;
-	Mon,  6 Jul 2026 13:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783346307; cv=none; b=WpB3CekROlZ269di92V+AM2KFjSa9D7MqJczbjHqBtNlM/WVMZJK65nyKsH7CwT7obeCeVUCtGJzzEgAKwD2py9lkLKN2RQMMgv8kiYrp1TemfVTseGlC4sLE6nVkguUbfi4cMUwjK9o7AKLNCqkRfRKhxg3tBWbCZ1z14vPwF0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783346307; c=relaxed/simple;
-	bh=lkAFaYGEao++IKnSzYgKo6EJpcZg5F7hSxyK4imz4Wg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IiWZo+bBOvaTEpTLSIWLAFc0McgRdIjawA6bMNapfdE0Hwgm1psXrBUQjntU6jZqfLy/j3BroP1BC5QphIdfx7cgr/nNKbOnjFcul3ptb6dDs2UGufIXDYIR661PMXhkGlHw762XDWq8m08UpDhX+LT8u8RtzyUt4REW1WBYprw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=wuJTfgQ4; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B06B3911AB;
+	Mon,  6 Jul 2026 14:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783348718; cv=pass; b=s2cvGjy+e+WjBykt4UkI2UT7JzL9jb/0SBIJg333L1rC1aCNWWdRChOzLWqMBD73T/t31Ebf8hscpTvtzmGUqN3j9TUD0wMf8XnVgbHBrFyb5zoZqRTugTtsNAK0oVcm6Vp+c32WZiMlvjUSm61XCtkyRBnszPSknHiOuCT42zA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783348718; c=relaxed/simple;
+	bh=tF7AljJwtTFuS1zxSK2Z1txTblLIjES1aUAsy+O4Oho=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=J/haB9sGGX2y3kIJ2c7MqA4CbOIDEPZM/Y/YkFfE0xMRt6PF5h5Mgufgkqs97f+L1xllB6qOvwBYvf/BMTby1Cv+k4JyDIrbM8cM9r0IhKtVE+/me+BOdOZQcTvuiQp7qupiX5tqxFpxb444A0DgYsODu6Od7w8MajO2bM6o6zY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YzEdmPKh; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="wuJTfgQ4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GHUWA0+7peyvHO+iBsxA1/V10pSUVW7Kn735d4eyL10=; b=wuJTfgQ4rHweUj4fRL8yDFGf/r
-	WzBjcrN1em2lx1b+9DbcNinyXfALxV/J08I7agu3zNqStHokQmjEnI10eK8k507VvPyZookfOPZEe
-	zLqGdtggCR90KQH3HL50zdacwCGeKWggr2Fa0mV8aDIPAcSQqbm7JW7K1vWvRkAUNaus=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1wgjpt-00B03A-1A; Mon, 06 Jul 2026 15:58:13 +0200
-Date: Mon, 6 Jul 2026 15:58:13 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Guru Das Srinagesh <linux@gurudas.dev>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: phy: qt2025: Use vertical import style
-Message-ID: <d2c1e11e-e616-4b2f-aa17-5eb96f045833@lunn.ch>
-References: <20260705-net-vert-imp-v1-0-95a35ddff411@gurudas.dev>
- <20260705-net-vert-imp-v1-2-95a35ddff411@gurudas.dev>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YzEdmPKh"
+ARC-Seal: i=1; a=rsa-sha256; t=1783348674; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=fC1kHJIMI8EMzhCyfTZIwXDwzqZYFG38b79rW8RQkMPYTnLqa4c8q5FLuPef2MGonvs0ZHWpER0zycLEn8/EWEWZPXvBXa49Z7GWAMbMKWcQuauWo1oHKwa3gEBCuLVNCXOp3gM5aWu4B60+VGGpoCDUiiPICt3mxOjt8SlcRQ0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783348674; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=nGOFMadA6trjWagAE4R3R81yB6gXYE/D7KXnaPswwtM=; 
+	b=bkpGybzdDSxBGUdhE67Doit2e7emaIN/k/WQRzsR284jOj4TwFMlnV20DjFC0EYX2w4SgRewjKCFv+rRZFE3iXTD7q2ohPikTUbOmUc15qI7ohe2IpkWUwuHxBBWwNQKwwtIq2HtgMCzu/bWtpLi/LwqpMV0qALQ4mhs9qSCKSc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783348674;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=nGOFMadA6trjWagAE4R3R81yB6gXYE/D7KXnaPswwtM=;
+	b=YzEdmPKh2Mco7bA/gnkich800xFRjea/TYKt8ZXIBjyjE847Aag1jdJEok9MojSF
+	aHzgfkog4KgjaIRW3cCdAjWRGWtVvLN/PG+YRLhYW3Cgx91WZx0H0x1s2U3R/bM83lt
+	PVFS8C5E7PnvRD4Nc8gDdIGpaiXDXvHU46oY+yx8=
+Received: by mx.zohomail.com with SMTPS id 1783348672663992.9747630995766;
+	Mon, 6 Jul 2026 07:37:52 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Mon, 06 Jul 2026 11:37:14 -0300
+Subject: [PATCH v5 3/4] rust: clk: add devres-managed clks
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260705-net-vert-imp-v1-2-95a35ddff411@gurudas.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260706-clk-type-state-v5-3-67c5f326a16c@collabora.com>
+References: <20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com>
+In-Reply-To: <20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
+ Fu Wei <wefu@redhat.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>, Boqun Feng <boqun@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org, 
+ linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Maurice <mhi@mailbox.org>
+X-Mailer: b4 0.15.2
+X-ZohoMailClient: External
 
-On Sun, Jul 05, 2026 at 10:38:41PM -0700, Guru Das Srinagesh wrote:
-> Convert `use` imports to vertical layout for better readability and
-> maintainability.
-> 
-> Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
-> ---
->  drivers/net/phy/qt2025.rs | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-> index 470d89a0ac00..efde3f909367 100644
-> --- a/drivers/net/phy/qt2025.rs
-> +++ b/drivers/net/phy/qt2025.rs
-> @@ -14,11 +14,17 @@
->  use kernel::io::poll::read_poll_timeout;
->  use kernel::net::phy::{
->      self,
-> -    reg::{Mmd, C45},
-> +    reg::{
-> +        Mmd,
-> +        C45, //
-> +    },
+The clk API allows fine-grained control, but some drivers might be
+more interested in a "set and forget" API.
 
-Given the comment this should be sorted in 'ASCIIbetical order',
-isn't this wrong, C comes before M? 
+Expand the current API to support this. The clock will automatically be
+disabled, unprepared and freed when the device is unbound from the bus
+without further intervention by the driver.
 
-	Andrew
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+ rust/kernel/clk.rs | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+index dd5fd656271e..b9a44f83843a 100644
+--- a/rust/kernel/clk.rs
++++ b/rust/kernel/clk.rs
+@@ -96,6 +96,52 @@ impl Sealed for super::Prepared {}
+         impl Sealed for super::Enabled {}
+     }
+ 
++    /// Obtains and enables a [`devres`]-managed [`Clk`] for a bound device.
++    ///
++    /// [`devres`]: crate::devres::Devres
++    #[inline]
++    pub fn devm_enable(dev: &Device<Bound>, name: Option<&CStr>) -> Result {
++        let name = name.map_or(ptr::null(), |n| n.as_char_ptr());
++
++        // SAFETY: It is safe to call [`devm_clk_get_enabled`] with a valid
++        // device pointer.
++        from_err_ptr(unsafe { bindings::devm_clk_get_enabled(dev.as_raw(), name) })?;
++        Ok(())
++    }
++
++    /// Obtains and enables a [`devres`]-managed [`Clk`] for a bound device.
++    ///
++    /// This does not print any error messages if the clock is not found.
++    ///
++    /// [`devres`]: crate::devres::Devres
++    #[inline]
++    pub fn devm_enable_optional(dev: &Device<Bound>, name: Option<&CStr>) -> Result {
++        let name = name.map_or(ptr::null(), |n| n.as_char_ptr());
++
++        // SAFETY: It is safe to call [`devm_clk_get_optional_enabled`] with a
++        // valid device pointer.
++        from_err_ptr(unsafe { bindings::devm_clk_get_optional_enabled(dev.as_raw(), name) })?;
++        Ok(())
++    }
++
++    /// Same as [`devm_enable_optional`], but also sets the rate.
++    #[inline]
++    pub fn devm_enable_optional_with_rate(
++        dev: &Device<Bound>,
++        name: Option<&CStr>,
++        rate: Hertz,
++    ) -> Result {
++        let name = name.map_or(ptr::null(), |n| n.as_char_ptr());
++
++        // SAFETY: It is safe to call
++        // [`devm_clk_get_optional_enabled_with_rate`] with a valid device
++        // pointer.
++        from_err_ptr(unsafe {
++            bindings::devm_clk_get_optional_enabled_with_rate(dev.as_raw(), name, rate.as_hz())
++        })?;
++        Ok(())
++    }
++
+     /// A trait representing the different states that a [`Clk`] can be in.
+     pub trait ClkState: private::Sealed {
+         /// Whether the clock is enabled in this state.
+
+-- 
+2.54.0
+
