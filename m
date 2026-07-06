@@ -1,464 +1,219 @@
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1DC21638D;
-	Mon,  6 Jul 2026 04:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599CE1C5D72
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jul 2026 05:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783312528; cv=none; b=a6u3zUlUjab0dn6AjU9VkEFpoDpXHy7t2J8d4aX4GfpMzZGeddHfotQ/7oP9XwS07+d0x+MvoawRRD/Db7rG3sp8vMee/1lp0Xassf/4v5hsnHSBmIcNA8Nq4hMekGmEAARifkep+DT94ERTBmSxpo1auaCnljNwtvdzpqTCi4k=
+	t=1783315147; cv=none; b=lYTpkgohIPqSRCZzz+0JC1lsafwwnrcgVFWE3fY3r7ztNiCJMek0HV/E99WCkVc8PFPaRgz0jq+7bZd3Fib0ai8CczWj5QxJnLBSc/YrPcdyRmsyTQQpJq+BbYfW5vihSYLHPfLdehtwfR9bEvM+DubgFIRH8K1byitCH7T+7kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783312528; c=relaxed/simple;
-	bh=loDCywPA4hp+nOW5Q3cYmG5I2jthQ44KkogZ2DLaJhs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E+XyG8qdXhFuQGniRDyMzCFdyOol8ZPpq5oN+JSD9yRG0pYsajMT1K9Oy1ddfk6koyIcPIudnoTyZK1uvv2t/JtDyKiPFziPrIQLEjvmrUiyYXL+ljiS0OT0FbvQwiA3A8tRaPSHS97QtZ3jNBzzCneMs27Y1p/Omvs1gZTPclk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c45ff70000001609-a8-6a4b2cf15680
-Date: Mon, 6 Jul 2026 13:19:55 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v18 34/42] dept: add module support for struct
- dept_event_site and dept_event_site_dep
-Message-ID: <20260706041955.GA23385@system.software.com>
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-35-byungchul@sk.com>
- <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
+	s=arc-20240116; t=1783315147; c=relaxed/simple;
+	bh=NgJ+ozCNGbYNiF/Oxy854h0KGtCL5Yaer3dQdt/96Yc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Js9GflUjs9PBnLMWLLmaqYybVy8yW/kJtACOWK8Zdehrwk1kOJu5A1iX5NvY5otJdjE3vAukUMRjyn84nulEwt1aqzsm/b3V9D03PxMEAiYHgP3WJyy5GvbNJKrk4T6G+AJMwx15ultUhxYsTcxxuzOtI830yhoJTWMaEGJ1AFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-37df72c9984so2326693a91.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 05 Jul 2026 22:19:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783315145; x=1783919945;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n+7kFWWI6DifTjKJC17XZfFBMotzFakAXEysGuj/UnM=;
+        b=QiAPoURdolsimPAMCoNjQJKn6OWFmmosrOn7iUjhNvrghwFfu3t+6Em/klHD8wrMJs
+         3HbrvpfM3J275nYNVECKu2McWpB+QWYr/qT2fJButFdWh9AgPVlOAxiP7WNK+3e6zWeV
+         APjWPqBuvakHDHU/87y3lNoBOVhDWrCmVhucCdhSYNwP9F4/swPNhSBlGQ3Tvi8q8kAv
+         CDvgPZvXic+5raw4I44FnyAycFnHgnHEUTrVL1itZUx1v0CPsgP6LY9kWZy+yy4uAKWj
+         H5/FUqDayLz+98Dqa+Ly1rhgKZIrcvMEw2+Yv9wrlzgEQ+G57elHIPp70RxU8TrrD4oX
+         vTkw==
+X-Gm-Message-State: AOJu0Yx9T1MYE6BYg/Ltvajjy4jqk5ouFuuqdthSN1nowogLFXLWZifS
+	1r+qy8QKaqGmHb9j1Cspt1z1opIl3aKkh3RHF1MCUMkW1/l4XYsB1ZPb
+X-Gm-Gg: AfdE7ckS8VzjQvjt+BfKEpNkyo5bCzb6/jsX91UjGEW8uG6BeRXcY2BQohGH+dhvVly
+	BQ+1ylPGOKLChDPD1XuxPP4aIPMlIXMOC6zS0Of0kTI1pKyQVGZ6WSFxVs19Cmutnc6cwK0M98W
+	upb4/4B5ek5XYrf1Wp9FSuHHbNdXcXMflP+MowtclIa+YAQVEJo/iDOB48h8gNqBA+1Hdb4xfe5
+	DzFWWFVjKBEJZQh63j5S3MwrNl45uEoCF1nGi8c2lgQ1Sj2czh25KqEj//UxT2w6ql24YdWa/Jq
+	wtmRP5ONmMuYKTntxXHN+MGUN26RZI8HzaWdDjL/Znmu3rv5CFhThzbaDD+mI4B8fkDWRU5JADO
+	30314LRMouQjMUlhwStFTzWKjQmaS4qQb/Ye9VZKRR+BZ/MLGyvStDUxGVw==
+X-Received: by 2002:a17:90b:184e:b0:37f:9cdf:f0ad with SMTP id 98e67ed59e1d1-3829f9e3ecamr8465916a91.28.1783315144602;
+        Sun, 05 Jul 2026 22:19:04 -0700 (PDT)
+Received: from [127.0.1.1] ([2a11:3:200::10a9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f3d92c44bsm26511081eec.19.2026.07.05.22.18.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jul 2026 22:19:04 -0700 (PDT)
+From: Ke Sun <sunke@kylinos.cn>
+Subject: [PATCH RESEND v13 0/2] rust: Add safe pointer formatting support
+Date: Mon, 06 Jul 2026 13:18:42 +0800
+Message-Id: <20260706-hashedptr-v13-0-377a07f2f78d@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SUUxTVxiAd+499/a2scu1k3AmyZJ1DB0oc0yXf4sxmpjlDrNsmXtRo7Mb
-	d9DSgmsFZZmhCCiSjQGTElpgVQErFMxadIjDMTQgSi0FxMYBjR3WOWhQZrvgQGzJzHw5+XL+
-	L9/5Hw5HK+rZlZw6a7+oz1JplawMy4LLTqx9uGabZt3oxDsw5ptkYLSgG0PoUQmG2rN2FhYs
-	P0ugxFHDQPGFRQwmTyUN3sFfabC3F1BQdWeSher7BRjMAYsEgr6LDCyO36PgVngawWT3UQQL
-	pkz48aSThSnTAxb+dblpqK4aRHDizjgN7b0TCLpsh1m4W36OhpHQDAtBTy0FnoEpBHWWSgSF
-	p86yYKpzYPBMzVMwZqqkoMXxIfiaAjjydGT2UyxYqgupyPFnZKPWixTMNTVLYODUGIYm4+tg
-	cQ0z4LeZJbBozYa2oJsBX98RBko6Qxgcf4wy0HU7CWrqx1jo7fBTMGFfZMBo+YeB671XMfzu
-	+l4C7s5WBhpveShwugZoCJfFwWDFdwx4y++izWlCs/M8JRQPLbCCvd6OhEeNhbRweXqGFoqc
-	B4TG69Os8Dh0kxW6wlYsXDtJhIZjjymhwrVWuGAelwhFl25LBKsjRyi6EmQ+XrNTtjFN1Kpz
-	Rf2bm/bKMhrP2PC+toyD9hvD2IgepJYiKUf49WT223bqGZddOiyJMubjSaAhgKPM8quI1ztH
-	lyKOWxG5H/JvKUUyjuZNr5B+ZwkTdV7iteTyDw+pqCPngQz37Yg6Cv44IlWn25Y6cn456a+Z
-	XGKaTyTeJ/eXfJqPI6efcFGU8htJmWlD1IjhXyPd5/uoaIbwASmZcYX/W/Nl8pvNi8sRb36u
-	an6uav6/akV0M1Kos3J1KrV2fXJGXpb6YPIX2ToHivzapkPzuzrQ7OD2HsRzSLlMDptTNQpG
-	lWvI0/UgwtHKFfKE1ds0CnmaKu9rUZ/9mT5HKxp6UByHlbHylPCBNAWfrtovZoriPlH/bEpx
-	0pVGpPyo7avEYyN1Pt1UvyYm4d2346/9HYo5uteCz+h8783KhipUb8TcoFKq7F/etL0fmPhg
-	S0PncaUhnZ37JGUPP5J6pCOUFP95Zss9f/KnV+MOuV7cYfvlGz83vz09/6+cVqO7JUkqJJCt
-	+S9Y97yqsStHPZvOVbuL6fzYjg3ElVq7W4kNGaq3Emm9QfUUwQS7vLEDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH8zz36e2lWL2rLNxpXJY6xbDh5jaS40uMfuIJZEazqNlLMju9
-	kZaCpmVMXAyW2ghlNlBtO1sVRKgMKjpwKppqB5OXiRtYN8mUVU1XJbwL1fBSsCVZ9MvJ/5z/
-	739yPhyOUUxLFnHqnFxRl6PSKlkZkW1aa0wZfT9D82FLmRSKTAXwIBCUwN8GH4HweBGBE+c9
-	LERcl6Nmw3EJtN8rJNBVX4cgEC5C8GLKxYCpaZZAxNoqhfGJ+1KwGRDMelsR2LutDPR03WDA
-	c9GAYezCDAv9Lc8Q2B4FWXD0GQgMu39A4Ay5pNB3Mw0GA9ckMNv7BMO95wMI3MEZDEHfYQQR
-	exaUVzZG4/YRFqZu/8mAw9aF4PSjXgae9T1EcLH1XwTemkIW/iv9hQF/cD7cDQ+z0GErYWGw
-	+wSGoQssVBR6JdDd2Y/gpMuKIPSPF4PxzHkW7CcbCDQ9vCqF7v5pDA/sVgx1DZ9CwB0icKu0
-	EkfPjVI/J4LLYcTR8hSD7dw1DBPuWumGakRfmCyE1jZewtR0J8JSzykPolOTVkTHq40MNZVG
-	25aBYYYeavyOVt8aYOlk+C+Wep9XEPp7pUCriicxLbudQpucvdLNG7+QrdslatV5ou6D9Ttk
-	mdU/1ZC99Zn7PH/4yUE0km5GcZzAfyJYrhdKY5rw7wqhqhCJaZZPEnp6Jhgz4riE6PzO441m
-	JOMY3v620NFYJIkxC3mt0HJ0FMcYOQ+Cv+3zGKPgjyHBdrZ+bo+cf0PoOB6c0wyfLPTM9M3x
-	DL9YODvDxWQcv06w2FNjxJv8UsF3qQ2XIrnztbDztbDzVbgCMbUoQZ2Tl61Sa1NX6rMy83PU
-	+1bu3JPdgKI/6T4wXXYFjfvTmhHPIeU8OWxI1ygkqjx9fnYzEjhGmSBfviJDo5DvUuXvF3V7
-	vtZ9qxX1zWgxR5SJ8vTt4g4Fv1uVK2aJ4l5R97+LubhFB1E53XrloyVflozeLWm7uXw+OYws
-	W8wRTa1vTI7rBosP/Xauqrxy2YKkjPurtcbZ+NyrQ/vfqypoHx06Yo7b9vRAxabdGkOid82v
-	nd6wMeGYs1NVnNpeQMc+OypYPr6xos6X5k/+vis+MPJN63BNkvGtr9agBY4lP4ZSOtNTHKse
-	x7+jJPpM1apkRqdXvQRKKENIjwMAAA==
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIALM6S2oC/22QQU/DMAyF/0qVM5liZ03anTiw6w5wRBza1CURt
+ NmSEDFN++9kBWmbxNH2e5+ffWKRgqPINtWJBcouOj+XAuRDxYzt5nfibigNhgKVqAG57aKlYZ8
+ CR1yrtm+lAJCs6PeBRve9wF7Z8/Zlu3tib6U/Bj/xZAN1VxKK+oaUATjwfhAjGT2SGuHx4/jpZ
+ h9XZr6grYvJh+MSMwMuG/5JVEZccAVDbbRuVNO0t5xLllyiXs2o7syymCWuZY0aFPX35vPvhYE
+ OX+VL6e/MvovEjZ8mlzZV1ivkwUARn38A73sH/loBAAA=
+X-Change-ID: 20260512-hashedptr-22469b930113
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, Ke Sun <sunke@kylinos.cn>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783315138; l=6582;
+ i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
+ bh=NgJ+ozCNGbYNiF/Oxy854h0KGtCL5Yaer3dQdt/96Yc=;
+ b=TH2+7tPDprll8GwiZaE63sSBekGfbMVDdiwn8kw96OSRWJGNMwUqpzRM1ScLa8oxW6yATKoVg
+ rV9g5GJLisiA7qa56ouQYCKN1aH/4PZhTpKVqIioTlTPEq/sxRQQm3D
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 
-On Wed, Jan 07, 2026 at 01:19:00PM +0100, Petr Pavlu wrote:
-> On 12/5/25 8:18 AM, Byungchul Park wrote:
-> > struct dept_event_site and struct dept_event_site_dep have been
-> > introduced to track dependencies between multi event sites for a single
-> > wait, that will be loaded to data segment.  Plus, a custom section,
-> > '.dept.event_sites', also has been introduced to keep pointers to the
-> > objects to make sure all the event sites defined exist in code.
-> >
-> > dept should work with the section and segment of module.  Add the
-> > support to handle the section and segment properly whenever modules are
-> > loaded and unloaded.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> 
-> Below are a few comments from the module loader perspective.
-> 
-> > ---
-> >  include/linux/dept.h     | 14 +++++++
-> >  include/linux/module.h   |  5 +++
-> >  kernel/dependency/dept.c | 79 +++++++++++++++++++++++++++++++++++-----
-> >  kernel/module/main.c     | 15 ++++++++
-> >  4 files changed, 103 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/include/linux/dept.h b/include/linux/dept.h
-> > index 44083e6651ab..c796cdceb04e 100644
-> > --- a/include/linux/dept.h
-> > +++ b/include/linux/dept.h
-> > @@ -166,6 +166,11 @@ struct dept_event_site {
-> >       struct dept_event_site          *bfs_parent;
-> >       struct list_head                bfs_node;
-> >
-> > +     /*
-> > +      * for linking all dept_event_site's
-> > +      */
-> > +     struct list_head                all_node;
-> > +
-> >       /*
-> >        * flag indicating the event is not only declared but also
-> >        * actually used in code
-> > @@ -182,6 +187,11 @@ struct dept_event_site_dep {
-> >        */
-> >       struct list_head                dep_node;
-> >       struct list_head                dep_rev_node;
-> > +
-> > +     /*
-> > +      * for linking all dept_event_site_dep's
-> > +      */
-> > +     struct list_head                all_node;
-> >  };
-> >
-> >  #define DEPT_EVENT_SITE_INITIALIZER(es)                                      \
-> > @@ -193,6 +203,7 @@ struct dept_event_site_dep {
-> >       .bfs_gen = 0,                                                   \
-> >       .bfs_parent = NULL,                                             \
-> >       .bfs_node = LIST_HEAD_INIT((es).bfs_node),                      \
-> > +     .all_node = LIST_HEAD_INIT((es).all_node),                      \
-> >       .used = false,                                                  \
-> >  }
-> >
-> > @@ -202,6 +213,7 @@ struct dept_event_site_dep {
-> >       .recover_site = NULL,                                           \
-> >       .dep_node = LIST_HEAD_INIT((esd).dep_node),                     \
-> >       .dep_rev_node = LIST_HEAD_INIT((esd).dep_rev_node),             \
-> > +     .all_node = LIST_HEAD_INIT((esd).all_node),                     \
-> >  }
-> >
-> >  struct dept_event_site_init {
-> > @@ -225,6 +237,7 @@ extern void dept_init(void);
-> >  extern void dept_task_init(struct task_struct *t);
-> >  extern void dept_task_exit(struct task_struct *t);
-> >  extern void dept_free_range(void *start, unsigned int sz);
-> > +extern void dept_mark_event_site_used(void *start, void *end);
-> 
-> Nit: The coding style recommends not using the extern keyword with
-> function declarations.
-> 
-> https://www.kernel.org/doc/html/v6.19-rc4/process/coding-style.html#function-prototypes
-> 
-> >
-> >  extern void dept_map_init(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
-> >  extern void dept_map_reinit(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
-> > @@ -288,6 +301,7 @@ struct dept_event_site { };
-> >  #define dept_task_init(t)                            do { } while (0)
-> >  #define dept_task_exit(t)                            do { } while (0)
-> >  #define dept_free_range(s, sz)                               do { } while (0)
-> > +#define dept_mark_event_site_used(s, e)                      do { } while (0)
-> >
-> >  #define dept_map_init(m, k, su, n)                   do { (void)(n); (void)(k); } while (0)
-> >  #define dept_map_reinit(m, k, su, n)                 do { (void)(n); (void)(k); } while (0)
-> > diff --git a/include/linux/module.h b/include/linux/module.h
-> > index d80c3ea57472..29885ba91951 100644
-> > --- a/include/linux/module.h
-> > +++ b/include/linux/module.h
-> > @@ -29,6 +29,7 @@
-> >  #include <linux/srcu.h>
-> >  #include <linux/static_call_types.h>
-> >  #include <linux/dynamic_debug.h>
-> > +#include <linux/dept.h>
-> >
-> >  #include <linux/percpu.h>
-> >  #include <asm/module.h>
-> > @@ -588,6 +589,10 @@ struct module {
-> >  #ifdef CONFIG_DYNAMIC_DEBUG_CORE
-> >       struct _ddebug_info dyndbg_info;
-> >  #endif
-> > +#ifdef CONFIG_DEPT
-> > +     struct dept_event_site **dept_event_sites;
-> > +     unsigned int num_dept_event_sites;
-> > +#endif
-> >  } ____cacheline_aligned __randomize_layout;
-> >  #ifndef MODULE_ARCH_INIT
-> >  #define MODULE_ARCH_INIT {}
-> 
-> My understanding is that entries in the .dept.event_sites section are
-> added by the dept_event_site_used() macro and they are pointers to the
-> dept_event_site_init struct, not dept_event_site.
-> 
-> > diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-> > index b14400c4f83b..07d883579269 100644
-> > --- a/kernel/dependency/dept.c
-> > +++ b/kernel/dependency/dept.c
-> > @@ -984,6 +984,9 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
-> >   * event sites.
-> >   */
-> >
-> > +static LIST_HEAD(dept_event_sites);
-> > +static LIST_HEAD(dept_event_site_deps);
-> > +
-> >  /*
-> >   * Print all events in the circle.
-> >   */
-> > @@ -2043,6 +2046,33 @@ static void del_dep_rcu(struct rcu_head *rh)
-> >       preempt_enable();
-> >  }
-> >
-> > +/*
-> > + * NOTE: Must be called with dept_lock held.
-> > + */
-> > +static void disconnect_event_site_dep(struct dept_event_site_dep *esd)
-> > +{
-> > +     list_del_rcu(&esd->dep_node);
-> > +     list_del_rcu(&esd->dep_rev_node);
-> > +}
-> > +
-> > +/*
-> > + * NOTE: Must be called with dept_lock held.
-> > + */
-> > +static void disconnect_event_site(struct dept_event_site *es)
-> > +{
-> > +     struct dept_event_site_dep *esd, *next_esd;
-> > +
-> > +     list_for_each_entry_safe(esd, next_esd, &es->dep_head, dep_node) {
-> > +             list_del_rcu(&esd->dep_node);
-> > +             list_del_rcu(&esd->dep_rev_node);
-> > +     }
-> > +
-> > +     list_for_each_entry_safe(esd, next_esd, &es->dep_rev_head, dep_rev_node) {
-> > +             list_del_rcu(&esd->dep_node);
-> > +             list_del_rcu(&esd->dep_rev_node);
-> > +     }
-> > +}
-> > +
-> >  /*
-> >   * NOTE: Must be called with dept_lock held.
-> >   */
-> > @@ -2384,6 +2414,8 @@ void dept_free_range(void *start, unsigned int sz)
-> >  {
-> >       struct dept_task *dt = dept_task();
-> >       struct dept_class *c, *n;
-> > +     struct dept_event_site_dep *esd, *next_esd;
-> > +     struct dept_event_site *es, *next_es;
-> >       unsigned long flags;
-> >
-> >       if (unlikely(!dept_working()))
-> > @@ -2405,6 +2437,24 @@ void dept_free_range(void *start, unsigned int sz)
-> >       while (unlikely(!dept_lock()))
-> >               cpu_relax();
-> >
-> > +     list_for_each_entry_safe(esd, next_esd, &dept_event_site_deps, all_node) {
-> > +             if (!within((void *)esd, start, sz))
-> > +                     continue;
-> > +
-> > +             disconnect_event_site_dep(esd);
-> > +             list_del(&esd->all_node);
-> > +     }
-> > +
-> > +     list_for_each_entry_safe(es, next_es, &dept_event_sites, all_node) {
-> > +             if (!within((void *)es, start, sz) &&
-> > +                 !within(es->name, start, sz) &&
-> > +                 !within(es->func_name, start, sz))
-> > +                     continue;
-> > +
-> > +             disconnect_event_site(es);
-> > +             list_del(&es->all_node);
-> > +     }
-> > +
-> >       list_for_each_entry_safe(c, n, &dept_classes, all_node) {
-> >               if (!within((void *)c->key, start, sz) &&
-> >                   !within(c->name, start, sz))
-> > @@ -3337,6 +3387,7 @@ void __dept_recover_event(struct dept_event_site_dep *esd,
-> >
-> >       list_add(&esd->dep_node, &es->dep_head);
-> >       list_add(&esd->dep_rev_node, &rs->dep_rev_head);
-> > +     list_add(&esd->all_node, &dept_event_site_deps);
-> >       check_recover_dl_bfs(esd);
-> >  unlock:
-> >       dept_unlock();
-> > @@ -3347,6 +3398,23 @@ EXPORT_SYMBOL_GPL(__dept_recover_event);
-> >
-> >  #define B2KB(B) ((B) / 1024)
-> >
-> > +void dept_mark_event_site_used(void *start, void *end)
-> 
-> Nit: I suggest that dept_mark_event_site_used() take pointers to
-> dept_event_site_init, which would catch the type mismatch with
-> module::dept_event_sites.
-> 
-> > +{
-> > +     struct dept_event_site_init **evtinitpp;
-> > +
-> > +     for (evtinitpp = (struct dept_event_site_init **)start;
-> > +          evtinitpp < (struct dept_event_site_init **)end;
-> > +          evtinitpp++) {
-> > +             (*evtinitpp)->evt_site->used = true;
-> > +             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
-> > +             list_add(&(*evtinitpp)->evt_site->all_node, &dept_event_sites);
-> > +
-> > +             pr_info("dept_event_site %s@%s is initialized.\n",
-> > +                             (*evtinitpp)->evt_site->name,
-> > +                             (*evtinitpp)->evt_site->func_name);
-> > +     }
-> > +}
-> > +
-> >  extern char __dept_event_sites_start[], __dept_event_sites_end[];
-> 
-> Related to the above, __dept_event_sites_start and
-> __dept_event_sites_end can already be properly typed here.
-> 
-> >
-> >  /*
-> > @@ -3356,20 +3424,11 @@ extern char __dept_event_sites_start[], __dept_event_sites_end[];
-> >  void __init dept_init(void)
-> >  {
-> >       size_t mem_total = 0;
-> > -     struct dept_event_site_init **evtinitpp;
-> >
-> >       /*
-> >        * dept recover dependency tracking works from now on.
-> >        */
-> > -     for (evtinitpp = (struct dept_event_site_init **)__dept_event_sites_start;
-> > -          evtinitpp < (struct dept_event_site_init **)__dept_event_sites_end;
-> > -          evtinitpp++) {
-> > -             (*evtinitpp)->evt_site->used = true;
-> > -             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
-> > -             pr_info("dept_event %s@%s is initialized.\n",
-> > -                             (*evtinitpp)->evt_site->name,
-> > -                             (*evtinitpp)->evt_site->func_name);
-> > -     }
-> > +     dept_mark_event_site_used(__dept_event_sites_start, __dept_event_sites_end);
-> >       dept_recover_ready = true;
-> >
-> >       local_irq_disable();
-> > diff --git a/kernel/module/main.c b/kernel/module/main.c
-> > index 03ed63f2adf0..82448cdb8ed7 100644
-> > --- a/kernel/module/main.c
-> > +++ b/kernel/module/main.c
-> > @@ -2720,6 +2720,11 @@ static int find_module_sections(struct module *mod, struct load_info *info)
-> >                                               &mod->dyndbg_info.num_classes);
-> >  #endif
-> >
-> > +#ifdef CONFIG_DEPT
-> > +     mod->dept_event_sites = section_objs(info, ".dept.event_sites",
-> > +                                     sizeof(*mod->dept_event_sites),
-> > +                                     &mod->num_dept_event_sites);
-> > +#endif
-> >       return 0;
-> >  }
-> >
-> > @@ -3346,6 +3351,14 @@ static int early_mod_check(struct load_info *info, int flags)
-> >       return err;
-> >  }
-> >
-> > +static void dept_mark_event_site_used_module(struct module *mod)
-> > +{
-> > +#ifdef CONFIG_DEPT
-> > +     dept_mark_event_site_used(mod->dept_event_sites,
-> > +                          mod->dept_event_sites + mod->num_dept_event_sites);
-> > +#endif
-> > +}
-> > +
-> 
-> It seems to me that the .dept.event_sites section can be discarded after
-> the module is initialized. In this case, the section should be prefixed
-> by ".init" and its address can be obtained at the point of use in
-> dept_mark_event_site_used_module(), without needing to store it inside
-> the module struct.
-> 
-> Additionally, what is the reason that the dept_event_site_init data is
-> not stored in the .dept.event_sites section directly and it requires
-> a level of indirection?
-> 
-> In general, for my own understanding, I also wonder whether the check to
-> determine that a dept_event_site is used needs to be done at runtime, or
-> if it could be done at build time by objtool/modpost.
+This series fixes two issues with {:p} pointer formatting:
+- The impl_fmt_adapter_forward! macro destructures self into a local
+  variable, causing {:p} to print a stack address instead of the actual
+  pointer
+- Kernel address leak — {:p} prints raw pointer values, exposing kernel
+  address space layout
 
-I appreciate your feedback and it was so helpful, but I decided to defer
-the part supporting recover events tracking - 33/42 ~ 35/42 in this
-series - to a follow-up patch later with the feedback applied, as it
-unnecessarily complicates the initial DEPT patchset and significantly
-increases the review burden.
+---
+Changes in v14:
+- EDITME: describe what is new in this series revision.
+- EDITME: use bulletpoints and terse descriptions.
+- Link to v13: https://lore.kernel.org/r/20260526-hashedptr-v13-0-324352716eb9@kylinos.cn
 
-	Byungchul
+Changes in v13:
+- Add NonNull<T> pointer formatting support
+- Add #[inline] to all Pointer impl methods
+- Support zero-padding format ({:0width$p})
+- Simplify SAFETY comments
+- Rewrite tests: remove NoHashPointersGuard — modifying
+  no_hash_pointers after boot panics since it's __ro_after_init; read
+  current value and branch instead; expand format coverage
+- Link to v12: https://lore.kernel.org/r/20260512-hashedptr-v12-0-61d5c7786889@kylinos.cn
 
-> >  /*
-> >   * Allocate and load the module: note that size of section 0 is always
-> >   * zero, and we rely on this for optional sections.
-> > @@ -3508,6 +3521,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
-> >       /* Done! */
-> >       trace_module_load(mod);
-> >
-> > +     dept_mark_event_site_used_module(mod);
-> > +
-> >       return do_init_module(mod);
-> >
-> >   sysfs_cleanup:
-> 
-> --
-> Thanks,
-> Petr
+Changes in v12:
+- Split into 2 patches: fix {:p} printing stack addresses → route {:p}
+  through HashedPtr
+- Test cleanup: NoHashPointersGuard RAII guard replaces raw
+  save/restore; mod expected consolidates 32/64-bit constants
+- Impl delegation: &T, &mut T, *mut T all forward to *const T (matching
+  core library conventions), replacing v11's blanket impl + macro
+- Link to v11: https://lore.kernel.org/r/20260205-hashedptr-v11-1-bd0fec7fe6f1@kylinos.cn
+
+Changes in v11:
+- Fix inaccurate or inappropriate descriptions in comments
+- Use as_char_ptr instead of as_ptr so that a *const u8 pointer is
+  always passed to scnprintf on all architectures
+- Per Tamir's suggestion, replace doctests with mod tests and adjust
+  test content to make the tests more meaningful
+- Remove the RawPtr wrapper type: it and HashedPtr use different
+  formatting mechanisms (HashedPtr uses scnprintf and pad; RawPtr would
+  call core's Pointer impl directly). This series focuses on fixing the
+  issue that without it {:p} would output the pointer's stack address,
+  and on using HashedPtr to safely format raw pointers and avoid leaking
+  kernel address space layout information
+- Link to v10: https://lore.kernel.org/r/20260121050059.2315091-1-sunke@kylinos.cn
+
+Changes in v10:
+- Merge all patches into a single patch
+- Improve `kernel::fmt::Pointer` trait implementation
+Link to v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
+
+Changes in v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
+- Refactor implementation to use Pointer trait and Adapter pattern
+  instead of exporting ptr_to_hashval() from lib/vsprintf.c. Use
+  scnprintf directly in Rust for pointer hashing, eliminating the
+  need for C function export
+- Move pointer wrapper types from rust/kernel/ptr.rs to
+  rust/kernel/fmt.rs
+- Split implementation into more granular patches: Pointer trait
+  foundation, HashedPtr type, raw pointer default behavior, and
+  RawPtr type
+- Remove documentation patch, integrate examples into code doctests
+- Simplify API and improve code organization following Display trait
+  pattern
+- Link to v8: https://lore.kernel.org/r/20260101081605.1300953-1-sunke@kylinos.cn
+
+Changes in v8:
+- Remove RestrictedPtr (%pK) support: only export ptr_to_hashval() with
+  EXPORT_SYMBOL_NS_GPL using "RUST_INTERNAL" namespace, provide only two
+  pointer wrapper types (HashedPtr, RawPtr) for %p and %px
+- Change API from HashedPtr::from(ptr) to HashedPtr(ptr) for direct
+  construction
+- Link to v7: https://lore.kernel.org/r/20251229072157.3857053-1-sunke@kylinos.cn
+
+Changes in v7:
+- Refactor kptr_restrict handling: extract kptr_restrict_value() from
+  restricted_pointer() in lib/vsprintf.c and export it for Rust use, and
+  improve RestrictedPtr::fmt() implementation to directly handle
+  kptr_restrict_value() return values (0, 1, 2, -1) for better code
+  clarity
+- Remove Debug derive from pointer wrapper types (HashedPtr,
+  RestrictedPtr, RawPtr)
+- Link to v6: https://lore.kernel.org/r/20251227033958.3713232-1-sunke@kylinos.cn
+
+Changes in v6:
+- Fix placeholder formatting to use `f.pad()` instead of `f.write_str()`
+  in format_hashed_ptr(), ensuring width, alignment, and padding options
+  are correctly applied to PTR_PLACEHOLDER
+- Link to v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
+
+Changes in v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
+- Format use statements in rust/kernel/ptr.rs and rust/kernel/fmt.rs
+  using kernel vertical style with alphabetical ordering
+- Remove unnecessary SAFETY comment in rust/kernel/ptr.rs (addressed
+  Clippy warning)
+- Update type ordering to alphabetical (HashedPtr, RawPtr,
+  RestrictedPtr) in fmt.rs macro invocation
+- Link to v4: https://lore.kernel.org/r/20251225225709.3944255-1-sunke@kylinos.cn
+
+Changes in v4:
+- Use Pointer::fmt() instead of write!(f, "{:p}", ...) to preserve
+  formatting options (width, alignment, padding characters)
+- Improve code structure: reduce unsafe block scope, use early return
+  pattern
+- Add doctests with formatting option tests for all pointer wrapper
+  types
+- Enhance documentation with detailed formatting options section,
+  including examples for width, alignment, and padding
+- Fix RestrictedPtr example to use pr_info! instead of seq_print! in
+  docs
+- Link to v3: https://lore.kernel.org/r/20251224081315.729684-1-sunke@kylinos.cn
+
+Changes in v3:
+- Export ptr_to_hashval() from lib/vsprintf.c for Rust pointer hashing
+- Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) in
+  rust/kernel/ptr.rs corresponding to %p, %pK, and %px
+- Make raw pointers automatically use HashedPtr when formatted with {:p}
+- Add documentation for pointer wrapper types
+- Link to v2: https://lore.kernel.org/r/20251223033018.2814732-1-sunke@kylinos.cn
+
+Changes in v2:
+- Disabled {:p} raw pointer printing by default to prevent accidental
+  information leaks
+- Link to v1: https://lore.kernel.org/r/20251218032709.2184890-1-sunke@kylinos.cn
+
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+
+---
+Ke Sun (2):
+      rust: fmt: fix {:p} printing stack addresses
+      rust: fmt: route {:p} through HashedPtr to prevent address leaks
+
+ rust/kernel/fmt.rs | 173 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 171 insertions(+), 2 deletions(-)
+---
+base-commit: 728e68a889bcf257b1e67298b12c360e5c3a13e0
+change-id: 20260512-hashedptr-22469b930113
+
+Best regards,
+-- 
+Ke Sun <sunke@kylinos.cn>
+
