@@ -1,17 +1,17 @@
 Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5392E3E5A32;
-	Mon,  6 Jul 2026 06:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D833C13EE;
+	Mon,  6 Jul 2026 06:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783318879; cv=none; b=n8DNruPmEABrsXOkL8Tm65HCf4JZHEGXOPQy0uBxS+OsWxVbPJUB3ALuXyC+PX9l8g0SNFGpW4FjaPEy3IDnRNrM9dNMCTdE6Vg6Mqqr+7bhW5/kqbJUKhdAhdvlSytNci/MjjkVqejaGjqoY+1PxwEZDmxSyo18qgnrHtjYMIU=
+	t=1783318897; cv=none; b=li1vBjeuUkxHg4PDmdL8NXIhnblQpToYgixy4IrgzTEDN+8vqVMPQ1MHIbCqmDnBZgsum3QxfMOhaoKnB1WmXtBWaqDz8GnwAErZJIR2SqxXfxBLncfX/UOwWXj8TORdNs19VHnMnCc4twj/Jav6DKm01gdu8tk504t9oJ2agdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783318879; c=relaxed/simple;
-	bh=sXq6ZG2FCPgGrD/93i05yDVFGWV/kuOXrwRc2Zt22go=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=JdR32j9IJPVuLd39VIug28s1Mt20SFLUeL/0yzo0nqle9rDRq+9voWmsJGfTQH0fNhpJCAXH0JuPsH2tyGSrNZssetIZUnoGnU55gm4Qi49nV+wefD7/AMavctmwCNaL9ZBz0UXq59zhi7vQwa537WHQ6AbjFiFrlw9c+7KCAh0=
+	s=arc-20240116; t=1783318897; c=relaxed/simple;
+	bh=314TpUAkZxMvbV2pk3wlciVKMbaC2tgJL1bvCZ48Y0A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=VehUN/uqopk6kl+MBkfFganxZc7EReCQD4ypxE1ZQfB78VHXCS412Vdjhd/A+kKhkF/i/Z9I3sl8j8ww+CbsD8EVTg23XkIaEIuaFXafmzJEank5UFmPQ+iVur/s5ixOt3A9Jq511jdFHAhUMhpJHMZKBpWV57XL30i+G9eaHlo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-80-6a4b4900ffba
+X-AuditID: a67dfc5b-c45ff70000001609-0f-6a4b49054145
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -178,45 +178,45 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 19/40] dept: apply timeout consideration to hashed-waitqueue wait
-Date: Mon,  6 Jul 2026 15:19:07 +0900
-Message-Id: <20260706061928.66713-20-byungchul@sk.com>
+Subject: [PATCH v19 32/40] completion, dept: introduce init_completion_dmap() API
+Date: Mon,  6 Jul 2026 15:19:20 +0900
+Message-Id: <20260706061928.66713-33-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxjG+Z/zP5dW6o6V6MEtw3TxMowXiJc3cc767WzGRKPGxJlgM05G
-	sVxSFIFkDTDcHDddt5YFh0KQWmlhtUREBR2oWIuQAlpLbVWUFQyXzcJApYMVyL793ud58uT9
-	8LCk3EetYNWpx0VtqkqjoKVYOhpZtZ74YnfyJm9TDPieD1DgeJKPwVVvQTDx7ikDhjwExm49
-	CR7XbRIM/QM0lL3OwzDrHyTANDBDwLDx77BmcCF4YCiioTK/hYKAt4UAY4UdQ/dwiACfUR8+
-	ryyHc2VDBBjqbhIQ6o+DdssgA8MBPQ32vnsIrMUBEuyv3BS0eNdB1fcXMbQ3vSSg98ZvNBTb
-	rlLwzDpLQY/FhaGj3YGh5kk3AQ2dD0n4eSyAoK9shIG81moM5jdlFLRXLgNbQTkD+kCQgau3
-	TyEIXpzE8KjvJoJbp18Q8HvgDgk15lEK7FY3DU7/OANu/QUaOhudDDjfOwl4WTrKQLBihgJD
-	6DQNtjeXaMgbf45g+m34qQlLLQ11/7qRUilYz1uRMFHzHSnUdIzQwvt/HtPC9XI/IxTc8jJC
-	pf2EUHB3lBIazLFCdfNrQrDX/kgL9qCeEaqmh0jB526mhbGuLkZw/DqN9648LP0sUdSoM0Xt
-	xs+PSpOmivaklzJZf9p+onJRP1WIJCzPbeYvGS+gQsTOs2l235xMc2t4j+cdOcdR3Eq+oSQQ
-	jktZkuuN4YtNJXjOWMod5EODZ+Z7MLeKHzEFiTmWcVt5y9QQvdAfw1tsf8wXScJ6fahiPiPn
-	tvBP/7qPFzLVEv5yc+wCR/OtZg8+i2SVKKIWydWpmSkqtWbzhqTsVHXWhq/TUuwovDnTt6Gv
-	mlDQtb8NcSxSRMpA+WWynFJlZmSntCGeJRVRstVrdyfLZYmq7BxRm5agPaERM9rQhyxWLJfF
-	T55MlHPfqI6Lx0QxXdT+7xKsZEUuSrk2qOvpyc9pjf3lesSnS6K3X5OT+YvO+d8+2Hasayrh
-	THHk4UadWeKJ/6FBt52MXqs54gvtOnvQEaQ++PjoR1NFu8aVCZOO8Z26maxCX/knh7yuxTkH
-	9jgWOZVZLyrw6h3x7ka9fEc/3F9cWn3KX1JXfzK35/KYdGeEq/dGx7N0nQJnJKniYklthuo/
-	rFnXM28DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93XrqvVZRldtOegkh5WkHHKiKKgS6XUHxHUHzny0uabrSyD
-	HnONVlrN0SY1tWW6QpeuaZbJaCjZw0TNMsuWSdMUNWNpY25zbUH/HD7nfL/ny/nj0Li4gYyh
-	5VkneUWWNENCCQlhcqJ6XYjbl7bhpTERtJoL8KXfTUKPyknA1KSWgJJaKwVB0xMBaO23SHj1
-	MZ+AzppqBP1TWgRevwkHTWOIgKC+VQCTvj4BGFQIQo5WBMYuPQ69nc9xsNarMPhtm6FgtMWD
-	wDDgpqB4REXAhKUQwe0hkwBGXuyB8f4mEkKuHxh8/DOGwOKewcDtvIwgaEyHO+V14XXjLwr8
-	7R04FBs6EdwdcOHgGfmGoL71KwLHg3wKBnWPceh2z4X3UxMUvDYUUDDeVYLBTxsF5nwHCV1v
-	RxGUmvQIhj47MFDfq6XAWGonoPHbMwF0jQYw+GLUY1BtT4J+yxABbbpyLHxu2PVoIZiK1Vi4
-	DGNgeNiEgc9SJdhRiTiv5jrBVdU1YJzmXZDirGVWxPmn9YibrFTjnEYXblvGJnDuUt1prrJt
-	jOKmpz5QnOOPmeDelLNcxZVpjCtqX8c13nYJDuw8ItyWymfIc3nF+u0pQpm3ICnnuuDMoK2I
-	vIgGyKuIpllmE2sJHbyKomiKWcX29vrwCEczy9i6a0Nhi5DGme6lbKHlGhER5jOH2MCPG2SE
-	CWYFO2bxYBEWMZvZau8wFWGWWcpW25z/gqLC85pA6T+PmElg+yZeEjokNKNZVShanpWbKZVn
-	JMQr02V5WfIz8cezM+0o/E2Wc4Gip2iye08zYmgkmSOCHXvTxKQ0V5mX2YxYGpdEi1bG7UsT
-	i1KleWd5RfYxxakMXtmMYmlCslC09zCfImZOSE/y6Tyfwyv+qxgdFXMRmVJvGq6k7D+WsEys
-	1QfvL99yILbivn9jh/mXN84ze/7yTZ9kOS3bD/U1FAziM78XqBn54vNNgcINu4QNvvb0J7vX
-	ixXlR+MaX/QULZEld1doxd9L+k6rti7a3bGm4r3f9c4WE1/Wk+t2KY+aT6XEzltrtcc6c3x8
-	yOZN1DnrPZ8khFIm3bgaVyilfwH0aI66SQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTH99z73Beq1ZvqxkU+QJqpiFGnYeYkvoS4D141SzSafZi62Yy7
+	0VKgaRHFaUAU10zQrksRAQ24USstoK1DBOsLClIrs4zNdVAqRFZCKmIUMGWtXavx2y///zm/
+	nA+HJWVeahGrzCsQtXkKtZyWYMnE3PoVzJZtqk/Gb2aAvqwYfE9GKZie0mOobbHR0PN3KQZP
+	sxXBk2k9grLrUQwRYzcDU6FBBqLObgS2q0cJCN59icA0MkrDpLkcwXjXZogOjRFgHn1DQKQy
+	B86YPAjqR4ZIuNrtR+C0lNLwr+E3EvpH54HLdJKGib5aAgIDTgIqz9kx9AXDBPgqjQRY7Z+D
+	23Ahll9JhJozxwgwNXUQEDI3MlDT209BeGQ1ROvyYei0CUPzxCMKXP7HFAQDRhqulQwzYP+n
+	K3ZneYAE+9NYcfa8j4YbThcGfWQKQX97LQ1+W5SCkprXFHhuuyn4w+rB0DLmJcBVfQnDYO9p
+	Bh61N1EwMuylwNH7kISZU8ng+amCyswSGh2thGA7b0PCf7NGJJQZYnT32SQpHHccEBrcz2hh
+	dvovWnDO1GHhwQVeuF49xAjHbw4wQp19v+CwpAu/3BgnhIHghu3pX0rWZ4lqZaGoXbVxnyS7
+	oaWG1jiXHbz3yoBK0GzKjyiB5bkM/oG5mnrPlnoLGWeaW8p7vaG3vJBL5R0VgdiMhCW5/hS+
+	3FyB48UCbgcfcuvpOGNuMX/LcIuJs5Rby4eCHeidNIW3Xr79VpQQy5vD54g4y7hP+cHJ+zgu
+	5TlrAm+6+JB8t5DE37F4sQFJ69AHjUimzCvMVSjVGSuzi/KUB1d+k59rR7F/Mx8J725DLz07
+	OxHHIvlcKWRuVckoRaGuKLcT8SwpXyhdkrZNJZNmKYoOidr8r7X71aKuEyWzWJ4oXTNzIEvG
+	facoEHNEUSNq37cEm7CoBJ1I3Lvl8ONwX9dTVeS1sdWfduL+z8+LDfOZdVXmw6lbNZkFX+1q
+	qk/evv5D70XXvA68obQqc47uo32XNafGqi79uaOgXN2W+nHr7tycnqQ5m5cmnm0PLG76/ocv
+	lqc1mMP+Xd2RNt/vx/YU+ord3/76GZvauGo4KXmN5oXqTuvJnr6j9zbJsS5bsTqd1OoU/wM3
+	LlxMawMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0yTZxTGfb9bS13NZ23mFyXBNMFbos5kbGfReElIfC1jmYlhxmik6hcp
+	BSStY7DNCJRix8SUZi3ODxAYVALVYsELkgaCE6doLLAhGbJi0pYRilUskJabrcv+Ofmd5znn
+	yfnjiEnZPXqdWJ1zjtfmqLIUjISSfLVLv40+mJL5SakjAYyGC/DS46VhqKibgpmQkYIqh52B
+	ReGuCIzOX2n440UxBe6bLQg8M0YEc/MCCYaOZQoWzb0iCIVHRGApQrDs6kVg7TeTMOzuIsHe
+	XkTAu9YlBiYfTCOwvPIyUDlRREHQdgnBVb8ggomHB2DK00nD8ug4AS9mAwhs3iUCvN0XESxa
+	NXCtvi26bn3DwPyz5yRUWtwI6l6NkjA9MYagvfcfBK6mYgZ8ptskDHpXwZ8zQQYeW35mYKq/
+	ioDXrQzUFrto6H86iaBaMCPw/+0iQP+bgwFrtZOCjrH7IuifXCDgpdVMQIszFTw2PwV9pnoi
+	em506tZaECr1RLT8S4DlRicBYVuzaF8jwnOGyxRubrtDYMPAIoPtNXaE5yNmhEONehIbTNH2
+	QSBI4pK273BjX4DBkZm/GOyaraXwk3oON/wUIXDFs2244+qo6Ov9RyW7T/NZ6jxeu2NPuiSj
+	0SEwua4t+b+/M6FCFEkoQ3Fijv2Ua6prImPMsJu44eHwB5azG7i2cj9dhiRikh1M4C7ZyqmY
+	sYY9xIX7jEyMKTaR6zJ1iWIsZT/jwpOd6L/QBK6ltftDUFxUv7lQTcRYxiZxI8FHlAlJatGK
+	ZiRX5+Rlq9RZSdt1moyCHHX+9lNns50o+k+28wsV91Bo8EAPYsVI8ZEU9ikzZbQqT1eQ3YM4
+	MamQSzduTsmUSU+rCr7ntWdPaL/N4nU9aL2YUqyVKr/h02XsGdU5XsPzubz2f5cQx60rRApa
+	flkYvXJkqb205uNZP6xJ+rKqqaLzZPKujVscUCoE7NfcJWXJ1QM1EyWRExtSQoGp8Xi3nFPu
+	zk0vmOaHGn5IfOTD4cOmROtIvFG5em/uyoFC4cfrq1LfejRHeEzqfGS8suEKFUgr/+VzzpcW
+	SNXcrirRH3R+cdwX1B9TULoM1c6tpFaneg9Ns3PXSwMAAA==
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -224,28 +224,157 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 
-Now that CONFIG_DEPT_AGGRESSIVE_TIMEOUT_WAIT was introduced, apply the
-consideration to hashed-waitqueue wait, assuming an input 'ret' in
-___wait_var_event() macro is used as a timeout value.
+Currently, dept uses dept's map embedded in task_struct to track
+dependencies related to wait_for_completion() and its family.  So it
+doesn't need an explicit map basically.
+
+However, for those who want to set the maps with customized class or
+key, introduce a new API to use external maps.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/wait_bit.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/completion.h | 40 +++++++++++++++++++++-----------------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
-diff --git a/include/linux/wait_bit.h b/include/linux/wait_bit.h
-index 179a616ad245..9885ac4e1ded 100644
---- a/include/linux/wait_bit.h
-+++ b/include/linux/wait_bit.h
-@@ -258,7 +258,7 @@ extern wait_queue_head_t *__var_waitqueue(void *p);
- 	struct wait_bit_queue_entry __wbq_entry;			\
- 	long __ret = ret; /* explicit shadow */				\
+diff --git a/include/linux/completion.h b/include/linux/completion.h
+index 4d8fb1d95c0a..e50f7d9b4b97 100644
+--- a/include/linux/completion.h
++++ b/include/linux/completion.h
+@@ -27,17 +27,15 @@
+ struct completion {
+ 	unsigned int done;
+ 	struct swait_queue_head wait;
++	struct dept_map *dmap;
+ };
+ 
+-#define init_completion(x)				\
+-do {							\
+-	__init_completion(x);				\
+-} while (0)
++#define init_completion(x) init_completion_dmap(x, NULL)
+ 
+ /*
+- * XXX: No use cases for now. Fill the body when needed.
++ * XXX: This usage using lockdep's map should be deprecated.
+  */
+-#define init_completion_map(x, m) init_completion(x)
++#define init_completion_map(x, m) init_completion_dmap(x, NULL)
+ 
+ static inline void complete_acquire(struct completion *x, long timeout)
+ {
+@@ -48,8 +46,11 @@ static inline void complete_release(struct completion *x)
+ }
+ 
+ #define COMPLETION_INITIALIZER(work) \
+-	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), }
++	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), .dmap = NULL, }
+ 
++/*
++ * XXX: This usage using lockdep's map should be deprecated.
++ */
+ #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
+ 	(*({ init_completion_map(&(work), &(map)); &(work); }))
+ 
+@@ -90,15 +91,18 @@ static inline void complete_release(struct completion *x)
+ #endif
+ 
+ /**
+- * __init_completion - Initialize a dynamically allocated completion
++ * init_completion_dmap - Initialize a dynamically allocated completion
+  * @x:  pointer to completion structure that is to be initialized
++ * @dmap:  pointer to external dept's map to be used as a separated map
+  *
+  * This inline function will initialize a dynamically created completion
+  * structure.
+  */
+-static inline void __init_completion(struct completion *x)
++static inline void init_completion_dmap(struct completion *x,
++		struct dept_map *dmap)
+ {
+ 	x->done = 0;
++	x->dmap = dmap;
+ 	init_swait_queue_head(&x->wait);
+ }
+ 
+@@ -136,13 +140,13 @@ extern void complete_all(struct completion *);
+ 
+ #define wait_for_completion(x)						\
+ ({									\
+-	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
+ 	__wait_for_completion(x);					\
+ 	sdt_might_sleep_end();						\
+ })
+ #define wait_for_completion_io(x)					\
+ ({									\
+-	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
+ 	__wait_for_completion_io(x);					\
+ 	sdt_might_sleep_end();						\
+ })
+@@ -150,7 +154,7 @@ extern void complete_all(struct completion *);
+ ({									\
+ 	int __ret;							\
  									\
--	sdt_might_sleep_start(NULL);					\
-+	sdt_might_sleep_start_timeout(NULL, __ret);			\
- 	init_wait_var_entry(&__wbq_entry, var,				\
- 			    exclusive ? WQ_FLAG_EXCLUSIVE : 0);		\
- 	for (;;) {							\
+-	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
+ 	__ret = __wait_for_completion_interruptible(x);			\
+ 	sdt_might_sleep_end();						\
+ 	__ret;								\
+@@ -159,7 +163,7 @@ extern void complete_all(struct completion *);
+ ({									\
+ 	int __ret;							\
+ 									\
+-	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
+ 	__ret = __wait_for_completion_killable(x);			\
+ 	sdt_might_sleep_end();						\
+ 	__ret;								\
+@@ -168,7 +172,7 @@ extern void complete_all(struct completion *);
+ ({									\
+ 	int __ret;							\
+ 									\
+-	sdt_might_sleep_start_timeout(NULL, -1L);			\
++	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
+ 	__ret = __wait_for_completion_state(x, s);			\
+ 	sdt_might_sleep_end();						\
+ 	__ret;								\
+@@ -177,7 +181,7 @@ extern void complete_all(struct completion *);
+ ({									\
+ 	unsigned long __ret;						\
+ 									\
+-	sdt_might_sleep_start_timeout(NULL, t);				\
++	sdt_might_sleep_start_timeout((x)->dmap, t);			\
+ 	__ret = __wait_for_completion_timeout(x, t);			\
+ 	sdt_might_sleep_end();						\
+ 	__ret;								\
+@@ -186,7 +190,7 @@ extern void complete_all(struct completion *);
+ ({									\
+ 	unsigned long __ret;						\
+ 									\
+-	sdt_might_sleep_start_timeout(NULL, t);				\
++	sdt_might_sleep_start_timeout((x)->dmap, t);			\
+ 	__ret = __wait_for_completion_io_timeout(x, t);			\
+ 	sdt_might_sleep_end();						\
+ 	__ret;								\
+@@ -195,7 +199,7 @@ extern void complete_all(struct completion *);
+ ({									\
+ 	long __ret;							\
+ 									\
+-	sdt_might_sleep_start_timeout(NULL, t);				\
++	sdt_might_sleep_start_timeout((x)->dmap, t);			\
+ 	__ret = __wait_for_completion_interruptible_timeout(x, t);	\
+ 	sdt_might_sleep_end();						\
+ 	__ret;								\
+@@ -204,7 +208,7 @@ extern void complete_all(struct completion *);
+ ({									\
+ 	long __ret;							\
+ 									\
+-	sdt_might_sleep_start_timeout(NULL, t);				\
++	sdt_might_sleep_start_timeout((x)->dmap, t);			\
+ 	__ret = __wait_for_completion_killable_timeout(x, t);		\
+ 	sdt_might_sleep_end();						\
+ 	__ret;								\
 -- 
 2.17.1
 
