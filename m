@@ -1,97 +1,254 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010042.outbound.protection.outlook.com [40.93.198.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C373FDBE2;
-	Mon,  6 Jul 2026 11:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783337464; cv=none; b=Jxa/Q2+RiDWAXs5rsWz0M/7Rz//fQKuFMeomwImUvwGRSEv3JldO+PJRdFZBqMu3shwVmkdA6CI8i8fzMAF246G1mwqeXG9UYSGCZ6XwE+43uX/9svU9bak29Mcr5zG7PxOQ0ZEiy73hLuY0CZLnMte5kAFO53UPsVFv0+PL9VE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783337464; c=relaxed/simple;
-	bh=BEJSsljLz7WqGeFuMxG1dz0EBEkp/cDo7crGru5AqYI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=UN9nL+1yhIUrtEkiXfZiZzs3V6pmHOl3GiW/bCPLNE5Xg+8gPlT+xnVkrMdjeMPSPI+Dgsq9DCnYVZK1qsZGCTRaY0VoldAgDFHLlWlBoHPLU9qIjYkrREt2yZ5Y8VQC9Vbsg5CqeOGFp9mv3txNlNG9u+bMenUPp4xjQ0WnoNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+Xw5B4X; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681A0417375
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jul 2026 11:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783337991; cv=fail; b=uAlqueoVzCrvFoIToR5d2NZZ1gdMlwUR6jzSr4/OTMfRMFoLJX4DoKCJy1EcA3N36PiCuDaGxSP6TmjawH+uCVHigK+exb7y013fUn9OPP00NBch/c/sxjVyRYbM5Gd2Z8sCTwcncBb29NwZMHo//elS0tfqUVMC4695wH4a54Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783337991; c=relaxed/simple;
+	bh=XP/kEZX85SQfBrXBwCIoFbglzUShrnzC797kaXwOHTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mgmO1Pu+puuQDA/uFd+siO4E28tALBqfaFUbzuwkLTtPPrDmXxtpyGwgjz8jpSWuwGRn6a3sm4OUykomHHwq7hLB+j1DMG1lB7O0PmOB0615nR07OyU0mzMxX5/lvt6hla1DL96f56EsYyDNJKvWNjJjyKD/Xfd7ldyTxH4IWd8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EZS9c3KD; arc=fail smtp.client-ip=40.93.198.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+Xw5B4X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EA31F000E9;
-	Mon,  6 Jul 2026 11:30:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783337463;
-	bh=F94dH8Su5lG+mhUpZiD6LkKjxF2NwBvnONHKF0cP9ZI=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=b+Xw5B4XTVBgIPDFBeoZNhAnlsgKR6JjRwSlsZWAK7MSDfFArPaZdwnKUjGJ/0lvS
-	 6v3pUQLiM5yAN3GkFl529gQRyNwho7oGHijrLDPnHk4bjyqqhQqnL/rXlByOfllbXo
-	 G+2QRvky/mzeGw1V2rYwh5Lk6l4MRggbU0WsACBPROc7AwB2vUm7mcFXmikH3ldh3v
-	 1OOtgZVg+SVrQSmuOF4YzPdWr5zDrouzWCRrtJJH7xuvvaUH6/w9KLlzAtTNxIsJmi
-	 o8L8oxaUFnbk3H81gff6yzq7QtpBHC7yb2HCxbYjpdhA9HYnY0CI6n5bNseIa50AjQ
-	 iTjMdaeJsr+tw==
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EZS9c3KD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ul6g10mqri92QaA7hXU3gd2PwhVxN4zaYcQsbrbJTt28tvNnT8UtfyUilEVdcNYgpH2jNL7vaXSu8KgQqXyZfNQWYATSWg7ne63EFGHHbqBu2YXcfGygdvJxvDO2xFPmQjUO5pBGqgrtgjlY6wdYm+Cbww75ythNMa7nZ6kVxc9XxrM6DQr0AhXWzXrUgLPOg1jIcomOMIIG5+jkyNOadrK79IvBEPg1UzNF6V1ziWtLd0ESpCEnEAsKwvFCcVeqp+ZkkOPsi6/QDJWI1ua+O3OiaNzqpzGSCk+AwOwsQ8m+BT5K7GbB8tIrkxw3t3bdYwWvzL7nDap6m6VB03QSQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d25tWwoYG9bw3mYq0ibSTJGpCHCGv1szzmzuij4q1/I=;
+ b=u9NNZ1lS3SYsUFJZuG4WPDEpdU5ruI4oW8lf3KqgAqEAxBlxFWjLtqtqCoMPMGciTxX21RB7ZMMZT7d2DQCKpFUrI7vEzFOOP6SV5LlJ7JSnn2z0ue/7NRaX8j2VXcnQN2Em8xjEN7/wYPlVGR//GYF5BeGDRTzk5ylAS53w8qAKuZ/zPxDpqjsR+eXSEfVRnkxt3puWqORIYmVJVL5bSIR3fCGlTwBncwEL105YrkOQXwOD/MfrBTCHWkoeUkdbr7kUOo/yIn22dOVTZQcJqXblMaRq2XnWSsOOrHg6yNZuvEo8+7V1UOJFKnNz+T6R7vE/PB/fGK/6h7r/wWozCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=d25tWwoYG9bw3mYq0ibSTJGpCHCGv1szzmzuij4q1/I=;
+ b=EZS9c3KDwNQGIbUFtB9p7wmzffPShR2fqVsz/SWQoCnUI4LaLuvoBYuuMR5abmvE1f1D0uOHwiTHZIqdMHV+k9h+VPjFHGe4mNOhS0JiO9xa5j4I0upjtH2phr/U32P6OY4hBSQ8QJyC/LxMUTc1zYlsPO+Y1TF53R078UygPoxWOHN53Zf2ttc+14tOLgg/E4IM0YIF+iDGHFVLfsgZUgktBUWqcqwB7EKm5Bp57GOKTVvurktIUwMPV7aQFAMWJhjrIIe95BnCTHUaVrOhSOP5PMparE4ocojK0YWzWW6pCyruErataZJdM61FUxPHThQPkOGnF3am5fmaLqE/gg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ PH0PR12MB7929.namprd12.prod.outlook.com (2603:10b6:510:284::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.10; Mon, 6 Jul 2026 11:39:47 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
+ 11:39:47 +0000
+Date: Mon, 6 Jul 2026 21:39:37 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Pedro Yudi Honda <niyudi.honda@usp.br>
+Cc: dakr@kernel.org, acourbot@nvidia.com, nico.antinori.7@gmail.com, 
+	aliceryhl@google.com, airlied@gmail.com, simona@ffwll.ch, 
+	dri-devel@lists.freedesktop.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	nova-gpu@lists.linux.dev
+Subject: Re: [PATCH v2 2/5] drm/nova: use `zerocopy` in booter.rs
+Message-ID: <akuSs22rTkn6MXqr@nvdebian.thelocal>
+References: <20260702120324.40388-1-niyudi.honda@gmail.com>
+ <20260702120324.40388-3-niyudi.honda@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702120324.40388-3-niyudi.honda@gmail.com>
+X-ClientProxiedBy: SY6PR01CA0017.ausprd01.prod.outlook.com
+ (2603:10c6:10:e8::22) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Jul 2026 13:30:55 +0200
-Message-Id: <DJRGD98J154Y.2MSNQJSXANX08@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v6 1/1] rust: introduce abstractions for fwctl
-Cc: "Zhi Wang" <zhiw@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <jgg@nvidia.com>, <dave.jiang@intel.com>,
- <saeedm@nvidia.com>, <jic23@kernel.org>, <gary@garyguo.net>,
- <joelagnelf@nvidia.com>, <aliceryhl@google.com>, <kwilczynski@kernel.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <cjia@nvidia.com>, <smitra@nvidia.com>,
- <ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
- <jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
-References: <20260629150156.3169384-1-zhiw@nvidia.com>
- <20260629150156.3169384-2-zhiw@nvidia.com>
- <DJR76RV8NEKN.2MP5M9Z66U4TY@nvidia.com>
-In-Reply-To: <DJR76RV8NEKN.2MP5M9Z66U4TY@nvidia.com>
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH0PR12MB7929:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64e0a11f-9e48-405b-593e-08dedb5347ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|7416014|22082099003|18002099003|3023799007|6133799003|11063799006|5023799004|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	2ZZnOkkO62wNoyzMmgrfCiZJQbsm2fZD+3jDWeIPQL217BtzIPlRsvBLFBAgrLMdQILIPArdaFQjhQA2ObUwbwbg7peY6rKzQKsZY0LkvMaIT2xKEmgpyarl9GGDb7HZ6papjOIRidWt0vEUrgLHoZpBbI2Nv8bRNhFJ18KbyEnYBniT8d1Qg7602UXU8aZZcroGCCotq3ZVsrEgGzdfaX8BOTJedBnmfi4VNdj//Cst7Ku7sqoZUSGhAzOapcqWYFDWzf/RKp9342Oy7M/sN2c3LaoVvvEyVzNDx7mD+ByYFB9/Kjg1uDFiYkXdoL+u1iQaUhCeHptepYuoPXckKvRumj6xWJtHBjB6950wqqrffI3Fm01J1bEj/UFrKhIS9+ej1MCbs6w84k61I4fl3Hot4aNa+LAFDWGKVkQYUC98mbDscSw3ic3iMGw5xCwjEwgBFKqR0nlnSTHxd3rcbjWAO6WgLAYmJ92nfRtgyenU16bmh/8ifdgfd5nfHWXdCfHxTi5Yyw+g7vviOaoD5GZSyNfJqQKVq2mAd0V9sGZwV7dw2nKknU2kRIM0XaV0kpQzExMXwzLiC7mKX2AGLDD5AlrlxTMcGe4UVnkz4LwTDMxwBFUS9ZyqMn0+AlrLwChC5jD6bHJiPZWED70QIFSZXS6Tb3OmSiqWma1uxpg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(7416014)(22082099003)(18002099003)(3023799007)(6133799003)(11063799006)(5023799004)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?wvT51/k8tNtJrVlplEXkJt3UuQmKWC7TjJPlWTl01wzBmCmLIL5Yw9ymAESe?=
+ =?us-ascii?Q?A9/hJxfHpScrnED6mjSSUlt18iVHUfC0scFHJDiyqLHU4bud05c7DeBjyhfz?=
+ =?us-ascii?Q?VM5fiXT3IzJyty3HINB7It3A9xsSPpdUXAKQZfeYKZsJ0efrJ51Gpg8mgX6Z?=
+ =?us-ascii?Q?CiuRGPpaSJ5fx4IbLuM1sFvMxuG6r5wVw3bmPrTrrtvjpouN3kYQnXqEvQ5+?=
+ =?us-ascii?Q?+XgEZ4gy7JmnXL3fffytK4tZPflWShx0a0blsVVqEYtlk33ID1+L7TH+B5Oa?=
+ =?us-ascii?Q?/J+JlqkV/C+VBW2BWOoLmmir5QSNEUQLe3KgdtGryfniZyDEDTcT5ySUM4Ld?=
+ =?us-ascii?Q?eO9Wxe+sgwFf78EPMAi3NB3VfZh0ZtAIhISLUEZT95k9zYICQDy8K79ZKhCC?=
+ =?us-ascii?Q?QQUpfc0tI+Dpnc/MerkwfFmp4aOlTsG3QjBv6R/nw6cg/FvDTu2C0Oe14d6G?=
+ =?us-ascii?Q?REZqS7nZU0jeh84Mz4lbmy9SBbOOMfbdrk/LXen0D804eqkq6vEkY8/arVwO?=
+ =?us-ascii?Q?8K53o9INS5laVrjl3YjjvI2wpAkyS8XITXjc5+ZVb89XFb+kYui96AnjtwT7?=
+ =?us-ascii?Q?wzdHtqZjxL9+QrUz92PAIgmMunr3fi+iUJUhlW8NmRIf+65gotql+aSjCR0N?=
+ =?us-ascii?Q?T2/yK/1wMrCz3WXcns0VY1Uk3i361TAFki2YzFGvYbr1QaiVArqaShpTWrFt?=
+ =?us-ascii?Q?I27wphTVxxLtbUYAQCqNcx+cHfuUqh5nP1jKcozRrnpLxUNiTrB3K85SZ4IY?=
+ =?us-ascii?Q?wWxbk38NeGJOxgJDElpoOgI5U6sxkSBaNGUb4HxAsce4XF+cjTDmOeH8G8U1?=
+ =?us-ascii?Q?HrpEDp0DTusp31GNs7bU7QqdybeFD8Rq9VlSYYoiFRWeX+FBdKQEipuXIRWK?=
+ =?us-ascii?Q?H+q1s4/6XI591AR3GUcZV9P/5qCkrmMvvGyhxgPsl/m8xpM3JhUeG07f1HqB?=
+ =?us-ascii?Q?QiIIaUsZjk5YFxu2Q/t35NVwLTvFnSrTIPC74mJTisRY6gr+8/TH5k4lXNJE?=
+ =?us-ascii?Q?g9SoV2AqD3zX58CiIB8mGCxzUpuO0+2zDdY/POwLZ9QUIlIJN/DTot/3BxbL?=
+ =?us-ascii?Q?VXWmO+vnmlQB0os52HEiZFS4atjwX1GTycshkC63OuWWnP0kFS5l8xheKMIL?=
+ =?us-ascii?Q?KF4Gc6WV5gvp/zRvTrby2i1At3YDpZHoqBpsqTUcxPRYoJ/qUpNl2Ir9Lq4n?=
+ =?us-ascii?Q?hkWqW7VTPwTyUxwVoK2FlvlgjdzyyG22L/VKwzB6klS22QAyySWOobFTvO9j?=
+ =?us-ascii?Q?wH8VoiIpFJt43nM56M4q3RKMhrXBLe7j0Z0D0Q180SebLO68jBwmdXBURw0g?=
+ =?us-ascii?Q?yrt4+B1ZAWXM4VV5oPN3jTbkG1MTQEY5czLha2Yb3u8wbhopV7b7f893c6G9?=
+ =?us-ascii?Q?RMmzXiAdN6xAwtHgwd2yxnvjyCDPxSFIrZTtD5MfTP+1c082sbjmtiwCX5Pj?=
+ =?us-ascii?Q?/1TA1W+14nhOyW7v2bOZKMyIVHvHthHyNOyQaD7ZA6pUAmAy6iK6dwPY3JtY?=
+ =?us-ascii?Q?/o214IqU93FM71QQEZNu40gUTYNzBL9zrXCMoU9p9e+fgJXM2Yr9nG6mjtLl?=
+ =?us-ascii?Q?n8zpNE9SaSLj4qt9vfgGqtLIWCfYtTnaogy+JEDVqO8ILdMa2YirWy8egvU8?=
+ =?us-ascii?Q?UmYSMk6mr3tmUodOKH+dp9zPo0y56aqON/7tGOWBTcAiQqxoYxn3GbbVTcTH?=
+ =?us-ascii?Q?p6a1jaLXRwzSETssGVrjmVykwaNLMgAb+m2d+JPABIRIBbun8JUP5Eqv6NYz?=
+ =?us-ascii?Q?JvcqqHPNgA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64e0a11f-9e48-405b-593e-08dedb5347ba
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 11:39:46.9307
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SeF+pr6a9mpfyMlCqSiXYXM1yo9EIfDZlEPs31jW9xHRk09aQqFUg92QVc1qhs8Vn/Oo0jPTaXU3Z61KozMxmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7929
 
-On Mon Jul 6, 2026 at 6:19 AM CEST, Alexandre Courbot wrote:
->> +impl<'a, T: Operations> Registration<'a, T> {
->> +    /// Register a previously allocated fwctl device with the given reg=
-istration data.
->> +    ///
->> +    /// The `reg_data` is owned by the registration and accessible duri=
-ng callbacks via
->> +    /// `Device::registration_data_unchecked()`.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// Callers must not `mem::forget()` the returned [`Registration`] =
-or otherwise prevent its
->> +    /// [`Drop`] implementation from running, since `fwctl_unregister` =
-must be called before the
->> +    /// parent device is unbound.
->> +    ///
->> +    /// `dev` must be an unregistered [`Device`] that is not associated=
- with any live
->> +    /// [`Registration`], and no other thread may attempt to register t=
-he same device concurrently.
->> +    pub unsafe fn new(
->> +        _parent: &'a device::Device<device::Bound>,
+On 2026-07-02 at 22:03 +1000, Pedro Yudi Honda <niyudi.honda@usp.br> wrote...
+> From: Pedro Yudi Honda <niyudi.honda@usp.br>
+> 
+> In firmware/booter.rs, replace the following `transmute` traits with
+> their `zerocopy` equivalents:
+> 
+> - `transmute::FromBytes` -> `zerocopy::FromBytes`
+
+Having a single item list reads a bit strange to me. I'd just say "replace
+`transmute::FromBytes` with `zerocopy::FromBytes`" and if you want to list the
+types it's replaced for you could. But that's a bit superfluous as it's clear
+from the patch anyway.
+
+But that's a small nit really, everything looks ok to me so feel free to add:
+
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+
+> Update call sites accordingly.
 >
-> Why do we need `_parent`? Is it to provide a proof that the parent
-> device is bound by the time of registration? If so, there is an obvious
-> loophole: this method will accept any bound device, not necessarily the
-> actual parent that was passed to `Device::new`.
->
-> We should either store an `ARef<device::Device>` in `fwctl::Device` to
-> perform the check at runtime, or add a requirement in the `Safety`
-> paragraph that `_parent` must be the actual parent, since the method is
-> already `unsafe` anyway.
-
-Neither is needed, the fwctl::Device already carries a parent device pointe=
-r
-(available through AsRef in Rust).
-
-This function should just compare dev.as_ref() with parent (which I thought=
- was
-already the case in a previous version).
+> Signed-off-by: Pedro Yudi Honda <niyudi.honda@usp.br>
+> ---
+>  drivers/gpu/nova-core/firmware/booter.rs | 26 +++++++-----------------
+>  1 file changed, 7 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/gpu/nova-core/firmware/booter.rs b/drivers/gpu/nova-core/firmware/booter.rs
+> index acb7f4d8a532..fe9389b84b90 100644
+> --- a/drivers/gpu/nova-core/firmware/booter.rs
+> +++ b/drivers/gpu/nova-core/firmware/booter.rs
+> @@ -10,8 +10,7 @@
+>  use kernel::{
+>      device,
+>      dma::Coherent,
+> -    prelude::*,
+> -    transmute::FromBytes, //
+> +    prelude::*, //
+>  };
+>  
+>  use crate::{
+> @@ -43,7 +42,7 @@ fn frombytes_at<S: FromBytes + Sized>(slice: &[u8], offset: usize) -> Result<S>
+>      let end = offset.checked_add(size_of::<S>()).ok_or(EINVAL)?;
+>      slice
+>          .get(offset..end)
+> -        .and_then(S::from_bytes_copy)
+> +        .and_then(|b| S::read_from_bytes(b).ok())
+>          .ok_or(EINVAL)
+>  }
+>  
+> @@ -52,7 +51,7 @@ fn frombytes_at<S: FromBytes + Sized>(slice: &[u8], offset: usize) -> Result<S>
+>  /// Such firmwares have an application-specific payload that needs to be patched with a given
+>  /// signature.
+>  #[repr(C)]
+> -#[derive(Debug, Clone)]
+> +#[derive(Debug, Clone, FromBytes)]
+>  struct HsHeaderV2 {
+>      /// Offset to the start of the signatures.
+>      sig_prod_offset: u32,
+> @@ -75,9 +74,6 @@ struct HsHeaderV2 {
+>      header_size: u32,
+>  }
+>  
+> -// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+> -unsafe impl FromBytes for HsHeaderV2 {}
+> -
+>  /// Heavy-Secured Firmware image container.
+>  ///
+>  /// This provides convenient access to the fields of [`HsHeaderV2`] that are actually indices to
+> @@ -144,6 +140,7 @@ fn signatures_iter(&'a self) -> Result<impl Iterator<Item = BooterSignature<'a>>
+>  
+>  /// Signature parameters, as defined in the firmware.
+>  #[repr(C)]
+> +#[derive(FromBytes)]
+>  struct HsSignatureParams {
+>      /// Fuse version to use.
+>      fuse_ver: u32,
+> @@ -153,9 +150,6 @@ struct HsSignatureParams {
+>      ucode_id: u32,
+>  }
+>  
+> -// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+> -unsafe impl FromBytes for HsSignatureParams {}
+> -
+>  impl HsSignatureParams {
+>      /// Returns the signature parameters contained in `hs_fw`.
+>      ///
+> @@ -170,14 +164,14 @@ fn new(hs_fw: &HsFirmwareV2<'_>) -> Result<Self> {
+>          hs_fw
+>              .fw
+>              .get(start..end)
+> -            .and_then(Self::from_bytes_copy)
+> +            .and_then(|b| Self::read_from_bytes(b).ok())
+>              .ok_or(EINVAL)
+>      }
+>  }
+>  
+>  /// Header for code and data load offsets.
+>  #[repr(C)]
+> -#[derive(Debug, Clone)]
+> +#[derive(Debug, Clone, FromBytes)]
+>  struct HsLoadHeaderV2 {
+>      // Offset at which the code starts.
+>      os_code_offset: u32,
+> @@ -191,9 +185,6 @@ struct HsLoadHeaderV2 {
+>      num_apps: u32,
+>  }
+>  
+> -// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+> -unsafe impl FromBytes for HsLoadHeaderV2 {}
+> -
+>  impl HsLoadHeaderV2 {
+>      /// Returns the load header contained in `hs_fw`.
+>      ///
+> @@ -205,7 +196,7 @@ fn new(hs_fw: &HsFirmwareV2<'_>) -> Result<Self> {
+>  
+>  /// Header for app code loader.
+>  #[repr(C)]
+> -#[derive(Debug, Clone)]
+> +#[derive(Debug, Clone, FromBytes)]
+>  struct HsLoadHeaderV2App {
+>      /// Offset at which to load the app code.
+>      offset: u32,
+> @@ -213,9 +204,6 @@ struct HsLoadHeaderV2App {
+>      len: u32,
+>  }
+>  
+> -// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
+> -unsafe impl FromBytes for HsLoadHeaderV2App {}
+> -
+>  impl HsLoadHeaderV2App {
+>      /// Returns the [`HsLoadHeaderV2App`] for app `idx` of `hs_fw`.
+>      ///
+> -- 
+> 2.34.1
+> 
