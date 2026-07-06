@@ -1,178 +1,117 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022100.outbound.protection.outlook.com [52.101.101.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF0738239E;
-	Mon,  6 Jul 2026 15:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911C338B140
+	for <rust-for-linux@vger.kernel.org>; Mon,  6 Jul 2026 15:28:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783350480; cv=fail; b=b8bQhkPpjYV8j7rTJPHkMtOtcUUY8VrLiLbEnrDhHUJSyZY6Sp17FGN5FV9EPs/lRBMpStHX+bXZh+SyxLKPkjFi0O7YsJ2EVSUn4/ZpsdkWzwP/So9Bt7nwkUx8EK0lRHpI0W6gdOMIb7fNJXlUvpsrDnD7KX5pyWUUEv2eaT0=
+	t=1783351737; cv=pass; b=k5/H7MKJYqmXhCOtDIDj6xKvmLn4lrivziGvQWghe8s+Wo3bJXyKxqWsgSVw1w7vaj8BTWKSZg+fFl71z1Zr9owMRpxzhIJXLEqq0/PVm4omRGCEE9uSvxi8w4pe5PUm0QKK53Bp/IvIpxmYQM3cjpTTkM7kmeVCp63nnuqQhzE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783350480; c=relaxed/simple;
-	bh=vH6yrxhNGbAzB79CvdjkrUb+RHVBCFWUDRjtYirISLg=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=Y/nnAwOIgqw7kM3E9IJCWQjJcS2i+Y8ylot0iFnRAYmmOvudWZroDopVgQNq2929NCw8IiYEzPyDQu7GYJ/+YF/6Db1D+R/itVuYeCM1ZLMLMvFj6Vm1jtw6n8dOQx4b0eArVIxoUdT8b7Qq+Q6iWv/Q3tHdMl2XLcIENYCeZYQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qUDcfDWB; arc=fail smtp.client-ip=52.101.101.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1783351737; c=relaxed/simple;
+	bh=7k6DeL6ujQWC8Az3boiJtx4HMnVIMtLm4gOs7Ec0JAo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rmh2O7d1pPU45a+V1gwXnPNvrpaXqzwOjiICoMn760fROme39Um7EKGSRiPvz1tosOKDpxQlzuIfUV3quuOK50VxVb0p4ICSlKwRBu/DES1akJXy/rlxdd6IaHL2348uCl/RuXeGEDxzABtzOUiNqHkvJlGWtTJ/SGh1hUQcGZQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QV+HHMuA; arc=pass smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qUDcfDWB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I55qDhStFloGb6SvCBdqgFoilX9jylqMvBNpDiRD/2rn8499xAv9gBYcVAl6FRmXuhmOAoDns4W4mb9U4UbcNdR6igZ4zguY9eNTNcSMFNLuJEGoNlNGaMx8YSbJYL51QgSNfZ/ge2zCIWVcJeukQ+vPN6PFBFlKh1Uw9W//k0QVicKurqIAWcxXHDUFuGd/J15hssn/7+gec1smUScXWDLnnwe0GV29VKqr171J+l3b33IFnpkmCkvMzTseWRvCDrXXlje8zqyKV1Bov9IlZkGwLV8A6sj/ZjVKxzrgmXDyak6Y0EQbZ/OswT3doajzHf6HxWYFjckEhyZyqinFlQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N+Na9PCjfUkDE/1JfC26Zhqt/9EdNCNqkADg6EUVrmw=;
- b=Xn8GrxlmAm/xfXqSgq4WvtNJJjwpPC5w8SRja2lFyk2bfdlVjkjNjKLqmBZSiJhG3j4tFrTdRk3W0JxWQ+siico6qOKmk9bFmdNqBtPbRnQegFC/lNraww398CBuu+1qIxmomi+TRXfVbV1oOM4FupHVfz3laF11QDoofhErI9yxAN47EYOg2obKigGrRfz9h2VX5By6qqOMWZnIDvWcxNU6BdSb7Oeg2UlOhdnESqx8pi5gP4Y0SxvTGCSheVlp8n1IGDSMVPdCi4Nm7tO1bpmfG+DkwxacibLGYLROErTj8TZ3MZCdkdzfwoGvR89l5IaaH5iUzpEyBgVc1dfqtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N+Na9PCjfUkDE/1JfC26Zhqt/9EdNCNqkADg6EUVrmw=;
- b=qUDcfDWBQ0i3zO89HI1+iDYg5A19ukhJKKmWqzu20e1oCV1Wp9X7gtn24e858A4S9XbbHaHhIE9wUYEKP4Hkj84lIckgQ5rowlyGDG3VSsK4T+gG8Q5PSGSQKrt5MR/2h6XyHJCxSOsjS3Nymxx3hmSzzW1poOS4z0XfspmqbfQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2198.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:77::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.13; Mon, 6 Jul
- 2026 15:07:53 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 15:07:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Jul 2026 16:07:52 +0100
-Message-Id: <DJRKZD8LBXXH.MCISM5ZLNVMP@garyguo.net>
-Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Heiner Kallweit" <hkallweit1@gmail.com>, "Russell
- King" <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next 2/2] net: phy: qt2025: Use vertical import
- style
-From: "Gary Guo" <gary@garyguo.net>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Andrew Lunn" <andrew@lunn.ch>, "Guru
- Das Srinagesh" <linux@gurudas.dev>
-X-Mailer: aerc 0.21.0
-References: <20260705-net-vert-imp-v1-0-95a35ddff411@gurudas.dev>
- <20260705-net-vert-imp-v1-2-95a35ddff411@gurudas.dev>
- <d2c1e11e-e616-4b2f-aa17-5eb96f045833@lunn.ch>
-In-Reply-To: <d2c1e11e-e616-4b2f-aa17-5eb96f045833@lunn.ch>
-X-ClientProxiedBy: LO4P123CA0527.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:2c5::11) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QV+HHMuA"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-385b78b4f9bso81927a91.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 06 Jul 2026 08:28:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783351736; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o/KBdPxxlZM3DMbPxM5aqd7PkD/HZuEmfO57VVqIWdOSFI4JupQd9GbVNxHvrjipm6
+         I7Q7CzhvbVRwsj2h4HNmdUBswqV0RY4rix6VJTtSKkxxn5TebQWDP+dzs+B31Z+UXG5V
+         svZAizl24Dq0qyY7Q/ibz7p9h/3+pSw7qnXT0hcajN+0GKbh7GisS2yhBn1zFVVS56Qw
+         i4Wh4nIFUhpe0T5KlyrOVVHXAX27dUCi7xhKO1rITHbCCR5BXwWnFNec7AdgpqZ1goVy
+         cZr+Au5Io7gpDKCR+xkkzemjpdAManS1nSjkIH7xjzlswim6zgWOlbYI2xRdKMQCF1UU
+         SKOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7k6DeL6ujQWC8Az3boiJtx4HMnVIMtLm4gOs7Ec0JAo=;
+        fh=uEMlf2UtFYMV2iAqAoaQAV5U+IKDy2cte3o2JVhpqP8=;
+        b=JG6nr+kt6qovWwIrVZXlZ9S4Wu5xll8GtK4/UvIb01f4PTFjkqrc05k3ZCuhcbpHoo
+         R5YLehkkoQ7qWhf36/br8++s3jn2DavhN/u/6ArieBoxpNzoiXIwiqPXz84jNGtPn5hw
+         zuph2we35xZ7lAOxWC1/i/HQPptjk3DEC1cKqUO6EXFfi+Le1XGVuqk8tmJFltBbA/cV
+         YmMhEBh7Llzt7nZxFKxLsp/ZvdYg/Ix2mMYZmLGzMC4iaOBv0K/mpm3N/v2Umt9DbxS7
+         8PeQ091DuYBWrBoYJi0jVIiUPTh3JZxZ5ntMq14k6jg4tGvkglgwehNiUkr3TdiapwQj
+         pM7A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783351736; x=1783956536; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7k6DeL6ujQWC8Az3boiJtx4HMnVIMtLm4gOs7Ec0JAo=;
+        b=QV+HHMuAgmhD9PRk7fji0v+Sh36Fvq1RksQaTL9n0iOtkpZY6+9QPKSWp6Umr32jam
+         uel8jtMbwg7/CtR45PZ6y1b9MZrNdYOqo/QEkIr0olc6KZtYaj4pphx5GGLcVzQhfZkS
+         yx4YvmhNpUwiHqtHTvzyhIymGLK644FHzObRncaNYriF6JnZHQ6uAOznqOKi/34yA045
+         JAyqn+lKld72NVADINM4hbdfA39EhqibDLpAuoYN2Av/6LgOurQAwdj33/Mn4uxrvLBH
+         F0cnTPjQDcwPBQbmH7m2BfSyIuG/fTfVJG31F1rnGawzFgiTusXihndTKWXM/vPpinig
+         HLKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783351736; x=1783956536;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7k6DeL6ujQWC8Az3boiJtx4HMnVIMtLm4gOs7Ec0JAo=;
+        b=NltGi8v4gR20cySzf/ZTRILH6pJgaz1/6p1gGDRUqR2bTwJXetjd+NPLae7cJrE2ch
+         /PY9ePGjKzY3uiWCRUT1sflX33+62x0lyijGPbMk8pfDKe/3U6GHnPsBipSXYIKoK5Lj
+         iVpcArcUNO1pE67AzKGkNy8Y1x9ob9kQX/3O20cJCx35rVrRRgnWcd8msBZCJhoqUwnj
+         +94A79MY9zV9bU6halS5Ej30QBH8TK/PSNgt/JXyuVDQXScw6fsUjLHwF1M1OqVt+mOp
+         PsJTg3Xtf5CsAnyTgs5kY6/MAN2e5u0dCAYpf1LacHKpyh89dyD6H9FJDYbFbKy0mK6S
+         DoHg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr962ePyCjCf1AWZFTkQylP6Q4QFnvoUfs2RQx1AGL5XVRyHpBlc4SIc83wn+GK3gwS/7hfOcaiUSz1TbSStg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyp5/P7xC6kCK/qJsH2dwTnuAhN+J3RHcWDpYRkquxsujlrS38r
+	IIFqgBphWxdliTX3jeKQnpDgyErC0MEw20NHYGdkN8NNQcRyEICpo/K3eesQm8uC+zcuXlVu40R
+	E3xvYgxEyujuGD/0FQSv9eyLG04sU4jU=
+X-Gm-Gg: AfdE7clnseKH+K7mKSH2eMu5k4c2EyIMAw3sr10EHZPgR+syeCr2qC3h3GNW2VhOBpP
+	JBfzuKDH9KTqC4aI2nMabvQCwz1iRWZiTnezyxVGTmFqOhryIbPHZ57IL2DhOM5qnMjOv/d4yp6
+	brQZ9xoWEpE2Ln+2AWNHgtbTTIKlS0khZSSWXiZ5mgwLzkiaePsAPYf7JCBns7oHgKBA4WpiOd9
+	FOs2gxhhShipIhejBmDrPlj3ibuhXMVE9g+Mu5Rcu354tpy1+QQzBHHVwuQSVuL5CzucihQc2x2
+	0QjWVVmsEthRhsQufoxWpp5ymeQJUk0jnJFFsW0gA8Aahr5F2LqtHQtygzBKEjA1oXxrlPT1dlc
+	NmUQTrTRfbIAG
+X-Received: by 2002:a17:90b:3c91:b0:380:7688:fc06 with SMTP id
+ 98e67ed59e1d1-382a00c393dmr6538387a91.8.1783351735962; Mon, 06 Jul 2026
+ 08:28:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2198:EE_
-X-MS-Office365-Filtering-Correlation-Id: 948b51f7-bfca-4c10-4328-08dedb705a65
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|10070799003|376014|23010399003|18002099003|22082099003|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	wavNWDJBg+0kHdjtlHsG2igHCq2NOJT7JgvTGATh1oXK6yPrqwVvlcq5D5UKfoMzLAiOYvADhL2fcvs5nwHJm6L3F2ozaIySPdTtI0DADRMavjmzXI87NcjwN8RXJzanlLxp0G+yUWdBQXzm/kcxAVXiFAoEa/y0kbWH4ykaghxwSUMZGPdzBf8/cHpUMZ27EZvisOiOE+Db0usT3Hz8ZYPNpl4u8tu3pZfxUVLwkdHOpTqwOae+j1W2TcT8n44C1mwy+4qLi7G8D91zQQY+PN60AEKMKwiS/gyBlF578thfMv+4TiU/izrE+lx4zNyfeZYwRhiw49zUrdfo1EPrr3N2SzD46LTk4BR869dwJCZvFec8c5ucg/LgkuDD8xb56HjrQbECZHvnBo1yGxpnnwAb+jQbRLGKpWnIj+pavXMTPy66gkBDKEVbmFsLj9+IGcUOGPlva8tlTpkBOTrpReb7BJ7etP693xg5sKR+9g+5/BgsRu317wpOfRqRXqFF8m/1glh0Igc/S+pKNHbusTwzGHGI5WppaA2hWY8bjkdI22WQXix5cmWLqThwohux9S+0gpRR8y6EVB/bgEfSMeWZ+iqzGZOa1ijtF9/SMXP2nGTWK9swRkbE9MST6M8X3w3LzcrK5kCrj3FyvJjR4ZgeB0wVaOCFDNuOXQzQ/LE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(10070799003)(376014)(23010399003)(18002099003)(22082099003)(56012099006)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MVBDWm5xWlNlQmRwakJ6djIyR2tUdTJpWm1WMU1adEExdjgzNjVNdmdET1Ry?=
- =?utf-8?B?S1hHOVV0MHdncUJUTjdwdCtnRWpndU0yVVM3Y0owQi9kaklERWhoanFaMjhX?=
- =?utf-8?B?aW4wN1ArZ0M1WjkvR0pSNkdJTjJBUk5leHJHMlBIcTY2RHNEMm1xNS9vNFZ2?=
- =?utf-8?B?ZEJWclBXajdnWHNoVjU2TFo0a2xKcElqMmQrWHNwWE5TM3RXamJma0E0V0Jy?=
- =?utf-8?B?K1k4ajEzQTkvaXdoeEVGOHU3UzFiT0FLQVJYTzU2NW1HNUF3MVRzVkh1d3NN?=
- =?utf-8?B?SnpPQTlmWUVDZzdhV1lHOXgvWnBhS0FzL1BpYVZScHBJTGt4R0RWV25ldkF2?=
- =?utf-8?B?YjU0WlRWaU84cFl4OWNCbTdPR3gzVHJ4VHdoNFJWT2g0UmVyRG5HUjBoeFQ4?=
- =?utf-8?B?RUh5UmMzbWtjZ3ZQcFJLdGtVdGlyc0VVdzFSU3l0NWJmeUV3Q29XZGd1UUll?=
- =?utf-8?B?M1JTR2VneXBZQlB5ZWFWdW1rRStFeWRXRFdWL2JCR3o4SmtsQ1NUWFBtcU0v?=
- =?utf-8?B?bzB3bUx3YUhJalBrelpPWFI0YWw1MDFsVWRkWU1hOE40c20rZjhibFQzMTVI?=
- =?utf-8?B?THdQaFJaQVQ3VitBT3BUUHJYOFY3blBKd0MveUgwbFhUUHliK0ZSRXVPNUJZ?=
- =?utf-8?B?RHYycGpKSWtVd1kzd0lpbXpOK0E2Q0JjMHVyZkVkNnFoMEZlYXdLcVBEUVFv?=
- =?utf-8?B?azFzcXVyejdwbkZGT2JwN2VpNHBqN0ZWTlNBbXh1ZVg4a1U0cmRDVmxTVk1n?=
- =?utf-8?B?Y05NcEtFMy92RjZVam42TE8vTGlkdUFWWXJ5amh2eHNQRDVPNyt2S2Qyemlu?=
- =?utf-8?B?UEtkMHRkVjhwSzBVMzZ3a3g1aC9rR2ZkQUNiQXBhazkxNENWV3VGWGhnTnZM?=
- =?utf-8?B?R045aDNqRFlpb2lKbFBZKzJjSjdwaENCRWhHcTV4alZ1RHEzaUR1UjR1Rm9C?=
- =?utf-8?B?dy9lVE12cFg5WDIwNDhybHFycDBESXZkRFdMY3NJZnFJWVdKMmZ3ZFF5cmFN?=
- =?utf-8?B?bmllNUtHakovTTlCUVo0bXFjelJIcEVXWVN2Y1JScUtRWndpYkhoc01ZWFlH?=
- =?utf-8?B?SUpoWDg4QTFidTU3RmhvbWozNURleVJ3QlZydTBnY3liK2FsdExUVjdERW95?=
- =?utf-8?B?Z3lYS2I3cWp1RDAvQ1o3YnhXVmxZRlprYU5QdW40a29UYXV0Q0QyVXZVT0k2?=
- =?utf-8?B?R1pkR1k1a1NpdzByTG1RNVU2QXRnZnRNaDRqV1V5SCtOVzhNRkp2S1dCdTZF?=
- =?utf-8?B?WmVoNlFEeURLQW5RV0dvanlBVG4vRDhiRWV2RVpRSmFINzhVMjAyNElNRmxB?=
- =?utf-8?B?QWd2dGpnaVgzZVpENUhVNXFFc3ROd2NBNXNkam5NWHRaeEk1ZWUyZjF6SW1o?=
- =?utf-8?B?dTNuSEVkc1JsKzlHZitqVXkxS2tJYU9JcWwzQzFJZ1NDdGhuNDRrelEyWjNU?=
- =?utf-8?B?dXlKamFnQlBITGpHQWRsakxPTUdEblZVQW5VT1lyQ3RoVWJwM0F5ZmFNVzNl?=
- =?utf-8?B?a2lhazhIeWszTE1Nd25RT3V2RTlRSHBpMGlETkpWRzVpblBuWGFKeGRRckJT?=
- =?utf-8?B?VGZhUlV0RWVyOXkxSHM5UTcxNlFlQUhJekJJMXFyV0NtYnBuSVlkMFZyUUlo?=
- =?utf-8?B?NFlRdFBIQ1ptN080ZkhNdlpGcTFZVjB1c1gzTnVtdndManZSRkNweHY2WWJX?=
- =?utf-8?B?aVNiNk16dGQ0QzJWdG1VVlRLa1g3b0graUtVdCtQeWJYSUp5RzhPQ0NjTFNu?=
- =?utf-8?B?KzMxeHl6YlVLZnQrUXFpVnBVM3Rld2pUZkVQQXpXempaWnhYaEZGL08xUVhE?=
- =?utf-8?B?ajhqNjNpUXVBWWFOenN2ekFZWjVpdFVrUGs5dW8xWk13WnV2WnRCczU0T0Vz?=
- =?utf-8?B?bThVNldtSHV3Y0w4a0dQOU9vVWVPTnhMMiszdmFpVW4rZVFaUjNQRmdHeVpN?=
- =?utf-8?B?M3BESnBidmRkcEIyd2lPK2JTYnByL1pqV1ZvOU13UXlzK1lkME53cHVXaXEx?=
- =?utf-8?B?T083R0NHSWZ1SU5URDRtUDZnQnUrNGJHVnJlR2dmK2hwYTUvYnl4UFFsZ0ZJ?=
- =?utf-8?B?dlphaFZITSs2c2xqcERSOS9xczV4eXZOTWEweGZYUGpQbGJHazhGNGRBK1ZC?=
- =?utf-8?B?bXZ4MGxKbEU1U1pFTHV6Qk5oeDJrQ0g0M1hueEROK2NqZnRLR1Z6dW96WEtv?=
- =?utf-8?B?WE5CUWcrbEFtTEJtVVhNK2ZSaTNHcm1yR3ZkUW5VdUFiYXMwTlpXYnBxMzYv?=
- =?utf-8?B?VjJpUU9IeWVHR1hDQ0FuQkR5dGRoSTY0U1RlQjl3czNyS09CaDlxNjNRS3Bz?=
- =?utf-8?B?c1k4bHFGU2JRQW9PZW1HeVdZcFM3VEIzSldyYS81dTg5Qldqc3RQQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 948b51f7-bfca-4c10-4328-08dedb705a65
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 15:07:53.3953
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VTnxv43iwRlMq9FctRVirOebaO/uSN4cU5wiihdIvvJebPwVhxxpdUQfG3yf3JF4Jpn9YFfd6ufiSfRV+ADA5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2198
+References: <20260705-net-vert-imp-v1-0-95a35ddff411@gurudas.dev>
+ <20260705-net-vert-imp-v1-2-95a35ddff411@gurudas.dev> <d2c1e11e-e616-4b2f-aa17-5eb96f045833@lunn.ch>
+ <DJRKZD8LBXXH.MCISM5ZLNVMP@garyguo.net>
+In-Reply-To: <DJRKZD8LBXXH.MCISM5ZLNVMP@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 6 Jul 2026 17:28:41 +0200
+X-Gm-Features: AVVi8CeWDj_fcpRxlY9LHajh2MWaBpJDhHsu09AJf5QyOF1UjwXW4i4yZ6uAlV8
+Message-ID: <CANiq72=-pEL+CHL5uhmnGna4xjEWnrJuD=FwHBwtdJryie+X4g@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] net: phy: qt2025: Use vertical import style
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Guru Das Srinagesh <linux@gurudas.dev>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Jul 6, 2026 at 2:58 PM BST, Andrew Lunn wrote:
-> On Sun, Jul 05, 2026 at 10:38:41PM -0700, Guru Das Srinagesh wrote:
->> Convert `use` imports to vertical layout for better readability and
->> maintainability.
->>=20
->> Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
->> ---
->>  drivers/net/phy/qt2025.rs | 10 ++++++++--
->>  1 file changed, 8 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
->> index 470d89a0ac00..efde3f909367 100644
->> --- a/drivers/net/phy/qt2025.rs
->> +++ b/drivers/net/phy/qt2025.rs
->> @@ -14,11 +14,17 @@
->>  use kernel::io::poll::read_poll_timeout;
->>  use kernel::net::phy::{
->>      self,
->> -    reg::{Mmd, C45},
->> +    reg::{
->> +        Mmd,
->> +        C45, //
->> +    },
+On Mon, Jul 6, 2026 at 5:16=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Given the comment this should be sorted in 'ASCIIbetical order',
-> isn't this wrong, C comes before M?=20
->
-> 	Andrew
+> Miguel, do you think it's worth moving to Rust style edition 2024 before =
+we
+> switch the lang edition?
 
-This is one of the quirks of rustfmt. Before style edition 2024, if an
-identifier is all caps, it sorts it after non-all-caps identifiers. The
-motivation was to ensure constants are ordered after types, however for thi=
-ngs
-like C45 it is actually a type, causing this weirdness.
+Maybe -- we could easily do it when we remove the `//` comments, i.e.
+we could have a couple automated commits applied at once by Linus
+before an -rc1.
 
-Miguel, do you think it's worth moving to Rust style edition 2024 before we
-switch the lang edition?
-
-Best,
-Gary
-
+Cheers,
+Miguel
