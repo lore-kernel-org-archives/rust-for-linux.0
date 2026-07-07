@@ -1,119 +1,174 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6104227BB9
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 10:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783418707; cv=pass; b=svlpxMYSEboZ7q9y0ocfsoLmc7YFOfc5CYK/ClCGBDsWRaFU9lZrZlbGdpXNcyGUcn63BbhAbUzuzDpFgixry4tyAhy+sLzzoyVz3KMcU8CmhyPLLrsTrEbSxh0HLGvOi5mDGQlkEZHOlDvDiZN5YG7aQhjKf6ubTOOGyLv9rlE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783418707; c=relaxed/simple;
-	bh=80xHlt69QXf5Eik8Ims27JGY04/uUKaZkrHHNCMdYdk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GUll1iU/iUcazcS4qbuYTIbD20sLxXSLxho8Qg9r6YCFbuRmTyF1Orp1yVPckVScSw38d2mO2i+aESy8VmQps4aB5Wy6bHF2YLDXTsQ0RcIU3qFDRjb/De56aiKnnkuK65t5Bq08ie+qC7oLpbxhAOpVu3+4scNGwSpmDS+P6Ls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ajJWw9Rg; arc=pass smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49E73D8121
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 10:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783418824; cv=none; b=QDaXIh15XnnN6hX7kxLbzBYcB59i1P6x/MvpPnlCk/XEMprhM5FMXkS69pbcIK8WsB6bd5224zNWT5URhoYcgylSoMriTQcPschXDT7mtU4qe1vBS1KQkDp2Hpzo56AcmMvIJuZOlyRsunl7y4P9o7Ftvo0CzHGpfJxc/shZFHA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783418824; c=relaxed/simple;
+	bh=ibBmGBhfW6rIKCn04NAkVmYQINk93YZeqpdh9lOrogU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OjinGPccxTeJZ2+HlTUmRLgFjZtIkq/PnaFktt6RVMAz6PZpKoPWOA/DsBzGkXZ3ENDCjjtvE0JyVhku2wMjS8SSefhwcXJmBDKlK8qpayakL07v0oNCCuXv5q+PGyEPjCB+cWu3pn+m+Ml7f9nIXnzj5VffSGCTInJWjRvIyRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FxAfHasM; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ajJWw9Rg"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-385b78b4f9bso194350a91.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 03:05:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783418706; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VOLgz4X0ZBD/hxn+lRk5X4Jy9IUt+09yujhxtZxSWlpp0FKo43yxgnT7909l/LjVca
-         Zki1HyznAX94vNet1oY+yy4i5lutshYYHXaENbJOKKdixjacuFdXo0pNUTbbbWzO6FSo
-         vHxkXCzSYvrBrZOFF+51mikEIqhs19Ev+hgqf1KSmu/MPyuWHazXdDIbCKldR1ZV5T80
-         vcMaEqLrgOiW1qT+yo2OmzLv/efQM89znl2A/qQxhyt907GunvYKGaDYxjabBz+W+mu/
-         rckOFO1Ul9xva0PKUVHyznEyK1eAIhiOa+oDfGblUy0jf+VvI9hlvX8Fy0dte+npLam5
-         0JGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/gdw7Yl97QcVZXZSB8KAzQbsvFn+eeRwH4j/MMj3UQE=;
-        fh=UV2etCPLxtOF9QHcE4LIc2w9JfuTtRoGEMxLby8NMWg=;
-        b=XiKqYLeU0pfubFLbaME4zhypTiQ6DvfB/qCuRYfEvyQsxrhkiGnw6p9E74F6FsxIwW
-         fXNP93lEOANTEiahnxzpdGdcBd+4d1UXNlaNq5nGHDdNTD/fVS0NM9fFJ3tHsgT71Qmi
-         kkfttKarZBVVJNjyF0lodSLVmu4bK/vTGTGlCENVhekR/ptBCSadlFzl5ASoLQBdJDfg
-         0jDwOPIVqQxL0KH66iDgz7LSY9HeK9QeeFr5QeSHpljxEM80YWrWntNBNt7usOw6adbX
-         zp5HNOHE9UxfNw+OGglsCiXfihwq4lbJqW2qO64zaKuJpDDZ874D9Ns4Ju31xgHHFgUA
-         LvnA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FxAfHasM"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-493c55d5ce5so18650015e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 03:07:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783418706; x=1784023506; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/gdw7Yl97QcVZXZSB8KAzQbsvFn+eeRwH4j/MMj3UQE=;
-        b=ajJWw9Rgjv2/pjezIquqT/KrnO/hZ8kgReC3eRASvi7us6KIZMI/7tj/2OQuSp3sPw
-         HSLzgw9UsX7Okh5NvEjiP6wNv7OMfpDWBBgDF2DnTlmu7X2UhlGhkMaBmwBN8uhI1a8M
-         +Z/IF48qWgx7SJRtuY7gsQA+u3PqA2nON2LBOGEzDAmW0WqjT2wbsaaxsIVt6AssTULQ
-         Zs3vrbGi4qXxbrjA5v7R99cBQkJMxjOJ5o5VYX3HQhPR6X0h91lUoEYQYRspGwg9EImq
-         9EXNwB+rHcb4yE3VU5h9pWdxwT1wvmV+kX9lgoIkCm7fFugSSRUUqQdRDqGK0ox2SufJ
-         xdBg==
+        d=google.com; s=20251104; t=1783418821; x=1784023621; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/oR7EhmXRRRVQ13/iX6VaF2jbV+1nBAD6trvmWWXjfg=;
+        b=FxAfHasM8p5XrvckSJoFuxUx2NVCW5zxYO4oDRMsBiQIjxWQK61HqK94t8nM5rYMSN
+         EMCoOYYQRmeXScaDQ14uBywZXibz7Prsm18r0D3EAHQ82/JxxMZEl0mtgE7dEfdRdgKM
+         yDUwoZ1ff1b+Fvv32Vgihby+wOxZMen6W5oSFWXh1j79dt9gcaUBDbYMzZMgn6w42efP
+         LDO42Z4BgtRPMjXmjd2nO90Pslpo3c59EJ7ifpvBzaSFeTZu9M4huSizM4/hvucbku+4
+         iWMnrnA4qshAMVtvnFvsXdQBHEqiGCbkUXat9A8Q9dHlFBbCPKIBk8uKYQLgH5XSEM0Y
+         VFqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783418706; x=1784023506;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1783418821; x=1784023621;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/gdw7Yl97QcVZXZSB8KAzQbsvFn+eeRwH4j/MMj3UQE=;
-        b=bRuXdeMnGDeNj6v5rN6ORcyhyvrPdjqUVRnaiHp2LH6QpDoZUkim0ctXj+9xDmfVxC
-         6Zkbp5dm39XBlc8p7jbzYU0aCOSL3riBtffit0YavLEgjpPbZpTUPDogaQHCzrmaHWQV
-         ws7CW7wRTM3wviyQHYnhzeBRreL5DT8obnwrcwf2IPKSY3ZTJkvNfXr8wnTk41B+Uo2Q
-         ASn3azwOGAOktTMvCN6HNdSx+pUvArvy1lxOR0G7OJmNAsJp82ocwaOYG5qhMh8qfplW
-         +HXaYltI+7AmqlkPjWMittHFMFAtMAb1uRog9nRVKD1RDPqNtaOH0GUwLJaEVjz1tzlw
-         yHSQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrjoRd1GNj4U2IZIbM4njDAplhh3XyahIyvI955rI/S+AH39v0C7FyriEDeSByVjoehTOVt14s7I+X811FwAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ0+kNlY1cD9kRSV/eDxbOJUE3PNKvtQcAbMaToCROIRaFKh8n
-	l1iVu3LL8UsW0JvVUcJSyKfFqhKyaMHirFIiOIlgzWkCZrms5U8sczyPuJlgKVdS5tR0P5N0qXz
-	mYzmcLye6SeR0L2Qm7iY/eLdj3odYZok=
-X-Gm-Gg: AfdE7cnPxSobsjrA8yVoQo7GkNYGDyWqxajNtSTsr+fAG79auHJmCWNowaZ/mnozPPm
-	j6RfHIB+BVOxSDwbwul66SijUnvUCBd1PJwSTtvXYrtLcA0yWZrN5XACiT0le+iNnfkVqk4jdbv
-	RwLKppnaXm6c8k2ry/L5bzfKcpARFoQvo1IL4X5YAzRI8Xhg4bDZiC+Odxb2uvofPJrO1ZhutFj
-	yNvJE6mG/3CXdVq7evem9ktgJodrG7mynEzYJfztxVLNcbkivoG2Fg+AlCgVp/cIPb6eB+P6768
-	D9nzCJQLUhRRnnzU9fylMBml7iNfII6j0cz2SvrOE39GTe/vZszkrlzzMct2rBFx/fYZWnZhHw1
-	GDq/aoc8h52QY
-X-Received: by 2002:a17:90b:5390:b0:381:6cf0:d5f5 with SMTP id
- 98e67ed59e1d1-3829ee06b9amr8687758a91.5.1783418706018; Tue, 07 Jul 2026
- 03:05:06 -0700 (PDT)
+        bh=/oR7EhmXRRRVQ13/iX6VaF2jbV+1nBAD6trvmWWXjfg=;
+        b=jS1UFiiTPkzLJDXVajihyW6opYeQkXi0DLmD846sKqZEsVFS3Cklg4zTW4J5lqO9h1
+         DpUJPZ4zoc46K6X8/x5wJRJBgYlmLwZ6LuNJSpbebgQJ/CZqHhAs2QXY2gT9rqgU5uwA
+         Qc30oRXvVxL/+vx18QXCWTyrJaO0kD6d3Datq3K9YYi+05qsXrw4mvMy1VC7kfuVpqhl
+         ghtr+oJJ/NRCy0kLmRL7/iSEZuaIGDVhlaPqYVGwjBEopAjpRaPmUMa08dNIX0mUw0hJ
+         3zEde9zg9rrsg2P2iJdOkh72DPknxurCGR0PlnhuH54h2s3jeaLOU/Azlj6FS+Kg1Nbb
+         W8Ow==
+X-Forwarded-Encrypted: i=1; AHgh+RomVeSSR2jMJo26XRBQwe/pNJqr+Lhg3JtZdJP9G+nhYLO0tmfRg3S/D6ho17VszOE6AvL/JPasQpvTMeJ52g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwseE5iv4SRCjbW8loYq3tiF2De8C8mELezkSIoI1brpfHjajLF
+	Hv9GNmn+FWL7XZmC16y8mIgRphAxuGNlbFm0qYJahc7XYOdCwFw51Vi912aqjKv5egYuweRsUeZ
+	AFn6FLFw3+BGA5qIReQ==
+X-Received: from wmg4.prod.google.com ([2002:a05:600c:22c4:b0:492:2b56:8534])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8b62:b0:493:bacb:1341 with SMTP id 5b1f17b1804b1-493df06699dmr48435545e9.4.1783418820597;
+ Tue, 07 Jul 2026 03:07:00 -0700 (PDT)
+Date: Tue, 07 Jul 2026 10:06:48 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260707073639.33133-1-melihemik@noirlang.tr>
-In-Reply-To: <20260707073639.33133-1-melihemik@noirlang.tr>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 7 Jul 2026 12:04:51 +0200
-X-Gm-Features: AVVi8CctQpUeM_GEWae1KPBwr3TGLS8AlPLYDDxSEQbFveFCm5Mn5TWu1XIludU
-Message-ID: <CANiq72mzXZgEFsdXSQ2i=61v1WhukGeYuBZr0Efrd-+YL=HwzA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] rust: prelude: improve generated docs for `build_assert`
-To: melihemik <melihemik@noirlang.tr>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIALjPTGoC/3XNzU7DMBAE4FepfMbIXv8k7on3QD1k7U1qURxw0
+ ghU5d1xyyFBFscZ6Zu5sYlypIkdDzeWaYlTHFMJzdOB+XOXBuIxlMxAgBVKWI4xBco80XyJ6Y3
+ 7FqQUCD02mhX0kamPX4/B19NvzvR5LbvzVp7jNI/5+3G6yHv77/4iueCh84QGfat6eBnGcbjQs
+ x/f2X1rgc1r0VYeivciKGiCNFqZyqudl6byqvhWIznsrCKq//XmjdCV18VbIVFLH8Bg7c3OQ/1 viu+cIHCgCAkrb/feVd4W7yCERqPtFNAfv67rD4tSqhMCAgAA
+X-Change-Id: 20260306-binder-netlink-c82110b2fb74
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3280; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=ibBmGBhfW6rIKCn04NAkVmYQINk93YZeqpdh9lOrogU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqTM+++Xkqedqy16KZ/zyq4sQeGvJScDPlNxX/K
+ L+4uaYfe76JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCakzPvgAKCRAEWL7uWMY5
+ RlOcD/9Aho3RfW59BOFCUjIteQz6o8rvYcxMudS1NG85YMlY592taq465GBSCbmv4RbZtyXe6uF
+ CdPD3KcUATRuWcqyiCakpNyOpXE5JyNM86vyPwAc7h0HEiIzH02sHvdYkSPhcXFXiA/O0ylWaUh
+ l0PSauJcHkxsBz4pnTGCWZrxd93yUs3CjvUcjvZAU6LXllTI4+Fg+kTyNI2x52ztA3qKV0FJR/n
+ H9yC3Nk+5Zk+xJO0lYfDAwETrh9W4yOPjsY1L8hx0xb48JJu7PLhbJ9AvmJamN+pYuDVrt2rz7s
+ BNVq+rSKcibOBvVjzdR5pwSOwwTFPRPYDpb7Mt43PpxqcrQrqRTBYI1QQNYiNTPie/qdWl08mAu
+ HAHUKFA0gRtXNZ/nM69kdUbG3UI0V0pP5RfgvoIOz1meYp/EqGHtAXaiWGOtDarEUHuvuk/A3YU
+ EXfHhdZQQNmRsOsP1O9Y9TIBtxLHCPGPemOK74xWxgL5Ni7SMnGvVSUSqS+grCuZevMoCKVabYH
+ Ut4IU8/93d335usieVR8HRCjf70sqkzEkqA33riGtBtdX1rkeZJ+/bxn6zOTnOb1668oXLC/bIj
+ HMqTg1w1d8hwuyBCheMMmRGy4SkCraxY0aq9xOpMYt3TlQVt024HE/HfzMte/ZoCImGBhB0NodN aGDgLfN7f7DuOUw==
+X-Mailer: b4 0.14.3
+Message-ID: <20260707-binder-netlink-v7-0-42b40e4b1ac8@google.com>
+Subject: [PATCH v7 0/3] Rust netlink support + use in Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jul 7, 2026 at 9:36=E2=80=AFAM melihemik <melihemik@noirlang.tr> wr=
-ote:
->
-> Signed-off-by: melihemik <melihemik@noirlang.tr>
+The C Binder driver exposes messages over netlink when transactions
+fail, so that a userpace daemon can respond to processes with many
+failing transactions.
 
-Is that name a "known identity"? The kernel does not accept anonymous
-contributions:
+This patch series adds netlink support from Rust, then implements an
+equivalent API in Rust Binder.
 
-  https://docs.kernel.org/process/submitting-patches.html#sign-your-work-th=
-e-developer-s-certificate-of-origin
+As Binder only uses broadcast messages, I did not add support for other
+kinds of messages.
 
-Thanks for the patch!
+This series is based on top of the result of merging together the two
+branches 'char-misc/char-misc-linus' and 'char-misc/char-misc-next'.
 
-Cheers,
-Miguel
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v7:
+- Rebase on char-misc-linus and char-misc-next.
+- Fix conflict with commit 77bfebf11077 ("rust_binder: fix BINDER_GET_EXTENDED_ERROR")
+- Pick up tags
+- Link to v6: https://lore.kernel.org/r/20260529-binder-netlink-v6-0-92dd74b6a32e@google.com
+
+Changes in v6:
+- Introduce MAINTAINERS entry update for net files.
+- Move netlink.rs to rust/kernel/net/.
+- Tweak info.reply logic in Binder patch.
+- Link to v5: https://lore.kernel.org/r/20260525-binder-netlink-v5-0-a90e2923ebeb@google.com
+
+Changes in v5:
+- Remove patch 2.
+- Squash patches 3 and 4.
+- Link to v4: https://lore.kernel.org/r/20260504-binder-netlink-v4-0-601b41cd25b2@google.com
+
+Changes in v4:
+- Fix typo in 'report netlink transactions' commit message.
+- Document that some methods are for const context only.
+- Rebase and pick up tags.
+- Link to v3: https://lore.kernel.org/r/20260415-binder-netlink-v3-0-84be9ba63ee2@google.com
+
+Changes in v3:
+- Fix spurious 'return' statements in Rust helpers (Patch 1).
+- Sashiko review:
+  - Fix ynl_gen to handle empty multicast groups and correct multicast indexing (Patch 2).
+  - Fix transaction failed reply logic to report via Netlink inside reply_inner() (Patch 4).
+- Link to v2: https://lore.kernel.org/r/20260408-binder-netlink-v2-0-c0d327d15435@google.com
+
+Changes in v2:
+- Make inclusion of to_pid conditional too.
+- Add note about file name in second patch.
+- Make it clear that the sk_buff wrapper is netlink-specific.
+- Better handle bitfield in patch 1.
+- Link to v1: https://lore.kernel.org/r/20260306-binder-netlink-v1-0-daceb5bc83f2@google.com
+
+---
+Alice Ryhl (2):
+      rust: net: add rust/kernel/net to NETWORKING [GENERAL]
+      rust: netlink: add raw netlink abstraction
+
+Carlos Llamas (1):
+      rust_binder: report netlink transactions
+
+ MAINTAINERS                                |   2 +
+ drivers/android/Kconfig                    |   2 +-
+ drivers/android/binder/netlink.rs          | 117 ++++++++++
+ drivers/android/binder/rust_binder_main.rs |   8 +-
+ drivers/android/binder/thread.rs           |  11 +-
+ drivers/android/binder/transaction.rs      |  40 ++++
+ rust/bindings/bindings_helper.h            |   3 +
+ rust/helpers/helpers.c                     |   1 +
+ rust/helpers/net/genetlink.c               |  46 ++++
+ rust/kernel/{net.rs => net/mod.rs}         |   2 +
+ rust/kernel/net/netlink.rs                 | 337 +++++++++++++++++++++++++++++
+ rust/uapi/uapi_helper.h                    |   1 +
+ 12 files changed, 566 insertions(+), 4 deletions(-)
+---
+base-commit: 2c7a7db3aa6370f46761b6d8eb821f5bde8901eb
+change-id: 20260306-binder-netlink-c82110b2fb74
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
