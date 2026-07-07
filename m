@@ -1,401 +1,186 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013024.outbound.protection.outlook.com [40.107.201.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B2C3DB314
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 10:07:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783418832; cv=none; b=OamSyGxAnsbRDL+bSecFTpIZe+YYTAYcQYSbvfp+yL0TtlF2pq9x1GhWoq7UBK7+MxAhZpWqLZROv6Wmz5pP0qQgoR+IO9L8uz1OPAqRYQ73NZEolK57Sjzo4fkMlbo2jfMGAHogHqRcPmJwC88CvkovqzvM5oieSyCA0Ld9gxw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783418832; c=relaxed/simple;
-	bh=1Zxx4LiOeAyOWdSZ6ZMPcFZy38g99mF/0v3yfaYaNNs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qcJuItY9R9xZUjt7RRl5crymidIabrKZu61AK9+mDBo4vV9wQAKAp/AUvpXusO0A7Ip68FWmTgGInitUVEBLJpSZO4uRPwic6wdPzyY6bnPyjTewvK61wNubiuDmN9LSL704ihfcIQ/lgLTI+Yu063rw4SU0qtqBbp84obi7L54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TbEjdoMI; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B393D88FA;
+	Tue,  7 Jul 2026 10:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783419162; cv=fail; b=d87O+b/aIH+VW9h4vdpC6K80Yo3bnJapwrx5MYk0Z0lINuq24z/J3NnABBc61ATkLA7h7pZp7Uy5rSoGDPcgne6rgSdldCe5TztI1pVz1ZfoZ8+MGmkHiU2yRXQcnKOLMJQRgxDMD+SfShsIMDXJP4AUjTyM93/wTPXRvUpUJqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783419162; c=relaxed/simple;
+	bh=FureBNQKZJ7HYXGZ9KGBTaa3/mB1GdHy7KTOM5EynG0=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=HencifsZkFzpGuZxIER9+JCTnDQBkPYNDYhSEWTOzc3xQ0tsaeufQcHfYkIvO1DpcphmP3ZGy7LLKmrSgJFrE46t036Z0kyg8cRTB4eFAqJVTVtiYMajW42abMseDy3VfYFqH99HMNhJ/quNoQc0uGp2yLlvRXg9prH7yVYECu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FBdDi+Bb; arc=fail smtp.client-ip=40.107.201.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TbEjdoMI"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-47345535410so3383371f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 03:07:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783418828; x=1784023628; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2xijOFGFCtwwJDChJMsXNmytvX78Dq8djrhwcNAGZHI=;
-        b=TbEjdoMIIy3DG5K88f8sjDFtV+DHrkBXl/KZ9suapuwA8+QpUAkoN/V2ftsKymaSF3
-         NE+0yA5sVXtf5hu7JNWMkocV4zAL01YGYU3dyqqn5OPg8gRNSYBM6k2pBBITsAB0Kweu
-         zFm4mTttFpabOC+JETsPeq6IPAVd5RQGjcZg3Sxn7t2ZebfFCGrh4EzmX5sYqwZIUdW2
-         Z2RmslTeRurIXVlETnPB8UzMuCYqFAmSnh27qpwWvOm6kjBq4E3Gzj1c+j/y3j8vSaeU
-         H/igsgX6ALqpMoD3JK2FiVUTrgY+H8m9THLwcPyfDSDlziRza/CdOUWK5E01+MldpKrn
-         uvSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783418828; x=1784023628;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2xijOFGFCtwwJDChJMsXNmytvX78Dq8djrhwcNAGZHI=;
-        b=hxkIAvbt08UBIv0y7FHBHjbAEG4cls70RWtMfVTSamrqUVPt3up7dqs8i/jZO7hDj1
-         0JXYM9/9HqrTOju+6bLL0bEimQMD/Cfmtujb/1HNJQ6Gi0cmEhW5ROW7RW6gqrdn+asF
-         Mi6jZW2pBKWwCdYT586pygeckoATmH6LGru9Jpxv+jUci5UtGWygBuhaCToAhqCFBAIN
-         IB6Cyiq8kAsBu4QMwTsxgH2q4UlVV+spuM5h4WNcw7SWB7ZQ0RWR3GbrmJd45MPL742+
-         dXhEM4uX0Z2OJkKA8sic4rB7ZI8f2BuRCC/ZyPxlxFr/G1Jo+h/tQ18Oxji/FyJVqB4G
-         dK/Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoPGn/Xax9noR6Mq2W6KbeduJo2UQRD+NaOqJoJbJuSEpN8Vx9HGhqAIZ1KaGoZJb78bnmpj6fr/Joby/OxfQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaQ3mOBvUtSasxNot1AXpF/eBjHIMyShtodAGL4MhLts2O/RjL
-	gEi09aEN/aJaWtqJfFBL0jjtxCo28YZlzUeFO7qGjvmDO2N57KY+ZOhsAm+X+oncY29MyPzVu4t
-	deQyCMvSMscRPC/IspA==
-X-Received: from wrsn1.prod.google.com ([2002:a5d:4841:0:b0:46c:a68f:93f8])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:adf:fe4b:0:b0:464:79f0:9162 with SMTP id ffacd0b85a97d-47de6611e85mr4150016f8f.19.1783418828201;
- Tue, 07 Jul 2026 03:07:08 -0700 (PDT)
-Date: Tue, 07 Jul 2026 10:06:51 +0000
-In-Reply-To: <20260707-binder-netlink-v7-0-42b40e4b1ac8@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FBdDi+Bb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zWvSIM7XTzfJ6R+FAAmly5E8CewUpjl2tcM7UIP9a1q79JhCL6fa9h54xeHUkPjIK8KUH0YSQusDcYfgAEC+p23IbCVMQN1Z29Ewp1vAldEF1dyxxOyiK132Qbjb3lLP52vlH9amlv2hWJA+vriHj3brUcxSFT0fWO1WKm+9VzFp14C21mpUp21PZ//xrMOtWMK1XEK44XvzUZbs2QgzlWftB4zJuSt+D1R0iLo1IVR+aZKD3DtSMBY139p3F+icYPJOrjlH0n15ruMtHKqarw7HAG0zQtdEnGhHgmWtnAcUMXEomupXSOcnnA1mvCMg3rUVBlWUZtbZEpnXJnZVUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YatcjrAXxJ2w+JeGe0eF4Pd5pgAFQ2aIDqC10otUgrw=;
+ b=TLpKuXB49eYd84xjN68wedbtz2GwbWmA0C35Wbd50zAWrp/L2jY/lsWSo2zKVAI5agvTjw3qP9JxdfhVo+3jj5GqD7665BuHttmtHDnqvkqspOlfKpu80MeBB0x3cZXVDrIRHb69AnwRG8ZMXX3Una1q4PnN4X6bmxvBLemuiQE88CJvlWoZ2yE2o49OQrGgE671jEXcQCq9I1v9Gb8kPKUir7BVpo9Atti/fNIHhoLqF6Fas0ySlkBnFDoFHfF87PWwxlJyCx1EaDsYbClPa9apHtP0QYTwXyleXaP0EtPTxwOGBoiVEf3noVu6sjiFGIdhOt6TECXI+J8dhuv+7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YatcjrAXxJ2w+JeGe0eF4Pd5pgAFQ2aIDqC10otUgrw=;
+ b=FBdDi+BbJ8bDQ411vdNlh+94mBWvuiAGyM8LhWR8FoR+H31aoqy5ABAdVwpPoSl1yTArC1s4az5X2lPYsTt8cwJa9KEPo+3ms1zeyBJYoxGxsX1fPJ/eZmp2jz1q7gVBM3c/IVEp/tOyv66LlN/aWjElU6Zf720jdLqnGRE2/eU2DcifRbbx/fOBKi5jkwwMNAm3Os2xtSEgbri5EFYiL2RSmR29KmhK/fPCVB/INjnU1cY7UdKszYSIxL4m4U8BEuVz5PPWvZbLuSazpNPyQpEmCz6rbipGzp66/LiB/t7Kx405rIzHnvmVn5MBC8oJhHY/a5qUHNudJRtVPr+gYQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ2PR12MB8830.namprd12.prod.outlook.com (2603:10b6:a03:4d0::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 7 Jul 2026
+ 10:12:35 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
+ 10:12:34 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Date: Tue, 07 Jul 2026 19:12:21 +0900
+Subject: [PATCH] rust: soc: silence clippy warning with rustc >= 1.88
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260707-soc_unwrap_or-v1-1-1ca1757a259f@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDcwNz3eL85PjSvPKixIL4/CLd1BRj81Qzc5NEc1NLJaCegqLUtMwKsHn
+ RsRB+cWlSVmpyCcgQpdpaALo2S7ZxAAAA
+X-Change-ID: 20260707-soc_unwrap_or-ed37e674a759
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Matthew Maurer <mmaurer@google.com>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TY4P286CA0120.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:37c::9) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260707-binder-netlink-v7-0-42b40e4b1ac8@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11638; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Lu2CIOSpVAE4sfJk5Xp8L3aJMVpKCemx/+Um1VQAvJg=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqTM/D5X/D3fhlG2u6cugGjQkTlICg3KISM3Icn
- OOqAxi82TSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCakzPwwAKCRAEWL7uWMY5
- RhKzD/9m4do6i0lSFlIedkYhLlt1n03qLIqzfoQzoBanKPuo/fZkkLSDRAzeuigIQmNhqc1Ed95
- 1b3XsLM5EWZ2Gh/ecvkc3pG4N6RbL4HiGFr7wCZP2l9fKXQjoh9spAQJR93ELt8i6Wcm8pV5tfg
- J+CuYsnzBAPJAEkR+5FpBwE4ltuGnpsQXC38MdHku5zU7nWdFJLk4rnVNhyvpSU50GSPLIQv7Rc
- QMTwAyo0hfAUF93eemaC3XojJtdmoTS7k4PDWWFp2wKNkk6EtfhiAbK15qj34JCCBVcn73lPNEu
- gXOZAUxCx9AtA6R4WETtA0sFAEf4vIDR7Yhbu3DvnjdhkKD2pZhFoQVuZ4ghw3LXNSRr0wDgK60
- 5SubOWMbMzdrhQ7Gva2ObmdAHANJ+vvTN+FhKpeg7IHcgdgIVHkndjD0cUKsA15mms0I4yFiBWR
- /MkWdRrkgSaBMktoIxI5W+5u53bfioliAc4HfFpPs36CIU1tmxabEW8aWobLB4k4m1cWmG5q//M
- FfShqbD2Ek6CLuZ4WGGA5eQipJ49Mu72eRwx6rfYzi7ZR8gkYUdWAvIx4/+M2ZXSROPT5SyvEqB
- CsHuufxWnJasBvLCBFjxaL42TdAwdvDr5g5SOevR0FnrVqBRWCSh6mD4GZujp4vQ/Ui/o099VGU g1gL2lDxVCrWmRA==
-X-Mailer: b4 0.14.3
-Message-ID: <20260707-binder-netlink-v7-3-42b40e4b1ac8@google.com>
-Subject: [PATCH v7 3/3] rust_binder: report netlink transactions
-From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Andrew Lunn <andrew@lunn.ch>, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ2PR12MB8830:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9cddb78c-10de-41f9-be29-08dedc1043a4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|10070799003|1800799024|23010399003|6133799003|56012099006|3023799007|18002099003|11063799006|921020;
+X-Microsoft-Antispam-Message-Info:
+	KpVrGIeoZY556HyJUiD6oEcPw3y0ELneUZ/TFeCFa3mcjA+sKWhaNIxFIp3NQdBcg63j+hxbAjOcDmT6ROQuKdKLqDwGsdMLTqD9JsGAdLbJudcp0uMlG6iiElnf9v66uvLIkf0IcG+WbvTIlVg5q/GZ95GG5sX8kqUFDZxYQd7YHSTt1yMwSGoZ2sfhsxUD9V3cc+yg2n7+wUNB+sDsj3BebkDZRRLDBkIcZaS27IlEu6IxSTA43Apb+38HNwC+BZIk2QNkXArYKf8LnQhFS5n4w/BaIr610dTZFo7NZAHFASsBpBHhKxqdpCukElrD0m6Sxt/Fx/C+Hbc+61+HXLIOSYj8UvY6Ldkp6HSUvg3UlJwvnBnr8C+kLeF+/0q3WVnfRHD5XQ8YUYh9q47NuukSVQR2ZWmkR4chFPDlH817zO2AEhx2CVBc4wyqE+XeXrDUarUgieOBTqYMwgBw3URwOGrizmj5vvPt8IEZk4nRXhLdICMuzXqXhEZOboNevR/fm5Kd2Kmemwx9Mczhcr/23/P0APadRVDAX+mPJMHN6lNra0KCOJ639VWtye92bn+cDWuUpaL8w43GMj05BMNBaAIGc6QsnyipRy/TOi++s+uuYK1z+I1Wy+G+mMTyI7Fxu8yKC8zDoFt6kbXKqRFVN1POJ3GdNmd993WCjECvXslz/TPBMOl09WSn6C7hsHZlSJTglJEXTW6clBmBqw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(10070799003)(1800799024)(23010399003)(6133799003)(56012099006)(3023799007)(18002099003)(11063799006)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dVRHVDNNRHRyVThlUTBGSkt4TUtCclVLMUNqYzEwL0djSDlpUzJnVDVScExC?=
+ =?utf-8?B?bkxUQ2M2cjRRcjE4aWJKaElnclp6elZZSEJYQ2luSU1SUFgrMU01S05mTHZt?=
+ =?utf-8?B?YlFTQ0N4UVVVNGxtRkNzalRtR2gxc3RkbzFuL1M0NFVMMGxzcjRsVldGdmFW?=
+ =?utf-8?B?bGU4aUYyaHQ0R2djd29aZFlKOFVSVXE5MDEzalNqYVl2Q3ZaWnd3NGxDemRG?=
+ =?utf-8?B?dE1DUUFnOXdyOExCY2VxOEhvazN0QXlIODJWc3loVGxYalVRb1J6cE80UTdS?=
+ =?utf-8?B?ZWx3c252MDhlN3lZMW0rRG1CSUNSTzlPZ0h0NEZQVjJDSi93cFZDTCs5eWpC?=
+ =?utf-8?B?UTdnRmFRczVGRVFTci80UmsrclJvdGFkQ1dnZEh0MmNnd3FQMWRIRi9VZ0pa?=
+ =?utf-8?B?NmVnTGdoSjVueU1ndWk3VVZodjBHdlB1RTk3U2cwU0oyMTJrU2V5Wjl2dFVE?=
+ =?utf-8?B?bEM0Q1Z1RjNsbWxvTFZMU3c1Mnl1VkNKM1V5R0p3bm52Nnl2aHl4MjdueE9s?=
+ =?utf-8?B?S1JmRmVmWExybHl1UVkzNklibjRqS2hIcHZwcmp4aDB6SmJZSTNTNDNuN2Mz?=
+ =?utf-8?B?UHp3c3JkcncvaUdlU1djQndLR2lWdEZOV3ZDUHNST2t2OXBlNFdUMTlVMFdR?=
+ =?utf-8?B?RkU4WnhnMlJSbFd0cG9ROEVzT09VVkFpTjVDUDJEYTJmd1RrWnErdXVIVHFB?=
+ =?utf-8?B?TVVFTmtISTd5MURRS3l3K3crVDEvbmliMm9jVHhHeWFDS2VSbytmYmhEdStw?=
+ =?utf-8?B?RjAwVkxqRDVhWW16SDNBekN5VTlJM2p2cmJObFNxQVMwNmZabWgwRDFpajlV?=
+ =?utf-8?B?V1grVkNjWVFTWVV4RllJTm5NY2grZlJmZ3RPemg1d1FaUzkvWFIrdldhbW15?=
+ =?utf-8?B?Y3lpN0NFenVFUElWamtvUUwxa2F5MGY5bXhiR0RFSDVwendxK3ZqRkJYSllO?=
+ =?utf-8?B?ZXdKSEZrWmJmRWRURkNQNlRHakFqbkFvZlhrMmNCbGNySTFxTXpYSThLRmhD?=
+ =?utf-8?B?QnNzRUdlV0xBZ3JsRUNaRU0vNnFLOGF5NURYTG9lREl6M0lvbjdTcWkyU3Mw?=
+ =?utf-8?B?L3Q1Z1BEcG5GQTZGTmluZVVpbmtVWHFxbThiT3k0YWlQOWtYekxFK3RGN0F1?=
+ =?utf-8?B?YVNQYk1HbDc5Wnh0N0VpbUkyVWROSUJPc3VlMlZ5eUVIUTczbExPY1lGWHpH?=
+ =?utf-8?B?TTI1WS80aC9GelIyUUFJNyt6Zmw0dm04WWdEUDgyNEQ4VGRIRWE0eENIcmJR?=
+ =?utf-8?B?Q1NtdnkwRHVaUk1qcjhYY1lnakdSc0hEUUpqZjlQU2s1NjRHZ1BIV0pENUVG?=
+ =?utf-8?B?WEVFMVh6cDA5RFAvZ3IvemVEMEE0Y2I3Zy96K1YwRzZhOGcxaXM2akRRTWN0?=
+ =?utf-8?B?RGllODlibTc5MVNQZDQ0elBMSUh6NUZlc3VSVjMyaWxZYStjRXZBOHBaMWkx?=
+ =?utf-8?B?ZTlOUlBrbzl5bzVXRlFFSGhUdWJpWFVjMDg1YTAwL29VQnlreWQ5Zk8yb0xC?=
+ =?utf-8?B?TmlMV1BSU3lUNVc4UG1RL0d0cmNlUzR4L3E1QVZMRE15UU1uM3ZFK0RQQjBx?=
+ =?utf-8?B?MXRtcDZTeVpkSUE2ZStMbExTTE8xM1pmRy9pelIwYk1MTzVjdWZ3MDJ2VEUz?=
+ =?utf-8?B?ZjdoRjluOWx0WGVMaXpJcEk2dWUxN2lJYUp6aE92Q1ArWkNkR3VTSXlkVkho?=
+ =?utf-8?B?M3kraEQ1L0J3QTE2WUtCZDMxZ255THRZVy9VRDBqUU9vWHB1SVEwKzVVSDhI?=
+ =?utf-8?B?VDkvaS92Z2U1YlZUZ1hqTDBRd29WNllvamFrZkdVRHlkbUF2OVQwUmU4NUND?=
+ =?utf-8?B?Z2tpeUpKRFloY25ZT1ZZMFRWcUIrV2ltYjVoTmp3N1JyaDJST1NuUEhCUHJF?=
+ =?utf-8?B?R0xaa3RHRVplY0JtN2sydzFjVzhVQW5yZkliVm51MEU4NE1XQzQ3U0tHK01q?=
+ =?utf-8?B?Znc0SDFMZDUvU1lSb3czRHJVNzE3d1VlZjU0ZHlwZ1hiYVAzeHJoS2d3WWlz?=
+ =?utf-8?B?ZzNvaUp6TDhtQ2I4QXNMOEdBVjJpck44elFWY0htWjkxcUp1M1dGZnFtcjhD?=
+ =?utf-8?B?Ym9wSFhxREYwWGZRRlNYcU5Zcm1rNVEvVVlZdkExQ0hwRnpFM1lMRFo4RXNK?=
+ =?utf-8?B?eWg5S2ZpSllxTC90SFVqREFEdTZlaUliZUF1anA4ek9jK3M5SXg1RmFNSDFz?=
+ =?utf-8?B?V2RpdERMbFJQWExBZUJicGlZdjVhN1VSeE10QnNWWVMwRTNGMTBvUzlJSTBp?=
+ =?utf-8?B?M3VSY1U1SUI4SDdLeSszZDYvMHAxb3ZRdmVhTUZsY3BEOWc0cVBGQytQalAz?=
+ =?utf-8?B?eHUxekN4dUU4Q0tuaHFSTkczcjhoWnIzVE84ZzdCYVdIeWFhQWNwYlpFc0ty?=
+ =?utf-8?Q?llBf9vTwc9enHXf1uoOOZ2WOjgRSORx1+xecRrNOaPX9U?=
+X-MS-Exchange-AntiSpam-MessageData-1: 9IqJ4LDy66YDfg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9cddb78c-10de-41f9-be29-08dedc1043a4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 10:12:34.7281
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8762IhBAX6hIxXzy12m2tl1tIBrBOjrhn9mEaXm1TZkA8VJFqbAIffYzBvbmMzDf6E6kcX55cBjRvsoHN8dwYQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8830
 
-From: Carlos Llamas <cmllamas@google.com>
+The `clippy::unwrap_or_default` warning triggers on
+`rust/kernel/soc.rs` since rustc 1.88:
 
-The Android Binder driver supports a netlink API that reports
-transaction *failures* to a userspace daemon. This allows devices to
-monitor processes with many failed transactions so that it can e.g. kill
-misbehaving apps.
+    warning: use of `unwrap_or` to construct default value
+      --> ../rust/kernel/soc.rs:66:10
+      |
+   66 |         .unwrap_or(core::ptr::null())
+      |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `unwrap_or_default()`
+      |
+      = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#unwrap_or_default
+      = note: `-W clippy::unwrap-or-default` implied by `-W clippy::all`
+      = help: to override `-W clippy::all` add `#[allow(clippy::unwrap_or_default)]`
 
-One very important thing that this monitors is when many oneway messages
-are sent to a frozen process, so there is special handling to ensure
-this scenario is surfaced over netlink.
+Since our current MSRV is 1.85, we cannot fix the warning as
+recommended, so allow the lint on the `cstring_to_c` function instead.
 
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- drivers/android/Kconfig                    |   2 +-
- drivers/android/binder/netlink.rs          | 117 +++++++++++++++++++++++++++++
- drivers/android/binder/rust_binder_main.rs |   8 +-
- drivers/android/binder/thread.rs           |  11 ++-
- drivers/android/binder/transaction.rs      |  40 ++++++++++
- rust/uapi/uapi_helper.h                    |   1 +
- 6 files changed, 175 insertions(+), 4 deletions(-)
+ rust/kernel/soc.rs | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
-index e2e402c9d175..606a9d07f774 100644
---- a/drivers/android/Kconfig
-+++ b/drivers/android/Kconfig
-@@ -16,7 +16,7 @@ config ANDROID_BINDER_IPC
- 
- config ANDROID_BINDER_IPC_RUST
- 	bool "Rust version of Android Binder IPC Driver"
--	depends on RUST && MMU && !ANDROID_BINDER_IPC
-+	depends on RUST && MMU && NET && !ANDROID_BINDER_IPC
- 	help
- 	  This enables the Rust implementation of the Binder driver.
- 
-diff --git a/drivers/android/binder/netlink.rs b/drivers/android/binder/netlink.rs
-new file mode 100644
-index 000000000000..beb7ea2edaff
---- /dev/null
-+++ b/drivers/android/binder/netlink.rs
-@@ -0,0 +1,117 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+/* Based on: Documentation/netlink/specs/binder.yaml */
-+
-+#![allow(unreachable_pub, clippy::wrong_self_convention)]
-+use kernel::{
-+    net::netlink::{
-+        Family,
-+        GenlMsg,
-+        MulticastGroup,
-+        NetlinkSkBuff, //
-+    },
-+    prelude::*, //
-+};
-+
-+pub static BINDER_NL_FAMILY: Family = Family::const_new(
-+    &crate::THIS_MODULE,
-+    kernel::uapi::BINDER_FAMILY_NAME,
-+    kernel::uapi::BINDER_FAMILY_VERSION,
-+    &BINDER_NL_FAMILY_MCGRPS,
-+);
-+
-+static BINDER_NL_FAMILY_MCGRPS: [MulticastGroup; 1] = [MulticastGroup::const_new(c"report")];
-+
-+/// A multicast event sent to userspace subscribers to notify them about
-+/// binder transaction failures. The generated report provides the full
-+/// details of the specific transaction that failed. The intention is for
-+/// programs to monitor these events and react to the failures as needed.
-+pub struct Report {
-+    skb: GenlMsg,
-+}
-+
-+impl Report {
-+    /// Create a new multicast message.
-+    pub fn new(
-+        size: usize,
-+        portid: u32,
-+        seq: u32,
-+        flags: kernel::alloc::Flags,
-+    ) -> Result<Self, kernel::alloc::AllocError> {
-+        const BINDER_CMD_REPORT: u8 = kernel::uapi::BINDER_CMD_REPORT as u8;
-+        let skb = NetlinkSkBuff::new(size, flags)?;
-+        let skb = skb.genlmsg_put(portid, seq, &BINDER_NL_FAMILY, BINDER_CMD_REPORT)?;
-+        Ok(Self { skb })
-+    }
-+
-+    /// Broadcast this message.
-+    pub fn multicast(self, portid: u32, flags: kernel::alloc::Flags) -> Result {
-+        self.skb.multicast(&BINDER_NL_FAMILY, portid, 0, flags)
-+    }
-+
-+    /// Check if this message type has listeners.
-+    pub fn has_listeners() -> bool {
-+        BINDER_NL_FAMILY.has_listeners(0)
-+    }
-+
-+    /// The enum binder_driver_return_protocol returned to the sender.
-+    pub fn error(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_ERROR: c_int = kernel::uapi::BINDER_A_REPORT_ERROR as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_ERROR, val)
-+    }
-+
-+    /// The binder context where the transaction occurred.
-+    pub fn context(&mut self, val: &CStr) -> Result {
-+        const BINDER_A_REPORT_CONTEXT: c_int = kernel::uapi::BINDER_A_REPORT_CONTEXT as c_int;
-+        self.skb.put_string(BINDER_A_REPORT_CONTEXT, val)
-+    }
-+
-+    /// The PID of the sender process.
-+    pub fn from_pid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_FROM_PID: c_int = kernel::uapi::BINDER_A_REPORT_FROM_PID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_FROM_PID, val)
-+    }
-+
-+    /// The TID of the sender thread.
-+    pub fn from_tid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_FROM_TID: c_int = kernel::uapi::BINDER_A_REPORT_FROM_TID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_FROM_TID, val)
-+    }
-+
-+    /// The PID of the recipient process. This attribute may not be present
-+    /// if the target could not be determined.
-+    pub fn to_pid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_TO_PID: c_int = kernel::uapi::BINDER_A_REPORT_TO_PID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_TO_PID, val)
-+    }
-+
-+    /// The TID of the recipient thread. This attribute may not be present
-+    /// if the target could not be determined.
-+    pub fn to_tid(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_TO_TID: c_int = kernel::uapi::BINDER_A_REPORT_TO_TID as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_TO_TID, val)
-+    }
-+
-+    /// When present, indicates the failed transaction is a reply.
-+    pub fn is_reply(&mut self) -> Result {
-+        const BINDER_A_REPORT_IS_REPLY: c_int = kernel::uapi::BINDER_A_REPORT_IS_REPLY as c_int;
-+        self.skb.put_flag(BINDER_A_REPORT_IS_REPLY)
-+    }
-+
-+    /// The bitmask of enum transaction_flags from the transaction.
-+    pub fn flags(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_FLAGS: c_int = kernel::uapi::BINDER_A_REPORT_FLAGS as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_FLAGS, val)
-+    }
-+
-+    /// The application-defined code from the transaction.
-+    pub fn code(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_CODE: c_int = kernel::uapi::BINDER_A_REPORT_CODE as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_CODE, val)
-+    }
-+
-+    /// The transaction payload size in bytes.
-+    pub fn data_size(&mut self, val: u32) -> Result {
-+        const BINDER_A_REPORT_DATA_SIZE: c_int = kernel::uapi::BINDER_A_REPORT_DATA_SIZE as c_int;
-+        self.skb.put_u32(BINDER_A_REPORT_DATA_SIZE, val)
-+    }
-+}
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 432390aab25b..df47aba05133 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -32,6 +32,7 @@
- mod deferred_close;
- mod defs;
- mod error;
-+mod netlink;
- mod node;
- mod page_range;
- mod process;
-@@ -282,19 +283,22 @@ fn ptr_align(value: usize) -> Option<usize> {
- // SAFETY: We call register in `init`.
- static BINDER_SHRINKER: Shrinker = unsafe { Shrinker::new() };
- 
--struct BinderModule {}
-+struct BinderModule {
-+    _netlink: kernel::net::netlink::Registration,
-+}
- 
- impl kernel::Module for BinderModule {
-     fn init(_module: &'static kernel::ThisModule) -> Result<Self> {
-         // SAFETY: The module initializer never runs twice, so we only call this once.
-         unsafe { crate::context::CONTEXTS.init() };
- 
-+        let netlink = crate::netlink::BINDER_NL_FAMILY.register()?;
-         BINDER_SHRINKER.register(c"android-binder")?;
- 
-         // SAFETY: The module is being loaded, so we can initialize binderfs.
-         unsafe { kernel::error::to_result(binderfs::init_rust_binderfs())? };
- 
--        Ok(Self {})
-+        Ok(Self { _netlink: netlink })
-     }
+diff --git a/rust/kernel/soc.rs b/rust/kernel/soc.rs
+index 0d6a36c83cb6..7998962560f8 100644
+--- a/rust/kernel/soc.rs
++++ b/rust/kernel/soc.rs
+@@ -60,6 +60,9 @@ struct BuiltAttributes {
+     inner: Opaque<bindings::soc_device_attribute>,
  }
  
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 19f881948a84..33368f7fd551 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1284,6 +1284,15 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-             }
-         }
- 
-+        if info.oneway_spam_suspect {
-+            // If this is both a oneway spam suspect and a failure, we report it twice. This is
-+            // useful in case the transaction failed with BR_TRANSACTION_PENDING_FROZEN.
-+            info.report_netlink(BR_ONEWAY_SPAM_SUSPECT, &self.process.ctx);
-+        }
-+        if info.reply != 0 {
-+            info.report_netlink(info.reply, &self.process.ctx);
-+        }
-+
-         Ok(())
-     }
- 
-@@ -1354,11 +1363,11 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-                 info.from_tid,
-                 info.to_pid
-             );
--
-             let param = err.source.as_ref().map_or(0, |e| e.to_errno());
-             let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
-             orig.from
-                 .deliver_reply(Err(BR_FAILED_REPLY), &orig, Some(ee));
-+            info.reply = BR_FAILED_REPLY;
-             err.reply = BR_TRANSACTION_COMPLETE;
-             err
-         });
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index afef5b46eac2..6cb7b745c52e 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -3,6 +3,7 @@
- // Copyright (C) 2025 Google LLC.
- 
- use kernel::{
-+    net::netlink::GENLMSG_DEFAULT_SIZE,
-     prelude::*,
-     seq_file::SeqFile,
-     seq_print,
-@@ -18,6 +19,7 @@
-     allocation::{Allocation, TranslatedFds},
-     defs::*,
-     error::{BinderError, BinderResult},
-+    netlink::Report,
-     node::{Node, NodeRef},
-     process::{Process, ProcessInner},
-     ptr_align,
-@@ -51,6 +53,44 @@ impl TransactionInfo {
-     pub(crate) fn is_oneway(&self) -> bool {
-         self.flags & TF_ONE_WAY != 0
-     }
-+
-+    pub(crate) fn report_netlink(&self, reply: u32, ctx: &crate::Context) {
-+        if let Err(err) = self.report_netlink_inner(reply, ctx) {
-+            pr_warn!(
-+                "{}:{} netlink report failed: {err:?}\n",
-+                self.from_pid,
-+                self.from_tid
-+            );
-+        }
-+    }
-+
-+    fn report_netlink_inner(&self, reply: u32, ctx: &crate::Context) -> kernel::error::Result {
-+        if !Report::has_listeners() {
-+            return Ok(());
-+        }
-+        let mut report = Report::new(GENLMSG_DEFAULT_SIZE, 0, 0, GFP_KERNEL)?;
-+
-+        report.error(reply)?;
-+        report.context(&ctx.name)?;
-+        report.from_pid(self.from_pid as u32)?;
-+        report.from_tid(self.from_tid as u32)?;
-+        if self.to_pid != 0 {
-+            report.to_pid(self.to_pid as u32)?;
-+        }
-+        if self.to_tid != 0 {
-+            report.to_tid(self.to_tid as u32)?;
-+        }
-+
-+        if self.is_reply {
-+            report.is_reply()?;
-+        }
-+        report.flags(self.flags)?;
-+        report.code(self.code)?;
-+        report.data_size(self.data_size as u32)?;
-+
-+        report.multicast(0, GFP_KERNEL)?;
-+        Ok(())
-+    }
- }
- 
- use core::mem::offset_of;
-diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-index 06d7d1a2e8da..86c7b6b284b0 100644
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@ -11,6 +11,7 @@
- #include <uapi/drm/nova_drm.h>
- #include <uapi/drm/panthor_drm.h>
- #include <uapi/linux/android/binder.h>
-+#include <uapi/linux/android/binder_netlink.h>
- #include <uapi/linux/mdio.h>
- #include <uapi/linux/mii.h>
- #include <uapi/linux/ethtool.h>
++// `unwrap_or_default()` on a raw pointer requires `Default for *const T`, which is stable since
++// Rust 1.88. Remove when the MSRV allows it.
++#[allow(clippy::unwrap_or_default)]
+ fn cstring_to_c(mcs: &Option<CString>) -> *const kernel::ffi::c_char {
+     mcs.as_ref()
+         .map(|cs| cs.as_char_ptr())
 
--- 
-2.55.0.rc2.803.g1fd1e6609c-goog
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260707-soc_unwrap_or-ed37e674a759
+
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
 
