@@ -1,212 +1,105 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011001.outbound.protection.outlook.com [40.107.208.1])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E69135F197;
-	Tue,  7 Jul 2026 16:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783441875; cv=fail; b=RReWte7XZ4WSUzwArut5TtelBwdPGGAcauMQSigQbT83vj17+IQkqe9oYfmpSfs1Fve5z+yWCSUMir/Tz4exCMZU9UXNsBlmZeLvSHDjy/GDUUy1kijkEWQfB1J0VFlLtaUhzj2luSLfyi8UTWRcLQH/sY3xOTIVih3tfOwM4q8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783441875; c=relaxed/simple;
-	bh=2vAjbEJiFt+SedUMDqxwcPnSwNhr17Tp4UxxLEh6Fcg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nZiLtIX+47fKWUsK3o7PFRmm0trzM3zC6nh4p6eMTT5EKSFR1k71jgpsWpefXEBL0OymZcKw6UfLLJpDcwX6+4WddOaSjVU0C5r7VhbGfo1laTM1fPDhTi72uuc2WUgEkiST7FI/IA7O7qWGvNSfnRReyBDnq3YALob2ihCtiYs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ubttmP9V; arc=fail smtp.client-ip=40.107.208.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E9D3EB0E9;
+	Tue,  7 Jul 2026 16:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783442037; cv=none; b=AZenefEIL228K0m3ZWcEcm7X1HSQO4HbrZC5/RblW9OhlFtJsUYlovlkTXQNmynZzUJJpDdAQlLkCm71zuMsRPTjkyfEjD/+2Ir03fS7joQtX521LcywFdCy+8Vvfe1FWJ9uEOcV0p/kC3+IR0hsLdHNh8Jq3NOlkxgQj6WIHmY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783442037; c=relaxed/simple;
+	bh=EPy4vUECfwBd2kziKfra1feIqTsOHoDbqQjE+yjE2sk=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=LvGrCgsdOdOqb/vd6PdB6eqkANHVO1mqSbH4PjFsakt7Vvx4bO28ZqI280CSh1TRDCN2OKru9mpXaCMS4HG3MwrDWKHzDVBmjsxiAFc6ijSON+ZIhaFUnCbOp94Ynbb5gproyRaSP9iMLGLCVB7tR+RYer/Z39BInCRQFqxGSa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=vyFBhMSJ; arc=none smtp.client-ip=162.62.57.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ubttmP9V"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dJcMjOVM8K3bzDz6svNIdFd00P3p8cArKT3zuYS2G2ARI+PynfaZSUkgCol0jxJzO7QhsUKL1teIuB6ZsmpCMK5xRLRi7MejnrgZ5GxeD3ws7xOhP+T6EKN+W3zVYYmgSs/AcZlY0KvORMIh0VYVVffAVLYRgLac0njGDV2qTq2J5F2/pNfUNCidWQsZpAGUdSScbkaXRbmOn1SIS0U/EfYg1L53sXEXfYJ9An8XdOmb3xC+aFaOMr4gXPoJg0Wyq19AjdSBD5w5EOvBZ1q+k7ZZe+MgOGTtYCr714Sj4v7MuTV4Tf9LYkMVLD9EXwDfE9Yh0sCJkfJ7iJ2mLkV9wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rXU4v5rcQJY4Z8pUE8wrmtvSptma50KtyUmN+NWkDTw=;
- b=l6qU2Or8lK4GCt7PGXibneieg1paZHJ4sMPGwE59r9NVXnDZAkWcn7AwU74tU4PoGPX0KT4ZD56Fz9K5Rn65nwVNj+bDpBWPNnXQ6+FSDGcx21mLho/uDvQ8ZT+oj7pZ3u1wBWOMGm0ppkI3DuyPgsbmRTtFZ9MOO8+cqO2PAxIw+M9eH9T15WrvCvr7cHXGDZpo/HMPEn7iYxE6lnprL5WXi3UcMUIEbRuiAgnbNlYyhTWyUcuzPp8AYP4d7shdkvYahiGLZxBYZxQN3hUSNektUf51ZAuh8rYGP3/IHSnNZlagEJtBOkj3Tx/1Ewj1F5oqGmoRdIx9La81e7AKvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rXU4v5rcQJY4Z8pUE8wrmtvSptma50KtyUmN+NWkDTw=;
- b=ubttmP9V/6Vbe6wxDbLvbnu/KVyAfGnVHuw/dJRSd9jtveHz+sNOWs+ByoJy4qp8Ykr2sQjJGlx0FVGRafBvLxqanmAcMNVJI12ox+B4ZtIAtS9KKMHN+bO9K6vn9LTLcjn21VDOwf2dgFj2oQ+MEMNpqKeBAAAZmv5db2QvQX9pIqxpJEaeCeDt7/cVTDzxCQxy9SkMuT5tPtYcnfPSEGPhRB1ZLa4baY46qHL2ImoejSDey/5NKK/VfdqC4vt2XVLeJd5esK37C9RrDG5O7849DCq+t9kp6q7WcM6h2kaXnbhh1wFhMgG13Ttna3kLigDw6eE4u+Em9Xfs36OQsw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by CY8PR12MB7684.namprd12.prod.outlook.com (2603:10b6:930:87::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Tue, 7 Jul
- 2026 16:31:10 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0181.009; Tue, 7 Jul 2026
- 16:31:09 +0000
-Date: Tue, 7 Jul 2026 12:31:08 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Eliot Courtney <ecourtney@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>, Burak Emir <bqe@google.com>,
-	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="vyFBhMSJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1783442023; bh=lSaDKeSfkjqAUmborLYlEgTaJyvoU/PgTrNBZohwgvg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=vyFBhMSJCqKRUi9KFe12cE8okAHpyCpCbHDgojS0NcP/p/GcFu6tYEPPVV0KLOSjh
+	 993FTRiOTGYDSiM3rj9o4EJfyGMRVYp9aBBUMCRR6UygmbOEAmNA/1MbSuGBAA2g5w
+	 9kGVrw8TUvrN7VeXWgk5aXsDmtyCf1Gt2VOm5caU=
+Received: from localhost.localdomain ([202.120.234.146])
+	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
+	id 868A90AE; Wed, 08 Jul 2026 00:33:40 +0800
+X-QQ-mid: xmsmtpt1783442020tq0ycsoje
+Message-ID: <tencent_4426892E62B77DEA2AE898E899A871940005@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3Jumgu2xQcoDP+TUcAjagQFGVkHXC9cCy+eo6Pdj9Poq0UDazu303
+	 HgIvy4jopjER8naCLgPY65XyMiACR8/vNuo/qb6sGSAyZKx1H7grrXFgEypWl6facEyHrXfC9Z8d
+	 sMGgdh3PLLv/G5RbeDzVNGG7svQ1UMGGJXhEn/K4oPsniNCbjGzQTDKzpSRyGjpjk4XgyhbM8R+e
+	 PjPdp10vIqW+Q9J0kfsGYqoOenGnpQKFZrKWgO2XXbu6xEhpIqVU6lWBizDKESQEWTPQZClNkDB/
+	 ehQYR3vZwEzROdJLaelxBBuzqfkwXOs/XetFhmiR2/pe523U4GHImUYClOaITDGxNvu+zdhnOjU8
+	 tvVIcSEW2/IYSBh68xVrcNR7KLEt184kVccfTa+rWLJJvjIfj5fM5qZIXzaI2MCGCzcIMjPSXZun
+	 7WMEzHqdc0tykM59nz+qmizTwTBSB5bQOIsq85pKJfHC7eVfaE4cGtQoYpEBc31ghP7IKsm1B9Xs
+	 +QBX7uWqgOCs3A0ORTPt2f3hRJdvQS/0q2tHXgp577G9HW597+rbNk7QezjdkYtU/ouHRkfsboGn
+	 v+llOlfTHC6+gGrMS3bjzTyoJkUltS1gjbQGuZrmIijq5xr5q2txjcfaEUd865CXyf8TKg3Mlqm5
+	 iQzqX612+YuI/PA9SGbMMUC8l5vPycbxoCCEimYyIkuCsrya513I59fTSWlvwtasA9Ehg6hg1wH6
+	 nA0yK2aYKxcVSTd58Jp6z+k1wBPUqJ2++UuwR9P6axBwtGhwAtYfQxw7EJgGlq3HHHAsaNN6nbVD
+	 W9//5+mbwmGUv6CFEebOYLtp7AJAdsKD466THExai4x3XnJSjGzJOI8+QBer2Ip9Nv+K8sC9h7i0
+	 9Xw8luJV3GM4fj7Lghkr6zIgm1UKG41i723C5cHWrZrsMS+UpzG/3xOguS7HdDSCsUxPoIHYFapv
+	 SFVdkwvCjg1JKuQWxfJjlsepmIGqqPzRb5xMFlV+X78JsCIi6E5Uj4TClIEMX7Jxw5XsPNX+Isho
+	 oIbdTcp8OpDl5Vkf16h0qQDRcHcBG//R3yRZr2Dg8rg5kY6EO9fBB9JTlzDSOe+K1p2aqxeTgjbA
+	 hA1Ph9y6H7CEnyrMy2okUlmphaRR+9E813d3dIMr/ADrQRu3g=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+From: Yilin Chen <1479826151@qq.com>
+To: David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	dri-devel@lists.freedesktop.org,
-	dri-devel <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH 3/4] rust: id_pool: add contiguous area allocation
-Message-ID: <ak0pzDc69nAmnviD@yury>
-References: <20260703-chid-v1-0-84fe8259e46e@nvidia.com>
- <20260703-chid-v1-3-84fe8259e46e@nvidia.com>
- <2026070334-dollar-hexagram-e49c@gregkh>
- <DJSDFHOADWYL.V4WC2TI9UWYF@nvidia.com>
- <2026070745-unwired-maybe-769e@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026070745-unwired-maybe-769e@gregkh>
-X-ClientProxiedBy: BN9PR03CA0404.namprd03.prod.outlook.com
- (2603:10b6:408:111::19) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Yilin Chen <1479826151@qq.com>
+Subject: [PATCH v2] rust: drm: fix GEM object pointer safety docs
+Date: Tue,  7 Jul 2026 16:33:33 +0000
+X-OQ-MSGID: <20260707163333.2811168-1-1479826151@qq.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260707160200.2798072-1-1479826151@qq.com>
+References: <20260707160200.2798072-1-1479826151@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CY8PR12MB7684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9684090d-7600-47bb-1260-08dedc4526de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|22082099003|18002099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	Tc0rf8FeUAb3xM4RahC4fNW0ILHKaIcvLlvAdjDGtoDYQ/kcihMrXSXiJzaO2Fs9ioM/s3PIXvzZGzVcIRywOAU6YGxF6W0FYLQxMh11Ep168RFJsCY8jDraFtNyFmclPfNQ7lmuXkWxv7Fk5OwVf+IYpoc8LqNRxLBZ6BBsjtEG3SWly/T9ltoilqOvQz0HFiHQdu12ieum3/UObCR7q4ZYpoxCW5Ooc0Ea7Z0P0uVEthE5X1Ca1CIZNV9vLsfdo42MDFEJr250nX2XXLj/svCclD5xHlY1E6jkRf+1YPMaAM3Llvtd5F8Pvg8nV290+e37p5AtlHVppzIHMheFuj0EQGv6MEP/8ZaNv8Kg2vrca4DFcb9f7dxWnWfrWYnKoPtCLC9iuPE6OVho6yo01O3//+DgrSXW4dMi5MobUCOHB+Kl5obBoL3UY3jHb6KVn6RP8qkcHMr2qOsdE5H2olIlrk2kBdX26/ILyJTDe9hr5ug1V7VBY4vQNYJo6CJZxS9YUwYC8lmoFJxsAnYSvfl506XrdZlj6C8TaMzjpzceIVK4vG7wia+RuwwDPhd+748xy+1+4jKTA1Yd3FLelgYPh2QTJrfa4/BcqcN4nyUSx2sTCWtF65giRM29LxcOGY3q9hfeX0yYZjgLCnxN7yzsDDWIDrLjaLPMtS7S17s=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uANI+g7v0VRbXkGsveP80C7NkwALumbbru4LlnMx93OVs6nIiwKzRh4xvjkQ?=
- =?us-ascii?Q?P6xQRd4EB/kU9TEWQDIQWGWlbxw5J6PfPg9Pj4xKOHfdBZwYxXrESJj98JSe?=
- =?us-ascii?Q?yMQmGL/RHzkW2dcNozz1xgcRWSAi0Ym6nXrZhYq16S/EnuCzD6gILfM06PBG?=
- =?us-ascii?Q?HWzfheU0UI3L1jhnyhloCgB0b40mWCS0rm2ZiIUQfepHmR60S1J6KdRjfRbA?=
- =?us-ascii?Q?pmK/gJe7z0ikgaZs1ObM158dZNqbA+MReua9M5h/wUT3itz/aD1/Wo+1gf9y?=
- =?us-ascii?Q?ERJVgVgiiRko5Rv2E/gYg2R+GQLU89KEGEF4cgeGL4dEH0MPcKmnpao5A3fI?=
- =?us-ascii?Q?PccdoVoNw6TvEaj166dxlyow6acmULEFBlAu7WVXj3Dqjsa2K0JbhJJJXvkt?=
- =?us-ascii?Q?X92Qui94zPWMw6MS4NZWLQSmm0nb4pGqsKeXCHL1kngxcauiqijfykpnCqVZ?=
- =?us-ascii?Q?0eWztfLOwQ97/MhhROL09wcnveTCpRDFU2VohlYogRZWBYPtrbjHOFx1ZZ+E?=
- =?us-ascii?Q?2+JlM2eT/uKXILQ/+5tiMHvgtHu/SFyffMAqdl2Y+JqvGwHTsAUUGV5ZIPEj?=
- =?us-ascii?Q?uzWzs4M+KUosZ1BatLo6XTF/o0UQRz0jpLOJBiv13OcKAkcBMll5R27nClrg?=
- =?us-ascii?Q?ph/YLtogN7MZN759IUHxZmXN9T/pyKTsrjVCo7I5yv3m3KoM1w5RLBBGLKb6?=
- =?us-ascii?Q?8B8ZK9HEj4w/NAh+A1FJ1kHIG7cMpr3KHeN00gufprS0Oqzkmwt3F51bBS/f?=
- =?us-ascii?Q?zyPAa/QCSN/336xWRvAUBm3WHpdEFKybwYXgndTp/jgyq+NIGzpRtgymMfwR?=
- =?us-ascii?Q?81Fe6xbnLHAv1xoy4M6RPJJefUQmg9eWwfa7A3DnCEg3upOLu0yn5dvOHQ2r?=
- =?us-ascii?Q?cN2S1Ph1k6EqmnkDZgnpy4eooxy5ehBpsY71YEZreO0A88hOqxh2zH/imc3X?=
- =?us-ascii?Q?EzgEalnu8lwcombWLVTNHU88vXClvREvia2MoOqI5ny42owNwoDQXnYQa9FN?=
- =?us-ascii?Q?XRIJABP28Eh9mb8ho7EELjlWAIEPi/Sb9Prpxv/LHDcJ46J5bGDDwi4twjSW?=
- =?us-ascii?Q?JJqhIcVnIFeb3+VNSTBCj5BeiQfMsT0rQic5PzozRGHVp8tnoPn984eAB//l?=
- =?us-ascii?Q?8r5C6WRaNAgVilKwX3DxZPFFdsF5/wf7+DoTjmSNeeUxgMdcr5kA1rphXlDA?=
- =?us-ascii?Q?8X7AS9HvX1l6HCp//filgyuRydGayNgo92pfgxySpxd1jlqeKt6awxcPSZjI?=
- =?us-ascii?Q?VfWa6zRypuISay5agGoRKbtX+nzzVvrtRQG7ZWPiP3wOr0G5k0gHgSL97+BJ?=
- =?us-ascii?Q?HkC+KG9gXhjb2ym8Jo8hHEGMyNjnlImbBSYDX7y3qSXqN+WlzryIO6P0oOdX?=
- =?us-ascii?Q?zzQKR+5GlE8vAJ/MYY9AG3CzCpioBefVXZHTSbdG7vGhwUj2FY9/4Dvj0oIF?=
- =?us-ascii?Q?1JGd7x4wShBN0Zzw7HfvD2EGQyUA5NtQxE+s2LLtHtWM2NcexmBFaRUc5s2h?=
- =?us-ascii?Q?43+/wj8ZHWsaK4571tNG/iCLIqHmDKSBF4UxPfIflnjce2KicvbYDRA3v1i7?=
- =?us-ascii?Q?9SmO+5FqejymLHRWQ/4vB8t4fwyN1x0sTYtYuE+FSNfTkNRGz0ci6YWlO7S6?=
- =?us-ascii?Q?NSOMF64yirGBlyabDmR8R6MQV2LZEttCdRyH2svf8HanC4hG0B2y1yqXx4kF?=
- =?us-ascii?Q?tQMnr4E6Cw69Vwfu135Mgk1X4FQFXoerbxkOcMq0sQZpYTZK?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9684090d-7600-47bb-1260-08dedc4526de
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 16:31:09.8413
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BKX7gIVgaBQanWIzbZ5HXSfLew8ctP2Zgora8mYQyvWRx5y4PqLdV7f7BcIXqZT0HOCanq4qOiNw2tI9ObmYSA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7684
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 07, 2026 at 04:13:30PM +0200, Greg KH wrote:
-> On Tue, Jul 07, 2026 at 10:25:27PM +0900, Eliot Courtney wrote:
-> > On Fri Jul 3, 2026 at 7:31 PM JST, Greg KH wrote:
-> > > On Fri, Jul 03, 2026 at 07:16:06PM +0900, Eliot Courtney wrote:
-> > >> Add support for contiguous area allocation. Add a new type,
-> > >> `UnusedArea`, following the same pattern as `UnusedId`.
-> > >> 
-> > >> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> > >
-> > > Why isn't the built-in idr library being used here instead of rolling
-> > > your own data structure?
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > 
-> > For nova-core in this series, we need allocation of a contiguous
-> > sequence of IDs with a specific length and sometimes a specific
-> > alignment. IIUC, IDA/xarray do not support that (I checked
-> > ida_alloc_range and it only allocates a single ID in a range, not a
-> > contiguous sequence).
-> > 
-> > For IdPool before this series, I think it could have used IDA/xarray.
-> > See [1] where Alice has posted some more context.
-> > 
-> > w.r.t. the structure choice, the IDs we need to allocate are channel
-> > IDs, and the total range is limited to 2048 of them, so IMO bitmaps are
-> > a better fit than e.g. maple tree.
-> 
-> But again, you are having to "roll your own" logic here, please reuse
-> the data structures we already have in the kernel for this type of
-> thing.  If a maple tree works, please use it.
+IntoGEMObject::from_raw() receives a pointer to struct drm_gem_object,
+not a pointer to Self. The previous documentation used Self even though
+the function argument is the embedded GEM object pointer.
 
-I asked exactly the same question when Alice and Burak added wrappers
-for bitmaps to implement their ID pool. This is the answer:
+However, the pointer must not be any arbitrary valid drm_gem_object. The
+implementations recover Self with container_of(), so the GEM object must
+be embedded in a valid Self instance. This patch documents that requirement
+explicitly.
 
-  An alternative route of vendoring an existing Rust bitmap package was
-  considered but suboptimal overall. Reusing the C implementation is
-  preferable for a basic data structure like bitmaps. It enables Rust
-  code to be a lot more similar and predictable with respect to C code
-  that uses the same data structures and enables the use of code that
-  has been tried-and-tested in the kernel, with the same performance
-  characteristics whenever possible.
+Assisted-by: Codex:GPT-5
+Signed-off-by: Yilin Chen <1479826151@qq.com>
+---
+Changes in v2:
+- Require the drm_gem_object to be embedded in a valid Self instance,
+  rather than merely being any valid drm_gem_object.
 
-And now it's in a commit message: 11eca92a2caeb
+ rust/kernel/drm/gem/mod.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-They measured the affect of their wrapper on performance, and it appears
-to be ~5%. See lib/find_bit_benchmark_rust.rs.
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index c8b66d816..524ab0e39 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -118,7 +118,8 @@ pub trait IntoGEMObject: Sized + super::private::Sealed + AlwaysRefCounted {
+     ///
+     /// # Safety
+     ///
+-    /// - `self_ptr` must be a valid pointer to `Self`.
++    /// - `self_ptr` must be a valid pointer to the `struct drm_gem_object` embedded in a
++    ///   valid instance of `Self`.
+     /// - The caller promises that holding the immutable reference returned by this function does
+     ///   not violate rust's data aliasing rules and remains valid throughout the lifetime of `'a`.
+     unsafe fn from_raw<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self;
+-- 
+2.25.1
 
-I didn't see any side-to-side comparison between any native Rust API vs
-imported C bitmaps. I'm sure, I asked for that, and I still believe
-it's the important piece of data to avoid this back-and-forth type of
-discussions. So, Alice, Burak or anybody...
-
-> > > Why isn't the built-in idr library being used here instead of rolling
-> > > your own data structure?
-
-Now having more context, the ID pool's primary goal is to allocate
-individual IDs, which naturally lays on find_bit() API in C. The
-native Rust alternative is considered and found 'suboptimal overall'.
-
-This series extends the existing data structure in Rust for Linux, not
-adding a new one. So, the series itself looks justified to me because
-it's a logical extension of the existing functionality.
-
-Regarding C bindings vs native API... Yes we lack thorough performance
-analysis. Do we have such analysis for every data structure in kernel?
-
-No. So to me it's as simple as: they are developers, they know better.
-
-Thanks,
-Yury
