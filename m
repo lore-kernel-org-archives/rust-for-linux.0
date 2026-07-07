@@ -1,97 +1,151 @@
-Received: from mail.noirlang.tr (mail.noirlang.tr [217.18.210.29])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011044.outbound.protection.outlook.com [52.101.62.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C153B893A;
-	Tue,  7 Jul 2026 07:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.18.210.29
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783410167; cv=none; b=KJ5oADI7p6j6q00J6AmJ/7htzRT7TaGMVnH+IDAZny61nk3aoBM+Yso2Sp/ZhRot8Ofc35gVN3GTSWo7I50PBeeJSRcA85qV+YGqIyruHid6pGZlAkHblSMX78VJQdnt2z5qFHMjaiYQlR/FBwMoPmzDP2Go3cAz1QdVKV2YQYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783410167; c=relaxed/simple;
-	bh=hrmBLMiatJ8vY8OdwuU8D1+x1QryxpSafNnMjQYo6Yk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SBZUkc8DHgYPY8Tdn57TObmwE4F7l85ex9TET2YdI96f5eMASzIM73VF7QS8JZc+v593PoEjd/qLxQZsmyms9OSYVfMihIbtnDnq8nCSwgOh+HadGUZQEJAUdmINL4q0gMHQLgoNAyl9PX0fKCzDopC6FfMbfxRD/4dopup189g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=noirlang.tr; spf=pass smtp.mailfrom=noirlang.tr; dkim=pass (2048-bit key) header.d=noirlang.tr header.i=@noirlang.tr header.b=X1iSBZqr; arc=none smtp.client-ip=217.18.210.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=noirlang.tr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=noirlang.tr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6992DC782;
+	Tue,  7 Jul 2026 07:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783410582; cv=fail; b=YA0ct3BFNbVVnbCFFsxkI65T5CxnxsVZWhdmQzGPDkls5iTx3eSpH4AoE50ev5Axd/nTdLHVRsFVp48sWd4kvNk+5CXkGstXpb5wLhBdSEN3KanxaLuT9yf6h9NGoiczoIBpv6sX43rpG2jPBKLIeYKcUcF+lH1+LWd4DOrOt0w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783410582; c=relaxed/simple;
+	bh=lNrSzlyO8Jtxxc/FWFZ5zW+mlL0cTK1k7hrhwiCdSV0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=C/OibNFP20CCx0Le91tL6wjg4rQzBBX57PTcOmBqpfhysoPZc1XXn1eJP4F47hsrfRKrIfyX9LKX+EbcQ3wDJVDJNghv8eneIqS7bSpmI4VYnUUDftCVSe3LuFBBU73oPomKidW1Vhy/D5qvxYBCWlh+lcA6mdysaXhSwyEP+tg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=G+o9dhJZ; arc=fail smtp.client-ip=52.101.62.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=noirlang.tr header.i=@noirlang.tr header.b="X1iSBZqr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=noirlang.tr; s=mail;
-	t=1783409804; bh=hrmBLMiatJ8vY8OdwuU8D1+x1QryxpSafNnMjQYo6Yk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=X1iSBZqrEvHNrgxeTc4WxbAU8RqopdK6PRPJNTKVDA+ZEmdEWJY1EVrQ+cOrs7hof
-	 oBd0COle7nyGM6p/LXb9eCMJ9sr6Ze/01m2VIyjqRnF8znpTZkSqwWwX8BhCGUNpQt
-	 u/TU8LM1mOgl6235SHE6oqctdje3bgaLrzjFV7S6nD1FfiSI8C4atrCV27uh9gllzx
-	 r5D4GlqR0jHSZlviWuRVEjQw+Rq6VqB3YAxHbCK8fySPYWExPNTUI+NicZDoPagruH
-	 O2oKSGqXhDxQpe8F6PBBK51Ey5bPxlYuFkEhCe7tR0fT4Aks+ofeBZS7Pj9OEEEKFh
-	 4Nt8df6PFeybw==
-From: melihemik <melihemik@noirlang.tr>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	melihemik <melihemik@noirlang.tr>
-Subject: [PATCH 1/1] rust: prelude: improve generated docs for `build_assert`
-Date: Tue,  7 Jul 2026 10:36:39 +0300
-Message-ID: <20260707073639.33133-1-melihemik@noirlang.tr>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="G+o9dhJZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hSWLM5RapURbrDcaBE/bpCs9Yzn296C6VTWRCcSMJEDhvnjnorp7MBqXyM47V2kMebQ4agxQaak7zxZoLEaeJAuN1OMesBkQ+13QlBEuRFgUE18bqTH/P94XOeyMbX7+c5C2dEDCHIV6uaz6r6k4z5O52638X1htUKlm/z3oxvdG8+mZMwMb4mZKZ68AsKgEjYoJVOwKspXiJAFhnwzXwULr020h2KnE9+W/pdSZ+tWbm+jTp0CYT9iN4dbq34y7xjMjZYw1JySiVeEGMDganneQzVOvygnXV5NwCqhRM3mEhYHjuaecglca33gXh37BnZkPEY7mQXzjwI0gR0VMSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lNrSzlyO8Jtxxc/FWFZ5zW+mlL0cTK1k7hrhwiCdSV0=;
+ b=aX6wfaTiRvU4BF/yMZ2O0tS1cR/uEq25rineM4osGp86SDN2rg69BXI3VEXHh7H5EYPLUAPppxXW2lyLPZwIbJ3v+Qq4PoieBqVXszpjwlCUt+DzT8bDbeEuTLl29PnV/KOkWpU224YiaBByRbpTL6IFvsTAwiIXF5M++AK4BxbBh4/ncojDx5m4ZfS74S0LXoZX8aXtj0SCCs9jJ3VPk4endfa7bUASGosaoaLANBXTDGTJfwwhNF/n2uYhwcntzpLmy5QnxKg6ZpVHQKIkqJX9waKaE2oCnZXCQKgk6hwJtIwm+hWoCTXb+Aeyfw/bQwLHzU/RdwqWi+HwANTNyA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lNrSzlyO8Jtxxc/FWFZ5zW+mlL0cTK1k7hrhwiCdSV0=;
+ b=G+o9dhJZp39t59cpqp2hONZNjjvB3qrvX2+y9/xdlIAQE3ZDFHiRS824cGywTbuPWakuRx0YXwXBNBEqP7pzt1rDyzaE367e+s3y5SnUrdA9K/5O+r3I6viFYp+3RELoyYJfeF3//driG9ncfHWskI7lEy8YJQ2coOACwItM1deVZNLymOTAba8rJftIZ7GTuvFqnpS23uq2KQpuChfYFRDVax8lQtMgablHOTmJ+g0vq9y6OECvykL3giJhTV5YqqQoQO+w/WebaQbyjyHrU7h/jr2WvQyoUJCY1UPt/mFEAebtjygOpyFUc/717VwuaDIQusLbde+MsExi6lYOcA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DM6PR12MB4465.namprd12.prod.outlook.com (2603:10b6:5:28f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Tue, 7 Jul
+ 2026 07:49:37 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
+ 07:49:37 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 07 Jul 2026 16:49:33 +0900
+Message-Id: <DJS6AAWKLBF2.1E7FH1HJ3MY2N@nvidia.com>
+Cc: <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>
+Subject: Re: [PATCH v5 09/13] gpu: nova-core: move GSP firmware files
+ decision to GSP HAL
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Gary Guo" <gary@garyguo.net>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>
+References: <20260707-nova-bootcontext-v5-0-ecad9346387f@nvidia.com>
+ <20260707-nova-bootcontext-v5-9-ecad9346387f@nvidia.com>
+In-Reply-To: <20260707-nova-bootcontext-v5-9-ecad9346387f@nvidia.com>
+X-ClientProxiedBy: OS3P286CA0022.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:1f4::15) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM6PR12MB4465:EE_
+X-MS-Office365-Filtering-Correlation-Id: 847fbdb6-93bc-4621-13d7-08dedbfc4ae0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|366016|1800799024|23010399003|376014|921020|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	DOP+5SCwRvMMXBl4mmBGXsom4Cxq9jIz3RIVjM+QwucVN6YwPdH2ax4wlSjYyyLtrsRhM3lLAbocUVahNmssn/xAGDF8HHtnx3HJOhV65yp9otC0ZNqRx2501Ecct2fueBkMhmVniGM/MxNjGxxz2oc4KrrJVQ8yKcBTPTMKiwwlC9uQIxHT6XdwOBp4BeR7s2KWLX9EMvRPXKeggrKe7KMfUISYukKaa6BWQIPzcdEY3+k0loScT5kw8iJHw3qIrtwYyqYaizpnTRXXeQdvjWmccPKzYGaoexwupgYNpiNxW2w1CwWl8gN2H/jXn9+9/7b75RZTApog23LX7NWJN77ggtK2C9zJdHXpnudMFrZTjR+JD2LB9+yRF5WUYPRWFB6SVpWXGQJDH2YEPd+B38+E1DmQ2DzDMcgrwh42Yf9rAXCv+uNNV40gBnGDJBbMBcvERSbYIAfFMXizGdM8TJRIU/jd7jHnPzZVKP8f7RJBkWROCVydpJHGXMq+avpW89PulFvCLTiZ2gGxz1v0dWY6k8l0q96yF4zM+HuER+jSfCl56nQX0kXFO+dpGtEhe72HGJd4gajPtPKZ3Mrsx6hjQrgTXce0DyEazGuekNnvVceGOnX/KhYcPZy5Cw3Ob9AqlC6xFG4aPtQd95f0S2cxwrweXsc9SmKUee3rmhNQVtd09RrxCnH/I6+2IKiWOcb8IirybcNteh5DhLjtjw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(1800799024)(23010399003)(376014)(921020)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R0VFak1TM3YxSWNZTnJGZXM0V21JLzFIOHVHZFJhemJCUFZrT042MEc2a0xn?=
+ =?utf-8?B?MWpuaFlDcnJMMWM5YmhnY1FSWnNrVCtpSENwQ0NmQkkzSGxwdHgzQ2FaQ2dN?=
+ =?utf-8?B?cWhWQkRucnhaWE9kOExxRXZ0MU5lblNUTm14cDlGUGFFNnlqMnV1aFduSmpL?=
+ =?utf-8?B?UzdwVGNnUHNrTlMwLytnYUNtS1BJYmdiOExiS0YySnJCdGEvenlpR2RYTUhU?=
+ =?utf-8?B?QlBLN3JXTzBVTlBYWVNackFIRnc0RWFyREhBbmxsRThDblNFaXNRN0ZTODlm?=
+ =?utf-8?B?TVV3a012YUVYVmdIRVBhUTl0MHd6a0tLS1JjWVNtYmFFWjRPckhscHZJRzRO?=
+ =?utf-8?B?YnJzRHc0QUZJU0RTUnNPd0l1dmJyUnd5VWpyeTloZG9yc3QzN3g4OXYvOUFu?=
+ =?utf-8?B?R0V4QXdyVXIrZ3R6WHZRS3BrZFBKRFNuYkxWbHBxekJUcU1hWHhVVmk4anMw?=
+ =?utf-8?B?bVdHWkllemNIRE1nU1dDaHdMQkJGazkxMDF6NkVRNFY3RDdOekluZXllS2FQ?=
+ =?utf-8?B?cjZjL2tWTmRwemRMdjBMSVVjQXVuUExzVVhNRDZCNTFQdzBncjNwUUtiMklI?=
+ =?utf-8?B?a2M2OWhUdEhERitvaFZJQTlybmtTdVE2OHNDNTRmK1VZSmQ3WExidHdWYWp5?=
+ =?utf-8?B?Yjlad0NnQmllY3ZMNnA5cFF6NDlzN2RLZGpiVWM0YytidEVmQURGUUluaGov?=
+ =?utf-8?B?YXlaR01VaFltRmtIbzNzQWtGM0xReC9MVlJqdTNvREFhWkd4Q3FSejJJcFhv?=
+ =?utf-8?B?cCt2cnlaSm81cHRTNk1IanN2SHV4cFpMZklaU1FCNHp2Rm42VS93d3FQenRl?=
+ =?utf-8?B?SndXUWtFaWhqdVZsb1pTVjZHYVZMZlQySG84TjdMS0FnV3E1NEhpTUJMblJ3?=
+ =?utf-8?B?ckh6bVhSUUZPL3JQaEJMWFBRU244NDFGUlhYNnRTelhTcjhoTHlmbnR3N2dH?=
+ =?utf-8?B?cWpOME9paXBUeFp4SmlRNGhWZ01vMEprNm5EOWx4MkliRHp6YzBXak8yMVJY?=
+ =?utf-8?B?MEtVSndBL1pBa1poOGxVQlpIOUNoejRpeElVb1JUTENMTUVNaXJaVnVOYVVB?=
+ =?utf-8?B?a1VWOUYvaEQ3SFRLODdmT0pHZDZsVURacWo0b252TTlzdDlSVDhjWmNsbFk2?=
+ =?utf-8?B?cTYrL0k2ZlM1Rnd6SE8wY1o1amtWWi9lVWFPYkI4OGdhcEpzeU56Tnl3RFBH?=
+ =?utf-8?B?bmZxb2l0R3ZQZTBkZEkvanFzaGlFdHh4ZEpMcUF4b3N6YmVWdFA1L2lmNkdI?=
+ =?utf-8?B?aktkSmttNVBaTHpKT1NhNEUvNThJUUNDbncrbUFwWW9oQVdZWnhkSFgyTDlV?=
+ =?utf-8?B?d1EzNTF0Sk9IM0owUmJxNnk1L1ZIbWdKbUs4c3pmOGxNOUVWa0pmNVRjS0Rj?=
+ =?utf-8?B?MHc1RjVwdHMwUjEyekk1L1VPWFBqSERDWVZ5QjFrOTVlYVpjaVd2WjJZTFpj?=
+ =?utf-8?B?dVVPL3RFMTJEMTBQTFFnd3N5K3pzdkpTNEFRd1htUnp5RXl5aGVGcCt1VzJ5?=
+ =?utf-8?B?RGtwV1dwNHg2TEJlZWc1djhXeXg5N21CZjdjVWdVdDk4QUdNbWdxbEh4VWU4?=
+ =?utf-8?B?N2ZQLzVjN3RLQU5LNGsxeXF6eTJXNGQ5MzVXRURUTkZFNW1ZUERFMVlHZ1Nj?=
+ =?utf-8?B?bjY0Zm5aNkJiQVB4ajBxT2ZRTjJCNWZCYXVyRGppNzcreHMxVWVVTXZyZVo0?=
+ =?utf-8?B?STZjbVRQcHRRSGE0eFpVUmxoOXJPbFkxYTZZVkNwKzFyWGc5RDJVTW5vRE96?=
+ =?utf-8?B?RTR3dEhIK3l6Y1ByYit0VlVWS0hrQ0JDWUZOeVhQTVJuaDdPNExkYWIzazhp?=
+ =?utf-8?B?cVVHcEh5eGIvbDBsSTJva2o0T1VFelpURXF1WEpXODFpaFk3cHRCV2svZ3dE?=
+ =?utf-8?B?dVdBckN6YmNySTExcGcvQWdNVFduNW9IOEo5SXlZOGhtQ2JZWnhmVS9WUmg2?=
+ =?utf-8?B?MUtSZCtqNzRxWGZlWk9XL2FmTlB1N3Vka0diemwzMi9iRGttNEZod2piUXJM?=
+ =?utf-8?B?b2Y2VW94L2dFK3l6WG1WOGVaQlBlR0NZVjZHbVI3TjJzNXRPNzlLTkUyOFUw?=
+ =?utf-8?B?NG43cFFvYlpNUm5iNU1qaUJ1VmF4aXdkMm45S1V2SkhvWjQ3a1M2UTZCWW5j?=
+ =?utf-8?B?M0UwOG54d3pWUnRBODIzVkZ6YXlkT0RVQzYwMGIvR1d5YVJTZ3F3UWJ5N082?=
+ =?utf-8?B?eDFoSkcwcks0b003T01IY0NBTWZXSlNmZ0lyWkprVUU1TzRuOUlsMG96N216?=
+ =?utf-8?B?V1hKS1REdVFQZlFNeVdldEZ2am9EQk9rckVwdTRINmdOd083R3AvMjZ6TWtE?=
+ =?utf-8?B?UWtqTFJIQ2x0ZkVYRlMxOC9WU2ZkWXVTZndFYXNJQjNhdXpJK1V2YVJsT2g2?=
+ =?utf-8?Q?jxrCxGWLGB4TePrXkisIJVj6yOi2C43xQ6nEcLzb5F3mt?=
+X-MS-Exchange-AntiSpam-MessageData-1: jYY+MPiiB0DZeg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 847fbdb6-93bc-4621-13d7-08dedbfc4ae0
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 07:49:36.9377
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: C/oJtibe1Qow/DDkfBV6OgniB6YbhvsOOb0ZDW9K/Xh2o0vWhgh94oLfq1XprNpUsNyKgE3SHIGrGbyMUwC1mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4465
 
-The build assertion macros are documented in the `build_assert` module,
-where rustdoc can show their purpose, where each macro should be used and
-how a failed assertion is reported during compilation.
+On Tue Jul 7, 2026 at 4:21 PM JST, Alexandre Courbot wrote:
+> From: Eliot Courtney <ecourtney@nvidia.com>
+>
+> The files to give the `ModInfoBuilder` depend on the chipset; this is
+> HAL information, so move it there. Doing so lets us remove the
+> `uses_fsp` and `needs_fwsec_bootloader` ad-hoc methods of `Chipset`.
+>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-After the macro definitions were hidden to avoid duplicate root-level
-documentation, however, rustdoc stopped rendering the explicit
-`build_assert::{...}` re-exports on the prelude page. Readers of the
-generated prelude documentation can no longer tell that `build_assert!`
-and the related macros are brought into scope by `kernel::prelude::*`.
-
-Use a glob re-export from the canonical module so rustdoc renders the
-prelude entry as a re-export without inlining another copy of the macro
-documentation.
-
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://github.com/Rust-for-Linux/linux/issues/1242
-Signed-off-by: melihemik <melihemik@noirlang.tr>
----
- rust/kernel/prelude.rs | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index ca396f1f78a6..b65f718d72bf 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -85,12 +85,7 @@
-         VVec,
-         Vec, //
-     },
--    build_assert::{
--        build_assert,
--        build_error,
--        const_assert,
--        static_assert, //
--    },
-+    build_assert::*,
-     current,
-     dev_alert,
-     dev_crit,
--- 
-2.55.0
+Eliot, I put you as the author of this patch since it is basically the
+diff you gave with very minor changes. If it looks ok to you, can you
+give your Signed-off-by?
 
