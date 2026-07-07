@@ -1,56 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8B4322C6D
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F15834DCC8
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783435910; cv=none; b=nsc8WjqcAvEvW2DlVwqRwwRkQI6jgCDJChcFAoWom8Ay0J3BVNOCCGz+xEAgxeQWgWdzLdnbYlJvUH41ny4s3469nVDUywFnxPTfvdFTKjO/aqtAQW6aVBt9v3yKGSGxqbYwXKI9dAE47r3d1xJPi1SwAeraMZY/08tqhyiQjG0=
+	t=1783437621; cv=none; b=o8DNnPk45Fg8veI2P2W3CRiPNTlHF3+oliM2HuwuQabRE2snMri6Lsv6IHxCFRB9FYQRxaz669eGfNNxi6sQ68TlehEuPptbaIc3uc6s0twdSMuH0qI0TzDEahwo9a94ZyO2hH7vMjri3JHn3UZ7aaRM2hrdQu1yeTjtq68K/M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783435910; c=relaxed/simple;
-	bh=FwWCLb8W4ptXXek0n3hs387brnND5lyq2MkyZwqN2zQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=M+F5FoNgDA39trWprqQNCSxEk/fhXf399HuW851fUpRAg7l8tkvU1j9/d3g/htamVYjlMJI+WZYCYDhdRx3FcVPumJZ6ouYQXFid5o0+5pGedTPf+adRvmlmRd7s8CX2BCex4laVhXsk3NQkewyxyj+SKqJTUFNW+0zY0qddngw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AahY3LdQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783437621; c=relaxed/simple;
+	bh=s65KxCyR5EuV+k9xrYjFUiz46fHXPXLBIgsyTCK3ptk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r39pVltC8CiZSFLPpyBYFIi67UrUu7gZDPw7Dt82rIghgcL7qgqtQ3VyPL4gmJsAcJADrYhK96EqOiTJTTzIjxgrwjeur9We0P+YpyvhhSt6JBIibeIV30HFvpudvZhUKPoDj0SwKFZuqjt4BzXVLu1kO10TJ2iLtuH2XpPStDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mfyevu9M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AahY3LdQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AD31F00A3A;
-	Tue,  7 Jul 2026 14:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783435905;
-	bh=FwWCLb8W4ptXXek0n3hs387brnND5lyq2MkyZwqN2zQ=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=AahY3LdQZXWodtF0xVkSfY/tYQVjh4OUzbBM4vKiTyQuM2neGuKAQdhOhapk4hVBO
-	 u9R1CqBIrAq6ecTuowLhYLdl4at2MG5FrSIWXWS+d2XW90FrO5mxmVnKvBGWPRwdJU
-	 kK8L+f4fLuwxszGXHMqV3SazVCTWY9XB05nx+0966zK/cFYp63/JQWYI5jb34T3sIj
-	 uWiRIoyxHYl5EpMYETvM0Dnu/Rr8TfiyOYbRyVj1DWrdzesnCWJaHx4iGbgsEZE0ts
-	 EcC68TR5XkEwwQCMMVCAnzL5tBD6/uV/2HV4Ech+l8o2Z527cB7hcmjRYbOLY3WXXF
-	 YPUcJfdkDcwjg==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mfyevu9M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90501F000E9;
+	Tue,  7 Jul 2026 15:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783437613;
+	bh=bhS5XwPh/2irfExaTH6TRgyt9BNmPmeLWGLWb858l8g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Mfyevu9MwMzeGcabPfgEUs6sqZYevaFRbxQ/1Dt0a4+nZZj/xUn4dvzETdJBIjEFi
+	 /3emG3ESlrPLFdWX7cpTL9M9FxABbTRtzeENC6gGYYZLv1bUE/qBPesySlYMyg//ml
+	 wSKn7ooBYDSoMGgpujy52xfdDiyT205IDD9yWIu0=
+Date: Tue, 7 Jul 2026 17:20:10 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: FUJITA Tomonori <tomo@aliasing.net>, ojeda@kernel.org,
+	a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+	bjorn3_gh@protonmail.com, boqun@kernel.org,
+	daniel.almeida@collabora.com, gary@garyguo.net, lossin@kernel.org,
+	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v1] rust: bug: Add bug_on macro
+Message-ID: <2026070746-roulette-catfish-57d6@gregkh>
+References: <20260707143026.2774023-1-tomo@aliasing.net>
+ <DJSF9IBYP207.2UQXDE9IVSRUF@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 Jul 2026 16:51:40 +0200
-Message-Id: <DJSF9IBYP207.2UQXDE9IVSRUF@kernel.org>
-Subject: Re: [PATCH v1] rust: bug: Add bug_on macro
-Cc: <ojeda@kernel.org>, <a.hindborg@kernel.org>, <acourbot@nvidia.com>,
- <aliceryhl@google.com>, <bjorn3_gh@protonmail.com>, <boqun@kernel.org>,
- <daniel.almeida@collabora.com>, <gary@garyguo.net>, <lossin@kernel.org>,
- <tamird@kernel.org>, <tmgross@umich.edu>, <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>
-To: "FUJITA Tomonori" <tomo@aliasing.net>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260707143026.2774023-1-tomo@aliasing.net>
-In-Reply-To: <20260707143026.2774023-1-tomo@aliasing.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DJSF9IBYP207.2UQXDE9IVSRUF@kernel.org>
 
-On Tue Jul 7, 2026 at 4:30 PM CEST, FUJITA Tomonori wrote:
-> Use of this macro is heavily discouraged. Prefer warn_on() macro with
-> recovery code where feasible. See the documentation for C's BUG_ON()
-> for guidance on when it is rarely justified.
+On Tue, Jul 07, 2026 at 04:51:40PM +0200, Danilo Krummrich wrote:
+> On Tue Jul 7, 2026 at 4:30 PM CEST, FUJITA Tomonori wrote:
+> > Use of this macro is heavily discouraged. Prefer warn_on() macro with
+> > recovery code where feasible. See the documentation for C's BUG_ON()
+> > for guidance on when it is rarely justified.
+> 
+> Given that, can you please spell out the motivation for this patch?
 
-Given that, can you please spell out the motivation for this patch?
+I agree, this should probably NOT be added unless there is a real user
+for it that requires it and we all agree that crashing the system is the
+only way out.
+
+thanks,
+
+greg k-h
