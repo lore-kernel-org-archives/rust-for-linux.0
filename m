@@ -1,205 +1,130 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020096.outbound.protection.outlook.com [52.101.196.96])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ED5420867;
-	Tue,  7 Jul 2026 20:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783454553; cv=fail; b=ZEhkzTR7hkdlnrqsFd7AQaAyZ6g+DFaH/2u9vDaDnLLH+1LLu2ylkFHJG+iDpQfJ4mb1sRcH36jRPKJR77fLmHHSdT9HTEAPDOljGMHkOkc9LFxxf+5b+sryQfDpb8OGjLXx/XOPuX/piUG9eBcUGG6IesGyKodZlHWCmbbx8jc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783454553; c=relaxed/simple;
-	bh=cCSNlYfeohOKK/6J0luGKxD3NCmfDLHfP7PolBYFyj8=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=cX3gBKfOOYu+fiCZJABXov+JIoUcUDYx4Xq4oiX16V7l5nSzTuY+F0NdcRJi3tANRRfIKl171mhuLsCSvpFAZ9ECRJUhjiPd1L1yLjRl/hq4luCUrOAt6EC2pRQ4V1ptqMEZ5df6s1bOD0wRPUsGDP7lOXdOINbT1W7OwfwmODU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=G1lbQnNV; arc=fail smtp.client-ip=52.101.196.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15FE2EEE7C
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 21:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783458340; cv=none; b=XmmP8nG7xzg8bxkpDay5Xf12rnr67ryenLxaGkBUcjZsat7ELq8pTBwk4yI11WW7WyUAhqbRzuIcKuRLaWZkMteBGgX840r4n+nWU70FlRajQJeubmoQSLnv7X2W3qaBWBnpeghOBanfKil64sDHNgP6/31s9sEqReYMhCkPnQ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783458340; c=relaxed/simple;
+	bh=8PKmof1mmNuwdqG0MY5eC6LUcGb1WWzUUyF4Dq3A8zE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Eq/e/wLAOBH9swwRjvvR6ogEymB2az1PcylHRDp39859m4v8b1Nd7Bi9m+EIG6fNoDlw+FzyQPg1vri8VsjFz1TLipDlUTWyxHWydgDnTzgaqyiejnDwIdw8SpZIq3d9/DcyW245SoCyNJQfiC8xfSHJHxPDHjYNQFzfFpANTX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jBczVG2T; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="G1lbQnNV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M+4jPjXk6rSnBvI5sBdvGVbwHFNnXp4RQ4Fq5Imhxhv0h5qL4v3bMnCPbPbizIAz9SnpCheROIXHsGDEbjCXVe7hJ2cUsIwIxTFHphYZeDHLH1dzCOrAN/eYalOB1wwuCyxCWX+qTVxu+e7oHxjNDnZiYgTt27pp8vUvyM1GdyFwP9hhkERsIVth3+66l1pajfLfr991ymvg/5sVMEdPDRjPnr6UtQDnx0p5pDTgDwQ69YQohxihsSH06Fcn8iVN4AZy2i6ChNX8kg0fKAZza0KgMH+JVKTisrJwZl5mL+dkIKsrvln6tqiyUux4WFWs50oqsEovnVaFxptaXgP47Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cCSNlYfeohOKK/6J0luGKxD3NCmfDLHfP7PolBYFyj8=;
- b=WF1SDu1iv2Dw6fhbBe4S7SIe9RoPmxojv4y+jfZ47yqNT0pBidHH870sK32KetaUs4atubBfS6abvAcihdNRVu/QMUqSZdo9oRDCvhlnnkDl3ErQcfBNIQG5dfOQm6Q4T1qcKaT4d/jcp+qKCBRUbrI9RUSBLAXEk9idHb4aN0emM/nzIDx1vWaFnICNcgMFrPHOxQp3NqNGj9QCnSLhqzVmrYdjqryDPrd+gM8/QU1fHr3kBbKZEhMzvcy+B0erqYDAAlxIdyJ53n44WZs/hYf16CzqCjXWoaDJ0W63ANG5spWOEtGSPEyfRls3frfe/E5kz7xkW6rGc7sU0iAHgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cCSNlYfeohOKK/6J0luGKxD3NCmfDLHfP7PolBYFyj8=;
- b=G1lbQnNV+UGnPxmYhZUc8NQOYY1kTxiZFjuF5VlZI4ExJ62eTgWGdlBp46c1AjKDbHdHEM/NcKDrcLUtYzfG6gfFkffv7GOjcEfXJyCr9MivmH84SxERzytOI150sru69i0wYU1dDm4E+8G1Gm/jVM5GmDsM9YhYHtvdcWj/BSo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO8P265MB7871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3a8::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Tue, 7 Jul
- 2026 20:02:28 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.008; Tue, 7 Jul 2026
- 20:02:28 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 Jul 2026 21:02:27 +0100
-Message-Id: <DJSLVGBW90CT.3W3FHC3J5NPMG@garyguo.net>
-Subject: Re: [PATCH v6 01/20] rust: io: add dynamically-sized `Region` type
-From: "Gary Guo" <gary@garyguo.net>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Gary Guo"
- <gary@garyguo.net>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
- "Robin Murphy" <robin.murphy@arm.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Michal Wilczynski" <m.wilczynski@samsung.com>,
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-pwm@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
- <20260706-io_projection-v6-1-72cd5d055d54@garyguo.net>
- <9AC77170-279D-4C0A-89F7-8D07F418AADF@collabora.com>
-In-Reply-To: <9AC77170-279D-4C0A-89F7-8D07F418AADF@collabora.com>
-X-ClientProxiedBy: LO2P265CA0494.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:13a::19) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jBczVG2T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783458338;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8PKmof1mmNuwdqG0MY5eC6LUcGb1WWzUUyF4Dq3A8zE=;
+	b=jBczVG2TSdzj8JQptDvovCCmf/gnWlPPZ8xuFlMJzXaCMXMz5KaGiH72Dq4ffRBooWh4hu
+	ul1NbrzE+wGNSzA3BhlaITvrB37AkfQokm7Jnj1GbSxx0JfqHIITQkoPbxRoQSpkuFTlu7
+	1a8bWG5WACug+ELwuuVeffmJBfd8keA=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-593-NizK79kmNSCEa6iN5XzVag-1; Tue, 07 Jul 2026 17:05:37 -0400
+X-MC-Unique: NizK79kmNSCEa6iN5XzVag-1
+X-Mimecast-MFC-AGG-ID: NizK79kmNSCEa6iN5XzVag_1783458337
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-8f1e4e0eac1so426816d6.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 14:05:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783458337; x=1784063137;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8PKmof1mmNuwdqG0MY5eC6LUcGb1WWzUUyF4Dq3A8zE=;
+        b=DaiClqo+xlMtfouaCMqyfxyJPnQP3hg3R6H9IuWlD9NYy2F9AkCyrO70I7MjJSr4JE
+         r2dHT/ml3Nenyi2jPquZcJ0OCWSMELCufqQDi/XqO363ak0RB9zxexI/edRE9G/1bkcM
+         qkONtp1ZFRYlFI9by4XlGXhqR942ilmgIy165ogb6CT7dt/cNuMIkKO+gRmsO80aECNj
+         gA1h7eYB+elNENR0qPQbUeKpBXL6cDhHStu5N80TwxjBHLUBx2UlV+1jUXbhKTMQ/6C8
+         VsPFeP8nThyJjEefPLqOlYp+Tyc8/2WrTj9ti/YEjV6lwfM/+rPijvxg7hQnvketCQpl
+         VStg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4Pg8MOaCf1um3I1rARWfibVsL+YHccSFlRdMf+CzyRkJfVAAum2tXNx/zYGy90Be2tytd1NO9jY+VYt9cXg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEe5CFT7mwDCUIbOc5Wk+soPvESRtzpMQU9qS38DzZuHlHhlCs
+	ncTCShCEAaiWMk2Q0hiPnZFR+HdOxb5hNbuP3q9kuZDEIgFawJ8eJoN7gfrIC3m+digAusCLSoU
+	IIczNvCE8N/S4OTVel6p6ZF4F+6peycm/vK88mGF+Rj5JddGkYZ0TzpUuDCUtg8v5QSRE
+X-Gm-Gg: AfdE7cnQDPQaQTCPZSJsoaBEz90Ko3rtvYhFsrAJVXKW3BUW6SFayY96ECo6yQl2XI7
+	EqRFySxicj0ys9hvH0Dh70CSOeuLfdkaJJeBRUa3iagGlOc8K6jqJ8LTRmlknsrwSkpjz+dGT6D
+	McewreNADikpNrBVCNp4ZVjx9pDi6ZA4JaNN8c3rO5+n9Osi5BgiqVSna7gOvTUBFeFJoePJQV0
+	3PbdMgb9HVGDs3ulFHzfOaaljN9XjwSbTxrXpM5ZhZLXcJ88QJack2Kg2ZzH+pP5q4HrhZO7R7Z
+	ymS+P8Gt1b8zUdRFyzYJM/MhxoucPDfjvGTirsNW+WqtrNduZNmLNvmok5RJJfQFYJ3FCZoDyRX
+	ELx7mJJA=
+X-Received: by 2002:ac8:5806:0:b0:51b:efbb:fbc with SMTP id d75a77b69052e-51c74829b78mr71428941cf.33.1783458336824;
+        Tue, 07 Jul 2026 14:05:36 -0700 (PDT)
+X-Received: by 2002:ac8:5806:0:b0:51b:efbb:fbc with SMTP id d75a77b69052e-51c74829b78mr71428471cf.33.1783458336294;
+        Tue, 07 Jul 2026 14:05:36 -0700 (PDT)
+Received: from [192.168.8.4] ([100.0.180.93])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c41db4fb5sm118175811cf.25.2026.07.07.14.05.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 14:05:34 -0700 (PDT)
+Message-ID: <232b31667248cf58b1365aba58573494f81b21b8.camel@redhat.com>
+Subject: Re: [PATCH RFC 0/2] rust: sync: create lock class using
+ `#[track_caller]`
+From: lyude@redhat.com
+To: Gary Guo <gary@garyguo.net>, Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Daniel
+ Almeida <daniel.almeida@collabora.com>, Onur =?ISO-8859-1?Q?=D6zkan?=
+ <work@onurozkan.dev>,  Miguel Ojeda <ojeda@kernel.org>,
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
+	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Tamir Duberstein	
+ <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Ingo Molnar	
+ <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long	
+ <longman@redhat.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Date: Tue, 07 Jul 2026 17:05:33 -0400
+In-Reply-To: <DJPZ3RKZWJZS.1EOKOZA3WE6GZ@garyguo.net>
+References: <20260703-rust_lockdep-v1-0-1c21c62d0341@garyguo.net>
+	 <20260703140140.GE651302@noisy.programming.kicks-ass.net>
+	 <DJP06ILK15W3.2XGWM3VAKNF04@garyguo.net>
+	 <20260703223242.GS751831@noisy.programming.kicks-ass.net>
+	 <DJPXYGA9HD3B.30I15MLPUM7DR@garyguo.net>
+	 <20260704171042.GT751831@noisy.programming.kicks-ass.net>
+	 <DJPZ3RKZWJZS.1EOKOZA3WE6GZ@garyguo.net>
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO8P265MB7871:EE_
-X-MS-Office365-Filtering-Correlation-Id: 964527ab-e269-4429-199f-08dedc62abbb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|10070799003|1800799024|366016|376014|4143699003|3023799007|18002099003|6133799003|56012099006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	RRVgLtZc6wFtJRfabuGOQ7KDg8ROpkf7RDU34e5z1Ud8lEvPCbcmTijr9ELHGwFTqALPH92lBiO+N/8Tzxio6OrJrEdnT3RBM4mcSm59epTpCKBvdY+7OYk7ihpBCVUwu4D0zCQahL2x2Uk+6rf/OWMeUaLFnSfA45Tv1xAZO6uLcJjWRpfodEQJi2GlRclyu8r8YCmS8UeOFijZeNmnuhZD5M/+ugj2V2uSx9kYB8vaneNHtOWqY5rt+pWNUNCeuLPROjT3bvQV2YhFkMJIkGwYqUyA0xXdUAybvmmJ5u9r9eyt4xZZgJW/Dx1OdnoWRCHDggSbWKCdI5aHhQ/CwoPHYuWp7L6/b/qBaGRGK1AZmt1G6anVoCDqLLIo2p1nCHkItrJWC70g/cUJFWTSBzujSCu4m+oghdQXMZcgtJwHrsLmr/z2IiBmR2XtsydzATR4I+hNAq3jhZgIP/HF9r9FLSj4tHjnvJAvisOuk+/wNsZa/EgNp2XmLtpqwoxWsuAv9N6JzUGs6VaXnMwE18nGjL7R6YOptw1uXQskbUo6vczv+qNHuGrJGNf0HtXJEgEuYU9fsWXa2AGgHbEQ83u6Nh3IKD3qCdYMm65N/Z0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(10070799003)(1800799024)(366016)(376014)(4143699003)(3023799007)(18002099003)(6133799003)(56012099006)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Tm9oUjY3bStxK1F0RzBSbkZVYTUwS1I5NFQ1OU9GeEQvNmRhWFVkc25tY3RM?=
- =?utf-8?B?ZkcxVzJQWUlKUWtJSk5jTUtrSFdVWXhHdklHL01RaHJRb1EzL0VFSCtHVEdC?=
- =?utf-8?B?dHpFQWVQeWlkUjdvOG9aVkZ3VUpTMFR5TVF3TmVmMWZ0MkZKOGNNQjdsNWlw?=
- =?utf-8?B?R2o3SDZqVjlFaEFzRERvWVpoNGxEdjZzR25nQWwwQ1dSYUJmVkdsOFFtd1VL?=
- =?utf-8?B?c3Uyc1NMZkQ5cHVtV29JNmRqTGtwNFZ3bnA5WDlUcXo0NW96cXgwUHhsR01N?=
- =?utf-8?B?WFVyNE1nVTRaS01aTnlidkpGeEg2SVRjT3RNRWdzcjVIMTArSXJUSjBQVmRy?=
- =?utf-8?B?WE1MZHhjNkVLbXhBOWVMeFk0b1dpbzZ4Q1JGVk8vR3VFZ2ovVDgvbndnK0xF?=
- =?utf-8?B?dVVjK3lQMmhwN1A1TzNyTGx4VE9WQUVNYVdDYmlPWFdCVkVsR3hKRkNwaVJQ?=
- =?utf-8?B?QU1VMitoZFJaRUR4K3R5UHJTMGtSS3ArZnRWd21JSExuY3Z4cnpudTZLZk1Z?=
- =?utf-8?B?aXdibklVcEhmalhaM0Z2dlkrTU1CTFgyaTN4TitLcUpFVzcvaWZ5VS9JeEUz?=
- =?utf-8?B?Zm9LVzlGZGtwdURpRDBTZXJjQkVBRCtKUEhFZUxTb3ZuTTlFdjVkTHVlUjFD?=
- =?utf-8?B?eCtCUWo4TzAvajdWQ21qZHZLTDJvMWY5Y1V1ZnZ0bldsWWladzY2UWJySDFY?=
- =?utf-8?B?dWEweTdZdnJDY3lxTW1BODd2bFhlQ0RJWDlsMGFnYTNtcS9ESmM5dmR5ei84?=
- =?utf-8?B?azRKVk9uTUYrUUx3MENIN2pGZHo0VWExNUpEVVRQMzFzUmw3UVNIZkt5dGw1?=
- =?utf-8?B?cHZpRzFIeTA2TFk0SWNrTm1VTTRRMnJxeWZsWng1QVpvR2JjRVdMZlVIYUUx?=
- =?utf-8?B?eVVyZGNncjBqOWdYTXRLTE01cHdvVVJLQy9uZHRvY1FNbEZQOHB0WmtpdzhJ?=
- =?utf-8?B?UWIyc0lpUU16azJCckRiU2N5OGIySlNwQUlRdlFEQUdIRldaSFQxUGRxZjRx?=
- =?utf-8?B?ZkZJeEp4VHRnZGpqTHRQWVVNOGRxU3p1Y3BKSm8zMktZbTFnNVlESThhdll4?=
- =?utf-8?B?S1RUVW9QcGZKdDVzNnBEZ0VkaHpoVnpkRHRhaVJQRTlNRmV3Z095TVI5ZDht?=
- =?utf-8?B?cWtSektrUXY5WGswNU1OK2pYa2M0c2Y1cUxsUVJkcEI3RkE3NmJ4TDdvOE4v?=
- =?utf-8?B?aGl3bjRwOGhUeVBPa1k3VjFocWNNNEhidE9lYnQ1dHU5SnNnWFdkRjFYd2Fr?=
- =?utf-8?B?S3NCbENnV3RQOEczaDZYVDhHa3gzaG9TTitkMGI1YzhHL2ErWnlUTWREQ2hP?=
- =?utf-8?B?MlRZK0xOTFJQbDkxa2E2cVdWYTU2TUZvRGkrNDBLeUVpVmpUNXZuMWJYL3dT?=
- =?utf-8?B?Zy9jcFQ0OWY0NlJlVDkyVkJlcXpGTTE0WWZSNkVqeWNEOG4vK1VaTWIrTFpa?=
- =?utf-8?B?emlERHFvOTFyczJQR1pOejFMK1dnb0FLTW44b1dpYXFoUGZaTSthVnBpSDQ2?=
- =?utf-8?B?WFU4aktCdTI1NVBCRG9xbWtCRjV0QTBicTkzYnVQdmovdG5odGd6cy91Y3Ru?=
- =?utf-8?B?VDcyYnoyQzZpTHBxK0E0ZUk3R2VKdFVkc2dtUDFjVy95ZGl1R1hEZHpYNzRL?=
- =?utf-8?B?Z0ZucFJmWHZleDhCQkdMVTd0SDBYbC9HUGNHdHBLemtnSzMvYlRSK2VlYi93?=
- =?utf-8?B?VkVhKzh2S3RpbFdRK2NPbzhuVXFsaVkyTEN2OXdiZ2lOYTZZWlhvWXRBRlV0?=
- =?utf-8?B?N3ZYTEpJSnRvbGtTWGJQcEV0MnpLVmM1UHpZc2xqWmFMSk9XbUJ1ZTJOdDlB?=
- =?utf-8?B?R0lGNStuRlFFd0VLclBjOThlakpZb1VqODg1QVJwVnYrV1hONGFrVi90Szdi?=
- =?utf-8?B?a1R0dHBLMjc5RExXUHZLdXA1MEtuOWtSYW9jT29PUVo3bkRaQmlzUVRUUnRV?=
- =?utf-8?B?WVdXVjJhYUw3T1l4Q2RBc2JRMGcrNGswbGtHNmRhbStjQ25JSFh4b3V2c3hr?=
- =?utf-8?B?dnczVTUwZTdTZEZlM3hJSzZMa3gra0puSXYyakN0YkJ4NlJRQUlUeURzRUlD?=
- =?utf-8?B?Y1ZBa0NmSFU2T0xKb3lLNHlBQVVYazNOejVHVDhxU0NIQnlxV0kyaXpHTjJh?=
- =?utf-8?B?VmZYNXRJeVZZK1lpQ2I1RitBM2hLWVU5Q21IRnFkdVJ0Y21COWxQR0tVZWdT?=
- =?utf-8?B?dGRNaWxpNmFNSXpiSXF1NlBrQUg2UWo3bHkzUDVCb1JJOWZkUnREZG5scGtp?=
- =?utf-8?B?THdXMDh3dEh5bGU3a0sxRGNRblZKWmdjemprZFN2L0ZPRlpmWS9EaGlXcjF2?=
- =?utf-8?B?V0hSVGg4SFVMNVJwa3NiUWhQV3dBZEJ4cHViMzBhOTRDT1dOTEUvQT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 964527ab-e269-4429-199f-08dedc62abbb
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 20:02:28.0060
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kJj+5zxcwk1DulXAwjxjP8DWnQYa8j3jhCXt2R6Ec/DCFNSDbafxMJKLcKVfy+AXNmPdaR4k55FPgojiNglJjQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7871
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: x-hk2dpkF92W_yyzfIkWFfZ4l1dqdJK_fK8yuP2OSP8_1783458337
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue Jul 7, 2026 at 6:14 PM BST, Daniel Almeida wrote:
-> Hi Gary,
->
-> A bit late to the party here, but going through this series one by one :)
->
->> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
->>=20
->> Currently many I/O related structs carry a `SIZE` parameter to denote th=
-e
->> minimum size of the I/O region, while they also carry a field indicating
->> the actual size. Proliferation of the pattern creates a lot of duplicate=
-d
->> code, and makes it hard to create typed views of I/O.
->>=20
->> Introduce a `Region` type that carries the `SIZE` parameter. It is a
->> wrapper of `[u8]`, which makes it dynamically sized with a metadata of
->> `usize`. This way, pointers to `Region` naturally carry size information=
-.
->> This type is required to be 4-byte aligned.
->
-> Why 4, specifically? i.e.: I wonder if this breaks u64 mmio accessors?
+On Sat, 2026-07-04 at 18:46 +0100, Gary Guo wrote:
+>=20
+> It's certainly possible to give explicit names (this is what patch
+> 1/2's
+> "new_with_name" function is for). To mandate names being provided we
+> just need
+> to remove the constructor function without the name. That said, I am
+> not sure
+> that we want everyone to explicitly give names. Especially for types
+> like
+> delayed_work where it needs two lock classes and names, it's somewhat
+> leaky abstraction if the constructor asks to user to provide a name
+> for its
+> work completion and a name for its timer (as it's not possible to
+> concat strings
+> without allocation without using macros).
+>=20
 
-It does, but if the alignment is 8 then it breaks a lot of platform devices=
-. 4
-is the most common alignment needed so it is chosen. Different base types c=
-an be
-added subsequently when needs arise.
+I think it's also worth mentioning too: this doesn't really make that
+much of a difference compared to how lockdep names are currently
+generated in the upstream kernel with Rust. If anything, this sort of
+change would make it a lot easier to actually improve the auto-
+generated names we come up with in the future.
 
-There's some additional discussions here:
-https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/G=
-eneric.20I.2FO.20backends/with/601411822
-and in earlier versions.
-
-Best,
-Gary
-
->>=20
->> Expose the minimum size information via `MIN_SIZE` constant of the
->> `KnownSize` trait. Similarly, expose the minimum alignment information v=
-ia
->> `KnownSize::MIN_ALIGN`.
->>=20
->> With these changes, it is possible to add an associated type to `Io` tra=
-it
->> to represent the type of I/O region. For untyped regions, this is the ne=
-wly
->> added `Region` type. Remove `IoKnownSize` as it is no longer necessary. =
-Use
->> the same mechanism to indicate minimum size of PCI config spaces.
->>=20
->> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
->> Signed-off-by: Gary Guo <gary@garyguo.net>
->
-> If MIN_ALIGN =3D 4 is actually intentional:
->
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
+> Best,
+> Gary
 
