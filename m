@@ -1,93 +1,93 @@
 Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3472E7360
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 13:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F234A2E7360
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 13:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783429470; cv=pass; b=RTjLu4GXrInUISsH0Q1j0t+Ay5njmFsVa2LDc+eSuz+YplHErCIfGBWBPLChWFLJ3mmOSOPnalO+btLC8fFn+MLhOJ6eRfR7gtEvYiIX8khwR8b2vBq4jQiCiQV0I+nE6IsnJgOHceqahyO1Bye4qeM8PjvfOI6D1WKebz2Um+I=
+	t=1783429501; cv=pass; b=gYlqZSVB9VoWM1UWcjZHljgAGuZhdDzypgkMcItTXRU47Fiz4MQmTOJkCXuCb7x6aKIsCfpJLAF6kFRppU9/xHrU1UWR7JZ3tXLSFC5aQUURA3hZKk9aexX6ST4sK3wAp5eG5ewXdDUHDPwnaW8j8qTTLRPdW8PfexmW4BGnmUA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783429470; c=relaxed/simple;
-	bh=TmPGIYAzJvC80RsuDMRwEJ1EsP9UZtxlgsFYi2qUwwE=;
+	s=arc-20240116; t=1783429501; c=relaxed/simple;
+	bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oIL4Xs7NdN4HjYidSHuKzQEec1ogXHUOAFg07YrBtRnTzRVw7NKlRTpV45eEETQx18aRuv8xc9DCcR93rvMd8JMxUf1xEwk+GJu675vXIPxzlFS4uQjvPeCAayfE/WaixbsNHYNdNE+ES+Hd/TqB5IIaK28Lz1d/Jb+gaUf/VjU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nts12kSM; arc=pass smtp.client-ip=209.85.128.50
+	 To:Cc:Content-Type; b=TrrGfTVPqJHUz5nT4xCj+Eqxrx9XudmeaZ2mMk2Ut+KSl79D+CD7hK/+D9ZDhdjcexHVzaicNy68W9kAcABGZN7vx7iIQIF9abfW/kxzKsmt+pzOF4asdPY4M+BsQ5nguTcwIAZ2AD2RABQI1kUvV8Zy4904IN1kgFfFlqY0kyk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nwFqpWQm; arc=pass smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nts12kSM"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490cf3000f0so39565575e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 06:04:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783429466; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nwFqpWQm"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-493bfe9f886so22847155e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 06:04:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783429498; cv=none;
         d=google.com; s=arc-20260327;
-        b=dqxkBUK377t4Dgyc0W7Hc74wnayZxNcUlbkO19k+9Fbhjc5Yc0jf8cen33OE+gIdsX
-         b7oSUjwLfkRA+hzrrSoe5UZ8Dk16qxLC2VPI8luru60qA1DWr32gY5M9qANwz3R0HfMe
-         zzHENdOJ8A0QAulHIaQnrM2HUPYJGty8f4mOimYm9sB7rK5SnOikn02C7YHGAICuh0il
-         xcwdAo6A9JtoUhdRaSzyCZLkecb7wzXyyBejPXucivUHxXfyOYMgWXAc8CZisD/lYYgu
-         ZGLvWy49LrJ+egVJAyf7oH57qYQtUkYuE79ofl8LlYnZnvIs8XR51GsctVo/UUmg51fa
-         A4Qw==
+        b=Ew4Jn3IrBsGQRPTpssOFxf5oYFCzycLugmW9AhkQDASeN19CxXVqoE0ovPs/oJOjsB
+         5nfvOovRejJGX+U9vMN/vS0ny9WCShKRL9o4jCGa2+89FJ7yzwEN8LzTjRnY4DImQW1r
+         ptjMpXgc7p8kxeAb0jdGXoms7FPTmo/sGB6i9LvEIW3Gd1f6WYsaN2JIp72vqoebLdq3
+         j9EyzBkxl/5bYSwMHEC3ZbF0ceOmTSFsNsztCpaoJGZyJNvj3rgS0Jk8iUuhH1cmmaEo
+         nVVZKudkB1PBztfVSHo2rX4oMiv2bZlGihpV6NrqU+D67UVq3r93zj92sNuj+US9v7Af
+         w+aA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=kMZTTwd8MYpbLMhgPf9wJy+JM0u3tngYW75375hm26s=;
-        fh=8WtPmK+1m0HJpbdtEuyf1hMOFp2EIdoj7VpA0LkMmTI=;
-        b=GH7hpDoIDmjtLidfHWB9y7ljHaBB5oS8TGRuDt41yos+vuHtgwtguQIBJgXXlZKHNe
-         fg4e1aNapomBty9EUUSSr8q+Yx19ApBNVLWc092WP/+WPD1nxPM9DTqbd7AF4bvcrttK
-         66oFVVZmSb0m20jWchIoUmhF56OLD6IwS7/9D7oDOOIdsdYAnG66Jt9Rv5NzZOzfv/KT
-         A1CzvFYO//ZD6aOcbkSlFOimFBywOib5Kj98bPrQkL3YAJw2q7hoAvIhwYZmOsA8zlf2
-         NdoZGqb3eE1YvXjSzR/U+x4M+j//BGsbh+gJn5b+Zq6Aq+TlWW8okVbWkMjAYjCejVKD
-         C8aA==;
+        bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
+        fh=q2TGOvSkYZp5869Seo4J6RxaYFvNMjVq9tMFWw0nei8=;
+        b=WxCfj+dwPjYJM87EPRSAe9pbk3DDiK1rwY/y7qT49qEM2bar8SyQXf4i0cvtI87VJd
+         JDD0Yq1ZzPMB8JCPMsmNeH+82+TNJO7ay6JQv9f3rzxdml+hpbVFhpf+LKcmrgoBJ1Zt
+         lM6sXIXRfpOw5NxRUM7lc7iDH5vXxY7Xb9TCMklu1nQr1DLr3WNoaqcMk9M0oQP7UXkX
+         EegovJhIujN5jrb6+hK8XxPpiGbWUFSO/hDbxZq03EnojmyZo+9Z3labdJPfpJjBlT5T
+         oFbWLNMFNdYbv2tnTZ4mO4tii9r2JxcbHOZjQapmmDjPPbAePffG3H4CTdOV4gseGJjg
+         zXGQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783429466; x=1784034266; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783429498; x=1784034298; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kMZTTwd8MYpbLMhgPf9wJy+JM0u3tngYW75375hm26s=;
-        b=Nts12kSMv14kT3Mm7Kxs1r2f7tWqlEGnFU6tFoIeMP51PoarIMC4pShI/bvjl76EtK
-         eT3KNRKzth5yyVfwhc+J3Og2gPsHACsw6eydKUS5ZEXruyJhPCzRGdCZ5eoisZKHSJY1
-         oMlspWCeU2jv5eRZ6PZLiMuG7a3rpEE6QmJ2pvzGxrOvoe8aefU7t91JcO/P6Lun1uI8
-         U5OMIwYqYtEHjG59SmrqN3VhGNEwmI5aLMpg6GP+FLSH63i6poR2wbERKVFFH90DEG/a
-         cSbPa49XXsG5KTzY0dPmu5qDvEdnmS1UNrUq2X1hTNzhd/REC6s0q2GpWCJNnzPRejHJ
-         XDZg==
+        bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
+        b=nwFqpWQmjpkhT5N166ROjlsHRUNBKTRpXMHaTMJhkX1rzisW+j8ZNBgqb0gt0uMyFK
+         kJBGogIRdGOCv+IfwKTap7nCADTIGP8KSe2axCh/K7UPtN3Y/fPn4dG6mxglUfb5sjDe
+         z9wuNw/bh4mOjkdHneFd2IGooWxjn53QI3Stm22mJIjhjpbdYFfbUmPDdJ+o5ujoCGZU
+         Eb2D+u6aPJP/dPUUL3BCwxU8hiDgJqf3hxk/zmzS8CtdaNnPAk27A0y9mKwZuZGJ8UZk
+         RsXJ0igYAos9Lsjb5CO7DSUU9QppF9kBmRG78Ibkhp9dKy3x75qDooky2A3617Q50Udn
+         s5oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783429466; x=1784034266;
+        d=1e100.net; s=20251104; t=1783429498; x=1784034298;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kMZTTwd8MYpbLMhgPf9wJy+JM0u3tngYW75375hm26s=;
-        b=sfEXBTgnbklryg7W0UoVHKjtb6mZgHAJJJVcJyh3M7QfoLqj16DBcuyLmhYSqlmbza
-         zGZzEOwqaktkY6i4RZGUDs2MO4DDBHboqo2bo24M8W42WZ+h9+0ctj75IbkhTibZ4LW7
-         tbFe1vwMHjkUENB8hVK3YsrcYmk79z7otNgfNj5Saz/S05VCHX1NoisfFbKdhYSpEVb6
-         gTVQLoedS9XpS4kD4Z7jO0SRK+mkLrpBc0N8l/gS8IjqHM0lXuQLjyQPr9vRjX2/zFIC
-         biSZx2P0/FrSouNzIvjlJ/cjUNqxQuPVxX6yNfYPWH35lSzH/bSDsO2Zvlfp/5y90GHi
-         D2aA==
-X-Forwarded-Encrypted: i=1; AHgh+RoZTzEPUXElrOIWVpiJibhBmbS7HNx56IXhmXi44+qrza/8z5Me6g1/K9CclDDS+Zkp+/ktwlzfj5hsLpMwCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeejqvVoIgIDKWyJFTWDGB340Ulf+2+rSONd4a25ovUl6b7P8m
-	lTDdKPRZZ2gkvpJNLwPymAdM84YBKws1Ftwb65AjRf6xTxEiBAb20sZDgWOVoj+baI4VpB56HxX
-	cehIMM/PfzariNC4J6sJUfF2b06d4Hocn4PbhmOBY
-X-Gm-Gg: AfdE7cmDqYAUkHcRbBcTqytJ7KAuHP8O2cwmpYpjkrX1MQm00dEF7XYl2eqDlDOOHnz
-	SQ18Jm6K4B7uHKHhnAD63aAqHGLtugCao1e8rZSGcnayslLYOvTBV8QRp5YBSEuS8v0geOvEJxi
-	N0fTS5vmqDQTux/kOc1/TF6zLnGK10kUxxpVnhUmULyGHw8XOnB+RLTbLJpHtchzIpdLde1XT2F
-	35O/znaRIoXJNQ5PgOaA7p7DmgAY3fEPvvMa3y6e0Bkhmh6T1yDMWPXW2YVOuZHK+2/awG3Xm4F
-	be1lTHm9KIbsV4PBvVAqzRu4OKE=
-X-Received: by 2002:a05:600c:3e14:b0:493:bc4a:e7d3 with SMTP id
- 5b1f17b1804b1-493df0a08d1mr56240095e9.39.1783429465838; Tue, 07 Jul 2026
- 06:04:25 -0700 (PDT)
+        bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
+        b=UouMzWLcbOH7rjG/bYk4cUt8GJIxXOxcqH3T0Dc61OsePhawW290BbKIfAjWd2YB+5
+         Kruv1OqPcyv0CRU7mwGesIIhYhFYFdJEuH3GT0urqYsuHlG2Rv2b/CUTbYpGHIItAL20
+         X3xPC/uED5kRcd43gNBchykB1w43qSUQ3pyfTCg/1tZz7bDh7pQzJVsWFh2o23edO+F7
+         ZEy/CCGA5+tvgk5SimBv479SpFWq3chRpMcFwWeA09y38fJLiPeYoqzho8psunkZuoya
+         dNATu75MsR5OWlONjV0rSbdx78eSKWbocyIiLRPSsdDrq+UOAj1DTRul1dfGk14gDq4H
+         jMvQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqm4a7yyqFFI4lQgrClS9DPePvjZ38M393i+ZWCtawceiA+opXdRvWHmWBDK8F7mZ09oMQ/6xlaZiFH+aKFzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKWpccoMRRDKnk9pvV7IxLRtEq4UkwnOnRcxPVr5R5kwhpKZIv
+	TDHKl4SjLXDxTZAQNF2tchWjLvc8akjQPLxw49dZcwZbpXX6AgpF6l4bwdMSyIzfioOlEYMcUNe
+	oExCU8odbmFUShd7hT6G/AyIfmhPrlNjYTkp6j3Gb
+X-Gm-Gg: AfdE7clAWPJXbKi0kyGmSp7VDB/zX3ZjetR6KQSp+3iKwkxmGFeSF1SSpOrWCY9IWg/
+	3FRSa7yBgo4cxPDZl6kNV5J/gpwKIknynPY2emYZ9n+gUvHjvcSd5HSk+46L+RWQjx+msqNBBfB
+	WYnazbya10Jat5bje0MHdGtSLQiKr/L+6Yy6Nec15rml+UQo6kSEmoQM00mYpUDiXeRxvOn5hg9
+	5XrFV7pOFbJheh8nN+cxL8/tQSaKm/ozVp9RRs7XoX/+VcdQA5C4C1Pf3x/zeVzho7FildGJvM4
+	PHug6DFAyALVB7l/6SFvb/kBOsw=
+X-Received: by 2002:a05:600c:8b70:b0:493:b6e4:fb2b with SMTP id
+ 5b1f17b1804b1-493df06e943mr52096855e9.25.1783429497735; Tue, 07 Jul 2026
+ 06:04:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org> <20260626-unique-ref-v19-4-2607ca88dfdf@kernel.org>
-In-Reply-To: <20260626-unique-ref-v19-4-2607ca88dfdf@kernel.org>
+References: <20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org> <20260626-unique-ref-v19-3-2607ca88dfdf@kernel.org>
+In-Reply-To: <20260626-unique-ref-v19-3-2607ca88dfdf@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 7 Jul 2026 15:04:13 +0200
-X-Gm-Features: AVVi8CcTh9Rs6YX_7yLE2pYLhG0EOfuYJdmTfdwdI6hvKkhrcisIrByGWFuDPNk
-Message-ID: <CAH5fLgguLAQG7mUwD1NPECYSsPdpPD_tLskU3NdwLZhKR1H=aQ@mail.gmail.com>
-Subject: Re: [PATCH v19 4/8] rust: page: convert to `Ownable`
+Date: Tue, 7 Jul 2026 15:04:45 +0200
+X-Gm-Features: AVVi8Cd8GrEsrkEwxzhRkanTcpbMUA7MU6OpTudOnt7DIfIGqhosSlF_BI7LYTM
+Message-ID: <CAH5fLggMeHUgXj7JGYSJejUrR2PdWymOOb+3E1VmHokzcox4hg@mail.gmail.com>
+Subject: Re: [PATCH v19 3/8] rust: implement `ForeignOwnable` for `Owned`
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -113,33 +113,22 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlasti
 	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
 	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>
+	linux-pwm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 26, 2026 at 1:56=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+On Fri, Jun 26, 2026 at 1:55=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
 .org> wrote:
 >
-> From: Asahi Lina <lina@asahilina.net>
+> Implement `ForeignOwnable` for `Owned<T>`. This allows use of `Owned<T>` =
+in
+> places such as the `XArray`.
 >
-> This allows Page references to be returned as borrowed references,
-> without necessarily owning the struct page.
+> Note that `T` does not need to implement `ForeignOwnable` for `Owned<T>` =
+to
+> implement `ForeignOwnable`.
 >
-> Remove `BorrowedPage` and update users to use `Owned<Page>`.
->
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> [ Andreas: Fix formatting and add a safety comment, update users. ]
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Reviewed-by: Gary Guo <gary@garyguo.net>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
->      /// Returns a raw pointer to the page.
->      pub fn as_ptr(&self) -> *mut bindings::page {
-> -        self.page.as_ptr()
-> +        Opaque::cast_into(&self.page)
-
-cast_into() is mainly used when you have a raw pointer to opaque. When
-you have a reference, you can just do self.page.get()
-
-Alice
