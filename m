@@ -1,298 +1,155 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7E931F983
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 21:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783459541; cv=none; b=ZNoWW/Rqn8ky999hW9yl/XdIW0tKLBpgydUvWFDVZ2qBEilTY4c34NRO5HCdVBTvy/Z1hlVdXkTavFqo9uubtpccBLdctni/9uOm2Q3+izH6G/cF0utPyM8XsukCySOJl+AZFUAtrQl/kvLGDl7hZko5pbKBKHczTMBPYNOq9lQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783459541; c=relaxed/simple;
-	bh=opkhXQ0lcaMxHbbYuSB+PJk9V1vg4E3l/H9QfsvJUN4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BFBiKuaMO5ZFAJXrMOjhVGrpbkE+bz6qzG42/oCIDMkNAZWgp8gR4XXs8lC3PmRfAkqhBIreO/wmyAr1RsJTIZl092DSn4P4Lz7WjMApcZKoFoEBT7vVFmd91NhHGzpY3kq7e/dw/CjsxppxObrrc/9RWxRARkS13jNZdgR/loo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FaY3fL7s; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17EB432BDF
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 21:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783460453; cv=pass; b=a4psM3pvbKNX9jPu5qSC0UzhEPa2xWiplCch0YvnS7l48NEsjjBk2qLMPGsGMxZpzkNcmpS/VF2IGhIxXtvS1fUtEHRVnsIQCMINNiEmxQ906MZShQimE8nphJUE+fPMih4Hvn/wYzkXKXkv9XIhnkaM9Ci5FpNUZRXINtswWno=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783460453; c=relaxed/simple;
+	bh=7s0j3gs1q8B0kvELXLVyzmwUipBlWc1iwp8X7x5EAP4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WDDoHmGQRaUQ+f5dH3qavJgyXwR58d6HlcLY6fmPaY8yBgo+2hcLWN4z9VikHhW4VuEhCJA5Qw41J+3AOPgk51qCt1fISvB0nec61Ibu/1wABxNgyCJx4WSaixdpvxbkIdk769ButS6CVdCobyPoawT8ImT74TRnSYPYgnzZ9eo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bj1ouXvi; arc=pass smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FaY3fL7s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783459539;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=opkhXQ0lcaMxHbbYuSB+PJk9V1vg4E3l/H9QfsvJUN4=;
-	b=FaY3fL7s9RIFU5+SuCzHJVGQReiWiHbque22eL+WEdg1AEu8mWl5lntUhbSxjqr3xdE7MX
-	zs2B++nEZHWKQGb2N2Ui8RSXk9rg7YEjUxkdQRswnegea+B+FJGVOiQGSfFZKk0R3kOu+D
-	CG62szWqZB/d4aYiYmulOdBsH5iM9S4=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-XgNlso14PBm85p2eJmC47A-1; Tue, 07 Jul 2026 17:25:38 -0400
-X-MC-Unique: XgNlso14PBm85p2eJmC47A-1
-X-Mimecast-MFC-AGG-ID: XgNlso14PBm85p2eJmC47A_1783459537
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8e934385db1so734026d6.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 14:25:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bj1ouXvi"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4629051c9d1so11349f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 14:40:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783460450; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BpTga9IlAFmPfIFQSK6+dViOZlwes8aJ4hOEQRV0Wp3wXDNJc2Eix3PEvDc5WU2tuy
+         ROJ5ATp1Wx8+y2XHbrPp512K3qkw6/Ob+PHi6VtHSNG/P1zFYmMfxpe9CUIUj1FwJTTb
+         XvD7EQiPaWCncQOfMJB/48rKooC4mIn2QAMc4AKbn05qNh9jQdpWd6QfwJTuomjH81Oa
+         fHivK9d7HNVPNJJfFOSAuK+EwTOk4vOqx3NOE3MM6U5Wy4JUlU7/U8QcGDSy/TbPNzHN
+         E4TJdfEyYqr84zj0ld9yGR2REcAwYjEtoOfUwxH88mCJ9mlgA5+KQvxOjDROkcMsgDb7
+         bAKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=F+Ok+D3VRtxGi9vtZTj6D7dsuUylLhpT+aE8x8yKCk0=;
+        fh=Vzs5hjKobYlA7YpwGehOXt0105HLJZW0CiMcw279cz4=;
+        b=kRUdhqmo/QbMvcXNWpZRPdqqlqXDPw19n42ydtbWuNYhiTwi27dBfwOwOi/u4BUXqa
+         LwY6oSfZEt7ZqP/orUvMxTmKWwVmolx03O0t59pHyrbl4UM3UixdW7Gbuov75UTObcN7
+         Omc64hARLV3a0+2byLIw4WPT5JiMJaNFUuU2MajeVvUh+r24MLZA2xJngf+Vmgz8QUBE
+         q6+yZbpiIJrFRQFAFiBfdAgeqDwQfvYQ6z372mBHNCl5cbrINpOhqVAoiwz2euWh7Mj6
+         qUT8h8cXtvHvteGWMdTBObKnq+jdSxKo9nXkawqnhDtjB8dZg2ZHQZHv0z1QYYTdzzdr
+         d7Ow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783460450; x=1784065250; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=F+Ok+D3VRtxGi9vtZTj6D7dsuUylLhpT+aE8x8yKCk0=;
+        b=Bj1ouXviKQhPARvNlmOCUKPFeBmCZEQqS0tNDUQN0HhxTuVwDlMO74CRcXdCdgLSRN
+         9m06Z+e5fs2pCv45gZpKuzTTUZpp2KQb//dQpAXslcelr6dfoxZBCE+kAqxBpspnXfuR
+         4iA9YRsIhhKTXpZFKrzQeNvg396CTpg7WmKglmhlchrzq+tIss3NNA/ET6SUpke/UXlp
+         RHEA9u1rlS759AyKjMjLjyguXYll5fANIswitRM/wSlLLDBMxNQlFBneoh+2ihYe2brN
+         tQIyge8+e5wfDaZ9Wwc6GufDCkQzngxli57QPQL78gGmOqxOTCbkPYkcPXaLlYxfq5en
+         XfAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783459537; x=1784064337;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=opkhXQ0lcaMxHbbYuSB+PJk9V1vg4E3l/H9QfsvJUN4=;
-        b=dFD0UNvP5kmuXVf6uxjvPrYjeKi5bERJg/lJuZ32Whyj0Y7XxTESXEmhSHEwrv4YgS
-         0Ve5fBcU2gnz/IWibAKXA+lEp5w4yPZZHEGOk1xN9S72tsVnY7q5+ghwo4U386AKHTet
-         ZKujn//LZIukJ6AI8b3LZzZS3+Cu9nPjDJiQ1ZXpHHm9C1ftbPXLr0dra+6Qb/c+b3lG
-         oSlei3nVtKuNrt/lPfgfI0FMYE9dtBoK6reYc4hXcJ/SOS/urFyPKyxVkITHAavsh7+s
-         WGhO/v6QtisILBcM1OkXDJj8M/Oy1KndynNWXMclQeYS45Y8Nb1F3Wsz2VR6Yp6wYvlz
-         5SrA==
-X-Forwarded-Encrypted: i=1; AHgh+RqSzUyuW969PcWM5FRtp1w1KrI+OCcspJHKsj8ZkeqoWbLMg2FPGf95r36IJ0pc+OgzVDotI9/REsqLyO1DlA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYS/1fEaK02KpSQfkwYzuY7rZNOj2y8rrq4Guoz+E3yJP0Oih5
-	slleINBQuf8+j04skx7++gf5ZHlJlBM5aI0fFn1ZWvDcgd72Bk3NZ7aAlusT60pH8Ppb6ESUZ6l
-	1PA2A3TUqYQluZe+l1D7muIWPB2Si0YwCZAPEvLrTmhmlRldZLs+o+1/WfXRl7AbHXsJM
-X-Gm-Gg: AfdE7cmQDvMJ1IW4C7kzEzIBTm3sLKOZui0odllWCYh6XY1ADJR91WAqOoSvM+xFNIq
-	3NAQyonIzUh/cR5M4BMYw1mv816UdnE1oZ+mpnu02SUVtsyJznUv+KXnGk9Uyk2R7odqNigS66s
-	bz+oKmcsU9vlQCkMbPpMlf6pcifvUDwsUEErPYkCd73UW590xeG5moh0bZp8/+C3LMdHKdvG5aE
-	W4Ogt/eBXNA7NaGtqj/cQGK3Y8XyhtqJgcFFpNLqRCoCatv6g4JML2szSKiYT/rwdPeYcmTIkZC
-	mx8uqXPgHsipCM/fn+4uw17BUcJj8k3XMoMaCxmUVajPjsgZvfUaLT3Gux7KcXu7/c6JcaCBNVG
-	Sz+xRf9c=
-X-Received: by 2002:a05:622a:120c:b0:517:6b31:8058 with SMTP id d75a77b69052e-51c748534b4mr73040711cf.40.1783459537444;
-        Tue, 07 Jul 2026 14:25:37 -0700 (PDT)
-X-Received: by 2002:a05:622a:120c:b0:517:6b31:8058 with SMTP id d75a77b69052e-51c748534b4mr73040371cf.40.1783459536693;
-        Tue, 07 Jul 2026 14:25:36 -0700 (PDT)
-Received: from [192.168.8.4] ([100.0.180.93])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f46e942af0sm171643796d6.14.2026.07.07.14.25.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 14:25:36 -0700 (PDT)
-Message-ID: <1df84ed4095c28f1b636ef914ad43b80e00a38ab.camel@redhat.com>
-Subject: Re: [PATCH RFC 1/2] rust: sync: introduce a way to create lock
- class from caller
-From: lyude@redhat.com
-To: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, Alice Ryhl	
- <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, Onur
- =?ISO-8859-1?Q?=D6zkan?=	 <work@onurozkan.dev>, Miguel Ojeda
- <ojeda@kernel.org>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich	 <dakr@kernel.org>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot	 <acourbot@nvidia.com>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar	 <mingo@redhat.com>, Will Deacon
- <will@kernel.org>, Waiman Long	 <longman@redhat.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Date: Tue, 07 Jul 2026 17:25:35 -0400
-In-Reply-To: <20260703-rust_lockdep-v1-1-1c21c62d0341@garyguo.net>
-References: <20260703-rust_lockdep-v1-0-1c21c62d0341@garyguo.net>
-	 <20260703-rust_lockdep-v1-1-1c21c62d0341@garyguo.net>
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43)
+        d=1e100.net; s=20251104; t=1783460450; x=1784065250;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=F+Ok+D3VRtxGi9vtZTj6D7dsuUylLhpT+aE8x8yKCk0=;
+        b=AxLqWGRG0Q6Punwrx/TeA2sZYCUZJxQcsu1i9LcS4xZP/oxxonOYIshUXrEMzrTtRO
+         uhoIe8X5uemSkwsNAojSav51LV8xklZUzj1p1yMY96DzfLZ/5wvQHrDn7VP1GEry8uJA
+         55DUkNI3DW6KvihNnrLvqsc0OGx/GtJaJXaabzFX9J/hmcm+UDBVE+VpJTdE6W50FbA6
+         LKbZp7265OAMY+OeAosNyichIs8Sau91fz9SWT3vWmTGTt0LydEK1S+lIaQLesEataIA
+         SghDVN7Yc6zCqDQBIB2q8CxNsAlxnBh6tFUsuoZtxtKLXAbSbrZnlZrAi6hQe99VHLIh
+         F6PQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpCKEDdt+B5FLR7spoTANYyzFLFoXOmbgAZjt+BlB/gvhaAhgHI9WEJyjikKePsKvWJpcjC55clMsNH97s/oA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZoqQv3i/K5ym9ukw/ehyBDZtD6nkwyEsNBNMGcgNQgiJsx+H2
+	3+tUIcx9c8HhDVRezyc778HR/H3Xl6mUMjzwmF35D8pyMWdrkS0dNHvbO+HFqSicSoVb2RxFJXn
+	grGw2SJ0f7wL2jnop8mbXlApSmQVTNhJd0Zoo0bLg
+X-Gm-Gg: AfdE7cmEK+YkCrHqMLZEbmAMejgc0y9InuYhJabS6hUnLzGR71z7mg6jao+IctJpcBa
+	e2UsBBKikzafgRRiznxzj4BYHE6Z4XhFVZ+VrU8yI4V5TezHeHrkGW4B2yKT5H8DQ6ZvkLAoWh6
+	iAt3E+TaN5Ndew1gEv9xo6SJXTnP8V+mkwcIaJhFDJbfFo3FN1xfmxtyaykYaz+Hcq9aTpUKvbH
+	TtGX5+Onq0vHJKBhN15tj4AsXEhrUfnzIsXhLMVkSAvzj/m9nbMyxEzTe4cbP6KJTbvKzkqo34e
+	kUZbJQ1ckUE9o7tVjxFMWpP/TUY=
+X-Received: by 2002:a5d:4207:0:b0:475:f0f0:9ecf with SMTP id
+ ffacd0b85a97d-47de6723eeamr6198466f8f.58.1783460449777; Tue, 07 Jul 2026
+ 14:40:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _Bp56TKv4WeFZRuJBFSDbTzTjKCETPLvKBnkU2XR8Eo_1783459537
-X-Mimecast-Originator: redhat.com
+References: <20260703-remove-task-euid-v5-1-c90c7e2ddf54@google.com> <c49545c6c69225bbc7e93cac58d58cd3@paul-moore.com>
+In-Reply-To: <c49545c6c69225bbc7e93cac58d58cd3@paul-moore.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 7 Jul 2026 23:40:37 +0200
+X-Gm-Features: AVVi8CfXuyQpigqlnMZkCqwD23ax4BF_tMVmnmNSZP3qMxiXiu7h20uznVvLHgE
+Message-ID: <CAH5fLgif5aEVPeD+-jq3e73OVX0uzcEYwggMyF5v_DbZ=3f_Og@mail.gmail.com>
+Subject: Re: [PATCH v5 1/2] rust: task: clarify comments on task UID accessors
+To: Paul Moore <paul@paul-moore.com>
+Cc: Serge Hallyn <sergeh@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, 
+	Dongliang Mu <dzm91@hust.edu.cn>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, 
+	linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+On Tue, Jul 7, 2026 at 9:10=E2=80=AFPM Paul Moore <paul@paul-moore.com> wro=
+te:
+>
+> On Jul  3, 2026 Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > Linux has separate subjective and objective task credentials, see the
+> > comment above `struct cred`. Clarify which accessor functions operate o=
+n
+> > which set of credentials.
+> >
+> > Also document that Task::euid() is a very weird operation. You can see =
+how
+> > weird it is by grepping for task_euid() in the history - binder was its
+> > only user. Task::euid() obtains the objective effective UID - it looks
+> > at the credentials of the task for purposes of acting on it as an
+> > object, but then accesses the effective UID (which the credentials.7 ma=
+n
+> > page describes as "[...] used by the kernel to determine the permission=
+s
+> > that the process will have when accessing shared resources [...]").
+> >
+> > For context:
+> > Arguably, binder's use of task_euid() is a theoretical security problem=
+,
+> > which only has no impact on Android because Android has no setuid binar=
+ies
+> > executable by apps.
+> > commit 29bc22ac5e5b ("binder: use euid from cred instead of using task"=
+)
+> > originally fixed that by removing that only user of task_euid(), but th=
+e
+> > fix got reverted in commit c21a80ca0684 ("binder: fix test regression
+> > due to sender_euid change") because some Android test started failing.
+> > It was since fixed again by commit 65b672152289 ("binder: use
+> > current_euid() for transaction sender identity"), which uses
+> > current_euid() instead.
+> >
+> > Signed-off-by: Jann Horn <jannh@google.com>
+> > Reviewed-by: Gary Guo <gary@garyguo.net>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > Originally sent as:
+> > https://lore.kernel.org/r/20260212-rust-uid-v1-1-deff4214c766@google.co=
+m
+> > ---
+> >  rust/kernel/task.rs | 9 ++++++---
+> >  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> Merged into lsm/dev, thanks!
 
-On Fri, 2026-07-03 at 14:47 +0100, Gary Guo wrote:
-> Rust provides a `#[track_caller]` mechanism that can be used to
-> identify
-> callers from callees. This also works across multiple level of calls.
-> As lockdep only needs the address for static key classes, the address
-> of
-> these `&'static Location` can be used as unique lock class keys.
-> This allows a more implicit way of creating lock classes without
-> having to
-> use macros.
->=20
-> Create `LockClassKey::from_caller`, and use it for mutex and
-> spinlocks.
->=20
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
-> =C2=A0rust/kernel/sync.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 37
-> +++++++++++++++++++++++++++++++++----
-> =C2=A0rust/kernel/sync/lock.rs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 13 +++++++++++--
-> =C2=A0rust/kernel/sync/lock/mutex.rs=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +--
-> =C2=A0rust/kernel/sync/lock/spinlock.rs |=C2=A0 3 +--
-> =C2=A04 files changed, 46 insertions(+), 10 deletions(-)
->=20
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 993dbf2caa0e..cf76fb37c460 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -5,8 +5,12 @@
-> =C2=A0//! This module contains the kernel APIs related to synchronisation
-> that have been ported or
-> =C2=A0//! wrapped for usage by Rust code in the kernel.
-> =C2=A0
-> -use crate::prelude::*;
-> -use crate::types::Opaque;
-> +use core::panic::Location;
-> +
-> +use crate::{
-> +=C2=A0=C2=A0=C2=A0 prelude::*,
-> +=C2=A0=C2=A0=C2=A0 types::Opaque, //
-> +};
-> =C2=A0use pin_init;
-> =C2=A0
-> =C2=A0mod arc;
-> @@ -66,6 +70,31 @@ impl LockClassKey {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> =C2=A0=C2=A0=C2=A0=C2=A0 }
-> =C2=A0
-> +=C2=A0=C2=A0=C2=A0 /// Obtain a statically allocated lock class key iden=
-tified by
-> the caller's location.
-> +=C2=A0=C2=A0=C2=A0 ///
-> +=C2=A0=C2=A0=C2=A0 /// Different caller locations will be guaranteed to =
-have
-> different lock class keys; however for
-> +=C2=A0=C2=A0=C2=A0 /// the same caller location, this may return differe=
-nt keys,
-> e.g. if the caller is instantiated
-> +=C2=A0=C2=A0=C2=A0 /// in different object files.
-> +=C2=A0=C2=A0=C2=A0 #[inline]
-> +=C2=A0=C2=A0=C2=A0 #[track_caller]
-> +=C2=A0=C2=A0=C2=A0 pub const fn from_caller() -> Pin<&'static Self> {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 static_assert!(size_of::<Loca=
-tion<'_>>() >=3D
-> size_of::<LockClassKey>());
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #[cfg(CONFIG_LOCKDEP)]
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let c=
-aller =3D Location::caller();
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SA=
-FETY: For static objects, lockdep does not touch
-> the underlying memory, and only
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // th=
-e address matters. `Location::caller()` is in
-> rodata so it meets the requirement.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // Th=
-e size check above makes sure that it does not
-> overlap with other lock class keys.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsaf=
-e {
-> Pin::new_unchecked(&*core::ptr::from_ref(caller).cast::<Self>()) }
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // A separate version if lock=
-dep is disabled to avoid
-> unnecessary `Location` being
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // generated.
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #[cfg(not(CONFIG_LOCKDEP))]
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 static_lock_class!()
-> +=C2=A0=C2=A0=C2=A0 }
-> +
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// Initializes a dynamically allocated lock cla=
-ss key.
-> =C2=A0=C2=A0=C2=A0=C2=A0 ///
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// In the common case of using a statically all=
-ocated lock
-> class key, the
-> @@ -83,7 +112,7 @@ impl LockClassKey {
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// let key_ptr =3D key.into_foreign();
-> =C2=A0=C2=A0=C2=A0=C2=A0 ///
-> =C2=A0=C2=A0=C2=A0=C2=A0 /// {
-> -=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0 stack_pin_init!(let num: =
-SpinLock<u32> =3D SpinLock::new(
-> +=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0 stack_pin_init!(let num: =
-SpinLock<u32> =3D
-> SpinLock::new_with_lock_class(
-> =C2=A0=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 0,
-> =C2=A0=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 c"my_spinlock",
-> =C2=A0=C2=A0=C2=A0=C2=A0 ///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 // SAFETY: `key_ptr` is returned by the above
-> `into_foreign()`, whose
-> @@ -129,7 +158,7 @@ fn drop(self: Pin<&mut Self>) {
-> =C2=A0/// use kernel::sync::{static_lock_class, Arc, SpinLock};
-> =C2=A0///
-> =C2=A0/// fn new_locked_int() -> Result<Arc<SpinLock<u32>>> {
-> -///=C2=A0=C2=A0=C2=A0=C2=A0 Arc::pin_init(SpinLock::new(
-> +///=C2=A0=C2=A0=C2=A0=C2=A0 Arc::pin_init(SpinLock::new_with_lock_class(
-> =C2=A0///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 42,
-> =C2=A0///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 c"new_locked_in=
-t",
-> =C2=A0///=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 static_lock_cla=
-ss!(),
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index 10b6b5e9b024..447fec291cdf 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -127,8 +127,17 @@ unsafe impl<T: ?Sized + Send, B: Backend> Send
-> for Lock<T, B> {}
-> =C2=A0unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<T, B> {}
-> =C2=A0
-> =C2=A0impl<T, B: Backend> Lock<T, B> {
-> -=C2=A0=C2=A0=C2=A0 /// Constructs a new lock initialiser.
-> -=C2=A0=C2=A0=C2=A0 pub fn new(
-> +=C2=A0=C2=A0=C2=A0 /// Constructs a new lock initialiser with a custom n=
-ame.
-> +=C2=A0=C2=A0=C2=A0 #[inline]
-> +=C2=A0=C2=A0=C2=A0 #[track_caller]
-> +=C2=A0=C2=A0=C2=A0 pub fn new_with_name(t: impl PinInit<T>, name: &'stat=
-ic CStr) ->
-> impl PinInit<Self> {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let key =3D LockClassKey::fro=
-m_caller();
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Self::new_with_lock_class(t, =
-name, key)
-> +=C2=A0=C2=A0=C2=A0 }
-> +
-> +=C2=A0=C2=A0=C2=A0 /// Constructs a new lock initialiser with a custom n=
-ame and
-> lock class key.
-> +=C2=A0=C2=A0=C2=A0 #[inline]
-> +=C2=A0=C2=A0=C2=A0 pub fn new_with_lock_class(
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 t: impl PinInit<T>,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: &'static CStr,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 key: Pin<&'static LockCl=
-assKey>,
-> diff --git a/rust/kernel/sync/lock/mutex.rs
-> b/rust/kernel/sync/lock/mutex.rs
-> index cda0203efefb..3675ce244e08 100644
-> --- a/rust/kernel/sync/lock/mutex.rs
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -11,8 +11,7 @@
-> =C2=A0#[macro_export]
-> =C2=A0macro_rules! new_mutex {
-> =C2=A0=C2=A0=C2=A0=C2=A0 ($inner:expr $(, $name:literal)? $(,)?) =3D> {
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $crate::sync::Mutex::new(
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $inne=
-r, $crate::optional_name!($($name)?),
-> $crate::static_lock_class!())
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $crate::sync::Mutex::new_with=
-_name($inner,
-> $crate::optional_name!($($name)?))
-> =C2=A0=C2=A0=C2=A0=C2=A0 };
-> =C2=A0}
-> =C2=A0pub use new_mutex;
-> diff --git a/rust/kernel/sync/lock/spinlock.rs
-> b/rust/kernel/sync/lock/spinlock.rs
-> index ef76fa07ca3a..091167ceda66 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -11,8 +11,7 @@
-> =C2=A0#[macro_export]
-> =C2=A0macro_rules! new_spinlock {
-> =C2=A0=C2=A0=C2=A0=C2=A0 ($inner:expr $(, $name:literal)? $(,)?) =3D> {
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $crate::sync::SpinLock::new(
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $inne=
-r, $crate::optional_name!($($name)?),
-> $crate::static_lock_class!())
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $crate::sync::SpinLock::new_w=
-ith_name($inner,
-> $crate::optional_name!($($name)?))
-> =C2=A0=C2=A0=C2=A0=C2=A0 };
-> =C2=A0}
-> =C2=A0pub use new_spinlock;
-
+Thanks!
