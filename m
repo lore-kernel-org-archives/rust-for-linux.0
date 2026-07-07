@@ -1,163 +1,120 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437B641D4E7
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 17:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783444330; cv=none; b=c+L/Q03F0y4UgtaLmh79nTFslJSvPejchTd24T9K3npWGCcUa/y1cU44iaTOZBs//ZX5MrwEDz/ABzOgT0kYBrgLo1814vISSComcnKD/vSaGlrziF8AX5vqVqmalx3C03vvY64yrC/D/XIpz08pGMS0nClisXL5RxeOS5yED18=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783444330; c=relaxed/simple;
-	bh=MZlwoLji55LDEIi/ba35T6ENHdW58XbSVzpHtLVVU/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OuVeEVm9Oh+3GMHp9Vcer+8S0cGNhBDp1GzfcIDHlQI4pB2Pmr29vIaV/NMDkZh0Zt54vvbtbezxQTeB7CkelPzzm5HLaLXnJB46OR5cldpC+0tjDfX4mCyOCO7usyPJajbXhCPd76rsdtWzaH5X4AQlPe9CXanxyFWvLIBPxUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EV/JdUb6; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBF0437857;
+	Tue,  7 Jul 2026 17:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783444515; cv=pass; b=IJrOe0Zlh3ol/ng9VpuUbbgIiLNqaQZq5tceSHPc0nKswkqVksFVwaVyYqHw9qWWB8ltnuN6dGq0WgNVDFm73S8nT49xfqdJIHIDU2EeWNVxCJFGoaSILJPa3cfFljmrSyzTC/S0f7oa5aS08nrscdpOmIV5dEE3M4ggjN1XytA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783444515; c=relaxed/simple;
+	bh=Fk3AkZVjgqLR06RoMyFMddArIDiVOz+n2M7Zso8MwdE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=CIIxNkXV1CmGcT2qYTBUXvB2Dbni58HwFEXBtUlOpB6jNn1XOwUxZfj5nRJAGTz5w5jaJsFsmne2QzWUF367Fe8SnCU+jLVFgeD2Gjln/0a4VqOrV2ivwSKVrBj4DGV56X2je+quQsLGAHGfs4a8zvJ72Xgyx4zbjDesIu8T1EQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ORVn9N7W; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EV/JdUb6"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c966b9ee9cbso2136180a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 10:12:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783444328; x=1784049128; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=maQBLqx55rvjjXzubLY4/j31Yf1uTR7Ozp3LJ/moHrI=;
-        b=EV/JdUb6kjTivWB19ymx2uqv31cJ70uyFWylooFay4tlvPa86F+2M/AyLl4Pz8TJ2I
-         z453Cp2Ftbfi44fReNhSmry3oqvcsHEpbR0ptongxoEBSKMqk6F4UggODFn3sRvrcweU
-         J1TWsQqpASNi7t28bRaDZieILIzxTDs1h5p9DQ+wdX1Cw5JhBwIq2h0Mp3lHoEU3gQTD
-         AXfLEp1OuYqZa7jyouVpFM4D3Vfk3Prhf61NlETbQSzAt4xA81xE5JYg8L80Tojs4BBW
-         tgkAuXlOuyYsb/UA1+zfXOaWv5em78q7EBodbjmyfgncRd/Xe4LbyOxl244oHoiNYVNO
-         uGJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783444328; x=1784049128;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=maQBLqx55rvjjXzubLY4/j31Yf1uTR7Ozp3LJ/moHrI=;
-        b=ey/VQqXwULQVMTdkH+rxm1udz7sCkyd8T0TvmqXc6LqE+4gQFF0q9/z977KjJ2GcYK
-         l+Jb6mz3/zKsx8DtCZdypULtVFKBp8IfLGceuXMESCV59kONFPavf3GdxhAURBHXvdBY
-         g+5tzWM6L55qEzpW+p2jZQLkgpLDLLqyxIh2a6vMHjcNLORsB2bM2HM30zY/S4B1x3Nc
-         Q9pYIYwrGBA2tdcRvf13P5alwNt6ngsdMjMAGMhh6Q7QUDHyknxx9liBai5u3uXIipSH
-         yT9vRin0GImivWc80WqjhsNqS+GRYxJNjNfsrZYof+PcE9z9+fJfC7ZamWDYxptlP3hZ
-         XSfg==
-X-Forwarded-Encrypted: i=1; AHgh+RpLO/PWL13YoeTrWQERJIsQql8Rf+0wV1FaGPdpjdMsMw3koo4BlEwGpBbv/uRQ7UeQWTh7NNrcq74F8W27sQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcEp7sn3M7TLS8CPi6uxVc/+d1AV+ePv3/lM+yPX2B6Z9T+EWM
-	YuHhezAmVLvstjFkBLBgZlVXOgbfhNMyUUzrjod45Hx6Qgpxk1j0Oz1s
-X-Gm-Gg: AfdE7clb7+rCMXE04AuRHsP5sVT4DSk/nxNMwvA3y3pg8jZfijZZhEu3lvw9DhIpQx5
-	KHqDHYteaF60Ytb7QR9mqaSSAPqp5XVS2kejm3o9cJuKD32b7464dUSm231s6wdmKinmhno+qGH
-	qaoC9M5bTiWconFTKpMpDmTNAzIhoNTTkc7nEubynLIbljRuAMvDepZ62jMFeOpy5msS5s3cPDP
-	D4B6i2ADWUxkl0AA5iOszn4hZ5zC43J0p3oZ3Sa6/0w9MIemxoBpGAxFNnn230Smx+mD4nselHa
-	60eArVO2B21q8z7ZxjCHL0dlKTIdxeZGm5N7RLqRD3KBJWqkoveqbfyNaD1aOQUDEpNY8O0l5fx
-	tLrNQy3MGPoRc6M5++hLXDFH4w19Mp9WIEpHuKtT9QJrtMwHQ4594yevowUulJ9iCDGn8Xj1s46
-	0u7KUs6JEcg3Tj5AYOeZooWumG2KBtn7xJ7uk5iB/EnC53LaZMONNUwYtftBVT
-X-Received: by 2002:a05:6a21:e098:b0:3bf:e94e:e38d with SMTP id adf61e73a8af0-3c08ef09cdbmr7227999637.43.1783444328420;
-        Tue, 07 Jul 2026 10:12:08 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.236])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659d8da9sm15539333c88.14.2026.07.07.10.11.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 10:12:08 -0700 (PDT)
-Date: Tue, 7 Jul 2026 22:41:53 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, maddy@linux.ibm.com, 
-	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, peterz@infradead.org, 
-	jpoimboe@kernel.org, jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org, 
-	ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	dakr@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, daniel.almeida@collabora.com, 
-	acourbot@nvidia.com, fujita.tomonori@gmail.com, gregkh@linuxfoundation.org, 
-	prafulrai522@gmail.com, tamird@kernel.org, kees@kernel.org, lyude@redhat.com, 
-	airlied@gmail.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH V16 4/7] rust/powerpc: Set min rustc version for powerpc
-Message-ID: <ak0yWkEQtCzBt9qe@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260520064630.1785283-5-mkchauras@gmail.com>
- <CANiq72nPOMkZXpMpwTLFg4xjFfmyf_O_x2FN_nrNBsxeNu178Q@mail.gmail.com>
- <ahVb4k-2rC4EYZF9@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <aj4gAdy2siBxONpo@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72=EVsTFkQK3LWrT2Gs5UKKViemGkv1WuitY6NOEtvcsNg@mail.gmail.com>
- <akH6yuDH9ZwXVoVA@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72mj1P9QykK6vbPK37hZkMLwd7RcgVWEcxxuE=9OL+4bAg@mail.gmail.com>
- <akNXvfSfue7_3tyd@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <akyiZBPCaZOOyTw6@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <akzTCxnSgxba7Yen@luna>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ORVn9N7W"
+ARC-Seal: i=1; a=rsa-sha256; t=1783444482; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=II9cW/m5Vv18fw/Fz0WLyRsiGR6pKU06k+7ZwMGqReK255ZDRP+Jcp5dBlcizDWNyvEanGLJAxhtbX2689uNiQHmw6Wa9j+MeejeWwFXdRa3Ncl0GBynkxxAnywIU1y/SXh88KtqABYgZGvhyTmTfatUwJ3YXgWTJFyTLnnGjLk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783444482; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=fEaD+gRjp8aYJ0as2zjJ9AwHePMS8+98otLPU9UgGEY=; 
+	b=NF3cGoe+89Uz0P9E6l0xjqep6c1vBs5OJJ3jFlQYC94rlcmLovPksrhYRmUI7e/1t+kOWHicCBLvO14LH3btunv4gfXdtllXAcfzHSRxzc6+82CHXvuaV37slE/Y56sDnPSRM9Us1YGpWIGEFGfxdFKZavuEJ5VgKK5GzuUw+ms=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783444482;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=fEaD+gRjp8aYJ0as2zjJ9AwHePMS8+98otLPU9UgGEY=;
+	b=ORVn9N7W+sewhCy0ODkKQiTiYiIu8blGoZgZYks+GXl3DwIhze+UBxhL88yseY7q
+	KZsWnlwNvAalMQUWiqQ/AUv+RVX3Em9Tfc0Exhem3ygzUzXJLA3rbf48HlVJnyoKL0X
+	dhD/xcgwYmXTkDul9KnOmpl+HpUxZDMb/qKpIKTM=
+Received: by mx.zohomail.com with SMTPS id 1783444480458298.4850949227821;
+	Tue, 7 Jul 2026 10:14:40 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <akzTCxnSgxba7Yen@luna>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 01/20] rust: io: add dynamically-sized `Region` type
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260706-io_projection-v6-1-72cd5d055d54@garyguo.net>
+Date: Tue, 7 Jul 2026 14:14:20 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ nova-gpu@lists.linux.dev,
+ dri-devel@lists.freedesktop.org,
+ linux-pwm@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <9AC77170-279D-4C0A-89F7-8D07F418AADF@collabora.com>
+References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+ <20260706-io_projection-v6-1-72cd5d055d54@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Jul 07, 2026 at 12:20:59PM +0200, Link Mauve wrote:
-> On Tue, Jul 07, 2026 at 12:41:37PM +0530, Mukesh Kumar Chaurasiya wrote:
-> > On Tue, Jun 30, 2026 at 11:15:03AM +0530, Mukesh Kumar Chaurasiya wrote:
-> > > On Mon, Jun 29, 2026 at 11:11:44AM +0200, Miguel Ojeda wrote:
-> > > > On Mon, Jun 29, 2026 at 6:57 AM Mukesh Kumar Chaurasiya
-> > > > <mkchauras@gmail.com> wrote:
-> > > > >
-> > > > > Sure i'll bisect. Meanwhile i would still like to get this upstream.
-> > > > 
-> > > > It is very early on the cycle -- I would suggest bisecting first.
-> > > > 
-> > > > But it is up to ppc, of course.
-> > > > 
-> > > > Cheers,
-> > > > Miguel
-> > Hey Miguel,
-> > 
-> > I was able to bisect this. This got fixed in 1.87 with
-> > #![feature(asm_experimental_arch)].
-> 
-> On 1.85.0 though, with this feature allowed, the kernel gets built
-> perfectly without any need for 1.87.0.  You might want to require 1.87.0
-> only with altivec enabled, whereas on 32-bit we can build on 1.85.0 just
-> fine.
-> 
-Even without altivec and vsx disabled, It's not building for ppc64le.
+Hi Gary,
 
-Regards,
-Mukesh
+A bit late to the party here, but going through this series one by one :)
 
-> > 
-> > 1st commit that contributed towards this is
-> > e4f539ea17a3 ("Bump to version 1.87.0")
-> > 
-> > This caused another issue to come up while building
-> > 
-> > ```
-> > error: extern blocks must be unsafe
-> >   --> /home/mkchauras/.local/rustc-src/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/powerpc/vsx.rs:38:1
-> >    |
-> > 38 | / extern "C" {
-> > 39 | |     #[link_name = "llvm.ppc.altivec.vperm"]
-> > 40 | |     fn vperm(
-> > 41 | |         a: vector_signed_int,
-> > ...  |
-> > 44 | |     ) -> vector_signed_int;
-> > 45 | | }
-> >    | |_^
-> > ```
-> > 
-> > Which is fixed by 
-> > a78d1b092c9c ("Update stdarch")
-> > 
-> > Both these commits went in 1.87.0 and fixed the build.
-> > 
-> > Regards,
-> > Mukesh
-> > 
-> > > Sure, I'll bisect it first.
-> > > 
-> > > Regards,
-> > > Mukesh
-> > 
+> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
 > 
-> -- 
-> Link Mauve
+> Currently many I/O related structs carry a `SIZE` parameter to denote the
+> minimum size of the I/O region, while they also carry a field indicating
+> the actual size. Proliferation of the pattern creates a lot of duplicated
+> code, and makes it hard to create typed views of I/O.
+> 
+> Introduce a `Region` type that carries the `SIZE` parameter. It is a
+> wrapper of `[u8]`, which makes it dynamically sized with a metadata of
+> `usize`. This way, pointers to `Region` naturally carry size information.
+> This type is required to be 4-byte aligned.
+
+Why 4, specifically? i.e.: I wonder if this breaks u64 mmio accessors?
+> 
+> Expose the minimum size information via `MIN_SIZE` constant of the
+> `KnownSize` trait. Similarly, expose the minimum alignment information via
+> `KnownSize::MIN_ALIGN`.
+> 
+> With these changes, it is possible to add an associated type to `Io` trait
+> to represent the type of I/O region. For untyped regions, this is the newly
+> added `Region` type. Remove `IoKnownSize` as it is no longer necessary. Use
+> the same mechanism to indicate minimum size of PCI config spaces.
+> 
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+
+If MIN_ALIGN = 4 is actually intentional:
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
