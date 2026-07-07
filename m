@@ -1,56 +1,54 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F153EB0FC
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 10:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9453E717B
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 10:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783420150; cv=none; b=aFJUV+OLTrJwdMrHOQZwYf4VXR+c8G9UusHnVupt4zNRWe1Kr8FlglVzhP0eG9H3JscB+Anm0Hl2HfAX1xnGnzWL1Z4c8FR/X4io4EYoqhKbc9uJR+v/mND1adU45rdhCWV6rEPVCiyLJoRfEvP8dJ/pUk+hnohPnzY+jHdw0Mg=
+	t=1783420150; cv=none; b=SlBoGCphAntBQxjP/zZe7IimZ7imI1cHoPbtql4WdfR/RQaJ6GcE51zXedEr7u1yef4z+faxu9iX0amsqq2r1GSTeAVlDKGSWaOPJwW9ax65eNCz9avSiE5TScrKPt7wPOhDcsD8K9eIvLeLQzT+QNifCdfUQoao+P/Y3Tzyg3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783420150; c=relaxed/simple;
-	bh=d9uo4Ov6IB4poq5LyLqx4MVAIcepLANVzyDdH34u4Qg=;
+	bh=OIOql2Ourz4XzU76mlFsSHHC5LOroakqKsicPvtBRyI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MjNi/JrdGXqIYOmeYpdRDTGSpA/iM/yxU9OTgvdoLHuyHLjZtmMu0WuuNRCQl/KmN5nkJoTvp852BSpnX5GrcUJn6zaSM1JsQIVdiOCdojAvztF3xMNMiB7M1WFLNm1ylwXEJRSffo7vJxQYAmS4AyKMQYlp0+2+x+Q94D5/AfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=su+l1fmJ; arc=none smtp.client-ip=209.85.221.73
+	 To:Cc:Content-Type; b=AEt42JUwBdGy/d1jrdJs/qJYWFDai2yqRuv2VRIJTeJPvNyx72QKHiKRLU7iyg/UZVmqJSQVS89ocvFAQaqhaFPFq0atTnmqdoid9+4vsS1otpQ4j92zGgqao4bw3jgSbacqgTwL45qlZIw0s7wD6vyAaH/gok2wCaynfKJrgwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c6rbXybf; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="su+l1fmJ"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-476d52b13d7so3059205f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 03:29:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c6rbXybf"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4629f312a67so3775610f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 03:29:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783420145; x=1784024945; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TJWJ4esPjYUB4cc/xhqnzZmWu+Yj9IGbAXKLMFjEL9U=;
-        b=su+l1fmJPEvhJ47Ky0+zvfRgQwBzULwLlqGhFJVpZcGUVA2qjZg9pl18WHQ36jopLs
-         xz7LEK9u2geKJAONlOgtGbHrVAhOmdFkzp4RygEAriJwDA3QtsqezHwbQ5RDhGNf9vKY
-         j9cr8LLhOmKt6lOIDAhKnv5FG1N2l9e7CBNwmjJWFnt5jPvEwqRn/QkWcNR9OIeu7AOD
-         fRfR28m3cB8yXSi9uw1Q7ZAApoRZ6bXcPLZp/VKx6T5AabO+eMRJ6FuV8k4wcj6prbIQ
-         2Fa68oPXEsfPwhFzaFB6cK4a7/V21BxtQjYLiqjs8qCpL4Ekry6gDbppOQFZ397HqcZ9
-         lRlQ==
+        d=google.com; s=20251104; t=1783420143; x=1784024943; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7K+dTUmkn9rcgoO7/BPipiqBM7AbzjBaW4IFdcE78l4=;
+        b=c6rbXybfJWe1l3qgeSy5V4/IuQGZAq2/Cp0jPe+y6rRiYQs2UsCQl05ng8/EP8ycql
+         fsvc7xV1ZvgCq1xEI7tpK4BDKa3PRg2b5an/fPxtOlwDAzE9HIerkjfr1R3OeWLZo56x
+         lIA6HM5fBqPC8aAL7UPvERcMseKFLV2WwwwTu9yIvYGUwNm5Mmw1skwj0+zgvKxaUF/x
+         OooIgJBwyYtj+VIuWjdprsNmofXukNPseqWMjEkxNTsfC8Gnft7bYLTcK6An1qYv369a
+         Hi1Is6tj033PoZjxggs7nOC/eYgVCbQHm9sqIiFQ8cBNxBncbCEM/cLMqZY36xlz7xic
+         OJXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783420145; x=1784024945;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TJWJ4esPjYUB4cc/xhqnzZmWu+Yj9IGbAXKLMFjEL9U=;
-        b=YUGDbY9iPk1s9atN2ZX8cOmHr8fwtgDecbdWRZB2WG8C2srevFGdbmQEy2v30u5vcn
-         Mr00frfMu/Hhie4G6s8y8EiC9ark2xctetRxYB93sysMNFmCsOasZFjAunSWUIwU09+t
-         D4L4DAY7nrerPskQE7xlV0jkRIat51+DvMiUbTEXqw7llvkzjCrSYAIEYtK7MAGJknpO
-         LJkCVnbbu84bjhhzqcirp6UWzewUw0yIjwxMUU4uqpfg5v8+V0wRKCcGPWo3/vMBweTr
-         /wbbwk2O0Z3Wvpct9uPM+3CUjNtIXl7tJpU31ADIJcqZPRHtdxu5DhdPmQoo5KJnfNnk
-         +EWA==
-X-Forwarded-Encrypted: i=1; AHgh+RqggOkJLlxshKma5TDrAphFbA3a/TKmK8MzBoerJsuxf/IUjga8VjskL4QhdTegQ7F6de3IOqY29sPUNbwiQQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFcwa65g6TK84Qf3zjnoYZrnUVtNHLLDmpfkYebaHNsxWPk1gs
-	UtIzht00NLhbmizogsW/0sC8xqeHHZlwirY1R73ZewPracVkr2YsAFeaCl5tapVsXBFeGeAyX4k
-	a5quIeKOVnyXkQjmN0g==
-X-Received: from wmqe6.prod.google.com ([2002:a05:600c:4e46:b0:493:bd80:da9b])
+        d=1e100.net; s=20251104; t=1783420143; x=1784024943;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7K+dTUmkn9rcgoO7/BPipiqBM7AbzjBaW4IFdcE78l4=;
+        b=JcYUXv5mHCDj/UEVu3/5nDvKVoyDSa4L1QAu4AkfP8wqZ2uge+vjjpTdWKJXdbviPZ
+         hsCNIvd8SWaWzqhjOOOV08VrNdqjtcyZZoh2ebEYO1FpSQsJ4/gyZ3S5tZVzH3U2Jmip
+         rq3XE1RRHw68zz2WNCtWkKC9j8ybT66h85ma+iGyoJNEJUbTYyM/dnzx5EIyX07WC9n5
+         nBY2mLEVIJyvn94FZSdm6uOwrvFNoG/Jh0Tr00U24PfxjEGrqQjVMKUKp6bjpAF1CGok
+         37Ny+yEQkiVdtuiZ39pdmqocO8nuRbiKms7IZm9NKC+IwTwARHqUNL4QWHUOf19P01GO
+         zryA==
+X-Forwarded-Encrypted: i=1; AHgh+RrnzS8TxPoxL6rDRIwgT+9t+rlBrBgctMIJeWB23FBZqrwQhG/geRqqEH4//J7U5Zh5EOFmwkHS02KQDOf2dQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGgxjSRDEX9DxhpI9XOcNbR3gECT/nTzS/V622X9LwUqCX+Vaj
+	5X9sq4NKT7XwlSNxBw3vqBKGKOm9W9LLd9Bmq46WCbC+JToq7mLyZYE7RNVKreSrYZXV8Lqrxgd
+	Aoluw4aUhgkZy1mkWnw==
+X-Received: from wmbds15.prod.google.com ([2002:a05:600c:628f:b0:48a:79a9:335c])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:19cc:b0:492:5145:f054 with SMTP id 5b1f17b1804b1-493df0930a6mr53083905e9.26.1783420145097;
- Tue, 07 Jul 2026 03:29:05 -0700 (PDT)
-Date: Tue, 07 Jul 2026 10:28:53 +0000
+ 2002:a05:600c:3483:b0:493:c548:87fb with SMTP id 5b1f17b1804b1-493df0b594fmr43870215e9.36.1783420143300;
+ Tue, 07 Jul 2026 03:29:03 -0700 (PDT)
+Date: Tue, 07 Jul 2026 10:28:52 +0000
 In-Reply-To: <20260707-binder-noderefs-spin-v4-0-7c3c8bc16339@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -60,22 +58,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260707-binder-noderefs-spin-v4-0-7c3c8bc16339@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1258; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=d9uo4Ov6IB4poq5LyLqx4MVAIcepLANVzyDdH34u4Qg=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqTNTqxiDDl2Th358yp5g/ZfXTmA1c/6R1sMupu
- lcDYLLqqFiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCakzU6gAKCRAEWL7uWMY5
- RgFUD/9N3SHUyo1n2ZPmqIJL4YMTAAPBEKOGWiB/o24RKZGkL6Bh3f6Goa+spVc6tHg8O3rpo2V
- hMtLSulPFS7RFtpc4y6zzRgJn8MYDKdaYgypKMYQ89vqLn2GMEoBFcgEN3zCOIzvM7UckmOlbRP
- VM6WIitl2kEae0kzGWM9zgc4NrQ5qWFH+2TDMU/swBRSfRfykEy+h3OGpzTd39nK0Hd199NeDP4
- iwCAqWQvkoWa6T+QWfsvEVs1GT1GjMgzEJI+y19hP6X10ZyyF47Cf/wfs7oENJPm3cEDIXB/usM
- wBu5zLSgeeiQ1EZFN+p+edq1XopN98jo0eDrf61twJC+GsdKnTRCrSqPes1xDi5UYUJnr+AFWlG
- xPX+IgZVYM6vFe9BvQtOf9hjwt3PCzm+rKkP0RE20oAcFmDOsIT0mR+YfYWU5Ccqz3fDqOjsK8I
- Fh9UCCwg4ShlHtuUvtFPQdByjsejsmZqSsn30y2HcVuak8u0CdffCHZyZeuQbv/klUYaJiBv5jV
- /20sR151uyZbqADhjrk+TJQ3Dy88vf2akaTII54bLf0NJbxU4bBJ6ALB5yuequOSKLG+wUbPLwe
- iVODejqpzADmvfsyeMZtOIn+6Oe0i0DkhDO9n2XRqJMZfUP1pvnP8gn8Ey13It6seFQQrKWy9Uv BmQsP/wTVb1idXQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2730; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=OIOql2Ourz4XzU76mlFsSHHC5LOroakqKsicPvtBRyI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqTNTqulADPZWsBJPlpOlmsrRhoRPS6XhRiYvlx
+ Rd4fI3dQrWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCakzU6gAKCRAEWL7uWMY5
+ Rp+wEAC7W25QFKm9VfGunUYRGOdFgG74zBbLJTArmeh4G0IkIkmb3qzdPF8r8InqcunqqrpClq/
+ xTQ8Kx9Ab4M4YTCaFiF6AXa95VvbA3z/iDEEaFarUubqeWI5AV0cnfbmOQY5M1zbWDZkYkl4TGM
+ r2tUx8UJ1czj9Dg4b2EkKbQVO9wKcHnRXWH9gjpNbHBTDOUFc8Xz7crry8lMe5a4t3+AvQo0sI0
+ Pvxw0+akLjaRk46Cx0tr2ZK5JbmtdN0nnDvK/j10vTeKCJUWPbmxohtsAyyt+FlN6eYDSG9Je6c
+ xcg4WfV/DHX90M1RghCutKL/1DzWgthWk5KW1HK1oGs4rvkajlvBQYtFfZr9QVy02zJjdi+gEK1
+ XpMudX8eHYK5GpFSMlccryld3lNzGOO+YEpCt7Aeh6Y37gI/jyPcgSn8S1BtM6sQCYuzPxHxsAN
+ 6MJkXHvG3ShxKQModUI64YXg1+GB4Mc0/iAa/XvtVHooATTlHyRctmmPkFFsF5vn1xw/6+fCteb
+ nD0XcMaFeZrxZrDAmCEd5gy4uShebnSh2c3lbP/svRiTwx20XGxcrSybCz+9NxOKZt7WF8N1Jrs
+ HHJ0rSrhUKVGgHb6Vz7boyCIoVtG7BxWhu293xos3EuXIi1FnNin+VhXG7yS4THFLTMoeGvT4nt 64nbRNmEKq80gag==
 X-Mailer: b4 0.14.3
-Message-ID: <20260707-binder-noderefs-spin-v4-3-7c3c8bc16339@google.com>
-Subject: [PATCH v4 3/6] rust_binder: schedule NodeDeath outside of node_refs lock
+Message-ID: <20260707-binder-noderefs-spin-v4-2-7c3c8bc16339@google.com>
+Subject: [PATCH v4 2/6] rust_binder: avoid dropping NodeRef in update_ref()
+ under lock
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -85,32 +84,61 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <ga
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-There's no reason to hold the node_refs lock while scheduling the
-NodeDeath to the thread todo list, so don't. The call to set_cleared()
-is kept under the lock so that the state update is kept atomic.
+In preparation for changing the node_refs lock to a spinlock, move the
+cleanup of NodeRefInfo in update_ref() so that it occurs without the
+node_refs lock held. This avoids dropping an Arc<Node> with the lock
+held. Furthermore, the NodeDeath field is kept in the NodeRefInfo to be
+dropped outside the lock as well.
+
+The removal from the rbtree is updated to use remove_node(), which keeps
+the rbtree node allocation until after node_refs is unlocked as well.
+This is not strictly necessary as it just moves a kfree() outside the
+lock, but there's no reason to invoke the kfree() under the lock if we
+can easily avoid it, so avoid it.
 
 Reviewed-by: Matthew Maurer <mmaurer@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/process.rs | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/android/binder/process.rs | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index da84c0072d46..505e0bc52748 100644
+index 3b8eeac666bb..da84c0072d46 100644
 --- a/drivers/android/binder/process.rs
 +++ b/drivers/android/binder/process.rs
-@@ -1303,7 +1303,10 @@ pub(crate) fn clear_death(&self, reader: &mut UserSliceReader, thread: &Thread)
+@@ -946,15 +946,19 @@ pub(crate) fn update_ref(
  
-         // Update state and determine if we need to queue a work item. We only need to do it when
-         // the node is not dead or if the user already completed the death notification.
--        if death.set_cleared(false) {
-+        let should_schedule = death.set_cleared(false);
-+        drop(refs);
-+
-+        if should_schedule {
-             if let Some(death) = ListArc::try_from_arc_or_drop(death) {
-                 let _ = thread.push_work_if_looper(death);
-             }
+         // To preserve original binder behaviour, we only fail requests where the manager tries to
+         // increment references on itself.
++        let _to_free_by_handle;
++        let _to_free_by_node;
+         let _to_free_freeze_listener;
+         let _to_free_freeze_listener_cleanup;
+         let mut refs = self.node_refs.lock();
+         if let Some(info) = refs.by_handle.get_mut(&handle) {
+             if info.node_ref().update(inc, strong) {
+                 // Clean up death if there is one attached to this node reference.
+-                if let Some(death) = info.death().take() {
++                //
++                // We remove the entire `info` below, so no need to remove `death` from `info`.
++                if let Some(death) = info.death().as_ref() {
+                     death.set_cleared(true);
+-                    self.remove_from_delivered_deaths(&death);
++                    self.remove_from_delivered_deaths(death);
+                 }
+ 
+                 // Remove reference from process tables, and from the node's `refs` list.
+@@ -971,8 +975,8 @@ pub(crate) fn update_ref(
+                     }
+                 }
+ 
+-                refs.by_handle.remove(&handle);
+-                refs.by_node.remove(&id);
++                _to_free_by_handle = refs.by_handle.remove_node(&handle);
++                _to_free_by_node = refs.by_node.remove_node(&id);
+                 refs.handle_is_present.release_id(handle as usize);
+ 
+                 if let Some(shrink) = refs.handle_is_present.shrink_request() {
 
 -- 
 2.55.0.rc2.803.g1fd1e6609c-goog
