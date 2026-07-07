@@ -1,145 +1,234 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011001.outbound.protection.outlook.com [52.101.52.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164FC3BE642
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 07:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783408316; cv=none; b=j+xROwywrvM3UppXlursDmYAK1ZBxzB8a98zNYPIzktdyPTiS8G0SjuVFYPHLwbFonb0yf+p4uMf5DLcgWASg+QHogwCTQ0WLI3lHm+ZpkZNGJvLs27tnGkg4uJmCoF6C3YKFqvfd/BtMokK2tOUvwxiuHhWF+Uh3pXIyufxvtY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783408316; c=relaxed/simple;
-	bh=dYEdQ18sgc+rSkPRjPzl6r1N6/BcC4c2WoZoXXxoK4s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kbGkmyK/wCJ38Ly+wB0oWhhCI7P1jLb8MlTA+ADmTnpgXzdEhFgoX8ZflgQptmX1tLo73p8Bp28ph+B1BQn5U+YvZCuM+DhwwdYg3XQV+tJ1nWT9FlcwmsfGfbE+qX3H+4lWQXzK5dvhNmipPOnud42vYEGlinb/MZxB3nl45No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gjuRJYVT; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9A93DD857;
+	Tue,  7 Jul 2026 07:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783408927; cv=fail; b=WIdNIwB6A90lDXxt3IAy47Yum74N9V0W25/g7e2F0IoFxwNqPKgcFQLtRJoL66uqWwA/fTNuNUasvCUiY/688e5rF0y168rdOK6xFr0WwgYo7Vyi/Q9R7uEsWnu/HlNfraqDNJW1aAAySzIvisfSnrGJMKn02e/CWWfbbdp8j5g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783408927; c=relaxed/simple;
+	bh=0CQw30W1OhsmpbJ4fM8Qx1j9rVZgDijAgemoDz3LHQE=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=E/VFjomWXmo3kCG687/uD/WVS/Gf9cJHBbkXycbyVXuj7K2Lx6MxLCxnkLK5B7UyCQN+k7N8NpCykcOME3eQ2ZHWGqKEH9t2B2lmzjtxTSQnPzPtaq7ZhGG1BzhMHXfKbysiSMaNtpvPajfwNijBKFUJRWWT0MxRkzPMwlz1kuM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NiyopKc/; arc=fail smtp.client-ip=52.101.52.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gjuRJYVT"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cacb8416a1so31925295ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 00:11:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783408311; x=1784013111; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uKV78wv3WbZUmoFpUcsGcDjAxX6ML3nr/lm0iF69y48=;
-        b=gjuRJYVTs27aW7Y7XGnAMm3P80N1o0Vdwn+fsQbvx2QFfc5flvyW4u9/hFCHuYp4MX
-         2n9YDPHuFcz/7xzxlXoDvGMv1OUUTrX6vDAO2FPq+ts6NlNTtXSIEe+dftERJWXmzw5u
-         xOfHOowxqg1Pu0oFTaVtcrfhy57cFL3G5PS+gw2Z2u+XtBNFHsV7TDSMqXVOMNkxiXO2
-         owtF3i/UMiCP22UYvG4EwrYKNkGlb/XvarRSvVahlzM/bISw30BIU5UHmtnelUzG+mao
-         PslXC+iqoC5hy0C9TMMH12BKx6PsgvOdmlJSlMOrxa0pESuKP/o09kMQ7HWVUcmJuNgL
-         4UOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783408311; x=1784013111;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=uKV78wv3WbZUmoFpUcsGcDjAxX6ML3nr/lm0iF69y48=;
-        b=WEagbA8ykQAtN3R015g3RtjhbkQ9a2jM+6NNuz+Eqjinx20Zn+y2fO0JYobPpLfuC+
-         76o6ijDBR90a7ItllofV9z1D/s/jsiIt8HWSH7Ry6PUKbvRuv6RWzaHImskkhd+71mvs
-         2pek38qbBS+wx2WAwLkX6WciA0RycbtuLFM5bXJvVJUJc/cPh/vLrW4+AXtInXe9+9fK
-         E0fiOSM6c9ODPHBvpbzG/vG9yoUWCoDCGlaXlk2O5HC4g1EyNk20BEaMT8WMN4mFIiNq
-         uWsY/xuXHOyH+4mOhqwFEgGC7GsalQHf17uC89N1V5/JVaByFrvGdwZr9dRWMfFNao4p
-         dDKg==
-X-Forwarded-Encrypted: i=1; AHgh+RrBoPWd0+3qJGMad5sz9Kfgzm/kguCDVD/2vdy1zgVpaZ355MjQKjJnQOuwVZmWxLQYSsL2gLRQ20MxqnJw+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmZhBCWHJilU+AY8nGoiUzmV2MXpzeclkZQa7ql/tluBryXMi7
-	bIk2ctV7kAhdltsjACwa/h5IH2iCHEC136TggjR/Sy4S7p02BgjCA7EH
-X-Gm-Gg: AfdE7cmQzOYj1LMyWIUXdLF63BTq2WPRYbtdyOSDaI4ZhseMzkfFi5ZF2BhDBW0adZS
-	36LFJsYc/T4t7HqADV91Qwn79RNDCk9ErgfZFDCWbTFs2UDHBS78ZrG6Pj3OVLNtlRu9x2btr7Z
-	PJM6cnaS434czb0UCtpnDUKKtJ9t0PyxJ3w9SI/IgU2CjAiH7u4vhOqtd15qWzS6nu2vn3MMUST
-	QpzVRG2pVV0nulKIFUV33hDmpuWmyk6zVMJKuDfzB+wcHYEvZUlGcDdfWQAovb7wwmPCWi0goeD
-	YD81Hw/6XcEwJFAiz8Yl0eLX67IqSM6v6FKbqiJ5E28nzf5UnB29/h3g+NhhRnoAnWaDD2w16MV
-	WratjH/GA1ej6mUzQt7tHooLlxocf8Mh7t1oq3r+0MXlWVZCChP5M25sZdy09rez+XURaod7Gkt
-	AbtX+hyEvCUd2GFF8hvI9fntjtcPCHwv2MNawmZLAv2FVSRB0SFUfKJFjghqeFVXzaaZMu2YI=
-X-Received: by 2002:a17:903:4683:b0:2ca:be8:62d with SMTP id d9443c01a7336-2ccbf085003mr50131725ad.32.1783408311212;
-        Tue, 07 Jul 2026 00:11:51 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.236])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf74cbsm6556115ad.18.2026.07.07.00.11.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 00:11:50 -0700 (PDT)
-Date: Tue, 7 Jul 2026 12:41:37 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	daniel.almeida@collabora.com, acourbot@nvidia.com, fujita.tomonori@gmail.com, 
-	gregkh@linuxfoundation.org, prafulrai522@gmail.com, tamird@kernel.org, kees@kernel.org, 
-	lyude@redhat.com, airlied@gmail.com, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH V16 4/7] rust/powerpc: Set min rustc version for powerpc
-Message-ID: <akyiZBPCaZOOyTw6@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260520064630.1785283-1-mkchauras@gmail.com>
- <20260520064630.1785283-5-mkchauras@gmail.com>
- <CANiq72nPOMkZXpMpwTLFg4xjFfmyf_O_x2FN_nrNBsxeNu178Q@mail.gmail.com>
- <ahVb4k-2rC4EYZF9@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <aj4gAdy2siBxONpo@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72=EVsTFkQK3LWrT2Gs5UKKViemGkv1WuitY6NOEtvcsNg@mail.gmail.com>
- <akH6yuDH9ZwXVoVA@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
- <CANiq72mj1P9QykK6vbPK37hZkMLwd7RcgVWEcxxuE=9OL+4bAg@mail.gmail.com>
- <akNXvfSfue7_3tyd@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NiyopKc/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fcPyZRv8Qaq8g+je8e5wEBU4gFzp+R/2beLAlZlmuAqp5H82AdRrWF97aeYK2biCmkq+hXuCux79m0MGZoFt0aKmc9o3pgh9hSa6MxYCCMNCzgFw+a/1dScRCuVw1ox6dtCztMMPF/L2TUgism6P2fLAWtm1Wme9iJMC8CcHZl+XzhaZzXf0RAen3pM+8U6cFKqGyd8m5/wowpEjAmETQFxjMrKcbkX4FOydAl18DjzmramqGrkDHYl1B0rRoxe3JFGkPWr8BkIpIJaDvqiTOW9GyHXc8QWEUiNKPVux5TSosCvKNRABGXyRfDsGMPrHICp+sClYh+9BSN+u5TxMFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GtYqRsct2qHhHg9VzrPZpKyLMX+3xvHbHt0UGD9q2L8=;
+ b=ZhOTct9eRnogcqeYcdVYU4yxLsodJQq/RF15cStkmQJr2bYuvFIZRy0gTD2N9OqKpmTmnrawh+6wAf1qcncZQ0k7Fr02x2bPAF2zmKFBYcy7x9aa3+15FnkxEMss0TPGe+udlrw/rTyGvQrNwFPWxH+7uM6E6KNiT79PFwZL6aPHitAvMjTmZ8JZ2rw9PHig5qporW99b7M120L1Qzu0Uu7zXpPzvJHFuf/vvralaC+nPe04DMvQOFJCdA2pX7yhS/EX6ighKXsNrcTZG8REQHtGe/IqxzKkYg3mA4J6ujpNW5QdgtF6Xzn1BsmXMrww1soDUAeFe+BiTzi19hHD5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GtYqRsct2qHhHg9VzrPZpKyLMX+3xvHbHt0UGD9q2L8=;
+ b=NiyopKc/wUWL1g04Bq9LLe8IDumLSztlHTfuRG1LQLWBZpPvalxFpPUz3CNC4ay7nxBpSE3+6HFdDlqYQXD5Qoqy1g1BOCDScFEl5lu7l5pi/mz/EW9F3ZPBMokqmbI9LbJDh04SMY57LXHYD9x03rJsEkmtTJpOJyrQmFKsgAI9hTJyHsVS7oPi1vKIHjc4zzNuZ/12IXsgYItBckure6gB+0OgsP9ctUdHAvkMUPcAbIGy1zH1xrb+x8RMWMKTLZvNmcOAXNihf1mMsfFFgebOVPdFHiqqJ4ekrl3fJB0mvwQDSydAf7pgIhutYicYnWHqvMc+HresbFt44Z2BFQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by IA1PR12MB6604.namprd12.prod.outlook.com (2603:10b6:208:3a0::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.9; Tue, 7 Jul 2026
+ 07:21:50 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
+ 07:21:49 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH v5 00/13] gpu: nova-core: consolidate and streamline GSP
+ boot process
+Date: Tue, 07 Jul 2026 16:21:33 +0900
+Message-Id: <20260707-nova-bootcontext-v5-0-ecad9346387f@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XOwU4DIRAG4FdpOIuBWcDFk+/R9MAysxYTQYGSm
+ mbfXbaaWNNGj/9k5pv/xArlQIU9bk4sUwslpNiDvtswv3fxmXjAnhkIMMJIy2Nqjk8pVZ9ipWP
+ lSkg0UjzQOE+sn71lmsPxTG53X7kcphfydXW+NzK9H/qv+rO2D6Wm/HEu0uQ6/eNnk1xwpaUdP
+ AoHpJ9iCxjcvU+vbNUaXAgANwTogkAkN3thZo1XwnAp3OowdAGMn8ASjUh0Jaj/BNUFrQeLozJ
+ WW/FLWJblE1TWvJeeAQAA
+X-Change-ID: 20260619-nova-bootcontext-401d6107e8fb
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Gary Guo <gary@garyguo.net>, John Hubbard <jhubbard@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+ Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
+Cc: nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TYCP301CA0078.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:7b::14) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <akNXvfSfue7_3tyd@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB6604:EE_
+X-MS-Office365-Filtering-Correlation-Id: 71263ff2-abda-4321-b20f-08dedbf8690a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|10070799003|18002099003|921020|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	S0W9w9KL9e5ND/V1COOQwKyheTXkDkNFdU58is0byhOT9Y8HCJ5OcWi+ghF6SSw0iFaU3PzYN25aYSIkbxmJIfVxrfbCZ3Pwc4YdyRvxP0FLhBvrJITsBHwou52RlX+GomiWx9rMTKNCyQrjxoYjvpxkBmm11WthaeY3x3W7XjskW/g6tdccdv9wdDieW++GaINATp5RyDHBN8Fa6nv58XqIlwA3ikWX8WpQJc9rVqBXpDl3dM1MmzHTI+8ESYP7oPWL8ym0m0YP8pU//+lAvz7A996sh75BrGVTldxRJghUe0+LIkIXtI4cI2/DY4GFQGUaIAmx+Q0HTvfeq/h7NRZoQS9FKG2L3QgvUSMaURmP+g3mO9V/8gMIqfdwrUuW94W3IxgHY+dhoBwTP89EjS9E1gN5s8YJnH1sb76qLCv7pYJOi/m6HrIPTgM3ezo87n1SXgkMwubbzfzuz0BuvDwLXZt/I3dexcwZM+/fn2mEl73AWkq5ABZZhfijV8w0JOjC1u5ysyPIhKVbWxjLolrT7XrzFpjFjBcIagePPh12wOEY8dAAVFb4ZIdOKu1Rm7sWWq5STBgyhQCPyGkdrFTheIx6VHRqDK66r8oxtyJlCy6kRn2iXxhTxYRnd2x6jZ1iGxpiukmo620ZKlLdnw1o+uu3U+5cytHyCIEW+bl6otfN1/rUhxFSSX0IS8vsuDcgF3EB2X0LzNedPosn/A==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(10070799003)(18002099003)(921020)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Ris4OC9hblMyKzlEOG82L0ZoazR5REg0UEZLdjJoMnpDWVNabmZkUU1YNDBt?=
+ =?utf-8?B?MHA5OHVPNUNPNDVJRWJ1S3FmR3k4WXJSUnBGY1FxNjNpVFRNNWlwZjFyQ1R4?=
+ =?utf-8?B?d2xvSmh3Rk5MNmIxQkpmVGVnRGNnWjU1RDBtaWFvS1QrNHpKeHREOVh6NGpq?=
+ =?utf-8?B?SjJ1Ynk5YkQrTlNxa283UDY3Z3lKY1NhUWtTdU5ZZXhXVURzdDFOc0psbmhq?=
+ =?utf-8?B?bjNwM29wTDliZVdNYXdhR1VoQk9oRFZicjVqUWRER3Q2VC9BRFRCUk5PSXdI?=
+ =?utf-8?B?UW0vOXlVa3FhSGU3d1dUMCtTbXM5Zlp3MGs5bWl3ck90dy8xTWRRQWYzakto?=
+ =?utf-8?B?WElHNTVWUTVpTS9PT1ROMkI5Wnc4Zy9oYkxTbktUbkVzVUI0ZlJVQ2dTaHJ4?=
+ =?utf-8?B?YnVkcUN2eXNwYXN4T29JRVNCU2FTcThNRUVGTTFyTElhOFZaMHplbEdaNDJI?=
+ =?utf-8?B?eUQwbUdpQmpST2Rna0NYaHZ6ZGYxQ1FKMVZ5clVIbDZENS8yVUdRcE9JL3dp?=
+ =?utf-8?B?U0xtR3lIWjRKUEtYSDBlWDFvS2E2bWlmME1hYVg1dWZpQ0twNzJDcFp4N243?=
+ =?utf-8?B?eFAwY3ZMdmZrYWFJcVp4Z0h1SHBPNnlienJaNWdZYmp1ZlJIZ1RxVWxtdFhB?=
+ =?utf-8?B?RldBYjdIdVRTU1NKWi9ubElDZkhUblArbDIzdjN4UVE1NjVJSTA1ZEJhMTAr?=
+ =?utf-8?B?WlU2TXl5Z0ZMQ2dOQmRRSGtBakMwMGx1ekZpWWRmTHRsVzlHN0YzTU9Oei9l?=
+ =?utf-8?B?LzFpamFhUlhIbjU3S244Y1BSSTNad042WUV2Qy8xb01BN0xXdmYyc24xQUtK?=
+ =?utf-8?B?UlFoUmdUTDNzbXBmRHFYU3EwSzZQb0tyUTBqbko5SXB5K0N2OUMvcVdhV002?=
+ =?utf-8?B?bnJwcWJ4SEJmRHN6SzdUbG1icy9la1Z4cklHUEhCdnlFaWlxekVUYkdTaHQ0?=
+ =?utf-8?B?aW9pWmUvcG90b01tYTRDSkZPbDg5NFJnN01GUEc0YWJma3REM3VtSW1IK1hj?=
+ =?utf-8?B?OW9MeDM2Z2lwQXBJbS9aNXZIUDBZbmlpMVVBbkVxM1JXdXdSTTlDOWxjTHRB?=
+ =?utf-8?B?ODdVY2M0SDJlU3lQMzhJQkwzdHM2TDZMejVueGVwQklqYzBlVldZcVBjcWpj?=
+ =?utf-8?B?d2tkQmFuRWpCVXB3UFBVREFDREp3dVlBSjNiS3JlbXQ3MXE1S1FnNEJIengr?=
+ =?utf-8?B?M0hCSDZUcDFFcytBTWZhR2VGS0NSbzEzNGYrMlJOb3liNWdhL2JZalVKdlh5?=
+ =?utf-8?B?ZXRoREo1WFNkNmhKd3B0RjNyYWhERjhzSVVtQVZxK0lPK09BdjlyWXNoNUc0?=
+ =?utf-8?B?R0V0U3h3ZVlSRk1zRzI2MzNDSlJsUFhXc1RKOHNHRnE3Z0wwbHFNQTFkeVNq?=
+ =?utf-8?B?b3hHZm91WldZUGUzWk9PeHg0YkJCc0lEaWlqN1ZpQ0ZoT1NBbEg3WVBJamJq?=
+ =?utf-8?B?ZDNFNHlvWG5pRUVORUEzK21VNFFCbFhUY3VNaThsUDhnNmpDcklkTzVtTytF?=
+ =?utf-8?B?RWVuRDdVTlFzSjhzSUJWSlR3RU9oUkdsUU5vbFE5Z096Sm5xMEpQZDZKV2hO?=
+ =?utf-8?B?L1NoWTVBQ1dsaTlFZGpDNDR6K25nSGVQOGxWRlZibGJuaElkclloRTQ5blFw?=
+ =?utf-8?B?bVFVd3pYNHJoVVg4OURqUEJ2S29FTmhwWC82Ry9RUHRFbXdoTDVYTkxQRUlB?=
+ =?utf-8?B?MVdzZnYzOFAvcWFGNUJVL3ZmMTd5ZlltT0pEclpadWdFVzFxSlBibHhaeGlm?=
+ =?utf-8?B?M2NvZzNOZndiUzdPWXROOU1uL3NLODdqY1FrMTRwQ0pWK3l3WndRVDBKVW8x?=
+ =?utf-8?B?bGhrYkdXOTdDTEJIajhYUTVaL1RwdzZVbys1T0hKMmt5ekxxSThleHJoUkw5?=
+ =?utf-8?B?aXRScGVGYzBlaEtLNHdsNm8zSmZKUzVmTGlVTllIVmlsRVcyb2NabEYrK0Zp?=
+ =?utf-8?B?US8vMWdBdmk0bkNWVUVMMTBXNnRMQ1FKZnZ2anBvRXh6ODJRWlhiYTBOQXhu?=
+ =?utf-8?B?OFN4cUNLV3RKS2MvdEJTU3NSQTZhaXlYWEF3ckVSSHc2WmxhVExYZEN1MjZt?=
+ =?utf-8?B?R2NaM2k3VEN3QW1VV0J6M3BqZ3QxQUEvaHliSVlHT2JDNm96TEtLWGM2VWh3?=
+ =?utf-8?B?ZGdtOXFOdGthTTRjcTJXenpRYm1seGZrVVdBdEFxSlFGeEVhdUdYdThaRkxI?=
+ =?utf-8?B?eXlBS20vcWdjVHBuOCt4SnRhK3RtaXZLaUV4WVhWeDRRZThUelh0YWtDTHVN?=
+ =?utf-8?B?ajF4RHlMVW5EdTFySmZZRVllajRTNmYwRkNpRzYzbTNlZnRrUXFjUjQ2cExs?=
+ =?utf-8?B?WE84RXNybUlqL0pkamgvK3VscHQ0V2F3RVE2Q1A1K0VlVzJ0emttNUVYVDN6?=
+ =?utf-8?Q?8G+oeRlfMKBaFjA5keKzcMS3cMXaWeqIb2w/tz81xUGFA?=
+X-MS-Exchange-AntiSpam-MessageData-1: HSe+cEfV083heQ==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 71263ff2-abda-4321-b20f-08dedbf8690a
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 07:21:49.6875
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BN6o5KTCxAmkgCjark5QdXPljT6qhSSCqhx43LXKZ0TUkWtGvjZ9IdFG8CW7O9NUnWxO3qd1DhhY8kptpZNRyw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6604
 
-On Tue, Jun 30, 2026 at 11:15:03AM +0530, Mukesh Kumar Chaurasiya wrote:
-> On Mon, Jun 29, 2026 at 11:11:44AM +0200, Miguel Ojeda wrote:
-> > On Mon, Jun 29, 2026 at 6:57 AM Mukesh Kumar Chaurasiya
-> > <mkchauras@gmail.com> wrote:
-> > >
-> > > Sure i'll bisect. Meanwhile i would still like to get this upstream.
-> > 
-> > It is very early on the cycle -- I would suggest bisecting first.
-> > 
-> > But it is up to ppc, of course.
-> > 
-> > Cheers,
-> > Miguel
-Hey Miguel,
+The recently introduced `GspBootContext` is useful in at least two
+other places:
 
-I was able to bisect this. This got fixed in 1.87 with
-#![feature(asm_experimental_arch)].
+- As a replacement for the sequencer's `GspSequencerParams`,
+- As the main parameter of `Gsp::unload`, for symmetry with `Gsp::boot`.
 
-1st commit that contributed towards this is
-e4f539ea17a3 ("Bump to version 1.87.0")
+This symmetry can be further exploited to make `Gsp::boot` and
+`Gsp::unload` generic over the exact boot context required for the
+current chip. Doing so requires some more preliminary work that goes
+beyond this series, but this groundwork is needed regardless.
 
-This caused another issue to come up while building
+Another cleanup that can be performed as a consequence is the removal of
+the `BootUnloadGuard`. This type is cumbersome as it holds extra
+references to the boot context, making it difficult to make some of
+these references mutable (as we want to do with the `Falcon`s that
+should require exclusive access to load and run firmware). Furthermore,
+it is only needed a single time in `Gsp::boot`, and is inadequate for
+handling errors occurring in HALs.
 
-```
-error: extern blocks must be unsafe
-  --> /home/mkchauras/.local/rustc-src/lib/rustlib/src/rust/library/core/src/../../stdarch/crates/core_arch/src/powerpc/vsx.rs:38:1
-   |
-38 | / extern "C" {
-39 | |     #[link_name = "llvm.ppc.altivec.vperm"]
-40 | |     fn vperm(
-41 | |         a: vector_signed_int,
-...  |
-44 | |     ) -> vector_signed_int;
-45 | | }
-   | |_^
-```
+Based on Eliot's feedback on v4, the series then removes the last
+remnants of the boot procedure leaking outside of the HALs, and
+consolidates everything within the GSP and FSP HALs.
 
-Which is fixed by 
-a78d1b092c9c ("Update stdarch")
+This series applies on the latest `drm-rust-next`.
 
-Both these commits went in 1.87.0 and fixed the build.
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Changes in v5:
+- Make GH100's HAL wait on both GSP lockdown release and GSP RISC-V halt
+  in case of error.
+- Drop `GspBootMethod` and use HAL abstractions to cover differences in
+  boot procedures. (thanks Eliot!)
+- Stylistic improvement in TU102 HAL.
+- Convert more pdev -> dev in `gpu.rs`.
+- Link to v4: https://patch.msgid.link/20260629-nova-bootcontext-v4-0-5539d8469590@nvidia.com
 
-Regards,
-Mukesh
+Changes in v4:
+- Rebase on top of latest `drm-rust-next`.
+- Add preparatory patch to separate the different lifetimes at play in
+  `GspBootContext`.
+- Link to v3: https://patch.msgid.link/20260629-nova-bootcontext-v3-0-26cb29ee8dee@nvidia.com
 
-> Sure, I'll bisect it first.
-> 
-> Regards,
-> Mukesh
+Changes in v3:
+- Drop the preparatory closure-only patch.
+- Use ScopeGuard for GSP boot-error cleanup.
+- Keep TU102 boot-error cleanup local to the HAL.
+- Avoid spurious unload-bundle warnings on early failures.
+- Keep GH100 FMC boot arguments alive through lockdown release.
+- Link to v2: https://patch.msgid.link/20260622-nova-bootcontext-v2-0-0ddeafc06f5d@nvidia.com
+
+Changes in v2:
+- Replace nonexistent `ENODATA` with the more appropriate `EAGAIN`.
+- Add patches introducing `GspBootMethod`.
+- Add patches moving `Fsp` to `Gpu`.
+- Link to v1: https://patch.msgid.link/20260619-nova-bootcontext-v1-0-45193cd0a2e5@nvidia.com
+
+---
+Alexandre Courbot (12):
+      gpu: nova-core: gsp: sequencer: use GspBootContext
+      gpu: nova-core: gsp: sequencer: do not store sequence into GspSequencer
+      gpu: nova-core: gsp: replace BootUnloadGuard with local handlers
+      gpu: nova-core: gsp: pass GspBootContext to unload methods
+      gpu: nova-core: gsp: centralize missing unload bundle warnings
+      gpu: nova-core: gsp: fold TU102 unload bundle construction into HAL method
+      gpu: nova-core: gsp: turn FWSEC execution into HAL method
+      gpu: nova-core: gsp: make use of FWSEC bootloader a property of the TU102 HAL
+      gpu: nova-core: avoid repeated calls to pci::Device::as_ref
+      gpu: nova-core: gsp: pass GspBootContext mutably
+      gpu: nova-core: gsp: separate context and GPU lifetimes in GspBootContext
+      gpu: nova-core: store Fsp instance in Gpu
+
+Eliot Courtney (1):
+      gpu: nova-core: move GSP firmware files decision to GSP HAL
+
+ drivers/gpu/nova-core/firmware.rs       |  25 ++-
+ drivers/gpu/nova-core/firmware/fwsec.rs |   5 +-
+ drivers/gpu/nova-core/fsp.rs            |  21 +-
+ drivers/gpu/nova-core/gpu.rs            |  68 ++++---
+ drivers/gpu/nova-core/gsp.rs            |  22 ++-
+ drivers/gpu/nova-core/gsp/boot.rs       |  99 +++-------
+ drivers/gpu/nova-core/gsp/hal.rs        |  59 +++---
+ drivers/gpu/nova-core/gsp/hal/ga102.rs  |  14 ++
+ drivers/gpu/nova-core/gsp/hal/gh100.rs  |  54 +++---
+ drivers/gpu/nova-core/gsp/hal/tu102.rs  | 330 ++++++++++++++++----------------
+ drivers/gpu/nova-core/gsp/sequencer.rs  |  71 +++----
+ 11 files changed, 375 insertions(+), 393 deletions(-)
+---
+base-commit: 78900738d981c97aad929e33620340d0d9bcfc82
+change-id: 20260619-nova-bootcontext-401d6107e8fb
+
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
+
