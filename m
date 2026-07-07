@@ -1,200 +1,118 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C831E492D;
-	Tue,  7 Jul 2026 18:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783449689; cv=pass; b=Z5TgJARRGzy1rwo6wdkv/Oz4xhpcN3LuJ6DuhyHPJGfBxta9vndLDtNHB2f2ov184LmXnoJYOZJMSvKBX7hLGIfB/qJxmwd2vgmid5s6PBOcnP4aJWB/XJn/UXgKsxevINfjvjaOu2UnEku+OS9hFz5VzWgqVJAiT/DEZmqnMHs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783449689; c=relaxed/simple;
-	bh=xTdEZPpx+cPYau6P/oapdph062qqJWYr/H3uSN27G/Y=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=CjZ6aoI7B+wOJ8uZtcGq+GdXYZifRyeUaObS/zRtXNPn5j0+1Y9op9gqO/H9TUAkDRwj006YB8XqqbH+5/aqLi/7R/HGXS+K8821fX5lfqTOc3XxwPr3nuhb3yereEf++3Ov4s6JONb0WEJCdFFc8wzn6pAQv690w99jGHTQVoQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=M9oei2BL; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BCF371067
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 19:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783451449; cv=none; b=H95fN0DqgQX1bWi9XfNcFFy33UpCV6UIVBYLx7/NAWSwaV9ZP14j5E/vWbSve3mCHuWwT8j6gzDOUVyx1cvGF92O50KiYkEw4JRcmlXF/EUS+IYvmutru8gIwTFt083rWnThzPkoLgCytTUmxaNjJoeyXAUBDjjL5wVYvhXM2yA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783451449; c=relaxed/simple;
+	bh=6QIPcqi/hr9Q5Mw00FYk5D293PSOJwYSWX9mfItRy44=;
+	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
+	 References:In-Reply-To; b=JOarM0bWwWtQyKCNAAdXD0m849Bfr2+G9QCHuOKqK1gAAYnQtiO4RTHFbxu6SpDmQrV01vBlKdjIyqk6YNMBAEf6UmRZn+3wJaZx4LX9UYYPAKdxMenbXq3+eiVZgcvVP5k6FQFlLLI+g/zpSckEHMmj93iwhzNxGURGSRsLl+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=c+BA9des; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="M9oei2BL"
-ARC-Seal: i=1; a=rsa-sha256; t=1783449658; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cdp4bG/XEl8J+bSYrJEMFweg2cZt6HBV2/55PeAKnvuxERQYQtMBdtS/kZH9HDq3nDad8j1/vAGViubPGZWnlQOBfueZLaGr1Z0oeXU5DnE+g3r2Jrbp+lcm7zdPuJ791tuc8M2p8+0P16J+7tZ9SRZm862eWg6INjk80hLwpiw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783449658; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=EDwlnOs4YCj2t7wvoltJ8iZPFDsHdK8fCnqAW/cA7WU=; 
-	b=cc8yUUsX/6Q4GKfSl6KX1RsrLQv2wthHwFoD/i65KU0YuAPSNoV+3e2Loach0y6TZUKh4OjZwyBzUHqlbsvAbzACpyBMnoktqaieJwCBL0RXYCsaZYSlUbhper3toYuJ/zsjdj4scXuaSrQRfDUBNoH9AqVnFYoHgndZGeyeyxM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783449658;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=EDwlnOs4YCj2t7wvoltJ8iZPFDsHdK8fCnqAW/cA7WU=;
-	b=M9oei2BLcjSRlwwu9LV2XG59pBQwPM1FvrsBjc4V+DCYAVZh+22SCt6I4FXxVpYH
-	m3jYja78NKSBtMrqu8CaIjPr0T1h1mafD5fc3kQwvY/CmXpjyAmBEgPyfG19FUSDpFA
-	Y8Bzm7lW5xBIav5I4ilNBOwr863p1D2CayxmLgv4=
-Received: by mx.zohomail.com with SMTPS id 1783449656904757.8597891704945;
-	Tue, 7 Jul 2026 11:40:56 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="c+BA9des"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8ef1dc934d1so9585946d6.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 12:10:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1783451446; x=1784056246; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2LUpyADyWOfmSP2Gd0K/OIW0oeVkcwDMQQoPjYwT+FQ=;
+        b=c+BA9des1e1uFnmqACzRnsVP+9gsL0iFDlEeHo5Ts1RVfRBQDtDTENqR8mqNBFQjtb
+         BjW9KVwtSLpakQSpiJ8C3+zMwD35VIFTdTDJyoGxalj2MswXSjTG6WnKquZTUS+bR59R
+         Emtjkol631c5jbD0JWshZ84dOnr8UN2RdPSrKFnUbBj3snPZvFNrw9zfzgE7XFhiHZ17
+         CVLmIZauLKJo7Gic5PSOzGE+urEF9a8p/Yk/ZePgyP4Y3cyiGqL/ZZJPGAzWMJsGlBHr
+         Kt6UmOpaPZBC3qc0PCdxWBlaAzfyAVwPVtLZNOxrdhDZVy1QW3CVR6xypPXyQSxetDMv
+         NN4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783451446; x=1784056246;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :mime-version:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2LUpyADyWOfmSP2Gd0K/OIW0oeVkcwDMQQoPjYwT+FQ=;
+        b=ctd/08GSeqzU7Kw18V29NztYavCfrIHALAossWWbeayzI/uolz2zDnQcB3OVbpJOek
+         9EJJ08l4UDGO+WVUVx507Jx7gIhxDOMGw6NFFWKuS4FEjHDtOM5dtA73E/DGc4Ai5oW8
+         cf2IaYGVYzJoRoq+4H+o5D/W9cQ6Ibs9GRaH8QtGnnc8gOxFKGujhWmIziTbg+t/VHpT
+         DwBMLjCIxKzTcOsA1KfVFsLwqnTd/z+34Dc4ndQZRT0b+qLARLd4O4nfvRlDgkmqfrys
+         x7fwGHfMK9ieHJgvxD+g5705a3YLqi68gDt8i/Itq8YUUgD9FPFFBLV2TtGmgBJBkS/7
+         4khA==
+X-Forwarded-Encrypted: i=1; AHgh+RrKC+TB162DsEEbjo6SGndvqLcHacXYJfM4unmn5TSvnIbxcXJy+ZyzMz4vNdxeUCXFTGJ4x/N39AVzD18fBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6VuP5pTAQt4GEnE3pwqMONKycnr7gweUu4gK9akgZ2OYq5j7+
+	NugKYpTQCTigIqgUKw/3CUmY0fiosELF11fuByqL4qTbj3fMSaLUeMnWACkcHBZFmA==
+X-Gm-Gg: AfdE7cmHnvMKrIoMJJTT1NsAzAmMTR6Jct3lrR+qf0VY6aDIkTMUpV5wx1JQVY/2EJE
+	kPD82rYQ2j0d2KodZsW5QWRPDKSfkKv1c5sEmjrxSGSliBTbAciCb8GFHJWpH5H5G3cPsmvDaVt
+	pXt3nLGggqnysPwsIcftN/997LJ4KNfn6Lrraf0+XFKNgUvlFcl4X9HIq9DAkOUm9/ke3SPlCSs
+	i1GwE0vXmfKfuG1bxFRTRNIPDT4mEvj32y8zgL3WkU2gPQBqcFmTXfTtXnaEEK9CXya2hRutZPM
+	LPWtBXfG4kv9X1OCWZe4/47qDY43vxvkhe3rB+tUAYLE7a+PozVDT8yDb+96mF62vOQph9Xa5eW
+	UaeSeddmdMmObwWI8UMb+pnvTKODqlP5ZtUQX6OumoOSUFuEIv36JWZEQzL2rV9LMISCp+FL84y
+	A30MZo1edRR3WmpavoFHu+whsM0fAjTZofLnM3U/Zqz+cWKs5L454ZsIXp1I3K4W038aFj
+X-Received: by 2002:ad4:5dec:0:b0:8f1:4bff:24dd with SMTP id 6a1803df08f44-8fd71be1e1cmr41525216d6.5.1783451445824;
+        Tue, 07 Jul 2026 12:10:45 -0700 (PDT)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f4724ba6fesm165735406d6.41.2026.07.07.12.10.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 12:10:44 -0700 (PDT)
+Date: Tue, 07 Jul 2026 15:10:43 -0400
+Message-ID: <c49545c6c69225bbc7e93cac58d58cd3@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 02/20] rust: io: add missing safety requirement in
- `IoCapable` methods
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260706-io_projection-v6-2-72cd5d055d54@garyguo.net>
-Date: Tue, 7 Jul 2026 15:40:36 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Michal Wilczynski <m.wilczynski@samsung.com>,
- =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>,
- driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org,
- nova-gpu@lists.linux.dev,
- dri-devel@lists.freedesktop.org,
- linux-pwm@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <20770F1B-133E-42B1-A204-BF3CB70758BA@collabora.com>
-References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
- <20260706-io_projection-v6-2-72cd5d055d54@garyguo.net>
-To: Gary Guo <gary@garyguo.net>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=UTF-8 
+Content-Transfer-Encoding: 8bit 
+X-Mailer: pstg-pwork:20260707_1504/pstg-lib:20260707_1258/pstg-pwork:20260707_1504
+From: Paul Moore <paul@paul-moore.com>
+To: Alice Ryhl <aliceryhl@google.com>, Serge Hallyn <sergeh@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shuah Khan <skhan@linuxfoundation.org>, Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, "=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jann Horn <jannh@google.com>, linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v5 1/2] rust: task: clarify comments on task UID accessors
+References: <20260703-remove-task-euid-v5-1-c90c7e2ddf54@google.com>
+In-Reply-To: <20260703-remove-task-euid-v5-1-c90c7e2ddf54@google.com>
 
-
-
-> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
->=20
-> The current safety comment on `io_read`/`io_write` does not cover the =
-topic
-> about alignment. Add it so it can be relied on by implementor of
-> `IoCapable`.
->=20
-> Expand the check performed by `Io` by taking `self.addr()` into
-> consideration when checking if `offset` is aligned. For the =
-compile-time
-> `io_addr_assert` check, check using the known minimum alignment of
-> `Io::Target` and the accessed type.
->=20
-> While at it, fix the alignment check to use `align_of` instead of
-> `size_of`. The values match for all primitives (including u64, given =
-that
-> we do not provide u64 accessor on 32-bit platforms), but are not
-> necessarily true for custom types.
->=20
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On Jul  3, 2026 Alice Ryhl <aliceryhl@google.com> wrote:
+> 
+> Linux has separate subjective and objective task credentials, see the
+> comment above `struct cred`. Clarify which accessor functions operate on
+> which set of credentials.
+> 
+> Also document that Task::euid() is a very weird operation. You can see how
+> weird it is by grepping for task_euid() in the history - binder was its
+> only user. Task::euid() obtains the objective effective UID - it looks
+> at the credentials of the task for purposes of acting on it as an
+> object, but then accesses the effective UID (which the credentials.7 man
+> page describes as "[...] used by the kernel to determine the permissions
+> that the process will have when accessing shared resources [...]").
+> 
+> For context:
+> Arguably, binder's use of task_euid() is a theoretical security problem,
+> which only has no impact on Android because Android has no setuid binaries
+> executable by apps.
+> commit 29bc22ac5e5b ("binder: use euid from cred instead of using task")
+> originally fixed that by removing that only user of task_euid(), but the
+> fix got reverted in commit c21a80ca0684 ("binder: fix test regression
+> due to sender_euid change") because some Android test started failing.
+> It was since fixed again by commit 65b672152289 ("binder: use
+> current_euid() for transaction sender identity"), which uses
+> current_euid() instead.
+> 
+> Signed-off-by: Jann Horn <jannh@google.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
-> rust/kernel/io.rs | 25 ++++++++++++++++---------
-> 1 file changed, 16 insertions(+), 9 deletions(-)
->=20
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index d1c5f0121994..d821ee48ed31 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -195,13 +195,14 @@ pub fn maxsize(&self) -> usize {
-> #[repr(transparent)]
-> pub struct Mmio<const SIZE: usize =3D 0>(MmioRaw<SIZE>);
->=20
-> -/// Checks whether an access of type `U` at the given `offset`
-> +/// Checks whether an access of type `U` at the given `base` and the =
-given `offset`
-> /// is valid within this region.
-> +///
-> +/// The `base` is used for alignment checking only. This can be set =
-to 0 to skip the check.
-> #[inline]
-> -const fn offset_valid<U>(offset: usize, size: usize) -> bool {
-> -    let type_size =3D core::mem::size_of::<U>();
-> -    if let Some(end) =3D offset.checked_add(type_size) {
-> -        end <=3D size && offset % type_size =3D=3D 0
-> +const fn offset_valid<U>(base: usize, offset: usize, size: usize) -> =
-bool {
-> +    if let Some(end) =3D offset.checked_add(size_of::<U>()) {
-> +        end <=3D size && (base.wrapping_add(offset) % align_of::<U>() =
-=3D=3D 0)
->     } else {
->         false
->     }
-> @@ -220,14 +221,16 @@ pub trait IoCapable<T> {
->     ///
->     /// # Safety
->     ///
-> -    /// The range `[address..address + size_of::<T>()]` must be =
-within the bounds of `Self`.
-> +    /// - The range `[address..address + size_of::<T>()]` must be =
-within the bounds of `Self`.
-> +    /// - `address` must be aligned.
->     unsafe fn io_read(&self, address: usize) -> T;
->=20
->     /// Performs an I/O write of `value` at `address`.
->     ///
->     /// # Safety
->     ///
-> -    /// The range `[address..address + size_of::<T>()]` must be =
-within the bounds of `Self`.
-> +    /// - The range `[address..address + size_of::<T>()]` must be =
-within the bounds of `Self`.
-> +    /// - `address` must be aligned.
->     unsafe fn io_write(&self, value: T, address: usize);
-> }
->=20
-> @@ -309,7 +312,11 @@ pub trait Io {
->     // Always inline to optimize out error path of `build_assert`.
->     #[inline(always)]
->     fn io_addr_assert<U>(&self, offset: usize) -> usize {
-> -        build_assert!(offset_valid::<U>(offset, =
-Self::Target::MIN_SIZE));
-> +        // We cannot check alignment with `offset_valid` using =
-`self.addr()`. So set 0 for it and
-> +        // ensure alignment by checking that the alignment of `U` is =
-smaller or equal to the
-> +        // alignment of `Self::Target`.
-> +        const_assert!(Alignment::of::<U>().as_usize() <=3D =
-Self::Target::MIN_ALIGN.as_usize());
-> +        build_assert!(offset_valid::<U>(0, offset, =
-Self::Target::MIN_SIZE));
->=20
->         self.addr() + offset
->     }
-> @@ -318,7 +325,7 @@ fn io_addr_assert<U>(&self, offset: usize) -> =
-usize {
->     /// performing runtime bound checks.
->     #[inline]
->     fn io_addr<U>(&self, offset: usize) -> Result<usize> {
-> -        if !offset_valid::<U>(offset, self.maxsize()) {
-> +        if !offset_valid::<U>(self.addr(), offset, self.maxsize()) {
->             return Err(EINVAL);
->         }
->=20
->=20
-> --=20
-> 2.54.0
->=20
+> Originally sent as:
+> https://lore.kernel.org/r/20260212-rust-uid-v1-1-deff4214c766@google.com
+> ---
+>  rust/kernel/task.rs | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Merged into lsm/dev, thanks!
 
+--
+paul-moore.com
