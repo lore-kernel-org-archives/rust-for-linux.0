@@ -1,55 +1,58 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDC441A78F
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 13:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C55341610D
+	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 13:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783430005; cv=none; b=hstoTAaqhs/e4kEZWXqi/PmGLg1ehQxiXBgxwj5uZnwZFer/1bEh+UM2DKZFm+Zo9N98puMIpK5E60QOIkal2E5OCggzqGe5qPl/qPua3OC0ETdWvbifunrDewmCdzEaMN52mpYFoAYKtTpQaO5ozkIx9wineqGZLELYJ9xM6pI=
+	t=1783430037; cv=none; b=FyGY2gh4tjA0HPqMzNewFAPMMzOnOQ3lQhgQvT3LROVfC65C3//QTUkmzyY6GkdvGjhEG7fambcs+R4dii+E8d/DUrUSrVwcncJ7UH0cZxZf9YwnnotE8ZIOKa9JFqctlaLJoCJ6Z6nJHyfe0xgoBgcFmZZ0FxzVWorbpb9VRSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783430005; c=relaxed/simple;
-	bh=MmybheBvPbZ9+fvtkdTreXu3lF24dABq4Vme1lUmp0k=;
+	s=arc-20240116; t=1783430037; c=relaxed/simple;
+	bh=GK7PFm99L/4DqOi76pFbPZ1OFtxYFfFssnW7d/gf0aE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=A0w7daxy4hAzTS+wtJE/SjibhqzeEzvP0hZEC3BLS7i4yO/KlxihWL62mo9O1hpzKsUvq3xomJsOWClGeyegLO9wUNHjUTABy4PQDDWg1yt0AYZH03vaoEEmSGaGRxl/e2nY5yiGTYSTQMEvta43R7D+/RdRYTcZp7uQhqHfZX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gy8g+MBo; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=R3WaRSxDltsKOMoa3gEXM6PMWcfw7gBbxWTqyGGaidThIbfP0goE8T0JCCT7510hSKNCkKfdUlh7A/FQcShIx7oFkOeXvRX4PHo5KxFQG6ZYZKWlBOhrkDkrOxUYr1qtvwI0YFzNZ9wW1xl5x3jLudFRUD5/nGrbg8G2O5/er68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R1riz4ia; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gy8g+MBo"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493c619bb52so29701315e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 06:13:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R1riz4ia"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-476d52b13d7so3180149f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 07 Jul 2026 06:13:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783430003; x=1784034803; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QAD8oBOQgciUMb3A+X2IkqOxCsD9BlkHYpuCHLlyDA4=;
-        b=gy8g+MBoUjztWivompumUzhzsaJ3hsH4T6VEhW34lUpAt+L06Fg0xFp9KDWLnjQqXK
-         eN/HpgQjaKk83u1AAY3qAPuiZVJDGpC5vXlLBIJQdQaNW4gs8x/vTOEk0rSd2AoFkitw
-         njqAD6eTOaPPPyqkUX1SYup9dtF6zLHj8rz2Cq74OB2gCgeQ6ZoS9PIiIj3HLgdv1iCT
-         eM4NxMI+Kjjck6DpB3/KMvZsrlTjQ/eh3gjvImwUE36aruEzLksN7qOajxRUsGypgTQv
-         /VC2IWEUC1TzoEj5HXkomAjq+LV7llxaTYIKbGXuR9FbHu5KJmSfkqf1ZF4fiDMofRBD
-         QKDg==
+        d=google.com; s=20251104; t=1783430034; x=1784034834; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GK7PFm99L/4DqOi76pFbPZ1OFtxYFfFssnW7d/gf0aE=;
+        b=R1riz4iaLDtXXX8JDWodfUbgZdOHF9fbtB4toQEfDf9yjzEu+jKLV5Np4jW8hAV4kB
+         aFHTRNh5upmKhf+6dhB3dr4KQOfDplKfDv8ZyKH4tCSwrmVnZJLplEKxwPG/ElsTwK04
+         5nzEJawAXGR/8utyPFtnumCKQwflyOOkDIMBXfRVLrAOC+AoG+svaYDLxz5uSl7dWhyj
+         79u5ZR3OhgZa4b4O0HEqFwuygiUeqIY1N/KxIhoiZFFX/c3MnbvjOJNNYsoFjN0M9a+Q
+         X/YTyFvF6KlplOO2Iw+HL18cO07CkHPNxoiCT8C5Myd6Zsf/Dgfp7L/nL1/zHMOjJF+8
+         UjNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783430003; x=1784034803;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QAD8oBOQgciUMb3A+X2IkqOxCsD9BlkHYpuCHLlyDA4=;
-        b=Iyqp+ubLig9tB3zfJ38xCS4Y4KUYjsB+jVygzvDJS7/tAkeGbqnJUn6jfoZXoRKOY+
-         kFIkYPFh4ei2DyrxZ6I6YdIPn1XT/bjJZQl3wUq+a3UKBuHUn/4sVcEjeSDviP8qenRE
-         RDB9JeXWuID2A8faO0YI/w2Bk3Jf4Hua+u9rYOiOh7TZzSKai9oNUl9ESh3q7rcpCR3x
-         RSNI1W+dKd0o2D4o2gTPXkq3P48w2V47bnoljN6mJIi5GMukZp3WUdNlY08/ASTbW79B
-         S0mfcloOF80YqiOVhrJnBrhVha+Iu9G3okrQlBADYkao+6OjcSMXLXfBangbfElKBDCe
-         hQGA==
-X-Forwarded-Encrypted: i=1; AHgh+RokkdMBJxAdjEBmh3LmN9Jm9yBvWDrEi93by1680WiIKcHie166k87rEHpCdeHI285XR2DaUrG9I6A3KoA0Wg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxh4wopMT/SJJQWJpXyUXQgoDH4KwLEvHWojc8XT+hW/XikY//N
-	MooiBeHhH3sO2Yl48NOiBjSvuUjVupcgDFdPYb1ageL9/OmXSa++lVIE17TVRIBdw6OaXH/AkQd
-	edmC1mU5lsJPFDo7/wQ==
-X-Received: from wrmf17.prod.google.com ([2002:adf:e911:0:b0:474:4c49:fdb5])
+        d=1e100.net; s=20251104; t=1783430034; x=1784034834;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GK7PFm99L/4DqOi76pFbPZ1OFtxYFfFssnW7d/gf0aE=;
+        b=FsdfqEiRrUKA1bpstsJlONaiHBeD1UkeWt32NgXs8KVDVJX6/BWTdxhW5v9ydIGBxc
+         4kQ6B//hccBBQaXnLhFWLMBGBTeggXciwpoZHEJrv5fqRL3G5HGl9GtPDhJENM9Cj7i2
+         bD2ZzYMbx5QZB0hSt42c/76bp5NadSQ477DulQnB9qpVZ4CxAynAMzm6jcyPoWY2skjG
+         yteZ4Op9yzRqlR0FEQZacCgD9TzfAJaYABpKsr4MF3OujtmETyvMMuB7zW4FPEWG4Nbh
+         XcJf2V1vHl4v6E6kM8rlS2sQHNz+FUtdiMCBVRGT4h/HhDHlj60LlFFYbYFq6/t9HH/Q
+         6B6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoG6KE7/appoAHuF3mj12PoRFtwJLnz5SF0iJO2o4e4vnbW4EfVQuRnbvDCd22/Fm1TFtJJi16+WDKrdIR4cA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8WujcDElBcM6ciQXpdRsjjrzChkk3BhR1kxuI/9ozpZPYd7nS
+	pVrl8EzyBh0UXjmGRAqUgReZBBJoLB8vh/njkDPW1kPS87cSQR27bsivj2rP8t/PIpttLka/cuc
+	42JfCSFiere/fakGbsA==
+X-Received: from wrmc5.prod.google.com ([2002:adf:e705:0:b0:465:767a:3a41])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4e92:b0:493:b6ee:fcb7 with SMTP id 5b1f17b1804b1-493df04b124mr65012395e9.14.1783430002417;
- Tue, 07 Jul 2026 06:13:22 -0700 (PDT)
-Date: Tue, 7 Jul 2026 13:13:21 +0000
-In-Reply-To: <akM7upgsb5y9d67B@MacBook-0RXW5>
+ 2002:a5d:53c8:0:b0:477:6da:1b83 with SMTP id ffacd0b85a97d-47de669f408mr4204803f8f.24.1783430033658;
+ Tue, 07 Jul 2026 06:13:53 -0700 (PDT)
+Date: Tue, 7 Jul 2026 13:13:52 +0000
+In-Reply-To: <d63a68b2-4301-4ce2-a28c-637f4c6bf4fa@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,40 +60,47 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com>
- <20260623-pr-ratelimited-v1-2-cc922f544dc0@google.com> <akM7upgsb5y9d67B@MacBook-0RXW5>
-Message-ID: <akz7cVZvxeWKl-mJ@google.com>
-Subject: Re: [PATCH 2/5] rust: sync: add const constructor for raw_spinlock_t
+ <20260623-pr-ratelimited-v1-3-cc922f544dc0@google.com> <d63a68b2-4301-4ce2-a28c-637f4c6bf4fa@linux.dev>
+Message-ID: <akz7kMQEfvnhY3wH@google.com>
+Subject: Re: [PATCH 3/5] rust: add pr_*_ratelimit! macros for printing
 From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun@kernel.org>
+To: Alvin Sun <alvin.sun@linux.dev>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Gary Guo <gary@garyguo.net>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
 	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, 
 	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
 	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, 
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 29, 2026 at 08:44:58PM -0700, Boqun Feng wrote:
-> On Tue, Jun 23, 2026 at 03:38:05PM +0000, Alice Ryhl wrote:
-> > +/// Helper for creating a raw unlocked `bindings::raw_spinlock_t`.
-> > +///
-> > +/// For use in statics containing raw spinlocks.
-> 
-> I think 
-> 
-> 	#[doc(alias("__SPIN_LOCK_UNLOCKED", "DEFINE_SPINLOCK"))]
-> 
-> is not a bad idea here?
+On Thu, Jul 02, 2026 at 02:15:35PM +0800, Alvin Sun wrote:
+>=20
+> On 6/23/26 23:38, Alice Ryhl wrote:
+> > Printing can be very expensive if it occurs often, so printing that can
+> > be triggered by userspace should be rate limited. For this purpose, add
+> > a Rust wrapper around `struct ratelimit_state` and use it in the new
+> > macros.
+> >=20
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>=20
+> Tested-by: Alvin Sun <alvin.sun@linux.dev>
+>=20
+> The binder-related patches couldn't be applied to the mainline
+> repository. I wrote a simple misc device to test pr_warn_ratelimited:
+>=20
+> [=C2=A0 =C2=A080.655483] misc misc_test: Opening Rust Misc Test Device
+> [=C2=A0 =C2=A080.655546] Rust: 1990 callbacks suppressed
+> [=C2=A0 =C2=A080.656102] rust_misc_test: pr_warn_ratelimited triggered (0=
+) from
+> /dev/misc_test
+> [=C2=A0 =C2=A080.656137] rust_misc_test: pr_warn_ratelimited triggered (1=
+) from
+> /dev/misc_test
 
-I'll add that.
-
-> Do you plan to have this go via binder tree? (Sorry you might already
-> me the plan, but I couldn't recall). Anyway,
-> 
-> Reviewed-by: Boqun Feng <boqun@kernel.org>
-
-Yes, I think that would be the simplest. Thanks!
+Thanks!
 
 Alice
