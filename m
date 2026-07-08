@@ -1,324 +1,308 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011021.outbound.protection.outlook.com [40.93.194.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719E83F12C0;
-	Wed,  8 Jul 2026 15:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8481E3B71AA;
+	Wed,  8 Jul 2026 15:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783523777; cv=pass; b=MjXVhSAqkxAR1KuEefAgrJp5hTZSAD67AXOs37Xnd66zx3CJct9pW7m2o8BakL1ThAAF5PB8iMXLmfAm/PmOo30kaOLNo/JTK9szQzCsJrYuK4KwS8w9fAIRpeVVIWE1eWqlYKo7xU/5oDe0ESN/fcQLu0Q8LdJPTCoh6ypj7Bs=
+	t=1783524112; cv=fail; b=o5YabslPjAh/qQUrDixW/CAVcBgikbPyshh0NbG6fR7jFBEdXrC5KxB1p6Mdh/MK5+enDMLZfWRzi80AolafOfEJoc6xrp3kFQeflV230jAfeVaoctOmcQZ1edq1DGHPMk8li/KIfrulFQYBX1jQJbxRZdVr7qYaIorrLYBwiEY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783523777; c=relaxed/simple;
-	bh=Iqkz9HZz7KsJqF6xvtRqT8xxwG+y4KVbP4uJohB9BWs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=QatHFlcHTBOo7htkq15b5L5WJ+neDFPSUK6GCRE7kMmcwxUiq8JM5VWAmOxdK7IQ0twYa8r26cOu96Qm3aWjK2MmoOxB8dTUOATVZSVsBdRlBDRP9E9FICVusyi0j9qr4RpRsMkQ6255q/Lu7VOFRLgqqOUS5HWL+WWjoq6gO2k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=kEQVPxM2; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1783524112; c=relaxed/simple;
+	bh=hbQ9wrkz8mAjnstWiWB6H+Ke3Gl7pi0RzbE5FobvX3o=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qBvSvc3kEeYyM5DMpvXlTi5t5UFmNrvUAi9NKWzvWDYKT4Yw5Tz+91eGN3UwwLmG8vj8pZGagMUPD4LVp2NPLpdoJY3yFJCjU3ceYJXALDpYQb63SsGYAaJw5Ktp/U4jszpTfE2KRTGQ0MhvqgPzA0cn/pd+OKlzZ2/fhAoCq9k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gIZiX6LF; arc=fail smtp.client-ip=40.93.194.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="kEQVPxM2"
-ARC-Seal: i=1; a=rsa-sha256; t=1783523745; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Igr8wTpfjpo1ZHqfHQn/lVnKM79U43R4E1eSVy71wQBDvHXW+bF2eW4ui7Wlm05zH+F72ZB1/Z8/x/j2BjCf6ilcdsUjooa7PMNX2Itz8G6jjHMaqhORMJ57RCIwSpetHbyI/YisCdVWgJJ+Jkg9KMKGe9UypP5HMpFPa+hUgoc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783523745; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=X1plbi+Oxfx02jtUPa4CfsK/IllRKlSLbG1pvpCqSpQ=; 
-	b=ktkjpgWkVW6XS4KQ16E5h2wy3zjPg33F3Disl5c7Xbo6Ak/eJHWeP+MTTNCv/kUnYxsakGAJc4kX9AIFBxOw9FF7H72JZo1sGw/y8N5mUnV7WnyroupyOdtSyfuOrKdMIplwZp2uY3xAbF+J1yhiZ/KCEPV37ZCNJg+jiZbtOe4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783523745;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=X1plbi+Oxfx02jtUPa4CfsK/IllRKlSLbG1pvpCqSpQ=;
-	b=kEQVPxM223LBIzrF2IQm1wNUlGBrh7MiW/mQZVoJUUrpCmGJaJANC3xJZOK2YDrv
-	xnEBPy87uWH2C/WN4gbtJqhZyHIrU5COGHHkBOurTwH2t2OlYhQJka3vJWns6loEqZg
-	9HOXk3Qw8egDZvS6KrbvTfVp3KU8Ghu9DBnuGY74=
-Received: by mx.zohomail.com with SMTPS id 1783523742904701.646089296638;
-	Wed, 8 Jul 2026 08:15:42 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gIZiX6LF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IgTICNjR/WU5ASrxfqanz1nt4l26jBmkcHhYTsp2yxdL2gt9PNXXTYzF31oDp/4tpApjB+KaCBfmZ18d73pBT+ccXl1lIlYWdY+acb60qThAqNNTKlM8Eenl8kqjx8rpCV0I/uNbZshPt9eXp3Nro01icTcpg5dBSR4ji4zeUd8AYUdJrdvDF6y/ew6Of9a/vKpH9T6REzj3QoAsaWqujj9ITGMGCNNFTnIwCJerOk2U/V6mGYbaDP6ubKaBE6JCtoope3rxau60Tw1XC6JYiY1m6DwvN/yM/PnMMgJWuNtDjrafGOyJ6I/L5PxM7xDFFsysP0NNMOAdjCsiVEaSqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vaShNTqwsjmvH6+cdRPDJLnNmExIaDMCmyfuQyTSstw=;
+ b=NOFhSzTQguG6hZo5pB3E7JY5+p4rX9Hw+IHh3BldjWdPzlacTeF1Zi2g60SjWmfzRbuYwPGexsKirfrdvfREgCmWh8LBrr0I3xftkfU2XPlBTdCOnsAIeopbbBCXBcv8jpuey478Sr4YKEC2MUdcbfL6TzrYWLp3+ksT5WMH7QO6GdWbAM6lzEwsvjn7EhUEeUkj8NybJpHQ0fqQyv7FnZrz1b30HqDI15LOSjnXkWU3axenk+SJeGCYrijmVBzUWFSzswbM5i+YjpFvJ8vkCOJTalgyIC/o80YShfTu3HexQlxtCfpobGFKgHOy138DZiG7Mx0Wa748TtpeXInADg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vaShNTqwsjmvH6+cdRPDJLnNmExIaDMCmyfuQyTSstw=;
+ b=gIZiX6LF2Czs9QL2rzGPGY0jSKuf0diIVQ1sF5Obs4Uj81tXo4Rl2DfxuUlvzD8EQEfzIzHI42Pe6tw4Xsdq2b9dNK8NjBHjsKbszV4Dvuib0VKOFYlOZng6qSzBWeDxR/DhqLd+lTgeVlIkexrCP732exgl/60Rvhjks/cJoICHld8sZ+acx0GmNV6idvaq/dR02OuQOCLFKNlHqMekGaQf1tlJXotB3ItTIyq9zRF29ZYkBT1sevTybv1gNikNmy+3itcCXwGYKG0l/xvog3dcfqyxlYCv4AmVzJBkhZQZYurIiiKaCcNTkHCSWfzMGRmkbpEjgtyIZeUk36y/ng==
+Received: from PH7P220CA0153.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:33b::15)
+ by DS7PR12MB5719.namprd12.prod.outlook.com (2603:10b6:8:72::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 8 Jul 2026
+ 15:21:30 +0000
+Received: from SN1PEPF0002BA51.namprd03.prod.outlook.com
+ (2603:10b6:510:33b:cafe::6e) by PH7P220CA0153.outlook.office365.com
+ (2603:10b6:510:33b::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.10 via Frontend Transport; Wed, 8
+ Jul 2026 15:21:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ SN1PEPF0002BA51.mail.protection.outlook.com (10.167.242.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Wed, 8 Jul 2026 15:21:29 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Jul
+ 2026 08:21:11 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Wed, 8 Jul 2026 08:21:10 -0700
+Received: from inno-dell (10.127.8.9) by mail.nvidia.com (10.126.190.182) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 8 Jul 2026 08:21:03 -0700
+Date: Wed, 8 Jul 2026 18:20:58 +0300
+From: Zhi Wang <zhiw@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+CC: <jgg@nvidia.com>, <rust-for-linux@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dave.jiang@intel.com>, <saeedm@nvidia.com>,
+	<jic23@kernel.org>, <gary@garyguo.net>, <joelagnelf@nvidia.com>,
+	<aliceryhl@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <acourbot@nvidia.com>,
+	<jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v6 1/1] rust: introduce abstractions for fwctl
+Message-ID: <20260708182058.34b00370@inno-dell>
+In-Reply-To: <DJQ1KX0O60J7.Q3RUZ46V153O@kernel.org>
+References: <20260629150156.3169384-1-zhiw@nvidia.com>
+	<20260629150156.3169384-2-zhiw@nvidia.com>
+	<DJQ1KX0O60J7.Q3RUZ46V153O@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 12/20] rust: io: move `Io` methods to extension trait
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260706-io_projection-v6-12-72cd5d055d54@garyguo.net>
-Date: Wed, 8 Jul 2026 12:15:23 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Michal Wilczynski <m.wilczynski@samsung.com>,
- =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>,
- driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org,
- nova-gpu@lists.linux.dev,
- dri-devel@lists.freedesktop.org,
- linux-pwm@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CDAB04DF-F46F-4E78-A981-E6B171FAE606@collabora.com>
-References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
- <20260706-io_projection-v6-12-72cd5d055d54@garyguo.net>
-To: Gary Guo <gary@garyguo.net>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA51:EE_|DS7PR12MB5719:EE_
+X-MS-Office365-Filtering-Correlation-Id: e34c6863-fc66-4203-f38b-08dedd04960c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|7416014|82310400026|1800799024|376014|18002099003|22082099003|6133799003|4143699003|11063799006|56012099006|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	bxj/IqstNnQQP/xGurTkS7Da1B7aqfFgxe5O9OykQc3MW3j9xJ9Kne3SI1xbFQHUmNJjwXJTONPEkCRMmCfXHrAkU1JrZLsnMaf9iC98100videXkf2uxlCgra7xyip4yzlmfPjiB0Ltqa8HIw2K30YTWbEkZY5wq3ROM5wHxtrAcixUxmMtiabz6AEFEwz1dv5GCeR9xnya1FBdcwe5SMv4OlHqAgAyh7vwRQk46iwPMvq/vQHOMg8sxpHxW3P6xp++4XF5ekQZOyR52V5z7UJyWgSWTXOmJyARrOxsn4lqPzinoZBOWc7UQI1tzBNuF6J7qoFWWFKIvR0NfeLc2qTK93KiKNGCEqBEvDS7Yz2SHfU0DLTmZ612MIsWZlfsAkXK3gjT8DKrX9gzpgcBNblDI5ed/KqrsKS2nUDzijitnl57XjqXwOvNjb+CCrCHzsdxwiA7fRAwlMQtLLBP7qkFQ1DNZ5S2wFXjZYsz+dd86WounKujs9y+5MOg1X25/UJf/PHFY1YJImfv6WQsk5GUH8MwCE0EvCZA73FXBT9sr1DImbnx0WkE0dNxorlcvWTJRt68LZE4JAd6QFkrgkLbPMIsloyKeKf2UJDNYsH8ySLMzVtcbjNrKD68E+UCZTvR74A76xbE7kNT4ETuO6ktV1wiaA4ys0/T+H8+TWi4me7gDja3H8vYguD8KUu5Ez2nAbVsN9O2Yi0i/HmQVA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(7416014)(82310400026)(1800799024)(376014)(18002099003)(22082099003)(6133799003)(4143699003)(11063799006)(56012099006)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	NFBM83q4L8IIXavTK6rS1jBv/WmpIcpzFdGmjSIMUH9aoZwxBFigwYmtajVEbQdgATC4tZC4nwS8NrlczTt/MfLulOAcOC3pXJJbi2HxHNPcM8lIf55R+PCV1yUQ/jQJ5fVjeIjgUN6ZsvBXC2WcfuleomESKlSB69efm8uJiDxGuYa7kqEvNtg+yQmeV9engsHZPcKdvaRuKx9qTe6NvuTLrdVtzLwI//HJv8K1/hzFPASzRY7C61iJtaSSOXMDH9WqXaDR7K4jL5E2wRj7nP6XFKRNCN0RpsXuvcPfZsqswaxikVwAUw+anHUQneJtKclq45N4L/V0ehANendYRZQSx4/MoVyTQ+4YCvYh7F7d4h5vNOPcs0NR/ltL7W6GN5KlSDZkrV/74uxjpFE2Pve9lfTLm/JydTTDaD7rOGZZeyPMD/HlDepMMFIdgbye
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 15:21:29.8844
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e34c6863-fc66-4203-f38b-08dedd04960c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF0002BA51.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5719
+
+On Sat, 04 Jul 2026 21:42:59 +0200
+"Danilo Krummrich" <dakr@kernel.org> wrote:
+
+> On Mon Jun 29, 2026 at 5:01 PM CEST, Zhi Wang wrote:
+> > Introduce safe Rust wrappers around struct fwctl_device and
+
+snip
+
+> 
+> This also needs:
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> 
+> > Link: https://lore.kernel.org/r/DJJW7X4ESDSM.QCVYK2FC7ZR3@kernel.org
+> > Signed-off-by: Zhi Wang <zhiw@nvidia.com>  
+> 
+
+Thanks, will add it.
+
+> Few remaining nits below.
+> 
+> Jason, would you be fine if I take this through the DRM tree, so Nova
+> can build on top of it right away, or do you want to take it through
+> your fwctl tree?
+> 
+> > ---
+> >  drivers/fwctl/Kconfig           |  12 +
+> >  rust/bindings/bindings_helper.h |   1 +
+> >  rust/helpers/fwctl.c            |  17 +
+> >  rust/helpers/helpers.c          |   3 +-
+> >  rust/kernel/fwctl.rs            | 546
+> > ++++++++++++++++++++++++++++++++ rust/kernel/lib.rs              |
+> >  2 + 6 files changed, 580 insertions(+), 1 deletion(-)
+> >  create mode 100644 rust/helpers/fwctl.c
+> >  create mode 100644 rust/kernel/fwctl.rs  
+> 
+> 
+
+snip
+
+> NIT: Do we want to add all device types even though they do not (plan
+> to) have a Rust driver?
+>
+
+I think they are not intended as placeholders for future Rust drivers.
+`DeviceType` models the valid `fwctl_device_type` UAPI domain, so I
+kept all existing non-error values while leaving
+`FWCTL_DEVICE_TYPE_ERROR` and arbitrary integers unrepresentable.
+
+`FWCTL_DEVICE_TYPE_NOVA_CORE` has not been allocated in the C UAPI
+yet, so it is intentionally not included here. I plan to add
+`DeviceType::NovaCore` together with the C UAPI value and the nova-core
+consumer.
+
+Do you have any better idea about this? We don't have a dummy driver as
+well...
 
 
+snip
 
-> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
->=20
-> `Io` trait now has a single required method with many more provided
-> methods. Provided methods may want to rely on their implementations to =
-not
-> be arbitrarily overridden by implementers for correctness or =
-soundness.
-> A good example is the `size` method, it may be relied by unsafe code =
-and
-> thus must be consistent with the metadata obtained from `as_ptr`.
->=20
-> Thus, create a new trait to host `size` method, extract existing =
-provided
-> methods to the new trait, and provide a blanket implementation. This
-> pattern is used extensively in userspace Rust libraries e.g. `tokio` =
-where
-> `AsyncRead` has minimum methods and `AsyncReadExt` is what users =
-mostly
-> interact with.
->=20
-> To avoid changing all user imports, the base trait is renamed to =
-`IoBase`
-> and the newly added trait takes the existing `Io` name.
->=20
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> ---
-> rust/kernel/devres.rs |  3 ++-
-> rust/kernel/io.rs     | 34 ++++++++++++++++++++++++----------
-> rust/kernel/io/mem.rs |  6 +++---
-> rust/kernel/pci/io.rs |  6 +++---
-> 4 files changed, 32 insertions(+), 17 deletions(-)
->=20
-> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> index 3545ffc5345d..6e0b845b229b 100644
-> --- a/rust/kernel/devres.rs
-> +++ b/rust/kernel/devres.rs
-> @@ -68,6 +68,7 @@ struct Inner<T> {
-> ///     devres::Devres,
-> ///     io::{
-> ///         Io,
-> +///         IoBase,
-> ///         Mmio,
-> ///         MmioRaw,
-> ///         MmioBackend,
-> @@ -105,7 +106,7 @@ struct Inner<T> {
-> ///     }
-> /// }
-> ///
-> -/// impl<'a, const SIZE: usize> Io<'a> for &'a IoMem<SIZE> {
-> +/// impl<'a, const SIZE: usize> IoBase<'a> for &'a IoMem<SIZE> {
-> ///    type Backend =3D MmioBackend;
-> ///    type Target =3D Region<SIZE>;
-> ///
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index c7533d605678..ab970e8b2e78 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -223,7 +223,7 @@ fn io_view<'a, IO: Io<'a>, U>(
-> /// operation.
-> pub trait IoBackend {
->     /// View type for this I/O backend.
-> -    type View<'a, T: ?Sized + KnownSize>: Io<'a, Backend =3D Self, =
-Target =3D T>;
-> +    type View<'a, T: ?Sized + KnownSize>: IoBase<'a, Backend =3D =
-Self, Target =3D T>;
->=20
->     /// Convert a `view` to a raw pointer for projection.
->     ///
-> @@ -309,15 +309,12 @@ fn offset(self) -> usize {
-> /// Types implementing this trait (e.g. MMIO BARs or PCI config =
-regions)
-> /// can perform I/O operations on regions of memory.
-> ///
-> -/// The [`Io`] trait provides:
-> -/// - Method to convert into [`IoBackend::View`].
-> -/// - Helper methods for offset validation and address calculation
-> -/// - Fallible (runtime checked) accessors for different data widths
-> -///
-> -/// Which I/O methods are available depends on the associated =
-[`IoBackend`] implementation.
-> +/// This trait defines which backend shall be used for I/O operations =
-and provides a method to
-> +/// convert into [`IoBackend::View`]. Users should use the [`Io`] =
-trait which provides the actual
-> +/// methods to perform I/O operations.
-> ///
-> /// This should be implemented on cheaply copyable handles, such as =
-references or view types.
-> -pub trait Io<'a>: Copy {
-> +pub trait IoBase<'a>: Copy {
->     /// Type that defines all I/O operations.
->     type Backend: IoBackend;
->=20
-> @@ -326,6 +323,21 @@ pub trait Io<'a>: Copy {
->=20
->     /// Return a view that covers the full region.
->     fn as_view(self) -> <Self::Backend as IoBackend>::View<'a, =
-Self::Target>;
-> +}
-> +
-> +/// Extension trait to provide I/O operation methods to types that =
-implement [`IoBase`].
-> +///
-> +/// This trait provides:
-> +/// - Helper methods for offset validation and address calculation
-> +/// - Fallible (runtime checked) accessors for different data widths
-> +///
-> +/// Which I/O methods are available depends on the associated =
-[`IoBackend`] implementation.
-> +pub trait Io<'a>: IoBase<'a> {
-> +    /// Returns the size of this I/O region.
-> +    #[inline]
-> +    fn size(self) -> usize {
-> +        KnownSize::size(Self::Backend::as_ptr(self.as_view()))
-> +    }
->=20
->     /// Fallible 8-bit read with runtime bounds check.
->     #[inline(always)]
-> @@ -779,6 +791,8 @@ fn update<T, L, F>(self, location: L, f: F)
->     }
-> }
->=20
+> > +    /// Called when a new user context is opened.
+> > +    ///
+> > +    /// Returns a [`PinInit`] initializer for `Self`. The instance
+> > is dropped
+> > +    /// automatically when the FD is closed (after
+> > [`close`](Self::close)).
+> > +    fn open<'a>(
+> > +        device: &'a Device<Self>,
+> > +        reg_data: &'a Self::RegistrationData<'a>,
+> > +    ) -> impl PinInit<Self, Error>;  
+> 
+> I think this can just be
+> 
+> 	fn open<'a>(
+> 	    device: &Device<Self>,
+> 	    reg_data: &Self::RegistrationData<'a>,
+> 	) -> impl PinInit<Self, Error>;
+> 
 
-IIUC this is what makes the methods non-overridable?
+Agree.
 
-If so, consider leaving a comment? i.e.:
+> > +impl<T: Operations> Device<T> {
+> > +    /// Allocate a new fwctl device.
+> > +    ///
+> > +    /// Returns an [`ARef`] that can be passed to
+> > [`Registration::new()`]
+> > +    /// to make the device visible to userspace.
+> > +    pub fn new(parent: &device::Device<device::Bound>) ->
+> > Result<ARef<Self>> {
+> > +        const_assert!(
+> > +            core::mem::offset_of!(Self, dev) == 0,
+> > +            "struct fwctl_device must be at offset 0"
+> > +        );
+> > +
+> > +        let ops =
+> > core::ptr::from_ref::<bindings::fwctl_ops>(&VTable::<T>::VTABLE).cast_mut();
+> > +
+> > +        // SAFETY: `ops` is static, `parent` is bound, and `size`
+> > covers the full `Device<T>`.
+> > +        let raw = unsafe {
+> > +            bindings::_fwctl_alloc_device(parent.as_raw(), ops,
+> > core::mem::size_of::<Self>())
+> > +        };
+> > +
+> > +        if raw.is_null() {
+> > +            return Err(ENOMEM);
+> > +        }
+> > +
+> > +        let this = raw.cast::<Self>();
+> > +
+> > +        // INVARIANT: Set `registration_data` to dangling (no
+> > registration yet).
+> > +        // SAFETY: `this` points to the allocation just returned
+> > by fwctl.
+> > +        unsafe {
+> > +            core::ptr::addr_of_mut!((*this).registration_data)  
+> 
+> Here and in a few other places, this can use &raw mut instead.
+> 
+> > +/// Static vtable mapping Rust trait methods to C callbacks.
+> > +pub struct VTable<T: Operations>(PhantomData<T>);  
+> 
+> Why does this need public visibility?
+> 
 
-// Provided methods may want to rely on their implementations to not be
-// arbitrarily overridden by implementers for correctness or soundness, =
-thus,
-// enforce it through this blanket implementation
+Will fix them in the next re-spin.
 
-Makes it easier to maintain later IMHO.
+> > +
+> > +impl<T: Operations> VTable<T> {
+> > +    /// The fwctl operations vtable for this driver type.
+> > +    pub const VTABLE: bindings::fwctl_ops = bindings::fwctl_ops {
+> > +        device_type: T::DEVICE_TYPE as u32,
+> > +        uctx_size: core::mem::size_of::<UserCtx<T>>(),
+> > +        open_uctx: Some(Self::open_uctx_callback),
+> > +        close_uctx: Some(Self::close_uctx_callback),
+> > +        info: Some(Self::info_callback),
+> > +        fw_rpc: Some(Self::fw_rpc_callback),
+> > +    };  
+> 
+> Same here.
+> 
+> > +
+> > +    /// # Safety
+> > +    ///
+> > +    /// `uctx` must be a valid `fwctl_uctx` embedded in a
+> > `UserCtx<T>` with
+> > +    /// sufficient allocated space for the uctx field.
+> > +    unsafe extern "C" fn open_uctx_callback(uctx: *mut
+> > bindings::fwctl_uctx) -> ffi::c_int {
+> > +        const_assert!(
+> > +            core::mem::offset_of!(UserCtx<T>, fwctl_uctx) == 0,
+> > +            "struct fwctl_uctx must be at offset 0"
+> > +        );
+> > +
+> > +        // SAFETY: fwctl sets this pointer before calling
+> > `open_uctx`.
+> > +        let raw_fwctl = unsafe { (*uctx).fwctl };
+> > +        // SAFETY: Rust fwctl devices use the offset-0 `Device<T>`
+> > layout.
+> > +        let device = unsafe { Device::<T>::from_raw(raw_fwctl) };
+> > +
+> > +        // SAFETY: open_uctx is called under registration_lock
+> > read; the device is registered.
+> > +        let reg_data = unsafe {
+> > device.registration_data_unchecked() }; +
+> > +        let initializer = T::open(device, reg_data);
+> > +
+> > +        let uctx_offset = core::mem::offset_of!(UserCtx<T>, uctx);
+> > +        // SAFETY: `uctx_size` reserves space for the full
+> > `UserCtx<T>`.
+> > +        let uctx_ptr: *mut T = unsafe {
+> > uctx.cast::<u8>().add(uctx_offset).cast() };  
+> 
+> This can use byte_add() instead.
+> 
+> > +            Ok(FwRpcResponse::NewBuffer(kvec)) => {
+> > +                let (ptr, len, _cap) = kvec.into_raw_parts();
+> > +                // SAFETY: `out_len` is valid.
+> > +                unsafe { *out_len = len };
+> > +                ptr.cast::<ffi::c_void>()  
+> 
+> This probably needs a kvec.is_empty() check, since an empty vector
+> contains a dangling pointer.
 
-> +impl<'a, T: IoBase<'a>> Io<'a> for T {}
-> +
-> /// A view of memory-mapped I/O region.
-> ///
-> /// # Invariant
-> @@ -819,7 +833,7 @@ unsafe impl<T: ?Sized + Sync> Send for Mmio<'_, T> =
-{}
-> // SAFETY: `Mmio<'_, T>` is conceptually `&T` but in I/O memory.
-> unsafe impl<T: ?Sized + Sync> Sync for Mmio<'_, T> {}
->=20
-> -impl<'a, T: ?Sized + KnownSize> Io<'a> for Mmio<'a, T> {
-> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for Mmio<'a, T> {
->     type Backend =3D MmioBackend;
->     type Target =3D T;
->=20
-> @@ -920,7 +934,7 @@ unsafe fn project_view<'a, T: ?Sized + KnownSize, =
-U: ?Sized + KnownSize>(
->     }
-> }
->=20
-> -impl<'a, T: ?Sized + KnownSize> Io<'a> for RelaxedMmio<'a, T> {
-> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for RelaxedMmio<'a, T> {
->     type Backend =3D RelaxedMmioBackend;
->     type Target =3D T;
->=20
-> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
-> index d9b3189d09b4..e95b769ebe47 100644
-> --- a/rust/kernel/io/mem.rs
-> +++ b/rust/kernel/io/mem.rs
-> @@ -14,7 +14,7 @@
->             Region,
->             Resource, //
->         },
-> -        Io,
-> +        IoBase,
->         Mmio,
->         MmioBackend,
->         MmioRaw, //
-> @@ -210,7 +210,7 @@ pub fn into_devres(self) -> =
-Result<Devres<ExclusiveIoMem<'static, SIZE>>> {
->     }
-> }
->=20
-> -impl<'a, const SIZE: usize> Io<'a> for &'a ExclusiveIoMem<'_, SIZE> {
-> +impl<'a, const SIZE: usize> IoBase<'a> for &'a ExclusiveIoMem<'_, =
-SIZE> {
->     type Backend =3D MmioBackend;
->     type Target =3D super::Region<SIZE>;
->=20
-> @@ -292,7 +292,7 @@ fn drop(&mut self) {
->     }
-> }
->=20
-> -impl<'a, const SIZE: usize> Io<'a> for &'a IoMem<'_, SIZE> {
-> +impl<'a, const SIZE: usize> IoBase<'a> for &'a IoMem<'_, SIZE> {
->     type Backend =3D MmioBackend;
->     type Target =3D super::Region<SIZE>;
->=20
-> diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
-> index 4be33ecb4192..4d1d0afdc491 100644
-> --- a/rust/kernel/pci/io.rs
-> +++ b/rust/kernel/pci/io.rs
-> @@ -8,8 +8,8 @@
->     device,
->     devres::Devres,
->     io::{
-> -        Io,
->         IoBackend,
-> +        IoBase,
->         IoCapable,
->         Mmio,
->         MmioBackend,
-> @@ -144,7 +144,7 @@ fn io_write(view: ConfigSpace<'_, $ty>, value: =
-$ty) {
-> impl_config_space_io_capable!(u16, pci_read_config_word, =
-pci_write_config_word);
-> impl_config_space_io_capable!(u32, pci_read_config_dword, =
-pci_write_config_dword);
->=20
-> -impl<'a, T: ?Sized + KnownSize> Io<'a> for ConfigSpace<'a, T> {
-> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for ConfigSpace<'a, T> {
->     type Backend =3D ConfigSpaceBackend;
->     type Target =3D T;
->=20
-> @@ -267,7 +267,7 @@ fn drop(&mut self) {
->     }
-> }
->=20
-> -impl<'a, const SIZE: usize> Io<'a> for &'a Bar<'_, SIZE> {
-> +impl<'a, const SIZE: usize> IoBase<'a> for &'a Bar<'_, SIZE> {
->     type Backend =3D MmioBackend;
->     type Target =3D crate::io::Region<SIZE>;
->=20
->=20
-> --=20
-> 2.54.0
->=20
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Yup. Will fix above in the next re-spin.
 
