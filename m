@@ -1,94 +1,122 @@
-Received: from outbound.mr.icloud.com (p-west2-cluster4-host3-snip4-5.eps.apple.com [57.103.69.236])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1795282F2C
-	for <rust-for-linux@vger.kernel.org>; Tue,  7 Jul 2026 22:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.69.236
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783464566; cv=none; b=UsTnolBGwWwyicDldevLgUJiQ7Q4hMsBZiG19pFMhr8T0Ey8WX5AXvQCkSFJ/2bK47uvZYCesE3ViFPmI1xyFHGW4xC+j1+0xdVt9G38Gb6+Id919p4Mhg0MvpYAIggpXLOjHaWj+bYQuMP+ugfqr2Sa/Qa96MXDxr5vM6IohVg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783464566; c=relaxed/simple;
-	bh=pJswPxQK4GoFtanf6LQF40HIE/Rn1sF205aBTjTyvkg=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=K/QjsRCIeDSWlrAxxVseDCAKp/CMJIzi6/HK9a5+hPG2ift2crGm1frSRElqNEjMhFPH/lmO7vdyzCeZ3GC5qNJSMx5SadH04R2eITMYyxw0aq3WynPk5ffBj7sgQpBBXC2CITQO/hVrNzGdSb63yUxBwfkXcWzI1pYYNMa/iRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=aiNdaczR; arc=none smtp.client-ip=57.103.69.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EFA1DC198;
+	Wed,  8 Jul 2026 00:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783470275; cv=pass; b=EWizRc24IeyGTMPT1o5JGaMF/XCrpAZzKf3DCL0PfZDZFeHLeQP+vwbIMcpo+JkCUMP/SimiybRETntqL4ZTQyr9mxy0+8zfI174A1qU4m+Gts3dIoiPIEy38oKPDeuTsQy6QwGF/YNHHkCeF7Id0tqeeq0mUWpndyNbndJ/Kqc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783470275; c=relaxed/simple;
+	bh=T5phQSMf9GvrAN5+gXMjqlbyH09POBaanjLNoMJje2Y=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=K/qkbuhgwGnS+Apvhm0lrzo2QnQ8756EWZWm2/3Hf79j2geb0RJzGjmR+UnElekzrm8xQ4bSalmJfAdjl4A9J4XXGyTjdcDEvBSdcdnpn/jMFWPbtgVkVdDYMhMkElpyOJ3LQTuXTQRdcKtNloW6ehHxtj9uw6ZCRiO0KGBVis4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fIy+B01d; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="aiNdaczR"
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-10-percent-0 (Postfix) with ESMTPS id 54FDB18013C7;
-	Tue, 07 Jul 2026 22:49:20 +0000 (UTC)
-X-ICL-RepId: 019f3ec5-865d-76fc-aa13-3c13fb832ab6
-X-ICL-Out-Info: HUtFAUMHWwJACUgATUQeDx5WFlZNRAJCTQhNAEMFXwBeC0oCQwZfBlBcHA4ZWAZdMFgUWgxEAlwXFxZWGRcNVk1YFFoMRAJcFxcWVhkXGVFNCE8TBVIHXU1WDUcPWB5cFBcVQUNeCF4fTBwdDlgGEgBNCg42BlkFXglWA0MFNhIUXUVSAV4KQRlXHx0DUh8SHVAcDlEFWwBGCU8DVRlbBUQBTQpDD10FRwBOC1oBWAJHAEgCWgVZHBZMEloZVitQFVxGExlOG1dNWg1AGVgGbRRWFVIEWQ==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1783464564; x=1786056564; bh=CojGPE+pWz5DeeFKd0Z8T55EL4EDpPCo362pHe/6qjc=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=aiNdaczRMo2yIFvEHohMEnHdMqvl4wE9TDJpD1kkm9fmHgAgUvALNystK8S6Row3pmF8igqZjM6XTLED8183+pMyQNEU1m89743phR9gfWrysLfqNK3S3ZWoaRJ6yMbooe7aPqndV7cXQzDnW8+1eoiER6O65KALZryfK668bkwq4E/r0vNbRJM2e8uZb/2koiyHWaRo2XTnZmz+Kbb2fyyYROIgsqjY0W3sGS+nJ8H+eD8w5YGd1c7I3wwBA4rlGTvaJHpvSk0MbQ7pg8ApMph08r/WFRVT2G/sM0crvKEzrtlB3oFl7xQCys9Y+4bzV6x2wZUfrjBe2moyBznEng==
-mail-alias-created-date: 1769500909675
-Received: from localhost (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-10-percent-0 (Postfix) with ESMTPSA id 420B61800125;
-	Tue, 07 Jul 2026 22:49:17 +0000 (UTC)
-Date: Wed, 08 Jul 2026 07:48:59 +0900 (JST)
-Message-Id: <20260708.074859.867796876307901722.fujita@bee>
-To: gregkh@linuxfoundation.org
-Cc: dakr@kernel.org, tomo@aliasing.net, ojeda@kernel.org,
- a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
- bjorn3_gh@protonmail.com, boqun@kernel.org, daniel.almeida@collabora.com,
- gary@garyguo.net, lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu,
- work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v1] rust: bug: Add bug_on macro
-From: FUJITA Tomonori <tomo@aliasing.net>
-In-Reply-To: <2026070746-roulette-catfish-57d6@gregkh>
-References: <20260707143026.2774023-1-tomo@aliasing.net>
-	<DJSF9IBYP207.2UQXDE9IVSRUF@kernel.org>
-	<2026070746-roulette-catfish-57d6@gregkh>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fIy+B01d"
+ARC-Seal: i=1; a=rsa-sha256; t=1783470238; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Eh/CRicKhYzjAv+NkC3XCS25mmZD96sPKSruzOkCfP5bgbvgku0FzBwmRFC07FGconTni+IdYYYThbTp1Tjy5PD0eI5FbEXxcMNXwHqW7tdlp9lrI3/eI5js2EzQU1IB864bb4zoX2tji6k/1/ZlUAnaywP1EtH/ESaghFo81FE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783470238; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=DYXyLoAY8AaVmLnx+7/pJaDvxt1RZKBKQrdv8WKrV+0=; 
+	b=gpRcMdoSv41OxUEsFya+v8vuaVmWGvUCXk9yOe5VzX0FpTr0vHlREjaDJJvS/XpAKnwoaorVF1uMqJGyzcBuR4jzI2vwxodq6dAIT/YxFi/R0xvm4b3lwwIp5FTBYlxnt/W2Z9GedSAbCKdqTScXp9phXD7MJyf1sb5Z+AEHrbw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783470238;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=DYXyLoAY8AaVmLnx+7/pJaDvxt1RZKBKQrdv8WKrV+0=;
+	b=fIy+B01dwvb7JLCtbCEEFHMplUsc1qCuaJIei5Iz7trHUoEwhpaOfJzVIwr35YSs
+	Qf8VskDPmrcCsDL8a8X8eioLjPM1KhgXQCrOSxURNX1+Dk+9JyO9D2waeu7dxTN2I7N
+	ruMqs5dyw5VX6RVW2qXQH5+3mFEjLtb/GDpQfoNs=
+Received: by mx.zohomail.com with SMTPS id 1783470236194104.25200355621882;
+	Tue, 7 Jul 2026 17:23:56 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDIyNCBTYWx0ZWRfXy+komLkWodvS
- mZcYRnFf9jZ0GzmDRrbCdFGheIQ+2D2JPE3y6YTMfCCo/rEEmJRFwWRPdcBip+OJLy3zKSik6GZ
- cpS6553jEH5bxFhyF3/hO4QmThKk04nj21WAZ0trmVHw0iL8yyTrzJ7jdRVI4tnSwkJq/HBzaCr
- gP/v/ye4BSIexaJmQlozkePbyqCXBDK9ZqQ6k150UpUsmGiPyQ86bJq97C7gsx0sSX4ipp/Yiba
- +BPaYLgv88jAN2C8lxu1/W0eH0EZ7HvYN4YgUzRpzQ2Q32zwaWWWfKd8wtKOpSEN7HPjh+gzXEl
- imteNgsnQgQ720xyLfL
-X-Proofpoint-GUID: ezgPb0GASfyEu9uX6ZgXd1sxHoeBx4ZG
-X-Proofpoint-ORIG-GUID: ezgPb0GASfyEu9uX6ZgXd1sxHoeBx4ZG
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 03/20] rust: io: restrict untyped IO access and
+ `register!` to `Region`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260706-io_projection-v6-3-72cd5d055d54@garyguo.net>
+Date: Tue, 7 Jul 2026 21:23:35 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ nova-gpu@lists.linux.dev,
+ dri-devel@lists.freedesktop.org,
+ linux-pwm@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <613EE0AC-716C-4382-8CB4-1EA03B915A46@collabora.com>
+References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+ <20260706-io_projection-v6-3-72cd5d055d54@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, 7 Jul 2026 17:20:10 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
 
-> On Tue, Jul 07, 2026 at 04:51:40PM +0200, Danilo Krummrich wrote:
->> On Tue Jul 7, 2026 at 4:30 PM CEST, FUJITA Tomonori wrote:
->> > Use of this macro is heavily discouraged. Prefer warn_on() macro with
->> > recovery code where feasible. See the documentation for C's BUG_ON()
->> > for guidance on when it is rarely justified.
->> 
->> Given that, can you please spell out the motivation for this patch?
-> 
-> I agree, this should probably NOT be added unless there is a real user
-> for it that requires it and we all agree that crashing the system is the
-> only way out.
 
-bindings::BUG() is already in use today, indirectly, from the kernel
-crate itself and from drivers such as binder and nova-core, via
-panic!()/.exepct().unwrap() on invariants that "can't happen". All of
-those funnel through panic() in kernel/lib.rs (#[panic_handler]),
-which itself calls BUG().
+> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
+>=20
+> Currently the `Io` trait exposes a bunch of untyped IO accesses, but =
+if the
+> `Io` region itself is typed, then it might be weird to have
+>=20
+>    let io: Mmio<u32> =3D /* ... */;
+>    io.read8(1);
+>=20
+> while not unsound, it is surely strange. Thus, restrict the untyped =
+methods
+> and also the register macro to `Region` type only.
+>=20
+> Implement it by adding a generic type to `IoLoc` indicating allowed =
+base
+> types. This also paves the way to add typed register blocks in the =
+future;
+> for example, we could use this mechanism to block driver A's =
+`register!()`
+> generated macro from being used on driver B's MMIO. The same mechanism
+> could be used for relative IO registers. These are future =
+opportunities,
+> and for now restrict everything to require `IoLoc<Region<SIZE>, _>`.
+>=20
+> Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+> Link: =
+https://lore.kernel.org/rust-for-linux/DHLB3RO3OSF5.2R7F27U99BKLN@nvidia.c=
+om/
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-The motivation for this patch is narrow: replace that bindings::BUG()
-call in lib.rs's panic() with bug_on!(), for a somewhat better
-trace. It isn't adding a new decision to crash the system -- that
-decision is already made at each of the existing panic!()/.expect()
-call sites.
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Separately, calling bug_on!() directly at a call site, instead of going
-through panic!()/.expect(), gives an accurate trace, since the location
-is captured at the actual check rather than inside the shared panic
-handler.
-
-How about marking the macro #[doc(hidden)], to make it clear it isn't
-meant to be called directly by driver authors?
