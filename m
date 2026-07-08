@@ -1,83 +1,84 @@
-Received: from va-2-27.ptr.blmpb.com (va-2-27.ptr.blmpb.com [209.127.231.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F9E3B992A
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 05:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CAC3BA246
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 05:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783488457; cv=none; b=V+9BCgwcj/TFBzFyraFOGG/y7GiWqoWG7SFkZKiduFMRi6FZmKFbtbYcBtWh6geRZCrHA6jif5HFPGrimbLxdHY9YhgXzloI9B7QqQ3zdnhMS596RrW2JxoWod3bS4oRCil8Owi8VmEJ3hSSr4kbOMR/SNNQ3MieQf/E94bYXCE=
+	t=1783488575; cv=none; b=Hx0aYJwpwhItkzaCfp26TgmYGDyJXGgx3KRuo1T4BkTRUDJ05XL6XRVmQ4IX2/nkh2t7TJc+O1sftGs+8bEclhsPYKHl4a1RhNAckp/KAUcxMEW95gmO7i3yVvROn2AJUsg9MzejjlXILmQNB29GcVr2PhCCfNVLjVazkV/vSBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783488457; c=relaxed/simple;
-	bh=tmodcF4+QiDiIz6WsYj59ZqemeeO5oJgHmmFdea45QQ=;
-	h=Message-Id:To:Cc:In-Reply-To:Subject:Mime-Version:Content-Type:
-	 From:Date:References; b=BtYozlouSQuULL1DzSVFid3tk3aZRYaqyqoSwonM0ZYavVwASvwun0jm+0K2xWFLruF2p9uoSxy+whe9FAUyy7UMj4r9fZPh1gSzbYbmp8sZfwI4qm4cjYbn8tvPT4K0HpCHN0zpWBxDs2lDTloqstSdpIXWP4JjUPKVPpGJuEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=uiVpuxrO; arc=none smtp.client-ip=209.127.231.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
+	s=arc-20240116; t=1783488575; c=relaxed/simple;
+	bh=63KdCFVPTbqn2LST8VLw0tLuUKUgQJ7r/WM2ElYyAcw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WPLTDktHUM9HgKXeQ+sNKEcyhA844h42Y99nXXvsPiEYhzsHIsrDVgH6kHE/sNeoAY9dqiyyEEgbg1+654XSMEystbf1a4panEQP11f3ILNBb7zwahwICJ9/xjRNEosrQKS8wPo/y4tvcwyJh4uLGVh6txBtKFpTDDoA8b4BWB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LENcbzAo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="uiVpuxrO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1783488336;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=Tn1ih0TZRCvYgAoo7m4rj+ooeW8ZODoMEyFV6AGT6gA=;
- b=uiVpuxrO87uXF9bhcyhY2TnR6Z22KkRJW8YrX3VAlgNhB3HvuRqDeDeFFAnkl755uAwiy2
- m1c4ezkgwcFh+JFazzwVRwrsLpnWUUd6OWshT/wFlVScV8a6AKbqnEfRpQs2P7Ev2ei6R8
- Bh0PR2xsMnIwe7AGQaT82O+WHTegC6BnzHjG9fg+kqej7VTpnmIVLePF84VH22GXBWjxuW
- ZDghDqYGMfaElgB7zWWc7RoSowRcbUtFpEMALq70matn6cipk+PQfLsrtKVLGRvOE36LM2
- jI+DA6T+ztSLLqmNO4F6h23im1CIBSAP5mu4QpABH6/ULpo6MgDkjZfQJyz0TQ==
-Message-Id: <8496b3ae0cd02e7ab7f68c2f3dac781aaf4fb29a.1783480076.git.ben.guo@openatom.club>
-X-Mailer: git-send-email 2.53.0
-Content-Transfer-Encoding: quoted-printable
-To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, 
-	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
-Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<rust-for-linux@vger.kernel.org>, 
-	<hust-os-kernel-patches@googlegroups.com>
-X-Original-From: Ben Guo <ben.guo@openatom.club>
-X-Lms-Return-Path: <lba+26a4ddf4e+13216b+vger.kernel.org+ben.guo@openatom.club>
-In-Reply-To: <cover.1783480076.git.ben.guo@openatom.club>
-Subject: [PATCH 3/4] docs/zh_CN: Update rust/arch-support.rst translation
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LENcbzAo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493B31F000E9;
+	Wed,  8 Jul 2026 05:29:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783488573;
+	bh=16g6jvWsx6pCfhMKw+vX7ZRgLnMo05lkjXbXRf/Wafw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LENcbzAoWxDUfaeb8hclVdjvxgU+FjsCNFDsvaoymJ9fFUZsn+JNOZTk7TZF8i0yX
+	 7rmZDFw8okjujq6Sm14W9PRwLinaXnyEgNJt6pm2c7pofuRj9w0uTo6Z8vbfcj/Y5Y
+	 FLj+Qugm5owdUvNq1LGCdRzIJbYA6RLCK7XqQ+6M=
+Date: Wed, 8 Jul 2026 07:29:31 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: FUJITA Tomonori <tomo@aliasing.net>
+Cc: dakr@kernel.org, ojeda@kernel.org, a.hindborg@kernel.org,
+	acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
+	boqun@kernel.org, daniel.almeida@collabora.com, gary@garyguo.net,
+	lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu,
+	work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+	fujita.tomonori@gmail.com
+Subject: Re: [PATCH v1] rust: bug: Add bug_on macro
+Message-ID: <2026070841-unplanned-lagoon-651f@gregkh>
+References: <20260707143026.2774023-1-tomo@aliasing.net>
+ <DJSF9IBYP207.2UQXDE9IVSRUF@kernel.org>
+ <2026070746-roulette-catfish-57d6@gregkh>
+ <20260708.074859.867796876307901722.fujita@bee>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Wed, 08 Jul 2026 13:25:33 +0800
-From: "Ben Guo" <ben.guo@openatom.club>
-Date: Wed,  8 Jul 2026 13:25:26 +0800
-References: <cover.1783480076.git.ben.guo@openatom.club>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708.074859.867796876307901722.fujita@bee>
 
-Update Documentation/rust/arch-support.rst translation.
+On Wed, Jul 08, 2026 at 07:48:59AM +0900, FUJITA Tomonori wrote:
+> On Tue, 7 Jul 2026 17:20:10 +0200
+> Greg KH <gregkh@linuxfoundation.org> wrote:
+> 
+> > On Tue, Jul 07, 2026 at 04:51:40PM +0200, Danilo Krummrich wrote:
+> >> On Tue Jul 7, 2026 at 4:30 PM CEST, FUJITA Tomonori wrote:
+> >> > Use of this macro is heavily discouraged. Prefer warn_on() macro with
+> >> > recovery code where feasible. See the documentation for C's BUG_ON()
+> >> > for guidance on when it is rarely justified.
+> >> 
+> >> Given that, can you please spell out the motivation for this patch?
+> > 
+> > I agree, this should probably NOT be added unless there is a real user
+> > for it that requires it and we all agree that crashing the system is the
+> > only way out.
+> 
+> bindings::BUG() is already in use today, indirectly, from the kernel
+> crate itself and from drivers such as binder and nova-core, via
+> panic!()/.exepct().unwrap() on invariants that "can't happen". All of
+> those funnel through panic() in kernel/lib.rs (#[panic_handler]),
+> which itself calls BUG().
+> 
+> The motivation for this patch is narrow: replace that bindings::BUG()
+> call in lib.rs's panic() with bug_on!(), for a somewhat better
+> trace. It isn't adding a new decision to crash the system -- that
+> decision is already made at each of the existing panic!()/.expect()
+> call sites.
 
-Update the translation through commit 3f70ebe63858
-("s390: Enable Rust support")
+That wasn't obvious that this was the reason why this change was being
+introduced, perhaps the changelog should have said that?
 
-Signed-off-by: Ben Guo <ben.guo@openatom.club>
----
- Documentation/translations/zh_CN/rust/arch-support.rst | 1 +
- 1 file changed, 1 insertion(+)
+thanks,
 
-diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Docum=
-entation/translations/zh_CN/rust/arch-support.rst
-index f5ae44588a5..0ca4be6e176 100644
---- a/Documentation/translations/zh_CN/rust/arch-support.rst
-+++ b/Documentation/translations/zh_CN/rust/arch-support.rst
-@@ -23,6 +23,7 @@
- ``arm64``      Maintained        =E4=BB=85=E5=B0=8F=E7=AB=AF=E5=BA=8F=E3=
-=80=82
- ``loongarch``  Maintained        \-
- ``riscv``      Maintained        =E4=BB=85 ``riscv64``=EF=BC=8C=E4=B8=94=
-=E4=BB=85=E9=99=90 LLVM/Clang=E3=80=82
-+``s390``       Maintained        =E5=BF=85=E9=A1=BB=E7=A6=81=E7=94=A8 ``CO=
-NFIG_EXPOLINE``=E3=80=82
- ``um``         Maintained        \-
- ``x86``        Maintained        =E4=BB=85 ``x86_64``=E3=80=82
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
---=20
-2.53.0
+greg k-h
