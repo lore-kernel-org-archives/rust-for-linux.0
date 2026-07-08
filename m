@@ -1,122 +1,140 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-26.ptr.blmpb.com (va-2-26.ptr.blmpb.com [209.127.231.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EFA1DC198;
-	Wed,  8 Jul 2026 00:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783470275; cv=pass; b=EWizRc24IeyGTMPT1o5JGaMF/XCrpAZzKf3DCL0PfZDZFeHLeQP+vwbIMcpo+JkCUMP/SimiybRETntqL4ZTQyr9mxy0+8zfI174A1qU4m+Gts3dIoiPIEy38oKPDeuTsQy6QwGF/YNHHkCeF7Id0tqeeq0mUWpndyNbndJ/Kqc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783470275; c=relaxed/simple;
-	bh=T5phQSMf9GvrAN5+gXMjqlbyH09POBaanjLNoMJje2Y=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=K/qkbuhgwGnS+Apvhm0lrzo2QnQ8756EWZWm2/3Hf79j2geb0RJzGjmR+UnElekzrm8xQ4bSalmJfAdjl4A9J4XXGyTjdcDEvBSdcdnpn/jMFWPbtgVkVdDYMhMkElpyOJ3LQTuXTQRdcKtNloW6ehHxtj9uw6ZCRiO0KGBVis4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fIy+B01d; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB87B34D901
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 03:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.26
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783480422; cv=none; b=MJPCTarU6ACOfwedOHSszCfZslu6/CGD3e1rd8TS3EUGEOP/JyNPZumcyoOyWIOfareN15Rj8A6Yy9yPQVIZBmKo1XoEkMeHS1Q0gO6le9FFMwsO70Rw4GkxlJEYzwIIjVsF++XWcG1Poor/bZvSp4uE/Gkro5K7YmjNe0oCDLA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783480422; c=relaxed/simple;
+	bh=aGFnYfBWWPqavfywXp0HMmaZ513jpIdH0AW5Mot/lVM=;
+	h=From:Message-Id:Cc:In-Reply-To:References:To:Subject:Mime-Version:
+	 Date:Content-Type; b=JYqyi76nNkqrpdHeSs/C03Hdggf+8UdU3IbzcR/ezkECL8nTlIPUdlWoK7NC0k7RNRaDNTcKxyt9yhIqzaaY6piw7tlH7xKPF871/IDKFidm9Jft0ICygyo05znpwZwFPlomuA0Mjt9GKnziO3NrA+lbiJ/gJpEjMSTZ7JdxaHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=U8C/4vpn; arc=none smtp.client-ip=209.127.231.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fIy+B01d"
-ARC-Seal: i=1; a=rsa-sha256; t=1783470238; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Eh/CRicKhYzjAv+NkC3XCS25mmZD96sPKSruzOkCfP5bgbvgku0FzBwmRFC07FGconTni+IdYYYThbTp1Tjy5PD0eI5FbEXxcMNXwHqW7tdlp9lrI3/eI5js2EzQU1IB864bb4zoX2tji6k/1/ZlUAnaywP1EtH/ESaghFo81FE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783470238; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=DYXyLoAY8AaVmLnx+7/pJaDvxt1RZKBKQrdv8WKrV+0=; 
-	b=gpRcMdoSv41OxUEsFya+v8vuaVmWGvUCXk9yOe5VzX0FpTr0vHlREjaDJJvS/XpAKnwoaorVF1uMqJGyzcBuR4jzI2vwxodq6dAIT/YxFi/R0xvm4b3lwwIp5FTBYlxnt/W2Z9GedSAbCKdqTScXp9phXD7MJyf1sb5Z+AEHrbw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783470238;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=DYXyLoAY8AaVmLnx+7/pJaDvxt1RZKBKQrdv8WKrV+0=;
-	b=fIy+B01dwvb7JLCtbCEEFHMplUsc1qCuaJIei5Iz7trHUoEwhpaOfJzVIwr35YSs
-	Qf8VskDPmrcCsDL8a8X8eioLjPM1KhgXQCrOSxURNX1+Dk+9JyO9D2waeu7dxTN2I7N
-	ruMqs5dyw5VX6RVW2qXQH5+3mFEjLtb/GDpQfoNs=
-Received: by mx.zohomail.com with SMTPS id 1783470236194104.25200355621882;
-	Tue, 7 Jul 2026 17:23:56 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="U8C/4vpn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1783480414;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=aGFnYfBWWPqavfywXp0HMmaZ513jpIdH0AW5Mot/lVM=;
+ b=U8C/4vpnn8ePeoFFnSqX8gfEHzIkqTTwaCVpy5bt4MzMS7tljvRn9EyQExMwNYYbPHRnQc
+ Xie/gFzP7l5M4IDc3g1Rxh49/gpMi9PA01TdZlYnN7zilCDtsB9aEAfrhIpCvMbn9nIzr8
+ 15mP9fMGwqZqDj7rLTI+aENATYyu8eQmi84epUlRmIRoK1r4PyjvkDnKP7lnsNAK1w3Qdw
+ bcMG4wbsiOuxiqpWxf11UfWA6lQqFkUGIyxCmOwPhgOaeVlTzBwESIgFrkoBwE70LCjwrR
+ L2rMPnruW8a8lj4hDteLnrxQLDjpVP8tAHK7yW6xXSunL0CSTcK0zqB5e7sx7Q==
+From: "Ben Guo" <ben.guo@openatom.club>
+Message-Id: <c55f8e36643a30a1aa0794c05caa5322045e7fa3.1783480076.git.ben.guo@openatom.club>
+X-Original-From: Ben Guo <ben.guo@openatom.club>
+Content-Transfer-Encoding: base64
+X-Lms-Return-Path: <lba+26a4dc05c+b14816+vger.kernel.org+ben.guo@openatom.club>
+Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<rust-for-linux@vger.kernel.org>, 
+	<hust-os-kernel-patches@googlegroups.com>
+In-Reply-To: <cover.1783480076.git.ben.guo@openatom.club>
+X-Mailer: git-send-email 2.53.0
+References: <cover.1783480076.git.ben.guo@openatom.club>
+To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, 
+	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
+Subject: [PATCH 1/4] docs/zh_CN: Update rust/quick-start.rst translation
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 03/20] rust: io: restrict untyped IO access and
- `register!` to `Region`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260706-io_projection-v6-3-72cd5d055d54@garyguo.net>
-Date: Tue, 7 Jul 2026 21:23:35 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@kernel.org>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- Robin Murphy <robin.murphy@arm.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Michal Wilczynski <m.wilczynski@samsung.com>,
- =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>,
- driver-core@lists.linux.dev,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org,
- nova-gpu@lists.linux.dev,
- dri-devel@lists.freedesktop.org,
- linux-pwm@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <613EE0AC-716C-4382-8CB4-1EA03B915A46@collabora.com>
-References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
- <20260706-io_projection-v6-3-72cd5d055d54@garyguo.net>
-To: Gary Guo <gary@garyguo.net>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Wed, 08 Jul 2026 11:13:31 +0800
+Date: Wed,  8 Jul 2026 11:13:22 +0800
+Content-Type: text/plain; charset=UTF-8
 
-
-
-> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
->=20
-> Currently the `Io` trait exposes a bunch of untyped IO accesses, but =
-if the
-> `Io` region itself is typed, then it might be weird to have
->=20
->    let io: Mmio<u32> =3D /* ... */;
->    io.read8(1);
->=20
-> while not unsound, it is surely strange. Thus, restrict the untyped =
-methods
-> and also the register macro to `Region` type only.
->=20
-> Implement it by adding a generic type to `IoLoc` indicating allowed =
-base
-> types. This also paves the way to add typed register blocks in the =
-future;
-> for example, we could use this mechanism to block driver A's =
-`register!()`
-> generated macro from being used on driver B's MMIO. The same mechanism
-> could be used for relative IO registers. These are future =
-opportunities,
-> and for now restrict everything to require `IoLoc<Region<SIZE>, _>`.
->=20
-> Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
-> Link: =
-https://lore.kernel.org/rust-for-linux/DHLB3RO3OSF5.2R7F27U99BKLN@nvidia.c=
-om/
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
+VXBkYXRlIERvY3VtZW50YXRpb24vcnVzdC9xdWljay1zdGFydC5yc3QgdHJhbnNsYXRpb24uDQoN
+ClVwZGF0ZSB0aGUgdHJhbnNsYXRpb24gdGhyb3VnaCBjb21taXQgYTQzOTJlZDFjOGI5DQooImRv
+Y3M6IHJ1c3Q6IHF1aWNrLXN0YXJ0OiByZW1vdmUgR0RCL0JpbnV0aWxzIG1lbnRpb24iKQ0KDQpT
+aWduZWQtb2ZmLWJ5OiBCZW4gR3VvIDxiZW4uZ3VvQG9wZW5hdG9tLmNsdWI+DQotLS0NCiAuLi4v
+dHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVpY2stc3RhcnQucnN0ICAgfCA0OCArKysrKysrKy0t
+LS0tLS0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDI5IGRlbGV0aW9u
+cygtKQ0KDQpkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVz
+dC9xdWljay1zdGFydC5yc3QgYi9Eb2N1bWVudGF0aW9uL3RyYW5zbGF0aW9ucy96aF9DTi9ydXN0
+L3F1aWNrLXN0YXJ0LnJzdA0KaW5kZXggNWYwZWNlNjQxMWYuLjAzOTYxMzdmM2MxIDEwMDY0NA0K
+LS0tIGEvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5y
+c3QNCisrKyBiL0RvY3VtZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVpY2stc3Rh
+cnQucnN0DQpAQCAtNTksNyArNTksNyBAQCBGZWRvcmEgTGludXgg5o+Q5L6b6L6D5paw55qEIFJ1
+c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L5aaCOjoNCiBHZW50b28g
+TGludXgNCiAqKioqKioqKioqKioNCiANCi1HZW50b28gTGludXjvvIjlsKTlhbbmmK8gdGVzdGlu
+ZyDliIbmlK/vvInmj5DkvpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjlvIDn
+rrHljbPnlKjvvIwNCitHZW50b28gTGludXgg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM
+5Zug5q2k6YCa5bi45byA566x5Y2z55So77yMDQog5L6L5aaCOjoNCiANCiAJVVNFPSdydXN0LXNy
+YyBydXN0Zm10IGNsaXBweScgZW1lcmdlIGRldi1sYW5nL3J1c3QgZGV2LXV0aWwvYmluZGdlbg0K
+QEAgLTcwLDcgKzcwLDcgQEAgR2VudG9vIExpbnV477yI5bCk5YW25pivIHRlc3Rpbmcg5YiG5pSv
+77yJ5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2kDQogTml4DQogKioqDQogDQot
+Tml477yIdW5zdGFibGUg6aKR6YGT77yJ5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug
+5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L5aaCOjoNCitOaXgg5o+Q5L6b6L6D5paw55qEIFJ1
+c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L5aaCOjoNCiANCiAJeyBw
+a2dzID8gaW1wb3J0IDxuaXhwa2dzPiB7fSB9Og0KIAlwa2dzLm1rU2hlbGwgew0KQEAgLTg1LDE2
+ICs4NSwxNCBAQCBvcGVuU1VTRQ0KIG9wZW5TVVNFIFNsb3dyb2xsIOWSjCBvcGVuU1VTRSBUdW1i
+bGV3ZWVkIOaPkOS+m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8gOeusQ0K
+IOWNs+eUqO+8jOS+i+Wmgjo6DQogDQotCXp5cHBlciBpbnN0YWxsIHJ1c3QgcnVzdDEuNzktc3Jj
+IHJ1c3QtYmluZGdlbiBjbGFuZw0KKwl6eXBwZXIgaW5zdGFsbCBydXN0IHJ1c3Qtc3JjIHJ1c3Qt
+YmluZGdlbiBjbGFuZw0KIA0KIA0KIFVidW50dQ0KICoqKioqKg0KIA0KLTI1LjA0DQotfn5+fn4N
+Ci0NCi3mnIDmlrDnmoQgVWJ1bnR1IOeJiOacrOaPkOS+m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8
+jOWboOatpOmAmuW4uOW8gOeuseWNs+eUqO+8jOS+i+Wmgjo6DQorVWJ1bnR1IDI1LjEwIOWSjCAy
+Ni4wNCBMVFMg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x
+5Y2z55So77yMDQor5L6L5aaCOjoNCiANCiAJYXB0IGluc3RhbGwgcnVzdGMgcnVzdC1zcmMgYmlu
+ZGdlbiBydXN0Zm10IHJ1c3QtY2xpcHB5DQogDQpAQCAtMTExLDMyICsxMDksMzIgQEAgVWJ1bnR1
+DQog6Jm954S2IFVidW50dSAyNC4wNCBMVFMg5Y+K5pu05pep54mI5pys5LuN54S25o+Q5L6b6L6D
+5paw55qEIFJ1c3Qg54mI5pys77yM5L2G5a6D5Lus6ZyA6KaB5LiA5Lqb6aKd5aSW55qE6YWNDQog
+572u77yM5L2/55So5bim54mI5pys5Y+355qE6L2v5Lu25YyF77yM5L6L5aaCOjoNCiANCi0JYXB0
+IGluc3RhbGwgcnVzdGMtMS44MCBydXN0LTEuODAtc3JjIGJpbmRnZW4tMC42NSBydXN0Zm10LTEu
+ODAgXA0KLQkJcnVzdC0xLjgwLWNsaXBweQ0KLQlsbiAtcyAvdXNyL2xpYi9ydXN0LTEuODAvYmlu
+L3J1c3RmbXQgL3Vzci9iaW4vcnVzdGZtdC0xLjgwDQotCWxuIC1zIC91c3IvbGliL3J1c3QtMS44
+MC9iaW4vY2xpcHB5LWRyaXZlciAvdXNyL2Jpbi9jbGlwcHktZHJpdmVyLTEuODANCisJYXB0IGlu
+c3RhbGwgcnVzdGMtMS44NSBydXN0LTEuODUtc3JjIGJpbmRnZW4tMC43MSBydXN0Zm10LTEuODUg
+XA0KKwkJcnVzdC0xLjg1LWNsaXBweQ0KKwlsbiAtcyAvdXNyL2xpYi9ydXN0LTEuODUvYmluL3J1
+c3RmbXQgL3Vzci9iaW4vcnVzdGZtdC0xLjg1DQorCWxuIC1zIC91c3IvbGliL3J1c3QtMS44NS9i
+aW4vY2xpcHB5LWRyaXZlciAvdXNyL2Jpbi9jbGlwcHktZHJpdmVyLTEuODUNCiANCiDov5nkupvo
+va/ku7bljIXpg73kuI3kvJrlsIblhbblt6Xlhbforr7nva7kuLrpu5jorqTlgLzvvJvlm6DmraTl
+upTor6XmmL7lvI/mjIflrprlroPku6zvvIzkvovlpoI6Og0KIA0KLQltYWtlIExMVk09MSBSVVNU
+Qz1ydXN0Yy0xLjgwIFJVU1RET0M9cnVzdGRvYy0xLjgwIFJVU1RGTVQ9cnVzdGZtdC0xLjgwIFwN
+Ci0JCUNMSVBQWV9EUklWRVI9Y2xpcHB5LWRyaXZlci0xLjgwIEJJTkRHRU49YmluZGdlbi0wLjY1
+DQorCW1ha2UgTExWTT0xIFJVU1RDPXJ1c3RjLTEuODUgUlVTVERPQz1ydXN0ZG9jLTEuODUgUlVT
+VEZNVD1ydXN0Zm10LTEuODUgXA0KKwkJQ0xJUFBZX0RSSVZFUj1jbGlwcHktZHJpdmVyLTEuODUg
+QklOREdFTj1iaW5kZ2VuLTAuNzENCiANCi3miJbogIXvvIzkv67mlLkgYGBQQVRIYGAg5Y+Y6YeP
+5bCGIFJ1c3QgMS44MCDnmoTkuozov5vliLbmlofku7bmlL7lnKjliY3pnaLvvIzlubblsIYgYGBi
+aW5kZ2VuYGAg6K6+DQor5oiW6ICF77yM5L+u5pS5IGBgUEFUSGBgIOWPmOmHj+WwhiBSdXN0IDEu
+ODUg55qE5LqM6L+b5Yi25paH5Lu25pS+5Zyo5YmN6Z2i77yM5bm25bCGIGBgYmluZGdlbmBgIOiu
+vg0KIOe9ruS4uum7mOiupOWAvO+8jOS+i+Wmgjo6DQogDQotCVBBVEg9L3Vzci9saWIvcnVzdC0x
+LjgwL2JpbjokUEFUSA0KKwlQQVRIPS91c3IvbGliL3J1c3QtMS44NS9iaW46JFBBVEgNCiAJdXBk
+YXRlLWFsdGVybmF0aXZlcyAtLWluc3RhbGwgL3Vzci9iaW4vYmluZGdlbiBiaW5kZ2VuIFwNCi0J
+CS91c3IvYmluL2JpbmRnZW4tMC42NSAxMDANCi0JdXBkYXRlLWFsdGVybmF0aXZlcyAtLXNldCBi
+aW5kZ2VuIC91c3IvYmluL2JpbmRnZW4tMC42NQ0KKwkJL3Vzci9iaW4vYmluZGdlbi0wLjcxIDEw
+MA0KKwl1cGRhdGUtYWx0ZXJuYXRpdmVzIC0tc2V0IGJpbmRnZW4gL3Vzci9iaW4vYmluZGdlbi0w
+LjcxDQogDQot5L2/55So5bim54mI5pys5Y+355qE6L2v5Lu25YyF5pe26ZyA6KaB6K6+572uIGBg
+UlVTVF9MSUJfU1JDYGDvvIzkvovlpoI6Og0KK+S9v+eUqOW4pueJiOacrOWPt+eahOi9r+S7tuWM
+heaXtuWPr+iDvemcgOimgeiuvue9riBgYFJVU1RfTElCX1NSQ2Bg77yM5L6L5aaCOjoNCiANCi0J
+UlVTVF9MSUJfU1JDPS91c3Ivc3JjL3J1c3RjLSQocnVzdGMtMS44MCAtLXZlcnNpb24gfCBjdXQg
+LWQnICcgLWYyKS9saWJyYXJ5DQorCVJVU1RfTElCX1NSQz0vdXNyL3NyYy9ydXN0Yy0kKHJ1c3Rj
+LTEuODUgLS12ZXJzaW9uIHwgY3V0IC1kJyAnIC1mMikvbGlicmFyeQ0KIA0KIOS4uuaWueS+v+i1
+t+inge+8jOWPr+S7peWwhiBgYFJVU1RfTElCX1NSQ2BgIOWvvOWHuuWIsOWFqOWxgOeOr+Wig+S4
+reOAgg0KIA0KLeatpOWklu+8jCBgYGJpbmRnZW4tMC42NWBgIOWcqOi+g+aWsOeahOeJiOacrO+8
+iDI0LjA0IExUUyDlkowgMjQuMTDvvInkuK3lj6/nlKjvvIzkvYblnKjmm7Tml6nnmoTniYgNCi3m
+nKzvvIgyMC4wNCBMVFMg5ZKMIDIyLjA0IExUU++8ieS4reWPr+iDveS4jeWPr+eUqO+8jOWboOat
+pOWPr+iDvemcgOimgeaJi+WKqOaehOW7uiBgYGJpbmRnZW5gYA0KK+atpOWklu+8jCBgYGJpbmRn
+ZW4tMC43MWBgIOWcqOi+g+aWsOeahOeJiOacrO+8iDI0LjA0IExUU++8ieS4reWPr+eUqO+8jOS9
+huWcqOabtOaXqeeahOeJiOacrA0KK++8iDIwLjA0IExUUyDlkowgMjIuMDQgTFRT77yJ5Lit5Y+v
+6IO95LiN5Y+v55So77yM5Zug5q2k5Y+v6IO96ZyA6KaB5omL5Yqo5p6E5bu6IGBgYmluZGdlbmBg
+DQog77yI6K+35Y+C6KeB5LiL5paH77yJ44CCDQogDQogDQpAQCAtMzI1LDExICszMjMsMyBAQCBS
+dXN05pSv5oyB77yIQ09ORklHX1JVU1TvvInpnIDopoHlnKggYGBHZW5lcmFsIHNldHVwYGAg6I+c
+5Y2V5Lit5ZCv55So44CC5Zyo5YW2DQogDQog6KaB5oOz5rex5YWl5LqG6Kej77yM6K+355yLIGBg
+c2FtcGxlcy9ydXN0L2BgIOS4i+eahOagt+S+i+a6kOS7o+eggeOAgSBgYHJ1c3QvYGAg5LiL55qE
+UnVzdOaUr+aMgeS7o+eggeWSjA0KIGBgS2VybmVsIGhhY2tpbmdgYCDkuIvnmoQgYGBSdXN0IGhh
+Y2tpbmdgYCDoj5zljZXjgIINCi0NCi3lpoLmnpzkvb/nlKjnmoTmmK9HREIvQmludXRpbHPvvIzo
+gIxSdXN056ym5Y+35rKh5pyJ6KKrZGVtYW5nbGVk77yM5Y6f5Zug5piv5bel5YW36ZO+6L+Y5LiN
+5pSv5oyBUnVzdOeahOaWsHYwDQotbWFuZ2xpbmfmlrnmoYjjgILmnInlh6DkuKrlip7ms5Xlj6/k
+u6Xop6PlhrPvvJoNCi0NCi0tIOWuieijheS4gOS4qui+g+aWsOeahOeJiOacrO+8iEdEQiA+PSAx
+MC4yLCBCaW51dGlscyA+PSAyLjM277yJ44CCDQotDQotLSDkuIDkupvniYjmnKznmoRHRELvvIjk
+vovlpoJ2YW5pbGxhIEdEQiAxMC4x77yJ6IO95aSf5L2/55So5bWM5YWl5Zyo6LCD6K+V5L+h5oGv
+KGBgQ09ORklHX0RFQlVHX0lORk9gYCkNCi0gIOS4reeahHByZS1kZW1hbmdsZWTnmoTlkI3lrZfj
+gIINCi0tIA0KMi41My4w
