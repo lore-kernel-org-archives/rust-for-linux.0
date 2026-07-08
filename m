@@ -1,161 +1,283 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECB92690EC
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 17:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783533090; cv=none; b=H05XH85tbPenGNHvLpMyMfRn7MidRDlA7q7yW913toqaPSkcRSeh6WRE8BYMM79ppP2X6wRfNt2JA7l7Sn/PVEFom6C02rPDFPQyK2pcq673YxnEJaRwae04oKgJMlFhKAswSU8dmcrVeRCn2PG+2EbiZh6o2ZWsL1C80wVfIUY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783533090; c=relaxed/simple;
-	bh=IpgvUANgAhfD6lZYzPF2w2u9gG68v73hlGQgOQNt358=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oA7o4f1BlXdAvQSzv3yv9Znm1XTyRbjcT0BJABmI1spEzXHZ9ZwcFDysJOTN4nVq0tcPSfEBM9bFWFCWgHCXuA7bYRut4sExve12zr63KQI1l7cZl8QRd9sBsDYnVRFL4G769cAloSj039jPKoTnh2vPBUN3fvxR6PMpR4irVxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TU41JGJ5; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC593BB109;
+	Wed,  8 Jul 2026 17:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783533572; cv=pass; b=GZBslb7M2ORWBP5TJtNkhUh/diJfkJPHuyRlO6UkJayTTZe2XRnDWEWrhDF2x2BXTbz97OSa2FcCc1IQvdD0Mn5uZO8Ag79pjVHoJlFK3ZIa3kq8UuvoCmyN9PXcBb4buLKQs6nOg3wbnWDoluNwnrFhEMh+15GqImS6b/NOozM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783533572; c=relaxed/simple;
+	bh=AgUlkat6v++jVhHY171oF8yEKncS8iy0eZpk/jsPyWQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=mTMqu8KQguX3B9SSymL4mdmZeVIbFMscXC+N+Gtag02AAllFJKEAAucuJ9QdpeotOMWpy4TUxIoSwBa14RdPirvWXBdsZ1trkFc7twhdjEYr483/g2qKnKpoEJxseHF4JJPEFMim+7CpapLGg6tniMR985FIGUEWQpOQMoYXBWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Jc94RES9; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TU41JGJ5"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-698b6c87884so1679740a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 10:51:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783533087; x=1784137887; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UjTZZD313ojYcs089TFb+HIC3d6T20qOffMkuqQnjpQ=;
-        b=TU41JGJ5ZuDa2IIh5dWvaOF/Jcx46I1PfYXJiabs+gI4Rx/QZHEkaWCmeA7me1KPvz
-         jDNA+IDZjd1w4DdZePsiIlZoegHvhsbf1cy+ijSr2iNBkOUVKDyAvpCOi5xKpX3AU3Qc
-         o2DRz4sWRiqxsq3XEql5WyG5BTZJV6/rOvvtRr2bduSLZC+ifATu43SFpOpLcLl6yS7K
-         RO0D736FAzbcnD1ZCywV8nsXvpiX6hp9KlpRKdwMtPVX4auwx4xEFqWfbZB3N2Ic9TvC
-         laklVKi2ixWCxRgmkk3BUsaz9nNnnELBmGcImxvaWy9gx+Finm2CIX9vMkxNjB3nWULl
-         aTKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783533087; x=1784137887;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UjTZZD313ojYcs089TFb+HIC3d6T20qOffMkuqQnjpQ=;
-        b=FYo+nc7yXVnhpo+qB4WCcxYSDt9mlXh2YxzbQBfdbX/FjrtVNa8FTqaut5zvVkMfmX
-         axhOm9UidXyio7g6l6RQsH6STuXe799Wdfi751XKZKl5JWOz+IH7hfA5R6dJ76FWGevL
-         x9MWMK0ykNaxcMbgQuIti/n47obqazx1MNYLfFPwWfvbMlfhSX1/RRN1utoPcJEk+Lrb
-         BM83Ki5IukuDORO81A+YqQCDgvmzW1uAVhq0tOrMd9IEwlDTYvYfNXMTyq4rTbwrVNZS
-         diam4bRlAUE02raAY65AcmJOeEqJCM4v7Cm87OCaSPiQp/I2GBfcHu/zv6h57QsCRk9V
-         zvCA==
-X-Forwarded-Encrypted: i=1; AHgh+RpcauNdbdrXW04X3Rena3VW5ezk0/PRthYXlqZomU/kODz+YdATVuIi4+K6X1DPyrFlM+SzVa6W8YPut5yOvw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3alC4G1wjnAOjV3nXp6ptF1zpjFOQyGFQQLbKkBAwKW8InO/b
-	P0NCHlyr2CFGpMeNeCYq3+rPNY5ReN8SbmEojzYkKF7ONigYUNmSd7I=
-X-Gm-Gg: AfdE7cmMQeYUHiknscOHdtKush7EYE32ZNqe5Qn3VPrKnIPM/5ZVV4qVxRvgJGoLvKk
-	8cwteIekDN9p/OEsDZbhxA7RgAQjSMnSl0qWtgCglEgnMGa2Cp9DUUeEbEWN8MEr6c9pwvQDlyG
-	Tm/0UPpPzRUq/zg3/qQz24NdZXUkfcUqAfF7rknRdsymaQP+S/yoXIPCvEG49yerUIVZ4lv635U
-	qaGnXdz6RzKzZc2ugfGAfGGlQjYyujd60B2slLG4igOnLEbSVhA7SQihCHs1t6uLauuxRIiwMpA
-	Vx06GV8VW+UeJ4WugWRYnhxfSKXcv/2UOkbS0f40Nj4s3adfrvExVDzBh+CDE+KyBBfKWhrjYkT
-	hjHSm436gT0dNOYL//2iPHAPh2DAamDLrPCbd1Jdrc5Yd9bGkujIGvaBHVff8jJhHbgmMHpirdc
-	aiSjAylv0o1DAD4NVmyJyhWQc6kVy/qbqKdEa/AZhoydGIAA==
-X-Received: by 2002:a05:6402:3816:b0:69a:bfa:cb1c with SMTP id 4fb4d7f45d1cf-69ab44b42c0mr1721116a12.31.1783533087039;
-        Wed, 08 Jul 2026 10:51:27 -0700 (PDT)
-Received: from HARICS-M-4G70.cisco.com ([2001:420:c0c0:1002::7])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69a9c4a4027sm3438323a12.29.2026.07.08.10.51.22
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 08 Jul 2026 10:51:26 -0700 (PDT)
-From: Harish-CS <harish.cs.ss24@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Harish-CS <harish.cs.ss24@gmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH] rust: sync: improve `Arc` documentation links
-Date: Wed,  8 Jul 2026 23:21:19 +0530
-Message-ID: <20260708175119.18051-1-harish.cs.ss24@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Jc94RES9"
+ARC-Seal: i=1; a=rsa-sha256; t=1783533531; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TQK+/eWYh4wKZqQ5mETovYgMNQ1ABCn8d5EewDQU407/AZMaueTjb+jp9GCEK4iXNVYNWL9oMrkYBUdzy0msABzx+QFgWWhLYt1/OzTLFtpdi/JkYhW4PTxz8xjNaAEZIDJQN0ePy2GgTJvhmLhzdoLNOGXnyVSvMgAqtB/AJyU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783533531; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=d2f5HzFH5tz9OWlHkS3xHKePdxFund2k2SALT7+iDuY=; 
+	b=IOxlvGZIU/zpU39EZo7uHZ3fzIq8nL4pJUshe3oSuMuh+PQKNK38KpmqR8IYC6F/VDLdMWgeNqdrcPvIR5QGRUmc3CK5JRxbISfxFaIqhrD0q+x5vREdQ3yuHJZK0a8wjIYsFKMjTotNXCufdAWYaGEOE8EBoPj5XMNgYkH5qQc=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783533531;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=d2f5HzFH5tz9OWlHkS3xHKePdxFund2k2SALT7+iDuY=;
+	b=Jc94RES9ph213bpRia+uTLhf4a8zqS/jir3Ilrqseh7isW3J29bViRgnzXaezNhZ
+	b4y7z4ySFtPSU0cxm+CGSP8WnjKKD6SrbuJMKKgaMYms5Db8zJLF/UtlfRYWvNRyIBt
+	Ot28BbBcAYB8NaLoC2XKc6lB9t7TKQUcMv6W4pIg=
+Received: by mx.zohomail.com with SMTPS id 1783533529735356.06010086134756;
+	Wed, 8 Jul 2026 10:58:49 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 13/20] rust: io: add projection macro and methods
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260706-io_projection-v6-13-72cd5d055d54@garyguo.net>
+Date: Wed, 8 Jul 2026 14:58:29 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ nova-gpu@lists.linux.dev,
+ dri-devel@lists.freedesktop.org,
+ linux-pwm@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CAF04CB6-4B09-47E1-9F9B-5D55E49A2737@collabora.com>
+References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+ <20260706-io_projection-v6-13-72cd5d055d54@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-The `Arc` documentation has a few mentions that do not follow the
-surrounding style: a plain `Arc` without an intra-doc link and a
-lower-case "arc".
 
-Use intra-doc links for rustdoc references to `Arc` and spell internal
-comments consistently as `Arc`, matching nearby docs.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1240
-Signed-off-by: Harish-CS <harish.cs.ss24@gmail.com>
----
- rust/kernel/sync/arc.rs | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
+>=20
+> Add an `io_project!()` macro to allow projection from `Io` to a =
+subview of
+> it, using the pointer projection mechanism to perform compile-time =
+checks.
+>=20
+> For cases where type-casting is required, the `try_cast()` function =
+may be
+> used where the size and alignment checks are performed at runtime.
+>=20
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+> rust/kernel/io.rs | 128 =
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 128 insertions(+)
+>=20
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index ab970e8b2e78..62643b23e904 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -49,6 +49,7 @@
+> /// - Size of the region is at least as large as the `SIZE` generic =
+parameter.
+> /// - Size of the region is multiple of 4.
+> #[repr(C, align(4))]
+> +#[derive(FromBytes)]
+> pub struct Region<const SIZE: usize =3D 0> {
+>     inner: [u8],
+> }
+> @@ -90,6 +91,19 @@ fn size(p: *const Self) -> usize {
+>     }
+> }
+>=20
+> +// SAFETY:
+> +// - Values read from I/O are always treated as initialized.
+> +// - Per type invariant the size is multiple of 4 and the type is =
+4-byte aligned, so it is padding
+> +//   free.
+> +//
+> +// This cannot be derived as `derive(IntoBytes)` as the padding free =
+property comes from type
+> +// invariant which the macro does not know.
+> +unsafe impl<const SIZE: usize> IntoBytes for Region<SIZE> {
+> +    #[inline]
+> +    #[allow(unused)] // Rust 1.87+ stops requiring this and will emit =
+unused warnings.
+> +    fn only_derive_is_allowed_to_implement_this_trait() {}
+> +}
+> +
+> /// Raw representation of an MMIO region.
+> ///
+> /// `MmioRaw<T>` is equivalent to `T __iomem *` in C.
+> @@ -339,6 +353,51 @@ fn size(self) -> usize {
+>         KnownSize::size(Self::Backend::as_ptr(self.as_view()))
+>     }
+>=20
+> +    /// Try to convert into a different typed I/O view.
+> +    ///
+> +    /// A runtime check is performed to ensure that the target type =
+is of same or smaller size to
+> +    /// current type, and the current view is properly aligned for =
+the target type. Returns
+> +    /// `Err(EINVAL)` if the runtime check fails.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```no_run
+> +    /// use kernel::io::{
+> +    ///     io_project,
+> +    ///     Mmio,
+> +    ///     Io,
+> +    ///     Region,
+> +    /// };
+> +    /// #[derive(FromBytes, IntoBytes)]
+> +    /// #[repr(C)]
+> +    /// struct MyStruct { field: u32, }
+> +    ///
+> +    /// # fn test(mmio: &Mmio<'_, Region>) -> Result {
+> +    /// // let mmio: Mmio<'_, Region>;
+> +    /// let whole: Mmio<'_, MyStruct> =3D mmio.try_cast()?;
+> +    /// # Ok::<(), Error>(()) }
+> +    /// ```
+> +    #[inline]
+> +    fn try_cast<U>(self) -> Result<<Self::Backend as =
+IoBackend>::View<'a, U>>
+> +    where
+> +        Self::Target: FromBytes + IntoBytes,
+> +        U: FromBytes + IntoBytes,
+> +    {
+> +        let view =3D self.as_view();
+> +        let ptr =3D Self::Backend::as_ptr(view);
+> +
+> +        if size_of::<U>() > KnownSize::size(ptr) {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        if ptr.addr() % align_of::<U>() !=3D 0 {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // SAFETY: We have checked bounds and alignment, so this is a =
+valid projection.
+> +        Ok(unsafe { Self::Backend::project_view(view, ptr.cast()) })
+> +    }
+> +
+>     /// Fallible 8-bit read with runtime bounds check.
+>     #[inline(always)]
+>     fn try_read8(self, offset: usize) -> Result<u8>
+> @@ -979,3 +1038,72 @@ pub fn relaxed(self) -> RelaxedMmio<'a, T> {
+> // MMIO regions on 64-bit systems also support 64-bit accesses.
+> #[cfg(CONFIG_64BIT)]
+> impl_mmio_io_capable!(RelaxedMmioBackend, u64, readq_relaxed, =
+writeq_relaxed);
+> +
+> +// This helper turns associated functions to methods so it can be =
+invoked in macro.
+> +// Used by `io_project!()` only.
+> +#[doc(hidden)]
+> +#[derive(Clone, Copy)]
+> +pub struct ProjectHelper<T>(pub T);
+> +
+> +impl<'a, T> ProjectHelper<T>
+> +where
+> +    T: Io<'a, Backend: IoBackend<View<'a, T::Target> =3D T>>,
+> +{
+> +    // These helper methods must not have symbols present in the =
+binary to avoid confusion.
+> +    #[inline(always)]
+> +    pub fn as_ptr(self) -> *mut T::Target {
+> +        T::Backend::as_ptr(self.0)
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// Same as `IoBackend::project_view`
+> +    #[inline(always)]
+> +    pub unsafe fn project_view<U: ?Sized + KnownSize>(
+> +        self,
+> +        ptr: *mut U,
+> +    ) -> <T::Backend as IoBackend>::View<'a, U> {
+> +        // SAFETY: Per safety requirement.
+> +        unsafe { T::Backend::project_view::<T::Target, _>(self.0, =
+ptr) }
+> +    }
+> +}
+> +
+> +/// Project an I/O type to a subview of it.
+> +///
+> +/// The syntax is of form `io_project!(io, proj)` where `io` is an =
+expression to a type that
+> +/// implements [`Io`] and `proj` is a [projection =
+specification](kernel::ptr::project!).
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::io::{
+> +///     io_project,
+> +///     Mmio,
+> +/// };
+> +/// #[repr(C)]
+> +/// struct MyStruct { field: u32, }
+> +///
+> +/// # fn test(mmio: Mmio<'_, [MyStruct]>) -> Result {
+> +/// // let mmio: Mmio<[MyStruct]>;
+> +/// let field: Mmio<'_, u32> =3D io_project!(mmio, [try: 1].field);
+> +/// let whole: Mmio<'_, MyStruct> =3D io_project!(mmio, [try: 2]);
+> +/// let nested: Mmio<'_, u32> =3D io_project!(whole, .field);
+> +/// # Ok::<(), Error>(()) }
+> +/// ```
+> +#[macro_export]
+> +#[doc(hidden)]
+> +macro_rules! io_project {
+> +    ($io:expr, $($proj:tt)*) =3D> {{
+> +        #[allow(unused)]
+> +        use $crate::io::IoBase as _;
+> +        let view =3D $crate::io::ProjectHelper($io.as_view());
+> +        let ptr =3D $crate::ptr::project!(
+> +            mut view.as_ptr(), $($proj)*
+> +        );
+> +        #[allow(unused_unsafe)]
+> +        // SAFETY: `ptr` is a projection.
+> +        unsafe { view.project_view(ptr) }
+> +    }};
+> +}
+> +#[doc(inline)]
+> +pub use crate::io_project;
+>=20
+> --=20
+> 2.54.0
+>=20
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 5ac4961b7cd2..76a153e01283 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -154,7 +154,7 @@ impl<T: ?Sized> ArcInner<T> {
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must have been returned by a previous call to [`Arc::into_raw`], and the `Arc` must
-+    /// `ptr` must have been returned by a previous call to [`Arc::into_raw`], and the [`Arc`] must
-     /// not yet have been destroyed.
-     unsafe fn container_of(ptr: *const T) -> NonNull<ArcInner<T>> {
-         let refcount_layout = Layout::new::<Refcount>();
-@@ -253,7 +253,7 @@ unsafe fn from_inner(inner: NonNull<ArcInner<T>>) -> Self {
- 
-     /// Convert the [`Arc`] into a raw pointer.
-     ///
--    /// The raw pointer has ownership of the refcount that this Arc object owned.
-+    /// The raw pointer has ownership of the refcount that this [`Arc`] object owned.
-     pub fn into_raw(self) -> *const T {
-         let ptr = self.ptr.as_ptr();
-         core::mem::forget(self);
-@@ -261,7 +261,7 @@ pub fn into_raw(self) -> *const T {
-         unsafe { core::ptr::addr_of!((*ptr).data) }
-     }
- 
--    /// Return a raw pointer to the data in this arc.
-+    /// Return a raw pointer to the data in this [`Arc`].
-     pub fn as_ptr(this: &Self) -> *const T {
-         let ptr = this.ptr.as_ptr();
- 
-@@ -305,7 +305,7 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
- 
-     /// Converts this [`Arc`] into a [`UniqueArc`], or destroys it if it is not unique.
-     ///
--    /// When this destroys the `Arc`, it does so while properly avoiding races. This means that
-+    /// When this destroys the [`Arc`], it does so while properly avoiding races. This means that
-     /// this method will never call the destructor of the value.
-     ///
-     /// # Examples
-@@ -345,11 +345,11 @@ pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
- 
-         // If the refcount reaches a non-zero value, then we have destroyed this `Arc` and will
-         // return without further touching the `Arc`. If the refcount reaches zero, then there are
--        // no other arcs, and we can create a `UniqueArc`.
-+        // no other `Arc`s, and we can create a `UniqueArc`.
-         if refcount.dec_and_test() {
-             refcount.set(1);
- 
--            // INVARIANT: We own the only refcount to this arc, so we may create a `UniqueArc`. We
-+            // INVARIANT: We own the only refcount to this `Arc`, so we may create a `UniqueArc`. We
-             // must pin the `UniqueArc` because the values was previously in an `Arc`, and they pin
-             // their values.
-             Some(Pin::from(UniqueArc {
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.50.1 (Apple Git-155)
-
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
