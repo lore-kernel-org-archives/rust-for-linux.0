@@ -1,331 +1,159 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011020.outbound.protection.outlook.com [52.101.52.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741883F88B5
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 21:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783547323; cv=none; b=j/jXzYSdwC1hdB3lf6zkC8bjK6ULIfSKo+UqwDfoFeH47UZyC5Y+GLYgJ9oNwfZicjZL050Zp7SrIGVPBi7gWnEcMuhbjqSDtdypuH8vOCVs/oZj6FGBnkXTOFLCrrqt2Rerb8U0H0I/DneZpzfKcyDNn5Dh9DG5HoIpi8VJJ58=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783547323; c=relaxed/simple;
-	bh=snvtzj0+nm9vqyOkQt/DWFJKiD2vSRrYc4+FQvMkhLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uVcbhIJs2MGSWkho1dz73nt8Asd5jwNcACyl0UoCchXlg8CGOiyirNqKb/83xfviCPVrwKxPIkAX9BUPe0G8CtO8+wimWKi2rMyXqn2jE5+7i2/bz7vmzwPE2xTvmXxm2iwk6hHqF8kMUD6aaDC53rZkKgcjx9bsADwRZBwjeXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VWSWYk13; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1854E3FCB0B
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 22:26:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783549602; cv=fail; b=gJbwL+dZGDOaHBDjjjRVCcVe1M6KwwNr/okMyBq53CNJO/fhY01LAKZNl1kXraXshK1o9wrWxiSrIGnP50ndC3htm/BWYkDIXWUofK0Lo4Jt1AJrfshsCF7lOJvegPEyQ3aPkStr+IgeqsaOv1MnMDJp2bbvp8c/nZnoZE2Bae8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783549602; c=relaxed/simple;
+	bh=jb9G1++6M9bm5H1drrXl43cpskcMK64Z3zuVpmZtFS8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ka6WtSPnkg5z53AbogJoXYxm4f58pOnE0MN++RSU+5AWwFye7jvWoIBIYOFw7Gb+n+1fJYGph8l0PX2GZlDIzaUHmfIK/Lj9zJOUorpMD6zBuzoFX8adnSN5cMoQqAoMphvbLCp45bofFis81135X0GUYIoOK0lJxvHWHeZX6Zs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MltbxbVY; arc=fail smtp.client-ip=52.101.52.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VWSWYk13"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2caf4496889so2197065ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 14:48:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783547321; x=1784152121; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0OETwA789YFBsCa88ZqhHy8r7H6SJQt922F4ot6BHlQ=;
-        b=VWSWYk13lWHDAvE9faunh3IEy7spPZXS30LCa8lanDSLUckzGBMEVxjsTO4Kt3Ghnj
-         VAJ9EnvgMW6U+kzYT5TCiqf7heJ5Pv3sybi81Tmt+CuQH9NF5fbDPbnK6w7NtOYqxE09
-         sqWxBs+OxySO/h/IfQNuPxpit3tUDSeC5idw8pkUk+t4GWKjLQYwsQWHS5xs6wohJRXN
-         IOcH/BPpxxIcR7il1y4rVx1GacIpJHpsq6e9gTd8htDWwzAJCrQrnhN9lm2zWfYsNkkJ
-         zdgMNPZEUpEzbjdMacHArO7Ytsdu/apGGaZ6hQjqjL4aEw7VUBCBH26dirr0jZfhvnJX
-         BKNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783547321; x=1784152121;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0OETwA789YFBsCa88ZqhHy8r7H6SJQt922F4ot6BHlQ=;
-        b=QbvXT8gtfjejQ9dHqnkyTdMzsik9KcQyg9ZUEj5TbrdvXAWYUNetsjR1hJaHF4XRIC
-         V9TqlZhJPUZhEJAdjJYhCAKXmMrij86lr7T28IkYyDHtjQE6L1OQvDcziPg5Zfg4ELrd
-         cSHMqOiLEQZs10AaZtCJOvECNEr3IhjCE4y70R3qPAPJpa0Qd7847sA9tVgzQ1RsLbq6
-         4EJQ99yCprt7hoG3JS2t+z9mI9O7ijLsmTe6Y3TE1aJ4Vtk9fnjPxEcLSeyZFetTP1nI
-         gDx23IdMCLQLsQTFds+yFa7seBDt4hZjAeZdAAQ7qWE/GQhjHk4qugUPkV2OyE3HQZh2
-         GYlg==
-X-Gm-Message-State: AOJu0Yx96qoNYNQUFSvQ4M4PtaDwWTPJzaH89oK79GvT0IFtKe6hW21M
-	eN4/Wd4O8adbP7OtmCKQkODHQZl3fXwxt7RVH7zDIGCIeDomnABEyIjmNTWPh0bAiPE=
-X-Gm-Gg: AfdE7clTJRk6DE4miwSsBey8TCLMG4gEnGght8UWUlAbex7RqPtzcWEzuZWscP9z6Cx
-	vjv0uBWwWSOuAmsWel/+9ag5hVT1rK+I12TZIxAUaTFc8ZmXmMJbL+XOcmK1lNUYXXzl+K9M6PA
-	jYWPx2d4e3nIm6ahPL2HfMifow/byrAWgAb9NC8l6rZujePJ1SdDlzGCHwt1gO+m4/qgDqwdxTa
-	P9IgWjjzLPya0lH3jL7Y1N+QfukboZaOMHDbKhZwY9UiRwPceGZzR7gP3FPmSAFGvApQ49Rpw4d
-	FEZgLG5L1zHdPjFTgygsIEbmbEWX/1gKPg6Yq2QgnJac7DJ/OvFFVZhSB+Yc3u35cY1tU/xOI6L
-	dhg2KTeQosLTOkD6HQ9jHdrhj+KHdgb0IJmlXM5V/UJWAHTS/UwJzqrOTliLg7Q4tcAB+DzGhAQ
-	w99XDWjDTMg9qzdKUDIYFg3TWdyCC1dMH911g3r/J5i/6BHiojDbqD8DsPlRvwjj9X4Va90UyZA
-	I8VG1MKgkzFCAgJHp16KVqGyKijRFP0UfMbs0bwe5J0+thNtkeBWmLqeC+V8rpvnd9okjdyrUBy
-	upb+7rCFVfsMEH8ofqPqMX1jZeHlV7fNOtoyqXooiBbtVGk7xCci5xplMkPS7DewwhclBWQk
-X-Received: by 2002:a17:903:2f48:b0:2ca:5023:f983 with SMTP id d9443c01a7336-2cdebdc448emr742115ad.29.1783547320621;
-        Wed, 08 Jul 2026 14:48:40 -0700 (PDT)
-Received: from ip-172-31-21-198.us-west-2.compute.internal (ec2-35-85-29-74.us-west-2.compute.amazonaws.com. [35.85.29.74])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3d946sm33733855ad.66.2026.07.08.14.48.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 14:48:40 -0700 (PDT)
-From: Bruce Robertson <brucer42@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Sebastian Reichel <sre@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Igor Korotin <igor.korotin@linux.dev>,
-	Gary Guo <gary@garyguo.net>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Bruce Robertson <brucer42@gmail.com>
-Subject: [RFC PATCH 3/3] power: supply: add Rust SMB347 charger driver
-Date: Wed,  8 Jul 2026 21:47:38 +0000
-Message-ID: <20260708214738.25008-4-brucer42@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260708214738.25008-1-brucer42@gmail.com>
-References: <20260708214738.25008-1-brucer42@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MltbxbVY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=d3AvOH4eA08OVnn8Ut9/4c1bc4aZdYzasIMRU94HoZWvKmazzZHQUblI4hXGy9SpnA0Hi7Hl8LZqqafaGzGQkvaXFCrfEgMh6s7um2hMqC+5UIKoiIiplVvJly30iIz3LoT+yP+ng1UwVQ8G4986cHr5zvcR7k6SfuDwpEbJ4g/PyNALLGH61Rs63YTau/tEHGy1KVnjI/GuB4/pD56s2cAl0MyZ319utl77Zl84aUewPMl8mrCY4Fv8DDKCspx+Vmeii5xSHwcSO2tYcbGCupUSo6clzZpEnDI2qdJFSgK9AKCFl7deV+LxBS7hPxScTU4Te7FDU6hBDBsDddwFZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jb9G1++6M9bm5H1drrXl43cpskcMK64Z3zuVpmZtFS8=;
+ b=JLxpWs9T8/kgp2cSK1iX16oksFzLYpRhH7BBrl9P8a5HMMe534Oq2VYupfEoU0P/2vFzMTVx1AK2FQwbYL0wptT7xL+rZsg1LGVwdEbB7emLCrkwV34JoC4TNHJLGfeEewBMIHR3xTvIUlJHqCePN5QNM3QI7cQRTRXG3PtAPVTx4TzHac5AgaIJaTz+ZQBsUA9unuu1byYaeTHHCNzhW09fssnvFqGCMctONo6I6sAcs3AaDBmwyCxWFZBTJcjxRIKou6qLt5xOx4e55Kzcpt2q1gu+9xmqGUIndqkXDA26ckxbBLba73JvGqp/ClfLh1BCmoJ4ArYn308pxf+N/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jb9G1++6M9bm5H1drrXl43cpskcMK64Z3zuVpmZtFS8=;
+ b=MltbxbVYkkFIKdBd2Oluf6DtePCB8fVDVK248GqPcKqzd6236rY0WwZzCFVUvkunRy0yaJk3h5lh9m1tAyEAXyLIxcsqsLSqMRiiHr4wOIH1x15/gLXgWzFAzQFcCezCnHIJsVvXFFGO/pGCcVmHa3Zull27628Lkn2rtMa1bTo9T+2au/sh+wo3jiw0YJAOqBCa6Y6A2u8UwJZoLdxqBvzGl7TlDNJZ3TGNhCkynZc+WXvPH3r7eSE9MXBXb2aCKVxYHx7uOewX5RLByhiuaBK1cs6zkPaiCT1mVMgcNYaeX70qO+nrzl/irwnkgxGD0GnjdHHs70UrIvbXQb+Nxg==
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
+ by MN0PR12MB5836.namprd12.prod.outlook.com (2603:10b6:208:37b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
+ 2026 22:26:36 +0000
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970%5]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
+ 22:26:36 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+CC: John Hubbard <jhubbard@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>,
+	"nova-gpu@lists.linux.dev" <nova-gpu@lists.linux.dev>, Zhi Wang
+	<zhiw@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>, "mcgrof@kernel.org"
+	<mcgrof@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"driver-core@lists.linux.dev" <driver-core@lists.linux.dev>,
+	"ojeda@kernel.org" <ojeda@kernel.org>, "russ.weight@linux.dev"
+	<russ.weight@linux.dev>
+Subject: Re: [PATCH v3 5/7] gpu: nova-core: transition gen_bootloader to TLV
+ images
+Thread-Topic: [PATCH v3 5/7] gpu: nova-core: transition gen_bootloader to TLV
+ images
+Thread-Index: AQHdCljkwu1+XAkqMkK4e6h+pSRGELZgDX4AgAQve4A=
+Date: Wed, 8 Jul 2026 22:26:36 +0000
+Message-ID: <79b4033973c675355a25d8fcc701cdedf8f30bc7.camel@nvidia.com>
+References: <20260702192712.3450652-1-ttabi@nvidia.com>
+	 <20260702192712.3450652-6-ttabi@nvidia.com>
+	 <DJRA02VV16AS.3W0QHW9YYSLXE@nvidia.com>
+In-Reply-To: <DJRA02VV16AS.3W0QHW9YYSLXE@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2-9 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|MN0PR12MB5836:EE_
+x-ms-office365-filtering-correlation-id: b66a8e22-b4ad-45c8-ae18-08dedd3ff918
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|22082099003|18002099003|38070700021|4143699003|11063799006|56012099006;
+x-microsoft-antispam-message-info:
+ gXlYLk8fKcs5JALT1Ff8MtgfH4kYnyeyJMjK75Lu7qXSn11rOa0iE3tbxarQ4HOPTHy97Wm85h2ecZLgiyAPWmj6g8+EEucnLwM+ypkxuiPDy3V2DVd+lAG+vJQ6bn1aJXYwPeXR5AofvOeN6rESZSevilorfZTE65C3R8KwrFiTIN2tui3p/PdoiFFQG7AN6ZVr7V4qGpZyUQ6AFDn2vZFtNvQpkS2NPIjN3kpyT5SMwpaJ01fj2Qs1V6HNo/nyGghaqNZJI+dmXuK9HU0igLvI9tq3zU7BjMEMuJcgtfC9jpOZraTBRd4Wy0orDO4+5TPGmxaFrZ+pEQRRT64YFP9g5oj8z2DkkHhv0eWETIPQVtfO/zwXKKmZbQZNOwvI2iUQpUgQBDCkJOuJTgWKuFXNGpt8LIRWFvusUQnTRUjVlIkN/WflLuuDjaAZkrOtq0Rt+qgYHzxXuHbcajr7DR6F1aB9/qwLgId8M7iUBJ6RJqKLfFmF8pPGczCtDtd2fyBlz5bJWGrvM/NF8uRJ2ybOFjPIZ9XA65a1XwGpDn2kqG5wl49lJBJR4EgDGSASRqcCoCUAH4eUUJoyJUZnZEnGRUblwMbrcT3it3kThKs8dDbWGTjsRb30urdTw4V0+Tx4KYC3hWOyLX8IfSoHkGPrR3eOls04cpFgqfWPTmazmnLjgcuBir0RNAYuwFjRnbgHcQid9nrBiu78VT4Kcf/OA/IVb7NZhOTUMcBxGsQ=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(22082099003)(18002099003)(38070700021)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?VnI1RFlmRVVnb3lvSit0SGJQcC9XRXYxMFNQRllobmUrek0rMnp3WVNaamZB?=
+ =?utf-8?B?UGFhMUhrNmwxamVxeVlmNVRhM0hyYWgwOW9MbjYwNTBOZ2VSRkJQZklzbEl0?=
+ =?utf-8?B?L3hRenVWVHBDSTFMYXN5Tk1PeFhlWFVxSXY5WTVIbDVYbzJCQTR5TVpuMHMr?=
+ =?utf-8?B?Q1RRTWUrcGMxSkE3QjVVVUZSVytHMDUyYjAvWGlrMitTYkFVd3ZsSDhRbWh4?=
+ =?utf-8?B?bWxyU2ZvYzUvN0lHV0hxS3FMZFFyL0NZWHkzVnpYWHdUM1U0K2lFUk9BaWhh?=
+ =?utf-8?B?YWg0S1hIMlFuQUdqV2ZjS3VlMUxqMW9Hd3VqM1c4cTR5dFFZdS8yZ3dEaHVx?=
+ =?utf-8?B?UUtpT21XQlN1QkdaSHhNd0ZIVDdkVlN4YUZZQkNZRTdhMXQ2WFFhb2ZqWXJy?=
+ =?utf-8?B?YUEwNW9tZVprbmI5VEFMZWF4Ylh0ZVlnWjNOSlQ0czNuTDNadzhsK2NkUUdL?=
+ =?utf-8?B?MzAybDYvQk1MSml6eHlxcUs5ZW11REY4UU1UZWdhdDdoUG1kK3hKck5qbFBK?=
+ =?utf-8?B?MC9nZ1pPNW1HWktQalZNcFdBaWY1V0dNY0FxME4xRllnZmNXQXBIYXAwQUNR?=
+ =?utf-8?B?eUwzZDRnUlZjRUozMXN5Z1R5L3A0dlFLU3psSmcxQjdNV01TRjlQVFFMUWs5?=
+ =?utf-8?B?NXptcUx3UnZXeDBGazRrQkxSeG5zYlJ3ai9iNHZNdUdRdHFrZUlGbEpXNDl4?=
+ =?utf-8?B?TmhOejVNS0RVbmxaZ3BleTVhMVA0ZkJFd1JzN2VJcGRwOGhhWG0xeGtmd1gy?=
+ =?utf-8?B?d2dQemVPQStCaWFJN0JIclF5cmFqSWhxd0cwVXlwc3FIV21WblVHQzREZUhk?=
+ =?utf-8?B?aUtpRHc2YkNyZUE4c2NXZUVNZ0hMOHVhM2wxQTRMenVmb1RMeGZ6dFZOYk8w?=
+ =?utf-8?B?azR1QVRLQllpdjhlNkVNaW5yS2czYnV6TlBrVzdnQjZoaDlSa1NSTVltaVo0?=
+ =?utf-8?B?TExVcmNGY1poME9JNEsvQ2tLY3dxUWxGNUVnbkRQZURHV0J6VSs2T3lCbWZY?=
+ =?utf-8?B?V1pkSVdHdkFhaVdmaW5zZm1SWGhndTBzdWMzWUtreCs2Sm1QbVFYZXFIYkxk?=
+ =?utf-8?B?VllhNHUvbDVzY0FRSlREWm43QjUraEhVcllXSVBMYnl3am9KamM5dU5WNzhL?=
+ =?utf-8?B?clZ4VVNDSUg1dG9uWXZHVDFyYnkwMit1eDR5OWpHenJsRGdSc1I1VHFGSkk0?=
+ =?utf-8?B?Q3RlV0h6d0xpUkJrZHQvUXAvVXBaRlIwSWptSDhDWlF0TEo5SWZuYVFweDFx?=
+ =?utf-8?B?dSttV0FBbEF4UlB0bHBWaHZaWXBEYVptN2JIaXgxdWxZOXQ5UjNoN3B6WEE5?=
+ =?utf-8?B?VXkrazk3ZU1yaUZoOTFIcEtteGVIdm02eTZtWGF0eGc5dnVCM0l3aUlLS0t5?=
+ =?utf-8?B?cHE4TmQrcStRWTRIZ3NMSi9ONW9sMGlMMk5tV0srWEF1cWQrNFNmOWh5eVps?=
+ =?utf-8?B?dElSRzZnTkc3UHpzS0pZV05GN00vVko4K1VKSkRGaDBJakU4THdvbHJ5ZGtk?=
+ =?utf-8?B?QTZObVlmYUY0NWFHNjh2dGt1a1RkeXFIWlZHY2FuVXNsb0oyS244MTlPdnBW?=
+ =?utf-8?B?eEdmcUZsTnY2L3VNcng3bGNtT0VGTU9CNzFRK1JEUnpidEhsT2dDQkJYTnJ0?=
+ =?utf-8?B?VFVoZkZ1RmlacDRCYWh4T3Z3YTF5aXVQYUpONUhWSC8wR2RKMzRNMzNiWTVX?=
+ =?utf-8?B?UVlnK2RVSHgxbmQ3NTdkenMrcDV2UlJ2YzcvZFlDbTFSMlB5L0NCcFhiblJX?=
+ =?utf-8?B?NFRZN1U1VGdqc2Z6aTIyWCtSZUZYOTBzbHB4L2p0QWF1dDU1THZjZ1JxQ3hp?=
+ =?utf-8?B?ZVVhM1I2clczVFB2K0U2WjNEbXRzS3Z0Vm5RNU5oZGN4UFBmeHdoSUV1MEhi?=
+ =?utf-8?B?OGF1NnFxK0M1UVpremZnMzFkS1NzS3pJQnVTRisvZUxIZWkvWmVDT0lkbTB5?=
+ =?utf-8?B?dktDSlZPSTdlcm04UXNZL2sxcm9QMkVPai9sR0UvazB3TTBaTFNvRGxSQUF4?=
+ =?utf-8?B?UjlsYnJPZkZRNit6WEwxZVlUcFM2Q1BXSUptcmozQlphc2I2MkhORWtDbUFq?=
+ =?utf-8?B?MGlBcWZ6aURGc0xRb1hSQ29wRzBQY1NEZ0lKdUZpT24rKzhGN3E3UWozOFZQ?=
+ =?utf-8?B?UDJHaXVRVm9SbkJveGRVNnVmWVRoWlYwMkQ2ZUtpSE1lR1FoeEhneHc3RVFW?=
+ =?utf-8?B?UlNROHVUQTVHUCsxQU5lZDVlUzJqRmtGemwvUS8wNkZrS3lLWTkwYVZhZ090?=
+ =?utf-8?B?OHFGd1dPY3ppaC81UDhvZTJhVHZnVUVuQXRoekJYcVpsVUxiYUlTNHZQajdO?=
+ =?utf-8?B?U3pwZFJPUnNUczIyUlZFdTc5Vkx0ZzNOWW5QWno0M0ZuNTVvUDMzUT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3FE88E356FFB1C43BA03A71E2D1394B9@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b66a8e22-b4ad-45c8-ae18-08dedd3ff918
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jul 2026 22:26:36.4811
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kTbnqiVJcMnVMu3RfscRkiODjh5tvSH84jCefeHXLZrSPIT3mUUP4errCEJkkd1g/Xog6q/dFkhQ0c1wpL+kqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5836
 
-Add a Rust port of the Summit SMB347 battery charger driver, built on
-the Rust i2c and power_supply abstractions. The driver binds over I2C,
-reads the charger's status registers, and registers a power supply that
-reports STATUS, ONLINE and CHARGE_TYPE to sysfs.
-
-It is the first in-tree consumer of the new power_supply abstraction.
-
-Signed-off-by: Bruce Robertson <brucer42@gmail.com>
----
- drivers/power/supply/Kconfig                |  14 ++
- drivers/power/supply/Makefile               |   1 +
- drivers/power/supply/smb347-charger_rust.rs | 180 ++++++++++++++++++++
- 3 files changed, 195 insertions(+)
- create mode 100644 drivers/power/supply/smb347-charger_rust.rs
-
-diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
-index f0ede1cecb6a..b6521c86b47c 100644
---- a/drivers/power/supply/Kconfig
-+++ b/drivers/power/supply/Kconfig
-@@ -875,6 +875,20 @@ config CHARGER_SMB347
- 	  Say Y to include support for Summit Microelectronics SMB345,
- 	  SMB347 or SMB358 Battery Charger.
- 
-+config CHARGER_SMB347_RUST
-+	tristate "Summit Microelectronics SMB3XX Battery Charger RUST"
-+	depends on I2C
-+	depends on RUST
-+	help
-+    Say Y to include support for the Summit Microelectronics SMB347
-+    battery charger, implemented in Rust. The driver binds over I2C
-+    and reports charging status, online state and charge type through
-+    the power supply class. It is a Rust port demonstrating the
-+    in-tree i2c and power_supply Rust abstractions.
-+
-+    To compile as a module, choose M here; the module will be called
-+    smb347-charger_rust.
-+
- config CHARGER_TPS65090
- 	tristate "TPS65090 battery charger driver"
- 	depends on MFD_TPS65090
-diff --git a/drivers/power/supply/Makefile b/drivers/power/supply/Makefile
-index 31fe4a145929..96616fb381a9 100644
---- a/drivers/power/supply/Makefile
-+++ b/drivers/power/supply/Makefile
-@@ -109,6 +109,7 @@ obj-$(CONFIG_CHARGER_BQ256XX)	+= bq256xx_charger.o
- obj-$(CONFIG_CHARGER_RK817)	+= rk817_charger.o
- obj-$(CONFIG_CHARGER_S2M)	+= s2m-charger.o
- obj-$(CONFIG_CHARGER_SMB347)	+= smb347-charger.o
-+obj-$(CONFIG_CHARGER_SMB347_RUST) += smb347-charger_rust.o
- obj-$(CONFIG_CHARGER_TPS65090)	+= tps65090-charger.o
- obj-$(CONFIG_CHARGER_TPS65217)	+= tps65217_charger.o
- obj-$(CONFIG_AXP288_FUEL_GAUGE) += axp288_fuel_gauge.o
-diff --git a/drivers/power/supply/smb347-charger_rust.rs b/drivers/power/supply/smb347-charger_rust.rs
-new file mode 100644
-index 000000000000..c8286956a7a8
---- /dev/null
-+++ b/drivers/power/supply/smb347-charger_rust.rs
-@@ -0,0 +1,180 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust SMB347 i2c driver
-+
-+use kernel::{
-+    device::Core,
-+    i2c,
-+    of,
-+    prelude::*, //
-+    sync::aref::ARef,
-+};
-+
-+/// SMB347 register map. Ported from drivers/power/supply/smb347-charger.c.
-+#[allow(dead_code)]
-+mod reg {
-+    // Configuration registers (0x00–0x0e, write-protected; unlock via CMD_A bit 7)
-+    pub(crate) const CFG_CHARGE_CURRENT: u8 = 0x00;
-+    pub(crate) const CFG_CURRENT_LIMIT: u8 = 0x01;
-+    pub(crate) const CFG_FLOAT_VOLTAGE: u8 = 0x03;
-+    pub(crate) const CFG_STAT: u8 = 0x05;
-+    pub(crate) const CFG_PIN: u8 = 0x06;
-+    pub(crate) const CFG_THERM: u8 = 0x07;
-+    pub(crate) const CFG_SYSOK: u8 = 0x08;
-+    pub(crate) const CFG_OTHER: u8 = 0x09;
-+    pub(crate) const CFG_OTG: u8 = 0x0a;
-+    pub(crate) const CFG_TEMP_LIMIT: u8 = 0x0b;
-+    pub(crate) const CFG_FAULT_IRQ: u8 = 0x0c;
-+    pub(crate) const CFG_STATUS_IRQ: u8 = 0x0d;
-+    pub(crate) const CFG_ADDRESS: u8 = 0x0e;
-+
-+    // Command registers
-+    pub(crate) const CMD_A: u8 = 0x30;
-+    pub(crate) const CMD_A_ALLOW_WRITE: u8 = 1 << 7;
-+
-+    pub(crate) const CMD_B: u8 = 0x31;
-+    pub(crate) const CMD_C: u8 = 0x33;
-+
-+    // Interrupt-status registers
-+    pub(crate) const IRQSTAT_A: u8 = 0x35;
-+    pub(crate) const IRQSTAT_C: u8 = 0x37;
-+    pub(crate) const IRQSTAT_D: u8 = 0x38;
-+    pub(crate) const IRQSTAT_E: u8 = 0x39;
-+    pub(crate) const IRQSTAT_E_DCIN_UV_STAT: u8 = 1 << 4;
-+
-+    pub(crate) const IRQSTAT_F: u8 = 0x3a;
-+
-+    // Status registers
-+    pub(crate) const STAT_A: u8 = 0x3b;
-+    pub(crate) const STAT_B: u8 = 0x3c;
-+    pub(crate) const STAT_C: u8 = 0x3d;
-+    pub(crate) const STAT_C_CHG_SHIFT: u8 = 1;
-+    pub(crate) const STAT_C_CHG_MASK: u8 = 0x06;
-+
-+    pub(crate) const STAT_E: u8 = 0x3f;
-+
-+    pub(crate) const MAX_REGISTER: u8 = 0x3f;
-+}
-+
-+// Declared before `client` so it drops first: the supply is
-+// unregistered (no further get_property callbacks) before the I2C
-+// client it reads through is released.
-+struct Smb347 {
-+    _registration: kernel::power_supply::Registration,
-+    client: ARef<i2c::I2cClient>,
-+}
-+
-+kernel::i2c_device_table! {
-+    I2C_TABLE,
-+    MODULE_I2C_TABLE,
-+    <Smb347 as i2c::Driver>::IdInfo,
-+    [(i2c::DeviceId::new(c"smb347"), 0)]
-+}
-+
-+kernel::of_device_table! {
-+    OF_TABLE,
-+    MODULE_OF_TABLE,
-+    <Smb347 as i2c::Driver>::IdInfo,
-+    [(of::DeviceId::new(c"summit,smb347"), 0)]
-+}
-+
-+impl Smb347 {
-+    /// Enable/disable writes to the non-volatile config registers (0x00–0x0e)
-+    /// by toggling CMD_A.ALLOW_WRITE. Other CMD_A bits are preserved.
-+    #[expect(dead_code)] // TODO: remove once a config-write path calls this (Phase 3)
-+    fn set_writable(idev: &i2c::I2cClient<Core<'_>>, writable: bool) -> Result {
-+        let bits = if writable { reg::CMD_A_ALLOW_WRITE } else { 0 };
-+        idev.smbus_update_bits(reg::CMD_A, reg::CMD_A_ALLOW_WRITE, bits)
-+    }
-+}
-+
-+impl kernel::power_supply::Driver for Smb347 {
-+    const NAME: &'static CStr = c"smb347-mains";
-+    const TYPE: kernel::power_supply::Type = kernel::power_supply::TYPE_MAINS;
-+    const PROPERTIES: &'static [kernel::power_supply::Property] = &[
-+        kernel::power_supply::PROP_STATUS,
-+        kernel::power_supply::PROP_ONLINE,
-+        kernel::power_supply::PROP_CHARGE_TYPE,
-+    ];
-+
-+    fn get_property(
-+        self: Pin<&Self>,
-+        psp: kernel::power_supply::Property,
-+        val: &mut kernel::power_supply::PropertyValue,
-+    ) -> Result {
-+        if psp == kernel::power_supply::PROP_ONLINE {
-+            let irqstat_e = self.client.smbus_read_byte_data(reg::IRQSTAT_E)?;
-+            val.intval = if irqstat_e & reg::IRQSTAT_E_DCIN_UV_STAT == 0 {
-+                1
-+            } else {
-+                0
-+            };
-+            Ok(())
-+        } else if psp == kernel::power_supply::PROP_STATUS {
-+            let stat_c = self.client.smbus_read_byte_data(reg::STAT_C)?;
-+            val.intval = if stat_c & reg::STAT_C_CHG_MASK != 0 {
-+                kernel::power_supply::STATUS_CHARGING
-+            } else {
-+                kernel::power_supply::STATUS_NOT_CHARGING
-+            };
-+            Ok(())
-+        } else if psp == kernel::power_supply::PROP_CHARGE_TYPE {
-+            let stat_c = self.client.smbus_read_byte_data(reg::STAT_C)?;
-+            let cs = (stat_c & reg::STAT_C_CHG_MASK) >> reg::STAT_C_CHG_SHIFT;
-+            val.intval = match cs {
-+                1 => kernel::power_supply::CHARGE_TYPE_TRICKLE,
-+                2 => kernel::power_supply::CHARGE_TYPE_FAST,
-+                _ => kernel::power_supply::CHARGE_TYPE_NONE,
-+            };
-+            Ok(())
-+        } else {
-+            Err(EINVAL)
-+        }
-+    }
-+}
-+
-+impl i2c::Driver for Smb347 {
-+    type IdInfo = u32;
-+    type Data<'bound> = Self;
-+
-+    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> = Some(&I2C_TABLE);
-+    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+
-+    fn probe(
-+        idev: &i2c::I2cClient<Core<'_>>,
-+        info: Option<&Self::IdInfo>,
-+    ) -> impl PinInit<Self, Error> {
-+        let dev = idev.as_ref();
-+
-+        dev_info!(dev, "Probe Rust SMB347 driver.\n");
-+
-+        if let Some(info) = info {
-+            dev_info!(dev, "Probed with info: '{}'.\n", info);
-+            let v = idev.smbus_read_byte_data(reg::STAT_A)?;
-+            dev_info!(dev, "STAT_A = {:#04x}\n", v);
-+        }
-+        let client: ARef<i2c::I2cClient> = idev.into();
-+        let registration = kernel::power_supply::register::<Smb347>(dev)?;
-+        dev_info!(dev, "registered power_supply\n");
-+        Ok(Self {
-+            _registration: registration,
-+            client,
-+        })
-+    }
-+
-+    fn shutdown(idev: &i2c::I2cClient<Core<'_>>, _this: Pin<&Self>) {
-+        dev_info!(idev.as_ref(), "Shutdown Rust SMB347 driver.\n");
-+    }
-+
-+    fn unbind(idev: &i2c::I2cClient<Core<'_>>, _this: Pin<&Self>) {
-+        dev_info!(idev.as_ref(), "Unbind Rust SMB347 driver.\n");
-+    }
-+}
-+
-+kernel::module_i2c_driver! {
-+    type: Smb347,
-+    name: "smb347_rust",
-+    authors: ["Bruce Robertson"],
-+    description: "Rust SMB347 driver",
-+    license: "GPL v2",
-+}
--- 
-2.43.0
-
+T24gTW9uLCAyMDI2LTA3LTA2IGF0IDE1OjMxICswOTAwLCBBbGV4YW5kcmUgQ291cmJvdCB3cm90
+ZToNCj4gPiArwqDCoMKgwqDCoMKgwqAgZGV2X2luZm8hKA0KPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIGRldiwNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAibG9hZGVkIGdlbmVyaWMg
+Ym9vdGxvYWRlciBmaXJtd2FyZSB2e31cbiIsDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+dGx2LmdldF9zdHJpbmcoYiJWRVJTIik/DQo+ID4gK8KgwqDCoMKgwqDCoMKgICk7DQo+IA0KPiBz
+L2Rldl9pbmZvL2Rldl9kYmcuDQo+IA0KPiBBbHNvLCBzaW5jZSBgZGV2X2RiZ2AgY2FuIGJlIGNv
+bXBpbGVkIG91dCwgdGhlIGNoZWNrIHBlcmZvcm1lZCBvbiB0aGUNCj4gYFZFUlNgIHRhZyBleGlz
+dGluZyBpcyBub3QgZ3VhcmFudGVlZCB0byBiZSBwZXJmb3JtZWQuIFdlIHNob3VsZA0KPiBwcm9i
+YWJseSBleHRyYWN0IGl0IG91dCBvZiB0aGUgYGRldl9kYmdgIHN0YXRlbWVudC4gVGhpcyBpcyB0
+cnVlIGFjcm9zcw0KPiB0aGUgc2VyaWVzOyB3aGljaCBtYWtlcyBtZSB0aGluayBpdCBtaWdodCBh
+bHNvIGJlbmVmaXQgZnJvbSBhIGhlbHBlciB0bw0KPiBmYWN0b3Igb3V0IHRoZSByZXF1ZXN0X3Qu
+di9UbHY6Om5ldy9kZXZfZGJnIGNvbW1vbiBzZXF1ZW5jZS4NCg0KV2UgZG9uJ3QgY2FyZSBhYm91
+dCB0aGUgVkVSUyB0YWcgaWYgd2UncmUgbm90IGdvaW5nIHRvIHByaW50IGl0IG91dCwgc28gd2Ug
+cHJvYmFibHkgc2hvdWxkIG5vdA0KZXh0cmFjdCBpdCBvdGhlcndpc2UuDQoNCkkga25vdyBpdCdz
+IGEgY29tbW9uIHBhdHRlcm4sIGJ1dCBJIGNvdWxkbid0IGZpbmQgYSB3YXkgdG8gY2xlYW5seSBj
+b21iaW5lIHJlcXVlc3RfdGx2KCkgd2l0aA0KVGx2OjpuZXcoKS4NCg==
