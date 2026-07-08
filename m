@@ -1,117 +1,81 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F6F3FCB2F
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 08:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C543F786F
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 08:18:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783498633; cv=none; b=DQ8DfkqNcaYkCcaYJAOk3rg0WIwQ6pp4fWhGzkVPDjNDYncrrS/ylSuznDznc7xNxCS5sjH58S77e5uu7Cm3ECo4qjf1JxY155da8BpjcoeeC+0lbOc9XIXaWMZFxYrM/gi6zxDX16gqCN3nWJS+mvTsrUC7LpoIcgN4nv++ybo=
+	t=1783498733; cv=none; b=Ng97G0BCp0fhUMl3RqcOl9PjFNv7kUDl5Sb9Y7pnDUzq0/Hew4gPxPi1UpY4adcTPF89b9sl9M1fIgbDFGUkfTCOCpbg80ZyQKH0JjNDkINLtN7hBRplWNbHIw0OFTe748sCoSavhzsAPFEb7E8IO5nr79FBFW+2QOWiIeoin0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783498633; c=relaxed/simple;
-	bh=Y3kUJjXfM6XiQJB5bJ9e235Zk2SP2JUUm2AGXpz1Dpg=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mDzITxWACljyOaKy05G8B3ntrZP90QbkuT831y0iD1sAIKJiF90zR2yDVmSsSUn6srs8KO3HllCqYCzv189aeMuPr1Zh69hTzP13ErQYy7OWPuwIBX3klY705Khm5KcRX8ER8AukY5NzKdU+FNpFR7YZh45qDU51o2r2vPR/6kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SDLBgiKF; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1783498733; c=relaxed/simple;
+	bh=nXuVdlrE0d05b1rMUSrzol4wnLS7LVrUEegBEgWQ69k=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pDmNbdq5mVPvF/kkhctRKqy8AGvbp9E2ktCerwAfUVai1f+MM1swx7vQB8EYYvwy8HXkdSmX4G3oGiy3QuvI41voISGEPgRTd8Yk8qBF1CoZXjM+f6oAptDUDrl2szKTxWo3gqD+1wyE/NvZ7wq8kcSRqE5/rlVhyeEWh2LJ70M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ALUskmLl; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SDLBgiKF"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-382a3fe0d28so420052a91.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 01:17:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ALUskmLl"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84783bce476so348102b3a.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 01:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783498628; x=1784103428; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1783498731; x=1784103531; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:to:from:date:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kOQ8rJdnaLlYyfsujfvhTomKPZ31Ydzu6crJCE3qtlM=;
-        b=SDLBgiKFaRSHihZ5VjP5mBIwH9iHSR+urTP+B+eOsV/ySLNnzXp9I5b35jGuyipVUO
-         ooefQH/7KIHOvUGSoFR7UBWSv15lU4eB5JoREu8oi0YDAt3H6c5hc0bhChnciGHMCxc4
-         GgCFR52OxXPLDQad6qimu+cE0g0MWHoA7nvcSmRqx0OsNI6W9ojNTvB2W5j8ptIIO8lD
-         glMq0drcmrpV+soyW6PrwT+Hwu6bIVOQyRZuwGGV6ZqvjYq4ZkvGLTn1RAEMA+XP1y6v
-         LASFdCZPWYkM4hWbYHlrWMN3L/01KGBVBwsR04NxvKDiDv4yo49MCy8K2+4Nuz6tVDPQ
-         qGng==
+        bh=59q6kMti6TEuYkK2zAzI9NhF5BHSzay0sLHoUMAZAzs=;
+        b=ALUskmLlB8Zc2vG50jodDL8YttLn6myf3v4VEhwaV562hvjk7KXUoD9r8crWxL3UQm
+         tyCFQAaLqrGQtBlSTAfB4+dGCQv6bU5z9jdVKNC/vVCRkOjxkxhSHfsm/rJxvhEG8EVp
+         wSDn6yY0SnNmlV8QGD9JeM95J8GKZ0Bs4bMK9tdgzm2lyBEqwnL1uWkCMPqLl9YSsEeX
+         v6lhviirwkOTDhynOPleebKv4WD4elubchKqt25TlrOrAr/uX+pW5cvjUedvSnTehtEy
+         Y+qtXtOUpRuZKHlRxCNVnGS8LbSut4VMZSiqhYcokoJpPV+WhI01YlmZH0dS7AoZfhqC
+         cb8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783498628; x=1784103428;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1783498731; x=1784103531;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kOQ8rJdnaLlYyfsujfvhTomKPZ31Ydzu6crJCE3qtlM=;
-        b=mmjNOvz2uHokhGI5dWzHyklZ+dlThFDYw/bHVsVtONkWMhu1/fy1fgCjQHdS8bFTwb
-         G6h+hLNzYVp8DiK+XeZfcKMNUUsqtwQKsspVnNuyOb3jwsC95qWSl4lp0LR+llgHKRnA
-         tV+j4WZ8qJHud1/ZquhmzjbbDjS4/OKrpI5emrSymCS+Xo+EB/bN01+TWyHZ5wKI+9o1
-         SmsdWvZFwyrC5eIAzdvt0KU/e2H0jN0quHqqj8HK8JmSICL5ujOxGZQJLlIqFn0oSRLu
-         dufnkfk7ALRql2tu2PiJMPM6U0AET7LhCqUNhm30WgqWkqMTfMKLLJ/6vKffNdKYdEVB
-         1xBg==
-X-Forwarded-Encrypted: i=1; AHgh+RrYC5+72cSmryLsqe15GtqA8/pCJ3Es3d3eHYeM9eBe3XGf4E+U22koi2C4ppuVG8meN1VzleW7bcnX4zXdSg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+JmK2Mf6s6bgaRAhCmVTfYaW1eGAP34uOXfw3UjoYtO6JtGuk
-	JP2VXQH7tymWHD8wGXDNbCTgTFSVUvAdg2iFblblyK7xS4i/CrDgdHCj
-X-Gm-Gg: AfdE7cnLt1GkojtG2zAAvM9/W0oqOYBLxLIfasA167mlQ12GeURs5xDxO7bgGrZ5Dms
-	fcdTmTJKRAEzb3zhwtdmk8cxXBZeu+7BMLfuc2xBbsf2PF8pBo/P3+Gq800JNwNhLYuOYSG3dB9
-	h3X9NJEVzrT2UoCQSyZHdeCEQnoI7+CLnd/iENJCrwWEpVMewQ2/7oaqxukul7wg0QI2D9heziQ
-	za6aVlG4Ixa0iUtD9Epqk0DXUIgSmokZqNMVW042Ehk1Wzngidbdd6c0/Dw99ymoe6vxyOf3xOW
-	N+jbZ59U3mrFPIVn9dssAhdbUirYJx6RLgf9a/Gr30mbf2O1IfI6h7OsUxzM8ofdZHtm3uik9gb
-	H8Hg4Yc6frAEOMrHUX5YSPSRLYQRiW1p2P42Zfn8UMZMdet+WZ3gGNXWPGOEBm1eSz/HcU7jZzh
-	mM+GaR9JPUvXYy37ptrJvDkRGpgrDieVcDt6wAu/x1Wi6Su5Gz6M8Au6aVz210jdKJU1mv/VxIg
-	Fvv
-X-Received: by 2002:a17:90b:5603:b0:387:e0bb:57fa with SMTP id 98e67ed59e1d1-389421ae993mr1439396a91.43.1783498627957;
-        Wed, 08 Jul 2026 01:17:07 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.160.236])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117483e0a2sm16346132eec.12.2026.07.08.01.16.53
+        bh=59q6kMti6TEuYkK2zAzI9NhF5BHSzay0sLHoUMAZAzs=;
+        b=P87z53KU5yUc0AyVKglY3vk4pI0N2F1F4fJESfAOo4w2GEepU9SN40jewZRZS8fc59
+         bWvIGmWuH8lBv5nZqW57wPLbilmKPpNo4/rHlzlbRnJ2pqAbzGh3KQPzsQDGNQllbvzf
+         /ySQf8f7iFbn0kweBVWsE7BzfAlLoJntPzaLWES7QXiCW3KOf5TxLwNKRoTZwFljo/Py
+         2skgGV/96jpQsloX35Pegb8w8WL+PH1n+TI3k6v7QfnZu8lkJvfvEQo0FcPl2gvMWBwo
+         Wq9oon+LpdqMpcgcaVxEMTkkhmQztbaBuRYriZgFvPhRC3ftRhvYjp1beMVxbM9/wsnA
+         bhdg==
+X-Forwarded-Encrypted: i=1; AHgh+RqWr3LGE0KPMiuXfCMY+bC3TW1OxEhrITvNISGAf20Sy57O//BTVODprCRGn8ErAo1H5YCDtRC7xwVQiItSGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8nXr6FerjyPuvsIsqZCBs53DtwVr2pJ6HaDxTaxUxWOYAnDCe
+	HB4TZ1c7WovYxgUqAhv9dvHvHDzDUMkjzvswxyLmPz+Lx9+Efql2cQ/P
+X-Gm-Gg: AfdE7cnkHG2ETlrFHP/cv878/elxszLOP3l1ZhPGOQKrnbcud04hJ+IxVejMUarKOZZ
+	SzRg71Jy39R0QI/RbS8t6aAM+fqKmW3ZNaZeEYGNbMEihQXAWnKoRHZvgv5yChikBBG/kIuJ0PG
+	0MH+1BYrbaXIP4rZwvTi9Twzmm2/cGhcNb9XAp8yg7XsTYzQ2epNVdZYOJ0up3I8ScSC94SLeGM
+	o3Wq9aLAVT/Pz5lSWEF1TIg0TZvBg+xLJ4VCKS5yWjlBdQWKnRz9Y7BZ4Ijd7kTtTwRh9Sh/pIr
+	rWOKoh04sBgl92rVxjuf0GeKzaTEOyCfO3/YzVL7T8ggt5Mhbr9s13NG/0qahyp0TRm6jQLz7pL
+	qEhmgGhpZapx1lc137BjbH8ux0HPEPsjtK8dn3IHX/tgPWvnr6W7CoUfMZFAqEgOvjdrBRDPkOj
+	l/i9PrZt8aaDKOWRNZ8DrJ4WC8a1lwnBQNGg1T4wemRoMTNC+Ude6YO6fy+h53
+X-Received: by 2002:a05:6a00:ad6:b0:845:c8f9:6ce0 with SMTP id d2e1a72fcca58-84842f2af17mr1578608b3a.21.1783498731120;
+        Wed, 08 Jul 2026 01:18:51 -0700 (PDT)
+Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.236])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b3162a49sm2012879a12.15.2026.07.08.01.18.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 01:17:07 -0700 (PDT)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	jbaron@akamai.com,
-	aliceryhl@google.com,
-	rostedt@goodmis.org,
-	ardb@kernel.org,
-	oleg@redhat.com,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	msuchanek@suse.de,
-	mkchauras@gmail.com,
-	sshegde@linux.ibm.com,
-	mchauras@linux.ibm.com,
-	thuth@redhat.com,
-	segher@kernel.crashing.org,
-	ryan.roberts@arm.com,
-	fujita.tomonori@gmail.com,
-	joelagnelf@nvidia.com,
-	prafulrai522@gmail.com,
-	gregkh@linuxfoundation.org,
-	nsc@kernel.org,
-	japo@linux.ibm.com,
-	lyude@redhat.com,
-	lina+kernel@asahilina.net,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH V17 1/8] powerpc/syscall: Fix syscall skip handling for seccomp and ptrace
-Date: Wed,  8 Jul 2026 13:46:26 +0530
-Message-ID: <20260708081633.1248382-2-mkchauras@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260708081633.1248382-1-mkchauras@gmail.com>
+        Wed, 08 Jul 2026 01:18:50 -0700 (PDT)
+Date: Wed, 8 Jul 2026 13:48:35 +0530
+From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+To: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
+	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, oleg@redhat.com, 
+	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, 
+	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, msuchanek@suse.de, sshegde@linux.ibm.com, mchauras@linux.ibm.com, 
+	thuth@redhat.com, segher@kernel.crashing.org, ryan.roberts@arm.com, 
+	fujita.tomonori@gmail.com, joelagnelf@nvidia.com, prafulrai522@gmail.com, 
+	gregkh@linuxfoundation.org, nsc@kernel.org, japo@linux.ibm.com, lyude@redhat.com, 
+	lina+kernel@asahilina.net, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH V17 0/8] Rust Support for powerpc
+Message-ID: <ak4HwGN_rJ9UN0Rt@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
 References: <20260708081633.1248382-1-mkchauras@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -119,181 +83,144 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708081633.1248382-1-mkchauras@gmail.com>
 
-After enabling GENERIC_ENTRY on PowerPC, syscall_enter_from_user_mode()
-returns -1 as a sentinel to signal that seccomp or ptrace has intercepted
-the syscall and already set a return value via syscall_set_return_value().
-system_call_exception() was not handling this sentinel, and since -1UL
-is >= NR_syscalls, the code fell into the out-of-range path and returned
--ENOSYS, overwriting the errno already placed in regs->gpr[3].
+On Wed, Jul 08, 2026 at 01:46:25PM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
+> Enable experimental rust support for ppc64le and ppc32be. The patch for
+> ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
+> merged over it. ppc32 needs some toolchain fixes mentioned in the patch
+> `rust: Add PowerPC support` and the discussion for that is done here[1].
+> 
+> This has been tested on
+> - powernv9 hardware
+> - pseries P11 hardware
+> - pseries(9, 10) qemu
+> - powernv(9, 10) qemu
+> - rustdoc on x86 and powerpc64le
+> - rusttest on x86 and powerpc64le
+> 
+> We are actively working with our LLVM team to get the target for ppc,
+> ppc64 and ppc64le in the rust compiler.
+> 
+> [1] https://lore.kernel.org/all/20260204030507.8203-1-linkmauve@linkmauve.fr
+> [2] https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com
+> 
+> Changelog:
+> V16 -> V17:
+> - Rebased to latest v7.2-rc2 
+> 
+> V15 -> V16:
+> - Rebased to latest v7.1-rc4
+> V15: https://lore.kernel.org/all/20260426105932.2270364-1-mkchauras@gmail.com/
+> 
+> V14 -> V15:
+> - Fix an issue with rustdoc build on ppc64le
+> V14: https://lore.kernel.org/all/20260426085725.2090827-1-mkchauras@gmail.com/
+> 
+> V13 -> V14:
+> - 2nd patch is rewritten (Christian)
+> - Fixed a small typo in rust/Makefile (Sashiko)
+> - Fixed commit message in Patch 4 (Sashiko)
+> V13: https://lore.kernel.org/all/20260424054742.45832-1-mkchauras@gmail.com/
+> 
+> V12 -> V13:
+> - Added a patch for fixing build issue on ppc32 by Link Mauve
+> - Added another patch to fix a build issue in dma-buf
+> - Added another patch to enforce minimum `rustc` version for powerpc
+> V12: https://lore.kernel.org/all/20260421120958.190430-1-mkchauras@gmail.com/
+> 
+> V11 -> V12:
+> - Rebased to mainline (rust/Makefile conflict resolved)
+> V11: https://lore.kernel.org/all/20260417152253.2312961-1-mkchauras@gmail.com/
+> 
+> V10 -> V11:
+> - Updated `rust/Makefile`
+> - Not all libraries are move to `rust/host` directory now. Only
+>   proc_macro2, quote and syn are moved
+> - Special handling for pin init is added. Details in commit
+> - Removed mkdir for `rust/host`, this is now handled by toolchain.
+> V10: https://lore.kernel.org/all/20260406200149.3727922-1-mkchauras@gmail.com/
+> 
+> V9 -> V10:
+> - rust/Makefile updated with review comments from Miguel
+> - Patch 1/4 updated with commit message and subject
+> V9: https://lore.kernel.org/all/20260404121610.1956528-1-mkchauras@gmail.com/
+> 
+> V8 -> V9:
+> - rust/Makefile updated with a directory instead of abspath
+> V8: https://lore.kernel.org/all/20260403145308.1042622-1-mkchauras@gmail.com/
+> 
+> V7 -> V8:
+> - rust/Makefile updated to separate host libraries from target
+> V7: https://lore.kernel.org/all/20260329160254.2592207-1-mkchauras@gmail.com/
+> 
+> Changelog:
+> V6 -> V7:
+> - Documentation removed as powerpc is still under development
+> - Added a fix for race condition in rust/Makefile
+> V6: https://lore.kernel.org/all/20260210090023.2587534-1-mkchauras@gmail.com
+> 
+> V5 -> V6:
+> - Added a missing Tested by from Venkat which got missed since V3
+> - Support is marked as Maintained instead of experimental
+> V5: https://lore.kernel.org/all/20260210053756.2088302-1-mkchauras@gmail.com
+> 
+> V4 -> V5:
+> - Removed a nested ifdef from PPC64 for Little endian toolchain
+> V4: https://lore.kernel.org/all/20260209105456.1551677-1-mkchauras@gmail.com
+> 
+> V3 -> V4:
+> - Co-developed-by header added in patch 1
+> V3: https://lore.kernel.org/all/20260205180429.3280657-1-mkchauras@gmail.com
+> 
+> V2 -> V3:
+> - Splited HAVE_RUST in 2 lines
+> - BINDGEN_TARGET_powerpc initialized before assigning the same to
+>   BINDGEN_TARGET
+> V2: https://lore.kernel.org/all/20260204210125.613350-1-mkchauras@gmail.com
+> 
+> V1 -> V2:
+> - jump label fix for rust has been moved to a separate patch
+> - PPC32 support has been taken
+> - rust support has been marked experimental
+> - target.json dependency has been removed
+> - HAVE_RUST now depends on CPU_LITTLE_ENDIAN for PPC64
+> V1: https://lore.kernel.org/all/20260204042417.83903-1-mkchauras@gmail.com 
+> 
+> Link Mauve (2):
+>   rust: Make __udivdi3() and __umoddi3() panic
+>   rust: Add PowerPC support
+> 
+> Mukesh Kumar Chaurasiya (IBM) (6):
+>   powerpc/syscall: Fix syscall skip handling for seccomp and ptrace
+>   rust: Fix "multiple candidates for rmeta dependency core" error
+>   dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER is
+>     disabled
+>   powerpc/jump_label: adjust inline asm to be consistent
+>   rust/powerpc: Set min rustc version for powerpc
+>   powerpc: Enable Rust for ppc64le
+> 
+>  arch/powerpc/Kconfig                   |  2 +
+>  arch/powerpc/Makefile                  |  7 ++++
+>  arch/powerpc/include/asm/jump_label.h  | 23 ++++++-----
+>  arch/powerpc/include/asm/ptrace.h      | 22 +++++++++-
+>  arch/powerpc/include/asm/syscall.h     |  6 +++
+>  arch/powerpc/include/uapi/asm/ptrace.h |  6 ++-
+>  arch/powerpc/kernel/ptrace/ptrace.c    |  2 +
+>  arch/powerpc/kernel/syscall.c          | 18 +++++++++
+>  rust/Makefile                          | 56 +++++++++++++++++---------
+>  rust/compiler_builtins.rs              |  6 +++
+>  rust/helpers/helpers.c                 |  2 +
+>  scripts/min-tool-version.sh            |  2 +
+>  12 files changed, 119 insertions(+), 33 deletions(-)
+> 
+> -- 
+> 2.55.0
+> 
 
-The naive fix of checking r0 == -1L before the NR_syscalls bounds check
-is ambiguous: a user legitimately calling syscall(-1) also produces r0 ==
--1L, and a tracer intercepting such a call would have its injected return
-value silently discarded.
+Please ignore this.
 
-Fix this properly by introducing regs->entry_flags, a kernel-internal
-field in struct pt_regs (consuming one slot of the existing __pt_regs_pad
-so the ABI is preserved), with SYSCALL_ENTRY_RET_SET as an out-of-band
-flag. syscall_set_return_value() sets this flag whenever seccomp or ptrace
-injects a return value. system_call_exception() zeros entry_flags before
-calling syscall_enter_from_user_mode(), then checks and clears the flag
-afterwards: if set, it returns regs->gpr[3] directly regardless of what
-syscall number the user originally requested.
-
-This handles all seccomp actions correctly:
-
-  - SECCOMP_RET_ERRNO, SECCOMP_RET_TRACE (no tracer), SECCOMP_RET_USER_NOTIF:
-    all call syscall_set_return_value(), flag is set, injected value returned.
-  - SECCOMP_RET_TRAP, SECCOMP_RET_KILL: call syscall_rollback() and deliver
-    a signal; flag is not set, but the process is dying so the return value
-    is irrelevant.
-
-The fix covers both ppc32 and ppc64 with no #ifdefs.
-
-Fixes: bee25f97ad24 ("powerpc: Enable GENERIC_ENTRY feature")
-Reported-by: Michal Suchánek <msuchanek@suse.de>
-Closes: https://lore.kernel.org/all/ajpp-_XnbF3UTM_E@kunlun.suse.cz/
-Tested-by: Michal Suchánek <msuchanek@suse.de>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
----
- arch/powerpc/include/asm/ptrace.h      | 22 +++++++++++++++++++++-
- arch/powerpc/include/asm/syscall.h     |  6 ++++++
- arch/powerpc/include/uapi/asm/ptrace.h |  6 ++++--
- arch/powerpc/kernel/ptrace/ptrace.c    |  2 ++
- arch/powerpc/kernel/syscall.c          | 18 ++++++++++++++++++
- 5 files changed, 51 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index fdeb97421785..1a53d5cfa8db 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -54,8 +54,9 @@ struct pt_regs
- 			};
- 			unsigned long result;
- 			unsigned long exit_flags;
-+			unsigned long entry_flags;
- 			/* Maintain 16 byte interrupt stack alignment */
--			unsigned long __pt_regs_pad[3];
-+			unsigned long __pt_regs_pad[2];
- 		};
- 	};
- #if defined(CONFIG_PPC64) || defined(CONFIG_PPC_KUAP)
-@@ -233,6 +234,25 @@ static inline unsigned long frame_pointer(struct pt_regs *regs)
- #define current_pt_regs() \
- 	((struct pt_regs *)((unsigned long)task_stack_page(current) + THREAD_SIZE) - 1)
- 
-+/*
-+ * SYSCALL_ENTRY_RET_SET: seccomp or ptrace called syscall_set_return_value()
-+ * and wants the syscall skipped; regs->gpr[3] already holds the return value.
-+ */
-+#define SYSCALL_ENTRY_RET_SET	BIT(0)
-+
-+static inline void set_syscall_entry_ret(struct pt_regs *regs)
-+{
-+	regs->entry_flags |= SYSCALL_ENTRY_RET_SET;
-+}
-+
-+static inline bool test_and_clear_syscall_entry_ret(struct pt_regs *regs)
-+{
-+	bool set = !!(regs->entry_flags & SYSCALL_ENTRY_RET_SET);
-+
-+	regs->entry_flags &= ~SYSCALL_ENTRY_RET_SET;
-+	return set;
-+}
-+
- /*
-  * The 4 low bits (0xf) are available as flags to overload the trap word,
-  * because interrupt vectors have minimum alignment of 0x10. TRAP_FLAGS_MASK
-diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-index 834fcc4f7b54..9ae79326abe3 100644
---- a/arch/powerpc/include/asm/syscall.h
-+++ b/arch/powerpc/include/asm/syscall.h
-@@ -98,6 +98,12 @@ static inline void syscall_set_return_value(struct task_struct *task,
- 			regs->gpr[3] = val;
- 		}
- 	}
-+	/*
-+	 * Mark that a return value has been explicitly set by seccomp or
-+	 * ptrace so that system_call_exception() can skip the syscall
-+	 * unconditionally, even when the user requested syscall(-1).
-+	 */
-+	set_syscall_entry_ret(regs);
- }
- 
- static inline void syscall_get_arguments(struct task_struct *task,
-diff --git a/arch/powerpc/include/uapi/asm/ptrace.h b/arch/powerpc/include/uapi/asm/ptrace.h
-index a393b7f2760a..2f2a43414fe6 100644
---- a/arch/powerpc/include/uapi/asm/ptrace.h
-+++ b/arch/powerpc/include/uapi/asm/ptrace.h
-@@ -56,7 +56,8 @@ struct pt_regs
- 	unsigned long dsisr;		/* on 4xx/Book-E used for ESR */
- 	unsigned long result;		/* Result of a system call */
- 	unsigned long exit_flags;	/* System call exit flags */
--	unsigned long __pt_regs_pad[3];	/* Maintain 16 byte interrupt stack alignment */
-+	unsigned long entry_flags;	/* System call entry flags */
-+	unsigned long __pt_regs_pad[2];	/* Maintain 16 byte interrupt stack alignment */
- };
- 
- #endif /* __ASSEMBLER__ */
-@@ -117,7 +118,8 @@ struct pt_regs
- #define PT_DSISR 42
- #define PT_RESULT 43
- #define PT_EXIT_FLAGS 44
--#define PT_PAD 47 /* 3 times */
-+#define PT_ENTRY_FLAGS 45
-+#define PT_PAD 46 /* 2 times */
- #define PT_DSCR 48
- #define PT_REGS_COUNT 48
- 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 316d4f5ead8e..440d00690cf2 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -235,6 +235,8 @@ void __init pt_regs_check(void)
- 		     offsetof(struct user_pt_regs, dsisr));
- 	BUILD_BUG_ON(offsetof(struct pt_regs, result) !=
- 		     offsetof(struct user_pt_regs, result));
-+	BUILD_BUG_ON(offsetof(struct pt_regs, entry_flags) !=
-+		     offsetof(struct user_pt_regs, entry_flags));
- 
- 	BUILD_BUG_ON(sizeof(struct user_pt_regs) > sizeof(struct pt_regs));
- 
-diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
-index a9da2af6efa8..a43d3a9428cc 100644
---- a/arch/powerpc/kernel/syscall.c
-+++ b/arch/powerpc/kernel/syscall.c
-@@ -19,9 +19,27 @@ notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
- 	long ret;
- 	syscall_fn f;
- 
-+	/*
-+	 * Zero entry_flags before syscall_enter_from_user_mode() so that
-+	 * syscall_set_return_value() can set SYSCALL_ENTRY_RET_SET as an
-+	 * unambiguous out-of-band signal.  The field is not initialised by
-+	 * the entry assembly.
-+	 */
-+	regs->entry_flags = 0;
- 	add_random_kstack_offset();
- 	r0 = syscall_enter_from_user_mode(regs, r0);
- 
-+	/*
-+	 * Seccomp or ptrace may have set a return value and requested that
-+	 * the syscall be skipped. syscall_set_return_value() sets
-+	 * SYSCALL_ENTRY_RET_SET in regs->entry_flags as an
-+	 * unambiguous out-of-band signal. This avoids the ambiguity of
-+	 * using r0 == -1 as the skip sentinel when the user themselves
-+	 * called syscall(-1).
-+	 */
-+	if (unlikely(test_and_clear_syscall_entry_ret(regs)))
-+		return syscall_get_error(current, regs);
-+
- 	if (unlikely(r0 >= NR_syscalls)) {
- 		if (unlikely(trap_is_unsupported_scv(regs))) {
- 			/* Unsupported scv vector */
--- 
-2.55.0
-
+Regards,
+Mukesh
