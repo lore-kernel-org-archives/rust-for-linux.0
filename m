@@ -1,74 +1,70 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012009.outbound.protection.outlook.com [40.93.195.9])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010020.outbound.protection.outlook.com [52.101.46.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2ACE409289;
-	Wed,  8 Jul 2026 15:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DF9126BF1;
+	Wed,  8 Jul 2026 16:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783526093; cv=fail; b=uJcOoRd5mShmu7m/GerfN133I5Z85Px+AyxMMVFxtkVQaQ0tL1PjYZMUL7Gf8KW4uBshLuNAFo3Mb0Y1OGfNLI7w1TCjaafMxnuuNVRp0+jr2mcRi36gJ7ySBkz8DQb52cg2fUjOSEZPpbg4YaN7tPdt5DvvV4LVmOTE5fKrYl0=
+	t=1783526426; cv=fail; b=WA+CQOr7zvB8rn5Xl8QJUwTVLB3snNgjw9AbYKODTxzAwaxnuyhJKmPK9LE2fOFAo8CdnrtDbYAkq/MQFl5lRQzCXYHf+PmV+Om2gtdWVcAtxB3Dvgx2UuNxBgUHcME2U2CETNiH3lhL6KMn9x5ZZMVqw7cdK/CfS52UFZxyYCY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783526093; c=relaxed/simple;
-	bh=SOMMlRsp/wNpPnsM/9B3uKfx80OdzzL1oAlEOavXnx8=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WAHi7FoG1XT0X3JSusfk5tt/Y09jtykq1PcAI5ar4iHyYFZD5iz+RBstaNgTtNl8gXMLZcYKX/ftlB3zMRAJFDBUu0ApwNtSuiI4coe2ED6wWYE8QhdSAJ3Vx1ET5mMoGfBNpqNKmbGPVR3DA5E0jFYog5Pujojjo9rgAL7pGHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Gqq21Aoo; arc=fail smtp.client-ip=40.93.195.9
+	s=arc-20240116; t=1783526426; c=relaxed/simple;
+	bh=l7uJ051JcCE2js7Mf1HsUJcR10nTh9dCdT8XlbFFbeg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Rx5j9PyueT8x86phdwboUKJ7gMClPVoERW2vt+8MQ8u/q0F7Bogoi1veimVPvAbQ+cL/ISM0L14C8HILs4aMhOjOmsQxsl12aH6Wik4CVc2UJ5/Lgna95xs8tOlysw7gZcaJLBmDU0n5D5wEtK1+lRk3HDVvfVECeBOu8kvFvkI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=M9wObSab; arc=fail smtp.client-ip=52.101.46.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Gqq21Aoo"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="M9wObSab"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lFwwcc9rv9gAhhrEJFVwukukDFgWGPMIlO4tRa4DLuoa5o1ZIMJS+D8z/cwHRH19AdX79mtKTfXMILkgrxVT36rkTzmodMXPIn6yEkiH41bYaYfXmA0ajbUf9TtSOWX/nA355Dp9BDviQr/VRHR9JU/5rULNK4mvTICCb/1gFVzio9tQHIkP+4oklRaqL1+lFhFuUcHExZCvECac2wAWq6tbYNppgp4n/9Y4mfm6t1FXddBea0hgB7Neh2RRKbWA5R2GwT+x5eJjoARkONxNBCm5yI21A8hydpsjSxsGIbg7IoUW5w7ruQvuzCbW8kMwitFIdUO23DansWHJAyRAig==
+ b=y8ionQL8P4AoP2cdopeQuNlrDTtj84Z295XuPNbYUFpSJcDJYYpKTC7lwaUXaN7r40aT3BfpvEap9P0/0sKQXwAcBhcxp5rpeJYrY9FONY+4sRC62kicfcrnPPl1hQazqBZlEzYA4Vu9KCArL4Wkby2kL8cEhVU3gLtAkyRU31H3guSFh7rVS0vHlRdcxcsp0bsOkFYh6D+K2HKCPT5z+/FwWQZQNNMKBU0c1MWVgTZM7jcgFWf56dHbYjPDOSGolv0oUhYhqkEZwtq3uevMnLAmpt6U8PaJkqLtSJWbwBJlGvIGVsBKZMXmhkHrpcIOdEcxMSFepxWEFBZwv3pjwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2pd32QsomrUlVShbXSfD8kuz2tqc9su+pwUaOW/ZSAI=;
- b=wONuyuU4BxTj3pnmL2X8Lq8zYSbWwPezR1n3IiHHHBrmqK3fHq38/aShIgppnKzsgNmFXsU3hjzZGfRZlyXtkQCOSF7LnJnos+UAAHuOI4iwllOV0/Is/4SZC1dCTFjUvizbkHSXypTOCpScBaTUAS0kN7mNOxr7TRuj9HoAUX/xPMyIPMTjAvCCalR/tke1LBsupREpW3vgdnHp74tTyVj19Y+Vyd7GQDQB4FO99Z/XI/ecyHY3s+TahCoQsBAywfG69zwmennyfsjgJQsQIpDY8RAdZDSLhJri+K4m6pq3RbNAkfjydb3vnS/n0nVw73LWAdySvHovRFQSYc2eYA==
+ bh=qSTub3rCie3T2Fvt5ngl8mkV5QN7VamIRUEwNGXZnso=;
+ b=dzdqGdL+zLnpYZphrZfY/Aod0fx8kUI3MWjc39AZbtsKkrqHj1qPkmuRWH1i1vKTjY+aIyw4ZoY0ls8y1bMqf7w/tQ+t4naAc9ItbnqqplSCkCkO3W/yjCguNX5758dv8PflqkbJ403F0kbO7n3vgIm4aEkp22R/YjZnjeHSZ2HUcBh/lGGMdG8fl+V01PVuuLoX7lv/LQE6e87QtotqchYcde38+ZzwHiV9+qDsDi7EdbJyUcxR04kX7qXboQEXc9doq1ii+pmio+SJzlUCem15LnowKq596NSwXJ+HXlKUUnA+ClWi/Yf4Fz3aLYXNRukKmBFfNsRNjz5/hTHPRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=umich.edu smtp.mailfrom=nvidia.com;
+ 216.228.118.232) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2pd32QsomrUlVShbXSfD8kuz2tqc9su+pwUaOW/ZSAI=;
- b=Gqq21Aoo7uUf7OfEfzgYZteDuemX3r1ajoeSrklDv7Fivo9r99NyhiREkBjmuszOCPYgQfi0ZdbOyJ5omOixG6VOf/hBcSdVzZ3noHzURW3yOOSvzpu7fpDeNSlVeJY9hGZlV/BS1nLTif8g0uGhhIaqdKp0eJib6L0TiZfqio6jx750BVFy1BcYc6gcuGE2TyXLuXMDCZjW131UWZm+IQQwhGcMtTMLPjjG4MYG9izGq2I1U7MO55KgpywX3NTOc4QzIbzQpD0Hz8GzBqdGinaNTeiH0ChRbS7S1I9cpmXmze6C2qxgB89jbBHvJC6giw9n3djw471jbZsaOObxYQ==
-Received: from SJ0PR13CA0074.namprd13.prod.outlook.com (2603:10b6:a03:2c4::19)
- by DM3PR12MB9351.namprd12.prod.outlook.com (2603:10b6:8:1ac::9) with
+ bh=qSTub3rCie3T2Fvt5ngl8mkV5QN7VamIRUEwNGXZnso=;
+ b=M9wObSabyqgo97qbhKLsqKOy+yRUaCwDPT/O/YaT3P5AtTNt7G7MOa26pDmVrq0B6w/5Dd7ljTJjrdu6AEBXFFjMj+YeI8Hh1bA/042+GGQcegojJFW2zPy7zCDu3ifVlnFh0qn18ooGQK5pMpeWCDUHt2Ih00HmMCWXHQQ4PAEd69yAhZqkayfZqVE8voDNBkAxRFyz1/Cf0E0GFvWzQ1zCYBVdscuaqUC0Wr5QVMImyZocXT55zIsVFDVNJg5vc0iQOSg6EqjJcfaNFfCjwYOtonfFKSM4Pv7qfVZUj5Ni3XVZBP3MMAGD3MyFWgFUYDerIBdi/+Gh15nqMBg0SA==
+Received: from BL1P223CA0009.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:2c4::14)
+ by CH1PR12MB9717.namprd12.prod.outlook.com (2603:10b6:610:2b2::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
- 2026 15:54:36 +0000
-Received: from MWH0EPF000C618E.namprd02.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::5b) by SJ0PR13CA0074.outlook.office365.com
- (2603:10b6:a03:2c4::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.3 via Frontend Transport; Wed, 8
- Jul 2026 15:54:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ 2026 16:00:15 +0000
+Received: from BL02EPF0001A0FD.namprd03.prod.outlook.com
+ (2603:10b6:208:2c4:cafe::48) by BL1P223CA0009.outlook.office365.com
+ (2603:10b6:208:2c4::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.11 via Frontend Transport; Wed, 8
+ Jul 2026 16:00:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- MWH0EPF000C618E.mail.protection.outlook.com (10.167.249.100) with Microsoft
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BL02EPF0001A0FD.mail.protection.outlook.com (10.167.242.104) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Wed, 8 Jul 2026 15:54:35 +0000
+ 15.21.181.6 via Frontend Transport; Wed, 8 Jul 2026 16:00:15 +0000
 Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Jul
- 2026 08:54:05 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Wed, 8 Jul
+ 2026 08:59:59 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
  drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Wed, 8 Jul 2026 08:54:04 -0700
-Received: from inno-dell (10.127.8.9) by mail.nvidia.com (10.126.190.182) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 8 Jul 2026 08:53:58 -0700
-Date: Wed, 8 Jul 2026 18:53:53 +0300
+ 15.2.2562.20; Wed, 8 Jul 2026 08:59:58 -0700
+Received: from inno-dell.home (10.127.8.9) by mail.nvidia.com (10.126.190.181)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Wed, 8 Jul
+ 2026 08:59:52 -0700
 From: Zhi Wang <zhiw@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<dakr@kernel.org>, <jgg@nvidia.com>, <dave.jiang@intel.com>,
+To: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <dakr@kernel.org>, <jgg@nvidia.com>, <dave.jiang@intel.com>,
 	<saeedm@nvidia.com>, <jic23@kernel.org>, <gary@garyguo.net>,
 	<joelagnelf@nvidia.com>, <aliceryhl@google.com>, <kwilczynski@kernel.org>,
 	<ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
@@ -76,475 +72,207 @@ CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<tmgross@umich.edu>, <cjia@nvidia.com>, <smitra@nvidia.com>,
 	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
 	<targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
-	<jhubbard@nvidia.com>, <zhiwang@kernel.org>, <daniel.almeida@collabora.com>
-Subject: Re: [PATCH v6 1/1] rust: introduce abstractions for fwctl
-Message-ID: <20260708185353.2dae54b6@inno-dell>
-In-Reply-To: <DJR76RV8NEKN.2MP5M9Z66U4TY@nvidia.com>
-References: <20260629150156.3169384-1-zhiw@nvidia.com>
-	<20260629150156.3169384-2-zhiw@nvidia.com>
-	<DJR76RV8NEKN.2MP5M9Z66U4TY@nvidia.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-pc-linux-gnu)
+	<acourbot@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>,
+	<daniel.almeida@collabora.com>, Zhi Wang <zhiw@nvidia.com>
+Subject: [PATCH v7 0/1] rust: introduce abstractions for fwctl
+Date: Wed, 8 Jul 2026 18:59:50 +0300
+Message-ID: <20260708155951.699564-1-zhiw@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000C618E:EE_|DM3PR12MB9351:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff708d59-94e4-4caa-2b8a-08dedd0935c4
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FD:EE_|CH1PR12MB9717:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcd570e1-d22d-476c-fcaf-08dedd0a0042
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|36860700016|376014|7416014|18002099003|22082099003|13003099007|4143699003|11063799006|5023799004|56012099006|6133799003;
+	BCL:0;ARA:13230040|376014|36860700016|7416014|1800799024|82310400026|23010399003|18002099003|3023799007|13003099007|11063799006|6133799003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	ycLXl5Ivdg6kZA6NA8uW5kDvqjiKPxFmloY0UmqvDNSw63IU/qcKF/2M/mOJgOwZiMBLXF1b1cgkzjcVDZQWkaFNosrAejHtCflM9/EISs/QZWnWBsgzVRFHT7TRv2kmTQ3yDNJ7zycbq9qvJHrKpkrX0Jlc79USyWIUVGa/u6EVziPyR9mc9KNw31k7B5rQnSpQzwRHxEWWa29+0AqAPC/cX66a+STPybNoYDekf315WGazxXZZ36X3bFaFbOz6cQGu+wMq6c7bg3e1V8y9RV7lDJx8h49fLJTwR8ZCsLj3qxSUX4vTuddkoKFdXCQwKr1G87w+BuesT8iPRNCSXcWPLBg2Ta7VvnCZcJLSLUjnxVOGpUZzIX8Gj4Dm/gQ8dyBndORIFJkljn2S16ZtPD32XCTKky4xgKU+JvuHLevSzlYgxHPtzJZCPf0M5IJ4BLLd/0TDyF/5zpRiTvDDQkD/HB2L9sZmzX7TGgDh+kUe7P5Zx17MXFRDx3YzVI0U1bnyyxsUwlPtfWCbWwJSVxsh/7GahpfzyObExivJqn2tR684DNv4ZAulLL6hqW77/XpAI+FwI6gzX0yyHwOsGi+YSrH0EV6Eare3xQ2Y2M7d4cTwToaypF222IpYvQYitVQwCWiuq3oDfvGFHrjLcdJqoDW1Ie7gpbNc2EDtO4Pq7gp4UBKhdiFPaFcZCt99nkFNLHr7VAfHeCqoPp/11w==
+	QTf8nq05+2BnvIpRTja1s02pd2OjEHlOQ8/R6tmsHN7/bNqWBqvoNjXWIGnHBFjPxoe4LTWLy/nOUUgxB5DF3pY2+cBzes2S1Nw2TBI8ciGu6E/cpDoxTHPhat1yOXy4aKzioRSsyuyO7gXXbfxuAWAgPIe0FrXibZxRuxFqz6wpFqvJSW0jAczoc4YIFkY6fsfW2QYtMqNFw96sQM6xbCuTNOJdeCVFPtX8wn9GttE5F8ZijB2MxayWc+VtTBwCEqO4wbspypcWBcrZwpY3TzYhnhCJVabVyAAGw9cM8+6lHqeerpXxF2SLSDjCx1DZRsp71u7jcOYkqDaGPBpTpHAcnj+Iglmyxx48cm/rJ1Cp7LrI9Zw3xLRirPXyJoZ9P/w3tnC3ew3KrsgrGvUTLmO/FYtzdtkfrHLHoMkTu+/7wOdjiJ+BhMzPIFdPZTEf1HKlRBcxl7OA6sh/ZsftoOk1Y7CD74dP5daRBAHHLU2Vmt0V8Z5wz2m2WNmWjHvmcA5ollQ5IC1zncfCnAsoX65DcwVhcrHOqi2BYg4LkHMJ7659sfJHJRxHzS0pot9bIjqxcr1ph4iMEGr8eZtsUNPaSHGWEwky88BwOnsjpIKlzfb8IVwzT8DlgiGelfVnjda+yxa64431xiFifwRvJIE4Y7e/tcXvfoCSc9ScY4Y9XzdxukUmBaQ6HLyQzAA2LLT2S4w7bNVVvvR13Jb2oQ==
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(36860700016)(376014)(7416014)(18002099003)(22082099003)(13003099007)(4143699003)(11063799006)(5023799004)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(36860700016)(7416014)(1800799024)(82310400026)(23010399003)(18002099003)(3023799007)(13003099007)(11063799006)(6133799003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	j7BkQn7wKwZIE91EqhTBqrCqwHrX7ldpd76S2CU6TskAI0ud9GYh9m7LGa8MWFMkEZve3u93hykG4ErFlUfA7za6uML3XmT6gemGDqZ3mc2kxpGBHGQEnLXrAhJ670pPaEH8ntI3aPYQpLX6lYacXyqW3f2KdrlnG7MKBW6PIZlPwreGs2eDY2Nvuy6ccLqQIbao9Wz2h8zpo7qN4N8nwaenFo4MiPGUWmgPSMfA7xZu43HrZARkgzQNbQWbz5eVarU7Kl3Bz5uoJSrDTxxwNLjD4rGUN7Zm1vHJk4wZhS3UR/YdAfMaH2PIH/tkJazGWbOdmS05sLh1j6qx5DPt21EwBggvzhoR9sICw6ikiyUba1OkHFHqnYFONdf800W5gseXfnP/La/TBmWtlwmmrZRrQcjwZnouDjC0CSyY62AfJKREtZ2JykyMOAClgtHC
+	ZPO0NczsJubCV+NHtR9dWD69M19LCa4I1+P8HjX1qYKMpeE9ovcKSh4XaM5jWiFVvW9UiNBcprfTX/MyrSkXaeauy/0upUTmvbERq72uyisk70E4YBtic1WPLKpuQ1WRmdB3+1HGbX910++8p1qbPSsepHFxgSaJrpKlapj5Jwv5jdFyHqFMWUm1C4o9yLIKqY9nWdGWTvQBvhkeefNrwC0EbzAm9l3SQCL/uqzU78jo/22UkwY5Wu38UEfvHts6aYW/ZDjVm/Ra+iOeGFjr+o9avdumTZs6Dm8bgJWN8aftQkI+ciuhEBi9OKJnBJuFfxsK9taGRvGcWQbbORReg7+s8gkLYiqG3AJ2SA/oTT4EGwGxusXE4o1HFvomZR+Se5ITNsuI6FUOPgCoFHvEkqnlvwCwEWkW245WUGTCzh2GHCuTijSRwPBcL36MxGOy
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 15:54:35.8913
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 16:00:15.5190
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff708d59-94e4-4caa-2b8a-08dedd0935c4
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcd570e1-d22d-476c-fcaf-08dedd0a0042
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000C618E.namprd02.prod.outlook.com
+	BL02EPF0001A0FD.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9351
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9717
 
-On Mon, 06 Jul 2026 13:19:17 +0900
-"Alexandre Courbot" <acourbot@nvidia.com> wrote:
+In the NVIDIA vGPU RFC [1], the vGPU type blobs must be provided to the GSP
+before userspace can enumerate available vGPU types and create vGPU
+instances. The original design relied on the firmware loading interface,
+but fwctl is a more natural fit for this use case, as it is designed for
+uploading configuration or firmware data required before the device becomes
+operational.
 
-> Hi Zhi,
-> 
-> This is looking pretty good to me overall, a few remarks/questions
-> below. None of these should require big changes.
-> 
-> On Tue Jun 30, 2026 at 12:01 AM JST, Zhi Wang wrote:
-> <...>
+This series introduces a Rust abstraction over the fwctl subsystem,
+providing safe and idiomatic bindings.
 
-snip
+The series is a single patch. `Registration` owns the callback-visible
+driver data and ties it to the parent device binding lifetime using a GAT
+on `Operations`. `Device<T>` remains the refcounted fwctl object, while
+callbacks borrow registration data for the callback lifetime.
 
-> > +
-> > +        // INVARIANT: Set `registration_data` to dangling (no
-> > registration yet).
-> > +        // SAFETY: `this` points to the allocation just returned
-> > by fwctl.
-> > +        unsafe {
-> > +            core::ptr::addr_of_mut!((*this).registration_data)
-> > +                .write(UnsafeCell::new(NonNull::dangling()));
-> > +        };
-> > +
-> > +        // SAFETY: `raw` owns the initial reference.
-> > +        Ok(unsafe { ARef::from_raw(NonNull::new_unchecked(this))
-> > })  
-> 
-> How about replacing from `if raw.is_null() ...` with something more
-> functional-style:
-> 
->     NonNull::new(raw.cast::<Self>())
->         .map(|this| {
->             // INVARIANT: Set `registration_data` to dangling (no
-> registration yet). // SAFETY: `this` points to the allocation just
-> returned by fwctl. unsafe {
->                 (&raw mut (*this.as_ptr()).registration_data)
->                     .write(UnsafeCell::new(NonNull::dangling()))
->             };
->             // SAFETY: `this` owns the initial reference.
->             unsafe { ARef::from_raw(this) }
->         })
->         .ok_or(ENOMEM)
-> 
-> It's not just cosmetic: it removes one call to an unsafe method
-> (`NonNull::new_unchecked`), carries the fact that `this` is not NULL
-> in the type system from the get-go (instead of relying on an explicit
-> check), and makes the transition steps from the raw pointer to the
-> `ARef` more explicit.
-> 
+The Rust fwctl module provides:
 
-Great idea. I eventually take Gary idea which has similar motivation
-with this one. All subsequent initialization uses this NonNull value,
-and NonNull::new_unchecked() is no longer needed. :)
+  - `Operations`: driver-specific `open()`, `close()`, `info()`, and
+    `fw_rpc()` callbacks. The implementing type is the per-FD user context.
+
+  - `RegistrationData<'a>`: a GAT associated type owned by `Registration`
+    and borrowed by callbacks under the fwctl registration lock.
+
+  - `Device<T>`: a refcounted wrapper around `struct fwctl_device`.
+
+  - `Registration<T>`: registration and automatic unregistration, including
+    verification that the supplied bound parent is the device's actual
+    parent.
+
+  - `RpcScope` and `FwRpcResponse`: type-safe RPC scope and response
+    handling. The safe callback receives the userspace output-buffer size
+    as a numeric value, while raw output-length pointer handling remains
+    confined to the abstraction.
+
+`DeviceType` intentionally models every valid, non-error
+`fwctl_device_type` UAPI value rather than the set of existing Rust
+drivers. This preserves a typed interface while making
+`FWCTL_DEVICE_TYPE_ERROR` and arbitrary integers unrepresentable.
+Device-specific Rust consumers can add new variants together with their
+UAPI allocation.
+
+`rust/kernel/lib.rs` conditionally includes the module under
+`CONFIG_RUST_FWCTL_ABSTRACTIONS`.
+
+This series is based on drm-rust-next commit d85845b64c00
+("gpu: nova-core: build SetRegistry entries dynamically"), so Nova can
+build on it directly. Danilo suggested taking it through the DRM tree;
+Jason, please let us know if you would prefer it to go through the fwctl
+tree.
+
+v7:
+
+- Rebase onto the latest drm-rust-next.
+- Pad fwctl allocation sizes for Rust alignment. (Danilo, Alexandre)
+- Validate the actual parent in `Registration::new()`. (Alexandre, Danilo)
+- Add an HRTB helper and remove the lifetime transmute. (Alexandre)
+- Pass `max_output_len` to safe RPC callbacks. (Alexandre, Joel)
+- Write `out_len` once. (Alexandre)
+- Return `NULL` for empty RPC replies. (Danilo)
+- Convert allocation results to `NonNull` immediately. (Alexandre, Gary)
+- Simplify callback lifetimes and raw pointer use. (Danilo, Alexandre)
+- Make `VTable` and `VTABLE` private. (Danilo)
+- Remove manual `Registration` `Send`/`Sync` impls. (Alexandre)
+- Tighten the rustdoc and safety comments. (Alexandre)
+- Document `DeviceType` as the non-error UAPI domain. (Danilo)
+- Update the FWCTL `MAINTAINERS` entry. (Miguel, Danilo)
+- Add Danilo's `Signed-off-by` trailer. (Danilo)
+
+Link to v6: [2]
+Links to the v6 reviews: [8] [9] [10]
+
+v6:
+
+- Use a GAT lifetime for `Operations::RegistrationData<'a>` instead of
+  requiring `ForLt`. (Danilo)
+- Require `FWCTL=y` for `RUST_FWCTL_ABSTRACTIONS`.
+- Add `#[inline]` to small forwarding helpers.
+- Return `EINVAL` for an unrecognized RPC scope.
+
+Link to Danilo's GAT diff: [3]
+Link to v5: [4]
+
+v5:
+
+- Rebase on top of drm-rust-next.
+- Adopt Danilo's higher-ranked lifetime model for callback-visible
+  registration data.
+- Drop the fwctl core release hook patch.
+- Reject `FwRpcResponse::InPlace(len)` when `len` exceeds the input buffer.
+- Add the missing BNXT fwctl device type.
+- Document the registration exclusivity requirements.
+
+Link to v4: [5]
+
+v4:
+
+- Rebase on top of drm-rust-next.
+- Split out the fwctl core release hook.
+- Drop the already-merged fwctl init-ordering change.
+- Add compile-time layout checks. (Jason)
+- Use `const_assert!()` for generic layout assertions.
+- Require `Operations` and its data to be `Send + Sync`. (Danilo)
+- Pass pinned shared references to `info()` and `fw_rpc()`. (Danilo)
+- Return an initializer directly from `open()`. (Danilo)
+- Fix clippy and rustdoc warnings. (Danilo)
+
+Link to v3: [6]
+
+v3:
+
+- Use an enum for the RPC response. (Joel)
+- Remove the test UAPI and sample driver. (Jason, John)
+- Remove `DeviceType::Error` and add fwctl reference helpers. (Gary)
+- Refine device-private data ownership. (Danilo)
+- Separate allocation and registration. (Jason)
+- Tie registration to a bound parent device. (Danilo)
+- Make the implementing type the per-FD context. (Danilo)
+
+An example nova-core fwctl consumer is available at [7].
+
+v2:
+
+- Use a Rust helper for `fwctl_put()`. (Jason, Danilo)
+- Guarantee registration lifetime management. (Jason, Danilo)
+- Rename the main abstraction types and use a typed device identifier.
+  (Danilo)
+- Improve pointer casts, reference counting, safety comments, and clippy
+  cleanliness.
+
+v1:
+
+- Initial submission introducing fwctl Rust abstractions.
+
+[1] https://lore.kernel.org/all/20250903221111.3866249-1-zhiw@nvidia.com/
+[2] https://lore.kernel.org/r/20260629150156.3169384-1-zhiw@nvidia.com/
+[3] https://lore.kernel.org/r/DJJW7X4ESDSM.QCVYK2FC7ZR3@kernel.org/
+[4] https://lore.kernel.org/r/20260629103946.3117152-1-zhiw@nvidia.com/
+[5] https://lore.kernel.org/r/20260624091758.1678092-1-zhiw@nvidia.com/
+[6] https://lore.kernel.org/r/20260217204909.211793-1-zhiw@nvidia.com/
+[7] https://lore.kernel.org/r/20260305190936.398590-1-zhiw@nvidia.com/
+[8] https://lore.kernel.org/r/DJQ1KX0O60J7.Q3RUZ46V153O@kernel.org/
+[9] https://lore.kernel.org/r/DJR76RV8NEKN.2MP5M9Z66U4TY@nvidia.com/
+[10] https://lore.kernel.org/r/DJRH022OWTTK.1KPQDQHKG7CTF@garyguo.net/
+
+Zhi Wang (1):
+  rust: introduce abstractions for fwctl
+
+ MAINTAINERS                     |   2 +
+ drivers/fwctl/Kconfig           |  12 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/fwctl.c            |  17 +
+ rust/helpers/helpers.c          |   3 +-
+ rust/kernel/fwctl.rs            | 578 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 7 files changed, 614 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/fwctl.c
+ create mode 100644 rust/kernel/fwctl.rs
 
 
-snip
-> > +    /// `dev` must be an unregistered [`Device`] that is not
-> > associated with any live
-> > +    /// [`Registration`], and no other thread may attempt to
-> > register the same device concurrently.
-> > +    pub unsafe fn new(
-> > +        _parent: &'a device::Device<device::Bound>,  
-> 
-> Why do we need `_parent`? Is it to provide a proof that the parent
-> device is bound by the time of registration? If so, there is an
-> obvious loophole: this method will accept any bound device, not
-> necessarily the actual parent that was passed to `Device::new`.
-> 
-> We should either store an `ARef<device::Device>` in `fwctl::Device` to
-> perform the check at runtime, or add a requirement in the `Safety`
-> paragraph that `_parent` must be the actual parent, since the method
-> is already `unsafe` anyway.
-> 
-
-Good catch. I fixed this in v7 with a runtime identity check.
-
-> > +        dev: &Device<T>,
-> > +        reg_data: impl PinInit<T::RegistrationData<'a>, Error>,
-> > +    ) -> Result<Self> {
-> > +        let reg_data: Pin<KBox<T::RegistrationData<'a>>> =
-> > KBox::pin_init(reg_data, GFP_KERNEL)?; +
-> > +        // Store the registration data pointer in the device
-> > before registration, so that it is
-> > +        // visible once callbacks can be invoked.
-> > +        //
-> > +        // SAFETY: Lifetimes do not affect layout, so the pointer
-> > cast is sound.
-> > +        let ptr: NonNull<T::RegistrationData<'static>> =
-> > +            unsafe {
-> > mem::transmute(NonNull::from(Pin::get_ref(reg_data.as_ref()))) };  
-> 
-> The only unsafe part of this statement is the `mem::transmute`. In
-> such cases, I think it is worth using an intermediate variable for the
-> non-unsafe part so non-checked unsafe operations don't slip in if the
-> code is modified, e.g.:
-> 
->     let r = NonNull::from(Pin::get_ref(reg_data.as_ref()));
->     ...
->     let ptr: NonNull<T::RegistrationData<'static>> = unsafe {
-> mem::transmute(r) }; 
-
-Thanks for the idea. I remove the transmute entirely in v7. 
-
-> > +
-> > +        // SAFETY: No concurrent access; the device is not yet
-> > registered.
-> > +        unsafe { *dev.registration_data.get() = ptr };
-> > +
-> > +        // SAFETY: `dev` is a valid fwctl_device backed by an ARef.
-> > +        let ret = unsafe { bindings::fwctl_register(dev.as_raw())
-> > };
-> > +        if ret != 0 {
-> > +            // SAFETY: No concurrent readers; registration failed.
-> > +            unsafe { *dev.registration_data.get() =
-> > NonNull::dangling() };
-> > +            return Err(Error::from_errno(ret));
-> > +        }
-> > +
-> > +        Ok(Self {
-> > +            dev: dev.into(),
-> > +            _reg_data: reg_data,
-> > +        })
-> > +    }
-> > +}
-> > +
-> > +impl<T: Operations> Drop for Registration<'_, T> {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: The Registration lifetime guarantees that the
-> > parent device is still bound.
-> > +        // `fwctl_unregister` takes the write lock, closes all
-> > user contexts, and sets ops=NULL.
-> > +        // After it returns, no callbacks can be running or will
-> > run.
-> > +        unsafe { bindings::fwctl_unregister(self.dev.as_raw()) };
-> > +
-> > +        // SAFETY: `fwctl_unregister` guarantees no concurrent
-> > readers.
-> > +        unsafe { *self.dev.registration_data.get() =
-> > NonNull::dangling() }; +
-> > +        // `self._reg_data` is dropped here, after callbacks have
-> > stopped.
-> > +    }
-> > +}
-> > +
-> > +// SAFETY: `Registration` can be sent between threads; the
-> > underlying fwctl_device uses internal +// locking.
-> > +unsafe impl<T: Operations> Send for Registration<'_, T> {}
-> > +
-> > +// SAFETY: `Registration` provides no mutable access; the
-> > underlying fwctl_device is protected by +// internal locking.
-> > +unsafe impl<T: Operations> Sync for Registration<'_, T> {}  
-> 
-> IIUC all the fields of `Registration` are already `Send` and `Sync`,
-> so we don't need these manual implementations.
-> 
-
-Removed in v7. 
-
-> > +/// Internal per-FD user context wrapping `struct fwctl_uctx` and
-> > `T`. +///
-> > +/// Not exposed to drivers; they work with `&T` / `Pin<&mut T>`
-> > directly. +#[repr(C)]
-> > +#[pin_data]
-> > +struct UserCtx<T: Operations> {
-> > +    #[pin]
-> > +    fwctl_uctx: Opaque<bindings::fwctl_uctx>,
-> > +    #[pin]
-> > +    uctx: T,
-> > +}
-> > +
-> > +impl<T: Operations> UserCtx<T> {
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must point to a `fwctl_uctx` embedded in a live
-> > `UserCtx<T>`.
-> > +    #[inline]
-> > +    unsafe fn from_raw<'a>(ptr: *mut bindings::fwctl_uctx) -> &'a
-> > Self {
-> > +        // SAFETY: The caller upholds the `UserCtx<T>` embedding
-> > invariant.
-> > +        unsafe { &*container_of!(Opaque::cast_from(ptr), Self,
-> > fwctl_uctx) }
-> > +    }
-> > +
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must point to a `fwctl_uctx` embedded in a live
-> > `UserCtx<T>`.
-> > +    /// The caller must ensure exclusive access to the
-> > `UserCtx<T>`.
-> > +    #[inline]
-> > +    unsafe fn from_raw_mut<'a>(ptr: *mut bindings::fwctl_uctx) ->
-> > &'a mut Self {
-> > +        // SAFETY: The caller upholds the embedding and
-> > exclusivity invariants.
-> > +        unsafe { &mut *container_of!(Opaque::cast_from(ptr), Self,
-> > fwctl_uctx).cast_mut() }
-> > +    }
-> > +
-> > +    /// Returns a reference to the fwctl [`Device`] that owns this
-> > context.
-> > +    #[inline]
-> > +    fn device(&self) -> &Device<T> {
-> > +        // SAFETY: fwctl initialises this pointer before any
-> > driver callback.
-> > +        let raw_fwctl = unsafe { (*self.fwctl_uctx.get()).fwctl };
-> > +        // SAFETY: Rust fwctl devices use the offset-0 `Device<T>`
-> > layout.
-> > +        unsafe { Device::from_raw(raw_fwctl) }
-> > +    }
-> > +}
-> > +
-> > +/// Static vtable mapping Rust trait methods to C callbacks.
-> > +pub struct VTable<T: Operations>(PhantomData<T>);
-> > +
-> > +impl<T: Operations> VTable<T> {
-> > +    /// The fwctl operations vtable for this driver type.
-> > +    pub const VTABLE: bindings::fwctl_ops = bindings::fwctl_ops {
-> > +        device_type: T::DEVICE_TYPE as u32,
-> > +        uctx_size: core::mem::size_of::<UserCtx<T>>(),  
-> 
-> Aren't the alignment concerns raised on [1] still valid? Since the
-> user context is allocated by the C side, we need to make sure that
-> Rust's alignment expectations are properly met.
-> 
-> [1] https://lore.kernel.org/all/DGUZ4A6W87JU.36R2KDR7YGSEX@kernel.org/
-> 
-
-Thanks for bringing this up. In v7, I got a private const helper based
-on Layout::pad_to_align(), and VTable::uctx_size uses the resulting
-padded size for UserCtx<T>. The same calculation is also used for the
-Device<T> allocation. This should address the concern.
-
-> > +        open_uctx: Some(Self::open_uctx_callback),
-> > +        close_uctx: Some(Self::close_uctx_callback),
-> > +        info: Some(Self::info_callback),
-> > +        fw_rpc: Some(Self::fw_rpc_callback),
-> > +    };
-> > +
-> > +    /// # Safety
-> > +    ///
-> > +    /// `uctx` must be a valid `fwctl_uctx` embedded in a
-> > `UserCtx<T>` with
-> > +    /// sufficient allocated space for the uctx field.
-> > +    unsafe extern "C" fn open_uctx_callback(uctx: *mut
-> > bindings::fwctl_uctx) -> ffi::c_int {
-> > +        const_assert!(
-> > +            core::mem::offset_of!(UserCtx<T>, fwctl_uctx) == 0,
-> > +            "struct fwctl_uctx must be at offset 0"
-> > +        );
-> > +
-> > +        // SAFETY: fwctl sets this pointer before calling
-> > `open_uctx`.
-> > +        let raw_fwctl = unsafe { (*uctx).fwctl };
-> > +        // SAFETY: Rust fwctl devices use the offset-0 `Device<T>`
-> > layout.
-> > +        let device = unsafe { Device::<T>::from_raw(raw_fwctl) };
-> > +
-> > +        // SAFETY: open_uctx is called under registration_lock
-> > read; the device is registered.
-> > +        let reg_data = unsafe {
-> > device.registration_data_unchecked() };  
-> 
-> This `from_raw`..`registration_data_unchecked` sequence is performed
-> by all hooks, how about factoring them out in a helper function?
-> 
-
-Done in v7.
-
-> > +
-> > +        let initializer = T::open(device, reg_data);
-> > +
-> > +        let uctx_offset = core::mem::offset_of!(UserCtx<T>, uctx);
-> > +        // SAFETY: `uctx_size` reserves space for the full
-> > `UserCtx<T>`.
-> > +        let uctx_ptr: *mut T = unsafe {
-> > uctx.cast::<u8>().add(uctx_offset).cast() }; +
-> > +        // SAFETY: `uctx_ptr` addresses the uninitialised pinned
-> > context.
-> > +        match unsafe { initializer.__pinned_init(uctx_ptr.cast())
-> > } {  
-> 
-> This `cast` is unneeded here IIUC.
-> 
-> > +            Ok(()) => 0,
-> > +            Err(e) => e.to_errno(),
-> > +        }
-> > +    }
-> > +
-> > +    /// # Safety
-> > +    ///
-> > +    /// `uctx` must point to a fully initialised `UserCtx<T>`.
-> > +    unsafe extern "C" fn close_uctx_callback(uctx: *mut
-> > bindings::fwctl_uctx) {
-> > +        // SAFETY: fwctl keeps the owning device live for this
-> > callback.
-> > +        let device = unsafe { Device::<T>::from_raw((*uctx).fwctl)
-> > }; +
-> > +        // SAFETY: close_uctx is called under registration_lock
-> > write (from fwctl_unregister) or
-> > +        // under registration_lock read (from fwctl_fops_release);
-> > the device is registered.
-> > +        let reg_data = unsafe {
-> > device.registration_data_unchecked() }; +
-> > +        // SAFETY: close is called for an opened Rust user context.
-> > +        let ctx = unsafe { UserCtx::<T>::from_raw_mut(uctx) };
-> > +
-> > +        {
-> > +            // SAFETY: fwctl never moves an opened user context.
-> > +            let pinned = unsafe { Pin::new_unchecked(&mut
-> > ctx.uctx) };
-> > +            T::close(pinned, device, reg_data);
-> > +        }
-> > +
-> > +        // SAFETY: close is the last callback before fwctl frees
-> > the allocation.
-> > +        unsafe { core::ptr::drop_in_place(&mut ctx.uctx) };
-> > +    }
-> > +
-> > +    /// # Safety
-> > +    ///
-> > +    /// `uctx` must point to a fully initialised `UserCtx<T>`.
-> > +    /// `length` must be a valid pointer.
-> > +    unsafe extern "C" fn info_callback(
-> > +        uctx: *mut bindings::fwctl_uctx,
-> > +        length: *mut usize,
-> > +    ) -> *mut ffi::c_void {
-> > +        // SAFETY: info is called for an opened Rust user context.
-> > +        let ctx = unsafe { UserCtx::<T>::from_raw(uctx) };
-> > +        let device = ctx.device();
-> > +
-> > +        // SAFETY: info is called under registration_lock read;
-> > the device is registered.
-> > +        let reg_data = unsafe {
-> > device.registration_data_unchecked() }; +
-> > +        // SAFETY: fwctl never moves an opened user context.
-> > +        let pinned = unsafe { Pin::new_unchecked(&ctx.uctx) };
-> > +
-> > +        match T::info(pinned, device, reg_data) {
-> > +            Ok(kvec) if kvec.is_empty() => {
-> > +                // SAFETY: `length` is a valid out-parameter.
-> > +                unsafe { *length = 0 };
-> > +                // Return NULL for empty data; kfree(NULL) is safe.
-> > +                core::ptr::null_mut()
-> > +            }
-> > +            Ok(kvec) => {
-> > +                let (ptr, len, _cap) = kvec.into_raw_parts();
-> > +                // SAFETY: `length` is a valid out-parameter.
-> > +                unsafe { *length = len };
-> > +                ptr.cast::<ffi::c_void>()
-> > +            }
-> > +            Err(e) => Error::to_ptr(e),
-> > +        }
-> > +    }
-> > +
-> > +    /// # Safety
-> > +    ///
-> > +    /// `uctx` must point to a fully initialised `UserCtx<T>`.
-> > +    /// `rpc_in` must be valid for `in_len` bytes. `out_len` must
-> > be valid.
-> > +    unsafe extern "C" fn fw_rpc_callback(
-> > +        uctx: *mut bindings::fwctl_uctx,
-> > +        scope: u32,
-> > +        rpc_in: *mut ffi::c_void,
-> > +        in_len: usize,
-> > +        out_len: *mut usize,
-> > +    ) -> *mut ffi::c_void {
-> > +        let scope = match RpcScope::try_from(scope) {
-> > +            Ok(s) => s,
-> > +            Err(e) => return Error::to_ptr(e),
-> > +        };
-> > +
-> > +        // SAFETY: RPC is called for an opened Rust user context.
-> > +        let ctx = unsafe { UserCtx::<T>::from_raw(uctx) };
-> > +        let device = ctx.device();
-> > +
-> > +        // SAFETY: fw_rpc is called under registration_lock read;
-> > the device is registered.
-> > +        let reg_data = unsafe {
-> > device.registration_data_unchecked() }; +
-> > +        // SAFETY: fwctl passes a valid in/out buffer for this
-> > callback.
-> > +        let rpc_in_slice: &mut [u8] =
-> > +            unsafe {
-> > slice::from_raw_parts_mut(rpc_in.cast::<u8>(), in_len) };  
-> 
-> Name nit: technically this is not just an `in` slice, since the reply
-> might be written into it.
-> 
-
-I will name it as rpc_buf then. :)
-
-> > +
-> > +        // SAFETY: fwctl never moves an opened user context.
-> > +        let pinned = unsafe { Pin::new_unchecked(&ctx.uctx) };
-> > +
-> > +        match T::fw_rpc(pinned, device, reg_data, scope,
-> > rpc_in_slice) {  
-> 
-> The C side passes `out_len` to its callback, don't we want to do the
-> same here?
-> 
-> > +            Ok(FwRpcResponse::InPlace(len)) => {
-> > +                if len > in_len {
-> > +                    return Error::to_ptr(EINVAL);
-> > +                }
-> > +
-> > +                // SAFETY: `out_len` is valid.
-> > +                unsafe { *out_len = len };
-> > +                rpc_in
-> > +            }
-> > +            Ok(FwRpcResponse::NewBuffer(kvec)) => {
-> > +                let (ptr, len, _cap) = kvec.into_raw_parts();
-> > +                // SAFETY: `out_len` is valid.
-> > +                unsafe { *out_len = len };  
-> 
-> Both arms are writing `*out_len` and require an `unsafe` statement. We
-> could factor these out into a single one by returning a `(len, res)`
-> tuple from the match statement, and writing `out_len` once out of it.
-> 
-> > +                ptr.cast::<ffi::c_void>()
-> > +            }
-> > +            Err(e) => Error::to_ptr(e),  
-> 
-> (if you follow my recommendation above, then this needs to become a
-> return statement).
-
-Done.
+base-commit: d85845b64c0020b2812243a22fa79d57cc1c1e38
+-- 
+2.51.0
