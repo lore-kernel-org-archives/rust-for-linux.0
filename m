@@ -1,224 +1,91 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20E81FBC8C
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 08:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC958403AE3;
+	Wed,  8 Jul 2026 08:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783499202; cv=none; b=MeEQob83SOEIy3OdHPdMXMfzxkCMADy+UD+3I57NbWO/L+CmmD/qo9vPrcaVB2I26QBPYwYahW4k9xy3rH94yVa+2GTS1Z3rgnFzgy14gJSqxS52/Z+jLHXVUhFulitYRQAfOCCQd7laGvZkbqAIVj3X7JIaC4poutzjYFOp5YU=
+	t=1783499980; cv=none; b=pYL/y0RnPpTd6N7D3+mKSpsIJBAGH3Ki8TdgHT11c/qL5Qh3ZDJsDTHXNlC7KhL9MfXLXyl1/6IbhykRzi86mqE/KHxzlZRsUhynZBzSt8ePf5mzwU/CLUuxaiAlKKN+XXEh8Oup3lfW5HOZSZLLJEYgv+t9q5LT/NKB430UrLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783499202; c=relaxed/simple;
-	bh=uMmA27PKZBuFU8atDbfUEF7pZEJKPZBZu66v/vfinpk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qrix13q15CmZQnaDAcSK+buorNYxJb/GHSaVwcOcXsIFDTW10Bvi0uME/Vb41wdXIDkpjO9GTLKzpFDDYanNzm1npGZ3TYWn6NGBveFEGB3IQhZGq1OrkF2ywb0EW7V0lLPldmltglgrPhL14lvWK68E2SBjvmtjPJwgWQoOpms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lYejDcKi; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lYejDcKi"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c9aaa90a791so243576a12.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 01:26:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783499200; x=1784104000; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7Uzn/NdDPosTQtig+uiLwEMPj/JQxR6heV7Be4pIXTc=;
-        b=lYejDcKidUsDx0dy4Q1IzvAANpzm3p7CE6/KsGyvMXNrcPHBKxrAFwEhZSULDWNICM
-         ZsUxRKF+BwQWRytESVFkECvacOgDITq1y2LsqDeDJ+DVeoawV6hWsHcCmsVBHXGieEg/
-         pfMLfS19afiCK6UGKAchpdC2SnAUleKqZneq02EEt+VbS9QyJHVmFavVTbORLsPb6qvr
-         Hof+gQ68GUD7eqH4SLy87JYu1ggYMF4rF2L+9cn3UFkGSa406lFgzAelD5fzNWrStBhV
-         o4TzmRSYA53eF75v3Th3+uyM871TFkJRq7wBY4XTX5nBJhBrzq/axXTwSJBvK24j5atE
-         mBwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783499200; x=1784104000;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7Uzn/NdDPosTQtig+uiLwEMPj/JQxR6heV7Be4pIXTc=;
-        b=e2rIEzo2NL0Oqi3UZBfvG2y1fCGYeNTcJQmnaP5Kehpsy7f8w85LDmmFcpcuPVvqmb
-         bngJAFn/r3+J7lXCDhcWi+1JFgi4zHOGQW7G4ncp0V1HNdBf0N8wh98rzlhAaoVOx4RW
-         n+Rv3IKaqipucQyq/cjIp26JqBD7Cp1NfVsqK97Lt6jKGnQoSbMHhWYWHs2wp59av8y/
-         yiirXK25KBPk8N+jA/VEPkj0ArvFQoR0hrxbX3AMFpQww1KaQeSPK3ImbeQvvKiDegh6
-         muuoFTDdfNizKW3TCM5pSgBOe7/iKTx9uj5KRRk+pFXzQmxGxncvYCg52zA4XiNJEMDK
-         Ia/g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/yOZ3FI6hwgsuIk1v7NCjc2CjSe33CSjzDNKCM8iExdqlyW1QDIzx9wwamJE/fnB7uj7GnVIPYE6DrR5mpA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmL6S5J/iurkXZGqBelnR2sAdhf7cL+sQJEM5jI9xyXQ9dZH76
-	nIAHR6NmDXm1mfofVYFTtR4eH9B/Drc1tjGQO7Ppl1uvuEkllG53843V
-X-Gm-Gg: AfdE7ck4oAVM5d/lApRkW7IMxqDq6OdKA7rQ/yn0t1ODHfG5xmAnpRE9V0XjHxiOlnv
-	cfgE0jVNYzmJphXA28408jf06XMpassKhwHo1yMy3QOoksz6emU6c/6wlp1zonlStUrDrfZHwRt
-	oMSfLdTKsYJvA8F5WLFseNMIIjJL2Cz62aMvJ/TpbeD5GLeFQt/Q5NNtuW11/3iiJ3F+fFZvCSz
-	noHgHE3dNkZJg06HX2/y5f/QYkUv2/QndXwHE1Mwwkxp+RS3oU5BoLmrDSLrheiFExCNYFCY9Vf
-	FBSXJQCz77yqVt95ksg9GPpb1fGD/1te1CoZxJ6bgIl9Qm0DFE2SCoKXXaJ3VLajwIBVR3bPeGb
-	P0x9QrTx8teh+s7IoH80m0TcvVPEG19AbWnTZiCf/ys7IIPiTqMreaSZxfbbErs14l+dh4QMmEF
-	6EqDJ0iTkK3SuNGITXHe51h1+K8fYZN6fSR3xva3uRZtZN62EAM5me59pvy7JABvSzxDevPLfkN
-	fYK
-X-Received: by 2002:a05:6a20:7288:b0:3bf:a1e5:ff62 with SMTP id adf61e73a8af0-3c0bd0fa2e2mr1854023637.47.1783499199822;
-        Wed, 08 Jul 2026 01:26:39 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com.com ([106.51.160.236])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3117462f5c7sm19975117eec.0.2026.07.08.01.26.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 01:26:39 -0700 (PDT)
-From: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	peterz@infradead.org,
-	jpoimboe@kernel.org,
-	jbaron@akamai.com,
-	aliceryhl@google.com,
-	rostedt@goodmis.org,
-	ardb@kernel.org,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	fujita.tomonori@gmail.com,
-	joelagnelf@nvidia.com,
-	gregkh@linuxfoundation.org,
-	prafulrai522@gmail.com,
-	nsc@kernel.org,
-	japo@linux.ibm.com,
-	mkchauras@gmail.com,
-	lina+kernel@asahilina.net,
-	j@jannau.net,
-	airlied@gmail.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
+	s=arc-20240116; t=1783499980; c=relaxed/simple;
+	bh=SZIS/yXl1GQlPFJhlTJP5+7QNE+11CSpjcgz6o8qXzo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T2/VXlTB8WKNFvPHMMWMiaj+qDGZD5j2/Qt9e2NBP4bG0erTP07PtSr1gClSfjAv7jSYfbkZEPSzjNPJNCZCR0tDyyjomU1UClFK9wW4IMweZyNbZ4Qxc3nvnL8xvcGExlR6wRgJTZ1erFAYVH6pGRr6WwMtVD3PxALhUydo8SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id 955D3F40CC8; Wed, 08 Jul 2026 10:39:30 +0200 (CEST)
+Date: Wed, 8 Jul 2026 10:39:30 +0200
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
+	jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org,
+	ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
+	daniel.almeida@collabora.com, tamird@kernel.org,
+	acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org,
+	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+	fujita.tomonori@gmail.com, joelagnelf@nvidia.com,
+	gregkh@linuxfoundation.org, prafulrai522@gmail.com, nsc@kernel.org,
+	japo@linux.ibm.com, lina+kernel@asahilina.net, j@jannau.net,
+	airlied@gmail.com, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	llvm@lists.linux.dev
-Cc: Link Mauve <linkmauve@linkmauve.fr>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [PATCH V17 7/7] powerpc: Enable Rust for ppc64le
-Date: Wed,  8 Jul 2026 13:54:54 +0530
-Message-ID: <20260708082454.1254320-8-mkchauras@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260708082454.1254320-1-mkchauras@gmail.com>
+Subject: Re: [PATCH V17 4/7] rust/powerpc: Set min rustc version for powerpc
+Message-ID: <ak4MwnDwIgdUhK3K@luna>
 References: <20260708082454.1254320-1-mkchauras@gmail.com>
+ <20260708082454.1254320-5-mkchauras@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260708082454.1254320-5-mkchauras@gmail.com>
+Jabber-ID: linkmauve@linkmauve.fr
 
-Enabling rust support for ppc64le.
+Hi,
 
-Tested on pseries Power11:
-╰─❯ dmesg | grep rust
-[    0.225728] Initialise system trusted keyrings
-[    0.270961] rust_minimal: Rust minimal sample (init)
-[    0.270968] rust_minimal: Am I built-in? true
-[    0.270974] rust_minimal: test_parameter: 1
-[    0.270983] rust_misc_device: Initialising Rust Misc Device Sample
-[    0.271012] rust_print: Rust printing macros sample (init)
-[    0.271019] rust_print: Emergency message (level 0) without args
-[    0.271023] rust_print: Alert message (level 1) without args
-[    0.271026] rust_print: Critical message (level 2) without args
-[    0.271030] rust_print: Error message (level 3) without args
-[    0.271033] rust_print: Warning message (level 4) without args
-[    0.271037] rust_print: Notice message (level 5) without args
-[    0.271040] rust_print: Info message (level 6) without args
-[    0.271043] rust_print: A line that is continued without args
-[    0.271054] rust_print: Emergency message (level 0) with args
-[    0.271064] rust_print: Alert message (level 1) with args
-[    0.271072] rust_print: Critical message (level 2) with args
-[    0.271077] rust_print: Error message (level 3) with args
-[    0.271083] rust_print: Warning message (level 4) with args
-[    0.271091] rust_print: Notice message (level 5) with args
-[    0.271097] rust_print: Info message (level 6) with args
-[    0.271102] rust_print: A line that is continued with args
-[    0.271110] rust_print: 1
-[    0.271113] rust_print: "hello, world"
-[    0.271121] rust_print: [samples/rust/rust_print_main.rs:35:5] c = "hello, world"
-[    0.271129] rust_print: Arc<dyn Display> says 42
-[    0.271130] rust_print: Arc<dyn Display> says hello, world
-[    0.271136] rust_print: "hello, world"
-[    0.271198] usbcore: registered new interface driver rust_driver_usb
-[    0.271207] rust_faux_driver: Initialising Rust Faux Device Sample
-[    0.271227] faux_driver rust-faux-sample-device: Hello from faux device!
-[    0.271297] rust_configfs: Rust configfs sample (init)
+On Wed, Jul 08, 2026 at 01:54:51PM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
+> Minimum `rustc` version required for powerpc is 1.95 as some critical
+> features required for compiling rust code for kernel are not there.
+> 
+> For example Stable inline asm support which got merged in 1.95.
 
-Reviewed-by: Link Mauve <linkmauve@linkmauve.fr>
-Tested-by: Link Mauve <linkmauve@linkmauve.fr>
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Link: https://github.com/Rust-for-Linux/linux/issues/105
-Link: https://github.com/linuxppc/issues/issues/451
-Acked-by: Gary Guo <gary@garyguo.net>
-Link: https://github.com/rust-lang/compiler-team/issues/987
-Link: https://github.com/rust-lang/compiler-team/issues/988
-Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
----
- arch/powerpc/Kconfig  | 1 +
- arch/powerpc/Makefile | 7 ++++++-
- rust/Makefile         | 6 ++++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+Didn’t we decide on 1.85.0 with the asm_experimental_arch feature
+instead?  And possibly on 64-bit 1.87.0 if it isn’t possible to disable
+altivec correctly there?
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index badd7c99b87f..650283107b92 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -286,6 +286,7 @@ config PPC
- 	select HAVE_RELIABLE_STACKTRACE
- 	select HAVE_RSEQ
- 	select HAVE_RUST			if PPC32
-+	select HAVE_RUST			if PPC64 && CPU_LITTLE_ENDIAN
- 	select HAVE_SAMPLE_FTRACE_DIRECT	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI	if HAVE_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- 	select HAVE_SETUP_PER_CPU_AREA		if PPC64
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 589613eaa5dc..9385db478c59 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -61,7 +61,12 @@ else
- KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
- endif
- 
--KBUILD_RUSTFLAGS 	+= --target=powerpc-unknown-linux-gnu
-+ifdef CONFIG_PPC64
-+KBUILD_RUSTFLAGS	+= --target=powerpc64le-unknown-linux-gnu
-+KBUILD_RUSTFLAGS	+= -Ctarget-feature=-mma,-vsx,-hard-float,-altivec
-+else
-+KBUILD_RUSTFLAGS	+= --target=powerpc-unknown-linux-gnu
-+endif
- 
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CPPFLAGS	+= -mlittle-endian
-diff --git a/rust/Makefile b/rust/Makefile
-index 61e7dc496fe4..d2f74998d3c1 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -459,7 +459,13 @@ BINDGEN_TARGET_loongarch	:= loongarch64-linux-gnusf
- BINDGEN_TARGET_s390	:= s390x-linux-gnu
- # This is only for i386 UM builds, which need the 32-bit target not -m32
- BINDGEN_TARGET_i386	:= i386-linux-gnu
-+
-+ifdef CONFIG_PPC64
-+BINDGEN_TARGET_powerpc	:= powerpc64le-linux-gnu
-+else
- BINDGEN_TARGET_powerpc	:= powerpc-linux-gnu
-+endif
-+
- BINDGEN_TARGET_um	:= $(BINDGEN_TARGET_$(SUBARCH))
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
+> 
+> Link: https://github.com/rust-lang/rust/pull/147996
+> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> ---
+>  scripts/min-tool-version.sh | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
+> index 031f2192b390..99bfdcaa3396 100755
+> --- a/scripts/min-tool-version.sh
+> +++ b/scripts/min-tool-version.sh
+> @@ -33,6 +33,8 @@ llvm)
+>  rustc)
+>  	if [ "$SRCARCH" = "s390" ]; then
+>  		echo 1.96.0
+> +	elif [ "$ARCH" = powerpc ]; then
+> +		echo 1.95.0
+>  	else
+>  		echo 1.85.0
+>  	fi
+> -- 
+> 2.55.0
+> 
+> 
+
 -- 
-2.55.0
-
+Link Mauve
