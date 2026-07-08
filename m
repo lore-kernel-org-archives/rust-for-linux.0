@@ -1,43 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CAC3BA246
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 05:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF47B363C75;
+	Wed,  8 Jul 2026 05:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783488575; cv=none; b=Hx0aYJwpwhItkzaCfp26TgmYGDyJXGgx3KRuo1T4BkTRUDJ05XL6XRVmQ4IX2/nkh2t7TJc+O1sftGs+8bEclhsPYKHl4a1RhNAckp/KAUcxMEW95gmO7i3yVvROn2AJUsg9MzejjlXILmQNB29GcVr2PhCCfNVLjVazkV/vSBQ=
+	t=1783488801; cv=none; b=VLo9QmUgITjbQ6H/ulcsccI0ZMWlJIykB4bZvM7YTwFjBiRWy+IVMx/QNFXtyjtOSUYs1/+Fn0HKb4CpWa9hcSG082JZtqaC1tazTXdPKNUb2GjdT17BArodNcTOIhnx1q5Q3tugh834yUxCFrlJkkXkbIoT21Y1NhYiSJlf7P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783488575; c=relaxed/simple;
-	bh=63KdCFVPTbqn2LST8VLw0tLuUKUgQJ7r/WM2ElYyAcw=;
+	s=arc-20240116; t=1783488801; c=relaxed/simple;
+	bh=3t4X0QDl+bT+gyOUIts/28lvEOWzKR0WAuSUJXofI+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WPLTDktHUM9HgKXeQ+sNKEcyhA844h42Y99nXXvsPiEYhzsHIsrDVgH6kHE/sNeoAY9dqiyyEEgbg1+654XSMEystbf1a4panEQP11f3ILNBb7zwahwICJ9/xjRNEosrQKS8wPo/y4tvcwyJh4uLGVh6txBtKFpTDDoA8b4BWB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LENcbzAo; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=TFMIL1yBqcFSCbY8x14vscm9qftVH/QiDd1l4ro8Upq1qsEgS6cjHvT4vJNuzCC4Og7mdsTWqIG6w/GwCJS5T8VkSHGeJG6QUZsD4mbpPj+0FXX6rKAAEMBKJDGpE08g6valDlh4W/m/NTDIXDfflNywe+epdhBGyYqr3TsZKyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ickX3Tog; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LENcbzAo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 493B31F000E9;
-	Wed,  8 Jul 2026 05:29:33 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ickX3Tog"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093331F00A3E;
+	Wed,  8 Jul 2026 05:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783488573;
-	bh=16g6jvWsx6pCfhMKw+vX7ZRgLnMo05lkjXbXRf/Wafw=;
+	s=korg; t=1783488799;
+	bh=mMaPgHn6LKK741pznqikoYQd8ZVAb02xm7w612bJCcw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LENcbzAoWxDUfaeb8hclVdjvxgU+FjsCNFDsvaoymJ9fFUZsn+JNOZTk7TZF8i0yX
-	 7rmZDFw8okjujq6Sm14W9PRwLinaXnyEgNJt6pm2c7pofuRj9w0uTo6Z8vbfcj/Y5Y
-	 FLj+Qugm5owdUvNq1LGCdRzIJbYA6RLCK7XqQ+6M=
-Date: Wed, 8 Jul 2026 07:29:31 +0200
+	b=ickX3TogilGPdFLnxstj6n81B//8drCBx+ZPJgKRzk+nEcAiTcVVFHaRRJClHuBLn
+	 cnkT1TYylN5X9JmWxc64DGrpvzc1gHEd+PyNn11u7k9L2fcd9S8guDy2GdbAZAS4yW
+	 cFGl4g0cs7uLsWUAx3RjN+e9ctAc8WYwuUutz1vs=
+Date: Wed, 8 Jul 2026 07:33:16 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: FUJITA Tomonori <tomo@aliasing.net>
-Cc: dakr@kernel.org, ojeda@kernel.org, a.hindborg@kernel.org,
-	acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
-	boqun@kernel.org, daniel.almeida@collabora.com, gary@garyguo.net,
-	lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu,
-	work@onurozkan.dev, rust-for-linux@vger.kernel.org,
-	fujita.tomonori@gmail.com
-Subject: Re: [PATCH v1] rust: bug: Add bug_on macro
-Message-ID: <2026070841-unplanned-lagoon-651f@gregkh>
-References: <20260707143026.2774023-1-tomo@aliasing.net>
- <DJSF9IBYP207.2UQXDE9IVSRUF@kernel.org>
- <2026070746-roulette-catfish-57d6@gregkh>
- <20260708.074859.867796876307901722.fujita@bee>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Eliot Courtney <ecourtney@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>, Burak Emir <bqe@google.com>,
+	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	dri-devel <dri-devel-bounces@lists.freedesktop.org>
+Subject: Re: [PATCH 3/4] rust: id_pool: add contiguous area allocation
+Message-ID: <2026070839-quadrant-gentleman-2334@gregkh>
+References: <20260703-chid-v1-0-84fe8259e46e@nvidia.com>
+ <20260703-chid-v1-3-84fe8259e46e@nvidia.com>
+ <2026070334-dollar-hexagram-e49c@gregkh>
+ <DJSDFHOADWYL.V4WC2TI9UWYF@nvidia.com>
+ <2026070745-unwired-maybe-769e@gregkh>
+ <ak0pzDc69nAmnviD@yury>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,38 +62,82 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708.074859.867796876307901722.fujita@bee>
+In-Reply-To: <ak0pzDc69nAmnviD@yury>
 
-On Wed, Jul 08, 2026 at 07:48:59AM +0900, FUJITA Tomonori wrote:
-> On Tue, 7 Jul 2026 17:20:10 +0200
-> Greg KH <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Tue, Jul 07, 2026 at 04:51:40PM +0200, Danilo Krummrich wrote:
-> >> On Tue Jul 7, 2026 at 4:30 PM CEST, FUJITA Tomonori wrote:
-> >> > Use of this macro is heavily discouraged. Prefer warn_on() macro with
-> >> > recovery code where feasible. See the documentation for C's BUG_ON()
-> >> > for guidance on when it is rarely justified.
-> >> 
-> >> Given that, can you please spell out the motivation for this patch?
+On Tue, Jul 07, 2026 at 12:31:08PM -0400, Yury Norov wrote:
+> On Tue, Jul 07, 2026 at 04:13:30PM +0200, Greg KH wrote:
+> > On Tue, Jul 07, 2026 at 10:25:27PM +0900, Eliot Courtney wrote:
+> > > On Fri Jul 3, 2026 at 7:31 PM JST, Greg KH wrote:
+> > > > On Fri, Jul 03, 2026 at 07:16:06PM +0900, Eliot Courtney wrote:
+> > > >> Add support for contiguous area allocation. Add a new type,
+> > > >> `UnusedArea`, following the same pattern as `UnusedId`.
+> > > >> 
+> > > >> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> > > >
+> > > > Why isn't the built-in idr library being used here instead of rolling
+> > > > your own data structure?
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > > 
+> > > For nova-core in this series, we need allocation of a contiguous
+> > > sequence of IDs with a specific length and sometimes a specific
+> > > alignment. IIUC, IDA/xarray do not support that (I checked
+> > > ida_alloc_range and it only allocates a single ID in a range, not a
+> > > contiguous sequence).
+> > > 
+> > > For IdPool before this series, I think it could have used IDA/xarray.
+> > > See [1] where Alice has posted some more context.
+> > > 
+> > > w.r.t. the structure choice, the IDs we need to allocate are channel
+> > > IDs, and the total range is limited to 2048 of them, so IMO bitmaps are
+> > > a better fit than e.g. maple tree.
 > > 
-> > I agree, this should probably NOT be added unless there is a real user
-> > for it that requires it and we all agree that crashing the system is the
-> > only way out.
+> > But again, you are having to "roll your own" logic here, please reuse
+> > the data structures we already have in the kernel for this type of
+> > thing.  If a maple tree works, please use it.
 > 
-> bindings::BUG() is already in use today, indirectly, from the kernel
-> crate itself and from drivers such as binder and nova-core, via
-> panic!()/.exepct().unwrap() on invariants that "can't happen". All of
-> those funnel through panic() in kernel/lib.rs (#[panic_handler]),
-> which itself calls BUG().
+> I asked exactly the same question when Alice and Burak added wrappers
+> for bitmaps to implement their ID pool. This is the answer:
 > 
-> The motivation for this patch is narrow: replace that bindings::BUG()
-> call in lib.rs's panic() with bug_on!(), for a somewhat better
-> trace. It isn't adding a new decision to crash the system -- that
-> decision is already made at each of the existing panic!()/.expect()
-> call sites.
+>   An alternative route of vendoring an existing Rust bitmap package was
+>   considered but suboptimal overall. Reusing the C implementation is
+>   preferable for a basic data structure like bitmaps. It enables Rust
+>   code to be a lot more similar and predictable with respect to C code
+>   that uses the same data structures and enables the use of code that
+>   has been tried-and-tested in the kernel, with the same performance
+>   characteristics whenever possible.
+> 
+> And now it's in a commit message: 11eca92a2caeb
+> 
+> They measured the affect of their wrapper on performance, and it appears
+> to be ~5%. See lib/find_bit_benchmark_rust.rs.
 
-That wasn't obvious that this was the reason why this change was being
-introduced, perhaps the changelog should have said that?
+You are comparing the C vs. Rust data structures here, which is not what
+I am proposing.
+
+Also, is this code being used on a "hot path" like the binder stuff is?
+
+> I didn't see any side-to-side comparison between any native Rust API vs
+> imported C bitmaps. I'm sure, I asked for that, and I still believe
+> it's the important piece of data to avoid this back-and-forth type of
+> discussions. So, Alice, Burak or anybody...
+
+Again, I'm not talking about Rust API vs. imported C bitmaps, I'm asking
+to use the C structures like maple-tree and idr instead of open-coding
+logic around the bitmap code.
+
+> > > > Why isn't the built-in idr library being used here instead of rolling
+> > > > your own data structure?
+> 
+> Now having more context, the ID pool's primary goal is to allocate
+> individual IDs, which naturally lays on find_bit() API in C. The
+> native Rust alternative is considered and found 'suboptimal overall'.
+
+Allocating IDs is a probe() thing, which can be as slow as it wants,
+right?  Or is this some other hot-path where performance matters?  The
+patch was not very specific as to the tradeoffs needed.
 
 thanks,
 
