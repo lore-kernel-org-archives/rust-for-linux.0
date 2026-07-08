@@ -1,116 +1,131 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C3B44D695
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 12:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0698D231A41
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 13:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783514259; cv=pass; b=Lzj2XgGHyGD+7PaHwwyekmgEyP1qoD3jnfIY1WRwECBcNjcEGc3EOa5A0MTJeyINlCI/yhU87zUOJTeXmNu5j3xBJJG6BMo1qPz/gxNI14RW5/xN+EH8AtMmOKIL05+6addHPh3HkPw0lNJ2hxck48XfY8an1XLQEwkj+ZyvuFA=
+	t=1783515767; cv=pass; b=ETA2NZrQOYN/1w5QJqOE++UdQ+pFpxj5ExNUHmy8uTM70q+1fw7lmwUx3Hyz/z6u2fw6ZbQhMxvWg0xKAKk1z8baoyFvtyKCTvChpRDi2hk2du6pwoYReLozPtf9+n9JhrKwbgiUtkM+A0LdBnFk3YkYGpd8X6cSEk8n0nSX6+g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783514259; c=relaxed/simple;
-	bh=RKB8o6GjrdgfJGNQpTr30hRzT5pRDKe/NXhxMY4NO4U=;
+	s=arc-20240116; t=1783515767; c=relaxed/simple;
+	bh=01GSOieINClQbTWiNGIDEavqyXKAQTpjChNDJs64pCI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FvA+wz3UkjnJv2L3EHevu1YsGOo1sVGhNAzi1cdfjyQr+jGxVotb1gU2sQaMocOg12eS/zDSvbTO6irJhuizwhFjSVN1Qm5u97XQivj6Y1cGQRjQuso2/wVh0i3Ljp/XCG7PdGeiw8cxtBvXqa3IMK4+bUZ/VaQVJczBTOv6PVM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VGJnPkz7; arc=pass smtp.client-ip=209.85.208.174
+	 To:Cc:Content-Type; b=gAln9cVm11F9uBjIX8teDPEwI7KjaSbzNG6MvoCC+rh5EMRmfGllm0HYjAbBBZA68gJ5g8GmFILumxq9KLeXMMV74Dyr1hkvDUXwdHBhY/FZtGtJJ7T6atp+/jchBWNhtaDe87g9AkOkCUTbhdnS6Beewexe0PRCVyr9r0FROgg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CZZI31/F; arc=pass smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VGJnPkz7"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-39c7050a48fso5052191fa.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 05:37:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783514254; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CZZI31/F"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381f03d7be0so55195a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 06:02:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783515765; cv=none;
         d=google.com; s=arc-20260327;
-        b=aihZ+t3N/9GYMmiLhjKEgPhw610me0pKkTIft3RkgUgFQaFX5eyZ+F9hIW0afHykmT
-         4aWt4cpPFwX1VunEGRlYyimXgYZJL/wcL+dfV0lZ7/xoGTP6y3SLLPLkOV3hNS5zLbOu
-         lVH9LBEmefU5ZOHIVnRkCcTrOuas+bWVgc4RdE7Do64Myo1pLbsMcUgmfGbhQRMEhpp6
-         TloDg3jGZ5vHQdbKIFmxhllNNjV+a3ebKINPIm88oCeKY2iZFtMIJGK/Jd3RkA3cCpPo
-         MJJLJqFs2+a9YqulaAHitUO/13zQOQLxKs9+zOWUFvrMYH/2mB6UGCATEd2PSM41gdHN
-         qTOw==
+        b=ovVKD6YlUiBUNYlWe0wB0dHBd6Wcf2K3Ex0SoFnr17F8tKE6UV9OAPuzz4prOH2Ap+
+         6B91F3g5bAM7UHHnisR90mKYki9mfS2KXko6v4YI7u+hLPGfix1pU0Xp6IX9aMZrM1AG
+         ivWGMLG85NWHtJuH3HuAIzYhCi8fHAi6NnRduuqGE0Aj5aWr90mXf7D9DElRHf2JiFo7
+         y8PgWlskL4hd+I+kleke9DOkWPlYK1fLydATLKBgi0VVzj9JQu+ikehRfSlznE8NMtSG
+         WGdt66rQAWOSN+P6h/Xq6D9JSuoxYNpH6oOySJGYGepGvwbs7OwSyheXfeLU5BlxEESs
+         yvlg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=RKB8o6GjrdgfJGNQpTr30hRzT5pRDKe/NXhxMY4NO4U=;
-        fh=Sk8LfNeRZ3OLiHsNLvS7WeRyWbJ+hJHUV0RRV8POf2M=;
-        b=shV/qmy0oTHfd83F/aY0ddFwpJi6BrA7xR674Cznk0drho1o/nqNjrhRs3MPZyYi1e
-         vWqeOpgzfzn2MVYl2IRLpjdIlRqEF6J0Ic52bDkMZZrnlEzgDX/hBpqPRlco+fL37D2x
-         PVZ1YN2kO88D5HexbHODqc6M2ExghCYwUHfziONF/mrcIm4q/4PBBZJQE1wghfFOanAO
-         KeZO7eMnRrPqUvM1rMgg+gzP2FGblJocF3gOcQEZceBGv9TOY8ipeezOSZ8zYPGLTTwF
-         AiGT4hqCwp9GJ4YHZeqH/J6CsvoVy6e1tDdcG4kYb1+qkzgx/ZgYRvB82Sza8WUcEbzv
-         OSCQ==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ffbj3vyfKfSu1/ovXdhyqJv0LJd9O4yZhbGsSBgFMUg=;
+        fh=eVfcZF1Sjade24C3SBHHOSwiFhzNpioPXvLtH0T/1b8=;
+        b=Ae9Hs0xEN5L9GosvsJk8ETDvmbb5HYBmRVqKCBjoiKgiwPrX2JIWozGqKwCL9vTyA8
+         mWtXVcQW/UO02WIYjx7vXUL1IEYJ3NuDwEbCoRPRjUlJxgI5U5FYEQfKfadBPLR9XVqS
+         NS1edplza4w8Gh3FJdSbYtIhC2mwg8Zaj7j/SVDgmu2OtyQDQL3D5H5a+ExZddczehgj
+         2+5v19zX5LbxPlontnG6VtVzDIMRHhSujozREKyIsD9Cr0GWeDG+kRx/h2VUBx/xPPZB
+         gSCT7ABlAoiwX/yZJPnc2T6wl1nM+np5UzEpYdpwoUzKHMtq7KNv2tcjPIjyoHkWWkjc
+         eR5g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783514254; x=1784119054; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RKB8o6GjrdgfJGNQpTr30hRzT5pRDKe/NXhxMY4NO4U=;
-        b=VGJnPkz7jry3sSBBc6ToDVQ4zShuMfMwOl6gfwbDZnZsRqNUlKvsLeIanUzlfwyFe/
-         Pt5ol2TcUDCVjcrUZgoi6nFhT7fVJS/fJjnQZtLtjeJ8LcNVubk2rzPPnJMfppXJ/luq
-         SqJxTIItrInFXthF/wqGOqAYZSdkifwXAWjR8YZaip7mbV+IbfaPrpuDQGpkeIapq9Xi
-         aUayVXslJtE5+b9f5bbVXG3FFvFd6B3hQkiYNy/MwIolrXty0sRaJnmGUkbUpS9CLmkW
-         BGjgTVmVzC5sHqlxl182jB/8L2NdVMcYzuExLG8ChLjfWgzrjhlOU8pEJ6t6Uccn1bQt
-         sYjw==
+        d=gmail.com; s=20251104; t=1783515765; x=1784120565; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ffbj3vyfKfSu1/ovXdhyqJv0LJd9O4yZhbGsSBgFMUg=;
+        b=CZZI31/FxNNpWtOly2DU0cXbcA+45474Qkg5GVMdjIxCS2OSchNs/Q0OhjpcEtZhOD
+         inwHap9QQ6Rk9y+fHtPxiBYHoQDU3vtm7CWqCwBNgYEyJRCVEOa3RUN2E6ujqYp22y9B
+         Mw+ZwHg4yseD3P5mGWFCKbfdJSRzaLpFMqloutDgjsaVT31q7IkFKP7NXiHqtskjsf7N
+         tTc6vNeC7XGoSW084r+90OCPnkadmwy2AkcGHo35/LCUIbjtzc3gktWRTpkCa+/JMfIO
+         lkgYLPJj6AIXlrlCTDKnt3p4zdevPYKCuW9eNcogHUp138Uy+0p1QSt/1dETv9dO2iud
+         zy5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783514254; x=1784119054;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RKB8o6GjrdgfJGNQpTr30hRzT5pRDKe/NXhxMY4NO4U=;
-        b=r1Y5sCTA/WJ3yQJxobMd03K0EhdiH55p1ydbWp5h7G7BYkOBU9Q19cuHVRTBqJhfab
-         PZjqeAsXrNkwctXjvalaa0Bt28pDU6N9hiWr43h66sP0Si2LShejP10Fh3Ts5N+qzNMD
-         IfLQDuHDpC9ZTZzXJ5S12CC84jDUu/XFhRPwmWTTEASKX8ZgVLZhPlJk/LP8oEEDkn0C
-         NIzoqZvhOJ2gQ6XRmCIGKACtNW7H7kisCjrDcKNXGatR4pvqxJHsW1RgVOvqJttLqHjM
-         lKN+tAvWFod8Es3pFJlTPKfyKto4pvtQoqFBVLZu1d/e5UWg6vtMI8YfstOTPK0+lDMW
-         6/Bw==
-X-Forwarded-Encrypted: i=1; AHgh+RowXPMbef3PmV4PRErciDq/cvfpyqZ4KYNYboMSsF2CVJMwLNUXvUveAWzIAA74TWf0t9DAv/Y+uNGPkQVNRA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yypmc4ND7tSISVsKF2o38WRkt9VyzoRRz0n8WB9C4YwTY/wcklQ
-	3Tz22PaP8DfjWgYmp8+Prfr4PFm934r+9Dc4VhQqM1nCFukVKQX4zqDBaVCXFZ46UYh+U7g6QUx
-	MylpJuov+x4JE1+5MLMcGcFvDcBU1K0I=
-X-Gm-Gg: AfdE7cl8EX1hlzAyayz1chus9CG9JcNh4sa8y7V6X7FTjlOYOubiMVxFeJ3rkoWgZio
-	0hhOwuSI6gABFYwYHRANnDVfS8OAemM/slvvYYX8D9OBUiDjjODqUAEKjIhud5ElmWEBwi0mZym
-	7z5ZdXggSgi4egHrdOt/mlHsV0hj+WBJbEbbw/CJq80y2Cs8l9CDtMglwhx4hagDM2bUhKa20wn
-	3VEGnhypUUIc/orN9qVCCanS0QRznUKre2ggS0xRdCn0UCRHldhnVVJ05BZY1ePsI8YFh+EyBO2
-	wKL1TRNsXwtefmGfhEbN5eTCgIK3mw4V0LCcYwM2vQ==
-X-Received: by 2002:a2e:bc11:0:b0:39b:2df2:901c with SMTP id
- 38308e7fff4ca-39c79870073mr5222991fa.16.1783514254053; Wed, 08 Jul 2026
- 05:37:34 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783515765; x=1784120565;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ffbj3vyfKfSu1/ovXdhyqJv0LJd9O4yZhbGsSBgFMUg=;
+        b=TWYFcAqGTMhkXIuycu3Vtu4tkG8aXIX4+8jKpEMu21B+EWUA2ZA0ea0V7XFDvYGXMu
+         QRahkZOlqBv/74CzWs385F1CpwAfdj7vZPM64sXUa5OQ9MmVNeMU8OTsT1E7rMYJHIpp
+         vAJ9qBPUrV2RHyTdRWsgokxq5cFVVbr/TJ+6clhwO3LW5D8m5j8x8fLQbqQuhjyBDdsB
+         3U2+29RmLcoeHgNPQFEBHx2x7WkAOrwbL8xdMqqTfQ+hrU/iI7j/FAZEmS7lFRY7V7Oy
+         dz2FEw+y9EhgesnSuAbGk5ZD3L1vzyZA3jmGZSTANzJmY4z8PFco3Z2tCkhYcINbgusS
+         1CwA==
+X-Forwarded-Encrypted: i=1; AHgh+RoLskOSUm2xy++ZQhTa9TpT+OH7E3sYhx28HBbKlrlhrlxSYCSl4KDUzhKQWM8fQQnoxaMhZ2U6O0wMZUojtA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8rCXmT36w80Rj/kIhPZD3RLHlciwGj+KAxxItFVM4IV2P/aH5
+	SyubJLeVqKDyOuonGuEb6BP/UuNBPHwOKGFRbLi9bpF+jUIUH2csnNap4/GLVbJe/pDuYIT8V2T
+	gvH/mZDCEquXJm3uD46uwgIU2HdHgvho=
+X-Gm-Gg: AfdE7ck0gKzRupGENESxnf3v+sfiYH0d4exbZAijIl+KeKhKqd+j7InrSFDkrb22qiA
+	FR97xGxPlRbzhaabR5OeOVVqHfKbZGuDvH1grseghKLdHMQ+lxcS2bnrWNcFoQv9mhcYuxlQzAH
+	98NVi4C6xJfCDj5eaDw5EzNV5+sksxQjbZfkkMmaq2geY0iAfBTXwbB2XDe5dxq2e0rMmtumaU7
+	/QyY9RtYL9iftpNAJxxvNLoIvQCgDCviTdg91rHNgkMLO0qeLyA+d+f3uH6/n6AyaAKSBDoWf3h
+	IyLd6jRdIExbnEFQ+ST52NVDZgbbvg9+2caiukC1mcsOpqt4/ycyc7zQQTbiQOyDmufZt+QwH1+
+	qhJ5QmsOV+5VU
+X-Received: by 2002:a17:90b:568c:b0:381:16b0:55c5 with SMTP id
+ 98e67ed59e1d1-3893f97c879mr2063340a91.2.1783515764982; Wed, 08 Jul 2026
+ 06:02:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260707151542.91997-1-muchamadcoirulanwar@gmail.com> <CANiq72kQ0=MqAhrSSk3m5RNVrO+4Cv18xv1noTE1Y8TsPeRhDA@mail.gmail.com>
-In-Reply-To: <CANiq72kQ0=MqAhrSSk3m5RNVrO+4Cv18xv1noTE1Y8TsPeRhDA@mail.gmail.com>
-From: Muchamad Coirul Anwar <muchamadcoirulanwar@gmail.com>
-Date: Wed, 8 Jul 2026 19:37:22 +0700
-X-Gm-Features: AVVi8Cc2__SbyiWeUKOd2eZf6DwFxVexg1Yun7S0NV1eIyHrGLZ-6Z4DPn_Uk_s
-Message-ID: <CAO26r3S=0UBOwSetC3cqqCZqwsoj=F3ff_o0_2YknG11+g_z=w@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 0/3] iio: position: add Rust driver for ams AS5600
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	andi.shyti@kernel.org, wsa+renesas@sang-engineering.com, ojeda@kernel.org, 
-	dakr@kernel.org, igor.korotin@linux.dev, branstj@gmail.com, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
+References: <20260707082104.90951-1-harish.cs.ss24@gmail.com>
+ <db94b1a3-cc1e-47e8-92ee-976400209a43@de.bosch.com> <7bcbb466-0c2e-41c5-9c85-8b4e73348d1b@de.bosch.com>
+ <CAGjpMsQgjBLTMt3PU8FHokCOBWc59YFagSjqcE2ZJSBGixLGOA@mail.gmail.com> <CAGjpMsTvHHbfaGXDTK+pK9j59wpAx1zitfgRDeC1NAnbt2K67A@mail.gmail.com>
+In-Reply-To: <CAGjpMsTvHHbfaGXDTK+pK9j59wpAx1zitfgRDeC1NAnbt2K67A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 8 Jul 2026 15:02:29 +0200
+X-Gm-Features: AVVi8CfG8PaAXSQQxyc-sE5YJS5cPaEgoiwxvzqNgWwMzRipNLGngs0fOznfSAA
+Message-ID: <CANiq72k1kdv4R+QYyROpJmO6sZBASCh+RwYkoLZ=wf8zTyUrHg@mail.gmail.com>
+Subject: Re: [PATCH] checkpatch: warn on Rust unwrap and expect calls
+To: Harish CS <harish.cs.ss24@gmail.com>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, Andy Whitcroft <apw@canonical.com>, 
+	Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	linux-kernel@vger.kernel.org, workflows@vger.kernel.org, 
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On Tue, Jul 7, 2026 at 5:17 PM Muchamad Coirul Anwar
-> <muchamadcoirulanwar@gmail.com> wrote:
-> >
-> > This is v4 of the Rust driver for the ams AS5600 12-bit magnetic rotary
-> > position sensor. v3 hardened the IIO abstraction layer and introduced
-> > kernel synchronisation primitives. This revision simplifies the driver
-> > substantially based on review feedback, removes components that were
-> > over-engineered for a single-bus 12-bit sensor, and validates the result
-> > with comprehensive hardware testing.
+On Wed, Jul 8, 2026 at 2:38=E2=80=AFPM Harish CS <harish.cs.ss24@gmail.com>=
+ wrote:
 >
-> Please Cc rust-for-linux as well for patch series that contain Rust -- thanks!
->
-> Cheers,
-> Miguel
+> Do you think using Clippy's existing semantic lints would be a better
+> direction to solve this in the build time itself ? Or do you have another=
+ approach in mind?
 
-Thanks Miguel, I missed it.
+The most recent context about this is that we talked with upstream
+Clippy in RustWeek about this again, and, bandwidth-allowing, I think
+they are open to such lints.
 
-Coirul
+In fact, for `// PANIC`, there is an open PR:
+
+  https://github.com/rust-lang/rust-clippy/pull/15969
+
+Helping test and review that one for the kernel use case would be
+welcome, I would imagine, since getting lints right is harder than it
+looks!
+
+I have more context in the live list at:
+
+  https://github.com/Rust-for-Linux/linux/issues/349
+
+I hope that helps & thanks!
+
+Cheers,
+Miguel
