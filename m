@@ -1,131 +1,638 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0698D231A41
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 13:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553F6281369;
+	Wed,  8 Jul 2026 13:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783515767; cv=pass; b=ETA2NZrQOYN/1w5QJqOE++UdQ+pFpxj5ExNUHmy8uTM70q+1fw7lmwUx3Hyz/z6u2fw6ZbQhMxvWg0xKAKk1z8baoyFvtyKCTvChpRDi2hk2du6pwoYReLozPtf9+n9JhrKwbgiUtkM+A0LdBnFk3YkYGpd8X6cSEk8n0nSX6+g=
+	t=1783516278; cv=pass; b=MeIRVMHePEWcthOYd2Y/Qan5hFLXM5twlEoZOdlKxpdAas6Gqg7hZjpLIjbAE+w8f0F/3i+eGZ1oNC8nKK4mwubnH/+UbizrAyBNLtzICF4Sp9R7idWQRjrgWyEUtv1pGMhFeC7PYrqBKUOQ8FkAWIs9DRFrzwsTi04xDAPS9lk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783515767; c=relaxed/simple;
-	bh=01GSOieINClQbTWiNGIDEavqyXKAQTpjChNDJs64pCI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gAln9cVm11F9uBjIX8teDPEwI7KjaSbzNG6MvoCC+rh5EMRmfGllm0HYjAbBBZA68gJ5g8GmFILumxq9KLeXMMV74Dyr1hkvDUXwdHBhY/FZtGtJJ7T6atp+/jchBWNhtaDe87g9AkOkCUTbhdnS6Beewexe0PRCVyr9r0FROgg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CZZI31/F; arc=pass smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783516278; c=relaxed/simple;
+	bh=LyMPmHxHOQ6eDXl4I4BLy2jd4ntW8YQp39+vDKoIf2w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=b2kF7T/HYeqbR6jkULZKbojxh6K5JCmkdJLWw1Jn+jBRxCNfQIMrKaxynPjvyZNbuneggC0cspxNZG7hAbO+dCX460H84Hu6ujvna6VwkBC4vBk5FzW4G9FDGvboON6kywwZmb+b8SGN8ArJKJPrmzBvslN+wjdIs7VNaRnsz4Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=FuKr9Dvo; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CZZI31/F"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-381f03d7be0so55195a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 06:02:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783515765; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ovVKD6YlUiBUNYlWe0wB0dHBd6Wcf2K3Ex0SoFnr17F8tKE6UV9OAPuzz4prOH2Ap+
-         6B91F3g5bAM7UHHnisR90mKYki9mfS2KXko6v4YI7u+hLPGfix1pU0Xp6IX9aMZrM1AG
-         ivWGMLG85NWHtJuH3HuAIzYhCi8fHAi6NnRduuqGE0Aj5aWr90mXf7D9DElRHf2JiFo7
-         y8PgWlskL4hd+I+kleke9DOkWPlYK1fLydATLKBgi0VVzj9JQu+ikehRfSlznE8NMtSG
-         WGdt66rQAWOSN+P6h/Xq6D9JSuoxYNpH6oOySJGYGepGvwbs7OwSyheXfeLU5BlxEESs
-         yvlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ffbj3vyfKfSu1/ovXdhyqJv0LJd9O4yZhbGsSBgFMUg=;
-        fh=eVfcZF1Sjade24C3SBHHOSwiFhzNpioPXvLtH0T/1b8=;
-        b=Ae9Hs0xEN5L9GosvsJk8ETDvmbb5HYBmRVqKCBjoiKgiwPrX2JIWozGqKwCL9vTyA8
-         mWtXVcQW/UO02WIYjx7vXUL1IEYJ3NuDwEbCoRPRjUlJxgI5U5FYEQfKfadBPLR9XVqS
-         NS1edplza4w8Gh3FJdSbYtIhC2mwg8Zaj7j/SVDgmu2OtyQDQL3D5H5a+ExZddczehgj
-         2+5v19zX5LbxPlontnG6VtVzDIMRHhSujozREKyIsD9Cr0GWeDG+kRx/h2VUBx/xPPZB
-         gSCT7ABlAoiwX/yZJPnc2T6wl1nM+np5UzEpYdpwoUzKHMtq7KNv2tcjPIjyoHkWWkjc
-         eR5g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783515765; x=1784120565; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ffbj3vyfKfSu1/ovXdhyqJv0LJd9O4yZhbGsSBgFMUg=;
-        b=CZZI31/FxNNpWtOly2DU0cXbcA+45474Qkg5GVMdjIxCS2OSchNs/Q0OhjpcEtZhOD
-         inwHap9QQ6Rk9y+fHtPxiBYHoQDU3vtm7CWqCwBNgYEyJRCVEOa3RUN2E6ujqYp22y9B
-         Mw+ZwHg4yseD3P5mGWFCKbfdJSRzaLpFMqloutDgjsaVT31q7IkFKP7NXiHqtskjsf7N
-         tTc6vNeC7XGoSW084r+90OCPnkadmwy2AkcGHo35/LCUIbjtzc3gktWRTpkCa+/JMfIO
-         lkgYLPJj6AIXlrlCTDKnt3p4zdevPYKCuW9eNcogHUp138Uy+0p1QSt/1dETv9dO2iud
-         zy5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783515765; x=1784120565;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ffbj3vyfKfSu1/ovXdhyqJv0LJd9O4yZhbGsSBgFMUg=;
-        b=TWYFcAqGTMhkXIuycu3Vtu4tkG8aXIX4+8jKpEMu21B+EWUA2ZA0ea0V7XFDvYGXMu
-         QRahkZOlqBv/74CzWs385F1CpwAfdj7vZPM64sXUa5OQ9MmVNeMU8OTsT1E7rMYJHIpp
-         vAJ9qBPUrV2RHyTdRWsgokxq5cFVVbr/TJ+6clhwO3LW5D8m5j8x8fLQbqQuhjyBDdsB
-         3U2+29RmLcoeHgNPQFEBHx2x7WkAOrwbL8xdMqqTfQ+hrU/iI7j/FAZEmS7lFRY7V7Oy
-         dz2FEw+y9EhgesnSuAbGk5ZD3L1vzyZA3jmGZSTANzJmY4z8PFco3Z2tCkhYcINbgusS
-         1CwA==
-X-Forwarded-Encrypted: i=1; AHgh+RoLskOSUm2xy++ZQhTa9TpT+OH7E3sYhx28HBbKlrlhrlxSYCSl4KDUzhKQWM8fQQnoxaMhZ2U6O0wMZUojtA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8rCXmT36w80Rj/kIhPZD3RLHlciwGj+KAxxItFVM4IV2P/aH5
-	SyubJLeVqKDyOuonGuEb6BP/UuNBPHwOKGFRbLi9bpF+jUIUH2csnNap4/GLVbJe/pDuYIT8V2T
-	gvH/mZDCEquXJm3uD46uwgIU2HdHgvho=
-X-Gm-Gg: AfdE7ck0gKzRupGENESxnf3v+sfiYH0d4exbZAijIl+KeKhKqd+j7InrSFDkrb22qiA
-	FR97xGxPlRbzhaabR5OeOVVqHfKbZGuDvH1grseghKLdHMQ+lxcS2bnrWNcFoQv9mhcYuxlQzAH
-	98NVi4C6xJfCDj5eaDw5EzNV5+sksxQjbZfkkMmaq2geY0iAfBTXwbB2XDe5dxq2e0rMmtumaU7
-	/QyY9RtYL9iftpNAJxxvNLoIvQCgDCviTdg91rHNgkMLO0qeLyA+d+f3uH6/n6AyaAKSBDoWf3h
-	IyLd6jRdIExbnEFQ+ST52NVDZgbbvg9+2caiukC1mcsOpqt4/ycyc7zQQTbiQOyDmufZt+QwH1+
-	qhJ5QmsOV+5VU
-X-Received: by 2002:a17:90b:568c:b0:381:16b0:55c5 with SMTP id
- 98e67ed59e1d1-3893f97c879mr2063340a91.2.1783515764982; Wed, 08 Jul 2026
- 06:02:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="FuKr9Dvo"
+ARC-Seal: i=1; a=rsa-sha256; t=1783516233; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=VxX87XaouBpnkXiVPtN4DYtw84IPZKmh6CVC2DtX3diBxlXmZHje2ZVDWjxuSFvAAhmN5+MwGwhvMHtpqpcLbIraZqRFN6VxTlTpmu0/NB6njVEdRT48cYgJbe75Te1zKeG9biYPsExKDYBeyQ8HGDzfYIyWIEmujqhHsEjS6KY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783516233; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=UTlHlLqqFS+y76nWC5IWjsnNvvO8MsWQtswtgtQQ5Lo=; 
+	b=B1sE7d12IxQ4VSn4c5YuIkDmg9atx1HFinoLE3UbWbA1o3JYltHkV5rdohlHQRaDFaOhvFOXqcGmCt+lWextVpWZE1EiP7GHeMUpEmkWQHUvapSlutFz0mBpPQ7+D5NQ6Dt9lNT9JdN667y268G9rbNGieHKqZKfKRGNRUCJ8lM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783516233;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=UTlHlLqqFS+y76nWC5IWjsnNvvO8MsWQtswtgtQQ5Lo=;
+	b=FuKr9DvoZJOO5I/8wQz+d6ZM/Yd5LVyRU22wvKkBq0BpX2kLPn8wh9ZFYdsWTU1M
+	zaWAvy5RmBiNhsk82fqYDZGOO3FUhMHFJT+2IOegrY26trlNSoZ11BVjiAQ3o74AZEP
+	8nXTEzktJwPgim7ErlhNqIQ1DJl9vWS1wmXn7Cvw=
+Received: by mx.zohomail.com with SMTPS id 1783516231275340.7934923442349;
+	Wed, 8 Jul 2026 06:10:31 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260707082104.90951-1-harish.cs.ss24@gmail.com>
- <db94b1a3-cc1e-47e8-92ee-976400209a43@de.bosch.com> <7bcbb466-0c2e-41c5-9c85-8b4e73348d1b@de.bosch.com>
- <CAGjpMsQgjBLTMt3PU8FHokCOBWc59YFagSjqcE2ZJSBGixLGOA@mail.gmail.com> <CAGjpMsTvHHbfaGXDTK+pK9j59wpAx1zitfgRDeC1NAnbt2K67A@mail.gmail.com>
-In-Reply-To: <CAGjpMsTvHHbfaGXDTK+pK9j59wpAx1zitfgRDeC1NAnbt2K67A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 8 Jul 2026 15:02:29 +0200
-X-Gm-Features: AVVi8CfG8PaAXSQQxyc-sE5YJS5cPaEgoiwxvzqNgWwMzRipNLGngs0fOznfSAA
-Message-ID: <CANiq72k1kdv4R+QYyROpJmO6sZBASCh+RwYkoLZ=wf8zTyUrHg@mail.gmail.com>
-Subject: Re: [PATCH] checkpatch: warn on Rust unwrap and expect calls
-To: Harish CS <harish.cs.ss24@gmail.com>
-Cc: Dirk Behme <dirk.behme@de.bosch.com>, Andy Whitcroft <apw@canonical.com>, 
-	Joe Perches <joe@perches.com>, Dwaipayan Ray <dwaipayanray1@gmail.com>, 
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	linux-kernel@vger.kernel.org, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 07/20] rust: io: implement `Mmio` as view type
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260706-io_projection-v6-7-72cd5d055d54@garyguo.net>
+Date: Wed, 8 Jul 2026 10:10:10 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ nova-gpu@lists.linux.dev,
+ dri-devel@lists.freedesktop.org,
+ linux-pwm@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <7CE0D9BF-E945-44A3-AAC6-C230B67EA335@collabora.com>
+References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+ <20260706-io_projection-v6-7-72cd5d055d54@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed, Jul 8, 2026 at 2:38=E2=80=AFPM Harish CS <harish.cs.ss24@gmail.com>=
- wrote:
->
-> Do you think using Clippy's existing semantic lints would be a better
-> direction to solve this in the build time itself ? Or do you have another=
- approach in mind?
 
-The most recent context about this is that we talked with upstream
-Clippy in RustWeek about this again, and, bandwidth-allowing, I think
-they are open to such lints.
 
-In fact, for `// PANIC`, there is an open PR:
+> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
+>=20
+> Implement `Mmio` as view type and convert `RelaxedMmio` to view type =
+as
+> well. I/O implementations of `MmioOwned` are changed to delegate to =
+the
+> `Mmio` view type.
+>=20
+> All existing users of `MmioOwned` in the documentation which do not
+> actually reflect the owning semantics is converted.
+>=20
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+> rust/kernel/io.rs          | 176 =
+++++++++++++++++++++++++++++++++++-----------
+> rust/kernel/io/poll.rs     |  10 +--
+> rust/kernel/io/register.rs |  24 +++----
+> 3 files changed, 153 insertions(+), 57 deletions(-)
+>=20
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index f93be7f78069..8110b49aa430 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -4,6 +4,10 @@
+> //!
+> //! C header: =
+[`include/asm-generic/io.h`](srctree/include/asm-generic/io.h)
+>=20
+> +use core::{
+> +    marker::PhantomData, //
+> +};
+> +
+> use crate::{
+>     bindings,
+>     prelude::*,
+> @@ -537,10 +541,11 @@ fn write64(self, value: u64, offset: usize)
+>     /// ```no_run
+>     /// use kernel::io::{
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+> -    /// fn do_reads(io: &MmioOwned) -> Result {
+> +    /// fn do_reads(io: Mmio<'_, Region>) -> Result {
+>     ///     // 32-bit read from address `0x10`.
+>     ///     let v: u32 =3D io.try_read(0x10)?;
+>     ///
+> @@ -571,10 +576,11 @@ fn try_read<T, L>(self, location: L) -> =
+Result<T>
+>     /// ```no_run
+>     /// use kernel::io::{
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+> -    /// fn do_writes(io: &MmioOwned) -> Result {
+> +    /// fn do_writes(io: Mmio<'_, Region>) -> Result {
+>     ///     // 32-bit write of value `1` at address `0x10`.
+>     ///     io.try_write(0x10, 1u32)?;
+>     ///
+> @@ -609,7 +615,8 @@ fn try_write<T, L>(self, location: L, value: T) -> =
+Result
+>     /// use kernel::io::{
+>     ///     register,
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+>     /// register! {
+> @@ -625,7 +632,7 @@ fn try_write<T, L>(self, location: L, value: T) -> =
+Result
+>     ///     }
+>     /// }
+>     ///
+> -    /// fn do_write_reg(io: &MmioOwned) -> Result {
+> +    /// fn do_write_reg(io: Mmio<'_, Region>) -> Result {
+>     ///
+>     ///     io.try_write_reg(VERSION::new(1, 0))
+>     /// }
+> @@ -654,10 +661,11 @@ fn try_write_reg<T, L, V>(self, value: V) -> =
+Result
+>     /// ```no_run
+>     /// use kernel::io::{
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+> -    /// fn do_update(io: &MmioOwned<0x1000>) -> Result {
+> +    /// fn do_update(io: Mmio<'_, Region<0x1000>>) -> Result {
+>     ///     io.try_update(0x10, |v: u32| {
+>     ///         v + 1
+>     ///     })
+> @@ -691,10 +699,11 @@ fn try_update<T, L, F>(self, location: L, f: F) =
+-> Result
+>     /// ```no_run
+>     /// use kernel::io::{
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+> -    /// fn do_reads(io: &MmioOwned<0x1000>) {
+> +    /// fn do_reads(io: Mmio<'_, Region<0x1000>>) {
+>     ///     // 32-bit read from address `0x10`.
+>     ///     let v: u32 =3D io.read(0x10);
+>     ///
+> @@ -723,10 +732,11 @@ fn read<T, L>(self, location: L) -> T
+>     /// ```no_run
+>     /// use kernel::io::{
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+> -    /// fn do_writes(io: &MmioOwned<0x1000>) {
+> +    /// fn do_writes(io: Mmio<'_, Region<0x1000>>) {
+>     ///     // 32-bit write of value `1` at address `0x10`.
+>     ///     io.write(0x10, 1u32);
+>     ///
+> @@ -757,7 +767,8 @@ fn write<T, L>(self, location: L, value: T)
+>     /// use kernel::io::{
+>     ///     register,
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+>     /// register! {
+> @@ -773,7 +784,7 @@ fn write<T, L>(self, location: L, value: T)
+>     ///     }
+>     /// }
+>     ///
+> -    /// fn do_write_reg(io: &MmioOwned<0x1000>) {
+> +    /// fn do_write_reg(io: Mmio<'_, Region<0x1000>>) {
+>     ///     io.write_reg(VERSION::new(1, 0));
+>     /// }
+>     /// ```
+> @@ -801,10 +812,11 @@ fn write_reg<T, L, V>(self, value: V)
+>     /// ```no_run
+>     /// use kernel::io::{
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     /// };
+>     ///
+> -    /// fn do_update(io: &MmioOwned<0x1000>) {
+> +    /// fn do_update(io: Mmio<'_, Region<0x1000>>) {
+>     ///     io.update(0x10, |v: u32| {
+>     ///         v + 1
+>     ///     })
+> @@ -828,16 +840,72 @@ fn update<T, L, F>(self, location: L, f: F)
+>     }
+> }
+>=20
+> +/// A view of memory-mapped I/O region.
+> +///
+> +/// # Invariant
+> +///
+> +/// `ptr` points to a valid and aligned memory-mapped I/O region for =
+the duration lifetime `'a`.
+> +pub struct Mmio<'a, T: ?Sized> {
+> +    ptr: *mut T,
+> +    phantom: PhantomData<&'a ()>,
+> +}
+> +
+> +impl<T: ?Sized> Copy for Mmio<'_, T> {}
+> +impl<T: ?Sized> Clone for Mmio<'_, T> {
+> +    #[inline]
+> +    fn clone(&self) -> Self {
+> +        *self
+> +    }
+> +}
+> +
+> +impl<'a, T: ?Sized> Mmio<'a, T> {
+> +    /// Create a `Mmio`, providing the accessors to the MMIO mapping.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `raw` represents a valid and aligned memory-mapped I/O region =
+while `'a` is alive.
+> +    #[inline]
+> +    pub unsafe fn from_raw(raw: MmioRaw<T>) -> Self {
+> +        // INVARIANT: Per safety requirement.
+> +        Self {
+> +            ptr: raw.ptr,
+> +            phantom: PhantomData,
+> +        }
+> +    }
+> +}
+> +
+> +// SAFETY: `Mmio<'_, T>` is conceptually `&T` but in I/O memory.
+> +unsafe impl<T: ?Sized + Sync> Send for Mmio<'_, T> {}
+> +
+> +// SAFETY: `Mmio<'_, T>` is conceptually `&T` but in I/O memory.
+> +unsafe impl<T: ?Sized + Sync> Sync for Mmio<'_, T> {}
+> +
+> +impl<T: ?Sized + KnownSize> Io for Mmio<'_, T> {
+> +    type Target =3D T;
+> +
+> +    #[inline]
+> +    fn addr(self) -> usize {
+> +        self.ptr.addr()
+> +    }
+> +
+> +    #[inline]
+> +    fn maxsize(self) -> usize {
+> +        KnownSize::size(self.ptr)
+> +    }
+> +}
+> +
+> /// Implements [`IoCapable`] on `$mmio` for `$ty` using `$read_fn` and =
+`$write_fn`.
+> macro_rules! impl_mmio_io_capable {
+>     ($mmio:ident, $(#[$attr:meta])* $ty:ty, $read_fn:ident, =
+$write_fn:ident) =3D> {
+>         $(#[$attr])*
+> -        impl<const SIZE: usize> IoCapable<$ty> for &$mmio<SIZE> {
+> +        impl<T: ?Sized> IoCapable<$ty> for $mmio<'_, T> {
+> +            #[inline]
+>             unsafe fn io_read(self, address: usize) -> $ty {
+>                 // SAFETY: By the trait invariant `address` is a valid =
+address for MMIO operations.
+>                 unsafe { bindings::$read_fn(address as *const c_void) =
+}
+>             }
+>=20
+> +            #[inline]
+>             unsafe fn io_write(self, value: $ty, address: usize) {
+>                 // SAFETY: By the trait invariant `address` is a valid =
+address for MMIO operations.
+>                 unsafe { bindings::$write_fn(value, address as *mut =
+c_void) }
+> @@ -847,17 +915,12 @@ unsafe fn io_write(self, value: $ty, address: =
+usize) {
+> }
+>=20
+> // MMIO regions support 8, 16, and 32-bit accesses.
+> -impl_mmio_io_capable!(MmioOwned, u8, readb, writeb);
+> -impl_mmio_io_capable!(MmioOwned, u16, readw, writew);
+> -impl_mmio_io_capable!(MmioOwned, u32, readl, writel);
+> +impl_mmio_io_capable!(Mmio, u8, readb, writeb);
+> +impl_mmio_io_capable!(Mmio, u16, readw, writew);
+> +impl_mmio_io_capable!(Mmio, u32, readl, writel);
+> // MMIO regions on 64-bit systems also support 64-bit accesses.
+> -impl_mmio_io_capable!(
+> -    MmioOwned,
+> -    #[cfg(CONFIG_64BIT)]
+> -    u64,
+> -    readq,
+> -    writeq
+> -);
+> +#[cfg(CONFIG_64BIT)]
+> +impl_mmio_io_capable!(Mmio, u64, readq, writeq);
+>=20
+> impl<'a, const SIZE: usize> Io for &'a MmioOwned<SIZE> {
+>     type Target =3D Region<SIZE>;
+> @@ -875,6 +938,23 @@ fn maxsize(self) -> usize {
+>     }
+> }
+>=20
+> +impl<'a, const SIZE: usize, T> IoCapable<T> for &'a MmioOwned<SIZE>
+> +where
+> +    Mmio<'a, Region<SIZE>>: IoCapable<T>,
+> +{
+> +    #[inline]
+> +    unsafe fn io_read(self, address: usize) -> T {
+> +        // SAFETY: Per safety requirement.
+> +        unsafe { self.as_view().io_read(address) }
+> +    }
+> +
+> +    #[inline]
+> +    unsafe fn io_write(self, value: T, address: usize) {
+> +        // SAFETY: Per safety requirement.
+> +        unsafe { self.as_view().io_write(value, address) }
+> +    }
+> +}
+> +
+> impl<const SIZE: usize> MmioOwned<SIZE> {
+>     /// Converts an `MmioRaw` into an `MmioOwned` instance, providing =
+the accessors to the MMIO
+>     /// mapping.
+> @@ -887,19 +967,33 @@ pub unsafe fn from_raw(raw: =
+&MmioRaw<Region<SIZE>>) -> &Self {
+>         // SAFETY: `MmioOwned` is a transparent wrapper around =
+`MmioRaw`.
+>         unsafe { &*core::ptr::from_ref(raw).cast() }
+>     }
+> +
+> +    /// Return a view that covers the full region.
+> +    #[inline]
+> +    pub fn as_view(&self) -> Mmio<'_, Region<SIZE>> {
+> +        // SAFETY: `Mmio` has same invariant as `MmioOwned`.
+> +        unsafe { Mmio::from_raw(self.0) }
+> +    }
+> }
+>=20
+> -/// [`MmioOwned`] wrapper using relaxed accessors.
+> +/// [`Mmio`] but using relaxed accessors.
+> ///
+> /// This type provides an implementation of [`Io`] that uses relaxed =
+I/O MMIO operands instead of
+> /// the regular ones.
+> ///
+> -/// See [`MmioOwned::relaxed`] for a usage example.
+> -#[repr(transparent)]
+> -pub struct RelaxedMmio<const SIZE: usize =3D 0>(MmioOwned<SIZE>);
+> +/// See [`Mmio::relaxed`] for a usage example.
+> +pub struct RelaxedMmio<'a, T: ?Sized>(Mmio<'a, T>);
+>=20
+> -impl<'a, const SIZE: usize> Io for &'a RelaxedMmio<SIZE> {
+> -    type Target =3D Region<SIZE>;
+> +impl<T: ?Sized> Copy for RelaxedMmio<'_, T> {}
+> +impl<T: ?Sized> Clone for RelaxedMmio<'_, T> {
+> +    #[inline]
+> +    fn clone(&self) -> Self {
+> +        *self
+> +    }
+> +}
+> +
+> +impl<T: ?Sized + KnownSize> Io for RelaxedMmio<'_, T> {
+> +    type Target =3D T;
+>=20
+>     #[inline]
+>     fn addr(self) -> usize {
+> @@ -912,8 +1006,8 @@ fn maxsize(self) -> usize {
+>     }
+> }
+>=20
+> -impl<const SIZE: usize> MmioOwned<SIZE> {
+> -    /// Returns a [`RelaxedMmio`] reference that performs relaxed I/O =
+operations.
+> +impl<'a, T: ?Sized> Mmio<'a, T> {
+> +    /// Returns a [`RelaxedMmio`] that performs relaxed I/O =
+operations.
+>     ///
+>     /// Relaxed accessors do not provide ordering guarantees with =
+respect to DMA or memory accesses
+>     /// and can be used when such ordering is not required.
+> @@ -923,20 +1017,20 @@ impl<const SIZE: usize> MmioOwned<SIZE> {
+>     /// ```no_run
+>     /// use kernel::io::{
+>     ///     Io,
+> -    ///     MmioOwned,
+> +    ///     Mmio,
+> +    ///     Region,
+>     ///     RelaxedMmio,
+>     /// };
+>     ///
+> -    /// fn do_io(io: &MmioOwned<0x100>) {
+> +    /// fn do_io(io: Mmio<'_, Region<0x100>>) {
+>     ///     // The access is performed using `readl_relaxed` instead =
+of `readl`.
+>     ///     let v =3D io.relaxed().read32(0x10);
+>     /// }
+>     ///
+>     /// ```
+> -    pub fn relaxed(&self) -> &RelaxedMmio<SIZE> {
+> -        // SAFETY: `RelaxedMmio` is `#[repr(transparent)]` over =
+`MmioOwned`, so `MmioOwned<SIZE>`
+> -        // and `RelaxedMmio<SIZE>` have identical layout.
+> -        unsafe { core::mem::transmute(self) }
+> +    #[inline]
+> +    pub fn relaxed(self) -> RelaxedMmio<'a, T> {
+> +        RelaxedMmio(self)
+>     }
+> }
+>=20
+> diff --git a/rust/kernel/io/poll.rs b/rust/kernel/io/poll.rs
+> index 79828a8006b5..d75f2fcf46f2 100644
+> --- a/rust/kernel/io/poll.rs
+> +++ b/rust/kernel/io/poll.rs
+> @@ -47,14 +47,15 @@
+> /// ```no_run
+> /// use kernel::io::{
+> ///     Io,
+> -///     MmioOwned,
+> +///     Mmio,
+> +///     Region,
+> ///     poll::read_poll_timeout, //
+> /// };
+> /// use kernel::time::Delta;
+> ///
+> /// const HW_READY: u16 =3D 0x01;
+> ///
+> -/// fn wait_for_hardware<const SIZE: usize>(io: &MmioOwned<SIZE>) -> =
+Result {
+> +/// fn wait_for_hardware<const SIZE: usize>(io: Mmio<'_, =
+Region<SIZE>>) -> Result {
+> ///     read_poll_timeout(
+> ///         // The `op` closure reads the value of a specific status =
+register.
+> ///         || io.try_read16(0x1000),
+> @@ -134,14 +135,15 @@ pub fn read_poll_timeout<Op, Cond, T>(
+> /// ```no_run
+> /// use kernel::io::{
+> ///     Io,
+> -///     MmioOwned,
+> +///     Mmio,
+> +///     Region,
+> ///     poll::read_poll_timeout_atomic, //
+> /// };
+> /// use kernel::time::Delta;
+> ///
+> /// const HW_READY: u16 =3D 0x01;
+> ///
+> -/// fn wait_for_hardware<const SIZE: usize>(io: &MmioOwned<SIZE>) -> =
+Result {
+> +/// fn wait_for_hardware<const SIZE: usize>(io: Mmio<'_, =
+Region<SIZE>>) -> Result {
+> ///     read_poll_timeout_atomic(
+> ///         // The `op` closure reads the value of a specific status =
+register.
+> ///         || io.try_read16(0x1000),
+> diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
+> index fd3bf6220f95..6cb07fc92cc3 100644
+> --- a/rust/kernel/io/register.rs
+> +++ b/rust/kernel/io/register.rs
+> @@ -58,7 +58,7 @@
+> //!     },
+> //!     num::Bounded,
+> //! };
+> -//! # use kernel::io::MmioOwned;
+> +//! # use kernel::io::{Mmio, Region};
+> //! # register! {
+> //! #     pub BOOT_0(u32) @ 0x00000100 {
+> //! #         15:8 vendor_id;
+> @@ -66,7 +66,7 @@
+> //! #         3:0 minor_revision;
+> //! #     }
+> //! # }
+> -//! # fn test(io: &MmioOwned<0x1000>) {
+> +//! # fn test(io: Mmio<'_, Region<0x1000>>) {
+> //! # fn obtain_vendor_id() -> u8 { 0xff }
+> //!
+> //! // Read from the register's defined offset (0x100).
+> @@ -446,7 +446,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///         Io,
+> ///     },
+> /// };
+> -/// # use kernel::io::MmioOwned;
+> +/// # use kernel::io::{Mmio, Region};
+> ///
+> /// register! {
+> ///     FIXED_REG(u32) @ 0x100 {
+> @@ -455,7 +455,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///     }
+> /// }
+> ///
+> -/// # fn test(io: &MmioOwned<0x1000>) {
+> +/// # fn test(io: Mmio<'_, Region<0x1000>>) {
+> /// let val =3D io.read(FIXED_REG);
+> ///
+> /// // Write from an already-existing value.
+> @@ -559,7 +559,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///         Io,
+> ///     },
+> /// };
+> -/// # use kernel::io::MmioOwned;
+> +/// # use kernel::io::{Mmio, Region};
+> ///
+> /// // Type used to identify the base.
+> /// pub struct CpuCtlBase;
+> @@ -584,7 +584,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///     }
+> /// }
+> ///
+> -/// # fn test(io: MmioOwned<0x1000>) {
+> +/// # fn test(io: Mmio<'_, Region<0x1000>>) {
+> /// // Read the status of `Cpu0`.
+> /// let cpu0_started =3D io.read(CPU_CTL::of::<Cpu0>());
+> ///
+> @@ -601,7 +601,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///     }
+> /// }
+> ///
+> -/// # fn test2(io: MmioOwned<0x1000>) {
+> +/// # fn test2(io: Mmio<'_, Region<0x1000>>) {
+> /// // Start the aliased `CPU0`, leaving its other fields untouched.
+> /// io.update(CPU_CTL_ALIAS::of::<Cpu0>(), |r| =
+r.with_alias_start(true));
+> /// # }
+> @@ -638,7 +638,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///         Io,
+> ///     },
+> /// };
+> -/// # use kernel::io::MmioOwned;
+> +/// # use kernel::io::{Mmio, Region};
+> /// # fn get_scratch_idx() -> usize {
+> /// #   0x15
+> /// # }
+> @@ -651,7 +651,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///     }
+> /// }
+> ///
+> -/// # fn test(io: &MmioOwned<0x1000>)
+> +/// # fn test(io: Mmio<'_, Region<0x1000>>)
+> /// #     -> Result<(), Error>{
+> /// // Read scratch register 0, i.e. I/O address `0x80`.
+> /// let scratch_0 =3D io.read(SCRATCH::at(0)).value();
+> @@ -724,7 +724,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///         Io,
+> ///     },
+> /// };
+> -/// # use kernel::io::MmioOwned;
+> +/// # use kernel::io::{Mmio, Region};
+> /// # fn get_scratch_idx() -> usize {
+> /// #   0x15
+> /// # }
+> @@ -752,7 +752,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///     }
+> /// }
+> ///
+> -/// # fn test(io: &MmioOwned<0x1000>) -> Result<(), Error> {
+> +/// # fn test(io: Mmio<'_, Region<0x1000>>) -> Result<(), Error> {
+> /// // Read scratch register 0 of CPU0.
+> /// let scratch =3D io.read(CPU_SCRATCH::of::<Cpu0>().at(0));
+> ///
+> @@ -794,7 +794,7 @@ fn into_io_op(self) -> (FixedRegisterLoc<T>, T) {
+> ///     }
+> /// }
+> ///
+> -/// # fn test2(io: &MmioOwned<0x1000>) -> Result<(), Error> {
+> +/// # fn test2(io: Mmio<'_, Region<0x1000>>) -> Result<(), Error> {
+> /// let cpu0_status =3D =
+io.read(CPU_FIRMWARE_STATUS::of::<Cpu0>()).status();
+> /// # Ok(())
+> /// # }
+>=20
+> --=20
+> 2.54.0
+>=20
 
-  https://github.com/rust-lang/rust-clippy/pull/15969
 
-Helping test and review that one for the kernel use case would be
-welcome, I would imagine, since getting lints right is harder than it
-looks!
+Ran the tests again, they=E2=80=99re passing.
 
-I have more context in the live list at:
-
-  https://github.com/Rust-for-Linux/linux/issues/349
-
-I hope that helps & thanks!
-
-Cheers,
-Miguel
+Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
