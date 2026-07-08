@@ -1,130 +1,65 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.st.icloud.com (p-east2-cluster5-host4-snip4-2.eps.apple.com [57.103.79.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A170345741
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 09:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783501495; cv=pass; b=lfe8jqTMoYD3gkJxN0Q+4Rb2mPuAtY7IOW8oFtNjm+IXj57oIGbYkfpTOY7LwXKFzAaP+WZxwzKkYpuJxOkmV038RvBl6XfoqcLbf/gMxsMt4ZwerRXJvO5Yzk5YUmMpXknFCsBe+4b+KWlUMGla/zj25jnNkG2dmD/+48gydWw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783501495; c=relaxed/simple;
-	bh=TSK20oxFL4fPpCXh3LY+/9/D15oE9Tg/thOdDQh+fTw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bIuIZXCYc0O0eA8Cx2JvsyswH5Ez+jTveXI7s1p45HBNp54Vne0o7RbpO6dhuNHsUInmthzz9fRBnCRvELE2I/NhanaFk3UmesfhhZbm/71nxP3Z+4/ofgFawPnQX6wgmF6+GgmTGluaBwAvrTIJrQ+kXwTEQzYgI5Ol5dVxnk4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aWWCGUpc; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24519408014
+	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 09:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.79.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783502089; cv=none; b=icNl3DIPgcSrmyfR7+DGC1vRmUbK3nmbg4vMencfZq/0qcznzH3isprjrY8/5J1dVG2kRnNlIml5r4H9IvCtg4wVXSqruthRKEofUnK6BS3lmEJxwJ7HSXK/Lv5JqxATZTjVVHVABdqWDBoppvng712bv+58wa47nWWQHB8Rx1Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783502089; c=relaxed/simple;
+	bh=jHQBDidGD/gDyP2uRLukKzou2QNi+hUDBR04lTls07A=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=qxGXqDosfzrHFWKzeIE7yRhdXQsrVHk1TEvYyjcaQiVCd5L7ksQ4r9jttPrGahTVmkPnZgsk7NRgeb4CkBjhBkE9U390tupKkoAyU23QBpKAu2vS9Zi7DyvAsqO5wf6+t9M7ZFJ+UDbZV5/Rxgv0CDuyT4OL9gd0G7eXXBRwAXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=UBQVKLT3; arc=none smtp.client-ip=57.103.79.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aWWCGUpc"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3856d4015e0so35307a91.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 02:04:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783501493; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ETksJwxpQODhckIFyFdQYD8TE1YP4T+dux43UsNlsQ8QXBvtyQRC5GJ6jaAya+/XXi
-         es9xKRuIUz6N2NjbqQ+kMfRRYkAhSQXkZ7cJYyJlOjKgvPszEQg+cB/wocsCjLMzgIYu
-         xXGhgU4E8dTIMJRJdvWotwr5FfasKkBshb225sUHbC2EBC3+yB4zNKfwdsiCvDQ9qKGn
-         HyjcBazRm5gxU47Y2OY+r2ydXEv78o/2+mhXUPfrhGH+pS02psAnxD10JBjatNjQGICa
-         kHDGOt+zXZXx6X/U+3gZ1HJX16ZJMjLtCxBxUhZTcrJ46ljqxXUqXSBaez/Iro/gp109
-         crSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=guYA+I/KzG7Dz59dLyzD4w7QapXwzT7sJq9m8Mey8v8=;
-        fh=oggnnajPm6vVQbRjLuR2eSuGKnfbJJE/eEVzAJZNJ8k=;
-        b=DD1vZVK16TR1nFe4T7t2JAX1lUNFXDHYGg/eWMC7QKkhMsgwB47M4ZePYTeXCwaNK1
-         O+nG2UwWYLdyB2ba5bzeb1xNjdvHYf5XqUHsKWB/2pwryID6ga4ZDhtJ4M/Xg2ZZ8NEh
-         w6CUXmDviWNRcvThYuw9K7TqryhvXeiC832NJuESZxcbu+jnY5KM34yizOWqgHt8/QI1
-         J15jPTuCNaRnrWHyhwIFLwRenOlmxLWYqE+u40306dT168t7kPKM5w25ijf17ZRwgJiN
-         i02wqBXqyTAB2PgFZ6yS4TtucGPmuqWztox7FXrIZ/fK4Z/WxhWY2E3Aw8DoGRmamvVA
-         k1aw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783501493; x=1784106293; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=guYA+I/KzG7Dz59dLyzD4w7QapXwzT7sJq9m8Mey8v8=;
-        b=aWWCGUpc3F5thwWI0YCvB/L2T2xSbjfm6qtFmbLE5kS9pQJJeduyT7xE1Rk95P4cBd
-         J4scqP+sqr8hF1JMdWhfTht6ckOJZuaLRkxLKA/vBWukHUgxuT8G4NB98A0w91UaihOD
-         EAao1tC/Q3AddgW6cU/Vj0nYFGOWaTBgtKWGbLMj2yHnUPA01NADG1f30LUQqMb+Htaw
-         8lApkAdi0ef4cnqs8ofLMoUh2TTNhPF+drKUtGPn7KpzPk6l5kk1D5+NFSSxsPRtjP8y
-         7Dh7nvkxANtzXnT2g6O1YplSgVvqY5NodoiVdvxVvdJBH7+YKRZlf4ZlIWPhXplzXf3t
-         hLHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783501493; x=1784106293;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=guYA+I/KzG7Dz59dLyzD4w7QapXwzT7sJq9m8Mey8v8=;
-        b=SgvRYITV189H3nISYYWQ+6/TAC22lmzNTdZRLlSlx7LPAUgY4B6l2xzWSHpqcc5m6f
-         o1YJJWM3T8X36TAdzgD98ijPwYQ/AYY5QPkCglflOLhq2k+LKyvILsNnW/XFhCnVLirP
-         TGfbkUeW0903fLgFpTVoDwjuwTyjYuC67tz5jpnbU8p0cCUFPPq9/xl6tlcN+xOfN3fm
-         0I1jqK8E14vaSJABKLMiQjlw2Y0U7f0sT5ocCQ2hJlH0QQOoF06nI+C+XYxqqYkv2NmC
-         wuhfdI7A/wAZrCJiXkKEjjOzzXcFQuavII6iT+h6eCDY4lG1tP+LIgph9TpFfgFoKiOq
-         mIKQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp2+EThkrOeHRa/dKE1LIXIVapv+/oIK8iID0zZ3TDKtnYH6W5CFn5hmsfImu0sZ40ajcOZa0MY9dZInlbSJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/sImFnyE5Jco185UuOSWf4UvJ9ROh5OG5HdsCUrhrr6JQqTsv
-	mj9PqtAD7ByC3YcmA5vtKMmjLgdSqArjWZoU0K/zZtTMkCO0Nvi+PD4RfDyt68Ut7fLbFraf3y0
-	G9MBb6XyP6NQ1O8L6nHuQ/WR16XN7O6w=
-X-Gm-Gg: AfdE7cm1hYuISB7T+QEEVB981TNxXcLrfUvyevor0raFkcG0VLPFjE9BfFd6jOZttAU
-	uou4+LboAu7LjHiF9f1hrMRX1gWsipgbgbTdVetS/8fgSZhKsSHJZG5vL0QdJ0ZXpEXoxCMvQss
-	TlpnZs3uLMvQsyd3bWaktWIcBPHxr6sBya+Gc5hHVqa0CIF9oGS9Sbbn7IAdMIXE19Z6vdQQtiT
-	vqHxqr/JbCDicHHOti4KKse0+68FAX4giJeONvtYwfzJSkq1C/kZFOB5VAHuV5bD7b8dwrwhJId
-	3bQivC0s4wQt7XaZiHU/sWx6j4SruoEyGd6fil8MlEN181niXMoOvEk+yzFbMyfDyMwTFc/8dxw
-	8NgBmDzs/S29j
-X-Received: by 2002:a17:90b:53c3:b0:380:9cd1:d985 with SMTP id
- 98e67ed59e1d1-3894249b34fmr1433674a91.6.1783501493402; Wed, 08 Jul 2026
- 02:04:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="UBQVKLT3"
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-6 (Postfix) with ESMTPS id 4E55818005E5;
+	Wed, 08 Jul 2026 09:14:43 +0000 (UTC)
+X-ICL-RepId: 019f4102-145a-7386-9a41-faf4d851ae4d
+X-ICL-Out-Info: HUtFAUMHWwJACUgATUQeDx5WFlZNRAJCTQhNAEMFXwBeC0oCQwZfBlBcHA4ZWAZdMFgUWgxEAlwXFxZWGRcNVk1YFFoMRAJcFxcWVhkXGVFNCEoTBVIHXU1WDUcPWB5cFBcLR0NeCF4fTBwdDlgGEgBNCg42BlkFXglWA0MFNhIUXUVSAV4KQRlXHx0DUh8SHVAcDlEFWwBGCU8DVRlaCkENSApDBVsARglLA18PWQpHAUsKVQVfBl5fDVkEQwpyEVURUh5eBVVeVx1HUxcfSwBcRVAYRB9dHWYcXABWAlw=
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1783502087; x=1786094087; bh=Rlt8vlfBNyKk4cSoSC5XZbIR42pZqzh63rscOEUuEwk=; h=Date:Message-Id:To:Subject:From:Mime-Version:Content-Type:x-icloud-hme; b=UBQVKLT3oacYhQ8n0aegz3svu4lYukSUDW88yP6knLV1KGaT4k1Wji7285EPjCnxryG4hr/RJHrgo+HDn7r4BDPD37gBiFefA5LCNBojvqOJxy2LxjxiceQGwaKJrWw8cmq5NxBY0WLWHMQikkHg8wlm+cyH4nHbwQcsAxVBbdIAGHf6oJzBPcHp1FO1HPcPOkbxYzgJyjdWmqqPMwhWzY9WKt74XXq4VRB2q7bYjKWV17eY0FLhXxv8lPGrbBnOZp/IPKTHUhRSqE1aiw033W+fWBjde57ACKAUHZpOnvTtPCL6sAsCkdr1AcZph0brb887tHRHxsasKxUE/l/w7A==
+mail-alias-created-date: 1769500909675
+Received: from localhost (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-6 (Postfix) with ESMTPSA id 123F11800B81;
+	Wed, 08 Jul 2026 09:14:36 +0000 (UTC)
+Date: Wed, 08 Jul 2026 18:14:09 +0900 (JST)
+Message-Id: <20260708.181409.2026030282878398244.fujita@aliasing.net>
+To: harish.cs.ss24@gmail.com
+Cc: apw@canonical.com, joe@perches.com, dwaipayanray1@gmail.com,
+ lukas.bulwahn@gmail.com, corbet@lwn.net, skhan@linuxfoundation.org,
+ ojeda@kernel.org, linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] checkpatch: warn on Rust unwrap and expect calls
+From: FUJITA Tomonori <tomo@aliasing.net>
+In-Reply-To: <20260707082104.90951-1-harish.cs.ss24@gmail.com>
+References: <20260707082104.90951-1-harish.cs.ss24@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260707-soc_unwrap_or-v1-1-1ca1757a259f@nvidia.com>
- <DJSB9NRJ9YMG.2B8SJBD7VNEC0@garyguo.net> <CANiq72=Q7aR51uvwKXUh2YWJmDuBAHPECA57qG3Hr20xWCt0mA@mail.gmail.com>
- <DJSEKYNY1LJ6.3SWGGDXKIURC7@nvidia.com> <DJSET0S73YYD.2HCX79F9XAWF3@garyguo.net>
- <DJT1OEEX0LQU.H9DPHR1SBN9X@nvidia.com>
-In-Reply-To: <DJT1OEEX0LQU.H9DPHR1SBN9X@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 8 Jul 2026 11:04:39 +0200
-X-Gm-Features: AVVi8Cdb6NxHFf7927_1Qu0u2gy3sTXoJPcVLX398UrqIxExItRjkOXEdPdZUYY
-Message-ID: <CANiq72n2KwCE1DCp2HR6CJF-vR-VNBYFgXYv3j0Kvv81dH6rng@mail.gmail.com>
-Subject: Re: [PATCH] rust: soc: silence clippy warning with rustc >= 1.88
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Matthew Maurer <mmaurer@google.com>, driver-core@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: -S6o572Dt0dytXkNP_h-f-Iu-0Ztuohb
+X-Proofpoint-GUID: -S6o572Dt0dytXkNP_h-f-Iu-0Ztuohb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA4OSBTYWx0ZWRfX4GEfd8sY1SW7
+ 6ltp6Eu/HpDAST/RUC01/Idt5zws/+YJo4OsX8WZfCjqYa9rrdxqyAxuYelvs/NWzFqQVQVIsvj
+ RbHmBUddlvKVmiLXunSI18l/Dqtg7WSdYiOuKH8EXu0eLkIpIBnlitK9QsUwjJZK9lk+10WR90V
+ 60g5PhpqN9Wh7QdQisCjg4fiL482Uxxu8bL3u29GGjWjgEND9IlTXMrvYxp/t7+6R3kA3mxcRqm
+ C1ft/w22Qd16TFPUWlEX/7nkCG8cXiSw87P1zGkPJlfdjJzOAM0GlW7zI/qclAKo58m20YvRMoG
+ 1QaHh/XQMvf+299THYh
 
-On Wed, Jul 8, 2026 at 10:25=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
-com> wrote:
->
-> Done: https://github.com/rust-lang/rust-clippy/issues/17379
->
-> As for this patch, I guess we don't need it then?
+On Tue,  7 Jul 2026 13:51:04 +0530
+Harish-CS <harish.cs.ss24@gmail.com> wrote:
 
-Thanks a lot for taking the time to fill the issue! Linked to our usual lis=
-t:
+> Rust panic paths are discouraged in kernel code because panics currently
+> lead to BUG-like behavior. Add a checkpatch warning for newly added Rust
+> uses of unwrap(), unwrap_err(), expect() and expect_err() so contributors
+> notice them during patch review.
 
-  https://github.com/Rust-for-Linux/linux/issues/349
-
-But why do you mean we don't need it? It is still reproducible within
-our possible toolchains, right? Or did I misunderstand something? Or
-do you mean it is fairly rare and thus maybe not needed?
-
-We can also always just disable that particular lint, and perhaps
-later on re-enable it conditionally when fixed -- we have support for
-that now.
-
-Cheers,
-Miguel
+How about panic!()?
