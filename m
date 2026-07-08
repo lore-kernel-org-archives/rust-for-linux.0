@@ -1,137 +1,324 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF29B409263
-	for <rust-for-linux@vger.kernel.org>; Wed,  8 Jul 2026 15:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783523376; cv=none; b=Q0M7p0r9Y9lJf65qVDD7yD9SFIShhmPT/+vfrUruPlRe+Rn9DDUaME/f0mqnpGUnf0CN2TS6YUOK6OmFr+ZFrm0jjgb5cuWq7Po7bQ1UOoA43Zr37ahE0a1M6YGeDohido6dzXPDFRpjc0oqSn+7X7v0UAH5XPPmIISQAz4/hKU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783523376; c=relaxed/simple;
-	bh=Ojm4HC+Qo3NA3bCB4Voj7HSWNha37gVnNM6dlE9kbIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rN25uL2wCGIhNa1NENPaZtDgUdfzQrYcmE0WwZZSsQXDlfBxEWkC61ZzQ2f36Elze3l3bDRaCcDx9JmShWWvutiVkVayc84N8FrRDSeXRvxRk1iqZYPJ/gsZoHhwl5/jgg199Tk2aHeIUXKc0FZalpuJm/q2ct881U7091R1L+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fkuKQ4Wh; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719E83F12C0;
+	Wed,  8 Jul 2026 15:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783523777; cv=pass; b=MjXVhSAqkxAR1KuEefAgrJp5hTZSAD67AXOs37Xnd66zx3CJct9pW7m2o8BakL1ThAAF5PB8iMXLmfAm/PmOo30kaOLNo/JTK9szQzCsJrYuK4KwS8w9fAIRpeVVIWE1eWqlYKo7xU/5oDe0ESN/fcQLu0Q8LdJPTCoh6ypj7Bs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783523777; c=relaxed/simple;
+	bh=Iqkz9HZz7KsJqF6xvtRqT8xxwG+y4KVbP4uJohB9BWs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=QatHFlcHTBOo7htkq15b5L5WJ+neDFPSUK6GCRE7kMmcwxUiq8JM5VWAmOxdK7IQ0twYa8r26cOu96Qm3aWjK2MmoOxB8dTUOATVZSVsBdRlBDRP9E9FICVusyi0j9qr4RpRsMkQ6255q/Lu7VOFRLgqqOUS5HWL+WWjoq6gO2k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=kEQVPxM2; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fkuKQ4Wh"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cc6ae3e7f1so5469635ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 08 Jul 2026 08:09:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783523374; x=1784128174; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5PZNUkHdJ6nqcdgkr9hcvPfqh6tCZ4YTms0UgHLH5I0=;
-        b=fkuKQ4WhFBS9jur2dGWmUYr13rS5cOSVjQLKyGbpwfA8ASWN/gBQKxgUXZ2gViy71k
-         qdrMMPoYSxMbs7bYDfZ70RaHpUn8AsGwjSDtWSgss8EytnQ9yYCENqb6HMSpD9BkznOb
-         sUW8FHBB4xydIBFkgsWPGoQkLswEYCdK+MvjwqrT0W3tXabmdUBX6KA6+PYdEBaDjsiV
-         8GvNmoA+GBR91/7wVsJHVLKkUvGdLSHu0eVsfQBaOT4Zyacfndi1DJmil6HpEopa48v4
-         E3gjZTsvEWu2/hflXYpN62dZ6qX+O1jOiTF/lhERVJLDCGD8OBA+MdOjczKZess6NgUf
-         qDPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783523374; x=1784128174;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=5PZNUkHdJ6nqcdgkr9hcvPfqh6tCZ4YTms0UgHLH5I0=;
-        b=CO+HPFn3/Yscqi+1c1Y3N1f0dtxIPn4XwfxJABZnTjkljU3tkJ0FaPlRRgy/6/1a+i
-         UVXaR901ncO3fOYHV+BukyOt7VXGhqciQoEgAuuoydAg/SQiVxP3/m1h5A5+F1a7A/5A
-         GGJrMG3HARMISODUE9+jMDbSprk6JcCjtpPj+yNQWbmSK2xNiRWz4Ej8bIvk7vbp45oy
-         eF11tmwU9iB2ChHSNdv/giHFg2GDCAIUlK07/9BB0TO5sQIJJ6E2PQYWSu0RPSm8Czgy
-         MSW3NsXWnJlpxCCKv3/uekUZO7oQttgkwSaDLzk3DlxQv3kDFBOl3z1iazekdaUNaCnR
-         LhoA==
-X-Forwarded-Encrypted: i=1; AHgh+RowWfN4Kt/p/rBryeclPe3pGqcgbM9CiCC2VAcGC60kBvryCRUpvfAqZWfX7z1YEYYAc3lE1pwCff63CfiOig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOcARv90GLTYWS90857zpe5StZ2m4EonrhoOD7igEE+tDHwO3j
-	qTnoE+prDxYAP5yiphNdELMk5zyd0nwQOpLPHFFeD0u/j1NjdYcfYuLi
-X-Gm-Gg: AfdE7clJIxyo/v5qTteBYrHwvJlKt4smRa3xgS5FmgLkgYcYtyphVqu7CYvlXMduhbr
-	IHXyxWUJXL3ucg4iI4mxx7aCmDUgkfdYjgyd7MbOO8RRfo0soWUlZHapmNIpAE/9SrLdPkLX+Ol
-	F6YOwKKPZJyDw4DDLdxC2ol15Py9hoAjP/Dgg++yKRgngySb/s4ecS0pXxWdUcjeMCGx+IWSGJ2
-	GLta36wrI5IDilmDSCseyDdgga/LG8FWDy30gqBMPKELL1+i6pnINP9b+ilDva3xyntj/tnMvo1
-	5PsBYQVI6rRngyNoonV/pQ/wmy6svG0wDV/bEePtnnnjbDpXgvRh2jhVNhr9DjotOEwnzOVTIrw
-	rurcQmbJdN4hR6k0mGv7ScjLsTtFifc52ofk4B07TVyCgaw8rpJRoHACp2ArzS0pcb2YTO1Ab0O
-	qXI1CxenBdberH51zKdeHLNqJD+t+qZ9xLKliZkWzIbhMO4/byqgBMojPwvRan
-X-Received: by 2002:a17:902:ef4d:b0:2c8:2808:3ec9 with SMTP id d9443c01a7336-2ccea36556dmr27151965ad.12.1783523374093;
-        Wed, 08 Jul 2026 08:09:34 -0700 (PDT)
-Received: from li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com ([106.51.160.236])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb56fsm29932865ad.15.2026.07.08.08.09.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 08:09:33 -0700 (PDT)
-Date: Wed, 8 Jul 2026 20:39:19 +0530
-From: Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com, 
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com, 
-	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev, nathan@kernel.org, 
-	ndesaulniers@google.com, morbo@google.com, justinstitt@google.com, 
-	fujita.tomonori@gmail.com, joelagnelf@nvidia.com, gregkh@linuxfoundation.org, 
-	prafulrai522@gmail.com, nsc@kernel.org, japo@linux.ibm.com, lina+kernel@asahilina.net, 
-	j@jannau.net, airlied@gmail.com, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH V17 4/7] rust/powerpc: Set min rustc version for powerpc
-Message-ID: <ak5ngpTqcKS1rOvH@li-1a3e774c-28e4-11b2-a85c-acc9f2883e29.ibm.com>
-References: <20260708082454.1254320-1-mkchauras@gmail.com>
- <20260708082454.1254320-5-mkchauras@gmail.com>
- <ak4MwnDwIgdUhK3K@luna>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="kEQVPxM2"
+ARC-Seal: i=1; a=rsa-sha256; t=1783523745; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Igr8wTpfjpo1ZHqfHQn/lVnKM79U43R4E1eSVy71wQBDvHXW+bF2eW4ui7Wlm05zH+F72ZB1/Z8/x/j2BjCf6ilcdsUjooa7PMNX2Itz8G6jjHMaqhORMJ57RCIwSpetHbyI/YisCdVWgJJ+Jkg9KMKGe9UypP5HMpFPa+hUgoc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783523745; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=X1plbi+Oxfx02jtUPa4CfsK/IllRKlSLbG1pvpCqSpQ=; 
+	b=ktkjpgWkVW6XS4KQ16E5h2wy3zjPg33F3Disl5c7Xbo6Ak/eJHWeP+MTTNCv/kUnYxsakGAJc4kX9AIFBxOw9FF7H72JZo1sGw/y8N5mUnV7WnyroupyOdtSyfuOrKdMIplwZp2uY3xAbF+J1yhiZ/KCEPV37ZCNJg+jiZbtOe4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783523745;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=X1plbi+Oxfx02jtUPa4CfsK/IllRKlSLbG1pvpCqSpQ=;
+	b=kEQVPxM223LBIzrF2IQm1wNUlGBrh7MiW/mQZVoJUUrpCmGJaJANC3xJZOK2YDrv
+	xnEBPy87uWH2C/WN4gbtJqhZyHIrU5COGHHkBOurTwH2t2OlYhQJka3vJWns6loEqZg
+	9HOXk3Qw8egDZvS6KrbvTfVp3KU8Ghu9DBnuGY74=
+Received: by mx.zohomail.com with SMTPS id 1783523742904701.646089296638;
+	Wed, 8 Jul 2026 08:15:42 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ak4MwnDwIgdUhK3K@luna>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 12/20] rust: io: move `Io` methods to extension trait
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260706-io_projection-v6-12-72cd5d055d54@garyguo.net>
+Date: Wed, 8 Jul 2026 12:15:23 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ nova-gpu@lists.linux.dev,
+ dri-devel@lists.freedesktop.org,
+ linux-pwm@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CDAB04DF-F46F-4E78-A981-E6B171FAE606@collabora.com>
+References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+ <20260706-io_projection-v6-12-72cd5d055d54@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Wed, Jul 08, 2026 at 10:39:30AM +0200, Link Mauve wrote:
-> Hi,
-> 
-> On Wed, Jul 08, 2026 at 01:54:51PM +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
-> > Minimum `rustc` version required for powerpc is 1.95 as some critical
-> > features required for compiling rust code for kernel are not there.
-> > 
-> > For example Stable inline asm support which got merged in 1.95.
-> 
-> Didn’t we decide on 1.85.0 with the asm_experimental_arch feature
-> instead?  And possibly on 64-bit 1.87.0 if it isn’t possible to disable
-> altivec correctly there?
-> 
-1.85.0 or 1.85.1 is not feasible for ppc64le.
-PPC maintainer is ok with 1.95 for PPC. It's still experimental for PPC.
 
-Regards,
-Mukesh
 
-> > 
-> > Link: https://github.com/rust-lang/rust/pull/147996
-> > Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
-> > ---
-> >  scripts/min-tool-version.sh | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/scripts/min-tool-version.sh b/scripts/min-tool-version.sh
-> > index 031f2192b390..99bfdcaa3396 100755
-> > --- a/scripts/min-tool-version.sh
-> > +++ b/scripts/min-tool-version.sh
-> > @@ -33,6 +33,8 @@ llvm)
-> >  rustc)
-> >  	if [ "$SRCARCH" = "s390" ]; then
-> >  		echo 1.96.0
-> > +	elif [ "$ARCH" = powerpc ]; then
-> > +		echo 1.95.0
-> >  	else
-> >  		echo 1.85.0
-> >  	fi
-> > -- 
-> > 2.55.0
-> > 
-> > 
-> 
-> -- 
-> Link Mauve
+> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
+>=20
+> `Io` trait now has a single required method with many more provided
+> methods. Provided methods may want to rely on their implementations to =
+not
+> be arbitrarily overridden by implementers for correctness or =
+soundness.
+> A good example is the `size` method, it may be relied by unsafe code =
+and
+> thus must be consistent with the metadata obtained from `as_ptr`.
+>=20
+> Thus, create a new trait to host `size` method, extract existing =
+provided
+> methods to the new trait, and provide a blanket implementation. This
+> pattern is used extensively in userspace Rust libraries e.g. `tokio` =
+where
+> `AsyncRead` has minimum methods and `AsyncReadExt` is what users =
+mostly
+> interact with.
+>=20
+> To avoid changing all user imports, the base trait is renamed to =
+`IoBase`
+> and the newly added trait takes the existing `Io` name.
+>=20
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+> rust/kernel/devres.rs |  3 ++-
+> rust/kernel/io.rs     | 34 ++++++++++++++++++++++++----------
+> rust/kernel/io/mem.rs |  6 +++---
+> rust/kernel/pci/io.rs |  6 +++---
+> 4 files changed, 32 insertions(+), 17 deletions(-)
+>=20
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index 3545ffc5345d..6e0b845b229b 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -68,6 +68,7 @@ struct Inner<T> {
+> ///     devres::Devres,
+> ///     io::{
+> ///         Io,
+> +///         IoBase,
+> ///         Mmio,
+> ///         MmioRaw,
+> ///         MmioBackend,
+> @@ -105,7 +106,7 @@ struct Inner<T> {
+> ///     }
+> /// }
+> ///
+> -/// impl<'a, const SIZE: usize> Io<'a> for &'a IoMem<SIZE> {
+> +/// impl<'a, const SIZE: usize> IoBase<'a> for &'a IoMem<SIZE> {
+> ///    type Backend =3D MmioBackend;
+> ///    type Target =3D Region<SIZE>;
+> ///
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index c7533d605678..ab970e8b2e78 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -223,7 +223,7 @@ fn io_view<'a, IO: Io<'a>, U>(
+> /// operation.
+> pub trait IoBackend {
+>     /// View type for this I/O backend.
+> -    type View<'a, T: ?Sized + KnownSize>: Io<'a, Backend =3D Self, =
+Target =3D T>;
+> +    type View<'a, T: ?Sized + KnownSize>: IoBase<'a, Backend =3D =
+Self, Target =3D T>;
+>=20
+>     /// Convert a `view` to a raw pointer for projection.
+>     ///
+> @@ -309,15 +309,12 @@ fn offset(self) -> usize {
+> /// Types implementing this trait (e.g. MMIO BARs or PCI config =
+regions)
+> /// can perform I/O operations on regions of memory.
+> ///
+> -/// The [`Io`] trait provides:
+> -/// - Method to convert into [`IoBackend::View`].
+> -/// - Helper methods for offset validation and address calculation
+> -/// - Fallible (runtime checked) accessors for different data widths
+> -///
+> -/// Which I/O methods are available depends on the associated =
+[`IoBackend`] implementation.
+> +/// This trait defines which backend shall be used for I/O operations =
+and provides a method to
+> +/// convert into [`IoBackend::View`]. Users should use the [`Io`] =
+trait which provides the actual
+> +/// methods to perform I/O operations.
+> ///
+> /// This should be implemented on cheaply copyable handles, such as =
+references or view types.
+> -pub trait Io<'a>: Copy {
+> +pub trait IoBase<'a>: Copy {
+>     /// Type that defines all I/O operations.
+>     type Backend: IoBackend;
+>=20
+> @@ -326,6 +323,21 @@ pub trait Io<'a>: Copy {
+>=20
+>     /// Return a view that covers the full region.
+>     fn as_view(self) -> <Self::Backend as IoBackend>::View<'a, =
+Self::Target>;
+> +}
+> +
+> +/// Extension trait to provide I/O operation methods to types that =
+implement [`IoBase`].
+> +///
+> +/// This trait provides:
+> +/// - Helper methods for offset validation and address calculation
+> +/// - Fallible (runtime checked) accessors for different data widths
+> +///
+> +/// Which I/O methods are available depends on the associated =
+[`IoBackend`] implementation.
+> +pub trait Io<'a>: IoBase<'a> {
+> +    /// Returns the size of this I/O region.
+> +    #[inline]
+> +    fn size(self) -> usize {
+> +        KnownSize::size(Self::Backend::as_ptr(self.as_view()))
+> +    }
+>=20
+>     /// Fallible 8-bit read with runtime bounds check.
+>     #[inline(always)]
+> @@ -779,6 +791,8 @@ fn update<T, L, F>(self, location: L, f: F)
+>     }
+> }
+>=20
+
+IIUC this is what makes the methods non-overridable?
+
+If so, consider leaving a comment? i.e.:
+
+// Provided methods may want to rely on their implementations to not be
+// arbitrarily overridden by implementers for correctness or soundness, =
+thus,
+// enforce it through this blanket implementation
+
+Makes it easier to maintain later IMHO.
+
+> +impl<'a, T: IoBase<'a>> Io<'a> for T {}
+> +
+> /// A view of memory-mapped I/O region.
+> ///
+> /// # Invariant
+> @@ -819,7 +833,7 @@ unsafe impl<T: ?Sized + Sync> Send for Mmio<'_, T> =
+{}
+> // SAFETY: `Mmio<'_, T>` is conceptually `&T` but in I/O memory.
+> unsafe impl<T: ?Sized + Sync> Sync for Mmio<'_, T> {}
+>=20
+> -impl<'a, T: ?Sized + KnownSize> Io<'a> for Mmio<'a, T> {
+> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for Mmio<'a, T> {
+>     type Backend =3D MmioBackend;
+>     type Target =3D T;
+>=20
+> @@ -920,7 +934,7 @@ unsafe fn project_view<'a, T: ?Sized + KnownSize, =
+U: ?Sized + KnownSize>(
+>     }
+> }
+>=20
+> -impl<'a, T: ?Sized + KnownSize> Io<'a> for RelaxedMmio<'a, T> {
+> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for RelaxedMmio<'a, T> {
+>     type Backend =3D RelaxedMmioBackend;
+>     type Target =3D T;
+>=20
+> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+> index d9b3189d09b4..e95b769ebe47 100644
+> --- a/rust/kernel/io/mem.rs
+> +++ b/rust/kernel/io/mem.rs
+> @@ -14,7 +14,7 @@
+>             Region,
+>             Resource, //
+>         },
+> -        Io,
+> +        IoBase,
+>         Mmio,
+>         MmioBackend,
+>         MmioRaw, //
+> @@ -210,7 +210,7 @@ pub fn into_devres(self) -> =
+Result<Devres<ExclusiveIoMem<'static, SIZE>>> {
+>     }
+> }
+>=20
+> -impl<'a, const SIZE: usize> Io<'a> for &'a ExclusiveIoMem<'_, SIZE> {
+> +impl<'a, const SIZE: usize> IoBase<'a> for &'a ExclusiveIoMem<'_, =
+SIZE> {
+>     type Backend =3D MmioBackend;
+>     type Target =3D super::Region<SIZE>;
+>=20
+> @@ -292,7 +292,7 @@ fn drop(&mut self) {
+>     }
+> }
+>=20
+> -impl<'a, const SIZE: usize> Io<'a> for &'a IoMem<'_, SIZE> {
+> +impl<'a, const SIZE: usize> IoBase<'a> for &'a IoMem<'_, SIZE> {
+>     type Backend =3D MmioBackend;
+>     type Target =3D super::Region<SIZE>;
+>=20
+> diff --git a/rust/kernel/pci/io.rs b/rust/kernel/pci/io.rs
+> index 4be33ecb4192..4d1d0afdc491 100644
+> --- a/rust/kernel/pci/io.rs
+> +++ b/rust/kernel/pci/io.rs
+> @@ -8,8 +8,8 @@
+>     device,
+>     devres::Devres,
+>     io::{
+> -        Io,
+>         IoBackend,
+> +        IoBase,
+>         IoCapable,
+>         Mmio,
+>         MmioBackend,
+> @@ -144,7 +144,7 @@ fn io_write(view: ConfigSpace<'_, $ty>, value: =
+$ty) {
+> impl_config_space_io_capable!(u16, pci_read_config_word, =
+pci_write_config_word);
+> impl_config_space_io_capable!(u32, pci_read_config_dword, =
+pci_write_config_dword);
+>=20
+> -impl<'a, T: ?Sized + KnownSize> Io<'a> for ConfigSpace<'a, T> {
+> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for ConfigSpace<'a, T> {
+>     type Backend =3D ConfigSpaceBackend;
+>     type Target =3D T;
+>=20
+> @@ -267,7 +267,7 @@ fn drop(&mut self) {
+>     }
+> }
+>=20
+> -impl<'a, const SIZE: usize> Io<'a> for &'a Bar<'_, SIZE> {
+> +impl<'a, const SIZE: usize> IoBase<'a> for &'a Bar<'_, SIZE> {
+>     type Backend =3D MmioBackend;
+>     type Target =3D crate::io::Region<SIZE>;
+>=20
+>=20
+> --=20
+> 2.54.0
+>=20
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
