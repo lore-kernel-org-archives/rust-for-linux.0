@@ -1,106 +1,131 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004313EDACC
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 09:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6563C8C74
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 09:04:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783587691; cv=none; b=b8rvy2GrVqPfmQhIaZnknDNU/aSLzbL9YVa6Ng+JhKP9DpI4I/HJl66sB6I02deyFyIGq85GYPU9eSF9LFqDeIyfF86wGpfITeM1f6ELkj5PKbvj29nbIVxwHFn6jdXt0oWVFT9pxyEiAVk/KguXHP8cW2isNwB5sHD5cYg9YfI=
+	t=1783587846; cv=none; b=nDElHnCPl8SklHfY5jc34U2j1LzhMp+E0ekFIhcWIPpEGsPFwHQyrzdJhGv3jZlM+ML3RmPqVHWbwiGtoc8K/qEeIj914a5FlyT+tF+A1E/tgCdrJ2e+H0jYrpIjGlBZygcpof5g4EwSZLYa0bjAd/cOob9GvuMgpVcSGQqR3+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783587691; c=relaxed/simple;
-	bh=zGyveR2WbexIXAL5cH6LAz1O8Yy1Bgi6o6rA6JtFqEc=;
+	s=arc-20240116; t=1783587846; c=relaxed/simple;
+	bh=8p1SlX4Y/tAMtxoktfOY4hYUbJ5KdrvxJ/hf35CLJIY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ayrx7KCM2VGBX5xjx94jqK2QvzBPwSdI26Eqq9gH1F6t8aRnrEaiYoUp6q5YCyJ0i2+7sUJlAvEMXO805GaU7hroYKS7wtJNuhyHz2aWu2EVNwXfqMmyYO8+VGoFrXzy4DFOIezUVeCmwoLlfTirf7nozLxyPa2ur2yufZZE+LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gkSgL9ap; arc=none smtp.client-ip=209.85.208.74
+	 To:Cc:Content-Type; b=RjOSchSefhoZdyyANb5eQhzS/7sJ2cJ3qD+jnoX4fEHH/ufRiB60tKd/me+za1OWD1MJoh42Od4t3mU9j9+Ss7vaAFczzBoYycxeY7ChN0l6sDmGRvT96hC4lp6nKc1Tf4cFQ74ZEPcFLGvmHoRfLB+yWtmMuWkoEzkqi95NoTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NML6nO88; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gkSgL9ap"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-698af52daa4so2307922a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 09 Jul 2026 02:01:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NML6nO88"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-493ce08a6b4so6611975e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Jul 2026 02:04:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783587688; x=1784192488; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783587842; x=1784192642; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cKWh2FN+uopuAMuLcrvUAZLjx2pCwGenf//G8cQsjMQ=;
-        b=gkSgL9apR7y+iMBXru722gl6bNjk0pDunLr8nm4cL9PIhBj35NSRXdpspNsxETxb2e
-         77MiaIcnAFL1IrLI91bf9Visv92kW3n/AlXobUKJ8bz3NL4aUY8ARzveVjY+U7USEhhB
-         FtPnrnq8OQTbdC25cOgmpdVP21LZUN5rSEXUORwqPdViyGBp+0C2NI82FDqOnXrx3FK5
-         BmcU9XKewCo2HaieMIEq6VFahz1QUfDDNWQPhlV9ePF3v9jFjxG7htLv5B8U+gzqCMXG
-         wt8zQFl6LtKiOAcGQMGCoPpfL86mGoIqY3SrTIFZLSX8SAmryHWqplVGpNnGpcFQdSW2
-         Ttaw==
+        bh=UHb/QYDUeRjEZWmoAxhxicuHQ83r8Iogoxy5g/5DRs8=;
+        b=NML6nO88IooRB6zrk3xKGhZwKnJ2AnNs7VSnEjk4j0l4a5/A595GCIvC3E6KCYyJTJ
+         SNzOeGM2s+gaNuISy4xSzvvn/eRPAxtyPQxXVBFU7U3n9UkFQ0SBFvG8Tr8y5OjYZCsb
+         0G6Y2Ruub4sMK6iGkvJwtt1HB8RbLWZvZEEzYsyHr9+rvRytUaISRDp2sgDJKFvnfaS1
+         adUXvPN4/V+uOg6AjfMgvDAnUMEgYXoX7v5HN08WX6DyH8WkDWDiJ3Q6BecSeP+00Zki
+         him7Mu8z1lKNCiejO12YnuQGgVUjo9WSqe7PJD3uPQbVZQ5tdL2TE194NqtWwdlIupR3
+         yZzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783587688; x=1784192488;
+        d=1e100.net; s=20251104; t=1783587842; x=1784192642;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cKWh2FN+uopuAMuLcrvUAZLjx2pCwGenf//G8cQsjMQ=;
-        b=CD4fPfnCr+yiZ7mW8gEXs1iq2WIsNBzuxNr+ktpP1IkNbDv6fb/egxDaQYXDpioLRt
-         soIJu8NA7KVJXXyHItgjz7dimmiWnoCDjVOBkZ9PLgqLJWVWcDqNdr5HCEzbhwmXMqoH
-         D1rF5WKxm3G3SVRTLdfVhQ16IHhObUFNP6/QLIm8Uc+4UDrooUP9IC1oC0B1Zg+G0hx2
-         JL4T/WMzf0xNsbc1xBv8RXgAUZo/qfaUJGggknz8UoBYhGbAzudilWu/vCQIaczwTFeg
-         xttDwuhdgnndwZtH/s6/yHKNuD+c8kDDa2I4rETzX9tH05e5tXl//7lDXbVFtV91UiIA
-         lRxQ==
-X-Forwarded-Encrypted: i=1; AHgh+RonqeTR+lJuaNbpWKpi/pFegqmO25g2qsSG9MJBDgVGs4OXRUbTimAVCh2jpVKrYrKkAQG/gHWVUYbBvxHfxw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYMyR/HbCKVVO1bun1z8pUIx4OPjfDUk7l1uQYPBY9UlxA6S1K
-	fEIgpr9Gmash19AYttnJ9nOk43pBdqWz/O58a7ApD+qTMHXPSZGfIEJbD3ksu9NhSVo5zo9M2mW
-	nK/FHGr2ocYubaudj1Q==
-X-Received: from edfg18-n1.prod.google.com ([2002:a05:6402:a252:10b0:69b:3a15:6755])
+        bh=UHb/QYDUeRjEZWmoAxhxicuHQ83r8Iogoxy5g/5DRs8=;
+        b=QK+bzVYmzlUyjAn/tnrO67fCJWxZKWUxH+iP/0r6JZz1kxuO3/ujqynCxX3/RDS+Bp
+         EeY+PSpF7Q/jv3l3ZPVAVFzYS5JoPACkgojjm7P03xnt84rn4QjArtq6eavrDAwp5yjb
+         yrQF/PO3PJBmcbd0nEW3MzhK/69kAfdJ5QU9HuT93ZF3QLRuYrZFM0rNIBpF0ITrwnA9
+         RPDHOXPCfm27jcUQ947nqpfwtDXG6BCxCVh42LE3IsP5obwhx/YNiZ8wLZzJXwttOA62
+         dR0rLzsM5EARk+Tuzu4mB4pUUUe5a5rSF/nSxAfVrhlyP2nY8z4r9XhDoU8SlKNA3CrF
+         q2pw==
+X-Gm-Message-State: AOJu0YyAnyapBqNOgO89JoyRnabOkhku3pDRwge4ip3xGGc40V8cAjYd
+	emmijT8yx2Z5rCJsU2COlDp88raoJu+K0xHin05rGLfBBFIXqThRqY1JjZEzuCAGFCFJYZVhvT4
+	46pFL/PT1YRAEOwuEXA==
+X-Received: from wmer22.prod.google.com ([2002:a05:600c:4356:b0:493:bea4:1b1f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2b9b:b0:69a:57fb:4783 with SMTP id 4fb4d7f45d1cf-69ab445ed4cmr2326024a12.13.1783587687331;
- Thu, 09 Jul 2026 02:01:27 -0700 (PDT)
-Date: Thu, 9 Jul 2026 09:01:25 +0000
-In-Reply-To: <DJRP4CD15MC5.J47HDEUJS7V1@garyguo.net>
+ 2002:a05:600c:3e8e:b0:493:d26b:1575 with SMTP id 5b1f17b1804b1-493e69b0dbdmr59666475e9.27.1783587841386;
+ Thu, 09 Jul 2026 02:04:01 -0700 (PDT)
+Date: Thu, 9 Jul 2026 09:04:00 +0000
+In-Reply-To: <20260708214738.25008-3-brucer42@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260703-chid-v1-0-84fe8259e46e@nvidia.com> <20260703-chid-v1-2-84fe8259e46e@nvidia.com>
- <akvXzPd169ahMuCi@yury> <akvkNuh2bHhFwmQM@google.com> <DJRP4CD15MC5.J47HDEUJS7V1@garyguo.net>
-Message-ID: <ak9jZe11r-A4oVf0@google.com>
-Subject: Re: [PATCH 2/4] rust: bitmap: add contiguous area operations
+References: <20260708214738.25008-1-brucer42@gmail.com> <20260708214738.25008-3-brucer42@gmail.com>
+Message-ID: <ak9kAP1SZF8AchQT@google.com>
+Subject: Re: [RFC PATCH 2/3] rust: power_supply: add power supply class abstraction
 From: Alice Ryhl <aliceryhl@google.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Yury Norov <ynorov@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, Burak Emir <bqe@google.com>, 
-	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	John Hubbard <jhubbard@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org
+To: Bruce Robertson <brucer42@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sebastian Reichel <sre@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Igor Korotin <igor.korotin@linux.dev>, 
+	Gary Guo <gary@garyguo.net>, Tamir Duberstein <tamird@kernel.org>, Boqun Feng <boqun@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, Jul 06, 2026 at 07:22:27PM +0100, Gary Guo wrote:
-> On Mon Jul 6, 2026 at 6:21 PM BST, Alice Ryhl wrote:
-> > On Mon, Jul 06, 2026 at 12:29:00PM -0400, Yury Norov wrote:
-> >> All three are the wrappers around the regular outline functions:
-> >> bitmap_find_next_zero_area_off(), __bitmap_set() and __bitmap_clear().
-> >> 
-> >> The inlined version in headers is optimized for small bitmaps. But the
-> >> optimization is all based on inlining in the C code. It doesn't work
-> >> if you wrap it with a rust helper.
-> >> 
-> >> There was a discussion about the similar find_next_bit(). The function
-> >> itself is an inliner, but it's a wrapper around the true outlined
-> >> _find_next_bit(). So we decided to minimize the binder size for that
-> >> type of functions.
-> >> 
-> >> Please, keep the binder minimal unless necessary.
-> >
-> > If we can just call __bitmap_clear() without any downsides, then I agree
-> > we should do that, but we actually do support inlining the helpers now.
-> > See CONFIG_RUST_INLINE_HELPERS.
+On Wed, Jul 08, 2026 at 09:47:37PM +0000, Bruce Robertson wrote:
+> There is no Rust abstraction for the power supply class in mainline or
+> rust-next. Add a minimal one:
 > 
-> bitmap uses __builtin_constant_p which will only work with pure C inlining and
-> not LLVM IR based inlining.
+>   - a Driver trait carrying the supply's name, type and property list,
+>     plus a get_property() method;
+>   - a generic extern "C" trampoline the power supply core calls back
+>     into, recovering the driver's private data via the parent device and
+>     dispatching to get_property();
+>   - a Registration that owns the power_supply_desc and unregisters the
+>     supply on drop, freeing the descriptor in the correct order.
+> 
+> Property, type and status constants are re-exported so drivers need not
+> reach into the generated bindings directly.
+> 
+> Signed-off-by: Bruce Robertson <brucer42@gmail.com>
 
-Ack in that case using __bitmap_clear() from Rust definitely makes sense. Thanks
+> +impl Drop for Registration {
+> +    fn drop(&mut self) {
+> +        // SAFETY: `psy` came from a successful `power_supply_register` and has not been
+> +        // unregistered. `power_supply_unregister` blocks until no callback is running;
+> +        // `_desc` (dropped immediately after) is then no longer referenced by the core.
+> +        unsafe { bindings::power_supply_unregister(self.psy) };
+> +    }
+> +}
+> +
+> +/// Register a power supply backed by driver `T` against `dev`.
+> +pub fn register<T: Driver + 'static>(dev: &Device) -> Result<Registration> {
+
+Should this be &Device<Bound>?
+
+> +    let mut desc = KBox::new(bindings::power_supply_desc::default(), GFP_KERNEL)?;
+> +    desc.name = T::NAME.as_char_ptr();
+> +    desc.type_ = T::TYPE;
+> +    desc.properties = T::PROPERTIES.as_ptr();
+> +    desc.num_properties = T::PROPERTIES.len();
+> +    desc.get_property = Some(get_property_trampoline::<T>);
+> +
+> +    // Stable heap address; moving the KBox into `Registration` keeps this valid
+> +    // (moving a KBox moves the pointer, not the heap allocation).
+> +    let desc_ptr: *const bindings::power_supply_desc = &*desc;
+> +
+> +    let cfg = bindings::power_supply_config {
+> +        drv_data: dev.as_raw().cast::<kernel::ffi::c_void>(),
+> +        ..Default::default()
+> +    };
+> +
+> +    // SAFETY: `dev` valid; `desc_ptr` points into `desc`, kept alive in the returned
+> +    // `Registration` and freed only after `power_supply_unregister`; `cfg` valid for the call.
+> +    let psy = unsafe { bindings::power_supply_register(dev.as_raw(), desc_ptr, &cfg) };
+> +    let psy = from_err_ptr(psy)?;
+> +
+> +    Ok(Registration { psy, _desc: desc })
+> +}
+
+This looks like it should be a ::new() method on Registration instead?
+
+I would compare with existing Registration abstractions and mirror how
+they do it.
 
 Alice
