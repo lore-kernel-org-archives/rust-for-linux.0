@@ -1,258 +1,154 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012044.outbound.protection.outlook.com [52.101.48.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CFC423147;
-	Thu,  9 Jul 2026 12:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA1F4252C8
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 12:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783600512; cv=fail; b=tR6B3lIhLO+UQ6nJgb5mbhQYwFfPqd9JB98Wfq15V+g1IlaxZ14jF6f7KhFr4ofLcXhRAoosZuLbpomcje+XJtdZs4kEZknkARUoa7svn9qkdFG45GlprKIh9RrxhfkFypO6HZegDu5qJUpVCvGH8YBIf8fPTwYqaY/wzGCVLJw=
+	t=1783600581; cv=pass; b=hwSkRIHthZT0rBBJ/54E1FrJwC9im9Ae9QR6Dd9Mkie71ZdK5BPem5NVRiR6ZV4a/BR/BGxVON3F+CNZ3gg/xqGYG9EWbP059fNyIe0qKtr7ifKMpY8JsPCIJDO785aYLMCv9+6cVh3z/j7Q3Lr/1nhkb/MOcNRVfDH2QEC+Ieo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783600512; c=relaxed/simple;
-	bh=Opj6mTBLXU3JwGVIRyaGBRJR8MYzIBq/NhFEXmi19Xk=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=db6vTzS9x5AwSz/JJUjc1gffKvANgrGrYi11Q+RoV/bHh2jaNiSd9PjujbkOkk/Eedet44ie3PB4vbpvsu2xIWJZY/W3cKQOBVhlh7d+rFm+Dm3zElTTz1q4UxaNni92EeJyp0FqoLzfAe1lxhFqeIUE4+2o+TCUhscJvt7FtJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FuFepVnm; arc=fail smtp.client-ip=52.101.48.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1783600581; c=relaxed/simple;
+	bh=EZnIMhyxq8/WSozIlMLiElkIfQ8ZrBt9dufg8sJD6BA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gaeonioklplFr++ysnppIQgW6R1ir7NUT0Xy9XHZIpcLnJSRIh1hdiqXkk81IEhJcD+tQE+WakLnqW3EdmZRXVg+dnMzOcVlCBHDxwgUj7HZns3TbwwAfEprGk1WnqUbOWjV8DbVdebVma9P94WE3mzeBHKVlkZ9vRpxnW+h5N0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DqUoteW0; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FuFepVnm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x6VnQFQMJboEutpruA02G8MRu+iYXcYsRVlAlE1pTmUKTbryHlq1nPqxFCCYn5M5hU/ISBqE2+gc9Uzli8bddUCTVXqtoiDpjCUkDh7vuG5+l2j99S9/3G4OBqspX3sKOWE/wVbVlTjXrGqM74MJ7cLMD+GEO857HU2S9xnW5nez2gWeehk864sRtjF1LhuIWMzabKqlR2RBxMPkTj6Z/tRzClVVjiPn+y61lxwKmwJd8funsLV97xt4j5GW98JetbenhgElIl0BQihiTqGBhmIlGGnia3ltSAzV9UPtlrXjqu2PkCU07ICdGbrGqFN7GcG+M8rddbfuNInAebNrcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KITAKGZpS1mQehdAFnpuQfU/MlWZzM86d+l8EkGUnl4=;
- b=rUC8xRH1dvDchfli+e2gUKaEppTitBWwhVwUSrQpioc3sFi67bpsVindEZ9QJcFZiMWnF/Om2aJkDkv2HonnSSaKHY8bRZemAyDssO4VvT4ZhPMnj+xK1+mJAHAWf7OchO4NsKOWfZjpm2syZdiSH1fP2FN/KoSiNzbPtu9AeCGl518ZjmaqJ35F5ocy0+OjG75YfbXwdwyLHxA0dlbps0oKGXY5wF/XCDPzsIZ9b0E3CXzlIOEhE6s6Ev9IvHxLbHMX148ZlshlwwzoFliqGk7VNkKe0HnyhvpHyzxy/mIx/wXZjvS/cFyJeacaL5Q8FiETZmyaXMViyCal/Lam/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KITAKGZpS1mQehdAFnpuQfU/MlWZzM86d+l8EkGUnl4=;
- b=FuFepVnmMNHNkXcO9A+UeA2UOpqf18DzwFALNJfTjHWkOSTkSiky+b/i+qwguQeRWU+QK95EXbQkorzDj0FpHL8wdAg6JadZYosfNCaYVGl8RkXRZAfOnCRGu2in6SO3CN5unldsKWyx/m18PJgEG0BdiM2Ut+YU4eP4SjqZc/EztwD/61IC3p+l3c1RqDe/lzgQTbLMNjCeuQKVsQrgHEMFDyZZP+1AMiRl4t585+a7luOx8UHzRu5cB1uodPMiTQBPXcCzHT9vG3HYDJC83D236ip6dhufBC5VyafvIb0EzuryIZB0ZGc9etWyLFNUOaC5qQji/UpyJzRMZn+HbA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by IA1PR12MB7517.namprd12.prod.outlook.com (2603:10b6:208:41a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Thu, 9 Jul
- 2026 12:35:06 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
- 12:35:06 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 Jul 2026 21:35:03 +0900
-Message-Id: <DJU1LZQLJ38P.2OHWQWKDYJ86J@nvidia.com>
-Cc: <nova-gpu@lists.linux.dev>, "Danilo Krummrich" <dakr@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Benno
- Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 3/5] drm: nova: Add GETPARAM parameter to read the
- GPU chipset
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Alistair Popple" <apopple@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-References: <20260709085204.565159-1-apopple@nvidia.com>
- <20260709085204.565159-4-apopple@nvidia.com>
-In-Reply-To: <20260709085204.565159-4-apopple@nvidia.com>
-X-ClientProxiedBy: TY4PR01CA0013.jpnprd01.prod.outlook.com
- (2603:1096:405:26e::15) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DqUoteW0"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-380a02c71e2so379471a91.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Jul 2026 05:36:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783600579; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cBb5triRxGrsJAg3TAttv7wKIzxjN54o0J102qlj30a8quP8AN72H1HN9EsIhKN6KI
+         MFHfJ030THCTHgvrRxSC0GrUuXfvfVx8n6OdrPGOxWBeYYzHsgYs1yyLGJSH3bA/Ucgp
+         IRHKsoFAS5MwhQViWFNbb7kIwbWY0ENqQHSvvFp1va/sM6aO/klm/khH2iHZEr/j4oKQ
+         k3sClthL7kGLJvwd23kFBEDDh9Y2vlFFrvPdP06+NMjNNlMwYvy61O5RJ7Y8I7bZKahq
+         0duea8A93TaLCbDa43oQ4ta2p6A4MjL6iG7dAAWycQVgfj457ZeU1HoP+yzzPVh1POa5
+         lZdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GmE0JTCOruYKrZQM4jbbugvhQ7RQl6mUUTUdc9aMHs0=;
+        fh=/GBUxLKQB0cfi+wHoMrecZoqtHdmxGkh7P4y8qjwrg4=;
+        b=CJhixJV1wCmS4AS1/v7ZrvPjuGzDRBiVyIsEOfKue55WXbUmD+loeH8S1HTWtQQd4m
+         Abaco8iWrhX9OpD81h8x2M5VJCSdp0bt0j2Yh13dZbEHy5ImBw8/XQq6k9ihF4opm1/F
+         JY4oQovGG8bZ/POg9ojY1h5bBlw9bBp1AxGhE+Ag22JALWZJsR4XGc1IYooH0We5nigc
+         dcDJYnMwhqiuAYNZbOehnZWQdsOKA6XY+fmiHd0Scq4u21QcYys4ezeFVOQAlwNtHHnS
+         rP6EHcGLZ4VbJq85cFluBjfO5nocYRViaOttF4d9r7BcQWavwFZlysBKKgBPSBBV674E
+         kHeg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783600579; x=1784205379; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GmE0JTCOruYKrZQM4jbbugvhQ7RQl6mUUTUdc9aMHs0=;
+        b=DqUoteW0yXh0DPAGBkdeFetSnFI5NlI2hib0zEK+cTY1WCusqUaohlx7lQfG1YLyGR
+         disNP7ugJ4w2QdA0Ijf/bajJ+zH6K5UDHHnbl0FxVcuwU+yHRa/AgKO3xFdadNKCoOgt
+         c2pqpi1Y0gYrde7FZilUSdESVMsZis6uLXdG1lNzieBslIFBGxn0EkWcGT7a/w0hPNLO
+         HS8GzZWiK2of1kUfH2flzgoIi+dk2EONeCERDp1bccf0DnA+zk6bgrjKWdnl0edcna+L
+         ddJL9Q0Lp08lIeCNuqjdBcuaWwNOe6eXrJEMAdu7V8SWPL5UGCcvjDY96pVfF75NPvgG
+         NYJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783600579; x=1784205379;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GmE0JTCOruYKrZQM4jbbugvhQ7RQl6mUUTUdc9aMHs0=;
+        b=jMo63LpaaCbUKm/+er9dy1sE+RoJMOeuYvjAjkVXQQHl1fVufEQJBvsPXxQoH28y8l
+         e4MAbg/KP4LBq4Lkj5BvX5lK9qscaPR9LafYx5l4Lt+JmeVfmCP04isBnEC62Z2gaTUV
+         gRp/sF0oB09BFJ5KpL9oJqI/hXSyNP7mSfo2iuw4ylO8luZvC7ZoLq2wNyPxU+UxmAJF
+         oeiMQ0a1oNbGUFruNlyPIGJyS7ymYPGV78xh01RBqzFE9Y3eU46mfoSyxZK5QPg31Bn9
+         kTI2NwAQe5PV1Etv3a3JMJEL+HkypiySs15iM6AZVLoT8/UL3Viytt8A7pzOIAw1mEPR
+         /aRA==
+X-Forwarded-Encrypted: i=1; AHgh+Rp5i1TGHcBfFlin4NlVYaku9zjKSRhwgMcDImksHIlgdoQj+mZLpUnlTDds2PMlmYc3vXt44td61OjNiT/6ng==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxrnvlw9qSRmEKInBnJLQdWideQFgugqw3Q+Z66e4yN6MyuwNfe
+	e7HiPmN3r5ey/udmX2Z77Ixe5xz1T+9OwBgh+bVdKv05nCZYHD8DOYg+JnlN3XVLJnrMgKSx5If
+	yqnkiJaq4vfFe1lTCdNwLYAd9iq3uNgs=
+X-Gm-Gg: AfdE7clZqx8bpbfpAbz5gT1IFAQKLmDlyiAR9uQQoOgDbIRLoQZWD1GcdOjO4LUfCqd
+	+5mlsj55IfO4QaPtmtZSHcREu42MTaQcrjcgfyQuuRuawbpgFhIzJgJBkRb5DCJcgEktIa3xiSC
+	8Rs9nC0+505DyPm2psv0N9gBsKhK7L6hILgHnaOP3t7SNgjB1ThfRwlAKi+OuUPRup5vMdLjywr
+	bNULdxNsu/Lre2TLhul4Tqmp+vqjlnBuhW+F78lXiGTBRbqxi2HcBGDNCiEuMrnDC+BtlQcfabg
+	Pv/5xk5TUh6I3dQv+PgtY04DRn/i33AImKNXHkT0PrQDmOcH5xWXMO0ROyBeymMxbWJxJQyJhWI
+	tNMka9D6M5YWo
+X-Received: by 2002:a17:90b:3fc8:b0:37f:df57:2ddf with SMTP id
+ 98e67ed59e1d1-3893f97f9acmr5955183a91.1.1783600579406; Thu, 09 Jul 2026
+ 05:36:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|IA1PR12MB7517:EE_
-X-MS-Office365-Filtering-Correlation-Id: 04a8f3e9-c0a3-48eb-bc50-08deddb681c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|10070799003|23010399003|1800799024|366016|4143699003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	qF3EWl7T1Qi4j4+JG7OwKvkuhPHbK03/6eLeoqd7ex0zPVDOaF5zpOWEBpxyNiNZsTu0OEeAsB+lmmHbgvr4yRLIHMuMxEFzHY9oxVRhXE4BMACas/9lP7PrrZpRgARKx2iP6inpSJMS4rYTlHJV2ZKKgkKJ+0wPzdwLDHhOOmayP+gASBWfbM9Vfpj7VR+FvJK1lMzbAWuVZVKrVGre8SXMPZLpStnx/oKHY2v71rV5fL9MvX+wqYS7HkLQEpsfEUL5qA9ommOww99ACLsd4h5y5oqJ5bMSsXl+ugTsxqwYpyR5fPE4yGqfdJubmlzs7RGBPCaYL4LJBhfHeHcyoHo5u/F0dokCkZhgoZHW3yI4GnetmAZNkmKTo/OnpfxJV90Un+6xRHfWB5NYm8egRiNSUv3jEcS/Abg4OJO+NrSKuOAHNGDjZYI7w7qcz2/QeBsPBmUOk24hztcahzkEngtWjoUiwdf57stdQfrlhEGSheikTCxLH1KxS3CmQWfp/RUdBMGuhd/Hhg66Tk5mAmBm7KtONMtEwDv+1W6lnaHzvJUrnrkAPBh2g1xLXYRJBGXgYPMs6mXuFgfEimK8pgyWmJTZA6A/yYGO+Rp8h1+N30bOWPZX+1hzry9VMBhrMEzai4XZQ6oQazosMlgqsCsBo9GkBS0zfjpGeas0muM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(23010399003)(1800799024)(366016)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UHJwNE9VSTRCd0NXLzdaZ2VmQUMzSldUTGhIUCt6T21IMnFBam03WE1IL2hZ?=
- =?utf-8?B?djFVNldPcUpJekVUUkk1TnFNZ2JYQUFETTI4eGZhbnVtMTR2ejR1SW12T1p2?=
- =?utf-8?B?RSt6V0I0OVNTc3dOOUc1SWxSVGx4ejdtakxMMEViYjl2ZThIY3E1dHR4RUdK?=
- =?utf-8?B?WWtrc2kxOGlnK0VMUjl2UTJJOWxCU0F0OXQxQmpRRDlrSWtFTGF0MzFuZzNw?=
- =?utf-8?B?T3BaalhuL2Ryci9VYWNtQXo3OTJRa1VQcmV0MWdEcGdPOUpodGp5czBzSnlP?=
- =?utf-8?B?bGx2RGVMRHZYaWwwVElyNnlZbzlJcFlFUmNySU9tMzhQbjM3OU1EOGZGTmhN?=
- =?utf-8?B?eUhzT2dYSEM1M3MyeHVlZWJ5aWtoVWdCdStrM1BMRTVSRWpkSG5VSXgxMzhO?=
- =?utf-8?B?L3lBclVoY2c0czFhVmplbU5IajYreWQvcVZrMzRsckcvRlJmaEtsaE11bVV5?=
- =?utf-8?B?ckVGNVA1Q0VPYnhRaWlXMHhDNFhXVjB1RHlwaVJualFPOGZmOEFJdE9UM2JW?=
- =?utf-8?B?NEdqb2dSY2VoL3Y3VWtGOStJNE9WbjJGK3o4a1VmSjRtaG4vcS9CN1BrU1Ro?=
- =?utf-8?B?ajJzMDcrSTFjUkRWam9uK2hadUs2YUdNT0ttSjhIejlxMU9HZWcrYjNvTzJJ?=
- =?utf-8?B?RGJ2VlFlRlhUaS8wQi9FdGdESktJSzlyQmNMbW9sNmJpVWdrdlE2RkRTYnZ6?=
- =?utf-8?B?SW5BUVl6VlhVUExlY1NyRHpIWXBHclJFd0ZEeW9TSGxOaGU0OWhlMnFScEdZ?=
- =?utf-8?B?b1RydGl5RVVUdDFXRVZtcFFrajlwYVlXeGp3QURkWUZxNXF5MzlnTmZrUkVz?=
- =?utf-8?B?bUNsSTBsSUlUeTU2WnZwdE9BcWdqaXdKZU1JUWRwY28wR0grejl4YjFoWEYy?=
- =?utf-8?B?VEUyMFU1RTdqSWx1b3BSenFMcXUrS0NqTjlwdjRYRnhmQlBOZUVrV28wcHNV?=
- =?utf-8?B?cCtGQkZQd2FCSTMyVHltUW8wNytabml2UCt6RmtxQkdHMEZQbGdtSVBhUHMz?=
- =?utf-8?B?S2ZZNGpnM01VMUVDRERLOE5xSnVTNDZ1YXpFZ25RZXhyL2Ixb1ZkNUcva2x2?=
- =?utf-8?B?TG9aS09lL0N1clR6aW91NEo3bncyYWtoaGo3QzFkRFpCeXdzL3lvN0ZrL2pr?=
- =?utf-8?B?OW1Ia2FGM21UL0hBUFlyNjdUNnF5RzlqbEQ2YytncDhOMFM5RzFRc2JaUExj?=
- =?utf-8?B?eDZVOXZPblFGcUlhaUd0ck5kSlVSZXlwZjhUakF3MHIybFZGR1JIcXVqSHZk?=
- =?utf-8?B?N1F1SmN0NW5iT2xXZjIyNDhOOTJtN2VodWQrN1NENjBvUGttdTBLTmlxV3E2?=
- =?utf-8?B?L1czNXR5dDRicGFEcGZ0TERLWUV0c2N3d1BjdEttQnhhTkR3ZnNVL2d2UHBi?=
- =?utf-8?B?TnlvZWNaSExmckJsSHpjcnh6ZXIvdS9JSlNFenE1eHVrd2hLdzhPYTduaXpJ?=
- =?utf-8?B?ZTZPdm0rMDdjeEl6UUVmeUk2ZE1FU0tndHFVcFhZYndXNTRMTmZUaFlPR0Vs?=
- =?utf-8?B?MzBESUZCamsvS1l3YXZ6TFpGM201bExlTldKYmhORWt2YlNCMVdiZnJ0WTNx?=
- =?utf-8?B?SnVySjlESitzaDJsdWVOMnJHdzVBbHlZV0ZsdER1a2dyc3ZYNHp3bDJhaGox?=
- =?utf-8?B?Nm0rSDBQaDZEbDM4bnUzdWdwdk1rc0NVa2FvSFJkdmpGUjZ1Q0dNTHpaaWxa?=
- =?utf-8?B?M3VrSGdiejVlQ3U1WUNZZzZlUk5IMnpHUm9VSmU5UzNvK1pPTGh5U0ViVnFi?=
- =?utf-8?B?czZjNVNKQWV4N1BqOXpYRHN2dmdBTndqb0I4V0k3RDgzMFVFb2E2QTZvZUxB?=
- =?utf-8?B?a1h0TURDUTFwaGJPeUVnT3pMdm1Pb0t2bXl6cW1aOUlhVjhXQ2IxTG1aSk4r?=
- =?utf-8?B?L2VBTGxMZDFDelZTcEVUclQzMkdYL1FHZVhXdFhtT0VsWmNoV0RtNk1xbkRv?=
- =?utf-8?B?cGFjVFNuNGV1T3MzTGg2cEx2Y3BkTWxoU0FsRzlEdXNOQTlLT2RpRlpJWEda?=
- =?utf-8?B?R2w3RlFpUDZLOG9tYWJhdzZHVUl6QjdPMXlYZk1VUGFGV2FiV1RBWE9NZndh?=
- =?utf-8?B?NGlDTFRWa3dLc0FhV1FVTlZTUEpsNGJ5cHA0TjBoWjJvdzlFNDhRcmlsSG5E?=
- =?utf-8?B?aXdHOFA5T3VoUWFLQlhSOGZydUFEbU1kNG9HUXI0Q05YaTdiaE5NZkh3bTZm?=
- =?utf-8?B?UmpneFVZQjNLbStIKzlDdDgzS3czZ05qQVJkQ0dtSENzMnJHS3FqQlpxQUdm?=
- =?utf-8?B?N1RZWDlDZ0dxejk2OTRTMHlHeWlFWmE2UU80N01rdEVXa1V0M1l2WWRscG4v?=
- =?utf-8?B?bXpvd2NGbFdqeHd6cHFWcS9MVVBTSFpxTDVxMW1zWlozTDhMeFlnVjFlVzNV?=
- =?utf-8?Q?3CdFSoMcI4CPctZjCvelf8dXye5SS4SsVOQ+JVtt/S9xP?=
-X-MS-Exchange-AntiSpam-MessageData-1: 63w+S43jMVuGEw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04a8f3e9-c0a3-48eb-bc50-08deddb681c7
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 12:35:06.5810
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qlWL48o4O3AAf4iplGDHBESdJhfyrIg8g/HdEFMmrhio8X9GoNRHKOPeutxQNXzLK8Q4xuhwvKBsMLGzLRVKjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7517
+References: <20260708211435.402426-1-chang.seok.bae@intel.com>
+In-Reply-To: <20260708211435.402426-1-chang.seok.bae@intel.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 9 Jul 2026 14:36:06 +0200
+X-Gm-Features: AUfX_mwL3bHKWtprsetd8vD3bzrJ-aNGwy1RO-GdBAT3lh0aQQKrh2dMlZPTCOA
+Message-ID: <CANiq72=-HjYOoJPd=B+0OYrHuyCO+NpcjRvmmhT_ecVZj8q97Q@mail.gmail.com>
+Subject: Re: [PATCH] x86/build/64: Prevent native builds from generating APX instructions
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, tglx@kernel.org, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	Omar Avelar <omar.avelar@intel.com>, stable@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu Jul 9, 2026 at 5:52 PM JST, Alistair Popple wrote:
-> One of the first things a user needs to know about a GPU is its chipset,
-> so add an ioctl to return that.
+On Wed, Jul 8, 2026 at 11:40=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.=
+com> wrote:
+>
+> +        KBUILD_RUSTFLAGS +=3D -Ctarget-cpu=3Dnative $(if $(call rust-min=
+-version,109100),-Ctarget-feature=3D-apxf,)
 
-We are not adding an ioctl though, just a GETPARAM parameter.
+Hmm... I don't think this was tested?
 
-<...>
-> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-> index 43c3f4f8df71..1f4c5f3aa8ea 100644
-> --- a/drivers/gpu/nova-core/gpu.rs
-> +++ b/drivers/gpu/nova-core/gpu.rs
-> @@ -10,7 +10,8 @@
->      num::Bounded,
->      pci,
->      prelude::*,
-> -    sizes::SizeConstants, //
-> +    sizes::SizeConstants,
-> +    uapi, //
->  };
-> =20
->  use crate::{
-> @@ -34,12 +35,12 @@
->  mod hal;
-> =20
->  macro_rules! define_chipset {
-> -    ({ $($variant:ident =3D $value:expr),* $(,)* }) =3D>
-> +    ({ $($variant:ident =3D $value:path),* $(,)* }) =3D>
->      {
->          /// Enum representation of the GPU chipset.
->          #[derive(fmt::Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq=
-)]
-> -        pub(crate) enum Chipset {
-> -            $($variant =3D $value),*,
-> +        pub enum Chipset {
-> +            $($variant =3D $value as isize),*,
->          }
-> =20
->          impl Chipset {
-> @@ -82,39 +83,39 @@ fn try_from(value: u32) -> Result<Self, Self::Error> =
-{
-> =20
->  define_chipset!({
->      // Turing
-> -    TU102 =3D 0x162,
-> -    TU104 =3D 0x164,
-> -    TU106 =3D 0x166,
-> -    TU117 =3D 0x167,
-> -    TU116 =3D 0x168,
-> +    TU102 =3D uapi::drm_nova_chipset_NOVA_DRM_CHIPSET_TU102,
-> +    TU104 =3D uapi::drm_nova_chipset_NOVA_DRM_CHIPSET_TU104,
-> +    TU106 =3D uapi::drm_nova_chipset_NOVA_DRM_CHIPSET_TU106,
-> +    TU117 =3D uapi::drm_nova_chipset_NOVA_DRM_CHIPSET_TU117,
-> +    TU116 =3D uapi::drm_nova_chipset_NOVA_DRM_CHIPSET_TU116,
+There is a missing `c` there -- the flag is never going to get passed.
 
-If we are going to remove the actual values, let's at least generate the
-right-hand side in the macro as it is just verbose without bringing any
-new information. The following diff lets you remove the `=3D uapi::...`
-for each chipset declaration.
+And while it is true that `rustc` knows about the target feature since
+1.88.0, it will (sadly) still loudly warn about it:
 
-The UAPI definitions come technically from nova-drm (and are defined as
-such), which introduces a dependency of sorts from nova-core to
-nova-drm. I'm not saying this is a problem, but mentioning it as we want
-to make that decision consciously.
+    warning: unstable feature specified for `-Ctarget-feature`: `apxf`
+      |
+      =3D note: this feature is not stably supported; its behavior can
+change in the future
 
-I also think the introduction of UAPI variants and modification of
-`define_chipset` should be its own patch, as these are pretty
-mechanical.
+Instead, we should be able to do it in the custom target spec, i.e. in
+`scripts/generate_rust_target.rs`, assuming `-Ctarget-cpu=3Dnative`
+enables it and we need to override it. But please double-check the
+interaction between those and test that LLVM is actually getting the
+right set of features you want.
 
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 202adfbfa176..5b67f25399de 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -35,12 +35,13 @@
- mod hal;
+Finally, we are trying to get rid of the custom target and instead use
+flags as soon as possible, so if the flag will be eventually needed,
+then it should be stabilized.
 
- macro_rules! define_chipset {
--    ({ $($variant:ident =3D $value:path),* $(,)* }) =3D>
-+    ({ $($variant:ident),* $(,)* }) =3D>
-     {
-+        ::kernel::macros::paste!(
-         /// Enum representation of the GPU chipset.
-         #[derive(fmt::Debug, Copy, Clone, PartialOrd, Ord, PartialEq, Eq)]
-         pub enum Chipset {
--            $($variant =3D $value as isize),*,
-+            $($variant =3D uapi::[<drm_nova_chipset_NOVA_DRM_CHIPSET_ $var=
-iant:upper>] as isize),*,
-         }
+To help with that, I have tagged the tracking issue with our Rust for
+Linux tag and will raise it to them in our next meeting, but it is
+even better if the actual company pings as well:
 
-         impl Chipset {
-@@ -48,7 +49,6 @@ impl Chipset {
-                 $( Chipset::$variant, )*
-             ];
+  https://github.com/rust-lang/rust/issues/139284
 
--            ::kernel::macros::paste!(
-             /// Returns the name of this chipset, in lowercase.
-             ///
-             /// # Examples
-@@ -64,7 +64,6 @@ pub(crate) const fn name(&self) -> &'static str {
-                 )*
-                 }
-             }
--            );
-         }
+I have also added it to our usual live list of features:
 
-         // TODO[FPRI]: replace with something like derive(FromPrimitive)
-@@ -73,45 +72,49 @@ impl TryFrom<u32> for Chipset {
+  https://github.com/Rust-for-Linux/linux/issues/2
 
-             fn try_from(value: u32) -> Result<Self, Self::Error> {
-                 match value {
--                    $( $value =3D> Ok(Chipset::$variant), )*
-+                    $(
-+                        uapi::[<drm_nova_chipset_NOVA_DRM_CHIPSET_ $varian=
-t:upper>]
-+                            =3D> Ok(Chipset::$variant),
-+                    )*
-                     _ =3D> Err(ENODEV),
-                 }
-             }
-         }
-+        );
-     }
- }
+Link: https://github.com/rust-lang/rust/issues/139284
+Link: https://github.com/rust-lang/rust/pull/139534
+
+Also Cc'ing rust-for-linux and the maintainers and reviewers.
+
+I hope this helps.
+
+Cheers,
+Miguel
