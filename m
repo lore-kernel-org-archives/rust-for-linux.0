@@ -1,626 +1,183 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011040.outbound.protection.outlook.com [40.107.208.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835723E0C7B;
-	Thu,  9 Jul 2026 21:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229F43C1F47
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 21:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783633051; cv=pass; b=jbHSBlYDqHfxm2vFnEGKglSl8MFAIRYW2OwdakUWzCkitTovhLNa2iGtNzbhbY6Sj+6nwM6cHHb2wZj1096rTukYXLgop+aEFhl4NpizPTCh7jTufKUmW5zDinyS9r5iLkHWcWj75uRDr4Ygy6FFA1uhN30dne9MtA/dl8LlXDI=
+	t=1783633194; cv=fail; b=fqk259ng1XS6BnTAqvRDTbsoWlW2Ifpc4D5p7BRK8Mz7Mv3XgDFB9ta5WzTHLm4xCyn2tiQ8/Zl3ctUT2hakM5GefOXWRE9J0J8RhueywveI9zCMQoDWc2tlNvxpVWgnPXFVmclI3yehNEOXgAvm460adAalGePwBtXsgMsWQlE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783633051; c=relaxed/simple;
-	bh=rkM8xd7MEPmOBmz9Wn2Rs8dmfCZL628OMCVzeTn80OU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RtEkgQgKMqRBXmak3e1YngKZqskcCXImGO1uEDpfTdP5MD5hrMkUemQP9ZQk18ou0LdEW0OFG8nEKWpqYasUmEfbRQDsGP5iLIKvupCSQ0uPrk1ja29TNrRi9U393ArdCkFBDF50x6TAbBXPLUer89F08Mxd3ozsTrFU+6VTYXg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=BAEerNru; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1783633194; c=relaxed/simple;
+	bh=DiktRAO1nSj3hF/RIgmiATnoyoZsBmZ8IxYt5Ct0+3E=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aE9ETZNy/Ecm5h3XAhNmFQpjR8iYio6QykJRfS2g5ck5+mcNGejXiwYZ/KHeHA+zJuAsYpngH4HI70VugBUQPM2Zfq1caPpOLlFX0cVRdVLRbWYf4Dm2+XvVkjYSrj7JD1u4pal7y6CXRquG37WwoFsSff/zKelQeYSmSSBoGgI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZdninidA; arc=fail smtp.client-ip=40.107.208.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="BAEerNru"
-ARC-Seal: i=1; a=rsa-sha256; t=1783633020; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Dn5oEbe/QN6m7g7Qo4ooPxTWNVCb3NEkGcIt0rhDO/UVrKcAXeCZm2SBpdC6r09xhdQWT4R1F56HtbBNDQMiXgtkNUfq4IhCvj+OPl7f0soyPIgofD/VE66lZTgOWXEZlZOeaggOiaPN/3tBE7tj9NijkMPIa8iTUbPOMASsS9g=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783633020; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=j+x0G30gOGtmkIedmRi7gsmgsUcnqMGTTFtxu5Bn8JA=; 
-	b=i094EQZJT679GlWbUts2zHDvfWBFW4ARmq32sPqieusjA2vsgly1cV5l+i0x+Q4MDV3VWr3347fZ1ZfTB9iakhGu88HjGo1J3Y3kdU6UB2vq9EE5qUXhkO3pk0w599rLjBeUOunIAWdzWLCwRl/LYTaTKOS7BV2/zxmu/7SdH48=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783633020;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=j+x0G30gOGtmkIedmRi7gsmgsUcnqMGTTFtxu5Bn8JA=;
-	b=BAEerNruMPb1mnmgLMmkpeoaV34Xfwi+xVI2kqriLRAcfR/TN1GUGXPvbKfOQeKe
-	TaF7VfWKFVHUD9cYcTdZUE2gMKAYpI4/bf2WaQqxICWC937CtxUgZ7NJrdshQxEsjhx
-	j/LZMqLtSXsyMOKWmmXYEdHrNRUsuOjCaEKe1G8c=
-Received: by mx.zohomail.com with SMTPS id 1783633019162549.870486600585;
-	Thu, 9 Jul 2026 14:36:59 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 09 Jul 2026 14:36:46 -0700
-Subject: [PATCH v6 6/7] drm/tyr: add parser for firmware binary
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZdninidA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xfheuuynbVumktkQVqN5cSNXCX/+aLsACGGAKem2QZAykPD0muYHOmAOyzKzO2sgXsMwlSQcAts6CO9LuU647NPBeqA7X5leY7EyksanB+Ah4vRXKQs7lFQU9u8Ir9tVQLN3f7AwFM49fAB+QuX7NSCgmcss8iC3WJScPMfQYqdEniR8sTWLekLkVmOYTtjUl/4u2IFVneSehQsMAfwsL2N8xuZXNXRoVZxd7sCiklizX8lQhKW09X9On7JyH68FY4jVQuXN9fstxK8zlRHDzqUuoiRv7FQeNlBwiVzz31WK8uYdxcMc9gtDS2ISQFIrA9gaE+Qb9VYVi4ae2XMsyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ocieyfx+d37SJ9xmFt4iaifdAfjxPGIzzUX6XWRnvHs=;
+ b=x9YcufCwxG00mR2GvFQk/6IGp8VuZeU8qDuTP7RXStL0ZTpGYWLkj5EZczIx0eXYTWOBLbsI6WB9fBhEznDMS7cZ2IAzzawuJ92ErYSD1D+34vozInlV9gDBR8sqMgFu0j2VVbs8og8ACnZPfb8TvB308hbBTfVm+BJsA+xvpFbBT4gd1ZnkeAf/poYHCv3VhmgUf9mi6HrXhkm/EWa2QpStppV28yO587b3jBLd3JAuhLwGNH74haCaFFy61tumQeCUzcb2Nlb3l4k9VeW2JWP8dVp5zC4wkZlSC/GR2H354JX9ViCc0ITwSNNFayZrECnfjRLI/bH+1DgAiwyaBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ocieyfx+d37SJ9xmFt4iaifdAfjxPGIzzUX6XWRnvHs=;
+ b=ZdninidAx+jjX4B8AxVsu+K1sbiXNdvNprbm0CfhtO1T1teW28iIyjomWRbdTwIpnwlnTEmQBA+5sktTxHeR10JHOSllR/V7qLIZ5yA3iDtmZTxeQqAVbuV0DO41E/IcXc2d7+mf1J1sLaw50z/AIn4zWmbHWDg3t4/WsFeAeAdcAc16Vl6BNvk1JTfh5CQRs90vzyDbIHf2WBdPKXdz0fmzE0B9Uszel02PkTMla+sf+kixQaE0ZBqc1+12h2FZUGy2cFfC4N4hyQrZXN4ZDnQ3G0oySA3En0K3iu+gPcROMgwtQl32V3S9LHMHaQbnWxNAZTg7kYXUJenXoRoUWw==
+Received: from BN0PR10CA0022.namprd10.prod.outlook.com (2603:10b6:408:143::30)
+ by LV5PR12MB9825.namprd12.prod.outlook.com (2603:10b6:408:2ff::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Thu, 9 Jul
+ 2026 21:39:49 +0000
+Received: from BN2PEPF000044A2.namprd02.prod.outlook.com
+ (2603:10b6:408:143:cafe::83) by BN0PR10CA0022.outlook.office365.com
+ (2603:10b6:408:143::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.11 via Frontend Transport; Thu, 9
+ Jul 2026 21:39:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BN2PEPF000044A2.mail.protection.outlook.com (10.167.243.153) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 21:39:48 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 9 Jul
+ 2026 14:39:23 -0700
+Received: from ttabi.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 9 Jul
+ 2026 14:39:22 -0700
+From: Timur Tabi <ttabi@nvidia.com>
+To: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>,
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	<driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+	<nova-gpu@lists.linux.dev>, Gary Guo <gary@garyguo.net>, Alexandre Courbot
+	<acourbot@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, John Hubbard
+	<jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
+Subject: [PATCH v4 0/7] Transition Nova Core to TLV firmare images
+Date: Thu, 9 Jul 2026 16:39:08 -0500
+Message-ID: <20260709213915.520109-1-ttabi@nvidia.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-fw-boot-b4-v6-6-ca391e1a4108@collabora.com>
-References: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com>
-In-Reply-To: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, 
- Deborah Brouwer <deborah.brouwer@collabora.com>, 
- boris.brezillon@collabora.com, samitolvanen@google.com, acourbot@nvidia.com, 
- alvin.sun@linux.dev, laura.nao@collabora.com, work@onurozkan.dev, 
- beata.michalska@arm.com, steven.price@arm.com, lyude@redhat.com
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18298;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=nLyO9aCjZeAIpnl9DB1QhQPV7Ro6Y/O5M5LZ3x6fLOw=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkBIiXL75S83FcvfC0qQD7Vf9H8AxO0NAS/Z3bI7tnlG
- JP59PemjlIWBjEuBlkxRZaz9kY94lXvjXTn/2+GmcPKBDKEgYtTACaS9ZWR4WQUA8ecBael9azz
- y2w83ieq3w8oLDg5reNs3glxuynMaowMZ2Zecrn7zzzPKGP28l/Tln3aLMXTqP/KhueL07r+LMd
- 8VgA=
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A2:EE_|LV5PR12MB9825:EE_
+X-MS-Office365-Filtering-Correlation-Id: 798ed6f3-a822-45ef-60c7-08dede029a26
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|23010399003|376014|36860700016|11063799006|56012099006|3023799007|18002099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	1NGK2/GQLiIu6ixh58g536nCmDuZfl1VlBmdvEHRe22ZZTCym0RQOUcBLPJIVwvlZCO77shjyBVKQe9fyGULYHOFZJaiF7nrGR0lBWZ1STI/8vreeSUh50U7ckVEBDAMOM3Jy3i4ApcsohZxE88Gqk34gtzbajRgghj7I9TFI3ccye/pNqbYs3ke8SC9uNbeFKgzlAg4WUXYg6OOdLGy2LE0Zq+uRvAwM73m/7MZrfUp4HXrGytXL3CAOPn8+kbJGehTvoPmfPjHpxj51HaIlXP4qR7df1dB9kD7YPLJbJbDL4ZCzrT7BBmgHVhefXXewZoHlsRwprrZrkfviOZYluivSmdHIUS/HlXcPHDippbt4gQhegfPAwUKQkIsfDFwg2LU9aiAVVY5o/nj+NLAr+PKQo9J6cvxs51ONPqGb5O2+DVQfYNMtmoFTacq27pZndKUYtUPtpKfH8ATCCf/6eb/YGvA+GOc3gaTkP4o/yFOEQFm/KT7/JeVls5aKPZYOn15b2nJKX1PdG7q0+u0+Rs0+5v9BNHEWrLy9xXcE9RDkeowPCQQx7kdcI2zTUf7S66XDdboifj8JjBo6ezHougeFfagMGKPcWpWlz6vfcJ0NTbv0OobxZYYaER2xI7IItQQYmQkZZxMt3TpbP5tSyB7LD8gm7d5omWNMJHWV+Jv2W81AhzEqKDV+/b1oEuId3bXlIx2IK1GOm7epDaVGJNBzVVBHkfw+j7C+/sEGLgWOvdqfH4waO9WT5mlk2Ml
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(376014)(36860700016)(11063799006)(56012099006)(3023799007)(18002099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	OlTpkc8PRyQQQJV2Xfef2lEtqlQxLk/JfPv3eJXmjZZrpdBAKjtf+4kLxNqUg4mpGBmwiFTNVFr0Ra9XcvOmMOu/0d6Rb5765R6OcpoLhUg6/Z1JfyE3FpM1gLJ+R7j2Bjd73SqTCAgG3GaOrT4dWEtl3+Jt/jgxKWXNXYJRKaduh9RKcVrX5YSkcozkbGozQ27gTbGj3K52Fyu8EaENayAwJuLr/vsDDZ1eSABt0lSYhxp/PpOgUlt1fkfoMXK2hnkvvbC8xPj4MN3kOudHUuy147mR7EBxP+Gs2KtbZVvsOP91WhtH5LFm87hcA2uKwDjwaG0WGHx6BAnmoGOv+bk4MwNBO0Z6U5694UqAlGiEl0h20TauDGjFMdbYYag4Mqbfx1zuk0rnvTD1nIddTPAxIxb88XxH6tUUhiTd9eSodW5TKqqb+xq0mmf39FqV
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 21:39:48.7809
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 798ed6f3-a822-45ef-60c7-08dede029a26
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV5PR12MB9825
 
-From: Daniel Almeida <daniel.almeida@collabora.com>
+This patch set transitions nova-core to use the new "TLV" firmware image
+files, instead of the ones that Nouveau uses.
 
-Add a parser for the Mali CSF GPU firmware binary format. The firmware
-consists of a header followed by entries describing how to load firmware
-sections into the MCU's memory.
+A prerequisite patch "rust: error: add remaining error codes" is required 
+to compile. [1]
 
-The parser extracts section metadata including virtual address ranges,
-data byte offsets within the binary, and section flags controlling
-permissions and cache modes. It validates the basic firmware structure
-and alignment and ignores protected-mode sections for now.
+The current r570.144 images are a mix of binary headers and ELF files that
+are cumbersome to parse in Rust.  There's a significant amount of code
+that just reads in a struct, extracts some offset, and uses it to find
+another struct, only to have nova-core use just a few fields.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Beata Michalska <beata.michalska@arm.com>
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/fw/parser.rs | 521 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 521 insertions(+)
+The new format uses a sequence of tag/length/value fields that can be
+iterated over.  The script that generates the TLV files,
+extract-firmware-nova.py, does the extra work to find the specific metadata
+needed by Nova and packages each one separately.
 
-diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
-new file mode 100644
-index 000000000000..198a754b294f
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/fw/parser.rs
-@@ -0,0 +1,521 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Firmware binary parser for Mali CSF (Command Stream Frontend) GPU.
-+//!
-+//! This module implements a parser for the Mali GPU firmware binary format. The firmware
-+//! file contains a header followed by a sequence of entries, each describing how to load
-+//! firmware sections into the MCU (Microcontroller Unit) memory. The parser extracts section
-+//! metadata including:
-+//! - Virtual address ranges where sections should be mapped
-+//! - Data ranges (byte offsets) within the firmware binary
-+//! - Section flags (permissions, cache modes)
-+
-+use core::{
-+    mem::size_of,
-+    ops::Range, //
-+};
-+
-+use kernel::{
-+    bits::bit_u32,
-+    prelude::*,
-+    str::CString, //
-+};
-+
-+use crate::{
-+    fw::{
-+        SectionFlag,
-+        SectionFlags,
-+        CSF_MCU_SHARED_REGION_START, //
-+    },
-+    vm::{
-+        VmFlag,
-+        VmMapFlags, //
-+    }, //
-+};
-+
-+/// A parsed firmware section ready for loading into MCU memory.
-+///
-+/// Represents a single firmware section extracted from the firmware binary, containing
-+/// all information needed to map the section's data into the MCU's virtual address space.
-+pub(super) struct ParsedSection {
-+    /// Byte offset range within the firmware binary where this section's data resides.
-+    pub(super) data_range: Range<u32>,
-+    /// MCU virtual address range where this section should be mapped.
-+    pub(super) va: Range<u32>,
-+    /// Memory protection and caching flags for the mapping.
-+    pub(super) vm_map_flags: VmMapFlags,
-+}
-+
-+/// A bare-bones `std::io::Cursor<[u8]>` clone to keep track of the current position in the
-+/// firmware binary.
-+///
-+/// Provides methods to sequentially read primitive types and byte arrays from the firmware
-+/// binary while maintaining the current read position.
-+struct Cursor<'a> {
-+    data: &'a [u8],
-+    pos: usize,
-+}
-+
-+impl<'a> Cursor<'a> {
-+    fn new(data: &'a [u8]) -> Self {
-+        Self { data, pos: 0 }
-+    }
-+
-+    fn len(&self) -> usize {
-+        self.data.len()
-+    }
-+
-+    fn pos(&self) -> usize {
-+        self.pos
-+    }
-+
-+    /// Returns a view into the cursor's data.
-+    ///
-+    /// This spawns a new cursor, leaving the current cursor unchanged.
-+    fn view(&self, range: Range<usize>) -> Result<Cursor<'_>> {
-+        if range.start < self.pos || range.end > self.data.len() {
-+            pr_err!(
-+                "Invalid cursor range {:?} for data of length {}",
-+                range,
-+                self.data.len()
-+            );
-+
-+            Err(EINVAL)
-+        } else {
-+            Ok(Self {
-+                data: &self.data[range],
-+                pos: 0,
-+            })
-+        }
-+    }
-+
-+    /// Reads a slice of bytes from the current position and advances the cursor.
-+    ///
-+    /// Returns an error if the read would exceed the data bounds.
-+    fn read(&mut self, nbytes: usize) -> Result<&[u8]> {
-+        let start = self.pos;
-+        let end = start + nbytes;
-+
-+        if end > self.data.len() {
-+            pr_err!(
-+                "Invalid firmware file: read of size {} at position {} is out of bounds",
-+                nbytes,
-+                start,
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        self.pos += nbytes;
-+        Ok(&self.data[start..end])
-+    }
-+
-+    /// Reads a little-endian `u8` from the current position and advances the cursor.
-+    fn read_u8(&mut self) -> Result<u8> {
-+        let bytes = self.read(size_of::<u8>())?;
-+        Ok(bytes[0])
-+    }
-+
-+    /// Reads a little-endian `u16` from the current position and advances the cursor.
-+    fn read_u16(&mut self) -> Result<u16> {
-+        let bytes = self.read(size_of::<u16>())?;
-+        Ok(u16::from_le_bytes(bytes.try_into().unwrap()))
-+    }
-+
-+    /// Reads a little-endian `u32` from the current position and advances the cursor.
-+    fn read_u32(&mut self) -> Result<u32> {
-+        let bytes = self.read(size_of::<u32>())?;
-+        Ok(u32::from_le_bytes(bytes.try_into().unwrap()))
-+    }
-+
-+    /// Advances the cursor position by the specified number of bytes.
-+    ///
-+    /// Returns an error if the advance would exceed the data bounds.
-+    fn advance(&mut self, nbytes: usize) -> Result {
-+        if self.pos + nbytes > self.data.len() {
-+            pr_err!(
-+                "Invalid firmware file: advance of size {} at position {} is out of bounds",
-+                nbytes,
-+                self.pos,
-+            );
-+            return Err(EINVAL);
-+        }
-+        self.pos += nbytes;
-+        Ok(())
-+    }
-+}
-+
-+/// Parser for Mali CSF GPU firmware binaries.
-+///
-+/// Parses the firmware binary format, extracting section metadata including virtual
-+/// address ranges, data offsets, and memory protection flags needed to load firmware
-+/// into the MCU's memory.
-+pub(super) struct FwParser<'a> {
-+    cursor: Cursor<'a>,
-+}
-+
-+impl<'a> FwParser<'a> {
-+    /// Creates a new firmware parser for the given firmware binary data.
-+    pub(super) fn new(data: &'a [u8]) -> Self {
-+        Self {
-+            cursor: Cursor::new(data),
-+        }
-+    }
-+
-+    /// Parses the firmware binary and returns a collection of parsed sections.
-+    ///
-+    /// This method validates the firmware header and iterates through all entries
-+    /// in the binary, extracting section information needed for loading.
-+    pub(super) fn parse(&mut self) -> Result<KVec<ParsedSection>> {
-+        let fw_header = self.parse_fw_header()?;
-+
-+        let mut parsed_sections = KVec::new();
-+        while (self.cursor.pos() as u32) < fw_header.size {
-+            let entry_section = self.parse_entry()?;
-+
-+            if let Some(inner) = entry_section.inner {
-+                parsed_sections.push(inner, GFP_KERNEL)?;
-+            }
-+        }
-+
-+        Ok(parsed_sections)
-+    }
-+
-+    fn parse_fw_header(&mut self) -> Result<FirmwareHeader> {
-+        let fw_header: FirmwareHeader = match FirmwareHeader::new(&mut self.cursor) {
-+            Ok(fw_header) => fw_header,
-+            Err(e) => {
-+                pr_err!("Invalid firmware file: {}", e.to_errno());
-+                return Err(e);
-+            }
-+        };
-+
-+        if fw_header.size > self.cursor.len() as u32 {
-+            pr_err!("Firmware image is truncated");
-+            return Err(EINVAL);
-+        }
-+        Ok(fw_header)
-+    }
-+
-+    fn parse_entry(&mut self) -> Result<EntrySection> {
-+        let entry_section = EntrySection {
-+            entry_hdr: EntryHeader(self.cursor.read_u32()?),
-+            inner: None,
-+        };
-+
-+        if self.cursor.pos() % size_of::<u32>() != 0
-+            || entry_section.entry_hdr.size() as usize % size_of::<u32>() != 0
-+        {
-+            pr_err!(
-+                "Firmware entry isn't 32 bit aligned, offset={:#x} size={:#x}\n",
-+                self.cursor.pos() - size_of::<u32>(),
-+                entry_section.entry_hdr.size()
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let section_hdr_size = entry_section.entry_hdr.size() as usize - size_of::<EntryHeader>();
-+
-+        let entry_section = {
-+            let mut entry_cursor = self
-+                .cursor
-+                .view(self.cursor.pos()..self.cursor.pos() + section_hdr_size)?;
-+
-+            match entry_section.entry_hdr.entry_type() {
-+                Ok(EntryType::Iface) => Ok(EntrySection {
-+                    entry_hdr: entry_section.entry_hdr,
-+                    inner: Self::parse_section_entry(&mut entry_cursor)?,
-+                }),
-+                Ok(
-+                    EntryType::Config
-+                    | EntryType::FutfTest
-+                    | EntryType::TraceBuffer
-+                    | EntryType::TimelineMetadata
-+                    | EntryType::BuildInfoMetadata,
-+                ) => Ok(entry_section),
-+
-+                entry_type => {
-+                    if entry_type.is_err() || !entry_section.entry_hdr.optional() {
-+                        if !entry_section.entry_hdr.optional() {
-+                            pr_err!(
-+                                "Failed to handle firmware entry type: {}\n",
-+                                entry_type
-+                                    .map_or(entry_section.entry_hdr.entry_type_raw(), |e| e as u8)
-+                            );
-+                            Err(EINVAL)
-+                        } else {
-+                            Ok(entry_section)
-+                        }
-+                    } else {
-+                        Ok(entry_section)
-+                    }
-+                }
-+            }
-+        };
-+
-+        if entry_section.is_ok() {
-+            self.cursor.advance(section_hdr_size)?;
-+        }
-+
-+        entry_section
-+    }
-+
-+    fn parse_section_entry(entry_cursor: &mut Cursor<'_>) -> Result<Option<ParsedSection>> {
-+        let section_hdr: SectionHeader = SectionHeader::new(entry_cursor)?;
-+
-+        if section_hdr.data.end < section_hdr.data.start {
-+            pr_err!(
-+                "Firmware corrupted, data.end < data.start (0x{:x} < 0x{:x})\n",
-+                section_hdr.data.end,
-+                section_hdr.data.start
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.va.end < section_hdr.va.start {
-+            pr_err!(
-+                "Firmware corrupted, section_hdr.va.end < section_hdr.va.start (0x{:x} < 0x{:x})\n",
-+                section_hdr.va.end,
-+                section_hdr.va.start
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.section_flags.contains(SectionFlag::Prot) {
-+            pr_info!("Firmware protected mode entry not supported, ignoring");
-+            return Ok(None);
-+        }
-+
-+        if section_hdr.va.start == CSF_MCU_SHARED_REGION_START
-+            && !section_hdr.section_flags.contains(SectionFlag::Shared)
-+        {
-+            pr_err!(
-+                "Interface at 0x{:x} must be shared",
-+                CSF_MCU_SHARED_REGION_START
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let name_len = entry_cursor.len() - entry_cursor.pos();
-+        let name_bytes = entry_cursor.read(name_len)?;
-+
-+        let mut name = KVec::with_capacity(name_bytes.len() + 1, GFP_KERNEL)?;
-+        name.extend_from_slice(name_bytes, GFP_KERNEL)?;
-+        name.push(0, GFP_KERNEL)?;
-+
-+        let _name = CStr::from_bytes_with_nul(&name)
-+            .ok()
-+            .and_then(|name| CString::try_from(name).ok());
-+
-+        let cache_mode = section_hdr.section_flags.cache_mode();
-+        let mut vm_map_flags = VmMapFlags::empty();
-+
-+        if !section_hdr.section_flags.contains(SectionFlag::Write) {
-+            vm_map_flags |= VmFlag::Readonly;
-+        }
-+        if !section_hdr.section_flags.contains(SectionFlag::Exec) {
-+            vm_map_flags |= VmFlag::Noexec;
-+        }
-+        if cache_mode != SectionFlag::CacheModeCached.into() {
-+            vm_map_flags |= VmFlag::Uncached;
-+        }
-+
-+        Ok(Some(ParsedSection {
-+            data_range: section_hdr.data.clone(),
-+            va: section_hdr.va,
-+            vm_map_flags,
-+        }))
-+    }
-+}
-+
-+/// Firmware binary header containing version and size information.
-+///
-+/// The header is located at the beginning of the firmware binary and contains
-+/// a magic value for validation, version information, and the total size of
-+/// all structured headers that follow.
-+#[expect(dead_code)]
-+struct FirmwareHeader {
-+    /// Magic value to check binary validity.
-+    magic: u32,
-+
-+    /// Minor firmware version.
-+    minor: u8,
-+
-+    /// Major firmware version.
-+    major: u8,
-+
-+    /// Padding. Must be set to zero.
-+    _padding1: u16,
-+
-+    /// Firmware version hash.
-+    version_hash: u32,
-+
-+    /// Padding. Must be set to zero.
-+    _padding2: u32,
-+
-+    /// Total size of all the structured data headers at beginning of firmware binary.
-+    size: u32,
-+}
-+
-+impl FirmwareHeader {
-+    const FW_BINARY_MAGIC: u32 = 0xc3f13a6e;
-+    const FW_BINARY_MAJOR_MAX: u8 = 0;
-+
-+    /// Reads and validates a firmware header from the cursor.
-+    ///
-+    /// Verifies the magic value, version compatibility, and padding fields.
-+    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-+        let magic = cursor.read_u32()?;
-+        if magic != Self::FW_BINARY_MAGIC {
-+            pr_err!("Invalid firmware magic");
-+            return Err(EINVAL);
-+        }
-+
-+        let minor = cursor.read_u8()?;
-+        let major = cursor.read_u8()?;
-+
-+        if major > Self::FW_BINARY_MAJOR_MAX {
-+            pr_err!(
-+                "Unsupported firmware binary header version {}.{} (expected {}.x)\n",
-+                major,
-+                minor,
-+                Self::FW_BINARY_MAJOR_MAX
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let padding1 = cursor.read_u16()?;
-+        let version_hash = cursor.read_u32()?;
-+        let padding2 = cursor.read_u32()?;
-+        let size = cursor.read_u32()?;
-+
-+        if padding1 != 0 || padding2 != 0 {
-+            pr_err!("Invalid firmware file: header padding is not zero");
-+            return Err(EINVAL);
-+        }
-+
-+        let fw_header = Self {
-+            magic,
-+            minor,
-+            major,
-+            _padding1: padding1,
-+            version_hash,
-+            _padding2: padding2,
-+            size,
-+        };
-+
-+        Ok(fw_header)
-+    }
-+}
-+
-+/// Firmware section header for loading binary sections into MCU memory.
-+#[derive(Debug)]
-+struct SectionHeader {
-+    section_flags: SectionFlags,
-+    /// MCU virtual range to map this binary section to.
-+    va: Range<u32>,
-+    /// References the data in the FW binary.
-+    data: Range<u32>,
-+}
-+
-+impl SectionHeader {
-+    /// Reads and validates a section header from the cursor.
-+    ///
-+    /// Parses section flags, virtual address range, and data range from the firmware binary.
-+    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-+        let section_flags = cursor.read_u32()?;
-+        let section_flags = SectionFlags::try_from(section_flags)?;
-+
-+        let va_start = cursor.read_u32()?;
-+        let va_end = cursor.read_u32()?;
-+
-+        let va = va_start..va_end;
-+
-+        if va.is_empty() {
-+            pr_err!(
-+                "Invalid firmware file: empty VA range at pos {}\n",
-+                cursor.pos(),
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let data_start = cursor.read_u32()?;
-+        let data_end = cursor.read_u32()?;
-+        let data = data_start..data_end;
-+
-+        Ok(Self {
-+            section_flags,
-+            va,
-+            data,
-+        })
-+    }
-+}
-+
-+/// A firmware entry containing a header and optional parsed section data.
-+///
-+/// Represents a single entry in the firmware binary, which may contain loadable
-+/// section data or metadata that doesn't require loading.
-+struct EntrySection {
-+    entry_hdr: EntryHeader,
-+    inner: Option<ParsedSection>,
-+}
-+
-+/// Header for a firmware entry, packed into a single u32.
-+///
-+/// The entry header encodes the entry type, size, and optional flag in a
-+/// 32-bit value with the following layout:
-+/// - Bits 0-7: Entry type
-+/// - Bits 8-15: Size in bytes
-+/// - Bit 31: Optional flag
-+struct EntryHeader(u32);
-+
-+impl EntryHeader {
-+    fn entry_type_raw(&self) -> u8 {
-+        (self.0 & 0xff) as u8
-+    }
-+
-+    fn entry_type(&self) -> Result<EntryType> {
-+        let v = self.entry_type_raw();
-+        EntryType::try_from(v)
-+    }
-+
-+    fn optional(&self) -> bool {
-+        self.0 & bit_u32(31) != 0
-+    }
-+
-+    fn size(&self) -> u32 {
-+        self.0 >> 8 & 0xff
-+    }
-+}
-+
-+#[derive(Clone, Copy, Debug)]
-+#[repr(u8)]
-+enum EntryType {
-+    /// Host <-> FW interface.
-+    Iface = 0,
-+    /// FW config.
-+    Config = 1,
-+    /// Unit tests.
-+    FutfTest = 2,
-+    /// Trace buffer interface.
-+    TraceBuffer = 3,
-+    /// Timeline metadata interface.
-+    TimelineMetadata = 4,
-+    /// Metadata about how the FW binary was built.
-+    BuildInfoMetadata = 6,
-+}
-+
-+impl TryFrom<u8> for EntryType {
-+    type Error = Error;
-+
-+    fn try_from(value: u8) -> Result<Self, Self::Error> {
-+        match value {
-+            0 => Ok(EntryType::Iface),
-+            1 => Ok(EntryType::Config),
-+            2 => Ok(EntryType::FutfTest),
-+            3 => Ok(EntryType::TraceBuffer),
-+            4 => Ok(EntryType::TimelineMetadata),
-+            6 => Ok(EntryType::BuildInfoMetadata),
-+            _ => Err(EINVAL),
-+        }
-+    }
-+}
+The TLV versions of r570.144 can be found here:
 
+	https://github.com/ttabi/linux-firmware-nova
+
+along with instructions on how to install them.  We are not planning on
+submitting these images to linux-firmware.  Rather, if this patchset
+is accepted upstream, I expect the small handful of people who are
+actually working on Nova to grab and install these images, which needs
+to be done only once.
+
+There are still opportunities for improvement.  For example, I would like
+to get rid of more GPU-specific code, especially the GA100 quirks.
+
+[1] https://lore.kernel.org/rust-for-linux/20260629183022.2709524-1-ttabi@nvidia.com/
+
+v4:
+1) get_bytes returns error if value is empty
+2) used to_result! macro.
+3) Improved some documentation again.
+4) Added Tlv::get_signature()
+5) Changed tags from &[u8;4] to just [u8;4], removing lifetimes.
+6) Added an INVARIANT comment to Tlv::new()
+7) Several other Rust-ism changes.
+
+As before, if I've overlooked a specific review comment, I apologize.
+
+Timur Tabi (7):
+  rust: firmware: add request_into_buf()
+  gpu: nova-core: add TLV parser for firmware files
+  gpu: nova-core: transition booter_load to TLV images
+  gpu: nova-core: transition gsp to TLV images
+  gpu: nova-core: transition gen_bootloader to TLV images
+  gpu: nova-core: transition fsp to TLV images
+  gpu: nova-core: update firmware module info for TLV images
+
+ Documentation/gpu/nova/core/tlv.rst           | 182 ++++++++++
+ drivers/gpu/nova-core/firmware.rs             | 302 +---------------
+ drivers/gpu/nova-core/firmware/booter.rs      | 329 +++---------------
+ drivers/gpu/nova-core/firmware/fsp.rs         |  88 +++--
+ .../nova-core/firmware/fwsec/bootloader.rs    |  74 +---
+ drivers/gpu/nova-core/firmware/gsp.rs         |  59 +---
+ drivers/gpu/nova-core/firmware/riscv.rs       |  76 +---
+ drivers/gpu/nova-core/firmware/tlv.rs         | 263 ++++++++++++++
+ drivers/gpu/nova-core/fsp.rs                  |  11 +-
+ drivers/gpu/nova-core/gsp/boot.rs             |   7 +-
+ drivers/gpu/nova-core/gsp/hal/tu102.rs        |  13 +-
+ rust/kernel/firmware.rs                       |  47 ++-
+ 12 files changed, 663 insertions(+), 788 deletions(-)
+ create mode 100644 Documentation/gpu/nova/core/tlv.rst
+ create mode 100644 drivers/gpu/nova-core/firmware/tlv.rs
+
+
+base-commit: d85845b64c0020b2812243a22fa79d57cc1c1e38
+prerequisite-patch-id: 92c2d027299f0bc35d20918668f6874712d12f28
 -- 
 2.54.0
 
