@@ -1,175 +1,204 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011028.outbound.protection.outlook.com [40.107.208.28])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3071A683B;
-	Thu,  9 Jul 2026 00:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F0EEEBA;
+	Thu,  9 Jul 2026 00:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783557669; cv=fail; b=HG4NxB4jVMrpwM9PHRhw9ijJzuI42JRCHyzxPPKXreSBq+YTSDrmm+0q8TvIpbYkiBUMF8syEj8PwXtGyxmBDlcm54lxoKkx+1ffDD+Ps++FPo60ofyEiNNgtVB+Jn8SkWEAdsW6oubztptcg2dEvnrRP/+KfCMwws/AgD80FTw=
+	t=1783558076; cv=pass; b=Xxb0qkLwXVex0ED3SwFZLEkXx0LH8LXzVf3TS9YJql8yE7LvwwVE63HR58RVTZO1QTtOegn2PtporVgoiksHkHl9Pn2SKKGOG734CF7PT7KoBpQq6BOSOpbB3KBD9AslF5qq4Ks417EPMcPe2TeMqr8PzYGs93CR7Yeru4PyhoM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783557669; c=relaxed/simple;
-	bh=iJJHSWbbNg7hjMU9jnmSVCL8knvMcXf/ESdnBm5D8vE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=TitobDDAKaaPPYMRD23XIndh56qbD3HBta2u4l0UQJldSslh+VgIRtWxtETTLPmmgqfErMWtBk9U4/nYGKmE5eAHWnBm0KisCTJMJZLScC9wCBJlATSmd4Ap8qO7AolveiNmtLnZ4eKSV6qG9ODgNrzw40zhLrqvDIo6iIpzIl8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=n+YDMA97; arc=fail smtp.client-ip=40.107.208.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1783558076; c=relaxed/simple;
+	bh=W60+jWwQgSDWG1mg1BeFeMEXJtzbD9TahmOIfMNB2Vk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IbwJJuw3D6bs7F4TmTB4zrW2VDRRX8xrwhFf6WpNA5j0abDLr7WpNh/oJDY21AkTCuc2uuP5sAQbO0xBl5KPNfuZUT5gM2DuQ1SHOiiM/loUgfX16TDEj4Z9+uHs6lwjRXxx5YRBPohIYgjT4Thd3pdXxb0r+iBRggsfQqaNehI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Sf3ONKxk; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="n+YDMA97"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ia/VPtKi5ywurWLJNpuK1F+jFqbgkqKLiiGmDAupawUzgYqvpEryidasm+YKoQmwh++YFM1m0zVSZWfkR54aGMsgZan6XuYacqQ1AVJIPb/KVpT9jZOfhyGXMK1t1RdjcwdLyEv6Zt3Q0ZXo8xMtmKAjOkWfzgCt/UKC0acJUCOQSqKKUiWKC0onPTcJqRjXpcnJpVxnIT2r15L0LY1HzDKXwpTwzU/qigKuWBEmcpIm8VR9bn/O8pA+Md4A1wHvwCT9grzSiXLFWXADQZbAzxerhKo+kJUTM/kAHIRdfmEdFeV1FeVYBSs3e+HK/8fLpZtBh9LNa1EYwTvQ6WTkUA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=viec5/jsv1xyzoZXC3qsODtekLgyymjvY0Ty1ekMLgk=;
- b=zULsN/gEayy0A6G/pph/kk4q6GbLmlKlF3S02hbObYaW5kOu0Tf8N2ZX/NXlIoSfKbvbHMToZZZpDPQjikSfpqPwzX1N0RQIcqwh/p4L1tG6GG+LD63cGa0/XaXTz8cVIkEzUH67/tlMnsnUJZie1DJo8r757Zs/TfL+RcWDVvQ85rQcIppDHhw9Xs9WgdQXZDoEBh7t72MouJEi7FLNjMP6dEf7QZ2E4zsjU2DWv6Vc0W1/H2WUbaYn8x3vaNrwg42WL26k8ojzXnXKWkwDtIFxrWuGXJ0Hgx7SN85vgHd8zMwBiZMlNCV2744TVGLU2eoptIkZXuDtJplN1xwVAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=viec5/jsv1xyzoZXC3qsODtekLgyymjvY0Ty1ekMLgk=;
- b=n+YDMA97G+EQC8Ki55ZzKMnYGKxy+BbRc+xEHwp52PvqaJq3IAScy0NwUmXoNpeYkzuF6Lm30GcaR0y+nablw8iwBj+3DurvgbLGqUJ1bHrPgNucm2suv8ww2hpJWm51hPPwjGgp+pyBSgZezc3+EL2rVGA/lFeuRFQgRSf1wwXCSMYmUSeRzPCl6IlCuBCSnVSk1FIu4R7imZxEW19bOLZl1nPIj0bqWGGKuCG4mOqBpXtzQ96myoneK6/xs3JvmpW5XcnmYbUKYI4HfrMokaQTLMhzSIu39/iFBYFtmzkQzYbv8sPc8IsaK6OVJNE5FUrLpLwhuyOuKeksX0sNGg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- DS5PPFB8FBD73EA.namprd12.prod.outlook.com (2603:10b6:f:fc00::65e) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.14; Thu, 9 Jul
- 2026 00:41:03 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Thu, 9 Jul 2026
- 00:41:03 +0000
-Date: Thu, 9 Jul 2026 10:40:58 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: nova-gpu@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>, 
-	David Airlie <airlied@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Eliot Courtney <ecourtney@nvidia.com>, John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/4] gpu: nova: Add DRM registration data
-Message-ID: <ak7tcGfBxAYQXyf4@nvdebian.thelocal>
-References: <20260706053413.154135-1-apopple@nvidia.com>
- <20260706053413.154135-3-apopple@nvidia.com>
- <DJROO2091YJ9.2O9BMST1L8HQX@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJROO2091YJ9.2O9BMST1L8HQX@kernel.org>
-X-ClientProxiedBy: SY5P282CA0196.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:249::7) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Sf3ONKxk"
+ARC-Seal: i=1; a=rsa-sha256; t=1783558051; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=VDYMd9XNgR3w6Px0J/yt8jirJ9kC9gylOAjKcayQGmUKva/yykQONi8VweQY3HjG+gN14+yKk2JLhTPEjwrt83U4+dmZIZoK1LbVLsfZ2q+iUNkvX/Q6koKePAHD2XS2W+HR1erVlgzGXzytYZrejtOqWpsVRCJgKYXRjJLHTWs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783558051; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=IanYi/nNoUFNzSvTX02sn7aORfT3WtzfHkwI4OaGl6o=; 
+	b=O2G9fZypqutA8CjmTipKyEVulZpu97QVuTpQjpEydnR27aFzVRU9rFCwBnfNMj5s7HroL488KQUbJorDfibhS99jU8n0hlZ/ZrCqlqLKHyLbGK+wH+oQSvDyG2w7ys12y6nkXd+ac0wsTLDz2Ch4h+/N49mDRWURZSV3IR6DAg4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783558051;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=IanYi/nNoUFNzSvTX02sn7aORfT3WtzfHkwI4OaGl6o=;
+	b=Sf3ONKxkF+EbMBE0MD/fbT8tJ4j1JQsbwNbVQiMvLf7HepXRHBmjK0IiFtLmk94C
+	KCpuzZUeC0WXrsxKqRJa26V/btM+CUKNaMExB1BYGGoWl2NTY/UtCf2BJYFb1I6vfpL
+	2XM5KkGo7D7DIW6Z9JcbFPfCBjDJPnLAVEKpCiRc=
+Received: by mx.zohomail.com with SMTPS id 1783558049501338.52042341409697;
+	Wed, 8 Jul 2026 17:47:29 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Wed, 08 Jul 2026 17:47:07 -0700
+Subject: [PATCH v5 1/7] drm/tyr: add resources to RegistrationData
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DS5PPFB8FBD73EA:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07ee7745-743f-49f4-ec93-08dedd52c0ea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|22082099003|18002099003|3023799007|56012099006|11063799006|5023799004|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	qSBzRVj/PInxt+MeDLxhPD05Soo+QwoQrC2QErAvW91PYCdc9o++kDc+/MEQQvdYWU9gEX0DpAJuAGIEYUmpc3oaF2nGu8YXI3hfzf+YTl3hb7hZwx+Uc3elbgXl8HjaVuoCKOsZ5nPzz6bJEyFlbcUo0MqJlzHJbXjY4wOvSByCdPk7zjw+vO2P6xzxO2y+auYiL4seAzG0jd8fZKyiKJtVv9ZXF9l/yGfsduXKs1aFFxGW5nTBWmIB/zwik54FZw1Icgfj+L7R/lDn3KplrOLlkK8JdwSMiYnmoXEnGStBsZyOvEj6rMz/97pubI9oHxvQEdxXVFC4pcnSkmDrg196Mfc7wPQL93Yh/hnH0d8UJKFQ9RZehWpgAlNaKRLCWvXEbKnIqIAEXtOUJxZhGC5hEE8QJZZrCCvu5oHJqJqtav8elqRaFhVLNmCcfUOt5uKZ7lhHWbQMbHeVtXqZlPB0n6GrISzO3l0QDaMR2KKWwC68RE/tBaDcKsh3vHrO91NH1EqZw4iKPIRjw8Dik9sBYJaF1NEa9Z+yCnzDT9NiU+566cWKTnywjg+JyUviKToLuLkjzTMAF5ACpYhtFJsLcve1bDKgt/EHFYeNbH3ZFBAeVPx5vp7eXHB9rFxGIbdYwKDy8LMYpidJ6LuBml6KnjZj+NpNqjah23IjIoE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(22082099003)(18002099003)(3023799007)(56012099006)(11063799006)(5023799004)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mWLUMsfA/K/V5cNDNbPSRQ54HxX0ECb58diG6npG9DFgFIDhFiLRtUqU63x5?=
- =?us-ascii?Q?8Y6z79s7RR9qZO5Y5mLzAG5Sb4p7pkEBFWsUhBkxqgXNYm2lolR+O9kSJ7SN?=
- =?us-ascii?Q?khJ80QVDiESeNL9fkNj7/En2zLqGlgEJ9QBBkPaB9bbL+cTfD3s+7M/jS9zr?=
- =?us-ascii?Q?IguXgbh7COtU5Ua/9EvGogxcRCYvrkynypl6X7NJjotc9fyP6JJ4NlEHEwN4?=
- =?us-ascii?Q?PXOBW7JOEt5uF9Af3QkYs/CNXwwiZJ1D+YIwfOUK1uwrTk/soGraCvUSeDHK?=
- =?us-ascii?Q?6nXechjNoeJz5V/jb07ZWYifemh2prIMBR0Ge7mMlj39Ks3x6KwC+KNeecss?=
- =?us-ascii?Q?AsOXcV8Yk89pix9R7d6FJRaiDUFtkT7ULN3xeCROT2QVDAubBQCX3BY8W7Ib?=
- =?us-ascii?Q?vkBcwYihFUhSaDExkwL37T4lpWN9gSmmPh2D1wiRleroUJwTKgioulECMDcj?=
- =?us-ascii?Q?EShNGM0btKuSrvzHVxFAUYkiCp7APmkjxRgWHYTZCsGWJZq/G/uR/qmMfM8T?=
- =?us-ascii?Q?pq3+9Bn3KUnQHnJ6oCdhBgdOFwLmg9OrIAg8NfyYq9qZbnPfnRrhKIabPTxg?=
- =?us-ascii?Q?G53xJlSTAqFd/Jw7yXkAKObbixy/hHtx1U3gnDDaoPh/TtQZNLwD2g9rvonv?=
- =?us-ascii?Q?F8dq9CgxQukiBQ6ACaIjMoscLzW/PGJzry2vcsg9K5GmQMzau62+Y2Y4a9aI?=
- =?us-ascii?Q?ly9XIkgFUxJzfWWBuJyBv1it6J1Lu5JGwohYqFMyq5lVsNa2IHpXcbprkhbY?=
- =?us-ascii?Q?SwnlnF0jSkTvBhPAJIp4OZxfDJhZp8C+On/xyzKazdeMpNtHfi+rCJyJ8/3r?=
- =?us-ascii?Q?g3KVwrfyYBeCJplvgbo+2m+1O8FP3GdAJ8Z/wOyDodSmsZ3QXjJyKrBFHHje?=
- =?us-ascii?Q?BPA2jBatxGHr+N9eEb2ELQIgFYxV/9Ve8U2Yu2XvaBP63gp412kAHO87Sl+W?=
- =?us-ascii?Q?ljvM8Maa4T2j/M247aZIxiOC5IbgrpeSGZZLpKg7Z1NpMu055tuDUXDl9VGP?=
- =?us-ascii?Q?MF93bYMsheYvwk8lMTnOde3oqDdQK+oUryl6LYIvJfzxf/C/hUvE6BmtWdUt?=
- =?us-ascii?Q?AYuRAV5I70chNTY3YnTzzkDrGh4k80OHopawIKdjbf5hrSXmtrfXAfWUQ25U?=
- =?us-ascii?Q?YdtAis+6GiKQCENpra+XhFsYocHBhfaszZJ4bqMm5KQ62UepjHqlqgvMeqFp?=
- =?us-ascii?Q?NSfEg3ReXtZUAdWZBCHCSDnGKV9YJW6/DNLpYzOwxyRHSeOiF18ndo+Et7Vq?=
- =?us-ascii?Q?ZET1cNTT+FqJUdCmq5p8J+7wwc8wIcSKd0uPmfLAqL5KO64Qh2oSuVSXKkqs?=
- =?us-ascii?Q?RXOrj8C9mwhi5kxWRYp+f2zVmDX0Ieyb31UOL0H3g4kRZvj15Gtl7m0VFM7W?=
- =?us-ascii?Q?HHP92MzeP6EHJIP9wlHtBIe74C0AI7eI6NTxybxLHx9vy8zLfK6DeD5I82gS?=
- =?us-ascii?Q?hfTDN6mCoyzxhRPRtZZu3F3wRcDBdRp2cqUebuK6GcetM34uAviALs8hCkQM?=
- =?us-ascii?Q?xG8s0Aqmdyq/UDq4T3P+PPU0g9xzxTEesV6aPE3ePylDjl2ATbtosS/hpRfP?=
- =?us-ascii?Q?e0Hyur/nxcStFDq3vlBKE254uUurW/xq4uwcJkLLzyOdi8x8nFYw1e9DywQX?=
- =?us-ascii?Q?L6n39o74YrS1emZCTZK0eOfXq2WdCzrskWtTQqeHRD+sPj+/urYZ+dZh/Bjh?=
- =?us-ascii?Q?v/+KjKvvK6d1afUhmymoWP9wZSKmU0oqbY4GOhd2PpgnWfIzP4lyfHeWbt2o?=
- =?us-ascii?Q?94EqnWtESg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07ee7745-743f-49f4-ec93-08dedd52c0ea
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 00:41:02.9733
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zJ/yisO9tj8wKukfz4kw2B8jARzv69N+cyreslcpLn+JPdmZNmfjiSD/QHOtb4LHQXzrihfys5xYkAJeYkUnJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFB8FBD73EA
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260708-fw-boot-b4-v5-1-7792ab68e359@collabora.com>
+References: <20260708-fw-boot-b4-v5-0-7792ab68e359@collabora.com>
+In-Reply-To: <20260708-fw-boot-b4-v5-0-7792ab68e359@collabora.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ rust-for-linux@vger.kernel.org, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>, 
+ boris.brezillon@collabora.com, work@onurozkan.dev, samitolvanen@google.com, 
+ steven.price@arm.com, laura.nao@collabora.com, alvin.sun@linux.dev, 
+ beata.michalska@arm.com, acourbot@nvidia.com, lyude@redhat.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4780;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=W60+jWwQgSDWG1mg1BeFeMEXJtzbD9TahmOIfMNB2Vk=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFl+7+f/Mer9x+E1+d/yXiv7xXseVKb7MkxcuFJTKv1f7
+ 5al2euqO0pZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZjIv5sM/907t/UKrX7O9Wum
+ j/4U84+r5+e8/bGX73uU50P5BcGSP64wMvTZGe2V9LpicPHQkuDwZwwrFkmvuihfudpNxYmNRbc
+ 4ix0A
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-On 2026-07-07 at 04:01 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
-> On Mon Jul 6, 2026 at 7:34 AM CEST, Alistair Popple wrote:
-> > diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-> > index 298c02bacb4b..855b6ffe696f 100644
-> > --- a/drivers/gpu/drm/nova/file.rs
-> > +++ b/drivers/gpu/drm/nova/file.rs
-> > @@ -1,11 +1,10 @@
-> >  // SPDX-License-Identifier: GPL-2.0
-> >  
-> > -use crate::driver::{NovaDevice, NovaDriver};
-> > +use crate::driver::{DrmRegData, NovaDevice, NovaDriver};
-> 
-> Please switch to vertical import style.
+Currently Tyr is not storing any resources in its drm::Driver
+RegistrationData.
 
-Will do.
+Move Tyr's parent platform device, clocks, regulators, and MMIO mapping to
+its RegistrationData. This allows Tyr to access these resources with
+lifetime awareness while the DRM device is registered with userspace.
 
-> >  use crate::gem::NovaObject;
-> >  use kernel::{
-> >      alloc::flags::*,
-> >      auxiliary,
-> > -    device::Bound,
-> >      drm::{
-> >          self,
-> >          gem::BaseObject,
-> > @@ -30,12 +29,12 @@ impl File {
-> >      /// IOCTL: get_param: Query GPU / driver metadata.
-> >      pub(crate) fn get_param(
-> >          dev: &NovaDevice<Registered>,
-> > -        _reg_data: &(),
-> > +        _reg_data: &DrmRegData<'_>,
-> >          getparam: &mut uapi::drm_nova_getparam,
-> >          _file: &drm::File<File>,
-> >      ) -> Result<u32> {
-> > -        let adev: &auxiliary::Device<Bound> = dev.as_ref();
-> > -        let pdev: &pci::Device<Bound> = adev.parent().try_into()?;
-> > +        let adev: &auxiliary::Device<_> = dev.as_ref();
-> > +        let pdev: &pci::Device<_> = adev.parent().try_into()?;
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ drivers/gpu/drm/tyr/driver.rs | 38 ++++++++++++++++++++++++++------------
+ drivers/gpu/drm/tyr/file.rs   |  5 +++--
+ 2 files changed, 29 insertions(+), 14 deletions(-)
 
-Actually I'd meant to drop this change as it's unrelated and was just me quizzing
-my Rust undertanding :-)
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 8348c6cd3929..2d2a44c19b6d 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -6,6 +6,7 @@
+         OptionalClk, //
+     },
+     device::{
++        Bound,
+         Core,
+         Device,
+         DeviceContext, //
+@@ -57,9 +58,24 @@ pub(crate) struct TyrPlatformDriverData<'bound> {
+     _reg: drm::Registration<'bound, TyrDrmDriver>,
+ }
  
-> Nothing for this patch, but now that we can call into nova-core we can obtain
-> the information from the pci::Device via NovaCoreApi.
-> 
-> The advantage is that NovaCoreApi can store the pci::Device<Bound> from
-> nova-core directly, i.e. we get rid of the try_into() dance to obtain the
-> correct parent device type.
-> 
-> Subsequently, we can remove this TryInto impl entirely. :)
++/// Data owned by the DRM [`Device`].
++///
++/// This data is stored in the DRM device itself and is not tied to the DRM
++/// registration or parent platform device binding lifetime.
+ #[pin_data]
+ pub(crate) struct TyrDrmDeviceData {
+-    pub(crate) pdev: ARef<platform::Device>,
++    /// GPU information read from hardware during probe.
++    pub(crate) gpu_info: GpuInfo,
++}
++
++/// Data owned by the DRM [`Registration`].
++///
++/// This data can have references tied to the parent platform device binding scope
++/// and is accessible only while the DRM device is registered with userspace.
++#[pin_data]
++pub(crate) struct TyrDrmRegistrationData<'bound> {
++    /// Parent platform device.
++    pub(crate) pdev: &'bound platform::Device<Bound>,
+ 
+     #[pin]
+     clks: Mutex<Clocks>,
+@@ -67,10 +83,8 @@ pub(crate) struct TyrDrmDeviceData {
+     #[pin]
+     regulators: Mutex<Regulators>,
+ 
+-    /// Some information on the GPU.
+-    ///
+-    /// This is mainly queried by userspace, i.e.: Mesa.
+-    pub(crate) gpu_info: GpuInfo,
++    /// GPU MMIO register mapping.
++    pub(crate) iomem: IoMem<'bound>,
+ }
+ 
+ fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
+@@ -134,10 +148,11 @@ fn probe<'bound>(
+         // other threads of execution.
+         unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
+ 
+-        let platform: ARef<platform::Device> = pdev.into();
++        let drm_data = try_pin_init!(TyrDrmDeviceData { gpu_info });
++        let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, drm_data)?;
+ 
+-        let data = try_pin_init!(TyrDrmDeviceData {
+-                pdev: platform.clone(),
++        let reg_data = try_pin_init!(TyrDrmRegistrationData {
++                pdev,
+                 clks <- new_mutex!(Clocks {
+                     core: core_clk,
+                     stacks: stacks_clk,
+@@ -147,13 +162,12 @@ fn probe<'bound>(
+                     _mali: mali_regulator,
+                     _sram: sram_regulator,
+                 }),
+-                gpu_info,
++                iomem,
+         });
+ 
+-        let tdev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;
+         // SAFETY: `reg` is stored in `TyrPlatformDriverData` and dropped when the driver is
+         // unbound; it is never forgotten.
+-        let reg = unsafe { drm::Registration::new(pdev.as_ref(), tdev, (), 0)? };
++        let reg = unsafe { drm::Registration::new(pdev.as_ref(), unreg_dev, reg_data, 0)? };
+ 
+         let driver = TyrPlatformDriverData {
+             _device: reg.device().into(),
+@@ -185,7 +199,7 @@ fn drop(self: Pin<&mut Self>) {}
+ #[vtable]
+ impl drm::Driver for TyrDrmDriver {
+     type Data = TyrDrmDeviceData;
+-    type RegistrationData<'a> = ();
++    type RegistrationData<'bound> = TyrDrmRegistrationData<'bound>;
+     type File = TyrDrmFileData;
+     type Object = drm::gem::shmem::Object<BoData>;
+     type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index b686041d5d6b..72c32e524be9 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -12,7 +12,8 @@
+ 
+ use crate::driver::{
+     TyrDrmDevice,
+-    TyrDrmDriver, //
++    TyrDrmDriver,
++    TyrDrmRegistrationData, //
+ };
+ 
+ #[pin_data]
+@@ -32,7 +33,7 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+ impl TyrDrmFileData {
+     pub(crate) fn dev_query(
+         ddev: &TyrDrmDevice<Registered>,
+-        _reg_data: &(),
++        _reg_data: &TyrDrmRegistrationData<'_>,
+         devquery: &mut uapi::drm_panthor_dev_query,
+         _file: &TyrDrmFile,
+     ) -> Result<u32> {
 
-That would be nice. I might add that as patch to this series.
+-- 
+2.54.0
+
