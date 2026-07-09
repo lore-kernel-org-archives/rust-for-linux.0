@@ -1,294 +1,161 @@
-Received: from outbound.pv.icloud.com (pv-2005e-snip4-6.eps.apple.com [57.103.66.137])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010052.outbound.protection.outlook.com [52.101.61.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D8711CBA
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 00:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.137
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783555315; cv=none; b=T7u+GUh4YNmAX810UVn7wuVyV0iLOfJsSlmnW8miA6WiNQknoZhSzjcO5yObi199tofvYMHHHD0pYpC4SkPzC3TIvCCDp0vqnuUOWwQtKmuKOYzlsq22Q8dPqTYCQC8b9XbeZdUUW1ZReQNcUcUo9nzLXmKsSZtngQb3xM2Yohk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783555315; c=relaxed/simple;
-	bh=MNAwnnnXpC5JG8h3G+3/XTDcnymIo4ZHQqzlRgjzc0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DBY9vN79E8CXQtcirkWpP1bcA0TRJCEDGh1O4+lqcAdS+TXl8QSbaci+ct9hHYwyJtztp3lhfJ8SKRq0rn3DEjQObWPOVfR9H6wBiBA5rJdOd276gk55JIvS//3VZTcrp+AUt2oBkgvz86ocyKDDdbtAbrN7tVGbposY9lH6Z2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net; spf=pass smtp.mailfrom=aliasing.net; dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b=JffgTbMz; arc=none smtp.client-ip=57.103.66.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliasing.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliasing.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E96EFBE1;
+	Thu,  9 Jul 2026 00:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783556179; cv=fail; b=KN1gc4Ux8wl2+Zugtb+/08jiva5ngNLAqzgZt31oR0SI8gCfonMy8JyVGes7RvyDABSAAQFo34yJmCcBGtRsAXBySuSP+XYDvwmDwQm8rryqIXj/2FZrCg/LuEAz7pObN8HA5Cs7XrCtXLNJqRkflReA+aluG50f5LoSkkkgc3w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783556179; c=relaxed/simple;
+	bh=yhYjLaLUoExWo0PYFOAromSAbxuTulznqpC1opOYRy8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Gvb9YFO5svHTe5r/4OQTA9vWWxw7MCj8tPNRLHEXJJ0cVuWIrMi8YzduS2cM5AO3FmxFbK3S/RvzT9vL4p2J7kx7Xj0yeY2kiOX8vPhgImT2ba4rPLHCCiuDrqXKkxniqzG1Ew6fuOkmmqnVL70xOpf+qgeeeQTKgEUYkir46yo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tCSD4wRg reason="signature verification failed"; arc=fail smtp.client-ip=52.101.61.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aliasing.net header.i=@aliasing.net header.b="JffgTbMz"
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-3 (Postfix) with ESMTPS id C63FC1800304;
-	Thu, 09 Jul 2026 00:01:49 +0000 (UTC)
-X-ICL-RepId: 019f442e-405e-78b9-bd80-9eb86ddb0444
-X-ICL-Out-Info: HUtFAUMHWwJACUgATUQeDx5WFlZNRAJCTQhNAEMFXwBeC0oCQwZfBlBcHA4ZWAZdMFgUWgxEAlwXFxZWGRcNVk1YFFoMRAJcFxcWVhkXGVFNCE4TBVIHXU1WDUcPWB5cFBcIRUNeCF4fTBwdDlgGEgBNCg42BlkFXglWA0MFNhIUXUVSAV4KQRlXHx0DUh8SHVAcDlEFWwBGCU8DVAdbAkEJSx1fDloAQQxBHlwaH10dVjhSAV4KQRlXHx0DUh8MUE0BQwgKCEcDTRdeMlMEXxFQFg==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aliasing.net; s=sig1; t=1783555313; x=1786147313; bh=DwE/M8i0rFXetmKY23n0sQsiLo9C3x6NCJwqOx6Duio=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=JffgTbMzhWkiNVxlyB562Vp5aalX7VlrbNblLrSEUouAcrbFEzXAz+Y1bqGEPc+2/pb+UH3gbDhe5qm3pTcv4PDSRZQiMtpoSrSRkNjt5xnL+cUfSde8ihhi6Ge1BDKtzT+ReFeJQWezD4wC+QlGxCtfC+EafBMqazv8TquaZeO/a7B2zftooVffpW0SVl8h0DfZNrJAvwUHO+t+u3iRwFTUwoIPJFCohLxfwIQzPXFu5/WeJoWe37acNck6zKkz7r0E8VtD+evbPB3hq62lD790vw5/wm4OXUBqAHcLKlwjt9KeyYkE2SXs3QOmT+rfWdCbWB7VUeHgyG+h+qpVvA==
-mail-alias-created-date: 1769500909675
-Received: from bee.. (unknown [17.56.9.36])
-	by p00-icloudmta-asmtp-us-west-1a-60-percent-3 (Postfix) with ESMTPSA id 202211800316;
-	Thu, 09 Jul 2026 00:01:46 +0000 (UTC)
-From: FUJITA Tomonori <tomo@aliasing.net>
-To: ojeda@kernel.org
-Cc: gregkh@linuxfoundation.org,
-	a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v2] rust: bug: Add bug macro
-Date: Thu,  9 Jul 2026 09:01:03 +0900
-Message-ID: <20260709000103.2912159-1-tomo@aliasing.net>
-X-Mailer: git-send-email 2.43.0
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tCSD4wRg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ghXgMG3zJClzP/EgxSnAIRpWkgu8EXKEyYlaTT1k7eUC/Lf2eXosNfOwEUWjGExVvwYIMQwzsxdCa6DZ3y+SZsFQXI+MkRyg1DwsGedIVHARH5vHv6ym2TZEMraIP8NPBlyB09BIQ7Sh/Zlsayo05R9hXm6yqqEJFeHXfZyT1mdhvlGQXQz8QFOJRciAJQQAUNH0RkoE7QOF3uSDeNOp6kOBanZn5/sXTV0XPCs9QSwrHUHofvXGyRm+wnZSL4WHes3CVbd8FHqjH8Pkw0Esv8C1SX2DMfb088nTg4e7dVR39MkG60dfts68BWlecuWFak664ifJsdgxJ3O1QodIAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0ao3stp7e71xM13+XbxkeSyVBkskpeBpKFGxTK03P+0=;
+ b=glpVWwmHGSJ05xtSoM4XFI2ra/zigbS6JLNUBsQK7DF82QBwUzyo8aKL2BCQFO7mLzEnIHx5m1fVV1NzAXunKfS5NWuaFbaH9nKxxkSTP/OOMK5jezWxfAKx8+KtGFjwK/pnB1LHs46xrW5JIp6zvqnPc+cVPGPmoRYn9d7/UBrt9lKuMqnx8EJT3G1Ai4TY9DXgfLlgObWd1+uJclgkhQKgnaB0OO7yvHyr+7rLdyH6+u5yIORi4oelAIohBWy3da2eqDy2bHrOK6aU3C6ijdZ7aw65g/GGSGuBrgn4T0kF1vedi232QPtu5x/jVEoIXPorROqqRPjz9+qBS/Ynqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ao3stp7e71xM13+XbxkeSyVBkskpeBpKFGxTK03P+0=;
+ b=tCSD4wRgzImhraiAx4qNl9CBqKPtSegoTaDoUvxg+kagaKOSPpaiYX895z3dENFPYYHLU4RyqCz1aH4dVTRH7ZpRY+9Z+p8E9JX+C2Jb9lMpZqKTYtzUIUeycdzWTeU8SEqcgAgExaat8pn9YzpdQvIGJ8SN69N0EEc+12pjvGWfw38uv+m3zbZG7JeEUjX4GZ7Gb4lZwB2JShFggBVudzueufaTkWgS9yRzsfGXDzX9UaRHuHNYHwILtdS47DVaQe/BsTabLVFuZyVB2LBvKk19NPLSzsz6HfpDijHc41NxgGWMd4Uv5WUqmPAUVHd4Da0kOo6OKRWUCA11P/nTZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SA1PR12MB8143.namprd12.prod.outlook.com (2603:10b6:806:333::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
+ 2026 00:16:14 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Thu, 9 Jul 2026
+ 00:16:14 +0000
+Date: Thu, 9 Jul 2026 10:16:08 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Timur Tabi <ttabi@nvidia.com>, 
+	"nova-gpu@lists.linux.dev" <nova-gpu@lists.linux.dev>, John Hubbard <jhubbard@nvidia.com>, 
+	"gary@garyguo.net" <gary@garyguo.net>, Eliot Courtney <ecourtney@nvidia.com>, 
+	"lossin@kernel.org" <lossin@kernel.org>, "airlied@gmail.com" <airlied@gmail.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>, 
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH 3/4] drm: nova: Add GETPARAM parameter to read the GPU
+ chipset
+Message-ID: <ak7lU9X4pTwx5NDB@nvdebian.thelocal>
+References: <20260706053413.154135-1-apopple@nvidia.com>
+ <20260706053413.154135-4-apopple@nvidia.com>
+ <59948bff927bd4ad3af5fbe68d5d5e7565c5f729.camel@nvidia.com>
+ <DJRP5QO5JKVT.Y7LCZARVCWJ8@kernel.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DJRP5QO5JKVT.Y7LCZARVCWJ8@kernel.org>
+X-ClientProxiedBy: SY5P300CA0025.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:1ff::18) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: 0Tbm8ogQBA5FQHlioUSwQpYyjIlskuk2
-X-Proofpoint-GUID: 0Tbm8ogQBA5FQHlioUSwQpYyjIlskuk2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDIzNiBTYWx0ZWRfX+PnrpVC5YEsX
- 8islS0nXuM+Xdkakb/Dc1LWmRw33WsicTVj3GFAJAGau2yh0KNJnEVnGLM/yvtim4iGfbPI3NaF
- a0pCY6WMjX3YuUcP5cop3wjDJZDwD+9tSOzGUARtWvu7DqTzueA9omHTJPkJhiRr03YwTF4m+Gu
- N/ImkKP7ws3Mq+w4lgNu6n0a9pv/86aVv6HGwEMkdr3H+0mzaxtXnhQ36gUVLLu16JCiA6rN5pY
- w9sk9MuX63ZHr4ghu/rYjaDJmPIklHK/X34R9NzxstymzHLjl883IyasmuCmF1cIGVxwthjmS8+
- li5+zAV6zwirB5NlhXO
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SA1PR12MB8143:EE_
+X-MS-Office365-Filtering-Correlation-Id: d09d33ff-0384-4d2d-4d7a-08dedd4f4968
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|6133799003|4143699003|18002099003|22082099003|11063799006|3023799007|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	rAPgf+MgOpZM35GwwGSw8Dpn34x/Nnvkm2X0b/kUj6PqdjnV/6M2ecXxt0zfEA8LJfmKfDwkFHqFTnX3bPYsTKlbcTeYTHX6Y80BtfVFxnNfeTz+1nm0ga1BFJ1nOFVVxPohJZnpTzdciFqnPjGJCYQMrQup8772Yv2eC7m29XnKGqIcwYwQcqxOoGQcPY+AhJlFfbPJdaMLT2p3c+JFjVnerH6CW/UJq0Q76AD8cgL5OcITfj9smR+VIvEqNp8S5FrI/Lb6UpOR7YGUVnKTkAj2RmTfL02BR303klnip1Pif5v6Wf0AuitYborYfX/uwDF525BCiTXDGIfUm9J8cubO+LQqmF5e8WydrbZg25FCLkJljom46G8hBszCgi1CheaJKCDbgXyGquwSitRdiVZrr+Dw/9sVrDMAEQl0DzVZXxtFRaYPrXKoF6FVU7b5LfDmRxPDg/owRacJc6dMnx/W1jjG6DkaNxKgOubLz/UmUDxH53NtqDswl0PEIBqJzWFYGs93afjaPPsORkXnetiOgBUNeMd8A4DsZB4cakgM7p9juRry2MK8jCzZeEbp1jTjJ+GXLWpjOw58qGBy7Cr4ZBdh9CDU5iGtDymVEey+hnMVLsKVvKhMoAmgnMLVY5Xy2+ERZt+0LnBMF99Pab4M85flnrhw/H/5n9WK7nM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(6133799003)(4143699003)(18002099003)(22082099003)(11063799006)(3023799007)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?fXnYfGp5fAaZLw50g7DC0Rkl7mfAjP2mbyR5Y4YW30CyAA9PEXJ2zYQCbc?=
+ =?iso-8859-1?Q?A3twn5RPN0XW3gkuiS9HmBmo+YkMFFcmpyXqp1/B2rvncctmFiamjqw4wb?=
+ =?iso-8859-1?Q?Z87bT2AvEjp/g5halx/zKyI+/CIgyhMYMOtPht/SohH+/W0LDQ5zm4Ycfd?=
+ =?iso-8859-1?Q?14naUejTOr16nPOR2c4CdJafDNOdYM+yInTJLyJ3gNvhN2FgZmEBMxwwf+?=
+ =?iso-8859-1?Q?1WLs7TrmOgKFdLiKnNQeijwmMVvM+NkYjeoby4w2g7d5ClnSrio6+5d+eC?=
+ =?iso-8859-1?Q?5wyUGYIZRN0wUwzW34cN/aF0pNuMF91weHqVRtdkaFSHL9TmLtHq8ADDJl?=
+ =?iso-8859-1?Q?MBmEKOieKS15GzQJIEwTjwb+Wm2xVTKAK7LK8NRDnls0ew3gQbLGqVzHED?=
+ =?iso-8859-1?Q?7oRFv+TVdhJQBq+YMw1DT6Fs4DZ5mvOeFm3sFFvQ5F4ch3VXj+vVqamXJU?=
+ =?iso-8859-1?Q?f5u1siPkn31Me6lsqwRwt0vWsQC7etjdKAmfVMHy8WntW7IP2XaEhDIlkF?=
+ =?iso-8859-1?Q?B/onMaXdmLJGp1rz61irPdY5xocfMrqWbJ1f+AKd4p0GD6Q5H3cvuuDfin?=
+ =?iso-8859-1?Q?oT6jPioljOpKnSF84YYbYGftGCLi4sPxDFHjTjL0IDWWOdrVFOXCnUFykn?=
+ =?iso-8859-1?Q?BR7sGNNUNJ4I04M19is5UewTcSUNug2EvyRrJoOGjVSf1nCcViu07k86Ri?=
+ =?iso-8859-1?Q?K6L6lMUAFVRE/NFBgmMYUL2W7YVQ3lPszNGKQlSXLzOq/q4/mi5IW2qQ4U?=
+ =?iso-8859-1?Q?4bBh7WViDLSwjbHAcSAU3VfcRbuOGsaH6UlLykR8VKni6gqaEIDqUlmDNi?=
+ =?iso-8859-1?Q?U8MJ7wdSwXmh2W1djpiqhWA/WyFyeND0JnwcqVg18Y3AgKNiaUFod5Ykgd?=
+ =?iso-8859-1?Q?ZIw7M0Z4yKbsqRqTWEoKEZi5uSMx/Gdpd0jnfG2gCvaeLIg+lCoY/338Eh?=
+ =?iso-8859-1?Q?M1ObmMpIR6WDwwpDb73qU5i9iDNUdpPHSi5SXaE8h8psvx9NRm1OxJbP36?=
+ =?iso-8859-1?Q?GUshvXghQRPsqq9B3s+lXl6CSwl1XTwT7qMbmHcCaG4MDmb2OBYkPCrEhk?=
+ =?iso-8859-1?Q?BJu40rp6XQiCJW5ukTO1Mf0r5L32e38BVhDf00b6mEaJevWUFAQqjldHzz?=
+ =?iso-8859-1?Q?vlXlJYOnMFNP1n1n3pR+KfwK89iT9/kgSGnuSUnUG7K9hYZy545ikjyyby?=
+ =?iso-8859-1?Q?xB5wF4wq73OHwKBK4qKrC2eFFegtZuAIfxLyjSwqELYUfx/nhX6P9I9MJl?=
+ =?iso-8859-1?Q?XFaINuDItLnz04NAIAoRCqG3U/1PTufjDrwhnu8GJ0ThDQP/bWbWoi2ZfR?=
+ =?iso-8859-1?Q?3oXQPohxnIJlGvm+tkoPPIeUsX4bQKaCdVfSzEfNFzVn6Xj+PiitEk5S0t?=
+ =?iso-8859-1?Q?6t14K15Ay+6dpFh67IHaoVpOnNMnhWjJoXRJxEwNlDbHFlU0MDalqD2ECI?=
+ =?iso-8859-1?Q?HlRf+qgM5DXwGObQKiybzJHFcshuXGNFGpf3GhkU4g7bBmLYTuCUrYzOnf?=
+ =?iso-8859-1?Q?6/48nYp5S31RV8rYhXGIu7msQM2eN/zV62ooxmpL7YUSyk+RG0z2jXbQFw?=
+ =?iso-8859-1?Q?iJMyJPt0P9d7uW1qCXq6SkcvPr/hl810QEPPp97fi6TVPcu3V0lbSY5vCZ?=
+ =?iso-8859-1?Q?IDBiU1GU2K9WKlH9V7s9VLM1JppO/ziAuDMtMh3R+jm63ixB+UvMCw/rui?=
+ =?iso-8859-1?Q?+/gc+I/jeN1bJFXWmZfJL2K3p0Wz1CvygXNBJr4vHjWULBOZSocTtzmN6I?=
+ =?iso-8859-1?Q?qV06OytizKas/5aJoGUrh5zQ9VIxnl3fijhPBm20xAFsPYZOGqGA//5T7X?=
+ =?iso-8859-1?Q?hRFgaqBdIw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d09d33ff-0384-4d2d-4d7a-08dedd4f4968
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 00:16:13.9110
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0bUfuXtHnq53MEd+aIabnAjskZt74lAdnIqaGSsGMWOred6OGPpXKRTsJpn0oc93Jn1cDkVtGRbBipf85owXUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8143
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On 2026-07-07 at 04:24 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
+> On Mon Jul 6, 2026 at 7:35 PM CEST, Timur Tabi wrote:
+> > On Mon, 2026-07-06 at 15:34 +1000, Alistair Popple wrote:
+> >> @@ -38,6 +38,7 @@ pub(crate) fn get_param(
+> >>  
+> >>          let value = match getparam.param as u32 {
+> >>              uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
+> >> +            uapi::NOVA_GETPARAM_GPU_CHIPSET => reg_data.api.chipset() as u64,
+> >
+> > Can we assign these IOCtl values to match Nouveau as much as possible?  I think it would make
+> > everyone's life easier if we could use the same user-space tools/libraries for Nova that we do for
+> > Nouveau.
 
-Add bug!(), the Rust equivalent of C's BUG(). Like warn_on!(), it
-emits the BUG/WARN metadata (lib/bug.c) directly via inline assembly
-on x86_64/arm64/riscv/s390. This differs from bindings::BUG(), which
-reaches the same C BUG() macro indirectly through a C helper
-(rust/helpers/bug.c).
+I debated this, for the same reasons. However I came to the conclusion that it
+wouldn't make a big difference - Nouveau only has a handful of GETPARAMs and
+we already know we're going to need a lot more for Nova given the increased
+scope of features it needs to support. The rest of the API also needs to be
+sufficiently different so I didn't see any real practical advantage to keeping a
+couple of parameters the same as tools will need updating anyway.
 
-bindings::BUG() is already in use today, indirectly, from the kernel
-crate itself and from drivers such as binder and nova-core, via
-panic!()/.expect()/.unwrap() on invariants that "can't happen". All of
-those funnel through panic() in kernel/lib.rs (#[panic_handler]),
-which itself calls bindings::BUG().
+That said I don't know these tools well - did you have any particular examples
+in mind?
 
-The motivation for this patch is narrow: replace that bindings::BUG()
-call in the panic() function in lib.rs with bug!(), for a somewhat
-better trace. It isn't adding a new decision to crash the system; that
-decision is already made at each of the existing panic!()/.expect()
-call sites.
+ - Alistair
 
-The bug!() macro is currently for internal use only, so it is marked
-`#[doc(hidden)]`.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v2
-- Replace bindings::BUG in lib.rs with bug!() to make the motivation clear
-- Add #[doc(hidden)] to make clear that bug!() is for internal use only
-- Add the bug!() macro, rather than bug_on!(), as the straightforward
-  choice for replacing bindings::BUG.
-
-v1: https://lore.kernel.org/rust-for-linux/20260707143026.2774023-1-tomo@aliasing.net/
----
- rust/kernel/bug.rs | 98 ++++++++++++++++++++++++++++++++--------------
- rust/kernel/lib.rs |  3 +-
- 2 files changed, 70 insertions(+), 31 deletions(-)
-
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index ed943960f851..c7bd019508f7 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -11,9 +11,13 @@
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
--        const _FILE: &[u8] = $file.as_bytes();
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {{
-+        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
-+        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
-+        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
-+        const _COND_STR: &str = file!();
-+
-+        const _FILE: &[u8] = _COND_STR.as_bytes();
-         // Plus one for null-terminator.
-         static FILE: [u8; _FILE.len() + 1] = {
-             let mut bytes = [0; _FILE.len() + 1];
-@@ -24,6 +28,7 @@ macro_rules! warn_flags {
-             }
-             bytes
-         };
-+        const FLAGS: u32 = $flags;
- 
-         // SAFETY:
-         // - `file`, `line`, `flags`, and `size` are all compile-time constants or
-@@ -35,14 +40,14 @@ macro_rules! warn_flags {
-                 concat!(
-                     "/* {size} */",
-                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
--                    include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+                    $asm_tail);
-                 file = sym FILE,
-                 line = const line!(),
-                 flags = const FLAGS,
-                 size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-             );
-         }
--    }
-+    }};
- }
- 
- #[macro_export]
-@@ -50,8 +55,8 @@ macro_rules! warn_flags {
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        const FLAGS: u32 = $flags;
- 
-         // SAFETY:
-         // - `flags` and `size` are all compile-time constants, preventing
-@@ -63,7 +68,7 @@ macro_rules! warn_flags {
-                 concat!(
-                     "/* {size} */",
-                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
--                    include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+                    $asm_tail);
-                 flags = const FLAGS,
-                 size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-             );
-@@ -75,16 +80,23 @@ macro_rules! warn_flags {
- #[doc(hidden)]
- #[cfg(all(CONFIG_BUG, CONFIG_UML))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        // SAFETY: It is always safe to call `warn_slowpath_fmt()`
--        // with a valid null-terminated string.
--        unsafe {
--            $crate::bindings::warn_slowpath_fmt(
--                $crate::c_str!(::core::file!()).as_char_ptr(),
--                line!() as $crate::ffi::c_int,
--                $flags as $crate::ffi::c_uint,
--                ::core::ptr::null(),
--            );
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        // bug_on!() sets $flags to 0, so we can use that to determine
-+        // whether to call BUG() or WARN_ON().
-+        if $flags == 0 {
-+            // SAFETY: It is always safe to call `BUG()`.
-+            unsafe { $crate::bindings::BUG() }
-+        } else {
-+            // SAFETY: It is always safe to call `warn_slowpath_fmt()`
-+            // with a valid null-terminated string.
-+            unsafe {
-+                $crate::bindings::warn_slowpath_fmt(
-+                    $crate::c_str!(::core::file!()).as_char_ptr(),
-+                    line!() as $crate::ffi::c_int,
-+                    $flags as $crate::ffi::c_uint,
-+                    ::core::ptr::null(),
-+                );
-+            }
-         }
-     };
- }
-@@ -93,9 +105,16 @@ macro_rules! warn_flags {
- #[doc(hidden)]
- #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        // SAFETY: It is always safe to call `WARN_ON()`.
--        unsafe { $crate::bindings::WARN_ON(true) }
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        // bug_on!() sets $flags to 0, so we can use that to determine
-+        // whether to call BUG() or WARN_ON().
-+        if $flags == 0 {
-+            // SAFETY: It is always safe to call `BUG()`.
-+            unsafe { $crate::bindings::BUG() }
-+        } else {
-+            // SAFETY: It is always safe to call `WARN_ON()`.
-+            unsafe { $crate::bindings::WARN_ON(true) }
-+        }
-     };
- }
- 
-@@ -103,7 +122,11 @@ macro_rules! warn_flags {
- #[doc(hidden)]
- #[cfg(not(CONFIG_BUG))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {};
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        if $flags == 0 {
-+            loop {}
-+        }
-+    };
- }
- 
- #[doc(hidden)]
-@@ -117,16 +140,33 @@ macro_rules! warn_on {
-     ($cond:expr) => {{
-         let cond = $cond;
- 
--        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
--        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
--        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
--        const _COND_STR: &str = file!();
--
-         if cond {
--            const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
-+            #[cfg(any(not(CONFIG_BUG), CONFIG_UML))]
-+            const WARN_ON_FLAGS: u32 = $crate::bindings::TAINT_WARN;
-+            #[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
-+            const WARN_ON_FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING
-+                | $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
- 
--            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
-+            $crate::warn_flags!(
-+                $cond,
-+                WARN_ON_FLAGS,
-+                include!(concat!(
-+                    env!("OBJTREE"),
-+                    "/rust/kernel/generated_arch_reachable_asm.rs"
-+                ))
-+            );
-         }
-         cond
-     }};
- }
-+
-+/// Reports an unrecoverable kernel bug.
-+#[macro_export]
-+#[doc(hidden)]
-+macro_rules! bug {
-+    () => {
-+        $crate::warn_flags!(true, 0, "");
-+        // SAFETY: We call `BUG()` above so this block will never be reached.
-+        unsafe { core::hint::unreachable_unchecked() }
-+    };
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 9512af7156df..41bfe5a20287 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -217,8 +217,7 @@ pub const fn as_ptr(&self) -> *mut bindings::module {
- #[panic_handler]
- fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
-     pr_emerg!("{}\n", info);
--    // SAFETY: FFI call.
--    unsafe { bindings::BUG() };
-+    crate::bug!();
- }
- 
- /// Produces a pointer to an object from a pointer to one of its fields.
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.43.0
-
+> I don't mind using the same numbers where it doesn't matter too much, but for
+> this to work, it would also require us to retain layout compatibility with
+> structures, semantics, etc., which I think we should not bother with at all.
+> 
+> Let's build a clean new uAPI, it will get messy over time by itself. :)
