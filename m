@@ -1,60 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D461BBBE5;
-	Thu,  9 Jul 2026 15:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA0535975
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 15:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783609231; cv=none; b=glgOFZofI8p8tDD/ffg8hTZD9wbRmKmYo4PDQ+2vbbtglbJpSx2BR/u0w3m6P5TW+dsJxGk0IBD8x6U8Eyr4p4I2zGcQjSksACsTFO3NQsw5s4iwt8xKUX8mtXlBI9weOHU9N8MuUfbI3TIc+AknLt2hWxXAwpTAkaHepiWVI7U=
+	t=1783612024; cv=none; b=UDyOQrOOwvfVmUF/J8ETR7ADsOrykjURn7vmYV2/6Ty8AHb2ZQcZy4Dg1ZQGtX0HJGiqL6ZJtWV0JlRLI6Xb6TzM3Fqp/ww7BYxJ74ApXjmnVGPKgBlld0mLmdNNWEJAW8huGB/Sd9VTozTKxespGV9KJhs5Yu18xNe2EA5jwjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783609231; c=relaxed/simple;
-	bh=6rV8yFdmFMaImLK/hyEKYchVJSXskJngKVoZJJKqhrE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kQJXosdDf/71+Ygi/W/aWmbsdt5jr4ZXIZ+NBnDbQNoVkM8W6GvYrQcegYlJNIW8H4g/loSIJ6zVGbZcDYzvJrKkMXAmED8y7ipcQBYN46CRCnaL86U2b6C9ICzYA6UOhp+YNQJX+7copsEyAE35pUZTiQ7weNLvRMFRqiDuhBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlIbjqao; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783612024; c=relaxed/simple;
+	bh=MgPfa4pKGE1SzEFbQCeqHMYKqdAxa7JEG0bUQwYux8M=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=mRVRS5Aw0KkzwJ5lQVa4vumLftcO3CzF23/94I78NT8MSyUZskqOMfa61J2G6DPvrbOupCVYos/oSwvBvv1M8l90YGI2wNmehkECmQXp3pcB5AyS6wet4SkZh0tJ0ZU+4fgNRuTJy+xZ1igN0ECgmz/Jx3Ull4GuUeLCaZatiNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VtSeojIQ; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlIbjqao"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698F21F000E9;
-	Thu,  9 Jul 2026 15:00:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783609230;
-	bh=XBSFFRlqjOjsfWabzs0b5VS/668RN/zWgBiBaHhQLlU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nlIbjqaoIBCc4SddDmN6qibWLw8SaLRD1qQk8Jh425DTjtrjRtsidSfhkjElu+9m9
-	 9sEYmfpOceRoNfJF9hKy8/b3JaxLVxEro7u07nWB5VqCinS1YdMCFflyueYB/kveGD
-	 KdUEUn8JeKrlThw6Bs6A/AgCmsUvk+QuOhzCKQUzWS91QJJ7ZyDrtNBUF4BDymts4F
-	 5bY7IUs392xktNYDMxcjClSCqpGCT8VVCaOPYA3MVv3LNdYs1Yvr5j01PWnnmGIl6O
-	 ByhX9jLq+zr5Jqpo7LXIWmaKQCZtvbvRHa0O4MFkvxEqJlHlKFtMH3BYlpBONo8uyg
-	 iszyasWK8Nr+Q==
-Message-ID: <7dcb4b89-0d53-4bb3-ac1c-4c3147587f0a@kernel.org>
-Date: Thu, 9 Jul 2026 17:00:24 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VtSeojIQ"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-473de38dcfaso35896f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 09 Jul 2026 08:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783612021; x=1784216821; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1ShG0iDDEU7To4XJxO6yX4MTZYqSurnuJSiTMgcIjD0=;
+        b=VtSeojIQJgqW0gzFTXVyqVJTks+w6NoJsU9FAUzzfdIOG6DS/E7PIW/dG7POyUBxKq
+         7v6ixAGBizqM9xc8SyAIc5iTZirZOjm7d7orYEwqoaB9R4lwdazyFLWrS81xyhDAo0Ks
+         NvgVJyGXBFc2wkvew1Vs85TvPUB3+EJJdOAuGil5Nhazfyfhgq21NMvUFM4ruFAHkobw
+         kX5BwIdYUlm+TSZED6ESVUd68hlJM8e1GZblftYX6zyT6CmqaVPBEZbJw4YIrx5mBiF5
+         HY/MLvzQOJpI4UtAJO8Xl4y149/m4uNMStW+nf6UWc6lzRV1RhRNLy3XqOJZu4pz2Fot
+         IrBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783612021; x=1784216821;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1ShG0iDDEU7To4XJxO6yX4MTZYqSurnuJSiTMgcIjD0=;
+        b=jJMwPpK3AFcUc2pJ36eF12wWRgboQzWql820uxYNu9GW4OJrVcae1HeXsXx9NM8bSZ
+         Ki8j6b16ARbvrgrAcfQQNrNT9VcWCV8S+XaSgbDlfaL9nma7hS9+21lElV0kw7NwHS7b
+         3RgVP8DvabV5rRKd2dGpmEHKYksiQn/ImK4HT5Dcl6G+ltL4H8eKhNDglsquu8Ix1qld
+         4Gab7kJWF45HTtIQ1Tq1DOt+fnaUouRt/wJjM9I7BbSB0GnpOprk3kMm8JUkXwD9imWg
+         GwQ68RDscNij/+k7i4Lokcd8fD5UeGuyM+PJ2EDfCj6hxoW4u0mgiYLeymtiOVk6BKUH
+         4S+w==
+X-Forwarded-Encrypted: i=1; AHgh+Roujxf9n8wEWNVkQh2FQkJZ+YZlCht0bVlbRghDb80/Nc4NeiW6IVRugC6lA+a6ONmTTf4h72Wr6udLcNOKKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+UFpy/bwlxgZlQxkuqmo4vjzsfPAC/CZ+h19EWeeGvgyVSePQ
+	JA6sr+KDUMw/lPhMY2mc7kHmOXoo9X3cJCz749bydlYsmiwqKAdIwJVXkZUxI3AcZhnJXDPwpm5
+	O4M7eqw1GiZrwN8uaOg==
+X-Received: from wrs28.prod.google.com ([2002:a05:6000:65c:b0:44a:cfa:ca21])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2201:b0:465:ba53:a006 with SMTP id ffacd0b85a97d-47df07394efmr8123926f8f.23.1783612021018;
+ Thu, 09 Jul 2026 08:47:01 -0700 (PDT)
+Date: Thu, 9 Jul 2026 15:46:59 +0000
+In-Reply-To: <20260703-pgtable_lt_b4-v3-1-e738e1f513a4@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: iommu: add device lifetime to IoPageTable
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: "Joerg Roedel (AMD)" <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- iommu@lists.linux.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, samitolvanen@google.com,
- laura.nao@collabora.com, boris.brezillon@collabora.com,
- daniel.almeida@collabora.com
+Mime-Version: 1.0
 References: <20260703-pgtable_lt_b4-v3-1-e738e1f513a4@collabora.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260703-pgtable_lt_b4-v3-1-e738e1f513a4@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-ID: <ak_Cc7yylzGM6oEF@google.com>
+Subject: Re: [PATCH v3] rust: iommu: add device lifetime to IoPageTable
+From: Alice Ryhl <aliceryhl@google.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, samitolvanen@google.com, 
+	laura.nao@collabora.com, boris.brezillon@collabora.com, 
+	daniel.almeida@collabora.com
+Content-Type: text/plain; charset="utf-8"
 
-On 7/4/26 2:28 AM, Deborah Brouwer wrote:
+On Fri, Jul 03, 2026 at 05:28:44PM -0700, Deborah Brouwer wrote:
 > Currently, using a raw IoPageTable is unsafe because the returned
 > IoPageTable is not tied to the device driver binding lifetime.
 > 
@@ -71,4 +91,14 @@ On 7/4/26 2:28 AM, Deborah Brouwer wrote:
 > Suggested-by: Boris Brezillon <boris.brezillon@collabora.com>
 > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Joerg, this patch is a dependency for this other series:
+https://lore.kernel.org/rust-for-linux/20260708-fw-boot-b4-v5-0-7792ab68e359@collabora.com
+
+Would it be okay with you if I apply this patch via drm-rust-next
+together with the thing it's a dependency of?
+
+It cleanly merges together with 'rust: iommu: replace core::mem::zeroed
+with Zeroable::zeroed' that you already picked up, so taking them
+through separate trees will not lead to a merge conflict.
+
+Alice
