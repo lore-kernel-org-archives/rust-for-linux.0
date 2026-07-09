@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C47A3C4548;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74C33D88FA;
 	Thu,  9 Jul 2026 21:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783633047; cv=pass; b=RPPhROx36RCG7Ngc8VcWXYnE3JMz3t6DU1bIrNO/Dxg/vrIXxWiy0v6WBUnad74qHaJG2iPwmAr8ERlgln8L3ik3/yIS1gLnxu2F4/osJErYMOz4jj/JBrlUhgrnFhoOqfVdXg1Moy5sz9aUqKT/oQX6Gm8zoA6ZK5kvkzvgxrQ=
+	t=1783633047; cv=pass; b=jdqz1zP2+tDH0lCSFUepMo1UqyWaflenoluBaxdshElk7jig8aiDSCMF+kGJJ225KgF9kVUwDKCG2cQL0VlonEL1XNLnqdji9azsltDtYWn5tpRvvneZQCZoxHHn6w1OmBRdyRlYpy/NdUz2J4ZOf8psLNcV+UF1Roab3vQu5sA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783633047; c=relaxed/simple;
-	bh=qfya5SI992qoDW8kXLHYLlwx0oCpHGFssQX7E4PpwLw=;
+	bh=q32/ybrmv7/oohm7iwK3y36zG0xpEFdqisLC7NY65i0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jSTYMSFOmSl2IvD4cgPa/l5ArqgueK4WaHm5EBhETdS6KsPbtVLBqyiVhYEMOn20EiUGTB56Q+gJktuJlyAsoYZzW9Ehhu83fJpnesxRphP/2PjnVpfCqxdlvye9G6c3KCCXTNoxofnl91fTpP+4LDmaCW+/Hvb+lj+kvXEP1XE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=Ne2Kav1l; arc=pass smtp.client-ip=136.143.188.11
+	 In-Reply-To:To:Cc; b=ijJSK/bMxo6Xfjz/KtstrgYOLGM8gCjdJyttxcbtt6uIu3SsYQgMHjCo/KR4pNMtyO0NHoQQ3OJSLvzuGB3M4CVUfQ9+nLHSTkrOKTKGkvqjUaUqwiNF/Abze5DqwNBDzFlanf/POcBuKrUWLErnj4v4aYKqtfhUyoNju5PjXb0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=KUuv6IZd; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="Ne2Kav1l"
-ARC-Seal: i=1; a=rsa-sha256; t=1783633018; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="KUuv6IZd"
+ARC-Seal: i=1; a=rsa-sha256; t=1783633016; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=IBmwHg5Yv0/aitUWqVx3FKi8xjRLKt0EaTg48/yTE7alwLUPQeYdia25EZ252vn2JPmFpKOp69iT1fmP4dnmlG/bEbSOkf3yYIb/2i0ig5t5/xu7DgoXr7zxAGnpiT8RNUmmu7Der8yDSw5/XePT4YBhOi7gxH39/zJr2k10OS4=
+	b=lI12VZF2UBcZxyhF7WguloAhdLtTQWL+d71/a72kf19Ma6nZnqqwyvxLr1lYUoNNGAoSkWF8QmrNzSJvl/iq/RlDqNRzjTPYXyLW9w35yXN4DAkorVhYs37AVjEmfgX41i6Tp/zxYJK7QuSusTK4ku5fPpLjCavOplk6j1m8UKI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783633018; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=/q26eLG7FAvNn02qV8K6lHPKS7qZgBsUkhWNinU299o=; 
-	b=T1OSrGovRd+8Oh5uEuDk9xXYeJclgJFEpwQhfnEuu1KbzFFiINbQ38MQujBGPigXmD9PsXeKLqSItv15rEtcJFNGiH2lES6fqeHIKFKdyFIYog7a4QBzGhw/aLGs2guunplB2R8DwStQAJAPWC6dNGr5y8lqe2Q8389bCiDah1w=
+	t=1783633016; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=435U5sarZ29IKDaQsyTZlsgFBn68QCRbPa9Sff2H3WY=; 
+	b=leCePXBc4GGD0U4fXDne6n5d73eRvOUC3kF+1jjAY2T//HVp955eyE3NpMT50JCgcl2KPHdZdg65sWm+WUZbKjHcJhAyazEx4GKQS2nmZz9g74fd8bbxjBcAQ4vonaoNZUb7lhQHt/UivnEjHS39kkqDS7kRg444sO8Hxk12Prw=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783633018;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783633016;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=/q26eLG7FAvNn02qV8K6lHPKS7qZgBsUkhWNinU299o=;
-	b=Ne2Kav1lTAPztCd/NqsNUdBC+RLXEvdiAlgTEtaBq+ji5OC/dXk2mjvYATgvEC2W
-	VscSGbS8ivsu+dbrOs5o0r/vR7QkikJ4ZuReeVCTb1JR1yuJkHfu7HC7KUGmxFqAPL0
-	YBcQqUbhbcKs4OEZ/DZiXuEXgax0IFXbGRuSv/Y0=
-Received: by mx.zohomail.com with SMTPS id 1783633017238358.57906502860374;
-	Thu, 9 Jul 2026 14:36:57 -0700 (PDT)
+	bh=435U5sarZ29IKDaQsyTZlsgFBn68QCRbPa9Sff2H3WY=;
+	b=KUuv6IZd86KtLlapCttAq/swfcDEzn3NhDqlMR7XbUQsAh9Ovg/t+LEdzU3ha8pD
+	FFyqRvXFi746soIAWF0xUauMzAtaTjWczGxux05WaNVxkaBTWc6WZnS1Qj3TA0Ijrua
+	69fXkjDp10lJt5FRyP/RnfW8bWMUutvHpYjH2+ng=
+Received: by mx.zohomail.com with SMTPS id 1783633015375147.95088866503;
+	Thu, 9 Jul 2026 14:36:55 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Thu, 09 Jul 2026 14:36:44 -0700
-Subject: [PATCH v6 4/7] drm/tyr: add GPU virtual memory (VM) support
+Date: Thu, 09 Jul 2026 14:36:42 -0700
+Subject: [PATCH v6 2/7] drm/tyr: add a generic slot manager
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-fw-boot-b4-v6-4-ca391e1a4108@collabora.com>
+Message-Id: <20260709-fw-boot-b4-v6-2-ca391e1a4108@collabora.com>
 References: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com>
 In-Reply-To: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -61,944 +61,447 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  alvin.sun@linux.dev, laura.nao@collabora.com, work@onurozkan.dev, 
  beata.michalska@arm.com, steven.price@arm.com, lyude@redhat.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=31588;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15586;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=OS9TWoZbWbc+248cTNQ2z3E7X8fAnPj8Z/MsgJ5gUxE=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkBIiWvWi/O3+Rgtup22Md9DJl3Nj2ckcqWdbp4kqviW
- TGDGV0rOkpZGMS4GGTFFFnO2hv1iFe9N9Kd/78ZZg4rE8gQBi5OAZhIzkJGhrNb6pZJ/BTmUn/t
- ofhE8KxMnkWKcufqf2q9eQIeCumd0xkZnn/nEWEOOpLW/Tm6reCKvCLrOteftd/ZJ950fvXK6st
- vRgA=
+ bh=9hL/Ym1XWv5mKj+lba/rSfvq8WqlYrmtCap0biBuow0=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkBIiXxOZVLeaK+8r/9J7a7xdUvI2PD+SsMWVte91ec2
+ 3Z/oSlLRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABP5s4eR4ZJc4sH4/XcvBz3W
+ nLG1+8OGqM8cHyY1Jyy8PbtVYuuO502MDGc4cqu/fGX/MSe29Nq67RsOzZher95xrv1Qxqd56/d
+ MEOcGAA==
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
 From: Boris Brezillon <boris.brezillon@collabora.com>
 
-Add GPU virtual address space management using the DRM GPUVM framework.
-Each virtual memory (VM) space is backed by ARM64 LPAE Stage 1 page tables
-and can be mapped into hardware address space (AS) slots for GPU execution.
+Introduce a generic slot manager to dynamically allocate limited hardware
+slots to software "seats". It can be used for both address space (AS) and
+command stream group (CSG) slots.
 
-The implementation provides memory isolation and virtual address
-allocation. VMs support mapping GEM buffer objects with configurable
-protection flags (readonly, noexec, uncached) and handle both 4KB and 2MB
-page sizes. A new_dummy_object() helper is provided to create a dummy GEM
-object for use as a GPUVM root.
+The slot manager initially assigns seats to its free slots. It will
+continue to reuse the same slot for a seat, as long as another seat does
+not start to use the slot in the interim.
 
-The vm module integrates with the MMU for address space activation and
-provides map/unmap/remap operations with page table synchronization.
+When contention arises because all of the slots are allocated, the slot
+manager will lazily evict and reuse slots that have become idle (if any).
+
+The seat state is protected using the LockedBy pattern with the same lock
+that guards the SlotManager. This ensures the seat state stays consistent
+across slot operations.
+
+Hardware specific behaviour is controlled through the SlotManager's
+specific manager type that implements the `SlotOperations` trait.
 
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/Kconfig   |   1 +
- drivers/gpu/drm/tyr/driver.rs |   4 +-
- drivers/gpu/drm/tyr/gem.rs    |  26 +-
- drivers/gpu/drm/tyr/tyr.rs    |   1 +
- drivers/gpu/drm/tyr/vm.rs     | 807 ++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 835 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tyr/slot.rs | 385 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs  |   1 +
+ 2 files changed, 386 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
-index 61a2fd6f961a..79ea4bb214de 100644
---- a/drivers/gpu/drm/tyr/Kconfig
-+++ b/drivers/gpu/drm/tyr/Kconfig
-@@ -12,6 +12,7 @@ config DRM_TYR
- 	default n
- 	select IOMMU_IO_PGTABLE_LPAE
- 	select RUST_DRM_GEM_SHMEM_HELPER
-+	select RUST_DRM_GPUVM
- 	help
- 	  Rust DRM driver for ARM Mali CSF-based GPUs.
- 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 74b55a389754..9195c8be5203 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -37,7 +37,7 @@
- 
- use crate::{
-     file::TyrDrmFileData,
--    gem::BoData,
-+    gem::Bo,
-     gpu,
-     gpu::GpuInfo,
-     mmu::Mmu,
-@@ -194,7 +194,7 @@ impl drm::Driver for TyrDrmDriver {
-     type Data = ();
-     type RegistrationData<'bound> = TyrDrmRegistrationData<'bound>;
-     type File = TyrDrmFileData;
--    type Object = drm::gem::shmem::Object<BoData>;
-+    type Object = Bo;
-     type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
- 
-     const INFO: drm::DriverInfo = INFO;
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 1640a161754b..c28be61a01bb 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -5,8 +5,12 @@
- //! DRM's GEM subsystem with shmem backing.
- 
- use kernel::{
--    drm::gem,
--    prelude::*, //
-+    drm::gem::{
-+        self,
-+        shmem, //
-+    },
-+    prelude::*,
-+    sync::aref::ARef, //
- };
- 
- use crate::driver::{
-@@ -34,3 +38,21 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
-         try_pin_init!(Self { flags: args.flags })
-     }
- }
-+
-+/// Type alias for Tyr GEM buffer objects.
-+pub(crate) type Bo = gem::shmem::Object<BoData>;
-+
-+/// Creates a dummy GEM object to serve as the root of a GPUVM.
-+pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
-+    let bo = Bo::new(
-+        ddev,
-+        4096,
-+        shmem::ObjectConfig {
-+            map_wc: true,
-+            parent_resv_obj: None,
-+        },
-+        BoCreateArgs { flags: 0 },
-+    )?;
-+
-+    Ok(bo)
-+}
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 79045d0135a8..92f6885cdaae 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -14,6 +14,7 @@
- mod mmu;
- mod regs;
- mod slot;
-+mod vm;
- 
- kernel::module_platform_driver! {
-     type: TyrPlatformDriver,
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
 new file mode 100644
-index 000000000000..57929c2d3e94
+index 000000000000..3f58b23238ef
 --- /dev/null
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -0,0 +1,807 @@
++++ b/drivers/gpu/drm/tyr/slot.rs
+@@ -0,0 +1,385 @@
 +// SPDX-License-Identifier: GPL-2.0 or MIT
 +
-+//! GPU virtual memory management using the DRM GPUVM framework.
++//! Slot management abstraction for limited hardware resources.
 +//!
-+//! This module manages GPU virtual address spaces, providing memory isolation and
-+//! the illusion of owning the entire virtual address (VA) range, similar to CPU virtual memory.
-+//! Each virtual memory (VM) area is backed by ARM64 LPAE Stage 1 page tables and can be
-+//! mapped into hardware address space (AS) slots for GPU execution.
++//! This module provides a generic [`SlotManager`] that assigns limited hardware
++//! slots to logical "seats". A seat represents an entity (such as a virtual memory
++//! (VM) address space) that needs access to a hardware slot.
++//!
++//! The [`SlotManager`] tracks slot allocation using sequence numbers (seqno) to detect
++//! when a seat's binding has been invalidated. When a seat requests activation,
++//! the manager will either reuse the seat's existing slot (if still valid),
++//! allocate a free slot (if any are available), or evict the oldest idle slot if any
++//! slots are idle.
++//!
++//! Hardware-specific behavior is customized by implementing the [`SlotOperations`]
++//! trait, which allows callbacks when slots are activated or evicted.
++//!
++//! This is currently used for managing address space slots in the GPU, and it will
++//! also be used to manage Command Stream Group (CSG) interface slots in the future.
++//!
++//! [SlotOperations]: crate::slot::SlotOperations
++//! [SlotManager]: crate::slot::SlotManager
 +#![allow(dead_code)]
 +
-+use core::marker::PhantomData;
-+use core::ops::Range;
++use core::{
++    mem::take,
++    ops::{
++        Deref,
++        DerefMut, //
++    }, //
++};
 +
 +use kernel::{
-+    c_str,
-+    device::{
-+        Bound,
-+        Device, //
-+    },
-+    drm::{
-+        gpuvm::{
-+            DriverGpuVm,
-+            GpuVaAlloc,
-+            GpuVm,
-+            GpuVmBo,
-+            OpMap,
-+            OpMapRequest,
-+            OpMapped,
-+            OpRemap,
-+            OpRemapped,
-+            OpUnmap,
-+            OpUnmapped,
-+            UniqueRefGpuVm, //
-+        }, //
-+    },
-+    impl_flags,
-+    iommu::pgtable::{
-+        prot,
-+        IoPageTable,
-+        ARM64LPAES1, //
-+    },
-+    new_mutex,
 +    prelude::*,
-+    sizes::{
-+        SZ_1G,
-+        SZ_2M,
-+        SZ_4K, //
-+    },
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        ArcBorrow,
-+        Mutex, //
-+    },
-+    uapi, //
++    sync::LockedBy, //
 +};
 +
-+use crate::{
-+    driver::{
-+        TyrDrmDevice,
-+        TyrDrmDriver, //
-+    },
-+    gem,
-+    gem::Bo,
-+    gpu::GpuInfo,
-+    mmu::{
-+        address_space::VmAsData,
-+        Mmu, //
-+    },
-+    regs::gpu_control::MMU_FEATURES,
-+};
-+
-+impl_flags!(
-+    /// Flags controlling virtual memory mapping behavior.
++/// Seat information.
++///
++/// This can't be accessed directly by the element embedding a `Seat`,
++/// but is used by the generic slot manager logic to control residency
++/// of a certain object on a hardware slot.
++pub(crate) struct SeatInfo {
++    /// Slot used by this seat.
 +    ///
-+    /// These flags control access permissions and caching behavior for GPU virtual
-+    /// memory mappings.
-+    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-+    pub(crate) struct VmMapFlags(u32);
++    /// This index is only valid if the slot pointed to by this index
++    /// has its `SlotInfo::seqno` match `SeatInfo::seqno`. Otherwise,
++    /// it means the object has been evicted from the hardware slot,
++    /// and a new slot needs to be acquired to make this object
++    /// resident again.
++    slot: u8,
 +
-+    /// Individual flags that can be combined in [`VmMapFlags`].
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub(crate) enum VmFlag {
-+        /// Map as read-only.
-+        Readonly = uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_READONLY as u32,
-+        /// Map as non-executable.
-+        Noexec = uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC as u32,
-+        /// Map as uncached.
-+        Uncached = uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED as u32,
-+    }
-+);
++    /// Sequence number encoding the last time this seat was active.
++    /// We also use it to check if a slot is still bound to a seat.
++    seqno: u64,
++}
 +
-+impl VmMapFlags {
-+    /// Convert the flags to `pgtable::prot`.
-+    fn to_prot(self) -> u32 {
-+        let mut prot = 0;
++/// Seat state.
++///
++/// This is meant to be embedded in the object that wants to acquire
++/// hardware slots. It also starts in the `Seat::NoSeat` state, and
++/// the slot manager will change the object value when an active/evict
++/// request is issued.
++#[derive(Default)]
++pub(crate) enum Seat {
++    #[expect(clippy::enum_variant_names)]
++    /// Resource is not resident.
++    ///
++    /// All objects start with a seat in the `Seat::NoSeat` state. The seat also
++    /// gets back to that state if the user requests eviction. It
++    /// can also end up in that state next time an operation is done
++    /// on a `Seat::Idle` seat and the slot manager finds out this
++    /// object has been evicted from the slot.
++    #[default]
++    NoSeat,
 +
-+        if self.contains(VmFlag::Readonly) {
-+            prot |= prot::READ;
-+        } else {
-+            prot |= prot::READ | prot::WRITE;
++    /// Resource is actively used and resident.
++    ///
++    /// When a seat is in the `Seat::Active` state, it can't be evicted, and the
++    /// slot pointed to by `SeatInfo::slot` is guaranteed to be reserved
++    /// for this object as long as the seat stays active.
++    Active(SeatInfo),
++
++    /// Resource is idle and might or might not be resident.
++    ///
++    /// When a seat is in the`Seat::Idle` state, we can't know for sure if the
++    /// object is resident or evicted until the next request we issue
++    /// to the slot manager. This tells the slot manager it can
++    /// reclaim the underlying slot if needed.
++    /// In order for the hardware to use this object again, the seat
++    /// needs to be turned into an `Seat::Active` state again
++    /// with a `SlotManager::activate()` call.
++    Idle(SeatInfo),
++}
++
++impl Seat {
++    /// Get the slot index this seat is pointing to.
++    ///
++    /// If the seat is not `Seat::Active` we can't trust the
++    /// `SeatInfo`. In that case `None` is returned, otherwise
++    /// `Some(SeatInfo::slot)` is returned.
++    pub(super) fn slot(&self) -> Option<u8> {
++        match self {
++            Self::Active(info) => Some(info.slot),
++            _ => None,
 +        }
-+
-+        if self.contains(VmFlag::Noexec) {
-+            prot |= prot::NOEXEC;
-+        }
-+
-+        if !self.contains(VmFlag::Uncached) {
-+            prot |= prot::CACHE;
-+        }
-+
-+        prot
 +    }
 +}
 +
-+impl core::fmt::Display for VmMapFlags {
-+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-+        let mut first = true;
++/// Information related to a slot.
++struct SlotInfo<T> {
++    /// Type specific data attached to a slot.
++    slot_data: T,
 +
-+        if self.contains(VmFlag::Readonly) {
-+            write!(f, "READONLY")?;
-+            first = false;
-+        }
-+        if self.contains(VmFlag::Noexec) {
-+            if !first {
-+                write!(f, " | ")?;
-+            }
-+            write!(f, "NOEXEC")?;
-+            first = false;
-+        }
++    /// Sequence number from when this slot was last activated.
++    seqno: u64,
++}
 +
-+        if self.contains(VmFlag::Uncached) {
-+            if !first {
-+                write!(f, " | ")?;
-+            }
-+            write!(f, "UNCACHED")?;
-+        }
++/// Slot state.
++#[derive(Default)]
++enum SlotState<T> {
++    /// Slot is free.
++    #[default]
++    Free,
 +
++    /// Slot is active.
++    Active(SlotInfo<T>),
++
++    /// Slot is idle.
++    Idle(SlotInfo<T>),
++}
++
++/// Trait describing the slot-related operations.
++pub(crate) trait SlotOperations {
++    /// Implementation-specific data associated with each slot.
++    type SlotData;
++
++    /// Called when a slot is being activated for a seat.
++    fn activate(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
++        Ok(())
++    }
++
++    /// Called when a slot is being evicted and freed.
++    fn evict(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
 +        Ok(())
 +    }
 +}
 +
-+impl TryFrom<u32> for VmMapFlags {
-+    type Error = Error;
++/// A generic slot manager that provides access to a limited number of hardware slots.
++pub(crate) struct SlotManager<T: SlotOperations, const MAX_SLOTS: usize> {
++    /// A specific implementation of the generic slot manager.
++    manager: T,
 +
-+    fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
-+        let valid = (kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_READONLY
-+            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC
-+            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED)
-+            as u32;
++    /// Number of slots actually available.
++    slot_count: usize,
 +
-+        if value & !valid != 0 {
-+            pr_err!("Invalid VM map flags: {:#x}\n", value);
++    /// Slot array used to track the state of each slot.
++    slots: [SlotState<T::SlotData>; MAX_SLOTS],
++
++    /// Sequence number incremented each time a Seat is successfully activated
++    use_seqno: u64,
++}
++
++/// A `Seat` that can only be accessed when holding a `SlotManager` lock guard.
++type LockedSeat<T, const MAX_SLOTS: usize> = LockedBy<Seat, SlotManager<T, MAX_SLOTS>>;
++
++impl<T: SlotOperations, const MAX_SLOTS: usize> SlotManager<T, MAX_SLOTS> {
++    /// Creates a specific instance of a slot manager.
++    pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> {
++        if slot_count == 0 {
++            pr_err!("Invalid slot count: 0");
 +            return Err(EINVAL);
 +        }
-+        Ok(Self(value))
-+    }
-+}
-+
-+/// Arguments for a virtual memory map operation.
-+struct VmMapArgs<'bound> {
-+    /// Access permissions and caching behavior for the mapping.
-+    flags: VmMapFlags,
-+    /// GEM buffer object registered with the GPUVM framework.
-+    vm_bo: ARef<GpuVmBo<GpuVmData<'bound>>>,
-+    /// Offset in bytes from the start of the buffer object.
-+    bo_offset: u64,
-+}
-+
-+/// Type of virtual memory operation.
-+enum VmOpType<'bound> {
-+    /// Map a GEM buffer object into the virtual address space.
-+    Map(VmMapArgs<'bound>),
-+    /// Unmap a region from the virtual address space.
-+    Unmap,
-+}
-+
-+/// Preallocated resources needed to execute a VM operation.
-+///
-+/// VM operations may require allocating new GPUVA objects to track mappings.
-+/// To avoid allocation failures during the operation, preallocate the
-+/// maximum number of GPUVAs that might be needed.
-+struct VmOpResources<'bound> {
-+    /// Preallocated GPUVA objects for remap operations.
-+    ///
-+    /// Partial unmap requests or map requests overlapping existing mappings
-+    /// will trigger a remap call, which needs to register up to three VA
-+    /// objects (one for the new mapping, and two for the previous and next
-+    /// mappings).
-+    preallocated_gpuvas: [Option<GpuVaAlloc<GpuVmData<'bound>>>; 3],
-+}
-+
-+/// Request to execute a virtual memory operation.
-+struct VmOpRequest<'bound> {
-+    /// Request type.
-+    op_type: VmOpType<'bound>,
-+
-+    /// Region of the virtual address space covered by this request.
-+    region: Range<u64>,
-+}
-+
-+/// Arguments for a page table map operation.
-+struct PtMapArgs {
-+    /// Memory protection flags describing allowed accesses for this mapping.
-+    ///
-+    /// This is directly derived from [`VmMapFlags`] via [`VmMapFlags::to_prot`].
-+    prot: u32,
-+}
-+
-+/// Type of page table operation.
-+enum PtOpType {
-+    /// Map pages into the page table.
-+    Map(PtMapArgs),
-+    /// Unmap pages from the page table.
-+    Unmap,
-+}
-+
-+/// Context for updating the GPU page table.
-+///
-+/// This context is created when beginning a page table update operation and
-+/// automatically flushes changes when dropped. It ensures that the
-+/// Memory Management Unit (MMU) state is properly managed and Translation
-+/// Lookaside Buffer (TLB) entries are flushed.
-+pub(crate) struct PtUpdateContext<'ctx, 'bound> {
-+    /// Device used for DMA-mapping GEM shmem SG tables.
-+    dev: &'ctx Device<Bound>,
-+
-+    /// Page table.
-+    pt: &'ctx IoPageTable<'bound, ARM64LPAES1>,
-+
-+    /// MMU manager.
-+    mmu: &'ctx Mmu<'bound>,
-+
-+    /// Reference to the address space data to pass to the MMU functions.
-+    as_data: &'ctx VmAsData<'bound>,
-+
-+    /// Region of the virtual address space covered by this request.
-+    region: Range<u64>,
-+
-+    /// Operation type.
-+    op_type: PtOpType,
-+
-+    /// Preallocated resources that can be used when executing the request.
-+    resources: &'ctx mut VmOpResources<'bound>,
-+}
-+
-+impl<'ctx, 'bound> PtUpdateContext<'ctx, 'bound> {
-+    /// Creates a new page table update context.
-+    ///
-+    /// This prepares the MMU for a page table update.
-+    /// The context will automatically flush the TLB and
-+    /// complete the update when dropped.
-+    fn new(
-+        dev: &'ctx Device<Bound>,
-+        pt: &'ctx IoPageTable<'bound, ARM64LPAES1>,
-+        mmu: &'ctx Mmu<'bound>,
-+        as_data: &'ctx VmAsData<'bound>,
-+        region: Range<u64>,
-+        op_type: PtOpType,
-+        resources: &'ctx mut VmOpResources<'bound>,
-+    ) -> Result<PtUpdateContext<'ctx, 'bound>> {
-+        mmu.start_vm_update(as_data, &region)?;
-+
-+        Ok(Self {
-+            dev,
-+            pt,
-+            mmu,
-+            as_data,
-+            region,
-+            op_type,
-+            resources,
-+        })
-+    }
-+
-+    /// Finds one of our pre-allocated VAs.
-+    ///
-+    /// It is a logic error to call this more than three times for a given
-+    /// PtUpdateContext.
-+    fn preallocated_gpuva(&mut self) -> Result<GpuVaAlloc<GpuVmData<'bound>>> {
-+        self.resources
-+            .preallocated_gpuvas
-+            .iter_mut()
-+            .find_map(|f| f.take())
-+            .ok_or(EINVAL)
-+    }
-+}
-+
-+impl Drop for PtUpdateContext<'_, '_> {
-+    fn drop(&mut self) {
-+        if let Err(e) = self.mmu.end_vm_update(self.as_data) {
-+            pr_err!("Failed to end VM update {:?}\n", e);
-+        }
-+
-+        if let Err(e) = self.mmu.flush_vm(self.as_data) {
-+            pr_err!("Failed to flush VM {:?}\n", e);
-+        }
-+    }
-+}
-+
-+/// Driver implementation for the GPUVM framework.
-+///
-+/// Implements [`DriverGpuVm`] to provide VM operation callbacks (map, unmap, remap)
-+/// and associated types for buffer objects, virtual addresses, and contexts.
-+pub(crate) struct GpuVmData<'bound> {
-+    _phantom: PhantomData<&'bound ()>,
-+}
-+
-+/// GPU virtual address space.
-+///
-+/// Each VM can be mapped into a hardware address space slot.
-+#[pin_data]
-+pub(crate) struct Vm<'bound> {
-+    /// Data referenced by an AS when the VM is active
-+    as_data: Arc<VmAsData<'bound>>,
-+    /// MMU manager.
-+    mmu: Arc<Mmu<'bound>>,
-+    /// Parent device used for DMA mapping and page-table operations.
-+    dev: &'bound Device<Bound>,
-+    /// DRM GPUVM core for managing virtual address space.
-+    #[pin]
-+    gpuvm_unique: Mutex<UniqueRefGpuVm<GpuVmData<'bound>>>,
-+    /// Non-core part of the GPUVM. Can be used for stuff that doesn't modify the
-+    /// internal mapping tree, like GpuVm::obtain()
-+    gpuvm: ARef<GpuVm<GpuVmData<'bound>>>,
-+    /// VA range for this VM.
-+    va_range: Range<u64>,
-+}
-+
-+impl<'bound> Vm<'bound> {
-+    /// Creates a new GPU virtual address space.
-+    ///
-+    /// The VM is initialized with a page table configured according to the GPU's
-+    /// address translation capabilities and registered with the GPUVM framework.
-+    pub(crate) fn new(
-+        dev: &'bound Device<Bound>,
-+        ddev: &TyrDrmDevice,
-+        mmu: ArcBorrow<'_, Mmu<'bound>>,
-+        gpu_info: &GpuInfo,
-+    ) -> Result<Arc<Vm<'bound>>> {
-+        let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
-+        let va_bits = mmu_features.va_bits().get();
-+        let pa_bits = mmu_features.pa_bits().get();
-+
-+        let range = 0..(1u64 << va_bits);
-+        let reserve_range = 0..0u64;
-+
-+        // dummy_obj is used to initialize the GPUVM tree.
-+        let dummy_obj = gem::new_dummy_object(ddev).inspect_err(|e| {
-+            pr_err!("Failed to create dummy GEM object: {:?}\n", e);
-+        })?;
-+
-+        let gpuvm_unique = kernel::drm::gpuvm::GpuVm::new::<Error, _>(
-+            c_str!("Tyr::GpuVm"),
-+            ddev,
-+            &*dummy_obj,
-+            range.clone(),
-+            reserve_range,
-+            GpuVmData::<'bound> {
-+                _phantom: PhantomData::<&()>,
-+            },
-+        )
-+        .inspect_err(|e| {
-+            pr_err!("Failed to create GpuVm: {:?}\n", e);
-+        })?;
-+        let gpuvm = ARef::from(&*gpuvm_unique);
-+
-+        let as_data = Arc::pin_init(VmAsData::new(&mmu, dev, va_bits, pa_bits), GFP_KERNEL)?;
-+
-+        let vm = Arc::pin_init(
-+            pin_init!(Self{
-+                as_data,
-+                dev,
-+                mmu: mmu.into(),
-+                gpuvm,
-+                gpuvm_unique <- new_mutex!(gpuvm_unique),
-+                va_range: range,
-+            }),
-+            GFP_KERNEL,
-+        )?;
-+
-+        Ok(vm)
-+    }
-+
-+    /// Activate the VM in a hardware address space slot.
-+    pub(crate) fn activate(&self) -> Result {
-+        self.mmu
-+            .activate_vm(self.as_data.as_arc_borrow())
-+            .inspect_err(|e| {
-+                pr_err!("Failed to activate VM: {:?}\n", e);
-+            })
-+    }
-+
-+    /// Deactivate the VM by evicting it from its address space slot.
-+    fn deactivate(&self) -> Result {
-+        self.mmu.deactivate_vm(&self.as_data).inspect_err(|e| {
-+            pr_err!("Failed to deactivate VM: {:?}\n", e);
-+        })
-+    }
-+
-+    /// Kills the VM by deactivating it and unmapping all regions.
-+    pub(crate) fn kill(&self) {
-+        // TODO: Turn the VM into a state where it can't be used.
-+        let _ = self.deactivate().inspect_err(|e| {
-+            pr_err!("Failed to deactivate VM: {:?}\n", e);
-+        });
-+        let _ = self
-+            .unmap_range(self.va_range.start, self.va_range.end - self.va_range.start)
-+            .inspect_err(|e| {
-+                pr_err!("Failed to unmap range during deactivate: {:?}\n", e);
-+            });
-+    }
-+
-+    /// Executes a virtual memory operation.
-+    ///
-+    /// This handles both map and unmap operations by coordinating between the
-+    /// GPUVM framework and the hardware page table.
-+    fn exec_op<'a>(
-+        &self,
-+        gpuvm_unique: &mut UniqueRefGpuVm<GpuVmData<'bound>>,
-+        req: VmOpRequest<'bound>,
-+        resources: &'a mut VmOpResources<'bound>,
-+    ) -> Result {
-+        let pt = &self.as_data.page_table;
-+
-+        match req.op_type {
-+            VmOpType::Map(args) => {
-+                let mut pt_upd = PtUpdateContext::new(
-+                    self.dev,
-+                    pt,
-+                    &self.mmu,
-+                    &self.as_data,
-+                    req.region,
-+                    PtOpType::Map(PtMapArgs {
-+                        prot: args.flags.to_prot(),
-+                    }),
-+                    resources,
-+                )?;
-+
-+                gpuvm_unique.sm_map(OpMapRequest {
-+                    addr: pt_upd.region.start,
-+                    range: pt_upd.region.end - pt_upd.region.start,
-+                    gem_offset: args.bo_offset,
-+                    vm_bo: &args.vm_bo,
-+                    context: &mut pt_upd,
-+                })
-+                //PtUpdateContext drops here flushing the page table
-+            }
-+            VmOpType::Unmap => {
-+                let mut pt_upd = PtUpdateContext::new(
-+                    self.dev,
-+                    pt,
-+                    &self.mmu,
-+                    &self.as_data,
-+                    req.region,
-+                    PtOpType::Unmap,
-+                    resources,
-+                )?;
-+
-+                gpuvm_unique.sm_unmap(
-+                    pt_upd.region.start,
-+                    pt_upd.region.end - pt_upd.region.start,
-+                    &mut pt_upd,
-+                )
-+                //PtUpdateContext drops here flushing the page table
-+            }
-+        }
-+    }
-+
-+    /// Maps a GEM buffer object range into the VM at the specified virtual address.
-+    ///
-+    /// This creates a mapping from GPU virtual address `va` to the physical pages
-+    /// backing the GEM object, starting at `bo_offset` bytes into the object and
-+    /// spanning `size` bytes. The mapping respects the access permissions and
-+    /// caching behavior specified in `flags`.
-+    pub(crate) fn map_bo_range(
-+        &self,
-+        bo: &Bo,
-+        bo_offset: u64,
-+        size: u64,
-+        va: u64,
-+        flags: VmMapFlags,
-+    ) -> Result {
-+        let req = VmOpRequest {
-+            op_type: VmOpType::Map(VmMapArgs {
-+                vm_bo: self.gpuvm.obtain(bo, ())?,
-+                flags,
-+                bo_offset,
-+            }),
-+            region: va..(va + size),
-+        };
-+        let mut resources = VmOpResources {
-+            preallocated_gpuvas: [
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+            ],
-+        };
-+        let mut gpuvm_unique = self.gpuvm_unique.lock();
-+
-+        self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut resources)?;
-+
-+        // We flush the defer cleanup list now. Things will be different in
-+        // the asynchronous VM_BIND path, where we want the cleanup to
-+        // happen outside the DMA signalling path.
-+        self.gpuvm.deferred_cleanup();
-+        Ok(())
-+    }
-+
-+    /// Unmaps a virtual address range from the VM.
-+    ///
-+    /// This removes any existing mappings in the specified range, freeing the
-+    /// virtual address space for reuse.
-+    pub(crate) fn unmap_range(&self, va: u64, size: u64) -> Result {
-+        let req = VmOpRequest {
-+            op_type: VmOpType::Unmap,
-+            region: va..(va + size),
-+        };
-+        let mut resources = VmOpResources {
-+            preallocated_gpuvas: [
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                None,
-+            ],
-+        };
-+        let mut gpuvm_unique = self.gpuvm_unique.lock();
-+
-+        self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut resources)?;
-+
-+        // We flush the defer cleanup list now. Things will be different in
-+        // the asynchronous VM_BIND path, where we want the cleanup to
-+        // happen outside the DMA signalling path.
-+        self.gpuvm.deferred_cleanup();
-+        Ok(())
-+    }
-+}
-+
-+impl<'bound> DriverGpuVm for GpuVmData<'bound> {
-+    type Driver = TyrDrmDriver;
-+    type Object = Bo;
-+    type VmBoData = ();
-+    type VaData = ();
-+    type SmContext<'ctx>
-+        = PtUpdateContext<'ctx, 'bound>
-+    where
-+        Self: 'ctx;
-+
-+    /// Indicates that a new mapping should be created.
-+    fn sm_step_map<'op>(
-+        &mut self,
-+        op: OpMap<'op, Self>,
-+        context: &mut Self::SmContext<'_>,
-+    ) -> Result<OpMapped<'op, Self>, Error> {
-+        let start_iova = op.addr();
-+        let mut iova = start_iova;
-+        let mut bytes_left_to_map = op.length();
-+        let mut gem_offset = op.gem_offset();
-+        let sgt = op.obj().sg_table(context.dev).inspect_err(|e| {
-+            pr_err!("Failed to get sg_table: {:?}\n", e);
-+        })?;
-+        let prot = match &context.op_type {
-+            PtOpType::Map(args) => args.prot,
-+            _ => {
-+                return Err(EINVAL);
-+            }
-+        };
-+
-+        for sgt_entry in sgt.iter() {
-+            let mut paddr = sgt_entry.dma_address();
-+            let mut sgt_entry_length: u64 = sgt_entry.dma_len();
-+
-+            if bytes_left_to_map == 0 {
-+                break;
-+            }
-+
-+            if gem_offset > 0 {
-+                // Skip the entire SGT entry if the gem_offset exceeds its length
-+                let skip = sgt_entry_length.min(gem_offset);
-+                paddr += skip;
-+                sgt_entry_length -= skip;
-+                gem_offset -= skip;
-+            }
-+
-+            if sgt_entry_length == 0 {
-+                continue;
-+            }
-+
-+            if gem_offset != 0 {
-+                pr_err!("Invalid gem_offset {} in page table mapping.\n", gem_offset);
-+                return Err(EINVAL);
-+            }
-+            let len = sgt_entry_length.min(bytes_left_to_map);
-+
-+            let segment_mapped = match pt_map(context.pt, iova, paddr, len, prot) {
-+                Ok(segment_mapped) => segment_mapped,
-+                Err(e) => {
-+                    // clean up any successful mappings from previous SGT entries.
-+                    let total_mapped = iova - start_iova;
-+                    if total_mapped > 0 {
-+                        pt_unmap(context.pt, start_iova..(start_iova + total_mapped)).ok();
-+                    }
-+                    return Err(e);
-+                }
-+            };
-+
-+            // Since there could be a partial mapping, only advance by the actual amount mapped
-+            bytes_left_to_map -= segment_mapped;
-+            iova += segment_mapped;
-+        }
-+
-+        let gpuva = context.preallocated_gpuva()?;
-+        let op = op.insert(gpuva, pin_init::init_zeroed());
-+
-+        Ok(op)
-+    }
-+
-+    /// Indicates that an existing mapping should be removed.
-+    fn sm_step_unmap<'op>(
-+        &mut self,
-+        op: OpUnmap<'op, Self>,
-+        context: &mut Self::SmContext<'_>,
-+    ) -> Result<OpUnmapped<'op, Self>, Error> {
-+        let start_iova = op.va().addr();
-+        let length = op.va().length();
-+
-+        let region = start_iova..(start_iova + length);
-+        pt_unmap(context.pt, region.clone()).inspect_err(|e| {
++        if slot_count > MAX_SLOTS {
 +            pr_err!(
-+                "Failed to unmap region {:#x}..{:#x}: {:?}\n",
-+                region.start,
-+                region.end,
-+                e
++                "Slot count: {} cannot exceed MAX_SLOTS: {}",
++                slot_count,
++                MAX_SLOTS
 +            );
-+        })?;
-+
-+        let (op_unmapped, _va_removed) = op.remove();
-+
-+        Ok(op_unmapped)
++            return Err(EINVAL);
++        }
++        Ok(Self {
++            manager,
++            slot_count,
++            slots: [const { SlotState::Free }; MAX_SLOTS],
++            use_seqno: 1,
++        })
 +    }
 +
-+    /// Indicates that an existing mapping should be split up.
-+    fn sm_step_remap<'op>(
++    /// Records a slot as active for the given seat.
++    fn record_active_slot(
 +        &mut self,
-+        op: OpRemap<'op, Self>,
-+        context: &mut Self::SmContext<'_>,
-+    ) -> Result<OpRemapped<'op, Self>, Error> {
-+        let unmap_start = if let Some(prev) = op.prev() {
-+            prev.addr() + prev.length()
-+        } else {
-+            op.va_to_unmap().addr()
-+        };
++        slot_idx: usize,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        let cur_seqno = self.use_seqno;
 +
-+        let unmap_end = if let Some(next) = op.next() {
-+            next.addr()
-+        } else {
-+            op.va_to_unmap().addr() + op.va_to_unmap().length()
-+        };
++        *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
++            slot: slot_idx as u8,
++            seqno: cur_seqno,
++        });
 +
-+        let unmap_length = unmap_end - unmap_start;
++        self.slots[slot_idx] = SlotState::Active(SlotInfo {
++            slot_data,
++            seqno: cur_seqno,
++        });
 +
-+        if unmap_length > 0 {
-+            let region = unmap_start..(unmap_start + unmap_length);
-+            pt_unmap(context.pt, region.clone()).inspect_err(|e| {
-+                pr_err!(
-+                    "Failed to unmap remap region {:#x}..{:#x}: {:?}\n",
-+                    region.start,
-+                    region.end,
-+                    e
-+                );
-+            })?;
++        self.use_seqno += 1;
++        Ok(())
++    }
++
++    /// Activates a slot for the given seat.
++    fn activate_slot(
++        &mut self,
++        slot_idx: usize,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        self.manager.activate(slot_idx, &slot_data)?;
++        self.record_active_slot(slot_idx, locked_seat, slot_data)
++    }
++
++    /// Finds a slot for the given seat. A free slot is preferred, but if none
++    /// are available, the oldest idle slot is evicted and reused. Otherwise, if
++    /// there are no free or idle slots, return [`EBUSY`].
++    fn allocate_slot(
++        &mut self,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        let slots = &self.slots[..self.slot_count];
++
++        let mut idle_slot_idx = None;
++        let mut idle_slot_seqno: u64 = 0;
++
++        for (slot_idx, slot) in slots.iter().enumerate() {
++            match slot {
++                SlotState::Free => {
++                    return self.activate_slot(slot_idx, locked_seat, slot_data);
++                }
++                SlotState::Idle(slot_info) => {
++                    if idle_slot_idx.is_none() || slot_info.seqno < idle_slot_seqno {
++                        idle_slot_idx = Some(slot_idx);
++                        idle_slot_seqno = slot_info.seqno;
++                    }
++                }
++                SlotState::Active(_) => (),
++            }
 +        }
 +
-+        let prev_va = context.preallocated_gpuva()?;
-+        let next_va = context.preallocated_gpuva()?;
-+
-+        let (op_remapped, _remap_ret) = op.remap(
-+            [prev_va, next_va],
-+            pin_init::init_zeroed(),
-+            pin_init::init_zeroed(),
-+        );
-+
-+        Ok(op_remapped)
++        match idle_slot_idx {
++            Some(slot_idx) => {
++                // Lazily evict idle slot just before it is reused.
++                if let SlotState::Idle(slot_info) = &self.slots[slot_idx] {
++                    self.manager.evict(slot_idx, &slot_info.slot_data)?;
++                }
++                self.activate_slot(slot_idx, locked_seat, slot_data)
++            }
++            None => {
++                pr_err!(
++                    "Slot allocation failed: all {} slots in use\n",
++                    self.slot_count
++                );
++                Err(EBUSY)
++            }
++        }
 +    }
-+}
 +
-+/// This function selects the largest supported block size (currently 4KB or 2MB)
-+/// that can be used for a mapping at the given address and size, respecting alignment constraints.
-+///
-+/// We can map multiple pages at once but we can't exceed the size of the
-+// table entry itself. So, if mapping 4KB pages, figure out how many pages
-+// can be mapped before we hit the 2MB boundary. Or, if mapping 2MB pages,
-+// figure out how many pages can be mapped before hitting the 1GB boundary
-+// Returns the page size (4KB or 2MB) and the number of pages that can be mapped at that size.
-+fn get_pgsize(addr: u64, size: u64) -> (u64, u64) {
-+    // Get the distance to the next boundary of 2MB block
-+    let blk_offset_2m = addr.wrapping_neg() % (SZ_2M as u64);
++    /// Converts an active slot and its seat to idle state.
++    fn idle_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        let slot = take(&mut self.slots[slot_idx]);
 +
-+    // Use 4K blocks if the address is not 2MB aligned, or we have less than 2MB to map
-+    if blk_offset_2m != 0 || size < SZ_2M as u64 {
-+        let pgcount = if blk_offset_2m == 0 {
-+            size / SZ_4K as u64
-+        } else {
-+            blk_offset_2m.min(size) / SZ_4K as u64
++        // If the slot was active, make it idle.
++        if let SlotState::Active(slot_info) = slot {
++            self.slots[slot_idx] = SlotState::Idle(slot_info);
++        }
++
++        // If the seat was active, make it idle, or keep it idle if it was already idle.
++        *locked_seat.access_mut(self) = match locked_seat.access(self) {
++            Seat::Active(seat_info) | Seat::Idle(seat_info) => Seat::Idle(SeatInfo {
++                slot: seat_info.slot,
++                seqno: seat_info.seqno,
++            }),
++            Seat::NoSeat => Seat::NoSeat,
 +        };
-+        return (SZ_4K as u64, pgcount);
++        Ok(())
 +    }
 +
-+    let blk_offset_1g = addr.wrapping_neg() % (SZ_1G as u64);
-+    let blk_offset = if blk_offset_1g == 0 {
-+        SZ_1G as u64
-+    } else {
-+        blk_offset_1g
-+    };
-+    let pgcount = blk_offset.min(size) / SZ_2M as u64;
++    /// Evicts an active or idle slot: calls the eviction callback and marks the slot as free
++    /// and the seat as NoSeat.
++    fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        match &self.slots[slot_idx] {
++            SlotState::Active(slot_info) | SlotState::Idle(slot_info) => {
++                self.manager.evict(slot_idx, &slot_info.slot_data)?;
++                take(&mut self.slots[slot_idx]);
++            }
++            _ => (),
++        }
 +
-+    (SZ_2M as u64, pgcount)
-+}
++        *locked_seat.access_mut(self) = Seat::NoSeat;
++        Ok(())
++    }
 +
-+/// Maps a physical address range into the page table at the specified virtual address.
-+///
-+/// This function maps `len` bytes of physical memory starting at `paddr` to the
-+/// virtual address `iova`, using the protection flags specified in `prot`. It
-+/// automatically selects optimal page sizes to minimize page table overhead.
-+///
-+/// If the mapping fails partway through, all successfully mapped pages are
-+/// unmapped before returning an error.
-+///
-+/// Returns the number of bytes successfully mapped.
-+fn pt_map(
-+    pt: &IoPageTable<'_, ARM64LPAES1>,
-+    iova: u64,
-+    paddr: u64,
-+    len: u64,
-+    prot: u32,
-+) -> Result<u64> {
-+    let mut segment_mapped = 0u64;
-+    while segment_mapped < len {
-+        let remaining = len - segment_mapped;
-+        let curr_iova = iova + segment_mapped;
-+        let curr_paddr = paddr + segment_mapped;
++    /// Checks that the seat state matches the slot's state.
++    /// If they don't match, the seat is stale and is reset to `NoSeat`.
++    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
++        let (slot_idx, seat_seqno, is_active) = match locked_seat.access(self) {
++            Seat::Active(seat_info) => (seat_info.slot as usize, seat_info.seqno, true),
++            Seat::Idle(seat_info) => (seat_info.slot as usize, seat_info.seqno, false),
++            _ => return,
++        };
 +
-+        let (pgsize, pgcount) = get_pgsize(curr_iova | curr_paddr, remaining);
-+
-+        // SAFETY: Exclusive access to the page table is ensured because
-+        // the pt reference comes from PtUpdateContext, which is created
-+        // during a VM update operation, ensuring the driver does not concurrently
-+        // modify the page table.
-+        let (mapped, result) = unsafe {
-+            pt.map_pages(
-+                curr_iova as usize,
-+                (curr_paddr as usize).try_into().unwrap(),
-+                pgsize as usize,
-+                pgcount as usize,
-+                prot,
-+                GFP_KERNEL,
++        let valid = if is_active {
++            !kernel::warn_on!(!matches!(
++                &self.slots[slot_idx],
++                SlotState::Active(slot_info) if slot_info.seqno == seat_seqno
++            ))
++        } else {
++            matches!(
++                &self.slots[slot_idx],
++                SlotState::Idle(slot_info) if slot_info.seqno == seat_seqno
 +            )
 +        };
 +
-+        if let Err(e) = result {
-+            pr_err!("pt.map_pages failed at iova {:#x}: {:?}\n", curr_iova, e);
-+            if segment_mapped > 0 {
-+                pt_unmap(pt, iova..(iova + segment_mapped)).ok();
-+            }
-+            return Err(e);
++        if !valid {
++            *locked_seat.access_mut(self) = Seat::NoSeat;
 +        }
-+
-+        if mapped == 0 {
-+            pr_err!("Failed to map any pages at iova {:#x}\n", curr_iova);
-+            if segment_mapped > 0 {
-+                pt_unmap(pt, iova..(iova + segment_mapped)).ok();
-+            }
-+            return Err(ENOMEM);
-+        }
-+
-+        segment_mapped += mapped as u64;
 +    }
 +
-+    Ok(segment_mapped)
-+}
-+
-+/// Unmaps a virtual address range from the page table.
-+///
-+/// This function removes all page table entries in the specified range,
-+/// automatically handling different page sizes that may be present.
-+fn pt_unmap(pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>) -> Result {
-+    let mut iova = range.start;
-+    let mut bytes_left_to_unmap = range.end - range.start;
-+
-+    while bytes_left_to_unmap > 0 {
-+        let (pgsize, pgcount) = get_pgsize(iova, bytes_left_to_unmap);
-+
-+        // SAFETY: Exclusive access to the page table is ensured because
-+        // the pt reference comes from PtUpdateContext, which was
-+        // created while holding &mut Vm, preventing any other access to the
-+        // page table for the duration of this operation.
-+        let unmapped = unsafe { pt.unmap_pages(iova as usize, pgsize as usize, pgcount as usize) };
-+
-+        if unmapped == 0 {
-+            pr_err!("Failed to unmap any bytes at iova {:#x}\n", iova);
-+            return Err(EINVAL);
++    /// Activate a resource on any available/reclaimable slot.
++    pub(crate) fn activate(
++        &mut self,
++        locked_seat: &LockedSeat<T, MAX_SLOTS>,
++        slot_data: T::SlotData,
++    ) -> Result {
++        self.check_seat(locked_seat);
++        match locked_seat.access(self) {
++            // If a seat still has a valid slot, just reuse the slot and refresh the bookkeeping.
++            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
++                self.record_active_slot(seat_info.slot as usize, locked_seat, slot_data)
++            }
++            _ => self.allocate_slot(locked_seat, slot_data),
 +        }
-+
-+        bytes_left_to_unmap -= unmapped as u64;
-+        iova += unmapped as u64;
 +    }
 +
-+    Ok(())
++    /// Flag a resource as idle. This method will be used for user VM support.
++    #[expect(dead_code)]
++    pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        self.check_seat(locked_seat);
++        if let Seat::Active(seat_info) = locked_seat.access(self) {
++            self.idle_slot(seat_info.slot as usize, locked_seat)?;
++        }
++        Ok(())
++    }
++
++    /// Evict a resource from its slot.
++    pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
++        self.check_seat(locked_seat);
++
++        match locked_seat.access(self) {
++            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
++                let slot_idx = seat_info.slot as usize;
++                self.evict_slot(slot_idx, locked_seat)?;
++            }
++            _ => (),
++        }
++
++        Ok(())
++    }
 +}
++
++impl<T: SlotOperations, const MAX_SLOTS: usize> Deref for SlotManager<T, MAX_SLOTS> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        &self.manager
++    }
++}
++
++impl<T: SlotOperations, const MAX_SLOTS: usize> DerefMut for SlotManager<T, MAX_SLOTS> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        &mut self.manager
++    }
++}
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index 95cda7b0962f..7c9a8063b3b9 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -12,6 +12,7 @@
+ mod gem;
+ mod gpu;
+ mod regs;
++mod slot;
+ 
+ kernel::module_platform_driver! {
+     type: TyrPlatformDriver,
 
 -- 
 2.54.0
