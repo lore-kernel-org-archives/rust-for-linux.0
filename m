@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29B63911AD;
-	Thu,  9 Jul 2026 00:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB56C7083C;
+	Thu,  9 Jul 2026 00:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783558080; cv=pass; b=mfwu56Maetw3zo6oZAQGn2EVncoHmBpG1FPBQif10KZMj22SbhpxS/xB4kv3vs7PyQid8w8nuiWatBeAekXmYsWv20PezIFMzjykWsti4hmBZARM6aTUHNF3CcMePDLpwSWCzA839YSjVssc6UEZdSOxdMUKFsRMcmpofUQ4Uyc=
+	t=1783558080; cv=pass; b=flJ00uZviwn8IkOfUSS4rYktEMrfra/HSK9OelNqtU3efB/RvWyTVLh9BQNydCEKzCEGEgmaYQdxRbx6cYx8bt/X0USlqp6nj0w5eCqdw0RT1wjn7jiz/TnwjaIsVq426BytSLCBYu9Ml23/GppYOAG4K9wQJdtLyppNjs1BFs0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783558080; c=relaxed/simple;
-	bh=qene0aW5yE/li+FU/l+74tEYwJYtfDH8z22GRGfXXk4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HryRzENvHTAgFPDp8Nmcqgr/LH1R+whAtcqj6oyX35j104FbKMp6n8ZFk6CwwUZdlGrjFjME8PdeCpCJxP4xOTVQT02qMIoP4istfjxvbnBZWmp+prTyuxiT4PQRGNsQe413MDTz4Kw+X59vEZjZrXXwMtkKOjpRNOKrIFkqj9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=J2SGwplm; arc=pass smtp.client-ip=136.143.188.11
+	bh=Aqq/nVdS1+z65UwFi5aBwT7YEt1OXhuTGxItG4KcO/c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LGDmKn0q0lzq2lJUuHvNNVYOyvPrbeDjr8TcVRQIo9aN0YZfNiwhNoK2djjEDjxJ7vMIiwtp5AregqWNhCau/ZvT/p4/dJFI410HIjnHbCI0/OsP/d9mjLv/MMdDb5cSyZl3DUC5Tx7ETC8mHnw62+bNOIuYdupQPNfT0is9WSY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=CqenvVqU; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="J2SGwplm"
-ARC-Seal: i=1; a=rsa-sha256; t=1783558053; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="CqenvVqU"
+ARC-Seal: i=1; a=rsa-sha256; t=1783558049; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ORQrl0RIk3+e52Abe2TkZrpknMrOPL0y+meS0CJ+Me65bpk0AoYOCu6J43DAHPnPSFl1XT4zGYDlJ+SfG57eviDH4xTqW/kMx9NLaEyGnWDVaJFjkdGqpHBH0vI1lSiGRtrQeSmPiSHiKAPwBWbhYybzocx5o9pXsQfAFUdMGJ0=
+	b=XAeRz8RgN2BSFEW+fMDdPJlz3hu5NTJhAd6Y1LTWflxWUlS+D3f/pFg3xwDrjUs2YE3KgvkP6b0vfNTZMcAI5rQcl1H8J3eNfVkWmFIUApSMT+gZKKwm74gLDpJWuoA1Jxa7qaofFf17MFwtB2WSozajZj7Ap5o8GY04EYw2Pkk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783558053; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=jxKj+acvDSkns8bqeK9is/xxPp2jnveqkTtIdNhqb9w=; 
-	b=ZArZCCK8831r7TokNiW8oE8scTxegP+YD7vQLzwcoVqAMQ+nCtS4g3+EEvTc/dZ2P9kdPZsaUUHLOOvER5fpbG6zXRLuNwbM4LY+Y12O1TowcdrJYGgrukPM5+qdc5j2jZsnldPcbYPMeH3FWOqOlD4ECeUiHBgQMLYE3pDuneo=
+	t=1783558049; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ykSv/MCDw0AUCDHIQSLalIer3TYZIzn/9drxaUvJIfI=; 
+	b=b9NbIVgPHS6/5IaF0Xrn3zqDryEX8AYAyvUgqdtiHsBVoUQ0dq4yrxvgR9MMK9xmZElsu6InTp5NGwSgslhlsLDA+Qfwi6ebMYXgPybcWyhlcttKgiy0X/muxN1woHl/lm8pObvBqGVa7eFk4I8JeLwA54oMADCq17tex0tYHko=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783558053;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783558049;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=jxKj+acvDSkns8bqeK9is/xxPp2jnveqkTtIdNhqb9w=;
-	b=J2SGwplmbn11xPuiGbjoP2hCTFKDMT6hZIoTp+PxdJge4B4V+LtxnywK0LNlJvyT
-	KOcFjzgRlZ4RYgHtmiQl2TsapplFp9m7l2HWfgChJ+9mf65kMKq1NfEP0uHNOSqkLSw
-	8WcJ4zcEnilcf242oXPeodOdz4jVGKJkjLTFFm3o=
-Received: by mx.zohomail.com with SMTPS id 1783558052558123.9190058886137;
-	Wed, 8 Jul 2026 17:47:32 -0700 (PDT)
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=ykSv/MCDw0AUCDHIQSLalIer3TYZIzn/9drxaUvJIfI=;
+	b=CqenvVqUBs59LVj8M8uFVF6NoZdNJOIO4MoXTuO/NKTRD9GrZ+SLNAGlJTjwqTmu
+	jnBCX/PAvO6hQ+lK41xCzSHiP6/jOj3x9PpIHy/w/geao7WThgPujUMskuZeV25HpuH
+	1PrgN9CeeHG/i5VScApJd5WL6NpczVyRAHZrCcew=
+Received: by mx.zohomail.com with SMTPS id 1783558048282301.9802146137505;
+	Wed, 8 Jul 2026 17:47:28 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Wed, 08 Jul 2026 17:47:10 -0700
-Subject: [PATCH v5 4/7] drm/tyr: add GPU virtual memory (VM) support
+Subject: [PATCH v5 0/7] drm/tyr: firmware loading and MCU boot support
+Date: Wed, 08 Jul 2026 17:47:06 -0700
+Message-Id: <20260708-fw-boot-b4-v5-0-7792ab68e359@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,9 +47,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-fw-boot-b4-v5-4-7792ab68e359@collabora.com>
-References: <20260708-fw-boot-b4-v5-0-7792ab68e359@collabora.com>
-In-Reply-To: <20260708-fw-boot-b4-v5-0-7792ab68e359@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2MwQ6DIBAFf8XsuTQrAdGe+h+NB0SsJNZtwNA2h
+ n8v0ibvMi+Z2SFY72yAS7WDt9EFR2sGearAzHq9W+bGzMCRN6iwZdOLDUQbGwSbUClsNG+kUZC
+ Fp7eTe5fYrc88u7CR/5R2rI/3lxFcFP1fiuIYMi3HrkaJqu3Gq6Fl0QN5fTb0gD6l9AW/W8MFq
+ wAAAA==
+X-Change-ID: 20260708-fw-boot-b4-f07706a265c7
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
  Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -61,949 +63,125 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  steven.price@arm.com, laura.nao@collabora.com, alvin.sun@linux.dev, 
  beata.michalska@arm.com, acourbot@nvidia.com, lyude@redhat.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=31756;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4720;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=S6WXKyricolk3mV1YqSQIq6NqaHi8G4zudDJw3iPkeo=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFl+7+df+sNzw1HA1/fynL74nboz/XMMJf4bNzJFXvP7c
- d5te1x6RwkLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABNhW8rwTW3zLSfbjaGFWz5d
- qHkmvFfp5iSJeWcbJKscr1Spnf4zmZGh32TCF7cFaxx4F39+yaiYMufxFNZA/8Xl2etey4jKOV/
- kBgA=
+ bh=Aqq/nVdS1+z65UwFi5aBwT7YEt1OXhuTGxItG4KcO/c=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFl+7+f/rYq7bpEV/+AMy+yW2Su5WBX80iL7Jt6NUz/tv
+ KQ2Y5pnRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABOJLWP475Bq/+zfBcVpaiLC
+ K5LrSy17o9ocle9W3nR9F38nWyhkFcM/y16JOdabOT8djAy9WaPIc3V5qcz3DVxMihtPVnb9Dvd
+ hAQA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+This series adds firmware loading and MCU boot support to the Tyr DRM
+driver. It includes:
+ - A parser for the Mali CSF firmware binary format
+ - A kernel-managed BO type (KernelBo) for internal driver allocations
+ - GPU virtual memory (VM) integration using drm_gpuvm
+ - An MMU module and a generic slot manager
+ - Loading firmware, VM activation, and MCU boot at probe()
 
-Add GPU virtual address space management using the DRM GPUVM framework.
-Each virtual memory (VM) space is backed by ARM64 LPAE Stage 1 page tables
-and can be mapped into hardware address space (AS) slots for GPU execution.
+It is based on drm-rust-next but also depends on:
+1. [PATCH v5 00/19] rust: drm: Higher-Ranked Lifetime private data
+   https://lore.kernel.org/rust-for-linux/20260628145406.2107056-1-dakr@kernel.org
 
-The implementation provides memory isolation and virtual address
-allocation. VMs support mapping GEM buffer objects with configurable
-protection flags (readonly, noexec, uncached) and handle both 4KB and 2MB
-page sizes. A new_dummy_object() helper is provided to create a dummy GEM
-object for use as a GPUVM root.
+2. [PATCH v3] rust: iommu: add device lifetime to IoPageTable
+   https://lore.kernel.org/rust-for-linux/20260703-pgtable_lt_b4-v3-1-e738e1f513a4@collabora.com
 
-The vm module integrates with the MMU for address space activation and
-provides map/unmap/remap operations with page table synchronization.
+A branch with all dependencies is available here:
+https://gitlab.freedesktop.org/dbrouwer/linux/-/commits/fw-boot-b4
 
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/Kconfig   |   1 +
- drivers/gpu/drm/tyr/driver.rs |   4 +-
- drivers/gpu/drm/tyr/gem.rs    |  26 +-
- drivers/gpu/drm/tyr/tyr.rs    |   1 +
- drivers/gpu/drm/tyr/vm.rs     | 811 ++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 839 insertions(+), 4 deletions(-)
+Changes in v5:
+- Reduce the scope of this series back to just MCU booting.
+- Drop the CSF global interface, job IRQ, wait, and arch timer patches
+  since they will be sent as subsequent series.
+- Add lifetimes to resources and store them in TyrRegistrationData.
 
-diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
-index 61a2fd6f961a..79ea4bb214de 100644
---- a/drivers/gpu/drm/tyr/Kconfig
-+++ b/drivers/gpu/drm/tyr/Kconfig
-@@ -12,6 +12,7 @@ config DRM_TYR
- 	default n
- 	select IOMMU_IO_PGTABLE_LPAE
- 	select RUST_DRM_GEM_SHMEM_HELPER
-+	select RUST_DRM_GPUVM
- 	help
- 	  Rust DRM driver for ARM Mali CSF-based GPUs.
- 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index cbed32e718e4..50f8883968d1 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -38,7 +38,7 @@
- 
- use crate::{
-     file::TyrDrmFileData,
--    gem::BoData,
-+    gem::Bo,
-     gpu,
-     gpu::GpuInfo,
-     mmu::Mmu,
-@@ -206,7 +206,7 @@ impl drm::Driver for TyrDrmDriver {
-     type Data = TyrDrmDeviceData;
-     type RegistrationData<'bound> = TyrDrmRegistrationData<'bound>;
-     type File = TyrDrmFileData;
--    type Object = drm::gem::shmem::Object<BoData>;
-+    type Object = Bo;
-     type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
- 
-     const INFO: drm::DriverInfo = INFO;
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index 1640a161754b..c28be61a01bb 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -5,8 +5,12 @@
- //! DRM's GEM subsystem with shmem backing.
- 
- use kernel::{
--    drm::gem,
--    prelude::*, //
-+    drm::gem::{
-+        self,
-+        shmem, //
-+    },
-+    prelude::*,
-+    sync::aref::ARef, //
- };
- 
- use crate::driver::{
-@@ -34,3 +38,21 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: BoCreateArgs) -> impl PinInit<Se
-         try_pin_init!(Self { flags: args.flags })
-     }
- }
-+
-+/// Type alias for Tyr GEM buffer objects.
-+pub(crate) type Bo = gem::shmem::Object<BoData>;
-+
-+/// Creates a dummy GEM object to serve as the root of a GPUVM.
-+pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
-+    let bo = Bo::new(
-+        ddev,
-+        4096,
-+        shmem::ObjectConfig {
-+            map_wc: true,
-+            parent_resv_obj: None,
-+        },
-+        BoCreateArgs { flags: 0 },
-+    )?;
-+
-+    Ok(bo)
-+}
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 79045d0135a8..92f6885cdaae 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -14,6 +14,7 @@
- mod mmu;
- mod regs;
- mod slot;
-+mod vm;
- 
- kernel::module_platform_driver! {
-     type: TyrPlatformDriver,
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-new file mode 100644
-index 000000000000..55bafacd2784
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -0,0 +1,811 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! GPU virtual memory management using the DRM GPUVM framework.
-+//!
-+//! This module manages GPU virtual address spaces, providing memory isolation and
-+//! the illusion of owning the entire virtual address (VA) range, similar to CPU virtual memory.
-+//! Each virtual memory (VM) area is backed by ARM64 LPAE Stage 1 page tables and can be
-+//! mapped into hardware address space (AS) slots for GPU execution.
-+#![allow(dead_code)]
-+
-+use core::marker::PhantomData;
-+use core::ops::Range;
-+
-+use kernel::{
-+    c_str,
-+    device::{
-+        Bound,
-+        Device, //
-+    },
-+    drm::{
-+        gpuvm::{
-+            DriverGpuVm,
-+            GpuVaAlloc,
-+            GpuVm,
-+            GpuVmBo,
-+            OpMap,
-+            OpMapRequest,
-+            OpMapped,
-+            OpRemap,
-+            OpRemapped,
-+            OpUnmap,
-+            OpUnmapped,
-+            UniqueRefGpuVm, //
-+        }, //
-+    },
-+    impl_flags,
-+    iommu::pgtable::{
-+        prot,
-+        IoPageTable,
-+        ARM64LPAES1, //
-+    },
-+    new_mutex,
-+    platform,
-+    prelude::*,
-+    sizes::{
-+        SZ_1G,
-+        SZ_2M,
-+        SZ_4K, //
-+    },
-+    sync::{
-+        aref::ARef,
-+        Arc,
-+        ArcBorrow,
-+        Mutex, //
-+    },
-+    uapi, //
-+};
-+
-+use crate::{
-+    driver::{
-+        TyrDrmDevice,
-+        TyrDrmDriver, //
-+    },
-+    gem,
-+    gem::Bo,
-+    gpu::GpuInfo,
-+    mmu::{
-+        address_space::VmAsData,
-+        Mmu, //
-+    },
-+    regs::gpu_control::MMU_FEATURES,
-+};
-+
-+impl_flags!(
-+    /// Flags controlling virtual memory mapping behavior.
-+    ///
-+    /// These flags control access permissions and caching behavior for GPU virtual
-+    /// memory mappings.
-+    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-+    pub(crate) struct VmMapFlags(u32);
-+
-+    /// Individual flags that can be combined in [`VmMapFlags`].
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub(crate) enum VmFlag {
-+        /// Map as read-only.
-+        Readonly = uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_READONLY as u32,
-+        /// Map as non-executable.
-+        Noexec = uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC as u32,
-+        /// Map as uncached.
-+        Uncached = uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED as u32,
-+    }
-+);
-+
-+impl VmMapFlags {
-+    /// Convert the flags to `pgtable::prot`.
-+    fn to_prot(self) -> u32 {
-+        let mut prot = 0;
-+
-+        if self.contains(VmFlag::Readonly) {
-+            prot |= prot::READ;
-+        } else {
-+            prot |= prot::READ | prot::WRITE;
-+        }
-+
-+        if self.contains(VmFlag::Noexec) {
-+            prot |= prot::NOEXEC;
-+        }
-+
-+        if !self.contains(VmFlag::Uncached) {
-+            prot |= prot::CACHE;
-+        }
-+
-+        prot
-+    }
-+}
-+
-+impl core::fmt::Display for VmMapFlags {
-+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-+        let mut first = true;
-+
-+        if self.contains(VmFlag::Readonly) {
-+            write!(f, "READONLY")?;
-+            first = false;
-+        }
-+        if self.contains(VmFlag::Noexec) {
-+            if !first {
-+                write!(f, " | ")?;
-+            }
-+            write!(f, "NOEXEC")?;
-+            first = false;
-+        }
-+
-+        if self.contains(VmFlag::Uncached) {
-+            if !first {
-+                write!(f, " | ")?;
-+            }
-+            write!(f, "UNCACHED")?;
-+        }
-+
-+        Ok(())
-+    }
-+}
-+
-+impl TryFrom<u32> for VmMapFlags {
-+    type Error = Error;
-+
-+    fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
-+        let valid = (kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_READONLY
-+            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC
-+            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED)
-+            as u32;
-+
-+        if value & !valid != 0 {
-+            pr_err!("Invalid VM map flags: {:#x}\n", value);
-+            return Err(EINVAL);
-+        }
-+        Ok(Self(value))
-+    }
-+}
-+
-+/// Arguments for a virtual memory map operation.
-+struct VmMapArgs<'bound> {
-+    /// Access permissions and caching behavior for the mapping.
-+    flags: VmMapFlags,
-+    /// GEM buffer object registered with the GPUVM framework.
-+    vm_bo: ARef<GpuVmBo<GpuVmData<'bound>>>,
-+    /// Offset in bytes from the start of the buffer object.
-+    bo_offset: u64,
-+}
-+
-+/// Type of virtual memory operation.
-+enum VmOpType<'bound> {
-+    /// Map a GEM buffer object into the virtual address space.
-+    Map(VmMapArgs<'bound>),
-+    /// Unmap a region from the virtual address space.
-+    Unmap,
-+}
-+
-+/// Preallocated resources needed to execute a VM operation.
-+///
-+/// VM operations may require allocating new GPUVA objects to track mappings.
-+/// To avoid allocation failures during the operation, preallocate the
-+/// maximum number of GPUVAs that might be needed.
-+struct VmOpResources<'bound> {
-+    /// Preallocated GPUVA objects for remap operations.
-+    ///
-+    /// Partial unmap requests or map requests overlapping existing mappings
-+    /// will trigger a remap call, which needs to register up to three VA
-+    /// objects (one for the new mapping, and two for the previous and next
-+    /// mappings).
-+    preallocated_gpuvas: [Option<GpuVaAlloc<GpuVmData<'bound>>>; 3],
-+}
-+
-+/// Request to execute a virtual memory operation.
-+struct VmOpRequest<'bound> {
-+    /// Request type.
-+    op_type: VmOpType<'bound>,
-+
-+    /// Region of the virtual address space covered by this request.
-+    region: Range<u64>,
-+}
-+
-+/// Arguments for a page table map operation.
-+struct PtMapArgs {
-+    /// Memory protection flags describing allowed accesses for this mapping.
-+    ///
-+    /// This is directly derived from [`VmMapFlags`] via [`VmMapFlags::to_prot`].
-+    prot: u32,
-+}
-+
-+/// Type of page table operation.
-+enum PtOpType {
-+    /// Map pages into the page table.
-+    Map(PtMapArgs),
-+    /// Unmap pages from the page table.
-+    Unmap,
-+}
-+
-+/// Context for updating the GPU page table.
-+///
-+/// This context is created when beginning a page table update operation and
-+/// automatically flushes changes when dropped. It ensures that the
-+/// Memory Management Unit (MMU) state is properly managed and Translation
-+/// Lookaside Buffer (TLB) entries are flushed.
-+pub(crate) struct PtUpdateContext<'ctx, 'bound> {
-+    /// Device used for DMA-mapping GEM shmem SG tables.
-+    dev: &'ctx Device<Bound>,
-+
-+    /// Page table.
-+    pt: &'ctx IoPageTable<'bound, ARM64LPAES1>,
-+
-+    /// MMU manager.
-+    mmu: &'ctx Mmu<'bound>,
-+
-+    /// Reference to the address space data to pass to the MMU functions.
-+    as_data: &'ctx VmAsData<'bound>,
-+
-+    /// Region of the virtual address space covered by this request.
-+    region: Range<u64>,
-+
-+    /// Operation type.
-+    op_type: PtOpType,
-+
-+    /// Preallocated resources that can be used when executing the request.
-+    resources: &'ctx mut VmOpResources<'bound>,
-+}
-+
-+impl<'ctx, 'bound> PtUpdateContext<'ctx, 'bound> {
-+    /// Creates a new page table update context.
-+    ///
-+    /// This prepares the MMU for a page table update.
-+    /// The context will automatically flush the TLB and
-+    /// complete the update when dropped.
-+    fn new(
-+        dev: &'ctx Device<Bound>,
-+        pt: &'ctx IoPageTable<'bound, ARM64LPAES1>,
-+        mmu: &'ctx Mmu<'bound>,
-+        as_data: &'ctx VmAsData<'bound>,
-+        region: Range<u64>,
-+        op_type: PtOpType,
-+        resources: &'ctx mut VmOpResources<'bound>,
-+    ) -> Result<PtUpdateContext<'ctx, 'bound>> {
-+        mmu.start_vm_update(as_data, &region)?;
-+
-+        Ok(Self {
-+            dev,
-+            pt,
-+            mmu,
-+            as_data,
-+            region,
-+            op_type,
-+            resources,
-+        })
-+    }
-+
-+    /// Finds one of our pre-allocated VAs.
-+    ///
-+    /// It is a logic error to call this more than three times for a given
-+    /// PtUpdateContext.
-+    fn preallocated_gpuva(&mut self) -> Result<GpuVaAlloc<GpuVmData<'bound>>> {
-+        self.resources
-+            .preallocated_gpuvas
-+            .iter_mut()
-+            .find_map(|f| f.take())
-+            .ok_or(EINVAL)
-+    }
-+}
-+
-+impl Drop for PtUpdateContext<'_, '_> {
-+    fn drop(&mut self) {
-+        if let Err(e) = self.mmu.end_vm_update(self.as_data) {
-+            pr_err!("Failed to end VM update {:?}\n", e);
-+        }
-+
-+        if let Err(e) = self.mmu.flush_vm(self.as_data) {
-+            pr_err!("Failed to flush VM {:?}\n", e);
-+        }
-+    }
-+}
-+
-+/// Driver implementation for the GPUVM framework.
-+///
-+/// Implements [`DriverGpuVm`] to provide VM operation callbacks (map, unmap, remap)
-+/// and associated types for buffer objects, virtual addresses, and contexts.
-+pub(crate) struct GpuVmData<'bound> {
-+    _phantom: PhantomData<&'bound ()>,
-+}
-+
-+/// GPU virtual address space.
-+///
-+/// Each VM can be mapped into a hardware address space slot.
-+#[pin_data]
-+pub(crate) struct Vm<'bound> {
-+    /// Data referenced by an AS when the VM is active
-+    as_data: Arc<VmAsData<'bound>>,
-+    /// MMU manager.
-+    mmu: Arc<Mmu<'bound>>,
-+    /// Platform device reference (needed to access the page table via devres).
-+    pdev: ARef<platform::Device>,
-+    /// DRM GPUVM core for managing virtual address space.
-+    #[pin]
-+    gpuvm_unique: Mutex<UniqueRefGpuVm<GpuVmData<'bound>>>,
-+    /// Non-core part of the GPUVM. Can be used for stuff that doesn't modify the
-+    /// internal mapping tree, like GpuVm::obtain()
-+    gpuvm: ARef<GpuVm<GpuVmData<'bound>>>,
-+    /// VA range for this VM.
-+    va_range: Range<u64>,
-+}
-+
-+impl<'bound> Vm<'bound> {
-+    /// Creates a new GPU virtual address space.
-+    ///
-+    /// The VM is initialized with a page table configured according to the GPU's
-+    /// address translation capabilities and registered with the GPUVM framework.
-+    pub(crate) fn new(
-+        pdev: &'bound platform::Device<Bound>,
-+        ddev: &TyrDrmDevice,
-+        mmu: ArcBorrow<'_, Mmu<'bound>>,
-+        gpu_info: &GpuInfo,
-+    ) -> Result<Arc<Vm<'bound>>> {
-+        let mmu_features = MMU_FEATURES::from_raw(gpu_info.mmu_features);
-+        let va_bits = mmu_features.va_bits().get();
-+        let pa_bits = mmu_features.pa_bits().get();
-+
-+        let range = 0..(1u64 << va_bits);
-+        let reserve_range = 0..0u64;
-+
-+        // dummy_obj is used to initialize the GPUVM tree.
-+        let dummy_obj = gem::new_dummy_object(ddev).inspect_err(|e| {
-+            pr_err!("Failed to create dummy GEM object: {:?}\n", e);
-+        })?;
-+
-+        let gpuvm_unique = kernel::drm::gpuvm::GpuVm::new::<Error, _>(
-+            c_str!("Tyr::GpuVm"),
-+            ddev,
-+            &*dummy_obj,
-+            range.clone(),
-+            reserve_range,
-+            GpuVmData::<'bound> {
-+                _phantom: PhantomData::<&()>,
-+            },
-+        )
-+        .inspect_err(|e| {
-+            pr_err!("Failed to create GpuVm: {:?}\n", e);
-+        })?;
-+        let gpuvm = ARef::from(&*gpuvm_unique);
-+
-+        let as_data = Arc::pin_init(VmAsData::new(&mmu, pdev, va_bits, pa_bits), GFP_KERNEL)?;
-+
-+        let vm = Arc::pin_init(
-+            pin_init!(Self{
-+                as_data,
-+                pdev: pdev.into(),
-+                mmu: mmu.into(),
-+                gpuvm,
-+                gpuvm_unique <- new_mutex!(gpuvm_unique),
-+                va_range: range,
-+            }),
-+            GFP_KERNEL,
-+        )?;
-+
-+        Ok(vm)
-+    }
-+
-+    /// Activate the VM in a hardware address space slot.
-+    pub(crate) fn activate(&self) -> Result {
-+        self.mmu
-+            .activate_vm(self.as_data.as_arc_borrow())
-+            .inspect_err(|e| {
-+                pr_err!("Failed to activate VM: {:?}\n", e);
-+            })
-+    }
-+
-+    /// Deactivate the VM by evicting it from its address space slot.
-+    fn deactivate(&self) -> Result {
-+        self.mmu.deactivate_vm(&self.as_data).inspect_err(|e| {
-+            pr_err!("Failed to deactivate VM: {:?}\n", e);
-+        })
-+    }
-+
-+    /// Kills the VM by deactivating it and unmapping all regions.
-+    pub(crate) fn kill(&self) {
-+        // TODO: Turn the VM into a state where it can't be used.
-+        let _ = self.deactivate().inspect_err(|e| {
-+            pr_err!("Failed to deactivate VM: {:?}\n", e);
-+        });
-+        let _ = self
-+            .unmap_range(self.va_range.start, self.va_range.end - self.va_range.start)
-+            .inspect_err(|e| {
-+                pr_err!("Failed to unmap range during deactivate: {:?}\n", e);
-+            });
-+    }
-+
-+    /// Executes a virtual memory operation.
-+    ///
-+    /// This handles both map and unmap operations by coordinating between the
-+    /// GPUVM framework and the hardware page table.
-+    fn exec_op<'a>(
-+        &self,
-+        gpuvm_unique: &mut UniqueRefGpuVm<GpuVmData<'bound>>,
-+        req: VmOpRequest<'bound>,
-+        resources: &'a mut VmOpResources<'bound>,
-+    ) -> Result {
-+        // SAFETY: pdev is a bound device.
-+        let dev = unsafe { self.pdev.as_ref().as_bound() };
-+
-+        let pt = &self.as_data.page_table;
-+
-+        match req.op_type {
-+            VmOpType::Map(args) => {
-+                let mut pt_upd = PtUpdateContext::new(
-+                    dev,
-+                    pt,
-+                    &self.mmu,
-+                    &self.as_data,
-+                    req.region,
-+                    PtOpType::Map(PtMapArgs {
-+                        prot: args.flags.to_prot(),
-+                    }),
-+                    resources,
-+                )?;
-+
-+                gpuvm_unique.sm_map(OpMapRequest {
-+                    addr: pt_upd.region.start,
-+                    range: pt_upd.region.end - pt_upd.region.start,
-+                    gem_offset: args.bo_offset,
-+                    vm_bo: &args.vm_bo,
-+                    context: &mut pt_upd,
-+                })
-+                //PtUpdateContext drops here flushing the page table
-+            }
-+            VmOpType::Unmap => {
-+                let mut pt_upd = PtUpdateContext::new(
-+                    dev,
-+                    pt,
-+                    &self.mmu,
-+                    &self.as_data,
-+                    req.region,
-+                    PtOpType::Unmap,
-+                    resources,
-+                )?;
-+
-+                gpuvm_unique.sm_unmap(
-+                    pt_upd.region.start,
-+                    pt_upd.region.end - pt_upd.region.start,
-+                    &mut pt_upd,
-+                )
-+                //PtUpdateContext drops here flushing the page table
-+            }
-+        }
-+    }
-+
-+    /// Maps a GEM buffer object range into the VM at the specified virtual address.
-+    ///
-+    /// This creates a mapping from GPU virtual address `va` to the physical pages
-+    /// backing the GEM object, starting at `bo_offset` bytes into the object and
-+    /// spanning `size` bytes. The mapping respects the access permissions and
-+    /// caching behavior specified in `flags`.
-+    pub(crate) fn map_bo_range(
-+        &self,
-+        bo: &Bo,
-+        bo_offset: u64,
-+        size: u64,
-+        va: u64,
-+        flags: VmMapFlags,
-+    ) -> Result {
-+        let req = VmOpRequest {
-+            op_type: VmOpType::Map(VmMapArgs {
-+                vm_bo: self.gpuvm.obtain(bo, ())?,
-+                flags,
-+                bo_offset,
-+            }),
-+            region: va..(va + size),
-+        };
-+        let mut resources = VmOpResources {
-+            preallocated_gpuvas: [
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+            ],
-+        };
-+        let mut gpuvm_unique = self.gpuvm_unique.lock();
-+
-+        self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut resources)?;
-+
-+        // We flush the defer cleanup list now. Things will be different in
-+        // the asynchronous VM_BIND path, where we want the cleanup to
-+        // happen outside the DMA signalling path.
-+        self.gpuvm.deferred_cleanup();
-+        Ok(())
-+    }
-+
-+    /// Unmaps a virtual address range from the VM.
-+    ///
-+    /// This removes any existing mappings in the specified range, freeing the
-+    /// virtual address space for reuse.
-+    pub(crate) fn unmap_range(&self, va: u64, size: u64) -> Result {
-+        let req = VmOpRequest {
-+            op_type: VmOpType::Unmap,
-+            region: va..(va + size),
-+        };
-+        let mut resources = VmOpResources {
-+            preallocated_gpuvas: [
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
-+                None,
-+            ],
-+        };
-+        let mut gpuvm_unique = self.gpuvm_unique.lock();
-+
-+        self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut resources)?;
-+
-+        // We flush the defer cleanup list now. Things will be different in
-+        // the asynchronous VM_BIND path, where we want the cleanup to
-+        // happen outside the DMA signalling path.
-+        self.gpuvm.deferred_cleanup();
-+        Ok(())
-+    }
-+}
-+
-+impl<'bound> DriverGpuVm for GpuVmData<'bound> {
-+    type Driver = TyrDrmDriver;
-+    type Object = Bo;
-+    type VmBoData = ();
-+    type VaData = ();
-+    type SmContext<'ctx>
-+        = PtUpdateContext<'ctx, 'bound>
-+    where
-+        Self: 'ctx;
-+
-+    /// Indicates that a new mapping should be created.
-+    fn sm_step_map<'op>(
-+        &mut self,
-+        op: OpMap<'op, Self>,
-+        context: &mut Self::SmContext<'_>,
-+    ) -> Result<OpMapped<'op, Self>, Error> {
-+        let start_iova = op.addr();
-+        let mut iova = start_iova;
-+        let mut bytes_left_to_map = op.length();
-+        let mut gem_offset = op.gem_offset();
-+        let sgt = op.obj().sg_table(context.dev).inspect_err(|e| {
-+            pr_err!("Failed to get sg_table: {:?}\n", e);
-+        })?;
-+        let prot = match &context.op_type {
-+            PtOpType::Map(args) => args.prot,
-+            _ => {
-+                return Err(EINVAL);
-+            }
-+        };
-+
-+        for sgt_entry in sgt.iter() {
-+            let mut paddr = sgt_entry.dma_address();
-+            let mut sgt_entry_length: u64 = sgt_entry.dma_len();
-+
-+            if bytes_left_to_map == 0 {
-+                break;
-+            }
-+
-+            if gem_offset > 0 {
-+                // Skip the entire SGT entry if the gem_offset exceeds its length
-+                let skip = sgt_entry_length.min(gem_offset);
-+                paddr += skip;
-+                sgt_entry_length -= skip;
-+                gem_offset -= skip;
-+            }
-+
-+            if sgt_entry_length == 0 {
-+                continue;
-+            }
-+
-+            if gem_offset != 0 {
-+                pr_err!("Invalid gem_offset {} in page table mapping.\n", gem_offset);
-+                return Err(EINVAL);
-+            }
-+            let len = sgt_entry_length.min(bytes_left_to_map);
-+
-+            let segment_mapped = match pt_map(context.pt, iova, paddr, len, prot) {
-+                Ok(segment_mapped) => segment_mapped,
-+                Err(e) => {
-+                    // clean up any successful mappings from previous SGT entries.
-+                    let total_mapped = iova - start_iova;
-+                    if total_mapped > 0 {
-+                        pt_unmap(context.pt, start_iova..(start_iova + total_mapped)).ok();
-+                    }
-+                    return Err(e);
-+                }
-+            };
-+
-+            // Since there could be a partial mapping, only advance by the actual amount mapped
-+            bytes_left_to_map -= segment_mapped;
-+            iova += segment_mapped;
-+        }
-+
-+        let gpuva = context.preallocated_gpuva()?;
-+        let op = op.insert(gpuva, pin_init::init_zeroed());
-+
-+        Ok(op)
-+    }
-+
-+    /// Indicates that an existing mapping should be removed.
-+    fn sm_step_unmap<'op>(
-+        &mut self,
-+        op: OpUnmap<'op, Self>,
-+        context: &mut Self::SmContext<'_>,
-+    ) -> Result<OpUnmapped<'op, Self>, Error> {
-+        let start_iova = op.va().addr();
-+        let length = op.va().length();
-+
-+        let region = start_iova..(start_iova + length);
-+        pt_unmap(context.pt, region.clone()).inspect_err(|e| {
-+            pr_err!(
-+                "Failed to unmap region {:#x}..{:#x}: {:?}\n",
-+                region.start,
-+                region.end,
-+                e
-+            );
-+        })?;
-+
-+        let (op_unmapped, _va_removed) = op.remove();
-+
-+        Ok(op_unmapped)
-+    }
-+
-+    /// Indicates that an existing mapping should be split up.
-+    fn sm_step_remap<'op>(
-+        &mut self,
-+        op: OpRemap<'op, Self>,
-+        context: &mut Self::SmContext<'_>,
-+    ) -> Result<OpRemapped<'op, Self>, Error> {
-+        let unmap_start = if let Some(prev) = op.prev() {
-+            prev.addr() + prev.length()
-+        } else {
-+            op.va_to_unmap().addr()
-+        };
-+
-+        let unmap_end = if let Some(next) = op.next() {
-+            next.addr()
-+        } else {
-+            op.va_to_unmap().addr() + op.va_to_unmap().length()
-+        };
-+
-+        let unmap_length = unmap_end - unmap_start;
-+
-+        if unmap_length > 0 {
-+            let region = unmap_start..(unmap_start + unmap_length);
-+            pt_unmap(context.pt, region.clone()).inspect_err(|e| {
-+                pr_err!(
-+                    "Failed to unmap remap region {:#x}..{:#x}: {:?}\n",
-+                    region.start,
-+                    region.end,
-+                    e
-+                );
-+            })?;
-+        }
-+
-+        let prev_va = context.preallocated_gpuva()?;
-+        let next_va = context.preallocated_gpuva()?;
-+
-+        let (op_remapped, _remap_ret) = op.remap(
-+            [prev_va, next_va],
-+            pin_init::init_zeroed(),
-+            pin_init::init_zeroed(),
-+        );
-+
-+        Ok(op_remapped)
-+    }
-+}
-+
-+/// This function selects the largest supported block size (currently 4KB or 2MB)
-+/// that can be used for a mapping at the given address and size, respecting alignment constraints.
-+///
-+/// We can map multiple pages at once but we can't exceed the size of the
-+// table entry itself. So, if mapping 4KB pages, figure out how many pages
-+// can be mapped before we hit the 2MB boundary. Or, if mapping 2MB pages,
-+// figure out how many pages can be mapped before hitting the 1GB boundary
-+// Returns the page size (4KB or 2MB) and the number of pages that can be mapped at that size.
-+fn get_pgsize(addr: u64, size: u64) -> (u64, u64) {
-+    // Get the distance to the next boundary of 2MB block
-+    let blk_offset_2m = addr.wrapping_neg() % (SZ_2M as u64);
-+
-+    // Use 4K blocks if the address is not 2MB aligned, or we have less than 2MB to map
-+    if blk_offset_2m != 0 || size < SZ_2M as u64 {
-+        let pgcount = if blk_offset_2m == 0 {
-+            size / SZ_4K as u64
-+        } else {
-+            blk_offset_2m.min(size) / SZ_4K as u64
-+        };
-+        return (SZ_4K as u64, pgcount);
-+    }
-+
-+    let blk_offset_1g = addr.wrapping_neg() % (SZ_1G as u64);
-+    let blk_offset = if blk_offset_1g == 0 {
-+        SZ_1G as u64
-+    } else {
-+        blk_offset_1g
-+    };
-+    let pgcount = blk_offset.min(size) / SZ_2M as u64;
-+
-+    (SZ_2M as u64, pgcount)
-+}
-+
-+/// Maps a physical address range into the page table at the specified virtual address.
-+///
-+/// This function maps `len` bytes of physical memory starting at `paddr` to the
-+/// virtual address `iova`, using the protection flags specified in `prot`. It
-+/// automatically selects optimal page sizes to minimize page table overhead.
-+///
-+/// If the mapping fails partway through, all successfully mapped pages are
-+/// unmapped before returning an error.
-+///
-+/// Returns the number of bytes successfully mapped.
-+fn pt_map(
-+    pt: &IoPageTable<'_, ARM64LPAES1>,
-+    iova: u64,
-+    paddr: u64,
-+    len: u64,
-+    prot: u32,
-+) -> Result<u64> {
-+    let mut segment_mapped = 0u64;
-+    while segment_mapped < len {
-+        let remaining = len - segment_mapped;
-+        let curr_iova = iova + segment_mapped;
-+        let curr_paddr = paddr + segment_mapped;
-+
-+        let (pgsize, pgcount) = get_pgsize(curr_iova | curr_paddr, remaining);
-+
-+        // SAFETY: Exclusive access to the page table is ensured because
-+        // the pt reference comes from PtUpdateContext, which is created
-+        // during a VM update operation, ensuring the driver does not concurrently
-+        // modify the page table.
-+        let (mapped, result) = unsafe {
-+            pt.map_pages(
-+                curr_iova as usize,
-+                (curr_paddr as usize).try_into().unwrap(),
-+                pgsize as usize,
-+                pgcount as usize,
-+                prot,
-+                GFP_KERNEL,
-+            )
-+        };
-+
-+        if let Err(e) = result {
-+            pr_err!("pt.map_pages failed at iova {:#x}: {:?}\n", curr_iova, e);
-+            if segment_mapped > 0 {
-+                pt_unmap(pt, iova..(iova + segment_mapped)).ok();
-+            }
-+            return Err(e);
-+        }
-+
-+        if mapped == 0 {
-+            pr_err!("Failed to map any pages at iova {:#x}\n", curr_iova);
-+            if segment_mapped > 0 {
-+                pt_unmap(pt, iova..(iova + segment_mapped)).ok();
-+            }
-+            return Err(ENOMEM);
-+        }
-+
-+        segment_mapped += mapped as u64;
-+    }
-+
-+    Ok(segment_mapped)
-+}
-+
-+/// Unmaps a virtual address range from the page table.
-+///
-+/// This function removes all page table entries in the specified range,
-+/// automatically handling different page sizes that may be present.
-+fn pt_unmap(pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>) -> Result {
-+    let mut iova = range.start;
-+    let mut bytes_left_to_unmap = range.end - range.start;
-+
-+    while bytes_left_to_unmap > 0 {
-+        let (pgsize, pgcount) = get_pgsize(iova, bytes_left_to_unmap);
-+
-+        // SAFETY: Exclusive access to the page table is ensured because
-+        // the pt reference comes from PtUpdateContext, which was
-+        // created while holding &mut Vm, preventing any other access to the
-+        // page table for the duration of this operation.
-+        let unmapped = unsafe { pt.unmap_pages(iova as usize, pgsize as usize, pgcount as usize) };
-+
-+        if unmapped == 0 {
-+            pr_err!("Failed to unmap any bytes at iova {:#x}\n", iova);
-+            return Err(EINVAL);
-+        }
-+
-+        bytes_left_to_unmap -= unmapped as u64;
-+        iova += unmapped as u64;
-+    }
-+
-+    Ok(())
-+}
+- Link to v4: https://lore.kernel.org/r/20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com
 
+Changes in v4:
+ New commits:
+  - drm/tyr: program CSF global interface
+  - rust: time: add arch_timer_get_rate wrapper
+  - drm/tyr: add CSF firmware interface support
+  - drm/tyr: validate presence of CSF shared section
+  - drm/tyr: wait for global interface readiness
+  - drm/tyr: add Job IRQ handling
+  - drm/tyr: add Wait type for GPU events
+
+ The existing commits from v3 remain unchanged.
+ - Link to v3: https://lore.kernel.org/r/20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com
+    
+Changes in v3:
+ New commits:
+  - drm/tyr: remove unused device from platform data
+  - drm/tyr: use shmem GEM object type in TyrDrmDriver
+    
+ drm/tyr: select required dependencies in Kconfig
+  - Rename commit since the dependencies are not limited to DRM.
+  - Select new RUST_DRM_GEM_SHMEM_HELPER instead of DRM_GEM_SHMEM_HELPER.
+    
+ drm/tyr: set DMA mask using GPU physical address
+  - Use register macro to read pa_bits instead of separate helper function.
+    
+ drm/tyr: add MMU module
+  - Switch MMU code to typed register APIs (TRANSCFG, MEMATTR, STATUS, LOCKADDR, etc.).
+  - Use MmuCommand enum for MMU commands instead of raw constants.
+  - Minor cleanups and renaming (MAX_AS, AS_PRESENT handling).
+    
+ drm/tyr: add GPU virtual memory module
+  - Extract VA/PA bits via typed MMU_FEATURES register.
+  - Update the VM code to match the new GPUVM v6 and shmem GEM v10 APIs.
+    
+ drm/tyr: add a kernel buffer object
+  - Reject zero-sized KernelBo allocations up front.
+    
+ drm/tyr: add firmware loading and MCU boot support
+  - Use typed GPU control registers.
+  - Pass iomem by Arc into Firmware::new() since we store it eventually.
+    
+  - Link to v2: https://lore.kernel.org/rust-for-linux/20260302232500.244489-1-deborah.brouwer@collabora.com/
+    
+Changes in v2:
+ - The whole series is rebased on drm-rust-next including v7.0-rc1.
+ - Each patch has its own changelog.
+    
+ Link to v1: https://lore.kernel.org/rust-for-linux/20260212013713.304343-1-deborah.brouwer@collabora.com/
+
+---
+Boris Brezillon (3):
+      drm/tyr: add a generic slot manager
+      drm/tyr: add Memory Management Unit (MMU) support
+      drm/tyr: add GPU virtual memory (VM) support
+
+Daniel Almeida (1):
+      drm/tyr: add parser for firmware binary
+
+Deborah Brouwer (3):
+      drm/tyr: add resources to RegistrationData
+      drm/tyr: add a kernel buffer object
+      drm/tyr: add Microcontroller Unit (MCU) booting
+
+ drivers/gpu/drm/tyr/Kconfig              |   5 +
+ drivers/gpu/drm/tyr/driver.rs            |  64 ++-
+ drivers/gpu/drm/tyr/file.rs              |   5 +-
+ drivers/gpu/drm/tyr/fw.rs                | 266 ++++++++++
+ drivers/gpu/drm/tyr/fw/parser.rs         | 521 ++++++++++++++++++++
+ drivers/gpu/drm/tyr/gem.rs               | 122 ++++-
+ drivers/gpu/drm/tyr/mmu.rs               | 102 ++++
+ drivers/gpu/drm/tyr/mmu/address_space.rs | 482 ++++++++++++++++++
+ drivers/gpu/drm/tyr/regs.rs              | 121 +++++
+ drivers/gpu/drm/tyr/slot.rs              | 384 +++++++++++++++
+ drivers/gpu/drm/tyr/tyr.rs               |   4 +
+ drivers/gpu/drm/tyr/vm.rs                | 810 +++++++++++++++++++++++++++++++
+ 12 files changed, 2864 insertions(+), 22 deletions(-)
+---
+base-commit: 3dc952c70e44991277f531ff6a2b8c14bcc52112
+change-id: 20260708-fw-boot-b4-f07706a265c7
+
+Best regards,
 -- 
-2.54.0
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
