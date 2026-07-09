@@ -1,269 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012056.outbound.protection.outlook.com [52.101.48.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2842D29C7
-	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 21:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783631611; cv=none; b=oUilvcMK3ebxdR58hUVrjtkg53aDsDgHsv3oCyUmehDlmAQ0K7vE+emhc3CVWewOG/5s10IXxHwdiIQD0Z8ruTQiTf1aohyM7nafXOllYy1ON2CNDBpMXFfYZRbpeSo95WJquXx/klD2CMwx6g7Rpsf8unfj4HXksgUgwhI2k5w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783631611; c=relaxed/simple;
-	bh=bqdv+TY2WrGkXu1W8c8lKTCe1tey4el9AuN1e1OVnsE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hr7JOEqhRUe5cKAi/GV4ET554m3pTsee6dbynwX9gDGI7wlvEOrWo4igWIART2yXw8xg/7+CrxZzWqLnxLNFQ/lKXIqXmUda7F6RMtVkBsB8N199SIKtb84IH2LBBDcqknTZMYG2D6TIj91NVDnMq+2h/NIv9OcflMKPpPyWrjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BtXqBzfI; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7413C7E17
+	for <rust-for-linux@vger.kernel.org>; Thu,  9 Jul 2026 21:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783632472; cv=fail; b=UnU84Pb17WA3F88eXSr99fxiHD7bMauyqQoCofg+XtL0ttYiSSBF7T5Y5939KpSC6316kkFEIfTdouE2dKynYXj/HUr2Ajb8aHaL1rUwGQkwKMwMHqevHoji5VMYxADHDLr5LYyZtr3XDoCS1nNHkYWjc/LDnTjCTqRPsU6O7Qk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783632472; c=relaxed/simple;
+	bh=qDAawEwJAAuIRQKWOJvkE9prf9gWszR77qp0J88S0FQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=B+2WP/2c23N9bfup/+xYNJ/8wLVmGkaTokeEl3tB/ZPPEXNQ72sFqoLljE4QQTfOl7PayIip5jCAMG0OLxi0XID84d/JgA4c2xpU2ZipPBMDBz6zKB4lPCEiqdIkaDbjCxShlBRzy7RbZKX6T/tt1Xx9AN3v1hJn7ohpzwfmQTQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fpDe9/WM; arc=fail smtp.client-ip=52.101.48.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BtXqBzfI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78391F000E9;
-	Thu,  9 Jul 2026 21:13:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783631609;
-	bh=pnCxH1c6Mxef2nPS/0MDqVBweSnAO3uS5IVi/xHN+Uk=;
-	h=From:To:Cc:Subject:Date;
-	b=BtXqBzfIWMrzAMVgIVeW9K2uuUlE+STPPj/lXytmCxx+wtv4MO0YJQnz//lL1Mcss
-	 3eBTD4Cg0jyjTgbHPrArUbYaHkS/0U0uJFkLXhCHDoatFWABmpw/JlFYTW9IKuysEu
-	 9gTMdF6+HuuKOkKMIUTq/ehnEQNvK7m5YuhnG2BL63ebSIgVAuX2sKCRrBf2XFlB/8
-	 rrDwb5zYC/O6VejOJLWAurpHAPBndGYsRhM5eqrcHwpnSiLqJjBu3a/LHpBlk9XU0V
-	 JkaYFBfANXuOA5MtM2h23thXoQgOMmZl5me6lEaAwINz+QIpFY5bqxyVmCPE50NL3f
-	 iSC1soxPOBArQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org,
-	Joshua Liebow-Feeser <joshlf@google.com>,
-	Jack Wrenn <jswrenn@google.com>
-Subject: [PATCH] rust: zerocopy: update to v0.8.54
-Date: Thu,  9 Jul 2026 23:13:11 +0200
-Message-ID: <20260709211311.142544-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fpDe9/WM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xXnlIZcHPhjskmrk4AYTnnrgr3Ks1PdGYnIQDoAdkLnVPAu725z9UMTlqvConD/H21dxESAHT08H4IiPmpUeyyRaeCftgiYZ+LQO5oj8qQQCadwpoenA1zmHskP6yk52gdVP8o3fOje+hvox5FHot9ZLOKH10cyZYnZvfNqUEtmAO2mBAkwGtn2gaikzpH5JQZy0np21SCGuKxfu7RNjyhrcbUZDK+6LjrVeXyZ1q5pYN225Rl73ZakHXqfi8l8nMRuGPiCLF/hcDyuB9ezgdnVJutHjVB2oGBfeO282aHbqasUol1hXZ9X+OsCUvPgHcgBNx0gvMDgZscwOTtg3eQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qDAawEwJAAuIRQKWOJvkE9prf9gWszR77qp0J88S0FQ=;
+ b=HElMcmpf9mL05i+/3+h9+r4VJhlCAMZNevrocPPnWorua8wFcbGLS9+yCWmJ5gQRKUBZzy4WBZj3UjtEkWPpJHVDH3kPiOj07Qp3Cxo9Ripq1nyaBd/IOXi+WLc0ilXmSCigH7S5Txz9UxwXvfUgvm31jwhmQSm1PakaVpMWOIt2ukj6uqCDlgK61mY2vZs2LohcYaNcpw+x20v8A8+Dq0t0N7cegOQzgd1CBazKiar/i9d6RcplyzCT8bpzK97TvBVPgePOWbQSKP0U02h7VFcqOVNC9GiJS/kddb3abFlnDxUFt6rdTiul4zdRBukyebs5BA56GmpDNzCgcIK27g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qDAawEwJAAuIRQKWOJvkE9prf9gWszR77qp0J88S0FQ=;
+ b=fpDe9/WMqmTyXemwQptD8q/1C2US/Pdk8KMAh9S0dcDuvz1BpjAFZokH4ASIp3F7WbDdObkTyHNFvvJsSnTixESAdIIWugprWQTADR3GLz7qP56Kr7OHIrV02arlZ2ad+YBRxxLBAVAQZlPNHGzKSgxCac4QJOcKbRb59xgOesf4F/WrjvofFadjou+7D2mGp+AdNiiG4azmBpc5VCSy9oiez+6BGK5kn5NHwb+Skggituwg22NpE65aYkkrEJgsz6QsaJTphBEF4wRjFfg7lRl12aB/okmGT5UF96Adb7+dqo4pfJPjrlcdrXutSDS3ASf8HQovjs+j8+pIQnyDVg==
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
+ by PH8PR12MB6721.namprd12.prod.outlook.com (2603:10b6:510:1cc::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
+ 2026 21:27:48 +0000
+Received: from CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
+ ([fe80::76e6:4d65:7ed1:6970%5]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
+ 21:27:48 +0000
+From: Timur Tabi <ttabi@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+CC: John Hubbard <jhubbard@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>,
+	Eliot Courtney <ecourtney@nvidia.com>, "nova-gpu@lists.linux.dev"
+	<nova-gpu@lists.linux.dev>, Zhi Wang <zhiw@nvidia.com>, "mcgrof@kernel.org"
+	<mcgrof@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"driver-core@lists.linux.dev" <driver-core@lists.linux.dev>,
+	"ojeda@kernel.org" <ojeda@kernel.org>, "russ.weight@linux.dev"
+	<russ.weight@linux.dev>
+Subject: Re: [PATCH v3 5/7] gpu: nova-core: transition gen_bootloader to TLV
+ images
+Thread-Topic: [PATCH v3 5/7] gpu: nova-core: transition gen_bootloader to TLV
+ images
+Thread-Index: AQHdCljkwu1+XAkqMkK4e6h+pSRGELZgDX4AgAQve4CAAEKSgIABP1WA
+Date: Thu, 9 Jul 2026 21:27:48 +0000
+Message-ID: <09b1d5117a38726d216074d7e3d56d4aeaae2bb1.camel@nvidia.com>
+References: <20260702192712.3450652-1-ttabi@nvidia.com>
+	 <20260702192712.3450652-6-ttabi@nvidia.com>
+	 <DJRA02VV16AS.3W0QHW9YYSLXE@nvidia.com>
+	 <79b4033973c675355a25d8fcc701cdedf8f30bc7.camel@nvidia.com>
+	 <DJTOMSK9WVHH.GA7X7JR0PYIO@nvidia.com>
+In-Reply-To: <DJTOMSK9WVHH.GA7X7JR0PYIO@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.56.2-9 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|PH8PR12MB6721:EE_
+x-ms-office365-filtering-correlation-id: b6899462-a472-4da0-611d-08dede00ec6b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|376014|38070700021|18002099003|22082099003|11063799006|6133799003|56012099006|4143699003;
+x-microsoft-antispam-message-info:
+ FUz9cgqPlbuElTGIsHTAvZsz9NbXa7aVmg2z+N/jiQTmqke23ZqfXRx5UFyGNVTi61u4V87ObB30GmImw7vPsNkiq5JrTrH8qEevBhTZs98oRz5R4UqToAshQiKI0Xww+tGPHatNiwuj2Lo3eEkWaa67y6eBRznN64vCbqf3+n8d/75nsQetBBDNVbpBaNMpCuG/Ybm9rY55nvsIMAltH1MavCER0hlpQ13k8Lf3ORBl8+eyAvoM8WaNKqyoaBs81Zn2YRY/1CFlJLTSOHoIw/bxTt+Mn9nJ5n2PbV0zhJnxuOsEQTW65Tt0ji64ez2LtLcM4atln2byX5Y8bYB+uYab+sPbEMK2QWyH3XEC8Q/2ddVrA+XZMZzcuC0V9dXTXWlUcnDt2edTgi6aLhQMvKhRPd9wFPU+Vf+kz3QcWNBJLxRRJDP3L9z1SgwXoTsT8Ju2AvLvzGdfvhcv2iZupDAeoRQJ/UZl9PllVP8n0pdGwW6qT7ElwOwRB/ShFhgMG0TfBGGebLuj4y1h/X6WoC+Ej/HSgxTIdY+dMRAC650SZ24I7ztIYU2TjfqnfCuuqxz3IyIsPRFrTcCDf5xiBx3pxqfVsiM5wyULzqeID9JaVhHvIlkqg8vGWqYI7gn6f2dE12k0COZmk5+VS6X9b5USMItNMy2CBC89gsZIK/066+nJjM7KMNsLuzuuoV3ppwWvcOeFjzawE/XEjoKLirh/o6TRumU8sdA0DPxHniw=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(376014)(38070700021)(18002099003)(22082099003)(11063799006)(6133799003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?YXU4UVN3NU5uRXNOWGozeURwVjY4ZWw0U25OaFBMNEJvR1dDSzk4Y05hRVVU?=
+ =?utf-8?B?YUc5TUZCWG5yV0x5T1ROeEdPK2lEREhxZW5xQ2ZLa0tpRlNwckVaUStaNWU4?=
+ =?utf-8?B?S2ZwWklmaGpiUnJkZGJxN0pkV01iUGFMM1locTl4dHNMblc2MVJoMEh1S2lH?=
+ =?utf-8?B?T2EycldIQjhXNG90S1gvVDJzRnBrSUpiRlhrSTZhd3BrYzhsdXpvVmhTSjEx?=
+ =?utf-8?B?S1FrQnhnVVZHR0tjK1FldE5EaWkvdXJwaFRzVEl2QkVVN0p3N3AzekVpbURn?=
+ =?utf-8?B?UFZlQkk3RG5LZjhCd1FQWGtuL0xYbVZYdmRJMmpFWXhDTjRYMFdtUWUvaXBJ?=
+ =?utf-8?B?MUZXNVVOK0ZXVUsxejhNQ0xueHhGRmFSYStRNnBieVdoNmt4UjdOb1dOek1z?=
+ =?utf-8?B?K3VGVFFGbGIrRnVIck9pMHA2ZWZGZDRQYnpnck5kRnhrYWxQQ3Yva2wwMVVX?=
+ =?utf-8?B?RW13R01DdUluSTY2UTZVMEtsM1k1SDRKazFYL2NBaXpZVmdRaFhPOHZZK2hD?=
+ =?utf-8?B?RUM3ZzRUY3ZmaVpjaDZ2cklvY3VIM01wZXdiSmhHYloyVWxlV2Ewd1U2cTNY?=
+ =?utf-8?B?ZzNGajFOM09LM0xmb1dPcWVaV29KalNadFZYOU1uNzhBOGlQOGJQcHpnUTZY?=
+ =?utf-8?B?c0RaSjR0aWNHblhYOExoNVdBN29IdHdDR051bmFGdGFhWFRYMXVRaWN5aW8z?=
+ =?utf-8?B?K25RNjkxL1hjYTJuYXc0RHUwUFVVT3JWMnpFZ1hqRnJZQWFYNm5sbXFrQXoz?=
+ =?utf-8?B?ZzJVejZLbk13VWVrVGNUbmtlTEJxSlhpaVp6eE5xSUM5cE9WQ1ZFQm1PRUlq?=
+ =?utf-8?B?YTEwVUpJc1NQOEppR2E0d0RQMW9CVkNjTWhmb1l2cTR5bUdyUjB2b0hpMEFV?=
+ =?utf-8?B?b2tKVzhjMHIzdWVzUzFqbUlXTEx2Y0piKzl0TWpZUXpwZ25WVElaaU5yOGF1?=
+ =?utf-8?B?NTY4V3lrN3NWakVyN0VHOWcxdGpkT1dmbHpGN3hYT21TeVF1cGhDc1VOSUlS?=
+ =?utf-8?B?bkgyV3lhaVFSZkd6cTZnKzBwUnAzeVptMGNWeFEwUDg3eXhYY20wQnl3Y3BX?=
+ =?utf-8?B?c2kzS3FmcU1jQzlPZzVqYjBHK2NFeUZUWmpoajJPU1FVQVZjRVR5TFRqdDZJ?=
+ =?utf-8?B?SWpVaVBoeW9QQWJZNm83bnIrTExtWjRaNEpnTjZ4eitMeEx0MzNFRnU3Qlhy?=
+ =?utf-8?B?YTRlOFZJWFhuVnR0NmZMa25NeURGeGpSL0l1b3lVK3pqVUFEbDYxK2Zadlgv?=
+ =?utf-8?B?dzZra09HWStjZVI0YXlkcUpabXVGZEFNbHRDVUJiNS9tdXUzRXlCOEt0T0g2?=
+ =?utf-8?B?eHF4UFZ1UXhNM0ppaWRSL0Y3TWtBVURtMHJmZ2h6M1ZoRFVDRlZUMGM0U0U1?=
+ =?utf-8?B?Q0RnbkIybHpETDg3em5udy81KzhOTmptR1NaTXpGTGNjcUwyYWMycTNXT1lv?=
+ =?utf-8?B?L2UxZ2YvVG96amtVbmdhUlkyc1pHaUlodVVWZ3hScC9ZQVNGR09HQnVRd0dE?=
+ =?utf-8?B?N1pjNUdpeFJSUUNiUTloanhtMmJ3WEtlcFowU29NdTRLS09jRWN6T1Uzemts?=
+ =?utf-8?B?bVE4MzV6YXJhQzQ0b29JaEgrMms4dU04UWhRblpRV1ErSGd4WjdLTGtIRTV3?=
+ =?utf-8?B?TmdCWStQaTg1a0RxZE4vZmFOYXdVZ0pnSjg1VnRLZHNJNVBqQ2g4RHkwcU1P?=
+ =?utf-8?B?QlVCUXg1Z2Vta1hucUJHUzgycUlKSXpJdXQycXFtb0Q5SDVoL1k4VGpFTkxE?=
+ =?utf-8?B?eDAwTkpvSWZDV1ZyQ1orYnBHcURjdkZ2Vld5VThUWDFCMHIxTll0UGpqMkVV?=
+ =?utf-8?B?RmluWHRZZ1FnQ1lKbGhjM0tKRkQySG1oZ0IzQ2VqbHNyM0o1RVVZZDRMa1dD?=
+ =?utf-8?B?aWZYOExkTGtqOHp5YnlrakE2cDRHcmh2WVJwSER4Q1RCS1V6QVBHWGtkK29X?=
+ =?utf-8?B?ZGkyUUk1YnUxNFhLdlczTUhsSCtTQ05lTVRSRTJ2Sm14L3paTHpjMkJiYXZh?=
+ =?utf-8?B?MmwzNEpSc054Z3J3cjZEQ0E4enVGdmpraWdSS01vMlc1R2VnSzdLNCswTzlK?=
+ =?utf-8?B?eEZORWRZSUlMdTRmSkIzQ0Y5UThnR1lVNCtzV2pHNUpIaUVSMUU2RTV3RXla?=
+ =?utf-8?B?U1ZpNFJ5eStkbkV0bFZUMElXekg5TDNBN0djSGpUWXpwajN6bEZWZkZCSnI3?=
+ =?utf-8?B?UlcrbWN5cnhUWUVNNGZKQ0wraUJQYnlpRTJEeXl5alBzSVUxNDZ5dS9ZOFlQ?=
+ =?utf-8?B?MjAyVVp6SkRaYktCeWRhZlBheGxVbDQvTFRtZFVxaDV1ZzhaNERIWUpMSGR5?=
+ =?utf-8?B?eDdPQVNOeXRsYVozZ1Bka1pEempvQjh4cDBhRVJvSXlrMk1EUjI2OXpFMmxO?=
+ =?utf-8?Q?7cOiJOD7Im28CVBSv+UbHZ6kB+bN1pzo4KNLxpaAF0M4f?=
+x-ms-exchange-antispam-messagedata-1: jBGQE/nayVeyWQ==
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <68EA93E09ABCD34AA19BD3F3050C02CB@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6899462-a472-4da0-611d-08dede00ec6b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jul 2026 21:27:48.0835
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ru10O/ilkWK5YqZyWlcdS/k7RqhWxY8FFlALfy/l4RtuDCzCCg9ltBU65HqYDPpEGaA36IrRhQtZJVCOO3ombw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6721
 
-Update our vendored copy of `zerocopy` (and `zerocopy-derive`) to v0.8.54.
-
-It is a very small delta from v0.8.52, and most importantly it resolves
-the unexpected lack of inlining [1] which triggered a modpost error
-under `CONFIG_CC_OPTIMIZE_FOR_SIZE=y` reported by Alexandre using Gary's
-suggestion [2]:
-
-    ERROR: modpost: "_RNvMNtCs5wX7wwEUCR9_8zerocopy6layoutNtB2_8SizeInfo24try_to_nonzero_elem_size" [drivers/gpu/nova-core.ko] undefined!
-    ERROR: modpost: "_RNvNtCs5wX7wwEUCR9_8zerocopy4util18padding_needed_for" [drivers/gpu/nova-core.ko] undefined!
-
-It also resolves `most_traits` being unexpectedly documented [3] that I
-reported and adds a missing SPDX license identifier [4] that I requested
-to match the kernel version.
-
-The following script may be used to check for the remaining differences:
-
-    for path in $(cd rust/zerocopy-derive/ && find . -type f ! -name README.md); do
-        curl --silent --show-error --location \
-            https://github.com/google/zerocopy/raw/v0.8.54/zerocopy/zerocopy-derive/src/$path |
-            git diff --no-index - rust/zerocopy-derive/$path &&
-            echo $path: OK
-    done
-
-    for path in $(cd rust/zerocopy/ && find . -type f ! -name README.md); do
-        curl --silent --show-error --location \
-            https://github.com/google/zerocopy/raw/v0.8.54/zerocopy/$path |
-            git diff --no-index - rust/zerocopy/$path &&
-            echo $path: OK
-    done
-
-Cc: Joshua Liebow-Feeser <joshlf@google.com>
-Cc: Jack Wrenn <jswrenn@google.com>
-Reported-by: Alexandre Courbot <acourbot@nvidia.com>
-Link: https://lore.kernel.org/rust-for-linux/20260708-zerocopy-export-v1-1-2bfc355853c6@nvidia.com/ [1]
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DJT6235B3DOV.222XR5O6VHG4M@garyguo.net/ [2]
-Link: https://github.com/google/zerocopy/issues/3466 [3]
-Link: https://github.com/google/zerocopy/issues/3457 [4]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-This goes on top of the v0.8.52 one:
-
-  https://lore.kernel.org/rust-for-linux/20260625231919.692444-1-ojeda@kernel.org/
-
-I may land both in `rust-fixes`, especially if someone else can confirm
-it works for them (I reproduced Alexandre's issue and this does indeed
-solve it).
-
- rust/Makefile                   |  2 +-
- rust/zerocopy-derive/README.md  | 12 ++++++------
- rust/zerocopy-derive/lib.rs     |  2 +-
- rust/zerocopy/README.md         | 12 ++++++------
- rust/zerocopy/rustdoc/style.css |  1 -
- rust/zerocopy/src/byteorder.rs  |  1 +
- rust/zerocopy/src/layout.rs     |  2 ++
- rust/zerocopy/src/lib.rs        |  1 -
- rust/zerocopy/src/util/mod.rs   |  6 ++++++
- 9 files changed, 23 insertions(+), 16 deletions(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 835cf10e1c0b..627ed79dc6f5 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -92,7 +92,7 @@ zerocopy-flags := \
-     $(call cfgs-to-flags,$(zerocopy-cfgs))
-
- zerocopy-envs := \
--    CARGO_PKG_VERSION=0.8.52
-+    CARGO_PKG_VERSION=0.8.54
-
- proc_macro2-cfgs := \
-     feature="proc-macro" \
-diff --git a/rust/zerocopy-derive/README.md b/rust/zerocopy-derive/README.md
-index 2a3dcf1212af..d62c79804342 100644
---- a/rust/zerocopy-derive/README.md
-+++ b/rust/zerocopy-derive/README.md
-@@ -1,14 +1,14 @@
- # `zerocopy-derive`
-
--These source files come from the Rust `zerocopy-derive` crate, version v0.8.52
--(released 2026-06-09), hosted in the <https://github.com/google/zerocopy>
-+These source files come from the Rust `zerocopy-derive` crate, version v0.8.54
-+(released 2026-07-08), hosted in the <https://github.com/google/zerocopy>
- repository, licensed under "BSD-2-Clause OR Apache-2.0 OR MIT" and only
- modified to tweak the SPDX license identifiers and to remove the generation of
- non-ASCII identifiers.
-
- For copyright details, please see:
-
--    https://github.com/google/zerocopy/blob/v0.8.52/README.md?plain=1
--    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-BSD
--    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-APACHE
--    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-MIT
-+    https://github.com/google/zerocopy/blob/v0.8.54/README.md?plain=1
-+    https://github.com/google/zerocopy/blob/v0.8.54/LICENSE-BSD
-+    https://github.com/google/zerocopy/blob/v0.8.54/LICENSE-APACHE
-+    https://github.com/google/zerocopy/blob/v0.8.54/LICENSE-MIT
-diff --git a/rust/zerocopy-derive/lib.rs b/rust/zerocopy-derive/lib.rs
-index 88599e750894..d387de368367 100644
---- a/rust/zerocopy-derive/lib.rs
-+++ b/rust/zerocopy-derive/lib.rs
-@@ -129,7 +129,7 @@ fn into_ts(self) -> proc_macro2::TokenStream {
- derive!(ByteEq => derive_eq => crate::derive::derive_eq);
- derive!(SplitAt => derive_split_at => crate::derive::derive_split_at);
-
--#[cfg_attr(zerocopy_unstable_linux, doc(hidden))]
-+#[cfg_attr(not(zerocopy_unstable_linux), doc(hidden))]
- #[proc_macro_derive(most_traits, attributes(zerocopy))]
- pub fn most_traits(ts: proc_macro::TokenStream) -> proc_macro::TokenStream {
-     let ast = syn::parse_macro_input!(ts as DeriveInput);
-diff --git a/rust/zerocopy/README.md b/rust/zerocopy/README.md
-index 712b0317df25..3d11a6502cf0 100644
---- a/rust/zerocopy/README.md
-+++ b/rust/zerocopy/README.md
-@@ -1,13 +1,13 @@
- # `zerocopy`
-
--These source files come from the Rust `zerocopy` crate, version v0.8.52
--(released 2026-06-09), hosted in the <https://github.com/google/zerocopy>
-+These source files come from the Rust `zerocopy` crate, version v0.8.54
-+(released 2026-07-08), hosted in the <https://github.com/google/zerocopy>
- repository, licensed under "BSD-2-Clause OR Apache-2.0 OR MIT" and only
- modified to tweak the SPDX license identifiers.
-
- For copyright details, please see:
-
--    https://github.com/google/zerocopy/blob/v0.8.52/README.md?plain=1
--    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-BSD
--    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-APACHE
--    https://github.com/google/zerocopy/blob/v0.8.52/LICENSE-MIT
-+    https://github.com/google/zerocopy/blob/v0.8.54/README.md?plain=1
-+    https://github.com/google/zerocopy/blob/v0.8.54/LICENSE-BSD
-+    https://github.com/google/zerocopy/blob/v0.8.54/LICENSE-APACHE
-+    https://github.com/google/zerocopy/blob/v0.8.54/LICENSE-MIT
-diff --git a/rust/zerocopy/rustdoc/style.css b/rust/zerocopy/rustdoc/style.css
-index 414348964af2..d2d55ad2e689 100644
---- a/rust/zerocopy/rustdoc/style.css
-+++ b/rust/zerocopy/rustdoc/style.css
-@@ -1,5 +1,4 @@
- /* SPDX-License-Identifier: (BSD-2-Clause OR Apache-2.0) OR MIT */
--
- /*
- Copyright 2026 The Fuchsia Authors
-
-diff --git a/rust/zerocopy/src/byteorder.rs b/rust/zerocopy/src/byteorder.rs
-index ecf95e38eebd..c761d5728320 100644
---- a/rust/zerocopy/src/byteorder.rs
-+++ b/rust/zerocopy/src/byteorder.rs
-@@ -100,6 +100,7 @@ impl Sealed for super::LittleEndian {}
-
- #[allow(missing_copy_implementations, missing_debug_implementations)]
- #[doc(hidden)]
-+#[derive(PartialEq)]
- pub enum Order {
-     BigEndian,
-     LittleEndian,
-diff --git a/rust/zerocopy/src/layout.rs b/rust/zerocopy/src/layout.rs
-index 942d35db8957..b1fa0cd436db 100644
---- a/rust/zerocopy/src/layout.rs
-+++ b/rust/zerocopy/src/layout.rs
-@@ -71,6 +71,8 @@ impl SizeInfo {
-     /// Attempts to create a `SizeInfo` from `Self` in which `elem_size` is a
-     /// `NonZeroUsize`. If `elem_size` is 0, returns `None`.
-     #[allow(unused)]
-+    #[cfg_attr(not(zerocopy_inline_always), inline)]
-+    #[cfg_attr(zerocopy_inline_always, inline(always))]
-     const fn try_to_nonzero_elem_size(&self) -> Option<SizeInfo<NonZeroUsize>> {
-         Some(match *self {
-             SizeInfo::Sized { size } => SizeInfo::Sized { size },
-diff --git a/rust/zerocopy/src/lib.rs b/rust/zerocopy/src/lib.rs
-index 700fece1b728..572f0563fe2f 100644
---- a/rust/zerocopy/src/lib.rs
-+++ b/rust/zerocopy/src/lib.rs
-@@ -435,7 +435,6 @@
-     WARNING
- };
-
--#[doc(hidden)]
- #[cfg(all(any(feature = "derive", test), zerocopy_unstable_linux))]
- pub use zerocopy_derive::most_traits;
- /// Implements [`KnownLayout`].
-diff --git a/rust/zerocopy/src/util/mod.rs b/rust/zerocopy/src/util/mod.rs
-index f8affbbd336c..02fd4ed62741 100644
---- a/rust/zerocopy/src/util/mod.rs
-+++ b/rust/zerocopy/src/util/mod.rs
-@@ -150,6 +150,8 @@ pub(crate) fn validate_aligned_to<T: AsAddress, U>(t: T) -> Result<(), Alignment
-     // Ensures that we add the minimum required padding.
-     kani::ensures(|&p| p < align.get()),
- )]
-+#[cfg_attr(not(zerocopy_inline_always), inline)]
-+#[cfg_attr(zerocopy_inline_always, inline(always))]
- pub(crate) const fn padding_needed_for(len: usize, align: NonZeroUsize) -> usize {
-     #[cfg(kani)]
-     #[kani::proof_for_contract(padding_needed_for)]
-@@ -251,6 +253,8 @@ fn proof() {
-     n & mask
- }
-
-+#[cfg_attr(not(zerocopy_inline_always), inline)]
-+#[cfg_attr(zerocopy_inline_always, inline(always))]
- pub(crate) const fn max(a: NonZeroUsize, b: NonZeroUsize) -> NonZeroUsize {
-     if a.get() < b.get() {
-         b
-@@ -259,6 +263,8 @@ pub(crate) const fn max(a: NonZeroUsize, b: NonZeroUsize) -> NonZeroUsize {
-     }
- }
-
-+#[cfg_attr(not(zerocopy_inline_always), inline)]
-+#[cfg_attr(zerocopy_inline_always, inline(always))]
- pub(crate) const fn min(a: NonZeroUsize, b: NonZeroUsize) -> NonZeroUsize {
-     if a.get() > b.get() {
-         b
---
-2.55.0
+T24gVGh1LCAyMDI2LTA3LTA5IGF0IDExOjI0ICswOTAwLCBBbGV4YW5kcmUgQ291cmJvdCB3cm90
+ZToNCj4gPiA+IA0KPiA+ID4gQWxzbywgc2luY2UgYGRldl9kYmdgIGNhbiBiZSBjb21waWxlZCBv
+dXQsIHRoZSBjaGVjayBwZXJmb3JtZWQgb24gdGhlDQo+ID4gPiBgVkVSU2AgdGFnIGV4aXN0aW5n
+IGlzIG5vdCBndWFyYW50ZWVkIHRvIGJlIHBlcmZvcm1lZC4gV2Ugc2hvdWxkDQo+ID4gPiBwcm9i
+YWJseSBleHRyYWN0IGl0IG91dCBvZiB0aGUgYGRldl9kYmdgIHN0YXRlbWVudC4gVGhpcyBpcyB0
+cnVlIGFjcm9zcw0KPiA+ID4gdGhlIHNlcmllczsgd2hpY2ggbWFrZXMgbWUgdGhpbmsgaXQgbWln
+aHQgYWxzbyBiZW5lZml0IGZyb20gYSBoZWxwZXIgdG8NCj4gPiA+IGZhY3RvciBvdXQgdGhlIHJl
+cXVlc3RfdC52L1Rsdjo6bmV3L2Rldl9kYmcgY29tbW9uIHNlcXVlbmNlLg0KPiA+IA0KPiA+IFdl
+IGRvbid0IGNhcmUgYWJvdXQgdGhlIFZFUlMgdGFnIGlmIHdlJ3JlIG5vdCBnb2luZyB0byBwcmlu
+dCBpdCBvdXQsIHNvIHdlIHByb2JhYmx5IHNob3VsZA0KPiA+IG5vdA0KPiA+IGV4dHJhY3QgaXQg
+b3RoZXJ3aXNlLg0KPiANCj4gVGhlIHNwZWMgbWVudGlvbnMgdGhhdCB0aGlzIHRhZyBpcyBwcmVz
+ZW50IGluIGFsbCBUTFYgZmlsZXMsIHNvIGl0cw0KPiBhYnNlbmNlIG1lYW5zIHRoZSBmaWxlIGlz
+IGludmFsaWQgYW5kIHNob3VsZCB0cmlnZ2VyIGFuIGVycm9yLg0KDQpJZiBhIHRyZWUgZmFsbHMg
+aW4gdGhlIHdvb2RzIGFuZCBubyBvbmUgaXMgYXJvdW5kIHRvIGhlYXIgaXQsIGRvZXMgaXQgbWFr
+ZSBhIHNvdW5kPw0KDQpJIHNlZSB5b3VyIHBvaW50LCBJJ20ganVzdCBub3Qgc3VyZSBJIGFncmVl
+IHdpdGggaXQuICBCeSB0aGF0IGxvZ2ljLCB3ZSBzaG91bGQgdGVzdCBmb3IgVkVSUyBpbg0KdGhl
+IGNvbnN0cnVjdG9yLiAgTXkgY29uY2VybiBpcyB0aGF0IG1heWJlIG9uZSBkYXkgd2Ugd2lsbCBo
+YXZlIGEgVExWIHRoYXQgZG9lc24ndCBoYXZlIGEgVkVSUw0KdGFnIGJlY2F1c2UgaXQncyBub3Qg
+YXR0YWNoZWQgdG8gYSB2ZXJzaW9uZWQgZmlybXdhcmUgaW1hZ2UsIGl0J3MganVzdCBzb21lIG1p
+c2MgZGF0YS4gIA0KDQpJIG5lZWQgdG8gdGhpbmsgYWJvdXQgdGhpcyBhIGxpdHRsZSBtb3JlLiAg
+V2hhdCBkbyB5b3UgdGhpbmsgYWJvdXQgdGVzdGluZyBmb3IgVkVSUyBpbiB0aGUNCmNvbnN0cnVj
+dG9yPyAgV2UgY291bGQgbW92ZSB0aGUgZGV2X2RiZyEgaW50byB0aGUgY29uc3RydWN0b3IsIGJ1
+dCB0aGVuIHdlJ2QgaGF2ZSB0byBwYXNzIGBkZXZgDQphcyBhIHBhcmFtZXRlci4NCg0KSSdtIGdv
+aW5nIHRvIHBvc3QgYSB2NCB0b2RheSBpbiB0aGUgbWVhbnRpbWUuDQo=
