@@ -1,208 +1,123 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020085.outbound.protection.outlook.com [52.101.195.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748E643CEF4;
-	Fri, 10 Jul 2026 16:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1253A26296
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 16:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783700490; cv=fail; b=A0k3l6aKFZODJEEjT4TJr858n6daViOyN71rn9hA+RRjW28pmcMlmLQ9rwOs3Mj2OWvj7UivH3rpEsMstHYtPqwkXCNHXs8/m+up45YtMgEx6oPih2n/H3/f4ONrIxzMCLkoqegoJzHRxqmgVI0XJa9EnBqxvyhksVwuFbFs+CQ=
+	t=1783701494; cv=pass; b=hA6TUr8wUi2NGIidBZxUbYqz1iOVcX9iQ+/xbA9vrQx6Sy1b03Uiu33BfpINCtMCN9L6kXzAcOUt3RLxIPvsw9kJJ9o1wRqDz3n5txFQQQbBdR/P45Y3FiPk6nITd91yC+6dzwqlZ0PHLY6nMwi6ofLmDtEy7/8KsGlpFm8/D88=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783700490; c=relaxed/simple;
-	bh=r+eRuRK7oALh0nANLMNRVXSRB6aZ3nAtRMvyY/C8Ou0=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=ptpcl1bJWFzXU/hQE8NSj/jtY4ohPQDiG2zUDTADL8znT2ERcDXu8bWD4V1KcZ4fCjOQmGZmPvgON0NTbWYEciseTrB12LUZGCfFIh/1O8OU2HAWEgvskWCtXivPn2fJZUSNOa7BJ7QCwec7vh9NP+IiV1SBE3l/XYyYS0ilNus=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=S2XROsqj; arc=fail smtp.client-ip=52.101.195.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1783701494; c=relaxed/simple;
+	bh=JVRshr3D8uTeHDQLRHhY+4FphdadiC/sXdk8hUweVzA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h4N12iWA+WRmZJf5ZuUbRElzyOC1AhLBWYVX96H3VNgQKY4TU5ERzGrveVUE9DwWkOfD6ishGMygTq4GJv8SQlpxd9pfsWuS1S8X/s929w8wq+rfyl6QQ842ySxHWk4FUbceOiMo/gthWOjs23vyCPYV87D4sqis/aEaqd49Uk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lc1x+iNt; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="S2XROsqj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yq70W6eQxBqOCdR6ihZSrRxal4gc7eg5zg/0eoax8Gw/8QGorLnV1eA7ip2EVKnVLa2IRAuhZYf0HeqRfrGWFTjCPdYpV9BuO3Pu5iW90SKt+/FSqHyBQC1ZyT9vqPQY7501hg7ieukxB7pTmb0RmSzUbUc2b/dSIIb3HX2iyi/hts0gkD5LH1P+XqSYgNwyM87RQ9P28ALqf4/m025pEdfrz4QJMDNotGATNyOSCwPCTbcS/DtWozkPwm5jM9Pwa3mZXc2rG6BJv02kRR/x2SdZOsgidPVTd7Nsu9vYWXGhQsaX1dng5gnbzOZn3oAEsSXZ2aDcSnvTURPeuUsofw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G0W92xuUpeu5/pJ/bomc3UyY87I4mtEygWoVPjn6bNw=;
- b=EjHgqqwcifgC+3s6P0UCZ0WTFNH77dPEggPKkiwZXMtlOA4Y6izz2taSR8yiSRIZkGZZGDZuz+VPhXSZYgx55h6mtHZzLFaw6DqlD7oSwaRsVJrEeNQmDTsWeHM9mJseM2S17BnYyeRxwGb6t8jbd9Z/mObKpwpgWVlSqUy7dUgSXsaLcQVWp7RPBiD5v8dWCGH1UgluPQXZmUvPwrJ7HqVmbP7PNCxmDC7WnIi0QWkey8uTk23PdMusJXgOfoFYsKJN0KdJNgMraQwtrDD5YYzQ/kTx+KKERRiAgcCYhETWkVcNTTt1bMJU5pyeD87ytW3V+NF67DKS6G2P9hbEzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G0W92xuUpeu5/pJ/bomc3UyY87I4mtEygWoVPjn6bNw=;
- b=S2XROsqjUrUkfUuIObru6na8TUfmj/O0dbjrnUKUz8KHlidaZ4eUc5/yFVd+Dv6slagSDwzNER785bD0bPsSGzdXt32HYemgk2JsbUFNPETsW7XQbKleSaHmK5oOOfUBjs6g1ynkeU70dYgUyCg0LQ2GI0QcavW5cyog/4FrzLw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB7266.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:225::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.17; Fri, 10 Jul
- 2026 16:20:51 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.016; Fri, 10 Jul 2026
- 16:20:51 +0000
-From: Gary Guo <gary@garyguo.net>
-Date: Fri, 10 Jul 2026 17:20:37 +0100
-Subject: [PATCH 7/7] rust: pin-init: make `[pin_]chain` unwind safe
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-pin-init-sync-v1-7-8fa16cde87ae@garyguo.net>
-References: <20260710-pin-init-sync-v1-0-8fa16cde87ae@garyguo.net>
-In-Reply-To: <20260710-pin-init-sync-v1-0-8fa16cde87ae@garyguo.net>
-To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gary Guo <gary@garyguo.net>, Mirko Adzic <adzicmirko97@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783700449; l=2706;
- i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=Pkk6Yum2nzmWmA2LAwLGyGWoThcn+xWvd4U5MbxeMv0=;
- b=qp4XVikxB78Msrz1rpzaYE24VLOZY9pgBYNZHV3VErnwbVumqgg3pSoB/S26tCkiV19m7pvsV
- FPrnXnkw+TRCSMTSdYy8AOwBFG8Kbq7/zY/4wdmzzZpyiF1Hpt+qymS
-X-Developer-Key: i=gary@garyguo.net; a=ed25519;
- pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
-X-ClientProxiedBy: LO4P265CA0209.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:33a::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lc1x+iNt"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-380a02c71e2so504772a91.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 09:38:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783701492; cv=none;
+        d=google.com; s=arc-20260327;
+        b=P15QgWjT3JpBXujmIkBzdbLAxV6/uzpdZjpVvpw7ektxJWjaex6yZv+dZTX/lh9mZK
+         wkf7NIi9gSRHW/PaM5pIXaquKUQo1TG1xvxKNAZ92tRGm/osWIcFxOlnqSfrSNvQYtJL
+         ihjiiaBjVT/B3p9lS8x7MKECYUOtS3vceov1b7fxGSXMd8tFK0nB2qtawnmGheK1hWJG
+         zYx7wk2sUjUA7pTGUK9WJiA2LzG/F2ejrXKTHoMeflj0OMPg0o0ENyXD0ay2/cD+gWi7
+         NMVRAKUu4Wwi/g34LdvMxJ52hxLJOKfyP/LUE5475C5wtaR7JyIeDUh4CxnJ4dgZ77Jj
+         zVEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gAkF/aCKp4VMrXUi9BS94W3tPkrfsCY3p7ZBeyWaneU=;
+        fh=qAUjHmMCc79nHRLLk4wPRym7vb7yaL4RCfFQUC1pIjI=;
+        b=oerC5EMeTd045AOhCa8ysPvvuPIVBeSBuMXtlK9AHk7Y6vQtMcQoxZyLF3E4Z4YKiu
+         SNNQxI4+e4GejG3IG5y05ubUXov+m1FRPybGUazSE86Bu9nx+vExp6QU8LKYBSosuzMe
+         8yIyRYlx8IKz2dHqT4suKHRQWkOSKim12X0P1XmK2+JDxac4IpzkpB8u+tLpTawgepd4
+         nFykl5oPyDTJngh1TNjf3J5DtFVGwaIHZJcGiDh4xzB8GINpgmGH4K6YpwH2tMfIRfbx
+         o5IcXy+LZeaLcj1HNla1/7aNPJsWJOEoZ+susvAl77f5QQXylc2DApWPFXdCb6rcSGIN
+         VLYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783701492; x=1784306292; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gAkF/aCKp4VMrXUi9BS94W3tPkrfsCY3p7ZBeyWaneU=;
+        b=lc1x+iNtCGzUKIi32emDcOzzulkHyDSHnrrhO6J0tQoVsYlsTRrr3aLsnZF8bF+Ntj
+         psxUgFkAPKA5t1M6kNnWQa1LOTB3neT1WvWZ5k2qwaFtIUnqG15mTmy/SrtDIscn3oOD
+         FdiyaPyxZPYPehkKqM8ncMEj8gGL7K0gnE8DOUni1xOrZoCsdQ1T0WfJSDfxTthRACd3
+         yw93QMp/5/IlutVTYCjZOQydr1bk5qXBIH8bNanllc4wiJTIHI4sb3OI+TrZR8iLaD7Q
+         R2N8UI1oa8cHNvXW3/r9H8qMjvP/qzSdAwYUlBbuGj5yOb7P6WXjDbOQsJ5qfVpglqRe
+         hwOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783701492; x=1784306292;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gAkF/aCKp4VMrXUi9BS94W3tPkrfsCY3p7ZBeyWaneU=;
+        b=qzsQhb7jjqfdnGBdQn2XJ0eAd0qk4f3YTo735kulknV9Xh4SAuTVTFwalvMpbPJJvh
+         IVrxHexBorQoWXcHGCYbIw6+3wAoxqs77TCIo5zEt/UVQHQwXxHR0MpjN0RjxvlPkyNl
+         9IvjphrshgfGkPSdcie37Fvjd/PK/HypS2j5M4wzbUbji8kE4c4p5qEBMcfpn5pmrioA
+         eESFk6HAaTiovNli8Yoc/HOlncnOMg4JWH0SyecM/YoUPnquKsVkS9iJLoQau0gmYIaQ
+         jAaoxV/FhedFEpzeMdLEZ7iLRXBI/UBcy5KQEgpDNRJiZ2RJ2RFl400is72UucSAxAbY
+         1A1g==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6zVHuEu/mEeMxBZ/45Siy4tBvC4Fm7CPa4KM/AVds7jiSvbMGu8RXaulqsNXu3pV3yLpzfhPdjz1/WWXF8w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ+UWx6zEYeWtZnzV6KZ0uQVgAMDMNoGHiwgpA7xrYgC8XxEti
+	JeR7fIysdNeOKUyng7zI2Qw/ONGR610SXTF7oDK1bp8LBM/4WKMkylVETj3d2Zu7ebevUGmn0AL
+	yBNjlxdEKgfZ4uv+UaiiCaxEyxKdXwsU=
+X-Gm-Gg: AfdE7cn6np2HRtwjmDPCsB+30wO3t/OCkVJJSH2cM/vequo12L7bwVcHXPAazpBchw+
+	dYcdA23SWR8Ci/Sra0AmN7qQuBchZH/UIiSZNU7m0ATQmlfeEngCmdhAbt9kFDj7tlPM3z5UHli
+	N3CGh8XIt2/nqm5VHGEd1Jp4TjzC2zC2xTdR5zeMXawGY6lKGc5gzAo+oP13mIxSHKR6+h38pZM
+	p7TLA9/2bEuq3p6x0XksbQBAQ7M66YllRpuVNcxv+l2RYfOBJXqCXmolxRr1M4FtdBAeUyVJIqs
+	5OysTNdpnbdPkbVpa5Tzs4TmnsgHr7uxbIFPkNrZVutsu95k68W8D8/JjFm3N/yq+ZbL57wGfyS
+	wLW5XE5LzJKjo
+X-Received: by 2002:a17:90b:33cb:b0:383:5a16:bd67 with SMTP id
+ 98e67ed59e1d1-389419cdeccmr9049403a91.4.1783701492403; Fri, 10 Jul 2026
+ 09:38:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7266:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0ada1913-23d9-43ff-103d-08dede9f35e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|23010399003|366016|56012099006|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	4tY6gpKYTQf0e8GtswI6Okep/zVrmcVAuQZpCClyg/ipXRQaAb2mXvYuG5sbtW3e1s5E5zNsmwu7gC9IVbEy8fhkAwiI26kGvYJrB5ByCQzfXoxaU7WfVTtR3dwU/7D93AZz1Hi5RVutPMujx7AJlmZMo93/jnd258J+qg44+JQHUTGNyoKozkzkdQtksm5smWGtX1vmCklJasGv0xp3evkgNa4aejcik/+Fc7AJLyOt6g7GJy3XeAhvnAXkKR7Mm2CioCid3qCj8LoBtZfEDroTKElPuTc6w2ReXzAozG8I90zNlwdBxxeJEMZ63fklTA485NpXqKD0+0ZrTBBgcDjEU7mYVd2CVD0hf7v8N+67H85bVPvDdVF9GIMtpepdVYMjyOeSB6hzvKw5JDe48sDuiuN/c0++VZ+xbxUf5fPTVOjXVBRxes0GykbkFbWz4X9n3IokG+mN5K0MpPfsiGASUvY86kQkUhSA7J0QXrIa8pZ7wc4RvU4eS9NYtKCL/0y4qH9tpa/rth56uOMdbDCXEyXvDbqkDL388JU76ZSlWLMoH2ITvK2+KWx+EZn7wU3O4ZabkVbwu88bc/V9yNqpzXfU1eQnf6+ML+pq4UUmB3BMJ1P6BpnKzBzmmITMkXeGV09guPPdgwRwK5JZiBu+rqzESxsq85uiR+dkp/o=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(23010399003)(366016)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?akRMS0IzQjhJbkhNWjFXVllKaDZ1UjJMejJUZGpyVUkvUEUzU2RDblI2MGla?=
- =?utf-8?B?Y0VZMlZ6N2orc1lOdHJPVkZhdUpQbCtWQmcxOGdzYVhhditFUmRUYnc0TGl3?=
- =?utf-8?B?ck9Yanc4VVlNeUQ0ZzNFSXRhMk5kYTA1S1R0blVGOHlLZ0tPY2FWN1RxVHdD?=
- =?utf-8?B?QTdFUnByTW56Z0lSZE5FUXB0Tkk3MWJZR1M0L1RkalRVcVQxOEJVeUNka1Nt?=
- =?utf-8?B?WHlOYlJmRm9vNDJ5Y00xQzV1cUt1NFJ6QkJBNXZLc3Z1YkdkUjdYR2wxT1Jn?=
- =?utf-8?B?REo4UDFSZUFHZ2RtNFovaVJPT1lKY0xLTEIrWVZFemlENEFyd2xyanMrck1E?=
- =?utf-8?B?QWVwaFQxa3I1TSs1MzFYeWZiTGV5WFNPdVBqUkdISExOVDlqNktROFBHbitM?=
- =?utf-8?B?Vi9tY3RnS2diQ1FvY0FxdVM4WHNnSjduWmo3b2MyMll0ZHVkRDdJQU9sMm1U?=
- =?utf-8?B?YkVJYmVNcmJTUS9ESmt2RkZMbExNNWpla2E1eE51VHpRWDJRZHVweEQxZjM3?=
- =?utf-8?B?T1lwdW9KVmN3VGQ4MTlsVkxxUEl3YUFValBCelNoTWMyanBTU1pMcmNROFR0?=
- =?utf-8?B?QzlpY0MwREM2b0VKTkg5a0hxVHgzanpEcVdneER5QTNvaWNVQ0lSbnVyNzAz?=
- =?utf-8?B?UkFIaVZxNzd6U0Z1dzNSQUhKVUVUdG9RcllDV3Irc0JYcXk5cU50U0JoWjlE?=
- =?utf-8?B?bTdoODFHMzNmOFVHK09Kc29GdjN6NWpKQUpYWlM4QVBUUzluSTQvQkN1enYx?=
- =?utf-8?B?cm0yK0ZmeXc3RFVabmxwdGFoMy80SXBHV09PYmNwaHNHMVR4cHkvLytDaThl?=
- =?utf-8?B?OTYyZGZlUi82WUxFMTNVNWFDY0dxQVc2ZkpQVjQ2ZUZ2QjBKUzZZeTNydVd5?=
- =?utf-8?B?UW0zNktmbUpramNDcmZCQ3l5YWFtZk5hRlFCb3pwaWlIdE4yYk40b0szWm1R?=
- =?utf-8?B?K2hrQTVSajRyc2tSWS9xQ3R4aDd5YkQrWXNNeisraVZISDZ6dkE4U25ERGZp?=
- =?utf-8?B?NFRMQWJGSU5xOWp5NDNDZmQxaUljZ1dFYkhOSyt4NXVBWDRVbnJtZHdVZmdV?=
- =?utf-8?B?N2FwdmZWT2ZqRDNZQXQyRGlXYnhwbkZTRCt6c1hvZzB4QU0vdm8rZEJhVUFX?=
- =?utf-8?B?SWhTSHdrWElkV0ZnNW90WFQwd3BLL1BZdU5aM2ZOR3dQUWljeXVERzJjNHBw?=
- =?utf-8?B?ZmtEYXhsQkRKQWRRNUpPWGF4RFI5NWR2Q1VCNTd4WDNqdzlFVkV2NzNuZVFQ?=
- =?utf-8?B?YmZ5WDF5VmZhUHFUakdab3pGWXlXVElQcjJWemNudVVLSEZRWURBLzg4a1pY?=
- =?utf-8?B?b3dZM0FOYWtkUERXazdybWpwL1RWNnJkTEtiK3BHcW14YTViN0krb2d6RXov?=
- =?utf-8?B?Si9SVnhoOGlqOWRSY2ZqWVlEczh4Sk5YQnUybXBQKzFHcGtDaUFsSC9wdkpF?=
- =?utf-8?B?RzNzMDRjVGlvMUVHcUxwaHB6TS9rWW1RU2Q4N1JjR0lSbC9uekZ1d2JvUzl1?=
- =?utf-8?B?QS9Mc1ZKaFk4Lzl4TzVkaWd1NWpBelkyMDBjZ0tjZFhhRnFMTEtmRzdiYjd6?=
- =?utf-8?B?WXRlcC9RWHYrSVpENWtYMUZWQ3htWktscE9kdEEzejYxY3NiUklxU0dzL0Vh?=
- =?utf-8?B?azF3REM3Vk9BMXErWTJNSjJ6VURWOTI3YjdyRWhNeUQya2NWS2lOL0R3bk5H?=
- =?utf-8?B?TnRmZktyL290emlGZnJ4SDYrYW5sWGtYR1ZBVyttUnlqSytVdllmQkxOWTB6?=
- =?utf-8?B?RUJCRFRPczBpcFlkQTBvY2labmdrS2RwVEJRS2NuUkgyaFo5VGJGSUFqRmRu?=
- =?utf-8?B?ZFlCUTIwSkZEeW5iUlJKNzRBMmRuT2tXa0cwZm5ieWJBS0NFTGExTGRHQTJ6?=
- =?utf-8?B?MmoxMzNVSDVoOGI3b3FvR1Y0enFUbUM2cjRwd1laSHhuRHZWdlFXbGxTMTBH?=
- =?utf-8?B?TVFOMmxCbUM2Ry9MS1dBQ0RndDJlTHRRbDU0M2JCRTB3QnJxU1ZucUQweDhr?=
- =?utf-8?B?eXQ2TXBVQUhoSU9LMXovWkVhWFIxQ014NCtnL3lYUDFwb1gzNXI1T040RXUw?=
- =?utf-8?B?QW5nSzhRbWlMaEVYTUsxbkhSMXZLY2p4NmZGSnVNY1dqc1d5bU82QWl2Unl3?=
- =?utf-8?B?YUJjWDA1OVlxWU40N2Vob2sySWRuYmNCRGh1YjMwcGRzOUZvRXpPMEhYUmVT?=
- =?utf-8?B?MjZDZ3hVaE1SQ3Y5c0o3d0pwYnBHbG5JZWR3d0d6b0JyeXFWZW5mTFFZTGpU?=
- =?utf-8?B?ZGRWNTZtZVlUam0rbUpXeVd0d2Uyb3liQi8zUmZuMkVPaDRQa2dVd2JISHR6?=
- =?utf-8?B?OFJycnJBODFvV0MzZ1QxbU15azB1aEN0dkRYS0tMWU9EZld4VGp0Zz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ada1913-23d9-43ff-103d-08dede9f35e6
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 16:20:51.9161
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CgnFZE++3PawrFWO4hIOyEcn51RM1PubocjhFlb7dyWrduhfzgjOww64gYGDFf+c5NdyNPdO72VCZ0fzZYMxbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7266
+References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
+ <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com> <2026071054-hazing-antirust-8e40@gregkh>
+In-Reply-To: <2026071054-hazing-antirust-8e40@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 10 Jul 2026 18:37:59 +0200
+X-Gm-Features: AUfX_my9YcBRz0kiweVl9KycdjdMe6ao9zwzF5EJxVzzFaZ1ntmxSy90-ax-nt4
+Message-ID: <CANiq72kxNx6wdvAW1DjGm=JhPiqs74qwxfPQ6cRHxiuZUubBPQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/7] rust_binder: Add dynamic debug logging mask
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: jahnavimn@google.com, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Mirko Adzic <adzicmirko97@gmail.com>
+On Fri, Jul 10, 2026 at 4:59=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> Not an objection, but don't we have the equivalent of the BIT() macro in
+> rust?  I think that's what this should be using if we do...
 
-Add a drop guard before the call to the chained closure so that the value
-initialized by the first stage is dropped if the closure errors or panics;
-`mem::forget` the guard on success.
+Yeah:
 
-The previous code only ran cleanup on the explicit error path, leaking the
-first-stage value if the chained closure panicked.
+  https://rust.docs.kernel.org/kernel/bits/
 
-Reported-by: Gary Guo <gary@garyguo.net>
-Closes: https://github.com/Rust-for-Linux/pin-init/issues/136
-Suggested-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Mirko Adzic <adzicmirko97@gmail.com>
-[ Fix Clippy missing safety comment false positive when `slot` and `guard`
-  creation are merged in a single line. - Gary ]
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/pin-init/src/lib.rs | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+We should probably update the example in the `impl_flags!` macro so
+that people use it here too -- the macro already takes an expression
+so it works.
 
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 3fc4a674a487..ef9f20b11034 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -959,13 +959,11 @@ unsafe impl<T: ?Sized, E, I, F> PinInit<T, E> for ChainPinInit<I, F, T, E>
- {
-     unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
-         // SAFETY: All requirements fulfilled since this function is `__pinned_init`.
--        unsafe { self.0.__pinned_init(slot)? };
--        // SAFETY: The above call initialized `slot` and we still have unique access.
--        let val = unsafe { &mut *slot };
--        // SAFETY: `slot` is considered pinned.
--        let val = unsafe { Pin::new_unchecked(val) };
--        // SAFETY: `slot` was initialized above.
--        (self.1)(val).inspect_err(|_| unsafe { core::ptr::drop_in_place(slot) })
-+        let slot = unsafe { __internal::Slot::<__internal::Pinned, _>::new(slot) };
-+        let mut guard = slot.init(self.0)?;
-+        (self.1)(guard.let_binding())?;
-+        core::mem::forget(guard);
-+        Ok(())
-     }
- }
- 
-@@ -1065,11 +1063,11 @@ unsafe impl<T: ?Sized, E, I, F> Init<T, E> for ChainInit<I, F, T, E>
- {
-     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
-         // SAFETY: All requirements fulfilled since this function is `__init`.
--        unsafe { self.0.__pinned_init(slot)? };
--        // SAFETY: The above call initialized `slot` and we still have unique access.
--        (self.1)(unsafe { &mut *slot }).inspect_err(|_|
--            // SAFETY: `slot` was initialized above.
--            unsafe { core::ptr::drop_in_place(slot) })
-+        let slot = unsafe { __internal::Slot::<__internal::Unpinned, _>::new(slot) };
-+        let mut guard = slot.init(self.0)?;
-+        (self.1)(guard.let_binding())?;
-+        core::mem::forget(guard);
-+        Ok(())
-     }
- }
- 
-
--- 
-2.54.0
-
+Cheers,
+Miguel
