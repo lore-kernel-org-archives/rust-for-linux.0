@@ -1,130 +1,166 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021089.outbound.protection.outlook.com [52.101.100.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5278495E5
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 11:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE82264D9;
+	Fri, 10 Jul 2026 12:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.89
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783681628; cv=pass; b=pSZ/17gD3K3ZJeYAz3viSOwBf39JBFZkuhnGc3g8dH4dgS2vCSsRE7utgvXJGatUJvfkuqlrBa6MkM9299UPjmmM4OF+cwztuDONkwMzaBXQnu0htlM1k98+zBsT2tI4yFb7ANmLUi30go5uMk6gLVrcHwO7RvK5BrCseJuVkB4=
+	t=1783685009; cv=fail; b=OCC8IOiN82oQujbWjC9s93SYjDximHHNVwpei+0I02dqCfCjQDjb6veHWzp5eveo+H1AJ6xhUoR8PvExYdknC1oOC0XUtoOBvISdtXd9ijxTPKShTyfg5nsMitsqSMOKCEJryk9crJCDvxE4+wMHIuzIVD08IDiCWXVojwRyMXs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783681628; c=relaxed/simple;
-	bh=XAY584fmWFVZcWg4HE7GBG5c7FzWPNMbpHCY4PB+JkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OJMAiuTYh26K0Pep6W/M4t867z4zlcO+WgOAKas5GeBj+4fWj6twRrgwVUfTVF//BN9Xp2KtMfEjJUAL2wzmxXIhtSArYSTanaym8rn5eutvNNlDyzjleFvB3IjcEReJVsqYEu89tRjTfkP0QdzQNM1AxvIHnUYz1/3lNDga380=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s+SDif58; arc=pass smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783685009; c=relaxed/simple;
+	bh=bmOkUM0CNNSLMlrxGtvC4mbiKCFEm7AWiBceCccTJSA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=QU6MBPbDGtrG7eQ5DaEvnzTQwjwjDL5MpCmA8pTMZV8sQJ15hjgHXKu1qPY0Sl1caNhtTtBeUSZVbnCXLXJEDzf3qcYpRG3YY9OGiamJ8vjOVnKak22XCZK+TbjfK/lsEgsHo1IAUk1eUMvcND+ZwWCvvBZfdSc8j+OyhzsoALs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qcdmTIl6; arc=fail smtp.client-ip=52.101.100.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s+SDif58"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-ca132e9c54aso61920a12.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 04:07:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783681626; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nID3tU1NRNsuGUth2XUkQVx7ApF/9Cze7JhXXF4i8DfPZFavd27RJQPa5ioALtDWe5
-         yWbLdDMc7cO5g1ZQ2lzCQOazofwRuojYMhr5KgkXGZ00wbAK1JbqsQrfgd5DrAVq2Rvt
-         HsphHWW0ixlauB4tB0LiGtQc4/CoR406nX9ezGMEPh5wkZctkDH3DTmvl/WUJ8HS7tYp
-         TuUgvI1UOsIBADuzsBv8l2yMzvVKizmpEudCmAgRO4XuV0qcIberFKSFz4+6DFux2VJ6
-         nC35ovwUQoxqXy/N3GM7jtV/LaCbW0vdFaR3v9g8p5JBa0X8ft1vA8gcM7apHTHPLYtJ
-         +omQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TVZpUjCDGJOuOty3pUnYrcg5wKgffKemZsynPuXgpX4=;
-        fh=+m9+vxvTrBc9DNVu6cGdeoPxeEBoOIPciB/nnJNPA/Q=;
-        b=mQdyXvMC8cD+aUrOhPmdr4sde8XtUg8slaSwTKMXU8tv71UE9q/b4p9yRv5AOeXRtO
-         Uwzp+rkQNn9ex2ihszRogj/y7P62TWv8VYcXDMJ4eq/zFEqigUG1dPUERtduVoIeLJRy
-         D0bnS8SFqH44uXzz1YKD9i7qToPYfZAxg+/Mlziz7sTeVpLq8PTx0k/kzsGebN77d6ql
-         +OID7/O7jqvp3lGQfi7Gkp9npbfseqsC4XoaVYk8T0PNsBNjrxaxLoxPctV4dT+p84wJ
-         uEJvlIsLjUNpOcYIVsr5ktYI4uY5PK+FfqhOx8T4ndCTKSpac4n5igPdFmJTeIXr9F9s
-         6kvg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783681626; x=1784286426; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TVZpUjCDGJOuOty3pUnYrcg5wKgffKemZsynPuXgpX4=;
-        b=s+SDif58LQMXPwcheTyAbPFRMdSiyCba/tC12npUfy/i5nFYGprqkGLwFOq6nGww0m
-         lV4zZPinYetEcMuGbvFakRcad5Spd0+wEHX686Xw0C7yvvR8S2alWpUvGcJwpjEwqSqQ
-         gVLRKWXSD6HoYT40lNc2eGv/xjzF0EwkPfEZ45X4oukeeQxkNnbgt3LRb+eTpHcVQxb6
-         1My2dnEW3I2vU+4ycRE9/h+KzRo076HrX+I8BgKPpbV3NASPEOSZuLftce1crLH36ICV
-         LK02KcgfXG7EXG0zOVtMOGcE+RScdiXqIyipDjjFL8QHDkqq4M/og0XGqjGZfE1xJzHK
-         3kDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783681626; x=1784286426;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TVZpUjCDGJOuOty3pUnYrcg5wKgffKemZsynPuXgpX4=;
-        b=jT9M5h87MgJttDowPklvwIdu65F5Xto31b25LBRjuQobA2hpZZGXpPy3KvvgltKk6L
-         OVajosxvWV6u928aXSvnJnsG/JKhXojq1igCVJXO28F5r3VVhdxVxe3R6EPR1vmX8kKp
-         u+7F7jQZXVpX7Aj9MCMEbjbcccYxyp0fHMhwpkpfQdcxO4Yen7Ji9v7ctbo5Rn/pePTx
-         1xbYeXbpYsY19eElgg4/D/POiOOSZTh6N4QWD23q3jnTfxcsb37rpv1a3c8kSD5NbWVS
-         afpSvxlNczXc/6KHr2dh+YXFVxTqxAZeiMgzSaLOEuF9HDDtLWGFxEJ3+gyAjT8m1LvB
-         ApHA==
-X-Forwarded-Encrypted: i=1; AHgh+RrBEZmeJ2NbhTlzhSJ1o6+lXGivL28z8S3byDSifyMA3cfVrDCYj4u+aRhz7MFXkln3IyXWuKsgHJQNSShMcQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRF/Hr0mbEkGC8xp9RSPsCvUsoTQVCnliK3hM1smtbEexWVCDj
-	LXyeET8Fwb8IwvrgexfDxq9T5A3HlUGdrZNN3bY61XOOsjD9VuOpwXvfcw8ivNL9i7I3TSFCcHc
-	cwD9rxEwzaWqMR+EMkNleNZ1wjiktBryGvUcVvjk=
-X-Gm-Gg: AfdE7cke1LsojAtZnGI5cUJJC4LasTI0fF73IlIXq5cRIA3i4UY3IRKrZPIFvxOwQyq
-	wxcmMDPwwimqve5cKvDV7/1lo3mkNn8/g0nl62F0YkaQx0dxM30/6xNnFc3s0JsnJE78a3k0O+r
-	w3KSugTiMEAcZN7zs6akPo17R4uyoG+Sebu8vsXfyq6eYOtpaX6M+mbmSNe8XV239CkwY2bHgeO
-	P2nv/AG428lFPg5FgCI+WFrZv9toKwK2YCi4ih3ZpZchm96xTNF+Ni6Zer6vFGAxJCLeeXQhDEz
-	DRJVxxPsdcGLp2sq3OAkCJhK7J090vWFTeuUZzRY56j/aiRfqENRhXXjj6L1e6qnHu2eJeRj/NV
-	kBXDugS+B07Ou
-X-Received: by 2002:a17:90b:58e6:b0:381:fa5:5217 with SMTP id
- 98e67ed59e1d1-38a2170a4acmr6732379a91.7.1783681625969; Fri, 10 Jul 2026
- 04:07:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qcdmTIl6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W8CA2Q9OD6E5kjh1ZgzGCqLQqcIOsZnaGQ22DEXlW5uAFRSR5276MeSnwjhrvFZAvEx7MgCCj/REhaOHSP4PDQSCbdSTBP2wWnbWLU9Ib2OncJaaI+6D5Tjr+RU2MeaRqwSUghvpvgYfEsqzg/Yujpy8FTmt5GhSMhPLOAM/LKugnWUsoRqBsG4AQMRMiHym9CRwVNX2/b0k47ZaGgwxVUs1Gi7yJu5sQEh/PDzWhhn8yJNUSl0x0pxUNHU4lIfPSpnE/yjfz0C+VEuoge96GoQXD+EfzMheOtu3eQ2zUtQFkde3bqR5ZPqLtXpZQb1GLhSH7C81rqA1qDhRiDMDDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o9kdotr0OqO6UWxOSOYMYqzVP6+0tFwy42FEsIkkWkg=;
+ b=cnkuCyW8+x9NpOCPYYvAVOriGA5hH5ZgqiwPLyFOgGNxTng5KLTP5waCNa3QQhBHF7jxFG16nYPjwStH2xb6arjaW4z9YqcMfUuUEmma0Gk41ZsJlXLK/Hoq8sjRCDLof4GkJTM8A42w5AAmSGiWKHcAjuX8vrKGQF0uRYNv0Y3LsrF08CVqklJOj2pLNClRct4BNoZZFjc4nzeCBGuosne8QQR3SbnLast2L2ctzOAAljThlTPmAEJRbaMaXKfQIhVGUTe/mxrR0BbZgp7nILOZM0wI8rMw864G1Pson139t7cCbkxmgSw30va4Y++Wd9qBRF+wDAzefD0PdZ5/ZA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o9kdotr0OqO6UWxOSOYMYqzVP6+0tFwy42FEsIkkWkg=;
+ b=qcdmTIl6sHP8ByukGT3Pp09h0cHBZH6uUAm1ZZmWEOiU6eApqqlN0qmBJ8bAHJyBuutgsl0c2PRrp1uVaObTQmbG2zMp0oW4FQ9gclrLnT7++6yEx1/cPg77XACDmpISqEximIWwAGF6ya9N1+sTjJof26cx4h1JZpNrwAkqT9o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB4990.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:22d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Fri, 10 Jul
+ 2026 12:03:20 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.016; Fri, 10 Jul 2026
+ 12:03:20 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 10 Jul 2026 13:03:19 +0100
+Message-Id: <DJUVK8MB1G9M.1RKFUUPIW4NDK@garyguo.net>
+Cc: <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <hust-os-kernel-patches@googlegroups.com>
+Subject: Re: [PATCH 0/4] docs/zh_CN: update rust documentation translations
+From: "Gary Guo" <gary@garyguo.net>
+To: "Ben Guo" <ben.guo@openatom.club>, "Alex Shi" <alexs@kernel.org>,
+ "Yanteng Si" <si.yanteng@linux.dev>, "Dongliang Mu" <dzm91@hust.edu.cn>,
+ "Jonathan Corbet" <corbet@lwn.net>
+X-Mailer: aerc 0.21.0
+References: <cover.1783480076.git.ben.guo@openatom.club>
+In-Reply-To: <cover.1783480076.git.ben.guo@openatom.club>
+X-ClientProxiedBy: LO4P265CA0320.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:390::13) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260708175119.18051-1-harish.cs.ss24@gmail.com>
-In-Reply-To: <20260708175119.18051-1-harish.cs.ss24@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 10 Jul 2026 13:06:51 +0200
-X-Gm-Features: AUfX_myKm8_n1QKOu-bD2EygAtwp2A6a0gw5219PzaKOG_R9PNEazC4lIwwlwGs
-Message-ID: <CANiq72=aTZitympw7_LKW4PoD71JfLTVt8EiLcjM5F48pCUjWw@mail.gmail.com>
-Subject: Re: [PATCH] rust: sync: improve `Arc` documentation links
-To: Harish-CS <harish.cs.ss24@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB4990:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6369da26-a8e2-423e-56ab-08dede7b3bd3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|10070799003|23010399003|366016|56012099006|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	roDOl/U3kBcvln9pAMKXC0k9Wlok9NB3lSGzQ6nZ6LMNdKSwg4N/jv1DHaT7nB5mKkT7T6IhAQQuM8fZvXaF2wX3/+zhvOFjIaMFHUn1p9KCSQUczQf/NgPCtpSJO6OlDETUpo3K4xquv7qrS0Xbp3wo8nHo4suc5ZhACa0ko/aB8SM9gquYf2L/RpZ4GQPaNqB4L1ByRRrLFADX4ih1Z7xuwk/IKYywnqiPw/xcFLxYnTkwhLN+cc8/QEi28yTYUQ6A82effdAc4Io7PMSzfb5g7sk7SXPny/tS/O/CxfwXRHUmJvlMVy/t9buoLq4ty368vVvXxQYI8W2b3e9+DDrRXTWRbHD6TY1QTaRCBooIq2AxOYVFX8O8a1RHgt17zoh3npBawoXGedfrMXmuA7XoVROu7Ijfk514FZbWlScX5Bwgv/wvQUzLHvgBzefxFIN8a0/vd9zbVNfsgm/Maw1q8qVWtrhKnzXA74SfmwDSMWbBLb/smKWlrDuf+AEAtT0hcyKgouzuNnizyF785Y/wPby2RJhuXNwYyOWRjFFqReURtrJBa/iFi/gU3TLU+OJqc2mwy7UU0drAZPjhBLMMl0wieZS5DH7itukYi+odW1haukcOeMZcysikUSNgrKlMPW5Ms8Jc1EACJnGS/cvPndyHvTJrB69ylMU71kQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(23010399003)(366016)(56012099006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?d1lRVGhEbS9kOE02N0M4ODJ3bmRJUzRram9aU1Ntb0M2Zm9uZ1A3YXQ2Skho?=
+ =?utf-8?B?S2RxV0k4aVErYlVpZEtrTUQ0enEzTWQxbjd3S2NETWR3bTVpM2hjUFM5T2tI?=
+ =?utf-8?B?NUFoYjVCcFJ0Qk13ZFFpd29NSVJFY3B4cTdUb2tZSVV6ZG95bXdEQm9ma1Jl?=
+ =?utf-8?B?R0xucFp6bGVnZWs5VmNpdU9OMUZNcWU2WEY5U0VxdE43SzBIeVJsUzc1NzV1?=
+ =?utf-8?B?TVk0QVIrTWRpYWk2RmU0eWF4UFN0bHRrTnk3cmdDV1ZtZFg0L0liVmJ2S0tR?=
+ =?utf-8?B?RTE3aEtYSStJWEdob2k3c0ZvNU1vWGhMN2JEbmVUSTEyWThnTjlQcWZvYlov?=
+ =?utf-8?B?YmNwdURhM0NGeFZCU0E2OHU5dFo0YWtMVHh4eEZPNG9WMCtzVjlYUUJObEl2?=
+ =?utf-8?B?SjR2aGE2T01hOTMyUWRoUUg2eVhDaGM2dWhjamI1Z2U4MEZ0eFNnWGVLcE1n?=
+ =?utf-8?B?Nm16dVdBYkJ1bG8vYWFoTENQZ0ZtS29rM0ZNTmxJSjZIN1k1QitZQjBkREZT?=
+ =?utf-8?B?UzB3N01oTUhEY1g4Q1U2NDlMZW42dWVMVmNDSzVtbWl1VkhGTVNOclR6Wkh3?=
+ =?utf-8?B?dHBqTzZvZjFKWW1XZ0J4M1dRbWwxaWJUdlZ5ZUJYRjJkeTRWTkhZZllpdVdP?=
+ =?utf-8?B?MEFuNWhwbTJkMGRUeUJURmYzV3hVNGNxbSt6STU3aERmaFI1REI3enlkOWZI?=
+ =?utf-8?B?YnVHOHJYcThkL0RCUUd3dVRUTlFzbFZkTklpajlhNnA4cmcyRUkwVTdIYkZ4?=
+ =?utf-8?B?RjRieERWWE96dmtqUTBoMHRvdUNGSCtKS2hUNXJyRGZRRUJ6Zk0zYmk0SjJN?=
+ =?utf-8?B?dWpRaWVDaVhYY3JNQUJUTnBnMGJZMHdtYnRPOG15cHIzM0lsOTJaWHJuYnEv?=
+ =?utf-8?B?Y1R2RERYcmZPaE1VSnpMWHM1YWRyS0RxYzNPYmxBSnhqS2dabldhOGY4QVBX?=
+ =?utf-8?B?WHVGZUNtdmxoSTQydTFFTVlJYUdOdldaK0NYNGM5RThzYm5nbWZTRG92ZEU0?=
+ =?utf-8?B?RXlFUUZzR1RkRGZpU1V6eVA4K1VzL2NtTllGK3g4UXJDMzJFMmRpRERrZ3JP?=
+ =?utf-8?B?M2FGeFQ0M0J0YjB4OGtFaXphemcwR2E0eXo0ak16UjhRVXNFRWE2aU9yQXUw?=
+ =?utf-8?B?OURzS2NUUE11RjdGMjU4bmNHTGNkN1BMVXcrd1hyMkpaNGpGMnBXV0FGUXVY?=
+ =?utf-8?B?N0RMQldrUGR4SmhhVW5IdXFiZVlIam5GbHpwc2lUMkxIS0xyYTdyeDhEaGk4?=
+ =?utf-8?B?SUU3MkJzTzIrZklqaGplWlZBcW1jU2xMV2wvcUUrQldGLysyTExIZGV2aU1n?=
+ =?utf-8?B?WkFJZ0kyK0hibUJsYVQ4MW5zenBpNC8wTFNkMUVPTTJIZ0xHZlBremswcXpC?=
+ =?utf-8?B?ay9sdzN1V05jbXZXdkRDN1cvYTBSZWNOY1djN3pNUjBxM3pLbUVIV2FIT09h?=
+ =?utf-8?B?Y3BTU2VEVGg5MS9xT0cva01XdE05Z3F3T3EwalVmb0J0SXMwWThML2Q0cFJp?=
+ =?utf-8?B?a2JiSW4wVlVpa3E1K1E1WlR2c0VKaWRhQkRvNThCTVZVOXluUEZrWEQvYWlC?=
+ =?utf-8?B?UUc4TEpQWGtubTdnV0FacmJ5bDljRlZnaytFejR3ZjRnVGZxdktWaFZpNWNC?=
+ =?utf-8?B?WEpwZERQMGZGNHkzdGwvcTIxaDh4bmJxZ3ZaUlVEOThJdnNzQ0JyWWptcmVX?=
+ =?utf-8?B?K2xmeHlnakhQd1M2OHNGb0ZiOFF0VitwMWhpaGVVT0xxN2N5bmo2N0UzZ0cw?=
+ =?utf-8?B?N2ZySm5oSk5WZGpUaUo2b29zTy8vWDJaMDVGcERBSGlKbnV1aWVMc2pTdTRR?=
+ =?utf-8?B?Y3ovbkE0dEFldDVjWVZUM1h0UDY3Qm9ub0FDeUk2T2NHNjlsSnMybk5DY1Nw?=
+ =?utf-8?B?SFZ3NjlVWFRxSjhUTlhRNjRNd2orTXRVR2llOFprWnptM3FmVnNNVUQ5NFFJ?=
+ =?utf-8?B?cEpXckZsVlIrWWlNRTY1UEFhU012WVZ5OFpHc2hMbWZaT3VYME4rZmtRZ1d1?=
+ =?utf-8?B?Sm1zUDR1eUp3c1Y2RUczaXViS3dGaDUrL0hnWGJMZnlFV0trR1F2WXhYTHJZ?=
+ =?utf-8?B?MnIwS3JqT2x1WU1ybVUyQmF6QjE2RjRYbEdscEJZYmM3RHFGakdMYVJEL3ZY?=
+ =?utf-8?B?Zzg5ZysrWER1VG01WUY1cWJBVnFJcGtGOXRVQm9YYlVIN1JORlkyL09KdzY1?=
+ =?utf-8?B?Q2RrNHhxQWhRTFZUV3Y3WTZBMER0bjU4M1pzeUFTWWpReEREc0dlWTA1aWpY?=
+ =?utf-8?B?Z3dIQXlQanplQTZ2WE4raCsweG5EMFhhNjA4U29MN3ZhRnI5Zk1OWm1jRXBF?=
+ =?utf-8?B?V1RZRkJtVjFGOUFNVXRWVWhxOUpIVWduSGF1NUNTM2NEK0lLRFMvUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6369da26-a8e2-423e-56ab-08dede7b3bd3
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 12:03:20.0316
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ua5pTorzffBGhSOwZmmho3l57ORzKfT+5d6Ls/e0+skjXDK/7hqdYxsvCTPhV3looieWT2KvnOd46/yhsQcn4w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB4990
 
-On Wed, Jul 8, 2026 at 7:51=E2=80=AFPM Harish-CS <harish.cs.ss24@gmail.com>=
- wrote:
+On Wed Jul 8, 2026 at 4:13 AM BST, Ben Guo wrote:
+> Update Chinese translations for the Rust subsystem documentation,
+> syncing with the latest upstream changes.
 >
-> The `Arc` documentation has a few mentions that do not follow the
-> surrounding style: a plain `Arc` without an intra-doc link and a
-> lower-case "arc".
+> - quick-start.rst: update distro-specific install instructions, Ubuntu
+>   package versions, openSUSE rust-src package, and remove GDB/Binutils no=
+te
+> - general-information.rst: add no_std section, rustdoc links, abstraction=
+s
+>   and bindings diagram, Bindings/Abstractions sections, and Kconfig examp=
+le
+> - arch-support.rst: add s390 support note
+> - testing.rst: add Kconfig guidance for KUnit test suites
 >
-> Use intra-doc links for rustdoc references to `Arc` and spell internal
-> comments consistently as `Arc`, matching nearby docs.
+> Ben Guo (4):
+>   docs/zh_CN: Update rust/quick-start.rst translation
+>   docs/zh_CN: Update rust/general-information.rst translation
+>   docs/zh_CN: Update rust/arch-support.rst translation
+>   docs/zh_CN: Update rust/testing.rst translation
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
+with the translation of "sound" fixed.
+
+Best,
+Gary
+
 >
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1240
-> Signed-off-by: Harish-CS <harish.cs.ss24@gmail.com>
+>  .../translations/zh_CN/rust/arch-support.rst  |  1 +
+>  .../zh_CN/rust/general-information.rst        | 82 ++++++++++++++++++-
+>  .../translations/zh_CN/rust/quick-start.rst   | 48 +++++------
+>  .../translations/zh_CN/rust/testing.rst       |  4 +
+>  4 files changed, 103 insertions(+), 32 deletions(-)
 
-Thanks for the patch! It looks good to me.
 
-One question that I am supposed to ask: is Harish-CS a "known identity"?
-
-  https://docs.kernel.org/process/submitting-patches.html#sign-your-work-th=
-e-developer-s-certificate-of-origin
-
-Normally, the full legal name is used (which may be what you wrote, in
-which case it is fine).
-
-Cheers,
-Miguel
