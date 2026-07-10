@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2E53DD532;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944913EA942;
 	Fri, 10 Jul 2026 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783693980; cv=none; b=IcdLk1diy7y/AGk6dVkXXNZUqJmJVcnYY6DOtd51ccka6UYny2kXrtzpmp2OCmdyTWpz2EE2zCFjDaEhEP6yj7Mn/+DqK+46aKWQq5aRUfuS+bvCsUH1xngC7FtOuKtBT/dxmZIAqyMqqKcBVQgbDhNOEWmTiBBqjmUAE5LZiAE=
+	t=1783693980; cv=none; b=fD5HQ/MKahe3OECQ1SGVLlnm7bTdJisOVpRKumYZ8KsuQeJuWt/FZXjughzkiiOafnw7CY3AgUeAndm+G7ZDlOtLdFjkNTLDu3TIXtt58nn3IsJyQPOKCIvVtEoJ6Z1aD1B61e3soysSHnWyW14r7WZzOwv4iAwkh6UJCi8nPBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783693980; c=relaxed/simple;
-	bh=Fj+4q0i9E6sV/EfSf177668feUv8hRm0VkvWCJs57U8=;
+	bh=effmvfGipEJw1CXAf4grDO/yAXKLh8tQceitLcPyakk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gXZi4zoC1S5TGKoCLIao42utMTqoscgmDmvW0v8b8c5oRqnnffmkEL9XJMCXB5XXoHf8cuMTWSuu4NaVSaHHkrIzYN2cb9M9pIjrtnxMqClr0rEZoU7TM7tfKJtsChta/DrmLtE95Od4iMHeO47UWpvEJdKgzPGqUW6hmFAc76c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EObl982v; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=G2P199qxyKaM1PKptXTwp64lZxYkn7q/tERoKy07F5D2l+Iz4ZeXx28b9w1TQYIyHWOHe8lboIf8Lq9eAYWcymqvfaIMHm8+PRdrgh6v0xfBanE2Wj3+W+dDuxrcaQnFh67nkZ/XSJJy8Ji+PfDCm6P8kfEvEurdemRzQC8GS0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SD/tjYL7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EObl982v"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 04B0BC4AF0D;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SD/tjYL7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0C35CC2BCFF;
 	Fri, 10 Jul 2026 14:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783693980;
-	bh=Fj+4q0i9E6sV/EfSf177668feUv8hRm0VkvWCJs57U8=;
+	bh=effmvfGipEJw1CXAf4grDO/yAXKLh8tQceitLcPyakk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EObl982v5yOyuZdJKxzfioOwsizpuEVQpGEzrKu74PGk9sAox2u3H/1kyn4k9T+m2
-	 FGaW4rn3NkXfJmTBH0VlcmV0bnS5tTJmUgkfbMNX5wHLnr5i1e3kYo+tOlvdlZ9Q/+
-	 pgKhL2/ryxAXgTyabaAivE7DOskD/uB+KmcrybNiF4aF/eOP7wkbPirej+h2Rskddu
-	 LetoBPBWIThZbV0nZmrwCPRulErwDrkddgLAWqCrKLA6Ip70+SacRxUeZnkz4oZVv6
-	 herk7YTSk7LVyphaKREcY6ilZ5P7PxklJaVvaRVT4skOkp/SrH3zozbrC46rVOK9Q+
-	 4cQ+JQgMno++A==
+	b=SD/tjYL7bKXucE1nupqaHbg70saluv5ivUWXv3Wwwe5LEKVEoWapHkVm9lRtjtZhb
+	 UGlOJxWWwQgcbpFjJZSjsPyii+xb0Eigj5FdzWSFKRlE3Qudpz30uCYDDgGUKRDxEz
+	 uk9xi8KaRSPHoIchXEsm91v+AkvS+iYy+ADrF6qM8G+n8vdhYo9/nWzISyNo6D1fza
+	 1ACwF/ZEvEVxycd3Ys0r9QFx/3IAFPmTLnqEFbLIsOSH6iq14FlIsdZI+JXQYEw+Jz
+	 sOxc+Pug/aEK54bmbwcVIzrtjWPc5waD9jjWEoZsEppASa81UBrZIUvaadVclD3JVk
+	 Y2sGoOL67PecA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCE5DC43458;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA6AAC44508;
 	Fri, 10 Jul 2026 14:32:59 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Fri, 10 Jul 2026 14:32:56 +0000
-Subject: [PATCH v2 5/7] rust_binder: Implement
- BINDER_DEBUG_FAILED_TRANSACTION
+Date: Fri, 10 Jul 2026 14:32:57 +0000
+Subject: [PATCH v2 6/7] rust_binder: Implement
+ BINDER_DEBUG_DEATH_NOTIFICATION
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-rust_binder_debug_mask-v2-5-2846410e3ae6@google.com>
+Message-Id: <20260710-rust_binder_debug_mask-v2-6-2846410e3ae6@google.com>
 References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
 In-Reply-To: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -60,11 +60,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783693978; l=2497;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783693978; l=2594;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=3CWbC+qTkLa0h08bqhh/+fob2zZIrU6rdQ2RDF8q2v0=;
- b=DTBz4DkrW1XrBoisPt3FrZirHrWqhl3c0fkgJDTmHHPEXAHoCPi/usYlnWZ8nOOEwdCDOjlaf
- rDihzyqFi7kAWC6s0PRvoDKFzWQC8JA+JJ6YD6IVWbNRMWdiiLg2+4P
+ bh=AtOGqyV47uTWj1HVWVVsjmE5n4vxfurKNFw6THldUO8=;
+ b=giAJSkYT/xgVZhtrblO4c1b6WXZ/zQU3csQ6ylYRFzxOWxxBs0k3YU8KSXXqFRfgr7W/n4YMm
+ JzBLJqZZKPMCX/qwuxtYR2L6nYUaS6SgSuw+cme9kvK3Z9/+B6yPSLo
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -75,66 +75,73 @@ Reply-To: jahnavimn@google.com
 From: Jahnavi MN <jahnavimn@google.com>
 
 This adds dynamic debug logs for:
-- Failed replies, target process deaths, and error code deliveries.
-- Detailed transaction failure diagnostics (including sender/receiver
-  PIDs, TIDs, transaction IDs, buffer sizes, and error codes).
+- Memory allocation (OOM) failures when requesting
+  death notifications
+- Registration and cancellation lifecycle events
+  (BC_REQUEST / BC_CLEAR)
+- Delivery of death notification events to userspace
+  (BR_DEAD_BINDER)
 
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
- drivers/android/binder/thread.rs      | 21 ++++++++++++++++-----
- drivers/android/binder/transaction.rs |  8 ++++++++
- 2 files changed, 24 insertions(+), 5 deletions(-)
+ drivers/android/binder/node.rs    |  5 +++++
+ drivers/android/binder/process.rs | 14 ++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 54b98efdd0ec..d7038b58c2ad 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1315,11 +1315,22 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-                     }
-                 }
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index dfad3697f672..898412cfddd9 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -1113,6 +1113,11 @@ fn do_work(
+             // We're still holding the inner lock, so it cannot be aborted while we insert it into
+             // the delivered list.
+             process_inner.death_delivered(self.clone());
++            binder_debug!(
++                DeathNotification,
++                "sending death notification, cookie {:016x}",
++                cookie
++            );
+             BR_DEAD_BINDER
+         };
  
--                pr_warn!(
--                    "{}:{} transaction to {} failed: {err:?}",
--                    info.from_pid,
--                    info.from_tid,
--                    info.to_pid
-+                binder_debug!(
-+                    FailedTransaction,
-+                    "transaction {} to {}:{} failed {:?}, code {} size {}-{}",
-+                    if info.is_reply {
-+                        "reply"
-+                    } else if info.is_oneway() {
-+                        "async"
-+                    } else {
-+                        "call"
-+                    },
-+                    info.to_pid,
-+                    info.to_tid,
-+                    err,
-+                    info.code,
-+                    info.data_size,
-+                    info.offsets_size
-                 );
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index db2b0230d19f..b1f1207ee868 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1267,6 +1267,10 @@ pub(crate) fn request_death(
+         // Queue BR_ERROR if we can't allocate memory for the death notification.
+         let death = UniqueArc::new_uninit(GFP_KERNEL).inspect_err(|_| {
+             thread.push_return_work(BR_ERROR);
++            binder_debug!(
++                DeathNotification,
++                "BC_REQUEST_DEATH_NOTIFICATION failed due to memory allocation failure"
++            );
+         })?;
+         let mut refs = self.node_refs.lock();
+         let Some(info) = refs.by_handle.get_mut(&handle) else {
+@@ -1310,6 +1314,11 @@ pub(crate) fn request_death(
+                 info.node_ref().node.add_death(death, &mut owner_inner);
              }
          }
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index 2643cca4a7d6..f058d3d50eb7 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -448,6 +448,14 @@ fn do_work(
-         } else {
-             // On failure to process the list, we send a reply back to the sender and ignore the
-             // transaction on the recipient.
-+            binder_debug!(
-+                FailedTransaction,
-+                "transaction {} to {} failed, fd fixups failed, size {}-{}",
-+                self.debug_id,
-+                self.to.task.pid(),
-+                self.data_size,
-+                self.offsets_size
-+            );
-             return Ok(true);
-         };
++        binder_debug!(
++            DeathNotification,
++            "BC_REQUEST_DEATH_NOTIFICATION handle {handle} cookie {:016x}",
++            cookie
++        );
+         Ok(())
+     }
+ 
+@@ -1353,6 +1362,11 @@ pub(crate) fn clear_death(&self, reader: &mut UserSliceReader, thread: &Thread)
+             }
+         }
+ 
++        binder_debug!(
++            DeathNotification,
++            "BC_CLEAR_DEATH_NOTIFICATION handle {handle} cookie {:016x}",
++            cookie
++        );
+         Ok(())
+     }
  
 
 -- 
