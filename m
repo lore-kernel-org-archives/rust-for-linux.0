@@ -1,65 +1,65 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011018.outbound.protection.outlook.com [40.93.194.18])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010068.outbound.protection.outlook.com [52.101.46.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E283A3F2101
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 23:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CB23D6663
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 23:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783724713; cv=fail; b=sA/0mmXnKlEUnnkOATaTFsJqp6xCm66eVj7AJh2KqLbgPo4QxmcSvt95x6yHgwMKWzZwRDjYqvm0Y/jUpWawAem3lYs0yyZOGm6YY3T1Yg4s+qB7cJRhmu6exuKHE2V3j3dXLmjbJiarIe3lqkwBP7fwLIC8sEgcUn7C3xkHb7A=
+	t=1783724717; cv=fail; b=MIP6QobOgUw+PU8ymrhwYf7nUxKhV4ylMBMJVtpOJpOkk3VPVOW/NHD8MYQmBO8qKyfvWZ2IQtJd40BW5OzalKT0vnwd4YlSM5HmtMIITMkdxPfqa/FWDR+3/gFHXPSypnBA7jdkl+7H51IlKOaaNuYzOtew6D3vdfOHnafPLiw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783724713; c=relaxed/simple;
-	bh=OxR3zuklXegmkxdnOeG4AknOjMAEwwPSf+M94BBqGII=;
+	s=arc-20240116; t=1783724717; c=relaxed/simple;
+	bh=yBwdhiaiofw+ZcPTG9caw/d09mNDmfNeMhEvJ4E3o38=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pMYozdty4zWZvKwWN4ZMigiesMXsVwbzZ9vw136gfnlw7m9sQnHBaalE8voPvELzuKSvS41sKZEA+7wKPtt31SBTGqQmQgeJzf8oY58vePGb/90qJVu/Bds+41o1Wug0yhR81ZBGSd0wuWSy3em5s9T4q0ofxgeFUhtyNzIRUI0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FVPb/sK7; arc=fail smtp.client-ip=40.93.194.18
+	 MIME-Version:Content-Type; b=iWmY/FZmX/IP1GZQMEJBp6IkzZR5FXixSlpFhCMUZc5d2DbTEQGJtMbH2416+gfLAP22WPUxTlIRf0sXlLMeeBgX6NaHZ4qHL6jil3GqPkvxw3CY35Hc1wqephaIuatgJODBU4DaRIeREos3uzfTZxyyMl9o0r3/WA4vbb2vg54=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Aq0y9OIc; arc=fail smtp.client-ip=52.101.46.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FVPb/sK7"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Aq0y9OIc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A2lNRbZ4akzZoHcxjkS1jmS+lIxQJRURIafcXYxBa/RdfUy7PZJn7mIhj1D+hTA4P7oeOitpq3ZSywY39yOnmVo7Kb7bIOx+KxA/TmwxR3qOeyWioDYqsKDFo4KGOSw4Hp0aZQH7c8yD8tYtB+pKinbWnZwUawoF/4hZR7IH4HLAayOz8fRGGfoNpPfaIkaW/DHp3Yxcx8APF+uj/TvAMKtAP1q09jp3s9QQr7uABoov+WIdHQ7d/OuDPZT8Y+2zeEBGwhOuTMkzC2wgAKSCaANbse5Y4k2lVfb0E4rCakK5+2H/PCBkyHGzQD4Hie69/c48joNzbjHr1o6z3+NXFQ==
+ b=GVggPAGV//EzXdiNUDuwmuBqJMD2NNtAlJfhdcoAGgLc3xmazJ02dI833lN56vRXc/mwJWEB/qH+ohOd1flvrpZE5X+jPFNWBpukzKRWg6t+/SyPDNC2pqXd/8Y/xNiULGPB/JZXUzeh67n5jDOkxIGCG0WZcTpNGYW9Bic8kdMNpwvL6CScLqT6g/8GFuC9EWY1zKl9Dhyugb5jEaeaJTSP24b2a7sxt475mmCDZ0ujbQ3LWjoJE92nKeJlaJFnfgpmQg3MHaMkRmlNd3RPoqI8HzRMW8fcDqDmnuPgLhZci0FwyFT3HrpZb6uC5lHRwz6fGPrl/BNZrCZR3b7TjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sbSuS9WuBam2XygkCPvuLId1vX9woYYR2j0oYnqC9x8=;
- b=QaZ34iHW7PDJ1qJJ86KfW3a+pbn3VSJatxWsqDTgqRjw3i4iKKAURKn5722ROT4ut3zc+mAUFq7U7CZFma6U8+RL88R+8iR3f254yvGTJR2gVXZ7p5t/NAWq11Ov9rmyAlExv/LuEMuE4IBlG7Gyd+OQLtLnLxmwujiCvfBR0ftKcYkia7veqWCMOjdBANPaC5cZTIKQy1PPgWE2KO1SatcbUIJA8yDYv13eTLwz5qnN45HPvx6IuC6mg1ENJZp/4MW/GWDLiQ+NJ0lwi2cLF9skFXExAQ5fGII4KVp6ohkVuxQE988u/nBZoI5x1uVShMSIBQ7DQhfmzmjRevYuHg==
+ bh=T8osvVTn1w0Cm+LkuvWVVQsC72ZVN/rrtkmRxNfYCsw=;
+ b=xNitHmNm77w9OunzUznHNdUvVcQqIErK1SUBk1GjwWLy/mNmeVMLlsUK4eB5U4BqUl+JsBJzpOoWAR4pJUGx1Yu6cnBzrQxCgO6yfx5wauyOpSp1t9kZKqxQq4xxB5xQgvXoGNGQ7vaHvKgxHxWnmY4K456AOM/dMWDYkv5VMyGjWGoRXMetUtzj6qkYC1xeK3k1x2QrsFFqIlKBIe4Houq9RV84SbuJ0ORAb8Rt0KFuZ5mX53HhPxRcYHfv+UgP8BZjPIPIEPIpTXgdvienhbHj3H/dcTFVTAkGG3Uj0fPajt7An1QxV1P/nDhYaTwKRNdrfwWxCoh1fFKEK/8rAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sbSuS9WuBam2XygkCPvuLId1vX9woYYR2j0oYnqC9x8=;
- b=FVPb/sK7OS07jRFsDoKhlkpNMg4Dp4KPXTbkMeVHkavK0I2N+Wg8mrkqj3SayjMFhdZguIIXFyYVsLtELa5Fc5C5BxdWsMkqun5edanUxvj6/LKEMstxxkvijjo/T1xl7cX2FlP0gQ3OA1siySF/eGUh6gZqB4yWsC/RvrO/J287lVtmh64n3eDrAFQaycD5LNJu8X19KDjkgSIccD7dAaItyWyvv0gFy3OsNXQokgjprPEW64mzO7c9s+7mAdUzOsAYRmB5sYTdv3skIdDgCDQASQS5t9iV3nkDJXO2rk4WfJ+esRhyOEYHzTVLIcd9pDGuQEflNwkZp7mu5Pf05w==
-Received: from BN0PR07CA0013.namprd07.prod.outlook.com (2603:10b6:408:141::19)
- by SN7PR12MB8132.namprd12.prod.outlook.com (2603:10b6:806:321::6) with
+ bh=T8osvVTn1w0Cm+LkuvWVVQsC72ZVN/rrtkmRxNfYCsw=;
+ b=Aq0y9OIc/7LcAm6AWbAtDQgWCSPMD8Xatdp478ELmEExeL9C/8Jd1qvK/gMkCggYCE5FqEWNQPGloo8E3dLwT+QNX5a1jQNGvNQdVq7s6JcFzjsFNm93cuat1nAsa6LUC0S6E8eXwFn+0Ux9keF4/LVEJ22/f3eGixWiTO8li6r+PF2cKQ+aRLsmB07rXoKThw6EaoXQg29XLYmxCxh0hScj3B0dIYZtC6/nOeRfsUzDM2HBGyCY1oSeFFCphAmDL4t8x23/G/mW2x3EncZ57nmv5cUhLarIIhab7JJBXofBZhAO+z2bx0W1YZyRuH7oL0Aq/xkZH3Sk+Kjs9LdWvw==
+Received: from SA0PR11CA0061.namprd11.prod.outlook.com (2603:10b6:806:d2::6)
+ by PH7PR12MB7332.namprd12.prod.outlook.com (2603:10b6:510:20f::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.18; Fri, 10 Jul
- 2026 23:05:05 +0000
-Received: from BN1PEPF00006000.namprd05.prod.outlook.com
- (2603:10b6:408:141:cafe::a3) by BN0PR07CA0013.outlook.office365.com
- (2603:10b6:408:141::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.9; Fri, 10 Jul
+ 2026 23:05:11 +0000
+Received: from SN1PEPF00036F41.namprd05.prod.outlook.com
+ (2603:10b6:806:d2:cafe::1d) by SA0PR11CA0061.outlook.office365.com
+ (2603:10b6:806:d2::6) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.14 via Frontend Transport; Fri,
- 10 Jul 2026 23:05:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ 10 Jul 2026 23:05:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN1PEPF00006000.mail.protection.outlook.com (10.167.243.232) with Microsoft
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF00036F41.mail.protection.outlook.com (10.167.248.25) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Fri, 10 Jul 2026 23:05:04 +0000
+ 15.21.181.6 via Frontend Transport; Fri, 10 Jul 2026 23:05:11 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 10 Jul
- 2026 16:04:49 -0700
+ 2026 16:04:55 -0700
 Received: from ttabi.nvidia.com (10.126.231.37) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 10 Jul
- 2026 16:04:47 -0700
+ 2026 16:04:53 -0700
 From: Timur Tabi <ttabi@nvidia.com>
 To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, "Luis
  Chamberlain" <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>,
@@ -67,9 +67,9 @@ To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, "Luis
 	<gary@garyguo.net>, <nova-gpu@lists.linux.dev>, Alexandre Courbot
 	<acourbot@nvidia.com>, Eliot Courtney <ecourtney@nvidia.com>, John Hubbard
 	<jhubbard@nvidia.com>, Zhi Wang <zhiw@nvidia.com>
-Subject: [PATCH v5 5/8] gpu: nova-core: transition gsp to TLV images
-Date: Fri, 10 Jul 2026 18:04:25 -0500
-Message-ID: <20260710230428.865447-6-ttabi@nvidia.com>
+Subject: [PATCH v5 8/8] gpu: nova-core: update firmware module info for TLV images
+Date: Fri, 10 Jul 2026 18:04:28 -0500
+Message-ID: <20260710230428.865447-9-ttabi@nvidia.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260710230428.865447-1-ttabi@nvidia.com>
 References: <20260710230428.865447-1-ttabi@nvidia.com>
@@ -86,320 +86,94 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00006000:EE_|SN7PR12MB8132:EE_
-X-MS-Office365-Filtering-Correlation-Id: 636f7f8a-eda3-4b2f-0ac8-08deded7adcc
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F41:EE_|PH7PR12MB7332:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2558af26-9703-4e06-cf15-08deded7b1e3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|23010399003|376014|82310400026|3023799007|6133799003|56012099006|11063799006|18002099003|22082099003|921020;
+	BCL:0;ARA:13230040|1800799024|23010399003|376014|36860700016|82310400026|921020|18002099003|22082099003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	8Rx0kCqRsd/pRoS7aaOopSAYISGfkp3ey80ghZV9RMyru+8nzRePxg3d5hFLS3I/APYpX+6N43kNfJxeBBcAzfKMAnRpQdUvgPZBY90lqGyrGwPRzZULf9V4YARovKJHpgKRastIJQeXwEWWqeqEHFmeeO0bG19ElBt4hHmWiF0ZGBUX505VHMwadZy3JGZjidI9+1hCk1JEISMS3njZE1rq1rVNXtDmvNMoCYyI4Pnd7o8b7hklKVJnXn5Alk7VxAmvqFtAX96FQySim7CeCLoJaRUHjxj+Z7KfDxR86McmZ/i3ND9UKBOiNrhT/9SifSsqS1PQKv0+skRFZBrq5475aVks+0vPqvZpgJSpPHSsMGULg++SQywA5Z8Et6KXfSPlXCBXgRbteTf1f0zc5MQxM2QW5hyhsGjplpRS5xSj4LB8wSKTTPFhltxpDG7zfS+6frxU6/y+E8EbDZQwHZY/g80tx+f3Z+f2RZaCELNoRBqmsfQ82NtXjK4e94NJPKSV9S3PF3b2JaVgybAe8PucFi4C5yh/ZGrC01OVvJfNnGsRWGfVWpcfaZGCmr5BcL6Mt1a1F0HMFeGoayqNTvPfpi6QV6ko24xheRNHiUsYzPyvXZQjINHUy7X0NszlVg6XYmz6KRIPBd46DColsmGQyi5ZQQBUzKEQYhjqH+f1pyvI8CzpqQ2rKkqbc7Sn53eHAhIH6NgbyI3pISbZOUUCPLSTNdQ+QKd+bqpZrP5mgqQSMkdOYAGRhnVFTLlv
+	j7QQBvapOru0rvrODhTeb7lb9RwYtJHIn+EBbmZdRWpJ23w3MGlGTWsRNl7nyEXRCvwGe4FAQYEVc/0K30dYqkOVeZu5JsAre+JFduU13vn0eHGVXiwCCbPtO0Jc0du5jddJts/K7HQXiTTdaThtoK4g2lfKChHiNvXNUlky8dMBaynLMQvxu5f9N1Uu6gj6JVOjBx3v6zOHFU5F+eWNaYWcgnfg3er43Z9cT2oaSUSggBBcEum1IctpAzE9vfJ22VQYOZVs02J7v9zViI+j0B/l4Po4lKSZurdtibYYA0wGvaDmbZt+hmTD1OdWOQM3BcuUIjgnozwEjWOjyrzfAk7xSgPZ2oujFA7SDdNN58RuByR7CGZeep9i2eaQnf4qvF10y9nW6RIoCSN3yo2PvfMwF8fEGwyQIidLnEBUp07bRTyjS7/rTQzKRhs5T6t1M1hrxJia1NQpaHY4jNyq+nZ9F5jhIOVWEcYt+bzgRGjjgghtAaX3tkt3aZcjZ0H4BQdQGDSBlqQ+4ZNrz35r3O8h+CEuTp43IBGhwi7cVnDxoGpIJPOYBzIrqc/vKSStNkbXprQnm5dHwuw6mxABhFEXZVH1OQFQjIWQ8k9gtpXO6JqCUgWZ2EbjNbTTg2MjbqVigfFkww9AQQsOI4POCo0blTaHPzNnccHZ0zh1m2tmrgOu1eF/KkP7HQaOT4Q9NIK8LZFHgbN5zkq9ulsF+0ak9wrHAF+QYmE4DJHBXRRTSZ6M3dI5W1utQLGFaY4x
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(23010399003)(376014)(82310400026)(3023799007)(6133799003)(56012099006)(11063799006)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(36860700016)(82310400026)(921020)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	WIklWlXZ8C8ZxgrAB+AU2+F13riCbGXgd0PamfIVEduXEz3Ih0IMEzkAdQZafKjMV+fZS7AXC4cjh78n3QC92v18uyXiQb7F2GVWrSdSh3/tVcpSEzQ1j0P41Zy8MztgLw7XLVCJNdTjFB9WEIe+CW7eg6qpBjKdjlCosg0cNvwhymXVXsR7FDQZyHHO740ktVB6F8SxEBVg90cCcvdv1S0+WAqBqqlDVMmPUoQaUqoih4fq2kw3BY8afRRzDHSJVYvFyQx2eq5J/ZL831Bj+I4fM3vZdjICZC2gc6RQvLA7tS1xNtkz5h5XA56wF7BNRXeu9Qv/El/f48x68U8A6h8evnFKkHEgC8zrHf820KqWRr1gMmpmsUWhsXYaWGPVKejTFoF0zQz22q470K/oy7ZJYV5T4gNzd7s+2JzBJdEiaJRXm2l7XrETbP6DGQas
+	UNPtlsWz3h2jX5SJ9fZrWZHCDWGfUzfB+7Zf2ii+TKwHjijtIZw/mi86hO0JNQqtfDPHG+3scM5M2bMXoUfhc2pK1X0ePr2YAkzkR5BWHXYuH66SF9jDRMH0tlWhV62bEse9KPlL1CmSJ48J/6WYkWqgLYv//3TThvt9JqzW5n7S2o/EDaeOMN33MVeapYfB8MenMawCFn416erQyZ8t5ap7Js2fDcss4CH2M82gRGXgaolQQUSVEcAc+ZUU1e2nm2Y8Z6GskVqUBXW2Xc62rEH8RDNMUCmH6XoFCtRFR/V+d7jdTCbZVngEYBL5BVBPcsn4oQPovMqc2rxNL9+wQjICa4AsTAr7IvvEnaPgeJQCDTr4TjlIy1wk2J+W+lhYm+Ex69sN8QMPkwWDLiN1LQ0cLsu78ZorE3B0YGNWEinHwdp7sBqSxtAySwziD0hf
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 23:05:04.6388
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 23:05:11.5499
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 636f7f8a-eda3-4b2f-0ac8-08deded7adcc
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2558af26-9703-4e06-cf15-08deded7b1e3
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00006000.namprd05.prod.outlook.com
+	SN1PEPF00036F41.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8132
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7332
 
-Switch the GSP firmware loader from the legacy binary format to the
-TLV format.  This change requires the new TLV versions of the r570.144
-firmware images.
+Now that nova-core loads the TLV firmware images, update the firmware
+module info to specify those files.
 
-Unlike the other TLV firmware images, gsp.tlv contains a pointer to
-the actual GSP firmware file instead of its contents.  This allows
-each small gsp.tlv file to contain the distinct metadata for each GPU
-while still allowing the very large gsp.bin to be shared by all
-GPUs.
-
-One key piece of metadata is the signature.  The legacy GSP firmware
-image is an ELF file that contains multiple sections that needed
-to be parsed, and the driver needed to determine which section is
-relevant for the GPU.  Instead, gsp.tlv contains the pre-processed
-metadata, so all the driver needs to do is to extract it.
+Also remove FIRMWARE_VERSION as it is no longer used.
 
 Signed-off-by: Timur Tabi <ttabi@nvidia.com>
 ---
- drivers/gpu/nova-core/firmware.rs       | 23 --------
- drivers/gpu/nova-core/firmware/gsp.rs   | 59 +++++++------------
- drivers/gpu/nova-core/firmware/riscv.rs | 76 ++++++-------------------
- drivers/gpu/nova-core/gsp/boot.rs       |  7 +--
- 4 files changed, 38 insertions(+), 127 deletions(-)
+ drivers/gpu/nova-core/firmware.rs | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/gpu/nova-core/firmware.rs b/drivers/gpu/nova-core/firmware.rs
-index 7634fe292446..06b74d82d698 100644
+index 4ea9eef46354..2969f5a9f114 100644
 --- a/drivers/gpu/nova-core/firmware.rs
 +++ b/drivers/gpu/nova-core/firmware.rs
-@@ -364,29 +364,6 @@ struct BinHdr {
- // SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
- unsafe impl FromBytes for BinHdr {}
+@@ -29,8 +29,6 @@
+ pub(crate) mod riscv;
+ pub(crate) mod tlv;
  
--// A firmware blob starting with a `BinHdr`.
--struct BinFirmware<'a> {
--    hdr: BinHdr,
--    fw: &'a [u8],
--}
+-pub(crate) const FIRMWARE_VERSION: &str = "570.144";
 -
--impl<'a> BinFirmware<'a> {
--    /// Interpret `fw` as a firmware image starting with a [`BinHdr`], and returns the
--    /// corresponding [`BinFirmware`] that can be used to extract its payload.
--    fn new(fw: &'a firmware::Firmware) -> Result<Self> {
--        const BIN_MAGIC: u32 = 0x10de;
--        let fw = fw.data();
--
--        fw.get(0..size_of::<BinHdr>())
--            // Extract header.
--            .and_then(BinHdr::from_bytes_copy)
--            // Validate header.
--            .filter(|hdr| hdr.bin_magic == BIN_MAGIC)
--            .map(|hdr| Self { hdr, fw })
--            .ok_or(EINVAL)
--    }
--}
--
- pub(crate) struct ModInfoBuilder<const N: usize>(firmware::ModInfoBuilder<N>);
- 
- impl<const N: usize> ModInfoBuilder<N> {
-diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-core/firmware/gsp.rs
-index 99a302bae567..185cae0689a3 100644
---- a/drivers/gpu/nova-core/firmware/gsp.rs
-+++ b/drivers/gpu/nova-core/firmware/gsp.rs
-@@ -8,6 +8,7 @@
-         DataDirection,
-         DmaAddress, //
-     },
-+    firmware,
-     prelude::*,
-     scatterlist::{
-         Owned,
-@@ -17,13 +18,14 @@
- 
- use crate::{
-     firmware::{
--        elf,
-         riscv::RiscvFirmware, //
-+        tlv::{
-+            request_tlv, //
-+            Tlv,
-+        },
-+        CString,
-     },
--    gpu::{
--        Architecture,
--        Chipset, //
--    },
-+    gpu::Chipset,
-     gsp::GSP_PAGE_SIZE,
-     num::FromSafeCast,
- };
-@@ -63,43 +65,26 @@ pub(crate) struct GspFirmware {
- }
- 
- impl GspFirmware {
--    fn find_gsp_sigs_section(chipset: Chipset) -> &'static str {
--        match chipset.arch() {
--            Architecture::Turing if matches!(chipset, Chipset::TU116 | Chipset::TU117) => {
--                ".fwsignature_tu11x"
--            }
--            Architecture::Turing => ".fwsignature_tu10x",
--            Architecture::Ampere if chipset == Chipset::GA100 => ".fwsignature_ga100",
--            Architecture::Ampere => ".fwsignature_ga10x",
--            Architecture::Ada => ".fwsignature_ad10x",
--            Architecture::Hopper => ".fwsignature_gh10x",
--            Architecture::BlackwellGB10x => ".fwsignature_gb10x",
--            Architecture::BlackwellGB20x => ".fwsignature_gb20x",
--        }
--    }
--
-     /// Loads the GSP firmware binaries, map them into `dev`'s address-space, and creates the page
-     /// tables expected by the GSP bootloader to load it.
-     pub(crate) fn new<'a>(
-         dev: &'a device::Device<device::Bound>,
-         chipset: Chipset,
--        ver: &'a str,
-     ) -> impl PinInit<Self, Error> + 'a {
-         pin_init::pin_init_scope(move || {
--            let firmware = super::request_firmware(dev, chipset, "gsp", ver)?;
-+            let firmware = request_tlv(dev, chipset, "gsp")?;
-+            let tlv = Tlv::new(firmware.data())?;
-+            dev_dbg!(dev, "loaded gsp firmware v{}\n", tlv.get_string(b"VERS")?);
- 
--            let fw_section = elf::elf_section(firmware.data(), ".fwimage").ok_or(EINVAL)?;
-+            let size = usize::from_safe_cast(tlv.get_u32(b"SIZE")?);
-+            let mut fw_vvec = VVec::zeroed(size, GFP_KERNEL).map_err(|_| ENOMEM)?;
- 
--            let size = fw_section.len();
-+            let chip_name = chipset.name();
-+            let file = tlv.get_string(b"FILE")?;
-+            let filename = CString::try_from_fmt(fmt!("nvidia/{chip_name}/gsp/{file}"))?;
-+            firmware::request_into_buf(&filename, dev, fw_vvec.as_mut_slice())?;
- 
--            // Move the firmware into a vmalloc'd vector and map it into the device address
--            // space.
--            let fw_vvec = VVec::with_capacity(fw_section.len(), GFP_KERNEL)
--                .and_then(|mut v| {
--                    v.extend_from_slice(fw_section, GFP_KERNEL)?;
--                    Ok(v)
--                })
--                .map_err(|_| ENOMEM)?;
-+            let signatures = Coherent::from_slice(dev, tlv.get_bytes(b"SIGN")?, GFP_KERNEL)?;
- 
-             Ok(try_pin_init!(Self {
-                 fw <- SGTable::new(dev, fw_vvec, DataDirection::ToDevice, GFP_KERNEL),
-@@ -145,15 +130,9 @@ pub(crate) fn new<'a>(
-                     level0.into()
-                 },
-                 size,
--                signatures: {
--                    let sigs_section = Self::find_gsp_sigs_section(chipset);
--
--                    elf::elf_section(firmware.data(), sigs_section)
--                        .ok_or(EINVAL)
--                        .and_then(|data| Coherent::from_slice(dev, data, GFP_KERNEL))?
--                },
-+                signatures,
-                 bootloader: {
--                    let bl = super::request_firmware(dev, chipset, "bootloader", ver)?;
-+                    let bl = request_tlv(dev, chipset, "gsp_bootloader")?;
- 
-                     RiscvFirmware::new(dev, &bl)?
-                 },
-diff --git a/drivers/gpu/nova-core/firmware/riscv.rs b/drivers/gpu/nova-core/firmware/riscv.rs
-index 2afa7f36404e..27bfd2b5a20f 100644
---- a/drivers/gpu/nova-core/firmware/riscv.rs
-+++ b/drivers/gpu/nova-core/firmware/riscv.rs
-@@ -7,53 +7,10 @@
-     device,
-     dma::Coherent,
-     firmware::Firmware,
--    prelude::*,
--    transmute::FromBytes, //
-+    prelude::*, //
- };
- 
--use crate::{
--    firmware::BinFirmware,
--    num::FromSafeCast, //
--};
--
--/// Descriptor for microcode running on a RISC-V core.
--#[repr(C)]
--#[derive(Debug)]
--struct RmRiscvUCodeDesc {
--    version: u32,
--    bootloader_offset: u32,
--    bootloader_size: u32,
--    bootloader_param_offset: u32,
--    bootloader_param_size: u32,
--    riscv_elf_offset: u32,
--    riscv_elf_size: u32,
--    app_version: u32,
--    manifest_offset: u32,
--    manifest_size: u32,
--    monitor_data_offset: u32,
--    monitor_data_size: u32,
--    monitor_code_offset: u32,
--    monitor_code_size: u32,
--}
--
--// SAFETY: all bit patterns are valid for this type, and it doesn't use interior mutability.
--unsafe impl FromBytes for RmRiscvUCodeDesc {}
--
--impl RmRiscvUCodeDesc {
--    /// Interprets the header of `bin_fw` as a [`RmRiscvUCodeDesc`] and returns it.
--    ///
--    /// Fails if the header pointed at by `bin_fw` is not within the bounds of the firmware image.
--    fn new(bin_fw: &BinFirmware<'_>) -> Result<Self> {
--        let offset = usize::from_safe_cast(bin_fw.hdr.header_offset);
--        let end = offset.checked_add(size_of::<Self>()).ok_or(EINVAL)?;
--
--        bin_fw
--            .fw
--            .get(offset..end)
--            .and_then(Self::from_bytes_copy)
--            .ok_or(EINVAL)
--    }
--}
-+use crate::firmware::tlv::Tlv;
- 
- /// A parsed firmware for a RISC-V core, ready to be loaded and run.
- pub(crate) struct RiscvFirmware {
-@@ -70,26 +27,27 @@ pub(crate) struct RiscvFirmware {
- }
- 
- impl RiscvFirmware {
--    /// Parses the RISC-V firmware image contained in `fw`.
-     pub(crate) fn new(dev: &device::Device<device::Bound>, fw: &Firmware) -> Result<Self> {
--        let bin_fw = BinFirmware::new(fw)?;
--
--        let riscv_desc = RmRiscvUCodeDesc::new(&bin_fw)?;
-+        let tlv = Tlv::new(fw.data())?;
-+        dev_dbg!(
-+            dev,
-+            "loaded gsp bootloader firmware v{}\n",
-+            tlv.get_string(b"VERS")?
-+        );
- 
--        let ucode = {
--            let start = usize::from_safe_cast(bin_fw.hdr.data_offset);
--            let len = usize::from_safe_cast(bin_fw.hdr.data_size);
--            let end = start.checked_add(len).ok_or(EINVAL)?;
-+        let code_offset = tlv.get_u32(b"CDOF")?;
-+        let data_offset = tlv.get_u32(b"DAOF")?;
-+        let manifest_offset = tlv.get_u32(b"MFOF")?;
-+        let app_version = tlv.get_u32(b"APPV")?;
- 
--            Coherent::from_slice(dev, fw.data().get(start..end).ok_or(EINVAL)?, GFP_KERNEL)?
--        };
-+        let ucode = Coherent::from_slice(dev, tlv.get_bytes(b"BLOB")?, GFP_KERNEL)?;
- 
-         Ok(Self {
-             ucode,
--            code_offset: riscv_desc.monitor_code_offset,
--            data_offset: riscv_desc.monitor_data_offset,
--            manifest_offset: riscv_desc.manifest_offset,
--            app_version: riscv_desc.app_version,
-+            code_offset,
-+            data_offset,
-+            manifest_offset,
-+            app_version,
-         })
+ /// Structure used to describe some firmwares, notably FWSEC-FRTS.
+ #[repr(C)]
+ #[derive(Debug, Clone, FromBytes)]
+@@ -338,10 +336,7 @@ const fn make_entry_file(self, chipset: &str, fw: &str) -> Self {
+                 .push("nvidia/")
+                 .push(chipset)
+                 .push("/gsp/")
+-                .push(fw)
+-                .push("-")
+-                .push(FIRMWARE_VERSION)
+-                .push(".bin"),
++                .push(fw),
+         )
      }
- }
-diff --git a/drivers/gpu/nova-core/gsp/boot.rs b/drivers/gpu/nova-core/gsp/boot.rs
-index 152093aafae6..56658faccdf7 100644
---- a/drivers/gpu/nova-core/gsp/boot.rs
-+++ b/drivers/gpu/nova-core/gsp/boot.rs
-@@ -19,10 +19,7 @@
-         Falcon, //
-     },
-     fb::FbLayout,
--    firmware::{
--        gsp::GspFirmware,
--        FIRMWARE_VERSION, //
--    },
-+    firmware::gsp::GspFirmware,
-     gsp::{
-         cmdq::Cmdq,
-         commands,
-@@ -110,7 +107,7 @@ pub(crate) fn boot(
-         let dev = pdev.as_ref();
-         let hal = super::hal::gsp_hal(chipset);
  
--        let gsp_fw = KBox::pin_init(GspFirmware::new(dev, chipset, FIRMWARE_VERSION), GFP_KERNEL)?;
-+        let gsp_fw = KBox::pin_init(GspFirmware::new(dev, chipset), GFP_KERNEL)?;
+@@ -349,20 +344,21 @@ const fn make_entry_chipset(self, chipset: gpu::Chipset) -> Self {
+         let name = chipset.name();
  
-         let fb_layout = FbLayout::new(chipset, bar, &gsp_fw)?;
-         dev_dbg!(dev, "{:#x?}\n", fb_layout);
+         let this = self
+-            .make_entry_file(name, "bootloader")
+-            .make_entry_file(name, "gsp");
++            .make_entry_file(name, "gsp_bootloader.tlv")
++            .make_entry_file(name, "gsp.tlv")
++            .make_entry_file(name, "gsp.bin");
+ 
+         // FSP-based chipsets (Hopper, Blackwell and later) boot the GSP via the FMC image loaded by
+         // FSP. Older chipsets use the SEC2 booter instead.
+         let this = if chipset.uses_fsp() {
+-            this.make_entry_file(name, "fmc")
++            this.make_entry_file(name, "fmc.tlv")
+         } else {
+-            this.make_entry_file(name, "booter_load")
+-                .make_entry_file(name, "booter_unload")
++            this.make_entry_file(name, "booter_load.tlv")
++                .make_entry_file(name, "booter_unload.tlv")
+         };
+ 
+         if chipset.needs_fwsec_bootloader() {
+-            this.make_entry_file(name, "gen_bootloader")
++            this.make_entry_file(name, "gen_bootloader.tlv")
+         } else {
+             this
+         }
 -- 
 2.54.0
 
