@@ -1,177 +1,149 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0164346A08
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 14:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A61A23D7C2;
+	Fri, 10 Jul 2026 14:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783693667; cv=none; b=EKIymC1x1sBy1loD5dSZQN40LcmfU+6O3OvWOEvprSdLxaH267mbz2jRe8mzRX1776zXdY+02OUCkNFBZXWHdsXf/UKXtMAGnDOhg+z3inMfNEv22gAJo/oBccgDGa0EYt/YdF4AODPMDT4qoCHJkC1YvvSNg9PPhZD3U2g7EJ0=
+	t=1783693980; cv=none; b=NJ9mpu48NpqrTRdjgxv/qkoeHF9ATTl2P43TgRLOEJ1zjpJ2qgLQvMD2zy3enar8NpY/AjU7reQmJNnKzp6cbvOwWedHmcmsVIhxNgMZ3wkpI28eT4RCyYKcl/y1Z4MOAb/nTsZQoqgfWi95D6/jQloTTn2SWE1DP1QJ1ykLPeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783693667; c=relaxed/simple;
-	bh=YEG54FXZqI/1KLY3tXJ7rHla6Je6lHhbzWeOJELuXSQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QzD3yvvvDAykDHzPQhEay9eo6g1qU8d981M5bhlQ5R9AJkAXlDnRNgGH9b/aZrpBJC8+TSx+iH3g8a3zCIT0gcmC0mivwLOm28Xmk54i3cLrWdFz4K/33LZO/IvfSjFbq+zWBJQdy1hIASG59folAl7W1B0+Rzi1o1JPFlDxcww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FgpB4sTx; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1783693980; c=relaxed/simple;
+	bh=FYPaH+l+XTQ5sU7Qv4cn8DYzP7Jz4mGDL005ddMunCU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EpkWgHe/pSmgg45tAUx7DFeWPZ8rYAtMGoANdNqRZh+3HKO8WZIhwEKMuL1hQA5e/Izdhz7MTTAHJQyaO6hbTpkjnsP8jkUTsY/N6y+/gHSoeAZwzPGTeuurXoSjiDrrDL4xU4Eg1hCKh8fD2ZW3kVeIb0YjSuOImlvHp5FFA6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3ZNjoUy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FgpB4sTx"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-698b899b53cso1153814a12.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 07:27:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783693664; x=1784298464; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZJxWnguOTe6CKBDsvGkeHPaaIWVYmyS6i3squ7Maq6Q=;
-        b=FgpB4sTx4EcOFW2efrWjV4o5XoozoMEu5aYaM8CnLjVnvqm88yrRJYeF/y1/iZkrT7
-         u2hDwwjcaAv39gh3fvCaESoFEEOxYGal5UhjnDVgldMluvXOaJt6na4I/5vgP/PQUpjN
-         g5H5aZqP3bz6XpuK4wv7aCirQFPhefGBF0gUkmlRBc3BJoCsPxSRPTck2ptsbuqP/wtK
-         ofeXERQQZOJgVHQf2N7V8xXsGE6UBFr45zNrZERLnGDoOWjXmytTOpvZuzCI7Jba+4qD
-         utJEFWhZ1evYptfMthypXJnlqRdeVZsKOnbWQ1IDXEUnq/e/YAtlzNr/uIJbwrFOkSmW
-         EZFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783693664; x=1784298464;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZJxWnguOTe6CKBDsvGkeHPaaIWVYmyS6i3squ7Maq6Q=;
-        b=c42xZ9/nwnoGMVXGv1JkiXMpEmlmEmYLREEjQH+pws1FeG4YdEUqTb+VX4hl1LAeV4
-         b6gWsEi2xTKDY8GunN3arfGuuP95iVprzQbKELx6oFLjL5TsWf4F1qTRDjbhXaZWEpko
-         uiXoVYB9uMcSY87bfdfMOoX7n/Hvz3mbIb3IV+Su8I80k1NVWCDN5osvpJGI+t0Fxr2q
-         NM3KPoTCajLSm3JAh3rIKbDHS/cQfSITYTXC34ix59TRwmjNiJPUQFIeivhOyUuOSfOI
-         4f0UhDtSqtPT94ZV3WQjWNdm55or148kgnrtZPHfUBmiQ+2nUy5pQmwXr9rvn5gioVgq
-         pgeA==
-X-Forwarded-Encrypted: i=1; AHgh+RpmnLhxQRAEiEruVTVUh6vRzD1htu1uQ35xok8QErIhMm9BEMCjQXoMZTIhQwwRmJRxHTqgYjhQb5vcHqT1gQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxO6jk60QB73iG41NJrcPTyWFRvcGM644bIB5HY2Pkcmii/jxTY
-	5DIL2Qm7DoASefW8JCFBp9Q3o/6bZ4UOvqg0W+VO9bUvLp0EnsqcrmEb9rbyZUw2hRsG/EjQYGJ
-	o2nu/gRl57fTg31ndnA==
-X-Received: from edqi22.prod.google.com ([2002:aa7:c716:0:b0:698:c0bc:3a7f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:1f0d:b0:698:663d:d7bd with SMTP id 4fb4d7f45d1cf-69ab446e0a8mr4806641a12.11.1783693663712;
- Fri, 10 Jul 2026 07:27:43 -0700 (PDT)
-Date: Fri, 10 Jul 2026 14:27:42 +0000
-In-Reply-To: <20260709-fw-boot-b4-v6-4-ca391e1a4108@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3ZNjoUy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B2371C2BCB8;
+	Fri, 10 Jul 2026 14:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783693979;
+	bh=FYPaH+l+XTQ5sU7Qv4cn8DYzP7Jz4mGDL005ddMunCU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=h3ZNjoUynAUc/2aLcOmwWnapF2+u6UTfNSGyb3x1qUF8r0ovYWv5En/UsvqY2m2MK
+	 zzvNHkG3nXMR7ik+prSajZjHGOuqGLtCaCsv4h5GJ3ljULkzh6Br24i5gVhWnIF0eI
+	 QUkOv3oYIdXG6/hF+/TZMwGuT40EeFYsb8XtI/ss0bhURZ83FaN2QTsYAhEWxlAEl5
+	 0W17sWrl2xyvnyegIrFuY5Nby6hIxySd7rUlcuXEc6gHLUDGXgXKRkpv9xAVsaKRgj
+	 k3f5ODJdh8LcRLNiM7wgjsN4LiUgqqYpPnR+J8a3zughxQ1/acBSu63Fi87+VKvJUa
+	 wMFChqjZ2it4w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D912C43458;
+	Fri, 10 Jul 2026 14:32:59 +0000 (UTC)
+From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
+Subject: [PATCH v2 0/7] rust_binder : Implement dynamic debug logging mask
+Date: Fri, 10 Jul 2026 14:32:51 +0000
+Message-Id: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com> <20260709-fw-boot-b4-v6-4-ca391e1a4108@collabora.com>
-Message-ID: <alEBXhTk2th3aENc@google.com>
-Subject: Re: [PATCH v6 4/7] drm/tyr: add GPU virtual memory (VM) support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	boris.brezillon@collabora.com, samitolvanen@google.com, acourbot@nvidia.com, 
-	alvin.sun@linux.dev, laura.nao@collabora.com, work@onurozkan.dev, 
-	beata.michalska@arm.com, steven.price@arm.com, lyude@redhat.com
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJMCUWoC/3WNwQ6CMBAFf4Xs2Zp2KyV68j8MIZQupVFa0wLRE
+ P7dSuLR40zy5q2QKDpKcClWiLS45ILPgIcCuqH1lpgzmQE5Kl5xZHFOU6OdNxQbQ3q2zdimO1N
+ SVbLiolR4gjx+Rurdaw/f6syDS1OI7/1nEV/7S8p/yUUwzs7a9AJ1KbHsrjYE+6BjF0aot237A
+ Pv13G+9AAAA
+X-Change-ID: 20260702-rust_binder_debug_mask-636737015624
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
+ Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Jahnavi MN <jahnavimn@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783693978; l=3639;
+ i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
+ bh=FYPaH+l+XTQ5sU7Qv4cn8DYzP7Jz4mGDL005ddMunCU=;
+ b=iymmeidSegkN0WgX29oEAgF/EVrw8oCYVHfMf2H9kNpNWthk3+z1WhirYD4PsnJQKm8RGUJP+
+ /ogUSKq11B9DL1cL2i0cWBblc+I/xLYpfmwgMpexNnfFIzfIEM0zhkr
+X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
+ pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
+X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
+ auth_id=849
+X-Original-From: Jahnavi MN <jahnavimn@google.com>
+Reply-To: jahnavimn@google.com
 
-On Thu, Jul 09, 2026 at 02:36:44PM -0700, Deborah Brouwer wrote:
-> From: Boris Brezillon <boris.brezillon@collabora.com>
-> 
-> Add GPU virtual address space management using the DRM GPUVM framework.
-> Each virtual memory (VM) space is backed by ARM64 LPAE Stage 1 page tables
-> and can be mapped into hardware address space (AS) slots for GPU execution.
-> 
-> The implementation provides memory isolation and virtual address
-> allocation. VMs support mapping GEM buffer objects with configurable
-> protection flags (readonly, noexec, uncached) and handle both 4KB and 2MB
-> page sizes. A new_dummy_object() helper is provided to create a dummy GEM
-> object for use as a GPUVM root.
-> 
-> The vm module integrates with the MMU for address space activation and
-> provides map/unmap/remap operations with page table synchronization.
-> 
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+When a user-space application sends malformed data or makes a
+lifecycle mistake, the driver rejects it with a generic error code
+(like -EINVAL). Without internal logs, the driver acts as a
+"black box," forcing developers to guess which check failed.
 
-I'm seeing some build failures on 32-bit arm:
+In the legacy C Binder driver, this issue is solved using a dynamic
+debug_mask module parameter that toggles verbose logs for specific
+subsystems. This series brings the same critical capability to the
+Rust Binder driver to provide developers with clear, real-time
+feedback.
 
-error[E0308]: mismatched types
-   --> /home/runner/work/linux/linux/linux/drivers/gpu/drm/tyr/vm.rs:572:45
-    |
-572 |             let mut sgt_entry_length: u64 = sgt_entry.dma_len();
-    |                                       ---   ^^^^^^^^^^^^^^^^^^^ expected `u64`, found `u32`
-    |                                       |
-    |                                       expected due to this
-    |
-help: you can convert a `u32` to a `u64`
-    |
-572 |             let mut sgt_entry_length: u64 = sgt_entry.dma_len().into();
-    |                                                                +++++++
+Instead of rebuilds, reboots, or guessing:
+- Developers can enable logs instantly on a running device by writing to 
+  `/sys/module/rust_binder/parameters/debug_mask`.
+- It prints the exact reason for failures (such as alignment errors, 
+  mismatched call stacks, or invalid handle references) directly into 
+  `dmesg`, reducing debugging time from hours to seconds.
+- It protects system logs by keeping logging off by default and only 
+  enabling it when developers are actively troubleshooting.
 
-error[E0308]: mismatched types
-   --> /home/runner/work/linux/linux/linux/drivers/gpu/drm/tyr/vm.rs:581:26
-    |
-581 |                 paddr += skip;
-    |                          ^^^^ expected `u32`, found `u64`
+Based on top of:
+https://lore.kernel.org/rust-for-linux/20260707-upgrade-poll-v6-0-4b8fae7bf1d9@google.com/
 
-error[E0277]: cannot add-assign `u64` to `u32`
-   --> /home/runner/work/linux/linux/linux/drivers/gpu/drm/tyr/vm.rs:581:23
-    |
-581 |                 paddr += skip;
-    |                       ^^ no implementation for `u32 += u64`
-    |
-    = help: the trait `core::ops::AddAssign<u64>` is not implemented for `u32`
-help: `u32` implements trait `core::ops::AddAssign<Rhs>`
-   --> /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/internal_macros.rs:61:9
-    |
- 61 |           impl const $imp<&$u> for $t {
-    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `core::ops::AddAssign<&u32>`
-    |
-   ::: /home/runner/work/linux/linux/linux/rust/zerocopy/src/byteorder.rs:316:9
-    |
-316 |           impl<O: ByteOrder> core::ops::$trait_assign<$name<O>> for $native {
-    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `core::ops::AddAssign<zerocopy::byteorder::U32<O>>`
-...
-720 | / define_type!(
-721 | |     A,
-722 | |     "A 32-bit unsigned integer",
-723 | |     U32,
-...   |
-735 | |     [U64, U128]
-736 | | );
-    | |_- in this macro invocation
-    |
-   ::: /home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/arith.rs:786:9
-    |
-786 |           impl const AddAssign for $t {
-    |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `core::ops::AddAssign`
-  CC      drivers/base/firmware_loader/builtin/main.o
-...
-799 |   add_assign_impl! { usize u8 u16 u32 u64 u128 isize i8 i16 i32 i64 i128 f16 f32 f64 f128 }
-    |   ----------------------------------------------------------------------------------------- in this macro invocation
-    = note: this error originates in the macro `impl_ops_traits` which comes from the expansion of the macro `add_assign_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+Signed-off-by: Jahnavi MN <jahnavimn@google.com>
+---
+Changes in v2:
+- Defined the debug mask categories using bitflags (impl_flags) to
+  resolve potential Undefined Behavior and match Rust idioms.
+- Added a tgid helper to rust/kernel/task.rs to expose the task
+  group ID and optimize default "PID:TID" prefixing.
+- Implemented the BINDER_DEBUG_DEATH_NOTIFICATION mask to log OOM
+  failures, lifecycle updates, and async delivery to user-space.
+- Added pid fields to ThreadError, DeliverCode, and FreezeMessage
+  to ensure cancellation logs show the correct process PID instead
+  of background kworker PIDs.
+- Removed duplicate PID printing across workqueue, transaction
+  failure, and stack unwinding logs.
+- Refactored log formatting (e.g. formatted BinderError with {:?},
+  used "strong"/"weak" strings, and improved message wording).
+- Fixed logic bugs (restored missing update_ref block, moved manager
+  lookup warnings).
+- Cleaned up spurious newlines, corrected indentations, and adjusted
+  all commit titles to be shorter and more meaningful.
+- Link to v1: https://lore.kernel.org/r/20260703-rust_binder_debug_mask-v1-0-9bdf12b5325c@google.com
 
-error[E0308]: mismatched types
-   --> /home/runner/work/linux/linux/linux/drivers/gpu/drm/tyr/vm.rs:596:65
-    |
-596 |             let segment_mapped = match pt_map(context.pt, iova, paddr, len, prot) {
-    |                                        ------                   ^^^^^ expected `u64`, found `u32`
-    |                                        |
-    |                                        arguments to this function are incorrect
-    |
-note: function defined here
-   --> /home/runner/work/linux/linux/linux/drivers/gpu/drm/tyr/vm.rs:731:4
-    |
-731 | fn pt_map(
-    |    ^^^^^^
-...
-734 |     paddr: u64,
-    |     ----------
-help: you can convert a `u32` to a `u64`
-    |
-596 |             let segment_mapped = match pt_map(context.pt, iova, paddr.into(), len, prot) {
-    |                                                                      +++++++
+---
+Jahnavi MN (7):
+      rust_binder: Add dynamic debug logging mask
+      rust_binder: Implement BINDER_DEBUG_USER_ERROR for freezer-related operation
+      rust_binder: Implement BINDER_DEBUG_USER_ERROR for refcounting and death notifications
+      rust_binder: Implement BINDER_DEBUG_USER_ERROR for transaction parsing failures
+      rust_binder: Implement BINDER_DEBUG_FAILED_TRANSACTION
+      rust_binder: Implement BINDER_DEBUG_DEATH_NOTIFICATION
+      rust_binder: Implement BINDER_DEBUG_DEAD_TRANSACTION
 
-  CC      net/core/tso.o
-error: aborting due to 4 previous errors
+ drivers/android/binder/debug.rs            |  80 ++++++++++++++++
+ drivers/android/binder/freeze.rs           |  70 ++++++++++----
+ drivers/android/binder/node.rs             |  30 +++++-
+ drivers/android/binder/process.rs          |  62 ++++++++++--
+ drivers/android/binder/rust_binder_main.rs |  16 +++-
+ drivers/android/binder/rust_binderfs.c     |   3 +
+ drivers/android/binder/thread.rs           | 149 ++++++++++++++++++++++-------
+ drivers/android/binder/transaction.rs      |  15 +++
+ rust/kernel/task.rs                        |   7 ++
+ 9 files changed, 363 insertions(+), 69 deletions(-)
+---
+base-commit: bf694eb01b1313f5510645ca34be4ed034ae08de
+change-id: 20260702-rust_binder_debug_mask-636737015624
+
+Best regards,
+-- 
+Jahnavi MN <jahnavimn@google.com>
+
+
