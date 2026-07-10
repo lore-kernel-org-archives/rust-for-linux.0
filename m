@@ -1,181 +1,211 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012055.outbound.protection.outlook.com [40.107.200.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5EE3B71A9;
-	Fri, 10 Jul 2026 21:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783718986; cv=fail; b=Acj0o1x+s5E925bsZ3NCPC8xYyVrcAsNd8ZISvbeuUVQ47VHRCCt7SRqJd5V44I9k4BOXp/D+MV6yAZYDwnPTgPldD0rpmpRTgoHlj18+gbhd9wPjO+uM26tVVuJmrooLBKa4R7Xr3Zh155qiMmc03LORmDMTJYUvHp4IHoWUxM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783718986; c=relaxed/simple;
-	bh=P0f+yr10Z9/d/TkgJ1qkWTU59cU9ebsTUulX3pRro3s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Hag0cDziarSjGWxds4OF/K3abqFURSN+lWFB/9GerOzm30AVpC4kWFnWvhwu+oic2HSJMkItmajKIdwm6fq8eGvAeKq4yk1HRUkNKRnvv/W00zx0xaRzCrplDrfEDjW+hyNm8htvxN4UjH/lqB9qdj+0SUQVztZRrpMzeqGbGB8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=e8mfbtCr; arc=fail smtp.client-ip=40.107.200.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C031372EF1
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 22:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783721563; cv=none; b=HGjd7VAlLNL58Tg6TJOyHxc4KI0EXWs2bfKuEtQsq2fua1GldaGAJuJd6rm2Y0N8WHo0C6HwVQ4CeSaPYWA2kmk5kgf5StUcNY7HhLoLg+jaQZPh7N4uEDgDWvcEPka6NjmHBe4XbcFDPeHAHex3xyxjCenS5dR0S3qEYkoq2fc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783721563; c=relaxed/simple;
+	bh=tmhfjL+7A+jarJnPQhyIwqYjI/s0zpjORzM9eSIVCtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Par274OKxH8TSxwDTjjPmABu5a7AbxN3KNdMQuhi9IrZQLp73MIAx6B33yC3ggcYxDMHuOtDCfz5T/oIttRyMu93k7lW8W0OMV3gAhWEJL/YF7NrJsN2+W2GDz0hmxLpRg4PMDIfid2X6FhbNp6mEwNl/QKE8Kx2ZRpne2nABrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ErcF2Wj3; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="e8mfbtCr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eMosdmZ0nWqwh2fGrJruUCgc+pAvZkF6CxdELZX3f2vXEteRmPTWpcH79FAKez1Nrm6imFTmwdLXXf24bV0BlP8TLJRoc9lp1X4gfwjZg7WIv3+SXgZE6aYU6q0cfiUR3Vbj05560h000WFQ70LnOlznvVmjRicVdZx8sacDO2H5hjKcX77i4NGaVHT5Towob4celQZUFlOfJ2/NZlPdoLhOF4Hxqq+2YDab4h/gkwjiB9OO0EcRnKbDUP8VEFEpQSndA/5P6P1MqMq3E/xlxGdKjh1a2jlxPmWmoS29YcaRRSJfrduKjAOBU8SRFIO51N3sHTKElHR5FmanMZvlWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hizogt5w1MNi30bHhvAO+HweJmsNfgTYNefPH64mvNw=;
- b=KNMJwcAGpO5FgEpTdfAvVvD4NadEhprbJXiTx8NptdGq+kXECA9ZQ6XobpEiX00teojzKGGv9nKdlwkl6TpRSHiC8904PjRZqqwDaXUhbVSxLnItmakKY6Gb6K75wjKFY48lskzfKJAbhtopZTfHPUAsr3fyG8W5osBNn7K3kSAssHCowUXR3hfd2fMF8EkzohgEYZpKwMehrq97lU2/KFCdb3vuQYeZ9o8oCNfGVydJT1NS7Dj2473nsvtXsZEO7eayW71VB4KCMyqD6F0gqassXB0ESQRm94yXwjeSTEqq2RLhzMY0TnUeBDHPS9ShmLbVdbRRfEMxceMK/a22ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Hizogt5w1MNi30bHhvAO+HweJmsNfgTYNefPH64mvNw=;
- b=e8mfbtCr2qkwWlypgGR64RFzEl3vKftjA+eN+ZZ24x5+RQ5lGlUb1eYy1ZrGXcoSuOqbCzxrnSmMLRCKXKKnxKm7fUmhSIxLwHv3vfNTYQMD30OauzvzJp571mXwnStAE/tDydxl2ypYEKB2BFJCELaFM4+ZqQSA7JMhqL5Qtqf4xRGvOn6qshJsK1f65Ds9MpfEq8K8Bpjn8dL8oOmyunBjOOmqMAGxWBK0wDG8Qp2YyJdh8+o97jHNIMaIxHykdHdxyRx4nQCnqBMsx0Fw0QRKlmOG3pOjOwkpZ40ZpEg4zK5f8XTo43U18IID2xv4IRCYxfNiT5EWPKZqeEmV/Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- LV3PR12MB9331.namprd12.prod.outlook.com (2603:10b6:408:219::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.17; Fri, 10 Jul
- 2026 21:29:41 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%4]) with mapi id 15.21.0181.016; Fri, 10 Jul 2026
- 21:29:41 +0000
-Message-ID: <84bc8bd2-e292-4b84-9580-a1b5df4c5bdc@nvidia.com>
-Date: Fri, 10 Jul 2026 14:29:39 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpu: nova-core: add ChannelIdPool
-To: Eliot Courtney <ecourtney@nvidia.com>, Danilo Krummrich
- <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Burak Emir <bqe@google.com>,
- Yury Norov <yury.norov@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Zhi Wang <zhiw@nvidia.com>,
- linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-References: <20260710-chid-maple-v1-1-4ee869055268@nvidia.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20260710-chid-maple-v1-1-4ee869055268@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR05CA0123.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::8) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ErcF2Wj3"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cb59f6ba26so35705ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 15:12:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783721562; x=1784326362; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Vrj/KNeeXRo3F4qSEnUw4GznCEEs9Z+LOPo84ArtpU8=;
+        b=ErcF2Wj3AoCk+mpzarjA4PCkWkn/dwXPVXPbjd9YVO74Vz5we/Qfb41Ab9xr4Qt0JF
+         pCyVc8Bvr0Z4/Txp7JiCCUkswpd+VQg9ZhecIs5cVlVzE+Fl/DBcA8Q0ai06w6TkCLnK
+         Dwc0bzDlhd15+xOP6PzooPAka2vyU1SBjgKWhETfQQCeH6fnQXuXaKjOsnwrLnureJ+2
+         yQbKhaKlgGdUDsNP8cYqBcGnrPTIxjDkUiK/ebQwipnl03XLqYHlKWAjcb0RnMcn9r39
+         lmQSC/l/tdQZvvbemxGMGh6yfST/LayHjsM1+Y4g1KkviHu4E9PgqZViayLU0pyQU1ac
+         Nspg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783721562; x=1784326362;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Vrj/KNeeXRo3F4qSEnUw4GznCEEs9Z+LOPo84ArtpU8=;
+        b=Bsf/SaaJkQ7vF+KGJflrfIyqIKr62tEorc5uIW9QmEtFH009b0B0nqj9hGRcsKNlvp
+         BMih7BvYfU9EODa5z1UE0ZH0ABNQfXoEyycOxxK5+KoFczHK0NfAjwPiJScRitG0d05e
+         wa45pBosBKrMXneSKlCn9yDqwpnRM9jlDjbosHReF4u2sAqPU3qOY+o4vmmiXOlEJNMZ
+         7zzytKDt91V0AYu0DESLCyK2MMROyYuCk9PWEv1Uy1TAXSZl8EzIWYDynSafKnFJGsTi
+         FPX+kUABlvLE2Zq8zGChN1+UroIz9Sl0vOFyi/Xv278sNkOsAcZm7adgB5JbubvhOqOe
+         rC8g==
+X-Forwarded-Encrypted: i=1; AHgh+RpxNg5P6JDuD0Lgcx6NgAcSKwNn9QGG1gIb50Ooxloqd/ygOY9ZEAkXHruUaL7+aGFvOv3FxUPL/my+j3WHOA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQxNRTc5orMOyTkuRpckxjjxsag0pkfY7Fv+0mDFgDCRJThjoE
+	V/oMc2YsaJnc2X8I9kXFYpRUd8yjHzmekC9rKpLrjNet60ERea1nja/4A1i8l1YeiQ==
+X-Gm-Gg: AfdE7cnMor7hmd/0+V2Yc+fQ6UwnF02slKujAU3uSDxUuigGGgSywuxeAhrvnSr1tH2
+	kgty6+c74cSF4xki0Rv1FeEhdqOKRaQdBIKwBsoh5/VcODScpu1MmX8eaeS6XskgLJtCcXLuDNf
+	2ei1B0WyqH8NaqyIwedM+cQy04TK+1Ef5AOAPWkWtHyi5sFMiItdN3hwpAybJcHLK75ZW3iwa5w
+	VoLsKeW6x7iWbRBNPIv0LIJBRxJ+KnPgUUJbhMsRHemdtkBsY6dESojdm1GsffkyIHAb5D66Dz1
+	olN/5JT5pvCUWDK8VbOTlFfxO2QsE9GFIZVrdie3b5ZILHW1QRifZt/k/CWnFTu9ji32A7UtkVs
+	lLeS/4L3ZKTADKms06fWvnyZ6advMvelJufepkrN2UIYryJBWaymX9BJARIz5+QSYnHWffihHeu
+	1vDq1Ck/l68mcbe7afWjmtN0yBFXGEBPji31+zHZl/6EsyqpWZUU9lBAZ43Z7jiaLyl1kAYuNNQ
+	FYX3TrIfVChBZu+AELikdU/4RzTnnWmHnpj
+X-Received: by 2002:a17:903:2301:b0:2ca:ed25:9c2f with SMTP id d9443c01a7336-2ce9f292e51mr1293035ad.16.1783721561213;
+        Fri, 10 Jul 2026 15:12:41 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a5574ca88sm3281168a91.7.2026.07.10.15.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 15:12:40 -0700 (PDT)
+Date: Fri, 10 Jul 2026 22:12:35 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: jahnavimn@google.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] rust_binder: Add dynamic debug logging mask
+Message-ID: <alFuU1Uek6t9v_tZ@google.com>
+References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
+ <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com>
+ <alFMOYlB24vuOxP2@google.com>
+ <DJV6AD2E0WK3.BFCKB6AM6A79@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|LV3PR12MB9331:EE_
-X-MS-Office365-Filtering-Correlation-Id: efafc217-91f8-4d25-d708-08dedeca5a41
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|921020|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	33zdYetUtXNW54HUuHFaMPpiqKXb6QrOgmvp8+6zs1DEZk+Nh82mJxrulnNitVoQa5HSWMy2Km5TVXzrNz/Zt2sdNz4U+UVSjbGJ8qDIGga1LfBCE7yxlMBP+3JeGg32Qo38N3o6gzALaKyz84fF0JOWCKZ2nRbCMCMvHIf4U2V0o3UfqHE+aHUbvsXeNT9CUVGcJiOy+rCt5WPriCTzCMlZ4WXlai50Bz+dZea/GxJfYP7yTrMKrO7W2buuVj3j+lCdiYaI4oWWmDFLTuqtbABHL1ONozvvyWT8mKebwnMo08BuwkfOXIuUL/2A05qL2Qod7Xm7B9vwhnNJ4PaVSzn6YNxrTxjHurwEWkRJylxr8ZFzIalIs4rtFu0qIU57GSL7A3CWY0ZE8C+UFiN+qE2XehX4VfioJW7KlfHap8fJSYRMZ8c8q0AKZB/oXH1D1ZWBw8wqkYNRQXxLw6XkqL/awb3NsZAd57Nc8vyrb9Xr9mY/ZqhQ0kKc4HbREP5xDDfjbWtzF6VW6pMag9Afsg2/KD2d6u579PUwhMY7EosKSytf++h++Qap9/RT8OegzVjcs2ZOdI7dZAaqaLGFKAiI+4+cmTzMVbSWiuQG6wP+JzXfHl9CWo8GenVWi+tagnw8fx+kpYSeej+BDf2cQoMjcuUsBGKOJjX5TZ9ElQVOM2esXUUTXXuY+Hi+bG8itZR/GKpScOkk/WgXAxF5qA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(921020)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RFE2RnVsWVZ1UkkvYTdUTThPMEpaQUtwektsRkRtSC9ZaGMrNHJ5anNSR1V3?=
- =?utf-8?B?MWpFZmNBRjFNWGdGd3hUY2VETlIvcGllREhLeDVzUUNpRHF5aTE5aEFTSjl5?=
- =?utf-8?B?NDR5UVNUMHRxSmVOUWZtb1ptYk1Ud0lxQk1jOFdDT2VwTVVmRGRkYVFORGFy?=
- =?utf-8?B?ZkxISW1GNk9Kb3RRUEVDTjNLR3VhMm9UbjlhZTJpSDBPVk5vWm9EOTJPSVlG?=
- =?utf-8?B?a3pHRDhodUVSUjZzT2dlVWdUYWUxTE9HWHV6alE4aHFHRlM4SzBUU2pQV3JS?=
- =?utf-8?B?dEMvYzl4cXdrcitYVDVHb2lVVURIc2o3VVJnaDhwYXVsSTdaN1pZR0h3aG1z?=
- =?utf-8?B?MGF1dHM0SElSL2x3Tyswc21CUnMya0F1WEI0Zm5OSmFuWGpjRlhJMitHN1Az?=
- =?utf-8?B?eUcrQWlGdlhIRWlJZ0VpUk9CTklOTTNzZGcvaWtRRFRMTVVDU3ZtazYwV1F6?=
- =?utf-8?B?RXZhQVQzd0F5YXA1V1RUSktNOElkT0N0bThBWTZGRFBYTElkbksvNVZGZDd2?=
- =?utf-8?B?U0JQTEl4OUlBMyt4NlQ2RWVSMThtR0VhME5reHl2SFNmZGJiVzNYc1QwbU80?=
- =?utf-8?B?TEtuYmhEMWFnaW1sVnlJbnI1Rzd6MEZtNTRTUnY0U016dHRyaTRvdGxFQXVO?=
- =?utf-8?B?T2tIZWVPQjY2Y0dvb1BncTNqV2ZNTVMvY2dVblhCQ05Pa2lyYzJBVTJldktS?=
- =?utf-8?B?bVZON0VBT0VXRFQ3WGhrMXUzVURTVEN3ZE5ydDZNOVNvckRQQW1tb2JxVHdn?=
- =?utf-8?B?WEptRmlUWWdDQk96eDNUN3VWMDNvZ2dwbnBTK1orYjdFMmhKRWkwWnBlc1Qv?=
- =?utf-8?B?OHVrdzJESTZOK2ZNTkYwcnVZeFhOODZRYVJpRUt1Mm5sM3FkcnpZMlBjczEr?=
- =?utf-8?B?eTZEREZDRWJZRy9CeVdCZVlTUjZVSTRSWVY3R2hqTHRnNDMzQjZCM1dPOEh4?=
- =?utf-8?B?WlNWbFdGWVladlBqL1FvMkdQQ2FaaUJTVGx5b2M3TTYyUWxDU1lQUVk3RVNr?=
- =?utf-8?B?WlMvUDJlMzdrWW44Ti9jblQyZnJsVFpQYWJ6SXlaY1JVSnpIRHRJNlE4cGtF?=
- =?utf-8?B?NGt5bVVpUUlycXJmRWdkWTNMS3BwdlFWODQ2c0JSakZ2TE9MUENPYkNoQUdM?=
- =?utf-8?B?dWFKRUltSmdCcGM3WFEvR3RNdTkvUVdDdFFVQmZEbit2elZFYTVFekNkTDAw?=
- =?utf-8?B?WHR2bzdPV09GTm4yZ3VBZ1E4Q1YwRVU0WmJndkhxTHhqUWRIQ0JoNlByTDYr?=
- =?utf-8?B?K2hLTmd3QWtHNWZ0RmM3N3FWRXlWRWhrWkc1QlE1Z3pXbmpMQS9ZUndqMDN0?=
- =?utf-8?B?b3kzOE1MT01QbTRUZXdDQWtyZUJKU1ZtQlBRTHQ5dzArSmdmZ3ZoNlF0OEJk?=
- =?utf-8?B?QzFTeXVrYzU4VVFWaEJkZG5pNkllVUt4UXVDcC8wTTBjM0tNeC96SEN2emV4?=
- =?utf-8?B?SHZmdUxGK1RJdjE0VkczUGdwem9DVUkvbDROT0lMZlltSFBjZnFFRmVqZE83?=
- =?utf-8?B?N0NZbXlvbmE2Mi9LNjk5WTFZNEtLNWhycGJVdW1oRUdFM3RlVllWbXQwV05j?=
- =?utf-8?B?VFpVNHBnS3NoejRsTkNjdmQ4VGNYbEFJOWJETytoNmE5M3F0dUl3YjNEOXhM?=
- =?utf-8?B?aHkzV0N1NlZRVm5SdW1KWWtRQW0ybVllL0FPM0VUZjVBR1RFZ1M5UEVGbVZ1?=
- =?utf-8?B?NlgyRDRvdzdEVW00d29jL09ZMmxrUDcxajNpMmcwNUtDMXRMcFd0eStDeVRp?=
- =?utf-8?B?WGVSR3J3b3JOUWxwV040QzZmODhXZGlmcFJvb0pqUnJXVkd5S3NYMW8zK0tS?=
- =?utf-8?B?SnJibTU1VmJ2QVpNL1BveDFJYWJteXB4MkdLT05Sek11MFluUTgyV2pMV28x?=
- =?utf-8?B?dWNRWWphZEJhOElxZ25uMForRE1wNGRyc0M3RDlQRyt6VmJJL054Vjh5M3Nk?=
- =?utf-8?B?T21HNnE3MG1LTlFyQ1U4TnVadXkrV21LMUlmTXhzNVl3REVzRlRIdFFOcCsr?=
- =?utf-8?B?MnNoSGx0YzBiQ3hUSkFLd1ZBYng5VUNCSTVkUjcvaFRQeUZldk01aCtreUdu?=
- =?utf-8?B?VGRxNDVTMWg4L3pWcGw3WWxKZnBqUFJJRGN5MDc4cTVMeDgrZjdoN0kzRzd0?=
- =?utf-8?B?ZFA2SDVjRVU5UEUxbmN0eEZ4Zm1iNUNtaHZJR242R3Z3eDNBRUp0N2tNa2Jo?=
- =?utf-8?B?bjZCR2F1NTRVUTYyMGhqYW1JUWNvVmxaZTdmTmhlNm02WFhYc0ZYVkFldUNo?=
- =?utf-8?B?ZDBmakRDanRyVGhtTk51KzF3Uk9RUzA3SjBVWDdVZENlVzdERG1QYnFCcnU1?=
- =?utf-8?B?c0x5K0J3VDFPNUExMXlwUm1FSDN2c1ZRbGMxcjNrKzAzVllPWVRNUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: efafc217-91f8-4d25-d708-08dedeca5a41
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 21:29:41.3867
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 688y96DUcJIZrrHQraPYX+hoQOrfXm1WKaP4IwhejLI+ICCi3BUi4kh8PHU4RQyAdu2g4IyWb3H3waWOX5+fxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9331
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DJV6AD2E0WK3.BFCKB6AM6A79@garyguo.net>
 
-On 7/10/26 6:42 AM, Eliot Courtney wrote:
-...
-> +use kernel::{
-> +    maple_tree::MapleTreeAlloc,
+On Fri, Jul 10, 2026 at 09:27:37PM +0100, Gary Guo wrote:
+> On Fri Jul 10, 2026 at 8:47 PM BST, Carlos Llamas wrote:
+> > On Fri, Jul 10, 2026 at 02:32:52PM +0000, Jahnavi MN via B4 Relay wrote:
+> >> From: Jahnavi MN <jahnavimn@google.com>
+> >> 
+> >> Implement a dynamic debug logging mask (`debug_mask`) for the
+> >> `rust_binder` module to allow dynamic runtime configuration of log
+> >> levels. This enables parity with the legacy C driver's debug mask.
+> >> 
+> >> Since the Rust `module!` macro in the current kernel build does not yet
+> >> support declaring module parameters directly in Rust, we define the
+> >> `debug_mask` variable in a C companion file to expose it to the kernel
+> >> runtime and import it using FFI with volatile reads.
+> >> 
+> >> To verify the setup, instrument process lifecycle events (open, flush,
+> >> and release) in `process.rs` under the new `BINDER_DEBUG_OPEN_CLOSE`
+> >> logging mask. These entry-point events are chosen for initial validation
+> >> because they represent the start of the Binder lifecycle and occur
+> >> at low frequency, allowing simple runtime verification of the dynamic
+> >> toggle without log noise.
+> >> 
+> >> Signed-off-by: Jahnavi MN <jahnavimn@google.com>
+> >> ---
+> >>  drivers/android/binder/debug.rs            | 80 ++++++++++++++++++++++++++++++
+> >>  drivers/android/binder/process.rs          |  7 ++-
+> >>  drivers/android/binder/rust_binder_main.rs |  2 +
+> >>  drivers/android/binder/rust_binderfs.c     |  3 ++
+> >>  rust/kernel/task.rs                        |  7 +++
+> >>  5 files changed, 98 insertions(+), 1 deletion(-)
+> >> 
+> >> diff --git a/drivers/android/binder/debug.rs b/drivers/android/binder/debug.rs
+> >> new file mode 100644
+> >> index 000000000000..da48bce3df54
+> >> --- /dev/null
+> >> +++ b/drivers/android/binder/debug.rs
+> >> @@ -0,0 +1,80 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +// Copyright (C) 2026 Google LLC.
+> >> +
+> >> +//! Binder debugging helpers.
+> >> +
+> >> +#![allow(dead_code)]
+> >> +
+> >> +kernel::impl_flags!(
+> >> +    /// Represents multiple debug mask flags.
+> >> +    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+> >> +    pub struct DebugMasks(u32);
+> >
+> > Where is this being used? I can't find it on subsequent patches.
+> > Maybe leftover from previous implementation?
+> 
+> impl_flags macro requires a type for a single flag and a type for flag masks.
 
-Hi Eliot, Alice, all,
+Oh I see. I was expecting the bitops to be peformed on this type
+somewhere. I guess the reason it wasn't is because of the issue with
+module parameters and their C macros.
 
-Eliot already laid out the maple costs (the alloc_range+erase loop
-replicating find_next_zero_area, the extra mutex, allocation on
-alloc and free), so I won't rehash them. What I can add is why the
-alignment is a hard requirement, since that is what seems to make
-the decision clearer to me at least.
+> 
+> >
+> >> +
+> >> +    /// Represents a single debug mask category.
+> >> +    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> >> +    pub enum DebugMask {
+> >> +        UserError = 1 << 0,
+> >> +        FailedTransaction = 1 << 1,
+> >> +        DeadTransaction = 1 << 2,
+> >> +        OpenClose = 1 << 3,
+> >> +        DeadBinder = 1 << 4,
+> >> +        DeathNotification = 1 << 5,
+> >> +        ReadWrite = 1 << 6,
+> >> +        UserRefs = 1 << 7,
+> >> +        Threads = 1 << 8,
+> >> +        Transaction = 1 << 9,
+> >> +        TransactionComplete = 1 << 10,
+> >> +        FreeBuffer = 1 << 11,
+> >> +        InternalRefs = 1 << 12,
+> >> +        PriorityCap = 1 << 13,
+> >> +        Spinlocks = 1 << 14,
+> >> +    }
+> >> +);
+> >> diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
+> >> index df47aba05133..995e6131bb77 100644
+> >> --- a/drivers/android/binder/rust_binder_main.rs
+> >> +++ b/drivers/android/binder/rust_binder_main.rs
+> >> @@ -31,6 +31,8 @@
+> >>  mod context;
+> >>  mod deferred_close;
+> >>  mod defs;
+> >> +#[macro_use]
+> >> +mod debug;
+> >>  mod error;
+> >>  mod netlink;
+> >>  mod node;
+> >> diff --git a/drivers/android/binder/rust_binderfs.c b/drivers/android/binder/rust_binderfs.c
+> >> index ade1c4d92499..fa8b38465550 100644
+> >> --- a/drivers/android/binder/rust_binderfs.c
+> >> +++ b/drivers/android/binder/rust_binderfs.c
+> >> @@ -51,6 +51,9 @@ DEFINE_SHOW_ATTRIBUTE(rust_binder_proc);
+> >>  char *rust_binder_devices_param = CONFIG_ANDROID_BINDER_DEVICES;
+> >>  module_param_named(rust_devices, rust_binder_devices_param, charp, 0444);
+> >>  
+> >> +u32 rust_binder_debug_mask = 7;
+> >
+> > hmm, I'm not sure about this magic number. Do you think we can
+> > initialize on the rust end at init()? Or at least a comment about what
+> > flags we are setting as default here?
+> 
+> It doesn't even need that, just a
+> 
+> static rust_binder_debug_mask: Atomic<u32> = Atomic::new((FLAG_A as u32) | (FLAG_B as u32) | ...);
+> 
+> and a `extern u32` on C side should do.
 
-Pre-Blackwell, USERD sits in BAR1 at page granularity, 8 channels to a
-4K page (chid = page*8 + slot). Giving a VM its own channels means
-giving it whole USERD pages, so a VM's chid range has to be 8-aligned
-and a multiple of 8. Blackwell moves submit to a per-function doorbell
-keyed by (runlist, chid), and the constraint goes away. So it's a
-constraint we're stuck with pre-Blackwell, not one we can design away.
-
-Given that, the bitmap version is hard to argue with. The aligned
-allocation is the one call the API is built around, roughly:
-
-    let mut ids = self.inner.lock();
-    let area = ids.find_unused_area(0, count, align_mask)
-                  .ok_or(ENOSPC)?;
-    // area.acquire() reserves and returns the range, drop clears it
-
-One lock, no retry, and release is a bitmap_clear that can't fail. For
-2048 IDs the backing store is a 256-byte array. find_next_zero_area()
-is also the existing idiom for this (IOMMU, DMA, IRQ), so it answers
-Greg's reuse-what-exists point as well.
-
-I'd go with the bitmap id_pool.
-
-thanks,
--- 
-John Hubbard
+ha sure, reversing the declaration and extern would also work.
