@@ -1,118 +1,129 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B921F09A8
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 14:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783694529; cv=pass; b=rY7Pbc6QKfbchJY/Es0RuSPNj8Yc4cItJrMzyADHZpnE37mBZ+gy9xIfOs4cKF1qucHYQespsw1TK+pD37HS8kHIohR4plMRirHBO3sRoIVEOsSvNGbI+g8omskgY19Jk0RhUB2dNE0y/fbHglxLJ5RzhZcdinaBZsrcQSPUAbQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783694529; c=relaxed/simple;
-	bh=fZnRJYjliLTSIR68GfBioenoxA13Fxczmz9EFPFDm10=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s9YAtN0WT57COZ+0f8zomq+sQVEbwFU9MKnrypI1i9N7Rd0oaU9RBXSRyVriYsWIw0E8c+ScY6eblO0DD73j8s1jrVt1U5sZW50q+ZNThjfF+J0Igz8oSH+e9VdnkmD/ngiLytJwsk21Lynmk2miS2hr2AT2tNOFEHFapT2Vm3M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hnMKl6aE; arc=pass smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6B734CDD;
+	Fri, 10 Jul 2026 14:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783695582; cv=none; b=N7DedjjKWj8ORgywkScZA2TTUI341/KzZkoEoaA21HHgASXEVp3yw5eRLtpJPc2AJJYa3K6WTdx7AzugnvZMhKgXQFe368RwH1YvXwhmwC6vrBi4R3pRu2QHBSDG8mGoqbhn+bCGRfkLePsBSYu3EpuDZUyEUuj5YyXf2lgu+vc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783695582; c=relaxed/simple;
+	bh=EIr5KNz33BOBpDOOIlsHY60SPjqnO3Gwr0biOUoFUXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IyUkJVizjO57BClGGgFWYYxpZC/sdGDzivTkPv13h3Lvtg/Z6Cn+vCP4VrRltHZScw6zYP8YiHB879Uj6uBeqBaPVMVx8BKPlLzzVVQzKfEUWyiNRXHut0L+IAm6zjyQP32a0dPYP53nAneMeFIVsvkSBfByAGvr7fGApn8Bcdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNA3uOil; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hnMKl6aE"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38cfcb507a3so137289a91.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 07:42:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783694528; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lBt1eioTbCkBaHHWrbyBYTggBjgjHPHr6u0jLf7LxAmafAKz0vToF7gDLoTwInC8+e
-         Qjw6S2HpD19WAB5Di/ZbxZ1OFwTeo5TxXlyaBQMusE8aqmICYFEEuwpkZjUvBa+Jl4DT
-         M5VQLCH7DBoDyroYNt19qToqP/DWIXJnCMpL1zOe9O+PZzvx/q2aGVido3McGnoRTVrT
-         sEAFrY21Pavp8LnWt96iT4q96D+NpbI4Op9mxsIFkc19BynIcueSmkt2Gr+lf6RtJhXg
-         MDt4N6n3MTsgGwuknQKOZ7da+CwE5q43os++ZoFn/7vfkEDVJ6003qcHNT7+pgyP/lwP
-         SeTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fZnRJYjliLTSIR68GfBioenoxA13Fxczmz9EFPFDm10=;
-        fh=yvsMSd6yAImi/VdpEs6sOdTt8nzK94OctmiE26SWTC0=;
-        b=O+W27RNs0cyc798enF35xvQwN2a1Mu9pzgaL0xYoLCffe8iv31D0/9YBaZ82dOU3/E
-         PHKoUYe5w9I2R+0c+R0VNpYj08bQ1VgrmgL5lHP3+5zIPT+7eFD8yzrbcAge1fFzoAlL
-         +RFh2ygOVFrEOePLZr6gd3iDHPPMjE2o6aqQt/44espLphsdZdCUWU25OMqmICuaUxib
-         ls6LdNGzZ9W2sKgLHzt3Ka0eZjktV3PToHFKwOSrZbDRuso+NrBn6tDMTAkHy/kNRKbE
-         JfpnTVC1QBT5/qVQFtXvZGSc8J9zGOwlh5+i0kPpGPfCM6uDuAxwIMHa/x6zlTLQGHRF
-         M4RA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783694528; x=1784299328; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fZnRJYjliLTSIR68GfBioenoxA13Fxczmz9EFPFDm10=;
-        b=hnMKl6aEpTf/fCX+Eg+VEcD2EZfXBOh3maQET7xNf97/q5wz95sC1ujgcxGYpbFsG4
-         +r27gvAkD0ewsfXtgEtcDPura/pzyqCzPGXuJMOokTOk2ZUbVoKZHdkF+nll/JqaWtaI
-         oFgFtmId3dmTgce7XotjaoYz1kEXVR6PKCIr4Ap9o0vIWitvW/S7dVIjkJYgc0dcK7iq
-         qR8pKngS4UmH1zxynAGVP8s0If/PPFYzU63fXD5ThcenJbkm5NGUCapzYa/uoTrBTkJd
-         Mvd2N+QSr7QZFGMgfF+ImLc/SnecUZIt78FvrZAKXdEQaPyvpE7gvEby3tE+qmcRMkor
-         eOew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783694528; x=1784299328;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fZnRJYjliLTSIR68GfBioenoxA13Fxczmz9EFPFDm10=;
-        b=bZEh6Ou92K91lvJdNynD2mcZ3JKCxNeBiYSwXMKfKUdxJZbvwL/4wqJi+xEhJkjPpL
-         AIV9zzUmMjP5fk+iFCELaTs8x1rrPJML+nKMc9+97U5q2UzE5JLxPktMBoUXyJl5nt+A
-         y7XjWnM0/70gdson626/632yNQM3miMYmR27Tt9/siHU743cPjwHOTXb7xMG4bdTaE+N
-         Wp21IsBrLBmc1o8bFHzKc6wS8ZtacZDl41BL/q6IRab/V7g/UaBsK2lG9PSpwdGPdbYy
-         fshRDxYdEDULnpb5pBQuF4/UG4W4UCoJZwZTKINn+OFS8LsfUYedxFS8vhWPkFokPiBR
-         ickA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro3SBLYVaaoQRMlVZewWDOoD6sWTxO/q5Q6fU9ENAF4jLZ8X6l8pRmCFG8EjZXTQK5zG16d3+CqMcbCm21MoQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxg5WCsl0kQmJ9srSWN/DU3G6RV3gPs+3evCPY/EXl3lnKcSD0a
-	uSDXrJA0p+WwS9ojjARdJq0ZJVoz1ceBCPOnn+7H5649yDCXcKQ3tUfhDrgwEpD0JN2+zZk1fH9
-	Bn79WQ5AQ7m1HWwAaUG9ZAErV2Kcvj0Y=
-X-Gm-Gg: AfdE7ckNgXqNvycfBSFtF2HodySPztb/r66zVEEJpujxG8v1yt8EFiLXJ7XYcSY0pqj
-	6Vdq1xmSiKWAEfOLv0W8pP1pGisy0FXNT/XXfTrDilGKIk47VpS5ONcscbnS3Qb7pAgcvhBXqbm
-	St0RybtaytVgRK55EZ9tz0QqmLkpMj9xuFwx6jO6Hr18wp1gQQS/kC5Stlz1fYUs3HWIFeSn6Cs
-	5jqOVmjUvgHG/JYuMel65kz0/n7niVbhnvK80mkSwKtoBEaB8n+LbbsMxcUzuTNSMyBHwkDFhvT
-	sfclL87pdp0Q9MH1H84eKwQFMoSd+931TflySvyUkwHp5fpiAWKt80quG5N9/oDtKUG/f5mBAYh
-	dnIzFe328H89/BmGPPs2dDFc=
-X-Received: by 2002:a17:90b:3881:b0:37d:f70f:fbf8 with SMTP id
- 98e67ed59e1d1-38a1c1b0a81mr6904214a91.0.1783694527589; Fri, 10 Jul 2026
- 07:42:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNA3uOil"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA8BF1F000E9;
+	Fri, 10 Jul 2026 14:59:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1783695581;
+	bh=k3R004eU3w4K0NsJlMEUiQB/E/UHlcuFZx3rZRDDzDE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KNA3uOilBcLKYq/sAshfROskVxqWX+m9dkjJt9yhCDImLo/RK3gjRytMHNgFQtW+1
+	 KcpEi5/pvKppVAeZqBWsTcDEC8GV5aPgwVDgEoPay9Gv+sbbzeZXBnh2UF/4E4hNXf
+	 pWwZi4cXVSQVdVj+28VY4kvkfCSOgPRpEZQueDSk=
+Date: Fri, 10 Jul 2026 16:59:37 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: jahnavimn@google.com
+Cc: Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] rust_binder: Add dynamic debug logging mask
+Message-ID: <2026071054-hazing-antirust-8e40@gregkh>
+References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
+ <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260601-modules-value-ref-v2-1-12ebbf0510c9@kernel.org>
- <52feb9b1-2073-4fcf-b2d1-a7f42f1e72a5@suse.com> <CANiq72m3w7L5CmAsFvOpSh_jNk4jL8+A4vz8GEp+E8FY=TJcRA@mail.gmail.com>
- <30e500ce-e9e6-43cc-bbdf-ded7c0ae56cd@suse.com> <alEBInX9gD1M5NAr@google.com>
-In-Reply-To: <alEBInX9gD1M5NAr@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 10 Jul 2026 16:41:55 +0200
-X-Gm-Features: AUfX_mwgK6QohPOXWRFfZuE1sgrPdYMmuLLdDx_yM4D0tdqeJa0YzC1RtoqfzLA
-Message-ID: <CANiq72=J=5KGq_+nurjBk7nGPeP5iB6sTmZFBdRd_QbPSMZm7w@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: module_param: return value by copy from `value`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Petr Pavlu <petr.pavlu@suse.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-modules@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com>
 
-On Fri, Jul 10, 2026 at 4:26=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> I understand this is probably due to a new function in Rust stdlib that
-> is no_return, so probably not caused by this patch even if this is
-> triggering it.
+On Fri, Jul 10, 2026 at 02:32:52PM +0000, Jahnavi MN via B4 Relay wrote:
+> From: Jahnavi MN <jahnavimn@google.com>
+> 
+> Implement a dynamic debug logging mask (`debug_mask`) for the
+> `rust_binder` module to allow dynamic runtime configuration of log
+> levels. This enables parity with the legacy C driver's debug mask.
+> 
+> Since the Rust `module!` macro in the current kernel build does not yet
+> support declaring module parameters directly in Rust, we define the
+> `debug_mask` variable in a C companion file to expose it to the kernel
+> runtime and import it using FFI with volatile reads.
+> 
+> To verify the setup, instrument process lifecycle events (open, flush,
+> and release) in `process.rs` under the new `BINDER_DEBUG_OPEN_CLOSE`
+> logging mask. These entry-point events are chosen for initial validation
+> because they represent the start of the Binder lifecycle and occur
+> at low frequency, allowing simple runtime verification of the dynamic
+> toggle without log noise.
+> 
+> Signed-off-by: Jahnavi MN <jahnavimn@google.com>
+> ---
+>  drivers/android/binder/debug.rs            | 80 ++++++++++++++++++++++++++++++
+>  drivers/android/binder/process.rs          |  7 ++-
+>  drivers/android/binder/rust_binder_main.rs |  2 +
+>  drivers/android/binder/rust_binderfs.c     |  3 ++
+>  rust/kernel/task.rs                        |  7 +++
+>  5 files changed, 98 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/android/binder/debug.rs b/drivers/android/binder/debug.rs
+> new file mode 100644
+> index 000000000000..da48bce3df54
+> --- /dev/null
+> +++ b/drivers/android/binder/debug.rs
+> @@ -0,0 +1,80 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (C) 2026 Google LLC.
+> +
+> +//! Binder debugging helpers.
+> +
+> +#![allow(dead_code)]
+> +
+> +kernel::impl_flags!(
+> +    /// Represents multiple debug mask flags.
+> +    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+> +    pub struct DebugMasks(u32);
+> +
+> +    /// Represents a single debug mask category.
+> +    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +    pub enum DebugMask {
+> +        UserError = 1 << 0,
+> +        FailedTransaction = 1 << 1,
+> +        DeadTransaction = 1 << 2,
+> +        OpenClose = 1 << 3,
+> +        DeadBinder = 1 << 4,
+> +        DeathNotification = 1 << 5,
+> +        ReadWrite = 1 << 6,
+> +        UserRefs = 1 << 7,
+> +        Threads = 1 << 8,
+> +        Transaction = 1 << 9,
+> +        TransactionComplete = 1 << 10,
+> +        FreeBuffer = 1 << 11,
+> +        InternalRefs = 1 << 12,
+> +        PriorityCap = 1 << 13,
+> +        Spinlocks = 1 << 14,
 
-I can take a look and perhaps push a patch via `rust-fixes`, which
-would make it fixed by the time this one lands in the merge window.
+Not an objection, but don't we have the equivalent of the BIT() macro in
+rust?  I think that's what this should be using if we do...
 
-Cheers,
-Miguel
+thanks,
+
+greg k-h
