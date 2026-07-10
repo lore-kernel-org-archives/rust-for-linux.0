@@ -1,276 +1,121 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021093.outbound.protection.outlook.com [52.101.100.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9B936A365;
-	Fri, 10 Jul 2026 16:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3483FB7C7
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 17:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783702315; cv=fail; b=bgs0z7S2VcX37fxGO3zWH4BSLTGp6J1/8vauUIVgvaKHuzVXORBelODc8B0XAYwdxEaf7+9b+kQAPgT47NrpUiaXW1Mk7gmoB+8JEmecdy3Ii2oSCUtGenuB7YrHclwvybAdlGZ9qNB/ye7UH1n0TNQ76jCWvRWcsU6V1WcwgdY=
+	t=1783702815; cv=pass; b=djDfwQwh9yezRWKG37Xw54E3wORGJe9IDDnwq+7BbAnHzaWYGm5SZifnsympDFS/1n6l6qiOsOTWEYnbhwSETgtmrntrhSb8MqerAC6JTLBINju+ZlRj3uJsqN4ezLqt4nAymBygEfW80E0tQm6XJ2oTNtIJBTo+1OAY8UUSS1A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783702315; c=relaxed/simple;
-	bh=3FdnNKzGHU0DidaWO0OveU95fQB80p/iA2ch7m1N+2g=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=tHT4kcK5mS899Yw9mH7cc6pEi3jIBy+wJKBjvgyvpKF5ZiUJGnt4sFtZSO4ydaU9B1b+gad5FdVYiyD11WoO4BqickmLW4a1itVhVlfkFqr6ajbH9Tku+Gr6KaDHmhSiz1TdetkOPu4TO3+bUaVb3qLwJcCqIAXC8m4D8zW5OhU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=GjPVDA2x; arc=fail smtp.client-ip=52.101.100.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1783702815; c=relaxed/simple;
+	bh=jYDyQC5noxejHXMcaXIqnvEa/ZDQ8QvkOkZRRR3SPwE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UTHSdoTvo7M3TXijzk2Qa+l3IZs5bHSLpR/9bxJ9h+as6qA7pEZ8kbuG2GwOYi+699juylr7g6JDLQgkcDiYPAMevU9dYgV+lEdFsdxau76aG/pjjZg+6FBXlbBmO2Dw4UxWHzHJJrcTXBtcoqDUDvxyfZ7yRCtmCUT17+wsCtg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kug4WfUC; arc=pass smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="GjPVDA2x"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CfORZG9cTPW+Mde3241BUchvzKnRJHdM4LO3CpZqhDWzTgDBuESbX/Bfet2AfLqpCrvQGQtw+EIF8P9lpn0xnd7MOHKdNxQWdERHNmAIba22rVCPk3UHxNBFZvNEQz8khLKJnWqxSqGLAwjPSwr1K2yDO6nE0GX23KZEw3PyAiyRbx8VLUHXLRnf1uoa58aWTL2FBdlBfFJhZkULDSXC7JjCKzTyO9H5c+q04q68UCcco7jDiJ4IaOoy8vtcG3qgT1Wz24KxE1GknV+4AtJn/CTZvBHeeD6CLw7O+xZGCTgaUv3+OqR7ZSOE4b8TOOPgEm/ypOJK0S4vXoDy+krAAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N/H2wFGTXdTAfsqiBANbBfoJn3zwyOr81wzaFsJNA+k=;
- b=F9oHyPMVpXnTgUp3F4YKFbY6Ph9isTjAv8+aKIq7ihiU7roVZE97YqS+KL8mIwZHk21IVvLPcMl92GgiZqmLwS8yRac/IchPupWaAhKLBJThCGFQbaYS3De8rAIS7/x6Lu8xu3M9CeRzEBkZFg9zgyhFxQs4//ghVCVAGPGDSHMS+gPknBxrZoMi8EoambIoor/85CAn0585WDa4OiAJCF6SBgUT43PONd1VlY3hSV5lCfcBqKaDMEs7jkuKqBXLIe05HoIkCPgENZYc8p55g0zMdKxjo1R4IwStH4H8UuUYCdG9qnFxJxd3YGPbNr+f+AY3qZFf3DoBR7bLJCJcCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N/H2wFGTXdTAfsqiBANbBfoJn3zwyOr81wzaFsJNA+k=;
- b=GjPVDA2xBsgyOcAzEHdln90D8frs/5Ibq9SCJG59JDhRshVTS5dfA+NYep6BduGxv2sXyA/re9CjNIL3p/Mbq8Uy0fnNkAWACnY3AV9hhWwEMFhckDAYLCZgelmBPrLXB0Zld1rJGy9rNDl9vUWyVYFlY1RN0bnD0N/lDSL/pQc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CW1P265MB7733.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d9::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.18; Fri, 10 Jul
- 2026 16:51:50 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0181.016; Fri, 10 Jul 2026
- 16:51:50 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 Jul 2026 17:51:49 +0100
-Message-Id: <DJV1P4UT5VNI.28KAUPWFW6W7F@garyguo.net>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 1/7] rust_binder: Add dynamic debug logging mask
-From: "Gary Guo" <gary@garyguo.net>
-To: <jahnavimn@google.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=
- <arve@android.com>, "Todd Kjos" <tkjos@android.com>, "Christian Brauner"
- <brauner@kernel.org>, "Carlos Llamas" <cmllamas@google.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: aerc 0.21.0
-References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
- <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com>
-In-Reply-To: <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com>
-X-ClientProxiedBy: LO4P123CA0654.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:296::12) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kug4WfUC"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c988e16bb3so3380255ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 10:00:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783702814; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o+F1HtcDhpWmqEAGZg0YmfodDMPkmK6kYMA9Ui4syQmARwPSVQ5sPBwOylIxxjKdrj
+         ShPkNrj15Vw76Us1pNtmB2+/odT83qJGZJ/AbYpORGpzr/wxk8sCnbEi9Ndw2YmUrSRw
+         OpJZIi2htaP+c9j+NBxsZrmm1y16h1BXEUxoYKeZeUvjqrA8cH+WIvaricChri2fRm+0
+         7FalTvV4W7jlFXRBBqEiKIHbxpSSnYLtS/dOKcdWRFglUKSjoXEtrivU8OB4ev2g+1i5
+         VAO0z41jpHEjrUY06Uvmuq9WDEOOzEcNOdaij8crgGLAPGYEpdjf/afa0z8JkXZxka+g
+         PU4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jYDyQC5noxejHXMcaXIqnvEa/ZDQ8QvkOkZRRR3SPwE=;
+        fh=c5m/n+yRhazBJzEmS8s4KwoztPbIIBU+G1LESA2AO84=;
+        b=TD2WZXwUZLNGTjK1CAunHIGOCBIln25CtRMHMxY+TOPfn6uNYD3wB+WzXfeyCLeI4b
+         YA/P7988ul4/cLIVAjfw4sAUFj6nR+RjkFc/+sQtRqNdcu6MSY32h8jCVahqTl5V2oC1
+         P3jDDQkaGSA5TmfZX2VNfRsd6JTv2mYIxFI9vaHwzS6rnJ811cF5g71FOqCcrlVeMXqS
+         ZJv+FsJ1er/uLjdo5d/h4j90vbyCNWCywIN/IoKicx+br8vGQalx7BI2L6WX1+yP26Us
+         2TvuB16aoavVpsVTEkokkOzw1VRVoYuvquzjvYLuxyyuVXAVqSYRHX5058RDV1tETPoN
+         B+Gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783702814; x=1784307614; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jYDyQC5noxejHXMcaXIqnvEa/ZDQ8QvkOkZRRR3SPwE=;
+        b=Kug4WfUC8S9j1KqP70ew0x97rg3wc6lN1bGxVT+0VAPYHXTzU1OAPEKp6TUMB3xjWR
+         yIvccfaucyfE9X7dbAelNXHEnMioXdtfRx6NL91Q8eaeTITq6zlwMyufS7weyapUm1E6
+         EMAXcq0P4ps0xyrxE58CYCiBqEIjPD82JOpBSc1BMNQ+5HR012IfGy8YPPvVdPX6/ixr
+         OaWq1jp0yA0+M9lIvBDegMtjjyFSqPYA55vTqsulq0tTk1N+DSThlQzsfBqRJqeNgFez
+         KOrmgEmcaXxvUZOMhNcH1C6wcqDyOuXFmhqo29sGLn8GnEwJ6sqhqYRCoBTDcBOVfE7R
+         jgLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783702814; x=1784307614;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jYDyQC5noxejHXMcaXIqnvEa/ZDQ8QvkOkZRRR3SPwE=;
+        b=JnqBDzXe9oHVEiQt+KzDDh3wYTo3fFdZ05IcItz9k+ZeYGXIG3NzzxFE2N7kOOd4Qf
+         J9kWIWNBS6LVNWQeJ8KGSTbG9blf8NJExSoVJenZjQrfKFAZh0/c4caMc2FAIWoNVnbl
+         74KoymbH9dstdaFJKBmfX//pQdtF51ojWKDIudw27VoIK1CkuJ7YggnYhhqZvr+c8sVg
+         OKaFOLuTY1msggphjnfhHTwvO3bS9vfoNEYmyFdvaKo69wxXebUXZyujSdDUkpdkx8ec
+         IgJxwrHb/krF5E5DFA2/n3epRFuFbTw8G0LyvRQ7JeSfHQZsc103GbYg1L/xWChewSPS
+         N47A==
+X-Forwarded-Encrypted: i=1; AHgh+Rr0/JHf6O5RLoXYWn9dP+v8U5YnyQc4U7AdoS+S2MzWToky2lRfQ+bVo7zj4d7T5kJPsPO2/q+h+l8cawr3eg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/fpQAqV0S+AQn0FFhFLBhvXMi+O9iJOHOtLwj+y1dg1XNlo4y
+	VCtUySnM8isolxlnxOIopy5PD4g4c5sStpAwXQ1IJNlJuoSmGrOguBp8Cy44B3JaWG0Z2aW68ev
+	p8nXXNsybmSeY4ilDogjeXkQcRQxYsRc=
+X-Gm-Gg: AfdE7cnW4MoyMMfmLMsLQ9IT9jIRXlofjozqlKpC/9Wct2ftBt1hTm6xVQKYkX2FUQh
+	w6KpjHCt4sTwllsupPaVpUKOZ//0bevKRwijdcU6FxrLMTJjkyBHcVQ+ghYhmX4z+g8L92U0P7U
+	c5RcUxeBuSRDFf4elMEpmwcECS5gwSCEqOJ8TN3PCybNv6aFXaP0GAswzm5rraoAwQIcd1uOjQ3
+	uxZKEH7yn6RWzZ96JMLl9v8oKH2slLIKtI+kosDkWJFRwOYUG9KmOcJYw8wgb8dSPwjgAxSIdhe
+	aKJ5s6p1ySxfg5NxDMYzV2BDb5MFPMVJRAAM7In/azAgBc3tzfH//llvhRN/GUrOd32c6qVPv04
+	KyW2rt0zzhTRB
+X-Received: by 2002:a17:90a:bf17:b0:38d:90c1:2485 with SMTP id
+ 98e67ed59e1d1-38d90c136bamr1755634a91.5.1783702813717; Fri, 10 Jul 2026
+ 10:00:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB7733:EE_
-X-MS-Office365-Filtering-Correlation-Id: 15cf86cb-66c1-4894-a84d-08dedea38999
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|10070799003|7416014|376014|22082099003|18002099003|56012099006|6133799003|4143699003|921020|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	IZpUxoNhjF8urKcVcModemKY3hLm+5sdtP3wQBE6+TEZjqNYhsd59ONREMbXslrzvs9wXcslalIltX1nBC8Hsr+nk3Bz1bcbSqbFpA77swmIKgFhEgoUwSjUvBPlBAXCiPnEfV9OU9KY+PG0Rqs94jxNSxyOa312sD4eS/3a6QkwjdME1gcLbg0DLrOiGUDYMSI1iUOQYYFIm2a41BXuzWcyAFbbZTbXedFIxFoYzsB9B1YKTI3fMsnntkvjo5orjmTy0Ha4BovTXmzDjUL1Z48rJ/dkn2rvcIc9E1mXXNK6vXW6/5s/kOLTqLtzB2o5Z4CbSBxxgyUpkAr+AdCO3gk1RAZOblDzqQwZzyVeP26slaau/hl3vYNiUlnoZFikaAsB3ZQs99Qm8LofVEOXFOj/tcR/Xp6wtzDB/mmAsfgvgE7yGmz2MsjNXYwQZPX1m7oDHc5pr6AoYp9OoYVEM7w7DlKDPW0ReIFmEoFG/dvj2+BBUXsN4D0HDxDRoSDKkO2wk32IbchXqkBNHq78Xe5DHHLNMjR53a+a/UpsLONEzKDBUYHnflpDiXzwFINDiExwtu3f1y5e/LhWZxIaIPcJGHNKnMNG+AfcDYuykEzIvv1PmHcRPlZ9mbqTzUFmjRNPCw/xtcv1v/ndpYRfmptIH+SRp5zDF3fSIu6mtpKaEAnBDhTk7OSOgh67Auk4+68AiCSo1KIlDJX8haDyow==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(10070799003)(7416014)(376014)(22082099003)(18002099003)(56012099006)(6133799003)(4143699003)(921020)(3023799007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MFh2K2huSkVMd2JrNzZDbFV6VkpnY0t4VWYxNlBTUkpycmRUZHA4cDdnbEJI?=
- =?utf-8?B?dVFGZ2dZbnRjbFlkYzFVV1lxYkNjODZrMnVhSXRwc09vaERhd2VVd3hpM3NY?=
- =?utf-8?B?TE0xcGVMNHlpQWdOTkNLbHUweElUMHlOd0wyZmRuK3RyY1BYN0FhaCtBUzVv?=
- =?utf-8?B?a25hUFhvRlBxRVVaa1VMVDZmUVIrcCszTzcvdzhGbWtLdk40QW1pV3pjbndG?=
- =?utf-8?B?YmZiRm1HalJVTytnV2V4bTQxTXBPaGZyVmF0Z0FwQ0xSVy9GQlpPWFNINjli?=
- =?utf-8?B?UEZuZTdMVUYxU0sxZ3JNODhNa3FYa3RIWk81VURPclhMWHdMcUZEU3FicnNk?=
- =?utf-8?B?UjdacWQ5bDVwVWlNbWYyczE3SU9qSDZVV3BvSTQzc3RPaXltcHd6TFQ4V0xE?=
- =?utf-8?B?dDFsdXUvczNIcEgra2xIdWZLQlZ5cmdXWU5mTGFXT1ppZU84Tzlqclk4bWw0?=
- =?utf-8?B?eXJqRlh5U1hJUWw3emYrQnBOK2FpckJybGRyNXRnQytrekxIa3Bjcnh5NFFP?=
- =?utf-8?B?TUc0QTN2clRhczlncmZZektFWFF6MlV1YUFha3VxMWRsbEdkUDQ0MU9RWkgv?=
- =?utf-8?B?SkN5ODFWT25RMmpOQTJjd3lPaXN4ZE1CZ0JiSTFPWEZZeUhLWHNZRjZYb3lm?=
- =?utf-8?B?SVVkZ0lWQ1Z3WGZDRE9wdndrZHUyRCs5SGVVeTRqZ2xKZGtWN3VXYzJUeFY4?=
- =?utf-8?B?MWRJKy9QOFJ4SnBlbWFLeXYzYi9seTNNR1d2WDlRU2xtajlaWXhNQ3QvaHp3?=
- =?utf-8?B?TnBPOUx0eDBpRlRWZGpITld0U3o2bHVEVGZka1Z2YlpraFZnK3oyc2I2ZjJl?=
- =?utf-8?B?ZVhVTGRBa1JrRFl4LytPRjJMd0lUaGtWSjRYMnRuZnh0U1ZNVk83ZmNPVzZH?=
- =?utf-8?B?RmVRY2lONzVxalhBeXB2ZWJNMDhRWjZiS3ZXZUFrREpOa0c0VklQc3VsaUNm?=
- =?utf-8?B?RVQzbmZhSW9MRzBRMzlHRkdxZFRRZDFDelV0S3BPb3hBVVNFbm5odkNMY3RN?=
- =?utf-8?B?M2JuaG5VdGR2d3djZ2c4MHlROW9MS0lUU01BdGRlN282Z0doTlhZaHdScitE?=
- =?utf-8?B?dm1OL3pBWkEvczVNdVRidERUOGRaYkZHOXdCeENqLzM5SVIzR2FFeWI5aHZo?=
- =?utf-8?B?K1FXdWo4ZDJVL0MrT1ZpTzduK21XYTArOG1hNmFSM2NWZXVNbGxJTEh6YnJD?=
- =?utf-8?B?U2xPdHhqYzZxZXlJWElrRUo5STFWMGlVNmUxeDZLa1puUUpSS3ZQSUkycHRJ?=
- =?utf-8?B?elZvZ0RvVVVQQ1pzUGhtMXMvNEF3ampuOWtCejFFY3RXU0FkeXI5Ulo0cXdM?=
- =?utf-8?B?ZjBOTjVqZU5JQWdqSXE4NlFJQnppVG9hOW9tZWVqV0c0ZURkSkF1OVRBKzV3?=
- =?utf-8?B?bDVPTzhqMkx5UUk5TU9NcFNRQWRpclN2aXQ2Z1dlemQwQ0VTUGxVOTM3enhH?=
- =?utf-8?B?eHR2NGhMUGhvTWJML052QUo1b2xnMXp0L0t2eW9jRFUxSjRJV2VXNHNrSG1m?=
- =?utf-8?B?ZTFqeHlGTnBZUmFkRDVFQ0ticFdiSTE1SDhYaE9YcitoSGJXTmlDWFB3bkRP?=
- =?utf-8?B?Z3JodTEwa1Yrb1d2YTBQbDU5dnRGTHFycENPVzBndUF4Q01tMkdiZVpVbGdu?=
- =?utf-8?B?b3pOY3J0ZUdjVHBvdTByVCsxQlNuZEV2LzIzZHBlcHlFWEVaUnQrUEFXaXlE?=
- =?utf-8?B?eEthRHlvWTBDN3pObVNybTZsSEVkbldkcDJPcUlpTnR0MGxZQTFPcEU4eEU5?=
- =?utf-8?B?NjdRT0dKdlBmVUJLRW5ibjFveUI2bHJ2YlhWUjMrMHl6NStwUlBtN0JVc3Yz?=
- =?utf-8?B?WDJtWHlUdUNsOSs1NSs1UlR4VmdlMmJ0enU5YVJEdUhJQmtINmpxbnF3RWZo?=
- =?utf-8?B?TmR4NmR6K1ZFVERucWJEN09KdlJKRExMWnBUTWpSQ1JwYTl6UUgrbTRQOGQ3?=
- =?utf-8?B?V1U5a2VTczFKelZNRmxHby9ya3UxbkEzMEhCbXpoQkw3d1dXS2hZUkF0VnNQ?=
- =?utf-8?B?SHo0Um1zSXhvWkhTZDZkdGs5dk9Zb0NNM2NHU0R2Z2x4cmordUg4a2RLY1pC?=
- =?utf-8?B?dlNxK0ZLQVRwVUFRTi92L3hwdms5QWNyR1FMczF6d21td0c2ZjdEaWhvbXVw?=
- =?utf-8?B?V3JZODVuNzlEYmREckVGNmM0NmVkL2xFekJKSm81OUtvWVVBL1V3OVpoYkhH?=
- =?utf-8?B?ZDR1ZUJUY2RtZFdxL00rNjdsV0d1YUIwYkJNdGErbFBHK2JjUkFWYnBpd3B0?=
- =?utf-8?B?c3RlSnFJbUczb0F2RktMbmdZangydjk2aEpEVlRyYVlaK0g1dGNaMzFiaEpn?=
- =?utf-8?B?TjJzbk5MZGhwNVZJQURUbGpPc1plY3lFMHhlRXNvYWxOSm91RUpMdz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 15cf86cb-66c1-4894-a84d-08dedea38999
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 16:51:50.3633
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vVNpzSXUkHkEXvX+dEIItRNAhRIDjtJezy/4mrDPr3fr+PS1UTX8fk6VgINwP/rq5c4Hl0XLBmyjLXGcPVkHRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7733
+References: <20260601-modules-value-ref-v2-1-12ebbf0510c9@kernel.org>
+ <52feb9b1-2073-4fcf-b2d1-a7f42f1e72a5@suse.com> <CANiq72m3w7L5CmAsFvOpSh_jNk4jL8+A4vz8GEp+E8FY=TJcRA@mail.gmail.com>
+ <30e500ce-e9e6-43cc-bbdf-ded7c0ae56cd@suse.com> <alEBInX9gD1M5NAr@google.com> <bd1f78bc-51b4-44b7-8e3c-7accc9e173f2@suse.com>
+In-Reply-To: <bd1f78bc-51b4-44b7-8e3c-7accc9e173f2@suse.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 10 Jul 2026 19:00:01 +0200
+X-Gm-Features: AUfX_myPaEXP4g2vFy2sJpxBrkO4WPpmW7nI-fz77EOc6odI1iQhqhWqVntgnb0
+Message-ID: <CANiq72nxK=nCf7C-GQ8JCtaTnOaDGwGDFKoQEVb4fqNonkKn3w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: module_param: return value by copy from `value`
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-modules@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri Jul 10, 2026 at 3:32 PM BST, Jahnavi MN via B4 Relay wrote:
-> From: Jahnavi MN <jahnavimn@google.com>
+On Fri, Jul 10, 2026 at 5:58=E2=80=AFPM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
 >
-> Implement a dynamic debug logging mask (`debug_mask`) for the
-> `rust_binder` module to allow dynamic runtime configuration of log
-> levels. This enables parity with the legacy C driver's debug mask.
->
-> Since the Rust `module!` macro in the current kernel build does not yet
-> support declaring module parameters directly in Rust, we define the
-> `debug_mask` variable in a C companion file to expose it to the kernel
-> runtime and import it using FFI with volatile reads.
->
-> To verify the setup, instrument process lifecycle events (open, flush,
-> and release) in `process.rs` under the new `BINDER_DEBUG_OPEN_CLOSE`
-> logging mask. These entry-point events are chosen for initial validation
-> because they represent the start of the Binder lifecycle and occur
-> at low frequency, allowing simple runtime verification of the dynamic
-> toggle without log noise.
->
-> Signed-off-by: Jahnavi MN <jahnavimn@google.com>
-> ---
->  drivers/android/binder/debug.rs            | 80 ++++++++++++++++++++++++=
-++++++
->  drivers/android/binder/process.rs          |  7 ++-
->  drivers/android/binder/rust_binder_main.rs |  2 +
->  drivers/android/binder/rust_binderfs.c     |  3 ++
->  rust/kernel/task.rs                        |  7 +++
->  5 files changed, 98 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/android/binder/debug.rs b/drivers/android/binder/deb=
-ug.rs
-> new file mode 100644
-> index 000000000000..da48bce3df54
-> --- /dev/null
-> +++ b/drivers/android/binder/debug.rs
-> @@ -0,0 +1,80 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (C) 2026 Google LLC.
-> +
-> +//! Binder debugging helpers.
-> +
-> +#![allow(dead_code)]
-> +
-> +kernel::impl_flags!(
-> +    /// Represents multiple debug mask flags.
-> +    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-> +    pub struct DebugMasks(u32);
-> +
-> +    /// Represents a single debug mask category.
-> +    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-> +    pub enum DebugMask {
-> +        UserError =3D 1 << 0,
-> +        FailedTransaction =3D 1 << 1,
-> +        DeadTransaction =3D 1 << 2,
-> +        OpenClose =3D 1 << 3,
-> +        DeadBinder =3D 1 << 4,
-> +        DeathNotification =3D 1 << 5,
-> +        ReadWrite =3D 1 << 6,
-> +        UserRefs =3D 1 << 7,
-> +        Threads =3D 1 << 8,
-> +        Transaction =3D 1 << 9,
-> +        TransactionComplete =3D 1 << 10,
-> +        FreeBuffer =3D 1 << 11,
-> +        InternalRefs =3D 1 << 12,
-> +        PriorityCap =3D 1 << 13,
-> +        Spinlocks =3D 1 << 14,
-> +    }
-> +);
-> +
-> +extern "C" {
-> +    // Declared as static mut because the value is mutated dynamically b=
-y C sysfs.
-> +    static mut rust_binder_debug_mask: u32;
-> +}
+> I can't immediately reproduce this issue. I tried with linux-next
+> (next-20260710), rustc 1.99.0-nightly (af3d95584 2026-07-09) and
+> x86_64_defconfig with Rust enabled. What am I missing? Could you send me
+> your config and the produced rust/kernel.o off-list?
 
-This should be `Atomic<u32>` so the read_volatile below is avoided.
+I can reproduce it independently of this patch.
 
-> +
-> +/// Checks if the given debug logging category is enabled in the mask.
-> +pub(crate) fn debug_mask_enabled(mask: DebugMask) -> bool {
-> +    // SAFETY: `rust_binder_debug_mask` is defined in C and can be mutat=
-ed at any time.
-> +    // We read it via volatile to ensure we fetch the current value from=
- memory.
-> +    let current_mask =3D unsafe { core::ptr::read_volatile(&raw const ru=
-st_binder_debug_mask) };
-> +    (current_mask & (mask as u32)) !=3D 0
-> +}
-> +
-> +/// Prints a debug log if the specified mask category is enabled.
-> +#[macro_export]
-> +macro_rules! binder_debug {
-> +    // 1. Internal helper rule to do the raw print.
+It looks like `panic_null_reference_constructed`, added the other day
+-- I will send the patch.
 
-This 1, 2, 3 numbering is very strange.
-
-> +    (raw, $($arg:tt)*) =3D> {
-> +        kernel::pr_info!($($arg)*);
-> +    };
-
-Why is this needed instead of just calling `pr_info!`?
-
-Best,
-Gary
-
-> +
-> +    // 2. Rule to explicitly specify a PID (used in kworkers).
-> +    (pid=3D$pid:expr, $mask:ident, $($arg:tt)*) =3D> {
-> +        if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$=
-mask) {
-> +            $crate::binder_debug!(
-> +                raw,
-> +                "{}: {}\n",
-> +                $pid,
-> +                kernel::prelude::fmt!($($arg)*)
-> +            );
-> +        }
-> +    };
-> +
-> +    // 3. Default rule (automatically prepends "PID:TID" of the current =
-calling thread).
-> +    ($mask:ident, $($arg:tt)*) =3D> {
-> +        if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$=
-mask) {
-> +            let thread =3D kernel::current!();
-> +            $crate::binder_debug!(
-> +                raw,
-> +                "{}:{} {}\n",
-> +                thread.tgid(),
-> +                thread.pid(),
-> +                kernel::prelude::fmt!($($arg)*)
-> +            );
-> +        }
-> +    };
-> +}
-
+Cheers,
+Miguel
