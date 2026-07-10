@@ -1,66 +1,66 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6262E7394
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 19:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE4438E8D6
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 19:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783713332; cv=none; b=cLkbAdtJUzOHd1Q62M+jGW5RnUBceqL2LYbcZPCKNWSP/8g81i908I4o0MNcb9toJn2iGvZAUbO5cVw/CiC/jMDCvw94+Go+vb1U0nyZDZj0nEobW5/d59J9/0zTAgCdrPLCxIVIX8dXqOWSqzEJnnTS4Amhnzpq+ryJ90SBbB8=
+	t=1783713389; cv=none; b=DEcigdGwuHYtlR+R6rls9GYI/TIzILm/RT+/qjR0OZJw8ak7mlFjNf33dSiRFYQL7FxVGjzgjuPotTArIMlSt3YiITGcvKEHLT04FBStvgnl9EaOt9Yq/ZQkLL82SWl4xrMzCew3NHBqxx9JPIGTwWyezyVpEJU+6qw2ApgvtJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783713332; c=relaxed/simple;
-	bh=74yQpHWj7TVJ4ijceO1yo7CRJg+azfKLGfyokj+r52Y=;
+	s=arc-20240116; t=1783713389; c=relaxed/simple;
+	bh=qWzvlV7X3JEDaJvqOVxdiWvtWE06C6bVAA3DO3yG+Tk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RrrB0da5LYXIp+TTeVmrJeQr1hJWLCa2MEZLyy72vr2f0tyzShs/dpD7J6ep7rWa/R9Jjv26k1C9JPJSj9ASQBNSh24fhdObH2rVGryb43O0kWX5vOpDHMFMafuMylJyL5tg70/tLMeP3Upv/cU9Qb6GLikGPUmdX3SNPTKY6p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MlPvjsoa; arc=none smtp.client-ip=209.85.214.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=E3dX0I7vykCe3oJjW87te6mByZ1hNWqGa2Bo9yssjPjLQhkwt4qVmirPvkDJJEY5brncbOnJZhIBAuMoVWlKmIICHSNUm98NNyx74/YvXPIFbuS2ri1YYMZ4l2RTAiU3HGsB6ex1qFkLWTo+QaJbVTy/kU+Ngv+w0VdU9hFmheo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UyBUo31O; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MlPvjsoa"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cab97c86bdso305ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 12:55:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UyBUo31O"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ccdf36f63dso24295ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 12:56:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783713330; x=1784318130; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1783713386; x=1784318186; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=M/os59kS+KQ/B+EaA/yP6hg3FHSgOfMSekYi/qYdyo4=;
-        b=MlPvjsoasaoneVSXd+we5zm0SHMN4RkEJLfZB+KdFIBhMesnJTd4YK2LYmPLDdNzaY
-         QWC96o3jM5ZzJHnZE1LQ7eoSaj1A9L5DZGnMLZke69B/E7B45i85GXifnMA7rmFGIJCa
-         luobRXPi6SF28cR+xqLIFggifVUetVpSdtx0Y5SISWv1Wqzhh2DSPnas09bm1iJCcsq7
-         FTghOVwR824YmsK1jPZAfQaVVK42nftJChe/XF8BZZL3tyrRks0cKtngEar2f+LTJ8Rm
-         sSXWGpiY/2XDj83Et4Z6jGTXlVLa8jc99n13ISFh548JniKFW/4fk+I3++1QrA/TV43T
-         ZlWg==
+        bh=mWYZ9D/LgjNHZE1ttPflKV1ra6LWo0KS2YE/FLfB05o=;
+        b=UyBUo31OVhAqIEJUzbn+7KfYvf7mKn0SvLj+yeaMm4JIVHpAvhypNW5NefPogeO48z
+         tvk57iudeSSZE7N9jSrQFC025xdap8VLNpn8/ZGZBUoKGjLvEMwLiBkc4Gg45pEueJzn
+         aMTzivpoW+tGc/RxIktjXcYscnAd/e2YxuANcwi1PraZx0FKmsNctKU/QZ4ExCAGsIN4
+         h2RDIcSYwh2rQ30ffQDcYNkkJB2n6xmREeBDeiRzHvdcMWsiPk2vcskY/ZRJWrpAD8S/
+         obJioQDBzFCFBD82Rlr1STAr8+qS8+H841zuxDuPyViceVUkxVfuA67ZbawXC4BQgqeM
+         Sy9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783713330; x=1784318130;
+        d=1e100.net; s=20251104; t=1783713386; x=1784318186;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=M/os59kS+KQ/B+EaA/yP6hg3FHSgOfMSekYi/qYdyo4=;
-        b=RVhuAfftIF2FrXCFUQjRkmNxfNfEftkbf9QlWjYkwKdIP6dy61Pee/SeAlh/QUQhDF
-         pOpQ4qHSjSUUOdaSMK6ErUtU4a+TNlzOzLwJNxW7wye997/8AFIQW2rXgAybCqX24niS
-         54nGwFFTyLOv6+s27qkGvCn8Ri2MQZSY4EaD+4SbsBDPKmNKaoTvs6iP3q2scwPzFuJt
-         nt2ZycP3LVKbrSW8bCkFfSEcFVcm98aMOVPppPMV+QDVT4o4f6KUpxyYgDVQEft1HikG
-         SkyTLD5jP116w6Zy9PaYERoQNvwnU644dRcOICCSYIs3oBLIFrBhena3GK71DeZw4WUT
-         R3xQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq4t2cofl4/hKPLU4sk2OE4O4uPPTH+IWVLYnHltJ66jgw5kckH4SorJmEO9A1oBrtjwRLUaiD7ibXNnJXfTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YypcDf7+N22vlCSZu/oaYe94gzdIltHy/wj72Hndqw1q4NjWT8u
-	hAC22xD2/SsrxPjTaNzNaz6quKpZY6YqP+WI1CEGEu4Aa9HcwyC0wPmqYG41In1eHg==
-X-Gm-Gg: AfdE7cm0Jcbw/6RsqDPUw6XImlWZx/VeZIYHFB4gLwY5QT4PFJGgSI0fpKyJtLW7WYf
-	1ZLP0M568seuuNYhlg7pEzEEg2NiWVQztk8KAW9sPuLUQKbzTzdZb/zdWsMVVkEBVr4oss3fe74
-	ArB5EC2Rnb6dxndeW/oBGecSlrA9fV46sPVl63m3Vl+pxF3Q20iHm2T6rb7Qi6UnXwzwyYl9bRj
-	AqrScyGmJ4twB6g9N4ysybb08cGV+n0JIP7IMYaMvnN6ZZJaQtsYHQH0B0BrE9xELYJCMa6dSxa
-	LyZF/tzdlp+HdGeo6J+6WzXnoCkZ+ZsinKRCHwu982WEDkBpmQMcI0Yrlc5BM3rUusCJpBaxzts
-	EIlpEbzHdvvpJaHFegmK3LRCm/yrRAWEm7CPb04I8tCP42BydAXSWtvc7Dsfjt7jpGyAxYVoyA2
-	aTd9y2HJ8T9R71FCL2hfby4BvYRXMP+eH8qYH06x9TrivGMSCiBNc63LC8PNLFKbnE3ih+kBr2a
-	5JR7P39yP6NmBiXFukGUPjfvzCVVI2W8rt0
-X-Received: by 2002:a17:902:e88b:b0:2ba:73c3:49b0 with SMTP id d9443c01a7336-2ce9ed153e8mr799595ad.14.1783713329985;
-        Fri, 10 Jul 2026 12:55:29 -0700 (PDT)
+        bh=mWYZ9D/LgjNHZE1ttPflKV1ra6LWo0KS2YE/FLfB05o=;
+        b=njvsTbJMILhvmiguArqxw7jbtf0bz8nDvqubVbkrv5HxKLy/Vx8lQznstvlqEUsj4f
+         7kwWPJY9v5Iv2+LzvuypqNuc1UVafbMGgCYbFYsqzV7PyfPJbSf4jYyrKd0a6Gx0db6T
+         /aF5RIIBT1AFA7hGRiZZ1NMKEhx4kIxLyNFhu7ucGe1XG/dKdTc+2IG8kvZUAgMJY+3w
+         fuN70T/qPA9iQ0gASq6ejSRosmdcLFDsy4MvJ7GAoQhR8i+Hk677SHaxwYTVL9ZApqPO
+         xFlSYXfHr7auloWnThRhsTyAXwyvjvgZkJ/cya5iWTH5Tb1eQuxT2hxxYJPtwu7L8ove
+         ktfA==
+X-Forwarded-Encrypted: i=1; AHgh+RppyXU3Ic3L7wujsQZlWCZ9xlcdxgBng48AfhVsYBxcSVWNc5X/el4XBItDChHfMHLNcFgN4LRu57aAFlCKhw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLuyGf3+NDt9jTq07yOFNFNnMvu4fRy/Var8xABmI2vvDzKffL
+	KrHhAabg7ugK+wNOErzxPSjoV0Rk5KJNAWTCDP9a6CaSdm5LXy727gYuXmTeGrVOxw==
+X-Gm-Gg: AfdE7cnjtDLCl5YeUaU+k7xTMT41WQlZcKUr28C8PEo3wHAyPZfzcBq4QPP5Fo2xZTh
+	mBEFsU/ohUml8DfJO8lJ4WDt1mTlcMlEtlt7XbxBH+sSHUlbfQcSrJOIJrQgU1Lms1+MbXhxTsc
+	N8+TkwUzYvmUFo9LS0HUquEjRhXOpSuNa+fgzZ3SgG3BJXg0hx2h9HLuZRV2GU2qeSEF94P0qiL
+	t0mrJLTqdbnfGAivZ1mJ/OJvXAdmbtl5OfJqTC2xpOh8+p++CxE5GQJSEvtHcuCLV5jlw3ErSv3
+	73snCNR9axNgT9Db/hvxIHYp6QDESfmJqHtWTl3YNZqYlyByzs7dN16OEtQSAUdjXsXtRwdV2of
+	dBs2ihZSV4VeOrbmyvFSwW1UuHYILTw36j4HzBaDaErPe8Z8CoEutMrQfmBhAjlIScSNSRjc3ai
+	Piv/FtVhk1TPvYcJSjQWUpiaF4a313lMZUP+UjTl5Z1kCFHHeViNH87IsEuQltPlsIBBcQ+jt2t
+	Rpjqx/MxgEHhVtFbsP/4bBZHtf3E5TlB7EIy8XIjG2ON84=
+X-Received: by 2002:a17:903:2a85:b0:2c9:d89f:fd98 with SMTP id d9443c01a7336-2cea1d79204mr127125ad.1.1783713385675;
+        Fri, 10 Jul 2026 12:56:25 -0700 (PDT)
 Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84847d4134fsm4439605b3a.0.2026.07.10.12.55.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf8c12sm64919605ad.26.2026.07.10.12.56.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 12:55:29 -0700 (PDT)
-Date: Fri, 10 Jul 2026 19:55:24 +0000
+        Fri, 10 Jul 2026 12:56:24 -0700 (PDT)
+Date: Fri, 10 Jul 2026 19:56:20 +0000
 From: Carlos Llamas <cmllamas@google.com>
 To: jahnavimn@google.com
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -79,11 +79,11 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
 	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] rust_binder: Implement BINDER_DEBUG_USER_ERROR
- for freezer-related operation
-Message-ID: <alFOLMbft11e7WDk@google.com>
+Subject: Re: [PATCH v2 3/7] rust_binder: Implement BINDER_DEBUG_USER_ERROR
+ for refcounting and death notifications
+Message-ID: <alFOZNqW-mcfZSpq@google.com>
 References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
- <20260710-rust_binder_debug_mask-v2-2-2846410e3ae6@google.com>
+ <20260710-rust_binder_debug_mask-v2-3-2846410e3ae6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -92,17 +92,17 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710-rust_binder_debug_mask-v2-2-2846410e3ae6@google.com>
+In-Reply-To: <20260710-rust_binder_debug_mask-v2-3-2846410e3ae6@google.com>
 
-On Fri, Jul 10, 2026 at 02:32:53PM +0000, Jahnavi MN via B4 Relay wrote:
+On Fri, Jul 10, 2026 at 02:32:54PM +0000, Jahnavi MN via B4 Relay wrote:
 > From: Jahnavi MN <jahnavimn@google.com>
 > 
 > This adds dynamic debug logs for:
-> - Requesting freeze notifications on invalid references, duplicate
->   cookies, or already active registrations.
-> - Completing freeze notifications that are not pending or not found.
-> - Clearing freeze notifications on invalid references, inactive
->   notifications, or cookie mismatches.
+> - Decrementing handle reference counts that are already zero.
+> - Mismatched reference states (calling inc_ref_done with no active
+>   inc_refs, or using a weak reference as a strong reference).
+> - Requesting or clearing death notifications on invalid references,
+>   already active notifications, or with mismatched cookies.
 > 
 > Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 > ---
