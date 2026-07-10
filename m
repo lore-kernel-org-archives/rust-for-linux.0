@@ -1,124 +1,240 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54912EB859
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 14:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4B433CEA9
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 14:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783692634; cv=none; b=GRwU/9vVwIXMqTgCx+T/7Y2uf8crJjG8CLPIM7W9QmuNHOPG0ZHecpgDwAKxl0hKlMquGJWLc/qhgCY1SfsbfiGABvXipy/7E2aXL4dJvEqtjVg9e2hkIx+uHHrr4E98HKjXgBwup5Iuib0s3GvhNAIIRQ8ROwtYOCPLLuuJDBE=
+	t=1783692913; cv=none; b=Q0N7MysAXV54WFxGX0DYACfYhJZS7ulxbzvYdvDi41Gm9Rog1BV5TAiXqhp3wz0km+LBqAblFVW4XkOXCRFX6f9SI/z13HntPXrSo+ubUgUPxT+fj8osiyp77K7XQCmKmorj0THv3v9SaqOfln04S8uzUpBsjQ+cjSNbX2fkC+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783692634; c=relaxed/simple;
-	bh=ANjkctNcuMAImXrJGww5k/0C1OC8Sw8gShkszAutm/8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JeYRlOhAg2smFYDh13zqVhyZ6nWrewrT6NiS1tEPZ72UP1FfqBwFIGv8CwzZyCoB1PI/Vq4ZQBAKaq6f6YBQbj7CGmnGW/HDX1bpJ2SgQMv0CTr8IrHRaQbxz2fd6jzOj19HPIDIJ+czpzJ5TX2j58db8b0xL/PfxEJBocfzyw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Iv499Orm; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1783692913; c=relaxed/simple;
+	bh=lOt+ARBIoeRQpbIeowh2vYdIaEIo+NWTnmhRuFyJtmc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BeAP8ttiViKiNLGhRnPfewM1OkBes1jMpojLLdR2OxgYzv+mkSj3gPj2Ru0oWnS5bBDAxXBF2Bqy5dcWNkU7VW9MXu/xh4Eb5Dq2/4s6bmyzupJfvlP6BsgXjkjie2xnag2jduGRGK2sD7LHRJRnNJnuIFPuIslPnxswwfGItII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C4sv87sg; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Iv499Orm"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493b966dd74so3854955e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 07:10:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C4sv87sg"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-473ac08a6a4so613481f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 07:15:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783692630; x=1784297430; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1783692910; x=1784297710; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cqZ0l6LzRTJPGQYgWIe1BLhP428UFzV157W6gh6Hzlw=;
-        b=Iv499Ormvk/t9jG8PTMw0ZpCupyNlJ2A+k9Ha3LXTGUFV+Z2pNgPlNoGXczSSTeoQx
-         2MyCJxTJrpn0t7PQhHO6NHzs2JVXmXOHIkUQ+CIZwDAN71pY6nodP9B2laNxHx5ouGxw
-         cUBK0gs/9GDy0oL8VJI23HUif2zJvYkzANECGwkvglkyooXOE1mA0DlJqvRy9/q7tNTC
-         2xnbRNsP/d0ciCFSidchYcktyFpdPa6jmuZwiOZmWTSc5kVU+54EMpOxb61YIsif8Ema
-         PRTj2tptR6hpcJ20hnH/lhVWtF0iROK7LmWg9B/0ZytxK4GhuKYJZ7zv2hpxeqlLCQL0
-         D/Jg==
+        bh=cZ/Rax3JtQ73njUkK4P8UwJJ63zTUvy1XJcf1ykx4E4=;
+        b=C4sv87sgtvq7+UxfDX/4S+mQzPdkZ8T8IQ1qGV60rFLI9suJXozpNCNUt9SOy/1QTW
+         w0bTQ1vo0iLoYpAqkeX3I7hqs3uGWpvQ88nbvdFW/EyXMsBBwyO+GArW5h2dkz+UskJp
+         apv6RK35T0muP9ENYMYTSuRtiPvbX3u0mBG2oK/wRnNeTqMKT2mFiOig7AJVsT+B8iDg
+         ZN1wxFok1BHjIULPwQ2SNEh+ivkSWOJKyuB+z12OTvBErrX3RLPVObWK6NglXSJmGpkd
+         3E8eAUzMZZ+K8UTg5KBG4asbpsyDqQw98tP5cmglKpHE189S/lFfWgqT/87/MFUHuPkb
+         Vetw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783692630; x=1784297430;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1783692910; x=1784297710;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cqZ0l6LzRTJPGQYgWIe1BLhP428UFzV157W6gh6Hzlw=;
-        b=PC7iZM3sqLQSqkEqEba7FtJrCSBb1h6sq4zWuTMVCT4q5I3TzkMj5XXn+a/lphDbwR
-         EVbTR1sfPLDRSX36flqvRgl0zB4kovo0QJtU+iWEgyJBAkIbfMSV1hgb+5fensh6PV0d
-         u3xRtr/FSdQV7JDKy6I/FGEGgzoUxPXmk1+VQyQrkkCeiAwu6gvyMjIBb0CxdLDUuJ5I
-         Ei/OJ1xIfV4kdk/V32jtmQf9bAzH3qil1ep9UmHUe4/kq8sEujpMYHaCY6f4bingoHAe
-         pEqrM/OwwcZMvKxlOwItjnTlr1WzY3ev02gfkNoD9wFA9XHKhdGQEJnkXSO7GCav9PlU
-         +Xqg==
-X-Forwarded-Encrypted: i=1; AHgh+Roh/YxiRzcswUPObwzsKB/1ss3pN/6KjmMVJYxsVH9+DY0GKl410EuvgyFbWZPJhrisKQlswNIHMjnY+pVuZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgyF023CxQdaa22Aj8sRxhPUKpoQWpavzoDZ0DFxwhXV2FKi7F
-	Kee6MWgrABgbQkT9TuWt2q+W8yZgANAqL4woHigMywLaOB16uC/pL0uJ8DkMQj8DzXU=
-X-Gm-Gg: AfdE7cn36uEyWA86RJhtLPQiLDuiSI7tB0nQSRKD3+iYjNAG8R0pQWxvM6PfU14Dhg9
-	cLW9Vd0jFbpxsGo9H9nhHWYkw/36wNvluWrOwag4yZGGnHkHQwhTtz7TjQ4Io9wf24XLcdzOPSq
-	6LQDIJNdTWOyQwTp2tzpHUZbx8f9F27K3gT9rN5R4VLx2I9DXKIQG5kb6NkQJNmP4LX4VJuXT4L
-	EWC2XNvqmhXagOlUMJw1Kniz33gCCxyPErfx6K5bLII/HyL13oRlfaddkNQPVJAfujV8TFAF/p4
-	vU7hXDYvySG1+Br/C4KTldiOHUTzb/y1o2OdRlezUm4lp6zIrLPnLVzZGQ73yb3POy4q99Ydl0L
-	aP2X6L9y0fq7SWld4oUDR0+RRCjIoBk3nc3OVFz1pQOV9K63DHKuFLyUMkxK85I/qfPzKjRlV8z
-	jEKU8beaezpgNTc8bwXNZFVOkZLLkFqzKokA==
-X-Received: by 2002:a05:600c:c3cf:10b0:493:f0f5:f2dd with SMTP id 5b1f17b1804b1-493f0f5f491mr42550385e9.21.1783692629973;
-        Fri, 10 Jul 2026 07:10:29 -0700 (PDT)
-Received: from [192.168.42.79] (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6e8844sm156565475e9.10.2026.07.10.07.10.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jul 2026 07:10:29 -0700 (PDT)
-Message-ID: <5b8b72b2-f832-4fb4-8fb4-9fd16b96b902@suse.com>
-Date: Fri, 10 Jul 2026 16:10:28 +0200
+        bh=cZ/Rax3JtQ73njUkK4P8UwJJ63zTUvy1XJcf1ykx4E4=;
+        b=JWknvMEgd4bPy1KC7VvW+jY4jT/DS/kHs/Iy9OirCTWypEKlvXqh5SX4tD3fBQcwmb
+         1XTX33Kg1q3JXWhHFc+SsvQz4rhBzr1EYnSoJZ/6AsnMbZcVdDxA0SHiIbOsybU5qHFP
+         4hJoEdwVX5Q/jqIUm3LFdodSDPARFFdwT92TaL0n0L716epC3vvj7vMSdpIl7L5LDF7N
+         t9GELCq77oQ7EO1d5u19B6UcyoS5C+PMZgoBFfDm4jm7FsHHgMZWF88xFkkHWW4Ma9dI
+         FRDE5EUvTrm54dVgpMA57k2ANwrGJdUng8BBSMqgTNgwo/qFue8UFMEkVvKRVTp9yjSU
+         VtCA==
+X-Forwarded-Encrypted: i=1; AHgh+RpmMWbqVZRxNcEdf4Kdytz7jfidiGsEODnHYcsV+CmadyhsRwtRDgiq1YCnjm1BDcgiSkhk2JYJ/ZM1AfGxTQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUll/DiOk9VxgaCRGhBMLCxy0zuv1oSt4/DrT2HX9kHxDYie5X
+	TlTfXeKoKmD2VJQbM7/t3DXU+O7r6stHgnTlCRFjD7l7REU/wHhiDc662roPqYBjdhg/RxarjIX
+	rm4kg9IjPuedcJxQ+Bg==
+X-Received: from wrqt12.prod.google.com ([2002:a5d:460c:0:b0:463:dd19:ae30])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:24c2:b0:475:f100:360c with SMTP id ffacd0b85a97d-47df0822e2dmr12652945f8f.59.1783692909823;
+ Fri, 10 Jul 2026 07:15:09 -0700 (PDT)
+Date: Fri, 10 Jul 2026 14:15:09 +0000
+In-Reply-To: <20260709-fw-boot-b4-v6-4-ca391e1a4108@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] rust: module_param: support bool parameters
-To: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
-Cc: mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
- ojeda@kernel.org, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org, atomlin@atomlin.com, boqun@kernel.org,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, linux-kernel@vger.kernel.org, Greg KH <greg@kroah.com>
-References: <20260411130254.3510128-1-wenzhaoliao@ruc.edu.cn>
- <20260411130254.3510128-2-wenzhaoliao@ruc.edu.cn>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260411130254.3510128-2-wenzhaoliao@ruc.edu.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com> <20260709-fw-boot-b4-v6-4-ca391e1a4108@collabora.com>
+Message-ID: <alD-bUuMS2913WJO@google.com>
+Subject: Re: [PATCH v6 4/7] drm/tyr: add GPU virtual memory (VM) support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	boris.brezillon@collabora.com, samitolvanen@google.com, acourbot@nvidia.com, 
+	alvin.sun@linux.dev, laura.nao@collabora.com, work@onurozkan.dev, 
+	beata.michalska@arm.com, steven.price@arm.com, lyude@redhat.com
+Content-Type: text/plain; charset="utf-8"
 
-On 4/11/26 3:02 PM, Wenzhao Liao wrote:
-> Add support for parsing boolean module parameters in the Rust
-> module! macro.
+On Thu, Jul 09, 2026 at 02:36:44PM -0700, Deborah Brouwer wrote:
+> From: Boris Brezillon <boris.brezillon@collabora.com>
 > 
-> Currently, only integer types are supported by the `module_param!`
-> macros. This patch implements the `ModuleParam` trait for `bool`
-> by delegating the string parsing to the existing C implementation
-> via `kstrtobool_bytes()`. It also wires up `PARAM_OPS_BOOL` so that
-> the Rust parameter system correctly links to the C `param_ops_bool`
-> structure.
+> Add GPU virtual address space management using the DRM GPUVM framework.
+> Each virtual memory (VM) space is backed by ARM64 LPAE Stage 1 page tables
+> and can be mapped into hardware address space (AS) slots for GPU execution.
 > 
-> For demonstration and verification, a boolean parameter is added
-> to `samples/rust/rust_minimal.rs`.
+> The implementation provides memory isolation and virtual address
+> allocation. VMs support mapping GEM buffer objects with configurable
+> protection flags (readonly, noexec, uncached) and handle both 4KB and 2MB
+> page sizes. A new_dummy_object() helper is provided to create a dummy GEM
+> object for use as a GPUVM root.
 > 
-> Assisted-by: Codex:GPT-5
-> Signed-off-by: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+> The vm module integrates with the MMU for address space activation and
+> provides map/unmap/remap operations with page table synchronization.
+> 
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-I've queued the patch on modules-next for v7.3-rc1, with the following
-minor changes:
+> +impl core::fmt::Display for VmMapFlags {
 
-* Added a short description of the motivation to the commit message:
+Use kernel::fmt instead of core::fmt.
 
-  Support for boolean parameters will initially be used by the Rust
-  null block driver [1].
+> +impl TryFrom<u32> for VmMapFlags {
+> +    type Error = Error;
+> +
+> +    fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
 
-  Link: https://lore.kernel.org/all/20260609-rnull-v6-19-rc5-send-v2-4-82c7404542e2@kernel.org/ [1]
+Simplifies to Result<Self, Self::Error> without full path.
 
-* Rebased the patch on top of '[PATCH v2] rust: module_param: return
-  value by copy from `value`' [1], which required removing the
-  dereference from '*module_parameters::test_bool_parameter.value()' in
-  samples/rust/rust_minimal.rs.
+> +        let valid = (kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_READONLY
+> +            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC
+> +            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED)
+> +            as u32;
 
-[1] https://lore.kernel.org/linux-modules/20260601-modules-value-ref-v2-1-12ebbf0510c9@kernel.org/
+Simplifies to
 
--- 
-Thanks,
-Petr
+	let valid = Self::Readonly as u32 | Self::Noexec as u32 | Self::Uncached as u32;
+
+> +impl Drop for PtUpdateContext<'_, '_> {
+> +    fn drop(&mut self) {
+> +        if let Err(e) = self.mmu.end_vm_update(self.as_data) {
+> +            pr_err!("Failed to end VM update {:?}\n", e);
+> +        }
+> +
+> +        if let Err(e) = self.mmu.flush_vm(self.as_data) {
+> +            pr_err!("Failed to flush VM {:?}\n", e);
+> +        }
+
+I assume it's not possible for this to run during a VM eviction, right?
+
+> +        let gpuvm_unique = kernel::drm::gpuvm::GpuVm::new::<Error, _>(
+> +            c_str!("Tyr::GpuVm"),
+
+This can just be c"Tyr::GpuVm". The macro is only needed in macro
+contexts where this rewrite is not possible e.g. because the macro's
+caller provides a non-c str literal.
+
+> +        let mut gpuvm_unique = self.gpuvm_unique.lock();
+> +
+> +        self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut resources)?;
+> +
+> +        // We flush the defer cleanup list now. Things will be different in
+> +        // the asynchronous VM_BIND path, where we want the cleanup to
+> +        // happen outside the DMA signalling path.
+> +        self.gpuvm.deferred_cleanup();
+
+You should probably release the gpuvm_unique mutex before invoking
+deferred_cleanup().
+
+(Multiple occurances in this patch.)
+
+> +            if gem_offset > 0 {
+> +                // Skip the entire SGT entry if the gem_offset exceeds its length
+> +                let skip = sgt_entry_length.min(gem_offset);
+
+Nit: this may just be my idiosyncrasy, but I think this is more readable as:
+
+	usize::min(sgt_entry_length, gem_offset)
+
+(Multiple occurances in this file.)
+
+> +            let segment_mapped = match pt_map(context.pt, iova, paddr, len, prot) {
+> +                Ok(segment_mapped) => segment_mapped,
+> +                Err(e) => {
+> +                    // clean up any successful mappings from previous SGT entries.
+> +                    let total_mapped = iova - start_iova;
+> +                    if total_mapped > 0 {
+> +                        pt_unmap(context.pt, start_iova..(start_iova + total_mapped)).ok();
+
+Nit: the idiomatic way to ignore errors is to write:
+
+	let _ = pt_unmap(context.pt, start_iova..(start_iova + total_mapped));
+
+instead of converting the Result into an Option with .ok() and abusing
+the fact that Option is not #[must_use].
+
+> +/// This function selects the largest supported block size (currently 4KB or 2MB)
+> +/// that can be used for a mapping at the given address and size, respecting alignment constraints.
+> +///
+> +/// We can map multiple pages at once but we can't exceed the size of the
+> +// table entry itself. So, if mapping 4KB pages, figure out how many pages
+> +// can be mapped before we hit the 2MB boundary. Or, if mapping 2MB pages,
+> +// figure out how many pages can be mapped before hitting the 1GB boundary
+> +// Returns the page size (4KB or 2MB) and the number of pages that can be mapped at that size.
+> +fn get_pgsize(addr: u64, size: u64) -> (u64, u64) {
+
+Some of these comments are missing a / character.
+
+> +        // SAFETY: Exclusive access to the page table is ensured because
+> +        // the pt reference comes from PtUpdateContext, which is created
+> +        // during a VM update operation, ensuring the driver does not concurrently
+> +        // modify the page table.
+> +        let (mapped, result) = unsafe {
+> +            pt.map_pages(
+> +                curr_iova as usize,
+> +                (curr_paddr as usize).try_into().unwrap(),
+> +                pgsize as usize,
+> +                pgcount as usize,
+> +                prot,
+> +                GFP_KERNEL,
+> +            )
+> +        };
+
+It would be ideal if this SAFETY comment explains why this safety
+requirement is satisfied:
+
+	This page table must not contain any mapping that overlaps with
+	the mapping created by this call.
+
+(It's because GPUVM tells you to unmap pages before it tells you to map
+them.)
+
+> +/// Unmaps a virtual address range from the page table.
+> +///
+> +/// This function removes all page table entries in the specified range,
+> +/// automatically handling different page sizes that may be present.
+> +fn pt_unmap(pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>) -> Result {
+> +    let mut iova = range.start;
+> +    let mut bytes_left_to_unmap = range.end - range.start;
+> +
+> +    while bytes_left_to_unmap > 0 {
+> +        let (pgsize, pgcount) = get_pgsize(iova, bytes_left_to_unmap);
+> +
+> +        // SAFETY: Exclusive access to the page table is ensured because
+> +        // the pt reference comes from PtUpdateContext, which was
+> +        // created while holding &mut Vm, preventing any other access to the
+> +        // page table for the duration of this operation.
+> +        let unmapped = unsafe { pt.unmap_pages(iova as usize, pgsize as usize, pgcount as usize) };
+
+It would be ideal if this SAFETY comment explains why this safety
+requirement is satisfied:
+
+	This page table must contain one or more consecutive mappings
+	starting at `iova` whose total size is `pgcount * pgsize`.
+
+I.e. why can we be sure that this call isn't trying to unmap a 4KB
+sub-page in something that exists as a 2MB mapping in the page table?
+
+(It's because GPUVM tells you to unmap exactly the range you were
+previously told to map.)
+
+Alice
