@@ -1,119 +1,124 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFDB2DF12F
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 14:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783692307; cv=pass; b=G/UVmg6ntniEVzX0keGMlTSP8O7vNsGIewosavUxMYF5XkGCdlLKCoTlBK1lPn+c8lLPFOONs+i4Fl86qyNPi+HoUHj8OWgQe7PuWSXZFBQ2enqK7sEZxPGLY+/znHdV5Jv0Qkz9OJ15QyTSHR6gj/b3JCNK4pPhnhV615dR8SA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783692307; c=relaxed/simple;
-	bh=lwpPFFnyCPicH9+L5R29w0UNiY1SpI0uZyLIpIyzq4I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uiSTbxIQpMlj5YQpz35jsF+6HN3V0pgmIQE2klDFbKf9Q1ENfN2aell7pGgbiMqVauK4IHOyjswlRDRjyWP4nM90Mo6aFQPrjisRb1rILX+22w2K5keRpnlIecIIBd2lAjGNV5xvb58NywtisC/gIbNOOgjFmOMnSlLJoI/jqrU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=egQVyFmW; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54912EB859
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 14:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783692634; cv=none; b=GRwU/9vVwIXMqTgCx+T/7Y2uf8crJjG8CLPIM7W9QmuNHOPG0ZHecpgDwAKxl0hKlMquGJWLc/qhgCY1SfsbfiGABvXipy/7E2aXL4dJvEqtjVg9e2hkIx+uHHrr4E98HKjXgBwup5Iuib0s3GvhNAIIRQ8ROwtYOCPLLuuJDBE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783692634; c=relaxed/simple;
+	bh=ANjkctNcuMAImXrJGww5k/0C1OC8Sw8gShkszAutm/8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JeYRlOhAg2smFYDh13zqVhyZ6nWrewrT6NiS1tEPZ72UP1FfqBwFIGv8CwzZyCoB1PI/Vq4ZQBAKaq6f6YBQbj7CGmnGW/HDX1bpJ2SgQMv0CTr8IrHRaQbxz2fd6jzOj19HPIDIJ+czpzJ5TX2j58db8b0xL/PfxEJBocfzyw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Iv499Orm; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="egQVyFmW"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38096590070so217169a91.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 07:05:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783692305; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XFt469kql84UXYQ7tsGmIyd+9Zpdf3gmw1mt15Zd+LOZmh+ZXkwtzsSyqWpcfkwgPc
-         GpxnEpTbjPlDkhysaLCKit5JUukC8bjPo9YV6X4TGQlgIpAoAzSaRqurxLsAHIUs6NN9
-         V7NKD0xrVz+0Bno5Qp6pyb2NpfpAO+cD9nf/zAK7Irjlbw970zyiPqlVe8i3mQ/ILpZi
-         qs1g25vubHMZMIuvim+8d7uaegAYNUaj5rxXejsJx2usIbNwvuvL0BX5lJwRQVfwF/t2
-         +bw7WXl5bD5+X/z2CRUl8NwxsXe4TFYT86rm1G8Q+fJm8WfDefzsGaanVxFcaLyflhZO
-         ht4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lwpPFFnyCPicH9+L5R29w0UNiY1SpI0uZyLIpIyzq4I=;
-        fh=Vn1UVd3/kq2Amo+3hyC8ugWN4rNjAjUDCEe5aFORvlk=;
-        b=qVOlAtQQFjsTTsbpJPbUdIWy/bfIlCGgQCCFNRlrUyrg+cHC/B0TNFUd+O2AMadE30
-         gvPbsC5AIulwAJozyDfS/qBKvtLZMYI2ZMr768TKXjok3lukKg0bNyG4lr0YmsHUjZiF
-         jEqHrgOJ8gJj0TbcvRG22A63BRYYVSxxpCAIE4vN8FbsbiD+EPYrMXhRgz07yhSl/n/H
-         XRegzYpFT5xLNrOa1KanSk+UQrB/tugGrGTTEbj1X8MdgxwMmc3EKrN5VZM+QbkBUBTw
-         j4qXKrdGp/vzjekkxtt8+oRO0fCe4VGwNzbpLcwrwwMqWVehSNCWxhwfRgQYIr/Irgom
-         CB6g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Iv499Orm"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-493b966dd74so3854955e9.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 07:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783692305; x=1784297105; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lwpPFFnyCPicH9+L5R29w0UNiY1SpI0uZyLIpIyzq4I=;
-        b=egQVyFmWYNlVV3v78nnSOzK4zoR/Hxfpvvr7ctsq6PfDPcLN1dmEpD9RzN8bjJdOz0
-         RTpmwYCUHybd1PLRRYV328xtD4sGhVnOZTK8mJfiL1BMBJ735NcViXht7AhGZuhuEpDx
-         bPCFeZ2dM4Bbd7k0lMgWt2rnkbt6Oy2D3sGCVe3CNR+1bhN+Cw2R84/OUST5Jh8jk1Vo
-         1G8I/DxAh0cZNdKdJWAUXaJIK6uZniPHPS7N7bOXUdrC5TUcvFtgNV88y/XVe+cLp9KH
-         oF4ioJG6Qk+KFV57OfN3ppxlHDm1eDAkJybjKmSl++PteKjGK5uCbeQzJNAOHUCwf1BK
-         3Adg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783692305; x=1784297105;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1783692630; x=1784297430; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lwpPFFnyCPicH9+L5R29w0UNiY1SpI0uZyLIpIyzq4I=;
-        b=AJvVIU0JLdgOADfOspJQl27Atsk4pLygNdzrGbqSXNvBbObKpUeb9beVPrn48HNmhr
-         PJFd849cPZQG2FCaJGYz8jKcsct1/zikPoeGn+Ut8ZdegguwwmFEkQcsKVXSwnXU/oc+
-         MPkccvOMpSesccxWAM5pighUPaOLQDiy+yYxUY7fSJfW05xo34QUXLfCbNztkv7pxtjS
-         aFfYBI02dQlQNSH3hw9aRVeSVLlyg9JNaejc+isewFzjV6lZe9RQJquhKKXdNFndsyDJ
-         jtoA5+g6Ry/M/QSDKT9uTzMUKFXGNE8JnksvdMbSdNbX6StfKB1pOi8QpgYtQgrYcxmZ
-         7tgg==
-X-Forwarded-Encrypted: i=1; AHgh+RrOmXw0bLb4tveaiKHBR7hTsOrfT+VQBUkHhhr4VhXqUjPHEhY2jaBd8Ysl9hgBPoWrQMPbOUWMTCYiwy9M0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/XzFoxEmoNpEiLGg1WVtxYCxWPxsADsFChl66EENWEiVOZhcB
-	PZlc9u3W2ly7G3ZoNLNligpYGhe99Z8dq2iYc4zFBzyZ21qWcmpHrg19yopOEZyMciiXDEDvJ/N
-	VtAIQdAYhNepy/22IQLlraGXVJlSxh30=
-X-Gm-Gg: AfdE7cn1DU+qaqF3cjk41hGRVZm/8HRa0hsBLgTzcriUj+LcLOnk2YQ6tCpYdZe3yNa
-	ujbEMY3ZCSHYUOosIyS4dgdUQGUuBwsBAViSj1Ic+2jjZpss7LPNfqNiyClp5xxlmjg1Ps1Pmxd
-	34Of2O7/U2vaDvD643TmpTlR127LsjhAC7bpe9MbjYLV/M8LchotY5npNbd3VXmvB2uznCp/UGe
-	UP9bK9sEhfWOkrajFwMkJ/DmPXwPXvdTqLrrRYMSOSGeUh4K3zDkZH5rZSO0oCgH/aNXCpXqRJN
-	p0p1gBLqnPDsLvm2XYpDNA50fwY6jYL85wjN7xsgVClewHYqiNyoN9cYaY294wb+2mh1wziNhD9
-	Yb+LtGpeIgmQD
-X-Received: by 2002:a17:90a:d888:b0:36d:de94:f31 with SMTP id
- 98e67ed59e1d1-38a21af4f70mr6170112a91.7.1783692305278; Fri, 10 Jul 2026
- 07:05:05 -0700 (PDT)
+        bh=cqZ0l6LzRTJPGQYgWIe1BLhP428UFzV157W6gh6Hzlw=;
+        b=Iv499Ormvk/t9jG8PTMw0ZpCupyNlJ2A+k9Ha3LXTGUFV+Z2pNgPlNoGXczSSTeoQx
+         2MyCJxTJrpn0t7PQhHO6NHzs2JVXmXOHIkUQ+CIZwDAN71pY6nodP9B2laNxHx5ouGxw
+         cUBK0gs/9GDy0oL8VJI23HUif2zJvYkzANECGwkvglkyooXOE1mA0DlJqvRy9/q7tNTC
+         2xnbRNsP/d0ciCFSidchYcktyFpdPa6jmuZwiOZmWTSc5kVU+54EMpOxb61YIsif8Ema
+         PRTj2tptR6hpcJ20hnH/lhVWtF0iROK7LmWg9B/0ZytxK4GhuKYJZ7zv2hpxeqlLCQL0
+         D/Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783692630; x=1784297430;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cqZ0l6LzRTJPGQYgWIe1BLhP428UFzV157W6gh6Hzlw=;
+        b=PC7iZM3sqLQSqkEqEba7FtJrCSBb1h6sq4zWuTMVCT4q5I3TzkMj5XXn+a/lphDbwR
+         EVbTR1sfPLDRSX36flqvRgl0zB4kovo0QJtU+iWEgyJBAkIbfMSV1hgb+5fensh6PV0d
+         u3xRtr/FSdQV7JDKy6I/FGEGgzoUxPXmk1+VQyQrkkCeiAwu6gvyMjIBb0CxdLDUuJ5I
+         Ei/OJ1xIfV4kdk/V32jtmQf9bAzH3qil1ep9UmHUe4/kq8sEujpMYHaCY6f4bingoHAe
+         pEqrM/OwwcZMvKxlOwItjnTlr1WzY3ev02gfkNoD9wFA9XHKhdGQEJnkXSO7GCav9PlU
+         +Xqg==
+X-Forwarded-Encrypted: i=1; AHgh+Roh/YxiRzcswUPObwzsKB/1ss3pN/6KjmMVJYxsVH9+DY0GKl410EuvgyFbWZPJhrisKQlswNIHMjnY+pVuZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgyF023CxQdaa22Aj8sRxhPUKpoQWpavzoDZ0DFxwhXV2FKi7F
+	Kee6MWgrABgbQkT9TuWt2q+W8yZgANAqL4woHigMywLaOB16uC/pL0uJ8DkMQj8DzXU=
+X-Gm-Gg: AfdE7cn36uEyWA86RJhtLPQiLDuiSI7tB0nQSRKD3+iYjNAG8R0pQWxvM6PfU14Dhg9
+	cLW9Vd0jFbpxsGo9H9nhHWYkw/36wNvluWrOwag4yZGGnHkHQwhTtz7TjQ4Io9wf24XLcdzOPSq
+	6LQDIJNdTWOyQwTp2tzpHUZbx8f9F27K3gT9rN5R4VLx2I9DXKIQG5kb6NkQJNmP4LX4VJuXT4L
+	EWC2XNvqmhXagOlUMJw1Kniz33gCCxyPErfx6K5bLII/HyL13oRlfaddkNQPVJAfujV8TFAF/p4
+	vU7hXDYvySG1+Br/C4KTldiOHUTzb/y1o2OdRlezUm4lp6zIrLPnLVzZGQ73yb3POy4q99Ydl0L
+	aP2X6L9y0fq7SWld4oUDR0+RRCjIoBk3nc3OVFz1pQOV9K63DHKuFLyUMkxK85I/qfPzKjRlV8z
+	jEKU8beaezpgNTc8bwXNZFVOkZLLkFqzKokA==
+X-Received: by 2002:a05:600c:c3cf:10b0:493:f0f5:f2dd with SMTP id 5b1f17b1804b1-493f0f5f491mr42550385e9.21.1783692629973;
+        Fri, 10 Jul 2026 07:10:29 -0700 (PDT)
+Received: from [192.168.42.79] (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6e8844sm156565475e9.10.2026.07.10.07.10.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jul 2026 07:10:29 -0700 (PDT)
+Message-ID: <5b8b72b2-f832-4fb4-8fb4-9fd16b96b902@suse.com>
+Date: Fri, 10 Jul 2026 16:10:28 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260406095820.465994-1-ojeda@kernel.org> <20260406095820.465994-2-ojeda@kernel.org>
- <CANiq72=mCc3XQ-fpkxBdEVkjDyt4tKzrdCuWgqMkQOyqBMej3w@mail.gmail.com> <DJUY1ZYYW5K6.39XJ3ZV7DGZQW@garyguo.net>
-In-Reply-To: <DJUY1ZYYW5K6.39XJ3ZV7DGZQW@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 10 Jul 2026 16:04:53 +0200
-X-Gm-Features: AUfX_mzejtr7NyRI1E2Lyx1jl6eWlUosGgZmdyaCHgMs0L4rP9NPA4uFjFJCVKc
-Message-ID: <CANiq72m37+nKB_L5W3EraM5APnG+pEPemadF3sEt3fud_qKNpw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: std_vendor: add `likely()`, `unlikely()` and `cold_path()`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] rust: module_param: support bool parameters
+To: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
+Cc: mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
+ ojeda@kernel.org, linux-modules@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, atomlin@atomlin.com, boqun@kernel.org,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, linux-kernel@vger.kernel.org, Greg KH <greg@kroah.com>
+References: <20260411130254.3510128-1-wenzhaoliao@ruc.edu.cn>
+ <20260411130254.3510128-2-wenzhaoliao@ruc.edu.cn>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260411130254.3510128-2-wenzhaoliao@ruc.edu.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 10, 2026 at 4:00=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> It might worth adding a user for this too in v3. `warn_flags!()` would be=
- a good
-> example.
+On 4/11/26 3:02 PM, Wenzhao Liao wrote:
+> Add support for parsing boolean module parameters in the Rust
+> module! macro.
+> 
+> Currently, only integer types are supported by the `module_param!`
+> macros. This patch implements the `ModuleParam` trait for `bool`
+> by delegating the string parsing to the existing C implementation
+> via `kstrtobool_bytes()`. It also wires up `PARAM_OPS_BOOL` so that
+> the Rust parameter system correctly links to the C `param_ops_bool`
+> structure.
+> 
+> For demonstration and verification, a boolean parameter is added
+> to `samples/rust/rust_minimal.rs`.
+> 
+> Assisted-by: Codex:GPT-5
+> Signed-off-by: Wenzhao Liao <wenzhaoliao@ruc.edu.cn>
 
-+1, yeah.
+I've queued the patch on modules-next for v7.3-rc1, with the following
+minor changes:
 
-We will need to go back to v1 or similar (simpler now with the new
-MSRV), because if I recall correctly, I noticed at some point that v3
-wouldn't actually generate the same assembly, which is why I didn't
-apply it yet. I have to re-recheck and send a new one.
+* Added a short description of the motivation to the commit message:
 
-Cheers,
-Miguel
+  Support for boolean parameters will initially be used by the Rust
+  null block driver [1].
+
+  Link: https://lore.kernel.org/all/20260609-rnull-v6-19-rc5-send-v2-4-82c7404542e2@kernel.org/ [1]
+
+* Rebased the patch on top of '[PATCH v2] rust: module_param: return
+  value by copy from `value`' [1], which required removing the
+  dereference from '*module_parameters::test_bool_parameter.value()' in
+  samples/rust/rust_minimal.rs.
+
+[1] https://lore.kernel.org/linux-modules/20260601-modules-value-ref-v2-1-12ebbf0510c9@kernel.org/
+
+-- 
+Thanks,
+Petr
