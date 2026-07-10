@@ -1,123 +1,162 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1253A26296
-	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 16:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800B943C05D
+	for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 16:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783701494; cv=pass; b=hA6TUr8wUi2NGIidBZxUbYqz1iOVcX9iQ+/xbA9vrQx6Sy1b03Uiu33BfpINCtMCN9L6kXzAcOUt3RLxIPvsw9kJJ9o1wRqDz3n5txFQQQbBdR/P45Y3FiPk6nITd91yC+6dzwqlZ0PHLY6nMwi6ofLmDtEy7/8KsGlpFm8/D88=
+	t=1783701909; cv=pass; b=VFW8QQJJzunJT3u5SLpAjcyINdN6rZXHFnTJ8MijRXAEun8Q5sTzSw0TdYfQ+sSfzpx3gkPalYWH3SAedt2rVH8Iqfrgaf3VPy+m00r4nJPMPpwshdKgfTOHhRA3S9f4H8higIZA9hxLrvlR/OKMWdEzV/x9qZVZVdlrxVFz5SU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783701494; c=relaxed/simple;
-	bh=JVRshr3D8uTeHDQLRHhY+4FphdadiC/sXdk8hUweVzA=;
+	s=arc-20240116; t=1783701909; c=relaxed/simple;
+	bh=xCjy7nX78kVpVGwcDacIhBhg3InIXD0P3WacXKtfrO4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h4N12iWA+WRmZJf5ZuUbRElzyOC1AhLBWYVX96H3VNgQKY4TU5ERzGrveVUE9DwWkOfD6ishGMygTq4GJv8SQlpxd9pfsWuS1S8X/s929w8wq+rfyl6QQ842ySxHWk4FUbceOiMo/gthWOjs23vyCPYV87D4sqis/aEaqd49Uk8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lc1x+iNt; arc=pass smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=Q5G/laiZLcpzEpNwr7ZvEByVl3imfj/LXinfYy/tE++9ILon59tS0q1tK112Ztt3P0DQQqKIq4H9MvFo7MjGO2Bn6mGanetYDDizXyDE/cZIjFmXCFQgzPIayPw6BMZcxyAiOLj7NzrNfdD5jqbfz9nYE10eiaYHApMA0c5EWdg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mVO0d8fH; arc=pass smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lc1x+iNt"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-380a02c71e2so504772a91.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 09:38:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783701492; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mVO0d8fH"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-ca53979f8e8so110113a12.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 10 Jul 2026 09:45:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783701905; cv=none;
         d=google.com; s=arc-20260327;
-        b=P15QgWjT3JpBXujmIkBzdbLAxV6/uzpdZjpVvpw7ektxJWjaex6yZv+dZTX/lh9mZK
-         wkf7NIi9gSRHW/PaM5pIXaquKUQo1TG1xvxKNAZ92tRGm/osWIcFxOlnqSfrSNvQYtJL
-         ihjiiaBjVT/B3p9lS8x7MKECYUOtS3vceov1b7fxGSXMd8tFK0nB2qtawnmGheK1hWJG
-         zYx7wk2sUjUA7pTGUK9WJiA2LzG/F2ejrXKTHoMeflj0OMPg0o0ENyXD0ay2/cD+gWi7
-         NMVRAKUu4Wwi/g34LdvMxJ52hxLJOKfyP/LUE5475C5wtaR7JyIeDUh4CxnJ4dgZ77Jj
-         zVEw==
+        b=SwYfeOjIoWvTaMPrWrGi+T4jgl4Xr/6VITQ5U60wSxH9GcbkcycC62JLd2HpJqhkcL
+         aL6pbxYCmz1fiixJZgvIqcMlvpEPQvxC1MOss/FReiR2JaVoEAAN0YS+9AN6I/3NSF/5
+         7Tlc5StNBVhdmF6OucDOl0Jl6Fa1mcwDGmSqfKxT5WHGH568FBq13qz6HIAmCgI8a/wt
+         phrQ0VZtLpv+1LY70lNlonnuDfEA6cqNvYUR0vXDNxWphUul8RElv8zWBzeqEVG9GraU
+         MfRQQbq7acGmCyt+IUdYqbmTWLJ+xw6dBtT4tcX9BjKhXtYE0U67xrLswimwErCVJdSe
+         KoVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=gAkF/aCKp4VMrXUi9BS94W3tPkrfsCY3p7ZBeyWaneU=;
-        fh=qAUjHmMCc79nHRLLk4wPRym7vb7yaL4RCfFQUC1pIjI=;
-        b=oerC5EMeTd045AOhCa8ysPvvuPIVBeSBuMXtlK9AHk7Y6vQtMcQoxZyLF3E4Z4YKiu
-         SNNQxI4+e4GejG3IG5y05ubUXov+m1FRPybGUazSE86Bu9nx+vExp6QU8LKYBSosuzMe
-         8yIyRYlx8IKz2dHqT4suKHRQWkOSKim12X0P1XmK2+JDxac4IpzkpB8u+tLpTawgepd4
-         nFykl5oPyDTJngh1TNjf3J5DtFVGwaIHZJcGiDh4xzB8GINpgmGH4K6YpwH2tMfIRfbx
-         o5IcXy+LZeaLcj1HNla1/7aNPJsWJOEoZ+susvAl77f5QQXylc2DApWPFXdCb6rcSGIN
-         VLYw==;
+        bh=hBlwEABXvW44zvsPx6ksviQAF3K4tXM0YakCYODCtvI=;
+        fh=mbGr04USke0UPHZPwR3eEqXSniXk2iWi4Ou8/pkunBE=;
+        b=ENgYqo3YFoOFFVULNLnCLv2YZ9PQpr5Vvclib7Glaot0iqU8L5e7MvZT8sCNig2bAW
+         IyrGxS8NaYGbUi6KR1KT66i6fcKkMm7kciqlfhur5qyy58hjXqRaDlPXU4r3++nph8ez
+         TanCNomLPIf7N/ruQDxSq5ghWWazcHmUl+2kCOjCbMXqMSeYydzYlfwoO0dUlDBhRqaD
+         OezHyoUSUIepy77QKFD5L9FwY43WgvTr82bmyfweL+bdKlwqQIehrYLpPhbkrdAjIynY
+         VzjDzQtGXp2c3MgqbuKpStoKaTivCSLjK6CQcQEofbSBhbhHuFLGTN6k1pqUKJXVKLh1
+         dbWA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783701492; x=1784306292; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783701905; x=1784306705; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gAkF/aCKp4VMrXUi9BS94W3tPkrfsCY3p7ZBeyWaneU=;
-        b=lc1x+iNtCGzUKIi32emDcOzzulkHyDSHnrrhO6J0tQoVsYlsTRrr3aLsnZF8bF+Ntj
-         psxUgFkAPKA5t1M6kNnWQa1LOTB3neT1WvWZ5k2qwaFtIUnqG15mTmy/SrtDIscn3oOD
-         FdiyaPyxZPYPehkKqM8ncMEj8gGL7K0gnE8DOUni1xOrZoCsdQ1T0WfJSDfxTthRACd3
-         yw93QMp/5/IlutVTYCjZOQydr1bk5qXBIH8bNanllc4wiJTIHI4sb3OI+TrZR8iLaD7Q
-         R2N8UI1oa8cHNvXW3/r9H8qMjvP/qzSdAwYUlBbuGj5yOb7P6WXjDbOQsJ5qfVpglqRe
-         hwOA==
+        bh=hBlwEABXvW44zvsPx6ksviQAF3K4tXM0YakCYODCtvI=;
+        b=mVO0d8fH7l0iUdZfxMaQeXaQcug6AsjTvO8fkDsZvJP+hoNzJi6vA23dNzU3U1+rdp
+         hEZP1z2fCWOF0ZnmPGSfeBSA2lXet25HFHLQWg8wf6LItvChJkm3GdJzdGBL1CuAvrR1
+         FtPZQ0uHDb3s2v4IpWl6Iy7UzPl/bHjiNcfbfpVbr1S3uKfZNnn9lMqM42/iAoJpj49G
+         uG8BnGlCuPM4yC3QPPDMLmeRRPveXa0aeDCfAs0LKSfippe96vwBShrwB/RPJe52aXFe
+         mWNbArMer+IVhPWJ4wVrqK6oiIpMqCIKhMgeYcsBhTX2SySgZV0YVkrpZ1YFtRkkjVOW
+         K83w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783701492; x=1784306292;
+        d=1e100.net; s=20251104; t=1783701905; x=1784306705;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gAkF/aCKp4VMrXUi9BS94W3tPkrfsCY3p7ZBeyWaneU=;
-        b=qzsQhb7jjqfdnGBdQn2XJ0eAd0qk4f3YTo735kulknV9Xh4SAuTVTFwalvMpbPJJvh
-         IVrxHexBorQoWXcHGCYbIw6+3wAoxqs77TCIo5zEt/UVQHQwXxHR0MpjN0RjxvlPkyNl
-         9IvjphrshgfGkPSdcie37Fvjd/PK/HypS2j5M4wzbUbji8kE4c4p5qEBMcfpn5pmrioA
-         eESFk6HAaTiovNli8Yoc/HOlncnOMg4JWH0SyecM/YoUPnquKsVkS9iJLoQau0gmYIaQ
-         jAaoxV/FhedFEpzeMdLEZ7iLRXBI/UBcy5KQEgpDNRJiZ2RJ2RFl400is72UucSAxAbY
-         1A1g==
-X-Forwarded-Encrypted: i=1; AHgh+Ro6zVHuEu/mEeMxBZ/45Siy4tBvC4Fm7CPa4KM/AVds7jiSvbMGu8RXaulqsNXu3pV3yLpzfhPdjz1/WWXF8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ+UWx6zEYeWtZnzV6KZ0uQVgAMDMNoGHiwgpA7xrYgC8XxEti
-	JeR7fIysdNeOKUyng7zI2Qw/ONGR610SXTF7oDK1bp8LBM/4WKMkylVETj3d2Zu7ebevUGmn0AL
-	yBNjlxdEKgfZ4uv+UaiiCaxEyxKdXwsU=
-X-Gm-Gg: AfdE7cn6np2HRtwjmDPCsB+30wO3t/OCkVJJSH2cM/vequo12L7bwVcHXPAazpBchw+
-	dYcdA23SWR8Ci/Sra0AmN7qQuBchZH/UIiSZNU7m0ATQmlfeEngCmdhAbt9kFDj7tlPM3z5UHli
-	N3CGh8XIt2/nqm5VHGEd1Jp4TjzC2zC2xTdR5zeMXawGY6lKGc5gzAo+oP13mIxSHKR6+h38pZM
-	p7TLA9/2bEuq3p6x0XksbQBAQ7M66YllRpuVNcxv+l2RYfOBJXqCXmolxRr1M4FtdBAeUyVJIqs
-	5OysTNdpnbdPkbVpa5Tzs4TmnsgHr7uxbIFPkNrZVutsu95k68W8D8/JjFm3N/yq+ZbL57wGfyS
-	wLW5XE5LzJKjo
-X-Received: by 2002:a17:90b:33cb:b0:383:5a16:bd67 with SMTP id
- 98e67ed59e1d1-389419cdeccmr9049403a91.4.1783701492403; Fri, 10 Jul 2026
- 09:38:12 -0700 (PDT)
+        bh=hBlwEABXvW44zvsPx6ksviQAF3K4tXM0YakCYODCtvI=;
+        b=bIZiWU2Lyk2L6qkAQJQR1SgQfA3i77CfkSiTpJFuAhK+SyRNUtmQb8IPJSgeePPu6j
+         ou+CO4P4JV1r7U44O6IdyQe5XKkvd2zVuPDEYCghg4pqPDI0gFx1p6i7Ezfd6YerjBM7
+         bRRBDI/maVVBFNtjArrwn0t+HbucHcX9tKmEsqvfKKOWxsErvkcu/4YiZdP/Y6ahkLUd
+         nYYb1fXxi7jqXBDOkSj8VF1PPDw9gsY9CItqkeBWNGH2tmTcFIUwxdnGUnZcJnsXsMSP
+         +WBkjmGQX5DwjBoI+IHPVwwBgERW+w0AtV3b8Du6phH7HOSnravaSSW4sIOXoc94LTy+
+         i/iw==
+X-Forwarded-Encrypted: i=1; AHgh+RplUSTF8W5P1sKAcc/ZHSO+inPgoa7t93GwFpJavFjDU6QKZ0aYjDSGNLa/Aue7CnJV7EJbdPEwMyKmImTPdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFT1urnLsAUn+mcnoSIg3zuaPrVNl8MQoOCl4Ef8xvPDSDmVFP
+	vEM03F+LsRY24JlLkLuPbCwZNApSoZRV54ymn/oR8I/DFhbUyWBcu4Mt+omMJjtKj5K0Xryg/hm
+	g1XUaTm0IoD7cJ78l0xpuIEje/sATyX5l2bas
+X-Gm-Gg: AfdE7ckwIYxbsInwknwqFxlpOFUmoQky9QNKKaZ7n8uPmrpABRF9k3B43VyhBbbl7jS
+	i/D28u6LcHxXYLVOojo7xZmMus4dXNg6H0lvSp8JiDoKlxbPgrEBSFxJQY1FQnNPEyBeHTV19yI
+	1h+87LGnRfAo1RsYMSz1XxcMMHetEDudx19FB8biDIva1nTTn3hTip2dvz4+bL1Tt8g2hhvFU2t
+	cOvr+Oj7DEcQjHrD5QmIyVuU5bYHx7rJ5SPgyCbBSqPNE4FzhdEfxrtiact18NTYkShde3u8xIQ
+	I7oM8ZaZGDbl8XsrpplfefDs12WT2rV2RaKvUo87UAaeAQUwHIHJGC5WR7VVfsQKKz8LHFMn+fu
+	OgNMCutru0Q/Kx3/U+FSGlPI=
+X-Received: by 2002:a17:90b:4c0e:b0:381:1ffc:7d35 with SMTP id
+ 98e67ed59e1d1-38a2122c84amr8231942a91.6.1783701905167; Fri, 10 Jul 2026
+ 09:45:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
- <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com> <2026071054-hazing-antirust-8e40@gregkh>
-In-Reply-To: <2026071054-hazing-antirust-8e40@gregkh>
+References: <20260625231919.692444-1-ojeda@kernel.org>
+In-Reply-To: <20260625231919.692444-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 10 Jul 2026 18:37:59 +0200
-X-Gm-Features: AUfX_my9YcBRz0kiweVl9KycdjdMe6ao9zwzF5EJxVzzFaZ1ntmxSy90-ax-nt4
-Message-ID: <CANiq72kxNx6wdvAW1DjGm=JhPiqs74qwxfPQ6cRHxiuZUubBPQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] rust_binder: Add dynamic debug logging mask
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: jahnavimn@google.com, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+Date: Fri, 10 Jul 2026 18:44:52 +0200
+X-Gm-Features: AUfX_mz8DZWlL1QD9ua806LSMQX3ccUfIVTtJeIAxBxmg2orczQrnhnY_ukACyY
+Message-ID: <CANiq72=z6p0LH1Wq+_r4c9Zctvwmu-8m6rdw2Tufg_BuOGwpPg@mail.gmail.com>
+Subject: Re: [PATCH] rust: zerocopy: update to v0.8.52
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Tamir Duberstein <tamird@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
 	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	rust-for-linux@vger.kernel.org, Jesung Yang <y.j3ms.n@gmail.com>, 
+	linux-kbuild@vger.kernel.org, Joshua Liebow-Feeser <joshlf@google.com>, 
+	Jack Wrenn <jswrenn@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 10, 2026 at 4:59=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Fri, Jun 26, 2026 at 1:19=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Not an objection, but don't we have the equivalent of the BIT() macro in
-> rust?  I think that's what this should be using if we do...
+> Update our vendored copy of `zerocopy` (and `zerocopy-derive`) to v0.8.52=
+.
+>
+> Most SPDX identifiers have been added upstream at our request [1]
+> (without parentheses -- supporting them is an issue on the kernel side,
+> but it does already reduce our differences). The CSS one for `rustdoc`
+> was added too [2], but will be picked up in a later version.
+>
+> For `zerocopy`, enable `--cfg no_fp_fmt_parse`, which was added at our
+> request to avoid our local workaround [3]. This means one less difference=
+,
+> thus indicate so in our `README.md`.
+>
+> For `zerocopy-derive`, enable `--cfg zerocopy_unstable_linux`. This
+> allows us to use `#[derive(zerocopy_derive::most_traits)]`, a new feature
+> upstream added for us [4]. We noticed a minor doc render bug [5], which
+> will be fixed for a future version too.
+>
+> The following script may be used to check for the remaining differences:
+>
+>     for path in $(cd rust/zerocopy-derive/ && find . -type f ! -name READ=
+ME.md); do
+>         curl --silent --show-error --location \
+>             https://github.com/google/zerocopy/raw/v0.8.52/zerocopy/zeroc=
+opy-derive/src/$path |
+>             git diff --no-index - rust/zerocopy-derive/$path &&
+>             echo $path: OK
+>     done
+>
+>     for path in $(cd rust/zerocopy/ && find . -type f ! -name README.md);=
+ do
+>         curl --silent --show-error --location \
+>             https://github.com/google/zerocopy/raw/v0.8.52/zerocopy/$path=
+ |
+>             git diff --no-index - rust/zerocopy/$path &&
+>             echo $path: OK
+>     done
+>
+> Cc: Joshua Liebow-Feeser <joshlf@google.com>
+> Cc: Jack Wrenn <jswrenn@google.com>
+> Link: https://github.com/google/zerocopy/issues/3428 [1]
+> Link: https://github.com/google/zerocopy/issues/3457 [2]
+> Link: https://github.com/google/zerocopy/issues/3426 [3]
+> Link: https://github.com/google/zerocopy/pull/3416 [4]
+> Link: https://github.com/google/zerocopy/issues/3466 [5]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Yeah:
+Applied to `rust-fixes` -- thanks everyone!
 
-  https://rust.docs.kernel.org/kernel/bits/
-
-We should probably update the example in the `impl_flags!` macro so
-that people use it here too -- the macro already takes an expression
-so it works.
+Tags still welcome for a couple days.
 
 Cheers,
 Miguel
