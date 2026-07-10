@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784AD3DC4B8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2E53DD532;
 	Fri, 10 Jul 2026 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783693980; cv=none; b=qQ6Rr1yU5k3XaxL63iPlEOhwGQgAoRW9nYQYWwW37R0NXA7Ek7y5RruLg+hyPyVaNQbsPT2fAymOIqSmkHONwXGUEkseP4qd5cQIRGFxwSRVCw7pgr8gtry/W5c+FB85hFexvJhGroDgsZX+sc8YBrPQi7j6Dm0qVRU/KEdsWV0=
+	t=1783693980; cv=none; b=IcdLk1diy7y/AGk6dVkXXNZUqJmJVcnYY6DOtd51ccka6UYny2kXrtzpmp2OCmdyTWpz2EE2zCFjDaEhEP6yj7Mn/+DqK+46aKWQq5aRUfuS+bvCsUH1xngC7FtOuKtBT/dxmZIAqyMqqKcBVQgbDhNOEWmTiBBqjmUAE5LZiAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783693980; c=relaxed/simple;
-	bh=OmNO0G2XXcRuxjACAF5btwpa7DLJTFfb+SQZzi3FhwI=;
+	bh=Fj+4q0i9E6sV/EfSf177668feUv8hRm0VkvWCJs57U8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=chWWHPv2IBDbYdMNOj9rYTKtfWIBXvvHTq2Dt0mnf0ZMnywD8OtcKp6S2KPUuZFZK0G4gy5YiYksjlz2x+biFDmHZupsDEqsGKJDin3DbWhOkki3apNLX5L5WqgFvxTuylHQs63S/HdH5MBRpWyB7JWpaXdLpiuXiLbRWBA7wt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYrJc5OX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gXZi4zoC1S5TGKoCLIao42utMTqoscgmDmvW0v8b8c5oRqnnffmkEL9XJMCXB5XXoHf8cuMTWSuu4NaVSaHHkrIzYN2cb9M9pIjrtnxMqClr0rEZoU7TM7tfKJtsChta/DrmLtE95Od4iMHeO47UWpvEJdKgzPGqUW6hmFAc76c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EObl982v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYrJc5OX"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A565C2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EObl982v"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 04B0BC4AF0D;
 	Fri, 10 Jul 2026 14:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783693980;
-	bh=OmNO0G2XXcRuxjACAF5btwpa7DLJTFfb+SQZzi3FhwI=;
+	bh=Fj+4q0i9E6sV/EfSf177668feUv8hRm0VkvWCJs57U8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EYrJc5OXoDCS68gCyFPanK62ydiapmJEFUdvs4LTxFKJxK+x1ehTX7sd5ZDgE8i7v
-	 WswaMWl9OYJhlUYCRwM8eFfM8Wn0C226/qPqF/M6RIDCKZw2F2t2A9Ec/vcCiX3WVS
-	 R7KWuKltOx2kXPmZXifvl8XwVfe3t6RqI4oy2LQ6t/fsEf9CmjOBtN4gTN7KMKG+zU
-	 dJ/sMTzNDYtcRLDmiuD1z+uUSh0ftYzxv3WMHl55bfQ52Q4QIcw4jCVkKFAc0mAKjR
-	 fFZFilMSzloXhF4A2ImC8qHHnWNxQ4pahLxjcuHfALOH1mOyQgqz6ieXhhT/lFIX19
-	 Rhdx4poPaST+A==
+	b=EObl982v5yOyuZdJKxzfioOwsizpuEVQpGEzrKu74PGk9sAox2u3H/1kyn4k9T+m2
+	 FGaW4rn3NkXfJmTBH0VlcmV0bnS5tTJmUgkfbMNX5wHLnr5i1e3kYo+tOlvdlZ9Q/+
+	 pgKhL2/ryxAXgTyabaAivE7DOskD/uB+KmcrybNiF4aF/eOP7wkbPirej+h2Rskddu
+	 LetoBPBWIThZbV0nZmrwCPRulErwDrkddgLAWqCrKLA6Ip70+SacRxUeZnkz4oZVv6
+	 herk7YTSk7LVyphaKREcY6ilZ5P7PxklJaVvaRVT4skOkp/SrH3zozbrC46rVOK9Q+
+	 4cQ+JQgMno++A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 068EAC44506;
-	Fri, 10 Jul 2026 14:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCE5DC43458;
+	Fri, 10 Jul 2026 14:32:59 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Fri, 10 Jul 2026 14:32:58 +0000
-Subject: [PATCH v2 7/7] rust_binder: Implement
- BINDER_DEBUG_DEAD_TRANSACTION
+Date: Fri, 10 Jul 2026 14:32:56 +0000
+Subject: [PATCH v2 5/7] rust_binder: Implement
+ BINDER_DEBUG_FAILED_TRANSACTION
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-rust_binder_debug_mask-v2-7-2846410e3ae6@google.com>
+Message-Id: <20260710-rust_binder_debug_mask-v2-5-2846410e3ae6@google.com>
 References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
 In-Reply-To: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -60,11 +60,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783693978; l=12052;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783693978; l=2497;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=/yUSMdRwz5YpDWDgyZQe6oyUnLIUP1mYxzl8tnYI+0w=;
- b=3Tbv0Gx90Nqf0NjUIoH8CF+knO4x9P9cSPfN/LcM9Q6Ks1X3fJh1PhQYEMFXuQcFzcmCtQbFC
- MHI9SbWBsGmCZYt0CM+Nq7NDjaY/IfrdIQvqapBGyl6AhU2CrJrALnX
+ bh=3CWbC+qTkLa0h08bqhh/+fob2zZIrU6rdQ2RDF8q2v0=;
+ b=DTBz4DkrW1XrBoisPt3FrZirHrWqhl3c0fkgJDTmHHPEXAHoCPi/usYlnWZ8nOOEwdCDOjlaf
+ rDihzyqFi7kAWC6s0PRvoDKFzWQC8JA+JJ6YD6IVWbNRMWdiiLg2+4P
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -75,310 +75,67 @@ Reply-To: jahnavimn@google.com
 From: Jahnavi MN <jahnavimn@google.com>
 
 This adds dynamic debug logs for:
-- Releasing active transactions during thread stack unwinding.
-- Discarded transaction error codes when a thread exits.
-- Undelivered transaction acknowledgments (TRANSACTION_COMPLETE)
-  upon thread exit.
-- Undelivered process death and freeze notifications when processes
-  exit or die.
-- Undelivered transactions canceled due to target process death.
-
-We now store the process PID in `ThreadError`, `DeliverCode`, and
-`FreezeMessage` to ensure the correct PID is logged on cancellation.
-This is necessary because `cancel()` runs from background `kworkers`,
-which would otherwise print the wrong PID.
+- Failed replies, target process deaths, and error code deliveries.
+- Detailed transaction failure diagnostics (including sender/receiver
+  PIDs, TIDs, transaction IDs, buffer sizes, and error codes).
 
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
- drivers/android/binder/freeze.rs           | 24 ++++++++++------
- drivers/android/binder/node.rs             |  9 +++++-
- drivers/android/binder/rust_binder_main.rs | 14 ++++++++--
- drivers/android/binder/thread.rs           | 44 ++++++++++++++++++++++++------
- drivers/android/binder/transaction.rs      |  7 +++++
- 5 files changed, 78 insertions(+), 20 deletions(-)
+ drivers/android/binder/thread.rs      | 21 ++++++++++++++++-----
+ drivers/android/binder/transaction.rs |  8 ++++++++
+ 2 files changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index 70b192ec199a..8bc0bff54d81 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -60,6 +60,7 @@ fn allow_duplicate(&self, node: &DArc<Node>) -> bool {
- /// Represents a notification that the freeze state has changed.
- pub(crate) struct FreezeMessage {
-     cookie: FreezeCookie,
-+    pid: i32,
- }
- 
- kernel::list::impl_list_arc_safe! {
-@@ -73,8 +74,8 @@ fn new(flags: kernel::alloc::Flags) -> Result<UninitFM, AllocError> {
-         UniqueArc::new_uninit(flags)
-     }
- 
--    fn init(ua: UninitFM, cookie: FreezeCookie) -> DLArc<FreezeMessage> {
--        match ua.pin_init_with(DTRWrap::new(FreezeMessage { cookie })) {
-+    fn init(ua: UninitFM, cookie: FreezeCookie, pid: i32) -> DLArc<FreezeMessage> {
-+        match ua.pin_init_with(DTRWrap::new(FreezeMessage { cookie, pid })) {
-             Ok(msg) => ListArc::from(msg),
-             Err(err) => match err {},
-         }
-@@ -140,7 +141,14 @@ fn do_work(
-         }
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        binder_debug!(
-+            pid=self.pid,
-+            DeadTransaction,
-+            "undelivered freeze notification, {:016x}",
-+            self.cookie.0
-+        );
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-@@ -264,7 +272,7 @@ pub(crate) fn request_freeze_notif(
-         }
- 
-         *info.freeze() = Some(cookie);
--        let msg = FreezeMessage::init(msg, cookie);
-+        let msg = FreezeMessage::init(msg, cookie, self.task.pid());
-         drop(node_refs_guard);
-         let _ = self.push_work(msg);
-         Ok(())
-@@ -285,7 +293,7 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
-         };
-         let mut clear_msg = None;
-         if freeze.num_pending_duplicates > 0 {
--            clear_msg = Some(FreezeMessage::init(alloc, cookie));
-+            clear_msg = Some(FreezeMessage::init(alloc, cookie, self.task.pid()));
-             freeze.num_pending_duplicates -= 1;
-             freeze.num_cleared_duplicates += 1;
-         } else {
-@@ -300,7 +308,7 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
-             let is_frozen = freeze.node.owner.inner.lock().is_frozen.is_fully_frozen();
-             if freeze.is_clearing || freeze.last_is_frozen != Some(is_frozen) {
-                 // Immediately send another FreezeMessage.
--                clear_msg = Some(FreezeMessage::init(alloc, cookie));
-+                clear_msg = Some(FreezeMessage::init(alloc, cookie, self.task.pid()));
-             }
-             freeze.is_pending = false;
-         }
-@@ -353,7 +361,7 @@ pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader)
-         *info.freeze() = None;
-         let mut msg = None;
-         if !listener.is_pending {
--            msg = Some(FreezeMessage::init(alloc, cookie));
-+            msg = Some(FreezeMessage::init(alloc, cookie, self.task.pid()));
-         }
-         drop(node_refs_guard);
- 
-@@ -433,7 +441,7 @@ pub(crate) fn prepare_freeze_messages(&self) -> Result<FreezeMessages, AllocErro
-                 continue;
-             };
-             let msg_alloc = FreezeMessage::new(GFP_KERNEL)?;
--            let msg = FreezeMessage::init(msg_alloc, cookie);
-+            let msg = FreezeMessage::init(msg_alloc, cookie, proc.task.pid());
-             batch.push((proc, msg), GFP_KERNEL)?;
-         }
- 
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index 898412cfddd9..b2d9d518e32b 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -1128,7 +1128,14 @@ fn do_work(
-         Ok(cmd != BR_DEAD_BINDER)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        binder_debug!(
-+            pid=self.process.task.pid(),
-+            DeadTransaction,
-+            "undelivered death notification, {:016x}",
-+            self.cookie
-+        );
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 995e6131bb77..31213b67b206 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -222,6 +222,7 @@ fn arc_pin_init(init: impl PinInit<T>) -> Result<DLArc<T>, kernel::error::Error>
- struct DeliverCode {
-     code: u32,
-     skip: Atomic<bool>,
-+    pid: i32,
- }
- 
- kernel::list::impl_list_arc_safe! {
-@@ -229,10 +230,11 @@ struct DeliverCode {
- }
- 
- impl DeliverCode {
--    fn new(code: u32) -> Self {
-+    fn new(code: u32, pid: i32) -> Self {
-         Self {
-             code,
-             skip: Atomic::new(false),
-+            pid,
-         }
-     }
- 
-@@ -257,7 +259,15 @@ fn do_work(
-         Ok(true)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        if !self.skip.load(Relaxed) {
-+            binder_debug!(
-+                pid=self.pid,
-+                DeadTransaction,
-+                "undelivered TRANSACTION_COMPLETE"
-+            );
-+        }
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
 diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index d7038b58c2ad..b93c37ad6845 100644
+index 54b98efdd0ec..d7038b58c2ad 100644
 --- a/drivers/android/binder/thread.rs
 +++ b/drivers/android/binder/thread.rs
-@@ -281,7 +281,7 @@ struct InnerThread {
- const LOOPER_POLL: u32 = 0x40;
+@@ -1315,11 +1315,22 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
+                     }
+                 }
  
- impl InnerThread {
--    fn new() -> Result<Self> {
-+    fn new(pid: i32) -> Result<Self> {
-         fn next_err_id() -> u32 {
-             static EE_ID: Atomic<u32> = Atomic::new(0);
-             EE_ID.fetch_add(1, Relaxed)
-@@ -292,8 +292,8 @@ fn next_err_id() -> u32 {
-             looper_need_return: false,
-             is_dead: false,
-             process_work_list: false,
--            reply_work: ThreadError::try_new()?,
--            return_work: ThreadError::try_new()?,
-+            reply_work: ThreadError::try_new(pid)?,
-+            return_work: ThreadError::try_new(pid)?,
-             work_list: List::new(),
-             current_transaction: None,
-             extended_error: ExtendedError::new(next_err_id(), BR_OK, 0),
-@@ -452,7 +452,7 @@ impl ListItem<0> for Thread {
- 
- impl Thread {
-     pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
--        let inner = InnerThread::new()?;
-+        let inner = InnerThread::new(process.task.pid())?;
- 
-         Arc::pin_init(
-             try_pin_init!(Thread {
-@@ -1154,6 +1154,12 @@ fn unwind_transaction_stack(self: &Arc<Self>) {
-             let mut inner = thread.inner.lock();
-             inner.pop_transaction_to_reply(thread.as_ref())
-         } {
-+            binder_debug!(
-+                DeadTransaction,
-+                "release transaction {} in, still active",
-+                transaction.debug_id
-+            );
-+
-             let reply = Err(BR_DEAD_REPLY);
-             if !transaction
-                 .from
-@@ -1354,7 +1360,10 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
-         // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
-         // could this happen?
-         let top = self.top_of_transaction_stack()?;
--        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
-+        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(
-+            BR_TRANSACTION_COMPLETE,
-+            self.process.task.pid(),
-+        ))?;
-         let completion = list_completion.clone_arc();
-         let transaction = Transaction::new(node_ref, top, self, info)?;
- 
-@@ -1412,7 +1421,10 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
- 
-         // We need to complete the transaction even if we cannot complete building the reply.
-         let out = (|| -> BinderResult<_> {
--            let completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
-+            let completion = DTRWrap::arc_try_new(DeliverCode::new(
-+                BR_TRANSACTION_COMPLETE,
-+                self.process.task.pid(),
-+            ))?;
-             let process = orig.from.process.clone();
-             let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
-             let reply = Transaction::new_reply(self, process, info, allow_fds)?;
-@@ -1453,7 +1465,10 @@ fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> Bin
-         } else {
-             BR_TRANSACTION_COMPLETE
-         };
--        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(code))?;
-+        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(
-+            code,
-+            self.process.task.pid(),
-+        ))?;
-         let completion = list_completion.clone_arc();
-         // Not notifying: Reply to current thread.
-         let _ = self.inner.lock().push_work(list_completion);
-@@ -1692,14 +1707,16 @@ pub(crate) fn release(self: &Arc<Self>) {
- #[pin_data]
- struct ThreadError {
-     error_code: Atomic<u32>,
-+    pid: i32,
-     #[pin]
-     links_track: AtomicTracker,
- }
- 
- impl ThreadError {
--    fn try_new() -> Result<DArc<Self>> {
-+    fn try_new(pid: i32) -> Result<DArc<Self>> {
-         DTRWrap::arc_pin_init(pin_init!(Self {
-             error_code: Atomic::new(BR_OK),
-+            pid,
-             links_track <- AtomicTracker::new(),
-         }))
-         .map(ListArc::into_arc)
-@@ -1726,7 +1743,16 @@ fn do_work(
-         Ok(true)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        let code = self.error_code.load(Relaxed);
-+        if code != BR_OK {
-+            binder_debug!(
-+                pid=self.pid,
-+                DeadTransaction,
-+                "undelivered TRANSACTION_ERROR: {code}"
-+            );
-+        }
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
+-                pr_warn!(
+-                    "{}:{} transaction to {} failed: {err:?}",
+-                    info.from_pid,
+-                    info.from_tid,
+-                    info.to_pid
++                binder_debug!(
++                    FailedTransaction,
++                    "transaction {} to {}:{} failed {:?}, code {} size {}-{}",
++                    if info.is_reply {
++                        "reply"
++                    } else if info.is_oneway() {
++                        "async"
++                    } else {
++                        "call"
++                    },
++                    info.to_pid,
++                    info.to_tid,
++                    err,
++                    info.code,
++                    info.data_size,
++                    info.offsets_size
+                 );
+             }
+         }
 diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index f058d3d50eb7..c8f2b3e2ef57 100644
+index 2643cca4a7d6..f058d3d50eb7 100644
 --- a/drivers/android/binder/transaction.rs
 +++ b/drivers/android/binder/transaction.rs
-@@ -532,6 +532,13 @@ fn cancel(self: DArc<Self>) {
-         if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
-             let reply = Err(BR_DEAD_REPLY);
-             self.from.deliver_reply(reply, &self, None);
-+        } else {
+@@ -448,6 +448,14 @@ fn do_work(
+         } else {
+             // On failure to process the list, we send a reply back to the sender and ignore the
+             // transaction on the recipient.
 +            binder_debug!(
-+                pid=self.to.task.pid(),
-+                DeadTransaction,
-+                "undelivered transaction {}, process died",
-+                self.debug_id
++                FailedTransaction,
++                "transaction {} to {} failed, fd fixups failed, size {}-{}",
++                self.debug_id,
++                self.to.task.pid(),
++                self.data_size,
++                self.offsets_size
 +            );
-         }
+             return Ok(true);
+         };
  
-         self.drop_outstanding_txn();
 
 -- 
 2.55.0.795.g602f6c329a-goog
