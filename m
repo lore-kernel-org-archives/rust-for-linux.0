@@ -1,155 +1,112 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A1737A83C
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 10:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783765745; cv=pass; b=YQH/sqVs8ls3+M+gBu9yUrRgz2qpZM01FT6qzg5QF+okgnbbRu/KEtMTk/mvmZ6+YxKR+pA8Q+zPjNqMhAhBxehRODTJrjaepn49YnxtuAQElLMYI+9NHx5Gbt+TfWJw4bFpbBcsFcBYPGA7fsUMGySmxGS5d7NeEZvIKhdM+Us=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783765745; c=relaxed/simple;
-	bh=v7N7WBZIoji8pk3g78CbdkF7r0kKnU9EWaTwbfXpxQw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ihZ+0G//wDhYQNZK2VSxHFFg9/okIhq5X9DNZIFZ0Egqy8AV9znLYHLecBjNjFSNbBhIQmTsgp6UBSrgxeRcmdhjazWbebGfctR4WeHS9LLsEO3Y7fP4ErQTI1TMOLTmkE8VreX7+2o6McAyqOm3jqp8Zl+hTBhhxSyGzYfYMpo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vshMRqpe; arc=pass smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F89379C57
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 10:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783765964; cv=none; b=mycLui+WDlxigszXQlBBlfKFqvWZQP7l0Asppz/HI5YKaAwGUmJIC36uMp7vxJwVXNyZapar21ELkQFSon1mK73eno+vyCl1nuldbZ/PKWb2sMzMOH5NtP2d7yJlKFOSqp1iQ8mZsduUoE/Sdkbc7ug8vvFxnqNM/fL8X396ipc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783765964; c=relaxed/simple;
+	bh=ujXvH+QUggs2BjDxPVxIjBSKMpGsHF/e6uAyGUcwkjI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MyQc6eiqRACBYcntokfwYFUnzOHmRDymQ+xYfh+1gNlF9zz0VacrIKnoYDLKQsE607taAgg2QoYc43vxtNcYDTPNC7cmjHcE81vjV6NrCPEmFkA48YiEoGPR0nIBa37a3BwIUFvgqknY1mgAAA/NjKxhzNA9HdLZRRatYlU1wkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L29GElRT; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vshMRqpe"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cacef7d299so42685ad.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 03:29:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783765743; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DW7mcGx9zh5Z8SpCRBDSSTYdmYPPi/KftPLgG+tAdZade9r77Qw2WCKwkxhUE3cNqw
-         Y+ClO3oXYsCVvUINlIoS7v9uaYlGYPpAPp515kn8q/0B0N3KJnuYUnp1jwINaAQ9fgUE
-         DtXDd8RFzWdbAYf8DypUVATmLmbuL5eWffvWghjGhMzSj6Ehpf/22EuiyDyhbs5A2E/p
-         YIGtOnFOcoaDJkSIf+ryWnyAUK9kucs/2Kfk9hD8G7rKoPg3QUPqGGiXz5YuxrdMcYcW
-         Q4bH4frtaE4C9QgRCyyoQ2ps2DAooZc4wherikXFo9bf5+awDyj0bCDKm8eCAbLJp0LF
-         F4dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oV/kudkJykLXrPCFSfzrdIQB6KqnLT0upf2KM2vQErw=;
-        fh=SFDVXuJpwpsnDSobTik54oaYyHdpk59tCSoy+MgEwwM=;
-        b=GlAEaCJxCQ4wWC2bD3DATVr0Y1LUpVDkhWBbHO+dq5txJ84V4WZPyn0zj0O1GKGj2J
-         cNkUnE+dS+w5fkwZuIwmMWVALK7IcT+giR+knmB9WKCXJVZ02EDMZt4e+pHljZ9d6pjv
-         MoNB8NLDEQjIEL2vj0x3DhVbKM5h26SULCETYp+d4qBd3DLVFBdVMd4Ur1Ql7qXk8u7B
-         Uzw+0nRr8A2xDTNwEgWlbOXkbB5YK5BGOwjFRPTkvunFw603NaKGlO232qzT+TCgvGo1
-         Pm7WTp9LLlZPPftPa8UflOgRnRVi8Wudh6QKXpnc0b8OslBt5wrmXMBR2M9JvrBWDrvG
-         4iwQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L29GElRT"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493bd52dae6so10691525e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 03:32:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783765743; x=1784370543; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oV/kudkJykLXrPCFSfzrdIQB6KqnLT0upf2KM2vQErw=;
-        b=vshMRqpewM1gdglf8iXrCqOh0oo9pvn3GSefHNBlLTcBGMsfOACdC478iNUm0OLpa0
-         ZqoIf6VjOvPPGH/+u4rJJGzZRDuii9QzP8OiKIgLb/BEi49knlFvPEo4BJrvNTciGXtC
-         6R/0A3UfZFCh++GKGKdq5BMrbCvAuSKQgct45CutnsTxJVs+rTxKuMubfWZoIfpTYTZW
-         Xqa0n/N0zQL3VNImAqGa6NAjALYrAVGS85PQCKJ45ARXMCvLidPDBMLQm11UdvfWkV3u
-         Ugc56GwfoqS8r2e0bKW8HZJeVyD+wy6uuZ78z3R3Lx0/qW0Uvb84P1xubbITwxHz5RZm
-         KUiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783765743; x=1784370543;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1783765961; x=1784370761; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oV/kudkJykLXrPCFSfzrdIQB6KqnLT0upf2KM2vQErw=;
-        b=dLT6GNhuswWaVqvrmpNyFQ4JuZRBbnTodPP97x2ySuVJtc48chMqqEPoumgaklU/gl
-         BleevublJFrgL4My7dDRptlhqa0ojkUPgT9rAGsV1ndE77o4RcjDIjCNcidcFHXcBjtN
-         kxzpCFGnsT3pZBfnL0UP208h8u0p4MPw8Ku/NLYkzin0nm+PqtHjZuKZMghhx9tUqY0P
-         bP4G/JULdrPr71c0qiR0o5NZ4z1dbghkqNrVXzpKsA2TWtzuL32ouTsu1JR/Hohr/30b
-         uXFqZU2Rj30jtpbAFtIjcrt7agnoU6ITzborqXkVQTHfhY/7n1rlyciOcs+qDLC1CcYa
-         Cwow==
-X-Forwarded-Encrypted: i=1; AHgh+RrFf4ya3gYs4J892pdMqLJae9KbEYjdsS2GA48ZpudGVNkA+HMZksK/JKtLEDOzetQiwS7awNm4q/ioPsFq0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSxJ+dq/o+45esJTmanoqBdaZ4VGsSxYYi5q0Qypv58AIstw2d
-	+vV+bSJYtkClQF38ZJlG6yACzKkMdIcxfKZF5iX3NgmBbcZj1lNpc14fvP0WLQKwpM03sPDf0pt
-	mGq3lAkHjyO0/GX5v7JvUbJ6VobShevb6uxSQ2528
-X-Gm-Gg: AfdE7cm9oB+QJFIGeUMrf6639S8P8jzxb9fwrPyAzdW6HP8Re2iauB5l63sW/FpV68C
-	aKIV4HFLMY5doSNA+34qwRrA2oGC3idQdDWubwY4NUxwLdQZsdZinFWSA2cmV6BUxaQLcsd29BF
-	7Q98w5c126Ag2XHYb2MX1EqHvH/7YR1GOpZaM/F8wOPYBWMC37RrOkzBiEmmrWNMw+BgPwuHa+h
-	MsPeLHT377PDdbm7O0vS4hSPnvwNc6OGQ+5nao3FT/KP1F0ICBkSI9AlwU8CZmzkP/o1ejzZsno
-	4MvjNSSy
-X-Received: by 2002:a17:903:2a85:b0:2c9:d89f:fd98 with SMTP id
- d9443c01a7336-2cea1d79204mr2038715ad.1.1783765743095; Sat, 11 Jul 2026
- 03:29:03 -0700 (PDT)
+        bh=JoGEUVDo62zcdMtD5EgM++hSQT8LOC5CKG+rJ8zo+lU=;
+        b=L29GElRT+7+Bqmwtw0WRbtKhpaN+8z/6Vg+sfT/jO4pGoQ1wNEtYOXe7oq4mKc+n3c
+         xFvXbIj7RLYZCfIK2ZD10YLgobp4fHDGhJQCMerqqGBUTp4gg9pMc8uI1JrgZj+esA22
+         uaRJUIdyEnOFCsGLKZIMznQ9enbZGgtL9r9EC1sE96JGHQuuYextMMXsOV5oZIAG6EBF
+         rljA7VBTGqHDCLXQoX5Gm8+J2NhzfGhHZmi/021hLo2uv2K60LcieWDXnS7vqgXTDJvb
+         mrr0q7h/rGKzn94Hxgetmf/geP43+assra5mqp7OsqPkYNJ4nnXtyuhviMVlqym+yb1m
+         hqwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783765961; x=1784370761;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JoGEUVDo62zcdMtD5EgM++hSQT8LOC5CKG+rJ8zo+lU=;
+        b=pP4dIpkpGooJVxrUEpZaEjmD8Kiey0w19YquehU2CvuucdmPD0ShnSd94dKS7vjuGw
+         QxN1jxP2Rp+bu9w2tUC2KnALxZyTN5PM3FBTTHgOjLp0Jg5qU3s0h+NQI7rKkQcU4Q58
+         44v72HNwMeZYkrDqXuIqUjS/hjUpUzruSRllA7YGlsh7W7qGK0t0OqjbxnS0HmjWcUBa
+         VAvKpWt5upEzhV+kkJFHIdM7q/MhXbJJ7k9IVHI6QILC0aVZzYdnu4P3HChREjjZzFYV
+         7f0e7chw4N8cJ21PKAoyUv27iWHNvtHoRFm5NckmHKLGaO0Ys7qehUz4ALpTvwIBdh/0
+         kfkQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrvS3YZg1Qptp8Gm72ryyE1hI+AkYYeZnLb1c0n1fgvDmIdLvegj3y48xssw2epfsVRmomYCLuXtRpAxozwsA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzqwAsoDwFN9zwE5UnvvCmVdggJPrtczZzz7qqGbidfgwJz+4u
+	/s58I1Qvx3hFKrrxZ6UsGxjNjlI+euy1k2hR3LchkCSXYdz5/W7hpO/cLvdEC41BJ+mR31xrTMa
+	d9SUbeZrL9R6VHVbGUw==
+X-Received: from wmht21.prod.google.com ([2002:a05:600c:41d5:b0:493:aecc:773c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f8a:b0:492:43d2:9e6e with SMTP id 5b1f17b1804b1-493f87e9bd4mr20378535e9.9.1783765961023;
+ Sat, 11 Jul 2026 03:32:41 -0700 (PDT)
+Date: Sat, 11 Jul 2026 10:32:39 +0000
+In-Reply-To: <alGOptAAFXuHscmG@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com> <2026071046-musty-subfloor-53ec@gregkh>
-In-Reply-To: <2026071046-musty-subfloor-53ec@gregkh>
-From: Jahnavi Nitheesha Mandava <jahnavimn@google.com>
-Date: Sat, 11 Jul 2026 15:58:51 +0530
-X-Gm-Features: AVVi8CdVA0e9M39pTo7f9PmDS5PArNQHHOoIpLiTjQMgExKbzuAD-FSltKzzmyE
-Message-ID: <CA+ba3EP9PO3ccBu1VK53WeR_2cT9MaGC_5dPcy9QKnvHBXX5fA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] rust_binder : Implement dynamic debug logging mask
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260707-upgrade-poll-v6-0-4b8fae7bf1d9@google.com>
+ <20260707-upgrade-poll-v6-2-4b8fae7bf1d9@google.com> <alGOptAAFXuHscmG@tardis.local>
+Message-ID: <alIbx8oav01VLarX@google.com>
+Subject: Re: [PATCH v6 2/2] rust_binder: move (e)poll wait queue to Process
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Christian Brauner <brauner@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jul 10, 2026 at 8:31=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Fri, Jul 10, 2026 at 02:32:51PM +0000, Jahnavi MN via B4 Relay wrote:
-> > When a user-space application sends malformed data or makes a
-> > lifecycle mistake, the driver rejects it with a generic error code
-> > (like -EINVAL). Without internal logs, the driver acts as a
-> > "black box," forcing developers to guess which check failed.
-> >
-> > In the legacy C Binder driver, this issue is solved using a dynamic
-> > debug_mask module parameter that toggles verbose logs for specific
-> > subsystems. This series brings the same critical capability to the
-> > Rust Binder driver to provide developers with clear, real-time
-> > feedback.
-> >
-> > Instead of rebuilds, reboots, or guessing:
-> > - Developers can enable logs instantly on a running device by writing t=
-o
-> >   `/sys/module/rust_binder/parameters/debug_mask`.
-> > - It prints the exact reason for failures (such as alignment errors,
-> >   mismatched call stacks, or invalid handle references) directly into
-> >   `dmesg`, reducing debugging time from hours to seconds.
-> > - It protects system logs by keeping logging off by default and only
-> >   enabling it when developers are actively troubleshooting.
-> >
-> > Based on top of:
-> > https://lore.kernel.org/rust-for-linux/20260707-upgrade-poll-v6-0-4b8fa=
-e7bf1d9@google.com/
-> >
-> > Signed-off-by: Jahnavi MN <jahnavimn@google.com>
->
-> Patches 5 and 7 did not apply to my tree, can you rebase against the
-> char-misc-testing branch and send just those?  Other ones are now all
-> queued up, nice work!
->
-> thanks,
->
-> greg k-h
+On Fri, Jul 10, 2026 at 05:30:30PM -0700, Boqun Feng wrote:
+> On Tue, Jul 07, 2026 at 10:43:13AM +0000, Alice Ryhl wrote:
+> > +        {
+> > +            let poll = loop {
+> > +                if let Some(poll) = this.poll.as_ref() {
+> > +                    break poll;
+> > +                }
+> > +
+> > +                let poll = PollCondVarBox::new(c"Process::poll", kernel::static_lock_class!())?;
+> > +                // Reuse our existing lock to synchronize callers initializing.
+> > +                let _guard = this.node_refs.lock();
+> > +                this.poll.populate(poll);
+> > +            };
+> 
+> Note sure whether this lock is needed? SetOnce::populate() should be
+> atomic, i.e. only one populate() would win?
+> 
+> Also seems we should have a SetOnce::as_ref_or_populate(&self, default:
+> T).
 
-Hi Greg,
+I'm taking this lock because I want to ensure that losers only loop
+once. The problem is that just because you lost the race in populate(),
+it's not guaranteed that as_ref() will return Some on the next
+iteration, since the winner of the race may still be busy executing
+populate(). Taking the loop avoids this possibility.
 
-Thanks! I will rebase and resubmit only patches 5 and 7 as a new
-version (v3) of this series shortly.
+With regards to as_ref_or_populate(), I point you to this discussion for
+reasons why this is hard:
+https://lore.kernel.org/all/aZLZbN5C3wXgt3kL@google.com/
 
-Regarding the feedback I received on Patch 1 (using the BIT macro
-and Atomic<u32>), since Patch 1 is already queued, I will send those
-cleanups as a separate, follow-up patch. Does that sound good?
+> The rest looks good to me. FWIW,
+> 
+> Reviewed-by: Boqun Feng <boqun@kernel.org>
 
-Thanks,
-Jahnavi
+Thanks!
+
+Alice
