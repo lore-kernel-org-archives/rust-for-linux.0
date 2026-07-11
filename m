@@ -1,159 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A9E125A0;
-	Sat, 11 Jul 2026 00:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783729835; cv=none; b=S1pkTClqDHh5YtgXTNyteSWwNPcALLEgOSbYuC6fOXDfQ5/hsMV8v2dJycMpUdGd5TAncY0bA/C7AH3Lj67aG2DyWiKWy5ceQ5XjrXIvpzidYrjx7W+Ar1iWm5Wbjq8bl+qcRUpV+zWG7GWx3iChac4CjKvKzMPXZfl+r7GZOH0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783729835; c=relaxed/simple;
-	bh=KEDmZM4IrNHXGCDiHDk3vV0ZDaHCLuzCwXUitBjEriI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s5V2llMbb1JMFRYOq7TKTLwgNBa19U3anMFx4aPibI10wsEgjylGODRqt3zZo/D3ZoIfEkWXVjRPAlTDGT6Vh0Q/JcqhAkBfFg5kI3J3bfTbK7ap+Qu9dEdDBLN8Z2M9TcjUi6fOhGtTBOCAn2dFWGxa8W/XeqJ+XdI+okW4w/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UxmgVCvy; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DFF28F5;
+	Sat, 11 Jul 2026 01:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783733229; cv=pass; b=F2k1xP6rPqVtCaBZncYZQWhk/nMTSC/nJIMPaG29e094HEPhG0AdyrPjO6V1sVQELyVGBDpf9J9d4oegGYkUb5IUep9SYWvNcRh85cn+QkdJOrc3f7rOOB5RqCOVMWKp1qMkvdM05sdB01NRdqZx2GwjToum5/y9mMTyWvLDCB0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783733229; c=relaxed/simple;
+	bh=XatPcgaBayRgywKUDu6SUeeMeB8y2HW7cvkwmV/GjR0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=baKIq6tVoOOKvtjIi0dd+tAkK8CbGmvUSuN+agUeKPQ/PsxY7OxEWhLBFo/YMTTkKSVLKJLL5opid9yiHg+8DNgel7q2htqGYkT3xDwzZfDblBCmt/LmUC4JqRKIgJV6hA0LyRO0NHeKEaG1UOxLg3SJmSQr63Na9C9wVRsYnCc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WjJzkoEo; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UxmgVCvy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBFE1F000E9;
-	Sat, 11 Jul 2026 00:30:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783729834;
-	bh=6LR54JkI1wcdPn4TYH3MPkmAVyt83QkA9jWX8tzyKsY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UxmgVCvyLy6wkoRskmyF+t0F3RCURmBOx44P9ekTXyJmSZ4IsKkR2xXwWsNk6qmts
-	 lZAqU0G4E60wp3Bu0ZacwcHC9KHOuMQbn6NH13YYAQezsjLFjHqTJt3EjY0020oE/r
-	 WnUGAl5z4SSsrgBGa86B0akxQ6GBn3V5qxPC2FyjE3B4KaerNrZeXPoQ/D7LMLoQQ+
-	 6pB3pKRgQhTfIsMWRBYG2jU9cfb9RT0HXRgNYIXzurTEFfuxbANp1s6uNF7o8XRSqN
-	 i7nMxp0p9646Q1cyRYucGLDmH0fBRsSngbLcJsZ1UHJZDsbwswQ9PMEXOdg2Euk30o
-	 f46iVs0usXMgA==
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DD13EF40209;
-	Fri, 10 Jul 2026 20:30:32 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Fri, 10 Jul 2026 20:30:32 -0400
-X-ME-Sender: <xms:qI5Rau7iosLVGLVhV3WyIOqYVr04lFJ7jPTCZFJWkbml6GSyJjUlVA>
-    <xme:qI5RapQKvzASprxGzysENlXGh4RzOQV0OAW-OeDVGIiC5KhP_dLEb6VdFjrV9QefJ
-    Nd2tfSg7A1wSUNjRv-iSD4iOqj1UD3YaQ7vx32HsGGhzPBqi0cbug>
-X-ME-Received: <xmr:qI5Rams4_xgY6zFyOekAs3h3EWyLApGIN1FVId7Ahor0gyn_JizLGVwVduaPDW3jz911lV7XiK4obdCJFRsqevgy9n4kr6K8>
-X-ME-Proxy-Cause: dmFkZTE1wogYAXUlAItxu9XMcKS5y1+B3bLvfb7lwvCZriS0O2piokV6KE2UfbD09eXK4H
-    WD93Qu0eiDEhbbtJo4a7XCd7u6mAs/gHF0ycvnZyWm7Xf4xH/GmRCUIXLpWro28TO9eFYD
-    j6LcIYas+j7oqEHy2P7gLcqSbnzQDKc2iRdwdexdMxA0eHS8zpsaqzz/O/dUvDjjDQk96T
-    vhQiPepuWvNqP4w5gF37I7caJY0IsvNMHiHTgy0cFzX3gKbOjy5JFIiUtLeHI9B70JH8SL
-    gI+jbU5uABUU5w/EQcxPp2tFlqvLWzQAXmMivjdCBZFZpXN/BnDTancADnhuYazUDLzoY2
-    TuHxa6xHuM/TNLuTc+3L5ApE51BNUJMIfAb20jWL/jh3pvuQR64po9PGIDYHh5bt5EBPEc
-    8XMOzpw+vlqXQbdack+fZfllhYzLeP/ReaUcnEc1CxbvIHZKEXg82m7uYsJ63V/T+SuTCi
-    QzI8HRjg0q6xHuouywCUbtuprAox0lXewrOPYUIfDCt3slL71hcAVSiZBjXVYs0dqHhG4u
-    cBrmI3oISldMNHZkb1W9sbxH7KenKHkLZ5u7LlXqraAimDMle8o+fkoBiIrstFfeeZHtCT
-    udjriDWIsj47+TxzbeYVTqZMJPkH+A2e/27cNpCGIuPxUtbY98PNvRkd8riw
-X-ME-Proxy: <xmx:qI5Rajbe9cHs1Nifb6srCDucDUs-jhPUroL1X5LuBvDYS1gr2dczGQ>
-    <xmx:qI5Rao8qwj6vQfSZ5kcT6SUqQ3mApGwz1EOmTq7duKiDg3N2nHlBWA>
-    <xmx:qI5Ranr2n30-63lqToNyIInh6WosSVatf7JjN9s5mY3JbZ1_r973kQ>
-    <xmx:qI5RajHg9Oow3ihW_SahVpldIQdYGT999iQmhzFvIwgqdkfnRzU_kA>
-    <xmx:qI5RavmykVuZBaCuOznGqRh7DVOeDlBGjQzcSnQ2nFQEiGqzglfu5WH->
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jul 2026 20:30:32 -0400 (EDT)
-Date: Fri, 10 Jul 2026 17:30:30 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>,
-	linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] rust_binder: move (e)poll wait queue to Process
-Message-ID: <alGOptAAFXuHscmG@tardis.local>
-References: <20260707-upgrade-poll-v6-0-4b8fae7bf1d9@google.com>
- <20260707-upgrade-poll-v6-2-4b8fae7bf1d9@google.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WjJzkoEo"
+ARC-Seal: i=1; a=rsa-sha256; t=1783733197; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=RYw/ccei8GfX2ZZYi5r7tnJpr9sLHJfVlXIfaYz6xZDpSAiaTQu3ouXyU1/NM0I+K+fIrjZbPGqChW360+2dPur+0MYqE3MqDBgf9ZrGxl4PLJlpbl2oxjWJ8IQ1Gi7ne1e9zke6/gQx5PNP6C/ngrxk5aqV/m5Oo0mG7SMtq78=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783733197; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=NdyoGdZ9jTNEWZfdQkrxE0H2N74xEabOBVRJ0yaV9C4=; 
+	b=XgeW3bYosXFnYvL8k6DprxzOzjOeMRRc5q8wXX0fmNu1J6GE32zwaNigLYbqYTqsFFJJDrRIrq2MpyW+VlZ/rOMcCE8TrQFPEKi/Xhvb9bUn+W6DlSJ3wS82Qhwb5qihD+XCYC3CNSzaJikvoyTjM1nDI3JMtROT2D9Hvgv1KIM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783733197;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=NdyoGdZ9jTNEWZfdQkrxE0H2N74xEabOBVRJ0yaV9C4=;
+	b=WjJzkoEo1YrCsUfjHkpDs2EXhf3fABLES5atC/TwYWQDR935XA5wRg6Lku1BcIb2
+	rZS7XoaDHB/H+glh+j+18u3elU7PyJxwqtQbwzjgiTcKo9qT2+k14vzfyFrwBvIwyF0
+	smSD55wEbPye66OlSdu3dQYOJV8aD2IabDA8ELr4=
+Received: by mx.zohomail.com with SMTPS id 1783733193918344.7896144010489;
+	Fri, 10 Jul 2026 18:26:33 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260707-upgrade-poll-v6-2-4b8fae7bf1d9@google.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v6 14/20] rust: io: add I/O backend for system memory with
+ volatile access
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260706-io_projection-v6-14-72cd5d055d54@garyguo.net>
+Date: Fri, 10 Jul 2026 22:26:12 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Tamir Duberstein <tamird@kernel.org>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Michal Wilczynski <m.wilczynski@samsung.com>,
+ =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ driver-core@lists.linux.dev,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ nova-gpu@lists.linux.dev,
+ dri-devel@lists.freedesktop.org,
+ linux-pwm@vger.kernel.org,
+ Laura Nao <laura.nao@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <926125C1-22E2-47BC-AFD4-788BA300601C@collabora.com>
+References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+ <20260706-io_projection-v6-14-72cd5d055d54@garyguo.net>
+To: Gary Guo <gary@garyguo.net>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Jul 07, 2026 at 10:43:13AM +0000, Alice Ryhl wrote:
-> Most processes do not use Rust Binder with epoll, so avoid paying the
-> synchronize_rcu() cost in drop for those that don't need it. For those
-> that do, we also manage to replace synchronize_rcu() with kfree_rcu(),
-> though we introduce an extra allocation.
-> 
-> In case the last ref to an Arc<Thread> is dropped outside of
-> deferred_release(), this also ensures that synchronize_rcu() is not
-> called in destructor of Arc<Thread> in other places. Theoretically that
-> could lead to jank by making other syscalls slow, which would be
-> problematic.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+
+
+> On 6 Jul 2026, at 09:44, Gary Guo <gary@garyguo.net> wrote:
+>=20
+> From: Laura Nao <laura.nao@collabora.com>
+>=20
+> Add `SysMem`, an `Io` trait implementation for kernel virtual address
+> ranges. It uses volatile accessors to provide safe access to shared
+> memory that may be concurrently accessed by external hardware. =
+Implement
+> `IoCapable` for `u8`, `u16`, `u32`, and `u64` (for 64-bit system).
+>=20
+> This can be used instead of `Coherent` for cases where a different =
+layer
+> takes care of mapping the system memory to the device (e.g. dma-buf or
+> GPUVM).
+>=20
+> Signed-off-by: Laura Nao <laura.nao@collabora.com>
+> [ Rebased and adapted on top of I/O rework. - Gary ]
+> Co-developed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 > ---
-[...]
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-> index 0555c4bd503e..f855d8d9818c 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-[...]
->              }
->          }
->      }
+> rust/kernel/io.rs | 122 =
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 122 insertions(+)
+>=20
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 62643b23e904..78c6ae2a0db8 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -1039,6 +1039,128 @@ pub fn relaxed(self) -> RelaxedMmio<'a, T> {
+> #[cfg(CONFIG_64BIT)]
+> impl_mmio_io_capable!(RelaxedMmioBackend, u64, readq_relaxed, =
+writeq_relaxed);
+>=20
+> +/// I/O Backend for system memory.
+> +pub struct SysMemBackend;
 > +
-> +    pub(crate) fn notify_poll(&self, sync: bool) {
-> +        if let Some(poll) = self.poll.as_ref() {
-> +            if sync {
-> +                poll.notify_sync();
-> +            }
-> +            poll.notify_all();
+> +impl IoBackend for SysMemBackend {
+> +    type View<'a, T: ?Sized + KnownSize> =3D SysMem<'a, T>;
+> +
+> +    #[inline]
+> +    fn as_ptr<'a, T: ?Sized + KnownSize>(view: Self::View<'a, T>) -> =
+*mut T {
+> +        view.ptr
+> +    }
+> +
+> +    #[inline]
+> +    unsafe fn project_view<'a, T: ?Sized + KnownSize, U: ?Sized + =
+KnownSize>(
+> +        _view: Self::View<'a, T>,
+> +        ptr: *mut U,
+> +    ) -> Self::View<'a, U> {
+> +        // INVARIANT: Per safety requirement, `ptr` is projection =
+from `view`, so it is also a valid
+> +        // kernel accessible memory region.
+> +        SysMem {
+> +            ptr,
+> +            phantom: PhantomData,
 > +        }
 > +    }
->  }
->  
->  fn get_frozen_status(data: UserSlice) -> Result {
-> @@ -1726,7 +1743,21 @@ pub(crate) fn poll(
->          table: PollTable<'_>,
->      ) -> Result<u32> {
->          let thread = this.get_current_thread()?;
-> -        let (from_proc, mut mask) = thread.poll(file, table);
-> +        {
-> +            let poll = loop {
-> +                if let Some(poll) = this.poll.as_ref() {
-> +                    break poll;
-> +                }
+> +}
 > +
-> +                let poll = PollCondVarBox::new(c"Process::poll", kernel::static_lock_class!())?;
-> +                // Reuse our existing lock to synchronize callers initializing.
-> +                let _guard = this.node_refs.lock();
-
-Note sure whether this lock is needed? SetOnce::populate() should be
-atomic, i.e. only one populate() would win?
-
-Also seems we should have a SetOnce::as_ref_or_populate(&self, default:
-T).
-
-The rest looks good to me. FWIW,
-
-Reviewed-by: Boqun Feng <boqun@kernel.org>
-
-Regards,
-Boqun
-
-> +                this.poll.populate(poll);
-> +            };
+> +/// Implements [`IoCapable`] on `SysMemBackend` for `$ty` using =
+`read_volatile` and
+> +/// `write_volatile`.
+> +macro_rules! impl_sysmem_io_capable {
+> +    ($ty:ty) =3D> {
+> +        impl IoCapable<$ty> for SysMemBackend {
+> +            #[inline]
+> +            fn io_read(view: SysMem<'_, $ty>) -> $ty {
+> +                // SAFETY:
+> +                // - Per type invariant, `ptr` is valid and aligned.
+> +                // - Using read_volatile() here so that race with =
+hardware is well-defined.
+> +                // - Using read_volatile() here is not sound if it =
+races with other CPU per Rust
+> +                //   rules, but this is allowed per LKMM.
+> +                // - The macro is only used on primitives so all bit =
+patterns are valid.
+> +                unsafe { view.ptr.read_volatile() }
+> +            }
 > +
-> +            table.register_wait(file, poll);
+> +            #[inline]
+> +            fn io_write(view: SysMem<'_, $ty>, value: $ty) {
+> +                // SAFETY:
+> +                // - Per type invariant, `ptr` is valid and aligned.
+> +                // - Using write_volatile() here so that race with =
+hardware is well-defined.
+> +                // - Using write_volatile() here is not sound if it =
+races with other CPU per Rust
+> +                //   rules, but this is allowed per LKMM.
+> +                unsafe { view.ptr.write_volatile(value) }
+> +            }
 > +        }
-> +        let (from_proc, mut mask) = thread.poll()?;
->          if mask == 0 && from_proc && !this.inner.lock().work.is_empty() {
->              mask |= bindings::POLLIN;
->          }
-[..]
+> +    };
+> +}
+> +
+> +impl_sysmem_io_capable!(u8);
+> +impl_sysmem_io_capable!(u16);
+> +impl_sysmem_io_capable!(u32);
+> +#[cfg(CONFIG_64BIT)]
+> +impl_sysmem_io_capable!(u64);
+> +
+> +/// A view of a system memory region.
+> +///
+> +/// Provides `Io` trait implementation for kernel virtual address =
+ranges,
+> +/// using volatile read/write to safely access shared memory that may =
+be
+> +/// concurrently accessed by external hardware.
+> +///
+> +/// # Invariants
+> +///
+> +/// `self.ptr.addr() .. self.ptr.addr() + KnownSize::size(self.ptr)` =
+is valid and aligned kernel
+> +/// accessible memory region for the lifetime `'a`.
+> +pub struct SysMem<'a, T: ?Sized> {
+> +    ptr: *mut T,
+> +    phantom: PhantomData<&'a ()>,
+> +}
+> +
+> +impl<T: ?Sized> Copy for SysMem<'_, T> {}
+> +impl<T: ?Sized> Clone for SysMem<'_, T> {
+> +    #[inline]
+> +    fn clone(&self) -> Self {
+> +        *self
+> +    }
+> +}
+> +
+> +// SAFETY: `SysMem<'_, T>` is conceptually `&T`.
+> +unsafe impl<T: ?Sized + Sync> Send for SysMem<'_, T> {}
+> +
+> +// SAFETY: `SysMem<'_, T>` is conceptually `&T`.
+> +unsafe impl<T: ?Sized + Sync> Sync for SysMem<'_, T> {}
+> +
+> +impl<'a, T: ?Sized> SysMem<'a, T> {
+> +    /// Create a `SysMem` from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr.addr() .. ptr.addr() + KnownSize::size(ptr)` must be =
+valid and aligned kernel
+> +    /// accessible memory region for the lifetime `'a`.
+> +    #[inline]
+> +    pub unsafe fn new(ptr: *mut T) -> Self {
+> +        // INVARIANT: Per safety requirement.
+> +        Self {
+> +            ptr,
+> +            phantom: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Obtain the raw pointer to the memory.
+> +    #[inline]
+> +    pub fn as_ptr(self) -> *mut T {
+> +        self.ptr
+> +    }
+> +}
+> +
+> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for SysMem<'a, T> {
+> +    type Backend =3D SysMemBackend;
+> +    type Target =3D T;
+> +
+> +    #[inline]
+> +    fn as_view(self) -> <Self::Backend as IoBackend>::View<'a, =
+Self::Target> {
+> +        self
+> +    }
+> +}
+> +
+> // This helper turns associated functions to methods so it can be =
+invoked in macro.
+> // Used by `io_project!()` only.
+> #[doc(hidden)]
+>=20
+> --=20
+> 2.54.0
+>=20
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
