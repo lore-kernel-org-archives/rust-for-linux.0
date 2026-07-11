@@ -1,104 +1,164 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4F6385D7B
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 12:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783771758; cv=none; b=PNOgpcay9RDBAbJek8hstIMp9kJfVl+WpUY9lr+XUObi9vSeFVtgTurfQtmpsIddmFD2H8dJ0me6MRaYLpgmGIFjGceOjMveI7sJEMV+fswV301Fc5m1KxaHhgbENblecRokjrHinmt09M1z6M3B9yh+kyPAM82SJLsfoczi8j0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783771758; c=relaxed/simple;
-	bh=NTQUTiOY6fWGJY+qqToUuWf4suAV/H32seKG+A+pnBk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=F0TLpt2JIH582+0Jr7nqiL2RC51d4kzqjeyhmEZZQSbhVVDwPMwqdECBzQG+L5WzTybJfyoiBs/+GjmxP0U0C58Nco5SrltGupxGg3Ohdx6dKNn5rsJw7TABDjnLk0ChHBuiupaRcK+cDF5/8wuc1rHWN7/AE1ptw6pgAaKAVjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o2Q4KDTp; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812C33769F5
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 12:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783772002; cv=pass; b=EiTbdHeY88wNQm/ay/f0KqgnixTLwXTP/o1aGxXf4Q96THoVO3ip9/z1vx1OuxPQTRzIibGS2k0Wdbqghiv5gIDAJsA7kgKkfb57fZ5bQwNssrxbfsUr4LZMCLWMnrWemUN1nnaHjToC8FnYVId9zJjqX39VFcrdx37OjcQ6x2E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783772002; c=relaxed/simple;
+	bh=80vo3JIjnCsKn8zo158HX4vkfRXd32w7uPzzJAtLaF0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mJL3tUWJZqdSTatxQvRa9wnGj4qGAaSeLqV0Sr+3TCI41VIGu4P3JFJIkHTBowtaMP8AFbUlgUNWlGDhIV8NDfLHK6yoEDNdguStTElctuDizPGt6c0LRYnZE+dfzdek9L+2qo/yGHM2xEGOCGZcXJu38UAHhWc09mw/f52buTY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gHFB0fSe; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o2Q4KDTp"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4784d0fb9cfso1015224f8f.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 05:09:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gHFB0fSe"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38096590070so319010a91.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 05:13:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783771999; cv=none;
+        d=google.com; s=arc-20260327;
+        b=li/gaFuM8WXPREJkIdP8aKiRmYAmy8lT8drhT3tzSrlVBB5oCafwWYaUs8Sx/UYIXr
+         SD5AB9DtobdxjrZ3SnAN4bROfVv7C4Vmc1fn0pkeEFJpB1UuAKkuBJ3b7dxbygCYVIUY
+         PFCWmkWwRaBNQjDuSxR33BCpmNWzx73w1oaVxlztJLgRrAvEUjrv5d1Q4OfK8wgNsx12
+         tw/gGKXMaanOsXT8rMkUWFFkXqcmByLgTXXxA+ULckBW27U6i4VS678/ISnPh1vWHKeD
+         2E3zuv4iZ6tCsjIP8NFrCn2o9SaPVO9J5Qvem00YKrK7RPnlFJddmjxsWJAcKhzogGNY
+         y+6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=80vo3JIjnCsKn8zo158HX4vkfRXd32w7uPzzJAtLaF0=;
+        fh=knrccgF+CueXzVJn++5h3bS+rPv6Lb32UqGf4t43Pw0=;
+        b=Rc/OOv7E9QD1orOGNc5Wn4BUB+Zkd5Y4z5NgoyduEYVqSl3l04jZ1EeTFj+E0VrauT
+         ftcQF4dqjIDSvvypp36kESYmr/wlKJblzdXQJIf8oUG1QVe8v6fUBnbj4xUuPDVYA5nZ
+         EyFD0QFxa9OwvCycMuL6TQD52g7fxWbhhi1BFsW2dcQHPjNTzCmiGFE4gjey/aDlUhu7
+         x/opOK7WhOumvZXRC7MRAOmQKzdodQtKUNh/C/SxUf19fiRx1ICyF3VHHeyDCOAV+piD
+         Zc8AqjjJ97c7z6RsbnJiPfk/3G8IFDfgb6lUfEnNOqI6jUZp264PV21cPwDYizF1s0rq
+         cXUg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783771755; x=1784376555; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rZECiUz8iXrro/+1KsBtJNmjhFi5kdYHy3t1PHyk/II=;
-        b=o2Q4KDTpENi27OJyUXz76+iAkjyePGLqWtRfSeYbujgi4tC0dYixHvcNwY6aI0dh/R
-         P3KpHuNzOgT5au/9VLQawB8WxNA2xIqXGzGqpnVew9P1Dl+sZ904l3dJKPPiwUuABVYW
-         uMZ8bclaG9bWCXfV//+EKw983xCvg4yZWlCBXGtLmI3IYP+2zQnQHiEDNjGKd0XeGJVl
-         4DkXnNK9g4qQi+E/1ZAwuAcJkvSH8B5hKNpxSgEm03C5qoWmap/gUmtw64/SRyU4qxrL
-         Xjctgu5Zw+/nRPiTidPt3jiVkWlo09Cms8Jh45Gmp+jg+ihhan6O/nkjf+ebV62fOx3U
-         RXiQ==
+        d=gmail.com; s=20251104; t=1783771999; x=1784376799; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=80vo3JIjnCsKn8zo158HX4vkfRXd32w7uPzzJAtLaF0=;
+        b=gHFB0fSemSn6s4jVp/EuBtir/qlPGO8Vq2wg3sOO56WQSEm3m1wgLV+PH+YCzCwe4w
+         40XUJ8N3llKffVv3KvwlpEx0PwjFhEP4ejwfKckXHhOrs4COlZYMuCDJVCD700HVWfby
+         Wef44AYzEvkwlRh4pmvCSPrnSSb+EuoMS7xAp1fqanhd4vgQUbVFs9DMhr/aX2ve4EZi
+         XKK9VbugY1ax8izR6ls1BpqL9Fr7yUJMtkts2rZtlWUvAdEs5tvYZoRcRU9pXB0Y6W76
+         RQw5PmUpYS6rrCfKNmEtUvADgYNWM7gb8xCEbJGzjwstKv7ju7GWWD5f6bQVByQhgD9b
+         Verg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783771755; x=1784376555;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=rZECiUz8iXrro/+1KsBtJNmjhFi5kdYHy3t1PHyk/II=;
-        b=aAEDqOvDg+7gjqlaXLToJvnJQtXWgMNo7E9VQppl5rdc5HCsPF0pqNKAQSqc7HdVjq
-         nuDTit2S6uwh3cLRsgSTZt8MZFGsaCsKz2dylez8mZxP9dgGiSao5TaKUj2bAchQtqTh
-         ky75Q2kejgrWEihee4UZPLoB8pvKecmW1MdG85CPSc41dpON9u/k0wNAuwv18DVoX+IN
-         b/0UHRMJDPTW6ReOWv52CE3382BNgrv80zvayNgNeJ5/3sP0g0xEuvkLduMHOtBVGKqv
-         4dgmN6LYDOTwP0VtzxJDch5sEIzZqaiH/lbH5pw4H6EcW2D0yIE8hG/0NDJA2mIh6djR
-         sj3Q==
-X-Forwarded-Encrypted: i=1; AHgh+RoxfX/GWo7lF307BiwcU+BHalnv9Wfe+3A3L+DeErQtp5h66MwoWRmOTWcqS1P7Yw2kx5MhBQS4465A7fxZuQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk6HVfH2c1nCF3ZGu4XH48zaVC3emDr1Uj8lmJ4zU/2yvJGDsy
-	0dpY6hpRaLm4FKi/pibvw6fPrX40qNXZJtHBxVM8kmng4hHmyEHwDz7aa6fbeDo1q1M5Q+gJ6vn
-	2LBG2gK07S1i3NyZzpQ==
-X-Received: from wrwq13.prod.google.com ([2002:a5d:574d:0:b0:472:3bc6:772d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:588e:0:b0:47d:ee7d:c125 with SMTP id ffacd0b85a97d-47f2dce2cc2mr2261213f8f.40.1783771755149;
- Sat, 11 Jul 2026 05:09:15 -0700 (PDT)
-Date: Sat, 11 Jul 2026 12:09:13 +0000
-In-Reply-To: <20260710173252.191781-1-ojeda@kernel.org>
+        d=1e100.net; s=20251104; t=1783771999; x=1784376799;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=80vo3JIjnCsKn8zo158HX4vkfRXd32w7uPzzJAtLaF0=;
+        b=m6vT8FTt2YEeo3Ua0bL2MMNP1n8iZ0ROYn1ffkAL5ZtXmH2X3KFaxxzIjluxDnO/AX
+         Ll5MgbagnLAjFSmcJCDtbDsQkhVomRt9eYqOawMVqmVG9cRz7QWZi4L98KomlGN3dZkB
+         fhvD9s9+AqqSeon7ME8xwqxhsTazt3ke3MswYluIMLy75p2ZFwJlWJZsVcn+6KZbNef8
+         54XSXOza4WcgntuhQx7sEFxlq06cXtHSjvnZ9Ybm5lH07C+fsIroM1nFqUYFz2r7HtNU
+         SnA/+wpkuZW4zhOACKyN9S2QD33sXQBNL/Vq3Ntx9b0DIAjtyjmAMSzi8egzjqz1p70Z
+         uIMg==
+X-Forwarded-Encrypted: i=1; AHgh+RqXLEvMXdMVIUXiXd0AQxhTQmf0i9UdgfJxFce2HQGHLYky3kQlrW4q35oQD+bwrl8BMY4MVxVljI8Jo/CmrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzU8qRSywxDf8Pcy++Un1YuT8iC+lxW7ZHBBG6FJSD1T0GcwpGk
+	5tCpwfpvrrcuDfJzM/JHMpnn1BK+twWtiPEU5WuZX8Y/+SMdsHaqyZ9AgAi/SOGtvP0SDRvDrXA
+	2dyMrEPNw04waNkCZ3/DznfsvhlbDAEg=
+X-Gm-Gg: AfdE7cmsjQH63EHX0K2H5C4yKD2Clt75Zpg74M/JUFKIIji4kEu/cyAcWss+B3TvW+z
+	JGHxbkbel/dt9gOKcFpTMXlkkL80Eyx0VxyqzZfz+iLADRwmsjRrD+seoN7Ffm8cif0SwUK3cvN
+	VU7ehYESf5/c7Ru9dJvwHeCFRtjFjY+jMDOzoNPdkuPu2hrJ3qvwxh3SEklRxqT3GfzQ5rtMPa3
+	RYbCydMTJepqni/rpADwNPaIP/tYiGwvbkLgp3YtWtponOZ0/TLVIa/RjUQceOJYXF+zcFzsiwQ
+	/82OEufHbcVSEHpn+N/QzgEji4Da+3FVu0wKkBjrFkn9K5UbGCJsE7zL9gj/T/GbmCFeHDGRa4t
+	kwNmw77QmFI4v
+X-Received: by 2002:a17:90b:4984:b0:380:9cd1:d985 with SMTP id
+ 98e67ed59e1d1-38dc7c111a8mr1909664a91.6.1783771998816; Sat, 11 Jul 2026
+ 05:13:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260710173252.191781-1-ojeda@kernel.org>
-Message-ID: <alIyaWz_32wZc2rK@google.com>
-Subject: Re: [PATCH] objtool/rust: add one more `noreturn` Rust function for
- Rust 1.99.0
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, stable@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260706061928.66713-1-byungchul@sk.com> <20260706061928.66713-40-byungchul@sk.com>
+In-Reply-To: <20260706061928.66713-40-byungchul@sk.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 11 Jul 2026 14:13:05 +0200
+X-Gm-Features: AUfX_mwWK6GqFCLIKCx9ivosmcno3i0b64L6R15FyNFXSSwj0HKdZlNefQKWcgc
+Message-ID: <CANiq72kEo=bGcHNaSA9JZhv4iuE+YDvu0kN+Z7aopVp3=2C+Wg@mail.gmail.com>
+Subject: Re: [PATCH v19 39/40] rust: completion: Add __rust_helper to rust_helper_wait_for_completion()
+To: Byungchul Park <byungchul@sk.com>, Gary Guo <gary@garyguo.net>
+Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com, 
+	kernel_team@skhynix.com, torvalds@linux-foundation.org, 
+	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org, 
+	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, will@kernel.org, tglx@linutronix.de, 
+	rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org, 
+	daniel.vetter@ffwll.ch, duyuyang@gmail.com, johannes.berg@intel.com, 
+	tj@kernel.org, tytso@mit.edu, willy@infradead.org, david@fromorbit.com, 
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com, 
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org, 
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org, 
+	jglisse@redhat.com, dennis@kernel.org, cl@linux.com, penberg@kernel.org, 
+	rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org, 
+	linux-block@vger.kernel.org, josef@toxicpanda.com, 
+	linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org, 
+	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org, 
+	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com, 
+	melissa.srw@gmail.com, hamohammed.sa@gmail.com, harry.yoo@oracle.com, 
+	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, 
+	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com, 
+	yeoreum.yun@arm.com, netdev@vger.kernel.org, matthew.brost@intel.com, 
+	her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com, bp@alien8.de, 
+	x86@kernel.org, hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org, 
+	gustavo@padovan.org, christian.koenig@amd.com, andi.shyti@kernel.org, 
+	arnd@arndb.de, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org, petr.pavlu@suse.com, 
+	da.gomez@kernel.org, samitolvanen@google.com, paulmck@kernel.org, 
+	frederic@kernel.org, neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com, 
+	josh@joshtriplett.org, urezki@gmail.com, mathieu.desnoyers@efficios.com, 
+	jiangshanlai@gmail.com, qiang.zhang@linux.dev, juri.lelli@redhat.com, 
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com, 
+	mgorman@suse.de, vschneid@redhat.com, chuck.lever@oracle.com, neil@brown.name, 
+	okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, 
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de, clrkwllms@kernel.org, 
+	mark.rutland@arm.com, ada.coupriediaz@arm.com, kristina.martsenko@arm.com, 
+	wangkefeng.wang@huawei.com, broonie@kernel.org, kevin.brodsky@arm.com, 
+	dwmw@amazon.co.uk, shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com, 
+	yuzhao@google.com, baolin.wang@linux.alibaba.com, usamaarif642@gmail.com, 
+	joel.granados@kernel.org, richard.weiyang@gmail.com, geert+renesas@glider.be, 
+	tim.c.chen@linux.intel.com, linux@treblig.org, 
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net, 
+	chenhuacai@kernel.org, francesco@valla.it, guoweikang.kernel@gmail.com, 
+	link@vivo.com, jpoimboe@kernel.org, masahiroy@kernel.org, brauner@kernel.org, 
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com, 
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org, 
+	neilb@ownmail.net, bagasdotme@gmail.com, wsa+renesas@sang-engineering.com, 
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 10, 2026 at 07:32:52PM +0200, Miguel Ojeda wrote:
-> Starting with Rust 1.99.0 (expected 2026-10-01), under
-> `CONFIG_RUST_DEBUG_ASSERTIONS=y`, `objtool` may report:
-> 
->     rust/kernel.o: warning: objtool: _R..._6kernel12module_param9set_paramaEB4_()
->     falls through to next function _R..._6kernel12module_param9set_paramhEB4_()
-> 
-> (and many others) due to calls to the `noreturn` symbol [1]:
-> 
->     core::panicking::panic_null_reference_constructed
-> 
-> Thus add the mangled one to the list so that `objtool` knows it is
-> actually `noreturn`.
-> 
-> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-> for more details.
-> 
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Petr Pavlu <petr.pavlu@suse.com>
-> Link: https://github.com/rust-lang/rust/pull/158796 [1]
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/rust-for-linux/alEBInX9gD1M5NAr@google.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Mon, Jul 6, 2026 at 8:22=E2=80=AFAM Byungchul Park <byungchul@sk.com> wr=
+ote:
+>
+> This is needed to inline these helpers into Rust code, which is required
+> for DEPT to play with wait_for_completion().
+>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
+Apart from what Gary said -- why did you need to do this in a separate
+patch in the same series?
+
+Cheers,
+Miguel
