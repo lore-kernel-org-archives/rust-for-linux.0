@@ -1,182 +1,126 @@
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B1B382299;
-	Sat, 11 Jul 2026 08:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783758472; cv=none; b=nWyJySYxw4qZeLDjxPKNr0/94L6s0X/8OtUEmeVJ1Mzbfd4qdmxkjbtCsf/bNUHI+vLtg4IwHUpu4p8P4VtnurlE1kCPBLN9+WWO0zh1KMhSC3M9KFPa18fMw/1tfLC+ag9HzQ0TSmN6kl/q0EUZeH/Sw2vDXrWe/xLaAeer8CA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783758472; c=relaxed/simple;
-	bh=XwEOc1CVdp2VHHZSxRJMzRhEPdCgMlTd1CkOkig6HhU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l0WDi2/4pBIEwK6OOqzFTbMioBazFDR1mG6dTFvaTSSq5fWtVUinbQadkbguNGHRsLS9LvgJbwPbu6AfGvmitwRyZKKWEv8RkQzrFV8Hv49sgPmjaRxxHA4Eb25mOfZAZwuSldMopfJN3Ryw+FaYu2mNX39M+vFEqe19aL/nrss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Pj+fWrEQ; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9D438B7DD
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 09:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783762090; cv=pass; b=g80qLVi50IhKyUQ8WJ7ZrhOQIDPnxSHJ1cyDpAyCIo4NyVnPmLN6iDNM6F881l2ug/Eer2K9ccOEphNUwFEJ815mRC3U1dOmM3sKwf76M92rp+JJzMzddUrAbuyfxz79j0h9YYogohyZDIdYVxpOmyZBYdrqlE6QT0c3DxODMBY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783762090; c=relaxed/simple;
+	bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DbSv6dGzwIDhCJGNZTa6gOIhwJXt644grfQbEnr6gCH1NIPceEhjk60pOkGpcMvTYli/7vkSbDhklQoEVA492i23RAHtaXKlU5Na+yhJuzPReIFxyfU+3iB/4XThjWcDfaDjCEHHHdmN1ggxX5k6drvg1OYSKeXOGh4TSYyzWH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qN2QoMYh; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Pj+fWrEQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1783758451; x=1784017651;
-	bh=PlOt4NbNmlRlFRophHEiAi0ynsEu/WmQ+w5dHk7ziXw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=Pj+fWrEQAHY2lFD81TrVw4qdqh5a/EqaMEyOCSZ/gbRRN3mdcihapcwpHRmGtZY1g
-	 fK4BeqI4vic6i14vTSUZnxRoEC8+4sUYy6BhLOY33QGxXo58Cu21UohPBol9vSk1Aa
-	 DaucRJNjd9FMAbSALNkIIMpolIHpNHoXdw+SsdDjjbo+aWRTR/zZ6YFW9tT2wI5So5
-	 7lIpCIm+xPMsM6nCM1YRz2LyoXIwfxfkPS1bXvdtlpTCvpKPIDopelQcrKeejZ4MeZ
-	 esEDjieTJXwEjhq63JoT+BmRYV5ltt0f7UzMre5nMj9XRPZbDyjDV+DUqr6gb6E9MW
-	 /UzF+dhsKw7Pg==
-X-Pm-Submission-Id: 4gy1z22L2Jz2ScPY
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Eliot Courtney <ecourtney@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Burak Emir <bqe@google.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Yury Norov <yury.norov@gmail.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	maple-tree@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] lib: test bitmap vs IDA vs Maple Tree performance for region allocations
-Date: Sat, 11 Jul 2026 11:27:08 +0300
-Message-ID: <20260711082725.12176-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260711063602.426311-1-ynorov@nvidia.com>
-References: <20260711063602.426311-1-ynorov@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qN2QoMYh"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38dd9c4845dso2347a91.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 02:28:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783762089; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BXY0/8gFNy1di/GsfYU/0F5IkoqxQ5FiUe2IHnqaTbM52GyQd9TNkpoJcPaBfvhZra
+         NOPpMpda4BuqtxfbS0cARTexI1ozbaNG1EP0EE+2VBioFFtGsTy9vZwqtyCsjRZxr4ir
+         mX2cYzVNYynxXp/0vNMDk3Z6WE6sJvZOM+Pp77E0CDbR0UJWT7pi+M+Qu3trDUKRgWV8
+         /DhSdrw2H3z588QUh/IXMPmkGTeDwu0m5USuALggabMfzZszysHyVYOsy3d/j0E1nSqi
+         cDSMLaYJ9vjSmA5XYQkHga4HEkMwdhCLvH0uY8U4Lgl5D2PjLC/3Y5Gqoi+KPBHSyXR1
+         jOvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
+        fh=pDGC2gfNOsA+VhB86PCu10wC4U7bwh3Ih0XvY54dM/M=;
+        b=GlhGKZupe9fCQ0xCf43rxjAsAw8Nk3Pl3sxVPv01OPl2GafOhuUwfl3GZ0IZ/+z4S4
+         ozM8LzM93eXwUgJHT4ldoFGrbTWgPl1Tv3Tk4Sddt/RdCRB396UOvTljN1+UpuJ03YRN
+         C6L52JpLbbAcyalV1+OBTUQ65zrhUswz1Rq6xtMUFvFlR2Ro3yUjDxkIyq6Tmm4DDZME
+         Et9hmwK2kvJjEc2999QcraxYjN0W/X2115AejK4lluwCmeWC/SfWXoMkSjicSgrYdWwC
+         B+Xg7vrCnfeqTv3DLN4NTgr0KRC/Rey/RolXcz4/o8VbhfyRWP0B3RCgjkNZeQ3LtSeo
+         /wqA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783762089; x=1784366889; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
+        b=qN2QoMYhFdCwlzAgPjKKMFddMao+FSU+Kvm8LQOnU+3f94/8rcdrg7pkVL6ldtJfX2
+         i0/6j5JLPGhmCEl+hh0exf3n+Sg+kEZOs9RWSbK/a+ZNMFDAaAMabRPDH3gARE4va2UF
+         ue2yHvy3sIJHqQ98+9Eqvor8ISFG2NL6CYi/7jF0yQzsDwnAN8GWMjvcXaMoQeVBG23q
+         IUEC36+Q5oKE97dWItFWKcffhP3Q0JawRT+YAHFQHpta19umVlvEyy12ibsyx71SqqsB
+         6uluGhXZ+3Gi+2J+ZmJyzPlp49Vo7CqobQ5UbCcGaPeBB+37XRkEsggHDKZR3FFSoTIo
+         S5KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783762089; x=1784366889;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
+        b=GcY0/6c2fYYWO+TZ//rPBg5Bdbf9D3pacXaMDXX5MfMJZ2V8HJR9bdwa88Spn0Dl59
+         9PguP8mscoTCaBa3xQZZos8FBgLRbF+u6ylPIvhCpogah8vitBD4j76+7ESAQkl89Cxh
+         591C8oGa8Oj7v+IwbXBHR/k8SOE2yJQCOft8TgF5nPtpev/K/RI5q+wH71W5rOY544KR
+         W2Dm8ZZJoaxNG0A5I8B+wve2FjWGYk27+QcoBXX4Vnw8Py1bcsY/iStfDHbUXRUQ2nPk
+         8mBr001YbL6AltAJTPlOpPve14UmLSGsBycPmwy4Ludbb/IM1onVj8jy8HA7/r0S3VaA
+         IbNg==
+X-Forwarded-Encrypted: i=1; AHgh+RoATjBlBC5B/x13wB5f+0hpSX/mHp7xAk8JCMPgvCsPSa7OFrAvQKvNkAWDUfGWOYUDF4kNAoroMm0rGePVIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFrqsFcASNsRkTiDuXbIbqt4l0QU4CsLcZDj00Jbr1QjdPT+e6
+	XTPohY7UFYlJfaNJcNM43aTg2TfInhKh/STs9jaoJ06427/lNunGeFAXOFfNXf1Y/79PgeG0zp3
+	a4ck6572Vuoxa3RNAFxLk7Zyq47q1HU0=
+X-Gm-Gg: AfdE7cnPlncM+coox1zLjXzYluLkNKDm3ARuuZVA6sJ2z+ImZfBIOjXDNIdWt5PlRCS
+	Bf1uJduRa7YKEW2AbhFirAJ+x3ydw1PjKb/yLgCVz/FqxrzolI/9kL5jaM0JJFd3gCfWkNXZUYn
+	qsrwRf/BQWO/7pqZB7ZMTGDMZTJS3ysXHLHfR5duy5VVBDb96RVrQpx1jijOc1uetk2UvAg+UJo
+	kDHKuSmEzNCz5yIIg2kbK5UgRP+0Renlv81lls/jcb7wSoJrbPPQ+ezn9RQavUoXy92GcHRXPrI
+	HjzGFUOORE/UM5EfHYoRI/K1bhYM1M1jJrgBbWysx14jKhImZR64B0vxsRB74dCfqUkGzhulFDP
+	jp8oV5BklnF0O
+X-Received: by 2002:a17:90b:3890:b0:383:5a16:bd67 with SMTP id
+ 98e67ed59e1d1-38dc7754e8amr2121879a91.4.1783762088889; Sat, 11 Jul 2026
+ 02:28:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260711082327.3062227-1-chankocyo@gmail.com>
+In-Reply-To: <20260711082327.3062227-1-chankocyo@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 11 Jul 2026 11:27:56 +0200
+X-Gm-Features: AUfX_mxJJlEIaqcNk7UQHFHDBGwkPEX3sgoypJKo2CkBiMFfMOxxNiSdWhMaVtY
+Message-ID: <CANiq72m5iqy+_D4fzxM-i3AZrA98VMXP0V7EtBN9npN5akVRRA@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: impl_flags: use bit helper in example
+To: Kosumi Chan <chankocyo@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
+	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
+	work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 11 Jul 2026 02:36:01 -0400=0D
-Yury Norov <ynorov@nvidia.com> wrote:=0D
-=0D
-> Compare the cost of allocating and freeing variable-sized regions using=0D
-> a bitmap, IDA and a Maple Tree. All implementations process the same=0D
-> randomly generated sequence of region sizes, ranging from 1 to 32 entries=
-,=0D
-> until the configured capacity is exhausted.=0D
-> =0D
-> Run the benchmark at several capacities to show how the approaches=0D
-> scale. Report allocation and free times separately because bitmap,=0D
-> IDA and Maple Tree removal have substantially different costs.=0D
-> =0D
-> On x86/kvm, the output example is:=0D
-> =0D
-> type       alloc (ns)      free (ns)   capacity   memory (B)=0D
-> bitmap      179573071         342105    1000000       125000=0D
-> IDA          46555636       33931498    1000000       134864=0D
-> maple        18629665       19741396    1000000      1548304=0D
-> bitmap        1630912          30933     100000        12504=0D
-> IDA           6144785        3354590     100000        14288=0D
-> maple         1745026        1825032     100000       155408=0D
-> bitmap          28448           3374      10000         1256=0D
-> IDA            418978         333641      10000         1872=0D
-> maple          185398         211138      10000        15632=0D
-> bitmap           2253            610       1000          128=0D
-> IDA             42755          36432       1000          144=0D
-> maple           19728          23474       1000         1552=0D
-> =0D
-> Reported IDA and Maple Tree memory figures exclude slab overhead=0D
-> and transient allocations. The Maple Tree figure is additionally=0D
-> a lower-bound estimate that assumes fully occupied leaf nodes and=0D
-> excludes internal nodes.=0D
-=0D
-The report itself doesn't make it obvious. I think "memory (B)" can be=0D
-misleading. Perhaps we should use a clearer column name or add a short note=
-=0D
-before/after the report for explaining the columns?=0D
-=0D
-Regards,=0D
-Onur=0D
-=0D
-> =0D
-> IDA has no region-allocation API, so each region is implemented as=0D
-> a sequence of single-ID allocations. The IDs remain contiguous=0D
-> because this benchmark fills an initially empty IDA monotonically.=0D
-> =0D
-> The benchmark is motivated by the discussion at the link below about=0D
-> choosing the best data structure for the channel ID pool with the=0D
-> capacity of 2048 IDs for the nova GPU driver.=0D
-> =0D
-> Specifically for 2048 IDs the result is:=0D
-> =0D
-> bitmap           3907            831       2048          256=0D
-> IDA             83545          71007       2048          848=0D
-> maple           34632          39710       2048         3600=0D
-> =0D
-> Link: https://lore.kernel.org/all/20260710-chid-maple-v1-1-4ee869055268@n=
-vidia.com/=0D
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>=0D
-> ---=0D
-> v2: add IDA benchmark (Matthew)=0D
-> v1: https://lore.kernel.org/all/20260711013910.349586-1-ynorov@nvidia.com=
-/=0D
-> =0D
->  MAINTAINERS                  |   3 +=0D
->  lib/Kconfig.debug            |   9 ++=0D
->  lib/Makefile                 |   1 +=0D
->  lib/region_alloc_benchmark.c | 174 +++++++++++++++++++++++++++++++++++=0D
->  4 files changed, 187 insertions(+)=0D
->  create mode 100644 lib/region_alloc_benchmark.c=0D
-> =0D
-> diff --git a/MAINTAINERS b/MAINTAINERS=0D
-> index 7cc4bca5a2c5..9e487a94aba4 100644=0D
-> --- a/MAINTAINERS=0D
-> +++ b/MAINTAINERS=0D
-> @@ -4615,6 +4615,7 @@ F:	lib/bitmap.c=0D
->  F:	lib/cpumask.c=0D
->  F:	lib/find_bit.c=0D
->  F:	lib/find_bit_benchmark.c=0D
-> +F:	lib/region_alloc_benchmark.c=0D
->  F:	lib/test_bitmap.c=0D
->  F:	lib/tests/cpumask_kunit.c=0D
-> +		bitmap_count =3D benchmark_bitmap(capacities[i]);=0D
-=0D
-[...]=0D
-=0D
-> +		ida_count =3D benchmark_ida(capacities[i]);=0D
-> +		maple_count =3D benchmark_maple_tree(capacities[i]);=0D
-> +		WARN_ON(bitmap_count !=3D ida_count);=0D
-> +		WARN_ON(bitmap_count !=3D maple_count);=0D
-> +	}=0D
-> +=0D
-> +	/* Let the benchmark be loaded and run repeatedly without rmmod. */=0D
-> +	return -EINVAL;=0D
-> +}=0D
-> +module_init(region_alloc_benchmark);=0D
-> +=0D
-> +MODULE_AUTHOR("Yury Norov <ynorov@nvidia.com>");=0D
-> +MODULE_DESCRIPTION("Benchmark bitmap, IDA and Maple Tree region allocati=
-on");=0D
-> +MODULE_LICENSE("GPL");=0D
-> -- =0D
-> 2.53.0=0D
-> =0D
+On Sat, Jul 11, 2026 at 10:23=E2=80=AFAM Kosumi Chan <chankocyo@gmail.com> =
+wrote:
+>
+> Use bit_u32() instead of open-coding shifts in the impl_flags! example.
+> This demonstrates the checked bit helper and ensures that bit positions
+> remain within the underlying u32 type.
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1244
+> Assisted-by: OpenCode:openai/gpt-5.6-sol
+> Signed-off-by: Kosumi Chan <chankocyo@gmail.com>
+
+Looks fine, thanks.
+
+I think I will add:
+
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/rust-for-linux/2026071054-hazing-antirust-8e4=
+0@gregkh/
+
+since Greg suggested the original change/idea even if not the one here.
+
+Cheers,
+Miguel
