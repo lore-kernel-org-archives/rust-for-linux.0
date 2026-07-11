@@ -1,111 +1,141 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DE92E11C7;
-	Sat, 11 Jul 2026 15:25:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA59C2749C1
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 15:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783783558; cv=none; b=kSH4cqgAROosU8LLNcavdN2ewRsZRE9t6KmOmPBsP4ZBgSABaBMep1oLuTtmbs3THqHQxyvGSjPrcmVJKVS9vJXY8fAp25VxjDQaJRJI1c73pAIPuZdFK7WPw0jNXJWSzv+tautQVmk1h+fo3JzLY8EnaS6TVXWYoLPTOhH4KIA=
+	t=1783784776; cv=none; b=LfcW079O8LZjH8IiPrW/Jyh1detH0zdjJF6Hg0oMAmSICSLAFEEtdWIzFGbaryXdXo2Kfp10NUo/ElHKY+Jywdspfq5BakKMNwIeRkOg3Iu/EW1r06NiyuknjPCbJ/UxIeA+aMtpnwLxjMiuS8H0jRJK0KAYsJxZKFepkFNT4Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783783558; c=relaxed/simple;
-	bh=Nek5ZXdB0D0IztbJf7PZdn++vHjyXt3SZbRe3hbsYHY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=WsmykvBj9OqHqo+wGLfrn6bEAcTCon6BO7cAbdgfgUZ8qwCEaOXtLFuL/5JjZdDdpZQy5aFBFNWUXbV8OqhY/n3L27MdcqEsj8/9g6N7UDE65JJe1yzveh3YqnvLspnT/UlJCnm0Abrc+CQYKZQMGPSeprUF4F++zimWRjxiAgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=KMAcG9yW; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=bpa/bxJ1; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1783784776; c=relaxed/simple;
+	bh=IMlHLsqa76DQv38CtqxVW1r80PfJXYDuVLnGnDDB4hw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HIkS9EK11AsL8IN+D9f/fLc3Tol7867zolm/uohKd8xkTOsaYdvmkaeALFgYnG4TtAxHcdOX8uxKS/UE8TZNzy3sgDWrLQfvPQ9ahF611c9RV5+6JQLxrP/DM5THK5upbLbhneJlzxKDuDk2BfmyfVQ4tr1+5q+PXCaJeeuDoeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qj21sLV+; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="KMAcG9yW";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="bpa/bxJ1"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gyCFs59c2zKv86;
-	Sat, 11 Jul 2026 17:25:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783783553;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nek5ZXdB0D0IztbJf7PZdn++vHjyXt3SZbRe3hbsYHY=;
-	b=KMAcG9yWg9CKKonB0vGgRybLd0s3D3yGLE4S/8GwQSU4c99qGBpzYHlHbxpc/AGvfet1gf
-	ngqHOVgcVddhtifMTglo3uLG0Odtk+NRN5mvE/FOZIjJubNlVHRortuU0Oxm+WYkAUEqeA
-	OztR6QztfDIGUcguWy9n5B/Um8oEAwSUjD1Z/zKbfURkiRXGuJ3BljKOr3vg1cWBu2bffv
-	Kc2szbjfoCRQcEdhHTsk/I3hy4rAUkCfkduxctZE060dACfV02K+ysjytFl9ShwXhLmbrH
-	ApZqI8PTjZMkWZU0zIBfyihx8mshAxr0hbDE3xYdImfXNer1YvclVsg5hipRFA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="bpa/bxJ1";
-	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=mhi@mailbox.org
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qj21sLV+"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493bab443f7so13570305e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 08:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783784773; x=1784389573; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ur7NKTJlZDhSFyUo4h9vpOo4v6UgyOoJcKjM9alIk7s=;
+        b=Qj21sLV+p2TtKAFUog4bwoVrpyQ7M6HXcR4fOmVSBsffaZHLqeLOx77mOdNPrqArAi
+         csI/v3f1/Dc7nslG1/3206WMo2nx/dtpnajJnnaElehRSYAs43kNbrBMsgX39rKPI+wM
+         fhjCap6LA5RBueM1WTi/2/VcdQW3JtlbbVBnLDDtYx0IgO080LVqHOT7GQYaFzPQ8zxU
+         zLTpLr4I0f3QIBEBB6cVZb3m391kZofBypIEogvJnfgjKA/rVP97ULHa4ZcnAaQPKhgO
+         FRpTuIhzX23o/V4Z2mj0ZYSdaHrEKzh6/ogb9Y09Cnkys8L5B+GfzbHwjjMXzjxPKxcG
+         hldg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783784773; x=1784389573;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ur7NKTJlZDhSFyUo4h9vpOo4v6UgyOoJcKjM9alIk7s=;
+        b=MXqRl1eas3/3vTYBhhHgj22ZWmM4jL4VyuHsU+YkdVHvvhK+nxSKCnCuXqKQqSUcVH
+         EZ1UWiKJYqIv7Ue1K49b+NwEdCnpmkCfjhtf+d2JcGKeBo6+WjDvAOgUwf1B8H3Tevb/
+         ve1oNxxV52115niRYO2XtJN1wdt+YyG3RCPCAZvvRg018KcYGbKse99xl8KU7BA+w9Q3
+         oqtUPjvg2AYlgKcv3A35puV7phO8fje5y0qoND/huKMSNiRFogFkb1yMrp57c3h6/b3w
+         IZ1r4s+MItc4XIeTl98Hw5cQTyhSh7NJBJz7JLm97rjxGwY0BV+gbNglJ4E5JajrqMB3
+         yChQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpdfkqpa6FxUC1EWnw6/stTxzb5IbNpLiTxKVqKJV5lJqibIhDzXc9yNdYplogFkTSJia9pQAltIXvYjz7xig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsjvwVaRIRLLG9bGAOE+i+RVnUfGy0xyCxky54tlFNmCW+6TvH
+	sOhTRQ2+GIVhp/EI6r7KMbH4Rtkc0sgwvdusKUpl+S7h8HTMPzyNofhzenhdB1xhtJw4XUfdA7V
+	C9vNusGYFdB6zQa6G2g==
+X-Received: from wmpo42.prod.google.com ([2002:a05:600c:33aa:b0:493:d884:f722])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8b53:b0:493:f13c:9c03 with SMTP id 5b1f17b1804b1-493f88dc201mr26395515e9.19.1783784773040;
+ Sat, 11 Jul 2026 08:46:13 -0700 (PDT)
+Date: Sat, 11 Jul 2026 15:46:12 +0000
+In-Reply-To: <alJHCkMIcnXYPNoJ@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1783783551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nek5ZXdB0D0IztbJf7PZdn++vHjyXt3SZbRe3hbsYHY=;
-	b=bpa/bxJ1dnVX+D9YGJrza67flkA2OrXluM6lCrue/JCkP1e5HbjPNJqT0qVhoaGj2NrliU
-	9Xvf4r3lr7cWhb7rhVPfK8Erpev7YpmhZLWkbC7WPTjHBflM4R7UqGinC6k7ZwoPOvGEIO
-	7xcdBJeB1Vok6mrVb6Y+cWOVLpzF8748cKEqmlNntgsiFOhH8qc6Pv2L8rrVhPm4hAB3qv
-	wJ9DJQEw/DBVIDS+lAfh/HCaJ98HDv0+qyHtxCPnJqmBJ5BX3S5TxcsKsa2OGCyP3/X9QI
-	WrtwH7DpX/T1WyiQQ76VbtmsC4LO4zLI3hJmHVSyZFvFNUsaLZg9tKZaRyoi1Q==
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 11 Jul 2026 17:25:45 +0200
-Message-Id: <DJVUHS5VHP4Z.G2FV1QJQ8ZYH@mailbox.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Beata Michalska"
- <beata.michalska@arm.com>
-Subject: Re: [PATCH] rust: pci: rework device enabling API
-From: "Maurice Hieronymus" <mhi@mailbox.org>
-To: "Maurice Hieronymus" <mhi@mailbox.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>
-References: <20260702-rust-pci-enable-device-managed-v1-1-75bc4ff2935c@mailbox.org> <DJOEYVBS17MJ.1YD3TNGQBWHNK@kernel.org> <DJQXXV5KC973.1XAINGJFCKSWE@mailbox.org>
-In-Reply-To: <DJQXXV5KC973.1XAINGJFCKSWE@mailbox.org>
-X-MBO-RS-META: enmjie771wiyeac8q44io5gtiagfegew
-X-MBO-RS-ID: 433528a3916b0c56860
-X-Rspamd-Queue-Id: 4gyCFs59c2zKv86
+References: <20260707-upgrade-poll-v6-0-4b8fae7bf1d9@google.com>
+ <20260707-upgrade-poll-v6-2-4b8fae7bf1d9@google.com> <alGOptAAFXuHscmG@tardis.local>
+ <alIbx8oav01VLarX@google.com> <alJHCkMIcnXYPNoJ@tardis.local>
+Message-ID: <alJlRDfrvdEhUxX7@google.com>
+Subject: Re: [PATCH v6 2/2] rust_binder: move (e)poll wait queue to Process
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Christian Brauner <brauner@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, linux-fsdevel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Sun Jul 5, 2026 at 11:04 PM CEST, Maurice Hieronymus wrote:
->
-> The one question is where the bit should live. pci_dev already has
-> priv_flags, but its bit definitions and accessors are private to
-> drivers/pci, while is_busmaster is accessed directly from outside:
-> xen-pciback writes it, lpfc and sfc read it. So either priv_flags
-> grows public accessors for this bit, or struct pci_dev gets a public
-> flags bitmap with an accessor macro, like struct device.
->
-> Bjorn, would you take such a patch, and which of the two would you
-> prefer?
->
-I went ahead and sent a series implementing the second option, a
-public flags bitmap with generated accessors following the driver
-core precedent, converting is_busmaster and broken_parity_status:
+On Sat, Jul 11, 2026 at 06:37:14AM -0700, Boqun Feng wrote:
+> On Sat, Jul 11, 2026 at 10:32:39AM +0000, Alice Ryhl wrote:
+> > On Fri, Jul 10, 2026 at 05:30:30PM -0700, Boqun Feng wrote:
+> > > On Tue, Jul 07, 2026 at 10:43:13AM +0000, Alice Ryhl wrote:
+> > > > +        {
+> > > > +            let poll = loop {
+> > > > +                if let Some(poll) = this.poll.as_ref() {
+> > > > +                    break poll;
+> > > > +                }
+> > > > +
+> > > > +                let poll = PollCondVarBox::new(c"Process::poll", kernel::static_lock_class!())?;
+> > > > +                // Reuse our existing lock to synchronize callers initializing.
+> > > > +                let _guard = this.node_refs.lock();
+> > > > +                this.poll.populate(poll);
+> > > > +            };
+> > > 
+> > > Note sure whether this lock is needed? SetOnce::populate() should be
+> > > atomic, i.e. only one populate() would win?
+> > > 
+> > > Also seems we should have a SetOnce::as_ref_or_populate(&self, default:
+> > > T).
+> > 
+> > I'm taking this lock because I want to ensure that losers only loop
+> > once. The problem is that just because you lost the race in populate(),
+> 
+> Then probably you could add some comment explaining this. For example:
+> 
+>     // Reuse our existing lock to synchronize callers initializing to
+>     // make sure in the next iteration `as_ref()` will return `Some`.
 
-https://lore.kernel.org/r/20260711-pci-dev-flags-v1-0-2fcf2811138c@mailbox.=
-org
+I don't mind adding the comment.
 
-Happy to respin on top of priv_flags instead if that is preferred.
+> > it's not guaranteed that as_ref() will return Some on the next
+> > iteration, since the winner of the race may still be busy executing
+> > populate(). Taking the loop avoids this possibility.
+> > 
+> > With regards to as_ref_or_populate(), I point you to this discussion for
+> > reasons why this is hard:
+> > https://lore.kernel.org/all/aZLZbN5C3wXgt3kL@google.com/
+> > 
+> 
+> Seems to me you really want OnceLock behavior here, and other code may
+> have the same requirement in the future. So maybe we just add OnceLock
+> for it? If the space cost is the concern, we can add a 
+> SetOnce::populate_with_lock(&self, lock: &Lock<..>) to provide users an
+> option. I think it's better than open-code here.
+> 
+> Thoughts?
 
-Best,
+Well, I don't think it's a bad idea.
 
-Maurice
+The current code drops the value under the spinlock if populate() loses
+the race, and a populate_with_lock() could help avoid that, so that
+seems like a reasonable idea. It's not a big problem in this case (it's
+just a kfree_rcu() call after all), but could be a problem for other
+SetOnce users.
 
+I mean, it'd be ideal if SetOnce could just properly support this, but
+like I discussed on the thread, there are a bunch of things to keep in
+mind if we want to actually do that. You want preemption disabled while
+you memcpy() in the value in populate(). I guess preemption doesn't
+matter for as_ref(), though. Not sure how that would interact with
+PREEMPT_RT.
+
+Alice
