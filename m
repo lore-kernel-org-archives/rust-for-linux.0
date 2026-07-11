@@ -1,109 +1,242 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AC0372EE9
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 13:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783775382; cv=pass; b=SWVr211h43b0MF58eIrb4UgB/6LCDUBduJrhYa9uHAso5rdFsV0H22cq3JjVTQ3bnVKRrKJz+mjBKiKNnKAmqnyyzzYiUanhXfn5MI9mrFzbnR1QfyBXALt9KYE8d2yC/cB4iePUPSoCxQooWa7LrmChxsarDBNpdVClS4Dk0YY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783775382; c=relaxed/simple;
-	bh=/2UfdN5Nqu4lM7RXRcLv27MNGfJkbs9IexWElOspdQA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eAqyU2xw3R8putDB46T2QTkBJmoKtpRewt7wfFQlpkppHadUN83bkTgjZXPrYPMvDVYMuYNphxgjPGAgGU/d/ZZAnN4yNmMpB6Q+8f4kNb53/gmGiq4tEU6vuetx/03BW/imA4vSMbEhKcabOdrCIy50K+HC2psg0HEMzjgkwQs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n5M1L7Rl; arc=pass smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA17E3C943F
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 13:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783775598; cv=none; b=eE0++QAHecM45fx5nTfE3ijlRb/hH52EO/CriiGtHWCn90886LHxNoZGdxay4sOaArLTKegbzHEEBv8YAz2ScQiWi2dOQvNQfp1tMVELFUphlYkEPULnf6kcU5HpnmR0jyMdk1bO7CndcdC0IsPBPLZI2WYVL6qsqOVv4seRYEQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783775598; c=relaxed/simple;
+	bh=Ehox8SAP1hezi8192+oo1JkH+FPtt5zIvzxy9/kfZGc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=J+x7an7bpjZeGfKMc5fBxXNyu8aHLmL7ZBLqaMXVZnp/s2b/ZgvAKEDt/Y3dVLos1vmVzIr6lo6LjUsdffaNW8V/OLq7CdEsXa9qj2snaZyVcsNZQsXUMYV3tg7RtaK9VGfUmTqmQSTeVLBBM/H88JhRyJcRrJ1z8mnMnqx5mB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OTOsm74f; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n5M1L7Rl"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38dd9c4845dso6761a91.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 06:09:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783775381; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FOvx2Kg65OXEzbRH3bJIN2L7J7iW4ulww+kF0xkeByuB90PlazwTCdpoU60ezAWokq
-         BT2C+TaetvDfSxno6XAbSwoTvBPJ2zAOcV8yDN00KIIykGiBvMDTkXFGckZTIHVFm2Q7
-         GqBtwgd1MNnCh+vFmg0ZUcv/J8jLUJTRQ3fsOJvWdZw2+QhWD2txtdcRI24gUZNXBOso
-         Vr2rGR+yq7u7HU8iqACG+8CbfdL5gox2xdnRI0VCFdUqgdtolxieLss28dAa7jWufXWZ
-         ckPVwBcEknrpKZ/G2YY+DmBQxAKj8Kiu7upREHYkxoKZru/SNCXMZUYe7J85OgyojfBx
-         vQqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/2UfdN5Nqu4lM7RXRcLv27MNGfJkbs9IexWElOspdQA=;
-        fh=/kPkspdEVkZCeucrv76fqtATpw8Uagkq0tgQewwNgFw=;
-        b=U3jsQwnmdq1hWnui4mGcDWbasN0CwjtnqxcG6E6Fa4jqE/LdyPYJXG0q4Nd5hn5rb0
-         GBc+/EP/cVow5QD8IrnWfBaxn4Tj/NjY2yRRiWcHeikeYXdtfFS1c0hP60vLbsRv6pab
-         AefePR5g1A87l/3MM3t5URYDt1Xc9J/65Neap+OY/ks5qt/2nurt6cYpJu+yFVWMQSIc
-         xjieUyMYBdK2KG8feINUshZIi7Ho2clNoBlssqQB6UtD0oiSyIr37SspW96/sR5yKeK/
-         O1M8JgzUwKWvFAAIGYXaXRUxq4AEgk2jKYhaTCAqV2OvuAhOW0INB18ZbtNDEmyJk96x
-         mAzA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OTOsm74f"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493bd52dae6so11241375e9.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 06:13:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783775381; x=1784380181; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/2UfdN5Nqu4lM7RXRcLv27MNGfJkbs9IexWElOspdQA=;
-        b=n5M1L7RlsQ/ynbaU5jyg367CtZXLJcD7sTEfqnBk5D5kMI3/kDtOEJjevpbTj9XpOk
-         0H8PTtkA6/J1Q1FEG++IoH/9z4LtNt4yyRFpByi54FdROQxwSqADGgWXB9/ysJ2M+nnV
-         soVl4764AD8lXCUPezk80W5L6ubH1HK0wRcT/0/v0ccY7eLKPXd9ODj+ICH44kl75hWs
-         Stb7HNfI/D+Uu4uhr012mT5ovBQkkQoo5NfGogp3jK0d3c8qVuQhzWvlbFhhXTXc3XUO
-         meanXp2EkLcHETN0ASOqvNTccTx+Cmu20cxcuCAsyXs34A7tzcD/3SAIrIPNkJ5mgJDs
-         165g==
+        d=google.com; s=20251104; t=1783775592; x=1784380392; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=n+knwv7wId+1eUW5sB+uND4i/4j6+R241YuCQ9i0Ajk=;
+        b=OTOsm74fxgh611I0PktP01Xu/ctKJ2J1xzy1aenm3vw5SId6HVmRpRmQCpWcz5anl8
+         0Jo+cAWDH9c1vFltt0Z/+KTQGbiTp00TW8bYoTLiVpqQzwAp6iOrblJj2rEA722A2wcn
+         gWBjefHPcTTuTJ/f7W1AKtioAM6sxz5L7hkCjwwgT3yyZFnPYML9GTwUxsvpMSMV4asp
+         R8KRo8Y36MLhaSDD5xLL8jmjd3qAm1vLV4a8no/r7eS4OI/Jb1Q/IRjQVN+LdbM8i0lr
+         ywkEx/5FBY0OhxobvvFa4B/5+mPgH41tTFMu8BupAH0JQctbJNu7Q5ut7+ZQJDpFyTJ7
+         lN9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783775381; x=1784380181;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1783775592; x=1784380392;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/2UfdN5Nqu4lM7RXRcLv27MNGfJkbs9IexWElOspdQA=;
-        b=iFcZ9L+ubnv8G8QcuekcCkNfFZyLkPx+8ZZ7sEeW82FvbnVqYY8tm8nSExxA09V5ZX
-         VzhEIcbJ/6/CrACGroVRHqhPR2zG0lub2c87hkA3e4A2RPjW38UMCPBhdb+KiNaaoANO
-         HzIJFfcr0nImC+2XdWQQltz1RMgGHjKOEuJIzahCya02vMjuZTz3EZukiuvKiMWpxJqJ
-         JVq4zjaiTfu6nKxNKy+CwJuJN7znjV4aN/Esm937//JDjegNhD1e7HDWB4hSiqvEAW0f
-         nzzF8a35cqaj112t0y/YUkH34a/e87jmKQOCSh40b6fRXzQR+D0qAmZ6VF09Mxj5dSx1
-         yXhQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rq1AdTEUQHTaBWMa2uNm9WMht69utqAIwanAXNzyLpcNTVLjEw/y5MMYeKTLKBjPA741eXTfX9xekHAhyvRng==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1G6jv7mN4toh1+779mF56Z5m1RtCicAZBQVpiS7MpJ9JiQXha
-	UOLugQBaiGNCsk0zJ7qbFTdmdOoQYRYTmGhX73zJeaNjeYtViVSaLWOrLA0zDxDtjIlIF9rZrTF
-	Zubegj+021IHcnnjBnqZXEIO7LgsnRo8=
-X-Gm-Gg: AfdE7clLujbBYmTRWaBpa/AoX3W/Byeb/4D8650ktRyyrJxk4FjZ2xrM5kzIYqNK1Is
-	EX7RKpxAKxivYckSqUSTZPW0/Us3VaX+0kLhUo/JlITXcmRDEA3SbokaOL3EWjoct+RULJD3H+G
-	cA6qy4p3r0Nxyxr8QpDrhe4AChHTzd3hdbzPr46CIfku34SqOL4GHMKoGcL1F+j3e4JIG/+WgPL
-	nQykqiDpx+nFuaL5HFOpA1WTNZ5I4M4r3xrljfbo8+gdkKVxj0gVH4gB0ciAWoMKwilONyKnVNv
-	L/ZRI7MRBV5/y78uDX03/NF4JgIKjaKDHBA+UR+bC+oJMx6EeyAkBW3qcHWLtOQ9tcHY35D0csQ
-	Fpk/fQbdJCY0q
-X-Received: by 2002:a17:90b:2d4e:b0:368:b002:bdad with SMTP id
- 98e67ed59e1d1-38dc779df28mr2131886a91.5.1783775380898; Sat, 11 Jul 2026
- 06:09:40 -0700 (PDT)
+        bh=n+knwv7wId+1eUW5sB+uND4i/4j6+R241YuCQ9i0Ajk=;
+        b=DRqEIIXVSp33IMa5AQXME6zYExfPh9SWd+CjzzrEItOUB+LnG/6RvV9Hu9bGYJs9yH
+         5W9SiDFGohuQK8VWLsSGDat5dZMUyYKx2+olh6l2kHlIruwTeqzxieAuyjRj03CrJXPr
+         NvvVDIwQIJ30LQhP2e2QhbyD6rw1m74zRzATHDg6OXRZhEbWwdBFTF1mnTnv0D5kLGrf
+         Lpfs6w0DH0ekHua+sY2mrWSFBD5pKNx+32JUZiMIBjsao4bUa0p0RdOp3YAzofM3zK8l
+         o9/Iqwbh8iABGGJnZEzecHWCE2CJ9QTT3DYIGLd1gdhYtpinRtlsvSZg1zddIDocMuo0
+         lM7g==
+X-Forwarded-Encrypted: i=1; AHgh+Rqv6QyMbLKvnT3AjMlpvHGwT5DCsdU8dnI3dyNYvES2pdRANL0mekEOZmXSIyVI5hKu0nqOdUbXzGH0WLjJDw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+efU/zzXdcqQ3azd0CjQ6x2HzFPWCzx3BMI8J9AynYwPUSY1K
+	1nU6t+blSCkCCm1zNKQL+u5Edkz+ARdzlHdpLiDR0H49tIdCYUXSDwNzNGMW649/HI02brKhuFo
+	hccOUX7TB7Mb9ujfZYg==
+X-Received: from wmpr37.prod.google.com ([2002:a05:600c:3225:b0:492:4527:3dee])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4f8a:b0:492:43d2:9e6e with SMTP id 5b1f17b1804b1-493f87e9bd4mr24086725e9.9.1783775591956;
+ Sat, 11 Jul 2026 06:13:11 -0700 (PDT)
+Date: Sat, 11 Jul 2026 13:13:05 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260709100100.604252-1-yuantan098@gmail.com>
-In-Reply-To: <20260709100100.604252-1-yuantan098@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 11 Jul 2026 15:09:26 +0200
-X-Gm-Features: AUfX_mz0L0PMjZc5QaihoCm9iseWlIO_uGF5cqSVyeeh5Ceo099XX7o0kud-B7o
-Message-ID: <CANiq72kbrtG2vecjXjnw2=qnFbQ0BV6NS1phm9Xvcwu9t8HM2w@mail.gmail.com>
-Subject: Re: [PATCH] block: rust: fix `Send` bound for `GenDisk`
-To: Yuan Tan <yuantan098@gmail.com>, a.hindborg@kernel.org
-Cc: boqun@kernel.org, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, zhiyunq@cs.ucr.edu, ardalan@uci.edu, 
-	pgovind2@uci.edu, dzueck@uci.edu, Yuan Tan <ytan089@ucr.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGBBUmoC/x3MTQqAIBBA4avErBtQoYKuEi38GWugVDQikO6et
+ PwW71UolJkKzF2FTDcXjqFB9h3YXYeNkF0zKKFGMUnZiCnGA894Exq+Tp1wMMJZ4ZQhb6GVKZP n578u6/t+k/oinmUAAAA=
+X-Change-Id: 20260711-id-pool-move-bitmap-5b0dc0d2befc
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4839; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Ehox8SAP1hezi8192+oo1JkH+FPtt5zIvzxy9/kfZGc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqUkFiYB1ZfFNogUbkqBSFnOdU9xXdxT0rGba7U
+ So70gI9pUWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCalJBYgAKCRAEWL7uWMY5
+ Rm00D/9Jy7mPt/8dcJQvJK/skF38LpJgSMTWFsYw/AWmfs9TJMRPjkmQmyNNfqxju9XfPmgo2Ng
+ 4f92LVU6u6cnVIiz6zzs/970sUT6iTZF+BioI34VANCeFyKsQJjnJmLqBO8AoO3tJuT0rLP6tIk
+ NiiZcChneS5Jx+WrujfRAcFHxtmDwiNhFgLVB5ZzyJYxxXHi9xTWEwacglVJuW9EecRzxo9Td1S
+ JI+ZQY3fENIvYDjj9qznHukXVaSbNH/KQXW6jTRQjFgRK5RjXJXrKmPTg3v5zGSUHiffi2x21fI
+ 3t8R6uYcqDOAjKDbBAlazdr3ls/di1FE5jYU3NgSkM7ijmr6ASL9ZzhQv6UxMe7pZC8eQtaLkQv
+ uIPbFHnX/WWx+/tVEmHL9hWKR4SRrlacaijRPMYScxqot65w6NMiXbeQ6rwBwiNioSv7puiqbAp
+ cgc+74Jv+L2ZMqjZmeQZ11G4ZjmISzDkE4DH9q+NBbCnou1Yy+jYy6NHyEwEv70D1Q43HGRTj+B
+ oXCuKfAnxqgGvky/hudvJL0+K9TazU8+mJ6y7rqdRr0YkEDjRCOja2I/3UvXEEGUeC9TXj8twj9
+ yXet1dlKdG7ZEUWYoY3x+d7pxYgheuorbFJGE+A7pNIcF5WTAKo1OspsqLm3XuMLZujHd5n+iCK HYfZm7sK9PwE96g==
+X-Mailer: b4 0.14.3
+Message-ID: <20260711-id-pool-move-bitmap-v1-1-cd5b7efc2c12@google.com>
+Subject: [PATCH] rust: bitmap: encourage using xarray/maple_tree instead of id_pool
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Liam R . Howlett" <liam@infradead.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Burak Emir <burak.emir@gmail.com>, 
+	Eliot Courtney <ecourtney@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Matthew Wilcox <willy@infradead.org>, 
+	Tamir Duberstein <tamird@kernel.org>, Yury Norov <yury.norov@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Benno Lossin <lossin@kernel.org>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Boqun Feng <boqun@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Trevor Gross <tmgross@umich.edu>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Jul 9, 2026 at 12:01=E2=80=AFPM Yuan Tan <yuantan098@gmail.com> wro=
-te:
->
-> I noticed that this patch has not been merged yet, and I am not sure what
-> its current status is.
+The id_pool.rs file was added for use in the Binder driver, which is
+using a bitmap rather than the normal IDR implementation due its
+specialized needs and performance/spinlock requirements. However, its
+current name as kernel::id_pool encourages using it over other IDR
+solutions.
 
-Nit: this patch wasn't tagged as v4, so that may be confusing.
+To discourage choosing this pool when you don't need it, move it to
+kernel::bitmap and add a comment recommending the xarray or maple tree
+for generic IDR use-cases.
 
-Cheers,
-Miguel
+Please see the below links for the discussion that prompted moving this
+file.
+
+Link: https://lore.kernel.org/rust-for-linux/2026070334-dollar-hexagram-e49c@gregkh/
+Link: https://lore.kernel.org/rust-for-linux/84bc8bd2-e292-4b84-9580-a1b5df4c5bdc@nvidia.com/
+Link: https://lore.kernel.org/rust-for-linux/20260711063602.426311-1-ynorov@nvidia.com/
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ MAINTAINERS                         |  2 +-
+ drivers/android/binder/process.rs   |  2 +-
+ rust/kernel/bitmap.rs               |  2 ++
+ rust/kernel/{ => bitmap}/id_pool.rs | 26 +++++++++++++++++++-------
+ rust/kernel/lib.rs                  |  1 -
+ 5 files changed, 23 insertions(+), 10 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 4a8b0fd665ce..d80377d06c3a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4639,7 +4639,7 @@ R:	Yury Norov <yury.norov@gmail.com>
+ S:	Maintained
+ F:	lib/find_bit_benchmark_rust.rs
+ F:	rust/kernel/bitmap.rs
+-F:	rust/kernel/id_pool.rs
++F:	rust/kernel/bitmap/
+ 
+ BITOPS API
+ M:	Yury Norov <yury.norov@gmail.com>
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 96b8440ceac6..eec417604806 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -16,10 +16,10 @@
+ 
+ use kernel::{
+     bindings,
++    bitmap::id_pool::IdPool,
+     cred::Credential,
+     error::Error,
+     fs::file::{self, File},
+-    id_pool::IdPool,
+     list::{List, ListArc, ListArcField, ListLinks},
+     mm,
+     prelude::*,
+diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+index b27e0ec80d64..ecf8f194cf3a 100644
+--- a/rust/kernel/bitmap.rs
++++ b/rust/kernel/bitmap.rs
+@@ -12,6 +12,8 @@
+ use crate::pr_err;
+ use core::ptr::NonNull;
+ 
++pub mod id_pool;
++
+ /// Represents a C bitmap. Wraps underlying C bitmap API.
+ ///
+ /// # Invariants
+diff --git a/rust/kernel/id_pool.rs b/rust/kernel/bitmap/id_pool.rs
+similarity index 93%
+rename from rust/kernel/id_pool.rs
+rename to rust/kernel/bitmap/id_pool.rs
+index 384753fe0e44..d6440ec8f60f 100644
+--- a/rust/kernel/id_pool.rs
++++ b/rust/kernel/bitmap/id_pool.rs
+@@ -3,6 +3,14 @@
+ // Copyright (C) 2025 Google LLC.
+ 
+ //! Rust API for an ID pool backed by a [`BitmapVec`].
++//!
++//! The id pool provided by this file is designed for specialized use-cases
++//! that need an implementation backed by a bitmap. If you just want a generic
++//! ID allocator, please use [`XArray`] instead. Or for use-cases that require
++//! contiguous ranges of IDs, use the [`MapleTree`].
++//!
++//! [`XArray`]: crate::xarray::XArray
++//! [`MapleTree`]: crate::maple_tree::MapleTree
+ 
+ use crate::alloc::{AllocError, Flags};
+ use crate::bitmap::BitmapVec;
+@@ -23,8 +31,10 @@
+ /// Basic usage
+ ///
+ /// ```
+-/// use kernel::alloc::AllocError;
+-/// use kernel::id_pool::{IdPool, UnusedId};
++/// use kernel::{
++///     alloc::AllocError,
++///     bitmap::id_pool::{IdPool, UnusedId},
++/// };
+ ///
+ /// let mut pool = IdPool::with_capacity(64, GFP_KERNEL)?;
+ /// for i in 0..64 {
+@@ -47,7 +57,7 @@
+ /// ```no_run
+ /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
+ /// use kernel::sync::{new_spinlock, SpinLock};
+-/// use kernel::id_pool::IdPool;
++/// use kernel::bitmap::id_pool::IdPool;
+ ///
+ /// fn get_id_maybe_realloc(guarded_pool: &SpinLock<IdPool>) -> Result<usize, AllocError> {
+ ///     let mut pool = guarded_pool.lock();
+@@ -134,10 +144,12 @@ pub fn capacity(&self) -> usize {
+     /// ```
+     /// use kernel::{
+     ///     alloc::AllocError,
+-    ///     bitmap::BitmapVec,
+-    ///     id_pool::{
+-    ///         IdPool,
+-    ///         ReallocRequest,
++    ///     bitmap::{
++    ///         id_pool::{
++    ///             IdPool,
++    ///             ReallocRequest,
++    ///         },
++    ///         BitmapVec,
+     ///     },
+     /// };
+     ///
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 9512af7156df..8e7717bb8b9f 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -77,7 +77,6 @@
+ pub mod gpu;
+ #[cfg(CONFIG_I2C = "y")]
+ pub mod i2c;
+-pub mod id_pool;
+ #[doc(hidden)]
+ pub mod impl_flags;
+ pub mod init;
+
+---
+base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
+change-id: 20260711-id-pool-move-bitmap-5b0dc0d2befc
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
