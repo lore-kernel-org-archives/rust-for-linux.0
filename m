@@ -1,100 +1,124 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FDA1DED5B
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 21:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FB426ACC
+	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 22:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783804194; cv=none; b=ACtPvnPk28xs+9ctZ1tpcBEJjq4X+V6uXdlLCZ+SWRokIccPhRq4G8qMSzu/5FFBB2ADmuPEYoctSBbnUwGR9FVV0jGJIswWtO3jsnD046CPosJ5k5IxKwnhF38fBZBV0EdKyTANG4nS983eTHsII7ihqmtj06rq5AFb7xRJ6k8=
+	t=1783809538; cv=none; b=HtIEM7pvGDMM2L2waOzHriL3fiKDsgasV83NSy3+vHQ4j3qC2vL6AH33NKb5rdnAiXbQ26CCyFPonHvY0aQc+1V5yaZW5pieGOZwKEGVFB2yVOAAExi8dV7AkEFlWcn//1ykPTQcxuphL5ss5yMN071Kx8K+qnK0P6TlAc210/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783804194; c=relaxed/simple;
-	bh=EuYXo+5nz9W/MTl5qgLELN1ck1LGg9k5c/7/3V6andw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JECyW0qXmysZwXWOr1G+EjTZICSpsWMF/F60yhBrmxwH89s5XNkS+t2S8/RxylT2kr0xJ4b+8pT8qeOUcrDj9eDdtLplvHfWH52U0KPajkMzhPL89QBh1D2IWJttSB0LgXfLXJyKH4+gUveMfhf4ha9IqV8TwHFq8Na3OOFpLqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ssd3Xs8r; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783809538; c=relaxed/simple;
+	bh=+xEm/4iT4PBor91YTBdpqnG2r+ITU5rbkztJu8claU8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=KusBhaSwApteZkHenSk9mD14hdwG9m5+oVVQa6f4PHk14RQ05oyCyfSv5ZKE6jlJZffodhPqM6w78Xp8nzLgZIoipkw+HPq8yuMiR/gWKRVtA2W8/jjGiO7Iuu5gujwHkW+vkf07ac6CybvKof2JuLuwXgNkMR4ey6fPPVWjoKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=VUNQlcVF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=S/+VXUzW; arc=none smtp.client-ip=202.12.124.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ssd3Xs8r"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-493c52cde9eso18628185e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 14:09:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783804191; x=1784408991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NwgTKzBosdlCxHbnu0swjHQWX5sLh92P2MJ9y08e2gQ=;
-        b=Ssd3Xs8rXonrwWes/xjkDPCryKwbf4uPmUedQvzpf96TemcW1lX4YIC1cM1ffXFUY6
-         Yz4R2nNU/mzucv9+IgOX6MNS7kG+f4dDP4W+Zx5hdUFcUZ94/NTZA61qRhckLT58YaXX
-         cYg/JgVBVoj43gYIyyPmzxd+EqcvggMmqjYswznJYUfP4jAIPfMWI5y0qtCMGeoKWgES
-         ir1RAX+OlVVlnnnUj1uYIxsyWLDEIQCEeTNaOMcO+CJHXvW32LEV2c6V9fGZLUotPctm
-         l+KyQYrCvZg9pLdqh5tzd7CkjldbgN5z1BiDHcbdQDgfNRE4L0wV2E+l6rho9s4NxKcc
-         LhWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783804191; x=1784408991;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NwgTKzBosdlCxHbnu0swjHQWX5sLh92P2MJ9y08e2gQ=;
-        b=fbCWkIJZymsGdiC8xrLwlkkDzQYYE1vToqMLd4d7NI7Ii5gx+VmSuKKe48asps1ttG
-         eQ0f4RlUnl/582J9wnx9AhwkQj4/tO+xT1Xo+HImEvW/oeYmD+KCavDXpZxvLRLMiv4F
-         bnxzQWQKD2BT0syLrBjCpA+aylo27YxCS/tWOdu7H6hTp7n1UPR4dmR3E0XLaTmOaT6A
-         yoCoR3cj8Mo58FL3+C+71bN4D0JLp2NP0OLq8HxH6F27plrPKXsY6S8dhehgGedaoS2d
-         iqAAdAi+2TvoQIm6BNIsQ+DIF7RCQkJjb0PC0ntZGmENT8FtEbzht0FnOv+gvPwOWaOf
-         c0gw==
-X-Gm-Message-State: AOJu0YyZ2wC+ILyGeBcPleA0vXvvIgRz8Ke1GZ6YCaP9ePzrWVDrCA4e
-	cSd4FlfAh+ri6kWHGW3WsxPJHhJLql02xT7OHhMZjsmm2Pux9iyRCFBL
-X-Gm-Gg: AfdE7cn7wuCsnF2ZtkcYsF4/+ULGLDCiiSF6gyspuZl2y7odDK+nZDz09md9rWkW3i4
-	7ylz/MoO5IRaeSXINn/2m7ExiFPmzKUDb3NEnC4wjYSmTMDCGD7wkngIECs1lhtqWnXGraMqvKH
-	DhrCFUPOd7bBj+IoktjItVGZXBw5GJ/tb3zg4UJVPt8RZvBA9CW9O7HH/0RYwr5D80nEhixjUTu
-	VZKpqiOLC5B+6QfczvMX2dSoSlf+RqQVx6yicPVOAe/Ht7FpGwiEGCUWK1uuH6cr6Bnoogq0aX7
-	V25yGZdaJuQnCaFAKeosngNpxfrzuIfpvl+lWsjQMssAWsLEcMOUvAUCiqeaS0C48tzaqw7FeXQ
-	6lcY1DCSZNOqM4zOdr/1ClD9pHq4HPyZqQDa5kypSihBgDeoFIXUvGhFE0sZrQ+nNuSNLtBif7J
-	7Wylo94W4iAHUCS3jUab0qqeVDKtYkzA==
-X-Received: by 2002:a05:600c:a14:b0:493:e311:5f10 with SMTP id 5b1f17b1804b1-493f87e72ecmr35443425e9.10.1783804190760;
-        Sat, 11 Jul 2026 14:09:50 -0700 (PDT)
-Received: from fedora-dell-ale.Home ([2a0e:424:a465:0:bdde:db24:d709:ef36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493f2a38b19sm116367555e9.0.2026.07.11.14.09.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 14:09:50 -0700 (PDT)
-From: alessioMaroni0 <alessiomaroni0@gmail.com>
-To: ojeda@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	boqun@kernel.org,
-	alessioMaroni0 <alessiomaroni0@gmail.com>
-Subject: [PATCH] rust: error: use pr_warn_once! in from_errno
-Date: Sat, 11 Jul 2026 23:09:19 +0200
-Message-ID: <20260711210919.33619-1-alessiomaroni0@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="VUNQlcVF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="S/+VXUzW"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.stl.internal (Postfix) with ESMTP id 8FD5513004D1;
+	Sat, 11 Jul 2026 18:38:55 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sat, 11 Jul 2026 18:38:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1783809535;
+	 x=1783813135; bh=wa6ED/l1/Qft/Zzl6e6R7ksnn4l2vtGfb9NwWOc+U3c=; b=
+	VUNQlcVF3LpFN9cCWsQXcvjTvtVo9LUfCBJuulGUJa29w02vdGMf6Z9/aTrUSm/Z
+	L2IzcI1Qj6DoIR9Vh8Z+Z0O0j5D7jkTDyBaeQWxELc4X4Wv15wPbQ8QIfPJp+AIS
+	3ZIvX23s4woW3PoqCRpoamv5LgYbKv9IidkQDvwVYmo6aByqNIRSs4d2fyYWR+9C
+	nxkakKbJShQuwcT70nrX3Uz/7ExJRoDIJAEVgrNHxNK79uh16oFD/Ij99f9HyzNJ
+	MvLSvw2/hzzYCHHn+7Ia2A9sRVjWkTlgOklckbBvOCheva6EnyKJY46LHcl17u+t
+	WN3JzNtPFGtp6Mk3uCxwGg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1783809535; x=
+	1783813135; bh=wa6ED/l1/Qft/Zzl6e6R7ksnn4l2vtGfb9NwWOc+U3c=; b=S
+	/+VXUzWNuVkGTy3MFsHaQTNirzm63oW4CDlmYOACy2G8n8gZxnRakj9ejlKcnh4v
+	rctsLEZ/3ATP9mX9bqSQIxgQ93w/r07UxiFD5xzAOeXl0PfzrfOB8YV4ZZI8/9mt
+	02oDvoasjkDNqDJ6agutk1evP/2yk2s9Hj7HaNBMptiC11+BUIgHBhxcjpmURKLV
+	4cmueAyXauvk+9wAzhgoLbIVDCcGXaVHyZwlyXEafCPzV4TNrR3VGFaqqbZOKjGs
+	fjRVlR9/Qqpm61BZL/u7AS9oLC2gPzfrQPxP01EAFTee3I/LUWMyZfe15L1lQJ4i
+	5etf83CpDRrOlhqZCPfSQ==
+X-ME-Sender: <xms:_sVSaqQIyQvmXHLAPNKS_cPvUttYmNe2nl5GOH0q-zq71vkMvnZ_hA>
+    <xme:_sVSamzGujTHQmHaHajvbbl6Ph2l-k26CCjIVea9iRV7mV9P4TtFpN0QLw0yxni04
+    4QUj3WwbF8dSZkpez2Lmrtka45nTqowt9I0zmOJaLP59EYOze_p5xI>
+X-ME-Received: <xmr:_sVSas2RRUNKjemyTItkKXX1QMT0VSEMILGpgvDca-PIzxOXVjqKMAC8t51Umg56gcRPK7lJk1HeInr3EgNRedYt>
+X-ME-Proxy-Cause: dmFkZTGtvqF4rtmbuaVJeKSx3goZPEl/hcef1CJce6RhEue2lRXfm6dx+g2RYzRDgMUwC1
+    xC0mOCD06Vp3bQA7SqG3yvedgihOPCzQm4DhpnzTZvLbgM1x3sJ9pH9hkPdTp7qYq5Ce1e
+    8Eoa/17MtOISIuXaWqt25EM6n6Av/fKwrRCPvv/KZlA6gUdptz/vSzghFs5p/a+PO9AqpV
+    ma68UCtOfwhA5eZuQ/V1gns/dsEuVZgILLr3OT4Fsf4LatZlq+oCRawfmlUTxJL2TN7VvA
+    gajLmVVn1H3pyCegFGQELnylHOr6k3OjBTC96YS1VL+qHOJYd5rG5JyhjNTVTwP12A1BiC
+    PUC3JPSygNXrjabprgNFVNSYW92r/leCm7+eJvK3vA/ylfcTQv03TuFBC+4WeLd+cNS0+q
+    zjbLGmb51p80k9AxKJulJ03m+zsBUcumae2PHZXqv/Te0MpU87/MFXNVexWbLTxTi71HUD
+    8GUxMymVMgMKvuu++oGad7ePXe8+uK+Tz1v7FEHxYv422yYB4N3WDP2A3XZiAaDOvX/dWU
+    wRT7mnaJVaNzyP8gdmUcQ6faaIf+qA72O4vUbRDuM2nDv5G2B2v4xNpkaOqrPwD/bfvhfI
+    FYki2gwt4r4OYjT0U6fYYauYssfw1SHnh7tVIRsPAB/NxTrEBHfMYkaLEN/w
+X-ME-Proxy: <xmx:_sVSak5QuS2ZP_GKp16o5VdQaulZ13ULztIqNhcvMWYiK0_cpLLwFg>
+    <xmx:_sVSavV6Nk-rlxI1fUf8-Sf6Nzy4P3cvnjqr28LnJBZWn6s1EDVTrQ>
+    <xmx:_sVSajDGHMu8bku8xX-svN5RJcG35_ZjM20prThuEJvtauqznI29hQ>
+    <xmx:_sVSau6VejGSNoi7hdzMTPwmJeD7gXN49Y3heaZBpGLHfJAcZL3cZw>
+    <xmx:_sVSaoWtQlWF9Jtd5HOR1uVdSWPUo83cArd-MukIpjSQBeTvTePNuLy2>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 11 Jul 2026 18:38:53 -0400 (EDT)
+Date: Sun, 12 Jul 2026 07:38:49 +0900 (JST)
+Message-Id: <20260712.073849.1464463190973607209.tomo@flapping.org>
+To: alessiomaroni0@gmail.com
+Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, boqun@kernel.org
+Subject: Re: [PATCH] rust: error: use pr_warn_once! in from_errno
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <20260711210919.33619-1-alessiomaroni0@gmail.com>
+References: <20260711210919.33619-1-alessiomaroni0@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Replace crate::pr_warn! with crate::pr_warn_once! in Error::from_errno
-to prevent logging noise if an invalid errno is repeatedly passed.
-This resolves a pending TODO in the file.
+On Sat, 11 Jul 2026 23:09:19 +0200
+alessioMaroni0 <alessiomaroni0@gmail.com> wrote:
 
-Signed-off-by: alessioMaroni0 <alessiomaroni0@gmail.com>
----
- rust/kernel/error.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+> Replace crate::pr_warn! with crate::pr_warn_once! in Error::from_errno
+> to prevent logging noise if an invalid errno is repeatedly passed.
+> This resolves a pending TODO in the file.
+> 
+> Signed-off-by: alessioMaroni0 <alessiomaroni0@gmail.com>
+> ---
+>  rust/kernel/error.rs | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index a56ba6309..2d3e31aff 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -123,8 +123,7 @@ pub fn from_errno(errno: crate::ffi::c_int) -> Error {
+>          if let Some(error) = Self::try_from_errno(errno) {
+>              error
+>          } else {
+> -            // TODO: Make it a `WARN_ONCE` once available.
+> -            crate::pr_warn!(
+> +            crate::pr_warn_once!(
+>                  "attempted to create `Error` with out of range `errno`: {}\n",
+>                  errno
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index a56ba6309..2d3e31aff 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -123,8 +123,7 @@ pub fn from_errno(errno: crate::ffi::c_int) -> Error {
-         if let Some(error) = Self::try_from_errno(errno) {
-             error
-         } else {
--            // TODO: Make it a `WARN_ONCE` once available.
--            crate::pr_warn!(
-+            crate::pr_warn_once!(
-                 "attempted to create `Error` with out of range `errno`: {}\n",
-                 errno
-             );
--- 
-2.55.0
+WARN_ONCE and pr_warn_once are not the same thing.
+
+WARN_ONCE prints a full stack trace and register dump.
+
+pr_warn_once is just sorta of printk.
+
+I'll add warn_once macro after the patch to add bug macro [1] is
+merged.
+
+[1] https://lore.kernel.org/rust-for-linux/20260709000103.2912159-1-tomo@aliasing.net/
 
