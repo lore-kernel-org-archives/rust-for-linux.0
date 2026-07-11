@@ -1,141 +1,137 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA59C2749C1
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 15:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9841D2C21E6;
+	Sat, 11 Jul 2026 16:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783784776; cv=none; b=LfcW079O8LZjH8IiPrW/Jyh1detH0zdjJF6Hg0oMAmSICSLAFEEtdWIzFGbaryXdXo2Kfp10NUo/ElHKY+Jywdspfq5BakKMNwIeRkOg3Iu/EW1r06NiyuknjPCbJ/UxIeA+aMtpnwLxjMiuS8H0jRJK0KAYsJxZKFepkFNT4Qo=
+	t=1783786272; cv=none; b=Y/m1XE2+ipSB+nxNf2YabZzi7NcqmPw7yB9Mo4hb0on80LhbltnTapE1hTyxfPWwaritCXI73UP6algB3yFejW6ZC2D/obnfKSmXC3AHUYN5LcLSlBCO02OGK7113QehDYBXFm4a+YMrxACPySqGKcvboJEt8dC6pDvzIof3WyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783784776; c=relaxed/simple;
-	bh=IMlHLsqa76DQv38CtqxVW1r80PfJXYDuVLnGnDDB4hw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HIkS9EK11AsL8IN+D9f/fLc3Tol7867zolm/uohKd8xkTOsaYdvmkaeALFgYnG4TtAxHcdOX8uxKS/UE8TZNzy3sgDWrLQfvPQ9ahF611c9RV5+6JQLxrP/DM5THK5upbLbhneJlzxKDuDk2BfmyfVQ4tr1+5q+PXCaJeeuDoeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qj21sLV+; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1783786272; c=relaxed/simple;
+	bh=PEmfnP3Viq0Iq57bVtkUe663Z9qvI2bWV0EPII+zm3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uHD6SciXtHgrcJ6ILjhIZ4l72CVGGmf1WUKG251cfbcOz1otVtUoFYmXsXjhqh9yR6In/3pKB2LC7AsfDfGgpBxvDVh/o9JI7yuqFoFdddVgnaHH/9TX8ohvCWxXxZeVkfxyg63z/e5hR09j6mzsVEN9gdHjhm0w0BGX1uJrvp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lArd3Na1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qj21sLV+"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493bab443f7so13570305e9.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 08:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783784773; x=1784389573; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ur7NKTJlZDhSFyUo4h9vpOo4v6UgyOoJcKjM9alIk7s=;
-        b=Qj21sLV+p2TtKAFUog4bwoVrpyQ7M6HXcR4fOmVSBsffaZHLqeLOx77mOdNPrqArAi
-         csI/v3f1/Dc7nslG1/3206WMo2nx/dtpnajJnnaElehRSYAs43kNbrBMsgX39rKPI+wM
-         fhjCap6LA5RBueM1WTi/2/VcdQW3JtlbbVBnLDDtYx0IgO080LVqHOT7GQYaFzPQ8zxU
-         zLTpLr4I0f3QIBEBB6cVZb3m391kZofBypIEogvJnfgjKA/rVP97ULHa4ZcnAaQPKhgO
-         FRpTuIhzX23o/V4Z2mj0ZYSdaHrEKzh6/ogb9Y09Cnkys8L5B+GfzbHwjjMXzjxPKxcG
-         hldg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783784773; x=1784389573;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ur7NKTJlZDhSFyUo4h9vpOo4v6UgyOoJcKjM9alIk7s=;
-        b=MXqRl1eas3/3vTYBhhHgj22ZWmM4jL4VyuHsU+YkdVHvvhK+nxSKCnCuXqKQqSUcVH
-         EZ1UWiKJYqIv7Ue1K49b+NwEdCnpmkCfjhtf+d2JcGKeBo6+WjDvAOgUwf1B8H3Tevb/
-         ve1oNxxV52115niRYO2XtJN1wdt+YyG3RCPCAZvvRg018KcYGbKse99xl8KU7BA+w9Q3
-         oqtUPjvg2AYlgKcv3A35puV7phO8fje5y0qoND/huKMSNiRFogFkb1yMrp57c3h6/b3w
-         IZ1r4s+MItc4XIeTl98Hw5cQTyhSh7NJBJz7JLm97rjxGwY0BV+gbNglJ4E5JajrqMB3
-         yChQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpdfkqpa6FxUC1EWnw6/stTxzb5IbNpLiTxKVqKJV5lJqibIhDzXc9yNdYplogFkTSJia9pQAltIXvYjz7xig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsjvwVaRIRLLG9bGAOE+i+RVnUfGy0xyCxky54tlFNmCW+6TvH
-	sOhTRQ2+GIVhp/EI6r7KMbH4Rtkc0sgwvdusKUpl+S7h8HTMPzyNofhzenhdB1xhtJw4XUfdA7V
-	C9vNusGYFdB6zQa6G2g==
-X-Received: from wmpo42.prod.google.com ([2002:a05:600c:33aa:b0:493:d884:f722])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b53:b0:493:f13c:9c03 with SMTP id 5b1f17b1804b1-493f88dc201mr26395515e9.19.1783784773040;
- Sat, 11 Jul 2026 08:46:13 -0700 (PDT)
-Date: Sat, 11 Jul 2026 15:46:12 +0000
-In-Reply-To: <alJHCkMIcnXYPNoJ@tardis.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lArd3Na1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5631F000E9;
+	Sat, 11 Jul 2026 16:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783786271;
+	bh=l157i8Cbrra3gsqHh/wXLRqMCSqeyLs3OdEljp8wurU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lArd3Na1tBACCTa0rtlAkbcQ+djURemz6aRjlt6N0k/8t6r0PBRgovVvcyHCDbHzA
+	 LJwYirK/usCJULhtOoOIqTJDf9ZLKevYYc2OU8GG9bTsLm281wrQNBsbZF8u8B6LOC
+	 w8G3MjGwmEdaPpbIlk4SZBdIr/XLdvY8Km86tNKxbqPu+BCHBwyqaEXqLtUCW5kGAk
+	 mTs10adg9ucQ/28mQ4N/G7R9GfS7sJuMi4pzJgxHJ7r9v/9/rhbVh5Lv83aDCB/mG4
+	 CdVGUi5+2Z1raFOA8856mTZUnkfLayu7BgYnzHGHZgAEAXkMPpEbXMw72EsjOsfXsZ
+	 92Ix6+oXxDefA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	linux-pwm@vger.kernel.org,
+	Laura Nao <laura.nao@collabora.com>
+Subject: Re: [PATCH v6 00/20] rust: I/O type generalization and projection
+Date: Sat, 11 Jul 2026 18:10:36 +0200
+Message-ID: <20260711161035.370023-2-dakr@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+References: <20260706-io_projection-v6-0-72cd5d055d54@garyguo.net>
+X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260707-upgrade-poll-v6-0-4b8fae7bf1d9@google.com>
- <20260707-upgrade-poll-v6-2-4b8fae7bf1d9@google.com> <alGOptAAFXuHscmG@tardis.local>
- <alIbx8oav01VLarX@google.com> <alJHCkMIcnXYPNoJ@tardis.local>
-Message-ID: <alJlRDfrvdEhUxX7@google.com>
-Subject: Re: [PATCH v6 2/2] rust_binder: move (e)poll wait queue to Process
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Christian Brauner <brauner@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, linux-fsdevel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 11, 2026 at 06:37:14AM -0700, Boqun Feng wrote:
-> On Sat, Jul 11, 2026 at 10:32:39AM +0000, Alice Ryhl wrote:
-> > On Fri, Jul 10, 2026 at 05:30:30PM -0700, Boqun Feng wrote:
-> > > On Tue, Jul 07, 2026 at 10:43:13AM +0000, Alice Ryhl wrote:
-> > > > +        {
-> > > > +            let poll = loop {
-> > > > +                if let Some(poll) = this.poll.as_ref() {
-> > > > +                    break poll;
-> > > > +                }
-> > > > +
-> > > > +                let poll = PollCondVarBox::new(c"Process::poll", kernel::static_lock_class!())?;
-> > > > +                // Reuse our existing lock to synchronize callers initializing.
-> > > > +                let _guard = this.node_refs.lock();
-> > > > +                this.poll.populate(poll);
-> > > > +            };
-> > > 
-> > > Note sure whether this lock is needed? SetOnce::populate() should be
-> > > atomic, i.e. only one populate() would win?
-> > > 
-> > > Also seems we should have a SetOnce::as_ref_or_populate(&self, default:
-> > > T).
-> > 
-> > I'm taking this lock because I want to ensure that losers only loop
-> > once. The problem is that just because you lost the race in populate(),
-> 
-> Then probably you could add some comment explaining this. For example:
-> 
->     // Reuse our existing lock to synchronize callers initializing to
->     // make sure in the next iteration `as_ref()` will return `Some`.
-
-I don't mind adding the comment.
-
-> > it's not guaranteed that as_ref() will return Some on the next
-> > iteration, since the winner of the race may still be busy executing
-> > populate(). Taking the loop avoids this possibility.
-> > 
-> > With regards to as_ref_or_populate(), I point you to this discussion for
-> > reasons why this is hard:
-> > https://lore.kernel.org/all/aZLZbN5C3wXgt3kL@google.com/
-> > 
-> 
-> Seems to me you really want OnceLock behavior here, and other code may
-> have the same requirement in the future. So maybe we just add OnceLock
-> for it? If the space cost is the concern, we can add a 
-> SetOnce::populate_with_lock(&self, lock: &Lock<..>) to provide users an
-> option. I think it's better than open-code here.
-> 
-> Thoughts?
-
-Well, I don't think it's a bad idea.
-
-The current code drops the value under the spinlock if populate() loses
-the race, and a populate_with_lock() could help avoid that, so that
-seems like a reasonable idea. It's not a big problem in this case (it's
-just a kfree_rcu() call after all), but could be a problem for other
-SetOnce users.
-
-I mean, it'd be ideal if SetOnce could just properly support this, but
-like I discussed on the thread, there are a bunch of things to keep in
-mind if we want to actually do that. You want preemption disabled while
-you memcpy() in the value in populate(). I guess preemption doesn't
-matter for as_ref(), though. Not sure how that would interact with
-PREEMPT_RT.
-
-Alice
+On Mon, 06 Jul 2026 13:44:13 +0100, Gary Guo wrote:=0D
+> [PATCH v6 00/20] rust: I/O type generalization and projection=0D
+=0D
+Applied, thanks!=0D
+=0D
+  Branch: topic/rust_io-7.2-rc1=0D
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-=
+core.git=0D
+=0D
+[1/20] rust: io: add dynamically-sized `Region` type=0D
+      commit: 426c92ca1bdd=0D
+=0D
+      [ Add brief explanation on MIN_ALIGN. - Danilo ]=0D
+=0D
+[2/20] rust: io: add missing safety requirement in `IoCapable` methods=0D
+      commit: 65f6abf9fa81=0D
+[3/20] rust: io: restrict untyped IO access and `register!` to `Region`=0D
+      commit: 6461c5776bf0=0D
+[4/20] rust: io: implement `Io` on reference types instead=0D
+      commit: 46b1b54139c3=0D
+[5/20] rust: io: generalize `MmioRaw` to pointer to arbitrary type=0D
+      commit: 9734e905119c=0D
+[6/20] rust: io: rename `Mmio` to `MmioOwned`=0D
+      commit: 691c75967d44=0D
+[7/20] rust: io: implement `Mmio` as view type=0D
+      commit: 9f64c84af008=0D
+[8/20] rust: pci: io: make `ConfigSpace` a view=0D
+      commit: 6e5f28968d7b=0D
+[9/20] rust: io: use view types instead of addresses for `Io`=0D
+      commit: e0454ec1220c=0D
+[10/20] pwm: th1520: remove unnecessary `deref`=0D
+      commit: 0adc93b85374=0D
+[11/20] rust: io: remove `MmioOwned`=0D
+      commit: bed01ca9e9cf=0D
+[12/20] rust: io: move `Io` methods to extension trait=0D
+      commit: 9b36c13cbd4f=0D
+=0D
+      [ Add comment explaining the purpose of the Io blanket implementation=
+.=0D
+        - Danilo ]=0D
+=0D
+[13/20] rust: io: add projection macro and methods=0D
+      commit: 1f989555fe5c=0D
+[14/20] rust: io: add I/O backend for system memory with volatile access=0D
+      commit: 2fabff780785=0D
+[15/20] rust: io: implement a view type for `Coherent`=0D
+      commit: 1d409d1e7a87=0D
+[16/20] rust: io: add `read_val` and `write_val` functions on `Io`=0D
+      commit: 89814c42c19e=0D
+[17/20] gpu: nova-core: use I/O projection for cleaner encapsulation=0D
+      commit: 0722567f5085=0D
+[18/20] rust: dma: drop `dma_read!` and `dma_write!` API=0D
+      commit: 6ff7d69b7e6e=0D
+[19/20] rust: io: add copying methods=0D
+      commit: e7219e53c525=0D
+[20/20] rust: io: implement `IoSysMap`=0D
+      commit: 11a4784f902e=0D
+=0D
+The patches are in the topic/rust_io-7.2-rc1 topic branch and will be merge=
+d=0D
+into the corresponding target branch soon.=0D
