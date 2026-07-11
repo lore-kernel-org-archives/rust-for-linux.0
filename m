@@ -1,160 +1,151 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB3629C327
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 14:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F0E2E11C7;
+	Sat, 11 Jul 2026 15:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783781444; cv=none; b=gciLcjyBMhmiU8fblsf8mFSqfFVDKWuPTlvfW50NSJMfo1EFJbXjeeMGswcN79NaB/UC/n1ZvBkEB2D9FgqezDWHbp6/cNXkYzTu96XFY/QAhKe4SnLTJCV1X/n+w7xHja9SueecERf2hXyOydWX/sifszLsVjId4ci20nfJLI8=
+	t=1783783297; cv=none; b=I5Q9V4epUKqIUKIbykZ77dYgokd3VBTc1hzzYMY4bydkdm6dKMPJx6huBLkBkAsQh3og2+a/U+zfgQjQuaUmnajUGSBmk5yFREP9eZwqLi/tJuKM2vE2cy840a0wStg5/Bn8XUH+wACmj489y2wuYwgK5iZYTbzwmNieWTgT+Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783781444; c=relaxed/simple;
-	bh=TxAHOCI8HJUxNpgz6gqiyVWfmmv2mcGTZ0IO7ZVFrak=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DR8JHjoek3kfwvjuiht01MrL6v2WHUVikUqEAmQI9m9BKNzjvUL22sOMMUBVV3iuJx2D6C3C2gqnzBf2P4nXpy9pLUc/O/Xzqe7hyQn7LOb/co3YZ7fpdf85q39VBQ3nINgC03RqPgggxtY6FH5/d2rZNPqteD2maF9Yda6T/xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipUz3N0p; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783783297; c=relaxed/simple;
+	bh=o9XAWD66ai+0Z3WcwldrjMlSlthY+1Kqo3Oox8uMmS0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AJHdVP17ECKnJEoLbT3u1yrqD2LndnPFjm6RkOqwmhbEQ85XaoWwapu5TwohHyImy/WrzzaK8deK/mumPkjORqv2pprAeNr0W+CR6S1x1XzzZSEnubC3hHUeu0TCZtv5m7vo/O8ugdA3YLZ3eUa6Hk70QQSYLSUgIooNriFpJ9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=eMVI1NjN; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=c8kmqXI9; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipUz3N0p"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-381216921aaso2065210a91.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 07:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783781442; x=1784386242; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KjJHYEJ+238MY0pZ1amwdjykbr/wm4kFMSYEYUTKcek=;
-        b=ipUz3N0pM4oOfF3iSIGEEvurSklAgDCsSFc9lbrWlKBmUD6Z6kRnZv4x1hEwTqqFdO
-         dLILS7BcM4wlGq7W2DD0rc2QNrGOdoC0ZGL83dZmwgp6ybrCTtuv8LwTAt7OJVdG4M6a
-         dcGFNO0bjvrQwbWlQIHcRX7mrn5iQWncv3UqHgCLIjoRPlJVaXbp1HgZ3SSJVQ1ZE9ef
-         rEi3qxxUFzsMW7UaWt2MvvKQPK5TcwCoNSRveBxkNWXPjgjyoCKBdOx6bWzCSKNdqezu
-         KHpyysOKhEpMzw9WKdBZY6dqXGqND/kQSKx1yQKytSGiMByYbL8a6GbLlaeQ9LPmEn8T
-         7rHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783781442; x=1784386242;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KjJHYEJ+238MY0pZ1amwdjykbr/wm4kFMSYEYUTKcek=;
-        b=GwOfzpqZNV+WZvgWkrOjKaUyIn9uDL5RnEIyOWT2WrlsucNbFFKvj6CD1YXkXAjya/
-         zefWpwZ4q5gKXAav1PjP0qEF9QSIhS7S9XJbI9L3vM40T1/vM4GFj8scAhg71zQXM7by
-         NgVo73rvOKr7D3d5kG9yck9SY4+6/VUosZZlXyG3qP3F9T2d4tKsoU+D/28MTFiKDdJL
-         W5AlcAOMlwtUoTtObf6+vPmTmt5ZQOlSbcpxPPEfAB6sMC2kxZKMCkjtFTt9YjHj94Rj
-         AM74Wru1k/jGCCOMJ1KkpkZUSSMOzmKPCOrLQ/mOOySS+Po8sGdNUh1nLrpGF5Y4uryB
-         BrOA==
-X-Forwarded-Encrypted: i=1; AHgh+RoiVaBSYz8Mum17071JKnqP7ZN00Z8R9N6cFZeTpxqUy/C7BzpMv6J3jEMEU+/21frLHMzf2wcrKXy0nybryw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0haTcIjUMx7qGAtBckuvewBv6XgmtGupBk3EoazreiAP7rgdv
-	6sLm+skYXpof7iyJaohs7QBsTWRbMQ1l2g2yxbF87U7pFF1SKWuDYNA=
-X-Gm-Gg: AfdE7cllYKyfCs25ysLaW7mVFZr0NQKMo9H3LzM6UnR1m5VD5YJflL/b4wfbafR73p7
-	nPj8+EcW6p75susiW88cCa5P04SXD51awLmMf3mAEK3tuqf7aCkTtU8vLWYX86oQGqfeZdO/QUm
-	8U29FFE2EQBJurRZ5aJsrrE4H9UvYUnX1QCoYlLDRAe4i8olrYPSm4mBIQxGIarDnIwPiw6FUVf
-	j6bzDiNAgBBjZfiFB/StXJbU5d1Q3FfRXf2XrH2lj0M/4Y85Mz4QYQjHz3y8tLwCBEO/J1+zA+r
-	G0VvoDnXMbWL5GDtFzytJw3wqzaAbgvz9+DabmD3rfGXety0XzxKIcmMft7WxNwboAd6Z5qSLBs
-	sYMyGP6Yep/nwBieL5s7RjddA8JGv94YJodGWLSH4kuwy9I7H2tB5RGAtftMUK0DXwPV6iLUamE
-	eiEsHsGCq5r13SSrhqmUcu2sm+Mu0k1mXH+DxP
-X-Received: by 2002:a17:90b:4a4b:b0:37f:e8d6:72c0 with SMTP id 98e67ed59e1d1-38dc73c3657mr3168007a91.1.1783781441952;
-        Sat, 11 Jul 2026 07:50:41 -0700 (PDT)
-Received: from HARICS-M-4G70.cisco.com ([2001:420:c0e0:1002::60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3118389d9bcsm42065865eec.20.2026.07.11.07.50.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 11 Jul 2026 07:50:41 -0700 (PDT)
-From: Harish C S <harish.cs.ss24@gmail.com>
-To: ojeda@kernel.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	aliceryhl@google.com,
-	lyude@redhat.com,
-	daniel.almeida@collabora.com,
-	work@onurozkan.dev,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v2] rust: sync: improve `Arc` documentation links
-Date: Sat, 11 Jul 2026 20:20:33 +0530
-Message-ID: <20260711145033.39649-1-harish.cs.ss24@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="eMVI1NjN";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="c8kmqXI9"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gyC8j6jmRzKvvr;
+	Sat, 11 Jul 2026 17:21:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783783285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kH44882xOwsD4SfCnl+qgk2oMqAUi2EehaDoPIzn3X4=;
+	b=eMVI1NjNntkXUIL2KOm2VZts3RhfTzWVqESVgkEg1PEU0iNNOTLEy4oPU1sGltwuvADktu
+	29XhMgFGgB99GHjLXkAn5ozkGwVXTnUWBBmNLahKBuKQI8RFu1nsjv2tvFKSfvmDAtyj1O
+	lXeTa0MTvdh9lMX7wH0Z4HrZUVewtjTxlWk4QbVwtZ4evIKBzLeSF4SmncAmhlmzTH6lfO
+	ksEtFi2KZ9Zd1uON+d5igIc2yOUDcSKi98kj00W2rAeb7w1IRkWpYlhnb4PTXyjwtXe5ay
+	DtFsbogadRXZ3ZyFWqIHkaejjrBvgV4yEaPRdkLhep6OOvyMJ6Ju9mGHWYSjgw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=c8kmqXI9;
+	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=mhi@mailbox.org
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783783283;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kH44882xOwsD4SfCnl+qgk2oMqAUi2EehaDoPIzn3X4=;
+	b=c8kmqXI9fAQXUpbVt8GLOdc11hNZaJUQQYsS5cxln0FyNygQRxXRLlPlY4A/0KF/KVlnyq
+	89csec1W7y0LP0NuHF8OvgxGL8QwqVDg/yqjlR/tZT0U7N22e4zfIfz1jks9M3hooLWyED
+	CDY1JGEot2RA0xGQ/m+LTSdmCoWb3snkaAPehAWthZ4c9C+ImtG2A76FPCgJ1/TbH/2vmO
+	HwgjxsoeMhnxjxIUpu6BvcCkHiqsrmwmJoz/XnGg32ShT1AplRvrYoSH27jRz6L7EeMPnf
+	xNMJZmtF3EhCBlrp2XnEluRXkziEHFi6I+wVebbtpQX2hdjgVnKSjqP8z4pXDQ==
+Subject: [PATCH 0/2] PCI: Convert bitfield flags to atomic accessors
+Date: Sat, 11 Jul 2026 17:21:05 +0200
+Message-Id: <20260711-pci-dev-flags-v1-0-2fcf2811138c@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBBA0auEWTuQ2KK0VykuTDKjIyWVjEpBc
+ vem7fIt/j9BKQsp3M0JmQ5ReaUK1xgI85gmQonV0Nq2s71zuAbBSAfyc5wU2fvAV+abvTiozZq
+ J5f37PYa/dfcLhe07gVI+47rh/HEAAAA=
+X-Change-ID: 20260711-pci-dev-flags-fbbcf4ff9031
+To: Edward Cree <ecree.xilinx@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Justin Tee <justin.tee@broadcom.com>, 
+ Paul Ely <paul.ely@broadcom.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Juergen Gross <jgross@suse.com>, 
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-net-drivers@amd.com, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ linux-edac@vger.kernel.org, Maurice Hieronymus <mhi@mailbox.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783783272; l=2313;
+ i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
+ bh=o9XAWD66ai+0Z3WcwldrjMlSlthY+1Kqo3Oox8uMmS0=;
+ b=4RJCYIsxz6UvLYOQ6xqvhVEQoQSh4rZQVVIc7mWtjntBUq4ccNJ2KYKolDjFHU49aAutOyaus
+ A5Eqo668VqlDuoF/ENWHgCu8gHFoRAMIBVG+FaowFqe6tBmqjHocs5w
+X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
+ pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
+X-MBO-RS-ID: 7fb4275b43160de9afd
+X-MBO-RS-META: o4fyj9cuc9w1urffc3xfrywcrt7anabk
+X-Rspamd-Queue-Id: 4gyC8j6jmRzKvvr
 
-The `Arc` documentation has a few mentions that do not follow the
-surrounding style: a plain `Arc` without an intra-doc link and a
-lower-case "arc".
+`struct pci_dev` keeps ~60 flags in one C bitfield. Bits sharing a
+word must not be modified concurrently, but several writers take no
+common lock: `pci_set_master()` writes `is_busmaster` and can run
+without the device lock (e.g. runtime PM resume paths),
+`pci_disable_device()` clears it, and `broken_parity_status_store()`
+writes the same word from sysfs at any time without any lock.
 
-Use intra-doc links for rustdoc references to `Arc` and spell internal
-comments consistently as `Arc`, matching nearby docs.
+Convert these two bits to a new public `flags` bitmap accessed with
+atomic bitops, mirroring how the driver core replaced its
+`offline`/`offline_disabled` bitfield in commit a7cc262a1135 ("driver
+core: Replace dev->offline + ->offline_disabled with accessors").
+More bits can follow the same pattern later.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1240
-Signed-off-by: Harish C S <harish.cs.ss24@gmail.com>
+An alternative would be to reuse `priv_flags`, but its bit definitions
+and accessors are deliberately private to drivers/pci, while
+`is_busmaster` is accessed by xen-pciback, lpfc and sfc. Happy to
+respin that way if preferred.
+
+This is also a prerequisite for the Rust device enabling API rework
+[1]: the guard object planned there calls `pci_disable_device()` from
+contexts that may run concurrently with `pci_set_master()`, which
+requires `is_busmaster` to not be part of a shared bitfield word.
+
+Link: https://lore.kernel.org/rust-for-linux/DJOEYVBS17MJ.1YD3TNGQBWHNK@kernel.org/ [1]
+Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
 ---
-Changes in v2:
-- Use full name in the patch author and Signed-off-by trailer.
+Maurice Hieronymus (2):
+      PCI: Replace pci_dev->is_busmaster with accessors
+      PCI: Replace pci_dev->broken_parity_status with accessors
 
- rust/kernel/sync/arc.rs | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/edac/edac_pci_sysfs.c               |  4 +--
+ drivers/net/ethernet/sfc/falcon/farch.c     |  2 +-
+ drivers/net/ethernet/sfc/siena/farch.c      |  2 +-
+ drivers/pci/pci-driver.c                    |  2 +-
+ drivers/pci/pci-sysfs.c                     |  4 +--
+ drivers/pci/pci.c                           |  6 ++---
+ drivers/scsi/lpfc/lpfc_init.c               |  4 +--
+ drivers/xen/xen-pciback/conf_space_header.c |  4 +--
+ drivers/xen/xen-pciback/pciback_ops.c       |  4 +--
+ include/linux/pci.h                         | 42 +++++++++++++++++++++++++++--
+ 10 files changed, 56 insertions(+), 18 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260711-pci-dev-flags-fbbcf4ff9031
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 5ac4961b7cd2..76a153e01283 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -154,7 +154,7 @@ impl<T: ?Sized> ArcInner<T> {
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must have been returned by a previous call to [`Arc::into_raw`], and the `Arc` must
-+    /// `ptr` must have been returned by a previous call to [`Arc::into_raw`], and the [`Arc`] must
-     /// not yet have been destroyed.
-     unsafe fn container_of(ptr: *const T) -> NonNull<ArcInner<T>> {
-         let refcount_layout = Layout::new::<Refcount>();
-@@ -253,7 +253,7 @@ unsafe fn from_inner(inner: NonNull<ArcInner<T>>) -> Self {
- 
-     /// Convert the [`Arc`] into a raw pointer.
-     ///
--    /// The raw pointer has ownership of the refcount that this Arc object owned.
-+    /// The raw pointer has ownership of the refcount that this [`Arc`] object owned.
-     pub fn into_raw(self) -> *const T {
-         let ptr = self.ptr.as_ptr();
-         core::mem::forget(self);
-@@ -261,7 +261,7 @@ pub fn into_raw(self) -> *const T {
-         unsafe { core::ptr::addr_of!((*ptr).data) }
-     }
- 
--    /// Return a raw pointer to the data in this arc.
-+    /// Return a raw pointer to the data in this [`Arc`].
-     pub fn as_ptr(this: &Self) -> *const T {
-         let ptr = this.ptr.as_ptr();
- 
-@@ -305,7 +305,7 @@ pub fn ptr_eq(this: &Self, other: &Self) -> bool {
- 
-     /// Converts this [`Arc`] into a [`UniqueArc`], or destroys it if it is not unique.
-     ///
--    /// When this destroys the `Arc`, it does so while properly avoiding races. This means that
-+    /// When this destroys the [`Arc`], it does so while properly avoiding races. This means that
-     /// this method will never call the destructor of the value.
-     ///
-     /// # Examples
-@@ -345,11 +345,11 @@ pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
- 
-         // If the refcount reaches a non-zero value, then we have destroyed this `Arc` and will
-         // return without further touching the `Arc`. If the refcount reaches zero, then there are
--        // no other arcs, and we can create a `UniqueArc`.
-+        // no other `Arc`s, and we can create a `UniqueArc`.
-         if refcount.dec_and_test() {
-             refcount.set(1);
- 
--            // INVARIANT: We own the only refcount to this arc, so we may create a `UniqueArc`. We
-+            // INVARIANT: We own the only refcount to this `Arc`, so we may create a `UniqueArc`. We
-             // must pin the `UniqueArc` because the values was previously in an `Arc`, and they pin
-             // their values.
-             Some(Pin::from(UniqueArc {
+Best regards,
 -- 
-2.50.1 (Apple Git-155)
+Maurice Hieronymus <mhi@mailbox.org>
+
