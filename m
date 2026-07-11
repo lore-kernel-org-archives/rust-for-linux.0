@@ -1,126 +1,137 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9D438B7DD
-	for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 09:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783762090; cv=pass; b=g80qLVi50IhKyUQ8WJ7ZrhOQIDPnxSHJ1cyDpAyCIo4NyVnPmLN6iDNM6F881l2ug/Eer2K9ccOEphNUwFEJ815mRC3U1dOmM3sKwf76M92rp+JJzMzddUrAbuyfxz79j0h9YYogohyZDIdYVxpOmyZBYdrqlE6QT0c3DxODMBY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783762090; c=relaxed/simple;
-	bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DbSv6dGzwIDhCJGNZTa6gOIhwJXt644grfQbEnr6gCH1NIPceEhjk60pOkGpcMvTYli/7vkSbDhklQoEVA492i23RAHtaXKlU5Na+yhJuzPReIFxyfU+3iB/4XThjWcDfaDjCEHHHdmN1ggxX5k6drvg1OYSKeXOGh4TSYyzWH4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qN2QoMYh; arc=pass smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAD8233927;
+	Sat, 11 Jul 2026 10:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783765022; cv=none; b=pB7KG0ribP9K1QZ1syyPaEV4NzhNBJQ4cI2oNBD8dCbfYkAVLSErmGqNxOWUhn1TyReyOJgxfIVInovNMI2stfOxzxILGEn/sw7QWpN4VHtdY9dseqf4W0rjSsQgXMr0/3GEjRxeeJ6xTqadrhFdViuMWR0UzAc5jagObCuvbLw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783765022; c=relaxed/simple;
+	bh=+Q01IOSPpbl6YaJ1sx2U1xpDg/zo1GCHE9ISpCMdGX4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HTyxsuZ3PPvXCexdGDf3E9ZSNpUanEWpIvdYKNKeYARbb547Cw+Tne91IGDa1Yjy30reX6+2dSnAF5ArFC7FOULU4xYMhczYu2w5Bh0ht+Gv8ISEFQN6gO9Iff5eu+NB9YApl3OmRGzfoawdGaijnUxMKLSBGLDHSHlgc1G7HEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=M/h8gBoO; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=p8w14CPZ; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qN2QoMYh"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38dd9c4845dso2347a91.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 11 Jul 2026 02:28:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783762089; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BXY0/8gFNy1di/GsfYU/0F5IkoqxQ5FiUe2IHnqaTbM52GyQd9TNkpoJcPaBfvhZra
-         NOPpMpda4BuqtxfbS0cARTexI1ozbaNG1EP0EE+2VBioFFtGsTy9vZwqtyCsjRZxr4ir
-         mX2cYzVNYynxXp/0vNMDk3Z6WE6sJvZOM+Pp77E0CDbR0UJWT7pi+M+Qu3trDUKRgWV8
-         /DhSdrw2H3z588QUh/IXMPmkGTeDwu0m5USuALggabMfzZszysHyVYOsy3d/j0E1nSqi
-         cDSMLaYJ9vjSmA5XYQkHga4HEkMwdhCLvH0uY8U4Lgl5D2PjLC/3Y5Gqoi+KPBHSyXR1
-         jOvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
-        fh=pDGC2gfNOsA+VhB86PCu10wC4U7bwh3Ih0XvY54dM/M=;
-        b=GlhGKZupe9fCQ0xCf43rxjAsAw8Nk3Pl3sxVPv01OPl2GafOhuUwfl3GZ0IZ/+z4S4
-         ozM8LzM93eXwUgJHT4ldoFGrbTWgPl1Tv3Tk4Sddt/RdCRB396UOvTljN1+UpuJ03YRN
-         C6L52JpLbbAcyalV1+OBTUQ65zrhUswz1Rq6xtMUFvFlR2Ro3yUjDxkIyq6Tmm4DDZME
-         Et9hmwK2kvJjEc2999QcraxYjN0W/X2115AejK4lluwCmeWC/SfWXoMkSjicSgrYdWwC
-         B+Xg7vrCnfeqTv3DLN4NTgr0KRC/Rey/RolXcz4/o8VbhfyRWP0B3RCgjkNZeQ3LtSeo
-         /wqA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783762089; x=1784366889; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
-        b=qN2QoMYhFdCwlzAgPjKKMFddMao+FSU+Kvm8LQOnU+3f94/8rcdrg7pkVL6ldtJfX2
-         i0/6j5JLPGhmCEl+hh0exf3n+Sg+kEZOs9RWSbK/a+ZNMFDAaAMabRPDH3gARE4va2UF
-         ue2yHvy3sIJHqQ98+9Eqvor8ISFG2NL6CYi/7jF0yQzsDwnAN8GWMjvcXaMoQeVBG23q
-         IUEC36+Q5oKE97dWItFWKcffhP3Q0JawRT+YAHFQHpta19umVlvEyy12ibsyx71SqqsB
-         6uluGhXZ+3Gi+2J+ZmJyzPlp49Vo7CqobQ5UbCcGaPeBB+37XRkEsggHDKZR3FFSoTIo
-         S5KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783762089; x=1784366889;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JVHhR/KG+qqLo/4P8TPgskU+Qf4ZcEH3S5VPpBXd7mA=;
-        b=GcY0/6c2fYYWO+TZ//rPBg5Bdbf9D3pacXaMDXX5MfMJZ2V8HJR9bdwa88Spn0Dl59
-         9PguP8mscoTCaBa3xQZZos8FBgLRbF+u6ylPIvhCpogah8vitBD4j76+7ESAQkl89Cxh
-         591C8oGa8Oj7v+IwbXBHR/k8SOE2yJQCOft8TgF5nPtpev/K/RI5q+wH71W5rOY544KR
-         W2Dm8ZZJoaxNG0A5I8B+wve2FjWGYk27+QcoBXX4Vnw8Py1bcsY/iStfDHbUXRUQ2nPk
-         8mBr001YbL6AltAJTPlOpPve14UmLSGsBycPmwy4Ludbb/IM1onVj8jy8HA7/r0S3VaA
-         IbNg==
-X-Forwarded-Encrypted: i=1; AHgh+RoATjBlBC5B/x13wB5f+0hpSX/mHp7xAk8JCMPgvCsPSa7OFrAvQKvNkAWDUfGWOYUDF4kNAoroMm0rGePVIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFrqsFcASNsRkTiDuXbIbqt4l0QU4CsLcZDj00Jbr1QjdPT+e6
-	XTPohY7UFYlJfaNJcNM43aTg2TfInhKh/STs9jaoJ06427/lNunGeFAXOFfNXf1Y/79PgeG0zp3
-	a4ck6572Vuoxa3RNAFxLk7Zyq47q1HU0=
-X-Gm-Gg: AfdE7cnPlncM+coox1zLjXzYluLkNKDm3ARuuZVA6sJ2z+ImZfBIOjXDNIdWt5PlRCS
-	Bf1uJduRa7YKEW2AbhFirAJ+x3ydw1PjKb/yLgCVz/FqxrzolI/9kL5jaM0JJFd3gCfWkNXZUYn
-	qsrwRf/BQWO/7pqZB7ZMTGDMZTJS3ysXHLHfR5duy5VVBDb96RVrQpx1jijOc1uetk2UvAg+UJo
-	kDHKuSmEzNCz5yIIg2kbK5UgRP+0Renlv81lls/jcb7wSoJrbPPQ+ezn9RQavUoXy92GcHRXPrI
-	HjzGFUOORE/UM5EfHYoRI/K1bhYM1M1jJrgBbWysx14jKhImZR64B0vxsRB74dCfqUkGzhulFDP
-	jp8oV5BklnF0O
-X-Received: by 2002:a17:90b:3890:b0:383:5a16:bd67 with SMTP id
- 98e67ed59e1d1-38dc7754e8amr2121879a91.4.1783762088889; Sat, 11 Jul 2026
- 02:28:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="M/h8gBoO";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="p8w14CPZ"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4gy4PP0dlZzKvv9;
+	Sat, 11 Jul 2026 12:16:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783765017;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U3ImstQrsA9UW+38lhQ1sNds7gu/oGbkbhambfG/NR0=;
+	b=M/h8gBoOZzGcKOjKkhO2U3RWnN/IbG1O1jBcYDl9RQ4AA5snm9OVJEtarFLd9J3rDReFj6
+	cNpOq7imAUFtt6EZ8L/lnnrdHaG+lLjh/ygkcd2tV06KZPvPWWJKqTNn2AItsvYuXUB3Qj
+	iutPsL6iGbqfXhp6eFBgCIjMRq1ZpedOUVrV22S9WqnVI5V4bQpL41lYMBsFU4uc07gPzh
+	+21VEAw93+HcFc9lffr2jdn4pjKKLg6hpVtlv7+7M0dWCcObsRjYFe7i8elsi0z9jB/T7U
+	qGi/mlOMjMCU3zWv8qR3f+MamcxyaSqqFh9Ggfh0srW7njLA+ZfE71s8pqrc+Q==
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1783765014;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U3ImstQrsA9UW+38lhQ1sNds7gu/oGbkbhambfG/NR0=;
+	b=p8w14CPZ0kWEU7bX10C1ghN0UHreb54mtp4opQHTe3FNRthqsgGq7vqIfcp7mTgjL7iyBq
+	asnDirQLwQNdcRS9mp5FYmRd7q/e6/mY1/lZZA6ZhUE4vayuQXfwjpLnc4EdrPyfF22o0Y
+	8Oo8fFnYiwoNeRIB954FI0S0S3XEnmETjWFaaS4+7O7U5YK2y/nRUrIlLcRoMZHHeyN4LZ
+	QG+4EeZFnI3eJ+YZ+OUv3oApZHbkyxJ7rPX3ZnpxbrVP80sOkGemDtSRB6SWmhVkY4KLpe
+	DWvoxZOHglK7I3Mq+AvdP1sHQshrQl3Q6nSCWDKgmDXKbpll++Y3b4Unh722zQ==
+Subject: [PATCH v4 0/2] rust: clk: Add ExclusiveClk and use it in
+ pwm-th1520
+Date: Sat, 11 Jul 2026 12:16:28 +0200
+Message-Id: <20260711-rate-exclusive-get-th1520-v4-0-8244a0666a71@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260711082327.3062227-1-chankocyo@gmail.com>
-In-Reply-To: <20260711082327.3062227-1-chankocyo@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 11 Jul 2026 11:27:56 +0200
-X-Gm-Features: AUfX_mxJJlEIaqcNk7UQHFHDBGwkPEX3sgoypJKo2CkBiMFfMOxxNiSdWhMaVtY
-Message-ID: <CANiq72m5iqy+_D4fzxM-i3AZrA98VMXP0V7EtBN9npN5akVRRA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: impl_flags: use bit helper in example
-To: Kosumi Chan <chankocyo@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
-	work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/43QTW7DIBAF4KtYrEsFw4+NV71H1QWGwUZN4hSI5
+ SjK3YuTRVpVirqckeZ7o3chGVPETPrmQhIuMcf5UAf50hA32cOINPo6E2CgmQJNky1IcXW7U44
+ L0hELLRNXwGirpTXSeOQdknp/TBjierPfP+o8xVzmdL5FLXzb/kddOGVUSBeYkMhrxtvext0wr
+ 69zGsnmLvCwqvbMgmppo7RkQ2hBmr+W+GFB98wS1XKtswIHFzQLv63rvYCEX6faabm38Ki0b2q
+ EYoYZ6naftJyPSHPZwhzj1rbeK8V9v6ityMHmup/3+1j6xgDjDMA4OYiuM23gghtf3+UaPASjD
+ Sj0vK0vXL8BKCEg+94BAAA=
+X-Change-ID: 20260526-rate-exclusive-get-th1520-764a949de18e
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Drew Fustini <fustini@kernel.org>, 
+ Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Brian Masney <bmasney@redhat.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+ linux-clk@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-pwm@vger.kernel.org, Maurice Hieronymus <mhi@mailbox.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783765003; l=2054;
+ i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
+ bh=+Q01IOSPpbl6YaJ1sx2U1xpDg/zo1GCHE9ISpCMdGX4=;
+ b=wrIw8EiPXBMgXwOPtE10nUhaLnGuBvvXnluKQnp020xOGAt974/hFA4jcJSIM/LAIYqar4qEW
+ TwOwcYvbqCsAW9XZmIYQ5zix6qVPq2cHcCTaxtX3rG7/0g/ox4qJTaR
+X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
+ pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
+X-MBO-RS-META: p68pwkc35abrj1qzbhy65xyydo66i3rj
+X-MBO-RS-ID: 17a3b90175c5235e027
 
-On Sat, Jul 11, 2026 at 10:23=E2=80=AFAM Kosumi Chan <chankocyo@gmail.com> =
-wrote:
->
-> Use bit_u32() instead of open-coding shifts in the impl_flags! example.
-> This demonstrates the checked bit helper and ensures that bit positions
-> remain within the underlying u32 type.
->
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1244
-> Assisted-by: OpenCode:openai/gpt-5.6-sol
-> Signed-off-by: Kosumi Chan <chankocyo@gmail.com>
+Add a Rust binding for clk_rate_exclusive_get() / clk_rate_exclusive_put()
+and use it in pwm-th1520, which previously carried a TODO noting the
+missing binding.
 
-Looks fine, thanks.
+Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+---
+Changes in v4:
+- Rebased on v5 of https://lore.kernel.org/rust-for-linux/20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com/
+- Link to v3: https://lore.kernel.org/r/20260628-rate-exclusive-get-th1520-v3-0-c7ca3ebcf60f@mailbox.org
 
-I think I will add:
+Changes in v3:
+- Add #[inline] to Clk::rate_exclusive_get() (Onur Özkan)
+- Drop intra-doc links from the regular SAFETY comments (Onur Özkan)
+- Rebase on Daniel Almeida's Clk type-state pattern
+  https://lore.kernel.org/rust-for-linux/20260618-clk-type-state-v4-0-8be082786080@collabora.com/
+- Use vertical imports in pwm_th1520.rs
+- Link to v2: https://lore.kernel.org/r/20260605-rate-exclusive-get-th1520-v2-0-695640bf7249@mailbox.org
 
-Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/rust-for-linux/2026071054-hazing-antirust-8e4=
-0@gregkh/
+Changes in v2:
+- Rebase on pwm/for-next
+- Remove newline after [`clk_rate_exclusive_get`] comment
+- Remove unused [`struct clk`] link
+- Put semicolon outside of unsafe block
+- Link to v1: https://lore.kernel.org/r/20260526-rate-exclusive-get-th1520-v1-0-34cf034e1764@mailbox.org
 
-since Greg suggested the original change/idea even if not the one here.
+---
+Maurice Hieronymus (2):
+      rust: clk: Add `ExclusiveClk` wrapper for `clk_rate_exclusive_get`
+      pwm: th1520: Lock clock rate with clk_rate_exclusive_get
 
-Cheers,
-Miguel
+ drivers/pwm/pwm_th1520.rs | 18 ++++++++-----
+ rust/kernel/clk.rs        | 67 +++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 79 insertions(+), 6 deletions(-)
+---
+base-commit: 92010229c4b38897f1319d260162d2f96925ed17
+change-id: 20260526-rate-exclusive-get-th1520-764a949de18e
+prerequisite-change-id: 20250909-clk-type-state-c01aa7dd551d:v5
+prerequisite-patch-id: 2d3dc45c241d9062a0d2546ec649eec7970fa50a
+prerequisite-patch-id: 67ad535fe110207ebc79045ba022ebb7137b0309
+prerequisite-patch-id: 3d1d8ee5c2a4957edd0807b7a5cb65dabab345b5
+prerequisite-patch-id: e2659037b8aaf51831da099cc568ad5b3c24a4dd
+
+Best regards,
+-- 
+Maurice Hieronymus <mhi@mailbox.org>
+
