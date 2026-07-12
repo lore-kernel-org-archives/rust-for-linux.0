@@ -1,332 +1,245 @@
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C017282866
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 10:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF3B3191D6;
+	Sun, 12 Jul 2026 11:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783852115; cv=none; b=Zz7CXibg+ukDTdmAH25t/yPLT+0EYgqoooHmSQACCwCzK0ee9yZquuvoEhKPHFAWXM+goMCwfyUEaM2g2brqeqBMuRWCyudUEOldqpQVEyeIe9FpLbeqJZrlENVqqbmYxYMu9iZFw3DV3X28J+QLWpPZIikQcbe40P2a6W5FC6A=
+	t=1783856194; cv=none; b=LY57esD3I/kYMBdE9xQZ6J8MRfdKwkObNUJ71Tf1ZGFVlruJesMIj9COSGwYoEy0QhCb0O29TFxB3Ueo2stVRGANV+/Zl3iDv6ny01bKiifdzhxi02Gz8cZuDC7EpBHCyMTL3lKghoxcvWqp6c38Z0sDmQWPdfBm7f7fcipA1R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783852115; c=relaxed/simple;
-	bh=OXfX6FR7NaHHUMrvA7XOXTmX2PvEd/Kva9P4/lU1l/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HvvOgDMxpBKYY7lNEJkCjS+vMEGXz7UnYMDTO785E8LfIGvTISVxoWkXdl45mePr5qKIE0fgbtv+VfxpvgxCAztGi67DQSbFLNriMUkfBrU67+ZTlxGbNWfTOQwjxNh4xx8TJnvUbm7+XAR0HQZmjpwkJ6ouDYtnzeiur+okaPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=bD3LGx13; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BPsndprJ; arc=none smtp.client-ip=103.168.172.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1783856194; c=relaxed/simple;
+	bh=MQgQ0IWFjAoCVpmJuvsFyksixFCSavh6UokVdFHNXp8=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=YKbuBEVqjb6w9d9K6LU83sbwMAmn5ixG0hfkWhZqrpDG24e06dmoVntq5/p5X4Hto8sWrst6X0HuqC+MMRHwh5cQqJN1MGoqPpTOt/XxU7Sh98ozJBZE7dT4yK8aB0JB1roJqb4gfykmKZQR6eWgdmYJyJwP3dAW/r0KZ5GVt84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=E8eegfOl; arc=none smtp.client-ip=85.9.206.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="bD3LGx13";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BPsndprJ"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id C73FE1380125;
-	Sun, 12 Jul 2026 06:28:31 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 12 Jul 2026 06:28:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1783852111; x=1783855711; bh=Szm3MDFGwqTSDmAcIWu2h
-	kMgY5JmR+ue65DebNbCyqI=; b=bD3LGx13Q1MYYY25I3hkNSbs3V9uPE+qDqKSH
-	oqOfjLsgknz83vACO+nrwEOufVMcgzxXMjf/BiYc+XiDL7l8hg3NULKpm3SZJnhw
-	AnobovLGnhXxV7N+XKqcushZR26DdHMXUiUVitEfCLxGajReBtDJ0jcf+Eh4Av0Q
-	RGVpx6uGA9SDU1unj4UIBCMzpcIbFbk8QmtNcqVQTAdsPGWaKYUaSq1AYxEaGhtu
-	pH3z4nOBm39WMxZQsd7gXYLwvYZfLLovJqF3qoM5NkHxoSlh28astqrZ5mR7qubj
-	0dhmBszowp9cJdN7UKk7M7AweasB/QwJ5oMOx1Q4BpDsluoOA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783852111; x=1783855711; bh=Szm3MDFGwqTSDmAcIWu2hkMgY5JmR+ue65D
-	ebNbCyqI=; b=BPsndprJoyz/OdNr5hhY7gTiXOR6fNMsnn2G6/2QzkrmU1DNJiR
-	xnVyROaAPY16RVvKZ1gZkgUvvsdsst/0ibzN/L2FiDjjn6Sqfa0yeKTt9QJ+7i4D
-	68tmHOOBBSDwGOywx9TVEKeiLBMo0ByongCFYF4mhNwxeoU/cxUzuVqlcHljXtq5
-	JkfO7pIiCcaw1AxGjh0eav+wxaQMe0PBY1zj0mqrolCGfQx2IlrC07vu2T5vXkz4
-	juwpmSx5N8wSpJHN0YtKbtOGCpK0RL6ZQcFCb/dMXUYq6zkHcFy3x8iNOm12QGhk
-	qqJFCB2+KM95amrqPcfjMSGHi8sBObCFwXA==
-X-ME-Sender: <xms:T2xTalXMvDJtjzVc90TCtACDC0KxQcBHOLIlmjHdB-2YmyarzWxdbQ>
-    <xme:T2xTamDR_YGMCjxKDu_dY0sD9nFO5UcBNwuIr_t-rVBQQx9ZtAbByJ2drgIpUE_a6
-    FMIS_wi75tMscJszgQMo0Ft6W8hR--G4cZ6uwX6qUe7DBv1FheFSA>
-X-ME-Received: <xmr:T2xTahLWkQhR-NHwCqdQ5xa18CIMkfX4-vfbp_zVUglscMxAWMn8RU-4snYy-JQFB5vS9vNhrOZdXssL-lI>
-X-ME-Proxy-Cause: dmFkZTGMSItUtPJZ4J4+/C2zR9QitAzWBIMPZ95psAPEfqrrcmz89FWOh2CLpnZZUKip4x
-    zVgqFd79nurYTaNCWEOcEkAnVSutF3CvZWh2WGW29hAzB3QH4h3+zZBV4AXnb2W8fxyX+5
-    JdmdQc6oLfPIgQGVh2N/kxPnQNJKhwnGnBcFLIjEl307mNbRMi82VLKOHanzqpciDChytz
-    lWyFG9wW71S/dBtTpEtD9c2/+glKGz/BI6M+Enx7NE0tC7d9c8iIMp3jHwv7Xf3Ahp1puj
-    xlIqBT0TndMQrMsRMJrhZ4VysGzx9iC68c+E7TjOfoda/Vwu4JwYF7ghmCI88z9+gUM1ea
-    XBhLBXxCsZUCC86V7koa9uRT98wkJtdK6HvGuUtCbntqByd6LFpVBNsIK1m4kpYzFSCm3/
-    9crQykQHLEfWQgV1xZzr3p7tdiDIpUdLhz5DD/jgI5AfyxOl8WWRgdJ3a7u1utciVh1bSN
-    9QB0NsJI0P7UNDWn4GPMYp2pzqgcl7slHuP/2pGJh8jZoDquUiSJAVQDU1qj3nRYcT20vm
-    hp3G21sgzMxh76i1au+qZQ5nJIttORh5B42f0vOGaMVjOaM4oH76pTHXRLK+8MrCryzIW0
-    TPtf6oRP0yCeF90E8KnD9OsadwzFBL08LM2NEaaehX2oosxJGmebEdhQ97jw
-X-ME-Proxy: <xmx:T2xTakshlveQa3FWZ6Yvle0NpBIQqjPEnN3LA_P31eHy1PaiV0wVHg>
-    <xmx:T2xTapWZpCJDVkVtL0yz2wR92cCs9WStto6mTEtr_We1892x3YsnZw>
-    <xmx:T2xTavKhICEXUGFRGv_wNJZu16ht_9jN2rosJZRYAhHjlfH_lHkMuA>
-    <xmx:T2xTau_nzad8OmSRg9ALS-rqwIK8CCuEdKj61WHO21bKJmu06Ns7uw>
-    <xmx:T2xTakZbKCbiGZFQPmFWFUSy7IzSCyjB2ogqiyqsSgwDY8iwUXxC_xMT>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 12 Jul 2026 06:28:26 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: gregkh@linuxfoundation.org,
-	a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v3] rust: bug: Add bug macro
-Date: Sun, 12 Jul 2026 19:28:02 +0900
-Message-ID: <20260712102802.3013600-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="E8eegfOl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=idjl6gsmt5bhdow5z6z2rvgixu.protonmail; t=1783856171; x=1784115371;
+	bh=G1MjZuFHK3Lys9+L8NuiAc1Kc/+5IEFQrCjyjzdi0vU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=E8eegfOl9Gh4aaUqD7FvJxo8017Jtu/z1+HCzOzj+kNJfHmZPQdSsvm8ZnaFBZEST
+	 5TZbGrGkNUNY3S9P/kQbmldmR4OSgaAKu1QSHauuaN+omW2RbwWy+NcSk5UE97eYiq
+	 UmVr6MhbV4Ebh7eyxHDgZP3E1rViSKBKnDM3PD55hatcnFZqAEBD3bPhBDU3qA6XfZ
+	 To8Y0VorGq9h8pxVwWThv+QAit4hUNjTghazU/GbBv3H0w3/Jc8CJrhyYpB4J9HLuI
+	 IOlyoSmZmL5itAx19NZpw/IJS3aSNCDREvb1LMO3j9p1kYGZV1NGVh2UQTSRkqSv11
+	 wlnuU0dE7IcPQ==
+Date: Sun, 12 Jul 2026 11:36:05 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+From: Lorenzo Delgado <lnsdev@proton.me>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, Lorenzo Delgado <lnsdev@proton.me>
+Subject: [PATCH] rust: io: convert ResourceSize into a transparent newtype
+Message-ID: <20260712113602.389060-1-lnsdev@proton.me>
+Feedback-ID: 53083996:user:proton
+X-Pm-Message-ID: edbbd905501a46a21956dba14434fbb5a51bd63e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+`ResourceSize` was a bare type alias for `resource_size_t`, so it
+inherited every integer operation and `as` cast. That silently permits
+operations that are meaningless for the size of a hardware resource:
+mixing it with unrelated integers and truncating casts.
 
-Add bug macro(), the Rust equivalent of the C's BUG(), which uses
-the BUG/WARN feature (lib/bug.c) via assembly for
-x86_64/arm64/riscv/s390 like warn_on() macro.
+Wrap it in a `#[repr(transparent)]` newtype so each conversion at a
+boundary becomes explicit and reviewable. The representation is
+unchanged, so this is ABI-identical; only the spelling at the FFI
+boundary changes. Provide the minimal conversion surface the call sites
+need: `from_raw`/`into_raw`, `From` in both directions, and a fallible
+`TryFrom<ResourceSize> for usize` for the page-count site that can
+truncate on 32-bit. Update the two producers, `Resource::size` and
+`SGEntry::dma_len`, and the `request_region` and nova-core consumers so
+the tree builds green. Add doctest examples for the new type.
 
-bindings::BUG() is already in use today, indirectly, from the kernel
-crate itself and from drivers such as binder and nova-core, via
-panic!()/.exepct()/.unwrap() on invariants that "can't happen". All of
-those funnel through panic() in kernel/lib.rs (#[panic_handler]),
-which itself calls BUG().
-
-The motivation for this patch is narrow: replace that bindings::BUG()
-call in lib.rs's panic() with bug!(), for a somewhat better trace. It
-isn't adding a new decision to crash the system -- that decision is
-already made at each of the existing panic!()/.expect() call sites.
-
-The bug() macro is currently for internal use only, so it is marked
-`#[doc(hidden)]`.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1203
+Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
 ---
-v3
-- Make some macro branches wrapped in {{ ... }}
-- Fix typos
-- Fix UML compile failure
-v2: https://lore.kernel.org/rust-for-linux/20260709000103.2912159-1-tomo@aliasing.net/
-- Replace bindings::BUG in lib.rs with bug!() to make the motivation clear
-- Add #[doc(hidden)] to make clear that bug!() is for internal use only
-- Add the bug!() macro, rather than bug_on!(), as the straightforward
-  choice for replacing bindings::BUG.
-  
-v1: https://lore.kernel.org/rust-for-linux/20260707143026.2774023-1-tomo@aliasing.net/
----
- rust/kernel/bug.rs | 100 +++++++++++++++++++++++++++++++--------------
- rust/kernel/lib.rs |   3 +-
- 2 files changed, 71 insertions(+), 32 deletions(-)
+An earlier attempt at this conversion was posted by Moritz Zielke [1]. This
+is a fresh, independent implementation that reuses none of that code; it
+additionally converts the nova-core consumer and adds doctest examples.
 
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index ed943960f851..25f3c2fbc12a 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -11,9 +11,13 @@
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
--        const _FILE: &[u8] = $file.as_bytes();
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {{
-+        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
-+        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
-+        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
-+        const _COND_STR: &str = file!();
+[1] https://lore.kernel.org/all/20251203-res-size-newtype-v1-1-22ed0b8a7a18=
+@gmail.com/
+
+ drivers/gpu/nova-core/firmware/gsp.rs |  2 +-
+ rust/kernel/io.rs                     | 73 +++++++++++++++++++++++++--
+ rust/kernel/io/resource.rs            |  6 +--
+ rust/kernel/scatterlist.rs            |  2 +-
+ 4 files changed, 74 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-core/=
+firmware/gsp.rs
+index 99a302bae567..d7593888e65b 100644
+--- a/drivers/gpu/nova-core/firmware/gsp.rs
++++ b/drivers/gpu/nova-core/firmware/gsp.rs
+@@ -175,7 +175,7 @@ pub(crate) fn radix3_dma_handle(&self) -> DmaAddress {
+ fn map_into_lvl(sg_table: &SGTable<Owned<VVec<u8>>>, mut dst: VVec<u8>) ->=
+ Result<VVec<u8>> {
+     for sg_entry in sg_table.iter() {
+         // Number of pages we need to map.
+-        let num_pages =3D usize::from_safe_cast(sg_entry.dma_len()).div_ce=
+il(GSP_PAGE_SIZE);
++        let num_pages =3D usize::try_from(sg_entry.dma_len())?.div_ceil(GS=
+P_PAGE_SIZE);
+=20
+         for i in 0..num_pages {
+             let entry =3D sg_entry.dma_address()
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index fcc7678fd9e3..ebf00b4536d6 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -6,9 +6,12 @@
+=20
+ use crate::{
+     bindings,
++    fmt,
+     prelude::*, //
+ };
+=20
++use core::num::TryFromIntError;
 +
-+        const _FILE: &[u8] = _COND_STR.as_bytes();
-         // Plus one for null-terminator.
-         static FILE: [u8; _FILE.len() + 1] = {
-             let mut bytes = [0; _FILE.len() + 1];
-@@ -24,6 +28,7 @@ macro_rules! warn_flags {
-             }
-             bytes
-         };
-+        const FLAGS: u32 = $flags;
- 
-         // SAFETY:
-         // - `file`, `line`, `flags`, and `size` are all compile-time constants or
-@@ -35,14 +40,14 @@ macro_rules! warn_flags {
-                 concat!(
-                     "/* {size} */",
-                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
--                    include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+                    $asm_tail);
-                 file = sym FILE,
-                 line = const line!(),
-                 flags = const FLAGS,
-                 size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-             );
-         }
--    }
-+    }};
- }
- 
- #[macro_export]
-@@ -50,8 +55,8 @@ macro_rules! warn_flags {
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {{
-+        const FLAGS: u32 = $flags;
- 
-         // SAFETY:
-         // - `flags` and `size` are all compile-time constants, preventing
-@@ -63,28 +68,35 @@ macro_rules! warn_flags {
-                 concat!(
-                     "/* {size} */",
-                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
--                    include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+                    $asm_tail);
-                 flags = const FLAGS,
-                 size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
-             );
-         }
--    }
-+    }};
- }
- 
- #[macro_export]
- #[doc(hidden)]
- #[cfg(all(CONFIG_BUG, CONFIG_UML))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        // SAFETY: It is always safe to call `warn_slowpath_fmt()`
--        // with a valid null-terminated string.
--        unsafe {
--            $crate::bindings::warn_slowpath_fmt(
--                $crate::c_str!(::core::file!()).as_char_ptr(),
--                line!() as $crate::ffi::c_int,
--                $flags as $crate::ffi::c_uint,
--                ::core::ptr::null(),
--            );
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        // bug!() sets $flags to 0, so we can use that to determine
-+        // whether to call BUG() or WARN_ON().
-+        if $flags == 0 {
-+            // SAFETY: It is always safe to call `BUG()`.
-+            unsafe { $crate::bindings::BUG() }
-+        } else {
-+            // SAFETY: It is always safe to call `warn_slowpath_fmt()`
-+            // with a valid null-terminated string.
-+            unsafe {
-+                $crate::bindings::warn_slowpath_fmt(
-+                    $crate::str::CStrExt::as_char_ptr($crate::c_str!(::core::file!())),
-+                    line!() as $crate::ffi::c_int,
-+                    $flags as $crate::ffi::c_uint,
-+                    ::core::ptr::null(),
-+                );
-+            }
-         }
-     };
- }
-@@ -93,9 +105,16 @@ macro_rules! warn_flags {
- #[doc(hidden)]
- #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        // SAFETY: It is always safe to call `WARN_ON()`.
--        unsafe { $crate::bindings::WARN_ON(true) }
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        // bug!() sets $flags to 0, so we can use that to determine
-+        // whether to call BUG() or WARN_ON().
-+        if $flags == 0 {
-+            // SAFETY: It is always safe to call `BUG()`.
-+            unsafe { $crate::bindings::BUG() }
-+        } else {
-+            // SAFETY: It is always safe to call `WARN_ON()`.
-+            unsafe { $crate::bindings::WARN_ON(true) }
-+        }
-     };
- }
- 
-@@ -103,7 +122,11 @@ macro_rules! warn_flags {
- #[doc(hidden)]
- #[cfg(not(CONFIG_BUG))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {};
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        if $flags == 0 {
-+            loop {}
-+        }
-+    };
- }
- 
- #[doc(hidden)]
-@@ -117,16 +140,33 @@ macro_rules! warn_on {
-     ($cond:expr) => {{
-         let cond = $cond;
- 
--        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
--        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
--        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
--        const _COND_STR: &str = file!();
--
-         if cond {
--            const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
-+            #[cfg(any(not(CONFIG_BUG), CONFIG_UML))]
-+            const WARN_ON_FLAGS: u32 = $crate::bindings::TAINT_WARN;
-+            #[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
-+            const WARN_ON_FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING
-+                | $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
- 
--            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
-+            $crate::warn_flags!(
-+                $cond,
-+                WARN_ON_FLAGS,
-+                include!(concat!(
-+                    env!("OBJTREE"),
-+                    "/rust/kernel/generated_arch_reachable_asm.rs"
-+                ))
-+            );
-         }
-         cond
-     }};
- }
+ pub mod mem;
+ pub mod poll;
+ pub mod register;
+@@ -25,11 +28,73 @@
+ /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+ pub type PhysAddr =3D bindings::phys_addr_t;
+=20
+-/// Resource Size type.
++/// Resource size type.
+ ///
+-/// This is a type alias to either `u32` or `u64` depending on the config =
+option
+-/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+-pub type ResourceSize =3D bindings::resource_size_t;
++/// This wraps either `u32` or `u64` depending on the config option
++/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit archi=
+tectures.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::io::ResourceSize;
++///
++/// let size =3D ResourceSize::from_raw(0x1000);
++/// assert_eq!(size.into_raw(), 0x1000);
++///
++/// // Round-trips through the raw C type.
++/// let raw: kernel::bindings::resource_size_t =3D size.into();
++/// assert_eq!(ResourceSize::from(raw), size);
++///
++/// // Fallible conversion to `usize` (can truncate on 32-bit).
++/// assert_eq!(usize::try_from(size)?, 0x1000);
++/// # Ok::<(), core::num::TryFromIntError>(())
++/// ```
++#[repr(transparent)]
++#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
++pub struct ResourceSize(bindings::resource_size_t);
 +
-+/// Reports an unrecoverable kernel bug.
-+#[macro_export]
-+#[doc(hidden)]
-+macro_rules! bug {
-+    () => {{
-+        $crate::warn_flags!(true, 0, "");
-+        // SAFETY: We call `BUG()` above so this block will never be reached.
-+        unsafe { core::hint::unreachable_unchecked() }
-+    }};
++impl ResourceSize {
++    /// Creates a resource size from the raw C type.
++    #[inline]
++    pub const fn from_raw(value: bindings::resource_size_t) -> Self {
++        Self(value)
++    }
++
++    /// Turns this resource size into the raw C type.
++    #[inline]
++    pub const fn into_raw(self) -> bindings::resource_size_t {
++        self.0
++    }
 +}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 9512af7156df..41bfe5a20287 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -217,8 +217,7 @@ pub const fn as_ptr(&self) -> *mut bindings::module {
- #[panic_handler]
- fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
-     pr_emerg!("{}\n", info);
--    // SAFETY: FFI call.
--    unsafe { bindings::BUG() };
-+    crate::bug!();
++
++impl fmt::Debug for ResourceSize {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(f, "{:#x}", self.0)
++    }
++}
++
++impl From<bindings::resource_size_t> for ResourceSize {
++    #[inline]
++    fn from(value: bindings::resource_size_t) -> Self {
++        Self::from_raw(value)
++    }
++}
++
++impl From<ResourceSize> for bindings::resource_size_t {
++    #[inline]
++    fn from(value: ResourceSize) -> Self {
++        value.into_raw()
++    }
++}
++
++impl TryFrom<ResourceSize> for usize {
++    type Error =3D TryFromIntError;
++
++    #[inline]
++    fn try_from(value: ResourceSize) -> Result<Self, Self::Error> {
++        Self::try_from(value.into_raw())
++    }
++}
+=20
+ /// Raw representation of an MMIO region.
+ ///
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+index 17b0c174cfc5..a33a416b289a 100644
+--- a/rust/kernel/io/resource.rs
++++ b/rust/kernel/io/resource.rs
+@@ -58,7 +58,7 @@ fn drop(&mut self) {
+         };
+=20
+         // SAFETY: Safe as per the invariant of `Region`.
+-        unsafe { release_fn(start, size) };
++        unsafe { release_fn(start, size.into_raw()) };
+     }
  }
- 
- /// Produces a pointer to an object from a pointer to one of its fields.
+=20
+@@ -114,7 +114,7 @@ pub fn request_region(
+             bindings::__request_region(
+                 self.0.get(),
+                 start,
+-                size,
++                size.into_raw(),
+                 name.as_char_ptr(),
+                 flags.0 as c_int,
+             )
+@@ -130,7 +130,7 @@ pub fn request_region(
+     pub fn size(&self) -> ResourceSize {
+         let inner =3D self.0.get();
+         // SAFETY: Safe as per the invariants of `Resource`.
+-        unsafe { bindings::resource_size(inner) }
++        ResourceSize::from_raw(unsafe { bindings::resource_size(inner) })
+     }
+=20
+     /// Returns the start address of the resource.
+diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+index b83c468b5c63..5d67242befd8 100644
+--- a/rust/kernel/scatterlist.rs
++++ b/rust/kernel/scatterlist.rs
+@@ -93,7 +93,7 @@ pub fn dma_address(&self) -> dma::DmaAddress {
+     pub fn dma_len(&self) -> ResourceSize {
+         #[allow(clippy::useless_conversion)]
+         // SAFETY: `self.as_raw()` is a valid pointer to a `struct scatter=
+list`.
+-        unsafe { bindings::sg_dma_len(self.as_raw()) }.into()
++        ResourceSize::from_raw(unsafe { bindings::sg_dma_len(self.as_raw()=
+) }.into())
+     }
+ }
+=20
 
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.43.0
+base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
+--=20
+2.54.0
+
 
