@@ -1,129 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96FB28DC4;
-	Sun, 12 Jul 2026 15:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C0E25B083
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 15:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783870563; cv=none; b=fcuRSmtLXx/Nq8g4zcg+YtWuf370R4EV+1QGGpvlg/5y6NHf1gGnMkixqkIDzO67tRZkpdiR/5pcBWORVJ7XsG0Er+JWWL7MafgUiypqVRic3dT8TQ6JvKHdrbcBgu8bJWNhnRDLPJ1ly4NgOYLV2QOp/FrI/yd1myYvuHEfxgU=
+	t=1783871365; cv=none; b=UJoemJxp4ANmKq4vXssdaiV6iHqmzJMSXZVIPLAYqU58UY/S/UOKK8TFja06LYLhe99Kv497zKsq1Iv664sfUzs/4f0SGIPwZL2sk0ns2IDER5VR09seTlfvHiUCBFFb0dO7rlz6cT8waDEGCyJeuxvyp5HWK1AHISprRLzzP/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783870563; c=relaxed/simple;
-	bh=B9rETD3vA+o8MvcBCmO5gs8wucqijoyXazRRPYjA+Uw=;
+	s=arc-20240116; t=1783871365; c=relaxed/simple;
+	bh=hWbRhZH2/ExHhSbV++KSjAbuk1/gQEjL0oR7v0HZxyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jjiZXmgkfztfnHBpX31L5Kk//gecZ7X8Yw8z8LA+7CnZoULMoxzvAsxUJhzyBYZ/gLhPg1SZ5sKfoInb/DqyaShPtfLDVfpDaakeMa+iwkbXwYz2PqpodbnPEdVYEet+PEsf8babGG7yr9zzWvNFfu9gKjgfpZfh1OIHUzS4AhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YM1SkcF7; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=jpD+yMFNgMJnkq4sv/igpjab13C23dg40CG5dJsLKvrEb/cbO7e86sMb++QylROytFteRReHJgLk6B65sOvz9fzyuUFlXp4geo8uetKRKo2qSgbKqA7/yTaHbEsizUpPABVrzOdU/oy1lNXQahMY/cr/rAPGlwGVN18PFucUDAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j1cKlw8B; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YM1SkcF7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6B81F000E9;
-	Sun, 12 Jul 2026 15:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783870562;
-	bh=/c8dQlrD+UopIRGkuo0OWH1leob6jgbBkZdHtJYCJ9E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YM1SkcF7SY84HKWxBJqeyCkrPQB8hvipq1YbGjaTSOLWX2edqyfRC7/aRJY46FRVQ
-	 8OppOKhkEskZ1hFCJd8S15txrxcTrRJmIb/NqLzj49jVXwk3QgP4vq8zC4p9A8mBmi
-	 CxjTipfMBJocq1yS3ImtkUJJgX4VYcgU4E60RQRYVPmMFUv2j0sJ/zhOPTPedhTHG/
-	 A2WKkWkva4pDBjhwgQeL/3PwoU0A/3kGrtD8nLcDUrtjD6OG4vWC+JcI4QAwNZreMZ
-	 QU98zlLyaGlSsvG2T/X34wZJvv2XbSrTxW6uWGr8nrYkuhVbDUSKuvCM2U471/109U
-	 h1ezctZwG8/IA==
-From: Danilo Krummrich <dakr@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	acourbot@nvidia.com,
-	ecourtney@nvidia.com,
-	ojeda@kernel.org,
-	boqun@kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j1cKlw8B"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-381216921aaso2643595a91.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 08:49:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783871364; x=1784476164; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vuV8hhyXMBSw35UwBV3Vw5b5QvmJJCKQBJkLO6Tuw2U=;
+        b=j1cKlw8BohNouHDFfo7IPnccWx9q3Noo3QtU4nR7sSs7wuLMB/tcjoLjT/y9m+KqwP
+         BLSQMWfeh+sfguzSZuhy3fu9b76xoIdYbn8w+F6fovxmLKpeCExerKPXrGr2xmcZA8oD
+         +xIQkJgR38Wa0NIlfdO573kptO+vebUwZLx+MYtdSf/W/parSSkHKM3yYcr+YxHjJi1C
+         PqckjsFw0lvVnHAMH/ah5KTQdF/0eNZeq2Y3AV3HP8/4K8Z2t7kx2ede5G1osWhUvfQ3
+         Xp+8+0cKjFEsfMRU0vR81ZYNrOsHZrFjUirkTWVIyCisREnleACAi8CjIrlRGXwcERpF
+         SOhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783871364; x=1784476164;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vuV8hhyXMBSw35UwBV3Vw5b5QvmJJCKQBJkLO6Tuw2U=;
+        b=JMBHu2mM3WjiWAVdboNd0sG/apWEIru2sYcDxYyLcjVxiW47SfnhaBAs1tmRWGSHd3
+         P1Vv8sXDbS0R+bTYq03do3LhbCLPPAB0LqhZWRj9QZ+6RO2gIOmC37cf0Vc0Vd1zYkHB
+         vmqvCIl6Id8NlNCrwU4nS/9ATf7M/q7iTs2rNJCoOqaBWYt3S6t+f9gOiAoX9nYFe5MQ
+         kFieCpnfn5U0WoTjZOkMP1VT1dsP5WmPT1zRyDWPN6UzrdHAk8rsqxhXOE+llo9trUOA
+         eHqfyMaSo8wdCGmgD32QFwaBEfsWmAQlRzFB7rxLDXYJCZBHWw9WK9bYJoX9cyb9+ptq
+         cdRw==
+X-Forwarded-Encrypted: i=1; AHgh+RqjaQ+rkj9X7w3LUxEnN7/tPSD0SqpwumQ1zMeyGEi+QuYDAqCll5p72lwsz6Zif5acQOLZ3T3YUe3HnptrZQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzWWyGSKHHvRSllmdZFnie/TQ3xfytprGHlyrYLsjtbKbl+6PS
+	rDw1upB4hs4gzL30s80pQuX/HBd0zX4Cad0EYwj39gm+Dj2dHEI53pcJ
+X-Gm-Gg: AfdE7clsx42ugRa5sgZTCcM0BxnDjtMxrgGvtdJGLXFKcz9a9D/cMEA6CLewvlG5gIe
+	zuknzEUYH5kTm/+Z83k+BeMkcIlAHsZzDM5HeLOS+D+ZaxgJCSsu//nRH3QkkZZmBVRctDT61M3
+	b8OqkmYMoLK6h44CYwele44dliGuNieGf6vbgQ4RN5APFxYEv/WuH8TuZ+4N2szJ40s6kYxx4/4
+	8WVyCLonP316YObbhuUqNS95asnVYD5yzNBUjes/WIkfnw31aJB0uxx6/fhTW8vWlWuSzE77L4x
+	lfKCHdZkHRjT28sjfiaQLRvKEwsUwa4Kl4N6Ul6zD6JD4LyrXtFwHZ1M/1QAe43iDLbC8TJu7BQ
+	/2YfFpc71sLj7oAawUMSGjYcuNuC2VAZfojGikcK2GzvQ0oQJkhRTtp5JOu1bcQ67fFe9VAKreb
+	YibEUmD04u7Ns7Xf787HdYPa1WP4yMnjYnO/WGjQ==
+X-Received: by 2002:a17:90b:57c5:b0:383:5a16:bd70 with SMTP id 98e67ed59e1d1-38dc75dc0fcmr5785697a91.16.1783871363754;
+        Sun, 12 Jul 2026 08:49:23 -0700 (PDT)
+Received: from Excalibur ([157.51.238.219])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31198cb2b99sm39268481eec.26.2026.07.12.08.49.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2026 08:49:23 -0700 (PDT)
+From: christopherjoshy <christopherjoshy4@gmail.com>
+To: ojeda@kernel.org
+Cc: boqun@kernel.org,
 	gary@garyguo.net,
+	aliceryhl@google.com,
+	lyude@redhat.com,
+	daniel.almeida@collabora.com,
+	work@onurozkan.dev,
 	bjorn3_gh@protonmail.com,
 	lossin@kernel.org,
 	a.hindborg@kernel.org,
 	tmgross@umich.edu,
-	deborah.brouwer@collabora.com,
-	boris.brezillon@collabora.com,
-	lyude@redhat.com,
-	driver-core@lists.linux.dev,
+	dakr@kernel.org,
+	tamird@nvidia.com,
+	acourbot@nvidia.com,
 	linux-kernel@vger.kernel.org,
-	nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 00/19] rust: drm: Higher-Ranked Lifetime private data
-Date: Sun, 12 Jul 2026 17:35:51 +0200
-Message-ID: <20260712153551.1097724-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260628145406.2107056-1-dakr@kernel.org>
-References: <20260628145406.2107056-1-dakr@kernel.org>
-X-Patch-Reply: applied
+	rust-for-linux@vger.kernel.org,
+	Christopher Joshy <christopherjoshy4@gmail.com>
+Subject: [PATCH v3] rust: kernel: add SAFETY comments in aref doc example
+Date: Sun, 12 Jul 2026 21:19:13 +0530
+Message-ID: <20260712154913.1779-1-christopherjoshy4@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.2
+In-Reply-To: <20260712153028.896-1-christopherjoshy4@gmail.com>
+References: <20260712153028.896-1-christopherjoshy4@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Sun, 28 Jun 2026 16:53:20 +0200, Danilo Krummrich wrote:
-> [PATCH v5 00/19] rust: drm: Higher-Ranked Lifetime private data
+From: Christopher Joshy <christopherjoshy4@gmail.com>
 
-Applied, thanks!
+Add the missing `// SAFETY` comments in the `ARef::into_raw` doc
+example, replacing the `TODO` placeholders from issue #351.
 
-  Branch: drm-rust-next
-  Tree:   https://gitlab.freedesktop.org/drm/rust/kernel.git
+For the `unsafe impl AlwaysRefCounted`, explain that `Empty` owns no
+data and has no destructor, so the no-op `inc_ref`/`dec_ref` cannot
+free or leak anything, and that this doc example keeps the backing
+object alive for the `ARef`'s lifetime.
 
-[1/19] rust: drm: ioctl: fix unbounded lifetimes in ioctl handler arguments
-      commit: 68b151bc6145
-[2/19] rust: drm: rename Uninit DeviceContext to Normal
-      commit: fd0f827c532b
-[3/19] rust: faux: add Device type with AsBusDevice support
-      commit: 893f39dadaa1
+For the `ARef::from_raw` call, explain that `ptr` is derived from a
+valid reference (so it is valid) and that the required refcount
+increment is trivially owned because `Empty`'s `AlwaysRefCounted`
+manages no actual refcount.
 
-      [ Drop redundant 'struct device' invariant; implied by valid
-        struct faux_device. - Danilo ]
+Link: https://github.com/Rust-for-Linux/linux/issues/351
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Christopher Joshy <christopherjoshy4@gmail.com>
+---
+ rust/kernel/sync/aref.rs | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-[4/19] rust: drm: Add Driver::ParentDevice associated type
-      commit: 49e27d58a06d
-[5/19] rust: drm: change default DeviceContext to Normal
-      commit: 903001300874
-[6/19] rust: drm: restrict AlwaysRefCounted to Normal Device context
-      commit: 506a7d63dab0
-[7/19] rust: drm: restrict AlwaysRefCounted to Normal GEM Object context
-      commit: ec8b2cc27c76
-[8/19] rust: drm/gem: remove DeviceContext from shmem::Object
-      commit: 7f994b8912eb
-[9/19] rust: drm: split Deref for Device context typestates
-      commit: 1c8a1f88ac32
-[10/19] rust: drm: pin ioctl Device reference to Normal context
-      commit: 499eb35cd477
-[11/19] rust: drm: add Ioctl device context typestate
-      commit: 86b20b11505d
-[12/19] rust: drm: Add RegistrationGuard for drm_dev_enter/exit critical sections
-      commit: 2455d5f2d5e8
-[13/19] rust: drm: Wrap ioctl dispatch in RegistrationGuard
-      commit: 478da53e5b68
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index b721b2e00..3cf7bc27f 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -124,7 +124,10 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+     ///
+     /// struct Empty {}
+     ///
+-    /// # // SAFETY: TODO.
++    /// // SAFETY: `Empty` owns no data and has no destructor, so its `inc_ref`/`dec_ref`
++    /// // are no-ops that cannot free or leak anything. This doc example keeps the backing
++    /// // `Empty` (`data`) alive for the whole lifetime of `data_ref`, so the `ARef` never
++    /// // dereferences freed memory.
+     /// unsafe impl AlwaysRefCounted for Empty {
+     ///     fn inc_ref(&self) {}
+     ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
+@@ -132,7 +135,10 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+     ///
+     /// let mut data = Empty {};
+     /// let ptr = NonNull::<Empty>::new(&mut data).unwrap();
+-    /// # // SAFETY: TODO.
++    /// // SAFETY: `ptr` comes from a valid `&mut data` reference, hence it is non-null,
++    /// // aligned and points to a valid `Empty`. `ARef::from_raw` also requires owning a
++    /// // refcount increment; this is trivially met because `Empty`'s `AlwaysRefCounted` uses
++    /// // no-op `inc_ref`/`dec_ref` and so manages no actual refcount.
+     /// let data_ref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
+     /// let raw_ptr: NonNull<Empty> = ARef::into_raw(data_ref);
+     ///
+-- 
+2.43.0
 
-      [ Use imperative mood in commit message; clarify __dev_ctx_cast() doc
-        comment to reflect Ioctl-to-Registered cast. - Danilo ]
-
-[14/19] rust: drm: return ParentDevice from Device AsRef
-      commit: 47f600d40bc6
-[15/19] rust: drm: add AsRef<ParentDevice<Bound>> for Device<Registered>
-      commit: 453197b7cc32
-[16/19] drm: fix race between partial drm_dev_register() failure and ioctl
-      commit: eb197f7d60f0
-[17/19] rust: drm: Add RegistrationData to drm::Driver
-      commit: e15b88223dc1
-
-      [ Move registration_data_unchecked() to Device<T, Registered> impl
-        block. - Danilo ]
-
-[18/19] rust: drm: Pass registration data to ioctl handlers
-      commit: 3ba210061c29
-[19/19] drm: nova: Use drm::Device<Registered> to access the parent bus device
-      commit: 354a8f8b098b
-
-The patches will appear in the next linux-next integration (typically within 24
-hours on weekdays).
-
-The patches are queued up for the upcoming merge window for the next major
-kernel release.
