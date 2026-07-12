@@ -1,41 +1,37 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF55367B9F
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 16:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB893546EC;
+	Sun, 12 Jul 2026 17:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783875525; cv=none; b=tLJUynkj4CGtxkkNExfyAys1LxhGXVvf8Y6pvfacKXbMPp7vEbOkShNTrZeOOmxHHxs7NqBa/zJ7ACr1Utl/HlPlI5uUKo/tNVXViagkbgOoiH3H+7T1MLdXE5HhG3IynR/cRoiku1W1uoEDHpsA4gbBYr1RINGDx37CyVpQrxU=
+	t=1783877207; cv=none; b=MxKmTSeFeb6zaR0HrQee3y7NmRDF2uN2gBWdawbdtHvWVgNvlRVGTW9wKQyHBQcd9Oz/s/M42+eLfK+IddzT5LukhopHlHnDD5DV6h2NyYSeGSEz3utc5aZKErrKNbKbjVtHN4fDvD9Zmxj3G0QRWlqD5Mesk0byBTEAszwLoNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783875525; c=relaxed/simple;
-	bh=swgmVY9FtI4pJ4eSMqifCns/lebL+9czFMeFZTNDdOY=;
+	s=arc-20240116; t=1783877207; c=relaxed/simple;
+	bh=LbIXFi6RoowHL8fWkFvaqjDUegfBqETQKa1bY68LrPo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IYq9XE45unf6uNNkp+qk/QIilrHKjoAR9/kQ47uXcvJOA8nLynLjG2HJXdPuO/ufP5GqRlhL7DkKdTcSD9kZBTd7Gmgwg3OpnjWJ0DyTBK3ldUp759deCUEkarQsY13hELaOiJXMABDJXAoyN7SrW4TtRJvNalNvqlw5X26UDCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=CFP0IaDN; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	 In-Reply-To:To:Cc; b=hR01iSLNeKjnYIPBMbsyAC6OiJsoWY68lWxWKlWtnOaBOZqYv5vawegg8/rePel1aJcLW4mHSOypfSqznj0xRKasGboqakljk5Dtv3CFeaWnEqgZGM1taUGi3J/0MdvBTrKC1tbOXEUnco8II2xIxkg3SdiFBdc+AahZ/CCQ5LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+zpMBnT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="CFP0IaDN"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id E69BF24002D
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 18:58:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1783875521;
-	bh=WrFV3DYGEdX1yssc8kRGqHi4rldvULjAXPP84Ohqy4A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=CFP0IaDNoZh/WaNXi8PsVYH+w4P6E8cIqbpwF6A8CwP3JDE79miLX4pKLZAm0+jCl
-	 /EZGdxb3AGgQwSQsaeOX43Davl6v/G1tAy0IXlME4Yg52UJvGYtgJwy6WwpvRoR8BP
-	 CIExaKpPmYhqDoEMg/I8G3OPy7Gu48misZqT2Y+0iODt7Zyhe3GeLGwFejjQTGJbN+
-	 XUIdlK8KI2LvZA63VEWACplQEgAA8ch683SeD713hDyQ4/axwlwpB2fGg/j1YZSO7l
-	 yMKCT9gwH2BrLzthEVa7CAr4oNGj/UdQ4uIKtBrT1sPeEsPGj9hoV7wCMpK02wpvEo
-	 4HQIp04c24Qrg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4gysGP71vNz6v0l;
-	Sun, 12 Jul 2026 18:58:37 +0200 (CEST)
-From: Markus Probst <markus.probst@posteo.de>
-Date: Sun, 12 Jul 2026 16:58:40 +0000
-Subject: [PATCH v13 3/3] MAINTAINERS: serdev: Add self for serdev
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+zpMBnT"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B940BC2BCF5;
+	Sun, 12 Jul 2026 17:26:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783877206;
+	bh=LbIXFi6RoowHL8fWkFvaqjDUegfBqETQKa1bY68LrPo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=F+zpMBnT/+DOtXcD8PVmmT9vcb/8nXCkPxMOw4N/dhKCGEkuANs1YaE4pNCVF6WRO
+	 ae5xLDK9DzsIBTxpg9eEBmvRg9u1wl2fR0R2sa4l1q0FVoxbhedtBehRToBcUX25b6
+	 45veFbM276OA5RAWVrd7vAWsrZ5M0j18vUgXKd7zsa8bajfE6tvWxb2ALrL+04Y26y
+	 wcfuD2QRwHv2quTzB24F/VV74UNkiDW1V0FZshOECbkB4e3b0mA3Ji29WLTm3XqjaE
+	 Q/n0Iu27w/Ql70Hj4kCf/51ouSKfkWIEyRkMDrBT4DrMkE8lgKLqmYKxsWyg2UPnOK
+	 6w9D2aAqyGb1Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99E45C44506;
+	Sun, 12 Jul 2026 17:26:46 +0000 (UTC)
+From: Markus Probst via B4 Relay <devnull+markus.probst.posteo.de@kernel.org>
+Date: Sun, 12 Jul 2026 19:26:44 +0200
+Subject: [PATCH v22 2/3] rust: leds: add Mode trait
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,114 +40,218 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260712-rust_serdev-v13-3-2c4060bc8e30@posteo.de>
-References: <20260712-rust_serdev-v13-0-2c4060bc8e30@posteo.de>
-In-Reply-To: <20260712-rust_serdev-v13-0-2c4060bc8e30@posteo.de>
-To: Rob Herring <robh@kernel.org>, 
+Message-Id: <20260712-rust_leds-v22-2-055b0459a079@posteo.de>
+References: <20260712-rust_leds-v22-0-055b0459a079@posteo.de>
+In-Reply-To: <20260712-rust_leds-v22-0-055b0459a079@posteo.de>
+To: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jiri Slaby <jirislaby@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
  Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Kari Argillander <kari.argillander@gmail.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
  Daniel Almeida <daniel.almeida@collabora.com>, 
  Tamir Duberstein <tamird@kernel.org>, 
  Alexandre Courbot <acourbot@nvidia.com>, 
  =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Boqun Feng <boqun@kernel.org>
-Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ Ira Weiny <iweiny@kernel.org>, Boqun Feng <boqun@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-leds@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
  Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=885;
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5626;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=swgmVY9FtI4pJ4eSMqifCns/lebL+9czFMeFZTNDdOY=;
- b=owEBiAJ3/ZANAwAIATR2H/jnrUPSAcsmYgBqU8e1cVm2pRJGsy/rHT4RGT5iiImhRDxB663h4
- QKe1S8JnJqJAk4EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCalPHtRsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9JfFQ/4+7hfSOYVQVEPYPNEKHojF7bH25UKqor
- 3TewJIl2z3ilEtx5m9abP+ZDZ3H+yv8KVQuH3tLT/InPCDV71YlKu6kLkcepBWX6wGzC8rc/Clk
- +w6ksLNPeFVDlNeCFfpcrQSE0Jy3Frkkwm9HQ9hCSQ0XWq/9Vqc58sGYf2lNYx+N7SiPrA2Xa7l
- Kq+aY/SoD7JJXS04HwOSB70WYFOar3kPgrU6gdBr7yOGP+3Qd7kYUq8RUbpCNsh05yIuOQ6JLTr
- PEsQ6Br78pRb7Yig4+8kg5A0LrPNX9rqbBI44RluufCQLgMmOd5mK7jPKiHz5I6+1RZE4T+XuU7
- 4X+5AmZvNwbTBiTtoUBj1Te8ZzesyoSf6RUBJarAhXNBQjBXwudtk8IalRl/IcTwG9re89/iRhA
- FmC/goOBXqvkpwXJaEkQpHCbrHzzD+rw0jXFQvkxv5GCON1Eb/TEn7i43liNOIfg8cTvU6ArF9y
- seRXIkwhq4TNgfzNlqWNoT5iOdOyNYeimYjkU7TdsynRXOln4PRsqNYA/wdcpH4Bw3oMb3FfFR/
- oR+fkGbdxrmPPgUF1jJ+q1kmDwC2JEjfIMm+YcGP10qx6H5U/03qmI04iQUyMF/OvyMkIHNEQxi
- HPAthn6x0NpH5dVXeowcQG7QicExV99vpSzyzTr+NHLHJaLLU4A==
+ bh=qpy5GWiOw2phlXaRzUTaPi0ihAjNEMjTvj78mEPj8Kk=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqU85UOErFxWk1eXiVcmqogoj1mpgXgnUxJdOnR
+ VzQ8xos8biJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCalPOVBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9KicxAAjqImq5aXAAxfabF9gWu9SPSa3tGjSGF
+ Bf/C6yDoa/mfsXHVObRrMJG6/W7JLqWk+KCwIgr1oYkHTSUuPHiYtzJ+QGqqpJnFoxoIiFs4uLl
+ U18Y5Yvw1QZpsk9k9YMRxyaCSkfAQyJq5IkBINlJUjAaQD4lDl8vqw2QlePrmAIybZH/S2IhZgy
+ K1WNP9fMhjs76hzz1encRqPasg01+PD0udBW4yJxfvmWnHKRopD/g2zx1H3EIJHnn2Eqh0zMqGd
+ 5sSUejWRHemxi53ooou7p5eMrfz1TAzFpWCqzKILL0yeCBGvbWIUnK4roOeO/juhdPrvSAVhrCw
+ G2mlIOCgoCT+hlCCB7uCbfmG72VAxPTbVSKsJiWdBaMePNnX+hlCua/RzLpRI9tLRTsgxYYYbol
+ uW1WjtKGj2JozKw1/ZFeH/hrm3jim/0ulV2bPdJJeKIyQAFMw3nwzSRTL0tG0sxiJo8eygocRCo
+ 5OHCb2wVjv5i5+UtpXB6m5srnTw+DuaACXJKyT3ejlZZtCNCXyOTWsgzPtzKIFEjfwhmc0JoG2U
+ AP2XSoBAfgL6LHIjHbIQTZ4m4lH7DtW+QnHfKmw9hlTkaYfu0vyWccdSBHpOYAzLF/PCNIvfyKV
+ V62s5A6+sbXK6YSSvHoSrJKQ+oaxRZNhnctrwKKHb2D0dWU9p9+g=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
-  keydata=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
-  aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+X-Endpoint-Received: by B4 Relay for markus.probst@posteo.de/default with
+ auth_id=680
+X-Original-From: Markus Probst <markus.probst@posteo.de>
+Reply-To: markus.probst@posteo.de
 
-Rob mentioned he needs to find someone else to maintain serdev.
+From: Markus Probst <markus.probst@posteo.de>
 
-Link: https://lore.kernel.org/rust-for-linux/20260430195858.GA1650658-robh@kernel.org/
-Link: https://lore.kernel.org/rust-for-linux/da85ceb81f51079d4a8248a1ffde6a27d2ef24ad.camel@posteo.de/
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Add the `led::Mode` trait to allow for other types of led class devices
+in `led::LedOps`.
+
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/led.rs        | 27 +++++++++++++++++++++++----
+ rust/kernel/led/normal.rs | 22 +++++++++++++++-------
+ 2 files changed, 38 insertions(+), 11 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ed4f8f2f17d5..c2e3430ac213 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24561,7 +24561,7 @@ F:	drivers/iio/chemical/sps30_i2c.c
- F:	drivers/iio/chemical/sps30_serial.c
+diff --git a/rust/kernel/led.rs b/rust/kernel/led.rs
+index 143f790eb6e4..ec4f178a120f 100644
+--- a/rust/kernel/led.rs
++++ b/rust/kernel/led.rs
+@@ -31,7 +31,10 @@
  
- SERIAL DEVICE BUS
--M:	Rob Herring <robh@kernel.org>
-+M:	Markus Probst <markus.probst@posteo.de>
- L:	linux-serial@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/serial/serial.yaml
+ mod normal;
+ 
+-pub use normal::Device;
++pub use normal::{
++    Device,
++    Normal, //
++};
+ 
+ /// The name of the led is determined by the driver.
+ pub enum Named {}
+@@ -160,6 +163,7 @@ pub fn name(self, name: &'init CStr) -> Self {
+ /// #[vtable]
+ /// impl led::LedOps for MyLedOps {
+ ///     type Bus = platform::Device<device::Bound>;
++///     type Mode = led::Normal;
+ ///     const BLOCKING: bool = false;
+ ///     const MAX_BRIGHTNESS: u32 = 255;
+ ///
+@@ -181,6 +185,11 @@ pub trait LedOps: Send + Sync + Sized {
+     #[allow(private_bounds)]
+     type Bus: AsBusDevice<Bound>;
+ 
++    /// The led mode to use.
++    ///
++    /// See [`Mode`].
++    type Mode: Mode;
++
+     /// If set true, [`LedOps::brightness_set`] and [`LedOps::blink_set`] must perform the
+     /// operation immediately. If set false, they must not sleep.
+     const BLOCKING: bool;
+@@ -193,7 +202,7 @@ pub trait LedOps: Send + Sync + Sized {
+     fn brightness_set<'bound>(
+         &self,
+         dev: &'bound Self::Bus,
+-        classdev: &Device<'bound, Self>,
++        classdev: &<Self::Mode as Mode>::Device<'bound, Self>,
+         brightness: u32,
+     ) -> Result<()>;
+ 
+@@ -201,7 +210,7 @@ fn brightness_set<'bound>(
+     fn brightness_get<'bound>(
+         &self,
+         dev: &'bound Self::Bus,
+-        classdev: &Device<'bound, Self>,
++        classdev: &<Self::Mode as Mode>::Device<'bound, Self>,
+     ) -> Result<u32> {
+         let _ = (dev, classdev);
+         build_error!(VTABLE_DEFAULT_ERROR)
+@@ -218,7 +227,7 @@ fn brightness_get<'bound>(
+     fn blink_set<'bound>(
+         &self,
+         dev: &'bound Self::Bus,
+-        classdev: &Device<'bound, Self>,
++        classdev: &<Self::Mode as Mode>::Device<'bound, Self>,
+         delay_on: &mut usize,
+         delay_off: &mut usize,
+     ) -> Result<()> {
+@@ -282,6 +291,16 @@ fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
+     }
+ }
+ 
++/// The led mode.
++///
++/// Each led mode has its own led class device type with different capabilities.
++///
++/// See [`Normal`].
++pub trait Mode: private::Sealed {
++    /// The class device for the led mode.
++    type Device<'bound, T: LedOps<Mode = Self> + 'bound>;
++}
++
+ mod private {
+     pub trait Sealed {}
+ }
+diff --git a/rust/kernel/led/normal.rs b/rust/kernel/led/normal.rs
+index 816db7c57689..25190486a62d 100644
+--- a/rust/kernel/led/normal.rs
++++ b/rust/kernel/led/normal.rs
+@@ -6,11 +6,19 @@
+ 
+ use super::*;
+ 
++/// The led mode for the `struct led_classdev`. Leds with this mode can only have a fixed color.
++pub enum Normal {}
++
++impl Mode for Normal {
++    type Device<'bound, T: LedOps<Mode = Self> + 'bound> = Device<'bound, T>;
++}
++impl private::Sealed for Normal {}
++
+ /// The led class device representation.
+ ///
+ /// This structure represents the Rust abstraction for a led class device.
+ #[pin_data(PinnedDrop)]
+-pub struct Device<'bound, T: LedOps + 'bound> {
++pub struct Device<'bound, T: LedOps<Mode = Normal> + 'bound> {
+     #[pin]
+     ops: T,
+     #[pin]
+@@ -20,7 +28,7 @@ pub struct Device<'bound, T: LedOps + 'bound> {
+ 
+ impl<'init, S: DeviceBuilderState> DeviceBuilder<'init, S> {
+     /// Registers a new [`Device`].
+-    pub fn build<'bound: 'init, T: LedOps + 'bound>(
++    pub fn build<'bound: 'init, T: LedOps<Mode = Normal> + 'bound>(
+         self,
+         parent: &'bound T::Bus,
+         ops: impl PinInit<T, Error> + 'init,
+@@ -87,7 +95,7 @@ pub fn build<'bound: 'init, T: LedOps + 'bound>(
+     }
+ }
+ 
+-impl<'bound, T: LedOps + 'bound> Device<'bound, T> {
++impl<'bound, T: LedOps<Mode = Normal> + 'bound> Device<'bound, T> {
+     /// # Safety
+     /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
+     /// `led::Device`.
+@@ -107,17 +115,17 @@ fn parent(&self) -> &'bound device::Device<Bound> {
+ }
+ 
+ // SAFETY: A `led::Device` can be unregistered from any thread.
+-unsafe impl<'bound, T: LedOps + 'bound + Send> Send for Device<'bound, T> {}
++unsafe impl<'bound, T: LedOps<Mode = Normal> + 'bound + Send> Send for Device<'bound, T> {}
+ 
+ // SAFETY: `led::Device` can be shared among threads because all methods of `led::Device`
+ // are thread safe.
+-unsafe impl<'bound, T: LedOps + 'bound + Sync> Sync for Device<'bound, T> {}
++unsafe impl<'bound, T: LedOps<Mode = Normal> + 'bound + Sync> Sync for Device<'bound, T> {}
+ 
+ struct Adapter<T: LedOps> {
+     _p: PhantomData<T>,
+ }
+ 
+-impl<T: LedOps> Adapter<T> {
++impl<T: LedOps<Mode = Normal>> Adapter<T> {
+     /// # Safety
+     /// `led_cdev` must be a valid pointer to a `led_classdev` embedded within a
+     /// `led::Device`.
+@@ -210,7 +218,7 @@ impl<T: LedOps> Adapter<T> {
+ }
+ 
+ #[pinned_drop]
+-impl<'bound, T: LedOps + 'bound> PinnedDrop for Device<'bound, T> {
++impl<'bound, T: LedOps<Mode = Normal> + 'bound> PinnedDrop for Device<'bound, T> {
+     fn drop(self: Pin<&mut Self>) {
+         let raw = self.classdev.get();
+         // SAFETY: The existence of `self` guarantees that `self.classdev.get()` is a pointer to a
 
 -- 
 2.54.0
+
 
