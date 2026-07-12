@@ -1,125 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7297425B0A4;
-	Sun, 12 Jul 2026 07:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AB72F363F
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 08:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783839701; cv=none; b=Bb0ucf4hQsaL1bvmDy+egjbo6jS33obK8yt+9S6fgVHv8kvriTiivW14s6+ahyvw/GOGsUSoAf79XRIftpEOhsUV/3c57XN7hsAq5S5p6f+4e5xmhtzCz4EmrIYk1l+aaDfmD+WFC0mUgp9mxb/M9MqyJ2LfBv0PEfXzSLVdKkk=
+	t=1783845111; cv=none; b=uCQHgOB5gEc/2h93u33ykp3dFsdqqR7YJ6k/ntfW+iOmiT7Lfmn3R3EiaJPY/3FHH/7S/+Q9uPl6Y1HJb3RzGrtsnbrdKqgJZ9+OP5SabfzikfVHTPeiI23OEvuKYu+icCh9pfpE5Rw1tZLxfNEMLA91SppQzAU9gOIKg75k/40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783839701; c=relaxed/simple;
-	bh=Nsos5ruO9YkOqEDwpItWLMWEcA2Q2CwV8AXcq55jLeU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bY5f26jArB0y+I3+sdah3krQqV9d0Afjyz2xIWWVM0Q/xtMWIGM3vHGoJH1YjYfEMUse+BAI/N4KzLZspYUFdIVyqeBhwBV4CocUaXn+Xu+pJvrqQusWAjmvSLwNDLqCECNSWdDBB7IV5qLu66sNflY+cxjkqUH5oaDsSxk2LhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyCx+umr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783845111; c=relaxed/simple;
+	bh=4NvJa/NyVgyiaM2aSl+GkHkxDA0TJTJ2Kcoeh+Q4Fwo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aPp5YE8VlBqTHJkeSC7t+7cC88kHzV0t+HJcY7dUtkWzwOIWGvGabCwMiSvH/4xqO4S7I3mkU3LAyL1MiJfGSfjaPWsRf0s46tAmud1w53LVInhBV/RBivisrvNA9NmOJBGj7iFZVO/d8HJ1EYIAEHEq8LP2mZHW39++o7Y1f54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NLS7jzu7; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyCx+umr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E09D1F000E9;
-	Sun, 12 Jul 2026 07:01:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783839700;
-	bh=KxQD+Jq9v474nnMTGNRACtLziLSnyet/LHxEVBTuOK0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iyCx+umrsBUdNxFD5a00pUr3SXs6RxGkLognEvQFgYfNdGnVZQJISYwlGt2/lqYPR
-	 S9zMGxfZyBq2yGk+Kv7kVoxxLwnqA7LxWd74hWnKe7JszG6WP5uSuaY7pHufFe+0+4
-	 8GkSNbup6zBtgXI74L3HIUQ3d88fZfc22wuJD6aA=
-Date: Sun, 12 Jul 2026 09:00:21 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Jahnavi Nitheesha Mandava <jahnavimn@google.com>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 0/7] rust_binder : Implement dynamic debug logging mask
-Message-ID: <2026071234-untidy-ruined-c98d@gregkh>
-References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
- <2026071046-musty-subfloor-53ec@gregkh>
- <CA+ba3EP9PO3ccBu1VK53WeR_2cT9MaGC_5dPcy9QKnvHBXX5fA@mail.gmail.com>
- <CAH5fLghOSPYA+uYmUB18VfPhc9PtDWaH0Khc=7EAN7DQt=8L4w@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NLS7jzu7"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-493ce4b7777so16122565e9.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 01:31:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783845108; x=1784449908; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Q6nI1V0RHF6gUcKFQz9c1yEULGss/rP9N3DVh8v8d/Y=;
+        b=NLS7jzu73EwKJh0lf6BoF7mRsjypLIodox2HHjKDq9NAkuLf7WVszUnjO6tN5fr/3R
+         6lfsmqRVGHpGOJH1LBftx7xtEiQUQQaixCkxpJXleX4Xg1zxk3phy00sIty3LNPxL87h
+         qLobT+wmaevhnMhEvC5HWSphXvvhAFa8aTYLk8UaDTIFfc17x1N8gR/tNrd4ZNq7yvmq
+         o2+DPyAh7RymuCpFKlgdzuSTZFArxT9/lCdaLHTFXq/nAMHgj0ACH0vBxnMnP0B0hlpK
+         kaG+SIbaqBH1yGslIX/w7CF/TZ2Zy554vU1wimbiOshKQjTkTgKyMOuOSYEq5YA1nq5x
+         XEUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783845108; x=1784449908;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Q6nI1V0RHF6gUcKFQz9c1yEULGss/rP9N3DVh8v8d/Y=;
+        b=QkkCDz41wpsZUsebL7f6/Sqe9AMfPZMQFKqGz66XOf0uTAkgOFXwZ7XtU9747Qrca2
+         m67YKVMKz5HIKmZ2VDzQB8sm/Pm3J/kWVV1ORpQhJdmb6/Mywp4/xg0NSyvaHkTCIRhs
+         tv80E53ZT5ND2M12GrnRu8zy8PrzoI8BuYe4skxz+PSVn5CRRrV4zCFxA//HFcHpLmuW
+         7OsuqLnPUuC3bpcnyUQD3aZ12mB4r62Z2/HVjVD6Bsjr3LrPi34f3xGF98vnzEycbd7P
+         HCFeLnVptK6j5AdqNe3Kk9oVtK3OAYrP79+F13VOOjqo/VQgRknDG9dmn6UWISVwlerF
+         Tkzg==
+X-Forwarded-Encrypted: i=1; AHgh+RoOMRMthNWnXiiRzU8gjlXN3u+4ulhbFnJAWENO7eaXWNuOImmMnpKFp7JNzLYgh563N0g13HA6LcbcXL036A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx27DbuQNOA5foZPsdqOG0e+Y2kfFkOi2vzwC69PehJjXO7FEfL
+	xf05x+ItGhdTkXOeAXCY3zz34m+D8/iYD4VhMV28xOX1Ic8O9mOkZOMknHwZfFZ4/qZRuqIYMd9
+	VUSRhx30ak4o8Vv2i0Q==
+X-Received: from wmrk19.prod.google.com ([2002:a05:600c:b53:b0:493:c111:8ed4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1394:b0:493:bb45:d54d with SMTP id 5b1f17b1804b1-493f883c8f2mr44015885e9.37.1783845107868;
+ Sun, 12 Jul 2026 01:31:47 -0700 (PDT)
+Date: Sun, 12 Jul 2026 08:31:46 +0000
+In-Reply-To: <alFuU1Uek6t9v_tZ@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLghOSPYA+uYmUB18VfPhc9PtDWaH0Khc=7EAN7DQt=8L4w@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260710-rust_binder_debug_mask-v2-0-2846410e3ae6@google.com>
+ <20260710-rust_binder_debug_mask-v2-1-2846410e3ae6@google.com>
+ <alFMOYlB24vuOxP2@google.com> <DJV6AD2E0WK3.BFCKB6AM6A79@garyguo.net> <alFuU1Uek6t9v_tZ@google.com>
+Message-ID: <alNQ8pqlDzf3gQXJ@google.com>
+Subject: Re: [PATCH v2 1/7] rust_binder: Add dynamic debug logging mask
+From: Alice Ryhl <aliceryhl@google.com>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Gary Guo <gary@garyguo.net>, jahnavimn@google.com, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Sat, Jul 11, 2026 at 12:42:11PM +0200, Alice Ryhl wrote:
-> On Sat, Jul 11, 2026 at 12:29 PM Jahnavi Nitheesha Mandava
-> <jahnavimn@google.com> wrote:
-> >
-> > On Fri, Jul 10, 2026 at 8:31 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
+On Fri, Jul 10, 2026 at 10:12:35PM +0000, Carlos Llamas wrote:
+> On Fri, Jul 10, 2026 at 09:27:37PM +0100, Gary Guo wrote:
+> > On Fri Jul 10, 2026 at 8:47 PM BST, Carlos Llamas wrote:
+> > > On Fri, Jul 10, 2026 at 02:32:52PM +0000, Jahnavi MN via B4 Relay wrote:
+> > >> +kernel::impl_flags!(
+> > >> +    /// Represents multiple debug mask flags.
+> > >> +    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+> > >> +    pub struct DebugMasks(u32);
 > > >
-> > > On Fri, Jul 10, 2026 at 02:32:51PM +0000, Jahnavi MN via B4 Relay wrote:
-> > > > When a user-space application sends malformed data or makes a
-> > > > lifecycle mistake, the driver rejects it with a generic error code
-> > > > (like -EINVAL). Without internal logs, the driver acts as a
-> > > > "black box," forcing developers to guess which check failed.
-> > > >
-> > > > In the legacy C Binder driver, this issue is solved using a dynamic
-> > > > debug_mask module parameter that toggles verbose logs for specific
-> > > > subsystems. This series brings the same critical capability to the
-> > > > Rust Binder driver to provide developers with clear, real-time
-> > > > feedback.
-> > > >
-> > > > Instead of rebuilds, reboots, or guessing:
-> > > > - Developers can enable logs instantly on a running device by writing to
-> > > >   `/sys/module/rust_binder/parameters/debug_mask`.
-> > > > - It prints the exact reason for failures (such as alignment errors,
-> > > >   mismatched call stacks, or invalid handle references) directly into
-> > > >   `dmesg`, reducing debugging time from hours to seconds.
-> > > > - It protects system logs by keeping logging off by default and only
-> > > >   enabling it when developers are actively troubleshooting.
-> > > >
-> > > > Based on top of:
-> > > > https://lore.kernel.org/rust-for-linux/20260707-upgrade-poll-v6-0-4b8fae7bf1d9@google.com/
-> > > >
-> > > > Signed-off-by: Jahnavi MN <jahnavimn@google.com>
-> > >
-> > > Patches 5 and 7 did not apply to my tree, can you rebase against the
-> > > char-misc-testing branch and send just those?  Other ones are now all
-> > > queued up, nice work!
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> >
-> > Hi Greg,
-> >
-> > Thanks! I will rebase and resubmit only patches 5 and 7 as a new
-> > version (v3) of this series shortly.
-> >
-> > Regarding the feedback I received on Patch 1 (using the BIT macro
-> > and Atomic<u32>), since Patch 1 is already queued, I will send those
-> > cleanups as a separate, follow-up patch. Does that sound good?
+> > > Where is this being used? I can't find it on subsequent patches.
+> > > Maybe leftover from previous implementation?
+> > 
+> > impl_flags macro requires a type for a single flag and a type for flag masks.
 > 
-> Since it's only queued in char-misc-testing and not char-misc-next, I
-> don't think it's too late to change the patches themselves. So I guess
-> you could also resend the entire series based on top of commit
-> f8d269390cd2 ("rust_binder: update Process::node_refs to use
-> SpinLock") from testing?
+> Oh I see. I was expecting the bitops to be peformed on this type
+> somewhere. I guess the reason it wasn't is because of the issue with
+> module parameters and their C macros.
 
-Yes, I messed up the application of this series to my tree as Alice
-pointed out in another email.  If you could just rebase and resend a new
-version, that would be great.
+I suppose we could implement debug_mask_enabled() like this:
 
-thanks,
+	/// Checks if the given debug logging category is enabled in the mask.
+	pub(crate) fn debug_mask_enabled(mask: DebugMask) -> bool {
+	    let current_mask = unsafe { core::ptr::read_volatile(&raw const rust_binder_debug_mask) };
+	    DebugMasks(current_mask).contains(mask)
+	}
 
-greg k-h
+By wrapping the value from the volatile read (or atomic read) in
+DebugMasks, we do actually make use of the DebugMasks type too.
+
+Alice
