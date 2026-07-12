@@ -1,92 +1,133 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365E9233932
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 12:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783859755; cv=none; b=NBksq1e6TjXSfsUG1DIVo5Pq3vHnhW7DV/xmY5Y67H5+A5o5OS3GL1O//BZGr76bh7lp4dXSXxWvBd3s8e5RvpJBHhrCaiR7B2J8BixcyW7FpGQI4JlLBEJMij99x6CzgwkFLbmuhKDs40zV5gBEeSKdG0pDKz9rjVSimHXWGCA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783859755; c=relaxed/simple;
-	bh=vbmsavjMRnQA+eomV66j+Hk7itBjYjDe+/oxr9QMvXQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=up4QvV2sP0dIzljaRZhdpxzrGOcPMJ8Kc2YmT8KvDxSu9OD1+Dgk8bs9OkHwGjNt+kMAcKo3ceWJD3M38NjVGst2Sohu4/QX3Nn+8acFQbluYz08z2TRJC7Px+U5fovN7OMhghNVsKFz/z8V0ggvoo3nEZoU4Kc3Yn1XhKvzdqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTa8hEsz; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFA63ACEF4
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 12:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783860196; cv=pass; b=aMRnHTY5/nA898M//DsbxnPBkEA0VV6cb7dCY/tcZEiPJB0pS97i3Nif0SCBC2kIWoFqU0qvovriP9v0ueTyOJG9xwvVohYdgdL1rRX6DnrLmzHUzmXdzh96JeVab9io30Y1KZLDBCtVCq4VyaJvMb7Ci1t4qif2zyqSo3staXs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783860196; c=relaxed/simple;
+	bh=fHeG4LLaYskTtG3YwW5Pv5s/dR3ztoDir8OjjYwdlGk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ai8qgrv+ZP+yZWKzXafRytR15UcD0TKLn31RQwMYf8qGe2iOlA3Qd8TN9LbhJ/C/U69uSVuHNLLvayto8jq+B9URPIidXnAT9UEQMKFG+jrGKwGmfX+/C4/6QpIcFeiclxR3hhBj4sLRgCop6Ld01X6CaIS+7xw5pFD/ZdDprqg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GrUOSHoq; arc=pass smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTa8hEsz"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493f60208a5so17969075e9.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 05:35:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GrUOSHoq"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2caf18d4904so5213265ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 05:43:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783860185; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CMm1Tbo9iGyscB8buCB1mWLdRPQPDE+dNzalFb726E184WXlV83bf0IFYw533skubc
+         HkfjS5BSvuSkn7M4ZlWPRpVLRBCKkVj6hPfmHdtBsVohexuKt5H82ij2jl/ysTSvm3x9
+         VY7ozrL6cvjVcNMWy4nMIyPhJZnN7qSw8EQwCYBXOV7DkmBsKaOzYAC+ptsl5mB9NWdB
+         dG1q/EEgM47IrK2A17O3+TVofEI5oFg53n8/JNFcEx/xbDLjS/CvHILaL4aVWJm0kCQi
+         da7K+IKw6xI19l8uUwMwOMHsx4+HyM2nEjEI37G0NiguBmudXuddhGDMJZ1Xd/UEJOQv
+         kH7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fKUtolI/dJSUk56UqWp4BlIs8XN1q3ypJBgqRuslk78=;
+        fh=NjF+fTPYFJ4sgaMnJBbKe/E+lYHOD3j99gOR0A86lws=;
+        b=YNaCEpjSIoYWvUsxxn3cYw0oitCJfyt1zk4XsqHMlIGUMD8Cfe8XMVwWzmQpII3riI
+         AmY+DiNTAFv3HziDpGNkCLxw6iPPZyZM0/zVV7Tk+oOEBpHq3CYq++gPqp8YRYCm5f3Z
+         pQ58YOcBBsj/cXO7gak7m73Y2s8vDv4Atv2Ymz7AwJPxIfjobHzU5FlQKikiowHbkLIh
+         8nguGRxfSpwglOSHNEfgaRgIcxrk2xSpb+kHRRI/5m2jVsO7rqPq0EXqe4kbhLK8qYxS
+         AivKAORyHpT8tn9ES2gPKYHMO0KbUOKCftwbVNcPICYfDTFsIsk3aCZcfILJYNnclV3M
+         X8tg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783859753; x=1784464553; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vFr7i1z8fyur2AGVEYY9/WLrL9vlCD+OnEC6ZMaETYg=;
-        b=mTa8hEszFZ274aJyuOI3aegKmqIFb0feb1k8X1wQDWkqvIb7bL9PEGn5ZuZ5dMIZ7K
-         75QNysPl8xDhWLtpQ+qBWoBWMs4nNUZntM6Hf2alTrrz5aCyxZfqK15tIWJEJ4v/+sZm
-         uDNZW7haqy3VN3ZyWzWYMVumTqv2J6EvzkKIjZUlO4u6ZFx1qCjUPd5Si5W3png5qti1
-         uzhEXWzILMFBH7+4Z2/x07GM61yDxUC+NXsFmiWUKAUjj5aPTZSV/b6u4kQ/nd5X7gWb
-         ICXmgbuA3ndMslPwuEl1bfsUQtnolCoF9Z06A5THlbnPQN4VkpcYlJrNcGNiJ3d1L7UM
-         DLSQ==
+        d=gmail.com; s=20251104; t=1783860185; x=1784464985; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fKUtolI/dJSUk56UqWp4BlIs8XN1q3ypJBgqRuslk78=;
+        b=GrUOSHoqXUm3FtRlCJmHLGQMrQ9hl+RtepqAK59DdNt/WWpwDiNE8wj3z39HITpJie
+         cJzeM6Bg7xNGiQvxiKXdfT8mAtNdPeDG2d6hh+/afRxe8wN8TdmqubXimf+VunQvJiLj
+         hFnG+bfqoEMagivK6OlYv0hk331mO6M2E5wNjAAQrRtHukg9qE7Gwk027W0Pnll9ftYh
+         ye+YkKXEG6z2ZTO9uhfX8wr0MMZ8/nGqcxF6LWkGbLUUo4MeidxR8mOt9N8ut7RwKO1g
+         rtYocbtWzAwiXX02y1qUq1pfWrb8Qxs7NSPM8ob5tTDV/NtCKgDgKSu4gEjT/xQPNl5I
+         HgMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783859753; x=1784464553;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vFr7i1z8fyur2AGVEYY9/WLrL9vlCD+OnEC6ZMaETYg=;
-        b=pJ1Pd/PVPJnUE3JwgVM6MZdslagJLZJfRjLb+fbo3NdgPxFut2PSp8gjpoT+2Rkh4w
-         TjuJ59kZO6lRd8UMHH7eKiskEs2Se1ZESpcQKxJvd6ki3lk9q/ZBnrxp8KoXiFdA+nZD
-         Z1twPBnrQ49c31buxKYKfkR40BUZdl3j7kRTCoV/PP3289hS3KK65G5ea4s1n5Qbm8yd
-         MZakoXY9fn0rfkp8k8ZoB5ESPKTlgj1ox5vWMHbx9AT3XCZul4yiFgiDPtqFAk3Zbezj
-         CFxJZ7s6xWl/VMrv+hr6ACiBMk6a0X9FUzfpwGf1cIcr1zZspb/E9DVtzKQyBpKPGpYe
-         zTjw==
-X-Gm-Message-State: AOJu0Yz9vOoDUe4xenrNPNFAvod3m086BbGzphwAZ5ZyFLtZJMT1d69B
-	zbjHlBcy1nHzgKmYeO5mZoaG9nWQBGtQWfhG/6OOA2S/oa5X6iACdOmu
-X-Gm-Gg: AfdE7cm4rrBw6Cg60rALWxLQdYadMu690c0osqflg2ujFB1f7DpdPRRFM54mjdRU4+N
-	XKaCgkCHtCC5+2azEteZc+zCjNVPnNyicUSo7XQewgeTMLgohk9zw3BF1Oo7pImrTq+brLJalG8
-	Y75mW2Hx0nfNPq09bCq06SAEVS4195xrkNcJF1MNXKIlKVdqhWdEDgm+eVMJ9tdqPO57xbPkDcN
-	s6JP8jKBHT8T0ScWWIJgFGr5wHvk8jVlX953/gAZ+HQFr/13RbmWbZRKkdq7i5tV+QyhF5y30MT
-	QvrWeI4n2z4R9Ztimh17Gf9ZIJOJak8UlxqkqDR8cSlcu0UEqKtEjf8WDmXAATqaRgy5HP7LeqA
-	nGCOEyUHdzVIGCjdFgAh7sRDW9qz16msuxqKZSppa5Ydod97DSVAUkQtHI/GTngfqf0iqHJLQom
-	dqiDp6ienYPL/rEM5/VJyE1FduDAAxRQ==
-X-Received: by 2002:a05:600c:190c:b0:493:b91c:6bf with SMTP id 5b1f17b1804b1-493f8818dedmr55304095e9.18.1783859752393;
-        Sun, 12 Jul 2026 05:35:52 -0700 (PDT)
-Received: from fedora-dell-ale.Home ([2a0e:424:a465:0:bdde:db24:d709:ef36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d780csm76497317f8f.11.2026.07.12.05.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 05:35:52 -0700 (PDT)
-From: Alessio Maroni <alessiomaroni0@gmail.com>
-To: brauner@kernel.org,
-	viro@zeniv.linux.org.uk,
-	ojeda@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: fs, hrtimer: replace read_volatile workarounds with atomic_load
-Date: Sun, 12 Jul 2026 14:34:43 +0200
-Message-ID: <20260712123502.2829-1-alessiomaroni0@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260712121420.25179-1-alessiomaroni0@gmail.com>
-References: <20260712121420.25179-1-alessiomaroni0@gmail.com>
+        d=1e100.net; s=20251104; t=1783860185; x=1784464985;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fKUtolI/dJSUk56UqWp4BlIs8XN1q3ypJBgqRuslk78=;
+        b=DDuKGq1GRVeDsUWabcipdxTywrqxL7Lrl0oZF1AyTBhutuR86pdHksk+p/IBHyUElX
+         bn+4uPzJZLPJvW8UkUb63cHQejRC68uSHl4Hb/Wmov8ruo3Y1LfiLUO2bS/k87Sx+9yA
+         BWZuq4OTKPEdYxJPQj7qUfmY5fGTa3H60RNC9JU6LYj1T5XtUDIgVddYWrAkcxUKv/4R
+         wRWu6D4Ssl0BXPrDYof509I1BKeOoSDDuXPRIhFhRhm4gMeNWQJuzDNvPtwNdT7WlJ2E
+         oc3PgeZUw52774z+6Qd+HN+cC25eEPxbeuPX+801wCqWYA6dX4vTjXHk8Kubd7DXFfxC
+         Zc0A==
+X-Forwarded-Encrypted: i=1; AHgh+RpqODBL55Q0dje/4SMgEwT62lBbuRcHhc65tNi870wC44oma90WsdS1CEg38NZ05b+5+bgXL7YKZw7ATIvmZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOv9+wjgH9iKs3SsNK6uzaIXEnu+Dn9tAe6JE3ctopddN/zBR6
+	/7WWf5dTB4og+NDyu+qHkjBW0T217RIi9Oqw0yAKtSb2TKOYSu/3JY5rXeqPRvJ0mXLShKfiKeP
+	wnINqV70SrDWT9tfgj9dWQVJEbMYVAXA=
+X-Gm-Gg: AfdE7cn42cSPpJBa/r7MiduD4P2YqsHGkb1nnSvfsIPUigm83G6Ej83iDbQWHCJr6vM
+	y8aaX++oUTvz3hb7fCxGvmTqRTw6BbKTHcJhnBGfPpN0FQPMzsxs/xJZU/E1dX0YgTo0chuWlxN
+	JA2xqNa3B831Bq9fE921DM2eLQlRIyeHOGMuBGGe83Nu7S0K/DNt3KN4zCJI7dM5F2DmsWbfYlN
+	jUSrBrZwzJssg0ycYbkLB5Vu9Ietmro7v0FvIJu6IR1v91dtPAqVm7NbyuGiR5mR0TaIpd492Sa
+	svjJdq4CWIpb+98dx9KrSiUwmUV52vODP7p/Bn2ElrfvqXEJSLak2XaWJ8CzCNLKpayQYD6m+ml
+	Eblf9vdMeK2qH
+X-Received: by 2002:a17:90b:224a:b0:38d:f0a7:85f9 with SMTP id
+ 98e67ed59e1d1-38df0a786cbmr766888a91.0.1783860185411; Sun, 12 Jul 2026
+ 05:43:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260712123517.392-1-christopherjoshy4@gmail.com>
+In-Reply-To: <20260712123517.392-1-christopherjoshy4@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 12 Jul 2026 14:42:52 +0200
+X-Gm-Features: AUfX_mydOnkloswql-fdFfUYmal68jtkjokYyK9H8jfbXxKiT_7Txl9fMIchUl0
+Message-ID: <CANiq72mYuFGbv2NY-aQJuVgZsaJ7aXFfScLAoFt2ymy9O=QHhQ@mail.gmail.com>
+Subject: Re: [[PATCH]] rust: kernel: add SAFETY comments in aref doc example
+To: Christopher Joshy <christopherjoshy4@gmail.com>
+Cc: ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Please disregard this patch. 
+On Sun, Jul 12, 2026 at 2:35=E2=80=AFPM Christopher Joshy
+<christopherjoshy4@gmail.com> wrote:
+>
+> Replace TODO safety comments with proper explanations in the
+> `ARef::into_raw` doc example.
+>
+> For the `unsafe impl AlwaysRefCounted`, explain that the empty
+> implementation is trivially sound since `Empty` has no data.
+>
+> For the `ARef::from_raw` call, explain that the pointer is valid
+> because it is derived from a valid reference.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/351
+> Signed-off-by: Christopher Joshy <christopherjoshy4@gmail.com>
 
-As pointed out by the Sashiko AI review, using `atomic_load` here
-introduces critical alignment issues on 32-bit platforms for ktime_t
-and violates the safety contract regarding concurrent non-atomic stores
-on the C side.
+Thanks for the patch! A few procedural notes:
 
-We definitely need a proper `read_once` abstraction in Rust before 
-handling these cases. Sorry for the noise!
+  - The title seems to have double brackets.
 
-Best regards,
-Alessio
+  - Please check the prefix for the title that previous patches to
+this file use in the Git log.
+
+  - Now that we have a proper `// SAFETY` comment, consider showing it
+in the rendered output instead of hiding it.
+
+  - Please Cc all the relevant maintainers and reviewers, i.e. you can
+check `MAINTAINERS` and/or use the `scripts/get_maintainer.pl` (you
+will need `RUST [SYNC]` and `RUST`).
+
+  - I personally don't mind either way, but I ask to add Suggested-by
+in the "good first issue"s because I want to encourage other reviewers
+to open new ones.
+
+Cheers,
+Miguel
