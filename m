@@ -1,113 +1,145 @@
-Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7136B2765E2;
-	Sun, 12 Jul 2026 14:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4F4211A09
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 15:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783868135; cv=none; b=icacOHf2BiISObACpuC2gNf+XOyeAXM5BEnUqGPjL5XX/c7dzRowpDdk5VbtYXy+5SfL5pqpLtvdAcoMjUQV+kW/wPntCVXLx4htwK+4zDtSmNW+l4dBHWdWrXWxId9ZNJiCHc7DBFEs7Stp1kERwtH60wTw9A3Y7JzceFoNg+8=
+	t=1783870239; cv=none; b=cwXIrPmRLWhzKTts2ZOvJiKaVM8WNdintWmLVHLxTnpqB6etGXsjfjFHaUjK2y+dPVyD/sVTwBdGcjRs0P5tUn1BBe3YeIVvX3jMSouglwllG3Ek23BmQ6cTXxl+erD6OtKXVSuQhqaWfNOsXxmI2pogmVdWWBn+6X06v2vETBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783868135; c=relaxed/simple;
-	bh=L4a64Aplo3e+24CSASMZO4O607mX9iJGrnuUkdNt5Xg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLYK2zPWiPWGleC0ZICYUVy5Kn3Sxehg18uI3g5PWPsrjr1pw5cuuk4xK+WcaRKFqTBnVW9ygqoB+0tNQ1y8jYoeMxRxEqnit+MdiCDP7T5qv2kenq6QlxCyiqIc1H97eC1NvsW9IQfVhQDrIt3mPIm5ZA7ZNZBrD8jMj+98oH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
-	 client-signature ECDSA (secp384r1) client-digest SHA384)
-	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
-	by mailout2.hostsharing.net (Postfix) with ESMTPS id 26AD310632;
-	Sun, 12 Jul 2026 16:55:31 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 032786022F08; Sun, 12 Jul 2026 16:55:30 +0200 (CEST)
-Date: Sun, 12 Jul 2026 16:55:30 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Maurice Hieronymus <mhi@mailbox.org>
-Cc: Edward Cree <ecree.xilinx@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	Paul Ely <paul.ely@broadcom.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	netdev@vger.kernel.org, linux-net-drivers@amd.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
-	linux-edac@vger.kernel.org
-Subject: Re: [PATCH 2/2] PCI: Replace pci_dev->broken_parity_status with
- accessors
-Message-ID: <alOq4rsjATipBjY9@wunner.de>
-References: <20260711-pci-dev-flags-v1-0-2fcf2811138c@mailbox.org>
- <20260711-pci-dev-flags-v1-2-2fcf2811138c@mailbox.org>
+	s=arc-20240116; t=1783870239; c=relaxed/simple;
+	bh=bSRx8gzU1P9HLkyXSFQmZ4ZPmUgPAb6Mx7i2pO169ho=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NJhgnFBL1YLC1NL46MAOXhdJurEqwWL7OTL89+4H7BHBxjJul1RakEBZ9YIc23eDdU4QsD2PPH2kJ+7y30MUD1TyIGyYcm3jSzuEFOliT1u6Ier5U4OHKF/zIsBQW2n0tR9RGGCqeUWsEigIAFHN3egNz5YagE/yzo+nZX8o+cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JqMQ07/8; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JqMQ07/8"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38dcbade417so769128a91.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 08:30:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783870237; x=1784475037; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZxTi4ddCQW6xW5dWZpbLnP7mAc018/mNCKwB9sEIer8=;
+        b=JqMQ07/8t6FMa7Dyeagw+L3FmxVX4FaxUcO6iiDH9x/rgmO4Wq44l0cu6xJ+FTYozm
+         djruGCWc5ay8LuEyYvGUSYtn8kJiXz6tYCIlq6I2SOETzQ9+/WUyPgYMbA0ea/4qyecZ
+         sgjKefwN6p3suBzylTYJEm1bvV7jqbILL5dc1HdGEeUWXqwMqq0DWRvXDuIPSFQMjMpm
+         vWSJbfg6BlLRcdV2OLPEmQH9QaOiQwBlzhAPUntlDIaBxUfh9uVycn/KClLyA6h4wOBe
+         yI5cRi7UgTCXuRzGOyU0zM29OqXsKs03/gxLgiM6momYQdXdzhJRzaOA57HZ+uDinrQi
+         V3bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783870237; x=1784475037;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZxTi4ddCQW6xW5dWZpbLnP7mAc018/mNCKwB9sEIer8=;
+        b=NTiGDuU/wcufLKLYkCfCTYxPo52+VNJQ9odRpGY9t0VUFApaPJ13aScVTnDO3l8bHl
+         vXMvH4f0UQZPvYwUmhSe8u//mm0ul+wZsLmv1H+enB4Rwf7IjZQJhHNoeUe4jsb1IwGV
+         9zrSlIw5dEmypwYFPdkTDiwFvFg2MFIZjJY5eePfhMM0EGZhBAlCFxAMp57O0gpjgLSt
+         O1wnIRAUlSLCITh8a87ToDJaAdudXd96w9Iaqst+18LqU2MIncFhmCxdkoJ5LEvdwjTd
+         DFzee+wu993doop17B+FMXXVrvxLH1ZrfblNM7qTIFfysj8qSHZAH8zfkw8eI74n3HxX
+         0W1A==
+X-Forwarded-Encrypted: i=1; AHgh+RprIC8FYek1LnCCiHpo69nmse1i+e1xsf1VbZqEY1t+LeuGW+e8JVMpUMRaQBvRYFX9cJwQ5T6rZDyco+hIWA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq+w1LZQbAW/azS4zEiNXAnlKPHMhOFLaB0zhKEhS2aeMKglzj
+	Kzy7t6n3L74GY/tjg3iKYTAx39bdAXYvcd9ndb3J4BIjhZi1j8LWkKAz
+X-Gm-Gg: AfdE7cmSZ3dE/KMYXJQ1eC1VV0TaU2QftbWYJvyu3eWUWWbIcLIYTbNYDJv6N3yGchB
+	ck6nyGUmzru/gC65QF4GSFAJRcKGDUcnihl47rLdM8XItbrSK/qWasXI3oKoEkM1/znfocwZkOb
+	z4mZ6qgcmDXEIxKm6GE0oHFjP4FTqAgIFjGW7UsJTaXOXd8zFYJYoqu614YjciQCg60QI5ckP6m
+	eVssHLJWUFQdUWERuXd8CxFU0ru0kVkgu+Ai90KJ4F5kW7/sWPcii59MsJGR5NtMMpfC+mf5k1Y
+	VWsGghSTwssYS4ZG/+lPoJ1vviPVrjIaN5Ag+0dpm/AVcMdL74fpOnt/LfbgliGoRTlyUUiZA4d
+	BYyw6Re63ELsZDgq7in/on4NNTRgM4z7G+OpZ7QotxfW0ixrM/g0jOsBFpQewi+S7zP4QXKIHJ1
+	rr3/KqZreuKC+vu7OoGyHFHI64zlFifAf46/o=
+X-Received: by 2002:a17:90b:3805:b0:380:83fc:4315 with SMTP id 98e67ed59e1d1-38dc77ee67cmr6442019a91.21.1783870237512;
+        Sun, 12 Jul 2026 08:30:37 -0700 (PDT)
+Received: from Excalibur ([117.254.186.114])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-311935fd091sm41468147eec.24.2026.07.12.08.30.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2026 08:30:36 -0700 (PDT)
+From: christopherjoshy <christopherjoshy4@gmail.com>
+To: ojeda@kernel.org
+Cc: boqun@kernel.org,
+	gary@garyguo.net,
+	aliceryhl@google.com,
+	lyude@redhat.com,
+	daniel.almeida@collabora.com,
+	work@onurozkan.dev,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	tamird@nvidia.com,
+	acourbot@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Christopher Joshy <christopherjoshy4@gmail.com>
+Subject: [PATCH v2] rust: kernel: add SAFETY comments in aref doc example
+Date: Sun, 12 Jul 2026 21:00:27 +0530
+Message-ID: <20260712153028.896-1-christopherjoshy4@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.2
+In-Reply-To: <20260712123517.392-1-christopherjoshy4@gmail.com>
+References: <20260712123517.392-1-christopherjoshy4@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260711-pci-dev-flags-v1-2-2fcf2811138c@mailbox.org>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jul 11, 2026 at 05:21:07PM +0200, Maurice Hieronymus wrote:
-> `broken_parity_status` shares a C bitfield word in `struct pci_dev`
-> with many other bits. `broken_parity_status_store()` writes it from
-> sysfs at any time without taking any lock, so userspace can make it
-> race with every other writer of the same word, e.g. `pci_set_master()`
-> from a runtime PM resume path, and updates of neighboring bits can be
-> lost.
+From: Christopher Joshy <christopherjoshy4@gmail.com>
 
-For static bits in struct pci_dev, i.e. ones that are mostly read
-and almost never written, and in particular ones that are only
-written on device enumeration, it's perfectly fine and more convenient
-to keep them as bitfields.  broken_parity_status seems to fit that bill.
+Add the missing `// SAFETY` comments in the `ARef::into_raw` doc
+example, replacing the `TODO` placeholders from issue #351.
 
-For other bits which are modified more frequently, move them to the existing
-priv_flags member if you believe they can be updated concurrently.
-I'm not sure is_busmaster fits that bill, it isn't updated that often.
+For the `unsafe impl AlwaysRefCounted`, explain that `Empty` has no
+data and its `inc_ref`/`dec_ref` are no-ops, so the liveness
+contract is trivially satisfied.
 
-Quite honestly I'm wondering if there is anything to fix here.
-Yes I get it, userspace may interfere with adjacent bits.
-But broken_parity_status is only used for certain broken devices
-on EDAC-capable platforms.  That's a fringe use case.
-Is it really worth refactoring this?
+For the `ARef::from_raw` call, explain that `ptr` is derived from a
+valid reference (so it is valid) and that the required refcount
+increment is trivially owned because `Empty`'s `AlwaysRefCounted`
+manages no actual refcount.
 
-Perhaps a better approach is to enclose dev_attr_broken_parity_status.attr
-in "#ifdef CONFIG_EDAC" so that the attribute isn't shown unless it's used.
+Link: https://github.com/Rust-for-Linux/linux/issues/351
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Christopher Joshy <christopherjoshy4@gmail.com>
+---
+ rust/kernel/sync/aref.rs | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-We shouldn't have used a sysfs attribute for this in the first place
-but rather a quirk.  Unfortunately 6b09ff9d7879 does not betray for which
-device this was needed, so it's difficult to convert it to a quirk now.
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index b721b2e00..5e8b8476b 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -124,7 +124,11 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+     ///
+     /// struct Empty {}
+     ///
+-    /// # // SAFETY: TODO.
++    /// // SAFETY: `Empty` has no data and its `inc_ref`/`dec_ref` are no-ops, so the
++    /// // `AlwaysRefCounted` contract holds: `inc_ref` need not keep anything alive (the
++    /// // zero-sized object lives on the stack while `data` is in scope) and `dec_ref` frees
++    /// // nothing. The caller ensures `data` outlives any `ARef<Empty>` (here `data` is a
++    /// // local that outlives `data_ref`).
+     /// unsafe impl AlwaysRefCounted for Empty {
+     ///     fn inc_ref(&self) {}
+     ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
+@@ -132,7 +136,10 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+     ///
+     /// let mut data = Empty {};
+     /// let ptr = NonNull::<Empty>::new(&mut data).unwrap();
+-    /// # // SAFETY: TODO.
++    /// // SAFETY: `ptr` comes from a valid `&mut data` reference, hence it is non-null,
++    /// // aligned and points to a valid `Empty`. `ARef::from_raw` also requires owning a
++    /// // refcount increment; this is trivially met because `Empty`'s `AlwaysRefCounted` uses
++    /// // no-op `inc_ref`/`dec_ref` and so manages no actual refcount.
+     /// let data_ref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
+     /// let raw_ptr: NonNull<Empty> = ARef::into_raw(data_ref);
+     ///
+-- 
+2.43.0
 
-Bjorn introduced a pci_disable_parity() API in 2021 which is used in a
-quirk for certain Mellanox products:
-
-https://lore.kernel.org/all/20210330174318.1289680-1-helgaas@kernel.org/
-
-Perhaps we can deprecate the sysfs attribute in favor of using quirks
-for broken devices?
-
-Thanks,
-
-Lukas
