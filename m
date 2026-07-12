@@ -1,598 +1,98 @@
-Received: from mail-yx2-f3.google.com (mail-yx2-f3.google.com [74.125.224.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C982A371878
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 21:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5ED2D47FF
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 21:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783890558; cv=none; b=L/Bm8VePXuLT1NcZa4E1C5QygFCVOOSg3uatIedtwW/aEt7849pmoIz+chf33pUOgbCt1yST80It9G4QHf6LYpq4Uxj8545sqnG2x2gl7DeKw/po0yju2+c1wRuDHAKlvV73Kt8OwSLDLAcpg3Nhbc6RrLszOYsCSJbtzZgkVQ0=
+	t=1783893262; cv=none; b=P4NJKspxw1miDlY/xnGvrKQCuVnOsFjB3VPzvPzutTHCIOOeqMcl6fWN4/mTLSxywLoFeBjlVCzT3G7oVmGu/+Z2INPVliyHq1LtKZH+hdO2mUddqz0mbVsSY21NcA3LDrxACLZG2cV3RlIHH/f5EospWthW6xWaqo+s9dLKTmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783890558; c=relaxed/simple;
-	bh=WQvKshDrAosb6Qtw7MpQmrVnyV9nFzUo7+XObHv3hgM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=scZs6Rt3Yg7bbcEo4LbMP+GolfWTDIuTX76TIjrwa/6N6k1phXz+aVYaxzm5YPiVCJsMcgEYk4675/2+u/0cbWsHDSMAjN8X+OXipDWw0uk0U2RYB41RGAVSrQOTU96FXuhk7P+OvIrejfcMyJw7CtZ+VMy89YPzgIJe2yaQg0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DB1EjdAl; arc=none smtp.client-ip=74.125.224.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783893262; c=relaxed/simple;
+	bh=DbGZsyri15+TeAvgWca1+4vW5rtsEbCwpy5OsSpjdoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AbIP8uFYWKy1/t7eR9+lHabl0FxH7UV/d8NQ4GOzv6l/+qhhZUQk/xPu6U3cMAiafDXt8Qh6Flysj+VWzxDgOy4pGI5FNy4HAs+TvQFKRi38QEYz/vTz8FSpIcQy8mKUWdxVkhCx0qwrs9sR0J/EeH27+2NBcVxT2khsevg3OKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CF4L+vS9; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DB1EjdAl"
-Received: by mail-yx2-f3.google.com with SMTP id 00721157ae682-81dfd9cae2cso13909287b3.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 14:09:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783890555; x=1784495355; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1vodfbLbrZTh4k1ELxmOTY9e67AVLB+3FCuvHYZI16k=;
-        b=DB1EjdAlERr7tsgkrOIT3Yd2ciRvMJcLNgj7Nf0htHZTL7i2oVRgb0vvOGcnQ+I3t3
-         2peqGbk4/4+hWBdF+mMlzWfzfsxhWLMa5NDU5JeKo8NGqbwpVvM3NrkzoXhVtL6MSD5J
-         Qbqn9G2CTMXnigJj5We0Tn5aQTv3Mi9l8TJVwewFNGk9Ij4TozNGizC9K9ot5F3df9z6
-         FmmaC95IHbsJUwIFsjAwwav8/5F8FzXUw6IR4zohTLEgyBQGLTHkuxDykntnUIdWy84y
-         hzDcEnG3BH9C9Xs8UGOlZuNBn13l9mXU8ZAmmBgvnKRmxIjvp1pdhJxrOc+yhUVmkmL5
-         2UGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783890555; x=1784495355;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1vodfbLbrZTh4k1ELxmOTY9e67AVLB+3FCuvHYZI16k=;
-        b=NV7Xm8+WjHLFoRzxy2iWKXPZ4qczkHX1/WsgS+QHfLZm4N2N0qohwci8EggCdvNkYs
-         tXWgfWZfBqdNRChXnQcHpJJOxYpXi2FMiyIKU0OVmsI97I5kvhFni/E8VBKlWBGRrWeM
-         QFnHb+iFv6Chl7Y9EApDCbEcFulWFEeGKdQ0msZvMpsRmXoB5F72I0He7jvMo+vNy0jS
-         a8bAfObevD2AxL7e1D7ht/My63b0e071VLasjA4irfIj/787spNdnM/2VOvLzsNMK9iS
-         xPppaXPm9aahWaeYE+fWY8CJ8FHl7kCkuNxLqUmIy3b/uJ7X2iYgmvrbRHLridiepk9/
-         0s8w==
-X-Forwarded-Encrypted: i=1; AHgh+RoT5axi7BMT3fRLfrKEttivPxzcoPDdvPWa6X/wM/0iMUdIQK7313uyyQJ3is6u9FTf+X3qLhcb+dg15rlnJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl/pu0fybNv61G+kRNqr8bHotifGfaACGd52u7p+P0Yd2CcUYU
-	DRnHmALeOb88jSSVLcvut2+Ef4VOY5Ysed7kVnNJG0M5tToem9q66Imc
-X-Gm-Gg: AfdE7clrDWJMkmwn4uWf96J8zAXoSzzNu0v6trrUAcDEPXM7P2h83yIAsjLZ9D8sqCY
-	UvoBxWhTfDykKD3Cx9BlKB8+GXZDB2pkA9h9o93VTcY2HSUGhmtKXWD6dtfKK9z/BV+xAVQdJOO
-	Hb5zIynwvUjpgx+EWewBGHXjz+g3oAwQtL8Qv+WFRn/Io9xr2AIEryP22rMGExZDm9/mNyxIXon
-	E3o9UDBdfA80RQddVxco4lZekIK1XZG5dIHgSCkd4tyjkELtEakC23+0uWWoN+yGEF1i/svo/Xa
-	m72Q0IDGlj6oR+RiJkALEGoqa2Rixb0JtOfaGcOpLhYDU3kEBcv3vvEhHO6rSaAmR7YUgwVgadu
-	yfzcUZ+IhSQPdtSbPwWDxsC9JcZhrqA6i+corXLlYP99Vx3JlTc1rlnIxIMdEwPPRz+cQJrrsjF
-	ou+jK1YJlln2HfRLS+7c+QcR44vSgsB1FDgOswlKo6Al0Vjg+n+6lCHTOVZYY7nk4mbNyV5E2Mq
-	JMG85Vl
-X-Received: by 2002:a05:690c:6008:b0:813:1001:cf85 with SMTP id 00721157ae682-81e9013e309mr54632687b3.37.1783890554640;
-        Sun, 12 Jul 2026 14:09:14 -0700 (PDT)
-Received: from [127.0.0.2] (76-234-45-214.lightspeed.cicril.sbcglobal.net. [76.234.45.214])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e6be9834dsm99737387b3.9.2026.07.12.14.09.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 14:09:14 -0700 (PDT)
-From: Colin Braun <colinbrauncl@gmail.com>
-X-Google-Original-From: Colin Braun <colin.braun.cl@gmail.com>
-Date: Sun, 12 Jul 2026 16:08:01 -0500
-Subject: [RFC PATCH 4/4] media: add gv-usb2 audio capture driver
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CF4L+vS9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783893260; x=1815429260;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DbGZsyri15+TeAvgWca1+4vW5rtsEbCwpy5OsSpjdoQ=;
+  b=CF4L+vS9YbmN7dZEVRMHfPh1bSinDdLU5dN0toePlurNU2TEJQr8dULa
+   zrO7M8yr0LnSq81qmDwW4w5VwyQvOBzVYAT/c/YvKALZnt5Yj5pD9a1Hl
+   zQWhr4vhYlRWamefXAZ/H2JH5I97NPrHo0znMOTy80F+emIlZcnZt8uqu
+   wdLsczQNnyTmcmp3DaH7nn3+cOxp0T2r00RKqQWlDo+i8QunDaIKW83HI
+   AOMrJB8+VLrozpR0B8StnlSye1v2Is/i4g6fDitlzGIfPNOtv0twWY3Uo
+   zKDoroJ0n9KenkwcR32/KsDJNGePZcSzdx05d1kUtzKJaC05EJwsty6y8
+   w==;
+X-CSE-ConnectionGUID: AVtJQAioSiGUilcXo7URJQ==
+X-CSE-MsgGUID: wMEYlXPxS9OTUmOoDqWQ7A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="110049951"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="110049951"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2026 14:54:19 -0700
+X-CSE-ConnectionGUID: AGXEr7GiRwS6CHaig+Eg0A==
+X-CSE-MsgGUID: TETWxDTVTn6lIBWwpLyzGA==
+X-ExtLoop1: 1
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by fmviesa003.fm.intel.com with ESMTP; 12 Jul 2026 14:54:15 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wj27n-00000000LAE-2D5a;
+	Sun, 12 Jul 2026 21:54:11 +0000
+Date: Mon, 13 Jul 2026 05:53:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	gregkh@linuxfoundation.org, a.hindborg@kernel.org,
+	acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
+	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
+	gary@garyguo.net, lossin@kernel.org, tamird@kernel.org,
+	tmgross@umich.edu, work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v3] rust: bug: Add bug macro
+Message-ID: <202607130448.hVx2H0N9-lkp@intel.com>
+References: <20260712102802.3013600-1-tomo@flapping.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260712-urb-abstraction-v1-v1-4-9fa011634ead@gmail.com>
-References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
-In-Reply-To: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Alan Stern <stern@rowland.harvard.edu>, 
- Mathias Nyman <mathias.nyman@intel.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-usb@vger.kernel.org, linux-media@vger.kernel.org, 
- Colin Braun <colin.braun.cl@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783890545; l=16409;
- i=colin.braun.cl@gmail.com; s=20260630; h=from:subject:message-id;
- bh=WQvKshDrAosb6Qtw7MpQmrVnyV9nFzUo7+XObHv3hgM=;
- b=eAFC0DaDVkJFQFNbLa8qWNzd9PbtHYHv/Rf+X1jYBm8Fki7XhfYlHf1HyJU2IX//IDgvKazmW
- RlAbpZ3m6J9DD6TlV1eRsTsMk1/CiCcdzWH6384HOtl5AcRVpKSOuo5
-X-Developer-Key: i=colin.braun.cl@gmail.com; a=ed25519;
- pk=DJ5DDAbTXtW6OgSgetK6R1PUfhtCNSvSayX3Je17ZAY=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260712102802.3013600-1-tomo@flapping.org>
 
-Add a Rust driver for the I-O Data GV-USB2 Composite-USB Video
-Capture Device. Leverages the USB abstractions from patches 1-3.
+Hi FUJITA,
 
-The GV-USB2 contains an STK1150, a USB bridge microchip for converting
-old analog video signals into digital data. The STK1160's datasheet
-is available, but the same is not true for the STK1150. However, it
-seems that most of the registers are the same as the STK1160's.
+kernel test robot noticed the following build warnings:
 
-This implementation demonstrates the ability to send and receive data
-via control and isochronous USB transfers. Due to a lack of V4L2 and
-ALSA abstractions, this initial implementation only exposes data from
-an audio endpoint via debugfs. I would like to expand on this driver
-later.
+[auto build test WARNING on dc59e4fea9d83f03bad6bddf3fa2e52491777482]
 
-Signed-off-by: Colin Braun <colin.braun.cl@gmail.com>
----
- drivers/media/usb/Kconfig            |   1 +
- drivers/media/usb/Makefile           |   1 +
- drivers/media/usb/gv-usb2/Kconfig    |   9 +
- drivers/media/usb/gv-usb2/Makefile   |   1 +
- drivers/media/usb/gv-usb2/driver.rs  | 361 +++++++++++++++++++++++++++++++++++
- drivers/media/usb/gv-usb2/gv_usb2.rs |  16 ++
- drivers/media/usb/gv-usb2/regs.rs    |  25 +++
- 7 files changed, 414 insertions(+)
+url:    https://github.com/intel-lab-lkp/linux/commits/FUJITA-Tomonori/rust-bug-Add-bug-macro/20260712-183026
+base:   dc59e4fea9d83f03bad6bddf3fa2e52491777482
+patch link:    https://lore.kernel.org/r/20260712102802.3013600-1-tomo%40flapping.org
+patch subject: [PATCH v3] rust: bug: Add bug macro
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260713/202607130448.hVx2H0N9-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260713/202607130448.hVx2H0N9-lkp@intel.com/reproduce)
 
-diff --git a/drivers/media/usb/Kconfig b/drivers/media/usb/Kconfig
-index 813171d25ac5..9867d0dc5626 100644
---- a/drivers/media/usb/Kconfig
-+++ b/drivers/media/usb/Kconfig
-@@ -14,6 +14,7 @@ if MEDIA_CAMERA_SUPPORT
- 	comment "Webcam devices"
- 
- source "drivers/media/usb/gspca/Kconfig"
-+source "drivers/media/usb/gv-usb2/Kconfig"
- source "drivers/media/usb/pwc/Kconfig"
- source "drivers/media/usb/s2255/Kconfig"
- source "drivers/media/usb/usbtv/Kconfig"
-diff --git a/drivers/media/usb/Makefile b/drivers/media/usb/Makefile
-index 6d171beea20d..f69aaec671ca 100644
---- a/drivers/media/usb/Makefile
-+++ b/drivers/media/usb/Makefile
-@@ -26,6 +26,7 @@ obj-$(CONFIG_VIDEO_AU0828) += au0828/
- obj-$(CONFIG_VIDEO_CX231XX) += cx231xx/
- obj-$(CONFIG_VIDEO_EM28XX) += em28xx/
- obj-$(CONFIG_VIDEO_GO7007) += go7007/
-+obj-$(CONFIG_VIDEO_GVUSB2) += gv-usb2/
- obj-$(CONFIG_VIDEO_HDPVR) += hdpvr/
- obj-$(CONFIG_VIDEO_PVRUSB2) += pvrusb2/
- obj-$(CONFIG_VIDEO_STK1160) += stk1160/
-diff --git a/drivers/media/usb/gv-usb2/Kconfig b/drivers/media/usb/gv-usb2/Kconfig
-new file mode 100644
-index 000000000000..755a669bba26
---- /dev/null
-+++ b/drivers/media/usb/gv-usb2/Kconfig
-@@ -0,0 +1,9 @@
-+config VIDEO_GVUSB2
-+	tristate "GV-USB2 audio/video capture device driver"
-+	depends on VIDEO_DEV && RUST
-+	help
-+	  Rust driver for the I-O Data GV-USB2 Composite-USB Video Capture
-+	  Device.
-+
-+	  To compile this driver as a module, choose M here: the module
-+	  will be called gv_usb2.
-diff --git a/drivers/media/usb/gv-usb2/Makefile b/drivers/media/usb/gv-usb2/Makefile
-new file mode 100644
-index 000000000000..7cc0f83a11c1
---- /dev/null
-+++ b/drivers/media/usb/gv-usb2/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_VIDEO_GVUSB2) += gv_usb2.o
-diff --git a/drivers/media/usb/gv-usb2/driver.rs b/drivers/media/usb/gv-usb2/driver.rs
-new file mode 100644
-index 000000000000..a8ab03e9a133
---- /dev/null
-+++ b/drivers/media/usb/gv-usb2/driver.rs
-@@ -0,0 +1,361 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use crate::regs;
-+use kernel::{
-+    debugfs::{
-+        self,
-+        BinaryWriter, //
-+    },
-+    device,
-+    prelude::*,
-+    sync::{
-+        new_spinlock,
-+        Arc,
-+        SpinLock, //
-+    },
-+    time::Delta,
-+    usb,
-+};
-+
-+/// The number of isochronous urbs to submit.
-+const NUM_URBS: usize = 4;
-+
-+/// The expected max packet size for audio.
-+const MAX_AUDIO_PACKET_SIZE: u16 = 256;
-+
-+/// The GV-USB2 USB driver struct.
-+///
-+/// Created during probe and stored as the driver's private data.
-+pub(crate) struct GvUsb2Driver {
-+    /// Shared audio state.
-+    _audio: Arc<AudioState>,
-+    /// Pool of isochronous URBs submitted for audio capture.
-+    _urbs: [Option<usb::UrbHandle<AudioState, usb::Active>>; NUM_URBS],
-+    /// The debugfs file exposing captured audio to userspace.
-+    _capture_file: Pin<KBox<debugfs::File<IsocCapture>>>,
-+    /// The debugfs directory node.
-+    _debugfs_dir: debugfs::Dir,
-+}
-+
-+/// Shared state for audio capture.
-+#[pin_data]
-+struct AudioState {
-+    /// Ring buffer for streaming audio data from URBs to userspace.
-+    #[pin]
-+    ring: SpinLock<AudioRingBuffer>,
-+}
-+
-+/// A ring buffer for audio data.
-+///
-+/// Used to transfer audio data from the URB completions to userspace
-+/// via debugfs.
-+struct AudioRingBuffer {
-+    /// Audio buffer, sized to a power of two.
-+    buf: KBox<[u8]>,
-+    /// Producer index.
-+    head: u32,
-+    /// Consumer index.
-+    tail: u32,
-+    /// Mask to handle ring buffer wrap-around. Must be capacity - 1.
-+    mask: u32,
-+}
-+
-+impl AudioRingBuffer {
-+    /// Write data into the ring buffer.
-+    ///
-+    /// Returns the number of bytes written.
-+    fn write(&mut self, data: &[u8]) -> usize {
-+        let capacity = self.mask as usize + 1;
-+        let fill = self.head.wrapping_sub(self.tail) as usize;
-+
-+        if fill >= capacity {
-+            return 0;
-+        }
-+
-+        let to_write = core::cmp::min(capacity - fill, data.len());
-+        if to_write == 0 {
-+            return 0;
-+        }
-+
-+        let mask = self.mask as usize;
-+        let head_idx = self.head as usize & mask;
-+        let space_to_end = capacity - head_idx;
-+
-+        if to_write <= space_to_end {
-+            self.buf[head_idx..head_idx + to_write].copy_from_slice(&data[..to_write]);
-+        } else {
-+            let (first, rest) = data.split_at(space_to_end);
-+            self.buf[head_idx..capacity].copy_from_slice(first);
-+            self.buf[..to_write - space_to_end].copy_from_slice(rest);
-+        }
-+
-+        self.head = self.head.wrapping_add(to_write as u32);
-+
-+        to_write
-+    }
-+
-+    /// Read data from the ring buffer.
-+    ///
-+    /// Returns the number of bytes copied into `buf`.
-+    fn read(&mut self, buf: &mut [u8]) -> usize {
-+        let capacity = self.mask as usize + 1;
-+        let fill = self.head.wrapping_sub(self.tail) as usize;
-+
-+        if fill == 0 {
-+            return 0;
-+        }
-+
-+        let to_read = core::cmp::min(fill, buf.len());
-+        let mask = self.mask as usize;
-+        let tail_idx = self.tail as usize & mask;
-+        let space_to_end = capacity - tail_idx;
-+
-+        if to_read <= space_to_end {
-+            buf[..to_read].copy_from_slice(&self.buf[tail_idx..tail_idx + to_read]);
-+        } else {
-+            let first_len = space_to_end;
-+            let second_len = to_read - space_to_end;
-+            buf[..first_len].copy_from_slice(&self.buf[tail_idx..capacity]);
-+            buf[first_len..to_read].copy_from_slice(&self.buf[..second_len]);
-+        }
-+
-+        self.tail = self.tail.wrapping_add(to_read as u32);
-+
-+        to_read
-+    }
-+}
-+
-+/// Debugfs reader that drains the audio ring buffer.
-+struct IsocCapture {
-+    /// Shared audio state whose ring buffer is read on each `read()` call.
-+    state: Arc<AudioState>,
-+}
-+
-+impl BinaryWriter for IsocCapture {
-+    fn write_to_slice(
-+        &self,
-+        writer: &mut kernel::uaccess::UserSliceWriter,
-+        offset: &mut kernel::fs::file::Offset,
-+    ) -> Result<usize> {
-+        let mut buf = [0u8; 4096];
-+        let n = match self.state.ring.try_lock() {
-+            Some(mut guard) => guard.read(&mut buf),
-+            None => 0,
-+        };
-+        if n == 0 {
-+            return Ok(0);
-+        }
-+        writer.write_slice_file(&buf[..n], offset)
-+    }
-+}
-+
-+kernel::usb_device_table!(
-+    USB_TABLE,
-+    MODULE_USB_TABLE,
-+    <GvUsb2Driver as usb::Driver>::IdInfo,
-+    [(usb::DeviceId::from_id(0x04BB, 0x0532), ()),]
-+);
-+
-+impl usb::Driver for GvUsb2Driver {
-+    type IdInfo = ();
-+    type Data<'bound> = Self;
-+    const ID_TABLE: usb::IdTable<Self::IdInfo> = &USB_TABLE;
-+
-+    /// Probe the GV-USB2 device.
-+    ///
-+    /// Matches only audio interface 2 (isochronous endpoint 4).
-+    /// Switches to altsetting 1, initializes the ADC, submits four isochronous
-+    /// URBs, and exposes the audio stream via debugfs.
-+    fn probe<'bound>(
-+        intf: &'bound usb::Interface<device::Core<'_>>,
-+        _id: &usb::DeviceId,
-+        _info: &'bound Self::IdInfo,
-+    ) -> impl PinInit<Self, Error> + 'bound {
-+        let dev: &device::Device<device::Core<'_>> = intf.as_ref();
-+
-+        dev_dbg!(
-+            dev,
-+            "INTERFACE {}: num altsettings = {}\n",
-+            intf.cur_altsetting().number(),
-+            intf.altsettings().len(),
-+        );
-+        for endpoint in intf.cur_altsetting().endpoints() {
-+            dev_dbg!(
-+                dev,
-+                "  endpoint dir: {:?}, endpoint type: {:?}\n",
-+                endpoint.endpoint_dir(),
-+                endpoint.endpoint_type()
-+            );
-+        }
-+
-+        if intf.cur_altsetting().class() == usb::ch9::InterfaceClass::AUDIO {
-+            // Audio class is supported by snd-usb-audio, reject the interface.
-+            return Err(ENODEV);
-+        }
-+
-+        // Interface 2 is the audio one for gv-usb2, skip the others
-+        if intf.cur_altsetting().number() != 2 {
-+            return Err(ENODEV);
-+        }
-+
-+        // Switch to altsetting 1 (full-bandwidth).
-+        intf.set_interface(1)?;
-+
-+        let audio_ep = find_audio_endpoint(intf)?;
-+        dev_dbg!(
-+            dev,
-+            "Found audio endpoint: {}\n",
-+            audio_ep.endpoint_number()
-+        );
-+
-+        let buf = KBox::new([0; 32_768], GFP_KERNEL)?;
-+        let audio: Arc<AudioState> = Arc::pin_init(
-+            pin_init!(AudioState {
-+                ring <- new_spinlock!(AudioRingBuffer {
-+                    buf,
-+                    head: 0,
-+                    tail: 0,
-+                    mask: 32_767,
-+                }),
-+            }),
-+            GFP_KERNEL,
-+        )?;
-+
-+        // Initialize the audio ADC: GPIO, AC97 disable, I2S enable.
-+        reset_adc(intf)?;
-+
-+        let urbs = submit_audio_urbs(intf, audio_ep, &audio)?;
-+
-+        let dir = debugfs::Dir::new(c"gv-usb2");
-+        let file = KBox::pin_init(
-+            dir.read_binary_file(
-+                c"audio_raw",
-+                IsocCapture {
-+                    state: audio.clone(),
-+                },
-+            ),
-+            GFP_KERNEL,
-+        )?;
-+
-+        let driver = Self {
-+            _audio: audio,
-+            _urbs: urbs,
-+            _capture_file: file,
-+            _debugfs_dir: dir,
-+        };
-+
-+        dev_dbg!(dev, "GV-USB2 successfully initialized\n");
-+        Ok(driver)
-+    }
-+
-+    /// Disconnect the GV-USB2 device.
-+    ///
-+    /// All resources are cleaned up when dropped.
-+    fn disconnect<'bound>(intf: &'bound usb::Interface<device::Core<'_>>, _data: Pin<&Self>) {
-+        let dev: &device::Device<device::Core<'_>> = intf.as_ref();
-+        dev_dbg!(dev, "GV-USB2 disconnected\n");
-+    }
-+}
-+
-+/// Write a vendor-specific control register on the GV-USB2 device.
-+///
-+/// Uses a vendor-type control request (`REQ_WRITE_REG`) to write the
-+/// given `value` to the given `reg` address.
-+fn write_reg(intf: &usb::Interface<device::Bound>, reg: u16, value: u8) -> Result {
-+    let req = usb::ch9::CtrlRequest::new(
-+        usb::ch9::RequestType::new(
-+            usb::ch9::Direction::Out,
-+            usb::ch9::Type::Vendor,
-+            usb::ch9::Recipient::Device,
-+        ),
-+        regs::REQ_WRITE_REG,
-+        u16::from(value),
-+        reg,
-+        0,
-+    );
-+    let dev: &usb::Device<device::Bound> = intf.as_ref();
-+    dev.control_msg(&req, None, Delta::from_millis(1_000))
-+        .map(|_| ())
-+}
-+
-+/// Initialize the audio ADC on the GV-USB2.
-+///
-+/// Configures GPIO direction and output values, disables the AC97 codec,
-+/// and enables the I2S interface.
-+fn reset_adc(intf: &usb::Interface<device::Bound>) -> Result {
-+    // GPIO: bits 4+5 as outputs; SOUND_ENABLE=0 (active), SDA_RESET=1 (inactive)
-+    write_reg(intf, regs::GPIO_CTRL + 2, 0x30)?;
-+    write_reg(intf, regs::GPIO_CTRL, 0x10)?;
-+    // Disable AC97, enable I2S
-+    write_reg(intf, regs::AC97_CTRL, 0x00)?;
-+    write_reg(intf, regs::I2S_CTRL, 0x01)
-+}
-+
-+/// Completion callback for isochronous audio URBs.
-+///
-+/// Copies received audio data into the ring buffer and resubmits the URB.
-+fn audio_complete(result: usb::UrbResult<'_, AudioState>) {
-+    let Ok(urb_data) = result.check_or_resubmit(GFP_ATOMIC) else {
-+        return;
-+    };
-+
-+    if let Some(state) = urb_data.context() {
-+        let mut ring_guard = state.ring.lock();
-+        for desc in urb_data.iso_frame_descs() {
-+            if let Ok(data) = urb_data.data_from_iso_packet_desc(desc) {
-+                ring_guard.write(data);
-+            }
-+        }
-+    }
-+
-+    let _ = urb_data.resubmit(GFP_ATOMIC);
-+}
-+
-+/// Create and submit isochronous URBs for audio capture.
-+///
-+/// URBs are resubmitted continuously by `audio_complete`.
-+fn submit_audio_urbs(
-+    intf: &usb::Interface<device::Bound>,
-+    ep: &usb::HostEndpoint,
-+    audio: &Arc<AudioState>,
-+) -> Result<[Option<usb::UrbHandle<AudioState, usb::Active>>; NUM_URBS]> {
-+    const PACKETS_PER_URB: u32 = 8;
-+    const URB_BUF_SIZE: usize = (PACKETS_PER_URB as usize) * (MAX_AUDIO_PACKET_SIZE as usize);
-+
-+    let dev: &usb::Device<device::Bound> = intf.as_ref();
-+    let pipe = usb::Pipe::new_receive_isoc_pipe(dev, ep);
-+    let mut urbs = [const { None }; NUM_URBS];
-+    for active_urb in urbs.iter_mut().take(NUM_URBS) {
-+        let buf = KBox::new([0u8; URB_BUF_SIZE], GFP_KERNEL)?;
-+        let urb_handle = usb::Urb::<AudioState>::new_isoc(
-+            GFP_KERNEL,
-+            intf,
-+            pipe,
-+            buf,
-+            Some(audio.clone()),
-+            audio_complete,
-+            PACKETS_PER_URB,
-+            MAX_AUDIO_PACKET_SIZE,
-+            usb::TransferFlag::IsoAsap.into(),
-+            i32::from(ep.interval()),
-+        )?;
-+        active_urb.replace(urb_handle.submit(GFP_KERNEL)?);
-+    }
-+    Ok(urbs)
-+}
-+
-+/// Attempt to find the isochronous audio IN endpoint on the interface.
-+fn find_audio_endpoint(intf: &usb::Interface) -> Result<&usb::HostEndpoint> {
-+    for altsetting in intf.altsettings() {
-+        for ep in altsetting.endpoints() {
-+            if ep.endpoint_dir() == usb::ch9::Direction::In
-+                && ep.endpoint_type() == usb::EndpointType::Isoc
-+                && ep.endpoint_number() == 4
-+                && ep.maxp() == MAX_AUDIO_PACKET_SIZE
-+            {
-+                return Ok(ep);
-+            }
-+        }
-+    }
-+    Err(ENODEV)
-+}
-diff --git a/drivers/media/usb/gv-usb2/gv_usb2.rs b/drivers/media/usb/gv-usb2/gv_usb2.rs
-new file mode 100644
-index 000000000000..e42c61c54773
---- /dev/null
-+++ b/drivers/media/usb/gv-usb2/gv_usb2.rs
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust GV-USB2 driver.
-+
-+use crate::driver::GvUsb2Driver;
-+
-+kernel::module_usb_driver! {
-+    type: GvUsb2Driver,
-+    name: "gv_usb2",
-+    authors: ["Colin Braun"],
-+    description: "GV-USB2 Composite-USB Video Capture Device",
-+    license: "GPL v2",
-+}
-+
-+mod driver;
-+mod regs;
-diff --git a/drivers/media/usb/gv-usb2/regs.rs b/drivers/media/usb/gv-usb2/regs.rs
-new file mode 100644
-index 000000000000..cc96086d5d40
---- /dev/null
-+++ b/drivers/media/usb/gv-usb2/regs.rs
-@@ -0,0 +1,25 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// USB Requests
-+
-+/// USB request value to read to a register on the STK1150.
-+#[allow(dead_code)]
-+pub(crate) const REQ_READ_REG: u8 = 0x00;
-+
-+/// USB request value to write to a register on the STK1150.
-+pub(crate) const REQ_WRITE_REG: u8 = 0x01;
-+
-+// Registers (accessed via REQ_READ_REG and REQ_WRITE_REG)
-+
-+/// GPIO Control Register.
-+///
-+/// b31:    EEPROM Disable
-+/// b25-16: DIR
-+/// b9-0:   VALUE
-+pub(crate) const GPIO_CTRL: u16 = 0x0000;
-+
-+/// Audio Control Register 0.
-+pub(crate) const AC97_CTRL: u16 = 0x0500;
-+
-+/// I2S Control Register.
-+pub(crate) const I2S_CTRL: u16 = 0x050C;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607130448.hVx2H0N9-lkp@intel.com/
 
--- 
-2.54.0
+All warnings (new ones prefixed by >>):
 
+>> vmlinux.o: warning: objtool: _RNvCsGIExRX8pES_7___rustc17rust_begin_unwind+0x47: unreachable instruction
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
