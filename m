@@ -1,69 +1,75 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C01339A7F6
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 12:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365E9233932
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 12:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783859725; cv=none; b=kQxtSFefaCcp2yrbquwR80ML/00qiA2DjjoHjpFviO4WRD6AgN0b+NbsqPaVkCKPdqo2Ffsfhu0giNrqkwnU9hEeGs6vv10Qn6x4jLSCgYl4TrnRq/++xbDBBmNayjqQTRSyAiCJJXCUK8GigrbIY6V2+cuHoC0DcgBIhbOPo0U=
+	t=1783859755; cv=none; b=NBksq1e6TjXSfsUG1DIVo5Pq3vHnhW7DV/xmY5Y67H5+A5o5OS3GL1O//BZGr76bh7lp4dXSXxWvBd3s8e5RvpJBHhrCaiR7B2J8BixcyW7FpGQI4JlLBEJMij99x6CzgwkFLbmuhKDs40zV5gBEeSKdG0pDKz9rjVSimHXWGCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783859725; c=relaxed/simple;
-	bh=Qd6fADU3tgLMNu+GFgH22sLsNUV0tmxxK98IifKu3oY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BFBN9y0+qE6rchKn7twkV1egAchjMcARh2cbNgBOnEJ2deefGMrELPsfnSUZho9DqrkgfDPS42Pk3CSh/RkYRgNmfFGGFsnujMXcwha3c3Id15vl38L1QWiYLUPdYnUGjhXD+6KLc49pJ1c5F5jmVLz9AV8A1FrGfIZ8vXztY4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MFz/Z/7b; arc=none smtp.client-ip=209.85.215.171
+	s=arc-20240116; t=1783859755; c=relaxed/simple;
+	bh=vbmsavjMRnQA+eomV66j+Hk7itBjYjDe+/oxr9QMvXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=up4QvV2sP0dIzljaRZhdpxzrGOcPMJ8Kc2YmT8KvDxSu9OD1+Dgk8bs9OkHwGjNt+kMAcKo3ceWJD3M38NjVGst2Sohu4/QX3Nn+8acFQbluYz08z2TRJC7Px+U5fovN7OMhghNVsKFz/z8V0ggvoo3nEZoU4Kc3Yn1XhKvzdqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTa8hEsz; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MFz/Z/7b"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c95d0a54ea5so1557908a12.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 05:35:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTa8hEsz"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493f60208a5so17969075e9.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 05:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783859724; x=1784464524; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6WA/Yp2D4HqvQ5OTI3/NmFxLywTKNdInMVr/lxCPnUI=;
-        b=MFz/Z/7bkLH05MWxnfvB8R6iGkRYqE1u/U3P1f5zn9kiUtr9EJ/vVt1AeCK5gaSgtK
-         zqWBQzGAvPbm5AdcAHx/ltxsz2KU9fj2V1vk4Tfm1vhpANtmsUg7/E+YTaYc1SsolT6r
-         eLHcdNOCv3TfD89H//9CM4jiZXjEd6+szRTiLRYPqs2vA7Sg+W1lKj3kZPh9dXknIYNr
-         jKgYXcu4c7yWZETsvREo87AObIKYFsrmCb0bOQDhjY/uq0DdUZE2ZylLKl2sFj8ZXI64
-         zMrGlh8nupoWy+XjF16gpTgN3vgjf/kvXKOXR7l70tXotxoUhKgLwB0rtpAHll4FIONY
-         u3Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783859724; x=1784464524;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1783859753; x=1784464553; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6WA/Yp2D4HqvQ5OTI3/NmFxLywTKNdInMVr/lxCPnUI=;
-        b=GUM7toCy4NKeNTK8titOCY4QTfHngY1RvfclIzFCRSZJyIyJ7VtBQtM8vtIUWAOBs6
-         ta5FXCQKOcEkV9K8KBk3lp8if1uQ/gb4A+rsrfQPcYE4+/kqdogZEFbUSXFN1b1xI94D
-         WkWAs1+IZvoXb07iLZ13KA5MM/xdmFRNd8g3vuBCVlIm3JJS5ZKCTA+V2OYotOhlofAI
-         2lGpvrBqZsn4DLSuqsD/C1pwHwnUOqr8JLwXI5v3r9ixASSjWxfZCUr9PfJa/lG+1z9M
-         pNcsP/WTAKxtVOW421CKRSBwwuWKXxjLrraEatt+ARo2Ogzj6iXSIisDZwokvNTPFy/w
-         2CMg==
-X-Gm-Message-State: AOJu0YyhMx3R/pNTRpRCOhMl3XkTjh4XLT5NO4y9UQcfxdlnR3quOAw4
-	Poe+x/N1YARCwIbqNZbEL71B0jkMrMcw9GvPMpz7XiRxAbIEPWo6hO8F
-X-Gm-Gg: AfdE7clN9pX+SAvuQo7772QphiWkhJ76v1c1MjcfO8W+Sa/arsUjkWWuiAMtsPTwnm1
-	yFjI3Os2ay1I0UBtdkhWIjotG5KMdEUZYqdkzWe1HVm4bsCzLv/3weYpUSWFXVkMqTmK1h2/pav
-	zV+4EdXw9jThISa5IZEw+KVxBZg9szBLKdMbCniIh6teJSaAAvhVvZKe9WVm6jPnYSOFUohh4d/
-	ISy0XCOTseSRjNUx7p+Ogz+/P7dM7s5vW4+92k+4KwpZUzXXrraEJrjCoI3JAd6t2EqRy4d374w
-	2lWPgBMMChOD72HSpddgJ8CGGIJ6bN0q5QTp6Nszr+PjJ4GSFa8boRg95d1GuooxYDa5JBUzaHA
-	iWVRXx5QlcxXUGIAqSXTZM3716SmddeB/lTl5iSJ3Mw3pcME+/quF7eQaqerBrPFfE4YHjXOSkw
-	04cwIWPv+s7SdNgbUQEXsXagH6SAB3nY1d6UAHdJjh
-X-Received: by 2002:a05:6a20:c998:b0:3c0:9c1a:893f with SMTP id adf61e73a8af0-3c110f7f555mr5553017637.71.1783859723782;
-        Sun, 12 Jul 2026 05:35:23 -0700 (PDT)
-Received: from Excalibur.localdomain ([157.51.238.219])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-313c50c70c9sm16540072eec.29.2026.07.12.05.35.21
+        bh=vFr7i1z8fyur2AGVEYY9/WLrL9vlCD+OnEC6ZMaETYg=;
+        b=mTa8hEszFZ274aJyuOI3aegKmqIFb0feb1k8X1wQDWkqvIb7bL9PEGn5ZuZ5dMIZ7K
+         75QNysPl8xDhWLtpQ+qBWoBWMs4nNUZntM6Hf2alTrrz5aCyxZfqK15tIWJEJ4v/+sZm
+         uDNZW7haqy3VN3ZyWzWYMVumTqv2J6EvzkKIjZUlO4u6ZFx1qCjUPd5Si5W3png5qti1
+         uzhEXWzILMFBH7+4Z2/x07GM61yDxUC+NXsFmiWUKAUjj5aPTZSV/b6u4kQ/nd5X7gWb
+         ICXmgbuA3ndMslPwuEl1bfsUQtnolCoF9Z06A5THlbnPQN4VkpcYlJrNcGNiJ3d1L7UM
+         DLSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783859753; x=1784464553;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vFr7i1z8fyur2AGVEYY9/WLrL9vlCD+OnEC6ZMaETYg=;
+        b=pJ1Pd/PVPJnUE3JwgVM6MZdslagJLZJfRjLb+fbo3NdgPxFut2PSp8gjpoT+2Rkh4w
+         TjuJ59kZO6lRd8UMHH7eKiskEs2Se1ZESpcQKxJvd6ki3lk9q/ZBnrxp8KoXiFdA+nZD
+         Z1twPBnrQ49c31buxKYKfkR40BUZdl3j7kRTCoV/PP3289hS3KK65G5ea4s1n5Qbm8yd
+         MZakoXY9fn0rfkp8k8ZoB5ESPKTlgj1ox5vWMHbx9AT3XCZul4yiFgiDPtqFAk3Zbezj
+         CFxJZ7s6xWl/VMrv+hr6ACiBMk6a0X9FUzfpwGf1cIcr1zZspb/E9DVtzKQyBpKPGpYe
+         zTjw==
+X-Gm-Message-State: AOJu0Yz9vOoDUe4xenrNPNFAvod3m086BbGzphwAZ5ZyFLtZJMT1d69B
+	zbjHlBcy1nHzgKmYeO5mZoaG9nWQBGtQWfhG/6OOA2S/oa5X6iACdOmu
+X-Gm-Gg: AfdE7cm4rrBw6Cg60rALWxLQdYadMu690c0osqflg2ujFB1f7DpdPRRFM54mjdRU4+N
+	XKaCgkCHtCC5+2azEteZc+zCjNVPnNyicUSo7XQewgeTMLgohk9zw3BF1Oo7pImrTq+brLJalG8
+	Y75mW2Hx0nfNPq09bCq06SAEVS4195xrkNcJF1MNXKIlKVdqhWdEDgm+eVMJ9tdqPO57xbPkDcN
+	s6JP8jKBHT8T0ScWWIJgFGr5wHvk8jVlX953/gAZ+HQFr/13RbmWbZRKkdq7i5tV+QyhF5y30MT
+	QvrWeI4n2z4R9Ztimh17Gf9ZIJOJak8UlxqkqDR8cSlcu0UEqKtEjf8WDmXAATqaRgy5HP7LeqA
+	nGCOEyUHdzVIGCjdFgAh7sRDW9qz16msuxqKZSppa5Ydod97DSVAUkQtHI/GTngfqf0iqHJLQom
+	dqiDp6ienYPL/rEM5/VJyE1FduDAAxRQ==
+X-Received: by 2002:a05:600c:190c:b0:493:b91c:6bf with SMTP id 5b1f17b1804b1-493f8818dedmr55304095e9.18.1783859752393;
+        Sun, 12 Jul 2026 05:35:52 -0700 (PDT)
+Received: from fedora-dell-ale.Home ([2a0e:424:a465:0:bdde:db24:d709:ef36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e4d780csm76497317f8f.11.2026.07.12.05.35.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 05:35:23 -0700 (PDT)
-From: Christopher Joshy <christopherjoshy4@gmail.com>
-To: ojeda@kernel.org
+        Sun, 12 Jul 2026 05:35:52 -0700 (PDT)
+From: Alessio Maroni <alessiomaroni0@gmail.com>
+To: brauner@kernel.org,
+	viro@zeniv.linux.org.uk,
+	ojeda@kernel.org
 Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Christopher Joshy <christopherjoshy4@gmail.com>
-Subject: [[PATCH]] rust: kernel: add SAFETY comments in aref doc example
-Date: Sun, 12 Jul 2026 12:35:17 +0000
-Message-ID: <20260712123517.392-1-christopherjoshy4@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: fs, hrtimer: replace read_volatile workarounds with atomic_load
+Date: Sun, 12 Jul 2026 14:34:43 +0200
+Message-ID: <20260712123502.2829-1-alessiomaroni0@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260712121420.25179-1-alessiomaroni0@gmail.com>
+References: <20260712121420.25179-1-alessiomaroni0@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -72,45 +78,15 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace TODO safety comments with proper explanations in the
-`ARef::into_raw` doc example.
+Please disregard this patch. 
 
-For the `unsafe impl AlwaysRefCounted`, explain that the empty
-implementation is trivially sound since `Empty` has no data.
+As pointed out by the Sashiko AI review, using `atomic_load` here
+introduces critical alignment issues on 32-bit platforms for ktime_t
+and violates the safety contract regarding concurrent non-atomic stores
+on the C side.
 
-For the `ARef::from_raw` call, explain that the pointer is valid
-because it is derived from a valid reference.
+We definitely need a proper `read_once` abstraction in Rust before 
+handling these cases. Sorry for the noise!
 
-Link: https://github.com/Rust-for-Linux/linux/issues/351
-Signed-off-by: Christopher Joshy <christopherjoshy4@gmail.com>
----
- rust/kernel/sync/aref.rs | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index b721b2e00..932343799 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -124,7 +124,8 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-     ///
-     /// struct Empty {}
-     ///
--    /// # // SAFETY: TODO.
-+    /// # // SAFETY: `Empty` has no data, so `inc_ref` and `dec_ref` being no-ops is trivially
-+    /// # // sound.
-     /// unsafe impl AlwaysRefCounted for Empty {
-     ///     fn inc_ref(&self) {}
-     ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-@@ -132,7 +133,8 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-     ///
-     /// let mut data = Empty {};
-     /// let ptr = NonNull::<Empty>::new(&mut data).unwrap();
--    /// # // SAFETY: TODO.
-+    /// # // SAFETY: `ptr` is derived from a valid reference and is therefore non-null, properly
-+    /// # // aligned, and points to a valid `Empty` instance.
-     /// let data_ref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
-     /// let raw_ptr: NonNull<Empty> = ARef::into_raw(data_ref);
-     ///
--- 
-2.43.0
-
+Best regards,
+Alessio
