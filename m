@@ -1,73 +1,73 @@
 Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649CB37756A
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 23:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A493769E6
+	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 23:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783900449; cv=none; b=Nhwd54m0nD1yPqFTC8JFed20I9C51AnfrHohKJrKoxIPL11vJ6qX17xrkATM2rd1/44TFF6BNa4wy7ObYVwmKG/QtLZZVatoLNiakkXdm571JxcHJAwAGHOr9L6RhNvKzy13n0mfMG1vqphoaaX4hbAYxTMx67vgsUA4JCxWnlE=
+	t=1783900455; cv=none; b=WJKYDd82ZowXxMurOiooyQAOUJnjhqV6I4CZ2T9ojcCa+65OLGWf3Hu/YqzeEeY+KL/ZZ3wx/Hlj4HuQWlsYkDaOI6v1TzDNHmSP/J7WoedoBHiGRzgj+HxX3ub0dlN6ZmVyz+RuwSD7gvQXdNnfBtMKpfG/UctTg+KKJsFWnt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783900449; c=relaxed/simple;
-	bh=cXkQwUNGQScvrk9qU/VKUg8DNn5kcdcZbQzuWNBQ5ug=;
+	s=arc-20240116; t=1783900455; c=relaxed/simple;
+	bh=pAk8/WeBtmpUDGF7SXCVLSU+S2kVLCgPD+TnAJC6yWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGuOAzv1de8cn9EPpRCr4n4DCdtR4QBOsD5tPlFXotO5XptzNG26p5xl4jSSGuvlkTh8aoe2A1ZML6T4ePAhcpRtIIPwuJeAhdTRIpYyfQ2dADrjnE+oNy1gyc9K5cJx9rpoqlE9nzQ79av1IahC6hUbkzK+U/XFFcX4kS+TeTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=GIO+YBcJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=USJayI2E; arc=none smtp.client-ip=103.168.172.139
+	 MIME-Version; b=oC9JHSSCwR/JQ8R5Vb8KE+RSJS53hToEp7qkcie28mGknjohAtrXxoGO6H9ESWYNZeEww2XvC9zEtENQPA7EClEhQglxYXSjmWYWycLvp5U0E3m22I2hWEl2iLrSvZtto9lRJDO7U6iasxZeb3iHbP9UVgPzoz2ILU+sNJenX4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=G4ZkpMjJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qLMnD4WQ; arc=none smtp.client-ip=103.168.172.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="GIO+YBcJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="USJayI2E"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id 98F081380277;
-	Sun, 12 Jul 2026 19:54:07 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="G4ZkpMjJ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qLMnD4WQ"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailflow.phl.internal (Postfix) with ESMTP id ADA831380279;
+	Sun, 12 Jul 2026 19:54:13 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Sun, 12 Jul 2026 19:54:07 -0400
+  by phl-compute-09.internal (MEProxy); Sun, 12 Jul 2026 19:54:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1783900447; x=
-	1783904047; bh=61TR1OaTY9lXp8Xl31GTWk4BaEAvul1/gGaHKhp8jA0=; b=G
-	IO+YBcJ/TCnBZJWnkGjptHUsFyRQrbmg7gpcYCVZJAT1WJ/zbo4gBxhSHdOTxSuF
-	xbeWJe2Y7+Qo0iM6VSw1+9ZC3vVUBAhxegwDIR2DffZ/O35NpFuqm/yAIwKvQTUr
-	Tln5/oz3SNYM6STRZy3xWwMi5YZe/DDo2I+3MRbZRNMXT8c+a4ZR4sQbF0q8hFYP
-	4lMuunpqb5h/ShaPFTs9hfE/uw51GZkjms9lreflsxgt7HmaNzcWF0uYFJ7IQBCk
-	z0RgGURZ/T5NknGyWyx/UgpF8SFVJYH8vxmfFbvdD71o6Cl6ibs7Sdzm+arUoKKY
-	2J/mLSUna2+Tg6OwCYJZQ==
+	:reply-to:subject:subject:to:to; s=fm1; t=1783900453; x=
+	1783904053; bh=fF3d4WsbQKlYNIxvg4gx4QhgKbcExL+i4pZn+WgcrKE=; b=G
+	4ZkpMjJnS1kJjNkVgM7M/ILCUz4hah2RPUXAV2CN5B+85WmzOULUy/WaljdWJJsf
+	y8JLpQsMsameiFC8A3QP8a9i73KU+HQHimGk2irVEyf3sq2/0S4rDIYYLOaswArH
+	LCQBfuXlPD96t0WRh52hsYxXE16fCVlOG41FaUF5qt5pPvOD8bq4o4UGbOsOprwK
+	McTUBrf/78TV/KGi5PA2ujNJ//FquG6H4dsQR1myW5BCWxgio/I3HQojcRFGblpi
+	OK827r0jfcnudC/zPuc/9+Ib9OTjMW6ls3irZYqGKjuSmMweEfwWor6sxCApfC30
+	eEAW+mD22nHaqWzJ152aw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1783900447; x=1783904047; bh=6
-	1TR1OaTY9lXp8Xl31GTWk4BaEAvul1/gGaHKhp8jA0=; b=USJayI2EoyoQXcmnE
-	VHQCLnUfpauNifUdLbSzHVcrmol63P+4GvBqDpDKs1rb6fwl7NA86fcBgja91Z7f
-	b6k6X13HMKM7E3xDsmCuV5cleoDKBWT8hqyExZF+m5XcAWyUYiWR+5st9vb8ymzL
-	6eMZmIy+XdgipiEDR/1Tk8RkzXlVNpZBbD5ThjRcQ2mr/PZFUvC5aohXRgZ0Qyjy
-	OjpkD4Szi9c7Z6dlAGTkavt7D93Co6KOZm/3MR8VfpiQXvMCSQ4ngAnxQ+HkYaHC
-	C78EO3zkXEZJ6XBuGRZUNgycTknIsXbVeUFtEJxL+AX7E4Mj/UMUWp+hNnAvp5T4
-	MtF1g==
-X-ME-Sender: <xms:HylUahIQSMi16-_qsvCSg2USKeVbr30rPKJk7JGTFh9-KLRKr0XEDg>
-    <xme:HylUapQyWcoDFw78bDYDv0vorqUSBnDEGBYaGoUVJX50qFdYobVL1-gwpMwVwEEKM
-    Jrx2Sc-jcGH-aPrKbABidUTAyv_2tb862cSAkQdvfqObHEd2UDd_n4>
-X-ME-Received: <xmr:HylUaljNJWx8_bIYK6U3ONMJgmGHPhSDtHlbJ-02lc_JEICmzOnqg3RviQeJlvCD2uI08utYC6HB3XWs6yg>
-X-ME-Proxy-Cause: dmFkZTGNFHVZi4u/+ximQc7vEJp7TLrBn6NdggyCR75nwP4lnn477LaQt2vTNxg8hsGca7
-    RJR4BnKEWso28swF6QTYuCcrY+KaqPZeHXGdgARShj6G69Cwkwvroz5iUFhhkqpjDH8ygn
-    2R7Bg4/4SLVd/Fltf0G8trNRrxTl7enWCkDBUgeC/y3JAEOxOg1aLWKKPOuZeNZrX7ePKa
-    z/0mFRD0n7+ClAVzs/bhWfRh5tMSIfyIGMOEO58FgkrbYcgfOzLfYR3OT1jUWu92yXm6q0
-    UmextV7aVIxRpJuxEvOWLlhZdaetPK9Rsp5bc99pTqzgTvOgNsZA70DXklwY7kiIuX0Jam
-    MOUUJ3Px+U8oik/7T/z3CWWRL8Rn22ncScks4RE0slMXDnjth6dJOyhQsDQ6//qScQ3w4g
-    hpOgjmXJAl9qZolKW63Jy1m2IhN9CG/eybXz41zW4v2igr4ALAm1J1ZKvTP0mONxMV53pn
-    CvsCYRJfDKiIosfbx5XIsEZxE+80Q+/ncoscET0gYxN8LiJf3r4L2xjJExnVKqg7UhXx2x
-    pgr19/45hSF4YD2CZaOD7VKF4GuRDCKBE6Q8NX9+sYyFoVSbrEo34XhItzjIef1RAy7heL
-    +kjPvfn3/TIZeinD8PCOX5ijNFHSOE53OW3ro7pKPNr4QsIqgmzkSpHVupbQ
-X-ME-Proxy: <xmx:HylUarsZEjN2XHd9Mwn82LRDT1RWG8lLAiVTYDa3gtAbPhr60ecm8Q>
-    <xmx:HylUaoinNeGciSu-LLz8nr_pNENQ4-w2Zr1TwnYma_oI76YIncHZZw>
-    <xmx:HylUaqF6K9PG36qDP86n3eUMhirD1FqsWIn9t-W2hfoTtJype36dGA>
-    <xmx:HylUapI5iKiuLGrlp6HhUclarYlbPHNC2fjcVGIcDwukpMDt2xo7ng>
-    <xmx:HylUaoDPA30CUkLYPS4iijEQt1c_Cd3OgQZQkbqxUO9EfvXF2_2oAWWh>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1783900453; x=1783904053; bh=f
+	F3d4WsbQKlYNIxvg4gx4QhgKbcExL+i4pZn+WgcrKE=; b=qLMnD4WQA81WCCgRF
+	DWvzZ/PlQ/3fcfTlkBRb6XNfuIfpkxm6qaKi/0yQOqOiaXoi5qCYhBgQ7GKVgx/0
+	ZqUC/fkyY8txU68WEDNbm+mZhnnG0HgI1OQDhVqic/hZDquAairHJUiWmZf5qHvq
+	k30ClRdbV39tfufnxnP1Q6ftI/jC6ruoEetmb3Lfyp7T/ejxuD98r45edBD3wT/H
+	EJO1e9sktWfeJp2WTW2poImn2ZAXQ38OHXhv2gKuFH78IuuT1Z/kDGgxL0iwWEAR
+	OEJ107g4Rdbjv73WIOe4ExdeKw3gTvCKdquD0fEtnWQscnZc7Cs6FoeOGdviQ/uA
+	cjZuQ==
+X-ME-Sender: <xms:JSlUagLgAHk87aMnEV0KcnbUo0BkqbJxR0kA4_lKYDQA_3WFneBzsg>
+    <xme:JSlUasRbG-Viofy7gYxv3SRTgT2h12ob7XK9fYKL19HJyj_-DfxgaxJtxyhckG3mo
+    f-QsqHjB7sXfc51_6IqCgWn2meF35rfGcd_6fNegNbuThL9_BvLIMA>
+X-ME-Received: <xmr:JSlUash2EtqDCYE4G1plphCGyBikuiVveEWzDA2IB7r9FrlXRFQsnplOk7KPAcJDhiBZmfiOw9acqbE5Z38>
+X-ME-Proxy-Cause: dmFkZTE31iBcvpgjYdZr1KIE/6DYlEJEulM18kywekYhcwjp6oc4qGtqEEiP0eBVYIviWA
+    Hhrc40792y5g9p/vZn7wYZZCpVhEMJZPg6Ag9Cx9+eIG8lCJUQBaaWrWpvDtf9MRNXXgrp
+    If9/LRtCsz7iF/x2Je2OLQRKSfaPWGZ9vc6tbm3bvH/9nu+UCTOj6k3rVTgzzqmkASkYUh
+    9E8sCqTUteDvUBZFufbRe8/NIYjgeXIu4N0FXfH5N3WIGjAZtE/iS1e0EueImeH9yGOrOK
+    ZHqNAT6bgvZmCQE1xp8VuNO73sqqBKuHU7QETGYMOABXyjd7rKLLYQHX10i6am1f9R+qeY
+    EPDZOrBBLFJWw3NPZVs+NIbAOXXHJafR2jJUlb9g+wrh447YiT4V0U1+1yoIQGDQlAS4CC
+    8CZBPk0kRQKV2bCIek2M9jAruXAhm18kosfWo0i1Ibi2Ti1o5tlKOVXZilsuQQGTkwQvl2
+    N7HvMNhWQgzI5hF1WoVa7p1bDV8AVzss1ws/VVy2NlUOQTjVjlySmwWjOmFQTKaacefrU1
+    baiwZ2t1ZtbbMThm9Q9WhhfIN2DNic/h03BgG3qaR8tGP9kUcqB9R3zi6w7uUK3JyPF9xn
+    g5/agM7d/GF7q30jNTKjM74jLzftZ7/Ml9AZnJkOAMdnCHYL9QVODDm1n9Ow
+X-ME-Proxy: <xmx:JSlUamveUPRSAyZ0SlEGBQY4t1FvDLBxqzWaukVvcRcx5P63ljJ19w>
+    <xmx:JSlUaniG5X8SImlTzV9K4iLW2ro1OdyJMr_iAhMnA2BUnSeyhMdz7g>
+    <xmx:JSlUatEGmQtUE8Ft7FmieHExx9QQEvUtQsW0maGlxDsDKbP-aC806g>
+    <xmx:JSlUagIKYPfohIq_mluQnhDVwI0g9yE4IYjLoNU_BdjMMccP6LKHBQ>
+    <xmx:JSlUakuwepdGwy8VEwBx6qUrAYOHI60NZutWdfxQ6s9FtoMGWymD54Eu>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 12 Jul 2026 19:54:02 -0400 (EDT)
+ 12 Jul 2026 19:54:07 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	aliceryhl@google.com,
@@ -95,9 +95,9 @@ Cc: acourbot@nvidia.com,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v2 2/4] rust: sync: use Delta for CondVar timeout API
-Date: Mon, 13 Jul 2026 08:52:44 +0900
-Message-ID: <20260712235246.3069713-3-tomo@flapping.org>
+Subject: [PATCH v2 3/4] rust: workqueue: use Delta for enqueue_delayed's delay parameter
+Date: Mon, 13 Jul 2026 08:52:45 +0900
+Message-ID: <20260712235246.3069713-4-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260712235246.3069713-1-tomo@flapping.org>
 References: <20260712235246.3069713-1-tomo@flapping.org>
@@ -111,115 +111,55 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-wait_interruptible_timeout() and CondVarTimeoutResult take/return a
-raw jiffies count (a plain c_ulong alias with no type safety). Callers
-have to know on their own that the value meant jiffies and convert
-to/from it themselves, which is easy to get wrong (e.g. passing a
-millisecond value where a jiffies value is expected).
+enqueue_delayed() took a raw jiffies count (a plain c_ulong alias with
+no type safety), so callers had to know on their own that the value
+meant jiffies and convert to/from it themselves. This mirrors the
+issue already fixed for CondVar's wait_interruptible_timeout().
 
-Switch to Delta, the duration type already used elsewhere, so the unit
-is part of the type instead of a caller convention.
+Switch to Delta, the duration type already used elsewhere, so the
+unit is part of the type instead of a caller convention.
 
-Use as_jiffies_ceil() rather than a plain truncating conversion: a
-caller that passes a nonzero Delta expects the call to actually sleep
-for roughly that long (or return earlier via a wakeup or signal).
-
-Update binder's ioctl_freeze(), the only caller, accordingly.
+Use as_jiffies_ceil() rather than a plain truncating conversion:
+queue_delayed_work_on() treats a delay of 0 jiffies as "enqueue
+immediately", so truncating a small nonzero Delta down to 0 would
+silently turn a requested delay into no delay at all.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- drivers/android/binder/process.rs | 12 ++++++------
- rust/kernel/sync/condvar.rs       | 20 ++++++++++++--------
- 2 files changed, 18 insertions(+), 14 deletions(-)
+ rust/kernel/workqueue.rs | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 96b8440ceac6..cc693484489a 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1468,25 +1468,25 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFreezeInfo) -> Result {
-         inner.is_frozen = IsFrozen::InProgress;
- 
-         if info.timeout_ms > 0 {
--            let mut jiffies = kernel::time::msecs_to_jiffies(info.timeout_ms);
--            while jiffies > 0 {
-+            let mut delta = kernel::time::Delta::from_millis(info.timeout_ms.into());
-+            while !delta.is_zero() {
-                 if inner.outstanding_txns == 0 {
-                     break;
-                 }
- 
-                 match self
-                     .freeze_wait
--                    .wait_interruptible_timeout(&mut inner, jiffies)
-+                    .wait_interruptible_timeout(&mut inner, delta)
-                 {
-                     CondVarTimeoutResult::Signal { .. } => {
-                         inner.is_frozen = IsFrozen::No;
-                         return Err(ERESTARTSYS);
-                     }
--                    CondVarTimeoutResult::Woken { jiffies: remaining } => {
--                        jiffies = remaining;
-+                    CondVarTimeoutResult::Woken { delta: remaining } => {
-+                        delta = remaining;
-                     }
-                     CondVarTimeoutResult::Timeout => {
--                        jiffies = 0;
-+                        delta = kernel::time::Delta::ZERO;
-                     }
-                 }
-             }
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index 69d58dfbad7b..c94ae83a583f 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -12,7 +12,7 @@
-     task::{
-         MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 7e253b6f299c..9022b22a83be 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -197,7 +197,7 @@
+         Arc,
+         LockClassKey, //
      },
 -    time::Jiffies,
 +    time::Delta,
      types::Opaque,
  };
- use core::{marker::PhantomPinned, pin::Pin, ptr};
-@@ -186,15 +186,19 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
-     pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
-         &self,
-         guard: &mut Guard<'_, T, B>,
--        jiffies: Jiffies,
-+        delta: Delta,
-     ) -> CondVarTimeoutResult {
--        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
-+        let jiffies = c_long::try_from(delta.as_jiffies_ceil()).unwrap_or(MAX_SCHEDULE_TIMEOUT);
-         let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
- 
--        match (res as Jiffies, crate::current!().signal_pending()) {
--            (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
-+        match (res, crate::current!().signal_pending()) {
-+            (jiffies, true) => CondVarTimeoutResult::Signal {
-+                delta: Delta::from_jiffies(jiffies as u64),
-+            },
-             (0, false) => CondVarTimeoutResult::Timeout,
--            (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
-+            (jiffies, false) => CondVarTimeoutResult::Woken {
-+                delta: Delta::from_jiffies(jiffies as u64),
-+            },
+ use core::{marker::PhantomData, ptr::NonNull};
+@@ -303,7 +303,7 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
+     /// This may fail if the work item is already enqueued in a workqueue.
+     ///
+     /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+-    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
++    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Delta) -> W::EnqueueOutput
+     where
+         W: RawDelayedWorkItem<ID> + Send + 'static,
+     {
+@@ -328,7 +328,7 @@ pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::Enqu
+                     bindings::wq_misc_consts_WORK_CPU_UNBOUND as ffi::c_int,
+                     queue_ptr,
+                     container_of!(work_ptr, bindings::delayed_work, work),
+-                    delay,
++                    delay.as_jiffies_ceil(),
+                 )
+             })
          }
-     }
- 
-@@ -248,11 +252,11 @@ pub enum CondVarTimeoutResult {
-     /// Somebody woke us up.
-     Woken {
-         /// Remaining sleep duration.
--        jiffies: Jiffies,
-+        delta: Delta,
-     },
-     /// A signal occurred.
-     Signal {
-         /// Remaining sleep duration.
--        jiffies: Jiffies,
-+        delta: Delta,
-     },
- }
 -- 
 2.43.0
 
