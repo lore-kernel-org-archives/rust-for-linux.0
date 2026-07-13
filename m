@@ -1,98 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f0.google.com (mail-yx2-f0.google.com [74.125.224.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46AB357CE0;
-	Mon, 13 Jul 2026 20:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E37535C1A1
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 20:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783974548; cv=none; b=ZGewrwiaQRbuPIJPfzxXFM9I+tLRrbRn57viKxnkIDO92Cc5A861uVpxu7oDIKeUey9tfTkkD6L7LAoMXM+I2EhYJ9rNSVCsAzIQrc0X2C8kejrDNxRzWq9o6C4cHnvMMmTgNqVxhObS3FFYMtzZ4VhWt6uVNubNwrN23EU/60Y=
+	t=1783974752; cv=none; b=nMc+NXR3PQgmO5cqRiOURa6H80CpnRg2fAUdaK9dXk9UBj8FuCJngrxuvJOl+DU2Tp7ii/kdWZqFWpcnD/MLdQ/kcVNeJEouvRetK3dirbVn5MtAyKAKOadn/J0pJQbqo8KfxlGG+Wg/BY/pFSLmxY3eFZ4lJ7W3qiYHpVS0dd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783974548; c=relaxed/simple;
-	bh=z9CfpkLtYoiBbZniUgf+0Qa1INUolTR9EyZFJaltEBU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=KU9qFB5rdcSsO30dHMTdNxTgSflPLAR6fZE0YRg/qnSEBjGxgaYoOx0Op/LSrSeZsgGM5B2xenGF+9T178so13X93oq3D9iNRapUY4hXUynV2ucY9m0HY47G2P/0HdED5CPtU4UWOr0VnH1cADKTem+Q9WTWWA+4J+nReWXkIq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdmZ99nA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783974752; c=relaxed/simple;
+	bh=LeA6DsgeNiDhTkDsEWQ3JkIksQ7pIMpOvA773uwG5HM=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uy2JVVJuZ3q1em0Gn3zKSARaeklmajKR//WS7CLYgEncyrLz4vA0KCUDjtAXWMyfRMLIO+m9L9qLgskipn93Lb4Pqza1zAoWni9X/0GBhLiOBx8lSgKYhqGW/deYXodArSYHTMPphFZvh1pCq6zNrTOmINBM6XzBlyhpBD/3thc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jda4LUpG; arc=none smtp.client-ip=74.125.224.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdmZ99nA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F301F000E9;
-	Mon, 13 Jul 2026 20:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783974547;
-	bh=fV7OXG0XY8ASWWbWgLtPwia7xSPFHx9Cd77aaSkr+gI=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=RdmZ99nALpM8SurJ92B5g4eVuw4u6Sd5yULrVRX4pwkMKCkLXqljZPLDdITkMKfce
-	 0GUTr+YsugBMCjpHdiQdT9w2d3Gg8DpDJbaNo71lHltsP1vvUiur9uoZr/HiFQYILM
-	 4zxl7a5QnnNecDrQR5FzA3qTEL13V/T9RpxZxqjfj0vjUwYM3UlxIvklmmsCBZN4Wr
-	 l34mK+hPr0xOjOxd5jwQbqPc456BLFNsLOunY1Sz590IIcw8uIe/guBEDVHtT2sx6N
-	 mhDgPQbalDVo9pQwBVnA5TgL7pgkHzUYJacLXkZruRdBA7uivbUFeZQDVxBzfJ5VyX
-	 qWGWdwyDO5cdw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jda4LUpG"
+Received: by mail-yx2-f0.google.com with SMTP id 00721157ae682-805c2f74deaso24593437b3.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 13:32:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783974750; x=1784579550; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1JGjrOW6K9FKh0kd0kkezd88P0I3SYr1VYMTxWuqLWE=;
+        b=Jda4LUpGEVpQr3ZWsz7SLqXHnRDdbD/0CZ6x8ZEh92d3ReMNdXRJGiIYJKoTYKCUbm
+         EmN0D8t5a3CCgcpFjH3xtDDMFh8Ifc5pWm/CrwSJOO5lPyyzPxvOw91/nVEnD88S5iei
+         b4q6r6pitFrrMbHK5fZK+lLK3p3RwHs6rwWkXdOm0MWpzTnmbW4KvNilJkzVO/lXpYnG
+         JE6lfx9kKAuSZnDZAf6nUkcx/VNFT9Y/Fqkiqd9evLr4iIg8z0PJ5xzjEa2Fu/TWR1G5
+         SCYNn6ewbdi7ix7tjGeBgltXRjp0/uelIGDG+uihhwgfnvfshlACi1qpfZgFWSdcTnaq
+         4bOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783974750; x=1784579550;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1JGjrOW6K9FKh0kd0kkezd88P0I3SYr1VYMTxWuqLWE=;
+        b=bY1OLggXVHMWPD/lFc+ru++68l5uC8e1kLXue/0T0UZQplUjz/b9SxH+bOAEZnJbZT
+         8Ga32X92r3jZlHxsXuPP7YOqqhmMoSkNn8sXcJddetSoqExPSEdNi6Jm8kY3d/sPlMVt
+         8UvV+aHFxFPXLPXOWJ4I9RhyMaGRbrjhFsFqLGkx/16uxOnZldBNUWLy+0190UJiVnUN
+         fJbHiec3KA47Hbw3W8/nGKz3CGUVo6PCl3C03p/7NrHJRLsAVIM2oXEJf/Tar8vLxW0C
+         JCPwO5PMkOfG883QQoaHJiRNSXi3Fwyvd64uA4G78M+62mDGekV2V9MlwHXMxzNWPg4K
+         vgyg==
+X-Forwarded-Encrypted: i=1; AHgh+RpZ+qTMxAwatwxnbWVC2itS1gNfG5ouDRGgKPwEtWKaBleYe5ArtqD5yUr5M+dQ40qLL9sOznz8k7KteaACsw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNpid/z8z3OShnKKQq1V9er2JkEfXdevMB8AJsgxSgDbsE44mI
+	lwp/DICFzK3M/z9J3FfeUH62AFeJXN9+XyNyTYnZrwoC05ZRkNW0/IF6
+X-Gm-Gg: AfdE7cnBiBqOs2x210OiRmoaVqchj39Q6JorVCp5vK7Mf7VmAku8Fsd8IXiFFmET4Jd
+	Fg04wWren3uQlK0nYPnD9BBilqLlWNjfWJRjIuJIRvSf8v6UqHwfi8fMPAlbqkIk/6D9bmFWTpB
+	kUcgW4DShGAZdk4ks6T4U1Ob3MbMa87HgGPyaZ+2QOUXOrPbE8sQpnA1jrFEb7SMLY/tUYjPRTa
+	oW3PCQJJY1mnUmcAvsPf+7ZXHqu8SbKFkUr534+vQwjbngCQppeEC4xhf7cODYhJ0upQ4B3WDfK
+	NQ0Z8LDxUR9qiv/j7lEbozIUMvFm9C+jP36bwqmTet/qfquayZ/u9zA6hgGjGRhPe5NpuFUkjBa
+	PyG4ePyATv+WAR30sUFbQ/9rGoxL6ZfGNpfiDICp5gTGKRVvYo7/GB+pbxuv4YyGEnAGD0EpCKZ
+	cQT59Wup+2dXCSblfR53jNkMorPBA/tJvpVebjGoCGiCHEESnxz//Hqlabj4OIP9DG/yI=
+X-Received: by 2002:a05:690e:251a:20b0:660:4473:6eba with SMTP id 956f58d0204a3-667d7bbf0c4mr6130000d50.47.1783974749743;
+        Mon, 13 Jul 2026 13:32:29 -0700 (PDT)
+Received: from pendragon (76-234-45-214.lightspeed.cicril.sbcglobal.net. [76.234.45.214])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66787a49befsm14450075d50.16.2026.07.13.13.32.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jul 2026 13:32:29 -0700 (PDT)
+From: Colin Braun <colinbrauncl@gmail.com>
+X-Google-Original-From: Colin Braun <electrolitic21@gmail.com>
+Date: Mon, 13 Jul 2026 15:32:27 -0500
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Colin Braun <colinbrauncl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Mathias Nyman <mathias.nyman@intel.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-media@vger.kernel.org, Colin Braun <colin.braun.cl@gmail.com>
+Subject: Re: [RFC PATCH 0/4] rust: usb: add usb request block abstractions
+ and a user
+Message-ID: <alVGanOux7SJ5dpM@pendragon>
+References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
+ <1E924102-5CC7-427A-9FD0-3B15BA1BEAEB@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jul 2026 22:29:01 +0200
-Message-Id: <DJXQ72BQ9CJY.3U4YFYKGYEEKU@kernel.org>
-Subject: Re: [PATCH] rust: device: make lifetime on `Core` and
- `CoreInternal` invariant
-Cc: "Gary Guo" <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Eliot Courtney" <ecourtney@nvidia.com>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>
-To: "Gary Guo" <gary@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260713201455.640151-1-gary@kernel.org>
-In-Reply-To: <20260713201455.640151-1-gary@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1E924102-5CC7-427A-9FD0-3B15BA1BEAEB@collabora.com>
 
-On Mon Jul 13, 2026 at 10:14 PM CEST, Gary Guo wrote:
-> diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-> index b3c91731db45..b603b0bd2692 100644
-> --- a/drivers/gpu/nova-core/gpu.rs
-> +++ b/drivers/gpu/nova-core/gpu.rs
-> @@ -285,10 +285,10 @@ pub(crate) struct Gpu<'gpu> {
->  }
-> =20
->  impl<'gpu> Gpu<'gpu> {
-> -    pub(crate) fn new(
-> -        pdev: &'gpu pci::Device<device::Core<'_>>,
-> +    pub(crate) fn new<'a>(
-> +        pdev: &'gpu pci::Device<device::Core<'a>>,
->          bar: Bar0<'gpu>,
-> -    ) -> impl PinInit<Self, Error> + 'gpu {
-> +    ) -> impl PinInit<Self, Error> + use<'gpu, 'a> {
+On Mon, Jul 13, 2026 at 10:53:53AM -0300, Daniel Almeida wrote:
+> 
+> Have you talked to the media people about adding a Rust driver?
+> 
 
-Isn't that edition 2024 only?
-
->          try_pin_init!(Self {
->              device: pdev.as_ref(),
->              spec: Spec::new(pdev.as_ref(), bar).inspect(|spec| {
-
-I think you also need this hunk:
-
-diff --git a/samples/rust/rust_debugfs.rs b/samples/rust/rust_debugfs.rs
-index 1f59e08aaa4b..6fe94a73c52a 100644
---- a/samples/rust/rust_debugfs.rs
-+++ b/samples/rust/rust_debugfs.rs
-@@ -147,7 +147,7 @@ fn build_inner(dir: &Dir) -> impl PinInit<File<Mutex<In=
-ner>>> + '_ {
-         dir.read_write_file(c"pair", new_mutex!(Inner { x: 3, y: 10 }))
-     }
-
--    fn new<'a>(pdev: &'a platform::Device<Core<'_>>) -> impl PinInit<Self,=
- Error> + 'a {
-+    fn new<'a, 'b>(pdev: &'a platform::Device<Core<'b>>) -> impl PinInit<S=
-elf, Error> + use<'a, 'b> {
-         let debugfs =3D Dir::new(c"sample_debugfs");
-         let dev =3D pdev.as_ref();
+I have not. I was actually wondering if this belongs in
+drivers/staging/media, given how much work still needs to be done for it
+to support basic functionality. I had seen some v4l2 Rust abstraction
+work done but not merged in, so I had hoped this could eventually be a
+user of that work. Still trying to get a lay of the land, this is my
+first attempt at contributing to the kernel.
