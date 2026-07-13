@@ -1,140 +1,77 @@
-Received: from va-2-37.ptr.blmpb.com (va-2-37.ptr.blmpb.com [209.127.231.37])
+Received: from va-2-36.ptr.blmpb.com (va-2-36.ptr.blmpb.com [209.127.231.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69DB18D636
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F31175A7D
 	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 01:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.37
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783907225; cv=none; b=ObpaiPVdb+avzeLaw4Pwa0ImHs8YObA5wYK1M73Rh6OuJa2UCaGSxlNah0I1OSapich2kEVL7Dt4hYE3MvnF+kcf1LhiWBX71+wrMdXhofTrza1FzbPZScOVWRbbguQmlLmn/kE0UzWmW3ACZPJQQT9tsLEuq1dHA8ihk92DkuQ=
+	t=1783907225; cv=none; b=aj5xEJazvBmU332NtxaEt8YFHXQ3lLkW6d2ilfgIxAvn32kpCzwcyRdJFZXKVSyeR+utCwgARV1aKkGjxj18RDGvCRVvXnifkov9yY/rGlkzDzJ08GVWSLHivUGujI82YR6TJOJuD+UJBpJ7Tl7grRmrcB+yzoqN8EyT4owa2d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783907225; c=relaxed/simple;
-	bh=fQRimROqRhWfetSskflV8FpsXI+GKDfUcyuFPqDU5pE=;
-	h=Cc:Mime-Version:Content-Type:References:From:In-Reply-To:
-	 Message-Id:To:Subject:Date; b=We587w40l+bOca+50dfMqoSu/WfmNBaaU3o9od4MPMmfzCzDK7oryie2inaviqo0WXlAipRltmLl9EWPE7d25+8+96dI6eI9q0eYL8GFow5c3LcTmQgaktcZqB7SP1JW+PD+xM3+oKwa/fl3GWJMYt5ovzhWD7IsN0yZ0DNNneg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=BSBGPv4v; arc=none smtp.client-ip=209.127.231.37
+	bh=wBwlxYBx0GKBxroYaSDO/lJIxBVqsBd471WfKYvo6kk=;
+	h=To:From:Subject:Date:Mime-Version:Content-Type:Message-Id:Cc; b=qngCeTk0B7leMI2Hj/FM1yeL2nbNZaaaQ3sO62vueg7TpJgSywiZsWHCOmYNW46/v6yW1ArUFEIrwHRzfvKK+BObwsMtQZWamPcq0WqIDyX6O5szghyKNj+wQBeTEuYN+0FLT8rfsZW+tPHWI9VlFbvOpdS8EeSjR0w0cKqvLp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=va50Nw0O; arc=none smtp.client-ip=209.127.231.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="BSBGPv4v"
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="va50Nw0O"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1783907209;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1783907207;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=fQRimROqRhWfetSskflV8FpsXI+GKDfUcyuFPqDU5pE=;
- b=BSBGPv4vITzhOvV4V1kRlG7L/MVJNhHZM4MdrZGaQQNY8hqAAh07OOcwQkYzFL9ycdjKrw
- Tvyp5OpfB9GAZnnQGrZ5kuw5DqHutL22qE06pzjUcsOomA7+4EX6T7S3FmMvmKLNQ2Gt++
- bmPEYpXMeFz7CUPPeBJzd0TBQn+N2YVulLSOSk6NLea+RQkcA9zxhKiYEQ1tnigI749s3O
- bM2nppy2lrBvuQxcQrbmQj8WEW+wWfYmmScectoAPvVNwxRJXpZtqvRhzYm82dSCQuC8FS
- pr86LHgiKtD+lLRSq0rZ/ktWlYOkzkEi0NqS1aFEakBGeyS+o3N+Cp3e07IvYw==
-Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Mon, 13 Jul 2026 09:46:46 +0800
-X-Mailer: git-send-email 2.53.0
-Cc: "Gary Guo" <gary@garyguo.net>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, 
-	<hust-os-kernel-patches@googlegroups.com>
+ bh=zQGlQBNBo0N6dyO+w4K9O5xOVlJFBxz/pa3ZfOjvoPc=;
+ b=va50Nw0OQES8pj2z5LRFPMdfeTKABmK3Sgn3kWRmPpFoK8LIExI/57j1itagLSG4zd7tVL
+ WhcUc67kDsXVyFua0tyEUsCBgpo47BQcMi08K0dTB09A45JZDdvl53QrEBphTgiGAofflX
+ EvFwy5wAJIz8MMJGJdJYSsGHMQbqUcts/ftGIoF4r20G6WoNsUE7HVof5p23/Yfe1r5yVK
+ aJ7tq8S7+eA63IV0Oup9NDsS0vFnI6dcsK7eMOY/ertlLt1XAtaspGqqrAvS/Od8FIj2tl
+ HqerRbk3Dk9abGF8qEgywhOnuGm1FWX7rglemvT+AX0kgitnJ6ccauUHHJtrAg==
+To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, 
+	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
+From: "Ben Guo" <ben.guo@openatom.club>
+Subject: [PATCH v2 0/4] docs/zh_CN: update rust documentation translations
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 13 Jul 2026 09:46:32 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Mon, 13 Jul 2026 09:46:43 +0800
 Content-Type: text/plain; charset=UTF-8
-References: <cover.1783905132.git.ben.guo@openatom.club>
-Content-Transfer-Encoding: base64
-From: "Ben Guo" <ben.guo@openatom.club>
-In-Reply-To: <cover.1783905132.git.ben.guo@openatom.club>
-Message-Id: <78a525ba7344a334bc70664b34327dbb51024e90.1783905132.git.ben.guo@openatom.club>
-X-Lms-Return-Path: <lba+26a544387+3e2530+vger.kernel.org+ben.guo@openatom.club>
+X-Mailer: git-send-email 2.53.0
+Message-Id: <cover.1783905132.git.ben.guo@openatom.club>
+X-Lms-Return-Path: <lba+26a544384+b12f98+vger.kernel.org+ben.guo@openatom.club>
 X-Original-From: Ben Guo <ben.guo@openatom.club>
-To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, 
-	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
-Subject: [PATCH v2 1/4] docs/zh_CN: Update rust/quick-start.rst translation
-Date: Mon, 13 Jul 2026 09:46:33 +0800
+Cc: "Gary Guo" <gary@garyguo.net>, <linux-doc@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, 
+	<hust-os-kernel-patches@googlegroups.com>
 
-VXBkYXRlIERvY3VtZW50YXRpb24vcnVzdC9xdWljay1zdGFydC5yc3QgdHJhbnNsYXRpb24uDQoN
-ClVwZGF0ZSB0aGUgdHJhbnNsYXRpb24gdGhyb3VnaCBjb21taXQgYTQzOTJlZDFjOGI5DQooImRv
-Y3M6IHJ1c3Q6IHF1aWNrLXN0YXJ0OiByZW1vdmUgR0RCL0JpbnV0aWxzIG1lbnRpb24iKQ0KDQpS
-ZXZpZXdlZC1ieTogR2FyeSBHdW8gPGdhcnlAZ2FyeWd1by5uZXQ+DQpTaWduZWQtb2ZmLWJ5OiBC
-ZW4gR3VvIDxiZW4uZ3VvQG9wZW5hdG9tLmNsdWI+DQotLS0NCiAuLi4vdHJhbnNsYXRpb25zL3po
-X0NOL3J1c3QvcXVpY2stc3RhcnQucnN0ICAgfCA0OCArKysrKysrKy0tLS0tLS0tLS0tDQogMSBm
-aWxlIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDI5IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0t
-Z2l0IGEvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5y
-c3QgYi9Eb2N1bWVudGF0aW9uL3RyYW5zbGF0aW9ucy96aF9DTi9ydXN0L3F1aWNrLXN0YXJ0LnJz
-dA0KaW5kZXggNWYwZWNlNjQxMWYuLjAzOTYxMzdmM2MxIDEwMDY0NA0KLS0tIGEvRG9jdW1lbnRh
-dGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5yc3QNCisrKyBiL0RvY3Vt
-ZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVpY2stc3RhcnQucnN0DQpAQCAtNTks
-NyArNTksNyBAQCBGZWRvcmEgTGludXgg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug
-5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L5aaCOjoNCiBHZW50b28gTGludXgNCiAqKioqKioq
-KioqKioNCiANCi1HZW50b28gTGludXjvvIjlsKTlhbbmmK8gdGVzdGluZyDliIbmlK/vvInmj5Dk
-vpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjlvIDnrrHljbPnlKjvvIwNCitH
-ZW50b28gTGludXgg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA
-566x5Y2z55So77yMDQog5L6L5aaCOjoNCiANCiAJVVNFPSdydXN0LXNyYyBydXN0Zm10IGNsaXBw
-eScgZW1lcmdlIGRldi1sYW5nL3J1c3QgZGV2LXV0aWwvYmluZGdlbg0KQEAgLTcwLDcgKzcwLDcg
-QEAgR2VudG9vIExpbnV477yI5bCk5YW25pivIHRlc3Rpbmcg5YiG5pSv77yJ5o+Q5L6b6L6D5paw
-55qEIFJ1c3Qg54mI5pys77yM5Zug5q2kDQogTml4DQogKioqDQogDQotTml477yIdW5zdGFibGUg
-6aKR6YGT77yJ5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x
-5Y2z55So77yM5L6L5aaCOjoNCitOaXgg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug
-5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L5aaCOjoNCiANCiAJeyBwa2dzID8gaW1wb3J0IDxu
-aXhwa2dzPiB7fSB9Og0KIAlwa2dzLm1rU2hlbGwgew0KQEAgLTg1LDE2ICs4NSwxNCBAQCBvcGVu
-U1VTRQ0KIG9wZW5TVVNFIFNsb3dyb2xsIOWSjCBvcGVuU1VTRSBUdW1ibGV3ZWVkIOaPkOS+m+i+
-g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8gOeusQ0KIOWNs+eUqO+8jOS+i+Wm
-gjo6DQogDQotCXp5cHBlciBpbnN0YWxsIHJ1c3QgcnVzdDEuNzktc3JjIHJ1c3QtYmluZGdlbiBj
-bGFuZw0KKwl6eXBwZXIgaW5zdGFsbCBydXN0IHJ1c3Qtc3JjIHJ1c3QtYmluZGdlbiBjbGFuZw0K
-IA0KIA0KIFVidW50dQ0KICoqKioqKg0KIA0KLTI1LjA0DQotfn5+fn4NCi0NCi3mnIDmlrDnmoQg
-VWJ1bnR1IOeJiOacrOaPkOS+m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8
-gOeuseWNs+eUqO+8jOS+i+Wmgjo6DQorVWJ1bnR1IDI1LjEwIOWSjCAyNi4wNCBMVFMg5o+Q5L6b
-6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x5Y2z55So77yMDQor5L6L
-5aaCOjoNCiANCiAJYXB0IGluc3RhbGwgcnVzdGMgcnVzdC1zcmMgYmluZGdlbiBydXN0Zm10IHJ1
-c3QtY2xpcHB5DQogDQpAQCAtMTExLDMyICsxMDksMzIgQEAgVWJ1bnR1DQog6Jm954S2IFVidW50
-dSAyNC4wNCBMVFMg5Y+K5pu05pep54mI5pys5LuN54S25o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI
-5pys77yM5L2G5a6D5Lus6ZyA6KaB5LiA5Lqb6aKd5aSW55qE6YWNDQog572u77yM5L2/55So5bim
-54mI5pys5Y+355qE6L2v5Lu25YyF77yM5L6L5aaCOjoNCiANCi0JYXB0IGluc3RhbGwgcnVzdGMt
-MS44MCBydXN0LTEuODAtc3JjIGJpbmRnZW4tMC42NSBydXN0Zm10LTEuODAgXA0KLQkJcnVzdC0x
-LjgwLWNsaXBweQ0KLQlsbiAtcyAvdXNyL2xpYi9ydXN0LTEuODAvYmluL3J1c3RmbXQgL3Vzci9i
-aW4vcnVzdGZtdC0xLjgwDQotCWxuIC1zIC91c3IvbGliL3J1c3QtMS44MC9iaW4vY2xpcHB5LWRy
-aXZlciAvdXNyL2Jpbi9jbGlwcHktZHJpdmVyLTEuODANCisJYXB0IGluc3RhbGwgcnVzdGMtMS44
-NSBydXN0LTEuODUtc3JjIGJpbmRnZW4tMC43MSBydXN0Zm10LTEuODUgXA0KKwkJcnVzdC0xLjg1
-LWNsaXBweQ0KKwlsbiAtcyAvdXNyL2xpYi9ydXN0LTEuODUvYmluL3J1c3RmbXQgL3Vzci9iaW4v
-cnVzdGZtdC0xLjg1DQorCWxuIC1zIC91c3IvbGliL3J1c3QtMS44NS9iaW4vY2xpcHB5LWRyaXZl
-ciAvdXNyL2Jpbi9jbGlwcHktZHJpdmVyLTEuODUNCiANCiDov5nkupvova/ku7bljIXpg73kuI3k
-vJrlsIblhbblt6Xlhbforr7nva7kuLrpu5jorqTlgLzvvJvlm6DmraTlupTor6XmmL7lvI/mjIfl
-rprlroPku6zvvIzkvovlpoI6Og0KIA0KLQltYWtlIExMVk09MSBSVVNUQz1ydXN0Yy0xLjgwIFJV
-U1RET0M9cnVzdGRvYy0xLjgwIFJVU1RGTVQ9cnVzdGZtdC0xLjgwIFwNCi0JCUNMSVBQWV9EUklW
-RVI9Y2xpcHB5LWRyaXZlci0xLjgwIEJJTkRHRU49YmluZGdlbi0wLjY1DQorCW1ha2UgTExWTT0x
-IFJVU1RDPXJ1c3RjLTEuODUgUlVTVERPQz1ydXN0ZG9jLTEuODUgUlVTVEZNVD1ydXN0Zm10LTEu
-ODUgXA0KKwkJQ0xJUFBZX0RSSVZFUj1jbGlwcHktZHJpdmVyLTEuODUgQklOREdFTj1iaW5kZ2Vu
-LTAuNzENCiANCi3miJbogIXvvIzkv67mlLkgYGBQQVRIYGAg5Y+Y6YeP5bCGIFJ1c3QgMS44MCDn
-moTkuozov5vliLbmlofku7bmlL7lnKjliY3pnaLvvIzlubblsIYgYGBiaW5kZ2VuYGAg6K6+DQor
-5oiW6ICF77yM5L+u5pS5IGBgUEFUSGBgIOWPmOmHj+WwhiBSdXN0IDEuODUg55qE5LqM6L+b5Yi2
-5paH5Lu25pS+5Zyo5YmN6Z2i77yM5bm25bCGIGBgYmluZGdlbmBgIOiuvg0KIOe9ruS4uum7mOiu
-pOWAvO+8jOS+i+Wmgjo6DQogDQotCVBBVEg9L3Vzci9saWIvcnVzdC0xLjgwL2JpbjokUEFUSA0K
-KwlQQVRIPS91c3IvbGliL3J1c3QtMS44NS9iaW46JFBBVEgNCiAJdXBkYXRlLWFsdGVybmF0aXZl
-cyAtLWluc3RhbGwgL3Vzci9iaW4vYmluZGdlbiBiaW5kZ2VuIFwNCi0JCS91c3IvYmluL2JpbmRn
-ZW4tMC42NSAxMDANCi0JdXBkYXRlLWFsdGVybmF0aXZlcyAtLXNldCBiaW5kZ2VuIC91c3IvYmlu
-L2JpbmRnZW4tMC42NQ0KKwkJL3Vzci9iaW4vYmluZGdlbi0wLjcxIDEwMA0KKwl1cGRhdGUtYWx0
-ZXJuYXRpdmVzIC0tc2V0IGJpbmRnZW4gL3Vzci9iaW4vYmluZGdlbi0wLjcxDQogDQot5L2/55So
-5bim54mI5pys5Y+355qE6L2v5Lu25YyF5pe26ZyA6KaB6K6+572uIGBgUlVTVF9MSUJfU1JDYGDv
-vIzkvovlpoI6Og0KK+S9v+eUqOW4pueJiOacrOWPt+eahOi9r+S7tuWMheaXtuWPr+iDvemcgOim
-geiuvue9riBgYFJVU1RfTElCX1NSQ2Bg77yM5L6L5aaCOjoNCiANCi0JUlVTVF9MSUJfU1JDPS91
-c3Ivc3JjL3J1c3RjLSQocnVzdGMtMS44MCAtLXZlcnNpb24gfCBjdXQgLWQnICcgLWYyKS9saWJy
-YXJ5DQorCVJVU1RfTElCX1NSQz0vdXNyL3NyYy9ydXN0Yy0kKHJ1c3RjLTEuODUgLS12ZXJzaW9u
-IHwgY3V0IC1kJyAnIC1mMikvbGlicmFyeQ0KIA0KIOS4uuaWueS+v+i1t+inge+8jOWPr+S7peWw
-hiBgYFJVU1RfTElCX1NSQ2BgIOWvvOWHuuWIsOWFqOWxgOeOr+Wig+S4reOAgg0KIA0KLeatpOWk
-lu+8jCBgYGJpbmRnZW4tMC42NWBgIOWcqOi+g+aWsOeahOeJiOacrO+8iDI0LjA0IExUUyDlkowg
-MjQuMTDvvInkuK3lj6/nlKjvvIzkvYblnKjmm7Tml6nnmoTniYgNCi3mnKzvvIgyMC4wNCBMVFMg
-5ZKMIDIyLjA0IExUU++8ieS4reWPr+iDveS4jeWPr+eUqO+8jOWboOatpOWPr+iDvemcgOimgeaJ
-i+WKqOaehOW7uiBgYGJpbmRnZW5gYA0KK+atpOWklu+8jCBgYGJpbmRnZW4tMC43MWBgIOWcqOi+
-g+aWsOeahOeJiOacrO+8iDI0LjA0IExUU++8ieS4reWPr+eUqO+8jOS9huWcqOabtOaXqeeahOeJ
-iOacrA0KK++8iDIwLjA0IExUUyDlkowgMjIuMDQgTFRT77yJ5Lit5Y+v6IO95LiN5Y+v55So77yM
-5Zug5q2k5Y+v6IO96ZyA6KaB5omL5Yqo5p6E5bu6IGBgYmluZGdlbmBgDQog77yI6K+35Y+C6KeB
-5LiL5paH77yJ44CCDQogDQogDQpAQCAtMzI1LDExICszMjMsMyBAQCBSdXN05pSv5oyB77yIQ09O
-RklHX1JVU1TvvInpnIDopoHlnKggYGBHZW5lcmFsIHNldHVwYGAg6I+c5Y2V5Lit5ZCv55So44CC
-5Zyo5YW2DQogDQog6KaB5oOz5rex5YWl5LqG6Kej77yM6K+355yLIGBgc2FtcGxlcy9ydXN0L2Bg
-IOS4i+eahOagt+S+i+a6kOS7o+eggeOAgSBgYHJ1c3QvYGAg5LiL55qEUnVzdOaUr+aMgeS7o+eg
-geWSjA0KIGBgS2VybmVsIGhhY2tpbmdgYCDkuIvnmoQgYGBSdXN0IGhhY2tpbmdgYCDoj5zljZXj
-gIINCi0NCi3lpoLmnpzkvb/nlKjnmoTmmK9HREIvQmludXRpbHPvvIzogIxSdXN056ym5Y+35rKh
-5pyJ6KKrZGVtYW5nbGVk77yM5Y6f5Zug5piv5bel5YW36ZO+6L+Y5LiN5pSv5oyBUnVzdOeahOaW
-sHYwDQotbWFuZ2xpbmfmlrnmoYjjgILmnInlh6DkuKrlip7ms5Xlj6/ku6Xop6PlhrPvvJoNCi0N
-Ci0tIOWuieijheS4gOS4qui+g+aWsOeahOeJiOacrO+8iEdEQiA+PSAxMC4yLCBCaW51dGlscyA+
-PSAyLjM277yJ44CCDQotDQotLSDkuIDkupvniYjmnKznmoRHRELvvIjkvovlpoJ2YW5pbGxhIEdE
-QiAxMC4x77yJ6IO95aSf5L2/55So5bWM5YWl5Zyo6LCD6K+V5L+h5oGvKGBgQ09ORklHX0RFQlVH
-X0lORk9gYCkNCi0gIOS4reeahHByZS1kZW1hbmdsZWTnmoTlkI3lrZfjgIINCi0tIA0KMi41My4w
+Update Chinese translations for the Rust subsystem documentation,
+syncing with the latest upstream changes.
+
+- quick-start.rst: update distro-specific install instructions, Ubuntu
+  package versions, openSUSE rust-src package, and remove GDB/Binutils note
+- general-information.rst: add no_std section, rustdoc links, abstractions
+  and bindings diagram, Bindings/Abstractions sections, and Kconfig example
+- arch-support.rst: add s390 support note
+- testing.rst: add Kconfig guidance for KUnit test suites
+
+Changes in v2:
+- Add Reviewed-by from Gary Guo
+- Translate "sound" as "=E5=8F=AF=E9=9D=A0" in general-information.rst
+
+Ben Guo (4):
+  docs/zh_CN: Update rust/quick-start.rst translation
+  docs/zh_CN: Update rust/general-information.rst translation
+  docs/zh_CN: Update rust/arch-support.rst translation
+  docs/zh_CN: Update rust/testing.rst translation
+
+ .../translations/zh_CN/rust/arch-support.rst  |  1 +
+ .../zh_CN/rust/general-information.rst        | 82 ++++++++++++++++++-
+ .../translations/zh_CN/rust/quick-start.rst   | 48 +++++------
+ .../translations/zh_CN/rust/testing.rst       |  4 +
+ 4 files changed, 103 insertions(+), 32 deletions(-)
+
+--=20
+2.53.0
