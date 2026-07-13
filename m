@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D81C860C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B602D9796;
 	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783946132; cv=none; b=q3gA9B1FohCRJA1yADTtjCCGROdwYw4gdttuvLoKeVqISZd4P1wbhCuljf/Zdcv11342o4k0V7IVidIrSHCuXzrBQx/N26Cr0R0vPCWDs/8OIYnya6ibaB0K7cGHqNc2a/GCNRWtRlcQ0uRW47xi/qW9BIC9dH1trdMsfjYfkQQ=
+	t=1783946132; cv=none; b=JTZITTRit9P30yJbqgeEe0LcybjOYQP0zhUN9iV/cEdmLCDZ+I0fU+cjzea1hkYmsF1O9IpdTiJf4qW3ULsnrEiNXl5BpXx8Uuz5hg8whZd3QIJWU9+Or5jTUgjaZrIYnqrfO1IicUlhllUz/kb0Sn91nbrCtBcFwu1A+hy+H98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783946132; c=relaxed/simple;
-	bh=FPOcRJpsJxmK9Lx1x3CvhzQCvpK3B1kl/Ior1UdgXh8=;
+	bh=q0IByoYJHtZct1/kh5Sa6SgUojAKdrR9wkZwULUXSWQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U9BWxP3GBdhWPTwNDvoevP5a4zu6xHEhI0N6oXyVF46iqtUJg5m2VZQPD1G/OeH1HEvZM9PzVNeDvyXITIrT7PyEVcQXufs1hrxGR3M7Et1VIkD2RolrKlg1o8PMBhPH3XJ19qg0h0P4A/WbKWuEgI/wLo5g2jWbW2C6uCIQsqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJHToF82; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ZnRmHhgkBHbxVfvLJCNetSnbx5akD/mfds1AyR7aHj49vsLpIqUh1N91jzVJ3kQz9M7JxkLQqxlRr97089x+Ae12GYziGC6lMPt3vS+KEOBQJzenlNfHuKqVm28N6WAiad1r4BJ4e8dbEDZK7xoooXOCL/cdpz5EB13DmZzwpzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFI4XevL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJHToF82"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0CB04C2BCF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFI4XevL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 311EDC2BCFF;
 	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783946132;
-	bh=FPOcRJpsJxmK9Lx1x3CvhzQCvpK3B1kl/Ior1UdgXh8=;
+	bh=q0IByoYJHtZct1/kh5Sa6SgUojAKdrR9wkZwULUXSWQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gJHToF82kTVIEu/O644q+p2YVMiloqI1qUMzbVvo2RBWFbqenzWIGGK3I45aVtMMx
-	 U/9/snkQA+CgJoyzrN37YDv1Ab20w44DwJHCv1GiIp9Bgb4E3NAoZDOtmzqJd7uGbS
-	 U4afz/+9S8Jbhtcgq3GcdJ7NT0vqfi6VZakIxv92PwOW4Oa3yz1IObWF8u2VmW9NMz
-	 x9lfEseb8vUcxmT/nynYTBPKY0wAr/y6Q8mc4cNpgNrAdTMGKgQzDbyoyAkDhMml/L
-	 BoVlRE+zaXwCruk6X9Vpo9LekAxJXCcjARoF6aPdYObfh2XDJyqK5LuWwS2MU8NkYF
-	 9FG0CUiek8l1w==
+	b=WFI4XevL9VDLZ7Z+sYP3Ku1JyBea1h4vNJprYWqsNAJGF/RHO2Qu/ijvRF9blV4jO
+	 YJDMyXSnkHlMEqxRQAgSzhsPbDz/id4wX4ffaDKP4oF6k/bux+fbhjzQdjp9oleb4F
+	 9Ug4ow+Tw/b5QiFbH9c9EAhE5P5O9c1lhAfrly3Btswmg9Zg1F6qmLYtlBzlUkgc0y
+	 oZlvLinqNOotoO+Lu6/M5Qtk8PutgUbZwkEtvvE4wNi39wpdBtsDj5omjn0Rs/FgSa
+	 LOyau/SNsPnyr4+3cSLGt8MLBAteo6kAPOMonuZVUseLsxVdipCooU0l3IVPqDEari
+	 QQ8dJlXSctvdQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E339CC44507;
-	Mon, 13 Jul 2026 12:35:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BD1CC44508;
+	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Mon, 13 Jul 2026 12:35:23 +0000
-Subject: [PATCH v3 1/7] rust_binder: Add dynamic debug logging mask
+Date: Mon, 13 Jul 2026 12:35:26 +0000
+Subject: [PATCH v3 4/7] rust_binder: Implement BINDER_DEBUG_USER_ERROR for
+ transaction parsing failures
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-rust_binder_debug_mask-v3-1-0de91bbbbf69@google.com>
+Message-Id: <20260713-rust_binder_debug_mask-v3-4-0de91bbbbf69@google.com>
 References: <20260713-rust_binder_debug_mask-v3-0-0de91bbbbf69@google.com>
 In-Reply-To: <20260713-rust_binder_debug_mask-v3-0-0de91bbbbf69@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -59,11 +60,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783946130; l=7221;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783946130; l=8410;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=msbj099PwXU9qBKAHKkWvtKfvYRAvnNuDuqPTXT8ez8=;
- b=nUl68Zd/00HhvLrfhJwumGgjs1iKtRZZtE5TLlTTgTnXK12DHTjp1FuXb4BJQ+2qi8NHDashF
- OAAC+BT1IiCD6quhO0pacg9n8i3OQWGjqNvS8khRnvdbVLmrGrW7K4S
+ bh=8F82YdQeoMbTNpy+yTKNRYFYnNfyFEuPOM2cE+pN+0U=;
+ b=+O+CH/tUG3KaiPgy/jVyTL7yOaFxa8gM+kdLpX/Yp7IxeblB5WcKbWo6bR7d3r1Hb6xGs/JZX
+ XzWseuyS0qUCtvcYPGj295almSKcH4Uo54rSGpQKgWbnbpYYS2tvaet
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -73,193 +74,172 @@ Reply-To: jahnavimn@google.com
 
 From: Jahnavi MN <jahnavimn@google.com>
 
-Implement a dynamic debug logging mask (`debug_mask`) for the
-`rust_binder` module to allow dynamic runtime configuration of log
-levels. This enables parity with the legacy C driver's debug mask.
-
-Since the Rust `module!` macro in the current kernel build does not
-yet support declaring module parameters directly in Rust, we define
-the `debug_mask` variable in Rust as an `Atomic<u32>` exported via
-FFI using `#[no_mangle]`, and link to it as `extern` in a C companion
-file to expose it to the kernel runtime.
-
-To verify the setup, instrument process lifecycle events (open, flush,
-and release) in `process.rs` under the new `BINDER_DEBUG_OPEN_CLOSE`
-logging mask. These entry-point events are chosen for initial validation
-because they represent the start of the Binder lifecycle and occur
-at low frequency, allowing simple runtime verification of the dynamic
-toggle without log noise.
+This adds dynamic debug logs in `thread.rs` for:
+- File descriptor array (FDA) parent offset and parent buffer address
+  alignment misalignments.
+- Memory copy, write, and translation failures during transaction
+  serialization (including out-of-bounds pointer fixups).
+- Incoming transactions or replies that do not match the expected
+  thread calling stack (such as out-of-order replies).
 
 Reviewed-by: Carlos Llamas <cmllamas@google.com>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
- drivers/android/binder/debug.rs            | 76 ++++++++++++++++++++++++++++++
- drivers/android/binder/process.rs          |  7 ++-
- drivers/android/binder/rust_binder_main.rs |  2 +
- drivers/android/binder/rust_binderfs.c     |  3 ++
- rust/kernel/task.rs                        |  7 +++
- 5 files changed, 94 insertions(+), 1 deletion(-)
+ drivers/android/binder/thread.rs | 54 ++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/android/binder/debug.rs b/drivers/android/binder/debug.rs
-new file mode 100644
-index 000000000000..824b10c004c3
---- /dev/null
-+++ b/drivers/android/binder/debug.rs
-@@ -0,0 +1,76 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (C) 2026 Google LLC.
-+
-+//! Binder debugging helpers.
-+
-+#![allow(dead_code)]
-+
-+use kernel::bits::bit_u32;
-+use kernel::sync::atomic::Atomic;
-+
-+kernel::impl_flags!(
-+    /// Represents multiple debug mask flags.
-+    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-+    pub struct DebugMasks(u32);
-+
-+    /// Represents a single debug mask category.
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub enum DebugMask {
-+        UserError = bit_u32(0),
-+        FailedTransaction = bit_u32(1),
-+        DeadTransaction = bit_u32(2),
-+        OpenClose = bit_u32(3),
-+        DeadBinder = bit_u32(4),
-+        DeathNotification = bit_u32(5),
-+        ReadWrite = bit_u32(6),
-+        UserRefs = bit_u32(7),
-+        Threads = bit_u32(8),
-+        Transaction = bit_u32(9),
-+        TransactionComplete = bit_u32(10),
-+        FreeBuffer = bit_u32(11),
-+        InternalRefs = bit_u32(12),
-+        PriorityCap = bit_u32(13),
-+        Spinlocks = bit_u32(14),
-+    }
-+);
-+
-+#[no_mangle]
-+pub(crate) static rust_binder_debug_mask: Atomic<u32> = Atomic::new(
-+    (DebugMask::UserError as u32)
-+        | (DebugMask::FailedTransaction as u32)
-+        | (DebugMask::DeadTransaction as u32),
-+);
-+
-+/// Checks if the given debug logging category is enabled in the mask.
-+pub(crate) fn debug_mask_enabled(mask: DebugMask) -> bool {
-+    let current_mask = rust_binder_debug_mask.load(kernel::sync::atomic::Relaxed);
-+    DebugMasks(current_mask).contains(mask)
-+}
-+
-+/// Prints a debug log if the specified mask category is enabled.
-+#[macro_export]
-+macro_rules! binder_debug {
-+    // Rule to explicitly specify a PID (used in kworkers).
-+    (pid=$pid:expr, $mask:ident, $($arg:tt)*) => {
-+        if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$mask) {
-+            kernel::pr_info!(
-+                "{}: {}\n",
-+                $pid,
-+                kernel::prelude::fmt!($($arg)*)
-+            );
-+        }
-+    };
-+
-+    // Default rule (automatically prepends "PID:TID" of the current calling thread).
-+    ($mask:ident, $($arg:tt)*) => {
-+        if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$mask) {
-+            let thread = kernel::current!();
-+            kernel::pr_info!(
-+                "{}:{} {}\n",
-+                thread.tgid(),
-+                thread.pid(),
-+                kernel::prelude::fmt!($($arg)*)
-+            );
-+        }
-+    };
-+}
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 1abeb83684e4..6dd39939e7ae 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1327,6 +1327,7 @@ pub(crate) fn lock_with_nodes(&self) -> WithNodes<'_> {
-     }
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 87298a8c597d..072cb4674172 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -721,11 +721,12 @@ fn translate_object(
+                 let alloc_offset = match sg_state.unused_buffer_space.claim_next(obj_length) {
+                     Ok(alloc_offset) => alloc_offset,
+                     Err(err) => {
+-                        pr_warn!(
+-                            "Failed to claim space for a BINDER_TYPE_PTR. (offset: {}, limit: {}, size: {})",
++                        binder_debug!(
++                            UserError,
++                            "failed to claim space for a BINDER_TYPE_PTR (offset: {}, limit: {}, size: {})",
+                             sg_state.unused_buffer_space.offset,
+                             sg_state.unused_buffer_space.limit,
+-                            obj_length,
++                            obj_length
+                         );
+                         return Err(err.into());
+                     }
+@@ -804,6 +805,7 @@ fn translate_object(
+                 let fds_len = num_fds.checked_mul(size_of::<u32>()).ok_or(EINVAL)?;
  
-     fn deferred_flush(&self) {
-+        binder_debug!(pid = self.task.pid(), OpenClose, "flushing process");
-         let inner = self.inner.lock();
-         for thread in inner.threads.values() {
-             thread.exit_looper();
-@@ -1334,6 +1335,8 @@ fn deferred_flush(&self) {
-     }
+                 if !is_aligned(parent_offset, size_of::<u32>()) {
++                    binder_debug!(UserError, "FDA parent offset not aligned correctly");
+                     return Err(EINVAL.into());
+                 }
  
-     fn deferred_release(self: Arc<Self>) {
-+        binder_debug!(pid = self.task.pid(), OpenClose, "releasing process");
-+
-         let is_manager = {
+@@ -822,6 +824,7 @@ fn translate_object(
+                 };
+ 
+                 if !is_aligned(parent_entry.sender_uaddr, size_of::<u32>()) {
++                    binder_debug!(UserError, "FDA parent buffer not aligned correctly");
+                     return Err(EINVAL.into());
+                 }
+ 
+@@ -905,12 +908,9 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
+ 
+                 let target_offset_end = fixup_offset.checked_add(fixup_len).ok_or(EINVAL)?;
+                 if fixup_offset < end_of_previous_fixup || offset_end < target_offset_end {
+-                    pr_warn!(
+-                        "Fixups oob {} {} {} {}",
+-                        fixup_offset,
+-                        end_of_previous_fixup,
+-                        offset_end,
+-                        target_offset_end
++                    binder_debug!(
++                        UserError,
++                        "fixups oob {fixup_offset} {end_of_previous_fixup} {offset_end} {target_offset_end}"
+                     );
+                     return Err(EINVAL.into());
+                 }
+@@ -918,18 +918,21 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
+                 let copy_off = end_of_previous_fixup;
+                 let copy_len = fixup_offset - end_of_previous_fixup;
+                 if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
+-                    pr_warn!("Failed copying into alloc: {:?}", err);
++                    binder_debug!(UserError, "failed copying into alloc: {err:?}");
+                     return Err(err.into());
+                 }
+                 if let PointerFixupEntry::Fixup { pointer_value, .. } = fixup {
+                     let res = alloc.write::<u64>(fixup_offset, pointer_value);
+                     if let Err(err) = res {
+-                        pr_warn!("Failed copying ptr into alloc: {:?}", err);
++                        binder_debug!(UserError, "failed copying ptr into alloc: {err:?}");
+                         return Err(err.into());
+                     }
+                 }
+                 if let Err(err) = reader.skip(fixup_len) {
+-                    pr_warn!("Failed skipping {} from reader: {:?}", fixup_len, err);
++                    binder_debug!(
++                        UserError,
++                        "failed skipping {fixup_len} from reader: {err:?}"
++                    );
+                     return Err(err.into());
+                 }
+                 end_of_previous_fixup = target_offset_end;
+@@ -937,7 +940,7 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
+             let copy_off = end_of_previous_fixup;
+             let copy_len = offset_end - end_of_previous_fixup;
+             if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
+-                pr_warn!("Failed copying remainder into alloc: {:?}", err);
++                binder_debug!(UserError, "failed copying remainder into alloc: {err:?}");
+                 return Err(err.into());
+             }
+         }
+@@ -1041,7 +1044,7 @@ pub(crate) fn copy_transaction_data(
+                 let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
+ 
+                 if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
+-                    pr_warn!("Got transaction with invalid offset.");
++                    binder_debug!(UserError, "got transaction with invalid offset");
+                     return Err(EINVAL.into());
+                 }
+ 
+@@ -1066,7 +1069,7 @@ pub(crate) fn copy_transaction_data(
+                 ) {
+                     Ok(()) => end_of_previous_object = offset + object.size(),
+                     Err(err) => {
+-                        pr_warn!("Error while translating object.");
++                        binder_debug!(UserError, "error while translating object: {err:?}");
+                         return Err(err);
+                     }
+                 }
+@@ -1086,15 +1089,12 @@ pub(crate) fn copy_transaction_data(
+         )?;
+ 
+         if let Some(sg_state) = sg_state.as_mut() {
+-            if let Err(err) = self.apply_sg(&mut alloc, sg_state) {
+-                pr_warn!("Failure in apply_sg: {:?}", err);
+-                return Err(err);
+-            }
++            self.apply_sg(&mut alloc, sg_state)?;
+         }
+ 
+         if let Some((off_out, secctx)) = secctx.as_mut() {
+             if let Err(err) = alloc.write(secctx_off, secctx.as_bytes()) {
+-                pr_warn!("Failed to write security context: {:?}", err);
++                binder_debug!(UserError, "failed to write security context: {err:?}");
+                 return Err(err.into());
+             }
+             **off_out = secctx_off;
+@@ -1282,7 +1282,7 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
+         {
              let mut inner = self.inner.lock();
-             inner.is_dead = true;
-@@ -1627,7 +1630,9 @@ fn ioctl_write_read(
- /// The file operations supported by `Process`.
- impl Process {
-     pub(crate) fn open(ctx: ArcBorrow<'_, Context>, file: &File) -> Result<Arc<Process>> {
--        Self::new(ctx.into(), ARef::from(file.cred()))
-+        let proc = Self::new(ctx.into(), ARef::from(file.cred()))?;
-+        binder_debug!(OpenClose, "opened process");
-+        Ok(proc)
+             if !transaction.is_stacked_on(&inner.current_transaction) {
+-                pr_warn!("Transaction stack changed during transaction!");
++                binder_debug!(UserError, "got new transaction with bad transaction stack");
+                 return Err(EINVAL.into());
+             }
+             inner.current_transaction = Some(transaction.clone_arc());
+@@ -1305,8 +1305,18 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
      }
  
-     pub(crate) fn release(this: Arc<Process>, _file: &File) {
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 432390aab25b..29829cb210a4 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -31,6 +31,8 @@
- mod context;
- mod deferred_close;
- mod defs;
-+#[macro_use]
-+mod debug;
- mod error;
- mod node;
- mod page_range;
-diff --git a/drivers/android/binder/rust_binderfs.c b/drivers/android/binder/rust_binderfs.c
-index ade1c4d92499..300cc65562d1 100644
---- a/drivers/android/binder/rust_binderfs.c
-+++ b/drivers/android/binder/rust_binderfs.c
-@@ -51,6 +51,9 @@ DEFINE_SHOW_ATTRIBUTE(rust_binder_proc);
- char *rust_binder_devices_param = CONFIG_ANDROID_BINDER_DEVICES;
- module_param_named(rust_devices, rust_binder_devices_param, charp, 0444);
+     fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
+-        let orig = self.inner.lock().pop_transaction_to_reply(self)?;
++        let orig = match self.inner.lock().pop_transaction_to_reply(self) {
++            Ok(orig) => orig,
++            Err(err) => {
++                binder_debug!(UserError, "got reply transaction with no transaction stack");
++                return Err(err.into());
++            }
++        };
+         if !orig.from.is_current_transaction(&orig) {
++            binder_debug!(
++                UserError,
++                "got reply transaction with bad transaction stack"
++            );
+             return Err(EINVAL.into());
+         }
  
-+extern u32 rust_binder_debug_mask;
-+module_param_named(debug_mask, rust_binder_debug_mask, uint, 0644);
-+
- static dev_t binderfs_dev;
- static DEFINE_MUTEX(binderfs_minors_mutex);
- static DEFINE_IDA(binderfs_minors);
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 38273f4eedb5..1b290c61714d 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -210,6 +210,13 @@ pub fn pid(&self) -> Pid {
-         unsafe { *ptr::addr_of!((*self.as_ptr()).pid) }
-     }
- 
-+    /// Returns the TGID (Thread Group ID / Process ID) of the given task.
-+    pub fn tgid(&self) -> Pid {
-+        // SAFETY: The tgid of a task never changes after initialization, so reading this field is
-+        // not a data race.
-+        unsafe { *ptr::addr_of!((*self.as_ptr()).tgid) }
-+    }
-+
-     /// Returns the UID of the given task.
-     #[inline]
-     pub fn uid(&self) -> Kuid {
 
 -- 
 2.55.0.795.g602f6c329a-goog
