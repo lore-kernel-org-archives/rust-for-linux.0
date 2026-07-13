@@ -1,25 +1,25 @@
 Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF73932861F;
-	Mon, 13 Jul 2026 02:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153A04317D;
+	Mon, 13 Jul 2026 02:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.182.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783910109; cv=none; b=YLi2RJyCOI359UfIOdv+y5XrARG97JnJDqh5sFtrfTPtI+M+8uCmOA6D7qFv/fiPPT0AlRTvUrmAiYNY/B9deRu7CmROoUtBfTry+727NFE4judfs1qlKJJ4hmg5s/gUSTmhVP9tp8eMta96W8AOvTQuz6xDP+O6R6fY2/fXFeI=
+	t=1783910243; cv=none; b=WwdNGwnSQsrNRaIO80cIdNH2H9iyOCqQZxWI401dxA8HoXEmLK0DqJJD3wd7waMhRBJ+QiBPL/oiJRuOyPcor5S1FSiQhEKfKHjlr6Kch6xrYmWBU20A18h6PNsdXGlF9IMU5Sq4iStC9tWh6hvqOQSRHb7jSSkMKs5RqS6GWhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783910109; c=relaxed/simple;
-	bh=2SfyYaekA5vGwMgWZyXmw4sv3c6t/3yluFUnez1PzLA=;
+	s=arc-20240116; t=1783910243; c=relaxed/simple;
+	bh=SVPFdzcOG7sfebkWaR6kZeeV3VkOzzPikv4mmxeo04Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T2uQ3Zd6rCsZSIqY6qkDtrsN37w7jRLXKqZGIOA+C7bTd/cpfA+Us8HermPgBadk2eHHEu12+D3FL8Gkz40corvG1CHpJCdUjiWWD2XDkTY1xP7zsXXvN5MowFt7H2V2lEEJddJKGkp+dkiP2vjoJ6/UyhDDg4iFMmMLkmt/hjE=
+	 In-Reply-To:Content-Type; b=rJWduyBN80OPV1YUeEc5d7c9X2LGIqjVk2zEC+hDimJVX5bqJ3w/61D1J5Mq2gsUiCYKNo+H4zpQaxoOLsDcBlBoLmQSQWfnWqg7X53Zatetf+2itsbldEub7BCKMvDfrP9dT7Az7oV1WYy97VR/s9fnqFmjBsAz5xYtcpdpzZA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=209.97.182.222
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
 Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app1 (Coremail) with SMTP id HgEQrABnZ6CZTlRq2vnuAQ--.9700S2;
-	Mon, 13 Jul 2026 10:34:01 +0800 (CST)
+	by app2 (Coremail) with SMTP id HwEQrAAn_jROT1Rq18JmAA--.5124S2;
+	Mon, 13 Jul 2026 10:37:02 +0800 (CST)
 Received: from [100.81.40.43] (unknown [10.12.191.55])
-	by gateway (Coremail) with SMTP id _____wAXQBCWTlRqIcrCAA--.22777S2;
-	Mon, 13 Jul 2026 10:33:59 +0800 (CST)
-Message-ID: <52e01b13-ff71-414f-8b38-e56d9eb3e166@hust.edu.cn>
-Date: Mon, 13 Jul 2026 10:33:58 +0800
+	by gateway (Coremail) with SMTP id _____wAnEBJMT1Rqjs3CAA--.62867S2;
+	Mon, 13 Jul 2026 10:37:00 +0800 (CST)
+Message-ID: <17094968-1385-4dba-aae8-5d93a2aaf59e@hust.edu.cn>
+Date: Mon, 13 Jul 2026 10:37:00 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -27,7 +27,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] docs/zh_CN: Update rust/quick-start.rst
+Subject: Re: [PATCH v2 2/4] docs/zh_CN: Update rust/general-information.rst
  translation
 To: Ben Guo <ben.guo@openatom.club>, Alex Shi <alexs@kernel.org>,
  Yanteng Si <si.yanteng@linux.dev>, Jonathan Corbet <corbet@lwn.net>
@@ -35,17 +35,17 @@ Cc: Gary Guo <gary@garyguo.net>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
  hust-os-kernel-patches@googlegroups.com
 References: <cover.1783905132.git.ben.guo@openatom.club>
- <78a525ba7344a334bc70664b34327dbb51024e90.1783905132.git.ben.guo@openatom.club>
+ <f7c671881801e1b24fa2965b2e730d0fb0931e32.1783905132.git.ben.guo@openatom.club>
 From: Dongliang Mu <dzm91@hust.edu.cn>
-In-Reply-To: <78a525ba7344a334bc70664b34327dbb51024e90.1783905132.git.ben.guo@openatom.club>
+In-Reply-To: <f7c671881801e1b24fa2965b2e730d0fb0931e32.1783905132.git.ben.guo@openatom.club>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HgEQrABnZ6CZTlRq2vnuAQ--.9700S2
-Authentication-Results: app1; spf=neutral smtp.mail=dzm91@hust.edu.cn;
-X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1fWFWrJFW3Wr1rWr48WFg_yoW7ZrW5pa
-	y09as7Ja97JFy8Zry8tryrZF1UCayrt345KwsxGas3Ars3Jr95Kr4qqw43ZFWIy34UZF4a
-	qrW8ZFnY9w4kur7anT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQFb7Iv0xC_tr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+X-CM-TRANSID:HwEQrAAn_jROT1Rq18JmAA--.5124S2
+Authentication-Results: app2; spf=neutral smtp.mail=dzm91@hust.edu.cn;
+X-Coremail-Antispam: 1UD129KBjvJXoW3GFykGFW3AF43Wryxur1Dtrb_yoW7urWfpF
+	1SkFsxtF17JF15XFWxGr4UA3W8GF4rG3WUGFy5Ga4IgrsYyFW5Kwsrtr4fJ39rAry8uFWD
+	ZF9Y9FWjkry7A37anT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQ2b7Iv0xC_Zr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
 	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
 	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
 	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
@@ -56,124 +56,142 @@ X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1fWFWrJFW3Wr1rWr48WFg_yoW7ZrW5pa
 	k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Yz7v_
 	Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
 	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
-	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jhcTQUUUUU=
+	cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU3YFADUUUU
 X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
 
 
 On 7/13/26 9:46 AM, Ben Guo wrote:
-> Update Documentation/rust/quick-start.rst translation.
+> Update Documentation/rust/general-information.rst translation.
 >
-> Update the translation through commit a4392ed1c8b9
-> ("docs: rust: quick-start: remove GDB/Binutils mention")
+> Update the translation through commit 86c5d1c6740c
+> ("docs: rust: general-information: use real example")
 >
 > Reviewed-by: Gary Guo <gary@garyguo.net>
+
+
+Revise the small issue below.
+
 Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+
+
 > Signed-off-by: Ben Guo <ben.guo@openatom.club>
 > ---
->   .../translations/zh_CN/rust/quick-start.rst   | 48 ++++++++-----------
->   1 file changed, 19 insertions(+), 29 deletions(-)
+>   .../zh_CN/rust/general-information.rst        | 82 ++++++++++++++++++-
+>   1 file changed, 79 insertions(+), 3 deletions(-)
 >
-> diff --git a/Documentation/translations/zh_CN/rust/quick-start.rst b/Documentation/translations/zh_CN/rust/quick-start.rst
-> index 5f0ece6411f..0396137f3c1 100644
-> --- a/Documentation/translations/zh_CN/rust/quick-start.rst
-> +++ b/Documentation/translations/zh_CN/rust/quick-start.rst
-> @@ -59,7 +59,7 @@ Fedora Linux 提供较新的 Rust 版本，因此通常开箱即用，例如::
->   Gentoo Linux
->   ************
+> diff --git a/Documentation/translations/zh_CN/rust/general-information.rst b/Documentation/translations/zh_CN/rust/general-information.rst
+> index 9b5e37e13f3..ff9355cb8c8 100644
+> --- a/Documentation/translations/zh_CN/rust/general-information.rst
+> +++ b/Documentation/translations/zh_CN/rust/general-information.rst
+> @@ -13,6 +13,14 @@
 >   
-> -Gentoo Linux（尤其是 testing 分支）提供较新的 Rust 版本，因此通常开箱即用，
-> +Gentoo Linux 提供较新的 Rust 版本，因此通常开箱即用，
->   例如::
+>   本文档包含了在内核中使用Rust支持时需要了解的有用信息。
 >   
->   	USE='rust-src rustfmt clippy' emerge dev-lang/rust dev-util/bindgen
-> @@ -70,7 +70,7 @@ Gentoo Linux（尤其是 testing 分支）提供较新的 Rust 版本，因此
->   Nix
->   ***
+> +``no_std``
+> +----------
+> +
+> +内核中的 Rust 支持只能链接 `core <https://doc.rust-lang.org/core/>`_，
+> +而不能链接 `std <https://doc.rust-lang.org/std/>`_。供内核使用的 crate
+> +必须使用 ``#![no_std]`` 属性选择这种行为。
+> +
+> +
+>   .. _rust_code_documentation_zh_cn:
 >   
-> -Nix（unstable 频道）提供较新的 Rust 版本，因此通常开箱即用，例如::
-> +Nix 提供较新的 Rust 版本，因此通常开箱即用，例如::
+>   代码文档
+> @@ -20,10 +28,18 @@
 >   
->   	{ pkgs ? import <nixpkgs> {} }:
->   	pkgs.mkShell {
-> @@ -85,16 +85,14 @@ openSUSE
->   openSUSE Slowroll 和 openSUSE Tumbleweed 提供较新的 Rust 版本，因此通常开箱
->   即用，例如::
+>   Rust内核代码使用其内置的文档生成器 ``rustdoc`` 进行记录。
 >   
-> -	zypper install rust rust1.79-src rust-bindgen clang
-> +	zypper install rust rust-src rust-bindgen clang
+> -生成的HTML文档包括集成搜索、链接项（如类型、函数、常量）、源代码等。它们可以在以下地址阅读
+> -（TODO：当在主线中时链接，与其他文档一起生成）：
+> +生成的HTML文档包括集成搜索、链接项（如类型、函数、常量）、源代码等。
+Add spaces before and after HTML
+> +它们可以在以下地址阅读：
+> +
+> +		https://rust.docs.kernel.org
+> +
+> +对于 linux-next，请参阅：
 >   
+> -	http://kernel.org/
+> +		https://rust.docs.kernel.org/next/
+> +
+> +每个主要版本也有对应的标签，例如：
+> +
+> +		https://rust.docs.kernel.org/6.10/
 >   
->   Ubuntu
->   ******
+>   这些文档也可以很容易地在本地生成和阅读。这相当快（与编译代码本身的顺序相同），而且不需要特
+>   殊的工具或环境。这有一个额外的好处，那就是它们将根据所使用的特定内核配置进行定制。要生成它
+> @@ -62,6 +78,58 @@ Rust内核代码使用其内置的文档生成器 ``rustdoc`` 进行记录。
+>   模块（例如，驱动程序）不应该直接使用C语言的绑定。相反，子系统应该根据需要提供尽可能安
+>   全的抽象。
 >   
-> -25.04
-> -~~~~~
-> -
-> -最新的 Ubuntu 版本提供较新的 Rust 版本，因此通常开箱即用，例如::
-> +Ubuntu 25.10 和 26.04 LTS 提供较新的 Rust 版本，因此通常开箱即用，
-> +例如::
+> +.. code-block::
+> +
+> +	                                                rust/bindings/
+> +	                                               (rust/helpers/)
+> +
+> +	                                                   include/ -----+ <-+
+> +	                                                                 |   |
+> +	  drivers/              rust/kernel/              +----------+ <-+   |
+> +	    fs/                                           | bindgen  |       |
+> +	   .../            +-------------------+          +----------+ --+   |
+> +	                   |    Abstractions   |                         |   |
+> +	+---------+        | +------+ +------+ |          +----------+   |   |
+> +	| my_foo  | -----> | | foo  | | bar  | | -------> | Bindings | <-+   |
+> +	| driver  |  Safe  | | sub- | | sub- | |  Unsafe  |          |       |
+> +	+---------+        | |system| |system| |          | bindings | <-----+
+> +	     |             | +------+ +------+ |          |  crate   |       |
+> +	     |             |   kernel crate    |          +----------+       |
+> +	     |             +-------------------+                             |
+> +	     |                                                               |
+> +	     +------------------# FORBIDDEN #--------------------------------+
+> +
+> +主要思想是将所有与内核 C API 的直接交互封装到经过仔细审查和文档化的抽象
+> +中。这样，只要满足以下条件，这些抽象的用户就不能引入未定义行为
+> +（undefined behavior，UB）：
+> +
+> +#. 抽象是正确的（"可靠"）。
+> +#. 任何 ``unsafe`` 块都遵守调用块内操作所需的安全契约。类似地，任何
+> +   ``unsafe impl`` 都遵守实现该特性所需的安全契约。
+> +
+> +绑定
+> +~~~~
+> +
+> +通过从 ``include/`` 中将 C 头文件包含到
+> +``rust/bindings/bindings_helper.h``， ``bindgen`` 工具将为所包含的子系统
+> +自动生成绑定。构建后，请查看 ``rust/bindings/`` 目录中的
+> +``*_generated.rs`` 输出文件。
+> +
+> +对于 ``bindgen`` 不会自动生成的 C 头文件部分，例如 C ``inline`` 函数或
+> +非平凡宏，可以在 ``rust/helpers/`` 中添加一个小型包装函数，使其也可供
+> +Rust 端使用。
+> +
+> +抽象
+> +~~~~
+> +
+> +抽象是绑定和内核内用户之间的层。它们位于 ``rust/kernel/`` 中，其作用是
+> +将对绑定的不安全访问封装到尽可能安全并暴露给用户的 API 中。抽象的用户
+> +包括用 Rust 编写的驱动程序或文件系统等。
+> +
+> +除了安全方面，这些抽象还应该易于使用，也就是说，把 C 接口转换为符合
+> +Rust 惯例的代码。基本示例包括将 C 的资源获取和释放转换为 Rust 的初始化
+> +和清理模式，或者将 C 整数错误码转换为 Rust 的 ``Result``。
+> +
 >   
->   	apt install rustc rust-src bindgen rustfmt rust-clippy
->   
-> @@ -111,32 +109,32 @@ Ubuntu
->   虽然 Ubuntu 24.04 LTS 及更早版本仍然提供较新的 Rust 版本，但它们需要一些额外的配
->   置，使用带版本号的软件包，例如::
->   
-> -	apt install rustc-1.80 rust-1.80-src bindgen-0.65 rustfmt-1.80 \
-> -		rust-1.80-clippy
-> -	ln -s /usr/lib/rust-1.80/bin/rustfmt /usr/bin/rustfmt-1.80
-> -	ln -s /usr/lib/rust-1.80/bin/clippy-driver /usr/bin/clippy-driver-1.80
-> +	apt install rustc-1.85 rust-1.85-src bindgen-0.71 rustfmt-1.85 \
-> +		rust-1.85-clippy
-> +	ln -s /usr/lib/rust-1.85/bin/rustfmt /usr/bin/rustfmt-1.85
-> +	ln -s /usr/lib/rust-1.85/bin/clippy-driver /usr/bin/clippy-driver-1.85
->   
->   这些软件包都不会将其工具设置为默认值；因此应该显式指定它们，例如::
->   
-> -	make LLVM=1 RUSTC=rustc-1.80 RUSTDOC=rustdoc-1.80 RUSTFMT=rustfmt-1.80 \
-> -		CLIPPY_DRIVER=clippy-driver-1.80 BINDGEN=bindgen-0.65
-> +	make LLVM=1 RUSTC=rustc-1.85 RUSTDOC=rustdoc-1.85 RUSTFMT=rustfmt-1.85 \
-> +		CLIPPY_DRIVER=clippy-driver-1.85 BINDGEN=bindgen-0.71
->   
-> -或者，修改 ``PATH`` 变量将 Rust 1.80 的二进制文件放在前面，并将 ``bindgen`` 设
-> +或者，修改 ``PATH`` 变量将 Rust 1.85 的二进制文件放在前面，并将 ``bindgen`` 设
->   置为默认值，例如::
->   
-> -	PATH=/usr/lib/rust-1.80/bin:$PATH
-> +	PATH=/usr/lib/rust-1.85/bin:$PATH
->   	update-alternatives --install /usr/bin/bindgen bindgen \
-> -		/usr/bin/bindgen-0.65 100
-> -	update-alternatives --set bindgen /usr/bin/bindgen-0.65
-> +		/usr/bin/bindgen-0.71 100
-> +	update-alternatives --set bindgen /usr/bin/bindgen-0.71
->   
-> -使用带版本号的软件包时需要设置 ``RUST_LIB_SRC``，例如::
-> +使用带版本号的软件包时可能需要设置 ``RUST_LIB_SRC``，例如::
->   
-> -	RUST_LIB_SRC=/usr/src/rustc-$(rustc-1.80 --version | cut -d' ' -f2)/library
-> +	RUST_LIB_SRC=/usr/src/rustc-$(rustc-1.85 --version | cut -d' ' -f2)/library
->   
->   为方便起见，可以将 ``RUST_LIB_SRC`` 导出到全局环境中。
->   
-> -此外， ``bindgen-0.65`` 在较新的版本（24.04 LTS 和 24.10）中可用，但在更早的版
-> -本（20.04 LTS 和 22.04 LTS）中可能不可用，因此可能需要手动构建 ``bindgen``
-> +此外， ``bindgen-0.71`` 在较新的版本（24.04 LTS）中可用，但在更早的版本
-> +（20.04 LTS 和 22.04 LTS）中可能不可用，因此可能需要手动构建 ``bindgen``
->   （请参见下文）。
->   
->   
-> @@ -325,11 +323,3 @@ Rust支持（CONFIG_RUST）需要在 ``General setup`` 菜单中启用。在其
->   
->   要想深入了解，请看 ``samples/rust/`` 下的样例源代码、 ``rust/`` 下的Rust支持代码和
->   ``Kernel hacking`` 下的 ``Rust hacking`` 菜单。
-> -
-> -如果使用的是GDB/Binutils，而Rust符号没有被demangled，原因是工具链还不支持Rust的新v0
-> -mangling方案。有几个办法可以解决：
-> -
-> -- 安装一个较新的版本（GDB >= 10.2, Binutils >= 2.36）。
-> -
-> -- 一些版本的GDB（例如vanilla GDB 10.1）能够使用嵌入在调试信息(``CONFIG_DEBUG_INFO``)
-> -  中的pre-demangled的名字。
+>   有条件的编译
+>   ------------
+> @@ -74,3 +142,11 @@ Rust代码可以访问基于内核配置的条件性编译:
+>   	#[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
+>   	#[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
+>   	#[cfg(not(CONFIG_X))]  // Disabled
+> +
+> +对于 Rust 的 ``cfg`` 不支持的其他条件，例如带有数值比较的表达式，可以
+> +定义一个新的 Kconfig 符号：
+> +
+> +.. code-block:: kconfig
+> +
+> +	config RUSTC_HAS_SPAN_FILE
+> +		def_bool RUSTC_VERSION >= 108800
 
