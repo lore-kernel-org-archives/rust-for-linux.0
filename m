@@ -1,152 +1,179 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010004.outbound.protection.outlook.com [52.101.56.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0A721FF2A
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 02:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783909299; cv=fail; b=tIQZSv+kMW1l+NthdlhEXYTaw8s3o7byAaMFH/7/lkd1WlGkcG/Rmg5m2/UDNX5cl7q56fpqO1wwU9mtDb+w8CDcAfnjs7ufW6VjfxNoILMYHdqAAHqwdFYG7SG4+s1tbcp3kdNoJ/bzp3s1qhFtdehvC7z1fXv3YQ/7xb+eybg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783909299; c=relaxed/simple;
-	bh=ESTlwbwDth0Vjx9zO1aK4DL95PLPyfxTpuSwOpWAQMI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uiivD9FzHFvdH5FranHByS3gZmTtU9At2ZWkb9c+NLJtBVMNkHGbh9ZA5wzH/a0i/YYvjMyVy7mQMvtxWZHdPPEqlJEJFP1p7vnQctnk2xv+z3+iPs+3F4F9qvsIIsxNwPBMolXkslsYyGiNN8Dpp+GTj+rIU1V2RCi2VETgvik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fHbcP5wR; arc=fail smtp.client-ip=52.101.56.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fHbcP5wR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GjSTyUW85EwrmmHlwy3DgcV3Bx8TWDQFoGcyreTMmeRfpgiPeDaMAHBawu8Xyb9vREoaPWFyC/HQPTdGOrfZtBu1b8eBGwqyr6GibYwoKkfLbTRaN+p6WYWwulSHpTWQPX4n3IAVd6UZSvDhHoLvhGpnujd03BeCCAylxfaLxbsBTiVq9NmSp4tTr0PAd4yTMb4w1NNZ7XnfxqlvHrNdTDepBY3VrmTxB8ZzFmCn2oFeR1MlvJkhAF+mIQf/3uO7RQZqDCWnUrwo++xTCsSUOatyQDd9msvxUG0ByuC81e6j6UQj6TzEy9+ePZ+E7cmnvi6ZC7h4OgsGZ3zm1rf5kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ESTlwbwDth0Vjx9zO1aK4DL95PLPyfxTpuSwOpWAQMI=;
- b=w38u31iN1YU0zru+gz4SIVpGSemEs4oFUwDF+0DGlIQoc3lT6QjFb4cqoW+cJHoUlglw7MUvGuwOJXAcayXHnCw8i+cESyZjUEfETMB1dZM/CkCnd3/3GYpaWXBsOuhgdF1IUKlT+QeJljEjE5UlfCd3rvPYxi5pwcGA59WKuTwUeNUyZvsbvv6+QdTwXgJPXd2BDCygzPIoPavmNcsbgMY+lfJsPSF1TLM/Ww/HYckyM4K0AWkJEfqb1GECHJzNEPjm2XDOl32GgdTI8xngdEn8BzrkF4QOr/71dvmD+Tw7/Q592eExQ0OHG2l6NnUUL66tEi9v1Z5P24e+MEupLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ESTlwbwDth0Vjx9zO1aK4DL95PLPyfxTpuSwOpWAQMI=;
- b=fHbcP5wRXOR3G01vldT1g0XDKmFSp1YVK+4FS7kE2oXsSb4leyrhub0cYt4z3QkvrmypgMVhTZ+fKzXWPk2okpEZ9so6VLl4gso6m8aNGW2zka3pW14EbPM0lmbFY0rxJP2G5iigiggP+pRuWaAbFKGwc+KU3ANHADCgeQWYjS6xOsYS0G0nOCJI/6WEUyw5y6nIPLXKtVFhq2BYJr3NmDyML4CRJSRoZFwLh6Wh9hlpW2GIXhmQOR0YOkPT/4R4iEpW2kE+08etP+1o7lCZXi1AaQNEF3YC2/VAenArtw6GLs+aAuUH7ewevE6G/kMj1YnJL157NNp0dQgpI4jZ5A==
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11)
- by PH7PR12MB7306.namprd12.prod.outlook.com (2603:10b6:510:20a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.18; Mon, 13 Jul
- 2026 02:21:35 +0000
-Received: from CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970]) by CY8PR12MB8412.namprd12.prod.outlook.com
- ([fe80::76e6:4d65:7ed1:6970%5]) with mapi id 15.21.0181.019; Mon, 13 Jul 2026
- 02:21:35 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: "miguel.ojeda.sandonis@gmail.com" <miguel.ojeda.sandonis@gmail.com>
-CC: Zhi Wang <zhiw@nvidia.com>, John Hubbard <jhubbard@nvidia.com>,
-	"gary@garyguo.net" <gary@garyguo.net>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, "nova-gpu@lists.linux.dev"
-	<nova-gpu@lists.linux.dev>, Eliot Courtney <ecourtney@nvidia.com>,
-	"russ.weight@linux.dev" <russ.weight@linux.dev>, "mcgrof@kernel.org"
-	<mcgrof@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>, "ojeda@kernel.org"
-	<ojeda@kernel.org>, "driver-core@lists.linux.dev"
-	<driver-core@lists.linux.dev>, Alexandre Courbot <acourbot@nvidia.com>
-Subject: Re: [PATCH v5 1/8] rust: alloc: add Vec::zeroed method
-Thread-Topic: [PATCH v5 1/8] rust: alloc: add Vec::zeroed method
-Thread-Index: AQHdEMCLO148PrPt1EGXnCsLrRZgMLZoT/WAgAJrMAA=
-Date: Mon, 13 Jul 2026 02:21:34 +0000
-Message-ID: <1ecf1c1235ab8fbbe884ec42d72cef1a9878c8b9.camel@nvidia.com>
-References: <20260710230428.865447-1-ttabi@nvidia.com>
-		 <20260710230428.865447-2-ttabi@nvidia.com>
-	 <CANiq72nENzJejiO3pmV9FhRA+H+zvCtfzWY0=wbTERToceiu3g@mail.gmail.com>
-In-Reply-To:
- <CANiq72nENzJejiO3pmV9FhRA+H+zvCtfzWY0=wbTERToceiu3g@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.56.2-9 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR12MB8412:EE_|PH7PR12MB7306:EE_
-x-ms-office365-filtering-correlation-id: b94140e4-00d5-4024-e162-08dee085761a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|376014|38070700021|18002099003|22082099003|56012099006|4143699003|11063799006;
-x-microsoft-antispam-message-info:
- hAs2K+Q1TwEV/E1QbKCHG7H06HhB7Q8PWCUmz1+nCHWYnKQQHZPAFuLqODAFWybErSq1gdrEt5Q3wRvT/rveqnVrmoJZ2/iUJmyWtZC1O6ljQi9+axzaNMiA7X2jvfMZcc+YUFJlP7Xwroe7+k8FFiXA8CFBbEauhXkiMFGPCF652lFIuminkWUPmMnlgELTILo2MefoZevxccJ9SCkQRdcFU/YHOJFLkppBudeg0C0XhXh0MorgebuQCPGtCbID18kPm0o2Z3Cilh4T5FaegvA98MHQ6YCxuOsvjbUHTls2tFbhVtGZONd9ikeI6QOPSnmRY5L1AKVq4oIiIfGEPDPKkQej1j1w7skm2gfWXQR9x8x1nCEzaIUogzzYMGfPcMAIPiBsMZQ5CJ5S7uQO+mh11RLVapErnjB2qPjE+1I+F6QuoTrTkJVkUVi1+vHHTl5IS8c1oPQwjJAyso2vQpOwP2GUqz3Ai0HbBSTje6klX9txwLXgmRTNkdIpAxhtmeOAPv4nUFqm9iDpo5EfYL8zyoCzj6foNRAbchzmEcLCTFzxFIIXoMsjgUlIs0dbzdAgm5Zi1LOPXR0BLQxCILiKHcrdKkDh/ljqTJ3esPmLbihDLDFj5FAzqGruYGjw2CCBwVDd9sfojKuF7H4/alE0lTR7PzSxnw0u+McxDVe8Z2UlJZz7Dl8Z4RO6hN8L7gWxtrAA+QberYBOwatfyNxGeHwydnnqJw+BP2EK8yg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8412.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(376014)(38070700021)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?c0RaK003RWs4S0ttRVcvQkcwTEVDenY3Q3NhSnVYbkkxMHdFVkNhQWFxR2dD?=
- =?utf-8?B?blNhOVpXU2ZLTkN6aExHdzV2Z09vZ1A4bkJsZ0RCRDRDZ1UxZnNzbTVHcHlW?=
- =?utf-8?B?THU5UHFOY2YyUnJXL0pKczN3ejROazhIeDRKSmVLN2FJeDl5dnBNUFgvRldW?=
- =?utf-8?B?TUNSN0V1d1o3NEhENXpSVEY2cVFuUlpjSXVNbFh4djY3ME5IUk03blhKd1ZJ?=
- =?utf-8?B?YWdObFVYU2U2MHJjYnloT1V3THBKaGpVUGlxU0JYM0owUVZmZWpOWVdld2Jo?=
- =?utf-8?B?MlFQR2FvSi8wTFMxQ2gzTHh2eWtSRlN0TUxEN3pnZ1F3WlpYYVowQk5aSlhC?=
- =?utf-8?B?YnJyVWxiOU9qMkRNL2FobmZMY093UTl5enh3WlA3cldNZ2lRNlZ3VEp4OEVt?=
- =?utf-8?B?TXYrODJURU5pbEZRVkNqQXhMMFZZWThmQXBKR0tyay9MZ21XK0h2SnZIVWxl?=
- =?utf-8?B?NHBHTTljajFzbEF5ODhJUGxrSzdvMFhQLzNENXlNcUt2TXBMb3I2NTMxaDZT?=
- =?utf-8?B?U2w0OWNMMUtUWjJLV1h4Y2NlMEFaNzNiQ09tUHFhYmdJUlloREtZeFduWENF?=
- =?utf-8?B?Q0I0SmVzNDJ1dHl4R2RKcjNoVGJ4YXlxNS9sZis3M0JpQjV5Q0tyVUZmREgw?=
- =?utf-8?B?a1pzdXBHeHY2ZE4yWmIva0R4dHJnMG43TFB6K2xOeHp2NGxIOHpzY1JjMHMy?=
- =?utf-8?B?Z2RjVkZsMTVieERGRklSQm83MTRkYSs5d2xCdUlYMjJ4U01rQ3dpcVc5QzVa?=
- =?utf-8?B?VWZnSTlVZkdsYWVsKzZEUjVLa1J1TWFMYzlUd3U2ZTlTTTUxM2JZRTNnL3lQ?=
- =?utf-8?B?U0U2cDhrS0ozdnFtaW1XK29TRHdVN1RaaWxQZGtkY1JJSmpYTy9sYnczWVE5?=
- =?utf-8?B?SGtxVTVleXBTUEN0V3VJSjF4ZTdHNDA0eWlva2VCdWx5cjNmMmlheFVVdmZ4?=
- =?utf-8?B?ZE1NVlRRZVFwMXZSRmRsdWNYTzdqcndWVSt0MmtZOWRZTkF1Zkxjdi9maU1v?=
- =?utf-8?B?Y0JRc1I0bEs5Rnh6Z1JlYlFDOFY3cjJLWG1zQUlBbFBVNGlUeWNSSEhlR1BN?=
- =?utf-8?B?YTJqSUNONGQwQk9GZDBHVG5yN3daR1N5b21hdjhHSm9CZHhxc1d1VDkxd2F2?=
- =?utf-8?B?YlZnVnAyWWgvSkg0QUIreEExaEQ1dDVDVlVxaHpGZXpub2Z5NG9VcCsrdGs5?=
- =?utf-8?B?QllDaFJSN1cxU3pxMnlieHFqNE5JZWYyTzRyTjkxS29kTkhNSjFSNStJMGZm?=
- =?utf-8?B?QXNCVytBUDA1RlJSRktCdW0zSzF5ZkNxczkwRTdoYWZiUlRjVjdsa3UwdEJj?=
- =?utf-8?B?TjZPMm9hVitrV3RhQzJDQTZtRm5adFJ1dHlTWXA4cGVPZjBMNlRvZlBmSEc5?=
- =?utf-8?B?T1BjRW13bHk5ZlpJM2ZkODA4N1Ftc1Q1L0Vubk84UEdxdVRBUDFkeGEva2lq?=
- =?utf-8?B?ZCtXakFmOHZiQUNFUzFlb0pjV1lKNHQ3TjRtVEIwRkxURFJHb2FDRnZ5bVRF?=
- =?utf-8?B?eTh6TDduNEY5Y2hsQmlLekRZZWpHSDJvSmpRQlp6eStmdnpKTGxxV2dtc05B?=
- =?utf-8?B?bERFWGlkVS84Y2VSYmNsdlRnOHNFbXZVM2pvNDllbDIwWWJqSzNqUHhYTkhw?=
- =?utf-8?B?NTA4UTRMNGU5aFl5RjQ1UzN4MVFTYk9YKzg5ZDZ3WWFBVUErc2RMTTBTKy95?=
- =?utf-8?B?Y1FROTR2UWNWUWs1LzdEK3I4TW1tOWJHQUM4WXkwOFFtbUtIK1UyS2ZoT3pQ?=
- =?utf-8?B?SDJKT1g5M3BKVjZQMXJNc3MzQk8xVURUV3FLOHA4dUE1bHZSUlE2VFFlNFc0?=
- =?utf-8?B?dDNJODd3RjdIa1ZEUFdrT2x4UUhnM3huVGh3Q1MydTZEQ2JwcHR3dHR5TDRL?=
- =?utf-8?B?ZG1QakUxNUEwQW5EK1E2OXgweEdpOHYzWk5tL0o2MlhuWGJacEhiRHpvWkp5?=
- =?utf-8?B?dlNlZGpMWHlwZWVyaVRGTUkrczhMaWlTTnRmOFNVTzdDL3hjNFBITGlia1B0?=
- =?utf-8?B?UGNrN2pNb1AxU1JqMWpFSEE0a2pOcVQ5ZjRVNnljcXJ6bWlTckx6S293SVY2?=
- =?utf-8?B?MkhpdHErUTZ0TDNVVlh1VWh5eW1VYTFCK1hPY2Q4b1FIRFRXaVZPc0ZPak9M?=
- =?utf-8?B?KzBQSWFGdnMyR1NvN3JIWlJQaXJYb3ZESm5HcmRjdVBueThrMnFvdFJzV3o1?=
- =?utf-8?B?bHNnZTdjTE5EaEY2ZnBScnYwYmRTbDNtcUIwaGlZcGF4WXhOQW5XVVZOakJu?=
- =?utf-8?B?K3Q4cGhCdTJGT0RZRlhCSS9OZE1wWTBiTER4cy83c2RBLzNwMG43SXhtUjZu?=
- =?utf-8?B?YlQzODgrbmJFS1pwOTh2M0NFOVFxdzh4UUU0TzcyTmdCcDJUM1BOM3QwVTBh?=
- =?utf-8?Q?KgpnlIsfYPT8XI/TblnvGx+7xymBNaEcbagzp61aJn4Gh?=
-x-ms-exchange-antispam-messagedata-1: 8cJSVWnJhiAzqA==
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A0781C4DAB19C54B97B575B9FF36EEF5@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+Received: from zg8tmja5ljk3lje4mi4ymjia.icoremail.net (zg8tmja5ljk3lje4mi4ymjia.icoremail.net [209.97.182.222])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF73932861F;
+	Mon, 13 Jul 2026 02:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.182.222
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783910109; cv=none; b=YLi2RJyCOI359UfIOdv+y5XrARG97JnJDqh5sFtrfTPtI+M+8uCmOA6D7qFv/fiPPT0AlRTvUrmAiYNY/B9deRu7CmROoUtBfTry+727NFE4judfs1qlKJJ4hmg5s/gUSTmhVP9tp8eMta96W8AOvTQuz6xDP+O6R6fY2/fXFeI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783910109; c=relaxed/simple;
+	bh=2SfyYaekA5vGwMgWZyXmw4sv3c6t/3yluFUnez1PzLA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T2uQ3Zd6rCsZSIqY6qkDtrsN37w7jRLXKqZGIOA+C7bTd/cpfA+Us8HermPgBadk2eHHEu12+D3FL8Gkz40corvG1CHpJCdUjiWWD2XDkTY1xP7zsXXvN5MowFt7H2V2lEEJddJKGkp+dkiP2vjoJ6/UyhDDg4iFMmMLkmt/hjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=209.97.182.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
+Received: from hust.edu.cn (unknown [172.16.0.50])
+	by app1 (Coremail) with SMTP id HgEQrABnZ6CZTlRq2vnuAQ--.9700S2;
+	Mon, 13 Jul 2026 10:34:01 +0800 (CST)
+Received: from [100.81.40.43] (unknown [10.12.191.55])
+	by gateway (Coremail) with SMTP id _____wAXQBCWTlRqIcrCAA--.22777S2;
+	Mon, 13 Jul 2026 10:33:59 +0800 (CST)
+Message-ID: <52e01b13-ff71-414f-8b38-e56d9eb3e166@hust.edu.cn>
+Date: Mon, 13 Jul 2026 10:33:58 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8412.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b94140e4-00d5-4024-e162-08dee085761a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jul 2026 02:21:34.9781
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eCIrLaMfJ68Ux7qycr7CpvLH7ae/cpt830PlHD09YDAMBnAq9SyeV3CDNtlYVQRmIDBD8b3nlRdKOnjQdYRixw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7306
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] docs/zh_CN: Update rust/quick-start.rst
+ translation
+To: Ben Guo <ben.guo@openatom.club>, Alex Shi <alexs@kernel.org>,
+ Yanteng Si <si.yanteng@linux.dev>, Jonathan Corbet <corbet@lwn.net>
+Cc: Gary Guo <gary@garyguo.net>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ hust-os-kernel-patches@googlegroups.com
+References: <cover.1783905132.git.ben.guo@openatom.club>
+ <78a525ba7344a334bc70664b34327dbb51024e90.1783905132.git.ben.guo@openatom.club>
+From: Dongliang Mu <dzm91@hust.edu.cn>
+In-Reply-To: <78a525ba7344a334bc70664b34327dbb51024e90.1783905132.git.ben.guo@openatom.club>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:HgEQrABnZ6CZTlRq2vnuAQ--.9700S2
+Authentication-Results: app1; spf=neutral smtp.mail=dzm91@hust.edu.cn;
+X-Coremail-Antispam: 1UD129KBjvJXoW3Gr1fWFWrJFW3Wr1rWr48WFg_yoW7ZrW5pa
+	y09as7Ja97JFy8Zry8tryrZF1UCayrt345KwsxGas3Ars3Jr95Kr4qqw43ZFWIy34UZF4a
+	qrW8ZFnY9w4kur7anT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQFb7Iv0xC_tr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
+	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
+	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
+	126r1DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
+	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
+	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04
+	k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jhcTQUUUUU=
+X-CM-SenderInfo: asqsiiirqrkko6kx23oohg3hdfq/
 
-T24gU2F0LCAyMDI2LTA3LTExIGF0IDE1OjI1ICswMjAwLCBNaWd1ZWwgT2plZGEgd3JvdGU6DQo+
-ID4gK8KgwqDCoCAvLy8gQ3JlYXRlcyBhIG5ldyBbYFZlY2BdIHdpdGggYG5gIHplcm8taW5pdGlh
-bGl6ZWQgZWxlbWVudHMuDQo+ID4gK8KgwqDCoCAvLy8NCj4gPiArwqDCoMKgIC8vLyBOZXcgbWVt
-b3J5IGlzIGFsbG9jYXRlZCB3aXRoIGBBYCBhbmQgdGhlIFtgX19HRlBfWkVST2BdIGZsYWcuDQo+
-IA0KPiBUaGlzIG1heSBiZSBvYnZpb3VzIHNpbmNlIHdlIHBhc3MgYGZsYWdzYCBhbmQgdGhlIGZ1
-bmN0aW9uIG9ubHkgZG9lcw0KPiB0aGlzLCBidXQgdGhlIHNlbnRlbmNlIChoZXJlIGFuZCBpbiB0
-aGUgY29tbWl0IG1lc3NhZ2UpIHNvdW5kcyBhIGJpdA0KPiBsaWtlIG9ubHkgdGhhdCBmbGFnIGlz
-IHVzZWQuDQoNCk9rLCBJJ2xsIHJld29yZCBpdCBpbiB2Ni4gIA0K
+
+On 7/13/26 9:46 AM, Ben Guo wrote:
+> Update Documentation/rust/quick-start.rst translation.
+>
+> Update the translation through commit a4392ed1c8b9
+> ("docs: rust: quick-start: remove GDB/Binutils mention")
+>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+> Signed-off-by: Ben Guo <ben.guo@openatom.club>
+> ---
+>   .../translations/zh_CN/rust/quick-start.rst   | 48 ++++++++-----------
+>   1 file changed, 19 insertions(+), 29 deletions(-)
+>
+> diff --git a/Documentation/translations/zh_CN/rust/quick-start.rst b/Documentation/translations/zh_CN/rust/quick-start.rst
+> index 5f0ece6411f..0396137f3c1 100644
+> --- a/Documentation/translations/zh_CN/rust/quick-start.rst
+> +++ b/Documentation/translations/zh_CN/rust/quick-start.rst
+> @@ -59,7 +59,7 @@ Fedora Linux 提供较新的 Rust 版本，因此通常开箱即用，例如::
+>   Gentoo Linux
+>   ************
+>   
+> -Gentoo Linux（尤其是 testing 分支）提供较新的 Rust 版本，因此通常开箱即用，
+> +Gentoo Linux 提供较新的 Rust 版本，因此通常开箱即用，
+>   例如::
+>   
+>   	USE='rust-src rustfmt clippy' emerge dev-lang/rust dev-util/bindgen
+> @@ -70,7 +70,7 @@ Gentoo Linux（尤其是 testing 分支）提供较新的 Rust 版本，因此
+>   Nix
+>   ***
+>   
+> -Nix（unstable 频道）提供较新的 Rust 版本，因此通常开箱即用，例如::
+> +Nix 提供较新的 Rust 版本，因此通常开箱即用，例如::
+>   
+>   	{ pkgs ? import <nixpkgs> {} }:
+>   	pkgs.mkShell {
+> @@ -85,16 +85,14 @@ openSUSE
+>   openSUSE Slowroll 和 openSUSE Tumbleweed 提供较新的 Rust 版本，因此通常开箱
+>   即用，例如::
+>   
+> -	zypper install rust rust1.79-src rust-bindgen clang
+> +	zypper install rust rust-src rust-bindgen clang
+>   
+>   
+>   Ubuntu
+>   ******
+>   
+> -25.04
+> -~~~~~
+> -
+> -最新的 Ubuntu 版本提供较新的 Rust 版本，因此通常开箱即用，例如::
+> +Ubuntu 25.10 和 26.04 LTS 提供较新的 Rust 版本，因此通常开箱即用，
+> +例如::
+>   
+>   	apt install rustc rust-src bindgen rustfmt rust-clippy
+>   
+> @@ -111,32 +109,32 @@ Ubuntu
+>   虽然 Ubuntu 24.04 LTS 及更早版本仍然提供较新的 Rust 版本，但它们需要一些额外的配
+>   置，使用带版本号的软件包，例如::
+>   
+> -	apt install rustc-1.80 rust-1.80-src bindgen-0.65 rustfmt-1.80 \
+> -		rust-1.80-clippy
+> -	ln -s /usr/lib/rust-1.80/bin/rustfmt /usr/bin/rustfmt-1.80
+> -	ln -s /usr/lib/rust-1.80/bin/clippy-driver /usr/bin/clippy-driver-1.80
+> +	apt install rustc-1.85 rust-1.85-src bindgen-0.71 rustfmt-1.85 \
+> +		rust-1.85-clippy
+> +	ln -s /usr/lib/rust-1.85/bin/rustfmt /usr/bin/rustfmt-1.85
+> +	ln -s /usr/lib/rust-1.85/bin/clippy-driver /usr/bin/clippy-driver-1.85
+>   
+>   这些软件包都不会将其工具设置为默认值；因此应该显式指定它们，例如::
+>   
+> -	make LLVM=1 RUSTC=rustc-1.80 RUSTDOC=rustdoc-1.80 RUSTFMT=rustfmt-1.80 \
+> -		CLIPPY_DRIVER=clippy-driver-1.80 BINDGEN=bindgen-0.65
+> +	make LLVM=1 RUSTC=rustc-1.85 RUSTDOC=rustdoc-1.85 RUSTFMT=rustfmt-1.85 \
+> +		CLIPPY_DRIVER=clippy-driver-1.85 BINDGEN=bindgen-0.71
+>   
+> -或者，修改 ``PATH`` 变量将 Rust 1.80 的二进制文件放在前面，并将 ``bindgen`` 设
+> +或者，修改 ``PATH`` 变量将 Rust 1.85 的二进制文件放在前面，并将 ``bindgen`` 设
+>   置为默认值，例如::
+>   
+> -	PATH=/usr/lib/rust-1.80/bin:$PATH
+> +	PATH=/usr/lib/rust-1.85/bin:$PATH
+>   	update-alternatives --install /usr/bin/bindgen bindgen \
+> -		/usr/bin/bindgen-0.65 100
+> -	update-alternatives --set bindgen /usr/bin/bindgen-0.65
+> +		/usr/bin/bindgen-0.71 100
+> +	update-alternatives --set bindgen /usr/bin/bindgen-0.71
+>   
+> -使用带版本号的软件包时需要设置 ``RUST_LIB_SRC``，例如::
+> +使用带版本号的软件包时可能需要设置 ``RUST_LIB_SRC``，例如::
+>   
+> -	RUST_LIB_SRC=/usr/src/rustc-$(rustc-1.80 --version | cut -d' ' -f2)/library
+> +	RUST_LIB_SRC=/usr/src/rustc-$(rustc-1.85 --version | cut -d' ' -f2)/library
+>   
+>   为方便起见，可以将 ``RUST_LIB_SRC`` 导出到全局环境中。
+>   
+> -此外， ``bindgen-0.65`` 在较新的版本（24.04 LTS 和 24.10）中可用，但在更早的版
+> -本（20.04 LTS 和 22.04 LTS）中可能不可用，因此可能需要手动构建 ``bindgen``
+> +此外， ``bindgen-0.71`` 在较新的版本（24.04 LTS）中可用，但在更早的版本
+> +（20.04 LTS 和 22.04 LTS）中可能不可用，因此可能需要手动构建 ``bindgen``
+>   （请参见下文）。
+>   
+>   
+> @@ -325,11 +323,3 @@ Rust支持（CONFIG_RUST）需要在 ``General setup`` 菜单中启用。在其
+>   
+>   要想深入了解，请看 ``samples/rust/`` 下的样例源代码、 ``rust/`` 下的Rust支持代码和
+>   ``Kernel hacking`` 下的 ``Rust hacking`` 菜单。
+> -
+> -如果使用的是GDB/Binutils，而Rust符号没有被demangled，原因是工具链还不支持Rust的新v0
+> -mangling方案。有几个办法可以解决：
+> -
+> -- 安装一个较新的版本（GDB >= 10.2, Binutils >= 2.36）。
+> -
+> -- 一些版本的GDB（例如vanilla GDB 10.1）能够使用嵌入在调试信息(``CONFIG_DEBUG_INFO``)
+> -  中的pre-demangled的名字。
+
