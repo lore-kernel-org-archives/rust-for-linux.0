@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B602D9796;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E2137B40E;
 	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783946132; cv=none; b=JTZITTRit9P30yJbqgeEe0LcybjOYQP0zhUN9iV/cEdmLCDZ+I0fU+cjzea1hkYmsF1O9IpdTiJf4qW3ULsnrEiNXl5BpXx8Uuz5hg8whZd3QIJWU9+Or5jTUgjaZrIYnqrfO1IicUlhllUz/kb0Sn91nbrCtBcFwu1A+hy+H98=
+	t=1783946132; cv=none; b=ktsoFZ1on+pOTX8vHx+zae82dcUHTfcT0U24EC2CPneEp6vKUnHhnTr8y+qNXthr9FAMswt/aNix4YW3GL+3JT0vN0dRVuS3XCQ44YF/GNBzaOYt1FCdpUYRVVAbFZ+N4pJtfRdUU7GhFJMzqvLxwMM0phgb7MoyK4/ueaRImFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783946132; c=relaxed/simple;
-	bh=q0IByoYJHtZct1/kh5Sa6SgUojAKdrR9wkZwULUXSWQ=;
+	bh=OEJqGCGraOc2xljPbhiZUKlm9vDXZ7opcLl4ICt4sXc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZnRmHhgkBHbxVfvLJCNetSnbx5akD/mfds1AyR7aHj49vsLpIqUh1N91jzVJ3kQz9M7JxkLQqxlRr97089x+Ae12GYziGC6lMPt3vS+KEOBQJzenlNfHuKqVm28N6WAiad1r4BJ4e8dbEDZK7xoooXOCL/cdpz5EB13DmZzwpzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFI4XevL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=hSlaBJuKzlKpJnG1BP2/RUEVoE4VgX93a3OkWk9e9ctn55Nwwet4O0DqOTsi/VSHKYtTd1H5YobvptOX8he+Iip5b0gSoMQtIR6CnQwkuytdUsRSqGuRc4ZeJ20XLCYpQTsisQh4zdGk/4NRNZFSktTnguPEXWI2DtGuwKLSsEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSs+FGFL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFI4XevL"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 311EDC2BCFF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSs+FGFL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4F1F4C32781;
 	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1783946132;
-	bh=q0IByoYJHtZct1/kh5Sa6SgUojAKdrR9wkZwULUXSWQ=;
+	bh=OEJqGCGraOc2xljPbhiZUKlm9vDXZ7opcLl4ICt4sXc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WFI4XevL9VDLZ7Z+sYP3Ku1JyBea1h4vNJprYWqsNAJGF/RHO2Qu/ijvRF9blV4jO
-	 YJDMyXSnkHlMEqxRQAgSzhsPbDz/id4wX4ffaDKP4oF6k/bux+fbhjzQdjp9oleb4F
-	 9Ug4ow+Tw/b5QiFbH9c9EAhE5P5O9c1lhAfrly3Btswmg9Zg1F6qmLYtlBzlUkgc0y
-	 oZlvLinqNOotoO+Lu6/M5Qtk8PutgUbZwkEtvvE4wNi39wpdBtsDj5omjn0Rs/FgSa
-	 LOyau/SNsPnyr4+3cSLGt8MLBAteo6kAPOMonuZVUseLsxVdipCooU0l3IVPqDEari
-	 QQ8dJlXSctvdQ==
+	b=LSs+FGFLGlR911W54QkQinnp5Po8MDhxDOp9u6QXgmhNBBXZeQ+HBF0lOMdXHdSXN
+	 LJlUSPG7axUQuyr7mdCEGQuTy+SyxbOaaAqN8tYe+NzACv4VhU7aCqmrbB/+pmkyOj
+	 vRWEW7qkMqkqKgsYFSx6a+mOZFCB7V0nIhmMGbQx95ydrDrkOmkCNpQiCYGUsHwHJ/
+	 RbAhsja6XKV0l9DbA6yn2FnCjOaNPFhFq1IILHVE6pMt6zb/LmpdVp+RTuQlnyF4oy
+	 oCnrpvvjtLYW25NVkCFDfPbYvLFrHMak1QKnzUD1jedN9ZTtxve2VuXli4fk/n/6/Y
+	 CAr8ryqIt/zyA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BD1CC44508;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 374EBC44507;
 	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
 From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Mon, 13 Jul 2026 12:35:26 +0000
-Subject: [PATCH v3 4/7] rust_binder: Implement BINDER_DEBUG_USER_ERROR for
- transaction parsing failures
+Date: Mon, 13 Jul 2026 12:35:28 +0000
+Subject: [PATCH v3 6/7] rust_binder: Implement
+ BINDER_DEBUG_DEATH_NOTIFICATION
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-rust_binder_debug_mask-v3-4-0de91bbbbf69@google.com>
+Message-Id: <20260713-rust_binder_debug_mask-v3-6-0de91bbbbf69@google.com>
 References: <20260713-rust_binder_debug_mask-v3-0-0de91bbbbf69@google.com>
 In-Reply-To: <20260713-rust_binder_debug_mask-v3-0-0de91bbbbf69@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -60,11 +60,11 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Jahnavi MN <jahnavimn@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783946130; l=8410;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783946130; l=2692;
  i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=8F82YdQeoMbTNpy+yTKNRYFYnNfyFEuPOM2cE+pN+0U=;
- b=+O+CH/tUG3KaiPgy/jVyTL7yOaFxa8gM+kdLpX/Yp7IxeblB5WcKbWo6bR7d3r1Hb6xGs/JZX
- XzWseuyS0qUCtvcYPGj295almSKcH4Uo54rSGpQKgWbnbpYYS2tvaet
+ bh=Ac2/HhH4s3DlFi55GxIloHEGDjTqfnRwxNUHDja4HeI=;
+ b=yfGc+GP3VvqjNRlJmoaDXFpEMxjfZRjbMUxz0D4asGe7UYhryD5Cbyby6Z9wSDNV7/0QvQRIx
+ KRCNr1vOHtSBlM1fz8qBveTrC+nc9LL9ev3rLKSb49HhCyOobmILnN8
 X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
  pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
 X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
@@ -74,171 +74,76 @@ Reply-To: jahnavimn@google.com
 
 From: Jahnavi MN <jahnavimn@google.com>
 
-This adds dynamic debug logs in `thread.rs` for:
-- File descriptor array (FDA) parent offset and parent buffer address
-  alignment misalignments.
-- Memory copy, write, and translation failures during transaction
-  serialization (including out-of-bounds pointer fixups).
-- Incoming transactions or replies that do not match the expected
-  thread calling stack (such as out-of-order replies).
+This adds dynamic debug logs for:
+- Memory allocation (OOM) failures when requesting
+  death notifications
+- Registration and cancellation lifecycle events
+  (BC_REQUEST / BC_CLEAR)
+- Delivery of death notification events to userspace
+  (BR_DEAD_BINDER)
 
 Reviewed-by: Carlos Llamas <cmllamas@google.com>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Jahnavi MN <jahnavimn@google.com>
 ---
- drivers/android/binder/thread.rs | 54 ++++++++++++++++++++++++----------------
- 1 file changed, 32 insertions(+), 22 deletions(-)
+ drivers/android/binder/node.rs    |  5 +++++
+ drivers/android/binder/process.rs | 14 ++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 87298a8c597d..072cb4674172 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -721,11 +721,12 @@ fn translate_object(
-                 let alloc_offset = match sg_state.unused_buffer_space.claim_next(obj_length) {
-                     Ok(alloc_offset) => alloc_offset,
-                     Err(err) => {
--                        pr_warn!(
--                            "Failed to claim space for a BINDER_TYPE_PTR. (offset: {}, limit: {}, size: {})",
-+                        binder_debug!(
-+                            UserError,
-+                            "failed to claim space for a BINDER_TYPE_PTR (offset: {}, limit: {}, size: {})",
-                             sg_state.unused_buffer_space.offset,
-                             sg_state.unused_buffer_space.limit,
--                            obj_length,
-+                            obj_length
-                         );
-                         return Err(err.into());
-                     }
-@@ -804,6 +805,7 @@ fn translate_object(
-                 let fds_len = num_fds.checked_mul(size_of::<u32>()).ok_or(EINVAL)?;
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index 3f0757058b84..87a2e613a816 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -1105,6 +1105,11 @@ fn do_work(
+             // We're still holding the inner lock, so it cannot be aborted while we insert it into
+             // the delivered list.
+             process_inner.death_delivered(self.clone());
++            binder_debug!(
++                DeathNotification,
++                "sending death notification, cookie {:016x}",
++                cookie
++            );
+             BR_DEAD_BINDER
+         };
  
-                 if !is_aligned(parent_offset, size_of::<u32>()) {
-+                    binder_debug!(UserError, "FDA parent offset not aligned correctly");
-                     return Err(EINVAL.into());
-                 }
- 
-@@ -822,6 +824,7 @@ fn translate_object(
-                 };
- 
-                 if !is_aligned(parent_entry.sender_uaddr, size_of::<u32>()) {
-+                    binder_debug!(UserError, "FDA parent buffer not aligned correctly");
-                     return Err(EINVAL.into());
-                 }
- 
-@@ -905,12 +908,9 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
- 
-                 let target_offset_end = fixup_offset.checked_add(fixup_len).ok_or(EINVAL)?;
-                 if fixup_offset < end_of_previous_fixup || offset_end < target_offset_end {
--                    pr_warn!(
--                        "Fixups oob {} {} {} {}",
--                        fixup_offset,
--                        end_of_previous_fixup,
--                        offset_end,
--                        target_offset_end
-+                    binder_debug!(
-+                        UserError,
-+                        "fixups oob {fixup_offset} {end_of_previous_fixup} {offset_end} {target_offset_end}"
-                     );
-                     return Err(EINVAL.into());
-                 }
-@@ -918,18 +918,21 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
-                 let copy_off = end_of_previous_fixup;
-                 let copy_len = fixup_offset - end_of_previous_fixup;
-                 if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
--                    pr_warn!("Failed copying into alloc: {:?}", err);
-+                    binder_debug!(UserError, "failed copying into alloc: {err:?}");
-                     return Err(err.into());
-                 }
-                 if let PointerFixupEntry::Fixup { pointer_value, .. } = fixup {
-                     let res = alloc.write::<u64>(fixup_offset, pointer_value);
-                     if let Err(err) = res {
--                        pr_warn!("Failed copying ptr into alloc: {:?}", err);
-+                        binder_debug!(UserError, "failed copying ptr into alloc: {err:?}");
-                         return Err(err.into());
-                     }
-                 }
-                 if let Err(err) = reader.skip(fixup_len) {
--                    pr_warn!("Failed skipping {} from reader: {:?}", fixup_len, err);
-+                    binder_debug!(
-+                        UserError,
-+                        "failed skipping {fixup_len} from reader: {err:?}"
-+                    );
-                     return Err(err.into());
-                 }
-                 end_of_previous_fixup = target_offset_end;
-@@ -937,7 +940,7 @@ fn apply_sg(&self, alloc: &mut Allocation, sg_state: &mut ScatterGatherState) ->
-             let copy_off = end_of_previous_fixup;
-             let copy_len = offset_end - end_of_previous_fixup;
-             if let Err(err) = alloc.copy_into(&mut reader, copy_off, copy_len) {
--                pr_warn!("Failed copying remainder into alloc: {:?}", err);
-+                binder_debug!(UserError, "failed copying remainder into alloc: {err:?}");
-                 return Err(err.into());
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 38190aaa462d..42330fd409c4 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -1239,6 +1239,10 @@ pub(crate) fn request_death(
+         // Queue BR_ERROR if we can't allocate memory for the death notification.
+         let death = UniqueArc::new_uninit(GFP_KERNEL).inspect_err(|_| {
+             thread.push_return_work(BR_ERROR);
++            binder_debug!(
++                DeathNotification,
++                "BC_REQUEST_DEATH_NOTIFICATION failed due to memory allocation failure"
++            );
+         })?;
+         let mut refs = self.node_refs.lock();
+         let Some(info) = refs.by_handle.get_mut(&handle) else {
+@@ -1282,6 +1286,11 @@ pub(crate) fn request_death(
+                 info.node_ref().node.add_death(death, &mut owner_inner);
              }
          }
-@@ -1041,7 +1044,7 @@ pub(crate) fn copy_transaction_data(
-                 let offset: usize = offset.try_into().map_err(|_| EINVAL)?;
- 
-                 if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
--                    pr_warn!("Got transaction with invalid offset.");
-+                    binder_debug!(UserError, "got transaction with invalid offset");
-                     return Err(EINVAL.into());
-                 }
- 
-@@ -1066,7 +1069,7 @@ pub(crate) fn copy_transaction_data(
-                 ) {
-                     Ok(()) => end_of_previous_object = offset + object.size(),
-                     Err(err) => {
--                        pr_warn!("Error while translating object.");
-+                        binder_debug!(UserError, "error while translating object: {err:?}");
-                         return Err(err);
-                     }
-                 }
-@@ -1086,15 +1089,12 @@ pub(crate) fn copy_transaction_data(
-         )?;
- 
-         if let Some(sg_state) = sg_state.as_mut() {
--            if let Err(err) = self.apply_sg(&mut alloc, sg_state) {
--                pr_warn!("Failure in apply_sg: {:?}", err);
--                return Err(err);
--            }
-+            self.apply_sg(&mut alloc, sg_state)?;
-         }
- 
-         if let Some((off_out, secctx)) = secctx.as_mut() {
-             if let Err(err) = alloc.write(secctx_off, secctx.as_bytes()) {
--                pr_warn!("Failed to write security context: {:?}", err);
-+                binder_debug!(UserError, "failed to write security context: {err:?}");
-                 return Err(err.into());
-             }
-             **off_out = secctx_off;
-@@ -1282,7 +1282,7 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
-         {
-             let mut inner = self.inner.lock();
-             if !transaction.is_stacked_on(&inner.current_transaction) {
--                pr_warn!("Transaction stack changed during transaction!");
-+                binder_debug!(UserError, "got new transaction with bad transaction stack");
-                 return Err(EINVAL.into());
-             }
-             inner.current_transaction = Some(transaction.clone_arc());
-@@ -1305,8 +1305,18 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
++        binder_debug!(
++            DeathNotification,
++            "BC_REQUEST_DEATH_NOTIFICATION handle {handle} cookie {:016x}",
++            cookie
++        );
+         Ok(())
      }
  
-     fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
--        let orig = self.inner.lock().pop_transaction_to_reply(self)?;
-+        let orig = match self.inner.lock().pop_transaction_to_reply(self) {
-+            Ok(orig) => orig,
-+            Err(err) => {
-+                binder_debug!(UserError, "got reply transaction with no transaction stack");
-+                return Err(err.into());
-+            }
-+        };
-         if !orig.from.is_current_transaction(&orig) {
-+            binder_debug!(
-+                UserError,
-+                "got reply transaction with bad transaction stack"
-+            );
-             return Err(EINVAL.into());
+@@ -1325,6 +1334,11 @@ pub(crate) fn clear_death(&self, reader: &mut UserSliceReader, thread: &Thread)
+             }
          }
+ 
++        binder_debug!(
++            DeathNotification,
++            "BC_CLEAR_DEATH_NOTIFICATION handle {handle} cookie {:016x}",
++            cookie
++        );
+         Ok(())
+     }
  
 
 -- 
