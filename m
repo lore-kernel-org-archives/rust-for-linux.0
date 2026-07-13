@@ -1,385 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5F640B397;
-	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BF94502F;
+	Mon, 13 Jul 2026 12:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783946132; cv=none; b=brAlWtLDtDhwJUz62CUKhrPNa0DEA5LtW1NW5Ky6C5KMcu2Ogw/QYTWM2vvgIqOiGz0sPwtnsY6gEfuEjoS0o8oWx4v5+dUhJbenlHyBzrwkUhVpKCWAoZ52Ml77HnwZibHo2Jd+DQw7z11Ac5KKzXXjW6pVSg46FrhHx8PIm10=
+	t=1783946726; cv=none; b=UQOdXYyH6Yvn6nn5oIZyuRfvH5nvbGgUqSqPQWv8CxSUH+kRvxNtFeajVLIEUQ8braJBLBytncHhl2/agTHiyxn1WQ4EXATtOJBOgzhPaQMtuX5LNPog5EMy41XFZETQlvWNxxqc5GvTg2qbiLhAj74hDYvB4Z5M45gh2bxg43E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783946132; c=relaxed/simple;
-	bh=8vc+90L0Mb07IpTALiLRIKYaM5HYvp7a59q+ECH1wM8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=vD/7DpMyvMGVIFFxsgoVao0pxmi+NGvqKXLIU15/XI6Kh9tDCTMSn/c2LGFjowoR/859UGxdV96ZcyrWxG0MByUVDtyTyfY/cXekr02DqzFJ3fRPCWkxDlcGDJMF6oc6eaPfYgDepXCIk0bYbLwZ9ZFmoPF94TZif+CHDBrgOIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+3VvTkB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1783946726; c=relaxed/simple;
+	bh=MoZnZLnN3wr1+v34l+4SyN7hBUWfVc8JTSKBai+cqMU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rbeWL+ymjzRUTjM93Xfk/QCLKSqhOIlbYh/mHQKGKiqQIb5LxPHOeZIQLnwiye2VTd13PvltRkPXSOrxcOem+GDWjWsOFfQTwr2VgG+HK695x5FfJR+6yRH5swuGEasvwdliLh3GnZSd/vapWdmEUdtVecadPc7pe0I2Wr238/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOu92ivy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+3VvTkB"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7ABD1C2BCFB;
-	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783946132;
-	bh=8vc+90L0Mb07IpTALiLRIKYaM5HYvp7a59q+ECH1wM8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=m+3VvTkB/cmtm6mPUCDFqSPVQaRRb44uRKuI5w57ryldoqkI21V6fXLg2HM6Ou1dk
-	 dw/ghLvBXBJOjWT4DcwA2Om4TTpsjQ1eRAlr/uWmUQjbV0UjM/8z/IqFe/hAwnquGd
-	 oP4XyKp5fg7hvuhQephunRgIFL7SacF9Nq96SMk/3WIpxSgQqo4UHCyfCK17+4MzpI
-	 ONz0K6my7cV0K7ZrBxF7wvbHotqogmNdnqikEDQs0X3E7FtLDseWl9MgK8FjLIzmAo
-	 huqWJas1OXFmsxISOyYoI5BPUJcY3tsnJhCVzUHRsJ7Dk3T/9aZ8zZRAWy9mdSY+6/
-	 TOuwn7qvuKuqQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65EE0C43458;
-	Mon, 13 Jul 2026 12:35:32 +0000 (UTC)
-From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Mon, 13 Jul 2026 12:35:29 +0000
-Subject: [PATCH v3 7/7] rust_binder: Implement
- BINDER_DEBUG_DEAD_TRANSACTION
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOu92ivy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB931F000E9;
+	Mon, 13 Jul 2026 12:45:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783946725;
+	bh=AXGCpmoREIMnAzCLPYce3WlEizM3wmYlDxVRnYi6hd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hOu92ivy4kEtLI6RcYO3NTAPeuzCqA8EMq5txScKDowGUvfNjZ4SeMe4b5rEQuOW8
+	 k8TvcznbCJi9E5pCPgyx/OTYowgbECz9immM2eulqFeo0c7Z8kwkN1N+7iqe4T4JzE
+	 hIVb0RGWKyzW+TRPND/pp+/obeDfT+TS4c076vgLSWvC04JPARNobJ5vPQZpXRIWIr
+	 Me4Q7qX6IbpY5XdbpkorEXvHUKC0yfOEK1FsJomc91zRxE+C50aUE7tWd/sTDw2eyu
+	 GyO1FjW3bran98B68rPShifjtsdxCQzUR9LH8kBdR7tbup1LqQIM58sViVgZh3zTh4
+	 pqP52S7yeXp8Q==
+Date: Mon, 13 Jul 2026 13:45:19 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-hardening@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3] hardening: Default randstruct off with rust for
+ better allmodconfig support
+Message-ID: <7cdb2407-924c-44a1-8c68-917efadd4e92@sirena.org.uk>
+References: <20260702-rust-reverse-randstruct-dep-v3-1-e4e09c50014e@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-rust_binder_debug_mask-v3-7-0de91bbbbf69@google.com>
-References: <20260713-rust_binder_debug_mask-v3-0-0de91bbbbf69@google.com>
-In-Reply-To: <20260713-rust_binder_debug_mask-v3-0-0de91bbbbf69@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Jahnavi MN <jahnavimn@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783946130; l=12110;
- i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=FwUrxBU36POBXVorUXVqXXZcgJ41yVN0yFL3RLSiaOo=;
- b=4lLFDy/jCECWBlfGm8QwlRgbjdkWY+HMOBFBVADqPBuKAoJGUaA9yzNFCSZU7r+JjO8lo3ozZ
- OdHd/5oOmFABKlFz5K/eh91+y9tJxUwm1Pxf6EXWzR9pcx/4+uxce+B
-X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
- pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
-X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
- auth_id=849
-X-Original-From: Jahnavi MN <jahnavimn@google.com>
-Reply-To: jahnavimn@google.com
-
-From: Jahnavi MN <jahnavimn@google.com>
-
-This adds dynamic debug logs for:
-- Releasing active transactions during thread stack unwinding.
-- Discarded transaction error codes when a thread exits.
-- Undelivered transaction acknowledgments (TRANSACTION_COMPLETE)
-  upon thread exit.
-- Undelivered process death and freeze notifications when processes
-  exit or die.
-- Undelivered transactions canceled due to target process death.
-
-We now store the process PID in `ThreadError`, `DeliverCode`, and
-`FreezeMessage` to ensure the correct PID is logged on cancellation.
-This is necessary because `cancel()` runs from background `kworkers`,
-which would otherwise print the wrong PID.
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Jahnavi MN <jahnavimn@google.com>
----
- drivers/android/binder/freeze.rs           | 24 +++++++++++------
- drivers/android/binder/node.rs             |  9 ++++++-
- drivers/android/binder/rust_binder_main.rs | 14 ++++++++--
- drivers/android/binder/thread.rs           | 42 +++++++++++++++++++++++-------
- drivers/android/binder/transaction.rs      |  7 +++++
- 5 files changed, 76 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index 2c99e0995554..7b825ffba557 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -60,6 +60,7 @@ fn allow_duplicate(&self, node: &DArc<Node>) -> bool {
- /// Represents a notification that the freeze state has changed.
- pub(crate) struct FreezeMessage {
-     cookie: FreezeCookie,
-+    pid: i32,
- }
- 
- kernel::list::impl_list_arc_safe! {
-@@ -73,8 +74,8 @@ fn new(flags: kernel::alloc::Flags) -> Result<UninitFM, AllocError> {
-         UniqueArc::new_uninit(flags)
-     }
- 
--    fn init(ua: UninitFM, cookie: FreezeCookie) -> DLArc<FreezeMessage> {
--        match ua.pin_init_with(DTRWrap::new(FreezeMessage { cookie })) {
-+    fn init(ua: UninitFM, cookie: FreezeCookie, pid: i32) -> DLArc<FreezeMessage> {
-+        match ua.pin_init_with(DTRWrap::new(FreezeMessage { cookie, pid })) {
-             Ok(msg) => ListArc::from(msg),
-             Err(err) => match err {},
-         }
-@@ -140,7 +141,14 @@ fn do_work(
-         }
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        binder_debug!(
-+            pid = self.pid,
-+            DeadTransaction,
-+            "undelivered freeze notification, {:016x}",
-+            self.cookie.0
-+        );
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-@@ -251,7 +259,7 @@ pub(crate) fn request_freeze_notif(
-         }
- 
-         *info.freeze() = Some(cookie);
--        let msg = FreezeMessage::init(msg, cookie);
-+        let msg = FreezeMessage::init(msg, cookie, self.task.pid());
-         drop(node_refs_guard);
-         let _ = self.push_work(msg);
-         Ok(())
-@@ -272,7 +280,7 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
-         };
-         let mut clear_msg = None;
-         if freeze.num_pending_duplicates > 0 {
--            clear_msg = Some(FreezeMessage::init(alloc, cookie));
-+            clear_msg = Some(FreezeMessage::init(alloc, cookie, self.task.pid()));
-             freeze.num_pending_duplicates -= 1;
-             freeze.num_cleared_duplicates += 1;
-         } else {
-@@ -287,7 +295,7 @@ pub(crate) fn freeze_notif_done(self: &Arc<Self>, reader: &mut UserSliceReader)
-             let is_frozen = freeze.node.owner.inner.lock().is_frozen.is_fully_frozen();
-             if freeze.is_clearing || freeze.last_is_frozen != Some(is_frozen) {
-                 // Immediately send another FreezeMessage.
--                clear_msg = Some(FreezeMessage::init(alloc, cookie));
-+                clear_msg = Some(FreezeMessage::init(alloc, cookie, self.task.pid()));
-             }
-             freeze.is_pending = false;
-         }
-@@ -340,7 +348,7 @@ pub(crate) fn clear_freeze_notif(self: &Arc<Self>, reader: &mut UserSliceReader)
-         *info.freeze() = None;
-         let mut msg = None;
-         if !listener.is_pending {
--            msg = Some(FreezeMessage::init(alloc, cookie));
-+            msg = Some(FreezeMessage::init(alloc, cookie, self.task.pid()));
-         }
-         drop(node_refs_guard);
- 
-@@ -420,7 +428,7 @@ pub(crate) fn prepare_freeze_messages(&self) -> Result<FreezeMessages, AllocErro
-                 continue;
-             };
-             let msg_alloc = FreezeMessage::new(GFP_KERNEL)?;
--            let msg = FreezeMessage::init(msg_alloc, cookie);
-+            let msg = FreezeMessage::init(msg_alloc, cookie, proc.task.pid());
-             batch.push((proc, msg), GFP_KERNEL)?;
-         }
- 
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index 87a2e613a816..b9e21b8ec251 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -1120,7 +1120,14 @@ fn do_work(
-         Ok(cmd != BR_DEAD_BINDER)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        binder_debug!(
-+            pid = self.process.task.pid(),
-+            DeadTransaction,
-+            "undelivered death notification, {:016x}",
-+            self.cookie
-+        );
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/rust_binder_main.rs b/drivers/android/binder/rust_binder_main.rs
-index 29829cb210a4..15c7b65928d8 100644
---- a/drivers/android/binder/rust_binder_main.rs
-+++ b/drivers/android/binder/rust_binder_main.rs
-@@ -221,6 +221,7 @@ fn arc_pin_init(init: impl PinInit<T>) -> Result<DLArc<T>, kernel::error::Error>
- struct DeliverCode {
-     code: u32,
-     skip: Atomic<bool>,
-+    pid: i32,
- }
- 
- kernel::list::impl_list_arc_safe! {
-@@ -228,10 +229,11 @@ struct DeliverCode {
- }
- 
- impl DeliverCode {
--    fn new(code: u32) -> Self {
-+    fn new(code: u32, pid: i32) -> Self {
-         Self {
-             code,
-             skip: Atomic::new(false),
-+            pid,
-         }
-     }
- 
-@@ -256,7 +258,15 @@ fn do_work(
-         Ok(true)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        if !self.skip.load(Relaxed) {
-+            binder_debug!(
-+                pid = self.pid,
-+                DeadTransaction,
-+                "undelivered TRANSACTION_COMPLETE"
-+            );
-+        }
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 26925d094a59..102413879d1d 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -279,7 +279,7 @@ struct InnerThread {
- const LOOPER_POLL: u32 = 0x40;
- 
- impl InnerThread {
--    fn new() -> Result<Self> {
-+    fn new(pid: i32) -> Result<Self> {
-         fn next_err_id() -> u32 {
-             static EE_ID: Atomic<u32> = Atomic::new(0);
-             EE_ID.fetch_add(1, Relaxed)
-@@ -290,8 +290,8 @@ fn next_err_id() -> u32 {
-             looper_need_return: false,
-             is_dead: false,
-             process_work_list: false,
--            reply_work: ThreadError::try_new()?,
--            return_work: ThreadError::try_new()?,
-+            reply_work: ThreadError::try_new(pid)?,
-+            return_work: ThreadError::try_new(pid)?,
-             work_list: List::new(),
-             current_transaction: None,
-             extended_error: ExtendedError::new(next_err_id(), BR_OK, 0),
-@@ -445,7 +445,7 @@ impl ListItem<0> for Thread {
- 
- impl Thread {
-     pub(crate) fn new(id: i32, process: Arc<Process>) -> Result<Arc<Self>> {
--        let inner = InnerThread::new()?;
-+        let inner = InnerThread::new(process.task.pid())?;
- 
-         Arc::pin_init(
-             try_pin_init!(Thread {
-@@ -1108,6 +1108,12 @@ fn unwind_transaction_stack(self: &Arc<Self>) {
-             let mut inner = thread.inner.lock();
-             inner.pop_transaction_to_reply(thread.as_ref())
-         } {
-+            binder_debug!(
-+                DeadTransaction,
-+                "release transaction {} in, still active",
-+                transaction.debug_id
-+            );
-+
-             let reply = Err(BR_DEAD_REPLY);
-             if !transaction.from.deliver_single_reply(reply, &transaction) {
-                 break;
-@@ -1284,7 +1290,10 @@ fn transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResu
-         // TODO: We need to ensure that there isn't a pending transaction in the work queue. How
-         // could this happen?
-         let top = self.top_of_transaction_stack()?;
--        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
-+        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(
-+            BR_TRANSACTION_COMPLETE,
-+            self.process.task.pid(),
-+        ))?;
-         let completion = list_completion.clone_arc();
-         let transaction = Transaction::new(node_ref, top, self, info)?;
- 
-@@ -1336,7 +1345,10 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
- 
-         // We need to complete the transaction even if we cannot complete building the reply.
-         let out = (|| -> BinderResult<_> {
--            let completion = DTRWrap::arc_try_new(DeliverCode::new(BR_TRANSACTION_COMPLETE))?;
-+            let completion = DTRWrap::arc_try_new(DeliverCode::new(
-+                BR_TRANSACTION_COMPLETE,
-+                self.process.task.pid(),
-+            ))?;
-             let process = orig.from.process.clone();
-             let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
-             let reply = Transaction::new_reply(self, process, info, allow_fds)?;
-@@ -1370,7 +1382,8 @@ fn oneway_transaction_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> Bin
-         } else {
-             BR_TRANSACTION_COMPLETE
-         };
--        let list_completion = DTRWrap::arc_try_new(DeliverCode::new(code))?;
-+        let list_completion =
-+            DTRWrap::arc_try_new(DeliverCode::new(code, self.process.task.pid()))?;
-         let completion = list_completion.clone_arc();
-         self.inner.lock().push_work(list_completion);
-         match transaction.submit(info) {
-@@ -1626,14 +1639,16 @@ pub(crate) fn release(self: &Arc<Self>) {
- #[pin_data]
- struct ThreadError {
-     error_code: Atomic<u32>,
-+    pid: i32,
-     #[pin]
-     links_track: AtomicTracker,
- }
- 
- impl ThreadError {
--    fn try_new() -> Result<DArc<Self>> {
-+    fn try_new(pid: i32) -> Result<DArc<Self>> {
-         DTRWrap::arc_pin_init(pin_init!(Self {
-             error_code: Atomic::new(BR_OK),
-+            pid,
-             links_track <- AtomicTracker::new(),
-         }))
-         .map(ListArc::into_arc)
-@@ -1660,7 +1675,16 @@ fn do_work(
-         Ok(true)
-     }
- 
--    fn cancel(self: DArc<Self>) {}
-+    fn cancel(self: DArc<Self>) {
-+        let code = self.error_code.load(Relaxed);
-+        if code != BR_OK {
-+            binder_debug!(
-+                pid = self.pid,
-+                DeadTransaction,
-+                "undelivered TRANSACTION_ERROR: {code}"
-+            );
-+        }
-+    }
- 
-     fn should_sync_wakeup(&self) -> bool {
-         false
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index b56dca55662d..0dbc7a9d16f9 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -489,6 +489,13 @@ fn cancel(self: DArc<Self>) {
-         if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
-             let reply = Err(BR_DEAD_REPLY);
-             self.from.deliver_reply(reply, &self);
-+        } else {
-+            binder_debug!(
-+                pid = self.to.task.pid(),
-+                DeadTransaction,
-+                "undelivered transaction {}, process died",
-+                self.debug_id
-+            );
-         }
- 
-         self.drop_outstanding_txn();
-
--- 
-2.55.0.795.g602f6c329a-goog
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KkKQRvq7fUd3CTer"
+Content-Disposition: inline
+In-Reply-To: <20260702-rust-reverse-randstruct-dep-v3-1-e4e09c50014e@kernel.org>
+X-Cookie: Call for details.
 
 
+--KkKQRvq7fUd3CTer
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Jul 02, 2026 at 06:37:08PM +0100, Mark Brown wrote:
+> Currently randstruct does not support rust so we have Kconfig dependencies
+> which prevent rust being enabled when randstruct is. Unfortunately this
+> prevents rust being enabled in allmodconfig, our standard coverage build.
+> randstruct gets turned on by default, then the dependency on !RANDSTRUCT
+> causes rust to get disabled.
+
+Any news on this?  I'm flying blind doing -next merges of rust code with
+build coverage gone, and I suspect a bunch of other people think they
+have build coverage in their tests but it's silently vanished (I know at
+least one person ran into that already).
+
+--KkKQRvq7fUd3CTer
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpU3d4ACgkQJNaLcl1U
+h9Bjvgf/UXM/ABlVwXmO0yhYbXVT+W40IPPfMsNSWSchDtT+Rt+69MAMwb+DGi2Y
+yat4uyPHz/UAhdJEN9lOTfY8r6xx1GK+Do2Iy1Rxx+1IWwesHzixtFXGrY5QpmR9
+umzRGBnNTRaCuxvE+F/gFg+pE7H4KeB1IUb11PSu2O6eE1jFMoSrO/XYuQOQv0sW
+mqnxFzXcxBvqSMexdb3VY3W+8Ga/q3qmTDG0qgOFUX5LqNdncd+e/iljQw83cpe2
+4U1tbxQRrdTXX+JUPqt/5LCoZlidSrr6/rt8Ejl2isihITtwEdskWeCv6FMi/LoC
+TynDTs67zu+p3nKZ15/B3BQm5pikKA==
+=QMrC
+-----END PGP SIGNATURE-----
+
+--KkKQRvq7fUd3CTer--
