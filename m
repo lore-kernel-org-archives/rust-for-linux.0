@@ -1,89 +1,83 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-yx2-f1.google.com (mail-yx2-f1.google.com [74.125.224.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F229C2D9ECD
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 21:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3014D78F3A
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 21:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783976654; cv=none; b=VCr8UpGz8WlAzYWxr9XNDw+sTovNWCS31N/LtlclKyxXdQBO4jbQ0NuZEMFM8CztiVKB5hXOFjveFAxUE73xetPZ6vupCE37W8AiRH86nUNYHJtwRLqrddxCYJUnHLN9EE0MfK9yKWSfAV63QvtEjuEatuZNWnoH9s/SjeM8s1I=
+	t=1783976942; cv=none; b=TrBiWRrET1dfA5f0oU1d7qveg2NQ4XRYCLCJ9tsWZnV2HK0qNL9cPaE4c3q5SQ14isXmD0uTQEvVkfI3xHlkItswqrlAZfh55MfFxyUKT/5NgY5J37CfVWM04fZR9OXFtRR4c3IVPDUAF4/NZbx8frDHeMtuiKh+oEklqJaD7HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783976654; c=relaxed/simple;
-	bh=V/jFJBxpxcBZsKbeLLzevjGS81iEgBjYXn9xBkxpl58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CNxfjb8pGTGbscRXKG88S50DubUPxOPzcYeAfB9BdrMQYVAn8VPM9D+KGpu3p/uhcME7DYtv9fMG5QFpN3tiEHswy9wQ+vCdU9tuFB+rjzcVMP62yFx9c3Db85M1Gzt4xKphEv08cogRn6x5szlvE3eI3OEkxc1hMAU2O66OTUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YCKm7j2T; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1783976942; c=relaxed/simple;
+	bh=3jQ1hH8GlZgiDKSnvflUdEkxhV2abBPDIrnY3Pptvs4=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jedjuVVVPteIVy2ZsJBSU0VytAPdKwUhuxj0bmj/EfCxqczzuNMKDvQLIX5+dwE7jVcp3tqK2dHga+GTByGBTZtOzBcsogXLmtls92/n1IYqer5NBiRszUHmwarMDyqKgiNCRuH1/pOZVYWWId50a0UD6oUikl+qjwjcPztSC/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DDu2ZxQI; arc=none smtp.client-ip=74.125.224.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YCKm7j2T"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ccdf36f63dso42735ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 14:04:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DDu2ZxQI"
+Received: by mail-yx2-f1.google.com with SMTP id 00721157ae682-81cf30cb90fso16575457b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 14:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783976651; x=1784581451; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783976940; x=1784581740; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=O1jwfrJSgvkJGqlKhnOnZPVsVcLy5HRFyyaAe+4iYsc=;
-        b=YCKm7j2TwvpGcfMje72j3+DBB4w8J2rnPix7xjJCX4se07dnl0g8tcTY0r6L6D3uJP
-         +5+OVaYo8Vy/ixMdPAR2TZen3sbeLVluoSFUJ0mcgurv46Pjqy3yyNaGXby8jF7dWdu/
-         WNT1qvdkwLbAJ84W6815RGTAYLx+d+/V7yQUkzZf9ZzVp+90a0CI7mJ7hHbLaM+doRiY
-         vI8QL+ZtFlkxYuAZWHcEQW7fd8CttSg1YWB6epUY129fWRTVNJxScpKOxZ1iuETizX/3
-         VZRRuI6O0MSiW0vsbKpQwSkJ0ruXOCP95jG2v+G1owEafH5wcHl36KAGIPgXk9nPPvbi
-         NMWw==
+        bh=3z11abkydzZ2iKlx8ecIFGRlioo2QGUfIr1WJRM/Diw=;
+        b=DDu2ZxQIwHAT+1WUHK+lGcra70p9GFk+7T2LBlyTerpEuC2q1C/ByWyyVwtVPaFrfV
+         RgcgDXBMmifKT1gFuRnWONEitVx9R3MwIC9sdRrDsy1nXJFjNYATaapiT72LCJJPHPW0
+         nQzYMo/qGKX2LPQVq81+xG8gTPEO1ptDcq7atl0znq8jh+9nRWHHpj/loF79upJY6zC4
+         Hp2dQXTV7LQUO6d5MvKqfClQ7WON3H/c/eL8E9O6txblqVrCCwPKcJDiCAowbAqj9Hw0
+         05zTftNpF7+wdU92OEq6WaLMdkwdzS+u6fhYpWdX5kJ9gAl6mpmOqNop4yUecJzJOgIT
+         czWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783976651; x=1784581451;
+        d=1e100.net; s=20251104; t=1783976940; x=1784581740;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O1jwfrJSgvkJGqlKhnOnZPVsVcLy5HRFyyaAe+4iYsc=;
-        b=mBPhfLCrxCpzAAWQsYW3SpHkTCueV+6Qb8I44ulaUD5cPKUAO5E4KzVxWO/ssxCg3I
-         ScaO4hyEz+kG0Qb1z3TYpgvG6lerEakWwjBGkzmI1MOeEXDl64BB5uOSwZW4TldVg1nJ
-         R5VPnXGJLjK0OYVr/JVGu5cswkGUGAaNi+nnqL4qMX0j3yijIMxOCcU9jFV9z7QtOoJG
-         UxYms/aULBBkOtWXQyRiP86HOU9ul7fs0U26WGmUDW2VhYrBnnhu5GCzwdBBtl1JL2CB
-         3JqtOHcclIoMFCQuSm4a5Z8qO+CsLsXz87TzAMjMuGu0MEsiCMN5N025aqaFQKZRnAmk
-         0sGw==
-X-Forwarded-Encrypted: i=1; AHgh+RrhwS+1d3TEKhhjlcrB47H8RF2iPJuCVJdBqHqheDkHf1Kn1ZCOP1hJXe4dcvFpK8be7/hJkLvJBiEWdB4N2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzETjdxET4cAT5aWM97Cr/sKUWd3LgQUuDMEqxemrFRkcPRrBOC
-	P53U7YM9Wh/uMPH/FliyQJ86XorvlGYJxfuJeS9Zgn2Qu+vjzYDZOaqjpVSwQuMVsw==
-X-Gm-Gg: AfdE7clBh9Mmkdx0pHHJ/N7Ewl2PqP8T3fmhgNeFwpj2kqfStkEmHDwEWLvwfz6c+XG
-	SaSwzc+0KbDBjaInbmWS0jT3hjbH6hOOWYVcbCGLsMC/D2A/u1+OMP9xP5Iw+MJcSUPNHIrpdQN
-	NBhwnFQmiOy5PmnnaeVtM04I5vcbtbulLIB/ye7JIl9BvTPKpKRkMFRdN0sJqwtRbf5csqrr6UU
-	q8vxCpjVihXx62MRBX+c6/q0zRiABwLbVXfqLfcvXvqqOqAs8tqLV9j6q2InDwJQ5J7kJ+szC+W
-	pT/k5L/CkzGCTzQ2eTGyZmAiY8jQGwzDwuK0oU4xLZ9ygRAmLETVW8WqP9bIQJuu86MQ7s/KD+X
-	asc1FpHhlXQ0y7TRCFZiwINfdYWPgDXa/MGh+OpF0nKJeNRFyAQULO9+8S40sHrU3VrrlYVixZS
-	RtbjxGrmkjznF6B2dguf6zea8XwA/epXa7I9bNkhmm63Y62EJSAryWTVa3Z+Pa86B+JcslNclZf
-	4iWyTLCJMBi9f9ecOoF3+nuGE3ADgYItYU=
-X-Received: by 2002:a17:903:943:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2cee16948f2mr2903665ad.8.1783976650846;
-        Mon, 13 Jul 2026 14:04:10 -0700 (PDT)
-Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e172b6d2csm415096a91.4.2026.07.13.14.04.09
+        bh=3z11abkydzZ2iKlx8ecIFGRlioo2QGUfIr1WJRM/Diw=;
+        b=kO3eerigsrhUrecevy7YI7dpVVmgHTKB4MwxQDFIO9w8Wda+0a0pmj2SmlnaPgZQ3U
+         qkVtwOzQDc2rnD4E09Xbxx3HEZKxsoN8W6KWaC8KBSc+inxy4awJYo432P8aXwc4WhLj
+         WpV/dxbCQQxxtn/e3T/6Tl2c6cczag5Z/kZs+UcPmNXGYl+mRUPUedSOxDBNrmLi3WAm
+         JqP6R3HZ70KoHF1Hw7UiknBoaM13kTIEenjRRthYqHUmI6xMw01Syf7HG+k91wwZb6iT
+         Pq3uV78dpCbl5xa0L1yMkN5X2gaWXiWsrAps57N6w51koyuZ+i3jW1e0EVd+RQrfVm1Y
+         wCKA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq2VUeQm4QKZC5AZqrNVxPis8KIBXGJrcsSkvXpUgr1+FZWpV5PrEJvYA8xmZ0naQ0uGkzfLETi1Uo6sKhFjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2znWZ8BWLgEUgApE5D01THqnnBuOBspBw88nk4IF+IgP82NRe
+	hzuXNh/omga9JD/00+fhjUb83/UQFoZtoQDfL9tY/Fkl8MamZ8kpElYW
+X-Gm-Gg: AfdE7cm4Aqxld1w0zyIGTm3Q+EdEKoqpo+K9bwLKiGw11BPM4ZjyhN+cYmNo3YwEu9F
+	b7qigHqY3gCUlPZML4XLda53UJQmoeKatIxe0n2wcHKb4wKT9IElkIxvmElEIXWHggWHlZCpz9J
+	6jfR81jtmXHCcTPeM12XPT7Tmoy4RuxcJeXRxTEd2Dcl1YUcgSntVfWqsj7NXscn5JbvRZO4CZy
+	HruNSde1Unt8OFTOqK2c5nDOiQsUWdquhRqHPBP2GtfAQwiLnfWHuHLxjWSjTx7H0VQEyAaq3um
+	jts+n2DBoQDiHy81kkf8j7DTaIcUApIoiNTfaAnLVrvrxx8crau6guzHcnttRcpZC5cL1nXduSo
+	1I3eVh4Er4U5eM/sKc88qRBKp8miw0ZOR2uBSE8H74EkqbW2KHSPiD3veyuoh7ng5sM2+myZ785
+	zzcoaAUK1nn7FQS+bLXPlvPgaz9+WO33YZdRVx/kfweSJYxpkGiB6U2T107VOo5wBqFHc=
+X-Received: by 2002:a05:690c:61c6:b0:81e:b801:34ec with SMTP id 00721157ae682-81ebb2c92b2mr9367897b3.60.1783976940225;
+        Mon, 13 Jul 2026 14:09:00 -0700 (PDT)
+Received: from pendragon (76-234-45-214.lightspeed.cicril.sbcglobal.net. [76.234.45.214])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e6be98dfbsm126045887b3.2.2026.07.13.14.08.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jul 2026 14:04:09 -0700 (PDT)
-Date: Mon, 13 Jul 2026 21:04:05 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: jahnavimn@google.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 7/7] rust_binder: Implement
- BINDER_DEBUG_DEAD_TRANSACTION
-Message-ID: <alVSxTzCxvWCUgzB@google.com>
-References: <20260713-rust_binder_debug_mask-v3-0-0de91bbbbf69@google.com>
- <20260713-rust_binder_debug_mask-v3-7-0de91bbbbf69@google.com>
+        Mon, 13 Jul 2026 14:08:59 -0700 (PDT)
+From: Colin Braun <colinbrauncl@gmail.com>
+X-Google-Original-From: Colin Braun <electrolitic21@gmail.com>
+Date: Mon, 13 Jul 2026 16:08:58 -0500
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Colin Braun <colinbrauncl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Mathias Nyman <mathias.nyman@intel.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-media@vger.kernel.org, Colin Braun <colin.braun.cl@gmail.com>
+Subject: Re: [RFC PATCH 4/4] media: add gv-usb2 audio capture driver
+Message-ID: <alVScUlUiOS0ZiIH@pendragon>
+References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
+ <20260712-urb-abstraction-v1-v1-4-9fa011634ead@gmail.com>
+ <DJXIV7JTU8JG.2U0I0LMHE84NJ@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -92,29 +86,26 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260713-rust_binder_debug_mask-v3-7-0de91bbbbf69@google.com>
+In-Reply-To: <DJXIV7JTU8JG.2U0I0LMHE84NJ@kernel.org>
 
-On Mon, Jul 13, 2026 at 12:35:29PM +0000, Jahnavi MN via B4 Relay wrote:
-> From: Jahnavi MN <jahnavimn@google.com>
+On Mon, Jul 13, 2026 at 04:44:24PM +0200, Danilo Krummrich wrote:
+> On Sun Jul 12, 2026 at 11:08 PM CEST, Colin Braun wrote:
+> > +/// Write a vendor-specific control register on the GV-USB2 device.
+> > +///
+> > +/// Uses a vendor-type control request (`REQ_WRITE_REG`) to write the
+> > +/// given `value` to the given `reg` address.
+> > +fn write_reg(intf: &usb::Interface<device::Bound>, reg: u16, value: u8) -> Result {
 > 
-> This adds dynamic debug logs for:
-> - Releasing active transactions during thread stack unwinding.
-> - Discarded transaction error codes when a thread exits.
-> - Undelivered transaction acknowledgments (TRANSACTION_COMPLETE)
->   upon thread exit.
-> - Undelivered process death and freeze notifications when processes
->   exit or die.
-> - Undelivered transactions canceled due to target process death.
+> In addition to raw control messages, this can leverage the generic I/O backend
+> infrastructure, so you don't have to roll your own write_reg() function and use
+> the register!() infrastructure instead. See also [1] and [2].
 > 
-> We now store the process PID in `ThreadError`, `DeliverCode`, and
-> `FreezeMessage` to ensure the correct PID is logged on cancellation.
-> This is necessary because `cancel()` runs from background `kworkers`,
-> which would otherwise print the wrong PID.
+> [1] https://lore.kernel.org/driver-core/20260706-io_projection-v6-0-72cd5d055d54@garyguo.net/
+> [2] https://lore.kernel.org/lkml/DJVQ852J7SOH.26YBIJTQ9B66G@kernel.org/
 > 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Jahnavi MN <jahnavimn@google.com>
-> ---
 
-Thanks Jahnavi,
+Interesting, I had briefly glanced at this macro and was disappointed
+that it didn't seem to apply well to my situation, but I see that the
+Io and IoCapable traits are generic in a way that does support this.
 
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
+I'll include this in my next revision, thank you!
