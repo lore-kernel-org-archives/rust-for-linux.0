@@ -1,91 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D6526F29C;
-	Mon, 13 Jul 2026 14:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5930835839E
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 15:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783953871; cv=none; b=AfXATU0Nt10xeoBlXaeZq7mDeJGEfRps2mbdr+i3DTVtXpBiSomGD4SGP6t/lzwuk7DnnsjwAP8w7p5qcI9rOS2WoMw8DgVp3ChL0QFiilPMoYlQyRdqh9d3sRShojT00et4LO06DtzCwk8lyzBNRJiq/ZQw8guhNj+uKq5FWmc=
+	t=1783956948; cv=none; b=PDBuC1pdZ/ZX+tmExENlizvuMFJ7pU7J5JpyNVdYa697f4Es59iio02Ir3pFq2AGM/IdaN2rpiFHN0bxwPUx230TLenzBzuQN0WVw2bjccdZVWXEbVWWuiKWogK152m5RnG2X4zm9MOAx7B5eLPssjC+2AdsvNDC11UyMeUftuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783953871; c=relaxed/simple;
-	bh=Wi2oIO4KlthMzhdBHCa/zOWzvuPpWi847pDCLSaxheI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=pfvxvav0wNpHys4XlPNwb2QjMpUWQIYdMrOF7kxbAazFjD0HdpCHlTY37O0W2o4t3UvVgnh7As1R3XGPT492EVl+3S3spu1T703PQq12YDAzT06QvaTO8hpszkXfD1N9/9kaSk2NreIVwZqGL0eXRgHcYYiPxo7yyyfDRfV8d7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NEqe3vf0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783956948; c=relaxed/simple;
+	bh=/+VDDljuUJgrqVoL7d8VkVrTcvD3lziVLdeX6XyuqXE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Eu1qHVj00etwcEQPZexH11e/wmfFYHkbpA6NVJFGzCXAK9Xh3OdIoLLkC2uFHJNEZW356UFrj65+A1cU4MCxutxvvoLkjpZSM49/sX2h65tYeoc1wrg5OZMQv97+NEtb5d0k846z7JW6lMPdQ3ZG2hs5Oe8hLmfHUmYuM6TeLD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JB1TDuKm; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NEqe3vf0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339E71F000E9;
-	Mon, 13 Jul 2026 14:44:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783953870;
-	bh=TJzui1iXfClv4opxUqA+6q+P2kgXyCK8mGf+aPBN15w=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=NEqe3vf0wECpvAehX8BA508mFHxw0Vc+AtEr40n2CwBWIiKY9M5HKEQJdqd1xlMmt
-	 EgDYk/hdyBDIigSlvRgafUlNMjplThFerXphRXqe4b3FttoCaLpaKfIBavvLjc32uU
-	 xy1J7dsY7IfJypwkgZBgfiq4fYuhIZQfWHGlYthHPLANI34eHyb4aOEMP2Dewt66hL
-	 UkV4VFQHRC3NXK/frjsMQIkwccnJlQxyzOD5sq9bCPlaDAKr+Zpgld3CJmzfI8p5kk
-	 nA9abuqjtHBhFpeV2SxbxhK/WTD25aCh+ejr2yhz8MStXbrugC93aKVHOcJ9QGsRJU
-	 kO3x4WDSa3R6A==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JB1TDuKm"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-695f710d929so3819392a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 08:35:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783956943; x=1784561743; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UZgc/vupwsueMqB4x7/Q5vvpLkG8Vv1Z1ubKbDy/+14=;
+        b=JB1TDuKmy9yrGojKdJaeJ5xcFyhwmxdHuV1LxT+M9XFbR6pCj+/5bbSvoykOi38mHd
+         ZbEXKeaUtt2nlQoScgcBBf5tkX55KQH3tVsk215E9OEfNAB4XgkQ71U96U3qlhn706we
+         QkXNBwZeZ4CT77yxHMDW3KKF8ZHnaOZ6JB4br0N0rgpK0vdl2uyR+e6GhzKJmK2b2wST
+         oLbW33BpNAFTnhKhdu4VSQkXRIw0CC41UiXwE80TnvtgO5zFxm4NoenPwsSFnMrssm49
+         jg+N9ZBDEnJua86v4dQnw5mFDdwqvMCkpwi6PN6qbBZ1hs2Zklf2YHAbcEKt5rcL+fqE
+         08zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783956943; x=1784561743;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UZgc/vupwsueMqB4x7/Q5vvpLkG8Vv1Z1ubKbDy/+14=;
+        b=PxYda/yAjx8tEGRgcaNw9O2PULMdHPPS0+G76oYRdM4NHo1NguK/SsJBAsL2zmEk4Q
+         TPAE/rmq0+m1ad7WKLm3e38VfpwlE4OzjcQoVNgM2HdWQeAno5bMwJPdVvMB1sgq7nJq
+         QlwcWUjD0aa+LUaqzGfYJFP1JwxitVl2Z4owjsJwOewcprwxh+P8NAb5lSFwk5xm1iNZ
+         ezmBYhnZNR8O+UxwgwxZdPnr2uuatY/EcR2BzU3JePv4umizFTn5dRDeoH6ZjFaFDmB4
+         9MFl6J4rmg0UljU5ddUqlpKnAb1SSo6BPgeGhYt7shPF3gCECD0ALkRHOQrve9AQIPWP
+         S0tw==
+X-Forwarded-Encrypted: i=1; AHgh+RrEl56lFm2FW1jfMypq74MUqA6+EDPFUfb1loZUQmoa9DryeGScvx1HMfs2EerMQjx8hsBIgYe247shgRguWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzApg/Y3qgwm1UvvndrDx454taqzDSJ4mmXJs+qgwVoGR6b1HHi
+	PIguGCYTXbUqGPmW61OeJZC4Uj49s+FL6KfT+aUGgk0iH9+QvvXWiGrYz2tNBNvhrR/Ftq1Te0j
+	k4P0VQrlUg+iJH8GRnA==
+X-Received: from edbif2.prod.google.com ([2002:a05:6402:5d82:b0:698:bf45:cd4f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2686:b0:698:87ac:33c2 with SMTP id 4fb4d7f45d1cf-69c5ef830e2mr4273388a12.9.1783956942642;
+ Mon, 13 Jul 2026 08:35:42 -0700 (PDT)
+Date: Mon, 13 Jul 2026 15:35:41 +0000
+In-Reply-To: <tencent_4426892E62B77DEA2AE898E899A871940005@qq.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jul 2026 16:44:24 +0200
-Message-Id: <DJXIV7JTU8JG.2U0I0LMHE84NJ@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Mauro Carvalho Chehab" <mchehab@kernel.org>, "Alan
- Stern" <stern@rowland.harvard.edu>, "Mathias Nyman"
- <mathias.nyman@intel.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <linux-media@vger.kernel.org>, "Colin Braun" <colin.braun.cl@gmail.com>
-To: "Colin Braun" <colinbrauncl@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [RFC PATCH 4/4] media: add gv-usb2 audio capture driver
-References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
- <20260712-urb-abstraction-v1-v1-4-9fa011634ead@gmail.com>
-In-Reply-To: <20260712-urb-abstraction-v1-v1-4-9fa011634ead@gmail.com>
+References: <20260707160200.2798072-1-1479826151@qq.com> <tencent_4426892E62B77DEA2AE898E899A871940005@qq.com>
+Message-ID: <alUFzVNxNHlmZbMJ@google.com>
+Subject: Re: [PATCH v2] rust: drm: fix GEM object pointer safety docs
+From: Alice Ryhl <aliceryhl@google.com>
+To: Yilin Chen <1479826151@qq.com>
+Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Sun Jul 12, 2026 at 11:08 PM CEST, Colin Braun wrote:
-> +/// Write a vendor-specific control register on the GV-USB2 device.
-> +///
-> +/// Uses a vendor-type control request (`REQ_WRITE_REG`) to write the
-> +/// given `value` to the given `reg` address.
-> +fn write_reg(intf: &usb::Interface<device::Bound>, reg: u16, value: u8) =
--> Result {
+On Tue, Jul 07, 2026 at 04:33:33PM +0000, Yilin Chen wrote:
+> IntoGEMObject::from_raw() receives a pointer to struct drm_gem_object,
+> not a pointer to Self. The previous documentation used Self even though
+> the function argument is the embedded GEM object pointer.
+> 
+> However, the pointer must not be any arbitrary valid drm_gem_object. The
+> implementations recover Self with container_of(), so the GEM object must
+> be embedded in a valid Self instance. This patch documents that requirement
+> explicitly.
+> 
+> Assisted-by: Codex:GPT-5
+> Signed-off-by: Yilin Chen <1479826151@qq.com>
 
-In addition to raw control messages, this can leverage the generic I/O back=
-end
-infrastructure, so you don't have to roll your own write_reg() function and=
- use
-the register!() infrastructure instead. See also [1] and [2].
-
-[1] https://lore.kernel.org/driver-core/20260706-io_projection-v6-0-72cd5d0=
-55d54@garyguo.net/
-[2] https://lore.kernel.org/lkml/DJVQ852J7SOH.26YBIJTQ9B66G@kernel.org/
-
-> +    let req =3D usb::ch9::CtrlRequest::new(
-> +        usb::ch9::RequestType::new(
-> +            usb::ch9::Direction::Out,
-> +            usb::ch9::Type::Vendor,
-> +            usb::ch9::Recipient::Device,
-> +        ),
-> +        regs::REQ_WRITE_REG,
-> +        u16::from(value),
-> +        reg,
-> +        0,
-> +    );
-> +    let dev: &usb::Device<device::Bound> =3D intf.as_ref();
-> +    dev.control_msg(&req, None, Delta::from_millis(1_000))
-> +        .map(|_| ())
-> +}
+Merged into drm-rust-next. Thanks!
