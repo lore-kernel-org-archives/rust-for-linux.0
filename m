@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515474252D6;
-	Mon, 13 Jul 2026 13:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FAE42E00F;
+	Mon, 13 Jul 2026 13:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783948952; cv=none; b=J5MhQlVsopJgwijn50qeuafL3jgMsDLjsi+hyMhOJDDtG5NijxFJTN+FdoZuM35Oh0zhHmgX8VEVyK2gweFWTYMNrmRhgBJIrQHxWNLYDrgvnCbqOrL+BNha4XXS5QYpt2BO9GcHk0NuD3tUsc81EAaRS5yibYlhlLYYcZSF21g=
+	t=1783948961; cv=none; b=Ya3KTlKUSaV2SGexZjwrQbnp1RefbHLUhhLyL7URMYMencZRBTKb5XQiq4X1eWX+HZNJyaQr+uhBa/E0UxFXLrefnbi7Qr1ZcGptNDoDPTC6113w81CIThpn/ZfSjqYojC9mDKdpYSITkMbVOZHyCJxwXPnZSIDow+vOVUA9CAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783948952; c=relaxed/simple;
-	bh=C5XLvguQLhVEcfSjW/+LL4p6dlUwKF/CRv5qqTfRXZM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=exzSknuzJSl1jw6UaedAbBgT8BYNiwQlHV6YinLqPOq8wyobRvnzYzlh+aHJONfNlfBwjx1w8GIJJdgHIgdwtN/cJvGqZKYQJ53qW6W2GlzoogHPXUUgqQPLInMVXP1TuWcaiYqF9Cea7MkRPDKdEeWjGsJID7qgGb+C0UOJyXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEp3SGnx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783948961; c=relaxed/simple;
+	bh=jM6e9c+0o75eNSvMophbQ8WJrLMI6Mrq3HnN42o2rqo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=AwO9UW8/YWFY7nWOsvFTPhmBZ4z6FnxE0djOwJ425/pqLJCsyLRvXvGG8ris+hdAQMtJJhX5pIq2BEttrIbKyaVeUBygJbGids3DDhC9ZDvZkGTyvffQ/dVzJHxC4zMbzTpXlBBJ0cqGMGTdchHxaQrvHYM6Dimx92GyqP8umcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/yRq4yF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEp3SGnx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055411F00A3A;
-	Mon, 13 Jul 2026 13:22:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/yRq4yF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9DE1F000E9;
+	Mon, 13 Jul 2026 13:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783948951;
-	bh=C5XLvguQLhVEcfSjW/+LL4p6dlUwKF/CRv5qqTfRXZM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=KEp3SGnxTenFsgqPyojBgtKn2/PyHFtTDC9UY7qqyDaooj84+rEpvk61MIgbVhSNF
-	 GGpYQG6/AUfE0D9D4ZTJiFphay7OC6ARCcGXjeJYGTz20c3cIf3V2amsYthyqXPNU2
-	 WwZSIcIQz/TVdOtTqA9VeaQAu4sCbRIaJfGFLa8UkH/FG99o44jMjxu+9W29KfhT/N
-	 cnNY+dGUh/nRpH7P8Oi80yW9W0Y+y52TqNwveSjn6mvskYXqVcy1WtUgGPvKLyulEE
-	 VUDcreQ0FiHZT3TGDNZb3ZRccNpm8WXxsmNaWzKKbchIx21pZXZ2G5q9RA7OvNvNtb
-	 NNQTaaUW3LQzw==
+	s=k20260515; t=1783948959;
+	bh=oN4fj19HlXx2gH9uVU0NktYB1l0CTvjr8ja0mgYRZ7I=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=b/yRq4yFfhFI/VFgrjlcjCvG6J1C292nFVSaKSvG0Y87cCj2pwiXmTpth/btpZQmc
+	 WkAYyqlkXeUgIGWfqDI0NeroLdhQf33eBbcfl02BosFiM/8p8Gq+gOFTZHzTm4a9DD
+	 sDmjTxKfgRx+EfWh9xgJMZCCPYwW89mJ1wnQXjdOiDt8IRuq9AvU73o76mMyLYmETl
+	 ZIUNIj5X3EFMSK30+8WlHOex9v3i7Hs/gJS44EVEcExwZKBWl69hd1shOezktbJFx3
+	 j07bJ7sU2E6415ZgTzhMR3Jy2MpggV0JP46c/nd0vP5qYC6FjEXIaJIsrfDhTSDFYX
+	 cQ+k6Pv/npM5A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jul 2026 15:22:25 +0200
-Message-Id: <DJXH4FQ62VED.3T41DAVF0KRDQ@kernel.org>
-Subject: Re: [RFC PATCH 0/4] rust: usb: add usb request block abstractions
- and a user
+Date: Mon, 13 Jul 2026 15:22:33 +0200
+Message-Id: <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
  <gregkh@linuxfoundation.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
@@ -50,16 +48,57 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
  Stern" <stern@rowland.harvard.edu>, "Mathias Nyman"
  <mathias.nyman@intel.com>, <linux-kernel@vger.kernel.org>,
  <rust-for-linux@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <linux-media@vger.kernel.org>, "Colin Braun" <colin.braun.cl@gmail.com>
+ <linux-media@vger.kernel.org>, "Colin Braun" <colin.braun.cl@gmail.com>,
+ <oneukum@suse.com>
 To: "Colin Braun" <colinbrauncl@gmail.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint
+ abstractions
 References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
-In-Reply-To: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
+ <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
+In-Reply-To: <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
+
+(Cc: Oliver)
 
 On Sun Jul 12, 2026 at 11:07 PM CEST, Colin Braun wrote:
-> This series introduces initial abstractions to allow for the
-> implementation of USB drivers in Rust.
+> @@ -382,8 +556,8 @@ fn as_ref(&self) -> &device::Device<Ctx> {
+>      }
+>  }
+> =20
+> -impl<Ctx: device::DeviceContext> AsRef<Device> for Interface<Ctx> {
+> -    fn as_ref(&self) -> &Device {
+> +impl<Ctx: device::DeviceContext> AsRef<Device<Ctx>> for Interface<Ctx> {
+> +    fn as_ref(&self) -> &Device<Ctx> {
+>          // SAFETY: `self.as_raw()` is valid by the type invariants.
+>          let usb_dev =3D unsafe { bindings::interface_to_usbdev(self.as_r=
+aw()) };
 
-Note that there's also [1].
+Please see commit f12140f21acb ("rust: usb: don't retain device context for=
+ the
+interface parent").
 
-[1] https://lore.kernel.org/lkml/20260617145946.1894-1-mike@fireburn.co.uk/
+We can't derive the device context of a USB device from a USB interface. Pl=
+ease
+also see the device context documentation in [1].
+
+USB device drivers are separate from USB interface drivers, we can't assume=
+ that
+a USB device is bound to a USB device driver just because a USB interface (=
+of
+that same device) is bound to an USB interface driver.
+
+The same is true from the Core context, which means the device is in a bus
+device callback, where the device lock is held.
+
+This is also the reason why I keep proposing to only expose simple forwardi=
+ng
+helpers on usb::Interface to implement URBs (see also [2] and [3]).
+
+An URB requires either usb::Interface<Bound> or, for a USB device driver,
+usb::Device<Bound>. But since we can't derive usb::Device<Bound> from
+usb::Interface<Bound> a simple forwarding helper does the trick.
+
+[1] https://rust.docs.kernel.org/kernel/device/trait.DeviceContext.html
+[2] https://lore.kernel.org/lkml/DJRF98V7SMXT.14BS8WGBEESZ8@kernel.org/
+[3] https://lore.kernel.org/lkml/24196da3-62e8-4707-8024-d989bcd5d3a8@rowla=
+nd.harvard.edu/
