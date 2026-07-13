@@ -1,92 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BF94502F;
-	Mon, 13 Jul 2026 12:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515474252D6;
+	Mon, 13 Jul 2026 13:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783946726; cv=none; b=UQOdXYyH6Yvn6nn5oIZyuRfvH5nvbGgUqSqPQWv8CxSUH+kRvxNtFeajVLIEUQ8braJBLBytncHhl2/agTHiyxn1WQ4EXATtOJBOgzhPaQMtuX5LNPog5EMy41XFZETQlvWNxxqc5GvTg2qbiLhAj74hDYvB4Z5M45gh2bxg43E=
+	t=1783948952; cv=none; b=J5MhQlVsopJgwijn50qeuafL3jgMsDLjsi+hyMhOJDDtG5NijxFJTN+FdoZuM35Oh0zhHmgX8VEVyK2gweFWTYMNrmRhgBJIrQHxWNLYDrgvnCbqOrL+BNha4XXS5QYpt2BO9GcHk0NuD3tUsc81EAaRS5yibYlhlLYYcZSF21g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783946726; c=relaxed/simple;
-	bh=MoZnZLnN3wr1+v34l+4SyN7hBUWfVc8JTSKBai+cqMU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rbeWL+ymjzRUTjM93Xfk/QCLKSqhOIlbYh/mHQKGKiqQIb5LxPHOeZIQLnwiye2VTd13PvltRkPXSOrxcOem+GDWjWsOFfQTwr2VgG+HK695x5FfJR+6yRH5swuGEasvwdliLh3GnZSd/vapWdmEUdtVecadPc7pe0I2Wr238/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOu92ivy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783948952; c=relaxed/simple;
+	bh=C5XLvguQLhVEcfSjW/+LL4p6dlUwKF/CRv5qqTfRXZM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=exzSknuzJSl1jw6UaedAbBgT8BYNiwQlHV6YinLqPOq8wyobRvnzYzlh+aHJONfNlfBwjx1w8GIJJdgHIgdwtN/cJvGqZKYQJ53qW6W2GlzoogHPXUUgqQPLInMVXP1TuWcaiYqF9Cea7MkRPDKdEeWjGsJID7qgGb+C0UOJyXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEp3SGnx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOu92ivy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB931F000E9;
-	Mon, 13 Jul 2026 12:45:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEp3SGnx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055411F00A3A;
+	Mon, 13 Jul 2026 13:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783946725;
-	bh=AXGCpmoREIMnAzCLPYce3WlEizM3wmYlDxVRnYi6hd0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hOu92ivy4kEtLI6RcYO3NTAPeuzCqA8EMq5txScKDowGUvfNjZ4SeMe4b5rEQuOW8
-	 k8TvcznbCJi9E5pCPgyx/OTYowgbECz9immM2eulqFeo0c7Z8kwkN1N+7iqe4T4JzE
-	 hIVb0RGWKyzW+TRPND/pp+/obeDfT+TS4c076vgLSWvC04JPARNobJ5vPQZpXRIWIr
-	 Me4Q7qX6IbpY5XdbpkorEXvHUKC0yfOEK1FsJomc91zRxE+C50aUE7tWd/sTDw2eyu
-	 GyO1FjW3bran98B68rPShifjtsdxCQzUR9LH8kBdR7tbup1LqQIM58sViVgZh3zTh4
-	 pqP52S7yeXp8Q==
-Date: Mon, 13 Jul 2026 13:45:19 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-hardening@vger.kernel.org, linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] hardening: Default randstruct off with rust for
- better allmodconfig support
-Message-ID: <7cdb2407-924c-44a1-8c68-917efadd4e92@sirena.org.uk>
-References: <20260702-rust-reverse-randstruct-dep-v3-1-e4e09c50014e@kernel.org>
+	s=k20260515; t=1783948951;
+	bh=C5XLvguQLhVEcfSjW/+LL4p6dlUwKF/CRv5qqTfRXZM=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=KEp3SGnxTenFsgqPyojBgtKn2/PyHFtTDC9UY7qqyDaooj84+rEpvk61MIgbVhSNF
+	 GGpYQG6/AUfE0D9D4ZTJiFphay7OC6ARCcGXjeJYGTz20c3cIf3V2amsYthyqXPNU2
+	 WwZSIcIQz/TVdOtTqA9VeaQAu4sCbRIaJfGFLa8UkH/FG99o44jMjxu+9W29KfhT/N
+	 cnNY+dGUh/nRpH7P8Oi80yW9W0Y+y52TqNwveSjn6mvskYXqVcy1WtUgGPvKLyulEE
+	 VUDcreQ0FiHZT3TGDNZb3ZRccNpm8WXxsmNaWzKKbchIx21pZXZ2G5q9RA7OvNvNtb
+	 NNQTaaUW3LQzw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KkKQRvq7fUd3CTer"
-Content-Disposition: inline
-In-Reply-To: <20260702-rust-reverse-randstruct-dep-v3-1-e4e09c50014e@kernel.org>
-X-Cookie: Call for details.
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Jul 2026 15:22:25 +0200
+Message-Id: <DJXH4FQ62VED.3T41DAVF0KRDQ@kernel.org>
+Subject: Re: [RFC PATCH 0/4] rust: usb: add usb request block abstractions
+ and a user
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Mauro Carvalho Chehab" <mchehab@kernel.org>, "Alan
+ Stern" <stern@rowland.harvard.edu>, "Mathias Nyman"
+ <mathias.nyman@intel.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+ <linux-media@vger.kernel.org>, "Colin Braun" <colin.braun.cl@gmail.com>
+To: "Colin Braun" <colinbrauncl@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
+In-Reply-To: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
 
+On Sun Jul 12, 2026 at 11:07 PM CEST, Colin Braun wrote:
+> This series introduces initial abstractions to allow for the
+> implementation of USB drivers in Rust.
 
---KkKQRvq7fUd3CTer
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Note that there's also [1].
 
-On Thu, Jul 02, 2026 at 06:37:08PM +0100, Mark Brown wrote:
-> Currently randstruct does not support rust so we have Kconfig dependencies
-> which prevent rust being enabled when randstruct is. Unfortunately this
-> prevents rust being enabled in allmodconfig, our standard coverage build.
-> randstruct gets turned on by default, then the dependency on !RANDSTRUCT
-> causes rust to get disabled.
-
-Any news on this?  I'm flying blind doing -next merges of rust code with
-build coverage gone, and I suspect a bunch of other people think they
-have build coverage in their tests but it's silently vanished (I know at
-least one person ran into that already).
-
---KkKQRvq7fUd3CTer
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpU3d4ACgkQJNaLcl1U
-h9Bjvgf/UXM/ABlVwXmO0yhYbXVT+W40IPPfMsNSWSchDtT+Rt+69MAMwb+DGi2Y
-yat4uyPHz/UAhdJEN9lOTfY8r6xx1GK+Do2Iy1Rxx+1IWwesHzixtFXGrY5QpmR9
-umzRGBnNTRaCuxvE+F/gFg+pE7H4KeB1IUb11PSu2O6eE1jFMoSrO/XYuQOQv0sW
-mqnxFzXcxBvqSMexdb3VY3W+8Ga/q3qmTDG0qgOFUX5LqNdncd+e/iljQw83cpe2
-4U1tbxQRrdTXX+JUPqt/5LCoZlidSrr6/rt8Ejl2isihITtwEdskWeCv6FMi/LoC
-TynDTs67zu+p3nKZ15/B3BQm5pikKA==
-=QMrC
------END PGP SIGNATURE-----
-
---KkKQRvq7fUd3CTer--
+[1] https://lore.kernel.org/lkml/20260617145946.1894-1-mike@fireburn.co.uk/
