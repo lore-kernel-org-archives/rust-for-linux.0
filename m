@@ -1,151 +1,140 @@
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-37.ptr.blmpb.com (va-2-37.ptr.blmpb.com [209.127.231.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192AE3769E6
-	for <rust-for-linux@vger.kernel.org>; Sun, 12 Jul 2026 23:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69DB18D636
+	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 01:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783900461; cv=none; b=adLWIYRMRd6bV+dCl/7H8xFv4BAc0rjlRv448se0fCLbU226aCppPqzxFQtVjx9ufsZUfA+JjsmqBfjXaZseXLnDcYsQMY182XOAu9LfpbsfaReO0+SMGWqG4lXKLL3mYo5bffPU3cmA1s1KQtdl4jbooTUTzSJ1NUstSDzFEz8=
+	t=1783907225; cv=none; b=ObpaiPVdb+avzeLaw4Pwa0ImHs8YObA5wYK1M73Rh6OuJa2UCaGSxlNah0I1OSapich2kEVL7Dt4hYE3MvnF+kcf1LhiWBX71+wrMdXhofTrza1FzbPZScOVWRbbguQmlLmn/kE0UzWmW3ACZPJQQT9tsLEuq1dHA8ihk92DkuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783900461; c=relaxed/simple;
-	bh=wpyNGaZ9jKtxFXLWSNpqgHDhYMqCTcvbnLEMM/CMZ/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMWS/+lyPxueD5Qyh3miqbgNELNLh0B/D1byTElglaTszf0qIzcyFuCrriD0gYFC+E3M/P4efp6qB0pNptMSMf2jNNKZjnomEAHsZn5roDLc7twGzOkRjEtdhzZxFzbEQ66gOuDZZeDNeQiwp23eBr1GxS4KhO1gBND1JC1yMVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=QCHkTIuB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZwKmMHXf; arc=none smtp.client-ip=103.168.172.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1783907225; c=relaxed/simple;
+	bh=fQRimROqRhWfetSskflV8FpsXI+GKDfUcyuFPqDU5pE=;
+	h=Cc:Mime-Version:Content-Type:References:From:In-Reply-To:
+	 Message-Id:To:Subject:Date; b=We587w40l+bOca+50dfMqoSu/WfmNBaaU3o9od4MPMmfzCzDK7oryie2inaviqo0WXlAipRltmLl9EWPE7d25+8+96dI6eI9q0eYL8GFow5c3LcTmQgaktcZqB7SP1JW+PD+xM3+oKwa/fl3GWJMYt5ovzhWD7IsN0yZ0DNNneg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=BSBGPv4v; arc=none smtp.client-ip=209.127.231.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="QCHkTIuB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZwKmMHXf"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id 5D8FA138027C;
-	Sun, 12 Jul 2026 19:54:19 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Sun, 12 Jul 2026 19:54:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1783900459; x=
-	1783904059; bh=t0+YL48i3GUAqgPlrOsaOamHDrmszqXlOP/wFNneMlk=; b=Q
-	CHkTIuBUsd9jUGRrRX64da1GDcu5ZZrS1coO+L60LlCpPZXltSXAups6H026a0VQ
-	hzF1gF02RuihXWbu9DZ+AyuuZ3JRCN7HLHhB21WSmX3ivHI/nGnMKnQEx412oNsQ
-	VgEz9jGqZdBaVpVZ166255vzyB/Av7wpQu8ovEsxoyYDYiHrWcB3WYxJV+g2IR5D
-	DCRGRr/prEap4BYykgQjvcxK7E18TRR1qfZ1SsQyyrTg39fW2DDDZYJOET62McNK
-	1BeiozOYWDLg/jJ1+Zvdi857JvaGid/Yjd3FRnVAM6RPemDbVqAM1HKaFpcU18wc
-	H4hz4tov007E7fd7z1Byg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1783900459; x=1783904059; bh=t
-	0+YL48i3GUAqgPlrOsaOamHDrmszqXlOP/wFNneMlk=; b=ZwKmMHXfw/p7E88JA
-	e0hd0rPP2stM0nIt3rFYnbXibX4tEzAOcPIlHd2TEm7Nr7FaHMXNeuaA5yreIbdL
-	d/GpRfaLHS/X3+N/z2pCsopYG2vuqQz5MN6VWIsdEqSE2qdBDm05cqpdt0kopN9I
-	KY7B4COIR0XcxMScDTiX5YMl66oKC0LfmFD4Vs3c5GCs/c4Dn6fzu6bjts/WjkK6
-	nzGtS3go8610Z1q08QyQlOp39QJYLHnhL3tK7ZcKdvdSSJcloowjJhC1F45nA+Fi
-	5x/qJZ4lzFuXssrEmeKBI0xjfxIP7e6CbVPXCLDIsB99+B7RSKJyelKaAlqV7YV4
-	PwVFg==
-X-ME-Sender: <xms:KylUaurBvSo24sdhHuM1nRadwlGQEPHFPxP5hwkMPC0RzqvePpIyGA>
-    <xme:KylUaoz7XbfOiIEeQAvmyQU7Vos-Bow3HXZ7HlMv7eI9Owy_gpTs0cse_98QXXo7f
-    M34LLX-TocdoPirGeZd8l4BYxRp8hLv_gO3jsW7xQ9qARjHHMDMU14>
-X-ME-Received: <xmr:KylUavAuXvh-Zkm0DsW6ZPIfBBA7SJ6slJxH9_u4nR91kfQKi49lADYbx8q8-MeoTMDxBu93boVv1-Uf2lc>
-X-ME-Proxy-Cause: dmFkZTE31iBcvpgjYdZr1KIE/6DYlEJEulM18kywekYhcwjp6oc4qGtqEEiP0eBVYIviWA
-    Hhrc40792y5g9p/vZn7wYZZCpVhEMJZPg6Ag9Cx9+eIG8lCJUQBaaWrWpvDtf9MRNXXgrp
-    If9/LRtCsz7iF/x2Je2OLQRKSfaPWGZ9vc6tbm3bvH/9nu+UCTOj6k3rVTgzzqmkASkYUh
-    9E8sCqTUteDvUBZFufbRe8/NIYjgeXIu4N0FXfH5N3WIGjAZtE/iS1e0EueImeH9yGOrOK
-    ZHqNAT6bgvZmCQE1xp8VuNO73sqqBKuHU7QETGYMOABXyjd7rKLLYQHX10i6am1f9R+qcK
-    PO4ail8FFEes27l392ESyM6XjvlafJfoXKgehg4ITmqh4P3Ht7fldQPjr5saDNmswHmcLq
-    mN/2UOPcTa3ANejcdZ/1R12CcSDXp1CvBvNmJ2dwb8gKerNAY+BPln9KcoRi2xzMBuuRza
-    S9jclzeP6JTTObyYJoxJgFqbMssUYguQNw2FqFUaSQJc5OhD99p96RbIeooiCFRt06Xgd7
-    vWHpm5ouUYNvGUM+7r9kMBE6Qud4wLkNnEIoFs9oLwUPp+w95bd76QCc/OZKpDOWtJom4w
-    JpYKTJwR75oS9rEpFo+uvx3okoFmZHe/Zc1fNzPDPvnDKq6MkVtBPsftEuGA
-X-ME-Proxy: <xmx:KylUanM34lasLooKiUBY6TDOMaaRXVpAC5tYrRrqRczLTpg8UJJHeg>
-    <xmx:KylUauCeJRFw9-w4wJ_WF0CVOVLak4RZ_7x2cw6ddRgQL5uck6EWXw>
-    <xmx:KylUahnbsCkJ_Kh6jJjcWk5Aj1hWtSgM9ezxqf8D8agV4WY-AA53iQ>
-    <xmx:KylUaqocnlIKjZ7suyq5ab7ANk-aDOujV5vBYQZx4A29JrqhYikk6Q>
-    <xmx:KylUatMo6w3gO2g0EFCDqqoGUcyH5QFVhlXJo2gUpfqClVGc0xWTYXGe>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 12 Jul 2026 19:54:13 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	arve@android.com,
-	boqun@kernel.org,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	tkjos@android.com
-Cc: acourbot@nvidia.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	frederic@kernel.org,
-	jstultz@google.com,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	sboyd@kernel.org,
-	tamird@kernel.org,
-	tglx@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v2 4/4] rust: time: remove unused Jiffies/Msecs helpers
-Date: Mon, 13 Jul 2026 08:52:46 +0900
-Message-ID: <20260712235246.3069713-5-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260712235246.3069713-1-tomo@flapping.org>
-References: <20260712235246.3069713-1-tomo@flapping.org>
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="BSBGPv4v"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1783907209;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=fQRimROqRhWfetSskflV8FpsXI+GKDfUcyuFPqDU5pE=;
+ b=BSBGPv4vITzhOvV4V1kRlG7L/MVJNhHZM4MdrZGaQQNY8hqAAh07OOcwQkYzFL9ycdjKrw
+ Tvyp5OpfB9GAZnnQGrZ5kuw5DqHutL22qE06pzjUcsOomA7+4EX6T7S3FmMvmKLNQ2Gt++
+ bmPEYpXMeFz7CUPPeBJzd0TBQn+N2YVulLSOSk6NLea+RQkcA9zxhKiYEQ1tnigI749s3O
+ bM2nppy2lrBvuQxcQrbmQj8WEW+wWfYmmScectoAPvVNwxRJXpZtqvRhzYm82dSCQuC8FS
+ pr86LHgiKtD+lLRSq0rZ/ktWlYOkzkEi0NqS1aFEakBGeyS+o3N+Cp3e07IvYw==
+Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Mon, 13 Jul 2026 09:46:46 +0800
+X-Mailer: git-send-email 2.53.0
+Cc: "Gary Guo" <gary@garyguo.net>, <linux-doc@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, 
+	<hust-os-kernel-patches@googlegroups.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+References: <cover.1783905132.git.ben.guo@openatom.club>
+Content-Transfer-Encoding: base64
+From: "Ben Guo" <ben.guo@openatom.club>
+In-Reply-To: <cover.1783905132.git.ben.guo@openatom.club>
+Message-Id: <78a525ba7344a334bc70664b34327dbb51024e90.1783905132.git.ben.guo@openatom.club>
+X-Lms-Return-Path: <lba+26a544387+3e2530+vger.kernel.org+ben.guo@openatom.club>
+X-Original-From: Ben Guo <ben.guo@openatom.club>
+To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <si.yanteng@linux.dev>, 
+	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
+Subject: [PATCH v2 1/4] docs/zh_CN: Update rust/quick-start.rst translation
+Date: Mon, 13 Jul 2026 09:46:33 +0800
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-
-CondVar's wait_interruptible_timeout() and workqueue's
-enqueue_delayed() have both moved from raw jiffies counts to Delta, so
-nothing in the tree calls msecs_to_jiffies() or uses the Jiffies and
-Msecs aliases anymore.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/time.rs | 14 --------------
- 1 file changed, 14 deletions(-)
-
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index cd054ea5df02..184ae7755f1b 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -39,20 +39,6 @@
- /// The number of nanoseconds per second.
- pub const NSEC_PER_SEC: i64 = bindings::NSEC_PER_SEC as i64;
- 
--/// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
--pub type Jiffies = crate::ffi::c_ulong;
--
--/// The millisecond time unit.
--pub type Msecs = crate::ffi::c_uint;
--
--/// Converts milliseconds to jiffies.
--#[inline]
--pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
--    // SAFETY: The `__msecs_to_jiffies` function is always safe to call no
--    // matter what the argument is.
--    unsafe { bindings::__msecs_to_jiffies(msecs) }
--}
--
- /// Trait for clock sources.
- ///
- /// Selection of the clock source depends on the use case. In some cases the usage of a
--- 
-2.43.0
-
+VXBkYXRlIERvY3VtZW50YXRpb24vcnVzdC9xdWljay1zdGFydC5yc3QgdHJhbnNsYXRpb24uDQoN
+ClVwZGF0ZSB0aGUgdHJhbnNsYXRpb24gdGhyb3VnaCBjb21taXQgYTQzOTJlZDFjOGI5DQooImRv
+Y3M6IHJ1c3Q6IHF1aWNrLXN0YXJ0OiByZW1vdmUgR0RCL0JpbnV0aWxzIG1lbnRpb24iKQ0KDQpS
+ZXZpZXdlZC1ieTogR2FyeSBHdW8gPGdhcnlAZ2FyeWd1by5uZXQ+DQpTaWduZWQtb2ZmLWJ5OiBC
+ZW4gR3VvIDxiZW4uZ3VvQG9wZW5hdG9tLmNsdWI+DQotLS0NCiAuLi4vdHJhbnNsYXRpb25zL3po
+X0NOL3J1c3QvcXVpY2stc3RhcnQucnN0ICAgfCA0OCArKysrKysrKy0tLS0tLS0tLS0tDQogMSBm
+aWxlIGNoYW5nZWQsIDE5IGluc2VydGlvbnMoKyksIDI5IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0t
+Z2l0IGEvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5y
+c3QgYi9Eb2N1bWVudGF0aW9uL3RyYW5zbGF0aW9ucy96aF9DTi9ydXN0L3F1aWNrLXN0YXJ0LnJz
+dA0KaW5kZXggNWYwZWNlNjQxMWYuLjAzOTYxMzdmM2MxIDEwMDY0NA0KLS0tIGEvRG9jdW1lbnRh
+dGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5yc3QNCisrKyBiL0RvY3Vt
+ZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVpY2stc3RhcnQucnN0DQpAQCAtNTks
+NyArNTksNyBAQCBGZWRvcmEgTGludXgg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug
+5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L5aaCOjoNCiBHZW50b28gTGludXgNCiAqKioqKioq
+KioqKioNCiANCi1HZW50b28gTGludXjvvIjlsKTlhbbmmK8gdGVzdGluZyDliIbmlK/vvInmj5Dk
+vpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjlvIDnrrHljbPnlKjvvIwNCitH
+ZW50b28gTGludXgg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA
+566x5Y2z55So77yMDQog5L6L5aaCOjoNCiANCiAJVVNFPSdydXN0LXNyYyBydXN0Zm10IGNsaXBw
+eScgZW1lcmdlIGRldi1sYW5nL3J1c3QgZGV2LXV0aWwvYmluZGdlbg0KQEAgLTcwLDcgKzcwLDcg
+QEAgR2VudG9vIExpbnV477yI5bCk5YW25pivIHRlc3Rpbmcg5YiG5pSv77yJ5o+Q5L6b6L6D5paw
+55qEIFJ1c3Qg54mI5pys77yM5Zug5q2kDQogTml4DQogKioqDQogDQotTml477yIdW5zdGFibGUg
+6aKR6YGT77yJ5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x
+5Y2z55So77yM5L6L5aaCOjoNCitOaXgg5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug
+5q2k6YCa5bi45byA566x5Y2z55So77yM5L6L5aaCOjoNCiANCiAJeyBwa2dzID8gaW1wb3J0IDxu
+aXhwa2dzPiB7fSB9Og0KIAlwa2dzLm1rU2hlbGwgew0KQEAgLTg1LDE2ICs4NSwxNCBAQCBvcGVu
+U1VTRQ0KIG9wZW5TVVNFIFNsb3dyb2xsIOWSjCBvcGVuU1VTRSBUdW1ibGV3ZWVkIOaPkOS+m+i+
+g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8gOeusQ0KIOWNs+eUqO+8jOS+i+Wm
+gjo6DQogDQotCXp5cHBlciBpbnN0YWxsIHJ1c3QgcnVzdDEuNzktc3JjIHJ1c3QtYmluZGdlbiBj
+bGFuZw0KKwl6eXBwZXIgaW5zdGFsbCBydXN0IHJ1c3Qtc3JjIHJ1c3QtYmluZGdlbiBjbGFuZw0K
+IA0KIA0KIFVidW50dQ0KICoqKioqKg0KIA0KLTI1LjA0DQotfn5+fn4NCi0NCi3mnIDmlrDnmoQg
+VWJ1bnR1IOeJiOacrOaPkOS+m+i+g+aWsOeahCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8
+gOeuseWNs+eUqO+8jOS+i+Wmgjo6DQorVWJ1bnR1IDI1LjEwIOWSjCAyNi4wNCBMVFMg5o+Q5L6b
+6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x5Y2z55So77yMDQor5L6L
+5aaCOjoNCiANCiAJYXB0IGluc3RhbGwgcnVzdGMgcnVzdC1zcmMgYmluZGdlbiBydXN0Zm10IHJ1
+c3QtY2xpcHB5DQogDQpAQCAtMTExLDMyICsxMDksMzIgQEAgVWJ1bnR1DQog6Jm954S2IFVidW50
+dSAyNC4wNCBMVFMg5Y+K5pu05pep54mI5pys5LuN54S25o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI
+5pys77yM5L2G5a6D5Lus6ZyA6KaB5LiA5Lqb6aKd5aSW55qE6YWNDQog572u77yM5L2/55So5bim
+54mI5pys5Y+355qE6L2v5Lu25YyF77yM5L6L5aaCOjoNCiANCi0JYXB0IGluc3RhbGwgcnVzdGMt
+MS44MCBydXN0LTEuODAtc3JjIGJpbmRnZW4tMC42NSBydXN0Zm10LTEuODAgXA0KLQkJcnVzdC0x
+LjgwLWNsaXBweQ0KLQlsbiAtcyAvdXNyL2xpYi9ydXN0LTEuODAvYmluL3J1c3RmbXQgL3Vzci9i
+aW4vcnVzdGZtdC0xLjgwDQotCWxuIC1zIC91c3IvbGliL3J1c3QtMS44MC9iaW4vY2xpcHB5LWRy
+aXZlciAvdXNyL2Jpbi9jbGlwcHktZHJpdmVyLTEuODANCisJYXB0IGluc3RhbGwgcnVzdGMtMS44
+NSBydXN0LTEuODUtc3JjIGJpbmRnZW4tMC43MSBydXN0Zm10LTEuODUgXA0KKwkJcnVzdC0xLjg1
+LWNsaXBweQ0KKwlsbiAtcyAvdXNyL2xpYi9ydXN0LTEuODUvYmluL3J1c3RmbXQgL3Vzci9iaW4v
+cnVzdGZtdC0xLjg1DQorCWxuIC1zIC91c3IvbGliL3J1c3QtMS44NS9iaW4vY2xpcHB5LWRyaXZl
+ciAvdXNyL2Jpbi9jbGlwcHktZHJpdmVyLTEuODUNCiANCiDov5nkupvova/ku7bljIXpg73kuI3k
+vJrlsIblhbblt6Xlhbforr7nva7kuLrpu5jorqTlgLzvvJvlm6DmraTlupTor6XmmL7lvI/mjIfl
+rprlroPku6zvvIzkvovlpoI6Og0KIA0KLQltYWtlIExMVk09MSBSVVNUQz1ydXN0Yy0xLjgwIFJV
+U1RET0M9cnVzdGRvYy0xLjgwIFJVU1RGTVQ9cnVzdGZtdC0xLjgwIFwNCi0JCUNMSVBQWV9EUklW
+RVI9Y2xpcHB5LWRyaXZlci0xLjgwIEJJTkRHRU49YmluZGdlbi0wLjY1DQorCW1ha2UgTExWTT0x
+IFJVU1RDPXJ1c3RjLTEuODUgUlVTVERPQz1ydXN0ZG9jLTEuODUgUlVTVEZNVD1ydXN0Zm10LTEu
+ODUgXA0KKwkJQ0xJUFBZX0RSSVZFUj1jbGlwcHktZHJpdmVyLTEuODUgQklOREdFTj1iaW5kZ2Vu
+LTAuNzENCiANCi3miJbogIXvvIzkv67mlLkgYGBQQVRIYGAg5Y+Y6YeP5bCGIFJ1c3QgMS44MCDn
+moTkuozov5vliLbmlofku7bmlL7lnKjliY3pnaLvvIzlubblsIYgYGBiaW5kZ2VuYGAg6K6+DQor
+5oiW6ICF77yM5L+u5pS5IGBgUEFUSGBgIOWPmOmHj+WwhiBSdXN0IDEuODUg55qE5LqM6L+b5Yi2
+5paH5Lu25pS+5Zyo5YmN6Z2i77yM5bm25bCGIGBgYmluZGdlbmBgIOiuvg0KIOe9ruS4uum7mOiu
+pOWAvO+8jOS+i+Wmgjo6DQogDQotCVBBVEg9L3Vzci9saWIvcnVzdC0xLjgwL2JpbjokUEFUSA0K
+KwlQQVRIPS91c3IvbGliL3J1c3QtMS44NS9iaW46JFBBVEgNCiAJdXBkYXRlLWFsdGVybmF0aXZl
+cyAtLWluc3RhbGwgL3Vzci9iaW4vYmluZGdlbiBiaW5kZ2VuIFwNCi0JCS91c3IvYmluL2JpbmRn
+ZW4tMC42NSAxMDANCi0JdXBkYXRlLWFsdGVybmF0aXZlcyAtLXNldCBiaW5kZ2VuIC91c3IvYmlu
+L2JpbmRnZW4tMC42NQ0KKwkJL3Vzci9iaW4vYmluZGdlbi0wLjcxIDEwMA0KKwl1cGRhdGUtYWx0
+ZXJuYXRpdmVzIC0tc2V0IGJpbmRnZW4gL3Vzci9iaW4vYmluZGdlbi0wLjcxDQogDQot5L2/55So
+5bim54mI5pys5Y+355qE6L2v5Lu25YyF5pe26ZyA6KaB6K6+572uIGBgUlVTVF9MSUJfU1JDYGDv
+vIzkvovlpoI6Og0KK+S9v+eUqOW4pueJiOacrOWPt+eahOi9r+S7tuWMheaXtuWPr+iDvemcgOim
+geiuvue9riBgYFJVU1RfTElCX1NSQ2Bg77yM5L6L5aaCOjoNCiANCi0JUlVTVF9MSUJfU1JDPS91
+c3Ivc3JjL3J1c3RjLSQocnVzdGMtMS44MCAtLXZlcnNpb24gfCBjdXQgLWQnICcgLWYyKS9saWJy
+YXJ5DQorCVJVU1RfTElCX1NSQz0vdXNyL3NyYy9ydXN0Yy0kKHJ1c3RjLTEuODUgLS12ZXJzaW9u
+IHwgY3V0IC1kJyAnIC1mMikvbGlicmFyeQ0KIA0KIOS4uuaWueS+v+i1t+inge+8jOWPr+S7peWw
+hiBgYFJVU1RfTElCX1NSQ2BgIOWvvOWHuuWIsOWFqOWxgOeOr+Wig+S4reOAgg0KIA0KLeatpOWk
+lu+8jCBgYGJpbmRnZW4tMC42NWBgIOWcqOi+g+aWsOeahOeJiOacrO+8iDI0LjA0IExUUyDlkowg
+MjQuMTDvvInkuK3lj6/nlKjvvIzkvYblnKjmm7Tml6nnmoTniYgNCi3mnKzvvIgyMC4wNCBMVFMg
+5ZKMIDIyLjA0IExUU++8ieS4reWPr+iDveS4jeWPr+eUqO+8jOWboOatpOWPr+iDvemcgOimgeaJ
+i+WKqOaehOW7uiBgYGJpbmRnZW5gYA0KK+atpOWklu+8jCBgYGJpbmRnZW4tMC43MWBgIOWcqOi+
+g+aWsOeahOeJiOacrO+8iDI0LjA0IExUU++8ieS4reWPr+eUqO+8jOS9huWcqOabtOaXqeeahOeJ
+iOacrA0KK++8iDIwLjA0IExUUyDlkowgMjIuMDQgTFRT77yJ5Lit5Y+v6IO95LiN5Y+v55So77yM
+5Zug5q2k5Y+v6IO96ZyA6KaB5omL5Yqo5p6E5bu6IGBgYmluZGdlbmBgDQog77yI6K+35Y+C6KeB
+5LiL5paH77yJ44CCDQogDQogDQpAQCAtMzI1LDExICszMjMsMyBAQCBSdXN05pSv5oyB77yIQ09O
+RklHX1JVU1TvvInpnIDopoHlnKggYGBHZW5lcmFsIHNldHVwYGAg6I+c5Y2V5Lit5ZCv55So44CC
+5Zyo5YW2DQogDQog6KaB5oOz5rex5YWl5LqG6Kej77yM6K+355yLIGBgc2FtcGxlcy9ydXN0L2Bg
+IOS4i+eahOagt+S+i+a6kOS7o+eggeOAgSBgYHJ1c3QvYGAg5LiL55qEUnVzdOaUr+aMgeS7o+eg
+geWSjA0KIGBgS2VybmVsIGhhY2tpbmdgYCDkuIvnmoQgYGBSdXN0IGhhY2tpbmdgYCDoj5zljZXj
+gIINCi0NCi3lpoLmnpzkvb/nlKjnmoTmmK9HREIvQmludXRpbHPvvIzogIxSdXN056ym5Y+35rKh
+5pyJ6KKrZGVtYW5nbGVk77yM5Y6f5Zug5piv5bel5YW36ZO+6L+Y5LiN5pSv5oyBUnVzdOeahOaW
+sHYwDQotbWFuZ2xpbmfmlrnmoYjjgILmnInlh6DkuKrlip7ms5Xlj6/ku6Xop6PlhrPvvJoNCi0N
+Ci0tIOWuieijheS4gOS4qui+g+aWsOeahOeJiOacrO+8iEdEQiA+PSAxMC4yLCBCaW51dGlscyA+
+PSAyLjM277yJ44CCDQotDQotLSDkuIDkupvniYjmnKznmoRHRELvvIjkvovlpoJ2YW5pbGxhIEdE
+QiAxMC4x77yJ6IO95aSf5L2/55So5bWM5YWl5Zyo6LCD6K+V5L+h5oGvKGBgQ09ORklHX0RFQlVH
+X0lORk9gYCkNCi0gIOS4reeahHByZS1kZW1hbmdsZWTnmoTlkI3lrZfjgIINCi0tIA0KMi41My4w
