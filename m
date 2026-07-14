@@ -1,168 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EAC46AEE0;
-	Tue, 14 Jul 2026 13:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88713477E32;
+	Tue, 14 Jul 2026 13:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784034323; cv=none; b=TcQWv+r06Gj829RIuuY0miOMALuKU+VlfAL2eV0ZVgbtk8GGHlJJax5wmxanb3WIdDz56YeWzF0WsYINYU4t0C+649sU4nllPwJrabHxnDRXMRyZ0ggrJr0/SVEaUBygBoI3s9KusrbqTQUSMEt5N+venZCkVkzt5FgOJeuNOQY=
+	t=1784036858; cv=none; b=NCs1ZS/jbv/mVr1B7fdEsG+YcZ6EA3mJBedVIZfAvp/FGzV+NwGbyvqKaio8YGSSsHBUiHH7gCW7Kaa7cVm3o348/4c+M/P1AdPfJghhGG39U6m/jtF5/CO5OFntjSpktQhN7JqAYXa5fBLsIyxh81W2SuWy3MFz9LIVUt9SkGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784034323; c=relaxed/simple;
-	bh=I7wEKHsf2R2pDc9KJje/OSCZvG41Dp/KsYtJEHVdnMs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=k3dgRiF8YQ260yJYgGTS5FWw2Kz4XN/elqJB5jjcfqZU1PEY7yfgor4Qt7ruu1bTxeQdO9EeBDbLvDmm/s4AgBFdvY55t8CYSk2kt6OtF0qNaB7nncAtNMKtDAG16Cu5a4S29zEY6IPCrLAZKjH+aJRY21tJonNZzv0jTVr2y2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COCqk8yy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784036858; c=relaxed/simple;
+	bh=n9cCVYuuPM0Dnz0kn/VctvAQ6WLJatsDO30dDYNF2u0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4ROyjb6cSOd4dwMfAPDv7UvUSasnLS6LKMSt4iDOAxPuutjcqXr1Ax2j90PiJ/PjJXcH8YM/aj0/M4kVG1iFJReBF9M3y2CP6G1kX0AsIh4PZFvTyOG8F5Q8EqzooPa+TI+MzKIMzkKeiCsSDm7BHPTtOGngIfHNcUPf2au/ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eq9DrFNT; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="COCqk8yy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EBF1F00A3D;
-	Tue, 14 Jul 2026 13:05:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784034322;
-	bh=Wbj6QDXg19S0b+wBbjbuJhWZrQ4U/U4cwe80Uim8/Nc=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=COCqk8yyHxuJEN9djlQCTBh1IOHnxAtOtM7s2b6RdmnnTWMojnCSpQIfMqwRwYfHP
-	 B0UOy3ZkXmNxGTNJ3MvwP3FVsxqSpWc/eLDKHRwuuAvjkaKRWWaojT06mkzVkPZgA1
-	 h4mqw18yCbo6A7lmCWrEWECM69YSLHZibj6CIUQRN0s3jhEOJmuUPe66HUxQVkgoKR
-	 RNu+OsP1oeQLsWmdvn0Yx5ak7ZbUDft+r+GbBdHvh1FhBIuNZtqqyCXtoX+8TuqHCy
-	 x/XqK+fknZYwEiGKKJ5C5Qa+XxR7u6xQu0aqbNslIWJ7JqpQs+XyJxOInB9/xJdl5s
-	 e7F3bSOmsq71Q==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eq9DrFNT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784036857; x=1815572857;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=n9cCVYuuPM0Dnz0kn/VctvAQ6WLJatsDO30dDYNF2u0=;
+  b=eq9DrFNT4Czi4+HNJUy6CFHuqjlT4rTfjLXDaib9TWRUL93+I+SS910Q
+   T5DOUXNiUJMVQkKuQJabLHQRyjg9EX9EM/s4kikt+NqHxV6hW2pQXY0WI
+   BrLj1EqRqP/GpXGy15+w+XMTYQsDv2ANOrHhUzUIM9mQ9cUpBJGDAKLky
+   5A4Bw6mg4OLTJxFwV8F/sYZihhE7H4FOTOCcmNhZA4UYtHUqEsnIdZlzK
+   oB4ZucabqfWBPA2RC2do6vBHwXUz2ylHRBiqs7c2+0ESdhq4jz/PKLjRf
+   KnrlISwwmAjBzhuvsqnh3TcpGf7hBTvGpOIHg1SdkBtyrWWMhitXj0DKE
+   A==;
+X-CSE-ConnectionGUID: +m3PY6hlSASzx2IWxvVVFQ==
+X-CSE-MsgGUID: saRHvX+gTr+czNAtj3QQ9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="84679902"
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
+   d="scan'208";a="84679902"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 06:47:36 -0700
+X-CSE-ConnectionGUID: 8znTZVoHTtav2Iqu6z5n4w==
+X-CSE-MsgGUID: dsEiQAvhQAGBdknanV7u9Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
+   d="scan'208";a="256506736"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 14 Jul 2026 06:47:30 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wjdTq-00000000Mg8-2pQS;
+	Tue, 14 Jul 2026 13:47:26 +0000
+Date: Tue, 14 Jul 2026 21:47:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gary Guo <gary@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Eliot Courtney <ecourtney@nvidia.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: device: make lifetime on `Core` and `CoreInternal`
+ invariant
+Message-ID: <202607142146.1EoHdPGy-lkp@intel.com>
+References: <20260713201455.640151-1-gary@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 14 Jul 2026 15:05:16 +0200
-Message-Id: <DJYBDUMUQ43T.3Q4ZG0FL76QH3@kernel.org>
-Cc: "Colin Braun" <colinbrauncl@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Mauro Carvalho Chehab"
- <mchehab@kernel.org>, "Alan Stern" <stern@rowland.harvard.edu>, "Mathias
- Nyman" <mathias.nyman@intel.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <linux-media@vger.kernel.org>, "Colin Braun" <colin.braun.cl@gmail.com>
-To: "Oliver Neukum" <oneukum@suse.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint
- abstractions
-References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
- <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
- <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org> <alVEUR0JrF1ga3S8@pendragon>
- <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
- <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
-In-Reply-To: <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260713201455.640151-1-gary@kernel.org>
 
-On Tue Jul 14, 2026 at 11:26 AM CEST, Oliver Neukum wrote:
-> You can see that there is no way a configuration and thereby its interfac=
-es
-> can last longer than its device.
+Hi Gary,
 
-So, what you're saying is that, in the generic case, there is a guarantee t=
-hat
-if a usb_interface is bound to a usb_driver, then the usb_interface's paren=
-t
-usb_device is also bound to a usb_device_driver.
+kernel test robot noticed the following build errors:
 
-But the relevant question is whether this always holds. In a previous discu=
-ssion
-[1] Alan explained that it currently doesn't hold.
+[auto build test ERROR on a13c140cc289c0b7b3770bce5b3ad42ab35074aa]
 
-Note that I'm not looking at this from a USB topology perspective, but from=
- a
-driver model perspective. All I'm saying is that usb::Device<Bound> from th=
-e
-driver model side means "it is guaranteed that the usb_device is bound to a
-usb_device_driver" and therefore can implement functions that rely on this
-invariant.
+url:    https://github.com/intel-lab-lkp/linux/commits/Gary-Guo/rust-device-make-lifetime-on-Core-and-CoreInternal-invariant/20260714-041724
+base:   a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+patch link:    https://lore.kernel.org/r/20260713201455.640151-1-gary%40kernel.org
+patch subject: [PATCH] rust: device: make lifetime on `Core` and `CoreInternal` invariant
+config: x86_64-buildonly-randconfig-002-20260714 (https://download.01.org/0day-ci/archive/20260714/202607142146.1EoHdPGy-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260714/202607142146.1EoHdPGy-lkp@intel.com/reproduce)
 
-Analogously, usb::Interface<Bound> means that the usb_interface is bound to=
- a
-usb_driver. So, if we want to be able to derive usb::Device<Bound> from
-usb::Interface<Bound> it must always be guaranteed that this holds, not jus=
-t in
-the most common case.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607142146.1EoHdPGy-lkp@intel.com/
 
-As for the question whether it should be
+All errors (new ones prefixed by >>):
 
-	let dev =3D intf.device();
-	dev.bulk_recv();
+>> error[E0700]: hidden type for `impl pin_init::PinInit<RustDebugFs, kernel::error::Error> + 'a` captures lifetime that does not appear in bounds
+   --> samples/rust/rust_debugfs.rs:154:9
+   |
+   150 |       fn new<'a>(pdev: &'a platform::Device<Core<'_>>) -> impl PinInit<Self, Error> + 'a {
+   |                                             --------      ------------------------------ opaque type defined here
+   |                                             |
+>> |                                             hidden type `impl pin_init::PinInit<RustDebugFs, kernel::error::Error>` captures the anonymous lifetime defined here
+   ...
+   154 | /         try_pin_init! {
+   155 | |             Self {
+   156 | |                 _compatible <- debugfs.read_only_file(
+   157 | |                     c"compatible",
+   ...   |
+   176 | |         }
+   | |_________^
+   |
+   = note: this error originates in the macro `::pin_init::pin_init` which comes from the expansion of the macro `try_pin_init` (in Nightly builds, run with -Z macro-backtrace for more info)
+   help: add a `use<...>` bound to explicitly capture `'_`
+   |
+   150 |     fn new<'a>(pdev: &'a platform::Device<Core<'_>>) -> impl PinInit<Self, Error> + 'a + use<'a, '_> {
+   |                                                                                        +++++++++++++
 
-or
-
-	intf.bulk_recv();
-
-the former does not work if we can't uphold the guarantee that
-usb::Device<Bound> follows from usb::Interface<Bound>; at least not without=
- an
-additional type state wrapper.
-
-However, I don't see why we don't want to have the helper regardless. A
-usb_driver primarily deals with the usb_interface device, so that makes per=
-fect
-sense from a driver model perspective: The "device" a usb_driver deals with=
- is
-the usb_interface.
-
-I think our main disconnect comes from the fact that you see this from a US=
-B
-stack topology point of view, whereas I see it from a driver model topology
-point of view.
-
-From the driver core perspective a usb_interface is just another device tha=
-t
-happens to have a usb_device parent. Lifecycle wise any device resources
-requested by a usb_driver are tied to the lifetime of the usb_interface bei=
-ng
-bound to the usb_driver.
-
-The semantic relationship of a usb_interface and a usb_device is a USB subs=
-ystem
-implementation detail, but it doesn't change the core lifecycle and ownersh=
-ip
-rules as far as the driver model is concerned.
-
-That said, the question of having or not having those helpers is "bikeshedd=
-ing"
-about USB topology vs. driver model perspective and either seems reasonable
-IMHO. However, it has a correctness implication, as giving out
-usb::Device<Bound> from usb::Interface<Bound> would currently be unsound as=
- by
-[1]; deriving usb::Device<Core> from usb::Interface<Core> is never correct,=
- as
-it implies being in the scope of a device lock protected bus callback.
-
-> There simply is no data structure equivalent to the binding of a driver a=
-nd an
-> interface,
-
-I don't know what you mean by this.
-
-> hence we cannot just give interfaces a state.
-
-Of course we can, and we have to. As mentioned above, from a driver core
-perspective a usb_interface is just another device, with an own struct devi=
-ce it
-embedds, its own device lock and its own driver structure (struct usb_drive=
-r) it
-can be bound to.
-
-The device types states match exactly this. For instance the 'Core' context
-represents a device that is given out in a bus callback while the device lo=
-ck is
-held, such that we can restrict methods that require this scope to this con=
-text.
-
-The same goes for the 'Bound' device context state. In the case of usb_inte=
-rface
-it means that the usb_interface is bound to the usb_driver.
-
-[1] https://lore.kernel.org/all/0ff2a825-1115-426a-a6f9-df544cd0c5fc@rowlan=
-d.harvard.edu/
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
