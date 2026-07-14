@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B18C377023;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBB83A381D;
 	Tue, 14 Jul 2026 03:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783999164; cv=pass; b=e8rbcE3shXj8YAeppIPSuo6atDPVxCp459xk4CEBUGimq9kh87FFG9WfoJgGM4+pF6G8oRkaKgnWWnpw0PQeHquHxZ1Df7NG5RjEJNAOnGngUAAPcssUJ1hzUb7EvNsViioAjWW9wM9UH1CrSkPolbP0Rel+gSwejkTzfvwkG2Q=
+	t=1783999164; cv=pass; b=eO0ZqfjLjrtiYvy/4FArIyspIYCSRUCUZBCzsPPvebMt9JE1QA1VVBe1cvAvCSP6s8Z2pzxi1+u0bk1RRs/JlUFUoDQK6lPRxkxGRBw+A1tON9dRVdVpxGnGFv1T4A0qwDFbGo0uFE0Asg6CqFGE6Lpvpj+QFDsaAH4hk5k/7kE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783999164; c=relaxed/simple;
-	bh=96fgh1jBo63JWVTUnNnKqniWb7MFpaQ73x8i18SysxI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=g96fgopqnq3Uy6qUfPoaPuAOCJn6UO0jB7U6mTX5gkZY++VOVe504cJ9QlYWkpMpOt3zrHL13m2HWi1N9r2Lo/HqZ58KI58iQy1p26R2+/Fr0hCdm88cq4sJal0wNSd1QXEHGlLAFj7945vRUXLPsYy9Za134H5Cso5AhPVPbHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=eV4j5SG8; arc=pass smtp.client-ip=136.143.188.11
+	bh=/lTl3P86QqfKk1OWhpH8vkka1+Hljs1sOLic8azDb5M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=P4w1jjYzCWXjE2brkX57++SFV0uiEBvCIu+bnDRY60i4hH0bEnVYVioGUZjwhP9H0d984l+RhByhzxpIFLEaLYq/MvO2WHUfl4P8hrltRd5CNcq7e1eTAoIQv/zaYH++tGSArmstd7bRNlw5V/B+27vhxq6ZcG6PAwaIloQFA9A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=O/xYyVQR; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="eV4j5SG8"
-ARC-Seal: i=1; a=rsa-sha256; t=1783999138; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="O/xYyVQR"
+ARC-Seal: i=1; a=rsa-sha256; t=1783999142; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=byvetco8qi7CiJUhJQzFGVO6TH8GeMLxazyceny52YxSwDH5yGVLzk0PsuvtL+kdwYMsFFIC58RpT7zVOxOFdXC3vKHOmQ1dIX7dkS6FI2qb+u9pHmaQEZORhPhsV3JZ62y1Y1sEScQqSc/E0WPETw4qrnGsOgZg3VtB6CoysuU=
+	b=Vc8bI+TkKx5JBcQ4mTMY0JBaIplMm6VgELxc89uTaB7QbYak+KZG2uxrfFLTd3B5mp4im3bHtHYd2PNvs1VUrDBUph3M69HAn/vtPSIfii3uVq13oH4YD53s7TFYXfpukefH0LLbBVEZfyoaiKhghLJ9ezlAZ+/GGG2yYp0Z/SI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783999138; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Rv7OUTiUkuVMgVM7v+6qo0GShNvkJAcTOE3YgtjTRH0=; 
-	b=JEh5kqFtGtlvR96xurKyT85DAw/kA1y2z0GhR2tMgHfM4CL0Gm8NJlTutwgtAGEXcnhigTQ2sDfp1BCevNxZ6MTMiJENSU7EapzHBlyVPqo70y5TmlobVtShA0+0ihtoCoTUHo0hNrzktb3DKiYuTWKrvCwkQlwU0++GbADZGM4=
+	t=1783999142; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=qpo1GpV6sk1WVtPptJhiq2FiJGO1cXEHyZJCt5K62l4=; 
+	b=LAuMmQ9JG/X5SrFsgvR+0uBHrTpWf3h+epHqinDpVwvC1VdAx7KPl9tI2GcJYANQCobpzrzn1TuEugZBo4zFSPME7R6VpB/2A+Iowi50zHR0GwgksWfsZM5lBnTPISP8UXuBNzXotkGDmrIEm+zGskbwlJmUNcg4qt09yLqmOUo=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783999138;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783999142;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
-	bh=Rv7OUTiUkuVMgVM7v+6qo0GShNvkJAcTOE3YgtjTRH0=;
-	b=eV4j5SG8nshUNLrGLstU34/oK9jGUC8f9yqKwOGN7VxZgls1Hjx9YRyNKqR3eiFQ
-	J4IctfszRGzwZOnyqVPf4Vf+EMCn9tT3kiOuqoYH5oxkIk5ALkZwKC0zXmZ+MVvFOG2
-	HXdg5ZWzUuR4EIeQKj9cBazDLCmIYhu3awNOcNGc=
-Received: by mx.zohomail.com with SMTPS id 1783999136859124.5213531717726;
-	Mon, 13 Jul 2026 20:18:56 -0700 (PDT)
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=qpo1GpV6sk1WVtPptJhiq2FiJGO1cXEHyZJCt5K62l4=;
+	b=O/xYyVQR6oOkBjJ2CkUj0PKjAXLVXGNFc6ktP5gPkWyePo9V55IudLJVCws/91aS
+	w6uY1D30LTzyCzgn84ALRcx06FZfZ8YzTuK5+OMgmMrsJO0hzGYMDzj8Q6J1VG99kjG
+	MHuZ0FN3m1HTnsJbuqrqIntTgyNbheNRDmsRXs9I=
+Received: by mx.zohomail.com with SMTPS id 1783999141548159.4252948460678;
+	Mon, 13 Jul 2026 20:19:01 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: [PATCH v7 0/7] drm/tyr: firmware loading and MCU boot support
-Date: Mon, 13 Jul 2026 20:18:44 -0700
-Message-Id: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
+Date: Mon, 13 Jul 2026 20:18:49 -0700
+Subject: [PATCH v7 5/7] drm/tyr: add a kernel buffer object
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,11 +47,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23O3wrCIBiH4VsJjzM+nX9mR91HdOCca8KaocOKs
- XvPraAagSe/D54XRxRtcDai/WZEwSYXne/zkNsNMq3uzxa7Om9EgQqQUOLmhivvB1wx3ICUIDQ
- V3EiUwTXYxt2X2PGUd+vi4MNjaScyX18ZRtnC36XE5gdY81oR4CBLVR+M7zpd+aB3xl/QXEv8U
- 1h9JPHMpVRUV6K0BVf/uPjm6oeLzI0uFLFEMwLlmk/T9AR+zsbVKQEAAA==
-X-Change-ID: 20260708-fw-boot-b4-f07706a265c7
+Message-Id: <20260713-fw-boot-b4-v7-5-afd8dc1494dd@collabora.com>
+References: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
+In-Reply-To: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
  Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -63,149 +61,156 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  acourbot@nvidia.com, lyude@redhat.com, laura.nao@collabora.com, 
  beata.michalska@arm.com, alvin.sun@linux.dev, steven.price@arm.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5900;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4385;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=96fgh1jBo63JWVTUnNnKqniWb7MFpaQ73x8i18SysxI=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmhq+Y/bj665ZWEoBrPzfe3/13Jm3py9ym+4+eyNDhUD
- ma5Vvg2d5SyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRPHeG/641a5Y/qOtTfHbF
- fvLy2vqzt+Wmqf+Zt3hfTVCqcNUGaw1Ghv1q4jHF87hia8IfzJv5eJXnHZei9zU58VPe3g8Kqm7
- JYgMA
+ bh=/lTl3P86QqfKk1OWhpH8vkka1+Hljs1sOLic8azDb5M=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmhqxY8+a/yckJjf4juvrPL70TOW7Pg++KWZr9n4io83
+ 5Wm+ib5d5SyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRf4cY/pdpvyrX7Tjf9u2t
+ fG6wo6z2UidTSabzE0yXv15vIprv85aRYbl4a2pA4T+LWfnz8j65tIus+hCr9tM18U58Y7Xvj8c
+ TOAA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-This series adds firmware loading and MCU boot support to the Tyr DRM
-driver. It includes:
- - A parser for the Mali CSF firmware binary format
- - A kernel-managed BO type (KernelBo) for internal driver allocations
- - GPU virtual memory (VM) integration using drm_gpuvm
- - An MMU module and a generic slot manager
- - Loading firmware, VM activation, and MCU boot at probe()
+Introduce a buffer object type (KernelBo) for internal driver allocations
+that are managed by the kernel rather than userspace.
 
-It is based on drm-rust-next but also depends on:
+KernelBo wraps a GEM shmem object and automatically handles GPU virtual
+address space mapping during creation and unmapping on drop. This provides
+a safe and convenient way for the driver to both allocate and clean up
+internal buffers for kernel-managed resources.
 
-1. [PATCH v3] rust: iommu: add device lifetime to IoPageTable
-   https://lore.kernel.org/rust-for-linux/20260703-pgtable_lt_b4-v3-1-e738e1f513a4@collabora.com
-
-2. [PATCH] drm: Remove DRIVER_GEM_GPUVA feature flag
-   https://lore.kernel.org/dri-devel/20260421084701.24227-1-laura.nao@collabora.com/
-   This patch is in drm-misc-next for v7.3:
-   https://lore.kernel.org/dri-devel/20260702-powerful-successful-raptor-eded34@houat/
-
-A branch with all dependencies is available here:
-https://gitlab.freedesktop.org/dbrouwer/linux/-/commits/fw-boot-b4
-
+Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
-Changes in v7:
-- slot.rs: don't print an error when all slots are busy
-- change all allow(dead_code) to expect(dead_code)
-- use LockedSeat type alias in VmAsData
-- shift the lockaddr_base so it fits properly in LOCKADDR
-- replace core::fmt with kernel::fmt
-- make SAFETY comments clearer for map/unmap pages
-- fix arm 32-bit build failures
-- release gpuvm_unique lock before calling deferred_cleanup
-- Link to v6: https://lore.kernel.org/r/20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com
+ drivers/gpu/drm/tyr/gem.rs | 101 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 97 insertions(+), 4 deletions(-)
 
-Changes in v6:
-- Move gpu_info from drm::Driver::Data to RegistrationData
-  and remove drm::Driver::Data entirely.
-- Remove the extra drm::Device ARef in TyrPlatformDriverData
-  since drm::Registration already owns an ARef to the drm::Device.
-- Stop storing platform::Device ARef in firmware since it is unused.
-- Pass a generic kernel::Device instead of the platform::Device through
-  firmware to Vm and pagetables since this is all that they need.
-- Link to v5: https://lore.kernel.org/r/20260708-fw-boot-b4-v5-0-7792ab68e359@collabora.com
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index c28be61a01bb..47a05a33388e 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -4,18 +4,29 @@
+ //! This module provides buffer object (BO) management functionality using
+ //! DRM's GEM subsystem with shmem backing.
+ 
++use core::ops::Range;
++
+ use kernel::{
+     drm::gem::{
+         self,
+         shmem, //
+     },
+     prelude::*,
+-    sync::aref::ARef, //
++    sync::{
++        aref::ARef,
++        Arc, //
++    }, //
+ };
+ 
+-use crate::driver::{
+-    TyrDrmDevice,
+-    TyrDrmDriver, //
++use crate::{
++    driver::{
++        TyrDrmDevice,
++        TyrDrmDriver, //
++    },
++    vm::{
++        Vm,
++        VmMapFlags, //
++    },
+ };
+ 
+ /// Tyr's DriverObject type for GEM objects.
+@@ -56,3 +67,85 @@ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
+ 
+     Ok(bo)
+ }
++
++/// Specifies how to choose a GPU virtual address for a [`KernelBo`].
++/// An automatic VA allocation strategy will be added in the future.
++pub(crate) enum KernelBoVaAlloc {
++    /// Explicit VA address specified by the caller.
++    #[expect(dead_code)]
++    Explicit(u64),
++}
++
++/// A kernel-owned buffer object with automatic GPU virtual address mapping.
++///
++/// This structure represents a buffer object that is created and managed entirely
++/// by the kernel driver, as opposed to userspace-created GEM objects. It combines
++/// a GEM object with automatic GPU virtual address (VA) space mapping and cleanup.
++///
++/// When dropped, the buffer is automatically unmapped from the GPU VA space.
++pub(crate) struct KernelBo<'bound> {
++    /// The underlying GEM buffer object.
++    #[expect(dead_code)]
++    pub(crate) bo: ARef<Bo>,
++    /// The GPU VM this buffer is mapped into.
++    vm: Arc<Vm<'bound>>,
++    /// The GPU VA range occupied by this buffer.
++    va_range: Range<u64>,
++}
++
++impl<'bound> KernelBo<'bound> {
++    /// Creates a new kernel-owned buffer object and maps it into GPU VA space.
++    ///
++    /// This function allocates a new shmem-backed GEM object and immediately maps
++    /// it into the specified GPU virtual memory space. The mapping is automatically
++    /// cleaned up when the [`KernelBo`] is dropped.
++    #[expect(dead_code)]
++    pub(crate) fn new(
++        ddev: &TyrDrmDevice,
++        vm: Arc<Vm<'bound>>,
++        size: u64,
++        va_alloc: KernelBoVaAlloc,
++        flags: VmMapFlags,
++    ) -> Result<Self> {
++        if size == 0 {
++            pr_err!("Cannot create KernelBo with size 0\n");
++            return Err(EINVAL);
++        }
++
++        let KernelBoVaAlloc::Explicit(va) = va_alloc;
++
++        let bo = Bo::new(
++            ddev,
++            size as usize,
++            shmem::ObjectConfig {
++                map_wc: true,
++                parent_resv_obj: None,
++            },
++            BoCreateArgs { flags: 0 },
++        )?;
++
++        vm.map_bo_range(&bo, 0, size, va, flags)?;
++
++        Ok(KernelBo {
++            bo,
++            vm,
++            va_range: va..(va + size),
++        })
++    }
++}
++
++impl Drop for KernelBo<'_> {
++    fn drop(&mut self) {
++        let va = self.va_range.start;
++        let size = self.va_range.end - self.va_range.start;
++
++        if let Err(e) = self.vm.unmap_range(va, size) {
++            pr_err!(
++                "Failed to unmap KernelBo range {:#x}..{:#x}: {:?}\n",
++                self.va_range.start,
++                self.va_range.end,
++                e
++            );
++        }
++    }
++}
 
-Changes in v5:
-- Reduce the scope of this series back to just MCU booting.
-- Drop the CSF global interface, job IRQ, wait, and arch timer patches
-  since they will be sent as subsequent series.
-- Add lifetimes to resources and store them in TyrRegistrationData.
-
-- Link to v4: https://lore.kernel.org/r/20260424-b4-fw-boot-v4-v4-0-a5d91050789d@collabora.com
-
-Changes in v4:
- New commits:
-  - drm/tyr: program CSF global interface
-  - rust: time: add arch_timer_get_rate wrapper
-  - drm/tyr: add CSF firmware interface support
-  - drm/tyr: validate presence of CSF shared section
-  - drm/tyr: wait for global interface readiness
-  - drm/tyr: add Job IRQ handling
-  - drm/tyr: add Wait type for GPU events
-
- The existing commits from v3 remain unchanged.
- - Link to v3: https://lore.kernel.org/r/20260413-b4-fw-boot-v3-v3-0-b422f3c03885@collabora.com
-    
-Changes in v3:
- New commits:
-  - drm/tyr: remove unused device from platform data
-  - drm/tyr: use shmem GEM object type in TyrDrmDriver
-    
- drm/tyr: select required dependencies in Kconfig
-  - Rename commit since the dependencies are not limited to DRM.
-  - Select new RUST_DRM_GEM_SHMEM_HELPER instead of DRM_GEM_SHMEM_HELPER.
-    
- drm/tyr: set DMA mask using GPU physical address
-  - Use register macro to read pa_bits instead of separate helper function.
-    
- drm/tyr: add MMU module
-  - Switch MMU code to typed register APIs (TRANSCFG, MEMATTR, STATUS, LOCKADDR, etc.).
-  - Use MmuCommand enum for MMU commands instead of raw constants.
-  - Minor cleanups and renaming (MAX_AS, AS_PRESENT handling).
-    
- drm/tyr: add GPU virtual memory module
-  - Extract VA/PA bits via typed MMU_FEATURES register.
-  - Update the VM code to match the new GPUVM v6 and shmem GEM v10 APIs.
-    
- drm/tyr: add a kernel buffer object
-  - Reject zero-sized KernelBo allocations up front.
-    
- drm/tyr: add firmware loading and MCU boot support
-  - Use typed GPU control registers.
-  - Pass iomem by Arc into Firmware::new() since we store it eventually.
-    
-  - Link to v2: https://lore.kernel.org/rust-for-linux/20260302232500.244489-1-deborah.brouwer@collabora.com/
-    
-Changes in v2:
- - The whole series is rebased on drm-rust-next including v7.0-rc1.
- - Each patch has its own changelog.
-    
- Link to v1: https://lore.kernel.org/rust-for-linux/20260212013713.304343-1-deborah.brouwer@collabora.com/
-
----
-Boris Brezillon (3):
-      drm/tyr: add a generic slot manager
-      drm/tyr: add Memory Management Unit (MMU) support
-      drm/tyr: add GPU virtual memory (VM) support
-
-Daniel Almeida (1):
-      drm/tyr: add parser for firmware binary
-
-Deborah Brouwer (3):
-      drm/tyr: add resources to RegistrationData
-      drm/tyr: add a kernel buffer object
-      drm/tyr: add Microcontroller Unit (MCU) booting
-
- drivers/gpu/drm/tyr/Kconfig              |   5 +
- drivers/gpu/drm/tyr/driver.rs            |  64 ++-
- drivers/gpu/drm/tyr/file.rs              |  11 +-
- drivers/gpu/drm/tyr/fw.rs                | 263 ++++++++++
- drivers/gpu/drm/tyr/fw/parser.rs         | 521 ++++++++++++++++++++
- drivers/gpu/drm/tyr/gem.rs               | 122 ++++-
- drivers/gpu/drm/tyr/mmu.rs               | 102 ++++
- drivers/gpu/drm/tyr/mmu/address_space.rs | 490 +++++++++++++++++++
- drivers/gpu/drm/tyr/regs.rs              | 123 ++++-
- drivers/gpu/drm/tyr/slot.rs              | 377 ++++++++++++++
- drivers/gpu/drm/tyr/tyr.rs               |   4 +
- drivers/gpu/drm/tyr/vm.rs                | 810 +++++++++++++++++++++++++++++++
- 12 files changed, 2860 insertions(+), 32 deletions(-)
----
-base-commit: c8482fab3418955dcd322bea615857adf8c47caa
-change-id: 20260708-fw-boot-b4-f07706a265c7
-
-Best regards,
 -- 
-Deborah Brouwer <deborah.brouwer@collabora.com>
+2.54.0
 
