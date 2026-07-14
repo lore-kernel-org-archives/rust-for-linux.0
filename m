@@ -1,153 +1,140 @@
-Received: from va-2-30.ptr.blmpb.com (va-2-30.ptr.blmpb.com [209.127.231.30])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48DA3EB11B
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 07:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E5737F012
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 08:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784012464; cv=none; b=jkafbtwNA4kf6E7sMH2gqSN4m0TGgA7XBtmxPgu1nenkYQ1uUyYXcs/fd57nazldyCTFKbh/0bWStEi7cNS2bNZ5Cmy9A+2LNuOe9VSyuWJHDTugvbIs2dESPMbrFeVpHx4v4kQ6tRBYZ7VUJRyltX9QLja83SxW36vm0EdIPKQ=
+	t=1784018028; cv=none; b=s4dJdC+may6UlE/Bmf/qGKkbI8cpoOX14yqpzDFOFa2UlgfmnQq31aHamprlAQOkHveb8FOeKZ7TKH2To/VuaH1NgbE+zQR8va2WqWKQGODvruaMbSxPhXcr7CnVJlVbbbZAPH6dz3Y0Wa17sx1i4konlPX7zWoZN4m2MArPPrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784012464; c=relaxed/simple;
-	bh=oPXgJE7zSuZMi9p8jsOWvPsrX9w4nnSFn7bSlkkdBXQ=;
-	h=Content-Type:Mime-Version:Date:Cc:Subject:References:To:From:
-	 In-Reply-To:Message-Id; b=EF7cl59CVDjJov/DfLS/JgcmarY/62HEDeya9NKH3UDVvqfeA7iTzX73961olS2h4RUsVhWQTsIWHH+REEVwzZ6j+GNLXyJ430OIKTPOhMzkalcqYWpLZvHiiPX67FgomOD+1fvirMt2wAxftLGr248rwxq43TbLefbBTaj9y4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=NJBgJK/t; arc=none smtp.client-ip=209.127.231.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
+	s=arc-20240116; t=1784018028; c=relaxed/simple;
+	bh=IHW0jrVYKirRz4xFnRAvekmWCpqi2k7RyAf7Y5W4PyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F1DrCpN+Pt5Pxo66C6IEhWxD+yLp2MxdNj/Zz/MUsOMpCnJXLqp6ZdcJitjl+wEyHIsQ9eka/ds4u3mr1lZrglhD7Z6h5fpcBMp9bH8fTcsxRFPQ3oFSNa93CJ+BNctgXtyQ3YIORvug5MCL++O5D/8ls3fbVSeKjtwgT8DK1Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZRNHBawA; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="NJBgJK/t"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1784012446;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=oPXgJE7zSuZMi9p8jsOWvPsrX9w4nnSFn7bSlkkdBXQ=;
- b=NJBgJK/tHBn0wLHmMbnFAu1kRqi2VuW6RqXqSovPhwczsrtlZhupI2/DeOjAwge4yG28jJ
- jx9Scc2PqzYrnZZqCAyAci1yGtxrlviu6l0q5XdCjf1SgsiBFT/YHppvPpsUHLvMmm34LH
- W8+NJIrj5AXOFLVb4i1pgEZFuR+V0OPuaa2ZHqV32OLwnZGuyBvGb/FeinwjuU7XnPfmLe
- YMqgbjYTx3FNaXiiG4GZRdB75SNthaG7GoNQ7NTaz7k4wYJ5SULUJPgu6aoIutlsXrr0X+
- kTJ3WksZ8Gk8G2Z3qX8gEmrnlIbITzpgwjadiBRQR7lSnTJGQv8shrw7kmOeBA==
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZRNHBawA"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-493f4638f4aso6224555e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 01:33:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784018020; x=1784622820; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dN43QeMKt3opRlURLs9WAJqq1Kw1gcGP8C53HZV1wz0=;
+        b=ZRNHBawAzRsgDKjWIYbkX/L1AqJpGi259NXywqFklR5avA8/pAhNQPKxfaa7liKDGY
+         NV9ytgt92T/KO1vMDsKuWiBcWT9AtNz/q4ge3CeGVXADTLhavvQiF9NVejobzMQizcy+
+         OSYECwuCUW4yzY99N0TT7xKej9FCV+CvkR+uyeaFsaQupoT92k3dVzY9RvibPF+ZrP+k
+         PnAoa2EWiPB8TPl/VQMTjpbig2UNMZ7cS8uNkIMfR+3jOe8IBchyDeaoSngsoWYBhj9N
+         GKF0e4AZ0teyjC1rpeqSD2d/+7s9DVcmuPxCqSuEKn4MaUjLkoWCwiF302XoWJHMFDu+
+         PJCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784018020; x=1784622820;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dN43QeMKt3opRlURLs9WAJqq1Kw1gcGP8C53HZV1wz0=;
+        b=QDJQB7uG8wD8hemL1oBs8BRWn6llJXB6Mt+3O3n3wOPbGuvyq4MT2Eqi1OiAegnI6Z
+         3qK5XGmN0VCnVOuw0UjNmRy83QqntLWGYDNJ0AVKWt3s0eoZlCSdImpK76RIisCB5qq/
+         RyJjeAK3ptLSnv9Ruhml9wf0ZtLReSkSPtvkMvKe5zp3Xu6xULNjlUecsCVEnIZrR66e
+         s8nCNZvMV09gOT0g9RQPKrBMeK94ID/IbISaV2r6w9UHXAZXuRkNCktJjEiqNOOJRoej
+         p0Ey2SUWXX3+IZ+75xbEVR/P06xU0jaimxHK/qaPelVPpwKYSjdWIMcmipM+ZekCIsvq
+         41oA==
+X-Forwarded-Encrypted: i=1; AHgh+RrYxKDDSKvhOtWYcU61otDRM6Ni7t1zDi/lcJ3Dq7bbN7PBe9Y0TJNwKQwLt8QAR5zS3upTWyIPZioYyA7A6A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYnAI0ia0VZ3qhzonqQGRJshl25jjMYObcmrgfKzo7bd7FBsjV
+	OPQVmMl3YnNl8YllrscoV407S4alHtPYHYmxCFpsw3fNLvyZRDnhdyLbNnr3BkXP
+X-Gm-Gg: AfdE7clp5xTrMDI6+12I+hXHtN0MUdsg9AsEd6i1nPFmOXy3rm2uYqAO1HYM+edSZVp
+	Yr7xCDdNvPogd36QjRP7T/QxNYacNuDLInhQrrnefg+bmvS/9kBFLuM0I47JvZSqrnRZzo+EtsQ
+	SH1bLZlGQWBHDXU1skfb4CLjuCWU+OzaR2nDUpgMG/UYtmW8Ye+Ik6UypQitg8uP4yNDtMJnm/N
+	qwJhi/1OG13xeG6MVeUucAwmZhyL5Xn3ocP+KzLOfn1VGuA5oTYLCHY07dj2NHbEezqlLlqtSfM
+	CaOYSaIrvvZD4095alyS7DrSXd7aMqnL+z8BJSaRm8SDFybgUzUCeG91GAZdmyJ5Ds40rsondoc
+	0e/8g+K3B/nuRwUICsAmB85Qr38KdaCG2J6dBMuquIHv69spMXXgxCvqFrnGOFLG0ffb/t7wBt0
+	B2PdhYPGiokvPWf4nZ5KxQtqxaAbDsnsZI2g==
+X-Received: by 2002:a05:600c:1392:b0:493:f753:24e8 with SMTP id 5b1f17b1804b1-493fed59338mr109265975e9.6.1784018019335;
+        Tue, 14 Jul 2026 01:33:39 -0700 (PDT)
+Received: from localhost (a89-182-201-216.net-htp.de. [89.182.201.216])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4950a33a926sm52933245e9.15.2026.07.14.01.33.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jul 2026 01:33:38 -0700 (PDT)
+From: Sergei Litvin <litvindev@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: ojeda@kernel.org,
+	nathan@kernel.org,
+	nsc@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Sergei Litvin <litvindev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] scripts/tags.sh: Prevent binary files appearing in cscope.files
+Date: Tue, 14 Jul 2026 10:33:31 +0200
+Message-ID: <20260714083331.69482-1-litvindev@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com>
+References: <CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: base64
-Date: Tue, 14 Jul 2026 15:00:09 +0800
-X-Lms-Return-Path: <lba+26a55de9c+b4dcb3+vger.kernel.org+ben.guo@openatom.club>
-Cc: "Gary Guo" <gary@garyguo.net>, <linux-doc@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, 
-	<hust-os-kernel-patches@googlegroups.com>
-Subject: [PATCH v3 2/4] docs/zh_CN: Update rust/general-information.rst translation
-X-Original-From: Ben Guo <ben.guo@openatom.club>
-Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Tue, 14 Jul 2026 15:00:42 +0800
-References: <cover.1784000217.git.ben.guo@openatom.club>
-To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <siyanteng@loongson.cn>, 
-	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
-From: "Ben Guo" <ben.guo@openatom.club>
-In-Reply-To: <cover.1784000217.git.ben.guo@openatom.club>
-Message-Id: <2cd77353aae6a85b63ab25d44c2379224c271366.1784000217.git.ben.guo@openatom.club>
-X-Mailer: git-send-email 2.53.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-VXBkYXRlIERvY3VtZW50YXRpb24vcnVzdC9nZW5lcmFsLWluZm9ybWF0aW9uLnJzdCB0cmFuc2xh
-dGlvbi4NCg0KVXBkYXRlIHRoZSB0cmFuc2xhdGlvbiB0aHJvdWdoIGNvbW1pdCA4NmM1ZDFjNjc0
-MGMNCigiZG9jczogcnVzdDogZ2VuZXJhbC1pbmZvcm1hdGlvbjogdXNlIHJlYWwgZXhhbXBsZSIp
-DQoNClJldmlld2VkLWJ5OiBHYXJ5IEd1byA8Z2FyeUBnYXJ5Z3VvLm5ldD4NClJldmlld2VkLWJ5
-OiBEb25nbGlhbmcgTXUgPGR6bTkxQGh1c3QuZWR1LmNuPg0KU2lnbmVkLW9mZi1ieTogQmVuIEd1
-byA8YmVuLmd1b0BvcGVuYXRvbS5jbHViPg0KLS0tDQogLi4uL3poX0NOL3J1c3QvZ2VuZXJhbC1p
-bmZvcm1hdGlvbi5yc3QgICAgICAgIHwgODIgKysrKysrKysrKysrKysrKysrLQ0KIDEgZmlsZSBj
-aGFuZ2VkLCA3OSBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEv
-RG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9nZW5lcmFsLWluZm9ybWF0aW9u
-LnJzdCBiL0RvY3VtZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvZ2VuZXJhbC1pbmZv
-cm1hdGlvbi5yc3QNCmluZGV4IDliNWUzN2UxM2YzLi5hOGMxYTIyNmVkNCAxMDA2NDQNCi0tLSBh
-L0RvY3VtZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvZ2VuZXJhbC1pbmZvcm1hdGlv
-bi5yc3QNCisrKyBiL0RvY3VtZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvZ2VuZXJh
-bC1pbmZvcm1hdGlvbi5yc3QNCkBAIC0xMyw2ICsxMywxNCBAQA0KIA0KIOacrOaWh+aho+WMheWQ
-q+S6huWcqOWGheaguOS4reS9v+eUqFJ1c3TmlK/mjIHml7bpnIDopoHkuobop6PnmoTmnInnlKjk
-v6Hmga/jgIINCiANCitgYG5vX3N0ZGBgDQorLS0tLS0tLS0tLQ0KKw0KK+WGheaguOS4reeahCBS
-dXN0IOaUr+aMgeWPquiDvemTvuaOpSBgY29yZSA8aHR0cHM6Ly9kb2MucnVzdC1sYW5nLm9yZy9j
-b3JlLz5gX++8jA0KK+iAjOS4jeiDvemTvuaOpSBgc3RkIDxodHRwczovL2RvYy5ydXN0LWxhbmcu
-b3JnL3N0ZC8+YF/jgILkvpvlhoXmoLjkvb/nlKjnmoQgY3JhdGUNCivlv4Xpobvkvb/nlKggYGAj
-IVtub19zdGRdYGAg5bGe5oCn6YCJ5oup6L+Z56eN6KGM5Li644CCDQorDQorDQogLi4gX3J1c3Rf
-Y29kZV9kb2N1bWVudGF0aW9uX3poX2NuOg0KIA0KIOS7o+eggeaWh+ahow0KQEAgLTIwLDEwICsy
-OCwxOCBAQA0KIA0KIFJ1c3TlhoXmoLjku6PnoIHkvb/nlKjlhbblhoXnva7nmoTmlofmoaPnlJ/m
-iJDlmaggYGBydXN0ZG9jYGAg6L+b6KGM6K6w5b2V44CCDQogDQot55Sf5oiQ55qESFRNTOaWh+ah
-o+WMheaLrOmbhuaIkOaQnOe0ouOAgemTvuaOpemhue+8iOWmguexu+Wei+OAgeWHveaVsOOAgeW4
-uOmHj++8ieOAgea6kOS7o+eggeetieOAguWug+S7rOWPr+S7peWcqOS7peS4i+WcsOWdgOmYheiv
-uw0KLe+8iFRPRE/vvJrlvZPlnKjkuLvnur/kuK3ml7bpk77mjqXvvIzkuI7lhbbku5bmlofmoaPk
-uIDotbfnlJ/miJDvvInvvJoNCivnlJ/miJDnmoQgSFRNTCDmlofmoaPljIXmi6zpm4bmiJDmkJzn
-tKLjgIHpk77mjqXpobnvvIjlpoLnsbvlnovjgIHlh73mlbDjgIHluLjph4/vvInjgIHmupDku6Pn
-oIHnrYnjgIINCivlroPku6zlj6/ku6XlnKjku6XkuIvlnLDlnYDpmIXor7vvvJoNCisNCisJCWh0
-dHBzOi8vcnVzdC5kb2NzLmtlcm5lbC5vcmcNCisNCivlr7nkuo4gbGludXgtbmV4dO+8jOivt+WP
-gumYhe+8mg0KIA0KLQlodHRwOi8va2VybmVsLm9yZy8NCisJCWh0dHBzOi8vcnVzdC5kb2NzLmtl
-cm5lbC5vcmcvbmV4dC8NCisNCivmr4/kuKrkuLvopoHniYjmnKzkuZ/mnInlr7nlupTnmoTmoIfn
-rb7vvIzkvovlpoLvvJoNCisNCisJCWh0dHBzOi8vcnVzdC5kb2NzLmtlcm5lbC5vcmcvNi4xMC8N
-CiANCiDov5nkupvmlofmoaPkuZ/lj6/ku6XlvojlrrnmmJPlnLDlnKjmnKzlnLDnlJ/miJDlkozp
-mIXor7vjgILov5nnm7jlvZPlv6vvvIjkuI7nvJbor5Hku6PnoIHmnKzouqvnmoTpobrluo/nm7jl
-kIzvvInvvIzogIzkuJTkuI3pnIDopoHnibkNCiDmrornmoTlt6XlhbfmiJbnjq/looPjgILov5nm
-nInkuIDkuKrpop3lpJbnmoTlpb3lpITvvIzpgqPlsLHmmK/lroPku6zlsIbmoLnmja7miYDkvb/n
-lKjnmoTnibnlrprlhoXmoLjphY3nva7ov5vooYzlrprliLbjgILopoHnlJ/miJDlroMNCkBAIC02
-Miw2ICs3OCw1OCBAQCBSdXN05YaF5qC45Luj56CB5L2/55So5YW25YaF572u55qE5paH5qGj55Sf
-5oiQ5ZmoIGBgcnVzdGRvY2BgIOi/m+ihjOiusOW9leOAgg0KIOaooeWdl++8iOS+i+Wmgu+8jOmp
-seWKqOeoi+W6j++8ieS4jeW6lOivpeebtOaOpeS9v+eUqEPor63oqIDnmoTnu5HlrprjgILnm7jl
-j43vvIzlrZDns7vnu5/lupTor6XmoLnmja7pnIDopoHmj5DkvpvlsL3lj6/og73lrokNCiDlhajn
-moTmir3osaHjgIINCiANCisuLiBjb2RlLWJsb2NrOjoNCisNCisJICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcnVzdC9iaW5kaW5ncy8NCisJICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAocnVzdC9oZWxwZXJzLykNCisN
-CisJICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaW5j
-bHVkZS8gLS0tLS0rIDwtKw0KKwkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICB8DQorCSAgZHJpdmVycy8gICAgICAgICAg
-ICAgIHJ1c3Qva2VybmVsLyAgICAgICAgICAgICAgKy0tLS0tLS0tLS0rIDwtKyAgIHwNCisJICAg
-IGZzLyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IGJpbmRnZW4g
-IHwgICAgICAgfA0KKwkgICAuLi4vICAgICAgICAgICAgKy0tLS0tLS0tLS0tLS0tLS0tLS0rICAg
-ICAgICAgICstLS0tLS0tLS0tKyAtLSsgICB8DQorCSAgICAgICAgICAgICAgICAgICB8ICAgIEFi
-c3RyYWN0aW9ucyAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIHwNCisJKy0tLS0tLS0t
-LSsgICAgICAgIHwgKy0tLS0tLSsgKy0tLS0tLSsgfCAgICAgICAgICArLS0tLS0tLS0tLSsgICB8
-ICAgfA0KKwl8IG15X2ZvbyAgfCAtLS0tLT4gfCB8IGZvbyAgfCB8IGJhciAgfCB8IC0tLS0tLS0+
-IHwgQmluZGluZ3MgfCA8LSsgICB8DQorCXwgZHJpdmVyICB8ICBTYWZlICB8IHwgc3ViLSB8IHwg
-c3ViLSB8IHwgIFVuc2FmZSAgfCAgICAgICAgICB8ICAgICAgIHwNCisJKy0tLS0tLS0tLSsgICAg
-ICAgIHwgfHN5c3RlbXwgfHN5c3RlbXwgfCAgICAgICAgICB8IGJpbmRpbmdzIHwgPC0tLS0tKw0K
-KwkgICAgIHwgICAgICAgICAgICAgfCArLS0tLS0tKyArLS0tLS0tKyB8ICAgICAgICAgIHwgIGNy
-YXRlICAgfCAgICAgICB8DQorCSAgICAgfCAgICAgICAgICAgICB8ICAga2VybmVsIGNyYXRlICAg
-IHwgICAgICAgICAgKy0tLS0tLS0tLS0rICAgICAgIHwNCisJICAgICB8ICAgICAgICAgICAgICst
-LS0tLS0tLS0tLS0tLS0tLS0tKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfA0KKwkgICAg
-IHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8DQorCSAgICAgKy0tLS0tLS0tLS0tLS0tLS0tLSMgRk9SQklEREVOICMtLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSsNCisNCivkuLvopoHmgJ3mg7PmmK/lsIbmiYDmnInk
-uI7lhoXmoLggQyBBUEkg55qE55u05o6l5Lqk5LqS5bCB6KOF5Yiw57uP6L+H5LuU57uG5a6h5p+l
-5ZKM5paH5qGj5YyW55qE5oq96LGhDQor5Lit44CC6L+Z5qC377yM5Y+q6KaB5ruh6Laz5Lul5LiL
-5p2h5Lu277yM6L+Z5Lqb5oq96LGh55qE55So5oi35bCx5LiN6IO95byV5YWl5pyq5a6a5LmJ6KGM
-5Li6DQor77yIdW5kZWZpbmVkIGJlaGF2aW9y77yMVULvvInvvJoNCisNCisjLiDmir3osaHmmK/m
-raPnoa7nmoTvvIgi5Y+v6Z2gIu+8ieOAgg0KKyMuIOS7u+S9lSBgYHVuc2FmZWBgIOWdl+mDvemB
-teWuiOiwg+eUqOWdl+WGheaTjeS9nOaJgOmcgOeahOWuieWFqOWlkee6puOAguexu+S8vOWcsO+8
-jOS7u+S9lQ0KKyAgIGBgdW5zYWZlIGltcGxgYCDpg73pgbXlrojlrp7njrDor6XnibnmgKfmiYDp
-nIDnmoTlronlhajlpZHnuqbjgIINCisNCivnu5HlrpoNCit+fn5+DQorDQor6YCa6L+H5LuOIGBg
-aW5jbHVkZS9gYCDkuK3lsIYgQyDlpLTmlofku7bljIXlkKvliLANCitgYHJ1c3QvYmluZGluZ3Mv
-YmluZGluZ3NfaGVscGVyLmhgYO+8jCBgYGJpbmRnZW5gYCDlt6XlhbflsIbkuLrmiYDljIXlkKvn
-moTlrZDns7vnu58NCivoh6rliqjnlJ/miJDnu5HlrprjgILmnoTlu7rlkI7vvIzor7fmn6XnnIsg
-YGBydXN0L2JpbmRpbmdzL2BgIOebruW9leS4reeahA0KK2BgKl9nZW5lcmF0ZWQucnNgYCDovpPl
-h7rmlofku7bjgIINCisNCivlr7nkuo4gYGBiaW5kZ2VuYGAg5LiN5Lya6Ieq5Yqo55Sf5oiQ55qE
-IEMg5aS05paH5Lu26YOo5YiG77yM5L6L5aaCIEMgYGBpbmxpbmVgYCDlh73mlbDmiJYNCivpnZ7l
-ubPlh6Hlro/vvIzlj6/ku6XlnKggYGBydXN0L2hlbHBlcnMvYGAg5Lit5re75Yqg5LiA5Liq5bCP
-5Z6L5YyF6KOF5Ye95pWw77yM5L2/5YW25Lmf5Y+v5L6bDQorUnVzdCDnq6/kvb/nlKjjgIINCisN
-Civmir3osaENCit+fn5+DQorDQor5oq96LGh5piv57uR5a6a5ZKM5YaF5qC45YaF55So5oi35LmL
-6Ze055qE5bGC44CC5a6D5Lus5L2N5LqOIGBgcnVzdC9rZXJuZWwvYGAg5Lit77yM5YW25L2c55So
-5pivDQor5bCG5a+557uR5a6a55qE5LiN5a6J5YWo6K6/6Zeu5bCB6KOF5Yiw5bC95Y+v6IO95a6J
-5YWo5bm25pq06Zyy57uZ55So5oi355qEIEFQSSDkuK3jgILmir3osaHnmoTnlKjmiLcNCivljIXm
-i6znlKggUnVzdCDnvJblhpnnmoTpqbHliqjnqIvluo/miJbmlofku7bns7vnu5/nrYnjgIINCisN
-CivpmaTkuoblronlhajmlrnpnaLvvIzov5nkupvmir3osaHov5jlupTor6XmmJPkuo7kvb/nlKjv
-vIzkuZ/lsLHmmK/or7TvvIzmioogQyDmjqXlj6PovazmjaLkuLrnrKblkIgNCitSdXN0IOaDr+S+
-i+eahOS7o+eggeOAguWfuuacrOekuuS+i+WMheaLrOWwhiBDIOeahOi1hOa6kOiOt+WPluWSjOmH
-iuaUvui9rOaNouS4uiBSdXN0IOeahOWIneWni+WMlg0KK+WSjOa4heeQhuaooeW8j++8jOaIluiA
-heWwhiBDIOaVtOaVsOmUmeivr+eggei9rOaNouS4uiBSdXN0IOeahCBgYFJlc3VsdGBg44CCDQor
-DQogDQog5pyJ5p2h5Lu255qE57yW6K+RDQogLS0tLS0tLS0tLS0tDQpAQCAtNzQsMyArMTQyLDEx
-IEBAIFJ1c3Tku6PnoIHlj6/ku6Xorr/pl67ln7rkuo7lhoXmoLjphY3nva7nmoTmnaHku7bmgKfn
-vJbor5E6DQogCSNbY2ZnKENPTkZJR19YPSJ5IildICAgLy8gRW5hYmxlZCBhcyBhIGJ1aWx0LWlu
-IChgeWApDQogCSNbY2ZnKENPTkZJR19YPSJtIildICAgLy8gRW5hYmxlZCBhcyBhIG1vZHVsZSAg
-IChgbWApDQogCSNbY2ZnKG5vdChDT05GSUdfWCkpXSAgLy8gRGlzYWJsZWQNCisNCivlr7nkuo4g
-UnVzdCDnmoQgYGBjZmdgYCDkuI3mlK/mjIHnmoTlhbbku5bmnaHku7bvvIzkvovlpoLluKbmnInm
-lbDlgLzmr5TovoPnmoTooajovr7lvI/vvIzlj6/ku6UNCivlrprkuYnkuIDkuKrmlrDnmoQgS2Nv
-bmZpZyDnrKblj7fvvJoNCisNCisuLiBjb2RlLWJsb2NrOjoga2NvbmZpZw0KKw0KKwljb25maWcg
-UlVTVENfSEFTX1NQQU5fRklMRQ0KKwkJZGVmX2Jvb2wgUlVTVENfVkVSU0lPTiA+PSAxMDg4MDAN
-Ci0tIA0KMi41My4w
+When executing the command `make COMPILED_SOURCE=1 cscope`, the resulting
+`cscope.files` file contains filenames with the extensions *.rlib, *.rmeta,
+and *.so.
+
+To fix this, modify the regular expression in the `all_compiled_sources()`
+function so that only files with the extensions *.h, *.c, *.S, and *.rs are
+accepted.
+
+The issue has been introduced by commit 4f491bb6ea2a ("scripts/tags.sh: collect
+compiled source precisely") which implemented the parsing of compiled sources
+from *.cmd files instead of using the "find" command.
+
+Cc: ojeda@kernel.org
+Cc: nsc@kernel.org
+Cc: nathan@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 4f491bb6ea2a ("scripts/tags.sh: collect compiled source precisely")
+Signed-off-by: Sergei Litvin <litvindev@gmail.com>
+
+---
+
+This is the first part of this patch:
+https://lore.kernel.org/lkml/20260602121521.11650-1-litvindev@gmail.com/
+
+which I have split into two parts, as suggested by Nicolas Schier here:
+https://lore.kernel.org/lkml/akVkIrcpNxZrrfii@levanger/
+
+Changes since V1:
+https://lore.kernel.org/lkml/20260705175936.4653-1-litvindev@gmail.com/
+
+as suggested by Miguel Ojeda here:
+https://lore.kernel.org/lkml/CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com/
+
+- Add "Cc: stable@vger.kernel.org" tag
+- Add "Fixes:" tag
+- Add missed "Signed-off-by:" tag
+---
+ scripts/tags.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/tags.sh b/scripts/tags.sh
+index 243373683f98..c9dc2763a505 100755
+--- a/scripts/tags.sh
++++ b/scripts/tags.sh
+@@ -100,7 +100,7 @@ all_compiled_sources()
+ 	{
+ 		echo include/generated/autoconf.h
+ 		find $ignore -name "*.cmd" -exec \
+-			grep -Poh '(?<=^  )\S+|(?<== )\S+[^\\](?=$)' {} \+ |
++			grep -Poh '(?<=^  )\S+\.([chS]|rs)(?=\s)|(?<== )\S+\.(?1)(?=$)' {} \+ |
+ 		awk '!a[$0]++'
+ 	} | xargs realpath -esq $([ -z "$KBUILD_ABS_SRCTREE" ] && echo --relative-to=.) |
+ 	sort -u
+-- 
+2.55.0
+
