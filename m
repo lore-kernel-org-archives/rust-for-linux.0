@@ -1,237 +1,110 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FE73FAE19
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 09:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D030736492A
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 10:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784021192; cv=none; b=mRSlbxdKntN6QiHjqG9p04FwlKcrZ/HGfFUvGQ0dQ7s+0UZmy5IyOPh75Hy+QFsFqlYF3Nk7bLunlnZbpsvcXFa+vnyf34S+kcTDOHgQJFpXM/sauYfrsGowCgUBxAgfhxnRnMaWMYD3OsRd6QLsNnomRWHKw+LVqgWsojK8fN0=
+	t=1784024218; cv=none; b=qCtFRl2sz3zYSMrnP+HTjuBf3EhNQMQfCfrfj467gVqtv8/9AbToliTvfdWv4lYAnS8xVohjbWMXrrjiUP9Rjo8NOODnVQ8LHn5baco+c1xK1Upt3DwDJlTncVepUtX8mV2EUR+Jm4MXaU5VWKXWM++cusSKv+au+Cz71yE7CHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784021192; c=relaxed/simple;
-	bh=uk44179nBHQ0R0LbB6H0UBTLnb1nykhwAc8C7JE3Ef0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ecor1TQMxtzAl/zgmtUl80Pz2OhG3OBijH40jQZr3ONYOjOlRSHoDP6IK8BFR+57mz7jYBSwlNSwAT5JkkHnJhR3PQhbXnCtVsY+tZ4F3KF1H25fSFHbwByYlfm9hherqoa8ATFVOTnHp+BhSqBw5bTu7bXPvQ3uWZLqT0ur3mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=G6Asaj16; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1784024218; c=relaxed/simple;
+	bh=+ihbdfXRiYltCakFWUrwyQB4pRBlZC8yQxKKQvvelXw=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=u94mTGPq8IicBcZs+xhdBe1pVHUbMYuvZ/Gdm4mWxyM3Igfg6IR/pZXyunbNM6pmlil1GrxiBf/CMsVnDnhIMmXYPSypIzl+a6xozBsABn3ujYHZOnd+5IBWDMgbp01N007xSrWDGIbqrSK5uAiIZ/ciNHMZxIpYUj9uEXGh2xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=NHy6J/TU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ed90bjEN; arc=none smtp.client-ip=202.12.124.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="G6Asaj16"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47f3b39f2a1so510161f8f.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 02:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1784021189; x=1784625989; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GHRW4UOdyW8Ouh0luSp6xuWXdsWRjaIjBrR+ZbVhoo8=;
-        b=G6Asaj16adtmQA3dfmnS4q/2xcZo4q/bc9fOBZMWcFDs9fAMuGJKcZWUbG0099G25g
-         t2ZZIlETgU4lp4sq7zr2hOk6tua6AdIKpuf83dKdRgt3/7ZovTmI6jsq9T8SOTqJQiJx
-         RfvpKo0P4jKKXJKIasGTMwY9S3M8rwQM4PnkT5MA8hWmjmiZQwft6YlQipCYpI2/2o2c
-         +mVMQGsLA7u9PJFczb9ewrSsZwVjwaVNEULWzcKSMqkkIKvOEX0gmbmjI98T2mqH78r2
-         FINNSAqHw9Ph3xEvgBvAuhyReo6wGNT6fcVYN5lNyAllnR8GjoOwbQG5zpkqrBHUXVLE
-         dqPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784021189; x=1784625989;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GHRW4UOdyW8Ouh0luSp6xuWXdsWRjaIjBrR+ZbVhoo8=;
-        b=BSMAuSCZGB0/RVZTmbQr4IEBLEB1rjb8lZ+IC/AirlulHVqqZH/MIPMpnutzJ+syha
-         n5FD31cEdE1eQgBMCT34FiJYoXLW3B5QX67SJICWDtI2u0pdHSS1VcyS0k8HDfPg3kmQ
-         dqgyNitqBhlWzk907fZG1YRuQn5y0Jeq2D0Sm4+aJDfXZAs4OZ7WtOSmebMPI8NoXcG5
-         /RPnhr6jd1Wj76PiAM4d4EbgKN7qpyqgtLK5ckHOyL1tvjsMl0aEjWl0i2LWLBwdTt4B
-         13HQNaGwWF4vahhEHRgm6GotMC5YtVWKXeYd2qTbkV+XVZ4QvSL+3W0P9jr1+XWRffHb
-         Ispw==
-X-Forwarded-Encrypted: i=1; AHgh+RoM2nIciBa/gukSfcrZdzqZUniXsCNPBQ31MGvbxXicwrzO79lN9uEK3kM3Wf6dnZsiJ3lBMUvrbjzxjqChhg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0wVFwM4cSCUI+6QRd6R6Z08br/fRarkcDdDBhBOA5qSdUKSdk
-	M1mkpU975sAC5pGP1yBWsywjhtxSIA+KwY+wD5118dDNoBWHSxzbKkcj5GAQAq1ixw4=
-X-Gm-Gg: AfdE7cmBz8+VsxZ+X0e4esr5yvMODy0tCXnmUsSpOU+8l0w20QlJD+U72A0eF982A98
-	453l/TCVT8IUMjK5yN0Ib0qgHR9/L9eadUqVc0OoHhUJud1Pz/tyNUkHXCq4rEMEUD+9a3rQ7up
-	ldskdBVxMCuU4+ZG1sQMc8g9HQo4mmDTjV0vu5KwA/ZCHX9J0EsJDQTaON4JwMA43FnrybdAjs5
-	b4V8ETKM0/bv4po68/K3HND4TKkoCRjeUdViyv4dFY6uIIeiMeq7Sk5OYjew1j8lKn3KqXmGVlh
-	CcO/rk3fppjQ9iiVI6jZtDievrSi3K8PATDXY+wWufDOdm6kGGAQPayABBIFIlY7DfeNuD7H5qi
-	D2VfaPJpFpMVAiiT0XwzY8cds1EuAADklZhz7Vs5R3d8UnYzJU6ci3avP2rZYSKQ1yFJjOqW82x
-	nS4HIR7/04886ov8P72fIF5Ov9nRUt/Ijf6T6NAbTiF6g2QA7TueoD2vE=
-X-Received: by 2002:a05:600c:c2:b0:493:f442:3dd4 with SMTP id 5b1f17b1804b1-493f883befcmr89458285e9.39.1784021188734;
-        Tue, 14 Jul 2026 02:26:28 -0700 (PDT)
-Received: from ?IPV6:2001:a61:13c3:1c01:3157:c849:4aaa:fa65? ([2001:a61:13c3:1c01:3157:c849:4aaa:fa65])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a2f635dsm63848015e9.12.2026.07.14.02.26.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jul 2026 02:26:28 -0700 (PDT)
-Message-ID: <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
-Date: Tue, 14 Jul 2026 11:26:26 +0200
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="NHy6J/TU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ed90bjEN"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 57E811300159;
+	Tue, 14 Jul 2026 06:16:50 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Tue, 14 Jul 2026 06:16:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784024210;
+	 x=1784027810; bh=+ihbdfXRiYltCakFWUrwyQB4pRBlZC8yQxKKQvvelXw=; b=
+	NHy6J/TUoGn7gw5keqFdgJtMUM7Ago61ZJDmT8ggt6rkrIJWzVoef67zy5pPrt/8
+	bw/VbieDho069F3Wxw2hIl3LO6PL23KTxMeefz1mCNLsTXOp/3cS+C912DNWVJuE
+	QnJFf6g4O+FN9uuxYJ2DHPEaqBRDjM95hKZ3PxPt3vUTWXPLQVwlmGjQ/JSOZNy+
+	+L6C18KRYn4qVJu/myCBSNUD2tPNmquu7d/J4h3wWmPim9sTK/iV3ZoYLPCS23YW
+	j8aa814BMXllirjbD41cmK9Q4fcTJnnPAoLBx4pov0qx0my7tKALWmAlMKLAn2bT
+	gB0YZisAGj5++qzB4OmQrA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784024210; x=
+	1784027810; bh=+ihbdfXRiYltCakFWUrwyQB4pRBlZC8yQxKKQvvelXw=; b=E
+	d90bjENuyTx1x1pB0iHTzDsJllwyoMWFRYxhvtserowDnydi7tC7nTkAaP36391Z
+	yADTL1ci5THQ8l9KWQxVz5hVfl9vglQjX3IJe3Mzgf/7DfTQRyyI7EvGf9yiMQXh
+	snKbx1y554vCCkzclc5wPB1kpegxRZtbN9SUFc9t9PsMuSCTdzkn4yfQSSkRvT0T
+	kHJvKApzQJ7fTCyu7aZKKs7gEsh9NvLMqzwvHlCjV7Fyau+n+HRBtexJ0cqfATCP
+	TgnvxyDHUQOXiE2uHRpd/yIBpMKEaAK27Iw0uRr/L76w5VMK0vkY+SIyS2hMpWdR
+	iRX59l0R9HwWXYLvuxMDw==
+X-ME-Sender: <xms:kQxWam8rRhpuaq7nC22Dd8LqoLmfxZmX9dcnKd5eedy1qy3WYKraJg>
+    <xme:kQxWanL_pqI5qTLnchGI1yshkVXhnWKRbeR_qtjvWXQ3UGRgBj-WkWv4RbIWGepG7
+    dVr7x-W9x8SBOgXkD3mO0A0vDJQ1-q6YZUv5HVMkaKSAzsk5kLE_9k>
+X-ME-Received: <xmr:kQxWahdzcXimHgREJYrn4-9awB35UxGYYh-IKqWMtXyj05I-B1Eg-xeTMpB2_ESFrnreZDji1hTma1lGsNn21h0P>
+X-ME-Proxy-Cause: dmFkZTENhRUjbVgpjN2QefDfr+/H+8RJwQ3611jL2nAoetCxcC1zKV8QOwkTC0kzFkUnMy
+    5tEGOKy80z+avTjGQ0eaaE/tyCqNaj8GfcxvDPJGnbtnnVeWWrUoJifhkmHqXyHCUCNAfS
+    ysJ/7Tm7ZrxvWGdDd5gqPl/xPEakQU6Iw3s0bKh1DxGjP7Gs07FiDrij7jViuVVuh6evBG
+    ibbQrnMnNmrhoMDusshedmV9zgbWN+DxGxk8c+IOtGTIyKlVss8dj9KABX9sJuq7drT3Zz
+    DPGkUPgApspBQNco0wZJg83hajFMdxUbg5Y/mEK1l+NcwNRaYh47skEiNDr9s3nn0F4Ec2
+    tDTO/uaUfko11AM1JhB/b/Ft1XUn5RbN2gQjGys+Qe4174QED6ymz62mSJYjPzQP4CPTyY
+    3V2C+iYb2K06R1YtYY2ManjvV5MnP6JW8z6a+jeyNSu25yIvoJKp5buI2UMvGoUAlPEWQt
+    2NG5PVXcYPQQpo1WI4bk+9fLrsNU9/QLZrf7DaIRcvBnhpCi3W+TYsKbBa5+7BZbTnJnMM
+    xF5k/a7EZyYt9lElv/26p4/G6AhyZwWxUWw2Ry1598l43Yi0NAkZv/YdYc6aX9fMWJMqC8
+    kbUX8zUXQSd5T28xeCbVBafwHayOcpVaNGjovtRKly9HXV6RnX/pAN2EbeGA
+X-ME-Proxy: <xmx:kQxWasYBIVeAJK3yURI0WsxKYu1MqK7comEJ72plWahk79qaIFFXiw>
+    <xmx:kQxWavAd5Q53SamIZiVDQ90fJC3Y3vA612hxwnmh2hhxEmzNrsEN7w>
+    <xmx:kQxWanJmfP-fFDkRHpPXdrl9cXfkA5uadMc3UT5-LIg3wPHc2JszZA>
+    <xmx:kQxWaurv2z8tF5cUp9EHYr4mqIU5RwupQvkh4vbvSad2-jpWhPArfQ>
+    <xmx:kgxWapDC5doxcrwO6Wjj4unjIyg9g8a4EmAA4xcPPLe7OWx-GIZIYXps>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 06:16:45 -0400 (EDT)
+Date: Tue, 14 Jul 2026 19:16:42 +0900 (JST)
+Message-Id: <20260714.191642.1103024240790648142.tomo@flapping.org>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: tomo@flapping.org, a.hindborg@kernel.org, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, gary@garyguo.net,
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
+ tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() to round correctly
+ for negative Delta
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <CANiq72kMWjfk9u_HiYsGWYGnKaF-oOn2w-kH=ap0wO9QccZYEg@mail.gmail.com>
+References: <20260713225235.3243480-1-tomo@flapping.org>
+	<CANiq72kMWjfk9u_HiYsGWYGnKaF-oOn2w-kH=ap0wO9QccZYEg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint
- abstractions
-To: Danilo Krummrich <dakr@kernel.org>, Colin Braun <colinbrauncl@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
- <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Alan Stern <stern@rowland.harvard.edu>,
- Mathias Nyman <mathias.nyman@intel.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-media@vger.kernel.org, Colin Braun <colin.braun.cl@gmail.com>
-References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
- <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
- <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org> <alVEUR0JrF1ga3S8@pendragon>
- <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
-Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On 13.07.26 22:09, Danilo Krummrich wrote:
-> On Mon Jul 13, 2026 at 10:03 PM CEST, Colin Braun wrote:
->> On Mon, Jul 13, 2026 at 03:22:33PM +0200, Danilo Krummrich wrote:
->>> (Cc: Oliver)
->>>
->>> On Sun Jul 12, 2026 at 11:07 PM CEST, Colin Braun wrote:
-
-[..]
-
->>> An URB requires either usb::Interface<Bound> or, for a USB device driver,
->>> usb::Device<Bound>. But since we can't derive usb::Device<Bound> from
->>> usb::Interface<Bound> a simple forwarding helper does the trick.
->>
->> That makes sense, thank you for pointing this out. I should have taken a
->> look at the git log for that line to try to understand its background.
->>
->> I'll remove the usb::Device<device::Bound>::set_interface() and
->> usb::Device<device::Bound>::control_msg() implementations in my next
->> revision (since they will no longer be used) and just implement them on
->> usb::Interface<device::Bound>.
-> 
-> I'd keep them unsafely on usb::Device and then safely expose forwarding via
-> usb::Device<Bound> and usb::Interface<Bound> once required.
-
-Hi,
-
-you are making me think that the fundamental assumptions of the USB
-layer are ill documented. If you find this to be the case, please tell
-me what should be improved and I'll see what I can do.
-
-Very well, this will be a bit longer, because I'll try to explain:
-For now, there is exactly one device driver, named "generic" (yes,
-imaginative). However, its behavior in that regard is rather fundamental,
-so if another driver were ever to be written, its drivers would not
-be normal interface drivers.
-
-In principle the chain goes as such:
-
-Device -> Configuration -> Interfaces
-
-The dependencies are in that order. You can have a configuration without
-interfaces and a device without configurations (it would be useless, but
-it is within spec)
-The life times are limited in the same way. An interface never lives
-longer than its configuration and a configuration does not live longer
-than its device.
-
-This is controlled by code in drivers/usb/core/generic.c
-
-int usb_generic_driver_probe(struct usb_device *udev)
-{
-         int err, c;
-
-         /* Choose and set the configuration.  This registers the interfaces
-          * with the driver core and lets interface drivers bind to them.
-          */
-         if (udev->authorized == 0)
-                 dev_info(&udev->dev, "Device is not authorized for usage\n");
-         else {
-                 c = usb_choose_configuration(udev);
-                 if (c >= 0) {
-                         err = usb_set_configuration(udev, c);
-
-This is the usual way a configuration is created. [You need not worry about
-the other ways. They also call usb_set_configuration().]
-
-Also important for this discussion is that this cannot fail:
-
-                         if (err && err != -ENODEV) {
-                                 dev_err(&udev->dev, "can't set config #%d, error %d\n",
-                                         c, err);
-                                 /* This need not be fatal.  The user can try to
-                                  * set other configurations. */
-                         }
-                 }
-         }
-         /* USB device state == configured ... usable */
-         usb_notify_add_device(udev);
-
-         return 0;
-}
-
-A configuration is destroyed by usb_set_configuration(). This
-is used in disconnect:
-
-void usb_generic_driver_disconnect(struct usb_device *udev)
-{
-         usb_notify_remove_device(udev);
-
-         /* if this is only an unbind, not a physical disconnect, then
-          * unconfigure the device */
-         if (udev->actconfig)
-                 usb_set_configuration(udev, -1);
-}
-
-( -1 means without replacement)
-
-You can see that there is no way a configuration and thereby its interfaces
-can last longer than its device.
-
-An interface driver is allowed to talk to two sets of endpoints
-
-1. endpoints associated with interfaces it has claimed, accepted or is probed for
-2. endpoint 0 of the device whose interfaces it has claimed, accepted or is probed for
-
-(Please do not ask about cdc-wdm)
-
-That does _not_ mean that a driver can communicate to them at all times. Communication
-is limited as follows:
-
-Communication may begin when
-
-1. probe() is called
-2. usb_claim_interface() returns without error
-3. resume() is called
-4. reset_resume() is called
-5. post_reset() is called
-
-Communication must cease
-
-1. before disconnect() returns
-2. before suspend() returns
-3. before pre_reset() returns
-4. before probe() is exited with an error return
-
-The only exception to that is that you may schedule a reset.
-
-I hope this makes things a bit clearer. Please ask questions
-if anything is unclear. I'd be happy to help.
-This area may be a bit murky because only the states of devices
-are named and documented. There simply is no data structure
-equivalent to the binding of a driver and an interface, hence
-we cannot just give interfaces a state.
-
-	Regards
-		Oliver
-
-
-
+T24gVHVlLCAxNCBKdWwgMjAyNiAxMTowOTozOSArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBUdWUsIEp1bCAxNCwgMjAy
+NiBhdCAxMjo1MuKAr0FNIEZVSklUQSBUb21vbm9yaSA8dG9tb0BmbGFwcGluZy5vcmc+IHdyb3Rl
+Og0KPj4NCj4+IEZpeGVzOiBmYWUwY2RjMTIzNDAgKCJydXN0OiB0aW1lOiBJbnRyb2R1Y2UgRGVs
+dGEgdHlwZSIpDQo+IA0KPiBTaG91bGQgdGhpcyBiZSBDYzogc3RhYmxlQCwgdGhlbj8gKHNpbmNl
+IHRoaXMgbGFuZGVkIGluIHY2LjE2KSBPciBpcw0KPiB0aGVyZSBhIHJlYXNvbiBub3QgdG8/DQoN
+ClllYWgsIHNob3VsZCBiZS4NCg0KPiBCeSB0aGUgd2F5LCB0aGVzZSBtZXRob2RzIHNob3VsZCBo
+YXZlIGAjIEV4YW1wbGVzYCBzaG93aW5nIChhbmQgdGh1cw0KPiB0ZXN0aW5nKSB0aGlzIHNvcnQg
+b2YgZWRnZSBjYXNlcy4gUHJvYmFibHkgYXMgYSBzZXBhcmF0ZSBzZXJpZXM/IChJDQo+IGNhbiBj
+cmVhdGUgYSAiZ29vZCBmaXJzdCBpc3N1ZSIsIGJ1dCBpZiB5b3UgcHJlZmVyIHRvIGRvIGl0LCBv
+Zg0KPiBjb3Vyc2UsIHRoYXQgd291bGQgYmUgZ3JlYXQpLg0KDQpJIGNhbiBzZW5kIGEgcGF0Y2gg
+YnV0IGFzIEkgcmVjYWxsLCB0aGUgbGFzdCB0aW1lIEkgcG9zdGVkIGEgcGF0Y2gNCmxpa2UgdGhh
+dCwgQW5kcmVhcyB3YXMgb3Bwb3NlZCB0byB0aGF0IGtpbmQgYXBwcm9hY2g/DQoNCmh0dHBzOi8v
+bG9yZS5rZXJuZWwub3JnL3J1c3QtZm9yLWxpbnV4LzIwMjUwNzAxMDAxODA5LjQ5NjM4OS0xLWZ1
+aml0YS50b21vbm9yaUBnbWFpbC5jb20vDQoNCg==
