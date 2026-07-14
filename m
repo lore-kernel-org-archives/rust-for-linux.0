@@ -1,138 +1,130 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E263644A6
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 10:38:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784025498; cv=pass; b=MN0yRAQLVDmHSnTfb56CnihShph67of8fk4SKYUi4Izi0n7Z/c3lWgr7W+xLxmbTFiACMRs/qq88c8qMJsRQkDA7/+E1+7S05kfSoI9VyocMK9nHFD5GLu0Ylc3C7sffd10ymqjgJxRl3hiBkNUPDFHaSd7rCd24maagN82/DAA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784025498; c=relaxed/simple;
-	bh=AHf6aec0xhpXyvZyY0H8SDCiX+h8WgLDyu7N26iZsik=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tmw10haUelU72+rsj8doC7LNCAjtzvBrVYklGQDdneA5ekyKo2QOzGsx5atbtbhcdd5qXVB0RaMPr8jmW5p0IrPyFTlFsKY8kHNldlIdwODC/xC6+74nLYKmIxEnKoPKxN4cYpEQL70qK0qK3pGMeLyNoQMsl4xLxgO6uBeviQQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zb+ShWDM; arc=pass smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FB72F49F6
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 10:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784026167; cv=none; b=HEuAjeMYVV6+j1tBRj+pi70OGd/QZBmccZ6ixeOuXzfsvT3HUqYXAEkbhXCjN/4rPD6UkdDvzCYIIXTZGkXnGWtP4p2vg20KAKzEjtTwrBIoQx6x9KvvNwD9thEPDKirVXhGSDmeRv084xGjrzwQzgIsCzO72Z4SqvW6hlLwPNk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784026167; c=relaxed/simple;
+	bh=iwqf/brmABftnOVLCzVjRzV6STnCOX+mhQjvCUhLEJ4=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=iQmb46vYXRoBQACFjO7f8qMQOMBpFElmX1FLXjD1XLUbkFOcmAaaaW7OXT1IiD4Tl/4OtKoxei4iVSI6snr2ISYRINUEkft7pcyqRzfK8m0OGfHV/yKNTdrwiUDuZcBIMFXtd1mDG7AmGL6Oa1vBs45XKHslaXsPINEmUTtlRdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=geDBPN00; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=I9smlK4j; arc=none smtp.client-ip=202.12.124.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zb+ShWDM"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-84a32ff53fcso343763b3a.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 03:38:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784025496; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RHOvQnfIfOUcndbM+j9s/qfMC31pRRoIk+03qEkPRZWx+jItWVDF0U0V8maPe6Lq6p
-         YLhds4gOqRRcSkza+4Jev4ykpNfC/sDCDlRx/AGE4plr9vGAcFlTsBy8oLFXoYVC+g2X
-         +LtveL29dIBXfVds4VIDSLGiPDn8NofMlyk04K7mWuZ3GFyEELhp6AYAkPo259j4lbjl
-         J7Fi75QTmxNroXNS4gXRFA6azmP6WIY0LudyW7xrQ/7DvUDTaRbgL01VNhUQ9t4FwWLB
-         +nlnwDnPjvZAO75N3w9MrIKlAziE9nHSgWA6GA3im6eOpzIFLxE3/y9M8Z9F/muIEB0D
-         8kTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AHf6aec0xhpXyvZyY0H8SDCiX+h8WgLDyu7N26iZsik=;
-        fh=OuOpYqgCwkip4BtKloiPDwWeATT0mlbD1qMKWQVEYso=;
-        b=WJX6dC0CeMOIqiKPqLGqWBOOrhsa/lQfCYyz8hwhowPijP/AITAZwyNEXak+RHdxUz
-         SppoGBiGxdumwcshc/1QiDdCvjcpB/w0zERoxqtkFyngdZVjn0HKEc4CaQ0QFxu7Lunt
-         zBwjeRtvU92KmMTWHIknDSboTZxAbLMjIOAURXAB/OEaYmj7yUWpdFXLv4h2PEJwoUaU
-         9F0qbw6fDvGLkdNvhzuDGLoZuyHbkofxVTEMlB+VOyDfZUdUjjWmVJNW/aFxukKAiKKy
-         zaGGkMfjwhQFaZ3dv4e/F6hpri8qSUaZd8A6ITRt8hMs35url+WbTPyd7av8P3nIaVxX
-         10fw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784025496; x=1784630296; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AHf6aec0xhpXyvZyY0H8SDCiX+h8WgLDyu7N26iZsik=;
-        b=Zb+ShWDMKH6EmZseDkFg26APP1za53zqodR6gI2lQF2nfU71GRvJcD9eB+olE3qljY
-         4l1EE24XAHP8krOjqtKBsxI77RgMjEnpa8JWMKH3U3suWCvPQ1ZzTDVHcOZyMwf7fBR+
-         r+LC+CkktGXCQSYDJAOjYWCFwV6UEDlsd2gRKB097T1Hri25FUKZ1xc1TxU1b7P0wFM+
-         RsCE4Rg1NArFvtfqeQnDwqq+q5dfTrK4BG2igX4EkKMn7Y25mGFm9fa78kdXTNQA3bbl
-         Ha65RQkILAkYqP8KGofvHGjfw1tlKvjZRaijn1RRD0hjDjMZVhXfwJSg8ubgXA675+rj
-         3Nug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784025496; x=1784630296;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AHf6aec0xhpXyvZyY0H8SDCiX+h8WgLDyu7N26iZsik=;
-        b=gwrOYfOZcEnk+gV3BVieqaOrqzUPAhiO23vCoi95OUHoHTxlmH6OCM2PAhXUWI5O64
-         zfak1rCdARmapcj2BCz5Vu3/LL3qIT0OimWrgfCkg71PmvPGNBr5tb3zL+JZaVK6LrVg
-         08Zw/dHHzdSGoumIjPA5JrgoSAq/dvRmen1zw6LSx/qdqthqEQDVv0Ecm9ekDhWpSfJp
-         aAaThTgtIxY+ap4gW0drMKIYMXQ9lAEVD/jf/5Gc7e8ZV9gnSU41drBYeyHwkNzMvNa1
-         pPQhS5WfjKVwzjCYfmo5eGyZSnQs2zyW3jV8RXp04lyRFydR0uVjp0HO/QBfRYG9MY3/
-         MUIQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoeZNgXjrEiaVPWmzr3rNnXSMYVfHhK1TJ8Sb2vL9pQKvuwr5RPhqI4iUJ8WDwIouwaBjg3cJd24nT69ExS0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjW2FrnNWvr1V9x+G4A1R2I5za3u+KnqCoXsuZ3yg6Nd0NM0NQ
-	vjbVOWO5xCLCBmta4eWQRqzvLljmhsoF3ELLql4W5cdwK1qZmY8Pc5zA8zd1Ng9eQCRlqO6CkET
-	v1Z2Heb9I1rFJjNVLdK2pMw6c8eP3B8A=
-X-Gm-Gg: AfdE7cmYIo+p/VRuIIaL+Fx4UlEVMp100cGKqsfVq/TbnoS0LUwc8eLdpQGNl6zVy4S
-	S2Q381CwMF9Z8gVIySRBT02KO53Mc4dVVoHrt6QCekHuuLy5KiKjMRs7Dz732n1r1+uj1tDSDq+
-	f2JFhBpqKUiTE8YLzXo512mHDMMdtzuT048zVcLFkVM85uNRxM+wrlS+RMKSDsHvjWaiD/j/ugC
-	UJD86jKKeFSrkgMD9FD4orj9f51mah1EJPrmhIirMbaH+n/2VVt/aCXsQGRBaSnu4gGSbWoFaIs
-	Tck5tHVJiACUQZgCCRTRVtIjGrbsTjSiJlzJ/+ZNBRjJuHJQe/Easu9aIWg9ZVVtIlFhIDfYv2v
-	A8TIj1Ycurm7F
-X-Received: by 2002:a17:90b:3b8d:b0:381:bcfb:e710 with SMTP id
- 98e67ed59e1d1-38dc7b2d49emr10554055a91.3.1784025495909; Tue, 14 Jul 2026
- 03:38:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="geDBPN00";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="I9smlK4j"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailflow.stl.internal (Postfix) with ESMTP id 98B6F1300129;
+	Tue, 14 Jul 2026 06:49:23 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Tue, 14 Jul 2026 06:49:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784026163;
+	 x=1784029763; bh=iwqf/brmABftnOVLCzVjRzV6STnCOX+mhQjvCUhLEJ4=; b=
+	geDBPN00obxZ4ZOaIrY0iQpP1u+Lc7QFdDX80nN5TQmFNM/7X++OCOTSMylmELHv
+	OtyHqG7PTvB40edXnq7nCs6G5jiF/iSNugikkDqBn4TsXbW6cLHB7F85Rc2o+ROU
+	V26QTa2jZTfG+FUJ3Hig9GZWReeKQiSwmEz6wVMrYgZB7egmTyRtNDA1JF/64uWu
+	dWDm2fYsGVu8gaHNMikUD+hbrqbHD842Iz25tkxIWFh4ipqezla4ViYAZWuatcoO
+	kcUjcyvN2vL5Uh9FhAcDHVEJNstoFvt1gZcv4uwEQ+7y+PpomIz9WZukb0MoVP9I
+	nYgRJp/hN9KTYqZi7x9yWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784026163; x=
+	1784029763; bh=iwqf/brmABftnOVLCzVjRzV6STnCOX+mhQjvCUhLEJ4=; b=I
+	9smlK4jCk37JbeAs9JZgy4RN4DnX0gtPWWdxkauIDCnyoS/kyAPupTVXk7ZzwiCn
+	7adxEtkQqzMGeGfUiYpMYFq+DsBScdV0P5n0vtzX052taWluIGvmAz+/mpGOXo/L
+	dCuzS/R7r0GI4qAQpP6ZqpIwSu4pexnAlyek6ZHVIcDevLi1qztgbCVD3Owo85H8
+	m9Lp3/f56eYmmGgHxcckHXS1QPcUQYW54gSgKWuILUNAVOUFdHd4SzYgm7gvZ99Q
+	HeGuiaF4hm5a8kU2gK67phtQv67UPvbhbL6DCLPWYCMd5yDK+vDnHP60AjdaiVq2
+	tkmsDWQl5L0/D2t5KFT3g==
+X-ME-Sender: <xms:MhRWasz46cQS_gFUS4oYNEqLYfs-cMPJbceszaGzisN4QsT_Bwsnng>
+    <xme:MhRWagv-omwh9IBla0ycwFEhfFu55XBVrBQR0JcpyAU8pNsFKkwuRMmifuKi6RSzM
+    nU4x2e0b7fdchexBoSoo9V8cImBfnAMU8a4YHZe3d0VSZdlejHxOg>
+X-ME-Received: <xmr:MhRWajxQhkLIvFa0n7DStnMDCptXvmbi0kXaZ8KJzIUN6ocFVKC1hL0vlYYwGb2o4-k3mR6zi32KxzbbAra_aX4w>
+X-ME-Proxy-Cause: dmFkZTEVqQtTLYrqF2iUKQsNuhsXxTwB8m/CY/0mS1fWS68OqWyJnPUTCEAXTcCdlWt27V
+    rdeT/dWnapdJayiDsZcCqsux3cc2Fyudwrwrin7SRrN/6PB9U7GYCZ18yZR5bA0omwafOT
+    9mMdiLYBAdF7GV0awxVdcCucG98zXes+XQm6sePozdtx1l0g0YHIj4IiZLP9jpW8Mq5IEX
+    UOokBzJ95vHMvfOySDEy9T2rH/jsTzdBEv2cJA94yoZWUsx4CX86ZvRYBGHMknrbfF8OBV
+    3Rg9ZkC/C6Lu2OnSLD4oKL40yI/eLYGZzZSb/ACCndzMjzppPA2wfQw8yiNdRNkH3XZukS
+    9cZJ7cuqMEszCPV1PDY0VqHxD9Uj8VE/OCLQ+0NtZoMjMW1QjBqlEr+KNGkqwFthWdxHDL
+    NmAWkqNGk55rTgi0/QkVzMDGx7EdGMc39zY+47Bysbbf9tS9BO9OT7+c5+ZtCiBtJWv8aX
+    Mixry6cBYzv5ue8QynayB57xHAcSUqlMjlvNvbnfkMWTpyfy2ywANCQPWTeSa7+RMCDEsh
+    AxiFI8gjgqFqGqODjS0l9wP8tD9405mgwrXIXCf4D/xdHzTZDPr4R7qQOtDWOwO6NnwH6v
+    IZNIjOBNLPHNSrwxsdrCW85TBj1xpG40vgvRkli10l36Jn12hfnfPK9LtlqQ
+X-ME-Proxy: <xmx:MhRWaodozhS624nlM0878V8ojbxqpf4VlObo4QIqlZ6qxv0rT7R3jw>
+    <xmx:MhRWah1E97MEBvi-F9bnzVWK0WCdF00H5iU8YOMTKN2tsBL0TNjWEQ>
+    <xmx:MhRWapsV_81Q6YVdhizMtov5_P0zjOpcgI4u_sGZyMxbWkQQqgQHXA>
+    <xmx:MhRWal9aq55bfvQ8Pm3YMVvLurrsnitA3NAMjW2gVSuC7sCcEcxVZw>
+    <xmx:MxRWav3s6RYVyloP5klHyqOsWDdbD-Rl-aByYnkcVEjSiq8JBofoTBim>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Jul 2026 06:49:18 -0400 (EDT)
+Date: Tue, 14 Jul 2026 19:49:16 +0900 (JST)
+Message-Id: <20260714.194916.571807180513332641.tomo@flapping.org>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: tomo@flapping.org, a.hindborg@kernel.org, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, gary@garyguo.net,
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
+ tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() to round correctly
+ for negative Delta
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <CANiq72m+mx-z6idfdTLh+mcW76nxRr_eA-a6vgjFY6a1GE_ygA@mail.gmail.com>
+References: <CANiq72kMWjfk9u_HiYsGWYGnKaF-oOn2w-kH=ap0wO9QccZYEg@mail.gmail.com>
+	<20260714.191642.1103024240790648142.tomo@flapping.org>
+	<CANiq72m+mx-z6idfdTLh+mcW76nxRr_eA-a6vgjFY6a1GE_ygA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260713225235.3243480-1-tomo@flapping.org> <CANiq72kMWjfk9u_HiYsGWYGnKaF-oOn2w-kH=ap0wO9QccZYEg@mail.gmail.com>
- <20260714.191642.1103024240790648142.tomo@flapping.org>
-In-Reply-To: <20260714.191642.1103024240790648142.tomo@flapping.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 14 Jul 2026 12:38:03 +0200
-X-Gm-Features: AUfX_mzN46iaPZAQum5V2Y9KwhiveXxmXsQjyRqbz-lKFVYBPHWlD6MhJaHs7uU
-Message-ID: <CANiq72m+mx-z6idfdTLh+mcW76nxRr_eA-a6vgjFY6a1GE_ygA@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() to round correctly
- for negative Delta
-To: FUJITA Tomonori <tomo@flapping.org>, a.hindborg@kernel.org
-Cc: ojeda@kernel.org, acourbot@nvidia.com, aliceryhl@google.com, 
-	anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun@kernel.org, 
-	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
-	gary@garyguo.net, jstultz@google.com, lossin@kernel.org, lyude@redhat.com, 
-	sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, 
-	work@onurozkan.dev, rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Tue, Jul 14, 2026 at 12:16=E2=80=AFPM FUJITA Tomonori <tomo@flapping.org=
-> wrote:
->
-> I can send a patch but as I recall, the last time I posted a patch
-> like that, Andreas was opposed to that kind approach?
->
-> https://lore.kernel.org/rust-for-linux/20250701001809.496389-1-fujita.tom=
-onori@gmail.com/
-
-Ah, that explains why I had the feeling I already mentioned this in
-the past... Thanks for linking it! :)
-
-My reading at the end of that thread was that he would open to it as
-long as the constants had a name or computed relative to something
-else, which is a good idea regardless, and I replied with agreement --
-so I don't think Andreas was completely opposed to doing so?
-
-We should anyway be consistent about this treewide. What we have been
-doing (or at least my intention) was to document an example of each
-possible return path / edge case. That is, we don't want every single
-test in examples, but for instance here at the very least I would
-expect to see 1) a normal case, 2) a saturating case, 3) the behavior
-of that with negatives; but perhaps we don't want to have every single
-test we may have about each of those "groups".
-
-Sometimes it can also help for readability to split the groups with a
-comment and a newline, e.g. `// Negative numbers.`, especially if we
-have several on each "group".
-
-In any case, one way or another, let's please not have those
-examples/tests be forgotten... Andreas?
-
-Cheers,
-Miguel
+T24gVHVlLCAxNCBKdWwgMjAyNiAxMjozODowMyArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBUdWUsIEp1bCAxNCwgMjAy
+NiBhdCAxMjoxNuKAr1BNIEZVSklUQSBUb21vbm9yaSA8dG9tb0BmbGFwcGluZy5vcmc+IHdyb3Rl
+Og0KPj4NCj4+IEkgY2FuIHNlbmQgYSBwYXRjaCBidXQgYXMgSSByZWNhbGwsIHRoZSBsYXN0IHRp
+bWUgSSBwb3N0ZWQgYSBwYXRjaA0KPj4gbGlrZSB0aGF0LCBBbmRyZWFzIHdhcyBvcHBvc2VkIHRv
+IHRoYXQga2luZCBhcHByb2FjaD8NCj4+DQo+PiBodHRwczovL2xvcmUua2VybmVsLm9yZy9ydXN0
+LWZvci1saW51eC8yMDI1MDcwMTAwMTgwOS40OTYzODktMS1mdWppdGEudG9tb25vcmlAZ21haWwu
+Y29tLw0KPiANCj4gQWgsIHRoYXQgZXhwbGFpbnMgd2h5IEkgaGFkIHRoZSBmZWVsaW5nIEkgYWxy
+ZWFkeSBtZW50aW9uZWQgdGhpcyBpbg0KPiB0aGUgcGFzdC4uLiBUaGFua3MgZm9yIGxpbmtpbmcg
+aXQhIDopDQo+IA0KPiBNeSByZWFkaW5nIGF0IHRoZSBlbmQgb2YgdGhhdCB0aHJlYWQgd2FzIHRo
+YXQgaGUgd291bGQgb3BlbiB0byBpdCBhcw0KPiBsb25nIGFzIHRoZSBjb25zdGFudHMgaGFkIGEg
+bmFtZSBvciBjb21wdXRlZCByZWxhdGl2ZSB0byBzb21ldGhpbmcNCj4gZWxzZSwgd2hpY2ggaXMg
+YSBnb29kIGlkZWEgcmVnYXJkbGVzcywgYW5kIEkgcmVwbGllZCB3aXRoIGFncmVlbWVudCAtLQ0K
+PiBzbyBJIGRvbid0IHRoaW5rIEFuZHJlYXMgd2FzIGNvbXBsZXRlbHkgb3Bwb3NlZCB0byBkb2lu
+ZyBzbz8NCj4gDQo+IFdlIHNob3VsZCBhbnl3YXkgYmUgY29uc2lzdGVudCBhYm91dCB0aGlzIHRy
+ZWV3aWRlLiBXaGF0IHdlIGhhdmUgYmVlbg0KPiBkb2luZyAob3IgYXQgbGVhc3QgbXkgaW50ZW50
+aW9uKSB3YXMgdG8gZG9jdW1lbnQgYW4gZXhhbXBsZSBvZiBlYWNoDQo+IHBvc3NpYmxlIHJldHVy
+biBwYXRoIC8gZWRnZSBjYXNlLiBUaGF0IGlzLCB3ZSBkb24ndCB3YW50IGV2ZXJ5IHNpbmdsZQ0K
+PiB0ZXN0IGluIGV4YW1wbGVzLCBidXQgZm9yIGluc3RhbmNlIGhlcmUgYXQgdGhlIHZlcnkgbGVh
+c3QgSSB3b3VsZA0KPiBleHBlY3QgdG8gc2VlIDEpIGEgbm9ybWFsIGNhc2UsIDIpIGEgc2F0dXJh
+dGluZyBjYXNlLCAzKSB0aGUgYmVoYXZpb3INCj4gb2YgdGhhdCB3aXRoIG5lZ2F0aXZlczsgYnV0
+IHBlcmhhcHMgd2UgZG9uJ3Qgd2FudCB0byBoYXZlIGV2ZXJ5IHNpbmdsZQ0KPiB0ZXN0IHdlIG1h
+eSBoYXZlIGFib3V0IGVhY2ggb2YgdGhvc2UgImdyb3VwcyIuDQoNCkFzIEkgcmVjYWxsLCB0aGUg
+bGFzdCB0aW1lIEkgcG9zdGVkIGEgcGF0Y2ggdG8gbWFrZSB0aGVtIGNvbnN0YW50cywNCkdhcnkg
+d2FzIG9wcG9zZWQ/DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3J1c3QtZm9yLWxpbnV4LzIw
+MjYwMTE5MjMzNjIxLjM0NjUzMDQtMS1mdWppdGEudG9tb25vcmlAZ21haWwuY29tLw0KDQoNCj4g
+U29tZXRpbWVzIGl0IGNhbiBhbHNvIGhlbHAgZm9yIHJlYWRhYmlsaXR5IHRvIHNwbGl0IHRoZSBn
+cm91cHMgd2l0aCBhDQo+IGNvbW1lbnQgYW5kIGEgbmV3bGluZSwgZS5nLiBgLy8gTmVnYXRpdmUg
+bnVtYmVycy5gLCBlc3BlY2lhbGx5IGlmIHdlDQo+IGhhdmUgc2V2ZXJhbCBvbiBlYWNoICJncm91
+cCIuDQo+IA0KPiBJbiBhbnkgY2FzZSwgb25lIHdheSBvciBhbm90aGVyLCBsZXQncyBwbGVhc2Ug
+bm90IGhhdmUgdGhvc2UNCj4gZXhhbXBsZXMvdGVzdHMgYmUgZm9yZ290dGVuLi4uIEFuZHJlYXM/
+DQoNCkknbSBob3Bpbmcgd2UgY2FuIGFjdHVhbGx5IHNldHRsZSBvbiBzb21ldGhpbmcgdGhpcyB0
+aW1lIGFyb3VuZCwgaXQNCndvdWxkIGJlIG5pY2UgdG8gaGF2ZSBhIHRyZWUtd2lkZSBwb2xpY3kg
+b24gaG93IHRvIGhhbmRsZSBjYXNlcyBsaWtlDQp0aGlzLg0K
