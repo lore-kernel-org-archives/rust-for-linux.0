@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1E93A3E88;
-	Tue, 14 Jul 2026 03:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA1B3C872A;
+	Tue, 14 Jul 2026 03:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783999164; cv=pass; b=Vnp/npD+tpP2U9IjgqG/20mnZhJE9ePtXNJifN4IxQbotbxTh58XketxqM7aZq2p/q4PTLzQ0vm75o+1qp79hvjdS8+B4LOhy5cesjgT3qR2qoz18tOf/1e0WGmi4XputmpA5LYSOn7m5jAbfWArTbkuAPGj8r+bAEpjPsskFEk=
+	t=1783999171; cv=pass; b=nUpvXCgZCP07i7OPA0au+kb77f4Szm8tkXb1ZPrvB/j0oKKXwKt4t+7RIWha9ph1LnL4aFMi0/8NpkIp0wbJzXCsPrxxlCBwDWLFzAnqkCnlX6IB8IQW4l/9tcTXasB2POQvxZLKnvPeEncr/hqrZ3km0gQMTM7sgCiR5OtKVgM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783999164; c=relaxed/simple;
-	bh=Ze2crYzN2hjMFiM9t7ijldQS3PnlVq1gH8DVhj/pZoU=;
+	s=arc-20240116; t=1783999171; c=relaxed/simple;
+	bh=rkM8xd7MEPmOBmz9Wn2Rs8dmfCZL628OMCVzeTn80OU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PaAI+iMmqJw3z/YNZcHFJf/NYc0IAvp2kiv19c29ok0OWIKIZuVGO+8asnyLrSCEXRPCfmkHCgNYaaHK6c7CMbFt8I1TuJwVTUtKEZQQ8IMfGqhsCYzgWMbWUyG4mw96NV3bwxCtUakUKKRiD7Zav8NOI+c1p1zQPf8vpUNtK+4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=EssQCLvB; arc=pass smtp.client-ip=136.143.188.11
+	 In-Reply-To:To:Cc; b=QacPvK9lahp9HcqeqxjRZfPdZZexyFhKwWZh8Qbx2f4CkJvqPE5/Cs1QrbamcKC//p5ENLUjd8qUh/NYFPp6D13hKsGo6W/RMUK0vJxJ9fsZ3eSh7XuERxHAuTX9+IOwEtnXlyv9ZP4ynHVXH7hG0zWIAZLuO9sHDkw1ELtUEgY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=eKvOml1C; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="EssQCLvB"
-ARC-Seal: i=1; a=rsa-sha256; t=1783999140; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="eKvOml1C"
+ARC-Seal: i=1; a=rsa-sha256; t=1783999144; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=fff+3MEZSKW7YcaHaQv3MeKh4K6qNe6NapjrGk16NS5wGpFUkjJv2GfF+RcS9prJin7KDJ57VCAqt+HHlgSet88F511XgheSwc033KGicuc5rsCyuDe2PusCJwG09nUQmbu1SHY982ZYKH03A5Ifhp8j2Q6UksMn9YC4Poaa0tU=
+	b=anjxbw3JBq8bdl6kjovrVnOJfxv3xiJOfg6wXuokrT5NM9e97+5dsc2ZuI+AsvdYiKOlWm+9KLojOEeeKmFv+oj8LzwZckKfJk1jzabmJewL2wH51FaBv4b5c8uR9BKiEXcBm0QjPUbW2ax4gaL4xvNoIdN3+MiqmtIoEfOADTQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783999140; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=gA03Yf6StWnnQWhcoki8izyAyZcrMa40GlhMbBZzfyY=; 
-	b=dYXTK9HfdrbvtNIXtZQq5DGZRDwqGPL23EifXEXUhQ5ATv6y6/ffn4Tr0M6SpGAyDCel4eNBjmQvSdpQLku1Sb50gGs/mKlQLeGthjBgLEKpXgKE8uxRwk1TGdeYIA3g2v16WYUQaEWn8md6UANsHdWj35Db53EMcTbXPLDp+7E=
+	t=1783999144; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=j+x0G30gOGtmkIedmRi7gsmgsUcnqMGTTFtxu5Bn8JA=; 
+	b=QlS1V8SWkBpMrLf9iavwAmVsWOxd5KFW3d4+n4ZmcSpIELJJHm9JKBUwJf3SR8s8Z5sbmw1EnqYVIMHpIIWinlQSWabCGLuPU04+a2nGlXXIMjY+KQuITjPTnkQlRDx/l5NdtO7bpOf92x6Zl/BmQwq13xBHeohCsWxittY9w2A=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783999140;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783999144;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=gA03Yf6StWnnQWhcoki8izyAyZcrMa40GlhMbBZzfyY=;
-	b=EssQCLvBbvh7ek5KqCQoVIM3NfjBd3cpKO9CvFxVDZ4YhRU7t/vQGzm0oR/2GdxA
-	LGM8++Nndipc/J7LJtssrI16zs8dOQUOeDUjkfUhj/i1vx4bHKpNINSGJifYuDnOAgF
-	aiTuMxZKJP2k8nVcEN++9SYp0WVw5U+5qSoybC9s=
-Received: by mx.zohomail.com with SMTPS id 1783999138756183.21330802698844;
-	Mon, 13 Jul 2026 20:18:58 -0700 (PDT)
+	bh=j+x0G30gOGtmkIedmRi7gsmgsUcnqMGTTFtxu5Bn8JA=;
+	b=eKvOml1CIoZXmxkbgAJ4IGuGjMCaX+HXy01ZhSXWLhw9LLfgSH6sSawAAV1tmTlK
+	lFbM07aY9Y8JtSRFe5Tk1pX3VvJMLHLPy84h8b2e+JDRUO1ubyneiWwQZjg2LtC/UsU
+	dfndI5PHsgNrOtsjfC0PsoZvyU7l6IcRzNiy2XoA=
+Received: by mx.zohomail.com with SMTPS id 1783999142473152.64783607446157;
+	Mon, 13 Jul 2026 20:19:02 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 13 Jul 2026 20:18:46 -0700
-Subject: [PATCH v7 2/7] drm/tyr: add a generic slot manager
+Date: Mon, 13 Jul 2026 20:18:50 -0700
+Subject: [PATCH v7 6/7] drm/tyr: add parser for firmware binary
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-fw-boot-b4-v7-2-afd8dc1494dd@collabora.com>
+Message-Id: <20260713-fw-boot-b4-v7-6-afd8dc1494dd@collabora.com>
 References: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
 In-Reply-To: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -61,440 +61,565 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  acourbot@nvidia.com, lyude@redhat.com, laura.nao@collabora.com, 
  beata.michalska@arm.com, alvin.sun@linux.dev, steven.price@arm.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15324;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=18298;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=vimgl4QtUCNhyj2xb9XPn1eCuT0/lV6/1MVOxo1Ys80=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmhq+a/dzJTz7S+VGd9K3bmsWcL5h410iucsiwwPG5vP
- DNb5SHXjlIWBjEuBlkxRZaz9kY94lXvjXTn/2+GmcPKBDKEgYtTACYS4cHwz6JY+8HbvL97ku4a
- WPG72GazXJvJ7849vUyOQepXtar7aUaGme/ebXja8K9tn5bCpqDgbxmCX9IbG/QrxUIKWxlXPHr
- DCAA=
+ bh=nLyO9aCjZeAIpnl9DB1QhQPV7Ro6Y/O5M5LZ3x6fLOw=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmhqxYU9GvELp55bfGaFeuZJ0W9N14vt/B32zvv4w48J
+ zM/NP+x7yhlYRDjYpAVU2Q5a2/UI1713kh3/v9mmDmsTCBDGLg4BWAi7j4M/70W7ElWuj235/AL
+ IXnHpqcGBXxrJ6+ckHrqFseHp4Lawi8Z/uer7dssxNjlxv14d92HdR19m1nvaTgnZKfIN659bnM
+ lhQ8A
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Daniel Almeida <daniel.almeida@collabora.com>
 
-Introduce a generic slot manager to dynamically allocate limited hardware
-slots to software "seats". It can be used for both address space (AS) and
-command stream group (CSG) slots.
+Add a parser for the Mali CSF GPU firmware binary format. The firmware
+consists of a header followed by entries describing how to load firmware
+sections into the MCU's memory.
 
-The slot manager initially assigns seats to its free slots. It will
-continue to reuse the same slot for a seat, as long as another seat does
-not start to use the slot in the interim.
+The parser extracts section metadata including virtual address ranges,
+data byte offsets within the binary, and section flags controlling
+permissions and cache modes. It validates the basic firmware structure
+and alignment and ignores protected-mode sections for now.
 
-When contention arises because all of the slots are allocated, the slot
-manager will lazily evict and reuse slots that have become idle (if any).
-
-The seat state is protected using the LockedBy pattern with the same lock
-that guards the SlotManager. This ensures the seat state stays consistent
-across slot operations.
-
-Hardware specific behaviour is controlled through the SlotManager's
-specific manager type that implements the `SlotOperations` trait.
-
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+Co-developed-by: Beata Michalska <beata.michalska@arm.com>
+Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/slot.rs | 378 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/tyr.rs  |   1 +
- 2 files changed, 379 insertions(+)
+ drivers/gpu/drm/tyr/fw/parser.rs | 521 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 521 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
+diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
 new file mode 100644
-index 000000000000..5c266fcf30ea
+index 000000000000..198a754b294f
 --- /dev/null
-+++ b/drivers/gpu/drm/tyr/slot.rs
-@@ -0,0 +1,378 @@
++++ b/drivers/gpu/drm/tyr/fw/parser.rs
+@@ -0,0 +1,521 @@
 +// SPDX-License-Identifier: GPL-2.0 or MIT
 +
-+//! Slot management abstraction for limited hardware resources.
++//! Firmware binary parser for Mali CSF (Command Stream Frontend) GPU.
 +//!
-+//! This module provides a generic [`SlotManager`] that assigns limited hardware
-+//! slots to logical "seats". A seat represents an entity (such as a virtual memory
-+//! (VM) address space) that needs access to a hardware slot.
-+//!
-+//! The [`SlotManager`] tracks slot allocation using sequence numbers (seqno) to detect
-+//! when a seat's binding has been invalidated. When a seat requests activation,
-+//! the manager will either reuse the seat's existing slot (if still valid),
-+//! allocate a free slot (if any are available), or evict the oldest idle slot if any
-+//! slots are idle.
-+//!
-+//! Hardware-specific behavior is customized by implementing the [`SlotOperations`]
-+//! trait, which allows callbacks when slots are activated or evicted.
-+//!
-+//! This is currently used for managing address space slots in the GPU, and it will
-+//! also be used to manage Command Stream Group (CSG) interface slots in the future.
-+//!
-+//! [SlotOperations]: crate::slot::SlotOperations
-+//! [SlotManager]: crate::slot::SlotManager
-+#![expect(dead_code)]
++//! This module implements a parser for the Mali GPU firmware binary format. The firmware
++//! file contains a header followed by a sequence of entries, each describing how to load
++//! firmware sections into the MCU (Microcontroller Unit) memory. The parser extracts section
++//! metadata including:
++//! - Virtual address ranges where sections should be mapped
++//! - Data ranges (byte offsets) within the firmware binary
++//! - Section flags (permissions, cache modes)
 +
 +use core::{
-+    mem::take,
-+    ops::{
-+        Deref,
-+        DerefMut, //
-+    }, //
++    mem::size_of,
++    ops::Range, //
 +};
 +
 +use kernel::{
++    bits::bit_u32,
 +    prelude::*,
-+    sync::LockedBy, //
++    str::CString, //
 +};
 +
-+/// Seat information.
++use crate::{
++    fw::{
++        SectionFlag,
++        SectionFlags,
++        CSF_MCU_SHARED_REGION_START, //
++    },
++    vm::{
++        VmFlag,
++        VmMapFlags, //
++    }, //
++};
++
++/// A parsed firmware section ready for loading into MCU memory.
 +///
-+/// This can't be accessed directly by the element embedding a `Seat`,
-+/// but is used by the generic slot manager logic to control residency
-+/// of a certain object on a hardware slot.
-+pub(crate) struct SeatInfo {
-+    /// Slot used by this seat.
-+    ///
-+    /// This index is only valid if the slot pointed to by this index
-+    /// has its `SlotInfo::seqno` match `SeatInfo::seqno`. Otherwise,
-+    /// it means the object has been evicted from the hardware slot,
-+    /// and a new slot needs to be acquired to make this object
-+    /// resident again.
-+    slot: u8,
-+
-+    /// Sequence number encoding the last time this seat was active.
-+    /// We also use it to check if a slot is still bound to a seat.
-+    seqno: u64,
++/// Represents a single firmware section extracted from the firmware binary, containing
++/// all information needed to map the section's data into the MCU's virtual address space.
++pub(super) struct ParsedSection {
++    /// Byte offset range within the firmware binary where this section's data resides.
++    pub(super) data_range: Range<u32>,
++    /// MCU virtual address range where this section should be mapped.
++    pub(super) va: Range<u32>,
++    /// Memory protection and caching flags for the mapping.
++    pub(super) vm_map_flags: VmMapFlags,
 +}
 +
-+/// Seat state.
++/// A bare-bones `std::io::Cursor<[u8]>` clone to keep track of the current position in the
++/// firmware binary.
 +///
-+/// This is meant to be embedded in the object that wants to acquire
-+/// hardware slots. It also starts in the `Seat::NoSeat` state, and
-+/// the slot manager will change the object value when an active/evict
-+/// request is issued.
-+#[derive(Default)]
-+pub(crate) enum Seat {
-+    #[expect(clippy::enum_variant_names)]
-+    /// Resource is not resident.
-+    ///
-+    /// All objects start with a seat in the `Seat::NoSeat` state. The seat also
-+    /// gets back to that state if the user requests eviction. It
-+    /// can also end up in that state next time an operation is done
-+    /// on a `Seat::Idle` seat and the slot manager finds out this
-+    /// object has been evicted from the slot.
-+    #[default]
-+    NoSeat,
-+
-+    /// Resource is actively used and resident.
-+    ///
-+    /// When a seat is in the `Seat::Active` state, it can't be evicted, and the
-+    /// slot pointed to by `SeatInfo::slot` is guaranteed to be reserved
-+    /// for this object as long as the seat stays active.
-+    Active(SeatInfo),
-+
-+    /// Resource is idle and might or might not be resident.
-+    ///
-+    /// When a seat is in the`Seat::Idle` state, we can't know for sure if the
-+    /// object is resident or evicted until the next request we issue
-+    /// to the slot manager. This tells the slot manager it can
-+    /// reclaim the underlying slot if needed.
-+    /// In order for the hardware to use this object again, the seat
-+    /// needs to be turned into an `Seat::Active` state again
-+    /// with a `SlotManager::activate()` call.
-+    Idle(SeatInfo),
++/// Provides methods to sequentially read primitive types and byte arrays from the firmware
++/// binary while maintaining the current read position.
++struct Cursor<'a> {
++    data: &'a [u8],
++    pos: usize,
 +}
 +
-+impl Seat {
-+    /// Get the slot index this seat is pointing to.
-+    ///
-+    /// If the seat is not `Seat::Active` we can't trust the
-+    /// `SeatInfo`. In that case `None` is returned, otherwise
-+    /// `Some(SeatInfo::slot)` is returned.
-+    pub(super) fn slot(&self) -> Option<u8> {
-+        match self {
-+            Self::Active(info) => Some(info.slot),
-+            _ => None,
-+        }
-+    }
-+}
-+
-+/// Information related to a slot.
-+struct SlotInfo<T> {
-+    /// Type specific data attached to a slot.
-+    slot_data: T,
-+
-+    /// Sequence number from when this slot was last activated.
-+    seqno: u64,
-+}
-+
-+/// Slot state.
-+#[derive(Default)]
-+enum SlotState<T> {
-+    /// Slot is free.
-+    #[default]
-+    Free,
-+
-+    /// Slot is active.
-+    Active(SlotInfo<T>),
-+
-+    /// Slot is idle.
-+    Idle(SlotInfo<T>),
-+}
-+
-+/// Trait describing the slot-related operations.
-+pub(crate) trait SlotOperations {
-+    /// Implementation-specific data associated with each slot.
-+    type SlotData;
-+
-+    /// Called when a slot is being activated for a seat.
-+    fn activate(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
-+        Ok(())
++impl<'a> Cursor<'a> {
++    fn new(data: &'a [u8]) -> Self {
++        Self { data, pos: 0 }
 +    }
 +
-+    /// Called when a slot is being evicted and freed.
-+    fn evict(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
-+        Ok(())
++    fn len(&self) -> usize {
++        self.data.len()
 +    }
-+}
 +
-+/// A generic slot manager that provides access to a limited number of hardware slots.
-+pub(crate) struct SlotManager<T: SlotOperations, const MAX_SLOTS: usize> {
-+    /// A specific implementation of the generic slot manager.
-+    manager: T,
++    fn pos(&self) -> usize {
++        self.pos
++    }
 +
-+    /// Number of slots actually available.
-+    slot_count: usize,
-+
-+    /// Slot array used to track the state of each slot.
-+    slots: [SlotState<T::SlotData>; MAX_SLOTS],
-+
-+    /// Sequence number incremented each time a Seat is successfully activated
-+    use_seqno: u64,
-+}
-+
-+pub(crate) type LockedSeat<T, const MAX_SLOTS: usize> = LockedBy<Seat, SlotManager<T, MAX_SLOTS>>;
-+
-+impl<T: SlotOperations, const MAX_SLOTS: usize> SlotManager<T, MAX_SLOTS> {
-+    /// Creates a specific instance of a slot manager.
-+    pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> {
-+        if slot_count == 0 {
-+            pr_err!("Invalid slot count: 0");
-+            return Err(EINVAL);
-+        }
-+        if slot_count > MAX_SLOTS {
++    /// Returns a view into the cursor's data.
++    ///
++    /// This spawns a new cursor, leaving the current cursor unchanged.
++    fn view(&self, range: Range<usize>) -> Result<Cursor<'_>> {
++        if range.start < self.pos || range.end > self.data.len() {
 +            pr_err!(
-+                "Slot count: {} cannot exceed MAX_SLOTS: {}",
-+                slot_count,
-+                MAX_SLOTS
++                "Invalid cursor range {:?} for data of length {}",
++                range,
++                self.data.len()
++            );
++
++            Err(EINVAL)
++        } else {
++            Ok(Self {
++                data: &self.data[range],
++                pos: 0,
++            })
++        }
++    }
++
++    /// Reads a slice of bytes from the current position and advances the cursor.
++    ///
++    /// Returns an error if the read would exceed the data bounds.
++    fn read(&mut self, nbytes: usize) -> Result<&[u8]> {
++        let start = self.pos;
++        let end = start + nbytes;
++
++        if end > self.data.len() {
++            pr_err!(
++                "Invalid firmware file: read of size {} at position {} is out of bounds",
++                nbytes,
++                start,
 +            );
 +            return Err(EINVAL);
 +        }
-+        Ok(Self {
-+            manager,
-+            slot_count,
-+            slots: [const { SlotState::Free }; MAX_SLOTS],
-+            use_seqno: 1,
-+        })
++
++        self.pos += nbytes;
++        Ok(&self.data[start..end])
 +    }
 +
-+    /// Records a slot as active for the given seat.
-+    fn record_active_slot(
-+        &mut self,
-+        slot_idx: usize,
-+        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-+        slot_data: T::SlotData,
-+    ) -> Result {
-+        let cur_seqno = self.use_seqno;
++    /// Reads a little-endian `u8` from the current position and advances the cursor.
++    fn read_u8(&mut self) -> Result<u8> {
++        let bytes = self.read(size_of::<u8>())?;
++        Ok(bytes[0])
++    }
 +
-+        *locked_seat.access_mut(self) = Seat::Active(SeatInfo {
-+            slot: slot_idx as u8,
-+            seqno: cur_seqno,
-+        });
++    /// Reads a little-endian `u16` from the current position and advances the cursor.
++    fn read_u16(&mut self) -> Result<u16> {
++        let bytes = self.read(size_of::<u16>())?;
++        Ok(u16::from_le_bytes(bytes.try_into().unwrap()))
++    }
 +
-+        self.slots[slot_idx] = SlotState::Active(SlotInfo {
-+            slot_data,
-+            seqno: cur_seqno,
-+        });
++    /// Reads a little-endian `u32` from the current position and advances the cursor.
++    fn read_u32(&mut self) -> Result<u32> {
++        let bytes = self.read(size_of::<u32>())?;
++        Ok(u32::from_le_bytes(bytes.try_into().unwrap()))
++    }
 +
-+        self.use_seqno += 1;
++    /// Advances the cursor position by the specified number of bytes.
++    ///
++    /// Returns an error if the advance would exceed the data bounds.
++    fn advance(&mut self, nbytes: usize) -> Result {
++        if self.pos + nbytes > self.data.len() {
++            pr_err!(
++                "Invalid firmware file: advance of size {} at position {} is out of bounds",
++                nbytes,
++                self.pos,
++            );
++            return Err(EINVAL);
++        }
++        self.pos += nbytes;
 +        Ok(())
 +    }
++}
 +
-+    /// Activates a slot for the given seat.
-+    fn activate_slot(
-+        &mut self,
-+        slot_idx: usize,
-+        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-+        slot_data: T::SlotData,
-+    ) -> Result {
-+        self.manager.activate(slot_idx, &slot_data)?;
-+        self.record_active_slot(slot_idx, locked_seat, slot_data)
++/// Parser for Mali CSF GPU firmware binaries.
++///
++/// Parses the firmware binary format, extracting section metadata including virtual
++/// address ranges, data offsets, and memory protection flags needed to load firmware
++/// into the MCU's memory.
++pub(super) struct FwParser<'a> {
++    cursor: Cursor<'a>,
++}
++
++impl<'a> FwParser<'a> {
++    /// Creates a new firmware parser for the given firmware binary data.
++    pub(super) fn new(data: &'a [u8]) -> Self {
++        Self {
++            cursor: Cursor::new(data),
++        }
 +    }
 +
-+    /// Finds a slot for the given seat. A free slot is preferred, but if none
-+    /// are available, the oldest idle slot is evicted and reused. Otherwise, if
-+    /// there are no free or idle slots, return [`EBUSY`].
-+    fn allocate_slot(
-+        &mut self,
-+        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-+        slot_data: T::SlotData,
-+    ) -> Result {
-+        let slots = &self.slots[..self.slot_count];
++    /// Parses the firmware binary and returns a collection of parsed sections.
++    ///
++    /// This method validates the firmware header and iterates through all entries
++    /// in the binary, extracting section information needed for loading.
++    pub(super) fn parse(&mut self) -> Result<KVec<ParsedSection>> {
++        let fw_header = self.parse_fw_header()?;
 +
-+        let mut idle_slot_idx = None;
-+        let mut idle_slot_seqno: u64 = 0;
++        let mut parsed_sections = KVec::new();
++        while (self.cursor.pos() as u32) < fw_header.size {
++            let entry_section = self.parse_entry()?;
 +
-+        for (slot_idx, slot) in slots.iter().enumerate() {
-+            match slot {
-+                SlotState::Free => {
-+                    return self.activate_slot(slot_idx, locked_seat, slot_data);
-+                }
-+                SlotState::Idle(slot_info) => {
-+                    if idle_slot_idx.is_none() || slot_info.seqno < idle_slot_seqno {
-+                        idle_slot_idx = Some(slot_idx);
-+                        idle_slot_seqno = slot_info.seqno;
++            if let Some(inner) = entry_section.inner {
++                parsed_sections.push(inner, GFP_KERNEL)?;
++            }
++        }
++
++        Ok(parsed_sections)
++    }
++
++    fn parse_fw_header(&mut self) -> Result<FirmwareHeader> {
++        let fw_header: FirmwareHeader = match FirmwareHeader::new(&mut self.cursor) {
++            Ok(fw_header) => fw_header,
++            Err(e) => {
++                pr_err!("Invalid firmware file: {}", e.to_errno());
++                return Err(e);
++            }
++        };
++
++        if fw_header.size > self.cursor.len() as u32 {
++            pr_err!("Firmware image is truncated");
++            return Err(EINVAL);
++        }
++        Ok(fw_header)
++    }
++
++    fn parse_entry(&mut self) -> Result<EntrySection> {
++        let entry_section = EntrySection {
++            entry_hdr: EntryHeader(self.cursor.read_u32()?),
++            inner: None,
++        };
++
++        if self.cursor.pos() % size_of::<u32>() != 0
++            || entry_section.entry_hdr.size() as usize % size_of::<u32>() != 0
++        {
++            pr_err!(
++                "Firmware entry isn't 32 bit aligned, offset={:#x} size={:#x}\n",
++                self.cursor.pos() - size_of::<u32>(),
++                entry_section.entry_hdr.size()
++            );
++            return Err(EINVAL);
++        }
++
++        let section_hdr_size = entry_section.entry_hdr.size() as usize - size_of::<EntryHeader>();
++
++        let entry_section = {
++            let mut entry_cursor = self
++                .cursor
++                .view(self.cursor.pos()..self.cursor.pos() + section_hdr_size)?;
++
++            match entry_section.entry_hdr.entry_type() {
++                Ok(EntryType::Iface) => Ok(EntrySection {
++                    entry_hdr: entry_section.entry_hdr,
++                    inner: Self::parse_section_entry(&mut entry_cursor)?,
++                }),
++                Ok(
++                    EntryType::Config
++                    | EntryType::FutfTest
++                    | EntryType::TraceBuffer
++                    | EntryType::TimelineMetadata
++                    | EntryType::BuildInfoMetadata,
++                ) => Ok(entry_section),
++
++                entry_type => {
++                    if entry_type.is_err() || !entry_section.entry_hdr.optional() {
++                        if !entry_section.entry_hdr.optional() {
++                            pr_err!(
++                                "Failed to handle firmware entry type: {}\n",
++                                entry_type
++                                    .map_or(entry_section.entry_hdr.entry_type_raw(), |e| e as u8)
++                            );
++                            Err(EINVAL)
++                        } else {
++                            Ok(entry_section)
++                        }
++                    } else {
++                        Ok(entry_section)
 +                    }
 +                }
-+                SlotState::Active(_) => (),
 +            }
-+        }
-+
-+        match idle_slot_idx {
-+            Some(slot_idx) => {
-+                // Lazily evict idle slot just before it is reused.
-+                if let SlotState::Idle(slot_info) = &self.slots[slot_idx] {
-+                    self.manager.evict(slot_idx, &slot_info.slot_data)?;
-+                }
-+                self.activate_slot(slot_idx, locked_seat, slot_data)
-+            }
-+            None => Err(EBUSY),
-+        }
-+    }
-+
-+    /// Converts an active slot and its seat to idle state.
-+    fn idle_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        let slot = take(&mut self.slots[slot_idx]);
-+
-+        // If the slot was active, make it idle.
-+        if let SlotState::Active(slot_info) = slot {
-+            self.slots[slot_idx] = SlotState::Idle(slot_info);
-+        }
-+
-+        // If the seat was active, make it idle, or keep it idle if it was already idle.
-+        *locked_seat.access_mut(self) = match locked_seat.access(self) {
-+            Seat::Active(seat_info) | Seat::Idle(seat_info) => Seat::Idle(SeatInfo {
-+                slot: seat_info.slot,
-+                seqno: seat_info.seqno,
-+            }),
-+            Seat::NoSeat => Seat::NoSeat,
-+        };
-+        Ok(())
-+    }
-+
-+    /// Evicts an active or idle slot: calls the eviction callback and marks the slot as free
-+    /// and the seat as NoSeat.
-+    fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        match &self.slots[slot_idx] {
-+            SlotState::Active(slot_info) | SlotState::Idle(slot_info) => {
-+                self.manager.evict(slot_idx, &slot_info.slot_data)?;
-+                take(&mut self.slots[slot_idx]);
-+            }
-+            _ => (),
-+        }
-+
-+        *locked_seat.access_mut(self) = Seat::NoSeat;
-+        Ok(())
-+    }
-+
-+    /// Checks that the seat state matches the slot's state.
-+    /// If they don't match, the seat is stale and is reset to `NoSeat`.
-+    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
-+        let (slot_idx, seat_seqno, is_active) = match locked_seat.access(self) {
-+            Seat::Active(seat_info) => (seat_info.slot as usize, seat_info.seqno, true),
-+            Seat::Idle(seat_info) => (seat_info.slot as usize, seat_info.seqno, false),
-+            _ => return,
 +        };
 +
-+        let valid = if is_active {
-+            !kernel::warn_on!(!matches!(
-+                &self.slots[slot_idx],
-+                SlotState::Active(slot_info) if slot_info.seqno == seat_seqno
-+            ))
-+        } else {
-+            matches!(
-+                &self.slots[slot_idx],
-+                SlotState::Idle(slot_info) if slot_info.seqno == seat_seqno
-+            )
-+        };
-+
-+        if !valid {
-+            *locked_seat.access_mut(self) = Seat::NoSeat;
++        if entry_section.is_ok() {
++            self.cursor.advance(section_hdr_size)?;
 +        }
++
++        entry_section
 +    }
 +
-+    /// Activate a resource on any available/reclaimable slot.
-+    pub(crate) fn activate(
-+        &mut self,
-+        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-+        slot_data: T::SlotData,
-+    ) -> Result {
-+        self.check_seat(locked_seat);
-+        match locked_seat.access(self) {
-+            // If a seat still has a valid slot, just reuse the slot and refresh the bookkeeping.
-+            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
-+                self.record_active_slot(seat_info.slot as usize, locked_seat, slot_data)
-+            }
-+            _ => self.allocate_slot(locked_seat, slot_data),
-+        }
-+    }
++    fn parse_section_entry(entry_cursor: &mut Cursor<'_>) -> Result<Option<ParsedSection>> {
++        let section_hdr: SectionHeader = SectionHeader::new(entry_cursor)?;
 +
-+    /// Flag a resource as idle. This method will be used for user VM support.
-+    #[expect(dead_code)]
-+    pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        self.check_seat(locked_seat);
-+        if let Seat::Active(seat_info) = locked_seat.access(self) {
-+            self.idle_slot(seat_info.slot as usize, locked_seat)?;
-+        }
-+        Ok(())
-+    }
-+
-+    /// Evict a resource from its slot.
-+    pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        self.check_seat(locked_seat);
-+
-+        match locked_seat.access(self) {
-+            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
-+                let slot_idx = seat_info.slot as usize;
-+                self.evict_slot(slot_idx, locked_seat)?;
-+            }
-+            _ => (),
++        if section_hdr.data.end < section_hdr.data.start {
++            pr_err!(
++                "Firmware corrupted, data.end < data.start (0x{:x} < 0x{:x})\n",
++                section_hdr.data.end,
++                section_hdr.data.start
++            );
++            return Err(EINVAL);
 +        }
 +
-+        Ok(())
++        if section_hdr.va.end < section_hdr.va.start {
++            pr_err!(
++                "Firmware corrupted, section_hdr.va.end < section_hdr.va.start (0x{:x} < 0x{:x})\n",
++                section_hdr.va.end,
++                section_hdr.va.start
++            );
++            return Err(EINVAL);
++        }
++
++        if section_hdr.section_flags.contains(SectionFlag::Prot) {
++            pr_info!("Firmware protected mode entry not supported, ignoring");
++            return Ok(None);
++        }
++
++        if section_hdr.va.start == CSF_MCU_SHARED_REGION_START
++            && !section_hdr.section_flags.contains(SectionFlag::Shared)
++        {
++            pr_err!(
++                "Interface at 0x{:x} must be shared",
++                CSF_MCU_SHARED_REGION_START
++            );
++            return Err(EINVAL);
++        }
++
++        let name_len = entry_cursor.len() - entry_cursor.pos();
++        let name_bytes = entry_cursor.read(name_len)?;
++
++        let mut name = KVec::with_capacity(name_bytes.len() + 1, GFP_KERNEL)?;
++        name.extend_from_slice(name_bytes, GFP_KERNEL)?;
++        name.push(0, GFP_KERNEL)?;
++
++        let _name = CStr::from_bytes_with_nul(&name)
++            .ok()
++            .and_then(|name| CString::try_from(name).ok());
++
++        let cache_mode = section_hdr.section_flags.cache_mode();
++        let mut vm_map_flags = VmMapFlags::empty();
++
++        if !section_hdr.section_flags.contains(SectionFlag::Write) {
++            vm_map_flags |= VmFlag::Readonly;
++        }
++        if !section_hdr.section_flags.contains(SectionFlag::Exec) {
++            vm_map_flags |= VmFlag::Noexec;
++        }
++        if cache_mode != SectionFlag::CacheModeCached.into() {
++            vm_map_flags |= VmFlag::Uncached;
++        }
++
++        Ok(Some(ParsedSection {
++            data_range: section_hdr.data.clone(),
++            va: section_hdr.va,
++            vm_map_flags,
++        }))
 +    }
 +}
 +
-+impl<T: SlotOperations, const MAX_SLOTS: usize> Deref for SlotManager<T, MAX_SLOTS> {
-+    type Target = T;
++/// Firmware binary header containing version and size information.
++///
++/// The header is located at the beginning of the firmware binary and contains
++/// a magic value for validation, version information, and the total size of
++/// all structured headers that follow.
++#[expect(dead_code)]
++struct FirmwareHeader {
++    /// Magic value to check binary validity.
++    magic: u32,
 +
-+    fn deref(&self) -> &Self::Target {
-+        &self.manager
++    /// Minor firmware version.
++    minor: u8,
++
++    /// Major firmware version.
++    major: u8,
++
++    /// Padding. Must be set to zero.
++    _padding1: u16,
++
++    /// Firmware version hash.
++    version_hash: u32,
++
++    /// Padding. Must be set to zero.
++    _padding2: u32,
++
++    /// Total size of all the structured data headers at beginning of firmware binary.
++    size: u32,
++}
++
++impl FirmwareHeader {
++    const FW_BINARY_MAGIC: u32 = 0xc3f13a6e;
++    const FW_BINARY_MAJOR_MAX: u8 = 0;
++
++    /// Reads and validates a firmware header from the cursor.
++    ///
++    /// Verifies the magic value, version compatibility, and padding fields.
++    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
++        let magic = cursor.read_u32()?;
++        if magic != Self::FW_BINARY_MAGIC {
++            pr_err!("Invalid firmware magic");
++            return Err(EINVAL);
++        }
++
++        let minor = cursor.read_u8()?;
++        let major = cursor.read_u8()?;
++
++        if major > Self::FW_BINARY_MAJOR_MAX {
++            pr_err!(
++                "Unsupported firmware binary header version {}.{} (expected {}.x)\n",
++                major,
++                minor,
++                Self::FW_BINARY_MAJOR_MAX
++            );
++            return Err(EINVAL);
++        }
++
++        let padding1 = cursor.read_u16()?;
++        let version_hash = cursor.read_u32()?;
++        let padding2 = cursor.read_u32()?;
++        let size = cursor.read_u32()?;
++
++        if padding1 != 0 || padding2 != 0 {
++            pr_err!("Invalid firmware file: header padding is not zero");
++            return Err(EINVAL);
++        }
++
++        let fw_header = Self {
++            magic,
++            minor,
++            major,
++            _padding1: padding1,
++            version_hash,
++            _padding2: padding2,
++            size,
++        };
++
++        Ok(fw_header)
 +    }
 +}
 +
-+impl<T: SlotOperations, const MAX_SLOTS: usize> DerefMut for SlotManager<T, MAX_SLOTS> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.manager
++/// Firmware section header for loading binary sections into MCU memory.
++#[derive(Debug)]
++struct SectionHeader {
++    section_flags: SectionFlags,
++    /// MCU virtual range to map this binary section to.
++    va: Range<u32>,
++    /// References the data in the FW binary.
++    data: Range<u32>,
++}
++
++impl SectionHeader {
++    /// Reads and validates a section header from the cursor.
++    ///
++    /// Parses section flags, virtual address range, and data range from the firmware binary.
++    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
++        let section_flags = cursor.read_u32()?;
++        let section_flags = SectionFlags::try_from(section_flags)?;
++
++        let va_start = cursor.read_u32()?;
++        let va_end = cursor.read_u32()?;
++
++        let va = va_start..va_end;
++
++        if va.is_empty() {
++            pr_err!(
++                "Invalid firmware file: empty VA range at pos {}\n",
++                cursor.pos(),
++            );
++            return Err(EINVAL);
++        }
++
++        let data_start = cursor.read_u32()?;
++        let data_end = cursor.read_u32()?;
++        let data = data_start..data_end;
++
++        Ok(Self {
++            section_flags,
++            va,
++            data,
++        })
 +    }
 +}
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 95cda7b0962f..7c9a8063b3b9 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -12,6 +12,7 @@
- mod gem;
- mod gpu;
- mod regs;
-+mod slot;
- 
- kernel::module_platform_driver! {
-     type: TyrPlatformDriver,
++
++/// A firmware entry containing a header and optional parsed section data.
++///
++/// Represents a single entry in the firmware binary, which may contain loadable
++/// section data or metadata that doesn't require loading.
++struct EntrySection {
++    entry_hdr: EntryHeader,
++    inner: Option<ParsedSection>,
++}
++
++/// Header for a firmware entry, packed into a single u32.
++///
++/// The entry header encodes the entry type, size, and optional flag in a
++/// 32-bit value with the following layout:
++/// - Bits 0-7: Entry type
++/// - Bits 8-15: Size in bytes
++/// - Bit 31: Optional flag
++struct EntryHeader(u32);
++
++impl EntryHeader {
++    fn entry_type_raw(&self) -> u8 {
++        (self.0 & 0xff) as u8
++    }
++
++    fn entry_type(&self) -> Result<EntryType> {
++        let v = self.entry_type_raw();
++        EntryType::try_from(v)
++    }
++
++    fn optional(&self) -> bool {
++        self.0 & bit_u32(31) != 0
++    }
++
++    fn size(&self) -> u32 {
++        self.0 >> 8 & 0xff
++    }
++}
++
++#[derive(Clone, Copy, Debug)]
++#[repr(u8)]
++enum EntryType {
++    /// Host <-> FW interface.
++    Iface = 0,
++    /// FW config.
++    Config = 1,
++    /// Unit tests.
++    FutfTest = 2,
++    /// Trace buffer interface.
++    TraceBuffer = 3,
++    /// Timeline metadata interface.
++    TimelineMetadata = 4,
++    /// Metadata about how the FW binary was built.
++    BuildInfoMetadata = 6,
++}
++
++impl TryFrom<u8> for EntryType {
++    type Error = Error;
++
++    fn try_from(value: u8) -> Result<Self, Self::Error> {
++        match value {
++            0 => Ok(EntryType::Iface),
++            1 => Ok(EntryType::Config),
++            2 => Ok(EntryType::FutfTest),
++            3 => Ok(EntryType::TraceBuffer),
++            4 => Ok(EntryType::TimelineMetadata),
++            6 => Ok(EntryType::BuildInfoMetadata),
++            _ => Err(EINVAL),
++        }
++    }
++}
 
 -- 
 2.54.0
