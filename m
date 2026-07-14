@@ -1,141 +1,85 @@
-Received: from va-2-28.ptr.blmpb.com (va-2-28.ptr.blmpb.com [209.127.231.28])
+Received: from va-2-29.ptr.blmpb.com (va-2-29.ptr.blmpb.com [209.127.231.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADE62D7DEA
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 07:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8849735CBD7
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 07:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784012456; cv=none; b=flwafirz9a2Xcr9Or1jx96bL8W9qXH2w/7mjp0AnvK+VbinrhV0DxNFg3TYQMpwdrmH6TUn0lHD/jAoL63WFzn6Ps1GZ3jG40JWpmW9VzkdPoS1q55tLi+49jwNVUs79jJUfQDs7/D5asDbjCDjkdKK1v06hK4fz3T7Rpba/+Zs=
+	t=1784012457; cv=none; b=tz8bTW3sbyk5iO7dx2HXPTBz0G7qPe/bhMjNPsN9LQhel3pXSfACiuKepztFKtlEpKi29CL+kPSOCAQ9L3XFexb+MKh7BuuPkmT/bo6U154yMcNKZtEEDy2YbrsEEUiMV/Y4ViTHOLTGUWgxjP3AqSKfeK6si2g6PawqqSQ4Djc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784012456; c=relaxed/simple;
-	bh=RGr2ce019BapnRqjWx50sN2infOcv+CRRg7V6FLONLM=;
-	h=Subject:Date:From:References:Mime-Version:In-Reply-To:Cc:
-	 Message-Id:Content-Type:To; b=jpxl1qZ3zbc1HanGUIqT1SprVrCB9jDcUDa/T3YZM6WMqoR8MuYz+NKTDbXI2++ReSZy2X4Bds2GIx16s3Z9nEfdbKUP7kSmX+08+2cCm/vcrqmXRBKqVWxRW1LnT8QfLAWzplddqQblGD/93TTyNMVS/Crz3eA4BAfNpWUZ7Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=bg7l+AGa; arc=none smtp.client-ip=209.127.231.28
+	s=arc-20240116; t=1784012457; c=relaxed/simple;
+	bh=gNLDLjDiJQrNQ/BJDs3dh3CJYRDKd/WHXTMTTXaaZcE=;
+	h=From:Mime-Version:Content-Type:In-Reply-To:References:To:
+	 Message-Id:Subject:Date:Cc; b=Cd+3mhAymI7NhknEHqbgLtoOIrSonvUZpq6lr7mEHgGBOWSMKm3MIWEyLMZfEy7P1QNrRzoi+K8zCQJ8jXVDV02cS+mXs+g8LhOa+gxUK3iu1gwhVXslFvPAIYERAj6cqFL3oMLAO/YvZfUC6VeU9nBUVdi5qCZD2F/l/Grq4Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club; spf=pass smtp.mailfrom=openatom.club; dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b=aRgPpe5K; arc=none smtp.client-ip=209.127.231.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=openatom.club
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openatom.club
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="bg7l+AGa"
+	dkim=pass (2048-bit key) header.d=openatom-club.20200927.dkim.feishu.cn header.i=@openatom-club.20200927.dkim.feishu.cn header.b="aRgPpe5K"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1784012442;
+ s=s1; d=openatom-club.20200927.dkim.feishu.cn; t=1784012449;
   h=from:subject:mime-version:from:date:message-id:subject:to:cc:
  reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=RGr2ce019BapnRqjWx50sN2infOcv+CRRg7V6FLONLM=;
- b=bg7l+AGaOODVyjvHMbH64fTtYQYsf8etzhN73K2Doj2v6gux8uNtmmmxnwjPt82+Pc9t51
- Xuht5CjAedCAeBo8brZQB1dBuIJpXFqIN7gsru7fVJIsSMKx7K0hWDfhYqevPuu+w1xLbn
- CTAmFP5WyVyuMFsUC8rntBVlKK0AXP1hR3+8kjtd/3dmVuzM3XkTRe/WnSnIGLzlrZLajU
- +jV1Z2DN9gj5gDcWlRQBb6PUZEA5brqWC5TpiWlQHc3171lexauwHFyAIatQTJAv755Cq1
- ON3ESQ9XQr+U/s/j4pmXHRad5Wbt4FJtULNXEOhysZDTt7wC9ivve9qVW3c/Jg==
-Subject: [PATCH v3 1/4] docs/zh_CN: Update rust/quick-start.rst translation
-Date: Tue, 14 Jul 2026 15:00:08 +0800
-X-Lms-Return-Path: <lba+26a55de97+da49a6+vger.kernel.org+ben.guo@openatom.club>
+ bh=8oy1lKCW+ydZeYMRTpmA5EiGWYk65RJv0w63nUr0nGI=;
+ b=aRgPpe5K+S+XgK5c8isykJlr7TAsxP+bG5cnp79IdpBjqEqyX6RI0qUMJi7Dt8JPcSLLgu
+ 01sKzyWOvmalyTiL7oSFIl4842vEhLd16BrNVfsvBHcAam9eRca/UtiWc5/rRE/cqXcb9h
+ wcsCQcoHIGrKvroaEG+M58RjBqTQqFbCJsNk+9luLv48UH8fo+SfdNb3OvOeUbkY9KQYX9
+ aO4ynv7awoim++pCNSZDNuUJD0/ujWnmP2jMrXEJ8xaSsqRr5BsTBeXErbCVdsaQdNwWGY
+ ITCPyDwLkm3kS8KOmeYSzfXjWCm+WK11CCO+Ah8WpSXm8QolFInqm4HualAtWg==
 From: "Ben Guo" <ben.guo@openatom.club>
-References: <cover.1784000217.git.ben.guo@openatom.club>
-Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Tue, 14 Jul 2026 15:00:36 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Original-From: Ben Guo <ben.guo@openatom.club>
+Content-Type: text/plain; charset=UTF-8
 In-Reply-To: <cover.1784000217.git.ben.guo@openatom.club>
+References: <cover.1784000217.git.ben.guo@openatom.club>
+To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <siyanteng@loongson.cn>, 
+	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
+Message-Id: <2684fbb81c5ca3321e927af7b2e61c2c6016df36.1784000217.git.ben.guo@openatom.club>
+Subject: [PATCH v3 3/4] docs/zh_CN: Update rust/arch-support.rst translation
+Date: Tue, 14 Jul 2026 15:00:10 +0800
+X-Lms-Return-Path: <lba+26a55dea0+8ddc6d+vger.kernel.org+ben.guo@openatom.club>
 Cc: "Gary Guo" <gary@garyguo.net>, <linux-doc@vger.kernel.org>, 
 	<linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, 
 	<hust-os-kernel-patches@googlegroups.com>
-Message-Id: <2d8c0a3eb510a4eb39c41cb946cebfd0f7dfa5fe.1784000217.git.ben.guo@openatom.club>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
 X-Mailer: git-send-email 2.53.0
-To: "Alex Shi" <alexs@kernel.org>, "Yanteng Si" <siyanteng@loongson.cn>, 
-	"Dongliang Mu" <dzm91@hust.edu.cn>, "Jonathan Corbet" <corbet@lwn.net>
+Received: from localhost ([58.35.126.19]) by smtp.feishu.cn with ESMTPS; Tue, 14 Jul 2026 15:00:46 +0800
+X-Original-From: Ben Guo <ben.guo@openatom.club>
+Content-Transfer-Encoding: quoted-printable
 
-VXBkYXRlIERvY3VtZW50YXRpb24vcnVzdC9xdWljay1zdGFydC5yc3QgdHJhbnNsYXRpb24uDQoN
-ClVwZGF0ZSB0aGUgdHJhbnNsYXRpb24gdGhyb3VnaCBjb21taXQgYTQzOTJlZDFjOGI5DQooImRv
-Y3M6IHJ1c3Q6IHF1aWNrLXN0YXJ0OiByZW1vdmUgR0RCL0JpbnV0aWxzIG1lbnRpb24iKQ0KDQpS
-ZXZpZXdlZC1ieTogR2FyeSBHdW8gPGdhcnlAZ2FyeWd1by5uZXQ+DQpSZXZpZXdlZC1ieTogRG9u
-Z2xpYW5nIE11IDxkem05MUBodXN0LmVkdS5jbj4NClNpZ25lZC1vZmYtYnk6IEJlbiBHdW8gPGJl
-bi5ndW9Ab3BlbmF0b20uY2x1Yj4NCi0tLQ0KIC4uLi90cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9x
-dWljay1zdGFydC5yc3QgICB8IDQ4ICsrKysrKysrLS0tLS0tLS0tLS0NCiAxIGZpbGUgY2hhbmdl
-ZCwgMTkgaW5zZXJ0aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pDQoNCmRpZmYgLS1naXQgYS9Eb2N1
-bWVudGF0aW9uL3RyYW5zbGF0aW9ucy96aF9DTi9ydXN0L3F1aWNrLXN0YXJ0LnJzdCBiL0RvY3Vt
-ZW50YXRpb24vdHJhbnNsYXRpb25zL3poX0NOL3J1c3QvcXVpY2stc3RhcnQucnN0DQppbmRleCA1
-ZjBlY2U2NDExZi4uMDM5NjEzN2YzYzEgMTAwNjQ0DQotLS0gYS9Eb2N1bWVudGF0aW9uL3RyYW5z
-bGF0aW9ucy96aF9DTi9ydXN0L3F1aWNrLXN0YXJ0LnJzdA0KKysrIGIvRG9jdW1lbnRhdGlvbi90
-cmFuc2xhdGlvbnMvemhfQ04vcnVzdC9xdWljay1zdGFydC5yc3QNCkBAIC01OSw3ICs1OSw3IEBA
-IEZlZG9yYSBMaW51eCDmj5DkvpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjl
-vIDnrrHljbPnlKjvvIzkvovlpoI6Og0KIEdlbnRvbyBMaW51eA0KICoqKioqKioqKioqKg0KIA0K
-LUdlbnRvbyBMaW51eO+8iOWwpOWFtuaYryB0ZXN0aW5nIOWIhuaUr++8ieaPkOS+m+i+g+aWsOea
-hCBSdXN0IOeJiOacrO+8jOWboOatpOmAmuW4uOW8gOeuseWNs+eUqO+8jA0KK0dlbnRvbyBMaW51
-eCDmj5DkvpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjlvIDnrrHljbPnlKjv
-vIwNCiDkvovlpoI6Og0KIA0KIAlVU0U9J3J1c3Qtc3JjIHJ1c3RmbXQgY2xpcHB5JyBlbWVyZ2Ug
-ZGV2LWxhbmcvcnVzdCBkZXYtdXRpbC9iaW5kZ2VuDQpAQCAtNzAsNyArNzAsNyBAQCBHZW50b28g
-TGludXjvvIjlsKTlhbbmmK8gdGVzdGluZyDliIbmlK/vvInmj5DkvpvovoPmlrDnmoQgUnVzdCDn
-iYjmnKzvvIzlm6DmraQNCiBOaXgNCiAqKioNCiANCi1OaXjvvIh1bnN0YWJsZSDpopHpgZPvvInm
-j5DkvpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjlvIDnrrHljbPnlKjvvIzk
-vovlpoI6Og0KK05peCDmj5DkvpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjl
-vIDnrrHljbPnlKjvvIzkvovlpoI6Og0KIA0KIAl7IHBrZ3MgPyBpbXBvcnQgPG5peHBrZ3M+IHt9
-IH06DQogCXBrZ3MubWtTaGVsbCB7DQpAQCAtODUsMTYgKzg1LDE0IEBAIG9wZW5TVVNFDQogb3Bl
-blNVU0UgU2xvd3JvbGwg5ZKMIG9wZW5TVVNFIFR1bWJsZXdlZWQg5o+Q5L6b6L6D5paw55qEIFJ1
-c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566xDQog5Y2z55So77yM5L6L5aaCOjoNCiANCi0J
-enlwcGVyIGluc3RhbGwgcnVzdCBydXN0MS43OS1zcmMgcnVzdC1iaW5kZ2VuIGNsYW5nDQorCXp5
-cHBlciBpbnN0YWxsIHJ1c3QgcnVzdC1zcmMgcnVzdC1iaW5kZ2VuIGNsYW5nDQogDQogDQogVWJ1
-bnR1DQogKioqKioqDQogDQotMjUuMDQNCi1+fn5+fg0KLQ0KLeacgOaWsOeahCBVYnVudHUg54mI
-5pys5o+Q5L6b6L6D5paw55qEIFJ1c3Qg54mI5pys77yM5Zug5q2k6YCa5bi45byA566x5Y2z55So
-77yM5L6L5aaCOjoNCitVYnVudHUgMjUuMTAg5ZKMIDI2LjA0IExUUyDmj5DkvpvovoPmlrDnmoQg
-UnVzdCDniYjmnKzvvIzlm6DmraTpgJrluLjlvIDnrrHljbPnlKjvvIwNCivkvovlpoI6Og0KIA0K
-IAlhcHQgaW5zdGFsbCBydXN0YyBydXN0LXNyYyBiaW5kZ2VuIHJ1c3RmbXQgcnVzdC1jbGlwcHkN
-CiANCkBAIC0xMTEsMzIgKzEwOSwzMiBAQCBVYnVudHUNCiDomb3nhLYgVWJ1bnR1IDI0LjA0IExU
-UyDlj4rmm7Tml6nniYjmnKzku43nhLbmj5DkvpvovoPmlrDnmoQgUnVzdCDniYjmnKzvvIzkvYbl
-roPku6zpnIDopoHkuIDkupvpop3lpJbnmoTphY0NCiDnva7vvIzkvb/nlKjluKbniYjmnKzlj7fn
-moTova/ku7bljIXvvIzkvovlpoI6Og0KIA0KLQlhcHQgaW5zdGFsbCBydXN0Yy0xLjgwIHJ1c3Qt
-MS44MC1zcmMgYmluZGdlbi0wLjY1IHJ1c3RmbXQtMS44MCBcDQotCQlydXN0LTEuODAtY2xpcHB5
-DQotCWxuIC1zIC91c3IvbGliL3J1c3QtMS44MC9iaW4vcnVzdGZtdCAvdXNyL2Jpbi9ydXN0Zm10
-LTEuODANCi0JbG4gLXMgL3Vzci9saWIvcnVzdC0xLjgwL2Jpbi9jbGlwcHktZHJpdmVyIC91c3Iv
-YmluL2NsaXBweS1kcml2ZXItMS44MA0KKwlhcHQgaW5zdGFsbCBydXN0Yy0xLjg1IHJ1c3QtMS44
-NS1zcmMgYmluZGdlbi0wLjcxIHJ1c3RmbXQtMS44NSBcDQorCQlydXN0LTEuODUtY2xpcHB5DQor
-CWxuIC1zIC91c3IvbGliL3J1c3QtMS44NS9iaW4vcnVzdGZtdCAvdXNyL2Jpbi9ydXN0Zm10LTEu
-ODUNCisJbG4gLXMgL3Vzci9saWIvcnVzdC0xLjg1L2Jpbi9jbGlwcHktZHJpdmVyIC91c3IvYmlu
-L2NsaXBweS1kcml2ZXItMS44NQ0KIA0KIOi/meS6m+i9r+S7tuWMhemDveS4jeS8muWwhuWFtuW3
-peWFt+iuvue9ruS4uum7mOiupOWAvO+8m+WboOatpOW6lOivpeaYvuW8j+aMh+WumuWug+S7rO+8
-jOS+i+Wmgjo6DQogDQotCW1ha2UgTExWTT0xIFJVU1RDPXJ1c3RjLTEuODAgUlVTVERPQz1ydXN0
-ZG9jLTEuODAgUlVTVEZNVD1ydXN0Zm10LTEuODAgXA0KLQkJQ0xJUFBZX0RSSVZFUj1jbGlwcHkt
-ZHJpdmVyLTEuODAgQklOREdFTj1iaW5kZ2VuLTAuNjUNCisJbWFrZSBMTFZNPTEgUlVTVEM9cnVz
-dGMtMS44NSBSVVNURE9DPXJ1c3Rkb2MtMS44NSBSVVNURk1UPXJ1c3RmbXQtMS44NSBcDQorCQlD
-TElQUFlfRFJJVkVSPWNsaXBweS1kcml2ZXItMS44NSBCSU5ER0VOPWJpbmRnZW4tMC43MQ0KIA0K
-LeaIluiAhe+8jOS/ruaUuSBgYFBBVEhgYCDlj5jph4/lsIYgUnVzdCAxLjgwIOeahOS6jOi/m+WI
-tuaWh+S7tuaUvuWcqOWJjemdou+8jOW5tuWwhiBgYGJpbmRnZW5gYCDorr4NCivmiJbogIXvvIzk
-v67mlLkgYGBQQVRIYGAg5Y+Y6YeP5bCGIFJ1c3QgMS44NSDnmoTkuozov5vliLbmlofku7bmlL7l
-nKjliY3pnaLvvIzlubblsIYgYGBiaW5kZ2VuYGAg6K6+DQog572u5Li66buY6K6k5YC877yM5L6L
-5aaCOjoNCiANCi0JUEFUSD0vdXNyL2xpYi9ydXN0LTEuODAvYmluOiRQQVRIDQorCVBBVEg9L3Vz
-ci9saWIvcnVzdC0xLjg1L2JpbjokUEFUSA0KIAl1cGRhdGUtYWx0ZXJuYXRpdmVzIC0taW5zdGFs
-bCAvdXNyL2Jpbi9iaW5kZ2VuIGJpbmRnZW4gXA0KLQkJL3Vzci9iaW4vYmluZGdlbi0wLjY1IDEw
-MA0KLQl1cGRhdGUtYWx0ZXJuYXRpdmVzIC0tc2V0IGJpbmRnZW4gL3Vzci9iaW4vYmluZGdlbi0w
-LjY1DQorCQkvdXNyL2Jpbi9iaW5kZ2VuLTAuNzEgMTAwDQorCXVwZGF0ZS1hbHRlcm5hdGl2ZXMg
-LS1zZXQgYmluZGdlbiAvdXNyL2Jpbi9iaW5kZ2VuLTAuNzENCiANCi3kvb/nlKjluKbniYjmnKzl
-j7fnmoTova/ku7bljIXml7bpnIDopoHorr7nva4gYGBSVVNUX0xJQl9TUkNgYO+8jOS+i+Wmgjo6
-DQor5L2/55So5bim54mI5pys5Y+355qE6L2v5Lu25YyF5pe25Y+v6IO96ZyA6KaB6K6+572uIGBg
-UlVTVF9MSUJfU1JDYGDvvIzkvovlpoI6Og0KIA0KLQlSVVNUX0xJQl9TUkM9L3Vzci9zcmMvcnVz
-dGMtJChydXN0Yy0xLjgwIC0tdmVyc2lvbiB8IGN1dCAtZCcgJyAtZjIpL2xpYnJhcnkNCisJUlVT
-VF9MSUJfU1JDPS91c3Ivc3JjL3J1c3RjLSQocnVzdGMtMS44NSAtLXZlcnNpb24gfCBjdXQgLWQn
-ICcgLWYyKS9saWJyYXJ5DQogDQog5Li65pa55L6/6LW36KeB77yM5Y+v5Lul5bCGIGBgUlVTVF9M
-SUJfU1JDYGAg5a+85Ye65Yiw5YWo5bGA546v5aKD5Lit44CCDQogDQot5q2k5aSW77yMIGBgYmlu
-ZGdlbi0wLjY1YGAg5Zyo6L6D5paw55qE54mI5pys77yIMjQuMDQgTFRTIOWSjCAyNC4xMO+8ieS4
-reWPr+eUqO+8jOS9huWcqOabtOaXqeeahOeJiA0KLeacrO+8iDIwLjA0IExUUyDlkowgMjIuMDQg
-TFRT77yJ5Lit5Y+v6IO95LiN5Y+v55So77yM5Zug5q2k5Y+v6IO96ZyA6KaB5omL5Yqo5p6E5bu6
-IGBgYmluZGdlbmBgDQor5q2k5aSW77yMIGBgYmluZGdlbi0wLjcxYGAg5Zyo6L6D5paw55qE54mI
-5pys77yIMjQuMDQgTFRT77yJ5Lit5Y+v55So77yM5L2G5Zyo5pu05pep55qE54mI5pysDQor77yI
-MjAuMDQgTFRTIOWSjCAyMi4wNCBMVFPvvInkuK3lj6/og73kuI3lj6/nlKjvvIzlm6DmraTlj6/o
-g73pnIDopoHmiYvliqjmnoTlu7ogYGBiaW5kZ2VuYGANCiDvvIjor7flj4Lop4HkuIvmlofvvInj
-gIINCiANCiANCkBAIC0zMjUsMTEgKzMyMywzIEBAIFJ1c3TmlK/mjIHvvIhDT05GSUdfUlVTVO+8
-iemcgOimgeWcqCBgYEdlbmVyYWwgc2V0dXBgYCDoj5zljZXkuK3lkK/nlKjjgILlnKjlhbYNCiAN
-CiDopoHmg7Pmt7HlhaXkuobop6PvvIzor7fnnIsgYGBzYW1wbGVzL3J1c3QvYGAg5LiL55qE5qC3
-5L6L5rqQ5Luj56CB44CBIGBgcnVzdC9gYCDkuIvnmoRSdXN05pSv5oyB5Luj56CB5ZKMDQogYGBL
-ZXJuZWwgaGFja2luZ2BgIOS4i+eahCBgYFJ1c3QgaGFja2luZ2BgIOiPnOWNleOAgg0KLQ0KLeWm
-guaenOS9v+eUqOeahOaYr0dEQi9CaW51dGlsc++8jOiAjFJ1c3TnrKblj7fmsqHmnInooqtkZW1h
-bmdsZWTvvIzljp/lm6DmmK/lt6Xlhbfpk77ov5jkuI3mlK/mjIFSdXN055qE5pawdjANCi1tYW5n
-bGluZ+aWueahiOOAguacieWHoOS4quWKnuazleWPr+S7peino+WGs++8mg0KLQ0KLS0g5a6J6KOF
-5LiA5Liq6L6D5paw55qE54mI5pys77yIR0RCID49IDEwLjIsIEJpbnV0aWxzID49IDIuMzbvvInj
-gIINCi0NCi0tIOS4gOS6m+eJiOacrOeahEdEQu+8iOS+i+WmgnZhbmlsbGEgR0RCIDEwLjHvvIno
-g73lpJ/kvb/nlKjltYzlhaXlnKjosIPor5Xkv6Hmga8oYGBDT05GSUdfREVCVUdfSU5GT2BgKQ0K
-LSAg5Lit55qEcHJlLWRlbWFuZ2xlZOeahOWQjeWtl+OAgg0KLS0gDQoyLjUzLjA=
+Update Documentation/rust/arch-support.rst translation.
+
+Update the translation through commit 3f70ebe63858
+("s390: Enable Rust support")
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: Ben Guo <ben.guo@openatom.club>
+---
+ Documentation/translations/zh_CN/rust/arch-support.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Docum=
+entation/translations/zh_CN/rust/arch-support.rst
+index f5ae44588a5..0ca4be6e176 100644
+--- a/Documentation/translations/zh_CN/rust/arch-support.rst
++++ b/Documentation/translations/zh_CN/rust/arch-support.rst
+@@ -23,6 +23,7 @@
+ ``arm64``      Maintained        =E4=BB=85=E5=B0=8F=E7=AB=AF=E5=BA=8F=E3=
+=80=82
+ ``loongarch``  Maintained        \-
+ ``riscv``      Maintained        =E4=BB=85 ``riscv64``=EF=BC=8C=E4=B8=94=
+=E4=BB=85=E9=99=90 LLVM/Clang=E3=80=82
++``s390``       Maintained        =E5=BF=85=E9=A1=BB=E7=A6=81=E7=94=A8 ``CO=
+NFIG_EXPOLINE``=E3=80=82
+ ``um``         Maintained        \-
+ ``x86``        Maintained        =E4=BB=85 ``x86_64``=E3=80=82
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+--=20
+2.53.0
