@@ -1,150 +1,193 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010008.outbound.protection.outlook.com [52.101.46.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8112481FB0
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 16:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784046380; cv=none; b=WKnOUtOTGfSMRczpB9xiLBP9TRqxmPWHDenoHP3SZLQwGzS1IMpwwvhjKmKGYOmPsIcXPe3IQRiYyG92P6cLgHOTXZwhGEQpTUOAG6W4liSi9qnFgRh2KAW9SevV47uEtB6V0Fy0rZzsiw17Sj2YrTN6DCZigUy9z4wgE0qQqr4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784046380; c=relaxed/simple;
-	bh=9QB/17nM4/R4mx4h2n5NdP9dfwITN4STF9A4EmU1/6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ea5CWulCrvvo0dhjctAR+1auQHE6Gs/v+VeUBRCeIniGmJlqq3s8vONFpRxPh671pb6yCJeC9okwU9p9jdFSjlYrRQaL3o/L1d2P+VY6SDcWOF9e7S3+FNrHeGxt+E0Q1PWJfWdZd5F0s//KXzysjZMq9jtZTZWfkX0Js6hr9iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=ajOdG0QT; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594334E3772;
+	Tue, 14 Jul 2026 16:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784048342; cv=fail; b=M1MQjicQnGgRnSaYbg5AceEmP6LOrj1RkdHjneiO1HvXfV6bGRYFRxD30VpMAyy35FBUcMJiaa/E1WyAsZWlRpfhLRUYZKHxpOrKnpRil3L/nOgppeKqty0sqrLPnkTYeVCds/xd+bLN6UKS6UxudHeUwnaVGPjfo5VU42GNvMs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784048342; c=relaxed/simple;
+	bh=RmCIvSEZ740WYLpsUaIDYCsTsfQLUbunCX7zm1WjbpE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m26mnOsx8CcEaa1SqQAGcTC5Yy7ZPs2dVLhqG2xonkOY6pcEuewnlViLV80r8E5Zxnhx7S1khMby2BFhrZCgX9YQBpGmnaijkGuTEP2ryHqwl+cTOvVLNaZl2FckHugr52pGUq+zsSd5On2EhFmbwcJDCWPkSIEZR1JEzDYOQP0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Pg+tJa9Z; arc=fail smtp.client-ip=52.101.46.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="ajOdG0QT"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c2a449c57so38616021cf.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 09:26:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1784046378; x=1784651178; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=K2Wx4ci415T2EcKJc2YaFvxNMNUQo+sVpQO5XLInrL0=;
-        b=ajOdG0QTtDhTzsbNOF6G8o22nrNSHvbFHgSTh5STGruCqxzUbuw01YZVyOlH6WYpV4
-         yBn6S1mIaptgx/BSOEbwzt53j34PvcQ1guh+Pw/mZL3W8qD4LVOtlxIiJ78BRDVxIUMd
-         sNUmLxzVxSwdEFtmGp2FnHMgxtUDQTuiii1dnadDpGDCirkQu7bG5/W8bZcBhCB90AHa
-         KLrFC2U/5o8QWJ9TQiCc4hQDiAPiYeUP5B4rA/0DsWfxoQSqvTtFxlPkIhmFRBl6neHM
-         7JSkuO5AgH/ackG27VR2SakVlaJEy4pn3PvEkVf7LqX0BIXwT70CLTlTU/q6s2rHZ9q5
-         jf1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784046378; x=1784651178;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K2Wx4ci415T2EcKJc2YaFvxNMNUQo+sVpQO5XLInrL0=;
-        b=N/6VE61958baM0Cn60mfgY2sNfeQvCVyT5CAcPLd12zOrPl2+zIYLAorQxeGQmGdAM
-         0lD5s/lqMNjid7nE27kLU+WLHniERQhmyTVOqVJTGAifTF5aTPUEyfg20QtaaMXsA4d/
-         S5abhhi1FWd/A+yxosE0wDdl/UcEJQ4CB9r6Q9TQgn43G8nA3JN8AGdRd3aWsVLs15ta
-         +o14NJzUFA2zF2e8uBq/3MpfTgsrS6DIauUt2RW1+w5K8L2viaJmGCeyU9XiHea1wU8e
-         OnI4UDSwWKuX1dYt/TfqsSmHM+r/Diy7CaV09DOImxDNQI8DwhG2vD50gYlIlTViNp/U
-         JGog==
-X-Forwarded-Encrypted: i=1; AHgh+RpvYRvcnHWZbUJCElRq/XtRHqWfJMIoNOu5xQsVa54E6KK2lDbGKxqOO66II5r6PWevvWEgutzS+42Kya4Ggw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnftwLzJxorw9ClOnCZm9tti5HEkTQouP1hrAAHK/bPxuVM3Iu
-	R6R3iKwEB64HeJazybc3TcuY/pnBaCjVjkOKWAm+0W1Bx7AxwXPwQaXrVt0IGIp3kQ==
-X-Gm-Gg: AfdE7cmzDxSVWsGFgOMojhjygAYBZgAnhMwqoK/uVAta50Zp4cBqlsxN9UpC8mbHQ6r
-	CrCb5GN0imbo+K0e3T94mlXRQm2Rit8BQ3vqMF/3exvoVBrsabN1uHZwE3HSftoDp8YMQDF9xA+
-	yekwD9mTDcuyx6w9xjuex1fEYTnDCVr9s6RZtIxSFDgrABJDEbbBRxBRsuMYFP0ABacTBh7d8mS
-	JbIuGDwdpD69yQRziUqKRAMn7Du0QjAt4RNSUJGynr/T6+onMuRg95EYbJfW/HOE5n1LrsbOlT9
-	kLj7HKQwHCa2NocrCs38lQOlKnQ2dcKzpckVfNs7bQtbjziiuWLMfYEdVGKrXvS2e1ZyC7wYTQG
-	aLNo9Q2elZaJfMllrziUJGPFwzOjtpFqQmpkS+vvYTC2+S+naKMqPQLJahB3VYB3ANqDvtAsZux
-	LIf96RynLM7PdkWw==
-X-Received: by 2002:ac8:7f85:0:b0:51c:2022:cf0b with SMTP id d75a77b69052e-51e3c2ca712mr44748001cf.56.1784046377696;
-        Tue, 14 Jul 2026 09:26:17 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::883a])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51caae23f42sm114990581cf.19.2026.07.14.09.26.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 09:26:16 -0700 (PDT)
-Date: Tue, 14 Jul 2026 12:26:13 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Oliver Neukum <oneukum@suse.com>, Colin Braun <colinbrauncl@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-media@vger.kernel.org,
-	Colin Braun <colin.braun.cl@gmail.com>
-Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint
- abstractions
-Message-ID: <fe12ec76-0f2a-48bd-8fd5-9b94b2600718@rowland.harvard.edu>
-References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
- <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
- <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org>
- <alVEUR0JrF1ga3S8@pendragon>
- <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
- <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
- <DJYBDUMUQ43T.3Q4ZG0FL76QH3@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Pg+tJa9Z"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QwD9GvHm0+zX6rb7YsRywHsiRiih/ToHXHeEkXHYmpqOYYXJn3vOlW/hZhraIgC2vgR1ZbEvH1ZKjJQU5W50U1yJCPxz/S2JBcWvSUnOp5IAi0bnIxsn0dgTfz3u7avY2tj9uMYtO2ge8sBI7G+Y4s03syCkVBf0V1VXNpZvmTejBJ+6Q+z+8GDSNyLqM071/aGlNt87t46AgbqqRI503qJbWcjRItIUXT0OPf+Er9foWm98tcggNYPxHTQtwpz9LfoCqV1YeQnnycAaiMATvbdsG6yiSmQM8TxUaTrTFS86cDgwaqQ4uw78Gtq/udaxLGmqMcQNoFheRDfC/2Vp1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2+XLRrldJuAMSuhQoMCWyOO/s8Iu4Z/RW7HY+cb0GiM=;
+ b=bAZXprsjeAmIRVU/fVkLnDPpSkyRQNQ994fmPNB+yB/VwQJVgpWQ83bnKNnEZ66vw1zfP5PXxhDxn0XydcY2YbVasBQsc74xQ6Dm3+JBgyn3vDOD9mLWFm46ciGLsbAx/9KKk8pmfu1Z/cZBS9SJAlmwoKGLHEsFP7P9mE/SfWr9BC7gCTRhWRimDfb3yabJXOf+xowI7D3kufwHSLneU/5kFA1MDEicXt1iMU0T6KWN5wZuuTUlz3CTzLtrMEBYW0gBl3cDiFlsBDFE7ZjyTCrje9aOkWd/xXyN4t0c7p9i5e9+ncmtPGR2Otztlma+VEgWoq9RwUfuBNTCm+RM5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2+XLRrldJuAMSuhQoMCWyOO/s8Iu4Z/RW7HY+cb0GiM=;
+ b=Pg+tJa9ZpTZ2xiP3GXA+pPo8XjsXiA2iXcYAo6E3j+o8qbmOOivzuCjQi/CwsMOqdbrOUQHu4J/dEfC6AKtuefpK4+M2tgW+2P30FiqyZUUc6Nvfn9i2L2ImXFxSAQGT54ogzOdvCh7gj9rvCenekNv5itF44sxTHWjvc8H01q/9F7uMby6Jxo9OapkArUgU9b3S9j0iaWf19R9Y5MtzI0aPgYFnZujq91fEkTQEFoj+fAyl1wCyQI+UhcAvQK0PJzg2JuXBfQAh2+1P+ygrhpqOpa5rgBQkwO0fVjCRMbN8ZANXuZTD0Vr/yT+NT+eYiqI+PPan01tu8ub9sQkd4g==
+Received: from PH2PEPF00003855.namprd17.prod.outlook.com (2603:10b6:518:1::75)
+ by SJ0PR12MB5664.namprd12.prod.outlook.com (2603:10b6:a03:42b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.9; Tue, 14 Jul
+ 2026 16:58:52 +0000
+Received: from SA2PEPF00001506.namprd04.prod.outlook.com
+ (2a01:111:f403:c801::2) by PH2PEPF00003855.outlook.office365.com
+ (2603:1036:903:48::3) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.10 via Frontend Transport; Tue,
+ 14 Jul 2026 16:58:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ SA2PEPF00001506.mail.protection.outlook.com (10.167.242.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.223.9 via Frontend Transport; Tue, 14 Jul 2026 16:58:52 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 14 Jul
+ 2026 09:58:35 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 14 Jul 2026 09:58:35 -0700
+Received: from inno-dell.mtl.com (10.127.8.13) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Tue, 14 Jul 2026 09:58:29 -0700
+From: Zhi Wang <zhiw@nvidia.com>
+To: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <acourbot@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>, "Zhi
+ Wang" <zhiw@nvidia.com>
+Subject: [PATCH v4 0/1] Rust PCI capability infrastructure and SR-IOV support
+Date: Tue, 14 Jul 2026 19:58:25 +0300
+Message-ID: <20260714165827.2937960-1-zhiw@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJYBDUMUQ43T.3Q4ZG0FL76QH3@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001506:EE_|SJ0PR12MB5664:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e6a7e4a-1728-4733-2017-08dee1c92ec6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|376014|1800799024|7416014|23010399003|82310400026|6133799003|5023799004|11063799006|56012099006|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	k1gkMn1MyQhdqfqCOl8D2AzEwXJ52apNKAybgq6LKkrHXh+ovRotiIm6+FzXJJHoy4Ga0QmQpuk4ImckVmBWvSnG97X4pROUrXIC9tVVSKFSz4PcEuz7eYnJ6U1CKoTijEDzG5F6V2iMlJ8hNhXw+89i4u1gR6wQSDQc9mBtnJQO96e7N7WXMA/Sn8Iku+60MOEumDXKqsFTydqPJ9eAalHw0EKwja3MI0vTIf2vhSt+vkt85ue4FLj2bAxbYxiYzrHXcwSTukeGwZU3msOEW1CvQfggGa2xBD57iilXRrIZFOir3vvPgD6hh2O0NTPmABLxUsfe5mxGS2DzQhFX9Z+sLcS6z0CXNCfIUQQSS0TDHAxvLMnZdS8gukZglIEmjRozhUrxnTxJfrKKHbVLcRn9XpVyD064uXS1w+wPVWRsWk4PfRIcDNdkL1Yu1yS/mf1etLCegQjbwA+WswR8o+/0aOyVhNLRf0YEPHhccD4/NELsauGSKi9kXVXRo2Tve7oVU/OPbmx0rD9e7ws2SXOShRPuGs6JVzhl3Qkos2cdekrJ+7dEqOms+HXnjmWxUand8SsM6v0cC8ZnnpvSLyreBB4uWgDrX5nOKlTcytFdgb6CH/wWZTl8tWmiUxnaLBphCuLFy17BvrZB4921BHsZffwJCT4mvWtMJXbA3okclqK1IlJrrJULLKoH+JKGf5xKMLR2mB3s6a+wSa2maw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(7416014)(23010399003)(82310400026)(6133799003)(5023799004)(11063799006)(56012099006)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	CHLFn27eyt5AlsYP235xk0i64U3FT/3/o+BSB6rDMR5DYHE76gWN/NGYk4/Uqi4fo2jwO4yJwo5azhR2Or4X/mY+SoYKPfrr7jipDAfIzrv27bhTti1N12RQKzt1JvNMha7ZNU4AZNp4TarODQcfE1+EMOIsrfi1A/6cpvY+b2YyDFy7Y473S7ysBjWHU0vHRQXNXz5/71RXRen0uinkB/iof2kxHltZXfUBrdrCXYDmpmi1kzI9blHTFVwghwKz1a+Xn0EqK0ePjf1cyayqtyzxW2Y6b91IaF5GiArGNfqvKJeJk/DsDgwIpvmWzgU9vNOl/AWt78EMPKzgNhO69tNkEoDzgA5lYQkeJW8ZgMzmZ4r8XJ3iqcVeXqwnwbJ0BJG/BnBoEtMhhDFRZuaygCslyj0vsFJtMruFbFqJcUdwLehFv67a1qVaa/DMZQSX
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jul 2026 16:58:52.1319
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e6a7e4a-1728-4733-2017-08dee1c92ec6
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001506.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5664
 
-On Tue, Jul 14, 2026 at 03:05:16PM +0200, Danilo Krummrich wrote:
-> On Tue Jul 14, 2026 at 11:26 AM CEST, Oliver Neukum wrote:
-> > You can see that there is no way a configuration and thereby its interfaces
-> > can last longer than its device.
-> 
-> So, what you're saying is that, in the generic case, there is a guarantee that
-> if a usb_interface is bound to a usb_driver, then the usb_interface's parent
-> usb_device is also bound to a usb_device_driver.
+This is a follow-up to v3 [1], reworked to address Alexandre Courbot's
+review [2] and the VF BAR API follow-up [3]. This version is based on
+the latest driver-core-next.
 
-At first I thought that we ought to have such a guarantee.  But in fact 
-we don't, because the user can at any time write to a USB device's 
-bConfigurationValue sysfs attribute even if the device isn't bound to a 
-driver.  This can create interfaces which may then be bound to drivers.  
-I just tried it and it worked.
+This patch has been used in the Boot GSP with vGPU enabled series [6].
 
-This wasn't the original intent, but I don't see any good reason to 
-prevent people from doing it.
+For context, v3 was a follow-up to the RFC v2 series [4], reworked on
+top of Gary's io_projection patches [5].
 
-> But the relevant question is whether this always holds. In a previous discussion
-> [1] Alan explained that it currently doesn't hold.
-> 
-> Note that I'm not looking at this from a USB topology perspective, but from a
-> driver model perspective. All I'm saying is that usb::Device<Bound> from the
-> driver model side means "it is guaranteed that the usb_device is bound to a
-> usb_device_driver" and therefore can implement functions that rely on this
-> invariant.
+The patch defines an ExtCapability trait that associates an extended
+capability ID with its register layout. The generic
+ConfigSpace::find_ext_capability() finder locates the capability, bounds
+it at the next capability or the end of extended configuration space,
+and projects the ConfigSpace view to the requested layout. This lets the
+existing I/O projection and access macros operate on capability registers.
 
-I don't see why Rust needs to distinguish between a USB device that is 
-bound and one that is unbound.  There isn't much you can do with one 
-that can't be done with the other.
+ExtSriovRegs provides the SR-IOV register layout, with helpers to identify
+and read 64-bit VF BARs. ExtSriovCapability remains as a convenience alias.
 
-> Analogously, usb::Interface<Bound> means that the usb_interface is bound to a
-> usb_driver. So, if we want to be able to derive usb::Device<Bound> from
-> usb::Interface<Bound> it must always be guaranteed that this holds, not just in
-> the most common case.
+Changes since v3:
+- Replaced the custom ExtCapability<T> I/O wrapper with the existing
+  ConfigSpace view infrastructure. (Alex)
+- Reused ExtCapability as a trait carrying the capability ID, and made
+  ConfigSpace::find_ext_capability() generic over register layouts.
+  (Alex)
+- Removed public cast_sized() and unused find_next_ext_capability().
+  (Alex)
+- Kept capability construction in the generic finder and documented
+  calculate_ext_cap_size(). (Alex)
+- Used PCI_SRIOV_NUM_BARS rather than a literal VF BAR count.
+  (Alex, Zhi)
+- Added is_vf_bar_64bit() and made read_vf_bar64() reject BARs that are
+  not 64-bit memory BARs. (Alex, Zhi)
+- Kept indexed VF BAR helpers because the Nova user accesses fixed BAR
+  slots rather than iterating over them. (Alex)
+- Adapted the implementation and doctest to the current ConfigSpace I/O
+  APIs. (Zhi)
 
-Similarly, I don't see why Rust needs to distinguish between an 
-interface that is bound and one that isn't.
+Changes since RFC v2:
+- Hardened calculate_ext_cap_size() against corrupt capability lists.
+  (Zhi)
+- Added // INVARIANT: comments at all ExtCapability construction sites
+  (make_ext_capability and cast_sized). (Zhi)
+- Added #[inline] to small forwarding methods (find, read_vf_bar64).
+  (Zhi)
 
-Even from the point of view of the device core, a device that is bound 
-to a driver is the same kind of data structure as one that isn't bound; 
-the only difference is whether the ->driver pointer is set.
+Changes since RFC:
+- Rebased on io_projection branch, using Gary's Io/IoCapable traits.
+  (Gary)
+- ExtCapability implements Io and delegates IoCapable to ConfigSpace
+  instead of duplicating config read/write logic. (Gary)
+- Dropped the fallible I/O patch (now upstream in this tree). (Zhi)
+- Added Rust helper for PCI_EXT_CAP_NEXT() macro. (Zhi)
+- Replaced raw `as` casts with From conversions where possible. (Zhi)
+- Renamed SriovRegs/SriovCapability to ExtSriovRegs/ExtSriovCapability.
+  (Zhi)
 
-I'm aware that Rust has separate types for pointers that may be NULL and 
-pointers that cannot be NULL.  Putting that into the language helps 
-prevent a lot of bugs.  How would making the language be aware of 
-whether a device is bound to a driver be similarly useful?
+[1] https://lore.kernel.org/rust-for-linux/20260409185254.3869808-1-zhiw@nvidia.com/
+[2] https://lore.kernel.org/rust-for-linux/DHRTUAF52GNI.1J98TSAG1LS6Q@nvidia.com/
+[3] https://lore.kernel.org/rust-for-linux/DI2SL4G5INLY.2W1IFTR081ID3@nvidia.com/
+[4] https://lore.kernel.org/rust-for-linux/20260225180449.1813833-1-zhiw@nvidia.com/
+[5] https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary@kernel.org/
+[6] https://lore.kernel.org/rust-for-linux/20260313165336.935771-1-zhiw@nvidia.com/
 
-Alan Stern
+Zhi Wang (1):
+  rust: pci: add extended capability and SR-IOV support
+
+ rust/helpers/pci.c     |   5 +
+ rust/kernel/pci.rs     |   7 ++
+ rust/kernel/pci/cap.rs | 209 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 221 insertions(+)
+ create mode 100644 rust/kernel/pci/cap.rs
+
+
+base-commit: b07fc8d60bd30caaba4d293929459780166da194
+-- 
+2.51.0
