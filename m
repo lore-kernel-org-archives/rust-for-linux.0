@@ -1,166 +1,130 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760E4156DA
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 18:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784053581; cv=pass; b=q2uZfB04u31ecsawdQ9A/1x5O/x3+6sslBB966Hq7notYDvCXbY/wsTvmTc5DRz7Gfq46E5hce/Wdha7RFqZrD1KUl2NySj+edbwXyC7l27SEUJi5Mnkutap1k8iJ4yC+56DEg/vNLxx47Ro4l/Dv+iYWPlZ0uTB3HFaMsFTVzA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784053581; c=relaxed/simple;
-	bh=CWq1ibkcj9NeNh3SlSdPZImkJeUrte+X5SZJ2CDVQ0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rcufGUaM3NI+tl/CkBiE6f8aanIAOu5h4m13YtNadYPj9QRu+WuZjtkVkwmGfTmErLZJRaq29EeE3QvU7JwGkcLbaB3B2W2Zr+AaasQK1lf979V6DdiS/S36khCsn7L4j6nSJAa6rtxyEGo43vXjIelSoy/4MQCa9HPss6zOVGU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQB1NvnQ; arc=pass smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1571141A93D
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 18:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784054934; cv=none; b=VjHw/sHbcZBdLNSe4rVTK2EL684bsxa07nohG/sQwWaoa+ITSEivDD8WNfqi2olKUanXo8+6CKYb/2/p/Htx1msQgl0zV2lZbUYvK38yWJjULcKJ7eC524H0eQKa3u/OIfnErsBZ0iq384PMu9uXAvIrvgtPHqdrLQryk8lOF4E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784054934; c=relaxed/simple;
+	bh=gPFPIei4CDkO7J1lxwRZh0QQzWYIn252zXFk5L8y0Ns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OWM4okqIDSNzNghDyrQ6XMNq2KuBhqRwXP85SWmWHzV7gYDxIrWOeSNlHi7EqKKG6viZz2QmkxO+dwfowxmDaAdz9gbHB1JfYtd+nqFOeMz86Vr0/1MvieEE0RtyHBDSaKartqbrujsbMB3ffrDk6kLjO8D0aolO3rxdUCDpJkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LwaOq9mV; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQB1NvnQ"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-384c94c9423so449879a91.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 11:26:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784053578; cv=none;
-        d=google.com; s=arc-20260327;
-        b=V4xeJV4AVgM08WO/5iSqpKAptCd+FGX/tBDt4yPpgszrk0RquHjEetOvxwuV8y4w3j
-         OMDvvkdiloFUI3OhDjS/VX97Q7zLqy/YrXyjWtS7WBu6tZVuB7nC0gTwYXrHu9snE4pg
-         HksA6VrZFQyxDcvIwHsYWGaJ+EH7Ly6ntCZIffajypz8P6lxHmHGaz5p2Frd75xuGEv5
-         rBa9vpNCshNjl2ow76wjzGa7FzKQZffr7iSKHQgyLQzsiAEH6QAsi3pvKi6bjWblBKL3
-         hYYPEYHLzbQtc84xOmvY/pezn2jMI+jevUy7ZoXhwRC1KLaPMBdlHtM3WBiT2bT0uS6w
-         7Z3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HzKy/eaLdYaHeQ6eLLxXRwAK/vEaoF/CDff/5uZfOBw=;
-        fh=OLXAKqAVmnTazXAoiY5JIz6HSnz+zNplvSy/LSFLrIc=;
-        b=id5/6x9R/NyPgvxXkQUYxn8upd45mW7xqeIPpCKxy8vXeNq4TuCHPhI8HBjLVF7LZ/
-         /jAHqYjqWUht8spb5PztNZHBspQearlYe6sdG2AFmwbo2dNdFQUvF3aXi1TzfUKNlKr/
-         UZqmSxKbl4p8MOJDrO5Rpb+kxJzvosY9AXmVxUk7FtMw7Cy8mGHmllMeL1glPMcB8HqT
-         MoGXAEFOAwl7mmwVXjxPmL4CJ9gZ3k7YcnPZLXIzrX5GpMChhzh+D/Gc6QPa1XN+GFTd
-         OQHBaoKEA8Tsr4acbvUCuFYuqFWTv78Bk5OfF5PGJlEI5+ykxBvBgrlFL5cve8+aR500
-         h5mw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LwaOq9mV"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47d70879764so3061408f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 11:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784053578; x=1784658378; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HzKy/eaLdYaHeQ6eLLxXRwAK/vEaoF/CDff/5uZfOBw=;
-        b=QQB1NvnQWvdbgi0UvEE7cRhOhcNhdmTpbpPaPej1CMzbRBCApW9+vuZYpTIgnuoLpm
-         ZXf68huGVIIlynGNN1f7ddRhhTu2NwH6yvwRbe3EllcBkpFXVGR/QrPj7FhFAg/wHNl0
-         /9LGWKzytVSm+6zhnkhldnMNsIW7/LB08YaFA2JrskCgp/ePqVLSq61f4XTpAmlAl1ey
-         LPqmBEHSUwpSq/c/H8z1soR/AR0xy+nRkaGxqj23r1CSLQyDI/i3eh/ChGSlrFz88iuT
-         XQ6VhVppO3zlMkgRsoT582J28buRblJGemfiCRLRlm5o0gvEKiSYH5w9W16qelSTFCbH
-         4hew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784053578; x=1784658378;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=suse.com; s=google; t=1784054928; x=1784659728; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HzKy/eaLdYaHeQ6eLLxXRwAK/vEaoF/CDff/5uZfOBw=;
-        b=b/KPE1imvO7XwgOkMMIYTyYEvg4DZa4cnI/s7PJFjY6TJc3mhJMOmWLqGN0iMapiq3
-         oU5Aazlt9D3/8q9g/SsB28Cnbdf6rchTh977xtEuZkD2qQRmHN6ayK+iBVBRY34TI6V8
-         r76h+y8tcJ8tPlMdyloAVKQI7yF4YSnZn3WYGU7QcYxiMzg5/66tkYOQ+0PKeWFIkLm1
-         lO8M4aHGbRnmKxrjF2VAJLCBvs3KLCS9oew1wWmEdmoCHZ8/tM0YbgFO3ReWx2MJYiR+
-         viDBR0ITr8aRs+6Z099W/6PEHSY3zHst6gO5WnYSfqqkVGpUs31BBRHOsEt3PUr7fXMQ
-         DoZw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr9X8Ozh/rwqwknIKd3LWpqqftiES8fs7OVOnKkhOc+OVtxbqjd79htLGGJpHx5HUpooVpd5en/5YfRxPzxlA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoCJtyxVmpXLWHzIrPchg9i0S7zk1Dn+jrguris3/tLdbIVM7i
-	Wr8QA8Waq7GhXDwNSJSJJ3QYe5JL4i3bhKRSeEBQkBuAcam/6scLDAD3MYNCJNfsHSYaq9N7zEO
-	8wrjI8lSDS5xGEcI531O1dekcqOiyz/0=
-X-Gm-Gg: AfdE7clFiDXDUSncSKFrhcAZs+Nk1ENu/ePDyWe4YjFaMLbPis9ExeUdITLa9++H6XA
-	Ume7Q3bMkrXqFjpWshbLCEdnMi7Fbr5PUOJ5i5jh0sDpuZSVkR1lEroE4NdmOrOtTtqhZ3D+yIb
-	SU+2Dwv9UJ+soCsl9rOZvRgEP+pI4PX6Gf3o95f3tm3+UES5nLDyS0HICFtmSqKk2wlmVf6BYHm
-	qB0OB0scbB3SxtUJuKBITMQEI3kIlEVr2Db46Z3dD8Z89XIFLh7qDZP7xmZl2lLKe3L1WcMrY9I
-	Ly8icyYfP53WmGclscZV5cvas72fKbssXdWxJwYiB4mf13oqJRIEmYb4eJRLfav792XdhUCnqie
-	B4ReQFxcThGWo
-X-Received: by 2002:a17:90a:d408:b0:381:2d9a:447b with SMTP id
- 98e67ed59e1d1-38dc7b31c40mr11110380a91.4.1784053577592; Tue, 14 Jul 2026
- 11:26:17 -0700 (PDT)
+        bh=9g9uFKnNctGU0FYMhigLvskzpkcJ4V8ymJ1XdxHN22E=;
+        b=LwaOq9mVhTu9fXTOgZv+K5w+yF8DWN6ZW3sQ6InXBHNCCdEdZ63D3YBPbXJVSf0NrB
+         exTOAiTo7FwVMAUdbIFa5ToyTSBQRpXflCL7iH6kop2w0IxvQYy2HjENkQIbHZJjFvib
+         GfcZWVl70P6Z93tzpcx7MzDHRf4OdPVZSIWHc8slfYfUdu4Pump5kYPvHHcHHmtdRX7K
+         fyx+HTLPJxtE/WBW4yZ+oUbUJwh++hNhn14Ai9n9XYLFJ8DbMyBZI5b3kZnNBfy75LUl
+         xmY2s0zMCN8IMVmym++yKwl44UDfwDtyvTpgbWFgSKudq5HzygnCYuM3k1AwhCd7AVtA
+         4H6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784054928; x=1784659728;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9g9uFKnNctGU0FYMhigLvskzpkcJ4V8ymJ1XdxHN22E=;
+        b=qHJ+CUfz6pupeUV33hVFU/TgxZXQCFBGOsEyxDfJFH8gX43aDPIx5BOkK42KD1TJc9
+         LNq35bVqpJfkC7WLG+2BkEJ+nOk/3R/eJICETKnOmLczL3YekhyzI+9AOycjkOj9Z4cC
+         Q42vsOJKhve8KNZuu4a007vFmCffPkxWXt9IDoSkQ6ZWIhx0+wR/7Zj0TEfEveRppLC9
+         d0Qi0ev+QxwO8MtT7n2NRewRatQO50Y8rIjqSeN24YHWmIFT/fYwVh/3PDKWhJlOPGDZ
+         dCW9rfwRTzGhx/kViwxXbA//9SXRq9DFHoGpa3BUeksuXo8wGEYoKIE5ZjrWABbKVzdm
+         x+rQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rokq0fM5Ts1nU4jav+WURTemC+va0UdYI7d80K9P2iwsabMJBjANJEHrfUbsv1u9x9/lDMHEwm4PhlBlXgqMA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YypaxUSY0r7xZ24iZe3e89DZuwVI2Qq8hmOQNPhbpQeRNXsIbGC
+	ZIN8ObZBWKRjhMLi2DDgmCIrITWhXM8M5ZNee/4jTZmt1mUBTwCUE123YhutV33LutQ=
+X-Gm-Gg: AfdE7cm/4QZFNeVTU3+KcQ0bIi8Pucji2qZzEMZdtvBp+tj3G0v91VbJ90cvz1iViPQ
+	OQL3Kch02AM/cLCU5PZavEBVee1NCNwtWgD9yyDoyIK4RoARDjEfRyuXW3YP+vwuQNQjgu5U/mP
+	lMRBQdhgMSrLmlDeMbMGMw2unjFmP//+SrnRTRc2qlEwl39+55SfPpvcrMoK6tRRdEsV39Q7Q4V
+	azM/+IsUJ+i0+YlpvaMqL89+UutULrsbU+HDECqnha7RNvihs0QMMxwy0KXeETxKnRIB14x24X3
+	d3TgE1lbGAw0DuxsmDCIwX2liaThQcKIEqN8JIHJ7v9jWK+VuyGT7detdSZIzNDvXG+sO1+LYnJ
+	fch1tWW5yrIzy7Udy2tFcQ6fQ3qKL4P24HfHliWjwV4Lb42I0Rnq7+2FvBduNlRU8L5gpGVHWtu
+	qBk3J6UK+YuHkZy7GMYaXfzuZOPv8N8Rj+LcTgKEv/BB9K8CC9B7YQCkc=
+X-Received: by 2002:a05:6000:3c6:b0:47d:f023:b4b3 with SMTP id ffacd0b85a97d-47f2dce9728mr18256050f8f.34.1784054928423;
+        Tue, 14 Jul 2026 11:48:48 -0700 (PDT)
+Received: from ?IPV6:2001:a61:13c3:1c01:3157:c849:4aaa:fa65? ([2001:a61:13c3:1c01:3157:c849:4aaa:fa65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f464c4320sm9826293f8f.32.2026.07.14.11.48.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jul 2026 11:48:48 -0700 (PDT)
+Message-ID: <018687f9-a7ba-4e30-bb3c-25ea6b8f172b@suse.com>
+Date: Tue, 14 Jul 2026 20:48:46 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint
+ abstractions
+To: Danilo Krummrich <dakr@kernel.org>, Alan Stern <stern@rowland.harvard.edu>
+Cc: Oliver Neukum <oneukum@suse.com>, Colin Braun <colinbrauncl@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot
+ <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Mathias Nyman <mathias.nyman@intel.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-media@vger.kernel.org, Colin Braun <colin.braun.cl@gmail.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, driver-core@lists.linux.dev
 References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
- <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com> <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org>
- <alVEUR0JrF1ga3S8@pendragon> <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
- <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com> <DJYBDUMUQ43T.3Q4ZG0FL76QH3@kernel.org>
+ <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
+ <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org> <alVEUR0JrF1ga3S8@pendragon>
+ <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
+ <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
+ <DJYBDUMUQ43T.3Q4ZG0FL76QH3@kernel.org>
  <fe12ec76-0f2a-48bd-8fd5-9b94b2600718@rowland.harvard.edu>
-In-Reply-To: <fe12ec76-0f2a-48bd-8fd5-9b94b2600718@rowland.harvard.edu>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 14 Jul 2026 20:26:03 +0200
-X-Gm-Features: AUfX_mz_aRz7cY4MbeNoQZxVf8UF06_0oMEjEGVSK_wjJBa5PsYJvfIZ139w0Fw
-Message-ID: <CANiq72khD4Uj69eVd2eGUYnhdEVyka6g7kQgv7-CfMTyv4a9DQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint abstractions
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Danilo Krummrich <dakr@kernel.org>, Oliver Neukum <oneukum@suse.com>, 
-	Colin Braun <colinbrauncl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mathias Nyman <mathias.nyman@intel.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-usb@vger.kernel.org, linux-media@vger.kernel.org, 
-	Colin Braun <colin.braun.cl@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <DJYHI6W0VJ73.NP4QFGU57J50@kernel.org>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <DJYHI6W0VJ73.NP4QFGU57J50@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 14, 2026 at 6:26=E2=80=AFPM Alan Stern <stern@rowland.harvard.e=
-du> wrote:
->
-> I'm aware that Rust has separate types for pointers that may be NULL and
-> pointers that cannot be NULL.  Putting that into the language helps
-> prevent a lot of bugs.  How would making the language be aware of
-> whether a device is bound to a driver be similarly useful?
+On 14.07.26 19:53, Danilo Krummrich wrote:
 
-Generally speaking, different types can implement different methods,
-which allows one to restrict what functions can be called in certain
-cases, which prevents bugs.
+> Many APIs rely on this, as in they only guarantee valid behavior when called
+> from a scope where the device is guaranteed to be bound to a driver, or IOW
+> where a driver can prove that it actually operates the device.
+> 
+> Drivers must only acquire device resources when they are actually bound to the
+> corresponding device, and must hand them back before the device is unbound. The
+> devres API, for instance, exists for this fundamental reason.
+> 
+> For instance, we can't have drivers manage IRQs, mess with I/O memory, program
+> IOMMU page tables (e.g. through DMA APIs), etc. for devices they are not bound
+> to and hence are not allowed to operate (anymore).
+> 
+> Those device resources all have a lifetime that is tied to the lifetime of the
+> device being bound to a driver.
 
-Similarly, having different types allow one to put different
-invariants on them, like the non-NULL you mention [*]. In turn, that
-allows one to design APIs that require callers to pass the proof they
-have the right type.
+Understood. Unfortunately this does not map straightforwardly to the USB API.
+Usbcore tells a driver via corresponding opeations when IO has to cease
+(and other operations should be performed) and when it is allowed again.
 
-That is, even if something may be exactly the same underlying data
-structure, the types being different allows to disambiguate this.
+Being probed and unbound is merely one of them. Nor does this really
+tell you anything about the device driver.
 
-Otherwise, you may need to check or assume those facts, without
-compiler support. In some cases, if those facts could lead to UB, then
-it means one's API may need to be `unsafe` instead of a safe
-abstraction, which make them more cumbersome and "dangerous" to use
-for callers.
+	Regards
+		Oliver
 
-So, for instance,
-
-  https://rust.docs.kernel.org/kernel/device/struct.Bound.html
-
-says
-
-  Some APIs, such as `dma::Coherent` or `Devres` rely on the `Device`
-to be bound, which can be proven with the `Bound` device context.
-
-And indeed there are methods that require such a `&Device<Bound>` like:
-
-  https://rust.docs.kernel.org/kernel/devres/struct.Devres.html#method.new
-
-Then the person implementing a safe abstraction can actually rely on
-the fact that it knows those facts to argue certain things -- the
-compiler will check it. For instance, that a call to the C side will
-not introduce UB. But you can use this to argue for other things,
-unrelated to UB, like making correctness arguments.
-
-I hope that clarifies a bit and serves as context for the rest of the
-discussion.
-
-[*] By the way, Rust's references guarantee way more than just not
-being NULL! Not being NULL is just the "easy case" which ones can
-dynamically check in other languages anyway.
-
-Cheers,
-Miguel
