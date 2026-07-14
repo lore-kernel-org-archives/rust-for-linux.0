@@ -1,249 +1,168 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D494F445ACE
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 13:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EAC46AEE0;
+	Tue, 14 Jul 2026 13:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784034093; cv=none; b=Hj2uIZU3RUQnbvRl3x21Y2QzDo9EUO4wDkfppR3mAkfdR7xSeMbjDpQHkxHyo6kjlgzpPU1mBqhcRZddoMrMbC4uX6boXGKUMUqqAlXrXluR4wLPwz8bAZx/AvZ9hH6P/+JZ31sKX+GxR30QpodBvLfruiP/BW7d/rA+DHGi7e8=
+	t=1784034323; cv=none; b=TcQWv+r06Gj829RIuuY0miOMALuKU+VlfAL2eV0ZVgbtk8GGHlJJax5wmxanb3WIdDz56YeWzF0WsYINYU4t0C+649sU4nllPwJrabHxnDRXMRyZ0ggrJr0/SVEaUBygBoI3s9KusrbqTQUSMEt5N+venZCkVkzt5FgOJeuNOQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784034093; c=relaxed/simple;
-	bh=WyD1J67XLcG4IvgaToe6usp9r1XMFajI8TfGZjbTKNU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sGm1mYhUTB0Z92qxe3mGGRD2ZtIOwYAOAaLfFBh3gWmOrItBaMUoNAeHD6zSfTfbNYoLuB9olvM6ibBg8nXufb6iuIly7InKS+XYNqwuNcEuma9KhrxkrxS8GaTn96S2SNtWNwEiGwffJwyEn/Gsuf+EhN5qkigY33LYW0BrfFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JHxUd+ao; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784034323; c=relaxed/simple;
+	bh=I7wEKHsf2R2pDc9KJje/OSCZvG41Dp/KsYtJEHVdnMs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=k3dgRiF8YQ260yJYgGTS5FWw2Kz4XN/elqJB5jjcfqZU1PEY7yfgor4Qt7ruu1bTxeQdO9EeBDbLvDmm/s4AgBFdvY55t8CYSk2kt6OtF0qNaB7nncAtNMKtDAG16Cu5a4S29zEY6IPCrLAZKjH+aJRY21tJonNZzv0jTVr2y2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COCqk8yy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JHxUd+ao"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493b27c7451so11297885e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 06:01:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784034090; x=1784638890; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IfAtkXqwgooxM2+QCHwHCGB2euY51XhTX8AA+P3KJww=;
-        b=JHxUd+ao9KEp9ZqYs/8J+LRgwdZzsYv5FbLPUtGgSP8Ub6mx45fBQ/intdrbn67PZp
-         FSaZIEf683hdEa3FWTND8RAtA9RiAgdlXyjzZFletgB9Y2Fg6H77VSWw71LTWfWO7v03
-         cZW+RlKJUOiG2KE5mYOr3QCIwiHdgmFtRCs/S6O/WMuha+lJgmn5dw7zcorjs7X44DDr
-         aHRjp8R34lhShKm2VLKIaXEIkieawf4rDguY0EHWb0IpRTmI4W6TIPVe8o9sFifVSWVA
-         DjXzdZSSQKCTtoXAN0xItonKe65jzSeUzKDWSRsN3swTkwEo8Oj/7VSGa2f4VOdMFEZf
-         n9rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784034090; x=1784638890;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IfAtkXqwgooxM2+QCHwHCGB2euY51XhTX8AA+P3KJww=;
-        b=bKzqUPkHX1hK+/Mz2SHTj2Y44bVMAc+lG1xOiRxfogx1cF86eqXCue0a7Rrkw/Qydh
-         YJlxLTmEd7JhX7fNBJR3q94zbcgHvriTQGG274LZBYQQXAe47ZKvMFZ9dAUhLSLV8dfu
-         W0f4Co+pHLjB/6wbM8Zq/mEPrrH3WxH8GLi7uOzw0Ir27ufYF+IqJV8WZ4TOV3ICWIOm
-         p//W0IaZ6wE8H1MSteA7vusGLUPNd+gT2JKrTdJzn8hcTGSp90aHUvtHQsDXKOGZyudu
-         sTumBraIp0UsPIwaESsHpY1BiEvi4Q1WXrxoTbytGJ7h6wAFlMym9eXnNzIQKQW/exiC
-         0dAQ==
-X-Gm-Message-State: AOJu0YyeGBmr4nd/q1eoPfQPXmxq6RszuQiAEcOaSYz4XcMwZZXb+c02
-	UVe5FJDQseu1idZw30HHwTbQYyC/VQ669lYrCXWS+IJ1DyIpdHJQ29x+
-X-Gm-Gg: AfdE7cnP0hJK3vpmHsdHx6ESDRSMeBUv1TTCwiywS0hpdmewKT/z1BzLZzK+dsAXTq1
-	ScFGl3fN/h5kTks+iV9IJJSd9RJuizHtg1eVAvZTxnfuzdgfBYggEyuelGcZEk4tlr3jBOQx3vP
-	NKwbvqC5j7SjkESlgPT50PGPzTFmLawooxg2JCFPh5UoMANVMOgncmbVLZl0nKcqLYgwuDPum0C
-	67a5uFAQZkX65BjArI6bNw3CkZdH8wt5XrX9RWLO3CnW7mINJtNMDyZe0dEORR3pSfxsq9+lGHk
-	9AUx3AUmcGJciXl585nH6MoxKMT57yN82K4VI941ejgd9FWVAySMkpRKnykoRQso92ZWpqsMS3C
-	ErrddTJIaoth1azTzCkPwzOePgvX0h73vExkFr7Ealns4UdPhdwUaamPjTX6qNbyXCCkGt/EENi
-	TuJ/A4AGWeVceVzxbyLJkHP6fLms58xXHUAw==
-X-Received: by 2002:a7b:cc8a:0:b0:492:2fc8:21f2 with SMTP id 5b1f17b1804b1-493f2a969a8mr154494525e9.8.1784034089745;
-        Tue, 14 Jul 2026 06:01:29 -0700 (PDT)
-Received: from localhost (a89-182-201-216.net-htp.de. [89.182.201.216])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47f462e0cb2sm8005729f8f.0.2026.07.14.06.01.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jul 2026 06:01:29 -0700 (PDT)
-From: Sergei Litvin <litvindev@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	Sergei Litvin <litvindev@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	nsc@kernel.org,
-	nathan@kernel.org
-Subject: [PATCH v4] scripts/tags.sh: Add support for rust source files
-Date: Tue, 14 Jul 2026 14:52:59 +0200
-Message-ID: <20260714125259.78824-1-litvindev@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260714122441.78158-1-litvindev@gmail.com>
-References: <20260714122441.78158-1-litvindev@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="COCqk8yy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EBF1F00A3D;
+	Tue, 14 Jul 2026 13:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784034322;
+	bh=Wbj6QDXg19S0b+wBbjbuJhWZrQ4U/U4cwe80Uim8/Nc=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=COCqk8yyHxuJEN9djlQCTBh1IOHnxAtOtM7s2b6RdmnnTWMojnCSpQIfMqwRwYfHP
+	 B0UOy3ZkXmNxGTNJ3MvwP3FVsxqSpWc/eLDKHRwuuAvjkaKRWWaojT06mkzVkPZgA1
+	 h4mqw18yCbo6A7lmCWrEWECM69YSLHZibj6CIUQRN0s3jhEOJmuUPe66HUxQVkgoKR
+	 RNu+OsP1oeQLsWmdvn0Yx5ak7ZbUDft+r+GbBdHvh1FhBIuNZtqqyCXtoX+8TuqHCy
+	 x/XqK+fknZYwEiGKKJ5C5Qa+XxR7u6xQu0aqbNslIWJ7JqpQs+XyJxOInB9/xJdl5s
+	 e7F3bSOmsq71Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 14 Jul 2026 15:05:16 +0200
+Message-Id: <DJYBDUMUQ43T.3Q4ZG0FL76QH3@kernel.org>
+Cc: "Colin Braun" <colinbrauncl@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Mauro Carvalho Chehab"
+ <mchehab@kernel.org>, "Alan Stern" <stern@rowland.harvard.edu>, "Mathias
+ Nyman" <mathias.nyman@intel.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+ <linux-media@vger.kernel.org>, "Colin Braun" <colin.braun.cl@gmail.com>
+To: "Oliver Neukum" <oneukum@suse.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint
+ abstractions
+References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
+ <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
+ <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org> <alVEUR0JrF1ga3S8@pendragon>
+ <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
+ <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
+In-Reply-To: <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
 
-When executing the command `make cscope`, the `cscope.files` file generated
-by it includes only filenames with the extensions *.h, *.c, *.S and not includes
-filenames with *.rs extensions.
+On Tue Jul 14, 2026 at 11:26 AM CEST, Oliver Neukum wrote:
+> You can see that there is no way a configuration and thereby its interfac=
+es
+> can last longer than its device.
 
-To fix this, modify the functions `find_arch_sources()`,
-`find_arch_include_sources()`, `find_include_sources()`, and
-`find_other_sources()` so that they can accept an unlimited number of filename
-patterns as parameters for the search. Add the `setup_name_pattern()` function
-to convert these filename pattern parameters into a list of parameters that can
-be passed to the `find` utility via the new `pattern` variable.
+So, what you're saying is that, in the generic case, there is a guarantee t=
+hat
+if a usb_interface is bound to a usb_driver, then the usb_interface's paren=
+t
+usb_device is also bound to a usb_device_driver.
 
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>
-Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Cc: Benno Lossin <lossin@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Trevor Gross <tmgross@umich.edu>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Tamir Duberstein <tamird@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Onur Özkan <work@onurozkan.dev>
-Cc: nsc@kernel.org
-Cc: nathan@kernel.org
-Signed-off-by: Sergei Litvin <litvindev@gmail.com>
+But the relevant question is whether this always holds. In a previous discu=
+ssion
+[1] Alan explained that it currently doesn't hold.
 
----
+Note that I'm not looking at this from a USB topology perspective, but from=
+ a
+driver model perspective. All I'm saying is that usb::Device<Bound> from th=
+e
+driver model side means "it is guaranteed that the usb_device is bound to a
+usb_device_driver" and therefore can implement functions that rely on this
+invariant.
 
-This is the second part of this patch:
-https://lore.kernel.org/lkml/20260602121521.11650-1-litvindev@gmail.com/
+Analogously, usb::Interface<Bound> means that the usb_interface is bound to=
+ a
+usb_driver. So, if we want to be able to derive usb::Device<Bound> from
+usb::Interface<Bound> it must always be guaranteed that this holds, not jus=
+t in
+the most common case.
 
-which I have split into two parts, as suggested by Nicolas Schier here:
-https://lore.kernel.org/lkml/akVkIrcpNxZrrfii@levanger/
+As for the question whether it should be
 
-Changes since V3:
-https://lore.kernel.org/lkml/20260714122441.78158-1-litvindev@gmail.com/
+	let dev =3D intf.device();
+	dev.bulk_recv();
 
-- Fixed list of "Cc:" tags
+or
 
-Changes since V2:
-https://lore.kernel.org/lkml/20260714083709.69517-1-litvindev@gmail.com/
+	intf.bulk_recv();
 
-as suggested by Miguel Ojeda here:
-https://lore.kernel.org/lkml/CANiq72k0RbkWk=8hiNzHUmFWr=6OA2DBHAUew4OfZb_Umb=6hA@mail.gmail.com/
+the former does not work if we can't uphold the guarantee that
+usb::Device<Bound> follows from usb::Interface<Bound>; at least not without=
+ an
+additional type state wrapper.
 
-- Remove "Cc: stable@vger.kernel.org" tag, because this commit introduces a new
-feature.
+However, I don't see why we don't want to have the helper regardless. A
+usb_driver primarily deals with the usb_interface device, so that makes per=
+fect
+sense from a driver model perspective: The "device" a usb_driver deals with=
+ is
+the usb_interface.
 
-Changes since V1:
-https://lore.kernel.org/lkml/20260705175957.4672-1-litvindev@gmail.com/
+I think our main disconnect comes from the fact that you see this from a US=
+B
+stack topology point of view, whereas I see it from a driver model topology
+point of view.
 
-as suggested by Miguel Ojeda here:
-https://lore.kernel.org/lkml/CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com/
+From the driver core perspective a usb_interface is just another device tha=
+t
+happens to have a usb_device parent. Lifecycle wise any device resources
+requested by a usb_driver are tied to the lifetime of the usb_interface bei=
+ng
+bound to the usb_driver.
 
-- Add "Cc: stable@vger.kernel.org" tag
-- Add missed "Signed-off-by:" tag
----
- scripts/tags.sh | 40 +++++++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 9 deletions(-)
+The semantic relationship of a usb_interface and a usb_device is a USB subs=
+ystem
+implementation detail, but it doesn't change the core lifecycle and ownersh=
+ip
+rules as far as the driver model is concerned.
 
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index c9dc2763a505..41e38df96984 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -46,13 +46,31 @@ elif [ "${ALLSOURCE_ARCHS}" = "all" ]; then
- 	ALLSOURCE_ARCHS=$(find ${tree}arch/ -mindepth 1 -maxdepth 1 -type d -printf '%f ')
- fi
- 
-+setup_name_pattern()
-+{
-+	pattern=()
-+	for ext; do
-+		if [ ${#pattern[@]} -gt 0 ]; then
-+			pattern+=("-o" "-name" "$ext")
-+		else
-+			pattern+=("(" "-name" "$ext")
-+		fi
-+	done
-+	if [ ${#pattern[@]} -gt 0 ]; then
-+		pattern+=(")")
-+	fi
-+}
-+
- # find sources in arch/$1
- find_arch_sources()
- {
- 	for i in $archincludedir; do
- 		local prune="$prune ( -path $i ) -prune -o"
- 	done
--	find ${tree}arch/$1 $ignore $prune -name "$2" -not -type l -print;
-+	local src=${tree}arch/$1
-+	shift
-+	setup_name_pattern "$@"
-+	find $src $ignore $prune "${pattern[@]}" -not -type l -print;
- }
- 
- # find sources in arch/$1/include
-@@ -61,14 +79,17 @@ find_arch_include_sources()
- 	local include=$(find ${tree}arch/$1/ -name include -type d -print);
- 	if [ -n "$include" ]; then
- 		archincludedir="$archincludedir $include"
--		find $include $ignore -name "$2" -not -type l -print;
-+		shift
-+		setup_name_pattern "$@"
-+		find $include $ignore "${pattern[@]}" -not -type l -print;
- 	fi
- }
- 
- # find sources in include/
- find_include_sources()
- {
--	find ${tree}include $ignore -name config -prune -o -name "$1" \
-+	setup_name_pattern "$@"
-+	find ${tree}include $ignore -name config -prune -o "${pattern[@]}" \
- 		-not -type l -print;
- }
- 
-@@ -76,23 +97,24 @@ find_include_sources()
- # we could benefit from a list of dirs to search in here
- find_other_sources()
- {
-+	setup_name_pattern "$@"
- 	find ${tree}* $ignore \
- 	     \( -path ${tree}include -o -path ${tree}arch -o -name '.tmp_*' \) -prune -o \
--	       -name "$1" -not -type l -print;
-+	       "${pattern[@]}" -not -type l -print;
- }
- 
- all_sources()
- {
--	find_arch_include_sources ${SRCARCH} '*.[chS]'
-+	find_arch_include_sources ${SRCARCH} '*.[chS]' '*.rs'
- 	if [ -n "$archinclude" ]; then
--		find_arch_include_sources $archinclude '*.[chS]'
-+		find_arch_include_sources $archinclude '*.[chS]' '*.rs'
- 	fi
--	find_include_sources '*.[chS]'
-+	find_include_sources '*.[chS]' '*.rs'
- 	for arch in $ALLSOURCE_ARCHS
- 	do
--		find_arch_sources $arch '*.[chS]'
-+		find_arch_sources $arch '*.[chS]' '*.rs'
- 	done
--	find_other_sources '*.[chS]'
-+	find_other_sources '*.[chS]' '*.rs'
- }
- 
- all_compiled_sources()
--- 
-2.55.0
+That said, the question of having or not having those helpers is "bikeshedd=
+ing"
+about USB topology vs. driver model perspective and either seems reasonable
+IMHO. However, it has a correctness implication, as giving out
+usb::Device<Bound> from usb::Interface<Bound> would currently be unsound as=
+ by
+[1]; deriving usb::Device<Core> from usb::Interface<Core> is never correct,=
+ as
+it implies being in the scope of a device lock protected bus callback.
 
+> There simply is no data structure equivalent to the binding of a driver a=
+nd an
+> interface,
+
+I don't know what you mean by this.
+
+> hence we cannot just give interfaces a state.
+
+Of course we can, and we have to. As mentioned above, from a driver core
+perspective a usb_interface is just another device, with an own struct devi=
+ce it
+embedds, its own device lock and its own driver structure (struct usb_drive=
+r) it
+can be bound to.
+
+The device types states match exactly this. For instance the 'Core' context
+represents a device that is given out in a bus callback while the device lo=
+ck is
+held, such that we can restrict methods that require this scope to this con=
+text.
+
+The same goes for the 'Bound' device context state. In the case of usb_inte=
+rface
+it means that the usb_interface is bound to the usb_driver.
+
+[1] https://lore.kernel.org/all/0ff2a825-1115-426a-a6f9-df544cd0c5fc@rowlan=
+d.harvard.edu/
