@@ -1,324 +1,243 @@
-Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072C13921E6
-	for <rust-for-linux@vger.kernel.org>; Mon, 13 Jul 2026 23:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783985398; cv=none; b=TDFX6tW3UogZVgZUh5obvzjUlDfrWDYZXClQjSpIBp4fBahrnIXnKzml3ygnTkrKGfQEaP0qW4lbZdsZ21ePKVrAjl00gxVkY0PrkloO5sntsqw6LVsgs4AORU832FpD/7EZm5E+iYd2kaMKq+Gkl2fposw4A13v468+eMugzrM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783985398; c=relaxed/simple;
-	bh=CESb8ZaV6L0XsUXYGHqTDq1phdSxSROEg6fn6oPFpNc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gqINCLbbeFey7e6LnWW3COH5sf6nEIVOx3GVKSvBHedAmkmPYbaiCImvnwTIQLEuHDDMCWSeXQQBLDV/BtZC3nLrbX7vV9eC9T1CINegjMxzduKglMaa8oL8ckrCBEodgSZeiqDCRG+2pTzf1VeyXg0aONM16WdcJzXoD6BiTls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=P+1pD8Ua; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=rPPs9edI; arc=none smtp.client-ip=202.12.124.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D6130C63B;
+	Tue, 14 Jul 2026 03:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783998769; cv=pass; b=XaPbNiDln9Ux+Bw/w1BBJlfi732GS5sVVjaav2k1GfJ7NgPTc5Z2y0c+TJb7t4+zhQEtzIBo/4rxYNyf5VV8JTuHsoqzz5GmNdlP4OI4E2lhC5b7zNzkHvCUGmwyI4YH6i9beN9bcl0ih2gBro3WgT3v0mFlo/X5jQ4dLZWJSYk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783998769; c=relaxed/simple;
+	bh=tODWZx6YEiJOaeAb2n9bZ1mJMw4aV8Tt/7vMY/c/f5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k5Ucbrv+ExIU/Obr/6NyPVEADH0/GD3WqjE84C/kgFWOfigqB8Qn9Wb3RewUonHsr+lnhd6AEFxCAWeL7SJHBSr0R9g5GhO+2DnN8QjFYP9XrZFx9c03n4wNtotQ2i7r3a1WG16LncIcdmxj8rFdSpBQMlWDJzjJSRPJz94tIIw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=URr+GzdK; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="P+1pD8Ua";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="rPPs9edI"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 8962113002B3;
-	Mon, 13 Jul 2026 19:29:54 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 13 Jul 2026 19:29:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1783985394; x=1783988994; bh=GWNVKcvu4LfXRJ/pntofB
-	TdvjjnT+/u+M/PVRQr4xpc=; b=P+1pD8UaBLt6u311ui88blDHCx+eMZl6PXxjc
-	PX5QIBq0+RmNn7BrInJg+aqIlGNqmGcCRSeSqa6Hz+P/hWN3DtVyH0hLZ3QuOhMe
-	rCjrSzv9YJ7RozbfemvfHTvSVLU2lp6z3DOW6ZtY8j/x8gLiAz635GCYpeA4GIKt
-	w+Ykn1S7eVj7pIY/qmWmJ64QDsiO5UErCtgOS3eaoWI3+e6O4bWxTvWp8bwNwOsN
-	XHmhdccaUeLL4TKnwGnobOZg19tXZLjRaa5CyS4sLYVxN2OyM41k0+VOvB9C6lsu
-	DTM6GkN1hK9kB1RlWPbc/iusdpS9YXaJ4DjvgpULUkkJdKyQQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783985394; x=1783988994; bh=GWNVKcvu4LfXRJ/pntofBTdvjjnT+/u+M/P
-	VRQr4xpc=; b=rPPs9edIX6pH5139uuQv0ygnJNsW5InJVYRH/BhgflGAr1zp0U+
-	dZfviJcitL5b8RtZB+N4EXsAMNJPSPki70tT7F7y1GkROJ5tUIEHbHD02o5zyzCe
-	mmHvRlFT+pvGD6WNRgRJrXrgd9W1l+v8d4QbZgPjyd6QigfN7E+P2pFYsu87S4H4
-	5YDENy5937AiXczvRQQ3REIYFZbqe6SPLrcZMigL0K09k6pYPCGDGPGxa70SlHY8
-	7OTNxhcOlyELy1pCwabeq1oRAtOX/WcLOS1Qf5UEdY5ZFuf0bAO7DGyN03dUlVNZ
-	6ACVAxEfveOeHog1x0Yr0IxelR8xNrAu9gw==
-X-ME-Sender: <xms:8XRVatblezc0X9W3FssDZnrJjefcwRWBb87UVT20JI_icnT7jf-CPw>
-    <xme:8XRVak2TMZmlfgeZQwHN3eJTuckaXbiaOodJc8hAlICw_zCHSEb96hCm8ckcefX3n
-    oEBUkBe4CG63anwLDW1mhSWDHGZa8Gdd50Ns90uqIuFL3-hCZpFNA>
-X-ME-Received: <xmr:8XRVavtVUrZbb3iLET9o5ZQqdXxYZd96JHTRXRTH8sJVe6cLSzBve0B_tryHm5gQX4_NSpWFdFVFEPBd2HU>
-X-ME-Proxy-Cause: dmFkZTGqrO4sb7QBA/Zl+Y7PDuKPN2u050ZMxeGETdPSSYDfkyhfDxCWKUZYxNuEBP4Xo2
-    +MpFoiiB0tXcn0A+KcQUk24k7ljfkqR+YZHYAfe3nJco9K/xSN+eERzlDzQ88DBMiguRHq
-    jolzYAuvqkwxIWtv0QDn5rnaaFG+pOQD4zOOAedX8kVx3/+j3jZCP0jX2C2mIzO4Qpv24T
-    l/lkZZwKS33v4UowWUWlcr/nBRMIjosVXz9bAfklnF9oAxaAszq4+1ljbUZL5bzcqq7iYK
-    sxQRSt6jAeQ9qT/0qq079WscXvpx/rTw0aEKv/sOYBbxxRDZCBrPItyVMf4kKUSrOs6pg1
-    r+/A4Kjo6Z9/EMY0CxJsPtNstI3RlvauK2PsACzMTKsvUbPDkvsNG0z+uFl4VdC4c/OUmX
-    0S3w1SNj4Ogrywm5g2EjYqAhPQQ905++i1kdEG8qm4JpYjEcZ07aOC1sYfU32pEhk2Ry3g
-    KLD5mmgBgzs/qaSGXfAbqU0ruU9q8Z0VslFApgxY6e5Ipny78VRzMSJV2aE3H7fxnY1fJg
-    OcfGVD0nwmdveYP4FlFb5vfejlPGWelzgSq0GBMPtJ8J0IaQvPP/XzJuEZf5CaCe179I++
-    DX4NcPEygrn83C00kjHjg1VJYg8BGMM8IS+BNyDWrHPTzhSmF4iQMVb/GebQ
-X-ME-Proxy: <xmx:8XRVaoDtQ94oa2XAQmp-l-xJaiLlOf3JuwRr-mORi3anSFyxWubkaw>
-    <xmx:8XRVaiYq-LbGREvfatqlTo0udOANDSfgJFPfPghHqpY7R611AkCZCg>
-    <xmx:8XRVaq91Q2Brd0Jt65mRu8V1bc8CAIH3BLBXmKO_fzn8r72RtWfwzQ>
-    <xmx:8XRVamjdGez6OM4mL7F1EuJHFweld3th2cFd3oKHHEbiYxdcw-AMcQ>
-    <xmx:8XRVauvRnvNyUrmHPGnFXUApCkdRZIPx0fAqSc8Jxume_sIH7eNYUuzn>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 13 Jul 2026 19:29:49 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: gregkh@linuxfoundation.org,
-	a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v4] rust: bug: Add bug macro
-Date: Tue, 14 Jul 2026 08:29:42 +0900
-Message-ID: <20260713232942.3331810-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="URr+GzdK"
+ARC-Seal: i=1; a=rsa-sha256; t=1783998743; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=OIS7QC1b7joiARMBkNgiyNP5pZZNcp3O3eK81g1Gtp3x3tPN3W8XZjedVJ4hNNE2AbYgq/wFDz+t1n1AlKcSHPjdnSO7rVFwNJdikbQrQmm69R6+M2rXWnMShQbBj8/C0d3nX0R4mHEaaVGFHQppaBgW9bd1/jCOUc9nISzE3tI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1783998743; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Wi5h6oeP9HWr70m6aoIQ5B1xgYt2IfshPyZ/wqBUZkY=; 
+	b=dH97cxHAv4oXS/3eC7/nC7nAlaa/9E5I0oitd9HfUWOVEGB1kbt4NabnN1h2xv/PrzmUB1ld3Q58aAdytInaLO72XSaqtQBVI5uGo5LIqZL6mSQC2Mq7yl2ODO7gJ2zKx3y3RukKqd9bXXxmvjKhrFnxftU2DQ7Ib/SlncXsdig=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783998743;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=Wi5h6oeP9HWr70m6aoIQ5B1xgYt2IfshPyZ/wqBUZkY=;
+	b=URr+GzdK5JjimSDBMt8bgBJz7GGANKf0fpNJ+AJYM2zHPhrvrtwx0G/uYdwntdSN
+	54LbSYU7fNn9W/y4Rkkc1mubdFZxavwQm8HFEvXQLoUYLos39DQy73Yqc3pluGuuYXe
+	ueUHHQILuRPGfzvkN6WRZdNTsseO5x30Y+xNOj34=
+Received: by mx.zohomail.com with SMTPS id 1783998742550199.74308223190712;
+	Mon, 13 Jul 2026 20:12:22 -0700 (PDT)
+Date: Mon, 13 Jul 2026 20:12:21 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, boris.brezillon@collabora.com,
+	samitolvanen@google.com, acourbot@nvidia.com, alvin.sun@linux.dev,
+	laura.nao@collabora.com, work@onurozkan.dev,
+	beata.michalska@arm.com, steven.price@arm.com, lyude@redhat.com
+Subject: Re: [PATCH v6 4/7] drm/tyr: add GPU virtual memory (VM) support
+Message-ID: <alWpFZfj1oj6IZMn@um790>
+References: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com>
+ <20260709-fw-boot-b4-v6-4-ca391e1a4108@collabora.com>
+ <alD-bUuMS2913WJO@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alD-bUuMS2913WJO@google.com>
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Fri, Jul 10, 2026 at 02:15:09PM +0000, Alice Ryhl wrote:
+> On Thu, Jul 09, 2026 at 02:36:44PM -0700, Deborah Brouwer wrote:
+> > From: Boris Brezillon <boris.brezillon@collabora.com>
+> > 
+> > Add GPU virtual address space management using the DRM GPUVM framework.
+> > Each virtual memory (VM) space is backed by ARM64 LPAE Stage 1 page tables
+> > and can be mapped into hardware address space (AS) slots for GPU execution.
+> > 
+> > The implementation provides memory isolation and virtual address
+> > allocation. VMs support mapping GEM buffer objects with configurable
+> > protection flags (readonly, noexec, uncached) and handle both 4KB and 2MB
+> > page sizes. A new_dummy_object() helper is provided to create a dummy GEM
+> > object for use as a GPUVM root.
+> > 
+> > The vm module integrates with the MMU for address space activation and
+> > provides map/unmap/remap operations with page table synchronization.
+> > 
+> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> > Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> 
+> > +impl core::fmt::Display for VmMapFlags {
+> 
+> Use kernel::fmt instead of core::fmt.
+> 
+> > +impl TryFrom<u32> for VmMapFlags {
+> > +    type Error = Error;
+> > +
+> > +    fn try_from(value: u32) -> core::result::Result<Self, Self::Error> {
+> 
+> Simplifies to Result<Self, Self::Error> without full path.
+> 
+> > +        let valid = (kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_READONLY
+> > +            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC
+> > +            | kernel::uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED)
+> > +            as u32;
+> 
+> Simplifies to
+> 
+> 	let valid = Self::Readonly as u32 | Self::Noexec as u32 | Self::Uncached as u32;
+> 
+> > +impl Drop for PtUpdateContext<'_, '_> {
+> > +    fn drop(&mut self) {
+> > +        if let Err(e) = self.mmu.end_vm_update(self.as_data) {
+> > +            pr_err!("Failed to end VM update {:?}\n", e);
+> > +        }
+> > +
+> > +        if let Err(e) = self.mmu.flush_vm(self.as_data) {
+> > +            pr_err!("Failed to flush VM {:?}\n", e);
+> > +        }
+> 
+> I assume it's not possible for this to run during a VM eviction, right?
 
-Add bug macro(), the Rust equivalent of the C's BUG(), which uses
-the BUG/WARN feature (lib/bug.c) via assembly for
-x86_64/arm64/riscv/s390 like warn_on() macro.
+In this series I don't think it's possible.
+VM eviction only happens on firmware drop which happens on device unbind.
+So, since firmware is held in RegistrationData, my understanding is that
+it won't be dropped while a device-bound VM operation is in progress.
 
-bindings::BUG() is already in use today, indirectly, from the kernel
-crate itself and from drivers such as binder and nova-core, via
-panic!()/.exepct()/.unwrap() on invariants that "can't happen". All of
-those funnel through panic() in kernel/lib.rs (#[panic_handler]),
-which itself calls BUG().
+The slot manager does have a function to evict an idle vm to allocate an address
+space for a new vm during a mapping/unmapping, but for this fw boot series there
+is only one vm and it’s never marked as idle.
 
-The motivation for this patch is narrow: replace that bindings::BUG()
-call in lib.rs's panic() with bug!(), for a somewhat better trace. It
-isn't adding a new decision to crash the system -- that decision is
-already made at each of the existing panic!()/.expect() call sites.
-
-The bug() macro is currently for internal use only, so it is marked
-`#[doc(hidden)]`.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-v4
-- Fix objtool warning with CONFIG_RUST_DEBUG_ASSERTIONS enabled
-v3: https://lore.kernel.org/rust-for-linux/20260712102802.3013600-1-tomo@flapping.org/
-- Make some macro branches wrapped in {{ ... }}
-- Fix typos
-- Fix UML compile failure
-v2: https://lore.kernel.org/rust-for-linux/20260709000103.2912159-1-tomo@aliasing.net/
-- Replace bindings::BUG in lib.rs with bug!() to make the motivation clear
-- Add #[doc(hidden)] to make clear that bug!() is for internal use only
-- Add the bug!() macro, rather than bug_on!(), as the straightforward
-  choice for replacing bindings::BUG.
-v1: https://lore.kernel.org/rust-for-linux/20260707143026.2774023-1-tomo@aliasing.net/
----
- rust/kernel/bug.rs | 89 ++++++++++++++++++++++++++++++++++------------
- rust/kernel/lib.rs |  3 +-
- 2 files changed, 68 insertions(+), 24 deletions(-)
-
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index ed943960f851..7f4a83554c26 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -11,9 +11,19 @@
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
--        const _FILE: &[u8] = $file.as_bytes();
-+    ($cond:expr, 0, $asm_tail:expr) => {
-+        $crate::warn_flags!(@inner $cond, 0, $asm_tail, options(noreturn))
-+    };
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        $crate::warn_flags!(@inner $cond, $flags, $asm_tail,)
-+    };
-+    (@inner $cond:expr, $flags:expr, $asm_tail:expr, $($opts:tt)*) => {{
-+        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
-+        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
-+        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
-+        const _COND_STR: &str = file!();
-+
-+        const _FILE: &[u8] = _COND_STR.as_bytes();
-         // Plus one for null-terminator.
-         static FILE: [u8; _FILE.len() + 1] = {
-             let mut bytes = [0; _FILE.len() + 1];
-@@ -24,6 +34,7 @@ macro_rules! warn_flags {
-             }
-             bytes
-         };
-+        const FLAGS: u32 = $flags;
- 
-         // SAFETY:
-         // - `file`, `line`, `flags`, and `size` are all compile-time constants or
-@@ -35,14 +46,15 @@ macro_rules! warn_flags {
-                 concat!(
-                     "/* {size} */",
-                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
--                    include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+                    $asm_tail);
-                 file = sym FILE,
-                 line = const line!(),
-                 flags = const FLAGS,
-                 size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
--            );
-+                $($opts)*
-+            )
-         }
--    }
-+    }};
- }
- 
- #[macro_export]
-@@ -50,8 +62,14 @@ macro_rules! warn_flags {
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
--        const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
-+    ($cond:expr, 0, $asm_tail:expr) => {
-+        $crate::warn_flags!(@inner $cond, 0, $asm_tail, options(noreturn))
-+    };
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-+        $crate::warn_flags!(@inner $cond, $flags, $asm_tail,)
-+    };
-+    (@inner $cond:expr, $flags:expr, $asm_tail:expr, $($opts:tt)*) => {{
-+        const FLAGS: u32 = $flags;
- 
-         // SAFETY:
-         // - `flags` and `size` are all compile-time constants, preventing
-@@ -63,24 +81,29 @@ macro_rules! warn_flags {
-                 concat!(
-                     "/* {size} */",
-                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
--                    include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-+                    $asm_tail);
-                 flags = const FLAGS,
-                 size = const ::core::mem::size_of::<$crate::bindings::bug_entry>(),
--            );
-+                $($opts)*
-+            )
-         }
--    }
-+    }};
- }
- 
- #[macro_export]
- #[doc(hidden)]
- #[cfg(all(CONFIG_BUG, CONFIG_UML))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
-+    ($cond:expr, 0, $asm_tail:expr) => {
-+        // SAFETY: It is always safe to call `BUG()`.
-+        unsafe { $crate::bindings::BUG() }
-+    };
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-         // SAFETY: It is always safe to call `warn_slowpath_fmt()`
-         // with a valid null-terminated string.
-         unsafe {
-             $crate::bindings::warn_slowpath_fmt(
--                $crate::c_str!(::core::file!()).as_char_ptr(),
-+                $crate::str::CStrExt::as_char_ptr($crate::c_str!(::core::file!())),
-                 line!() as $crate::ffi::c_int,
-                 $flags as $crate::ffi::c_uint,
-                 ::core::ptr::null(),
-@@ -93,7 +116,11 @@ macro_rules! warn_flags {
- #[doc(hidden)]
- #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {
-+    ($cond:expr, 0, $asm_tail:expr) => {
-+        // SAFETY: It is always safe to call `BUG()`.
-+        unsafe { $crate::bindings::BUG() }
-+    };
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {
-         // SAFETY: It is always safe to call `WARN_ON()`.
-         unsafe { $crate::bindings::WARN_ON(true) }
-     };
-@@ -103,7 +130,10 @@ macro_rules! warn_flags {
- #[doc(hidden)]
- #[cfg(not(CONFIG_BUG))]
- macro_rules! warn_flags {
--    ($file:expr, $flags:expr) => {};
-+    ($cond:expr, 0, $asm_tail:expr) => {
-+        loop {}
-+    };
-+    ($cond:expr, $flags:expr, $asm_tail:expr) => {};
- }
- 
- #[doc(hidden)]
-@@ -117,16 +147,31 @@ macro_rules! warn_on {
-     ($cond:expr) => {{
-         let cond = $cond;
- 
--        #[cfg(CONFIG_DEBUG_BUGVERBOSE_DETAILED)]
--        const _COND_STR: &str = concat!("[", stringify!($cond), "] ", file!());
--        #[cfg(not(CONFIG_DEBUG_BUGVERBOSE_DETAILED))]
--        const _COND_STR: &str = file!();
--
-         if cond {
--            const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
-+            #[cfg(any(not(CONFIG_BUG), CONFIG_UML))]
-+            const WARN_ON_FLAGS: u32 = $crate::bindings::TAINT_WARN;
-+            #[cfg(all(CONFIG_BUG, not(CONFIG_UML)))]
-+            const WARN_ON_FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING
-+                | $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
- 
--            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
-+            $crate::warn_flags!(
-+                $cond,
-+                WARN_ON_FLAGS,
-+                include!(concat!(
-+                    env!("OBJTREE"),
-+                    "/rust/kernel/generated_arch_reachable_asm.rs"
-+                ))
-+            );
-         }
-         cond
-     }};
- }
-+
-+/// Reports an unrecoverable kernel bug.
-+#[macro_export]
-+#[doc(hidden)]
-+macro_rules! bug {
-+    () => {{
-+        $crate::warn_flags!(true, 0, "")
-+    }};
-+}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 9512af7156df..41bfe5a20287 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -217,8 +217,7 @@ pub const fn as_ptr(&self) -> *mut bindings::module {
- #[panic_handler]
- fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
-     pr_emerg!("{}\n", info);
--    // SAFETY: FFI call.
--    unsafe { bindings::BUG() };
-+    crate::bug!();
- }
- 
- /// Produces a pointer to an object from a pointer to one of its fields.
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.43.0
-
+> 
+> > +        let gpuvm_unique = kernel::drm::gpuvm::GpuVm::new::<Error, _>(
+> > +            c_str!("Tyr::GpuVm"),
+> 
+> This can just be c"Tyr::GpuVm". The macro is only needed in macro
+> contexts where this rewrite is not possible e.g. because the macro's
+> caller provides a non-c str literal.
+> 
+> > +        let mut gpuvm_unique = self.gpuvm_unique.lock();
+> > +
+> > +        self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut resources)?;
+> > +
+> > +        // We flush the defer cleanup list now. Things will be different in
+> > +        // the asynchronous VM_BIND path, where we want the cleanup to
+> > +        // happen outside the DMA signalling path.
+> > +        self.gpuvm.deferred_cleanup();
+> 
+> You should probably release the gpuvm_unique mutex before invoking
+> deferred_cleanup().
+> 
+> (Multiple occurances in this patch.)
+> 
+> > +            if gem_offset > 0 {
+> > +                // Skip the entire SGT entry if the gem_offset exceeds its length
+> > +                let skip = sgt_entry_length.min(gem_offset);
+> 
+> Nit: this may just be my idiosyncrasy, but I think this is more readable as:
+> 
+> 	usize::min(sgt_entry_length, gem_offset)
+> 
+> (Multiple occurances in this file.)
+> 
+> > +            let segment_mapped = match pt_map(context.pt, iova, paddr, len, prot) {
+> > +                Ok(segment_mapped) => segment_mapped,
+> > +                Err(e) => {
+> > +                    // clean up any successful mappings from previous SGT entries.
+> > +                    let total_mapped = iova - start_iova;
+> > +                    if total_mapped > 0 {
+> > +                        pt_unmap(context.pt, start_iova..(start_iova + total_mapped)).ok();
+> 
+> Nit: the idiomatic way to ignore errors is to write:
+> 
+> 	let _ = pt_unmap(context.pt, start_iova..(start_iova + total_mapped));
+> 
+> instead of converting the Result into an Option with .ok() and abusing
+> the fact that Option is not #[must_use].
+> 
+> > +/// This function selects the largest supported block size (currently 4KB or 2MB)
+> > +/// that can be used for a mapping at the given address and size, respecting alignment constraints.
+> > +///
+> > +/// We can map multiple pages at once but we can't exceed the size of the
+> > +// table entry itself. So, if mapping 4KB pages, figure out how many pages
+> > +// can be mapped before we hit the 2MB boundary. Or, if mapping 2MB pages,
+> > +// figure out how many pages can be mapped before hitting the 1GB boundary
+> > +// Returns the page size (4KB or 2MB) and the number of pages that can be mapped at that size.
+> > +fn get_pgsize(addr: u64, size: u64) -> (u64, u64) {
+> 
+> Some of these comments are missing a / character.
+> 
+> > +        // SAFETY: Exclusive access to the page table is ensured because
+> > +        // the pt reference comes from PtUpdateContext, which is created
+> > +        // during a VM update operation, ensuring the driver does not concurrently
+> > +        // modify the page table.
+> > +        let (mapped, result) = unsafe {
+> > +            pt.map_pages(
+> > +                curr_iova as usize,
+> > +                (curr_paddr as usize).try_into().unwrap(),
+> > +                pgsize as usize,
+> > +                pgcount as usize,
+> > +                prot,
+> > +                GFP_KERNEL,
+> > +            )
+> > +        };
+> 
+> It would be ideal if this SAFETY comment explains why this safety
+> requirement is satisfied:
+> 
+> 	This page table must not contain any mapping that overlaps with
+> 	the mapping created by this call.
+> 
+> (It's because GPUVM tells you to unmap pages before it tells you to map
+> them.)
+> 
+> > +/// Unmaps a virtual address range from the page table.
+> > +///
+> > +/// This function removes all page table entries in the specified range,
+> > +/// automatically handling different page sizes that may be present.
+> > +fn pt_unmap(pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>) -> Result {
+> > +    let mut iova = range.start;
+> > +    let mut bytes_left_to_unmap = range.end - range.start;
+> > +
+> > +    while bytes_left_to_unmap > 0 {
+> > +        let (pgsize, pgcount) = get_pgsize(iova, bytes_left_to_unmap);
+> > +
+> > +        // SAFETY: Exclusive access to the page table is ensured because
+> > +        // the pt reference comes from PtUpdateContext, which was
+> > +        // created while holding &mut Vm, preventing any other access to the
+> > +        // page table for the duration of this operation.
+> > +        let unmapped = unsafe { pt.unmap_pages(iova as usize, pgsize as usize, pgcount as usize) };
+> 
+> It would be ideal if this SAFETY comment explains why this safety
+> requirement is satisfied:
+> 
+> 	This page table must contain one or more consecutive mappings
+> 	starting at `iova` whose total size is `pgcount * pgsize`.
+> 
+> I.e. why can we be sure that this call isn't trying to unmap a 4KB
+> sub-page in something that exists as a 2MB mapping in the page table?
+> 
+> (It's because GPUVM tells you to unmap exactly the range you were
+> previously told to map.)
+> 
+> Alice
