@@ -1,212 +1,119 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C73A3F44CE
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 08:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E2143B48A
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 08:59:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784018249; cv=none; b=pf/iKcO8FYjYvcJAGgVI1mTw5MU0rFo13exuveDkmvrQMIB4702fF84NdmXwtVmvOlv1+JyrfwT2BbzaYvzdINxulyL+zb/yGPMeQkD9JWUvXethTcwyGN7XXR9exx6uqYYRP7Qgb4+nYOkbqWxpZ4UefFjCI5lVaD8Dmnt3QKc=
+	t=1784019579; cv=none; b=K8Q1qICG2Cfj3pGgjmK22qhYBGB5ZsBLRjeS9YCgNiahf3hFXjtWke0yecZpWTJqu5deXCSiRWA3Rg9c28shxNRBc00VHs9s4El8OihpPvXWrWJjD4uvLzqLsbjH2e2T0hrPzkzuQDkjOhMeghmlVcCjFgrlh4h8jgIRgG6cYh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784018249; c=relaxed/simple;
-	bh=jyNi2uQN+yA/KxZs/JeOh8FJ+fAidxRw+r2ty9saz0U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXk+FbNhCAzXVMgbxWQ77ItWq1VDUrbgkSK+NEJDlRKqNsmvMF0MXKi+qblNSgZskx7w4WCuw5biuDYZgdfguIDlutcerWTD2PLWZgMlYx224Y8Ryge3u9EX9NXwTaKO2d/hnfuwzSHnA1geX5vWQFbY9bcjKrmf2uFJIxRLVzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoHG1Zjl; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1784019579; c=relaxed/simple;
+	bh=eDQ47pldprt1E8F8vtbRapvR5r2on7TmJn0NmPvSu0M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hb8Ju//exp3YK6vmrSPG/TdDhDnWmUXXcVpKbypad0QUKbGKDgR/wZHs9W602ft1lbkA4izZ15iMpLzpWNXtCve9jPHPibwV1sCzdFKEd+0CYnarn/HXEvb0sgNhCRDQaFvFfxDjKzKpoZI3hRpWmL6OoZzTzyOOspnWevd6BGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3kvRlXF; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoHG1Zjl"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4758bd3731bso535191f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 01:37:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3kvRlXF"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8454160043aso514504b3a.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 01:59:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784018236; x=1784623036; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C2Wd2Xk4XZ8QtjBdQAzkHYSxRYvpP0OLkJpmP7Ac0SQ=;
-        b=RoHG1ZjlN9LgqdgchRqf/YaTilkFn0aSTzPr5wN/U5HfBN2utje0GaqlVq54eCOhJv
-         QtrOgbOUE1xWkc6eNiGptCUfaj84r7C6ABNGYomMT63j7pb8AIX68WhY9+U5wSyDFIGb
-         WAEPAYpgpXfmFNtua87OM5m8A3J5hgMkCVb3E/KrDGyZFwF+Ab/QLq1iH9kaW9DvOuxu
-         cJhUwP56x44S78K/9JCE/XH+FMTrX3+Pe1s87HQxc3gnDzHNEZxNmrPQuZ+P3bwCOkaU
-         XRDXhANlAj4kUjSaIcGRS1i+87/kms91l/YpENjhU5faNS4MKtjjfE1l3TQseMVco7BR
-         gi/g==
+        d=gmail.com; s=20251104; t=1784019577; x=1784624377; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NgawkwvLmNqS05KN4743zXsQLMKXXqTfmnTO2uf0Zvk=;
+        b=f3kvRlXF7L9RyHgBaDS1MEGXIVRVi1HoxuPL2VjrKcgPlhk4i2c96LRHsNMBZhe6nb
+         ZInmzDuqmtjHaK1XDyhT53hNGzW7ibNUeXn2lkPvKyd2zQ2Z1ypDHxsRh7a8xE9dbpuU
+         WfjcKhGDBv2VXMECypoGIArs9LgkGt1IP3tqQRRjSUKfwTQCS5p/9MD6SI+ORHDelxBe
+         iAiRxxVNF7h7eDfoVnWXAqSpzO+rMK8rbelIiYd4OahU61vRR7YvvjZ0RgmyGMJJYR6a
+         lDyDXErW3Ux5PM72PhNsXqLaAnBgSwJ1Ap/fWyualHLRznzk9f2dsTkVXWTmdn0uJWAs
+         KybQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784018236; x=1784623036;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C2Wd2Xk4XZ8QtjBdQAzkHYSxRYvpP0OLkJpmP7Ac0SQ=;
-        b=CNzKAkSuVtnAkZXyNC/6wDny21POGoigOrKcnxSbvw8ulBVyAmGt+QIZA7o8od0Eab
-         aMUlkv5PAMOnUz2n6Q63w+CMeng40HsaYt/nMJ7Y3mi7wQUhOtSfvb8uMRperplDwfi7
-         m3m6goYnVCUZ7eds6ow2dU+BAddO7LDuDnkxaB5WBStgiEQBx1b5bIOhbRomqYpsyBWD
-         OQx9lyaZvPNy1S2/d6yOAPkEfOiKiVW+wJkt0OQGk7mJKzvB00xor+mzU2oRbrWYI1je
-         1d6tGV+m9bawPQdWnuT7VWvQ45YiN34iYCJ6kL036WNVbwr/YY5gIFCuyA8lwWvQ9lc2
-         9YVQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+uSyB6ZgALysKawSMmO9gofWBF5HapDq4qj4EftLgqaTPLRZYHe8EXRbdVGX37bk373FPkry42JGleqnoeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOIcAbvHxm/g3DnJGg3+27q5JjSj8b/nfJ86KeJUEO+fUJLTMS
-	+TwSuaUuiH64gZOBUWFoaGaEFy47xs4LPLaQQg86DMMmOQbXhF80MSRb
-X-Gm-Gg: AfdE7ck08KdtaA2GZZHYjKCnPsqFc2bWgg7c3A/+utjOPS6pHkHSb9yMjFB7uMmAt+S
-	wu4NqQiUaSsG6kpbSudiKPf7KwFJlEeUZPkJJZPB/xMM8+gl9J5H5OPeypMaWjOMyP2P3Db2WO4
-	4x6o4spZy49i3sBUQhJrR75tU+d+xoLHqNgjgjf/kFXdUCHMHi0yfNXEh5oMJTkFCxfMKEwpH4q
-	r5MYX5k8k33I/L4P2YN2U0f2jpCx3i6o4NGehPnRIRnNq/aZ62spGCRiT4is8NMTT6/+QRGoUKx
-	f+KjxH6fv72TkABVAkOT+uJgnnymjrnmQWzUs1xGq1sAiT91/Lmd3VgnD8+wehVeo2KDL3myEaE
-	YHijdObTuvMsN9R/JPaBeGxXya2X8rTSYaywBkrhDUCTo9v9Yid6xDTnczU5cmSPca8yl4eqaaF
-	i0bMUz4/fX+Rp+lnU+B/4fIHHPSRs/uZAj9Qy8gw6c/ynw
-X-Received: by 2002:adf:e19a:0:b0:47e:96f2:52ab with SMTP id ffacd0b85a97d-47f2dc85da3mr15640517f8f.7.1784018235606;
-        Tue, 14 Jul 2026 01:37:15 -0700 (PDT)
-Received: from localhost (a89-182-201-216.net-htp.de. [89.182.201.216])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-47f464c7c96sm6238308f8f.33.2026.07.14.01.37.14
+        d=1e100.net; s=20251104; t=1784019577; x=1784624377;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NgawkwvLmNqS05KN4743zXsQLMKXXqTfmnTO2uf0Zvk=;
+        b=pHXzlcxXqWwD9W4v6Is41x4Xn69Ikdt6dQipgVgPxDnlsWqL1kmgo0/QmPUaIb4cbb
+         GWXvuNtGmsaX8Jnv9XOpGLYz+atVywOK9O3fq6o/cJvPp/++JsKtpUBbvmga8EezCeoA
+         XP1Qc1C1I5Gald8WAO8CMXtDS77ldRbqvtCw3bNRTU3mLutH8xW9MlEmUnL3Ej4lu4ES
+         bXOU1NtLm4AGggw6y/Qf/oNqg7/xR5+ynUTSTURHLI94Cpv0pVBqh1K32n3VVzMsbL6m
+         YP+1qg+lM9rdxT7xQN4biA6XaFulbyRxArzfa6fARUvUIL2BNvi06zgnYBcQKzE6K7qy
+         4oOg==
+X-Forwarded-Encrypted: i=1; AHgh+RquS7RMvnLaqDly9O2JS2EVSbWEmEKU03rXiIIp19+tjzsgMwnMYFmt1sZCFM4uDNkJjw2wfkqvuInMGJEZgA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXP1vle/zvY/U/8JOPr/OPVjZP2kACOzmIp26FQwYiVXyIMgAR
+	6fmrH+qETt5ct857KX8Yw4zRxlhvWm3+vDOMJFkp2MW+T7soOYOz0Z9p
+X-Gm-Gg: AfdE7clUDpeuHOXWUaT67n/Ly5kujSJftzSyqp61kT2tzBscsUEgAAif6X/WMz+a02b
+	grJEw8T8R60O288oBQMGYzDi6CH+SpN1G6XTABxt4EYGCTNWjIOdQDwgZxk1MaeMs/ZgN+XVx9Y
+	kgNnGaDRbWivdXATQhdeedPD28VV4a/I9aUZH4SUSt2UDoFcgX+rC5Q0DrvMHu8UXp840hXkCEX
+	JzyiTPW2IckVyqgudzUP6HlMiZbZ81HkJsa9HUoPNXXpdQeHseB9jMpcY6Wkm8bTBG+Jo6ApZIv
+	H0lCDuQFpGIVdFzbA/Anw3abzDX3gfbQ6M79fKFlij+eOcCtNLfjPqUr+6XBSkCAO2ugGJsR0VF
+	bMfCmE6KuepwcNTGEvpPlSc3BKnQmpZ99/rfm5AsG4c9TKkC5Wa0q8rg8clTfkDNWuLMxHhuuiz
+	lbagv/OmxwbglRD0C4z1QWXmDoznLkWEIrPyMOkfJGosslWIpLhBDQ3g==
+X-Received: by 2002:a05:6a00:929d:b0:848:7a8a:48c4 with SMTP id d2e1a72fcca58-8488971e16cmr11527960b3a.40.1784019577373;
+        Tue, 14 Jul 2026 01:59:37 -0700 (PDT)
+Received: from ?IPV6:240e:38b:e68:3a01:ce86:5400:dbd7:7cc6? ([240e:38b:e68:3a01:ce86:5400:dbd7:7cc6])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a4f7da667sm1123598b3a.41.2026.07.14.01.59.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jul 2026 01:37:15 -0700 (PDT)
-From: Sergei Litvin <litvindev@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: ojeda@kernel.org,
-	nathan@kernel.org,
-	nsc@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	Sergei Litvin <litvindev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] scripts/tags.sh: Add support for rust source files
-Date: Tue, 14 Jul 2026 10:37:09 +0200
-Message-ID: <20260714083709.69517-1-litvindev@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com>
-References: <CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com>
+        Tue, 14 Jul 2026 01:59:36 -0700 (PDT)
+Message-ID: <e8013001-1adf-4913-a934-e98bed045b51@gmail.com>
+Date: Tue, 14 Jul 2026 16:59:30 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] docs/zh_CN: update rust documentation translations
+To: Ben Guo <ben.guo@openatom.club>, Alex Shi <alexs@kernel.org>,
+ Yanteng Si <siyanteng@loongson.cn>, Dongliang Mu <dzm91@hust.edu.cn>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: Gary Guo <gary@garyguo.net>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ hust-os-kernel-patches@googlegroups.com
+References: <cover.1784000217.git.ben.guo@openatom.club>
+From: Alex Shi <seakeel@gmail.com>
+Content-Language: en-US
+In-Reply-To: <cover.1784000217.git.ben.guo@openatom.club>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-When executing the command `make cscope`, the `cscope.files` file generated
-by it includes only filenames with the extensions *.h, *.c, *.S and not includes
-filenames with *.rs extensions.
+Applied, thanks!
 
-To fix this, modify the functions `find_arch_sources()`,
-`find_arch_include_sources()`, `find_include_sources()`, and
-`find_other_sources()` so that they can accept an unlimited number of filename
-patterns as parameters for the search. Add the `setup_name_pattern()` function
-to convert these filename pattern parameters into a list of parameters that can
-be passed to the `find` utility via the new `pattern` variable.
-
-Cc: ojeda@kernel.org
-Cc: nsc@kernel.org
-Cc: nathan@kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Sergei Litvin <litvindev@gmail.com>
-
----
-
-This is the second part of this patch:
-https://lore.kernel.org/lkml/20260602121521.11650-1-litvindev@gmail.com/
-
-which I have split into two parts, as suggested by Nicolas Schier here:
-https://lore.kernel.org/lkml/akVkIrcpNxZrrfii@levanger/
-
-Changes since V1:
-https://lore.kernel.org/lkml/20260705175957.4672-1-litvindev@gmail.com/
-
-as suggested by Miguel Ojeda here:
-https://lore.kernel.org/lkml/CANiq72kHbVQfNrum5D2a5sCd3mFQHNtigrQxP1WW=YcggxA=WQ@mail.gmail.com/
-
-- Add "Cc: stable@vger.kernel.org" tag
-- Add missed "Signed-off-by:" tag
----
- scripts/tags.sh | 40 +++++++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 9 deletions(-)
-
-diff --git a/scripts/tags.sh b/scripts/tags.sh
-index c9dc2763a505..41e38df96984 100755
---- a/scripts/tags.sh
-+++ b/scripts/tags.sh
-@@ -46,13 +46,31 @@ elif [ "${ALLSOURCE_ARCHS}" = "all" ]; then
- 	ALLSOURCE_ARCHS=$(find ${tree}arch/ -mindepth 1 -maxdepth 1 -type d -printf '%f ')
- fi
- 
-+setup_name_pattern()
-+{
-+	pattern=()
-+	for ext; do
-+		if [ ${#pattern[@]} -gt 0 ]; then
-+			pattern+=("-o" "-name" "$ext")
-+		else
-+			pattern+=("(" "-name" "$ext")
-+		fi
-+	done
-+	if [ ${#pattern[@]} -gt 0 ]; then
-+		pattern+=(")")
-+	fi
-+}
-+
- # find sources in arch/$1
- find_arch_sources()
- {
- 	for i in $archincludedir; do
- 		local prune="$prune ( -path $i ) -prune -o"
- 	done
--	find ${tree}arch/$1 $ignore $prune -name "$2" -not -type l -print;
-+	local src=${tree}arch/$1
-+	shift
-+	setup_name_pattern "$@"
-+	find $src $ignore $prune "${pattern[@]}" -not -type l -print;
- }
- 
- # find sources in arch/$1/include
-@@ -61,14 +79,17 @@ find_arch_include_sources()
- 	local include=$(find ${tree}arch/$1/ -name include -type d -print);
- 	if [ -n "$include" ]; then
- 		archincludedir="$archincludedir $include"
--		find $include $ignore -name "$2" -not -type l -print;
-+		shift
-+		setup_name_pattern "$@"
-+		find $include $ignore "${pattern[@]}" -not -type l -print;
- 	fi
- }
- 
- # find sources in include/
- find_include_sources()
- {
--	find ${tree}include $ignore -name config -prune -o -name "$1" \
-+	setup_name_pattern "$@"
-+	find ${tree}include $ignore -name config -prune -o "${pattern[@]}" \
- 		-not -type l -print;
- }
- 
-@@ -76,23 +97,24 @@ find_include_sources()
- # we could benefit from a list of dirs to search in here
- find_other_sources()
- {
-+	setup_name_pattern "$@"
- 	find ${tree}* $ignore \
- 	     \( -path ${tree}include -o -path ${tree}arch -o -name '.tmp_*' \) -prune -o \
--	       -name "$1" -not -type l -print;
-+	       "${pattern[@]}" -not -type l -print;
- }
- 
- all_sources()
- {
--	find_arch_include_sources ${SRCARCH} '*.[chS]'
-+	find_arch_include_sources ${SRCARCH} '*.[chS]' '*.rs'
- 	if [ -n "$archinclude" ]; then
--		find_arch_include_sources $archinclude '*.[chS]'
-+		find_arch_include_sources $archinclude '*.[chS]' '*.rs'
- 	fi
--	find_include_sources '*.[chS]'
-+	find_include_sources '*.[chS]' '*.rs'
- 	for arch in $ALLSOURCE_ARCHS
- 	do
--		find_arch_sources $arch '*.[chS]'
-+		find_arch_sources $arch '*.[chS]' '*.rs'
- 	done
--	find_other_sources '*.[chS]'
-+	find_other_sources '*.[chS]' '*.rs'
- }
- 
- all_compiled_sources()
--- 
-2.55.0
+On 2026/7/14 15:00, Ben Guo wrote:
+> Update Chinese translations for the Rust subsystem documentation,
+> syncing with the latest upstream changes.
+> 
+> - quick-start.rst: update distro-specific install instructions, Ubuntu
+>    package versions, openSUSE rust-src package, and remove GDB/Binutils note
+> - general-information.rst: add no_std section, rustdoc links, abstractions
+>    and bindings diagram, Bindings/Abstractions sections, and Kconfig example
+> - arch-support.rst: add s390 support note
+> - testing.rst: add Kconfig guidance for KUnit test suites
+> 
+> Changes in v3:
+> - Add Reviewed-by from Dongliang Mu
+> - Add spaces around "HTML" in general-information.rst
+> 
+> Changes in v2:
+> - Add Reviewed-by from Gary Guo
+> - Translate "sound" as "可靠" in general-information.rst
+> 
+> Ben Guo (4):
+>    docs/zh_CN: Update rust/quick-start.rst translation
+>    docs/zh_CN: Update rust/general-information.rst translation
+>    docs/zh_CN: Update rust/arch-support.rst translation
+>    docs/zh_CN: Update rust/testing.rst translation
+> 
+>   .../translations/zh_CN/rust/arch-support.rst  |  1 +
+>   .../zh_CN/rust/general-information.rst        | 82 ++++++++++++++++++-
+>   .../translations/zh_CN/rust/quick-start.rst   | 48 +++++------
+>   .../translations/zh_CN/rust/testing.rst       |  4 +
+>   4 files changed, 103 insertions(+), 32 deletions(-)
+> 
+> -- 
 
