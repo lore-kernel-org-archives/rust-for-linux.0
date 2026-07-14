@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBB83A381D;
-	Tue, 14 Jul 2026 03:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A7C3A4510;
+	Tue, 14 Jul 2026 03:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783999164; cv=pass; b=eO0ZqfjLjrtiYvy/4FArIyspIYCSRUCUZBCzsPPvebMt9JE1QA1VVBe1cvAvCSP6s8Z2pzxi1+u0bk1RRs/JlUFUoDQK6lPRxkxGRBw+A1tON9dRVdVpxGnGFv1T4A0qwDFbGo0uFE0Asg6CqFGE6Lpvpj+QFDsaAH4hk5k/7kE=
+	t=1783999164; cv=pass; b=DFSc1zBUTe5hjaPfSATlStPPet8/hsFny9y8zcTRWRo6GBl7yaEYkhJUUJDk1oEWEQk5X1Ur8L+4gS8zgGTglxwiX3p0jS05HhFmCP14K7J8ednW+BdJ9YTpm6nNaaAuKmhFZlk81xe5IS3qCTUFURzkheIm8NSIarEh0u1hSbk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1783999164; c=relaxed/simple;
-	bh=/lTl3P86QqfKk1OWhpH8vkka1+Hljs1sOLic8azDb5M=;
+	bh=/sD3Dwni/MdYye4RpZVxgxUSX49sFfnkmHpx+hyNdSY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P4w1jjYzCWXjE2brkX57++SFV0uiEBvCIu+bnDRY60i4hH0bEnVYVioGUZjwhP9H0d984l+RhByhzxpIFLEaLYq/MvO2WHUfl4P8hrltRd5CNcq7e1eTAoIQv/zaYH++tGSArmstd7bRNlw5V/B+27vhxq6ZcG6PAwaIloQFA9A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=O/xYyVQR; arc=pass smtp.client-ip=136.143.188.11
+	 In-Reply-To:To:Cc; b=pDX9LNuEqBckqkANhRazJxMynSf73h09HbZLBquQekqN6Dlxau2CQTUttowz48P6PkME0GOlAWdjDs2bhKYURg6nxeyYTqooRZsS6XGtCYPh3xY3TGLlzHeq81+BUDFA5jqSSb7L+wCeucWC2953eiZnMxIzlOPJ0M9aTJs6lkI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=bsHizDiu; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="O/xYyVQR"
-ARC-Seal: i=1; a=rsa-sha256; t=1783999142; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="bsHizDiu"
+ARC-Seal: i=1; a=rsa-sha256; t=1783999140; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=Vc8bI+TkKx5JBcQ4mTMY0JBaIplMm6VgELxc89uTaB7QbYak+KZG2uxrfFLTd3B5mp4im3bHtHYd2PNvs1VUrDBUph3M69HAn/vtPSIfii3uVq13oH4YD53s7TFYXfpukefH0LLbBVEZfyoaiKhghLJ9ezlAZ+/GGG2yYp0Z/SI=
+	b=MPVuydFc09nt4VsIA5J0hFANZi22dIzC3EaiNJn+afYnhGoFyjmAYEv2uiuu6Vh4Xx51uOg8fmiZa/+AWQ4Xqv6ZHr2MBe0XShIMZY1Hr4tMVUCQ765+Os/tFV0tTa79dDEy9FCpb5X97Yvv1AyXLBj7+Gz1c9IeiEPQ6hu4y2k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1783999142; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=qpo1GpV6sk1WVtPptJhiq2FiJGO1cXEHyZJCt5K62l4=; 
-	b=LAuMmQ9JG/X5SrFsgvR+0uBHrTpWf3h+epHqinDpVwvC1VdAx7KPl9tI2GcJYANQCobpzrzn1TuEugZBo4zFSPME7R6VpB/2A+Iowi50zHR0GwgksWfsZM5lBnTPISP8UXuBNzXotkGDmrIEm+zGskbwlJmUNcg4qt09yLqmOUo=
+	t=1783999140; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=CqZt6uwrnjXjiwcScBt70Pe/agqwavvDJ7ZlS5w0LwU=; 
+	b=LdFGrOP4e8DnZfDDsb0zi5BrjCLB4TYSelFl6ewA6XLUwzseUpmIcaf6zUgBcV7w93S/iG04fyGM2bNSNKVLBR2Y3RY1pi83SKXmjXkaHMC7JuL7pvqBOj4WDrsUVdGnM2Gr1EolEGfEfXsImrk/Awv4OVqnogQ5HenFqTBbICc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783999142;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1783999140;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=qpo1GpV6sk1WVtPptJhiq2FiJGO1cXEHyZJCt5K62l4=;
-	b=O/xYyVQR6oOkBjJ2CkUj0PKjAXLVXGNFc6ktP5gPkWyePo9V55IudLJVCws/91aS
-	w6uY1D30LTzyCzgn84ALRcx06FZfZ8YzTuK5+OMgmMrsJO0hzGYMDzj8Q6J1VG99kjG
-	MHuZ0FN3m1HTnsJbuqrqIntTgyNbheNRDmsRXs9I=
-Received: by mx.zohomail.com with SMTPS id 1783999141548159.4252948460678;
-	Mon, 13 Jul 2026 20:19:01 -0700 (PDT)
+	bh=CqZt6uwrnjXjiwcScBt70Pe/agqwavvDJ7ZlS5w0LwU=;
+	b=bsHizDiubvFKX9rR1ojxpA5UMuEd5PVrxI8xdBdW02uTo489uuv7/mLC5Wv1ZTxN
+	r3EF4eTUjTVMlTXZdzyxsw6YFyM80K7x4kRtUwluPcJJrOK+nrEPLEq8NkbJIp79AMh
+	mi6LWq6mCA97MnDcNOMapdm8CumxBLb02PJaAlZg=
+Received: by mx.zohomail.com with SMTPS id 1783999137808210.2008414009524;
+	Mon, 13 Jul 2026 20:18:57 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Mon, 13 Jul 2026 20:18:49 -0700
-Subject: [PATCH v7 5/7] drm/tyr: add a kernel buffer object
+Date: Mon, 13 Jul 2026 20:18:45 -0700
+Subject: [PATCH v7 1/7] drm/tyr: add resources to RegistrationData
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260713-fw-boot-b4-v7-5-afd8dc1494dd@collabora.com>
+Message-Id: <20260713-fw-boot-b4-v7-1-afd8dc1494dd@collabora.com>
 References: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
 In-Reply-To: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -61,155 +61,178 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  acourbot@nvidia.com, lyude@redhat.com, laura.nao@collabora.com, 
  beata.michalska@arm.com, alvin.sun@linux.dev, steven.price@arm.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4385;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5729;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=/lTl3P86QqfKk1OWhpH8vkka1+Hljs1sOLic8azDb5M=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmhqxY8+a/yckJjf4juvrPL70TOW7Pg++KWZr9n4io83
- 5Wm+ib5d5SyMIhxMciKKbKctTfqEa96b6Q7/38zzBxWJpAhDFycAjCRf4cY/pdpvyrX7Tjf9u2t
- fG6wo6z2UidTSabzE0yXv15vIprv85aRYbl4a2pA4T+LWfnz8j65tIus+hCr9tM18U58Y7Xvj8c
- TOAA=
+ bh=/sD3Dwni/MdYye4RpZVxgxUSX49sFfnkmHpx+hyNdSY=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmhq+ZHXA54ZbuhJb3ndfLD5x2zWc0fPTm2hM/9waW4K
+ J6OFwk2HaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAExkogLD//gcrVMJUhFr9/45
+ VFggWflU2EhdSFqD3frY1tXekhe3VDAydEozTEhhf3z+85SicmchLsYpKl+jxXZyvjKddePSF35
+ GRgA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-Introduce a buffer object type (KernelBo) for internal driver allocations
-that are managed by the kernel rather than userspace.
+Currently Tyr is not storing any resources in its drm::Driver
+RegistrationData.
 
-KernelBo wraps a GEM shmem object and automatically handles GPU virtual
-address space mapping during creation and unmapping on drop. This provides
-a safe and convenient way for the driver to both allocate and clean up
-internal buffers for kernel-managed resources.
+Move Tyr's device-private resources and gpu information from
+drm::Driver::Data to drm::Driver::RegistrationData. This allows Tyr to
+access this data safely within the lifetime of its binding to its parent
+platform device and while registered with userspace.
 
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/gem.rs | 101 +++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 97 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tyr/driver.rs | 42 +++++++++++++++++++++---------------------
+ drivers/gpu/drm/tyr/file.rs   | 11 ++++++-----
+ 2 files changed, 27 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
-index c28be61a01bb..47a05a33388e 100644
---- a/drivers/gpu/drm/tyr/gem.rs
-+++ b/drivers/gpu/drm/tyr/gem.rs
-@@ -4,18 +4,29 @@
- //! This module provides buffer object (BO) management functionality using
- //! DRM's GEM subsystem with shmem backing.
- 
-+use core::ops::Range;
-+
- use kernel::{
-     drm::gem::{
-         self,
-         shmem, //
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index 8348c6cd3929..46ce5c41e310 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -6,6 +6,7 @@
+         OptionalClk, //
      },
-     prelude::*,
--    sync::aref::ARef, //
-+    sync::{
-+        aref::ARef,
-+        Arc, //
-+    }, //
+     device::{
++        Bound,
+         Core,
+         Device,
+         DeviceContext, //
+@@ -27,10 +28,7 @@
+     regulator,
+     regulator::Regulator,
+     sizes::SZ_2M,
+-    sync::{
+-        aref::ARef,
+-        Mutex, //
+-    },
++    sync::Mutex,
+     time, //
  };
  
--use crate::driver::{
--    TyrDrmDevice,
--    TyrDrmDriver, //
-+use crate::{
-+    driver::{
-+        TyrDrmDevice,
-+        TyrDrmDriver, //
-+    },
-+    vm::{
-+        Vm,
-+        VmMapFlags, //
-+    },
- };
+@@ -53,13 +51,17 @@
  
- /// Tyr's DriverObject type for GEM objects.
-@@ -56,3 +67,85 @@ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
- 
-     Ok(bo)
+ #[pin_data(PinnedDrop)]
+ pub(crate) struct TyrPlatformDriverData<'bound> {
+-    _device: ARef<TyrDrmDevice>,
+     _reg: drm::Registration<'bound, TyrDrmDriver>,
  }
-+
-+/// Specifies how to choose a GPU virtual address for a [`KernelBo`].
-+/// An automatic VA allocation strategy will be added in the future.
-+pub(crate) enum KernelBoVaAlloc {
-+    /// Explicit VA address specified by the caller.
-+    #[expect(dead_code)]
-+    Explicit(u64),
-+}
-+
-+/// A kernel-owned buffer object with automatic GPU virtual address mapping.
+ 
++/// Data owned by the DRM [`Registration`].
 +///
-+/// This structure represents a buffer object that is created and managed entirely
-+/// by the kernel driver, as opposed to userspace-created GEM objects. It combines
-+/// a GEM object with automatic GPU virtual address (VA) space mapping and cleanup.
-+///
-+/// When dropped, the buffer is automatically unmapped from the GPU VA space.
-+pub(crate) struct KernelBo<'bound> {
-+    /// The underlying GEM buffer object.
-+    #[expect(dead_code)]
-+    pub(crate) bo: ARef<Bo>,
-+    /// The GPU VM this buffer is mapped into.
-+    vm: Arc<Vm<'bound>>,
-+    /// The GPU VA range occupied by this buffer.
-+    va_range: Range<u64>,
-+}
++/// This data can have references tied to the parent platform device binding scope
++/// and is accessible only while the DRM device is registered with userspace.
+ #[pin_data]
+-pub(crate) struct TyrDrmDeviceData {
+-    pub(crate) pdev: ARef<platform::Device>,
++pub(crate) struct TyrDrmRegistrationData<'bound> {
++    /// Parent platform device.
++    pub(crate) pdev: &'bound platform::Device<Bound>,
+ 
+     #[pin]
+     clks: Mutex<Clocks>,
+@@ -67,9 +69,10 @@ pub(crate) struct TyrDrmDeviceData {
+     #[pin]
+     regulators: Mutex<Regulators>,
+ 
+-    /// Some information on the GPU.
+-    ///
+-    /// This is mainly queried by userspace, i.e.: Mesa.
++    /// GPU MMIO register mapping.
++    pub(crate) iomem: IoMem<'bound>,
 +
-+impl<'bound> KernelBo<'bound> {
-+    /// Creates a new kernel-owned buffer object and maps it into GPU VA space.
-+    ///
-+    /// This function allocates a new shmem-backed GEM object and immediately maps
-+    /// it into the specified GPU virtual memory space. The mapping is automatically
-+    /// cleaned up when the [`KernelBo`] is dropped.
-+    #[expect(dead_code)]
-+    pub(crate) fn new(
-+        ddev: &TyrDrmDevice,
-+        vm: Arc<Vm<'bound>>,
-+        size: u64,
-+        va_alloc: KernelBoVaAlloc,
-+        flags: VmMapFlags,
-+    ) -> Result<Self> {
-+        if size == 0 {
-+            pr_err!("Cannot create KernelBo with size 0\n");
-+            return Err(EINVAL);
-+        }
-+
-+        let KernelBoVaAlloc::Explicit(va) = va_alloc;
-+
-+        let bo = Bo::new(
-+            ddev,
-+            size as usize,
-+            shmem::ObjectConfig {
-+                map_wc: true,
-+                parent_resv_obj: None,
-+            },
-+            BoCreateArgs { flags: 0 },
-+        )?;
-+
-+        vm.map_bo_range(&bo, 0, size, va, flags)?;
-+
-+        Ok(KernelBo {
-+            bo,
-+            vm,
-+            va_range: va..(va + size),
-+        })
-+    }
-+}
-+
-+impl Drop for KernelBo<'_> {
-+    fn drop(&mut self) {
-+        let va = self.va_range.start;
-+        let size = self.va_range.end - self.va_range.start;
-+
-+        if let Err(e) = self.vm.unmap_range(va, size) {
-+            pr_err!(
-+                "Failed to unmap KernelBo range {:#x}..{:#x}: {:?}\n",
-+                self.va_range.start,
-+                self.va_range.end,
-+                e
-+            );
-+        }
-+    }
-+}
++    /// GPU information read from hardware during probe.
+     pub(crate) gpu_info: GpuInfo,
+ }
+ 
+@@ -134,10 +137,10 @@ fn probe<'bound>(
+         // other threads of execution.
+         unsafe { pdev.dma_set_mask_and_coherent(DmaMask::try_new(pa_bits)?)? };
+ 
+-        let platform: ARef<platform::Device> = pdev.into();
++        let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
+ 
+-        let data = try_pin_init!(TyrDrmDeviceData {
+-                pdev: platform.clone(),
++        let reg_data = try_pin_init!(TyrDrmRegistrationData {
++                pdev,
+                 clks <- new_mutex!(Clocks {
+                     core: core_clk,
+                     stacks: stacks_clk,
+@@ -147,18 +150,15 @@ fn probe<'bound>(
+                     _mali: mali_regulator,
+                     _sram: sram_regulator,
+                 }),
++                iomem,
+                 gpu_info,
+         });
+ 
+-        let tdev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, data)?;
+         // SAFETY: `reg` is stored in `TyrPlatformDriverData` and dropped when the driver is
+         // unbound; it is never forgotten.
+-        let reg = unsafe { drm::Registration::new(pdev.as_ref(), tdev, (), 0)? };
++        let reg = unsafe { drm::Registration::new(pdev.as_ref(), unreg_dev, reg_data, 0)? };
+ 
+-        let driver = TyrPlatformDriverData {
+-            _device: reg.device().into(),
+-            _reg: reg,
+-        };
++        let driver = TyrPlatformDriverData { _reg: reg };
+ 
+         // We need this to be dev_info!() because dev_dbg!() does not work at
+         // all in Rust for now, and we need to see whether probe succeeded.
+@@ -184,8 +184,8 @@ fn drop(self: Pin<&mut Self>) {}
+ 
+ #[vtable]
+ impl drm::Driver for TyrDrmDriver {
+-    type Data = TyrDrmDeviceData;
+-    type RegistrationData<'a> = ();
++    type Data = ();
++    type RegistrationData<'bound> = TyrDrmRegistrationData<'bound>;
+     type File = TyrDrmFileData;
+     type Object = drm::gem::shmem::Object<BoData>;
+     type ParentDevice<Ctx: DeviceContext> = platform::Device<Ctx>;
+diff --git a/drivers/gpu/drm/tyr/file.rs b/drivers/gpu/drm/tyr/file.rs
+index b686041d5d6b..9f60a90d4948 100644
+--- a/drivers/gpu/drm/tyr/file.rs
++++ b/drivers/gpu/drm/tyr/file.rs
+@@ -12,7 +12,8 @@
+ 
+ use crate::driver::{
+     TyrDrmDevice,
+-    TyrDrmDriver, //
++    TyrDrmDriver,
++    TyrDrmRegistrationData, //
+ };
+ 
+ #[pin_data]
+@@ -31,15 +32,15 @@ fn open(_dev: &drm::Device<Self::Driver>) -> Result<Pin<KBox<Self>>> {
+ 
+ impl TyrDrmFileData {
+     pub(crate) fn dev_query(
+-        ddev: &TyrDrmDevice<Registered>,
+-        _reg_data: &(),
++        _ddev: &TyrDrmDevice<Registered>,
++        reg_data: &TyrDrmRegistrationData<'_>,
+         devquery: &mut uapi::drm_panthor_dev_query,
+         _file: &TyrDrmFile,
+     ) -> Result<u32> {
+         if devquery.pointer == 0 {
+             match devquery.type_ {
+                 uapi::drm_panthor_dev_query_type_DRM_PANTHOR_DEV_QUERY_GPU_INFO => {
+-                    devquery.size = core::mem::size_of_val(&ddev.gpu_info) as u32;
++                    devquery.size = core::mem::size_of_val(&reg_data.gpu_info) as u32;
+                     Ok(0)
+                 }
+                 _ => Err(EINVAL),
+@@ -53,7 +54,7 @@ pub(crate) fn dev_query(
+                     )
+                     .writer();
+ 
+-                    writer.write(&ddev.gpu_info)?;
++                    writer.write(&reg_data.gpu_info)?;
+ 
+                     Ok(0)
+                 }
 
 -- 
 2.54.0
