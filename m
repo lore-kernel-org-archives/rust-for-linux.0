@@ -1,127 +1,124 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB792349CE1
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 19:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784055797; cv=none; b=jvZ7M8yd32jXe/XZmaMNz58jpg6gO8AG4Qho5TnMwyDqhnAxKFlvOdQLQsUb92VawAYpq7RTCe5IRbyp1dx/6KFjGtHoAPncS9O9zfpjUeQRVFB7j7ipwcgM/zfG1IWEdLltVzHG2eN08zR4Z3wuyLU8MCkFKW2gLQIT0ziKwbw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784055797; c=relaxed/simple;
-	bh=TD8lKq4ystLfYg3uzT5qVpSCjbcK7ollxAN9yl/ptS0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gwCEgqanzEbVW+BU6bHCXECgOIZ6zax/Rgvft/yJ/XxWggKT5+lpwoJcAIfjznB2cCCl1ppoII8PSIyDTFi13C3VwVvKCYTXKt9hK3DmbLAtrOsFBYusmSld8K5zWuq4O0sNt/KkkiirF08ggsxBAaxFeI9MToHsW4HXg5lr9s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=sFUA0vLM; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F3C418A38
+	for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 19:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784056317; cv=pass; b=mpn589wSJQnhaFIlwF2VgOA8LzzRbZ1ja8ZXCqiL4b4bFG/UpBoPXRUkinulzsVS4h32ogr/FWENYgTyLIFkpbjD2FJUhaGY0/FBfsxtL0vfJqrOw+g6rznOUUjScnTJeDYHO74Hd2N0tR18w/Rbk7wvZ75He2qnDK4rHR7OWE0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784056317; c=relaxed/simple;
+	bh=Yi73BiN3ijNx3l7DwTynvqe36yS0esoDlO6LV48FWwg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UbBU7KbutRKT/IJyBNkIXSNdoQwerzjSWtTzolpQ76btIQAonA03JJVOgfLed8uUqz4qFzfUd/vWta3seSLAcLQGprh09nkwAUHjy3XdWgGYbLgfKBkL5y4u1jtub3gi+HYzJM86fsZfTmWZnEOBPC2hoG6JywKdjSVRo/4b5NM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgYfPmDY; arc=pass smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="sFUA0vLM"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c21495722so29845991cf.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 12:03:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgYfPmDY"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38115bbb83dso407115a91.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 14 Jul 2026 12:11:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784056313; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KfPAerr2LkDH04r4Un2d9oMJaYK2boBSPzDNgPt40Z6ZVSj+6bfXsVbp5kpwShp/3q
+         OrD6nLMjWyA/2bVZ42BIn+izlfTlcGGg7Q1QFP17ePkEAtRfKIKDhawNIbd5eOx2/37x
+         0OY1CqWdeQj9P0kKUneWfPhLWnAZ4HWzealjr0KF98e51l5dyAKcVa8dcgEH78ccn5al
+         qMSRixzOod+cTYqeIIM0LvXvk9N123xCTD9AisRCar+1QmIsFFaSofmyTiPsI9PN+BZe
+         1+Ww7Lr+KDxlkaSMgy9bbDG6QkO8VJsrTFxnCPyzz1yyv0go+GKXMSJWwqf9YuX1AO/9
+         +7MQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Yi73BiN3ijNx3l7DwTynvqe36yS0esoDlO6LV48FWwg=;
+        fh=bu7yY3zNiz31UZkIEqi/O5u+AyzITqwyFpVPUNzz5xQ=;
+        b=Tv89hzKV971g2itXW5V0McUsasahRI5msvsBkxKoJKbwmUAvzFoTYxtAcUFwZA+A5E
+         4c/sHWmlsq6wd4SWZXmjF52ZILa7gTCdUa87Tqz4LjOqS6HmTHUsMVE+vnWfxuAFBhah
+         lBZukmKanStzLIKvJl2ajZEqev8vi3ZYMUzZW8AWosDxD9AC82YogFzG1MOWLSIpXNtl
+         HXK8kjrgrwoTwkFmRzInmfUFd8oE6RXYZtPy/aENSTg5fOS1yH6XjDu8cYMby6v0N1pu
+         qFkD7wCZlXWyHdIQ5R2kgGqwwaMRuyLZs3/mHAgoxYxSxIu9JUqDC2uKfmOVU7z/j5wD
+         sC4w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1784055795; x=1784660595; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1784056313; x=1784661113; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=AON4maRAJUj4gBm9jpFXBi/aAje+mEu1tQ86oVKIt54=;
-        b=sFUA0vLM0WAmlgLOzDG0CCdw8Jkeknx6HduBgOWHgy+ZaonojrzP9GpbxqULZpvlZo
-         ualUMuPWYF9I4y++1dmA4ju0RfzVAg3FyapOqmCvdDb5gvjhVuSNwDYhsgrPV4re5tBx
-         0tIH6LOzLhS1KSUaA0R4wQxtjr4SL+G75IoYiM7CI4ezG+j/0jbCeNDv2/XpdStg7OOz
-         t3BnCj9D1kXz9ncoKESyr05QV2F+Yoi6BEfHKgRr4mBrVdduxe2vlMN898l98Rwbsixt
-         vowdDTID8g17j7EVpu+l6c0ChLx0glbIHGPcMW7h+KD5Mm6DBKLOFOGU2Q9dpbE/PwMy
-         8CnQ==
+        bh=Yi73BiN3ijNx3l7DwTynvqe36yS0esoDlO6LV48FWwg=;
+        b=RgYfPmDY63xeHqRsIf8qyFQO0XVWLxNIm/WSrR26lFGTz351oWo0k5zLFK1MZ9Ugkr
+         j7c7cIwkJwFQyAL4icWBvNfsN2gHS4Oa8epmVxlbHDXZ84bUOcr/J8yXp5HKilibl7mA
+         /i04+lTl5bh7DVwXdJSlCMQDG3HCYA1kSqtx17dQEmHdWUM5KMK2OVSU21ulDqZ5LV6y
+         FaO6ijN5KISVHKXQJcnKRdysaa9oDPfDLr8JH8J3weRjDaihO5tQhYmy3lvFbpNLJ9tc
+         HGKRUJ7HnOc5MbDFcrMBT78+P+D8OvvsuanTblRJ3G5vI8lJIjPLAY+LTfGWwZKVJwrc
+         Wk/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784055795; x=1784660595;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1784056313; x=1784661113;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AON4maRAJUj4gBm9jpFXBi/aAje+mEu1tQ86oVKIt54=;
-        b=r8ycdCZLprAaz95w+hAF80dyGv9qUDStwHZh2E2nys+e4t2FJtg4c+heX9EwgIiYQ4
-         A1OZiYG4bRarxQpHaKM3d1SbJUMK6Dk9h8iVl6V1WfI3xcg/jDY4t/6dKr6b21myNzCW
-         xsqJXiFc6RjMp+XOg4Qphl3jN7RD5F23JoQx4H5p4ebOqmyTSJNoAlmgYPIRYX40Vi/K
-         qdVv5oK/2HxJlw0voDppByoFXtkd7CwR9jIs6LLokO6HlpY4BwgEkOJEAx2Vip1RHV73
-         IDBD3fl8JiCEZlxVSoe64+iklUDA3FdOdmOuHyTMdd2uKh3ZTa89FPpvcsYE4//XqDkm
-         XVJw==
-X-Forwarded-Encrypted: i=1; AHgh+RpM27hFBugjukvxVqjJs6zhRbGEIOeVpSVtq3U5l5TOeww/VJScTCrhIbDUUwFZiQB7bmUU+td9xUciYsDNZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YytNcaUKRyciSJUsdonx6aNZfJWoYtk4D5Q6p1nJkTIYC8c3FIj
-	iWVD3+WIIUBZcutZgWb4XzCMUfCNa2WM030Z+EgQ3KDcENVrrlj7XHcYI2AvS7eV0w==
-X-Gm-Gg: AfdE7cnQ+CL7VpFdRGm13ISX1Ixic6v7JIBQlB7joHDI/3C20cES1fWTV6SOUiAxmlL
-	rUO24V9m+axq3gCwnvreqoO/fvYmjaedcLBHlQtObFJttGC5WeFgcAHgf7BWshvS5sORS3ohFbQ
-	P+SQBYWmViYxxrlKlOlZ9kSNdatZla68zfyM+R3rWJmJ2eXCOuqzT1dlqG2WLtObW0+W3IFHniT
-	/48Qe2BGka2+zh5LAhzvJwSxQQ+sEW4xRjhu6AaUwcspZcJOMBIgg9IaSQkUZQKT4RtIyDT/7Aw
-	LbDcBb6ZnnWcYXkKW7YS5S/7fwu7ss1/ckNI297h4TsESyGto02QGW94YfRi5oxZS1JYFuALBFc
-	61HmBRx0gGMcJ8bXQZdWNGisTW6P1RVJfn29zDLZtWaqbeYdeXq40kTvLQuASkBpFl5VVTcg5Xe
-	tM8tnIi1irig4jfQ==
-X-Received: by 2002:a05:622a:152:b0:51b:fe30:b8da with SMTP id d75a77b69052e-51e3c1cffe9mr50820721cf.33.1784055795355;
-        Tue, 14 Jul 2026 12:03:15 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::883a])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd80fd82csm174762066d6.35.2026.07.14.12.03.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 12:03:14 -0700 (PDT)
-Date: Tue, 14 Jul 2026 15:03:12 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Colin Braun <colinbrauncl@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-media@vger.kernel.org,
-	Colin Braun <colin.braun.cl@gmail.com>
-Subject: Re: [RFC PATCH 2/4] rust: usb: add usb host interface and endpoint
- abstractions
-Message-ID: <59f596b7-5c90-4084-87f3-cc085ad4962b@rowland.harvard.edu>
-References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
- <20260712-urb-abstraction-v1-v1-2-9fa011634ead@gmail.com>
- <DJXH4JLX4CES.11S3IZ1V2FTHF@kernel.org>
- <alVEUR0JrF1ga3S8@pendragon>
- <DJXPS0HY54SU.3JEDTA04V8HJ0@kernel.org>
- <7e6ebb5b-8ce0-4114-85d6-98cd11a3ad81@suse.com>
- <DJYBDUMUQ43T.3Q4ZG0FL76QH3@kernel.org>
- <fe12ec76-0f2a-48bd-8fd5-9b94b2600718@rowland.harvard.edu>
- <8d39b5df-1b85-4cb6-88c5-7478d6f4bbed@suse.com>
+        bh=Yi73BiN3ijNx3l7DwTynvqe36yS0esoDlO6LV48FWwg=;
+        b=ePueInfBuBo7DCohUoTTtu6Nr5LVSJ4A24sSsOtjQf/GsEufWam7gZdsY8rfMkUGju
+         BTCMLssOENWCR7kaJ2dFvqYyGk68V+d1vK6gY5DKouLOgoIUsrfa+9n76ngsKjqTxsgn
+         HDaPFXLNcxjyTTyJqgLTTOX9rpSyxPcSzCYuajOCF1+KyeA9bEl01DP/vOi79kzhG7p8
+         5BIM4ogta6zDD2WIOhckerwP/+PZW9KQUNZpn8EjYLd6XxecidRjrqS//bVmQ9Y0QAR7
+         TCcG33TpXgb0HMXzAOkPlzTRj5WHkVDGlwAYaARMZo0byP/DUcC2Xw1HzYhBOIbeO+gl
+         ikJA==
+X-Forwarded-Encrypted: i=1; AHgh+RrHhvo31ycWRxpkbUpEtrXo0f7A9FylPxteQss/AWKpmP1x0QhobuyfFJckA+NGTBseD+HDFhWTWO1J6lieKA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx+OCU2PP1lkdEMoIddBVgjwBW8iFIvxd+c+rypPZj0/xKF8uS
+	sn9lHOGAF3gespan+VXWAQszEIxsnzzL1so96dCSf3c7CYHyfHfvciUml/8i5V069e7sUg+j/gA
+	jPy1jDpgY60+JVD0xwo6ArbM4FpzUbYc=
+X-Gm-Gg: AfdE7cn6MjabRcvJ+pmAZdbZ+onwU+ORca3SEDqxRN0a3iVV78fBLO6aOcPWRmfripr
+	WtBAs3rY8PWoFEL77zg+H2TSQ2vS56LibgX2uwbkBhGMvtK5nV0rqDgUo3K2KDQ86KZA8l3Bltv
+	kFrhZYW7AdXlTnWFNH3rjHry/q2dSkAAAGUJbsp3j14RW7Z94sxC7yR4GDGL3c6f6/XdS3tdP1g
+	6Q25hKqiOCb8FzAeys2eOu0rkZv4mlRt9alsY27QRxbtqTVshCmMp2fGMVqNf1P0pJP4AocRXfo
+	0uBSuuHgA9ZUIi6naAwY5J5Fa8xGEXFbOIuZHpuYLgBE3SoWp2ZjM76aqA92qZXLzGjgX1CSbPx
+	aDJ9s/bvcw+GI
+X-Received: by 2002:a17:90b:51cc:b0:381:6cf0:d5f5 with SMTP id
+ 98e67ed59e1d1-38dc780f503mr11725640a91.5.1784056312803; Tue, 14 Jul 2026
+ 12:11:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d39b5df-1b85-4cb6-88c5-7478d6f4bbed@suse.com>
+References: <20260708175119.18051-1-harish.cs.ss24@gmail.com>
+ <CANiq72=aTZitympw7_LKW4PoD71JfLTVt8EiLcjM5F48pCUjWw@mail.gmail.com> <cc22e92456ed6b394f6e49b2cbb5562618f0e182.camel@redhat.com>
+In-Reply-To: <cc22e92456ed6b394f6e49b2cbb5562618f0e182.camel@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 14 Jul 2026 21:11:39 +0200
+X-Gm-Features: AUfX_mxCi8BPBAQ7HzcYcnuefn0RYWDgg28R6nFMPk3DBPSSxqRnJ2v1xdOaRQ8
+Message-ID: <CANiq72=Ytm5aanE24PraTb4C_dX5h2J-6_HZG54Kt+CLajdogQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: improve `Arc` documentation links
+To: lyude@redhat.com
+Cc: Harish-CS <harish.cs.ss24@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 14, 2026 at 07:57:21PM +0200, Oliver Neukum wrote:
-> On 14.07.26 18:26, Alan Stern wrote:
-> > At first I thought that we ought to have such a guarantee.  But in fact
-> > we don't, because the user can at any time write to a USB device's
-> > bConfigurationValue sysfs attribute even if the device isn't bound to a
-> > driver.  This can create interfaces which may then be bound to drivers.
-> > I just tried it and it worked.
-> > 
-> > This wasn't the original intent, but I don't see any good reason to
-> > prevent people from doing it.
-> 
-> I hardly dare ask, but what happens if you unplug the device?
+On Tue, Jul 14, 2026 at 8:24=E2=80=AFPM <lyude@redhat.com> wrote:
+>
+> JFYI: it also doesn't actually have to be your legal name, it just
+> needs to be consistent and traceable to your online identity generally.
 
-Exactly what you would expect: The interface driver is unbound and the 
-device and interface disappear.  This line shows up in the dmesg log (I 
-didn't have dynamic debugging turned on):
+Yeah, I didn't say it has to be, just that normally it is.
 
-[406254.947595] usb 3-1: USB disconnect, device number 15
+The reason is that if it is not the legal name, then it may not be as
+simple to accept the patch, especially lately for maintainers in some
+countries.
 
-You can try it for yourself; it's an easy experiment to do.  I used a 
-USB mouse for the test.
+So for contributors that are OK confirming publicly that it is their
+legal name, it is the simplest approach :(
 
-Alan Stern
+(For small patches it is not a big worry, but hopefully the
+contributor will end up contributing larger changes.)
+
+Cheers,
+Miguel
