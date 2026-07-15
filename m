@@ -1,33 +1,33 @@
-Received: from mail-106111.protonmail.ch (mail-106111.protonmail.ch [79.135.106.111])
+Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B46495509
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 20:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A994BC026;
+	Wed, 15 Jul 2026 20:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784145742; cv=none; b=gKVHxNG+mLZSd6CS52eNVvOdGkU2KYJ21YJ+YVpKCA80LGlSDeQpxP+VShbwWIQm5aM3eaV2BFYuvWuv7AghvYrES5jzk5grr+HbM8+/fkyPCC163ghV8A+QC4l2G8IDbUWFLBmgN0Q+7D3Iyb6iMRMds8MTIx+vJWGT4limn9w=
+	t=1784145837; cv=none; b=u+tXTynBa9RHaImpwZu/PY+lFVUDBYgHJy9FL1cClSVQfWBy1wyING9RjvAippqUezP7azaFCTMiuYCMJHVXpJ5bKEWvVwXEIRPkY0yoIEOE0Q7QKgmOutkcT9VFaUIv0sBL7kNRWOmmyrvqIeJ0z+1G6w3sHNEHtxWpbTeOxgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784145742; c=relaxed/simple;
-	bh=L7CrLJMVRfz7b6Mq8AGgo76DRFLIk7+WT8WbD7OBnnQ=;
+	s=arc-20240116; t=1784145837; c=relaxed/simple;
+	bh=mxZtatRWlTVQYOH9aCKnwVTK4nBk5WlQy0U514gTPIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mO+az2PgKf3JG8d7BCwO4qPFFjfTNkz9Oy2xfbL/fKXcMXflsliW7gki/C5ntXhj8uVfU1vZlI6ipPNM9+Kompl1nmdhstBMisli47e0YUH7VFytFH2TXllWgrHu3LJetD1ksB1bewaSjXl14jmXMiacVfgp37XPvq8OT4dNHH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=j1/mN7ts; arc=none smtp.client-ip=79.135.106.111
+	 MIME-Version:Content-Type; b=mTFnEc3ycCJ0pLcvKYRqQaw7L5XWRNqe0GdhuFpSeqJSm55niaudJD6Ugpql4S1Gmvznsidmz4VMOhPbc4oS46HeOMg2xVOeRUCuMUUBU+un4KZemUMfqXP2tsPqf4LRhP5pSPh5l1oEvh3TVOugTDSTKfoS7jb4GVIwsveT/IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=KCwhOvWG; arc=none smtp.client-ip=79.135.106.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="j1/mN7ts"
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="KCwhOvWG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1784145735; x=1784404935;
-	bh=4QqeuF5FUcRt5pFIExp1uYIABYGFvYOct0RfvBryi2M=;
+	s=protonmail; t=1784145832; x=1784405032;
+	bh=g/CYReVUA7tKjrfK+oP2QeLP0DLtyYHy63HTvErRdJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
 	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=j1/mN7tsc7BUeIEdRM7EQzx9zri2n42/KPuvQ+WuRj+XQw7RXh4p+1yWVEyg9ZWhM
-	 VsWRzo4DRZMYP6xxVJdLyJAQBQ4zXnojPCGIfDwJctnfw40e+ZN8b+TRDGMInnJPvX
-	 R+BTnE0tgMd48acQzULIDu23OM6QWNoEaBcLZ7EfMNcYB7mggSgWq1MbWJRtYojL1J
-	 P2ea+jTzoG1Q2dBoLnNXT9oQvAv87RMVANGDYretM7/cvdATiNE8D5T2qwZWorERr8
-	 OVV2g8la2rv7Bbxg74o/OHvh1xvitvpXkabPaW0F/qofOlp5vXQ8OftenB5ghnmSnO
-	 3WklqdoF88K7w==
-X-Pm-Submission-Id: 4h0nBg2hrLz1DDpB
+	b=KCwhOvWGo6dhXDD2UPNVTg2rQaoSm39Eto8DhZs+HS50cQps1VxPvT0m7qdYQlfob
+	 92RH+UlI8o8N9Ujz9otNa1AaOgQA9K7I2Nw6wxv2ktvEkfb2m+ipy5gToJ08f9twK/
+	 Xn1EdEjO7PsNUAukQhnsml33AFS9PUgAehMsUEL+AkBgyUoad5O9zpDdcFXyzCWipB
+	 h96svYyLG9wUam1r0Tyc6QgxU21pA2rkvaDsPdBq9fbN+X7t5+TnhmBbM5tLph3Et3
+	 bXgusswrwnznkkx4/pj9UyBX1I4w6IP61LZts6f886wZCK6+s+1FkJWBeKrvcdsw6+
+	 VqWqw0SjWEKdQ==
+X-Pm-Submission-Id: 4h0nDf3yrbz2ScdL
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: Philipp Stanner <phasta@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>,
@@ -59,12 +59,12 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
 	dri-devel@lists.freedesktop.org,
 	linaro-mm-sig@lists.linaro.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: Re: [PATCH v5 3/5] rust: sync: Add abstraction for rcu_barrier()
-Date: Wed, 15 Jul 2026 23:01:52 +0300
-Message-ID: <20260715200156.47101-1-work@onurozkan.dev>
+Subject: Re: [PATCH v5 2/5] rust: error: Add ECANCELED error code
+Date: Wed, 15 Jul 2026 23:03:37 +0300
+Message-ID: <20260715200340.48270-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260703073141.3962604-5-phasta@kernel.org>
-References: <20260703073141.3962604-2-phasta@kernel.org> <20260703073141.3962604-5-phasta@kernel.org>
+In-Reply-To: <20260703073141.3962604-4-phasta@kernel.org>
+References: <20260703073141.3962604-2-phasta@kernel.org> <20260703073141.3962604-4-phasta@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,55 +74,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 03 Jul 2026 09:31:39 +0200=0D
+On Fri, 03 Jul 2026 09:31:38 +0200=0D
 Philipp Stanner <phasta@kernel.org> wrote:=0D
 =0D
-> rcu_barrier() is a frequently used C function which is always safe to be=
-=0D
-> called.=0D
+> The Rust dma_fence abstractions need the ECANCELED error code.=0D
 > =0D
-> Add a safe abstraction for rcu_barrier().=0D
+> Add ECANCELED error code.=0D
 > =0D
 > Signed-off-by: Philipp Stanner <phasta@kernel.org>=0D
 > ---=0D
->  rust/kernel/sync/rcu.rs | 20 ++++++++++++++++++++=0D
->  1 file changed, 20 insertions(+)=0D
+>  rust/kernel/error.rs | 1 +=0D
+>  1 file changed, 1 insertion(+)=0D
 > =0D
-> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs=0D
-> index a32bef6e490b..7031ca5d2473 100644=0D
-> --- a/rust/kernel/sync/rcu.rs=0D
-> +++ b/rust/kernel/sync/rcu.rs=0D
-> @@ -50,3 +50,23 @@ fn drop(&mut self) {=0D
->  pub fn read_lock() -> Guard {=0D
->      Guard::new()=0D
->  }=0D
-> +=0D
-> +/// Wait until all in-flight call_rcu() callbacks complete.=0D
-> +///=0D
-> +/// Note that this primitive does not necessarily wait for an RCU grace =
-period=0D
-> +/// to complete.  For example, if there are no RCU callbacks queued anyw=
-here=0D
-> +/// in the system, then rcu_barrier() is within its rights to return=0D
-> +/// immediately, without waiting for anything, much less an RCU grace pe=
-riod.=0D
-> +/// In fact, rcu_barrier() will normally not result in any RCU grace per=
-iods=0D
-> +/// beyond those that were already destined to be executed.=0D
-> +///=0D
-> +/// In kernels built with CONFIG_RCU_LAZY=3Dy, this function also hurrie=
-s all=0D
-> +/// pending lazy RCU callbacks.=0D
-> +///=0D
-> +/// Note that this is one of the RCU primitives which must not be called=
- in=0D
-> +/// atomic context.=0D
-> +#[inline]=0D
-> +pub fn rcu_barrier() {=0D
-> +    // SAFETY: `rcu_barrier()` is always safe to be called. It just migh=
-t wait for a grace period.=0D
-> +    unsafe { bindings::rcu_barrier() };=0D
-> +}=0D
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs=0D
+> index a56ba6309594..cb666f0d42ee 100644=0D
+> --- a/rust/kernel/error.rs=0D
+> +++ b/rust/kernel/error.rs=0D
+> @@ -67,6 +67,7 @@ macro_rules! declare_err {=0D
+>      declare_err!(EOVERFLOW, "Value too large for defined data type.");=0D
+>      declare_err!(EMSGSIZE, "Message too long.");=0D
+>      declare_err!(ETIMEDOUT, "Connection timed out.");=0D
+> +    declare_err!(ECANCELED, "Request has been canceled.");=0D
+>      declare_err!(ERESTARTSYS, "Restart the system call.");=0D
+>      declare_err!(ERESTARTNOINTR, "System call was interrupted by a signa=
+l and will be restarted.");=0D
+>      declare_err!(ERESTARTNOHAND, "Restart if no handler.");=0D
 > -- =0D
 > 2.54.0=0D
 > =0D
