@@ -1,123 +1,413 @@
-Received: from mail-yx2-f3.google.com (mail-yx2-f3.google.com [74.125.224.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-43171.protonmail.ch (mail-43171.protonmail.ch [185.70.43.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F6643991C
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 19:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648343C4540;
+	Wed, 15 Jul 2026 20:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784145435; cv=none; b=kENQ07HeDVQPwe6LtnzqmAkKCHtFX7i6cPftevjWNPOKfnX56zlhvYZ3jTU1I5w4tNHK/mQUODG96AET8DTa/cAkmi3vuajptgOSAkjTudLIS8Xd5BMhH5EMxv403u5EIrhMdiANMrL+pZrCKABWhlUn1IwFWXOErFxWCLjjK84=
+	t=1784145660; cv=none; b=iNynODJ1vk2MepPNMPHqvUdd/MdFCp4s52Onb2ejhAqhQo2GL7SqGf0eGx6XailMf1LK/1JIqOBFFplQ4Wetyppv0p9siy+fEHPz2gqFCP5q6dnzncQLyG9z3wa8J+V8S+Xp1nNGlKCGd7WctPsUSpuMj2ynzN5O7vftQpuiVz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784145435; c=relaxed/simple;
-	bh=dWqB7+bvcc/NBuM3f79bt9xVLBZ3QNYcA1WJmcoPBwo=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B/6GAm2z7frn/mHD1mfx02ziw33xefIJVvceSZSIihbnWDXwO5h/DeR7rKApxmQWKGzq6obmwQu+sUdAtXtPDyEOGAiBte+rApzEPb8UjzQ5gJUaV8ZpdVVSrTaE6IeEiFmRQ+XfJxLDEc8bKs2dr9uv4C//ExIYanCcX5e3sCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KPlABJkp; arc=none smtp.client-ip=74.125.224.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784145660; c=relaxed/simple;
+	bh=TvvXYHHttZSbErhgNVWLoDQXPSWMrtkAFiLyrqb6yVM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q4RxNX999jJFgjg7jgv9oHseyBdMD6K1ohy1tlnbMH5CK9DfMcj+OvipwIPaRZbnOXQcxFELRW5JFhZPfdnoTh8F6M7gpzztZP1gd8MFHI/CZ4Hqjj3w8saIBM+rAJYbmgmPt1nW+aSCHs4pJtq9GBcJw1u55aJRYvQLhtDxxh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=E5LajhRs; arc=none smtp.client-ip=185.70.43.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KPlABJkp"
-Received: by mail-yx2-f3.google.com with SMTP id 00721157ae682-81daac601a1so18655497b3.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 12:57:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784145429; x=1784750229; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1wq8otHP0LCRNgmPzcboIygw2YeAuXCKv3ifkhHU0zI=;
-        b=KPlABJkp/HaRVWwjuV68joY9ose2xTzSXck5MdpD6uoXZfzic4dsjTiTkywpvebJe0
-         Y6VdRAvGgtIY7wNfLiNDKvpKH2ev4NhEU7m3TS7wAUIm8cEJXhJnUx+01PgGlkM43SvT
-         FE9Vjh7GPkuuGKQjCyqP/nZdevuTmqEVD49EI3nnKdFxpELgcS3eYE6dpTudZIQpYoOW
-         ExoxWaXFXDK5OTHCI8CNd3uNweC3eGcjKaEL4HjAyzAngqJfQORDGrRSIxC/vg4gTMM0
-         qO/g+M55LFb3+nbkB+jgFh5IXA10/nom/8ZX/gRMLCOmIM0xt7prkq/HYOOTNK+YD7+I
-         I/mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784145429; x=1784750229;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:date
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=1wq8otHP0LCRNgmPzcboIygw2YeAuXCKv3ifkhHU0zI=;
-        b=mAjOliQuFsqpXawbm1fyinroOH/7NXBF+wlU2hDpu4jiC2Dm0QL83DDOVuZQx20CCe
-         4nvClWWyx80GnV6cROZNG/svQdOAhpKOkKEBt/wlI5WPUe+PHiCsBdtqJXaZ6hP+tcxc
-         gHxHF3pAMot5Wrnmp+7nOFWCVaamrSnKFytzmtOrwFtH37uaD2NxNLuh9w7Ht87coFLZ
-         DAG8/5erkg3WCmgAu1kTTUnj2gkOGLCKJf/iCql2p6RMmHSGTuydTU17dIlxXuckjDdE
-         zoqUSeSoSL0jrKeaHLYe4zuZzdxWSZvYHMUifPkv9IkRmM45kSwMRKa57xPPybjm5OzF
-         YW/A==
-X-Forwarded-Encrypted: i=1; AHgh+RrOh4E6j4m+px6NBjl2+PJboseN0IGZvgcMdKOIej3Q2Psaq6zMU33gDP+JL/Geex6L3tcZGUqb/QhT8y1z9A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmMAO/y1+DhhpWhUETzzrkc78hzyjPdhAgmT+9ND6yHxjozqWS
-	ZrULVQ88Y+2slrgOAAvst48gKgZHv+eBtGkDO1VLjUtgRTRb4/oGotg0
-X-Gm-Gg: AfdE7clciZ/5erbHNRzthNm7u5UgpyTYApDBJ2564NdQVmCTYSqZfOAkxtf/218UT8K
-	/CK2GHAEnC72Bftt3zkpM1fL3E2+H9S35ZEDkHTrDmXeoZfsC1N/n68XMSkTYYwBPWXi8D6NGhK
-	yLsiuCUYBEPAXZ2yL3OXq7PJC2Vc/h7AKmUU3P1BtM8hMSfR7FWEz8I/DcqdUwe+xiEmRBYklCO
-	bXz17xlWrCNZLueqWAOKLlwwhftCtIqtFMh1/oVk1itOTtal8Pelr9sFXjaMtnMN2vKSD/RCOjT
-	yiRE1opXpS6Uev8FGf2zQ22FOfIIR5FXBVp99TjB3KcPKw9uTUIW/cghAkTSjWPRlda7hRBxys1
-	rVAIyWAhIt8oasMObkPC87tQKyMDR2iUXbGKvRQfO1DXpjKDa1iAiRK8xHIOxbh6aB86q6k6Bo4
-	sNyDKhJb3+kGrThXQ9SIotoNPX4zp6ZTgSIZiAkIXRVhpaEif2oOKXzAgWFU9ypybqwG4=
-X-Received: by 2002:a05:690c:e1e:b0:81e:735b:c880 with SMTP id 00721157ae682-81ecf82e130mr31797547b3.26.1784145429210;
-        Wed, 15 Jul 2026 12:57:09 -0700 (PDT)
-Received: from pendragon (76-234-45-214.lightspeed.cicril.sbcglobal.net. [76.234.45.214])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81e7795988dsm162879817b3.26.2026.07.15.12.57.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 12:57:08 -0700 (PDT)
-From: Colin Braun <colinbrauncl@gmail.com>
-X-Google-Original-From: Colin Braun <electrolitic21@gmail.com>
-Date: Wed, 15 Jul 2026 14:57:06 -0500
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Colin Braun <colinbrauncl@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Alan Stern <stern@rowland.harvard.edu>, Mathias Nyman <mathias.nyman@intel.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-media@vger.kernel.org, Colin Braun <colin.braun.cl@gmail.com>, 
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Subject: Re: [RFC PATCH 0/4] rust: usb: add usb request block abstractions
- and a user
-Message-ID: <alfgqLpK9PAluzHF@pendragon>
-References: <20260712-urb-abstraction-v1-v1-0-9fa011634ead@gmail.com>
- <1E924102-5CC7-427A-9FD0-3B15BA1BEAEB@collabora.com>
- <alVGanOux7SJ5dpM@pendragon>
- <0CCB6F69-1336-4254-AE1A-5DDC63BCA7B1@collabora.com>
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="E5LajhRs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1784145650; x=1784404850;
+	bh=ts6KE6n9Ht+WSmkN6ONmApmjSk5JKTR9+DlMVacsjHI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=E5LajhRsefXNoy3rcDwGCGO67DRluuBWqpjiQEEPR1Lw7AOCmdDSz7EZue5aRN/ec
+	 37pauODZIOytJ6flDk8w9xm5rtgExZTd5rm83jJv0rkatrI4ZXUgz7uOb+qH3Pe5ll
+	 Y+AV51Kb2RfeniZm3jCAmDuaDammoJILAdFs/hcjcoPKL7jFI7ZMagnH8nC5bVpXgA
+	 ALzTTm/Ttl2l+ZLN1WLpvv6xBs4ErEzFyW8+/Rqhn45aNdK1yAHuHcumfeU1hqcAty
+	 K8XCPCsmGwkw+YInrSj7ixtCVD1wNtTjhx/NviV574a03L7jZvxY9Xgroboc4OYTIM
+	 bGAKsXGvJvrNA==
+X-Pm-Submission-Id: 4h0n9447T0z1DFgp
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Philipp Stanner <phasta@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Burak Emir <bqe@google.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Krishna Ketan Rai <prafulrai522@gmail.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Mirko Adzic <adzicmirko97@gmail.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Shankari Anand <shankari.ak0208@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: Re: [PATCH v5 4/5] rust: Add dma_fence abstractions
+Date: Wed, 15 Jul 2026 23:00:34 +0300
+Message-ID: <20260715200036.46182-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260703073141.3962604-6-phasta@kernel.org>
+References: <20260703073141.3962604-2-phasta@kernel.org> <20260703073141.3962604-6-phasta@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0CCB6F69-1336-4254-AE1A-5DDC63BCA7B1@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 14, 2026 at 11:35:50PM -0300, Daniel Almeida wrote:
-> I’m cc’ing my colleague Nicolas. He was at the media summit this year
-> discussing a topic somewhat related to Rust.
-> 
-> IIUC, the consensus is unfavorable for Rust media drivers at the moment. They
-> are waiting for more progress on gcc-rs before allowing it, as clang does not
-> fit some of their infrastructure.
-
-This is good to know, thanks for mentioning this. I will table my work
-on the media driver for now, though I might continue working on some of
-it privately until gcc-rs has progressed enough.
-
-> This doesn't have to discourage you from this work, though. Last I spoke to
-> Greg, I think he was OK with having enough infrastructure to build a Rust
-> version of usb-skeleton.c. You could perhaps work on that? I never really found
-> the time to, but I can chime in with reviews. It's always nice to onboard new people :)
-
-I would definitely be interested in picking up this work.
-
-Unless my first 3 patches seem to be heading in the wrong direction,
-I will integrate the initial and any coming feedback here, as well as
-some of the concerns the Sashiko AI bot emailed me. I'll include an
-attempt at the rust version of usb-skeleton as well.
-
-I imagine it makes sense to strip out functions usb-skeleton doesn't use,
-so I will remove those in my next revision.
-
-Thanks,
-Colin
+On Fri, 03 Jul 2026 09:31:40 +0200=0D
+Philipp Stanner <phasta@kernel.org> wrote:=0D
+=0D
+> C's dma_fence's are synchronisation primitives that will be needed by all=
+=0D
+> Rust GPU drivers.=0D
+> =0D
+> The dma_fence framework sets a number of rules, notably:=0D
+>   - fences must only be signalled once=0D
+>   - all fences must be signalled at some point=0D
+>   - fence error codes must only be set before signalling=0D
+>   - every pointer to a fence must be backed by a reference=0D
+> =0D
+> All those rules are being addressed by these abstractions.=0D
+> =0D
+> To cleanly decouple fence issuers and consumers, two types are provided:=
+=0D
+>   - DriverFence: the only fence type that can be signalled and that=0D
+>     carries driver-specific data.=0D
+>   - Fence: the fence type to be shared with other drivers and / or=0D
+>     userspace. The only type callbacks can be registered on.=0D
+>     Cannot be signalled.=0D
+> =0D
+> Hereby, a Fence lives in the same chunk of memory as a DriverFence. Both=
+=0D
+> share the refcount of the underlying C dma_fence. Since this=0D
+> implementation does not provide a custom dma_fence_backend_ops.release()=
+=0D
+> function, the memory is freed by the dma_fence backend once the refcount=
+=0D
+> drops to 0.=0D
+> =0D
+> To create a DriverFence, the user must first allocate a=0D
+> DriverFenceAllocation, so that the creation of the DriverFence later on=0D
+> can always succeed. Otherwise, deadlocks could occur if fences need to=0D
+> be created in a GPU job submission path.=0D
+> =0D
+> Synchronization is ensured by the dma_fence backend.=0D
+> =0D
+> All DriverFence's created through this abstraction must be signalled by=0D
+> the creator with an error code. In case a DriverFence drops without=0D
+> being signalled beforehand, it is signalled with -ECANCELLED as its=0D
+> error and a warning is printed. This allows the Rust abstraction to very=
+=0D
+> cleanly decouple fence issuer and consumer by relying on the decoupling=0D
+> mechanisms in the C backend, which ensures through RCU and the=0D
+> 'signalled' fence-flag that dma_fence_backend_ops functions cannot=0D
+> access the potentially unloaded driver code anymore.=0D
+> =0D
+> Signalling fences on drop thus grants many advantages. Not signalling=0D
+> fences on drop would risk deadlock and does not grant real advantages:=0D
+> By definition only the drivers can ensure that a fence always represents=
+=0D
+> the hardware's state correctly.=0D
+> =0D
+> This implementation models a DmaFenceCtx (fence context) object on which=
+=0D
+> fences are to be created, thereby ensuring correct sequence numbering=0D
+> according to the timeline.=0D
+> =0D
+> dma_fence supports a variety of callbacks. The mandatory callbacks=0D
+> (get_timeline_name() and get_driver_name()) are implemented in this=0D
+> patch. For convenience, they store those name parameters in the fence=0D
+> context, saving the driver from implementing these two callbacks.=0D
+> =0D
+> Support for other callbacks (like for hardware signalling) is prepared=0D
+> for through the fact that both DriverFence and Fence live in the same=0D
+> allocation, allowing for usage of container_of from the callback to=0D
+> access the driver-specific data.=0D
+> =0D
+> Synchronization for backend_ops callbacks is ensured by only running the=
+=0D
+> Rust deconstructor delayed with call_rcu(), which prevents UAF-bugs=0D
+> should a DriverFence drop while a Fence callback is currently operating=0D
+> on the associated driver data.=0D
+> =0D
+> Add abstractions for dma_fence in Rust.=0D
+> =0D
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>=0D
+> ---=0D
+>  rust/bindings/bindings_helper.h  |   1 +=0D
+>  rust/helpers/dma_fence.c         |  48 ++=0D
+>  rust/helpers/helpers.c           |   1 +=0D
+>  rust/kernel/dma_buf/dma_fence.rs | 894 +++++++++++++++++++++++++++++++=0D
+>  rust/kernel/dma_buf/mod.rs       |  14 +=0D
+>  rust/kernel/lib.rs               |   1 +=0D
+>  6 files changed, 959 insertions(+)=0D
+>  create mode 100644 rust/helpers/dma_fence.c=0D
+>  create mode 100644 rust/kernel/dma_buf/dma_fence.rs=0D
+>  create mode 100644 rust/kernel/dma_buf/mod.rs=0D
+> =0D
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h=0D
+> index 1124785e210b..54b62d952e01 100644=0D
+> --- a/rust/bindings/bindings_helper.h=0D
+> +++ b/rust/bindings/bindings_helper.h=0D
+> @@ -53,6 +53,7 @@=0D
+>  #include <linux/debugfs.h>=0D
+>  #include <linux/device/faux.h>=0D
+>  #include <linux/dma-direction.h>=0D
+> +#include <linux/dma-fence.h>=0D
+>  #include <linux/dma-mapping.h>=0D
+>  #include <linux/dma-resv.h>=0D
+>  #include <linux/errname.h>=0D
+> diff --git a/rust/helpers/dma_fence.c b/rust/helpers/dma_fence.c=0D
+> new file mode 100644=0D
+> index 000000000000..0e08411098fa=0D
+> --- /dev/null=0D
+> +++ b/rust/helpers/dma_fence.c=0D
+> @@ -0,0 +1,48 @@=0D
+> +// SPDX-License-Identifier: GPL-2.0=0D
+> +=0D
+> +#include <linux/dma-fence.h>=0D
+> +=0D
+> +__rust_helper void rust_helper_dma_fence_get(struct dma_fence *f)=0D
+> +{=0D
+> +	dma_fence_get(f);=0D
+> +}=0D
+> +=0D
+> +__rust_helper void rust_helper_dma_fence_put(struct dma_fence *f)=0D
+> +{=0D
+> +	dma_fence_put(f);=0D
+> +}=0D
+> +=0D
+> +__rust_helper bool rust_helper_dma_fence_begin_signalling(void)=0D
+> +{=0D
+> +	return dma_fence_begin_signalling();=0D
+> +}=0D
+> +=0D
+> +__rust_helper void rust_helper_dma_fence_end_signalling(bool cookie)=0D
+> +{=0D
+> +	dma_fence_end_signalling(cookie);=0D
+> +}=0D
+> +=0D
+> +__rust_helper bool rust_helper_dma_fence_is_signaled(struct dma_fence *f=
+)=0D
+> +{=0D
+> +	return dma_fence_is_signaled(f);=0D
+> +}=0D
+> +=0D
+> +__rust_helper bool rust_helper_dma_fence_test_signaled_flag(struct dma_f=
+ence *f)=0D
+> +{=0D
+> +	return dma_fence_test_signaled_flag(f);=0D
+> +}=0D
+> +=0D
+> +__rust_helper void rust_helper_dma_fence_lock_irqsave(struct dma_fence *=
+f, unsigned long *flags)=0D
+> +{=0D
+> +	dma_fence_lock_irqsave(f, *flags);=0D
+> +}=0D
+> +=0D
+> +__rust_helper void rust_helper_dma_fence_unlock_irqrestore(struct dma_fe=
+nce *f, unsigned long *flags)=0D
+> +{=0D
+> +	dma_fence_unlock_irqrestore(f, *flags);=0D
+> +}=0D
+> +=0D
+> +__rust_helper void rust_helper_dma_fence_set_error(struct dma_fence *f, =
+int error)=0D
+> +{=0D
+> +	dma_fence_set_error(f, error);=0D
+> +}=0D
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c=0D
+> index 998e31052e66..4ab8aa9da7e7 100644=0D
+> --- a/rust/helpers/helpers.c=0D
+> +++ b/rust/helpers/helpers.c=0D
+> @@ -58,6 +58,7 @@=0D
+>  #include "cred.c"=0D
+>  #include "device.c"=0D
+>  #include "dma.c"=0D
+> +#include "dma_fence.c"=0D
+>  #include "dma-resv.c"=0D
+>  #include "drm.c"=0D
+>  #include "drm_gpuvm.c"=0D
+> diff --git a/rust/kernel/dma_buf/dma_fence.rs b/rust/kernel/dma_buf/dma_f=
+ence.rs=0D
+> new file mode 100644=0D
+> index 000000000000..cbe8f447a603=0D
+> --- /dev/null=0D
+> +++ b/rust/kernel/dma_buf/dma_fence.rs=0D
+> @@ -0,0 +1,894 @@=0D
+> +// SPDX-License-Identifier: GPL-2.0=0D
+> +//=0D
+> +// Copyright (T) 2025, 2026 Red Hat Inc.:=0D
+> +//   - Philipp Stanner <pstanner@redhat.com>=0D
+> +=0D
+> +//! DriverFence support.=0D
+> +//!=0D
+> +//! Reference: <https://docs.kernel.org/driver-api/dma-buf.html#c.dma_fe=
+nce>=0D
+> +//!=0D
+> +//! T header: [`include/linux/dma-fence.h`](srctree/include/linux/dma-fe=
+nce.h)=0D
+> +=0D
+> +use crate::{=0D
+> +    alloc::AllocError,=0D
+> +    bindings,=0D
+> +    container_of,=0D
+> +    error::to_result,=0D
+> +    prelude::*,=0D
+> +    types::ForeignOwnable,=0D
+> +    types::Opaque,=0D
+> +    warn_on, //=0D
+> +};=0D
+> +=0D
+> +use core::{=0D
+> +    marker::PhantomData,=0D
+> +    mem::ManuallyDrop,=0D
+> +    ops::Deref,=0D
+> +    ptr,=0D
+> +    ptr::{=0D
+> +        drop_in_place,=0D
+> +        NonNull, //=0D
+> +    },=0D
+> +    sync::atomic::{=0D
+> +        AtomicU64,=0D
+> +        Ordering, //=0D
+> +    }, //=0D
+> +};=0D
+> +=0D
+> +use kernel::{=0D
+> +    str::CString,=0D
+> +    sync::{=0D
+> +        aref::{=0D
+> +            ARef,=0D
+> +            AlwaysRefCounted, //=0D
+> +        },=0D
+> +        rcu::rcu_barrier, //=0D
+> +    }, //=0D
+> +};=0D
+> +=0D
+> +/// VTable for dma_fence backend_ops callbacks.=0D
+> +//=0D
+> +// Mandatory dma_fence backend_ops are implemented implicitly through=0D
+> +// [`FenceCtx`]. Additional ones shall get implemented on this trait, wh=
+ich then=0D
+> +// shall be demanded for the fence context data.=0D
+> +pub trait FenceCtxOps {=0D
+> +    /// The generic payload data for [`DriverFence`]s created on this fc=
+tx.=0D
+> +    type FenceDataType: Send + Sync;=0D
+> +}=0D
+> +=0D
+> +/// A dma-fence context. A fence context takes care of associating relat=
+ed fences=0D
+> +/// with each other, providing each with raising sequence numbers and a =
+common=0D
+> +/// identifier.=0D
+> +#[pin_data(PinnedDrop)]=0D
+> +pub struct FenceCtx<T: Send + Sync> {=0D
+> +    /// The fence context number.=0D
+> +    nr: u64,=0D
+> +    /// The sequence number for the next fence created.=0D
+> +    seqno: AtomicU64,=0D
+> +    // The name parameters can be accessed by the dma_fence backend_ops.=
+ UAF=0D
+> +    // errors are prevented by the `call_rcu()` in `drop_driver_fence_da=
+ta()`.=0D
+> +    /// The name of the driver this FenceCtx's fences belong to.=0D
+> +    driver_name: CString,=0D
+> +    /// The name of the timeline this FenceCtx's fences belong to.=0D
+> +    timeline_name: CString,=0D
+> +    /// The user's data.=0D
+> +    #[pin]=0D
+> +    data: T,=0D
+> +}=0D
+> +=0D
+> +#[allow(unused_unsafe)]=0D
+=0D
+Why is this needed?=0D
+=0D
+> +impl<'a, T: Send + Sync + FenceCtxOps> FenceCtx<T> {=0D
+> +    // This can later be extended as a vtable in case other parties need=
+ support=0D
+> +    // for the more "exotic" callbacks.=0D
+> +    const OPS: bindings::dma_fence_ops =3D bindings::dma_fence_ops {=0D
+> +        get_driver_name: Some(Self::get_driver_name),=0D
+> +        get_timeline_name: Some(Self::get_timeline_name),=0D
+> +        enable_signaling: None,=0D
+> +        signaled: None,=0D
+> +        wait: None,=0D
+> +        release: None,=0D
+> +        set_deadline: None,=0D
+> +    };=0D
+> +=0D
+> +    /// Create a new `FenceCtx`.=0D
+> +    pub fn new<E>(=0D
+> +        driver_name: CString,=0D
+> +        timeline_name: CString,=0D
+> +        data: impl PinInit<T, E>,=0D
+> +    ) -> impl PinInit<Self, Error>=0D
+> +    where=0D
+=0D
+[...]=0D
+=0D
+> +    unsafe { bindings::dma_fence_put(fence) };=0D
+> +=0D
+> +    // The actual memory the data associated with a `DriverFence` lives =
+in=0D
+> +    // gets freed by the C dma_fence backend once the fence's refcount r=
+eaches 0.=0D
+> +}=0D
+> diff --git a/rust/kernel/dma_buf/mod.rs b/rust/kernel/dma_buf/mod.rs=0D
+> new file mode 100644=0D
+> index 000000000000..fb353ce042ce=0D
+> --- /dev/null=0D
+> +++ b/rust/kernel/dma_buf/mod.rs=0D
+> @@ -0,0 +1,14 @@=0D
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT=0D
+> +=0D
+> +//! DMA-buf subsystem abstractions.=0D
+> +=0D
+> +pub mod dma_fence;=0D
+> +=0D
+> +pub use self::dma_fence::{=0D
+> +    DriverFence,=0D
+> +    Fence,=0D
+> +    FenceCb,=0D
+> +    FenceCbRegistration,=0D
+> +    FenceCtx,=0D
+> +    FenceCtxOps, //=0D
+> +};=0D
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs=0D
+> index 9512af7156df..dc54d8af471f 100644=0D
+> --- a/rust/kernel/lib.rs=0D
+> +++ b/rust/kernel/lib.rs=0D
+> @@ -64,6 +64,7 @@=0D
+>  pub mod device_id;=0D
+>  pub mod devres;=0D
+>  pub mod dma;=0D
+> +pub mod dma_buf;=0D
+>  pub mod driver;=0D
+>  #[cfg(CONFIG_DRM =3D "y")]=0D
+>  pub mod drm;=0D
+> -- =0D
+> 2.54.0=0D
+> =0D
