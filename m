@@ -1,152 +1,115 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60679280335
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 08:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784102823; cv=pass; b=FRZYiUzmgbUQdDIu5k6vOF/Dt5DNHOLbAWbJ2IuCylhB311dDzjDI+J8VGcD+HGuoJxxEODfHzgbKBvll5xdG2pIdirp/GX3HziMk6oKbsL+TcRIiCLHS7fMfI+MyvTaTZ3ZsFmhLEu2b2Cdijpgtzk/TA+fFVboexwsObKeAR8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784102823; c=relaxed/simple;
-	bh=anX8UaxJ4WrYOir1Bf7AqZ78Tml7E4ZtoJ1AaNrJv6g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AGmJWP58pHRiUYaYzSRIPAw3tpyQS8kItCYjfHws9homgEbBqa/I/RY61rMHWqlvqfNauu1XoJiqI4P25yyPp0VCi+q92GEHUa8TcCz79+1CqH/K7Mu4vpneMRw6s90gOcfnT9IS3OAExhLsU2zgoNJAhxb9Wsk/9P7SBs+ktXs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WwtPdZ2R; arc=pass smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833CD3D9532
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 08:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784105907; cv=none; b=c8dzwqcgjZ9J+rNiaWCsAYvZGouSKaiyhj/3ysczxhB01XW8TcgPAG+3LcoK4DhCZEPqbeVvSzzKf5vgk+MIqx2mkjNiUlljRrjrxJb22V7QwH7tB4ZeGE8+Mc8tIOtlaInjx0El9I+mkJECcQJeFo8RWlViXJNYwW2fiPT8puk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784105907; c=relaxed/simple;
+	bh=OFFG33vQhgFzNtMM8+ZEc1yIjErwJeaRKkvGlmr/540=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=clCBUenyOUiWhLv5krueiIWdQXTd/Tjp8CpuTiz2GwSJik+oH8yNg+xCX9LhXRxynzMA80bfTw4qEIpkhk/kUhQpi4ls3yLArR2U7L8+54wvPrDl/J9OG4aYfPLYPCwNK6F+MEcXd1vRS7E4SNlpIxM/PX88Ac6fI00XuevfW90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Cxt42wCB; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WwtPdZ2R"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493c7902f47so44167935e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 01:07:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784102821; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pDAzRPi4dPnc+ag4H9voTly1yT2GQsNvuBq21B6My3wMk3KbBTrnVXzP1Pa5nmUdQA
-         PmUJMmyJDJUgFCvrDcjuVt0mQg+tJQJUpf3dhem3mbXmauA8267S5bCCGvcTQbVjBU99
-         gJ0ncW4vE0PvRCIhnKriq/33fDHzPsZ6/5AfuLbPcHzWLitnzAxyy2GBpQ/YbrfVws+z
-         hbw3DrLUuuUx2nJSg7XFeSZppPkzrVvXkEYrWhShqtOwwUUttaIdPq0M1l/M21M+sdQ0
-         0eqA0UBQ86CNBMFSDYp5VT60tyI7phvYFb9EOEg/mfjJ2rzvcwqYQmVlLKhhz1f1tEw0
-         FgMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7grnnCCD4sCgZ0pN3Sf5LRFWY9qV6BVxBPnYIus15LQ=;
-        fh=NhWWbL2yrYyIFUr99c/xfEQQ/27CPYZ9yqm5j99Ntw8=;
-        b=RVQo2z4Xb39uDs1ElNv8SEJC1kuBdLY9+RrXhGRhQUyKRfQNgtJ+2H1HI6y4lu2Nx2
-         zY+33WByKYiVGvY/R+1GRkyWrjE9DGw4RjFFDbrizOHt6Esl7IkWsy6iYpvLjeQwjfoR
-         i3sET0fxeIKk4z5J5puw5lLA/wfhmvkaKUAPUtsHQPyoDnFoWfzImOX8K+N2x+S4y6z2
-         jjvY/j/S+Ztl3o9mSLv84sj39g5+dhlgUVkPfC89aYlxtnTlP2POvSZEHaZjibsgybwp
-         xkfOpN7XHoKTpoXzm25mZ2uO0jhZ6v0wxmceHhfaw2GdhmMWCYi0vvIwnVXjJewznaSZ
-         rd4w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Cxt42wCB"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3810c5d691bso4075688a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 01:58:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784102821; x=1784707621; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=linaro.org; s=google; t=1784105904; x=1784710704; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7grnnCCD4sCgZ0pN3Sf5LRFWY9qV6BVxBPnYIus15LQ=;
-        b=WwtPdZ2RRjzeQgp2doynT9k0f9sAhiKMg2M9YnzjcrhMfZiabpgtwJNRPNL/+50WRE
-         jUDd65qcDuo9LP5jG2lIGUZ3RJ6KDwCHQL7eBXtebm0N0+/V9IEabvp9BPTGShILYKwu
-         ygOD4TlrPS73hrgS6yIkWQbJJptvvmxZCI5w0tqoadrWXOcc9VxlW6+XVj5obbf7c/1k
-         UDvMnRHG1PILm5EdAu+TlZnPFByFex8/Q6gHY8O1anfbxo+jNJ3DD+lCx7C58QTA79FR
-         sdUo0KSjtIcvPMJrBrcDcHsWE9YXZg6vSxK7JpTrxdlLpop555z0zKFLiV5AqAXhb2fn
-         tzoA==
+        bh=oWc1JQgdI1fGiAcrnlK/VAskM7Ax6+leAaYqZIOdLWM=;
+        b=Cxt42wCB7/JDMDWKRcX5lQlzJdnXYOZJgmslMs/Sm8pMh/YZnj/el/WRsivvajYLxF
+         c1KJOuumtuLEjWV+3xc2SL12ESWI7GlzuOzj0xPPJhqjltTeYjnQJy0ZpAVNfLolF6xq
+         QdO78g7meGIizLB4UNxNmJW+sxVozaQuJ7VN7Q6cIjr7WwjGmN3qMJKydzo1iPVKCgBs
+         9rb/FsUK5VaXhj0UKOAHKtPLqkRb7Q+M8X2+84rz0jklGttpipOiLh248FQnndrWSr2C
+         AzmzWs0u25Vn3MQ9IMzJqR+euJx+ghORX5I8EEaK2e5vSSLVSe4UUakst+HUD8y4IIzz
+         t3MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784102821; x=1784707621;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784105904; x=1784710704;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7grnnCCD4sCgZ0pN3Sf5LRFWY9qV6BVxBPnYIus15LQ=;
-        b=SkdOTZj8BRSRPSqA6ZsQJo9gQ2h4Avr3/Du3VaANUzzzDN4JvkeokStyyxAIVH8HT8
-         YhDAH0oVNqjei9065zRrZ9pTPIuxOzoiIHmn+tbwuxbEHmQAHdv/sC/ORhWKuRtKpJFM
-         aMUiZrYOjWbzaEhbmkXzgdNmEz1LXlQoNgPoIfgfiMAN9gq1JMbmHYTYwsdhZnuKubto
-         gO5x0O9eWG5hViaHnKoNvsoYRYkKlBSIBsZRfpmqPtXl3XpF0TPWNEL+Gv64nplcatqi
-         /Juj9HPEVQeZfCj0cnXFpCLNnR+nhfVrfNwCYH49d1bkzVawSJyP4vyp0ByTm6rs8SIN
-         eXsA==
-X-Forwarded-Encrypted: i=1; AHgh+RqBcCl2RETamK345VQdVKrzjreAuT6zf+XR2F/NrOCzdgEi+r6HBYfR2CaW+9+qc2Z6iYVMXZkCPZb2jBe0lw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1QdRKRQ0tgFDSbFN10tMC9KpZzcY9tLyn+mGK5G0S0d1w2P+S
-	cZGAWDr/tPco9+/1D3adoTaMpw9pQfhjXvXgy7eehPwoAcvUmeXpob7YrYHcM08r3U2VVN9Jm/7
-	bNuDF+/pGH+FOlHUYs1s2hk9lwDBthY1y3/ANLPBE
-X-Gm-Gg: AfdE7cluDkQbU8+yJwgo0DaZtL8/UKtQXeMINDF/XyvspEPy61/egTpBKQ7kpMQcvml
-	Qv1UhfUEopRZiom0kOb0Ei5Y0ZFqAWUHuh6bLlWXLDLpW+CFvYkmoDIeOvB+G6i7OZvMRn/3TvR
-	EyThGvPbS2tFGZvLrwS4/G/koKPnELuayn8FObzwzdSC3FYq2J74WhIDGA80NlHja2in1dDOgx0
-	+vXUdruGjhHoABTcjWEv5dcGFid34fN+hHDtLs1lyiCAbT1Gqvh0HGWuRu698QFpPzE7COeU9x5
-	O+KhZIwoRp/nkUNszj+g8/E7N/M=
-X-Received: by 2002:a05:600c:8483:b0:493:c8a6:b517 with SMTP id
- 5b1f17b1804b1-4953c3944d9mr18980225e9.38.1784102820014; Wed, 15 Jul 2026
- 01:07:00 -0700 (PDT)
+        bh=oWc1JQgdI1fGiAcrnlK/VAskM7Ax6+leAaYqZIOdLWM=;
+        b=Gy3VxU7I5Zjhu3SbihQ8ttni5WmJ+nrHJtQ7DrouvkFXm2OWAlgzxCv9c/nVxtH4Xb
+         iwEKP0taao0v6IB7qhxQlkyS0OEspQzMFreGP93Ojo7Y+T6Sy0WZNL8o07g2M7STFFce
+         UyUXdKidzDgfWXQ4hfeZAFdEU9ChTfafQlB7VeQdV/xU8uFBKL/PisoCcs4YzhkZFSZX
+         do0gHz3pqUCr9639RsH7U7prmKcwbpVeYrerqNdBpoKhNH/a1Agh0yzneuEO62fHOsP1
+         BOiI4+gMl9fYSysCjtyV14q41pxZvrmeXnTj7/BdgXwWpsMKtQmcraQ8Au/c94a9kRFL
+         cBbA==
+X-Forwarded-Encrypted: i=1; AHgh+RpBMa0reEn0HK5YlAlGejdfVpBr6pXAz3NzFQ4YGjxB7P3d5kYnDeeRIIEEn/6XRvcplHZuOS6gZxNDwwph8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywt7Lp9+8WYtiK96pE2Mzv2lzOgqeQbyjVMpeFZ+BTm5M+xAY1U
+	WJAAqjxJ3hmbkOhcLaXufJB2ked+5542uWxsV/snIzSXgYJbTim5MJYbzIxCn7ekLz0=
+X-Gm-Gg: AfdE7clEhHOJnHSZJWQ8MLxcldbGESnp2ntNTs4j/9UQrmOa1ZfR1fxRWBrdH6vNN4S
+	L1CBci8uSSqqAjzVVEpJwJKPV93Ex+HyHMUM8az52tbAqYvp3MtUkM4PIuNAh5CDWPYpYRACfFU
+	0WZvnrAcSdlgWURUr8PygdWEsmeYEJ9MMd1D12m6LREFiCHc+uyMsuHJv8i+xKfJ5T/QyDQHq8Q
+	NvD6Tfw3pPV14F2XY274jtdCHC22AT9WDfHAEcSThfKpliAl7jMeJmUFInaGUi1PNsvQi3F60mo
+	ztj1zqOKD0rIp9MYKJHQmn6xM3L1RAYZQI+9C0h6cwFv6FP7Pf9Fdw/ZTRO1uO3H4gmq60cxu96
+	/SVi0apJ4yFO6J8kyL2o8gEfBe0J/JaJnOKvsdpYXyNJbqKb6gS1vKbkzpC1HLe4wxFtPujirOX
+	zkn5reXy1pcZGw
+X-Received: by 2002:a05:6a21:4849:b0:3c3:791e:5e12 with SMTP id adf61e73a8af0-3c3791e6ccemr234718637.72.1784105903773;
+        Wed, 15 Jul 2026 01:58:23 -0700 (PDT)
+Received: from localhost ([122.172.82.94])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659d8da9sm164351913c88.14.2026.07.15.01.58.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 01:58:22 -0700 (PDT)
+Date: Wed, 15 Jul 2026 14:28:20 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Priya Bala Govindasamy <pgovind2@uci.edu>, rafael@kernel.org, 
+	ojeda@kernel.org, boqun@kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pm@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu, 
+	ytan089@ucr.edu
+Subject: Re: [PATCH 1/1] rust: cpufreq: Fix temporary write in
+ Registration::bios_limit_callback
+Message-ID: <vbi4qqhyyzl3bnewb2dhk2qscebu3s2nkunv4dmzy54wqf2z2x@3pewe2nm2hck>
+References: <cover.1783456063.git.pgovind2@uci.edu>
+ <f56e1010822963b2f8133c63de47645834281007.1783456063.git.pgovind2@uci.edu>
+ <ouf2qqkiqgvn5yy6umr36ii5ltgacx3qthyhbol7ly3qn6lypv@pmkv27ngsbcf>
+ <CAH5fLgjHWsVc-o_kv9=CBPVWqHJP_V2kRN97C9b+6aHt8agb2g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1783456063.git.pgovind2@uci.edu> <f56e1010822963b2f8133c63de47645834281007.1783456063.git.pgovind2@uci.edu>
- <ouf2qqkiqgvn5yy6umr36ii5ltgacx3qthyhbol7ly3qn6lypv@pmkv27ngsbcf>
-In-Reply-To: <ouf2qqkiqgvn5yy6umr36ii5ltgacx3qthyhbol7ly3qn6lypv@pmkv27ngsbcf>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 15 Jul 2026 10:06:47 +0200
-X-Gm-Features: AUfX_mxcfDa7WSudj0Q6zu8VDrJ89ChidSgbwBc0KxRCpnunkL6_Q7YNcncqaK4
-Message-ID: <CAH5fLgjHWsVc-o_kv9=CBPVWqHJP_V2kRN97C9b+6aHt8agb2g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] rust: cpufreq: Fix temporary write in Registration::bios_limit_callback
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Priya Bala Govindasamy <pgovind2@uci.edu>, rafael@kernel.org, ojeda@kernel.org, boqun@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, ardalan@uci.edu, 
-	zhiyunq@cs.ucr.edu, dzueck@uci.edu, ytan089@ucr.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLgjHWsVc-o_kv9=CBPVWqHJP_V2kRN97C9b+6aHt8agb2g@mail.gmail.com>
 
-On Wed, Jul 15, 2026 at 8:11=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
->
-> On 14-07-26, 20:30, Priya Bala Govindasamy wrote:
-> > Writes made by `T::bios_limit` go to a temporary on the stack instead o=
-f the
-> > limit pointer passed by C.
-> > Fix by creating a mutable reference to the actual memory location of
-> > the limit pointer.
-> >
-> > Additionally there is a creation of a reference from the
-> > uninitialized limit pointer which is unsound.
-> > Fix by initializing the limit pointer to 0 before
-> > calling `T::bios_limit`.
-> >
-> > ---
-> > Fixes: c6af9a1191d042839e56abff69e8b0302d117988 ("rust: cpufreq: Extend=
- abstractions for driver registration")
-> > Reported-by: Dylan Zueck<dzueck@uci.edu>
-> > Reported-by: Yuan Tan<ytan089@ucr.edu>
-> > Signed-off-by: Priya Bala Govindasamy<pgovind2@uci.edu>
-> > Assisted-by: ChatGPT:gpt-5.4
-> >
-> >  rust/kernel/cpufreq.rs | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-> > index 58ac04c650a1..0f9385d41b64 100644
-> > --- a/rust/kernel/cpufreq.rs
-> > +++ b/rust/kernel/cpufreq.rs
-> > @@ -1349,12 +1349,12 @@ impl<T: Driver> Registration<T> {
-> >      unsafe extern "C" fn bios_limit_callback(cpu: c_int, limit: *mut c=
-_uint) -> c_int {
-> >          // SAFETY: The C API guarantees that `cpu` refers to a valid C=
-PU number.
-> >          let cpu_id =3D unsafe { CpuId::from_i32_unchecked(cpu) };
-> > -
-> > +        unsafe { core::ptr::write(limit, 0); }
->
-> Maybe add a comment over this on why this is done ?
->
-> Miguel, can we get around this somehow ? The driver is supposed to fill t=
-he
-> `limit` field and not use the uninitialized value.
+On 15-07-26, 10:06, Alice Ryhl wrote:
+> Why not just use a return value like this?
+> 
+> /// Driver's `bios_limit` callback.
+> ///
+> /// Returns the limit.
+> fn bios_limit(_policy: &mut Policy) -> Result<u32> {
 
-Why not just use a return value like this?
+Makes sense.
 
-/// Driver's `bios_limit` callback.
-///
-/// Returns the limit.
-fn bios_limit(_policy: &mut Policy) -> Result<u32> {
+Priya, can you make the change as per this please ?
 
-Alice
+bios_limit_callback() can be adapted as:
+
+unsafe extern "C" fn bios_limit_callback(cpu: c_int, limit: *mut c_uint) -> c_int {
+        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
+        let cpu_id = unsafe { CpuId::from_i32_unchecked(cpu) };
+
+        from_result(|| {
+            let mut policy = PolicyCpu::from_cpu(cpu_id)?;
+            let val = T::bios_limit(&mut policy)?;
+
+            // SAFETY: `limit` is guaranteed by the C code to be valid.
+            unsafe { core::ptr::write(limit, val); }
+            Ok(0)
+        })
+}
+
+-- 
+viresh
