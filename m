@@ -1,188 +1,121 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4933590AE
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 14:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901A43271EA
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 14:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784124565; cv=pass; b=RYw8O0oxhgkdTV9m1MoLPaEzGoJF5SjKmUX+OZ3oBIvpFIn8hy/D5jv+ENRngsWqsIfSDwXnjX0Y4gKcs+R/iDRJlLDlx22WR1vBfpxtyRVeU1vnHPkgyzHcgBDiQQH/8NjAWy7nTYvLMQ04xfdKxKT/PCvvQ8DzrHRdLqTf7bM=
+	t=1784125339; cv=pass; b=KgeGdBpe7TeGeYPEtIoEd6877JXKo0EoXzszxRNN6cU5Z1rObKUbeaFQAyGwkcAncPijkL3cgZ5UxxzFqPQ1biFSZVDju0XeTEU5oC/vbvP1I2o391m0duYU+MgqRtyRmMW5L9+LttFRc2nKVy7bcH2Yf9YuUITqUPcr4ujOb9E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784124565; c=relaxed/simple;
-	bh=SNqsn1X2G8kP/+EM1dJk3CmM2TUfgksbckY1LKNvZHI=;
+	s=arc-20240116; t=1784125339; c=relaxed/simple;
+	bh=BX+rSx/ebWQTJxtWffqE5TY9/TFNiZTpBvjgkrwyrCc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Otrcd5JXG8J7yupLjZg0lKsIzIWyIrbpsMzjKNB91+ele2w2ilaPJUjxBdwGFn3kt+O/OVRZt1pzlOZXa9QAfo3RpUp8/oA5xdrYeFJgGVn6FUmyMa6Yc7ylXdo4ntHpxbG9ojk+UivHHrWsQCcOe3e8GBqnKPMsO+uPqeDTrO4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UaSfAw47; arc=pass smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=L9pJyU7v1LXCo2B0Ip7Sqa3k14s9w5yCevbvwy4zMX7urFkVBexY9pzNlUXGE9pCKr41p+Yq47tSCdUfBNe3iywRvAECrMCcWQUJuO0MTFWLBS4W2T5O+89zVnJrRdB1lesLALww6Z3f7BEcmcryQepiIlhqT8fX2VtLZFQahMk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h6XCe11V; arc=pass smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UaSfAw47"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493c7902f47so46474865e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 07:09:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784124561; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h6XCe11V"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3860f32307bso869552a91.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 07:22:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784125338; cv=none;
         d=google.com; s=arc-20260327;
-        b=U3bdQGUtQwwDmm0o6yHwJtNFLfGWcUrTW8T+/RDWLtThmdnT5r5v8r03fVGnCDhGWs
-         PpFIoC4CxEWx/IIHrrxxV4I94A8v5ezZSgiG3+G53gp3en9Yhl4g2bWuVbPL8ML6tXIi
-         QDk8g6vfPJLy7yshVIH1+eS0sjIJ8ibaIq5YFV5hOpnpI41hxU8hH0nVoFqabPUZHrnl
-         4TR1U1vm+Kdyxu37r9u/VNv1LTlqbsaZ6lQtlfTdWGx78dwjeU0kfhsTX7ks2jgrlJdY
-         TZ/7naxq46v6NTPfrmP3oX1AbD+HEbMhbMe3Wyzn9CJMzDvSOGcJdjlo8RTRGdpQWlvC
-         nodg==
+        b=foX35Jk78qmxQyR39Mc1qmkgOvD8PJcIA+bqQPU9LWWbmqAjb6gU0cFmGc7G2z84v/
+         muzPJ5K7gxIfK7xpj1qjNuLZnigpbs3CrtcgFnvZmyRyNW1RvUdjN2jomOLYsvZfY9+A
+         w00efqV8DtqBBLosZGS1gXafIwGxNpdCEOpccbqnp2DwIqVmZrtHPX3WV2mw+b8O3+XZ
+         8f7w2QXkmFXwk8ojvKVGPN7TTqGXkuOo5xtxG8PmKx0hiT+NCiY0F8+ECU99sKWA7ia1
+         m6kKj09MEYNlMU0JJBDeGCs9+d/vAIr2gqM53/yD84uZ6IEV5UkMKDDQu+asGtvg8Kpc
+         559w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=1mcx5kizqsJiWKU3Assktv3idKETuJ14oVMLxFKExzM=;
-        fh=eoyyu4dAYNnZ9JI4/wy4/7SEsgSEoMkQFx1xOeLcb/Y=;
-        b=GBOA8E4A8DVDvC8BWjZ0OrRu89ymXGzPit12iLWfTBouDoMGtfeCq3HUn+EPJvNSAR
-         EnuIg+09fFRkn/rIrw3Hff/MSdV7uilwtpDREN2NXc+F+YqE0jxbFkMq0IdNERYcT/O/
-         qx2jTsN6x6tzqD8O1rcyrQI6015h4X5amgLHPwXpfVhV2NUDQFeoD0o8oItKSqsrcL5y
-         jw3pB78ftIuGAxE17CLEpg9DsuluUop6wuoCOMDyVHKnNcH0fv3hn2NQUm0WGuJs1LaQ
-         vl17WTAnd+76fuxfWocGNbp/PdNtpMuTh5W5irDci2q5DGnU34HGoMNIwVYwYAM8ouno
-         tYOQ==;
+        bh=BX+rSx/ebWQTJxtWffqE5TY9/TFNiZTpBvjgkrwyrCc=;
+        fh=eye2OPlMSRUmRlE5ByDYzSkGWRGHu2776sYmiRa1gMw=;
+        b=XHKLFLkIKCnJsDrwr5Gh33GEO+STAhj3V353X4s4LwkSm1lW91lNUk4lDVboxP8YI3
+         FyFXs0PKedJdYafGodaYOJ4QaXq4TPAjapYmYGwgeYgsvV5toE5fRY6CAaOhc4p6vjb8
+         pAMEV89sNXMh0JQ8JWg4Wb4zWxoFTHBrxikPOODFHBQTTfHNMjHIEvigRCGtBjVU6vlN
+         IuJNtAGrOz9FMlQGJwGpZ1v+bcpmEl5auZdWVogFV12t+DSO3CgtD57JTGnrID68zvTP
+         ueYW05ix2SOS5ZxZt+ClJWvS+b8e52qbKsUAefEKBgvL6vCMDBewd36sANvArEy/rWkj
+         JSkg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784124561; x=1784729361; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784125338; x=1784730138; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1mcx5kizqsJiWKU3Assktv3idKETuJ14oVMLxFKExzM=;
-        b=UaSfAw47mfe2To7mpkFVmc5n0JVKld4Zp9BlmAHPqKKjxaAcOi8Gc53dGuMtjTJkot
-         30OkIQx/GnCqe1zn9XcxNT+x5qXde9tenGtZDyE4It6anCRuW/ZjtNCqrLfWi8K/4fnh
-         IZXtQsK3I6YA2J1hoa7mLqfndnPAJPLGyJOJMkp/h8KOTYBX6cMrXxXNMT4fdByR6CGN
-         BSG6+u7Y733zuJuayhDf4DZiXRLfsEq6m9/ZcPk1pBEPRhEsQ2kfqLapk2yODzQEiVVN
-         LpoMEYzQZ4oaZ7Gg8QZuI/uIWZiu9JfYSv2atUROZuUEa9OQZxdVEuXf3eJrDSv7nZJB
-         JCwQ==
+        bh=BX+rSx/ebWQTJxtWffqE5TY9/TFNiZTpBvjgkrwyrCc=;
+        b=h6XCe11VjV1LRHmsDXKESTXyc5gITx9SwwGXAmM9pVUDDuW0BZyD4gmx9MgSI/gRgi
+         kDBYZF1H5gYT1VuTXydapJg2uI0NDY0DoPZ8sYqXUvGv8wBqh1zK2P6A1hrBGIxZhv4F
+         hwlGdGD/4dzLhKCBkzVm8UbnsVq8hZL90YJvUSDDca+PLJVFUFR/thUTCZhbZxcSy+SJ
+         gy66qEPXSdtlA1dxOc3+SMUM5CIHN7tZe5Bno3xzio02lIyNoMNjnSLj42Fi0tGX2QMZ
+         ZTO1ujxR+4s5+zBT8AFghN8QgGe/MK+lgByRnlWF/GupHLfgbeKtiNz3ZS8MhRVRy8XW
+         hROw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784124561; x=1784729361;
+        d=1e100.net; s=20251104; t=1784125338; x=1784730138;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1mcx5kizqsJiWKU3Assktv3idKETuJ14oVMLxFKExzM=;
-        b=gzWnuGSqcvF+CQ4XD1D5/vTRjDOrIgHmWPOTncKDBTcmdCsC4DGiEiE+C3AMbbJNYB
-         Ph9t88H8mG/QWY1+1TTQJMqDRSvifUE/McsE+Qjno27mDXgbi0ImUeGnMgeXBBepdfah
-         84JB70a7RO08ensrFKJi7iuwA2Jnv0s21RdJqLPfoMoe14FJr0bqu+dH/FXPZNagA7tB
-         R4SoG3si6K7Vm0aGupFxoHD0+2R3KD9G9TDcZPR8gvpblnwtifrPgiDpr8ZeJRE5apTA
-         TIre7IAhFX2+pNnvokxszK2l6BM2j0e0CJHo5X9Rguj+RuuRR8+VtZJOYQzQkX7pvy7t
-         AnLg==
-X-Forwarded-Encrypted: i=1; AHgh+RrUWfNItbu0VDBbobR+jrnTMxmqnS6/NvwG7YRNKdfczKc54uI6d/eVW3KKHk3GdeV7cKgJyFyliRAykQXvmQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzh8qcaOm5tQvhOoBktSt6ZLvQhcT1I2tJObooxNtkhmHDZev1+
-	BseaVQLH2FKjG8JJFAXWgT1yTj/clQB0aHW9hj6wAmcWTxQa4PLHh9z7zaRBoG10w8UQtlUHg0X
-	9ou0eZ/jTcQdajlkgeKA6EaSTIITNuhTos2PiSMRM
-X-Gm-Gg: AfdE7cnuabY/8hg2hRRcOeZTZtveC/4aAnK0IHpdJ/3xmC1FZW9ghGB5sGwm3hxunVq
-	lo/XCvD9TIyGJprA7sUb7D0jSp3Lf+h0PlM+rJFnORDi5QZzfFqEtlpND5i22D5jodU390ESH5P
-	7UEZ/RGIx17ZEonYowNgbdnOWsIXpcMzE/WNpsvfbyMprkV893JJeXd6QWnVROG3J96NotgjMvf
-	+ybYcO7/hq1u6A/tFuuQWkvmfZf+/FuvA5uNxE+fkgx1XLFFspFkY4jxOz1H7O2ibJtTwGiL9pD
-	ezQykgmw09owosHk3bDM4sLOJqg=
-X-Received: by 2002:a05:600d:8443:10b0:495:404b:85eb with SMTP id
- 5b1f17b1804b1-495404b8636mr4530305e9.26.1784124560869; Wed, 15 Jul 2026
- 07:09:20 -0700 (PDT)
+        bh=BX+rSx/ebWQTJxtWffqE5TY9/TFNiZTpBvjgkrwyrCc=;
+        b=Thj4fODY0IwEVhadWEUCLWwU/OLG2c3CdZvYVdUy1RLXSiH7G/NZIrQUrwc/77kjcN
+         WsH6QnD0w/1pPb3lnnC2WpuuM4DClDvKEntu+KAw/nTCHJrMThSVi68qlVSKu4/iTloc
+         9fpK+YXt3W/c2rfYjX3Qh+uQcsapMRo9C81MQr2aZNQRMwgwUsYiCXUMlh6GZPua99Ju
+         D/dEOWNY4kG5iyV41HzGufE9xG22n0A6g+6fS6clxWmCnx0mJ2oBbN3HgZbS1cRrzsmo
+         XkcONMRJTK3wFqWKJVFa+SoBrOhaBXyTlurevZvyqFbP69lxSjRMr0jfBmJR/rcP34uC
+         FxdA==
+X-Forwarded-Encrypted: i=1; AHgh+RqmzKs7MRIvZmFzU5zu6NpNTGNqHipny54EoZSK/1LTikBvs0jDNCX5CbBspsmJ7B2Yx3prTxaFTFq1tSlr+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3E9Yv1o/5VonbCzDXtyE1aITX7m+m7Mc3panG68rX5K3wVHlW
+	x5sdxQ604hkXQUeJZwcgU1lusJEZAZYN5iNfxVuM+DyxCCYdQ7ieg63/zUMbYOXP+RKmPr7xCNb
+	1PqMzH3sEgI5M5NfYdKeGrzpUtyHGkT+yQkCH
+X-Gm-Gg: AfdE7cn+qcPir7IAL1BTzO7lu8cF3+cVaomL8m4HR3sp+5MBZVcGHBE+XWBA5Qt+Uxm
+	781bNxCUswMkegKwpsxL2Hlxg9UScStjQGq84bVXJd+3TdRthfY5EfNJOoZRfrHzno5Yw58r19T
+	eKmFjizWCELaqb0dxZEO+C4YAhgp0OGH1Wk4BwXi/pQsYIgpHDqEAomI7YLslNJjHtHWYz0tSvE
+	OcwYrxvslWZx8aSA7eekRre7ZQ1yzMpboDBj6mLEBSc+MHnBq9rQwzMQZv/Jbfvuh+TqQ0z9WSV
+	/IdXfc5vm4wnoeFjFM3U0Y6cN92N/zpnUJi1AlFMPRTVrSjKJCOcCy3JZytIetuFntbeR1YQ1X9
+	Sdq25y3a2AfU3
+X-Received: by 2002:a17:90b:4f81:b0:381:77cd:38ca with SMTP id
+ 98e67ed59e1d1-38dc7bd893cmr11043179a91.4.1784125337865; Wed, 15 Jul 2026
+ 07:22:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260605133541.22569-1-boqun@kernel.org> <20260605133541.22569-5-boqun@kernel.org>
-In-Reply-To: <20260605133541.22569-5-boqun@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 15 Jul 2026 16:09:08 +0200
-X-Gm-Features: AUfX_myXsOMxqzySIL_c6wjy_KTMgParE-LvwcdXFSkdOBkOsDSHqrVd6QhTOvc
-Message-ID: <CAH5fLggHxeDMm1ygYEGPpjCdfRD8nEsgN31WMvjX3mMPs5p5yg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] rust: maple_tree: Add load_rcu()
-To: Boqun Feng <boqun@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	rcu@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Andrew Ballance <andrewjballance@gmail.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	maple-tree@lists.infradead.org, linux-mm@kvack.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	Philipp Stanner <phasta@kernel.org>, Lyude Paul <lyude@redhat.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+References: <qkuR2hizBbyuYmC9pigSGc_wAIN33sdtqV2v9CS9TjAP3UsxypcGi7F5_XXauq7AtTNawHIM2zR6awW7O1LsCw==@protonmail.internalid>
+ <20260712235246.3069713-2-tomo@flapping.org> <87ik6ghha8.fsf@kernel.org>
+ <20260715.212021.485543459172925773.tomo@flapping.org> <87cxwogywo.fsf@kernel.org>
+In-Reply-To: <87cxwogywo.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 15 Jul 2026 16:22:02 +0200
+X-Gm-Features: AUfX_mxviplK2v4-CYSmuje5qp_wYbs-_qiQG5vQ0_0LVWEL6oX2E_gGGotT0Pw
+Message-ID: <CANiq72n8-=QF7T9d8hon82eQktyRW-_1YsCQwnLZaWmmcx1hUw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] rust: time: add jiffies conversion helpers to Delta
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: FUJITA Tomonori <tomo@flapping.org>, aliceryhl@google.com, arve@android.com, 
+	boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
+	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
+	jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, 
+	tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 5, 2026 at 3:35=E2=80=AFPM Boqun Feng <boqun@kernel.org> wrote:
+On Wed, Jul 15, 2026 at 3:34=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> From: Alice Ryhl <aliceryhl@google.com>
->
-> Now that we have a concept of rcu-safe containers, we may add a
-> load_rcu() method to MapleTree that does not take the spinlock.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/maple_tree.rs | 52 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 52 insertions(+)
->
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> index 265d6396a78a..1499191b8935 100644
-> --- a/rust/kernel/maple_tree.rs
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -16,6 +16,10 @@
->      alloc::Flags,
->      error::to_result,
->      prelude::*,
-> +    sync::rcu::{
-> +        self,
-> +        ForeignOwnableRcu, //
-> +    },
->      types::{ForeignOwnable, Opaque},
->  };
->
-> @@ -233,6 +237,54 @@ pub fn erase(&self, index: usize) -> Option<T> {
->          unsafe { T::try_from_foreign(ret) }
->      }
->
-> +    /// Load the value at the given index with rcu.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// Read the value under an rcu read lock. Even if the value is remo=
-ved, it remains accessible
-> +    /// for one rcu grace period.
-> +    ///
-> +    /// ```ignore
-> +    /// use kernel::{
-> +    ///     maple_tree::MapleTree,
-> +    ///     sync::rcu::{self, RcuBox},
-> +    /// };
-> +    ///
-> +    /// let tree =3D KBox::pin_init(MapleTree::<RcuBox<i32>>::new(), GFP=
-_KERNEL)?;
-> +    ///
-> +    /// let ten =3D RcuBox::new(10, GFP_KERNEL)?;
-> +    /// tree.insert(100, ten, GFP_KERNEL)?;
-> +    ///
-> +    /// let rcu_read_lock =3D rcu::Guard::new();
-> +    /// let ten =3D tree.load_rcu(100, &rcu_read_lock);
-> +    /// assert_eq!(ten, Some(&10));
-> +    ///
-> +    /// // Even if the value gets removed, we may continue to access it =
-for one rcu grace period.
-> +    /// tree.erase(100);
-> +    /// assert_eq!(ten, Some(&10));
-> +    /// # Ok::<_, Error>(())
-> +    /// ```
-> +    #[inline]
-> +    pub fn load_rcu<'rcu>(
-> +        &self,
-> +        index: usize,
-> +        _rcu: &'rcu rcu::Guard,
-> +    ) -> Option<T::RcuBorrowed<'rcu>>
-> +    where
-> +        T: ForeignOwnableRcu,
-> +    {
-> +        // SAFETY: `self.tree` contains a valid maple tree.
-> +        let ret =3D unsafe { bindings::mtree_load(self.tree.get(), index=
-) };
+> I think widening to 128 bits is fine. My question is why `NSEC_PER_SEC
+> as u128` instead of `u128::from(NSEC_PER_SEC)`?
 
-I think this is only legal if MT_FLAGS_USE_RCU is set on the tree. :(
+Yes, please avoid casts if possible.
 
-Alice
+Regarding `u128` -- please make sure it works in 32-bit architectures.
+It seems like you are doing a 128-bit multiplication there?
+
+Thanks!
+
+Cheers,
+Miguel
