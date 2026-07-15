@@ -1,78 +1,67 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833CD3D9532
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 08:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F364F4156DB;
+	Wed, 15 Jul 2026 09:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784105907; cv=none; b=c8dzwqcgjZ9J+rNiaWCsAYvZGouSKaiyhj/3ysczxhB01XW8TcgPAG+3LcoK4DhCZEPqbeVvSzzKf5vgk+MIqx2mkjNiUlljRrjrxJb22V7QwH7tB4ZeGE8+Mc8tIOtlaInjx0El9I+mkJECcQJeFo8RWlViXJNYwW2fiPT8puk=
+	t=1784106784; cv=none; b=TiOdrs++wH1urLyLMp6gojBmB2MlqiLfBUESLakgRWaN2Jn3IpMRhVBwJNae2yqp+wihu1FGkKDujRVZMDDU+WC7odVnIibNlbXKvGEncvk8DZmyY3ek6y62tLzVo/WEJbjsyFNxPNdu9Iaxk8vuj6jvoXJwjMYdPv3tUYYmquQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784105907; c=relaxed/simple;
-	bh=OFFG33vQhgFzNtMM8+ZEc1yIjErwJeaRKkvGlmr/540=;
+	s=arc-20240116; t=1784106784; c=relaxed/simple;
+	bh=ZuI6c56qCbvtlQu9iW6eSgb7tuRCOSj5bRlR3Wi83aU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=clCBUenyOUiWhLv5krueiIWdQXTd/Tjp8CpuTiz2GwSJik+oH8yNg+xCX9LhXRxynzMA80bfTw4qEIpkhk/kUhQpi4ls3yLArR2U7L8+54wvPrDl/J9OG4aYfPLYPCwNK6F+MEcXd1vRS7E4SNlpIxM/PX88Ac6fI00XuevfW90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Cxt42wCB; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=gkGi2B82JoNaK7/btP12IHTR6g40w+JFm3ZxNSYHiZadx+Tzd8OMVvyOhkkevFlDbZTPG3eyijcR9BPV+HrEveVggM39jiaeZEDuKJ4t+pY60RXw8Io4AX+nQ4d6/3+fEfwMu6wP8ILR3OIms9keZN68P7BFJYdE31HG7r0b0Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdW6QMex; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Cxt42wCB"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3810c5d691bso4075688a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 01:58:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1784105904; x=1784710704; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oWc1JQgdI1fGiAcrnlK/VAskM7Ax6+leAaYqZIOdLWM=;
-        b=Cxt42wCB7/JDMDWKRcX5lQlzJdnXYOZJgmslMs/Sm8pMh/YZnj/el/WRsivvajYLxF
-         c1KJOuumtuLEjWV+3xc2SL12ESWI7GlzuOzj0xPPJhqjltTeYjnQJy0ZpAVNfLolF6xq
-         QdO78g7meGIizLB4UNxNmJW+sxVozaQuJ7VN7Q6cIjr7WwjGmN3qMJKydzo1iPVKCgBs
-         9rb/FsUK5VaXhj0UKOAHKtPLqkRb7Q+M8X2+84rz0jklGttpipOiLh248FQnndrWSr2C
-         AzmzWs0u25Vn3MQ9IMzJqR+euJx+ghORX5I8EEaK2e5vSSLVSe4UUakst+HUD8y4IIzz
-         t3MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784105904; x=1784710704;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oWc1JQgdI1fGiAcrnlK/VAskM7Ax6+leAaYqZIOdLWM=;
-        b=Gy3VxU7I5Zjhu3SbihQ8ttni5WmJ+nrHJtQ7DrouvkFXm2OWAlgzxCv9c/nVxtH4Xb
-         iwEKP0taao0v6IB7qhxQlkyS0OEspQzMFreGP93Ojo7Y+T6Sy0WZNL8o07g2M7STFFce
-         UyUXdKidzDgfWXQ4hfeZAFdEU9ChTfafQlB7VeQdV/xU8uFBKL/PisoCcs4YzhkZFSZX
-         do0gHz3pqUCr9639RsH7U7prmKcwbpVeYrerqNdBpoKhNH/a1Agh0yzneuEO62fHOsP1
-         BOiI4+gMl9fYSysCjtyV14q41pxZvrmeXnTj7/BdgXwWpsMKtQmcraQ8Au/c94a9kRFL
-         cBbA==
-X-Forwarded-Encrypted: i=1; AHgh+RpBMa0reEn0HK5YlAlGejdfVpBr6pXAz3NzFQ4YGjxB7P3d5kYnDeeRIIEEn/6XRvcplHZuOS6gZxNDwwph8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt7Lp9+8WYtiK96pE2Mzv2lzOgqeQbyjVMpeFZ+BTm5M+xAY1U
-	WJAAqjxJ3hmbkOhcLaXufJB2ked+5542uWxsV/snIzSXgYJbTim5MJYbzIxCn7ekLz0=
-X-Gm-Gg: AfdE7clEhHOJnHSZJWQ8MLxcldbGESnp2ntNTs4j/9UQrmOa1ZfR1fxRWBrdH6vNN4S
-	L1CBci8uSSqqAjzVVEpJwJKPV93Ex+HyHMUM8az52tbAqYvp3MtUkM4PIuNAh5CDWPYpYRACfFU
-	0WZvnrAcSdlgWURUr8PygdWEsmeYEJ9MMd1D12m6LREFiCHc+uyMsuHJv8i+xKfJ5T/QyDQHq8Q
-	NvD6Tfw3pPV14F2XY274jtdCHC22AT9WDfHAEcSThfKpliAl7jMeJmUFInaGUi1PNsvQi3F60mo
-	ztj1zqOKD0rIp9MYKJHQmn6xM3L1RAYZQI+9C0h6cwFv6FP7Pf9Fdw/ZTRO1uO3H4gmq60cxu96
-	/SVi0apJ4yFO6J8kyL2o8gEfBe0J/JaJnOKvsdpYXyNJbqKb6gS1vKbkzpC1HLe4wxFtPujirOX
-	zkn5reXy1pcZGw
-X-Received: by 2002:a05:6a21:4849:b0:3c3:791e:5e12 with SMTP id adf61e73a8af0-3c3791e6ccemr234718637.72.1784105903773;
-        Wed, 15 Jul 2026 01:58:23 -0700 (PDT)
-Received: from localhost ([122.172.82.94])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659d8da9sm164351913c88.14.2026.07.15.01.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 01:58:22 -0700 (PDT)
-Date: Wed, 15 Jul 2026 14:28:20 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Priya Bala Govindasamy <pgovind2@uci.edu>, rafael@kernel.org, 
-	ojeda@kernel.org, boqun@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pm@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu, dzueck@uci.edu, 
-	ytan089@ucr.edu
-Subject: Re: [PATCH 1/1] rust: cpufreq: Fix temporary write in
- Registration::bios_limit_callback
-Message-ID: <vbi4qqhyyzl3bnewb2dhk2qscebu3s2nkunv4dmzy54wqf2z2x@3pewe2nm2hck>
-References: <cover.1783456063.git.pgovind2@uci.edu>
- <f56e1010822963b2f8133c63de47645834281007.1783456063.git.pgovind2@uci.edu>
- <ouf2qqkiqgvn5yy6umr36ii5ltgacx3qthyhbol7ly3qn6lypv@pmkv27ngsbcf>
- <CAH5fLgjHWsVc-o_kv9=CBPVWqHJP_V2kRN97C9b+6aHt8agb2g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdW6QMex"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id DB95F1F000E9;
+	Wed, 15 Jul 2026 09:12:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784106780;
+	bh=bbsxyVWqOGFhtr4W+a8jv4bdeufYTgNlzVGO/0yDsl0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cdW6QMexC3OBVbgSpjjXQqo42CJ0wcbnhev8oKN0bF56iq/0jgg/Vg1/a958vAFBk
+	 /LnU9l+qWYidpPizZBb6d8ggzR9+6c36kCaxelGu3kq4p7t0x9uw4nWYYLbZa9COCD
+	 OLqOw3mG+V/9IFz5aC7KiMakxWew3Q1jdZr9N8itGJjZkFzRJHmW5nlRIlVWBjen4f
+	 8BVYdEyYoU5r3+ah9eERkcUoUPiqZizBHC5wherA8qCDm9+DJS2FBazI/uwFWNvvSH
+	 qWKAM7WiilJhVxzcsfMNT4IR9QPgeHYJVlsq62kE7m9XfEU/Zptit6be5s3cPXseDV
+	 qLufT9NBiQInw==
+Date: Wed, 15 Jul 2026 11:12:04 +0200
+From: Nicolas Schier <nsc@kernel.org>
+To: Sergei Litvin <litvindev@gmail.com>
+Cc: miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	nathan@kernel.org
+Subject: Re: [PATCH v4] scripts/tags.sh: Add support for rust source files
+Message-ID: <aldO5D9hHVSdcM_W@levanger>
+Mail-Followup-To: Sergei Litvin <litvindev@gmail.com>,
+	miguel.ojeda.sandonis@gmail.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	nathan@kernel.org
+References: <20260714122441.78158-1-litvindev@gmail.com>
+ <20260714125259.78824-1-litvindev@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,35 +70,26 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAH5fLgjHWsVc-o_kv9=CBPVWqHJP_V2kRN97C9b+6aHt8agb2g@mail.gmail.com>
+In-Reply-To: <20260714125259.78824-1-litvindev@gmail.com>
 
-On 15-07-26, 10:06, Alice Ryhl wrote:
-> Why not just use a return value like this?
-> 
-> /// Driver's `bios_limit` callback.
-> ///
-> /// Returns the limit.
-> fn bios_limit(_policy: &mut Policy) -> Result<u32> {
+On Tue, Jul 14, 2026 at 02:52:59PM +0200, Sergei Litvin wrote:
+> When executing the command `make cscope`, the `cscope.files` file generated
+> by it includes only filenames with the extensions *.h, *.c, *.S and not includes
+> filenames with *.rs extensions.
 
-Makes sense.
+With removed Cc trailers and adjusted line break in the commit message, applied
+to kbuild/linux.git (kbuild-next-unstable), thanks!
 
-Priya, can you make the change as per this please ?
+[1/1] scripts/tags.sh: Prevent binary files appearing in cscope.files
+      https://git.kernel.org/kbuild/c/4859c0d5
 
-bios_limit_callback() can be adapted as:
+Please look out for regression or issue reports or other follow up
+comments, as they may result in the patch/series getting dropped,
+reverted or modified (e.g. trailers). Patches applied to the
+kbuild-next-unstable branch are accepted pending wider testing in
+linux-next and any post-commit review; they will generally be moved
+to the kbuild-next branch in about a week if no issues are found.
 
-unsafe extern "C" fn bios_limit_callback(cpu: c_int, limit: *mut c_uint) -> c_int {
-        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
-        let cpu_id = unsafe { CpuId::from_i32_unchecked(cpu) };
-
-        from_result(|| {
-            let mut policy = PolicyCpu::from_cpu(cpu_id)?;
-            let val = T::bios_limit(&mut policy)?;
-
-            // SAFETY: `limit` is guaranteed by the C code to be valid.
-            unsafe { core::ptr::write(limit, val); }
-            Ok(0)
-        })
-}
-
+Best regards,
 -- 
-viresh
+Nicolas
