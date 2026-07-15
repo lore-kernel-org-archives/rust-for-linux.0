@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EA11DE4F1
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 13:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7DD2EEE63
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 13:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784122454; cv=none; b=CKOkjW/+kxM8ufJeet/z7fiWLLL0jxPVFhKl1zx2i9LWHP83BaZhSl1DLrWOt3z4mtx1N8tkHU9s7i7l3bD3JXngh79X8sbJqRfHZUqiqQU7UJ4lJvgDygIp5hGIi4mcIGQ2zwAZkJgYdDQO1cyaPLeWoxx38rm8VYB4r+EjfiA=
+	t=1784122658; cv=none; b=IG4ad3JaUxKdymEepdtwwHBTFooVUVAoAqvY2XI+7pF1fbqtp+Q21pxwKj38TElYSI+obchHfsBy2QsJHeMU1EBdn3heA8WAUq3RpPAHzq1Cr2hlDc7YmkztfzN461ODXGlIW8ClJwd7TrU17jnD2je5vb/ee4t9QYtVhc84KZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784122454; c=relaxed/simple;
-	bh=WicUkYcnfqsmeDqktuOSbN/9omsJ6ynfarTG99BrouA=;
+	s=arc-20240116; t=1784122658; c=relaxed/simple;
+	bh=yf9XzCZFc5g7b2/Db0e2WgjDAv23QAStE2Dt3OzcWug=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AmFqCLhp19fBpdUjzDT5UBG+klhctrteBN6oJEfMnVCCPryw3kencIaS7rluLrrBfazsTdSDxA8It5lQc9kVPwSCJJ1Nu44jjtWjc8PgSIqat3ZBfsFn1uUdvlxI7aJ0wkyU5Xq5JfiuPb5Kt6tQEt7z5j8vSuf4Sb8YvI3a9Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0DLNPqk; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=gYy2tm/NUrAqadxFYpGC49oO4AvAE987MIU38GoG2NktFR+54sA5Xzepbacna/9RWyEFgsekZoMFgOXu327W3rI79347KKnFB+BidN3JSiQQWjjFFOsZLnG99bMmI0UWkE85ASZjzewWR4PKqXLShCad6SlC0gSZ+9cAou5V8AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jcfv+pBu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0DLNPqk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448B81F000E9;
-	Wed, 15 Jul 2026 13:34:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jcfv+pBu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AE91F00A3A;
+	Wed, 15 Jul 2026 13:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784122453;
-	bh=XmdICwKCxqQc9yRNGlXZxOHfGZUHHeNQ8Xhx7cbzLzk=;
+	s=k20260515; t=1784122657;
+	bh=vgtPuIR2nGutJO0rUN//ADPG8TDSUsS2cdfbbasNal8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=K0DLNPqkiulnLfNCMRafJ21lk+JVtEG1nwQqkNL+uZMOImtw61snSUCleNJFXH2B7
-	 E0qcv+1vGH2xuhYf4Do4gW5BlXWdg3FApgvIlCMBQHmpjA3RTrScIFt++G9Y4+89F1
-	 C8tlGZ7XRXIjsVBX6C23JbArAR06kQphfm8H7eAZa5/smI3NNiErceZkvhK/OuA14m
-	 +vbF3xqT6KMqdmXyCKN3TvVG3+OJRjsp+PmFt9XAHPHXmGZ8LsahFefVBs2PiGXo6C
-	 klifAXQdjKqmx5CMUkHn8ymIvaz3ZI8BjB1SWrt7G55vZSeHLW5cKira9jLxA85UhN
-	 7juPhvPwnGxLg==
+	b=Jcfv+pBuf5FLttOz7RVemSmzRUiVd+pKGQJeVob7Y4S2QmDCIisVXCfjVQYF+caO9
+	 JIkFg9R/PA9qjfmduY7BJPpQQQi/OOmMV8ms9Whnt2v/aTqrnVnEWIhiyraZdELGTe
+	 hSPDE/uDgr2bBGA01c2wVHo6DrM9LLsrqSJA7Cmar7x7l7mx+qMq4SymVJsft9JHRW
+	 mvXunQWiKmjaWpC8uf3HoYnWEQmakidldxff/OLXxZiAtdfk7WYocnxYI/ZGXS2ZHQ
+	 kaVN4FC4o+SAUDW90rCJqtJP6qguAO/HE/UEookMGC34jzJapBxLTbLru3ydhxbOxe
+	 S9NhI+V9Chrww==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: FUJITA Tomonori <tomo@flapping.org>
-Cc: tomo@flapping.org, aliceryhl@google.com, arve@android.com,
- boqun@kernel.org, brauner@kernel.org, cmllamas@google.com,
- gary@garyguo.net, gregkh@linuxfoundation.org, ojeda@kernel.org,
- tkjos@android.com, acourbot@nvidia.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
+Cc: tomo@aliasing.net, ojeda@kernel.org, gary@garyguo.net,
+ dirk.behme@de.bosch.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
  frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
- lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v2 1/4] rust: time: add jiffies conversion helpers to Delta
-In-Reply-To: <20260715.212021.485543459172925773.tomo@flapping.org>
-References: <qkuR2hizBbyuYmC9pigSGc_wAIN33sdtqV2v9CS9TjAP3UsxypcGi7F5_XXauq7AtTNawHIM2zR6awW7O1LsCw==@protonmail.internalid>
- <20260712235246.3069713-2-tomo@flapping.org> <87ik6ghha8.fsf@kernel.org>
- <20260715.212021.485543459172925773.tomo@flapping.org>
-Date: Wed, 15 Jul 2026 15:33:59 +0200
-Message-ID: <87cxwogywo.fsf@kernel.org>
+ lyude@redhat.com, sboyd@kernel.org, tglx@kernel.org, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v3] rust: hrtimer: Restrict expires() to safe contexts
+In-Reply-To: <20260715.202254.38223441240127219.tomo@flapping.org>
+References: <hGNrgHLZgzaLAav_TQCJaAHYX3aWSPyoHeXEf7u3ioJunfoFTIPF9Q8PnCvfRKXq2SS-fNdOn35uMiTaF90nKA==@protonmail.internalid>
+ <20260303061000.73970-1-tomo@aliasing.net>
+ <87y0gcf9xw.fsf@t14s.mail-host-address-is-not-set>
+ <20260715.202254.38223441240127219.tomo@flapping.org>
+Date: Wed, 15 Jul 2026 15:37:25 +0200
+Message-ID: <87a4rsgyqy.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,62 +52,49 @@ Content-Type: text/plain
 
 FUJITA Tomonori <tomo@flapping.org> writes:
 
-> On Wed, 15 Jul 2026 08:57:03 +0200
+> On Thu, 18 Jun 2026 11:56:59 +0200
 > Andreas Hindborg <a.hindborg@kernel.org> wrote:
 >
->> "FUJITA Tomonori" <tomo@flapping.org> writes:
+>> "FUJITA Tomonori" <tomo@aliasing.net> writes:
 >> 
 >>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 >>>
->>> Callers that hand a timeout to some C APIs need conversion between
->>> Delta and jiffies.
+>>> HrTimer::expires() previously read node.expires via a volatile load, which
+>>> can race with C-side updates. Rework the API so it is only callable with
+>>> exclusive access or from the callback context.
 >>>
+>>> Introduce expires_unchecked() with an explicit safety contract, switch
+>>> HrTimer::expires() to Pin<&mut Self>, add
+>>> HrTimerCallbackContext::expires(), and route the read through
+>>> hrtimer_get_expires() via a Rust helper.
+>>>
+>>> Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
+>>> Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-host-address-is-not-set/
 >>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>> ---
->>>  rust/kernel/time.rs | 30 ++++++++++++++++++++++++++++++
->>>  1 file changed, 30 insertions(+)
->>>
->>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
->>> index 363e93cbb139..cd054ea5df02 100644
->>> --- a/rust/kernel/time.rs
->>> +++ b/rust/kernel/time.rs
->>> @@ -377,6 +377,20 @@ impl Delta {
->>>      /// A span of time equal to zero.
->>>      pub const ZERO: Self = Self { nanos: 0 };
->>>
->>> +    /// Create a new [`Delta`] from a number of jiffies.
->>> +    ///
->>> +    /// If `jiffies` is large enough that the corresponding number of nanoseconds
->>> +    /// would overflow an `i64`, the result saturates to `i64::MAX` nanoseconds.
->>> +    /// The exact threshold depends on `CONFIG_HZ`.
->>> +    #[inline]
->>> +    pub fn from_jiffies(jiffies: u64) -> Self {
->>> +        let nanos = (u128::from(jiffies) * NSEC_PER_SEC as u128 / u128::from(bindings::HZ))
->>> +            .min(i64::MAX as u128);
 >> 
->> In general for this patch, why are some widening operations using `from`
->> and others use `as u128`? Is it not possible to use into/form for all
->> the widening operations?
+>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-> When NSEC_PER_SEC % HZ != 0, we need to multiply jiffies *
-> NSEC_PER_SEC before dividing by HZ.
+> One thing I'd like to double check before merging this,
+> HrTImerCallbackContext::expires() now does:
 >
-> What the C side does is:
+> unsafe { self.0.as_ref().expires_unchecked() }
 >
-> u64 jiffies64_to_nsecs(u64 j)
-> {
-> #if !(NSEC_PER_SEC % HZ)
-> 	return (NSEC_PER_SEC / HZ) * j;
-> # else
-> 	return div_u64(j * HZ_TO_NSEC_NUM, HZ_TO_NSEC_DEN);
-> #endif
-> }
+> which briefly makes a &HrTimer<T> from the NonNull<HrTimer<T>>.
 >
-> We could replicate this with a cfg/the C side's const-eval
-> computing. But I think using u128/i128 is simpler. What do you think?
+> This is only sound today because `HrTimer<T>`'s sole field is
+> `Opaque<bindings::hrtimer>`. As you pointed out earlier, if we add a
+> field to HrTimer, "stuff breaks".
+>
+> Should `expires_unchecked` just keep taking `self_ptr: *const Self`,
+> like `raw_forward()` (and like v2 did), so
+> `HrTimerCallbackContext::expires()` can stay on `self.0.as_ptr()` and
+> never form the reference at all?
 
-I think widening to 128 bits is fine. My question is why `NSEC_PER_SEC
-as u128` instead of `u128::from(NSEC_PER_SEC)`?
+Either way is fine for me, but Gary seems to gravitate towards the
+current solution, so maybe keep that? We can add a "// NOTE:" on the
+struct definition saying that soundness depends on all fields being OK
+with this caveat.
+
 
 Best regards,
 Andreas Hindborg
