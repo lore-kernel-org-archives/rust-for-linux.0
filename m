@@ -1,164 +1,131 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0483ED5B3
-	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 10:31:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784111463; cv=pass; b=hBYoT2Mpa+k8xlT/LN+6/gSmNjvgUtQMOJap3WtLX7cr/vS/Bls2hM7mXXgkaQlD5UbH5OV8IYCTol7+8ESbkRJ998WHpMi+YqsqE9XqQlhMQ3iSvWXVPeBFp2sRlzGIUwu+CBXyuwXPs2hm1MuqS9qYiPZDmtKqMRbdEjyUUoo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784111463; c=relaxed/simple;
-	bh=zCVEWbgPtNQZ1Mf0SSgc/9MVLe94ygEvCMPHUAjF2Nc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=unSuIZ6QDdaf2I44w5GtE0X53s7KS6LQSgX7JknaoUbGjrGyObykMXK6z+eQDzQNg8qqocgze61koUCcO0qUn94GKYtfuXSGWKHSun29/4kReX9HKn5onLNSmR4KyhSBPxp0B8R1GOUZYrAerqiSxHmSrDz3uRai6ZgFdRF4wXI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClVGaUhF; arc=pass smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BD13CF212
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 11:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784114585; cv=none; b=DdhbYnbdrzENTKQ112vjSxcuOUssF2/XYr8fxO9FqeCnHpZTLhSDW/xiJ9ShJR9NNjZRPB289JcONOAp6b3zMd/4r4Z9J3JOhSF7cbrLc3Hq9PzwnekYHwNEKaxPYV9xk7n7JplPwBrfyADV8yEtpy6H8gIKenn/MxaO6dvBm8U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784114585; c=relaxed/simple;
+	bh=RJ4GMvgHUEjMt1h+1dIeJFIcmItdoeU2PrmOdj9ktn8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=U2/ZMvYZ4gJWPD48XSlsdq4aU3UNogiIMlttjBZ1t61dtYPpTLgL1kEq+MQgFI3ie1GfF16qoMvJe9vojIaw95AL4AszLab3X2JRBiR4Q0P5ZXYBxo/EZYFBKsmOMxnTj5Nldl8UB6QyjF7BiVYTio+Yp+l6cqsfgtYvTkUOMeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=lhRleoyz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VEVr/mEX; arc=none smtp.client-ip=202.12.124.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClVGaUhF"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-384caf7b168so665004a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 15 Jul 2026 03:31:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784111461; cv=none;
-        d=google.com; s=arc-20260327;
-        b=H8Ttz0PI1IvWoteBsI0Mg1G+MfOI4A57wbKwZZP7t+TI9n48bCkswzmR/4mo/AcKh6
-         r5kvFQFVxhmceSL9LzNhIZy8FYypD6EarQaQWnjOnHbBcEv3KVeGdxQBKxyDeUhn6ktR
-         6i6CcyfII45cVqdd1NZONy0Y7klr0pmwfQPQq/0kSMKMidGql7TfxoUEJPvnoOcY3LtH
-         l2jXNmfRtZn7VK7mmkoQhnR0LEUQSx/aVLQ/UXwp9NrObdO2mxEsyre07ZQkMwURz9RW
-         KeT+tHNX8Dxyseb2sXcb6kt2n2l76PBRL4nZxk8EOpqIBV9c+OExZ8SFLOjioGYpI9He
-         wmGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7I5s1r4zbwdDnFUPkYxXrynK0Xpz2B6Wc1hGmhEooeE=;
-        fh=V6m03tkn9tnG46uI/GAGtt+PJKYNbeH6lvUuSkRzej8=;
-        b=H5/KXreZCFeDzPUijVG9MTOhCgwEhFTDaSahc9HFn8KFZUkYKgN7jly5gQxEWpEG6C
-         4ivx/HiWlUe22HAeynISZVyoo4N10v7k9tglTE5POJZvBFAFpyZ2oqhA4Ul8qJ74CRmi
-         yaAmVtjA4+vO5rt0Kuxkn0emolg+ivr+BMBrXpi1jRSv5CzDV57qOMJNUlEBNXrRyppa
-         D1NGTe9pS/8jnDdsvmKZ/thKLwKd6U3OK33hKCRxLja8D4d9CekxmBZgomk6Q5nTz9VV
-         u22YjNsQqWX1i4tHUNjKWWmoeFUkPw86n12mlXLURym0O2hznyaw6WeWL4gBnHGZL3K4
-         231g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784111461; x=1784716261; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7I5s1r4zbwdDnFUPkYxXrynK0Xpz2B6Wc1hGmhEooeE=;
-        b=ClVGaUhF6WpO8z2Yn90X89Qio7kq7FZtqBOpZGVUPZU7HvFM3y/WgL9KmcZsOHowyp
-         k59F9LwYQcihBqKg+SIN2zqg1sMQRMEPug5WP8FCbbsPIiF1cHCpynJ+7fQ1+KBuaCWR
-         Y0lx5qUE/7R7OTJrtobidRwDWwx91+WCQpX+0rMmnc76tXRkpLtnNw6j7+NjloudhhNk
-         fFfg5tSo7txJGj8hoGEcyiLGgkI1CiSxSyvRnqqw4azVUZ9husZSCD4YTrQInDM0Hoo3
-         3zszl/SfOSOemoL1qt/ygtvwmoNE1PrM5VRrW5xVoTg8LY/ZrTEQHJjUojiiDe8aLsaS
-         Ax9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784111461; x=1784716261;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7I5s1r4zbwdDnFUPkYxXrynK0Xpz2B6Wc1hGmhEooeE=;
-        b=Nge81QyuAPxV9sqOcJ46+365kKEfJaB2QDKxZY7EOUKKNtvQFM1HRM/1A+HxSelTGn
-         Qvypsf+Na3kzOuK1kwrAaHshbEJGCm5Bt60T7OKGeHTZnik/nSu4P3cUzKyAHzHpQxFl
-         N1aFaxHletXJB/VPUQDRqoFFGON+J2UKid4HFXLldTkQOGV4/Rpszy+qLzh+Hx1HZjMi
-         RUYEu1sRi+YtuCYbny+eLn1AkWN6UVik2viFZmmGgaxCISEIHx9sEQ3hMo9HRlKVNzAv
-         8EJHzdT4FJCXf7mKA22Ap+pkMCpYFomwX5awFvjxm/VeK0kVWcB1uFtAB63Hw3IYQB22
-         jtIw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqqnr+mHD/6S+K9NMbToG/7qtdAqzN09gUFk9TgLpPSOEgZ6+yCQs1ffbkANEps0f1SJy4gpHiwKpzLLAjFQg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGd04VDL5FRwiYaDjdOU1uQ4EduO2BJqvHZm+/bJ4fX3lIC3bL
-	yHdDCGBWXnjUs/5KI56c6IOhOXyqLLP6uITKgV2+DBIKtnuwtikiI70lmz6Ku3ctqNTr+SuBF4F
-	eS/WHmN69oFpihnOIFTNpeDmvDxTBuwM=
-X-Gm-Gg: AfdE7cm7m96ZWKgVR99nTyEl+qKhFNup1vYvF4BbcGhzGLnWyBRIyRDnsV2l8UQXsUZ
-	v/Y6JPRXaIxunmnYQThQ0jC7R4BlcuVEBgyXnI/xz6gcJpDBSZ2+2L9ZimWUXR4wyQC1x8HeM0Z
-	0RdNI+MhIr2FJL+sogPzdpyh+SW7f5/BsuLnXYSBGMX0oalU3+DuZzDzb32KwVGhkFLopXRRiuZ
-	i7hs4tr9ZWFXi5n7gbtLu+gvFlp0M1fTbu27i5oHpwxZ4JmcNlM5RXmCN5X5U+H+2l6coYnCgBI
-	eTJs09Fpr309jnv22nNbTxqe8O/8XMCwW3zLHef57hTKYlxeNw1ubckJGnQoREXd0KQCARkvvLY
-	5s1QAtv0I6tHL
-X-Received: by 2002:a17:90b:4d08:b0:38d:fe7d:2a83 with SMTP id
- 98e67ed59e1d1-38dfe7d2abfmr8330874a91.3.1784111460832; Wed, 15 Jul 2026
- 03:31:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="lhRleoyz";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VEVr/mEX"
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailflow.stl.internal (Postfix) with ESMTP id 4AC03130009A;
+	Wed, 15 Jul 2026 07:23:02 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-08.internal (MEProxy); Wed, 15 Jul 2026 07:23:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784114582;
+	 x=1784118182; bh=CI8TvT9WeH5WeYauNk8nvqcgjGVjpLD/kx3YeTQ1+IY=; b=
+	lhRleoyzElmt6O7a1k/inDsJVv2+4FhOutHZ6xX8LGFSgGLPieZ6GIgO3pJtFJqc
+	3zA7dcNApbxZcCbyuZUiDefe5gquABw5NWGm+7yWwxN1JaEWBQVnQU2FujRgr/U1
+	VvPoSkI+rSQ6yUno08f4nHr3Hx0771dYCrcHcTjDoQSJRozxKdj2fomq2415L1ql
+	ILMWZy1YcQoGVa1ZFVCs4XKLgmkvkM8LHUgDa6dLMn2iOoo7nUQ/REFgCAKNwutB
+	PGVhFY3C6jVwHA7ZjSuvD5e63/Afmt0l0ZRhhhjpvLvzp/Odljl5XXua3o1rjFBW
+	B00r9PSyizZCAhHpYCJggQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784114582; x=
+	1784118182; bh=CI8TvT9WeH5WeYauNk8nvqcgjGVjpLD/kx3YeTQ1+IY=; b=V
+	EVr/mEXjuza5A4fg5IvizQ4IKuqigVA9J+UUkVV0ii/EUxzV09Y3Oh/qwYHg6juK
+	Q0jK7s/r3hRkMIIZM4HsdufgiFNs8/Gp5AM2t80/6xmvwkuNTPOrNSlM4mBXUQTL
+	Gjm7BUFjg2DrMz+Suig7M+GvrDI43vF4XO0DZJYjE6wuSntuIew3SEN43ZB8QGEO
+	QtcTQ2vwSd33TF9Mhtnpp3M7wJSMNiophL0gDPiAzORXWFPUq7GdjWhvZGse59md
+	/SGYPkDtmbrnU+vtXAVp/tAmZ4a2/39g6XqXsBXIQ9SpokLQ+St3k1vgB22Vu/bd
+	H4U08UPsHyP1gpeHT5CgQ==
+X-ME-Sender: <xms:lW1XaiNtNEz6poFi4Zo01oF3vRHoKo4CIt8ZqNRUw65_ugvsFQO6ow>
+    <xme:lW1XaiWBvuTHdXgG90puQu3tHxqh1jwvIVSgkMnqJXe9cdMjnhBup8eLGIuhqo-GE
+    tmHndWw_1OYjVFoztwCq2w7hEMS4zIrDqTvbigfgZhdGwdBaeYrQ-qC>
+X-ME-Received: <xmr:lW1Xaij69kxmQu-FXXqyLAx7_veVmRffIUohTvSTato_Kst26RYs3CEhj5ig0-naHbUVKgDRjXFmwLMTKy3E6MK2>
+X-ME-Proxy-Cause: dmFkZTF9e/UQaVHUhRka8NwMIrg22vBt0TLfXmQdS16Cj0/tYkmnLRxtjCMbUrGcaZyoYy
+    wDLtbIL4zTU5f5okCmSmFYTLlc9nFg6+YQECLzThTq/TTevhIRcaBuvESWhqLMNaIUINsm
+    Q2gtLqLrh8BymuqtHg2yl93SQZpoT9BRVzsqQB0OfecLqC1quKBwJEQWvAevqJL1skRfKz
+    Q/2YZp/1UcRsuPyk5yCReDzWkYpUhGNeFzyL1iwLb8Q5eyvVF3KYtQ5xGtuVRLDGIr1w0A
+    WtbaQNpIBiZAqaVWOoajTz7mLv9cndgh8w0d+cO4cBy2hJdVTo8+Bexn32XRq1OQgZH0bB
+    2dEAZh0Qk3kd5pa05+doMDskTGVC5el2hWtMgdhY7V7OvOovpIgE+p1Np3TtL1jabPb7jC
+    0q/NXLVX0b2qAEGvXft/4PI4kfqmDJLh74gf6tfG/o7HjbiBZyCVtzKMywt2UL6YslRp4I
+    KGq4L+v7NV3mvCZHHWaxqCgMQiR5/2qjCscGcY3Vj9QLinpiOgPutKXcuqOnMJqO2TH4+B
+    7tChn0muPFz22BBSx6NcZj7bx6P0R+8TE7lGP4IYqevx6MpvnSkJ35VcYQ2FF1Eu1XB73k
+    G2M8+iUHG+eN+gfIbfX7lvkeYRcFhrKWMxg7iXmdyTlkanMw5oM3JW7TTW9w
+X-ME-Proxy: <xmx:lW1Xaq8pv_q-CZ39Bb5BF6rMQbb4EFNOF_WjmKJsxEIGVTsUfwrjLg>
+    <xmx:lW1XahQD0sex_QZiu4VyQzmINEdzbSoCYU3PCjICj0HlHfDfVhj4HQ>
+    <xmx:lW1XahulggZDTrbff5YbnrnjSBRx9I8apw5WppD5aE3-N9RoxW12-g>
+    <xmx:lW1Xar7gyXaXcLiU5guhkZUn__0H4DAvFPhMae27vCpZRtZA5poDxw>
+    <xmx:lW1Xaov9oc5mhDGt65V5iL9AvV4cWP1sLYPJkgQjj_5GqTQXqAYQk6K8>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 15 Jul 2026 07:22:57 -0400 (EDT)
+Date: Wed, 15 Jul 2026 20:22:54 +0900 (JST)
+Message-Id: <20260715.202254.38223441240127219.tomo@flapping.org>
+To: a.hindborg@kernel.org
+Cc: tomo@aliasing.net, ojeda@kernel.org, gary@garyguo.net,
+ dirk.behme@de.bosch.com, aliceryhl@google.com, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
+ lyude@redhat.com, sboyd@kernel.org, tglx@kernel.org, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v3] rust: hrtimer: Restrict expires() to safe contexts
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <87y0gcf9xw.fsf@t14s.mail-host-address-is-not-set>
+References: <hGNrgHLZgzaLAav_TQCJaAHYX3aWSPyoHeXEf7u3ioJunfoFTIPF9Q8PnCvfRKXq2SS-fNdOn35uMiTaF90nKA==@protonmail.internalid>
+	<20260303061000.73970-1-tomo@aliasing.net>
+	<87y0gcf9xw.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260708211435.402426-1-chang.seok.bae@intel.com>
- <CANiq72=-HjYOoJPd=B+0OYrHuyCO+NpcjRvmmhT_ecVZj8q97Q@mail.gmail.com> <b705ef27-e87e-432a-ad1a-f425fe66887f@intel.com>
-In-Reply-To: <b705ef27-e87e-432a-ad1a-f425fe66887f@intel.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 15 Jul 2026 12:30:48 +0200
-X-Gm-Features: AUfX_mxOa88utfElFRyZIrS2LgzsWoibXzzaSNpmHupISKv8tKlcaf7D0e6UA7w
-Message-ID: <CANiq72kn8F-pnd-YxBiPN9nr02jagRk4NL-3vyX1tERCQjqNHA@mail.gmail.com>
-Subject: Re: [PATCH] x86/build/64: Prevent native builds from generating APX instructions
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, tglx@kernel.org, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	Omar Avelar <omar.avelar@intel.com>, stable@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 15, 2026 at 12:15=E2=80=AFAM Chang S. Bae <chang.seok.bae@intel=
-.com> wrote:
->
->     JSON avoids the warning but Rust versions prior to 1.93 instead
->     produce another noise:
->
->     '-apxf' is not a recognized feature for this target ...
+On Thu, 18 Jun 2026 11:56:59 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-I think that warning may be coming from LLVM, not Rust, so it may
-depend not on the Rust version, but on the LLVM backend being used
-(Rust compilers support several major LLVM versions).
+> "FUJITA Tomonori" <tomo@aliasing.net> writes:
+> 
+>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>
+>> HrTimer::expires() previously read node.expires via a volatile load, which
+>> can race with C-side updates. Rework the API so it is only callable with
+>> exclusive access or from the callback context.
+>>
+>> Introduce expires_unchecked() with an explicit safety contract, switch
+>> HrTimer::expires() to Pin<&mut Self>, add
+>> HrTimerCallbackContext::expires(), and route the read through
+>> hrtimer_get_expires() via a Rust helper.
+>>
+>> Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
+>> Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-host-address-is-not-set/
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-So I would recommend double-checking that -- and if so, perhaps you
-may need to restrict the LLVM backend version. In case you need them,
-we have nowadays e.g.
+One thing I'd like to double check before merging this,
+HrTImerCallbackContext::expires() now does:
 
-    CONFIG_RUSTC_LLVM_VERSION
-    CONFIG_RUSTC_LLVM_MAJOR_VERSION
+unsafe { self.0.as_ref().expires_unchecked() }
 
-Also, from that
-https://github.com/intel/apx/blob/study_rust-apxf/study_rust-apxf.md,
-I notice you checked object files, which is a good check, but what I
-meant is to check the LLVM module attributes in the LLVM IR emitted
-from the Rust compiler.
+which briefly makes a &HrTimer<T> from the NonNull<HrTimer<T>>.
 
-For instance, if I do:
+This is only sound today because `HrTimer<T>`'s sole field is
+`Opaque<bindings::hrtimer>`. As you pointed out earlier, if we add a
+field to HrTimer, "stuff breaks".
 
-  https://godbolt.org/z/sMaajjYao
-
-I see:
-
-    +egpr,+push2pop2,+ppx,+ndd,+ccmp,+cf,+nf,+zu
-
-being added to the LLVM module attributes when I pass a `+apxf`.
-
-Also, I saw in your file:
-
-  "The generated `rust/core.o` object was selected as the insepction target
-    because it appears to represent the core Rust support built into
-the kernel."
-
-To clarify, that object file is "just" the standard library. Which is
-definitely a good target to inspect, but since you scripted this
-anyway, I would suggest checking others. In fact, you could even
-inspect all and filter them out by the language DWARF tag. Or perhaps
-you can just do it for every single object, since the C ones are
-expected to behave the same, no?
-
-I hope that helps!
-
-> Indeed. This is very helpful!
-
-You're welcome!
-
-Cheers,
-Miguel
+Should `expires_unchecked` just keep taking `self_ptr: *const Self`,
+like `raw_forward()` (and like v2 did), so
+`HrTimerCallbackContext::expires()` can stay on `self.0.as_ptr()` and
+never form the reference at all?
