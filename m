@@ -1,153 +1,94 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8C141A547
-	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jul 2026 12:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784204299; cv=pass; b=Lc7opPEmWIfk9OlX28uHlly9KVxkkmKYMV+/n7kU543/mZ5n/nJ+JO5HYzKeNPqBar8K2QVOWiAZc8cEh7AHuTtBHdY2ThpwrFsVzEHz7IjXHgQgztrR9X+ISxslj4wksdIPEZXgTx4g/P/UvvBEfgNLTXpDDu2Yr/IRliKeW54=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784204299; c=relaxed/simple;
-	bh=qeCZE0Y3mr/J0JsfPOHL/DiAQ1YvkRmztyR1MwtxFq0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Flm5y5/xDlzk9qyqmEwYSD4XHxyWDHR3J0cB3jtstO8QvCWhKHA0pZvYj3b4OhjUCOqDW/5jhpzdGIX/JMT0tve4+9L+Fe0mFfaEowLOL4d3tLsqhuaDYzLNZTkcq2ejO8j12b/8A1v2IfYvjm1d6eCSYqMpdOcsbSfKvWquWqA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHbCgSVA; arc=pass smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489F932F748
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jul 2026 12:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784204837; cv=none; b=ZobGAPauTlg8wKT1aQ4cbBF98A5mUUv1KHe1H9tLjYi0f0+WxFCIMXfM/YkN+fueA1Pl9KSmoKYvV2zOfPxcNJ7fvbDKSOAe9Q/5EFUDEYIrMFLSbpsiAVhhF7bwa/vL+NR0INynQoxiJJAGCh0gd1nTGy1G8qoDJW2TmujbRRQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784204837; c=relaxed/simple;
+	bh=7O4/0OSbH1Y/zp8zjFS4jShqd78HQDhbVFMaaX5tl9g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=t+NVxdbHHL0DpQORd8PHb8wzVg6Dk9xMk5p37Z3r0aywpUqnhFjw3Xryq0fBobomK4c8CbLlH8To1h4Bfee0CJKh2xzCmzSpdyVG234W1YdeVIQnA1lHmx5XXEVMjOLy64jfEnOY0QkPRA9Vw4o5f/R06bxq2SR7irwk80NR/J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GTkdt2m5; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHbCgSVA"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-ca5b707b78aso521535a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jul 2026 05:18:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784204293; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OBBhNICpjZ0Sr0kNXknj3xfh/5xkgJS6er9/tN5GoCXeJvGGxuYrsD6MyNJjdcCd5A
-         vDPhWHnQKP4WNx+JCHd1MRbMVtHr0CkCgFKJ13WapO6osDbvuvDPA4vYb3fzqj+YQH/a
-         J8WHkvSdYvYITntcBO1DIiOeqAqFCvT5Oim+ukyHacnZfjZCWZhnSDp+raxx+a/KpFdX
-         XJ/HsgdKVHyXtLIEFed9lMI7RF0+a+KVJjXZwIyYlXP2GRaSsO8v3OWsM+m+aBeUeHJG
-         xV60SXRl05lfJGSSwnMNpt/cVWRY06bc7dCZzwHNnICMAR1a5txv4LZqd1zt6oY83WZH
-         zypQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=c918aQ7k7uX1GyNkZQnbAfatOcsaumnLiScuoFWDMmw=;
-        fh=A6pT7m7FReS4yVKMKGGLfSpb9n44NAfeTE5ZY265zE4=;
-        b=Nz+InJlGugzHzduL+elozdeBLQF+wiwKp5oQluQWBTetGNCfQNst9UULH5vsqB1jM2
-         57KpnS7vpPG4DOamvotXdUZG9rGN5YwoTeoRr93x8iCbZ/LCmFoB47KkVOIv1/BAucCm
-         5CV0bvAuR0CD+2k7KPWVu+d9RhQBbwisoT9MOw3+Rq39jVVQilu6YDRbHnYgD4J0Bfg7
-         9l3m5HHpS72np3gCJSftxhU972aqimgpqz3cOV6//GFWpepjJQ0iKObBeiatSYkSTm61
-         sCtXZ/wAE1TUBFrPpD5/7qerpuvp+69GTmL3Aevbbtb9w5WZvDnWNnfRJW54EOBK620R
-         zD8g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GTkdt2m5"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-47485fde05aso3849665f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jul 2026 05:27:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784204293; x=1784809093; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=c918aQ7k7uX1GyNkZQnbAfatOcsaumnLiScuoFWDMmw=;
-        b=ZHbCgSVAJRrVDroM61OXejFv+TyuGWsK1WmjIl4p8ZcpGbCui6F/ZrCZGkA79NPPsx
-         CJoI5KgS+ERcRu5tQoDdC4j7ng54hQkmg0wzqIqkdAp10iFVBPSLUU1+Ab/+vNolC1Kq
-         rE75g9sgxJqMTiT/wF3GG7+UQJaAmlpaSACExKryBiBNX17/7ukvn2H/Vc90Fd6ERqqR
-         MCTRo1ermQcG004GyEEjuE5rg3cG6YHQGFJNFKE01+OEqpoAygK/TZX9AePm2IZy1Lx8
-         nYCsq2UmLJ9pczZuNE7hSVtR4DA9uUhyrXvJkBJiTskVpTEbgl9XPAp2JEtrNRehtK0o
-         SiXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784204293; x=1784809093;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1784204834; x=1784809634; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=c918aQ7k7uX1GyNkZQnbAfatOcsaumnLiScuoFWDMmw=;
-        b=d89Oay9fgC9IYwG7zzI0vY59c5NK0gpy9NxseHsnrlIpxpZVRQAPAlrsaBQFyNkg8f
-         /bK44nPPLNpHTTXu0x34vDEql+728hKm9zNGUJQXmmRKOpg27sFewW1VSS2IDtIZeGPn
-         kEdVo5MMjKYiNT6vGSjbeeaXGgXUIYAal8tSHD2MUv/ADMKXsUztDmjgTVawF1Klpawg
-         wx/mLMzS7vp0WAl8xq3F6iEb/UjLbmb8QG482FvpzIZC9cKnZosLJnSvL7kEt/81q5Ho
-         4w1nQOyuAC3zgPeYgKAKLnErx6HtAQ0LPBcgCOnW80vYRVjNg/T3Zg5R1ClPDlooU4PP
-         L+MQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqCXNjnucGEOExmtZBa2j6AUkr76VNuWpGe7MJBLV6ycxL6L/OlY61B4aYvBgffF0myL2ddWEj1eynSf33tSQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCZj4hrNhUCoe1U2USMJkVL2a8V5u5ElZgY4mkHWaLVopH4Tq+
-	LBfl2QXaoMqMvcx15GNycm7f3IzcdWErpMIo9j3mca1D4e2hCclYe9atxzEcfxcTl8xOWubIa34
-	UT1pAG5EZPqtolvN9dpHj3o5S1WWqtWw=
-X-Gm-Gg: AfdE7clrpytSSyIaHp7xwkULUmNe63d2eE6gXPWYcxtPNITCFQFAzSqhSRX16Lw3cy6
-	mu2S9foFQYqDY1+/vWZC2yVpOUkALzRyIV+3Oli74XFmi7AaSZZshQzfGH91SNMJxRA4xk/aYVh
-	1pthiW24AbkJnZWvxKR9oLSfFhAwZ8Dnf4xl69AGjMrVr4HKa1Uy7TKxIV5Vaz7Z66pKnBES+4O
-	nc+Ijo92NnErP/3U7LCLASq3A99qelCqW1Mhx3CTttmD0yDXzKMv2679+R47G9k2mRwuM7Ok0/P
-	3SZRG4c2M4nLp0pwbCcn1WUad0meMrVYV9sP9DSBlznC1s0aVFcqcepiGUsxUFFCooKgl/vHcUe
-	S1w==
-X-Received: by 2002:a17:90b:4c0f:b0:37d:f70f:fbf8 with SMTP id
- 98e67ed59e1d1-38dc76069b8mr14068130a91.0.1784204292951; Thu, 16 Jul 2026
- 05:18:12 -0700 (PDT)
+        bh=vU+uWDxGjhxeFCEyixor39X4wa2P2p9cpoSP2aSeuPA=;
+        b=GTkdt2m5hJIaeoyLuhwGuHGnWGtSWDgZVwC4Jwc+7GavmIDIlXk5+eBeGOozixn8M9
+         bvrMQcWybuC+TIGlzpUj4QtUGL2knk9dWqTRtsZTThItoXCHLgj7LOiB7aD6mp74oyKK
+         LzvKvETPl7bQQlTl2W2lM6F9lo1ok/yqYTrX1uNTSbbIDs0hQilNXFCfSsmfcQtqoKP/
+         Z5ma5H+9kNGiHePUSIMZqkNa7AIgoDl0CcTCntK5kOS7GDvlY3cXVcooJf8MkAaQ0/L+
+         ga0d9OOWIqs/PUZPfeVJPl287piI38dZuGauuV1dWbgPrwB5nBq2mwS8nGP0bcovrXod
+         dRqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784204834; x=1784809634;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vU+uWDxGjhxeFCEyixor39X4wa2P2p9cpoSP2aSeuPA=;
+        b=JvHLn/wZVSpBV1CceQJz3PjKSSWoiyut4ao4ldwlemXcftKQfbLIGUnLkyZiUix04a
+         6T1K0XiL3IdZSjN96H7sSxbAkcbECkrwunCF/HJg4vdoeM7n5kRpCGTn3zXKb67VoqqP
+         gOUPUJdi2b2uEfQqTbVxKiil1csECU7YVvJjSi/kqPqOpITAIF1wyrUa7t2+scGeJRtH
+         Q4TYOaM77BUv/ClBf2bmzDF1YhPTnR5aO7D/fEq9MAKDEXg6y+aAkW+FiLy1Kgq7VCOv
+         5sTgby/9g+POx61sEHccj0v/Qkaqbv+OKYpzr5XKHKUZaBSKnW2tE9Jd/e4BroLfz9Rw
+         pA0g==
+X-Forwarded-Encrypted: i=1; AHgh+RqzCXomkrc8j3ps0nxRhtJ/wFlXIWhjNVBrBorVHaJ1ePf3PNqKnwxk3SWrsVgbMmB9YkInSWkhuIwIqI1Rzw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWqnzkSXTR369jxH3lP6G4Hwpd9qIdmmh1moGWGFm+iJkOqoH/
+	UnWkZNQM/gmvezYP+crJ88KckdwXla5TGdU2ZLGeuNezszn2B7e6DTs0eFbStFnBIe89g5L+UUg
+	M1xFcTGnxM5m16dQS3A==
+X-Received: from wrrw12.prod.google.com ([2002:adf:f9cc:0:b0:47f:2bb3:93cf])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2483:b0:47d:ecaa:3f97 with SMTP id ffacd0b85a97d-47f4fce6c1emr9350637f8f.45.1784204834069;
+ Thu, 16 Jul 2026 05:27:14 -0700 (PDT)
+Date: Thu, 16 Jul 2026 12:27:12 +0000
+In-Reply-To: <20260716-defer-complete-v1-1-ce0e38d30dc6@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260716-device-trail-semicolon-v1-1-f48e9dcfae15@google.com>
-In-Reply-To: <20260716-device-trail-semicolon-v1-1-f48e9dcfae15@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 16 Jul 2026 14:17:59 +0200
-X-Gm-Features: AUfX_myevnsR5Su-h4NLGTu3-mxvvsCDC3uCj12Aik5QGhF3XPcyxIyrYw2aShM
-Message-ID: <CANiq72n3BYGfB9VvLk4-bBQzGy9YhDxFvCrjkjJqBbcJa5YRYw@mail.gmail.com>
-Subject: Re: [PATCH] rust: device: avoid trailing ; in printing macros
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+Mime-Version: 1.0
+References: <20260716-defer-complete-v1-1-ce0e38d30dc6@google.com>
+Message-ID: <aljOIDTJ3lNaNHIm@google.com>
+Subject: Re: [PATCH] rust_binder: add TF_DEFER_COMPLETE flag for avoiding
+ userspace roundtrip
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Todd Kjos <tkjos@android.com>, 
+	Carlos Llamas <cmllamas@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
 	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, driver-core@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Jul 16, 2026 at 12:22=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> These macros are used like expressions, so they should must not emit a
-> semicolon. This is being turned into a hard error in a future release of
-> Rust.
->
-> error: trailing semicolon in macro used in expression position
->   --> drivers/gpu/nova-core/firmware/fsp.rs:79:34
->    |
-> 79 |                 .inspect_err(|_| dev_err!(dev, "FMC firmware missing=
- '{}' section\n", name))
->    |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
-^^^^^^^^^^^^^^^^^^^^^^^
->    |
->    =3D warning: this was previously accepted by the compiler but is being=
- phased out; it will become a hard error in a future release!
->    =3D note: for more information, see issue #79813 <https://github.com/r=
-ust-lang/rust/issues/79813>
->    =3D note: this error originates in the macro `dev_err` (in Nightly bui=
-lds, run with -Z macro-backtrace for more info)
->
-> Cc: stable@vger.kernel.org
-> Fixes: 5c7ca6fa603f ("rust: add `dev_*` print macros.")
-> Link: https://github.com/rust-lang/rust/issues/79813
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Thu, Jul 16, 2026 at 11:20:56AM +0000, Alice Ryhl wrote:
+> +            {
+> +                // This performs a deferred push so that `read` can wait for the next incoming
+> +                // transaction without a userspace roundtrip.
+> +                let mut inner = self.inner.lock();
+> +                inner.push_work_deferred(completion);
+> +                // However, if `TF_DEFER_COMPLETE` is not set, then set `process_work_list` to make
+> +                // the push non-deferred. This forces a userspace roundtrip.
+> +                inner.process_work_list |= info.flags & TF_DEFER_COMPLETE == 0;
+> +            }
 
-I was doubly surprised since upstream made it a warning by default a
-long time ago, and yet we didn't see it; and since I hadn't seen in my
-CI even yesterday.
+Sashiko makes a good point that we must be a bit more careful here. If
+we find that that the thread-local queue only contains the deferred
+completion, but that the process-global queue is non-empty, we must
+still deliver the deferred completion first before taking anything from
+the process-global queue.
 
-It turns out this just landed into today's nightly:
-
-Link: https://github.com/rust-lang/rust/pull/159222
-
-  The semicolon_in_expressions_from_macros lint previously
-  suppressed warnings about non-local macros. This masks
-  a lint that will subsequently become a hard error.
-
-So that explains it. And this is the one that will make it a hard error:
-
-Link: https://github.com/rust-lang/rust/pull/159218
-
-Ok, I will land this into `rust-fixes` then, and send the PR during
-the weekend after tomorrow's -next.
-
-Cheers,
-Miguel
+Alice
