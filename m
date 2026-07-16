@@ -1,185 +1,110 @@
 Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F083451CF
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F99348C56
 	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jul 2026 05:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784179565; cv=none; b=idN3Sfz2ZJVY+b17DIR0f64AMVeb6vM1N6/yoLZ6GYlXy+W3En8hCutkJQNf0RGU+yZxPfEoTaGnc2c7kC45QKjyRwl4jd59xV8eXNYVLl7WhDF1eOGJLuzBixNUjdj5tEOvTWTRnDbVAwuRCmgRE8/9MYpo6Kxf7Mh8IKaragU=
+	t=1784179565; cv=none; b=LB/qICO31iXhM38+qJIOcGSbB7bNrnwi3JwvtHX1C4xgNR28yRGlORYD4rqMgED6qEzQ7YJ4ScKLdB/SN6yllIuSKVpRU8NNkehOQHa35dGut9vYZJ3MMiNTy6I+1e8uBKQoisl7oNMPJdjJsc80Lfi1AVCRkoC3+hVr/SpxQ5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784179565; c=relaxed/simple;
-	bh=GceRmms38wASeWc60/Ex1NUyKYIVHDTf1FJgZnfrWL0=;
+	bh=IsOOwaqj0xupoOBbuYJ0BcDCgxN6dNfuAfQYLZ+rBHM=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=SMCgk0CSPn7mYWIbpDHMKyHDp1oHx+8+/xxLheXs1KDF0N+k5gOTaKZWvqn6TkYLmf6BVJ4JsoyqzBWX+dQuD5BB03Z73IND/KWPkwDCtQlwFr33EqngBBOQTRiQX1tgSwFD/sHkGPuwjKTN27bs6K1qV9u5nQX7XWoFxIk3UNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=PQBI6MkO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WS4s4JJD; arc=none smtp.client-ip=202.12.124.139
+	 Mime-Version:Content-Type; b=QS1X1NucPaFBOTlOj326CGqb4w0rSKFqi1ouuPMNqyaYLoJ24ljAvrfDOeFCxJ5eDZ+/sHgfKgvoZRIbR2KKrYJiKLPQzJxiTIWkUeiaM/nbetz16UXXOVjfDwmXpjqaaYMxMKyk93NnXyaQfOqekl7nvFZHM9A6urdNvEKbtdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=KHQhv3UX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=brbiI5ST; arc=none smtp.client-ip=202.12.124.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="PQBI6MkO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WS4s4JJD"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 2F52C130014B;
-	Thu, 16 Jul 2026 01:08:26 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="KHQhv3UX";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="brbiI5ST"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.stl.internal (Postfix) with ESMTP id 08BDD1300308;
+	Thu, 16 Jul 2026 01:16:41 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 16 Jul 2026 01:08:26 -0400
+  by phl-compute-01.internal (MEProxy); Thu, 16 Jul 2026 01:16:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784178506;
-	 x=1784182106; bh=AfLbmsLGFyX2nsNGlLa0UymkSjHHgpt39UhzWIg1w2c=; b=
-	PQBI6MkOoH8Vd2wj3fg/PApzPzMfcVFWB+6V8CbgmnQg3PnTaAIw9PQv/AfPPCzi
-	dnuGi5aaQVqPfPomghEMgVVSQyHDrlbtp4ES5g3IgApOAmPnTmtqP8lFlP0SDAkC
-	gzAYTJ3x+RKSfHvnsuOI1LD2jWvvYjkXtVh0HCh/VWSGQ/+rFdZLczGgQwTjRmLD
-	GT3QFFiuE9gIg/xxbZxIJ6XDAj//ftrgJYNVokc/LcZ+bRerh/p4MFaUYw/JBFHY
-	RxfS+LYe6AthamgLIScMNeptABVM81ILjc2wMEuw4Ou1hF37aq2gwFs8M6SQpgg+
-	n4EoMlJ9xDXfjk3Zu0fZwg==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784179000;
+	 x=1784182600; bh=IsOOwaqj0xupoOBbuYJ0BcDCgxN6dNfuAfQYLZ+rBHM=; b=
+	KHQhv3UXEcVyPXtU62LV+xKuZsdjaLSDrfNS499KDBcNj1le2OlLsrSzsvD3HUNz
+	9Dr+hRSN0kyRv4XbBU0rHofu5yuGW6eRz1WqznwRN40BIuzf7yFrxktLuK+eIdIv
+	LAXbpQMjTly6uZGX3+TwC3q9QDvlPOyF8ROVz45pMMqbFANUAZK0D2G5vUBLxrpL
+	ZGykn1xTTMMlxClwNbK2c8PdzvxIPIst6bi9+1piutoF/VAHv4D9aeJvM1a4mjze
+	W086TYudX5mVRjBrrqkPM2fX/iDm1L6doVtRDwJQUObzOP7hgAXbrJt9N7zJ079d
+	ECCdcSkAFmAJwv32NRYsiw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784178506; x=
-	1784182106; bh=AfLbmsLGFyX2nsNGlLa0UymkSjHHgpt39UhzWIg1w2c=; b=W
-	S4s4JJD3DdQBtsMW0PdkdUIQjLRJDkWpjZe3gCbydq5/32d12d0HbFVN56P3hxHf
-	UWJwJ0vfCcdCkmta5Mw85SVoJ34uq1ZtYqROTkGej6qB4CA+ZtXJs2l4gYty4R8s
-	I8Me9Uw73MyI/7r6fPV+Ju2tO0+OGF9OqmYzecqrvbZrTnnS7Ja+7O/8jdWDa2z0
-	QSCchpKx0iP+xPLXLj19ufl9aOo0yAFp6gm1OcwiCS2ek0naCAPZqe1wtyEILwY+
-	1nWRAZRw2m/oo9AMjzsTkWqWLV9+qxLdBgTJqtfTvn+mjyJsRD+8cy9XAotbcAw6
-	5/ahfnAoSPtOQKpCpTMkg==
-X-ME-Sender: <xms:SWdYauN0k6ODwveqXWSYK81lIv9ttWS9CaUH7cMAZ7d1xlboCWpnNA>
-    <xme:SWdYas0189wYwfGuSDqUZtyWgIC_CHd8E-n4yatKHetfapuNL3bc8CuBffdNN2Dfp
-    oH37rV8quQHO8uIsSu5oL7aqPiQughqd2HZ16-WOYjEi_hzle80av5n>
-X-ME-Received: <xmr:SWdYaikduEv3wOeNPPhETMg_iwxnj1wq4O0r7-34zJcL-f4VnYncpp_79VbbYxn8e9Tr1F2wkDobNwtPhPY3qAof>
-X-ME-Proxy-Cause: dmFkZTGxlNX0WchkO1Hbz3nI+r50Lr1MDC+FGu5025zsoFblWRwyr9Vfb0UdunyP7fKfNq
-    QpUNvfLyO9IkYy56CAeXCvaLWJ8rmgEfst7weDYbPNruep9PxGWm3ZVapxjCQXqV02ZUcs
-    q8fo4A59z6EixLxtdp86qeJuvpdjmTkIsX2qbnFXu9haVFZSLRMui917WQXGZDgjWnFr0v
-    IXLRR8XAlLlAQonZI9PmY9tGFLUOSvV42+swOjP55cdAf+1R/cNAN7qIgp9/1IwG6CvwdH
-    0ILL4IosvMmMa0dK+V4xmGhklmRmXoDS2oeTkw1b9qzUShltGSBVL1gn4hRqvI2aVZbgNv
-    RbxTBnOjet/iIPPdU63X7s7AI2e4uKIshbPN1Gt3LK0oYyXKXcqEP65jIS6o+CeVDzc7yR
-    itYqmwG0q9N5RxukfPpfeGyKNkrNvizcEqKHmKngSlZ5e676cFVWETumbAfWMR7luVfKkc
-    u0/HithB8BAuGpEYlpIlAm08lDZRTJaOyUepyjqIvupkyKelmDkHO1K3vsMp5Aw8sTiERR
-    +SpJACc2BNAww8qWuiLZBc8cT1xMfrPD8En3I2GpnbtvBYwCC/knc2LvbqmPK8xnB/FR6T
-    ZnefOG6eaHN5q7SG/VbtX/B7mqOYcFsrrh1nTIklsURfQvXSXuykYyD6Yrrw
-X-ME-Proxy: <xmx:SWdYaq73E_9Y2NeQs5xlp5l4CVCNcgjQVBjk3NjyySOqXYV4NQtvOw>
-    <xmx:SWdYajme9vqac5vu14_ErGMClvqvH23rH55bZoG6N4EVqdYLcGiRdg>
-    <xmx:SWdYakTajgoDegVwC-NaguzEqodXWU-7kL0IPQt-hkUCGmuUQyhU-g>
-    <xmx:SWdYapnC7CO_dRuquhnDplChQ8GYiljWzf6_wY70tyR4tfpkBadUmQ>
-    <xmx:SWdYavZiPUhqyN-QwbmXdG5roMcipL-n0d_iy3BmIRQ3sxBYjmDI1f8->
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784179000; x=
+	1784182600; bh=IsOOwaqj0xupoOBbuYJ0BcDCgxN6dNfuAfQYLZ+rBHM=; b=b
+	rbiI5STIM+Th9KT5BkqaIRHS2/wufAO/mpy7QcSd3alZBqeZRZg6q5BeoH5frxvr
+	M2TzIo+AGa5BiEPk56EaELCltETdOAbtLEfoCVO48hDlwdLtl+438jxVnWnaXR1Q
+	ZtOanKbaN1BNhugdlVa6f3coaGlMvJlGRuYbwhqV2ZKv/gBu4FSPNzudLEyjHVwl
+	v2bfySjJP1A242ErbrkiB2H9U12Ai3pfGENUyQt8bw9fAFlklQcPgw/7ise9KncJ
+	nC9sfAuS0NffSSC2gS/Nmfyu1sx1A8nv21Lva0OTfyvAXIK/tETlCtuPy18btc8d
+	9X4T5jcHAJ2bnIOChdW2Q==
+X-ME-Sender: <xms:OGlYalZw0Vj_gSfH9Pa8x5643obfLsHBtLJzkHKJzHkhiAWTPXzfow>
+    <xme:OGlYakyxpolagx1sBa50zDd_WRtjg4u09qe2AyHiduEEfiVUsF3OAEr7cuwUYb5iV
+    M2E3zXRvM3ApWj8gVCIkh6xpWKbHcGXkUOXLIQcs1l2xTJ7BtYSHi8>
+X-ME-Received: <xmr:OGlYaqIdGOTZK6ezUmt15kVE2y1zONotunardFOvJOigGweKyD94JlcgwZSckrSN41S8NkJvz1qYvjNORTn0UoB9>
+X-ME-Proxy-Cause: dmFkZTFAvIr2LuTyqZx5rJTYJXRBbn3/OWPryLLj7aYkTVJBsTgmedt7aID2SVafPKtXJ4
+    f1/1INg10OQwuI+dNDvjMJc5H9Xi0SPBebIZr1vONpLekY6IsXLg8EMTAxf/ka7YsdiZPu
+    AscAxpKx2rwTKOzyzFd3klMZ+vLP5jaOhCanY9va/puu+YJ1vA5bcRjZDWZR+u1ed0IgPh
+    eTde4i6/MBEfZwdGIBxM0OdOqL64gsYrKeErLbIODGuLePMMHlm611hNuQrevoGjxlBWNE
+    KiMnpzG5gIDqG0VUxEirumDz3pIsTlGBBlxgZ+MLtsuJ6kSSu9PhbYsBXdTHVerQicBFSu
+    MJEvFaIIUvkJHFzxa89LYBFEpzVJ8+iAOaluxH+rRJrRzUpjfDqvzcJ9d8plWSsfe2/0SV
+    9rSxNbpUgBvN7lqBZwaVsAAfaUtOel7FHa+p9L2uAEcKcXNY+4XbOy9BqGGXDpX1fzhNgd
+    7xpl9h9Y2EgLGW3k9jR9MluUkqLbxE9tPbxrAIdrUlCeOL2UfO6BIjn4Ght8O+4rf6pO4M
+    CsllSjGhOQA+YJBFCqp+xEkfip2/oeJTAPsLCTbq3K2LMXq8xqTjxVgtTcv5Ej0p6q1n8Q
+    iTIpYMlqE6FkUo1QgJyaDyB/+UAoPpLbLxTsruTp0msE9F6GerBexmOauYbw
+X-ME-Proxy: <xmx:OGlYardbmod3TzCKjkwQcAIG2YRdf_vOJ8XQfkHDffQo4lhn44kV_g>
+    <xmx:OGlYaivgpPMbes4KjPRq99wVsSCAmU5bDkNLbDUhqXx2zi_5SJKTcQ>
+    <xmx:OGlYapFzTRSDJRpueLxHHY-p3YOuV4P2r-TxndjNVANAq4gnmjI5tg>
+    <xmx:OGlYasckbCau_igSMrVVazB8NI48VILksx5RtOS76MGgo-M-rpWDtA>
+    <xmx:OGlYajEug-Ubg-1tReVEUTJHqxx-XowBt_QurO3SZ4zf8CSiV-LKrwlU>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Jul 2026 01:08:19 -0400 (EDT)
-Date: Thu, 16 Jul 2026 14:08:17 +0900 (JST)
-Message-Id: <20260716.140817.2274294223385671448.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, aliceryhl@google.com, arve@android.com,
- boqun@kernel.org, brauner@kernel.org, cmllamas@google.com,
- gary@garyguo.net, gregkh@linuxfoundation.org, ojeda@kernel.org,
- tkjos@android.com, acourbot@nvidia.com, anna-maria@linutronix.de,
- bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
- frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
- lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
+ 16 Jul 2026 01:16:34 -0400 (EDT)
+Date: Thu, 16 Jul 2026 14:16:32 +0900 (JST)
+Message-Id: <20260716.141632.562265692045070440.tomo@flapping.org>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org, tomo@flapping.org, aliceryhl@google.com,
+ arve@android.com, boqun@kernel.org, brauner@kernel.org,
+ cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org,
+ ojeda@kernel.org, tkjos@android.com, acourbot@nvidia.com,
+ anna-maria@linutronix.de, bjorn3_gh@protonmail.com, dakr@kernel.org,
+ daniel.almeida@collabora.com, frederic@kernel.org, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
 Subject: Re: [PATCH v2 1/4] rust: time: add jiffies conversion helpers to
  Delta
 From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <87cxwogywo.fsf@kernel.org>
-References: <87ik6ghha8.fsf@kernel.org>
-	<20260715.212021.485543459172925773.tomo@flapping.org>
+In-Reply-To: <CANiq72n8-=QF7T9d8hon82eQktyRW-_1YsCQwnLZaWmmcx1hUw@mail.gmail.com>
+References: <20260715.212021.485543459172925773.tomo@flapping.org>
 	<87cxwogywo.fsf@kernel.org>
+	<CANiq72n8-=QF7T9d8hon82eQktyRW-_1YsCQwnLZaWmmcx1hUw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Wed, 15 Jul 2026 15:33:59 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
-
-> FUJITA Tomonori <tomo@flapping.org> writes:
-> 
->> On Wed, 15 Jul 2026 08:57:03 +0200
->> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>
->>> "FUJITA Tomonori" <tomo@flapping.org> writes:
->>> 
->>>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>>>
->>>> Callers that hand a timeout to some C APIs need conversion between
->>>> Delta and jiffies.
->>>>
->>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>>> ---
->>>>  rust/kernel/time.rs | 30 ++++++++++++++++++++++++++++++
->>>>  1 file changed, 30 insertions(+)
->>>>
->>>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
->>>> index 363e93cbb139..cd054ea5df02 100644
->>>> --- a/rust/kernel/time.rs
->>>> +++ b/rust/kernel/time.rs
->>>> @@ -377,6 +377,20 @@ impl Delta {
->>>>      /// A span of time equal to zero.
->>>>      pub const ZERO: Self = Self { nanos: 0 };
->>>>
->>>> +    /// Create a new [`Delta`] from a number of jiffies.
->>>> +    ///
->>>> +    /// If `jiffies` is large enough that the corresponding number of nanoseconds
->>>> +    /// would overflow an `i64`, the result saturates to `i64::MAX` nanoseconds.
->>>> +    /// The exact threshold depends on `CONFIG_HZ`.
->>>> +    #[inline]
->>>> +    pub fn from_jiffies(jiffies: u64) -> Self {
->>>> +        let nanos = (u128::from(jiffies) * NSEC_PER_SEC as u128 / u128::from(bindings::HZ))
->>>> +            .min(i64::MAX as u128);
->>> 
->>> In general for this patch, why are some widening operations using `from`
->>> and others use `as u128`? Is it not possible to use into/form for all
->>> the widening operations?
->>
->> When NSEC_PER_SEC % HZ != 0, we need to multiply jiffies *
->> NSEC_PER_SEC before dividing by HZ.
->>
->> What the C side does is:
->>
->> u64 jiffies64_to_nsecs(u64 j)
->> {
->> #if !(NSEC_PER_SEC % HZ)
->> 	return (NSEC_PER_SEC / HZ) * j;
->> # else
->> 	return div_u64(j * HZ_TO_NSEC_NUM, HZ_TO_NSEC_DEN);
->> #endif
->> }
->>
->> We could replicate this with a cfg/the C side's const-eval
->> computing. But I think using u128/i128 is simpler. What do you think?
-> 
-> I think widening to 128 bits is fine. My question is why `NSEC_PER_SEC
-> as u128` instead of `u128::from(NSEC_PER_SEC)`?
-
-NSEC_PER_SEC is defined as i64 because Delta stores its value as i64
-so the other constructors can compute directly without any cast.
-
-u128: From<T> is only implemented for unsigned integer sources:
-
-error[E0277]: the trait bound `u128: core::convert::From<i64>` is not satisfied
-   --> /linux/rust/kernel/time.rs:373:44
-    |
-373 |         let nanos = (u128::from(jiffies) * u128::from(NSEC_PER_SEC) / u128::from(bindings::HZ))
-    |                                            ^^^^ the trait `core::convert::From<i64>` is not implemented for `u128`
-    |
-    = help: `u128` implements trait `core::convert::From<T>`:
-              core::convert::From<bool>
-              core::convert::From<char>
-              core::convert::From<core::ascii::Char>
-              core::convert::From<core::net::Ipv6Addr>
-              core::convert::From<u16>
-              core::convert::From<u32>
-              core::convert::From<u64>
-              core::convert::From<u8>
-            and 4 others
-
-
-Note that the u128 division here does not work on 32-bit architectures
-so I will switch to a different implementation in v3.
+T24gV2VkLCAxNSBKdWwgMjAyNiAxNjoyMjowMiArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBXZWQsIEp1bCAxNSwgMjAy
+NiBhdCAzOjM04oCvUE0gQW5kcmVhcyBIaW5kYm9yZyA8YS5oaW5kYm9yZ0BrZXJuZWwub3JnPiB3
+cm90ZToNCj4+DQo+PiBJIHRoaW5rIHdpZGVuaW5nIHRvIDEyOCBiaXRzIGlzIGZpbmUuIE15IHF1
+ZXN0aW9uIGlzIHdoeSBgTlNFQ19QRVJfU0VDDQo+PiBhcyB1MTI4YCBpbnN0ZWFkIG9mIGB1MTI4
+Ojpmcm9tKE5TRUNfUEVSX1NFQylgPw0KPiANCj4gWWVzLCBwbGVhc2UgYXZvaWQgY2FzdHMgaWYg
+cG9zc2libGUuDQo+IA0KPiBSZWdhcmRpbmcgYHUxMjhgIC0tIHBsZWFzZSBtYWtlIHN1cmUgaXQg
+d29ya3MgaW4gMzItYml0IGFyY2hpdGVjdHVyZXMuDQo+IEl0IHNlZW1zIGxpa2UgeW91IGFyZSBk
+b2luZyBhIDEyOC1iaXQgbXVsdGlwbGljYXRpb24gdGhlcmU/DQoNCllvdSdyZSByaWdodCwgc29y
+cnkuIEkgaGFkbid0IGNvbnNpZGVyZWQgMzItYml0IGFyY2hpdGVjdHVyZXMuIDEyOC1iaXQNCmlu
+dGVnZXJzIGNhbm5vdCBiZSB1c2VkIG9uIDMyLWJpdCwgc28gSSB3aWxsIHN3aXRjaCB0byBhIHU2
+NC9pNjQtYmFzZWQNCmltcGxlbWVudGF0aW9uLg0KDQo=
