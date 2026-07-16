@@ -1,599 +1,243 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012035.outbound.protection.outlook.com [52.101.43.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5518322749;
-	Wed, 15 Jul 2026 23:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FA91946BC;
+	Thu, 16 Jul 2026 00:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.35
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784157477; cv=pass; b=YtC9Mze8dB86r1ZoEUFuUkFO43EeAvVK5t1PLf3JhS8q/ZMSWveuDobGInhTnKEff7mBuaX9naSH7lUQK3D7YnTte667Ri1qCJoH/18jiD62IJstTb8JXehxTjvP8OrBhlS/EMNz2IZBzCgfqL/LSBdMGmcvi0VWfbb/50495fo=
+	t=1784163181; cv=fail; b=WyydHO2Oo3UuVNx+9SCb49l/w1BFV9uqglzYcsB6gds7W6Y3+pJ8+9hTQssfCG//m1xsxxzYOLCvQBFOFHpndaGGS9WbBb39F6/S4/wi9/NBmKtZarWzq4Py+DGFLnxOY90/4nFa+LVgjjtdrV7ZtKNtQNdM+g4HI7O1bCSA1tc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784157477; c=relaxed/simple;
-	bh=pL0ckFhB8f0U9zpMf+u6yP5Kf87mAbnmUw7ZXC6bsdI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=WO6Yfd4R4V4IAVHaw4vLtYbTQCj0t5o9bOmU+S6RRTmb9TolR2DlXG6y672bAHkqT4BfgG00t/11/Qf50SbYm2YMt0mLbMq+jymCoGGbOD2GimTebiXxMbT7hrwwO5brM6bfoM0HUu8FQ3JfanilNFsRfx1ng6/gCRtcsJ2hhL0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Mpcp/MIl; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1784163181; c=relaxed/simple;
+	bh=p2G7/VzSdhvD5OpZjCTOvM6Vr2G7U5Hz1GLNe14AJMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=gHAomEbcxrMCw2QLfK9PDkcLHNZlLLRqL4f/GX2cJXaUVHPlNI16opJbxL1qZ3Tc8XUlUFGcpPab5OTsTHzEH1+q87+2NyT5nRVT3QB3CWHCCKM/LRVagAZYlK42zMW5gcjr5k6OTp0Lf+Y7iMmo7627jVHrIoMDjrxL/OmRp+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nW0p2Pln; arc=fail smtp.client-ip=52.101.43.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Mpcp/MIl"
-ARC-Seal: i=1; a=rsa-sha256; t=1784157441; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Bmm7F3VRsW3WPG1PirQ27wZ9qrI4boKVgP7ebP36Y2jloa/fFTn5+iCcPiGiMNg1Po5FQrZ3DeUDmhSosnDhnerTT89tNBivv9kSS+ON9PBVuQLAhrmnYn2Jij630g2ePH+zD0d3Oeji3XkbHaqmYKdT5ms1rf4js9CsH9gLqXg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784157441; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=toTzPTSrExSOJV+tv8XiAz+9wu77Jfj2cu4BzZcT4UI=; 
-	b=ZR0tChEA8K+tm8U3wmY0E7mMcgjLL8XxAAWPuMgYs7y7N6THAa/tm6LoJN2N2ezaMo7whNuD7/pW77S5xpocKBgN7eiWe9KX/16opaV/p4dZsV2o+LLd+rGbbpyXv2H1GPtfbg2HQU4OSOWoFtuoqsOvB6myt/HXwWdSV69BVjs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784157441;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=toTzPTSrExSOJV+tv8XiAz+9wu77Jfj2cu4BzZcT4UI=;
-	b=Mpcp/MIllA2wHcfbu8vTbbT+VZjkKGihBbBIItQTeZJ7NcTXQuODrUxOBnzvdHQ2
-	gNSy7pbc2iHj/P9TcaBjKCNi4SH8ct0El7QdUjhvbHzdYSdKMBbCFetaKk9SKNO0NsR
-	dt8gUE3ElrFVKZ6Oa3oBUfyHerD5BaZHiV3mVFEg=
-Received: by mx.zohomail.com with SMTPS id 1784157439654931.4461996631151;
-	Wed, 15 Jul 2026 16:17:19 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nW0p2Pln"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dNCIpOLpKfwC5CtazBTjhuN1CqCvhv+bdZmiyNL9zpSmiVm2exdk3LgzQo1qSxkeHZ1ELzUEJksdObzTCKCsUaio6nWkBlCXbPMTia/syoQNPR+AOgv9Bx3e4cTlVaHKZb6ab/7iBSiQTadHVM1R3Jzs8QUnHx3LKihfH+YPWd4ud0iaTkWJpJ2/uyfPPdFFmPBIumpfUGvXoLWMrEbZAs5fxq/6SD0enyxbS+yqFHeujdhSOYvyx5sP6ASWat9H0oEYhKEpdn6cjDjPnmFH+lrorkoyBPJdeCI/kz0pCis8uEn+w/G2BVNkvuqsRDiL/R6NNbElRUDBf3LxESixxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lMsMaVHEsbz1VEVS3LHfC0mtRJIHPXSGzTnTouu5QaU=;
+ b=foQzL+1tqDh9sHEkZpLirQz91ca09BFRlSVN7MMOowsDn70eavfZ5f0RwuHHsiIw1dtCjJomzSaHaBiWOAWgRpxPZshSMtAppVNbRFX4ORmU3bYuKOwhT6CEumNsWzV3xn7frp2KNqAJyNNlLL5xqUfHExSYztLCGB8ixTsrxRTyu7Q8MoSfMiyywKbChcg1DMOaV4cz7dI+3vw4puIct0U2gqI8TNJPrk0n1895Ym/3cyfSfac3pgfepo1P8e3qJxBaxSdi/DJt1S3JX/dULyMjZMoclw8bmf58IcxcUVCDqwUP+nLKpkDUF45/D4GxttnUrbHShqFcoFh+Cpg21w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lMsMaVHEsbz1VEVS3LHfC0mtRJIHPXSGzTnTouu5QaU=;
+ b=nW0p2Plnqc+QEqnLr1Jvubd8FtWFXdEqV7IOXqFU4wOKZkX2dkulnqLL7uy6EeltrmlEvnLy2mvgeWpy+zKzhlrM6guchDYR+RxtCuRU8jP4OSi2Eqep2f+czlfxfklmLOKJFEgD3Ae4XvrUzz9Rg+i2/hqyRk2hecHp6BsoX0skc+jnkLubIjEOiUSm1mUTRDKje3zjCpYOxDkXAk7TTTJQHgLkdtFLa/4W1EUQGbJRfLMMwDxXvjG2+L8q2gVn8zyq1fEjCPM/2896CvaYKXCk3mL80MiHQm0QF5U38n5u7xleBF6F0vMrssD3ggmEz9jGaWzLtv7af+h6v+Okbg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by MN0PR12MB5932.namprd12.prod.outlook.com (2603:10b6:208:37f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.202.19; Thu, 16 Jul
+ 2026 00:52:55 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0223.008; Thu, 16 Jul 2026
+ 00:52:55 +0000
+Date: Wed, 15 Jul 2026 20:52:52 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Eliot Courtney <ecourtney@nvidia.com>,
+	Greg KH <gregkh@linuxfoundation.org>, Burak Emir <bqe@google.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Simona Vetter <simona@ffwll.ch>,
+	Tamir Duberstein <tamird@kernel.org>, Timur Tabi <ttabi@nvidia.com>,
+	Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>,
+	Zhi Wang <zhiw@nvidia.com>, maple-tree@lists.infradead.org,
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2] lib: test bitmap vs IDA vs Maple Tree performance for
+ region allocations
+Message-ID: <algrZLHyYcR2mwzX@yury>
+References: <20260711063602.426311-1-ynorov@nvidia.com>
+ <alf1lUH0EDf3CRMl@pedro-suse.lan>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alf1lUH0EDf3CRMl@pedro-suse.lan>
+X-ClientProxiedBy: SJ0PR03CA0171.namprd03.prod.outlook.com
+ (2603:10b6:a03:338::26) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v6 2/7] drm/tyr: add a generic slot manager
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260709-fw-boot-b4-v6-2-ca391e1a4108@collabora.com>
-Date: Wed, 15 Jul 2026 20:17:02 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Benno Lossin <lossin@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- boris.brezillon@collabora.com,
- samitolvanen@google.com,
- acourbot@nvidia.com,
- alvin.sun@linux.dev,
- laura.nao@collabora.com,
- work@onurozkan.dev,
- beata.michalska@arm.com,
- steven.price@arm.com,
- lyude@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <41798711-8EFA-409B-9BA2-F718181AEB67@collabora.com>
-References: <20260709-fw-boot-b4-v6-0-ca391e1a4108@collabora.com>
- <20260709-fw-boot-b4-v6-2-ca391e1a4108@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|MN0PR12MB5932:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1a45843-54c0-4acb-d12f-08dee2d4923d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|23010399003|22082099003|18002099003|3023799007|10067099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	vWDP1F4x8FHd0qIlaV6sPBFQU6c/p6WkaH2IsRRE0/RymcyCSWVy0SZKkeq4GZ9z152x/frU86s4wMkX4Fv31z7uziRkPgGJBSsQWoMU0NCDG5f5IN5dNcuRrR1EtH9Msvl1MM8OCNCbLh/l11oFJnSMQjmnZYY5yAkCX4oJsuJSeKHR13xLhgA4mQsYHFC9A/noz2KiDl68Nt4fQf9JKu1/XgMRFORr74E+waCQYhEexW6fkR+Glz7fUc+U/GrnfVp0P7UZGTWfKQVbLfQp7IZt3R6Bs+YrPnXReto0GxUIUTZQ5pCemGIopxG/AaTf7i/ksHIugPuMv9dLL65ocDcwar7IbaGFbVyGjGZTdIIjsZeJPznHSHqJ4dAqgCnIe1IRTQks32Av6908z/SRx4xd+ghWqMV/HeTEOCgldxKiCO4/5AZoAIbyi/m3+TISHv64FBfDwNVC3X9k4gHUp6aa987RvVTqR08lMS6WJKcn9Vvhu7QyPdLyXD8T6ML3PTp09lN3DhASQBItf1Z27o2ufrFjATg++Ns/mBDZWjQ0gQViPBHufifF2MxFlxlLR12+QQJtmo9n4L87JSuIO8sqoHj20nnI1ALILOEBO/IgQVuiKjhPYq1nKh3ZJxBFHcPB2/woYe9TT87kyLYP2VFPG6Z+zrUFq4eS8ESLkEk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(23010399003)(22082099003)(18002099003)(3023799007)(10067099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kUFKHJA/urU2DXYy7WEIuWIPY+Kci01kqiRwYaRkEP6FSmXXiPFcE8nXJtkb?=
+ =?us-ascii?Q?Lt3vldFhZ5RdWK8aV/sU6QW9WeiqRnCtMhRAOzsNILTM0LS5sCF3wYBP2uLB?=
+ =?us-ascii?Q?EdgtMGgpkh1cmEg1e9I5OLOHCP8CRIpU+2NoJTwtJfWfC+t7p7bcb/wwjiue?=
+ =?us-ascii?Q?ZMMS9GI5O70x864GJ1Dxnao/LqucjPJdSCLi1Tf0k7KfHo4pOeg5YDc6aN5j?=
+ =?us-ascii?Q?A70rfhFOkO0b0gPamWkjsZ2GSgPHZZAdkkS7PN8V5b8VSfIDvItRmwR8dahP?=
+ =?us-ascii?Q?BvDK9hEJB8sAVjqTJZK74H2ocSZtMP08azBg29Nzc4cC/CpHtIaQqLDg2r+2?=
+ =?us-ascii?Q?1r0wX41/Upics6wFwRng4UBBZWV6f7eP04nnXp27bSlevqV9rYQCFO7Xz2zB?=
+ =?us-ascii?Q?SkNyuL7nTJBlYBS2IVoEX9U1F9Xd2aO6NnjyZyHVTEnwjqEK+83n+vXwtDN1?=
+ =?us-ascii?Q?js9kVUMCcyMcWfIx5jeHNvQJysLjJsWsyqBj6CETI0L2xBVdvEVkSVpHndH9?=
+ =?us-ascii?Q?1aj8xkIfYv0Fmgzi147fCyypmcnL06CqDSbxvQUCh/3sV+N1mDyFddVgNkI3?=
+ =?us-ascii?Q?HQVCYzulPdTDPWAfHqFDm3oi+Z/ZgAxWQ1DxShvf0AhcNYjx69+Ywvkn72Sr?=
+ =?us-ascii?Q?hCXryFiomEFTMbakajVLGpwm0er2TQ03GjD4/lSOKLBSl1rnihr+D6r9gqEN?=
+ =?us-ascii?Q?Z9AzvjejYvXyp+dgsJlPOX0vo0Rn4LOWOtnqAg1XDcdGKARWSXTWfSLokXPB?=
+ =?us-ascii?Q?TvSTSZ2uvUiC+znnPgUlUDmF1jMIZ/6IJ/RUXkeFEj3APi46SMG9s/mEi1xB?=
+ =?us-ascii?Q?j8YKnI47e5brNow8lt/cJ9pO2YAse2R/cEhaIrzbhAfN5Iql6Cn9TcGbGUeK?=
+ =?us-ascii?Q?+BKlvykeHORyoFfC4IX0STlHKf4QZsuF+49sQG3g8EEXWmVpb7kyIAXB/YVF?=
+ =?us-ascii?Q?JU9v4alAzwViNncmk2PRtkZ+91swTu+nJD+hUIQp9i870yslbNx6V76DJXZT?=
+ =?us-ascii?Q?0NUnVFfJN0G+pBiqrq1JVvBp3nbWPhq7ey6q1eT0sYmHzyKRaYYEXSFz/ilK?=
+ =?us-ascii?Q?W+BQxDxc5V+MX1feqxZgrvop808o98/tlXcstELcaEN0b1Dcl7t+HN44UPkm?=
+ =?us-ascii?Q?qI1GNgEjhJ4vPPa1YUPNNiplhRuSDTATftQF9Kpw8M703rMJFXEA87j3iJhF?=
+ =?us-ascii?Q?tht4lZN5x5bSp28mMTMJB4u3nArJkMVRaHXZP7rscgfv7b2/MyDLBlj7BkCf?=
+ =?us-ascii?Q?BJCEsF3Xnd3U76yKKkvJTVbb+ChfVM/Nq4HOPisNKWTcTPUc83wMwyjCsiLq?=
+ =?us-ascii?Q?ef1Rqtgd2sOK07uRFGxqfqv+S4OD+UcfAfNQlFqtoRQrpv2+YHC8CkQdDMhf?=
+ =?us-ascii?Q?cN1RH+1Nl6M1h80Cwwsn0fW/kNaGox0tFzdgl/gtTl/+o39n9VNm9F/tvxkl?=
+ =?us-ascii?Q?ukOjaxMg3y76tN8SJA9GKPwj9jLWPAGNgE0snfe40GDMdnOJBgzL0ivbsB+J?=
+ =?us-ascii?Q?h3jl0e1SlsdK+pwfazKB+3nFuNbAjksk4loIURoRH37dYbZo5D0ZJ0MQ3Kzo?=
+ =?us-ascii?Q?ZEkZ4/BNjNgt43MJA3QMI+Ol/aAzcmPcYcajQUD8GRTwSwz+rwRyAsBcwHGL?=
+ =?us-ascii?Q?ulvYhOoYKVF6TMqgP2daMhYUKfoaiYbdrXu+EhVP4mzp2+QNNlDHuPbkW94k?=
+ =?us-ascii?Q?RZ0uJoyfWgcmsfoSJ3LU9bi9QMRJNqJiGrVKx2Pejv3zK4QzrZvwNpymRE5v?=
+ =?us-ascii?Q?mnzKcUNkqA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1a45843-54c0-4acb-d12f-08dee2d4923d
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 00:52:55.0126
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z7Qvr+ZcTvyix5mZNzIi/w3YmDvmrNjnGISuZgElRrf3hLhj+FqWFSqXwnSzMfMKNb6OHYhS7QfvMLIVWzywqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5932
 
+On Wed, Jul 15, 2026 at 10:41:01PM +0100, Pedro Falcato wrote:
+> On Sat, Jul 11, 2026 at 02:36:01AM -0400, Yury Norov wrote:
+> > Compare the cost of allocating and freeing variable-sized regions using
+> > a bitmap, IDA and a Maple Tree. All implementations process the same
+> > randomly generated sequence of region sizes, ranging from 1 to 32 entries,
+> > until the configured capacity is exhausted.
+> > 
+> > Run the benchmark at several capacities to show how the approaches
+> > scale. Report allocation and free times separately because bitmap,
+> > IDA and Maple Tree removal have substantially different costs.
+> > 
+> > On x86/kvm, the output example is:
+> > 
+> > type       alloc (ns)      free (ns)   capacity   memory (B)
+> > bitmap      179573071         342105    1000000       125000
+> > IDA          46555636       33931498    1000000       134864
+> > maple        18629665       19741396    1000000      1548304
+> > bitmap        1630912          30933     100000        12504
+> > IDA           6144785        3354590     100000        14288
+> > maple         1745026        1825032     100000       155408
+> > bitmap          28448           3374      10000         1256
+> > IDA            418978         333641      10000         1872
+> > maple          185398         211138      10000        15632
+> > bitmap           2253            610       1000          128
+> > IDA             42755          36432       1000          144
+> > maple           19728          23474       1000         1552
+> > 
+> 
+> I don't understand the comparison. bitmap, IDA and maple are
+> completely different data structures for completely different purposes.
 
+Sure. Please check this link from the patch description:
 
-> On 9 Jul 2026, at 18:36, Deborah Brouwer =
-<deborah.brouwer@collabora.com> wrote:
->=20
-> From: Boris Brezillon <boris.brezillon@collabora.com>
->=20
-> Introduce a generic slot manager to dynamically allocate limited =
-hardware
-> slots to software "seats". It can be used for both address space (AS) =
-and
-> command stream group (CSG) slots.
->=20
-> The slot manager initially assigns seats to its free slots. It will
-> continue to reuse the same slot for a seat, as long as another seat =
-does
-> not start to use the slot in the interim.
->=20
-> When contention arises because all of the slots are allocated, the =
-slot
-> manager will lazily evict and reuse slots that have become idle (if =
-any).
->=20
-> The seat state is protected using the LockedBy pattern with the same =
-lock
-> that guards the SlotManager. This ensures the seat state stays =
-consistent
-> across slot operations.
->=20
-> Hardware specific behaviour is controlled through the SlotManager's
-> specific manager type that implements the `SlotOperations` trait.
->=20
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
-> drivers/gpu/drm/tyr/slot.rs | 385 =
-++++++++++++++++++++++++++++++++++++++++++++
-> drivers/gpu/drm/tyr/tyr.rs  |   1 +
-> 2 files changed, 386 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
-> new file mode 100644
-> index 000000000000..3f58b23238ef
-> --- /dev/null
-> +++ b/drivers/gpu/drm/tyr/slot.rs
-> @@ -0,0 +1,385 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +
-> +//! Slot management abstraction for limited hardware resources.
-> +//!
-> +//! This module provides a generic [`SlotManager`] that assigns =
-limited hardware
-> +//! slots to logical "seats". A seat represents an entity (such as a =
-virtual memory
-> +//! (VM) address space) that needs access to a hardware slot.
-> +//!
-> +//! The [`SlotManager`] tracks slot allocation using sequence numbers =
-(seqno) to detect
-> +//! when a seat's binding has been invalidated. When a seat requests =
-activation,
-> +//! the manager will either reuse the seat's existing slot (if still =
-valid),
-> +//! allocate a free slot (if any are available), or evict the oldest =
-idle slot if any
-> +//! slots are idle.
-> +//!
-> +//! Hardware-specific behavior is customized by implementing the =
-[`SlotOperations`]
-> +//! trait, which allows callbacks when slots are activated or =
-evicted.
-> +//!
-> +//! This is currently used for managing address space slots in the =
-GPU, and it will
-> +//! also be used to manage Command Stream Group (CSG) interface slots =
-in the future.
-> +//!
-> +//! [SlotOperations]: crate::slot::SlotOperations
-> +//! [SlotManager]: crate::slot::SlotManager
-> +#![allow(dead_code)]
-> +
-> +use core::{
-> +    mem::take,
-> +    ops::{
-> +        Deref,
-> +        DerefMut, //
-> +    }, //
-> +};
-> +
-> +use kernel::{
-> +    prelude::*,
-> +    sync::LockedBy, //
-> +};
-> +
-> +/// Seat information.
-> +///
-> +/// This can't be accessed directly by the element embedding a =
-`Seat`,
-> +/// but is used by the generic slot manager logic to control =
-residency
-> +/// of a certain object on a hardware slot.
-> +pub(crate) struct SeatInfo {
-> +    /// Slot used by this seat.
-> +    ///
-> +    /// This index is only valid if the slot pointed to by this index
-> +    /// has its `SlotInfo::seqno` match `SeatInfo::seqno`. Otherwise,
-> +    /// it means the object has been evicted from the hardware slot,
-> +    /// and a new slot needs to be acquired to make this object
-> +    /// resident again.
-> +    slot: u8,
-> +
-> +    /// Sequence number encoding the last time this seat was active.
-> +    /// We also use it to check if a slot is still bound to a seat.
-> +    seqno: u64,
-> +}
-> +
-> +/// Seat state.
-> +///
-> +/// This is meant to be embedded in the object that wants to acquire
-> +/// hardware slots. It also starts in the `Seat::NoSeat` state, and
-> +/// the slot manager will change the object value when an =
-active/evict
-> +/// request is issued.
-> +#[derive(Default)]
-> +pub(crate) enum Seat {
-> +    #[expect(clippy::enum_variant_names)]
-> +    /// Resource is not resident.
-> +    ///
-> +    /// All objects start with a seat in the `Seat::NoSeat` state. =
-The seat also
-> +    /// gets back to that state if the user requests eviction. It
-> +    /// can also end up in that state next time an operation is done
-> +    /// on a `Seat::Idle` seat and the slot manager finds out this
-> +    /// object has been evicted from the slot.
-> +    #[default]
-> +    NoSeat,
-> +
-> +    /// Resource is actively used and resident.
-> +    ///
-> +    /// When a seat is in the `Seat::Active` state, it can't be =
-evicted, and the
-> +    /// slot pointed to by `SeatInfo::slot` is guaranteed to be =
-reserved
-> +    /// for this object as long as the seat stays active.
-> +    Active(SeatInfo),
-> +
-> +    /// Resource is idle and might or might not be resident.
-> +    ///
-> +    /// When a seat is in the`Seat::Idle` state, we can't know for =
-sure if the
-> +    /// object is resident or evicted until the next request we issue
-> +    /// to the slot manager. This tells the slot manager it can
-> +    /// reclaim the underlying slot if needed.
-> +    /// In order for the hardware to use this object again, the seat
-> +    /// needs to be turned into an `Seat::Active` state again
-> +    /// with a `SlotManager::activate()` call.
-> +    Idle(SeatInfo),
-> +}
-> +
-> +impl Seat {
-> +    /// Get the slot index this seat is pointing to.
-> +    ///
-> +    /// If the seat is not `Seat::Active` we can't trust the
-> +    /// `SeatInfo`. In that case `None` is returned, otherwise
-> +    /// `Some(SeatInfo::slot)` is returned.
-> +    pub(super) fn slot(&self) -> Option<u8> {
+https://lore.kernel.org/all/20260710-chid-maple-v1-1-4ee869055268@nvidia.com/
 
-Can we use on pub(crate) instead of pub(super)?
+The test is very well motivated by that discussion. I'm not saying
+it compares apples to apples. I'm trying to quantify the answer to a
+very specific question: what is better for NOVA ID allocator. Or more
+broadly: what's the best data structure for range ID allocators of a
+given capacity.
+ 
+> 1) IDA is 16 bytes when empty, maple is 16 bytes when empty, bitmap
+> is $size bytes
+> 2) bitmap is statically sized, IDA and maple have to deal with actual
+> allocation and freeing of memory
+> 3) xarray and maple (especially maple) are optimized for RCU usage and
+> have different tradeoffs
+> 4) IDA does not support ranges
+> 5) xarray (the underlying data structure for IDA) does not support ranges
+> in any optimal way
+> 6) maple is not optimized for 1-sized ranges, nor ID allocation; it
+> actually stores data, so instead of 1 bit per index you get 8 whole
+> bytes.
+> 7) maple and IDA both handle locking implicitly
 
-> +        match self {
-> +            Self::Active(info) =3D> Some(info.slot),
-> +            _ =3D> None,
-> +        }
-> +    }
-> +}
-> +
-> +/// Information related to a slot.
-> +struct SlotInfo<T> {
-> +    /// Type specific data attached to a slot.
-> +    slot_data: T,
-> +
-> +    /// Sequence number from when this slot was last activated.
-> +    seqno: u64,
-> +}
-> +
-> +/// Slot state.
-> +#[derive(Default)]
-> +enum SlotState<T> {
-> +    /// Slot is free.
-> +    #[default]
-> +    Free,
-> +
-> +    /// Slot is active.
-> +    Active(SlotInfo<T>),
-> +
-> +    /// Slot is idle.
-> +    Idle(SlotInfo<T>),
-> +}
-> +
-> +/// Trait describing the slot-related operations.
-> +pub(crate) trait SlotOperations {
-> +    /// Implementation-specific data associated with each slot.
-> +    type SlotData;
-> +
-> +    /// Called when a slot is being activated for a seat.
-> +    fn activate(&mut self, _slot_idx: usize, _slot_data: =
-&Self::SlotData) -> Result {
-> +        Ok(())
-> +    }
-> +
-> +    /// Called when a slot is being evicted and freed.
-> +    fn evict(&mut self, _slot_idx: usize, _slot_data: =
-&Self::SlotData) -> Result {
-> +        Ok(())
-> +    }
-> +}
-> +
-> +/// A generic slot manager that provides access to a limited number =
-of hardware slots.
-> +pub(crate) struct SlotManager<T: SlotOperations, const MAX_SLOTS: =
-usize> {
-> +    /// A specific implementation of the generic slot manager.
-> +    manager: T,
-> +
-> +    /// Number of slots actually available.
-> +    slot_count: usize,
-> +
-> +    /// Slot array used to track the state of each slot.
-> +    slots: [SlotState<T::SlotData>; MAX_SLOTS],
-> +
-> +    /// Sequence number incremented each time a Seat is successfully =
-activated
-> +    use_seqno: u64,
-> +}
-> +
-> +/// A `Seat` that can only be accessed when holding a `SlotManager` =
-lock guard.
-> +type LockedSeat<T, const MAX_SLOTS: usize> =3D LockedBy<Seat, =
-SlotManager<T, MAX_SLOTS>>;
-> +
-> +impl<T: SlotOperations, const MAX_SLOTS: usize> SlotManager<T, =
-MAX_SLOTS> {
-> +    /// Creates a specific instance of a slot manager.
-> +    pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> =
-{
-> +        if slot_count =3D=3D 0 {
-> +            pr_err!("Invalid slot count: 0");
-> +            return Err(EINVAL);
-> +        }
-> +        if slot_count > MAX_SLOTS {
-> +            pr_err!(
-> +                "Slot count: {} cannot exceed MAX_SLOTS: {}",
-> +                slot_count,
-> +                MAX_SLOTS
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +        Ok(Self {
-> +            manager,
-> +            slot_count,
-> +            slots: [const { SlotState::Free }; MAX_SLOTS],
-> +            use_seqno: 1,
-> +        })
-> +    }
-> +
-> +    /// Records a slot as active for the given seat.
-> +    fn record_active_slot(
-> +        &mut self,
-> +        slot_idx: usize,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
+Yes, this to some extent follows John's arguments why bitmaps are
+preferred for NOVA Id allocator. I'd also add serializeability, if
+it's needed.
+ 
+> There are also other pressing questions about the benchmark itself:
+> it's pretty much the ideal scenario for bitmap.
 
-This looks infallible?
+It's pretty much the worst scenario for bitmaps, because the test
+starts searching for a region from the beginning of the bitmap on
+every iteration, making it "Shlemiel the Painter" algorithm with
+O(N^2) complexity.
 
-> +        let cur_seqno =3D self.use_seqno;
-> +
-> +        *locked_seat.access_mut(self) =3D Seat::Active(SeatInfo {
-> +            slot: slot_idx as u8,
-> +            seqno: cur_seqno,
-> +        });
-> +
-> +        self.slots[slot_idx] =3D SlotState::Active(SlotInfo {
-> +            slot_data,
-> +            seqno: cur_seqno,
-> +        });
-> +
-> +        self.use_seqno +=3D 1;
-> +        Ok(())
-> +    }
-> +
-> +    /// Activates a slot for the given seat.
-> +    fn activate_slot(
-> +        &mut self,
-> +        slot_idx: usize,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
-> +        self.manager.activate(slot_idx, &slot_data)?;
-> +        self.record_active_slot(slot_idx, locked_seat, slot_data)
-> +    }
-> +
-> +    /// Finds a slot for the given seat. A free slot is preferred, =
-but if none
-> +    /// are available, the oldest idle slot is evicted and reused. =
-Otherwise, if
-> +    /// there are no free or idle slots, return [`EBUSY`].
-> +    fn allocate_slot(
-> +        &mut self,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
-> +        let slots =3D &self.slots[..self.slot_count];
-> +
-> +        let mut idle_slot_idx =3D None;
-> +        let mut idle_slot_seqno: u64 =3D 0;
-> +
-> +        for (slot_idx, slot) in slots.iter().enumerate() {
-> +            match slot {
-> +                SlotState::Free =3D> {
-> +                    return self.activate_slot(slot_idx, locked_seat, =
-slot_data);
-> +                }
-> +                SlotState::Idle(slot_info) =3D> {
-> +                    if idle_slot_idx.is_none() || slot_info.seqno < =
-idle_slot_seqno {
-> +                        idle_slot_idx =3D Some(slot_idx);
-> +                        idle_slot_seqno =3D slot_info.seqno;
-> +                    }
-> +                }
-> +                SlotState::Active(_) =3D> (),
-> +            }
-> +        }
-> +
-> +        match idle_slot_idx {
-> +            Some(slot_idx) =3D> {
-> +                // Lazily evict idle slot just before it is reused.
-> +                if let SlotState::Idle(slot_info) =3D =
-&self.slots[slot_idx] {
-> +                    self.manager.evict(slot_idx, =
-&slot_info.slot_data)?;
-> +                }
-> +                self.activate_slot(slot_idx, locked_seat, slot_data)
-> +            }
-> +            None =3D> {
-> +                pr_err!(
-> +                    "Slot allocation failed: all {} slots in use\n",
-> +                    self.slot_count
-> +                );
-> +                Err(EBUSY)
-> +            }
-> +        }
-> +    }
-> +
-> +    /// Converts an active slot and its seat to idle state.
-> +    fn idle_slot(&mut self, slot_idx: usize, locked_seat: =
-&LockedSeat<T, MAX_SLOTS>) -> Result {
-> +        let slot =3D take(&mut self.slots[slot_idx]);
+If I wanted to cheat, I'd carry the last allocated ID over the loop.
+It would make the complexity O(N). I could choose to start searching
+from a random ID, saying it's 'more realistic'. It makes the complexity
+converging to O(N*logN). This is how cpumask_*_distribute() works, btw.
 
-I think it=E2=80=99d be clearer to have mem::take here instead of take.
+So no, this is far from being the ideal scenario.
 
-> +
-> +        // If the slot was active, make it idle.
-> +        if let SlotState::Active(slot_info) =3D slot {
-> +            self.slots[slot_idx] =3D SlotState::Idle(slot_info);
+> doing the find in
+> bitmap is essentially testing how far the CPU can speculate, and how
+> large the cache is. It's pretty darn large on modern hardware.
 
-Is it me or we don=E2=80=99t place the slot back in the array if the =
-slot is
-already idle? Looking at the caller, it seems like this can=E2=80=99t =
-happen today,
-but still, perhaps we should use a match here as future-proofing
+Yes, it's a very effective data structure. That's why it's the 2nd
+most popular in the kernel, after spinlocks.
 
-I think that would fit better, specially given the fact that the code =
-below
-does use a match.
+> Since you
+> never actually free the ranges in any way, every bitmap branch should predict
+> extremely well. Fragmentation in the bitmap can very quickly turn into a
+> nightmare, while maple will eat it up just fine.
 
-> +        }
-> +
-> +        // If the seat was active, make it idle, or keep it idle if =
-it was already idle.
-> +        *locked_seat.access_mut(self) =3D match =
-locked_seat.access(self) {
-> +            Seat::Active(seat_info) | Seat::Idle(seat_info) =3D> =
-Seat::Idle(SeatInfo {
-> +                slot: seat_info.slot,
-> +                seqno: seat_info.seqno,
-> +            }),
-> +            Seat::NoSeat =3D> Seat::NoSeat,
-> +        };
+Assuming "fragmentation" is the uniform distribution of free areas, it
+wouldn't "turn to nightmare", it would asymptotically turn to O(N*logN).
 
-> +        Ok(())
-> +    }
-> +
-> +    /// Evicts an active or idle slot: calls the eviction callback =
-and marks the slot as free
-> +    /// and the seat as NoSeat.
-> +    fn evict_slot(&mut self, slot_idx: usize, locked_seat: =
-&LockedSeat<T, MAX_SLOTS>) -> Result {
-> +        match &self.slots[slot_idx] {
-> +            SlotState::Active(slot_info) | SlotState::Idle(slot_info) =
-=3D> {
-> +                self.manager.evict(slot_idx, &slot_info.slot_data)?;
-> +                take(&mut self.slots[slot_idx]);
-> +            }
-> +            _ =3D> (),
-> +        }
-> +
-> +        *locked_seat.access_mut(self) =3D Seat::NoSeat;
-> +        Ok(())
-> +    }
-> +
-> +    /// Checks that the seat state matches the slot's state.
-> +    /// If they don't match, the seat is stale and is reset to =
-`NoSeat`.
-> +    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) =
-{
-> +        let (slot_idx, seat_seqno, is_active) =3D match =
-locked_seat.access(self) {
-> +            Seat::Active(seat_info) =3D> (seat_info.slot as usize, =
-seat_info.seqno, true),
-> +            Seat::Idle(seat_info) =3D> (seat_info.slot as usize, =
-seat_info.seqno, false),
-> +            _ =3D> return,
-> +        };
-> +
-> +        let valid =3D if is_active {
-> +            !kernel::warn_on!(!matches!(
-> +                &self.slots[slot_idx],
-> +                SlotState::Active(slot_info) if slot_info.seqno =3D=3D =
-seat_seqno
-> +            ))
-> +        } else {
-> +            matches!(
-> +                &self.slots[slot_idx],
-> +                SlotState::Idle(slot_info) if slot_info.seqno =3D=3D =
-seat_seqno
-> +            )
-> +        };
-> +
-> +        if !valid {
-> +            *locked_seat.access_mut(self) =3D Seat::NoSeat;
-> +        }
-> +    }
-> +
-> +    /// Activate a resource on any available/reclaimable slot.
-> +    pub(crate) fn activate(
-> +        &mut self,
-> +        locked_seat: &LockedSeat<T, MAX_SLOTS>,
-> +        slot_data: T::SlotData,
-> +    ) -> Result {
-> +        self.check_seat(locked_seat);
-> +        match locked_seat.access(self) {
-> +            // If a seat still has a valid slot, just reuse the slot =
-and refresh the bookkeeping.
-> +            Seat::Active(seat_info) | Seat::Idle(seat_info) =3D> {
-> +                self.record_active_slot(seat_info.slot as usize, =
-locked_seat, slot_data)
-> +            }
-> +            _ =3D> self.allocate_slot(locked_seat, slot_data),
-> +        }
-> +    }
-> +
-> +    /// Flag a resource as idle. This method will be used for user VM =
-support.
-> +    #[expect(dead_code)]
-> +    pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, =
-MAX_SLOTS>) -> Result {
-> +        self.check_seat(locked_seat);
-> +        if let Seat::Active(seat_info) =3D locked_seat.access(self) {
-> +            self.idle_slot(seat_info.slot as usize, locked_seat)?;
-> +        }
-> +        Ok(())
-> +    }
-> +
-> +    /// Evict a resource from its slot.
-> +    pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, =
-MAX_SLOTS>) -> Result {
-> +        self.check_seat(locked_seat);
-> +
-> +        match locked_seat.access(self) {
-> +            Seat::Active(seat_info) | Seat::Idle(seat_info) =3D> {
-> +                let slot_idx =3D seat_info.slot as usize;
-> +                self.evict_slot(slot_idx, locked_seat)?;
-> +            }
-> +            _ =3D> (),
-> +        }
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl<T: SlotOperations, const MAX_SLOTS: usize> Deref for =
-SlotManager<T, MAX_SLOTS> {
-> +    type Target =3D T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.manager
-> +    }
-> +}
-> +
-> +impl<T: SlotOperations, const MAX_SLOTS: usize> DerefMut for =
-SlotManager<T, MAX_SLOTS> {
-> +    fn deref_mut(&mut self) -> &mut Self::Target {
-> +        &mut self.manager
-> +    }
-> +}
-> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-> index 95cda7b0962f..7c9a8063b3b9 100644
-> --- a/drivers/gpu/drm/tyr/tyr.rs
-> +++ b/drivers/gpu/drm/tyr/tyr.rs
-> @@ -12,6 +12,7 @@
-> mod gem;
-> mod gpu;
-> mod regs;
-> +mod slot;
->=20
-> kernel::module_platform_driver! {
->     type: TyrPlatformDriver,
->=20
-> --=20
-> 2.54.0
->=20
+> These are very different data structures and picking between them requires
+> understanding all the tradeoffs. I don't think this benchmark helps with
+> that.
 
+OK, I see. You seemingly think that I want to throw all and every data
+structure away from the kernel in favor of the bitmaps.
+
+No, I don't.
+
+Thanks,
+Yury
