@@ -1,142 +1,206 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6073CD8B0;
-	Thu, 16 Jul 2026 09:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F1D3451B2
+	for <rust-for-linux@vger.kernel.org>; Thu, 16 Jul 2026 10:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784192616; cv=none; b=PNoeMBfNKKgqldI7/IhesaTYd7Z0XZyZRIV0IHGxQhjekFtfyExra5jzvnDmP9LBAMLHvVfU8d5b4zIItzWyc7VX586lofI3jgWdomCG2LGRRNdu2v+cUw8C6nyMztpuOTkEVbfuxah/9tcEPYAybN6rLmfpuLzgD16GlnTFVvQ=
+	t=1784197377; cv=none; b=NTBrpGi1+hAfHcAfOHNjo3zI+AkPfElZGz5I19w/knLxy8Q+BnK8H7IMFUGpwxsH0twlzxyxLGA9lgphvZfuYdk+tq1iDdpqzbSz3NBUKUgO6oIzkZSAEaI2NasLIc5wpyiWrmuPJeXwqAXm6f9RsISmsKpSsz04as/FMrFRzG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784192616; c=relaxed/simple;
-	bh=mdc0Qg0CaS9HhMRhYLzKY0lvqzMX6zDKQ+/7G+CVATM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tl0gEFXkzuGQaVm0wJSw3CzautHN2NOEPyxN1QZfY8QEJMVIMCn/4wFW5BWlQvgYP7ze/3T5TNq0lf6z6AdfQf3AyaEs3mUD+Je1M2v6koAMfL2jxa8ZwLhkZAFgLdTTouL7TT25YNxhdrlKyhjlbcrY/CUuqlxSA0CrV/J+ZL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XmCfPuud; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1784197377; c=relaxed/simple;
+	bh=CEB7cSB5VZeuvZcE2U7qcb4DmzUSxIr4fcv6Fn/xfYs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m94f0lDgS/FFdxpWckmLaChWU4LjyLXh8Pnm+baHx/PwMOinXlookx6pz/KGzoRVBRZxy9fbvrZWV2Wm2U3NzDNMnyX64dUFywLmIhupKvfgNlRGadUfHDMueXrw+7gYjQW8bHJARgcarfxK+Dvu4EDHHPJxDm7Gc4rvmJUotZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eEeMxfUK; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XmCfPuud"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784192614; x=1815728614;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mdc0Qg0CaS9HhMRhYLzKY0lvqzMX6zDKQ+/7G+CVATM=;
-  b=XmCfPuudKfg96rOkNRVBKpg+cmRsN4UpwQPR3YDHt9Z57QWU2BOrwx5E
-   Tww1l3QYiHH+7BLiqcBl+wURkjW3CyfU2IWVT7hImvknmFM2T9OUveqTJ
-   X/MWlmP1qe2BRp8hEuvPt1iNH8cNCyKoj2382RJ3B0lHLDREPn4yvAdZN
-   GMoC/e1Fok5jz3z94IRg/3vhJKJfOTfbDAQtw8mfErUawrqX1g0JL2TUj
-   lbjO2Goj2EbRruYVeU0WreIOOaVDHqQlNPnjJAvVrFh2L+cju/1kOBEpR
-   BBLnjMjv2M+GAnuPYg2xEzO+8l6Kwrvq7McCS7TyHUq7XknhNfaIipZ0W
-   w==;
-X-CSE-ConnectionGUID: 7Hv/F3d5RkCCuPv3D61Xlg==
-X-CSE-MsgGUID: 938+LABAQgu7PXuLXytfIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84874234"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="84874234"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 02:03:30 -0700
-X-CSE-ConnectionGUID: lRoi4/cIQz+TT/pG5vIyBg==
-X-CSE-MsgGUID: /nbhLZgmScmziK0fSPUDtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="260260162"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.26])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 02:03:20 -0700
-Date: Thu, 16 Jul 2026 12:03:17 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>, Sven Peter <sven@kernel.org>,
-	Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] nvmem: fix a const-unsoundness in reg_write
-Message-ID: <alieVR1cOtOySi4_@ashevche-desk.local>
-References: <20260715195520.25410-1-linkmauve@linkmauve.fr>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eEeMxfUK"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4629f312a67so5451503f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 16 Jul 2026 03:22:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784197374; x=1784802174; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=l4LZHVP1BW407EGuW6dnUL3Kfk1zeC5bbxSp3F5DgwI=;
+        b=eEeMxfUKZRFpGDwBA+/+75OMMPjtzk4qT9W7gqxyIV0c8QF5UvFLYJaYHfRM8NRMs5
+         W/T/FgIj4Gmouj7epNXI/5F/HSmavshBazBObcelfxHkDLCv+grNThUG+1Y9ppRoc79K
+         dEs0ZVUc4NIWG0FwCAlDOuvtuC2VMjrSulhTmOgjAK024VGkkcocCK/hPAr/EHHDjUH7
+         9KYQUW0akbBP2dugT0YnA9Rnf8kmTD1ADNCCa/GeHBUmvUuKoyMsmRTE+Dc1JJvaPNVP
+         ZqfNQ1aRRjRwaffDie4OPxzHg5CirByeyS/woNCkJV+5GtMYhll/CdaTpJnWMdELnPpM
+         ynnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784197374; x=1784802174;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=l4LZHVP1BW407EGuW6dnUL3Kfk1zeC5bbxSp3F5DgwI=;
+        b=KMGz8r6PWwyCqO2xK0y8+HdrhVP51nX0ZRDK1QXpGxE8MNj+UfoM6/m5d4S5OtMKbj
+         vhp5PlI4O2ORlDvRwwpKRp0KPICZysF5w/SMAx4s/23ngsNaK9QpC+sVZdnO+6GTtoZX
+         Yo4ULCrujkirwvegWMgTxk8Pj/5fRqOtthAQpIIY6Q/ZBCHiwVJdMSL6+k6u1BN5l6pJ
+         /m51IDrQtFObvEKUHTE0YxhY6408I2U00rzvuKn3FhrKbFHHD5a0OIBWE+NKQ6g7IGkO
+         czXoZ/8X3O/tpyOIjTvw4mnBQi3sKG9sA/7CyRpsKRKoX3Wg8Q+yXG60DtqzaNVexFfh
+         leQA==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6K1wJ3cxndQkZv7FKMsKBjU3HVLmd5Ew+CVBOzZzq0+rzdC+mwq5DGyDuZBEuHsdoLcKLy0V5E95/npGpsw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzN/e8JReY2w11qvDtoX9cuUmsVLFhpodKaWkYS00NsEI6/2RXg
+	Cw4trMxpJDSsW/pW2XKxTbgwDei2LK11dfHVuVVVXWNrZGrObPz1UkiNWi7omsiCvEpuPlOrBQm
+	rqwY4JDjwFj38LIh9mA==
+X-Received: from wrwa16.prod.google.com ([2002:a5d:53d0:0:b0:478:b7dc:65f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:64e5:0:b0:47e:81aa:3822 with SMTP id ffacd0b85a97d-47f4fd1fe44mr7437542f8f.42.1784197373274;
+ Thu, 16 Jul 2026 03:22:53 -0700 (PDT)
+Date: Thu, 16 Jul 2026 10:22:43 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260715195520.25410-1-linkmauve@linkmauve.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPKwWGoC/x2MwQqAIBAFfyX23IJ6KOpXooNsr1ooDY0Ion9PO
+ g7MzEMZSZGprx5KuDRrDAVsXZGsPixgnQqTM64xrW14KpKAz+R144xdJW4xsBXj4Dp4KzOV+Ei Y9f7Hw/i+H7ui3LFoAAAA
+X-Change-Id: 20260716-device-trail-semicolon-1c02e29ea1cf
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4264; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=CEB7cSB5VZeuvZcE2U7qcb4DmzUSxIr4fcv6Fn/xfYs=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqWLD1ZEdWyiv8/XGg2gs9Lu+iwlm/WL70pP1cZ
+ /pV+LIAqbCJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaliw9QAKCRAEWL7uWMY5
+ Rk6jEACcW8b4A/RlINCpHGoMmXGQcgHokZ8vPjmXpT9qRxwwmJE83jpOLI+MPs584bexMND7BP0
+ m4poFxC9crPBJcsIGBUepVSsjH61PFcD6nTLnP2EZTjeQY5LYrSWjq+n4uDee6kqQceqHiiq0nL
+ wk8JXBN5ijd24PXxo4tonmxfVWiwCXkuBewwDNfiBrDoFTdDxB2bl+fQYglhz+8+Re8qSYanve+
+ D1ONODxgnK6pNq1qh/hFlr1UisNsM8iuqTUdaxD1q7Szc7SkLNz/tyPiP+dmc8pZJ+OU+LHsRwF
+ jm3H/mG9xzWkxIeMhNiBvbw4lqISgpgUv9tLcyjZtYTt92XrR5gzjgCJPbxlm4mxQbQg5mCoDh6
+ 5Na2xrtLZXiziyI1t08go0olRltnhWq0tHgOrg26gw2contCSpehq0tQq5cZ1IRO0K6Zk1oIQkW
+ YQWk0Thc0GdZoYZPtcQpD5Uaew4Vb7Cm+uPK9vhbAKls/nSsAVqLtYTd6g3hJ4FnFQcuvn2R9cj
+ +PIrDAQdTywUe3s5uaupHRGQTie/QP9qhIrdv8VrLV/Coqk6jqpxshtWhHs0MHh3QdPZYUfwKza
+ t2Qrv8MVTp0jCxigYYlcWjPAr34FiF1C38Mw6d6tZEo412IAQQuuJHR40wo480sUmovZH+IF4Cl FzbB+ES4KqcHlTg==
+X-Mailer: b4 0.14.3
+Message-ID: <20260716-device-trail-semicolon-v1-1-f48e9dcfae15@google.com>
+Subject: [PATCH] rust: device: avoid trailing ; in printing macros
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jul 15, 2026 at 09:55:16PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
-> 
-> This was found while drafting the nvmem-provider Rust abstraction.
-> 
-> Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> callback and deprecates the existing one, with the goal of renaming the
-> new one into the old one once no user remains in the kernel.
+These macros are used like expressions, so they should must not emit a
+semicolon. This is being turned into a hard error in a future release of
+Rust.
 
-You forgot to use --base. It's unclear against what should be this applied.
-I tried Linux Next (next-20260715), and it fails.
+error: trailing semicolon in macro used in expression position
+  --> drivers/gpu/nova-core/firmware/fsp.rs:79:34
+   |
+79 |                 .inspect_err(|_| dev_err!(dev, "FMC firmware missing '{}' section\n", name))
+   |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in a future release!
+   = note: for more information, see issue #79813 <https://github.com/rust-lang/rust/issues/79813>
+   = note: this error originates in the macro `dev_err` (in Nightly builds, run with -Z macro-backtrace for more info)
 
-Yes, it applies against v7.2-rc3, but it means that this won't be applied on
-top of maintainer's tree (which has something already that you have to take
-into consideration).
+Cc: stable@vger.kernel.org
+Fixes: 5c7ca6fa603f ("rust: add `dev_*` print macros.")
+Link: https://github.com/rust-lang/rust/issues/79813
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/device.rs | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-For the record, the first version of the series was no go as the first patch
-there breaks the things, like
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 645afc49a27d..1a38b3bbdfb7 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -708,9 +708,7 @@ macro_rules! impl_device_context_into_aref {
+ #[macro_export]
+ macro_rules! dev_printk {
+     ($method:ident, $dev:expr, $($f:tt)*) => {
+-        {
+-            $crate::device::Device::$method($dev.as_ref(), $crate::prelude::fmt!($($f)*))
+-        }
++        $crate::device::Device::$method($dev.as_ref(), $crate::prelude::fmt!($($f)*))
+     }
+ }
+ 
+@@ -737,7 +735,7 @@ macro_rules! dev_printk {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_emerg {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_emerg, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_emerg, $($f)*) }
+ }
+ 
+ /// Prints an alert-level message (level 1) prefixed with device information.
+@@ -763,7 +761,7 @@ macro_rules! dev_emerg {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_alert {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_alert, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_alert, $($f)*) }
+ }
+ 
+ /// Prints a critical-level message (level 2) prefixed with device information.
+@@ -789,7 +787,7 @@ macro_rules! dev_alert {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_crit {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_crit, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_crit, $($f)*) }
+ }
+ 
+ /// Prints an error-level message (level 3) prefixed with device information.
+@@ -815,7 +813,7 @@ macro_rules! dev_crit {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_err {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_err, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_err, $($f)*) }
+ }
+ 
+ /// Prints a warning-level message (level 4) prefixed with device information.
+@@ -841,7 +839,7 @@ macro_rules! dev_err {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_warn {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_warn, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_warn, $($f)*) }
+ }
+ 
+ /// Prints a notice-level message (level 5) prefixed with device information.
+@@ -867,7 +865,7 @@ macro_rules! dev_warn {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_notice {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_notice, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_notice, $($f)*) }
+ }
+ 
+ /// Prints an info-level message (level 6) prefixed with device information.
+@@ -893,7 +891,7 @@ macro_rules! dev_notice {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_info {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_info, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_info, $($f)*) }
+ }
+ 
+ /// Prints a debug-level message (level 7) prefixed with device information.
+@@ -919,5 +917,5 @@ macro_rules! dev_info {
+ /// ```
+ #[macro_export]
+ macro_rules! dev_dbg {
+-    ($($f:tt)*) => { $crate::dev_printk!(pr_dbg, $($f)*); }
++    ($($f:tt)*) => { $crate::dev_printk!(pr_dbg, $($f)*) }
+ }
 
-drivers/nvmem/qfprom.c:446:22: error: incompatible function pointer types assigning to 'nvmem_reg_write_t' (aka 'int (*)(void *, unsigned int, const void *, unsigned long)') from 'int (void *, unsigned int, void *, size_t)' (aka 'int (void *, unsigned int, void *, unsigned long)') [-Wincompatible-function-pointer-types]
-  446 |                         econfig.reg_write = qfprom_reg_write;
-      |                                           ^ ~~~~~~~~~~~~~~~~
-1 error generated.
+---
+base-commit: a13c140cc289c0b7b3770bce5b3ad42ab35074aa
+change-id: 20260716-device-trail-semicolon-1c02e29ea1cf
 
-This version doesn't have this issue (at least with my smoke build tests
-on x86_64).
-
-Now, what catches me is that regmap_bulk_read() proto used for both cases in
-drivers/nvmem/apple-spmi-nvmem.c without any changes. Which makes me think
-that the approach can be done in a simpler way, id est converting users first
-to use const specifiers in their callbacks first. But this trick is done with
-using (void *) casting (?) which makes warning to disappear, which is
-interesting case. So I think the Apple driver should actually use proper
-protos and hence wrappers, otherwise it makes compiler blind, which is not
-good. TL;DR: you should fix the Apple driver (and might more if any of them
-use that dirty trick).
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Alice Ryhl <aliceryhl@google.com>
 
