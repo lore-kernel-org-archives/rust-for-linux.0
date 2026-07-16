@@ -1,32 +1,32 @@
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9876143A7F0;
-	Thu, 16 Jul 2026 17:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD4842F717;
+	Thu, 16 Jul 2026 17:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784221785; cv=none; b=MsYiywx45UWaZIKlSi+25WR5BVvcWgFuubNOoMukvzt/ycPxWeX89esDvHivBQaWbmKeaC6MixbqQUBgfqhilVwAGT6XnVIcV7z3k3ZoFF2HUCa54uhhE4oloZffK47dG96LnOJusQ/LTm3gxeWgTDFkr9VoQ60xBiR63YfEMS4=
+	t=1784221786; cv=none; b=ZS6toWW0KN2HhaXYSMKBBNPChZJq/JdbZOqlwbRQuQ4E1qtxoIpFd+x5SoLAzWDqguPLWwrL1BpedmvQGszpXh/6SMTvsjeI9hrkZ+K9wyLwwp3eIE6BH39UOokYTW1z/YElZBiqJqspCspKZ7DvxV2lUBJVw0HkAzw0CWsZUAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784221785; c=relaxed/simple;
-	bh=E/neM9q45oFk5vumCuNs3BlrBpr2PnvuUZbONFwRIKg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Hs+G0iogwW81MvvMKVsjXBEhJSX5NttrD5OCu5+g/TuP9UTWjobIoB2BPPq56tZr6QGdoJWwPE/aAecX673C4bFtWi1GYvuT2x4Yg0JJYaucqxBWfasqWuUloTyPKfuqAleiCzUNSEJKEoSkmNxmB/4Polgr3tNkFN6OFOM6m9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=Ni9G6ir7; arc=none smtp.client-ip=159.69.126.157
+	s=arc-20240116; t=1784221786; c=relaxed/simple;
+	bh=9YZesc5wcXlynZX+h2DL+YsI2VfvK0ZmkJiEnkQRKNY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lRGaS3Pf97hJ7id1TgL56ibn3sxFSizr9u56K+TDwGb/qy7yVgpqxQyqHUsQ/beBOYNKkt0mx+mOKAmOx7hzcgEKwQofzY3SdByIUWHQRf++sdmxwBtjPIXoc3OTraYRZEkPhL6MPy6vxaRiNCypYSPjQRJ+2crNpM4SY50P+fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=PGjNtLke; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="Ni9G6ir7"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="PGjNtLke"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1784221779;
-	bh=E/neM9q45oFk5vumCuNs3BlrBpr2PnvuUZbONFwRIKg=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Ni9G6ir7X07AFt8GUroRRtE9hkhAZNVOrzMQepnCFH2BcL030i+v9bC1kxvm2nAcT
-	 nBbfHbVv/hBI75X0GZYJLl9tKUrCqPmSJWW3FIN5WIibKGxUoM65IQK9N0kdBRsDF1
-	 ZIUvhnPTAVAJ1lFO1jm81GcoprxerHFvc3XjcNzY=
+	bh=9YZesc5wcXlynZX+h2DL+YsI2VfvK0ZmkJiEnkQRKNY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=PGjNtLke6YGPB964aaVBz4MAWVNniRPsAqXwlv8pVmFv9TChaWf2Gk/zVXB9DEyG1
+	 VZw3tihOZBwj+lTJ077L+4waZcGSDgZ4nMS1MxvlSsdPR0C7yCFNEuWi1QgOljhe1t
+	 01zc+/tPiDSfvQNVTmIed98XYxEyb5d7orrCtGE4=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 0/6] configfs: Allow the registration of const struct
- configfs_attribute
-Date: Thu, 16 Jul 2026 19:09:25 +0200
-Message-Id: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
+Date: Thu, 16 Jul 2026 19:09:28 +0200
+Subject: [PATCH 3/6] configfs: Treat attribute structures as const
+ internally
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,10 +35,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMyw5AMBCF4VeRWWtSl1Z4FbHQmjIWJR1EIt5ds
- Tvf4vwXMAZChia5IOBBTIuPyNIE7NT7EQUN0ZDLXMsq08Iu3tHo+B28CdMzCl0rZWRZKC0NxOc
- a0NH5VdvuN+9mRru9KbjvB7LL58h3AAAA
-X-Change-ID: 20260716-configfs-const-base-6955b043560b
+Message-Id: <20260716-configfs-const-base-v1-3-c545a4053cb5@weissschuh.net>
+References: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
+In-Reply-To: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
 To: Andreas Hindborg <a.hindborg@kernel.org>, 
  Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, 
  Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
@@ -59,43 +58,116 @@ Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784221778; l=1356;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784221778; l=3841;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=E/neM9q45oFk5vumCuNs3BlrBpr2PnvuUZbONFwRIKg=;
- b=W8B1eCdzBPF+vX/iGW+KJHE8xAceDD1at4gcqjxGEzdBiqCIOPZrlc1rI1Witb3eC2twB400h
- B8v+ldzTTnpAVplEdwuXCfW7epvpRYTFvlvmL1bey309UhnH5QkbVcJ
+ bh=9YZesc5wcXlynZX+h2DL+YsI2VfvK0ZmkJiEnkQRKNY=;
+ b=n+mbJ+otyx8qMM6l8Vc3E+5CAxdDYeaMfR9dv5eIQzMk+XXKgH0vhEYfsIEgL6Q0umHcANnma
+ BIkvWu9KfcHBrT9wRpU/i2Jcxjy5UMrgog7uvwZ8+AfffbtJssC83Fn
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-The attribute structure defined in driver code never need to be
-modified. Allow them to be marked as const.
+The configfs core never modifies the attribute structures defined in
+driver core.
+
+Reflect this in the types used internally in the configfs core.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
-Thomas Weißschuh (6):
-      rust: configfs: remove mutability from some field initializers
-      configfs: Constify is_visible/is_visible_bin in configfs_group_operations
-      configfs: Treat attribute structures as const internally
-      configfs: Constify configfs_bin_attribute
-      configfs: Allow the registration of const struct configfs_attribute
-      samples: configfs: constify the configfs_attribute structures
+ fs/configfs/configfs_internal.h | 10 +++++-----
+ fs/configfs/dir.c               |  6 +++---
+ fs/configfs/file.c              |  6 +++---
+ fs/configfs/inode.c             |  2 +-
+ 4 files changed, 12 insertions(+), 12 deletions(-)
 
- drivers/acpi/acpi_configfs.c       |  2 +-
- drivers/gpu/drm/xe/xe_configfs.c   |  4 +--
- drivers/virt/coco/guest/report.c   |  6 ++--
- fs/configfs/configfs_internal.h    | 10 +++---
- fs/configfs/dir.c                  | 10 +++---
- fs/configfs/file.c                 |  6 ++--
- fs/configfs/inode.c                |  2 +-
- include/linux/configfs.h           | 73 ++++++++++++++++++++------------------
- rust/kernel/configfs.rs            | 20 ++++++-----
- samples/configfs/configfs_sample.c | 16 ++++-----
- 10 files changed, 78 insertions(+), 71 deletions(-)
----
-base-commit: c8d07eca6270b3f41c0e528a470895f1bd42e2b7
-change-id: 20260716-configfs-const-base-6955b043560b
+diff --git a/fs/configfs/configfs_internal.h b/fs/configfs/configfs_internal.h
+index acdeea8e2d69..4bc19cd8d666 100644
+--- a/fs/configfs/configfs_internal.h
++++ b/fs/configfs/configfs_internal.h
+@@ -104,17 +104,17 @@ static inline struct config_item * to_item(struct dentry * dentry)
+ 	return ((struct config_item *) sd->s_element);
+ }
+ 
+-static inline struct configfs_attribute * to_attr(struct dentry * dentry)
++static inline const struct configfs_attribute * to_attr(struct dentry * dentry)
+ {
+ 	struct configfs_dirent * sd = dentry->d_fsdata;
+-	return ((struct configfs_attribute *) sd->s_element);
++	return ((const struct configfs_attribute *) sd->s_element);
+ }
+ 
+-static inline struct configfs_bin_attribute *to_bin_attr(struct dentry *dentry)
++static inline const struct configfs_bin_attribute *to_bin_attr(struct dentry *dentry)
+ {
+-	struct configfs_attribute *attr = to_attr(dentry);
++	const struct configfs_attribute *attr = to_attr(dentry);
+ 
+-	return container_of(attr, struct configfs_bin_attribute, cb_attr);
++	return container_of_const(attr, struct configfs_bin_attribute, cb_attr);
+ }
+ 
+ static inline struct config_item *configfs_get_config_item(struct dentry *dentry)
+diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
+index 3c88f13f1ca2..9a5c2bc4065d 100644
+--- a/fs/configfs/dir.c
++++ b/fs/configfs/dir.c
+@@ -461,7 +461,7 @@ static struct dentry * configfs_lookup(struct inode *dir,
+ 		 */
+ 		if ((sd->s_type & CONFIGFS_NOT_PINNED) &&
+ 		    !strcmp(configfs_get_name(sd), dentry->d_name.name)) {
+-			struct configfs_attribute *attr = sd->s_element;
++			const struct configfs_attribute *attr = sd->s_element;
+ 			umode_t mode = (attr->ca_mode & S_IALLUGO) | S_IFREG;
+ 
+ 			dentry->d_fsdata = configfs_get(sd);
+@@ -622,8 +622,8 @@ static int populate_attrs(struct config_item *item)
+ {
+ 	const struct config_item_type *t = item->ci_type;
+ 	const struct configfs_group_operations *ops;
+-	struct configfs_attribute *attr;
+-	struct configfs_bin_attribute *bin_attr;
++	const struct configfs_attribute *attr;
++	const struct configfs_bin_attribute *bin_attr;
+ 	int error = 0;
+ 	int i;
+ 
+diff --git a/fs/configfs/file.c b/fs/configfs/file.c
+index a48cece775a3..6460b000c593 100644
+--- a/fs/configfs/file.c
++++ b/fs/configfs/file.c
+@@ -41,8 +41,8 @@ struct configfs_buffer {
+ 	struct config_item	*item;
+ 	struct module		*owner;
+ 	union {
+-		struct configfs_attribute	*attr;
+-		struct configfs_bin_attribute	*bin_attr;
++		const struct configfs_attribute		*attr;
++		const struct configfs_bin_attribute	*bin_attr;
+ 	};
+ };
+ 
+@@ -291,7 +291,7 @@ static int __configfs_open_file(struct inode *inode, struct file *file, int type
+ {
+ 	struct dentry *dentry = file->f_path.dentry;
+ 	struct configfs_fragment *frag = to_frag(file);
+-	struct configfs_attribute *attr;
++	const struct configfs_attribute *attr;
+ 	struct configfs_buffer *buffer;
+ 	int error;
+ 
+diff --git a/fs/configfs/inode.c b/fs/configfs/inode.c
+index 68290fe0e374..69f1f24e890f 100644
+--- a/fs/configfs/inode.c
++++ b/fs/configfs/inode.c
+@@ -178,7 +178,7 @@ struct inode *configfs_create(struct dentry *dentry, umode_t mode)
+  */
+ const unsigned char * configfs_get_name(struct configfs_dirent *sd)
+ {
+-	struct configfs_attribute *attr;
++	const struct configfs_attribute *attr;
+ 
+ 	BUG_ON(!sd || !sd->s_element);
+ 
 
-Best regards,
---  
-Thomas Weißschuh <linux@weissschuh.net>
+-- 
+2.55.0
 
