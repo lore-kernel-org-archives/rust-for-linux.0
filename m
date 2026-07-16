@@ -1,145 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944A23F39DB;
-	Thu, 16 Jul 2026 08:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6073CD8B0;
+	Thu, 16 Jul 2026 09:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784191081; cv=none; b=WLGGIXjd5DXNgpxWZe+BAZfH+T4/ghN4DKxpjia+fXyqtyiXgkt4deD3D4tljTygwa8hajhJT7lT16is2gVGNv/xFnwJG4xJIvHXT57tIcE3158K0nYrzirk8lRr+pQ8xdfErciwwG46TECUWKsrgbpGKdz5iu2luV2Goo3mx+g=
+	t=1784192616; cv=none; b=PNoeMBfNKKgqldI7/IhesaTYd7Z0XZyZRIV0IHGxQhjekFtfyExra5jzvnDmP9LBAMLHvVfU8d5b4zIItzWyc7VX586lofI3jgWdomCG2LGRRNdu2v+cUw8C6nyMztpuOTkEVbfuxah/9tcEPYAybN6rLmfpuLzgD16GlnTFVvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784191081; c=relaxed/simple;
-	bh=YfYIYubHv2Q4ihushjbAMl2ffommTXWfGXmYtafqEyM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lU8h8zOByK9GRLMT2CNHB0MyR5OtlvymcGajzbACfLahfsZtua+SE99rjiG4/M1a2pDke3n2/XAaILiZVtAGEV66znkbSxVT1OwxZXci0HrT9e636s/SN9ULp/aJe6YOaoly9ZPA5HghxzhHs+6aAFMTXB+99WK8x7dJFztpnpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkcwfs+U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1784192616; c=relaxed/simple;
+	bh=mdc0Qg0CaS9HhMRhYLzKY0lvqzMX6zDKQ+/7G+CVATM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tl0gEFXkzuGQaVm0wJSw3CzautHN2NOEPyxN1QZfY8QEJMVIMCn/4wFW5BWlQvgYP7ze/3T5TNq0lf6z6AdfQf3AyaEs3mUD+Je1M2v6koAMfL2jxa8ZwLhkZAFgLdTTouL7TT25YNxhdrlKyhjlbcrY/CUuqlxSA0CrV/J+ZL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XmCfPuud; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkcwfs+U"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6E5C9C4AF0C;
-	Thu, 16 Jul 2026 08:38:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1784191080;
-	bh=YfYIYubHv2Q4ihushjbAMl2ffommTXWfGXmYtafqEyM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jkcwfs+U80ZmpRi0HSyYkjjme0S+BX3AiJtRfVjMRbsDth2u0I0PmDSCAvFdb0Ick
-	 prgoXeRwfsR4/zF/sQwjtG6Gzs5KY7nOjAwxtet/6i2xBipGfUnX/RmkDvNK+cBXXx
-	 IfR9wZ+0gE2GERgSWICojTEvNqCrvAvykbc644hbdwmOydpcwUReL28wrsT4QlpPSM
-	 /WrZs7KKvYhwXAWiX1TtinwToP+qALKBqIOrhSfyvG25G+P9VPci2ccKPrrU9v3T2H
-	 cKng9/qcaHAX9XCzFXr2JA9AAdLmoGtP/Bd4P4YToOqSW9tUbhwOLKRf528jCgfsjL
-	 aiJ84mGB+mrFA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58B04C44515;
-	Thu, 16 Jul 2026 08:38:00 +0000 (UTC)
-From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Thu, 16 Jul 2026 08:37:47 +0000
-Subject: [PATCH v4 5/7] rust_binder: Implement
- BINDER_DEBUG_FAILED_TRANSACTION
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XmCfPuud"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784192614; x=1815728614;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mdc0Qg0CaS9HhMRhYLzKY0lvqzMX6zDKQ+/7G+CVATM=;
+  b=XmCfPuudKfg96rOkNRVBKpg+cmRsN4UpwQPR3YDHt9Z57QWU2BOrwx5E
+   Tww1l3QYiHH+7BLiqcBl+wURkjW3CyfU2IWVT7hImvknmFM2T9OUveqTJ
+   X/MWlmP1qe2BRp8hEuvPt1iNH8cNCyKoj2382RJ3B0lHLDREPn4yvAdZN
+   GMoC/e1Fok5jz3z94IRg/3vhJKJfOTfbDAQtw8mfErUawrqX1g0JL2TUj
+   lbjO2Goj2EbRruYVeU0WreIOOaVDHqQlNPnjJAvVrFh2L+cju/1kOBEpR
+   BBLnjMjv2M+GAnuPYg2xEzO+8l6Kwrvq7McCS7TyHUq7XknhNfaIipZ0W
+   w==;
+X-CSE-ConnectionGUID: 7Hv/F3d5RkCCuPv3D61Xlg==
+X-CSE-MsgGUID: 938+LABAQgu7PXuLXytfIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84874234"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
+   d="scan'208";a="84874234"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 02:03:30 -0700
+X-CSE-ConnectionGUID: lRoi4/cIQz+TT/pG5vIyBg==
+X-CSE-MsgGUID: /nbhLZgmScmziK0fSPUDtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
+   d="scan'208";a="260260162"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.26])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 02:03:20 -0700
+Date: Thu, 16 Jul 2026 12:03:17 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Link Mauve <linkmauve@linkmauve.fr>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>, Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] nvmem: fix a const-unsoundness in reg_write
+Message-ID: <alieVR1cOtOySi4_@ashevche-desk.local>
+References: <20260715195520.25410-1-linkmauve@linkmauve.fr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260716-rust_binder_debug_mask-v4-5-3d7436c2d2f2@google.com>
-References: <20260716-rust_binder_debug_mask-v4-0-3d7436c2d2f2@google.com>
-In-Reply-To: <20260716-rust_binder_debug_mask-v4-0-3d7436c2d2f2@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Jahnavi MN <jahnavimn@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784191078; l=2595;
- i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=+4rw0vNjIoFTKWAClTzY1+yTtFeuL8UUoNYjyIOP6gQ=;
- b=sNkwuFcD0fc+U58aKKejbz1SmO1qojohE/ZwsyuerIf0aHd30yIeNEiDks1l4am80YKuIwell
- XmKnzIwIftqCvvTdC6BfsiUC0IPNCg3lyGg1vNqpMxMOsnXNhUoL07D
-X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
- pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
-X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
- auth_id=849
-X-Original-From: Jahnavi MN <jahnavimn@google.com>
-Reply-To: jahnavimn@google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260715195520.25410-1-linkmauve@linkmauve.fr>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Jahnavi MN <jahnavimn@google.com>
+On Wed, Jul 15, 2026 at 09:55:16PM +0200, Link Mauve wrote:
+> This callback used to take a mutable void * for no reason, which causes
+> the compiler to be unaware that the val buffer should never be modified
+> by the callback.
+> 
+> This was found while drafting the nvmem-provider Rust abstraction.
+> 
+> Thanks to the guidance of Andy Shevchenko, this now introduces a new
+> callback and deprecates the existing one, with the goal of renaming the
+> new one into the old one once no user remains in the kernel.
 
-This adds dynamic debug logs for:
-- Failed replies, target process deaths, and error code deliveries.
-- Detailed transaction failure diagnostics (including sender/receiver
-  PIDs, TIDs, transaction IDs, buffer sizes, and error codes).
+You forgot to use --base. It's unclear against what should be this applied.
+I tried Linux Next (next-20260715), and it fails.
 
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Jahnavi MN <jahnavimn@google.com>
----
- drivers/android/binder/thread.rs      | 21 ++++++++++++++++-----
- drivers/android/binder/transaction.rs |  8 ++++++++
- 2 files changed, 24 insertions(+), 5 deletions(-)
+Yes, it applies against v7.2-rc3, but it means that this won't be applied on
+top of maintainer's tree (which has something already that you have to take
+into consideration).
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 9f0178a13d6f..38b90c79c057 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -1275,11 +1275,22 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-                     }
-                 }
- 
--                pr_warn!(
--                    "{}:{} transaction to {} failed: {err:?}",
--                    info.from_pid,
--                    info.from_tid,
--                    info.to_pid
-+                binder_debug!(
-+                    FailedTransaction,
-+                    "transaction {} to {}:{} failed {:?}, code {} size {}-{}",
-+                    if info.is_reply {
-+                        "reply"
-+                    } else if info.is_oneway() {
-+                        "async"
-+                    } else {
-+                        "call"
-+                    },
-+                    info.to_pid,
-+                    info.to_tid,
-+                    err,
-+                    info.code,
-+                    info.data_size,
-+                    info.offsets_size
-                 );
-             }
-         }
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index afef5b46eac2..069c792d2200 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -404,6 +404,14 @@ fn do_work(
-         } else {
-             // On failure to process the list, we send a reply back to the sender and ignore the
-             // transaction on the recipient.
-+            binder_debug!(
-+                FailedTransaction,
-+                "transaction {} to {} failed, fd fixups failed, size {}-{}",
-+                self.debug_id,
-+                self.to.task.pid(),
-+                self.data_size,
-+                self.offsets_size
-+            );
-             return Ok(true);
-         };
- 
+For the record, the first version of the series was no go as the first patch
+there breaks the things, like
+
+drivers/nvmem/qfprom.c:446:22: error: incompatible function pointer types assigning to 'nvmem_reg_write_t' (aka 'int (*)(void *, unsigned int, const void *, unsigned long)') from 'int (void *, unsigned int, void *, size_t)' (aka 'int (void *, unsigned int, void *, unsigned long)') [-Wincompatible-function-pointer-types]
+  446 |                         econfig.reg_write = qfprom_reg_write;
+      |                                           ^ ~~~~~~~~~~~~~~~~
+1 error generated.
+
+This version doesn't have this issue (at least with my smoke build tests
+on x86_64).
+
+Now, what catches me is that regmap_bulk_read() proto used for both cases in
+drivers/nvmem/apple-spmi-nvmem.c without any changes. Which makes me think
+that the approach can be done in a simpler way, id est converting users first
+to use const specifiers in their callbacks first. But this trick is done with
+using (void *) casting (?) which makes warning to disappear, which is
+interesting case. So I think the Apple driver should actually use proper
+protos and hence wrappers, otherwise it makes compiler blind, which is not
+good. TL;DR: you should fix the Apple driver (and might more if any of them
+use that dirty trick).
 
 -- 
-2.55.0.229.g6434b31f56-goog
+With Best Regards,
+Andy Shevchenko
 
 
