@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C3337D126;
-	Thu, 16 Jul 2026 17:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F24A442FC3;
+	Thu, 16 Jul 2026 17:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784224151; cv=none; b=U+s7Me+8D2HTzq+BTrStew6qfAYqqPX1mGMHD2nHx1WJTt8oTccLqD3wMs+qm0KYGGFR6XrIJIrDbgA4ewipO9bo5Fkd38UksLJ2CuHph7Dsn3Qed9SKexFq9gvIMxvDbO6puQPOMviC21d+iiZYJB6TIcMy4EXbObrkF3uaDis=
+	t=1784224236; cv=none; b=rjOGs4jElI4Bu81EnsTHaS9Qb25JZk2fuEm1iq3Oytu0x0di5CcwfrnVFhn5eQw3I9TPoNgeZbjiVkgEj05/U5IQ4MCJjnUvvw7s2nPpHOre62C2CxRtd7NhBELfOXDakQDSuNhVv8MX+VkdNjEjLksPCeniNbRkrRVJcOWMVus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784224151; c=relaxed/simple;
-	bh=WDOpxcwFle75xJgV45Y3mz4ze1wpcOya2GSWIlnO6Qg=;
+	s=arc-20240116; t=1784224236; c=relaxed/simple;
+	bh=xxOjee7glhv2bbNIZZyyAk70a5eC9HP+MBjlGBfZqNA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LpfYNr3Nt+hCBIvzEVHbV85lx0RQ7fmVKnrhJqhaEdZncYrFNypSwpS32SWDSV6MFOEc2dP/V7hCwMfyGOK2kQvJuCk6WVyCt6BSVL45ZNBI//29LWD9g5RduqQKfmIn5vKhl6mTMdEDB1ZZRMT1VW3DEPyZa8YQPJnest0FDOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EHKxKrpy; arc=none smtp.client-ip=198.175.65.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZsOQpKcbsZ8ACnpPJkIaE+hffSDnKfPsWe+eI5kXj5ycgwYD/HiVgLMQhPYkaGk0owLVlSuOcOLaPxSkImsA0ytXYG5qlMgRAvuZ7DCb5zri/rZvt8D5QE3Oel5urigRNH8O2ftUlKbSTGwkyuVYgv4mNwdM2+ZWYdZA3BHi0OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RRbewCLm; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EHKxKrpy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RRbewCLm"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784224150; x=1815760150;
+  t=1784224236; x=1815760236;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=WDOpxcwFle75xJgV45Y3mz4ze1wpcOya2GSWIlnO6Qg=;
-  b=EHKxKrpypfwt/Hy6uUdYyp3klYP5s5/RREy7f3rxX+50j7JYfdacii34
-   zQR6OIRHl3hgi5w2d43Mp35XKGtHHmVTBQt7lMpAoaJT9uSNkOHIm71VJ
-   0oQ41eTE3GofMZYvBuelWArVHJ6DOFEwWPJr4VAFQqTncRoIIYvKENDgy
-   Evn6qI+axGWNI8x+o5V2h38/ulUt89sSKeP3cXTMoLnGbWFf4fcaYw37o
-   RDABEa/74HwVcWqkqkAn/+pvrKZleX7JDKLeKtVTkelXJ0p+9xFRDRJmH
-   oaXLi/dUG86ufSihMmaqtXMPCbA40ZHO3uQyLmVGDVV+dEgvP4m9WVFIM
-   Q==;
-X-CSE-ConnectionGUID: ZE3O0oDEScmQvAqK2p5JQw==
-X-CSE-MsgGUID: eD0MXmxbQSKf2dye9iYuoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="84853710"
+  bh=xxOjee7glhv2bbNIZZyyAk70a5eC9HP+MBjlGBfZqNA=;
+  b=RRbewCLmo2hVRKZH6V9VIiWQSY61R73vBRWr5OCG7iYK8lb5xgjCkEFC
+   nSUpzUiX0cTvE6uwRittoROOmTX//E1HCPKB95Sr9UkOcPh5KeJ+XWjKD
+   vXCGkwHY8tckYI/hFbjOKcbT1wyWWfDZmjSBx2UipUgqIRfTreS7eE2F0
+   bIFqzCPvj9mFjTjZwitkb3plnqy61hNfX4KAGCGEmphCcZwGvq70IcXXz
+   l8H6DnuzsBIrqX+DhbOQKQZ6JgF1JM+D7a1b+39BdRrBcC7Q5vl6phGJh
+   yVMJrrnCsDbdDNDyHAyo1qk1Ne0bvVlPJd1fsHWY75PshI4EjpQpHKEdM
+   A==;
+X-CSE-ConnectionGUID: 00lmLQHzQF6aIDMdNtF8nQ==
+X-CSE-MsgGUID: LouHCOmlTvOdoRztqIw5Ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="88569124"
 X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="84853710"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 10:49:10 -0700
-X-CSE-ConnectionGUID: XfGCLMq2TIOWPCEFC2xIgw==
-X-CSE-MsgGUID: kOYF/zaMQF25P48lYMtL6A==
+   d="scan'208";a="88569124"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 10:50:35 -0700
+X-CSE-ConnectionGUID: KSXdeNBXTx+whu28zmJl9Q==
+X-CSE-MsgGUID: ISrJSJNIRJu4vj7xXuRo5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
-   d="scan'208";a="255415130"
+   d="scan'208";a="260854065"
 Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.26])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 10:49:00 -0700
-Date: Thu, 16 Jul 2026 20:48:58 +0300
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 10:50:25 -0700
+Date: Thu, 16 Jul 2026 20:50:22 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Link Mauve <linkmauve@linkmauve.fr>
 Cc: Srinivas Kandagatla <srini@kernel.org>,
@@ -82,10 +82,10 @@ Cc: Srinivas Kandagatla <srini@kernel.org>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v2 0/2] nvmem: fix a const-unsoundness in reg_write
-Message-ID: <alkZiozKVGlAYVUb@ashevche-desk.local>
+Message-ID: <alkZ3tVY0y31RYUz@ashevche-desk.local>
 References: <20260715195520.25410-1-linkmauve@linkmauve.fr>
  <alieVR1cOtOySi4_@ashevche-desk.local>
- <ali7bki3jqpd8ckE@luna>
+ <aljAqBNVXV1aVJqx@luna>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -95,30 +95,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ali7bki3jqpd8ckE@luna>
+In-Reply-To: <aljAqBNVXV1aVJqx@luna>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jul 16, 2026 at 01:07:26PM +0200, Link Mauve wrote:
+On Thu, Jul 16, 2026 at 01:29:44PM +0200, Link Mauve wrote:
 > On Thu, Jul 16, 2026 at 12:03:17PM +0300, Andy Shevchenko wrote:
-> > On Wed, Jul 15, 2026 at 09:55:16PM +0200, Link Mauve wrote:
 
-...
+[…]
 
-> I’ve attached a patch fixing this particular issue, I will include it in
-> my v3 if that’s ok with you (or it could go as a different series, I
-> don’t care much).
+> > TL;DR: you should fix the Apple driver (and might more if any of them
+> > use that dirty trick).
+> 
+> It was the only one of the drivers/nvmem/ to do that.  Three other
+> drivers use a pattern where they merge read and write operations into a
+> single access function with a type=read/write parameter, so const safety
+> can’t work there and I’ll continue casting from const void * to void *
+> in the write function to keep that pattern working.
 
-Works for me.
-
-> I think I’ve found another bug in that driver, it says .max_register =
-> 0xffff but .size = 0xffff, one or the other is probably off-by-one, and
-> I suspect .size should be 0x10000 instead.
-
-Yeah, max_register means offset of the last _accessible_ register.
-So, 0xffff sounds about right there. As for size being 0xffff, I weakly
-remember that there was a discussion about these values. Can you dig the
-lore archive?
+I meant all the driver in the kernel that are going to be affected by this
+change.
 
 -- 
 With Best Regards,
