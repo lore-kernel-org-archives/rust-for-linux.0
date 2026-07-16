@@ -1,146 +1,127 @@
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C070443E07A;
-	Thu, 16 Jul 2026 17:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C3337D126;
+	Thu, 16 Jul 2026 17:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784221790; cv=none; b=XHkitvpSckPq/L8h/R/cr8SLnfPFd6kuqbqtha4v7sPhMCPU4KFxG4uP5xNfShsiUOy5jN1FZxCgpURvQia66x+h+BgLmu6s1g2rD8mHcm6dKdRHlmsQ8EEK2hbyvrEOYwcLylGeiEzNM2kTYyZZw32fKdGdf8ArEo0/+Vnuqgk=
+	t=1784224151; cv=none; b=U+s7Me+8D2HTzq+BTrStew6qfAYqqPX1mGMHD2nHx1WJTt8oTccLqD3wMs+qm0KYGGFR6XrIJIrDbgA4ewipO9bo5Fkd38UksLJ2CuHph7Dsn3Qed9SKexFq9gvIMxvDbO6puQPOMviC21d+iiZYJB6TIcMy4EXbObrkF3uaDis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784221790; c=relaxed/simple;
-	bh=rcnAPuhL8Z0tyvLmFviUdVzEcI4fwp6dRZrhwOTqVoA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=r3JLTdE9WrjbwHRayGm07B8qIu13NkqRxnUXYoyAW1yoS7FiYtEwfEe8FNCu3vn3V3OCEP5TYhTvhsSedhpNXEA1rZPRaoMYe/xcEJ/bSxs5aYcmGtI0TAKOM33Esfc7DRMRojRcAQ04Fq+Z7w/kupN955wdNTAbtj1gD6S36lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=nOETgqmV; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+	s=arc-20240116; t=1784224151; c=relaxed/simple;
+	bh=WDOpxcwFle75xJgV45Y3mz4ze1wpcOya2GSWIlnO6Qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LpfYNr3Nt+hCBIvzEVHbV85lx0RQ7fmVKnrhJqhaEdZncYrFNypSwpS32SWDSV6MFOEc2dP/V7hCwMfyGOK2kQvJuCk6WVyCt6BSVL45ZNBI//29LWD9g5RduqQKfmIn5vKhl6mTMdEDB1ZZRMT1VW3DEPyZa8YQPJnest0FDOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EHKxKrpy; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="nOETgqmV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1784221779;
-	bh=rcnAPuhL8Z0tyvLmFviUdVzEcI4fwp6dRZrhwOTqVoA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nOETgqmVNkaIt9iGQH/1tiOMAegyFKlI3RwPiCCK4gjxBd9f8iI1S3JDe2PnVCaAz
-	 NxGs9kkQ3hD2UNPk26CSQb7Pv9r4aHe98FoTBCMfEUKzxP0P8pbkyv/7ki6/Mnn6kp
-	 +slMWZBB5W6VhRNNdOGlrg04PHNiCNFqUxeHUdxM=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Thu, 16 Jul 2026 19:09:30 +0200
-Subject: [PATCH 5/6] configfs: Allow the registration of const struct
- configfs_attribute
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EHKxKrpy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784224150; x=1815760150;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=WDOpxcwFle75xJgV45Y3mz4ze1wpcOya2GSWIlnO6Qg=;
+  b=EHKxKrpypfwt/Hy6uUdYyp3klYP5s5/RREy7f3rxX+50j7JYfdacii34
+   zQR6OIRHl3hgi5w2d43Mp35XKGtHHmVTBQt7lMpAoaJT9uSNkOHIm71VJ
+   0oQ41eTE3GofMZYvBuelWArVHJ6DOFEwWPJr4VAFQqTncRoIIYvKENDgy
+   Evn6qI+axGWNI8x+o5V2h38/ulUt89sSKeP3cXTMoLnGbWFf4fcaYw37o
+   RDABEa/74HwVcWqkqkAn/+pvrKZleX7JDKLeKtVTkelXJ0p+9xFRDRJmH
+   oaXLi/dUG86ufSihMmaqtXMPCbA40ZHO3uQyLmVGDVV+dEgvP4m9WVFIM
+   Q==;
+X-CSE-ConnectionGUID: ZE3O0oDEScmQvAqK2p5JQw==
+X-CSE-MsgGUID: eD0MXmxbQSKf2dye9iYuoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="84853710"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
+   d="scan'208";a="84853710"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 10:49:10 -0700
+X-CSE-ConnectionGUID: XfGCLMq2TIOWPCEFC2xIgw==
+X-CSE-MsgGUID: kOYF/zaMQF25P48lYMtL6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; 
+   d="scan'208";a="255415130"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.26])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 10:49:00 -0700
+Date: Thu, 16 Jul 2026 20:48:58 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Link Mauve <linkmauve@linkmauve.fr>
+Cc: Srinivas Kandagatla <srini@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>, Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>, Neal Gompa <neal@gompa.dev>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] nvmem: fix a const-unsoundness in reg_write
+Message-ID: <alkZiozKVGlAYVUb@ashevche-desk.local>
+References: <20260715195520.25410-1-linkmauve@linkmauve.fr>
+ <alieVR1cOtOySi4_@ashevche-desk.local>
+ <ali7bki3jqpd8ckE@luna>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260716-configfs-const-base-v1-5-c545a4053cb5@weissschuh.net>
-References: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
-In-Reply-To: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
-To: Andreas Hindborg <a.hindborg@kernel.org>, 
- Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Matthew Brost <matthew.brost@intel.com>, 
- =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
- Rodrigo Vivi <rodrigo.vivi@intel.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Dan Williams <djbw@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784221778; l=3319;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=rcnAPuhL8Z0tyvLmFviUdVzEcI4fwp6dRZrhwOTqVoA=;
- b=BbbHbm8YNFPQUYzw2eaFmTWdJbpX3GvBgFeLEGXDxWxnIG1Z8xTzlkFqKvEUcuRAd6g3Rl8FE
- OjFsAUTLCitCBHywW3Vn0JL/8AcrsjEWHYxagQ+dWpIfIh2HzKbjiX+
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+In-Reply-To: <ali7bki3jqpd8ckE@luna>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-The attribute structure defined in driver code never need to be
-modified. Allow them to be marked as const.
+On Thu, Jul 16, 2026 at 01:07:26PM +0200, Link Mauve wrote:
+> On Thu, Jul 16, 2026 at 12:03:17PM +0300, Andy Shevchenko wrote:
+> > On Wed, Jul 15, 2026 at 09:55:16PM +0200, Link Mauve wrote:
 
-As there are many drivers which use these attributes, prepare for a
-phased transition by using a union of const and non-const attributes.
+...
 
-After all drivers have been migrated to the const variant, the non-const
-one can be replaced by the const one and the transition machinery will
-be removed again.
+> I’ve attached a patch fixing this particular issue, I will include it in
+> my v3 if that’s ok with you (or it could go as a different series, I
+> don’t care much).
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- fs/configfs/dir.c        | 4 ++--
- include/linux/configfs.h | 5 ++++-
- rust/kernel/configfs.rs  | 8 ++++++--
- 3 files changed, 12 insertions(+), 5 deletions(-)
+Works for me.
 
-diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-index 9a5c2bc4065d..c2152288517c 100644
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -632,8 +632,8 @@ static int populate_attrs(struct config_item *item)
- 
- 	ops = t->ct_group_ops;
- 
--	if (t->ct_attrs) {
--		for (i = 0; (attr = t->ct_attrs[i]) != NULL; i++) {
-+	if (t->ct_attrs_const) {
-+		for (i = 0; (attr = t->ct_attrs_const[i]) != NULL; i++) {
- 			if (ops && ops->is_visible && !ops->is_visible(item, attr, i))
- 				continue;
- 
-diff --git a/include/linux/configfs.h b/include/linux/configfs.h
-index eff2fb22ab70..5bead9173ec1 100644
---- a/include/linux/configfs.h
-+++ b/include/linux/configfs.h
-@@ -66,7 +66,10 @@ struct config_item_type {
- 	struct module				*ct_owner;
- 	const struct configfs_item_operations	*ct_item_ops;
- 	const struct configfs_group_operations	*ct_group_ops;
--	struct configfs_attribute		**ct_attrs;
-+	union {
-+		struct configfs_attribute		**ct_attrs;
-+		const struct configfs_attribute		*const *ct_attrs_const;
-+	};
- 	const struct configfs_bin_attribute	*const *ct_bin_attrs;
- };
- 
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index f99a6e376fa3..2ef9cce693b9 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -756,7 +756,9 @@ pub const fn new_with_child_ctor<const N: usize, Child>(
-                         ct_owner: owner.as_ptr(),
-                         ct_group_ops: GroupOperationsVTable::<Data, Child>::vtable_ptr(),
-                         ct_item_ops: ItemOperationsVTable::<$tpe, Data>::vtable_ptr(),
--                        ct_attrs: core::ptr::from_ref(attributes).cast_mut().cast(),
-+                        __bindgen_anon_1: bindings::config_item_type__bindgen_ty_1 {
-+                            ct_attrs_const: core::ptr::from_ref(attributes).cast(),
-+                        },
-                         ct_bin_attrs: core::ptr::null(),
-                     }),
-                     _p: PhantomData,
-@@ -773,7 +775,9 @@ pub const fn new<const N: usize>(
-                         ct_owner: owner.as_ptr(),
-                         ct_group_ops: core::ptr::null(),
-                         ct_item_ops: ItemOperationsVTable::<$tpe, Data>::vtable_ptr(),
--                        ct_attrs: core::ptr::from_ref(attributes).cast_mut().cast(),
-+                        __bindgen_anon_1: bindings::config_item_type__bindgen_ty_1 {
-+                            ct_attrs_const: core::ptr::from_ref(attributes).cast(),
-+                        },
-                         ct_bin_attrs: core::ptr::null(),
-                     }),
-                     _p: PhantomData,
+> I think I’ve found another bug in that driver, it says .max_register =
+> 0xffff but .size = 0xffff, one or the other is probably off-by-one, and
+> I suspect .size should be 0x10000 instead.
+
+Yeah, max_register means offset of the last _accessible_ register.
+So, 0xffff sounds about right there. As for size being 0xffff, I weakly
+remember that there was a discussion about these values. Can you dig the
+lore archive?
 
 -- 
-2.55.0
+With Best Regards,
+Andy Shevchenko
+
 
