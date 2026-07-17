@@ -1,135 +1,124 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC122C11D6
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 13:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6773246BCD
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 14:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784296103; cv=pass; b=AubIIuyxUgx0guDTB2/YukcAWcCdTEb+GAWkGL7SRLcr/uEgIr+dKB1dej7KmW38BIpwpYD6ifFhUSoBUbdSiazpc+j6anrdoPjrq+OzfBgo91KEC9wN51qGMrO9pXVsv1QrxbHXyB8tZ4pfNaBQentbhGP9l9QvlmtH1ysTuYk=
+	t=1784298686; cv=pass; b=pXj2vzfU+0qScTW8d+yGEEkKOo37PnA6eX/YTE+jMBQX7XygCWrNkyhgn33Ys/BGkGyB8kGjY41EGxur9esdIIBH+XQVrf7dvPa94QANMYdgDZmvib4+xHw920XOqWYXnxW7ogZs53bHQCgwdxL6wTefpkFSpO8fkdmqYzwANng=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784296103; c=relaxed/simple;
-	bh=xUJhbj3yyPAiqFDdLRL6Vu2BwchblYlCM5Tj4IDP928=;
+	s=arc-20240116; t=1784298686; c=relaxed/simple;
+	bh=bwirwPdlnEft+r0dSEcs5Z3/QF6OKfOxmp3M9eXrh0k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rx+z61NBzaRZ3iBTTwY5S/J8fvOxynWxMw2z6IXO6qbC/zqFZu8bIfqW/l+Z5NRGJJStfdIUsOL1nMs9bPJQbnn+S1WlHgi+nYUPPe5rPanxnbMcQbYxUJoGin4crnIEmcTw1uN2RoOvjFKpcjzXNuW3H8VLRdnK9Puvrex0iRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q48g3ktW; arc=pass smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=oO65bjxI1xIAmp4pWWulpsNIJSePNcmZUqi+Z7kElN3R9Cdzl3M+BTE7EWh9EnK13JzYU7d3C1USfb8yfs5XZZZbEDYYywpTUzP6iqB8KLEwMuJ+LWdIplwMnAx0zNiW20d2TMc9z7GHdw/HuCovF0h1NqXtZj7HUm/rIlGqeS8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+LTanvt; arc=pass smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q48g3ktW"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47de0093c42so3656056f8f.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 06:48:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784296100; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+LTanvt"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9d290216d0so367845a12.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 07:31:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784298685; cv=none;
         d=google.com; s=arc-20260327;
-        b=ezcDElXQgv/oqizLcTl34VxlFbDVxBCyPdjqIE7Z9QqmdpLzRAZh//ZsUA8/2/elF5
-         Pe7rS3cPBQgGG0cm6LckvBqYkLcaJL4OCHGrRGKEoa5hvaurekoVwxwHj82xDf+4EdSb
-         VSSZ7h5kcwRj15A/I7H/ZGSPawn4NKaltXOWNrM9zPzX6/K2V5K0CVdS74ziEZPbjqfB
-         WUfGdJ9p+q/HOWaeqxDOOppL7gUScNZjlyEhPpGjxdHfdjhiuECUhW8yrNt6p2QaIU4k
-         6lYLeeG7hlhSqSFLDi/XC5Ordfc+6mR/wjo4jLgAM6qvtvLO5+CqjAccZZI4CkaOYzi4
-         ImsQ==
+        b=TvXFIMDDdew8Jh8MEf1WTrg5AfOqgazW7/oWC8ao1jQBdaX7OlPuOPhSV18nZoPOb6
+         64gUpp4/68pvKohaQYPWzEacbVxjWAtfV5waFcYzpqOamoSWOaqzVNSWkjgVuTxcoHnn
+         h9xWPSb3WoUK/fvVD1sg12xrClSsz/Y6rdtRzAXw9gT549Y501Albl8xnq/Q3SFZl+9B
+         SAUxEKQXYBJF6VuYSGvFo2viPTrV/he1eNL/fofLGGCgHtlGI4WyYYDnoXVeax3E51Fu
+         VSA8zHuDfPW5OY8ULNs+Ut6Q65fMKoumsgRH43wSpxaFNIAcUaezfjmCjY4yXznV/yUS
+         DJ+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=+k8IhwEuO4wsB0kPzrLtc1OfuFTTs1CCMQ4oQVoac2M=;
-        fh=NRWcopylafQykhSkEDaXJfgcz3PQgvblurcoSCdvX9s=;
-        b=grXqQ7isKIUen5uAlylN5nASFTXQbYFaXDkLh2nZNk3dY83AfjFe7t0AYHH9wdrzmB
-         4/jnAY0eTHWzjN2G+n4wZBEavraVTzEkx9w9oXF30/MqMRL2851U3z8J3CE8VLRmSyTb
-         XZIEbIh6xLlNl+YH75FnLdz/pK91vlWcl6cGK+wrEp5NIAk+NVJ6sgqTbWkU9TduMkof
-         tp5j5dVoOqUyc9G/RR05JfYffb5J4PzE/lK1iCR7WudTWbCZLtQsN5Vwilpzi87rMuNV
-         qJ7cvhjGek6IGJYM2ACr72DatETOz2XypP+72aTkmprzShAiBkzDQubcFw8VBSmNjgic
-         m4tw==;
+        bh=bwirwPdlnEft+r0dSEcs5Z3/QF6OKfOxmp3M9eXrh0k=;
+        fh=gj71Vm6LrTk4A5aoMeo4jUg16R7L0vPts+Zf11x+yXA=;
+        b=gQiwGbYlwhPUFefMWSG6te4naov65mTj2NKVWJUOPzjVNWRtOYy1dhkx2E4nM1S0us
+         Kbcjw4cxwvFajy79bO3MnXYw1GNjA1jWm1R0WtlFV/P/rF2EGv0ZUvFb6rgWqzi4Qvid
+         BGpX7omdN9ebgqOAr3F87RCDwZ418PIUPcHaIjuac1LzQCb9P1bc8NQIvHRLebQr+avM
+         ufLCMU09eGIV+Qzwctl+UItZKgaIH0FDieDz41aIOrPGqmG96V+UDYkvSp0iegU96Czs
+         2/BYRv2U+rH/27hKtTRW2z67GM1UfDd4BUroYymP38h2obiUt74bMs8znR5+rjPNfRKF
+         xScg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784296100; x=1784900900; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784298685; x=1784903485; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+k8IhwEuO4wsB0kPzrLtc1OfuFTTs1CCMQ4oQVoac2M=;
-        b=Q48g3ktW55a2swGxdble1hSF3IKRv819Dn5QE6Y50tVs6aF6EDjnT+DKxBU9dt2ZDq
-         ZYG9X4EL4kl0L7toCJ+25ELL9ZBP/ig6SPJiRl6aWlcYbXaCCUAjYwbIPxaXZfT0Tsf+
-         SGnVrGN1o48OOMmbvKsSGz75SOxpczNjdk0vd5h/jMYKgPfERTfi+oiviURnyJCj+bC6
-         0xgUTyF/fCzXS6/ItSI5/r5hPRJ0nTPb7+542bRrkhvaQMDp7o5t2TI4nYu5IiIRIQQ1
-         Aoyapxr0BNSUdNZ5alCdNL47pQedSussNG0EVnHR4UHHHqQVn6oyc05FA3H6luMUbkeu
-         17jQ==
+        bh=bwirwPdlnEft+r0dSEcs5Z3/QF6OKfOxmp3M9eXrh0k=;
+        b=W+LTanvtmW5q7YxBOY89ouAH5RM2kJa5jK4/R1mH8/H6jEksD4P0OhJc08vSaTKWVE
+         7ZKiJBC6Z4iJlplDmHhlpKrj0qPZElBX5oZYYtC1ZDAQbWlTDvU7lpvBtCWdj6m57Unr
+         otp8A6y5CH2sCnI77nQGHMIqFqbbFKmrTpJOyxaVXmWVKhfYaqq0h7TnJoYCLm/BrvUn
+         FWdpo0b5hJB4wbb1gNU984EOXr1rfJJPAHu1OkOWfGpLP6S510tvj1+ozFAIG54/gQ2z
+         1QKRIkjhXcnd9NUCfHqWshGkIMZ5SL+9L37alH2aBwLsqOWKaxH1WmoeDosdExZWDyNg
+         /w9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784296100; x=1784900900;
+        d=1e100.net; s=20251104; t=1784298685; x=1784903485;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+k8IhwEuO4wsB0kPzrLtc1OfuFTTs1CCMQ4oQVoac2M=;
-        b=UB7iR3d539UvE6W2m100HRkAOjtjDAt5zIkp0stXiOEt8mcafnXk+eodE0aZolMgnA
-         CVqo8xwEN5DCqHBpsqLJXJfTqlTE+NVOvTq3w2yi9/I7lyEMa6NzTCR9nYv8g7cBsgHX
-         nGI/adVdZZRDFccd+j3Ks9WG1TnstrUuN8eoWeyEIMmMDBJVf3yUg0e/tN9BDokFslTZ
-         2AOe4ZADry+ocVvqtGlCDIlc9GoSHiSZpr0J5IoLx6pFgXF1q/sqITgttzNhGOsVagGr
-         Xxha/bCcwlVKu8iB+0xN72poKlxGbJ0HQ49uv3Xl/WWNahsfUb4nLzga7tcqdCs9Y87g
-         sMeA==
-X-Forwarded-Encrypted: i=1; AHgh+RrGwmzT2TPhSjirTMY3Xcga6tWy7PDKOcVcr5bh09kVPYOgh+vaW+WrDTVyfKqNspCsdWERDLxBzCtjnvt9QQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLPIY2QTjr3cCUdD3O7yNq31nIK04sAUPOOcIkTL7kKL04HnV6
-	PCrYqEf8JDqvoyNrT6eIFpUOKhEH7L0OeAorZQ0NeatupajbMEJ3HKN4N8TzuUZ0dk4eEdcs5Rn
-	oYe6d5Jir1CqpV54M3WwUlpwQ6njPpRYOLWi8dZqz
-X-Gm-Gg: AfdE7cm35GD5PYqTcLTq0jd00QaMC0JsCPDzGk/DBxIiw+2STa4oHIrJ5mSKcP1ddRh
-	/tWdDGloTYt6zicbZUiRxOptLCetmyF6UAbhlRr7aAxTTtB9FtwPvsfxw2iU6jlqDzD24dMRgC8
-	pT9zYWNBd0YqgPqQvQiVkoO+5ufpZBOj+2S6m9xF/miilL6WS/XzA0BG8JvhJDLs2VWsch5tqbF
-	+zbafbjHa7mUfPmAAmdWcyhitfj4vgW5VuInTm5ojY/h0Tou5SQJxzjdyCj7uow7ExZwjCvnnSO
-	Gl6cw6NjR16pgRMTHCzI+O1G4K8ppFenXt3+44XNsWf8IdDw
-X-Received: by 2002:a05:6000:4305:b0:473:c18:f2cb with SMTP id
- ffacd0b85a97d-47f622f94c7mr3837445f8f.18.1784296099552; Fri, 17 Jul 2026
- 06:48:19 -0700 (PDT)
+        bh=bwirwPdlnEft+r0dSEcs5Z3/QF6OKfOxmp3M9eXrh0k=;
+        b=jbRFXNsDoqpPTyHJfy0tpqYP05kfvfOtCr0vSnQoaleJcOn8EpGnxUFXunbssLnUWS
+         D/Ecs0VJ7a2+ngFMZ9VkYahiUzBDYPJzLMeUfQLoOwXf4xsXKKddKaruurAhWVav+lj8
+         JxKeT/oYI7LtErT/3VFkVuS7+vDOR2hIqK9HzlmP+Q/vyZQLr3DQxq38OVVLlp6qxB9I
+         zJOqTgwrHYspdPszepFBht3n5L/7+ASBy0GFJM9MaIWbYNPWlYwHHuvjFYKmQg98IlJy
+         2yOwxHXnccAK86tb4jvrwIHxejwbA6Pu7mL6ay1ZAbFbyj/IdasS+G4c8VsOHSxwopJ7
+         7kgw==
+X-Forwarded-Encrypted: i=1; AHgh+RpUI773XbSgNl7w6vTCiXUlCEnZARNH5F+EkkjGSei+of8Tqcf4Dnaqw7hCGi0m/Y9nAINc/Lx0ZWDgL7u8OA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxY0oTJJ8tnADG7sDrxRL6tOfEegCJrFNT5518A93DsGfBhiqEA
+	13GAc0BRuwMlBefaEC+HECtr+xulXj4ErHWHmoZkz/JTtUAOZuo3uprj8frWlOYzH0Qql1k2U3G
+	D+x6+kpPu0ZB8COrlNy9NL9SJ5QJ1Dh0=
+X-Gm-Gg: AfdE7ckD1EDNjX0Lzvr6OSDPSd4b2qCYvzwTBxbJGXZ9VAKG8c6qhK6I+5DiC3gagu9
+	qXQm7Omgfeez5pUBUfE08qIYG8dqaRoSQCfecQEYkoezSjZlx+L2t1rx+2Xhf0lnMtPNhzm1SFu
+	1YmNRU5BU0v7F3ZKFyElJElDkTjUnCTsF2P4my2Ixd3h1ND6sjo9td0j1qG4DeyhujFZB4pYlkY
+	fIxFP610kQqYXmR8RnmdeJ/ZmrEcsr1cEJWMe9VNszoz204PaSOzGz4fOQWnpZG183doS4WRw82
+	wjrDQe0+vdYyeFkOaLwguzyVqI7OkYGgBSeEO6th+uKAO8jEQc2Oth9hS5RB5y8bVTD+Li+DOnM
+	7xw==
+X-Received: by 2002:a17:90b:3bc7:b0:36a:5438:cff4 with SMTP id
+ 98e67ed59e1d1-38e4b5220e0mr2237396a91.6.1784298684865; Fri, 17 Jul 2026
+ 07:31:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260707-binder-noderefs-spin-v4-0-7c3c8bc16339@google.com>
- <20260707-binder-noderefs-spin-v4-1-7c3c8bc16339@google.com> <2026071755-covenant-shining-6910@gregkh>
-In-Reply-To: <2026071755-covenant-shining-6910@gregkh>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 17 Jul 2026 15:48:07 +0200
-X-Gm-Features: AUfX_mzYRAD2zHwodrs55ChKTGt3WvYOr2EkVXlmM382Q173j8KxINpvh3q7dFg
-Message-ID: <CAH5fLgjNm_aHLTE-XH=S+nukEW0o5MLe8Uih1nmn6io7e7fDZg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/6] rust_binder: avoid allocating under node_refs for
- freeze listeners
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20260717-docs-irq-rustdoc-header-v1-1-36749192aa04@younes.io>
+In-Reply-To: <20260717-docs-irq-rustdoc-header-v1-1-36749192aa04@younes.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 17 Jul 2026 16:31:10 +0200
+X-Gm-Features: AUfX_mz5L9S1u9ZhfFO6HNC7y3ftAjtwDZbUvDOfkx4EwYYmREtedGI9_6WqZY4
+Message-ID: <CANiq72nuYjagAecdrd=w+R06Y-fRciMy1PZ1kfWOjqEhjL+NDg@mail.gmail.com>
+Subject: Re: [PATCH] rust: irq: fix C header path in module docs
+To: git@younes.io
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 17, 2026 at 3:20=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Fri, Jul 17, 2026 at 3:27=E2=80=AFPM Younes Akhouayri via B4 Relay
+<devnull+git.younes.io@kernel.org> wrote:
 >
-> On Tue, Jul 07, 2026 at 10:28:51AM +0000, Alice Ryhl wrote:
-> > The node_refs mutex needs to be changed to a spinlock, so in preparatio=
-n
-> > for that, update freeze.rs to avoid allocating under the node_refs lock=
-.
-> > This is done by adding a retry loop so that if add_freeze_listener()
-> > requires reallocating the KVVec<_> of freeze listeners, the caller will
-> > allocate a larger vector and retry.
-> >
-> > Analogously, the remove_freeze_listener() function is updated to return
-> > the empty KVVec<_> when it is no longer needed, to avoid calling
-> > kvfree() under the node_refs lock.
-> >
-> > Reviewed-by: Matthew Maurer <mmaurer@google.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  drivers/android/binder/freeze.rs | 65 +++++++++++++++++++++++++++-----=
---------
-> >  drivers/android/binder/node.rs   | 41 +++++++++++++------------
-> >  2 files changed, 64 insertions(+), 42 deletions(-)
-> >
+> From: Younes Akhouayri <git@younes.io>
 >
-> This doesn't apply against my tree now, given all of the binder patches
-> now added?  Can you rebase against char-misc-testing and resend?
+> The IRQ module documentation displays `include/linux/device.h`, while
+> the link points to `include/linux/interrupt.h`. The module wraps the IRQ
+> registration interfaces declared in `include/linux/interrupt.h`, so fix
+> the displayed header path.
+>
+> Fixes: 1f54d5e5cd2a ("rust: irq: add irq module")
+> Link: https://github.com/Rust-for-Linux/linux/issues/1246
+> Signed-off-by: Younes Akhouayri <git@younes.io>
 
-I believe this is already in char-misc-next as commit b9d17aa74ddd
-("rust_binder: avoid allocating under node_refs for freeze
-listeners").
+Looks good, thanks for these, for adding the Link: for this one and
+for backlinking in the GitHub issue, I appreciate that!
 
-Alice
+Cheers,
+Miguel
