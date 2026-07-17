@@ -1,47 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783BC429CFB;
-	Fri, 17 Jul 2026 14:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40ECF27B32C;
+	Fri, 17 Jul 2026 15:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784298922; cv=none; b=ByWnA6hAYJ2A5ayuHnKzSX9nYfMabNwKn5HsyYRNonuNqoz7avk2sRjDh9x81NFl5W/YE1DtPd94fmC4++C1MXJqVJXTFPOPI9VGcuYi3DkB4YXyGVMXYBJvpTww8pyRXJ2ysB5CjjM7QtLrvzv1J0Jb5B18Z2W2GcqpmhKPcrU=
+	t=1784302532; cv=none; b=aP69cQAUEdVN3oe4WLr4YisUgE2UvARuPts2RKOp9UaQRKmIAe1e5p3zrbfQBPKby2d04uriWMYeJmfzKlApnWzwvMos2P58PvSvdYtze7L+SFWk8fHFl0nqwOcmZeAIQRl7R6X7/njuvD2Fj+c/q8L8ICRwFV5sNXcOnTCr++c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784298922; c=relaxed/simple;
-	bh=3QD4liklG29fA/4OxUAMVAU7+OG0IQcIFzskydz3FZE=;
+	s=arc-20240116; t=1784302532; c=relaxed/simple;
+	bh=gXtoOXom+SZ6fQtLujthmE72o636wo7yJ2Varaquo7k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MzF6U2+lPqKzp+gvI1M9Ymvc5D0BsNag8CmKPu/U2oJU4jEIknR/s1I2JxhN1u6dB/pmWLEVwPN07HVtvk89jW61LOSQhsyB6rA1iZ0KhEcEsAujN3MxxcAon+edShgPR/u1YXMeLSMhbh7H48vFjMutSylBflUG2DurwZLNdGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/Xufx7C; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=dD9FKMk4oCh/iq91XKT+T+5eXQP0rdehWQk0LbFYWo4619Ux9zxZXj1kj6M51S8YvmoHpYzzPaG0RhKBLPIwuZLg/lglKogUiwqjZtTYDniEwcHAuxbC8o4LIJMzYGh8b4NGeex+6RdYkw/4azG0UdK0t7C+GMMgebd22zxk6ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=C7A3hx32; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/Xufx7C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A030D1F000E9;
-	Fri, 17 Jul 2026 14:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1784298921;
-	bh=Ttg3gnsDom3czoU01ODutbajemkq0LzLfWdWhESk8IE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=A/Xufx7CbJVvXWf5KlpgOe40JhtJumMzWpGOMvgzmmogNczbTnngXmW+hYr6sU7KY
-	 hx0OysFwG+NOVlaYCi3V3OffbxO4MZT1e3oGt9xb/NS99gO714jKQC0ouzjpaZn37d
-	 Isn874VD7KqX5niLUn/DS5B4XQa4tTKyPY7xM3D4=
-Date: Fri, 17 Jul 2026 16:35:13 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/6] rust_binder: avoid allocating under node_refs for
- freeze listeners
-Message-ID: <2026071704-acorn-backstage-e0ba@gregkh>
-References: <20260707-binder-noderefs-spin-v4-0-7c3c8bc16339@google.com>
- <20260707-binder-noderefs-spin-v4-1-7c3c8bc16339@google.com>
- <2026071755-covenant-shining-6910@gregkh>
- <CAH5fLgjNm_aHLTE-XH=S+nukEW0o5MLe8Uih1nmn6io7e7fDZg@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="C7A3hx32"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1784302527;
+	bh=gXtoOXom+SZ6fQtLujthmE72o636wo7yJ2Varaquo7k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C7A3hx32jx895MFvzYe4hAelAzoV5JrxYVL5DhNvu226PRfs8EQMVKcO32Fi49mK9
+	 tGyECjWnZYRjaZD4Nz2T0lbWZlMiWVBTMpBzfOX6pAMH4c9VyX93D9RRVVUZVDAJfO
+	 rczg1jxOtPUk6bzpwTVQHSQJpUtGM37XrH0HxaAk=
+Date: Fri, 17 Jul 2026 17:35:27 +0200
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Matthew Brost <matthew.brost@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Dan Williams <djbw@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-coco@lists.linux.dev, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH 5/6] configfs: Allow the registration of const struct
+ configfs_attribute
+Message-ID: <91f5e9dc-1ba0-4e20-9f1f-5100aaaf0a88@t-8ch.de>
+References: <20260716-configfs-const-base-v1-0-c545a4053cb5@weissschuh.net>
+ <20260716-configfs-const-base-v1-5-c545a4053cb5@weissschuh.net>
+ <alnrJJNb1hwDrAxI@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,49 +53,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjNm_aHLTE-XH=S+nukEW0o5MLe8Uih1nmn6io7e7fDZg@mail.gmail.com>
+In-Reply-To: <alnrJJNb1hwDrAxI@gmail.com>
 
-On Fri, Jul 17, 2026 at 03:48:07PM +0200, Alice Ryhl wrote:
-> On Fri, Jul 17, 2026 at 3:20 PM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, Jul 07, 2026 at 10:28:51AM +0000, Alice Ryhl wrote:
-> > > The node_refs mutex needs to be changed to a spinlock, so in preparation
-> > > for that, update freeze.rs to avoid allocating under the node_refs lock.
-> > > This is done by adding a retry loop so that if add_freeze_listener()
-> > > requires reallocating the KVVec<_> of freeze listeners, the caller will
-> > > allocate a larger vector and retry.
-> > >
-> > > Analogously, the remove_freeze_listener() function is updated to return
-> > > the empty KVVec<_> when it is no longer needed, to avoid calling
-> > > kvfree() under the node_refs lock.
-> > >
-> > > Reviewed-by: Matthew Maurer <mmaurer@google.com>
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > ---
-> > >  drivers/android/binder/freeze.rs | 65 +++++++++++++++++++++++++++-------------
-> > >  drivers/android/binder/node.rs   | 41 +++++++++++++------------
-> > >  2 files changed, 64 insertions(+), 42 deletions(-)
-> > >
-> >
-> > This doesn't apply against my tree now, given all of the binder patches
-> > now added?  Can you rebase against char-misc-testing and resend?
+On 2026-07-17 01:43:36-0700, Breno Leitao wrote:
+> On Thu, Jul 16, 2026 at 07:09:30PM +0200, Thomas Weißschuh wrote:
+> > The attribute structure defined in driver code never need to be
+> > modified. Allow them to be marked as const.
+> > 
+> > As there are many drivers which use these attributes, prepare for a
+> > phased transition by using a union of const and non-const attributes.
 > 
-> I believe this is already in char-misc-next as commit b9d17aa74ddd
-> ("rust_binder: avoid allocating under node_refs for freeze
-> listeners").
+> How many drivers need to be migrated? Isn't this a mechanism move?
 
-Ok, sorry about that.
+The actual constification of the attribute will happen with a central
+change to the CONFIGFS_ATTR* macros. But all users of the macro
+will need to be prepared to handle the constness.
 
-I've now gone through all pending patches that I saw on my side for the
-binder code.  There were 2 that needs review from you:
-	https://lore.kernel.org/r/20260618121202.6258-1-iganschel@gmail.com
-	https://lore.kernel.org/r/20260616170956.2580772-1-georgeandrout13@gmail.com
+I have a branch with the full conversion here:
 
-and then there's the ratelimit patches outstanding too.
+https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git/log/?h=b4/configfs-const
 
-If I've missed anything else, please resend.
+ 73 files changed, 241 insertions(+), 248 deletions(-)
 
-thanks,
+ Most driver changes are really trivial. But a few do more interesting
+ things. My goal is to heavily reduce the amount of patches in this
+ branch by merging patches to the same subsystem.
 
-greg k-h
+ The last four patches will be the finalization going again through
+ the configfs tree.
+
+
+ Thomas
