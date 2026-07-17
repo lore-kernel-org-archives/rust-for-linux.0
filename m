@@ -1,529 +1,93 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D360372677;
-	Fri, 17 Jul 2026 17:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784308509; cv=pass; b=SrOd2Uki/VYx8A8KN7JCbIU3ZGf6OBCGwGBgxMR9gzTHNMetaDBKvSCs4cJh+g8cRVqQiCeASlWQTcFIyMFrpN6UnU88Tg3sErG/cUdt7y83m4YtDtpjZFwab8IgRiXXMhZXVTf4Jt8gpArfTb4lG67M6YoN4p6mNi/Ms6tze6U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784308509; c=relaxed/simple;
-	bh=f/7lKZOAMpNfJDUKXj8Ups3A/NrXYNRYO2O+zBeOh5I=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=gt9mCqzTPkUske8/B2uNTbg1PdtKyQme41AVvrMET50/W3va4PAVNpLgS7aE8kACfGJlA3IKRDZVI286Hs/BpeCjDQJYLPvVPzt8Yawv/yQY0VU1C3QcnkKKveVI80SLB9JHrP2NouIfvhqF9A5jdSKCmHzRaL/aIkrrzYf7wfY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ON/y666p; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C732246BCD
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 20:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784320308; cv=none; b=PDcYyONQBF2rfweeHU7R9Adi7EXfpN2Xb/tE6ROgcSXSmoO2BXq8FVC2It9mO49cl2O11B4dRSxIEKxD032B9AJWBGrZ69k/axliPfXQLX9dgeGUEsaM5NKF3WeTFXfwwkESNQz3Bgv6ZPHevLUOhbnhTk8y7wNDILhAAN2vctY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784320308; c=relaxed/simple;
+	bh=aA8vlh3zQBayklxxvmQ525+ETISHVewCsnx10b4eY9w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=E7w77E2jgpDYB/AGAkLfwdDJpM2UQKfQRCZtYpyERrnuqbwknzX99blBFGs4PTynfUP79egOPr8aj8qmIqvj95uJh0LcWvio4erkRFTs2oh2ne4rQa5aK0q3JVjKnyV+AmE4qZNmpHFK7GB/L8RBniH56tYQebJRWX9g1RgnZxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJXHemT5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ON/y666p"
-ARC-Seal: i=1; a=rsa-sha256; t=1784308474; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=eHSXv93a+kLpfBPuV4XMN8saZzYgi7LA9SX9dc4napdLK7TOM75b0ikWgjSdhFjMxf8T6NHIrl4jUk3Nbed9reiUA59QGvqJN4qvpYUCux9jRk0zf4ttQdEtXL6S/oetUReuLjVZPSSNkMtJgaJ1fgrSKQ+ZlA32Sf/iJjls8xo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784308474; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Obi2JLsftJUNdtXpRvd5RDFm/4pvc5YPTAdtbeGx+vk=; 
-	b=i0+Namg8tF78Le2WotK25lOY2P8X0lSJW/H5/ZmF3DJlbKkk/dAVi+gU19zjbJ1hcSDwNMiayT6NwRmiOn8bxSM6fhXwth5lbwJ94pA1DhrGL3kiI3Eal3D82XlB/KcxNebb/ZLbKSdm5zV83d5RdRNDcDpGs987uSgcmws7Y1s=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784308474;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=Obi2JLsftJUNdtXpRvd5RDFm/4pvc5YPTAdtbeGx+vk=;
-	b=ON/y666pE9jZgsoD56Zvsw63/zP4PdKAAGcKl5v0e5J44MOe+wE8Dq9rEXJ+G7+e
-	BNMPMW+cM/7MeIxN/Ze8XYP3UJGclhKjVhdy9/9wEP+XU6fw8xcVcNfgjOId/2V9hH8
-	M6jGT8qP8b8uO4toAivQCLeu+/How3SbepeOm42I=
-Received: by mx.zohomail.com with SMTPS id 1784308473066294.55527821713736;
-	Fri, 17 Jul 2026 10:14:33 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJXHemT5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983FC1F000E9;
+	Fri, 17 Jul 2026 20:31:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784320307;
+	bh=aA8vlh3zQBayklxxvmQ525+ETISHVewCsnx10b4eY9w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=mJXHemT5Evwxmci7ZUChjSqYzcdTc+PrRRZn2fBJvHbH649OpvlwK/LPMLth96/7H
+	 fhlkksvWM1gBIPecafgM0Psp62o8KeOAr2XIH3Gn0iEB+UY3g3KS1++8gkb8gZ9xLj
+	 m1OrLjwVLpvKh4Oy7V4yxQIRbooeWdyn3e438vrh0aEfR/9vmgqGrQtaYzYaO1tqKH
+	 8+yHyEDk8cmLdkvPxrnezx6KUkwgI5ffdSCHrC8Vqhp4j6OA/p4gFmEu9IJDujsqdx
+	 NI616Sr602RjwdGBf/nONz2AQJI0XZjBsh/ISnSs5NIP2rMDZAGfdgeWjqDd2urAtS
+	 vEe9TfA2zuBGQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Alice Ryhl
+ <aliceryhl@google.com>
+Cc: FUJITA Tomonori <tomo@flapping.org>, gary@garyguo.net, ojeda@kernel.org,
+ acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+ boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
+ frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
+ lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org,
+ tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ fujita.tomonori@gmail.com
+Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() to round correctly
+ for negative Delta
+In-Reply-To: <CANiq72n-MUqf2MBrUTqOD4jbDTZ26kYULzX6YbQLawJ+201jQA@mail.gmail.com>
+References: <CANiq72m+mx-z6idfdTLh+mcW76nxRr_eA-a6vgjFY6a1GE_ygA@mail.gmail.com>
+ <20260714.194916.571807180513332641.tomo@flapping.org>
+ <DJY8NM7TIHZK.15213B4MWETHU@garyguo.net>
+ <20260714.211751.124079232269470730.tomo@flapping.org>
+ <CANiq72mokH0-CnObPnFJWsSaofOmiAqtBuvGxPvXSruPT-Xn3g@mail.gmail.com>
+ <alYyNtrxK5qz7nxA@google.com>
+ <zhnTGQvrvwQNiTmNO2p-HZmjeh2tpgIhyWsowfD7V1Do4N4Fyf9TfDY62R3_0a8M7Nr3gjCn6l6hLtVUt93e5g==@protonmail.internalid>
+ <CANiq72n-MUqf2MBrUTqOD4jbDTZ26kYULzX6YbQLawJ+201jQA@mail.gmail.com>
+Date: Fri, 17 Jul 2026 22:31:35 +0200
+Message-ID: <874ihxgxy0.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v5 4/5] rust: Add dma_fence abstractions
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <7a2cf5494824b8451824ebe82e0391df05a7cb5a.camel@mailbox.org>
-Date: Fri, 17 Jul 2026 14:14:12 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Burak Emir <bqe@google.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>,
- Alexandre Courbot <acourbot@nvidia.com>,
- Krishna Ketan Rai <prafulrai522@gmail.com>,
- Tamir Duberstein <tamird@kernel.org>,
- Mirko Adzic <adzicmirko97@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- Shankari Anand <shankari.ak0208@gmail.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <F72EFF33-E4F8-4E9B-B966-58BCCBA495C4@collabora.com>
-References: <20260703073141.3962604-2-phasta@kernel.org>
- <20260703073141.3962604-6-phasta@kernel.org>
- <046C4D44-1966-4EE9-AE86-A8F83A136771@collabora.com>
- <7a2cf5494824b8451824ebe82e0391df05a7cb5a.camel@mailbox.org>
-To: phasta@kernel.org
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
->=20
->>> +        try_pin_init!(Self {
->>> +            // SAFETY: `dma_fence_context_alloc()` merely works on =
-a global atomic.
->>> +            // Parameter `1` is the number of contexts we want to =
-allocate.
->>> +            nr: unsafe { bindings::dma_fence_context_alloc(1) },
->>> +            seqno: AtomicU64::new(0),
->>=20
->> Do we really need to force a 0 here? i.e.: can=E2=80=99t we take the =
-initial seqno
->> as an argument?
->=20
-> We could. What would that be useful for?
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
+> On Tue, Jul 14, 2026 at 2:57=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+>>
+>> I mean if the goal is just to explain that values that are too large
+>> saturate, then the example could look like this?
+>
+> Yeah, that is what I meant by the 2) group, i.e. I think saturation
+> should be shown one way or another.
+>
+> But the boundary case in particular is separate, and a previous patch
+> showcased the actual boundary (i.e. both N and N + 1). If the docs
+> mention it (as they do now), then I am OK with the boundary case being
+> in the example too, even if we may not have a `pub const`, or in
+> `#[test]`.
+>
+> Either way, what I really want is to have the basic examples landed
+> and the fix... we can discuss the boundary (docs, examples, `#[test]`s
+> and `pub const`s) separately. :)
+>
 
-On Mali, the hardware syncobj starts at 0. If you see a 0, is this the =
-default
-state, or should you signal seqno 0?
+We can land the fix first and the examples and tests later.
 
-This problem goes away if we can have seqnos starting at a custom value, =
-like
-1. It seems like the C machinery also special-cases 0 in a few other =
-places too.
+I agree with the suggestions made in this thread about examples and
+cases. Let's have the example like Alice suggest and then test boundary
+inputs in `#[test]` kunit tests. Define the magic numbers as named
+constants local to the test scope, not as part of the exported API.
 
->=20
->>=20
->>> +            driver_name,
->>> +            timeline_name,
->>> +            data <- data,
->>> +        })
->>> +    }
->>> +
->>>=20
->=20
-> [=E2=80=A6]
->=20
->>> +    /// Create a new fence, consuming `data`.
->>> +    ///
->>> +    /// The fence will increment the refcount of the fence context =
-associated with this
->>> +    /// [`FenceCtx`].
->>> +    pub fn new_fence(&self, memory: DriverFenceAllocation<'a, T>) =
--> DriverFence<'a, T> {
->>=20
->> Do we ever check if the allocation was really made by =E2=80=9Cself=E2=80=
-=9D ? Apparently not :/
->=20
-> Hm, no, we don't.
->=20
-> For the most part that's irrelevant, since all critical components =
-then
-> only get set in new_fence(). Correct typization is enforced through T.
->=20
-> The notable exception is the fence_ctx reference itself.
->=20
-> What should we do about it?
->=20
-> We could keep the fctx field as a MaybeUninit and set it later. Or we
-> check through the fctx identifier number whether it's the correct one
-> in new_fence(), but then new_fence() could fail with some error, and
-> it's probably better to have it be completely fail-free.
+Best regards,
+Andreas Hindborg
 
-Agree about the fail-free part.
-
-The problem I see here is that new_fence() will use "seqno" and "nr" =
-from
-whatever context called new_fence(), but DriverFenceAllocation has some =
-other
-(possibly unrelated) context as its DriverFenceData::fctx.
-
-The lifetimes are apparently broken too, because 'a is the lifetime of =
-the
-context where new_fence_allocation was called, meaning that the context =
-that
-actually called new_fence() can drop, even though it provided the state =
-for
-dma_fence_init().
-
-I guess this can be solved by moving new_fence() to impl =
-DriverFenceAllocation?
-That already has a context, and most importantly, the right context.
-
->=20
->>=20
->>>=20
->=20
-> [=E2=80=A6]
->=20
->>> +pub trait FenceCb: Send + 'static {
->>=20
->> IMHO these acronyms make the code harder to read for no gain. I =
-don=E2=80=99t think
->> we have to carry that over from C.
->>=20
->> FenceCb -> FenceCallback
->=20
-> No principle objections from me. But do you believe *all* of them are
-> bad? I really like `let fctx =3D =E2=80=A6` for instance.
-
-No, variable names are fine IMHO. It=E2=80=99s only types where I think =
-we should be a bit
-more verbose.
-
->=20
->=20
->>=20
->>> +    /// Called when the fence is signaled.
->>> +    ///
->>> +    /// This is called from the fence signaling path, which may be =
-in interrupt
->>> +    /// context or with locks held, which is why `self` is only =
-borrowed, so that
->>> +    /// it cannot drop. Implementations must not sleep or perform
->>> +    /// long-running operations.
->>> +    ///
->>> +    /// An implementation likely wants to inform itself (e.g., =
-through a work item)
->>> +    /// within this callback that the associated =
-[`FenceCbRegistration`] can now be
->>> +    /// dropped.
->>> +    fn called(&mut self);
->>=20
->> I think =E2=80=9Csignaled=E2=80=9D is more descriptive than =
-=E2=80=9Ccalled=E2=80=9D.
->=20
-> Here I disagree. A callback does not get signaled. It gets called once
-> the fence gets signaled.
-
-Is the information that a callback was called more important than the =
-fact that
-it was called because a fence was signaled? I think that a driver author =
-would
-rather implement =E2=80=9Cwhat happens when the fence is signaled=E2=80=9D=
- versus
-=E2=80=9Cwhat happens when the callback is called=E2=80=9D. But this is =
-pretty minor.
-If you still think that called is better, I don=E2=80=99t object either =
-:)
-
->=20
->>=20
->>> +}
->>> +
->>>=20
->=20
-> [=E2=80=A6]
->=20
->>> +
->>> +/// The receiving counterpart of a [`DriverFence`], designed to =
-register callbacks
->>> +/// on, check the signalled state etc. A [`Fence`] cannot be =
-signalled.
->>> +/// A [`Fence`] is always refcounted.
->>=20
->> I would explain this a tad better.
->=20
-> What exactly? The refcounting? The dualism between DriverFence and
-> Fence? :)
-
-For example, you say =E2=80=9Ca Fence cannot be signaled=E2=80=9D. A =
-person seeing this
-code for the first time might ask why. Specially if they start by =
-reading the
-docs for Fence first.
-
-I think explaining a bit more about the DriverFence/Fence/refcounting as =
-you
-said is already enough to settle it.
-
-
->=20
->>=20
->>> +#[repr(transparent)]
->>> +pub struct Fence {
->>> +    /// The actual dma_fence passed to C.
->>> +    inner: Opaque<bindings::dma_fence>,
->>> +}
->>> +
->>> +// SAFETY: Fences are literally designed to be shared between =
-threads.
->>> +unsafe impl Send for Fence {}
->>> +// SAFETY: Fences are literally designed to be shared between =
-threads.
->>> +unsafe impl Sync for Fence {}
->>> +
->>> +impl Fence {
->>> +    /// Check whether the fence was signalled at the moment of the =
-function call.
->>> +    ///
->>> +    /// Note that this can return `true` for a [`Fence`] whose =
-[`DriverFence`]
->>> +    /// has not yet been dropped. The reason is that the fence ops =
-callbacks can
->>> +    /// cause the fence to get signaled by the C backend.
->>> +    pub fn is_signaled(&self) -> bool {
->>> +        let fence =3D self.as_raw();
->>> +        let mut fence_flags: usize =3D 0;
->>> +        let flag_ptr =3D &raw mut fence_flags;
->>> +
->>> +        // We shouuld not use `dma_fence_is_signaled_locked()` =
-here, because
->>=20
->> typo
->=20
-> ACK.
->=20
->>=20
->>> +        // according to the C backend's recommendations, that =
-function is problematic
->>> +        // and we should avoid calling that function with a lock =
-held.
->>> +
->>> +        // SAFETY: `self` is valid by definition. We take the =
-spinlock above.
->>=20
->> Where?
->=20
-> The safety comment is wrong / outdated. See below.
->=20
->>=20
->>> +        let ret =3D unsafe { bindings::dma_fence_is_signaled(fence) =
-};
->>> +
->>> +        // To guarantee that an API caller can 100% rely on the =
-signalling being
->>> +        // completed (i.e., all fence callbacks ran), we have to =
-take the lock.
->>> +        //
->>> +        // The reason is that the C dma_fence backend currently =
-does not carefully
->>> +        // synchronize the `dma_fence_is_signaled()` function with =
-the proper
->>> +        // spinlock. This can lead to the function returning `true` =
-while fence
->>> +        // callbacks are still being executed. This can be =
-mitigated by guarding
->>> +        // the entire function with the spinlock.
->>> +        //
->>> +        // See commit c8a5d5ea3ba6a.
->>> +
->>> +        // SAFETY: `fence` is valid because `self` is valid. =
-`flag_ptr` is
->>> +        // merely a pointer to an integer, which lives as long as =
-this function.
->>> +        unsafe { bindings::dma_fence_lock_irqsave(fence, flag_ptr) =
-};
->>=20
->> Shouldn=E2=80=99t this be before the =E2=80=9Cis_signaled=E2=80=9D =
-ffi call? Or is this
->> only about ensuring all callbacks have run? i.e.: is =E2=80=9Cret=E2=80=
-=9D valid even
->> though it was computed before taking the lock?
->=20
-> OK, this is where it gets ugly.
->=20
-> So during the last weeks I've been struggling to get the C backend =
-into
-> better shape. One issue from my POV is that the C dma_fence spinlock
-> does not protect the fence state; there is insistence that the lock
-> shall only protect the callback list.
->=20
-> The function dma_fence_is_signaled() has an unlocked fast path check:
->=20
-> =
-https://elixir.bootlin.com/linux/v7.2-rc3/source/include/linux/dma-fence.h=
-#L551
->=20
-> whereas setting of that bit is done under lock-protection:
->=20
-> =
-https://elixir.bootlin.com/linux/v7.2-rc3/source/drivers/dma-buf/dma-fence=
-.c#L362
->=20
->=20
-> This can lead to funny races like in the commit mentioned in the
-> comment block above (c8a5d5ea3ba6a).
->=20
-> And it also leads to weird hacks like this:
->=20
-> =
-https://elixir.bootlin.com/linux/v7.2-rc3/source/drivers/gpu/drm/amd/amdgp=
-u/amdgpu_vm.c#L2775
->=20
->=20
-> Now, in principle I agree with you that a pattern like this:
->=20
-> dma_fence_lock_irqsave(=E2=80=A6);
-> let signaled =3D dma_fence_is_signaled_locked(=E2=80=A6);
-> dma_fence_unlock_irqrestore(=E2=80=A6);
->=20
-> would be better.
->=20
-> However, lengthy discussions with Christian seem to settle at the =
-point
-> where Christian sees the very strict requirement of never calling =
-fence
-> callbacks under lock protection, and where he views
-> dma_fence_is_signaled_locked() as a broken function that should be
-> removed.
->=20
-> He's currently working on removing all bits where fence callbacks are
-> invoked under lock protection:
->=20
-> =
-https://lore.kernel.org/dri-devel/20260624122917.2483-1-christian.koenig@a=
-md.com/
->=20
-> There's been a ton of discussions and proposals about that in recent
-> weeks
->=20
-> =
-https://lore.kernel.org/dri-devel/20260608142436.265820-2-phasta@kernel.or=
-g/
-> =
-https://lore.kernel.org/dri-devel/20260612104251.2264707-2-phasta@kernel.o=
-rg/
->=20
->=20
-> So tl;dr: The weird code you're commenting on above ensures that
->=20
-> a) the fence->ops->is_signaled() callback is not called under lock
-> protection and
-> b) taking and releasing the lock guarantees that all callbacks are
-> really finished, i.e. they have run.
->=20
->=20
-> (I continue to believe that setting the bit under lock protection and
-> reading it without lock is fundamentally broken and needs to be fixed,
-> but fixes are being rejected because of claimed performance =
-regressions
-> years ago when this was tried, because checking the bit is some sort =
-of
-> fast path check for.. parties that spin on dma_fence_is_signaled() ??)
-
-I see, there is a lot more context on this then. Can you merely add a =
-comment
-saying it=E2=80=99s ok to call dma_fence_is_signaled() without the =
-locks? Otherwise
-people might try to =E2=80=9Cfix=E2=80=9D this down the line...
-
->=20
->>=20
->>>=20
->=20
-> [=E2=80=A6]
->>=20
->>=20
->>> +    /// The API user's data. This must either not need drop, or =
-must delay its
->>> +    /// drop by a grace period. It is essential that the data only =
-performs
->>> +    /// operations legal in atomic context in its [`Drop`] =
-implementation.
->>> +    #[pin]
->>> +    data: T::FenceDataType,
->>> +}
->>> +
->>>=20
->=20
-> [=E2=80=A6]
->=20
->>> +
->>> +        // DriverFenceData is repr(C) and a Fence is its first =
-member.
->>=20
->>> +        let fence_data_ptr =3D fence_ptr as *mut =
-DriverFenceData<'a, T>;
->>=20
->> Without a =E2=80=9CCAST:=E2=80=9D keyword, I think this will trigger =
-the linter?
->>=20
->=20
-> Didn't see a complaint from clippy nor compiler.
-
-I recommend the CAST thing anyways. It=E2=80=99s being adopted in other =
-parts of the kernel
-crate.
-
->=20
->>=20
->>> +
->>>=20
->=20
-> [=E2=80=A6]
->=20
->>=20
->> lifetime is a single word.
->=20
-> ACK.
->=20
->>=20
->>> +}
->>> +
->>> +impl<'a, T: Send + Sync + FenceCtxOps> Deref for =
-DriverFenceBorrow<'a, T> {
->>> +    type Target =3D DriverFence<'a, T>;
->>> +
->>> +    fn deref(&self) -> &Self::Target {
->>> +        self.driver_fence.deref()
->>> +    }
->>> +}
->>> +
->>> +// SAFETY: The Rust dma_fence abstractions are already designed =
-around the inner
->>> +// C `dma_fence`, which can serve safely as the identification =
-point when being
->>> +// owned by C. Moreover, safety is ensured by not dropping =
-`DriverFence` and by
->>> +// only allowing operations without side effects on the Borrowed =
-type.
->>> +unsafe impl<'b, T: Send + Sync + FenceCtxOps + 'static> =
-ForeignOwnable for DriverFence<'b, T> {
->>> +    type Borrowed<'a>
->>> +        =3D DriverFenceBorrow<'a, T>
->>> +    where
->>> +        Self: 'a;
->>> +    type BorrowedMut<'a>
->>> +        =3D DriverFenceBorrow<'a, T>
->>=20
->> We should have a separate type for mutable borrows, IMHO.
->=20
-> No hard objections. But because it's convention, or because you see
-> other advantages?
-
-Actually, when I first made this comment, I think pointers were being =
-used.
-Back then I wanted one type to deref to *const and the other one to =
-deref to
-*mut. This does not seem to be the case anymore, so please forget what I =
-just
-said :)
-
->=20
->=20
->=20
-> Thanks
->=20
-> P.
->>=20
 
