@@ -1,157 +1,165 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010022.outbound.protection.outlook.com [40.93.198.22])
+Received: from flow-a8-smtp.messagingengine.com (flow-a8-smtp.messagingengine.com [103.168.172.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1923D7D87;
-	Thu, 16 Jul 2026 23:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784246234; cv=fail; b=fmipPGKxFqRT9aJlK6jlakii30/DYtcUzcTlnuWKRyF5VkZ+S0lX+ZjPtlVGJ9fg7abUXS9TcS04bFIuyGueRir+RVOg4EArxadfxs4MNm9Cr7+MNU9Pi4fibibalbWzUHJUcSjxFFXCLuhi1u4Kiy7TF2Cxz2f6EdT5d0HBypM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784246234; c=relaxed/simple;
-	bh=GqvFGMv2ZqDdV/J8hGce35p2XLnvKLz+EeyFTi8iWfg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=nOJt+QOnFdqrmjEm/RxTduycmnFbFWrWS9UecUrLhOXV4ZORsAXb8do1N71KmuBmgZDLYOQGpFOK4et7PaD4tLbLmlL2Hp41bvZa9nYwA4aE15wX/FbH+vMqUtrl3D68K8zQVHRuepRZmRKNCuvQsDgZIQ0sw0ruk186UH4yxnI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AV2fAsDQ; arc=fail smtp.client-ip=40.93.198.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F75366546
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 04:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784262200; cv=none; b=gvoEtPdryMkapsNPNnWM3vMuLb1NkssE8BwsoDJLlEsUSEvJihK00UXYPpIlpGaVu3M/DtLoP+7ppIAi/7m6WhLHLfwk50Dxs3WEf6nycH+lmv6c/PwD97GBBJMuUkzyUyBvWPnHkJqWIEqIAI5K1m8+xgatk/tJWwgi6iolwbs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784262200; c=relaxed/simple;
+	bh=UUCw0OxVJdMolh77N4CterHQVW5CaLCNAJk8QTrhwrg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Po+5qGpvRf/PmAdhmHsj/k+WFXDYgWCMnVU4pGZYV2Ub2Fn3h0ssxzNQZvoTMfGiDupISXzUJrAWRIO7Qa5FJFaXySPBHa/AzFvwkfNK3e614vt+Zb27Sk4kynWLNDIP4GgEQt8jnQPxTW5l0Q22sNme0QAw2YOursKbOq1NYSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=F8CjPwSs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=T8POPG88; arc=none smtp.client-ip=103.168.172.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AV2fAsDQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TJMLXfYhVzsAbKYiTLR8jKanUFwxJ9VyW11YOxBGdPZpcpBZIoxT4BdUBzRxsVL9vLfpL10y+wPs6FQdgXX6wFHFcONFDOobp+7rrJVh24T97s2ls0uBS22jSSPEW5nkfmj2EFSpQ96hefmpDQZfjlcS/tc4bsYx6MVYZZND7hV8FN52WtQX3jyL/177cKAmcU/YgAhGWK6CfEPD/nF6H+QwzLGmEThCWqyFX0LIocEzFaOoMNYSe0pvmOX74nAkxFBWt7vBKzQI81TIAPaMXOGQuGosTrpKQOBjtA7GDAFw7xDAVn+PITJv+E/xR8pw3XaV5wiIEmk0MDscSM8Lew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RVr3ytK8NMRykB9upMN+wey9639tVHNwD10T//b4i8I=;
- b=zGtraYFEKKhgLJ1oYyzWJxK5H9r+JIlTDWhPrTNMkh7ectShjXRtHBwz/8g0wZhLaB3lwUSb0TmlN9xhxTI6l0gIyj9zg3FO63nKEBZN2Pmj+CetOAm8pCY6/NSMQP+1H6xuTEa8zzqbY0eaeWQijItXBpUIQhtBm5lVFJOmbvIRM5SnEq773o4YT/nVfoS4Mny8uV7ZDePUYmiZEoPa9Qpc41xHiYQXQD0bGK6FtqBO7wiTouKpWRpFKaFLn4j0RS3vawWu/m0Zp1O4rnc/Uc7pWKPK8M3U8nhp1kknCK/EzkEXVcWhIh75/XBFnUz4Totqi/bbn8J/Ol++B/BiZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RVr3ytK8NMRykB9upMN+wey9639tVHNwD10T//b4i8I=;
- b=AV2fAsDQk0taVrCsMkag/S5LKuHcgj5f0z24e8D3z6U1hopW5uhuBc2IOmmWhn/lDGpl6it8XKf1qjGlqlQ/UWi/o1c9FaTziQWAFjX5BErVgBfL2b45NjRNT0/yib74MjBGEqANGFGyUzWfpC4ZA4o1SrKmUawhL2ckdP7NretnHp+EjuhCrB+j1AK9oDrfzFsrJ28cRe9VwRbPMXSHmgLHU2ViJieFhUkJQTa0wXXpAHRB5SeUCdo3sKLNchmTGXZ1anXeSWAW+yRKDIrrJuB0FIglQOnNPxx4fl1lXWOB0xvoZ4YlVoRapACgF75+OwVzN1aN2DpoFW1wOiCRbg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by CY3PR12MB9678.namprd12.prod.outlook.com (2603:10b6:930:101::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.10; Thu, 16 Jul
- 2026 23:57:08 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0223.011; Thu, 16 Jul 2026
- 23:57:08 +0000
-Date: Thu, 16 Jul 2026 19:57:06 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, Eliot Courtney <ecourtney@nvidia.com>,
-	Greg KH <gregkh@linuxfoundation.org>, Burak Emir <bqe@google.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Simona Vetter <simona@ffwll.ch>,
-	Tamir Duberstein <tamird@kernel.org>, Timur Tabi <ttabi@nvidia.com>,
-	Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>,
-	Zhi Wang <zhiw@nvidia.com>, maple-tree@lists.infradead.org,
-	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] lib: test bitmap vs IDA vs Maple Tree performance for
- region allocations
-Message-ID: <allv0n0_xgE_IpyP@yury>
-References: <20260711063602.426311-1-ynorov@nvidia.com>
- <alf1lUH0EDf3CRMl@pedro-suse.lan>
- <algrZLHyYcR2mwzX@yury>
- <aljkXMNLkciazVVi@casper.infradead.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aljkXMNLkciazVVi@casper.infradead.org>
-X-ClientProxiedBy: SJ0PR03CA0070.namprd03.prod.outlook.com
- (2603:10b6:a03:331::15) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="F8CjPwSs";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="T8POPG88"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id E6FE11380043;
+	Fri, 17 Jul 2026 00:23:16 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 17 Jul 2026 00:23:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1784262196; x=1784265796; bh=uMH6G3jIIZci6cj1zPrT9
+	PXyP+oSk4q/lcDOX42VT38=; b=F8CjPwSst7yLLAUttZ3TX3+RKXlszmsEEMXpi
+	/8Xf+4ezqqKu5dlXdhjCv+YtHj9GUpxeZlRY9PXgjkTeKN4nO3AmlNNkSGxWX1CR
+	Hy9KEXuSUQhPdqLGtEAhoBpUlJDAo0Sboil2vzVFFwO8vwoyssAn+sR9BhV+dqEW
+	xANRrh4FGM/rsPvV0sDSNyhfZ0pNuweoUkCeNG0MSLg4ttUZw0JpQBcFkUNUXDcf
+	0Kb/yjBw9FSOWPMgrtXk9TpH8eCjCV8MqqmDBgApXssYdp0NdQDNGnPRlKQHWS4v
+	bDfP7tscg8oPAyVLJKMF1g6gto+l41cJmaLF6S+o+eDNnGO+g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784262196; x=1784265796; bh=uMH6G3jIIZci6cj1zPrT9PXyP+oSk4q/lcD
+	OX42VT38=; b=T8POPG88lxagxIXM8EajN13QPtV6qrYbjxQi8ATcFDDJwu8skSI
+	coPp28uWJubjGk+l0OTQmFNoWUEAM92krIjSJ4TIf5m7vN6PBIXSmqwSUDKHHFjp
+	fcdDBWQgMgdVhcUHkUJusbxAHKrjyVcQo5fdIs4LP7x4GKtZLQFpXxUkZ1acBKVN
+	KrM6O0oJaEhdmKPl7TT/mFY4SYXotXYdDlUraTuqaaLeUcgF/QnjQGKqjZwSpA6Z
+	P5xg0D5GEzVR61y6SwlLBn9+2i1ZriiqKj7WeTQEUvLqUDdkjQgaPLZNTNQBAPmb
+	LRI2W0JKou1WzTJPywvprmdi61TdEXKkTpg==
+X-ME-Sender: <xms:NK5ZarWHk6VUIsRv6cKSznDbq5uv2-TU9H_dhlD24khUkPHs1xHiVw>
+    <xme:NK5ZamWy40R6nepMccSFcXtt4My8VkAJFE0qdNsa-wSdMbWNStA7t_ePmQBJnhI-h
+    De4fPRSpf1jYKrwqkfksHmNhChR3-vSR8tXUV6YGIYL0yw62CV-Tw>
+X-ME-Received: <xmr:NK5ZakROsoVVYqFcBNIwTIXKPpmDfwZoOcbC7hkwYilAedfJMQp3-0IONmZ6lORZ64-nr6yKpovk6w4gBro>
+X-ME-Proxy-Cause: dmFkZTEi7ITbiXD1RcKLeuJ6pOFVXQN3WYBwxa06DDwBX5EANgowxJMBjuYYncfX6N4Fyn
+    a6kfclq9/13fdNjg57+xRtTa7RK512cyKDYDvOf8HqRCEkXvtY5uBQu8kU8XZTAVbchNRq
+    iWLHs6LmkH2iiztTwDk7SCFCW6y39PsPf85PDXnH8ppbnb8rNQBgdhWZnsGnRZF1Mno9kQ
+    3pqiT20EQy+hKgHVHDaTFjRlEo1CxuGQBB1j4cWXUDG+tkGGiiVhjR3a/GVLXHp98aelPk
+    u3s2mFoXfPuw5FUioHqmSRZJqOMg7whD0V3+eaQ+EqzGl6jSo0nUUjptJE/w7imzv02WjV
+    pZWnPNUK7yMjl0jO4DGb+oThXN8K9Rhwzv8E1IJcihOJDJkumcvYalvfzKN+s8OKGILB2b
+    tu20qOouvMA4DT5zb1+ejk9K8F676mcbIPRNUrTBUwoGzqzRlLrv72XW/DVLBkIpRK+yhI
+    z9bz6NVSx8XLT79TldZ7mTCSLh6IA8t/MJjqrqw5PYCusakHzwpdhXkKBH6HZjNh/0Z+nv
+    sIYli4ItA+LptrUtnADZHJM+i5Fz7Z2go72wC1UpfORx74qdhNUanTcVmgkQvybiOLRT8G
+    TzVDbb1gBgSvMBrz1irS+VS78mq9AvsIQH0bqlBdPJJaJqWsEfUA3z5ySLFg
+X-ME-Proxy: <xmx:NK5Zat0b6zrsZKSWb9YV7VVApwLHv5P7AW8oiNuz0XNMXm8gYYyS8g>
+    <xmx:NK5ZatJgTgCmvKrEspwtlJeGPxYjWeporS3aIdVkTFsIBBwCBDNbAQ>
+    <xmx:NK5Zam9CYO4kbGutAdJ6kAnSU9jJgyfd52FzOnytIqSDI_F8NVzT8g>
+    <xmx:NK5ZammC4puMr9Mk0di9N6pYYSuw3XN_3aWMFCScnrio13Vqj3u1LQ>
+    <xmx:NK5ZaoUMJip_2Ox3WZehuXE3TrHTlVXGF874CBaiF2pg0NPFGI_eeQIr>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 17 Jul 2026 00:23:10 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	arve@android.com,
+	boqun@kernel.org,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	tkjos@android.com
+Cc: acourbot@nvidia.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	frederic@kernel.org,
+	jstultz@google.com,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	sboyd@kernel.org,
+	tamird@kernel.org,
+	tglx@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v3 0/2] rust: use Delta and new Jiffies type instead of raw jiffies for timeouts and delays
+Date: Fri, 17 Jul 2026 13:22:45 +0900
+Message-ID: <20260717042247.3634961-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|CY3PR12MB9678:EE_
-X-MS-Office365-Filtering-Correlation-Id: 919ea4fc-a1c6-40d4-fbb0-08dee395f21e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|22082099003|18002099003|56012099006|4143699003|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	L81XMNLFIptm5ESn8EIGx7ALwvwN+XXSgwnaB09UiQSzgZvfVJ7TBY2gJ7ne8+D3g1mLGZyXcWlQQs1YpQe2Cgmn3HvEeiOez/VXMwpgJ2r1wq2HNEvR0C97B04wkVnHz55dtRDe1MBlQFfALKhXE17tkQO2dWybknWMfUZwZg+R3QjLFmKwkUEAKCAgzkx47mRFUUcIE/BSl8CLY+KjBYVCHhJIsCuWQPQZkPn3PuDr9EWq2s6fHcHhHjFs4SE+klmgz22o+pX44p4gEA7AOFX1bpz0zHF86XqHXXgDMQXjVTWXvmC0rgmg9sNIzvDASAi8DdH3GJy1Mjeus56cFmJbJXFWpTYLKtmDKCFqlLcV44wRp63a1AVB7hvCoFRv7MrSPMO8a17JM6xmuiuL9ZLZEOQldWc+ss1jNhfewPir6q5domWPdEYc6vCFkDfY0uo9rhrdzOPvN77bo34/V72w+hFcsllvOCYsHEp7D0lCBsJcgA6/kLK8MB2HziMDEbLhab2RMnCutubTW8x7Q+gKNclzmK6QxiANtnsscH+zwQ/cP+O015vCKHPNTqoBMjeZnsaEecUDugpyyEYVV7D9ktWVPp5BCtWlAZ0WiX/2VbyTW3jArG9d54eI6waN59WtFtpTO5jSaRVs9y0a6iwYOPdIxqG0oEAjVyS/dYA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Nl+Zh4DbHCd7ABreXsE3kLykSdHSLIDIMOae+4g5Glah3nDjv20s8xtUKyt+?=
- =?us-ascii?Q?2cn/D5mYm35BiQZhdvrKBMI+6BCqUKN/zW0TlZPmCy0ToRJuL57vYtMMcQcj?=
- =?us-ascii?Q?156M25qDK5mgQQtFpNwqcMeu9GQImLzfdpuSZGLvx+fX2zQNcz9fULwtJBtg?=
- =?us-ascii?Q?nkmkPk5Nrj7EZEv7m8JYzeijac0Qgfs7bJ0UVNfsaqXH42F7wyHZKwtczgbV?=
- =?us-ascii?Q?w7/wT5CddxRqkQZIB4HAgEgwI1KTIEjlnrB/1Y4wdA73P8Hhgkv0HcbRZ1PJ?=
- =?us-ascii?Q?1bZR98kpISqUuUI2iwo74XJd+2uHdmvY6f98c6V3di/nTvg5x92i9Uiiuonz?=
- =?us-ascii?Q?Z7GvM1qJ62sihtYoJ03HLA/xMs/kVkdVkiEMsoYpmYD7jieCMrIgo0SVwSGv?=
- =?us-ascii?Q?jdVoRl1x4NaGiVkPWetppPDoHJbhipJ0VLAdkR4JzgrtsuJYOf+xZJra2pw1?=
- =?us-ascii?Q?CfURZ9e/NT94dTg2ssdVN9Jsrc01hJxAmMHLBLAugsehF5egabHP3XrYzfIM?=
- =?us-ascii?Q?VFCHshJUtJI9cj0yBIUMqAotZRtsbvjxEwtRM70zdZ+1EZkqtIRWe04Hsn3d?=
- =?us-ascii?Q?nC9if5F03rnANfRd/c7ks1VeE3cR2XL1nUm711javMvvRf2JrSEETbWbkFsa?=
- =?us-ascii?Q?bNUzpP/imwxkxrelZ9vkVKaPSGLUn6IwT2HPJ63N5ZiSY8Ao6vJae6kN89WG?=
- =?us-ascii?Q?855HUmdRAR7wLpAVZ1/W1mfgqUvFmnkmke4GOwWNGXE5yj05TG2QAYsKU5JS?=
- =?us-ascii?Q?eLvt2kS/3/YQdEHJG3pyd68AL995zHor9/rPeGvuHvDzt2fUM2tmyWc6b9cU?=
- =?us-ascii?Q?jznb9n3OWY6DwbwEELSdszsl7Tp3LsMhJI/e1eo8+/zW9F1e9+ywz9zvfOq+?=
- =?us-ascii?Q?DKateklj2g4a4++hjBNvP/ZAEJUKhM5Yili29gi2L762l6DnCPS2q9eK6aOD?=
- =?us-ascii?Q?A7M20X9Pn0ciWMx4LFEOhRW7aX/54T9yBSgJGVSEiMU78Y4ZyEM+RZEBVgTF?=
- =?us-ascii?Q?ATMJ6tLGqxALZ5jtYGEnJ1NL9Bqxqhr16o76gwVQURCyto8Ryysc9VAHX0aI?=
- =?us-ascii?Q?QuxB14lo6ndutbxydOSr4xU/YOmveDaMdkoQowK/ljsi0itAvB1TmwgLzn0C?=
- =?us-ascii?Q?d1H8/IQzZ6/pwZswgFq8tnmgJSrDRyXl7xc4TLz9R0A1cjCkmcRr4dKU+AJs?=
- =?us-ascii?Q?Hu4P7En+Sy+Px65RiRF93YCQ9Ck/XpF0dFdhPQRHcoplsPL6GTwn3SW8Xyj0?=
- =?us-ascii?Q?YgqSmyL2gm4dbm1dKrETxA4wxjYqt67TLBBT0APJFjuBdzuglWY1Pm04MDpp?=
- =?us-ascii?Q?PbJWJVziHV4RkvDdQXAh+Q7+lSi2qol2zCWz7HhC6gshaFFVvMdNlNqL7B9x?=
- =?us-ascii?Q?xPhWZVzBLN0jBh5Vp9f8y/rp2XPK/EPU18VZFnexhPrTOYzIRIPFWPlZ9II5?=
- =?us-ascii?Q?lqCtZ2XfGN6/77feMb+3/CU7K+ETTlPvpTmkmoXYtu2pqq8yDvbiLzX8Y2pq?=
- =?us-ascii?Q?j/PovmPziJESAWT10pS0WCohVNDsatjyigZ9uOT99/w1ATWaZ5tdiin+jUOo?=
- =?us-ascii?Q?qrXVMTxlu14h0L/5m07wAWbW11ZQhMj4fiwS2WruZyLxHaaNA8TRGteoZ5Xm?=
- =?us-ascii?Q?uNZfol/pPcWrqxUB5s3cZnfHpwAxbbwLMOl2NXjhhIfqzImiwKpTaZqNWgFq?=
- =?us-ascii?Q?HqpLGUVmvGdKg/ORqeFWuAxLROOCAjKrVeu5N+5jgl9FQqT0/2R051YLcYW8?=
- =?us-ascii?Q?8CEFY/DfTA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 919ea4fc-a1c6-40d4-fbb0-08dee395f21e
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 23:57:08.6732
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QV+zjUYow39jxaa0c73yhiQI7PU2zZcVYfXgIhCgAUCT39BYK4yMyeVE2U3wDH478/fXJJWMESE62sTlIzqr2A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY3PR12MB9678
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 16, 2026 at 03:02:04PM +0100, Matthew Wilcox wrote:
-> On Wed, Jul 15, 2026 at 08:52:52PM -0400, Yury Norov wrote:
-> > The test is very well motivated by that discussion. I'm not saying
-> > it compares apples to apples. I'm trying to quantify the answer to a
-> > very specific question: what is better for NOVA ID allocator. Or more
-> > broadly: what's the best data structure for range ID allocators of a
-> > given capacity.
-> 
-> From my work with the IDA, there are definitely ID allocators which
-> allocate only a single ID, less than ten or less than a hundred.  Could
-> you scale the benchmark down to 10 and 100 rather than starting at 1000?
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-OK.
+CondVar::wait_interruptible_timeout() and Queue::enqueue_delayed() use
+a raw jiffies count (a plain c_ulong alias with no type
+safety). Callers have to know on their own that the value meant
+jiffies and convert to/from it themselves, which is easy to get wrong
+(e.g. passing a millisecond value where a jiffies value is expected).
+
+Unlike the previous versions, v3 introduces a dedicated `Jiffies`
+newtype instead. The APIs take `impl Into<Jiffies>`, so a caller can
+pass either a `Delta` (the duration is converted once, rounding up) or
+a `Jiffies` directly with no conversion. Jiffies returned by the C
+side stay as `Jiffies`, so a caller that works in jiffies never
+converts and the round trip is gone.
+
+Why a `Jiffies` type, but no `Micros`/`Nanos`/... types?
+
+`Delta` represents a span of time as a nanosecond count. Microseconds,
+milliseconds and seconds are exact multiples of a nanosecond, so they
+embed into `Delta` losslessly and round-trip through it losslessly; they
+are already covered by Delta's constructors and accessors (from_millis(),
+as_millis_ceil(), ...) and would gain nothing from their own types.
+
+A jiffy is 1/HZ of a second, which is generally not an exact number of
+nanoseconds (e.g. HZ=300). Converting between jiffies and Delta is
+therefore inherently lossy in both directions, and that is exactly
+what makes a jiffies count a distinct quantity -- a count of timer
+ticks -- rather than just another way to spell a Delta. So it, and
+only it, gets its own (unsigned) newtype.
+
+The Delta -> Jiffies conversion reuses the C `__msecs_to_jiffies()`
+helper -- the same routine the existing Rust `msecs_to_jiffies()`
+wrapper already called. The arithmetic (and the range clamping) is
+done on the C side so it works on 32-bit architectures.
+
+v3:
+- Add new Jiffies type and convert the APIs to take impl Into<Jiffies>
+v2: https://lore.kernel.org/rust-for-linux/20260712235246.3069713-1-tomo@flapping.org/
+- Fix potential overflow in from_jiffies()
+- Fix inflating bug in as_jiffies_ceil()
+- Add a patch to convert enqueue_delayed()
+- Add a patch to remove Jiffies/Msecs aliases
+v1: https://lore.kernel.org/rust-for-linux/20260704132558.2253275-1-tomo@aliasing.net/
+
+FUJITA Tomonori (2):
+  rust: time: add Delta::as_millis_ceil()
+  rust: use Delta and a Jiffies newtype for timeouts and delays
+
+ drivers/android/binder/process.rs |  7 ++--
+ rust/kernel/sync/condvar.rs       | 21 +++++++---
+ rust/kernel/time.rs               | 64 ++++++++++++++++++++++++++-----
+ rust/kernel/workqueue.rs          | 11 ++++--
+ 4 files changed, 82 insertions(+), 21 deletions(-)
+
+
+base-commit: 7059bdf4f04a3e14f4fafb3ac35fdca913e3e21a
+-- 
+2.43.0
+
