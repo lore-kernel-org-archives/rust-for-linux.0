@@ -1,107 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432FB3FF1C7;
-	Fri, 17 Jul 2026 13:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784294827; cv=none; b=qWGDeBwyC+LQoRbqREDMFJ8mRw2veedRoYGovjn9JB+wejh0yqt3F6YtbzIOE6R4/DQy2N3ixy1n3KmsAFRiRxaJG6/TMvWB5WYsxQRyVRHtllSZt0dGweCVJXIzwOhA3NgtoOLzg3xJ+4kB/eVRpUJItrfA/tsv5pt2IxyVt9M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784294827; c=relaxed/simple;
-	bh=pwMSIzetdYB7xQjuMxJhP+mfS/rDklXO8XTBOZHhSbc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fK3+gQgK0RrHWFWxn52rOJt2/uITsJ1+g8gds0lOEtU7WB41mIGC6iwM5RZybdgg83RI+Zd2emaM8pA5yzLjfsWY3ouTIHDg82H7wut7/WQYd0v8GxXQJVPpkyreK35bR4E3/fu8ZHrB1h33eMYCeDbMYSEAjp9g53xbj7L94xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOc9WKaY; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC122C11D6
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 13:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784296103; cv=pass; b=AubIIuyxUgx0guDTB2/YukcAWcCdTEb+GAWkGL7SRLcr/uEgIr+dKB1dej7KmW38BIpwpYD6ifFhUSoBUbdSiazpc+j6anrdoPjrq+OzfBgo91KEC9wN51qGMrO9pXVsv1QrxbHXyB8tZ4pfNaBQentbhGP9l9QvlmtH1ysTuYk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784296103; c=relaxed/simple;
+	bh=xUJhbj3yyPAiqFDdLRL6Vu2BwchblYlCM5Tj4IDP928=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rx+z61NBzaRZ3iBTTwY5S/J8fvOxynWxMw2z6IXO6qbC/zqFZu8bIfqW/l+Z5NRGJJStfdIUsOL1nMs9bPJQbnn+S1WlHgi+nYUPPe5rPanxnbMcQbYxUJoGin4crnIEmcTw1uN2RoOvjFKpcjzXNuW3H8VLRdnK9Puvrex0iRU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q48g3ktW; arc=pass smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOc9WKaY"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AF011C2BCB9;
-	Fri, 17 Jul 2026 13:27:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1784294826;
-	bh=pwMSIzetdYB7xQjuMxJhP+mfS/rDklXO8XTBOZHhSbc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=sOc9WKaYAF30kTZX3X9GfRpDI6GvBA4pQZQAXzhu2BNIGGU2F7BoUaxP+MsDu0tu6
-	 C75P+o5Nq9ofbeE8G3+lofZN4B2V/NeyK6ebqLHPH1lQAcuqcvbwuuR6vtB+Uixu5u
-	 JyuhFi+oB4I1M5dhrVo300GCHWny5FfAXZpNT3YrBOh8ZfSAHa7yh4Co7o4eJ5/SZ5
-	 RDLAzTDfDy5UqhXcvUZJ2N+SOw0bRN27C+NbMk87krh5LMHliFrSAd9NFkCpD0Rf1M
-	 XZKsfSuR5iXgSsgA/KaSdRvRJ5F21Z6XjFMes51XguZ0IlH9DqDlJdB49m5dXk9Iuu
-	 P69MdpfU8akXQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87DC1C44520;
-	Fri, 17 Jul 2026 13:27:06 +0000 (UTC)
-From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
-Date: Fri, 17 Jul 2026 15:26:46 +0200
-Subject: [PATCH] rust: irq: fix C header path in module docs
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q48g3ktW"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-47de0093c42so3656056f8f.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 06:48:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784296100; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ezcDElXQgv/oqizLcTl34VxlFbDVxBCyPdjqIE7Z9QqmdpLzRAZh//ZsUA8/2/elF5
+         Pe7rS3cPBQgGG0cm6LckvBqYkLcaJL4OCHGrRGKEoa5hvaurekoVwxwHj82xDf+4EdSb
+         VSSZ7h5kcwRj15A/I7H/ZGSPawn4NKaltXOWNrM9zPzX6/K2V5K0CVdS74ziEZPbjqfB
+         WUfGdJ9p+q/HOWaeqxDOOppL7gUScNZjlyEhPpGjxdHfdjhiuECUhW8yrNt6p2QaIU4k
+         6lYLeeG7hlhSqSFLDi/XC5Ordfc+6mR/wjo4jLgAM6qvtvLO5+CqjAccZZI4CkaOYzi4
+         ImsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+k8IhwEuO4wsB0kPzrLtc1OfuFTTs1CCMQ4oQVoac2M=;
+        fh=NRWcopylafQykhSkEDaXJfgcz3PQgvblurcoSCdvX9s=;
+        b=grXqQ7isKIUen5uAlylN5nASFTXQbYFaXDkLh2nZNk3dY83AfjFe7t0AYHH9wdrzmB
+         4/jnAY0eTHWzjN2G+n4wZBEavraVTzEkx9w9oXF30/MqMRL2851U3z8J3CE8VLRmSyTb
+         XZIEbIh6xLlNl+YH75FnLdz/pK91vlWcl6cGK+wrEp5NIAk+NVJ6sgqTbWkU9TduMkof
+         tp5j5dVoOqUyc9G/RR05JfYffb5J4PzE/lK1iCR7WudTWbCZLtQsN5Vwilpzi87rMuNV
+         qJ7cvhjGek6IGJYM2ACr72DatETOz2XypP+72aTkmprzShAiBkzDQubcFw8VBSmNjgic
+         m4tw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784296100; x=1784900900; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+k8IhwEuO4wsB0kPzrLtc1OfuFTTs1CCMQ4oQVoac2M=;
+        b=Q48g3ktW55a2swGxdble1hSF3IKRv819Dn5QE6Y50tVs6aF6EDjnT+DKxBU9dt2ZDq
+         ZYG9X4EL4kl0L7toCJ+25ELL9ZBP/ig6SPJiRl6aWlcYbXaCCUAjYwbIPxaXZfT0Tsf+
+         SGnVrGN1o48OOMmbvKsSGz75SOxpczNjdk0vd5h/jMYKgPfERTfi+oiviURnyJCj+bC6
+         0xgUTyF/fCzXS6/ItSI5/r5hPRJ0nTPb7+542bRrkhvaQMDp7o5t2TI4nYu5IiIRIQQ1
+         Aoyapxr0BNSUdNZ5alCdNL47pQedSussNG0EVnHR4UHHHqQVn6oyc05FA3H6luMUbkeu
+         17jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784296100; x=1784900900;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+k8IhwEuO4wsB0kPzrLtc1OfuFTTs1CCMQ4oQVoac2M=;
+        b=UB7iR3d539UvE6W2m100HRkAOjtjDAt5zIkp0stXiOEt8mcafnXk+eodE0aZolMgnA
+         CVqo8xwEN5DCqHBpsqLJXJfTqlTE+NVOvTq3w2yi9/I7lyEMa6NzTCR9nYv8g7cBsgHX
+         nGI/adVdZZRDFccd+j3Ks9WG1TnstrUuN8eoWeyEIMmMDBJVf3yUg0e/tN9BDokFslTZ
+         2AOe4ZADry+ocVvqtGlCDIlc9GoSHiSZpr0J5IoLx6pFgXF1q/sqITgttzNhGOsVagGr
+         Xxha/bCcwlVKu8iB+0xN72poKlxGbJ0HQ49uv3Xl/WWNahsfUb4nLzga7tcqdCs9Y87g
+         sMeA==
+X-Forwarded-Encrypted: i=1; AHgh+RrGwmzT2TPhSjirTMY3Xcga6tWy7PDKOcVcr5bh09kVPYOgh+vaW+WrDTVyfKqNspCsdWERDLxBzCtjnvt9QQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLPIY2QTjr3cCUdD3O7yNq31nIK04sAUPOOcIkTL7kKL04HnV6
+	PCrYqEf8JDqvoyNrT6eIFpUOKhEH7L0OeAorZQ0NeatupajbMEJ3HKN4N8TzuUZ0dk4eEdcs5Rn
+	oYe6d5Jir1CqpV54M3WwUlpwQ6njPpRYOLWi8dZqz
+X-Gm-Gg: AfdE7cm35GD5PYqTcLTq0jd00QaMC0JsCPDzGk/DBxIiw+2STa4oHIrJ5mSKcP1ddRh
+	/tWdDGloTYt6zicbZUiRxOptLCetmyF6UAbhlRr7aAxTTtB9FtwPvsfxw2iU6jlqDzD24dMRgC8
+	pT9zYWNBd0YqgPqQvQiVkoO+5ufpZBOj+2S6m9xF/miilL6WS/XzA0BG8JvhJDLs2VWsch5tqbF
+	+zbafbjHa7mUfPmAAmdWcyhitfj4vgW5VuInTm5ojY/h0Tou5SQJxzjdyCj7uow7ExZwjCvnnSO
+	Gl6cw6NjR16pgRMTHCzI+O1G4K8ppFenXt3+44XNsWf8IdDw
+X-Received: by 2002:a05:6000:4305:b0:473:c18:f2cb with SMTP id
+ ffacd0b85a97d-47f622f94c7mr3837445f8f.18.1784296099552; Fri, 17 Jul 2026
+ 06:48:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260717-docs-irq-rustdoc-header-v1-1-36749192aa04@younes.io>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMyw6CQAyF4VchXdvIJUL0VQyLmeEIdTFoC4aE8
- O7O6PJrev6dDCowuhU7KT5iMseE6lRQmFwcwTIkU13WbdlVHQ9zMBZ9s662JPAEN0C5QttcLx7
- ONaC0fikesv3K9/5vW/0TYcm5/OGdgb26GKZ8mlVGieec5YhtoeP4AqUwLIueAAAA
-X-Change-ID: 20260717-docs-irq-rustdoc-header-1e6395beaa3e
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Younes Akhouayri <git@younes.io>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784294825; l=1205;
- i=git@younes.io; s=20260712; h=from:subject:message-id;
- bh=DUAXmsk7k/KxOykvnIl3o8UFwBQcn84FmsrWr/BYmZ0=;
- b=b9J58TftG4SmQphTzp8LyXtKcYP/wMDXvQqNnmZYoOiUgUXgzg+IzKDUTQWc0aYp0SqhhJtmE
- hNSDOEWUYCpAa8ay1LKpF2A4P61Fnw7ZkcfSBpRvcnEDC8OT/q033ow
-X-Developer-Key: i=git@younes.io; a=ed25519;
- pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
-X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
- auth_id=866
-X-Original-From: Younes Akhouayri <git@younes.io>
-Reply-To: git@younes.io
+References: <20260707-binder-noderefs-spin-v4-0-7c3c8bc16339@google.com>
+ <20260707-binder-noderefs-spin-v4-1-7c3c8bc16339@google.com> <2026071755-covenant-shining-6910@gregkh>
+In-Reply-To: <2026071755-covenant-shining-6910@gregkh>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 17 Jul 2026 15:48:07 +0200
+X-Gm-Features: AUfX_mzYRAD2zHwodrs55ChKTGt3WvYOr2EkVXlmM382Q173j8KxINpvh3q7dFg
+Message-ID: <CAH5fLgjNm_aHLTE-XH=S+nukEW0o5MLe8Uih1nmn6io7e7fDZg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/6] rust_binder: avoid allocating under node_refs for
+ freeze listeners
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Carlos Llamas <cmllamas@google.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Younes Akhouayri <git@younes.io>
+On Fri, Jul 17, 2026 at 3:20=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Jul 07, 2026 at 10:28:51AM +0000, Alice Ryhl wrote:
+> > The node_refs mutex needs to be changed to a spinlock, so in preparatio=
+n
+> > for that, update freeze.rs to avoid allocating under the node_refs lock=
+.
+> > This is done by adding a retry loop so that if add_freeze_listener()
+> > requires reallocating the KVVec<_> of freeze listeners, the caller will
+> > allocate a larger vector and retry.
+> >
+> > Analogously, the remove_freeze_listener() function is updated to return
+> > the empty KVVec<_> when it is no longer needed, to avoid calling
+> > kvfree() under the node_refs lock.
+> >
+> > Reviewed-by: Matthew Maurer <mmaurer@google.com>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  drivers/android/binder/freeze.rs | 65 +++++++++++++++++++++++++++-----=
+--------
+> >  drivers/android/binder/node.rs   | 41 +++++++++++++------------
+> >  2 files changed, 64 insertions(+), 42 deletions(-)
+> >
+>
+> This doesn't apply against my tree now, given all of the binder patches
+> now added?  Can you rebase against char-misc-testing and resend?
 
-The IRQ module documentation displays `include/linux/device.h`, while
-the link points to `include/linux/interrupt.h`. The module wraps the IRQ
-registration interfaces declared in `include/linux/interrupt.h`, so fix
-the displayed header path.
+I believe this is already in char-misc-next as commit b9d17aa74ddd
+("rust_binder: avoid allocating under node_refs for freeze
+listeners").
 
-Fixes: 1f54d5e5cd2a ("rust: irq: add irq module")
-Link: https://github.com/Rust-for-Linux/linux/issues/1246
-Signed-off-by: Younes Akhouayri <git@younes.io>
----
- rust/kernel/irq.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
-index 20abd4056655..09ef1e7f853c 100644
---- a/rust/kernel/irq.rs
-+++ b/rust/kernel/irq.rs
-@@ -8,7 +8,7 @@
- //! The current abstractions handle IRQ requests and handlers, i.e.: it allows
- //! drivers to register a handler for a given IRQ line.
- //!
--//! C header: [`include/linux/device.h`](srctree/include/linux/interrupt.h)
-+//! C header: [`include/linux/interrupt.h`](srctree/include/linux/interrupt.h)
- 
- /// Flags to be used when registering IRQ handlers.
- mod flags;
-
----
-base-commit: 7059bdf4f04a3e14f4fafb3ac35fdca913e3e21a
-change-id: 20260717-docs-irq-rustdoc-header-1e6395beaa3e
-
-Best regards,
---  
-Younes Akhouayri <git@younes.io>
-
-
+Alice
