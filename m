@@ -1,41 +1,41 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B193890F0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F66389455
 	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 12:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784378876; cv=none; b=extQLXK/HMzWaTgVdBncjlHVKsh4A4NyrYWTZmuOVUntDeNRAPS+uFnpIafDpXyORKHvD6IJgOSWSV0y5PNQxzXmhrS9xguoxqAQ8gG4wFBX8XzPXmqhykdaor8gJQLIdBVZnxlrOVMUnDJ7xdJO+Dixh5H5sbqVThkK7m2Hz8o=
+	t=1784378876; cv=none; b=cGkfYCK+1r37+8wCFVeMHRCC9BgOwP/InIUfCDuQKVWriax2Oe/TLpA2VGZdK0s13WMm/MF9VIc1ZHLAWX69QzMvIDyfIjnoRjCExQ5xWMdOei6S4RBEqLHjwkd2erQITj1DiF2K8AI5Vt6Rx+vyl9j9KnunRXtCKcA+cKFx14s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784378876; c=relaxed/simple;
-	bh=5Upn3XgzNHsfFjssw0UXmxtjmmJmk1QhUiVZAnpqPnM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jqUsWBfWbzw/zBtnZbWQ6m4Z6RYezmAnmCRb0fXZw/qzZBU3p39T++yEeg7VeyCjBzMhuLbG6W1NBsaXSB7okIMRQoYiaFC6W3pRl+/KlRIk9ec4A6YiWEJGme2UU2BiafzZVr63qqVHJXspC2kAQXhHighl/qIzIsRTsZs2/zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=MZXSOBwD; arc=none smtp.client-ip=185.67.36.65
+	bh=Ut/IRZsxXHW6O61T2pDCsBqDBfWdqPE0u1OY+IFn1Us=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pzs/8lO7rmcA1dr+s80iBjUKvXgMO8T9SLsoAzEzwGWNW23doZUqkQW6JOYhDc6Ij3X5v3OQuk+sOktK8BKlsD2iLi3jbQ9Gdy8K5KUa/KPKnO5+2dmNxj3zE1lunMg4oN76BhWeYqw5tHoRSXuMMHuyUDvJ+QdPCoP2AtEyj6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=Hfo5rWCP; arc=none smtp.client-ip=185.67.36.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="MZXSOBwD"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="Hfo5rWCP"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id E69CB24002B
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 14:47:51 +0200 (CEST)
+	by mout02.posteo.de (Postfix) with ESMTPS id C8EB6240107
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 14:47:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1784378871;
-	bh=9ZZOAvXfJWsCMzdmVLuGtcsnNAcVrXzkXiB16u34YRo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=MZXSOBwDEU9rWDX6MDGhigeBdG6AUqHamEVTFx09yPmhl9cAFEERU7fIQuUF/cYY4
-	 ccAsnIHIhU/otGF8I20IXbjJ0LBse1ftXz7DyWm6oyn5vl/jhtmEZ42qNFwRUbR+Hx
-	 fHO11EnLAllrROi/toW13vz/yMKl0pReASjZ7b7f9BqWLfsFxp/Qm4fvKSKqsR5oO9
-	 ywdPtbBrdzUJfWbcDQZr/OPcOOREFLejF872qqhWmvmaNzzVzY/qavZ3jDFEjRhNgb
-	 9ttnyP1+4NSnsLwujTP0uOSfGpyoppBNKQobMxEJG4ZHrqL3Kdp/aRdx1jWYdLW5BH
-	 jYMd9XVi9Q6Ug==
+	s=1984.8680eb; t=1784378867;
+	bh=aqspqbMtap3MyUHvygE65AWMHG91QJ7438aDXiT20PA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:To:Cc:Autocrypt:OpenPGP:From;
+	b=Hfo5rWCP3ny+crTIZ3nIe5aV0oWFjn4lFPoNppQ5Cl0iynOUM8Hj36jJdUmBh0q8V
+	 8vWgDRYXQpIGvWJURUTy4BSQG9ucj2VN4M7fnXUUejxPZzfR9UX44PUDPjON/c37dH
+	 0xG/lcOn8zxoWfi1jbW/bUCdpw8KE3bYDu0jgK91BkMrMrqpNKZTh5w0I2lqx66qAg
+	 5h/Wsja4QBKL7YfkF6d1HJsdDNKTFdfGab574FW9fihwwaLd/3lRUvYas18GUl8DLL
+	 3bx3S7s99mWo+I6floEkYmhDLyPTPjYhTgoZgjQhRW7Jkvzi57xLWRkTXfcaTUMTR3
+	 NLaWTiHDmbwkQ==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4h2RQF6tBzz6v1n;
-	Sat, 18 Jul 2026 14:47:49 +0200 (CEST)
+	by submission (posteo.de) with ESMTPSA id 4h2RQ944V8z6tvx;
+	Sat, 18 Jul 2026 14:47:45 +0200 (CEST)
 From: Markus Probst <markus.probst@posteo.de>
-Date: Sat, 18 Jul 2026 12:47:50 +0000
-Subject: [PATCH v2 4/4] rust: serdev: remove `serdev::Timeout`
+Subject: [PATCH v2 0/4] rust: serdev: trivial fixes
+Date: Sat, 18 Jul 2026 12:47:46 +0000
+Message-Id: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,9 +44,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260718-rust_serdev_fixes-v2-4-e5214e03de13@posteo.de>
-References: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
-In-Reply-To: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OzQ6CMAzHX4X07HSAinLyPQwhwIrWRKbtWDSEd
+ 3eABw/e+kv/XwMIMqFAHg3A6EnIdgGSVQTNteouqMgEhkQne53FmeJeXBlMBn3Z0gtFHeuq3bV
+ prJPsAMH3YJwfwXYuFpa+vmHjpqCvgvHZhzK3yKCuBFVj73dyeWSYPHJAxs3PrYLYUXeBKfRK4
+ iy/590+njO+Ew9/JvpYaZXutmla702Duj09rDi0a4NQjOP4ASw52pMHAQAA
+X-Change-ID: 20260717-rust_serdev_fixes-9baf5f310278
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
@@ -59,22 +61,23 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Alexandre Courbot <acourbot@nvidia.com>, 
  =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 Cc: linux-serial@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4550;
+ linux-kernel@vger.kernel.org, Markus Probst <markus.probst@posteo.de>, 
+ kernel test robot <lkp@intel.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1102;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=5Upn3XgzNHsfFjssw0UXmxtjmmJmk1QhUiVZAnpqPnM=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqW3XxQaZWKBfIoPHQ0xqtJOQJf30Vd4j874k+F
- LRFG6vOUDOJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCalt18RsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9J+uw//ftD82kdrBl1jStYpm5bqkSD84Zk/8xM
- 7z1pO5oHR2ERlVVhhkfTQE7Mpvn6AjzQu0Q6VKfR9/VOtuPjK1xbg9m10BzXaqm7Anpb8gSykhJ
- cqPgOMXOHGoVLlOyyeSP420hi7VfBzVhZsyXE+RxGymux2BOC4lPXQOR9jogsWpX3bNPUtkIEh2
- 1b22sLFocBq0I2ubylbxSPgVOGyrHtIo9GL68x0esFucFkNsfKdDLcC3bBSb1vQmok6ZiiUH/rJ
- ONDEgFFfMyMwM+zsHCxQw3YOsPkLml5Elo2qkxTeW5tIuiegD1S/5TDrVqEd24jKQWizXvOb+X2
- A22tKu2eWSEyg/fsNftv7lNINH+qskGNRFjWNSFyINPf2q/xTTrDrRA0dMwFN9tqC5Yy2ZqPCf+
- tDZa84VgMClyoB6NiwMhwX1/Q2fmMqAuSKgPx5QOft8/AoGTXALM88Yd2rMWmXNFalzgYy+Mf9D
- TVq6tIqSj8B7t4PgNZyPn4yDsTrlbIDO8iRHJ84nZU3MEZIn5Ovf8Vhep4vPrtknBIe03AsKCOy
- kuekn9KO+Qg1kZPuoLjOWXfLeKlQeWYwCOmQcU9Avs4w29v2cXclreNzuY/c5C3rSopnygG7U3v
- Js/wE4mQpvc9TU4q4hHxJxawIPqwvrUxd33z80/2j7T5lAm0XcK8=
+ bh=Ut/IRZsxXHW6O61T2pDCsBqDBfWdqPE0u1OY+IFn1Us=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqW3XpUJy8feyPI6HSGOPW5AGwbaYJxcng7uUW4
+ JQr0OazaMaJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCalt16RsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9IJfBAAts1/ifBxizf9uCgCTS8lejNZn560srp
+ HA1dCtUf6HHZgstf0w0A0MOV/w/aozYdGH2KGY/3dxnsk/XG9lsWsqqO7LHHrA17BQ09knvvx/3
+ IlLw7v9AJ55hF5jDyIa9aGtIJiyKbamWSjK3/htVtvhY5fPV19XF4eLpxtO4gIjV99uMN1CY4FN
+ DCCxk7vFLXpjlonAjvqMQ4oUMPBWumpRiNOAqNXVc6i5urU//alg2R22IKBCv3vQxLGzsvD4hrj
+ 67T/3zBNDBRuhv9fNGsPxGMt4ypzhH725rVi7P9BGhLuPnA9CNt9AY7+5192JfTpb6scp4XgisL
+ bifINyQGpFymvfUNII0lisFHCp9KdV2aDOvUzF6HVQggtuHq7kOWLHwfI9YbdsYm/L59bSL62sF
+ z1jjlVr0BnML5Jll96azxhdN+Zd5k9XWKibS8dd0eDgFYOUS8JjfV80I03EwP1RZW+gVFXV+nhL
+ ODclIKTCTi6CXb1nQ6rJXekEmzjI5UQ10T9lfmrRQ+8Vstlp5LmnVGvQrutICoMDoVN5VZbdRyo
+ Qm/PArakNSqqJFvbBRz8PLSMQbazdNNFy6PAT66+Bp4Y8C26lzZapElk/gLtxOcC+P+le5sk2f4
+ OCgpKzrQLjt34/alCSDDPJDWJIel4Kt+YJYvKkGRPCyP/kIgK+ko=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
@@ -120,130 +123,34 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Instead of relying on its own timeout types, the abstraction should make
-use of `impl Into<Jiffies>`.
+Those are small fixes discovered by the kernel test robot and Gary Guo
+after the serdev rust abstraction have already been merged.
 
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DK0SX3P5K1J6.1OV4ETJMXW83R@garyguo.net/
+This includes
+- a fix for a documentation typo
+- adding missing `#[inline]` attributes
+- a small structual change for timeout
+
+There is no urgency to merge this.
+
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- rust/kernel/serdev.rs | 55 +++++++++++++++++----------------------------------
- 1 file changed, 18 insertions(+), 37 deletions(-)
+Changes in v2:
+- resolve Sashiko issues:
+  - reword small parts of the `PrivateData::active` documentation
+  - fix documentation references left to `serdev::Timeout`.
+- Link to v1: https://patch.msgid.link/20260718-rust_serdev_fixes-v1-0-35433b6dce0f@posteo.de
 
-diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-index a78dfa6e2c27..0fdb37cff15d 100644
---- a/rust/kernel/serdev.rs
-+++ b/rust/kernel/serdev.rs
-@@ -20,11 +20,7 @@
-         aref::AlwaysRefCounted,
-         Mutex, //
-     },
--    time::{
--        msecs_to_jiffies,
--        Jiffies,
--        Msecs, //
--    },
-+    time::Jiffies,
-     types::{
-         Opaque,
-         ScopeGuard, //
-@@ -35,7 +31,6 @@
-     cell::UnsafeCell,
-     marker::PhantomData,
-     mem::{offset_of, MaybeUninit},
--    num::NonZero,
-     ptr::NonNull, //
- };
- 
-@@ -50,30 +45,6 @@ pub enum Parity {
-     Odd = bindings::serdev_parity_SERDEV_PARITY_ODD,
- }
- 
--/// Timeout in Jiffies.
--pub enum Timeout {
--    /// Wait for a specific amount of [`Jiffies`].
--    Jiffies(NonZero<Jiffies>),
--    /// Wait for a specific amount of [`Msecs`].
--    Milliseconds(NonZero<Msecs>),
--    /// Wait as long as possible.
--    ///
--    /// This is equivalent to [`kernel::task::MAX_SCHEDULE_TIMEOUT`].
--    Max,
--}
--
--impl Timeout {
--    fn into_jiffies(self) -> isize {
--        match self {
--            Self::Jiffies(value) => value.get().try_into().unwrap_or_default(),
--            Self::Milliseconds(value) => {
--                msecs_to_jiffies(value.get()).try_into().unwrap_or_default()
--            }
--            Self::Max => 0,
--        }
--    }
--}
--
- /// An adapter for the registration of serial device bus device drivers.
- pub struct Adapter<T: Driver>(T);
- 
-@@ -379,7 +350,7 @@ macro_rules! module_serdev_device_driver {
- ///         _id_info: Option<&'bound Self::IdInfo>,
- ///     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
- ///         sdev.set_baudrate(115200);
--///         sdev.write_all(b"Hello\n", serdev::Timeout::Max)?;
-+///         sdev.write_all(b"Hello\n", 0usize)?;
- ///         Ok(MyDriver)
- ///     }
- /// }
-@@ -505,11 +476,13 @@ pub fn set_parity(&self, parity: Parity) -> Result {
-     /// [`Device::wait_until_sent`] to make sure the controller write buffer has actually been
-     /// emptied.
-     ///
-+    /// Use a timeout of 0 to wait indefinitely.
-+    ///
-     /// Returns the number of bytes written (less than `data.len()` if interrupted).
-     /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::ERESTARTSYS`] if interrupted
--    /// before any bytes were written.
-+    /// before any bytes were written. [`kernel::error::code::EINVAL`] if `data.len() > i32::MAX`.
-     #[inline]
--    pub fn write_all(&self, data: &[u8], timeout: Timeout) -> Result<usize> {
-+    pub fn write_all(&self, data: &[u8], timeout: impl Into<Jiffies>) -> Result<usize> {
-         if data.len() > i32::MAX as usize {
-             return Err(EINVAL);
-         }
-@@ -523,7 +496,7 @@ pub fn write_all(&self, data: &[u8], timeout: Timeout) -> Result<usize> {
-                 self.as_raw(),
-                 data.as_ptr(),
-                 data.len(),
--                timeout.into_jiffies(),
-+                isize::try_from(timeout.into()).unwrap_or_default(),
-             )
-         };
-         // CAST: negative return values are guaranteed to be between `-MAX_ERRNO` and `-1`,
-@@ -570,11 +543,19 @@ pub fn write_flush(&self) {
- 
-     /// Wait for the data to be sent.
-     ///
--    /// After this function, the write buffer of the controller should be empty.
-+    /// After this function, the write buffer of the controller should be empty or the timeout
-+    /// elapsed.
-+    ///
-+    /// Use a timeout of 0 to wait indefinitely.
-     #[inline]
--    pub fn wait_until_sent(&self, timeout: Timeout) {
-+    pub fn wait_until_sent(&self, timeout: impl Into<Jiffies>) {
-         // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
--        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw(), timeout.into_jiffies()) };
-+        unsafe {
-+            bindings::serdev_device_wait_until_sent(
-+                self.as_raw(),
-+                isize::try_from(timeout.into()).unwrap_or_default(),
-+            )
-+        };
-     }
- }
- 
+---
+Markus Probst (4):
+      rust: serdev: fix typo in rustdoc
+      rust: serdev: mark small functions as `#[inline]`
+      rust: serdev: document `PrivateData::active`
+      rust: serdev: remove `serdev::Timeout`
 
--- 
-2.54.0
+ rust/kernel/serdev.rs | 82 +++++++++++++++++++++++++++------------------------
+ 1 file changed, 44 insertions(+), 38 deletions(-)
+---
+base-commit: 25acf039a5dbb40b6865d9392e05be8e713a39f3
+change-id: 20260717-rust_serdev_fixes-9baf5f310278
 
