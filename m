@@ -1,298 +1,120 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701CC33EB10
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 15:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666AD34104B
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 15:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784387565; cv=none; b=XbYgFINjdmxHggR5mKgZSa/Q0nPO1xO3s0Mp6X4tZg3UBCWRdXiZ2/28AeDucCuhKdrhu0KxAJfo5fM5BO6vrrAny2FjYHemVW6MsW2GbhW9clgfhfPbOPJYB6PhJIN3NicE0MZUa/fwYDH6SxQiX2Qswi+C/4OK5hcBbUhGILU=
+	t=1784387862; cv=none; b=Tw2IhpjFyYBiDcYTnJtbdNeJ0Mm40RncJsjpgQYyrI4//gVCIjVG0KbiCQGxchLkMQFNengCLxES8YJ38xW+wE3166Nky2b1+/BD0RhA4wyFmB9683dDDyWDrGoQ7slrTTJYpYDs/bVMj5ryauzDiGxn+Lp8Ex15dT0Pn5RPJBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784387565; c=relaxed/simple;
-	bh=gUJPOZmVJqkVByGf7bHunCrf9zfgWAJOjbhVn8PwtSk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BCx8AiKsXppY+JIKda87j2drjGrKSxcCflfObpX2JA2YMS3X4bLp7efFHAp+N91Mq1I1uN+oHkoxI9QsAtxp9Qfa4+97pE7r7J/FpZ1hRy3GRys+uBcF5A+DnxRxiToqw5tgFLBkqoHXCeCkXIGu3+dlh22aQpvE/j6O+ln+uEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=KQu0WksW; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1784387862; c=relaxed/simple;
+	bh=FX9+ytC4Iz6IpEsyGIB35Jd2O4SwepeLOOS0Uyo6W5c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L+DDrvDODwlAvIG9a3obkXlLytHDZUZdOx8Dz/9lGKDVoqzELw3BNPsDwAGacWamZh/dR8firI9Lhjd3+eoS039uiDYEk0fKKPw/7nqHoFLf6er1gXolzr4pddwiCmK1pFg5Ev/9ci+t+o8Wqf5vEqbmpBnC8jtV2ke1J/eIv4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k4USDkEw; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="KQu0WksW"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 7A96124002D
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 17:12:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1784387560;
-	bh=4kzLe+wtVJyH+y9LVuVLGN4Wjww7mf1StIOqkMQG76U=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=KQu0WksWQne1NC2VaQt2Sf/i50jZN4sXCuyQK90ST+HqBtohqMXDzDLZsK3mcV+V1
-	 MHrYxyevEJaf4Fa15HWWHr+uHPaGK8rL3G+ZrdbDd2ZgEoi+wsQYnOTaKq9zasKGFF
-	 yBxsylJqHTAdB/F+S2AkyqdYDIZDtFDBZOQUPNTLQ2wo/rCSAgPX3voM7yoeTwFJGj
-	 TQF7iW2fHvzNHYeICmqY9uUgYF+v6sr4tasiKHBMUbFcxlx7PANZJoLXe0uvGQ0XtF
-	 X8mYuNlK43NSdoypLJuXQpxrkbg4SNrtisZC9J0mU0mtHrcFirujkKyCYGYQVku5c9
-	 0F8HEAOQKrkQQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4h2VdL1wbLz9rxF;
-	Sat, 18 Jul 2026 17:12:38 +0200 (CEST)
-Message-ID: <dd8cc1a98c48338bd8b29168d312b7a1f466c8f3.camel@posteo.de>
-Subject: Re: [PATCH v2 4/4] rust: serdev: remove `serdev::Timeout`
-From: Markus Probst <markus.probst@posteo.de>
-To: Gary Guo <gary@garyguo.net>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: linux-serial@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Sat, 18 Jul 2026 15:12:39 +0000
-In-Reply-To: <DK1SDT57QY13.3ZXZYQGOTK2P@garyguo.net>
-References: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
-	 <20260718-rust_serdev_fixes-v2-4-e5214e03de13@posteo.de>
-	 <DK1SDT57QY13.3ZXZYQGOTK2P@garyguo.net>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-TYJacBHMQ87hTAgcI4oo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k4USDkEw"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4954a2e73a9so9856515e9.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 08:17:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784387859; x=1784992659; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/utO568HGbVmGB6Jd4gPvyi2DOEWefL8XBowMOF3j1g=;
+        b=k4USDkEwRoz10H2QOkLvLU1f0ohL8IMIdtqJxeGBxHXwCQpIfrc9NcdXeOlrBc8Vut
+         EwfAQpiy7x6xoFLRu5HcVlBCNYwtEJFZ2zqYCzFAoVGbvvC7IHchLEl4HThMVtUBngIB
+         +/UlMwxypm3hoi7Sd0wGsHDInDZN8QQ/sLWjBpKu59LCwrvDU7H1fL3UqVvbRjcvIh8J
+         WUXrgaeryuOv39mccOX69j2eccNX6wsRbSOSOlPmwrHH7tqIpYu669AYlbrqIaYKD8MF
+         cuGUCMqG9vtTJAMiY2loHe2y1Wbn8tQq6GdS8rxHIC9FeOL93pXrIzvNwA8lm5Z9zhHm
+         HGVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784387859; x=1784992659;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/utO568HGbVmGB6Jd4gPvyi2DOEWefL8XBowMOF3j1g=;
+        b=oHolyMzG80UU72EVE8lfTz5VMWBzoN7Q5wvDKkCMVzZSExfpU0arifbBdIr6160eNL
+         YMpiP0bEOg6t1atHvahwu6qT6K5xPDdeAhkuVXNNuticJ1j05ycn0tpV40iTsYshrqaw
+         6iqztQ7gMCpnensLJLcE/25jLy3m4znlssT7kUWc5ue3fOjxWX1PogAwcXZKoQGtoulE
+         pgyIFEiWIoq63acNKcZAWTWW78CwptJ1YBCVfWaJiPkjQxPjCFA2jpRvpdA/apgO6pe5
+         0dYXCbcB3aRBzulUKSHT2JU7PQcny1SWsU4xRFmE/X1o9xczanRN9c7aZHxM64SPBMcO
+         ahBw==
+X-Forwarded-Encrypted: i=1; AHgh+RrKB7xQemmCvUcR96dmGDu864ba6uau2pUZiE5SdigS6NLVLwbuuGRsY2vXesX/cO+kN7JXi+h63rQ8tPG1bw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmmgGFfEtYspBM+iovn4Lf1YBvkUAOe18D0/GhhgShwxn3YLUO
+	SdBo0j5mk375N2VTb9xCZKHEOaKRFkMW8B/MM9Ei1SW0zG1rGSa/chx+
+X-Gm-Gg: AfdE7cm+AQdrVzGru1D62+PB4CruOwVpIxUCjKCnixdWsuUxVgBMZ4Iqp0uu9mY+aSS
+	RLFLQ/LilREH7MkrgJywqEpnlPTfEKm8n8mBT3Xi2+XVMXSw6sAhlbn+wjBMXweKXEQDGC3sB65
+	HG2sxArLJuN7xexehUJjygI0L5X/Wt384Fbzf9wK0mXTpwa27p+KZrliwoeHy/zdRF5LVJuvPTL
+	BIbKI3Pe7iOeucFk01O9+iaaIX7Zfq9kk7eHII2+fzra8IF+olfITsLjBWSFnK37AbgkUFzkoed
+	rTgdqUIU5YxUcWnqkFVdueWexOTbNTClzQN2YleqWHQhmZlv+MN222epJLb0zY24Qbv7Q7hYthJ
+	JLbp2UDj32TbcCrO+1oUZDlxYH12nBrRqeJvacbFF5ljwcvkS/fADvNPQ7/N6ISykhBy3udAuyE
+	c8Dy58JJ+i0zPDvm/Dv8QqRusoRZKY1bum3MY=
+X-Received: by 2002:a05:600c:5247:b0:495:573e:1c54 with SMTP id 5b1f17b1804b1-495573e1da1mr2785675e9.9.1784387859117;
+        Sat, 18 Jul 2026 08:17:39 -0700 (PDT)
+Received: from ubuntu ([95.143.48.78])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49549a3e56fsm129621965e9.5.2026.07.18.08.17.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jul 2026 08:17:38 -0700 (PDT)
+From: Burak Emir <burak.emir@gmail.com>
+To: Yury Norov <yury.norov@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Sverdlin <alex@sverdlin.org>,
+	Chuck Lever <cel@kernel.org>,
+	=?UTF-8?q?Martin=20Kepplinger-Novakovi=C4=87?= <martink@posteo.de>,
+	=?UTF-8?q?St=C3=A9phane=20Grosjean?= <s.grosjean@peak-system.fr>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Burak Emir <burak.emir@gmail.com>
+Subject: [PATCH] MAINTAINERS: Update address for Burak Emir
+Date: Sat, 18 Jul 2026 17:13:03 +0200
+Message-ID: <20260718151303.2649-1-burak.emir@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
+Content-Transfer-Encoding: 8bit
 
+Update MAINTAINERS and .mailmap to point to my gmail.com address:
+burak.emir@gmail.com.
 
---=-TYJacBHMQ87hTAgcI4oo
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Burak Emir <burak.emir@gmail.com>
+---
+ .mailmap    | 1 +
+ MAINTAINERS | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-On Sat, 2026-07-18 at 16:02 +0100, Gary Guo wrote:
-> On Sat Jul 18, 2026 at 1:47 PM BST, Markus Probst wrote:
-> > Instead of relying on its own timeout types, the abstraction should mak=
-e
-> > use of `impl Into<Jiffies>`.
-> >=20
-> > Suggested-by: Gary Guo <gary@garyguo.net>
-> > Link: https://lore.kernel.org/rust-for-linux/DK0SX3P5K1J6.1OV4ETJMXW83R=
-@garyguo.net/
-> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
-> > ---
-> >  rust/kernel/serdev.rs | 55 +++++++++++++++++--------------------------=
---------
-> >  1 file changed, 18 insertions(+), 37 deletions(-)
-> >=20
-> > diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-> > index a78dfa6e2c27..0fdb37cff15d 100644
-> > --- a/rust/kernel/serdev.rs
-> > +++ b/rust/kernel/serdev.rs
-> > @@ -20,11 +20,7 @@
-> >          aref::AlwaysRefCounted,
-> >          Mutex, //
-> >      },
-> > -    time::{
-> > -        msecs_to_jiffies,
-> > -        Jiffies,
-> > -        Msecs, //
-> > -    },
-> > +    time::Jiffies,
-> >      types::{
-> >          Opaque,
-> >          ScopeGuard, //
-> > @@ -35,7 +31,6 @@
-> >      cell::UnsafeCell,
-> >      marker::PhantomData,
-> >      mem::{offset_of, MaybeUninit},
-> > -    num::NonZero,
-> >      ptr::NonNull, //
-> >  };
-> > =20
-> > @@ -50,30 +45,6 @@ pub enum Parity {
-> >      Odd =3D bindings::serdev_parity_SERDEV_PARITY_ODD,
-> >  }
-> > =20
-> > -/// Timeout in Jiffies.
-> > -pub enum Timeout {
-> > -    /// Wait for a specific amount of [`Jiffies`].
-> > -    Jiffies(NonZero<Jiffies>),
-> > -    /// Wait for a specific amount of [`Msecs`].
-> > -    Milliseconds(NonZero<Msecs>),
-> > -    /// Wait as long as possible.
-> > -    ///
-> > -    /// This is equivalent to [`kernel::task::MAX_SCHEDULE_TIMEOUT`].
-> > -    Max,
-> > -}
-> > -
-> > -impl Timeout {
-> > -    fn into_jiffies(self) -> isize {
-> > -        match self {
-> > -            Self::Jiffies(value) =3D> value.get().try_into().unwrap_or=
-_default(),
-> > -            Self::Milliseconds(value) =3D> {
-> > -                msecs_to_jiffies(value.get()).try_into().unwrap_or_def=
-ault()
-> > -            }
-> > -            Self::Max =3D> 0,
-> > -        }
-> > -    }
-> > -}
-> > -
-> >  /// An adapter for the registration of serial device bus device driver=
-s.
-> >  pub struct Adapter<T: Driver>(T);
-> > =20
-> > @@ -379,7 +350,7 @@ macro_rules! module_serdev_device_driver {
-> >  ///         _id_info: Option<&'bound Self::IdInfo>,
-> >  ///     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
-> >  ///         sdev.set_baudrate(115200);
-> > -///         sdev.write_all(b"Hello\n", serdev::Timeout::Max)?;
-> > +///         sdev.write_all(b"Hello\n", 0usize)?;
->=20
-> Note that the jiffies type is being converted to a new type (in fact,
-> `Into<Jiffies>` only make sense with it being a new type.
-I assume it won't take long for the patch series for the new type to be
-merged. Currently there is no user for any other timeout than 0 (which
-corrosponds to MAX_SCHEDULE_TIMEOUT in serdev).
+diff --git a/.mailmap b/.mailmap
+index 735470e21075..d447b05711b3 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -171,6 +171,7 @@ Brian Cain <bcain@kernel.org> <bcain@quicinc.com>
+ Brian King <brking@us.ibm.com>
+ Brian Silverman <bsilver16384@gmail.com> <brian.silverman@bluerivertech.com>
+ Bryan Tan <bryan-bt.tan@broadcom.com> <bryantan@vmware.com>
++Burak Emir <burak.emir@gmail.com> <bqe@google.com>
+ Cai Huoqing <cai.huoqing@linux.dev> <caihuoqing@baidu.com>
+ Casey Connolly <casey.connolly@linaro.org> <caleb.connolly@linaro.org>
+ Casey Connolly <casey.connolly@linaro.org> <caleb@connolly.tech>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a674e36529f7..3abb1e4b7344 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4634,7 +4634,7 @@ F:	rust/helpers/cpumask.c
+ 
+ BITMAP API [RUST]
+ M:	Alice Ryhl <aliceryhl@google.com>
+-M:	Burak Emir <bqe@google.com>
++M:	Burak Emir <burak.emir@gmail.com>
+ R:	Yury Norov <yury.norov@gmail.com>
+ S:	Maintained
+ F:	lib/find_bit_benchmark_rust.rs
+-- 
+2.53.0
 
-Or should I revert to `serdev::Timeout` until then?
-
-Thanks
-- Markus Probst
-
->=20
-> Best,
-> Gary
->=20
-> >  ///         Ok(MyDriver)
-> >  ///     }
-> >  /// }
-> > @@ -505,11 +476,13 @@ pub fn set_parity(&self, parity: Parity) -> Resul=
-t {
-> >      /// [`Device::wait_until_sent`] to make sure the controller write =
-buffer has actually been
-> >      /// emptied.
-> >      ///
-> > +    /// Use a timeout of 0 to wait indefinitely.
-> > +    ///
-> >      /// Returns the number of bytes written (less than `data.len()` if=
- interrupted).
-> >      /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::E=
-RESTARTSYS`] if interrupted
-> > -    /// before any bytes were written.
-> > +    /// before any bytes were written. [`kernel::error::code::EINVAL`]=
- if `data.len() > i32::MAX`.
-> >      #[inline]
-> > -    pub fn write_all(&self, data: &[u8], timeout: Timeout) -> Result<u=
-size> {
-> > +    pub fn write_all(&self, data: &[u8], timeout: impl Into<Jiffies>) =
--> Result<usize> {
-> >          if data.len() > i32::MAX as usize {
-> >              return Err(EINVAL);
-> >          }
-> > @@ -523,7 +496,7 @@ pub fn write_all(&self, data: &[u8], timeout: Timeo=
-ut) -> Result<usize> {
-> >                  self.as_raw(),
-> >                  data.as_ptr(),
-> >                  data.len(),
-> > -                timeout.into_jiffies(),
-> > +                isize::try_from(timeout.into()).unwrap_or_default(),
-> >              )
-> >          };
-> >          // CAST: negative return values are guaranteed to be between `=
--MAX_ERRNO` and `-1`,
-> > @@ -570,11 +543,19 @@ pub fn write_flush(&self) {
-> > =20
-> >      /// Wait for the data to be sent.
-> >      ///
-> > -    /// After this function, the write buffer of the controller should=
- be empty.
-> > +    /// After this function, the write buffer of the controller should=
- be empty or the timeout
-> > +    /// elapsed.
-> > +    ///
-> > +    /// Use a timeout of 0 to wait indefinitely.
-> >      #[inline]
-> > -    pub fn wait_until_sent(&self, timeout: Timeout) {
-> > +    pub fn wait_until_sent(&self, timeout: impl Into<Jiffies>) {
-> >          // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a =
-valid `serdev_device`.
-> > -        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw()=
-, timeout.into_jiffies()) };
-> > +        unsafe {
-> > +            bindings::serdev_device_wait_until_sent(
-> > +                self.as_raw(),
-> > +                isize::try_from(timeout.into()).unwrap_or_default(),
-> > +            )
-> > +        };
-> >      }
-> >  }
-> > =20
->=20
-
---=-TYJacBHMQ87hTAgcI4oo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmpbl+AbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSRroP/05MQCTUhUfN25zOYKvo
-FAPnib29fPa/SFQYTmCwiHIjOWkfHFCvlDLdbNeeEnEAaj+ubjtEoky5ybzOAGPs
-8dSrdTK019v/dridzoRRnE0YkdKzCAgX+4H54fEl/I2liA0E0eETlVC9kfzO3Fi6
-p1kFL9QZUAX9asvigiRpjVqSJZdZZBg1FRaplUr7JHxq8q7Huk9vT2uo5k/PdK2j
-42hp+UL2uzz1tW/+opkOjZade2SpbmT8CvNq/WsM24eGCnA6l1Lm8eHrQiCedS/2
-ur5F8fLpiazg8fomyWa1j04VcgFcJc33ygLIWjJP8x2uJElx8uBRIs+kn1DvG3Nv
-697Am/lOu/+79G0HQjDygGUpXbWyZ3vws6Fu2tfK+p5oYovP5m4e74qfJolYgETe
-AoGF14r1WOapQ/QHLVn9uZzrwG1kEZfaQR8vuNqcpf++bJwQl7naku+PKBxvsPag
-CUZxbiqWsKHJ1VYeaf/lisQOzcuoCs0o4k+wP4eoxaySV2Gor6Adll3WdE2Xr01N
-aGGWOw+1uTCjCi4nn6WJYhEbkOa12Aj4DbDrm4zyKU2gCrumEmAYR5eEEHlVQZkX
-D8asdGiLUgrCDDESKmI5KRvz9c7bn/b5UQmZDmYUk7aGXkvFsxYH+OVw9VeJauKI
-cGh6mS94LIx/3eDrYunHaXU+
-=QYPI
------END PGP SIGNATURE-----
-
---=-TYJacBHMQ87hTAgcI4oo--
