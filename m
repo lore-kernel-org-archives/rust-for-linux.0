@@ -1,134 +1,128 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90F026B2DA;
-	Sat, 18 Jul 2026 17:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784394194; cv=none; b=lyg3Dm8MgKXi8RGLeehNEMKVxWGIJXwMhiESnlMSf29htHvj/Zm7N/Q/FHYqd5nQkDOrVaULf0GU7H+kgi2dA3hBat9abTWqT2jVX0qlOuYzNeHVs1L6DuOXsBCLNiJzcZdSDdzUceSa5idQXyt4OcCW9JT2cB429M26VEJTIHY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784394194; c=relaxed/simple;
-	bh=Eo70NEU6KqAOrmNSdHxkeabKbAhSH9ivRl9nNEL052M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=hpS/f4gTkPQGL98FXVdck+ibZ0QeeIPHGMocIzFYLcbTP7rDv3qoFuaKSeu4Gob+S/Ca0SGLG8P5n6ym3m95sGlmpGXJ09v0PD8pk8yBUwQP3LGcIo2tJL+VLlv+B8wUY0gFbu4dGt32fEhhnN98byLWMLM1wkQDFfONKOiqmrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=aln+E3ea; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=P1KW0RuF; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDF9175A5
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 17:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784395416; cv=pass; b=fSJMtk1saykxoll3d4+fzaIr2wZBql91Yv5xprJPVAUlGRPhm/3BgRYs8/w/0956gL/rB9OyIVIw6NhEZw00zISOz3jHyVpI8erGTzzL+nJGvCOlqV3XHA6c/FgHjoCIsI+VcDwKhH88SBLEHchzDbDeNZU8gY7qjFOpsfn9Obw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784395416; c=relaxed/simple;
+	bh=M8pmD2lFTg/HN6MNMk43D13KYYUMHjYZP4KRSXHolKs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BDa8gSQHKDwLrtccG88PoO1l8uqvhiMVOPAxgAIV5KNwyq99EzJn2k1tiZE47wxdMLebOu9YpkmjjEawG28XdrLiDiyQPj52LM+B2zyIOkz/sxNIpbsiEbEIwwAMtwDNED2CLlSw7NlFgH+AoDW5TO4lCHul3UFTegF50Yw8eeA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDP7Yobk; arc=pass smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="aln+E3ea";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="P1KW0RuF"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4h2Y4l0wzyzMlGr;
-	Sat, 18 Jul 2026 19:03:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1784394183;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tzj3jkroeJ9qDDBuoFNN5o4ycSfZDKYPcOED/sOa+Lg=;
-	b=aln+E3eaDYlrKxaSGm+3XSpYABwLi/lqLzy3Oq/jtOJc9K9Tps6sA48suz7viwG90Zg3Ni
-	wqIG+itekNyrfXz+41zykPa4OlzUiIMP3Npkm6+tgr1j6s6Sxj803Pdj+bnrql4LPbTQxi
-	j0b0WlVgCzzGEvrRwF6madkNIREjjEKRnzxRGRpu+OKHzuTSRdc2CnLuSKHZm+wo4nVHx6
-	mLCmRhYh4q4Mww2gNWrDfXw4IsWJ3r3CW3CCZznwIOeywKFWB6Lks+KbtiNdGHrOkQtdS7
-	uaedeQLxKm1WOhJQ4vatK2OWGOtpjlO74CcbJZkQJNAyNWwcvnWj9HYp1wgVow==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDP7Yobk"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-ca8a3a77daaso195735a12.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 10:23:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784395415; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DmHULftG/hJtNPDuyY7mNhuOnqhkJr/do7edSC0OurMkgBVLQqSUlWw4OWRc8xmPi3
+         /BpxCXawdqhs1RZaZxmKSHIn/KFPK9dAyPrM2U+zr6ElJqm1CtJKVYL6DvKwmIDvvTGg
+         H06eRLkomx3seCM17I7XnzVLguf5YekB7as4ztOn+IQg9c6dsIAuCdPKNHKqhlXIWCGv
+         bwpW1Nubg5aLDUCRGwFA2e2vk85nuX7LV/qMxRVCA4VpJLznV3e2kguyLT8q9L9JCw+t
+         ayi3xyvHT1U9zCZoc0hQomWcrSzi4JdwK16wxIO4VvJwGXMKMJBIjDjTcKIXsxFBqQVq
+         lMfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8P+a+6M5SuHZs1w1KkGbi4RDJsJVScD+OcdihG6KQaM=;
+        fh=6dQazk4OtD8DgbS26l5nm/iVMBnWdPgBp/pbkxY/XSE=;
+        b=QmzuY9HrirHFwXQsm0WM8HYCO87GBQ2/5eGKHlJvclNXk3/hHK+DI05J4pVDKIcBvs
+         qoYor9Log0Gk5H8x88W0ne7vlwYD5zz3I3ffljebj0fp+0qpjIf/IDW9dUXuW9qgHka6
+         sHAXCDqn+CJqriC1ga1O9JLt4NwEt7y16J0kjaeVjLANHkjjiAJNd8QFdI8ChxSq0WKV
+         Ico1qbxJayjVLDlnRVanJxXB9k/85fnCGxydqbcC5zRCCngr7JapOTu0YCtHqmz2h6H0
+         B5g03KBNfSrj/PfVpMlRuWkOTfL1KCHaP/0ddAxXoiJxK289d0DFtcOlDqaLfALdzslV
+         UMAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784395415; x=1785000215; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8P+a+6M5SuHZs1w1KkGbi4RDJsJVScD+OcdihG6KQaM=;
+        b=RDP7YobkCZ+fyWUcXNJWR9B/dTazCBZbX6B5/1zjFY4IEeM6WTNyybsow29CUc0L+e
+         wrgflOZ2DmNDI6B1hZ9mA0rlzBxLqPjoUCne0v5uGoMrAPxU6u+bSLe0HyUtQiB+grIR
+         +c2Iv68z7XNGQCEHenu64J/Anp/6sDZxXsnK/I0mfxU0Nwlqw2xW3W47ZEmhoqYdfT3m
+         0Ji40Oh8yO71/RR4B23Ef9wwB0/IIyGXqPxhgpHamQUFM5vj6uzXUdvuIsFJsTic0ex+
+         PCm/fho5zFyB/P1QKfSqGjQ/nG6/cABW6xznrVsWZLwBndCgeLM7vqBpOR6UH3mvDW9X
+         vc+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784395415; x=1785000215;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8P+a+6M5SuHZs1w1KkGbi4RDJsJVScD+OcdihG6KQaM=;
+        b=jH4B33vWvTJcVnLuCqalOqIBirOwbFeBwJ9V0bXAPBi/SKtF5U2YJnG5a8yE+4a5+S
+         5ut8GKADTrzRBh3ubsOd737/8CutwlSNa5i49dFMYJE4lW9as+6A/csN9lLABmGnrgHU
+         AwZy6jgOFr7w8GGGCT2+K6nUckFsDt1hiijZUOVT2pFh6nEXchayyVJZ2VsADNIq+lgm
+         pJrB/HFRA7qXkWuEZXJSoNCdiyXIG5QaUiONR7RUwh1HzvTPxz8JIXm1drwOIGGIg0uZ
+         gsKG2RAzcUddSfrrTP/47gFQPQPXl1pZw9v8KouZeRfTVZJmNFDpj0yrCIy5wmcI/mMK
+         4DnQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoV0ovV2INAZl95eBqfR+BKxbIJBBw7bHpjpKVI3tXWUcWtKl3AAV7jIzZ8S6qEUZPSJ37VnKA9f5QZXa0WuQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyB+3mcwKGC28KA6la9BgRRgarAFwPJuseiMK+DPcnI5kdkUuSe
+	XQoV9BYtPVMrjbpck/NIjO2dYEWQqfRiKcIhEnq6IYCvZrKyb33TG5bgwg7gDLLDhOndDl6xc6P
+	mN/1V96nLTq1BWgMUlZlPs1dFlwTimWE=
+X-Gm-Gg: AfdE7cmKIHyqjsbAX6RcVdW0bqCQMSulXQ+cUr4I8uGuBDxbj/FgObiFde93rYf/8XW
+	9LABWAlOk+S+ZIMgDUr71D5aEPsEMfUjIZwP5aV5zcE6ZIOc6JCxOLKXcuq+SK8CdfEcoBqYYNm
+	29aOjwL+gOhK/EhtWRRJpGpaVkEm4tf/1FvwZQnQXrOvVhCDVQ7LhBJANhv6p5JAc3o2Ma7OAMC
+	ngQijbbAlWBZ02gzLMWFmNIb5aDa2rkJrV4amzbX2pXtSfI/9JdE9wqTN4pkQuOLa9RIZMjxU3S
+	jt92UbwUgA6u73GMG/y7QXBw825xVCD4d8aD1DigavKPGWAyM8eF+p5H8FU5yl3vS6AAdKVvXtH
+	UyKSl4cJ0VLx8
+X-Received: by 2002:a17:90a:e70d:b0:38e:6d4c:14df with SMTP id
+ 98e67ed59e1d1-38e6d4c159cmr853918a91.1.1784395415020; Sat, 18 Jul 2026
+ 10:23:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1784394181;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tzj3jkroeJ9qDDBuoFNN5o4ycSfZDKYPcOED/sOa+Lg=;
-	b=P1KW0RuF0ntpYj4ZoBCfrMOhMBGzPbYCgUpbaeL1Wn4ib5OzTkiDIDo/p1j3QOU65c+DDl
-	iGMhUQy3cTkjNWLuo8iKKT+ZDJE18EYX6SW4ZfihB/7x4xi4VC1spxl05O2kzzblBhd/dv
-	kr9sOGx1z2CWIVp/sJMv9IwerysVsW4iinlWh5DvbHiAVPaGkBbHD2ykdKkt9aALllUIDw
-	z7S08aSpusUPHeXVQs+zO4vrPaCLygYoUdJ/h6sMHdUvGQn9ruWFdq6gqC06sIV3tpyHsR
-	aCIiCttc5Xl16k2AInJyP5fXCPElESzBdgxGOLmlwEhCov3FuZ3RRDBae0IUAA==
+MIME-Version: 1.0
+References: <N3Mcf328j6hi7HCJTp14HUC6-cxRUNgQLjvAdkFhIuZM-yYM91SYBYsW7kEVHRkqTzm1B3zgl5Bat4dpSIfXtA==@protonmail.internalid>
+ <20260713225235.3243480-1-tomo@flapping.org> <877bmtgy6e.fsf@kernel.org>
+In-Reply-To: <877bmtgy6e.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 18 Jul 2026 19:23:19 +0200
+X-Gm-Features: AUfX_mw2m6yFprysR4k9A06vwPLBH_REFiYpnSdYHpaUkdN-MgJXZzhWn4AwE4U
+Message-ID: <CANiq72mtS0ABA2JnT5tpz6J9c_mnxY+vyPvghV_ukngWvN8F2w@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() to round correctly
+ for negative Delta
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: FUJITA Tomonori <tomo@flapping.org>, ojeda@kernel.org, acourbot@nvidia.com, 
+	aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com, 
+	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, lossin@kernel.org, 
+	lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org, 
+	tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 18 Jul 2026 19:02:51 +0200
-Message-Id: <DK1UXXRGW737.2IVTYCHPRM9ET@mailbox.org>
-Cc: "Edward Cree" <ecree.xilinx@gmail.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Justin
- Tee" <justin.tee@broadcom.com>, "Paul Ely" <paul.ely@broadcom.com>, "James
- E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K.
- Petersen" <martin.petersen@oracle.com>, "Juergen Gross" <jgross@suse.com>,
- "Stefano Stabellini" <sstabellini@kernel.org>, "Oleksandr Tyshchenko"
- <oleksandr_tyshchenko@epam.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Borislav Petkov"
- <bp@alien8.de>, "Tony Luck" <tony.luck@intel.com>, "Danilo Krummrich"
- <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-net-drivers@amd.com>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-scsi@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
- <linux-edac@vger.kernel.org>
-Subject: Re: [PATCH v2] PCI: Move pci_dev->is_busmaster into priv_flags
-From: "Maurice Hieronymus" <mhi@mailbox.org>
-To: "Lukas Wunner" <lukas@wunner.de>, "Maurice Hieronymus" <mhi@mailbox.org>
-References: <20260714-pci-dev-flags-v2-1-a1d7dc441cf3@mailbox.org>
- <alcSjoypegNolW48@wunner.de>
-In-Reply-To: <alcSjoypegNolW48@wunner.de>
-X-MBO-RS-ID: b5973a326c905eef11a
-X-MBO-RS-META: ac7hnh6jjxdgumx33umeygikqfdzbxu6
 
-On Wed Jul 15, 2026 at 6:54 AM CEST, Lukas Wunner wrote:
-
-> pci_dev_assign_busmaster() should not have public visibility.
-> Drivers should really use pci_set_master() / pci_clear_master()
-> and nothing else.
+On Fri, Jul 17, 2026 at 10:31=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
 >
-> It seems Xen is the only one in the tree which needs this:
+> Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
->> +++ b/drivers/xen/xen-pciback/pciback_ops.c
->> @@ -125,14 +125,14 @@ void xen_pcibk_reset_device(struct pci_dev *dev)
->>  		if (pci_is_enabled(dev))
->>  			pci_disable_device(dev);
->> =20
->> -		dev->is_busmaster =3D 0;
->> +		pci_dev_assign_busmaster(dev, false);
->>  	} else {
->>  		pci_read_config_word(dev, PCI_COMMAND, &cmd);
->>  		if (cmd & (PCI_COMMAND_INVALIDATE)) {
->>  			cmd &=3D ~(PCI_COMMAND_INVALIDATE);
->>  			pci_write_config_word(dev, PCI_COMMAND, cmd);
->> =20
->> -			dev->is_busmaster =3D 0;
->> +			pci_dev_assign_busmaster(dev, false);
->>  		}
->>  	}
->>  }
->
-> Please change these direct assignments to pci_clear_master(),
-> preferably in a separate patch to ease bisecting if anything
-> breaks.
-This conversion does not preserve behavior. The direct assignments
-clear only the software flag, while pci_clear_master() also clears
-PCI_COMMAND_MASTER in config space.
+> @Miguel, can you take this with rust fixes?
 
-I am not an expert on xen devices. That's why I want to clarify first
-that this does not break anything. Especially since commit
-7681f31ec9cd ("xen/pciback: Don't disable PCI_COMMAND on PCI device
-reset.") deliberately removed the PCI_COMMAND write right above the
-first assignment, and pci_clear_master() would reintroduce a
-PCI_COMMAND write there.
+Thanks for taking a look even on holidays -- on it.
 
-Best,
+By the way, apart from this fix, for the positive side, reading on the
+doctests we were discussing, if we want:
 
-Maurice
+  +    /// // One past the boundary: saturates.
+  +    /// assert_eq!(Delta::from_micros(MAX_MICROS + 1),
+Delta::from_nanos(i64::MAX));
+
+Then do we want `Delta::from_micros(MAX_MICROS + 1).as_micros_ceil()`
+to return `MAX_MICROS` or `MAX_MICROS + 1`?
+
+The docs seem to imply `MAX_MICROS + 1` but we return `MAX_MICROS`.
+
+Cheers,
+Miguel
