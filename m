@@ -1,155 +1,111 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F3C2FFF8F
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 18:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826D53242DF
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 19:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784399237; cv=pass; b=gXOfT1tepwSS/rHOT3wBM/dnnoiMLR9Z9bcQSg7sCm8sY+/HUr6Olhwi2KZ9KOnHbI1oKSyuM2szCd8GlpcE2xQcKmSho9yZXlETexvbPeJwKgmlRzePPCCD+t/QXyBhs18iMNyBXIEXtLJCbIOsh+cYR+beg1LbCkE7R7ecK0w=
+	t=1784402331; cv=pass; b=gxaiVZIWT9aKi8b4jmFjIcHaTy0NMQEagZVUsUsPJExNtzvasfeng6JTSkwD2PzTSMlcltN7p7ln0AiOI4t3TCPG6bdcw01+p+XGoZqJhl6b53HtBF6AT7kt3qOkSaCDYEjUmcN2A1QUD7N755LP1BRwa+OXS7KbPoksvL7LERY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784399237; c=relaxed/simple;
-	bh=AP41tUx195ng9TgT6uzGyVV7lbuXENWF5xVRR8LXTEc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oy5KLLz20IM7qGaSD9Z9PAQ5xcgB14BPtYfgLw3XkJBTrqIO1unSW+He9AE03tl7rr3vibZC3xpHnlJAgaFgAIK8CMGqIRmgynw+98v//PAwQPU2wYs4X1zZOJPYEu618orqC6ayMWGS4fVAvA/N/dHa19XLoUflpyo4O12svbA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=amMECZXx; arc=pass smtp.client-ip=209.85.216.54
+	s=arc-20240116; t=1784402331; c=relaxed/simple;
+	bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Fq2FbafR9m0NTcQ1euc5Xqg/y9IGkigWatScRGUZE0oNNNhBqrzpH3LOYVc3L2jKu8qWkpJP3cn+OBkOKygtMdUp3usmqm2FyYqZ9sczLjQb5x/opZGu3zJ9diU4MZX3vTWFYhzt1aNNe0GoXpIGgznnbM53KsUH5H1tSwz38mg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zi0FYI2C; arc=pass smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="amMECZXx"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-38096590070so1409279a91.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 11:27:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784399235; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zi0FYI2C"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cad4170e8eso117876305ad.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 12:18:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784402330; cv=none;
         d=google.com; s=arc-20260327;
-        b=ejfR/KA9T0/kzAQFntQC70YMD/ESoAnvCPV2nd/UJxLmVRE2z6pkcNWCm1CGYkPKjg
-         k7QkALQct46b9IRKo5n8+DfW7mPoaK89ga1/NvEFfqhUYQmKLKXY+VzeM5Uhsi0V5IuP
-         OWxhY6IaR9XTE5cGBX+DPSzY+U8Q2egwrYMLuB4kvBVSS5O7hsMxETPSKnuHVv2eWyaX
-         M/AcWHokusZ3nOP0Yi/Fi8024gNj3YLdejXrVjm5CPxwg9tBB9T4i71L1P/fD3DPOjHt
-         UeGvJIHuer4HeHhCb6kYWZSjJHQzIZ4B/QFdP9ioFIgMB9pB7dlYay5grFsJwLba+t2p
-         jWlQ==
+        b=rJz+B8jG3J2ZZO8Vw9Wd+UV6mjSGhp1STDMhJQxLF9QQ89wj/AF0KiQkGrQ51PkaiH
+         oYyWk4wS4P9xmzAD5miyEkDG/ixu4EN9Z7WOotlwkLMiQ56phVVGUKtdC0N/bL7TRBKN
+         OQDw+FtUAK5Ifpmezj5YhY3DlMTUW/soCRVsxwp6tU28KBDzy8xQImVmcweZVf2GwoSu
+         sXoX93dXi25hGlIFA+oM2+qoQUz2GBwPoPvvqxjRniAWBSoQ3F3CzLs4V9drOTNu6E6X
+         /PC5YpJNZfyejZjgSXJZWykHsTQ2eC/82M/xXxaTu1ZSQ2uErjHRsz4Lj/mNFdlq0Ah2
+         L9Hg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VF1UqndvD15BxTbg7z5vo4szg71VyV/aIRdaOO6x9SQ=;
-        fh=d10vgpLJVXiHBfeTSZRgeEtamDA91QoSBG6jf3vG9OU=;
-        b=IBmNznb9oXuV4TJQKrlvsr6H0BjLQK9V9X5q5jmrIxt57To1wd1U7orzOYFU2NDhwk
-         UNqlzXQpfEkrXX87J7ofrTE1c784/CB3BlFC9/N21oIDhht5jYmGrhhywWF+MXfjqW0X
-         caQzxzxQwZonSEQqq5X6pXWKSI9hk3VViTn+BhFXcTRPdUlEv/qqZdCKy59QFiNwN9VC
-         fg/B/EdwNbZs0vnbFo5aFWHgPmTZ/oLS2T3ptTrJRy0ULDmAhhzYqjCnVzOLj78YDDMU
-         FrVa60u01j3NQ0VdSrWYUQtalDjivsOVlHB+znONfLWRfkN4zTaD2VxBily0D8oIPDGJ
-         2epA==;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
+        fh=8H9ktHP5QxsRo3CZ+ceNcEx2kor2amXinZK+t/855+E=;
+        b=OdMirf+ZyzsW7CmEfX9UK4NzSVH3mfYxjqIM/wRe0se/9Kt7+T/3NRSbGCfAzpcmcN
+         fcbzhcGuwTff+kjfZ1xW3ZAim8KenA9FXf9E8UoM07GmN2rv7rLcPyBOx9FvZW/hiMPc
+         Yp8Le3ggZbzEernZbTnWXVubWAl933cFypQSmAfN3kk080C2DsCOaNzNxbBhVNr3HqPE
+         hC1QhZzYx3iZfkW7djUEkyyJhh+EOGsLvc/ieZ1NI4B8gJasjdJ3EhoSSA8Eulskg41m
+         KSUGRQ2WUhcmEqE317gVH6BFjh+fIpeV1rJ8bdqauHzV9UHFJlbFQA2sUoSbd61PWCvt
+         0miQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784399235; x=1785004035; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VF1UqndvD15BxTbg7z5vo4szg71VyV/aIRdaOO6x9SQ=;
-        b=amMECZXxDcVI/tDclwfWEv91FERjCewoh7Xun9jiWjXpgvbeX1dsNB8a2RjP7RieJM
-         ZQlHu2E1Ff95i2SPMjZPmsbICL2QdSTVeiEJexhYZjQ32QGUYbKi1k7fGDHGmECQtaW0
-         9P56H3gCFeuxsNnpindCx45z6d770aIe4NQwOPVPUR5D1OeKXKOuy6CcD8NVUfn4t4Zb
-         kg2fMhYVoCQjS7lwLfFEvDjeKWX5isCyxbdxsQprVQzk2c+1UcRs6xvoQke+9QkBM8kE
-         JZlmtPYuZsXM0W+v7fvwdXoVKnrAmnCyEnSeGHdaIscl3SawQ8FwNh7347MWklrFJsb/
-         pppA==
+        d=gmail.com; s=20251104; t=1784402330; x=1785007130; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
+        b=Zi0FYI2CJAYGnsjyPgNQFNEBkj76nDYygtCwaXITzymkOs7zJbveQIPBEX3PFST2p8
+         BIYdtavB+xxwRgSETQtfa60nTtBF0mdymUwPpR1LNodMLePuRKUz6JOpBVXLIDPUzDex
+         m8vwz8dL3lvRl9cO3R04UOrgSuZ+4C2WWHhXYx9sUBz/ARD/zKZ2Vs+Iy8sfYEZsvaMr
+         nJLEEOSJadT9u3Fnsch+ocQRlhT0cxhof5VYFGuJd/Fql4N3zqsU4LTU06twpZ7wMwiX
+         m71Fy2A2/+RnS852jRIBu6YDQy5fUnqy+K1RSW79BdhnUvjhq4Ge1OXsCjJZrrlzUGPu
+         fGuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784399235; x=1785004035;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VF1UqndvD15BxTbg7z5vo4szg71VyV/aIRdaOO6x9SQ=;
-        b=VZlsBZcrYuA2AvFndx+av5nfE5yDnyqdAemiHO+39pnqd2Nb4vt06KWXh0yvsU4Mix
-         N0cDGUAcRqtLHK/ghDEQkzSwsgTpwdAWJH73uQ2Vma4NCgtNwc5B5fxvJuAl3E6YuJIB
-         kQtxjaBX0eN8T6qxIj6CT9y1T1laehFTFKISjvOzQ+wnLXnNYpHOqYL5XZzGBv8sSPyy
-         KTkzPaAih6Khmq1he2c91CmIW+/L1kssMZCmjqnFM08c8iKCuk0kK/7SK01/c7BZEeJw
-         AzDSCbC3V+2J9+eBd0lSVzrSif5O01wc4ra26RyVB6eAauDX9qNZJZT0Ws5vM7qTIQxR
-         uysQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp33CPpSvRC6JZOAUKnF9HLcHzc1D0Am+qLdp2YWwCWtnOgLohzN0Zk2r9DtUMx9YcGpIn1hSpTfuaJji+Rmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/OfWy5mUo0jhRNZ66PmM2aZuVL6c/VvtpmQ6lBw6fv1xh+nRr
-	BxClvzJ5IbxW/Ov0eakM1ZLc3kkgb4Bg5Z9fElzGiK6RPg8FWIgQbQOLQk191LaHfHbeAyuWTuW
-	Iy1gflYBlF931vTGBDM9yp+Yq2UqEiJ4=
-X-Gm-Gg: AfdE7cmn0/WJ6AZCwShVJs5WfKr87QQMlIcYLAx+VoKxuD20YP8TOliSCsuED3qgoSU
-	DBN8DQjoojp+PK01s5ZD2xo4aiSvzn/UyI9aCYoV4+03foMVRt27ZOw6AnxZE5CuOtqXJK3FS8W
-	5AVb55M1d06PtCvj8V+YJyPEHQZamEFkSPmet+s0EFGcqGoyVh/kRgReN/QQzFVcGdLVQkOhBQ2
-	aufJRq+7QU0cmJOLqqSq1oo5Q+RgRD6RA4KKo9j+d4vMmN4RVXT+avoQKrDpb9lFzGsF8N7JZ6O
-	fjLu/rsK9VmPepuqs9YDQzO7uuIlbw4/aY4d12fF3itAJ4O+qOaDPFsIxlWkHoL2tIExisPYfQ6
-	FlQ==
-X-Received: by 2002:a17:90b:48cc:b0:381:2788:a437 with SMTP id
- 98e67ed59e1d1-38e4b45428bmr5637614a91.1.1784399235381; Sat, 18 Jul 2026
- 11:27:15 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1784402330; x=1785007130;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
+        b=b+Q2cdrZYhKwd/9lSj6f3oMoq7D4MtjRvu3h4h57EUgDXiXbs1J+TK4tJ6Cx+9drBe
+         8yLYzIYHsDqCSY5nB3DizW+SYTR7FuSu81hBOnkISrpIJjFqo4G/wuMo9QNqUlXcw2mI
+         63haoEbAUwHdHSE8yqoELD+/f/b/mW981QO8nFtxKcOSMJSgzQW9vrFbaz9CwrNWsO8n
+         0zmwnCBQ2SRqT8/PI/9GqGuacw6WQ783NhI+czBOCvti6w6ASF7Rqc8kTD+HSaWM+ZpP
+         9tklvL7cj+WCL+uuHe1YddaLuWX1HFfoCuikZeGr2LMpPg122OvSnVqm3hXGVCL6F292
+         CWwQ==
+X-Gm-Message-State: AOJu0Ywo3OWyr6Uy7B/46nSnt6U49kifgZlx0gFDPhtZwh9ybfxdqgOP
+	rI4sJBph3RwLkJInAVIQ1jx3zO+V+pFTMKBgAtoxpLpQDc6WemxanyLH0a2jtl1KWsH8VDH46Ir
+	KN+IJ2NsPA5ioFTla2IY1EpRo0Auw5eq2/+V9
+X-Gm-Gg: AfdE7cnM8smqRl4ryRVvesNmOb9U5ZV5gyjddNuHxRC4SgAvtC5GKs3P8pw0jc8eF0X
+	7oBY4EY0EXVN/YDe6M8aBFs0IOUvNHS8ogFq74Kz2couZMlGQfFGUehRkOAksmQwRu7tHUT7AAb
+	26N3z/b0ddXjfRuvIkaOibNpJKz3iuB4cUkeQCRWqmQHnHYV1iSL6Is1XMWw8+cjbPhaYqsx1Yr
+	XJSGfGY7WhRyPE8rxO4Avjx40fXyFMNkFlbAfQlsI7uOe9pwEjWkLp0QUElRBys+AMnWKTFHMZX
+	72pv1b63Kmdka8CMav07jYsXi5+tnkwYaqqBGmll7mBtDdDx
+X-Received: by 2002:a05:6a21:a8d:b0:3c3:954d:278d with SMTP id
+ adf61e73a8af0-3c3ad5aed77mr8627569637.9.1784402329790; Sat, 18 Jul 2026
+ 12:18:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260718182323.107565-1-ojeda@kernel.org>
-In-Reply-To: <20260718182323.107565-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 18 Jul 2026 20:27:02 +0200
-X-Gm-Features: AUfX_mwJPjIV2cZCTnoVSTWE_fZLtIswk-O58QgDaLvdnhGdzF4gPg_mWdzIaoU
-Message-ID: <CANiq72nLTuv2s71bNBVV85bTbWriiCdhG_O+-=t+1Ubv-sHFJw@mail.gmail.com>
-Subject: Re: [PATCH 6.12.y] rust: block: `allow(deprecated)` for
- `fetch_update` for Rust >= 1.99.0
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	Boqun Feng <boqun@kernel.org>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+From: Burak Emir <burak.emir@gmail.com>
+Date: Sat, 18 Jul 2026 21:18:37 +0200
+X-Gm-Features: AUfX_mw_AFdvUaNqzvvUWdgpmggBgy39Hf6imaP9NuxYAxJ_LyA5TNvoDL2X6_Y
+Message-ID: <CABwQupNfMAJOGqRM9ke6tj4f53dCCsBDKU7Vp+zf8mwk7bqt8Q@mail.gmail.com>
+Subject: LLVM 22 needs bindgen 0.72.1
+To: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, Alice Ryhl <alice@ryhl.io>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 18, 2026 at 8:23=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Starting with Rust 1.99.0 (expected 2026-10-01), the
-> `Atomic*::fetch_update` method is deprecated, with the compiler suggestin=
-g
-> the `try_update` alias instead:
->
->     error: use of deprecated method `core::sync::atomic::Atomic::<u64>::f=
-etch_update`: renamed to `try_update` for consistency
->        --> rust/kernel/block/mq/request.rs:206:22
->         |
->     206 |     let old =3D target.fetch_update(Ordering::Relaxed, Ordering=
-::Relaxed, |x| Some(op(x)));
->         |                      ^^^^^^^^^^^^
->         |
->         =3D note: `-D deprecated` implied by `-D warnings`
->         =3D help: to override `-D warnings` add `#[allow(deprecated)]`
->     help: replace the use of the deprecated method
->         |
->     206 -     let old =3D target.fetch_update(Ordering::Relaxed, Ordering=
-::Relaxed, |x| Some(op(x)));
->     206 +     let old =3D target.try_update(Ordering::Relaxed, Ordering::=
-Relaxed, |x| Some(op(x)));
->         |
->
-> The deprecation was added in Rust 1.95.0 [1], but only triggers starting
-> with Rust 1.99.0.
->
-> However, we cannot use the alias since our minimum in 6.12.y is Rust
-> 1.78.0 -- `try_update` was added in Rust 1.86.0 [2].
->
-> Thus just allow the lint.
->
-> Cc: Andreas Hindborg <a.hindborg@kernel.org>
-> Cc: Boqun Feng <boqun@kernel.org>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Link: https://github.com/rust-lang/rust/pull/148590 [1]
-> Link: https://github.com/rust-lang/rust/pull/133829 [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> Warning: this is a 6.12.y-only patch -- I assume you prefer something
-> local like this instead of backporting the commit that made this go away
-> later with the move to `Refcount`.
+Hey Nathan, Miguel, anyone who may run into this,
 
-Cc'ing stable here in the reply.
+I just filed https://github.com/Rust-for-Linux/linux/issues/1247
 
-Cheers,
-Miguel
+I couldn't find this described anywhere, so posting here for wider
+reach. Maybe it helps save some time.
+
+I have run into this with the slim LLVM toolchains [1] which use LLVM
+22. It could happen with any toolchain LLVM 22.
+
+- bindgen 0.71.1 with a libclang LLVM 22 will erroneously generate
+opaque types as bindings. This then leads to build errors "field does
+not exist".
+
+- Using bindgen 0.72.1 works fine.
+
+It would be great if the slim LLVM toolchains could be updated to
+bindgen 0.72.1
+
+cheers,
+Burak
+
+[1] https://mirrors.edge.kernel.org/pub/tools/llvm/rust/
