@@ -1,127 +1,119 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AE5264FBD
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 17:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784395654; cv=pass; b=PdIAxw4iOcPUiMwc8go6oLbxMpCoblfeDib4g7FjYpfCH4pJxK59c36JQg7CZb4g6gruYeOimU0TSb/i/mXKyHCwc9b5L7rG6lkPqneNTVpMgKjlGboa4s+7el4UnVePHg0Eiyzn7iSJh/yIexNhDwg6Ynon5Un+aoMYZXhjfPo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784395654; c=relaxed/simple;
-	bh=lfrebF8b1+1qASaIgSEDdbl90XsCcIfjSI9Wojzf2aU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g/YTIwFMIFdHTwwIdLp4CgCA/2NeVSisWmd53yX8ygyr5C2obptBtvaqr0OHOvBkWwKtuK25fi6uodb69U8ysfooeiDSUF/Ce6Ff6lzl5RVFvUTXExjmBdNmzaGcFapV9ViEm0ydO0mCs5uqrYKL1VDZ53JRIoAQi5XKlKpLOFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dy4+DexT; arc=pass smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BACA2FFF8F;
+	Sat, 18 Jul 2026 18:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784399029; cv=none; b=NGS6pK1Jyi6ii/AXnjaKOt4m69PCskFF/Lc3LZ/RvHdW9ZX9/KEjzOS17kKz596VUueneJn3+5BAFiUAiKSuFmdWkDRsasbJA+Evx9OrgQ9dkIkCzx3CPKVYipXroFcX46f1rukK0z+SbDk3PtGDMB3lYQaV8SAkIN6gS15o6+E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784399029; c=relaxed/simple;
+	bh=l3yZ+37tfBSBMZqQe6H1vW57ZymL2Ah1mvxBjw2Pzwc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lXunzQmP87EuBaoSc5nWKuaQVKvP7Mvz1Zho4iLO7KcJHhHHEobtVe+sPhM61i/kad54p7o71js/zL0vnjgIO7MupVy7A61KTGFwamOogxNipeNdpU1Yqv72STwxagtpn17k6A6fW1HHaXX7ShCsBMj79n+nNTpTD5tTURjcu0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBiq5/SL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dy4+DexT"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38dd1cc8dc8so860647a91.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 10:27:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784395653; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mBRbnc8IWL9ctCucQLaUjTsJzKI2JjdAA3DrMcbi72u8QFeQEBaxDQslV9KvXwVAF8
-         B6M2BgZvxlkebbMOiw9yEWW+K9kJ1b13MLba2S7EleKkEFs1/13wot0lmrligEliEXeT
-         JJJEKnQQd73Eoceb3bYqMaJjqOo2Nh+hZzcffPI7SdoiVuZ4+A4uyCmLwQpCiZrut2Hs
-         Osguyom+kjVcZeto3h/j3UM2o5kjF6o3b3E6jwXvWPjPFWmk2A05OwU87AR1tdWRUmTy
-         1sV12laaABkmdsi0H20WW7q18/pOR8VMnYiguos3ezj0hXP01+AoN9+SlKpXZN/rgM3e
-         Kb+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Mqqux9OfCrOFCnukdDW6Dhn3g9FZWSv9acx0ZQuSvSs=;
-        fh=PS8CpDsN/GPXxnLkDc8ue7maXefY4mj0nfiW64Hases=;
-        b=NIH2jJI26BetZIhVDN+RsVU4c2j/FaFw/J5gB5rKj9841ldnqZMDNsmh0ktZIy10m5
-         oEBh4eVcCRRi64g36ALpW4Szt5lobIQqXWbgeiJN/9ljGLL2Q0ji6FiS6MTVbckhSi8t
-         21xZ+Un/fYcmVZXtsPU7dt83o7x7natDm64xKgwp0WBnHdVE7bAFKe1W1DlDil3WIB+n
-         CpzHwMUFVmprGmTwxrA2rG3SWQSCkPnicfT0ZagUnGxvMaaMkt23Ewp84uEzTRpoDkLn
-         HCzypHgupAAo4pQv07qGsM+hq6lWn0lmCPD5ayshPUo10eHPzGlLLmo3Bm3HgeuMfiy5
-         TZsw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784395653; x=1785000453; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Mqqux9OfCrOFCnukdDW6Dhn3g9FZWSv9acx0ZQuSvSs=;
-        b=Dy4+DexTgy1FFQ2YPEK6zf8xQ3tgxAn913ntYKyCGQpnogrAOGSKxvjLVDgwyGBa67
-         uWAB50UFQu07dLwHrKzpnjNgcC//BhMTUY8etwdkX+5c2MlYpfJ8+iXHCFRBzh1B9z3e
-         icTJw50i3N26BQqb2klrWa0/CdlYwuXNS81BtVGgzKXi3XoY1LwPzAdX0BIi7iFQKGIw
-         IJm1zEHGUNW5Hpc118rBr/z0AaHgD4pfOWJACzlhK7B9fabhQwvpn5lobWJlx06Cjzb1
-         bimAyiTj26S8ezFBQzFcBU3S3Xtv8vOyUJFUjm1lRLmZO9dYTW2db8tPVlIoTTfJ5XEh
-         Di+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784395653; x=1785000453;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Mqqux9OfCrOFCnukdDW6Dhn3g9FZWSv9acx0ZQuSvSs=;
-        b=YDUBS3xGPlOshJX7QOU/Craf2dzu9K5Z5y40ZZ3h6Xyf49yvcMEsfYbfq+JoQENH61
-         /PYI/LQYZBzS1koPqgGaykm0zonWpwUTIK8Cnc0Vh2ckblsYMXC9tbN3QYp9chjRPAIj
-         BgI77+engNyukCa6y8plH2bsZ5igVfXByPz1wjQbj+WIpY3WPwioxGIRRq+km0Q5DxDV
-         vRmP+KBnavtew7TgUgq5qHoWc9DPhtQaqCdy0NpieSv/LaRHnv05of2X+JVH6d35w/v0
-         6yt2t6u8fSpbssYjahmP5M/JrSKkJm4UK2GIDXDUFjBYFuEJfu3AFJpQWBGtKnIAvGRl
-         NYoA==
-X-Forwarded-Encrypted: i=1; AHgh+RrMqHTswqdZFkOw8RWxwU4fr2NJn+zzjxcvB9JGCpb71JsumCw9KcoKrazAW0w0+J/QS0FOus5AvfPfD6uFYQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKXvoupRwAPDt/zyY0W6pqGDNwHEO+3SlmF4mjN76F73WEHUnM
-	mQn1Q0BSofUy2xqQZckVYOrcFQiRJ5Pkdy+L14mHNJ/74CqpQ7m5XuVS/8kXf6R2IZdHEU4Swpv
-	CjCbMdkp/RPjzIS/7LGdqV0NxbQBiL4I=
-X-Gm-Gg: AfdE7clVOPr2GNBirUHO14fs3cUPTpe0j2P7WJrSAjkk7f6i577YQN6Bh51tStJnwVM
-	McH6bWr8x+7Lh0LRpK5N2l8A+MLlr562pK2Latt9SC8CVFvKADgTwA1VUGajh/EP+HQXruvU2TS
-	uyE7s90RgiHKQkNqsIENIyM+g/iRFUvioYqDRNstzRQ9L9LQZsTHCYNpOC3BPjhSBn8yXHRxFPP
-	DoVepY+jiRdNsp4rJKw4M0MGSoEQYlaio0OfjXDlDQf+ymPeIQu+9qy+juNTJ34rEpImW8Tr26a
-	Q3EC0gdu1i9dUd1VkoxDP3O9csSXLd1/6r6teAWuCbVXZ0ZO2ynl1mBd9RxnAEUuFwSOBthma32
-	98g==
-X-Received: by 2002:a17:90b:3bc7:b0:36a:5438:cff4 with SMTP id
- 98e67ed59e1d1-38e4b5220e0mr5847091a91.6.1784395652941; Sat, 18 Jul 2026
- 10:27:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBiq5/SL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3B91F000E9;
+	Sat, 18 Jul 2026 18:23:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784399027;
+	bh=E9c/HTeldoMf/dhz9RJlXtx3LAjywkGV2QDWT2jjvy0=;
+	h=From:To:Cc:Subject:Date;
+	b=SBiq5/SL9PTncSwGU8y0X51qKhqdC1e3GQqpxzsRloSA2wtfBG0bx+7PmyK3dh8p0
+	 fIk4Kv7afAkL0MAzGGc53Mw5nl4PoxvuPGewxbZo5w+NT2H0KhNee3YqhlTRbLVqaM
+	 N1NQhF4KvGPvQrs8KaTQM9T42A77sTh4vURqsyZQqtsvYlBwrL2tX4pXpgaV4z0BA5
+	 MEFSzM7Afa1XtN7jqnt1QjrapaowYFMFfqcJ+vq60deMG1rEmk2dl7HD+AmQedl2Ha
+	 IK9quIPzqc6JnzF7e7I8+xub/idVt6Qf30XPU9uouAgw5GiGm//+bRsMHSJx7ZhX68
+	 ufyF6iZBadzrw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH 6.12.y] rust: block: `allow(deprecated)` for `fetch_update` for Rust >= 1.99.0
+Date: Sat, 18 Jul 2026 20:23:23 +0200
+Message-ID: <20260718182323.107565-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260713225235.3243480-1-tomo@flapping.org>
-In-Reply-To: <20260713225235.3243480-1-tomo@flapping.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 18 Jul 2026 19:27:20 +0200
-X-Gm-Features: AUfX_mzIJLdIyAU-ainCKC7dEe1k3zAetrPHWsseCwTu6XTxie9v1ZXYWXcie1E
-Message-ID: <CANiq72mTuwbuSba679a11_ESKz0fbcpvj98S41gyRt1EXOqZxQ@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() to round correctly
- for negative Delta
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: a.hindborg@kernel.org, ojeda@kernel.org, acourbot@nvidia.com, 
-	aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, lossin@kernel.org, 
-	lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org, 
-	tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 14, 2026 at 12:52=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org=
-> wrote:
->
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->
-> The ceiling-division idiom `(n + d - 1) / d` only produces the
-> correct result when `n` is non-negative.
->
-> For example, if n =3D -1000 (exactly -1us), the old code computed (-1000
-> + 999) / 1000 =3D=3D 0 instead of -1.
->
-> For negative n, truncating division already rounds towards positive
-> infinity, so no bias is needed in that case.
->
-> Fixes: fae0cdc12340 ("rust: time: Introduce Delta type")
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Starting with Rust 1.99.0 (expected 2026-10-01), the
+`Atomic*::fetch_update` method is deprecated, with the compiler suggesting
+the `try_update` alias instead:
 
-Applied to `rust-fixes` -- thanks everyone!
+    error: use of deprecated method `core::sync::atomic::Atomic::<u64>::fetch_update`: renamed to `try_update` for consistency
+       --> rust/kernel/block/mq/request.rs:206:22
+        |
+    206 |     let old = target.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |x| Some(op(x)));
+        |                      ^^^^^^^^^^^^
+        |
+        = note: `-D deprecated` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(deprecated)]`
+    help: replace the use of the deprecated method
+        |
+    206 -     let old = target.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |x| Some(op(x)));
+    206 +     let old = target.try_update(Ordering::Relaxed, Ordering::Relaxed, |x| Some(op(x)));
+        |
 
-    Cc: stable@vger.kernel.org
+The deprecation was added in Rust 1.95.0 [1], but only triggers starting
+with Rust 1.99.0.
 
-Cheers,
-Miguel
+However, we cannot use the alias since our minimum in 6.12.y is Rust
+1.78.0 -- `try_update` was added in Rust 1.86.0 [2].
+
+Thus just allow the lint.
+
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Link: https://github.com/rust-lang/rust/pull/148590 [1]
+Link: https://github.com/rust-lang/rust/pull/133829 [2]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+Warning: this is a 6.12.y-only patch -- I assume you prefer something
+local like this instead of backporting the commit that made this go away
+later with the move to `Refcount`.
+
+ rust/kernel/block/mq/request.rs | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index 7943f43b9575..1c7937653542 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -203,6 +203,7 @@ unsafe impl<T: Operations> Sync for Request<T> {}
+ /// Store the result of `op(target.load())` in target, returning new value of
+ /// target.
+ fn atomic_relaxed_op_return(target: &AtomicU64, op: impl Fn(u64) -> u64) -> u64 {
++    #[allow(deprecated)]
+     let old = target.fetch_update(Ordering::Relaxed, Ordering::Relaxed, |x| Some(op(x)));
+
+     // SAFETY: Because the operation passed to `fetch_update` above always
+@@ -215,6 +216,7 @@ fn atomic_relaxed_op_return(target: &AtomicU64, op: impl Fn(u64) -> u64) -> u64
+ /// Store the result of `op(target.load)` in `target` if `target.load() !=
+ /// pred`, returning [`true`] if the target was updated.
+ fn atomic_relaxed_op_unless(target: &AtomicU64, op: impl Fn(u64) -> u64, pred: u64) -> bool {
++    #[allow(deprecated)]
+     target
+         .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |x| {
+             if x == pred {
+
+base-commit: 6c7577041b6a76ee4e18c3910bab12a268df037e
+--
+2.55.0
