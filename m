@@ -1,133 +1,139 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C938821E0BA;
-	Sat, 18 Jul 2026 19:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784404420; cv=none; b=DnaLzuDp3SFrJiVmaZ9XXEwkJzgPsfxxxkf9E6xWcKop0p8awDGr12QR6ykdGzEl7TDKFn/3gFWM0Ti6FuLJ9BjYevNXgBse9pvJY50SeffyprMk9Lj7AnilfB30Z8GFz+MnxGU/RPwIxx0/GiV1TB6UZQ6BueRysWdpBUa/fKQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784404420; c=relaxed/simple;
-	bh=lMq/EhsOacgV0jgXVNu8dJ4WMrAAI5hxCgiwsBgvYRE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=U6CvXBq+HjbxED3bp5jEMmtunC/O/CHkh5DEwmyK8rH/Lah6/a9RgzAn8RJIxnYCCxWj7PP3VopM2eH+uzCQ20TYbu3perYctXO6A/Eli6GqHefJAIHDE0bnX5J4NuJQBkqHHlUjPy7oWLeIJJaXnYlbUccEbhgKpTGm5ZlOHOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WWObqVrr; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WI2x8e0I; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48FD1F0E29
+	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 21:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784409425; cv=pass; b=Xc5RLr+tSAhTIr6RlxZAz4Jd+4gvjDB8rConKp0Yi6iMPN7X4HVSv+XMfWTeZFFp2hWmhBfnGhoc8lPeNc6TkDBaFQRrF/+QLcuXCuHN0z6x+kYz3pBxuyy/tWjuis+YdS/5uZMGinNvN+5tm1Vw7ezRY4hrJ+SJxGYNibNJl5s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784409425; c=relaxed/simple;
+	bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jdOwQj4qWlMHvOq/qlfsIeOg6vCFz4OXxv2tEs/D2sojz17A/BT4hA/iwpXUAEEXfFW0+LTriHgsUoJH96/yF0EAPDXgtrGaS1uQgfE6W3wDqjzjhyJCOPmh1YI3l5ZiA8pMvlevqC3l/vU2RRcgcLZKn3Sfyk/76lkI3hN/uNM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOuNYRTw; arc=pass smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WWObqVrr";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WI2x8e0I"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4h2csW1lyMz8txp;
-	Sat, 18 Jul 2026 21:53:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1784404415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Q9fGxwUp7I/1j3y/cSl5ogqwUUkW66zHyf7/sZoHXyU=;
-	b=WWObqVrrmhIG0kM1hCCcfPtwlJk0WDTsc+ejv2vdUGt4I1Csnjja/KgBAghVkRpM5wBiuY
-	hMSph4Udg693I0UsRWv903xpcocmysD4VLqkBEDEEOa5xb7FUS0iJBMVZGxmi0X3Tm+ObE
-	tLQna2JlA3uRQvskvjQUHDJxtdhs/5DNRWp3Zgmsfw7H3jA/0h11MlOCdYDaZmrBwlhTLu
-	4IRdnLDNH8nJFHUFj695VOQlvRY4QSLhPmCDNCZagNLnRyWDHovZng/O2jojaE+s/1D1hI
-	Q4w2OHcGsmFjlN+KMdqqNB/BjIk1qiLAgOZCQuS/heJBcINzSjna9pzYb0qDUw==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=WI2x8e0I;
-	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=mhi@mailbox.org
-From: Maurice Hieronymus <mhi@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1784404413;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Q9fGxwUp7I/1j3y/cSl5ogqwUUkW66zHyf7/sZoHXyU=;
-	b=WI2x8e0I3zpOG9B8EMvnjDgrENRjt48r45b+ab0qrr4N1B9dMdjGpKxD/cBCIx+qIvJLf9
-	wrh/C+DxX906XWI4SCPOkDSkj3SMAeZ7Oa3sQcZE/9Z3rnJH3+rQt31UVWTXMV+mV5cqv+
-	92CKAyeG5/eCqGvOazgiCWzq8q2mYk3i/nWcQE4eCAjntTxG9UWKbLsAphjOGmTswoPMUh
-	Cg6zRkvez2mWvjoscVxg/2LJsMmlPXqX4QrodAAIJqYnHleQoBD9BGwMbwgr0aq8lC3nrZ
-	5eNJTfSAApjTP2CxEaPqJuDHBQO/ArGMVD8ofd59yaFfjUgdo6Qu4uW8wQQ7zA==
-Date: Sat, 18 Jul 2026 21:53:19 +0200
-Subject: [PATCH] rust: drm: gem: shmem: drop stale dma_resv locking TODO
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOuNYRTw"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2caf228a910so70333315ad.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 14:17:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784409423; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dVPGWGuNjzmRh10fgGu91w3mux7VxJXH2mI5njK4N/WnUoZPmv+W5sbm8ugW8W2Nd2
+         uIbPAN93q9tTMF3cNj6L6/8zE1ZNNK35u0lRQU9iLs0tl0ZrPU+xsADVqqBnTs9m0a0F
+         tOFquwwCjqQsbNnZx7Yh6Q0xSbAycweQMybKPYDSzmtNxmwTOmgIorubUFUvHfW0jOqQ
+         t8jMt2LKP0ffSf1RVpiHgbyp+TsA7fXOXdNf8kifbRndo+KcVXhVzSNjO54ZBlI9Rzvf
+         s6LPif40tZbaqHpVyEYgNGBRX0lUmwU4ZHlNvG0y2v8vuReCFTfD//xutlgc/b6CAL8x
+         7gDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
+        fh=qNB2HxDHgjE87OKvAouJhrE1f4YzQDoFohyhds868Q0=;
+        b=sqGzV1EOPF2Jn/nLfOVFJIDVmyoWX1UBLizonhtN7KvTNn5p+KBHERnQf1uk67ZEbW
+         +F2a1gskcG9CRcd2gqVazhcHQqW+gR5u6/IdLDdrbwV9Aj+Du99Ta5iNadRYCXmKrVI7
+         HtSChuIthLT5eCHtPPoqz3jbJwKkrXFGWcS4/XFEnC/UACCFJq+soFR86VggpokmvDpw
+         mpwGIb0rmEqcgXCgexH3Tyy1E//IZtOPHD4UaKo5VcNXlJcHszAThCGacW395kccTvMw
+         /uc5GLQ62qvB7QLzS4ejGff3K3eTQRsjjkWs2vn+qKX7rx6JXqP/IRgolNvlfrIzPxY8
+         Td3g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784409423; x=1785014223; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
+        b=gOuNYRTwvAOHWkN2p61zSdY+JEf3KVvN+ysdikYtKqfmroszHDKeMGbViv6F/+lkXx
+         0rC3cFa0ELwHIk9CXH7plPfxUNGVuJVFyXzFpQ/V4HUIuknrGeXHBbpnx8ZrL4gAwtke
+         fD4UCll/aIvNDxtxwIe54uFtDZYC3BQLxQyiF/ISntE39EQ1JbqUtJcM57WtleJZFRnq
+         ATfB07pjJmGFMeIxpZ2GNI+VG0zkY6qWBbF6yofHIjgfnhk+RFYHQBwRtMWqWVDNYEiC
+         j6kHD0i9rbLoJ79cWVjxSNomPSSvczhL1AX82MnaIO1v+SpzqgwZM6KANbBh6l3mxqq+
+         9qQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784409423; x=1785014223;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b+3x11ZcqtE9a/DE9C4Zw2ioxu64CvrijxbkRIHuMcA=;
+        b=M7t8sy1Dy2PUVylPRE6fctD7T7JnW5/mdzg6CNMaEuAVmwkoQbnypV9Am93xu3T0kJ
+         94DZrBU4zfN/+Gc2kleySVdC/nMle6RDEKwE5A0IWB0aggIyxlYnE5IpZ3e7TAtspk0l
+         KRRONnLkEsKAUvTOgkju7mFENnK2b2ZNlA47byFsrcqFxaT4rGzMDWs5o5Z7OG1pMgwr
+         yTBev2kWsXd6EpdDu1l9no4P3TB+IJBOKqtUSCxFJlWstAKFcknJ6SoYgbO2w5hCOL1Q
+         kgM//sBR/J+f0qaVo+7VIjBys5dXKzPOTnfFL4EkXdOfuhGFpMnRgi5RP7Oaqq3AlTnw
+         S7Pw==
+X-Forwarded-Encrypted: i=1; AHgh+RpA2tv6k9RkoaIlM3xSRhXgkbi2CgDFJZSKLTkeDRg13XoKR3Trtxq3db86MGQsShXWyJVZwyopD1MCf0TtjA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy537zUjazBLgV1pBJ5yr6PKOwtrH3ocn170XDMMYe17hTCxCRT
+	7PcJOBjzpdjVpDEBSGOQ+1dScszKGJHjBaMPNJJ4St5n4r7xwdNcaNmFDVkUFXU8MjdS2sn2tFK
+	hWicPNWYp1fDydNTDga4yER95EXZSzek=
+X-Gm-Gg: AfdE7cmj+BcDOkpgstmF5IgHaDBMrABOwURl/1t1NI6i4RFW5wqJNJ2vQvDfubQbcRu
+	8c7GF0yM/OWr36ytt7ApcaYnR07dwwMkImFgyVD0G6/gIh32h68SfBna1D1u9IpA798L5ABIyhR
+	1vYpQ/Jw+ZKKGRk4+srsINNar1UcZQBfuEJ6u/FQUW4WUlZ4eg3/6aK/Yzv5W5K63jDGxpS0ejY
+	CUqRlou9Kqjk1dWPXSOOzbjDJIzt2+i9AfL6rPMwt68GnBE9SyhF/UDxkVl9sialIXkfApU6OVK
+	s781kiB5uRtMY35MqFl5QedyaYGjCPnofYb7qJmTQAyv8bOQ
+X-Received: by 2002:a05:6a20:2583:b0:3b4:605c:2163 with SMTP id
+ adf61e73a8af0-3c3ad78de40mr9171821637.4.1784409423135; Sat, 18 Jul 2026
+ 14:17:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260718-rust-drm-shmem-stale-todo-v1-1-b81ff0663f49@mailbox.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQqDMBCE4VeRPXchClXpq5QeTDKtW6opu1EK4
- rubtpeB7zD/RgYVGF2qjRSrmKS5oD5VFMZhfoAlFlPjmtZ1dc+6WOaoE9s4oWweXuCcYuLQeZy
- B3sM7Kv+34i6fX/t6+9sW/0TI3yDt+wEqn1yJfQAAAA==
-X-Change-ID: 20260718-rust-drm-shmem-stale-todo-c7be5ee8beb0
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, Maurice Hieronymus <mhi@mailbox.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784404408; l=1485;
- i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
- bh=lMq/EhsOacgV0jgXVNu8dJ4WMrAAI5hxCgiwsBgvYRE=;
- b=JBehnO1NTKxdJ5KkSMWWWjPdtBFyqOhxO+e9LgPYs3ZQq3o+PH7TGk1JjQ32HvA6Hvv2r6pdM
- Wij3c6bYMccCTaXlTYWogZ3LHlH19mXKS5uLohUeY4PID1dRkgmT1a0
-X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
- pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
-X-MBO-RS-ID: c76ce972a1cfbbd5e12
-X-MBO-RS-META: qce7o56o34skw5fb7kcro4pnkgg95fnu
-X-Rspamd-Queue-Id: 4h2csW1lyMz8txp
+References: <20260711-id-pool-move-bitmap-v1-1-cd5b7efc2c12@google.com>
+In-Reply-To: <20260711-id-pool-move-bitmap-v1-1-cd5b7efc2c12@google.com>
+From: Burak Emir <burak.emir@gmail.com>
+Date: Sat, 18 Jul 2026 23:16:51 +0200
+X-Gm-Features: AUfX_mzD2A7tzRvT0wfJ4sImRRe5a5kmfvx8TKWr-iujwCqAP7VLhO6-tyToFZA
+Message-ID: <CABwQupMNO5mdq+nSg-gpMcgatnG0P=XYJN-bH96Jjzs-_b-6BQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: bitmap: encourage using xarray/maple_tree instead
+ of id_pool
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "Liam R . Howlett" <liam@infradead.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@kernel.org>, 
+	Yury Norov <yury.norov@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, Lorenzo Stoakes <ljs@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The TODO describes "a number of spots here that manually acquire/release
-the DMA reservation lock using dma_resv_(un)lock()", but no such spots
-exist in this file.
+On Sat, Jul 11, 2026 at 3:13=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> The id_pool.rs file was added for use in the Binder driver, which is
+> using a bitmap rather than the normal IDR implementation due its
+> specialized needs and performance/spinlock requirements. However, its
+> current name as kernel::id_pool encourages using it over other IDR
+> solutions.
+>
+> To discourage choosing this pool when you don't need it, move it to
+> kernel::bitmap and add a comment recommending the xarray or maple tree
+> for generic IDR use-cases.
+>
+> Please see the below links for the discussion that prompted moving this
+> file.
+>
+> Link: https://lore.kernel.org/rust-for-linux/2026070334-dollar-hexagram-e=
+49c@gregkh/
+> Link: https://lore.kernel.org/rust-for-linux/84bc8bd2-e292-4b84-9580-a1b5=
+df4c5bdc@nvidia.com/
+> Link: https://lore.kernel.org/rust-for-linux/20260711063602.426311-1-ynor=
+ov@nvidia.com/
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-The only `dma_resv` reference left is the `base.resv` assignment in
-`Object::new()`, which takes no lock.
+Reviewed-by: Burak Emir <burak.emir@gmail.com>
 
-The manual locking the comment refers to does exist in
-`GpuVmBoAlloc::obtain()` in rust/kernel/drm/gpuvm/vm_bo.rs, which already
-carries its own equivalent note, so nothing is lost by removing this one.
+Looks good. I built, ran the tests and checked the rustdoc.
 
-Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
----
- rust/kernel/drm/gem/shmem.rs | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
-index 34af402899a0..3c1d75b54c2c 100644
---- a/rust/kernel/drm/gem/shmem.rs
-+++ b/rust/kernel/drm/gem/shmem.rs
-@@ -4,11 +4,6 @@
- //!
- //! C header: [`include/linux/drm/drm_gem_shmem_helper.h`](srctree/include/drm/drm_gem_shmem_helper.h)
- 
--// TODO:
--// - There are a number of spots here that manually acquire/release the DMA reservation lock using
--//   dma_resv_(un)lock(). In the future we should add support for ww mutex, expose a method to
--//   acquire a reference to the WwMutex, and then use that directly instead of the C functions here.
--
- use crate::{
-     container_of,
-     drm::{
-
----
-base-commit: 7059bdf4f04a3e14f4fafb3ac35fdca913e3e21a
-change-id: 20260718-rust-drm-shmem-stale-todo-c7be5ee8beb0
-
-Best regards,
--- 
-Maurice Hieronymus <mhi@mailbox.org>
-
+cheers,
+Burak
