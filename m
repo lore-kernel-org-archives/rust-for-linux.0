@@ -1,83 +1,98 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5931A9F90
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 03:03:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEB51A9FA4;
+	Sat, 18 Jul 2026 05:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784343840; cv=none; b=Lxk3EPtrWR9xcPTkP3eBnTiDiZHp3I8KwvV/EMJsfVFjI8QL7wM4b/LZTkkNu3JUB5RWDxw7Z8l2ny5aQ5JttjO6gSvBOEPBn/sPU91tZmuo325fdX6RCFKPet08aaQQyCCSAq1hKbz3P8yzYYmtISO8juZbt5PZ7ePZLZDQ9pQ=
+	t=1784352779; cv=none; b=kHRkyvAvZMP/guL4sror2cCzGHXnS5M62xXAI2WdGoEn+GSLr+gTk7GNGPokcCqIpaTIogn+F0aqCYiBTRGh3A5nUO+WsA6YHc2xP1HMDA+1ZmfCh4b03fPTJzxntZqbxM8xYd4GBVES9CpK0U57clJlAnzHSadXYp0r7270R2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784343840; c=relaxed/simple;
-	bh=pPCpxr9XgsyMz1xhP7Hg7iTwImnOiQD93GKWC8ZNcxo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzeTUZKknCP5RIZgl7eQlEKfHaIkXF3yXACIjVpDGBla+mhQIX3ATwiD+QksmSOGAgLS8viTjZlx9PK5siwea6sDLn8woMCQbr8TcsH1e70JMVWvzwiX8S+MPBckJ3cAcRtVDKtsU7YEV6rEkIxh24s0zjoaL5gEpctq7uQz1oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iTwgm+Wg; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784352779; c=relaxed/simple;
+	bh=AiA5FaxDk/WIqsTmFuRJM5AVAq/hdFLlRbR0mL4W6Vw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mhPeRftWd2NG7H0kfZRcj6SBVUGdB+GbqMoFNo9J5+qlwE/MX7j660PLqtCVB2SFuIIWBMz3bstV2j9DZeJZNtM9mF/DCD4CowfVazX9ILvddqtyXc/lKNEmY21z9VgkOHFXnvioXOAspPN7yyD+HmKbeVyXukylFl+cuinLX2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOQtiaQ6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iTwgm+Wg"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca97d139d8dso3134511a12.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 Jul 2026 20:03:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784343839; x=1784948639; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pPCpxr9XgsyMz1xhP7Hg7iTwImnOiQD93GKWC8ZNcxo=;
-        b=iTwgm+Wg2sS+mIV0DMNR6fLahIQmiUCyx4MCpU4VHB2tOSMZZJEnajl7+z+JMectZC
-         Xb9ETdLRW295iKotIi0gKsgIq6Ammqyq7ZcNhqWE3gvozAbBRLAf2CxBVaoklYWTwTER
-         SEp0pNdVmmrZgWTVDj4VldMMNmeXoFzScibBXI0LrDOWeU9dKFVeOpgVyZHv3Hhw/hoX
-         uPYWH7pYsu1au0atDZtQRWD8ofsWKpGQRKijQmqvIIiE8yPdzuRWOdF66Zf+tXpOBmF6
-         4/9Rn6hUrr/ehSvZ2RuiaBgcDh2+4s4khJNv33FuondztEgNSFyzZqcVMy2fDd42gKBs
-         YPEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784343839; x=1784948639;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pPCpxr9XgsyMz1xhP7Hg7iTwImnOiQD93GKWC8ZNcxo=;
-        b=DAJaZlNmWnSKM2/JsUI7AJxGhet7Votj0DWiYu4o28qQqAU74uB+A83x8mKAQcgvsC
-         0TsqTqclMdRJk3/IsJ6fj0X8oEWywWVzORxvhhAOVL759O+giYSKZATDJ6qFgKmTE3hS
-         Mh/xZL27spemNuFcLWu/DH402E3D+a+Iw1L4a23oKK2rpkleSO1ByWGEC1g8RZeI3VpI
-         fL6ZF4V4DaE8aJ3ZZ44yLpLS6xIq4SBYGj9DWNh6dImRzWolXs8IvahnqtnZDwwH0KoB
-         VxIl1D6ybcz+6KCuG6G75ndjKHS/w2YSkEfSBfyjOy3uKAEB12e5u8t0uaBo0U8FuaZU
-         fdaw==
-X-Gm-Message-State: AOJu0YxXAwVWl4M+AIsyiIh/lW3Iep1AryFNDeDjTjnR5U4DrlNJrJTo
-	gfgVjSTgAnzMpRo6CnH3vizSWJrCzIGNpWxv4D+X9nHbfhx9QeoWzhls
-X-Gm-Gg: AfdE7cnLNfj0LlvSiMLbzdo5alkZXeXQoMlnUdOraw6K5q9fg1QWiDKsxTjFbYzfuyT
-	goUD9t2AztctmcNpP3GdJdzE74+XCpb2fYHEqml4MKK2ixJiGb2y2lD4WdxIt3/lkuLuEOW3/7l
-	KorTiO7DPaVFAKug4X583jdDY5ONEg95yLJjTp8SHyH4xwDBpGHh7UbUWRNSzHXTLspcxuf78q/
-	txu+Bc5R2AFfCdct0Hn7uIaJzG84wqlKqA5znctJpRv7kBm6QzYQux2M7HvtfoSe0kmNcUKIHK0
-	JGdv+Pu2HJUKrtjyhsynb6YTKQtAatxIafTlUTRuKNiUevsppIaNTU3WD+59umW3v1G2KExgB1f
-	SGkmWFmU6l7Zjnlfdd7QAv4qx4AD3DUgOQ2f6q7sP6diNjwUYFB3mb6h76ye2tU8lPpnpA8p1yM
-	zIUBYyjrW+h7YrGkeegd2Frv+pIyDBWaqOubnMM8yIDUJz86rQpWb1D8v5SJuXszwM8n3agIrtt
-	LYpXGjKqdnERtJcdGV2fMdYYh2NKkLvf1g6f3PzyXCbDsAaKwTbQB9MG7VlO87qwoJfcAOm6jp4
-	rYzinWrUM4iGaBLaX8t6qhCnsT+zLft8v7MqLE8EHMVFy5/B9c03TFn0akASOEDjGhY=
-X-Received: by 2002:a05:6a00:451b:b0:848:7459:5f62 with SMTP id d2e1a72fcca58-84c2945a902mr5377409b3a.44.1784343839028;
-        Fri, 17 Jul 2026 20:03:59 -0700 (PDT)
-Received: from ip-172-31-21-198.us-west-2.compute.internal (ec2-54-213-160-35.us-west-2.compute.amazonaws.com. [54.213.160.35])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af6e48csm2015355b3a.45.2026.07.17.20.03.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 20:03:58 -0700 (PDT)
-From: Bruce Robertson <brucer42@gmail.com>
-To: Igor Korotin <igor.korotin@linux.dev>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sre@kernel.org,
-	ojeda@kernel.org,
-	gary@garyguo.net,
-	tamird@kernel.org,
-	aliceryhl@google.com,
-	boqun@kernel.org,
-	dakr@kernel.org
-Subject: Re: [RFC PATCH 1/3] rust: i2c: add SMBus byte transfer helpers
-Date: Sat, 18 Jul 2026 03:03:46 +0000
-Message-ID: <20260718030346.1698-1-brucer42@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <178376605131.22511.1602274538745913609@linux.dev>
-References: <178376605131.22511.1602274538745913609@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOQtiaQ6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2A91F00A3A;
+	Sat, 18 Jul 2026 05:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784352777;
+	bh=kwtjjGmmiAFcJH+349xh1RmY0+cdYF3UnpCgzEY++n8=;
+	h=From:To:Cc:Subject:Date;
+	b=EOQtiaQ6nmW/x59ilsYVxtoSgBJj5WvdLTR4F05KRrRUGLktimBgD1StbpObcFt9j
+	 XXufM0cGb+rn5QRPxtgxqQY15aRP/45qMqzQyw6QkQjqa5rca+CcZzjVyMeKlCRiId
+	 x5bRucQYnwbsSs/4Hg+YaXG2pgUtZ6Lh7dx22ychuQgQYZSOx+1OuWyS1OGo5B4Bu2
+	 lFvNRHXO6z8qWFhah47bqUJLHcZg6xCqmzmZqYwfQ/Si9Vk3yLsnUFLpMLBuXpgZpF
+	 doZRxoWSeEx3rpAojEeimuJheITG7jxc1bIQUhXoYexbO78A7aWODd8YWKWasi28cQ
+	 nbBt+xSIEQdwQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3E035F40067;
+	Sat, 18 Jul 2026 01:32:55 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sat, 18 Jul 2026 01:32:55 -0400
+X-ME-Sender: <xms:BxBbauwHm1FcfFvmUjGng9huZPoSRclRePWS7b0VkA--cU2vHYh1YQ>
+    <xme:BxBbakFCAEwq9URGxa9JfhOhiNojXbKwwaJnWSuQjPDp00hUmDsuvlLK-vxfdwnEx
+    mxyIUtNaUa3_GZJKrz9srYzgVuUcrdzI3Ss0a04xMGZa13t7lWuvjo>
+X-ME-Received: <xmr:BxBbaryYUd35u1l0--7nv1GBJZf6twciiFCv0x18wAdN42Kyi_Co-2FMGerL7BbIlwSgvKBaduMWlD47rFdT4yVFmfGL7wQr>
+X-ME-Proxy-Cause: dmFkZTES8M4nCmmYKnGMqobh3TqhunEGFElLNM+viRad93RdmeJRGfaj0RUMOtFBg6bXs7
+    ypRH2PFkw0ks3z7mx1ng3QrV7lhgf1fSoT2136oH2jbEe9eoM7ag0CsJVTgNRR31HEuUg7
+    YaUSD28NyGPwedMfKZngj2o/+7VJZGW1f/u4fz7QhpD8PDjuuOxyPNmNaRuF+xecSzJNfh
+    u9MwMO+JdQEtSmeM/ZgcfqHqOtf5Ik3jzWJgBntXvL1J2CS8mFHvJZhx+DzRmfWOr1Mv9d
+    80lUu3lcp/F+8I7Vz6nFvx4UxoWaXhdO8e3rKesyTqFCQYvNgIDmw3KjYp8Kux0JHTJcjO
+    2GnoBLq6JKO5fF5OKZWIUK2LOvJ1RSiQMRWG3PqZfJkboQ9IoWIS+2e3nPa9gLGjyzzrGO
+    EctPrVXKnEzF2+RZf4WR7mkhGQNIUXxdvuwnETBLLwA6S9GK6qZWJGUIa3WILNk3JlS5zp
+    GfF5RHdxNfuM3+2TIKaNimuf+8WUiwPv3ARjlQZm2ZkB6c/jTDDec7tgJ6EYeoNvXJt5ss
+    Y0H0M4WKwFjhA0HRovQGmgCy4ykb6gLtsVkfaFoA5W2RvVDkaYwKbEhpMfVuI3S8zEkdqE
+    ajC9oE7GWZt30rlTAIOg01uzdJ4dngOidGReT9RsKS/FhiJUbQXFFOw/seww
+X-ME-Proxy: <xmx:BxBbag57_HwhpOYMVPGkzpr6q6_JGmFSzKcxr2VuqzGR4aOHtHe2rg>
+    <xmx:BxBbaq6-bfpiViAkVZVMbLud7Pb12b70zxBfx-5uUn5WlKXHT9q7fQ>
+    <xmx:BxBbapKXT52eXSePdRzpL6iW-nlhuCSaRF3ok0KtMGYtQdbuywxUZA>
+    <xmx:BxBbasEE9fe6KiG8C753GKmWtFz8EZAcPaDz08KImbAiXjQn-LHf8g>
+    <xmx:BxBbam2ISzee3hCoD0_v6Px5DeOx0mMncavCQ3yd-e1qXTntz5AqTcOU>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 18 Jul 2026 01:32:53 -0400 (EDT)
+From: Boqun Feng <boqun@kernel.org>
+To: rust-for-linux@vger.kernel.org,
+	rcu@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,	Jan Kara <jack@suse.cz>,
+	Lyude Paul <lyude@redhat.com>,	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,	Zqiang <qiang.zhang@linux.dev>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Matthew Maurer <mmaurer@google.com>,	Lorenzo Stoakes <ljs@kernel.org>,
+	linux-kernel@vger.kernel.org,	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,	linux-fsdevel@vger.kernel.org,
+	linux-media@vger.kernel.org,	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [RFC PATCH v2 0/4] rust: sync: Introduce Rcu*Box
+Date: Fri, 17 Jul 2026 22:32:43 -0700
+Message-ID: <20260718053247.25154-1-boqun@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -86,38 +101,41 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sat, Jul 11, 2026 at 11:34:11 +0100, Igor Korotin wrote:
-> I2cClient should implement the `Io` trait rather than adding standalone
-> SMBus methods like these -- this was already agreed on previously [1][2].
->
-> There's also an in-flight series doing exactly this rework right now:
-> Muchamad's "[RFC PATCH v4 1/3] i2c: rust: implement SMBus read
-> abstraction via kernel::io::Io for I2cClient".
+v1: https://lore.kernel.org/rust-for-linux/20260605133541.22569-1-boqun@kernel.org/
 
-Thanks -- I hadn't seen the prior agreement or Muchamad's series (it
-ran on linux-iio, which I don't follow). The Io direction makes sense
-to me, especially given Danilo's point that it's what gets I2C the
-register!() framework.
+Changes since v1:
 
-I'll drop this patch. No point in two competing implementations, and
-Muchamad's series is further along the agreed path. When the
-FallibleIoCapable discussion settles I'll rebase the SMB347 driver
-(patch 3/3) onto the Io-based accessors it provides.
+* Rebased on 7.2-rc1
+* As Alice pointed out [5], RcuFreeBox::with_rcu() should return a type
+  that disallows extending the RCU read-side critical section to
+  outlive the guard. As for now, no user needs with_rcu(), hence remove
+  it.
 
-> Your smbus_update_bits() is exactly the kind of read-modify-write
-> that's affected
+* Includes a not-for-merge example based on Alice's patch.
 
-Right -- and it may be useful as a test case. Unlike the AS5600, the
-SMB347 driver is write-capable: it does a config-unlock write and
-read-modify-write updates of charge-control fields, so it exercises
-exactly the try_write/try_update paths you identified as unsound if
-left routed through the infallible backend. I've offered it as an
-early consumer on that thread.
+v1's cover letter
+-----------------
 
-The power_supply abstraction and the driver (patches 2/3 and 3/3)
-don't depend on the shape of the I2C accessors, so I'll continue
-revising those in the meantime.
+(this series is based on Alice's RFC [1] and discussion around Philipp's
+patches [2], [3])
 
-Bruce
+As an easy way to provide RCU-protected allocation, two major types are
+provided:
 
-[1] https://lore.kernel.org/all/20260708214738.25008-1-brucer42@gmail.com/
+- `RcuBox<T, A>`, inner T will be dropped and after a grace period.
+  Users: binder with maple_tree and dma_fence.
+- `RcuFreeBox<T, A>`, inner T will be cleaned up immmediately and freed
+  after a grace period. (Name suggestion is welcome). This is an attempt
+  to consolidate Alice's `PollCondVarBox` [4] into a generic
+  implementation, InPlaceInit support is still missing, but I want to
+  get some feedback on the trait `RcuFreeSafe`.
+
+[1]: https://lore.kernel.org/rust-for-linux/20260116-rcu-box-v1-0-38ebfbcd53f0@google.com/
+[2]: https://lore.kernel.org/rust-for-linux/20260530143541.229628-2-phasta@kernel.org/
+[3]: https://lore.kernel.org/rust-for-linux/20260520131725.266014-2-phasta@kernel.org/
+[4]: https://lore.kernel.org/rust-for-linux/20260523-upgrade-poll-v4-0-f5b4c747eac2@google.com/
+[5]: https://lore.kernel.org/rust-for-linux/aiLXWHg22P6OTb7O@google.com/
+
+-- 
+2.50.1 (Apple Git-155)
+
