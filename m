@@ -1,41 +1,41 @@
 Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643F93890F1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B193890F0
 	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 12:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784378876; cv=none; b=OMvchCQsa1QXp7HmsqeV+PSHq2RyBVpn3qPEW2X2EbostlbwNTdYUFU6z0vxmaUTNPyQ2tkgZJyqXVXaANUhTE/WWsj+N7KWzJ3p54/Bas1wz9/+HxRxcx1C1UxtGWJVw0wkBJsVZTTpBJVurv5teunpxmXs5GNQ4Ma2tdhhHRg=
+	t=1784378876; cv=none; b=extQLXK/HMzWaTgVdBncjlHVKsh4A4NyrYWTZmuOVUntDeNRAPS+uFnpIafDpXyORKHvD6IJgOSWSV0y5PNQxzXmhrS9xguoxqAQ8gG4wFBX8XzPXmqhykdaor8gJQLIdBVZnxlrOVMUnDJ7xdJO+Dixh5H5sbqVThkK7m2Hz8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784378876; c=relaxed/simple;
-	bh=J1tI9f3jC5ts0Ly/hfiH6lrfbcMCqQ3s2pmza6gp4rc=;
+	bh=5Upn3XgzNHsfFjssw0UXmxtjmmJmk1QhUiVZAnpqPnM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mJtAy8vJfCLPTclzRJytCH6AkVs8m1AbXgCY7X+LtlHh3KfOmuCKmyBlgKEttVQKQOCd5xhPHN8Ah+pRfLdOVWkEoGFzR0wDSMJcwEHVOWk+f3OXTRTPkSKBfn1R8xdlp/wmyB4T6Bo4jK34qoekIdafuaYOgGOiU5/HerguCWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=ft2sR6LH; arc=none smtp.client-ip=185.67.36.65
+	 In-Reply-To:To:Cc; b=jqUsWBfWbzw/zBtnZbWQ6m4Z6RYezmAnmCRb0fXZw/qzZBU3p39T++yEeg7VeyCjBzMhuLbG6W1NBsaXSB7okIMRQoYiaFC6W3pRl+/KlRIk9ec4A6YiWEJGme2UU2BiafzZVr63qqVHJXspC2kAQXhHighl/qIzIsRTsZs2/zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=MZXSOBwD; arc=none smtp.client-ip=185.67.36.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="ft2sR6LH"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="MZXSOBwD"
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 3A482240029
+	by mout01.posteo.de (Postfix) with ESMTPS id E69CB24002B
 	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 14:47:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
 	s=1984.8680eb; t=1784378871;
-	bh=t7BKnS7EMjRmW4YFV6NvV7lNwNUcrxmXMtnTvDUuTuw=;
+	bh=9ZZOAvXfJWsCMzdmVLuGtcsnNAcVrXzkXiB16u34YRo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:To:Cc:Autocrypt:OpenPGP:From;
-	b=ft2sR6LHTC15/ylp02eroha4SrBRQ6KhSB2WqzLw76jLjWFlDBRlwX51yAZwRNaHZ
-	 YGrzO+NcnPFeiyWlZSFr3ZIf/MQvBy7hSjWwR8BGg4WX7tMPSPxMUCnvMv0eNL0fSp
-	 9t+ZnEbKZTUWM6mmVIWI72ngCTi2chfGODTyjhiOM4FL89oHAHL+r/FDNt9pQNOKv+
-	 0ew02KbDRkhA9HVhtMuc129s/Yh29QUFNmDgUTCziA1mJKG+Gk0fWJYVQ5mg3FOjRW
-	 uYxHpUjFWt4r907fhhi31fp0TEMFuv1TrlLxTRnYwggW8JweusWLNNBhwI6TDYKjPi
-	 2OJyGWn+HFBdA==
+	b=MZXSOBwDEU9rWDX6MDGhigeBdG6AUqHamEVTFx09yPmhl9cAFEERU7fIQuUF/cYY4
+	 ccAsnIHIhU/otGF8I20IXbjJ0LBse1ftXz7DyWm6oyn5vl/jhtmEZ42qNFwRUbR+Hx
+	 fHO11EnLAllrROi/toW13vz/yMKl0pReASjZ7b7f9BqWLfsFxp/Qm4fvKSKqsR5oO9
+	 ywdPtbBrdzUJfWbcDQZr/OPcOOREFLejF872qqhWmvmaNzzVzY/qavZ3jDFEjRhNgb
+	 9ttnyP1+4NSnsLwujTP0uOSfGpyoppBNKQobMxEJG4ZHrqL3Kdp/aRdx1jWYdLW5BH
+	 jYMd9XVi9Q6Ug==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4h2RQF0M4Sz6tvs;
+	by submission (posteo.de) with ESMTPSA id 4h2RQF6tBzz6v1n;
 	Sat, 18 Jul 2026 14:47:49 +0200 (CEST)
 From: Markus Probst <markus.probst@posteo.de>
-Date: Sat, 18 Jul 2026 12:47:49 +0000
-Subject: [PATCH v2 3/4] rust: serdev: document `PrivateData::active`
+Date: Sat, 18 Jul 2026 12:47:50 +0000
+Subject: [PATCH v2 4/4] rust: serdev: remove `serdev::Timeout`
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260718-rust_serdev_fixes-v2-3-e5214e03de13@posteo.de>
+Message-Id: <20260718-rust_serdev_fixes-v2-4-e5214e03de13@posteo.de>
 References: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
 In-Reply-To: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -60,21 +60,21 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 Cc: linux-serial@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Markus Probst <markus.probst@posteo.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1821;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4550;
  i=markus.probst@posteo.de; h=from:subject:message-id;
- bh=J1tI9f3jC5ts0Ly/hfiH6lrfbcMCqQ3s2pmza6gp4rc=;
- b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqW3XxWhPwlxiGPuQEnb8IJpyzpY29d1TKVbU5V
- gzl2zaPqFKJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCalt18RsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9Juow/+OSuutmdqe37PozLg3bwDHNTNqzQslfH
- QVDJiB+9ekown05G7rVN5+NQLVvsTQoi5xyE9NfiR+2aJdJlxqBPyQDud3foZvQrYHOO7ck7tIX
- Zeu1+1iuA2fQEnIRmkLQeI3yZ6Qtkdz7fkvaXgbMjkURz6glzVmjtPZKbUff/L1i1nD71QzGthk
- w7i24fQ0Ozqh6rOVnSqcYytoZ9xw95rB4MJGFnWi8bcOIRmNVhxFZAPAeACGO4tU91gyOw2rhPi
- NoSPPaWLSE6eokiUN0GlXGqe7JYV89xOCAUthFkDR367ksq+vj5zJGJ24C95zthSGg7pTO7sQc+
- bJadf960GIiKGXvyUxOy3l8ZlrezsgVPbcl90bT1sNvKxZlJvPyKgB65XyvJFYP1gvAIeTxDmUT
- IUUepkVBiFUornXof4yDj2VMcXdcBlvH2HvdlwhjUBc8tlX4PZDtauKp/6r/MS6we4UJh50vzA/
- 6xKqWR7IrwEJfutjNq8N0IrtuPyMc/95fFSAOo+8i4Tyf/gpupv6LPHG+MiTO+NdbRiTmJCPTwM
- gDOlsvNAsLD8i2l8MWEiSGEzkYD066db2zzHQiIU9NfZOw09ak/8yUREQgZvmYROS2vxbYUSjjd
- Xprh20ZqP7tygI73ntPNCXA839TkylCanoBPzNEUC5oQWBJuNLmM=
+ bh=5Upn3XgzNHsfFjssw0UXmxtjmmJmk1QhUiVZAnpqPnM=;
+ b=owEBiQJ2/ZANAwAIATR2H/jnrUPSAcsmYgBqW3XxQaZWKBfIoPHQ0xqtJOQJf30Vd4j874k+F
+ LRFG6vOUDOJAk8EAAEIADkWIQSCdBjE9KxY53IwxHM0dh/4561D0gUCalt18RsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQNHYf+OetQ9J+uw//ftD82kdrBl1jStYpm5bqkSD84Zk/8xM
+ 7z1pO5oHR2ERlVVhhkfTQE7Mpvn6AjzQu0Q6VKfR9/VOtuPjK1xbg9m10BzXaqm7Anpb8gSykhJ
+ cqPgOMXOHGoVLlOyyeSP420hi7VfBzVhZsyXE+RxGymux2BOC4lPXQOR9jogsWpX3bNPUtkIEh2
+ 1b22sLFocBq0I2ubylbxSPgVOGyrHtIo9GL68x0esFucFkNsfKdDLcC3bBSb1vQmok6ZiiUH/rJ
+ ONDEgFFfMyMwM+zsHCxQw3YOsPkLml5Elo2qkxTeW5tIuiegD1S/5TDrVqEd24jKQWizXvOb+X2
+ A22tKu2eWSEyg/fsNftv7lNINH+qskGNRFjWNSFyINPf2q/xTTrDrRA0dMwFN9tqC5Yy2ZqPCf+
+ tDZa84VgMClyoB6NiwMhwX1/Q2fmMqAuSKgPx5QOft8/AoGTXALM88Yd2rMWmXNFalzgYy+Mf9D
+ TVq6tIqSj8B7t4PgNZyPn4yDsTrlbIDO8iRHJ84nZU3MEZIn5Ovf8Vhep4vPrtknBIe03AsKCOy
+ kuekn9KO+Qg1kZPuoLjOWXfLeKlQeWYwCOmQcU9Avs4w29v2cXclreNzuY/c5C3rSopnygG7U3v
+ Js/wE4mQpvc9TU4q4hHxJxawIPqwvrUxd33z80/2j7T5lAm0XcK8=
 X-Developer-Key: i=markus.probst@posteo.de; a=openpgp;
  fpr=827418C4F4AC58E77230C47334761FF8E7AD43D2
 Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
@@ -120,44 +120,129 @@ Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
   aBeNN4ijKZchBXHPgVx+YtWRHfcm4l8=
 OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
 
-Gary pointed out that it isn't clear for what the mutex is used for,
-thus adding documentation comments for it.
+Instead of relying on its own timeout types, the abstraction should make
+use of `impl Into<Jiffies>`.
 
 Suggested-by: Gary Guo <gary@garyguo.net>
 Link: https://lore.kernel.org/rust-for-linux/DK0SX3P5K1J6.1OV4ETJMXW83R@garyguo.net/
 Signed-off-by: Markus Probst <markus.probst@posteo.de>
 ---
- rust/kernel/serdev.rs | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ rust/kernel/serdev.rs | 55 +++++++++++++++++----------------------------------
+ 1 file changed, 18 insertions(+), 37 deletions(-)
 
 diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-index 79d61c6ceeec..a78dfa6e2c27 100644
+index a78dfa6e2c27..0fdb37cff15d 100644
 --- a/rust/kernel/serdev.rs
 +++ b/rust/kernel/serdev.rs
-@@ -132,6 +132,23 @@ pub struct PrivateData<'bound, T: Driver> {
-     #[pin]
-     driver: UnsafeCell<MaybeUninit<T::Data<'bound>>>,
-     open: UnsafeCell<bool>,
-+    /// Whether `receive_buf_callback` is allowed to call `Driver::receive`.
-+    ///
-+    /// If locked, the receive_buf_callback will be blocked on data reception.
-+    /// This is the case while the driver is being probed or while [`PrivateData`] is being dropped.
-+    /// This is necessary, because we need to open the serdev device before the driver has been
-+    /// probed in order to allow it to be configured, which allows `receive_buf_callback` to be
-+    /// called. Thus we need to block data until probe completes and the driver data becomes
-+    /// initialized.
-+    ///
-+    /// If unlocked and true, the receive_buf_callback will forward the data to
-+    /// `Driver::receive`. This is the normal state of operation.
-+    ///
-+    /// If unlocked and false, the receive_buf_callback will throw away the data.
-+    /// This is only the case, if the serdev device is open and
-+    /// - the driver returned an error in probe
-+    /// or
-+    /// - the driver data already has been dropped, because it was unbound.
-     #[pin]
-     active: Mutex<bool>,
+@@ -20,11 +20,7 @@
+         aref::AlwaysRefCounted,
+         Mutex, //
+     },
+-    time::{
+-        msecs_to_jiffies,
+-        Jiffies,
+-        Msecs, //
+-    },
++    time::Jiffies,
+     types::{
+         Opaque,
+         ScopeGuard, //
+@@ -35,7 +31,6 @@
+     cell::UnsafeCell,
+     marker::PhantomData,
+     mem::{offset_of, MaybeUninit},
+-    num::NonZero,
+     ptr::NonNull, //
+ };
+ 
+@@ -50,30 +45,6 @@ pub enum Parity {
+     Odd = bindings::serdev_parity_SERDEV_PARITY_ODD,
  }
+ 
+-/// Timeout in Jiffies.
+-pub enum Timeout {
+-    /// Wait for a specific amount of [`Jiffies`].
+-    Jiffies(NonZero<Jiffies>),
+-    /// Wait for a specific amount of [`Msecs`].
+-    Milliseconds(NonZero<Msecs>),
+-    /// Wait as long as possible.
+-    ///
+-    /// This is equivalent to [`kernel::task::MAX_SCHEDULE_TIMEOUT`].
+-    Max,
+-}
+-
+-impl Timeout {
+-    fn into_jiffies(self) -> isize {
+-        match self {
+-            Self::Jiffies(value) => value.get().try_into().unwrap_or_default(),
+-            Self::Milliseconds(value) => {
+-                msecs_to_jiffies(value.get()).try_into().unwrap_or_default()
+-            }
+-            Self::Max => 0,
+-        }
+-    }
+-}
+-
+ /// An adapter for the registration of serial device bus device drivers.
+ pub struct Adapter<T: Driver>(T);
+ 
+@@ -379,7 +350,7 @@ macro_rules! module_serdev_device_driver {
+ ///         _id_info: Option<&'bound Self::IdInfo>,
+ ///     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
+ ///         sdev.set_baudrate(115200);
+-///         sdev.write_all(b"Hello\n", serdev::Timeout::Max)?;
++///         sdev.write_all(b"Hello\n", 0usize)?;
+ ///         Ok(MyDriver)
+ ///     }
+ /// }
+@@ -505,11 +476,13 @@ pub fn set_parity(&self, parity: Parity) -> Result {
+     /// [`Device::wait_until_sent`] to make sure the controller write buffer has actually been
+     /// emptied.
+     ///
++    /// Use a timeout of 0 to wait indefinitely.
++    ///
+     /// Returns the number of bytes written (less than `data.len()` if interrupted).
+     /// [`kernel::error::code::ETIMEDOUT`] or [`kernel::error::code::ERESTARTSYS`] if interrupted
+-    /// before any bytes were written.
++    /// before any bytes were written. [`kernel::error::code::EINVAL`] if `data.len() > i32::MAX`.
+     #[inline]
+-    pub fn write_all(&self, data: &[u8], timeout: Timeout) -> Result<usize> {
++    pub fn write_all(&self, data: &[u8], timeout: impl Into<Jiffies>) -> Result<usize> {
+         if data.len() > i32::MAX as usize {
+             return Err(EINVAL);
+         }
+@@ -523,7 +496,7 @@ pub fn write_all(&self, data: &[u8], timeout: Timeout) -> Result<usize> {
+                 self.as_raw(),
+                 data.as_ptr(),
+                 data.len(),
+-                timeout.into_jiffies(),
++                isize::try_from(timeout.into()).unwrap_or_default(),
+             )
+         };
+         // CAST: negative return values are guaranteed to be between `-MAX_ERRNO` and `-1`,
+@@ -570,11 +543,19 @@ pub fn write_flush(&self) {
+ 
+     /// Wait for the data to be sent.
+     ///
+-    /// After this function, the write buffer of the controller should be empty.
++    /// After this function, the write buffer of the controller should be empty or the timeout
++    /// elapsed.
++    ///
++    /// Use a timeout of 0 to wait indefinitely.
+     #[inline]
+-    pub fn wait_until_sent(&self, timeout: Timeout) {
++    pub fn wait_until_sent(&self, timeout: impl Into<Jiffies>) {
+         // SAFETY: `self.as_raw()` is guaranteed to be a pointer to a valid `serdev_device`.
+-        unsafe { bindings::serdev_device_wait_until_sent(self.as_raw(), timeout.into_jiffies()) };
++        unsafe {
++            bindings::serdev_device_wait_until_sent(
++                self.as_raw(),
++                isize::try_from(timeout.into()).unwrap_or_default(),
++            )
++        };
+     }
+ }
+ 
 
 -- 
 2.54.0
