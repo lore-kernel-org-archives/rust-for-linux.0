@@ -1,111 +1,133 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826D53242DF
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 19:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784402331; cv=pass; b=gxaiVZIWT9aKi8b4jmFjIcHaTy0NMQEagZVUsUsPJExNtzvasfeng6JTSkwD2PzTSMlcltN7p7ln0AiOI4t3TCPG6bdcw01+p+XGoZqJhl6b53HtBF6AT7kt3qOkSaCDYEjUmcN2A1QUD7N755LP1BRwa+OXS7KbPoksvL7LERY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784402331; c=relaxed/simple;
-	bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Fq2FbafR9m0NTcQ1euc5Xqg/y9IGkigWatScRGUZE0oNNNhBqrzpH3LOYVc3L2jKu8qWkpJP3cn+OBkOKygtMdUp3usmqm2FyYqZ9sczLjQb5x/opZGu3zJ9diU4MZX3vTWFYhzt1aNNe0GoXpIGgznnbM53KsUH5H1tSwz38mg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zi0FYI2C; arc=pass smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C938821E0BA;
+	Sat, 18 Jul 2026 19:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784404420; cv=none; b=DnaLzuDp3SFrJiVmaZ9XXEwkJzgPsfxxxkf9E6xWcKop0p8awDGr12QR6ykdGzEl7TDKFn/3gFWM0Ti6FuLJ9BjYevNXgBse9pvJY50SeffyprMk9Lj7AnilfB30Z8GFz+MnxGU/RPwIxx0/GiV1TB6UZQ6BueRysWdpBUa/fKQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784404420; c=relaxed/simple;
+	bh=lMq/EhsOacgV0jgXVNu8dJ4WMrAAI5hxCgiwsBgvYRE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=U6CvXBq+HjbxED3bp5jEMmtunC/O/CHkh5DEwmyK8rH/Lah6/a9RgzAn8RJIxnYCCxWj7PP3VopM2eH+uzCQ20TYbu3perYctXO6A/Eli6GqHefJAIHDE0bnX5J4NuJQBkqHHlUjPy7oWLeIJJaXnYlbUccEbhgKpTGm5ZlOHOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WWObqVrr; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WI2x8e0I; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zi0FYI2C"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cad4170e8eso117876305ad.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 12:18:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784402330; cv=none;
-        d=google.com; s=arc-20260327;
-        b=rJz+B8jG3J2ZZO8Vw9Wd+UV6mjSGhp1STDMhJQxLF9QQ89wj/AF0KiQkGrQ51PkaiH
-         oYyWk4wS4P9xmzAD5miyEkDG/ixu4EN9Z7WOotlwkLMiQ56phVVGUKtdC0N/bL7TRBKN
-         OQDw+FtUAK5Ifpmezj5YhY3DlMTUW/soCRVsxwp6tU28KBDzy8xQImVmcweZVf2GwoSu
-         sXoX93dXi25hGlIFA+oM2+qoQUz2GBwPoPvvqxjRniAWBSoQ3F3CzLs4V9drOTNu6E6X
-         /PC5YpJNZfyejZjgSXJZWykHsTQ2eC/82M/xXxaTu1ZSQ2uErjHRsz4Lj/mNFdlq0Ah2
-         L9Hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
-        fh=8H9ktHP5QxsRo3CZ+ceNcEx2kor2amXinZK+t/855+E=;
-        b=OdMirf+ZyzsW7CmEfX9UK4NzSVH3mfYxjqIM/wRe0se/9Kt7+T/3NRSbGCfAzpcmcN
-         fcbzhcGuwTff+kjfZ1xW3ZAim8KenA9FXf9E8UoM07GmN2rv7rLcPyBOx9FvZW/hiMPc
-         Yp8Le3ggZbzEernZbTnWXVubWAl933cFypQSmAfN3kk080C2DsCOaNzNxbBhVNr3HqPE
-         hC1QhZzYx3iZfkW7djUEkyyJhh+EOGsLvc/ieZ1NI4B8gJasjdJ3EhoSSA8Eulskg41m
-         KSUGRQ2WUhcmEqE317gVH6BFjh+fIpeV1rJ8bdqauHzV9UHFJlbFQA2sUoSbd61PWCvt
-         0miQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784402330; x=1785007130; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
-        b=Zi0FYI2CJAYGnsjyPgNQFNEBkj76nDYygtCwaXITzymkOs7zJbveQIPBEX3PFST2p8
-         BIYdtavB+xxwRgSETQtfa60nTtBF0mdymUwPpR1LNodMLePuRKUz6JOpBVXLIDPUzDex
-         m8vwz8dL3lvRl9cO3R04UOrgSuZ+4C2WWHhXYx9sUBz/ARD/zKZ2Vs+Iy8sfYEZsvaMr
-         nJLEEOSJadT9u3Fnsch+ocQRlhT0cxhof5VYFGuJd/Fql4N3zqsU4LTU06twpZ7wMwiX
-         m71Fy2A2/+RnS852jRIBu6YDQy5fUnqy+K1RSW79BdhnUvjhq4Ge1OXsCjJZrrlzUGPu
-         fGuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784402330; x=1785007130;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=E1qYW6ZJ1UYNlaqgIIJKg7oHLKVzrfGMujLweR77Egs=;
-        b=b+Q2cdrZYhKwd/9lSj6f3oMoq7D4MtjRvu3h4h57EUgDXiXbs1J+TK4tJ6Cx+9drBe
-         8yLYzIYHsDqCSY5nB3DizW+SYTR7FuSu81hBOnkISrpIJjFqo4G/wuMo9QNqUlXcw2mI
-         63haoEbAUwHdHSE8yqoELD+/f/b/mW981QO8nFtxKcOSMJSgzQW9vrFbaz9CwrNWsO8n
-         0zmwnCBQ2SRqT8/PI/9GqGuacw6WQ783NhI+czBOCvti6w6ASF7Rqc8kTD+HSaWM+ZpP
-         9tklvL7cj+WCL+uuHe1YddaLuWX1HFfoCuikZeGr2LMpPg122OvSnVqm3hXGVCL6F292
-         CWwQ==
-X-Gm-Message-State: AOJu0Ywo3OWyr6Uy7B/46nSnt6U49kifgZlx0gFDPhtZwh9ybfxdqgOP
-	rI4sJBph3RwLkJInAVIQ1jx3zO+V+pFTMKBgAtoxpLpQDc6WemxanyLH0a2jtl1KWsH8VDH46Ir
-	KN+IJ2NsPA5ioFTla2IY1EpRo0Auw5eq2/+V9
-X-Gm-Gg: AfdE7cnM8smqRl4ryRVvesNmOb9U5ZV5gyjddNuHxRC4SgAvtC5GKs3P8pw0jc8eF0X
-	7oBY4EY0EXVN/YDe6M8aBFs0IOUvNHS8ogFq74Kz2couZMlGQfFGUehRkOAksmQwRu7tHUT7AAb
-	26N3z/b0ddXjfRuvIkaOibNpJKz3iuB4cUkeQCRWqmQHnHYV1iSL6Is1XMWw8+cjbPhaYqsx1Yr
-	XJSGfGY7WhRyPE8rxO4Avjx40fXyFMNkFlbAfQlsI7uOe9pwEjWkLp0QUElRBys+AMnWKTFHMZX
-	72pv1b63Kmdka8CMav07jYsXi5+tnkwYaqqBGmll7mBtDdDx
-X-Received: by 2002:a05:6a21:a8d:b0:3c3:954d:278d with SMTP id
- adf61e73a8af0-3c3ad5aed77mr8627569637.9.1784402329790; Sat, 18 Jul 2026
- 12:18:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WWObqVrr";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WI2x8e0I"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4h2csW1lyMz8txp;
+	Sat, 18 Jul 2026 21:53:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1784404415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Q9fGxwUp7I/1j3y/cSl5ogqwUUkW66zHyf7/sZoHXyU=;
+	b=WWObqVrrmhIG0kM1hCCcfPtwlJk0WDTsc+ejv2vdUGt4I1Csnjja/KgBAghVkRpM5wBiuY
+	hMSph4Udg693I0UsRWv903xpcocmysD4VLqkBEDEEOa5xb7FUS0iJBMVZGxmi0X3Tm+ObE
+	tLQna2JlA3uRQvskvjQUHDJxtdhs/5DNRWp3Zgmsfw7H3jA/0h11MlOCdYDaZmrBwlhTLu
+	4IRdnLDNH8nJFHUFj695VOQlvRY4QSLhPmCDNCZagNLnRyWDHovZng/O2jojaE+s/1D1hI
+	Q4w2OHcGsmFjlN+KMdqqNB/BjIk1qiLAgOZCQuS/heJBcINzSjna9pzYb0qDUw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=WI2x8e0I;
+	spf=pass (outgoing_mbo_mout: domain of mhi@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=mhi@mailbox.org
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1784404413;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Q9fGxwUp7I/1j3y/cSl5ogqwUUkW66zHyf7/sZoHXyU=;
+	b=WI2x8e0I3zpOG9B8EMvnjDgrENRjt48r45b+ab0qrr4N1B9dMdjGpKxD/cBCIx+qIvJLf9
+	wrh/C+DxX906XWI4SCPOkDSkj3SMAeZ7Oa3sQcZE/9Z3rnJH3+rQt31UVWTXMV+mV5cqv+
+	92CKAyeG5/eCqGvOazgiCWzq8q2mYk3i/nWcQE4eCAjntTxG9UWKbLsAphjOGmTswoPMUh
+	Cg6zRkvez2mWvjoscVxg/2LJsMmlPXqX4QrodAAIJqYnHleQoBD9BGwMbwgr0aq8lC3nrZ
+	5eNJTfSAApjTP2CxEaPqJuDHBQO/ArGMVD8ofd59yaFfjUgdo6Qu4uW8wQQ7zA==
+Date: Sat, 18 Jul 2026 21:53:19 +0200
+Subject: [PATCH] rust: drm: gem: shmem: drop stale dma_resv locking TODO
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Burak Emir <burak.emir@gmail.com>
-Date: Sat, 18 Jul 2026 21:18:37 +0200
-X-Gm-Features: AUfX_mw_AFdvUaNqzvvUWdgpmggBgy39Hf6imaP9NuxYAxJ_LyA5TNvoDL2X6_Y
-Message-ID: <CABwQupNfMAJOGqRM9ke6tj4f53dCCsBDKU7Vp+zf8mwk7bqt8Q@mail.gmail.com>
-Subject: LLVM 22 needs bindgen 0.72.1
-To: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, Alice Ryhl <alice@ryhl.io>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260718-rust-drm-shmem-stale-todo-v1-1-b81ff0663f49@mailbox.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQqDMBCE4VeRPXchClXpq5QeTDKtW6opu1EK4
+ rubtpeB7zD/RgYVGF2qjRSrmKS5oD5VFMZhfoAlFlPjmtZ1dc+6WOaoE9s4oWweXuCcYuLQeZy
+ B3sM7Kv+34i6fX/t6+9sW/0TI3yDt+wEqn1yJfQAAAA==
+X-Change-ID: 20260718-rust-drm-shmem-stale-todo-c7be5ee8beb0
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, Maurice Hieronymus <mhi@mailbox.org>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784404408; l=1485;
+ i=mhi@mailbox.org; s=20260525; h=from:subject:message-id;
+ bh=lMq/EhsOacgV0jgXVNu8dJ4WMrAAI5hxCgiwsBgvYRE=;
+ b=JBehnO1NTKxdJ5KkSMWWWjPdtBFyqOhxO+e9LgPYs3ZQq3o+PH7TGk1JjQ32HvA6Hvv2r6pdM
+ Wij3c6bYMccCTaXlTYWogZ3LHlH19mXKS5uLohUeY4PID1dRkgmT1a0
+X-Developer-Key: i=mhi@mailbox.org; a=ed25519;
+ pk=AHlEkGG3hpXZHntlEzF42Ip/LFyXWOgsNUvaHqAnV80=
+X-MBO-RS-ID: c76ce972a1cfbbd5e12
+X-MBO-RS-META: qce7o56o34skw5fb7kcro4pnkgg95fnu
+X-Rspamd-Queue-Id: 4h2csW1lyMz8txp
 
-Hey Nathan, Miguel, anyone who may run into this,
+The TODO describes "a number of spots here that manually acquire/release
+the DMA reservation lock using dma_resv_(un)lock()", but no such spots
+exist in this file.
 
-I just filed https://github.com/Rust-for-Linux/linux/issues/1247
+The only `dma_resv` reference left is the `base.resv` assignment in
+`Object::new()`, which takes no lock.
 
-I couldn't find this described anywhere, so posting here for wider
-reach. Maybe it helps save some time.
+The manual locking the comment refers to does exist in
+`GpuVmBoAlloc::obtain()` in rust/kernel/drm/gpuvm/vm_bo.rs, which already
+carries its own equivalent note, so nothing is lost by removing this one.
 
-I have run into this with the slim LLVM toolchains [1] which use LLVM
-22. It could happen with any toolchain LLVM 22.
+Signed-off-by: Maurice Hieronymus <mhi@mailbox.org>
+---
+ rust/kernel/drm/gem/shmem.rs | 5 -----
+ 1 file changed, 5 deletions(-)
 
-- bindgen 0.71.1 with a libclang LLVM 22 will erroneously generate
-opaque types as bindings. This then leads to build errors "field does
-not exist".
+diff --git a/rust/kernel/drm/gem/shmem.rs b/rust/kernel/drm/gem/shmem.rs
+index 34af402899a0..3c1d75b54c2c 100644
+--- a/rust/kernel/drm/gem/shmem.rs
++++ b/rust/kernel/drm/gem/shmem.rs
+@@ -4,11 +4,6 @@
+ //!
+ //! C header: [`include/linux/drm/drm_gem_shmem_helper.h`](srctree/include/drm/drm_gem_shmem_helper.h)
+ 
+-// TODO:
+-// - There are a number of spots here that manually acquire/release the DMA reservation lock using
+-//   dma_resv_(un)lock(). In the future we should add support for ww mutex, expose a method to
+-//   acquire a reference to the WwMutex, and then use that directly instead of the C functions here.
+-
+ use crate::{
+     container_of,
+     drm::{
 
-- Using bindgen 0.72.1 works fine.
+---
+base-commit: 7059bdf4f04a3e14f4fafb3ac35fdca913e3e21a
+change-id: 20260718-rust-drm-shmem-stale-todo-c7be5ee8beb0
 
-It would be great if the slim LLVM toolchains could be updated to
-bindgen 0.72.1
+Best regards,
+-- 
+Maurice Hieronymus <mhi@mailbox.org>
 
-cheers,
-Burak
-
-[1] https://mirrors.edge.kernel.org/pub/tools/llvm/rust/
