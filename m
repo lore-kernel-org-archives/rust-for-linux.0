@@ -1,72 +1,73 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020100.outbound.protection.outlook.com [52.101.196.100])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020094.outbound.protection.outlook.com [52.101.195.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446763AF66E
-	for <rust-for-linux@vger.kernel.org>; Sat, 18 Jul 2026 15:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153C93D5C3C;
+	Sat, 18 Jul 2026 15:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.94
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784388016; cv=fail; b=vBRG2Y781YpudaRXDK5VEP1uEizaAuFxtIEAWAS7TazZJOcr/rsqAm7ufVa8iIYYeIAzE+cLx55/xH86Ne7lc9uTr+TLzfLNLdhR+GmvJ+3iED2n5MHf01ZIRuLxlI5ulhXZ6uPJPVV6q7Qs0W5K9y2hvRVoT3hALCfSbiGNDn8=
+	t=1784388191; cv=fail; b=Hhxift7yTH7/f6tmBdmDu8ru60/LSFv9arL+02jQKifDIjpAOgg7EYpATSOIgR3EWF1SvzZBd97GTee2uAeK8uJRp8cMs5a5yy/QpQ5KFqnYcLJVfZxMQw1GEQNe7slwAi3E2DQJIM6e/ddCoq8cdUgarE7W1i5lVC5pMXnwefI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784388016; c=relaxed/simple;
-	bh=xHnF8irPY8PCzJH9y92a8cDLMwdH3ChS0ZauxM01Hnk=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=nLavV7fa3vt9SrqYFlTpewCIJWFiV+ikxwwX6f6mkp2quaHuB72oruiRAG8C7/DWgra31TVDrcrIzkN6OTf3XDkwG0dxjxsoIa7PvLFyn05GMO5KZ9GI8A6ZMKt4JVB8OqW7fzS0iQzUwhzUwcsMGLdfsTaxC07eJUVKep4LvQk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qjeyHw6k; arc=fail smtp.client-ip=52.101.196.100
+	s=arc-20240116; t=1784388191; c=relaxed/simple;
+	bh=1QJkFj5MHAnsRrCW+WgoInAsBrQFT68rNQvI4zGLA7o=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=aCYDUZwwvWHsgCiv/8SS3h95Xf89SbW3YHt7d1d3ZaHwY3/IaSOm+MIXxK/wF9s3y0Gm7HiFmGX3SYgtOPT4qrcr+sts9IJXhYmvrK1tl0Cb3Rsen1CTA9xMh6eWOUebONyqUEuFDiti6wS6PTFy9PUcZhJKEGMTjBbY/NGj2Go=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=Rij3Et3i; arc=fail smtp.client-ip=52.101.195.94
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qjeyHw6k"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="Rij3Et3i"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XOKmRxjH2BJrVRhNxvvUrIRdBW1CXSQEdAhTqDf5FOw7DrJErzNCxPKUsUarHGYncs2tCG7ytw49hOgBr4LgnC80mFllA5u0SnLx4nQc0h/LRV0zgERSG3as8i1Gutane56cHqD1IlLcDnphSPZXq2/BI2XJmZDT/fVc7HvwonIZWk1/1tfWF5JlGB8ayxW0mbHphZujcO2Junqdckb9HoqvWgfchquEM2dDXACAEP7Sck6q8TK7k6lVASaoJb+1WqXnPVh09eEesUM3P6ERxie+F/XMWS9z6bDwzy0LWpj+xedyQfUwW1IUX747Xvk+2AtlqfrqERhR7XXwJc1bsg==
+ b=Y/BQV371UhvW53FhFMi9r8a0XOZ5wVzO3Z0/3yah/iohCQq+fswd8vrRmc5dg6OucNNXAsKMH0CKexRDRxLxM0lsW5/oWi8HWqo+5EKZlymaHkPz5bFEuSxTlWB9hOkUfQ8ItSegrZnqzTIbSzxWI6wC94EZIYDiv0AB1i1gaNCsuhRErT0Qv7Tjh8nNt14E5a86N3ek1bS+FRkd9ELRCWi9d73/ATAw8GZwjar33ND4jsw/T5c1ybHg1to4hpgpmqKMZmFg72vts4vLiwqRPbSDFVFCxRg5jZtNlx4+Ws37hIq+ERv2Cg8S2VzbCV+SgNL1E9NjffEG8hn7JAUp1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/26xfbKbqtJs3hXJDb0cSs4c5O9813obaPEcwZWcKgE=;
- b=Gik0drYev+w12gl9iY+Pol3Ngb0Thrxtu/p0eT72D9Af7c7byGWwFt4f+vrQraW/6tgrw9b4o3KCilF0vrPlrYBXlNrKKpmu3qBOmuxBiF/lV71tiwTUAwq3xtxfd0k0Na2bj9Mbh9HPuzp2yFqsCZyblsObilZeKtxR/MtY3J0I4gxLPK3GH2roCMBOBdO6xdNLgX41LbqCwgGisnZRjbXt1y2eJclPlDgJH2jKnv33E0oPFdJo5mfvLQjIgzu2ezgsmsNCoTkkNCG0wlvgAj+ji+ze8B3P9N3bgYxgzHaq0pttchbR/4fI/brRjt20MgWkYVM3fNiT8bj5pOxDqg==
+ bh=uskUmpC5IJw/onYE39BdserOU3Sd0go1pAVcvyx4fME=;
+ b=w3zeHS2cTMPZ9GxivBe9AKgni9M3fokuM0hpmzPlm0cKuuYpoD6Mfg0QEVEp1xJHNUrIVzZt/bopx+cWirQwFVK6gYdTE54FAR75rZCgoyFuBBx2ysTWPIfxe5fZLM3I88ME+/mqLzKG+yo0F9FaJ6s5mSex8xCsh0HW8+7HccRxrDGU4y5PcR9Yfbt0un7fCqVR9lCGtHIrljqCR7/6nxitS1XUhTiVN/ZpZ4JuXP9VV13YPJxezQgLkftFsa4LoFvpUy0kvpiMS1c3GILnNdkVf301TuwJ4wnBKFFwQvPsytqPjnlwG0A4fC1vfTxepi9r7lvp2iV5RTsCnR1KSg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/26xfbKbqtJs3hXJDb0cSs4c5O9813obaPEcwZWcKgE=;
- b=qjeyHw6kO1CWqoLvphVgslp5y9PrvqBIBMDy3HqzB10RjPuHrH95QrO6aBC0+Rab+DJlCrh9JH2gqTDzBai+u2WUZY1Lxu8RHMKE2ftzNLJdJ4AIQxau+2+Xst36/JOzUNqWDrgkBJgZC9Eyvc+a8rQ9QehiqyXgfvOh/RB0CuE=
+ bh=uskUmpC5IJw/onYE39BdserOU3Sd0go1pAVcvyx4fME=;
+ b=Rij3Et3iX2R3284FFlLj7RlVIT1TobeysgcglNuzeze+mdDCi/KtIE67cSdofPMThWEaIhV8Wfw/7sVBz5SWwhuOrxFd7Xy8Ohw3KKZ9U4vT/AKxXQ5Ic7WjCKxBdOXvLs6LEtAVtrQMofOLxY7QTuJ6qyEGFqabPXPaqF7If+s=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by LO2P265MB3389.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:199::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.15; Sat, 18 Jul
- 2026 15:20:10 +0000
+ 2026 15:23:06 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0223.013; Sat, 18 Jul 2026
- 15:20:10 +0000
+ 15:23:06 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 18 Jul 2026 16:20:10 +0100
-Message-Id: <DK1SRBA3315M.32N4T8QQBUOER@garyguo.net>
-To: "FUJITA Tomonori" <tomo@flapping.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <arve@android.com>, <boqun@kernel.org>,
- <brauner@kernel.org>, <cmllamas@google.com>, <gary@garyguo.net>,
- <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <tkjos@android.com>
-Cc: <acourbot@nvidia.com>, <anna-maria@linutronix.de>,
- <bjorn3_gh@protonmail.com>, <dakr@kernel.org>,
- <daniel.almeida@collabora.com>, <frederic@kernel.org>,
- <jstultz@google.com>, <lossin@kernel.org>, <lyude@redhat.com>,
- <sboyd@kernel.org>, <tamird@kernel.org>, <tglx@kernel.org>,
- <tmgross@umich.edu>, <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: use Delta and a Jiffies newtype for
- timeouts and delays
+Date: Sat, 18 Jul 2026 16:23:05 +0100
+Message-Id: <DK1STJX916M3.J94WL07DKDHW@garyguo.net>
+Cc: <linux-serial@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 4/4] rust: serdev: remove `serdev::Timeout`
 From: "Gary Guo" <gary@garyguo.net>
+To: "Markus Probst" <markus.probst@posteo.de>, "Gary Guo"
+ <gary@garyguo.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>
 X-Mailer: aerc 0.21.0
-References: <20260717042247.3634961-1-tomo@flapping.org>
- <20260717042247.3634961-3-tomo@flapping.org>
-In-Reply-To: <20260717042247.3634961-3-tomo@flapping.org>
-X-ClientProxiedBy: LO4P123CA0418.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18b::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+References: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
+ <20260718-rust_serdev_fixes-v2-4-e5214e03de13@posteo.de>
+ <DK1SDT57QY13.3ZXZYQGOTK2P@garyguo.net>
+ <dd8cc1a98c48338bd8b29168d312b7a1f466c8f3.camel@posteo.de>
+In-Reply-To: <dd8cc1a98c48338bd8b29168d312b7a1f466c8f3.camel@posteo.de>
+X-ClientProxiedBy: LO6P123CA0052.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:310::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -76,327 +77,171 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB3389:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa179ece-2b73-4b3f-76a9-08dee4e00ee5
+X-MS-Office365-Filtering-Correlation-Id: 3c5cf84b-dc6b-4868-88e7-08dee4e07777
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|366016|23010399003|6133799003|4143699003|3023799007|56012099006|22082099003|18002099003|10067099003|921020;
+	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|366016|23010399003|4143699003|3023799007|56012099006|22082099003|18002099003|10067099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	K0pMQ4A7QnFuEcjXyet1EOWfkrpYl47rlFY0Gb4n/7ZBkoshrAuP9LfPJUQ4uMycw6pNfQqu24fmqiLhFrIpPBo3N0J5GokF1V0DYpWnwNpjNj2MQIHGwZZdZLv0s7SNRKZFMitZbXsoS6LIIAZqX9HccVlW2qX+S4PtCI/Cz5cQtNeqlJd2vXDf8fcYTZC0Y/FI8YAc9ANzaZxVvXdzYbLXZQTWviOMtp8x0OPFcMydXx41L7iiflFZo7rLwf6ACnNVQ3QHwxqxJnHF+vXJaa6G3GNEKEeHc9eKov/h23RmgkgN4znIScTDBQzHJGqLHq6oB44xB/DxQ4cHiMX4IaaLPkk2AiWOtuxFakVH7R3OoboUujCwCKcjNisTgaIl95V06MFLhFaH7nIh0psIjdnewNI1g7KNDQFckGsImigoTxtGGTq/TL1EIiSWX6sSJS0vZub77Cs0UwhJFH1SXFhosEBubaZ0OMk5TzD/rTp9Y7n2scICjKtXANe7w4CZnJA4ZkmETkb78hikhzfOdy25NBFG/WIRvVOEENM0apcOebTIn3tvOyZn5iOy8TNLwVAKkeOnqZULcwlQnsXi41GFmVbRcYZvvXac59zAV5InYmDlMtIGZi+hCdXHHyVdVc69k2gMjoJgwQHjeD+lMCyFO8cagmH4rV3sk4c8AqHEZJj3BQ5lXkYWAr4ZDWATrGRVjPIx0OgPfcm5qH97IQ==
+	POM2z7ZrbhdOeYy+jKQF74S9xn5l2LK2SMBEX7IiVsJC3OHVD/gKHjIZRXvcsaG878aLUlJvOgC38ztlIO6blsfUrX59FC+I4mcfK/oLdvWrnHh+ZoF6Vb/vwaXm+IMlNLTRVSuMxsi+ozVayB30mx6C2uoPQp011v5p1dxejXXHANWUtCWvODyszd2i883xEJygjFmMswtYLRg2PgiEtgEh3XdKc0komUPOjqH/OuikOonxmp+Us95p4lNfQikrsL1+J9GsZKXdMcEVdMjQa+9PcNnjb8Z9nl/dGA98OIVJ+9Z79A/WCJRluLRDUlkPgQoomQTM5rm24XWWMBPjIl5Tt/6PkhkUoeFoCBVRBA8Nqk5ga7vxMCWiWdk1gFPQUzi9bVyIuDPNZjPR2z7OWJ9bk9mv+gOav8xX1cT3B4m8ODEaT+rPCszESOYW/RJfOSL/Gb4k5Z7bFtJK8QbSk9VbqkWd+5lRnEUbENPw+n8V27YXexm2EOuvsnEXPgsCCizj1FMnEL/sDyoi5OL6JuIyYSl12ked4NwIpbQC2ZhX7hT9YCmtSpvgq3PD6fa4LCIHKaOD86cXzk8D2h3izBno7HGNU3jZ/GE0/KAIHXWIxIAJxa0LGgnJ9t8O6Mz2ZJbInxUCvlX/aXt1WOOyEnGXZf0YL8BPQfcuSGCaKm5VSt/91wlv1v6pAEG90BKbJuAwdVVhV5GE0ZnJj0oXQA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(366016)(23010399003)(6133799003)(4143699003)(3023799007)(56012099006)(22082099003)(18002099003)(10067099003)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(366016)(23010399003)(4143699003)(3023799007)(56012099006)(22082099003)(18002099003)(10067099003)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UlltbzkybjdQUFZ5Zk02MVJSOEI0S1g1ZTJjOFdWSlpOWE1WcFljNjJ6aE1Y?=
- =?utf-8?B?eTBKa2I0NzNzYWZlbUcvQXdmYVdvMm90ejZtVWgrcTBnK1ZRK3V2dlZpRmhu?=
- =?utf-8?B?bGFqVk5ON0ZRTnM1Q3B1WWR3ZitqdUozMkVmUUdIVHpaU255aDAzbU1BRFBN?=
- =?utf-8?B?dWoyT3lwVkNndmEyRmtIbHFqSzh1ckloTnNPeEI4a05Cc3dkVUxHdklSM204?=
- =?utf-8?B?Rk9PUXkxVVo3clpES0xWWFFhdDR2K0xaNEhUWmN1ZUlxenF2a2hHN1pWaXNl?=
- =?utf-8?B?SG9SbjQweFgvUXFmUVFWb1hwcHV3WXZtZEpRYWM2UlZSWjJPWnE4V1N4bGxv?=
- =?utf-8?B?SnoxVlFiajJkd3RSSUM0Nys3djgxSXFCL25DOFJJTTIwZ2MxZ3lvbHBERWJ2?=
- =?utf-8?B?OXBtcmg4QUlwYk1RVi92L0lzWWhaenkxQ1VMbVpNc2VBcE9ZSmJ6SjUwTER6?=
- =?utf-8?B?S2NUUEpjN3JYMTR5cjFlUTlUOUdwNUhQekJiTkRHNTZQQWRLQk93TENseHpG?=
- =?utf-8?B?SzdzT1FTMDUwbzM4N2kwNXJsbk9jVVB3anpOVlNteHg1WDcxNzZ5V0xIWlNH?=
- =?utf-8?B?Nllld1Q3RjhCc0J4emdhYUN5VytGVlpHMzBiYzFLK1VMR0xRWUFGZjJUeHV2?=
- =?utf-8?B?dXFvY3R1ZlJPT3dFdzhGSVdiaFpiVjNaaEt3cXk5YzNPWnNwYlVwd2FRNVp1?=
- =?utf-8?B?aVdhVXQzR0ZuNnh3aDFXbGk1TTgrYmFsMHVKRi84Y0gyYktRZHFaOVFHcDd1?=
- =?utf-8?B?d0VIZE9FQ25KZTQ2K3Y4YkdiWGRJTUFQcHpKLzgwTHd1ZEYzM08wS1FHcUZ2?=
- =?utf-8?B?NU54UnpuMkdac0ZDbEtuV2NET3lnaFo2clJjaWpQOGlPa1dTeWhmK0NGdExw?=
- =?utf-8?B?U00zUzNybzZkY29OZzh6QnZEQU5mZ3BTQUxuUTNNNy90d3RVbXFnb1lYZVFx?=
- =?utf-8?B?VEs1RDFtZ2dTSzZod0s5WlozTzE5a2NSV3RsRDVPUWlzMTdKV0NkYUZZdmQv?=
- =?utf-8?B?U241VVFXbFd0UXI2YUNTT3Niak1sdk5VbnVENE81alVYRWMyUk1xWlNHb1hq?=
- =?utf-8?B?SjJUa1JSekwzRisyM1BtNmpqRXY0ZjhyTnZHS0p6clpXQm9UMDI3a1BnRDQ1?=
- =?utf-8?B?OE5FMDB3MXI4amdPckMyZk90UDEyZ0tvMUlFTE5STDNtMW5tMUR5bWZQUG9K?=
- =?utf-8?B?YkY2VEl2WjRuMFQ5MzBUcHFSYWdrL21HYml0UWpubWVjemE4Nlkvbzhwbmhm?=
- =?utf-8?B?ZUY1VXJzQWRXcDV6SFljbXRlSnhvcXQ0NUNSNFBUaHVVV2dUT1A3TlJIMjBr?=
- =?utf-8?B?WVl6Rk1sWVhycXJRMEk3akI2RXM4c2xQYWRSSnkxQ2VkeC9nSWRpTEtVLzRa?=
- =?utf-8?B?dUlJd29GWWlLVzVPOWlPb2NFWDdCR2dDQUZGeHpTa2VGR0M0MkZic2tldnRL?=
- =?utf-8?B?N21vOUJlSVcvRlRYQkZtaDg3T3BVSnVrcnllUVdVNldOWDVuRXM3Wlpka0xV?=
- =?utf-8?B?dUM3TWlWbWJ4Wmx2V0VESlZFdTkzdWVJM1VWcVY5aVk1K0QvZzhmYmgvOVNR?=
- =?utf-8?B?N2NibVZMcFVzRFN1eE5UVFlsMzNQRVlVdFREektqamFMcGZMK0Y3b0V2ZnhX?=
- =?utf-8?B?Mi9zbDVjSXFNaElDT2YwR1BUYmJ2ZjVWV0hEOSsyOUVneXR0RC9JZzlLQy9M?=
- =?utf-8?B?dUZkZ0RGdzBCWnI2SWp0MzcyMXhMR0R1dXJNcU1wbncxOFp3R0YzK2Q2K3Fh?=
- =?utf-8?B?aG5oZlZ2UWp2dVNlUGpzTkEzVk8xM1lCb29LcGhNWG5IRW1sNmllZDRxVE9P?=
- =?utf-8?B?a0t3aDlRR2pBZFo2azB5eUVpYmx6QjhDU0lZOW1BbERYUi8vUXNsdUVZdmkw?=
- =?utf-8?B?OFFncGNOd0hYVUYvY0lZUnErMnRJWUJGUzE4Z2NEVVFlbzRtbFU5ZVhTU216?=
- =?utf-8?B?Q0lrUTJpaUlvRkQ2ODdPMXV5NW5hTmFMTDBWUDhXOFBXYmM4emtONUhZZStm?=
- =?utf-8?B?d1IvVTdiWm91SGVzV2VDcy95S2lnVTlISmszS01wV2piTERtMFdXcG5PL3E2?=
- =?utf-8?B?MjlBR01OVHg2WklUOURYVjd3VGZRbGtUZEU5VHVqbFovcWpSZUZSaEl2ZXJE?=
- =?utf-8?B?WnhKZmVoRUFJc2hoYVNOUFV2Ui9EQmlaYWtucFJZZzF0YW1tYzhlelVFZnF1?=
- =?utf-8?B?c2ZJR215RzFkaEh6NXlDVm5ueGNVQ2JSTlcxeWh4blV4N282aUNqbXIyWWhH?=
- =?utf-8?B?dHdMMFFZVm4xU2JnTUpvN1ppaW5ObHRtL3dXWmI2d2YycVBvVWZjSlVIS2Z5?=
- =?utf-8?B?SGtBZU9RUCtHbVZ4V0s4S1A3ZElZOHpUS2tpR01CNUJla3dDdGY3dz09?=
+	=?utf-8?B?VCtpL1RsZGxRRU9HWTNLTHBuODZJSFd1M3JzY2VPQ2lwczE1RXNNUXowY1Rz?=
+ =?utf-8?B?ZEF1cC9BQTFRUnhNYk45ek1OTFg4ZmpxdnRTUXlySUpacjNEUkUyM3pMQll5?=
+ =?utf-8?B?S2tvWWRJKzJYNytuQW0xdmVxeExPU3BMVFNTYzh5dGNuaXA5N1NnSnUwZTd4?=
+ =?utf-8?B?VE5tUEdicmtlR25XNm5MU0MrdkdrTHJBaXhKNDcxR1RvK2w2Z1I0QUhFS3Mx?=
+ =?utf-8?B?aGg4TW1zbDlVUVZHZFpJSGdwK1FkTWdGZi84dHRDcWxoQU1ZVEJpc1UwYlRm?=
+ =?utf-8?B?MllLM1I2SVNXWDl5cUtZU1Z0amViME0raytZOGpMZ0prYkQzSDd0U2FBL1pD?=
+ =?utf-8?B?dE42bDhDNVZidTdWNmNJSjRKRExhSGM0dUx2UW8yTzVraUt1Q2xBWlh3QmZ0?=
+ =?utf-8?B?WFQyN3NNU1ZaNm8rVDlnRXpNMHVZb2oxNGRUdjNZQ2cybGxoTXZCWHh6VlhL?=
+ =?utf-8?B?QnBrOEVuekt2K2RMUm4rRThiRW1qWVFtMVlDWWIxWExka0pwZHFHcml5YnJ4?=
+ =?utf-8?B?YTlaQWdZdER3Tm9IVVlVV0lKYjlPdWFYQTkrdVU5SlpPaVpXZ3ZyaHpPWFBN?=
+ =?utf-8?B?azR6WVNoVmwxQzh6S1RrSURNcS83S3lHUWFwRkNSZ2Rla205eUFyUGpvcTE1?=
+ =?utf-8?B?cm1PK2U2bUQ5cFBiQ3NJVFJEVFhVSGRGMVphc0dNS1dZY2ZNdUdOaU8wWW1L?=
+ =?utf-8?B?TDBFUE94RE9iRUltVDg4a1Z3YkwwbFc4NWt6L0M1VlpvRnpLbWtkUHc3cmNL?=
+ =?utf-8?B?RkY5ZTdPYVplUWVHOGtpbEZJemw3c0V2NUJVR1JCMHI3MitZbDRJRHdmR0JE?=
+ =?utf-8?B?ZmtuYkR0Um42eWZxV1VwWnNGaEY3RnV1TkZJSnUwcTRMMUZudXYxRjhRYXF5?=
+ =?utf-8?B?eUhhTWVib2wvQjBaS0VTQTV0V2hBcnRVYWZORlVHelhMMXpWM0I1eCtCS0x0?=
+ =?utf-8?B?VjhMZndaZU1iU1lLeFcxVUJQc2ptMm51K3ZLM1drUlg2SWkwWkRGUVVlYmNr?=
+ =?utf-8?B?aHdGVDZDMDNTNFRGWis5bGxBNWlueTBZWU8xamNndHRHY3pGaFcrZmhxZEdo?=
+ =?utf-8?B?emZNSTFkOVkxUy9FZE5UblpsZjRSOUZLQUtFQ1FpS0cwTUZOd0lSU1BBc25X?=
+ =?utf-8?B?OUtJZjdReFpRZU44Yjl3a3V3UUtmTTcrOXFSNm56enByK3JpSWI3bVJSVlpr?=
+ =?utf-8?B?ZnV6VHZrQkpqaDNDRHNpMmM1ME5zT3ZwbXZIRjVHUU03K0YzbUpYOW0wbWxE?=
+ =?utf-8?B?YWFLZXhqdkpZN2NLYURRVDNJa09SaHR1THJFSk5NWTVNc3M4bk1RVnF0WnRT?=
+ =?utf-8?B?N2xlRnFUSzJFdFRDWENVTExNRU5uUW40b3UyT2YreG5rWWpDS1N2Ym0wNExa?=
+ =?utf-8?B?d2lCQTVpREdpa3BHbzlvQ3V3KzBmOGlGcFJQYzFYYXptRHJ0bytWRmI0S3Nh?=
+ =?utf-8?B?S0l6azQ5T3J6cURkV3BxemZIZGRLWGhyN3pxdGlmZWRxNVlGWEREc3hab1Iw?=
+ =?utf-8?B?TTJaL29VdDlSWUFWQVpsNEd3WWc4S0Q3U1I0SGRxcms0Q0grYjFuc25kc2xm?=
+ =?utf-8?B?elVhVkNVMkRaSHhTQ281NXJUK1ZIYWR2L2g4Tzh6UmpveFlVbGNObjBoaDI2?=
+ =?utf-8?B?VkhWd25qNjcySHJhdzI0bzcyUWxpNmRYdjE1ZUV0UXRUalEwWnhBOU9BNTR2?=
+ =?utf-8?B?MEFpSllQL0QvWWtyOW5hR0MwSlk4UzllRW4vUEhoL3h4NkZCOTV1OUFtUFNs?=
+ =?utf-8?B?RXllWWZQWFB4YUc5bkY4NnZnbUxqVEp6Qld4T1pqVFR0eUpxNG1aSkpQcUxH?=
+ =?utf-8?B?VWk3VVNTNnB0OFpuUXc0dEN1YWYvK2ZMd28zTmcyMERBM3hVUWxlUzNsK0Fv?=
+ =?utf-8?B?QUk3L1o5aWxneFUxVXlKU3R1blNmd2lpeVJ5TXdPSFhuU01BNGN1aThqaC81?=
+ =?utf-8?B?L0RtZE1JdGNsRS9Rck54MEhJS0xRQzNvdUVqVk00QlhsMGlLK3JlOXUwa0xC?=
+ =?utf-8?B?UE0vQ0QzQ01HWEpobGFTbHU2UjZ4TlhPcWNjN3p0VXoyckVTT2tNeFErZjcz?=
+ =?utf-8?B?RDJ1NjVTTzFTc1ZySGxGVjJaTHdGeDNOaFBHaWR1S1NTS2lvNjQ0cjc4TVdY?=
+ =?utf-8?B?d2V4cGdpNUw3U01EVE5YQndvMHBIRXAvMnFWM250aWRBNVA2Lys2cmdKQnNV?=
+ =?utf-8?B?K0lCY3MzZktpanJyQTVMTCtianh1QVBieTVHSXB6NGpFeTN0QjFEdFlZOXMv?=
+ =?utf-8?B?N0NRc2hvSlU0M1RsbXFKZ290TUM4cU8zT3MrRm1RaklTc2h3YkVsU2VIbTA4?=
+ =?utf-8?B?bHUyaEFoQVhtaytVTXlDTUdRVXEybmtuQXpTazZwMnMydzVEZE83UT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa179ece-2b73-4b3f-76a9-08dee4e00ee5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c5cf84b-dc6b-4868-88e7-08dee4e07777
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2026 15:20:10.7656
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2026 15:23:06.1943
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rMkXMzTMKjQbypVu5IXDHrDbmuiTrkzbAV3Ll6ovn2R3Tk+ojDynnD/aakTfkWiujIXo2ij+Zn533AWID0o5/g==
+X-MS-Exchange-CrossTenant-UserPrincipalName: dGOozjicPUyKtwDQSBpkMwiEccGqrjBuhS7VLyyjNfiHPJgMPhog/9vKsdUpyLeN3thuK9mROotQRUogo8jDIw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3389
 
-On Fri Jul 17, 2026 at 5:22 AM BST, FUJITA Tomonori wrote:
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Sat Jul 18, 2026 at 4:12 PM BST, Markus Probst wrote:
+> On Sat, 2026-07-18 at 16:02 +0100, Gary Guo wrote:
+>> On Sat Jul 18, 2026 at 1:47 PM BST, Markus Probst wrote:
+>> > Instead of relying on its own timeout types, the abstraction should ma=
+ke
+>> > use of `impl Into<Jiffies>`.
+>> >=20
+>> > Suggested-by: Gary Guo <gary@garyguo.net>
+>> > Link: https://lore.kernel.org/rust-for-linux/DK0SX3P5K1J6.1OV4ETJMXW83=
+R@garyguo.net/
+>> > Signed-off-by: Markus Probst <markus.probst@posteo.de>
+>> > ---
+>> >  rust/kernel/serdev.rs | 55 +++++++++++++++++-------------------------=
+---------
+>> >  1 file changed, 18 insertions(+), 37 deletions(-)
+>> >=20
+>> > diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
+>> > index a78dfa6e2c27..0fdb37cff15d 100644
+>> > --- a/rust/kernel/serdev.rs
+>> > +++ b/rust/kernel/serdev.rs
+>> > @@ -20,11 +20,7 @@
+>> >          aref::AlwaysRefCounted,
+>> >          Mutex, //
+>> >      },
+>> > -    time::{
+>> > -        msecs_to_jiffies,
+>> > -        Jiffies,
+>> > -        Msecs, //
+>> > -    },
+>> > +    time::Jiffies,
+>> >      types::{
+>> >          Opaque,
+>> >          ScopeGuard, //
+>> > @@ -35,7 +31,6 @@
+>> >      cell::UnsafeCell,
+>> >      marker::PhantomData,
+>> >      mem::{offset_of, MaybeUninit},
+>> > -    num::NonZero,
+>> >      ptr::NonNull, //
+>> >  };
+>> > =20
+>> > @@ -50,30 +45,6 @@ pub enum Parity {
+>> >      Odd =3D bindings::serdev_parity_SERDEV_PARITY_ODD,
+>> >  }
+>> > =20
+>> > -/// Timeout in Jiffies.
+>> > -pub enum Timeout {
+>> > -    /// Wait for a specific amount of [`Jiffies`].
+>> > -    Jiffies(NonZero<Jiffies>),
+>> > -    /// Wait for a specific amount of [`Msecs`].
+>> > -    Milliseconds(NonZero<Msecs>),
+>> > -    /// Wait as long as possible.
+>> > -    ///
+>> > -    /// This is equivalent to [`kernel::task::MAX_SCHEDULE_TIMEOUT`].
+>> > -    Max,
+>> > -}
+>> > -
+>> > -impl Timeout {
+>> > -    fn into_jiffies(self) -> isize {
+>> > -        match self {
+>> > -            Self::Jiffies(value) =3D> value.get().try_into().unwrap_o=
+r_default(),
+>> > -            Self::Milliseconds(value) =3D> {
+>> > -                msecs_to_jiffies(value.get()).try_into().unwrap_or_de=
+fault()
+>> > -            }
+>> > -            Self::Max =3D> 0,
+>> > -        }
+>> > -    }
+>> > -}
+>> > -
+>> >  /// An adapter for the registration of serial device bus device drive=
+rs.
+>> >  pub struct Adapter<T: Driver>(T);
+>> > =20
+>> > @@ -379,7 +350,7 @@ macro_rules! module_serdev_device_driver {
+>> >  ///         _id_info: Option<&'bound Self::IdInfo>,
+>> >  ///     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
+>> >  ///         sdev.set_baudrate(115200);
+>> > -///         sdev.write_all(b"Hello\n", serdev::Timeout::Max)?;
+>> > +///         sdev.write_all(b"Hello\n", 0usize)?;
+>>=20
+>> Note that the jiffies type is being converted to a new type (in fact,
+>> `Into<Jiffies>` only make sense with it being a new type.
+> I assume it won't take long for the patch series for the new type to be
+> merged. Currently there is no user for any other timeout than 0 (which
+> corrosponds to MAX_SCHEDULE_TIMEOUT in serdev).
 >
-> Turn Jiffies into a distinct newtype and let these APIs take
-> impl Into<Jiffies>. A caller can now pass a Delta, the duration type
-> already used elsewhere, so the unit is part of the type rather than a
-> caller convention. A caller that already holds a jiffies count can
-> still pass Jiffies directly, avoiding a lossy jiffies -> Delta ->
-> jiffies round trip.
->
-> Update CondVar::wait_interruptible_timeout() and
-> Queue::enqueue_delayed(), which took a raw jiffies count through a
-> bare c_ulong alias with no type safety. Callers had to know on their
-> own that the value meant jiffies and convert to and from it
-> themselves, which is easy to get wrong.
->
-> Once callers express timeouts and delays as Delta, msecs_to_jiffies()
-> and the Msecs alias have no remaining users, so remove them.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  drivers/android/binder/process.rs |  7 +++---
->  rust/kernel/sync/condvar.rs       | 21 +++++++++++-----
->  rust/kernel/time.rs               | 41 ++++++++++++++++++++++++-------
->  rust/kernel/workqueue.rs          | 11 ++++++---
->  4 files changed, 59 insertions(+), 21 deletions(-)
->
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/p=
-rocess.rs
-> index cdd1a9079726..5230ea492a75 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-> @@ -1482,8 +1482,9 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFree=
-zeInfo) -> Result {
->          inner.is_frozen =3D IsFrozen::InProgress;
-> =20
->          if info.timeout_ms > 0 {
-> -            let mut jiffies =3D kernel::time::msecs_to_jiffies(info.time=
-out_ms);
-> -            while jiffies > 0 {
-> +            let mut jiffies: kernel::time::Jiffies =3D
-> +                kernel::time::Delta::from_millis(info.timeout_ms.into())=
-.into();
-> +            while !jiffies.is_zero() {
->                  if inner.outstanding_txns =3D=3D 0 {
->                      break;
->                  }
-> @@ -1500,7 +1501,7 @@ pub(crate) fn ioctl_freeze(&self, info: &BinderFree=
-zeInfo) -> Result {
->                          jiffies =3D remaining;
->                      }
->                      CondVarTimeoutResult::Timeout =3D> {
-> -                        jiffies =3D 0;
-> +                        jiffies =3D kernel::time::Jiffies::ZERO;
->                      }
->                  }
->              }
-> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-> index 69d58dfbad7b..e215f83825e4 100644
-> --- a/rust/kernel/sync/condvar.rs
-> +++ b/rust/kernel/sync/condvar.rs
-> @@ -7,7 +7,7 @@
-> =20
->  use super::{lock::Backend, lock::Guard, LockClassKey};
->  use crate::{
-> -    ffi::{c_int, c_long},
-> +    ffi::{c_int, c_long, c_ulong},
->      str::{CStr, CStrExt as _},
->      task::{
->          MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_N=
-ORMAL, TASK_UNINTERRUPTIBLE,
-> @@ -186,15 +186,24 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: B=
-ackend>(
->      pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
->          &self,
->          guard: &mut Guard<'_, T, B>,
-> -        jiffies: Jiffies,
-> +        duration: impl Into<Jiffies>,
->      ) -> CondVarTimeoutResult {
-> -        let jiffies =3D jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOU=
-T);
-> +        let raw_jiffies: c_ulong =3D duration.into().as_raw();
-> +        let jiffies =3D c_long::try_from(raw_jiffies).unwrap_or(MAX_SCHE=
-DULE_TIMEOUT);
+> Or should I revert to `serdev::Timeout` until then?
 
-This is existing problem, but this code pretty much assumes that
-`MAX_SCHEDULE_TIMEOUT =3D=3D c_long::MAX`, which is true but would be bad c=
-ode. So I
-would expect this to be just a compare, or would eventually become
-`saturating_cast_signed` (once it's stable) which explicitly relies on that
-assumption.
+`Timeout` uses `Jiffies` and `Msec` directly which would be changed too. I
+think we just need to treat this as conflict and figure out how to handle t=
+he
+conflict.
 
->          let res =3D self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffie=
-s);
-> =20
-> -        match (res as Jiffies, crate::current!().signal_pending()) {
-> -            (jiffies, true) =3D> CondVarTimeoutResult::Signal { jiffies =
-},
-> +        match (res, crate::current!().signal_pending()) {
-> +            (jiffies, true) =3D> CondVarTimeoutResult::Signal {
-> +                // CAST: `wait_internal()` never returns negative,
-> +                // so it is safe to cast `jiffies` to `c_ulong`.
-> +                jiffies: Jiffies::new(jiffies as c_ulong),
-> +            },
->              (0, false) =3D> CondVarTimeoutResult::Timeout,
-> -            (jiffies, false) =3D> CondVarTimeoutResult::Woken { jiffies =
-},
-> +            (jiffies, false) =3D> CondVarTimeoutResult::Woken {
-> +                // CAST: `wait_internal()` never returns negative,
-> +                // so it is safe to cast `jiffies` to `c_ulong`.
-> +                jiffies: Jiffies::new(jiffies as c_ulong),
-> +            },
->          }
->      }
-> =20
-> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> index 23ef5c77383f..206296b6b6ea 100644
-> --- a/rust/kernel/time.rs
-> +++ b/rust/kernel/time.rs
-> @@ -40,17 +40,40 @@
->  pub const NSEC_PER_SEC: i64 =3D bindings::NSEC_PER_SEC as i64;
-> =20
->  /// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
-> -pub type Jiffies =3D crate::ffi::c_ulong;
-> +#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
-> +pub struct Jiffies(crate::ffi::c_ulong);
-
-Hmm, I feel that we are again making the same mistake that we had for `ktim=
-e_t`
-abstraction, namely that we use the same type for instant and delta, albeit=
- this
-time the measure unit is jiffies and not nanoseconds. The reason that signe=
-d and
-unsigned casts is needed in the above code basically is this.
-
-Arguably, your earlier version don't have this issue, but then we are
-introducing costly divisions implicitly in many places which is bad for
-different reason.
-
-I wonder if we should have time types being generic over units. So you can =
-have
-`Delta<Nsec>` and `Delta<Jiffy>` and `Instant<Nsec>`, `Instant<Jiffy>`, wit=
-h the
-generic default being set to `Nsec`.
-
-    Delta::new(42) // Delta<Nsec>
-    Delta::new_jiffies(42) // Delta<Jiffy>
-
-Thoughts?
+I think realistic there're some designs to still iron out for the jiffy ser=
+ies,
+so yours one may land first. The easiest thing is probably just have API th=
+at
+take `Jiffies` type directly without `Into` (as having it doesn't bring muc=
+h
+value at the moment), and that can be converted by the jiffy series.
 
 Best,
 Gary
-
-> =20
-> -/// The millisecond time unit.
-> -pub type Msecs =3D crate::ffi::c_uint;
-> +impl Jiffies {
-> +    /// A jiffies value of zero.
-> +    pub const ZERO: Self =3D Self(0);
-> =20
-> -/// Converts milliseconds to jiffies.
-> -#[inline]
-> -pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
-> -    // SAFETY: The `__msecs_to_jiffies` function is always safe to call =
-no
-> -    // matter what the argument is.
-> -    unsafe { bindings::__msecs_to_jiffies(msecs) }
-> +    /// Create a new [`Jiffies`] from the C side's `jiffies` value.
-> +    #[inline]
-> +    pub const fn new(jiffies: crate::ffi::c_ulong) -> Self {
-
-Given that this is a public API not just for binding code, I think it's bet=
-ter
-to use `usize`.
-
-> +        Self(jiffies)
-> +    }
-> +
-
-This function can be `pub`.
-
-> +    #[inline]
-> +    pub(crate) const fn as_raw(self) -> crate::ffi::c_ulong {
-> +        self.0
-> +    }
-> +
-> +    /// Return `true` if the [`Jiffies`] has a value of zero.
-> +    #[inline]
-> +    pub fn is_zero(self) -> bool {
-> +        self.0 =3D=3D 0
-> +    }
-> +}
-> +
-> +impl From<Delta> for Jiffies {
-> +    #[inline]
-> +    fn from(delta: Delta) -> Self {
-> +        let millis =3D u32::try_from(delta.as_millis_ceil().max(0)).unwr=
-ap_or(u32::MAX);
-> +        // SAFETY: The `__msecs_to_jiffies` function is always safe to c=
-all no
-> +        // matter what the argument is.
-> +        let jiffies =3D unsafe { bindings::__msecs_to_jiffies(millis) };
-> +        Self(jiffies)
-> +    }
->  }
-> =20
->  /// Trait for clock sources.
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index 7e253b6f299c..41fa1a9eb9d7 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -136,6 +136,7 @@
->  //! ```
->  //! use kernel::sync::Arc;
->  //! use kernel::workqueue::{self, impl_has_delayed_work, new_delayed_wor=
-k, DelayedWork, WorkItem};
-> +//! use kernel::time::Jiffies;
->  //!
->  //! #[pin_data]
->  //! struct MyStruct {
-> @@ -171,7 +172,7 @@
->  //! /// This method will enqueue the struct for execution on the system =
-workqueue, where its value
->  //! /// will be printed 12 jiffies later.
->  //! fn print_later(val: Arc<MyStruct>) {
-> -//!     let _ =3D workqueue::system().enqueue_delayed(val, 12);
-> +//!     let _ =3D workqueue::system().enqueue_delayed(val, Jiffies::new(=
-12));
->  //! }
->  //!
->  //! /// It is also possible to use the ordinary `enqueue` method togethe=
-r with `DelayedWork`. This
-> @@ -303,7 +304,11 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::=
-EnqueueOutput
->      /// This may fail if the work item is already enqueued in a workqueu=
-e.
->      ///
->      /// The work item will be submitted using `WORK_CPU_UNBOUND`.
-> -    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies=
-) -> W::EnqueueOutput
-> +    pub fn enqueue_delayed<W, const ID: u64>(
-> +        &self,
-> +        w: W,
-> +        delay: impl Into<Jiffies>,
-> +    ) -> W::EnqueueOutput
->      where
->          W: RawDelayedWorkItem<ID> + Send + 'static,
->      {
-> @@ -328,7 +333,7 @@ pub fn enqueue_delayed<W, const ID: u64>(&self, w: W,=
- delay: Jiffies) -> W::Enqu
->                      bindings::wq_misc_consts_WORK_CPU_UNBOUND as ffi::c_=
-int,
->                      queue_ptr,
->                      container_of!(work_ptr, bindings::delayed_work, work=
-),
-> -                    delay,
-> +                    delay.into().as_raw(),
->                  )
->              })
->          }
-
 
