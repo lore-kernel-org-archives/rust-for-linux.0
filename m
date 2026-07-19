@@ -1,291 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65FA384235;
-	Sun, 19 Jul 2026 09:57:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784455022; cv=none; b=M727wMX3bVQrqb+VABAuovSTGTzOSQAkrxAJpdvoQrxPUtVsvaHWHORQ5UvehaPXxTmLO+ZjuPq1IsgNydocXbjLnpEurbgWrtG35mnazrxUTOfPQzqHAc/zAsCBDVYzqw4k3IMj6tyyXmTnCGakbtBbcFRAbXsyaY1jbfXwvCw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784455022; c=relaxed/simple;
-	bh=5rI3mdOU0NVruB/vkmdZPE8rVrYsR2Kj+JBwO08wwYg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ecdHtqTElTuVN3odNrXj8OFq8IJntktLITG1moMa/WbbXAPS1cEmCWv4z43dNVpPMfEwrMMJ12G99B5zCPiRwj1k+jwbB8DSQxh9PudNUG0e79JUZpv3ZNOsbPN8FHTx30haTcKYyazvZP/7dXv5kJWmRFo7zXsdxJEbln4TwTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vz2sc+ej; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB7B37C0F6
+	for <rust-for-linux@vger.kernel.org>; Sun, 19 Jul 2026 10:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784455343; cv=pass; b=rlTDKbwkMqgjwjeOZtHCUKEqp1hFhwfHd+HNnuvdLKrlkYzJk+A+RoytWUsoHHetnPD0OMu9rOmWT9FsRELXwMDPrfSC+zvnm0uPbNK/e7SYSrihoonXoyN4Yix9XFV6mHL7g0bThy/zml+3WxqCqKOkBMfR1nc3prWVIi9YuiU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784455343; c=relaxed/simple;
+	bh=qRSbfD9djHMxioMbfjbjGNyCIP+sb1ZAZgfGDMmTHM0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rtXf6U+CdQAJFJMRxi+SSDP4aLLNRCQdII0uuAh6GB+IpkSDTr07aTKIY66a900iMIfnKtXv0N3mj4ttb6QkAo52vA3pFVMSAMCF+OX2XYs/H6B7vX7B1ZlcgdBld45bpcs7EcBsSPBgT7cS986aH8brXJ7mNsroLB8jUqriT40=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NDGNGd/D; arc=pass smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vz2sc+ej"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9C084C2BCFD;
-	Sun, 19 Jul 2026 09:57:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1784455021;
-	bh=5rI3mdOU0NVruB/vkmdZPE8rVrYsR2Kj+JBwO08wwYg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Vz2sc+ejgJkoxKTpDqNT53MOOYyy9XsCDJWRbR6XuyBJiiVbVhpQj2nAVN0kDGdTz
-	 X2FbhWLM9tcMiNOw9TCO8fSl34ihIR9naa5Ldf+Zcj3DmKcVmAlfSAHkrjrm89RmpK
-	 TC/LbaA9DLTXoW7ViTLQ+o5ouUovoEqqE7avSMRq7Q+OyJcc7gGWWWto7LpCPPcS5L
-	 jWH0KI0OTHz5aoUw5ouKmwBa6MDZsqyITjPzEcR8tsILfoFdkM5GixP751cBsItmvg
-	 bd8WKjL0XTDwjM7HapGT4hAuAJrGJ4mtKLPzwTFN73rhKnaG0dNrjp+JSt8BknKeYJ
-	 6LKNbuMI4bE2Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 808B1C44512;
-	Sun, 19 Jul 2026 09:57:01 +0000 (UTC)
-From: Jahnavi MN via B4 Relay <devnull+jahnavimn.google.com@kernel.org>
-Date: Sun, 19 Jul 2026 09:56:59 +0000
-Subject: [PATCH v2 2/2] rust_binder: Update transaction flags to use
- kernel::impl_flags!
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NDGNGd/D"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-38cfcb507a3so1004759a91.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 19 Jul 2026 03:02:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784455342; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DHa2z6DPqmEa6BGsqRmNLpwj8qkGVpZfMtuRAdDtKbbUeHoX6dqlw7+gPoENidIJNT
+         dyZtZf1ZoLUT1I/kLg0jdiU1HyE6zMiw9m8DpKqRScH56WIxgoYQWeBVsr0Z7lVLSH0u
+         YTzW36S2qTYA3yaNec34ym2sp40BkOf82EVadoTIQDRpbikN8L6vm6/IxZEO3Ko+yhb0
+         zJyubNPGaFR7ji3c/knXmr16rZ5gm+F7EWHWpn8LuC1f5ri9wpBMc/PTY6p80C6LKMef
+         BinKIs0n5v0gmAZQvzPWlI4qVfKqgFCKJbl4CBaQAiS02MAyxjzo/tVMlDF7IHW8w69I
+         4h7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zBqYrvfkMcaBzJerbGplo0e2p2R5NDakkgbrJKmzy4g=;
+        fh=+ihge4b7/CZD1PNeDEGlxUrsZObkwvwuTJC9yoY4vDM=;
+        b=sE14+nHKW7a7aC0f0EszuhSGKrAfVmWCeD3by5Ptvtv/LkWICSj3CwCS/fnYQNzf4u
+         FmY+xJ0oxUSOsD2OHWpaZuqNkHYHFTA6lihy1XBebxQRj0Drst8k2UwOgKjhts3yHLN6
+         M/0kXVDy4gHSiGAkzeFT7NmUUA6cS8FfuFX9rWvsktAWoHbY9ek6Jlz0RwceEd1b9wFz
+         StF66zJTNbHd0fXiYSPyJsiSHHFJ+d7pzFo92Db/LcEJjA1n+LBSnqacpWYvIBSz3uvW
+         aQGuX09Wks512p0TOIUM5eNh9944hLUSi+AOvw5XG2cTxdO9jk4QgzWfSZKVrt3IH5i7
+         r4Ww==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784455342; x=1785060142; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zBqYrvfkMcaBzJerbGplo0e2p2R5NDakkgbrJKmzy4g=;
+        b=NDGNGd/DQGIHkBuL8NYHkGwMAQ7UKh7gHqfmEfY7buPglFboe6NYeb9uLB+wqjp4rR
+         sVN7SQE1OOPCK0eoxIis2WGfhOG1fzdJq63T089EsZQGFF8set7dPLyURhiCpAfU2NB+
+         HFazekc5rfd8cK26C6uruM38TkpE0HIAFmA0GG+U1SVY57d0oegM9Maq6DTffb1aDl/l
+         2UzcpciFbkwHvHWI7oA3cAIFiICoHIdIaZ0xOpGoc64IX4SvI9z9Gzt0k7hk/mFXIrO0
+         emNiH3AumTYSzdxHht9RmqiajsKvTNsCwwioUZPlyGgbhhOiB0UJ+J27ROAdUYeGzZKV
+         fkUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784455342; x=1785060142;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zBqYrvfkMcaBzJerbGplo0e2p2R5NDakkgbrJKmzy4g=;
+        b=f7mklsK9Z4PD12bNgmVe+CnZdZhnsLX/MgdwN55gcNpx0ePltw7IY3Tcz7SNuag0bn
+         ZlR//gF/x4TSnthFya1tCK9aU4CyW8rYgpQR9/vTjGUy+H5+gbwXXCo9bBREcTgHFm6b
+         RsRJPQ/YSmOpcZumhW7pXXXxw8kvyIO4EED2WgryyNH/GlKCyBhqR5ZsLyzj52aTMVXA
+         SyWXgB9qPmisHI8m2OawPida7ckIA5A3GJI7/mqwNC9WkUf5aXiDkiyXwc+vi9R6+nkL
+         oUHq/YvsFzBnAbVGU0E/J+k0q78lSlmyxFVqIVcNPw+Qy7rPC1dg7KaGHrYlsOQq8suq
+         DD8g==
+X-Forwarded-Encrypted: i=1; AHgh+RqZtxNxUcdbcx0EuayBdnKtvgltX+lLTOd4/xqVFJxRSVcCMHJ9P8EK8DTA2VstCs0uElTcKOsOd8UZUEZK4g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzv3GBc+tIGajvMcv+low4Q0VfP1DXTVzE/T02OwN6OVwY2Gir
+	amiA9LN49P67QpGdy1uXH2OM80GjbCCYNOacFKEs035mbd+NaptR2533WeBSb7qpiw0Kqw1RcAF
+	IqXM0/bE8KDR6+yLNQQzBAFbZsTxhNkegJDjlTek=
+X-Gm-Gg: AfdE7cm9ryapdLcuXgaXNHRikMmQggSWIuwfm/RMkofMuYO/4U49bnxuFnvKfGvYiX7
+	F5FYL4GpsvL159hS/aHv6akh9HR8uY9ajVNwy7LTqYgKGwpv48dA2XjtSpuc12loawgOZQkipUN
+	8Pm31wgiMuEcwlgfNXUfvZvSdzGCRQmkBbP8ECquQ+EePBnz7jbpwJ2UULB6k5I4kt3Tki9kgxZ
+	Wh2Bj8ohUdMHaiPtI3uwv4BBq4EcVE4IgyJ1FfjfPEkIVjd4DyEhyTvEVopBzp6V2euWHKprBNe
+	hEvsPalIMeZu/gqj8xsD2JTMtmr4oiTFeMcBIzqxemEk8Cefp/RfQ+VfgkZ2EtvXdoyFlBGQMPH
+	0Tg==
+X-Received: by 2002:a17:90b:3f85:b0:38e:480b:99a5 with SMTP id
+ 98e67ed59e1d1-38e4b3e228emr7432819a91.2.1784455341567; Sun, 19 Jul 2026
+ 03:02:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260719-b4-rust_binder_impl_flags-v2-2-7a5debdfa39c@google.com>
-References: <20260719-b4-rust_binder_impl_flags-v2-0-7a5debdfa39c@google.com>
-In-Reply-To: <20260719-b4-rust_binder_impl_flags-v2-0-7a5debdfa39c@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
- Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Jahnavi MN <jahnavimn@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784455020; l=9219;
- i=jahnavimn@google.com; s=20260702; h=from:subject:message-id;
- bh=An+Z09A906s/tyyin0FuLA6y0ENPk4CNLdXSHAc41d4=;
- b=q7GeN+JvzAhFeWVEMJrGG6Q6L8l2IXS66LgAiNMtdjGf+MZH5/9vRCxmIFjT2cOHn9Az17UY+
- k5lqr+XY98tBzXpQnj4n0/bB0Yw/zmgDkpjLue09ig6OZ5xyPsqzKdy
-X-Developer-Key: i=jahnavimn@google.com; a=ed25519;
- pk=9aLfw3FepTOJwTS7jRXm7pDH87eBeZMXBPrqwU0//RE=
-X-Endpoint-Received: by B4 Relay for jahnavimn@google.com/20260702 with
- auth_id=849
-X-Original-From: Jahnavi MN <jahnavimn@google.com>
-Reply-To: jahnavimn@google.com
+References: <CABwQupNfMAJOGqRM9ke6tj4f53dCCsBDKU7Vp+zf8mwk7bqt8Q@mail.gmail.com>
+In-Reply-To: <CABwQupNfMAJOGqRM9ke6tj4f53dCCsBDKU7Vp+zf8mwk7bqt8Q@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 19 Jul 2026 12:02:09 +0200
+X-Gm-Features: AUfX_mxhtL5_Aw7I2kRdaJ9STjyilcJN2dCOttmTXbvjWKpSbgyvfC5P4jjm1Q4
+Message-ID: <CANiq72krLhYi_vQJjKcEhiQP9CHwc-+d=iMZocW19+MqfW3qwA@mail.gmail.com>
+Subject: Re: LLVM 22 needs bindgen 0.72.1
+To: Burak Emir <burak.emir@gmail.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <alice@ryhl.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jahnavi MN <jahnavimn@google.com>
+On Sat, Jul 18, 2026 at 9:18=E2=80=AFPM Burak Emir <burak.emir@gmail.com> w=
+rote:
+>
+> It would be great if the slim LLVM toolchains could be updated to
+> bindgen 0.72.1
 
-- Define `TransactionFlags(u32)` and `TransactionFlag` with 4 variants.
-- Change flags field type to `TransactionFlags` in structs.
-- Add `is_oneway` helper on `TransactionFlags` to simplify checks.
-- Update `can_replace` logic to use type-safe combined flag checks.
-- Convert `flags` to `u32` for FFI boundaries and logging.
+Yeah, this is the "Missing fields in nested class with LLVM 22." entry
+I have in:
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Jahnavi MN <jahnavimn@google.com>
----
- drivers/android/binder/thread.rs      |  6 ++--
- drivers/android/binder/transaction.rs | 58 ++++++++++++++++++++++++++---------
- 2 files changed, 46 insertions(+), 18 deletions(-)
+  https://github.com/Rust-for-Linux/linux/issues/353
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index ef692fe79201..6c838884fc07 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -30,7 +30,7 @@
-     process::{GetWorkOrRegister, Process},
-     ptr_align,
-     stats::GLOBAL_STATS,
--    transaction::{Transaction, TransactionInfo},
-+    transaction::{Transaction, TransactionFlag, TransactionFlags, TransactionInfo},
-     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverCode, DeliverToRead,
- };
- 
-@@ -1266,7 +1266,7 @@ fn read_transaction_info(
-         info.from_pid = self.process.task.pid();
-         info.from_tid = self.id;
-         info.code = td.transaction_data.code;
--        info.flags = td.transaction_data.flags;
-+        info.flags = TransactionFlags::from_bits(td.transaction_data.flags);
-         info.data_ptr = UserPtr::from_addr(trd_data_ptr.buffer as usize);
-         info.data_size = td.transaction_data.data_size as usize;
-         info.offsets_ptr = UserPtr::from_addr(trd_data_ptr.offsets as usize);
-@@ -1408,7 +1408,7 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-                 self.process.task.pid(),
-             ))?;
-             let process = orig.from.process.clone();
--            let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
-+            let allow_fds = orig.flags.contains(TransactionFlag::AcceptFds);
-             let reply = Transaction::new_reply(self, process, info, allow_fds)?;
-             // Not notifying: Reply to current thread.
-             let _ = self.inner.lock().push_work(completion);
-diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index 13dfb5c5c955..245f1556b5db 100644
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -27,6 +27,33 @@
-     BinderReturnWriter, DArc, DLArc, DTRWrap, DeliverToRead,
- };
- 
-+kernel::impl_flags!(
-+    /// Represents multiple transaction flags.
-+    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq, Zeroable)]
-+    pub struct TransactionFlags(u32);
-+
-+    /// Represents a single transaction flag.
-+    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-+    pub enum TransactionFlag {
-+        OneWay = TF_ONE_WAY,
-+        AcceptFds = TF_ACCEPT_FDS,
-+        ClearBuf = TF_CLEAR_BUF,
-+        UpdateTxn = TF_UPDATE_TXN,
-+    }
-+);
-+
-+impl TransactionFlags {
-+    /// Creates a `TransactionFlags` from a raw `u32` value.
-+    pub(crate) fn from_bits(bits: u32) -> Self {
-+        Self(bits)
-+    }
-+
-+    /// Checks if the Oneway flag is set.
-+    pub(crate) fn is_oneway(self) -> bool {
-+        self.contains(TransactionFlag::OneWay)
-+    }
-+}
-+
- #[derive(Zeroable)]
- pub(crate) struct TransactionInfo {
-     pub(crate) from_pid: Pid,
-@@ -34,7 +61,7 @@ pub(crate) struct TransactionInfo {
-     pub(crate) to_pid: Pid,
-     pub(crate) to_tid: Pid,
-     pub(crate) code: u32,
--    pub(crate) flags: u32,
-+    pub(crate) flags: TransactionFlags,
-     pub(crate) data_ptr: UserPtr,
-     pub(crate) data_size: usize,
-     pub(crate) offsets_ptr: UserPtr,
-@@ -51,7 +78,7 @@ pub(crate) struct TransactionInfo {
- impl TransactionInfo {
-     #[inline]
-     pub(crate) fn is_oneway(&self) -> bool {
--        self.flags & TF_ONE_WAY != 0
-+        self.flags.is_oneway()
-     }
- 
-     pub(crate) fn report_netlink(&self, reply: u32, ctx: &crate::Context) {
-@@ -84,7 +111,7 @@ fn report_netlink_inner(&self, reply: u32, ctx: &crate::Context) -> kernel::erro
-         if self.is_reply {
-             report.is_reply()?;
-         }
--        report.flags(self.flags)?;
-+        report.flags(u32::from(self.flags))?;
-         report.code(self.code)?;
-         report.data_size(self.data_size as u32)?;
- 
-@@ -115,7 +142,7 @@ pub(crate) struct Transaction {
-     allocation: SpinLock<Option<Allocation>>,
-     is_outstanding: Atomic<bool>,
-     code: u32,
--    pub(crate) flags: u32,
-+    pub(crate) flags: TransactionFlags,
-     data_size: usize,
-     offsets_size: usize,
-     data_address: usize,
-@@ -161,7 +188,7 @@ pub(crate) fn new(
-             }
-             alloc.set_info_oneway_node(node_ref.node.clone());
-         }
--        if info.flags & TF_CLEAR_BUF != 0 {
-+        if info.flags.contains(TransactionFlag::ClearBuf) {
-             alloc.set_info_clear_on_drop();
-         }
-         let target_node = node_ref.node.clone();
-@@ -201,7 +228,7 @@ pub(crate) fn new_reply(
-                     return Err(err);
-                 }
-             };
--        if info.flags & TF_CLEAR_BUF != 0 {
-+        if info.flags.contains(TransactionFlag::ClearBuf) {
-             alloc.set_info_clear_on_drop();
-         }
-         Ok(DTRWrap::arc_pin_init(pin_init!(Transaction {
-@@ -234,7 +261,7 @@ pub(crate) fn debug_print_inner(&self, m: &SeqFile, prefix: &str) {
-             self.from.id,
-             self.to.task.pid(),
-             self.code,
--            self.flags,
-+            u32::from(self.flags),
-             self.start_time.elapsed().as_millis(),
-         );
-         if let Some(target_node) = &self.target_node {
-@@ -313,7 +340,7 @@ pub(crate) fn submit(self: DLArc<Self>, info: &mut TransactionInfo) -> BinderRes
-         let _t_outdated;
-         let _oneway_node;
- 
--        let oneway = self.flags & TF_ONE_WAY != 0;
-+        let oneway = self.flags.is_oneway();
-         let process = self.to.clone();
-         let mut process_inner = process.inner.lock();
- 
-@@ -324,7 +351,7 @@ pub(crate) fn submit(self: DLArc<Self>, info: &mut TransactionInfo) -> BinderRes
-                 crate::trace::trace_transaction(false, &self, None);
-                 if process_inner.is_frozen.is_frozen() {
-                     process_inner.async_recv = true;
--                    if self.flags & TF_UPDATE_TXN != 0 {
-+                    if self.flags.contains(TransactionFlag::UpdateTxn) {
-                         if let Some(t_outdated) =
-                             target_node.take_outdated_transaction(&self, &mut process_inner)
-                         {
-@@ -399,7 +426,8 @@ pub(crate) fn can_replace(&self, old: &Transaction) -> bool {
-             return false;
-         }
- 
--        if self.flags & old.flags & (TF_ONE_WAY | TF_UPDATE_TXN) != (TF_ONE_WAY | TF_UPDATE_TXN) {
-+        let required = TransactionFlag::OneWay | TransactionFlag::UpdateTxn;
-+        if !(self.flags.contains_all(required) && old.flags.contains_all(required)) {
-             return false;
-         }
- 
-@@ -436,7 +464,7 @@ fn do_work(
-         writer: &mut BinderReturnWriter<'_>,
-     ) -> Result<bool> {
-         let send_failed_reply = ScopeGuard::new(|| {
--            if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
-+            if self.target_node.is_some() && !self.flags.is_oneway() {
-                 let reply = Err(BR_FAILED_REPLY);
-                 self.from.deliver_reply(reply, &self, None);
-             }
-@@ -467,7 +495,7 @@ fn do_work(
-             tr.cookie = cookie as uapi::binder_uintptr_t;
-         };
-         tr.code = self.code;
--        tr.flags = self.flags;
-+        tr.flags = u32::from(self.flags);
-         tr.data_size = self.data_size as uapi::binder_size_t;
-         tr.data.ptr.buffer = self.data_address as uapi::binder_uintptr_t;
-         tr.offsets_size = self.offsets_size as uapi::binder_size_t;
-@@ -477,7 +505,7 @@ fn do_work(
-         }
-         tr.sender_euid = self.sender_euid.into_uid_in_current_ns();
-         tr.sender_pid = 0;
--        if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
-+        if self.target_node.is_some() && !self.flags.is_oneway() {
-             // Not a reply and not one-way.
-             tr.sender_pid = self.from.process.pid_in_current_ns();
-         }
-@@ -529,7 +557,7 @@ fn cancel(self: DArc<Self>) {
-         drop(allocation);
- 
-         // If this is not a reply or oneway transaction, then send a dead reply.
--        if self.target_node.is_some() && self.flags & TF_ONE_WAY == 0 {
-+        if self.target_node.is_some() && !self.flags.is_oneway() {
-             let reply = Err(BR_DEAD_REPLY);
-             self.from.deliver_reply(reply, &self, None);
-         } else {
-@@ -545,7 +573,7 @@ fn cancel(self: DArc<Self>) {
-     }
- 
-     fn should_sync_wakeup(&self) -> bool {
--        self.flags & TF_ONE_WAY == 0
-+        !self.flags.is_oneway()
-     }
- 
-     fn debug_print(&self, m: &SeqFile, _prefix: &str, tprefix: &str) -> Result<()> {
+Updating the toolchains would be nice. I think we can easily add a
+check on `rust_is_available.sh` like e.g. the one I had before commit:
 
--- 
-2.55.0.229.g6434b31f56-goog
+  ae64324ad5c1 ("rust: rust_is_available: remove warning for `bindgen`
+< 0.69.5 && libclang >=3D 19.1")
 
+I will do that.
 
+Cheers,
+Miguel
