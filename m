@@ -1,169 +1,267 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from mail-08.mail-europe.com (mail-08.mail-europe.com [57.129.93.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82A715FA81
-	for <rust-for-linux@vger.kernel.org>; Sun, 19 Jul 2026 16:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F175B24E4A1
+	for <rust-for-linux@vger.kernel.org>; Sun, 19 Jul 2026 20:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.129.93.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784477371; cv=none; b=f+slSah9zGwiBVCT47JFVdRyulZrjtCMvPZZZhACTHlMbOoeqhPVLJDodQghLfD6ATYiR20AarQWdfpD2WCl46iA9vFq0+V/nAvYVNsJZ6VOxMNAKltv13o+kDxZA2oE4hz+J7TsWdh4Wyxokbpde/rewl2JtfeB4d1FoinU6d4=
+	t=1784491814; cv=none; b=JXx1ri7y4kUK8ZnoPgmpuSamHkKONi8jHYzHCb+zn2ONPfDuyBBYR4Uvv74Q2BYhhbOnL8PcRYTD/zi/SKXV4FpXfNsrNyLBDvusi9FZj4P1DEqzoyZiazSuUcsxrz6eM0trTvrStH0FY7O6Ch/eTWsPnGCFyDzW2mWzngWs3dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784477371; c=relaxed/simple;
-	bh=5j0+Q+8f9tUfn8r5/ID+yQmL1h8HTn3VdOrsDpaCmw8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nsxHZWj/TXIO0hf1MYkPSIwYkzr6d+588VqAAWAT3cYsH0nrPRq8t8aZIeFJ4GykdGqykoRcP0q/b2rRSbsdWthFvCTuU3LmeFhqIZbk3WSbSRwgxgmOO6PKGw/bue6s0mOfmPF8TgTrtrtgapi8m86zjLxR0gtIYXbM+2Q3bk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=Ls3PK8ha; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1784491814; c=relaxed/simple;
+	bh=X5iAEHz2hxjPsXMerElFIw8SISqLEikb1wSYP2eCe74=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Rc4BdejqeB98+vYVHjf2MOnzwVMwhF2MKZGBtepGbq2qRFpFhTd3eyieaRWch4dGjLLuMbkcuHyZrYFuU2QelN/a6Ftxq7BXSEcJelW67iLY9Jkbgmehg2ut0La4/ZQrj720n4wg27WaxDqyNt5NeONNe1HFGfN4tBTrZTa8hSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XIDe5Bxp; arc=none smtp.client-ip=57.129.93.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="Ls3PK8ha"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id E8F88240027
-	for <rust-for-linux@vger.kernel.org>; Sun, 19 Jul 2026 18:09:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de;
-	s=1984.8680eb; t=1784477361;
-	bh=5j0+Q+8f9tUfn8r5/ID+yQmL1h8HTn3VdOrsDpaCmw8=;
-	h=Message-ID:Subject:From:To:Cc:Date:Autocrypt:Content-Type:
-	 MIME-Version:OpenPGP:From;
-	b=Ls3PK8ha/BcdA5Ioo8nsrQMOOtvxWxMvwBl9mpuUT6/Hol3atBR/F5lfiv89/TAAk
-	 YvB7o/8wu+COL1YxPWnbaC+rNQCQaxlhZAmhNDfGCh6OsfFXkKfqBC3oQWgboD4RcU
-	 nH8DBWacyGHCo7lQ3Rbyf/EkiaclGt9+g9ayIRMH6MYfF2veReBpMpdL/XbGc8TLYc
-	 daqfQVbDMFxafJUA3BEP3CumVob39IYJihqdu1o3d5iFdZdrIwwhyuD6OZGqLfAEoj
-	 /801vf1lmtl+TkO6ltyVoldk8mQ7lT9QCoBP9H35tna0ujIDbUS7SOmhUMsC21MQAB
-	 ieHUhIwFqZVOQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4h37rH238Kz6txq;
-	Sun, 19 Jul 2026 18:09:19 +0200 (CEST)
-Message-ID: <128bd2f0b3369f2eff43357483565a74700cd5c4.camel@posteo.de>
-Subject: Re: [PATCH v2 0/4] rust: serdev: trivial fixes
-From: Markus Probst <markus.probst@posteo.de>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda	
- <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
- <gary@garyguo.net>,  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
- Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross	 <tmgross@umich.edu>, Daniel Almeida
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, Onur =?ISO-8859-1?Q?=D6zkan?=	
- <work@onurozkan.dev>, linux-serial@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, kernel test
- robot	 <lkp@intel.com>
-Date: Sun, 19 Jul 2026 16:09:21 +0000
-In-Reply-To: <DK1R9VZND2NS.36X0BL0F957OI@kernel.org>
-References: <20260718-rust_serdev_fixes-v2-0-e5214e03de13@posteo.de>
-	 <DK1R9VZND2NS.36X0BL0F957OI@kernel.org>
-Autocrypt: addr=markus.probst@posteo.de; prefer-encrypt=mutual;
- keydata=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
- jfGillcaQOqFZ3WwVqyzG1BUfTow==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-BiYm2L4aK4rtF4SVsgXx"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XIDe5Bxp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=hr7fef3m5bcb3nzwxv7hcawpkm.protonmail; t=1784491794; x=1784750994;
+	bh=YIlA/ffz+CiSppXBfyyFp/DZEaOzhgtsaIbJf8IEPJk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=XIDe5BxpOiZPwyCj4Yuh5bU57cJs5z9EkFRs7WjCxWGWBRLdSDo36yxkjjNUrKBi6
+	 BJIK8IWmBZljUseKpghmQSzhH4/YboOWW62wW9sr3Cu5eFdr9Jn//oKltxrn33U9lv
+	 a4xGmGYzXCR5dNaMXg6cVUGeUODfrhTmn+nbEHlvXSk/m2SGTW8cEt8COeG9ZU51mf
+	 YmOPeMX1gQo5pdt0oIcwI/WVx+0QkRO4jlq0Lt2S4CPyDdzNGzE72lwG5t5vfYODzE
+	 V5zl36MlUXVH2KwaWJPTmMI9Cy0FOVck8k3+jbJXoiM67leHx5XPGTApRwjgt0Skus
+	 VpyQOHmAN2ZFw==
+Date: Sun, 19 Jul 2026 20:09:49 +0000
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Alexandre Courbot <acourbot@nvidia.com>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>
+From: Lorenzo Delgado <lnsdev@proton.me>
+Cc: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev, Lorenzo Delgado <lnsdev@proton.me>
+Subject: [PATCH v2] rust: io: convert ResourceSize into a transparent newtype
+Message-ID: <20260719200945.687904-1-lnsdev@proton.me>
+In-Reply-To: <20260712113602.389060-1-lnsdev@proton.me>
+References: <20260712113602.389060-1-lnsdev@proton.me>
+Feedback-ID: 53083996:user:proton
+X-Pm-Message-ID: 81b8f77747862653e1bf7a1622bfe2725ec30257
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-OpenPGP: url=https://posteo.de/keys/markus.probst@posteo.de.asc; preference=encrypt
-
-
---=-BiYm2L4aK4rtF4SVsgXx
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2026-07-18 at 16:10 +0200, Danilo Krummrich wrote:
-> On Sat Jul 18, 2026 at 2:47 PM CEST, Markus Probst wrote:
-> > Those are small fixes discovered by the kernel test robot and Gary Guo
-> > after the serdev rust abstraction have already been merged.
-> >=20
-> > This includes
-> > - a fix for a documentation typo
-> > - adding missing `#[inline]` attributes
-> > - a small structual change for timeout
->=20
-> Thanks for the quick follow-up, the patches were only in the -testing bra=
-nch, so
-> I dropped them from the queue.
->=20
-> Can you please integrate those changes into the original patches and rese=
-nd?
->=20
-> Thanks,
-> Danilo
+`ResourceSize` was a bare type alias for `resource_size_t`, so it
+inherited every integer operation and `as` cast. That silently permits
+operations that are meaningless for the size of a hardware resource:
+mixing it with unrelated integers and truncating casts.
 
-Hi,
+Wrap it in a `#[repr(transparent)]` newtype so each conversion at a
+boundary becomes explicit and reviewable. The representation is
+unchanged, so this is ABI-identical; only the spelling at the FFI
+boundary changes. Provide the conversion surface `from_raw`/`into_raw`,
+`From` in both directions, and a fallible `TryFrom<ResourceSize> for
+usize` for checked narrowing. Update the two producers, `Resource::size`
+and `SGEntry::dma_len`, and the `request_region` consumer. In nova-core,
+add an `impl FromSafeCast<ResourceSize> for usize` so its page-count
+conversion keeps the infallible `usize::from_safe_cast(sg_entry.dma_len())`
+unchanged.
 
-The patches have been integrated into
-https://lore.kernel.org/rust-for-linux/20260718-rust_serdev-v16-0-5809384d2=
-e1b@posteo.de
-.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1203
+Signed-off-by: Lorenzo Delgado <lnsdev@proton.me>
+---
+v2: keep the nova-core page-count conversion infallible, per review
+    (Danilo Krummrich). v1 changed it to a fallible
+    usize::try_from(sg_entry.dma_len())?; instead of touching the call
+    site, add an impl FromSafeCast<ResourceSize> for usize in nova-core's
+    num.rs, so drivers/gpu/nova-core/firmware/gsp.rs keeps
+    usize::from_safe_cast(sg_entry.dma_len()) unchanged. FromSafeCast is
+    to move to the kernel crate subsequently. io.rs is unchanged from v1.
 
-As they haven't been picked up again yet, I assume you want to wait to
-allow for comments to be written.
+v1: https://lore.kernel.org/r/20260712113602.389060-1-lnsdev@proton.me
 
-Thanks
-- Markus Probst
+ drivers/gpu/nova-core/num.rs | 10 +++++
+ rust/kernel/io.rs            | 73 ++++++++++++++++++++++++++++++++++--
+ rust/kernel/io/resource.rs   |  6 +--
+ rust/kernel/scatterlist.rs   |  2 +-
+ 4 files changed, 83 insertions(+), 8 deletions(-)
 
---=-BiYm2L4aK4rtF4SVsgXx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+diff --git a/drivers/gpu/nova-core/num.rs b/drivers/gpu/nova-core/num.rs
+index 6eb174d136ab..7c0e878bbfb2 100644
+--- a/drivers/gpu/nova-core/num.rs
++++ b/drivers/gpu/nova-core/num.rs
+@@ -6,6 +6,7 @@
+ //! crate.
+=20
+ use kernel::{
++    io::ResourceSize,
+     macros::paste,
+     prelude::*, //
+ };
+@@ -137,6 +138,15 @@ fn from_safe_cast(value: u64) -> Self {
+     }
+ }
+=20
++// A `resource_size_t` fits into a `usize` on 64-bit platforms, where a `u=
+size` is a `u64` and a
++// `resource_size_t` is at most a `u64`. Delegates to the primitive impl f=
+or the underlying type.
++#[cfg(CONFIG_64BIT)]
++impl FromSafeCast<ResourceSize> for usize {
++    fn from_safe_cast(value: ResourceSize) -> Self {
++        Self::from_safe_cast(value.into_raw())
++    }
++}
++
+ /// Counterpart to the [`FromSafeCast`] trait, i.e. this trait is to [`Fro=
+mSafeCast`] what [`Into`]
+ /// is to [`From`].
+ ///
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index fcc7678fd9e3..ebf00b4536d6 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -6,9 +6,12 @@
+=20
+ use crate::{
+     bindings,
++    fmt,
+     prelude::*, //
+ };
+=20
++use core::num::TryFromIntError;
++
+ pub mod mem;
+ pub mod poll;
+ pub mod register;
+@@ -25,11 +28,73 @@
+ /// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+ pub type PhysAddr =3D bindings::phys_addr_t;
+=20
+-/// Resource Size type.
++/// Resource size type.
+ ///
+-/// This is a type alias to either `u32` or `u64` depending on the config =
+option
+-/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit archite=
+ctures.
+-pub type ResourceSize =3D bindings::resource_size_t;
++/// This wraps either `u32` or `u64` depending on the config option
++/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a `u64` even on 32-bit archi=
+tectures.
++///
++/// # Examples
++///
++/// ```
++/// use kernel::io::ResourceSize;
++///
++/// let size =3D ResourceSize::from_raw(0x1000);
++/// assert_eq!(size.into_raw(), 0x1000);
++///
++/// // Round-trips through the raw C type.
++/// let raw: kernel::bindings::resource_size_t =3D size.into();
++/// assert_eq!(ResourceSize::from(raw), size);
++///
++/// // Fallible conversion to `usize` (can truncate on 32-bit).
++/// assert_eq!(usize::try_from(size)?, 0x1000);
++/// # Ok::<(), core::num::TryFromIntError>(())
++/// ```
++#[repr(transparent)]
++#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
++pub struct ResourceSize(bindings::resource_size_t);
++
++impl ResourceSize {
++    /// Creates a resource size from the raw C type.
++    #[inline]
++    pub const fn from_raw(value: bindings::resource_size_t) -> Self {
++        Self(value)
++    }
++
++    /// Turns this resource size into the raw C type.
++    #[inline]
++    pub const fn into_raw(self) -> bindings::resource_size_t {
++        self.0
++    }
++}
++
++impl fmt::Debug for ResourceSize {
++    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
++        write!(f, "{:#x}", self.0)
++    }
++}
++
++impl From<bindings::resource_size_t> for ResourceSize {
++    #[inline]
++    fn from(value: bindings::resource_size_t) -> Self {
++        Self::from_raw(value)
++    }
++}
++
++impl From<ResourceSize> for bindings::resource_size_t {
++    #[inline]
++    fn from(value: ResourceSize) -> Self {
++        value.into_raw()
++    }
++}
++
++impl TryFrom<ResourceSize> for usize {
++    type Error =3D TryFromIntError;
++
++    #[inline]
++    fn try_from(value: ResourceSize) -> Result<Self, Self::Error> {
++        Self::try_from(value.into_raw())
++    }
++}
+=20
+ /// Raw representation of an MMIO region.
+ ///
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+index 17b0c174cfc5..a33a416b289a 100644
+--- a/rust/kernel/io/resource.rs
++++ b/rust/kernel/io/resource.rs
+@@ -58,7 +58,7 @@ fn drop(&mut self) {
+         };
+=20
+         // SAFETY: Safe as per the invariant of `Region`.
+-        unsafe { release_fn(start, size) };
++        unsafe { release_fn(start, size.into_raw()) };
+     }
+ }
+=20
+@@ -114,7 +114,7 @@ pub fn request_region(
+             bindings::__request_region(
+                 self.0.get(),
+                 start,
+-                size,
++                size.into_raw(),
+                 name.as_char_ptr(),
+                 flags.0 as c_int,
+             )
+@@ -130,7 +130,7 @@ pub fn request_region(
+     pub fn size(&self) -> ResourceSize {
+         let inner =3D self.0.get();
+         // SAFETY: Safe as per the invariants of `Resource`.
+-        unsafe { bindings::resource_size(inner) }
++        ResourceSize::from_raw(unsafe { bindings::resource_size(inner) })
+     }
+=20
+     /// Returns the start address of the resource.
+diff --git a/rust/kernel/scatterlist.rs b/rust/kernel/scatterlist.rs
+index b83c468b5c63..5d67242befd8 100644
+--- a/rust/kernel/scatterlist.rs
++++ b/rust/kernel/scatterlist.rs
+@@ -93,7 +93,7 @@ pub fn dma_address(&self) -> dma::DmaAddress {
+     pub fn dma_len(&self) -> ResourceSize {
+         #[allow(clippy::useless_conversion)]
+         // SAFETY: `self.as_raw()` is a valid pointer to a `struct scatter=
+list`.
+-        unsafe { bindings::sg_dma_len(self.as_raw()) }.into()
++        ResourceSize::from_raw(unsafe { bindings::sg_dma_len(self.as_raw()=
+) }.into())
+     }
+ }
+=20
 
------BEGIN PGP SIGNATURE-----
+base-commit: 7059bdf4f04a3e14f4fafb3ac35fdca913e3e21a
+--=20
+2.54.0
 
-iQJPBAABCAA5FiEEgnQYxPSsWOdyMMRzNHYf+OetQ9IFAmpc9pkbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMiwyAAoJEDR2H/jnrUPSz5kQAKOBVC0vSgi6aDXWZO+K
-dr1Ug/Ipswr9SeiNtXQbxqTtl/Y3wWZFLdvDKkNDAMbnT62GaXsaqjkIFknU0Z6x
-YPlVDR1D51MMclaLp7Ls7CDGf/xtWjDg7JqdnLg0pCqXVX6xmG9RKWQ3lmJJlA17
-bJdgFfZsPz04HblKvcrynKRWuf38Oi+RlQMk8j0ypvmWnk3udemHH+NA08NXx3LK
-JTVsMQJBd72+99HOGKp5xiacRQol9lRqd9tSFFWF9eYaMviD/1wQgnSqPrQ3T+nx
-5JauBQr/WSteBCzC+Kzv0XIxzLKTKuajh+xfivklU2BzND89YEZUc/Ok7tGxwpdR
-8UFzFFdITc1jrVJaVM+GfKhJshGRIKfM2NR6dI4DbSptXC0aOYS8GRbZx+OUgHuR
-rEPmg7tX1ebSR4Ftz/kRR5jlYVRUeuDsQXOKyOkU6yryZqxRxzNPLDYESanS0kjD
-KIQG7zfma0k8B5KGmhlkKQXgcj0D63pCTjMTKTGurcaAR9QCeV41bNo1qn136B/p
-VUu+KwuHEXedZTQYbCnTENHt+l0oTbiCayLx9vaeSeNFfcUlqLzcVMrOGCGtmZcV
-NEh3t5rufL+xZiLiKnDV64o4d2Z8BwCy+GKniyylmWSDyJ4AT0NB6pf2tEiQZYbq
-w0it182pWV1ljoIe9VuK+vnh
-=cnZu
------END PGP SIGNATURE-----
 
---=-BiYm2L4aK4rtF4SVsgXx--
