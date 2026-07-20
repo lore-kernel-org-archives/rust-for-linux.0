@@ -1,146 +1,147 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F2545104C
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 18:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784570462; cv=none; b=ccgzz8D0Iiau46N6KS4UlhXDZSIrJxooT1+evbMy485991qfiX5RFveGTItFF6Y6Gi4/zBuPQKknQvdOulm3gAynjGkQ22S28dJGTe9bQE2MxmIVnHoqdku7rYiUyIjBEhsHZR92k2Yu0WRjCJYuw7LF4cALHx4I7eWD2hr93XU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784570462; c=relaxed/simple;
-	bh=NwFxwEzduRthsAklGhzehNehnxCMZ1sKcUXTgzWo67I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TiOTdc0ZOQ4Mz0vG/w8QrvPUgQDW/LPruW9YA1DBk/95HoYWHIf1RAFSKODNOpadao7GrDnoYzorvfz5G1IFwiJYIUtdBDsVbkK9VVeZT/5+pg648AIpuJ2lEE9gU5rL1e1cqjWNXpbxU7BA0EIlwsWsBGsbLhqXRKbKeebkCgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu; spf=pass smtp.mailfrom=uci.edu; dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b=dR5oCnzH; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uci.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uci.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DCC1F30BB
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 18:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784571380; cv=pass; b=U7OS9O9NbYABim5m18zDmzUMflzyZMyAxMkw4ZzvopCPbg3BIleYUadprwtGhht0okSfbavGLAr+r/VO6tiO5WnqnDjbBNLRQ4haKzUwlaUjBUEnD8opWapSijfXRXMEv5mlYBayuyHb++Fr6cB5ZX7GdTqKiBoH/2yN2LiiHPI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784571380; c=relaxed/simple;
+	bh=BRTNEQ4O2F84GW1j1IDa+ZoiMoKj1hSznZ9zfsgkfIM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B/WGH5IaOSl8+DPrF9PiIG9Xdtr4Aip4i9UfxvSIswgfI7hScpR0s74QkiEGCOcu+i10tyRsO/voMzYWzQU8jPVdQM1laXIQRSbZxY7QeuAPzfso4VlTH/W6j603LknDMlL6q/38Fw7ANiCjAsHxWdXwPcFAQ9b28A7uBM93xow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MtoUy+to; arc=pass smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uci.edu header.i=@uci.edu header.b="dR5oCnzH"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-caf707e3a70so2453896a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 11:01:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MtoUy+to"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-382ef647e20so9908925a91.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 11:16:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784571379; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fmee6lqNU2up7xISX1e1QQooIsfCAHrv1Vz3U6Z4SJup6By7Rb3kGZcmi0fCjxk6/t
+         XohymTUa2Qdci/DPNCHa205WO13lhOgGQbr1l2+/28WbzSfeoLNzCAaaWmjuXOnSN9Qq
+         AzH0A+vlIKoJnwvWrGawcr2CRlOrs0APB384SDaUGkiBZJn/jy596uO5bNIe/tVoQz8w
+         FZ/THFidrQdvFpy8oaatoDz8lcutmVznVyoU90DzpNE+dJM9c+dYM2Ca7P2YqJ3goHo5
+         HW5jfVmQnX6s/EGHjSZI9BjPjQo1gF5o1PWWI8mbftYfGDhorNPfaaATWt/PTKnHtKUD
+         h09w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XcbLbMlAxU3FFYmHV6MHSiEe84/hA+evMZkKwSS6324=;
+        fh=p1Ziclq4FwAwaXimqIRSklgENIoeiq1S4XV4zD7o6Es=;
+        b=CNV4BgDu28ypYEM4Gs99uLNgDPXZU3mm5dyK1Y77DRVk46/xNb3HlgNpbRoN4jcjBR
+         DQ4U5y5KutRUR+L0+cJV9vOkEeBi2DlkT0fqIGfm4ecwCYbF8711XGUtIyucGQmmKilz
+         CXHSOQpjblwg447n7JhVmSJem9F4QhfhcwWaZdrBQCx+hS8lQoNwIHOkGsuHVVUhnWmk
+         R/jV9Fc/TeySiIshLbM2DKN/Fe21RwVWZiUCs6nNcels9tHxe600xx1yBmOwdBRIHP9y
+         oRVWYCojCR61kgB+uOkPMv2CVPEKejSbAfK8hfBiXumcra0TIPv5sVMcnPas8xXiYRhn
+         tNwA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=uci.edu; s=google; t=1784570460; x=1785175260; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sKOREryEfKuNZZdoCOQ4fv+T8IxxHM0POBXRDbZ5okM=;
-        b=dR5oCnzH+eWP4FLyw9QlFCfGMwGlpvRbtQidrhxxgjiKdvS2gdc0OThfvPK0yk6YnZ
-         a7vC7aqTG8+HRV4C9BWaPQ0bEOLZIl+sq6a0VVWTGgdeD9kiCmfAFneN9Q/FC1DDR0+X
-         FZYFBUH9t+MphuRux9PfOl/MGw2ln3pROwsV2+wl67Xf2bkSXwYHXvG0McPJ2lZyOkVg
-         dWc5BHODso0fpDYeQgu9OBE/uDK0tQNvHU0W0SZMjJ7CHkbR5Bn9xgcP4J8+l79p+t19
-         bNGHfMMe9Y7QwRxkxhZIZiEV+xPsMlNSWhFD7grBHAnrNHvZ5e1YnpeTiCTSsp5o2AKW
-         LLLw==
+        d=google.com; s=20251104; t=1784571379; x=1785176179; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XcbLbMlAxU3FFYmHV6MHSiEe84/hA+evMZkKwSS6324=;
+        b=MtoUy+toza1egkCGmOVuN+Q24SxV6reiLhdWIJlIqAYl42zQ6oYlTjHXokAVyoHyWv
+         L0A8SN132Ov3MVTBHyHoYbEG0QhO2KQcMzWfnEa+r7xrIwkgFJwnw5zVjuzKNo6XOopC
+         sJa/QvdoBetvKTHro++IFPT4u6dSkW/r3L7RZrga/XjmTT7cMzEill2BGi3C0qL8SDT4
+         KHgRFSVqQDUVveGi9tyKVrrV94AvXD+eTeghLPLl9zlBFfgdOICxvf7Mf6OEBgBqzgO1
+         QAs4AQbXXH6rrtfrulvT5vHiKfv8wZO5Ko8eUkPtKacHThMzcwL7xGN2VhjN35BsI3L0
+         b8wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784570460; x=1785175260;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sKOREryEfKuNZZdoCOQ4fv+T8IxxHM0POBXRDbZ5okM=;
-        b=Ig+KM71kWzrRef29jlUrk2lke8DDhsPy8uM8tp4Pw6naKul0jLZcHPux2ngOSZ76Ht
-         2kAkKJdX+u3aUqydqHYEpHqLXjc+uXM+GVipr8FhzIYMYjsNDDWKXd5+wNB5mUmuZ3/S
-         W4pE12RtqVqfQau0t/K+ITN22lvvTzU+eCdlZ89ZzVNtlHm85D6z6nQ3hPNAjiWfevUk
-         sNFwnaovh9LVzQnm7zdJdIuQztP4RowXk59woMOnTYi0RX5tqg5eIrpgLk52IUmbfKI2
-         MXbWi3Uu+giaS9rTqaVHrWYOHmshcnXIKBKDg6v8ODsvUjyVch/h4ZqG9hlwKwmmDcwD
-         GFuA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrh3zl3YnPokjGEMYkPK/1Zq1jpHp7ylxdggRI+kKCtjcrks4xTjB1kL+ZZ6+D0wXikEo/45xJEpWtJshS8dg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyW5urHNoFUcAEbOAjZxKDYc94busaHJSS2xI2/1Q4Kda6VFhdY
-	NBiyKXgCZ4yx485cSCuP7dFHyhUU5Ufmz5CTVmktjqFCa0ExzheuSUCNnI5Xji5nGMY=
-X-Gm-Gg: AfdE7ckRRLNu3t7dxnlQYuAe2wjrgnPT1Ng/cZLgqxlfgjq22ZEsfG4PbMOj1CJXS55
-	vORdXJ4h9GWiAvkQttnweFyYGHuEd+xMBEqRwylAxqi84Sk5poGkGRDQzNVjSCNWhk3jnBm3GOE
-	c1GcVepupT0/ocx41b6OjKHvqxes0YFfXhTm9b58QoptJVsqwkXIA6NrMSmneF3C6P6Yhu572be
-	O0tTQOHq5YxGy119F3XmfXxvUIjtIMhBkU3fShWQXKoTxe7hA8DT+Umd0Is4xqcipUjs1FCDgt6
-	aAZIXrIgvjp+8TUy4Ij9uyQp0lD8muAzs/hsyOHIqXDOnmhASqiXTlsLFMI9Vr+2cZfvJQadhO8
-	PGRKkWfgts+clpuJAJu9Bs8DtRK+58eT5zu+qUk9MvmDZflnkMiNHRbXLUWVxVcVxDwC6J+7Siu
-	0545uf04mpjUxRPqR3VemihoeEOg0yJhC40tnPiCQ=
-X-Received: by 2002:a05:6a20:939f:b0:3bf:ecf8:abe with SMTP id adf61e73a8af0-3c38d512647mr21834868637.0.1784570459809;
-        Mon, 20 Jul 2026 11:00:59 -0700 (PDT)
-Received: from guest1.. (charm.ics.uci.edu. [128.195.4.118])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-3142a1bb770sm42198774eec.16.2026.07.20.11.00.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 11:00:59 -0700 (PDT)
-From: Priya Bala Govindasamy <pgovind2@uci.edu>
-To: rafael@kernel.org,
-	viresh.kumar@linaro.org,
-	ojeda@kernel.org,
-	aliceryhl@google.com,
-	gary@garyguo.net,
-	boqun@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Cc: ardalan@uci.edu,
-	zhiyunq@cs.ucr.edu,
-	dzueck@uci.edu,
-	ytan089@ucr.edu,
-	pgovind2@uci.edu
-Subject: [PATCH v3] rust: cpufreq: Fix temporary write in Registration::bios_limit_callback
-Date: Mon, 20 Jul 2026 18:00:58 +0000
-Message-Id: <c38ed08b34af92e134f5aefc993d349bd1dd11ef.1784569723.git.pgovind2@uci.edu>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1784571379; x=1785176179;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XcbLbMlAxU3FFYmHV6MHSiEe84/hA+evMZkKwSS6324=;
+        b=Sa1LyEz72gwjK59Miq+DO7+/mgoN3m8TuwFyQ96rsjwV6ACnMTXLr3OfJEIO8QFRG6
+         JN2tNDBXzE22zjfk4NZ0hjj5OxEYvn8UkTn+DtfCbgvQzmN1UahOX7fXrfvxlQADZ6rX
+         XTY0+v4yHqyZnZrRjuOzGbnATrj4StO7jbg/BY8xrq7Q9XVbAyIgax62ARPds0Hlo6O+
+         ZoMBHp0uKobQmT7sXL2x9CcDXpzskMt09mtCVwYdfXntgYlkvcc13UEdY2D+ibMvZGyX
+         ePuRLtBYMWQnfNs3qwISKvpPADADQ64IaMGYF4xHsEiKxKXnfnTXNXgbIGsK5T8ZB9NA
+         +jIw==
+X-Forwarded-Encrypted: i=1; AHgh+RrIIAHJQWD2CcoaHdGGgEfJDpdAEb+NxqKW1d8D9BgZB+Yhber9RXXfHPRVKFPNfKu341GyGif4RGOlF5XZCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyrbhxu4tUHFxkcQAMrUIH8tmIO498EGj8aTcdO7lRQaKIEapao
+	zK3ykz1a4ElWC/WmQg9obnZEPn9rrFJIh9cmuLTys0r9uKnSAtJ47wkyvUrRVnmql5um7lxI3kI
+	rKOmnLRwwCuV7Dc2fNjSAqR16xbRRhoHKCfmy4yc=
+X-Gm-Gg: AR+sD11/YfPzM8xNiHumvQzVlVUm0NmhERe0vX6JcoIxGCnXJbI08hNaAPyZqigqxIm
+	Zz5droJXomJzDEcMPVPm4MYh6MksFUveosrOoRDK3AQl1RjBE/kbd9pYahJAJ10kSYooYpQ/PGv
+	UKLM0nKHj2PUfGSIWyS3uQN0EsU+MRU1/mQCnqXJETcN/Nu2ECpnak2O4vTQWezh9XkR3N1V8Te
+	TIsl6NRe3YAaT/Mkyex0Vdrh5JmmPvX8+3ZWv7WbkzIu67gop8xyFClllM+CJSaW07B/K0pdQJl
+	rxRox71eKBVh/mmLXM/SCh0uzGLPYSBmRlonUDLID1PXT+abmA9P/DgvyTL6GaJmkM8uUDzB5yA
+	xBdW1ajKCUswY
+X-Received: by 2002:a17:90b:3ec7:b0:38e:7eb:d07b with SMTP id
+ 98e67ed59e1d1-38e4b55affbmr17282364a91.34.1784571378108; Mon, 20 Jul 2026
+ 11:16:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260717042247.3634961-1-tomo@flapping.org> <20260717042247.3634961-3-tomo@flapping.org>
+ <DK1SRBA3315M.32N4T8QQBUOER@garyguo.net> <20260720.184751.938933263969124163.tomo@flapping.org>
+In-Reply-To: <20260720.184751.938933263969124163.tomo@flapping.org>
+From: John Stultz <jstultz@google.com>
+Date: Mon, 20 Jul 2026 11:16:06 -0700
+X-Gm-Features: AUfX_myBVTGUs1isUDf1xFdHYpko8PRfK5j7XAV6SZGEdyYIniKK0dkFdMXduI8
+Message-ID: <CANDhNCrKMdHCmL76LWCROVF2Ly-9NxmfmQ2T+P=iv34aVkO2uQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: use Delta and a Jiffies newtype for timeouts
+ and delays
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com, 
+	arve@android.com, boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, 
+	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
+	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
+	lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, 
+	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In `Registration::bios_limit_callback`, the expression
-`&mut (unsafe { *limit })` creates a reference to a temporary copy
-of the value pointed to by `limit` on the stack.
-Therefore, writes made by `T::bios_limit` go to this temporary
-instead of the memory location pointed to by `limit`.
+On Mon, Jul 20, 2026 at 2:48=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org>=
+ wrote:
+> On Sat, 18 Jul 2026 16:20:10 +0100
+> "Gary Guo" <gary@garyguo.net> wrote:
+> > I wonder if we should have time types being generic over units. So you =
+can have
+> > `Delta<Nsec>` and `Delta<Jiffy>` and `Instant<Nsec>`, `Instant<Jiffy>`,=
+ with the
+> > generic default being set to `Nsec`.
+> >
+> >     Delta::new(42) // Delta<Nsec>
+> >     Delta::new_jiffies(42) // Delta<Jiffy>
+> >
+> > Thoughts?
+>
+> I think making Delta generic over the time unit makes sense; Delta
+> <Nsec> and Delta<Jiffy>.
+>
+> However, I don't think making Instant generic over the time unit is a
+> good idea, even though it clearly is for Delta.
+>
+> Instant is already generic over ClockSource, and jiffies is not a
+> clock source: it has no clockid_t, it is read via get_jiffies_64()
+> rather than ktime_get(), and it cannot be armed through hrtimer. That
+> leaves two ways to force a jiffies Instant, both looks wrong:
 
-Additionally, `limit` may be uninitialized, such as when
-`Registration::bios_limit_callback` is invoked by `show_bios_limit`
-in drivers/cpufreq/cpufreq.c. Therefore creating a reference to 
-`limit` is unsound.
+I read the above and thought, "but jiffies is a clocksource":
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ker=
+nel/time/jiffies.c#n21
 
-Fix this by changing the signature of `T::bios_limit` to return the limit
-value.
-`Registration::bios_limit_callback` can then update `limit` directly.
+And then I realized there has been some unfortunate naming overlap,
+where it seems the rust ClockSource seems to map to the clockid_t, not
+to the clocksource concept that Linux uses to abstract the hardware
+counter used as a source of time (for the majority of the clockids).
 
-Fixes: c6af9a1191d042839e56abff69e8b0302d117988 ("rust: cpufreq: Extend abstractions for driver registration")
-Reported-by: Dylan Zueck<dzueck@uci.edu>
-Reported-by: Yuan Tan<ytan089@ucr.edu>
-Assisted-by: ChatGPT:gpt-5.4
-Signed-off-by: Priya Bala Govindasamy<pgovind2@uci.edu>
+Very much a bikeshed request, but is it too late to rename this to
+ClockID or something? So there is maybe less confusion when reading
+across C and Rust code?
 
-changes in v3:
- - Update documentation for `bios_limit`
- - Use direct raw pointer assignment instead of non-dropping write for
-   `limit`
- - v2 Link: https://lore.kernel.org/rust-for-linux/2fd4425697efb6d52459cd886115edd281bd5f44.1784155370.git.pgovind2@uci.edu/
- - v1 Link: https://lore.kernel.org/rust-for-linux/cover.1783456063.git.pgovind2@uci.edu/T/#t
----
- rust/kernel/cpufreq.rs | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index 58ac04c650a1..04b39ade32e2 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -817,7 +817,9 @@ fn update_limits(_policy: &mut Policy) {
-     }
- 
-     /// Driver's `bios_limit` callback.
--    fn bios_limit(_policy: &mut Policy, _limit: &mut u32) -> Result {
-+    ///
-+    /// Returns HW/BIOS max frequency limitations for the CPU.
-+    fn bios_limit(_policy: &mut Policy) -> Result<u32> {
-         build_error!(VTABLE_DEFAULT_ERROR)
-     }
- 
-@@ -1352,9 +1354,10 @@ impl<T: Driver> Registration<T> {
- 
-         from_result(|| {
-             let mut policy = PolicyCpu::from_cpu(cpu_id)?;
--
-+            let val = T::bios_limit(&mut policy)?;
-             // SAFETY: `limit` is guaranteed by the C code to be valid.
--            T::bios_limit(&mut policy, &mut (unsafe { *limit })).map(|()| 0)
-+            unsafe { *limit = val; }
-+            Ok(0)
-         })
-     }
- 
--- 
-2.34.1
-
+thanks
+-john
