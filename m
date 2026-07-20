@@ -1,174 +1,265 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021089.outbound.protection.outlook.com [52.101.95.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FB83F12D6;
-	Mon, 20 Jul 2026 11:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784545518; cv=none; b=e5EkQ41sOFzzeQKTuZTIttTFoEK5cWvTb6DnANzSU3YJBLc3JIV6653vY+6OQAG94NIEEp1BhMU23fWnGzz8IhlzxOfHX/lWgIBmlzuCYWMQJ3z/deZ+pvjMUgbbwwa6wdHDJfcQYG7EvJtZQhVBATuWz1f8fVqixxQNoUtUutI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784545518; c=relaxed/simple;
-	bh=cgrVbqvHirhm8/ft9p1L7cLcou2SKIvhDcqiCnRwQmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=punmFMMeBHxQkPwzXOpK7eXZBNWam2GpBTlxpy3PVyA2HUONTsmyVIC+DoRXeENoVjyO/M7lXnxpsixrW13XDdQW7UYXL+SFQpaha9iH6lPsEQQW8ulOSPVaVVWy1hNmc4m0yk/kdHszyoO1DHbY0MDEC6j4n94jGLDY2x42kCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TbQhZmNX; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9435840963A
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 12:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784549086; cv=fail; b=h3NglKejSqCAyh5ZP9I0msKP76q5m58fv+iy6SYvz21ajee9kPn1Mp5fH7DyGaqFjUcUioUjB38Yv5vvHPgzf4LA6QAJvPqyHTvnpJAkbKHXKH9rwCqC5C7o1MlXzdoIFRZ90s85m2YFLWWw+y/GuYof5UGEOFMCImc76KgC+cE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784549086; c=relaxed/simple;
+	bh=yi1BS80yDWpAM6INvmjR05j8rQ1T0xYOdwyI9H2Np50=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=dJ6w6mazRayIKWibEYxAznFQZjHvOHwq7iPT9TLE6DpoC2UlM2DGaVyrE8Knea37CqT/H8VUCdx4iBuZ/lucLbNS8o2DMk7Bjw6ltzc0yd09j6CtrXRJK+vtSsLJvmS1FJ3mn7b5ifEacdH42OgXV3FJiOhVygpnL125PbafxWY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=uanq6KIo; arc=fail smtp.client-ip=52.101.95.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TbQhZmNX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784545514; x=1816081514;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=cgrVbqvHirhm8/ft9p1L7cLcou2SKIvhDcqiCnRwQmo=;
-  b=TbQhZmNXGDXG+x1MU/a/q0WQHGGiMkzyvVPB1eMw77COylZi4l5U1J3H
-   nIRyiXtIU5egjnG+FJ5DVKpwWyRwBvIzXomQtQkUkpgUj/GjAG07T71jg
-   jv8fX85x5V05GmleSHOVj+HX39FRUVdm24LJT4J4PJDAxHv6hyOBsaM/U
-   B4xs5XhQMlwU4eFL2X8kQptSr3o/DMhdm3vTes+fPtIi2ice59juiU3rU
-   vIwgtd/nO+WEsnWpHj9X99p/MrD4ndtHUUh4SJpW/vLoqK76ZwT4AKXhs
-   pTA+AlXMv1D15OzK2eRyCHBxdkvFUADtJDAt9EblpTikIUJmHKCNQlB5e
-   w==;
-X-CSE-ConnectionGUID: alarHK8ZQKuVwJmkgWw3fg==
-X-CSE-MsgGUID: stUzc/8hToa9fNY0A2WWJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="84106768"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="84106768"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 04:05:09 -0700
-X-CSE-ConnectionGUID: b65oAi9yQSiq7NfKO+hA7Q==
-X-CSE-MsgGUID: BER5zIsIRdezir+MK+zDWw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="254815588"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.94])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 04:05:01 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id D5319121C2B;
-	Mon, 20 Jul 2026 14:05:03 +0300 (EEST)
-Date: Mon, 20 Jul 2026 14:05:03 +0300
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: johannes.goede@oss.qualcomm.com
-Cc: Link Mauve <linkmauve@linkmauve.fr>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Lee Jones <lee@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	"Vaibhaav Ram T.L" <vaibhaavram.tl@microchip.com>,
-	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Praveen Teja Kundanala <praveen.teja.kundanala@amd.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Joshua Kinard <linux@kumba.dev>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Salah Triki <salah.triki@gmail.com>, Yury Norov <ynorov@nvidia.com>,
-	David Carlier <devnexen@gmail.com>,
-	Achim Gratz <Achim.Gratz@stromeko.de>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Patrick Wicki <patrick.wicki@siemens.com>,
-	Markus Heidelberg <m.heidelberg@cab.de>,
-	Markus Perkins <markus@notsyncing.net>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
-	Chen Ni <nichen@iscas.ac.cn>, Kees Cook <kees@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-omap@vger.kernel.org, mfd@lists.linux.dev,
-	linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, linux-rtc@vger.kernel.org,
-	linux-sunxi@lists.linux.dev, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 8/8] media: ov2740: remove NULL reg_write callback
-Message-ID: <al4A3wmBCrCy_HDs@kekkonen.localdomain>
-References: <20260715175229.24672-1-linkmauve@linkmauve.fr>
- <20260715175229.24672-9-linkmauve@linkmauve.fr>
- <al3sxMUgeK49dwNs@kekkonen.localdomain>
- <8d86ca46-d329-4e65-a7bf-2b79fccddf05@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="uanq6KIo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h05wwiDRIr5ushF7puWavQIUDn7sVk2wi2dHL5LvWHMkgLPUI5/Ojm+ulXy1r8bLtCT9PX5/rY8fELDAxGCXFcYIliBDHRY6UXYQHesee/jVdTuMia0HXViqR83G3VxuzP1ETTd6JPnswjGYXjrj8m+DLMUCL9jKhIfBLR3ixaqsh7omzohV1jLlbXq6Kbid03ZLVTPyVSUKt0sLzxppufaFiO51Qas1W85zQp2t6mAQ7lSKh/joAsegBfmgA38uk7Pa/eu8O0FnDURpy3bvbSsYrSzRpecoaDjs5hDcN/znP1GYXwVU9aoYKIr8vjixI5uXdl3NUTboBhn8NFvBRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hpzWJZDSmQsANCVX8qwXuirXpc3nOhf0IJ6As4XxjOU=;
+ b=O7GrNBFXfgueil3F4PpXCxh5LkFXCIW4s/Lhi6h7VLG7Bf5i5DHwIEQfospp0pnWl58YWAh42dF1Z0ky3qfpeJi9K6M6DHFH+GlhL0Lis++TgJx6qvqL9/s1L5hdO9R8H4hFRO/zg4hXa1NHVopN+w4mQKYXoOFcI2Vi1OXr2wZ4wSSHl9vbaWio3LlXjA7YJpWsXRWCf4DTgmXwAS9yoOkbBHCo55xYBdBDUg5pK7iTkM7tnRoMbWS8OuK2tU10hfQSBk5wv+Zcp2b8KiNrrpYiOSz54FJJNyXc4Dm+Clw2/jnZi+Arl6CTt9P07SJRrD4QPu3kqr64qBcJr4omdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hpzWJZDSmQsANCVX8qwXuirXpc3nOhf0IJ6As4XxjOU=;
+ b=uanq6KIoRlV/n5crj/fGiU96rgZ1qA1I2rekSxZS6GaJxyWrMvObMRFhuZvBj6U7w8sgz/mH9RlS9pFwpS0pL0NCxkpiBCk3yH1duY5nzG10bUfoIj53cjCR5Y9zyzsfKYHdWQck9tfRdNzJ5Tw2LA1PDXXAtA1sI2r9TBbvweA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB2703.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:146::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
+ 2026 12:04:41 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
+ 12:04:40 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 Jul 2026 13:04:40 +0100
+Message-Id: <DK3DUPV7BIQD.2OCUGHIA583HB@garyguo.net>
+Cc: <a.hindborg@kernel.org>, <aliceryhl@google.com>, <arve@android.com>,
+ <boqun@kernel.org>, <brauner@kernel.org>, <cmllamas@google.com>,
+ <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <tkjos@android.com>,
+ <acourbot@nvidia.com>, <anna-maria@linutronix.de>,
+ <bjorn3_gh@protonmail.com>, <dakr@kernel.org>,
+ <daniel.almeida@collabora.com>, <frederic@kernel.org>,
+ <jstultz@google.com>, <lossin@kernel.org>, <lyude@redhat.com>,
+ <sboyd@kernel.org>, <tamird@kernel.org>, <tglx@kernel.org>,
+ <tmgross@umich.edu>, <work@onurozkan.dev>,
+ <rust-for-linux@vger.kernel.org>, <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: use Delta and a Jiffies newtype for
+ timeouts and delays
+From: "Gary Guo" <gary@garyguo.net>
+To: "FUJITA Tomonori" <tomo@flapping.org>, <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260717042247.3634961-1-tomo@flapping.org>
+ <20260717042247.3634961-3-tomo@flapping.org>
+ <DK1SRBA3315M.32N4T8QQBUOER@garyguo.net>
+ <20260720.184751.938933263969124163.tomo@flapping.org>
+In-Reply-To: <20260720.184751.938933263969124163.tomo@flapping.org>
+X-ClientProxiedBy: LO4P302CA0024.GBRP302.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c1::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8d86ca46-d329-4e65-a7bf-2b79fccddf05@oss.qualcomm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB2703:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f065ff0-dd4b-48ca-fbbe-08dee657142c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|366016|7416014|376014|1800799024|56012099006|4143699003|10067099003|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	ql37IIJTTT6w18TT9ExKvbOfDRKJDtxMumq3jliGy+/Akof4N1nfAATYRvSRn35DMlGoMQCrl1XAIxmB0fGrnluu+ZspjpxjrjVGUysZOkbi7iJnOJ4Syk2loKrz+QGjKXIL74lyPthBj4G35CsCtI5xm+EB2Tulbjp3NC/gysc9vc4wjetDUzT28SG5lnbMb/Onjsoc7qDIb6BSzmNBPvJy60Fps6STYTJB0F3btWdPqph0kIK7baLhKukBcZeiQ9VYyEvlAwkE3vRp9FybiDTM5QBaBOdc7oWnWW98BTl5RllRsF6Cx/LJiN2wd2YKXLAWBqfmwsX9I1w9CRAjwMCBT897pRCebH4AsuyWQ0+MuRDfYDCXlYUfHlC2iNV+frMptxhvvqGSb8vKYjn9E/6HlIb8U9lT/bo0jlosTi6q34aDwKchfv9NRCpJMm1w6lzTTyzLbdSFAjdrWDv+H0DZg9luMCiUXTfpBTukv3cc79znYLjH9kOBJj7ZrKntCOmMru4byx2MPnlCTwnNTyMd5CmDFJjegnVptRW1jWRDO+1SCpsB0kF0XExo8/bXzKkOeSQgCSt+3lcr+6DB7ZweFHKc5bEyYk78QpbDvGKaDtybP4W7WLzvduTOM4kO5uqZCN+tkF27KxjWDm8z3j2KS0A9YJxWlQHO8OBmXq0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(366016)(7416014)(376014)(1800799024)(56012099006)(4143699003)(10067099003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YU9wWE1xQ1I1YXh1VVBzV2Nqa09GWlUxc3FrajNSRm4yd2M4SURrRzFxejlz?=
+ =?utf-8?B?SEZTbkgvY1dKS1E2eXFUUjExMUlKV0F2ZFM0bjE2VGxrYVpwVWppNS8vcWoy?=
+ =?utf-8?B?SnB4MGJXUVFTZWxqb2pTZWxrNmhlMkJxd3ZEWEVydFV2UjJuTjg4WlN5V1c2?=
+ =?utf-8?B?VEVqMmFqTzdGczc0V3NsakNZY3NaSWFHem4zV2lMMXlFVmp1MWU3ampkWWUw?=
+ =?utf-8?B?U3A3MzVDdDBDRER4WVRXdis2WU9hVGVLSUJMRTNVOGptWnhZanpDWHozN3Fw?=
+ =?utf-8?B?OVYxN3o0NnN2VitPUTNCOW9MM0dnei92YldZSnQvRGVwQnFCV0pxV0hSYXNQ?=
+ =?utf-8?B?WC9vY21MQWh1VTJpTkhMdkY2OGxGWWVvOENBZ0U0WnVoNUVWWDdyTks5TmI3?=
+ =?utf-8?B?ckI2a08weGZjcWxIUUFJRE5kaCtmWGtMN3BjKzZqU0Q2NzJYOHFQQjNWY0dv?=
+ =?utf-8?B?d0RUS0RCQ3BQU2FOYlhDR2ZidVdLckFFcW1aOGcvS2lRcjBNRFhTNVJyemdu?=
+ =?utf-8?B?dTJvamx4dWt2YXg3MFRUY0lyL01hUkd0UnVucUNFOTdZSERxcXMxcWFZaTlQ?=
+ =?utf-8?B?Mmh1WUFiRVQ0RE1kTkpNbVY1Q0YwSDlMcW5uVEJTcndtaHRtTEVUZE1OR2RU?=
+ =?utf-8?B?UktEMlRGWm1mak5DdXF2em15dnBtaWo3ajNuK0hMZnJuOUtFdWxQLy9ScGlM?=
+ =?utf-8?B?RnNQc2QzbHhTTEhqMUVzZnRXaEtxbURpM2JEYThUQkxMVndVRGdJQzRFYVI2?=
+ =?utf-8?B?MUZWdzJhWHZ1RzVoVWczRDREQ0dNL2ZGOVNybzlNZlFkSHJiRk0yZFF3dzRG?=
+ =?utf-8?B?TFZBZDVXV3JQNkFKTnpnVXowam84YkkwbTJaNHM0ditCSlBkdUFhZXQ5S1Yy?=
+ =?utf-8?B?R1RWcjh1RnY3Z09OMEtlWkhHRjMxd3hMTko2MnJNakJVcXJ6bUFqNVcwdE90?=
+ =?utf-8?B?ZE1ZY0w2ZXB3bFp4RlEzSlZQNnE2bTJsaGZmNVpTY29UQmtVY2lmaERJZVhX?=
+ =?utf-8?B?c3hoQSsyTGVtTW9jRjdTVGFCY1dmUjBweDNLaEh2TzI5Ti95WldiL1pWLyt4?=
+ =?utf-8?B?emRNTXlDd2JxMHFkcjQxYmRscEJBNWxyVDRUaXF3UWxxVUdxVTVQZnZCWHRU?=
+ =?utf-8?B?TlFrUitIVDBiRkdLazFsa2dCTi9KN3JWandyRUg0d0cvZ0NUSE5DQjBSRVFv?=
+ =?utf-8?B?YzV5KzRQbzdFR0pLd0NSbTl2VlpDS0VySUtETkdtUDFUZHFyTlBjT1JmOVAw?=
+ =?utf-8?B?bk5IUkV3bEVGd1pFQTB4N29IMUE1RE5zdENBRkd1aWNyV3crVEpQV0lhUlRj?=
+ =?utf-8?B?MUhwWXVvd3N1UlE2YTFRMUZrbUtRMVdaSlFpOGN4MWN6d3p2VnJZcnNIMnVI?=
+ =?utf-8?B?dUhSOHZXUlZHbStmMDZWTExrRzhUMzZpcFdJS2FxUVEySVlUUTlaeVRzZFNL?=
+ =?utf-8?B?SnZjWHdiQUFCdWFjMFhYZUpkK05jUVROUTBjR0NpTnN0WGdqdE9SdTZUWkVG?=
+ =?utf-8?B?bUhtOEVXOXlpUURxV0V4OUpQNWliaFlMN3NFT3RrQ0djMDJFVDJ5V21zSG4y?=
+ =?utf-8?B?eHNtOHhJMnJzZnNGby9Bd2txYnBVZ1NaZVhVZFBhOUUrKy9TN1lTRVZvUXdr?=
+ =?utf-8?B?WDNuWXFnLzJLNXR4MjRKcXlUU1o1WWtpVmpnOTNVVXh4Ynl0eXB0TytSczBa?=
+ =?utf-8?B?ckJSNHNLZE5nM01RTVhpOWpRQWdpYzhBOCtOMW5HZ3p4bDZILzA4VVpaQ0Jj?=
+ =?utf-8?B?ZkRHVlBvQ3I4RDdOeXhTRGVtYWhQZFJyYVpKdTRidXhxYWQ4VEl6aDIxOVho?=
+ =?utf-8?B?cDMwZkdOOHVoT2MvdXJ5eW42ZGJBUTE0K3BVMVhvRXUyandqZ0ZXNjl6YXRn?=
+ =?utf-8?B?ek1RdGo1SFBRZTJlc2lsaGNBcGI2M0NDM0dyS1hUMXhWSktDdy9jV2tKZ2VG?=
+ =?utf-8?B?V1htdHJrR0IxQnArbm9QVEs0SDZvNU1TWXcwS2tsdTZaMWpjQWNGbDFIUDYy?=
+ =?utf-8?B?Q09xV1pyaW4yNEY1L3kzL0hsR09NUFgyRUswK2NJMTkrYXBsQ2twdzZWTUVh?=
+ =?utf-8?B?dmRjeEZMc0FvclVjeEl5ei8vUVAvdHg0am43aHhxczk1R3RNK0tMQXpUaDJa?=
+ =?utf-8?B?MGdjQ0ZDQ2tXT0c0U2l0Q0UzY25xWkhnMHZFUnUzUW55SndteUxTdXlCN3F5?=
+ =?utf-8?B?NEYvSmxqQWVMZVdvS2dUT0pWanEyTGphakF2Y2FpdUlicHNrNkR0RkdTY2Qv?=
+ =?utf-8?B?Si9kbnVPeEpQMk9YWXZrVUo3V0E1S25oakpDNVhLZG9pM1NCTXNqNWdyRDBW?=
+ =?utf-8?B?cHJKeEJqNzF3a0E5QTVZeFZNYzNhdEgybzNDVVRxZDdqT24rSExKdz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f065ff0-dd4b-48ca-fbbe-08dee657142c
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 12:04:40.9017
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nimQMuM+oLY+LUaP2QUdjLubkJ+pwLpXmpb774YWRfct+SaGpEui7GlmeJOJ9QMhrZVrA0kNcsZqpXp2wApXkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB2703
 
-Hi Hans,
+On Mon Jul 20, 2026 at 10:47 AM BST, FUJITA Tomonori wrote:
+>>> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+>>> index 23ef5c77383f..206296b6b6ea 100644
+>>> --- a/rust/kernel/time.rs
+>>> +++ b/rust/kernel/time.rs
+>>> @@ -40,17 +40,40 @@
+>>>  pub const NSEC_PER_SEC: i64 =3D bindings::NSEC_PER_SEC as i64;
+>>> =20
+>>>  /// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
+>>> -pub type Jiffies =3D crate::ffi::c_ulong;
+>>> +#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
+>>> +pub struct Jiffies(crate::ffi::c_ulong);
+>>=20
+>> Hmm, I feel that we are again making the same mistake that we had for `k=
+time_t`
+>> abstraction, namely that we use the same type for instant and delta, alb=
+eit this
+>> time the measure unit is jiffies and not nanoseconds. The reason that si=
+gned and
+>> unsigned casts is needed in the above code basically is this.
+>>=20
+>> Arguably, your earlier version don't have this issue, but then we are
+>> introducing costly divisions implicitly in many places which is bad for
+>> different reason.
+>
+> Agreed.
+>
+>> I wonder if we should have time types being generic over units. So you c=
+an have
+>> `Delta<Nsec>` and `Delta<Jiffy>` and `Instant<Nsec>`, `Instant<Jiffy>`, =
+with the
+>> generic default being set to `Nsec`.
+>>=20
+>>     Delta::new(42) // Delta<Nsec>
+>>     Delta::new_jiffies(42) // Delta<Jiffy>
+>>=20
+>> Thoughts?
+>
+> I think making Delta generic over the time unit makes sense; Delta
+> <Nsec> and Delta<Jiffy>.
+>
+> However, I don't think making Instant generic over the time unit is a
+> good idea, even though it clearly is for Delta.
+>
+> Instant is already generic over ClockSource, and jiffies is not a
+> clock source: it has no clockid_t, it is read via get_jiffies_64()
+> rather than ktime_get(), and it cannot be armed through hrtimer. That
+> leaves two ways to force a jiffies Instant, both looks wrong:
+>
+> a) Add a second unit parameter, Instant<C, Unit>. But then the type
+> admits meaningless combinations - there is no Instant<Monotonic,
+> Jiffy> - and jiffies still has no ClockSource to put in the C slot, so
+> (a) really collapses into (b).
 
-On Mon, Jul 20, 2026 at 12:34:10PM +0200, johannes.goede@oss.qualcomm.com wrote:
-> Hi Sakari,
-> 
-> On 20-Jul-26 11:39, Sakari Ailus wrote:
-> > Hi,
-> > 
-> > On Wed, Jul 15, 2026 at 07:52:24PM +0200, Link Mauve wrote:
-> >> This field is already initialized to NULL, so there is no reason to
-> >> write it again.
-> >>
-> >> This prevents it from appearing while grepping for reg_write in the
-> >> future.
-> >>
-> >> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
-> > 
-> > I believe we need a real name here.
-> 
-> We don't need a real name / official name here, just a "known identity",
-> IOW not "anonoymous1234" since Link has clearly is using Link Mauve as
-> their internet identity (given they went through the trouble of
-> registering it as a domain) I believe the S-o-b here is fine as is.
-> 
-> See: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d4563201f33a022fc0353033d9dfeb1606a88330
-> where the "real name" policy was weakened to "known identity".
+We could split the `ClockSource` trait to be a generic `ClockSource` that
+supports everything and a `HrClockSource` that provides ID.
 
-Ack, thanks for pointing that out!
+>
+> b) Make jiffies a fake ClockSource. But ClockSource::ID is passed
+> straight to hrtimer_setup(), so a fabricated clockid_t would make
+> HrTimer over jiffies type-check even though there is no corresponding
+> C operation.
+>
+> This matches the C world: for deltas, jiffy and nsec interconvert
+> (nsecs_to_jiffies() and friends), which is exactly what Delta<Unit>
+> with conversions models. But the jiffies counter and ktime_get()
+> values are never mixed - there isn't even an API to compare or convert
+> between them - so there is no unit-generic notion of an instant to
+> represent. A jiffies point in time, should be its own concrete type
+> rather than a specialization of Instant.
 
--- 
-Regards,
+Well, `Instant` never inter-converts with anything, so a `Instant<Jiffies>`
+would be fine too. That said, we can delay making the change until we have =
+a
+user that needs to get jiffies count. So far it seems that people just use =
+it as
+a delta only.
+>
+>
+>>> -/// The millisecond time unit.
+>>> -pub type Msecs =3D crate::ffi::c_uint;
+>>> +impl Jiffies {
+>>> +    /// A jiffies value of zero.
+>>> +    pub const ZERO: Self =3D Self(0);
+>>> =20
+>>> -/// Converts milliseconds to jiffies.
+>>> -#[inline]
+>>> -pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
+>>> -    // SAFETY: The `__msecs_to_jiffies` function is always safe to cal=
+l no
+>>> -    // matter what the argument is.
+>>> -    unsafe { bindings::__msecs_to_jiffies(msecs) }
+>>> +    /// Create a new [`Jiffies`] from the C side's `jiffies` value.
+>>> +    #[inline]
+>>> +    pub const fn new(jiffies: crate::ffi::c_ulong) -> Self {
+>>=20
+>> Given that this is a public API not just for binding code, I think it's =
+better
+>> to use `usize`.
+>
+> Good point, I'll use usize.
+>
+>
+>> This function can be `pub`.
+>>=20
+>>> +    #[inline]
+>>> +    pub(crate) const fn as_raw(self) -> crate::ffi::c_ulong {
+>>> +        self.0
+>>> +    }
+>>> +
+>
+> I'd prefer to keep this pub(crate) until there's an in-tree user,
+> following the usual practice of not exposing public API without a
+> user. Also, if we do make it pub, it should return usize rather than
+> ffi::c_ulong, to stay consistent with the constructor change above. Do
+> you have a specific use case in mind that needs it public?
 
-Sakari Ailus
+I think knowing how many jiffies are there in a `Delta<Jiffy>` is a reasona=
+ble
+need while getting a raw pointer type from other abstractions are more
+suspicious for drivers.
+
+Best,
+Gary
