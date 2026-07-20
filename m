@@ -1,147 +1,115 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DCC1F30BB
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 18:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784571380; cv=pass; b=U7OS9O9NbYABim5m18zDmzUMflzyZMyAxMkw4ZzvopCPbg3BIleYUadprwtGhht0okSfbavGLAr+r/VO6tiO5WnqnDjbBNLRQ4haKzUwlaUjBUEnD8opWapSijfXRXMEv5mlYBayuyHb++Fr6cB5ZX7GdTqKiBoH/2yN2LiiHPI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784571380; c=relaxed/simple;
-	bh=BRTNEQ4O2F84GW1j1IDa+ZoiMoKj1hSznZ9zfsgkfIM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B/WGH5IaOSl8+DPrF9PiIG9Xdtr4Aip4i9UfxvSIswgfI7hScpR0s74QkiEGCOcu+i10tyRsO/voMzYWzQU8jPVdQM1laXIQRSbZxY7QeuAPzfso4VlTH/W6j603LknDMlL6q/38Fw7ANiCjAsHxWdXwPcFAQ9b28A7uBM93xow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MtoUy+to; arc=pass smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8884B1A4F3C;
+	Mon, 20 Jul 2026 19:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784575334; cv=none; b=WePM/9F3uOvWFU3/dBwc1nObZfJQpzHbr4cbGcV/PboMqqA4UdeMdt6czEk+G/56HxLDrppauhGc2KgQJA/KlYfr1Ub3jRJVJXpS15oFhCUFCPnqQPcFLazuPwh9cS9i2LeVxifO586XQpDaquwJ9ljaDnCeZvaxayH9k5cDJUk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784575334; c=relaxed/simple;
+	bh=RLKLNwfo7o3vXrN/SD5EFpIDimBZI9C9UYFzRN+Ka6U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ajH9i98qs7jXRZR4lR1qVPHM+GcaP9dnphtP5kM42SBG6baKt+aEXWioFceBkhCfB0oLh96C/txY6VJ3CYvkeUUIvzu7iI0UAEjflJu0sYWAVUL2e0tLGkwFy0guKwkYRID3/1hIBw5iGLPQTlcCv8v/jNOIJZuL3ZqRuxsMfuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OoWI7BG5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MtoUy+to"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-382ef647e20so9908925a91.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 11:16:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784571379; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fmee6lqNU2up7xISX1e1QQooIsfCAHrv1Vz3U6Z4SJup6By7Rb3kGZcmi0fCjxk6/t
-         XohymTUa2Qdci/DPNCHa205WO13lhOgGQbr1l2+/28WbzSfeoLNzCAaaWmjuXOnSN9Qq
-         AzH0A+vlIKoJnwvWrGawcr2CRlOrs0APB384SDaUGkiBZJn/jy596uO5bNIe/tVoQz8w
-         FZ/THFidrQdvFpy8oaatoDz8lcutmVznVyoU90DzpNE+dJM9c+dYM2Ca7P2YqJ3goHo5
-         HW5jfVmQnX6s/EGHjSZI9BjPjQo1gF5o1PWWI8mbftYfGDhorNPfaaATWt/PTKnHtKUD
-         h09w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XcbLbMlAxU3FFYmHV6MHSiEe84/hA+evMZkKwSS6324=;
-        fh=p1Ziclq4FwAwaXimqIRSklgENIoeiq1S4XV4zD7o6Es=;
-        b=CNV4BgDu28ypYEM4Gs99uLNgDPXZU3mm5dyK1Y77DRVk46/xNb3HlgNpbRoN4jcjBR
-         DQ4U5y5KutRUR+L0+cJV9vOkEeBi2DlkT0fqIGfm4ecwCYbF8711XGUtIyucGQmmKilz
-         CXHSOQpjblwg447n7JhVmSJem9F4QhfhcwWaZdrBQCx+hS8lQoNwIHOkGsuHVVUhnWmk
-         R/jV9Fc/TeySiIshLbM2DKN/Fe21RwVWZiUCs6nNcels9tHxe600xx1yBmOwdBRIHP9y
-         oRVWYCojCR61kgB+uOkPMv2CVPEKejSbAfK8hfBiXumcra0TIPv5sVMcnPas8xXiYRhn
-         tNwA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784571379; x=1785176179; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=XcbLbMlAxU3FFYmHV6MHSiEe84/hA+evMZkKwSS6324=;
-        b=MtoUy+toza1egkCGmOVuN+Q24SxV6reiLhdWIJlIqAYl42zQ6oYlTjHXokAVyoHyWv
-         L0A8SN132Ov3MVTBHyHoYbEG0QhO2KQcMzWfnEa+r7xrIwkgFJwnw5zVjuzKNo6XOopC
-         sJa/QvdoBetvKTHro++IFPT4u6dSkW/r3L7RZrga/XjmTT7cMzEill2BGi3C0qL8SDT4
-         KHgRFSVqQDUVveGi9tyKVrrV94AvXD+eTeghLPLl9zlBFfgdOICxvf7Mf6OEBgBqzgO1
-         QAs4AQbXXH6rrtfrulvT5vHiKfv8wZO5Ko8eUkPtKacHThMzcwL7xGN2VhjN35BsI3L0
-         b8wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784571379; x=1785176179;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XcbLbMlAxU3FFYmHV6MHSiEe84/hA+evMZkKwSS6324=;
-        b=Sa1LyEz72gwjK59Miq+DO7+/mgoN3m8TuwFyQ96rsjwV6ACnMTXLr3OfJEIO8QFRG6
-         JN2tNDBXzE22zjfk4NZ0hjj5OxEYvn8UkTn+DtfCbgvQzmN1UahOX7fXrfvxlQADZ6rX
-         XTY0+v4yHqyZnZrRjuOzGbnATrj4StO7jbg/BY8xrq7Q9XVbAyIgax62ARPds0Hlo6O+
-         ZoMBHp0uKobQmT7sXL2x9CcDXpzskMt09mtCVwYdfXntgYlkvcc13UEdY2D+ibMvZGyX
-         ePuRLtBYMWQnfNs3qwISKvpPADADQ64IaMGYF4xHsEiKxKXnfnTXNXgbIGsK5T8ZB9NA
-         +jIw==
-X-Forwarded-Encrypted: i=1; AHgh+RrIIAHJQWD2CcoaHdGGgEfJDpdAEb+NxqKW1d8D9BgZB+Yhber9RXXfHPRVKFPNfKu341GyGif4RGOlF5XZCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyrbhxu4tUHFxkcQAMrUIH8tmIO498EGj8aTcdO7lRQaKIEapao
-	zK3ykz1a4ElWC/WmQg9obnZEPn9rrFJIh9cmuLTys0r9uKnSAtJ47wkyvUrRVnmql5um7lxI3kI
-	rKOmnLRwwCuV7Dc2fNjSAqR16xbRRhoHKCfmy4yc=
-X-Gm-Gg: AR+sD11/YfPzM8xNiHumvQzVlVUm0NmhERe0vX6JcoIxGCnXJbI08hNaAPyZqigqxIm
-	Zz5droJXomJzDEcMPVPm4MYh6MksFUveosrOoRDK3AQl1RjBE/kbd9pYahJAJ10kSYooYpQ/PGv
-	UKLM0nKHj2PUfGSIWyS3uQN0EsU+MRU1/mQCnqXJETcN/Nu2ECpnak2O4vTQWezh9XkR3N1V8Te
-	TIsl6NRe3YAaT/Mkyex0Vdrh5JmmPvX8+3ZWv7WbkzIu67gop8xyFClllM+CJSaW07B/K0pdQJl
-	rxRox71eKBVh/mmLXM/SCh0uzGLPYSBmRlonUDLID1PXT+abmA9P/DgvyTL6GaJmkM8uUDzB5yA
-	xBdW1ajKCUswY
-X-Received: by 2002:a17:90b:3ec7:b0:38e:7eb:d07b with SMTP id
- 98e67ed59e1d1-38e4b55affbmr17282364a91.34.1784571378108; Mon, 20 Jul 2026
- 11:16:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OoWI7BG5"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 07130C2BCB8;
+	Mon, 20 Jul 2026 19:22:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1784575334;
+	bh=RLKLNwfo7o3vXrN/SD5EFpIDimBZI9C9UYFzRN+Ka6U=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=OoWI7BG5DyAxua4zKfNQAZQA+fzD+5bGlDglwZxjNy0Pu5MYTAeEQrcGvG9rRfefF
+	 vsa2I8qAkVjfoYfhAC/7bzHPn7YN7WdXBRKfcWlheYx6kpqypFl44zr/UlJd0DgWu+
+	 o6WwRTXq2P28W5fbb8QrM+AtTmCRBVnCY/tN2ONQUmvLYnP4xVICDmX0Urv3fbexwJ
+	 Q+ZDLQQl0tOvOat4ErgyeEsayE7KIQFzKopG2bXURPVdiDTNFoVHNt1zu1PBBJl5pD
+	 lG769TtL+CgWbJCjr5yQ6diU5o2QsDGRpY9hSxNfrUxq0axGtX2bac9qh56gpjkaU5
+	 hTX/7pgV3n6kQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D395DC44529;
+	Mon, 20 Jul 2026 19:22:13 +0000 (UTC)
+From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Date: Mon, 20 Jul 2026 21:21:39 +0200
+Subject: [PATCH] rust: dma: return zero for Coherent reads past EOF
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260717042247.3634961-1-tomo@flapping.org> <20260717042247.3634961-3-tomo@flapping.org>
- <DK1SRBA3315M.32N4T8QQBUOER@garyguo.net> <20260720.184751.938933263969124163.tomo@flapping.org>
-In-Reply-To: <20260720.184751.938933263969124163.tomo@flapping.org>
-From: John Stultz <jstultz@google.com>
-Date: Mon, 20 Jul 2026 11:16:06 -0700
-X-Gm-Features: AUfX_myBVTGUs1isUDf1xFdHYpko8PRfK5j7XAV6SZGEdyYIniKK0dkFdMXduI8
-Message-ID: <CANDhNCrKMdHCmL76LWCROVF2Ly-9NxmfmQ2T+P=iv34aVkO2uQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: use Delta and a Jiffies newtype for timeouts
- and delays
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com, 
-	arve@android.com, boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, 
-	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
-	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
-	lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, 
-	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260720-fix-dma-coherent-eof-v1-1-d92685db8da6@younes.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywrCMBBFf6XM2sEkgq9fkS7ymDYjmMgkFaH03
+ 03s8lzuOSsUEqYC92EFoQ8XzqmBPgzgo00zIYfGYJQ5q4tROPEXw8uiz5GEUkXKEwYV1NXfNCl
+ 9gqa+hdrvn32MO5fFPcnX3uoPZwuhE5t87FMWnjkdZSkVd3Pbfi0LylOcAAAA
+X-Change-ID: 20260720-fix-dma-coherent-eof-d0d08c91e013
+To: Danilo Krummrich <dakr@kernel.org>, 
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Robin Murphy <robin.murphy@arm.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Timur Tabi <ttabi@nvidia.com>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Younes Akhouayri <git@younes.io>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784575333; l=1249;
+ i=git@younes.io; s=20260712; h=from:subject:message-id;
+ bh=ePXYrWvX1ZJHBuWoCGi8RZ5TS9lrAyqgkzIq9B/HEy0=;
+ b=NfHD8xfI5i55YLfCBe7tqm0G8oZ4a4geTGO9kWWsJ9qBfmySQKlGogGfmzkXta8XZv+0kbUQ1
+ ub/u/f6nzNoCPyTyLbgzeweY6Nz3e34MrFIC8SUBDaSWDuYPTNto0yq
+X-Developer-Key: i=git@younes.io; a=ed25519;
+ pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
+X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
+ auth_id=866
+X-Original-From: Younes Akhouayri <git@younes.io>
+Reply-To: git@younes.io
 
-On Mon, Jul 20, 2026 at 2:48=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org>=
- wrote:
-> On Sat, 18 Jul 2026 16:20:10 +0100
-> "Gary Guo" <gary@garyguo.net> wrote:
-> > I wonder if we should have time types being generic over units. So you =
-can have
-> > `Delta<Nsec>` and `Delta<Jiffy>` and `Instant<Nsec>`, `Instant<Jiffy>`,=
- with the
-> > generic default being set to `Nsec`.
-> >
-> >     Delta::new(42) // Delta<Nsec>
-> >     Delta::new_jiffies(42) // Delta<Jiffy>
-> >
-> > Thoughts?
->
-> I think making Delta generic over the time unit makes sense; Delta
-> <Nsec> and Delta<Jiffy>.
->
-> However, I don't think making Instant generic over the time unit is a
-> good idea, even though it clearly is for Delta.
->
-> Instant is already generic over ClockSource, and jiffies is not a
-> clock source: it has no clockid_t, it is read via get_jiffies_64()
-> rather than ktime_get(), and it cannot be armed through hrtimer. That
-> leaves two ways to force a jiffies Instant, both looks wrong:
+From: Younes Akhouayri <git@younes.io>
 
-I read the above and thought, "but jiffies is a clocksource":
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ker=
-nel/time/jiffies.c#n21
+Coherent<T>::write_to_slice() calculates a zero-byte copy when the file
+offset is beyond the allocation, but still calls
+UserSliceWriter::write_dma(). The latter rejects offsets beyond the
+allocation even when the copy length is zero, so a debugfs read past EOF
+returns -ERANGE.
 
-And then I realized there has been some unfortunate naming overlap,
-where it seems the rust ClockSource seems to map to the clockid_t, not
-to the clocksource concept that Linux uses to abstract the hardware
-counter used as a source of time (for the majority of the clockids).
+Return before calling write_dma() when the offset is at or beyond the
+allocation, matching simple_read_from_buffer() EOF semantics.
 
-Very much a bikeshed request, but is it too late to rename this to
-ClockID or something? So there is maybe less confusion when reading
-across C and Rust code?
+Fixes: 016818513936 ("rust: dma: implement BinaryWriter for Coherent<[u8]>")
+Signed-off-by: Younes Akhouayri <git@younes.io>
+---
+ rust/kernel/dma.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-thanks
--john
+diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+index 200def84fb69..36b72fb9ab46 100644
+--- a/rust/kernel/dma.rs
++++ b/rust/kernel/dma.rs
+@@ -1005,6 +1005,10 @@ fn write_to_slice(
+             return Ok(0);
+         };
+ 
++        if offset_val >= self.size() {
++            return Ok(0);
++        }
++
+         let count = self.size().saturating_sub(offset_val).min(writer.len());
+ 
+         writer.write_dma(self, offset_val, count)?;
+
+---
+base-commit: 880c43b185ca52239e75bc546cc4f4d9154d0fed
+change-id: 20260720-fix-dma-coherent-eof-d0d08c91e013
+
+Best regards,
+--  
+Younes Akhouayri <git@younes.io>
+
+
