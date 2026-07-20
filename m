@@ -1,173 +1,160 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022080.outbound.protection.outlook.com [52.101.101.80])
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E680282F29;
-	Sun, 19 Jul 2026 20:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784494442; cv=fail; b=mHfLfr5g/XzFFvY4MzfMeY8pYddMCf/FO0LeGJt2Qt8ZYGQeLXu/9IFEvQruNApoPXlWH0jlYi1so347DQlQP2t/MQ4C5TpJ2w2spJHNSHKmHrdaoB2z7S+8nBTzhdQ6qOI3e5v7xL+LaUVE57L3B6JMa1DmKIe2wSOcvAYYLjU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784494442; c=relaxed/simple;
-	bh=qOObCuXtV8xJhE+HohxpwkyLUz7jH6alOj+IbEI6wbU=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ppXu62BPnwaONy/Mjkb0LYf0YadBn0sjkf8SjbUG6f7FZCVbFEIHs+xP+m7DmnN6P57S+IL/nt0uq9WrjNkz47alpsMH1pESjE1y004MIOF2iViFJrbqPuzcwfjXKUFDbMl1mOlgpN/R4CAy+5M6W5yH9k97LiJBlamvXaYHH7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=U2gK/VOs; arc=fail smtp.client-ip=52.101.101.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC5D3998A4
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 Jul 2026 03:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784519733; cv=none; b=Tp9kqG+LDsgcs7V1o30gfY8wxs+wW7U77LTFfPdsUfii1WMwglzm45hFwtRL+yMPvXJ+s4dCi01GiZyfRRZjgRs79ApwHAgkkibajs1qRSgOFd7hE+kq/7vJOQEzvbyBRiuTPOzXZPMG3cSWnyKqfp2bzfXQ+HnC2YwAZ8WST8A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784519733; c=relaxed/simple;
+	bh=JfyR4fyFyIKTXlsijkbLCFLIp8+OYoJrwqHkAU4bwPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bFnzabDTtDPJiXWCzWvnrB1ZJ2oYtque+It5yhZMmLSYaJ8PpBfVMaAtrba8xcRv/n9/wBzdVHSH2X4rdl/Qev5LxXcuWjG48NZ4cCWB+FghfQvP/m/zQhz0TLGwAcMoprK0Bxsy5KgRTgL2Mq0AgxacMrPd27nAfJhGyzRcJ3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=USwxelCm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dn9vOGwr; arc=none smtp.client-ip=202.12.124.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="U2gK/VOs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wknGdTyUtU3c0kpefjh8gUk2tAVt8Wbdlv9gFAm3vt/kx5kvWN9jWcvNpzXJyLb/AXqVYcvDIg9v+ojyphybtryw4M/ze6je0jXSRtM1X0KBGC5G5iUt5E/rXJzLi14Y4ZZBKRutAKQbH0kvAGjbKVawHhgZZZiHWIvZ5DEEuPXf6DP6gB6ZnOnb2ZQ69MjS3afPNMP0ZuPl8HYNYGhiCdLrvBysp0wU3yDz5+9bKmP7DTzy4c1MBSvCWr6ATt573kD+OLGSqQvAAAeLRyn+TVQjkixS8mQx2QYrBEhHZKADXKblOdP8Dtuf1K3ca/YCFZn8hR1g6czisivIPhTeGQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JYyHU8c5joNEUFLXt1lHcrmkZlaV1jPk2DbZNAEQhSE=;
- b=ExQm35JBwFN2h2GH7qL65LRFg6fMuYRej9/rYx4icE399LMgeAGwAM04oCsQTi6n920FZ8qBnbYqymJNqMJihloTK8dgeoXzBf8KVpX4Ivu383Y8Rbkg8xYjPKUnzAEMxQGPRZXuvbr4i1hLgrEEFZZe4xyuTgqXzX52KZeYlHwsxHhFylQ8btpbauhexXP4nLSy6Eb15mH18ZW/LxPGZHC6u6nn1Awrcj7pzcNn6OIeYTn6/+tKZ273UrkotlhV3x7NoFd+Foh5i08/UA7w8wQo4v/wxAJ4bLqgwuR2fo6CSYwjU3XshqrQKiUgg1XhchisacolOXnRV65yJDWPWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JYyHU8c5joNEUFLXt1lHcrmkZlaV1jPk2DbZNAEQhSE=;
- b=U2gK/VOsNhHg8hL61Qy1XQv13r6UMnB444x2Aczyr2YvdhTbjlEcCx8c/do0NTtBZMZyZMUfa1V5U/3R5WB5yBoCNOQEhwaw8Rj6FheN9rzU18jw7q+j9RI3gvg4KwbN4D/HeOxzc2HyHDhd1OYQvxovmUUjLK04D6/0OS6PD7A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CW1P265MB8634.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27f::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Sun, 19 Jul
- 2026 20:53:57 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0223.015; Sun, 19 Jul 2026
- 20:53:57 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 19 Jul 2026 21:53:56 +0100
-Message-Id: <DK2UHF0JHVJW.39W4VPL8H5CM8@garyguo.net>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Robin
- Murphy" <robin.murphy@arm.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <nova-gpu@lists.linux.dev>
-Subject: Re: [PATCH] rust: io: convert ResourceSize into a transparent
- newtype
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Delgado"
- <lnsdev@proton.me>
-X-Mailer: aerc 0.21.0
-References: <20260712113602.389060-1-lnsdev@proton.me>
- <DK0BPAHR8IS3.2KLSLH7K448RJ@kernel.org>
- <20260719104012.364283-1-lnsdev@proton.me>
- <DK2MT37NYCTQ.3JCJ9EAQ9TJEE@kernel.org>
-In-Reply-To: <DK2MT37NYCTQ.3JCJ9EAQ9TJEE@kernel.org>
-X-ClientProxiedBy: LO3P123CA0023.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:388::16) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="USwxelCm";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dn9vOGwr"
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailflow.stl.internal (Postfix) with ESMTP id 90812130075C;
+	Sun, 19 Jul 2026 23:55:29 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Sun, 19 Jul 2026 23:55:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1784519729; x=1784523329; bh=l8oVAf+/TlYCuu1Dj6MY0
+	GlYLWWCcl4eowspK4q9jHs=; b=USwxelCm3MpuZix4gQc0LrrLk6n24ebqRkFYa
+	X1LFxpgfQyBcsEfkM07FG+l2f5IuVhtyH2aPdCHXV52kBkxNmHuUyg3T8De0toB3
+	sqLcw7Er2ium1umonnDtfrcwYrOC9LlT83JHx0GTSHhHyzYwFvsJwn2ZSP+svLta
+	a/ORpifB/1sNmUc7T8fAcXQmGIVms1a+YkgmoKq2ez2gxkwkR1rxwTKVRkDS0CZO
+	0pMzdmlY0P+WlUT5lEU4uWKZ7P/RAffZSvkCKk0joRprjp4bBYLAAgrgs9qkKUCV
+	bpmU+aLKtf4mMdBk/SeSYmjkqk2Lm36UBVthOwbvrUkqD1cdg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1784519729; x=1784523329; bh=l8oVAf+/TlYCuu1Dj6MY0GlYLWWCcl4eows
+	pK4q9jHs=; b=dn9vOGwryWT+8kzJoZ8S8RvgP/nZqiTrF2Oitbuw9pAfRfDNmcS
+	0jd4+pMLIlb0Fmk2tCS4djEr+rx6t0IfSSSU47q3P9Sv8KUObSuIwYkJrFxEpJkj
+	b6oDiuXBMOiKQhuuuWx3y+XhdURNwuGSmhWs996QOn+FOMP49j4k7WG8krCQidQs
+	5Xv45FwSPSViA8piBSkGhtmFdY4mV6g2GSld1uvW2Fcyegeu5ul4vVHvZG96MdGP
+	KNnHtfnL9C2KSW5PCfFhr6ZMOkQddx9fJ9Z7r/dSSvmi1AnEqOY2ZMNMkqAlnZ+d
+	tyIdfvBgZxXMbRWf+NUxMgvCaWoioxDWHUg==
+X-ME-Sender: <xms:MJxdalyAOYOVM6PVC-2jQd5XUWPj0HYC5bjluiGLGu9vJ5mNVI5Zug>
+    <xme:MJxdahrPfubXpITfGFnSzPW5ITNTIOs_eCz6AEJPraYc-oZBEI8IY7bZfCyM7QBis
+    Jw7M8BauGfono9qJyCBj1x0v0unaw64VRevYO9naHs5OobW79bQfdU>
+X-ME-Received: <xmr:MJxdajwbw8zsGgyuCZvvnCuTuGrcXzYrrUSYdx-SRd49VMQc1SDPrs7ZJVeykdQRbWQQ8oNzRqI8H-cUcHs>
+X-ME-Proxy-Cause: dmFkZTFG6q6PVQHEUiP5ua4VvA7R5Z6CoGq+ELzxqLKPFSlTlY0CdUSFyF6yAg3gDLk36x
+    2tJiHkNNqSm40kYEU85cCrhBfLsPo/ECHRVyiy9+M5NLasgIlNytCtKvwBfaJa7HbM+PYh
+    1HvXznhZfN170HvgNVJULUfzeHLIDzMNWuHoLM0m4xeHfEB2FcewaFu0OQY5UdeXmgsLnw
+    5nJOFkXXbVyra29kRM0xsEpXWhBETzz+0gSKg4EEerjg3I5ySZC2I8NWUFXfZT3hdJYxPE
+    BlDvG34In1kW2Ko6bppNKwdrKd3pkBSa5UH9Buf1UAxcLFiRspkMP77jZwFJMg1AT4tnNQ
+    YG6I78RZee+qQgTL7hi9HVvBzrhxpcsuverIw6WWb9uq3D9g18C/lKZ0hj2YL2Ept5Ly1b
+    bEtTM7njw8+vDzrWyVG4+3YEuRucfO1fAreW9m9Eevbvcm2GpBchyaVayAYoOwqwa1miQb
+    tod+0CeiXBqc42aydLSD02XUQmGXL2sODYA+l27p37mmfLHYYc6vS5vaGYIxOLlNL++I68
+    6CEh9XO3f9z0oNSPwcK5PvpptBM09HG40vf/p0t/+v0ijFXWVfj/Hx4SpuWSI3eT9quIJh
+    D40cx9yp3ZcOxQa9ddS6R58/HrwPZKkOBT+RrF4Nj1e2RccRB9Ulbuvoy1Ag
+X-ME-Proxy: <xmx:MJxdalqVDySPCJsBccYhxalKCl8tgsR6F9gbA7AOcLtFmrXBXhbEJA>
+    <xmx:MJxdajcTkMLyJ72mt3pQ_quuOfb0GxYqTbPsvL2LGrlCX1J45fZ4AA>
+    <xmx:MJxdaoq8tsyU-5WZqVCwWL1TBiy8uqeXuObg072KUmihJGp_DNM6vw>
+    <xmx:MJxdatlHlWYxLqrBN5cNEPFdllFy_TaGNVoTn0Jtc4DqJueUCPIEKA>
+    <xmx:MJxdalkJzau4igMZ9qpcNPLPSm3ZVwkNWLmSx8yIUzkowvBOuWVXaBhY>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 19 Jul 2026 23:55:25 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: ojeda@kernel.org
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1] rust: bug: prevent dead_code warning from warn_on!'s flags constant
+Date: Mon, 20 Jul 2026 12:55:10 +0900
+Message-ID: <20260720035510.4048145-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CW1P265MB8634:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1937ae5f-1f50-4bd8-1d37-08dee5d7da27
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|10070799003|22082099003|18002099003|56012099006|10067099003|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	ruO0APhMqNqaoO1HI9dBeKsb1gwcIAqlxruYq3mZ06fDPn0Bj6ANyyfpE0GK7U5hoppOJL8LiFJfx4pWRRpp3ETFzXsqHciA+DgJFo+mRhzc4m1BO1Bx4oI/U4+4k/JJ1WJRBy2Tb48e5YXkoB2Qafr4qcSrh3ZBtl76nC/YRiTSlJw6/DDr0yKODzPKSPTynczg482XGaa7IxsnWpjp660rHntNPVR762W77Ft1D/vG/IN3R5iQZyl+el/JRMJXTdZOrKsLUPEmlSChJJQrypozKU1yYjQ5uOPmcTLIBbScD8MzgQtixTVajeaaTzQAkjuxDcmNSRwwMlfzH0+XLoACW0fc4bGEffssKg6m5MSR/7qoqqpI4s0sllYU3vdQKUndXyRs4k5E2ZYPNV2Zp7AxLtPS00k+fknitasQXG3KXeuL+xpk5bQrqe2qEOauMCB2/i9pySS/to/FJjcd4RN03HIrtdM+GibO90vNECMHzG5mQWKsap/PRIzTmmzHqab91nfZkpP2+HHUuT68BdQpVBVsQ5PG3gIcPpkP/KP+gHyjNyBTaRmMAX1skT/1SpQgsUipiLoYUT8NkLLklCKJe7JJrKLtB0eiRoEzVnyBFYvHxtiX9KDK1jwPFTWnhkAs+AXBAvzvZGF1DWtxjcOfSw0XrKhvEADZSvwUS9k=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(10070799003)(22082099003)(18002099003)(56012099006)(10067099003)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZE1ZdGcycFcxRm10azVkOHZBK0xqeHdMTHYwMFYwT2c1ZEVYNGdHRTJqMVRK?=
- =?utf-8?B?SjdaSjdnZi8rcFlVMi8vcU4wcXZZRFFFZnR4OGVIV0IvMGtSR1Nka2RtWDZm?=
- =?utf-8?B?V1VZbDEvaW5Sc0xOWDZDem83K0JhTSszbndLbFhjTlBvVVRvcTFUTUZkYmtG?=
- =?utf-8?B?NHNtUVd5ZkNEQTdxOTNDR1BsNURJazBZb3BTalNmNHBKQ1pINnhmMkFDRnBm?=
- =?utf-8?B?L0ZHWVJ3eE0yRWNaNW4xOE1xVy8xTVRBVnU3eXlRN2ZiSXBiN0xOQ1A1T1Fx?=
- =?utf-8?B?WGVDTWQ4MUVaLzlFeUFiRXo5b0N6M1h1ZXptY0tRZ1Bkb0FEa3R0OUlIUkVM?=
- =?utf-8?B?NXRIYzRoOGVmOU1kR0k4RXhvelhFRzBramNJcjRlMTBFOWtwVWErL1YyRVpk?=
- =?utf-8?B?bHBKNzNYZksvWncrMEE2blRPUHFscCtVSlphTEZGdXREeGtiMGppM2VzMmJO?=
- =?utf-8?B?aThLTGk5a25jVkhpVjYwaitYQi90eVg0NTlidXBzNjZsRE5Vd1lDS0hrYmo3?=
- =?utf-8?B?VXVVSGpNdlRDc0VvTGY1V2lEdUpZbE1kaGdtY1lDOTNQczF0cDE1UEF1NkVE?=
- =?utf-8?B?a3pydUxvK0trOGZsN0FuN1FMNVMvTGhrMmRheG9iZGR0UGVmeVJIN0ZLdnRY?=
- =?utf-8?B?RkdudlZUM0IvTWMxeklrdWJaaksxYTNoL1dveHJDdzBWdXJUY3hRN3dpWTdR?=
- =?utf-8?B?ejRqRUxDUmRldXBtVlRhYytMMTA2QjdPaGFsY3N4TkFQa3o3Zm5zdWJHNWsx?=
- =?utf-8?B?WmphWmVFRDRkZWpBWEZ3a1E4bURaMzF2UFdkU0FMcVhIZ3k3WWpUclYxRXU3?=
- =?utf-8?B?NTlmcFRsUEp5Qnd2ay9Ua25PUkMvdDdyKzZYOElTYjJtQWJhTWNhcEdoNm9v?=
- =?utf-8?B?dTk2N25kZFU2Q1I5RkVjTTFsOGFXNTlaclRqa1Z5bFVkeEFPZVFUYUxjZVFa?=
- =?utf-8?B?RkRaeVBUUU1nTDZNQzBXbWQ3TnJYOEN2QTc5eElabE9QSFZLWkFjRWlGQlZJ?=
- =?utf-8?B?OXhMMkRZS1ZNd3pocVRXVlc2a094N3M3Vkt3UXVhOUV1emcySW1YK09CMlov?=
- =?utf-8?B?eXRsM1dySUQxa1VxUDM5eHkvbU5WSnZ3TythSklBc2VWQnRvdC9WRFVYbXNw?=
- =?utf-8?B?TmZQNE15SXBVdG5XQ0N0MVowcnBVMkV1ckgzNXk2cnVvSi94dEM0SzZNQnFU?=
- =?utf-8?B?bVBzOGJDUFI4ZTZQYmgwSUlQT2gxWHo5V3A2RVdjVklheW4zVGdkektNUlp0?=
- =?utf-8?B?VTZvUFlWbzVHLzBBckUzcnhIdC9ma2ZGc3NPWHA4RlROOThTK0paSEpGWXpV?=
- =?utf-8?B?UFZjZm1yUUNkWW1lMUp5cUl3c1cyV1FDTXYzcHRJajBWeUYxVnVCa3dFTGFK?=
- =?utf-8?B?bzR2R0JVTGZnWm9TRGp6eFRlTGg2VEEyYWZYbWNUc1JqRmlUUUszT2c0ek5V?=
- =?utf-8?B?NmVPUEZjbHNJVmMrczFJc2FoZ2Myd3hxQzg1Z3d2ODZ3LzcyTmk0aFZ0K0dn?=
- =?utf-8?B?d3pwYXUxcnkrc015UDFBd2MreU9OTXk5dFUyUWpPTGt0WHRkUTA2MGJuRDZy?=
- =?utf-8?B?WmlwKzIyblJQdmNYWXZHWjNRL25XQ3BOUzNhVzNMcnAzQmgxc2Jjell4VHM3?=
- =?utf-8?B?SVJrVngxUE1OSXQvb2tkQVRzZmJ4MlRlclB5NDl2Q2plMXFRNzErYlNlWHlD?=
- =?utf-8?B?UmFrVTZCREdHR0NNdEhPdHk2YVVVTGoyRUVMS2FwUzNKR2tUVkpySjFOTER6?=
- =?utf-8?B?cXJtOVVtMm9tbkJDUzdVNmVaWEJYeGlXYVQ5UUd6OEJmbnp5ODZNR0VXU3lj?=
- =?utf-8?B?cWN3dW9QdGRTU3YzU0tTb2dpODZyNGkyY2p0U0lzV05qSUR4V1kwbEN1b0xt?=
- =?utf-8?B?aEt5WnNzYWhMSTVCdW1nMHpMQWtCM1crdUwrUDVsQ0NGODJlMk0xOC95RjQ5?=
- =?utf-8?B?dTIwUURqM09iL2k2RS9Jd0dNeFdtVHhLTUkydExjbmxVYS9WbnZnbVdKQWIr?=
- =?utf-8?B?WVJqU2dhaXYvSVdPZ3hZNEJyS3dXemtHcnlhUDlsSGJrRWtTU0dHOTFpNEsy?=
- =?utf-8?B?anpBTk9wQm5EUTJBa1Y1NC83M3M4ZWdFLzdVWXpWM1ZNLzg0eFk2ZEhRWWl5?=
- =?utf-8?B?ZHc5cXRsZkttVzU2T0doWWRLSmx6ZHBaNkZXWllYeTdHMlYwR1V1RDVhZVlP?=
- =?utf-8?B?SjQzWVk0c29Va0VGcHVJamhuWkZUbk5rZk5sNy9sM0tvVzVqSFZPNXVmLzlI?=
- =?utf-8?B?a3ZRM1JRR2NuRHJaTnRIaUl0ZFJBaEVNa0dkTTdRWjZXWUJPL0tnWEg3Q0Ju?=
- =?utf-8?B?Y2twODV6UG1hQitKckF0T3JaeHM5YTBxQi9RN0RHSjRZblhTNXRFUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1937ae5f-1f50-4bd8-1d37-08dee5d7da27
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2026 20:53:57.4679
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: crAksFfM+nUifen50LwwiHaADWI7bxd2VS6R0oAbZYczjLpIzwgmIU1h/7psEVfe7WNw7cFZSjY2bmk0iH04Bw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB8634
+Content-Transfer-Encoding: 7bit
 
-On Sun Jul 19, 2026 at 3:53 PM BST, Danilo Krummrich wrote:
-> On Sun Jul 19, 2026 at 12:40 PM CEST, Lorenzo Delgado wrote:
->> I tried that, but it doesn't build. ResourceSize wraps resource_size_t,
->> which is u64 on 64-bit (CONFIG_PHYS_ADDR_T_64BIT), so the impl the patch
->> already has,
->>
->>     impl From<ResourceSize> for bindings::resource_size_t
->>
->> is already From<ResourceSize> for u64 there, and a second one conflicts:
->>
->>     error[E0119]: conflicting implementations of trait
->>                   `From<ResourceSize>` for type `u64`
->
-> Sure, but in the case a cfg-gate is perfectly fine, as the impl will alwa=
-ys be
-> availble.  Either through impl for u64 directly or through impl for
-> bindings::resource_size_t.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Given that `resource_size_t` is either u32 or u64 depending on cfg, essenti=
-ally
-`From<ResourceSize> for bindings::resource_size_t` has cfg-gating. So basic=
-ally
-we always unconditionally have u64 impl, and for `!CONFIG_PHYS_ADDR_T_64BIT=
-` we
-have a condition u32 impl.
+Fix the following dead_code warning on some configurations in an
+atomic development branch:
 
-Best,
-Gary
+warning: constant `WARN_ON_FLAGS` is never used
+   --> /linux/rust/kernel/bug.rs:126:19
+    |
+126 |               const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+    |                     ^^^^^^^^^^^^^
+    |
+   ::: /linux/rust/kernel/sync/srcu.rs:106:12
+    |
+106 |           if crate::warn_on!(
+    |  ____________-
+107 | |             // SAFETY: By the type invariants, `self` contains a valid and pinned `struct srcu_struct`
+108 | |             // and `srcu_readers_active()` only checks the active reader count.
+109 | |             unsafe { bindings::srcu_readers_active(ptr) }
+110 | |         ) {
+    | |_________- in this macro invocation
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+    = note: this warning originates in the macro `crate::warn_on` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+The warn_on! macro always defines a WARN_ON_FLAGS constant and hands it
+to warn_flags!. On configurations where warn_flags! does not reference
+its flags argument (the LOONGARCH/ARM variant, which only calls
+WARN_ON(), and the !CONFIG_BUG no-op variant), the constant is left
+unused and triggers a dead_code warning.
+
+The warning only surfaces for callers inside the kernel crate itself:
+uses from other crates expand an external macro, so the lint is
+suppressed there.
+
+Rename the constant to _WARN_ON_FLAGS so the underscore marks it as
+possibly-unused, matching the existing _COND_STR constant in the same
+macro. The name is still referenceable, so configurations that do use
+the flags are unaffected.
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/bug.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+index ed943960f851..2fd7ee25abcb 100644
+--- a/rust/kernel/bug.rs
++++ b/rust/kernel/bug.rs
+@@ -123,9 +123,9 @@ macro_rules! warn_on {
+         const _COND_STR: &str = file!();
+ 
+         if cond {
+-            const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
++            const _WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+ 
+-            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
++            $crate::warn_flags!(_COND_STR, _WARN_ON_FLAGS);
+         }
+         cond
+     }};
+
+base-commit: 880c43b185ca52239e75bc546cc4f4d9154d0fed
+-- 
+2.43.0
+
