@@ -1,119 +1,115 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ED742EEC4
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 07:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784619298; cv=pass; b=ORtC4laItrWHyytD+KNEsN1/FrOUerpaXTadgqGDsnLp7qGwS4xxr83WGIyhwZIL4bW6UYjxOHlUV+9ou2zZuBBwwT1zYjuXlmibsEgABWk/lH4T/HB3xmvJ8oc7HB3jmph6TWWDX0t+Uth/JFmt/QLaYu1g+hv+dVvooCwt++Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784619298; c=relaxed/simple;
-	bh=IH+fA/tWIwhGXGABscWzwYwKIxTnu6htnra/ydQjCMM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KnXclkrAcJXJyzrYfW86D09XeJ8t1U5x79w3/U8WJtLh4g456KSixqGkupjBDl9CiO4CZYE1CdJSFfNaK8psawWp/wSugMwxCQc4Xj++klPrWx3VnKE4JsxE1ahNgiFtgaENYctmgQhZ7rndNjTJDvfDyE1EK11i2DahmZk/CmE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NAlg+NBJ; arc=pass smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BF4433BA2
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 07:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784619976; cv=none; b=hMl2lFXtkCRmfMJCYv/hBlxjywEvAoDZEUjN3clVbyhgnfsI9Ar0JGOqfDP8v/F8c7lBua3nnOWkO1gfT2wax/fNLVqjnCrHTBC9cazx4pWkctfglExXMFhT0452rxwLZq33vB3bSKb3Rifj1j7uXHMr033ZiFYLzUs0NkNkQvw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784619976; c=relaxed/simple;
+	bh=dau4m55i0N+huU1Tx4LV5VNIWA7SxLqAMiCgmbSBsQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=N+5ry8EKzCk2zgoEAlnLcKt0kEOfHYmo+IbgOe6Wokl/ez4xl4J0UMTyVKVVq8Mg57P+LTCpH1ngkcaTkJ/lL72L5OsofAoiMZHJHXQsMhQ2IvKtB3rxtOnO7M1KD8dsy7dbGtI6VF5mHwtPwRt5C/MuN//cPR7RjylFTDM5fhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dIlOrAVp; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NAlg+NBJ"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso7127702f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 00:34:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784619295; cv=none;
-        d=google.com; s=arc-20260327;
-        b=sXJozV34FaLrBOCSXksDY71SMQcqJdwxFhQfi/SvB0zkYfHPrPlfekT+/4gTn5qnuq
-         j3OWVPO+Typp93+XIyEywtN+Tlud4m4ERDvFjl8SuAKkF8Cs/rov/eglN/52pxtWn68v
-         suDelAYzkc2eXghCvIT5Xi6kafINtNZz/GncmYRWmGJhRR98ayZo2UiDOJG366vJnX4g
-         XCZ33uLlkSl6YVh0O/tDhxTEyxLqnK9n+eUmYVVDhTRCzDo/8oHbAwUPZYBtrZyIVabD
-         QWkAz586moWItcS6QjDp25MM2E+8L7UbTmXtr3MpY8PSGudNsKv6H0fWRi//ozGiJ87g
-         H1gg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IH+fA/tWIwhGXGABscWzwYwKIxTnu6htnra/ydQjCMM=;
-        fh=XMSlWvGfoII7zgYh+XG1Bdlh9uzGpiZGKeQ77V7qrSk=;
-        b=nWtQVBh6lKHGASEeTDrMGWsm49I3GzarJ5pQ0A8N3JDBFaksTrOXaa2odg0lJ1fbuz
-         l/bkEgkS5A6k5dvXBy0yyvzgBfehQW72tOippVnz+FvF467bglc12BMMgJQwhHRRm2Pf
-         O/Y2Qtl1mh+45Qog3Aw/sMimO8QvYtPSykNdoHu/ZylMebtJj3QkcNQAZ26K8g+5V0a8
-         MHWd+7aAi+hRUyEqAsDdvRAyGh+agqw0SIvX9VLkb3R3LxKpQxAgaZqkbW54bfsOntIC
-         RIxDkgXpwuVI8BpYEbciun18UgZAmloB5lpGkRR2k/5dt+3D/S+rytSIiNaWfV8ghUAv
-         rCuA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784619295; x=1785224095; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IH+fA/tWIwhGXGABscWzwYwKIxTnu6htnra/ydQjCMM=;
-        b=NAlg+NBJ1w0CbG2ujx801xWzOyTGne3uf5qZTKTIkvVqS9JntvvQWWvvlfX7Cx4HDr
-         imXJaifMVhkgFmmymryIOo0KQQm6c0cVLtTDzXdcSDs9TH8FMff84+o0SHM82t38o/Xm
-         GlrOnN+WSA9lncfC6XfENX8j0Q/+2c5I/9vBJ/o15XNDZ+1t5JZYyNW5FsbHA4U0XOML
-         IrIE4pUpbwUNBzEHNrHDOcq9FW8J9kox80nXmP/qvUfxNyTgrWQVYNypKAuFAXWdM1GE
-         MqUSn4LBdp33BDtnWZO3TwZqDjtDZHVfo/PDGumXitg7Hbe+5879bEaIto4VZ0bqss98
-         JO0Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dIlOrAVp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1784619974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Ais/X6bRzcXYsevthemLaBtrh2axhIC1Q39swas2MM=;
+	b=dIlOrAVp0Ji2V5uTVEmBpiea9pMbIx6M+OOB5ZyTDB9+QstjgsdxLFRwYx+IDMirRWlz3A
+	I5t7Bbn21g1YWyf9E3TJo3/Ve7vdCvvZvzEhgj36aQStbhoRc9XqkdQ120s9gPrVDSdswn
+	kH67gkVnw4dLHFn2v6eWHyf1mQmyLfM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-34-m8IrxrkWM9Gbu_Iq-Ptn7w-1; Tue, 21 Jul 2026 03:46:13 -0400
+X-MC-Unique: m8IrxrkWM9Gbu_Iq-Ptn7w-1
+X-Mimecast-MFC-AGG-ID: m8IrxrkWM9Gbu_Iq-Ptn7w_1784619972
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f6db77430so1957909f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 00:46:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784619295; x=1785224095;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1784619972; x=1785224772;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=IH+fA/tWIwhGXGABscWzwYwKIxTnu6htnra/ydQjCMM=;
-        b=lIG7geHZNZ2WBNYoKkyM9y1Nd2X8p3bdXPC9x7p16RNsTij/NUlUA2bvsnRqM2fg/E
-         bQi0zKzfY0xJBaH1OyhjA69ClrVljWEdwpcx6MeiOGnIAckDvH2krhWu0mJzSqiJX+en
-         k2Q/TqmajVI9ka3IW/TdNp1SBwqGEKn5joT5BiNbTjs/OxsNLUTQnaeMqnmWuj7uf8JP
-         LTPedOLmW/+dojErDcXhrdMS4EaPMf7TTcN8ff4p4pmbrKVYIiPG3cc+ecUovOqHLGkc
-         GcDYNsAkTWB/BhmLzKkET0ug1nmkuB0SNCvvhuzR8YdnE4BohMLNQWSvZtVuLDlhJdho
-         y9lw==
-X-Forwarded-Encrypted: i=1; AHgh+RqmgCHcWAPKeNXL4fxCYP5T2C+UePYJWA+SFvDlTRhLMo/tzFMRnQnw2hJy9A9Xa2bgPK667k1TfOfoG9Ud0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcMHA/9BbYASqYTLX2IKjt92RiaUS2j52Lf/A45Vpe4el7lvJe
-	kMAJ+yqtoxu5TGqVA3mMxtT6MSd7DH2A2QOHgsD2L5/muYG9p8HPp0L6cznhvBB7UPQjFwck6av
-	J3KgpNOu2XM7fLJlHcEb7rEtJ1c4t8E9QVu7RbMKj
-X-Gm-Gg: AR+sD10HqfQayt03hjhnMbVmmEYLvmnrl5l6cXdBs91J7DqyGg+hGJvFkZsuzaqLhSU
-	eVJaDRTanQ9gRPu7DZ6K3jgpO3suzle/nnoJfaY8UkdJ406g/ciMNGEOh7ydjLCnt6uldoYsCjO
-	5MGrbds5Vh3JgNzR6UMoSDtteTwBADrcXmtgLOAllgi0F5pjv+5uqZwYVhdar6jKQs2mHYzl1sz
-	TZn2/Mmh5SRYKFs7eFw43ekQgDy454xQWlxksBbIM+x3Fni7yuNzxP3bmVANco5UQ0ti+yXFtYm
-	/bM+y2tvTz74znpcYYqs/1pzyRQWmO3uyM6+wzLl6NkLVK8=
-X-Received: by 2002:a05:6000:3113:b0:477:47c6:36e5 with SMTP id
- ffacd0b85a97d-47f6230dc46mr22141711f8f.25.1784619295093; Tue, 21 Jul 2026
- 00:34:55 -0700 (PDT)
+        bh=4Ais/X6bRzcXYsevthemLaBtrh2axhIC1Q39swas2MM=;
+        b=a2J1zQIlRyN/RPRF6+1lzrtjrNeZXjxq88sWbrGWRma/G1GLuspLPXcMDqw5QSJ83k
+         SShZPPIOOH1trEhu3qNWc7YQR+yvIC5TeULqRytbGBG5rm/aQ8EZ/xJjda/gV7uN8oEv
+         IkJPu5OsZGB99bifkIcpfA+Ntfj5+iR/zD4yrd4118KY4voPkavXwt7HThZiBkO4JDV5
+         fRkbl4AhZRqI2vAdAWIvzPbMP3rQLu5nL6YDfz06GE/K57n9M3DFF6EkRIV+YJ5uNXWf
+         6buokLKCHNWl7W+HGqAPBlbgJxg/y3InhG0cwTRyD6vThsXf0L8KIARwhZIWDGf4mDSj
+         hNAQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpYOZ5+pjsjw0wTPP0P2l7GtHXrKmeiJv6cnzwplwc6PV4Tex3wwonYBn/hgRwWgVGnBerImQQe88ajfLjx2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPBvDyYoMdSsPKGENljzNds1SKk+BwV5axNMtuctJLe0SXCwYN
+	YbqsIBVFJp8xO747cK2XAMb33/JcqK687PEPCIM8WnKCsdzbu4ikE2LOUCssJseVpY2qEjmsgZZ
+	p5uOhWXTxzHosiCT1SXKkNFDcVzKkOUHtq1kvMA/SrIRrjmNWOEodgpfL205FKlabZ4FY
+X-Gm-Gg: AfdE7cn9mFBqmyb+biMgXrh1j4IiXEZelnmjm6yHi5AE/D8ot3ZS1lQljwWQ5vAY8nn
+	o884vo9oxdgUGDtQ1v2c+Pxvv8J53F0T5w+R96ldc12VOYv0vS49dr7sKOcML5pAPJf8OjwZNQU
+	pG8+A2ltsbLFRH6GkYLXL4JhS8JIUjtReHQrsDOjc2QjMDg92IZvXQDpZERUQznI/dWzR17bRoD
+	G8B7NgCknvwx3aG9QvVvOix/QMsSxLVSm/i0PScJRof12P+wHii+lT9p4bpS58fDo8UpWfkVehE
+	S8Y8aJyBJ215sSa+QRrmpM4z+ZK87Nfoxr46Erf6kLWQB87cTUAFbFFG7zUIHAbCKR7gjUjELFj
+	JaAVRwryZTiUIwN1wv+CaQesv9+zmCYGve8K6IhBkg7hPHDWpcg==
+X-Received: by 2002:a05:600c:3515:b0:495:5b4a:53c9 with SMTP id 5b1f17b1804b1-4955b95bfbbmr89971175e9.39.1784619971810;
+        Tue, 21 Jul 2026 00:46:11 -0700 (PDT)
+X-Received: by 2002:a05:600c:3515:b0:495:5b4a:53c9 with SMTP id 5b1f17b1804b1-4955b95bfbbmr89970765e9.39.1784619971248;
+        Tue, 21 Jul 2026 00:46:11 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-65.retail.telecomitalia.it. [82.53.135.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f63e49ce4sm37180764f8f.8.2026.07.21.00.46.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 00:46:10 -0700 (PDT)
+Date: Tue, 21 Jul 2026 09:46:00 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Manos Pitsidianakis <manos@pitsidianak.is>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 0/6] Add Rust virtio bindings and sample device
+Message-ID: <al8isqIL6gwGlPc0@sgarzare-redhat>
+References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is>
+ <tiiht3.22qk83rct1pd@pitsidianak.is>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610133241.374115-1-georgeandrout13@gmail.com> <20260616170956.2580772-1-georgeandrout13@gmail.com>
-In-Reply-To: <20260616170956.2580772-1-georgeandrout13@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 21 Jul 2026 09:34:37 +0200
-X-Gm-Features: AUfX_mzHCGDGgiLZZ7_h2z_pCj13NSac0WMLZ0VWES0nh-G_NKnTO0Rh_qv0PlI
-Message-ID: <CAH5fLgjk0BxY142AfJZC14ZYsU5_rO3NNSrP3oLm53pjy4yzyw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust_binder: add ownership assertion to Node::add_death
-To: Georgios Androutsopoulos <georgeandrout13@gmail.com>
-Cc: gregkh@linuxfoundation.org, cmllamas@google.com, arve@android.com, 
-	tkjos@android.com, brauner@kernel.org, ojeda@kernel.org, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
-	paul@paul-moore.com, work@onurozkan.dev, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <tiiht3.22qk83rct1pd@pitsidianak.is>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5Rl5ZQYMDapnpTwbjOb2IOLjHjaJLyL8rMNySn1qaxc_1784619972
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
 
-On Tue, Jun 16, 2026 at 7:10=E2=80=AFPM Georgios Androutsopoulos
-<georgeandrout13@gmail.com> wrote:
+On Tue, Jul 21, 2026 at 09:21:15AM +0300, Manos Pitsidianakis wrote:
+>Ping.
 >
-> The `// SAFETY:` comment in NodeDeath::set_cleared assumes that a
-> NodeDeath is never inserted into the death list of any Node other than
-> its owner. However, this invariant is not enforced by the safe function
-> Node::add_death, which inserts NodeDeath into the death list without
-> checking that death.node =3D=3D self, leaving a risk for future code that
-> may miss this implicit invariant and cause undefined behavior.
+>I have a different version of the series WIP with a virtio-rng instead 
+>of virtio-rtc, based on https://lore.kernel.org/lkml/20260529-rust-hw_random-virtio-rng-v1-0-b3153dd90311@pitsidianak.is/ 
+>(which needs a v2 also)
 >
-> Add an assertion to make this precondition explicit and catch potential
-> violations early.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/1237
->
-> Signed-off-by: Georgios Androutsopoulos <georgeandrout13@gmail.com>
+>But since this series hasn't gotten any feedback on the virtio part, 
+>I'd like to ask if there is any before respinning.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Sorry I haven't replied until now, but I haven't been able to find the 
+time to take a look. I'm very interested in seeing Rust used in virtio 
+drivers, and I'd be happy to help maintain them.
+
+I'll send you my feedback within the next few days.
+
+Thanks for your work!
+Stefano
+
