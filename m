@@ -1,118 +1,164 @@
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+Received: from out-13.smtp.spacemail.com (out-13.smtp.spacemail.com [63.250.43.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF39E43711D
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 07:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B9D437866;
+	Tue, 21 Jul 2026 07:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.250.43.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784620248; cv=none; b=ucykW6E7XZJpnydXv78S2Au/kXZSrQZ3SRtLokGEpGjZ6MuPEVbHtwqXv1OVKVqkx3wr4wWMCDHQcSvGOcDcuk/CrP2wFczeMEOVD468ssq5n4rU6KhP2YV5K9TrZ9a7NSxGZq2yJ5CFm237haguAqhrArBPP0nS7kDiYIHGrjI=
+	t=1784620503; cv=none; b=Og6wFZBFuItmcfdkV2hcQRu46dXevUxm45mEvbMoZ3I51aGPsXZs+nW6HGhV/vj5kWxR4lF9UEMqi8zLhGl/Ka0xkiDr4CA2m4iMWJQIP213pZHgOqxbCQkJX3PQT1FTMiERaSlIQmr0JT9oXYC6xM5kPkOoDqV8OgsJPEmspb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784620248; c=relaxed/simple;
-	bh=v1HyQ9w4CQ9GtjNjR+yGGPjV+zdr+mSawSgmUOS7+QY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EcPZMLnsctX/DHSVQPJRnq5RBSW5ADCn2eq52PXU8a3PK6qJ2q4Mto155FPqQ8dXfcIRPrnhGdBBS0fkGJf0pLTvJNSjOGL/2WRob+39rHiCelxWs4b9w6N/I6hJIVr9G09G41BZ+MZpF/lMFJaFnQeV+A4n1F3vwp373vibQsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uusYuBLc; arc=none smtp.client-ip=209.85.128.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1784620503; c=relaxed/simple;
+	bh=zgZCx6f5e3YjORwGtUiplRAdJu2Oq+Ptz5Q5lkQjVRE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SsrGZJA77fL7QgE6qa3QcBZKwvqcjI0AekmSlP4L/Js1DEF1RGJEUSANQBKgFsjFzIWWe7J3ZroxGhHA10Xs6BA5Pp9qugwc75S10kZ0pSrEQEhzGecq2CCFr3IQsMaifRD2LpkRADklthTSAJFoKtoAL4YtxIj5wjTKErJlROU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev; spf=pass smtp.mailfrom=gurudas.dev; dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b=JOvvoTsN; arc=none smtp.client-ip=63.250.43.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gurudas.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gurudas.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uusYuBLc"
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-492488f8583so146543785e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 00:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784620235; x=1785225035; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jZN0cXKJfka9i5ge5e0ezdkYWG8Vmfnfz35ybXd+mtU=;
-        b=uusYuBLcah4tK4MNxCg1ZCyK/edOcwoSm0eps5P3xbRoCdCMhQAq/juWwIIajri/r8
-         ktUmODgWzrGWoP+7KhMT3iZ7lMsJe2RFnjwkbNT8Z/i2HkwU2/S3zOjnawpRCWc4dUkC
-         1qdQp5cBGJbIG8If2h8Mjz48YUlJnEh2TVmW4Q3P2cpoHZ01csnc6LZjU59R+uHDJ9/6
-         uBX/uB0cUeTOwUbeQtJTrZBOPAqrmPA/qr2ahVRKdB1gAaM4vPXYQgVKYvqmzWr9nVx3
-         PSjUl2CTz2uiiRBXmYKqmec73t+Vv3WHTuHc2V7XibGtm2vCcioKVDa3Dtq+UrFJfr56
-         nMFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784620235; x=1785225035;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jZN0cXKJfka9i5ge5e0ezdkYWG8Vmfnfz35ybXd+mtU=;
-        b=L1Iu38hNiQHMOp3E3Sc1Zrr2plQwUeiTLA3dfuWbiU82EVnfumToFllV4ozZNnu9w1
-         lCgIwcqaa5iFsDeSsQa9/avUANZJ35zqFAirtLS5CoRO5FL1orrh8nSLmtjN2Ar3WdmX
-         aYf+NMVJpAPJxlKgptvnyInjkpE8tKM+rqFFcVymIwSKnSJ4AXxPr0ie3SZNi+L6Ytlo
-         DVpI/kEU+Q4mXbixR/szFeDn4HJ8dE6jaFOLO7UOa4SHHyRFXjIgA3kPzM4c6wBMhjRt
-         Lx4hTP4Y5iqw0fz/48kojhmEVPDGHdz26NwHctBv8BwdqHhZ08J1OlXrMsxsw5rbwQXh
-         YRdQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpEjOoi8LYpoWByI0i6/2Psz7QPAg5mF6JOROILlSz37hkK731QaZCnxzy6q6/Mkb3GqcsLP/A7ja/sClOCIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFT4JJ4xVIgvEoJSv5jnexUITeu3+MQe785n0ny38nq8fZZnXq
-	TOeYOxxCnlKatchsLkj7qrClMBp3jjQOlUIoRK6fstScfBdoLND6fVLs2oNGOxiFyacQ+5JdCtk
-	BtNMRoMjCHDJm3aweGg==
-X-Received: from wrny4.prod.google.com ([2002:adf:ee04:0:b0:47f:4fe5:ede6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3b26:b0:495:6274:56c2 with SMTP id 5b1f17b1804b1-495627459e1mr65586805e9.2.1784620234926;
- Tue, 21 Jul 2026 00:50:34 -0700 (PDT)
-Date: Tue, 21 Jul 2026 07:50:33 +0000
-In-Reply-To: <20260719153631.559341-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gurudas.dev header.i=@gurudas.dev header.b="JOvvoTsN"
+Received: from [192.168.1.103] (107-194-158-19.lightspeed.sntcca.sbcglobal.net [107.194.158.19])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4h48fl04yFz2x99;
+	Tue, 21 Jul 2026 07:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gurudas.dev;
+	s=spacemail; t=1784620176;
+	bh=iks/xDPE0d1M9emSWbUSSzGi+JoBRcg8Z3T2an+YYQc=;
+	h=From:Date:Subject:To:Cc:From;
+	b=JOvvoTsNQLQcVEwVHpsEkmzeom4o/PDhpWUgfmtxNz4W7e4OSDSdqcbryL9enKVxM
+	 6Tf6fuyDVh57CZq4GJBVR+lRkKOuUgY+8PoHpUTC07nPi3i/nHKoiqpnuMxAHPrmvO
+	 FbMkOzzPmvGqJPqU2dEcufxzI+BJWT+JXowY8LfIpHapKoS90QfGTydVbKz8EWPRdw
+	 QCH96qS36v1rww5iHYZuHCW3BchhyMwhQnY9GNZlpQlvBUKfem5BkRGkyMy6f/33p+
+	 X9l85E+fs0t+H+M1hQs+mP5Iry7kO/xVov6jGkOA+gF78KnosX7xJkEzLt8YMgQoJT
+	 UaEFMheewbpzQ==
+From: Guru Das Srinagesh <linux@gurudas.dev>
+Date: Tue, 21 Jul 2026 00:49:27 -0700
+Subject: [PATCH v2] pwm: th1520: use vertical import style
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260719153631.559341-1-dakr@kernel.org>
-Message-ID: <al8kyaXILj4oepq7@google.com>
-Subject: Re: [PATCH v2] rust: irq: make Registration compatible with
- lifetime-bound drivers
-From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: daniel.almeida@collabora.com, ojeda@kernel.org, boqun@kernel.org, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, tmgross@umich.edu, tamird@kernel.org, 
-	acourbot@nvidia.com, work@onurozkan.dev, bhelgaas@google.com, 
-	kwilczynski@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	mhi@mailbox.org, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260721-pwm-rust-vert-imp-v2-1-9f91547f5e07@gurudas.dev>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0Jm7ZgWAqgr72FY0HaAmgBNp60aw
+ t0F3Lt8yfvvL8DkLTHcsgU8Jct2njbITxnooZ16Qms2hlzklahFie41oo8cMJEPaEeH5bUtjLw
+ oI3QH28556uz7aD6aH3NUT9JhD+3GYDnM/nOcJrl7//pJosS6LIxSna5EJe999NG0fDaUoFnX9
+ Qu559A7xgAAAA==
+X-Change-ID: 20260705-pwm-rust-vert-imp-59a3d18bd0cf
+To: Michal Wilczynski <m.wilczynski@samsung.com>, 
+ Link Mauve <linkmauve@linkmauve.fr>, Drew Fustini <fustini@kernel.org>, 
+ Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ llvm@lists.linux.dev, Guru Das Srinagesh <linux@gurudas.dev>
+X-Mailer: b4 0.15.2
+X-Envelope-From: linux@gurudas.dev
 
-On Sun, Jul 19, 2026 at 05:36:05PM +0200, Danilo Krummrich wrote:
-> Adapt the IRQ registration to work with the Higher-Ranked Lifetime Types
-> (HRT) device driver architecture introduced in commit 2c7c65933600
-> ("Merge patch series "rust: device: Higher-Ranked Lifetime Types for
-> device drivers"").
-> 
-> With HRT, driver structs carry a lifetime parameter tied to the device
-> binding scope, allowing device resources such as pci::Bar<'bar> to be
-> held directly rather than through Devres indirection. However, the IRQ
-> abstraction required Handler: Sync + 'static, preventing handlers from
-> embedding lifetime-parameterized resources.
-> 
-> Remove the 'static bound from Handler and ThreadedHandler and replace
-> the Devres<RegistrationInner> indirection with direct request_irq() /
-> free_irq() calls in the constructor and PinnedDrop.  Registration<'a, T>
-> stores the IrqRequest<'a>, which structurally ties it to the device
-> binding scope.
-> 
-> Also remove the &Device<Bound> parameter from the handler callbacks,
-> since handlers that need device access can embed it in their own type.
-> 
-> IRQ handlers can now directly own device resources:
-> 
-> 	struct IrqHandler<'irq> {
-> 	    bar: pci::Bar<'irq, BAR_SIZE>,
-> 	}
-> 
-> 	impl irq::Handler for IrqHandler<'_> {
-> 	    fn handle(&self) -> IrqReturn {
-> 	        let stat = self.bar.read(regs::STAT);
-> 	        ...
-> 	    }
-> 	}
-> 
-> This eliminates the indirection previously required for IRQ handlers to
-> access device resources and aligns with the broader goal of expressing
-> every registration scoped to a driver binding through compile-time
-> lifetime bounds.
-> 
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Convert `use` imports to vertical layout for better readability and
+maintainability.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
+---
+Came across a recent commit bc58905eb07 ("samples: rust_misc_device: use
+vertical import style") and found a few more locations that could
+benefit from this cleanup. No functional changes.
+
+Separating out patches per-subsystem as per the review feedback in [0].
+
+Tested via:
+
+    $ make LLVM=1 rustfmtcheck || echo "fail"
+    $
+
+[0]: https://lore.kernel.org/lkml/20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev/
+---
+Changes in v2:
+- Link Mauve: Removed empty terminal comment from middle of imports
+- Link to v1: https://patch.msgid.link/20260705-pwm-rust-vert-imp-v1-1-753dbbfc6061@gurudas.dev
+
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+To: Drew Fustini <fustini@kernel.org>
+To: Guo Ren <guoren@kernel.org>
+To: Fu Wei <wefu@redhat.com>
+To: Uwe Kleine-König <ukleinek@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+To: Tamir Duberstein <tamird@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+To: Onur Özkan <work@onurozkan.dev>
+To: Nathan Chancellor <nathan@kernel.org>
+To: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+To: Bill Wendling <morbo@google.com>
+To: Justin Stitt <justinstitt@google.com>
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-pwm@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org
+Cc: llvm@lists.linux.dev
+---
+ drivers/pwm/pwm_th1520.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+index 3e3fa51ccef9..543bd8dea846 100644
+--- a/drivers/pwm/pwm_th1520.rs
++++ b/drivers/pwm/pwm_th1520.rs
+@@ -23,15 +23,21 @@
+ use core::ops::Deref;
+ use kernel::{
+     clk::Clk,
+-    device::{Bound, Core, Device},
++    device::{
++        Bound,
++        Core,
++        Device, //
++    },
+     devres,
+     io::{
+         mem::IoMem,
+         Io, //
+     },
+-    of, platform,
++    of,
++    platform,
+     prelude::*,
+-    pwm, time,
++    pwm,
++    time, //
+ };
+ 
+ const TH1520_MAX_PWM_NUM: u32 = 6;
+
+---
+base-commit: 1a4920940ebfd8d907858abd8f8dd09b13752946
+change-id: 20260705-pwm-rust-vert-imp-59a3d18bd0cf
+
+Best regards,
+--  
+Guru Das Srinagesh <linux@gurudas.dev>
+
