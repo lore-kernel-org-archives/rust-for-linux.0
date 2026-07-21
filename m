@@ -1,83 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F253746AA6D;
-	Tue, 21 Jul 2026 15:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAF946AA68;
+	Tue, 21 Jul 2026 15:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784647945; cv=none; b=TRG2B4NcUgKZobq0JPMmMjfFaujIXmfgOiq9b8PLyDN1bzVE2gyj9K/eu+6fxFAzougXtgZSqqBXQdIV8Q+k1/2BCtj0xEz5pC90bZuSuPITm7+mlZLPs1dCouc6StgVtmfqi6o0pKV1ZEcFJCsoUiJyZ69rAgTKXA1D69blRvo=
+	t=1784648212; cv=none; b=mdYUDMbQd/ng8R46bO42EbyFS23/Wsp/grBmF3wogDaLIj4BNGWg+LobLLe9q3jJPw0suM4rRNAOQhgKwAbseHGbrEhXtEZQq2NvdiaVM5IQeoNusgrBsoqlSiZTEkZuC2bPqgju66EzyTjuk+dCuYOD55jP9cdUc/ktwqof6DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784647945; c=relaxed/simple;
-	bh=YmeKO/rqCgaum2nCNEFLOEjx/qFEgr9O093ZlpM1v5o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=NQC0WYz2znx39aoG2X1kBkR5v/34WKCSZpuWio/AL9tL/m4sY3vcffRPPJ9OQnZd83ydPLz884jkITEnM0K9wmAMaSs+3KJb8uPWZ3pzWi77A3IW+Ccw/aws4QoxImpjpfQinsx95GPmvpl2WY1VcSrhTqvqK2Nlp/2bSFeaCEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=foDFq9gv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784648212; c=relaxed/simple;
+	bh=Tgx+AsJ1cZ3aSr/XoMl1XYAEYXaxeH8/wj0VMqXxtR0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qPo0k8qVla2nAdkG0c+g1Wbqcs/rXxPrs1TG2mcIpBupbyk6l43Fe0IGiAEkPz+SLYFHJTriCauXaKKJIXC+CHr39e1bSmOsbcZmy+8WlC8b+em8V6vnOlSoOKFSiboffJkpAbU833WtDcU6VrJULHkdM68XAxn9umOP43P996c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=cdItnyw0; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="foDFq9gv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27EE1F000E9;
-	Tue, 21 Jul 2026 15:32:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784647943;
-	bh=q5/zi7cNrAXqMYuiX3MH0iTCnpKZXOPQtuIcMMtp6BM=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=foDFq9gvx5k/WUNMRwO6oPryQ99mNdJsoBTaxbg2iTH4UNN8w78Ug1kjn6bMaK9yX
-	 ZT0/LujqZx6Fk9YQvP8+vQy3EHkKkpKnkNYE+iyrX9pNTJEHndC/GptWbUQWyk29jl
-	 hwdzsyFlbSjKwObSPqXOJjNuIxWIEZm/tRuq9SpXV4ctJJe3rdvZH14glAXRc0cAEt
-	 H/pUR5oALHPviHwJ1FZmSo4FloHBxeefDtHq8/fVVH+G7LkOU45d+SptMbyeA9Bozt
-	 PsgPuSQcNTngIoCw9UvTij+E5iHQ+/mhD3MRKVQEgp9ci44gygq7EcFwzE1U3IEec6
-	 IhUuvsOpwv19g==
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="cdItnyw0"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4262E152B;
+	Tue, 21 Jul 2026 08:36:46 -0700 (PDT)
+Received: from e143943.arm.com (unknown [10.57.39.15])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 183F73F58B;
+	Tue, 21 Jul 2026 08:36:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1784648210; bh=Tgx+AsJ1cZ3aSr/XoMl1XYAEYXaxeH8/wj0VMqXxtR0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cdItnyw0mOsCIiaH9NX6ROh0LFOM6x3wj68pzHvRZaJlXoJsc9i5T7uZoDxw2jVkx
+	 RJysIRfsORtLydMSkkP/bJZRs9/R0JEGf5AhIdJnVMt7CRR6KlDXlvIPjEHYGpoUCN
+	 TMaO8/haBtZicKB97oYbZ/6qtqHV4m0ixixl7U80=
+From: Beata Michalska <beata.michalska@arm.com>
+To: ojeda@kernel.org,
+	dakr@kernel.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org
+Cc: boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	daniel.almeida@collabora.com,
+	boris.brezillon@collabora.com,
+	work@onurozkan.dev,
+	samitolvanen@google.com,
+	rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH v2 0/3] Rust: add runtime PM support
+Date: Tue, 21 Jul 2026 17:34:01 +0200
+Message-ID: <20260721153617.869933-1-beata.michalska@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Jul 2026 17:32:18 +0200
-Message-Id: <DK4CW8JXVL8M.2KKRMJVCD9AYO@kernel.org>
-To: "Laura Nao" <laura.nao@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/2] drm/tyr: add Wait type for GPU events
-Cc: <daniel.almeida@collabora.com>, <aliceryhl@google.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
- <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <tmgross@umich.edu>, <tamird@kernel.org>,
- <acourbot@nvidia.com>, <work@onurozkan.dev>,
- <deborah.brouwer@collabora.com>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <kernel@collabora.com>, "Beata Michalska" <beata.michalska@arm.com>
-References: <20260721151423.444175-1-laura.nao@collabora.com>
- <20260721151423.444175-2-laura.nao@collabora.com>
-In-Reply-To: <20260721151423.444175-2-laura.nao@collabora.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Jul 21, 2026 at 5:14 PM CEST, Laura Nao wrote:
-> +/// A convenience type to wait for GPU events.
-> +///
-> +/// Wraps a [`CondVar`] and [`Mutex`] pair. The mutex synchronizes predi=
-cate checks
-> +/// with wait/wake operations; the condvar provides the sleep/wake mecha=
-nism.
-> +#[pin_data]
-> +pub(crate) struct Wait {
-> +    /// The actual wait/signal mechanism.
-> +    #[pin]
-> +    cond: CondVar,
-> +    /// Synchronizes waiters with notifications.
-> +    #[pin]
-> +    lock: Mutex<()>,
-> +}
+This series adds initial Rust support for Linux runtime PM.
 
-This is backwards; if I get this right at a quick glance it is basically ab=
-using
-CondVar to implement a WaitQueue abstraction in your driver.
+The concept for Rust abstraction gets introduced in the first patch.
+It provides callback registration, PM callback dispatch through PMOps trait,
+scoped request helpers for common runtime PM operations and configuration
+helpers.
 
-What you actually seem to look for is a proper WaitQueue abstraction, which
-could then also be used to simplify the implementation of CondVar.
+The abstraction intends to keep the request semantics aligned with
+the C runtime PM core.
 
-I'm already working on a WaitQueue abstraction, since I need it elsewhere. =
-I can
-probably post something in a few days.
+Second patch integrates dev_pm_ops into the Rust platform driver abstraction,
+enabling drivers to register PM callbacks with the core.
 
-(I didn't check your use-case but you may want to consider completions and
-simple waitqueue as well.)
+The last in the series is provided for demonstrative purposes
+(not intended to be an actual merge material).
+
+This has been lightly tested with the Tyr driver.
+
+It is based on Danilo's drm-lifetime branch [1]
+
+Note: Currently the PM abstraction stores the payload data associated with the
+PM transitions within `struct device_private`. Newly introduced member has been
+deliberately named 'rust_private', wiht the intention to be extended to cover
+data registgry (on the Rust side) for any future cases that might need to take
+the same approach as PM abstraction. And those are comming.
+The work is ongoing and hopefully will be available soon.
+For the time beinng the
+	`rust_private`
+is intended to represent
+	`rust_pm_private`.
+
+TBC
+
+---
+v2:
+- Moving away from the old PMContext<T, Dormant/Active> type-state design
+- Introducing an explicit Registration<'a, T> object.
+- PMContext now carries a lifetime and is derived from the registration
+- Callback data is no longer recovered through driver data
+- Simplified PMOps
+- Runtime payload handling change
+- Request helpers slightly extended
+
+---
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=drm-lifetime
+---
+
+Beata Michalska (3):
+  rust: add runtime PM support
+  rust: platform: wire runtime PM callbacks
+  drm/tyr: enable runtime PM
+
+ drivers/base/base.h             |    3 +
+ drivers/gpu/drm/tyr/driver.rs   |  112 +++-
+ drivers/gpu/drm/tyr/file.rs     |    7 +-
+ rust/bindings/bindings_helper.h |    1 +
+ rust/helpers/helpers.c          |    1 +
+ rust/helpers/pm_runtime.c       |   44 ++
+ rust/kernel/lib.rs              |    1 +
+ rust/kernel/platform.rs         |    9 +
+ rust/kernel/pm.rs               | 1020 +++++++++++++++++++++++++++++++
+ 9 files changed, 1177 insertions(+), 21 deletions(-)
+ create mode 100644 rust/helpers/pm_runtime.c
+ create mode 100644 rust/kernel/pm.rs
+
+-- 
+2.43.0
+
