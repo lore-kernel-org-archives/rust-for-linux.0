@@ -1,132 +1,131 @@
-Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D24544D6B4
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 09:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784627848; cv=none; b=No8Gx1fXE/1A3iWG87DUDSuQgJ/0tZN+WZcDI1R/1jE6IJe0FvqgcM8v8pEUn9UfW8Bb4tU4GPMFhcfDeZLu3pB74NhUE64hpikp2PZQyXz5NzufWDVqijLiCyhiphopOIU/cu6hHymYpYM4ZMbLlCs0TT/D19kYCBactm2yveE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784627848; c=relaxed/simple;
-	bh=jFCAyegiqNPs5PDzpbgVqUPQ7SISnv5jdxzBzrPwdoo=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=RPfcvJh/LOWum3QxNo88C3hFFSQPHClxahEVPVuCuNFNKRcUVkFW+f4+8yNMjww6ULatzG95osF0AeRFnquE0dU2yr1egUOmjrlfSP1reQ9kFaX0TFL1yAQnjLzhccMs5fIsxbvEtvsQZSW+vTuzVug9C8CAsLPvJvpeIsDTxKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Ir43/mDS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pWsiatfF; arc=none smtp.client-ip=103.168.172.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BFD446837
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 10:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784628482; cv=pass; b=tGQAeen/ELjaGUumnCoa8NcE80jIoj+0mD1T+Q07N3v1hlQA47HkwTEibb4+Q1P3Wh7ynN7vO06GuESrIgC+/W9HSdnPmEQYPxNMy816pCKAY46tjjUN4EjvQC/j1K2rbOrQspmUCaqvFNGzh561VYyItahmwanerw31uNg+eQ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784628482; c=relaxed/simple;
+	bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sU6kGNHMt6UQGaC/VvnYhaiisetdM+TcdYrBxGajMg5vYQ4jgqErRf2Jbt2ni3mACrLE5wLroQtf7RP9Xn6oOKuSd9kPBcJN3aRVt6wHMgJhdnvUjkT6upDdt6OM45WE2ax4WKI4oBN/vodH/XaBW1GfMaJlRfvnigsK6SZ+FnU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ecWvrf3r; arc=pass smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Ir43/mDS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pWsiatfF"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 4AB5C13803DA;
-	Tue, 21 Jul 2026 05:57:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 21 Jul 2026 05:57:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1784627845;
-	 x=1784631445; bh=jFCAyegiqNPs5PDzpbgVqUPQ7SISnv5jdxzBzrPwdoo=; b=
-	Ir43/mDS7WJN/g+KUuI21Q3REmM0YESkWv72eboU1MCYgR+XrJTZBRhe0RV+xT10
-	sILlOYiYrS35jmshJoLOeTD8XEtuHwAblISHGShZD5s7800sF2HIv8ObefZkn/0p
-	aCdacYeNyOaXqm6n6tqOdV1ECaYSqB6Z0iHG0DPxZXgV4dKEnKnqcxow4NU8M7tv
-	0wZWj2IhjVc5kgbW9iMmE5lPt3zLSnF3+tWTIIhDagKGzAyxGyeM0dIIbcf36SDt
-	ZxTllQwkbgJt1WWvTRVx157Xpc9mdBXA2VGGK6SeYrn/iOQbnseFw8glQPyUp5Uj
-	pb0kIPnjT46lVgl8TmOU3w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784627845; x=
-	1784631445; bh=jFCAyegiqNPs5PDzpbgVqUPQ7SISnv5jdxzBzrPwdoo=; b=p
-	WsiatfFkv12Lh4bQFqsWqF3DuqQ31uXYoj+AgmiGxekr2XwQ0udKWlNhebPYik/M
-	lq6vIA21mQK8lRYZHsn2hzCkYliypn6kZYy32ttL76IlPCjW6zOifZnBZtsbN51h
-	m4+HfS2IHUM45UEFGnqhpu3utHgxMgfN70KjxoqZsuWYhB06PxSfx/Vjh9SgpgNf
-	erdSi+Sh+H3ofB43wRHJIvAqn83bRgVNUCK4AFAc5kFGk5dOJFn4u5kBuvTeZwUD
-	cPgeOzD7cfoMTwUC+ih+7xKwzXIgO6gz4hE/S+oH2QKYfLQ07zyqEq68Q4EoIaPl
-	z2+CGfgUPr6lNCXiyVLyA==
-X-ME-Sender: <xms:hEJfau3fKUy-VJZx-mN3N7IDxEtNUIOKZ8nCYLM5JEhA_19-VT0hsQ>
-    <xme:hEJfag_FYSLNbFkxrInyZaVK_c-UcsdcrYET6YIT84XkgCRTjaTITxUO2N-sbMLL-
-    f_dtOJ1GPlOwt7UrKTKGC8mCUhumUXyI7EAlRqlX2PnDDU-ggBvesA>
-X-ME-Received: <xmr:hEJfakNoWH3VBOHCdOKfDtiJcwwdeCejI2RqJORrmjlueTVgEPJkgO0EtB923z72GZzhMkRFOlw7o6icYg3ju2W2>
-X-ME-Proxy-Cause: dmFkZTGmf1tEZqgGbAiDfqxjePEm1aHiY8idQCAicZKA8CgUO/4jvIkLz4ZsACs7R8z1bq
-    Kjgh4G7DYhvWHTcNtE1eFJD9YuNA2vQ5LiC3C0XolI3rSrS41uSt9f96YtLHVjj+H7IrIS
-    OdBaUPc1iP8s+JwkOvjexMIW2p5dGrsEhTZTZi5d2xU0s5HvWj8Tk4SXExZHK0u3TungSx
-    2aa3sbZbd0ZiGJuLKlpmYQaF5QtWFxtNvOfum1y4dFPhJuqGBe4u8fiv0QSkN0YtAvLHT6
-    zhTJc1TCMPScN+UyUWiWikYjdu24Zu0arqS+XVqnFrJ2m/U6Zr9Jm9C530rTMZycEZk/D2
-    27Qsu5Y/hooj9MBFjxx6QE2mzUTav5Ul1N3AT+AscbG69cMi9BStlid9cVn1MAxvtFwTw7
-    N9/dzo+OA+j/BSt5GnDeNM4PyZi0OG8UVn1+fLwqony8r3SduWaJqbPe0H9Td9MUwuM8Gv
-    xfjXH5ptVeHWLyU2Gr0X0b2c/el1rpse0K3t7j5HDWzN3/AUK2ZmRFbJ4nIpaUX4j9OVhA
-    KIGK2IsqmduXbhGUm578Zt0eiLfGo/MLbhIufyUaBnckrwIHr+27IN42KCR9GNDMS6khOd
-    BZc88UEEHoKEUGMbCiHwKevudN+VPc3prrFqq3rManPB57qaVQIwFC+XI1/w
-X-ME-Proxy: <xmx:hEJfasBNxeue4ocr7Ew-tFcLYhvIZelkem-iwmpxSFqJfIyy_yVZfQ>
-    <xmx:hEJfauNvZAojszHVLZOE3YZOIGiKqxq5iC-Te76Ht_h7K4yauhZCZQ>
-    <xmx:hEJfaqbbZ_vFqzou0GmHm7l7-wWANZa6Mz1IBqbmAMhYmn5HifexoA>
-    <xmx:hEJfalNl6OmqX1Sovr4uypWOYIMweTNKCeRdFflBN3XDgm3S3y6Igg>
-    <xmx:hUJfauDni4V6LkYAKRPM85CgC6wz0sYaAGPyuWW-TVwr9F5UfX6htJr4>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 21 Jul 2026 05:57:19 -0400 (EDT)
-Date: Tue, 21 Jul 2026 18:57:16 +0900 (JST)
-Message-Id: <20260721.185716.538446175000843628.tomo@flapping.org>
-To: jstultz@google.com
-Cc: tomo@flapping.org, gary@garyguo.net, a.hindborg@kernel.org,
- aliceryhl@google.com, arve@android.com, boqun@kernel.org,
- brauner@kernel.org, cmllamas@google.com, gregkh@linuxfoundation.org,
- ojeda@kernel.org, tkjos@android.com, acourbot@nvidia.com,
- anna-maria@linutronix.de, bjorn3_gh@protonmail.com, dakr@kernel.org,
- daniel.almeida@collabora.com, frederic@kernel.org, lossin@kernel.org,
- lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v3 2/2] rust: use Delta and a Jiffies newtype for
- timeouts and delays
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <CANDhNCrKMdHCmL76LWCROVF2Ly-9NxmfmQ2T+P=iv34aVkO2uQ@mail.gmail.com>
-References: <DK1SRBA3315M.32N4T8QQBUOER@garyguo.net>
-	<20260720.184751.938933263969124163.tomo@flapping.org>
-	<CANDhNCrKMdHCmL76LWCROVF2Ly-9NxmfmQ2T+P=iv34aVkO2uQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ecWvrf3r"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cf110997efso15208565ad.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 03:08:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784628480; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LXsa0KxAbMxz6O63jaJ0H0UWd0it2zjR5VF2NsBFYlPjjH3Z90lmRWtkqT1etmQC8t
+         YxMSaf4XVFC//MeA2EF+9OgYaKg7rGYFxgPcasLi5JpKDPgXBfrWYgydCx/ZxBoI386q
+         l3y82k0p9bXbh/1L7bUupfAoXGHMELlwkq7LG3V62tvTYY/zLaZrMgEL0HtbmMhCd6jO
+         GInkNVjzP3jKvYKEfOBNGpbdwmYQ/0iOMFOGieRCIP/ThvU6jYK0/9bpNsl/jT2+RRXK
+         NQS2/vu/8F4BH0M06tEtlWcTUo1RPTysbwT8JN+7WjhR6iBbvOiNIf4FIn0YUra76DrS
+         vWDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
+        fh=9cAhpvI9S6scL20A4Yq2Q/01BEQDy9UXcm0fjZ9fd8Q=;
+        b=GrLmD0tnbrL2Uhcoj84VzSTrwwNI4DAYwCToAtkVWAmW7hdmixNdoCT3wlSmtSrBvA
+         609APoDlrkDuIhxtq6qNskoZhosOAPjoGhYbYTAqAJAwa3T0TXuAGHZRJd3isTzLj/9X
+         GPiC3rjh9sUMjPHh7ffYLm1xEAd8W+sC+8WKOm+BQctp4fMAe8Ndxa4ebuaSyIf6gMv7
+         6HQSrrLXbhDT1wqdj/ayLJ14u1fYf08YvaM7t2876ey0UBuhu7dwysPg8GMBWB3oXFei
+         Smvg8R/7vaf4YYVtIYykvILnH3RoaJDMtbiup4Cngx+gZwe1Od7uApqlqy+5serFDZIl
+         Uwvw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784628480; x=1785233280; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
+        b=ecWvrf3rDtX0O0DcHj1u1+yKdtRIrCmY8k+Hg0BNLeuMf57ftmde8HErqKMxAhY/l9
+         T/Dqc66mG2gY84ZBV9AyZL7DGqw6TkK8BtB9PoFrTrACMmLYHveIAao5XKRKv2woL0j/
+         ZCbbDvWhtAgQ6HqAy1GjF23C4v4vJms5dgEm2tyDix/fZ+AXyXm+7qk05psLmGpI2sih
+         76iqha4FTn1m9RkUbxJOLOPNlZLqHCxcVwmGrei0ftqh0cZ/jU9QBS0yJ9M/lEtUUphN
+         8w4d9eupZVfjSqJqeB0PeOpqdjUYQUwIngUWPxRhKilaTN/Zzc889OgyBagYoPJnzL5h
+         lR4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784628480; x=1785233280;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uJqHqkBJhkNLZbiN8td7JzVLgTCDKdS3I7/+ILBr1ww=;
+        b=ZvXeJkozM0GiMkn+9sYBB7/cWtaGpyCJZXXUljnCjczEQRxi6FvpOBQoXppQoObcI7
+         oJ5yd6gTfs8oiXrR/gZsUlHCHYjOGIsd4XcVeoEoRm+odcpsWHbH4YqLUdWscsn+F/RV
+         Zn2dbBYQQxnfSUKtZ8be0NrJq+75r8XWBIYdgeueRzuuF5tRsdSEEsj2Y+ZYUiJi4qjD
+         wcRlU0Rz9PYFGlwlMnf01Ga2b1IKGTTmcYmDoj2EKtuTWH47MsuJVIpeC8yU95KZwSsw
+         HoGXA3LNVY3gy88Ib6aCdRNI0V58XD5hXVfdktama8QAPWG+kIWnMZ95XAy++WyM8KMS
+         xmDQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqSAwMAN028CpNZm4QJoOGvZ3UzNw3BzDGBDnqvgVCU2jJREuyYe1Rz0mtMbZmjJqXjn3KwR1xStKnYd/hNWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ1CUypRnpoDJM878zS0jnAmZfSrBSSqvzo9Bl7Q9rN/Sg3OWa
+	MbElT7MiG/pWH8qwpGsnI5QjIyqpAXGy23TPsGk+Uz3DjLQ9G716/6SPBL+pyLhp7LqmJG2PD25
+	ylX6Ftp7T5sxxX5XJOMqNn5UIOrWXSDc=
+X-Gm-Gg: AR+sD10wpn5W3Jp0PInSNIAnkNbwZoGYDv+L9BlcJgrNRM5/DA7TjApVHLsFviJ9Nm2
+	76uZ4egpn+QIgGJu6yKDhKdatY2OTrzJE3tdCz+i+5RS7mBD1mzn1h+u63+dfU3KSAij1fp1n8D
+	h+wGz3ybFHiKe8asbz+2/Di3hTm0UkAY8IcZLYnGXA7RDdB7YFCrrSg4+BrGrujxbF5J95YLHTs
+	N7WmY0IwE0nZvs6MBax91UZDkk80JA9aOVnbL9sB2iWTdK+SzeRHZmsZxNWHEU0mPMnUJwsFXxm
+	AjR5ugmqtxe/ruHMgQGBaBf7Xd3gatMwmi+n5/Ye8rUgkCdsMDh2yNHDWtr3jhwfURP0nTgKMwF
+	VVQ==
+X-Received: by 2002:a17:903:2c0c:b0:2c0:db23:4a6 with SMTP id
+ d9443c01a7336-2cf34877127mr161188405ad.1.1784628480430; Tue, 21 Jul 2026
+ 03:08:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+References: <20260711-id-pool-move-bitmap-v1-1-cd5b7efc2c12@google.com> <alzeHwmGJsmK4z96@yury>
+In-Reply-To: <alzeHwmGJsmK4z96@yury>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 21 Jul 2026 12:07:46 +0200
+X-Gm-Features: AUfX_myc3dWi3KO1PwgkhDIvWoWmIji8BJjxPimHdjYL3OdXBlWKkkU1pj14LEw
+Message-ID: <CANiq72mz9bvrOn14yVtEOLf9BW7R6mS+whRszmcA-WNMuftcNQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: bitmap: encourage using xarray/maple_tree instead
+ of id_pool
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, "Liam R . Howlett" <liam@infradead.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Andrew Ballance <andrewjballance@gmail.com>, 
+	Burak Emir <burak.emir@gmail.com>, Eliot Courtney <ecourtney@nvidia.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Hubbard <jhubbard@nvidia.com>, 
+	Matthew Wilcox <willy@infradead.org>, Tamir Duberstein <tamird@kernel.org>, 
+	Yury Norov <yury.norov@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, Lorenzo Stoakes <ljs@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gTW9uLCAyMCBKdWwgMjAyNiAxMToxNjowNiAtMDcwMA0KSm9obiBTdHVsdHogPGpzdHVsdHpA
-Z29vZ2xlLmNvbT4gd3JvdGU6DQoNCj4gT24gTW9uLCBKdWwgMjAsIDIwMjYgYXQgMjo0OOKAr0FN
-IEZVSklUQSBUb21vbm9yaSA8dG9tb0BmbGFwcGluZy5vcmc+IHdyb3RlOg0KPj4gT24gU2F0LCAx
-OCBKdWwgMjAyNiAxNjoyMDoxMCArMDEwMA0KPj4gIkdhcnkgR3VvIiA8Z2FyeUBnYXJ5Z3VvLm5l
-dD4gd3JvdGU6DQo+PiA+IEkgd29uZGVyIGlmIHdlIHNob3VsZCBoYXZlIHRpbWUgdHlwZXMgYmVp
-bmcgZ2VuZXJpYyBvdmVyIHVuaXRzLiBTbyB5b3UgY2FuIGhhdmUNCj4+ID4gYERlbHRhPE5zZWM+
-YCBhbmQgYERlbHRhPEppZmZ5PmAgYW5kIGBJbnN0YW50PE5zZWM+YCwgYEluc3RhbnQ8SmlmZnk+
-YCwgd2l0aCB0aGUNCj4+ID4gZ2VuZXJpYyBkZWZhdWx0IGJlaW5nIHNldCB0byBgTnNlY2AuDQo+
-PiA+DQo+PiA+ICAgICBEZWx0YTo6bmV3KDQyKSAvLyBEZWx0YTxOc2VjPg0KPj4gPiAgICAgRGVs
-dGE6Om5ld19qaWZmaWVzKDQyKSAvLyBEZWx0YTxKaWZmeT4NCj4+ID4NCj4+ID4gVGhvdWdodHM/
-DQo+Pg0KPj4gSSB0aGluayBtYWtpbmcgRGVsdGEgZ2VuZXJpYyBvdmVyIHRoZSB0aW1lIHVuaXQg
-bWFrZXMgc2Vuc2U7IERlbHRhDQo+PiA8TnNlYz4gYW5kIERlbHRhPEppZmZ5Pi4NCj4+DQo+PiBI
-b3dldmVyLCBJIGRvbid0IHRoaW5rIG1ha2luZyBJbnN0YW50IGdlbmVyaWMgb3ZlciB0aGUgdGlt
-ZSB1bml0IGlzIGENCj4+IGdvb2QgaWRlYSwgZXZlbiB0aG91Z2ggaXQgY2xlYXJseSBpcyBmb3Ig
-RGVsdGEuDQo+Pg0KPj4gSW5zdGFudCBpcyBhbHJlYWR5IGdlbmVyaWMgb3ZlciBDbG9ja1NvdXJj
-ZSwgYW5kIGppZmZpZXMgaXMgbm90IGENCj4+IGNsb2NrIHNvdXJjZTogaXQgaGFzIG5vIGNsb2Nr
-aWRfdCwgaXQgaXMgcmVhZCB2aWEgZ2V0X2ppZmZpZXNfNjQoKQ0KPj4gcmF0aGVyIHRoYW4ga3Rp
-bWVfZ2V0KCksIGFuZCBpdCBjYW5ub3QgYmUgYXJtZWQgdGhyb3VnaCBocnRpbWVyLiBUaGF0DQo+
-PiBsZWF2ZXMgdHdvIHdheXMgdG8gZm9yY2UgYSBqaWZmaWVzIEluc3RhbnQsIGJvdGggbG9va3Mg
-d3Jvbmc6DQo+IA0KPiBJIHJlYWQgdGhlIGFib3ZlIGFuZCB0aG91Z2h0LCAiYnV0IGppZmZpZXMg
-aXMgYSBjbG9ja3NvdXJjZSI6DQo+IGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51
-eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4LmdpdC90cmVlL2tlcm5lbC90aW1lL2ppZmZpZXMu
-YyNuMjENCj4gDQo+IEFuZCB0aGVuIEkgcmVhbGl6ZWQgdGhlcmUgaGFzIGJlZW4gc29tZSB1bmZv
-cnR1bmF0ZSBuYW1pbmcgb3ZlcmxhcCwNCj4gd2hlcmUgaXQgc2VlbXMgdGhlIHJ1c3QgQ2xvY2tT
-b3VyY2Ugc2VlbXMgdG8gbWFwIHRvIHRoZSBjbG9ja2lkX3QsIG5vdA0KPiB0byB0aGUgY2xvY2tz
-b3VyY2UgY29uY2VwdCB0aGF0IExpbnV4IHVzZXMgdG8gYWJzdHJhY3QgdGhlIGhhcmR3YXJlDQo+
-IGNvdW50ZXIgdXNlZCBhcyBhIHNvdXJjZSBvZiB0aW1lIChmb3IgdGhlIG1ham9yaXR5IG9mIHRo
-ZSBjbG9ja2lkcykuDQo+IA0KPiBWZXJ5IG11Y2ggYSBiaWtlc2hlZCByZXF1ZXN0LCBidXQgaXMg
-aXQgdG9vIGxhdGUgdG8gcmVuYW1lIHRoaXMgdG8NCj4gQ2xvY2tJRCBvciBzb21ldGhpbmc/IFNv
-IHRoZXJlIGlzIG1heWJlIGxlc3MgY29uZnVzaW9uIHdoZW4gcmVhZGluZw0KPiBhY3Jvc3MgQyBh
-bmQgUnVzdCBjb2RlPw0KDQpBaCwgSSBtaXN1bmRlcnN0b29kLiBUaGFua3MgZm9yIHRoZSBwb2lu
-dGVyIQ0KDQpZb3UncmUgcmlnaHQ7IHRoZSB0cmFpdCBjYXJyaWVzIHRoZSBjbG9ja2lkX3QsIG5v
-dCB0aGUgaGFyZHdhcmUNCmNsb2Nrc291cmNlLiBJdCdzIG5vdCB0b28gbGF0ZSBhdCBhbGw7IEkn
-bGwgcmVuYW1lIENsb2NrU291cmNlIHRvDQpDbG9ja0lkLg0KDQo=
+On Sun, Jul 19, 2026 at 4:24=E2=80=AFPM Yury Norov <ynorov@nvidia.com> wrot=
+e:
+>
+> ID pool is a user of bitmaps, not a part of it. If we move every
+> random user to the bitmap directory, that would be an immediate
+> maintenance burden on you, Burak and me. Not sure I'm a fan of
+> this idea.
+
+Splitting things into more independent modules is usually fine, yeah.
+
+I don't see why we would need a `lib/`, though.
+
+Hmm... If what we want is to avoid having `id_pool` as part of
+`bitmap`, then can we add the documentation paragraph added here
+instead?
+
+Thanks!
+
+Cheers,
+Miguel
