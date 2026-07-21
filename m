@@ -1,233 +1,1153 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013053.outbound.protection.outlook.com [40.93.196.53])
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0AF3BCD13;
-	Tue, 21 Jul 2026 11:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F224254B18;
+	Tue, 21 Jul 2026 12:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784634124; cv=fail; b=INDOfweIAqJqUyi3so1jOFaJO4uc0Aml5u9m6Cb/KlBFHRX6zEho3aTKAkVPI0eUMTI9FdR4WW7loaaWUHu9yEUAAgiDmJ77vtz9wVpknenn+qCAjmiFeHYAXqHr9xoOww2opkWqcgr5xq32cgAJ30QQO2F9Jl8xrf4i9Bt1ULU=
+	t=1784638570; cv=pass; b=D59CmgOuHdbQaLw/vXZX0ihMi1btVzE7eEwNn2CeGgpSGdUL1v6S/eV/ZoXp37tipmYngZXTmoESG9CPeqnCRY+9JX4p4RjJEtCqAajihpeSdFZPHMJi1geLCq1Zin/NJHxY6i4Lymj5Ms42ry3p/2ALhKxKplb9lJ/ThlRN2Uc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784634124; c=relaxed/simple;
-	bh=A7NTFKZPivE2nlmE/+HQFoMe3Y/oQbzJEZW39mSR7pA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=ONjuvmMx21oiUTfmqLzO8Kld2L7lNOw0zxHhjIpqMOz+qyHlLLm7bmjM2nGq8U+WSDh4cpARvqsL4aZc8waYWwpAYtiOLm/FUCGE6UMnz1nT9AF5QnULORK78b0ZUIxfY4rdgXdZYcOcBqRIZcDkDQespa17GYMTZdVPfE1XwDs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i2iewtWl; arc=fail smtp.client-ip=40.93.196.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1784638570; c=relaxed/simple;
+	bh=+P3v0PpoDVdiGbrtgcghIqHt58GdBqTCF9o94dmnht8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=J9wwHbhkuZrzF0JgwPmKGqLmQ4zeQnSw+u4xIlxyN/XP8OUQgx/rgW6Xo8BCu3U9d6XeF78e0hZNJOyR1cXXdGfAFFQ5TNMoW5+rYFGBoWLDR+4JcYNPXRtKzJP4Wwr/bHcrYvD4jFJ3Zt1xZ53UL0r6Yv+OPj1uCea9JsbQpTw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=XGFVgezt; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i2iewtWl"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c1HV/1OqbkpWzTn4QNs6c/+4f5gsiZ00VXEd40imPsQbNtZGnQsl945duACzoGGpqPPmrFVeijzaGNjSCKC59T2sT8+SSYc2ZAlTlJ5lF7l6vMahBvubba3FTCNCosX1U7Tu3Sk0AN+2z6kT7Qu8hiAotvHY7tlS2hDAvLjlnDK/8kslicf+oKe7WAKeryUUdu3w2mMUn4xb4cxtqslp0v9IiYkscxUvalWuM73HsliugJfyg+NGZgmF+ff53yki0mT5Sn942oaXG/AnE/igRUgtPQB0dTOCsbV2fa0MfBDgMSqQ3cWdipu9TBt1kUUQpwRkwfZ1P7ISWcxKsL6nWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KMODG3hcoUX3esNJBCnlzYd/gPP6sl8gyPobkZ4dHkM=;
- b=nhiu5WkNNF7ngDQiMHUS0xa9OjIrtko8OEpPRcXvVSikSoRNdnPoxajtk+W9jgrUhodhpdLvPeIYIxBpEfkMbHRNMMblh6uqGWSUeD+CfSjPwJR6bTO7ezmb+0FE14dcQOjY+bvpnteN+wvxGORVe8I4oQdywgITOyt3qV0VRv8EfmouCSGoLb1AkxSmJV+Pnm/+jgBMIpzMLeH+bhPhPlZcJAyyh0i8v8L8tRzd8JI6AAxHmdK5gKTNduZSnrRqgYRzWY8I9g2BTlCNIyrX4aGWN/ROpljNtoxz5GSa3V2BsljRz9oh0dc8lkMm1F+3UjxwwZ5x3TW2XKEbhDa6Jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KMODG3hcoUX3esNJBCnlzYd/gPP6sl8gyPobkZ4dHkM=;
- b=i2iewtWlFSXGxVm7fsn76xbGMtz3tVSGlr9CUW8jh4Qy9+tmgopHVazoZx7LTMm0z+m4gUJxDqHq1qUytTjOIkGozW71M2KKvjLd2FYIVnnrZE0SCsftAcGo/AZIfjrTwCc2XhYNyChDZUa2NUI6OvtZGU3u61CB59XhvDQGbDNm7y8tE5EleV2fxk4svG87BYHzz277ZZhqY+j3D8VLprIbTrWcd6lN5P41EZUsRQjU1fqYrIB8VE1ThWLoBc5Ohl7K6TRAHt6PO6A0vI6XQFL5BtGRZem9n+3u9HZjm2yVD+jVXC61nuj4IYCvvEHLH6Q9IVqrJzc11bmDRLU80w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by DM4PR12MB5771.namprd12.prod.outlook.com (2603:10b6:8:62::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.14; Tue, 21 Jul
- 2026 11:41:53 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0245.009; Tue, 21 Jul 2026
- 11:41:53 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 Jul 2026 04:41:49 -0700
-Message-Id: <DK47ZRUL6UBX.1V6XG5QZ2YB8W@nvidia.com>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>
-Subject: Re: [PATCH 4/8] rust: io: register: use path fragment in relative
- internal rules
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>
-Content-Transfer-Encoding: quoted-printable
-References: <20260721-registers_fix-v1-0-3711b2317e1f@nvidia.com>
- <20260721-registers_fix-v1-4-3711b2317e1f@nvidia.com>
-In-Reply-To: <20260721-registers_fix-v1-4-3711b2317e1f@nvidia.com>
-X-ClientProxiedBy: TP0P295CA0034.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:4::19) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="XGFVgezt"
+ARC-Seal: i=1; a=rsa-sha256; t=1784638541; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QT+4q16JFmbdxYpDrcZ3BM1DbZ3DzzZo/+Tmgin1Fmq/cvyIpSdIkRmhazt/7BNQLahMAbUwUJhe2oc1A6QdNy/MxCG/v2d8nyo0RAajEi0LDjIx13hUwrk9p7Vu6ttH1ionPDQaBcZGKhzLCjFhRMGWYpMaF0kWXMhjKx6jlDM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1784638541; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1Ii1Ex0pAS4rMrXK6sB394KYstbEQFpERpAQVeRDnuM=; 
+	b=WLez0x0MFWOFjbhKBy98DxUOJz8SLE6er34M1VJ3BJf8o8zCR5/UQ8YTGpllDNjogjzxZZ2VKCvQk1YP6QuUDzMPJPqcCg/X6yYFyU4qYnY3Vum8q9BUt4rVtKAJzpwFWEqW0CzFs3X+UFfScGjLkaMqkQ4fT1kQYo2saJR+02U=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784638541;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=1Ii1Ex0pAS4rMrXK6sB394KYstbEQFpERpAQVeRDnuM=;
+	b=XGFVgeztcwyGREtG6TUbVmaEL5scc+xPH0U67fESdlNfHtcPF2Ei1IZArlS632hc
+	TfJh4tbwUDaLVOqLGO675cR/aRWvSRSnTDc8Ij2yqiGystRDe3crlDRktqQTA/7J4SP
+	mOzGcjPtH8bWZrFZBx9XqE2U5nyy+ba+B3Z7E1d4=
+Received: by mx.zohomail.com with SMTPS id 1784638537888771.3905608271614;
+	Tue, 21 Jul 2026 05:55:37 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM4PR12MB5771:EE_
-X-MS-Office365-Filtering-Correlation-Id: d80c63e2-a7a4-4b48-0b4f-08dee71d0f9e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|18002099003|22082099003|4143699003|10067099003|11063799006|56012099006|921020;
-X-Microsoft-Antispam-Message-Info:
-	DQSy74Ln2C7u0tGfvPRiijK0EPdUq/363ouGbfCzoZxF7nsL4pBBx6jXriuXBwT1A7z1rkR4lPwdORvTb/QmerfsZj3negIQ60xEADUepNn1D5Ux174EzdPPgIWOoCl/yGfXTV10vqkDmy945Ik5AjEqC6wX63T8OMBdePKO2x4GGRKDXzVq5/5tj0OHqJh+GY+FSWGu4LZkaIGsbD8v11kYpOpvtq9Gfjt99KxKdNPTMFdJDGKUV0RYNPsVumlY8xk6X1r6oRCEpBu0GevWlb3H91dQEIE5ySpeODUfHlVsppwQlJyp7EdpEFga3DsqfuGmNbs3KF1tvET+Ub/RT7LXGKuwkEScPA8TSUUO56iT6sMs1ZeZh4t81Ca+7m4hVIr4MdOl0kFmJwqdBFtSg7AUvxlPM3quxs3IiWFXhPll4nQbThnZF70QQ0cVOKNr1fXbbxWphXtiOdLD6h2EhnPRMoQyDAd11/LJyPlwu6r+JcvV18x4qiqpqqKxuwlhQ/617t9rSMtme2DaD53YQHuX09ofxRRopB026M+QZrSZEMkTQkKYZsjbqZf+ostUL9CvVpPaS+Y9c67FuFhZOd0KIqHmxZCou+XgLrRsw/DTAw++f6G/j8bqK+pTd3w6cN/IzgTyryKVnObKRjopXdTet23ep0ySWs++NTD5cjlJHz8NvpOCiDaA0KC2N4NCVrNqIsyuia5x45RGkERNBA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(18002099003)(22082099003)(4143699003)(10067099003)(11063799006)(56012099006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?N2tFd2JaaHVuQkZSckUzcW1ZOHpORXpDQ0JrL1Z0ZXgxRDJiMDhLL1NWK1h3?=
- =?utf-8?B?UmY3eXlzK3NKR2t3VE9pT3UzbjBFdDExMU5sMUkwNmdOb0laeFJuRTdwYUFM?=
- =?utf-8?B?aUtlR25hUGx6a2RGU3dLakRhSk9OMFpJanNxbUJ3TUloekh3NjdGc2QvcUQr?=
- =?utf-8?B?OWZkbklja25mbmlBQW9oeFM2TW1JWU1tMmpiaWVScWRzeU15a3hXeEZVb2lq?=
- =?utf-8?B?RDFIV3c0amVpSXNCRkVnWkhQdjlQTDBnNFkxdHhsRXZDL2F4UmhPR3NqMUtJ?=
- =?utf-8?B?WWt3Qkx3MXo4d2o0bWI0aWFoT09FVlhUbHRBclNBZE9GZHNCRVZqRGd6QTAx?=
- =?utf-8?B?bWlYT1NoWTBoS0tiaTR2bWliYWMwRFlBZndZNnIvZjUyRWI3amZEaTdxOUxD?=
- =?utf-8?B?bWJMbWxqUzc5M1R6cTh6Tmo0OXRDSmw2TUJEQU1UQnE4ak5EYktzVlZaR2RC?=
- =?utf-8?B?ejViSFJ3SUo2Y3IwRGd5SjlDbVYwQnVkRXpQOW5ZclZVeUVjRzdFOTcydXhX?=
- =?utf-8?B?RGc0TFZnMWNYRXF0Yi9hdzZrTUQvK25mZzdBQ2hkNTVHWEEyWkdEMHVxcFBo?=
- =?utf-8?B?YTBhK3ViMEpnUmdIdlA0czF0UEFWWVdCaExzb0tnd1NjbVJOalZvYkJnc0JD?=
- =?utf-8?B?RVhweHlpQjRDZEk4VVJYRkZSSHJYVGhJalZiV09vUXFSVUtkdmg1RUZER21k?=
- =?utf-8?B?eWFJYkZXUjJqMzQ4S1BpRDlEME9oekJ0SmcxbFg2ekFLbUthdDAwZy9CZm9V?=
- =?utf-8?B?cVFaT2tDYTVNWEhoVFJHaXJmd20rZEszaWQxUDRtSi94TmluNVN0Q2FiOXg1?=
- =?utf-8?B?TmpjVTNZdlUzSDNQSVBFMnY3VU96Z2lvR2Ywc1U3WHAyUVJkMEV5a05MTnNr?=
- =?utf-8?B?V2R0UFNUNWVKQXlsUGNjb2h6dVdVRXJRaG5LaTBpMFVSZHhlWG1WRHExR0k3?=
- =?utf-8?B?K3NsVTJjUTQvMUVTVnZGRThhNVEzMkZYamhrMThrakYyY2duM0Vndkpad2JO?=
- =?utf-8?B?TkhocEJ1SzhYVFVhY0hVT1RLS1FGVUpwRVI3Y29yZUFlcGY4eDNtbVJBYzBC?=
- =?utf-8?B?dEJEZ2lJVzBRTWI0SXc2cXJjOVJ1RHhGS2xndExGVEg4L2xoblVlRXFlQU9z?=
- =?utf-8?B?aWc1dDBqOEZBbjE2YUxwbjRaRXNoVnhrTkdYM2NGcGFFckQyN3c4ZitINGhu?=
- =?utf-8?B?NDMxWHZ2cTduZnhJK1c2ZFVzQTZkUTRvZWdXWk9rbllKVUVZbS9IOE8ra255?=
- =?utf-8?B?QjVWL1pMTVpMa3hwWVZ6M1g5QTJlNlJoQkg5U0JuVDhuaDlYdmtDcFlHSlFF?=
- =?utf-8?B?eWFTTFhvNGF6d212RGlKUkxmMTFJTGFJWW1HMEhhcnBWUzR0NHprY29VaGJ4?=
- =?utf-8?B?L1R1RlNFa1lpUDlaTSsxQ25ROHZmVHhpMTVZMkx1eThTemU4YU1valNzZUdt?=
- =?utf-8?B?YnA0TDUvVWt1dDFDdUVyT0E4ZU9DVSs3WTdRVnQ5Q2RQWWg5M1BrN1FsUzho?=
- =?utf-8?B?YVNsQVd1bUZDMzBvYmo3Uzd6Wm8rYm1UcXlYaHM1dkg5WWl2Y1JHd2MrWWNX?=
- =?utf-8?B?MXA0TjhvcVU1cE5Fc0ppVjFDMW5ROGtuWXBzK0RadDJpdEowNElOUHVORUlQ?=
- =?utf-8?B?WFNmRkFFZmVydzVRMTRJQWduMEhhV0dldVB0cllOcElEYkFLV294VHI5ZGQ5?=
- =?utf-8?B?SWhmdnNOdkxjN0N1V0JUWkJMcHpZUkJYbmc1NzBvT04zQk9lY0g3czhtZDIy?=
- =?utf-8?B?L1NBNkZWbjFEeEVCZUhzVEt0Sk1WcTYyYXRGVXRPUklYamUxMS9RVC83U0s1?=
- =?utf-8?B?Wk5FVE93NUVyT2psTFdrcTlNdGNUcU1TU1N3WitVdkovOGU2d2w2VXNpTmpr?=
- =?utf-8?B?aHRxbnBzV2dNS3ZsK0cvUkN0V2ZYMGhrTWNQUVB2ZlluajNEdTVWa2NhMzRq?=
- =?utf-8?B?a25yRm9TTk8rMnJWMXNPRFdVUnFJT2lIWnJxTlNxV0VsK2dRQXNoNnlkOFJV?=
- =?utf-8?B?VDVWWnFMQlcvM25FQ2p6NGc4anFzZm1kV2REK0piNmFydkVQRlhOYkM3S3pK?=
- =?utf-8?B?S3hUYXBtQUJHeXpBaXE1M0k0Vnp0RktLTDF4Z0puZ3c1elBHQ3NZazFFUkZs?=
- =?utf-8?B?VkVJYUtvbTRWajJCZTBHRXgxaGRyYlFYN3hEMDM0QmhIY0E4clpSa295VWNz?=
- =?utf-8?B?cVhoWkV6WS9LRFUrTk5jNmhKUUZabmxIUWFZUHhRaHhVelVDZUhoZUVSSDZD?=
- =?utf-8?B?YjJZbDA4SzRVNUtqWlR1ZzJ1bGcyRXZ5Rmx3bFdWLy81TVFFS25maFBpcEJC?=
- =?utf-8?B?NDF4dCtwdHN1a3hhQXFxVDYzOEZHbFFGZW5vSlVYQlZ2RkR3aHFnQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d80c63e2-a7a4-4b48-0b4f-08dee71d0f9e
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2026 11:41:53.8111
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 85SE3TlJM6iCXRf0wdv0yndncqoiy5BdglgMSbcThGCGI2oADw73Wwo49w5UF+kPG55DV++hD2RNpgIo5XK+kA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5771
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v7 4/7] drm/tyr: add GPU virtual memory (VM) support
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260713-fw-boot-b4-v7-4-afd8dc1494dd@collabora.com>
+Date: Tue, 21 Jul 2026 09:55:18 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Benno Lossin <lossin@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ boris.brezillon@collabora.com,
+ samitolvanen@google.com,
+ work@onurozkan.dev,
+ acourbot@nvidia.com,
+ lyude@redhat.com,
+ laura.nao@collabora.com,
+ beata.michalska@arm.com,
+ alvin.sun@linux.dev,
+ steven.price@arm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0CC97E4D-4D6B-4733-870B-35030714D99B@collabora.com>
+References: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
+ <20260713-fw-boot-b4-v7-4-afd8dc1494dd@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue Jul 21, 2026 at 4:00 AM PDT, Alexandre Courbot wrote:
-> The base of a relative register is a type, but its current fragment is
-> `ident`. This prevents referencing bases that are e.g. declared in
-> another module.
->
-> The `path` fragment is more accurate to represent relative register
-> bases, but bases are currently followed by `+`, which is forbidden right
-> after `path` fragments.
->
-> `:` is another separator that can carry the desired semantics, and is
-> legal to follow a `path` fragment. Thus, replace the `+` separator with
-> `:` in the internal rules so we can change the fragment for relative
-> register bases to `path`.
->
-> The public rule still uses the `+` notation and an `ident` fragment, so
-> there is no user-facing change yet; only a minor replumbing of the
-> internals to better support the new syntax introduced in the next patch.
->
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+
+
+> On 14 Jul 2026, at 00:18, Deborah Brouwer =
+<deborah.brouwer@collabora.com> wrote:
+>=20
+> From: Boris Brezillon <boris.brezillon@collabora.com>
+>=20
+> Add GPU virtual address space management using the DRM GPUVM =
+framework.
+> Each virtual memory (VM) space is backed by ARM64 LPAE Stage 1 page =
+tables
+> and can be mapped into hardware address space (AS) slots for GPU =
+execution.
+>=20
+> The implementation provides memory isolation and virtual address
+> allocation. VMs support mapping GEM buffer objects with configurable
+> protection flags (readonly, noexec, uncached) and handle both 4KB and =
+2MB
+> page sizes. A new_dummy_object() helper is provided to create a dummy =
+GEM
+> object for use as a GPUVM root.
+>=20
+> The vm module integrates with the MMU for address space activation and
+> provides map/unmap/remap operations with page table synchronization.
+>=20
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 > ---
->  rust/kernel/io/register.rs | 23 ++++++++++++-----------
->  1 file changed, 12 insertions(+), 11 deletions(-)
->
-> diff --git a/rust/kernel/io/register.rs b/rust/kernel/io/register.rs
-> index 1e0e23e4233f..62208f52752a 100644
-> --- a/rust/kernel/io/register.rs
-> +++ b/rust/kernel/io/register.rs
-> @@ -816,8 +816,8 @@ macro_rules! register {
->          $(
->          $crate::register!(
->              @reg $(#[$attr])* $vis $name ($storage) $([$size $(, stride =
-=3D $stride)?])?
-> -                $(@ $($base +)? $offset)?
-> -                $(=3D> $alias $(+ $alias_offset)? $([$alias_idx])? )?
-> +                $(@ $($base :)? $offset)?
-> +                $(=3D> $alias $(: $alias_offset)? $([$alias_idx])? )?
->              { $($fields)* }
->          );
->          )*
-> @@ -850,7 +850,7 @@ macro_rules! register {
-> =20
->      // Creates a register at a relative offset from a base address provi=
-der.
->      (
-> -        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) @ $bas=
-e:ident + $offset:literal
-> +        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) @ $bas=
-e:path : $offset:literal
->              { $($fields:tt)* }
->      ) =3D> {
->          $crate::register!(@bitfield $(#[$attr])* $vis struct $name($stor=
-age) { $($fields)* });
-> @@ -860,7 +860,7 @@ macro_rules! register {
-> =20
->      // Creates an alias register of relative offset register `alias` wit=
-h its own fields.
->      (
-> -        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) =3D> $=
-base:ident + $alias:path
-> +        @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) =3D> $=
-base:path : $alias:path
->              { $($fields:tt)* }
->      ) =3D> {
->          $crate::register!(@bitfield $(#[$attr])* $vis struct $name($stor=
-age) { $($fields)* });
-> @@ -916,7 +916,7 @@ macro_rules! register {
->      (
->          @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty)
->              [ $size:expr, stride =3D $stride:expr ]
-> -            @ $base:ident + $offset:literal { $($fields:tt)* }
-> +            @ $base:path : $offset:literal { $($fields:tt)* }
->      ) =3D> {
->          $crate::build_assert::static_assert!(::core::mem::size_of::<$sto=
-rage>() <=3D $stride);
-> =20
-> @@ -928,11 +928,12 @@ macro_rules! register {
->      // Shortcut for contiguous array of relative registers (stride =3D=
-=3D size of element).
->      (
->          @reg $(#[$attr:meta])* $vis:vis $name:ident ($storage:ty) [ $siz=
-e:expr ]
-> -            @ $base:ident + $offset:literal { $($fields:tt)* }
-> +            @ $base:path : $offset:literal { $($fields:tt)* }
->      ) =3D> {
->          $crate::register!(
-> -            $(#[$attr])* $vis $name($storage) [ $size, stride =3D ::core=
-::mem::size_of::<$storage>() ]
-> -                @ $base + $offset { $($fields)* }
-> +            @reg $(#[$attr])* $vis $name($storage)
+> drivers/gpu/drm/tyr/Kconfig   |   1 +
+> drivers/gpu/drm/tyr/driver.rs |   4 +-
+> drivers/gpu/drm/tyr/gem.rs    |  26 +-
+> drivers/gpu/drm/tyr/mmu.rs    |   1 -
+> drivers/gpu/drm/tyr/tyr.rs    |   1 +
+> drivers/gpu/drm/tyr/vm.rs     | 811 =
+++++++++++++++++++++++++++++++++++++++++++
+> 6 files changed, 839 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
+> index 61a2fd6f961a..79ea4bb214de 100644
+> --- a/drivers/gpu/drm/tyr/Kconfig
+> +++ b/drivers/gpu/drm/tyr/Kconfig
+> @@ -12,6 +12,7 @@ config DRM_TYR
+> default n
+> select IOMMU_IO_PGTABLE_LPAE
+> select RUST_DRM_GEM_SHMEM_HELPER
+> + select RUST_DRM_GPUVM
+> help
+>  Rust DRM driver for ARM Mali CSF-based GPUs.
+>=20
+> diff --git a/drivers/gpu/drm/tyr/driver.rs =
+b/drivers/gpu/drm/tyr/driver.rs
+> index 74b55a389754..9195c8be5203 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -37,7 +37,7 @@
+>=20
+> use crate::{
+>     file::TyrDrmFileData,
+> -    gem::BoData,
+> +    gem::Bo,
+>     gpu,
+>     gpu::GpuInfo,
+>     mmu::Mmu,
+> @@ -194,7 +194,7 @@ impl drm::Driver for TyrDrmDriver {
+>     type Data =3D ();
+>     type RegistrationData<'bound> =3D TyrDrmRegistrationData<'bound>;
+>     type File =3D TyrDrmFileData;
+> -    type Object =3D drm::gem::shmem::Object<BoData>;
+> +    type Object =3D Bo;
+>     type ParentDevice<Ctx: DeviceContext> =3D platform::Device<Ctx>;
+>=20
+>     const INFO: drm::DriverInfo =3D INFO;
+> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+> index 1640a161754b..c28be61a01bb 100644
+> --- a/drivers/gpu/drm/tyr/gem.rs
+> +++ b/drivers/gpu/drm/tyr/gem.rs
+> @@ -5,8 +5,12 @@
+> //! DRM's GEM subsystem with shmem backing.
+>=20
+> use kernel::{
+> -    drm::gem,
+> -    prelude::*, //
+> +    drm::gem::{
+> +        self,
+> +        shmem, //
+> +    },
+> +    prelude::*,
+> +    sync::aref::ARef, //
+> };
+>=20
+> use crate::driver::{
+> @@ -34,3 +38,21 @@ fn new(_dev: &TyrDrmDevice, _size: usize, args: =
+BoCreateArgs) -> impl PinInit<Se
+>         try_pin_init!(Self { flags: args.flags })
+>     }
+> }
+> +
+> +/// Type alias for Tyr GEM buffer objects.
+> +pub(crate) type Bo =3D gem::shmem::Object<BoData>;
+> +
+> +/// Creates a dummy GEM object to serve as the root of a GPUVM.
+> +pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> =
+Result<ARef<Bo>> {
+> +    let bo =3D Bo::new(
+> +        ddev,
+> +        4096,
+> +        shmem::ObjectConfig {
+> +            map_wc: true,
+> +            parent_resv_obj: None,
+> +        },
+> +        BoCreateArgs { flags: 0 },
+> +    )?;
+> +
+> +    Ok(bo)
+> +}
+> diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
+> index beae87c816e5..0ed20e03569c 100644
+> --- a/drivers/gpu/drm/tyr/mmu.rs
+> +++ b/drivers/gpu/drm/tyr/mmu.rs
+> @@ -10,7 +10,6 @@
+> //! The [`SlotManager`] manages the assignment of virtual address =
+spaces to hardware address-space
+> //! (AS) slots. MMU commands such as updates and flushes are carried =
+out by the
+> //! [`AddressSpaceManager`] which actually writes to the MMU =
+registers.
+> -#![expect(dead_code)]
+>=20
+> use core::ops::Range;
+>=20
+> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+> index 79045d0135a8..92f6885cdaae 100644
+> --- a/drivers/gpu/drm/tyr/tyr.rs
+> +++ b/drivers/gpu/drm/tyr/tyr.rs
+> @@ -14,6 +14,7 @@
+> mod mmu;
+> mod regs;
+> mod slot;
+> +mod vm;
+>=20
+> kernel::module_platform_driver! {
+>     type: TyrPlatformDriver,
+> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+> new file mode 100644
+> index 000000000000..2358096afc7e
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tyr/vm.rs
+> @@ -0,0 +1,811 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +
+> +//! GPU virtual memory management using the DRM GPUVM framework.
+> +//!
+> +//! This module manages GPU virtual address spaces, providing memory =
+isolation and
+> +//! the illusion of owning the entire virtual address (VA) range, =
+similar to CPU virtual memory.
+> +//! Each virtual memory (VM) area is backed by ARM64 LPAE Stage 1 =
+page tables and can be
+> +//! mapped into hardware address space (AS) slots for GPU execution.
+> +#![expect(dead_code)]
+> +
+> +use core::marker::PhantomData;
+> +use core::ops::Range;
+> +
+> +use kernel::{
+> +    device::{
+> +        Bound,
+> +        Device, //
+> +    },
+> +    drm::{
+> +        gpuvm::{
+> +            DriverGpuVm,
+> +            GpuVaAlloc,
+> +            GpuVm,
+> +            GpuVmBo,
+> +            OpMap,
+> +            OpMapRequest,
+> +            OpMapped,
+> +            OpRemap,
+> +            OpRemapped,
+> +            OpUnmap,
+> +            OpUnmapped,
+> +            UniqueRefGpuVm, //
+> +        }, //
+> +    },
+> +    fmt,
+> +    impl_flags,
+> +    iommu::pgtable::{
+> +        prot,
+> +        IoPageTable,
+> +        ARM64LPAES1, //
+> +    },
+> +    new_mutex,
+> +    prelude::*,
+> +    sizes::{
+> +        SZ_1G,
+> +        SZ_2M,
+> +        SZ_4K, //
+> +    },
+> +    sync::{
+> +        aref::ARef,
+> +        Arc,
+> +        ArcBorrow,
+> +        Mutex, //
+> +    },
+> +    uapi, //
+> +};
+> +
+> +use crate::{
+> +    driver::{
+> +        TyrDrmDevice,
+> +        TyrDrmDriver, //
+> +    },
+> +    gem,
+> +    gem::Bo,
+> +    gpu::GpuInfo,
+> +    mmu::{
+> +        address_space::VmAsData,
+> +        Mmu, //
+> +    },
+> +    regs::gpu_control::MMU_FEATURES,
+> +};
+> +
+> +impl_flags!(
+> +    /// Flags controlling virtual memory mapping behavior.
+> +    ///
+> +    /// These flags control access permissions and caching behavior =
+for GPU virtual
+> +    /// memory mappings.
+> +    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+> +    pub(crate) struct VmMapFlags(u32);
+> +
+> +    /// Individual flags that can be combined in [`VmMapFlags`].
+> +    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +    pub(crate) enum VmFlag {
+> +        /// Map as read-only.
+> +        Readonly =3D =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_READONLY =
+as u32,
+> +        /// Map as non-executable.
+> +        Noexec =3D =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC as =
+u32,
+> +        /// Map as uncached.
+> +        Uncached =3D =
+uapi::drm_panthor_vm_bind_op_flags_DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED =
+as u32,
+> +    }
+> +);
+> +
+> +impl VmMapFlags {
+> +    /// Convert the flags to `pgtable::prot`.
+> +    fn to_prot(self) -> u32 {
+> +        let mut prot =3D 0;
+> +
+> +        if self.contains(VmFlag::Readonly) {
+> +            prot |=3D prot::READ;
+> +        } else {
+> +            prot |=3D prot::READ | prot::WRITE;
+> +        }
+> +
+> +        if self.contains(VmFlag::Noexec) {
+> +            prot |=3D prot::NOEXEC;
+> +        }
+> +
+> +        if !self.contains(VmFlag::Uncached) {
+> +            prot |=3D prot::CACHE;
+> +        }
+> +
+> +        prot
+> +    }
+> +}
+> +
+> +impl fmt::Display for VmMapFlags {
+> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> +        let mut first =3D true;
+> +
+> +        if self.contains(VmFlag::Readonly) {
+> +            write!(f, "READONLY")?;
+> +            first =3D false;
+> +        }
+> +        if self.contains(VmFlag::Noexec) {
+> +            if !first {
+> +                write!(f, " | ")?;
+> +            }
+> +            write!(f, "NOEXEC")?;
+> +            first =3D false;
+> +        }
+> +
+> +        if self.contains(VmFlag::Uncached) {
+> +            if !first {
+> +                write!(f, " | ")?;
+> +            }
+> +            write!(f, "UNCACHED")?;
+> +        }
+> +
+> +        Ok(())
+> +    }
+> +}
+> +
+> +impl TryFrom<u32> for VmMapFlags {
+> +    type Error =3D Error;
+> +
+> +    fn try_from(value: u32) -> Result<Self, Self::Error> {
+> +        let valid =3D VmFlag::Readonly as u32 | VmFlag::Noexec as u32 =
+| VmFlag::Uncached as u32;
+> +
+> +        if value & !valid !=3D 0 {
+> +            pr_err!("Invalid VM map flags: {:#x}\n", value);
+> +            return Err(EINVAL);
+> +        }
+> +        Ok(Self(value))
+> +    }
+> +}
+> +
+> +/// Arguments for a virtual memory map operation.
+> +struct VmMapArgs<'bound> {
+> +    /// Access permissions and caching behavior for the mapping.
+> +    flags: VmMapFlags,
+> +    /// GEM buffer object registered with the GPUVM framework.
+> +    vm_bo: ARef<GpuVmBo<GpuVmData<'bound>>>,
+> +    /// Offset in bytes from the start of the buffer object.
+> +    bo_offset: u64,
+> +}
+> +
+> +/// Type of virtual memory operation.
+> +enum VmOpType<'bound> {
+> +    /// Map a GEM buffer object into the virtual address space.
+> +    Map(VmMapArgs<'bound>),
+> +    /// Unmap a region from the virtual address space.
+> +    Unmap,
+> +}
+> +
+> +/// Preallocated resources needed to execute a VM operation.
+> +///
+> +/// VM operations may require allocating new GPUVA objects to track =
+mappings.
+> +/// To avoid allocation failures during the operation, preallocate =
+the
+> +/// maximum number of GPUVAs that might be needed.
+> +struct VmOpResources<'bound> {
+> +    /// Preallocated GPUVA objects for remap operations.
+> +    ///
+> +    /// Partial unmap requests or map requests overlapping existing =
+mappings
+> +    /// will trigger a remap call, which needs to register up to =
+three VA
+> +    /// objects (one for the new mapping, and two for the previous =
+and next
+> +    /// mappings).
+> +    preallocated_gpuvas: [Option<GpuVaAlloc<GpuVmData<'bound>>>; 3],
+> +}
+> +
+> +/// Request to execute a virtual memory operation.
+> +struct VmOpRequest<'bound> {
+> +    /// Request type.
+> +    op_type: VmOpType<'bound>,
+> +
+> +    /// Region of the virtual address space covered by this request.
+> +    region: Range<u64>,
+> +}
+> +
+> +/// Arguments for a page table map operation.
+> +struct PtMapArgs {
+> +    /// Memory protection flags describing allowed accesses for this =
+mapping.
+> +    ///
+> +    /// This is directly derived from [`VmMapFlags`] via =
+[`VmMapFlags::to_prot`].
+> +    prot: u32,
+> +}
+> +
+> +/// Type of page table operation.
+> +enum PtOpType {
+> +    /// Map pages into the page table.
+> +    Map(PtMapArgs),
+> +    /// Unmap pages from the page table.
+> +    Unmap,
+> +}
+> +
+> +/// Context for updating the GPU page table.
+> +///
+> +/// This context is created when beginning a page table update =
+operation and
+> +/// automatically flushes changes when dropped. It ensures that the
+> +/// Memory Management Unit (MMU) state is properly managed and =
+Translation
+> +/// Lookaside Buffer (TLB) entries are flushed.
+> +pub(crate) struct PtUpdateContext<'ctx, 'bound> {
+> +    /// Device used for DMA-mapping GEM shmem SG tables.
+> +    dev: &'ctx Device<Bound>,
+> +
+> +    /// Page table.
+> +    pt: &'ctx IoPageTable<'bound, ARM64LPAES1>,
+> +
+> +    /// MMU manager.
+> +    mmu: &'ctx Mmu<'bound>,
+> +
+> +    /// Reference to the address space data to pass to the MMU =
+functions.
+> +    as_data: &'ctx VmAsData<'bound>,
+> +
+> +    /// Region of the virtual address space covered by this request.
+> +    region: Range<u64>,
+> +
+> +    /// Operation type.
+> +    op_type: PtOpType,
+> +
+> +    /// Preallocated resources that can be used when executing the =
+request.
+> +    resources: &'ctx mut VmOpResources<'bound>,
+> +}
+> +
+> +impl<'ctx, 'bound> PtUpdateContext<'ctx, 'bound> {
+> +    /// Creates a new page table update context.
+> +    ///
+> +    /// This prepares the MMU for a page table update.
+> +    /// The context will automatically flush the TLB and
+> +    /// complete the update when dropped.
+> +    fn new(
+> +        dev: &'ctx Device<Bound>,
+> +        pt: &'ctx IoPageTable<'bound, ARM64LPAES1>,
+> +        mmu: &'ctx Mmu<'bound>,
+> +        as_data: &'ctx VmAsData<'bound>,
+> +        region: Range<u64>,
+> +        op_type: PtOpType,
+> +        resources: &'ctx mut VmOpResources<'bound>,
+> +    ) -> Result<PtUpdateContext<'ctx, 'bound>> {
+> +        mmu.start_vm_update(as_data, &region)?;
+> +
+> +        Ok(Self {
+> +            dev,
+> +            pt,
+> +            mmu,
+> +            as_data,
+> +            region,
+> +            op_type,
+> +            resources,
+> +        })
+> +    }
+> +
+> +    /// Finds one of our pre-allocated VAs.
+> +    ///
+> +    /// It is a logic error to call this more than three times for a =
+given
+> +    /// PtUpdateContext.
+> +    fn preallocated_gpuva(&mut self) -> =
+Result<GpuVaAlloc<GpuVmData<'bound>>> {
+> +        self.resources
+> +            .preallocated_gpuvas
+> +            .iter_mut()
+> +            .find_map(|f| f.take())
+> +            .ok_or(EINVAL)
+> +    }
+> +}
+> +
+> +impl Drop for PtUpdateContext<'_, '_> {
+> +    fn drop(&mut self) {
+> +        if let Err(e) =3D self.mmu.end_vm_update(self.as_data) {
+> +            pr_err!("Failed to end VM update {:?}\n", e);
+> +        }
+> +
+> +        if let Err(e) =3D self.mmu.flush_vm(self.as_data) {
+> +            pr_err!("Failed to flush VM {:?}\n", e);
+> +        }
+> +    }
+> +}
+> +
+> +/// Driver implementation for the GPUVM framework.
+> +///
+> +/// Implements [`DriverGpuVm`] to provide VM operation callbacks =
+(map, unmap, remap)
+> +/// and associated types for buffer objects, virtual addresses, and =
+contexts.
+> +pub(crate) struct GpuVmData<'bound> {
+> +    _phantom: PhantomData<&'bound ()>,
+> +}
+> +
+> +/// GPU virtual address space.
+> +///
+> +/// Each VM can be mapped into a hardware address space slot.
+> +#[pin_data]
+> +pub(crate) struct Vm<'bound> {
+> +    /// Data referenced by an AS when the VM is active
+> +    as_data: Arc<VmAsData<'bound>>,
+> +    /// MMU manager.
+> +    mmu: Arc<Mmu<'bound>>,
+> +    /// Parent device used for DMA mapping and page-table operations.
+> +    dev: &'bound Device<Bound>,
+> +    /// DRM GPUVM core for managing virtual address space.
+> +    #[pin]
+> +    gpuvm_unique: Mutex<UniqueRefGpuVm<GpuVmData<'bound>>>,
+> +    /// Non-core part of the GPUVM. Can be used for stuff that =
+doesn't modify the
+> +    /// internal mapping tree, like GpuVm::obtain()
+> +    gpuvm: ARef<GpuVm<GpuVmData<'bound>>>,
+> +    /// VA range for this VM.
+> +    va_range: Range<u64>,
+> +}
+> +
+> +impl<'bound> Vm<'bound> {
+> +    /// Creates a new GPU virtual address space.
+> +    ///
+> +    /// The VM is initialized with a page table configured according =
+to the GPU's
+> +    /// address translation capabilities and registered with the =
+GPUVM framework.
+> +    pub(crate) fn new(
+> +        dev: &'bound Device<Bound>,
+> +        ddev: &TyrDrmDevice,
+> +        mmu: ArcBorrow<'_, Mmu<'bound>>,
+> +        gpu_info: &GpuInfo,
+> +    ) -> Result<Arc<Vm<'bound>>> {
+> +        let mmu_features =3D =
+MMU_FEATURES::from_raw(gpu_info.mmu_features);
+> +        let va_bits =3D mmu_features.va_bits().get();
+> +        let pa_bits =3D mmu_features.pa_bits().get();
+> +
+> +        let range =3D 0..(1u64 << va_bits);
+> +        let reserve_range =3D 0..0u64;
+> +
+> +        // dummy_obj is used to initialize the GPUVM tree.
+> +        let dummy_obj =3D gem::new_dummy_object(ddev).inspect_err(|e| =
+{
+> +            pr_err!("Failed to create dummy GEM object: {:?}\n", e);
+> +        })?;
+> +
+> +        let gpuvm_unique =3D GpuVm::new::<Error, _>(
+> +            c"Tyr::GpuVm",
+> +            ddev,
+> +            &*dummy_obj,
+> +            range.clone(),
+> +            reserve_range,
+> +            GpuVmData::<'bound> {
+> +                _phantom: PhantomData::<&()>,
+> +            },
+> +        )
+> +        .inspect_err(|e| {
+> +            pr_err!("Failed to create GpuVm: {:?}\n", e);
+> +        })?;
+> +        let gpuvm =3D ARef::from(&*gpuvm_unique);
+> +
+> +        let as_data =3D Arc::pin_init(VmAsData::new(&mmu, dev, =
+va_bits, pa_bits), GFP_KERNEL)?;
+> +
+> +        let vm =3D Arc::pin_init(
+> +            pin_init!(Self{
+> +                as_data,
+> +                dev,
+> +                mmu: mmu.into(),
+> +                gpuvm,
+> +                gpuvm_unique <- new_mutex!(gpuvm_unique),
+> +                va_range: range,
+> +            }),
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        Ok(vm)
+> +    }
+> +
+> +    /// Activate the VM in a hardware address space slot.
+> +    pub(crate) fn activate(&self) -> Result {
+> +        self.mmu
+> +            .activate_vm(self.as_data.as_arc_borrow())
+> +            .inspect_err(|e| {
+> +                pr_err!("Failed to activate VM: {:?}\n", e);
+> +            })
+> +    }
+> +
+> +    /// Deactivate the VM by evicting it from its address space slot.
+> +    fn deactivate(&self) -> Result {
+> +        self.mmu.deactivate_vm(&self.as_data).inspect_err(|e| {
+> +            pr_err!("Failed to deactivate VM: {:?}\n", e);
+> +        })
+> +    }
+> +
+> +    /// Kills the VM by deactivating it and unmapping all regions.
+> +    pub(crate) fn kill(&self) {
+> +        // TODO: Turn the VM into a state where it can't be used.
+> +        let _ =3D self.deactivate().inspect_err(|e| {
+> +            pr_err!("Failed to deactivate VM: {:?}\n", e);
+> +        });
+> +        let _ =3D self
+> +            .unmap_range(self.va_range.start, self.va_range.end - =
+self.va_range.start)
+> +            .inspect_err(|e| {
+> +                pr_err!("Failed to unmap range during deactivate: =
+{:?}\n", e);
+> +            });
+> +    }
+> +
+> +    /// Executes a virtual memory operation.
+> +    ///
+> +    /// This handles both map and unmap operations by coordinating =
+between the
+> +    /// GPUVM framework and the hardware page table.
+> +    fn exec_op<'a>(
+> +        &self,
+> +        gpuvm_unique: &mut UniqueRefGpuVm<GpuVmData<'bound>>,
+> +        req: VmOpRequest<'bound>,
+> +        resources: &'a mut VmOpResources<'bound>,
+> +    ) -> Result {
+> +        let pt =3D &self.as_data.page_table;
+> +
+> +        match req.op_type {
+> +            VmOpType::Map(args) =3D> {
+> +                let mut pt_upd =3D PtUpdateContext::new(
+> +                    self.dev,
+> +                    pt,
+> +                    &self.mmu,
+> +                    &self.as_data,
+> +                    req.region,
+> +                    PtOpType::Map(PtMapArgs {
+> +                        prot: args.flags.to_prot(),
+> +                    }),
+> +                    resources,
+> +                )?;
+> +
+> +                gpuvm_unique.sm_map(OpMapRequest {
+> +                    addr: pt_upd.region.start,
+> +                    range: pt_upd.region.end - pt_upd.region.start,
+> +                    gem_offset: args.bo_offset,
+> +                    vm_bo: &args.vm_bo,
+> +                    context: &mut pt_upd,
+> +                })
+> +                //PtUpdateContext drops here flushing the page table
+> +            }
+> +            VmOpType::Unmap =3D> {
+> +                let mut pt_upd =3D PtUpdateContext::new(
+> +                    self.dev,
+> +                    pt,
+> +                    &self.mmu,
+> +                    &self.as_data,
+> +                    req.region,
+> +                    PtOpType::Unmap,
+> +                    resources,
+> +                )?;
+> +
+> +                gpuvm_unique.sm_unmap(
+> +                    pt_upd.region.start,
+> +                    pt_upd.region.end - pt_upd.region.start,
+> +                    &mut pt_upd,
+> +                )
+> +                //PtUpdateContext drops here flushing the page table
+> +            }
+> +        }
+> +    }
+> +
+> +    /// Maps a GEM buffer object range into the VM at the specified =
+virtual address.
+> +    ///
+> +    /// This creates a mapping from GPU virtual address `va` to the =
+physical pages
+> +    /// backing the GEM object, starting at `bo_offset` bytes into =
+the object and
+> +    /// spanning `size` bytes. The mapping respects the access =
+permissions and
+> +    /// caching behavior specified in `flags`.
+> +    pub(crate) fn map_bo_range(
+> +        &self,
+> +        bo: &Bo,
+> +        bo_offset: u64,
+> +        size: u64,
+> +        va: u64,
+> +        flags: VmMapFlags,
+> +    ) -> Result {
+> +        let req =3D VmOpRequest {
+> +            op_type: VmOpType::Map(VmMapArgs {
+> +                vm_bo: self.gpuvm.obtain(bo, ())?,
+> +                flags,
+> +                bo_offset,
+> +            }),
+> +            region: va..(va + size),
+> +        };
+> +        let mut resources =3D VmOpResources {
+> +            preallocated_gpuvas: [
+> +                =
+Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
+> +                =
+Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
+> +                =
+Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
+> +            ],
+> +        };
+> +        {
+> +            let mut gpuvm_unique =3D self.gpuvm_unique.lock();
+> +            self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut =
+resources)?;
+> +        }
+> +        // We flush the defer cleanup list now. Things will be =
+different in
+> +        // the asynchronous VM_BIND path, where we want the cleanup =
+to
+> +        // happen outside the DMA signalling path.
+> +        self.gpuvm.deferred_cleanup();
+> +        Ok(())
+> +    }
+> +
+> +    /// Unmaps a virtual address range from the VM.
+> +    ///
+> +    /// This removes any existing mappings in the specified range, =
+freeing the
+> +    /// virtual address space for reuse.
+> +    pub(crate) fn unmap_range(&self, va: u64, size: u64) -> Result {
+> +        let req =3D VmOpRequest {
+> +            op_type: VmOpType::Unmap,
+> +            region: va..(va + size),
+> +        };
+> +        let mut resources =3D VmOpResources {
+> +            preallocated_gpuvas: [
+> +                =
+Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
+> +                =
+Some(GpuVaAlloc::<GpuVmData<'bound>>::new(GFP_KERNEL)?),
+> +                None,
+> +            ],
+> +        };
+> +        {
+> +            let mut gpuvm_unique =3D self.gpuvm_unique.lock();
+> +            self.exec_op(gpuvm_unique.as_mut().get_mut(), req, &mut =
+resources)?;
+> +        }
+> +        // We flush the defer cleanup list now. Things will be =
+different in
+> +        // the asynchronous VM_BIND path, where we want the cleanup =
+to
+> +        // happen outside the DMA signalling path.
+> +        self.gpuvm.deferred_cleanup();
+> +        Ok(())
+> +    }
+> +}
+> +
+> +impl<'bound> DriverGpuVm for GpuVmData<'bound> {
+> +    type Driver =3D TyrDrmDriver;
+> +    type Object =3D Bo;
+> +    type VmBoData =3D ();
+> +    type VaData =3D ();
+> +    type SmContext<'ctx>
+> +        =3D PtUpdateContext<'ctx, 'bound>
+> +    where
+> +        Self: 'ctx;
+> +
+> +    /// Indicates that a new mapping should be created.
+> +    fn sm_step_map<'op>(
+> +        &mut self,
+> +        op: OpMap<'op, Self>,
+> +        context: &mut Self::SmContext<'_>,
+> +    ) -> Result<OpMapped<'op, Self>, Error> {
+> +        let start_iova =3D op.addr();
+> +        let mut iova =3D start_iova;
+> +        let mut bytes_left_to_map =3D op.length();
+> +        let mut gem_offset =3D op.gem_offset();
+> +        let sgt =3D op.obj().sg_table(context.dev).inspect_err(|e| {
+> +            pr_err!("Failed to get sg_table: {:?}\n", e);
+> +        })?;
+> +        let prot =3D match &context.op_type {
+> +            PtOpType::Map(args) =3D> args.prot,
+> +            _ =3D> {
+> +                return Err(EINVAL);
+> +            }
+> +        };
+> +
+> +        for sgt_entry in sgt.iter() {
+> +            // Expressly convert to u64 to work with arm 32-bit =
+builds.
+> +            #[allow(clippy::useless_conversion)]
+> +            let mut paddr =3D u64::from(sgt_entry.dma_address());
+> +            #[allow(clippy::useless_conversion)]
+> +            let mut sgt_entry_length =3D =
+u64::from(sgt_entry.dma_len());
+> +
+> +            if bytes_left_to_map =3D=3D 0 {
+> +                break;
+> +            }
+> +
+> +            if gem_offset > 0 {
+> +                // Skip the entire SGT entry if the gem_offset =
+exceeds its length.
+> +                let skip =3D u64::min(sgt_entry_length, gem_offset);
+> +                paddr +=3D skip;
+> +                sgt_entry_length -=3D skip;
+> +                gem_offset -=3D skip;
+> +            }
+> +
+> +            if sgt_entry_length =3D=3D 0 {
+> +                continue;
+> +            }
+> +
+> +            if gem_offset !=3D 0 {
+> +                pr_err!("Invalid gem_offset {} in page table =
+mapping.\n", gem_offset);
+> +                return Err(EINVAL);
+> +            }
+> +            let len =3D u64::min(sgt_entry_length, =
+bytes_left_to_map);
+> +
+> +            let segment_mapped =3D match pt_map(context.pt, iova, =
+paddr, len, prot) {
+> +                Ok(segment_mapped) =3D> segment_mapped,
+> +                Err(e) =3D> {
+> +                    // clean up any successful mappings from previous =
+SGT entries.
+> +                    let total_mapped =3D iova - start_iova;
+> +                    if total_mapped > 0 {
+> +                        let _ =3D pt_unmap(context.pt, =
+start_iova..(start_iova + total_mapped));
+> +                    }
+> +                    return Err(e);
+> +                }
+> +            };
+> +
+> +            // Since there could be a partial mapping, only advance =
+by the actual amount mapped
+> +            bytes_left_to_map -=3D segment_mapped;
+> +            iova +=3D segment_mapped;
+> +        }
 
-Mmm looks like this `@reg` should also have been added by the first patch.
+I think this code doesn=E2=80=99t really guarantee that =
+bytes_left_to_map =3D=3D 0
+here. Iow, there is no guarantee that the size of the SG table and the =
+size of
+the requested mapping match, and in that case, the requested region is
+allocated on the interval tree even though it's not 100% mapped.
+
+I would add an early check like this:
+
+    // The object must back the whole window this op maps.
+    let end =3D op.gem_offset().checked_add(op.length()).ok_or(EINVAL)?;
+    if end > op.obj().size() as u64 {
+        return Err(EINVAL);
+    }
+
+And also check for bytes_to_map =3D=3D 0 at the end of the loop.
+
+> +
+> +        let gpuva =3D context.preallocated_gpuva()?;
+> +        let op =3D op.insert(gpuva, pin_init::init_zeroed());
+> +
+> +        Ok(op)
+> +    }
+> +
+> +    /// Indicates that an existing mapping should be removed.
+> +    fn sm_step_unmap<'op>(
+> +        &mut self,
+> +        op: OpUnmap<'op, Self>,
+> +        context: &mut Self::SmContext<'_>,
+> +    ) -> Result<OpUnmapped<'op, Self>, Error> {
+> +        let start_iova =3D op.va().addr();
+> +        let length =3D op.va().length();
+> +
+> +        let region =3D start_iova..(start_iova + length);
+> +        pt_unmap(context.pt, region.clone()).inspect_err(|e| {
+> +            pr_err!(
+> +                "Failed to unmap region {:#x}..{:#x}: {:?}\n",
+> +                region.start,
+> +                region.end,
+> +                e
+> +            );
+> +        })?;
+> +
+> +        let (op_unmapped, _va_removed) =3D op.remove();
+> +
+> +        Ok(op_unmapped)
+> +    }
+> +
+> +    /// Indicates that an existing mapping should be split up.
+> +    fn sm_step_remap<'op>(
+> +        &mut self,
+> +        op: OpRemap<'op, Self>,
+> +        context: &mut Self::SmContext<'_>,
+> +    ) -> Result<OpRemapped<'op, Self>, Error> {
+> +        let unmap_start =3D if let Some(prev) =3D op.prev() {
+> +            prev.addr() + prev.length()
+> +        } else {
+> +            op.va_to_unmap().addr()
+> +        };
+> +
+> +        let unmap_end =3D if let Some(next) =3D op.next() {
+> +            next.addr()
+> +        } else {
+> +            op.va_to_unmap().addr() + op.va_to_unmap().length()
+> +        };
+> +
+> +        let unmap_length =3D unmap_end - unmap_start;
+> +
+> +        if unmap_length > 0 {
+> +            let region =3D unmap_start..(unmap_start + unmap_length);
+> +            pt_unmap(context.pt, region.clone()).inspect_err(|e| {
+> +                pr_err!(
+> +                    "Failed to unmap remap region {:#x}..{:#x}: =
+{:?}\n",
+> +                    region.start,
+> +                    region.end,
+> +                    e
+> +                );
+> +            })?;
+> +        }
+> +
+> +        let prev_va =3D context.preallocated_gpuva()?;
+> +        let next_va =3D context.preallocated_gpuva()?;
+> +
+> +        let (op_remapped, _remap_ret) =3D op.remap(
+> +            [prev_va, next_va],
+> +            pin_init::init_zeroed(),
+> +            pin_init::init_zeroed(),
+> +        );
+> +
+> +        Ok(op_remapped)
+> +    }
+> +}
+> +
+> +/// This function selects the largest supported block size (currently =
+4KB or 2MB)
+> +/// that can be used for a mapping at the given address and size, =
+respecting alignment constraints.
+> +///
+> +/// We can map multiple pages at once but we can't exceed the size of =
+the
+> +/// table entry itself. So, if mapping 4KB pages, figure out how many =
+pages
+> +/// can be mapped before we hit the 2MB boundary. Or, if mapping 2MB =
+pages,
+> +/// figure out how many pages can be mapped before hitting the 1GB =
+boundary
+> +/// Returns the page size (4KB or 2MB) and the number of pages that =
+can be mapped at that size.
+> +fn get_pgsize(addr: u64, size: u64) -> (u64, u64) {
+> +    // Get the distance to the next boundary of 2MB block
+> +    let blk_offset_2m =3D addr.wrapping_neg() % (SZ_2M as u64);
+> +
+> +    // Use 4K blocks if the address is not 2MB aligned, or we have =
+less than 2MB to map
+> +    if blk_offset_2m !=3D 0 || size < SZ_2M as u64 {
+> +        let pgcount =3D if blk_offset_2m =3D=3D 0 {
+> +            size / SZ_4K as u64
+> +        } else {
+> +            u64::min(blk_offset_2m, size) / SZ_4K as u64
+> +        };
+> +        return (SZ_4K as u64, pgcount);
+> +    }
+> +
+> +    let blk_offset_1g =3D addr.wrapping_neg() % (SZ_1G as u64);
+> +    let blk_offset =3D if blk_offset_1g =3D=3D 0 {
+> +        SZ_1G as u64
+> +    } else {
+> +        blk_offset_1g
+> +    };
+> +    let pgcount =3D u64::min(blk_offset, size) / SZ_2M as u64;
+> +
+> +    (SZ_2M as u64, pgcount)
+> +}
+> +
+> +/// Maps a physical address range into the page table at the =
+specified virtual address.
+> +///
+> +/// This function maps `len` bytes of physical memory starting at =
+`paddr` to the
+> +/// virtual address `iova`, using the protection flags specified in =
+`prot`. It
+> +/// automatically selects optimal page sizes to minimize page table =
+overhead.
+> +///
+> +/// If the mapping fails partway through, all successfully mapped =
+pages are
+> +/// unmapped before returning an error.
+> +///
+> +/// Returns the number of bytes successfully mapped.
+> +fn pt_map(
+> +    pt: &IoPageTable<'_, ARM64LPAES1>,
+> +    iova: u64,
+> +    paddr: u64,
+> +    len: u64,
+> +    prot: u32,
+> +) -> Result<u64> {
+> +    let mut segment_mapped =3D 0u64;
+> +    while segment_mapped < len {
+> +        let remaining =3D len - segment_mapped;
+> +        let curr_iova =3D iova + segment_mapped;
+> +        let curr_paddr =3D paddr + segment_mapped;
+> +
+> +        let (pgsize, pgcount) =3D get_pgsize(curr_iova | curr_paddr, =
+remaining);
+> +
+> +        // SAFETY:
+> +        // No other io-pgtable operation can currently access this =
+range because Tyr holds
+> +        // the gpuvm_unique mutex for the entire sm_map() operation.
+> +        // The addresses being mapped won't overlap any existing =
+mappings in this
+> +        // page table because drm_gpuvm_sm_map() checks each =
+requested mapping and either unmaps
+> +        // or remaps any overlap before creating the new mapping.
+> +        let (mapped, result) =3D unsafe {
+> +            pt.map_pages(
+> +                curr_iova as usize,
+> +                (curr_paddr as usize).try_into().unwrap(),
+> +                pgsize as usize,
+> +                pgcount as usize,
+> +                prot,
+> +                GFP_KERNEL,
+> +            )
+> +        };
+> +
+> +        if let Err(e) =3D result {
+> +            pr_err!("pt.map_pages failed at iova {:#x}: {:?}\n", =
+curr_iova, e);
+> +            if segment_mapped > 0 {
+> +                let _ =3D pt_unmap(pt, iova..(iova + =
+segment_mapped));
+> +            }
+> +            return Err(e);
+> +        }
+> +
+> +        if mapped =3D=3D 0 {
+> +            pr_err!("Failed to map any pages at iova {:#x}\n", =
+curr_iova);
+> +            if segment_mapped > 0 {
+> +                let _ =3D pt_unmap(pt, iova..(iova + =
+segment_mapped));
+> +            }
+> +            return Err(ENOMEM);
+> +        }
+> +
+> +        segment_mapped +=3D mapped as u64;
+> +    }
+> +
+> +    Ok(segment_mapped)
+> +}
+> +
+> +/// Unmaps a virtual address range from the page table.
+> +///
+> +/// This function removes all page table entries in the specified =
+range,
+> +/// automatically handling different page sizes that may be present.
+> +fn pt_unmap(pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>) -> =
+Result {
+> +    let mut iova =3D range.start;
+> +    let mut bytes_left_to_unmap =3D range.end - range.start;
+> +
+> +    while bytes_left_to_unmap > 0 {
+> +        let (pgsize, pgcount) =3D get_pgsize(iova, =
+bytes_left_to_unmap);
+> +
+> +        // SAFETY:
+> +        // No other io-pgtable operation can currently access this =
+range because Tyr holds
+> +        // the gpuvm_unique mutex for the entire sm_unmap() =
+operation.
+> +        // We know that this page table has one or more consecutive =
+mappings
+> +        // starting at `iova` with the total size of `pgcount * =
+pgsize` because
+> +        // gpuvm callbacks provide exactly the range that was =
+previously mapped.
+> +        let unmapped =3D unsafe { pt.unmap_pages(iova as usize, =
+pgsize as usize, pgcount as usize) };
+> +
+> +        if unmapped =3D=3D 0 {
+> +            pr_err!("Failed to unmap any bytes at iova {:#x}\n", =
+iova);
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        bytes_left_to_unmap -=3D unmapped as u64;
+> +        iova +=3D unmapped as u64;
+> +    }
+> +
+> +    Ok(())
+> +}
+>=20
+> --=20
+> 2.54.0
+>=20
+
