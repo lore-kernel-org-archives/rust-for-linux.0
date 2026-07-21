@@ -1,698 +1,158 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6FF386C1C;
-	Tue, 21 Jul 2026 20:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0033BADA2
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 20:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784667196; cv=pass; b=eonpJxjWJ3PhSHHcq/7Zy7p1GiHC7TPAYI2gfhvlFhqptLqodqhVsZX3guOpnrK4K/WSJvkwgAdvjnUI7nzuw7DmD563sANaqEVVw0pJ9g05EgvGplbRexKdi8PKa5pA4c3gm1v02gXtEcibbhJWJhGOWe7Z29Ejun/nTtf1Iyc=
+	t=1784667199; cv=pass; b=VAhUjE9Ts4AJLQZ+AjZF1bDGLBTZpsW0aW4sBcIYCmcQlnq7lKM7+uWoNDJxiW6itiIYOcuYpR3Gbr5DTCqJ38BjP2j9Cthgz/JmUwt8Txcda02Wzj4nI8pQckeA/dJq9gl8qgkxLFJfyDgiOLx6J05bbBXWzvExy2Dk0k3iXUE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784667196; c=relaxed/simple;
-	bh=Z9E8+IyJRt+W22xs+AsaTwbqGWPRvXPcqCsSaDBxbyQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=rDHv3oDwthFLhiLSXuJy6B+pavtNeBVCpDeWg5ix4wiO5xl4E8CakeS+Yacp8pD5dbK+d051LaEg+CofW7Ul/zmzYL5hi7zX+FLHAmbZTZa/Z2P0D4PFBmOEz6e0R46pxnxvJ8aK73n5EE334PZqK80i8VN0+QiVDUnNETdk2tU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=hL0jDPIN; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1784667199; c=relaxed/simple;
+	bh=Aj6TYx/Cyc9Dv0Qz7DIdrt1RM8bDeJ1mWJK0SGqsMpI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=izw9arTiZoxTMugM+OVMEriBEDpGqogbhFgmPC9CJckjUfRPrM6whnbKjWgchKfElxJutqQ5VugYBw2yFt95vaBQZEhXlUWja7eEzZywQUnYzmfc3jYEsVIzYac/hJ28QD3Lb+8/xECzK7PfFKJ31owvsr2kc2cYxHVr0AI3z2U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=is1/3gos; arc=pass smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="hL0jDPIN"
-ARC-Seal: i=1; a=rsa-sha256; t=1784667164; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=FojvYusFSjuVLnTWsPHbNhcmSCZd7j6h701rSqbHfwspGCuCaWqo/L4UMGSS88MqaM/wJtY33fUqmOpWUyRf1JOxEK0mSKezYV/8uSpPVWzQItmszJDZEant6K3BLCt4GbQDxISqP47OjntN7Rv8xMIhPk3lp3WxqxXxjKD3NDo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784667164; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=LLBagPNXHJ0kpfP4oPNBwhSEz+cGT6bZGlW+lGGkdRc=; 
-	b=IrPUXq23T6nau9trPybjw+ownPT1Mf6mgvr8grMpieMyEL2IgHj9msLUyhtzDiWjjr7vWJqce9CEdbMSUjw0gd1/IE05gOvtM86xzN84GRVAAehwudGh9FDoatwykOn7N0N6jZbcw3w0gyfqfLLNQQCwSqVQA64RhLYcUROJliY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784667164;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=LLBagPNXHJ0kpfP4oPNBwhSEz+cGT6bZGlW+lGGkdRc=;
-	b=hL0jDPINXWcTW3f0+triPLps2ziKEPus1mvbOfQ9lSo0kL1+/c7JSr5daebsR5Np
-	mLVb+xm7tDb/vlk11kT3DYkSeLAkByPg5WUK5MIfpG1PcSj5PJz5fUsd6RVsqfCh9zP
-	nIuGOH/Duf6J4A2CvCpLhCGPtCIm8Sj+459Rbk+E=
-Received: by mx.zohomail.com with SMTPS id 1784667162225959.0268587599195;
-	Tue, 21 Jul 2026 13:52:42 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="is1/3gos"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c9d1fff21edso7763253a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 13:53:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784667198; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WQrYqSOEXC6xZ8EMEC8tJzARLRh6Fhfs3rY0PhITkkctqM37+81yHBDM1ju+rKPKcr
+         G0dNmnb00pQtPNA70CIcOAQDCp6SVKJ0rQQAWtPpXvjdpZaxPZIhYp4AiLlVobrF0851
+         Ri8SYb7gmt4Cg4W8msQqy97AGf3rzr3YacvGxClMyBG/4OO/Xjh1Ys7MGqOsP5Qiwf9H
+         g8slb9A84MpBusx0xDFEB4psamu/y+3C2WTqv1yZdFfJXAuHGkTPHzYKOisAKRH7CPov
+         3zuAZ8y/sEvdqG61VQ1fl23wpngA6OWFofB34RtIe8mQ+13GTJusD0qmZFfG3LMIoTEk
+         5bpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0A5uhlvnx13ugb8HkKfIltQI6gavYIC2X4ticlk8EKg=;
+        fh=GijvnvAbXvjYOElGmKi1y0HzX2ybfBgP2WbUSxZ8eig=;
+        b=qLudHHiVzKDWQDbWJqnfKd2W6zHUYXHv6RW2YqjMEC+DSjWfrzchbnTROzxwsuysW6
+         RICFmSnLXKdY56Uz1A/D1dq9dGl4IErDYWXwmqcSK00iOYVAxvGsmpFWRnn2Z3ovn4jM
+         pmISJiuDaC89LsILRuyyQVMHKIJ1a3kHvy1L6ZL/tmCCIPzIhq7ANyhBDeVFSJdX0Qbu
+         onFqUuLhsQlu5OU2QWYCakfmxiAJJgZvtZWso1l5vKjW/17EOwzL8WAaVoFHIj0nUqVg
+         98nubBXXOUp57qWU2YWd2G7B6Q7/2t6nq7KY0ZCgGXbnUWtgGkVGIfb6zoGw0pCQd5qf
+         qOHQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784667198; x=1785271998; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0A5uhlvnx13ugb8HkKfIltQI6gavYIC2X4ticlk8EKg=;
+        b=is1/3gos3nSYdsJ68y4PZln0yw3hCFYTCIUe793YdhXrAewXgvybSgSyAuOOMxcnKf
+         XkTD8CcvOiVODBmJanpS8AiTPjrGpiiK5Nz8agdTYXjD4egLP/Kfy/pJbY7FQsLVJwpx
+         WEYpzuhgwhrfXBpivoXoc4c2qoZnFjz4nNZA9CGgjZg/dtoXppm+fBgDJSwdQIRm0P66
+         U2Ggz7/9QlaEiYZ+717ofRndon7GxfQRNgy4B4RLAAVbPO7DZcf9px1wI1WCPyMyl3Mm
+         5dpKC+/QX3qdAIwHpukbRu8ZvPCk+8Hf7QKEBTY+xlD5Kha8dKXiJFoy0GWLVln5ytkW
+         PCag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784667198; x=1785271998;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0A5uhlvnx13ugb8HkKfIltQI6gavYIC2X4ticlk8EKg=;
+        b=On6ninM+/QAToMg8O2B9vRPUyDaLSIMt31XfsKib+jDs9z815wI1xMDQ4HSsj9Izqz
+         M4+3UlTrlwXqhr7+aU+7N4tDxnSw/Fh5lM3vmdjRa1YqLMjHhFcX6h2T6pcsDj13QXSG
+         D9DI5mLztejyceG0buQrvQVbiUc3r7Yg7oQ0hC18sEiQwVaw1qKEfl6ayLYMEahBM7pj
+         eizFKWhEzyio/oktdNcUD0GQFzSubnpHZqFDY9WU9lgYLlAeG1L+7zuC7QggJyxrTXGu
+         otB5yYUfnzpWsI+Jzwq++zbuOzfYSjox2How86bwh5rIMURXqp7WW9cbOxBGVuJXoy5o
+         kVpg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp6DYFL01O2bH2pT2MNAU7qCS2WR1psKAUFMrOlrk2MpcyqupqTyUy6xG33v9SSeXMPLpFzxL/yf3ZEa0GEJw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBELkk8j1UHDu0OXTQK1IwBBHDg0Z3yzyEkwrprRwVvatTaO2W
+	IoOCML3CkMWYzqpLZ5kxw8s4mWEsbAk34/iJb+2LcaoEE8q+Y12biUBt7faajSnXXnjmRGMTPeW
+	ll5z2ODBHJDPUyRsS3ZQcQyFPXwy4lgsbioyFQSw=
+X-Gm-Gg: AR+sD11/cjWSPT2ihS8NwcHeMY+51NLjWSwafzX0tOvQZ9p5gdqW7XboLj/z+9xNCFd
+	9DD/hXZ1d9Kb0KYwLu0YUp3QrH9SbWJxnOMftYSiP8ieHWSXKusWiosuU6+qf35YCQpEF6AoF3i
+	GdPSQ2r1t+SMRiC/rSpcRtPnwkD8DuyVKXWT5jmvPkfIIWKeH017Wv7f1+BG2WJk3LL9MLbeRvz
+	/uAZLlKJoyEJ2HDGnS+NgUxT2fJLU+CzmLreC0ZE5ybkLlj+0Wc/BRf5PDZOr/t2oJ5yIq4ndGX
+	EXmF129SG+5X+CCKjQ1iOciwzOwB871/1KpDqVuNkHlpHI55C2fvhgQKu9Wk0+s4/WT6zN0bm4u
+	ZpxgyMQd2Nu0kog==
+X-Received: by 2002:a05:6a21:6b83:b0:3c3:8222:b8c9 with SMTP id
+ adf61e73a8af0-3c3ada39a49mr22140955637.67.1784667197151; Tue, 21 Jul 2026
+ 13:53:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v7 6/7] drm/tyr: add parser for firmware binary
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260713-fw-boot-b4-v7-6-afd8dc1494dd@collabora.com>
-Date: Tue, 21 Jul 2026 17:52:20 -0300
-Cc: Alice Ryhl <aliceryhl@google.com>,
- Danilo Krummrich <dakr@kernel.org>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Benno Lossin <lossin@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- boris.brezillon@collabora.com,
- samitolvanen@google.com,
- work@onurozkan.dev,
- acourbot@nvidia.com,
- lyude@redhat.com,
- laura.nao@collabora.com,
- beata.michalska@arm.com,
- alvin.sun@linux.dev,
- steven.price@arm.com
+MIME-Version: 1.0
+References: <DK1SRBA3315M.32N4T8QQBUOER@garyguo.net> <20260720.184751.938933263969124163.tomo@flapping.org>
+ <CANDhNCrKMdHCmL76LWCROVF2Ly-9NxmfmQ2T+P=iv34aVkO2uQ@mail.gmail.com> <20260721.185716.538446175000843628.tomo@flapping.org>
+In-Reply-To: <20260721.185716.538446175000843628.tomo@flapping.org>
+From: John Stultz <jstultz@google.com>
+Date: Tue, 21 Jul 2026 13:53:05 -0700
+X-Gm-Features: AUfX_mw9cZ8KeAiQXxGgbTBjAq_XlAQVOVEPg1ENvgNy3bYljEdKujnhAmNfrGk
+Message-ID: <CANDhNCp=RFgt9o4bw368R4dR3z3fPBAzwdofxpbsGi5ji2WmKg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: use Delta and a Jiffies newtype for timeouts
+ and delays
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com, 
+	arve@android.com, boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, 
+	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
+	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
+	lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, 
+	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <D0A4704C-F275-42DD-B82D-8B021BE5DF1F@collabora.com>
-References: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
- <20260713-fw-boot-b4-v7-6-afd8dc1494dd@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
 
+On Tue, Jul 21, 2026 at 2:57=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org>=
+ wrote:
+> On Mon, 20 Jul 2026 11:16:06 -0700
+> John Stultz <jstultz@google.com> wrote:
+>
+> > On Mon, Jul 20, 2026 at 2:48=E2=80=AFAM FUJITA Tomonori <tomo@flapping.=
+org> wrote:
+> >> On Sat, 18 Jul 2026 16:20:10 +0100
+> >> "Gary Guo" <gary@garyguo.net> wrote:
+> >> > I wonder if we should have time types being generic over units. So y=
+ou can have
+> >> > `Delta<Nsec>` and `Delta<Jiffy>` and `Instant<Nsec>`, `Instant<Jiffy=
+>`, with the
+> >> > generic default being set to `Nsec`.
+> >> >
+> >> >     Delta::new(42) // Delta<Nsec>
+> >> >     Delta::new_jiffies(42) // Delta<Jiffy>
+> >> >
+> >> > Thoughts?
+> >>
+> >> I think making Delta generic over the time unit makes sense; Delta
+> >> <Nsec> and Delta<Jiffy>.
+> >>
+> >> However, I don't think making Instant generic over the time unit is a
+> >> good idea, even though it clearly is for Delta.
+> >>
+> >> Instant is already generic over ClockSource, and jiffies is not a
+> >> clock source: it has no clockid_t, it is read via get_jiffies_64()
+> >> rather than ktime_get(), and it cannot be armed through hrtimer. That
+> >> leaves two ways to force a jiffies Instant, both looks wrong:
+> >
+> > I read the above and thought, "but jiffies is a clocksource":
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/kernel/time/jiffies.c#n21
+> >
+> > And then I realized there has been some unfortunate naming overlap,
+> > where it seems the rust ClockSource seems to map to the clockid_t, not
+> > to the clocksource concept that Linux uses to abstract the hardware
+> > counter used as a source of time (for the majority of the clockids).
+> >
+> > Very much a bikeshed request, but is it too late to rename this to
+> > ClockID or something? So there is maybe less confusion when reading
+> > across C and Rust code?
+>
+> Ah, I misunderstood. Thanks for the pointer!
+>
+> You're right; the trait carries the clockid_t, not the hardware
+> clocksource. It's not too late at all; I'll rename ClockSource to
+> ClockId.
 
-
-> On 14 Jul 2026, at 00:18, Deborah Brouwer =
-<deborah.brouwer@collabora.com> wrote:
->=20
-> From: Daniel Almeida <daniel.almeida@collabora.com>
->=20
-> Add a parser for the Mali CSF GPU firmware binary format. The firmware
-> consists of a header followed by entries describing how to load =
-firmware
-> sections into the MCU's memory.
->=20
-> The parser extracts section metadata including virtual address ranges,
-> data byte offsets within the binary, and section flags controlling
-> permissions and cache modes. It validates the basic firmware structure
-> and alignment and ignores protected-mode sections for now.
->=20
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Co-developed-by: Beata Michalska <beata.michalska@arm.com>
-> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-> Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
-> drivers/gpu/drm/tyr/fw/parser.rs | 521 =
-+++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 521 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/tyr/fw/parser.rs =
-b/drivers/gpu/drm/tyr/fw/parser.rs
-> new file mode 100644
-> index 000000000000..198a754b294f
-> --- /dev/null
-> +++ b/drivers/gpu/drm/tyr/fw/parser.rs
-> @@ -0,0 +1,521 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +
-> +//! Firmware binary parser for Mali CSF (Command Stream Frontend) =
-GPU.
-> +//!
-> +//! This module implements a parser for the Mali GPU firmware binary =
-format. The firmware
-> +//! file contains a header followed by a sequence of entries, each =
-describing how to load
-> +//! firmware sections into the MCU (Microcontroller Unit) memory. The =
-parser extracts section
-> +//! metadata including:
-> +//! - Virtual address ranges where sections should be mapped
-> +//! - Data ranges (byte offsets) within the firmware binary
-> +//! - Section flags (permissions, cache modes)
-> +
-> +use core::{
-> +    mem::size_of,
-> +    ops::Range, //
-> +};
-> +
-> +use kernel::{
-> +    bits::bit_u32,
-> +    prelude::*,
-> +    str::CString, //
-> +};
-> +
-> +use crate::{
-> +    fw::{
-> +        SectionFlag,
-> +        SectionFlags,
-> +        CSF_MCU_SHARED_REGION_START, //
-> +    },
-> +    vm::{
-> +        VmFlag,
-> +        VmMapFlags, //
-> +    }, //
-> +};
-> +
-> +/// A parsed firmware section ready for loading into MCU memory.
-> +///
-> +/// Represents a single firmware section extracted from the firmware =
-binary, containing
-> +/// all information needed to map the section's data into the MCU's =
-virtual address space.
-> +pub(super) struct ParsedSection {
-> +    /// Byte offset range within the firmware binary where this =
-section's data resides.
-> +    pub(super) data_range: Range<u32>,
-> +    /// MCU virtual address range where this section should be =
-mapped.
-> +    pub(super) va: Range<u32>,
-> +    /// Memory protection and caching flags for the mapping.
-> +    pub(super) vm_map_flags: VmMapFlags,
-> +}
-> +
-> +/// A bare-bones `std::io::Cursor<[u8]>` clone to keep track of the =
-current position in the
-> +/// firmware binary.
-> +///
-> +/// Provides methods to sequentially read primitive types and byte =
-arrays from the firmware
-> +/// binary while maintaining the current read position.
-> +struct Cursor<'a> {
-> +    data: &'a [u8],
-> +    pos: usize,
-> +}
-> +
-> +impl<'a> Cursor<'a> {
-> +    fn new(data: &'a [u8]) -> Self {
-> +        Self { data, pos: 0 }
-> +    }
-> +
-> +    fn len(&self) -> usize {
-> +        self.data.len()
-> +    }
-> +
-> +    fn pos(&self) -> usize {
-> +        self.pos
-> +    }
-> +
-> +    /// Returns a view into the cursor's data.
-> +    ///
-> +    /// This spawns a new cursor, leaving the current cursor =
-unchanged.
-> +    fn view(&self, range: Range<usize>) -> Result<Cursor<'_>> {
-> +        if range.start < self.pos || range.end > self.data.len() {
-> +            pr_err!(
-> +                "Invalid cursor range {:?} for data of length {}",
-> +                range,
-> +                self.data.len()
-> +            );
-> +
-> +            Err(EINVAL)
-> +        } else {
-> +            Ok(Self {
-> +                data: &self.data[range],
-> +                pos: 0,
-> +            })
-> +        }
-> +    }
-> +
-> +    /// Reads a slice of bytes from the current position and advances =
-the cursor.
-> +    ///
-> +    /// Returns an error if the read would exceed the data bounds.
-> +    fn read(&mut self, nbytes: usize) -> Result<&[u8]> {
-> +        let start =3D self.pos;
-> +        let end =3D start + nbytes;
-> +
-> +        if end > self.data.len() {
-> +            pr_err!(
-> +                "Invalid firmware file: read of size {} at position =
-{} is out of bounds",
-> +                nbytes,
-> +                start,
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        self.pos +=3D nbytes;
-> +        Ok(&self.data[start..end])
-> +    }
-> +
-> +    /// Reads a little-endian `u8` from the current position and =
-advances the cursor.
-> +    fn read_u8(&mut self) -> Result<u8> {
-> +        let bytes =3D self.read(size_of::<u8>())?;
-> +        Ok(bytes[0])
-> +    }
-> +
-> +    /// Reads a little-endian `u16` from the current position and =
-advances the cursor.
-> +    fn read_u16(&mut self) -> Result<u16> {
-> +        let bytes =3D self.read(size_of::<u16>())?;
-> +        Ok(u16::from_le_bytes(bytes.try_into().unwrap()))
-> +    }
-> +
-> +    /// Reads a little-endian `u32` from the current position and =
-advances the cursor.
-> +    fn read_u32(&mut self) -> Result<u32> {
-> +        let bytes =3D self.read(size_of::<u32>())?;
-> +        Ok(u32::from_le_bytes(bytes.try_into().unwrap()))
-> +    }
-> +
-> +    /// Advances the cursor position by the specified number of =
-bytes.
-> +    ///
-> +    /// Returns an error if the advance would exceed the data bounds.
-> +    fn advance(&mut self, nbytes: usize) -> Result {
-> +        if self.pos + nbytes > self.data.len() {
-> +            pr_err!(
-> +                "Invalid firmware file: advance of size {} at =
-position {} is out of bounds",
-> +                nbytes,
-> +                self.pos,
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +        self.pos +=3D nbytes;
-> +        Ok(())
-> +    }
-> +}
-> +
-> +/// Parser for Mali CSF GPU firmware binaries.
-> +///
-> +/// Parses the firmware binary format, extracting section metadata =
-including virtual
-> +/// address ranges, data offsets, and memory protection flags needed =
-to load firmware
-> +/// into the MCU's memory.
-> +pub(super) struct FwParser<'a> {
-> +    cursor: Cursor<'a>,
-> +}
-> +
-> +impl<'a> FwParser<'a> {
-> +    /// Creates a new firmware parser for the given firmware binary =
-data.
-> +    pub(super) fn new(data: &'a [u8]) -> Self {
-> +        Self {
-> +            cursor: Cursor::new(data),
-> +        }
-> +    }
-> +
-> +    /// Parses the firmware binary and returns a collection of parsed =
-sections.
-> +    ///
-> +    /// This method validates the firmware header and iterates =
-through all entries
-> +    /// in the binary, extracting section information needed for =
-loading.
-> +    pub(super) fn parse(&mut self) -> Result<KVec<ParsedSection>> {
-> +        let fw_header =3D self.parse_fw_header()?;
-> +
-> +        let mut parsed_sections =3D KVec::new();
-> +        while (self.cursor.pos() as u32) < fw_header.size {
-> +            let entry_section =3D self.parse_entry()?;
-> +
-> +            if let Some(inner) =3D entry_section.inner {
-> +                parsed_sections.push(inner, GFP_KERNEL)?;
-> +            }
-> +        }
-> +
-
-Can we please check for parsed_sections =3D=3D 0 here?=20
-
-
-> +        Ok(parsed_sections)
-> +    }
-> +
-> +    fn parse_fw_header(&mut self) -> Result<FirmwareHeader> {
-> +        let fw_header: FirmwareHeader =3D match =
-FirmwareHeader::new(&mut self.cursor) {
-> +            Ok(fw_header) =3D> fw_header,
-> +            Err(e) =3D> {
-> +                pr_err!("Invalid firmware file: {}", e.to_errno());
-> +                return Err(e);
-> +            }
-> +        };
-> +
-> +        if fw_header.size > self.cursor.len() as u32 {
-> +            pr_err!("Firmware image is truncated");
-> +            return Err(EINVAL);
-> +        }
-> +        Ok(fw_header)
-> +    }
-> +
-> +    fn parse_entry(&mut self) -> Result<EntrySection> {
-> +        let entry_section =3D EntrySection {
-> +            entry_hdr: EntryHeader(self.cursor.read_u32()?),
-> +            inner: None,
-> +        };
-> +
-> +        if self.cursor.pos() % size_of::<u32>() !=3D 0
-> +            || entry_section.entry_hdr.size() as usize % =
-size_of::<u32>() !=3D 0
-
-|| entry_section.entry_hdr.size() < size_of::<EntryHeader>()
-
-(reads better if we extract this expression into a variable)
-
-> +        {
-> +            pr_err!(
-> +                "Firmware entry isn't 32 bit aligned, offset=3D{:#x} =
-size=3D{:#x}\n",
-> +                self.cursor.pos() - size_of::<u32>(),
-> +                entry_section.entry_hdr.size()
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let section_hdr_size =3D entry_section.entry_hdr.size() as =
-usize - size_of::<EntryHeader>();
-> +
-> +        let entry_section =3D {
-> +            let mut entry_cursor =3D self
-> +                .cursor
-> +                .view(self.cursor.pos()..self.cursor.pos() + =
-section_hdr_size)?;
-> +
-> +            match entry_section.entry_hdr.entry_type() {
-> +                Ok(EntryType::Iface) =3D> Ok(EntrySection {
-> +                    entry_hdr: entry_section.entry_hdr,
-> +                    inner: Self::parse_section_entry(&mut =
-entry_cursor)?,
-> +                }),
-> +                Ok(
-> +                    EntryType::Config
-> +                    | EntryType::FutfTest
-> +                    | EntryType::TraceBuffer
-> +                    | EntryType::TimelineMetadata
-> +                    | EntryType::BuildInfoMetadata,
-> +                ) =3D> Ok(entry_section),
-> +
-> +                entry_type =3D> {
-> +                    if entry_type.is_err() || =
-!entry_section.entry_hdr.optional() {
-> +                        if !entry_section.entry_hdr.optional() {
-> +                            pr_err!(
-> +                                "Failed to handle firmware entry =
-type: {}\n",
-> +                                entry_type
-> +                                    =
-.map_or(entry_section.entry_hdr.entry_type_raw(), |e| e as u8)
-> +                            );
-> +                            Err(EINVAL)
-> +                        } else {
-> +                            Ok(entry_section)
-> +                        }
-> +                    } else {
-> +                        Ok(entry_section)
-> +                    }
-> +                }
-> +            }
-> +        };
-> +
-> +        if entry_section.is_ok() {
-> +            self.cursor.advance(section_hdr_size)?;
-> +        }
-> +
-> +        entry_section
-> +    }
-> +
-> +    fn parse_section_entry(entry_cursor: &mut Cursor<'_>) -> =
-Result<Option<ParsedSection>> {
-> +        let section_hdr: SectionHeader =3D =
-SectionHeader::new(entry_cursor)?;
-> +
-> +        if section_hdr.data.end < section_hdr.data.start {
-> +            pr_err!(
-> +                "Firmware corrupted, data.end < data.start (0x{:x} < =
-0x{:x})\n",
-> +                section_hdr.data.end,
-> +                section_hdr.data.start
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if section_hdr.va.end < section_hdr.va.start {
-> +            pr_err!(
-> +                "Firmware corrupted, section_hdr.va.end < =
-section_hdr.va.start (0x{:x} < 0x{:x})\n",
-> +                section_hdr.va.end,
-> +                section_hdr.va.start
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if section_hdr.section_flags.contains(SectionFlag::Prot) {
-> +            pr_info!("Firmware protected mode entry not supported, =
-ignoring");
-> +            return Ok(None);
-> +        }
-> +
-> +        if section_hdr.va.start =3D=3D CSF_MCU_SHARED_REGION_START
-> +            && =
-!section_hdr.section_flags.contains(SectionFlag::Shared)
-> +        {
-> +            pr_err!(
-> +                "Interface at 0x{:x} must be shared",
-> +                CSF_MCU_SHARED_REGION_START
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let name_len =3D entry_cursor.len() - entry_cursor.pos();
-> +        let name_bytes =3D entry_cursor.read(name_len)?;
-> +
-> +        let mut name =3D KVec::with_capacity(name_bytes.len() + 1, =
-GFP_KERNEL)?;
-> +        name.extend_from_slice(name_bytes, GFP_KERNEL)?;
-> +        name.push(0, GFP_KERNEL)?;
-> +
-> +        let _name =3D CStr::from_bytes_with_nul(&name)
-> +            .ok()
-> +            .and_then(|name| CString::try_from(name).ok());
-> +
-> +        let cache_mode =3D section_hdr.section_flags.cache_mode();
-> +        let mut vm_map_flags =3D VmMapFlags::empty();
-> +
-> +        if !section_hdr.section_flags.contains(SectionFlag::Write) {
-> +            vm_map_flags |=3D VmFlag::Readonly;
-> +        }
-> +        if !section_hdr.section_flags.contains(SectionFlag::Exec) {
-> +            vm_map_flags |=3D VmFlag::Noexec;
-> +        }
-> +        if cache_mode !=3D SectionFlag::CacheModeCached.into() {
-> +            vm_map_flags |=3D VmFlag::Uncached;
-> +        }
-> +
-> +        Ok(Some(ParsedSection {
-> +            data_range: section_hdr.data.clone(),
-> +            va: section_hdr.va,
-> +            vm_map_flags,
-> +        }))
-> +    }
-> +}
-> +
-> +/// Firmware binary header containing version and size information.
-> +///
-> +/// The header is located at the beginning of the firmware binary and =
-contains
-> +/// a magic value for validation, version information, and the total =
-size of
-> +/// all structured headers that follow.
-> +#[expect(dead_code)]
-> +struct FirmwareHeader {
-> +    /// Magic value to check binary validity.
-> +    magic: u32,
-> +
-> +    /// Minor firmware version.
-> +    minor: u8,
-> +
-> +    /// Major firmware version.
-> +    major: u8,
-> +
-> +    /// Padding. Must be set to zero.
-> +    _padding1: u16,
-> +
-> +    /// Firmware version hash.
-> +    version_hash: u32,
-> +
-> +    /// Padding. Must be set to zero.
-> +    _padding2: u32,
-> +
-> +    /// Total size of all the structured data headers at beginning of =
-firmware binary.
-> +    size: u32,
-> +}
-> +
-> +impl FirmwareHeader {
-> +    const FW_BINARY_MAGIC: u32 =3D 0xc3f13a6e;
-> +    const FW_BINARY_MAJOR_MAX: u8 =3D 0;
-> +
-> +    /// Reads and validates a firmware header from the cursor.
-> +    ///
-> +    /// Verifies the magic value, version compatibility, and padding =
-fields.
-> +    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-> +        let magic =3D cursor.read_u32()?;
-> +        if magic !=3D Self::FW_BINARY_MAGIC {
-> +            pr_err!("Invalid firmware magic");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let minor =3D cursor.read_u8()?;
-> +        let major =3D cursor.read_u8()?;
-> +
-> +        if major > Self::FW_BINARY_MAJOR_MAX {
-> +            pr_err!(
-> +                "Unsupported firmware binary header version {}.{} =
-(expected {}.x)\n",
-> +                major,
-> +                minor,
-> +                Self::FW_BINARY_MAJOR_MAX
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let padding1 =3D cursor.read_u16()?;
-> +        let version_hash =3D cursor.read_u32()?;
-> +        let padding2 =3D cursor.read_u32()?;
-> +        let size =3D cursor.read_u32()?;
-> +
-> +        if padding1 !=3D 0 || padding2 !=3D 0 {
-> +            pr_err!("Invalid firmware file: header padding is not =
-zero");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let fw_header =3D Self {
-> +            magic,
-> +            minor,
-> +            major,
-> +            _padding1: padding1,
-> +            version_hash,
-> +            _padding2: padding2,
-> +            size,
-> +        };
-> +
-> +        Ok(fw_header)
-> +    }
-> +}
-> +
-> +/// Firmware section header for loading binary sections into MCU =
-memory.
-> +#[derive(Debug)]
-> +struct SectionHeader {
-> +    section_flags: SectionFlags,
-> +    /// MCU virtual range to map this binary section to.
-> +    va: Range<u32>,
-> +    /// References the data in the FW binary.
-> +    data: Range<u32>,
-> +}
-> +
-> +impl SectionHeader {
-> +    /// Reads and validates a section header from the cursor.
-> +    ///
-> +    /// Parses section flags, virtual address range, and data range =
-from the firmware binary.
-> +    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-> +        let section_flags =3D cursor.read_u32()?;
-> +        let section_flags =3D SectionFlags::try_from(section_flags)?;
-> +
-> +        let va_start =3D cursor.read_u32()?;
-> +        let va_end =3D cursor.read_u32()?;
-> +
-> +        let va =3D va_start..va_end;
-> +
-> +        if va.is_empty() {
-> +            pr_err!(
-> +                "Invalid firmware file: empty VA range at pos {}\n",
-> +                cursor.pos(),
-> +            );
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        let data_start =3D cursor.read_u32()?;
-> +        let data_end =3D cursor.read_u32()?;
-> +        let data =3D data_start..data_end;
-> +
-> +        Ok(Self {
-> +            section_flags,
-> +            va,
-> +            data,
-> +        })
-> +    }
-> +}
-> +
-> +/// A firmware entry containing a header and optional parsed section =
-data.
-> +///
-> +/// Represents a single entry in the firmware binary, which may =
-contain loadable
-> +/// section data or metadata that doesn't require loading.
-> +struct EntrySection {
-> +    entry_hdr: EntryHeader,
-> +    inner: Option<ParsedSection>,
-> +}
-> +
-> +/// Header for a firmware entry, packed into a single u32.
-> +///
-> +/// The entry header encodes the entry type, size, and optional flag =
-in a
-> +/// 32-bit value with the following layout:
-> +/// - Bits 0-7: Entry type
-> +/// - Bits 8-15: Size in bytes
-> +/// - Bit 31: Optional flag
-> +struct EntryHeader(u32);
-> +
-> +impl EntryHeader {
-> +    fn entry_type_raw(&self) -> u8 {
-> +        (self.0 & 0xff) as u8
-> +    }
-> +
-> +    fn entry_type(&self) -> Result<EntryType> {
-> +        let v =3D self.entry_type_raw();
-> +        EntryType::try_from(v)
-> +    }
-> +
-> +    fn optional(&self) -> bool {
-> +        self.0 & bit_u32(31) !=3D 0
-> +    }
-> +
-> +    fn size(&self) -> u32 {
-> +        self.0 >> 8 & 0xff
-> +    }
-> +}
-> +
-> +#[derive(Clone, Copy, Debug)]
-> +#[repr(u8)]
-> +enum EntryType {
-> +    /// Host <-> FW interface.
-> +    Iface =3D 0,
-> +    /// FW config.
-> +    Config =3D 1,
-> +    /// Unit tests.
-> +    FutfTest =3D 2,
-> +    /// Trace buffer interface.
-> +    TraceBuffer =3D 3,
-> +    /// Timeline metadata interface.
-> +    TimelineMetadata =3D 4,
-> +    /// Metadata about how the FW binary was built.
-> +    BuildInfoMetadata =3D 6,
-> +}
-> +
-> +impl TryFrom<u8> for EntryType {
-> +    type Error =3D Error;
-> +
-> +    fn try_from(value: u8) -> Result<Self, Self::Error> {
-> +        match value {
-> +            0 =3D> Ok(EntryType::Iface),
-> +            1 =3D> Ok(EntryType::Config),
-> +            2 =3D> Ok(EntryType::FutfTest),
-> +            3 =3D> Ok(EntryType::TraceBuffer),
-> +            4 =3D> Ok(EntryType::TimelineMetadata),
-> +            6 =3D> Ok(EntryType::BuildInfoMetadata),
-> +            _ =3D> Err(EINVAL),
-> +        }
-> +    }
-> +}
->=20
-> --=20
-> 2.54.0
->=20
-
+Sounds good. Thank you for the consideration!
+-john
