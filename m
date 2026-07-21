@@ -1,317 +1,83 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665D14D9916;
-	Tue, 21 Jul 2026 15:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F253746AA6D;
+	Tue, 21 Jul 2026 15:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784646939; cv=none; b=dI7FcsEGkfIUKQDxpny5oR4fJOOn4hhLZELA9Ap4JGg2Q5/00hRgqYNUduHIJKTICzSxEUQjgVBjVQKr4Rt1gqu+rwfzpvzt/JHzDtXxX6wzcIrYmce8PqKaoT7yNu8Qw0RkDt9Fn1wewspw76eLSgBx4jJUOnmlGTZS4xejCF0=
+	t=1784647945; cv=none; b=TRG2B4NcUgKZobq0JPMmMjfFaujIXmfgOiq9b8PLyDN1bzVE2gyj9K/eu+6fxFAzougXtgZSqqBXQdIV8Q+k1/2BCtj0xEz5pC90bZuSuPITm7+mlZLPs1dCouc6StgVtmfqi6o0pKV1ZEcFJCsoUiJyZ69rAgTKXA1D69blRvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784646939; c=relaxed/simple;
-	bh=Bm2sDgGGdf93DGpkU5R0geZJmOBMRfW4uCRvCqoKcOk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T2U7g+EFOYJO69ugQFenzJNp3WYsVUN8iXO2EljKQhEA7khUqr05uGg6Sy2OoXu5DQotn533Oy6VR3pYjWpNY/SmGSuQmXsBFX8utzlUl3gyUXEo6hp6ejysma0nHcaFi8nRaionC/HseOlXMxaQNzKK1sIuGyN6PK2ITPa+DnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=OW8ofhD+; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1784647945; c=relaxed/simple;
+	bh=YmeKO/rqCgaum2nCNEFLOEjx/qFEgr9O093ZlpM1v5o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=NQC0WYz2znx39aoG2X1kBkR5v/34WKCSZpuWio/AL9tL/m4sY3vcffRPPJ9OQnZd83ydPLz884jkITEnM0K9wmAMaSs+3KJb8uPWZ3pzWi77A3IW+Ccw/aws4QoxImpjpfQinsx95GPmvpl2WY1VcSrhTqvqK2Nlp/2bSFeaCEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=foDFq9gv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="OW8ofhD+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1784646935;
-	bh=Bm2sDgGGdf93DGpkU5R0geZJmOBMRfW4uCRvCqoKcOk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OW8ofhD+7zPldXdMKoPwIRCf1AgKP5NHavOOfAT5COpMLadJgFqhc3ro6vEBxC4H3
-	 5q8lfc+SHEWZ/MPZFwhLFESpkMV3Stocac/JZnLHKj6hj9+ooXQpF5E3PhpnXH1C3o
-	 D8uTJB97SZIL6TAZaiiIed5eM/My+fRoMNHkjoLR7d3K3/TeBC+ZUzVdlys78iCy93
-	 rZ8KtIK/XL2kNlxAm0C7wDcUHBovThA2I0W1OJFfm1SXlNpfRttNS9Qx0g19A8lhwH
-	 EOmYxRf8rU1+EveYhKZ40kpXz3ZxHT2kJNjT4894utKpe88prVOQpxDo41I8Et5w5l
-	 qivftjQSC4niQ==
-Received: from laura.lan (unknown [100.64.0.215])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id AFC9917E08A2;
-	Tue, 21 Jul 2026 17:15:34 +0200 (CEST)
-From: Laura Nao <laura.nao@collabora.com>
-To: daniel.almeida@collabora.com,
-	aliceryhl@google.com,
-	dakr@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org
-Cc: boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	deborah.brouwer@collabora.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	kernel@collabora.com,
-	Laura Nao <laura.nao@collabora.com>
-Subject: [PATCH 2/2] drm/tyr: add Job IRQ handling
-Date: Tue, 21 Jul 2026 17:14:23 +0200
-Message-Id: <20260721151423.444175-3-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260721151423.444175-1-laura.nao@collabora.com>
-References: <20260721151423.444175-1-laura.nao@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="foDFq9gv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27EE1F000E9;
+	Tue, 21 Jul 2026 15:32:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784647943;
+	bh=q5/zi7cNrAXqMYuiX3MH0iTCnpKZXOPQtuIcMMtp6BM=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=foDFq9gvx5k/WUNMRwO6oPryQ99mNdJsoBTaxbg2iTH4UNN8w78Ug1kjn6bMaK9yX
+	 ZT0/LujqZx6Fk9YQvP8+vQy3EHkKkpKnkNYE+iyrX9pNTJEHndC/GptWbUQWyk29jl
+	 hwdzsyFlbSjKwObSPqXOJjNuIxWIEZm/tRuq9SpXV4ctJJe3rdvZH14glAXRc0cAEt
+	 H/pUR5oALHPviHwJ1FZmSo4FloHBxeefDtHq8/fVVH+G7LkOU45d+SptMbyeA9Bozt
+	 PsgPuSQcNTngIoCw9UvTij+E5iHQ+/mhD3MRKVQEgp9ci44gygq7EcFwzE1U3IEec6
+	 IhUuvsOpwv19g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Jul 2026 17:32:18 +0200
+Message-Id: <DK4CW8JXVL8M.2KKRMJVCD9AYO@kernel.org>
+To: "Laura Nao" <laura.nao@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/2] drm/tyr: add Wait type for GPU events
+Cc: <daniel.almeida@collabora.com>, <aliceryhl@google.com>,
+ <airlied@gmail.com>, <simona@ffwll.ch>, <ojeda@kernel.org>,
+ <boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>, <tamird@kernel.org>,
+ <acourbot@nvidia.com>, <work@onurozkan.dev>,
+ <deborah.brouwer@collabora.com>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
+ <kernel@collabora.com>, "Beata Michalska" <beata.michalska@arm.com>
+References: <20260721151423.444175-1-laura.nao@collabora.com>
+ <20260721151423.444175-2-laura.nao@collabora.com>
+In-Reply-To: <20260721151423.444175-2-laura.nao@collabora.com>
 
-Add a threaded IRQ wrapper for Tyr interrupt sources and use it to handle
-the firmware Job IRQ.
+On Tue Jul 21, 2026 at 5:14 PM CEST, Laura Nao wrote:
+> +/// A convenience type to wait for GPU events.
+> +///
+> +/// Wraps a [`CondVar`] and [`Mutex`] pair. The mutex synchronizes predi=
+cate checks
+> +/// with wait/wake operations; the condvar provides the sleep/wake mecha=
+nism.
+> +#[pin_data]
+> +pub(crate) struct Wait {
+> +    /// The actual wait/signal mechanism.
+> +    #[pin]
+> +    cond: CondVar,
+> +    /// Synchronizes waiters with notifications.
+> +    #[pin]
+> +    lock: Mutex<()>,
+> +}
 
-The Job IRQ reports requests from the CSF firmware, including global
-interface requests and CSG attention bits. Add a Job IRQ handler that
-masks the interrupt in the primary IRQ handler, processes pending raw
-status in the threaded handler, clears handled bits, and reenables the
-mask before returning.
+This is backwards; if I get this right at a quick glance it is basically ab=
+using
+CondVar to implement a WaitQueue abstraction in your driver.
 
-Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
- drivers/gpu/drm/tyr/driver.rs |  75 ++++++++++++++++++++++++
- drivers/gpu/drm/tyr/fw.rs     |   4 ++
- drivers/gpu/drm/tyr/fw/irq.rs | 104 ++++++++++++++++++++++++++++++++++
- 3 files changed, 183 insertions(+)
- create mode 100644 drivers/gpu/drm/tyr/fw/irq.rs
+What you actually seem to look for is a proper WaitQueue abstraction, which
+could then also be used to simplify the implementation of CondVar.
 
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 46ba91af9aca..6ee6f5e578b7 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
-+use core::marker::PhantomPinned;
-+
- use kernel::{
-     clk::{
-         Clk,
-@@ -21,6 +23,13 @@
-         poll,
-         Io, //
-     },
-+    irq::{
-+        Flags,
-+        IrqReturn,
-+        ThreadedHandler,
-+        ThreadedIrqReturn,
-+        ThreadedRegistration, //
-+    },
-     new_mutex,
-     of,
-     platform,
-@@ -238,3 +247,69 @@ struct Regulators {
-     _mali: Regulator<regulator::Enabled>,
-     _sram: Regulator<regulator::Enabled>,
- }
-+
-+pub(crate) trait TyrIrqTrait: Sync {
-+    fn read_status(&self) -> u32;
-+    fn clear_mask(&self);
-+    fn reenable_mask(&self);
-+    fn read_raw_status(&self) -> u32;
-+    fn clear_status(&self, status: u32);
-+    fn mask(&self) -> u32;
-+    fn handle(&self, status: u32);
-+}
-+
-+#[pin_data]
-+pub(crate) struct TyrIrq<T: TyrIrqTrait> {
-+    irq: T,
-+    #[pin]
-+    _pin: PhantomPinned,
-+}
-+
-+impl<T: TyrIrqTrait> TyrIrq<T> {
-+    pub(crate) fn request<'a>(
-+        pdev: &'a platform::Device<Bound>,
-+        name: &'static CStr,
-+        irq: T,
-+    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + 'a>
-+    where
-+        T: 'a,
-+    {
-+        let handler = try_pin_init!(Self {
-+            irq,
-+            _pin: PhantomPinned,
-+        });
-+
-+        // SAFETY: The resulting `PinInit` is not leaked, it is consumed by the caller to
-+        // initialize a pinned `ThreadedRegistration`.
-+        Ok(unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, name, name, handler) })
-+    }
-+}
-+
-+impl<T: TyrIrqTrait> ThreadedHandler for TyrIrq<T> {
-+    fn handle(&self) -> ThreadedIrqReturn {
-+        let masked_status = self.irq.read_status();
-+
-+        if masked_status == 0 {
-+            return ThreadedIrqReturn::None;
-+        }
-+        self.irq.clear_mask();
-+        ThreadedIrqReturn::WakeThread
-+    }
-+
-+    fn handle_threaded(&self) -> IrqReturn {
-+        let mut ret = IrqReturn::None;
-+
-+        loop {
-+            let raw_status = self.irq.read_raw_status() & self.irq.mask();
-+            if raw_status == 0 {
-+                break;
-+            }
-+            self.irq.handle(raw_status);
-+            self.irq.clear_status(raw_status);
-+            ret = IrqReturn::Handled;
-+        }
-+
-+        self.irq.reenable_mask();
-+        ret
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
-index 554808a792aa..4188dc4232f5 100644
---- a/drivers/gpu/drm/tyr/fw.rs
-+++ b/drivers/gpu/drm/tyr/fw.rs
-@@ -66,8 +66,12 @@
-     vm::Vm, //
- };
- 
-+pub(crate) mod irq;
- mod parser;
- 
-+/// Maximum number of CSG interfaces supported by hardware.
-+const MAX_CSG: usize = 16;
-+
- impl_flags!(
-     #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
-     pub(super) struct SectionFlags(u32);
-diff --git a/drivers/gpu/drm/tyr/fw/irq.rs b/drivers/gpu/drm/tyr/fw/irq.rs
-new file mode 100644
-index 000000000000..4084904d53f6
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/fw/irq.rs
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! IRQ handling for the Job IRQ.
-+//!
-+//! The Job IRQ signals events from the MCU, including global interface acknowledgements.
-+#![allow(dead_code)]
-+
-+use core::sync::atomic::{
-+    AtomicBool,
-+    Ordering, //
-+};
-+
-+use kernel::{
-+    c_str,
-+    device::Bound, //
-+    io::Io,
-+    irq::ThreadedRegistration,
-+    platform,
-+    prelude::*,
-+    sync::Arc, //
-+};
-+
-+use crate::{
-+    driver::{
-+        IoMem,
-+        TyrIrq,
-+        TyrIrqTrait, //
-+    },
-+    regs::job_control::{
-+        JOB_IRQ_CLEAR,
-+        JOB_IRQ_MASK,
-+        JOB_IRQ_RAWSTAT,
-+        JOB_IRQ_STATUS, //
-+    },
-+    wait::Wait, //
-+};
-+
-+const CSG_IRQ_MASK: u32 = (1u32 << super::MAX_CSG) - 1;
-+
-+pub(crate) struct JobIrq<'bound> {
-+    iomem: Arc<IoMem<'bound>>,
-+    fw_ready: Arc<AtomicBool>,
-+    ready_wait: Arc<Wait>,
-+}
-+
-+pub(crate) fn job_irq_init<'bound>(
-+    pdev: &'bound platform::Device<Bound>,
-+    iomem: Arc<IoMem<'bound>>,
-+    fw_ready: Arc<AtomicBool>,
-+    ready_wait: Arc<Wait>,
-+) -> Result<impl PinInit<ThreadedRegistration<'bound, TyrIrq<JobIrq<'bound>>>, Error> + 'bound> {
-+    iomem.write_reg(
-+        JOB_IRQ_MASK::zeroed()
-+            .with_const_csg::<CSG_IRQ_MASK>()
-+            .with_glb(true),
-+    );
-+    let job_irq = JobIrq {
-+        iomem: iomem.clone(),
-+        fw_ready,
-+        ready_wait,
-+    };
-+
-+    TyrIrq::request(pdev, c_str!("job"), job_irq)
-+}
-+
-+impl TyrIrqTrait for JobIrq<'_> {
-+    fn read_status(&self) -> u32 {
-+        self.iomem.read(JOB_IRQ_STATUS).into_raw()
-+    }
-+
-+    fn clear_mask(&self) {
-+        self.iomem.write_reg(JOB_IRQ_MASK::zeroed());
-+    }
-+
-+    fn reenable_mask(&self) {
-+        self.iomem.write_reg(
-+            JOB_IRQ_MASK::zeroed()
-+                .with_const_csg::<CSG_IRQ_MASK>()
-+                .with_glb(true),
-+        );
-+    }
-+
-+    fn read_raw_status(&self) -> u32 {
-+        self.iomem.read(JOB_IRQ_RAWSTAT).into_raw()
-+    }
-+
-+    fn clear_status(&self, status: u32) {
-+        self.iomem.write_reg(JOB_IRQ_CLEAR::from_raw(status));
-+    }
-+
-+    fn mask(&self) -> u32 {
-+        JOB_IRQ_MASK::zeroed()
-+            .with_const_csg::<CSG_IRQ_MASK>()
-+            .with_glb(true)
-+            .into_raw()
-+    }
-+
-+    fn handle(&self, status: u32) {
-+        if JOB_IRQ_RAWSTAT::from_raw(status).glb() {
-+            self.fw_ready.store(true, Ordering::Release);
-+            self.ready_wait.notify_all();
-+        }
-+    }
-+}
--- 
-2.39.5
+I'm already working on a WaitQueue abstraction, since I need it elsewhere. =
+I can
+probably post something in a few days.
 
+(I didn't check your use-case but you may want to consider completions and
+simple waitqueue as well.)
