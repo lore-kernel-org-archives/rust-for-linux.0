@@ -1,158 +1,528 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0033BADA2
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 20:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AB544AB72;
+	Tue, 21 Jul 2026 21:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784667199; cv=pass; b=VAhUjE9Ts4AJLQZ+AjZF1bDGLBTZpsW0aW4sBcIYCmcQlnq7lKM7+uWoNDJxiW6itiIYOcuYpR3Gbr5DTCqJ38BjP2j9Cthgz/JmUwt8Txcda02Wzj4nI8pQckeA/dJq9gl8qgkxLFJfyDgiOLx6J05bbBXWzvExy2Dk0k3iXUE=
+	t=1784668443; cv=pass; b=Y2HXxrkfDKKRPGkuta0U/xo6y3mEF9mH2eAkW8K+JSzBEthCXl7AVe0cedA7aHXKXzSuxwHcdDZiY3nIHtJcTKuCpXiOrJIGyQ4knKieNZfiAQEtMiqFfOMZpNy3vOO8Ahm5pBcZDG/F86jS8UJ5zBceXqD4K8QiLvZDVsu9CwI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784667199; c=relaxed/simple;
-	bh=Aj6TYx/Cyc9Dv0Qz7DIdrt1RM8bDeJ1mWJK0SGqsMpI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=izw9arTiZoxTMugM+OVMEriBEDpGqogbhFgmPC9CJckjUfRPrM6whnbKjWgchKfElxJutqQ5VugYBw2yFt95vaBQZEhXlUWja7eEzZywQUnYzmfc3jYEsVIzYac/hJ28QD3Lb+8/xECzK7PfFKJ31owvsr2kc2cYxHVr0AI3z2U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=is1/3gos; arc=pass smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1784668443; c=relaxed/simple;
+	bh=rs4uvtP3RmbfgyrJ29pUhgnhlohsO3XdgK0nnpCji58=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=l6HzPthtC8Bpe7GYBcgnv5xep+7SzIVT7ifRcKp1WqmXYPdnKRPFGI41fb6kILpfN8xUFt+DBYOsSzFzqrg8O5JyjAcsCSw3AZVGvCRJAs2z5wIiui6aftTqQ1hJa/we/ETdB22kw+yNs1cjuIeFNTUmOxgRanSSnTPQlgRpt3A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NnYxUm5O; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="is1/3gos"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c9d1fff21edso7763253a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 Jul 2026 13:53:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784667198; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WQrYqSOEXC6xZ8EMEC8tJzARLRh6Fhfs3rY0PhITkkctqM37+81yHBDM1ju+rKPKcr
-         G0dNmnb00pQtPNA70CIcOAQDCp6SVKJ0rQQAWtPpXvjdpZaxPZIhYp4AiLlVobrF0851
-         Ri8SYb7gmt4Cg4W8msQqy97AGf3rzr3YacvGxClMyBG/4OO/Xjh1Ys7MGqOsP5Qiwf9H
-         g8slb9A84MpBusx0xDFEB4psamu/y+3C2WTqv1yZdFfJXAuHGkTPHzYKOisAKRH7CPov
-         3zuAZ8y/sEvdqG61VQ1fl23wpngA6OWFofB34RtIe8mQ+13GTJusD0qmZFfG3LMIoTEk
-         5bpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0A5uhlvnx13ugb8HkKfIltQI6gavYIC2X4ticlk8EKg=;
-        fh=GijvnvAbXvjYOElGmKi1y0HzX2ybfBgP2WbUSxZ8eig=;
-        b=qLudHHiVzKDWQDbWJqnfKd2W6zHUYXHv6RW2YqjMEC+DSjWfrzchbnTROzxwsuysW6
-         RICFmSnLXKdY56Uz1A/D1dq9dGl4IErDYWXwmqcSK00iOYVAxvGsmpFWRnn2Z3ovn4jM
-         pmISJiuDaC89LsILRuyyQVMHKIJ1a3kHvy1L6ZL/tmCCIPzIhq7ANyhBDeVFSJdX0Qbu
-         onFqUuLhsQlu5OU2QWYCakfmxiAJJgZvtZWso1l5vKjW/17EOwzL8WAaVoFHIj0nUqVg
-         98nubBXXOUp57qWU2YWd2G7B6Q7/2t6nq7KY0ZCgGXbnUWtgGkVGIfb6zoGw0pCQd5qf
-         qOHQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1784667198; x=1785271998; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=0A5uhlvnx13ugb8HkKfIltQI6gavYIC2X4ticlk8EKg=;
-        b=is1/3gos3nSYdsJ68y4PZln0yw3hCFYTCIUe793YdhXrAewXgvybSgSyAuOOMxcnKf
-         XkTD8CcvOiVODBmJanpS8AiTPjrGpiiK5Nz8agdTYXjD4egLP/Kfy/pJbY7FQsLVJwpx
-         WEYpzuhgwhrfXBpivoXoc4c2qoZnFjz4nNZA9CGgjZg/dtoXppm+fBgDJSwdQIRm0P66
-         U2Ggz7/9QlaEiYZ+717ofRndon7GxfQRNgy4B4RLAAVbPO7DZcf9px1wI1WCPyMyl3Mm
-         5dpKC+/QX3qdAIwHpukbRu8ZvPCk+8Hf7QKEBTY+xlD5Kha8dKXiJFoy0GWLVln5ytkW
-         PCag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784667198; x=1785271998;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0A5uhlvnx13ugb8HkKfIltQI6gavYIC2X4ticlk8EKg=;
-        b=On6ninM+/QAToMg8O2B9vRPUyDaLSIMt31XfsKib+jDs9z815wI1xMDQ4HSsj9Izqz
-         M4+3UlTrlwXqhr7+aU+7N4tDxnSw/Fh5lM3vmdjRa1YqLMjHhFcX6h2T6pcsDj13QXSG
-         D9DI5mLztejyceG0buQrvQVbiUc3r7Yg7oQ0hC18sEiQwVaw1qKEfl6ayLYMEahBM7pj
-         eizFKWhEzyio/oktdNcUD0GQFzSubnpHZqFDY9WU9lgYLlAeG1L+7zuC7QggJyxrTXGu
-         otB5yYUfnzpWsI+Jzwq++zbuOzfYSjox2How86bwh5rIMURXqp7WW9cbOxBGVuJXoy5o
-         kVpg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6DYFL01O2bH2pT2MNAU7qCS2WR1psKAUFMrOlrk2MpcyqupqTyUy6xG33v9SSeXMPLpFzxL/yf3ZEa0GEJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBELkk8j1UHDu0OXTQK1IwBBHDg0Z3yzyEkwrprRwVvatTaO2W
-	IoOCML3CkMWYzqpLZ5kxw8s4mWEsbAk34/iJb+2LcaoEE8q+Y12biUBt7faajSnXXnjmRGMTPeW
-	ll5z2ODBHJDPUyRsS3ZQcQyFPXwy4lgsbioyFQSw=
-X-Gm-Gg: AR+sD11/cjWSPT2ihS8NwcHeMY+51NLjWSwafzX0tOvQZ9p5gdqW7XboLj/z+9xNCFd
-	9DD/hXZ1d9Kb0KYwLu0YUp3QrH9SbWJxnOMftYSiP8ieHWSXKusWiosuU6+qf35YCQpEF6AoF3i
-	GdPSQ2r1t+SMRiC/rSpcRtPnwkD8DuyVKXWT5jmvPkfIIWKeH017Wv7f1+BG2WJk3LL9MLbeRvz
-	/uAZLlKJoyEJ2HDGnS+NgUxT2fJLU+CzmLreC0ZE5ybkLlj+0Wc/BRf5PDZOr/t2oJ5yIq4ndGX
-	EXmF129SG+5X+CCKjQ1iOciwzOwB871/1KpDqVuNkHlpHI55C2fvhgQKu9Wk0+s4/WT6zN0bm4u
-	ZpxgyMQd2Nu0kog==
-X-Received: by 2002:a05:6a21:6b83:b0:3c3:8222:b8c9 with SMTP id
- adf61e73a8af0-3c3ada39a49mr22140955637.67.1784667197151; Tue, 21 Jul 2026
- 13:53:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NnYxUm5O"
+ARC-Seal: i=1; a=rsa-sha256; t=1784668412; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MIK2oNBNrHEnfXc+nl5bE35WiSVXeYstuDjMSNWM8pWnqhUG0vBu89W3zRdJAt5a+Gf+FMyMFd6UWJL9rI1BaoD/IVzIQif+xW8UPysir7uWaCdDnYVDeMgxR8ozHRcbZGBovJOLbIhdS5RjzasKY/H/aISZKqwNvXmxzQuTIbc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1784668412; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=B5MnkAkKVPQB4CbZ3x0AqoQskLWcHWS/O8H+mC3rH6c=; 
+	b=oLFRWPzsG4NLxlyO9nHY+dTFS87gpCF9rsUxtV1G7qs9Rzjj+8fnZnkKgM9hGuSnwQIKTTFUC+1Ub8VYyrKTxCsrtDqMcrT/YBi+sucKUL42Ezg7qT8TK1vXVKx+LdBdODyMetA5apZ2VIcg892M9tmb4IF1eU1ONYz42RppKfQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784668412;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=B5MnkAkKVPQB4CbZ3x0AqoQskLWcHWS/O8H+mC3rH6c=;
+	b=NnYxUm5OUxHr0UoNbekAnhSnRDWTZYgpc6bP4Fnf+86fYyDpo1qPFH6wzBJgEn9f
+	psF5Gw/yQ1n0z1fdieBNNm9LEFbQYVNodo5xYN3fzARLgkmDNQ2OdNGcjONFmxXr8iL
+	K0+rypfsRsoK8nLRfAu3EQS1XembIjiAqPz5L/dM=
+Received: by mx.zohomail.com with SMTPS id 1784668410354357.298122545111;
+	Tue, 21 Jul 2026 14:13:30 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <DK1SRBA3315M.32N4T8QQBUOER@garyguo.net> <20260720.184751.938933263969124163.tomo@flapping.org>
- <CANDhNCrKMdHCmL76LWCROVF2Ly-9NxmfmQ2T+P=iv34aVkO2uQ@mail.gmail.com> <20260721.185716.538446175000843628.tomo@flapping.org>
-In-Reply-To: <20260721.185716.538446175000843628.tomo@flapping.org>
-From: John Stultz <jstultz@google.com>
-Date: Tue, 21 Jul 2026 13:53:05 -0700
-X-Gm-Features: AUfX_mw9cZ8KeAiQXxGgbTBjAq_XlAQVOVEPg1ENvgNy3bYljEdKujnhAmNfrGk
-Message-ID: <CANDhNCp=RFgt9o4bw368R4dR3z3fPBAzwdofxpbsGi5ji2WmKg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: use Delta and a Jiffies newtype for timeouts
- and delays
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com, 
-	arve@android.com, boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, 
-	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
-	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
-	lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, 
-	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v7 7/7] drm/tyr: add Microcontroller Unit (MCU) booting
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20260713-fw-boot-b4-v7-7-afd8dc1494dd@collabora.com>
+Date: Tue, 21 Jul 2026 18:13:12 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Benno Lossin <lossin@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ boris.brezillon@collabora.com,
+ samitolvanen@google.com,
+ work@onurozkan.dev,
+ acourbot@nvidia.com,
+ lyude@redhat.com,
+ laura.nao@collabora.com,
+ beata.michalska@arm.com,
+ alvin.sun@linux.dev,
+ steven.price@arm.com
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <7EA774F9-500F-43B6-99D2-1447A695F467@collabora.com>
+References: <20260713-fw-boot-b4-v7-0-afd8dc1494dd@collabora.com>
+ <20260713-fw-boot-b4-v7-7-afd8dc1494dd@collabora.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-On Tue, Jul 21, 2026 at 2:57=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org>=
- wrote:
-> On Mon, 20 Jul 2026 11:16:06 -0700
-> John Stultz <jstultz@google.com> wrote:
->
-> > On Mon, Jul 20, 2026 at 2:48=E2=80=AFAM FUJITA Tomonori <tomo@flapping.=
-org> wrote:
-> >> On Sat, 18 Jul 2026 16:20:10 +0100
-> >> "Gary Guo" <gary@garyguo.net> wrote:
-> >> > I wonder if we should have time types being generic over units. So y=
-ou can have
-> >> > `Delta<Nsec>` and `Delta<Jiffy>` and `Instant<Nsec>`, `Instant<Jiffy=
->`, with the
-> >> > generic default being set to `Nsec`.
-> >> >
-> >> >     Delta::new(42) // Delta<Nsec>
-> >> >     Delta::new_jiffies(42) // Delta<Jiffy>
-> >> >
-> >> > Thoughts?
-> >>
-> >> I think making Delta generic over the time unit makes sense; Delta
-> >> <Nsec> and Delta<Jiffy>.
-> >>
-> >> However, I don't think making Instant generic over the time unit is a
-> >> good idea, even though it clearly is for Delta.
-> >>
-> >> Instant is already generic over ClockSource, and jiffies is not a
-> >> clock source: it has no clockid_t, it is read via get_jiffies_64()
-> >> rather than ktime_get(), and it cannot be armed through hrtimer. That
-> >> leaves two ways to force a jiffies Instant, both looks wrong:
-> >
-> > I read the above and thought, "but jiffies is a clocksource":
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/kernel/time/jiffies.c#n21
-> >
-> > And then I realized there has been some unfortunate naming overlap,
-> > where it seems the rust ClockSource seems to map to the clockid_t, not
-> > to the clocksource concept that Linux uses to abstract the hardware
-> > counter used as a source of time (for the majority of the clockids).
-> >
-> > Very much a bikeshed request, but is it too late to rename this to
-> > ClockID or something? So there is maybe less confusion when reading
-> > across C and Rust code?
->
-> Ah, I misunderstood. Thanks for the pointer!
->
-> You're right; the trait carries the clockid_t, not the hardware
-> clocksource. It's not too late at all; I'll rename ClockSource to
-> ClockId.
 
-Sounds good. Thank you for the consideration!
--john
+
+> On 14 Jul 2026, at 00:18, Deborah Brouwer =
+<deborah.brouwer@collabora.com> wrote:
+>=20
+> Add a firmware module to load, parse, and map the MCU firmware =
+sections
+> into shared GEM memory at the required virtual addresses accessible by =
+the
+> GPU.
+>=20
+> Create a firmware instance during probe and store it inside the
+> TyrDrmRegistrationData to keep it alive after probe. Use the firmware
+> instance to boot the MCU.
+>=20
+> Remove the dead-code annotations from the MMU, VM, slot manager, and
+> kernel BO code now that these paths are used by the firmware module.
+>=20
+> Update Kconfig to add the RUST_FW_LOADER_ABSTRACTIONS dependency
+> required by this module.
+>=20
+> Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> ---
+> drivers/gpu/drm/tyr/Kconfig   |   1 +
+> drivers/gpu/drm/tyr/driver.rs |  17 ++-
+> drivers/gpu/drm/tyr/fw.rs     | 263 =
+++++++++++++++++++++++++++++++++++++++++++
+> drivers/gpu/drm/tyr/gem.rs    |   3 -
+> drivers/gpu/drm/tyr/tyr.rs    |   1 +
+> drivers/gpu/drm/tyr/vm.rs     |   1 -
+> 6 files changed, 281 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
+> index 79ea4bb214de..8f13e49f11f9 100644
+> --- a/drivers/gpu/drm/tyr/Kconfig
+> +++ b/drivers/gpu/drm/tyr/Kconfig
+> @@ -13,6 +13,7 @@ config DRM_TYR
+> select IOMMU_IO_PGTABLE_LPAE
+> select RUST_DRM_GEM_SHMEM_HELPER
+> select RUST_DRM_GPUVM
+> + select RUST_FW_LOADER_ABSTRACTIONS
+> help
+>  Rust DRM driver for ARM Mali CSF-based GPUs.
+>=20
+> diff --git a/drivers/gpu/drm/tyr/driver.rs =
+b/drivers/gpu/drm/tyr/driver.rs
+> index 9195c8be5203..46ba91af9aca 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -37,6 +37,7 @@
+>=20
+> use crate::{
+>     file::TyrDrmFileData,
+> +    fw::Firmware,
+>     gem::Bo,
+>     gpu,
+>     gpu::GpuInfo,
+> @@ -67,6 +68,9 @@ pub(crate) struct TyrDrmRegistrationData<'bound> {
+>     /// Parent platform device.
+>     pub(crate) pdev: &'bound platform::Device<Bound>,
+>=20
+> +    /// Firmware sections.
+> +    pub(crate) fw: Firmware<'bound>,
+> +
+>     #[pin]
+>     clks: Mutex<Clocks>,
+>=20
+> @@ -144,10 +148,21 @@ fn probe<'bound>(
+>=20
+>         let unreg_dev =3D =
+drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
+>=20
+> -        let _mmu =3D Mmu::new(iomem.as_arc_borrow(), &gpu_info)?;
+> +        let mmu =3D Mmu::new(iomem.as_arc_borrow(), &gpu_info)?;
+> +
+> +        let firmware =3D Firmware::new(
+> +            pdev.as_ref(),
+> +            iomem.clone(),
+> +            &unreg_dev,
+> +            mmu.as_arc_borrow(),
+> +            &gpu_info,
+> +        )?;
+> +
+> +        firmware.boot()?;
+>=20
+>         let reg_data =3D try_pin_init!(TyrDrmRegistrationData {
+>                 pdev,
+> +                fw: firmware,
+>                 clks <- new_mutex!(Clocks {
+>                     core: core_clk,
+>                     stacks: stacks_clk,
+> diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+> new file mode 100644
+> index 000000000000..554808a792aa
+> --- /dev/null
+> +++ b/drivers/gpu/drm/tyr/fw.rs
+> @@ -0,0 +1,263 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +
+> +//! Firmware loading and management for Mali CSF GPU.
+> +//!
+> +//! This module handles loading the Mali GPU firmware binary, parsing =
+it into sections,
+> +//! and mapping those sections into the MCU's virtual address space. =
+Each firmware section
+> +//! has specific properties (read/write/execute permissions, cache =
+modes) and must be loaded
+> +//! at specific virtual addresses expected by the MCU.
+> +//!
+> +//! See [`Firmware`] for the main firmware management interface and =
+[`Section`] for
+> +//! individual firmware sections.
+> +//!
+> +//! [`Firmware`]: crate::fw::Firmware
+> +//! [`Section`]: crate::fw::Section
+> +
+> +use kernel::{
+> +    bits::genmask_u32,
+> +    device::{
+> +        Bound,
+> +        Device, //
+> +    },
+> +    drm::{
+> +        gem::BaseObject, //
+> +    },
+> +    impl_flags,
+> +    io::{
+> +        poll,
+> +        Io, //
+> +    },
+> +    prelude::*,
+> +    str::CString,
+> +    sync::{
+> +        Arc,
+> +        ArcBorrow, //
+> +    },
+> +    time, //
+> +};
+> +
+> +use crate::{
+> +    driver::{
+> +        IoMem,
+> +        TyrDrmDevice, //
+> +    },
+> +    fw::parser::{
+> +        FwParser,
+> +        ParsedSection, //
+> +    },
+> +    gem,
+> +    gem::{
+> +        KernelBo,
+> +        KernelBoVaAlloc, //
+> +    },
+> +    gpu::GpuInfo,
+> +
+> +    mmu::Mmu,
+> +    regs::{
+> +        gpu_control::{
+> +            McuControlMode,
+> +            McuStatus,
+> +            GPU_ID,
+> +            MCU_CONTROL,
+> +            MCU_STATUS, //
+> +        }, //
+> +        job_control::JOB_IRQ_RAWSTAT, //
+> +    },
+> +    vm::Vm, //
+> +};
+> +
+> +mod parser;
+> +
+> +impl_flags!(
+> +    #[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+> +    pub(super) struct SectionFlags(u32);
+> +
+> +    #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> +    pub(super) enum SectionFlag {
+> +        Read =3D 1 << 0,
+> +        Write =3D 1 << 1,
+> +        Exec =3D 1 << 2,
+> +        CacheModeNone =3D 0 << 3,
+> +        CacheModeCached =3D 1 << 3,
+> +        CacheModeUncachedCoherent =3D 2 << 3,
+> +        CacheModeCachedCoherent =3D 3 << 3,
+> +        Prot =3D 1 << 5,
+> +        Shared =3D 1 << 30,
+> +        Zero =3D 1 << 31,
+> +    }
+> +);
+
+Can we please rewrite this with the bitfield macro instead?=20
+
+I think we can use something like:
+
+4:3 cache_mode =3D> CacheMode
+
+
+> +
+> +pub(super) const CACHE_MODE_MASK: SectionFlags =3D =
+SectionFlags(genmask_u32(3..=3D4));
+> +
+> +pub(super) const CSF_MCU_SHARED_REGION_START: u32 =3D 0x04000000;
+> +
+> +impl SectionFlags {
+> +    fn cache_mode(&self) -> SectionFlags {
+> +        *self & CACHE_MODE_MASK
+> +    }
+> +}
+> +
+> +impl TryFrom<u32> for SectionFlags {
+> +    type Error =3D Error;
+> +
+> +    fn try_from(value: u32) -> Result<Self, Self::Error> {
+> +        let valid_flags =3D SectionFlags::from(SectionFlag::Read)
+> +            | SectionFlags::from(SectionFlag::Write)
+> +            | SectionFlags::from(SectionFlag::Exec)
+> +            | CACHE_MODE_MASK
+> +            | SectionFlags::from(SectionFlag::Prot)
+> +            | SectionFlags::from(SectionFlag::Shared)
+> +            | SectionFlags::from(SectionFlag::Zero);
+> +
+> +        if value & valid_flags.0 !=3D value {
+> +            Err(EINVAL)
+> +        } else {
+> +            Ok(Self(value))
+> +        }
+> +    }
+> +}
+> +
+> +/// A parsed section of the firmware binary.
+> +struct Section<'bound> {
+> +    // Raw firmware section data for reset purposes
+> +    #[expect(dead_code)]
+> +    data: KVec<u8>,
+> +
+> +    // Keep the BO backing this firmware section so that both the
+> +    // GPU mapping and CPU mapping remain valid until the Section is =
+dropped.
+> +    #[expect(dead_code)]
+> +    mem: gem::KernelBo<'bound>,
+> +}
+> +
+> +/// Loaded firmware with sections mapped into MCU VM.
+> +pub(crate) struct Firmware<'bound> {
+> +    /// Iomem need to access registers.
+> +    iomem: Arc<IoMem<'bound>>,
+> +
+> +    /// MCU VM.
+> +    vm: Arc<Vm<'bound>>,
+> +
+> +    /// List of firmware sections.
+> +    #[expect(dead_code)]
+> +    sections: KVec<Section<'bound>>,
+> +}
+> +
+> +impl<'bound> Drop for Firmware<'bound> {
+> +    fn drop(&mut self) {
+> +        // AS slots retain a VM ref, we need to kill the circular ref =
+manually.
+> +        self.vm.kill();
+> +    }
+> +}
+> +
+> +impl<'bound> Firmware<'bound> {
+> +    fn init_section_mem(mem: &mut KernelBo<'bound>, data: &KVec<u8>) =
+-> Result {
+> +        if data.is_empty() {
+> +            return Ok(());
+> +        }
+> +
+> +        let vmap =3D mem.bo.vmap::<0>()?;
+> +        let size =3D mem.bo.size();
+> +
+> +        if data.len() > size {
+> +            pr_err!("fw section {} bigger than BO {}\n", data.len(), =
+size);
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        for (i, &byte) in data.iter().enumerate() {
+> +            vmap.try_write8(byte, i)?;
+> +        }
+> +
+> +        Ok(())
+> +    }
+> +
+> +    fn request(ddev: &TyrDrmDevice, gpu_info: &GpuInfo) -> =
+Result<kernel::firmware::Firmware> {
+> +        let gpu_id =3D GPU_ID::from_raw(gpu_info.gpu_id);
+> +
+> +        let path =3D CString::try_from_fmt(fmt!(
+> +            "arm/mali/arch{}.{}/mali_csffw.bin",
+> +            gpu_id.arch_major().get(),
+> +            gpu_id.arch_minor().get()
+> +        ))?;
+> +
+> +        kernel::firmware::Firmware::request(&path, =
+ddev.as_ref().as_ref())
+> +    }
+> +
+> +    fn load(
+> +        ddev: &TyrDrmDevice,
+> +        gpu_info: &GpuInfo,
+> +    ) -> Result<(kernel::firmware::Firmware, KVec<ParsedSection>)> {
+> +        let fw =3D Self::request(ddev, gpu_info)?;
+> +        let mut parser =3D FwParser::new(fw.data());
+> +
+> +        let parsed_sections =3D parser.parse()?;
+> +
+> +        Ok((fw, parsed_sections))
+> +    }
+> +
+> +    /// Load firmware and map sections into MCU VM.
+> +    pub(crate) fn new(
+> +        dev: &'bound Device<Bound>,
+> +        iomem: Arc<IoMem<'bound>>,
+> +        ddev: &TyrDrmDevice,
+> +        mmu: ArcBorrow<'_, Mmu<'bound>>,
+> +        gpu_info: &GpuInfo,
+> +    ) -> Result<Firmware<'bound>> {
+> +        let vm =3D Vm::new(dev, ddev, mmu, gpu_info)?;
+> +        vm.activate()?;
+> +
+> +        let (fw, parsed_sections) =3D Self::load(ddev, gpu_info)?;
+> +        let mut sections =3D KVec::new();
+> +        for parsed in parsed_sections {
+> +            let size =3D (parsed.va.end - parsed.va.start) as usize;
+> +            let va =3D u64::from(parsed.va.start);
+> +
+> +            let mut mem =3D KernelBo::new(
+> +                ddev,
+> +                vm.clone(),
+> +                size.try_into().unwrap(),
+> +                KernelBoVaAlloc::Explicit(va),
+> +                parsed.vm_map_flags,
+> +            )?;
+> +
+> +            let section_start =3D parsed.data_range.start as usize;
+> +            let section_end =3D parsed.data_range.end as usize;
+> +            let mut data =3D KVec::new();
+> +
+> +            // Ensure that the firmware slice is not out of bounds.
+> +            let fw_data =3D fw.data();
+> +            let bytes =3D =
+fw_data.get(section_start..section_end).ok_or(EINVAL)?;
+> +            data.extend_from_slice(bytes, GFP_KERNEL)?;
+> +
+> +            Self::init_section_mem(&mut mem, &data)?;
+> +
+> +            sections.push(Section { data, mem }, GFP_KERNEL)?;
+> +        }
+> +
+> +        let firmware =3D Firmware {
+> +            iomem,
+> +            vm,
+> +            sections,
+> +        };
+> +
+> +        Ok(firmware)
+> +    }
+> +
+> +    pub(crate) fn boot(&self) -> Result {
+> +        let io =3D &self.iomem;
+> +        =
+io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Auto));
+> +
+> +        if let Err(e) =3D poll::read_poll_timeout(
+> +            || Ok((io.read(MCU_STATUS), io.read(JOB_IRQ_RAWSTAT))),
+> +            |(mcu_status, irq_rawstat)| {
+> +                mcu_status.value() =3D=3D McuStatus::Enabled && =
+irq_rawstat.glb()
+> +            },
+> +            time::Delta::from_millis(1),
+> +            time::Delta::from_millis(100),
+> +        ) {
+> +            let status =3D io.read(MCU_STATUS);
+> +            pr_err!("MCU failed to boot, status: {:?}", =
+status.value());
+> +            return Err(e);
+> +        }
+> +        Ok(())
+> +    }
+> +}
+> diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+> index 47a05a33388e..e9bf35682a47 100644
+> --- a/drivers/gpu/drm/tyr/gem.rs
+> +++ b/drivers/gpu/drm/tyr/gem.rs
+> @@ -72,7 +72,6 @@ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) =
+-> Result<ARef<Bo>> {
+> /// An automatic VA allocation strategy will be added in the future.
+> pub(crate) enum KernelBoVaAlloc {
+>     /// Explicit VA address specified by the caller.
+> -    #[expect(dead_code)]
+>     Explicit(u64),
+> }
+>=20
+> @@ -85,7 +84,6 @@ pub(crate) enum KernelBoVaAlloc {
+> /// When dropped, the buffer is automatically unmapped from the GPU VA =
+space.
+> pub(crate) struct KernelBo<'bound> {
+>     /// The underlying GEM buffer object.
+> -    #[expect(dead_code)]
+>     pub(crate) bo: ARef<Bo>,
+>     /// The GPU VM this buffer is mapped into.
+>     vm: Arc<Vm<'bound>>,
+> @@ -99,7 +97,6 @@ impl<'bound> KernelBo<'bound> {
+>     /// This function allocates a new shmem-backed GEM object and =
+immediately maps
+>     /// it into the specified GPU virtual memory space. The mapping is =
+automatically
+>     /// cleaned up when the [`KernelBo`] is dropped.
+> -    #[expect(dead_code)]
+>     pub(crate) fn new(
+>         ddev: &TyrDrmDevice,
+>         vm: Arc<Vm<'bound>>,
+> diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+> index 92f6885cdaae..e7ec450bdc9c 100644
+> --- a/drivers/gpu/drm/tyr/tyr.rs
+> +++ b/drivers/gpu/drm/tyr/tyr.rs
+> @@ -9,6 +9,7 @@
+>=20
+> mod driver;
+> mod file;
+> +mod fw;
+> mod gem;
+> mod gpu;
+> mod mmu;
+> diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+> index 2358096afc7e..7534e68359bf 100644
+> --- a/drivers/gpu/drm/tyr/vm.rs
+> +++ b/drivers/gpu/drm/tyr/vm.rs
+> @@ -6,7 +6,6 @@
+> //! the illusion of owning the entire virtual address (VA) range, =
+similar to CPU virtual memory.
+> //! Each virtual memory (VM) area is backed by ARM64 LPAE Stage 1 page =
+tables and can be
+> //! mapped into hardware address space (AS) slots for GPU execution.
+> -#![expect(dead_code)]
+>=20
+> use core::marker::PhantomData;
+> use core::ops::Range;
+>=20
+> --=20
+> 2.54.0
+>=20
+
+Apart from the change I mentioned, this patch looks good to me.
+
+
+
