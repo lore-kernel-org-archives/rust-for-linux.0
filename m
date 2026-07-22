@@ -1,254 +1,158 @@
-Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6757C442FDE;
-	Wed, 22 Jul 2026 09:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81010481FC8
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 10:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784714269; cv=none; b=RxrATYQLJZpgt4zetC1aCpsofBHGduSR6PttlRsX8wDdgw+edLIawj9DZWrqpfMaugnTd28bQ14N4R0a83NZ6QnEh4H4G5V8PgAQ10CFgokkJxQOPE6oFmDr/9vjFH5oywQAMYf9E7p06wB6BrtS8+xrhPVAtYIhFdh2uFDvFNE=
+	t=1784715144; cv=none; b=AeXVhB1iVyntHaoqL7rWttcEXsooIUL44LP/v0/mhlnvbYeXuv+P7NbI3/sMUjPejIcv10hQq7ztL5/s1aiSrXmKDDucCYbYltMo0EsTWJealZ8eJf3bCQiIZ57wy/z6PDhivHaHeztkvTsJbWo/R4HOWuxGrNqqZEFclt2TDHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784714269; c=relaxed/simple;
-	bh=VesKABZyDBivX5i7m3kEgIrkJh3YwHmybvmYOQyC9G0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=SsPBJQfJZADHRpseK+I1kJ31StI4db2UaW4Duxojc4AJRu3R4pwCTAnY/RRHPZtQMOpcoyFeyiE6U/VulQtS7Zqx2EKnWaMYu6UdXsl/RPVJk6+PV0ghbF98iP4J2C/5g7NEgm83IYnee690eiSSigybk7SL1hL/shRd6fiTLTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=lklB5zC9; arc=none smtp.client-ip=188.245.177.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
+	s=arc-20240116; t=1784715144; c=relaxed/simple;
+	bh=d9fNlnI/XuGj5CvhW4AhgCBBPUeapCVoabxapDL1isc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KVYMjs/ShIKdAeR4pjyjejBW0BBqXuPBvZpS2RhgrUWVAhLoWk6Y+JwVzGnUc/MiGxNKVQhfpOINZm9HK3gkiK3wfI4pR7Y7vqfYyeBbke3C8UtDhGtqU2CXY4uT6uzU4fefzGP9Fb+3JGnHHzoEUKF7hSg6LhYcQ5VNH1DtdZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YhT00/r9; arc=none smtp.client-ip=209.85.128.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="lklB5zC9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
-	s=mailSelector; t=1784714264;
-	bh=VesKABZyDBivX5i7m3kEgIrkJh3YwHmybvmYOQyC9G0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Subject;
-	b=lklB5zC9fa3FKgq4NEc3zZTvZVQaCifdzQWXHVOnyRx5SNFFybGQUH9gL2sSLnGbI
-	 /KFU/wxfedBdUIj332CchtK1uFNyCEQAUOwVJU9xjlWmbCIH1TQ38Os8cKuUMsgeFZ
-	 c7a4y9GMh4PggNoRorPjehcMRou/tnPHZ28g0VyHYbu49PWwnaAousnrQ3FGXEXkfX
-	 frtRZtFJceEDMnEm8H8D7hRkzJhMPOm2yPZ/04sqArpBS04kaWT/gS/RHDTeIW2mI8
-	 KVDxnOM/tLFPlC8cNCHyTgElqe9918kJuL9zQZSDldgGK7FPhywO8b3pul8Dnw9VgG
-	 +iZ55tgXmY3QcU8/EkPQtFdkDGe2qmBEzB9bwCM16IDiRqCvjlGJIK1TJ71eVt4KHh
-	 9MPhDSuttUHIvb9uCU5twoGqUfm822XLYp6GPhPmFFnUvJN1fMmO5uatRBEpmxi4/j
-	 MVsDGuy0goIoPDmIWt9PpLC0sxEMGJoYYM5OSe/PJagGVnIb2E3iG26onjfrCo5oqH
-	 nCGq2WqocpVja32xhFK19umZml8XurHrCpvkmU8S4VKV/CnqQ70+LMKQnNxJoKjjTm
-	 1/tNHT300BdQF37Ko3N9PTWkQRUqZqmcSXKPiAYfDPsCWfadKw7WhtA1PcNpi46eoB
-	 Z7GDaMgGYjnVpcb8zE55QLOk=
-Date: Wed, 22 Jul 2026 12:55:18 +0300
-From: Manos Pitsidianakis <manos@pitsidianak.is>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Zybg==?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v3 0/6] Add Rust virtio bindings and sample device
-User-Agent: meli/0.8.13
-References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is> <tiiht3.22qk83rct1pd@pitsidianak.is> <CAJaqyWcSeXW_vdP03-oTXp5uO8vNBg224LDgyCn3QrXhuJ6tHw@mail.gmail.com> <tikjvp.3n7sct2j96lcx@pitsidianak.is> <CAJaqyWfq=tAdaAzqBtrkKt0fwiQL=SU6QYVydos1q4GhHy-JDg@mail.gmail.com>
-In-Reply-To: <CAJaqyWfq=tAdaAzqBtrkKt0fwiQL=SU6QYVydos1q4GhHy-JDg@mail.gmail.com>
-Message-ID: <tikmc7.hs1w0947avvx@pitsidianak.is>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YhT00/r9"
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4955e865174so21256345e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 03:12:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1784715139; x=1785319939; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3wwehrSux52AcQuBFCAkCg0qXJfyPFqe58UjKR7Whus=;
+        b=YhT00/r9M+285j6yi70GUwMay0LgXZAlmL9iVCE3L84YL2p3YPPeaeBX/ii/nLX1Ka
+         CCaE8W5b/7asFbe4wzFRWUWkVUYWF3kV5L4L0eB1cV2GnO5B1cr8f1DZoCXRReUd/8ou
+         b4gE8A7M0Jv2S5nXZq0HSDtxqBi7cRxWckZH4mVilVrXv+HYcswvQiNZ8pFxvwdFF1fT
+         hhGyVlg+08QMFqC5bV+SkWeDUj57swyS+rusbHE/L2CnZDTfw56+VACynbMTE++uIEFJ
+         Oet4xvBQWru2dws8YQamheeenysDzBh9L5LyPU2wCOvk/9z8x7EwkLony7YeQfQ58Mk5
+         mTuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784715139; x=1785319939;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3wwehrSux52AcQuBFCAkCg0qXJfyPFqe58UjKR7Whus=;
+        b=Trg/W7cnk1adLIukl6BBpksYnPQ+6DBx1VkiPCAYGxk8Q0shqNs9EgBzBX6HgSoX8E
+         D6qhg93xVVLKHjG0j9lm1WncNku+HDnWvbi4/GCwOTIeZYUXL/CZDG6bcpd/9YEuxiEp
+         xvcJsJ9dtPioG7KF7GNSVb/nFUiySggcnMG6UZufXzdBijYv0XDKizHHwuLNIgGYJeJd
+         GedSKdr5OZBJuZgL1c0TNRZGBiRzgPMvEdoFZ8ozEnLEsK8aWD5zr6TqywONmIlGYRX/
+         0r/Qrys+TEWiYWOKmnRBPIg7tImFv1pYTi93yVa2mBmu8c5veDOrTwT13/UCDRGAMt+M
+         sWsg==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7hggf9x0ua0ObQP3Lrdzex9ImXDLaqgz974odS+tDhBB62OS941tuAJfOh4a0o9xsFAn7rs9NzVBnh+UqlQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywCLg7hHY5orVqQd2POLI+FWa/Du9zwKrGpg4C6TG0bnbZfIiQ
+	edE/qVVFZYca+VGIxY7/ulYcD03KNQnw/wTh9MlnRIk1paXwe7oqvund0EnZC0BJ15PWiZBbY+X
+	u8O60PMDB1FbMFTNfxA==
+X-Received: from wmba22.prod.google.com ([2002:a05:600c:6dd6:b0:492:4e77:8950])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:1509:b0:494:6baa:ccef with SMTP id 5b1f17b1804b1-4954a3dcaa5mr161964845e9.11.1784715138429;
+ Wed, 22 Jul 2026 03:12:18 -0700 (PDT)
+Date: Wed, 22 Jul 2026 10:12:08 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAHiXYGoC/2XM0QrCIBiG4VsJjzP017nWUfcRHTj9twnbHDqkG
+ Lv33AiiOvw+eJ+FRAwOI7kcFhIwuej8mIc4Hojp9NgidTZvAgwUU7yiU6BBz9i7wc1oqUJgjT5
+ XtS1qkqMpYOMeO3i75925OPvw3P3Et/dNgfilEqeMGlMBNIWU1rBr633b48n4gWxWgk9fcvXXQ +4FN1BqWUhh4atf1/UFvk6Mae0AAAA=
+X-Change-Id: 20260619-pr-ratelimited-6e20fa89bd5b
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2908; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=d9fNlnI/XuGj5CvhW4AhgCBBPUeapCVoabxapDL1isc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqYJd80ZwVmYPuHVfo20kczkk4vs8S0T59xHAOL
+ a5Iq/VKwp2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCamCXfAAKCRAEWL7uWMY5
+ Rt+MEACxqyAKj9qEAOLUoocuxmBPYDgRpFnJifm0jOyskrFXYCtPuTRYTP8NzTCCr/7kvCLjFjW
+ Qcf2uocpkm9dhLK0Nk2CQmLuoM6JcAchntnXGTAo7zTZqDD6jsDENmpIR9x0NSyf6sOsagCqh/K
+ GlYrxRiW4v/Y4Fj2Q3cXmavu+wGCacFjKH0THWbOhSY75le9dL4cRQncGBiGITW6q5xLcevEQ66
+ Bs+gNGmy1gSWWJ8d5G3QiK9vEIzcwKF0jBG/8h4zmj2WLev7pSIGRFIeXMWg/hBlOwr/ncEQSjh
+ vZ2UcpG8VwFVIMBpeHiwE+8PIe2AV3Gkxcxke9jOVC1pOks1YNoGwMWcUZN0fyi02vFplOKurzw
+ R4lYohO+a2KSWWQx+LNe2tpxmHIt8QMaESweWynX4tGYFMJJKx/elEUnoOs8nNq5CLJuuD4EIWL
+ UAfz4/VotpF9sUOzGHelFxI9QOfLyVtlSSaAm9F29DCCxpVZl1V+JvcDv5H5mhwjYNycAMl4rZU
+ 5qGTaV6VI7tGIGz2JYebXEgAlH7Af8kKYzAQ4rYKtlYSzL6yL9EfnHsw26lNcO+aT3c13Va+1Yd
+ xdmV9utevn4J9JYDwUxPFTtADH9xVIkIJdCyX98wTMxWKC9TxCSxcaB/uuNKStjrH4zC58B1FE9 DYEvG7ZC7LwUE5w==
+X-Mailer: b4 0.14.3
+Message-ID: <20260722-pr-ratelimited-v3-0-57faa37fdfbd@google.com>
+Subject: [PATCH v3 0/5] Rate limited printing for Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Alvin Sun <alvin.sun@linux.dev>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, 22 Jul 2026 12:31, Eugenio Perez Martin <eperezma@redhat.com> wrote:
->On Wed, Jul 22, 2026 at 11:04 AM Manos Pitsidianakis
-><manos@pitsidianak.is> wrote:
->>
->> Hi Eugenio,
->>
->> On Wed, 22 Jul 2026 11:49, Eugenio Perez Martin <eperezma@redhat.com> wrote:
->> >On Tue, Jul 21, 2026 at 8:24 AM Manos Pitsidianakis
->> ><manos@pitsidianak.is> wrote:
->> >>
->> >> Ping.
->> >>
->> >> I have a different version of the series WIP with a virtio-rng instead
->> >> of virtio-rtc, based on
->> >> https://lore.kernel.org/lkml/20260529-rust-hw_random-virtio-rng-v1-0-b3153dd90311@pitsidianak.is/
->> >> (which needs a v2 also)
->> >>
->> >> But since this series hasn't gotten any feedback on the virtio part, I'd
->> >> like to ask if there is any before respinning.
->> >>
->> >> Thanks!
->> >>
->> >
->> >I also think this will be a great addition, but I have very little
->> >knowledge of Rust. Is it easy to implement the simplest virtio-net
->> >driver using Rust, without CVQ or extra features, so I can test it and
->> >hopefully build features on top? Would it help?
->>
->> I think so, however it would not be upstreamable right away since (I
->> think) there are no netdev Rust bindings and abstractions yet. I will
->> take a look when I have the time...
->>
->
->How about starting even smaller? Just with the virtio-ring processing
->that all virtio drivers share.
+To avoid DoS on the kernel log, the Rust Binder driver is being switched
+to rate limited printing. But before we can do that, we must first
+implement rate limited printing for Rust. Thus, do that.
 
-That's already possible with this series (adding inbufs/outbufs). If you 
-mean a virtio-net that can react to virtio commands but does not do 
-anything with packets, yes we can do that. I can try setting up a 
-minimum driver we can work on together if you like.
+However, it turns out that before we can implement rate limited
+printing, we must first implement the ability declare a raw_spinlock_t
+in a global variable. Thus, do that too.
 
-Manos
+Based on top of char-misc-testing.
 
->
->> (This is something I am also interested in because I'm working on a
->> different kind of network device)
->>
->> You can definitely play with the sample driver included in this series
->> however!
->>
->> Manos
->>
->>
->> >
->> >Thanks!
->> >
->> >> On Sun, 10 May 2026 16:38, Manos Pitsidianakis <manos@pitsidianak.is> wrote:
->> >> >Hi all, this RFC series adds Rust bindings for Virtio drivers
->> >> >(frontends in virtio parlance).
->> >> >
->> >> >As a PoC, it also adds a sample virtio-rtc driver which performs
->> >> >capability discovery through the virtqueue without registering any clock.
->> >> >
->> >> >Before I send a cleaned-up non-RFC I would like some initial feedback
->> >> >(i.e. is it something the upstream wants?)
->> >> >
->> >> >This was tested with the rust-vmm vhost-device-rtc device backend that I
->> >> >wrote[^0]:
->> >> >
->> >> >[^0]: https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-rtc
->> >> >
->> >> >Instructions:
->> >> >
->> >> >  Run the daemon in a separate terminal:
->> >> >
->> >> >  $ cargo run --bin vhost-device-rtc -- -s /tmp/rtc.sock
->> >> >
->> >> >  Then run the VM:
->> >> >
->> >> >  $ qemu-system-aarch64 \
->> >> >    -machine type=virt,virtualization=off,acpi=on \
->> >> >    -cpu host \
->> >> >    -smp 8 \
->> >> >    -accel kvm \
->> >> >    -drive if=virtio,format=qcow2,file=./debian-13-nocloud-arm64-daily.qcow2 \
->> >> >    -device virtio-net-pci,netdev=unet \
->> >> >    -device virtio-scsi-pci \
->> >> >    -serial mon:stdio \
->> >> >    -m 8192 \
->> >> >    -object memory-backend-memfd,id=mem,size=8G,share=on \
->> >> >    -numa node,memdev=mem \
->> >> >    -display none \
->> >> >    -vga none \
->> >> >    -kernel /path/to/linux/build/arch/arm64/boot/Image \
->> >> >    -device vhost-user-test-device,chardev=rtc,id=rtc,virtio-id=17,num_vqs=2,vq_size=1024 \
->> >> >    -chardev socket,path=/tmp/rtc.sock,id=rtc \
->> >> >    ...
->> >> >
->> >> >  Example output:
->> >> >    [    1.105238] rust_virtio_rtc: Probe Rust virtio driver sample.
->> >> >    [    1.105645] rust_virtio_rtc: Found 1 vqs.
->> >> >    [    1.136050] rust_virtio_rtc: process_requestq got buf 16 bytes
->> >> >    [    1.136125] rust_virtio_rtc: Got response! Ok(RespCfg { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, num_clocks: Le16(3), reserved: [0, 0, 0, 0, 0, 0] })
->> >> >    [    1.136701] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 3, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
->> >> >    [    1.136724] rust_virtio_rtc virtio0: cannot expose clock 0 (type 3, variant 0, flags 0) to userspace
->> >> >    [    1.137259] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(1777890485031060388) })
->> >> >    [    1.137277] rust_virtio_rtc: #0 clock reading = 1777890485031060388
->> >> >    [    1.137749] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 1, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
->> >> >    [    1.137769] rust_virtio_rtc virtio0: cannot expose clock 1 (type 1, variant 0, flags 0) to userspace
->> >> >    [    1.138247] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(1777890485032086075) })
->> >> >    [    1.138264] rust_virtio_rtc: #1 clock reading = 1777890485032086075
->> >> >    [    1.138730] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 2, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
->> >> >    [    1.138751] rust_virtio_rtc virtio0: cannot expose clock 2 (type 2, variant 0, flags 0) to userspace
->> >> >    [    1.139253] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(338567896865557) })
->> >> >    [    1.139270] rust_virtio_rtc: #2 clock reading = 338567896865557
->> >> >
->> >> >Concerns - Notes - TODOs
->> >> >========================
->> >> >
->> >> >- Virtqueue lifetimes don't neatly apply to Rust as expected, so a lot
->> >> >  of times we have to go through unsafe pointer dereferences (though
->> >> >  which are guaranteed by Virtio subsystem to be valid, for example when
->> >> >  a callback is called with the vq argument). There's a potential for
->> >> >  misuse and definitely could use better thinking.
->> >> >- `struct virtio_device` is not reference-counted like other implemented
->> >> >  device types in rust/kernel. Maybe we need to change C API first to
->> >> >  make them reference counted, assuming this doesn't break anything?
->> >> >- The sample driver obviously conflicts with the C implementation, so
->> >> >  this would either need to move out of samples/ or figure out some way
->> >> >  to handle this in kbuild.
->> >> >- kernel::virtio module and its types need a few rustdoc examples that I
->> >> >  will add in followup series
->> >> >- Note that the registration of RTC clocks etc in the sample driver is
->> >> >  not done, I'm putting it off until I receive some feedback first. The
->> >> >  sample driver otherwise does send and receive data from the virtqueue
->> >> >  as a PoC.
->> >> >
->> >> >PS: No LLMs used so any mistakes and goofs are solely written by me.
->> >> >
->> >> >Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
->> >> >---
->> >> >Changes in v3:
->> >> >- Removed unused methods from virtio API
->> >> >- Clean up how scattergather lists are added to virtqueues by using
->> >> >  owned SGTables only, and make the API safe(r)
->> >> >- Add RAII cleanup for find_vqs return value that calls del_vqs
->> >> >- Reset device after remove callback
->> >> >- Significantly clean up sample driver as a result of the other cleanups
->> >> >- Link to v2: https://lore.kernel.org/r/20260509-rust-virtio-v2-0-c1e30ec2bd21@pitsidianak.is
->> >> >
->> >> >Changes in v2:
->> >> >- Move helper ifdefs to helper file (thanks Alice)
->> >> >- Changed CONFIG checks to IS_ENABLED to allow for CONFIG_VIRTIO=m
->> >> >- Split all use imports to one item per line according to style guide
->> >> >- Fixed wait_for_completion_interruptible*() rustdocs
->> >> >- Use Jiffy type alias in wait_for_completion_interruptible_timeout()
->> >> >- Pepper and salt #[inline]s wherever appropriate as per style guide
->> >> >- Split probe() into probe() and init() to allow cleaning up if init
->> >> >  fails
->> >> >- Remove unnecessary Send and Sync unsafe impls for
->> >> >  kernel::virtio::Device
->> >> >- Remove unnecessary LeSize and BeSize
->> >> >- Accept Option<_> for virtqueue callback when creating a VirtqueueInfo
->> >> >- Made all vq buffer adding operations unsafe
->> >> >- Use AtomicU16 instead of Cell<u16> for sample virtio driver
->> >> >- Fix RespHead field types in sample virtio driver
->> >> >- Fix response error checking in sample virtio driver
->> >> >- Change some device contexts in method signatures
->> >> >- Link to v1: https://lore.kernel.org/r/20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is
->> >> >
->> >> >---
->> >> >Manos Pitsidianakis (6):
->> >> >      rust/bindings: generate virtio bindings
->> >> >      rust/helpers: add virtio.c
->> >> >      rust/kernel/device: return parent at same context
->> >> >      rust: add virtio module
->> >> >      rust: impl interruptible waits for Completion
->> >> >      samples/rust: Add sample virtio-rtc driver [WIP]
->> >> >
->> >> > MAINTAINERS                     |   9 +
->> >> > rust/bindings/bindings_helper.h |   5 +
->> >> > rust/helpers/helpers.c          |   1 +
->> >> > rust/helpers/virtio.c           |  37 ++++
->> >> > rust/kernel/device.rs           |   2 +-
->> >> > rust/kernel/lib.rs              |   2 +
->> >> > rust/kernel/sync/completion.rs  |  42 +++-
->> >> > rust/kernel/virtio.rs           | 423 ++++++++++++++++++++++++++++++++++++++++
->> >> > rust/kernel/virtio/utils.rs     |  57 ++++++
->> >> > rust/kernel/virtio/virtqueue.rs | 314 +++++++++++++++++++++++++++++
->> >> > samples/rust/Kconfig            |  15 ++
->> >> > samples/rust/Makefile           |   1 +
->> >> > samples/rust/rust_virtio_rtc.rs | 403 ++++++++++++++++++++++++++++++++++++++
->> >> > 13 files changed, 1309 insertions(+), 2 deletions(-)
->> >> >---
->> >> >base-commit: 028ef9c96e96197026887c0f092424679298aae8
->> >> >change-id: 20260504-rust-virtio-8523b01dfdc2
->> >> >
->> >> >Best regards,
->> >> >--
->> >> >Manos Pitsidianakis <manos@pitsidianak.is>
->> >> >
->>
->
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Rebase on char-misc-testing.
+- Add rust/kernel/sync/lockdep.rs to MAINTAINERS file.
+- Link to v2: https://lore.kernel.org/r/20260716-pr-ratelimited-v2-0-31c27a4543d2@google.com
+
+Changes in v2:
+- Rebase on top of binder_debug! patch series.
+  - As a consequence, the logic for printing the size of transaction
+    failures is changed to print the size of each piece of the
+    transaction, rather than the total buffer size.
+- Add doc aliases for raw_spin_lock_unlocked.
+- Make raw_spin_lock_unlocked and raw_lockdep_map private.
+- Add Ratelimit::new_static.
+- Add some missing links to docs.
+- Link to v1: https://lore.kernel.org/r/20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com
+
+---
+Alice Ryhl (5):
+      rust: sync: move lockdep types to rust/kernel/sync/lockdep.rs
+      rust: sync: add const constructor for raw_spinlock_t
+      rust: add pr_*_ratelimit! macros for printing
+      rust_binder: consolidate transaction failure prints
+      rust_binder: use pr_*_ratelimited! for printing
+
+ MAINTAINERS                           |   1 +
+ drivers/android/binder/allocation.rs  |   4 +-
+ drivers/android/binder/context.rs     |   6 +-
+ drivers/android/binder/debug.rs       |   4 +-
+ drivers/android/binder/error.rs       |   4 -
+ drivers/android/binder/freeze.rs      |   2 +-
+ drivers/android/binder/node.rs        |   4 +-
+ drivers/android/binder/page_range.rs  |  12 +-
+ drivers/android/binder/process.rs     |  22 ++--
+ drivers/android/binder/thread.rs      | 103 ++++++++--------
+ drivers/android/binder/transaction.rs |  24 +---
+ include/linux/spinlock_types_raw.h    |   4 +
+ rust/bindings/lib.rs                  |  24 ++++
+ rust/helpers/helpers.c                |   1 +
+ rust/helpers/ratelimit.c              |  14 +++
+ rust/kernel/error.rs                  |   2 +-
+ rust/kernel/lib.rs                    |   1 +
+ rust/kernel/prelude.rs                |   8 ++
+ rust/kernel/ratelimit.rs              | 215 ++++++++++++++++++++++++++++++++++
+ rust/kernel/sync.rs                   | 135 +--------------------
+ rust/kernel/sync/lock/spinlock.rs     |  30 +++++
+ rust/kernel/sync/lockdep.rs           | 161 +++++++++++++++++++++++++
+ 22 files changed, 544 insertions(+), 237 deletions(-)
+---
+base-commit: 2cedf2272f1bb42471e646868ac572cc5752bd91
+change-id: 20260619-pr-ratelimited-6e20fa89bd5b
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
