@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01305459AF6;
-	Wed, 22 Jul 2026 23:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BF54611E5;
+	Wed, 22 Jul 2026 23:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784764496; cv=pass; b=G+NaHzhEg6y+8vnkmm3HeABU+mlBcP2Mfi1ExxaSnSmjN4YMM/Y55RgwVPZfJWjMADsNwBrBrL0dYxqgG0YcxMagrgICHHhdS+mU//lFYxkLu0QwIQNHdu735MR/md9zABXy1vEIWm8No1hto4mCTYCitrvSRNqVB4cWEh7cnv0=
+	t=1784764500; cv=pass; b=rJLW7+aqfO4JIcZIrjr9VJpsYNW+ctmnugKkN3gTnR7NcBEaMI2wuVnonb+5X2AhVbxeEMYET1Fqq1J6qQDLhSCFgIJJgjzhcCmQIOgnPCqdaA/Tx+5bf4xArxlw/H7gflYwY1l1VMcnYZ1Ko1v3IxfnmOfD17CzptAm3clhL2Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784764496; c=relaxed/simple;
-	bh=Kb3YIPW+GDuw/kMG0JZ42kyaNU2IyFnrcFVNa9dzdl0=;
+	s=arc-20240116; t=1784764500; c=relaxed/simple;
+	bh=NWaAh7yaUfbdgLyDZ/0RX8WpE3m3erlF49nZ7vDDw3w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mDs+3V6ylAVn8F4+kbXNn0CPHMxKWKNk8WETLmxtr4lh1KOPrKN4ZjacoHmNbwKUGUwpOhzYTVI0XwppjPptoGUv12KozrXONuF8t2eCXbqNjgTyAWof5Y+2Iem+vVgrDS0J+Q2E0zUZugLjS4hqX0s/EVxMmctiiFafDMNHG5A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=BkyxHMX6; arc=pass smtp.client-ip=136.143.188.11
+	 In-Reply-To:To:Cc; b=ep8xrVeiRv4ulN0Wj34MFqIGk5MawgjiBncz3lnHUQkY/nwvZ3IjDTJGaNSvUP/Jgj7A0YIYBw4l3FyctLfQsKm4zKAQEZFvTOur87WJs6jUqbxj4HwTThCJN3G9ztxPovhaOmeKuishQUzQFq+w318RObZRsZp0g3Rg5DLyhXY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=faqV0jCF; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="BkyxHMX6"
-ARC-Seal: i=1; a=rsa-sha256; t=1784764460; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="faqV0jCF"
+ARC-Seal: i=1; a=rsa-sha256; t=1784764462; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=ObJrlTYrdAvYiAjQDNUG4eTwmdvljd+ewM93sYF3ywG1u/VnRHTeSvQUPceNuN1VrGM8XOXJJr2rFpExoJAs51PUFHLzC0zaS04G/0kjeQgQDGd/w+9/MecBxt3TTOqBY6rniT7Gzhfqszz6sJXlpfmECa/TEsbJgtzdmk437zM=
+	b=XE6rq6zr5sSM8+JTvRSe0G5j6D/fTvGYu93Grp+F5vsws0l6G0WmTxKYpLmwP6qW+V9RMEDtSUpG/eF/W1UMgwB6JVdUZg34j0CV4XRb10huUvnKilnd8kqHlo/ov5t9HcY2DpfOa+slcb9VgtUtoCjY6yvFyS+FXjQSqBAGiGM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784764460; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=TvXnYwGRr/5R68oyHjBcZr5UU+E2jdQ7GiYszvmDWyE=; 
-	b=eBt8eAXAYEAcq/qE7hhnyjHKCWgWkOdgHC9ADsgTjETslj4vr2vbOuRpC7R3kRSU491ptJB0X2BLkI0b/QriLXSIBG8v0PY1s0jbsNRiolExZAm0JjDGxVawHX+YgmlhQML5Xr2YIUfTOWw2Y33xQkrxmFOihxh5n86ICOZFs5g=
+	t=1784764462; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=v/gD8OKp1x+gK9LcyeJ7sv7IGO6Bt++6bAQvdun5I4U=; 
+	b=oFUpPBEdBKfZxJ7lvVhv3Dze1tbAXUkYPqI6Eb8jd7gQ04Ts16q1rMtYuLNWpumEsmd1JR1HnNNc90I+oyQcgIIXsSDL5wRmKHUxQ+1RB7hsPV1m5smYqn/OifzOvbERptoREmSZYI9HWx3jwGW4bmJsu5ZkbeVWSl9ajb2y7tY=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784764460;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784764462;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=TvXnYwGRr/5R68oyHjBcZr5UU+E2jdQ7GiYszvmDWyE=;
-	b=BkyxHMX6p9vTNHeqzza13fC1kQ8DLF80YsvQ/HPqw/4lAuArxVklAz8kAT1T+cTE
-	9uMU1I0Q9J9xJ0AQLLGqV1H0y4mpfd8m7anThkNHIU0qABog1OFaiV+XDw9PuwFlmp0
-	RTxkIWJM/3+eEf8bFcdf52y276OxeXfPX8qE2N4o=
-Received: by mx.zohomail.com with SMTPS id 1784764459318369.9182970166802;
-	Wed, 22 Jul 2026 16:54:19 -0700 (PDT)
+	bh=v/gD8OKp1x+gK9LcyeJ7sv7IGO6Bt++6bAQvdun5I4U=;
+	b=faqV0jCFPEXZD5bl8eZcS5XMivY1FCxmEn1s9PPPFCBQ8B2O1MoqLpGbtwP4/Gdo
+	s3jYYu38gnLiEYMjVQwgKQ6CqHgkKGYxpmd7AM6pvAOogQl0xPl06jAV6g+isOQoANp
+	ueY+cNgGrrV8dOLKmNqUtY9dagepNqVrOpLTUs5g=
+Received: by mx.zohomail.com with SMTPS id 1784764460404955.6325363246353;
+	Wed, 22 Jul 2026 16:54:20 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Wed, 22 Jul 2026 16:54:12 -0700
-Subject: [PATCH v9 6/7] drm/tyr: add parser for firmware binary
+Date: Wed, 22 Jul 2026 16:54:13 -0700
+Subject: [PATCH v9 7/7] drm/tyr: add Microcontroller Unit (MCU) booting
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-fw-boot-b4-v9-6-8669d2a02590@collabora.com>
+Message-Id: <20260722-fw-boot-b4-v9-7-8669d2a02590@collabora.com>
 References: <20260722-fw-boot-b4-v9-0-8669d2a02590@collabora.com>
 In-Reply-To: <20260722-fw-boot-b4-v9-0-8669d2a02590@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -66,632 +66,490 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  lyude@redhat.com, boris.brezillon@collabora.com, steven.price@arm.com, 
  alvin.sun@linux.dev, laura.nao@collabora.com, beata.michalska@arm.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20040;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14540;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=4uauGNrmbFrjJl21ZnqBGuRTt3aBiHgNWqTuGmxqjWA=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmJEcoFztc+zXjMqSw57cz6Y2se/vrdriJg0WGYFRTz6
- 8h3SYfjHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAEyEwZqR4YPwykBRse+nPLUd
- a+dzPHlb9VE9eRbHvpnpYba7l3uGv2ZkmOo7a9bq4to7d2dPOxTs1HOs2FNal/vA5yAl64MHRKY
- p8wIA
+ bh=NWaAh7yaUfbdgLyDZ/0RX8WpE3m3erlF49nZ7vDDw3w=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmJEcpStyWU4w9kpn4UXFu5vM1Y491584vnroR2Hn+Un
+ +IlXePfUcrCIMbFICumyHLW3qhHvOq9ke78/80wc1iZQIYwcHEKwESEzzH8d7/iM7tm/5ypTQ6s
+ kez3Ze6X7HrBZKclua+9Si811rrGh+GfneZM65+Xtx2LyN1/j/vB3q0Rvs0KIrHmFr2hrYo3U3n
+ ZAQ==
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Daniel Almeida <daniel.almeida@collabora.com>
+Add a firmware module to load, parse, and map the MCU firmware sections
+into shared GEM memory at the required virtual addresses accessible by the
+GPU.
 
-Add a parser for the Mali CSF GPU firmware binary format. The firmware
-consists of a header followed by entries describing how to load firmware
-sections into the MCU's memory.
+Create a firmware instance during probe and store it inside the
+TyrDrmRegistrationData to keep it alive after probe. Use the firmware
+instance to boot the MCU.
 
-The parser extracts section metadata including virtual address ranges,
-data byte offsets within the binary, and section flags controlling
-permissions and cache modes. It validates the basic firmware structure
-and alignment and ignores protected-mode sections for now.
+Remove the dead-code annotations from the MMU, VM, slot manager, and
+kernel BO code now that these paths are used by the firmware module.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Beata Michalska <beata.michalska@arm.com>
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Update Kconfig to add the RUST_FW_LOADER_ABSTRACTIONS dependency
+required by this module.
+
 Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/fw/parser.rs | 588 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 588 insertions(+)
+ drivers/gpu/drm/tyr/Kconfig   |   1 +
+ drivers/gpu/drm/tyr/driver.rs |  23 ++-
+ drivers/gpu/drm/tyr/fw.rs     | 321 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/gem.rs    |   3 -
+ drivers/gpu/drm/tyr/tyr.rs    |   1 +
+ drivers/gpu/drm/tyr/vm.rs     |   1 -
+ 6 files changed, 341 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
+diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
+index 79ea4bb214de..8f13e49f11f9 100644
+--- a/drivers/gpu/drm/tyr/Kconfig
++++ b/drivers/gpu/drm/tyr/Kconfig
+@@ -13,6 +13,7 @@ config DRM_TYR
+ 	select IOMMU_IO_PGTABLE_LPAE
+ 	select RUST_DRM_GEM_SHMEM_HELPER
+ 	select RUST_DRM_GPUVM
++	select RUST_FW_LOADER_ABSTRACTIONS
+ 	help
+ 	  Rust DRM driver for ARM Mali CSF-based GPUs.
+ 
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index b6528d8cd3ce..8f87fd5b772a 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -37,6 +37,7 @@
+ 
+ use crate::{
+     file::TyrDrmFileData,
++    fw::Firmware,
+     gem::Bo,
+     gpu,
+     gpu::GpuInfo,
+@@ -67,6 +68,9 @@ pub(crate) struct TyrDrmRegistrationData<'bound> {
+     /// Parent platform device.
+     pub(crate) pdev: &'bound platform::Device<Bound>,
+ 
++    /// Firmware sections.
++    pub(crate) fw: Firmware<'bound>,
++
+     #[pin]
+     clks: Mutex<Clocks>,
+ 
+@@ -144,10 +148,21 @@ fn probe<'bound>(
+ 
+         let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
+ 
+-        let _mmu = Mmu::new(pdev.as_ref(), iomem.as_arc_borrow(), &gpu_info)?;
++        let mmu = Mmu::new(pdev.as_ref(), iomem.as_arc_borrow(), &gpu_info)?;
++
++        let firmware = Firmware::new(
++            pdev.as_ref(),
++            iomem.clone(),
++            &unreg_dev,
++            mmu.as_arc_borrow(),
++            &gpu_info,
++        )?;
++
++        firmware.boot()?;
+ 
+-        let reg_data = try_pin_init!(TyrDrmRegistrationData {
++        let reg_data = pin_init!(TyrDrmRegistrationData {
+                 pdev,
++                fw: firmware,
+                 clks <- new_mutex!(Clocks {
+                     core: core_clk,
+                     stacks: stacks_clk,
+@@ -167,9 +182,7 @@ fn probe<'bound>(
+ 
+         let driver = TyrPlatformDriverData { _reg: reg };
+ 
+-        // We need this to be dev_info!() because dev_dbg!() does not work at
+-        // all in Rust for now, and we need to see whether probe succeeded.
+-        dev_info!(pdev, "Tyr initialized correctly.\n");
++        dev_dbg!(pdev, "Tyr initialized correctly.");
+         Ok(driver)
+     }
+ }
+diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
 new file mode 100644
-index 000000000000..c4d0ad1d7899
+index 000000000000..df11647023c2
 --- /dev/null
-+++ b/drivers/gpu/drm/tyr/fw/parser.rs
-@@ -0,0 +1,588 @@
++++ b/drivers/gpu/drm/tyr/fw.rs
+@@ -0,0 +1,321 @@
 +// SPDX-License-Identifier: GPL-2.0 or MIT
 +
-+//! Firmware binary parser for Mali CSF (Command Stream Frontend) GPU.
++//! Firmware loading and management for Mali CSF GPU.
 +//!
-+//! This module implements a parser for the Mali GPU firmware binary format. The firmware
-+//! file contains a header followed by a sequence of entries, each describing how to load
-+//! firmware sections into the MCU (Microcontroller Unit) memory. The parser extracts section
-+//! metadata including:
-+//! - Virtual address ranges where sections should be mapped
-+//! - Data ranges (byte offsets) within the firmware binary
-+//! - Section flags (permissions, cache modes)
-+
-+use core::{
-+    mem::size_of,
-+    ops::Range, //
-+};
++//! This module handles loading the Mali GPU firmware binary, parsing it into sections,
++//! and mapping those sections into the MCU's virtual address space. Each firmware section
++//! has specific properties (read/write/execute permissions, cache modes) and must be loaded
++//! at specific virtual addresses expected by the MCU.
++//!
++//! See [`Firmware`] for the main firmware management interface and [`Section`] for
++//! individual firmware sections.
++//!
++//! [`Firmware`]: crate::fw::Firmware
++//! [`Section`]: crate::fw::Section
 +
 +use kernel::{
-+    bits::bit_u32,
-+    device::Device,
++    device::{
++        Bound,
++        Device, //
++    },
++    drm::{
++        gem::BaseObject, //
++    },
++    io::{
++        poll,
++        Io, //
++    },
++    num::Bounded,
 +    prelude::*,
-+    sizes::SZ_4K, //
++    register,
++    str::CString,
++    sync::{
++        Arc,
++        ArcBorrow, //
++    },
++    time, //
 +};
 +
 +use crate::{
-+    fw::{
-+        CacheMode,
-+        SectionFlags,
-+        CSF_MCU_SHARED_REGION_START, //
++    driver::{
++        IoMem,
++        TyrDrmDevice, //
 +    },
-+    vm::{
-+        VmFlag,
-+        VmMapFlags, //
-+    }, //
++    fw::parser::{
++        FwParser,
++        ParsedSection, //
++    },
++    gem,
++    gem::{
++        KernelBo,
++        KernelBoVaAlloc, //
++    },
++    gpu::GpuInfo,
++
++    mmu::Mmu,
++    regs::{
++        gpu_control::{
++            McuControlMode,
++            McuStatus,
++            GPU_ID,
++            MCU_CONTROL,
++            MCU_STATUS, //
++        }, //
++        job_control::{
++            JOB_IRQ_CLEAR,
++            JOB_IRQ_RAWSTAT, //
++        }, //
++    },
++    vm::Vm, //
 +};
 +
-+/// A parsed firmware section ready for loading into MCU memory.
-+///
-+/// Represents a single firmware section extracted from the firmware binary, containing
-+/// all information needed to map the section's data into the MCU's virtual address space.
-+pub(super) struct ParsedSection {
-+    /// Byte offset range within the firmware binary where this section's data resides.
-+    pub(super) data_range: Range<u32>,
-+    /// MCU virtual address range where this section should be mapped.
-+    pub(super) va: Range<u32>,
-+    /// Memory protection and caching flags for the mapping.
-+    pub(super) vm_map_flags: VmMapFlags,
++mod parser;
++
++pub(super) const CSF_MCU_SHARED_REGION_START: u32 = 0x04000000;
++
++#[derive(Copy, Clone, Debug, PartialEq, Eq)]
++#[repr(u8)]
++pub(super) enum CacheMode {
++    None = 0,
++    Cached = 1,
++    UncachedCoherent = 2,
++    CachedCoherent = 3,
 +}
 +
-+/// A bare-bones `std::io::Cursor<[u8]>` clone to keep track of the current position in the
-+/// firmware binary.
-+///
-+/// Provides methods to sequentially read primitive types and byte arrays from the firmware
-+/// binary while maintaining the current read position.
-+struct Cursor<'a> {
-+    dev: &'a Device,
-+    data: &'a [u8],
-+    pos: usize,
++impl From<Bounded<u32, 2>> for CacheMode {
++    fn from(value: Bounded<u32, 2>) -> Self {
++        match value.get() {
++            0 => Self::None,
++            1 => Self::Cached,
++            2 => Self::UncachedCoherent,
++            3 => Self::CachedCoherent,
++            _ => unreachable!(),
++        }
++    }
 +}
 +
-+impl<'a> Cursor<'a> {
-+    fn new(dev: &'a Device, data: &'a [u8]) -> Self {
-+        Self { dev, data, pos: 0 }
++impl From<CacheMode> for Bounded<u32, 2> {
++    fn from(value: CacheMode) -> Self {
++        Bounded::try_new(value as u32).unwrap()
 +    }
++}
 +
-+    fn len(&self) -> usize {
-+        self.data.len()
++register! {
++     #[allow(non_upper_case_globals)]
++    pub(super) SectionFlags(u32) @ 0x0 {
++        0:0 read => bool;
++        1:1 write => bool;
++        2:2 exec => bool;
++        4:3 cache_mode => CacheMode;
++        5:5 prot => bool;
++        30:30 shared => bool;
++        31:31 zero => bool;
 +    }
++}
 +
-+    fn pos(&self) -> usize {
-+        self.pos
-+    }
++impl SectionFlags {
++    const VALID_MASK: u32 = Self::READ_MASK
++        | Self::WRITE_MASK
++        | Self::EXEC_MASK
++        | Self::CACHE_MODE_MASK
++        | Self::PROT_MASK
++        | Self::SHARED_MASK
++        | Self::ZERO_MASK;
 +
-+    /// Returns a view into the cursor's data.
-+    ///
-+    /// This spawns a new cursor, leaving the current cursor unchanged.
-+    fn view(&self, range: Range<usize>) -> Result<Cursor<'_>> {
-+        if range.start < self.pos || range.end > self.data.len() {
-+            dev_err!(
-+                self.dev,
-+                "Invalid cursor range {:?} for data of length {}",
-+                range,
-+                self.data.len()
-+            );
-+
++    fn try_from_fw(value: u32) -> Result<Self> {
++        if value & !Self::VALID_MASK != 0 {
 +            Err(EINVAL)
 +        } else {
-+            Ok(Self {
-+                dev: self.dev,
-+                data: &self.data[range],
-+                pos: 0,
++            Ok(Self::from_raw(value))
++        }
++    }
++}
++
++/// A parsed section of the firmware binary.
++struct Section<'bound> {
++    // Raw firmware section data for reset purposes
++    #[expect(dead_code)]
++    data: KVec<u8>,
++
++    // Keep the BO backing this firmware section so that both the
++    // GPU mapping and CPU mapping remain valid until the Section is dropped.
++    #[expect(dead_code)]
++    mem: gem::KernelBo<'bound>,
++}
++
++/// Loaded firmware with sections mapped into MCU VM.
++pub(crate) struct Firmware<'bound> {
++    /// Iomem need to access registers.
++    iomem: Arc<IoMem<'bound>>,
++
++    /// MCU VM.
++    vm: Arc<Vm<'bound>>,
++
++    /// List of firmware sections.
++    #[expect(dead_code)]
++    sections: KVec<Section<'bound>>,
++}
++
++impl<'bound> Drop for Firmware<'bound> {
++    fn drop(&mut self) {
++        // Stop the MCU before releasing its firmware mappings and memory.
++        let _ = self.stop();
++
++        // AS slots retain a VM ref, we need to kill the circular ref manually.
++        self.vm.kill();
++    }
++}
++
++impl<'bound> Firmware<'bound> {
++    fn init_section_mem(dev: &Device, mem: &mut KernelBo<'bound>, data: &KVec<u8>) -> Result {
++        if data.is_empty() {
++            return Ok(());
++        }
++
++        let vmap = mem.bo().vmap::<0>()?;
++        let size = mem.bo().size();
++
++        if data.len() > size {
++            dev_err!(dev, "fw section {} bigger than BO {}", data.len(), size);
++            return Err(EINVAL);
++        }
++
++        for (i, &byte) in data.iter().enumerate() {
++            vmap.try_write8(byte, i)?;
++        }
++
++        Ok(())
++    }
++
++    fn request(ddev: &TyrDrmDevice, gpu_info: &GpuInfo) -> Result<kernel::firmware::Firmware> {
++        let gpu_id = GPU_ID::from_raw(gpu_info.gpu_id);
++
++        let path = CString::try_from_fmt(fmt!(
++            "arm/mali/arch{}.{}/mali_csffw.bin",
++            gpu_id.arch_major().get(),
++            gpu_id.arch_minor().get()
++        ))?;
++
++        kernel::firmware::Firmware::request(&path, ddev.as_ref().as_ref())
++    }
++
++    fn load(
++        dev: &Device,
++        ddev: &TyrDrmDevice,
++        gpu_info: &GpuInfo,
++    ) -> Result<(kernel::firmware::Firmware, KVec<ParsedSection>)> {
++        let fw = Self::request(ddev, gpu_info)?;
++        let mut parser = FwParser::new(dev, fw.data());
++
++        let parsed_sections = parser.parse()?;
++
++        Ok((fw, parsed_sections))
++    }
++
++    /// Load firmware and map sections into MCU VM.
++    pub(crate) fn new(
++        dev: &'bound Device<Bound>,
++        iomem: Arc<IoMem<'bound>>,
++        ddev: &TyrDrmDevice,
++        mmu: ArcBorrow<'_, Mmu<'bound>>,
++        gpu_info: &GpuInfo,
++    ) -> Result<Firmware<'bound>> {
++        let vm = Vm::new(dev, ddev, mmu, gpu_info)?;
++        vm.activate()?;
++
++        let result = (|| {
++            let (fw, parsed_sections) = Self::load(dev, ddev, gpu_info)?;
++            let mut sections = KVec::new();
++            for parsed in parsed_sections {
++                let size = u64::from(parsed.va.end.checked_sub(parsed.va.start).ok_or(EINVAL)?);
++
++                let va = u64::from(parsed.va.start);
++
++                let mut mem = KernelBo::new(
++                    ddev,
++                    vm.clone(),
++                    size,
++                    KernelBoVaAlloc::Explicit(va),
++                    parsed.vm_map_flags,
++                )?;
++
++                let section_start = parsed.data_range.start as usize;
++                let section_end = parsed.data_range.end as usize;
++                let mut data = KVec::new();
++
++                // Ensure that the firmware slice is not out of bounds.
++                let fw_data = fw.data();
++                let bytes = fw_data.get(section_start..section_end).ok_or(EINVAL)?;
++                data.extend_from_slice(bytes, GFP_KERNEL)?;
++
++                Self::init_section_mem(dev, &mut mem, &data)?;
++
++                sections.push(Section { data, mem }, GFP_KERNEL)?;
++            }
++
++            Ok(Firmware {
++                iomem,
++                vm: vm.clone(),
++                sections,
 +            })
++        })();
++
++        if result.is_err() {
++            vm.kill();
 +        }
++
++        result
 +    }
 +
-+    /// Reads a slice of bytes from the current position and advances the cursor.
-+    ///
-+    /// Returns an error if the read would exceed the data bounds.
-+    fn read(&mut self, nbytes: usize) -> Result<&[u8]> {
-+        let start = self.pos;
-+        let end = start + nbytes;
++    pub(crate) fn boot(&self) -> Result {
++        let io = &self.iomem;
 +
-+        if end > self.data.len() {
++        // Discard any stale global interrupt.
++        io.write_reg(JOB_IRQ_CLEAR::zeroed().with_glb(true));
++
++        io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Auto));
++
++        if let Err(e) = poll::read_poll_timeout(
++            || Ok((io.read(MCU_STATUS), io.read(JOB_IRQ_RAWSTAT))),
++            |(mcu_status, irq_rawstat)| {
++                mcu_status.value() == McuStatus::Enabled && irq_rawstat.glb()
++            },
++            time::Delta::from_millis(1),
++            time::Delta::from_millis(100),
++        ) {
++            let status = io.read(MCU_STATUS);
 +            dev_err!(
-+                self.dev,
-+                "Invalid firmware file: read of size {} at position {} is out of bounds",
-+                nbytes,
-+                start,
++                self.vm.dev(),
++                "MCU failed to boot, status: {:?}",
++                status.value()
 +            );
-+            return Err(EINVAL);
++            return Err(e);
 +        }
 +
-+        self.pos += nbytes;
-+        Ok(&self.data[start..end])
++        io.write_reg(JOB_IRQ_CLEAR::zeroed().with_glb(true));
++
++        Ok(())
 +    }
 +
-+    /// Reads a little-endian `u8` from the current position and advances the cursor.
-+    fn read_u8(&mut self) -> Result<u8> {
-+        let bytes = self.read(size_of::<u8>())?;
-+        Ok(bytes[0])
-+    }
++    fn stop(&self) -> Result {
++        let io = &self.iomem;
++        io.write_reg(MCU_CONTROL::zeroed().with_req(McuControlMode::Disable));
 +
-+    /// Reads a little-endian `u16` from the current position and advances the cursor.
-+    fn read_u16(&mut self) -> Result<u16> {
-+        let bytes: [u8; 2] = self
-+            .read(size_of::<u16>())?
-+            .try_into()
-+            .map_err(|_| EINVAL)?;
-+
-+        Ok(u16::from_le_bytes(bytes))
-+    }
-+
-+    /// Reads a little-endian `u32` from the current position and advances the cursor.
-+    fn read_u32(&mut self) -> Result<u32> {
-+        let bytes: [u8; 4] = self
-+            .read(size_of::<u32>())?
-+            .try_into()
-+            .map_err(|_| EINVAL)?;
-+
-+        Ok(u32::from_le_bytes(bytes))
-+    }
-+
-+    /// Advances the cursor position by the specified number of bytes.
-+    ///
-+    /// Returns an error if the advance would exceed the data bounds.
-+    fn advance(&mut self, nbytes: usize) -> Result {
-+        if self.pos + nbytes > self.data.len() {
++        if let Err(e) = poll::read_poll_timeout(
++            || Ok(io.read(MCU_STATUS)),
++            |status| status.value() == McuStatus::Disabled,
++            time::Delta::from_micros(10),
++            time::Delta::from_millis(100),
++        ) {
++            let status = io.read(MCU_STATUS);
 +            dev_err!(
-+                self.dev,
-+                "Invalid firmware file: advance of size {} at position {} is out of bounds",
-+                nbytes,
-+                self.pos,
++                self.vm.dev(),
++                "MCU failed to stop, status: {:?}",
++                status.value()
 +            );
-+            return Err(EINVAL);
++            return Err(e);
 +        }
-+        self.pos += nbytes;
++
 +        Ok(())
 +    }
 +}
-+
-+/// Parser for Mali CSF GPU firmware binaries.
-+///
-+/// Parses the firmware binary format, extracting section metadata including virtual
-+/// address ranges, data offsets, and memory protection flags needed to load firmware
-+/// into the MCU's memory.
-+pub(super) struct FwParser<'a> {
-+    cursor: Cursor<'a>,
-+}
-+
-+impl<'a> FwParser<'a> {
-+    /// Creates a new firmware parser for the given firmware binary data.
-+    pub(super) fn new(dev: &'a Device, data: &'a [u8]) -> Self {
-+        Self {
-+            cursor: Cursor::new(dev, data),
-+        }
-+    }
-+
-+    /// Parses the firmware binary and returns a collection of parsed sections.
-+    ///
-+    /// This method validates the firmware header and iterates through all entries
-+    /// in the binary, extracting section information needed for loading.
-+    pub(super) fn parse(&mut self) -> Result<KVec<ParsedSection>> {
-+        let fw_header = self.parse_fw_header()?;
-+        let header_end = fw_header.size as usize;
-+
-+        let mut parsed_sections = KVec::new();
-+        while self.cursor.pos() < header_end {
-+            let entry_section = self.parse_entry(header_end)?;
-+
-+            if let Some(inner) = entry_section.inner {
-+                parsed_sections.push(inner, GFP_KERNEL)?;
-+            }
-+        }
-+
-+        if parsed_sections.is_empty() {
-+            dev_err!(self.cursor.dev, "Firmware contains no loadable sections");
-+            return Err(EINVAL);
-+        }
-+
-+        Ok(parsed_sections)
-+    }
-+
-+    fn parse_fw_header(&mut self) -> Result<FirmwareHeader> {
-+        let fw_header: FirmwareHeader = match FirmwareHeader::new(&mut self.cursor) {
-+            Ok(fw_header) => fw_header,
-+            Err(e) => {
-+                dev_err!(self.cursor.dev, "Invalid firmware file: {}", e.to_errno());
-+                return Err(e);
-+            }
-+        };
-+
-+        if fw_header.size as usize > self.cursor.len() {
-+            dev_err!(self.cursor.dev, "Firmware image is truncated");
-+            return Err(EINVAL);
-+        }
-+        Ok(fw_header)
-+    }
-+
-+    fn parse_entry(&mut self, header_end: usize) -> Result<EntrySection> {
-+        let entry_start = self.cursor.pos();
-+
-+        let entry_header_end = entry_start
-+            .checked_add(size_of::<EntryHeader>())
-+            .ok_or(EINVAL)?;
-+
-+        if entry_header_end > header_end {
-+            dev_err!(
-+                self.cursor.dev,
-+                "Firmware entry header at {:#x} exceeds header region ending at {:#x}",
-+                entry_start,
-+                header_end
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let entry_section = EntrySection {
-+            entry_hdr: EntryHeader(self.cursor.read_u32()?),
-+            inner: None,
-+        };
-+
-+        let firmware_size = self.cursor.len();
-+        let entry_size = entry_section.entry_hdr.size() as usize;
-+
-+        if self.cursor.pos() % size_of::<u32>() != 0
-+            || entry_size % size_of::<u32>() != 0
-+            || entry_size < size_of::<EntryHeader>()
-+        {
-+            dev_err!(
-+                self.cursor.dev,
-+                "Firmware entry isn't 32 bit aligned, offset={:#x} size={:#x}",
-+                self.cursor.pos() - size_of::<u32>(),
-+                entry_size
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let entry_end = entry_start.checked_add(entry_size).ok_or(EINVAL)?;
-+
-+        if entry_end > header_end {
-+            dev_err!(
-+                self.cursor.dev,
-+                "Firmware entry at {:#x} extends beyond header region ending at {:#x}",
-+                entry_start,
-+                header_end
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let section_hdr_size = entry_size - size_of::<EntryHeader>();
-+
-+        let entry_section = {
-+            let mut entry_cursor = self.cursor.view(self.cursor.pos()..entry_end)?;
-+
-+            match entry_section.entry_hdr.entry_type() {
-+                Ok(EntryType::Iface) => Ok(EntrySection {
-+                    entry_hdr: entry_section.entry_hdr,
-+                    inner: Self::parse_section_entry(&mut entry_cursor, firmware_size)?,
-+                }),
-+                Ok(
-+                    EntryType::Config
-+                    | EntryType::FutfTest
-+                    | EntryType::TraceBuffer
-+                    | EntryType::TimelineMetadata
-+                    | EntryType::BuildInfoMetadata,
-+                ) => Ok(entry_section),
-+
-+                Err(_) => {
-+                    if entry_section.entry_hdr.optional() {
-+                        Ok(entry_section)
-+                    } else {
-+                        dev_err!(
-+                            self.cursor.dev,
-+                            "Failed to handle firmware entry type: {}",
-+                            entry_section.entry_hdr.entry_type_raw()
-+                        );
-+                        Err(EINVAL)
-+                    }
-+                }
-+            }
-+        };
-+
-+        if entry_section.is_ok() {
-+            self.cursor.advance(section_hdr_size)?;
-+        }
-+
-+        entry_section
-+    }
-+
-+    fn parse_section_entry(
-+        entry_cursor: &mut Cursor<'_>,
-+        firmware_size: usize,
-+    ) -> Result<Option<ParsedSection>> {
-+        let section_hdr: SectionHeader = SectionHeader::new(entry_cursor)?;
-+
-+        if section_hdr.data.end < section_hdr.data.start {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Firmware corrupted, data.end < data.start (0x{:x} < 0x{:x})",
-+                section_hdr.data.end,
-+                section_hdr.data.start
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.data.end as usize > firmware_size {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Firmware data range {:#x}..{:#x} exceeds firmware size {:#x}",
-+                section_hdr.data.start,
-+                section_hdr.data.end,
-+                firmware_size,
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.va.start as usize % SZ_4K != 0 || section_hdr.va.end as usize % SZ_4K != 0 {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Firmware virtual address range {:#x}..{:#x} is not page aligned",
-+                section_hdr.va.start,
-+                section_hdr.va.end
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.section_flags.prot() {
-+            dev_dbg!(
-+                entry_cursor.dev,
-+                "Firmware protected mode entry not supported, ignoring"
-+            );
-+            return Ok(None);
-+        }
-+
-+        if section_hdr.va.start == CSF_MCU_SHARED_REGION_START
-+            && !section_hdr.section_flags.shared()
-+        {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Interface at 0x{:x} must be shared",
-+                CSF_MCU_SHARED_REGION_START
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.va.is_empty() {
-+            return Ok(None);
-+        }
-+
-+        let mut vm_map_flags = VmMapFlags::empty();
-+
-+        if !section_hdr.section_flags.write() {
-+            vm_map_flags |= VmFlag::Readonly;
-+        }
-+
-+        if !section_hdr.section_flags.exec() {
-+            vm_map_flags |= VmFlag::Noexec;
-+        }
-+
-+        // TODO: As in Panthor, map coherent firmware sections uncached until the VM
-+        // supports a coherent mapping attribute.
-+        if section_hdr.section_flags.cache_mode() != CacheMode::Cached {
-+            vm_map_flags |= VmFlag::Uncached;
-+        }
-+
-+        Ok(Some(ParsedSection {
-+            data_range: section_hdr.data.clone(),
-+            va: section_hdr.va,
-+            vm_map_flags,
-+        }))
-+    }
-+}
-+
-+/// Firmware binary header containing version and size information.
-+///
-+/// The header is located at the beginning of the firmware binary and contains
-+/// a magic value for validation, version information, and the total size of
-+/// all structured headers that follow.
-+#[expect(dead_code)]
-+struct FirmwareHeader {
-+    /// Magic value to check binary validity.
-+    magic: u32,
-+
-+    /// Minor firmware version.
-+    minor: u8,
-+
-+    /// Major firmware version.
-+    major: u8,
-+
-+    /// Padding. Must be set to zero.
-+    _padding1: u16,
-+
-+    /// Firmware version hash.
-+    version_hash: u32,
-+
-+    /// Padding. Must be set to zero.
-+    _padding2: u32,
-+
-+    /// Total size of all the structured data headers at beginning of firmware binary.
-+    size: u32,
-+}
-+
-+impl FirmwareHeader {
-+    const FW_BINARY_MAGIC: u32 = 0xc3f13a6e;
-+    const FW_BINARY_MAJOR_MAX: u8 = 0;
-+
-+    /// Reads and validates a firmware header from the cursor.
-+    ///
-+    /// Verifies the magic value, version compatibility, and padding fields.
-+    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-+        let magic = cursor.read_u32()?;
-+        if magic != Self::FW_BINARY_MAGIC {
-+            dev_err!(cursor.dev, "Invalid firmware magic");
-+            return Err(EINVAL);
-+        }
-+
-+        let minor = cursor.read_u8()?;
-+        let major = cursor.read_u8()?;
-+
-+        if major > Self::FW_BINARY_MAJOR_MAX {
-+            dev_err!(
-+                cursor.dev,
-+                "Unsupported firmware binary header version {}.{} (expected {}.x)",
-+                major,
-+                minor,
-+                Self::FW_BINARY_MAJOR_MAX
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let padding1 = cursor.read_u16()?;
-+        let version_hash = cursor.read_u32()?;
-+        let padding2 = cursor.read_u32()?;
-+        let size = cursor.read_u32()?;
-+
-+        if padding1 != 0 || padding2 != 0 {
-+            dev_err!(
-+                cursor.dev,
-+                "Invalid firmware file: header padding is not zero"
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let fw_header = Self {
-+            magic,
-+            minor,
-+            major,
-+            _padding1: padding1,
-+            version_hash,
-+            _padding2: padding2,
-+            size,
-+        };
-+
-+        Ok(fw_header)
-+    }
-+}
-+
-+/// Firmware section header for loading binary sections into MCU memory.
-+#[derive(Debug)]
-+struct SectionHeader {
-+    section_flags: SectionFlags,
-+    /// MCU virtual range to map this binary section to.
-+    va: Range<u32>,
-+    /// References the data in the FW binary.
-+    data: Range<u32>,
-+}
-+
-+impl SectionHeader {
-+    /// Reads and validates a section header from the cursor.
-+    ///
-+    /// Parses section flags, virtual address range, and data range from the firmware binary.
-+    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-+        let section_flags = SectionFlags::try_from_fw(cursor.read_u32()?)?;
-+
-+        let va_start = cursor.read_u32()?;
-+        let va_end = cursor.read_u32()?;
-+
-+        let va = va_start..va_end;
-+
-+        if va.end < va.start {
-+            dev_err!(
-+                cursor.dev,
-+                "Invalid firmware file: VA end precedes start at pos {}",
-+                cursor.pos(),
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let data_start = cursor.read_u32()?;
-+        let data_end = cursor.read_u32()?;
-+        let data = data_start..data_end;
-+
-+        Ok(Self {
-+            section_flags,
-+            va,
-+            data,
-+        })
-+    }
-+}
-+
-+/// A firmware entry containing a header and optional parsed section data.
-+///
-+/// Represents a single entry in the firmware binary, which may contain loadable
-+/// section data or metadata that doesn't require loading.
-+struct EntrySection {
-+    entry_hdr: EntryHeader,
-+    inner: Option<ParsedSection>,
-+}
-+
-+/// Header for a firmware entry, packed into a single u32.
-+///
-+/// The entry header encodes the entry type, size, and optional flag in a
-+/// 32-bit value with the following layout:
-+/// - Bits 0-7: Entry type
-+/// - Bits 8-15: Size in bytes
-+/// - Bit 31: Optional flag
-+struct EntryHeader(u32);
-+
-+impl EntryHeader {
-+    fn entry_type_raw(&self) -> u8 {
-+        (self.0 & 0xff) as u8
-+    }
-+
-+    fn entry_type(&self) -> Result<EntryType> {
-+        let v = self.entry_type_raw();
-+        EntryType::try_from(v)
-+    }
-+
-+    fn optional(&self) -> bool {
-+        self.0 & bit_u32(31) != 0
-+    }
-+
-+    fn size(&self) -> u32 {
-+        self.0 >> 8 & 0xff
-+    }
-+}
-+
-+#[derive(Clone, Copy, Debug)]
-+#[repr(u8)]
-+enum EntryType {
-+    /// Host <-> FW interface.
-+    Iface = 0,
-+    /// FW config.
-+    Config = 1,
-+    /// Unit tests.
-+    FutfTest = 2,
-+    /// Trace buffer interface.
-+    TraceBuffer = 3,
-+    /// Timeline metadata interface.
-+    TimelineMetadata = 4,
-+    /// Metadata about how the FW binary was built.
-+    BuildInfoMetadata = 6,
-+}
-+
-+impl TryFrom<u8> for EntryType {
-+    type Error = Error;
-+
-+    fn try_from(value: u8) -> Result<Self, Self::Error> {
-+        match value {
-+            0 => Ok(EntryType::Iface),
-+            1 => Ok(EntryType::Config),
-+            2 => Ok(EntryType::FutfTest),
-+            3 => Ok(EntryType::TraceBuffer),
-+            4 => Ok(EntryType::TimelineMetadata),
-+            6 => Ok(EntryType::BuildInfoMetadata),
-+            _ => Err(EINVAL),
-+        }
-+    }
-+}
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index b371299028d6..342d3303a0c0 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -72,7 +72,6 @@ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
+ /// An automatic VA allocation strategy will be added in the future.
+ pub(crate) enum KernelBoVaAlloc {
+     /// Explicit VA address specified by the caller.
+-    #[expect(dead_code)]
+     Explicit(u64),
+ }
+ 
+@@ -98,7 +97,6 @@ impl<'bound> KernelBo<'bound> {
+     /// This function allocates a new shmem-backed GEM object and immediately maps
+     /// it into the specified GPU virtual memory space. The mapping is automatically
+     /// cleaned up when the [`KernelBo`] is dropped.
+-    #[expect(dead_code)]
+     pub(crate) fn new(
+         ddev: &TyrDrmDevice,
+         vm: Arc<Vm<'bound>>,
+@@ -135,7 +133,6 @@ pub(crate) fn new(
+         })
+     }
+ 
+-    #[expect(dead_code)]
+     pub(crate) fn bo(&self) -> &Bo {
+         &self.bo
+     }
+diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
+index 92f6885cdaae..e7ec450bdc9c 100644
+--- a/drivers/gpu/drm/tyr/tyr.rs
++++ b/drivers/gpu/drm/tyr/tyr.rs
+@@ -9,6 +9,7 @@
+ 
+ mod driver;
+ mod file;
++mod fw;
+ mod gem;
+ mod gpu;
+ mod mmu;
+diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
+index c113820b5505..418f98ab07fb 100644
+--- a/drivers/gpu/drm/tyr/vm.rs
++++ b/drivers/gpu/drm/tyr/vm.rs
+@@ -6,7 +6,6 @@
+ //! the illusion of owning the entire virtual address (VA) range, similar to CPU virtual memory.
+ //! Each virtual memory (VM) area is backed by ARM64 LPAE Stage 1 page tables and can be
+ //! mapped into hardware address space (AS) slots for GPU execution.
+-#![expect(dead_code)]
+ 
+ use core::marker::PhantomData;
+ use core::ops::Range;
 
 -- 
 2.55.0
