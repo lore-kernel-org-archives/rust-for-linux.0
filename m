@@ -1,73 +1,73 @@
 Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BBE470EBC
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 21:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6443128D9
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 21:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784757105; cv=none; b=XENHAc168YupvrWMZEgzorwqQ4j411+PY4wDbeuG9qQPwUnW9JpbQs8rrBWh832Ry8sVMEaQECtdfjCb0wo3uJXYyViT7Qy3w+N4CpHkki1HBB+hxLkG81orZs72JHwK4U1JsD9RiJaKLXlRFlx7pRKAdQezq5oN3it0ASeR4zY=
+	t=1784757113; cv=none; b=uWGab/GFqfk80qwgBKKbNs8B1qwYHv+ymmszwfwhulXlKxcmpY+pTwSskhx6SULUKh/OhwTlDFwqGAp3+3sB1oznHQoMTPZuM6w6TDDE0y80Mj7MGXAUTFndETBNeF/jGAcabfHZLurrUWmUig2Rzd32kA9ZaAKRoUO+WcxiBo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784757105; c=relaxed/simple;
-	bh=3jetGCwFnGJx1Nj82TQ0OET9A1eFbLFJ7GQN5vBgIeo=;
+	s=arc-20240116; t=1784757113; c=relaxed/simple;
+	bh=z7wk8z3fKgY3Y/3sqEDTjSHS8OoXxx4nWGG27uKB7zM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8WVac67U1RQAcp2pGzKG/E6GjEP/xsCe6Y9/OBK1IZwacO308/miiPDktIqtXxD4zJY1Mu2ua/gMYaed/UnfqRvsQxxkr0N1ZzEabtf7jjUtg7nPOjb/xNqF99qhwaTBg+i6xV79dbzcR/tMLe/9jUfj+xYt2gvheh/pmTyy1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=SUtqBj+8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TwVjpH/u; arc=none smtp.client-ip=202.12.124.136
+	 MIME-Version; b=S9TouITeGUvksFqXIvTZFOUStYi63sqCWy4rwwt4g6wb/ExZguA+XcE8aUvebHHMV6P++FqmEmPIF0SFzMPWbgKFnZawqZOubDAZf1/3m14eAW4MbVjVvbNuXRHV0tSjhJDmbPBuYN+40d6laEq7tYfcOESOi1H5htlOYagMRt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=N8TJCdrc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mdq26PWX; arc=none smtp.client-ip=202.12.124.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="SUtqBj+8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TwVjpH/u"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 41C8E1300153;
-	Wed, 22 Jul 2026 17:51:43 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="N8TJCdrc";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mdq26PWX"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 895CB13001FF;
+	Wed, 22 Jul 2026 17:51:50 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 22 Jul 2026 17:51:43 -0400
+  by phl-compute-04.internal (MEProxy); Wed, 22 Jul 2026 17:51:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1784757103; x=
-	1784760703; bh=MtNln29hVZ9IWALJerNipSaK5loKjj34NfnBOk6q6qQ=; b=S
-	UtqBj+89lMIW0Qjtnob4DeFxEYZnlY4Raw9Lg9E8Q2zkIU2W3uzF9H7/UchgfFUe
-	K1V+KTBxgLId6TvcVOGLSWobV6pVB9Kkrrx4ZlD9vbt11F7Gt79bX8wX6rTPVm9+
-	Jr52fAYHRnnGC8k/N3X9X1doapO5Qala3qkzykagnwdbH3l8qnYLK4zZu000uqqg
-	zEvYb9bYhgMGOILDQC6B/ehzjNmms/alnm3aNGNmHkEPxYAqRSLkg+4JisdxokCT
-	/po0aLaFH2WTlaZDIxaKNO5QLq0waT7XiYYyLXXxs4df9KHh2hTK/HbouTD6hTac
-	WtXsytnr6m3Lgtqa1eYHg==
+	:reply-to:subject:subject:to:to; s=fm1; t=1784757110; x=
+	1784760710; bh=vNm/Q8af0obcOcWOukkB3ja9JtroCMxF15RaYJ9nMwE=; b=N
+	8TJCdrcHsRBEBDVXimKfjJWsK5e7Gu1A82NcweiEk0P6HJcQSsDS6McPY/MQk21s
+	Bl6WBZctkLWcllol2gEAtTUxvEJWI3lZbR3/Wr5tU/BwLOspl+bCCKOuRFxkxTFI
+	z6sgQEN/ByUPGGTvr3F+pUFVis4guWmyhleLFUfsy5M5qaz2/BLU9sfFcPc67aUG
+	833s7NYhiW9McFIYRoIolhMXm33vi7mYZP7NmAg/OK4wwZAzNmDbaGIBc2Dqvog+
+	RJq8luzvd2qykxmRmSbzmxffycy1bsQFWCHl7n7WhQGqHjesbukQEJu9esun7PrM
+	tYXzHkFClw8ZFphZ4MseQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1784757103; x=1784760703; bh=M
-	tNln29hVZ9IWALJerNipSaK5loKjj34NfnBOk6q6qQ=; b=TwVjpH/uEYUNXJN3M
-	wHOLgR1N9BUtcchHP0EKCnLzSyqGSNDfyZ6iRidDHmuudoruXau99+eRH/ROW3yE
-	BZsH5cnF26f01l2uXYupMskIxN19ebSIS/aBDomIq9ThvEo8q0MCZotetMgcN+sI
-	rGVfJsQ28J0MxzfsVUVrCg7p6mcZCHCBUq+Ul4QO+isVwxL2vNnidz7XKpKp7f9Z
-	wt2/KaVVyzR7t/6Dr6jCo6IOTSb8RyjDu9ce8+lDeeWJt2OblD/zFPw+pMwFBJ2k
-	fLrVUSvazpxkXww0c3T+AoYghAt4eaRvmRPm2hqdfYHDO452xZb2SeY6erGQvdzn
-	8AWNQ==
-X-ME-Sender: <xms:bjthamRT1oApASwj7klVyv5sXWq5ffyxMQn4KtFj7OnobC-XqKgP6A>
-    <xme:bjthan6I_1rYEHpZk7s6q5rSdZDgseeGyxsEDq5k_n014PclVbD7q6kfV_O-_VIbb
-    rCyTjnkGvmWEl_e0fKr3Tb9U4djdJc7i7XdM_rn9NcIh4sWtuObwpo>
-X-ME-Received: <xmr:bjthavqd4JO9kOyJWlqaLbyqeU-NLH9LSkBr1kmVkX46_NUlzr82lkpz95AQCix6jlYb1cGMJ7T7EMexcMI>
-X-ME-Proxy-Cause: dmFkZTGOSirqeokS0ZXsw6G9GVEOg6iKiIq8G0L2KqrYRg+AcxY3WjDvGDCH8hahcJXoia
-    4OSFdZ1+KIUBNcnVNSo3+wpA6eU3xJ5Z205LSCxk0uSApRcaf5A0PjZzlz6yfpdtfh9HVN
-    kZwFUIKk1mEIstjileX6PqLIAWL+/69XKM8Xm4zX7K6ZvnqfogWSJicmcVS9N8I6hP2ucd
-    BTHHQS343IL8K6QuWjSzt+Ex0onEg/SZ8TTW9wt+9x+bGBM4wRMUq9MMDsv4CUrWI9zawB
-    heaWyq9x3Ko6MTPLlYC7y9qjRfdlpJq4l4VO4Zlzkx9ISJGGfrEVCSHl+5chGfqEQmJcpg
-    IHDZIi6g9c0kuySGgEmJ3w6thntlQPKESxA68a7+VZHIXPYgP0g8fxjRi0eyFXW+B8Xl/z
-    F+DZGAERcyiZlNAK9sQPEFo0chZTz2NHwtBK8RPst132S6RTqtPxw6XFx8lyYEkz010J7X
-    sqDLR6RzQDlxzLx+IMdwyDmpXe0WPAYgTmrS0ZXGp2bu634bwJBUUkMbc1TLHoeOtgML2Z
-    FqoQOReUzU+oMdUZksalNr99rDD2S2fHKFxoRDNfUYgDsc1SEkJQl6Bsy8qeSJLKgiDqlP
-    IswRbr/fvjJ/lM0r5+0DpT+eX1D8n5f12JAN1o4PGcOQDND6KU3Ev1Xg+rIw
-X-ME-Proxy: <xmx:bjtharV6ZsYVn21TB51u96XNPD1OK1nPu1mbyLm3MOOoDHXhFSYUcA>
-    <xmx:bjthavqNu51E_LdAxbeIJSBSliiBC0_gxQbSng5bLUB5SZnA6qnvuQ>
-    <xmx:bjthaisFUbIVYGbTgOQUPrUgbUsOFdGvccr89Wa_gcq81bPHNhYtyA>
-    <xmx:bjthalQyNMnaTsfxgMl5tZcYUHTLsnFZhovb9BRLqgXlhwARKdJi1w>
-    <xmx:bzthavVjhuG67S4TuS_g0DTHbbx2u6c8f-gEY4MHdJqv-TALFIHCKCQL>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1784757110; x=1784760710; bh=v
+	Nm/Q8af0obcOcWOukkB3ja9JtroCMxF15RaYJ9nMwE=; b=mdq26PWXM0fIcg729
+	Mr1xB4ZVET8r9gRSZ2leptGTkmhfw6JpiURWTuvNofLIZi8geywgs792QD2/hixM
+	XJv+t4YIa7NmeV4BdDZtjTDEg36jViHScvsMllZovkucSlwTfPp/AEu3LfxUzijL
+	ds6L+4Slk3K8kRDvXSi1l3e/T29tCkY1gL/LLtD9KcEoY4NLmW90puaLnwU7kXzi
+	crjykaf4TTg+p4/a8hgFApELNDi0wgqv4Tz1CaawTZ8V9XaxLflSyt4rr1CIlJOY
+	6HFbazP0lrbKtcFnwAfAlzH61wP8mhGB6y2JyFY+dYIxHW9VPsrfXe01Dll4NduL
+	WdKNQ==
+X-ME-Sender: <xms:djthajCuaha0dqjDkOUZY7YIOqBQyL28shxldbaJQrg7R-5AbiROYA>
+    <xme:djthalp5zfBVnxLP-sLT8ZzhFOK74IGsdZNS36rfPjaKuV26n0VEr1ajR8VnIODL6
+    dMmkXaTwBuPVjT9IZ1JnekWewI6bY2V_97rWrTBTun6ZUUm8g8mp1Y>
+X-ME-Received: <xmr:djthaqbTxTXqUXjQpoNn_RQiqYRxLmME4ucI-AjDQwtv6CbmcBBVdRb8F9ye65koXwRoRfODcIR-iZlSmuk>
+X-ME-Proxy-Cause: dmFkZTFPtQh+XDiIlN/deL/zNNtaMycIlI2Lr+BxbJi1FsWXTVFzkk+8yYSvkRxAJHk4qW
+    sgP6RWrlEhQ7XaDBYLcb5S8EzlOGHjpDFiZfVZXHDXuoddfD1VsT60d9mtHcd7WoBtj1KM
+    HDIn45Jsio0Idz1r0FxQeMcnYGD8D/kMv7yYzHa4vnh1aepyfdsERDWX2oAoUZ19e+WaAp
+    0CkqpCyStETs4zyYqQq5O/ZESt5ugjiLTUjKUAf9Ati9HSvq3vB0LLrTWr6+Aya1tm4WGa
+    dKuqV2S8riFrEJAoN6SyqEI1lLaaHlL8v7BE6Sm0dm1RqBXhArzPCrk1jBqFih9himSbY0
+    WinaJUg5e0djBW2Rv4fhxfZOk4B7C+LyFsRoDwcBt4Mw+ZAd6S10jCmQhc4MP7wfshnKdy
+    8h6tEqERob2W3DLLpWucxsWxXQZ3grXzbcxdCCcoSlsHqVxmzrpiPeKLJ9x7xNCpFPIvoB
+    GeGrLxOEJAfYhe5j669NrAH6hYxx327D7s0+6DEcUQJKuCH14x3J/NtA5c+gLhb1p7OaoZ
+    XN0LyMcU1pe4n1CjKVpH42OYNaTYjqmliSk6h+KwlM40Uy7jZn+vA5kHEFkWEu+/V/GIcO
+    KaplOZhPzawesAkbfSfPPbs0MBYMmXaq6Cxnn3Emi3PGOqY4+lxJIMBEcFzQ
+X-ME-Proxy: <xmx:djthavHcxkUSLZDwfX-W2lWaUwxhPB141wTdsLoNS7JjpgOeRzhg_A>
+    <xmx:djthaoZJVwkRrQ8-RJxLpoIjoN0NDUSDnZ7OYHH0raxp2vlzD64_7A>
+    <xmx:djthasenL7tgW4ZGdw1oiv7318NqttG4y5jwvraMreLIQ1dDkncUfQ>
+    <xmx:djthasCW58VdlLisVe8UEg20Mjhcvg8gNovZzh_wNxfChxpQAmjoQw>
+    <xmx:djthanHKeqEPeXPRTYfSYIv6tPI2CmZfwKQ3jSufcfFOD4vwPQoLKdHh>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jul 2026 17:51:37 -0400 (EDT)
+ 22 Jul 2026 17:51:44 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	aliceryhl@google.com,
@@ -95,9 +95,9 @@ Cc: acourbot@nvidia.com,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v4 4/7] rust: time: add Delta::to_jiffies() for timeout conversion
-Date: Thu, 23 Jul 2026 06:49:48 +0900
-Message-ID: <20260722214951.72941-5-tomo@flapping.org>
+Subject: [PATCH v4 5/7] rust: workqueue: take a Delta<Jiffy> for the enqueue delay
+Date: Thu, 23 Jul 2026 06:49:49 +0900
+Message-ID: <20260722214951.72941-6-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260722214951.72941-1-tomo@flapping.org>
 References: <20260722214951.72941-1-tomo@flapping.org>
@@ -111,48 +111,64 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Add Delta<Nsec>::to_jiffies() conversion that rounds up so the
-resulting timeout is never shorter than the requested span, clamps a
-negative span to an immediate timeout, and saturates an overlong span
-to the kernel's MAX_JIFFY_OFFSET "wait forever" value.
+enqueue_delayed() takes the delay as a raw Jiffies (c_ulong). That is
+the C representation rather than a kernel time type, so it neither
+carries the unit in its type nor composes with the Delta arithmetic
+used elsewhere for expressing spans, and it forces callers to hand the
+API a bare integer.
+
+Change the delay parameter to Delta<Jiffy> so a delay is expressed in
+the same time vocabulary as the rest of the kernel crate. A signed
+Delta can be negative, so clamp it to zero before handing it to the C
+side, which keeps "no delay" the natural meaning of a non-positive
+span.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/time.rs | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ rust/kernel/workqueue.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index f890c2d03932..900481a3cba2 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -541,6 +541,27 @@ pub fn as_millis_ceil(self) -> i64 {
-         }
-     }
- 
-+    /// Convert this span to a [`Delta<Jiffy>`] suitable for use as a timeout.
-+    ///
-+    /// The value is rounded up to the next whole jiffy, so the resulting
-+    /// timeout is never shorter than `self` (as `msecs_to_jiffies()` does).
-+    /// A negative span clamps to zero jiffies (an immediate timeout).
-+    #[inline]
-+    pub fn to_jiffies(self) -> Delta<Jiffy> {
-+        let msecs = self.as_millis_ceil();
-+
-+        // CAST: `msecs` is clamped to `0..=c_uint::MAX`, so it is non-negative and
-+        // fits in `c_uint`.
-+        let msecs = msecs.clamp(0, i64::from(crate::ffi::c_uint::MAX)) as crate::ffi::c_uint;
-+
-+        // SAFETY: `__msecs_to_jiffies()` is always safe to call.
-+        let jiffies = unsafe { bindings::__msecs_to_jiffies(msecs) };
-+
-+        // CAST: `__msecs_to_jiffies()` returns a value in `0..=MAX_JIFFY_OFFSET`, i.e.
-+        // `((LONG_MAX >> 1) - 1)`, which is non-negative and well within `isize`.
-+        Delta::<Jiffy>::from_jiffies(jiffies as isize)
-+    }
-+
-     /// Return `self % dividend` where `dividend` is in nanoseconds.
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 7e253b6f299c..d4f8a3ea5acb 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -171,7 +171,7 @@
+ //! /// This method will enqueue the struct for execution on the system workqueue, where its value
+ //! /// will be printed 12 jiffies later.
+ //! fn print_later(val: Arc<MyStruct>) {
+-//!     let _ = workqueue::system().enqueue_delayed(val, 12);
++//!     let _ = workqueue::system().enqueue_delayed(val, kernel::time::Delta::from_jiffies(12));
+ //! }
+ //!
+ //! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
+@@ -197,7 +197,10 @@
+         Arc,
+         LockClassKey, //
+     },
+-    time::Jiffies,
++    time::{
++        Delta,
++        Jiffy, //
++    },
+     types::Opaque,
+ };
+ use core::{marker::PhantomData, ptr::NonNull};
+@@ -303,11 +306,14 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
+     /// This may fail if the work item is already enqueued in a workqueue.
      ///
-     /// The kernel doesn't have any emulation for `s64 % s64` on 32 bit platforms, so this is
+     /// The work item will be submitted using `WORK_CPU_UNBOUND`.
+-    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
++    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delta: Delta<Jiffy>) -> W::EnqueueOutput
+     where
+         W: RawDelayedWorkItem<ID> + Send + 'static,
+     {
+         let queue_ptr = self.0.get();
++        // CAST: A negative delay is clamped to `0`, so the value is non-negative
++        // and fits in `c_ulong`.
++        let delay = delta.as_jiffies().max(0) as ffi::c_ulong;
+ 
+         // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The other
+         // `__enqueue` requirements are not relevant since `W` is `Send` and static.
 -- 
 2.43.0
 
