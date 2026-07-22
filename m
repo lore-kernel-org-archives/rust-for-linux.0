@@ -1,73 +1,73 @@
 Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6D24399C2
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 21:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E294399D3
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 21:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784757086; cv=none; b=AYpVfTR60zOSiJW0SuHXZ1F7KNbeT437c1Eqfc6SzgjLguPUPFTdyV9AZR8ylgt0FQK9mgwhLYKW4tlSIQHtbP+RjaBm2kYTLoVkftHYXtyBJ2BiEEyU7FebJGaB4HjZnsy8s55AAMIi7yARVvd/P5U3zW/W96X6n5RvyB7ykv0=
+	t=1784757092; cv=none; b=n8maorocvvINAZwHu3BDifWjiwTfRA5OLq1dj4Ox3pY+mK1/IxqRtWIAsKuj9KWfbwA+n1l3zge55tZuaZ/1EsvzViuvKMKFN+KAXv1ARhVN2b7OwfS4EnlelZDkBTySIMaAgdM/8zO+YPM21bsDytdbThyDHu1SDuXAgjbqHQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784757086; c=relaxed/simple;
-	bh=8F8RuNGFEz/AtJtM98W0SDG+tZLsHdhYzZKBCa7Ftwc=;
+	s=arc-20240116; t=1784757092; c=relaxed/simple;
+	bh=74oXo+urqlpIlvaHoSVuRQQv33xObM3eYsBk3lIexhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VwXxJxz0Zu06vI1NY2nMBX8Hvzq8gr2qhWzZvmOwOgsSlmh20zJc6cTvtrAZ6AfHAtZ2rvAMZdVApU0WV41hB/mXP7fPY3kAI9fsE0BtpWe+iF/sjHxZvz4SIl4ae5n4oIeY82X5u6xDUb8AWhRv9rTBISeb++3+g509wmA9ykA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Ey4Xlkw4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dQmtVddm; arc=none smtp.client-ip=202.12.124.136
+	 MIME-Version; b=bF81ZYC3UFy/Spk6SH/lPrSg+ROFKzD+yrvs5ElWTPupsHxf7TubtYNU9uzPEWQim2lWu6sNrsw0CYRXJzxYkOZoGNApJJKtXJuyEyyD9HXA+LKvcMrUAzHAcB5Jw1iEI69MJ+LKc5Qm5izyqzRusG276bKvaCln2XlMaq1cVGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=XRPbkLeV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IGDjgUgJ; arc=none smtp.client-ip=202.12.124.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Ey4Xlkw4";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dQmtVddm"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailflow.stl.internal (Postfix) with ESMTP id AC68513007C6;
-	Wed, 22 Jul 2026 17:51:21 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="XRPbkLeV";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IGDjgUgJ"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 0012D1300153;
+	Wed, 22 Jul 2026 17:51:28 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Wed, 22 Jul 2026 17:51:22 -0400
+  by phl-compute-05.internal (MEProxy); Wed, 22 Jul 2026 17:51:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1784757081; x=
-	1784760681; bh=j/YlaVecCqeUqpuwKfapH4ZjIrRoaIsWlfVDnbnciGc=; b=E
-	y4Xlkw4MeAk3TmRtt8VdjI5db6NH/yS66qNQ85+f80JhiQ+hR77RLsZTECXae/3p
-	sdhhEV3I9EK/BL2ACFmZywSwO+p3GAqSsVkiTK6Hp8zgr9XzKsqURWqifORZVEU5
-	1N347tY04zV4haW9IyZgHzSKBe4CzXKdRAunTbyBbXQ8MznmajxNoyhMh1TIo3eX
-	JIKNMFfCt8f7j5rmnpyTaUnRolyLpQkuQbgO+fz0hQv17ZNBcksoNWaKuCgYjrRT
-	FzDPJlCeHcB1pJd6YEsA6XmP/Ki857DggVFFspRuGuqqbY9tP7q/Zg6PbNKR7rhe
-	jVcmqIoCtWS8v8cIka75g==
+	:reply-to:subject:subject:to:to; s=fm1; t=1784757088; x=
+	1784760688; bh=M18QPOMPxPN0ZiPf3XmQUeFTbhHf8Fgk2rpCMPjbcnc=; b=X
+	RPbkLeVAJwsbrmlC5TxdNy9ecwoWoIOl8lC7BuH8ChqIesGJxd/bW7eDC/zEcgKz
+	Miej8dJWaCpgaZMcNW6cdq0qbBySJd+wbNCtDHbPaCZFAHBDtD0nQVyPTnYWdK+E
+	XV1t+wjUXBPZ4attOB0+gb9CsvEMkD8S1Kdig47Mnl7k3/CwYy7b49SyYHLK8aBS
+	sACk4TmqMOaGym3mAmZNra99lSnvZzn6LHSQekNx7XSqSSyn+XOwnsrLEbxsc0mY
+	lhXg+g5LFtpLDMxlZKE/aW9b6oSCmzaOurWZpGeffVXoeHswpr4tYyGImOUakY7q
+	GAlYNOF3GOvXzHOcrHGHg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1784757081; x=1784760681; bh=j
-	/YlaVecCqeUqpuwKfapH4ZjIrRoaIsWlfVDnbnciGc=; b=dQmtVddmQ9XlGO6DB
-	rSU9WgT31hdLohQN9SemSwRk5TAhxrP8Hl84ZAmPGaLkq+iuUrD0odTslUhE9SKh
-	d3kqMIBbMbJPc2HkzcxFiRKtiOlmJSvM2N51IUVEbMgpqnuIlZliGrLpKnBXQmRx
-	pCYiMLIfcuY49/FQjfBbJBoyoePFnA389+XcpcdMuj6OOOodSktMItGhyBVtvQyW
-	uS/JScMxDq+t3iK/1HVuktKj5pvScsv2eVmTxSQTySXSBdKJlXwu54udrTfCKNyp
-	5lfqSu8N/aLESjnnoZc3hQaEgnG1pY35MuIhP9zbrR9MLpCu6NStICF0vYKiP+nc
-	eYN+w==
-X-ME-Sender: <xms:WDthagW2GqoEL_R56cHdAAafjJQGoL9e4NLeVYjAjQOlorWT9sgUIg>
-    <xme:WDthagstJuiF_5tIdx-2aUEFRTuZ_PRJUZz35zO05E53vq0ff4Xgw-Bw3JQ1uEX-h
-    Bvp6PVydad9oF48IL3MH0YY1XYOD9oAn_yfueeea1AMwIpJZWketUo>
-X-ME-Received: <xmr:WDthagNcJ128UsFwYENBVBve5ZUaLaL-M0iBWYPwvJN52PKmBTlzAXNT1gb5Bzsm2Ru5YO-v1WgKwSTAMm4>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1784757088; x=1784760688; bh=M
+	18QPOMPxPN0ZiPf3XmQUeFTbhHf8Fgk2rpCMPjbcnc=; b=IGDjgUgJQ41qZTtDQ
+	e9JVPydHuk4+K5AptmOmQyOjJQmqtzPMD5174kjY6iNU3tqRsLBhMgQpdWThamqg
+	V8SUgbVmPoXI996k4WjX02FpQcuOnE4x7heIcspJBzY7t3EmgA9iFSyU86eNsfiv
+	sylQQMujL0mO5/bm7o8bLyXTmeXChfJMV9w9wf1xOzXNHT+zcZG0Z6MkngFqhGDE
+	PFuTuSJNOaFI4D2r9iTIbohjhkm3xa8dxhrzrKnHJsMNq9bZ/B5wHIn8BWoDtXgx
+	x/KPTC0BWfIJQKb30Yyfjp6/GnezJxs35faVqUjJdbeTEyFCOt97+8AFtQ+4lnC5
+	bwdvg==
+X-ME-Sender: <xms:YDthapmxNMxlF1S-eCBuPbX0Ws-pRlY4ykYFGxlBxkUqlF4axJv7MA>
+    <xme:YDthag9DrQksYaweBrO12nOriex2ZLrEVVXqrx9jxtlhl9FppQ6_RD6Gy4R5rz8jg
+    ktn_sGJ1Rr9ae1Bg1xLq8uq7l8c7U8ZGf8xDAUHcEQ42gIRc00ggZU>
+X-ME-Received: <xmr:YDthardTI8WCPxTr2XXUkHM-2HYluaxHv9D8N8AFCArSJBqodBn-23Yk0Rwfef1XPhCjz4O6rN98pTxGYQ0>
 X-ME-Proxy-Cause: dmFkZTGuoNy9B4Nm4eUiSt/VO/ZwmCQP+pc5e41if9fnwGdZOMxeWyXy+Utey7GravQTWS
     muAn+B62eren/+/qU3EjCcmq1A6Eqv/2TSGyUXtamSBV1XbJXh0burYHMsiltX+K3CtEff
     Wco0eXJKyhY0hcEwzWNRu2xlxwLsydcKZzw9PWSXF6a5FRETjsjcJ2OKj6rTuDQTgABHtb
     ILguifJG57tR2Wc7xaCTnmZVRe6QvnD67FskWzmUPI2exQarWI/gxcbziaEnx1ptUC9fe2
-    5uCFs5iP9pgb++LyH7dLUYB5glPYeF9nYP1PyEK9FtB8D5G90yfpz901nPJyFMuBsApRJm
-    b23eZHHkgP3IpSI4VilpGkqIXn8YCyKs9on3II9Lu/h/o9L8dIp/mTPkBgwAXVVsrwGvs1
-    dbuFssk9/rLCx0aZQ8pR3qiOnj0ywPVhM5WJFgsXNsWRsPFHlZ+KEdxF7poVqvM4oGpK23
-    lXS9r9Onx3XSkvPjwO9209/QFmnBze0J05CzyWc5thPkQv9v8m9Un+hi1tHbesLno1YAEL
-    2ezk6itkIUiLlTbiCwAW45KNGunTor4boawI/jVb81ba9ywi/co7T7Jm8jyWTt6tkZXg6j
-    ogTUgr8jJy0EiJZrUOOywOPq9rUY1vuBwHdPWqGyKAwQHqQ7ih7bvxiUSglQ
-X-ME-Proxy: <xmx:WDthaop6jQZhUpTUwZ9oLsswSRU_GRdTJ1tiSVWJ_KdGfJF12uW3kw>
-    <xmx:WDthaqvZi4bbnMVs2mHOvTGHUBv0AbgmmmbLQGrnrw15zk5sdydYuQ>
-    <xmx:WDthaohFLjwtJZJ6YVTf-e6r6R7CTjvb0R3dGAIxARqyLPSt9zrJoQ>
-    <xmx:WDthau0n-D8uOPTb_1Fl6Tz0Keph0LxUdTseGNz-pJobb_SrjXRDtA>
-    <xmx:WDthanp0HozlG0cErpPOi_y2x_h9tMQHaXdU2U9W34AgzvWOm4JSyq2s>
+    5uCFs5iP9pgb++LyH7dLUYB5glPYeF9nYP1PyEK9FtB8D5G90yfpz901nPJyFMuBsApRuB
+    yrTZE3GfoXSzjIPEFEv9fPTbZXbyGo2Xfo3ME+oByJgJYCvL6KzKQQDxVddrXmjVr00rnz
+    MjxsG7nGUOkSBNutVYZh7L25leynATLwK+pRuw8au81kHbKcX6TopGKEZkMozn10FjdRCw
+    cTUVqyAkouStwyX0TVtpD8UGOM5+EjN9j80R8uc3AZ+jT30Xm/d3Re0+h7zuYL0sRul5B1
+    WKSm6EB8JUTscPzZVkRL/RBplpEDpgDfNWjBia2EXs9Tbcef/h87TpBIFQffGp9Hb7lzLZ
+    4pWbIkDU+TqHtLAbmTFIb/lG84rWCk7voBCDvVbxchgFJIKi3xMCZv9baarg
+X-ME-Proxy: <xmx:YDthai6qUR-6u2kEK5Bwlb-AgeD94wMBRpVBtfPsMrMn_Gept4c8MA>
+    <xmx:YDthan96EXgtodStLiCu7Dj9Sa_B5iaIzL43SwkmvEdBDotP7kBGWA>
+    <xmx:YDthasw3Ajw1_1Nk1MEUWTcVaUmILzhlgQCFQUrwMej6qNDlxVKqag>
+    <xmx:YDthauFmj-cFt05kw2PnDEBdAxAo0jFzP5qG_NBYLRhFiJsorftXxQ>
+    <xmx:YDthat7B1hf-xpcLYwsOB_26k-uIZYJQC2uj8GaOckptdcWqxK5T6fto>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jul 2026 17:51:14 -0400 (EDT)
+ 22 Jul 2026 17:51:22 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	aliceryhl@google.com,
@@ -95,9 +95,9 @@ Cc: acourbot@nvidia.com,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v4 1/7] rust: time: make Delta generic over its time unit
-Date: Thu, 23 Jul 2026 06:49:45 +0900
-Message-ID: <20260722214951.72941-2-tomo@flapping.org>
+Subject: [PATCH v4 2/7] rust: time: add jiffies time unit for Delta
+Date: Thu, 23 Jul 2026 06:49:46 +0900
+Message-ID: <20260722214951.72941-3-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260722214951.72941-1-tomo@flapping.org>
 References: <20260722214951.72941-1-tomo@flapping.org>
@@ -111,234 +111,72 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Delta hardcodes its value as i64 nanoseconds. A later patch adds a
-jiffies span, whose natural representation is isize jiffies rather than
-i64 nanoseconds, and a separate type per unit would duplicate the
-arithmetic and comparison machinery.
+Add a Jiffy time unit with isize as its representation and provide
+Delta<Jiffy>::from_jiffies() and as_jiffies() as the unit-specific
+constructor and accessor, mirroring from_nanos()/as_nanos() on the
+nanosecond Delta.
 
-Make Delta generic over its time unit so the jiffies span can reuse that
-machinery. The nanosecond Delta keeps its current representation and API
-via the default unit parameter, so no functional change.
-users.
+Represent the jiffies span as isize: Delta is a signed span (nanoseconds
+use i64) and, as a timeout, the value only needs to reach
+MAX_JIFFY_OFFSET ((LONG_MAX >> 1) - 1). isize is signed and matches the
+kernel's c_long, so it meets both.
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/time.rs | 72 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 48 insertions(+), 24 deletions(-)
+ rust/kernel/time.rs | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
 diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 363e93cbb139..8c01ca62b471 100644
+index 8c01ca62b471..20f059d19a6c 100644
 --- a/rust/kernel/time.rs
 +++ b/rust/kernel/time.rs
-@@ -246,7 +246,7 @@ impl<C: ClockSource> ops::Sub for Instant<C> {
-     #[inline]
-     fn sub(self, other: Instant<C>) -> Delta {
-         Delta {
--            nanos: self.inner - other.inner,
-+            value: self.inner - other.inner,
-         }
-     }
- }
-@@ -258,7 +258,7 @@ impl<T: ClockSource> ops::Add<Delta> for Instant<T> {
-     fn add(self, rhs: Delta) -> Self::Output {
-         // INVARIANT: With arithmetic over/underflow checks enabled, this will panic if we overflow
-         // (e.g. go above `KTIME_MAX`)
--        let res = self.inner + rhs.nanos;
-+        let res = self.inner + rhs.value;
+@@ -295,6 +295,7 @@ mod private {
+     pub trait Sealed {}
  
-         // INVARIANT: With overflow checks enabled, we verify here that the value is >= 0
-         #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
-@@ -278,7 +278,7 @@ impl<T: ClockSource> ops::Sub<Delta> for Instant<T> {
-     fn sub(self, rhs: Delta) -> Self::Output {
-         // INVARIANT: With arithmetic over/underflow checks enabled, this will panic if we overflow
-         // (e.g. go above `KTIME_MAX`)
--        let res = self.inner - rhs.nanos;
-+        let res = self.inner - rhs.value;
- 
-         // INVARIANT: With overflow checks enabled, we verify here that the value is >= 0
-         #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
-@@ -291,14 +291,38 @@ fn sub(self, rhs: Delta) -> Self::Output {
-     }
+     impl Sealed for super::Nsec {}
++    impl Sealed for super::Jiffy {}
  }
  
-+mod private {
-+    pub trait Sealed {}
-+
-+    impl Sealed for super::Nsec {}
-+}
-+
-+/// A trait for time units.
-+pub trait TimeUnit: private::Sealed {
-+    /// The underlying representation of the time unit.
-+    type Repr: Copy + Clone + PartialEq + PartialOrd + Eq + Ord + core::fmt::Debug;
-+}
-+
-+/// A time unit of nanoseconds.
+ /// A trait for time units.
+@@ -314,6 +315,17 @@ impl TimeUnit for Nsec {
+     type Repr = i64;
+ }
+ 
++/// A time unit of jiffies.
 +///
-+/// A [`Delta<Nsec>`] stores its value as `i64` nanoseconds and can represent
-+/// any `i64` value, including negative, zero, and positive numbers.
++/// A [`Delta<Jiffy>`] stores its value as `isize` jiffies and can represent
++/// any `isize` value, including negative, zero, and positive numbers.
 +#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
-+pub struct Nsec;
++pub struct Jiffy;
 +
-+impl TimeUnit for Nsec {
-+    type Repr = i64;
++impl TimeUnit for Jiffy {
++    type Repr = isize;
 +}
 +
  /// A span of time.
  ///
--/// This struct represents a span of time, with its value stored as nanoseconds.
--/// The value can represent any valid i64 value, including negative, zero, and
--/// positive numbers.
-+/// The span is stored in the unit given by the type parameter `U` (see
-+/// [`TimeUnit`]); its value has type `U::Repr`. `U` defaults to [`Nsec`], so a
-+/// plain [`Delta`] is a span in nanoseconds. The value can be negative, zero, or
-+/// positive.
- #[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
--pub struct Delta {
--    nanos: i64,
-+pub struct Delta<U: TimeUnit = Nsec> {
-+    value: U::Repr,
+ /// The span is stored in the unit given by the type parameter `U` (see
+@@ -325,6 +337,20 @@ pub struct Delta<U: TimeUnit = Nsec> {
+     value: U::Repr,
  }
  
- impl ops::Add for Delta {
-@@ -307,7 +331,7 @@ impl ops::Add for Delta {
-     #[inline]
-     fn add(self, rhs: Self) -> Self {
-         Self {
--            nanos: self.nanos + rhs.nanos,
-+            value: self.value + rhs.value,
-         }
-     }
- }
-@@ -315,7 +339,7 @@ fn add(self, rhs: Self) -> Self {
- impl ops::AddAssign for Delta {
-     #[inline]
-     fn add_assign(&mut self, rhs: Self) {
--        self.nanos += rhs.nanos;
-+        self.value += rhs.value;
-     }
- }
- 
-@@ -325,7 +349,7 @@ impl ops::Sub for Delta {
-     #[inline]
-     fn sub(self, rhs: Self) -> Self::Output {
-         Self {
--            nanos: self.nanos - rhs.nanos,
-+            value: self.value - rhs.value,
-         }
-     }
- }
-@@ -333,7 +357,7 @@ fn sub(self, rhs: Self) -> Self::Output {
- impl ops::SubAssign for Delta {
-     #[inline]
-     fn sub_assign(&mut self, rhs: Self) {
--        self.nanos -= rhs.nanos;
-+        self.value -= rhs.value;
-     }
- }
- 
-@@ -343,7 +367,7 @@ impl ops::Mul<i64> for Delta {
-     #[inline]
-     fn mul(self, rhs: i64) -> Self::Output {
-         Self {
--            nanos: self.nanos * rhs,
-+            value: self.value * rhs,
-         }
-     }
- }
-@@ -351,7 +375,7 @@ fn mul(self, rhs: i64) -> Self::Output {
- impl ops::MulAssign<i64> for Delta {
-     #[inline]
-     fn mul_assign(&mut self, rhs: i64) {
--        self.nanos *= rhs;
-+        self.value *= rhs;
-     }
- }
- 
-@@ -362,25 +386,25 @@ impl ops::Div for Delta {
-     fn div(self, rhs: Self) -> Self::Output {
-         #[cfg(CONFIG_64BIT)]
-         {
--            self.nanos / rhs.nanos
-+            self.value / rhs.value
-         }
- 
-         #[cfg(not(CONFIG_64BIT))]
-         {
-             // SAFETY: This function is always safe to call regardless of the input values
--            unsafe { bindings::div64_s64(self.nanos, rhs.nanos) }
-+            unsafe { bindings::div64_s64(self.value, rhs.value) }
-         }
-     }
- }
- 
- impl Delta {
-     /// A span of time equal to zero.
--    pub const ZERO: Self = Self { nanos: 0 };
-+    pub const ZERO: Self = Self { value: 0 };
- 
-     /// Create a new [`Delta`] from a number of nanoseconds.
-     #[inline]
-     pub const fn from_nanos(nanos: i64) -> Self {
--        Self { nanos }
-+        Self { value: nanos }
-     }
- 
-     /// Create a new [`Delta`] from a number of microseconds.
-@@ -391,7 +415,7 @@ pub const fn from_nanos(nanos: i64) -> Self {
-     #[inline]
-     pub const fn from_micros(micros: i64) -> Self {
-         Self {
--            nanos: micros.saturating_mul(NSEC_PER_USEC),
-+            value: micros.saturating_mul(NSEC_PER_USEC),
-         }
-     }
- 
-@@ -403,7 +427,7 @@ pub const fn from_micros(micros: i64) -> Self {
-     #[inline]
-     pub const fn from_millis(millis: i64) -> Self {
-         Self {
--            nanos: millis.saturating_mul(NSEC_PER_MSEC),
-+            value: millis.saturating_mul(NSEC_PER_MSEC),
-         }
-     }
- 
-@@ -415,7 +439,7 @@ pub const fn from_millis(millis: i64) -> Self {
-     #[inline]
-     pub const fn from_secs(secs: i64) -> Self {
-         Self {
--            nanos: secs.saturating_mul(NSEC_PER_SEC),
-+            value: secs.saturating_mul(NSEC_PER_SEC),
-         }
-     }
- 
-@@ -434,7 +458,7 @@ pub fn is_negative(self) -> bool {
-     /// Return the number of nanoseconds in the [`Delta`].
-     #[inline]
-     pub const fn as_nanos(self) -> i64 {
--        self.nanos
++impl Delta<Jiffy> {
++    /// Create a new [`Delta`] from a number of jiffies.
++    #[inline]
++    pub const fn from_jiffies(jiffies: isize) -> Self {
++        Self { value: jiffies }
++    }
++
++    /// Return the number of jiffies in the [`Delta`].
++    #[inline]
++    pub const fn as_jiffies(self) -> isize {
 +        self.value
-     }
++    }
++}
++
+ impl ops::Add for Delta {
+     type Output = Self;
  
-     /// Return the smallest number of microseconds greater than or equal
-@@ -477,7 +501,7 @@ pub fn rem_nanos(self, dividend: i32) -> Self {
-         #[cfg(CONFIG_64BIT)]
-         {
-             Self {
--                nanos: self.as_nanos() % i64::from(dividend),
-+                value: self.as_nanos() % i64::from(dividend),
-             }
-         }
- 
-@@ -489,7 +513,7 @@ pub fn rem_nanos(self, dividend: i32) -> Self {
-             unsafe { bindings::div_s64_rem(self.as_nanos(), dividend, &mut rem) };
- 
-             Self {
--                nanos: i64::from(rem),
-+                value: i64::from(rem),
-             }
-         }
-     }
 -- 
 2.43.0
 
