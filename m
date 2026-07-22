@@ -1,334 +1,254 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.nessuent.net (mail.nessuent.net [188.245.177.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EDE2B9BA
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 09:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6757C442FDE;
+	Wed, 22 Jul 2026 09:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.245.177.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784712754; cv=none; b=qCQAGBw8xlYuqb11hlTMNmS5DUSIaTER267/V+qT4QflIwDh3ptV0DuUOrg7JGrGSj48dV4JbDC/Yf5Al288MTJaJCdF86zrOaCTIxtn1PMkTRYf40NpeduiyS372ZGpy+oswHO2rejxMR2vSEIpjb9MNDYstYHywQKJUIep1dU=
+	t=1784714269; cv=none; b=RxrATYQLJZpgt4zetC1aCpsofBHGduSR6PttlRsX8wDdgw+edLIawj9DZWrqpfMaugnTd28bQ14N4R0a83NZ6QnEh4H4G5V8PgAQ10CFgokkJxQOPE6oFmDr/9vjFH5oywQAMYf9E7p06wB6BrtS8+xrhPVAtYIhFdh2uFDvFNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784712754; c=relaxed/simple;
-	bh=uTEZI6DKdfsgsq32YJ+4UhlmIX+jZhcmjt9F9t0EVJ4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T8TBoAl6dbTR4IZoMcemnrASEimoIAS82NvZ6M18xyDyVmAAcG6ZXns1c0cGwxB1LFqZKE50slU4XEst/rEL3WKwzZdt0Om2dY0J5rFtAb1pPKij8mXeaOLXmMMXKhm7Z9ooncGrIreDcEeJFNAXbeW3UK3LJTuJwGa+jjT5xPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Oam0t2B3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1784714269; c=relaxed/simple;
+	bh=VesKABZyDBivX5i7m3kEgIrkJh3YwHmybvmYOQyC9G0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=SsPBJQfJZADHRpseK+I1kJ31StI4db2UaW4Duxojc4AJRu3R4pwCTAnY/RRHPZtQMOpcoyFeyiE6U/VulQtS7Zqx2EKnWaMYu6UdXsl/RPVJk6+PV0ghbF98iP4J2C/5g7NEgm83IYnee690eiSSigybk7SL1hL/shRd6fiTLTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is; spf=pass smtp.mailfrom=pitsidianak.is; dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b=lklB5zC9; arc=none smtp.client-ip=188.245.177.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pitsidianak.is
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pitsidianak.is
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Oam0t2B3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1784712751;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=283jKDUw6tyTL18bbaH54DEIYdFHrTHWzqhLR5a8h6c=;
-	b=Oam0t2B3EZ48thLEgfp01VBnAtuZ6QlNrVm/92x3uxWvLa1eB2QBMLER6fi+y6zBq1qg+8
-	qW5VpJIF5LlNfZA/dNnKIF3UUS20L7//XyDp4CBYTcLfMxUFVAe5/l3C2/bM4/rjRmlhF9
-	XKO8ulVQJViqweEbRwR/28M/BVB1dTE=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-56-wr5yXjGPOLyCBa7oGWnI9A-1; Wed, 22 Jul 2026 05:32:29 -0400
-X-MC-Unique: wr5yXjGPOLyCBa7oGWnI9A-1
-X-Mimecast-MFC-AGG-ID: wr5yXjGPOLyCBa7oGWnI9A_1784712749
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-81e68281f2eso176279917b3.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 Jul 2026 02:32:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784712749; x=1785317549;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=283jKDUw6tyTL18bbaH54DEIYdFHrTHWzqhLR5a8h6c=;
-        b=WzSz6pdi+8sJZQI/nD61k16416bkHzeoSwRLnv5gbsS48xfvN+NFhevc/R0JFDZyQ4
-         t1B4iQytS5Af4rCHrvM14fxlNQ6lO6Ws4jMnq8yiFupKetK5tQD7cpz2YL4stjutp4qG
-         ZdiCD52h2FbCobxHl4mk+lV8lyyt9HlTwRU8qRLkj9DUZK+XMG4PXoQsz06rl6281MjT
-         YUOBOcgMddcF1/0xvDYpyVmYPbpB5sWdgaCDeH1SUlu44d5p4L4xtc55Fy9Lg1l2RA7Q
-         plKehwBBv5PUd6FwaOTimqFkXcbgv6qxGghZ3TlhLqySq1P+kElWztxMYMwBiZ6Y0V40
-         RAtg==
-X-Forwarded-Encrypted: i=1; AHgh+RrkxyA53uJe3QahW5GocMwmvq2blNt10T3yfik0sHDZ7UgOUdbb4XIelHfMRdPwTL07ffcS5Jk1C1qDlnLVAQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRbVrKOYF4Zz5x9YI4xtEfTuHquaFTe6btEd9ktdTtzF9HPx6m
-	XmdZjU0pkIh9ZKEY4NVO2iALYWnKeKimba6T6XtCEIZH/p/ZHraaZU4UtUA+O1iGSaowk14qJDh
-	1P7O884utNORAdlU98wRDeQbhwFIhArNwsJ/9ZncYTMikl2fzViqfdOEjcMJqKx9O7diUFaUM4O
-	NSdlaWQUlnxd7jmQUNgzLiIgrBqeVAylI5+yUbGNH9K8A=
-X-Gm-Gg: AR+sD12PUNJx0rwYcT49y3A6GfUYeSt+bgOrFIIxTCo5zwQuM30PGzz+XRoTwhMpZf9
-	zNzOgm9+zjNqg63UfFS2KhgT/cHjFNP2+CreHWchk49noKRksBU/Ecanpu6dDLXeEHrvwhHrdY8
-	QE4qFuAZFkzXwKU+Jr2Fw9Nx8YvJKZbc8crvehmAkyw1vvcsIWsUfHT8RvogcZsEe1oHwwOP86Q
-	NeO+BKdqlt6htKSL103t5VX5pi/8lZEO18qyp1PCwqBN1ggjxo3gU/ieIU=
-X-Received: by 2002:a05:690c:600d:b0:80c:85b6:75b8 with SMTP id 00721157ae682-81ef286a9c8mr72955347b3.65.1784712749084;
-        Wed, 22 Jul 2026 02:32:29 -0700 (PDT)
-X-Received: by 2002:a05:690c:600d:b0:80c:85b6:75b8 with SMTP id
- 00721157ae682-81ef286a9c8mr72955227b3.65.1784712748523; Wed, 22 Jul 2026
- 02:32:28 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=pitsidianak.is header.i=@pitsidianak.is header.b="lklB5zC9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=pitsidianak.is;
+	s=mailSelector; t=1784714264;
+	bh=VesKABZyDBivX5i7m3kEgIrkJh3YwHmybvmYOQyC9G0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Subject;
+	b=lklB5zC9fa3FKgq4NEc3zZTvZVQaCifdzQWXHVOnyRx5SNFFybGQUH9gL2sSLnGbI
+	 /KFU/wxfedBdUIj332CchtK1uFNyCEQAUOwVJU9xjlWmbCIH1TQ38Os8cKuUMsgeFZ
+	 c7a4y9GMh4PggNoRorPjehcMRou/tnPHZ28g0VyHYbu49PWwnaAousnrQ3FGXEXkfX
+	 frtRZtFJceEDMnEm8H8D7hRkzJhMPOm2yPZ/04sqArpBS04kaWT/gS/RHDTeIW2mI8
+	 KVDxnOM/tLFPlC8cNCHyTgElqe9918kJuL9zQZSDldgGK7FPhywO8b3pul8Dnw9VgG
+	 +iZ55tgXmY3QcU8/EkPQtFdkDGe2qmBEzB9bwCM16IDiRqCvjlGJIK1TJ71eVt4KHh
+	 9MPhDSuttUHIvb9uCU5twoGqUfm822XLYp6GPhPmFFnUvJN1fMmO5uatRBEpmxi4/j
+	 MVsDGuy0goIoPDmIWt9PpLC0sxEMGJoYYM5OSe/PJagGVnIb2E3iG26onjfrCo5oqH
+	 nCGq2WqocpVja32xhFK19umZml8XurHrCpvkmU8S4VKV/CnqQ70+LMKQnNxJoKjjTm
+	 1/tNHT300BdQF37Ko3N9PTWkQRUqZqmcSXKPiAYfDPsCWfadKw7WhtA1PcNpi46eoB
+	 Z7GDaMgGYjnVpcb8zE55QLOk=
+Date: Wed, 22 Jul 2026 12:55:18 +0300
+From: Manos Pitsidianakis <manos@pitsidianak.is>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Zybg==?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v3 0/6] Add Rust virtio bindings and sample device
+User-Agent: meli/0.8.13
+References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is> <tiiht3.22qk83rct1pd@pitsidianak.is> <CAJaqyWcSeXW_vdP03-oTXp5uO8vNBg224LDgyCn3QrXhuJ6tHw@mail.gmail.com> <tikjvp.3n7sct2j96lcx@pitsidianak.is> <CAJaqyWfq=tAdaAzqBtrkKt0fwiQL=SU6QYVydos1q4GhHy-JDg@mail.gmail.com>
+In-Reply-To: <CAJaqyWfq=tAdaAzqBtrkKt0fwiQL=SU6QYVydos1q4GhHy-JDg@mail.gmail.com>
+Message-ID: <tikmc7.hs1w0947avvx@pitsidianak.is>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is>
- <tiiht3.22qk83rct1pd@pitsidianak.is> <CAJaqyWcSeXW_vdP03-oTXp5uO8vNBg224LDgyCn3QrXhuJ6tHw@mail.gmail.com>
- <tikjvp.3n7sct2j96lcx@pitsidianak.is>
-In-Reply-To: <tikjvp.3n7sct2j96lcx@pitsidianak.is>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 22 Jul 2026 11:31:52 +0200
-X-Gm-Features: AUfX_myFdSS5yFEbwkTE9E55Wpvvva6R-RIsA-LwClYyzwNu3ZAklY_mP7h86Pc
-Message-ID: <CAJaqyWfq=tAdaAzqBtrkKt0fwiQL=SU6QYVydos1q4GhHy-JDg@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 0/6] Add Rust virtio bindings and sample device
-To: Manos Pitsidianakis <manos@pitsidianak.is>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
-	Peter Hilber <peter.hilber@oss.qualcomm.com>, Stefano Garzarella <sgarzare@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 2nW2iNhvyUWtv6s1-9Ierls4v76Ci6reaPqlAzehYZU_1784712749
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
 
-On Wed, Jul 22, 2026 at 11:04=E2=80=AFAM Manos Pitsidianakis
-<manos@pitsidianak.is> wrote:
+On Wed, 22 Jul 2026 12:31, Eugenio Perez Martin <eperezma@redhat.com> wrote:
+>On Wed, Jul 22, 2026 at 11:04 AM Manos Pitsidianakis
+><manos@pitsidianak.is> wrote:
+>>
+>> Hi Eugenio,
+>>
+>> On Wed, 22 Jul 2026 11:49, Eugenio Perez Martin <eperezma@redhat.com> wrote:
+>> >On Tue, Jul 21, 2026 at 8:24 AM Manos Pitsidianakis
+>> ><manos@pitsidianak.is> wrote:
+>> >>
+>> >> Ping.
+>> >>
+>> >> I have a different version of the series WIP with a virtio-rng instead
+>> >> of virtio-rtc, based on
+>> >> https://lore.kernel.org/lkml/20260529-rust-hw_random-virtio-rng-v1-0-b3153dd90311@pitsidianak.is/
+>> >> (which needs a v2 also)
+>> >>
+>> >> But since this series hasn't gotten any feedback on the virtio part, I'd
+>> >> like to ask if there is any before respinning.
+>> >>
+>> >> Thanks!
+>> >>
+>> >
+>> >I also think this will be a great addition, but I have very little
+>> >knowledge of Rust. Is it easy to implement the simplest virtio-net
+>> >driver using Rust, without CVQ or extra features, so I can test it and
+>> >hopefully build features on top? Would it help?
+>>
+>> I think so, however it would not be upstreamable right away since (I
+>> think) there are no netdev Rust bindings and abstractions yet. I will
+>> take a look when I have the time...
+>>
 >
-> Hi Eugenio,
->
-> On Wed, 22 Jul 2026 11:49, Eugenio Perez Martin <eperezma@redhat.com> wro=
-te:
-> >On Tue, Jul 21, 2026 at 8:24=E2=80=AFAM Manos Pitsidianakis
-> ><manos@pitsidianak.is> wrote:
-> >>
-> >> Ping.
-> >>
-> >> I have a different version of the series WIP with a virtio-rng instead
-> >> of virtio-rtc, based on
-> >> https://lore.kernel.org/lkml/20260529-rust-hw_random-virtio-rng-v1-0-b=
-3153dd90311@pitsidianak.is/
-> >> (which needs a v2 also)
-> >>
-> >> But since this series hasn't gotten any feedback on the virtio part, I=
-'d
-> >> like to ask if there is any before respinning.
-> >>
-> >> Thanks!
-> >>
-> >
-> >I also think this will be a great addition, but I have very little
-> >knowledge of Rust. Is it easy to implement the simplest virtio-net
-> >driver using Rust, without CVQ or extra features, so I can test it and
-> >hopefully build features on top? Would it help?
->
-> I think so, however it would not be upstreamable right away since (I
-> think) there are no netdev Rust bindings and abstractions yet. I will
-> take a look when I have the time...
->
+>How about starting even smaller? Just with the virtio-ring processing
+>that all virtio drivers share.
 
-How about starting even smaller? Just with the virtio-ring processing
-that all virtio drivers share.
+That's already possible with this series (adding inbufs/outbufs). If you 
+mean a virtio-net that can react to virtio commands but does not do 
+anything with packets, yes we can do that. I can try setting up a 
+minimum driver we can work on together if you like.
 
-> (This is something I am also interested in because I'm working on a
-> different kind of network device)
->
-> You can definitely play with the sample driver included in this series
-> however!
->
-> Manos
->
->
-> >
-> >Thanks!
-> >
-> >> On Sun, 10 May 2026 16:38, Manos Pitsidianakis <manos@pitsidianak.is> =
-wrote:
-> >> >Hi all, this RFC series adds Rust bindings for Virtio drivers
-> >> >(frontends in virtio parlance).
-> >> >
-> >> >As a PoC, it also adds a sample virtio-rtc driver which performs
-> >> >capability discovery through the virtqueue without registering any cl=
-ock.
-> >> >
-> >> >Before I send a cleaned-up non-RFC I would like some initial feedback
-> >> >(i.e. is it something the upstream wants?)
-> >> >
-> >> >This was tested with the rust-vmm vhost-device-rtc device backend tha=
-t I
-> >> >wrote[^0]:
-> >> >
-> >> >[^0]: https://github.com/rust-vmm/vhost-device/tree/main/vhost-device=
--rtc
-> >> >
-> >> >Instructions:
-> >> >
-> >> >  Run the daemon in a separate terminal:
-> >> >
-> >> >  $ cargo run --bin vhost-device-rtc -- -s /tmp/rtc.sock
-> >> >
-> >> >  Then run the VM:
-> >> >
-> >> >  $ qemu-system-aarch64 \
-> >> >    -machine type=3Dvirt,virtualization=3Doff,acpi=3Don \
-> >> >    -cpu host \
-> >> >    -smp 8 \
-> >> >    -accel kvm \
-> >> >    -drive if=3Dvirtio,format=3Dqcow2,file=3D./debian-13-nocloud-arm6=
-4-daily.qcow2 \
-> >> >    -device virtio-net-pci,netdev=3Dunet \
-> >> >    -device virtio-scsi-pci \
-> >> >    -serial mon:stdio \
-> >> >    -m 8192 \
-> >> >    -object memory-backend-memfd,id=3Dmem,size=3D8G,share=3Don \
-> >> >    -numa node,memdev=3Dmem \
-> >> >    -display none \
-> >> >    -vga none \
-> >> >    -kernel /path/to/linux/build/arch/arm64/boot/Image \
-> >> >    -device vhost-user-test-device,chardev=3Drtc,id=3Drtc,virtio-id=
-=3D17,num_vqs=3D2,vq_size=3D1024 \
-> >> >    -chardev socket,path=3D/tmp/rtc.sock,id=3Drtc \
-> >> >    ...
-> >> >
-> >> >  Example output:
-> >> >    [    1.105238] rust_virtio_rtc: Probe Rust virtio driver sample.
-> >> >    [    1.105645] rust_virtio_rtc: Found 1 vqs.
-> >> >    [    1.136050] rust_virtio_rtc: process_requestq got buf 16 bytes
-> >> >    [    1.136125] rust_virtio_rtc: Got response! Ok(RespCfg { head: =
-ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, num_clocks: Le=
-16(3), reserved: [0, 0, 0, 0, 0, 0] })
-> >> >    [    1.136701] rust_virtio_rtc: Got response! Ok(RespClockCap { h=
-ead: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_typ=
-e: 3, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
-> >> >    [    1.136724] rust_virtio_rtc virtio0: cannot expose clock 0 (ty=
-pe 3, variant 0, flags 0) to userspace
-> >> >    [    1.137259] rust_virtio_rtc: Got response! Ok(RespRead { head:=
- ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading=
-: Le64(1777890485031060388) })
-> >> >    [    1.137277] rust_virtio_rtc: #0 clock reading =3D 177789048503=
-1060388
-> >> >    [    1.137749] rust_virtio_rtc: Got response! Ok(RespClockCap { h=
-ead: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_typ=
-e: 1, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
-> >> >    [    1.137769] rust_virtio_rtc virtio0: cannot expose clock 1 (ty=
-pe 1, variant 0, flags 0) to userspace
-> >> >    [    1.138247] rust_virtio_rtc: Got response! Ok(RespRead { head:=
- ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading=
-: Le64(1777890485032086075) })
-> >> >    [    1.138264] rust_virtio_rtc: #1 clock reading =3D 177789048503=
-2086075
-> >> >    [    1.138730] rust_virtio_rtc: Got response! Ok(RespClockCap { h=
-ead: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_typ=
-e: 2, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
-> >> >    [    1.138751] rust_virtio_rtc virtio0: cannot expose clock 2 (ty=
-pe 2, variant 0, flags 0) to userspace
-> >> >    [    1.139253] rust_virtio_rtc: Got response! Ok(RespRead { head:=
- ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading=
-: Le64(338567896865557) })
-> >> >    [    1.139270] rust_virtio_rtc: #2 clock reading =3D 338567896865=
-557
-> >> >
-> >> >Concerns - Notes - TODOs
-> >> >=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-> >> >
-> >> >- Virtqueue lifetimes don't neatly apply to Rust as expected, so a lo=
-t
-> >> >  of times we have to go through unsafe pointer dereferences (though
-> >> >  which are guaranteed by Virtio subsystem to be valid, for example w=
-hen
-> >> >  a callback is called with the vq argument). There's a potential for
-> >> >  misuse and definitely could use better thinking.
-> >> >- `struct virtio_device` is not reference-counted like other implemen=
-ted
-> >> >  device types in rust/kernel. Maybe we need to change C API first to
-> >> >  make them reference counted, assuming this doesn't break anything?
-> >> >- The sample driver obviously conflicts with the C implementation, so
-> >> >  this would either need to move out of samples/ or figure out some w=
-ay
-> >> >  to handle this in kbuild.
-> >> >- kernel::virtio module and its types need a few rustdoc examples tha=
-t I
-> >> >  will add in followup series
-> >> >- Note that the registration of RTC clocks etc in the sample driver i=
-s
-> >> >  not done, I'm putting it off until I receive some feedback first. T=
-he
-> >> >  sample driver otherwise does send and receive data from the virtque=
-ue
-> >> >  as a PoC.
-> >> >
-> >> >PS: No LLMs used so any mistakes and goofs are solely written by me.
-> >> >
-> >> >Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
-> >> >---
-> >> >Changes in v3:
-> >> >- Removed unused methods from virtio API
-> >> >- Clean up how scattergather lists are added to virtqueues by using
-> >> >  owned SGTables only, and make the API safe(r)
-> >> >- Add RAII cleanup for find_vqs return value that calls del_vqs
-> >> >- Reset device after remove callback
-> >> >- Significantly clean up sample driver as a result of the other clean=
-ups
-> >> >- Link to v2: https://lore.kernel.org/r/20260509-rust-virtio-v2-0-c1e=
-30ec2bd21@pitsidianak.is
-> >> >
-> >> >Changes in v2:
-> >> >- Move helper ifdefs to helper file (thanks Alice)
-> >> >- Changed CONFIG checks to IS_ENABLED to allow for CONFIG_VIRTIO=3Dm
-> >> >- Split all use imports to one item per line according to style guide
-> >> >- Fixed wait_for_completion_interruptible*() rustdocs
-> >> >- Use Jiffy type alias in wait_for_completion_interruptible_timeout()
-> >> >- Pepper and salt #[inline]s wherever appropriate as per style guide
-> >> >- Split probe() into probe() and init() to allow cleaning up if init
-> >> >  fails
-> >> >- Remove unnecessary Send and Sync unsafe impls for
-> >> >  kernel::virtio::Device
-> >> >- Remove unnecessary LeSize and BeSize
-> >> >- Accept Option<_> for virtqueue callback when creating a VirtqueueIn=
-fo
-> >> >- Made all vq buffer adding operations unsafe
-> >> >- Use AtomicU16 instead of Cell<u16> for sample virtio driver
-> >> >- Fix RespHead field types in sample virtio driver
-> >> >- Fix response error checking in sample virtio driver
-> >> >- Change some device contexts in method signatures
-> >> >- Link to v1: https://lore.kernel.org/r/20260505-rust-virtio-v1-0-956=
-3383909e4@pitsidianak.is
-> >> >
-> >> >---
-> >> >Manos Pitsidianakis (6):
-> >> >      rust/bindings: generate virtio bindings
-> >> >      rust/helpers: add virtio.c
-> >> >      rust/kernel/device: return parent at same context
-> >> >      rust: add virtio module
-> >> >      rust: impl interruptible waits for Completion
-> >> >      samples/rust: Add sample virtio-rtc driver [WIP]
-> >> >
-> >> > MAINTAINERS                     |   9 +
-> >> > rust/bindings/bindings_helper.h |   5 +
-> >> > rust/helpers/helpers.c          |   1 +
-> >> > rust/helpers/virtio.c           |  37 ++++
-> >> > rust/kernel/device.rs           |   2 +-
-> >> > rust/kernel/lib.rs              |   2 +
-> >> > rust/kernel/sync/completion.rs  |  42 +++-
-> >> > rust/kernel/virtio.rs           | 423 ++++++++++++++++++++++++++++++=
-++++++++++
-> >> > rust/kernel/virtio/utils.rs     |  57 ++++++
-> >> > rust/kernel/virtio/virtqueue.rs | 314 +++++++++++++++++++++++++++++
-> >> > samples/rust/Kconfig            |  15 ++
-> >> > samples/rust/Makefile           |   1 +
-> >> > samples/rust/rust_virtio_rtc.rs | 403 ++++++++++++++++++++++++++++++=
-++++++++
-> >> > 13 files changed, 1309 insertions(+), 2 deletions(-)
-> >> >---
-> >> >base-commit: 028ef9c96e96197026887c0f092424679298aae8
-> >> >change-id: 20260504-rust-virtio-8523b01dfdc2
-> >> >
-> >> >Best regards,
-> >> >--
-> >> >Manos Pitsidianakis <manos@pitsidianak.is>
-> >> >
->
+Manos
 
+>
+>> (This is something I am also interested in because I'm working on a
+>> different kind of network device)
+>>
+>> You can definitely play with the sample driver included in this series
+>> however!
+>>
+>> Manos
+>>
+>>
+>> >
+>> >Thanks!
+>> >
+>> >> On Sun, 10 May 2026 16:38, Manos Pitsidianakis <manos@pitsidianak.is> wrote:
+>> >> >Hi all, this RFC series adds Rust bindings for Virtio drivers
+>> >> >(frontends in virtio parlance).
+>> >> >
+>> >> >As a PoC, it also adds a sample virtio-rtc driver which performs
+>> >> >capability discovery through the virtqueue without registering any clock.
+>> >> >
+>> >> >Before I send a cleaned-up non-RFC I would like some initial feedback
+>> >> >(i.e. is it something the upstream wants?)
+>> >> >
+>> >> >This was tested with the rust-vmm vhost-device-rtc device backend that I
+>> >> >wrote[^0]:
+>> >> >
+>> >> >[^0]: https://github.com/rust-vmm/vhost-device/tree/main/vhost-device-rtc
+>> >> >
+>> >> >Instructions:
+>> >> >
+>> >> >  Run the daemon in a separate terminal:
+>> >> >
+>> >> >  $ cargo run --bin vhost-device-rtc -- -s /tmp/rtc.sock
+>> >> >
+>> >> >  Then run the VM:
+>> >> >
+>> >> >  $ qemu-system-aarch64 \
+>> >> >    -machine type=virt,virtualization=off,acpi=on \
+>> >> >    -cpu host \
+>> >> >    -smp 8 \
+>> >> >    -accel kvm \
+>> >> >    -drive if=virtio,format=qcow2,file=./debian-13-nocloud-arm64-daily.qcow2 \
+>> >> >    -device virtio-net-pci,netdev=unet \
+>> >> >    -device virtio-scsi-pci \
+>> >> >    -serial mon:stdio \
+>> >> >    -m 8192 \
+>> >> >    -object memory-backend-memfd,id=mem,size=8G,share=on \
+>> >> >    -numa node,memdev=mem \
+>> >> >    -display none \
+>> >> >    -vga none \
+>> >> >    -kernel /path/to/linux/build/arch/arm64/boot/Image \
+>> >> >    -device vhost-user-test-device,chardev=rtc,id=rtc,virtio-id=17,num_vqs=2,vq_size=1024 \
+>> >> >    -chardev socket,path=/tmp/rtc.sock,id=rtc \
+>> >> >    ...
+>> >> >
+>> >> >  Example output:
+>> >> >    [    1.105238] rust_virtio_rtc: Probe Rust virtio driver sample.
+>> >> >    [    1.105645] rust_virtio_rtc: Found 1 vqs.
+>> >> >    [    1.136050] rust_virtio_rtc: process_requestq got buf 16 bytes
+>> >> >    [    1.136125] rust_virtio_rtc: Got response! Ok(RespCfg { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, num_clocks: Le16(3), reserved: [0, 0, 0, 0, 0, 0] })
+>> >> >    [    1.136701] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 3, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
+>> >> >    [    1.136724] rust_virtio_rtc virtio0: cannot expose clock 0 (type 3, variant 0, flags 0) to userspace
+>> >> >    [    1.137259] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(1777890485031060388) })
+>> >> >    [    1.137277] rust_virtio_rtc: #0 clock reading = 1777890485031060388
+>> >> >    [    1.137749] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 1, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
+>> >> >    [    1.137769] rust_virtio_rtc virtio0: cannot expose clock 1 (type 1, variant 0, flags 0) to userspace
+>> >> >    [    1.138247] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(1777890485032086075) })
+>> >> >    [    1.138264] rust_virtio_rtc: #1 clock reading = 1777890485032086075
+>> >> >    [    1.138730] rust_virtio_rtc: Got response! Ok(RespClockCap { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_type: 2, leap_second_smearing: 0, flags: 0, reserved: [0, 0, 0, 0, 0] })
+>> >> >    [    1.138751] rust_virtio_rtc virtio0: cannot expose clock 2 (type 2, variant 0, flags 0) to userspace
+>> >> >    [    1.139253] rust_virtio_rtc: Got response! Ok(RespRead { head: ReqHead { msg_type: Le16(0), reserved: [0, 0, 0, 0, 0, 0] }, clock_reading: Le64(338567896865557) })
+>> >> >    [    1.139270] rust_virtio_rtc: #2 clock reading = 338567896865557
+>> >> >
+>> >> >Concerns - Notes - TODOs
+>> >> >========================
+>> >> >
+>> >> >- Virtqueue lifetimes don't neatly apply to Rust as expected, so a lot
+>> >> >  of times we have to go through unsafe pointer dereferences (though
+>> >> >  which are guaranteed by Virtio subsystem to be valid, for example when
+>> >> >  a callback is called with the vq argument). There's a potential for
+>> >> >  misuse and definitely could use better thinking.
+>> >> >- `struct virtio_device` is not reference-counted like other implemented
+>> >> >  device types in rust/kernel. Maybe we need to change C API first to
+>> >> >  make them reference counted, assuming this doesn't break anything?
+>> >> >- The sample driver obviously conflicts with the C implementation, so
+>> >> >  this would either need to move out of samples/ or figure out some way
+>> >> >  to handle this in kbuild.
+>> >> >- kernel::virtio module and its types need a few rustdoc examples that I
+>> >> >  will add in followup series
+>> >> >- Note that the registration of RTC clocks etc in the sample driver is
+>> >> >  not done, I'm putting it off until I receive some feedback first. The
+>> >> >  sample driver otherwise does send and receive data from the virtqueue
+>> >> >  as a PoC.
+>> >> >
+>> >> >PS: No LLMs used so any mistakes and goofs are solely written by me.
+>> >> >
+>> >> >Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
+>> >> >---
+>> >> >Changes in v3:
+>> >> >- Removed unused methods from virtio API
+>> >> >- Clean up how scattergather lists are added to virtqueues by using
+>> >> >  owned SGTables only, and make the API safe(r)
+>> >> >- Add RAII cleanup for find_vqs return value that calls del_vqs
+>> >> >- Reset device after remove callback
+>> >> >- Significantly clean up sample driver as a result of the other cleanups
+>> >> >- Link to v2: https://lore.kernel.org/r/20260509-rust-virtio-v2-0-c1e30ec2bd21@pitsidianak.is
+>> >> >
+>> >> >Changes in v2:
+>> >> >- Move helper ifdefs to helper file (thanks Alice)
+>> >> >- Changed CONFIG checks to IS_ENABLED to allow for CONFIG_VIRTIO=m
+>> >> >- Split all use imports to one item per line according to style guide
+>> >> >- Fixed wait_for_completion_interruptible*() rustdocs
+>> >> >- Use Jiffy type alias in wait_for_completion_interruptible_timeout()
+>> >> >- Pepper and salt #[inline]s wherever appropriate as per style guide
+>> >> >- Split probe() into probe() and init() to allow cleaning up if init
+>> >> >  fails
+>> >> >- Remove unnecessary Send and Sync unsafe impls for
+>> >> >  kernel::virtio::Device
+>> >> >- Remove unnecessary LeSize and BeSize
+>> >> >- Accept Option<_> for virtqueue callback when creating a VirtqueueInfo
+>> >> >- Made all vq buffer adding operations unsafe
+>> >> >- Use AtomicU16 instead of Cell<u16> for sample virtio driver
+>> >> >- Fix RespHead field types in sample virtio driver
+>> >> >- Fix response error checking in sample virtio driver
+>> >> >- Change some device contexts in method signatures
+>> >> >- Link to v1: https://lore.kernel.org/r/20260505-rust-virtio-v1-0-9563383909e4@pitsidianak.is
+>> >> >
+>> >> >---
+>> >> >Manos Pitsidianakis (6):
+>> >> >      rust/bindings: generate virtio bindings
+>> >> >      rust/helpers: add virtio.c
+>> >> >      rust/kernel/device: return parent at same context
+>> >> >      rust: add virtio module
+>> >> >      rust: impl interruptible waits for Completion
+>> >> >      samples/rust: Add sample virtio-rtc driver [WIP]
+>> >> >
+>> >> > MAINTAINERS                     |   9 +
+>> >> > rust/bindings/bindings_helper.h |   5 +
+>> >> > rust/helpers/helpers.c          |   1 +
+>> >> > rust/helpers/virtio.c           |  37 ++++
+>> >> > rust/kernel/device.rs           |   2 +-
+>> >> > rust/kernel/lib.rs              |   2 +
+>> >> > rust/kernel/sync/completion.rs  |  42 +++-
+>> >> > rust/kernel/virtio.rs           | 423 ++++++++++++++++++++++++++++++++++++++++
+>> >> > rust/kernel/virtio/utils.rs     |  57 ++++++
+>> >> > rust/kernel/virtio/virtqueue.rs | 314 +++++++++++++++++++++++++++++
+>> >> > samples/rust/Kconfig            |  15 ++
+>> >> > samples/rust/Makefile           |   1 +
+>> >> > samples/rust/rust_virtio_rtc.rs | 403 ++++++++++++++++++++++++++++++++++++++
+>> >> > 13 files changed, 1309 insertions(+), 2 deletions(-)
+>> >> >---
+>> >> >base-commit: 028ef9c96e96197026887c0f092424679298aae8
+>> >> >change-id: 20260504-rust-virtio-8523b01dfdc2
+>> >> >
+>> >> >Best regards,
+>> >> >--
+>> >> >Manos Pitsidianakis <manos@pitsidianak.is>
+>> >> >
+>>
+>
