@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDD14457BA;
-	Wed, 22 Jul 2026 23:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E7D45A2A1;
+	Wed, 22 Jul 2026 23:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784764493; cv=pass; b=Xb2Lm0CZtyRPfJhYnXWdHy9QraDv6FzLQWeWbek39L1/rREs6ImOny3jF5UYvWdScIOEwWZ5mt7LV/9uwE2JzwciSGVQMYhjrSPGTF4a2cspZLQgq3vLvVzDfd5iHIm5CINwBh+AH9SuoHsjTUbiYzmpqT+NWCv0n0pNkuusjSk=
+	t=1784764495; cv=pass; b=L5BpdpCRM0QhdUOHXHdpcb8mM0Xb2K1iDQ/b9DTlx5m4bbDK21UngWjgwN4M4wTreP7ShiTxzf74KOqzYL4ipgpRmZB1KXWUwFqpcJIGUWY3ukbZvsc+6vv0/Ii2wESbNLaE4W6LN1ZQVxwixEXd5ZuthGUGCNkhBPPN6PA0pME=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784764493; c=relaxed/simple;
-	bh=terCo1ge57k5W45hRwNhjU57M46rTs/10zADTmy6rcU=;
+	s=arc-20240116; t=1784764495; c=relaxed/simple;
+	bh=zHbLWiZ8WMuIDU4aejBoOrp0PLyfIMFgjgGvjWHbUzM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZUqc03Z6gd+M726o1uJgNSdv/y6nqFkdBtlXSGiLtqteJ2gBcpPekC2YWq5Yl6BsgvecJwue/xx+uGUpBffsDaLaa6JfFNeit1Cvciqh8GgEQ3dgLfPFUgv/R9vD5Mdx/sv3vyqeO/6bNvsPiJRNRlYxvxfXQx/d2nGgAWaZ3Oc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=S31pxr+q; arc=pass smtp.client-ip=136.143.188.11
+	 In-Reply-To:To:Cc; b=EEbKUR83Iz8LK5fibIaE76kHSv52ilcN+E8EM17EF4YkXXI1zrcfLuWGrD4K8IBMhS1cQRTnimSE/qcWA7mEcHudL9CcKlVczOp1z/a4chK2p25c+c5oPqFGY1k1yW4+QBmnbP+ea0FH3ZKOFoB8nDh4PjgQoayAvjmpJurDgLo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=JPPKgPRv; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="S31pxr+q"
-ARC-Seal: i=1; a=rsa-sha256; t=1784764456; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="JPPKgPRv"
+ARC-Seal: i=1; a=rsa-sha256; t=1784764460; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=DEBaOKLVJZO8xY4oMfIoaF909PXouYS50/tByXOh1jQJ6OzD7e3bINxBwf9Id2X53QrXMlY6RB5pWhOP78PZ5FgQqVDWXrzZ2quAgLXrQqhGiv5ml/AWftzKbcYZlffqOoX7JyQnaaU18D0GMJqXr8ueeujKij08oNVaRZIBz38=
+	b=heaV99LMyhzEh3hIfmThoe4UCy3EVNS/zg8Yu/YUGFYlXNEfHQw++0LMSncTOzI4jzHmxhmzEghOkwbEImbWRCUm6bxUGecz4Q+nkGyiYTdKCS8y3z780RnFsGv3lepC8p0AmcCUeqxZC0z4t6+X5+f8nDKDfkcxpi6QQWGv1Ys=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784764456; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=nzgvVj2YFg+yuz4duAIJqF9njTFSJ6sRESzHzi+IIuQ=; 
-	b=h8VR0NzgsdahsyV8upkzbW2L+M+4XdXn7p7AVNi7fMI2eVhqFvnTvTl+zMZg8D8ct33rVDosRsFnBn+DBSyPV9jOTV363teQrkbNXFgqbPL5munTLekITvZjWpaC373hkxSurLEOBJUTWJrIUrA/+Fums4OeqfF8OKysS76tr5g=
+	t=1784764460; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=kPxZcOCFJQSkWCGVRwm4EoZkxurlyOvE1JwNp6QWYAw=; 
+	b=HTki6I9oS5S3Cy3QG5eY2nEGfEWtuLfR8JMmuxHWoy74q07D+9F+m+IRygllNV+bd0D7bwE4mqX0EkMjOuSdjfXn2Qw5k7JiYt1EvqAelzFqk2DEydiY7OJl5lwDS5qVnaU6h1pw78rgwRgJ0x83hjZk6im/mv4uHhdapaJYKX4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784764456;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784764460;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=nzgvVj2YFg+yuz4duAIJqF9njTFSJ6sRESzHzi+IIuQ=;
-	b=S31pxr+q16Y9tUo+imDFk2TPB53mL4lgNrWIo4MFe8msmnRumekL8FSVofMexqnz
-	FumSl2E25AXhZPTEWAGK+5pZ3QU8mWtQELrMw1qvZ0Em4wNZes94pat4BKGIFC8CNbJ
-	og9PhNtqeIHgMX6vaww0I7GrYQWpnyuMVVpOv1q0=
-Received: by mx.zohomail.com with SMTPS id 1784764454777406.8023888276125;
-	Wed, 22 Jul 2026 16:54:14 -0700 (PDT)
+	bh=kPxZcOCFJQSkWCGVRwm4EoZkxurlyOvE1JwNp6QWYAw=;
+	b=JPPKgPRv2/nFwfhn/E4jtQgLJnGC8Rgq8FTfU1ZB8v/rjLzf4rZZ+nurlJyT6q08
+	VAkgBTcr1B7gahc6uZLpPx3Q3RSRkIK+OGlogIKbazTJF9Edk3uHbRKuPZzsMAesjxP
+	1j9HRmTkvmePSetvWxbRdrih42JkcpQsqF7hhKOU=
+Received: by mx.zohomail.com with SMTPS id 1784764458290601.0817471702306;
+	Wed, 22 Jul 2026 16:54:18 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Wed, 22 Jul 2026 16:54:08 -0700
-Subject: [PATCH v9 2/7] drm/tyr: add a generic slot manager
+Date: Wed, 22 Jul 2026 16:54:11 -0700
+Subject: [PATCH v9 5/7] drm/tyr: add a kernel buffer object
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-fw-boot-b4-v9-2-8669d2a02590@collabora.com>
+Message-Id: <20260722-fw-boot-b4-v9-5-8669d2a02590@collabora.com>
 References: <20260722-fw-boot-b4-v9-0-8669d2a02590@collabora.com>
 In-Reply-To: <20260722-fw-boot-b4-v9-0-8669d2a02590@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -66,467 +66,167 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  lyude@redhat.com, boris.brezillon@collabora.com, steven.price@arm.com, 
  alvin.sun@linux.dev, laura.nao@collabora.com, beata.michalska@arm.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=16923;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4887;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=4Y6uqS96E9XnIMI6yVGWCKWEa1lwaF587vv0NGT9XQg=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmJEcp9t8LMbcwlny4xypm0dJX5XHtr3Qv3/6d1Pjxjw
- X7Picuoo5SFQYyLQVZMkeWsvVGPeNV7I935/5th5rAygQxh4OIUgInoXWP4K7yRS2LfbLvyxfm/
- BFo+FTycOdM2qOee0Zo1L89Onrw/gI3hf9Gj/JotJk0Ot3bsW7qp76bV5hS9qlN1Lmqb7M+8Zsr
- 05AYA
+ bh=zHbLWiZ8WMuIDU4aejBoOrp0PLyfIMFgjgGvjWHbUzM=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmJEcrS5+4kzto2b3LDwy+pJwvaXb86VB1ZF+vzPLJ7/
+ yxBZ9NXHaUsDGJcDLJiiixn7Y16xKveG+nO/98MM4eVCWQIAxenAEzERp+R4X2n2rTtEz/qfd1S
+ +ljqt/uEmXPWnf2aFfnMUspSWdPmiQ4jw7KrBhItn6+LJyjrdnlMZom6IJr1/A3PvW6hba+Vmp4
+ e4AUA
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+Introduce a buffer object type (KernelBo) for internal driver allocations
+that are managed by the kernel rather than userspace.
 
-Introduce a generic slot manager to dynamically allocate limited hardware
-slots to software "seats". It can be used for both address space (AS) and
-command stream group (CSG) slots.
+KernelBo wraps a GEM shmem object and automatically handles GPU virtual
+address space mapping during creation and unmapping on drop. This provides
+a safe and convenient way for the driver to both allocate and clean up
+internal buffers for kernel-managed resources.
 
-The slot manager initially assigns seats to its free slots. It will
-continue to reuse the same slot for a seat, as long as another seat does
-not start to use the slot in the interim.
-
-When contention arises because all of the slots are allocated, the slot
-manager will lazily evict and reuse slots that have become idle (if any).
-
-The seat state is protected using the LockedBy pattern with the same lock
-that guards the SlotManager. This ensures the seat state stays consistent
-across slot operations.
-
-Hardware specific behaviour is controlled through the SlotManager's
-specific manager type that implements the `SlotOperations` trait.
-
+Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/slot.rs | 405 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/tyr.rs  |   1 +
- 2 files changed, 406 insertions(+)
+ drivers/gpu/drm/tyr/gem.rs | 113 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 109 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
-new file mode 100644
-index 000000000000..845846e07ee5
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/slot.rs
-@@ -0,0 +1,405 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index c28be61a01bb..b371299028d6 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -4,18 +4,29 @@
+ //! This module provides buffer object (BO) management functionality using
+ //! DRM's GEM subsystem with shmem backing.
+ 
++use core::ops::Range;
 +
-+//! Slot management abstraction for limited hardware resources.
-+//!
-+//! This module provides a generic [`SlotManager`] that assigns limited hardware
-+//! slots to logical "seats". A seat represents an entity (such as a virtual memory
-+//! (VM) address space) that needs access to a hardware slot.
-+//!
-+//! The [`SlotManager`] tracks slot allocation using sequence numbers (seqno) to detect
-+//! when a seat's binding has been invalidated. When a seat requests activation,
-+//! the manager will either reuse the seat's existing slot (if still valid),
-+//! allocate a free slot (if any are available), or evict the oldest idle slot if any
-+//! slots are idle.
-+//!
-+//! Hardware-specific behavior is customized by implementing the [`SlotOperations`]
-+//! trait, which allows callbacks when slots are activated or evicted.
-+//!
-+//! This is currently used for managing address space slots in the GPU, and it will
-+//! also be used to manage Command Stream Group (CSG) interface slots in the future.
-+//!
-+//! [SlotOperations]: crate::slot::SlotOperations
-+//! [SlotManager]: crate::slot::SlotManager
-+#![expect(dead_code)]
-+
-+use core::{
-+    mem,
-+    ops::{
-+        Deref,
-+        DerefMut, //
+ use kernel::{
+     drm::gem::{
+         self,
+         shmem, //
+     },
+     prelude::*,
+-    sync::aref::ARef, //
++    sync::{
++        aref::ARef,
++        Arc, //
 +    }, //
-+};
+ };
+ 
+-use crate::driver::{
+-    TyrDrmDevice,
+-    TyrDrmDriver, //
++use crate::{
++    driver::{
++        TyrDrmDevice,
++        TyrDrmDriver, //
++    },
++    vm::{
++        Vm,
++        VmMapFlags, //
++    },
+ };
+ 
+ /// Tyr's DriverObject type for GEM objects.
+@@ -56,3 +67,97 @@ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
+ 
+     Ok(bo)
+ }
 +
-+use kernel::{
-+    prelude::*,
-+    sync::LockedBy, //
-+};
++/// Specifies how to choose a GPU virtual address for a [`KernelBo`].
++/// An automatic VA allocation strategy will be added in the future.
++pub(crate) enum KernelBoVaAlloc {
++    /// Explicit VA address specified by the caller.
++    #[expect(dead_code)]
++    Explicit(u64),
++}
 +
-+/// Seat information.
++/// A kernel-owned buffer object with automatic GPU virtual address mapping.
 +///
-+/// This can't be accessed directly by the element embedding a `Seat`,
-+/// but is used by the generic slot manager logic to control residency
-+/// of a certain object on a hardware slot.
-+pub(crate) struct SeatInfo {
-+    /// Slot used by this seat.
-+    ///
-+    /// This index is only valid if the slot pointed to by this index
-+    /// has its `SlotInfo::seqno` match `SeatInfo::seqno`. Otherwise,
-+    /// it means the object has been evicted from the hardware slot,
-+    /// and a new slot needs to be acquired to make this object
-+    /// resident again.
-+    slot: u8,
-+
-+    /// Sequence number encoding the last time this seat was active.
-+    /// We also use it to check if a slot is still bound to a seat.
-+    seqno: u64,
-+}
-+
-+/// Seat state.
++/// This structure represents a buffer object that is created and managed entirely
++/// by the kernel driver, as opposed to userspace-created GEM objects. It combines
++/// a GEM object with automatic GPU virtual address (VA) space mapping and cleanup.
 +///
-+/// This is meant to be embedded in the object that wants to acquire
-+/// hardware slots. It also starts in the `Seat::NoSeat` state, and
-+/// the slot manager will change the object value when an active/evict
-+/// request is issued.
-+#[derive(Default)]
-+pub(crate) enum Seat {
-+    #[expect(clippy::enum_variant_names)]
-+    /// Resource is not resident.
++/// When dropped, the buffer is automatically unmapped from the GPU VA space.
++pub(crate) struct KernelBo<'bound> {
++    /// The underlying GEM buffer object.
++    bo: ARef<Bo>,
++    /// The GPU VM this buffer is mapped into.
++    vm: Arc<Vm<'bound>>,
++    /// The GPU VA range occupied by this buffer.
++    va_range: Range<u64>,
++}
++
++impl<'bound> KernelBo<'bound> {
++    /// Creates a new kernel-owned buffer object and maps it into GPU VA space.
 +    ///
-+    /// All objects start with a seat in the `Seat::NoSeat` state. The seat also
-+    /// gets back to that state if the user requests eviction. It
-+    /// can also end up in that state next time an operation is done
-+    /// on a `Seat::Idle` seat and the slot manager finds out this
-+    /// object has been evicted from the slot.
-+    #[default]
-+    NoSeat,
-+
-+    /// Resource is actively used and resident.
-+    ///
-+    /// When a seat is in the `Seat::Active` state, it can't be evicted, and the
-+    /// slot pointed to by `SeatInfo::slot` is guaranteed to be reserved
-+    /// for this object as long as the seat stays active.
-+    Active(SeatInfo),
-+
-+    /// Resource is idle and might or might not be resident.
-+    ///
-+    /// When a seat is in the`Seat::Idle` state, we can't know for sure if the
-+    /// object is resident or evicted until the next request we issue
-+    /// to the slot manager. This tells the slot manager it can
-+    /// reclaim the underlying slot if needed.
-+    /// In order for the hardware to use this object again, the seat
-+    /// needs to be turned into an `Seat::Active` state again
-+    /// with a `SlotManager::activate()` call.
-+    Idle(SeatInfo),
-+}
-+
-+impl Seat {
-+    /// Get the slot index this seat is pointing to.
-+    ///
-+    /// If the seat is not `Seat::Active` we can't trust the
-+    /// `SeatInfo`. In that case `None` is returned, otherwise
-+    /// `Some(SeatInfo::slot)` is returned.
-+    pub(crate) fn slot(&self) -> Option<u8> {
-+        match self {
-+            Self::Active(info) => Some(info.slot),
-+            _ => None,
-+        }
-+    }
-+}
-+
-+/// Information related to a slot.
-+struct SlotInfo<D> {
-+    /// Type specific data attached to a slot.
-+    slot_data: D,
-+
-+    /// Sequence number from when this slot was last activated.
-+    seqno: u64,
-+}
-+
-+/// Slot state.
-+#[derive(Default)]
-+enum Slot<D> {
-+    /// Slot is free.
-+    #[default]
-+    Free,
-+
-+    /// Slot is active.
-+    Active(SlotInfo<D>),
-+
-+    /// Slot is idle.
-+    Idle(SlotInfo<D>),
-+}
-+
-+pub(crate) type LockedSeat<T, const MAX_SLOTS: usize> = LockedBy<Seat, SlotManager<T, MAX_SLOTS>>;
-+
-+/// Trait describing the slot-related operations.
-+pub(crate) trait SlotOperations<const MAX_SLOTS: usize>: Sized {
-+    /// Implementation-specific data associated with each slot.
-+    type SlotData;
-+
-+    /// Returns the seat belonging to this slot data.
-+    fn seat(slot_data: &Self::SlotData) -> &LockedSeat<Self, MAX_SLOTS>;
-+
-+    /// Called when a slot is being activated for a seat.
-+    fn activate(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
-+        Ok(())
-+    }
-+
-+    /// Called when a slot is being evicted and freed.
-+    fn evict(&mut self, _slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
-+        Ok(())
-+    }
-+}
-+
-+/// A generic slot manager that provides access to a limited number of hardware slots.
-+pub(crate) struct SlotManager<T: SlotOperations<MAX_SLOTS>, const MAX_SLOTS: usize> {
-+    /// A specific implementation of the generic slot manager.
-+    manager: T,
-+
-+    /// Number of slots actually available.
-+    slot_count: usize,
-+
-+    /// Slot array used to track the state of each slot.
-+    slots: [Slot<T::SlotData>; MAX_SLOTS],
-+
-+    /// Sequence number incremented each time a Seat is successfully activated
-+    use_seqno: u64,
-+}
-+
-+impl<T: SlotOperations<MAX_SLOTS>, const MAX_SLOTS: usize> SlotManager<T, MAX_SLOTS> {
-+    /// Creates a specific instance of a slot manager.
-+    pub(crate) fn new(manager: T, slot_count: usize) -> Result<Self> {
-+        if slot_count == 0 {
-+            return Err(EINVAL);
-+        }
-+        if slot_count > MAX_SLOTS {
-+            return Err(EINVAL);
-+        }
-+        // Since the slot index is stored in SeatInfo as a u8, the maximum number of slots is 256.
-+        if slot_count > u8::MAX as usize + 1 {
++    /// This function allocates a new shmem-backed GEM object and immediately maps
++    /// it into the specified GPU virtual memory space. The mapping is automatically
++    /// cleaned up when the [`KernelBo`] is dropped.
++    #[expect(dead_code)]
++    pub(crate) fn new(
++        ddev: &TyrDrmDevice,
++        vm: Arc<Vm<'bound>>,
++        size: u64,
++        va_alloc: KernelBoVaAlloc,
++        flags: VmMapFlags,
++    ) -> Result<Self> {
++        if size == 0 {
++            dev_err!(vm.dev(), "Cannot create KernelBo with size 0");
 +            return Err(EINVAL);
 +        }
 +
-+        Ok(Self {
-+            manager,
-+            slot_count,
-+            slots: [const { Slot::Free }; MAX_SLOTS],
-+            use_seqno: 1,
++        let KernelBoVaAlloc::Explicit(va) = va_alloc;
++
++        let bo_size = usize::try_from(size).map_err(|_| EOVERFLOW)?;
++        let va_end = va.checked_add(size).ok_or(EINVAL)?;
++
++        let bo = Bo::new(
++            ddev,
++            bo_size,
++            shmem::ObjectConfig {
++                map_wc: true,
++                parent_resv_obj: None,
++            },
++            BoCreateArgs { flags: 0 },
++        )?;
++
++        vm.map_bo_range(&bo, 0, size, va, flags)?;
++
++        Ok(KernelBo {
++            bo,
++            vm,
++            va_range: va..va_end,
 +        })
 +    }
 +
-+    /// Records a newly activated slot for the given seat.
-+    /// The slot manager takes ownership of the hardware-specific slot data.
-+    fn record_active_slot(&mut self, slot_idx: usize, slot_data: T::SlotData) {
-+        let cur_seqno = self.use_seqno;
-+
-+        *T::seat(&slot_data).access_mut(self) = Seat::Active(SeatInfo {
-+            slot: slot_idx as u8,
-+            seqno: cur_seqno,
-+        });
-+
-+        self.slots[slot_idx] = Slot::Active(SlotInfo {
-+            slot_data,
-+            seqno: cur_seqno,
-+        });
-+
-+        self.use_seqno += 1;
-+    }
-+
-+    /// Reactivates an active/idle slot for a given seat without reprogramming the hardware.
-+    /// The SlotManager reuses the existing slot_data. This ensures that the hardware-specific
-+    /// information is not changed between subsequent uses. It also ensures that resources
-+    /// owned by the existing slot_data remain alive while the hardware is configured to use them.
-+    fn reactivate_slot(&mut self, slot_idx: usize, slot_data: &T::SlotData) -> Result {
-+        let cur_seqno = self.use_seqno;
-+
-+        let mut slot_info = match mem::take(&mut self.slots[slot_idx]) {
-+            Slot::Active(slot_info) | Slot::Idle(slot_info) => slot_info,
-+            Slot::Free => {
-+                *T::seat(slot_data).access_mut(self) = Seat::NoSeat;
-+                return Err(EINVAL);
-+            }
-+        };
-+
-+        *T::seat(slot_data).access_mut(self) = Seat::Active(SeatInfo {
-+            slot: slot_idx as u8,
-+            seqno: cur_seqno,
-+        });
-+
-+        slot_info.seqno = cur_seqno;
-+        self.slots[slot_idx] = Slot::Active(slot_info);
-+
-+        self.use_seqno += 1;
-+
-+        Ok(())
-+    }
-+
-+    /// Activates a slot for the given seat.
-+    fn activate_slot(&mut self, slot_idx: usize, slot_data: T::SlotData) -> Result {
-+        self.manager.activate(slot_idx, &slot_data)?;
-+        self.record_active_slot(slot_idx, slot_data);
-+        Ok(())
-+    }
-+
-+    /// Finds a slot for the given seat. A free slot is preferred, but if none
-+    /// are available, the oldest idle slot is evicted and reused. Otherwise, if
-+    /// there are no free or idle slots, return [`EBUSY`].
-+    fn allocate_slot(&mut self, slot_data: T::SlotData) -> Result {
-+        let slots = &self.slots[..self.slot_count];
-+
-+        let mut idle_slot_idx = None;
-+        let mut idle_slot_seqno: u64 = 0;
-+
-+        for (slot_idx, slot) in slots.iter().enumerate() {
-+            match slot {
-+                Slot::Free => {
-+                    return self.activate_slot(slot_idx, slot_data);
-+                }
-+                Slot::Idle(slot_info) => {
-+                    if idle_slot_idx.is_none() || slot_info.seqno < idle_slot_seqno {
-+                        idle_slot_idx = Some(slot_idx);
-+                        idle_slot_seqno = slot_info.seqno;
-+                    }
-+                }
-+                Slot::Active(_) => (),
-+            }
-+        }
-+
-+        match idle_slot_idx {
-+            Some(slot_idx) => {
-+                // Lazily evict idle slot just before it is reused.
-+                if let Slot::Idle(slot_info) = &self.slots[slot_idx] {
-+                    self.manager.evict(slot_idx, &slot_info.slot_data)?;
-+                    mem::take(&mut self.slots[slot_idx]);
-+                }
-+                self.activate_slot(slot_idx, slot_data)
-+            }
-+            None => Err(EBUSY),
-+        }
-+    }
-+
-+    /// Converts an active slot and its seat to idle state.
-+    fn idle_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        let slot = mem::take(&mut self.slots[slot_idx]);
-+
-+        self.slots[slot_idx] = match slot {
-+            // If the slot was active, make it idle.
-+            Slot::Active(slot_info) => Slot::Idle(slot_info),
-+
-+            // Preserve an already-idle slot.
-+            Slot::Idle(slot_info) => Slot::Idle(slot_info),
-+
-+            // A free slot remains free.
-+            Slot::Free => Slot::Free,
-+        };
-+
-+        // If the seat was active, make it idle, or keep it idle if it was already idle.
-+        *locked_seat.access_mut(self) = match locked_seat.access(self) {
-+            Seat::Active(seat_info) | Seat::Idle(seat_info) => Seat::Idle(SeatInfo {
-+                slot: seat_info.slot,
-+                seqno: seat_info.seqno,
-+            }),
-+            Seat::NoSeat => Seat::NoSeat,
-+        };
-+        Ok(())
-+    }
-+
-+    /// Evicts an active or idle slot: calls the eviction callback and marks the slot as free
-+    /// and the seat as NoSeat.
-+    fn evict_slot(&mut self, slot_idx: usize, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        match &self.slots[slot_idx] {
-+            Slot::Active(slot_info) | Slot::Idle(slot_info) => {
-+                // If hardware eviction fails (e.g. times out), the slot retains
-+                // its SlotData so that any resources still referenced by the hardware
-+                // will remain alive. This prevents use-after-free errors.
-+                self.manager.evict(slot_idx, &slot_info.slot_data)?;
-+                mem::take(&mut self.slots[slot_idx]);
-+            }
-+            _ => (),
-+        }
-+
-+        *locked_seat.access_mut(self) = Seat::NoSeat;
-+        Ok(())
-+    }
-+
-+    /// Checks that the seat state matches the slot's state.
-+    /// If they don't match, the seat is stale and is reset to `NoSeat`.
-+    fn check_seat(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) {
-+        let (slot_idx, seat_seqno, is_active) = match locked_seat.access(self) {
-+            Seat::Active(seat_info) => (seat_info.slot as usize, seat_info.seqno, true),
-+            Seat::Idle(seat_info) => (seat_info.slot as usize, seat_info.seqno, false),
-+            _ => return,
-+        };
-+
-+        let valid = if is_active {
-+            !kernel::warn_on!(!matches!(
-+                &self.slots[slot_idx],
-+                Slot::Active(slot_info) if slot_info.seqno == seat_seqno
-+            ))
-+        } else {
-+            matches!(
-+                &self.slots[slot_idx],
-+                Slot::Idle(slot_info) if slot_info.seqno == seat_seqno
-+            )
-+        };
-+
-+        if !valid {
-+            *locked_seat.access_mut(self) = Seat::NoSeat;
-+        }
-+    }
-+
-+    /// Activates a resource on any available/reclaimable slot.
-+    pub(crate) fn activate(&mut self, slot_data: T::SlotData) -> Result {
-+        self.check_seat(T::seat(&slot_data));
-+
-+        // Copy out only the slot index so the borrow of slot_data ends here.
-+        let slot_idx = match T::seat(&slot_data).access(self) {
-+            Seat::Active(seat_info) | Seat::Idle(seat_info) => Some(seat_info.slot as usize),
-+            Seat::NoSeat => None,
-+        };
-+
-+        match slot_idx {
-+            Some(slot_idx) => self.reactivate_slot(slot_idx, &slot_data),
-+            None => self.allocate_slot(slot_data),
-+        }
-+    }
-+
-+    /// Flag a resource as idle. This method will be used for user VM support.
 +    #[expect(dead_code)]
-+    pub(crate) fn idle(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        self.check_seat(locked_seat);
-+        if let Seat::Active(seat_info) = locked_seat.access(self) {
-+            self.idle_slot(seat_info.slot as usize, locked_seat)?;
++    pub(crate) fn bo(&self) -> &Bo {
++        &self.bo
++    }
++}
++
++impl Drop for KernelBo<'_> {
++    fn drop(&mut self) {
++        let va = self.va_range.start;
++        let size = self.va_range.end - self.va_range.start;
++
++        if let Err(e) = self.vm.unmap_range(va, size) {
++            // If unmap_range fails, it is still safe to drop the
++            // KernelBo and its ARef to the GEM buffer object because
++            // GPUVM also holds a reference to the GEM buffer object.
++            // The physical pages won't be freed or reallocated.
++            dev_err!(
++                self.vm.dev(),
++                "Failed to unmap KernelBo range {:#x}..{:#x}: {:?}",
++                self.va_range.start,
++                self.va_range.end,
++                e
++            );
 +        }
-+        Ok(())
-+    }
-+
-+    /// Evict a resource from its slot.
-+    pub(crate) fn evict(&mut self, locked_seat: &LockedSeat<T, MAX_SLOTS>) -> Result {
-+        self.check_seat(locked_seat);
-+
-+        match locked_seat.access(self) {
-+            Seat::Active(seat_info) | Seat::Idle(seat_info) => {
-+                let slot_idx = seat_info.slot as usize;
-+                self.evict_slot(slot_idx, locked_seat)?;
-+            }
-+            _ => (),
-+        }
-+
-+        Ok(())
 +    }
 +}
-+
-+impl<T: SlotOperations<MAX_SLOTS>, const MAX_SLOTS: usize> Deref for SlotManager<T, MAX_SLOTS> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.manager
-+    }
-+}
-+
-+impl<T: SlotOperations<MAX_SLOTS>, const MAX_SLOTS: usize> DerefMut for SlotManager<T, MAX_SLOTS> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.manager
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 95cda7b0962f..7c9a8063b3b9 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -12,6 +12,7 @@
- mod gem;
- mod gpu;
- mod regs;
-+mod slot;
- 
- kernel::module_platform_driver! {
-     type: TyrPlatformDriver,
 
 -- 
 2.55.0
