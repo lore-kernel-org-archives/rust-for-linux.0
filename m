@@ -1,165 +1,134 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D5B2F7EFF
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 Jul 2026 16:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784823372; cv=none; b=pdmOWl2Pt2ufbCSlFsoABWjjt8utkZ7SdZ9XrRPYD2xwacVr1S+SkQPw0HmDH53DZ5AVtdTB4WFHCdpzcHpNtf0cEEXF1pJvwlZcHh7YwAiy47leuKV4KXco4EDr/rKMDJdulEQzK2RcPMT7nFyoQ5EBvDkIzlfrjwHIptZTvvI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784823372; c=relaxed/simple;
-	bh=RhYZhATafjoMD0ZHXlRQHWN9Xd1AxMAMGtvwpmw4tCE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MOqF/HcvKvXo2EBQvsCzhrbd4gLXD8qXKH4Z/Or/mDsFLDs35Mbx5Eg6nS+aYYe/oyOnlhIrsYsAJaSpx7KMMjQJpsTH7k1UuAkMSTwfShH2nPMAwIsjYlZhtBf2JWvnRa680M/Wg5xFHnHWyjg8IcxI9WWVYRCQZprd48HirIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A9Mxu893; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022484BC00B
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 Jul 2026 16:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784823368; cv=pass; b=KdFHmHQ3NFPoTP6oiZmciiZcepfqC5GHgY9xusWPOxze9YycqT2y6Mpf3JCcX0nfejp9l3yqVVniEJzSEZUjAgZn9+f36ZmwmX1TIaTXElEQ7ziqVyK1mde1wVuJ+JiLZoFTLMnR8GY1SMGb4J0nSILCx5Ox+FVKpwA24A30rlY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784823368; c=relaxed/simple;
+	bh=C+UuQnH9p7pQ4txAQtrBZMq/oyL9mQTAJo5xHQjvdvQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Zbss4ToRh9xIYPR+wYUv0kezXj2Nze9PQRQU8GkBkejhmUDB4zl6zD9rdYcSzX4AF9OHdaO/7f9LHUc6Me4wQMpKujTf9DBmzPKXnHCuwpTjeYClqXBQ6a51loS8HA0Tg5U+eUAAicMEEYfERZNk5Fxn2VsKVC0cRoQBGfGRIAc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ut2bbDAU; arc=pass smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A9Mxu893"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-39c8dbf4f38so6298081fa.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 23 Jul 2026 09:15:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ut2bbDAU"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ccae46de39so1747045ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 23 Jul 2026 09:15:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784823345; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gPxu6NkRKJod/w9UBPykrQL17ENI2bXe1b7+AxjSobwX+RHpgRH8kw3oAQ3eESwRKR
+         n8X4Fh0KbmI6jVcT83Iskkw69kfjdneNdQOrhvp3enk/YiSVL9nHAa5o45RspPa6FhGT
+         aaantHAHEFWc3rVxBe0bsckhxM2740Tf0k85m4bgazv3jKozMECMjyRj0fwc5NqaDETE
+         lcctSxelge+3yEO02FA+pAny9vU5cdHQfS8v4GEpXxsrIHKNnRh0Umbo1tSxgCoAgGoc
+         RKrsE7TfnwkMVcwzITSM+h+5Bc5YKaqxPLGt6YX3WHGW174uIeijqjdxsqyJqEUF+nKT
+         LH6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=C+UuQnH9p7pQ4txAQtrBZMq/oyL9mQTAJo5xHQjvdvQ=;
+        fh=Tqb5jfHlZcMU9kpUA2Qt0Fzck7knbcOL0RRfQQT/Q/g=;
+        b=K9sTWP8JWdv92xz0V7LuWBZsD2acFBY9JZx804ZE00EO1V7w87E4P2d+xJpdQ1J+y1
+         iiQwgzgGBsPNVJBgHam/K1RdediXVBjvjNfH5Hn0ImcgO/C5AaQNVEgR7/ou78xbSXxC
+         SH9T4ZZzGS64MB7uGxO9YlfBWrgbjTKW2mfBvToX5uvO1mQgVVQeLUBnehsnctO5FFq3
+         ypqCDp0PflOGshiIjw59CqjTMHPF53qb47zwkMqCGMGA/KRRA01ZJTFZd7UsvRMyBTVt
+         ivnSB//BuTEuuMdpoh8lOSVUC4N8cPiT4UG4mUlVRpTYYewwZ2meo3hMu/gdmSM1HCtp
+         WThA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784823353; x=1785428153; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iCFBAhStYCbZRWF7EYeTGTDCTAg3SzAm66lZxtMyduE=;
-        b=A9Mxu89328xZTb6bSW/2wNnD+XEPmPHz3atfPhfCpmbOOVGSlflpXV4Jqm8nl+QhHh
-         7N3M/cilFKg91h9GOQ8CRh60AdSOd4wphKO07Gtin7NnpmNVTlVzWEtl3ycmlzS3HtY5
-         cdNuZX43vZUKpuFTo10Ai+KkbS6lzqDgcLbYAyXjez0Ddmix7VS0IHyFgyofPQAtK92q
-         sVZ2DeSCeif8AfuWHSVTD/Dchg2oH+QgqWIFY0xfNH2J8Dp/UMTJgOTHIR9TQ69RQlbf
-         ieLiBus83V/lNa8A6HcLgmFwmhO8pGIv3ddMtIaZiexwpZWHh4q/W5nSQI2XVeD7Nlb9
-         0ngg==
+        d=gmail.com; s=20251104; t=1784823345; x=1785428145; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=C+UuQnH9p7pQ4txAQtrBZMq/oyL9mQTAJo5xHQjvdvQ=;
+        b=Ut2bbDAUQVTk/wxkTp0LIbFyymxoYMaCVVEJHerHzy8/yV4+WDp5f3qpH06z/CP4ze
+         853f120RkdcKAjyxTk2knBtpKPVESkAslvuRTXLNtMg5xP6OBE7VhLqZU8Ffn1TxBDaE
+         7GjSZ5hsMPzdYcREEe5JrBjZUj3AcgBcb3TDbFRUkesNzS0WhNw2yDUdxZTPiM9DDBgi
+         XsxesL8c0rEcBBmd913EOM4u1+fIJObWk8ojSL1Onzk9Y8xy2xP4maNC+O9R+beselKG
+         0yvmB7kUMGyIbOkVHuV1x4IFLwCN18ov2O2EwZLKyQb1IUMB7XrRVzUyuhBDDZtsTW83
+         6Rzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784823353; x=1785428153;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iCFBAhStYCbZRWF7EYeTGTDCTAg3SzAm66lZxtMyduE=;
-        b=OoGfUItdmUMAZLOe/bWdRDvxU0g6QhssPWCUFu3CIMKZcpVexo+YZYvpxzMYeWjzTH
-         sCjE8pFYp66hIvdad5crwLHYuxTU1OxCne6qL7bifS4zJBeqMaY4yqfsazqQHkttiqAw
-         7Fk7CBXqNgMHRfpU+fKXy9S+sJiUnqmGT7jURbR8mbwcLFhkgy7yTW7pC9FY3O4w+RAP
-         nk/C+pSufWRNIAhU/72d1f95oaUoQARVAV7PCGdFm+DRWpIIHO2eWjLQsaGb3Hifecx4
-         DskdUR3AwZ+U0CHV+PbRCNuQPvG8HBkjHnRor36gkUML0j6Chk5vn1Fo2hPRwGzoBQZl
-         Usag==
-X-Forwarded-Encrypted: i=1; AHgh+RoImgIGqvkt2/haVKGuNOWCIZ1aVfKD/t0PTUN4p50i9lFzakvU6tDs5WgqvnGURlY29pJ4oINWx+0hZAQd4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzi59q1etqteh8LeLXPSobTRwYxHIIWen70bW/lC0IKcQ/DRuB8
-	cwSX+BjCjtDmDUMfENdsL9RRvbsExuNHkxdcncAQ30NDmrrSC05I4ETi
-X-Gm-Gg: AR+sD11jkHlNi0vV0iEbQVNuF+11WBWnbLFyT1x2d/m4kF7fvqSii+pNjDCeCXdSV6O
-	n26boVSV7bZMUfIzjK5ua2kbHn8tHu0ceSqFVxeY84CBVwUiwDSeLXnZZIE3LcSxpnVWcMLZcTE
-	gJhBTa0LQjnD3DLwl5KQoH7uN+LT6jhJ4Z/E/z6iNwvGLble6qX9nYsIoAcrHj6Vbt753hSeXrA
-	derT8bcjTqFXs7LmNzSIvEhH500DPjcMLyju5Ydi9l6hto0+Et7t71r6ziOOttR0BeDoGpb3+n6
-	Fyj1LEUtW5n6jW6cWsjU9fl7d7LIS3mqfrErpy83d9VeTP9AeD0lgYC+0wBxBjChUfBmqxAICsn
-	yacG/W58LqsvbS16ZmZ6/KL4NiWPMnh85at2CA7Z70xbw/qIzh3GtS+HQZuLFZxoAWU7eGrMcS/
-	wvIQhtEo0r/BISR9odQcdti1963CLxCqIZa5sBNPgpMkCzPhMHGPXs+oD7Og9sJ4lfm/+TO2HLe
-	yJC
-X-Received: by 2002:a2e:3a13:0:b0:39a:e29b:790b with SMTP id 38308e7fff4ca-39f07e96d46mr6427911fa.34.1784823352729;
-        Thu, 23 Jul 2026 09:15:52 -0700 (PDT)
-Received: from localhost.localdomain (46-138-176-102.dynamic.spd-mgts.ru. [46.138.176.102])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39ef6d8c40fsm9875561fa.41.2026.07.23.09.15.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jul 2026 09:15:52 -0700 (PDT)
-From: Artem Lytkin <iprintercanon@gmail.com>
-To: linux-watchdog@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	wim@linux-watchdog.org,
-	linux@roeck-us.net,
-	ojeda@kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	a.hindborg@kernel.org,
-	lossin@kernel.org
-Subject: [PATCH v2 0/3] rust: add watchdog abstraction and Rust softdog driver
-Date: Thu, 23 Jul 2026 19:15:26 +0300
-Message-ID: <20260723161529.23759-1-iprintercanon@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1784823345; x=1785428145;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C+UuQnH9p7pQ4txAQtrBZMq/oyL9mQTAJo5xHQjvdvQ=;
+        b=PcUqSTvw0bkFzqcjjhqBJ536G25yzEdhKlHjMjnmBrruyvuEUzJSTm2ILODAUO/fs3
+         TvQ6YuKyH1aUg0OEHqtciVINlC0vli9pz+R+u1knBZIXVObcoj/PZeJkmnmFyC6j3hvz
+         2KFlRQjxNgCUtapSmeslWyRnJnK9fWDhnhHSNfTLe/0bOlz2IZTE84Qvv2Sfi+3rhwnv
+         iGBt5RPb5SmYeKUC70AyvFGgTSTKdM+tMYGyXQoqMI+3yEz2Smbbt1g7s/csSaLrIzGK
+         zECy02nFQefLMTk9ERqCSiDG53QJIlITqYZ2yn/2LVh+zLhoHBISWb29eMxAoPKRnSBk
+         CdWw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrz95hDf1LSLGlvXT/ErfIeGYWq4AZi+9mkQ8ur5jcQ/vMk1BTVaTtbI/cums4wjX8OI4YU444dKk2YmTW0kQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQlf2YNQyq/RcWh7RvwHYVqMSRM7XfXt3LYweHdG1BgEYvwtEF
+	b2WY4tDWzG6mrkG9EYMb71Ltf4CsASb7ekOAY90Jq08CCiAh3WZQR+aJi3SeSsRFo1k057E/HSn
+	RhSQD8yTa+vNoKt9SwHdRMhOLwAr+EU8=
+X-Gm-Gg: AR+sD12Z6IXL0kWBh+zwqlqgdYCbUpyv1ELAXCZnV+Wz5beJkrCCHrmM68tQA5apxol
+	jIwgX8zY3IJEsUv0jjwvT/O8oQjI9P2T8p//FG4fQXlNZGZm17kASGpSo4lKeMhvwaa+bhPdXsW
+	Ozryw6qSZDr5V6mgo8gWf3kjWQV1gnk0hZnqbnjp2UqhTXeqpNORu4n6JzXz1RKjNrrgoL6bZEs
+	E0H7oNVZTdmRD5XszHHsKQYKyd/wQSrmL59qElqhdVISvMlrP0KVSq+QOPRSGMABqmK+Kf7QqSx
+	5yYX38jHUsYjxdqVzwGgKJ1Ka86qtWIKdrOnSdE6tJNDt0Ce8FnZjWkTdzuxKrN8vrh5Z4+SonP
+	n3g==
+X-Received: by 2002:a17:903:98c:b0:2ca:6885:8a06 with SMTP id
+ d9443c01a7336-2cfbd2b74c3mr2366395ad.5.1784823344470; Thu, 23 Jul 2026
+ 09:15:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260720-fix-dma-coherent-eof-v1-1-d92685db8da6@younes.io>
+In-Reply-To: <20260720-fix-dma-coherent-eof-v1-1-d92685db8da6@younes.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 23 Jul 2026 18:15:30 +0200
+X-Gm-Features: AUfX_mwkPOgZ5l6-5ZKvWl3ZTUXh_wDSFE1Ix3DRe1vASO0ih2BX5vJ8dTJn36o
+Message-ID: <CANiq72k34khi=vGRxge0sX-1d0+N0f=ixhdko7jqvfw1S4dsqA@mail.gmail.com>
+Subject: Re: [PATCH] rust: dma: return zero for Coherent reads past EOF
+To: git@younes.io
+Cc: Danilo Krummrich <dakr@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Timur Tabi <ttabi@nvidia.com>, driver-core@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series adds Rust abstractions for the watchdog subsystem and a
-Rust software watchdog driver functionally equivalent to the core of
-the C softdog.
+On Mon, Jul 20, 2026 at 9:22=E2=80=AFPM Younes Akhouayri via B4 Relay
+<devnull+git.younes.io@kernel.org> wrote:
+>
+> Fixes: 016818513936 ("rust: dma: implement BinaryWriter for Coherent<[u8]=
+>")
 
-Patch 1 adds the watchdog abstraction: a Device wrapper, an Info
-wrapper with option flags, an Options configuration struct, a
-#[vtable] WatchdogOps trait with an associated Data type for driver
-private data, and a generic Registration that owns the device, the
-ops table and the driver data in a single heap allocation.
+This hash is in v7.1 so it should likely have:
 
-Patch 2 adds a minimal kernel::reboot module wrapping
-emergency_restart(), needed by the softdog driver.
+Cc: stable@vger.kernel.org
 
-Patch 3 adds the softdog_rs driver: an hrtimer is armed on start and
-re-armed on every keepalive ping; if userspace stops pinging, the
-timer expires and the system is restarted via emergency_restart().
+In addition:
 
-Changes since v1 [1]:
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/t=
+opic/.E2.9C.94.20Possible.20past-EOF.20bug.20in.20Coherent.3CT.3E.3A.3Awrit=
+e_to_slice/near/611677095
 
-Most of v2 is a redesign addressing the review feedback from Guenter
-(via the Sashiko review [2]), Miguel, and the kernel test robot:
+since it was discussed there :)
 
-- The ops table is no longer a &'static mut supplied by the driver;
-  it is built by the abstraction and embedded in the per-device heap
-  allocation, so multiple device instances need no static mutable
-  state (Sashiko).
-- Driver private data is now supported via an associated Data type;
-  every callback receives a reference to it (Sashiko).
-- Callbacks now take only shared references and Data must be Sync:
-  the watchdog core does not hold its lock on every callback path
-  (the first start/ping on open, the reboot notifier stop, and the
-  stop on unregistration run without it), so exclusive references
-  would be unsound.
-- max_hw_heartbeat_ms is configurable and the stop()-or-heartbeat
-  registration requirement is documented (Sashiko).
-- Removed the Registration::device() accessor that allowed aliasing
-  with the references used in callbacks (Sashiko).
-- stop_on_reboot is now opt-in and rejected with EINVAL for drivers
-  without stop(); nowayout defaults to CONFIG_WATCHDOG_NOWAYOUT
-  (Sashiko).
-- The watchdog is always stopped on unregistration so no callback can
-  run after the driver data is freed.
-- softdog_rs now actually bites: it arms an hrtimer and calls
-  emergency_restart() on expiry, instead of relying on the (wrong)
-  assumption that the core handles expiry (Sashiko).
-- Kconfig mutual exclusion fixed to SOFT_WATCHDOG=n; !SOFT_WATCHDOG
-  still allowed both drivers as modules (Sashiko).
-- C helpers marked __rust_helper (Miguel), and updated for the
-  const-qualified watchdog_active()/watchdog_hw_running().
-- Fixed rustfmt and clippy issues reported by the kernel test robot.
-- Drivers no longer use raw bindings: added the Info wrapper, the
-  flags module, and the kernel::reboot module.
-- Added the new rust watchdog files to MAINTAINERS.
-- Rebased onto current mainline (post-v7.2-rc4).
+No need to resend, though!
 
-[1] https://lore.kernel.org/linux-watchdog/20260323195138.5541-1-iprintercanon@gmail.com/
-[2] https://sashiko.dev/#/patchset/20260323195138.5541-1-iprintercanon%40gmail.com
+> base-commit: 880c43b185ca52239e75bc546cc4f4d9154d0fed
 
-Artem Lytkin (3):
-  rust: watchdog: add watchdog device abstraction
-  rust: reboot: add emergency_restart() wrapper
-  watchdog: softdog_rs: add Rust software watchdog driver
+This points to `rust-fixes`, but it was likely better to point to the
+`driver-core` branch instead.
 
- MAINTAINERS                     |   2 +
- drivers/watchdog/Kconfig        |  12 +
- drivers/watchdog/Makefile       |   1 +
- drivers/watchdog/softdog_rs.rs  | 143 +++++++++++
- rust/bindings/bindings_helper.h |   2 +
- rust/helpers/helpers.c          |   1 +
- rust/helpers/watchdog.c         |  38 +++
- rust/kernel/lib.rs              |   3 +
- rust/kernel/reboot.rs           |  19 ++
- rust/kernel/watchdog.rs         | 522 ++++++++++++++++++++++++++++++++++++++++
- 10 files changed, 743 insertions(+)
- create mode 100644 drivers/watchdog/softdog_rs.rs
- create mode 100644 rust/helpers/watchdog.c
- create mode 100644 rust/kernel/reboot.rs
- create mode 100644 rust/kernel/watchdog.rs
+Thanks for the patch!
 
--- 
-2.43.0
-
+Cheers,
+Miguel
