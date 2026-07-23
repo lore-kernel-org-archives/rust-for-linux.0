@@ -1,90 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DC333343C;
-	Thu, 23 Jul 2026 21:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E122931D2;
+	Thu, 23 Jul 2026 21:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784840485; cv=none; b=BM5AR5yGQxHlSRrC+r1jBHyi2+hEEmElktTepQF79PhWbVgjVFaYX8zYqvKEQNqEbpcXL4TqSq3ynukEskun3HRVqY59QJdePmmfr9CgAHhf8ko0OXf5ntCT6lRZVrkxAIoJX83K+HkErY8+fNd39u19mXss0BTE822pfaoe1wc=
+	t=1784841413; cv=none; b=YB5CB0yi5Q0KuAaPCiZDuOomOwx9HPmY6DBQyrkdngvy3Xjzce2o5eXWNJTjnWxDamiS4FBJOC2XfAFiw64uxj+++GRWT3quHyMJ0GLSPRlKR3IrX00a51oo+0fE+AHpl8mlJDDI5RqWen7pH1kJVYsb/o3fxYL7GBtFRMTb5Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784840485; c=relaxed/simple;
-	bh=mE6efsjj1HR8KLdg0wYKfz8OYyci/j6R+JIhpgYAcmU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=oztj/k0t65wgeFg8dIdLDt8wqF7+dWEvguvATcY4ybBWkPtZuFaftCiBWIWtIYjsQ5Q6jafex0tpoE3Agljv3DDOX+cl83LHsAwHYC1TsfzMLMpouaQ1tpEbGJPzyPdCp675BV8Ej7CtZ7YwF7d/utMsgewjP65qtVEnGojSjyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OJUQOWwC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784841413; c=relaxed/simple;
+	bh=Y5ldl6wH28A4HC6wsNyowajS3TCFbRSJQL7uFSe7Xs8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JjK1MHZYw+iENouDK0nP/WJ8HVK/zAuXu67b5C41jL9lelFoAVkX/XP2XpH6MoM0FkDnXj3A7ugLObMqzZSfz9Us2VGv14SsgQN6FdhRvtN+VPe/X0Hvl2qVx8yoFMQLXrzsty2+33iZYWSOTd2wg1eUpHoYjdAu1JgyIRbsWOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OT9eI+/e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OJUQOWwC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587F61F000E9;
-	Thu, 23 Jul 2026 21:01:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OT9eI+/e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0051F000E9;
+	Thu, 23 Jul 2026 21:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784840484;
-	bh=N7P9e1r3CovQaZxuR1nAPyHLIxoqZVRNBW5i/3MEaYM=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=OJUQOWwCg4/XQ7v2Thq7hATmGaeSoHahaqWcZDY2C0A3crUULV0qYErWLyMvWNQ6F
-	 REpRylUIrirJVKmKxJTMz1DNi4NVZ1CcHDWtk/433yfTyhfJlZGFqVNu4V2/LPIA5h
-	 FTsDTHfCzsnYJhhhM5GMGjDb7urmApsGr9Yrwqn9S5g6J18BZSjYXMezaCVjI4nt9M
-	 1WbdJkECfRssA/lkiyEatYAkB81E/ZzwhuBF1aIIhCg746E6kffyQxIMwcna5yQnvn
-	 w9M4a5mMhpRuPcrD3Drp5kYwMDspRG4rCzfURQPTn3hd/gQ3T9mVGy0c4JyAA2TyR/
-	 94yL8gYMcCMyg==
+	s=k20260515; t=1784841412;
+	bh=+Gbp1bgfHO44kelU7eSxwSMlWxO4+ZjEVSmyYMfwjs8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OT9eI+/eX2Qtp6yQOzst6ob+mObklRrNDR0dWOKa6Al263h6rq+VK9EqU/cCxO/yp
+	 Cf7rbQYhEOQW2GlO3wsR8n5aeDrqgity60IGksJXdsgntQeZt80z0RPLURZ9g7KkAx
+	 XQyefokfjVFV61DWkOrkjmN6en2UGtBy0vdTCnur6Ka1uACbMCCWXJWiBmPsXaLIbH
+	 4wh4J3g2VBBtrb7dbVoLR7MA4audZkEA+PqDDiwogbmtECiToMI+tNHCWON/lSueYh
+	 wYyXS1/U+f0QIYZIBHQMrQ2NECSO8Wq9uKvzqgRfrD0f2RO4H3SHbVVnPagQxxtHWQ
+	 eFroaDhhw35rQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Guru Das Srinagesh <linux@gurudas.dev>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Link Mauve <linkmauve@linkmauve.fr>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2] samples: rust_dma: use vertical import style
+Date: Thu, 23 Jul 2026 23:16:45 +0200
+Message-ID: <20260723211645.3473315-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260721-rfl-vert-imp-v2-1-71ce0df519f2@gurudas.dev>
+References: <20260721-rfl-vert-imp-v2-1-71ce0df519f2@gurudas.dev>
+X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 23 Jul 2026 23:01:17 +0200
-Message-Id: <DK69583TKES2.2ECSGER5Z77I6@kernel.org>
-Subject: Re: [PATCH v16 0/3] rust: add basic serial device bus abstractions
-Cc: "Rob Herring" <robh@kernel.org>, "Markus Probst"
- <markus.probst@posteo.de>, "Jiri Slaby" <jirislaby@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Kari
- Argillander" <kari.argillander@gmail.com>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Boqun Feng"
- <boqun@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir
- Duberstein" <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260718-rust_serdev-v16-0-5809384d2e1b@posteo.de>
- <20260723205912.3441137-1-dakr@kernel.org>
-In-Reply-To: <20260723205912.3441137-1-dakr@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu Jul 23, 2026 at 10:59 PM CEST, Danilo Krummrich wrote:
-> On Sat, 18 Jul 2026 15:33:09 +0000, Markus Probst wrote:
->> [PATCH v16 0/3] rust: add basic serial device bus abstractions
->
-> Applied, thanks!
->
->   Branch: driver-core-testing
->   Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/drive=
-r-core.git
->
-> [1/3] rust: add basic serial device bus abstractions
->       commit: 99f59aa82341
-> [2/3] samples: rust: add Rust serial device bus sample device driver
->       commit: 4b2c9156d312
-> [3/3] MAINTAINERS: serdev: Add self for serdev
->       commit: 6b71fef6f05c
->
-> The patches will appear in the next linux-next integration (typically wit=
-hin 24
-> hours on weekdays).
->
-> The patches are in the driver-core-testing branch and will be promoted to
-> driver-core-next after validation.
+On Tue, 21 Jul 2026 00:55:30 -0700, Guru Das Srinagesh wrote:
+> [PATCH v2] samples: rust_dma: use vertical import style
 
-Greg, since I've dropped it from the queue a few days ago I've now picked i=
-t
-back up.
+Applied, thanks!
 
-Thanks,
-Danilo
+  Branch: driver-core-testing
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+
+[1/1] samples: rust_dma: use vertical import style
+      commit: fde6b526a9ee
+
+The patch will appear in the next linux-next integration (typically within 24
+hours on weekdays).
+
+The patch is in the driver-core-testing branch and will be promoted to
+driver-core-next after validation.
