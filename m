@@ -1,63 +1,63 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5E5476052
-	for <rust-for-linux@vger.kernel.org>; Fri, 24 Jul 2026 23:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B076D47669B
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Jul 2026 23:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784936322; cv=none; b=oEQcV1E3fCjovQ9twLndWOrl7ionbDCirrYkVz9daNA9MbTr+G5doguMC0P9CfuXUUx9e2C1wr2Z3T8Kl/SfFW/JpBMqc0viUtseUiPAU2W5oGrLaw8EUGTX3l6u6NdR8QH2g3jvLRw8ZPh3JclgcZ33fNM/n0uj7Ph15EEgXKk=
+	t=1784936324; cv=none; b=ZbqSpXYB+9ii6lx4x3YOUoU75xJSygrqVQGXCqv/JuD+ZInN0cYaISRsor5JEGS+GwKx/7N4lqw372jjqNtjvaUl2Wf5QsbevqQ2TSPH7Ptv5H8B7VXYQ6oh0qHS9t1+6K6VSFcXXqk1ecn/h4sG4y3Vi3mY/MU8dlFMsz1tvnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784936322; c=relaxed/simple;
-	bh=JDKyV4W2BjZg5GjCq6RIA2OL6ZpLVs/C1bKacsvhbqw=;
+	s=arc-20240116; t=1784936324; c=relaxed/simple;
+	bh=kKKmq7jufGIPyfk8VrnaKD8ZMuWoYzZl5hWNdLhisvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhhUNtZ5IQNSisXP/HU5siFr90pvODYh2VGYkXBbXq9VDCoH63AfEJ5PJ1v7qIJxIV5BX1h+6zeY7gKjzaTgbISXzDRiVkkw3vmcPyTvi5O+7RVS0fg5vBkGcCLqZSG8Hk/HfZPl6aWp6FBS7ElHU1Q8PhpyGDuF8XyfI4OPJuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDGyk31H; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=iFyNaMjZnpdvKdkNfNBAJz+uNqL7d6N5FGxg0eGdD+pz1scI6JDM41+Jp32H24Bcxxkhk2mSe4xw3Ag1RQVbJpISXD0kWmgeaTUIFd+dLBUvHLl84eJ5+/FFIyQWeQDyJgxHxxcuau8Cu/i0jmfi3eKQ4/aUqAQrZtok+xPx7iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f0le2ZHr; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDGyk31H"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4957eefd361so7448245e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 24 Jul 2026 16:38:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f0le2ZHr"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4956869750eso7176835e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 24 Jul 2026 16:38:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784936319; x=1785541119; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1784936321; x=1785541121; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nyGCLZe7s+TVetzGO2XyQi/oKbitcaVFU4jBbM8ggUo=;
-        b=aDGyk31HZK0Illd907KxU/2E5AkTj1rtrG5xqjdcV+pQ/V7lDG1/HAf4CJ7MXSLdo4
-         P6RiFT5Z6VICWf69n5UxzGPZ58e5WA4YTgcUBEe3VnAAd+4XB0hycEjpxTn8KG8pjzsw
-         yUKDOuJdllz6AA6ESgPRUz6NHyo7EGqlPORxsFbbIdXcmi4EGk2j2sQnWKDchfxKdJPG
-         QHoUM8Cm6p4Fy5tVphH6bWQrecGSnFbDE+CLh4tYU5E/uVGlEsDX55uhs1YOm/7p134n
-         epBFMV4/vN3275pYp/yyS/ylgf9Z31PthawSZXvltX4xCMfxqFRSb6vwD2TPSpYc9J8U
-         QiNA==
+        bh=QUkrcS3bT47EateKo7yg7zIM6h/BJq/nEtdQpmc8z04=;
+        b=f0le2ZHr5pmz2++EvZm4f8hvpnqdGYriWvb9cox0exePPzKfDPZ5xhM2wFtuj0DZ+W
+         OFVoQkKEIxRIgEjpj5voPhsN3jA8bEaieHxRExsI1KMzfprX+tQZ5KIxU/S+Zwns8K1U
+         X4QJok12Hf3zEBrEEY3fXAyxje0Em7w6TdKkpOhb18VgM9+FhV7cI553byzNWt9xcaxN
+         XmJm3ywk4PygEwbhfhtseyCCsoHZT/Tkt4S/YH0FFQCLMNF69EEHzc2p/UBuil3yBWWB
+         jgmRXSUgP0xzdbYOwl/2+S4gh8vvj/jmIGFnUdf/VaCMb8vroyaQycP8OywjhUzt6HuU
+         qNcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784936319; x=1785541119;
+        d=1e100.net; s=20251104; t=1784936321; x=1785541121;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nyGCLZe7s+TVetzGO2XyQi/oKbitcaVFU4jBbM8ggUo=;
-        b=f93S0ohyyEB2KJarPfNV1JCLjDQymvRk740MSlchyjM0ZW4Q4C+Trdn+2y5LO3nfoS
-         B3Ner89NY+kGtTiSjuZ/7oD1UieNbqC26UyWST3xtg5wJX5J1SI7g3skzqR17UFryoat
-         dOHOjZeKa5kX7rF5VlxbzGswOknVQG0CElP9Z17bneiRH4N59neJgKrEimNi/xykr85n
-         3klZvhIcQUYbIwN3unuqKHqQfFywtTIfNQM9NgfYfZXXPppI6L1w11T8bGz5KLr3xlQk
-         wK6b6zDMWfii/g4UGnnJn+fo0llluxKb+dt5GJ9M6LNUhEa42aivEDKGmJ0gM++mdNYL
-         NEBw==
-X-Forwarded-Encrypted: i=1; AHgh+RozmhTbb6tIFInBK10HjQow4aGFswSm40uB3HVy3D5W+RqNTURKYFRfU4lvcG/uYcsAjQeSCFxoQlTyn3rK7Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkG3oLXCJETyusjH7Lj7rMZJbNixXIHXBfGsyogN9F+GG6qRUT
-	+uOrHEZnQOf51FGAd+Z/pYFGYe6hLcZ2O6NQZosmZdMz2moGYBLSCQPY
-X-Gm-Gg: AR+sD10wyNz1BiMFDrxsLaobrdK93K23T4DVCZYMHnpRR9n7UwX1dBDogPerL/MK/zW
-	6Fu+QPjGmpoJwomVi7IA4TQ3jjnd3DHUuBEy4a+Lzh7yDYf30ZrlJbSal6aoAfDo6E3xpkqgtsN
-	bGCACjfRUwdvCV+7zWYs5q9aE5T5bOlWQL2zHCKEZlbiU9Fz3vT7k15rIt2jV/fERWfGGVtbVnn
-	gf49gwu+AGM9x0HxQbhVuJbIZZDmhB7U+Dvl+7EERX7pcKwYlB+HWGUtMy6ZuEXBNMRoz6j11ad
-	L94aoY2o1X6oBvKAtu1fHnUWjsE5o918ukIIANqYFM6RHFaAkdkkWQoQZVlOoySo5aICDiatTX+
-	jaMHxiYXUpJG+bw876usGkAbPqBy7+x7PfV/bTaTUy2eYr5hLP6fxyYUEauy+siKnYBH9uTeQ3+
-	SG9klEYGygwc07HKVA/TO0fsMYlYSiNvq7uy2xawBLCE92WgLk/nWVZeQU
-X-Received: by 2002:a05:600c:4295:b0:495:7990:a1d0 with SMTP id 5b1f17b1804b1-496b571a0c6mr2206105e9.19.1784936319091;
-        Fri, 24 Jul 2026 16:38:39 -0700 (PDT)
+        bh=QUkrcS3bT47EateKo7yg7zIM6h/BJq/nEtdQpmc8z04=;
+        b=sIzK90tSfWOUe0YFL7a51YDhYhnyMHzI8cSicCRO4vfdNyCGXxl7FxCLQRmpi71+Ff
+         uG91hH7Zeq+IB7seXHpD5XyFdG8FJMkc+xVhLarhz8mlYB3W5ub0mdJa4FGZ/OehO+it
+         iW+JuiEOmQ5V3n4Le3qGa7WLwp1J+VPebc/Jev66WGf8/9v47RO01pFPgdYE7nTgyiUK
+         NulJcSm3CjZDHmFjvk+UUZVV4swkOqDxWT7/pPrRY98x5+8JRlWzpkGl74WoepFfYZoO
+         a2cljea2Zhv4tUx/BWDpJNo7hmGvpZe8aS/Mh2YKvdAdIKR/gN0qI6pPKDMEK+0m9YAI
+         uAqQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqfOzOeObKWqXemmVtxIOsYmUD3nxVZ9f3ukWmGeyL1pMXmPU9ja9PbZMFMZ59wxc+eUHDuBHWkStK9UvehcQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg2o30PdJWJun2eQyPKMW8jMD/WTSPfPyXU/RXPXDei84w5FBH
+	+H/7QK2n2TB6VYuliFGDaIwURladTuEFvkiPfbxS2+0p4L7qIUHCoG2x
+X-Gm-Gg: AR+sD12ghC9NPO3Wr6NLZkl0C/8VuPPD7/fcIv536uyUoKYSOlGPeRYOyxL2d0Z5c18
+	SeE/ObITpo0jNJS4PvPqMKIrOoyrRBj9bsTnDuDNMhghEovdFg9jCD3gYJLB3wWXQttmL37amdq
+	/hQbBLyA+9imjf4aEK0hlhpI2Z9VmcdwrlnBtcirUuOEIE7VI4WfRD4rEUl6/BjN7MCWrlxpyUG
+	wTQewYoIEzznQ5jo0AR/5nnq9mHII3WC1ZSM4w3eVbYjr6ikce5xZl7CHNjsFUpIphTzT0o7Yrm
+	reAOL0WTUbDITIJxXE8LSp2WgtgYMzgnO0CygxC7PijArQd8zr3TmF4EENKeO8+x5ep8bFJHUsW
+	RshGKXvklE83RLlmfT9pL1vdUUUVdrTGfFnJBVMPEEBzgJsud/UVgMH2Q1DpaQT8tJE51Dwfd0W
+	TKvh1iUtaNTev9bBRvtSjr5Et8tSrOHEYrFwU+ChfYkBO5qgGQMKda+TTE
+X-Received: by 2002:a05:600c:4ec8:b0:495:3f68:699b with SMTP id 5b1f17b1804b1-496b56f3705mr3664245e9.9.1784936321038;
+        Fri, 24 Jul 2026 16:38:41 -0700 (PDT)
 Received: from Cian.taile2c8f4.ts.net ([2a02:8084:d03:fa00:819d:8e1d:c966:142d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957b5f35a1sm72226775e9.0.2026.07.24.16.38.37
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4957b5f35a1sm72226775e9.0.2026.07.24.16.38.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jul 2026 16:38:38 -0700 (PDT)
+        Fri, 24 Jul 2026 16:38:40 -0700 (PDT)
 From: Cian McGuire <cianmcguire167@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Boqun Feng <boqun@kernel.org>,
@@ -78,9 +78,9 @@ Cc: Boqun Feng <boqun@kernel.org>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Cian McGuire <cianmcguire167@gmail.com>
-Subject: [PATCH v2 2/4] rust: print: document safety of _printk FFI calls
-Date: Sat, 25 Jul 2026 00:38:23 +0100
-Message-ID: <20260724233825.1321247-2-cianmcguire167@gmail.com>
+Subject: [PATCH v2 3/4] rust: list: document safety of List::remove
+Date: Sat, 25 Jul 2026 00:38:24 +0100
+Message-ID: <20260724233825.1321247-3-cianmcguire167@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260724233825.1321247-1-cianmcguire167@gmail.com>
 References: <20260724233825.1321247-1-cianmcguire167@gmail.com>
@@ -92,70 +92,49 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Two calls in this file had their SAFETY comments left as "TODO.": the
-cast back to `fmt::Arguments` in `rust_fmt_argument`, and the call to
-`bindings::_printk` in `call_printk`.
+The call to `ListLinks::fields(T::view_links(item))` in `List::remove`
+had its SAFETY comment left as "TODO.". This call chains two separate
+safety requirements that need to be discharged together.
 
-`rust_fmt_argument` is only reachable through the `%pA` format
-specifier. Every in-tree Rust caller that uses `%pA` -- `call_printk`,
-`device::printk`, `kunit::printk`, and `seq_file::call_printf` -- invokes
-it synchronously with a pointer derived from its own live
-`fmt::Arguments`, as one call in a `switch` dispatch in
-`lib/vsprintf.c`'s pointer formatter that returns its result immediately;
-there is no deferred use or storage of the pointer on the C side. So the
-`fmt::Arguments` value stays alive on the caller's stack for the whole
-time `rust_fmt_argument` is running with `ptr` pointing at it.
+`view_links` requires its pointer argument to point at a valid value.
+`item` is a `&T`, and Rust's reference guarantees mean it is always a
+valid, non-dangling pointer to a live value of type `T`, so this is
+satisfied without needing anything beyond ordinary reference validity
+(`view_links`'s own doc comment notes it "need not be in an `Arc`", to
+head off the assumption that anything more is required here).
 
-The `_printk` call itself is also justified by this function's own
-`# Safety` section: `format_string` is guaranteed to be one of the fixed
-`format_strings` statics (traced through every `pr_*!` macro, each of
-which hardcodes a specific one), so its `%s`/`%pA` specifiers always
-match the two extra arguments supplied, and `module_name` is guaranteed
-null-terminated by both of its possible origins (`kernel::__LOG_PREFIX`
-and the one generated by the `module!` proc macro).
+`fields` requires its pointer argument to be dereferenceable. The
+pointer returned by `view_links` is guaranteed dereferenceable by its
+own documented guarantees: it is either the pointer from a preceding
+`prepare_to_insert` call, which itself must point at a valid value, or
+it points at a read-only `ListLinks` with null fields. Either way,
+`fields`'s requirement is satisfied.
 
 Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 Link: https://github.com/Rust-for-Linux/linux/issues/351
 Signed-off-by: Cian McGuire <cianmcguire167@gmail.com>
 ---
-v2:
-- The `rust_fmt_argument` comment named only `call_printk` as the caller
-  supplying `ptr`; it now names all four in-tree `%pA` callers
-  (`call_printk`, `device::printk`, `kunit::printk`,
-  `seq_file::call_printf`), since the argument applies to any of them.
+ rust/kernel/list.rs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
- rust/kernel/print.rs | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 6fd84389a858..b2be5ab50f15 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -29,7 +29,10 @@
-     use fmt::Write;
-     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
-     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
--    // SAFETY: TODO.
-+    // SAFETY: This function is only reachable via the `%pA` format specifier; using `%pA` from
-+    // Rust requires the caller to invoke it synchronously with a `ptr` derived from a live
-+    // `&fmt::Arguments`, before that reference's scope can end. `ptr` is therefore valid and
-+    // properly aligned for a `fmt::Arguments<'_>` for the duration of this call.
-     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
-     w.pos().cast()
- }
-@@ -109,7 +112,11 @@ pub unsafe fn call_printk(
- ) {
-     // `_printk` does not seem to fail in any path.
-     #[cfg(CONFIG_PRINTK)]
--    // SAFETY: TODO.
-+    // SAFETY: By this function's safety requirements, `format_string` is one of the fixed
-+    // `format_strings` statics, so its `%s`/`%pA` specifiers match the two arguments
-+    // supplied below, and `module_name` is null-terminated as `%s` requires. The third
-+    // argument points at `args`, which remains valid for the duration of this call and is
-+    // only read back synchronously, through `%pA`, by `rust_fmt_argument`.
-     unsafe {
-         bindings::_printk(
-             format_string.as_ptr(),
+diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
+index 406e3a028c55..22b497eb10c0 100644
+--- a/rust/kernel/list.rs
++++ b/rust/kernel/list.rs
+@@ -599,7 +599,12 @@ pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
+     ///
+     /// `item` must not be in a different linked list (with the same id).
+     pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> {
+-        // SAFETY: TODO.
++        // SAFETY: `item` is a `&T`, and Rust's reference guarantees mean it is always a valid,
++        // non-dangling pointer to a live value of type `T`, satisfying `view_links`'s safety
++        // requirement. The pointer `view_links` returns is guaranteed dereferenceable by its own
++        // documented guarantees: it's either the pointer from a preceding `prepare_to_insert`
++        // call, which itself must point at a valid value, or it points at a read-only
++        // `ListLinks` with null fields. Either way, `fields`'s safety requirement is satisfied.
+         let mut item = unsafe { ListLinks::fields(T::view_links(item)) };
+         // SAFETY: The user provided a reference, and reference are never dangling.
+         //
 -- 
 2.55.0
 
