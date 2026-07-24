@@ -1,201 +1,137 @@
-Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022113.outbound.protection.outlook.com [52.101.96.113])
+Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEE72F6562;
-	Fri, 24 Jul 2026 02:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.113
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784859142; cv=fail; b=EI9dpzZuvopP5epiu45Te7/uJO+IqHZhG/+sa5pdLsyrDBFjyTAy356zTXG1QN/8ALZx/rHudKVH0FmVFDuRrrz0mzfRmadv3qU3pZbCmW5CiMP6d3+xglNWvX5mzhkkgLkGgbeWIDZCbebW/wbOtLNvsPCZNxE3G2mozJp2OVI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784859142; c=relaxed/simple;
-	bh=tdyT11Ak/f6vs8X+zMVfiO1OXUlveSelPhQoqVKhvdo=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=uQLzINwQA5HQ2pBS4mLtMstQE2acNnhrSbhvfYzjuVt0jjnsS5JHyIoXWrJ5qCQZx0jBeG3yDQsYVVW3vvS9+lb/votwAUGam1+KIqF7G28/+oN6Kcv/loOsWu6+vx0QLUAdPPYKZz92SPNdAteSq557l38oe2KwAFJOux4KOnQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=nHhkjVeb; arc=fail smtp.client-ip=52.101.96.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C91C5D7D
+	for <rust-for-linux@vger.kernel.org>; Fri, 24 Jul 2026 04:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784866143; cv=none; b=ZbAXvntScCHMWXCJXbCmWTg5dDbOp+yJfa/aWI92spmFHi3iilavFQBbQ9Vq6XHg/U07QQ8GI82iRbscc0NTqtFZmNwyCt+ArEvtJQRm1CgPmU1s4gC+IqI87TUGuBMrOS8HG7bqSG4lS/lrWajq3D8u9iMPh7Oo+QXn7dkOAP8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784866143; c=relaxed/simple;
+	bh=lCot1/K9G1s7zCTxWRlOJCyioFiarcg/8ENRIUOGFN8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=a/JIB3i3p29uL8gOvMkGuWMyJ3TWaZ44Tt5Vd3a3delH2KZef3TdsW/MOFLLRFD0QW2aUvrxoLu4LPz7zW4IktBrb0Wj8NlUPmkAwWyWRAKsODwebQguzVWTLEgSaIW650WzmZqgWQuKIrzYZbs6KBdTqKjXhQP3Mw5zO3OIQHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=fBQCgD2T; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Brre2Ry5; arc=none smtp.client-ip=103.168.172.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="nHhkjVeb"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RLMB9WE1gEBKhNULYr+E4YxJdJoZM5RE88fL/5S6o8n7E7ijtueX49vuXRFbL4PGuC80HMzd0JrNtZhjq4oyhu7S3vQ0bV1P52vckqboitATFRAS/YxQdC5iVj5mp33Xq0iiVG4vLhyu/xRDfUU8fSRAnq3QyK2l6dxBLT+K0WVVrtdaV6I3iTwtRo8y3HZPFcrmiO/yWtZc3SHJsI+ZghjIpJ5FCUo12AAp9ItfKAJW9y2unE+z4z1V9oxBDK/8RBUKaRLDGuCErgeDKwGzu/NiqGLC8ODI+XNXWAsiCOqEw7btbckdhHIfSkQkQM3C6h94Ca510DPBEGJf/coaYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8XSnpm7VdU7dhvvYps8w6kAgUxVNiPsigMLbDwZdHaM=;
- b=OZYZw4leoOwUxS429GA+FbTODn+lvL77cshrcWRKY3g9Zjy+td4T+x9aWvU6Bu2rdRyechDsI0emSfaQNxWEfmNGYbqI9EgP1ComhRs94QPqAMZpak8mgf83V2hrTJ28ke5xA2wbFWu3JWotAZjLbmofvO3ENWBZR+rm4NSNMU0R1B31RAniwpjFrpKvZ7c9DTrDxOtwFiwgQI4OsnIGciMC49ZcylAbwrOfgnQV6E+ASaEUcmdyk4vTQjFutzC47RkUJ4Y48xTEKIMLjCbeUAUe7zhkpOZBSKLqjgaG4CBCoTtMZepGi4f18rjB7mXHP7mGOQaA/YUDSNxNse/VDg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8XSnpm7VdU7dhvvYps8w6kAgUxVNiPsigMLbDwZdHaM=;
- b=nHhkjVebqwjO9ePYERYGUVpUwbhDF2XlIVHwfJX1znr8Z6KBgS+jkgc8ueHm0zpZ2Pzd5ia0iEdTLd9cjZudcmSMOb+g8Rasxmq0vj4HVqLyWlhzQcaKro+szK6WNBosJgPjwNhyF4KI/ahAuzyE7yBqqu0RPFTTgmXYzA0/yZM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWLP265MB7088.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1ff::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Fri, 24 Jul
- 2026 02:12:17 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0245.010; Fri, 24 Jul 2026
- 02:12:16 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Jul 2026 03:12:16 +0100
-Message-Id: <DK6FRBI877L8.1I9EEYPFR9JEP@garyguo.net>
-Cc: <git@younes.io>, "Danilo Krummrich" <dakr@kernel.org>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Robin Murphy" <robin.murphy@arm.com>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Timur Tabi"
- <ttabi@nvidia.com>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: dma: return zero for Coherent reads past EOF
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260720-fix-dma-coherent-eof-v1-1-d92685db8da6@younes.io>
- <DK6CCQDJHK8E.1DZHVZJDLS97P@garyguo.net>
- <DK6DC28Y2CZY.2IOLKS3T81VG8@nvidia.com>
- <DK6DXU51V88J.23CVF9ARSSGT2@garyguo.net>
- <DK6EN7URPZ6E.1OGM4A8LHLRV1@nvidia.com>
-In-Reply-To: <DK6EN7URPZ6E.1OGM4A8LHLRV1@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0621.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:294::21) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="fBQCgD2T";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Brre2Ry5"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.phl.internal (Postfix) with ESMTP id CDD9713801BD;
+	Fri, 24 Jul 2026 00:09:00 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Fri, 24 Jul 2026 00:09:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1784866140;
+	 x=1784869740; bh=gktvss8Nw6gWCwRMUXQNEfHkQ95oubJrjuB/dtEsxD0=; b=
+	fBQCgD2T8woJGPX3vXzqYjEQNdMp4CKk5OFbYqyXCWjttnl2wDQywopXW2WjoNLi
+	Ru6EbEO2y1NHuj8W69iCkl7vGWigxlJbebUkt2fawz0DIVTR1u70jTMPp+anQqwe
+	9SOfkYXMznUgy2CJWwSyROHJYCRQRT42uVcI0gBwfLtdK8L4Rfzobggii/6Dy0bQ
+	daFuv+3sNsMho7xVYXWW3OA6lQ3g041tC7//h29dwFq0EZaHbhZqzLUkzkbGN5/p
+	HR2VKlA07vYnrFcK9k0l+tYstmIFRG9XvqDuXR4BsYL5qkwLqkD6rU8cDA1RjCMr
+	KIGEaf+A56MjetoMnjJnPg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1784866140; x=
+	1784869740; bh=gktvss8Nw6gWCwRMUXQNEfHkQ95oubJrjuB/dtEsxD0=; b=B
+	rre2Ry51b+n0ayzhDIjAfJIUCtWQ69uneC3wmgChGhmRUAF+p2639n3jwEWZ4YSH
+	0hepV4w+4X2MN88GYxldyk/u17Q4yONwCcLroBQtXuoRkyO1E8m1BuGdykZm1FEB
+	TB00UQlS+LjwIE6BhYCoyAcB++/p2lnZB75powah7shu3oRtPtNJM9yM7R4o8K6C
+	iDjuWswMtyyReaCQJA5iN1ssDZfYrr8n9BYdAjos/aeESPWpITk+pbnzym0kjLtL
+	ddPNqRlScSb0AxUvAzFKrPQeqYRAlwNcAbwQQdxiPEpSNdowjoJNmRbGS8165aeW
+	sd1Nc4kEqte4E3y76D/iQ==
+X-ME-Sender: <xms:XOViasZshd1nlGKQ3detvHbi3b1xOyM6dbmTzUZ7Me7C6pc1FykaCQ>
+    <xme:XOVian2nu1_o3IJCC1X1fk5WZYIMc3xfnGxXE0ftJsd23MbvFET39q3u7tsZbSP4c
+    6TEOirFa5-2MFUEdY_zTICRiZVU84CBOGIC00mpDGyWMkPxq_0VWu_Q>
+X-ME-Received: <xmr:XOViamsOgIlLZP6ncNh4RFypZg5WgwLNNEEUI2nkyg58FgIsV51hI2CajjDkgJ5y9XEu--u-bWllrxgwRxDsjIgm>
+X-ME-Proxy-Cause: dmFkZTF06f1koHXtEpswqSzrvzLSi5gsfKm2UnvXrcDrQE5m6sfqvzqXbnu4CaLgyZST/l
+    Hx42YZ2ZAwXrVvBlw18dIRRa2xzrqUt9pxfvS9naELpa98GstydjMxfVRWaL33DJ7i/9GZ
+    dD4szRbvuF3r1oP3Yc4ktzcy67TB/u37JxmC8noh0L///NQ4kV26t9pH2ETrlaQOrUHIPz
+    HojLMv42S7VpQu8Y6qVX6nPXxs8nfMNeXXTiWsSZGw2EuwDsvCtz93DFC3bVJ+i7153L1H
+    ZR8nQyg9VIxRKHN+24yho19o5pwjLkj7UYOtU93+BxKVJDjqZfQntAbZ9U8sNOluNrXWCb
+    z4TM8Q+L/BGcyZhtisQfU/CU+iNHv09eDcZ2v96/4Upox3QQMsVdz4JqSaIGrZbkvg6jYs
+    pLVRfg9anq/+pPn3GTFcDew2e5QkiuBayoX9V5aLMDYAbX+jUbmnn1OhmtlbKOruTJ6Otw
+    PClV660tUe1qAJpV4F6gkVNV55wqsGMvZFYnq1jxxIxEb1ErBxJpp9U2Uk4sE02lIOiazZ
+    NIA38pljbxvzkk9WUjri/p4SslV9t9hjoGJu4nkHPSVbPHeba4BEFdukqcNHPhTWC7dYMF
+    eaCGGoA7dbSQ3bmK4Dsn0+zzBu07kmXd9L2GbepFJdB814EPisKU3qoD+muQ
+X-ME-Proxy: <xmx:XOViajAVsAOwmwvq0fgUCOdI3khQAxgsp7sPhywDlOfSz9mww2smQQ>
+    <xmx:XOViahYw7Qe-_u9CPVNGxrlAqP9_KRKKdn0pqv5auapuBs6-FsKhiw>
+    <xmx:XOViat-cLJXBQVnpEV1pmHn_KIM9wD0NaiSz_i0lI_1X2YWcAZsVUA>
+    <xmx:XOViatis1KwMGrN4DVaqs8Sf1lBNk6Puu98iHac-gjAX_OfSimzk-A>
+    <xmx:XOViauUiYbJB8QAQZb5MAAQHMp7aIIFSgaK6C6lLU3BRuODDlnQj6GC->
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Jul 2026 00:08:56 -0400 (EDT)
+Date: Fri, 24 Jul 2026 13:08:53 +0900 (JST)
+Message-Id: <20260724.130853.1719089301624801198.tomo@flapping.org>
+To: gary@garyguo.net
+Cc: tomo@flapping.org, ojeda@kernel.org, a.hindborg@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
+ boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
+ lossin@kernel.org, tamird@kernel.org, tmgross@umich.edu,
+ work@onurozkan.dev, rust-for-linux@vger.kernel.org,
+ fujita.tomonori@gmail.com
+Subject: Re: [PATCH v1] rust: bug: prevent dead_code warning from
+ warn_on!'s flags constant
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <DK6CISNRMHJD.391EZL08Z6HM0@garyguo.net>
+References: <20260720035510.4048145-1-tomo@flapping.org>
+	<DK6CISNRMHJD.391EZL08Z6HM0@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWLP265MB7088:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae47d317-3537-4f7f-0772-08dee928fbf2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|23010399003|1800799024|22082099003|18002099003|6133799003|4143699003|5023799004|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	gvpnY+1tVODLFR9JbJkkyBX7LSZjSWQorNAU7HuODV9XZe5hIjfFY6fJsP8AeYV7fM0pSrr1aXlWTJMkWUyjxv2sYzg6Krtzg7tAGyIdOUU6rJlnUmJ0n3o9oLWdZETkyqB6tRE7488iEGNfBJNVqpD8cUUfReFSYk4VsxLiBESDwbNd4mmzUncB+0P32PMmgO2uc6wCUZ+vpwW2OCnyIpc+9XOrXvCVleGD+NVoA77P0Safq8oiyu+XpH0yzyKqUVYFwXQgYE+9DeREsJoBoAdu4GdRVfVhHcXvN85ro8+1gjZJTR8SRAf4vShX1aeUvHaXtArkQH3z7sRBC4PlZq6uz8UhKNwGW0djIG6rCK5eNehux6aPmeNLbca350D0K3x4vatkbBacVtuD7MnlqEUTy7nq/aDcpg3GXbzXjVfbtQ4CxChPK/DlEyQns74GW1Nj+XcRuLqaSD/qEgzzqAvGEFM7qWt01MfOz8MILKdqSSKFrRd5zp/IsaiZLCL8uSEaOXkpkNl7LEbulpFdTTxQ0oKA9r8tBRnX/zBdbcfqBNpOV3gldDa70EZLtb1YE/G/YZuERc4ljpZtbQqebMh2lIMP9rqHf9fApBICzodOnVIIzgDK/zzVFq/fLKaCViicPanLIHv1BVmpQLRV35mRY8WPbCfIPEKzE9kTTDc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(6133799003)(4143699003)(5023799004)(56012099006)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UVBKdzBWcGhBN29RdVgzOEkycXRSN1I3c2xqSzZGV294T1ZxUDFHblZTS09j?=
- =?utf-8?B?UlFzRlhHZHpSbzgyODdHdzJXWTFZOTNJZUhDYkFrZ2VDSllzQ2dmc3pnT3FW?=
- =?utf-8?B?UVd5cE1HeGNHRzhWNW9nYVdsTFBRdXJvUDU2Tlg2dXZYdE5YNEw4a2d5VWV5?=
- =?utf-8?B?cUE2bmh4ai9xUi9OTWtWZ0xUeG5nMnZQcU01RzBRT2MxMmhtbVJ0Nlk0em1o?=
- =?utf-8?B?VWh6WThDWjBQVkhLRHRnVlRhNzFWSUxuWXZRUjlZU0FJcVJNOGExckZGMWhJ?=
- =?utf-8?B?WEVxYUJjS1V4ZUxjQnVPd1JZaVVMNkJ2aVdqQ3NuWkJQVUNQUXRMazNSMHVV?=
- =?utf-8?B?bndQanZJQ3AvR3ozdUZzM0ExV2VCdXVZczJwcFZuRWwxdDFUbHpOUEE4KytQ?=
- =?utf-8?B?M1VpZEpsQkpLYWxzclhGVE92enJ0NDRvNWlvTU1VNFRGY25vcDAzbWRnb1F4?=
- =?utf-8?B?WGxaSmpWL0p3cm5ZZzV1TzRKNVUxZVdsY1lKT0VFTERwdFNUU1lCQk1DcjBW?=
- =?utf-8?B?VWJhMEM2eENUK085TmhHbG9MdXhqaUZJWlZsZy9PSEFkL3Vuclh0TTVrcEIx?=
- =?utf-8?B?SjRxUlBwaTF1c0VZbnozcFNEZ2xLQWxKallEMVplOWhjQXAxc1A4RGpyRHAr?=
- =?utf-8?B?dDVwZU1CbHpSTEJYYUFJa0RpV0RWSnZSTnJtbzhZYXBsY0FyY3UxVGtWbjho?=
- =?utf-8?B?T3pjOVZGcjNwWjkyNUpkV2tWRk5TZjlCM1V6WVVOZXQzcDNsOVRYam5FVHhv?=
- =?utf-8?B?cVdGdndJWFdBdmdwTEppOGdpYW9SbFVQYi9VRzRaRVFwVElXNkRKTHJ0bkhw?=
- =?utf-8?B?TXphcFQ5SE5PTWJnL0dtSVlQK1JvZHY4dS9iYmdzUXVUUitHcnhaekU2ekdW?=
- =?utf-8?B?S2s0VTRHa2Uya3V6YmFBajd5dlRBVDM2cFZrYTZXOTRIWGJSZlQ3bjUwOW5E?=
- =?utf-8?B?VTN1VHFVUmR1eFBxUitjU2hPNnE3NFFrQ252ZnFST3pTUitXWUowWWVTdGdi?=
- =?utf-8?B?UDhVSk15c0tRRWt5NlBvNkhhTExiTnFybDhBTjdJaVZ4WDVwMW1sZzNRMUU3?=
- =?utf-8?B?anNVd25mQVVZblpLM1d5RnRsM1RXY3FiRngrMnd5NU5nNkFGZEZBcGdYNjlv?=
- =?utf-8?B?alBocG0wSG1CcjFYQlVWRitOWjF4N3hiMEY2TlRhc3JqR3p4WVBjOEt1Y21M?=
- =?utf-8?B?SkpjYTVhNEhPSkhyd1dVRDRaZWJMOU1kQnRRelE5Z1kwdlErWXVjODFzTnJo?=
- =?utf-8?B?Q1g3cnlIQWYzSklNbU5jbFM2RG4wSlNEZlFQZkdScUtXMFNjZVdXREgvMXV5?=
- =?utf-8?B?LzVzM1BlNkhQVWtzQ2pDTzlNTU50N29XNE5RZVVCTk5zRE5oUUlGY2Y2alZD?=
- =?utf-8?B?OEFMc2pvQndGendBN1VuWUROY2t1NzJCTkd3Yjc4azVPbnFSMDZJMEVYRnI4?=
- =?utf-8?B?azZOb095KzE2dHpIRlprdWU3U2wrU1hwM2V2elZQVDVHck9Xb3FYUStwYzhU?=
- =?utf-8?B?NWtRMkg1WEZ1aUIxTi9CV2VjYnFUdENmVTJPRy80L0psenZleTNwcWZaTWxI?=
- =?utf-8?B?NDFUQU4zNnFjbmRVbk81eVg0dHlsbUVtLzErWXFrNmlJUTFubGRaVzgxTEpv?=
- =?utf-8?B?SHFHY2g5TVhxTXQ4SWVhcFdVejZnZlZyekZsNmh6Snc2YjlCOWxWUlhpekQr?=
- =?utf-8?B?UmhpYm9uTFZxOC9WVENGQWZiampnT2ZWV0p2NGs4SDBEcy9JTXVlYk9oZVAr?=
- =?utf-8?B?c2QxMG9ISjVoTHd1UVQyUVE0VVl2YmRsL0xEUUhCRytKSVA4QjB5bnRrWFk1?=
- =?utf-8?B?NEVEVmNXSjZ5amhVYlZLTStFRFRldmNaeUVrdVI5MWlCVEt0c3pCbFJYTjJD?=
- =?utf-8?B?c3NIQnlTMWZnKzhjL2lBR0tWNi9xU2tESFFTMnBIVFR6cGRjSDdrWkRKYTEw?=
- =?utf-8?B?YjQrc3JQRHAveXdQM1BsYUVmRWpUYkVWQXJva004VGwyRjdUU1RNdzdBb3Y3?=
- =?utf-8?B?L0dJNTRTTUVOK0svaTd0eEk0ZnRYT0EweDJDaXJGNTBIUjZFc3dLWDFEQXNE?=
- =?utf-8?B?LzNiTVpyOE1TaXcvdE14UGUveFFEeHhpZXlMNVVjVStrUk9WeTdIZmd4OXIz?=
- =?utf-8?B?QnBrQWZPN2xhL1RlVUJ6WVpodzhnMm8vTU8wSU4wTUExM3RHQThxT2VjWDVM?=
- =?utf-8?B?ZGpuRDhXUFFCb1p3OWI4TFhsUzNQQlNTWG4rc251NDI1OUZBY1c0eEVaRUlW?=
- =?utf-8?B?Y2NaMk9oV0Nqb2dqT2wzejJzRjY5TFQrb3YxdnhQOGpGTWtYM01mTGdDOTlC?=
- =?utf-8?B?TVM0aCsxNkNBYjAzL2gwUk41RWJFbjVjN00rL1QyMGxYeUx5eG4vZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae47d317-3537-4f7f-0772-08dee928fbf2
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2026 02:12:16.9117
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6dHPLhUFF0jD77YcusdhNrNst33h+9GFDCwXfjUnm9m61f2prt9cmmcP+HcjMDWdBU3DLVLs8hSrxMsnFuRbxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7088
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri Jul 24, 2026 at 2:19 AM BST, Alexandre Courbot wrote:
-> On Fri Jul 24, 2026 at 9:46 AM JST, Gary Guo wrote:
->> On Fri Jul 24, 2026 at 1:18 AM BST, Alexandre Courbot wrote:
->>> On Fri Jul 24, 2026 at 8:32 AM JST, Gary Guo wrote:
->>>> On Mon Jul 20, 2026 at 8:21 PM BST, Younes Akhouayri via B4 Relay wrot=
-e:
->>>>> From: Younes Akhouayri <git@younes.io>
->>>>>
->>>>> Coherent<T>::write_to_slice() calculates a zero-byte copy when the fi=
-le
->>>>> offset is beyond the allocation, but still calls
->>>>> UserSliceWriter::write_dma(). The latter rejects offsets beyond the
->>>>> allocation even when the copy length is zero, so a debugfs read past =
-EOF
->>>>> returns -ERANGE.
->>>>>
->>>>> Return before calling write_dma() when the offset is at or beyond the
->>>>> allocation, matching simple_read_from_buffer() EOF semantics.
->>>>>
->>>>> Fixes: 016818513936 ("rust: dma: implement BinaryWriter for Coherent<=
-[u8]>")
->>>>> Signed-off-by: Younes Akhouayri <git@younes.io>
->>>>> ---
->>>>>  rust/kernel/dma.rs | 4 ++++
->>>>>  1 file changed, 4 insertions(+)
->>>>>
->>>>> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
->>>>> index 200def84fb69..36b72fb9ab46 100644
->>>>> --- a/rust/kernel/dma.rs
->>>>> +++ b/rust/kernel/dma.rs
->>>>> @@ -1005,6 +1005,10 @@ fn write_to_slice(
->>>>>              return Ok(0);
->>>>>          };
->>>>> =20
->>>>> +        if offset_val >=3D self.size() {
->>>>> +            return Ok(0);
->>>>> +        }
->>>>> +
->>>>>          let count =3D self.size().saturating_sub(offset_val).min(wri=
-ter.len());
->>>>
->>>> This saturating_sub is redundant now and should just use -.
->>>
->>> Or even better, you could use `checked_sub` to perform the test and the
->>> subtraction in one go, while avoiding potentially panicking operands.
->>
->> I think the code is clearer with separate EOF check length calc. This al=
-so needs
->> to return `Ok` so it's not like that you can use `?`.
->
-> Is it clearer? The `checked_sub` is efficient and makes it clear the
-> code won't panic. And `ok_or` takes care of converting to the right
-> error nicely.
+On Fri, 24 Jul 2026 00:40:04 +0100
+"Gary Guo" <gary@garyguo.net> wrote:
 
-There's no error here.
+>> diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+>> index ed943960f851..2fd7ee25abcb 100644
+>> --- a/rust/kernel/bug.rs
+>> +++ b/rust/kernel/bug.rs
+>> @@ -123,9 +123,9 @@ macro_rules! warn_on {
+>>          const _COND_STR: &str = file!();
+>>  
+>>          if cond {
+>> -            const WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+>> +            const _WARN_ON_FLAGS: u32 = $crate::bug::bugflag_taint($crate::bindings::TAINT_WARN);
+>>  
+>> -            $crate::warn_flags!(_COND_STR, WARN_ON_FLAGS);
+>> +            $crate::warn_flags!(_COND_STR, _WARN_ON_FLAGS);
+> 
+> Hmm, why bother adding a const for this rather than just invoke
+> 
+>     $crate::warn_flags!(
+>         _COND_STR,
+>         const { ... }
+>     )
+> 
+> ?
 
-Best,
-Gary
+Ah, `(const { ... })` works.
 
+
+> Also, the proper fix would be to mark it as used in the `warn_flags` macro
+> that discard the expression.
+> 
+>     if false {
+>         _ = $flags;
+>     }
+
+
+Yeah, having the callee that discards the argument consume it is more
+logical than working around it at the caller. I'll send v2 shortly.
+
+The same reasoning applies to `$file`. Since there is no warning right
+now, I'll rename `_COND_STR` to `COND_STR` and consume `$file` in a
+separate patch for consistency.
