@@ -1,92 +1,177 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F2E1B4156;
-	Sat, 25 Jul 2026 15:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4AF4908A9;
+	Sat, 25 Jul 2026 16:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784993023; cv=none; b=DE097an7vTmmkbAsOeq4uNKGA/4cGbZ5LDIzK/FfNeIZtTIcQ6ylOIKoLEGl15L8HesKTgVo+J5F63lMS6c2xJIVmGgtoWzfJ+yi9S07x3Mtx1S0f9msdrZzk42OYAv/NlngaaHemNQ47e/XKxE0Q0z7d9KdVbQFUzK5gvwMsc4=
+	t=1784998440; cv=none; b=Ogx8eSlmCOLgfvmyJUbyAJ64gJ+i0lY9SM2KPx3QxP12toanB1Wh7f4Yu2uMpgtXGxAFI604qIOzO+fqMchlXsZxJjtyTsc7C/KHDJRi0xWqYvhsutSC/IFFYDTzABGvrYFmRKha+Y93K3pzDLSAY0jiNUlFWmc6ZXaA2U/u//g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784993023; c=relaxed/simple;
-	bh=H/UZoo1jd5DwImMYrju7zqybkVtsq/bF8GTxB3eWQ8Q=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ZdH2L9LJdtbolIO2rXJaTq9PkK9WJxWKGcDIZLw+SqeWgrSIi6AkqqDGRbLvjjdBdRaOz2bmW5W2LikM4jggMQ2FRdQqp+UceAJXb+eqsDSbjYvCdexsGzBgUQK8Gw7qPHl9x9yjd7MBzx5E+fSHye5C6S/syXwXdTbmyzWjo84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nkt1kOUO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784998440; c=relaxed/simple;
+	bh=rBsMR70hceQfsKfQTp+lZd8nsTWC6aUj6e5tjLRfISs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BVhMMBRO6DOQPpFvFL/BUrifSWRX0tt+N1wu2sRkzStO/9Vc7ZjyvSed7CQZmjcnqVOiHaPkBehVjkx1YoKSXYd5AsDKLXnSeLHCYLiflgHmFRdCOAd+J8J6uXP/WwlyR91ojepw6NPc1BxTbQkgNPaz145Bv+tE4X70jQCm9rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmaVBdlB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nkt1kOUO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320331F000E9;
-	Sat, 25 Jul 2026 15:23:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmaVBdlB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED371F000E9;
+	Sat, 25 Jul 2026 16:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784993022;
-	bh=IrObirDM6JFQjYFVBVhnBldHIACwoPrCRU3wk43L1Oo=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=Nkt1kOUO3NkQqUDxsXpetJv5q0e/lbbYguCNrmgwuuST0sFbm/8Da1NhuYg2FuuZi
-	 x7yDyrmFtBoKxuEXUUcHQsjgi41/IlyLoCJluvVhYoRuM3koH+5hnrGjzQqHaHjJlg
-	 Z+DH8GsbJh/2j251JxTRx1B64ukQb+oNykjQFQkuhazqB3wmC0ohDMOZN0huwMMIFq
-	 9UI7V2Jla7LbuveLPcj9eyORWXbjdMtY2KrlyNhQUAV7trvWCb1EVtfgqZ9P7pV7wh
-	 oXqqUCNNk1+zMhLMgFwvD8DoMzKx8mpXr3dhIx/xBFr9j54Pw/44QLeZRJay3nCvjV
-	 8Zrjf2B9Gngmw==
+	s=k20260515; t=1784998439;
+	bh=CGiD98qQCQZ7uNP/Ka9jvI6qO1LaECcQqkPSKoNbdcc=;
+	h=From:To:Cc:Subject:Date;
+	b=QmaVBdlBTsOhQ0JzCMOuWT7sAnWtHN5QrjVWyaFFfopjgouxJNVyQvA5/NbVy4Y4S
+	 d215TAUDo0GxvWGSqRyLMuBiVGrTXigiV+vKXtXkQBqprRb+On8rRdxIit4CjTGhRJ
+	 cekCRz9f4mp/Tf/NelnXsNoPkmYv/JOqF18HLajbml1mR+Q4n1BsaTf7TENoH5S0h6
+	 sHtmnXwT/NyoybrmW7rT/j8Pxy31U7FfJEKPZDn6fW7q9pKNnZLUPugpOxxm+0BOFk
+	 ToDKRyKBatw+utpLKoP2Qyu0TeZP7bEsxrKjl/AH30+bLAA3eei06qU0q2/+x0vguZ
+	 ZLDEfKMq3/HnQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 7.2 (2nd)
+Date: Sat, 25 Jul 2026 18:53:01 +0200
+Message-ID: <20260725165301.156594-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 25 Jul 2026 17:23:38 +0200
-Message-Id: <DK7R7SG09F1B.1TQISVHUUM0WG@kernel.org>
-Subject: Re: [PATCH v3 4/7] drm: nova: Add GETPARAM parameter to read the
- GPU chipid
-Cc: <nova-gpu@lists.linux.dev>, "Alice Ryhl" <aliceryhl@google.com>, "David
- Airlie" <airlied@gmail.com>, "Alexandre Courbot" <acourbot@nvidia.com>,
- "Benno Lossin" <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "John Hubbard" <jhubbard@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260723063046.1265791-1-apopple@nvidia.com>
- <20260723063046.1265791-5-apopple@nvidia.com>
-In-Reply-To: <20260723063046.1265791-5-apopple@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Jul 23, 2026 at 8:30 AM CEST, Alistair Popple wrote:
-> diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-> index 1156df51c533..855f23877734 100644
-> --- a/drivers/gpu/drm/nova/file.rs
-> +++ b/drivers/gpu/drm/nova/file.rs
-> @@ -34,7 +34,7 @@ impl File {
->      /// IOCTL: get_param: Query GPU / driver metadata.
->      pub(crate) fn get_param(
->          dev: &NovaDevice<Registered>,
-> -        _reg_data: &DrmRegData<'_>,
-> +        reg_data: &DrmRegData<'_>,
->          getparam: &mut uapi::drm_nova_getparam,
->          _file: &drm::File<File>,
->      ) -> Result<u32> {
-> @@ -43,6 +43,7 @@ pub(crate) fn get_param(
-> =20
->          let value =3D match getparam.param as u32 {
->              uapi::NOVA_GETPARAM_VRAM_BAR_SIZE =3D> pdev.resource_len(1)?=
-,
-> +            uapi::NOVA_GETPARAM_GPU_CHIPID =3D> reg_data.api.chipset() a=
-s u64,
+Hi Linus,
 
-NIT: Given the subsequent changes I'd create a temporary
+Please pull these fixes for Rust.
 
-	let api =3D reg_data.api;
+They have been in linux-next for at least four rounds (most for more
+than a week).
 
-for this.
+No conflicts expected.
 
-> +/*
-> + * NOVA_GETPARAM_GPU_CHIPID
-> + *
-> + * Query the GPU chipid (architecture/implementation).
-> + */
-> +#define NOVA_GETPARAM_GPU_CHIPID	0x2
+Thanks!
 
-As mentioned in the previous reply, do we want userspace to extract additio=
-nal
-information from the chipid directly? Defining it as opaque value would mak=
-e
-things easier if the encoding details of the chipid ever change.
+Cheers,
+Miguel
+
+The following changes since commit dc59e4fea9d83f03bad6bddf3fa2e52491777482:
+
+  Linux 7.2-rc1 (2026-06-28 12:01:31 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-7.2-2
+
+for you to fetch changes up to 880c43b185ca52239e75bc546cc4f4d9154d0fed:
+
+  rust: time: fix as_micros_ceil() to round correctly for negative Delta (2026-07-18 19:07:35 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v7.2 (2nd)
+
+Toolchain and infrastructure:
+
+ - 'zerocopy' crates: update to v0.8.54 to fix a modpost error under
+   'CONFIG_CC_OPTIMIZE_FOR_SIZE=y'.
+
+   There are actually two updates in the PR: the one to v0.8.52 is
+   fairly large and was originally not intended for a fixes PR, but the
+   actual fix landed in the v0.8.54 one. Thus I included both here.
+
+   The v0.8.52 update includes two things upstream added for us:
+   '--cfg no_fp_fmt_parse' to avoid a local workaround, and the new
+   'most_traits' feature.
+
+   The good news is that, after these updates, the delta with upstream
+   is now trivial: only an identifier prefix change and the SPDX
+   parentheses.
+
+ - Fix an objtool warning by adding one more 'noreturn' function for
+   Rust 1.99.0 (expected 2026-10-01).
+
+ - Clean up new 'semicolon_in_expressions_from_macros' lint errors for
+   Rust 1.99.0 (expected 2026-10-01). The lint can be allowed, but it
+   will be a hard error at some point in the future anyway, so clean it
+   up now.
+
+ - Locally allow new 'suspicious_runtime_symbol_definitions' lint for
+   Rust 1.98.0 (expected 2026-08-20).
+
+ - Globally allow 'clippy::unwrap_or_default' lint since it relies on
+   optimizations -- under 'CONFIG_CC_OPTIMIZE_FOR_SIZE=y' it does not
+   work well.
+
+'kernel' crate:
+
+ - 'time' module: fix 'Delta::as_micros_ceil()' to round negative values
+   correctly.
+
+----------------------------------------------------------------
+Alexandre Courbot (1):
+      rust: allow `clippy::unwrap_or_default` globally
+
+Alice Ryhl (1):
+      rust: device: avoid trailing ; in printing macros
+
+FUJITA Tomonori (1):
+      rust: time: fix as_micros_ceil() to round correctly for negative Delta
+
+Miguel Ojeda (4):
+      rust: allow `suspicious_runtime_symbol_definitions` lint for Rust >= 1.98
+      rust: zerocopy: update to v0.8.52
+      rust: zerocopy: update to v0.8.54
+      objtool/rust: add one more `noreturn` Rust function for Rust 1.99.0
+
+ Makefile                                      |  5 +++
+ init/Kconfig                                  |  3 ++
+ rust/Makefile                                 | 16 +++++++--
+ rust/bindings/lib.rs                          |  4 +++
+ rust/kernel/device.rs                         | 20 +++++------
+ rust/kernel/time.rs                           | 11 ++++--
+ rust/uapi/lib.rs                              |  4 +++
+ rust/zerocopy-derive/README.md                | 14 ++++----
+ rust/zerocopy-derive/derive/from_bytes.rs     |  2 +-
+ rust/zerocopy-derive/derive/into_bytes.rs     |  2 +-
+ rust/zerocopy-derive/derive/known_layout.rs   |  3 +-
+ rust/zerocopy-derive/derive/mod.rs            | 20 ++++++-----
+ rust/zerocopy-derive/derive/try_from_bytes.rs |  6 ++--
+ rust/zerocopy-derive/derive/unaligned.rs      |  2 +-
+ rust/zerocopy-derive/lib.rs                   | 36 ++++++++++++++++++-
+ rust/zerocopy-derive/repr.rs                  |  2 +-
+ rust/zerocopy-derive/util.rs                  | 34 +++++++++++++-----
+ rust/zerocopy/README.md                       | 15 ++++----
+ rust/zerocopy/rustdoc/style.css               |  1 -
+ rust/zerocopy/src/byte_slice.rs               |  2 +-
+ rust/zerocopy/src/byteorder.rs                | 50 ++++++++++++++++++++++-----
+ rust/zerocopy/src/deprecated.rs               |  2 +-
+ rust/zerocopy/src/error.rs                    |  2 +-
+ rust/zerocopy/src/impls.rs                    |  4 +--
+ rust/zerocopy/src/layout.rs                   |  4 ++-
+ rust/zerocopy/src/lib.rs                      | 12 ++++---
+ rust/zerocopy/src/macros.rs                   |  2 +-
+ rust/zerocopy/src/pointer/inner.rs            |  2 +-
+ rust/zerocopy/src/pointer/invariant.rs        |  2 +-
+ rust/zerocopy/src/pointer/mod.rs              |  2 +-
+ rust/zerocopy/src/pointer/ptr.rs              |  2 +-
+ rust/zerocopy/src/pointer/transmute.rs        |  2 +-
+ rust/zerocopy/src/ref.rs                      |  2 +-
+ rust/zerocopy/src/split_at.rs                 |  2 +-
+ rust/zerocopy/src/util/macro_util.rs          |  2 +-
+ rust/zerocopy/src/util/macros.rs              |  2 +-
+ rust/zerocopy/src/util/mod.rs                 |  8 ++++-
+ rust/zerocopy/src/wrappers.rs                 |  2 +-
+ tools/objtool/check.c                         |  1 +
+ 39 files changed, 217 insertions(+), 90 deletions(-)
