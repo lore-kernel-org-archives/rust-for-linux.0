@@ -1,175 +1,179 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012048.outbound.protection.outlook.com [52.101.48.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD1017A305;
-	Sat, 25 Jul 2026 04:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784954530; cv=fail; b=kc0xdU1pKFKA5s9i7hAWyKdSi+wTv1dqdF3ITufGhj7+E2li780Fu+8nqmYEepu/FnuVDc9D1o7nC9s+iT86bPm3RDDc1isYAS18zGUraxfHcT6TIGZoiY5uUDOrrDX37NlcqSXWD2c+I6xO6g+w9DEijOffvnmmfiInqkuHHs0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784954530; c=relaxed/simple;
-	bh=iULOspyYEG/JZA/XyH5+pcgFR7F1VJFIZHMGxkDij5s=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=NlFa6FUOPpfmJN5jGhLikZVpxe6Ba+h4ou5hJSJ7ZT4olMPKgIhAJixL6yMpWH1HVpcXkntVtyMwve3xKgAxXyvQ82WT9iVgNA6BA638jm+7yZPdTIERtRrjKO8nMrcRrfKIHw3ylqlaxHtB1w37r/Z/wqk/8xnoUAdGczhp9nc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VddE21w+; arc=fail smtp.client-ip=52.101.48.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B0F2E0938
+	for <rust-for-linux@vger.kernel.org>; Sat, 25 Jul 2026 14:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784988583; cv=none; b=TSFqmh07w0/SMlLpC6U+qqtkvhWDwPgUir92iR2wP0Pjom6XnxjdoOy+0MMWd5yI6pGQnzcecc23+gH2WftxBD0mOYF4lOCoar+pEXtS1fiEtX08sayVr4F1M23NYHqgBR5RNI1WxJBcmk+Ubcv9GdGXllgTMRQ1UB8MbDTSgMg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784988583; c=relaxed/simple;
+	bh=Dp80bhHC2pZxfWCGX1LuQb9uub81dvM8F2U5HkPdon8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iMahoEdGHDq7mfxg+PGqz0IRtnNDf+aS/GhChzrgm6KVWcQy69vy18Xv3haw8u3An6ohpKzCAiAq0uI2gP0vnp7fBWzL4IGJJyA7tZYx4iVyd7xkYgmtshIHeu+Gp/PMCqP9WMNeSVB5fMSiwDuAQP3gCNJi22hLINkQGEKcyTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J26RhIHV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VddE21w+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UKSZdLZMsP/U9sEDKESZO62D9TuN9LuQGjZ3I1XYYScp79K0GadmqHteeBVL7/LZOOO/KSKGAf6PX5pN9jcZijOBLxTkRfzo0oYO8Hqa9P0NORmm1TIzJFRR506gZRggHz+wthmz1V4PKTCIYoPTTTatqRPrhyiKPe16aJ3IoGoD/Z4ICx5ulB5lwChns7AUKa1Iru7jfuft8Ep//6qi0jC75ZssIDccf+0rMlrVU0m6fWPaon89Jt8x6zqmpoeMGgYmmFAw1wzNcSH68JkIlzRe9y0ymg2ZcXQW/qUt9NdNsgoQ+PgU9OmSLd5oLaiw5iD/XpA8MKLfLwwYeRoGCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iULOspyYEG/JZA/XyH5+pcgFR7F1VJFIZHMGxkDij5s=;
- b=DsjG2cqwV/DmEJ3yT0jG0OkriB+x2Q4DrZF9hwytOGgwtrdinoVueuzDsUAimFubCDcF6MZBMtZ2l/HtEoIFGHk/4SNusYYzNtI5aXpbw+qJAegyC7095Lq/jRKi+B9F1HamPsSfm2n4iw1G98uB0PPh5q/ZkvFLbBzyeMgNB04ubRwHIAcT9PQjyFk2EnjeBTFlQEnR3VDvfOuE3s78q7wI6PWmxkU9x0VCuB3UZKLHSnJUtbjWzODeuxuINXCxnWNsG8N4VQByeFLs20T3mEKlT7a4S415hT70WOGZ0cZpWOO44UQrY6YmmJPyDsMPbyAb7U/9GbV/uFcbLz4muA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iULOspyYEG/JZA/XyH5+pcgFR7F1VJFIZHMGxkDij5s=;
- b=VddE21w+Nwg7PxahBXBo3IMfxb2udPcLqXEOoUCJ8HsZ/EFx+VVSimvin1aKBz2RNbW9OtUUDTVdimjAqUaW1Al8sNgxLIKoZqcAaGmhR2bxlAY4Rh4F9nMU1eaGl5l/xwrAfWR68rqy0l7k8T8aMWWz/qkYIBWW+jYYUCmQhZIhICrwl9kosUgdsy8nr9kHB8WbQfRDiihwc9SRUnI0IR25Wc9XZONyaI9dEyeiV5BCKmO2q4IuBatd7oI8iE2ErCiIPFLXAEhIUAcZMwGj5oImiNAqmfPWgiWfZpYq4Nz1u1u0zgvTxyj/TAx9YWw43gCGG5tH/yWhyzSaD0gnTw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MN2PR12MB4047.namprd12.prod.outlook.com (2603:10b6:208:1de::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Sat, 25 Jul
- 2026 04:42:05 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0245.012; Sat, 25 Jul 2026
- 04:42:05 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 25 Jul 2026 13:42:00 +0900
-Message-Id: <DK7DKIDW14CO.1PJO3G4OGD4LN@nvidia.com>
-Subject: Re: [PATCH 2/2] gpu: nova-core: falcon: use I/O projection to check
- transfer bounds
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, "Simona Vetter" <simona@ffwll.ch>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20260724-falcon-dma-projections-v1-0-957028a7c0a7@nvidia.com>
- <20260724-falcon-dma-projections-v1-2-957028a7c0a7@nvidia.com>
- <e7ba2c90-6d4f-487e-bd25-56d568ba1f26@nvidia.com>
- <DK75LUA4NLGI.3P29AIZQE20V2@kernel.org>
-In-Reply-To: <DK75LUA4NLGI.3P29AIZQE20V2@kernel.org>
-X-ClientProxiedBy: TYCP286CA0180.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:3c6::13) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J26RhIHV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEF41F00A3A;
+	Sat, 25 Jul 2026 14:09:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784988582;
+	bh=r5PYm+oqvpKlxv3Cl/XCwuw8e4e6I/Lk7zvr1vH4Luc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=J26RhIHVTAztKY8UhUrTGpqgfmNpO3k2AkrgPmKZNnuU3RtQrF1/z0FonhF73E+uo
+	 kTdbrV6yHWV3IGl0lebPRuPu4vslVfUWJStobCce854JrHIRxQZxWSGmfHuh0ecM2h
+	 OsjdHnHWzMSPYmgGr3Dl5B5uS5Rfe5juT+VftcBEoYx/0cptH4hVU3QryTsbPovVFN
+	 QIStFfXbsG17MG+NIXYfO1822kfTCq+ctg3xhxtlFlav0z2QJF7uWD+aDmFrRtgSsY
+	 STMD9p/EuCgnTRvqvgcyplW8Ikfivq0pAlfwK9ZIs2aFspLB8iL1uMpwqmUASCgLd/
+	 pKNHsucHH6o3A==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9B5DEF40071;
+	Sat, 25 Jul 2026 10:09:40 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Sat, 25 Jul 2026 10:09:40 -0400
+X-ME-Sender: <xms:pMNkaoUPadUfnIgcIJEOH-c0wz7C3PL_RP9KRwU0MOwLAYvs7arhPw>
+    <xme:pMNkam8ufm2iHmUV2OGDY4OtWy9YCQa2nVom51YAkthHQ8QJ8t3XAha8JHXawTeut
+    ZBiA3UcBjHB_Nh5NJXIYCezpcEjMcg5nF5X8GahVBex259lETlpQA>
+X-ME-Received: <xmr:pMNkaigfjLmkMXp7Q-rh9V1QaHJbFsoFMiNixw_LVjQRs-C7ddSchOprjwA>
+X-ME-Proxy-Cause: dmFkZTE+V3F6vyp9ozQmXV+S4cQnM2PV+kxwk5oow5vH94Np1S7UQGE9YaAB7Cw6e6JmeZ
+    Om1I382tv9RJaocFeSwM09JQnyHL+zEh6yFJBBnvlhz24Cfs6fvBKdM6lfHJWOWU6IaAj/
+    /++tJta25Nv/Q0o0lF96Ovk7xj99iJ0CsMcCPOm9uxI3pDuNFgut9PwC9mqhgOHOVAhSZM
+    bu+60WZAx7lDgZASxgAgoviHJ1bdp/+w2zXF0a3I2KQaEtW6JwS7sBucGsDAq7QMbKvG1u
+    4qXwofJbSvWsztetHuJiRPfIC/0tbxdvaVk1shI3aqfIzIdKZA92ceI4mtxJ02/Ih2ysrx
+    7ysVPxG9Ac8dGAY+soEPTOgi83SO+EmAQ+M/GBC3WIEvj56g9Bk6qTr3ZFUvNmV7KC8+AG
+    DyJMjSr1IGL0y8SecgbSFaY4lE9jnWvWuK/ZWO0BqxsBDpCLugGM5kyFWICmu4eX3/A02t
+    R1s4ixnHBggPaZL2J6AG7QL5+udWWOPiIQyi8uKisCXJicNUYyJYAjPDRBFDH/BwR4JUOU
+    8j0v4k9fOOXwOM5Htzl11VbMNY5kb4uAt4flmKYU5L7a1MLTfv4F1D78sQM9seBprg166I
+    2r2ds3FFO+sWfOSHPbwMUlhKncqmstqWJC2hF0FaM/ARUZt/Wfkx8XHrDWLQ
+X-ME-Proxy: <xmx:pMNkaidY7mj6Zrzvehg8_xAt-QWl5jsemv55HlApQbb79HqE9JXu0w>
+    <xmx:pMNkarKXzXo9iU4eLh6rPDHbpzld93Z8XbQ79vYiy7Ew9JVzQvFoOg>
+    <xmx:pMNkavn1lWciOLBa8U88o6SG8YRjsB466MYfjMg1-7ICFtBP6z91OQ>
+    <xmx:pMNkajfhRuY4LR7fIeKlRAJ3Bz_rJtQCKAEQzv1pttnSxu_bCDo5QA>
+    <xmx:pMNkagwey2F_WmMB1O1hVL7dydr-BmBow5zbJ8t6H4nt0a1W87CSEgVT>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 25 Jul 2026 10:09:40 -0400 (EDT)
+Date: Sat, 25 Jul 2026 07:09:37 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: revocable: use LKMM atomics instead of Rust atomics
+Message-ID: <amTDoW2sark_jEUa@MacBook-0RXW5>
+References: <20260716145536.3681630-1-gary@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN2PR12MB4047:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc02c9dc-bacc-49a3-7d31-08deea0713b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|10070799003|6133799003|22082099003|18002099003|11063799006|4143699003|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	H/ykBj6W0MavvQzihbuTPO9l8GFTkATj59FOB3pLJD/Lw1w1qMNxBfqT2o95JGo+f6slDDG4wTAF7NOJeZ0fRCmElPzMsqBpCV+2KqFuJU/YR+0QdUczY0kVwfpbsVtk/feTFWiKkyeJiKWWokT5n9mrCoLUlLDzf92eZ0DIM8j6SwpT1AxrGJoImfmVtT2f0wycZk592siVIuEy1/49LFhcxx2skLA5knpcwgaxlZhbQPY0ViUd9qXdcn0ILDCvJv2vNq1d/lRTKjhtwcMtfAcpphrg3CWtewtvdzDPkskFK1dD3g7czKOOS50Akw4Sgle6PshlLSqC0zqOW5F+3Qy7OuGtwaV6Ll4F1xwgLsMPFvdTPwqM15tbZBNXYvhbmCi0C12hTbwi9COsd/rqWkiNaKnDEVXeLrpxhqbF/jECa2gaZ/Q2xTKFZH4ggMKp9bkx3YF1Q+AI7H87MA1ZMd0wKdVFgIzLF3/zreoPr3rGjB3ydsLbZv85VxK5IT6dAj1C/uKdaCbo2v9oWiX8HubgNjxHWXwuxzsg/znSyoGZ4kSUQmvFEVY5GpEvHkO9jOkK8NiyssLEJbcHxZvcaGk7TNUDcfmrpiqVlKfJt/2qREV1U5yp0U6/48tif3zwMNG7/K95IrhIjYCut51T6Hu/oawvPydFQP87ITSQfN8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(10070799003)(6133799003)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QUhIR1B1ZncxcEJYUUZ2WmdBZUhSMzhOMEo2VE9MNTU3TFJReHVlc2lWMWsx?=
- =?utf-8?B?eU1ncVVDY1hBTTc5bG9jOVhKeFBPN2VnZkZrdHdsQTU0V1YzSFliTVJ0WTRN?=
- =?utf-8?B?NHBrSnBRQkpud1B4MTYzaGhTVmdLQW9pc0svZmZSY2wxdThBc0JhZHRTQThi?=
- =?utf-8?B?dWRjdVY5MEhZWWpkczhmeHBSdmNBdWRhYVJsbFRrc1Bhb05uRE1BNTBZSXhQ?=
- =?utf-8?B?N1loT0tMN2pYRzZpY2xPWG5NVUYxNHgyNE95Tkcwam5sak1GUjMxdmRyclU3?=
- =?utf-8?B?RXlrQjFHQnUzcTJRenFFU3hjRHp3K2dIakM4VHUxVDRaVHFieVEzRlZ5SXZz?=
- =?utf-8?B?bTdCREdlcko1cjBmOEVuZjg0b3JUSUYvZU5Vazg5QWZJa3RBQ1VuOFlkamNH?=
- =?utf-8?B?eGtPcHZPWlVKLzA0RTBwS3gzd0JDVUtJRGR2bXY0Qk8rTjBhSVp4aTlUb2xw?=
- =?utf-8?B?bFVzMTIvSy9zeUVuVU1KeWtsTloxenFTbDRtT3I3VHIySzdNZzFTeVVsOE9I?=
- =?utf-8?B?cGpYeUZ6cHhIajh4Q0dkMDN0R3M0QnR1TDl3QkY4Wm42RVZGMmlQYTVtWHFk?=
- =?utf-8?B?KytVR1d4QmtNRTE5VmpCbHFoRFBLUjRFaExhY1d3amhPQzVJbVNIdlRPWnBB?=
- =?utf-8?B?S3Q1SnludCtEZ3RpRnpvbUVkZVhDNk5adzZoYnlaTGRLVjREblFoaFdFWC9L?=
- =?utf-8?B?dVlhaURMK203TGF5SDNpQ0VKUlkvcVlzaXN2Y2JoNDcrM0dzM3BmUXBvOGpv?=
- =?utf-8?B?UzFJeEk5OG0wRVgvbjljNVVuakdkQVUrNHpsYjN4YmRXaFN2dGZmUG5uMjAz?=
- =?utf-8?B?d2VISmgwcXJ4SUlPbDFZbVROTHBSQnNSeUNrRDFyVW9sZi9ra25CU0ozWmdY?=
- =?utf-8?B?Rk1FL25TRWxBQS83bHF3bXI0bnpyU1pJajVMc1RoVDBwWktLY1BTS3Ewd1Ux?=
- =?utf-8?B?ZGY3VHhXcSs3QUczM1JvKzRHL3hKZ2ZjWmhra3AwOWZqV2VRVTNmaVJXWUhR?=
- =?utf-8?B?bnBpUkt6WWpORXo0RlgwWFVYbm90M2hDeWxQK0JKeHNsclhwT0dFWVhYbFh1?=
- =?utf-8?B?RGxhbFdvN3VXOVMyVjQzUXlOcHpsYjMzaVQ5MFJmQVdKcWJGQmgvNVVHQU85?=
- =?utf-8?B?UGhER2RCUC9lMHNac1dDamg0WGxqL2EveExiOFFTOVAzdXVIMVFRVXM1RVZG?=
- =?utf-8?B?YzJFRDNiSTVoOHhrZFdxeFZtb0kvTytoQmF3a3VTRXRFVEJHYVdKODU0ZGlN?=
- =?utf-8?B?MEYxeDliVUR6eEF6NTZ3UzRTNkNGR0FWYzJjT3BTQU5lMFlhOTRydEYvaXBF?=
- =?utf-8?B?bnVXeFNkS1E2MzYrc0JTR1RUUThHU3RRdmhVK3gybWRLMXYvc3hMZGFkbkdz?=
- =?utf-8?B?cGhwR1FIWDMxMStTNmlMa3IyMFJUZHhmYkdVZUhqRWlMZ0hzK2YzUy9WT1VM?=
- =?utf-8?B?L0x2V1dqdElRSnBTbDRjUmhxUUc2YVpTcHFzSXBBSUp0VC83VlIrcXFPS1Zz?=
- =?utf-8?B?eGpJU0xXdkl1bkFiMHZSVS9FSFJJQStYdzdxb2V5YmwrTVUyMHBvb3NrLy8y?=
- =?utf-8?B?SmxJdVRHTWZPUkJJcjBjR1dFcTMwM2JUOUhnako5bFRpbFhvcm50YjhtN3Jt?=
- =?utf-8?B?cVNNWSswU0l1UHMyV3BpaklocFFqUWFkSW5lVmlWYm5KbjJXOENtc2dYSDVD?=
- =?utf-8?B?TXYzUXB2OTdzY0pnSEJMRitRcXBPVzhXM2x1blY1Y2RpSy9OSlpFNkoyTzBV?=
- =?utf-8?B?RHdGbE11TXNiWFRjSCs3NEFneTYwRXZNMXg3L2J4VTMvaVdJK2FjTi9SM3do?=
- =?utf-8?B?RDU1ajNVTUdES0ZxUzBiTC92UDBUbzZhZDlxSWFTdmdnOWdPSUZwcHVML1Vp?=
- =?utf-8?B?M2t4RWpXRGQ1RmpzTUpadVYzeGsvZm5Na0I3OEJqVEJqOWhzNEtkdVhtcDZx?=
- =?utf-8?B?bDZzTkFTVEI4QVlPM0lNM2ZtQjRCczF5UVM0NTYybExIZ1VmTEtHdjM2VjFa?=
- =?utf-8?B?ZXQ0N2JyL3Njcy9NdDRQMVFnSnRENC9sSm5jZm1oY3JvVTAzUElDQTlyTEg0?=
- =?utf-8?B?cElsdk9vM0Zra3dwdEgrdmNyR2VEaWt1N3lEN1VIalFlUC9lZ0VwZTgyU1hG?=
- =?utf-8?B?dUl1RERaeGs5VUtpMDZ2Rkl3WTVzRG13MmNuV3JVRzliTkNuSEtTNEVkMEw4?=
- =?utf-8?B?T3pvTytkSVcvVFlWczVialRGM0pXNTZRL3hvRG9GUWpBSzVZQkN0ZVVmZDNm?=
- =?utf-8?B?UHZWeXpHWkxpTmV1K2gydGtKZnRYOS9hUUVzUS9QNjlQeWJPMVpGRDFvUTBn?=
- =?utf-8?B?MFFjd3RYaU9pSHNybFkzYXQyTXdBZkE3VWtlSHdaeWpnU29mY1RhWUV5amRG?=
- =?utf-8?Q?+cxOpJ2jzxEQgXDyEEXzOAVNrrZRa3XuZyRYP5UXWuIES?=
-X-MS-Exchange-AntiSpam-MessageData-1: ZhcdWBgcdyXl9A==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc02c9dc-bacc-49a3-7d31-08deea0713b7
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2026 04:42:05.2460
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v0m/gDbWv6YosqwEfoOqjajg+STHvBu42EU7a4X51DYLcfBtPhq3iARLMdSGnyThSB2vPewt8OZXepLzQQaoiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4047
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260716145536.3681630-1-gary@kernel.org>
 
-On Sat Jul 25, 2026 at 7:27 AM JST, Danilo Krummrich wrote:
-> On Fri Jul 24, 2026 at 8:10 PM CEST, John Hubbard wrote:
->> Sort of "conceptually pre-existing" problem, but "handle" doesn't
->> quite work as a name, because handles are supposed to be opaque
->> items that one just uses to find and refer to things.
->
-> This is inherited from the C API where from its perspective the returned =
-base
-> DMA address of the allocation actually serves as a handle.
->
-> In Rust the actual handle is represented by different types with differen=
-t
-> invariants and hence capabilties.
->
-> (For instance, dma::CoherentBox does not expose the DMA address at all, a=
-nd
-> hence provides access to its contents through a direct mutable reference,
-> whereas dma::CoherentHandle only provides access to the DMA address and d=
-oes not
-> have a CPU virtual mapping; dma::Coherent provides access to both.)
->
-> Both dma::Coherent and dma::CoherentHandle have a dma_handle() method whi=
-ch
-> provides access to the DMA address; this naming was taken over from the C=
- API.
->
-> Given that the base DMA address serving as a handle from the perspective =
-of the
-> C API is just an implementation detail, we should probably just rename th=
-is
-> method to dma_address().
+On Thu, Jul 16, 2026 at 03:55:35PM +0100, Gary Guo wrote:
+> From: Gary Guo <gary@garyguo.net>
+> 
+> Kernel code should use LKMM atomics. The existing code is `AtomicBool` with
+> the need to use `xchg`, so convert it to `AtomicFlag`.
+> 
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-I was also thinking about using `dma_address`, so let's do that!
+Queued it in rust-sync, thank you all!
 
-I guess the pieces required to support a proper DMA range type are also
-starting to fall together.
+Regards,
+Boqun
+
+> ---
+>  rust/kernel/revocable.rs | 26 ++++++++++++++++++--------
+>  1 file changed, 18 insertions(+), 8 deletions(-)
+> 
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> index 2af212ea3b6d..4d177744520a 100644
+> --- a/rust/kernel/revocable.rs
+> +++ b/rust/kernel/revocable.rs
+> @@ -7,12 +7,22 @@
+>  
+>  use pin_init::Wrapper;
+>  
+> -use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
+> +use crate::{
+> +    bindings,
+> +    prelude::*,
+> +    sync::{
+> +        atomic::{
+> +            AtomicFlag,
+> +            Relaxed, //
+> +        },
+> +        rcu, //
+> +    },
+> +    types::Opaque, //
+> +};
+>  use core::{
+>      marker::PhantomData,
+>      ops::Deref,
+> -    ptr::drop_in_place,
+> -    sync::atomic::{AtomicBool, Ordering},
+> +    ptr::drop_in_place, //
+>  };
+>  
+>  /// An object that can become inaccessible at runtime.
+> @@ -66,7 +76,7 @@
+>  /// ```
+>  #[pin_data(PinnedDrop)]
+>  pub struct Revocable<T> {
+> -    is_available: AtomicBool,
+> +    is_available: AtomicFlag,
+>      #[pin]
+>      data: Opaque<T>,
+>  }
+> @@ -85,7 +95,7 @@ impl<T> Revocable<T> {
+>      /// Creates a new revocable instance of the given data.
+>      pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+>          try_pin_init!(Self {
+> -            is_available: AtomicBool::new(true),
+> +            is_available: AtomicFlag::new(true),
+>              data <- Opaque::pin_init(data),
+>          }? E)
+>      }
+> @@ -99,7 +109,7 @@ pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+>      /// because another CPU may be waiting to complete the revocation of this object.
+>      pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+>          let guard = rcu::read_lock();
+> -        if self.is_available.load(Ordering::Relaxed) {
+> +        if self.is_available.load(Relaxed) {
+>              // Since `self.is_available` is true, data is initialised and has to remain valid
+>              // because the RCU read side lock prevents it from being dropped.
+>              Some(RevocableGuard::new(self.data.get(), guard))
+> @@ -117,7 +127,7 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+>      /// allowed to sleep because another CPU may be waiting to complete the revocation of this
+>      /// object.
+>      pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
+> -        if self.is_available.load(Ordering::Relaxed) {
+> +        if self.is_available.load(Relaxed) {
+>              // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
+>              // valid because the RCU read side lock prevents it from being dropped.
+>              Some(unsafe { &*self.data.get() })
+> @@ -158,7 +168,7 @@ pub unsafe fn access(&self) -> &T {
+>      ///
+>      /// Callers must ensure that there are no more concurrent users of the revocable object.
+>      unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
+> -        let revoke = self.is_available.swap(false, Ordering::Relaxed);
+> +        let revoke = self.is_available.xchg(false, Relaxed);
+>  
+>          if revoke {
+>              if SYNC {
+> 
+> base-commit: b8809969e1d7a591e0f49dd464a5d04b3cf02ab1
+> -- 
+> 2.54.0
+> 
