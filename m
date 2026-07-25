@@ -1,202 +1,175 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012048.outbound.protection.outlook.com [52.101.48.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18CE30F531;
-	Sat, 25 Jul 2026 01:41:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD1017A305;
+	Sat, 25 Jul 2026 04:42:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784943716; cv=pass; b=le6njyzWbRplIyxN1txZsCIIlmHQb2CZd3sdua3V/4OesVx+kUoeP2fbsevzAFizhGRLHzYK3Nlvo2I7ye9d7bbtaO8RSLGDZLiXYXmNe/aeODxRUPaQyU/RyINn4m6bi3m02KdOW683JLoSwyTEwyVRApeQYFGeR92b0MgoOTE=
+	t=1784954530; cv=fail; b=kc0xdU1pKFKA5s9i7hAWyKdSi+wTv1dqdF3ITufGhj7+E2li780Fu+8nqmYEepu/FnuVDc9D1o7nC9s+iT86bPm3RDDc1isYAS18zGUraxfHcT6TIGZoiY5uUDOrrDX37NlcqSXWD2c+I6xO6g+w9DEijOffvnmmfiInqkuHHs0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784943716; c=relaxed/simple;
-	bh=NZyVFpIRyK2rNwaMXjWMJlx5PJeZGjemTrC+PWB+WmY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ebqCrIqESpAtA9iy2HZ0/SLKFxGrDhVGPKyFTwdWLT/QX2xqZBmfHGgqsKSLF5gvFFeeXN3VmaU5LWhLg5TiAUKgbxIkMH40S32fF9XjLdrKl4MwSO6P4UwAeUa4n0HDxETThHpqYGaS3Q3g54uX30med5X3oeIpvpAOyU+BOIg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=kDM2xX65; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1784954530; c=relaxed/simple;
+	bh=iULOspyYEG/JZA/XyH5+pcgFR7F1VJFIZHMGxkDij5s=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=NlFa6FUOPpfmJN5jGhLikZVpxe6Ba+h4ou5hJSJ7ZT4olMPKgIhAJixL6yMpWH1HVpcXkntVtyMwve3xKgAxXyvQ82WT9iVgNA6BA638jm+7yZPdTIERtRrjKO8nMrcRrfKIHw3ylqlaxHtB1w37r/Z/wqk/8xnoUAdGczhp9nc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VddE21w+; arc=fail smtp.client-ip=52.101.48.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="kDM2xX65"
-ARC-Seal: i=1; a=rsa-sha256; t=1784943702; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=lMrrV9vou/udhD54x/d1OJXy38OqQLeUw1vHRFqX4cThDHyh74iHVoUmq334x+yzGnbSZM09NpPBTw8vu2cjZM5n5ErUyzyZcquLu3tXxXOBZGd0Gqy2fD7mznQuXKPKPAYc0KD1dZDlQWKg+qXTkgjDwBOTjHbt8vqcPqDxJ6c=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1784943702; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=sH6CqLJTGi8ISCigCTRSI5cDrts97yVGtVPSig9GIGk=; 
-	b=RTr4lha7eCMULJZyHNUR1LxWTw3vTGrP9Tq+dPcM3pPnEPvcdklDS2ClvqWxdMkvIoZPYrvthf0nHK0IvzZmRK/goUCh48d1mksled/CCBOpDOF0n62Qb0JLYUdmWvmuq+jPA/CQvCL2DJ9Z7BEr07gylXmk+jTSinPzvIVabHo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1784943702;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=sH6CqLJTGi8ISCigCTRSI5cDrts97yVGtVPSig9GIGk=;
-	b=kDM2xX65FhVl5v1HHE7bUlOtCmlEFWjYuLu/2bXo+Coekl4Bu/IlPfXXuypWeRUH
-	iCvxNU7vfE83f5WNFPe7zEA38ZIVOKZfhUpZiaY3XhczGFt0DW3Uj1DBrcWitzMiX0f
-	+N+aYGzfqS4oy0WtbFsLuQi8plWza7pEtJuyhpi0=
-Received: by mx.zohomail.com with SMTPS id 1784943699375320.3677950223381;
-	Fri, 24 Jul 2026 18:41:39 -0700 (PDT)
-Received: by venus (Postfix, from userid 1000)
-	id 9CED8181F16; Sat, 25 Jul 2026 03:41:35 +0200 (CEST)
-Date: Sat, 25 Jul 2026 03:41:35 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Bruce Robertson <brucer42@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Igor Korotin <igor.korotin@linux.dev>, Gary Guo <gary@garyguo.net>, 
-	Tamir Duberstein <tamird@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun@kernel.org>
-Subject: Re: [RFC PATCH 0/3] rust: power_supply class abstraction and SMB347
- charger driver
-Message-ID: <amQPYhBkj9rIdSZ_@venus>
-References: <20260708214738.25008-1-brucer42@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VddE21w+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UKSZdLZMsP/U9sEDKESZO62D9TuN9LuQGjZ3I1XYYScp79K0GadmqHteeBVL7/LZOOO/KSKGAf6PX5pN9jcZijOBLxTkRfzo0oYO8Hqa9P0NORmm1TIzJFRR506gZRggHz+wthmz1V4PKTCIYoPTTTatqRPrhyiKPe16aJ3IoGoD/Z4ICx5ulB5lwChns7AUKa1Iru7jfuft8Ep//6qi0jC75ZssIDccf+0rMlrVU0m6fWPaon89Jt8x6zqmpoeMGgYmmFAw1wzNcSH68JkIlzRe9y0ymg2ZcXQW/qUt9NdNsgoQ+PgU9OmSLd5oLaiw5iD/XpA8MKLfLwwYeRoGCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iULOspyYEG/JZA/XyH5+pcgFR7F1VJFIZHMGxkDij5s=;
+ b=DsjG2cqwV/DmEJ3yT0jG0OkriB+x2Q4DrZF9hwytOGgwtrdinoVueuzDsUAimFubCDcF6MZBMtZ2l/HtEoIFGHk/4SNusYYzNtI5aXpbw+qJAegyC7095Lq/jRKi+B9F1HamPsSfm2n4iw1G98uB0PPh5q/ZkvFLbBzyeMgNB04ubRwHIAcT9PQjyFk2EnjeBTFlQEnR3VDvfOuE3s78q7wI6PWmxkU9x0VCuB3UZKLHSnJUtbjWzODeuxuINXCxnWNsG8N4VQByeFLs20T3mEKlT7a4S415hT70WOGZ0cZpWOO44UQrY6YmmJPyDsMPbyAb7U/9GbV/uFcbLz4muA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iULOspyYEG/JZA/XyH5+pcgFR7F1VJFIZHMGxkDij5s=;
+ b=VddE21w+Nwg7PxahBXBo3IMfxb2udPcLqXEOoUCJ8HsZ/EFx+VVSimvin1aKBz2RNbW9OtUUDTVdimjAqUaW1Al8sNgxLIKoZqcAaGmhR2bxlAY4Rh4F9nMU1eaGl5l/xwrAfWR68rqy0l7k8T8aMWWz/qkYIBWW+jYYUCmQhZIhICrwl9kosUgdsy8nr9kHB8WbQfRDiihwc9SRUnI0IR25Wc9XZONyaI9dEyeiV5BCKmO2q4IuBatd7oI8iE2ErCiIPFLXAEhIUAcZMwGj5oImiNAqmfPWgiWfZpYq4Nz1u1u0zgvTxyj/TAx9YWw43gCGG5tH/yWhyzSaD0gnTw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN2PR12MB4047.namprd12.prod.outlook.com (2603:10b6:208:1de::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Sat, 25 Jul
+ 2026 04:42:05 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0245.012; Sat, 25 Jul 2026
+ 04:42:05 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 25 Jul 2026 13:42:00 +0900
+Message-Id: <DK7DKIDW14CO.1PJO3G4OGD4LN@nvidia.com>
+Subject: Re: [PATCH 2/2] gpu: nova-core: falcon: use I/O projection to check
+ transfer bounds
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, "Simona Vetter" <simona@ffwll.ch>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260724-falcon-dma-projections-v1-0-957028a7c0a7@nvidia.com>
+ <20260724-falcon-dma-projections-v1-2-957028a7c0a7@nvidia.com>
+ <e7ba2c90-6d4f-487e-bd25-56d568ba1f26@nvidia.com>
+ <DK75LUA4NLGI.3P29AIZQE20V2@kernel.org>
+In-Reply-To: <DK75LUA4NLGI.3P29AIZQE20V2@kernel.org>
+X-ClientProxiedBy: TYCP286CA0180.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c6::13) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t4jkyeocqyd2wit6"
-Content-Disposition: inline
-In-Reply-To: <20260708214738.25008-1-brucer42@gmail.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.10.1.5.2/284.919.37
-X-ZohoMailClient: External
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN2PR12MB4047:EE_
+X-MS-Office365-Filtering-Correlation-Id: cc02c9dc-bacc-49a3-7d31-08deea0713b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|366016|10070799003|6133799003|22082099003|18002099003|11063799006|4143699003|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	H/ykBj6W0MavvQzihbuTPO9l8GFTkATj59FOB3pLJD/Lw1w1qMNxBfqT2o95JGo+f6slDDG4wTAF7NOJeZ0fRCmElPzMsqBpCV+2KqFuJU/YR+0QdUczY0kVwfpbsVtk/feTFWiKkyeJiKWWokT5n9mrCoLUlLDzf92eZ0DIM8j6SwpT1AxrGJoImfmVtT2f0wycZk592siVIuEy1/49LFhcxx2skLA5knpcwgaxlZhbQPY0ViUd9qXdcn0ILDCvJv2vNq1d/lRTKjhtwcMtfAcpphrg3CWtewtvdzDPkskFK1dD3g7czKOOS50Akw4Sgle6PshlLSqC0zqOW5F+3Qy7OuGtwaV6Ll4F1xwgLsMPFvdTPwqM15tbZBNXYvhbmCi0C12hTbwi9COsd/rqWkiNaKnDEVXeLrpxhqbF/jECa2gaZ/Q2xTKFZH4ggMKp9bkx3YF1Q+AI7H87MA1ZMd0wKdVFgIzLF3/zreoPr3rGjB3ydsLbZv85VxK5IT6dAj1C/uKdaCbo2v9oWiX8HubgNjxHWXwuxzsg/znSyoGZ4kSUQmvFEVY5GpEvHkO9jOkK8NiyssLEJbcHxZvcaGk7TNUDcfmrpiqVlKfJt/2qREV1U5yp0U6/48tif3zwMNG7/K95IrhIjYCut51T6Hu/oawvPydFQP87ITSQfN8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(10070799003)(6133799003)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QUhIR1B1ZncxcEJYUUZ2WmdBZUhSMzhOMEo2VE9MNTU3TFJReHVlc2lWMWsx?=
+ =?utf-8?B?eU1ncVVDY1hBTTc5bG9jOVhKeFBPN2VnZkZrdHdsQTU0V1YzSFliTVJ0WTRN?=
+ =?utf-8?B?NHBrSnBRQkpud1B4MTYzaGhTVmdLQW9pc0svZmZSY2wxdThBc0JhZHRTQThi?=
+ =?utf-8?B?dWRjdVY5MEhZWWpkczhmeHBSdmNBdWRhYVJsbFRrc1Bhb05uRE1BNTBZSXhQ?=
+ =?utf-8?B?N1loT0tMN2pYRzZpY2xPWG5NVUYxNHgyNE95Tkcwam5sak1GUjMxdmRyclU3?=
+ =?utf-8?B?RXlrQjFHQnUzcTJRenFFU3hjRHp3K2dIakM4VHUxVDRaVHFieVEzRlZ5SXZz?=
+ =?utf-8?B?bTdCREdlcko1cjBmOEVuZjg0b3JUSUYvZU5Vazg5QWZJa3RBQ1VuOFlkamNH?=
+ =?utf-8?B?eGtPcHZPWlVKLzA0RTBwS3gzd0JDVUtJRGR2bXY0Qk8rTjBhSVp4aTlUb2xw?=
+ =?utf-8?B?bFVzMTIvSy9zeUVuVU1KeWtsTloxenFTbDRtT3I3VHIySzdNZzFTeVVsOE9I?=
+ =?utf-8?B?cGpYeUZ6cHhIajh4Q0dkMDN0R3M0QnR1TDl3QkY4Wm42RVZGMmlQYTVtWHFk?=
+ =?utf-8?B?KytVR1d4QmtNRTE5VmpCbHFoRFBLUjRFaExhY1d3amhPQzVJbVNIdlRPWnBB?=
+ =?utf-8?B?S3Q1SnludCtEZ3RpRnpvbUVkZVhDNk5adzZoYnlaTGRLVjREblFoaFdFWC9L?=
+ =?utf-8?B?dVlhaURMK203TGF5SDNpQ0VKUlkvcVlzaXN2Y2JoNDcrM0dzM3BmUXBvOGpv?=
+ =?utf-8?B?UzFJeEk5OG0wRVgvbjljNVVuakdkQVUrNHpsYjN4YmRXaFN2dGZmUG5uMjAz?=
+ =?utf-8?B?d2VISmgwcXJ4SUlPbDFZbVROTHBSQnNSeUNrRDFyVW9sZi9ra25CU0ozWmdY?=
+ =?utf-8?B?Rk1FL25TRWxBQS83bHF3bXI0bnpyU1pJajVMc1RoVDBwWktLY1BTS3Ewd1Ux?=
+ =?utf-8?B?ZGY3VHhXcSs3QUczM1JvKzRHL3hKZ2ZjWmhra3AwOWZqV2VRVTNmaVJXWUhR?=
+ =?utf-8?B?bnBpUkt6WWpORXo0RlgwWFVYbm90M2hDeWxQK0JKeHNsclhwT0dFWVhYbFh1?=
+ =?utf-8?B?RGxhbFdvN3VXOVMyVjQzUXlOcHpsYjMzaVQ5MFJmQVdKcWJGQmgvNVVHQU85?=
+ =?utf-8?B?UGhER2RCUC9lMHNac1dDamg0WGxqL2EveExiOFFTOVAzdXVIMVFRVXM1RVZG?=
+ =?utf-8?B?YzJFRDNiSTVoOHhrZFdxeFZtb0kvTytoQmF3a3VTRXRFVEJHYVdKODU0ZGlN?=
+ =?utf-8?B?MEYxeDliVUR6eEF6NTZ3UzRTNkNGR0FWYzJjT3BTQU5lMFlhOTRydEYvaXBF?=
+ =?utf-8?B?bnVXeFNkS1E2MzYrc0JTR1RUUThHU3RRdmhVK3gybWRLMXYvc3hMZGFkbkdz?=
+ =?utf-8?B?cGhwR1FIWDMxMStTNmlMa3IyMFJUZHhmYkdVZUhqRWlMZ0hzK2YzUy9WT1VM?=
+ =?utf-8?B?L0x2V1dqdElRSnBTbDRjUmhxUUc2YVpTcHFzSXBBSUp0VC83VlIrcXFPS1Zz?=
+ =?utf-8?B?eGpJU0xXdkl1bkFiMHZSVS9FSFJJQStYdzdxb2V5YmwrTVUyMHBvb3NrLy8y?=
+ =?utf-8?B?SmxJdVRHTWZPUkJJcjBjR1dFcTMwM2JUOUhnako5bFRpbFhvcm50YjhtN3Jt?=
+ =?utf-8?B?cVNNWSswU0l1UHMyV3BpaklocFFqUWFkSW5lVmlWYm5KbjJXOENtc2dYSDVD?=
+ =?utf-8?B?TXYzUXB2OTdzY0pnSEJMRitRcXBPVzhXM2x1blY1Y2RpSy9OSlpFNkoyTzBV?=
+ =?utf-8?B?RHdGbE11TXNiWFRjSCs3NEFneTYwRXZNMXg3L2J4VTMvaVdJK2FjTi9SM3do?=
+ =?utf-8?B?RDU1ajNVTUdES0ZxUzBiTC92UDBUbzZhZDlxSWFTdmdnOWdPSUZwcHVML1Vp?=
+ =?utf-8?B?M2t4RWpXRGQ1RmpzTUpadVYzeGsvZm5Na0I3OEJqVEJqOWhzNEtkdVhtcDZx?=
+ =?utf-8?B?bDZzTkFTVEI4QVlPM0lNM2ZtQjRCczF5UVM0NTYybExIZ1VmTEtHdjM2VjFa?=
+ =?utf-8?B?ZXQ0N2JyL3Njcy9NdDRQMVFnSnRENC9sSm5jZm1oY3JvVTAzUElDQTlyTEg0?=
+ =?utf-8?B?cElsdk9vM0Zra3dwdEgrdmNyR2VEaWt1N3lEN1VIalFlUC9lZ0VwZTgyU1hG?=
+ =?utf-8?B?dUl1RERaeGs5VUtpMDZ2Rkl3WTVzRG13MmNuV3JVRzliTkNuSEtTNEVkMEw4?=
+ =?utf-8?B?T3pvTytkSVcvVFlWczVialRGM0pXNTZRL3hvRG9GUWpBSzVZQkN0ZVVmZDNm?=
+ =?utf-8?B?UHZWeXpHWkxpTmV1K2gydGtKZnRYOS9hUUVzUS9QNjlQeWJPMVpGRDFvUTBn?=
+ =?utf-8?B?MFFjd3RYaU9pSHNybFkzYXQyTXdBZkE3VWtlSHdaeWpnU29mY1RhWUV5amRG?=
+ =?utf-8?Q?+cxOpJ2jzxEQgXDyEEXzOAVNrrZRa3XuZyRYP5UXWuIES?=
+X-MS-Exchange-AntiSpam-MessageData-1: ZhcdWBgcdyXl9A==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc02c9dc-bacc-49a3-7d31-08deea0713b7
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2026 04:42:05.2460
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v0m/gDbWv6YosqwEfoOqjajg+STHvBu42EU7a4X51DYLcfBtPhq3iARLMdSGnyThSB2vPewt8OZXepLzQQaoiA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4047
 
+On Sat Jul 25, 2026 at 7:27 AM JST, Danilo Krummrich wrote:
+> On Fri Jul 24, 2026 at 8:10 PM CEST, John Hubbard wrote:
+>> Sort of "conceptually pre-existing" problem, but "handle" doesn't
+>> quite work as a name, because handles are supposed to be opaque
+>> items that one just uses to find and refer to things.
+>
+> This is inherited from the C API where from its perspective the returned =
+base
+> DMA address of the allocation actually serves as a handle.
+>
+> In Rust the actual handle is represented by different types with differen=
+t
+> invariants and hence capabilties.
+>
+> (For instance, dma::CoherentBox does not expose the DMA address at all, a=
+nd
+> hence provides access to its contents through a direct mutable reference,
+> whereas dma::CoherentHandle only provides access to the DMA address and d=
+oes not
+> have a CPU virtual mapping; dma::Coherent provides access to both.)
+>
+> Both dma::Coherent and dma::CoherentHandle have a dma_handle() method whi=
+ch
+> provides access to the DMA address; this naming was taken over from the C=
+ API.
+>
+> Given that the base DMA address serving as a handle from the perspective =
+of the
+> C API is just an implementation detail, we should probably just rename th=
+is
+> method to dma_address().
 
---t4jkyeocqyd2wit6
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [RFC PATCH 0/3] rust: power_supply class abstraction and SMB347
- charger driver
-MIME-Version: 1.0
+I was also thinking about using `dma_address`, so let's do that!
 
-Hi,
-
-On Wed, Jul 08, 2026 at 09:47:35PM +0000, Bruce Robertson wrote:
-> This series adds a Rust abstraction for the power supply class -- which
-> does not currently exist in mainline or rust-next -- together with the
-> SMBus helpers needed to drive an I2C charger from Rust,
-
-Having Rust bindings for new drivers sounds good to me.
-
-> and a Rust port of the Summit SMB347 battery charger as the first
-> consumer.
-
-Any reason for Summit SMB347 specifically? I would prefer not to
-have two drivers for the same hardware. Looks like this is used
-by just three relatively old devices:
-
-rg -l '"summit,smb347"' arch
-arch/arm/boot/dts/ti/omap/omap4-samsung-espresso10.dts
-arch/arm/boot/dts/nvidia/tegra30-asus-nexus7-grouper-common.dtsi
-arch/arm/boot/dts/samsung/exynos4412-p4note.dtsi
-
-All are ARM32 based, so Rust is at least available by all users.
-So I suppose replacing this C driver would be an option, OTOH I
-don't want to motivate people to rewrite things either :)
-
-> Motivation
-> ----------
-> Rust drivers for power supply hardware are currently blocked: there is
-> no safe Rust interface to the power supply class, and the I2cClient
-> abstraction exposes no register I/O. This series provides a minimal,
-> self-contained path from binding an I2C charger to reporting charging
-> state through sysfs, entirely in safe Rust, with the unsafe FFI confined
-> to the two abstraction layers.
->=20
-> The series is structured abstraction-first:
->=20
->   1/3  Safe SMBus read/write/update_bits over i2c::I2cClient.
->   2/3  A power_supply Driver trait, a generic get_property trampoline,
->        and an RAII Registration that owns the descriptor lifetime.
->   3/3  A Rust SMB347 charger driver consuming both: it binds over I2C
->        and reports STATUS, ONLINE and CHARGE_TYPE.
-
-A new driver supporting CHARGE_TYPE should also support
-CHARGE_TYPES.
-
-> Testing
-> -------
-> Built and exercised against an emulated SMB347 using i2c-stub: seeding
-> the chip's status registers and reading back the corresponding sysfs
-> attributes (status, online, charge_type) confirms the full C->Rust->C
-> path. No physical hardware or interrupt path has been tested.
-
-If the idea is to just have a user for the Rust binding and
-something to test/play around: Maybe convert test_power instead? It
-would also decouple the power-supply Rust bindings from I2C/SMBus.
-The disadvantage is, that this driver is a special-case, since it
-has no parent device :)
-
-Greetings,
-
--- Sebastian
-
-> Open questions / known limitations (hence RFC)
-> ----------------------------------------------
->   - get_property recovers the driver's private data via the parent
->     device's drvdata. The current code relies on the observed ordering
->     (callbacks only fire after probe() has set drvdata); the contract
->     should be made explicit.
->   - smbus_update_bits() is not atomic against concurrent callers; a lock
->     will be required before a charger IRQ handler is added (not yet
->     implemented).
->   - Only get_property and a handful of properties are wired up;
->     set_property, property_is_writeable and the IRQ-driven
->     power_supply_changed() notification are future work.
->=20
-> Feedback on the abstraction's shape -- especially the descriptor
-> lifetime and the drvdata recovery -- would be very welcome.
->=20
-> checkpatch emits one MAINTAINERS warning on patch 3/3 (new driver file);
-> it is a false positive -- the driver is covered by the existing POWER
-> SUPPLY CLASS "F: drivers/power/supply/" glob and needs no new entry.
-> Patch 2/3 adds the one file outside any existing glob
-> (rust/kernel/power_supply.rs) and updates MAINTAINERS accordingly.
->=20
-> Based on rust-next (v7.2-rc1).
->=20
-> Bruce Robertson (3):
->   rust: i2c: add SMBus byte transfer helpers
->   rust: power_supply: add power supply class abstraction
->   power: supply: add Rust SMB347 charger driver
->=20
->  MAINTAINERS                                 |   1 +
->  drivers/power/supply/Kconfig                |  14 ++
->  drivers/power/supply/Makefile               |   1 +
->  drivers/power/supply/smb347-charger_rust.rs | 180 ++++++++++++++++++++
->  rust/bindings/bindings_helper.h             |   1 +
->  rust/kernel/i2c.rs                          |  42 +++++
->  rust/kernel/lib.rs                          |   1 +
->  rust/kernel/power_supply.rs                 | 133 +++++++++++++++
->  8 files changed, 373 insertions(+)
->  create mode 100644 drivers/power/supply/smb347-charger_rust.rs
->  create mode 100644 rust/kernel/power_supply.rs
->=20
-> --=20
-> 2.43.0
->=20
-
---t4jkyeocqyd2wit6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmpkFEsACgkQ2O7X88g7
-+pqG5A/+OXDSMBBeBQeHtPnntBd8Wx6nflqqmyNWgjtgNzc1Hmk+yQzj2BFnvkwq
-UwzB7KOiUxVJbNzOuV19yRqVeSFmxYHGXEUzNsQNFHBpvSPopOj/IN/sd3uw6eEw
-w8a356v9gJdEP/cMd2pKOKQmRzDDDwNbMSOYaAxhMLaBa8kSepf37L2nWx8RnxoK
-7Usvij75cQN4RIsGzg5QsjwujoSNuBdk0naHkGUsdVjq0eTPLiYMeIck6nQ69VtU
-NUsUy96WDAgiZJU+iir1rh/IVRJQS+nNO/Kd41ANyMhP47e3idOVJ24PJivjFnWw
-wq8wKSGxOT9rhkrLDddgJwFKKeZYp5AH2NmvquSCS3xF3k1uSow2uPmBYpP9nx4K
-Aay0TjibqIJWt58swQegj2OpogWn72VTs7l3HQUp6ARy06FOv/LXxFMPKWDnH22u
-vL4MrUC+Brbt5751q6hOfna9399fv+C8KO6WblFlBXs5hfumLNjbWilNCy/BH+6v
-7QOcT1WvOuwbNAsMnECGSsf/Tlv4EVh/6XBYl9eN8PrlIM/r6lnXGVZUgwtwbz0w
-3MsLJwdBiqHKPYZsHr1NN5Uy5+GUhkHORT3Rc+3YbxyR0PRrnanu3dTvSY6pHsLQ
-mhW9p1sgguehZBDH6411FwsEkO+dMSCV8v1Q0AyPI2Q4RDCnaqQ=
-=V0FH
------END PGP SIGNATURE-----
-
---t4jkyeocqyd2wit6--
+I guess the pieces required to support a proper DMA range type are also
+starting to fall together.
