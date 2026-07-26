@@ -1,81 +1,85 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94682931F2
-	for <rust-for-linux@vger.kernel.org>; Sun, 26 Jul 2026 02:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F2E37CD30
+	for <rust-for-linux@vger.kernel.org>; Sun, 26 Jul 2026 11:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785033211; cv=none; b=pCt2AsSD/Zgq7GDWQVecQuB7Sg6H9+HHIM7ZIZr0R65gEEZ2pT33d0u3RTcs/WrRySAtwptfEEsqaNxfh7Qx59bkyaD50aKE16UIha8v8Gp5Ei3QUy2W21/DBBfLouTnlWwkVHwOC5eKB7jj7mxpIhVFoneAA+JoHonBETMT6gM=
+	t=1785067200; cv=none; b=M6qT4xBXqDDefK9Yr0ERH+6tT21diLsm0UxH8YI96ULWQZ+sLQtisiZcgFzSPO9AghjiU4C9qmiLjWx8O7Nn3rnH1PjAmSQ40EmmeskQoiE63AjMN+5zULX6nIGoJSqUjePXkSwCgqbOYwAAsqKF3KAoh823vfS8+nlepD75nnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785033211; c=relaxed/simple;
-	bh=Z8o+7L5AcN0mc5L4ZBXWEkwZ88tRim+Z49ttFoGnBwk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsZ8K2dtbdArGFzDQyFWx0+D4wDbikZfE6THdVRhNhF0I0QKxjVOeaMdY8Ty1UEpKGCtJYuByGeElp5npZj65WaauOb22jX41ubjkB0vsm9YVdVL8R8Ts6cvYURZQH6/kgop6uJPFknkgRKx20b6Jiz+0flTMvyC+RzgWeKtHK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pf0116UP; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1785067200; c=relaxed/simple;
+	bh=JCLyLY8dgae/Sbwod2BMdY5luNYoPvnPa3MTPFhmmz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N+DPh9BrB1uUafqSAsYkuvd2ZGdlwfNsRhPopOxl8Pl5xyeQ2xnGaiVl8kz1pHwirRMoR3B2ItqSGjx2dv0zUgtzsj1jZqPvypfWR/mZZVdiHn+QJHmFRhTEs9/L6fCRvXk1v+a6c3ZWhuxynMfT1QOy0TxsdwgtfTM0ovhE3ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=myuEDAx9; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pf0116UP"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso973945a12.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 25 Jul 2026 19:33:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="myuEDAx9"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso897195f8f.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Jul 2026 04:59:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785033209; x=1785638009; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sjXzoSujIP+9dDYXqm3Aab2DrXJeEn6UY/TChtANBQI=;
-        b=Pf0116UPcFARZ5UI+z00eqkzao7AiZ4Fi5S8Zh50yL13JqalyzfoxqBU2PaJdzWnqO
-         J5c4hq9CPKJuFeuanxV2/MK3ijJ/3SCckcyCtdyWTvzeoHz4J45ONp27jXuMIv4T1Yv2
-         7xdNLC5r0dvXpKhsegaKrU3DF1oQvS2naECqY4QiLDvag2Ed50AIPnfe6aBZFU1ldrlN
-         hA6e58iqZnwyxoUn7Anx9Mh/sDCXivUUv0P/JoRltBsz34+XwvcMx8oQi1gVIYB7h15T
-         JTen9AsTO0FCWmfpoWyvAyDn8my8kZJuhoNgp7kLCrO1FDggo9ZSutwDB3o22zrDD4KP
-         iDGQ==
+        d=gmail.com; s=20251104; t=1785067197; x=1785671997; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ADI/xa4fDOzHJVmDEfZGbvJQDEVg86zgIrIj9McDiRY=;
+        b=myuEDAx9gQIoPH2Ijy6vqnSsVV3/datlDC8zpVAT8UzANc0ssXgYtZi++/iYTkFlqF
+         mtM/fWvkbq+LyTUeukDTPqEDiDk5JF+D1pMxsQsVMUaZbgKxnvZG32iZJ6TxCRu04PVr
+         n0rLDPKfZMR/5gPP7AXHTuAkliAZsW52IrMXdRuAJXSLS4T0G5A4iZxn8+wErZLRYUj8
+         CRMC5VVk1UQ1enM2GW2GvgUzCjQlGSlKSJ1kE6ZuJBaj5bbumdeCEMNPIFirphDarl4X
+         lX244bJkMhTCVJu5RIxGSLGxB7vRGiwmjkhRgeqXQZC68tuKXD9pTw9l28rxTYu2lDm2
+         eNug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785033209; x=1785638009;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sjXzoSujIP+9dDYXqm3Aab2DrXJeEn6UY/TChtANBQI=;
-        b=J1UvjJr3oltvd5LDqdKKHBfsUDutiAjCNRzFKVBydGXzS9DMn1hUvJkY7vdJBfq83L
-         +MGLcfgJCQJnt+FdzubteO4SHD+Hz9MTdV1FD2Wj4RNKglLBtHnaHwpoitmn7c9Ao5sr
-         fvitozOwnNYv+4fNTkK03errvKPXR3igaj9wxiIfbQtOpyWSugKI47BpNaVu/rrVDC6f
-         yUztRAYxTNffuV4lkL/TFtRYuSxofabkf+X620+MTphOItNkGalz2WoVzExSFnMMW790
-         1arsGXE6mLGbYCIXQ1vHnAVFtQIqNE3N5UQGE48gawKU4qB+5LjyqTXrHaBaDsW2hZwk
-         fdgQ==
-X-Gm-Message-State: AOJu0Yw70p1MoIwcd1aKzCGpu2T6Xz9Ih6HT8YTwx/9DunMD3JvAdoOY
-	ct7I42U2W5CllwUDYcqlEMaJmiQEecYuHIeA7ndTbPcWkHpxXMgMuN21
-X-Gm-Gg: AR+sD10JUzUwNBH1Dbf0MR8wf+uiGabOWOaE8FLvMKC3bzv5WHjOGx0MIk7bEfOglGY
-	Dg30MRpTnUwJymtS/u/h2Fy6L6uwFKNIWZmd8iY52DpwfxSpRWgRln3lewDvLPjITV+RdGykpB5
-	3kLxS3qiY9Vh1E545rI1oeyqplYb6VzWa/hWG1QKgrHQe/YaydtnxhZDUDYX9dCfSl6sd7phCTV
-	+n3UTXJW2wNEmwsoHka4KtWdMYPJN1bv4d+SX5SN+pXf9WvMV2bxBUI/Aoua7SuJfAe2XgixlTm
-	edkG2F6U7xV+XGtsh2WhAyr0lm57CkYmYR1JC0GhkNezA/709p2m4uSZnil2nc5E+Icui9jNwHi
-	tyhSLjZnFjyBisKBj+1uwogvzKDapKIQSvUmTkYx3WqMI1WFFsQLWMdUkwJ3UHCkJWzajzKZ07W
-	/MnH0JqGzNALToy5yHBXVWRNxekpMaTkkxeGErW7a53Hrg/4IhMA4ONj8xPnJ5RGq4jNxAtceqP
-	YaBdSgc0dcgEoO8ocmM1I0FNt8ot39OtASjodl61wSBjQpwdw==
-X-Received: by 2002:a05:6a21:a09:b0:3c0:9c19:6586 with SMTP id adf61e73a8af0-3c67e159021mr3525765637.64.1785033208757;
-        Sat, 25 Jul 2026 19:33:28 -0700 (PDT)
-Received: from localhost ([50.38.60.151])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb66b282asm1722846a12.18.2026.07.25.19.33.27
+        d=1e100.net; s=20251104; t=1785067197; x=1785671997;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ADI/xa4fDOzHJVmDEfZGbvJQDEVg86zgIrIj9McDiRY=;
+        b=mR4D+OGfVIYRRoEz3ZRFWOFbCVLDMe0vaRR/m2F0ClkN83/S2BwJ9LKJWcvyq+EYrL
+         PHm3GvA7B5uHqexYjGvWhweJwfmr0U3eJSW3RzztgpiUvfKoR0LQVr9UezmAFYBNSuhG
+         TwZDV4ANKqo4BHrj4H+BAYcrCjWoM6GkXRNNzDulP7EGj9kerzQKHe2i9GlyiYx1McaA
+         rYU3wWGAODaVZE9mvLSsOw8OGxkT7YLRLIWJYdk/zCPXwNfEefqr+NcMMn1fMj2SL/sn
+         vJiTxETmTTiuv8siLBm7BH7tvAKAwpQOmp0T/oYCgRfXa6jCYztT6x7OpEfqvMdJOAdm
+         FeQQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro/gl2iadUnuVUcgqUWF1W7ynOH3kXg8orZoXEr/kNf4E/BW6BwSAYCngRDOiK9kJAE0x12P3NA3KTYs2khkA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL9ucuME7MLv0UoOe3sGBQ0chGuH8qQNsTz74I4E3YlVMikdGw
+	BxLW/wqlC3RWsvRwos29IYjAAy379IypM40SXlqHnsvpVfUbiIs7jheE
+X-Gm-Gg: AR+sD10+Q8mOmetGozWelkhevNVsLR3/l9KYJxKiEKGQDtt1bWZPYfZGx916w0ikNcs
+	PZxOh+1kv0kjh7XRnFae2s8Yt79O+zVamVwlUsmYzvONibVufYC/sINshPfAqAMbxWBZZ+6ZQdK
+	CuTIoDR8q0F3K2vn3tBOgQsp0QcNGkyk+3YW3I6atn3hQfbMjus8it0K4GoirJAEzMXnl/biTc2
+	hxG67L5t0XEBuBtqDBFIcO1g8lPB8GTMiROo1IRXhro4I2hqeWpgW3E02N/JrFKduf2Sq5xQgbb
+	KWl8aBkFnEK6XYHIzWWmKJHlrCyW+qcbdq94DYLE+9IHQnTEnU9K0sO9YNqGW/ueyAbxiYaHI/2
+	uB+ZMtFTeTTPnQKjqJvRe7ByY8dTkrPjuTYxxwOZyQnmKG76i26p1GWBz/7HqJ34pDfOH1VXLSl
+	S07bU0632DO1//rc5RZJanoRBkJUeOfNdkifiFKsvRJOGxuaPH3RvCxi/R
+X-Received: by 2002:adf:e191:0:b0:47f:962a:9f4d with SMTP id ffacd0b85a97d-47f9fc8cee5mr6266416f8f.15.1785067196500;
+        Sun, 26 Jul 2026 04:59:56 -0700 (PDT)
+Received: from Cian.taile2c8f4.ts.net ([2a02:8084:d03:fa00:819d:8e1d:c966:142d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6dc25sm39094265f8f.33.2026.07.26.04.59.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jul 2026 19:33:28 -0700 (PDT)
-From: Bruce Robertson <brucer42@gmail.com>
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
+        Sun, 26 Jul 2026 04:59:56 -0700 (PDT)
+From: Cian McGuire <cianmcguire167@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	igor.korotin@linux.dev,
-	gary@garyguo.net,
-	tamird@kernel.org,
-	aliceryhl@google.com,
-	boqun@kernel.org
-Subject: Re: [RFC PATCH 0/3] rust: power_supply class abstraction and SMB347 charger driver
-Date: Sat, 25 Jul 2026 19:33:27 -0700
-Message-ID: <20260726023327.51519-1-brucer42@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <amQPYhBkj9rIdSZ_@venus>
-References: <amQPYhBkj9rIdSZ_@venus>
+	Cian McGuire <cianmcguire167@gmail.com>
+Subject: [PATCH v3 2/4] rust: print: document safety of _printk FFI calls
+Date: Sun, 26 Jul 2026 12:59:29 +0100
+Message-ID: <20260726115929.82150-1-cianmcguire167@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,110 +88,105 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[Resent as plain text -- my first attempt was rejected by the vger
-lists for containing HTML, so it reached only the people Cc'd
-directly. Apologies to those of you getting this twice; please reply
-to this copy, as the first one never made it to the archives.]
+Two calls in this file had their SAFETY comments left as "TODO.": the
+cast back to `fmt::Arguments` in `rust_fmt_argument`, and the call to
+`bindings::_printk` in `call_printk`.
 
-On Sat, Jul 25, 2026 at 01:41:35 +0000, Sebastian Reichel wrote:
-> Having Rust bindings for new drivers sounds good to me.
+`rust_fmt_argument` is only reachable through the `%pA` format
+specifier. Every in-tree Rust caller that uses `%pA` -- `call_printk`,
+`device::printk`, `kunit::printk`, and `seq_file::call_printf` -- invokes
+it synchronously with a pointer derived from its own live
+`fmt::Arguments`, as one call in a `switch` dispatch in
+`lib/vsprintf.c`'s pointer formatter that returns its result immediately;
+there is no deferred use or storage of the pointer on the C side. So the
+`fmt::Arguments` value stays alive on the caller's stack for the whole
+time `rust_fmt_argument` is running with `ptr` pointing at it.
 
-Thanks -- good to hear. That was the part I most wanted confirmed
-before putting more time into it.
+The `_printk` call itself is justified by this function's `# Safety`
+section, which this patch also tightens: `format_string` must be one of
+the non-continuation `format_strings` statics, not
+`format_strings::CONT`. `call_printk` always supplies two extra
+arguments -- `module_name` for `%s` and `args` for `%pA` -- which only
+matches the `"%s: %pA"` shape shared by every non-continuation string;
+`CONT`'s format string is `"%pA"` only, so passing it here would make
+`_printk` consume `module_name`'s pointer for `%pA` instead, and
+`rust_fmt_argument` would then reinterpret that `*const c_char` as a
+`*const fmt::Arguments` and dereference it. No caller does this today --
+`call_printk` is only reached from `print_macro!`'s non-continuation arm;
+the continuation arm calls the separate, safe `call_printk_cont`, which
+hardcodes `CONT` together with the single argument it expects -- but the
+previous, broader contract permitted it. With `format_string` guaranteed
+non-`CONT`, and `module_name` guaranteed null-terminated by both of its
+possible origins (`kernel::__LOG_PREFIX` and the one generated by the
+`module!` proc macro), the specifiers always match the supplied
+arguments.
 
-One status note first: patch 1/3 (the SMBus helpers) is dropped. Igor
-Korotin pointed out that I2cClient is meant to implement
-kernel::io::Io rather than grow standalone SMBus methods, and there is
-an in-flight series from Muchamad Coirul Anwar doing exactly that [1].
-The SMB347 driver will consume those accessors once they land.
-Patches 2/3 and 3/3 are unaffected -- more on that at the end.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/351
+Signed-off-by: Cian McGuire <cianmcguire167@gmail.com>
+---
+v3:
+- Tightened `call_printk`'s `# Safety` contract to require a
+  non-continuation format string (i.e. not `format_strings::CONT`),
+  since the function always supplies both a `%s` and a `%pA` argument,
+  which only matches the non-continuation strings' `"%s: %pA"` shape.
+  Passing `CONT` under the old, broader contract would make `_printk`
+  consume `module_name`'s pointer for `%pA` instead of `args`, which
+  `rust_fmt_argument` would then wrongly reinterpret as a
+  `*const fmt::Arguments` and dereference. Updated the inline SAFETY
+  comment to match.
+v2:
+- Reworded the SAFETY comment on `rust_fmt_argument`'s cast to argue
+  from the property that makes every `%pA` call site safe (synchronous
+  invocation with a live `&fmt::Arguments`), instead of enumerating
+  callers by name, so it doesn't go stale if a new caller is added.
 
-> Any reason for Summit SMB347 specifically? I would prefer not to
-> have two drivers for the same hardware.
+ rust/kernel/print.rs | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-I wrote the C one. drivers/power/supply/smb347-charger.c came in via
-commit ed1a230f96eb ("Add I2C driver for Summit Microelectronics
-SMB347 Battery Charger.") in v3.4, back in 2012, and the file header
-still carries my name. So this is me porting my own driver rather than
-a drive-by rewrite of someone else's -- which I think also speaks to:
+diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+index 6fd84389a858..5a0ee103b54e 100644
+--- a/rust/kernel/print.rs
++++ b/rust/kernel/print.rs
+@@ -29,7 +29,10 @@
+     use fmt::Write;
+     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
+     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
+-    // SAFETY: TODO.
++    // SAFETY: This function is only reachable via the `%pA` format specifier; using `%pA` from
++    // Rust requires the caller to invoke it synchronously with a `ptr` derived from a live
++    // `&fmt::Arguments`, before that reference's scope can end. `ptr` is therefore valid and
++    // properly aligned for a `fmt::Arguments<'_>` for the duration of this call.
+     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
+     w.pos().cast()
+ }
+@@ -96,8 +99,11 @@ pub mod format_strings {
+ ///
+ /// # Safety
+ ///
+-/// The format string must be one of the ones in [`format_strings`], and
+-/// the module name must be null-terminated.
++/// The format string must be one of the non-continuation strings in
++/// [`format_strings`] (i.e. not [`format_strings::CONT`]): this function
++/// always supplies both `module_name` and `args` as arguments, which only
++/// matches the `"%s: %pA"` shape used by the non-continuation strings, not
++/// `CONT`'s `"%pA"`-only shape. The module name must be null-terminated.
+ ///
+ /// [`_printk`]: srctree/include/linux/_printk.h
+ #[doc(hidden)]
+@@ -109,7 +115,11 @@ pub unsafe fn call_printk(
+ ) {
+     // `_printk` does not seem to fail in any path.
+     #[cfg(CONFIG_PRINTK)]
+-    // SAFETY: TODO.
++    // SAFETY: By this function's safety requirements, `format_string` is one of the
++    // non-continuation `format_strings` statics (never `CONT`), so its fixed `"%s: %pA"` shape
++    // matches the two arguments supplied below: `module_name` is null-terminated as `%s`
++    // requires, and the third argument points at `args`, which remains valid for the duration
++    // of this call and is only read back synchronously, through `%pA`, by `rust_fmt_argument`.
+     unsafe {
+         bindings::_printk(
+             format_string.as_ptr(),
+-- 
+2.55.0
 
-> All are ARM32 based, so Rust is at least available by all users.
-> So I suppose replacing this C driver would be an option, OTOH I
-> don't want to motivate people to rewrite things either :)
-
-Agreed on both counts, and I don't want two drivers either.
-Replacement is the goal. But I should be straight that the RFC is
-nowhere near it yet: the C driver is ~1640 lines, the Rust one is 180,
-with three properties, no IRQ, no set_property, no OTG/regulator
-support and no DT charge-parameter configuration.
-
-Two things I can do in the meantime:
-
- - Make the two mutually exclusive in Kconfig so that no configuration
-   ever builds both. For v2 I was planning the ax88796b arrangement --
-   the Rust option as a bool modifier on CHARGER_SMB347 with the
-   Makefile selecting the object -- rather than a second tristate.
-
- - Build-test ARM32. So far I have only built and run this on x86_64
-   against i2c-stub; I don't have any of the three boards.
-
-What would you want to see before the C driver could actually go away
--- parity against a specific feature list, a hardware test from one of
-the espresso10 / nexus7 / p4note users, a deprecation cycle? I can aim
-at whatever the bar is, but I can't self-certify a swap on hardware I
-don't have.
-
-> A new driver supporting CHARGE_TYPE should also support CHARGE_TYPES.
-
-Happy to add it. One question on how it should map here.
-
-Reading the ABI and the in-tree users, charge_types is read-write: the
-supported set comes from the desc->charge_types bitmask, the active
-one from get_property, and writing selects an algorithm. On the SMB347
-the charge type isn't selectable -- the progression from trickle/
-pre-charge through fast to taper is autonomous hardware state that the
-driver only reports out of STAT_C. That is why the C driver has never
-had a set_property or property_is_writeable at all.
-
-So: would you want CHARGE_TYPES exposed read-only here, with a
-Trickle|Fast|N/A bitmask and the active value from STAT_C? Or do you
-consider a read-only CHARGE_TYPE to be exactly the mis-modelling that
-CHARGE_TYPES is meant to replace? I'll follow whichever you prefer.
-
-Either way it lands on the abstraction rather than just the driver:
-desc->charge_types is a descriptor field, not a property callback, so
-the Rust Driver trait needs a way to express it, and the writable case
-needs set_property and property_is_writeable plumbed through. Those
-were on the cover letter's future-work list; this moves them up.
-
-> If the idea is to just have a user for the Rust binding and
-> something to test/play around: Maybe convert test_power instead? It
-> would also decouple the power-supply Rust bindings from I2C/SMBus.
-
-The decoupling is already there, as it happens. Patch 2/3 touches only
-MAINTAINERS, rust/kernel/lib.rs, rust/bindings/bindings_helper.h and
-the new rust/kernel/power_supply.rs -- no I2C dependency at all. It is
-only the driver in 3/3 that consumes both. And with 1/3 dropped, the
-SMBus layer leaves this series entirely.
-
-> The disadvantage is, that this driver is a special-case, since it
-> has no parent device :)
-
-That is the part that gives me pause about it as the *first* consumer.
-The open question I flagged in the cover letter -- how the get_property
-trampoline recovers the driver's private data -- is specifically about
-the parent-device path, and it is what reviewers have pushed on most.
-A consumer with no parent device wouldn't exercise it at all, so I'd
-risk shaping the abstraction around the special case.
-
-For v2 I'm moving the private data into power_supply_config::drv_data
-at registration time instead of recovering it from parent drvdata,
-which removes the ordering dependency Alice and I discussed [2] -- and
-that is also what a parentless supply would need. test_power becomes
-straightforward once that's in. I'd be glad to do it as a second
-consumer on top; I'd just rather it not be the only one.
-
-[1] https://lore.kernel.org/all/20260707151542.91997-1-muchamadcoirulanwar@gmail.com/
-[2] https://lore.kernel.org/all/ak9kAP1SZF8AchQT@google.com/
-
-Bruce
