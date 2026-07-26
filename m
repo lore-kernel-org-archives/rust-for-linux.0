@@ -1,192 +1,146 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from luna.linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F2E37CD30
-	for <rust-for-linux@vger.kernel.org>; Sun, 26 Jul 2026 11:59:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D641FBC8C;
+	Sun, 26 Jul 2026 12:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785067200; cv=none; b=M6qT4xBXqDDefK9Yr0ERH+6tT21diLsm0UxH8YI96ULWQZ+sLQtisiZcgFzSPO9AghjiU4C9qmiLjWx8O7Nn3rnH1PjAmSQ40EmmeskQoiE63AjMN+5zULX6nIGoJSqUjePXkSwCgqbOYwAAsqKF3KAoh823vfS8+nlepD75nnY=
+	t=1785070584; cv=none; b=FywZIhta/NXkyrkO4oiZ0Gjwn1n17g+wn4tGL1/mUJODnCHCoxxTmhXb4XybxjQHpRNbM694izMhd00eJaVWeuHT0Vd0Kx08WNpwDZmnGwQ9D0k7kc57qEGFhVgitwbod2SK5dSBzt3Vi+xw1pnosu+w0m+q4iSP87sp29gY7SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785067200; c=relaxed/simple;
-	bh=JCLyLY8dgae/Sbwod2BMdY5luNYoPvnPa3MTPFhmmz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N+DPh9BrB1uUafqSAsYkuvd2ZGdlwfNsRhPopOxl8Pl5xyeQ2xnGaiVl8kz1pHwirRMoR3B2ItqSGjx2dv0zUgtzsj1jZqPvypfWR/mZZVdiHn+QJHmFRhTEs9/L6fCRvXk1v+a6c3ZWhuxynMfT1QOy0TxsdwgtfTM0ovhE3ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=myuEDAx9; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="myuEDAx9"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47ddf7b09aaso897195f8f.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 Jul 2026 04:59:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785067197; x=1785671997; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ADI/xa4fDOzHJVmDEfZGbvJQDEVg86zgIrIj9McDiRY=;
-        b=myuEDAx9gQIoPH2Ijy6vqnSsVV3/datlDC8zpVAT8UzANc0ssXgYtZi++/iYTkFlqF
-         mtM/fWvkbq+LyTUeukDTPqEDiDk5JF+D1pMxsQsVMUaZbgKxnvZG32iZJ6TxCRu04PVr
-         n0rLDPKfZMR/5gPP7AXHTuAkliAZsW52IrMXdRuAJXSLS4T0G5A4iZxn8+wErZLRYUj8
-         CRMC5VVk1UQ1enM2GW2GvgUzCjQlGSlKSJ1kE6ZuJBaj5bbumdeCEMNPIFirphDarl4X
-         lX244bJkMhTCVJu5RIxGSLGxB7vRGiwmjkhRgeqXQZC68tuKXD9pTw9l28rxTYu2lDm2
-         eNug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785067197; x=1785671997;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ADI/xa4fDOzHJVmDEfZGbvJQDEVg86zgIrIj9McDiRY=;
-        b=mR4D+OGfVIYRRoEz3ZRFWOFbCVLDMe0vaRR/m2F0ClkN83/S2BwJ9LKJWcvyq+EYrL
-         PHm3GvA7B5uHqexYjGvWhweJwfmr0U3eJSW3RzztgpiUvfKoR0LQVr9UezmAFYBNSuhG
-         TwZDV4ANKqo4BHrj4H+BAYcrCjWoM6GkXRNNzDulP7EGj9kerzQKHe2i9GlyiYx1McaA
-         rYU3wWGAODaVZE9mvLSsOw8OGxkT7YLRLIWJYdk/zCPXwNfEefqr+NcMMn1fMj2SL/sn
-         vJiTxETmTTiuv8siLBm7BH7tvAKAwpQOmp0T/oYCgRfXa6jCYztT6x7OpEfqvMdJOAdm
-         FeQQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/gl2iadUnuVUcgqUWF1W7ynOH3kXg8orZoXEr/kNf4E/BW6BwSAYCngRDOiK9kJAE0x12P3NA3KTYs2khkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL9ucuME7MLv0UoOe3sGBQ0chGuH8qQNsTz74I4E3YlVMikdGw
-	BxLW/wqlC3RWsvRwos29IYjAAy379IypM40SXlqHnsvpVfUbiIs7jheE
-X-Gm-Gg: AR+sD10+Q8mOmetGozWelkhevNVsLR3/l9KYJxKiEKGQDtt1bWZPYfZGx916w0ikNcs
-	PZxOh+1kv0kjh7XRnFae2s8Yt79O+zVamVwlUsmYzvONibVufYC/sINshPfAqAMbxWBZZ+6ZQdK
-	CuTIoDR8q0F3K2vn3tBOgQsp0QcNGkyk+3YW3I6atn3hQfbMjus8it0K4GoirJAEzMXnl/biTc2
-	hxG67L5t0XEBuBtqDBFIcO1g8lPB8GTMiROo1IRXhro4I2hqeWpgW3E02N/JrFKduf2Sq5xQgbb
-	KWl8aBkFnEK6XYHIzWWmKJHlrCyW+qcbdq94DYLE+9IHQnTEnU9K0sO9YNqGW/ueyAbxiYaHI/2
-	uB+ZMtFTeTTPnQKjqJvRe7ByY8dTkrPjuTYxxwOZyQnmKG76i26p1GWBz/7HqJ34pDfOH1VXLSl
-	S07bU0632DO1//rc5RZJanoRBkJUeOfNdkifiFKsvRJOGxuaPH3RvCxi/R
-X-Received: by 2002:adf:e191:0:b0:47f:962a:9f4d with SMTP id ffacd0b85a97d-47f9fc8cee5mr6266416f8f.15.1785067196500;
-        Sun, 26 Jul 2026 04:59:56 -0700 (PDT)
-Received: from Cian.taile2c8f4.ts.net ([2a02:8084:d03:fa00:819d:8e1d:c966:142d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47f85c6dc25sm39094265f8f.33.2026.07.26.04.59.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 04:59:56 -0700 (PDT)
-From: Cian McGuire <cianmcguire167@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
+	s=arc-20240116; t=1785070584; c=relaxed/simple;
+	bh=qOWSLoFTRbEIxSauVxZ4vA0xfF8LEiuIbFTNM/LfThE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bWbCmr46At+rxtABSkcKDcnYOr7xT/G19DTNsrkyPG0E2Nb/bc3wA1KxyHzG7b4oe3F0LqZJLwNXaruvAZVHCd8BWFK7vP5PDKJqb94d3/v+bwJiGbQymXn0Pu+UwqaY6tULg4NwXgsmsGUGBUNcILYcPDf6kj9x/9eljFZuvIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by luna.linkmauve.fr (Postfix, from userid 1000)
+	id 046A5F40DDF; Sun, 26 Jul 2026 14:56:17 +0200 (CEST)
+Date: Sun, 26 Jul 2026 14:56:16 +0200
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Cian McGuire <cianmcguire167@gmail.com>
-Subject: [PATCH v3 2/4] rust: print: document safety of _printk FFI calls
-Date: Sun, 26 Jul 2026 12:59:29 +0100
-Message-ID: <20260726115929.82150-1-cianmcguire167@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Johan Hovold <johan@kernel.org>,
+	Ronald Claveau <linux-kernel-dev@aliel.fr>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev, imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] nvmem: apple-spmi: improve calling safety with
+ wrapper functions
+Message-ID: <amYD8I6a1c01fnvs@luna>
+References: <20260716142415.28718-1-linkmauve@linkmauve.fr>
+ <20260716142415.28718-4-linkmauve@linkmauve.fr>
+ <alkd0WWr3KX7MS5O@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <alkd0WWr3KX7MS5O@ashevche-desk.local>
+Jabber-ID: linkmauve@linkmauve.fr
 
-Two calls in this file had their SAFETY comments left as "TODO.": the
-cast back to `fmt::Arguments` in `rust_fmt_argument`, and the call to
-`bindings::_printk` in `call_printk`.
+Ah, someone independently sent the same patch as this one in
+7089170e1df160f5f8fb395bc5aa2e2697b4e896, so I’ll drop it from v4.
 
-`rust_fmt_argument` is only reachable through the `%pA` format
-specifier. Every in-tree Rust caller that uses `%pA` -- `call_printk`,
-`device::printk`, `kunit::printk`, and `seq_file::call_printf` -- invokes
-it synchronously with a pointer derived from its own live
-`fmt::Arguments`, as one call in a `switch` dispatch in
-`lib/vsprintf.c`'s pointer formatter that returns its result immediately;
-there is no deferred use or storage of the pointer on the C side. So the
-`fmt::Arguments` value stays alive on the caller's stack for the whole
-time `rust_fmt_argument` is running with `ptr` pointing at it.
+Sorry it took that long!
 
-The `_printk` call itself is justified by this function's `# Safety`
-section, which this patch also tightens: `format_string` must be one of
-the non-continuation `format_strings` statics, not
-`format_strings::CONT`. `call_printk` always supplies two extra
-arguments -- `module_name` for `%s` and `args` for `%pA` -- which only
-matches the `"%s: %pA"` shape shared by every non-continuation string;
-`CONT`'s format string is `"%pA"` only, so passing it here would make
-`_printk` consume `module_name`'s pointer for `%pA` instead, and
-`rust_fmt_argument` would then reinterpret that `*const c_char` as a
-`*const fmt::Arguments` and dereference it. No caller does this today --
-`call_printk` is only reached from `print_macro!`'s non-continuation arm;
-the continuation arm calls the separate, safe `call_printk_cont`, which
-hardcodes `CONT` together with the single argument it expects -- but the
-previous, broader contract permitted it. With `format_string` guaranteed
-non-`CONT`, and `module_name` guaranteed null-terminated by both of its
-possible origins (`kernel::__LOG_PREFIX` and the one generated by the
-`module!` proc macro), the specifiers always match the supplied
-arguments.
+On Thu, Jul 16, 2026 at 09:07:13PM +0300, Andy Shevchenko wrote:
+> On Thu, Jul 16, 2026 at 04:24:10PM +0200, Link Mauve wrote:
+> > This driver used to cast the regmap_bulk_*() functions to void *,
+> > bypassing any compiler safety around incompatible function pointers.
+> > 
+> > With two small wrappers, which just convert the void * priv parameter
+> > into the wanted struct regmap *, we can remove the void * cast
+> > altogether.
+> 
+> Reported-by: ?
+> 
+> > Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+> 
+> ...
+> 
+> > +static int apple_spmi_nvmem_read(void *priv, unsigned int offset,
+> > +				 void *val, size_t bytes)
+> > +{
+> 
+> > +	struct regmap *regmap = priv;
+> 
+> No need :-)
+> 
+> > +	return regmap_bulk_read(regmap, offset, val, bytes);
+> > +}
+> 
+> static int apple_spmi_nvmem_read(void *map, unsigned int offset,
+> 				 void *val, size_t bytes)
+> {
+> 	return regmap_bulk_read(map, offset, val, bytes);
+> }
+> 
+> ...
+> 
+> > +static int apple_spmi_nvmem_write(void *priv, unsigned int offset,
+> > +				  const void *val, size_t bytes)
+> > +{
+> > +	struct regmap *regmap = priv;
+> > +	return regmap_bulk_write(regmap, offset, val, bytes);
+> > +}
+> 
+> In the similar way as above.
+> 
+> ...
+> 
+> > -		.reg_read = (void *)regmap_bulk_read,
+> > -		.reg_write_const = (void *)regmap_bulk_write,
+> > +		.reg_read = apple_spmi_nvmem_read,
+> > +		.reg_write_const = apple_spmi_nvmem_write,
+> 
+> I think the proper ordering is to address this first (before your main change)
+> and update later with const argument. Yes, it will be a bit more changes, but
+> it will be cleaner.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/351
-Signed-off-by: Cian McGuire <cianmcguire167@gmail.com>
----
-v3:
-- Tightened `call_printk`'s `# Safety` contract to require a
-  non-continuation format string (i.e. not `format_strings::CONT`),
-  since the function always supplies both a `%s` and a `%pA` argument,
-  which only matches the non-continuation strings' `"%s: %pA"` shape.
-  Passing `CONT` under the old, broader contract would make `_printk`
-  consume `module_name`'s pointer for `%pA` instead of `args`, which
-  `rust_fmt_argument` would then wrongly reinterpret as a
-  `*const fmt::Arguments` and dereference. Updated the inline SAFETY
-  comment to match.
-v2:
-- Reworded the SAFETY comment on `rust_fmt_argument`'s cast to argue
-  from the property that makes every `%pA` call site safe (synchronous
-  invocation with a live `&fmt::Arguments`), instead of enumerating
-  callers by name, so it doesn't go stale if a new caller is added.
-
- rust/kernel/print.rs | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 6fd84389a858..5a0ee103b54e 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -29,7 +29,10 @@
-     use fmt::Write;
-     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
-     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
--    // SAFETY: TODO.
-+    // SAFETY: This function is only reachable via the `%pA` format specifier; using `%pA` from
-+    // Rust requires the caller to invoke it synchronously with a `ptr` derived from a live
-+    // `&fmt::Arguments`, before that reference's scope can end. `ptr` is therefore valid and
-+    // properly aligned for a `fmt::Arguments<'_>` for the duration of this call.
-     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
-     w.pos().cast()
- }
-@@ -96,8 +99,11 @@ pub mod format_strings {
- ///
- /// # Safety
- ///
--/// The format string must be one of the ones in [`format_strings`], and
--/// the module name must be null-terminated.
-+/// The format string must be one of the non-continuation strings in
-+/// [`format_strings`] (i.e. not [`format_strings::CONT`]): this function
-+/// always supplies both `module_name` and `args` as arguments, which only
-+/// matches the `"%s: %pA"` shape used by the non-continuation strings, not
-+/// `CONT`'s `"%pA"`-only shape. The module name must be null-terminated.
- ///
- /// [`_printk`]: srctree/include/linux/_printk.h
- #[doc(hidden)]
-@@ -109,7 +115,11 @@ pub unsafe fn call_printk(
- ) {
-     // `_printk` does not seem to fail in any path.
-     #[cfg(CONFIG_PRINTK)]
--    // SAFETY: TODO.
-+    // SAFETY: By this function's safety requirements, `format_string` is one of the
-+    // non-continuation `format_strings` statics (never `CONT`), so its fixed `"%s: %pA"` shape
-+    // matches the two arguments supplied below: `module_name` is null-terminated as `%s`
-+    // requires, and the third argument points at `args`, which remains valid for the duration
-+    // of this call and is only read back synchronously, through `%pA`, by `rust_fmt_argument`.
-     unsafe {
-         bindings::_printk(
-             format_string.as_ptr(),
 -- 
-2.55.0
-
+Link Mauve
