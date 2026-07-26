@@ -1,181 +1,193 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013027.outbound.protection.outlook.com [40.93.196.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D47D2D46CE;
-	Sun, 26 Jul 2026 00:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785025932; cv=fail; b=rQd/HBQErrP7jdkxzLzQYl47iWLJ+T0u1vAWy71XVAI6CDUJsy1ecRn7mGJpOGxr9CNnS9m7t5dFDSsCtcn9bA3FZmJEklHxPyBAMK/H45GHQL2kku9fc89toGYEQKP+pi7y2UHlDmkBBqWOPhVfTwt3d3Bf94CiTjVCCqnz9is=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785025932; c=relaxed/simple;
-	bh=CmsnTLfskz0qln/h0bN4DZtn6eAkUI21WZ91IVTFIOk=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=EtJdy1Kouv80dpY2YhRuEtnAExFmDkOrN6EiNz46DFB1lQAZUM4/zqNKgkyi0sclR4UWsjXcZu1wAQn3dRkq3cuOb5oHvoX5ei65H+0MioGWqvGW1Z4BJ/yKjVbt2OFHgSrQvrkuxsvnr+Rew7SOL4xn8g45VTrMCJsbclvR35Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cCsRVqAr; arc=fail smtp.client-ip=40.93.196.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94682931F2
+	for <rust-for-linux@vger.kernel.org>; Sun, 26 Jul 2026 02:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785033211; cv=none; b=pCt2AsSD/Zgq7GDWQVecQuB7Sg6H9+HHIM7ZIZr0R65gEEZ2pT33d0u3RTcs/WrRySAtwptfEEsqaNxfh7Qx59bkyaD50aKE16UIha8v8Gp5Ei3QUy2W21/DBBfLouTnlWwkVHwOC5eKB7jj7mxpIhVFoneAA+JoHonBETMT6gM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785033211; c=relaxed/simple;
+	bh=Z8o+7L5AcN0mc5L4ZBXWEkwZ88tRim+Z49ttFoGnBwk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BsZ8K2dtbdArGFzDQyFWx0+D4wDbikZfE6THdVRhNhF0I0QKxjVOeaMdY8Ty1UEpKGCtJYuByGeElp5npZj65WaauOb22jX41ubjkB0vsm9YVdVL8R8Ts6cvYURZQH6/kgop6uJPFknkgRKx20b6Jiz+0flTMvyC+RzgWeKtHK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pf0116UP; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cCsRVqAr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pe3NU4YyNFALeYBbFa/0CCfz+IMn8lORNVkrj4WoANU+fMAhgjCGh1eq3X5U77ttJbuilGtMcGxZGmeZoKdlrlW26vYykgPHhci5oMr+Xd0KZrwhIE1u8dPEe4XYto6+OwKIsmvZBRWY4Tl0aKMGFg6PjDKjBA04M1pedGu9bDA2ANH3yBPy4bNj8FKJJ1aB6fID67Bo7bQ8MrunZgnl8EvqUKMEhyedfjXLojZUuSfbyi/+Me3tJj3ujny/MZXVRBrCYUoye17XWYcysyS7ARGQqtFwrJNw0EGFH2ZcEyOBum5mLHfqVnTGT9QG8m8HhkaxUuMGeDZ6FM+fX7J4jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=catbcoFqrkoD95qggxkSdJhKX2797kMi+cIIle5cXDU=;
- b=ANIdMZZIUA3NkOQmUNhyLSXNA//KWFWD2Vj84we+PP9uaYEWPKnmQMsqP0XLl/qfbThVSqnzq3N84PHGvxONnkYuOJ+LcWex9K1NTz82GQLOOlRzqraHsWwbeq6UmdeeREPB8S4t6hQ6+9pKZF62qemLCzs1rJXEBBFkiOhIBQMye5CfPSNT5PbXIloKRhbCEJoIVLqibA6OG/LkKE+IwSZpShwe96iOx6nflTEhL1WcUkkkl5mu9NjQjGE1abhmveo5R1fweGYl7USRk36jpwZMNOF5g8WQMLkeQ4QIVOzydL/ewVqe0cVEviE4JrQaE9iDmC+lh+F/znI/x12eTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=catbcoFqrkoD95qggxkSdJhKX2797kMi+cIIle5cXDU=;
- b=cCsRVqArvRssdetNDN6oPYYDSe3g8yyqZVzouCfZuDk7V1KHocnRowmSFcIkj/JNky3jgYUiOB2fij0IwMygu0tE3TDFJs55OwkZEVCfSSoYLEpWeN8mah2uujm4Rrz4VUIGijrvB6ohVsJJJfu7/LqsjVR2F3De3c5rHe4mjMQnuZ7XbNK5w5tRCHj7/aK5fitFlsWSbtLxbFvq3PDnDe2g98uxWydQJ7QimwWlSq56nV1g9SX9u6Wvu2W4nzhBRpPiALY8srdx0Hb8GfJ48U+W+N8kzQcbhV68Db6aFrB9zW016bOzB0ZGJHvp+wPLkEgjOnfKjHaGakehthFxYA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by MN6PR12MB8516.namprd12.prod.outlook.com (2603:10b6:208:46f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.12; Sun, 26 Jul
- 2026 00:32:05 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0245.012; Sun, 26 Jul 2026
- 00:32:05 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 26 Jul 2026 09:32:00 +0900
-Message-Id: <DK82VNBOLWA7.1RFTZQWWNHIEH@nvidia.com>
-Subject: Re: [PATCH] rust: io: convert ResourceSize into a transparent
- newtype
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Lorenzo Delgado" <lnsdev@proton.me>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "David Airlie" <airlied@gmail.com>, "Simona
- Vetter" <simona@ffwll.ch>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Robin
- Murphy" <robin.murphy@arm.com>, "John Hubbard" <jhubbard@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <nova-gpu@lists.linux.dev>
-Content-Transfer-Encoding: quoted-printable
-References: <20260712113602.389060-1-lnsdev@proton.me>
- <DK0BPAHR8IS3.2KLSLH7K448RJ@kernel.org>
-In-Reply-To: <DK0BPAHR8IS3.2KLSLH7K448RJ@kernel.org>
-X-ClientProxiedBy: TYCP286CA0344.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:38e::16) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pf0116UP"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso973945a12.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 25 Jul 2026 19:33:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785033209; x=1785638009; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sjXzoSujIP+9dDYXqm3Aab2DrXJeEn6UY/TChtANBQI=;
+        b=Pf0116UPcFARZ5UI+z00eqkzao7AiZ4Fi5S8Zh50yL13JqalyzfoxqBU2PaJdzWnqO
+         J5c4hq9CPKJuFeuanxV2/MK3ijJ/3SCckcyCtdyWTvzeoHz4J45ONp27jXuMIv4T1Yv2
+         7xdNLC5r0dvXpKhsegaKrU3DF1oQvS2naECqY4QiLDvag2Ed50AIPnfe6aBZFU1ldrlN
+         hA6e58iqZnwyxoUn7Anx9Mh/sDCXivUUv0P/JoRltBsz34+XwvcMx8oQi1gVIYB7h15T
+         JTen9AsTO0FCWmfpoWyvAyDn8my8kZJuhoNgp7kLCrO1FDggo9ZSutwDB3o22zrDD4KP
+         iDGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785033209; x=1785638009;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sjXzoSujIP+9dDYXqm3Aab2DrXJeEn6UY/TChtANBQI=;
+        b=J1UvjJr3oltvd5LDqdKKHBfsUDutiAjCNRzFKVBydGXzS9DMn1hUvJkY7vdJBfq83L
+         +MGLcfgJCQJnt+FdzubteO4SHD+Hz9MTdV1FD2Wj4RNKglLBtHnaHwpoitmn7c9Ao5sr
+         fvitozOwnNYv+4fNTkK03errvKPXR3igaj9wxiIfbQtOpyWSugKI47BpNaVu/rrVDC6f
+         yUztRAYxTNffuV4lkL/TFtRYuSxofabkf+X620+MTphOItNkGalz2WoVzExSFnMMW790
+         1arsGXE6mLGbYCIXQ1vHnAVFtQIqNE3N5UQGE48gawKU4qB+5LjyqTXrHaBaDsW2hZwk
+         fdgQ==
+X-Gm-Message-State: AOJu0Yw70p1MoIwcd1aKzCGpu2T6Xz9Ih6HT8YTwx/9DunMD3JvAdoOY
+	ct7I42U2W5CllwUDYcqlEMaJmiQEecYuHIeA7ndTbPcWkHpxXMgMuN21
+X-Gm-Gg: AR+sD10JUzUwNBH1Dbf0MR8wf+uiGabOWOaE8FLvMKC3bzv5WHjOGx0MIk7bEfOglGY
+	Dg30MRpTnUwJymtS/u/h2Fy6L6uwFKNIWZmd8iY52DpwfxSpRWgRln3lewDvLPjITV+RdGykpB5
+	3kLxS3qiY9Vh1E545rI1oeyqplYb6VzWa/hWG1QKgrHQe/YaydtnxhZDUDYX9dCfSl6sd7phCTV
+	+n3UTXJW2wNEmwsoHka4KtWdMYPJN1bv4d+SX5SN+pXf9WvMV2bxBUI/Aoua7SuJfAe2XgixlTm
+	edkG2F6U7xV+XGtsh2WhAyr0lm57CkYmYR1JC0GhkNezA/709p2m4uSZnil2nc5E+Icui9jNwHi
+	tyhSLjZnFjyBisKBj+1uwogvzKDapKIQSvUmTkYx3WqMI1WFFsQLWMdUkwJ3UHCkJWzajzKZ07W
+	/MnH0JqGzNALToy5yHBXVWRNxekpMaTkkxeGErW7a53Hrg/4IhMA4ONj8xPnJ5RGq4jNxAtceqP
+	YaBdSgc0dcgEoO8ocmM1I0FNt8ot39OtASjodl61wSBjQpwdw==
+X-Received: by 2002:a05:6a21:a09:b0:3c0:9c19:6586 with SMTP id adf61e73a8af0-3c67e159021mr3525765637.64.1785033208757;
+        Sat, 25 Jul 2026 19:33:28 -0700 (PDT)
+Received: from localhost ([50.38.60.151])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb66b282asm1722846a12.18.2026.07.25.19.33.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jul 2026 19:33:28 -0700 (PDT)
+From: Bruce Robertson <brucer42@gmail.com>
+To: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	igor.korotin@linux.dev,
+	gary@garyguo.net,
+	tamird@kernel.org,
+	aliceryhl@google.com,
+	boqun@kernel.org
+Subject: Re: [RFC PATCH 0/3] rust: power_supply class abstraction and SMB347 charger driver
+Date: Sat, 25 Jul 2026 19:33:27 -0700
+Message-ID: <20260726023327.51519-1-brucer42@gmail.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <amQPYhBkj9rIdSZ_@venus>
+References: <amQPYhBkj9rIdSZ_@venus>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN6PR12MB8516:EE_
-X-MS-Office365-Filtering-Correlation-Id: 353fa27c-3027-444f-d3c9-08deeaad518a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|7416014|10070799003|5023799004|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	qz2TttZBXvcbili6+XRoN2eKMr1CV7b8WgorCviI5S+e5YX+fhYWQ1Gh/H8g6SDvW2TJqWiGU+0ZzhhtXBfiu5/TEESgjqO/EsJxuLs4LU8CvZdaz12cBBQkTjLD1pq9yBsAUW8v1Li1wKZmBIXbeABrxnk7RiLzs61AVkf6wF0MFNyNQtTqJAJ7x96M0Z53DfTnsNFdpuds5LKrMxHVdm/IzY1B/NAw75bUY+aZi0tHfaUCixgYdehSjws67rM/UO+Hat6aBugOmO8WT4n8yhc2rEEinPLqXCIsprCIFFpN69DeADp8eVE1r7Bury436Dbfhff/kMyHQSd4XkqeD+Y+OH62+TKGUHfsVHjUfgw5YomXkQi9e+yDo9M5fLutf4dIjRHuYm4q1cBbjjrFaIs4WJKoHsEJtzAYyc82GHsD2kbPVRnpNm+9a5j9tmVEuClXI1gBzYXnxMN6MDXLFnhy6I/2D5zmzOfFROLFycysDvjrmp4e+e27tMMZRaK2dgj0VoQwoFnDAPuSgLtrpTRl9P1CRKmne/PyqronbM6VXpE/MSFB2crq3Vg9NS6AJKsgS2IzYEkXmA7wZnlEdC63Dgj9F/t7hifhJPH+eheoDch/YyuEZjYp4ucbMIycYjULzDb0l8XRflsYn0+l9+VSTk+1Tx4q6HVnXQDGHcI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(7416014)(10070799003)(5023799004)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bU5XVVNsN0VHWi9uMXVLd1JIdDduOU4xakdqM1p6SVZFMUJodXRRc3JlUWRz?=
- =?utf-8?B?bVYzc3hmVWJGQmRhaEdpeXRNOTdTYldEZ2dMd1UrZm5PSVphSnpZMnpGRlEr?=
- =?utf-8?B?YlZ1U1RvdGY4VFF2SUg5MllPcTBad1JwQkFiNjJnYitSNHVTcEoveEZadmhS?=
- =?utf-8?B?SHdMbGVmMGRvdHRuSXNaRGU4THpRZ3cyMVVLZHFjMVo1cTB4VTk4cVVjOW1F?=
- =?utf-8?B?LzJ0MlJnaFQ5MDA3L3p5OGx5YmRPajlyUDBRMUlGZWpQMXYrR05sZDlpU0Js?=
- =?utf-8?B?S2Y0YVYySkl6SlZkWmtkNFZBUGJqVmRmUm9tcUIzM1hvOGlNS2NsV0tEd3c2?=
- =?utf-8?B?ZFdzN0ZreERLa0lZYzFSKzlqemdsRi9Cdm82dllJR01ZT0NrQXhBZ1lOajJs?=
- =?utf-8?B?WTVWQTA2b0JnSWpSMUtJU21uZENueGh1SzExSUtKYi9vZHhzNXFsbFV2cXpx?=
- =?utf-8?B?VDlaZVVuc3MvcVNIMGdwcTJRUkVYREJnQW5FUDNOb05JYkFDcTRwT25xM0dQ?=
- =?utf-8?B?cnl5TldPMHoyUDBnam1hVDRuclVDRXZEU3hRNENFNUpneTZQNXZ3SzJZbnUz?=
- =?utf-8?B?d3RRL1NBKy9yK1Rkb1Z5TXpEc2dwclBVVitocUE0Vmh0ODZXQUlUbWtUNnZZ?=
- =?utf-8?B?bndDL2ErUkRhT1B3KzNZdEYzQjB1Tk5vNUM0eDMyc2Q3ODlLOWVQZHUyQm1w?=
- =?utf-8?B?YzRJcVgrOTJUU3lBL1JzbG8xRUt3aDVaOTE4Ykd5S3JMRUJUTHRrQUMzVXJY?=
- =?utf-8?B?SkR3VFJLKy9ucjAvTjZXYlNXQ1g2dFF4VWk3V2RyZkFVNGtrVG1uR2o1WU4x?=
- =?utf-8?B?d1lqc3NtSTVGVW1vL0JISTFnYk1mblBzRGllV3EvZVQwc2RKbjBWclBOSzBJ?=
- =?utf-8?B?TVA3VXVhcGJQTEVJd1pmR0h3dVd6dFdnMEsybWJ0dUJuWllPbm14U0hqM01u?=
- =?utf-8?B?UFhmeDN0RmZsQWVXalhBS245NitkdGdHcHJNSmJIVUlKYk02cUdWUUM3TDVz?=
- =?utf-8?B?Q0kwZ3BJM1pzQUtnNUNQelYyS2pEd2ZvZkFkTTFPdHg3YVVhV3Q1ck5xdWxR?=
- =?utf-8?B?anpLQzJhMzhKa0JIaU1aRldnMUs5UVp0dG80V2R2VndnMmI4cGdLTC8rTjhB?=
- =?utf-8?B?YXdQOEpsbnBmRERaVHQzYTR5SkplcjA3UDk3c2t3QVJtM0JvWHBHMlRqNHgx?=
- =?utf-8?B?QXQ4ZEVnSHpjc0xzV216MkZEUVZsRTBTQWdpQjFRVTFDMHBub3pxSjVYZkha?=
- =?utf-8?B?dTBrMEx3cyszMzYzdjlGZ1hFd1h1UnZ1MkhXcjFqYVFQU0ZwZ2FCNGp5Q2ll?=
- =?utf-8?B?dVhGeGF4UkNieStBcTBHVk9lUERZZWNDQVErMWpFR0tibHJSWDVjL3VSUGs5?=
- =?utf-8?B?SE9Ha3VlWjRZRzdsd2JjWVp0OGx1NzBKV1d4ZHpRR3p0c1BGdUdyZ3U5Mlpo?=
- =?utf-8?B?dGtBem04a3JOSHhseGoyakxrUGlWbnlwcHZFRDhvcEtMcWp6bWdYUVhnQzZk?=
- =?utf-8?B?OXpSRmFWckRnTFZUdHg0cjhPQWF6b2ZlNVRoUk5zSWtoZS9PZE0wazhibG9U?=
- =?utf-8?B?NmFFTHN5L1JYb2FMRzY2QTY4VEtYQzM3cytqUTE3UlJvdWxNVzFUelNRRDlv?=
- =?utf-8?B?bnc1V1BPNkg4WTNBMnVjMzRnNG9JakhsOTFyZzZZSFIwQkJIZ2dyOG5pT3NN?=
- =?utf-8?B?S3E1YVlraXRUeWF6N2lycVVHbUhRZytMU3RjcjZPcklRUWp6aDBvYnhwd2hJ?=
- =?utf-8?B?QzdPcnFXRnpoZElxUCt6a2laMjVVNG9aYmw0WXQ5OHV3bGxLbFMzNUxCUFkx?=
- =?utf-8?B?bGlpRzFKbmJ3Vjg4dTBxTEJwbkMrVmVEbjBSL2JJZFowZlNVN25NNFRUVitF?=
- =?utf-8?B?WVAyaGhhS3hYZVVnNkY1SVM0ZnRsTHhFeUt6bjBNMlZkSTdvUytjbkh3KzNm?=
- =?utf-8?B?eDNvZFBOSXhQUnlaRTRRZ2ZOa1ptNGU1Q25wVzlqdHYxYXdUSEgvQ3dreXZT?=
- =?utf-8?B?ODNrMFdZSGhHTUl6SkhsSko1MUFhWFdZY3lBZkFrVTFjVEdmeSsxVCtXK2hK?=
- =?utf-8?B?RzJpSlRybVA4YWR4N1VzLy9oNDZ0VjhRR0ZLRWo1angySDRYREtBb1RVWTA4?=
- =?utf-8?B?aU9YZFMrWEk3Z3JNMmFJUmNTQ2JNeHRPWjdzTmRGNU4yL05LVDVVTDV2TWpX?=
- =?utf-8?B?R3NhYW82eEtua05kdk8xVHhSVnlHWWdpREszb0pJb0JIK2ZCcldRRURJOVZw?=
- =?utf-8?B?TVlmMzMzTFdPZmZQc1ZvSzRWZ0c5NUhOOTdVbzVyWTd1NDZKRStqSGVReWxz?=
- =?utf-8?B?UG5wWEZqVElEL2Y1TWllckNMaVYvN2FVeElvU0V3Y1c5anpCcTNhbkRUUGdx?=
- =?utf-8?Q?Q2OSxcuF/FIvDpov4F9x6+tInl0iob4PAM4CdPCvDosib?=
-X-MS-Exchange-AntiSpam-MessageData-1: q/cB1OSCCeJ0pw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 353fa27c-3027-444f-d3c9-08deeaad518a
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2026 00:32:05.4059
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CZBZrf1lj1Gpge0bP/eKfqQzMzpLGH8XTBoiA8EDZb0/cpc4GXai2AwE8bKwDDeQXJQNsUldX3aAhE4pUasl0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8516
+Content-Transfer-Encoding: 8bit
 
-On Fri Jul 17, 2026 at 6:45 AM JST, Danilo Krummrich wrote:
-> On Sun Jul 12, 2026 at 1:36 PM CEST, Lorenzo Delgado wrote:
->> diff --git a/drivers/gpu/nova-core/firmware/gsp.rs b/drivers/gpu/nova-co=
-re/firmware/gsp.rs
->> index 99a302bae567..d7593888e65b 100644
->> --- a/drivers/gpu/nova-core/firmware/gsp.rs
->> +++ b/drivers/gpu/nova-core/firmware/gsp.rs
->> @@ -175,7 +175,7 @@ pub(crate) fn radix3_dma_handle(&self) -> DmaAddress=
- {
->>  fn map_into_lvl(sg_table: &SGTable<Owned<VVec<u8>>>, mut dst: VVec<u8>)=
- -> Result<VVec<u8>> {
->>      for sg_entry in sg_table.iter() {
->>          // Number of pages we need to map.
->> -        let num_pages =3D usize::from_safe_cast(sg_entry.dma_len()).div=
-_ceil(GSP_PAGE_SIZE);
->> +        let num_pages =3D usize::try_from(sg_entry.dma_len())?.div_ceil=
-(GSP_PAGE_SIZE);
->
-> I think this is worse, as the conversion becomes fallible.
->
-> You could implement From<ResourceSize> for u64 and then keep using
-> usize::from_safe_cast() in nova-core.
->
-> Alternatively, we could also consider moving the FromSafeCast trait to
-> rust/kernel/num.rs and add FromSafeCast<ResourceSize> impls for usize.
->
-> I originally proposed the approach [1], since in nova-core we had a lot o=
-f
-> fallible conversion, while our Kconfig mandates that they can never actua=
-lly
-> fail.
+[Resent as plain text -- my first attempt was rejected by the vger
+lists for containing HTML, so it reached only the people Cc'd
+directly. Apologies to those of you getting this twice; please reply
+to this copy, as the first one never made it to the archives.]
 
-Back last year (!) I sent a RFC for this [1] but never followed up
-somehow. Let me send a proper patch as it should be useful to have
-globally.
+On Sat, Jul 25, 2026 at 01:41:35 +0000, Sebastian Reichel wrote:
+> Having Rust bindings for new drivers sounds good to me.
 
-[1] https://lore.kernel.org/all/20251104-as_casts-v1-1-0a0e95bd2a9f@nvidia.=
-com/
+Thanks -- good to hear. That was the part I most wanted confirmed
+before putting more time into it.
+
+One status note first: patch 1/3 (the SMBus helpers) is dropped. Igor
+Korotin pointed out that I2cClient is meant to implement
+kernel::io::Io rather than grow standalone SMBus methods, and there is
+an in-flight series from Muchamad Coirul Anwar doing exactly that [1].
+The SMB347 driver will consume those accessors once they land.
+Patches 2/3 and 3/3 are unaffected -- more on that at the end.
+
+> Any reason for Summit SMB347 specifically? I would prefer not to
+> have two drivers for the same hardware.
+
+I wrote the C one. drivers/power/supply/smb347-charger.c came in via
+commit ed1a230f96eb ("Add I2C driver for Summit Microelectronics
+SMB347 Battery Charger.") in v3.4, back in 2012, and the file header
+still carries my name. So this is me porting my own driver rather than
+a drive-by rewrite of someone else's -- which I think also speaks to:
+
+> All are ARM32 based, so Rust is at least available by all users.
+> So I suppose replacing this C driver would be an option, OTOH I
+> don't want to motivate people to rewrite things either :)
+
+Agreed on both counts, and I don't want two drivers either.
+Replacement is the goal. But I should be straight that the RFC is
+nowhere near it yet: the C driver is ~1640 lines, the Rust one is 180,
+with three properties, no IRQ, no set_property, no OTG/regulator
+support and no DT charge-parameter configuration.
+
+Two things I can do in the meantime:
+
+ - Make the two mutually exclusive in Kconfig so that no configuration
+   ever builds both. For v2 I was planning the ax88796b arrangement --
+   the Rust option as a bool modifier on CHARGER_SMB347 with the
+   Makefile selecting the object -- rather than a second tristate.
+
+ - Build-test ARM32. So far I have only built and run this on x86_64
+   against i2c-stub; I don't have any of the three boards.
+
+What would you want to see before the C driver could actually go away
+-- parity against a specific feature list, a hardware test from one of
+the espresso10 / nexus7 / p4note users, a deprecation cycle? I can aim
+at whatever the bar is, but I can't self-certify a swap on hardware I
+don't have.
+
+> A new driver supporting CHARGE_TYPE should also support CHARGE_TYPES.
+
+Happy to add it. One question on how it should map here.
+
+Reading the ABI and the in-tree users, charge_types is read-write: the
+supported set comes from the desc->charge_types bitmask, the active
+one from get_property, and writing selects an algorithm. On the SMB347
+the charge type isn't selectable -- the progression from trickle/
+pre-charge through fast to taper is autonomous hardware state that the
+driver only reports out of STAT_C. That is why the C driver has never
+had a set_property or property_is_writeable at all.
+
+So: would you want CHARGE_TYPES exposed read-only here, with a
+Trickle|Fast|N/A bitmask and the active value from STAT_C? Or do you
+consider a read-only CHARGE_TYPE to be exactly the mis-modelling that
+CHARGE_TYPES is meant to replace? I'll follow whichever you prefer.
+
+Either way it lands on the abstraction rather than just the driver:
+desc->charge_types is a descriptor field, not a property callback, so
+the Rust Driver trait needs a way to express it, and the writable case
+needs set_property and property_is_writeable plumbed through. Those
+were on the cover letter's future-work list; this moves them up.
+
+> If the idea is to just have a user for the Rust binding and
+> something to test/play around: Maybe convert test_power instead? It
+> would also decouple the power-supply Rust bindings from I2C/SMBus.
+
+The decoupling is already there, as it happens. Patch 2/3 touches only
+MAINTAINERS, rust/kernel/lib.rs, rust/bindings/bindings_helper.h and
+the new rust/kernel/power_supply.rs -- no I2C dependency at all. It is
+only the driver in 3/3 that consumes both. And with 1/3 dropped, the
+SMBus layer leaves this series entirely.
+
+> The disadvantage is, that this driver is a special-case, since it
+> has no parent device :)
+
+That is the part that gives me pause about it as the *first* consumer.
+The open question I flagged in the cover letter -- how the get_property
+trampoline recovers the driver's private data -- is specifically about
+the parent-device path, and it is what reviewers have pushed on most.
+A consumer with no parent device wouldn't exercise it at all, so I'd
+risk shaping the abstraction around the special case.
+
+For v2 I'm moving the private data into power_supply_config::drv_data
+at registration time instead of recovering it from parent drvdata,
+which removes the ordering dependency Alice and I discussed [2] -- and
+that is also what a parentless supply would need. test_power becomes
+straightforward once that's in. I'd be glad to do it as a second
+consumer on top; I'd just rather it not be the only one.
+
+[1] https://lore.kernel.org/all/20260707151542.91997-1-muchamadcoirulanwar@gmail.com/
+[2] https://lore.kernel.org/all/ak9kAP1SZF8AchQT@google.com/
+
+Bruce
