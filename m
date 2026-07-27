@@ -1,116 +1,76 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA28E3C0A1F
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 19:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9CC37F312;
+	Mon, 27 Jul 2026 20:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785180292; cv=none; b=SEbyw3KB07s33+/XHGDoEqmL4bmUzpjCaQJy1wVii/Kq71HaoxHSyyi07oVmdGZaU4nT+mDPqdmQAfQYhT74+P5Xxn1lBJQOTZ7OnWWKCTOYVShDVw2RDj3pYI2ELdYuDBRMqWJNSZ72ejSwZywL0sbqLDkhpomKbwHavcQKe8g=
+	t=1785184748; cv=none; b=eehP1QSWAq6/8IZMNmM32bd2KprIiw1qE+dX+u8+iE8ceBvnZF/tyn7al4geufNgvHDpAjS/19oJx7Ij37BTfzG/tQD3XR/Nu26GO9nynA0rXJsIvn4V66Kc1Kwbn9TKSjQOm2pAfnoqQsuFe5hoesxVCQUO0oH6MJgONTf/Rfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785180292; c=relaxed/simple;
-	bh=J8xfgP9hEfTcL5HLwMcdAyzynD6LkxGko0WlTarX4/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jS4UvDAXTKj8l4ECEqATenqLGlUYD4Vj0DVOwjgGuwIfiqJK05yqFxbD373KCcGYjooHs9rkKhN5J54RG5C0zhuZewvgJC7ZiNIVJkhQAABD/C1kkRKDdcC+KCEQhqFD+/Y5wYT95LPHd6wXrG1Dh9f0oheBOoETL8imx9tUdbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KF4ZuNHN; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785184748; c=relaxed/simple;
+	bh=1jU3SSVnZksJo+htVGPcounRwgbu7IpnTbla9akcccg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ces1sg1FY1P8UEbaZsnVtWcCIIEQDEiTQve5pitKGuWfFjP0rCZPcnIHK8cNUa59YGIOtspfrdyMkoQYe0z18AQCbK2dd1ZYE8OrbSMbcZ/H59AfXv50E5X5aOHC7uGBu8BnTwkZb4zh6xGmjax4qjkbKT6ljmkxCeAZUkoscz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzE3lm/V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KF4ZuNHN"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cede6375caso29595ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 12:24:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785180290; x=1785785090; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zJFdpBhBp0OM8gJ3Y2wEmdgykqIsz6w3M3NCrQc35F0=;
-        b=KF4ZuNHNHtIIFYIPiHzGOUV7VMYLAYid97t1X3Od+wK2DGKeMjYVd1CHfTfLpswIbW
-         Cq2w7nPjiLTroDDrPD6gs8JD/cehMImru5hViQWgRVaLsKr2H+SqwIIICBJH7CmM5mJB
-         Ft8923cO2gfbwY3U0k9uNo6Qugw+CyeSTSPK3GPqdUI13AvxgOMFO9/7au/gjxAY9o4G
-         7k73cWiCU7DqWMN0Xo16z8x5S9nL3E7ar+zKoW8T0mOSumWyXXcIC5GZxWyBoE/HHztt
-         QTQxxIGWknhTerD3ViUxXT/colXqQHmtoDkAs5SkHKLNoLUA2+nxJT6vBMl/YFJ1v3Oa
-         ZfNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785180290; x=1785785090;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zJFdpBhBp0OM8gJ3Y2wEmdgykqIsz6w3M3NCrQc35F0=;
-        b=l9Fd79woxWYgnUDrMH8W5Mw3dmBO9vDslWq9SvNYd22fGbftBHbeM4IeiX8BL92y2t
-         knmaxzjxZrQN9rzJ8xYU8OYeJgLzz9Iq9dl8eR10g2fc697YfjjJeSwfyFa0ckXVmBNd
-         JoGme6AkKm+P6K6IHfpOnifaL6C3xt+2fVv3l9NMn91bey431kGebWU0ipyfY84+WaUX
-         PwggaPRwCJoObooSzdYv55yWYh2PS0lC70SUQ3fYHovBWpPwfbggfUVuA4Jby4kBmuYX
-         MlKwik05Y+5Ag/4Cv4VZH0aC+STh+VjS36kNZUULk5qtSSThpFHfG2dqQoatVHQgHpIm
-         eXAA==
-X-Forwarded-Encrypted: i=1; AHgh+RqVcUrb0vHw7CRpthKIBzP6Vvhf9J7O3EAAR6bIaiCatsmjSv9A5pw9QJMAh2b1pAjHK55mQyWsbVQM3ufU3A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnRCxrIIxtC/I8zXpiL75Tz2OqwgJYa+xdS56eD0Elb2WnMeMt
-	BJsnS70Cop1G4+phCjF3tbOG40HiT9J4JT98L6g4ERSgtCuyV4VAIoy3luHwN01cf2l42071ruX
-	SrYep4Q==
-X-Gm-Gg: AR+sD11/KfR1K3LdNQJFdI6+HNhlb3p/r+6cpXCJajP/n/kAgn+65u/O+X/czo9DKFX
-	b2yHIS3TfjhO1dtY1VfvyWZt0lJPT2WqUzKnCbfhihXE9YxEFxaxbpUIOIPnCF/cS4yA7hmP5ZV
-	OsQf8jXQ2pmtPWzQHgah5wjwIlFxoerasmAms1B+k5Sc/OVQeuxxHeBZpg0Bq96J0btk0waQXxF
-	TQ2BHhjdh+SssBIDweSicwvTZ3dpRkQCbBWfG6zhkogcSQvLonK4Mi/Z2j3hzQIXUWvHH1zWjdj
-	Z86KoQ488dmHOwl08h0wkYMwAsOFMEnuq6qOuIOM7YHzVoZ/Tl0dVmSrSdTsix+fJLuRYSMXnfq
-	+cEyNwZqzr5h9cNKokQZEA1SF4rWXFTp0SfNIvRG4/BxEYEruQV5V/Fx9ZUr+DJez0AyydYd5D8
-	rihZDt8QexiHpCcYMWEkwahUX2VuHNTg82qfIOV8ZBn9TkO6qtxL8MgLiAqVBUQjiVw+e5i9960
-	O6j42HyOVvzwKF4ssLnQNbT1Q==
-X-Received: by 2002:a17:903:1c1:b0:2cf:41ba:96b8 with SMTP id d9443c01a7336-2cfdb5cc713mr18629365ad.6.1785180289443;
-        Mon, 27 Jul 2026 12:24:49 -0700 (PDT)
-Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e533ce1f7sm3446224b3a.34.2026.07.27.12.24.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 12:24:48 -0700 (PDT)
-Date: Mon, 27 Jul 2026 19:24:43 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzE3lm/V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76CA1F000E9;
+	Mon, 27 Jul 2026 20:39:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785184746;
+	bh=9MBLqZcQejQgFZk0sO359niPoruaJF9yAp0lSaSnXf8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HzE3lm/V+6ory0CRn1KzyV2GM4JbELSV9fzYu3ehA+veSF2TT5gyquOebYT9F6bKB
+	 5NlVnU5U6TI6x1PEMV0JrOG623jsMvVPNEFsskUV1NAWjYIybdDoo2z/kKFYLfDpHP
+	 9LAtGiST27MVHRJksHcIZba88jk2+69Ro1/WubVH5V6QB0jLGgCPd8RBib2zB28MYf
+	 zCv/l7KeeFslW3I3jOUuEeudZo+7rX8W9jb4BT37z61Y8zxrvXYfgA52/SnRy3EUa9
+	 3ASss9fEtrmo4rYDY5L2SI+3s4D64Tto0BNJZwJQDIQl/gge9zgb9DCsnhZ+mUWHzl
+	 clvxu1soBWqxw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <lossin@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust_binder: do not query current thread for all ioctls
-Message-ID: <amewewIwdet8iSat@google.com>
-References: <20260727-binder-cur-thread-v1-1-8edf2b64e235@google.com>
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH 0/4] rust: pin-init: merge `__init` and `__pinned_init`
+Date: Mon, 27 Jul 2026 22:38:58 +0200
+Message-ID: <20260727203858.2275755-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260722-merge-init-v1-0-d4594de76538@garyguo.net>
+References: <20260722-merge-init-v1-0-d4594de76538@garyguo.net>
+X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260727-binder-cur-thread-v1-1-8edf2b64e235@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 27, 2026 at 12:28:59PM +0000, Alice Ryhl wrote:
-> The get_current_thread() method is currently called for every ioctl to
-> ensure that a Thread struct exists for the thread calling into the
-> driver. However, not all ioctls require a Thread object, so this means
-> we are unnecessarily creating these objects in cases where we don't need
-> to. If said thread does not invoke BINDER_THREAD_EXIT on exit, Binder's
-> Thread struct stays around until the fd is closed. For long-lived
-> processes the Thread object is effectively leaked.
-> 
-> Furthermore, when the BINDER_GET_NODE_DEBUG_INFO ioctl is invoked by
-> libmemunreachable to ensure that objects reachable only through the
-> Binder driver are not considered leaked, this is done from a fork of the
-> process owning the fd, which means that it fails the group_leader check
-> inside get_current_thread(). This results in EINVAL errors for this
-> ioctl, causing libmemunreachable to report a false positive memory leak.
-> 
-> Thus, do not invoke get_current_thread() for ioctls that do not require
-> it.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-LGTM,
+On Wed, 22 Jul 2026 19:50:14 +0100, Gary Guo wrote:
+> [PATCH 0/4] rust: pin-init: merge `__init` and `__pinned_init`
 
-Acked-by: Carlos Llamas <cmllamas@google.com>
+Applied, thanks!
+
+  Branch: driver-core-testing
+  Tree:   git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
+
+[2/4] rust: devres: use `cast_pin_init` instead of manual reimplementation
+      commit: a1f1b3b478b4
+
+The patch will appear in the next linux-next integration (typically within 24
+hours on weekdays).
+
+The patch is in the driver-core-testing branch and will be promoted to
+driver-core-next after validation.
