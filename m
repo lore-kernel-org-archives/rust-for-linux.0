@@ -1,166 +1,320 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7143BCD28;
-	Sun, 26 Jul 2026 22:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27087082D
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 00:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785105423; cv=none; b=M4kJkmcuvZgdNNR5CTCgziVlYXCfGuWKymouJzl8cLoNGrVf1o8Jbv/oROJEd6kqofWN1EZR/RqyRkEQwXjo2hRdJax4TeE/GJuiU58bUhdoMnxBQq+Kw1eaWlvCkP7dzgfjOhgMi28FnDqT9jxswqI0zEWOA6Nc7+pwFuU4TpE=
+	t=1785111391; cv=none; b=Pg6MKOi6YTqnAIYmF7CQkswPMP0zOXvtJbvUJWC62zttptj1StIQY/pnhuWE4D5XCLGmegiqVcutEkZDWbEtuTjtG4gQia2BS9tl6NSyCMkG1uHOGjuFUyKIN6IwtV4GK5uAZvVw+TtYnBqI6y6WXsoc6F6Lbaeqp8N9JhP31tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785105423; c=relaxed/simple;
-	bh=5vXgI+m5SgBSeuxeY3cTP4VMpV2wvLHgJktV4898ZZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwriXdsnGMPVHBaYC70MNVkd8mYGkMCGSJglo4xlhvpTGGluhFG1ozxlU/j489HxmLEw23m08Mdk1XUsfx0HauJFMp/8fFe1vzyPHK0BclTax+HAlXv0adnV8CjMDRFWTSEqzhNeMhkLE6UZ0jQSqlHzg1ykAMxILloLIhWPQp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WsfunnAl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785111391; c=relaxed/simple;
+	bh=i2zx551+g/3yOmTFimci3g0fTX0Tr3rvfUsIHzGhOHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KvpGex2HrHY+En1PygiJ13xMRquVw/GxhjUC32J4o1eDhyNbylIvtSYCYbk3RGZnKst+2qWldopA+m44JprEI8quBPRhH+KO7AbISV6GAykQZfmR5wgpcEKJJr9PBihqkayp025Epc8AfnTx45pn7sM1v2OOMnhprMag0ljy+b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M+mKFS4t; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WsfunnAl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615471F00A3A;
-	Sun, 26 Jul 2026 22:36:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785105419;
-	bh=pg1IjrG9FGQR5IpRmFNTaphIen2dO7e5SWQcaeFog+c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WsfunnAlY/iARsA0daxCFzototIG4/vaI0H/BBS3QYXEXLhdyR3UPWRKHH+uUnd8U
-	 f10p8q/YREKKZ1X5voS4YaEqTytR5lXdQ5bOp/o3VQzIJoYnovC8eokYdfo0ZCeC9i
-	 ZguyH+tztzqXbKWWiChOOq50KQmJiHHpv8DsY6zcb05QKFLRkAu9IdfZv5xhwmaNWD
-	 X/fFfbHswzTQXQQGUtphO7U638JOBfxnHFnvEi0I/+LTB57D8N+PejbmYvzUa+8b5D
-	 nka61dFRl/ATAZjNOUqWQaM4MqnxqEVcXoHyCGfDgLaHVhgYq/LkmfA4Wac2UINFZm
-	 /XfmpUmbDstgg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	arve@android.com,
-	tkjos@android.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	aliceryhl@google.com,
-	boqun@kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M+mKFS4t"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-496bb7cdf51so6378875e9.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 26 Jul 2026 17:16:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785111388; x=1785716188; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:sender:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=QnuzTKiGOY/ywudPLpHX93bHErM64Xzt97J5qjWEKX0=;
+        b=M+mKFS4tqFjGDyIJS9uCnd+BhpSMjn6BNxUv4q0+oir0hB6PvsIPFRXVg+8zX2DNvo
+         T79R+g9yfDpVfKL61rTxMQfs3yMSvOFkMFw0S8XsdiZ+t8AWDDW9Cga035LVsneIQ79B
+         3xhDfeLKQobM3lb+8794SASylL0BP+SWTK/Jtz1dOd8Z02QljF2MX/f6McXU04Eqo9Ps
+         pbFJrz0cJ2935AfGletEubxxx9D/1TV0ImGCJMrm19s2yV7ZFfh5aB2cB/mQK+5jeJEe
+         7zv0OaTrsBwlqGdjPjEzBFSZZje1lR23/hJa7oUpKG6Z62TeEkG7BCi7AqQDEt33B5CO
+         OREQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785111388; x=1785716188;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=QnuzTKiGOY/ywudPLpHX93bHErM64Xzt97J5qjWEKX0=;
+        b=aj1r0yTF53irNjPI62DXqdwHnE+jXJK1eLkK87hvm/+23MMKCmLLbO6DATPw4QaLUt
+         nW4dqLqte6VHIVpj1IK+t0+CrN1HqvO2Rs7GRp9uQuNyVYM9BPZkT0W6Qk/0aqjTzX/u
+         0UuyKWupXZ7iqQEyYucR1V57iavWydLuuMprdAnJN2FKvleZ0PcMs6I3+P9guGbqLnap
+         VW9b0hqAlRT7aWImCC0MhlY702pk/GyR0z3GhrR7N/H35HBLfRWImqOu7w+L9LhK6U2s
+         +cO4gUt/PivbH8QAyHiUsIhtQrnPmQSnE6KQFwMwG/BymIoE/YqOTMMAI/3PPXmjCb3y
+         yxVQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5bgYcnuRtaVn3SybpKw5ntgofwEtzi369NV+zjB3ziTw/UzwEHAPLj5EuNKvaYHaxOt/reQTkvda6GGjTYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvOU0XCNVSGBSVs0qcsMEgOXFwKIKvd1tjgpI1Fs3uHR0exH1a
+	6gnx4YiGXORxy7f8MjGOzMPr6j0GjKKY1bDGO5v30P07ZyfQ+BqE7Zpe
+X-Gm-Gg: AR+sD11nMqTpB9x8d8ENyN+5+S/Fl9QL+a3mPR7PtRPN/1U1YRNpMPKn5MD6KmNqr/8
+	N0LY6jApYoGVJs83Xqof1XcC6nkOg+nGPkPkg6ykCom8JOTj2k3oWZ3O4G8TVOjzFKfDjvWgd+P
+	IPdaLM0VLO8CR1xHTs5E5Ec/1cEKDU0RbIPwNyMaSAe5HoOgDTpj1rDAvE01myfCFtMgwjRxlem
+	itb9XXoMvhuuShLZ95XmtilC2vBRVokskYkGY+yUqCNqZ+RWZ/n3avUl5COp3rhceN2nQm5jD41
+	Tc5iqN3kiJ8WO/eUynC5Tz2dV0D5xKR4oo9VCj7+T0Rcs2fq6OxQqmO4G1oGGU+v5v0Fdpnam+9
+	dYVx3ST6O7Bu0RnyKS4NLsiaGpxV683XxNtL8/JAcUIQwbZm6Pd6pM+8/cwq93Oib+dGdjfnCzh
+	+SZo38vTJoUAzPCxnLxXXnUHTshKYT/igG8tg1+wd77S8GBXVwIgS1SHr9JFHJqLYVJk+PwarZZ
+	WHi
+X-Received: by 2002:a05:600c:1d0d:b0:495:4aff:5fdf with SMTP id 5b1f17b1804b1-496b5708144mr86567635e9.28.1785111387742;
+        Sun, 26 Jul 2026 17:16:27 -0700 (PDT)
+Received: from nixos-office (195-23-151-163.net.novis.pt. [195.23.151.163])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496b485f65csm176403555e9.5.2026.07.26.17.16.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 17:16:27 -0700 (PDT)
+Sender: Julian Braha <julian.braha@gmail.com>
+From: Julian Braha <julianbraha@gmail.com>
+To: nathan@kernel.org,
+	nsc@kernel.org
+Cc: ojeda@kernel.org,
+	akpm@linux-foundation.org,
+	jani.nikula@linux.intel.com,
 	gary@garyguo.net,
-	lyude@redhat.com,
-	daniel.almeida@collabora.com,
-	work@onurozkan.dev,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kprateek.nayak@amd.com,
-	ojeda@kernel.org,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	longman@redhat.com,
-	viro@zeniv.linux.org.uk,
-	jack@suse.cz,
-	tj@kernel.org,
-	jiangshanlai@gmail.com
-Cc: linux-kernel@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	arnd@arndb.de,
+	ljs@kernel.org,
+	andrew.jones@linux.dev,
+	masahiroy@kernel.org,
+	corbet@lwn.net,
+	qingfang.deng@linux.dev,
+	demiobenour@gmail.com,
+	ej@inai.de,
+	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5/5] rust: sync: condvar: use task::schedule_timeout()
-Date: Mon, 27 Jul 2026 00:36:11 +0200
-Message-ID: <20260726223613.1242940-6-dakr@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260726223613.1242940-1-dakr@kernel.org>
-References: <20260726223613.1242940-1-dakr@kernel.org>
+	linux-doc@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Julian Braha <julianbraha@gmail.com>
+Subject: [PATCH v4 0/5] add kconfirm
+Date: Mon, 27 Jul 2026 01:16:18 +0100
+Message-ID: <20260727001623.2794156-1-julianbraha@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Convert CondVar::wait_internal() from calling
-bindings::schedule_timeout() directly to using the safe
-task::schedule_timeout() wrapper. This removes the unsafe call and the
-Jiffies-to-c_long conversion from CondVar, since the wrapper handles it.
+kconfirm now uses the in-tree parser. Making this migration required a
+modification to the parser that allows us to observe the parse tree before
+its final simplification step, thus allowing us to detect dead code.
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Since no external crates are now necessary, I’ve removed the Cargo requirement,
+too.
+
+I believe these changes should resolve the major questions, so I’ve
+removed the RFC tag.
+
+Now, onto the existing patch-set description since the RFCs:
+
+===
+
+kconfirm is a tool to detect misusage of Kconfig. It detects dead code,
+constant conditions, and invalid (reverse) ranges. There are also optional
+checks to detect config options that select visible config options, and to
+check for dead links in the help texts.
+
+See also kconfirm's original introduction to the mailing list:
+https://lore.kernel.org/all/6ec4df6d-1445-48ca-8f54-1d1a83c4716d@gmail.com/
+
+False Alarms:
+kconfirm aims for zero false-positives, though this is not completely
+feasible due to macro evaluation from the host environment, primarily
+affecting host compiler-related options. There will also be some false
+positives for dead link checks, as this depends on an internet connection,
+and we do not attempt to bypass bot blocks. For this reason, dead link
+checking is disabled by default, but I've provided an example below of how
+to enable it. Additionally, you can view my previous message to the
+mailing list with hand-verified dead links here:
+https://lore.kernel.org/all/6732bf08-41ee-40c4-83b2-4ae8bc0da7cf@gmail.com/
+
+Additionally, there is an optional check to detect config options that
+select visible config options, as requested by Jani during the review of
+the first RFC:
+https://lore.kernel.org/all/dcb7439832f0bb35598fba653d922b5f6a4d0058@intel.com/
+
+Even after deduplicating across architectures, there are well over 1,000
+instances of these select-visible cases, and I suspect that, despite the
+Kconfig documentation saying select-visible should be avoided, some
+exceptions will be made. So, I have left this check disabled by default,
+keeping in line with the goal of having a low-noise checker. If interested
+in using it, I have included an example below of how to enable this check.
+
+Current State of Alarms:
+With x86-64 on Linux v7.2-rc4 (which this RFC is based), there are 1282
+alarms coming from the default set of checks, and an additional 976 alarms
+if enabling the optional select-visible check. The last time I checked
+linux-next (next-20260427), there were 81 unique dead links.
+
+The most critical check is the dead default statements, which has surfaced
+a few misconfiguration bugs (fortunately, just for kunit tests), see
+examples:
+https://lore.kernel.org/all/20260323124118.1414913-1-julianbraha@gmail.com/
+and:
+https://lore.kernel.org/all/20260323123536.1413732-1-julianbraha@gmail.com/
+
+But hopefully kconfirm can ease maintenance and we can prevent more of
+these from making it into the tree in the future.
+
+Use it:
+You can test out kconfirm with this patch series by compiling and running
+kconfirm like this:
+
+`make kconfirm`
+
+To enable the select-visible check:
+`KCONFIRM_ARGS="--enable-check select_visible" make kconfirm`
+
+And to enable dead link checks in the help texts:
+`KCONFIRM_ARGS="--enable-check dead_link" make kconfirm`
+
+kconfirm by default runs on the same architecture as the kernel build
+would. To run kconfirm on another architecture (for example, ARM with an
+X86 host):
+`ARCH=arm make kconfirm`
+
+Thanks,
+Julian Braha
 ---
- rust/kernel/sync/condvar.rs | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+Changes since RFC v3:
+- Modify kconfig parser to make raw parse tree viewable to enable analysis
+- Switch from external parser to in-tree kconfig parser (Demi)
+- Add Rust bindings for kconfig
+- Remove Cargo and external crates
+- Make curl an optional dependency for optional dead link check (Arnd)
+- Switch from libcurl to curl CLI for dead link checks (Miguel)
+- Adhere to Rust-for-Linux style (Miguel)
+- Add tests (Miguel)
+- Move kconfirm under scripts/kconfig/ to resolve broken tab autocompletion (Nathan)
+- Remove ungrouped attributes style check
+- Add support for checking liveness of ftp and git URIs in help texts
+- Dropped RFC tag
 
-diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
-index d4bfc936423e..e1bafaa69ab4 100644
---- a/rust/kernel/sync/condvar.rs
-+++ b/rust/kernel/sync/condvar.rs
-@@ -16,7 +16,7 @@
-     prelude::*,
-     str::CStr,
-     task::{
--        MAX_SCHEDULE_TIMEOUT,
-+        self,
-         TASK_FREEZABLE,
-         TASK_INTERRUPTIBLE,
-         TASK_UNINTERRUPTIBLE, //
-@@ -104,11 +104,10 @@ fn wait_internal<T: ?Sized, B: Backend>(
-         &self,
-         wait_state: c_int,
-         guard: &mut Guard<'_, T, B>,
--        timeout_in_jiffies: c_long,
--    ) -> c_long {
-+        timeout: Jiffies,
-+    ) -> Jiffies {
-         self.wq.wait_once_exclusive(wait_state, || {
--            // SAFETY: Switches to another thread. The timeout can be any number.
--            guard.do_unlocked(|| unsafe { bindings::schedule_timeout(timeout_in_jiffies) })
-+            guard.do_unlocked(|| task::schedule_timeout(timeout))
-         })
-     }
- 
-@@ -119,7 +118,7 @@ fn wait_internal<T: ?Sized, B: Backend>(
-     /// [`CondVar::notify_one`] or [`CondVar::notify_all`]. Note that it may also wake up
-     /// spuriously.
-     pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
--        self.wait_internal(TASK_UNINTERRUPTIBLE, guard, MAX_SCHEDULE_TIMEOUT);
-+        self.wait_internal(TASK_UNINTERRUPTIBLE, guard, Jiffies::MAX);
-     }
- 
-     /// Releases the lock and waits for a notification in interruptible mode.
-@@ -130,7 +129,7 @@ pub fn wait<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) {
-     /// Returns whether there is a signal pending.
-     #[must_use = "wait_interruptible returns if a signal is pending, so the caller must check the return value"]
-     pub fn wait_interruptible<T: ?Sized, B: Backend>(&self, guard: &mut Guard<'_, T, B>) -> bool {
--        self.wait_internal(TASK_INTERRUPTIBLE, guard, MAX_SCHEDULE_TIMEOUT);
-+        self.wait_internal(TASK_INTERRUPTIBLE, guard, Jiffies::MAX);
-         crate::current!().signal_pending()
-     }
- 
-@@ -145,11 +144,7 @@ pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
-         &self,
-         guard: &mut Guard<'_, T, B>,
-     ) -> bool {
--        self.wait_internal(
--            TASK_INTERRUPTIBLE | TASK_FREEZABLE,
--            guard,
--            MAX_SCHEDULE_TIMEOUT,
--        );
-+        self.wait_internal(TASK_INTERRUPTIBLE | TASK_FREEZABLE, guard, Jiffies::MAX);
-         crate::current!().signal_pending()
-     }
- 
-@@ -164,10 +159,9 @@ pub fn wait_interruptible_timeout<T: ?Sized, B: Backend>(
-         guard: &mut Guard<'_, T, B>,
-         jiffies: Jiffies,
-     ) -> CondVarTimeoutResult {
--        let jiffies = jiffies.try_into().unwrap_or(MAX_SCHEDULE_TIMEOUT);
--        let res = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
-+        let remaining = self.wait_internal(TASK_INTERRUPTIBLE, guard, jiffies);
- 
--        match (res as Jiffies, crate::current!().signal_pending()) {
-+        match (remaining, current!().signal_pending()) {
-             (jiffies, true) => CondVarTimeoutResult::Signal { jiffies },
-             (0, false) => CondVarTimeoutResult::Timeout,
-             (jiffies, false) => CondVarTimeoutResult::Woken { jiffies },
+Link to RFC v3:
+https://lore.kernel.org/all/20260516215354.449807-1-julianbraha@gmail.com/
+
+Changes since RFC v2:
+- Reduce Rust dependencies significantly (follows Demi's suggestions):
+  - from 6 direct dependencies to 1
+  - from 107 indirect dependencies to 4
+  - Replace ureq crate with usage of system libcurl (thanks Demi)
+  - Replace clap crate with FFI bindings to libc's getopt_long (also Demi)
+  - Remove crates env_logger, regex
+- Switch from vendoring dependencies to requiring users to first download
+  outside of Make (as suggested by Miguel)
+- Various makefile improvements (as pointed out by Nicolas):
+  - Fix out-of-tree builds
+  - Only delete kconfirm artifacts with 'distclean' and 'mrproper'
+- Add myself as maintainer of kconfirm (as discussed with Nicolas)
+- Remove dedicated code license file (pointed out by Jani)
+- Update documentation to explain tool setup
+- Add hint to users to check documentation and download tool dependencies
+- Address sashiko's many code-level and documentation suggestions:
+  - Follow the kernel's rust import style
+  - Fix a dead_range/duplicate_range alarm mixup
+  - Fix potential duplicates in default value style check
+  - Avoid panicking on errors
+  - Clarify parse failure check usage in documentation 
+  - Fix typo in documentation
+- Can now enable architectures and disable the default (host) architecture in the CLI
+
+Link to RFC v2:
+https://lore.kernel.org/all/20260509203808.1142311-1-julianbraha@gmail.com/
+
+Changes since RFC v1:
+- vendored dependencies instead of requiring an internet connection
+- removed Cargo.lock
+- replaced reqwest dependency with smaller ureq
+- removed rustls, expect user to have openssl instead
+- added select-visible check based on Jani's feature request
+- added invalid (reverse) range check
+- deduplicating alarms that appear for multiple architectures
+- `make clean` no longer deletes kconfirm's build artifacts
+- typo fixes in documentation
+- added patch description for the main "add kconfirm" patch (patch 1/2)
+
+Link to RFC v1:
+https://lore.kernel.org/all/20260427174429.779474-1-julianbraha@gmail.com/
+---
+
+Julian Braha (5):
+  kconfig: add add another callback to the parser to view raw parse tree
+  kconfig: add kconfirm
+  kconfirm: add tests
+  Documentation: add kconfirm
+  MAINTAINERS: add entry for kconfirm
+
+ Documentation/dev-tools/index.rst             |   1 +
+ Documentation/dev-tools/kconfirm.rst          | 229 ++++++
+ MAINTAINERS                                   |   7 +
+ Makefile                                      |  17 +-
+ scripts/kconfig/.gitignore                    |   1 +
+ scripts/kconfig/Makefile                      |  54 ++
+ scripts/kconfig/kconfig.rs                    | 445 +++++++++++
+ scripts/kconfig/kconfirm/.gitignore           |   2 +
+ scripts/kconfig/kconfirm/analyze.rs           | 340 ++++++++
+ scripts/kconfig/kconfirm/arch.rs              |  53 ++
+ scripts/kconfig/kconfirm/checks.rs            | 748 ++++++++++++++++++
+ scripts/kconfig/kconfirm/dead_links.rs        | 230 ++++++
+ scripts/kconfig/kconfirm/kconfirm-cfg.sh      |  57 ++
+ scripts/kconfig/kconfirm/kconfirm.rs          | 278 +++++++
+ scripts/kconfig/kconfirm/output.rs            |  87 ++
+ scripts/kconfig/kconfirm/symbol_table.rs      | 105 +++
+ .../kconfig/kconfirm/tests/arch/arm/Kconfig   |   9 +
+ .../kconfirm/tests/arch/powerpc/Kconfig       |   4 +
+ .../kconfig/kconfirm/tests/arch/riscv/Kconfig |   9 +
+ .../kconfig/kconfirm/tests/arch/sh/Kconfig    |   4 +
+ .../kconfirm/tests/arch/testarch/Kconfig      |   4 +
+ .../kconfig/kconfirm/tests/arch/um/Kconfig    |   4 +
+ .../kconfig/kconfirm/tests/arch/x86/Kconfig   |   4 +
+ .../kconfirm/tests/architecture.Kconfig       |   4 +
+ .../tests/architecture_common.Kconfig         |  19 +
+ .../kconfirm/tests/conditional_prompt.Kconfig |  17 +
+ scripts/kconfig/kconfirm/tests/conftest.py    |  93 +++
+ ...nt_condition_negative_expression_1.Kconfig |  13 +
+ ...nt_condition_negative_expression_2.Kconfig |  13 +
+ ...nstant_condition_negative_symbol_1.Kconfig |  13 +
+ ...nstant_condition_negative_symbol_2.Kconfig |  13 +
+ .../kconfig/kconfirm/tests/dead_link.Kconfig  |  12 +
+ .../tests/default_categorization.Kconfig      |  20 +
+ scripts/kconfig/kconfirm/tests/pytest.ini     |   2 +
+ scripts/kconfig/kconfirm/tests/ranges.Kconfig |  39 +
+ .../kconfirm/tests/select_imply.Kconfig       |  28 +
+ .../kconfig/kconfirm/tests/test_kconfirm.py   | 358 +++++++++
+ scripts/kconfig/lkc_proto.h                   |   2 +
+ scripts/kconfig/parser.y                      |  21 +
+ 39 files changed, 3357 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/dev-tools/kconfirm.rst
+ create mode 100644 scripts/kconfig/kconfig.rs
+ create mode 100644 scripts/kconfig/kconfirm/.gitignore
+ create mode 100644 scripts/kconfig/kconfirm/analyze.rs
+ create mode 100644 scripts/kconfig/kconfirm/arch.rs
+ create mode 100644 scripts/kconfig/kconfirm/checks.rs
+ create mode 100644 scripts/kconfig/kconfirm/dead_links.rs
+ create mode 100755 scripts/kconfig/kconfirm/kconfirm-cfg.sh
+ create mode 100644 scripts/kconfig/kconfirm/kconfirm.rs
+ create mode 100644 scripts/kconfig/kconfirm/output.rs
+ create mode 100644 scripts/kconfig/kconfirm/symbol_table.rs
+ create mode 100644 scripts/kconfig/kconfirm/tests/arch/arm/Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/arch/powerpc/Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/arch/riscv/Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/arch/sh/Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/arch/testarch/Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/arch/um/Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/arch/x86/Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/architecture.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/architecture_common.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/conditional_prompt.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/conftest.py
+ create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_expression_1.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_expression_2.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_symbol_1.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/constant_condition/default_constant_condition_negative_symbol_2.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/dead_link.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/default_categorization.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/pytest.ini
+ create mode 100644 scripts/kconfig/kconfirm/tests/ranges.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/select_imply.Kconfig
+ create mode 100644 scripts/kconfig/kconfirm/tests/test_kconfirm.py
+
 -- 
-2.55.0
+2.54.0
 
