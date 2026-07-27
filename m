@@ -1,133 +1,110 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282793FB055
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 11:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785150669; cv=pass; b=H2ZwCxqJT2zUVbzosSCQ4Vm08+7gzR6hFBtCV6CxI6jZecktUn/4sxudeMtRxuBnIBSTU4ltRUj+2AwJo+vuORFbFr2OxoI2mAkXHWO8ZMrbGX0Q7+IPU+cuwPWk3JQ1pMKnmmfTqDjpQsbfwHrtbl8okQp6NbGgMXXU4BUs5qg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785150669; c=relaxed/simple;
-	bh=n3UbNAChy9UhbUV9nZPv6nu7odgfx8msewsJ3NP1OyA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jIujZ0OspiVFpX9A2ivrH46yLI14MGw1Z6d/d5fXssy8MknGh3+Tk6AnAalitoEFmHxtmDN6zb3J88SM+Pi+ar7V1kTPzyoeAA2xCGOs5sl+nZLHkDioybdK7Zaak4ELQL4ibuN5FIto9jbe00dZjEg8r9zWb62sPvdu3gl0zx8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JXepIVpb; arc=pass smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B55379998
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 11:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785150926; cv=none; b=EtVNAw5xXmlmdNY7SK/EGmdD93l2UqgAJxzgIpoW+4ZkZ504w9TEee9yHPKX3BamuNGw6BWZa6JkOkezDccQ5SzjDK7528eqR0fZQGikyDq2cgMRC49THYoNTxQSy+FbvYJLPzkmV8s/16f9sn7mHfhDMWx/riWP9embfa6Oenw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785150926; c=relaxed/simple;
+	bh=FSGGFdDhWSnb8CCbvnx3/qBrQn+EJBu2CTO1ACrdCv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=okKH/6UQhKYm0iWIJd795zsa+4VmirrYMnnLA7w8kKOelhLpHA0rQY5Z13g5JWLNs9GvwVPibrnVjLPqTv2DUi3M/OSX3NwUg/ZJ0MNxpSNe70leW5QZeJyqGnjVYNhyw4Gvjh1j5XuYKg9nzdb+MVqGBA4EahOaLUfFH3l1xDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=DHCNX6Tf; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JXepIVpb"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ceeee8c46bso8010095ad.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 04:11:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785150667; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nsADr+nIAyOTL5RvoudYInb3wZ342Sbfwk30A2BVLRhFqzRgd6+zmOKofCm4W4zv5d
-         EYSqknd0Y4pFnwSEbJwoy6gRMSBOtp6FJPnH4SzoyvMNwT1SAHsBalbK4FFFFleQCCtP
-         hZzo7qh65bjFGje0uMXhTFyuL88yluv3WZMzMDbg4Oizf75r2NdToXb6+TeNhjw8wTy0
-         RLqqy94ZXOSmsb2+6yN9rJiF4m4WBcHwU34AY8Z3oSRejNdofPEc/B4/dF7qUFskSoMD
-         D5OjN67wGbPNCaBu/0u1lKhKUr1blBg1sFg4owMaJWtiKqdU3Sgl3hwTOTZARYamx2yp
-         qzOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=n3UbNAChy9UhbUV9nZPv6nu7odgfx8msewsJ3NP1OyA=;
-        fh=Cj36QuyUWRiQfFUErRZHIZ3mbfAvaSZJcddWkMHZAqM=;
-        b=QVZQF9QWIl9KaBa6nZFdv93HNxH0HfFdS73HsEc7/20iJykQiaagRH7ZJrbomDerZ1
-         vWUNJGRiZL/Un4g4PmhnAGDsIrKyR9RQx3W80MGxxMxhUK7naqYCseSFH2mJawd7M+9K
-         EoLp+hCDHSszzyYg2wtjgo8d4aCYth+W5Wd7mHRbpP7AkBSG4+4AJXkazqpf7OxEOxwN
-         003TgjfiLnCS4ndacqb8hb6dA6drhPnXaBOngFzBvjfYH8rX9QCrOwk7Til8tVfzxUVM
-         U+J8dkb4SSK6sLB9h4ynk52+bkFUUHkO7zJf6eOOlInYcIUVR0bTb0+/YQL7+lmHv+VJ
-         Ifcw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785150667; x=1785755467; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=n3UbNAChy9UhbUV9nZPv6nu7odgfx8msewsJ3NP1OyA=;
-        b=JXepIVpbo6zLKGgBiO1auYytE/mhFqOPkQgqKqvcsmotOddNFh7tpz3PXkpRwD8ein
-         5a5Pmao0NQO3Mj5xMdVtbwhU3Ut2+J1AV0CSkVaBXvo0qDNwkvyft5reHn2N/lHjqSRx
-         7VqUKBX9X1G8wbX8c5oynu5CJm/4S/4YsxFyGDzr5EvLW4fy2mNocZbXQatY+0Cm9aY7
-         ciVJbDGeXpd7mWZjHRUfCuEr6WZyo2o4vzBl/dAJ3UNdq09jHgqR0RL4lZ76POn1yDNH
-         XS2ryONQcDtfBxpl8UquLU9qY9vLmWy8QDC+taKcJqNJIWu9OgDxiwaLr7ZyOWdQTHP3
-         Sdbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785150667; x=1785755467;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n3UbNAChy9UhbUV9nZPv6nu7odgfx8msewsJ3NP1OyA=;
-        b=SmVzFGsR9WWyPuQKxv3BGxpCDQS4ZwQ6kqPTvW+EOUM/n2FJmT60ySCylpAHKB04Eg
-         Q3/AxMTuFCngvHwPBJet7haF25QPZvP2x2Zt8CABMjz9NzNgze3gD/DAIc8tKd3vCMU7
-         HwZsOnCXuUe36fEMgP33ZIMcsMA/ZfF8FYgTmu8eqpEeZiEJn+tzV76gcFdRIrcWrSV3
-         Ov1YNbdLuUIjMctSavula6+GcTvBNZ24mJahoBLnL1O7vQZUYcUsj1VHDBsfCHeo0CUy
-         kK+CLgs1518Fk6kYYzvog+3Mt4UOkhDI1tafIq/HnxaqGoTqtjVve1Q/fjJEWzpYtEpO
-         NKDQ==
-X-Forwarded-Encrypted: i=1; AHgh+RosTeNDhAOLbybbmLFlSIjJbOJ2fZzYCJGRFTMe0gWVcZBi2ZP8H2mAfGyEDiqkftO11BiG0Y43NiApCEzkdg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCjNkyfQXLKMtFHgWUQp5wHGVRl20IY8wB6sjjvQwM1tMSpW+c
-	RVl/gW0ALbYivRe4I+b86A6PCoCUbal1V9q1rwSXZv2erzPAhtjx2u+JhakHNYD7wVcg/fe1VZw
-	xtxYJwcM6ZNv2oQChMr4dnCEFxMt/zMk=
-X-Gm-Gg: AR+sD13b7iNYsAI2rIYO/n1okLAS0u24wGnlzpf2H6bRh4l1vhqqVBGnXp0Nd2jSIRt
-	/X0n7vsJZxJFOpledO9nBEIxawYMpSNf04AlU7UFFZ2qeYg6pfBgbNQgMXQTIJPsQWEGIy86Pf5
-	DYfaLqPkOe/qOKFkGV71H6EcPeGLZiWcRHzcMTXaYjVi1qgkI2dKBxw2A6z3pGz81mMNRB9kt1/
-	JGYISZx4KkAxkzRmJWDajjCycGKRlUWf80K3kAhHxC0RGZrQTemiIFvaRPu6n8gQj2nTjBKmtjh
-	lhNJmmIZkLsh6uueV+1HK0BJ8PV3OpF2Xt+gy8Od3apP1EbajVAKa3wC8qBJIXqHrKsfkEoxQ/8
-	3aA==
-X-Received: by 2002:a17:90b:2ccb:b0:381:1ffc:7d35 with SMTP id
- 98e67ed59e1d1-38f2963f51dmr5698501a91.6.1785150667519; Mon, 27 Jul 2026
- 04:11:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="DHCNX6Tf"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260727111515euoutp02b0558af776cdf398b0bb7d2d4a51738d~GIUyo_AE20798107981euoutp02l
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 11:15:15 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260727111515euoutp02b0558af776cdf398b0bb7d2d4a51738d~GIUyo_AE20798107981euoutp02l
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1785150915;
+	bh=A7ERjbMk+yFZshthB0sp+/tIp9yvMUlmWK307gnlUbA=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=DHCNX6TfMMrrGLGiAogKgGrGc54pm9hMLZKxN+f/DROTose/ZDPN8wxFiG3goWpFU
+	 ufonCu65Wo8Tak70rsiBGeA34I93TtVspvt7flyfWmooFrgHzvudOkXemzB2Ikl6A7
+	 k2mCVnU7JPaztIcGsAIfxak6PPDNDnD1ylSQQeuo=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260727111515eucas1p27222fc8db945ebaa9fbdb982273ba8c5~GIUyZ5zFn0254302543eucas1p2-;
+	Mon, 27 Jul 2026 11:15:15 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260727111514eusmtip139c438f59f7bb6c2db48ab040612e603~GIUxyucU80770907709eusmtip1v;
+	Mon, 27 Jul 2026 11:15:14 +0000 (GMT)
+Message-ID: <d9f17866-cc79-4f6c-9b4b-236128bebe69@samsung.com>
+Date: Mon, 27 Jul 2026 13:15:14 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260727-as_casts-v1-0-6ea704ff25d8@nvidia.com>
- <20260727-as_casts-v1-1-6ea704ff25d8@nvidia.com> <DK9A6KGK5JQD.3U23MBEMSAXBK@garyguo.net>
-In-Reply-To: <DK9A6KGK5JQD.3U23MBEMSAXBK@garyguo.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 27 Jul 2026 13:10:54 +0200
-X-Gm-Features: AUfX_mzAAHSnDIUmHWOprFaPHGHzt8pY7YaTmVoYf1E0kimJ5FRbov43CIm97I0
-Message-ID: <CANiq72nwo=NSCOaafPc_4beonpJO3x6Njj-GKcW7q3Hk8P80yA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: add functions and traits for lossless integer conversions
-To: Gary Guo <gary@garyguo.net>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, John Hubbard <jhubbard@nvidia.com>, 
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, nova-gpu@lists.linux.dev, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rust: pwm: replace `core::mem::zeroed` with
+ `pin_init::zeroed`
+To: Francis Laniel <laniel_francis@privacyrequired.com>, Miguel Ojeda
+	<ojeda@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <20260603160910.159307-1-laniel_francis@privacyrequired.com>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260727111515eucas1p27222fc8db945ebaa9fbdb982273ba8c5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260603160927eucas1p1ae24e871a8ef0771d72fae6462d96318
+X-EPHeader: CA
+X-CMS-RootMailID: 20260603160927eucas1p1ae24e871a8ef0771d72fae6462d96318
+References: <CGME20260603160927eucas1p1ae24e871a8ef0771d72fae6462d96318@eucas1p1.samsung.com>
+	<20260603160910.159307-1-laniel_francis@privacyrequired.com>
 
-On Mon, Jul 27, 2026 at 12:28=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> I'm okay with having u32 -> usize casts and usize -> u64 casts, but havin=
-g
-> usize -> u32 and u64 -> usize casts like this series do is worrying as it=
- can be
-> misused from drivers that are supposed to be supporting multiple platform=
-s or
-> core subsystems.
->
-> Pointer-size dependent drivers that need these casts should define them l=
-ocally.
+Hi Uwe,
 
-Ideally we would define it once, but nevertheless make it explicit
-enough (somehow) that this makes one not build in certain configs, so
-that we get no repetition and no confusion.
+On 6/3/26 18:09, Francis Laniel wrote:
+> All types in `bindings` implement `Zeroable` if they can, so use
+> `pin_init::zeroed` instead of relying on `unsafe` code.
+> 
+> If this ends up not compiling in the future, something in bindgen or on
+> the C side changed and is most likely incorrect.
+> 
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://protect2.fireeye.com/v1/url?k=851847ef-eca32f5d-8519cca0-905a08a8515a-5adce8ef7cc40eb1&q=1&e=6c6d6a32-0f0e-4805-8882-718eae7641a8&u=https%3A%2F%2Fgithub.com%2FRust-for-Linux%2Flinux%2Fissues%2F1189
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
+> Signed-off-by: Francis Laniel <laniel_francis@privacyrequired.com>
+> ---
+>  rust/kernel/pwm.rs | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+> index 6c9d667009ef..3427b7d93a03 100644
+> --- a/rust/kernel/pwm.rs
+> +++ b/rust/kernel/pwm.rs
+> @@ -494,9 +494,7 @@ pub(crate) fn as_raw(&self) -> *const bindings::pwm_ops {
+>  /// This is used to bridge Rust trait implementations to the C `struct pwm_ops`
+>  /// expected by the kernel.
+>  pub const fn create_pwm_ops<T: PwmOps>() -> PwmOpsVTable {
+> -    // SAFETY: `core::mem::zeroed()` is unsafe. For `pwm_ops`, all fields are
+> -    // `Option<extern "C" fn(...)>` or data, so a zeroed pattern (None/0) is valid initially.
+> -    let mut ops: bindings::pwm_ops = unsafe { core::mem::zeroed() };
+> +    let mut ops: bindings::pwm_ops = pin_init::zeroed();
+>  
+>      ops.request = Some(Adapter::<T>::request_callback);
+>      ops.capture = Some(Adapter::<T>::capture_callback);
 
-Something like splitting the non-portable ones into a different
-trait/`mod`/method name/... so that it is very clear that it makes you
-(i.e. the user) user pointer-size dependent just by e.g. `grep`ing for
-it.
+I believe this commit is good to go, if you could take it through your
+tree it would be great.
 
-Cheers,
-Miguel
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
