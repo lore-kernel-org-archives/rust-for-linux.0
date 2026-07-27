@@ -1,110 +1,103 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B55379998
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 11:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817873FADE5;
+	Mon, 27 Jul 2026 11:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785150926; cv=none; b=EtVNAw5xXmlmdNY7SK/EGmdD93l2UqgAJxzgIpoW+4ZkZ504w9TEee9yHPKX3BamuNGw6BWZa6JkOkezDccQ5SzjDK7528eqR0fZQGikyDq2cgMRC49THYoNTxQSy+FbvYJLPzkmV8s/16f9sn7mHfhDMWx/riWP9embfa6Oenw=
+	t=1785151183; cv=none; b=HvTnHentO+0rHuBk8X38FkeoHA36G/JQdw9QWPqe4nneoaSwbAEh8/qR6ecDnhDaQXiEU7JZlJ7K072PE6J6N3KX3/Cg8b/efsK4fJQhx6sWIJzjKLoYcKtNs2g8vrIyZWqys6pK0b2Wnnyfqym8WZBaOwifpJ7NA3S+Y9ZTvrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785150926; c=relaxed/simple;
-	bh=FSGGFdDhWSnb8CCbvnx3/qBrQn+EJBu2CTO1ACrdCv8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=okKH/6UQhKYm0iWIJd795zsa+4VmirrYMnnLA7w8kKOelhLpHA0rQY5Z13g5JWLNs9GvwVPibrnVjLPqTv2DUi3M/OSX3NwUg/ZJ0MNxpSNe70leW5QZeJyqGnjVYNhyw4Gvjh1j5XuYKg9nzdb+MVqGBA4EahOaLUfFH3l1xDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=DHCNX6Tf; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1785151183; c=relaxed/simple;
+	bh=7rois3tyGDgFpZ0VN8zK1c2qDI/P8DN5GT/B5hSQ3oY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=MYXBqvjYfLMkKukm5u2Bz2CbByNbqCTE52J4Z6/OZfx1ov88mqEd3RpYsR4HJEypw50F8tQaAGCQ5Toja+ibdCMu5/F2HiRi7+KQj3sy46+X0MoJyYMgHIE3Bcpy1nvMi67ucuDLSh99t9pNrQOoeYWWLD15eJRMaMkmCdvK6ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3UPbxWU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="DHCNX6Tf"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260727111515euoutp02b0558af776cdf398b0bb7d2d4a51738d~GIUyo_AE20798107981euoutp02l
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 Jul 2026 11:15:15 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260727111515euoutp02b0558af776cdf398b0bb7d2d4a51738d~GIUyo_AE20798107981euoutp02l
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1785150915;
-	bh=A7ERjbMk+yFZshthB0sp+/tIp9yvMUlmWK307gnlUbA=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=DHCNX6TfMMrrGLGiAogKgGrGc54pm9hMLZKxN+f/DROTose/ZDPN8wxFiG3goWpFU
-	 ufonCu65Wo8Tak70rsiBGeA34I93TtVspvt7flyfWmooFrgHzvudOkXemzB2Ikl6A7
-	 k2mCVnU7JPaztIcGsAIfxak6PPDNDnD1ylSQQeuo=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260727111515eucas1p27222fc8db945ebaa9fbdb982273ba8c5~GIUyZ5zFn0254302543eucas1p2-;
-	Mon, 27 Jul 2026 11:15:15 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260727111514eusmtip139c438f59f7bb6c2db48ab040612e603~GIUxyucU80770907709eusmtip1v;
-	Mon, 27 Jul 2026 11:15:14 +0000 (GMT)
-Message-ID: <d9f17866-cc79-4f6c-9b4b-236128bebe69@samsung.com>
-Date: Mon, 27 Jul 2026 13:15:14 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3UPbxWU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3F91F000E9;
+	Mon, 27 Jul 2026 11:19:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785151182;
+	bh=7rois3tyGDgFpZ0VN8zK1c2qDI/P8DN5GT/B5hSQ3oY=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To;
+	b=I3UPbxWU1XdEljpuUjqV3yT8wIS0sMu78+u36ojs8Kr7oKYe/Ujz/RHR5Tvql+FlP
+	 YxLS180x7vzMraZJ69tWAgCA37stT82HoFjQl/yebuZut4FGGzI7S5I2wMUdZD4ICJ
+	 S05YncKFIdP5FCUWRC30pssOuLw/4NgeKphHWM/kTCskdSzxcV6mAqIsGFkWzkemxz
+	 lwoRTOeJwFOHYHRycIX1b5YQGXzVfXbBQnBp37aypNQFViWKvdvcFIp87RHUtTNuHT
+	 VPnK1H/ZHxr9+ghzNe6xyfHhX1dM8XGAKozlFKV5HRn+9lZwLpujtWraYFjnjZDqdd
+	 mztm+26G9A+NQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: pwm: replace `core::mem::zeroed` with
- `pin_init::zeroed`
-To: Francis Laniel <laniel_francis@privacyrequired.com>, Miguel Ojeda
-	<ojeda@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, Boqun Feng <boqun@kernel.org>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <20260603160910.159307-1-laniel_francis@privacyrequired.com>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260727111515eucas1p27222fc8db945ebaa9fbdb982273ba8c5
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260603160927eucas1p1ae24e871a8ef0771d72fae6462d96318
-X-EPHeader: CA
-X-CMS-RootMailID: 20260603160927eucas1p1ae24e871a8ef0771d72fae6462d96318
-References: <CGME20260603160927eucas1p1ae24e871a8ef0771d72fae6462d96318@eucas1p1.samsung.com>
-	<20260603160910.159307-1-laniel_francis@privacyrequired.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 27 Jul 2026 13:19:35 +0200
+Message-Id: <DK9BA0QUVUGT.2ZB6EESQOXCS3@kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/2] rust: add functions and traits for lossless integer
+ conversions
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
+ <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
+ <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>, "Timur Tabi"
+ <ttabi@nvidia.com>, "Eliot Courtney" <ecourtney@nvidia.com>, "Zhi Wang"
+ <zhiw@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+References: <20260727-as_casts-v1-0-6ea704ff25d8@nvidia.com>
+ <20260727-as_casts-v1-1-6ea704ff25d8@nvidia.com>
+ <DK9A6KGK5JQD.3U23MBEMSAXBK@garyguo.net>
+In-Reply-To: <DK9A6KGK5JQD.3U23MBEMSAXBK@garyguo.net>
 
-Hi Uwe,
+On Mon Jul 27, 2026 at 12:28 PM CEST, Gary Guo wrote:
+> On Mon Jul 27, 2026 at 11:15 AM BST, Alexandre Courbot wrote:
+>> The core library's `From` implementations do not cover conversions that
+>> are not portable or future-proof. For instance, even though it is safe
+>> today, `From<usize>` is not implemented for `u64` because of the
+>> possibility of supporting larger-than-64bit architectures in the future.
+>>
+>> However, the kernel supports a narrower set of architectures, with a
+>> considerable amount of code that is architecture-specific. This makes it
+>> helpful and desirable to provide more infallible conversions, lest we
+>> need to rely on the `as` keyword and carry the risk of silently losing
+>> data.
+>>
+>> Thus, introduce a new module `num::casts` that provides safe const
+>> functions performing more conversions allowed by the build target, as
+>> well as `FromSafeCast` and `IntoSafeCast` traits that are just
+>> extensions of `From` and `Into` to conversions that are known to be
+>> lossless.
+>
+> I'm okay with having u32 -> usize casts and usize -> u64 casts, but havin=
+g
+> usize -> u32 and u64 -> usize casts like this series do is worrying as it=
+ can be
+> misused from drivers that are supposed to be supporting multiple platform=
+s or
+> core subsystems.
+>
+> Pointer-size dependent drivers that need these casts should define them l=
+ocally.
 
-On 6/3/26 18:09, Francis Laniel wrote:
-> All types in `bindings` implement `Zeroable` if they can, so use
-> `pin_init::zeroed` instead of relying on `unsafe` code.
-> 
-> If this ends up not compiling in the future, something in bindgen or on
-> the C side changed and is most likely incorrect.
-> 
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://protect2.fireeye.com/v1/url?k=851847ef-eca32f5d-8519cca0-905a08a8515a-5adce8ef7cc40eb1&q=1&e=6c6d6a32-0f0e-4805-8882-718eae7641a8&u=https%3A%2F%2Fgithub.com%2FRust-for-Linux%2Flinux%2Fissues%2F1189
-> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-> Acked-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> Signed-off-by: Francis Laniel <laniel_francis@privacyrequired.com>
-> ---
->  rust/kernel/pwm.rs | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-> index 6c9d667009ef..3427b7d93a03 100644
-> --- a/rust/kernel/pwm.rs
-> +++ b/rust/kernel/pwm.rs
-> @@ -494,9 +494,7 @@ pub(crate) fn as_raw(&self) -> *const bindings::pwm_ops {
->  /// This is used to bridge Rust trait implementations to the C `struct pwm_ops`
->  /// expected by the kernel.
->  pub const fn create_pwm_ops<T: PwmOps>() -> PwmOpsVTable {
-> -    // SAFETY: `core::mem::zeroed()` is unsafe. For `pwm_ops`, all fields are
-> -    // `Option<extern "C" fn(...)>` or data, so a zeroed pattern (None/0) is valid initially.
-> -    let mut ops: bindings::pwm_ops = unsafe { core::mem::zeroed() };
-> +    let mut ops: bindings::pwm_ops = pin_init::zeroed();
->  
->      ops.request = Some(Adapter::<T>::request_callback);
->      ops.capture = Some(Adapter::<T>::capture_callback);
+I also raised this concern in the context of [1]. On the other hand, it is =
+not
+as if this can "randomly" break with exotic or niche kernel configs; 32bit =
+vs.
+64bit compile tests are well covered.
 
-I believe this commit is good to go, if you could take it through your
-tree it would be great.
+So, as long as we are explicit about it, I think it should be fine. Maybe w=
+e can
+export the non-portable ones with a different name?
 
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+[1] https://lore.kernel.org/driver-core/DK0BPAHR8IS3.2KLSLH7K448RJ@kernel.o=
+rg/
