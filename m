@@ -1,44 +1,44 @@
 Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E2E46C4C4;
-	Tue, 28 Jul 2026 18:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B2946C4DA;
+	Tue, 28 Jul 2026 18:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785264009; cv=pass; b=u3o1Uk0OLYn/8iuo/BeYNa4V94uNAfuAr+3Gqp9KfK7/Cul5ZyMcClxnCL21XEO1z2jey82HRfj7lv3drg3BQV0RX4NLgtvIoWp+u+y62P/ewhsslLaWCly4hT1OYwdFDAdDH1KeRPEb2ugSGjvH+FRX2kr7QXPra+PZkVo4ZNY=
+	t=1785264010; cv=pass; b=lgFVyODoZ/MrgPtwucNnlguMx2ud1tRaTxfMcMIkRP/FEEWYFr2+aDPsF+qCwQK4ID4EKF9FhqXUSIbKYjlgnCgJjEBmOFnDW3Hr2thkST6lZMyz80U6HP849m2FxzklCXlLpwrom6aYDmNoqiDQl47uVBvHHV0QGjiVw2fJjSI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785264009; c=relaxed/simple;
-	bh=hmUDz9Z9Jm/oBssMEu/o+uRe5WNAXr/TWtgtjfSGgyc=;
+	s=arc-20240116; t=1785264010; c=relaxed/simple;
+	bh=UUlMTKXjE+sw7OBiXJtxtqy6EDZSwTuK9McceZ9E5Yg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ssehz6+94i5iSFe3PgPpNxEB1lQC1qu+WOgWZ77ycHrZNqv4lRr404ogXCET4k7tyDr/HtrbWS6eLvNxpAnaY9kH0JQPodE13NCD4z+SJKoTBRisX7LWXjsKdvwY80eWUW7f7hWiKDyLs0WbXYt8rwBzNeoJkw0rFs8/4YX5gls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=A+m/YNrA; arc=pass smtp.client-ip=136.143.188.11
+	 In-Reply-To:To:Cc; b=sAiIFPzLbD6eTGPdT4YWdvBoEy4SSZIZflCVD7myUOz+JeY4P5uvoa295CsnZ5sBXzdzIFx65dhO7SbV1eq/QNx2VW6acSfWGRkoNTwOlCO9417TBrrKY0yp5Z1hf846DyOSzMxMP3IhCSgIsM2RK3Ll0vlgMBxhO2Jtg/wuaY8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=InJ3Ursv; arc=pass smtp.client-ip=136.143.188.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="A+m/YNrA"
-ARC-Seal: i=1; a=rsa-sha256; t=1785263976; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="InJ3Ursv"
+ARC-Seal: i=1; a=rsa-sha256; t=1785263978; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=faIKKo0v3Bdwa4+SBAPKWA3AWO/BBWigHhQwqd2iYPsaYJWQKmM2KzLOsCO4iRBTvLSqu3lfBlSo2UbYOu6hTcPO8/hNFip56wCMPJpk4s2R0xKK/lrKuxpKRfv6c6WjZonnQTVKt/xwmKrO14Yjj3EXW2+mBXGDKcHCG2m+fF8=
+	b=JTEb6U3QDlB5TQpeg437C8FlKfh+J79REdzhCXDnm0YbKoh1r7H9RtvTGfCRaEwFwHLa4feN2TkSXSkhzw+M76cdk5ja7ys0FaShDRT96T1gXyFvNa/IA+x6NYTtZDeOgTxCyVnTuxFjVbSZQOzro5thpmU/9sV6hDf3enmIwSk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1785263976; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=nDoJYlojHo5HR4Vnr1lToWbC+enfiG6pI/SBnWg1DFA=; 
-	b=mmI7DVhEVHNnJSFZ8fQZ5yP7GEdGcTUiQOBxWBowfzIpmWmdvx7blS0BSwnVtkVGoHSMOEMM7rzATGRoVjJdX4lh+lRmIQisX0/mBrSzGIHEteqz+JgS558wguCC/gpVWq2a6bxvOG2iTyheDfgvz/c104iv3yqQKgN5rUQ3A5E=
+	t=1785263978; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZjZmunmYtUIrppE+52AoLp32IVv+8mSqUWcXxK2pdVs=; 
+	b=OXOxilG4f62ZSeKtq2tme6mSKlQC1HO4xJDOMSkcsr5hmAlWGOj75gvSyNojlNx/8Jjd0eHiwGbrl+/zohBoHbniMI19mlIQ6iuYt1sd6YS8cnCD5ZwUYKzV39kJ/q0OHxw/pS58MLuvN5w2h26fAWcsvzNghVIdJY+3oNk+/1U=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
 	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785263976;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785263978;
 	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=nDoJYlojHo5HR4Vnr1lToWbC+enfiG6pI/SBnWg1DFA=;
-	b=A+m/YNrA1MtA9EzfK0nLRdhPZCvyvA5wllSjP0iJsVuDPB9d9joLcQDMLh0tRqke
-	46XaLESbFrOJXbrd96bgBbSS0yuhNIRwTM+e4mPF1ho46VqOvzjaIUUUTlsLMj0IRj3
-	BNLbd7mVwE26O4oRb1UTM0d0L8H5nGePLQ9ro9pA=
-Received: by mx.zohomail.com with SMTPS id 178526397387172.03680057144061;
-	Tue, 28 Jul 2026 11:39:33 -0700 (PDT)
+	bh=ZjZmunmYtUIrppE+52AoLp32IVv+8mSqUWcXxK2pdVs=;
+	b=InJ3Ursv0TyD8Kv2qxlw/qJjDmspKj5wUoeANXHqZko5A5P+HwRv//KN98s/GEYU
+	53Olo0K+7DSaTkIE2QeuFcR+6Z7HFKncBfyrycZ74L0IY5y8v1M4/cDe0foz6Zu8JhC
+	gIofJsm3Y5SaL7qrEZzydQsQNnpg4UIqVnButJyo=
+Received: by mx.zohomail.com with SMTPS id 1785263976196554.4575498744655;
+	Tue, 28 Jul 2026 11:39:36 -0700 (PDT)
 From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Tue, 28 Jul 2026 11:39:25 -0700
-Subject: [PATCH v10 3/7] drm/tyr: add Memory Management Unit (MMU) support
+Date: Tue, 28 Jul 2026 11:39:27 -0700
+Subject: [PATCH v10 5/7] drm/tyr: add a kernel buffer object
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,8 +46,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260728-fw-boot-b4-v10-3-9187aefa3f2f@collabora.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260728-fw-boot-b4-v10-5-9187aefa3f2f@collabora.com>
 References: <20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com>
 In-Reply-To: <20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>, 
@@ -66,958 +66,167 @@ Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  samitolvanen@google.com, lyude@redhat.com, beata.michalska@arm.com, 
  boris.brezillon@collabora.com, steven.price@arm.com, alvin.sun@linux.dev
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=35457;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4877;
  i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=i11C98KZzci8pay5jbRdvj9YyulpsDKC5Jxvq/xATNc=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkZ3xMMXkrc/3BElktG1+vftYm/wxifz5Fn59DecCVo1
- kHWJlOejlIWBjEuBlkxRZaz9kY94lXvjXTn/2+GmcPKBDKEgYtTACbim8Dwv2aL/dOtMeclXjgF
- n5rBUrLn7an1XG4b37H5irpM+ZPxcgvDXzHt9Idc3eoOwTlcjlvE35cfctie1JV80dxj/5qNMhc
- /MAAA
+ bh=UUlMTKXjE+sw7OBiXJtxtqy6EDZSwTuK9McceZ9E5Yg=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkZ3xN+HnrJU1uq8eT8ZL6S7yE/rU5yGXPu7w0tmlLk8
+ TTrf3FuRykLgxgXg6yYIstZe6Me8ar3Rrrz/zfDzGFlAhnCwMUpABOZZ87IcD1vlZWyybepDF8y
+ 9I3f77ZZJLS9bsmmJGVujyUPnhjMNGP4w7VwpZ11ys5JEpord2SLSwnuSPb13Gl5pPbX5IPe3eq
+ 1jAA=
 X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
  fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+Introduce a buffer object type (KernelBo) for internal driver allocations
+that are managed by the kernel rather than userspace.
 
-Add Memory Management Unit (MMU) support in Tyr. The MMU module wraps a
-SlotManager instance to allocate MMU address-space slots for use by
-virtual memory (VM) address spaces. The MMU's SlotManager uses an
-AddressSpaceManager to handle the hardware-specific callbacks. For
-example, the AddressSpaceManager activates and evicts VMs from slots by
-writing commands to the MMU registers.
+KernelBo wraps a GEM shmem object and automatically handles GPU virtual
+address space mapping during creation and unmapping on drop. This provides
+a safe and convenient way for the driver to both allocate and clean up
+internal buffers for kernel-managed resources.
 
-Add an implementation block for the MMU's MEMATTR register to provide
-a method for translating the Memory Attribute Indirection Register (MAIR)
-format from the pagetable configuration to a format understood by the MMU.
-
-Create an mmu instance during probe, it will be used by subsequent patches
-in this series.
-
-Wrap the iomem stored in TyrDrmRegistrationData in an Arc. The iomem
-is stored in the mmu through its AddressSpaceManager. In anticipation
-of the iomem also being stored in the firmware object, set up shared
-ownership of the iomem now.
-
-Update Kconfig to add the new MMU and IOMMU dependencies required
-by this MMU module.
-
+Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
 Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 ---
- drivers/gpu/drm/tyr/Kconfig              |   3 +
- drivers/gpu/drm/tyr/driver.rs            |  13 +-
- drivers/gpu/drm/tyr/mmu.rs               | 121 ++++++++
- drivers/gpu/drm/tyr/mmu/address_space.rs | 511 +++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/regs.rs              | 135 +++++++-
- drivers/gpu/drm/tyr/slot.rs              |   1 -
- drivers/gpu/drm/tyr/tyr.rs               |   1 +
- 7 files changed, 780 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/tyr/gem.rs | 113 +++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 109 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
-index 51a68ef8212c..61a2fd6f961a 100644
---- a/drivers/gpu/drm/tyr/Kconfig
-+++ b/drivers/gpu/drm/tyr/Kconfig
-@@ -5,9 +5,12 @@ config DRM_TYR
- 	depends on DRM=y
- 	depends on RUST
- 	depends on ARM || ARM64 || COMPILE_TEST
-+	depends on MMU
- 	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
- 	depends on COMMON_CLK
-+	depends on IOMMU_SUPPORT
- 	default n
-+	select IOMMU_IO_PGTABLE_LPAE
- 	select RUST_DRM_GEM_SHMEM_HELPER
- 	help
- 	  Rust DRM driver for ARM Mali CSF-based GPUs.
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index 728a8388d591..92c9d98e3aab 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -28,7 +28,10 @@
-     regulator,
-     regulator::Regulator,
-     sizes::SZ_2M,
--    sync::Mutex,
-+    sync::{
-+        Arc,
-+        Mutex, //
-+    },
-     time, //
- };
+diff --git a/drivers/gpu/drm/tyr/gem.rs b/drivers/gpu/drm/tyr/gem.rs
+index c28be61a01bb..69e1c75e59a5 100644
+--- a/drivers/gpu/drm/tyr/gem.rs
++++ b/drivers/gpu/drm/tyr/gem.rs
+@@ -4,18 +4,29 @@
+ //! This module provides buffer object (BO) management functionality using
+ //! DRM's GEM subsystem with shmem backing.
  
-@@ -37,6 +40,7 @@
-     gem::BoData,
-     gpu,
-     gpu::GpuInfo,
-+    mmu::Mmu,
-     regs::gpu_control::*, //
- };
- 
-@@ -70,7 +74,7 @@ pub(crate) struct TyrDrmRegistrationData<'drm> {
-     regulators: Mutex<Regulators>,
- 
-     /// GPU MMIO register mapping.
--    pub(crate) iomem: IoMem<'drm>,
-+    pub(crate) iomem: Arc<IoMem<'drm>>,
- 
-     /// GPU information read from hardware during probe.
-     pub(crate) gpu_info: GpuInfo,
-@@ -121,7 +125,8 @@ fn probe<'bound>(
-         let sram_regulator = Regulator::<regulator::Enabled>::get(pdev.as_ref(), c"sram")?;
- 
-         let request = pdev.io_request_by_index(0).ok_or(ENODEV)?;
--        let iomem = request.iomap_sized::<SZ_2M>()?;
-+
-+        let iomem = Arc::new(request.iomap_sized::<SZ_2M>()?, GFP_KERNEL)?;
- 
-         issue_soft_reset(pdev.as_ref(), &iomem)?;
-         gpu::l2_power_on(pdev.as_ref(), &iomem)?;
-@@ -139,6 +144,8 @@ fn probe<'bound>(
- 
-         let unreg_dev = drm::UnregisteredDevice::<TyrDrmDriver>::new(pdev, Ok(()))?;
- 
-+        let _mmu = Mmu::new(pdev.as_ref(), iomem.as_arc_borrow(), &gpu_info)?;
-+
-         let reg_data = try_pin_init!(TyrDrmRegistrationData {
-                 pdev,
-                 clks <- new_mutex!(Clocks {
-diff --git a/drivers/gpu/drm/tyr/mmu.rs b/drivers/gpu/drm/tyr/mmu.rs
-new file mode 100644
-index 000000000000..83e022f9168b
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/mmu.rs
-@@ -0,0 +1,121 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Memory Management Unit (MMU) module.
-+//!
-+//! The GPU MMU provides a limited number of memory address spaces for use by command streams.
-+//! The MMU translates virtual addresses to physical addresses and manages memory configuration
-+//! and access permissions.
-+//!
-+//! This MMU module is essentially a locked wrapper around a [`SlotManager`] instance.
-+//! The [`SlotManager`] manages the assignment of virtual address spaces to hardware address-space
-+//! (AS) slots. MMU commands such as updates and flushes are carried out by the
-+//! [`AddressSpaceManager`] which actually writes to the MMU registers.
-+#![expect(dead_code)]
-+
 +use core::ops::Range;
 +
-+use kernel::{
-+    device::{
-+        Bound,
-+        Device, //
-+    },
-+    new_mutex,
-+    prelude::*,
+ use kernel::{
+     drm::gem::{
+         self,
+         shmem, //
+     },
+     prelude::*,
+-    sync::aref::ARef, //
 +    sync::{
-+        Arc,
-+        ArcBorrow,
-+        Mutex, //
++        aref::ARef,
++        Arc, //
 +    }, //
-+};
-+
-+use crate::{
-+    driver::IoMem,
-+    gpu::GpuInfo,
-+    mmu::address_space::{
-+        AddressSpaceManager,
-+        VmAsData, //
-+    },
-+    regs::{
-+        gpu_control::AS_PRESENT,
-+        MAX_AS, //
-+    },
-+    slot::SlotManager, //
-+};
-+
-+pub(crate) mod address_space;
-+
-+pub(crate) type AsSlotManager<'drm> = SlotManager<AddressSpaceManager<'drm>, MAX_AS>;
-+
-+/// Locked wrapper for carrying out virtual memory (VM) operations on the MMU.
-+#[pin_data]
-+pub(crate) struct Mmu<'drm> {
-+    /// Slot Manager instance used to allocate hardware slots and write to MMU registers.
-+    #[pin]
-+    pub(crate) as_manager: Mutex<AsSlotManager<'drm>>,
-+}
-+
-+impl<'drm> Mmu<'drm> {
-+    /// Create an MMU component for this device.
-+    pub(crate) fn new(
-+        dev: &'drm Device<Bound>,
-+        iomem: ArcBorrow<'_, IoMem<'drm>>,
-+        gpu_info: &GpuInfo,
-+    ) -> Result<Arc<Mmu<'drm>>> {
-+        let present = AS_PRESENT::from_raw(gpu_info.as_present).present().get();
-+        let slot_count = present.count_ones().try_into()?;
-+
-+        let address_space_manager = AddressSpaceManager::new(dev, iomem.into(), present)?;
-+        let as_slot_manager =
-+            SlotManager::new(address_space_manager, slot_count).inspect_err(|e| {
-+                dev_err!(
-+                    dev,
-+                    "Failed to initialize MMU slot manager with {} slots: {:?}",
-+                    slot_count,
-+                    e
-+                );
-+            })?;
-+        let mmu_init = try_pin_init!(Self{
-+            as_manager <- new_mutex!(as_slot_manager),
-+        });
-+        Arc::pin_init(mmu_init, GFP_KERNEL)
-+    }
-+
-+    /// Assign a VM to an AS slot, provide a translation table,
-+    /// and update the MMU to make the VM resident.
-+    pub(crate) fn activate_vm(&self, vm_as_data: ArcBorrow<'_, VmAsData<'drm>>) -> Result {
-+        self.as_manager.lock().activate_vm(vm_as_data)
-+    }
-+
-+    /// Evict a VM from its AS slot and flush the MMU.
-+    pub(crate) fn deactivate_vm(&self, vm_as_data: &VmAsData<'drm>) -> Result {
-+        self.as_manager.lock().deactivate_vm(vm_as_data)
-+    }
-+
-+    /// Flush MMU translation caches after a VM update.
-+    pub(crate) fn flush_vm(&self, vm_as_data: &VmAsData<'drm>) -> Result {
-+        self.as_manager.lock().flush_vm(vm_as_data)
-+    }
-+
-+    /// Flags the start of a VM update.
-+    ///
-+    /// If the VM is resident, any GPU access on the memory range being
-+    /// updated will be blocked until `Mmu::end_vm_update()` is called.
-+    /// This guarantees the atomicity of a VM update.
-+    /// If the VM is not resident, this is a NOP.
-+    pub(crate) fn start_vm_update(
-+        &self,
-+        vm_as_data: &VmAsData<'drm>,
-+        region: &Range<u64>,
-+    ) -> Result {
-+        self.as_manager.lock().start_vm_update(vm_as_data, region)
-+    }
-+
-+    /// Flags the end of a VM update.
-+    ///
-+    /// If the VM is resident, this will let GPU accesses on the updated
-+    /// range go through, in case any of them were blocked.
-+    /// If the VM is not resident, this is a NOP.
-+    pub(crate) fn end_vm_update(&self, vm_as_data: &VmAsData<'drm>) -> Result {
-+        self.as_manager.lock().end_vm_update(vm_as_data)
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/mmu/address_space.rs b/drivers/gpu/drm/tyr/mmu/address_space.rs
-new file mode 100644
-index 000000000000..76e3d2df6afd
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/mmu/address_space.rs
-@@ -0,0 +1,511 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Address space module.
-+//!
-+//! This module handles the hardware interaction for MMU operations through
-+//! MMIO register access.
-+//!
-+
-+use core::ops::Range;
-+
-+use kernel::{
-+    device::{
-+        Bound,
-+        Device, //
-+    }, //
-+    error::Result,
-+    io::{
-+        poll,
-+        register::Array,
-+        Io, //
-+    },
-+    iommu::pgtable::{
-+        Config,
-+        IoPageTable,
-+        ARM64LPAES1, //
-+    },
-+    num::Bounded,
-+    prelude::*,
-+    sizes::{
-+        SZ_2M,
-+        SZ_4K, //
-+    },
-+    sync::{
-+        Arc,
-+        ArcBorrow,
-+        LockedBy, //
-+    },
-+    time::Delta, //
-+};
-+
-+use crate::{
-+    driver::IoMem,
-+    mmu::{
-+        AsSlotManager,
-+        Mmu, //
-+    },
-+    regs::{
-+        mmu_control::mmu_as_control,
-+        mmu_control::mmu_as_control::*,
-+        MAX_AS, //
-+    },
-+    slot::{
-+        LockedSeat,
-+        Seat,
-+        SlotOperations, //
-+    }, //
-+};
-+
-+/// Address space configuration values to be written to MMU registers.
-+#[derive(Clone, Copy)]
-+struct AddressSpaceConfig {
-+    /// Translation configuration. Configures how the MMU walks the page table for this
-+    /// address space.
-+    transcfg: u64,
-+
-+    /// Translation table base address. The address of the page table.
-+    transtab: u64,
-+
-+    /// Memory attributes such as cacheability.
-+    memattr: u64,
-+}
-+
-+/// Virtual memory (VM) address space data for use in MMU operations.
-+#[pin_data]
-+pub(crate) struct VmAsData<'drm> {
-+    /// This address-space seat tracks this VM's binding to a hardware address space slot.
-+    /// It can only be accessed when holding the `Mmu::as_manager` lock.
-+    as_seat: LockedSeat<AddressSpaceManager<'drm>, MAX_AS>,
-+
-+    /// Virtual address bits for this address space.
-+    va_bits: u8,
-+
-+    /// The page table which maps GPU virtual addresses to physical addresses for this VM.
-+    #[pin]
-+    pub(crate) page_table: IoPageTable<'drm, ARM64LPAES1>,
-+}
-+
-+impl<'drm> VmAsData<'drm> {
-+    /// Creates VM address space data by initializing all of its fields.
-+    pub(crate) fn new<'a>(
-+        mmu: &'a Mmu<'drm>,
-+        dev: &'drm Device<Bound>,
-+        va_bits: u32,
-+        pa_bits: u32,
-+    ) -> impl pin_init::PinInit<VmAsData<'drm>, Error> + 'a {
-+        let pt_config = Config {
-+            quirks: 0,
-+            pgsize_bitmap: SZ_4K | SZ_2M,
-+            ias: va_bits,
-+            oas: pa_bits,
-+            coherent_walk: false,
-+        };
-+
-+        let page_table_init = IoPageTable::new(dev, pt_config);
-+
-+        try_pin_init!(Self {
-+            as_seat: LockedBy::new(&mmu.as_manager, Seat::NoSeat),
-+            va_bits: va_bits as u8,
-+            page_table <- page_table_init,
-+        }? Error)
-+    }
-+
-+    /// Computes the hardware configuration for this address space.
-+    fn as_config(&self) -> Result<AddressSpaceConfig> {
-+        let pt = &self.page_table;
-+        // The hardware computes the valid input address range as:
-+        //   INA_BITS_VALID = min(HW_INA_BITS, 55 - INA_BITS)
-+        // To configure our desired va_bits, we solve for INA_BITS:
-+        //   INA_BITS = 55 - va_bits
-+        // This assumes HW_INA_BITS (hardware capability) >= va_bits.
-+        let field = 55u64.checked_sub(self.va_bits.into()).ok_or(EINVAL)?;
-+        let ina_bits =
-+            match mmu_as_control::InaBits::try_from(Bounded::try_new(field).ok_or(EINVAL)?)? {
-+                mmu_as_control::InaBits::Reset => return Err(EINVAL),
-+                bits => bits,
-+            };
-+
-+        let transcfg = mmu_as_control::TRANSCFG::zeroed()
-+            .with_ptw_memattr(mmu_as_control::PtwMemattr::WriteBack)
-+            .with_r_allocate(true)
-+            .with_mode(mmu_as_control::AddressSpaceMode::Aarch64_4K)
-+            .with_ina_bits(ina_bits)
-+            .into_raw();
-+
-+        Ok(AddressSpaceConfig {
-+            transcfg,
-+            // SAFETY: The SlotManager holds an `Arc<VmAsData>` as SlotData while this
-+            // TTBR is programmed and stores that Arc in the active slot before
-+            // returning. Eviction flushes and disables the slot before releasing
-+            // the Arc; if eviction fails, the slot retains it. Therefore the page
-+            // table cannot be dropped while the GPU is using it.
-+            transtab: unsafe { pt.ttbr() },
-+            memattr: MEMATTR::from_mair(pt.mair()).into_raw(),
-+        })
-+    }
-+}
-+
-+/// Coordinates all hardware-level address space operations through MMIO register
-+/// operations including enabling, disabling, flushing, and updating address spaces.
-+pub(crate) struct AddressSpaceManager<'drm> {
-+    /// Parent device used for logging.
-+    dev: &'drm Device<Bound>,
-+
-+    /// Memory-mapped I/O region for GPU register access.
-+    iomem: Arc<IoMem<'drm>>,
-+
-+    /// Bitmask of present address space slots from GPU_AS_PRESENT register.
-+    as_present: u32,
-+}
-+
-+impl<'drm> AddressSpaceManager<'drm> {
-+    /// Creates a new address space manager.
-+    ///
-+    /// Initializes the manager with references to the platform device and
-+    /// I/O memory region, along with the bitmask of available AS slots.
-+    pub(super) fn new(
-+        dev: &'drm Device<Bound>,
-+        iomem: Arc<IoMem<'drm>>,
-+        as_present: u32,
-+    ) -> Result<AddressSpaceManager<'drm>> {
-+        if as_present.trailing_ones() != as_present.count_ones() {
-+            dev_err!(
-+                dev,
-+                "Sparse AS_PRESENT mask is unsupported: {:#x}",
-+                as_present
-+            );
-+            return Err(EINVAL);
-+        }
-+        Ok(Self {
-+            dev,
-+            iomem,
-+            as_present,
-+        })
-+    }
-+
-+    /// Validates that an AS slot number is within range and present in hardware.
-+    ///
-+    /// Checks that the slot index is less than [`MAX_AS`] and that
-+    /// the corresponding bit is set in the `as_present` mask read from the GPU.
-+    ///
-+    /// Returns [`EINVAL`] if the slot is out of range or not present in hardware.
-+    fn validate_as_slot(&self, as_nr: usize) -> Result {
-+        if as_nr >= MAX_AS {
-+            dev_err!(
-+                self.dev,
-+                "AS slot {} out of valid range (max {})",
-+                as_nr,
-+                MAX_AS
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if (self.as_present & (1 << as_nr)) == 0 {
-+            dev_err!(
-+                self.dev,
-+                "AS slot {} not present in hardware (AS_PRESENT={:#x})",
-+                as_nr,
-+                self.as_present
-+            );
-+            return Err(EINVAL);
-+        }
-+        Ok(())
-+    }
-+
-+    /// Waits for an AS slot to become ready (not active).
-+    ///
-+    /// Returns an error if polling times out after 10ms or if register access fails.
-+    fn as_wait_ready(&self, as_nr: usize) -> Result {
-+        let io = &*self.iomem;
-+        let op = || {
-+            let status_reg = STATUS::try_at(as_nr).ok_or(EINVAL)?;
-+            Ok(io.read(status_reg))
-+        };
-+        let cond = |status: &STATUS| -> bool { !status.active_ext() };
-+        poll::read_poll_timeout(op, cond, Delta::from_micros(50), Delta::from_millis(10))?;
-+
-+        Ok(())
-+    }
-+
-+    /// Sends a command to an AS slot.
-+    ///
-+    /// Returns an error if waiting for ready times out or if register write fails.
-+    fn as_send_cmd(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-+        self.as_wait_ready(as_nr)?;
-+        let io = &*self.iomem;
-+        let command_reg = COMMAND::try_at(as_nr).ok_or(EINVAL)?;
-+        io.write(command_reg, COMMAND::zeroed().with_command(cmd));
-+        Ok(())
-+    }
-+
-+    /// Sends a command to an AS slot and waits for completion.
-+    ///
-+    /// Returns an error if sending the command fails or if waiting for completion times out.
-+    fn as_send_cmd_and_wait(&mut self, as_nr: usize, cmd: MmuCommand) -> Result {
-+        self.as_send_cmd(as_nr, cmd)?;
-+        self.as_wait_ready(as_nr)?;
-+        Ok(())
-+    }
-+
-+    /// Enables an AS slot with the provided configuration.
-+    ///
-+    /// Returns an error if the slot is invalid or if register writes/commands fail.
-+    fn as_enable(&mut self, as_nr: usize, as_config: &AddressSpaceConfig) -> Result {
-+        self.validate_as_slot(as_nr)?;
-+
-+        let io = &*self.iomem;
-+
-+        let transtab = as_config.transtab;
-+        io.write(
-+            TRANSTAB_LO::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSTAB_LO::from_raw(transtab as u32),
-+        );
-+        io.write(
-+            TRANSTAB_HI::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSTAB_HI::from_raw((transtab >> 32) as u32),
-+        );
-+
-+        let transcfg = as_config.transcfg;
-+        io.write(
-+            TRANSCFG_LO::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSCFG_LO::from_raw(transcfg as u32),
-+        );
-+        io.write(
-+            TRANSCFG_HI::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSCFG_HI::from_raw((transcfg >> 32) as u32),
-+        );
-+
-+        let memattr = as_config.memattr;
-+        io.write(
-+            MEMATTR_LO::try_at(as_nr).ok_or(EINVAL)?,
-+            MEMATTR_LO::from_raw(memattr as u32),
-+        );
-+        io.write(
-+            MEMATTR_HI::try_at(as_nr).ok_or(EINVAL)?,
-+            MEMATTR_HI::from_raw((memattr >> 32) as u32),
-+        );
-+
-+        self.as_send_cmd_and_wait(as_nr, MmuCommand::Update)?;
-+
-+        Ok(())
-+    }
-+
-+    /// Disables an AS slot and clears its configuration.
-+    ///
-+    /// Returns an error if the slot is invalid or if register writes/commands fail.
-+    fn as_disable(&mut self, as_nr: usize) -> Result {
-+        self.validate_as_slot(as_nr)?;
-+
-+        // Flush AS before disabling
-+        self.as_send_cmd_and_wait(as_nr, MmuCommand::FlushMem)?;
-+
-+        let io = &*self.iomem;
-+
-+        io.write(
-+            TRANSTAB_LO::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSTAB_LO::from_raw(0),
-+        );
-+        io.write(
-+            TRANSTAB_HI::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSTAB_HI::from_raw(0),
-+        );
-+
-+        io.write(
-+            MEMATTR_LO::try_at(as_nr).ok_or(EINVAL)?,
-+            MEMATTR_LO::from_raw(0),
-+        );
-+        io.write(
-+            MEMATTR_HI::try_at(as_nr).ok_or(EINVAL)?,
-+            MEMATTR_HI::from_raw(0),
-+        );
-+
-+        let transcfg = TRANSCFG::zeroed()
-+            .with_mode(AddressSpaceMode::Unmapped)
-+            .into_raw();
-+
-+        io.write(
-+            TRANSCFG_LO::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSCFG_LO::from_raw(transcfg as u32),
-+        );
-+        io.write(
-+            TRANSCFG_HI::try_at(as_nr).ok_or(EINVAL)?,
-+            TRANSCFG_HI::from_raw((transcfg >> 32) as u32),
-+        );
-+
-+        self.as_send_cmd_and_wait(as_nr, MmuCommand::Update)?;
-+
-+        Ok(())
-+    }
-+
-+    /// Locks a region of the translation tables for an atomic update.
-+    ///
-+    /// Programs the MMU [`LOCKADDR`] register for the given address space and issues
-+    /// the lock command. The hardware rounds the requested range up to a
-+    /// power-of-two region aligned to its size.
-+    ///
-+    /// Returns an error if the slot is invalid or if register writes/commands fail.
-+    fn as_start_update(&mut self, as_nr: usize, region: &Range<u64>) -> Result {
-+        self.validate_as_slot(as_nr)?;
-+
-+        // Avoid both an empty range and an inverted range.
-+        if region.start >= region.end {
-+            return Err(EINVAL);
-+        }
-+
-+        // The lock operates on full 64-byte cache lines of translation table entries.
-+        // Since each translation table entry (TTE) is 8 bytes, a cache line has 8 TTEs.
-+        // Since each TTE maps one page, the minimum locked region size will be 8 pages.
-+        //
-+        // With 4KiB pages (Aarch64_4K mode), the minimum locked region is 32KiB.
-+        let lock_region_min_size: u64 = 4096 * 8;
-+
-+        // Count the number of trailing zero bits (zeros at the right/least-significant
-+        // end of the binary representation). For a power-of-two value, this equals the
-+        // base-2 exponent (e.g., 32 KiB = 2^15 → 15).
-+        let lock_region_min_size_log2 = lock_region_min_size.trailing_zeros() as u8;
-+
-+        // XOR the first and last addresses to identify which bits differ between them.
-+        // The highest set bit in the result determines the exponent of the smallest
-+        // power-of-two region that can contain both addresses.
-+        //
-+        // Example:
-+        //   addr_xor = 0x1000 ^ 0x2FFF = 0x3FFF
-+        //   highest set bit in 0x3FFF is bit 13
-+        //   minimum region size = 2^(13 + 1) = 16 KiB
-+        let addr_xor = region.start ^ (region.end - 1);
-+        let region_size_log2 = 64 - addr_xor.leading_zeros() as u8;
-+
-+        let lock_region_log2 = core::cmp::max(region_size_log2, lock_region_min_size_log2);
-+
-+        let lock_region_size = 1u64.checked_shl(lock_region_log2.into()).ok_or(EINVAL)?;
-+        // Align the LOCKADDR base address down to the lock region size (1 << lock_region_log2).
-+        //
-+        // The MMU ignores the low lock_region_log2 bits of LOCKADDR base, so ensure
-+        // they are cleared in software to avoid ambiguity.
-+        //
-+        // Example:
-+        //   lock_region_log2 = 14 (16 KiB)
-+        //   region.start = 0x1000
-+        //   lockaddr_base = 0x1000 & ~(0x3FFF) = 0x0000
-+        let lockaddr_base = region.start & !(lock_region_size - 1);
-+
-+        // The LOCKADDR size field encodes the lock region size as log2(size) - 1,
-+        // per the hardware definition. For example, a 32 KiB region is encoded as 14
-+        // because log2(32 KiB) = 15.
-+        let lockaddr_size = lock_region_log2 - 1;
-+
-+        let io = &*self.iomem;
-+
-+        // The LOCKADDR base field stores address bits 63:12, so remove the low 12 bits
-+        // before passing this value to the register macro helper.
-+        // These bits are guaranteed to be zero anyway because of the minimum
-+        // size of the locked region.
-+        let lockaddr_base_field = lockaddr_base >> 12;
-+        let lockaddr_val = LOCKADDR::zeroed()
-+            .try_with_size(lockaddr_size)?
-+            .try_with_base(lockaddr_base_field)?
-+            .into_raw();
-+
-+        io.write(
-+            LOCKADDR_LO::try_at(as_nr).ok_or(EINVAL)?,
-+            LOCKADDR_LO::from_raw(lockaddr_val as u32),
-+        );
-+        io.write(
-+            LOCKADDR_HI::try_at(as_nr).ok_or(EINVAL)?,
-+            LOCKADDR_HI::from_raw((lockaddr_val >> 32) as u32),
-+        );
-+
-+        self.as_send_cmd_and_wait(as_nr, MmuCommand::Lock)
-+    }
-+
-+    /// Completes an atomic translation table update.
-+    ///
-+    /// Returns an error if the slot is invalid or if the flush command fails.
-+    fn as_end_update(&mut self, as_nr: usize) -> Result {
-+        self.validate_as_slot(as_nr)?;
-+        self.as_send_cmd_and_wait(as_nr, MmuCommand::FlushPt)?;
-+        Ok(())
-+    }
-+
-+    /// Flushes the translation table cache for an AS slot.
-+    ///
-+    /// Returns an error if the slot is invalid or if the flush command fails.
-+    fn as_flush(&mut self, as_nr: usize) -> Result {
-+        self.validate_as_slot(as_nr)?;
-+        self.as_send_cmd_and_wait(as_nr, MmuCommand::FlushPt)
-+    }
-+}
-+
-+impl<'drm> SlotOperations<MAX_AS> for AddressSpaceManager<'drm> {
-+    /// VM address space data associated with a hardware slot.
-+    type SlotData = Arc<VmAsData<'drm>>;
-+
-+    fn seat(slot_data: &Self::SlotData) -> &LockedSeat<Self, MAX_AS> {
-+        &slot_data.as_seat
-+    }
-+
-+    /// Activates a VM in a hardware slot.
-+    fn activate(&mut self, slot_idx: usize, slot_data: &Self::SlotData) -> Result {
-+        let as_config = slot_data.as_config()?;
-+        self.as_enable(slot_idx, &as_config)
-+    }
-+
-+    /// Evicts a VM from a hardware slot.
-+    fn evict(&mut self, slot_idx: usize, _slot_data: &Self::SlotData) -> Result {
-+        self.as_flush(slot_idx)?;
-+        self.as_disable(slot_idx)?;
-+        Ok(())
-+    }
-+}
-+
-+impl<'drm> AsSlotManager<'drm> {
-+    /// Locks a region for translation table updates if the VM has an active slot.
-+    pub(super) fn start_vm_update(
-+        &mut self,
-+        vm_as_data: &VmAsData<'drm>,
-+        region: &Range<u64>,
-+    ) -> Result {
-+        let seat = vm_as_data.as_seat.access(self);
-+        match seat.slot() {
-+            Some(slot) => {
-+                let as_nr = slot as usize;
-+                self.as_start_update(as_nr, region)
-+            }
-+            _ => Ok(()),
-+        }
-+    }
-+
-+    /// Completes translation table updates and unlocks the region.
-+    pub(super) fn end_vm_update(&mut self, vm_as_data: &VmAsData<'drm>) -> Result {
-+        let seat = vm_as_data.as_seat.access(self);
-+        match seat.slot() {
-+            Some(slot) => {
-+                let as_nr = slot as usize;
-+                self.as_end_update(as_nr)
-+            }
-+            _ => Ok(()),
-+        }
-+    }
-+
-+    /// Flushes the translation table cache if the VM has an active slot.
-+    pub(super) fn flush_vm(&mut self, vm_as_data: &VmAsData<'drm>) -> Result {
-+        let seat = vm_as_data.as_seat.access(self);
-+        match seat.slot() {
-+            Some(slot) => {
-+                let as_nr = slot as usize;
-+                self.as_flush(as_nr)
-+            }
-+            _ => Ok(()),
-+        }
-+    }
-+
-+    /// Activates a VM by assigning it to a hardware slot.
-+    pub(super) fn activate_vm(&mut self, vm_as_data: ArcBorrow<'_, VmAsData<'drm>>) -> Result {
-+        self.activate(vm_as_data.into())
-+    }
-+
-+    /// Deactivates a VM by evicting it from its hardware slot.
-+    pub(super) fn deactivate_vm(&mut self, vm_as_data: &VmAsData<'drm>) -> Result {
-+        self.evict(&vm_as_data.as_seat)
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
-index 831357a8ef87..a62724378ced 100644
---- a/drivers/gpu/drm/tyr/regs.rs
-+++ b/drivers/gpu/drm/tyr/regs.rs
-@@ -25,7 +25,7 @@
- //
- // Nevertheless, it is useful to have most of them defined, like the C driver
- // does.
--#![allow(dead_code)]
-+#![expect(dead_code)]
+ };
  
- /// Combine two 32-bit values into a single 64-bit value.
- pub(crate) fn join_u64(lo: u32, hi: u32) -> u64 {
-@@ -45,6 +45,8 @@ pub(crate) fn read_u64_no_tearing(lo_read: impl Fn() -> u32, hi_read: impl Fn()
-     }
+-use crate::driver::{
+-    TyrDrmDevice,
+-    TyrDrmDriver, //
++use crate::{
++    driver::{
++        TyrDrmDevice,
++        TyrDrmDriver, //
++    },
++    vm::{
++        Vm,
++        VmMapFlags, //
++    },
+ };
+ 
+ /// Tyr's DriverObject type for GEM objects.
+@@ -56,3 +67,97 @@ pub(crate) fn new_dummy_object(ddev: &TyrDrmDevice) -> Result<ARef<Bo>> {
+ 
+     Ok(bo)
  }
- 
-+pub(crate) use mmu_control::mmu_as_control::MAX_AS;
 +
- /// These registers correspond to the GPU_CONTROL register page.
- /// They are involved in GPU configuration and control.
- pub(crate) mod gpu_control {
-@@ -965,6 +967,8 @@ pub(crate) mod mmu_as_control {
-             register, //
-         };
- 
-+        use pin_init::Zeroable;
++/// Specifies how to choose a GPU virtual address for a [`KernelBo`].
++/// An automatic VA allocation strategy will be added in the future.
++pub(crate) enum KernelBoVaAlloc {
++    /// Explicit VA address specified by the caller.
++    #[expect(dead_code)]
++    Explicit(u64),
++}
 +
-         /// Maximum number of hardware address space slots.
-         /// The actual number of slots available is usually lower.
-         pub(crate) const MAX_AS: usize = 16;
-@@ -1158,7 +1162,136 @@ fn from(val: MMU_MEMATTR_STAGE1) -> Self {
-             pub(crate) MEMATTR_HI(u32)[MAX_AS, stride = STRIDE] @ 0x240c {
-                 31:0 value;
-             }
++/// A kernel-owned buffer object with automatic GPU virtual address mapping.
++///
++/// This structure represents a buffer object that is created and managed entirely
++/// by the kernel driver, as opposed to userspace-created GEM objects. It combines
++/// a GEM object with automatic GPU virtual address (VA) space mapping and cleanup.
++///
++/// When dropped, the buffer is automatically unmapped from the GPU VA space.
++pub(crate) struct KernelBo<'drm> {
++    /// The underlying GEM buffer object.
++    bo: ARef<Bo>,
++    /// The GPU VM this buffer is mapped into.
++    vm: Arc<Vm<'drm>>,
++    /// The GPU VA range occupied by this buffer.
++    va_range: Range<u64>,
++}
++
++impl<'drm> KernelBo<'drm> {
++    /// Creates a new kernel-owned buffer object and maps it into GPU VA space.
++    ///
++    /// This function allocates a new shmem-backed GEM object and immediately maps
++    /// it into the specified GPU virtual memory space. The mapping is automatically
++    /// cleaned up when the [`KernelBo`] is dropped.
++    #[expect(dead_code)]
++    pub(crate) fn new(
++        ddev: &TyrDrmDevice,
++        vm: Arc<Vm<'drm>>,
++        size: u64,
++        va_alloc: KernelBoVaAlloc,
++        flags: VmMapFlags,
++    ) -> Result<Self> {
++        if size == 0 {
++            dev_err!(vm.dev(), "Cannot create KernelBo with size 0");
++            return Err(EINVAL);
 +        }
 +
-+        impl MEMATTR {
-+            /// Outer cache-policy nibble indicating device memory.
-+            const ARM_MAIR_DEVICE_MEMORY: u8 = 0x0;
++        let KernelBoVaAlloc::Explicit(va) = va_alloc;
 +
-+            /// In the ARM Architecture Reference Manual, the MAIR encoding for Normal memory
-+            /// uses the format `0bxxRW` where:
-+            /// - `W` (bit 0) = Write-Allocate policy
-+            /// - `R` (bit 1) = Read-Allocate policy
-+            ///   E.g., `0b0011` would allow both read and write allocation on a cache miss.
-+            ///
-+            /// ARM MAIR Write-Allocate bit (bit 0 of a cache policy nibble).
-+            const ARM_MAIR_WRITE_ALLOCATE: u8 = 0x1;
-+            /// ARM MAIR Read-Allocate bit (bit 1 of a cache policy nibble).
-+            const ARM_MAIR_READ_ALLOCATE: u8 = 0x2;
++        let bo_size = usize::try_from(size).map_err(|_| EOVERFLOW)?;
++        let va_end = va.checked_add(size).ok_or(EINVAL)?;
 +
-+            /// Write-back policy bit. For cacheable encodings, it is necessary but not
-+            /// sufficient to set bit 2 of the cache policy nibble. Bit 2 does not
-+            /// definitively determine write back because bit 2 is also set in `0b0100`
-+            /// which encodes Normal non-cacheable memory.
-+            const ARM_MAIR_WRITE_BACK_BIT: u8 = 0x4;
++        let bo = Bo::new(
++            ddev,
++            bo_size,
++            shmem::ObjectConfig {
++                map_wc: true,
++                parent_resv_obj: None,
++            },
++            BoCreateArgs { flags: 0 },
++        )?;
 +
-+            /// Complete cache-policy nibble encoding for Normal Non-cacheable memory.
-+            const ARM_MAIR_NON_CACHEABLE: u8 = 0x4;
++        vm.map_bo_range(&bo, 0, size, va, flags)?;
 +
-+            /// Mask for the inner cache policy nibble in MAIR attribute bytes.
-+            const ARM_MAIR_INNER_MASK: u8 = 0x0f;
++        Ok(KernelBo {
++            bo,
++            vm,
++            va_range: va..va_end,
++        })
++    }
 +
-+            /// Check if a MAIR attribute byte represents device memory.
-+            ///
-+            /// Device memory (memory-mapped I/O, registers) cannot be cached because
-+            /// reading and writing to this memory may have side effects.
-+            fn is_device_memory(mair_attr: u8) -> bool {
-+                // In AArch64 MAIR, outer nibble only is 0 for device memory.
-+                (mair_attr >> 4) == Self::ARM_MAIR_DEVICE_MEMORY
-+            }
++    #[expect(dead_code)]
++    pub(crate) fn bo(&self) -> &Bo {
++        &self.bo
++    }
++}
 +
-+            /// Check if normal memory is fully write-back cacheable.
-+            ///
-+            /// ARM MAIR has two cache policy levels (outer [7:4] and inner [3:0]).
-+            /// For memory to be truly write-back, BOTH levels must have the write-back bit set.
-+            /// If only one level is write-back, treat it as non-cacheable for GPU purposes.
-+            fn is_writeback_cacheable(mair_attr: u8) -> bool {
-+                let outer = mair_attr >> 4;
-+                let inner = mair_attr & Self::ARM_MAIR_INNER_MASK;
++impl Drop for KernelBo<'_> {
++    fn drop(&mut self) {
++        let va = self.va_range.start;
++        let size = self.va_range.end - self.va_range.start;
 +
-+                outer != Self::ARM_MAIR_NON_CACHEABLE
-+                    && inner != Self::ARM_MAIR_NON_CACHEABLE
-+                    && (outer & Self::ARM_MAIR_WRITE_BACK_BIT) != 0
-+                    && (inner & Self::ARM_MAIR_WRITE_BACK_BIT) != 0
-+            }
-+
-+            // Helper to encode a MEMATTR attribute from its individual fields.
-+            fn encode_attribute(
-+                alloc_w: bool,
-+                alloc_r: bool,
-+                alloc_sel: AllocPolicySelect,
-+                coherency: Coherency,
-+                memory_type: MemoryType,
-+            ) -> MMU_MEMATTR_STAGE1 {
-+                MMU_MEMATTR_STAGE1::zeroed()
-+                    .with_alloc_w(alloc_w)
-+                    .with_alloc_r(alloc_r)
-+                    .with_alloc_sel(alloc_sel)
-+                    .with_coherency(coherency)
-+                    .with_memory_type(memory_type)
-+            }
-+
-+            /// Convert one MAIR attribute byte into a MEMATTR attribute.
-+            // TODO: Add a `coherent` parameter like panthor's mair_to_memattr().
-+            // For now, assume a non-coherent system and always encode write-back
-+            // memory with MidgardInnerDomain coherency.
-+            fn attribute_from_mair(mair_attr: u8) -> MMU_MEMATTR_STAGE1 {
-+                // Device memory or non-write-back normal memory
-+                if Self::is_device_memory(mair_attr) || !Self::is_writeback_cacheable(mair_attr) {
-+                    return Self::encode_attribute(
-+                        false,
-+                        false,
-+                        AllocPolicySelect::Alloc,
-+                        Coherency::MidgardInnerDomain,
-+                        MemoryType::NonCacheable,
-+                    );
-+                }
-+
-+                // Write-back cacheable normal memory
-+                let inner: u8 = mair_attr & Self::ARM_MAIR_INNER_MASK;
-+                Self::encode_attribute(
-+                    (inner & Self::ARM_MAIR_WRITE_ALLOCATE) != 0,
-+                    (inner & Self::ARM_MAIR_READ_ALLOCATE) != 0,
-+                    AllocPolicySelect::Alloc,
-+                    Coherency::MidgardInnerDomain,
-+                    MemoryType::WriteBack,
-+                )
-+            }
-+
-+            /// Write one converted MAIR attribute into a corresponding MEMATTR slot.
-+            fn with_encoded_attribute(self, index: usize, attr: MMU_MEMATTR_STAGE1) -> Self {
-+                debug_assert!(index < 8);
-+
-+                let shift = index * 8;
-+                let mask = !(0xffu64 << shift);
-+                let raw = (self.into_raw() & mask) | ((u64::from(attr.into_raw())) << shift);
-+
-+                Self::from_raw(raw)
-+            }
-+
-+            /// Convert an AArch64 MAIR value into the GPU MEMATTR register encoding.
-+            ///
-+            /// Both MAIR and MEMATTR are 64-bit values with eight 8-bit memory
-+            /// attribute entries, but the bits do not map directly. The GPU MEMATTR encoding
-+            /// is  less detailed than the MAIR encoding, so MAIR is converted to MEMATTR
-+            /// conservatively as follows:
-+            ///
-+            /// 1. Device memory, or Normal Memory that is not write-back cacheable, is encoded
-+            ///    as GPU `NonCacheable`
-+            ///
-+            /// 2. Normal memory that is write-back cacheable is encoded as GPU `WriteBack`,
-+            ///    and the inner allocation hints are preserved.
-+            pub(crate) fn from_mair(mair: u64) -> Self {
-+                mair.to_le_bytes()
-+                    .into_iter()
-+                    .enumerate()
-+                    .fold(Self::zeroed(), |acc, (i, attr)| {
-+                        acc.with_encoded_attribute(i, Self::attribute_from_mair(attr))
-+                    })
-+            }
++        if let Err(e) = self.vm.unmap_range(va, size) {
++            // If unmap_range fails, it is still safe to drop the
++            // KernelBo and its ARef to the GEM buffer object because
++            // GPUVM also holds a reference to the GEM buffer object.
++            // The physical pages won't be freed or reallocated.
++            dev_err!(
++                self.vm.dev(),
++                "Failed to unmap KernelBo range {:#x}..{:#x}: {:?}",
++                self.va_range.start,
++                self.va_range.end,
++                e
++            );
 +        }
- 
-+        register! {
-             /// Lock region address for each address space.
-             pub(crate) LOCKADDR(u64)[MAX_AS, stride = STRIDE] @ 0x2410 {
-                 /// Lock region size.
-diff --git a/drivers/gpu/drm/tyr/slot.rs b/drivers/gpu/drm/tyr/slot.rs
-index 845846e07ee5..d194ead53f71 100644
---- a/drivers/gpu/drm/tyr/slot.rs
-+++ b/drivers/gpu/drm/tyr/slot.rs
-@@ -20,7 +20,6 @@
- //!
- //! [SlotOperations]: crate::slot::SlotOperations
- //! [SlotManager]: crate::slot::SlotManager
--#![expect(dead_code)]
- 
- use core::{
-     mem,
-diff --git a/drivers/gpu/drm/tyr/tyr.rs b/drivers/gpu/drm/tyr/tyr.rs
-index 7c9a8063b3b9..79045d0135a8 100644
---- a/drivers/gpu/drm/tyr/tyr.rs
-+++ b/drivers/gpu/drm/tyr/tyr.rs
-@@ -11,6 +11,7 @@
- mod file;
- mod gem;
- mod gpu;
-+mod mmu;
- mod regs;
- mod slot;
- 
++    }
++}
 
 -- 
 2.55.0
