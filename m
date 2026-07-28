@@ -1,114 +1,89 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7384746D6;
-	Tue, 28 Jul 2026 20:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785270973; cv=pass; b=MYyAM0bxV5Qwa/JH0vp9ntMsJ8SY74NKLudJSTSx17gklr1eNp6wkWx0id6xup1pGi6Wa7PfKdjCXTtwgJCimGxJ0HSwdLZ4gWqQ4E82Fc3ewjCnvVPsE3kAwpvEtsxJF4uUJx/aIdeHnSwyqAOmnQH+Xs0uznz8vWFibZgcows=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785270973; c=relaxed/simple;
-	bh=KvjkKX7oP7hHEjsLwlXZ3yVw4wY3+II/1zIITC6hXyM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aMwXNzIaU09tkSH08ipmApqg5mNrhBGeTqsXMjtqtvlSf1oPBqrevIQVxJKBbjBrnCD7e3K5ZnrfzOuJLRDi2dh58R1IT+PLLR5z6L/dxb6Gnn5PGYFOKuZ7b5/IWVsCEThX7VJKjg29bkuDt34HoOYncgIN0k69AyBId7niPqY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=H1LIDzYy; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94477429CD6
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 20:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785272394; cv=none; b=IPuvic6BNLTleQxDaqz76Dyxg84EGYv8VjWGP3LRFzo2FYlAFC3N4Vibaw0Op8GaWMFThMeZgEpyZ8yXDfZo/JbDUUJLJEcj1iTKLdnFWxGxKCRXeUrVZGGEIjX9UgSiwmEgQ0tIj+A/acLpMqqoGmN4RWL+qQwbuBLDpB79DvQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785272394; c=relaxed/simple;
+	bh=N/QyWsYWlb/wTkxijoFPQMdrqD5lE7biQ8nf5cXKQRQ=;
+	h=Content-Type:Date:Message-Id:Subject:Cc:From:To:Mime-Version:
+	 References:In-Reply-To; b=LM3uzuMPAt+gB/4STLoyPeX9eeNjIGKDVcTs/Cx/RodV7QXj7rExbVxiT3lQgqjRSu8KCR941XN78q/rhmi0m6z1Qi9Jn5AJBQLWVa/71iRn5q11m2svPAv4Vh2rmAA8i2Mp5axB6+x4+q2fXA3CDU0XEnUGpCQbbxi+bCnfTU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rcpassos.me; spf=pass smtp.mailfrom=rcpassos.me; dkim=pass (2048-bit key) header.d=rcpassos.me header.i=@rcpassos.me header.b=nxmS7sY5; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=ZaDuk9rK; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rcpassos.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rcpassos.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="H1LIDzYy"
-ARC-Seal: i=1; a=rsa-sha256; t=1785270928; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=f2/jRC+MITzs+rDlKhMHrYc3cx38Cx5UCcIzffZ8twp5YQltQEEA1imSuNP8GmGFBImSKWsTRamuleFkXLxdh/3Z1+sK8aSbvw3pQX8KBRJ2ouBm5/v/CsqOp/BF8teQo34FumXDv9nI3FnFILBwzNWsX9Elif73I4ReAhINDKE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1785270928; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=YhxTGf5YXkQYjZLE3DoklfRuPngjyDj+Ylg5ViviS+g=; 
-	b=Zokw+rmBE/8vtwEgAJtsKPycT5uqipcMQ9nCZouODuVT+foJmcYO9CTZyV8oqQc8ev3qDDU+uVeW93N7CmoSv3ykcwTAsHTqtVv9ewIapBPX0qqssDIKGhM7J5zgKXJKaW9N6FTNm6/tzCrIZEljuEZpj4y9GCLaeeOdNc8wuPw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785270928;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=YhxTGf5YXkQYjZLE3DoklfRuPngjyDj+Ylg5ViviS+g=;
-	b=H1LIDzYyE3qnL2DpZtUbBsCMb8P+4gVaco4Asw2jesTz1aJRJ3fGtMEkpp1ZGBHm
-	oDKN0taXlwBqvwlKfJvMssKJk5Qu8FQv7XSVHAvY/ANNY5vOo4sn57rMjn6AyR0zFWn
-	Ut7OhLjA5rPwMyvjzMupq38Ws2U/0GvTdyrI5xMo=
-Received: by mx.zohomail.com with SMTPS id 1785270925370174.37285430042743;
-	Tue, 28 Jul 2026 13:35:25 -0700 (PDT)
-Date: Tue, 28 Jul 2026 13:35:24 -0700
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
-	Alice Ryhl <aliceryhl@google.com>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Benno Lossin <lossin@kernel.org>,
-	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, laura.nao@collabora.com,
-	samitolvanen@google.com, lyude@redhat.com, beata.michalska@arm.com,
-	boris.brezillon@collabora.com, steven.price@arm.com,
-	alvin.sun@linux.dev
-Subject: Re: [PATCH v10 3/7] drm/tyr: add Memory Management Unit (MMU) support
-Message-ID: <amkSjDCt_P-TfXHD@um790>
-References: <20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com>
- <20260728-fw-boot-b4-v10-3-9187aefa3f2f@collabora.com>
- <DKAGDGAGBRXN.T20HFE198R5A@kernel.org>
+	dkim=pass (2048-bit key) header.d=rcpassos.me header.i=@rcpassos.me header.b="nxmS7sY5";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="ZaDuk9rK"
+Authentication-Results: purelymail.com; auth=pass
+DKIM-Signature: a=rsa-sha256; b=nxmS7sY5r0h0aw2fu9l43mdXgaxvzKTie1C/pfEtNW+8TWwklRuaOKTAbh3ZLqPu9IZVFVxaPyGZeXm1T+gMeyCIYKqdnjjG4LT6Q3VRHa+DA+yM/R8VmvubM6+a9Fd5PgwR1i4exvNz2qDI24OgeXpDx/AL8tisYb+g5cToi6ru18bXxtD+nT0KCRP2NQg9g7e2SjACaotocPHlHbB8P7P1msokvNpszbv8VkwoB56DBxt7qDGsqGHhgb0d+JvGvPa6tkfb4q1TSLfbncyUGV2sv/+HRy6xbbjhrjPGkd5g0GsZcIq6tOggl2xv4Op0VQ6ZkD+mnu+gfqkRpc36cw==; s=purelymail3; d=rcpassos.me; v=1; bh=N/QyWsYWlb/wTkxijoFPQMdrqD5lE7biQ8nf5cXKQRQ=; h=Received:Date:Subject:From:To;
+DKIM-Signature: a=rsa-sha256; b=ZaDuk9rKv/DqOGSaxMkKRqg8WxE8hM09WLEuBWbmpXaHqmuCRz/TxFA2w3EGZMzQpCPvCgNn2x3jgVnKRV/WB6pIKpomjSxR1wBsYb6TY5ETd7JVw2TDH4/FPF0jFFGNPxJ3wydsaxUbamGNR1H0AdG3H4POtH1KhellUfEewLQAU1Kqu0Tga2KMipHBA+CGxRknxaOVkLZFXFP4frGw9L5Bs6f6nJSIQJLgRRkD9QBzUOxTMho8OkXqXaMXDa7rTF9dgps9KFRJJGjHoMU9JDtusDw17Wu9CRDYaL2n/+D7uNjJh4POyMg+nmccKXTWXjxMJfOF6MFc7CyQPy9kLA==; s=purelymail3; d=purelymail.com; v=1; bh=N/QyWsYWlb/wTkxijoFPQMdrqD5lE7biQ8nf5cXKQRQ=; h=Feedback-ID:Received:Date:Subject:From:To;
+Feedback-ID: 45355:7809:null:purelymail
+X-Pm-Original-To: rust-for-linux@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1337069898;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Tue, 28 Jul 2026 20:59:48 +0000 (UTC)
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Jul 2026 17:59:45 -0300
+Message-Id: <DKAI8RPYX25S.ENUL6EQIROC9@rcpassos.me>
+Subject: Re: [PATCH] rust_binder: speed up get_node_debug_info using
+ lower_bound iter
+Cc: "Rafael Passos" <rafael@rcpassos.me>, <arve@android.com>,
+ <tkjos@android.com>, "Christian Brauner" <brauner@kernel.org>,
+ <cmllamas@google.com>
+From: "Rafael Passos" <rafael@rcpassos.me>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Greg KH"
+ <gregkh@linuxfoundation.org>, <rust-for-linux@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKAGDGAGBRXN.T20HFE198R5A@kernel.org>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.10.1.5.2/285.252.37
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: aerc 0.21.0
+References: <20260728010717.3075755-1-rafael@rcpassos.me>
+ <2026072804-sedation-bogged-6f89@gregkh>
+ <CAH5fLgh6jyOOW=nHatA=wOc0fjwk7k5VUJgtk0HNz4zdUScN_g@mail.gmail.com>
+In-Reply-To: <CAH5fLgh6jyOOW=nHatA=wOc0fjwk7k5VUJgtk0HNz4zdUScN_g@mail.gmail.com>
 
-On Tue, Jul 28, 2026 at 09:31:50PM +0200, Danilo Krummrich wrote:
-> On Tue Jul 28, 2026 at 8:39 PM CEST, Deborah Brouwer wrote:
-> > +/// Locked wrapper for carrying out virtual memory (VM) operations on the MMU.
-> > +#[pin_data]
-> > +pub(crate) struct Mmu<'drm> {
-> 
-> This shouldn't be 'drm, but 'mmu or just something generic like 'a.
-> 
-> The rationale is that Mmu might be shorter lived than 'drm once we have
-> self-referencial pin-init. Currently it is straight forward, such as in
-> 
-> 	struct Foo<'foo> {
-> 	    dev: &'foo platform::Device<Bound>,
-> 	}
-> 	
-> 	struct Data<'bound> {
-> 	    foo: Foo<'bound>,
-> 	}
-> 
-> where the lifetime of `dev` really ties back to 'bound. However, with
-> self-referencial pin-init it could looks like this:
-> 
-> 	struct Foo<'foo> {
-> 	    dev: &'foo platform::Device<Bound>,
-> 	    io: &'foo IoMem<'foo>,
-> 	}
-> 	
-> 	struct Data<'bound> {
-> 	    foo: Foo<'io>,
-> 	    io: IoMem<'bound>,
-> 	}
-> 
-> Now Foo is not constrained to 'bound anymore, as this would be longer lived than
-> `io`, so it has to capture 'io instead in order to still compile.
+Hi Greg and Alice,
 
-Danilo, would you be ok with renaming this lifetime as a follow up
-patch? Currently, if I understand this correctly, the mmu lifetime is
-still tied to the DRM registration data, so the name is not inaccurate
-for Tyr at least as it stands right now.
+On Tue, Jul 28, 2026 at 6:54=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Mon, Jul 27, 2026 at 10:03:21PM -0300, Rafael Passos wrote:
+> > Finding the next node in the RBTree can be done more efficiently using
+> > the cursor_lower_bound, as it reduces cost from O(n) to O(log n).
+> >
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1249
+> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Rafael Passos <rafael@rcpassos.me>
+> > ---
+>
+> Does this actually speed anything up in the binder benchmark tools?
 
+I want to run these benchmarks! I searched and this "Performance testing"
+page [1] in android docs was the closest match. Am I correct?
+
+I'm learning more about binder, watching the talks, reading posts etc.
+It's really interesting. Any recommendations on how to run in VMs and in
+Hardware ? Is the Cuttlefish emulator the recommended setup ?
+
+On Tue Jul 28, 2026 at 2:47 AM -03, Alice Ryhl wrote:
+> I don't think I got the email for this patch?
+
+Sorry for the confusion. I had to send it twice because I missed the
+list in the first email. The second send is in lore [2].
+I will send a v2 with suggestions. This message might reach both
+threads (if I manipulated the headers correctly ;P)
+
+[1] Android Performance testing https://source.android.com/docs/core/tests/=
+vts/performance
+[2] patch resend https://lore.kernel.org/rust-for-linux/amhHBxSfuat8WZ8R@go=
+ogle.com/T/#t
+
+Thanks,
+Rafael Passos
