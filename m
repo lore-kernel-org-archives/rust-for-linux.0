@@ -1,573 +1,270 @@
-Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012068.outbound.protection.outlook.com [40.107.200.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B2C15A86D;
-	Tue, 28 Jul 2026 06:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785219131; cv=none; b=XYetkET6ufLD/K6eMAkMep66GAzSeCOOVqsEFTA8VibPIj7YW80arye2T+FDNlw2fWjEyj1bUpQin6QNtjdqjkv2bcgPuMcGS81jRSHcr2VGSN7mphSE9u3g2FvOGooKHzLZVmiEk+XDDFNked/Z/PDn4nDH6VXhOPuX6usm5b0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785219131; c=relaxed/simple;
-	bh=CaaInSiJi3i41/gut0Gwk+pfrc1/6h4OTQa64N0MPe0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uvXY/Bkj6PSLB6x7V59SCIXKw1eAYp1RE2OR2fQ35TiOKoGNWNlIU3zSnj45w30m+O2NhYBoe1x364alXA0MwczPar7yv72nrrWyTb63kDxc4lIZgK+skh7vf29DbFULilTOLUvTlhaxNwU0ePcRa5xHH7Q01mbfZOZTLAVZ7B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=LIDFlWv8; arc=none smtp.client-ip=79.135.106.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7AE35292A;
+	Tue, 28 Jul 2026 06:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785221164; cv=fail; b=XFDQpC4EOOQFSpFils+CCvJCa92Qstfk0x1r8CBXulrjVSA7Jp8Je2S6XI38Otz6c8LEArvd6MLopn6nGfNzrJuJxe3zOYrpoQCB86dmhaBapWyQUk1bnoch1IwNHyo6mZMlso1GXwTMrqMFgwHKLyGIz9qM+pWgPAlfjBRNNd4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785221164; c=relaxed/simple;
+	bh=kJ3TCeYoZiknPIssTX2qgmc7v7r5u++wCyN4AoKUyHA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Z4n0jo8tpyOXbw1jQ4HCzsn/zzpOOJ9aqkaFnpydJpYdvy967WbuXAukFot/tYV+DQ/7AqSYAIoiAyBbb/6GAvKOOUEsnQ+vuh2Zk//25HY+MUHA4O+PJVZyKcpO21IlaR8faP3YSA1EgNjI82aa9jHfY3glnSfcDbziyc36dQo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VLDA1OZ/; arc=fail smtp.client-ip=40.107.200.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="LIDFlWv8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1785219117; x=1785478317;
-	bh=YlrIZYvOtDdb3cK3NLM5v5muIPdxdyD9BqDWD4Jsznc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=LIDFlWv89QOxlHngWKelxX57/eOF58gacptBKPmXlJaaG15Uo50j9OI6zyAjU6V07
-	 qMjKxluW3mN3//vtfN3Ls/TJYDbPaxKVZ3fAiRRb4kHzx8/MuxO7FnvwcwGTelyFDn
-	 3MjaXKidWDLhSuyQeJJyz6LMHhvF9WLvW2QGP5l/oRC+pEDFQDhMGE5p7RUjSfSew8
-	 1u3q8HbnWC/sJM71K4/H5fLclsd6TJnGLtWdrqqcwaOGp3Nf2WpQ0re5S5vvisMHC9
-	 bQEVzY6Y87RTr08DWNL5J89qgkrO3VMvu1A5vgV583Ue99deH0LO4YBXEXcBNOIzcY
-	 JmFU4JTQhL9+w==
-X-Pm-Submission-Id: 4h8Q8k6zQCz2ScQ5
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org,
-	arve@android.com,
-	tkjos@android.com,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	aliceryhl@google.com,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	lyude@redhat.com,
-	daniel.almeida@collabora.com,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kprateek.nayak@amd.com,
-	ojeda@kernel.org,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org,
-	longman@redhat.com,
-	viro@zeniv.linux.org.uk,
-	jack@suse.cz,
-	tj@kernel.org,
-	jiangshanlai@gmail.com,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 3/5] rust: sync: add WaitQueue infrastructure
-Date: Tue, 28 Jul 2026 09:11:46 +0300
-Message-ID: <20260728061150.206946-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260726223613.1242940-4-dakr@kernel.org>
-References: <20260726223613.1242940-1-dakr@kernel.org> <20260726223613.1242940-4-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VLDA1OZ/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pUTkgIFvFnoLTa4wca+CUAaN/Xy7Y7pgtfU6gRUOrp+vjv9Akz+BfcUoQWKjByCv3va0gWfQ1JZQns3qYjbno+6Xf5TNHWBd/tQrKiQbO7nOdOVE35O2rbkXO3O0NzTWsVyPm244f9+GpBBpLg1B4QtyddyIIZIrmW0o6HZEWpR/qnygmXXwaIQ3bYmM2S/w2qYzsFWdktbsyly1LIji8EpMpYagPJNBqJ71QJ85hnCUsONN74h9IBsrCzd/Hxky17YlVL0sTxjhGkYzFhuAm2Ysm+OjZE0IiC5dcbQsms88e7vtOh7ixHut9Bds07jAscCrJQrSlDx46BzHpai7Mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I1ieTHOQy7n3qPyOpJMSgsRJL+oGxnaI8CtwZs7TbqE=;
+ b=ppCRTwNpjmdd4jz+qYjkxapTm3m8Cc1npjhHDnZb/uSOxF8HhGc5xltkU+KuQ1BjKgBvYMCKemPXKkXwcL/Ix1D+zUAebuyh8nvKS23gkNgU+6VHVYoK43pg4V3B7+KsnoOrrwXJGD7Pi1RSTNXcyaC1qYPoQrDupmosUbrMwit4ov5CuuhKB0x56ruq0bxONLkMu+FhUWTKuUX5eZM0ao3If4C1dYxbwXJYQmFk3L/+6u2EdX5/GUMcyKpvFMLFUQehyzmTDYALx16RqX2akA6f5kqVpSjTzxx1nsLpWU0P8nL8+gSwku8byrLR3uE0dH/XuE43g/R0aPf4dMitLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I1ieTHOQy7n3qPyOpJMSgsRJL+oGxnaI8CtwZs7TbqE=;
+ b=VLDA1OZ/JJRO4S8ovsifa9YQFzkbQL81b8sX2Bozi8dzsO3vqxkqyyu59o31RZDgJA9gTsZTW3aPWL0W6U4StbjvZHsAU3HRkKpYAVxUo/YTW486RMYca45bSA0MEi262Sg61cFqYC/jj+1Hahd4tIkGsEXCtmJrEZ3y+0Qv3w7CD9RzJ0xHf7Hyw+A4t9+5n/b4Hq7Ml/lexXUx4BscuMDmjUknEVKuez6ZJddW0GQ27ZZPyBU5NEUXuhvSERhB2ZQZkCSnPnKs2H+MBYaqOOFAEeuI99QXc0dM/5W8McC5scSvtVfYyAetXm1YZ/mVxY7tjoBRjtk5L/v0VVozSQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS0PR12MB7874.namprd12.prod.outlook.com (2603:10b6:8:141::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Tue, 28 Jul
+ 2026 06:45:54 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
+ 06:45:53 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Jul 2026 15:45:49 +0900
+Message-Id: <DKA02Y5RE1YJ.2FGI97Z60X96R@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 08/10] gpu: nova-core: use projection for PFALCON and
+ PFALCON2 registers
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+References: <20260721-typed_register-v1-0-452d72b60262@garyguo.net>
+ <20260721-typed_register-v1-8-452d72b60262@garyguo.net>
+In-Reply-To: <20260721-typed_register-v1-8-452d72b60262@garyguo.net>
+X-ClientProxiedBy: TY4P301CA0071.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:405:36f::10) To MN2PR12MB3997.namprd12.prod.outlook.com
+ (2603:10b6:208:161::11)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS0PR12MB7874:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29569ede-6891-4279-a219-08deec73de32
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|23010399003|376014|7416014|1800799024|366016|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	+AKk1rVCemQPkTv7kg0ZZ0nDoDw1YZ85rib0X4f6WrLStEgaKK+DIrIIsgUkBVqPQTtNHq2oRdV+icw88XH959LZb9lGZyvWIhHjrMFKeYr3AEJt3xSvmA8fpzEbRxpifE2cS/eO5qKtndGa3WXo8I1GkS689+acUzeLqAMiUryMcmfHeDuta9dGbizm+WONDhStFDskLXFFeewUt7swYCPV1LtsyABec0hagmC0XxXx7dBq1pVHjFMh5E84MFwreNVs5o9u1ZZwUlILMdjSu4e6Sw4pylKXJKqaYUR7enwaYYJFcrBAoIyDQ6pKv34jEnR1lFTdD4zt/cWuk/57PgFX+I28CYnB+v2+jz2QOPKgjm0t/lFu3eCMMNKVWGa5Y4KxRqTld9JxHOVd3ccKSZTgQoP50ZyEbLGz6+N0VW22/VVnTIwgWH8SnJ3Db+n1zqzk3RJ+mQmNmrmgSoYzRJl6p4OGZrexiSNDFE7hh/c8Q59p7XbMLP4iyEeBFrWGKU4GxnV/k5+QuTMyWkUEdDRn9GPORF+pTR6tQgd/DfVBXgTndvdceeMzM20RRK5EvaVOhYSGkHPB27YLvIGpL+VLLRhcL3AQG7O847/XrRb8tHdBDAElOWDiqF5dd/cj9y2eTRtSlqGtXe4eRG+B6G9PALkQI+tcsYeXiVg6LHs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(376014)(7416014)(1800799024)(366016)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MUx0LzBIQkUxTUlZYnRncFovYUlPejVRYm5NY0ZQTUlnREZJN3hzZm5PbTlv?=
+ =?utf-8?B?c0xuaW4yOUZRa2FmQnoxcHNxUWR1QXRwc3hYVTE4OHN4NXVPUjJ4Q1lFUW0w?=
+ =?utf-8?B?blYzZUNPcEdwU3V1Yk9YWllJZ3FwOXRVTmQwdGc5NVovbzBkVmJVUDRFWlZ1?=
+ =?utf-8?B?NklYeFhZeUYyczJaSEYyRFF6UDd5Q1N4bWZrTFNWZEQrZGtScE04MnJSRE1K?=
+ =?utf-8?B?NWJ4SUFiSEx0Y3hoTzVhdUk2Nm9QRVFZU290YUxkVTNwZU0zMklYWEF4bzJ1?=
+ =?utf-8?B?Vlkzanp2NkRKbG4zb2w3QUFOZGdzQlBsanRnWWVtMDludEpwYXZkcjg5dXgw?=
+ =?utf-8?B?MlZJSXdMQm5Ob2d1MjRibzFmWG5PWHAzL05BejJPeklXU1RqVTR0cXhCU3Rk?=
+ =?utf-8?B?eHRXeXppOW9qd3RYSVF3d0JNblBGd3NOdjFrUVVRQkMvYWoydWo4bE11REFu?=
+ =?utf-8?B?NWNxSHR1N1BnS1A4dlRnQUJsRDgwZHlVcmg4YnBpVlM3bDJnRDU3VUNSOG90?=
+ =?utf-8?B?YVQ1OHJIZHVzTFNFRzJBS1pOT056RWQybVdJY3JtbGFBZHArR3p1cFQwOHY5?=
+ =?utf-8?B?YWV5UXB0bzdIYXhWcmhpTHFzUVhyZHRSQ2NLa1k1TTIwdGRpZ2NZeTE5L09q?=
+ =?utf-8?B?VW0remQrVmRFNjdGU0RrT0FOeWZEOXFPV0h5UzdWbWZKRjYrU1NOUkllc0hR?=
+ =?utf-8?B?S3Z3OWlEc0dvbStkNVRuRm1QNld1Tmo5VmUxVzAxNFJwYTFOTS9FeFI0NHZG?=
+ =?utf-8?B?Q3lFU2tDVEFaNnVHeWJZcjBkbWJwTkYxUGtZdGtOeG1JQ1Q2MHdGNG5tNGJn?=
+ =?utf-8?B?dnMzdEV4aXo4enhrWjlGcjQrY2Y2SWZ5bzhVQmp2OEJzWHR3SmdDZFZnSVNw?=
+ =?utf-8?B?cHJIQ0xxWmVOTFp2anRIdXVOM0w3d3grejVxZzNTenhTdDhMeHpJcVpPckJv?=
+ =?utf-8?B?T3VlejRySGdpWmN0Q2pUS1lEY0pvZ2MvNFZCQS9GQ2hOMEM2QnJEdTFVcy9v?=
+ =?utf-8?B?c0lndHR1ZlZSam84RHFxUHY3RndPZ3Uxbld4ZmZKK3VrS242RFg3ak0yZy9Z?=
+ =?utf-8?B?WGFZTTFnT2lqK0d3QmVkUzZtZjlJWG0rYmlPdDRvSGNWOGpXeGkyMDZFOUda?=
+ =?utf-8?B?V2FKSHcvOVZvb2JIU0IxemhVZ0JhZU83VVF4L29VRXg1Nng2ZEdyQWJIUmlT?=
+ =?utf-8?B?U3VENVNZbCtLbEkxaUp0NmJvUFFZLzBLY1pRZHZYbUZIN0RIdnpPejhvdERG?=
+ =?utf-8?B?T3BGNkhyekFOWmdNTXpJalY3L3hJQk1SbFIxWlJnaDZLRnJXbk8zb1VySU9t?=
+ =?utf-8?B?VEF1QUxTWWNJZSt1ajZUNkx6bSt0QjNiL2lZcDg1aFNHRk54T0pXZWw3MkFr?=
+ =?utf-8?B?U2FCZ2szN1VGZmxQdGlRdVdWU25NTDFWc0Zpamx4TDFIenNPNk1yVFpsdVBU?=
+ =?utf-8?B?NjBRcGZsdTkvc002bXRhR3IwazNBS2t5K2lJVVN3OFM4L3lwRWNUV0pWK2Vt?=
+ =?utf-8?B?WDMzTmxoa2dBWlpIU0c4aUZzTnNKemxnZnFXVnppZlJoakc1c1RNdlQ4VSs0?=
+ =?utf-8?B?NEd4R1BWeWpZU1ZoZ2tEcW9UQ1REOGxqVGtaQUdNb09paXc4OVR1L2ZiLytM?=
+ =?utf-8?B?NWhIZHhWL0VTOUtDU29UZUZSZXZwdVlhRVlCckxWRHEwb1M2Z3RXZjNmVllO?=
+ =?utf-8?B?YXo5cGNKQ0R4b1IvY1JvdFVBWWxuVThCZzBENFRDN1VwWGprNktYRlI5ejlz?=
+ =?utf-8?B?MVNmUjZCTmxsMmxPakErRVVRV0dsNHBIQjNiT3pOclJwNWxNQmFEdnRYNXRn?=
+ =?utf-8?B?MzNDdW9EeS9RVTFuWEZhRVdoSmJ5UW1qYzYyb09qL0EyVUdaUU1pM2g1Nzh5?=
+ =?utf-8?B?Wm4wOFFIa3BvRDNqbGFjMkRtbjRuWTBRRUlRSytoemo5RVQvQUYwNFNTc2FF?=
+ =?utf-8?B?ajlmL1NGYjNmSUNHYVhXOEhDRytwRnlreWVOQm51dnN1c1V0TzZMSGFhUHdW?=
+ =?utf-8?B?WVZzNmErQlZSWUZ3TzA3Q01ZODdQakltQW5XU1RxMk9aNDVITERWZGdZdXJG?=
+ =?utf-8?B?eWJUZ1lneVhYRDhwVXpKVHZ6Z0cvMDlqRGVvMEpMaGw2WUxuTmxWdEcvSlJs?=
+ =?utf-8?B?cU5UZGprY0xRZDlJVnp4QzVUYnlGNmZDNzlMQnlqbFgyVzBYa2VteGpzZkRK?=
+ =?utf-8?B?MnU4MFczeEEzVUFFdnRKSXAreXEyYm1WZ25QK3ZKYlRIbU5jSGRTNUZ1MjhP?=
+ =?utf-8?B?SzJma2lZc3luVktrb1VVZWlLRUNjLzRPYW1ad0EvTDFsYnUzL1krU3ZvSUlX?=
+ =?utf-8?B?VGdGb3NQRDhmbWpvazI3YThXV3pTSjJyQkpFbll4NXlIb0hUamJpQk5QaWV5?=
+ =?utf-8?Q?w72iZ6TjzFmQCYkyptavZAeMWfMvNQl4Iph2ABkq9cw7w?=
+X-MS-Exchange-AntiSpam-MessageData-1: DBFHhUDIEziYyw==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29569ede-6891-4279-a219-08deec73de32
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB3997.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 06:45:53.4873
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: joxLdJm7q52Z+KymHjr7gZM+PEFkjjqACoKmDjA4pE1WCyRg2XhNSwziBCh/lJidvhYY0rAqPQ9gI6aweFiWcQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7874
 
-On Mon, 27 Jul 2026 00:36:09 +0200=0D
-Danilo Krummrich <dakr@kernel.org> wrote:=0D
-=0D
-> Implement a wait queue wrapping the kernel's struct wait_queue_head,=0D
-> with wait_event()-style methods that take a condition closure directly.=0D
-> =0D
-> The API mirrors the C wait_event() family:=0D
-> =0D
->   - wait_event()=0D
->   - wait_event_interruptible()=0D
->   - wait_event_timeout()=0D
->   - wait_event_interruptible_timeout()=0D
->   - wake_up() / wake_up_all() / wake_up_sync()=0D
-> =0D
-> Interruptible and timeout variants return Result<(), WaitError>, where=0D
-> WaitError maps to ERESTARTSYS (signal) or ETIMEDOUT (timeout).=0D
-> =0D
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>=0D
-> ---=0D
->  rust/kernel/sync.rs      |   6 +=0D
->  rust/kernel/sync/wait.rs | 388 +++++++++++++++++++++++++++++++++++++++=0D
->  2 files changed, 394 insertions(+)=0D
->  create mode 100644 rust/kernel/sync/wait.rs=0D
-> =0D
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs=0D
-> index df4f2604ff9b..31f0999e5747 100644=0D
-> --- a/rust/kernel/sync.rs=0D
-> +++ b/rust/kernel/sync.rs=0D
-> @@ -21,6 +21,7 @@=0D
->  pub mod rcu;=0D
->  mod refcount;=0D
->  mod set_once;=0D
-> +mod wait;=0D
->  =0D
->  pub use arc::{Arc, ArcBorrow, UniqueArc};=0D
->  pub use completion::Completion;=0D
-> @@ -38,6 +39,11 @@=0D
->  pub use locked_by::LockedBy;=0D
->  pub use refcount::Refcount;=0D
->  pub use set_once::SetOnce;=0D
-> +pub use wait::{=0D
-> +    new_waitqueue,=0D
-> +    WaitError,=0D
-> +    WaitQueue, //=0D
-> +};=0D
->  =0D
->  /// Represents a lockdep class.=0D
->  ///=0D
-> diff --git a/rust/kernel/sync/wait.rs b/rust/kernel/sync/wait.rs=0D
-> new file mode 100644=0D
-> index 000000000000..ba4ee0f8d4d4=0D
-> --- /dev/null=0D
-> +++ b/rust/kernel/sync/wait.rs=0D
-> @@ -0,0 +1,388 @@=0D
-> +// SPDX-License-Identifier: GPL-2.0=0D
-> +=0D
-> +//! Wait queue.=0D
-> +//!=0D
-> +//! C header: [`include/linux/wait.h`](srctree/include/linux/wait.h)=0D
-> +=0D
-> +use super::LockClassKey;=0D
-> +use crate::{=0D
-> +    prelude::*,=0D
-> +    str::CStr,=0D
-> +    task::{=0D
-> +        self,=0D
-> +        TASK_INTERRUPTIBLE,=0D
-> +        TASK_NORMAL,=0D
-> +        TASK_UNINTERRUPTIBLE, //=0D
-> +    },=0D
-> +    time::Jiffies,=0D
-> +    types::Opaque,=0D
-> +};=0D
-> +=0D
-> +use core::{=0D
-> +    pin::Pin,=0D
-> +    ptr, //=0D
-> +};=0D
-> +=0D
-> +/// Creates a [`WaitQueue`] initialiser with the given name and a newly-=
-created lock class.=0D
-> +#[macro_export]=0D
-> +macro_rules! new_waitqueue {=0D
-> +    ($($name:literal)?) =3D> {=0D
-> +        $crate::sync::WaitQueue::new(=0D
-> +            $crate::optional_name!($($name)?),=0D
-> +            $crate::static_lock_class!(),=0D
-> +        )=0D
-> +    };=0D
-> +}=0D
-> +pub use new_waitqueue;=0D
-> +=0D
-> +/// Exposes the kernel's [`struct wait_queue_head`] as a Rust wait queue=
-.=0D
-> +///=0D
-> +/// A `WaitQueue` allows a thread to sleep until a caller-supplied condi=
-tion becomes true,=0D
-> +/// re-checking the condition on each wake-up. This matches the C `wait_=
-event()` family of macros.=0D
-> +///=0D
-> +/// For waiting with a lock guard (the condition variable pattern), use =
-[`CondVar`](super::CondVar)=0D
-> +/// instead.=0D
-> +///=0D
-> +/// Instances of `WaitQueue` need a lock class and to be pinned. The rec=
-ommended way to create such=0D
-> +/// instances is with the [`pin_init!`] and [`new_waitqueue!`] macros.=0D
-> +///=0D
-> +/// # Examples=0D
-> +///=0D
-> +/// ```=0D
-> +/// use kernel::sync::{=0D
-> +///     atomic::{=0D
-> +///         Atomic,=0D
-> +///         Relaxed,=0D
-> +///     },=0D
-> +///     new_waitqueue,=0D
-> +///     WaitQueue,=0D
-> +/// };=0D
-> +///=0D
-> +/// #[pin_data]=0D
-> +/// pub struct Example {=0D
-> +///     value: Atomic<i32>,=0D
-> +///     #[pin]=0D
-> +///     queue: WaitQueue,=0D
-> +/// }=0D
-> +///=0D
-> +/// fn wait_for_value(e: &Example, v: i32) {=0D
-> +///     e.queue.wait_event(|| e.value.load(Relaxed) =3D=3D v);=0D
-> +/// }=0D
-> +///=0D
-> +/// fn set_value(e: &Example, v: i32) {=0D
-> +///     e.value.store(v, Relaxed);=0D
-> +///     e.queue.wake_up();=0D
-> +/// }=0D
-> +/// ```=0D
-> +///=0D
-> +/// [`struct wait_queue_head`]: srctree/include/linux/wait.h=0D
-> +#[pin_data]=0D
-> +pub struct WaitQueue {=0D
-> +    #[pin]=0D
-> +    wait_queue_head: Opaque<bindings::wait_queue_head>,=0D
-> +}=0D
-> +=0D
-> +// SAFETY: `WaitQueue` only uses a `struct wait_queue_head`, which is sa=
-fe to use on any thread.=0D
-> +unsafe impl Send for WaitQueue {}=0D
-> +=0D
-> +// SAFETY: `WaitQueue` only uses a `struct wait_queue_head`, which is sa=
-fe to use on multiple=0D
-> +// threads concurrently.=0D
-> +unsafe impl Sync for WaitQueue {}=0D
-> +=0D
-> +impl WaitQueue {=0D
-> +    /// Constructs a new wait queue initialiser.=0D
-> +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> =
-impl PinInit<Self> {=0D
-> +        pin_init!(Self {=0D
-> +            // SAFETY: `slot` is valid while the closure is called and b=
-oth `name` and `key` have=0D
-> +            // static lifetimes so they live indefinitely.=0D
-> +            wait_queue_head <- Opaque::ffi_init(|slot| unsafe {=0D
-> +                bindings::__init_waitqueue_head(slot, name.as_char_ptr()=
-, key.as_ptr())=0D
-> +            }),=0D
-> +        })=0D
-> +    }=0D
-> +=0D
-> +    /// Returns a raw pointer to the underlying `wait_queue_head`.=0D
-> +    #[expect(unused)]=0D
-> +    #[inline]=0D
-> +    pub(super) fn as_raw(&self) -> *mut bindings::wait_queue_head {=0D
-> +        self.wait_queue_head.get()=0D
-> +    }=0D
-> +=0D
-> +    /// Sleeps until the condition returns `true`.=0D
-> +    ///=0D
-> +    /// The condition is checked before each sleep and after each wake-u=
-p. The wait is=0D
-> +    /// uninterruptible.=0D
-> +    #[inline]=0D
-> +    pub fn wait_event<F: Fn() -> bool>(&self, condition: F) {=0D
-> +        self.wait_event_timeout_internal(TASK_UNINTERRUPTIBLE, &conditio=
-n, Jiffies::MAX);=0D
-> +    }=0D
-> +=0D
-> +    /// Sleeps until the condition returns `true` or a signal is receive=
-d.=0D
-> +    ///=0D
-> +    /// Returns `Ok(())` when the condition is met, or `Err(WaitError::S=
-ignal)` if interrupted=0D
-> +    /// by a signal.=0D
-> +    #[inline]=0D
-> +    pub fn wait_event_interruptible<F: Fn() -> bool>(&self, condition: F=
-) -> Result<(), WaitError> {=0D
-> +        self.wait_event_timeout_internal(TASK_INTERRUPTIBLE, &condition,=
- Jiffies::MAX);=0D
-> +        if !condition() && current!().signal_pending() {=0D
-> +            Err(WaitError::Signal)=0D
-> +        } else {=0D
-> +            Ok(())=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    /// Sleeps until the condition returns `true` or the timeout expires=
-.=0D
-> +    ///=0D
-> +    /// Returns `Ok(())` when the condition is met, or `Err(WaitError::T=
-imeout)` if the timeout=0D
-> +    /// elapsed first.=0D
-> +    #[inline]=0D
-> +    pub fn wait_event_timeout<F: Fn() -> bool>(=0D
-> +        &self,=0D
-> +        condition: F,=0D
-> +        jiffies: Jiffies,=0D
-> +    ) -> Result<(), WaitError> {=0D
-> +        let remaining =3D self.wait_event_timeout_internal(TASK_UNINTERR=
-UPTIBLE, &condition, jiffies);=0D
-> +        if remaining =3D=3D 0 && !condition() {=0D
-> +            Err(WaitError::Timeout)=0D
-> +        } else {=0D
-> +            Ok(())=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    /// Sleeps until the condition returns `true`, a signal is received,=
- or the timeout expires.=0D
-> +    ///=0D
-> +    /// Returns `Ok(())` when the condition is met, or `Err(WaitError)` =
-on signal or timeout.=0D
-> +    #[inline]=0D
-> +    pub fn wait_event_interruptible_timeout<F: Fn() -> bool>(=0D
-> +        &self,=0D
-> +        condition: F,=0D
-> +        jiffies: Jiffies,=0D
-> +    ) -> Result<(), WaitError> {=0D
-> +        let remaining =3D self.wait_event_timeout_internal(TASK_INTERRUP=
-TIBLE, &condition, jiffies);=0D
-> +        if condition() {=0D
-> +            Ok(())=0D
-> +        } else if current!().signal_pending() {=0D
-> +            Err(WaitError::Signal)=0D
-> +        } else if remaining =3D=3D 0 {=0D
-> +            Err(WaitError::Timeout)=0D
-> +        } else {=0D
-> +            Ok(())=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    fn wait_event_timeout_internal(=0D
-> +        &self,=0D
-> +        wait_state: c_int,=0D
-> +        condition: &dyn Fn() -> bool,=0D
-> +        jiffies: Jiffies,=0D
-> +    ) -> Jiffies {=0D
-=0D
-Would it make sense to check condition() first and return early?=0D
-=0D
-> +        let wait =3D Opaque::<bindings::wait_queue_entry>::uninit();=0D
-> +=0D
-> +        // SAFETY: `wait` points to valid memory.=0D
-> +        unsafe { bindings::init_wait(wait.get()) };=0D
-> +=0D
-> +        let mut remaining =3D jiffies;=0D
-> +=0D
-> +        loop {=0D
-> +            // SAFETY: Both `wait` and `wait_queue_head` point to valid =
-memory, and `wait` was=0D
-> +            // initialised by `init_wait()` above.=0D
-> +            let ret =3D unsafe {=0D
-> +                bindings::prepare_to_wait_event(self.wait_queue_head.get=
-(), wait.get(), wait_state)=0D
-> +            };=0D
-> +=0D
-> +            if condition() {=0D
-> +                break;=0D
-> +            }=0D
-> +=0D
-> +            if ret !=3D 0 || remaining =3D=3D 0 {=0D
-> +                break;=0D
-> +            }=0D
-> +=0D
-> +            remaining =3D task::schedule_timeout(remaining);=0D
-> +=0D
-> +            if condition() {=0D
-> +                break;=0D
-> +            }=0D
-> +        }=0D
-> +=0D
-> +        // SAFETY: Both `wait` and `wait_queue_head` point to valid memo=
-ry.=0D
-> +        unsafe { bindings::finish_wait(self.wait_queue_head.get(), wait.=
-get()) };=0D
-> +=0D
-> +        remaining=0D
-> +    }=0D
-> +=0D
-> +    /// Performs a single exclusive prepare-to-wait / finish-wait cycle,=
- calling `schedule_fn`=0D
-> +    /// in between.=0D
-> +    #[expect(unused)]=0D
-> +    pub(super) fn wait_once_exclusive<F, R>(&self, wait_state: c_int, sc=
-hedule_fn: F) -> R=0D
-> +    where=0D
-> +        F: FnOnce() -> R,=0D
-> +    {=0D
-> +        let wait =3D Opaque::<bindings::wait_queue_entry>::uninit();=0D
-> +=0D
-> +        // SAFETY: `wait` points to valid memory.=0D
-> +        unsafe { bindings::init_wait(wait.get()) };=0D
-> +=0D
-> +        // SAFETY: Both `wait` and `wait_queue_head` point to valid memo=
-ry.=0D
-> +        unsafe {=0D
-> +            bindings::prepare_to_wait_exclusive(self.wait_queue_head.get=
-(), wait.get(), wait_state)=0D
-> +        };=0D
-> +=0D
-> +        let ret =3D schedule_fn();=0D
-> +=0D
-> +        // SAFETY: Both `wait` and `wait_queue_head` point to valid memo=
-ry.=0D
-> +        unsafe { bindings::finish_wait(self.wait_queue_head.get(), wait.=
-get()) };=0D
-> +=0D
-> +        ret=0D
-> +    }=0D
-> +=0D
-> +    /// Wakes up waiters.=0D
-> +    ///=0D
-> +    /// Wakes all non-exclusive waiters and one exclusive waiter, if any=
-.  Matches C's `wake_up()`.=0D
-> +    #[inline]=0D
-> +    pub fn wake_up(&self) {=0D
-> +        // SAFETY: `wait_queue_head` points to valid memory.=0D
-> +        unsafe { bindings::__wake_up(self.wait_queue_head.get(), TASK_NO=
-RMAL, 1, ptr::null_mut()) };=0D
-> +    }=0D
-> +=0D
-> +    /// Wakes up all waiters.=0D
-> +    ///=0D
-> +    /// Wakes all non-exclusive and all exclusive waiters, if any.=0D
-> +    /// Matches C's `wake_up_all()`.=0D
-> +    #[inline]=0D
-> +    pub fn wake_up_all(&self) {=0D
-> +        // SAFETY: `wait_queue_head` points to valid memory.=0D
-> +        unsafe { bindings::__wake_up(self.wait_queue_head.get(), TASK_NO=
-RMAL, 0, ptr::null_mut()) };=0D
-> +    }=0D
-> +=0D
-> +    /// Like [`wake_up()`](Self::wake_up), but hints to the scheduler th=
-at the current task is=0D
-> +    /// about to sleep, so the woken task should be scheduled on the sam=
-e CPU to avoid unnecessary=0D
-> +    /// migration. Matches C's `wake_up_sync()`.=0D
-> +    #[inline]=0D
-> +    pub fn wake_up_sync(&self) {=0D
-> +        // SAFETY: `wait_queue_head` points to valid memory.=0D
-> +        unsafe { bindings::__wake_up_sync(self.wait_queue_head.get(), TA=
-SK_NORMAL) };=0D
-> +    }=0D
-> +=0D
-> +    /// Wakes up all waiters and clears poll registrations.=0D
-> +    ///=0D
-> +    /// Used when a wait queue is about to be freed, to ensure epoll ite=
-ms are properly removed.=0D
-> +    /// Matches C's `wake_up_pollfree()`.=0D
-> +    #[inline]=0D
-> +    #[expect(unused)]=0D
-> +    pub(super) fn wake_up_pollfree(&self) {=0D
-> +        // SAFETY: `wait_queue_head` points to valid memory.=0D
-> +        unsafe { bindings::__wake_up_pollfree(self.wait_queue_head.get()=
-) };=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +/// Error returned by [`WaitQueue`] wait functions.=0D
-> +#[derive(Debug, PartialEq)]=0D
-> +pub enum WaitError {=0D
-> +    /// Interrupted by a signal.=0D
-> +    Signal,=0D
-> +    /// The timeout elapsed without the condition being met.=0D
-> +    Timeout,=0D
-> +}=0D
-> +=0D
-> +impl From<WaitError> for Error {=0D
-> +    #[inline]=0D
-> +    fn from(e: WaitError) -> Error {=0D
-> +        match e {=0D
-> +            WaitError::Signal =3D> ERESTARTSYS,=0D
-> +            WaitError::Timeout =3D> ETIMEDOUT,=0D
-> +        }=0D
-> +    }=0D
-> +}=0D
-> +=0D
-> +#[macros::kunit_tests(rust_waitqueue)]=0D
-> +mod tests {=0D
-> +    use super::*;=0D
-> +    use crate::{=0D
-> +        sync::{=0D
-> +            atomic::{=0D
-> +                Atomic,=0D
-> +                Relaxed, //=0D
-> +            },=0D
-> +            Arc,=0D
-> +        },=0D
-> +        time::{=0D
-> +            delay::fsleep,=0D
-> +            Delta, //=0D
-> +        },=0D
-> +        workqueue,=0D
-> +    };=0D
-> +=0D
-> +    #[pin_data]=0D
-> +    struct State {=0D
-> +        value: Atomic<i32>,=0D
-> +        #[pin]=0D
-> +        wq: WaitQueue,=0D
-> +    }=0D
-> +=0D
-> +    impl State {=0D
-> +        fn new() -> Result<Arc<Self>> {=0D
-> +            Arc::pin_init(=0D
-> +                pin_init!(Self {=0D
-> +                    value: Atomic::new(0),=0D
-> +                    wq <- new_waitqueue!(),=0D
-> +                }),=0D
-> +                GFP_KERNEL,=0D
-> +            )=0D
-> +        }=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn wait_event_from_work() {=0D
-> +        let s =3D State::new().unwrap();=0D
-> +=0D
-> +        let s2 =3D s.clone();=0D
-> +        workqueue::system_dfl()=0D
-> +            .try_spawn(GFP_KERNEL, move || {=0D
-> +                s2.value.store(1, Relaxed);=0D
-> +                s2.wq.wake_up();=0D
-> +            })=0D
-> +            .unwrap();=0D
-> +=0D
-> +        s.wq.wait_event(|| s.value.load(Relaxed) =3D=3D 1);=0D
-> +        assert_eq!(s.value.load(Relaxed), 1);=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn wait_event_condition_already_true() {=0D
-> +        let s =3D State::new().unwrap();=0D
-> +        s.value.store(1, Relaxed);=0D
-> +=0D
-> +        s.wq.wait_event(|| s.value.load(Relaxed) =3D=3D 1);=0D
-> +        assert_eq!(s.value.load(Relaxed), 1);=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn wait_event_condition_not_yet_met() {=0D
-> +        let s =3D State::new().unwrap();=0D
-> +=0D
-> +        let s2 =3D s.clone();=0D
-> +        workqueue::system_dfl()=0D
-> +            .try_spawn(GFP_KERNEL, move || {=0D
-> +                s2.value.store(1, Relaxed);=0D
-> +                s2.wq.wake_up_all();=0D
-> +=0D
-> +                fsleep(Delta::from_millis(50));=0D
-> +=0D
-> +                s2.value.store(2, Relaxed);=0D
-> +                s2.wq.wake_up_all();=0D
-> +            })=0D
-> +            .unwrap();=0D
-> +=0D
-> +        s.wq.wait_event(|| s.value.load(Relaxed) =3D=3D 2);=0D
-> +        assert_eq!(s.value.load(Relaxed), 2);=0D
-> +    }=0D
-> +=0D
-> +    #[test]=0D
-> +    fn wait_event_timeout_expires() {=0D
-> +        let s =3D State::new().unwrap();=0D
-> +=0D
-> +        let ret =3D s.wq.wait_event_timeout(|| s.value.load(Relaxed) =3D=
-=3D 1, 1);=0D
-> +        assert_eq!(ret, Err(WaitError::Timeout));=0D
-> +    }=0D
-> +}=0D
-> -- =0D
-> 2.55.0=0D
-> =0D
+On Wed Jul 22, 2026 at 1:54 AM JST, Gary Guo wrote:
+> Add fixed size region types for these and add projection methods that
+> project from `Bar0` into these. Update these registers to be registers on
+> `PFalconRegisters` and `PFalcon2Registers` and not relative registers on
+> `NovaRegisters`.
+>
+> The use sites are updated mechanically; calls to the projection methods a=
+re
+> not extracted in this commit.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+>  drivers/gpu/nova-core/falcon.rs                    | 158 +++++++++------=
+------
+>  drivers/gpu/nova-core/falcon/fsp.rs                |  53 +++----
+>  drivers/gpu/nova-core/falcon/gsp.rs                |  43 +++---
+>  drivers/gpu/nova-core/falcon/hal/ga102.rs          |  39 ++---
+>  drivers/gpu/nova-core/falcon/hal/tu102.rs          |   8 +-
+>  drivers/gpu/nova-core/falcon/sec2.rs               |  32 +++--
+>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |  11 +-
+>  drivers/gpu/nova-core/regs.rs                      |  81 ++++++-----
+>  8 files changed, 193 insertions(+), 232 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falc=
+on.rs
+> index 78948cc8bff3..3cd065019a66 100644
+> --- a/drivers/gpu/nova-core/falcon.rs
+> +++ b/drivers/gpu/nova-core/falcon.rs
+> @@ -14,13 +14,12 @@
+>      },
+>      io::{
+>          poll::read_poll_timeout,
+> -        register::{
+> -            RegisterBase,
+> -            WithBase, //
+> -        },
+> +        register::Array,
+>          Io,
+> +        Mmio, //
+>      },
+>      prelude::*,
+> +    sizes::SZ_4K,
+>      time::Delta,
+>  };
+> =20
+> @@ -165,18 +164,22 @@ pub(crate) enum FalconFbifMemType with From<Bounded=
+<u32, 1>> {
+>      }
+>  }
+> =20
+> -/// Type used to represent the `PFALCON` registers address base for a gi=
+ven falcon engine.
+> -pub(crate) struct PFalconBase(());
+> +/// Type used to represent the `PFALCON` registers.
+> +#[repr(align(4))]
+> +#[derive(FromBytes, IntoBytes)]
+> +pub(crate) struct PFalconRegisters([u8; SZ_4K]);
+
+nit: `SZ_4K` looks correct for both PFALCON and PFALCON2, but the size
+should be defined at a const of its own.
+
+> =20
+> -/// Type used to represent the `PFALCON2` registers address base for a g=
+iven falcon engine.
+> -pub(crate) struct PFalcon2Base(());
+> +/// Type used to represent the `PFALCON2` registers.
+> +#[repr(align(4))]
+> +#[derive(FromBytes, IntoBytes)]
+> +pub(crate) struct PFalcon2Registers([u8; SZ_4K]);
+> =20
+>  /// Trait defining the parameters of a given Falcon engine.
+>  ///
+>  /// Each engine provides one base for `PFALCON` and `PFALCON2` registers=
+.
+> -pub(crate) trait FalconEngine:
+> -    Send + Sync + RegisterBase<PFalconBase> + RegisterBase<PFalcon2Base>=
+ + Sized
+> -{
+> +pub(crate) trait FalconEngine: Send + Sync + Sized {
+> +    fn pfalcon(io: Bar0<'_>) -> Mmio<'_, PFalconRegisters>;
+> +    fn pfalcon2(io: Bar0<'_>) -> Mmio<'_, PFalcon2Registers>;
+
+We are calling these methods quite a bit throughout the code. I
+understand they are supposed to be optimized away, but that's still a
+lot of repetition.
+
+Since we now have HRTB and `Falcon` is already referencing the `Bar0`,
+how about storing the projected `Mmio` inside the `Falcon` instance?
+
+    pub(crate) struct Falcon<'a, E: FalconEngine> {
+        ...
+        pfalcon: Mmio<'a, PFalconRegisters>,
+        pfalcon2: Mmio<'a, PFalcon2Registers>,
+    }
+
+    pub(crate) fn new(...) -> Result<Self> {
+        Ok(Self {
+            ...
+            pfalcon: E::pfalcon(bar),
+            pfalcon2: E::pfalcon2(bar),
+        })
+    }
+
+That way all the
+
+    E::pfalcon(self.bar)...
+
+Can become simply
+
+    self.pfalcon
+
+And I suspect that once this is generalized, `Falcon` won't even need to
+store a reference to the `Bar0` (and potentially poke the I/O of other
+engines) anymore.
+
+Actually I would like to push that even further and replace the
+`pfalcon()` and `pfalcon2()` trait methods by associated constants used
+to construct the projected view in `Falcon::new`, since the projections
+are all constructed the same way, but doing so requires
+`generic_const_exprs`. :/
+
+We could make it work by moving the `OFFSET` generic argument of
+`subregion` into a regular argument and enforcing its invariants using
+`build_assert!`, but that would require `subregion` to be
+`#[inline(always)]`. I don't know if there is another trick we can use,
+if not otherwise I guess the trait methods are ok, especially if they
+are only called once in the constructor.
