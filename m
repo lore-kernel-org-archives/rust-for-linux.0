@@ -1,55 +1,56 @@
 Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021119.outbound.protection.outlook.com [52.101.100.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E501C84DC;
-	Tue, 28 Jul 2026 14:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD57D3A7F69;
+	Tue, 28 Jul 2026 14:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.119
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250349; cv=fail; b=IwIf4WmH0E+uJOTRIwVikxhUFp4CnM/5JwtKZb9beVA5D4rsLdg6RBzSfEuPeepdRFvalIRwwvW/7zG3QFkaTVrd6/si9yyo8J3/j4wH/vrEduyGkj444FpjjHjgtkuZIPmLy39oVaa5iLYNiry4sdCEFc77fpBTuFi3RfSY0KA=
+	t=1785250352; cv=fail; b=pAopaIojdNF9xG0wXzHM3fgv9pqQmbJYlH5buc7ncZIOjGgZ3yHhfuBrPRDlEnR+qcyVJDwgFQeq40rK33/iLQ+umjcwnxa/g1PNTZlq5/47OYezcryF2OLU7vO2nJtJtIrhmU4LaIIh4jJvtQnHfR3VnSub5/+/AGl+EsfxmXs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785250349; c=relaxed/simple;
-	bh=e66sEbUMcnOcFoei80t1yO+AZSHQtd4jX5eUdmTrlGU=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=jGodSjl2GmB0wfMFcs4zJHHBk1xE2faq5YzY4JvEYLh5tSlRoYB/ZbXFj3XwZbCkZLQCzzpgfEmPUFme2l91JZAOAntuzX6I1x3wnGk9IZhcVl5Qyaxco/EzxWc7MRJe4bS37bcqXPN70uw5XhGyRa2NBtjRbDEjjFVUpB1rxQ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=xYgIiH8M; arc=fail smtp.client-ip=52.101.100.119
+	s=arc-20240116; t=1785250352; c=relaxed/simple;
+	bh=KbCGgIl0wMc7UI1Nebpiei57LyS8+vOOvCwJ4P6pD+8=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=rkIfKCFQ2pdmaA6dTACCepFkFvlHIiW6coC91TNkO3KtdZ9xN796mcXdTOcXLa0y+7y1cmFj7v54wthx0qOcsw5StfyIqyPhPedco5nDKaH8Y0CODJ6Inbo9sqBxI+uNfGVJ6VKdF2KwpwJIEOGvRjZ9UEyaGDNJ9nR9Zf75qws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=cNsrv9VB; arc=fail smtp.client-ip=52.101.100.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="xYgIiH8M"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="cNsrv9VB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sQsnns4Be3nbAKyhGWN2qg1WL7SbXAsAtzC8Z4AmIaNojydCKZHUdBDnV2C74lbSbnXR+G0lVT4l9qKg/Qh+qWRkqXCR3Jmi5NzCSWsRzOM/xMjM49th6T0j07SNr2s8ETrBFHMknHWC0ZvMALV2/z+dhYth9WS1VpnNkmfDwyvtCLePE5vVmU97Ut6rE71zoq8/0StEeIi+XN7gHsKTsMMcWPX+IsPP+p/pi/gWWwdCCL6KlM/NmcOqYk+xuwjs9qdMWPv7culNnc7RuTjY++/2aLy6kSbo6EcuHu71PncfBbrl/nsKUKj13rTYg04X6dP3rrW2HDS/Ib8Z/00m3Q==
+ b=rA1/FgPKULurYKGaLqb+ua4hHPV7nhr0DkRozGEry0X9/hmfcXk1mSuRYaaumFaN5ubuPIkll7mQCeg0/SP4EGAF4QRv4vbLtICe9uYv4gIGveBLLxcAnHnw+ts4YdD+yeVI1B+5oNQKWPuAZWI+yg6t/+zGiOgrJAI7F7cil7xYsUYBIzoa5+6x+ywnxrJYXOTsgDyz1Y+6GeVBdGCeWNtuKHWgJQtBLENlcKvncwHoxDnc+j7qFLJbHZaUqX1kRnOVaAkDH44r+LG35aLnRkug4d7K1NYquCy1M7qb5vzsYI4kzzVrI/CArQIXgl8isN8ERJ9NdHg64yMZ/hiKVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QKkyrose37EcRn0XHKlIJB3gRlUXsme8To/1klPWuJA=;
- b=Vm9rpxe5aoGjDfZ8GB67fWjT1AgJ3kCIPn9u2MUUMqbPIrDQwiBWcegNdJQF7wvktrClxB/zBx90xXDTl5LWZzl/M0QnAIWIADzi7RIIrM12ya/vfceNMGa+7X7fR4m2tV0yimkXaUNQBvMp6j0Gll1HNCkX1k8TTCFw1QxyM92dYb8JK5g4GQEMf6KmviTG+isv/Y2/R1ah6yKZcfE8Wxlo7RzujsugaX13Zs4d0umSaxT5vGvSpVWOsa3C7weqbq4u3M35+ZbDDPwYCn2cx6AAi0gk5LOM3WCH6hEXHnNbTw4fsIBz+hQ35vDAymGuynzajNQkjXk4ghD3ILfn2g==
+ bh=sS5p0QbMNkOHLO+4D50MItzu7zIg8Tuzdd7FJu161BY=;
+ b=Lre2kIc8howQdLtxyKBvM502fQqfd83APq9I6v2StV1L4zYIYF2xpsfvCmWzghUxxKI0S4w+OQ0w/nk84rGaVYrUtMjV80hv9cN/iUZtVAfee3hR4q2DMP1ymqSgTTEYW25h0OwAqE09c0xrMpTt8GvIQYFXd0wnrh4CxFv0/SBK51xYxtEYeXQCR8ONe+4E8lUMJ/zFMON2jfcK6ipKThkNSImqMhSQZbrw4oUnbIkNYCvgNUIJmdCuv8ouIM/caYvJNQNcJwjlQcAMKpYcHsrmpCiprVD/fxNtHoAyHYyIdATBto2U0jyzm2N7wJMMmp7rXxeuYD14leG1hVFABg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QKkyrose37EcRn0XHKlIJB3gRlUXsme8To/1klPWuJA=;
- b=xYgIiH8MSlD0TXaYEwV8/dzoRiMU7jdy6fbsm7BeYoYPG8A7p1+t+cp0qhbN58tE1I5ukOmOI2Xvp6A1+OG9MNY/pOG+Z7YjjbsJ/T+TCZ7mKN0aB/LU83al3Em4HRink6fbakayT5p8bwbEl/Xo9BWSetn+BE0z3riN/J2lldQ=
+ bh=sS5p0QbMNkOHLO+4D50MItzu7zIg8Tuzdd7FJu161BY=;
+ b=cNsrv9VB08aT8H3VHxo+REDJKrADPDxMft2AK+H3e3wzARszHQjIciltAVLG7589k557bsoFKArYm6ngePOTfDkzFTuS3bnSY2BsH1L9AwNi6+P5Wq8Z2OIMxJgK7fxqCJQHlUY+TYRr/+NvL2MKpIi8hPbXRgvf63c5IZwq6ks=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by LO6P265MB7374.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:31a::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 14:52:23 +0000
+ 2026 14:52:22 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 14:52:23 +0000
+ 14:52:22 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Tue, 28 Jul 2026 15:52:08 +0100
-Subject: [PATCH 1/5] rust: print: handle `pr_cont` separately
+Subject: [PATCH 0/5] rust: print: add "continuable" as option
+Date: Tue, 28 Jul 2026 15:52:07 +0100
+Message-Id: <20260728-printk-v1-0-855606634d70@garyguo.net>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-printk-v1-1-855606634d70@garyguo.net>
-References: <20260728-printk-v1-0-855606634d70@garyguo.net>
-In-Reply-To: <20260728-printk-v1-0-855606634d70@garyguo.net>
+X-B4-Tracking: v=1; b=H4sIABfCaGoC/yWMyw7CIBBFf6WZtURKURt/xbgAnNrxQZsZakia/
+ rugy3Nzzl1BkAkFzs0KjB8SmmKBdtdAGF28o6JbYTDaHPXJ9GpmiumpuqCHcOi71loLRZ4ZB8q
+ /o8v1z7L4B4ZU62p4J6g8uxjGOr0oLllFzGn/dpKQYdu+HKySQY4AAAA=
+X-Change-ID: 20260728-printk-3c0fc5831444
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
@@ -63,11 +64,11 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785250342; l=7751;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785250342; l=3705;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=e66sEbUMcnOcFoei80t1yO+AZSHQtd4jX5eUdmTrlGU=;
- b=e4pj1ZxcynEn2XoF5ghs3bjDaDjx+oENZ1ymrPu3eSDIXkDI1owmiqMPjLTd6g7p4SR0xnuEX
- aNLuhYN9ah4AP9Nq2tyZ7o1RnR4+jXZZIa+x1yJWaWOP/ZZtRWstHLG
+ bh=KbCGgIl0wMc7UI1Nebpiei57LyS8+vOOvCwJ4P6pD+8=;
+ b=sM/qDodvaIv3TqBYO3dINfl0O/fbRWARqwn8d6VNn9b8+G0SB8f6ni+aEVEjbWFDhLoC7AtXG
+ JnHYMmvnxLHC4lwOccfNifvxqQVRrZNku9OMDBJW/mCqnxIlkczGWOA
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO2P123CA0107.GBRP123.PROD.OUTLOOK.COM
@@ -81,272 +82,144 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB7374:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2eacead-9515-4aa6-67bc-08deecb7d50a
+X-MS-Office365-Filtering-Correlation-Id: 649bfab7-bab1-4b8f-9aea-08deecb7d4bd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|23010399003|376014|7416014|18002099003|10067099003|22082099003|5023799004|56012099006|921020|6133799003;
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|23010399003|376014|7416014|18002099003|10067099003|56012099006|921020;
 X-Microsoft-Antispam-Message-Info:
-	L9eks5YecA6DZ2yZh0wBw+8A7Nliy/8x17bu0UfEEtQhJIqCJ2pQhkIU7VDTQa+FAN7upzLesa6pWreDdTPXlhW0GBq+Kx8YgQDYGzShj1xB/maOkuIpctgTKbkT5Fy5JNbPbJZX2R41BeoVT/R+1SDdStqxGEao2u13M/qjKyHY+ALiTjp/TRR+BsjowBrs5vE8aK0rhDeCUw4Jc4b8PoXqmC8MNaBGJp9l/VMWLmwjV0IyXnRncNNEqetZxnObTWaiIQ3V+17zeRDKGVNQx1bwPuiVqgbR9PTKVoRWaVAW9zV2weK8T11AaFgbM0TMwUD6DHFIq6G6MqdAWgLH5lbN0k7peXHucUHFh1bsYAGb0ibq1GZzlleR2/o7lgAcAgswh1HL8YBwM7CmDqlgTHC01jjyXxuo6mjvPYkJwGaPYk/0dFKp80OtZBuDP0+cN9Xgr1Rgo7qicnOjIG+hLX7jju9ffygai88ck2VCHhX50bnkxz+CgHy2mbfZ27BreLRqJu+jeiFb4aYseGJVnguDyElYEY6beIiBkNzj2l2e9h2/+OAA6c8VSiexGPyh22FxnbQKnueBObvoWidpZQ6A0kPVZplIaJjeDN/py99rsjGor4sBcAPepYFIX1I54KAWtsol8LqJbaNBIQ1GpbzMEP/8mrqwHiKHZsdWhBbQeOJjJnmiNqOdt/4eHwfnRTMwceHPfLMSI7uwgzvpMA==
+	ADSICKSHeorSCy61JOgfIrqN8XhKLbX6f+amSY5+gWg39DbK9IyyH4StpkBq14ppvu1LLk9Pz6tSasDE0yaItcpZHdKDC/MacbyEODGfeDEx+0db2imTQLKNkDZzDeHUO3VdjBY9SUxcLT5JMEzYKL310swmT5wWZt2YGNBRAou7F8Hk4ts+YDtP0bIWzASB6X1g8qiJDSZB7BLQUabQFSdSsL8GPce9+xsmjLEDsxTKp79rwIq/7JHPAmPbDNI/jSySeEhmub76h8tdvtBVt/ZW2oCzjrD3oPHiYmht8x7/W0XhFSs/oaSJpuhYNbRZJdirrTesNgmo8xuCQRulpKtSx8t+bPg2Z86VyoUAQk1OBDNXWr7oUudR9pRVsyMJngUNDUTgYvwWke07pnK42UYbf7fIHnYDRS2pPZ5hanus+2uCzk4+zIYartrPdAxNYacPMyPvaiCaIVRiUtJwm3hce1EokRdPaeUmJcteNmptRWUuAG0rgkCJCY4rFtmQcs0hfTnLyW2oZnMbiYgv/lGEAj47l2A+U1Ef1UN81TmIvbuKOntIkJfn/dNB9CZE3DCNPLFsatk90RqzMqEHZdE2FuGWEWgeKokPqVfNYARHYxZAlOGJbPIbvW5wS+OLZj0NKuscqcKUGv34Ls9jTfqkppM9rW3pVK1cALAnU8wL5EXCCtma1uCbti9fadsyiVv+8vDnnNengm9pNo1ThQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(10067099003)(22082099003)(5023799004)(56012099006)(921020)(6133799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(10067099003)(56012099006)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NG12bm5EcTBid3Jac2NWZWJyUXgxZlZBc2dwR2w5aG00L0tzMk9vZFltbDNh?=
- =?utf-8?B?MXpPZmFtMTJZc3VYTGsrNWx2L1AxMlY5dWpDMkhuYnY0dHpnQWxPc3dxWUp1?=
- =?utf-8?B?K2JJdXljaDU5UHlSTWVaenZNQjMvWEh0d3J4cGdTVjd5dFpWUS9WTWRUaFFL?=
- =?utf-8?B?WUs3aSs0TDdDbDNyYXFpaTEvcm9rRU5wR295Si9KTlRtK2xoNWZYY25OMFY1?=
- =?utf-8?B?d3h6MWw1LzBScmR5bjgzeUplb1oxVmJRbS9aUmU4VXNRWmc2dHJ5WGNMdnRq?=
- =?utf-8?B?ZG5aRkprdlVubmJtUkY5RUtrSGszRmY5SmIxR0dhSWROanR4WGZqOWRxKzRX?=
- =?utf-8?B?STJkRndvYkxNMTZIVDdZOUo4cDJWWE5VY2svYU9kdldybTgwK0wxODE0bGxm?=
- =?utf-8?B?c0hNTTBUT0o0bVlTNktnSTNrZ2Z4YVhXdk9NM2tRT2ZLbSszYjBvMXpmOExM?=
- =?utf-8?B?WS9aUW1IZHpKRWJtSUFDenZjWWNGMkdBdUQ4NDladzR0N3huWE1laWhqTW9N?=
- =?utf-8?B?QW1hMHJrcklhamlWb3ljSnJId2oyTmtsZzNKZVJoelJiSlM4Z29kL3RNMTQ2?=
- =?utf-8?B?OWRYakJ0czd6RDgyM1dXN04xU24yc1RVN1dPcTZ4bytzUG9DU3lqQzRacEND?=
- =?utf-8?B?b2k5bUpzcGh6T2c0QUhTRy92NGpuU28zOGVHa3BWa3B5SHdrYUN6VitGUkN0?=
- =?utf-8?B?ZHl0UFhHMXdZYW1qOHlpZnRGQW9wRzl5SG41T0VkeWhhbnVQeTdzbEVNVHFk?=
- =?utf-8?B?WTVNNHJHMXhvRXo5dkZieGVBZ2dhVmdNN1JwRVZkTlJlTHdxd1VoTUxRUlFx?=
- =?utf-8?B?anBpRG1CVUIrRXNWTUNZN2pxRlQ0YkpYbVN3SkFkWWUyN2x4cUlUcGlxbnpa?=
- =?utf-8?B?SEFNbmhNWlRJK1pKRHZaRlhCN1lNenU1aEJiRkx3b3JtckFueHpQenBINkhR?=
- =?utf-8?B?ZGxUQmxZNWUxS2FQbFIvMlpsc2hPU1NQRTN1S0hJTTVuOEZMcnVCUFd1eTh3?=
- =?utf-8?B?VkUwY2xneTNSSWJacW1Vb3lnQktDL2hSSEp4V1BENDlKV01OdUZhTy9SanRx?=
- =?utf-8?B?REZoeHFDUkpLa3ZVSFEzOExPYUQ1WG1TUlhYRm1QOUREV01XclhBWFpDTEJL?=
- =?utf-8?B?SHRQZ3VOQ2tSK3Uya1hFTjcvalNXdXRSTnVmVVFybU9uN1puakNrRFRvNEg3?=
- =?utf-8?B?RTJZOHV1VEN3aklBdmZnZnAwdHhSUWwyQjBNRnhaSlZLTUNoQzZjTE1MazBV?=
- =?utf-8?B?amQ1RDM4SEtQOGNHem9PREJwV0Y3YU5tMUFvcFFnbEtiQWkyYnRtaVBzK2p2?=
- =?utf-8?B?L2RaM1FJSVBIeXlUWDdrZDJFL0E3dnA1d0lrWDN0aWxncnpSUTgzTGxhL2Qr?=
- =?utf-8?B?eVg3cGVock90ekcwbHBEMkpJYTd3UjJETVk4VW1KWEpxbWNUemd0Rno4RThN?=
- =?utf-8?B?SjZNajdZRVJENWJ6MmJ0KzZpZGZ6akVQbXF0VFpLaDBTNGp3V3FlY05vcmlC?=
- =?utf-8?B?WThKKzRhc2NhS3NXUEhJanVXSkZqZ2U2d214M004bUowN1dmOUY3Y05YVS9o?=
- =?utf-8?B?Snk2WWNmempJTEhOVzAxc3c0eGdhcGhoKzl6SWhsUXVlQWdRNm9oK1I2cG5K?=
- =?utf-8?B?d0NYUVlHN2xqa1k2eUdsV2NMWWcrMysvOXZqK2xUalB2WUxzb1U3amh0bUgx?=
- =?utf-8?B?ZjAvWHFkMi9wazhGaGFCUGxHckI5WGF3VG4yMFJyZFMyVk5vOG93TUN4V0g5?=
- =?utf-8?B?QWRxbllFMmlhNGJLS2txZVlRQnlpdGVyYXFLaHorazNPaHpPZlZXajhOb3ND?=
- =?utf-8?B?UHZldDJVOEZFVVRzaWUveThUWDdnOXZCZEpQWmc1azFpYVp1aVg5TkwwSHp4?=
- =?utf-8?B?ZDlFUGVyQ3ZKamYxV1ZJSmhZK05GdUhoaUN1MjAyU3ZZc0hud1dUaFBySTht?=
- =?utf-8?B?dDJyY3lUT0o0RHhJcEJsTHFBN2NnQ0dwNXY1MlF3Q3pMZm4yblFRaVhvK00z?=
- =?utf-8?B?MzNyL0RyeDFxMmV3UTFzY1VHNjNrbFVsamxLbEIvUWw0aURWSnYzUkxNRWRU?=
- =?utf-8?B?UldwbGtSUlNwT2VGcUdzSndtaGZWcVVGdmxTbTdGOGxRYlFxSkd4WEErRmlG?=
- =?utf-8?B?NzUvY3R0ZUk3bmFXOHdibHhVcjZOY0NGNFhLRUt1MncwQ3BpRGRHb1loK0Iz?=
- =?utf-8?B?eFh0K3RQTFlXRE84Q25CbDBoZ0VWNno3Y05ybi9vUFZSaVhCMGU4MjNrTm0x?=
- =?utf-8?B?dHhvd0lyZ3FxMVZ3bmdrdGlwNGluZkk5dDdRUHN6enZHK1VnOWFSemZDc09Y?=
- =?utf-8?B?Q0ZROUd1UVhpL2wyTHNkazN3bUhtc2xoQVhoS25DbnNqelBtUitCUT09?=
+	=?utf-8?B?RjRxbTJmb1BjSy96Vkk4eUcwSzF3V1dmTEZOV3JtdFREbHdPMVdlOVJoVmUv?=
+ =?utf-8?B?NXc4bnJJV2UxK2ZxM1dIaUJiU3ZxTFFSUGpMN3pYc0pVaEYvUWFwd1RjNkln?=
+ =?utf-8?B?VWkvYlE2OE54SjQvMDM3a1NUT0VzNHlKYllhd2FSanZYbkEwK1ZWODZYUlo4?=
+ =?utf-8?B?cHpuaDNnU3pVSmxqdnkveTFIVzI3ZncrZC8zcE1lN0pqTEl1ZkJaRUdPdXhU?=
+ =?utf-8?B?amEvV2YybzIxSGd3RE5HNUVjOUdkZzYxSDB1ZFVmczVOalNETmFLb0FZY21q?=
+ =?utf-8?B?cTNpUUFyVW5pakRwRnFrZksyWjJBUmNnNzlETVBoejFpTTJ5UTRYdjJRNTRT?=
+ =?utf-8?B?bTYxVnVQeERJT0dTMTcwWVJ0M0pSdElLbU1ac0UyUTZJU3Bnc3VFVFJuYXlZ?=
+ =?utf-8?B?UFoxelk0bWVDZW9TT0ZWNDA1SnBxc2Q0YnJsWHFrNTF2bnpRNkhhRi9oTnhF?=
+ =?utf-8?B?RmhSSE1XdWpyOEtPQjV1cGhmQndlcDMydHduK05KbHFSdXdCNVl4ZHJ3bjFl?=
+ =?utf-8?B?cGoxMk9LcUo2TkJPeW5zZzdrL0lKazdjVXZ5b0FyWVY1aXpxL2xXUmVvczZu?=
+ =?utf-8?B?Nkg1dURwUXBiYzRhMDQ3SENYTHBZSStOVm9JWmVoLzhGWGQ0dU1TcjlnNXRK?=
+ =?utf-8?B?eVVVN0JRenNiOThyUVFzUEJzNGM1WVRYODVIRCtkSGxWQ2MvalRBZ2VjZXhE?=
+ =?utf-8?B?VURaT0U1R2UxZm94UGo0MDFkVVk0NEhpcWljMlkwMUxyNi9DSGNPdjhQWHIy?=
+ =?utf-8?B?RlR3blBrS0taUTlpbmRlOUpwUXl0bkJQVXBuTTM3Q0JhV2dmRnlKNk4wSjVE?=
+ =?utf-8?B?dmk2QmY5dHh0NFlnaUtTUEFjR2hCQ0JpR2g3ckNlVHBySE9UQ25IaS9jaXVr?=
+ =?utf-8?B?dU5TZHNiYkVCME9hREk1TzZKYy9WcTFNbGNlRmIrSlU3OGQzRm9UeDFvNis0?=
+ =?utf-8?B?TTVYUGRMNURGZlRmOEtKTVJjRFVtaTI2WmRHbVZUUDh5K2tYanUybFozMHVT?=
+ =?utf-8?B?V0hGWmtaV0k1bE04V0ZFZ1VpaURiMmI1dzJ4dHd5d2xDb0ZxTTVkK08rUWxo?=
+ =?utf-8?B?UU1OK0ZCMWJqL2diZnRHWkRqMUNCbVdUbFFsM2ROWk1vT2xNRjBTdVZNSEFv?=
+ =?utf-8?B?d2xSSVhHZ0pkMm8rNVpObzZrVUdpcXJhRHZIc3hPQXdDY1EvSHp3TlRqZnBS?=
+ =?utf-8?B?ZWEyeUZ1RFBNNVV4Rk9QN0o5bGNLY3o2UmZtUms0bGtVYlBhN00wRHBWYU1Y?=
+ =?utf-8?B?VHZ0dWhQa3JuUFdHY0NVa3N6cXdkTHRjRk1lUlBVSEV6WndoU3Bsc3ZTM09v?=
+ =?utf-8?B?M1NHaTVGNnZKOXdsZUd6TVlZNXdxWm94M3NSSVdoam01UjdTWUVzUGNQbFAz?=
+ =?utf-8?B?b2lzZk4zcWtYamNuUVV1cDlESmwwTnkvN0xHOTVhZDZPOEZVRTMxN2RBZmxo?=
+ =?utf-8?B?Yi82TERCb3Z6eG0xZHVVcHdwZ1V0NUYwbngzZHluTE81dmF0NVoxMDFMMjll?=
+ =?utf-8?B?L0dpOThPQjZRZysxOGx0eFp2RHZhdzkzZWpHVjFiQXV2VzNvT3Y1RTVNbTJh?=
+ =?utf-8?B?RFFFWHFSakRhd0JIaGVCOXE5eTBUMVYwdi9YR3NqRXFBSjg3OFZsTVNGMCtS?=
+ =?utf-8?B?WnhTUGpLcEU0SGpFcTByRzNLeksxWXcrYTdyd0tGVU54QnhmQWlSbnBBck1V?=
+ =?utf-8?B?NWhJK0d2M0VVdjNGck1GTzYxeEo4MmRuQW8zdjR1WlZ0eDlPcnJuR3lEVTNW?=
+ =?utf-8?B?VW9mVTAwVGhwWFo3OFY1WG9GQVVCZlhqaThyMldiRFBKZHJ3STFqTTFyNzc5?=
+ =?utf-8?B?aStFaDlDbENrZVVlUlRNTFpnZzZHR1g5U2IwUEJMSjM0cWppL05aVHBac3hv?=
+ =?utf-8?B?UmMzVWpVdyttVmI0OUZzSGdzZGxSdFpPSkJUbDhrdGZZZTk2MFRESnFkUTVk?=
+ =?utf-8?B?M1NlUm03aUhJRmZNak5nNzZxd213S3hjSVVwemNVR0xMTmJta21DQnI5TFkw?=
+ =?utf-8?B?WjV5blhoc29TM0xzZTNMNE1nZC9iUmpyNFovYVdsN1BZa3pkS3dCR3VCMmtV?=
+ =?utf-8?B?czBRcUZyUjkwUVc4SmdDazF1dEVSdjFKSDlRWVNFVTN2em5KeDY4QVFhd1JU?=
+ =?utf-8?B?RENpNG9RSWlKZnVOaDBwSGNLbTk0K282ZWpKbXo1MC9LTVhpM2FMWmdiNkxB?=
+ =?utf-8?B?U3ByTjNxbGVsczl4RGlYY092OURWdk96MmhTQ0RoemNvYzFkR0wra3NRblNI?=
+ =?utf-8?B?MGRZNDA5YzdzOHJzakJocnZrMytKMTc2U3grWktscWc4YlRYVnZPN0VWSWYx?=
+ =?utf-8?B?WGdaUXRSeS8xak9wRXNIOXBXTE9CUUdUc25ZZEsyVGY3eFF4OWRPdz09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2eacead-9515-4aa6-67bc-08deecb7d50a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 649bfab7-bab1-4b8f-9aea-08deecb7d4bd
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 14:52:23.1290
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 14:52:22.6443
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VD+SYQFwLfxcz09Mr56q+uss18HuQ2v8roqTORHB6RAxIHzaP49lLgZ8ZhUe9SFUgQ8AgOmbq2CdLZ3syPFQBw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZJFHQTHbMqxmsgP0UY1oS3j/82LIHb4d1KGv9Cqxk7+BzLm3We65lREnYnkPeeQIfMfX2P4gXxX/MoN0oA0P1Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7374
 
-Currently all prints are handled centrally through the `print_macro` macro
-with everything except `pr_cont` passing `true` as the second macro
-argument. This is all redundant, call `call_printk_cont` directly from
-`pr_cont` instead.
+This series include some cleanups to print macro, followed by the last
+patch which adds "continuable" as an option.
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
+This is some ability that is unique to Rust macros; C macros cannot do
+complex matching, so the options to printk are mostly specified via string
+control flags (like log levels using \x01, continuable or not using
+trailing \n) or additional macros (e.g. once and ratelimited).
+
+Rust macros support pattern matching (macros by example) so it is possible
+to do more. In theory you can do this:
+
+    // dev_err!(...)
+    log!(target: dev, level: err, continuable, ratelimited, "my messsage {foo}");
+    // pr_err!(...)
+    log!(target: module, level: err, continuable, ratelimited, "my messsage {foo}");
+
+Userspace Rust logging usually have levels being part of the macro name, like this:
+
+    error!([options], "my messsage {foo}");
+
+Danilo points out that we still want split between pr_ and dev_ [1], but I
+think adding options would a good to have. This series add an option
+"continuable"; absence of which indicates that the user do not want the
+line to be continued. The name is preliminary; we might want to call it
+"cont" or something else to save some typing.
+
+With that, we have the option to auto add newlines to the print message and
+not having trailing "\n" in the macro invocations. I personally think not
+having "\n" is better given that printk is treating it rather like a
+control flag of whether message can be continued instead of actual new
+line; it is stripped away inside printk code eventually. Printk has all the
+control flags being strings due to limitation of C macros, but Rust macros
+are more versatile so we might be able to take advantage of that and just
+pass control flags directly in the future. The
+"lib/find_bit_benchmark_rust.rs" is a good example of how this can be
+beneficial; it has a `pr_err!` without newline and `pr_cont!` following it
+immediately adds one to it; the newline has to be part of the second
+message as otherwise printk would treat it as a control flag to commit
+immediately. If the control flags are passed on its own, we can then have
+continuable message that still ends with a newline.
+
+However Danilo pointed out in [1] that always adding newline automatically
+can create issue for developers that need to switch back and worth between
+C and Rust:
+
+> I don't think it is a good idea to always add newlines. It might be fine if you
+> only do C code or only do Rust code, but if you are switching back and forth, it
+> is a horrible inconsistency for muscle memory.
+
+So the newline is made optional if the message is not continuable. It
+behaves the same with or without the trailing newline.
+
+Link: https://lore.kernel.org/rust-for-linux/DFJ8XRR2T22T.3R4FQHF50B4P4@kernel.org/ [1]
+
 ---
- rust/kernel/print.rs | 75 ++++++++++++++++++++++++----------------------------
- 1 file changed, 35 insertions(+), 40 deletions(-)
+Gary Guo (5):
+      rust: print: handle `pr_cont` separately
+      rust: print: use `CStr` for __LOG_PREFIX
+      rust: print: accept level in `print_macro` instead of expression
+      rust: macros: use `syn` for `fmt!` string parsing
+      rust: print: add `continuable` as option
 
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 6fd84389a858..066ef7a7d5ce 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -51,21 +51,13 @@ pub mod format_strings {
-     /// given `prefix`, which are the kernel's `KERN_*` constants.
-     ///
-     /// [`_printk`]: srctree/include/linux/printk.h
--    const fn generate(is_cont: bool, prefix: &[u8; 3]) -> [u8; LENGTH] {
-+    const fn generate(prefix: &[u8; 3]) -> [u8; LENGTH] {
-         // Ensure the `KERN_*` macros are what we expect.
-         assert!(prefix[0] == b'\x01');
--        if is_cont {
--            assert!(prefix[1] == b'c');
--        } else {
--            assert!(prefix[1] >= b'0' && prefix[1] <= b'7');
--        }
-+        assert!(prefix[1] >= b'0' && prefix[1] <= b'7');
-         assert!(prefix[2] == b'\x00');
- 
--        let suffix: &[u8; LENGTH - LENGTH_PREFIX] = if is_cont {
--            b"%pA\0\0\0\0\0"
--        } else {
--            b"%s: %pA\0"
--        };
-+        let suffix: &[u8; LENGTH - LENGTH_PREFIX] = b"%s: %pA\0";
- 
-         [
-             prefix[0], prefix[1], suffix[0], suffix[1], suffix[2], suffix[3], suffix[4], suffix[5],
-@@ -79,15 +71,14 @@ pub mod format_strings {
-     //
-     // Furthermore, `static` instead of `const` is used to share the strings
-     // for all the kernel.
--    pub static EMERG: [u8; LENGTH] = generate(false, bindings::KERN_EMERG);
--    pub static ALERT: [u8; LENGTH] = generate(false, bindings::KERN_ALERT);
--    pub static CRIT: [u8; LENGTH] = generate(false, bindings::KERN_CRIT);
--    pub static ERR: [u8; LENGTH] = generate(false, bindings::KERN_ERR);
--    pub static WARNING: [u8; LENGTH] = generate(false, bindings::KERN_WARNING);
--    pub static NOTICE: [u8; LENGTH] = generate(false, bindings::KERN_NOTICE);
--    pub static INFO: [u8; LENGTH] = generate(false, bindings::KERN_INFO);
--    pub static DEBUG: [u8; LENGTH] = generate(false, bindings::KERN_DEBUG);
--    pub static CONT: [u8; LENGTH] = generate(true, bindings::KERN_CONT);
-+    pub static EMERG: [u8; LENGTH] = generate(bindings::KERN_EMERG);
-+    pub static ALERT: [u8; LENGTH] = generate(bindings::KERN_ALERT);
-+    pub static CRIT: [u8; LENGTH] = generate(bindings::KERN_CRIT);
-+    pub static ERR: [u8; LENGTH] = generate(bindings::KERN_ERR);
-+    pub static WARNING: [u8; LENGTH] = generate(bindings::KERN_WARNING);
-+    pub static NOTICE: [u8; LENGTH] = generate(bindings::KERN_NOTICE);
-+    pub static INFO: [u8; LENGTH] = generate(bindings::KERN_INFO);
-+    pub static DEBUG: [u8; LENGTH] = generate(bindings::KERN_DEBUG);
- }
- 
- /// Prints a message via the kernel's [`_printk`].
-@@ -127,13 +118,23 @@ pub unsafe fn call_printk(
- #[doc(hidden)]
- #[cfg_attr(not(CONFIG_PRINTK), allow(unused_variables))]
- pub fn call_printk_cont(args: fmt::Arguments<'_>) {
-+    const CONT_FMT: [u8; 6] = {
-+        // Ensure the `KERN_*` macros are what we expect (2 byte + 1 byte nul-termination).
-+        assert!(bindings::KERN_CONT.len() == 3);
-+
-+        let mut fmt = *b"\0\0%pA\0";
-+        fmt[0] = bindings::KERN_CONT[0];
-+        fmt[1] = bindings::KERN_CONT[1];
-+        fmt
-+    };
-+
-     // `_printk` does not seem to fail in any path.
-     //
-     // SAFETY: The format string is fixed.
-     #[cfg(CONFIG_PRINTK)]
-     unsafe {
-         bindings::_printk(
--            format_strings::CONT.as_ptr(),
-+            CONT_FMT.as_ptr(),
-             core::ptr::from_ref(&args).cast::<c_void>(),
-         );
-     }
-@@ -147,8 +148,7 @@ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
- #[macro_export]
- #[expect(clippy::crate_in_macro_def)]
- macro_rules! print_macro (
--    // The non-continuation cases (most of them, e.g. `INFO`).
--    ($format_string:path, false, $($arg:tt)+) => (
-+    ($format_string:path, $($arg:tt)+) => (
-         // To remain sound, `arg`s must be expanded outside the `unsafe` block.
-         // Typically one would use a `let` binding for that; however, `format_args!`
-         // takes borrows on the arguments, but does not extend the scope of temporaries.
-@@ -169,20 +169,13 @@ macro_rules! print_macro (
-             }
-         }
-     );
--
--    // The `CONT` case.
--    ($format_string:path, true, $($arg:tt)+) => (
--        $crate::print::call_printk_cont(
--            $crate::prelude::fmt!($($arg)+),
--        );
--    );
- );
- 
- /// Stub for doctests
- #[cfg(testlib)]
- #[macro_export]
- macro_rules! print_macro (
--    ($format_string:path, $e:expr, $($arg:tt)+) => (
-+    ($format_string:path, $($arg:tt)+) => (
-         ()
-     );
- );
-@@ -217,7 +210,7 @@ macro_rules! print_macro (
- #[macro_export]
- macro_rules! pr_emerg (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::EMERG, false, $($arg)*)
-+        $crate::print_macro!($crate::print::format_strings::EMERG, $($arg)*)
-     )
- );
- 
-@@ -242,7 +235,7 @@ macro_rules! pr_emerg (
- #[macro_export]
- macro_rules! pr_alert (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::ALERT, false, $($arg)*)
-+        $crate::print_macro!($crate::print::format_strings::ALERT, $($arg)*)
-     )
- );
- 
-@@ -267,7 +260,7 @@ macro_rules! pr_alert (
- #[macro_export]
- macro_rules! pr_crit (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::CRIT, false, $($arg)*)
-+        $crate::print_macro!($crate::print::format_strings::CRIT, $($arg)*)
-     )
- );
- 
-@@ -292,7 +285,7 @@ macro_rules! pr_crit (
- #[macro_export]
- macro_rules! pr_err (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::ERR, false, $($arg)*)
-+        $crate::print_macro!($crate::print::format_strings::ERR, $($arg)*)
-     )
- );
- 
-@@ -317,7 +310,7 @@ macro_rules! pr_err (
- #[macro_export]
- macro_rules! pr_warn (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::WARNING, false, $($arg)*)
-+        $crate::print_macro!($crate::print::format_strings::WARNING, $($arg)*)
-     )
- );
- 
-@@ -342,7 +335,7 @@ macro_rules! pr_warn (
- #[macro_export]
- macro_rules! pr_notice (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::NOTICE, false, $($arg)*)
-+        $crate::print_macro!($crate::print::format_strings::NOTICE, $($arg)*)
-     )
- );
- 
-@@ -368,7 +361,7 @@ macro_rules! pr_notice (
- #[doc(alias = "print")]
- macro_rules! pr_info (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::INFO, false, $($arg)*)
-+        $crate::print_macro!($crate::print::format_strings::INFO, $($arg)*)
-     )
- );
- 
-@@ -396,7 +389,7 @@ macro_rules! pr_info (
- macro_rules! pr_debug (
-     ($($arg:tt)*) => (
-         if cfg!(debug_assertions) {
--            $crate::print_macro!($crate::print::format_strings::DEBUG, false, $($arg)*)
-+            $crate::print_macro!($crate::print::format_strings::DEBUG, $($arg)*)
-         }
-     )
- );
-@@ -425,7 +418,9 @@ macro_rules! pr_debug (
- #[macro_export]
- macro_rules! pr_cont (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
-+        $crate::print::call_printk_cont(
-+            $crate::prelude::fmt!($($arg)+),
-+        )
-     )
- );
- 
+ lib/find_bit_benchmark_rust.rs  |   2 +-
+ rust/kernel/lib.rs              |   2 +-
+ rust/kernel/print.rs            | 217 +++++++++++++++++++++++++---------------
+ rust/macros/fmt.rs              |  92 +++++++++--------
+ rust/macros/lib.rs              |   4 +-
+ rust/macros/module.rs           |   2 +-
+ samples/rust/rust_print_main.rs |   4 +-
+ scripts/rustdoc_test_gen.rs     |   2 +-
+ 8 files changed, 194 insertions(+), 131 deletions(-)
+---
+base-commit: 0d33d21e47d9dc66f91e44da3fc9220c74d93df7
+change-id: 20260728-printk-3c0fc5831444
 
--- 
-2.54.0
+Best regards,
+--  
+Gary Guo <gary@garyguo.net>
 
