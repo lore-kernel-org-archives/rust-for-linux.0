@@ -1,112 +1,164 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5111403B0A
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 08:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8295240DB3D
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 09:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785228468; cv=none; b=PBDfzxd/Cd1WkO8GT6yT42RuknSnglQZFH0IAxH9RPpJe6MkvN1yotlyiO5Wes1bOusYspVHwB0K5xNvnIO8ezJxeS+gxlxeR8k3aRmUmj8gS11TVBfSlsoJtqgu/4hiWynrhoqrcT5gelovYf8MHsC+hdrX0IMx64di1ZtINco=
+	t=1785231184; cv=none; b=DVUkZYHm14dBr2ernka9USxqb4m9Bgpoldp2HdxUV7hDJpHUZt6P+F7RPgFmVH6EcZBdFlMm7MTJvdioESfrEqlZZFVp3GPexFAN6aF3Tbg8ymPM/dMqegU+njrEydnRecVfuM/ONwOmt76HUx8xnPvaC6F/4fYWR+Do0srALOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785228468; c=relaxed/simple;
-	bh=fGKlNxg9YLsPLBpDCSEKog+Wv6vCRO5W9ykgw0AMKyU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MPvQ9/gEkxRz2sv6BYjtf6ONH0zzzGpjKZZ9W7hPZrxPy7R4ke71cRrCXQlgko/rvQy6xPfZCVyBNPtbmEm2q4FyioPiQjOdizNEokcLlxheitgGC+1du+N2yTpGBT0vxdQgDQS3nSHVeDP3tzxfQUoGLplVtxV6ovzAJEiGeUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zKTbeQWE; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1785231184; c=relaxed/simple;
+	bh=LlIlzK5NNphROYKWlaVKma55nq6KUqv7UrPj9D9qWrc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=dKbK0F8WHPHPeGsiSlR+2DC6PBcBpPQHQ76UIkW+cxyaMP7dbmJd31ETo+zQaAHmQJAs6xBTpqO5VIh/W4pJD/y0Tfa5V50yyv0wViUbghAnxv83lIbGfALGb4zLsws4DczyNgxck20nhNkr1maHPpe4ZqPBcwJXyX6NUcB9O8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MpWQOmQt; arc=none smtp.client-ip=209.85.218.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zKTbeQWE"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-845c92bc464so2979547b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 01:47:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MpWQOmQt"
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c11f2b9f62fso300408766b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 02:33:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1785228466; x=1785833266; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tA6/MY5PF2Grnw4dPL2r7KgNhjVu2XUJf38B+92A4LY=;
-        b=zKTbeQWEXCQO8FBPjqbHWwBLMwPhuvMQpnMgN6w+CcX44VAOvVGbxbIo2TDDW+sXn1
-         s5EPDFcW+GzK1Z1PDH39P0iy4lx+HUUOrKj7rE49czAfMzl6L5jCH5v+ZThv+Zsa8teW
-         BtAnv2mwZHEZBuJ58oSnuD8NQc//PK7+aMjKn2IC4zHDpuAOOr29ZjkhPc1FJyC9e0AC
-         6toUtt7geTi0EQ9B8utmlsEaLljQ+kGs+zjQ7HNg1L0Nswx6k9mteg2VVCWJQ9zbGlaM
-         hkm5TpXBBo8jU3VlvJx4IACetG79PqilfZx47m3+7qToDuz45QwV8GJYu+0UVykWnMC+
-         MYhA==
+        d=google.com; s=20251104; t=1785231181; x=1785835981; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QV12yf4MQsmWzikrH2XSolww9qlOMkguHw2tdy0o2aI=;
+        b=MpWQOmQtxdRqYOfAnXNwPV9F2kDCcixCnlfEEULHj9RMF4Sl2UOJc+Wg9Tk5KvqZR1
+         TG2uvmPRSLkocx6RTlHslGjVVrZ/zQtpS4ls2wkDvyxuhTjFHkb3xeEeSD7mLyqSFmnQ
+         Rxw4AP5A2EceIyXsePx21CbwX0SYf43FTWTig4eghP9ZV0FrgTJdnbryRLP6aL/1C3A5
+         1d36cyCq59c72iGSP5CyAZ2LrdVckgn0fKgQ/ljpp5TkAzhp42uRCUcrE9ePdjovNKOP
+         WwIA1o8tLDACyl/nDSJJOO9flQ4zLWml6qnvTvw9BaYvaxBMMcfzcTyRm0O2PoK6Z3jt
+         DGjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785228466; x=1785833266;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1785231181; x=1785835981;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tA6/MY5PF2Grnw4dPL2r7KgNhjVu2XUJf38B+92A4LY=;
-        b=IcAWwwj0TBaf6DdhiMuGuKq3KEBIipbQEpFvsi9aS9w0TzD05i3cNHtf4vp9Z/JNV6
-         lV0itAXO4E588bF5tVijaS4pal4CQDhRgIgYm3BH0Q968X+wsUAj0eN8X70iaI3e8Nk/
-         BxewqWoj4afZeQ0cKMdwiWL4uAUjJWnBN3aXZhKs5PC0pb0/S4LX0ADWi8CXgAH45XXi
-         P/aSR7Q4XvIPYqrx2+nNgxCupYVE4Etza4JoUocguz/AylggQvdc6C7vz2nqZeceHGBP
-         pzAMhRd3PyJ9kcm/IHhQQ0s2JeuzbE60hLxTuAhE3XkWcaZO20N4f9CbcRhosE4bUkUB
-         mbhg==
-X-Forwarded-Encrypted: i=1; AHgh+RrC/6r0n1LmtTFs9JUdnLgXz4iZPKuaoY5bZWRbSghbckoYD4EPDiZ05ilOyQDHBHMU9Jh7pULo3/o89a5xbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yziug+zXSHupvcxYoDfQCudRcHFKErWyCOz7qn0LaIoWZFCgUl9
-	UojaRZA99gYXewp2m6U5KO5Gw7QtdsQXWWCT5tSJCvWvhZgdy9IH/gYYqLyHKAqviCw=
-X-Gm-Gg: AR+sD11hB1jK/QodXQ0oMKOwzHIIrm3vX5cBuat7irWWAB25jo2S+aabtLGgKB/B+UG
-	k21WeVaEtLn0I2Lk00qoEgeUFoOmwPtv3mt3CZ9O1xdDg0RSI9l9t4whIj+YhspT2OOqdQVlCPf
-	elI9kDHuw7PGAVAwh1+6L/0mM3LYmajIC4gVfjEfz3DgRwM4tNw+y2n8PCjXNq+AG6l804GL0cD
-	JHbN7bLlbzh7sEsJG3W307UZadHUmcSlLlwfi2tiUYOB5t8EKuklW9fEVE2aGVOQAyMyohrSkKG
-	Ifq2zyy4dBrPGRAsCyFjpFBMI0Bcouo6wCGK06cm4fhlJLPb3wtosOierGOZXY6aSbf0ti/riH0
-	Cnmnd4PcPYw6gjaardS2hH9r3oqP7SAHScb+5YxblFNsl29rFcxmj1Qo3M+Ftisu6lz5eGtfvj6
-	8+6BLupiJaIpvi
-X-Received: by 2002:a05:6a20:d808:b0:3c3:66c5:68d6 with SMTP id adf61e73a8af0-3c8aafbb717mr2008641637.9.1785228466130;
-        Tue, 28 Jul 2026 01:47:46 -0700 (PDT)
-Received: from localhost ([122.172.82.94])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc579819sm34918375eec.20.2026.07.28.01.47.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 01:47:44 -0700 (PDT)
-Date: Tue, 28 Jul 2026 14:17:42 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Priya Bala Govindasamy <pgovind2@uci.edu>
-Cc: rafael@kernel.org, ojeda@kernel.org, boqun@kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, ardalan@uci.edu, zhiyunq@cs.ucr.edu, 
-	dzueck@uci.edu, ytan089@ucr.edu
-Subject: Re: [PATCH v2] rust: cpufreq: Add CPUFREQ_TABLE_END as last table
- entry in TableBuilder::to_table
-Message-ID: <qyjrkxlyqgn5wpfl456mdhwidouupghnaaznsisotri7bkqvl4@4xe5y46nzehh>
-References: <4dcb9b9c756e413c13616e46cb27669bc5b32cf5.1784576749.git.pgovind2@uci.edu>
+        bh=QV12yf4MQsmWzikrH2XSolww9qlOMkguHw2tdy0o2aI=;
+        b=FCnarWvRM468OyifgLC5u3JsnDo+HkP43gRTo8+HqFgqS/fG8iE10MfIfzVkeS3gPC
+         ZKL0o0sydz/wxinS4zsXDGQCJ/haObZAUmy3S0WIfffMNQO+QpNuAp19Dn9dyZ+iBq9G
+         hKUho7uizczSeGBW5QHhhUcudB25dYLuJv8s2Ewk+TpeyeyqVxA5OVKSvI452FsHPabx
+         Dg/JxrollIM0NBCz43sjWsHdMmRhFE4qSD/LrAoHBDiy9RXIMNH1F0wTNlxn/LoTOymd
+         zgqB+PmSOvGWlf01tKMb3KvrbvRFwZ1xuWtaRU3+nl0mOn9wdeqfZbZLBcKT89m57C8N
+         AH+Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9K5yIxsl+HooRCNOuBPvMP6EW50AU7PgwQr+Sh+gL8skuT14fMQq23I35GIZ4QHwusaMypyTCpYObxcUaFg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLk19MpKVm42X1uFZ+1Mu3+XBRdKSoCwcApyHTOOKyXedEaW27
+	NXSWNpjlTjJZPayf5M8bA6nWysNF7qk0AN+kgW8E5kk6MBi2TGLZDhJXD7+NWRh9jQNnQAtS7rK
+	S38M06N/jYZarpbe6lg==
+X-Received: from ejdbv20.prod.google.com ([2002:a17:907:fd14:b0:c12:6311:cd1])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:c80e:b0:c1c:25a2:45b with SMTP id a640c23a62f3a-c1f727c57efmr67235066b.63.1785231180314;
+ Tue, 28 Jul 2026 02:33:00 -0700 (PDT)
+Date: Tue, 28 Jul 2026 09:32:50 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4dcb9b9c756e413c13616e46cb27669bc5b32cf5.1784576749.git.pgovind2@uci.edu>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAEJ3aGoC/2XM3QqDIBjG8VsZHs+hr1ZrR7uPsQPT1xIqQyM2o
+ nufxWAfHT4P/P4ziRgcRnI5zCTg5KLzfRryeCC6UX2N1Jm0CTDIWc5LOgQa1Iit69yIhuYIzKp
+ zWZmsIgkNAa17bMHbPe3GxdGH59af+Pq+UyD+UxOnjGpdAthMSqPZtfa+bvGkfUfW1gQfX/B85 yF5wTUUSmZSGNh58eUBdl4knxVWKVFYYyvz45dleQGlnBOFLQEAAA==
+X-Change-Id: 20260619-pr-ratelimited-6e20fa89bd5b
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3176; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=LlIlzK5NNphROYKWlaVKma55nq6KUqv7UrPj9D9qWrc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqaHdGOb4PTPr0MyKOi9ygTNNHMX8NBt7VPwYZh
+ Lg7SVbBS6aJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCamh3RgAKCRAEWL7uWMY5
+ RnK8EACuKAyBfSL7ibuZF7WHNrAO8i/lJN80NJIm7T5y7pgLGC6wuZO7R5eT882BzdzavRYnwST
+ x34GNvazbO5WRoVz8lQz4k66IOqVjfmI64PLURpzHbVJKGGf/ncAMl9a+1ciuY2lVdDhcWKtNUU
+ BLzErw4OvO6fc1wCMRGTbEC/EIjVfmTKAjptyjbHED3JviIjM6sTd1NP+tM1GgqpsphVD4uXtkU
+ pkEjMp9TaaqEdxgc3Z1yzyR9BUkjdBipJhIY1UosiL7Raj66AeNtHCWrnPBuvy1GjX12u/bMLOu
+ VORL2BkW7lIODkqtOTLQWnWxk6VuX9MIm+iuVmxT2yTZA8qoQQs/p/6OLImA6P58rBdLINSv4r8
+ z/y/dCDEcCz0u0vGmHRLVWg31qZRnS1KYE6CZQAlZctgdvJF/AjU3m9dZvfpR/ZVFzhDlzPCDbz
+ jNFxITzicicp4KMoOnxSUaD8nGaj98RXpUgpnLyFhTS5yaTEixvnfLeAD7ehc/jZYpwxs4U8h92
+ 1D0NOKkiwy44rnWiLjl9avaC2FnJWfn8Mhjz7l6mx8PvGz/b/x4bWQ+J8PqecJxjNa/mGbnxusM
+ 1XWX9nL0GSz+/JwgjtDXbO3h4ZDisx+lBKmESJaYczwCrAATk/eShLx3a5dpkOjzbijsbfWKJsU gLhgxsbez1sG8Eg==
+X-Mailer: b4 0.14.3
+Message-ID: <20260728-pr-ratelimited-v4-0-435f8d6e9605@google.com>
+Subject: [PATCH v4 0/5] Rate limited printing for Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>
+Cc: "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>, Lyude Paul <lyude@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Alvin Sun <alvin.sun@linux.dev>
+Content-Type: text/plain; charset="utf-8"
 
-On 20-07-26, 20:50, Priya Bala Govindasamy wrote:
-> The `TableBuilder::to_table` function adds `Hertz(c_ulong::MAX).as_khz()`
-> as the last frequency entry in the frequency table.
-> But the C API expects the last entry to have frequency set to
-> `CPUFREQ_TABLE_END` which is `~1u` as per include/linux/cpufreq.h.
-> 
-> Fix this by setting the last frequency entry to `CPUFREQ_TABLE_END`
-> instead of `Hertz(c_ulong::MAX).as_khz()`.
-> 
-> Fixes: 2207856ff0bc8d953d6e89bda70b8978c2de8bab ("rust: cpufreq: Add initial abstractions for cpufreq framework")
-> Reported-by: Dylan Zueck<dzueck@uci.edu>
-> Reported-by: Yuan Tan<ytan089@ucr.edu>
-> Assisted-by: ChatGPT:gpt-5.6-terra
-> Signed-off-by: Priya Bala Govindasamy<pgovind2@uci.edu>
-> 
-> Changes in v2:
->  - Create `TableBuilder::push` method to add entries to the table
->    without converting the frequency to kHz.
->  - `TableBuilder::add` now internally uses `TableBuilder::push` to add
->    entries to the table after converting the frequency to kHz.
->  - Use the new `TableBuilder::push` method to add to the last table
->    entry.
->  - Link to v1: https://lore.kernel.org/rust-for-linux/cover.1783548374.git.pgovind2@uci.edu/T/#t
-> ---
->  rust/kernel/cpufreq.rs | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+To avoid DoS on the kernel log, the Rust Binder driver is being switched
+to rate limited printing. But before we can do that, we must first
+implement rate limited printing for Rust. Thus, do that.
 
-Applied. Thanks.
+However, it turns out that before we can implement rate limited
+printing, we must first implement the ability declare a raw_spinlock_t
+in a global variable. Thus, do that too.
 
+Based on top of char-misc-next plus this patch:
+https://lore.kernel.org/all/20260728061236.198267-1-aliceryhl@google.com/
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v4:
+- Rebase series.
+- Mark Ratelimit::new_static() with #[inline]
+- Link to v3: https://lore.kernel.org/r/20260722-pr-ratelimited-v3-0-57faa37fdfbd@google.com
+
+Changes in v3:
+- Rebase on char-misc-testing.
+- Add rust/kernel/sync/lockdep.rs to MAINTAINERS file.
+- Link to v2: https://lore.kernel.org/r/20260716-pr-ratelimited-v2-0-31c27a4543d2@google.com
+
+Changes in v2:
+- Rebase on top of binder_debug! patch series.
+  - As a consequence, the logic for printing the size of transaction
+    failures is changed to print the size of each piece of the
+    transaction, rather than the total buffer size.
+- Add doc aliases for raw_spin_lock_unlocked.
+- Make raw_spin_lock_unlocked and raw_lockdep_map private.
+- Add Ratelimit::new_static.
+- Add some missing links to docs.
+- Link to v1: https://lore.kernel.org/r/20260623-pr-ratelimited-v1-0-cc922f544dc0@google.com
+
+---
+Alice Ryhl (5):
+      rust: sync: move lockdep types to rust/kernel/sync/lockdep.rs
+      rust: sync: add const constructor for raw_spinlock_t
+      rust: add pr_*_ratelimit! macros for printing
+      rust_binder: consolidate transaction failure prints
+      rust_binder: use pr_*_ratelimited! for printing
+
+ MAINTAINERS                           |   1 +
+ drivers/android/binder/allocation.rs  |   4 +-
+ drivers/android/binder/context.rs     |   6 +-
+ drivers/android/binder/debug.rs       |   4 +-
+ drivers/android/binder/error.rs       |   4 -
+ drivers/android/binder/freeze.rs      |   2 +-
+ drivers/android/binder/node.rs        |   4 +-
+ drivers/android/binder/page_range.rs  |  12 +-
+ drivers/android/binder/process.rs     |  22 ++--
+ drivers/android/binder/thread.rs      | 119 +++++++++----------
+ drivers/android/binder/transaction.rs |  24 +---
+ include/linux/spinlock_types_raw.h    |   4 +
+ rust/bindings/lib.rs                  |  24 ++++
+ rust/helpers/helpers.c                |   1 +
+ rust/helpers/ratelimit.c              |  14 +++
+ rust/kernel/error.rs                  |   2 +-
+ rust/kernel/lib.rs                    |   1 +
+ rust/kernel/prelude.rs                |   8 ++
+ rust/kernel/ratelimit.rs              | 216 ++++++++++++++++++++++++++++++++++
+ rust/kernel/sync.rs                   | 135 +--------------------
+ rust/kernel/sync/lock/spinlock.rs     |  30 +++++
+ rust/kernel/sync/lockdep.rs           | 161 +++++++++++++++++++++++++
+ 22 files changed, 553 insertions(+), 245 deletions(-)
+---
+base-commit: c6ad4d0943523437ae5b42dc24865fc2643d1260
+change-id: 20260619-pr-ratelimited-6e20fa89bd5b
+
+Best regards,
 -- 
-viresh
+Alice Ryhl <aliceryhl@google.com>
+
