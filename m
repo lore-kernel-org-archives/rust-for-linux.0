@@ -1,698 +1,91 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5AE46D0A1;
-	Tue, 28 Jul 2026 18:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785264012; cv=pass; b=nVO2qL+4DvohQhMO3cIDQCgyClEGOtJ9OdZsoYGImDokAp1RgeedKc69Kh3PvrxtfyI0iecAxH78GjxPOgDc31kQcPDTdYGHx0OjswNsrxkIJiEheURUV9qu98+u8v3pUX0ZMJ6ia0SMqeW5gxeAdQjOBjnQoNDz8Y/XJux74Zs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785264012; c=relaxed/simple;
-	bh=Kb3YIPW+GDuw/kMG0JZ42kyaNU2IyFnrcFVNa9dzdl0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ts1R/lWzuZ++c/zrAuPrZsfHcaVTL4Rzy17SLT3J/mSueMeAR4vm+FIKf56plHUFuZp496v04+3poBsDZls+PMcUJ3fH5tezHRiFEg+2f13zPUbFTkLKr0mT1b4wWurUh4iu7G5bshMOvdAGLX8x35/+ZK35keinxMQ7xK6AV40=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=LOPzFWGF; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1F3471CE1;
+	Tue, 28 Jul 2026 18:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785265001; cv=none; b=S8kJRWjSNACSbPN+daH3c2KjQZc/292M5v4UlrRa84QH+yqFdSgY/TDkzPlhqvkd0v98zGSKx2d07t5r+SF8mqeN0t4/C/EHHRbmL69NeSvM5Hsq1O3HsQnwYjgWUUoMNoX8sYZf61m5/PYq7UljmTTYz8Y2VOPoz8+A1qhH8oc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785265001; c=relaxed/simple;
+	bh=2WiJKDeK2Vzyu/WLkFFx9UUxHT2Nh9XVMNUlUceYbbg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=UGBU6c0XpC/HSJh7w8uff8LekrY2uZcu8mscQvONxml9/AkqOf1Tx/1ub7dj0uYoIUsJYXOeH+N4zPqBP2wbb2WRPMfHXIzsUfqkqto9EDobftallUmG9HbbkyE3XfRqF3ghvBS3zq14Jg/j+xp8dC7NBfBMLTn+QuR2kVlPKIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TuY3xn/o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="LOPzFWGF"
-ARC-Seal: i=1; a=rsa-sha256; t=1785263978; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=PFSehVabJ4LTg+99KXw/ctC+cH5pMFDM0wzr88r8crt67BukEKMCEfSBLBPQlnoZA+Qw9935nIuUqUsreZFzOV7q3kDRphDpitaK5rwu/UtCzjxpdU9FoBCZF4fm0k/yWtVUdDt6tFjuTrFnhKS+aOd4NRXU1EGAtbRj5qM2/I4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1785263978; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=TvXnYwGRr/5R68oyHjBcZr5UU+E2jdQ7GiYszvmDWyE=; 
-	b=eAVok7/dUo9NBJaRicwsaAzHPmFbbw76vfI3Ymx49rPY8gq6bgQDJ/Ces9vYDkiIouPBCzI/YoXgFvhHlNZMaYBRwnSBi4akyItbVcUwbCkADPpbzI5//ClW29iIelppv8E0qJlichrIvg/eMEi3uXGdqw4up6dStl4LMjYNmLA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
-	dmarc=pass header.from=<deborah.brouwer@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785263978;
-	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=TvXnYwGRr/5R68oyHjBcZr5UU+E2jdQ7GiYszvmDWyE=;
-	b=LOPzFWGFSv8CmAaw6OA1Q85M7k4AI1loopx3aercpV0jHTHrzndYxJKy6bUN7GUe
-	H8mGv2jon2XNgrZwPD5A+tVWLMgA/bkoIY2EbqbzZEZ5kWs0Fe0/5hGpydmc9BJJHgk
-	vPXs7zIXOMW7Wld/gJzbRAII4DMjGJYCFVj4/634=
-Received: by mx.zohomail.com with SMTPS id 1785263977222570.0891668311016;
-	Tue, 28 Jul 2026 11:39:37 -0700 (PDT)
-From: Deborah Brouwer <deborah.brouwer@collabora.com>
-Date: Tue, 28 Jul 2026 11:39:28 -0700
-Subject: [PATCH v10 6/7] drm/tyr: add parser for firmware binary
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuY3xn/o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADD31F00A3A;
+	Tue, 28 Jul 2026 18:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785264994;
+	bh=2WiJKDeK2Vzyu/WLkFFx9UUxHT2Nh9XVMNUlUceYbbg=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=TuY3xn/oFJ2MtFjSY8HTXL5wh5FePxvdq+RTUWR27pehxQi+tiQ7CjhjHtHHUViHb
+	 1B+fGpY62mDuvKggftWi72MFev1JkfERHvTMdkrbo9IAYkRZV9IpsMTas9SQ+nKXw/
+	 CnJQOziRclQxWJo0h3hiwwFb45ZrescgQ42Ln+XGup+qQlNByMoVMpnQk4Do2nXB59
+	 yI44XzbG2jhwDh7ydLbq3VS+U1e94D+qLumLKwrtpzBTQp7InvUah/oXC+wLKvnKjH
+	 TZy9HvuHMMESrWa1xwR90bX9a5gaPxBgabU5KuB6dFwxhbOU3mBJVwkX6f+z616Jq4
+	 iQ5wLh2gh+ewA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-fw-boot-b4-v10-6-9187aefa3f2f@collabora.com>
-References: <20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com>
-In-Reply-To: <20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, 
- Deborah Brouwer <deborah.brouwer@collabora.com>, laura.nao@collabora.com, 
- samitolvanen@google.com, lyude@redhat.com, beata.michalska@arm.com, 
- boris.brezillon@collabora.com, steven.price@arm.com, alvin.sun@linux.dev
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20040;
- i=deborah.brouwer@collabora.com; h=from:subject:message-id;
- bh=4uauGNrmbFrjJl21ZnqBGuRTt3aBiHgNWqTuGmxqjWA=;
- b=owGbwMvMwCVWuULzOU9c7WvG02pJDFkZ3xNW7vmktG/+ktQdnoce2ek2fzS69fnUpXnTxU9Zl
- LR++n7nXkcpC4MYF4OsmCLLWXujHvGq90a68/83w8xhZQIZwsDFKQATed/ByLDI5VaBUHftxE0c
- bk/LUvN0vuXYL/2xet/+uJicJfta8rYw/OHOf31CoPXIR5+JW69O0XzRJrpBNchvveLc7Ms12t3
- 6htwA
-X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
- fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Jul 2026 20:56:27 +0200
+Message-Id: <DKAFMD8X5LFP.UPKPHK5FYZPH@kernel.org>
+Subject: Re: [PATCH 08/10] gpu: nova-core: use projection for PFALCON and
+ PFALCON2 registers
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pci@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260721-typed_register-v1-0-452d72b60262@garyguo.net>
+ <20260721-typed_register-v1-8-452d72b60262@garyguo.net>
+ <DKA02Y5RE1YJ.2FGI97Z60X96R@nvidia.com>
+ <DKA4Q5QUBUXM.1K6QS2QPXT12H@garyguo.net>
+ <DKAASRCK3M06.G9XODK0T5AAK@nvidia.com>
+ <DKAD64Q7CEQD.Z15OS6MRHEKE@kernel.org>
+ <DKAEZ4LDA10F.1RFA9JKBGY2CF@garyguo.net>
+In-Reply-To: <DKAEZ4LDA10F.1RFA9JKBGY2CF@garyguo.net>
 
-From: Daniel Almeida <daniel.almeida@collabora.com>
+On Tue Jul 28, 2026 at 8:26 PM CEST, Gary Guo wrote:
+> On Tue Jul 28, 2026 at 6:01 PM BST, Danilo Krummrich wrote:
+>> I may have a slight preference for a separate subregion() variant for th=
+e
+>> purpose of working around generic_const_exprs, as it probably is a bit c=
+loser to
+>> the final solution, but trait methods are fine with me too.
+>
+> I am not sure that's the final solution that I want. I want arg-position
+> const-generics which would syntactically look more similar to `build_asse=
+rt!`.
 
-Add a parser for the Mali CSF GPU firmware binary format. The firmware
-consists of a header followed by entries describing how to load firmware
-sections into the MCU's memory.
+arg-position const generics would be great, but that's just a syntax differ=
+ence
+and not related to supporting expressions involving const generics?
 
-The parser extracts section metadata including virtual address ranges,
-data byte offsets within the binary, and section flags controlling
-permissions and cache modes. It validates the basic firmware structure
-and alignment and ignores protected-mode sections for now.
+In any case, I think my point about being closer to the final solution hold=
+s
+regardless.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Beata Michalska <beata.michalska@arm.com>
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-Co-developed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
----
- drivers/gpu/drm/tyr/fw/parser.rs | 588 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 588 insertions(+)
+> Personally I think most issues with `build_assert!` can be fixed by havin=
+g
+> lints, which is on my radar.
 
-diff --git a/drivers/gpu/drm/tyr/fw/parser.rs b/drivers/gpu/drm/tyr/fw/parser.rs
-new file mode 100644
-index 000000000000..c4d0ad1d7899
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/fw/parser.rs
-@@ -0,0 +1,588 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! Firmware binary parser for Mali CSF (Command Stream Frontend) GPU.
-+//!
-+//! This module implements a parser for the Mali GPU firmware binary format. The firmware
-+//! file contains a header followed by a sequence of entries, each describing how to load
-+//! firmware sections into the MCU (Microcontroller Unit) memory. The parser extracts section
-+//! metadata including:
-+//! - Virtual address ranges where sections should be mapped
-+//! - Data ranges (byte offsets) within the firmware binary
-+//! - Section flags (permissions, cache modes)
-+
-+use core::{
-+    mem::size_of,
-+    ops::Range, //
-+};
-+
-+use kernel::{
-+    bits::bit_u32,
-+    device::Device,
-+    prelude::*,
-+    sizes::SZ_4K, //
-+};
-+
-+use crate::{
-+    fw::{
-+        CacheMode,
-+        SectionFlags,
-+        CSF_MCU_SHARED_REGION_START, //
-+    },
-+    vm::{
-+        VmFlag,
-+        VmMapFlags, //
-+    }, //
-+};
-+
-+/// A parsed firmware section ready for loading into MCU memory.
-+///
-+/// Represents a single firmware section extracted from the firmware binary, containing
-+/// all information needed to map the section's data into the MCU's virtual address space.
-+pub(super) struct ParsedSection {
-+    /// Byte offset range within the firmware binary where this section's data resides.
-+    pub(super) data_range: Range<u32>,
-+    /// MCU virtual address range where this section should be mapped.
-+    pub(super) va: Range<u32>,
-+    /// Memory protection and caching flags for the mapping.
-+    pub(super) vm_map_flags: VmMapFlags,
-+}
-+
-+/// A bare-bones `std::io::Cursor<[u8]>` clone to keep track of the current position in the
-+/// firmware binary.
-+///
-+/// Provides methods to sequentially read primitive types and byte arrays from the firmware
-+/// binary while maintaining the current read position.
-+struct Cursor<'a> {
-+    dev: &'a Device,
-+    data: &'a [u8],
-+    pos: usize,
-+}
-+
-+impl<'a> Cursor<'a> {
-+    fn new(dev: &'a Device, data: &'a [u8]) -> Self {
-+        Self { dev, data, pos: 0 }
-+    }
-+
-+    fn len(&self) -> usize {
-+        self.data.len()
-+    }
-+
-+    fn pos(&self) -> usize {
-+        self.pos
-+    }
-+
-+    /// Returns a view into the cursor's data.
-+    ///
-+    /// This spawns a new cursor, leaving the current cursor unchanged.
-+    fn view(&self, range: Range<usize>) -> Result<Cursor<'_>> {
-+        if range.start < self.pos || range.end > self.data.len() {
-+            dev_err!(
-+                self.dev,
-+                "Invalid cursor range {:?} for data of length {}",
-+                range,
-+                self.data.len()
-+            );
-+
-+            Err(EINVAL)
-+        } else {
-+            Ok(Self {
-+                dev: self.dev,
-+                data: &self.data[range],
-+                pos: 0,
-+            })
-+        }
-+    }
-+
-+    /// Reads a slice of bytes from the current position and advances the cursor.
-+    ///
-+    /// Returns an error if the read would exceed the data bounds.
-+    fn read(&mut self, nbytes: usize) -> Result<&[u8]> {
-+        let start = self.pos;
-+        let end = start + nbytes;
-+
-+        if end > self.data.len() {
-+            dev_err!(
-+                self.dev,
-+                "Invalid firmware file: read of size {} at position {} is out of bounds",
-+                nbytes,
-+                start,
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        self.pos += nbytes;
-+        Ok(&self.data[start..end])
-+    }
-+
-+    /// Reads a little-endian `u8` from the current position and advances the cursor.
-+    fn read_u8(&mut self) -> Result<u8> {
-+        let bytes = self.read(size_of::<u8>())?;
-+        Ok(bytes[0])
-+    }
-+
-+    /// Reads a little-endian `u16` from the current position and advances the cursor.
-+    fn read_u16(&mut self) -> Result<u16> {
-+        let bytes: [u8; 2] = self
-+            .read(size_of::<u16>())?
-+            .try_into()
-+            .map_err(|_| EINVAL)?;
-+
-+        Ok(u16::from_le_bytes(bytes))
-+    }
-+
-+    /// Reads a little-endian `u32` from the current position and advances the cursor.
-+    fn read_u32(&mut self) -> Result<u32> {
-+        let bytes: [u8; 4] = self
-+            .read(size_of::<u32>())?
-+            .try_into()
-+            .map_err(|_| EINVAL)?;
-+
-+        Ok(u32::from_le_bytes(bytes))
-+    }
-+
-+    /// Advances the cursor position by the specified number of bytes.
-+    ///
-+    /// Returns an error if the advance would exceed the data bounds.
-+    fn advance(&mut self, nbytes: usize) -> Result {
-+        if self.pos + nbytes > self.data.len() {
-+            dev_err!(
-+                self.dev,
-+                "Invalid firmware file: advance of size {} at position {} is out of bounds",
-+                nbytes,
-+                self.pos,
-+            );
-+            return Err(EINVAL);
-+        }
-+        self.pos += nbytes;
-+        Ok(())
-+    }
-+}
-+
-+/// Parser for Mali CSF GPU firmware binaries.
-+///
-+/// Parses the firmware binary format, extracting section metadata including virtual
-+/// address ranges, data offsets, and memory protection flags needed to load firmware
-+/// into the MCU's memory.
-+pub(super) struct FwParser<'a> {
-+    cursor: Cursor<'a>,
-+}
-+
-+impl<'a> FwParser<'a> {
-+    /// Creates a new firmware parser for the given firmware binary data.
-+    pub(super) fn new(dev: &'a Device, data: &'a [u8]) -> Self {
-+        Self {
-+            cursor: Cursor::new(dev, data),
-+        }
-+    }
-+
-+    /// Parses the firmware binary and returns a collection of parsed sections.
-+    ///
-+    /// This method validates the firmware header and iterates through all entries
-+    /// in the binary, extracting section information needed for loading.
-+    pub(super) fn parse(&mut self) -> Result<KVec<ParsedSection>> {
-+        let fw_header = self.parse_fw_header()?;
-+        let header_end = fw_header.size as usize;
-+
-+        let mut parsed_sections = KVec::new();
-+        while self.cursor.pos() < header_end {
-+            let entry_section = self.parse_entry(header_end)?;
-+
-+            if let Some(inner) = entry_section.inner {
-+                parsed_sections.push(inner, GFP_KERNEL)?;
-+            }
-+        }
-+
-+        if parsed_sections.is_empty() {
-+            dev_err!(self.cursor.dev, "Firmware contains no loadable sections");
-+            return Err(EINVAL);
-+        }
-+
-+        Ok(parsed_sections)
-+    }
-+
-+    fn parse_fw_header(&mut self) -> Result<FirmwareHeader> {
-+        let fw_header: FirmwareHeader = match FirmwareHeader::new(&mut self.cursor) {
-+            Ok(fw_header) => fw_header,
-+            Err(e) => {
-+                dev_err!(self.cursor.dev, "Invalid firmware file: {}", e.to_errno());
-+                return Err(e);
-+            }
-+        };
-+
-+        if fw_header.size as usize > self.cursor.len() {
-+            dev_err!(self.cursor.dev, "Firmware image is truncated");
-+            return Err(EINVAL);
-+        }
-+        Ok(fw_header)
-+    }
-+
-+    fn parse_entry(&mut self, header_end: usize) -> Result<EntrySection> {
-+        let entry_start = self.cursor.pos();
-+
-+        let entry_header_end = entry_start
-+            .checked_add(size_of::<EntryHeader>())
-+            .ok_or(EINVAL)?;
-+
-+        if entry_header_end > header_end {
-+            dev_err!(
-+                self.cursor.dev,
-+                "Firmware entry header at {:#x} exceeds header region ending at {:#x}",
-+                entry_start,
-+                header_end
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let entry_section = EntrySection {
-+            entry_hdr: EntryHeader(self.cursor.read_u32()?),
-+            inner: None,
-+        };
-+
-+        let firmware_size = self.cursor.len();
-+        let entry_size = entry_section.entry_hdr.size() as usize;
-+
-+        if self.cursor.pos() % size_of::<u32>() != 0
-+            || entry_size % size_of::<u32>() != 0
-+            || entry_size < size_of::<EntryHeader>()
-+        {
-+            dev_err!(
-+                self.cursor.dev,
-+                "Firmware entry isn't 32 bit aligned, offset={:#x} size={:#x}",
-+                self.cursor.pos() - size_of::<u32>(),
-+                entry_size
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let entry_end = entry_start.checked_add(entry_size).ok_or(EINVAL)?;
-+
-+        if entry_end > header_end {
-+            dev_err!(
-+                self.cursor.dev,
-+                "Firmware entry at {:#x} extends beyond header region ending at {:#x}",
-+                entry_start,
-+                header_end
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let section_hdr_size = entry_size - size_of::<EntryHeader>();
-+
-+        let entry_section = {
-+            let mut entry_cursor = self.cursor.view(self.cursor.pos()..entry_end)?;
-+
-+            match entry_section.entry_hdr.entry_type() {
-+                Ok(EntryType::Iface) => Ok(EntrySection {
-+                    entry_hdr: entry_section.entry_hdr,
-+                    inner: Self::parse_section_entry(&mut entry_cursor, firmware_size)?,
-+                }),
-+                Ok(
-+                    EntryType::Config
-+                    | EntryType::FutfTest
-+                    | EntryType::TraceBuffer
-+                    | EntryType::TimelineMetadata
-+                    | EntryType::BuildInfoMetadata,
-+                ) => Ok(entry_section),
-+
-+                Err(_) => {
-+                    if entry_section.entry_hdr.optional() {
-+                        Ok(entry_section)
-+                    } else {
-+                        dev_err!(
-+                            self.cursor.dev,
-+                            "Failed to handle firmware entry type: {}",
-+                            entry_section.entry_hdr.entry_type_raw()
-+                        );
-+                        Err(EINVAL)
-+                    }
-+                }
-+            }
-+        };
-+
-+        if entry_section.is_ok() {
-+            self.cursor.advance(section_hdr_size)?;
-+        }
-+
-+        entry_section
-+    }
-+
-+    fn parse_section_entry(
-+        entry_cursor: &mut Cursor<'_>,
-+        firmware_size: usize,
-+    ) -> Result<Option<ParsedSection>> {
-+        let section_hdr: SectionHeader = SectionHeader::new(entry_cursor)?;
-+
-+        if section_hdr.data.end < section_hdr.data.start {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Firmware corrupted, data.end < data.start (0x{:x} < 0x{:x})",
-+                section_hdr.data.end,
-+                section_hdr.data.start
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.data.end as usize > firmware_size {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Firmware data range {:#x}..{:#x} exceeds firmware size {:#x}",
-+                section_hdr.data.start,
-+                section_hdr.data.end,
-+                firmware_size,
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.va.start as usize % SZ_4K != 0 || section_hdr.va.end as usize % SZ_4K != 0 {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Firmware virtual address range {:#x}..{:#x} is not page aligned",
-+                section_hdr.va.start,
-+                section_hdr.va.end
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.section_flags.prot() {
-+            dev_dbg!(
-+                entry_cursor.dev,
-+                "Firmware protected mode entry not supported, ignoring"
-+            );
-+            return Ok(None);
-+        }
-+
-+        if section_hdr.va.start == CSF_MCU_SHARED_REGION_START
-+            && !section_hdr.section_flags.shared()
-+        {
-+            dev_err!(
-+                entry_cursor.dev,
-+                "Interface at 0x{:x} must be shared",
-+                CSF_MCU_SHARED_REGION_START
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        if section_hdr.va.is_empty() {
-+            return Ok(None);
-+        }
-+
-+        let mut vm_map_flags = VmMapFlags::empty();
-+
-+        if !section_hdr.section_flags.write() {
-+            vm_map_flags |= VmFlag::Readonly;
-+        }
-+
-+        if !section_hdr.section_flags.exec() {
-+            vm_map_flags |= VmFlag::Noexec;
-+        }
-+
-+        // TODO: As in Panthor, map coherent firmware sections uncached until the VM
-+        // supports a coherent mapping attribute.
-+        if section_hdr.section_flags.cache_mode() != CacheMode::Cached {
-+            vm_map_flags |= VmFlag::Uncached;
-+        }
-+
-+        Ok(Some(ParsedSection {
-+            data_range: section_hdr.data.clone(),
-+            va: section_hdr.va,
-+            vm_map_flags,
-+        }))
-+    }
-+}
-+
-+/// Firmware binary header containing version and size information.
-+///
-+/// The header is located at the beginning of the firmware binary and contains
-+/// a magic value for validation, version information, and the total size of
-+/// all structured headers that follow.
-+#[expect(dead_code)]
-+struct FirmwareHeader {
-+    /// Magic value to check binary validity.
-+    magic: u32,
-+
-+    /// Minor firmware version.
-+    minor: u8,
-+
-+    /// Major firmware version.
-+    major: u8,
-+
-+    /// Padding. Must be set to zero.
-+    _padding1: u16,
-+
-+    /// Firmware version hash.
-+    version_hash: u32,
-+
-+    /// Padding. Must be set to zero.
-+    _padding2: u32,
-+
-+    /// Total size of all the structured data headers at beginning of firmware binary.
-+    size: u32,
-+}
-+
-+impl FirmwareHeader {
-+    const FW_BINARY_MAGIC: u32 = 0xc3f13a6e;
-+    const FW_BINARY_MAJOR_MAX: u8 = 0;
-+
-+    /// Reads and validates a firmware header from the cursor.
-+    ///
-+    /// Verifies the magic value, version compatibility, and padding fields.
-+    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-+        let magic = cursor.read_u32()?;
-+        if magic != Self::FW_BINARY_MAGIC {
-+            dev_err!(cursor.dev, "Invalid firmware magic");
-+            return Err(EINVAL);
-+        }
-+
-+        let minor = cursor.read_u8()?;
-+        let major = cursor.read_u8()?;
-+
-+        if major > Self::FW_BINARY_MAJOR_MAX {
-+            dev_err!(
-+                cursor.dev,
-+                "Unsupported firmware binary header version {}.{} (expected {}.x)",
-+                major,
-+                minor,
-+                Self::FW_BINARY_MAJOR_MAX
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let padding1 = cursor.read_u16()?;
-+        let version_hash = cursor.read_u32()?;
-+        let padding2 = cursor.read_u32()?;
-+        let size = cursor.read_u32()?;
-+
-+        if padding1 != 0 || padding2 != 0 {
-+            dev_err!(
-+                cursor.dev,
-+                "Invalid firmware file: header padding is not zero"
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let fw_header = Self {
-+            magic,
-+            minor,
-+            major,
-+            _padding1: padding1,
-+            version_hash,
-+            _padding2: padding2,
-+            size,
-+        };
-+
-+        Ok(fw_header)
-+    }
-+}
-+
-+/// Firmware section header for loading binary sections into MCU memory.
-+#[derive(Debug)]
-+struct SectionHeader {
-+    section_flags: SectionFlags,
-+    /// MCU virtual range to map this binary section to.
-+    va: Range<u32>,
-+    /// References the data in the FW binary.
-+    data: Range<u32>,
-+}
-+
-+impl SectionHeader {
-+    /// Reads and validates a section header from the cursor.
-+    ///
-+    /// Parses section flags, virtual address range, and data range from the firmware binary.
-+    fn new(cursor: &mut Cursor<'_>) -> Result<Self> {
-+        let section_flags = SectionFlags::try_from_fw(cursor.read_u32()?)?;
-+
-+        let va_start = cursor.read_u32()?;
-+        let va_end = cursor.read_u32()?;
-+
-+        let va = va_start..va_end;
-+
-+        if va.end < va.start {
-+            dev_err!(
-+                cursor.dev,
-+                "Invalid firmware file: VA end precedes start at pos {}",
-+                cursor.pos(),
-+            );
-+            return Err(EINVAL);
-+        }
-+
-+        let data_start = cursor.read_u32()?;
-+        let data_end = cursor.read_u32()?;
-+        let data = data_start..data_end;
-+
-+        Ok(Self {
-+            section_flags,
-+            va,
-+            data,
-+        })
-+    }
-+}
-+
-+/// A firmware entry containing a header and optional parsed section data.
-+///
-+/// Represents a single entry in the firmware binary, which may contain loadable
-+/// section data or metadata that doesn't require loading.
-+struct EntrySection {
-+    entry_hdr: EntryHeader,
-+    inner: Option<ParsedSection>,
-+}
-+
-+/// Header for a firmware entry, packed into a single u32.
-+///
-+/// The entry header encodes the entry type, size, and optional flag in a
-+/// 32-bit value with the following layout:
-+/// - Bits 0-7: Entry type
-+/// - Bits 8-15: Size in bytes
-+/// - Bit 31: Optional flag
-+struct EntryHeader(u32);
-+
-+impl EntryHeader {
-+    fn entry_type_raw(&self) -> u8 {
-+        (self.0 & 0xff) as u8
-+    }
-+
-+    fn entry_type(&self) -> Result<EntryType> {
-+        let v = self.entry_type_raw();
-+        EntryType::try_from(v)
-+    }
-+
-+    fn optional(&self) -> bool {
-+        self.0 & bit_u32(31) != 0
-+    }
-+
-+    fn size(&self) -> u32 {
-+        self.0 >> 8 & 0xff
-+    }
-+}
-+
-+#[derive(Clone, Copy, Debug)]
-+#[repr(u8)]
-+enum EntryType {
-+    /// Host <-> FW interface.
-+    Iface = 0,
-+    /// FW config.
-+    Config = 1,
-+    /// Unit tests.
-+    FutfTest = 2,
-+    /// Trace buffer interface.
-+    TraceBuffer = 3,
-+    /// Timeline metadata interface.
-+    TimelineMetadata = 4,
-+    /// Metadata about how the FW binary was built.
-+    BuildInfoMetadata = 6,
-+}
-+
-+impl TryFrom<u8> for EntryType {
-+    type Error = Error;
-+
-+    fn try_from(value: u8) -> Result<Self, Self::Error> {
-+        match value {
-+            0 => Ok(EntryType::Iface),
-+            1 => Ok(EntryType::Config),
-+            2 => Ok(EntryType::FutfTest),
-+            3 => Ok(EntryType::TraceBuffer),
-+            4 => Ok(EntryType::TimelineMetadata),
-+            6 => Ok(EntryType::BuildInfoMetadata),
-+            _ => Err(EINVAL),
-+        }
-+    }
-+}
-
--- 
-2.55.0
-
+I think it can be improved, but in the end it relies on compiler optimizati=
+on
+that may or may not happen as expected.
