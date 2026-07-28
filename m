@@ -1,127 +1,121 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B413D399352
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 19:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785267609; cv=pass; b=bA20ZRaL+0wjs+9o/qAYuNYl8b7KSZzAx7Phufu52GkqTvHPtev2vQU2MTWAXK5K28//ANtE6eOVPXT9jFlE3zm5XZgJFRReLpJlEVuBELTpHzjSFcmUthj9r0qXEQMuEMKSfYxhaULvpKx8NcqroZ4lSpjsFZDGElq+19m+9WY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785267609; c=relaxed/simple;
-	bh=DME2bxOuBWHVT2Ozl9o0AuOi6bZJacMW5sFLBLDf1co=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DDVYvohvy28sgi326G6PfPNrNoSCfp0RHhHtGUrGgxGYdKZ0YUeOH/ca7hFSudgh0xkCuyVfDdnwf8Riimd4c1kxzG1m0TyEvGLHdq1WAUgZvNBYaA3PyxGrgzbeusPezM4o6+wi94f1AAZSka9/cn6A1uR5+6XZ2HsIF7bbvl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZ7lJhQI; arc=pass smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A4444C51A;
+	Tue, 28 Jul 2026 20:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785269259; cv=none; b=cM9EapITZQfpc25JXFaglkoqdKX7vT96lAbSSAcPi/X56gKOjk7Jy+o92dBUzvwGhcl08yEFZYWICeiIUFliIL7np3FS18g+sFpJqcOa6EYryarShqrDoEhmHEgFhOC2c8xZ4eiSpXwennr/dHuW8Qwx3jU7KNSffTRrplYWK5M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785269259; c=relaxed/simple;
+	bh=g58gRfs5c0V3SCdYvHY5lSFx4//gOQF/FXNiiAMSmC8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=LL6Kdg05gpUWvf8PwZMPvqySuPnPsgl7JbkVyVs6rELH6/NUpH1di8AJXke2N8OZ1tBQ636QoFJRTb0BF/tQ0/FcvT0NItZy11yRg+e2XAZMIt2YkmD7tNsz9ZD2eeE6Glz53vxv73sQjf1JxR5aljhEzmIw/+MFMycCfQGwLoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SeDRXvjI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZ7lJhQI"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2cffd93cdedso264595ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 12:40:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785267607; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EQnBgN3dSryWZ0x5kPmLdMLgCdcfHEvL7MIaOJRlMkFeNHr8TUieY2048ZjoYZumIJ
-         dWjOx+LE8ui28rCdurlua2iTbtdOWtsfPtxJEO0oo1mE/EOeEwkbiijpwtctGmDf6JYi
-         UqImYVKTxRtrCv41HUvbonAbIw4p380j0GjXK86NZDTdwItabPW3Gm+2WItNYEc7fSkX
-         37Ea07zoy9xm+Y04nmj8NiOINI5UB70tBMH51oEN4UCnJXaRMePsxedKMEWhW22RdFmP
-         MJD+ddiDPsi78/g906YCEhyIqUlJyw7TfO4Zlm19U/yTIN2V5whtwxwkKd2h7K8FnUxb
-         Q3vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cpPQ24EVyvfhB0gl5C6A7Ib14qQkrWJ9dSg9UQ/L0F0=;
-        fh=A6L3us9dzAPaOm1sZYsCZNd61HemSkvN92AYYdgLygo=;
-        b=fCyxZPM769zUy2w5USjV4QQDK81Qu/kdmY3N/3QiPugzQyToI5Xpwi2avUPxGvA/sD
-         +pWw5NDhh6cY4KpMVWXuJ2Dc3RwsxnVf73h1D5zEQuvVZ8bFTOqEWh9WsxlVaO50XzlL
-         o2rcz8ci7QJtiQMXkJhW590W1+C/IgHV1OleAcefcVnTN27favOfmBDDuOLUsuNQfGzT
-         iXh9qlE/dBvfs4riik6o4bcQJ56I7OK+UgokHM2ZVbQtj6kQzDRp0iXetD0ie6F+zY7u
-         SQwDh4FglG5FSFy6IkQtzhbecPAfXgA41SJGjkYIf/rVuzGcZNRqD1z1+F7nj8B1y5b0
-         iMlQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785267607; x=1785872407; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cpPQ24EVyvfhB0gl5C6A7Ib14qQkrWJ9dSg9UQ/L0F0=;
-        b=HZ7lJhQIXjTK+d8x5xZcoR/OZ2gFRmhqGSFa1SNeglhtX5QbilvRIu0kv5z6TqW2K3
-         7WGyAKwKrRgujAp2FEAg28XOmEGbZyFUKrhfio+BsgvIyoaVBmO0JBIwbpEPvfYsETF7
-         anjcqw3qYikxsILEChoK29sormLxoTCrKxTrYGqxj748kPCWsTy4V/1rE6eu4+DUhaZD
-         82+EH80KRDV8+7xKDCnej37eZbDqSQpHb9S4QBcXIsx8Ti3gc7UYpx1giwxubIDezj6b
-         GSMHds9EKqiLQGJWn2AVF52nvP9FBdXHQm374bSYj+VSKXr4COUd1gKiW+V03gAXBGBN
-         2MsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785267607; x=1785872407;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cpPQ24EVyvfhB0gl5C6A7Ib14qQkrWJ9dSg9UQ/L0F0=;
-        b=PmXwOUhIPgCiU/Akmx7lSlU+aM+w+wYnEG9z5sNZXHVyU5eAXm1cUEG1Kd6XTRZ0gF
-         H8OXUvobMYaYwFg0Nrsjf7aFZbwp1qjaOXY0fEkVAbeZ4J8fwXG0bN2tT47jRcJ4F80n
-         b6uyh9dZqLcBhq9YJkPhRh7uIXuBrEdjDPQo9YFSRF/xqgbp4SUzNNaOUCkhN90l+hTw
-         BzlErpci9I9jERyZd1lPnUy8Qq2QqLDx/4OMvUBrDzNsVU3cSTSDH7xcFYXpTtVxeFLy
-         l5iD9/6NT6zGAPXD0/Uyn76ioaHJpVEv45bDUTkVxGQjR4EkmpEPPKj/SrhEUv8eZkLW
-         j/cw==
-X-Forwarded-Encrypted: i=1; AHgh+RpqIASmr8a3wFMU/fVRQUYZJZY32as/c1AzyyeZs6zYja9Mm7MCfzG1Lw2EwbWiGSiJiFe4B/gT/v317S4tCA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHLHgfBZnUYvJuJYK3PVMzdWXtdGTutb5i+FX0mpZzBvodCm3z
-	UPPTvOu5ofb2RLR+zmmy8qUTzIjayFzZDq2sNB1BAcgIYLn6EbvajuWGA3QZaBSgO5Dq6z1DSBj
-	TBsAdUWVMLx5Vixs4Jp/Ra0bq27sjBNg=
-X-Gm-Gg: AR+sD10Y0G5WiuUu/ETkAnjsZLsZqZVrhCBRlVYWzRHNSKLWaaZR1mOFZfY02BwcdrX
-	bbhZkL4pHFvOsGA/0fanVS7htURcRMs88XdiyL0R3vWr0l71mEbqX/zITr1D1gmpr42nB/R4B6T
-	jGHoa/FrcTL9908a9bJxQDuRf0Bvpk5+v1MW/xwUo5ZqKeKz42yu34NCsNKLCmmurqoT+tnWCsZ
-	RECGuBMlRN+GB7td4cw4vCYMJ/2+Ei9uLZCKDpY7Qcz05qhRLMytykQcXUeI8RZMklZ3hcf3NDB
-	k1+gm1yW+5tHmb59i0iTN0UQ5GppPY5FsD5y2GsOAuSF7PakV4XfAxoqGr78JDVYJw3tXS710cA
-	qaB9yYkXOxXyCuCh0O5pMTiDh9E1YKnR/M1loovgxf6/WR7nD78eYcSF81SO8
-X-Received: by 2002:a17:903:18d:b0:2c9:d8c6:1db3 with SMTP id
- d9443c01a7336-2d015ca0006mr30230635ad.8.1785267607090; Tue, 28 Jul 2026
- 12:40:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SeDRXvjI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728331F000E9;
+	Tue, 28 Jul 2026 20:07:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785269257;
+	bh=g58gRfs5c0V3SCdYvHY5lSFx4//gOQF/FXNiiAMSmC8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=SeDRXvjIo0PeOAWB+qm714ij5PQEMCtF/M5mCTstkRgZ5GlDTjfpliDRdVBI01r24
+	 A3mnQRZfkOZz1ImfR3pup6DRJGJAXc8bp6jDvuUQ6vmzewnNFVDqc212us6hPGnbQg
+	 itJjunYpXKxrSJvCRsQsgLR+fqzJ86ZG/k7ji2fpN780oeUu1BQtUlomxQEWx9lPeP
+	 e9GMLHy8TXVI55RXMR5QGi9kUQURJV8RhboPjw9lH944vH0J9PRhJKWHnK1eljsRX4
+	 zXiTvp1K/R5u52VQHfNvycvV7Nuwud/mx5T2+cfbOHNA/igp4artW42pcwECRKvhMJ
+	 m+39UEt+/dkIw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260331190053.482607-1-ojeda@kernel.org> <d47bcff5-ae97-4a27-8348-efef67ed3d98@app.fastmail.com>
- <CANiq72nFZT0ZZS1R82qVjPg4A=FEU675-3yx+tv3XVA=twnUWQ@mail.gmail.com> <18cf2372-0558-4a90-8faa-bdb2ca1cef61@app.fastmail.com>
-In-Reply-To: <18cf2372-0558-4a90-8faa-bdb2ca1cef61@app.fastmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 28 Jul 2026 21:39:54 +0200
-X-Gm-Features: AUfX_mxieED903ZVOSDzaT4nr5jZsRFAL90RWlFLtxi1t75KjzU4CBXoDz2O-m4
-Message-ID: <CANiq72nLWbdu1yW_tB1T_=JVhVeD9bnfnDvWYn0Qun0bEVcX-g@mail.gmail.com>
-Subject: Re: arm `rustdoc` Rust 1.85.0-only build error
-To: =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <debian@fabian.gruenbichler.email>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Christian Schrrefl <chrisi.schrefl@gmail.com>, 
-	Russell King <rmk+kernel@armlinux.org.uk>, Rudraksha Gupta <guptarud@gmail.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Jul 2026 22:07:31 +0200
+Message-Id: <DKAH4S5IE3RZ.10VD33NMVVLDR@kernel.org>
+Subject: Re: [PATCH 08/10] gpu: nova-core: use projection for PFALCON and
+ PFALCON2 registers
+Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Boqun Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-pci@vger.kernel.org>
+To: "Gary Guo" <gary@garyguo.net>, "Miguel Ojeda" <ojeda@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260721-typed_register-v1-0-452d72b60262@garyguo.net>
+ <20260721-typed_register-v1-8-452d72b60262@garyguo.net>
+ <DKA02Y5RE1YJ.2FGI97Z60X96R@nvidia.com>
+ <DKA4Q5QUBUXM.1K6QS2QPXT12H@garyguo.net>
+ <DKAASRCK3M06.G9XODK0T5AAK@nvidia.com>
+ <DKAD64Q7CEQD.Z15OS6MRHEKE@kernel.org>
+ <DKAEZ4LDA10F.1RFA9JKBGY2CF@garyguo.net>
+ <DKAFMD8X5LFP.UPKPHK5FYZPH@kernel.org>
+ <DKAFRETW93IW.SXUWFVB47V3B@garyguo.net>
+In-Reply-To: <DKAFRETW93IW.SXUWFVB47V3B@garyguo.net>
 
-On Sat, Jul 25, 2026 at 7:19=E2=80=AFPM Fabian Gr=C3=BCnbichler
-<debian@fabian.gruenbichler.email> wrote:
+On Tue Jul 28, 2026 at 9:03 PM CEST, Gary Guo wrote:
+> On Tue Jul 28, 2026 at 7:56 PM BST, Danilo Krummrich wrote:
+>> On Tue Jul 28, 2026 at 8:26 PM CEST, Gary Guo wrote:
+>>> On Tue Jul 28, 2026 at 6:01 PM BST, Danilo Krummrich wrote:
+>>>> I may have a slight preference for a separate subregion() variant for =
+the
+>>>> purpose of working around generic_const_exprs, as it probably is a bit=
+ closer to
+>>>> the final solution, but trait methods are fine with me too.
+>>>
+>>> I am not sure that's the final solution that I want. I want arg-positio=
+n
+>>> const-generics which would syntactically look more similar to `build_as=
+sert!`.
+>>
+>> arg-position const generics would be great, but that's just a syntax dif=
+ference
+>> and not related to supporting expressions involving const generics?
+>>
+>> In any case, I think my point about being closer to the final solution h=
+olds
+>> regardless.
+>>
+>>> Personally I think most issues with `build_assert!` can be fixed by hav=
+ing
+>>> lints, which is on my radar.
+>>
+>> I think it can be improved, but in the end it relies on compiler optimiz=
+ation
+>> that may or may not happen as expected.
 >
-> Happy to report (with some delay ;)) that the next stable release of
-> Debian Trixie (13.7, planned for 12.09.2026) should contain an update
-> of rustc to 1.85.1, which got accepted into the proposed updates
-> suite today:
+> It'd be a compiler bug if const folding is expected to happen, the whole
+> BUILD_BUG_ON depends on it working.
 >
-> https://tracker.debian.org/news/1778462/accepted-rustc-1851dfsg1-1deb13u1=
--source-into-proposed-updates/
+> `build_assert!` is a useful tool that I'm not giving up. If there is a ne=
+ed to
+> use it, then I'd use it compared to having two variants to do the same th=
+ing
+> with different syntax.
 
-Great :) I see the update also on:
+It is indeed useful and I don't want to give up on it either.
 
-  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1135220
+But, it is more fragile than const evaluation, so we should only use it whe=
+re
+const evaluation is not sufficient.
 
-which I was tracking in:
+In the case we are discussing the problem is that const expressions involvi=
+ng
+const generics are not yet supported, but in general it should be.
 
-  https://github.com/Rust-for-Linux/linux/issues/350
-
-I added your tracker.debian.org link and the planned release you
-mentioned there too.
-
-Thanks for the update!
-
-Cheers,
-Miguel
+This is different compared to e.g. read() where the syntax difference would
+actually hurt and const generics would limit flexibility, where we actually=
+ rely
+on the compiler to eliminate unreachable code paths regardless of a value b=
+eing
+known at runtime only.
