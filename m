@@ -1,124 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D2B2E888A;
-	Tue, 28 Jul 2026 17:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D5F39D6E8
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 17:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785258080; cv=none; b=VUkP+kKh+lkb4T7JHeyU77ITDFKItT0kP+xz/DtNIWQpEF4aPoajj88YQ6+MTVHGiws7VJhL/oYf/pMxSrOAjt5ytsUG3HsjLx9LqSOhGjsGZ/ZgzppYGSqsUzUzShMcc5IZyGwWUEqM79JGtNjmNmm94JvNsskEwb/K0pM3/gE=
+	t=1785258639; cv=none; b=bsek9ffF6rbS9ALI5yBNEygkprma+VovEN8vAnVDHuCm9bYLSONuzZMDsaQBS65OR5H8Zg7L90HZH4bQyl8vtolohU8TTr1dK2JRwPCtbkSyFzBmW0KizrbfJgLVlCPKUVOOQWPgz9hYVEeFi8ojMG734gweCKcPrYxYhdZC2sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785258080; c=relaxed/simple;
-	bh=MvOyPm0OvxaBHSilVu7AshLW8XnoVziVrisixs/IqO8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=a8r8yl4cpDvyO7ISAxTCVfPE5LOqEEOyRHGY748F6oUnx5NSSeONwsW2gjqB4F8yTNNctst9+0uqJsGfgfZGFyofk2R1RTV29Yogyx8xAT9zt0YTn8ox1MqcUcLj595ugDRFS+JXwOf+OxENz64ZfrFIU6uLJ+aF7JQByILaPIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlspHBOW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785258639; c=relaxed/simple;
+	bh=aiAcjvqBDo/hZ57/7zDsAt4TmRAIXblduf55Q62ap74=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JcreQQMY4qh1CIhr/aKxSaTDf4TpDVBfGDMVlsr9uunnhwLFNImybg7fepwVRrGJDcd53FnwmV9t7LDL02Osh0UiHsNNxgTXG2S9H+ZQoqBqwj6HFTYKuw6nDTsCe5I7NbFr2GJdPRfsfkLLHcpm6gTxj+xTVOVAr7Kng8Pg9V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ufb5oBd7; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlspHBOW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C524D1F000E9;
-	Tue, 28 Jul 2026 17:01:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785258079;
-	bh=MvOyPm0OvxaBHSilVu7AshLW8XnoVziVrisixs/IqO8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=BlspHBOWZYLezf3OfdCf9nATqVDX9JgadDA+zhTJ+rvVUXVhS1QHNTxehILUmMgjj
-	 A8djzFY3yhwu7mT0liyuqBs9QW6/2rrWJc8S7c/V6YaWx+W/bOAWjD+GGD1KEsz4/y
-	 ADKWPmf8+li8WTshvYsnEud4PSTBToaNYGp4ODCf1xogVtrcjnJe0WK2rH3NaA/huB
-	 JtulGZ3UJ8oVdxZlgQ5t8gpQ8Tk3YyJCkUK6u8QIkEJz8roAITzDE9BvnXLBHdT3Fl
-	 uvl9365qrvzZHNxqYDTRIMDH8gh/ccEfWwqszPSjMo1wcrIOwMXXocGHSV00929ZGv
-	 e5a0/BAYSUniQ==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ufb5oBd7"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ccdf36f63dso4835ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 10:10:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785258638; x=1785863438; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Rtso/6MrMFRHVOUOKPRhobi5Os1VnnvXLg5WxwaI43c=;
+        b=ufb5oBd7ALRhPkjDZYBVj8fYT+BX1qsCkdfpBqYwGYqGp7LL5XO/sLY5SgRQZ6d8bR
+         ffs/6Wn4lLZOio4zBWw7kbaPozfi44st30pvCflVokll5WEBCpxCv5ml/zJw/k/bJXCw
+         qk8Cj+Jck9rkTIsapU+SEkVuDE/zFUxJQK5D/v21NBjYQ9ySKjzKhF3TWIMsVLY3Dih2
+         f1Gly/skhXHxa/E6os1RQ4lzb/u9ZsapHxv2oi6bJ5bhBn4XAIRXZzIXkceJSApKT7f8
+         7+1wpMrQ3Ma/G8/ejbqPjXHZDrXHDzumqhz0v2yxwLaUC53AvRh4Bjv/IkI1kMPqy49B
+         QiUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785258638; x=1785863438;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Rtso/6MrMFRHVOUOKPRhobi5Os1VnnvXLg5WxwaI43c=;
+        b=hPIBq2h1EUuoapKaBxmvkst1bJEEiMhd886if0zA2uE7VbuL/0u/PEaM3uIRI1wOqS
+         WN+AmzAmD5y8XIxe2ywYQMd497enhgxb4cGlFV1IfShjAQsD7TG4H3fXJ+JbeqrHJVfc
+         hb/cBsgx8ZB4K7E/HoWee4X1flNbTTeKvHbpe94LpZT4YgYCrPb4H2T1lHONkBopZo4f
+         YslJX9WXPxeJrdGMDdHdaz/AhT+Sz5zeAoudez5TA+0/EWSiKKqvYFn7uIogfwK0OIw3
+         Y+bZT34TSvM2CtC/qEerAGF4crtjOBsy46D0fII78boKkzWfAApIJgHKrFiRfs2p9irk
+         3LvQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpgoje6GOXBxQkVjPHZRrO9sRTZeCdS4SXZ9kBc6mXX1MY3oERnMBCSrd6tgL8uFjPBuQYhbPgY1l5TkaYKzw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTbGN5zVD/JW2S3AvXnftpmeNEjfUfj1lLf8GQYkinPFikWyRo
+	3xjVIPugTREM8B9qXRJc6DzVlosO8tsn660tbSNEDvCdKeoBXLADaHhqmtFofE0wPA==
+X-Gm-Gg: AR+sD13erG3imxV9wlajF3Iep7GujXR+tOoEOqSm7nYh+6LVS+uXqCq61SeQfHf7kvt
+	tny0e64lTOtDb2Y77gg8BsG5cOhaRv/eBUkq6n4npjO2KSE7JRKLsl85FsyamuWqH2GIxO1qceL
+	lt7o+AjCTUVFXIe9DJpSiCBKqOgWtqRO7N1DqF/XPMP69Ilzn8qvSvR4i0AlHgzFlDvwU9p0uND
+	X4VZiQ9C1VgZdZKyiEvX/gYs7GmaeFu1OrfXtjXaNXMztfvDizr7j9oHX96HkJA3OaPLeZgMe2M
+	YxTljbrC94dk6FbxwrYvOzXMx5iM+DMierNZmYQJHEVPVQWbBubkEBLlHOzPjLdmKFrzzEStkmB
+	0C0lsT18EeQEEC8sYWrMeOrchD9XfSwHY83t2fGdOhBHn3KBKcWrZtOhq4qareymgvQcKPNnAmI
+	xOrCsaPeoGwAOh1iJnLl9/fVt9ohXWvRjHqSbasm3jjGYdILyhOWZeJ2zskYe4pzuTrKvWKxmCY
+	qNJvg1yC0hEfRn5Q1JTXre43w==
+X-Received: by 2002:a17:902:fd87:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2cfdb73e6cfmr7608015ad.8.1785258636718;
+        Tue, 28 Jul 2026 10:10:36 -0700 (PDT)
+Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde81dcb3sm55463025ad.82.2026.07.28.10.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jul 2026 10:10:36 -0700 (PDT)
+Date: Tue, 28 Jul 2026 17:10:31 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 4/5] rust_binder: consolidate transaction failure
+ prints
+Message-ID: <amjih6MHfDIAk0QA@google.com>
+References: <20260728-pr-ratelimited-v4-0-435f8d6e9605@google.com>
+ <20260728-pr-ratelimited-v4-4-435f8d6e9605@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 28 Jul 2026 19:01:13 +0200
-Message-Id: <DKAD64Q7CEQD.Z15OS6MRHEKE@kernel.org>
-Subject: Re: [PATCH 08/10] gpu: nova-core: use projection for PFALCON and
- PFALCON2 registers
-Cc: "Gary Guo" <gary@garyguo.net>, "Alice Ryhl" <aliceryhl@google.com>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-pci@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260721-typed_register-v1-0-452d72b60262@garyguo.net>
- <20260721-typed_register-v1-8-452d72b60262@garyguo.net>
- <DKA02Y5RE1YJ.2FGI97Z60X96R@nvidia.com>
- <DKA4Q5QUBUXM.1K6QS2QPXT12H@garyguo.net>
- <DKAASRCK3M06.G9XODK0T5AAK@nvidia.com>
-In-Reply-To: <DKAASRCK3M06.G9XODK0T5AAK@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260728-pr-ratelimited-v4-4-435f8d6e9605@google.com>
 
-On Tue Jul 28, 2026 at 5:09 PM CEST, Alexandre Courbot wrote:
-> Great, keeping this commit purely mechanical sounds good to me if you
-> prefer it that way (although one can argue that the refactor itself is
-> also mostly mechanical as the end result shouldn't be more complex).
+On Tue, Jul 28, 2026 at 09:32:54AM +0000, Alice Ryhl wrote:
+> When a transaction fails, it currently hits multiple print statements
+> meaning that a single failure can result in several lines in the kernel
+> log. This is unnecessary, so consolidate them into one print used for
+> all transaction failures.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
 
-I don't really see much value in this intermediate change; it's not really =
-less
-invasive than to do the refactor I think, so let's do that.
-
->>> And I suspect that once this is generalized, `Falcon` won't even need t=
-o
->>> store a reference to the `Bar0` (and potentially poke the I/O of other
->>> engines) anymore.
->>>
->>> Actually I would like to push that even further and replace the
->>> `pfalcon()` and `pfalcon2()` trait methods by associated constants used
->>> to construct the projected view in `Falcon::new`, since the projections
->>> are all constructed the same way, but doing so requires
->>> `generic_const_exprs`. :/
-
-Yes, that'd be best.
-
->>> We could make it work by moving the `OFFSET` generic argument of
->>> `subregion` into a regular argument and enforcing its invariants using
->>> `build_assert!`, but that would require `subregion` to be
->>> `#[inline(always)]`. I don't know if there is another trick we can use,
->>> if not otherwise I guess the trait methods are ok, especially if they
->>> are only called once in the constructor.
-
-I think this is fine if, as Alex says as well, we expose it as another vari=
-ant
-of subregion(). (In general, I'd like to avoid introducing more build_asser=
-t!()
-if there's not much value though.)
-
-In the nova-core case it would be a specific workaround for generic_const_e=
-xprs
-not being stable, so a separate subregion() variant that is specifically
-targeted at this seems fine.
-
->> This was definitely one option that I have considered, however as `NEW_S=
-IZE`
->> still needs to be generic so we're not entirely turbofish-free. But if m=
-aking
->> `offset` become an effective const parameter helps nova impl, it might m=
-ake
->> sense to use `build_assert!` for this.
-
-As mentioned I'd like to avoid additional build_assert!() if not needed, th=
-e
-turbofish doesn't hurt too much here.
-
-> Maybe we can have another variant of `subregion` that operates that way,
-> but your call. I don't see any obvious flaw with the current
-> implementation, it's just that the `FalconEngine` methods should not be
-> useful outside of the constructor eventually, so it seems a bit
-> superfluous to have them visible to the whole crate.
-
-I may have a slight preference for a separate subregion() variant for the
-purpose of working around generic_const_exprs, as it probably is a bit clos=
-er to
-the final solution, but trait methods are fine with me too.
+Thanks,
+Acked-by: Carlos Llamas <cmllamas@google.com>
