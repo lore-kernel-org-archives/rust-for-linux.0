@@ -1,56 +1,56 @@
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBAF3E2ABA
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 09:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2093941DDE1
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 09:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785231187; cv=none; b=Nbxgx/nGWkZW14s4w3JGZope7VHb2qIBkWxB6hJwqKxIo8ARwr7NLmOaV7I2RLAoN2ZPD5LUsemifKJaMrxdjCxl74eDGDNwMfYejWJ3ljslVfyYifsO4TCZtJISUnE+4ciLOEkhLEO8V0ldZ4Lo7EV9Yri5bnwmE/DgQyVSAms=
+	t=1785231189; cv=none; b=XIz4qSJrf17AJu8iNwflhY6JQlOv0mBX7WvEUbjqm8hfu192VUjzGT3J/+Hvg8dyoaknxWrrmRL3xbyVSooMtR7E5LWFar/iMvkBoGbZVogdPCpw2ni4zSwp8RYT7c5i64+8iRUuy3o7Svt0qmVcdjK6vBVAl4Bgzlv0gaEEoos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785231187; c=relaxed/simple;
-	bh=yYTW/YCtTG64KJXIcF+6Rt2z9XEGwhz+AhjLcJ6qvVA=;
+	s=arc-20240116; t=1785231189; c=relaxed/simple;
+	bh=mXTTWhILo7aDPEkbAR6C+bmwUEdzKgNkNNRY0w3AaDo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NNZiZMzxZ1X3liAu8MgAXVXrigM/R6g2fvPnCugkTRE/FEIxo2PmJRBUeuwk3ubt9elKsQ8SaMJO3MJaqOYuEoSq5+uMBc3dZ8KatOK5hd3ZByegJNUSjawpIg1zfrcsJ7iEwyhlv4REahTaF/oxrt4CZL0S+r9sW4kEDcd26y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LxBpzt9s; arc=none smtp.client-ip=209.85.221.69
+	 To:Cc:Content-Type; b=LOBXbXGGyQ4bgE+Uq09Eo9lRz3V5DZSQHjwWMxUUCUya98YAwpBBssYDrXJ9zNQ0J0x4NmqtHvQCZ1gVrjQkhCnZ1K5C9Q+o0e34Hc846yFTyDN+NJcOdiTnd0XcptcAhFFbe8zX50mpMalqeSZ87k8/1mJy69QztLz8pHwZboE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BlCwUWcw; arc=none smtp.client-ip=209.85.128.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LxBpzt9s"
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-472a798fc7cso2771540f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 02:33:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BlCwUWcw"
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49561facb1dso28854905e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 02:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785231184; x=1785835984; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785231185; x=1785835985; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Akaj1G20N+GUpw+fJ1iolQ/M0zigZeHSHuU4UIVEr9w=;
-        b=LxBpzt9s3Kp2O50hv367ToZjhhK6FA+RZuJKB/crKOzAGvbZOBAm5hfwGFkhXWgA0q
-         xJ1ygcRnexsk3IQNOquWJQYeowUF6KHemzv/iMxdyg39+mfN3aKSln01JUUxkTikevKQ
-         /P4SrCaTCpMrdPWoc+JTKhKAY5fdTBIf1awbxdrYZnPoK7Vdwb/H496a2TkzzdMC8mjM
-         1CTruk5khUyFpXMFP/VvYhbfM4g7GflnImrm/Xt/TVoXveIjmOIydRYwW+DvY+oouu2x
-         fiw0f9ZqlrXR+vg9kveD4cgrEamaU/XWYo2MX57wgE9ca6yy7nx0yez2jDpql2xTvEM/
-         Gqpg==
+        bh=dW2yskFS01SfEEHEA1J2JCWByPmKS5uveMOaI5uF4WU=;
+        b=BlCwUWcwIj6dppv/FBBVVa3bkD+3qmmeeh77lI3hnb81NSulKK899/K9w2B7JOHGe+
+         Wa+6Fdjz9obl6vAMaoWTBk4/iqX4ZWHpvQojTftxCjS6V4f2T0KSEevn8DHCFPiz65DW
+         WVmF40CE+K0zDeUFkoCHr712Ytg5NVgKxf7XxlmjPWTS+3n31vHVg1i0UbySIIuDQCL4
+         Im9C8Mdf5jwytpq++4466VlYXY9WrxMR4pth/19k+fZdle4soAFnoX4VKthcv3p6UsRt
+         Z/BPJQy+flJ1N9YYkTR9NOpee+pnPFKQHx72WnwYYDM2S2HRrQbjfP5/VIOg/cjpQBo9
+         PPnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785231184; x=1785835984;
+        d=1e100.net; s=20251104; t=1785231185; x=1785835985;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Akaj1G20N+GUpw+fJ1iolQ/M0zigZeHSHuU4UIVEr9w=;
-        b=POcBwVEL2RD/ceyDHzWyfMLem8YmQaRWTn7GzFUbxu8QiRFIPc6oY4KlIYNkAvKb1Z
-         MGy1u0YlGy6WsER+eKCMfsnCyPggwvn1HwCXzTFtO6EQBmNz4z1JSX9P+Fr2UADs5SMp
-         l6eh/aBBXAx4ENRLRAbxZYzWhZrCKgK/LCUkuL53s2ee1spCeEEHTpJ/98DOeSFZTck4
-         pn9GmdXuJf7dwZgFbRzdqBG1KVnuSGxpbmBh9kZ6ZQiK2d9O8gbpo7Wn3BhGL1EkyN8H
-         vktl4GkE9pUQIZPG1mEEwQf0UUyB0lisJL3mzMKNdf3mhvTggQ5cTOpUDxn8KgnS0CPk
-         SUnA==
-X-Forwarded-Encrypted: i=1; AHgh+RpultlorIFfNCd+crnHyFlCVjXX0AGlbmamkM5VjMr62MvqVTlVT5qBv/3qyzUfn/t396/2UxDSNcfZn5c/yg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwldV6u9pGrGSdDqtrrELN5gCozMKnOdmmKmjqDfY+TLUz6YRfs
-	4LIn5daveoPkynzUl9m6UT2LMcIC0qjPFVIOnYcXNmvhxc+ChGvB5BwjA6fUCTHjSXe4nNb8kB2
-	dZuQcosDD2xXHUmqVfA==
-X-Received: from wmqg6.prod.google.com ([2002:a05:600c:4ec6:b0:495:72a8:661f])
+        bh=dW2yskFS01SfEEHEA1J2JCWByPmKS5uveMOaI5uF4WU=;
+        b=Vf8DtuL3cfs1YYDu4Ss/plaFta8LCGO/524R7qD+/WGoJ2pq0ft3NcQPb5JIDnEMnV
+         hIXm/60xbzeSvpQct0evLddwDFbgrlWSadNzHYBv9OcfNnXeAzShINCAuTJInwg8LXTZ
+         RX2wVy2CR/Lw9dirgpNMBGczO80UY8CpCYpm15NwOEhgqA74rMpoZfe6e3ZGLZHXkM0e
+         oY8driyhC9VlXzJqBJS49yRunLEklRyqpFAB1yLGtHrhORPB0527U3+hlRzWrQKq2M3Y
+         V1PO9/BuVNPCZR87a4a7mptT5OS5qxV4Gg49kheg8gGQnvyFQFbPqiq8KFRKBC+eOIpw
+         BOIw==
+X-Forwarded-Encrypted: i=1; AHgh+RplpwoGZr7YSXzYKv/hdm5+B8xfZGUdBkLt6sQrSXAtXd9KCCedXslXqZ3QvQguLUcSieAD08a7myWlQqNpvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVMj4tqpP5ApZCSAU336El5KA0tgrpoBqhHNs0kh6+2lrkx8nO
+	7u1PW+bGMTg/Zu+jyGs+MiJVIegd9VcgBlZyyob21bjn5CkVzvbO92tQdso6Kz57Et7gvHdxQaU
+	tKEvZJ2lc92cUWoAlLg==
+X-Received: from wmju5.prod.google.com ([2002:a7b:cb05:0:b0:493:c2c8:a251])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f85:b0:493:f318:3bc6 with SMTP id 5b1f17b1804b1-496c654f6c3mr17844295e9.13.1785231183690;
- Tue, 28 Jul 2026 02:33:03 -0700 (PDT)
-Date: Tue, 28 Jul 2026 09:32:52 +0000
+ 2002:a05:600c:1d06:b0:494:596e:e8c4 with SMTP id 5b1f17b1804b1-496c64393eamr16491595e9.17.1785231185101;
+ Tue, 28 Jul 2026 02:33:05 -0700 (PDT)
+Date: Tue, 28 Jul 2026 09:32:53 +0000
 In-Reply-To: <20260728-pr-ratelimited-v4-0-435f8d6e9605@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -60,22 +60,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260728-pr-ratelimited-v4-0-435f8d6e9605@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5073; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=yYTW/YCtTG64KJXIcF+6Rt2z9XEGwhz+AhjLcJ6qvVA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqaHdKyXNntk4iT+d57GlkOywrAfiVcdw3usEf0
- mjbLd0DDI6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCamh3SgAKCRAEWL7uWMY5
- RnttEACcle0Biy4shf9A3m2L8hNLZKeN8cv9meAm5wavtoPHWgRKWK0Y+06mLoduzFfygUbdBmo
- HnlkwoOX/u6R1UgMRXDpoT9303Vo7L0QkynISbSvUuWy3x7k9acUaTilUp67y5fE9T4YjKT8Hlw
- f7+AEGUid3gcJjqPR6utmi4cwPGOayovZmSDGHGGuJ48MYr6YCTafHVAbHSrt9r/9hV0pUNoAin
- 2sUXIPAJRpy1VBnaY1vb+mUu/aZekNY2/6yePWvnQ52pXV4wFAzSlwKTxR9j3Z8iXplQ0OIxC/7
- yYnrnw4bX+qVWN+a9eh02tgDiP43iF1yD5M3p7FgP0BbSJ/wuCUZzDw8rdqrTDBiIiwdLiBoQ9B
- JFFUrFr5qXeKdQxqQlkMCQ30vY3+SEtTmMokXBbioCQx1BNEAJQP6lM5mTLC6BTc8MlPj8oSZe3
- SO/4XmIE8XuZmLBfnx6jiHBfn2pfixE13WmcllihY99WNbfoJX7J7xT7Pu91fnSkLnUk3DBEr20
- bbonO24AE3Y9Q1SCphB9UlZb0Hajp/mVC30iAC9FDEWZ8kQ9hrrjWG+SH4u11B7KZKY18BMdBic
- w/NbgUt5V/w7avmYGeeCg7OBicJzASGfHzqTY2RApgxqwnCzlV8QjyRXSWG/yZA1pssuAmz123j SNKeFTqQcBDhGPg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10783; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=mXTTWhILo7aDPEkbAR6C+bmwUEdzKgNkNNRY0w3AaDo=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqaHdLhpZVGeJwTEPKVdKKk8/fUQtCUzG3wd7n3
+ uyRdnX0MxuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCamh3SwAKCRAEWL7uWMY5
+ RtpYD/9m2psyVOaqQATHiAsBvwhI2DC/IkzQ6nZtyd0z73c5rRrZMOYMRd+2P2S4lRLczqF0rij
+ +db55mj9Wmkg/jWfTZ0eCihRIsemXtY1Ql9DMxWY9hPHtNv6nbnwhuLc1C9jsCBTufln6JOQmIq
+ 2fp9TQ+uraiMs7zyl3moRX+2cguNGslEebxw4BOVZfzREpzoc/k31B5ooHe3TRyw0PVrOcx1agv
+ h0rBKLSO33h/nfqeCT02pXmkG59eiKVi6WmPfK7b6fWu4UCAlNoGwdmuTz+4/nihCAIz+BG7phu
+ 823b1gWI/AQk0rEslfde6DDB+mVkgNXvyl4om5V4uTB2TYgci8q2+OAdFSpYdcjahA4kMv3wjie
+ TMfSSB0TDaC7B9G5Iz6roCyqpU7mUHoNZz0Zv8lemK8rT3bHqj23LisKtWtfLTinWwXmm4pG2vC
+ 6MNvi44kRFyix0Q8b1Ccw2LbBnQiZbCS57yhJqNrWJ4A/a3MnG299HK7IJOT2yvG7d92k3uYEy5
+ PRo7K1eIDHAMzMd4ICrJYaOWlLIM8MZwl4n6ZEvCnqZWAWdJblwImbjo/EZStFW0VyNbXok8UvD
+ ///Xxs92+gUxCRakYyLaY0LRxFmpx5ovQGuYWR4s0zLxnP8FnSGQbqoXl/wo7iXlXj/WAN8aBlT iwKLhwRynmgfUvw==
 X-Mailer: b4 0.14.3
-Message-ID: <20260728-pr-ratelimited-v4-2-435f8d6e9605@google.com>
-Subject: [PATCH v4 2/5] rust: sync: add const constructor for raw_spinlock_t
+Message-ID: <20260728-pr-ratelimited-v4-3-435f8d6e9605@google.com>
+Subject: [PATCH v4 3/5] rust: add pr_*_ratelimit! macros for printing
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>
@@ -86,154 +86,333 @@ Cc: "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Andreas Hindborg <a.hind
 	Miguel Ojeda <ojeda@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
 	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>, Will Deacon <will@kernel.org>, 
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+	Alice Ryhl <aliceryhl@google.com>, Alvin Sun <alvin.sun@linux.dev>
 Content-Type: text/plain; charset="utf-8"
 
-The abstractions for pr_*_ratelimited! need to construct a global
-`struct ratelimit_state`, which contains a `raw_spinlock_t` field. Thus,
-add a const constructor for the `raw_spinlock_t` type.
+Printing can be very expensive if it occurs often, so printing that can
+be triggered by userspace should be rate limited. For this purpose, add
+a Rust wrapper around `struct ratelimit_state` and use it in the new
+macros.
 
-The SPINLOCK_OWNER_INIT constant isn't mirrored via a const helper
-because bindgen generates a 'static mut' instead of a constant from the
-pointer constant.,
+The new files will fall under the catch-all RUST maintainers entry.
 
-The __ARCH_SPIN_LOCK_UNLOCKED constant cannot be translated by bindgen
-because it's a define for a struct without type annotations, so it's
-explicitly declared in Rust.
-
-Reviewed-by: Boqun Feng <boqun@kernel.org>
+Tested-by: Alvin Sun <alvin.sun@linux.dev>
 Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/122
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- include/linux/spinlock_types_raw.h |  4 ++++
- rust/bindings/lib.rs               | 24 ++++++++++++++++++++++++
- rust/kernel/sync/lock/spinlock.rs  | 31 +++++++++++++++++++++++++++++++
- rust/kernel/sync/lockdep.rs        | 22 ++++++++++++++++++++++
- 4 files changed, 81 insertions(+)
+ rust/helpers/helpers.c            |   1 +
+ rust/helpers/ratelimit.c          |  14 +++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/prelude.rs            |   8 ++
+ rust/kernel/ratelimit.rs          | 216 ++++++++++++++++++++++++++++++++++++++
+ rust/kernel/sync/lock/spinlock.rs |   1 -
+ 6 files changed, 240 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/spinlock_types_raw.h b/include/linux/spinlock_types_raw.h
-index e5644ab2161f..942c229c90bb 100644
---- a/include/linux/spinlock_types_raw.h
-+++ b/include/linux/spinlock_types_raw.h
-@@ -11,6 +11,10 @@
- 
- #include <linux/lockdep_types.h>
- 
-+/*
-+ * Keep in sync with rust/kernel/sync/lock/spinlock.rs
-+ */
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 1d4ee51f576b..cbecf152f647 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -82,6 +82,7 @@
+ #include "processor.c"
+ #include "property.c"
+ #include "pwm.c"
++#include "ratelimit.c"
+ #include "rbtree.c"
+ #include "rcu.c"
+ #include "refcount.c"
+diff --git a/rust/helpers/ratelimit.c b/rust/helpers/ratelimit.c
+new file mode 100644
+index 000000000000..e5052f568b81
+--- /dev/null
++++ b/rust/helpers/ratelimit.c
+@@ -0,0 +1,14 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- context_lock_struct(raw_spinlock) {
- 	arch_spinlock_t raw_lock;
- #ifdef CONFIG_DEBUG_SPINLOCK
-diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
-index 812f8e5a08d5..bb35e64957cd 100644
---- a/rust/bindings/lib.rs
-+++ b/rust/bindings/lib.rs
-@@ -81,3 +81,27 @@ mod bindings_helper {
-         None
-     }
- };
++#include <linux/ratelimit.h>
 +
-+// Explicitly list architectures where this logic is checked correct.
-+#[cfg(any(
-+    CONFIG_ARM,
-+    CONFIG_ARM64,
-+    CONFIG_LOONGARCH,
-+    CONFIG_PPC,
-+    CONFIG_RISCV,
-+    CONFIG_S390,
-+    CONFIG_X86,
-+))]
-+pub const __ARCH_SPIN_LOCK_UNLOCKED: arch_spinlock_t = {
-+    // SAFETY: The `arch_spinlock_t` type can be zeroed.
-+    #[allow(unused_mut)]
-+    let mut lock: arch_spinlock_t = unsafe { core::mem::zeroed() };
++__rust_helper void rust_helper_ratelimit_state_init(struct ratelimit_state *rs,
++						    int interval, int burst)
++{
++	ratelimit_state_init(rs, interval, burst);
++}
 +
-+    #[cfg(not(CONFIG_SMP))]
-+    #[cfg(CONFIG_DEBUG_SPINLOCK)]
-+    {
-+        lock.slock = 1;
++__rust_helper void rust_helper_ratelimit_state_exit(struct ratelimit_state *rs)
++{
++	ratelimit_state_exit(rs);
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 9512af7156df..f53dd564aef5 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -112,6 +112,7 @@
+ pub mod ptr;
+ #[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
+ pub mod pwm;
++pub mod ratelimit;
+ pub mod rbtree;
+ pub mod regulator;
+ pub mod revocable;
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index ca396f1f78a6..bcaa232205be 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -107,13 +107,21 @@
+     },
+     init::InPlaceInit,
+     pr_alert,
++    pr_alert_ratelimited,
+     pr_crit,
++    pr_crit_ratelimited,
+     pr_debug,
++    pr_debug_ratelimited,
+     pr_emerg,
++    pr_emerg_ratelimited,
+     pr_err,
++    pr_err_ratelimited,
+     pr_info,
++    pr_info_ratelimited,
+     pr_notice,
++    pr_notice_ratelimited,
+     pr_warn,
++    pr_warn_ratelimited,
+     str::CStrExt as _,
+     try_init,
+     try_pin_init,
+diff --git a/rust/kernel/ratelimit.rs b/rust/kernel/ratelimit.rs
+new file mode 100644
+index 000000000000..5f0deae819dd
+--- /dev/null
++++ b/rust/kernel/ratelimit.rs
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Rate limiting support.
++//!
++//! C header: [`include/linux/ratelimit.h`](srctree/include/linux/ratelimit.h)
++
++use crate::{
++    bindings,
++    prelude::*,
++    types::Opaque, //
++};
++
++/// Defines a `static` containing a [`Ratelimit`].
++#[macro_export]
++macro_rules! ratelimit_state_init {
++    ($name:ident, $interval:expr, $burst:expr $(,)?) => {
++        static $name: $crate::ratelimit::Ratelimit = {
++            let name = $crate::c_str!(::core::stringify!($name));
++            let interval = $interval;
++            let burst = $burst;
++            // SAFETY: This will be stored in static memory.
++            unsafe { $crate::ratelimit::Ratelimit::new_static(name, interval, burst) }
++        };
++    };
++}
++pub use ratelimit_state_init;
++
++/// Rate limiter state.
++///
++/// # Invariants
++///
++/// The `inner` field contains an initialized `struct ratelimit_state`.
++#[pin_data(PinnedDrop)]
++#[repr(transparent)]
++pub struct Ratelimit {
++    #[pin]
++    inner: Opaque<bindings::ratelimit_state>,
++}
++
++// SAFETY: `Ratelimit` is safe to be sent to any task.
++unsafe impl Send for Ratelimit {}
++
++// SAFETY: `Ratelimit` is safe to be accessed concurrently as it is protected by an internal
++// spinlock.
++unsafe impl Sync for Ratelimit {}
++
++impl Ratelimit {
++    /// Constructs a [`Ratelimit`] with the specified configuration.
++    ///
++    /// If `interval` is zero, then no rate limit is applied.
++    #[inline]
++    pub fn new(interval: i32, burst: i32) -> impl PinInit<Self> {
++        // INVARIANT: This creates a `Ratelimit` containing an initialized `struct ratelimit_state`
++        pin_init!(Self {
++            inner <- Opaque::ffi_init(|slot: *mut bindings::ratelimit_state| {
++                // SAFETY: `slot` is a valid pointer to an uninitialized `struct ratelimit_state`.
++                // The memory is pinned so it remains valid until `ratelimit_state_exit` is called.
++                unsafe { bindings::ratelimit_state_init(slot, interval, burst) };
++            }),
++        })
 +    }
 +
-+    lock
-+};
++    /// Constructs a [`Ratelimit`] with the default configuration.
++    #[inline]
++    pub fn new_default() -> impl PinInit<Self> {
++        Ratelimit::new(Ratelimit::DEFAULT_INTERVAL, Ratelimit::DEFAULT_BURST)
++    }
++
++    /// Constructs a [`Ratelimit`] with the specified configuration.
++    ///
++    /// The name will be used for the lockdep name of the internal spinlock. See [`Self::new`] for
++    /// the meaning of `interval` and `burst`.
++    ///
++    /// # Safety
++    ///
++    /// The resulting value must be stored in static memory.
++    #[inline]
++    pub const unsafe fn new_static(name: &'static CStr, interval: i32, burst: i32) -> Self {
++        Self {
++            inner: Opaque::new(bindings::ratelimit_state {
++                lock: kernel::sync::lock::spinlock::raw_spin_lock_unlocked(name),
++                interval,
++                burst,
++                ..pin_init::zeroed()
++            }),
++        }
++    }
++
++    /// The default interval used for rate limiting.
++    pub const DEFAULT_INTERVAL: i32 = bindings::DEFAULT_RATELIMIT_INTERVAL as i32;
++
++    /// The default burst size.
++    pub const DEFAULT_BURST: i32 = bindings::DEFAULT_RATELIMIT_BURST as i32;
++
++    /// Check if an action should be rate-limited.
++    ///
++    /// Returns [`true`] if the action is allowed, and [`false`] if it should be suppressed.
++    #[inline]
++    pub fn ratelimit(&self) -> bool {
++        // We don't set `RATELIMIT_MSG_ON_RELEASE`, so the function name parameter is not used.
++        //
++        // SAFETY: `self.inner.get()` is a valid pointer to a `struct ratelimit_state`.
++        // The lifetime of `func` ensures the pointer remains valid for the duration of the call.
++        // The C function `___ratelimit` handles its own internal locking, so it is safe to call
++        // concurrently.
++        unsafe { bindings::___ratelimit(self.inner.get(), c"Rust".as_char_ptr()) != 0 }
++    }
++}
++
++#[pinned_drop]
++impl PinnedDrop for Ratelimit {
++    #[inline]
++    fn drop(self: Pin<&mut Self>) {
++        // SAFETY: By the type invariants, this struct contains an initialized `struct
++        // ratelimit_state`.
++        unsafe { bindings::ratelimit_state_exit(self.inner.get()) };
++    }
++}
++
++/// Helper macro to implement ratelimited printing.
++#[macro_export]
++#[doc(hidden)]
++macro_rules! print_ratelimited {
++    ($print_macro:ident, $($arg:tt)*) => {{
++        $crate::ratelimit::ratelimit_state_init!(
++            _rs,
++            $crate::ratelimit::Ratelimit::DEFAULT_INTERVAL,
++            $crate::ratelimit::Ratelimit::DEFAULT_BURST,
++        );
++        if $crate::ratelimit::Ratelimit::ratelimit(&_rs) {
++            $crate::$print_macro!($($arg)*);
++        }
++    }};
++}
++
++/// Prints an emergency-level message (level 0) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_emerg_ratelimited (
++    ($($arg:tt)*) => (
++        $crate::print_ratelimited!(pr_emerg, $($arg)*)
++    )
++);
++
++/// Prints an alert-level message (level 1) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_alert_ratelimited (
++    ($($arg:tt)*) => (
++        $crate::print_ratelimited!(pr_alert, $($arg)*)
++    )
++);
++
++/// Prints a critical-level message (level 2) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_crit_ratelimited (
++    ($($arg:tt)*) => (
++        $crate::print_ratelimited!(pr_crit, $($arg)*)
++    )
++);
++
++/// Prints an error-level message (level 3) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_err_ratelimited (
++    ($($arg:tt)*) => (
++        $crate::print_ratelimited!(pr_err, $($arg)*)
++    )
++);
++
++/// Prints a warning-level message (level 4) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_warn_ratelimited (
++    ($($arg:tt)*) => (
++        $crate::print_ratelimited!(pr_warn, $($arg)*)
++    )
++);
++
++/// Prints a notice-level message (level 5) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_notice_ratelimited (
++    ($($arg:tt)*) => (
++        $crate::print_ratelimited!(pr_notice, $($arg)*)
++    )
++);
++
++/// Prints an info-level message (level 6) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_info_ratelimited (
++    ($($arg:tt)*) => (
++        $crate::print_ratelimited!(pr_info, $($arg)*)
++    )
++);
++
++/// Prints a debug-level message (level 7) if allowed by a rate limiter.
++///
++/// [`Ratelimit`]: $crate::ratelimit::Ratelimit
++#[macro_export]
++macro_rules! pr_debug_ratelimited (
++    ($($arg:tt)*) => (
++        if cfg!(debug_assertions) {
++            $crate::print_ratelimited!(pr_debug, $($arg)*)
++        }
++    )
++);
 diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index ef76fa07ca3a..697efa7e04c6 100644
+index 697efa7e04c6..b9869f958ce0 100644
 --- a/rust/kernel/sync/lock/spinlock.rs
 +++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,6 +4,8 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- 
-+use kernel::prelude::*;
-+
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+@@ -151,7 +151,6 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
  ///
- /// It uses the name if one is given, otherwise it generates one based on the file name and line
-@@ -144,3 +146,32 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
-         unsafe { bindings::spin_assert_is_held(ptr) }
-     }
- }
-+
-+/// Helper for creating a raw unlocked `bindings::raw_spinlock_t`.
-+///
-+/// For use in statics containing raw spinlocks.
-+#[doc(alias("__SPIN_LOCK_UNLOCKED", "DEFINE_SPINLOCK"))]
-+#[expect(dead_code)]
-+pub(crate) const fn raw_spin_lock_unlocked(name: &'static CStr) -> bindings::raw_spinlock_t {
-+    // Silence unused variable warnings.
-+    #[cfg(not(CONFIG_DEBUG_LOCK_ALLOC))]
-+    let _ = name;
-+
-+    bindings::raw_spinlock_t {
-+        raw_lock: bindings::__ARCH_SPIN_LOCK_UNLOCKED,
-+
-+        #[cfg(CONFIG_DEBUG_SPINLOCK)]
-+        magic: bindings::SPINLOCK_MAGIC,
-+        #[cfg(CONFIG_DEBUG_SPINLOCK)]
-+        owner_cpu: u32::MAX,
-+        #[cfg(CONFIG_DEBUG_SPINLOCK)]
-+        owner: usize::MAX as *mut c_void,
-+
-+        #[cfg(CONFIG_DEBUG_LOCK_ALLOC)]
-+        dep_map: kernel::sync::lockdep::raw_lockdep_map(
-+            name,
-+            kernel::sync::lockdep::LD_WAIT_SPIN,
-+            kernel::sync::lockdep::LD_WAIT_INV,
-+        ),
-+    }
-+}
-diff --git a/rust/kernel/sync/lockdep.rs b/rust/kernel/sync/lockdep.rs
-index 784821cc2a39..d9222be0fb29 100644
---- a/rust/kernel/sync/lockdep.rs
-+++ b/rust/kernel/sync/lockdep.rs
-@@ -137,3 +137,25 @@ macro_rules! optional_name {
-         $crate::c_str!($name)
-     };
- }
-+
-+/// Not checked, catch all.
-+pub const LD_WAIT_INV: u8 = bindings::lockdep_wait_type_LD_WAIT_INV as u8;
-+/// Spin loops, `raw_spinlock_t` etc
-+pub const LD_WAIT_SPIN: u8 = bindings::lockdep_wait_type_LD_WAIT_SPIN as u8;
-+
-+/// Helper for declaring a raw `struct lockdep_map` for locks in statics.
-+///
-+/// It's up to the caller to use the returned `struct lockdep_map` correctly.
-+#[cfg(CONFIG_DEBUG_LOCK_ALLOC)]
-+pub(crate) const fn raw_lockdep_map(
-+    name: &'static CStr,
-+    wait_type_inner: u8,
-+    wait_type_outer: u8,
-+) -> bindings::lockdep_map {
-+    // SAFETY: All zeros is valid for this type.
-+    let mut map: bindings::lockdep_map = unsafe { core::mem::zeroed() };
-+    map.name = kernel::str::as_char_ptr_in_const_context(name);
-+    map.wait_type_inner = wait_type_inner;
-+    map.wait_type_outer = wait_type_outer;
-+    map
-+}
+ /// For use in statics containing raw spinlocks.
+ #[doc(alias("__SPIN_LOCK_UNLOCKED", "DEFINE_SPINLOCK"))]
+-#[expect(dead_code)]
+ pub(crate) const fn raw_spin_lock_unlocked(name: &'static CStr) -> bindings::raw_spinlock_t {
+     // Silence unused variable warnings.
+     #[cfg(not(CONFIG_DEBUG_LOCK_ALLOC))]
 
 -- 
 2.55.0.229.g6434b31f56-goog
