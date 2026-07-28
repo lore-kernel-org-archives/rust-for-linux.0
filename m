@@ -1,78 +1,76 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021119.outbound.protection.outlook.com [52.101.100.119])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013021.outbound.protection.outlook.com [40.93.196.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FD245DF44;
-	Tue, 28 Jul 2026 14:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CDD459AE5;
+	Tue, 28 Jul 2026 15:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250363; cv=fail; b=HvPzFfT2Vay+9ppvHfEiHPJZKkfkz4gwwJhbr+/lDtHixFYsqe3GCOw0jmpNlm12SeUhgPZs2a0FeWPfIsSS64Fh9w8hFMBSVLbEmlZVDN1txnCGyZfGF7usJi9JSj+IclZqzGKpQDheZS5R7h8L+EZxgyrHymPfjsrSiRzVIvM=
+	t=1785251396; cv=fail; b=PuOP+HHWfQvHTujcypra5wkxmnBquAZKC9OTfVZ91vTdaNrU2ugruMNZ7TFoJmeavBij6osrrHWAc7KD9j5GnQ2daMl4GuNCNGqItVkwRLKX5iHbzNlNpmkueaiJlgiuxOa+EAQN8dEPhVZe+iDYnQy4eGx0wi49OEywSagkAo4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785250363; c=relaxed/simple;
-	bh=NyvYVrUxrWGCIgg+i6LU3meVb7NncVfPP36ld2bSlno=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=JMxyBvp2EZRi9Hh738HGJmlwUw7zLzVq6d2DpWSLaOhoG1id0F0T4VIRvv7/DIeY4Dk35DZFZ4cpFNYhyYSuTsN0ApVLPgdacRBC14HwKY4UE0ldMPinhndqVceYT5SrXJlSUM+nIcXfWYSLODnj/JdocAqljPZUoBBmUmgfXk0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=d/AfBsK4; arc=fail smtp.client-ip=52.101.100.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1785251396; c=relaxed/simple;
+	bh=zy4mc91CY7L19fC9q7l9jnrzNM9wieN9qRqRgPYyC+A=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Ds29Apm9UBeK5OPGVZsj+BWIuv/BWg4Rg3dnihfUeovobvCJFiPOk+AFUhouCtfyMBP58+jTaf0OJQ9i6R5iyDleQO4VtXTYsfyQceH9bkFLjKqXV/O8MxfJ4qoCItJXEAwvlVJGw3mu6HDAMaX7egtnGJGTgfhU00AqT3avHuU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CbRk+CfK; arc=fail smtp.client-ip=40.93.196.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="d/AfBsK4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CbRk+CfK"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZbzMegR2DM1FCfDGbXvSK3CB/rMmAcUKmPt00+o/q0/Duw4BEMgak+kym6hrnMlrCOw0Rpp8AeaVoeVWuC1lP+aYmdKqh7/rYycQQ31G+mdIZJP4ThitbGGjCDC8qbem7gyEu1r//eOnEBkiNF+EVr6PkIeTTNGy3vbu/uWOLJRC9NnJGi9pVeZQnVMMWo8TXgRG8+7r+RJd1l9/WASrQ/j+2h9sd4mmojldK2JvYPQZeijSnlZf7vGzZ1aDioxU8G7VLlQWY09CUEmhN0UrI8wG39yRHE6yS/qcQfE+7e/UiOEcgYuxoplZJ75Gx0JgPLGoqRkf89pDm1PDkah+zA==
+ b=AGaP86XtwI0ObU5EQaspgo6uniTYTTFNX2DF6RoIXekZ7m0NJmoeDoV3Mo/7HDG2v7/OCTDecB+Mac5zwAXuZAHpbxIYcGplM7806FpsBdkpqlE3vuJHt2BYtkkmuW/8kxCwBA7+4JFmWXpujNpnvHsFr9pmB7Jfl1leALEjtTq0yMpL3/mloC0brYqDKZLWTBo8PdD2ES2hu5qVFZ/rq8UHb7YKDlgdE8oJZFWS+VbRzTBJ/Y4mVPQo08OSn0elEgYe8eHx22l3NE0Vn2He/DcYb+nwiC+ngxLFmTa8J8zG9r7e0w91NBZatKxtSgU5ZiQWR+UWQoWtzJNq6FxnWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i62rzc1Pk6J2RaDHY71m1LAI9ifPM/65/FFv4Z0YlX0=;
- b=vTG+ikHGmNOlODfR785J4JKcctmcPoTArF+9LQRFFFMGDh1KxX3ALW8zBG39YPlGSwBun110R+RZiTTy5pfK6xdImgHHG13O82NeuMCqD+IpzuOo/RcMlhq8zmFzI/qio6NYQVf0VQtStWcwU7jzVrJevsdeYOPUFWv4+B7WEiM/SLyWrXcikZ8KIu7EiAbKJn6Zit3ByVWleQdpaOmmxLhRHEnXoxODVhOGxyJkORbzuRs7WgDlX0RE++TDLficr3BdG7QccTqqCHCk3C1wv6Ktku43cxbMVhdcdB7SjaMwGEJtlujItczS2NbziCdwIfA70R2AE8st2w9oI/+SsA==
+ bh=JQLs4y+PPMItTj3+3wYWiJ/o03oy2+UPiIL5+Mgtw2A=;
+ b=Zp0SruyfLW2Hp3KurvkY7KGfQey0zyxQntKPU6X8f0kGf1/uuyEaOKWGeqi+on5cMLpQt85s5jGIvcgOctY+KYMP1y7gm/hDghiAIOxlYu1qTZNWh43EWAq5L0RsM7gfK8C6O182NZ+Cc2mQgxc2utUZJbI9pU1h2nJVAanuQZ0EIKOlPEsYG413Dddz/XJhdsqwZmQREzj5bJwkgvdQ0gt5c8itc4Fg8w4MCopIUqKLqjFGqhQVuMXY9QkBRXrm7JS/4VT4Ng9vi+kzlPdLsuunSmgkK21PHheMtnH6Fx8g+wu6BZsmkX/jOdCPoNPlvZIVJe6iT9r0xIwp4ICTAg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i62rzc1Pk6J2RaDHY71m1LAI9ifPM/65/FFv4Z0YlX0=;
- b=d/AfBsK4dZRcwr9FCfQge2+cD/MS25NxSodXOdcdJf4whzCk1f2esc/SJQTlp/Py6L33D8t0eH4WoeAnbSd/+Mfq5VRpjjKii9t0OCN7vtdJQ07XnuHcal3qWj++lPjdoK+2kgKpYbDMdT+0mGfL4CtQegE28FgclgtubgAggc0=
+ bh=JQLs4y+PPMItTj3+3wYWiJ/o03oy2+UPiIL5+Mgtw2A=;
+ b=CbRk+CfKieG+50uRSE3CssIFCse1juZbmsF4B0aJtHLoM8IQLW47jNyncdSherzcuPAlAvRXhcjAAkS9a437oltaiPjGxnoGrCq1hoXUjVWuw3DO9eLl1t4ephmjS9kVqiwudEcIl7blIB2jMVrvvZCGw0xKm/QTsiQF1cOgUVZJKQQ3ujSc5+jL7iFKEYaQBP/VgQRIHDKKgq8Yf2LnkW0Uo04e9bZ4iq5E51NzToX0aLcr85eebW5dRy/RANKqIGcI+8NX46XxE5Nm0StLzByJ7oGsJFRCl923Et9HCslY1OadZbQdPFzx9aUvz+tTalviHusjQjI3XNaMtFlH4A==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO6P265MB7374.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:31a::8) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ0PR12MB7460.namprd12.prod.outlook.com (2603:10b6:a03:48d::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 14:52:26 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 14:52:26 +0000
-From: Gary Guo <gary@garyguo.net>
-Date: Tue, 28 Jul 2026 15:52:12 +0100
-Subject: [PATCH 5/5] rust: print: add `continuable` as option
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-printk-v1-5-855606634d70@garyguo.net>
-References: <20260728-printk-v1-0-855606634d70@garyguo.net>
-In-Reply-To: <20260728-printk-v1-0-855606634d70@garyguo.net>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Burak Emir <burak.emir@gmail.com>, Yury Norov <yury.norov@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gary Guo <gary@garyguo.net>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785250342; l=7928;
- i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=NyvYVrUxrWGCIgg+i6LU3meVb7NncVfPP36ld2bSlno=;
- b=qC3puzp+vyssHURgKWatS3c0VT39Ut6pYcx6LU1wiap6aaM1ovEsIJxxKpHDR3wHivSLfkAD6
- qaHgw/ksOteAP4nxpe8PaJa1Eap+OIuXDs9pqADmYBfulwgVcxw3L6n
-X-Developer-Key: i=gary@garyguo.net; a=ed25519;
- pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
-X-ClientProxiedBy: LO2P123CA0107.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:139::22) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+ 2026 15:09:47 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
+ 15:09:47 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Jul 2026 00:09:43 +0900
+Message-Id: <DKAASRCK3M06.G9XODK0T5AAK@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <driver-core@lists.linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
+ <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 08/10] gpu: nova-core: use projection for PFALCON and
+ PFALCON2 registers
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Gary Guo" <gary@garyguo.net>
+References: <20260721-typed_register-v1-0-452d72b60262@garyguo.net>
+ <20260721-typed_register-v1-8-452d72b60262@garyguo.net>
+ <DKA02Y5RE1YJ.2FGI97Z60X96R@nvidia.com>
+ <DKA4Q5QUBUXM.1K6QS2QPXT12H@garyguo.net>
+In-Reply-To: <DKA4Q5QUBUXM.1K6QS2QPXT12H@garyguo.net>
+X-ClientProxiedBy: TYCPR01CA0182.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b0::6) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,270 +78,166 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB7374:EE_
-X-MS-Office365-Filtering-Correlation-Id: 068fea42-5806-48b8-b79b-08deecb7d63a
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB7460:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69421325-5cc4-46b5-cd4d-08deecba4318
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|23010399003|376014|7416014|18002099003|10067099003|22082099003|5023799004|56012099006|921020|6133799003;
+	BCL:0;ARA:13230040|10070799003|366016|7416014|1800799024|376014|23010399003|4143699003|18002099003|22082099003|10067099003|56012099006|11063799006;
 X-Microsoft-Antispam-Message-Info:
-	A64crxRfjAFyrNRtvCtlaM7bqY2VriNHXWHNHD+giKW21QzOKahrqtiVrJir6YJAsA5S3Vhwr4HJcDrrwVDhAwh+7wGVEuuG5NAWR6ShcCRhGkDibkwbtkWyQy9wb1yqtl0PXgfxjWPTRBweOWuG/zeZ5601af6Wm4gVrvjBh20iYHf7lcwqiQBo7JKb/u1QJzrSvaOj+VwU+kEJiL/+NHTyuT/EIr3670acKaC4+aHfyB5DdTHz/kf2FJO8EifsTWm+A+zsfaLpbOfbDrf1sAwnTWskLP2NtktRuhjjhCAxd3y9dFXv3b/dDS7MtLOl6V6A6mdJ8ssfK/2sx98tvgUUcQFjQ8SO0roPxs2dJAS2kQoUIQad+qAdVd7HMGHGRVxq7TnOcelUS2N/ywCwhK54BuYy4cmBKNvgr2IC61sYoAqn7rzk+xjhpJMF9J+kCeec/XpJpV48Mong+tHkR0fwD3fWJrVmMMJ/d4XrCzTqeilMaxW1yl1RcYptngr6uVo8iYYFjjgVNK/Ga1Onum9iPnUl6olio2xQ8qu/ydmuO2tLuiejixaOZxxiGhxCDu9bzl+HhtPXA124/bkWScGe+XQfz7w+TeAVt2OysIrfSyPsuRpNAopvpjna6HPqqmkStLTSDeaK2Go26yZbjOcNH7sIwxfDBw9goWWGzlbYXYZjsX/29PeRqDhek/gWhoxLediJ3mzhaJKA4eYumw==
+	iCtc+w9WNltX5jgESujR5la/okxmXOSy6mbvrs+YCAJma0lPljzCCO3CV50rM5Yxoae3XZIFTnspno+b2yOr4zbuZWegtAUdvjUn+TwJeB9H7R+IcS/XEAAF1XXfhbRunIU0xeHjbotrxcv0ybhsidqzfpyJtiWVdcCBQmXfVJd5/gkf6hVecjudihaR47aVUrCkzy7ANYZQ8iEfvpIF8PLnNHeyO6ebQDxO6JJB25D12cObg3TVlGITXT4evAWy/60ynEc4CAEC3HnQbKOAA0rjh/XpYYktl27/Vo7rwutRmVFX4w5/9RNxN7r6TW2/p/AbEiK4+xq4gAggPW8vHstA1N1H2iXHWo+ehJT1Cg7b/lDo0zCzmFt42eo/fSKqmPD5l4FIOxpOfYaNTR3+FQngQVTl5ET0sm5o0B6/iiZ5sNS+02oq1UoCN0TPhA8Cq73HTSMMWONOGzdW7LqbWqxH/rQzImzI6Iwm3brqO7XCSjOVQ2yLRQZmahwDkEZ89fAMhs+S9Sl/ZAjV8sGIb0iOJZn+1RE2dXKN25s5RJxQYAvsFJ8ng7k1jDcwu8qia3drEFYi97VWRfI0f69vTmDrBpPj+4Zogqto/abjg7R8Yg/tAWeFWUXNnvR1wADBgm8r3TpJLhryCkdqddCvy8c74GQOg093D1dKCIKe6b0=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(10067099003)(22082099003)(5023799004)(56012099006)(921020)(6133799003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(7416014)(1800799024)(376014)(23010399003)(4143699003)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WTI4NnZYTEQwcmVqVEt3ZWNsTFV0cnQ0aEhIWHJsc3M1dlFHblBFU0QxN3Zv?=
- =?utf-8?B?R0djZnJxWHNaYitsUE5INWV3ZmdtOHJRQmxTOW9sc1pzaEJVU0ZHUlVPVklM?=
- =?utf-8?B?V3RJSk50RHhpTHh1Vm1sdllmbGQ1NkxLSGxTbTlBR3cwVGJXenhCd3Byd1g4?=
- =?utf-8?B?QTRtcHAwY09xWUUrUURTSGx3bWZFRjE4UWs3VVNOclV6OHlQaWRwRFJUMmhL?=
- =?utf-8?B?dU1PMEkrRDRnTCthSVRESWlRamx5em55ZklGMDUybVhCZm4vWUR1QlBjeHJZ?=
- =?utf-8?B?dXJpWFd1dkdjVXBURlcyeGl1QVBKTGxqay9KdXZvbDV2SzNyTVd3RWxIWU9Z?=
- =?utf-8?B?N0VzaWJoYnFhOUZ0dTh4VGRsaUxLWkFDTStiL2JhZG9YTnNwN01kdkNldlVs?=
- =?utf-8?B?OXlVemVBR1dxczhUdTFtbWFSbExjUVE3cGVpelRJT1kwTEFRU2ZiL2lJemNK?=
- =?utf-8?B?dDh4WkVVdDBGRVdQRjU5b29LRHQ0eUpLdHZXZkVUazVNNW5mSkxnbmlta2ln?=
- =?utf-8?B?S1E4N1VzMlc4eTNqSUJMOEg5QVlJTXE4MStEcDgwSFZPLzhBOG1qL1gvT3RS?=
- =?utf-8?B?OTlQUFdxVm1jYkViaW1JcXJvODNHYjUvVFRhWVNFUmN2V3YwY2IrMGhBQzlG?=
- =?utf-8?B?S0lMY3Z0anM2clVLYkhBSHVOeHlNd2NrdWdDS0N0K2grNlRmd0poVEc4VVdI?=
- =?utf-8?B?TUptaEtQYVV5ZUhxSjFuU2swV1hYTjJjTVNlUVBlcm0xazJZRFk2bGJkeTJo?=
- =?utf-8?B?MGhzVHNjS1RVenpsUm5FeVE2QWh4cHZibTlpbXpLNEYxWTdHb2c4cElHRkRy?=
- =?utf-8?B?ZjduTnVJc2hBMU0zZTZSSnhqWmx0QUYxRS9KSVJicWxmS3dQbElNSzVkSDEr?=
- =?utf-8?B?cXpsUEx4MDQzRHRmSUdxVUh5V0h2NkIvU21pbnB5OHVBRVQ4MStIZGFxN3Rj?=
- =?utf-8?B?L3l4MkRwVkdHc1NBZXJiUXIzV2xrZmVGNzFWbG50ZFoyZERsT0hueWhjUDRO?=
- =?utf-8?B?ZFhESGpDVFRoYUhobzMxZloxY2l5eCtwS1hIdkljUndwbXVUR3V4WFgxWXF2?=
- =?utf-8?B?TnFwajZZbEZDUU8xSFZzLzZHSzRGNjlDYW9GaldYT3c0bG1aU2dMalJaTlRy?=
- =?utf-8?B?R2Fldk5pa2tLamM4eEtNS0lDMkNseGovNzBzc0xIMnA2S0FwL1RQQkt6aHFR?=
- =?utf-8?B?WTdlRHNJd0JBZkNBZ0sxZkhOdkROSTlDejZUbVdtb1pYRTdER3I1QlVwcVJI?=
- =?utf-8?B?bXBPb01tYWtmUjhXb1dsaGxmMVplMzZRK0RNNW9VbE1UMWF4RmxnWWpQWEQ3?=
- =?utf-8?B?L0poQjFRcUZUYmpnUTBoaDJvWGRWeklINHhtMklnS2I3VVBlZkdPUzlQbGRV?=
- =?utf-8?B?bmx1SlJtZnk2RUk4OTZiQTRBZ3pPemRZR3lWYkdId2VydzljRVpnem95NHl2?=
- =?utf-8?B?WG0xUGd0Y3h5T3ZoNjJ2Nnh4dnI3d1JHT1RhZHVFTjg0MmJvNXROY0lDRlBk?=
- =?utf-8?B?N3lOWTFGaXNJS1FVUUJtQXM1bFZmS2RNVnlWelRYa1FPL3k0eTEyeEVob0l0?=
- =?utf-8?B?cXUxaVNpS3llbXh0T3ZrU3l2amowWGcwaWZPbFc5ckhqakRRazVIejcveEJ5?=
- =?utf-8?B?bGRGc2JTd25PdUdRTncyemttN0JVZWpwZU9taEZJUUZjUkgvaE5OcTRLWUJz?=
- =?utf-8?B?cFRVQUw4SjloZkdCVmhHbzErd1IrclVLRTJYVHBLNkxDU2xoWWtuZm92YWti?=
- =?utf-8?B?djhvSFlvdzJKU0Q0SmF4T2hJeTFFUm1RMkxZaGR2M25FV2UzbUUvWGtWYjA0?=
- =?utf-8?B?aG0rNFQxdFNOelZsVkMrV3JuVmxhdVo3c09NRjVPeG9ZaGEyZVpEcmlZNkpX?=
- =?utf-8?B?bW5MbWlhVWxXYVBINXRpenpFYlZNdVVDVW9QU1RXL2w2VVdEYlNDUlB1R1hJ?=
- =?utf-8?B?YVI4Vjd5SGhxWTU4QkZPWElKbjFFdmxGVWprN3R4U05PaGQ0QllGeEIzcVNk?=
- =?utf-8?B?NWh6SFI1SGRoUnRURW1mb1pvWDJLNGlneE5YREpRYUNTWnRlVGUyWEI4THFa?=
- =?utf-8?B?VEJoTkF6a3RJZjhoNmpKSFdXb2RlSHVaQ29MYWh4Rkx2d1c2alBUVElwWjIz?=
- =?utf-8?B?QmNHU1BvT1NVTmprRHE3ZElRUkEvU2Y5bkw2cHNkRkxIVjVxVkY1cExYaWth?=
- =?utf-8?B?YmdnMTJaUnFPcmFPdTFxanNyZisrWEcybTl6aHNZZXBKeUp1R21RdEtxbU1E?=
- =?utf-8?B?TUtlTnlYRXJRdkkwSnZqZ3RTTnA0R3VlQXNhZ2ZwbUI4VzdERHhCbHIvZHB1?=
- =?utf-8?B?cDhBNGY5ZzVnZStqbmFsQVN1QXowaVN0UDNTZTkxMkk1MEIrVHRWZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 068fea42-5806-48b8-b79b-08deecb7d63a
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+	=?utf-8?B?WnpkRVdKUVNSR2ZmSDVVSDFBMWVZbWtGMk50bVovOFI5NExDU1FSdWNhbXFt?=
+ =?utf-8?B?aTdmYWpvY1g0R2d4bUFlVEU5NmU1L04wL1AwK3h3SUdGSFhQVDROVDJUSDd0?=
+ =?utf-8?B?dVc1Wnh3WDRpS2hqUnJ6VlpNSHRjSXBsVEtyeVd1aGtleHhpc1lqZlhnV3BZ?=
+ =?utf-8?B?UlFOVTVCQnl1NURzaHRKV1RibFlTSjRGbnpTTWlKVThhWERtQ1pyR2V4SWt2?=
+ =?utf-8?B?ekRSWkNtcW5Xc1FXalBseVR3TllzdS9CU3JhOUJ5NVRpLzcxRXZYZjJGVGpS?=
+ =?utf-8?B?TlZTNjR3WkR5TDdsaWZ4cDB2NFNpYmpjQ0Y5OVhDdXVpUEFwYXRkRHZVQ3R2?=
+ =?utf-8?B?YXFaempFQ29yM050YzhKN2JiOHl3Tnd5UUlSYjJQa2pBN2wvTExLNVZJSnR6?=
+ =?utf-8?B?UklGbXd4MThhMDhVRTltNlF2SlI4U0NOcTRTUmQ4QU8wWlcyUlhUVmFaaUhM?=
+ =?utf-8?B?UEdvbVBNVExBZlRtOTI0TWMzekl5L3B1NkJUdnZHUHlVWElQaFF2Z1JRUVN3?=
+ =?utf-8?B?MjNka0VvbUQvbzZraDdFNFlla0pJZTI0a0tYc2NsSTA0N0dpVXRuYnhkbzc1?=
+ =?utf-8?B?bmkyUG5RT25mVG9YRVB3Q1puSERCU3F3ZHlpZkt3a3pvanV4aDZrU3FFZjMz?=
+ =?utf-8?B?aFViNnJQWEdDcGQ1SUpWbVhidkdHa2RkUGMvZElJdkJKTXl0Q3VUdmxoMDdW?=
+ =?utf-8?B?bjdlWWJMaW1CZEg5c1UzOWw4UWJEN2pVQzBLZzZTZmNjbFh2ekJjdCtBdit1?=
+ =?utf-8?B?V2RGSlBneC9YS2tlL29jWlpKdEhRQmVqQmFDR1RHakhjMmZpOHdxbldSMURM?=
+ =?utf-8?B?dE1TQUx5clR4QUs5STBUWFJ4WnNUdU9mcnRvTWYvZkIybng4b20yc1ROL25o?=
+ =?utf-8?B?MldWZFZwWWd0UU9nR1NiZ2lCbXJRQXJUa3A3Tjk4aXFNQzBhQ0JoYWZ6L3lG?=
+ =?utf-8?B?RmFVaUgwZUdiR0VJWjJLVXZ0eG51ZmtwaHh2VmpxMW9hSFVHRFA0Z2VFOUZv?=
+ =?utf-8?B?dVpmaFREaGlPdUxTREMvU3ExdS82V1hQNkdjTXZka1NMcmd2MHZSRGpmMGhy?=
+ =?utf-8?B?ZDZqQ0xjVklrS2U1dkp2TVM5anMzbVhqa2xXcXdidUszTjhBU2FxbFhzZko0?=
+ =?utf-8?B?VUZIdUtTVjdOS1NlcXZNNE55MDMxTUozc1NMc0tMK1NXSjdVQ2hqME91TWJK?=
+ =?utf-8?B?ZE1Rd0YvdWlZMWVzWWxjQWpxOHZGZ3VYdFB5TzA1Y1RVMWtWZDZ0QkgxRVRN?=
+ =?utf-8?B?VFZVd0VwMzFUSVg3dVpLTWRLNGhWa0JxSmNoYWJvREc3bkt2Z1JxK0g0MVd2?=
+ =?utf-8?B?VHVGc3Y5ekFoYklETEc2UG92OG9rN2lyVkJSaENwSUVUWHFQdjdPazFNUmtT?=
+ =?utf-8?B?azN5MGovT1I5N0M1TE5pc1NlVjcvd3NDRUtDMWlUazRNWnpWMFYvdDJiMTIy?=
+ =?utf-8?B?QXkvcVJkODVmN05GeUlxdXRuUnc1R3BJTXpTbEorRXhySlNCRitjekt5RkRo?=
+ =?utf-8?B?Z3VFd3F5TzlVd1RjeHl6K3ZNTzAvMm1nK3h3YXpwVFR2ZGp4cS9BbjJLeENv?=
+ =?utf-8?B?MEwyNmk4b0MrVGpvNmNUMTBtL1VDM3U5cDdjbHR6QzE3MTRpMC95anMrb01F?=
+ =?utf-8?B?VWxyMXUrNzExdTYwNXdhbmlhakZXd090ZW93QTlGZ3Z3aHhYQnk5TUNlODQ4?=
+ =?utf-8?B?by9sYkVKNGYrbUlnK09OUXp4VXBWRnJMWGp5OEZ2ZFZlbEYxZ1kvT1B0OVpE?=
+ =?utf-8?B?MkY1VWZjWHgzc0FiY1VjbnRLVmVhMkdCbzdQUWxqTjhrWHpGK2RLd2VXMWlh?=
+ =?utf-8?B?aUF4ajl0MUpEVngvby9Bckl0SzFXYWVXeVdGNzYrTTBISW5neGJEdXVmWWNv?=
+ =?utf-8?B?a1l1WWtMTlRGd3VaaXlySHJpTnBoeTJsR1hmelZVUVNhcU9ZbWpxeU9XcUdv?=
+ =?utf-8?B?Q1VvNURTRmdUZ2RrZTFac3doaWtHU1dHNDU2eTBzOU5aSyt5eWVxajNFZitp?=
+ =?utf-8?B?VkVKMzBUNlBsT0hOL092NWVCQ2dnV3VGbXZNSSs2WWMrMEJXUmE4c1VTcW9K?=
+ =?utf-8?B?RmE5SW9qbnRaSXY4KzQycDhwTFdRaGdVSzdmQXJiMHZtOWRrMGFZckZ2cTRi?=
+ =?utf-8?B?NlgrKzZPdkJMVkVNRTk3cEtvV0QvemxsWEJYZXNRTzNQdis1dnFsTDRYMmhy?=
+ =?utf-8?B?eFAxbGJocFRPY2F0NnprM0d4blU1bkFMNGpObkNxQTE5WXV1MWZUdE4yOHNp?=
+ =?utf-8?B?dnZJUzVoY3RWNzAxQ2M0V3k1MVZBaW9iL3NxU21MWW1YZnRBWTZiQzZzQnRC?=
+ =?utf-8?B?TjZ2eEQ4SVYzN3JJQzBUT3dBaUpmOElvRUE5TFBNZm56bjNGZWk3TmVMcjZW?=
+ =?utf-8?Q?iv/9c5Hae8G1M0oP/fNtqqCGlruZLXFiIWoBlpO/381AE?=
+X-MS-Exchange-AntiSpam-MessageData-1: VPwMhcOKsrWzNA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69421325-5cc4-46b5-cd4d-08deecba4318
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 14:52:25.1207
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 15:09:46.9303
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 901SdOaIa5Vp3we6hh5F7E7frh2NSLsAysJCPhAxrd+xc70gNgHI3LlCAHXb5+DOeC34S9yMG5/Ecfivvub45g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7374
+X-MS-Exchange-CrossTenant-UserPrincipalName: h4TaqJtixLEu0l7NW6S7kCOY6GYNhveorCywqoLRL+E7A0WlkCX5mXVf4M4MSsE918GOK7BCHu+VescxW+dI6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7460
 
-Most users do not need the print to be continuable; have users that need
-continuability of printk mark themselves as needing so explicitly.
+On Tue Jul 28, 2026 at 7:24 PM JST, Gary Guo wrote:
+> On Tue Jul 28, 2026 at 7:45 AM BST, Alexandre Courbot wrote:
+>> On Wed Jul 22, 2026 at 1:54 AM JST, Gary Guo wrote:
+>>> Add fixed size region types for these and add projection methods that
+>>> project from `Bar0` into these. Update these registers to be registers =
+on
+>>> `PFalconRegisters` and `PFalcon2Registers` and not relative registers o=
+n
+>>> `NovaRegisters`.
+>>>
+>>> The use sites are updated mechanically; calls to the projection methods=
+ are
+>>> not extracted in this commit.
+>>>
+>>> Signed-off-by: Gary Guo <gary@garyguo.net>
+>>> ---
+>>>  drivers/gpu/nova-core/falcon.rs                    | 158 +++++++++----=
+--------
+>>>  drivers/gpu/nova-core/falcon/fsp.rs                |  53 +++----
+>>>  drivers/gpu/nova-core/falcon/gsp.rs                |  43 +++---
+>>>  drivers/gpu/nova-core/falcon/hal/ga102.rs          |  39 ++---
+>>>  drivers/gpu/nova-core/falcon/hal/tu102.rs          |   8 +-
+>>>  drivers/gpu/nova-core/falcon/sec2.rs               |  32 +++--
+>>>  drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |  11 +-
+>>>  drivers/gpu/nova-core/regs.rs                      |  81 ++++++-----
+>>>  8 files changed, 193 insertions(+), 232 deletions(-)
+>>>
+>> We are calling these methods quite a bit throughout the code. I
+>> understand they are supposed to be optimized away, but that's still a
+>> lot of repetition.
+>>
+>> Since we now have HRTB and `Falcon` is already referencing the `Bar0`,
+>> how about storing the projected `Mmio` inside the `Falcon` instance?
+>>
+>>     pub(crate) struct Falcon<'a, E: FalconEngine> {
+>>         ...
+>>         pfalcon: Mmio<'a, PFalconRegisters>,
+>>         pfalcon2: Mmio<'a, PFalcon2Registers>,
+>>     }
+>>
+>>     pub(crate) fn new(...) -> Result<Self> {
+>>         Ok(Self {
+>>             ...
+>>             pfalcon: E::pfalcon(bar),
+>>             pfalcon2: E::pfalcon2(bar),
+>>         })
+>>     }
+>>
+>> That way all the
+>>
+>>     E::pfalcon(self.bar)...
+>>
+>> Can become simply
+>>
+>>     self.pfalcon
+>
+> Right, this is the direction that I do think we should head to. As descri=
+bed in
+> commit message, this commit is intended as a mechanical conversion and re=
+factors
+> are left to the future.
 
-Other users are assumed to actually want the log lines being committed
-immediately. In printk, the trailing newline is treated more like a control
-flag rather than actual new line. It is stripped way eventually. With
-"continuable" not specified, naturally we should add "\n" automatically to
-the print to convey this info and without requiring extra "\n" to be
-specified. It is also natural to kernel developers with userspace Rust
-background as neither `log` nor `tracing` crates needs trailing "\n". On
-the other hand kernel C developers would add the trailing "\n" (or maybe
-not, given many C code is missing trailing "\n" too), so it is not ideal to
-require it being not present (or adding a redundant newline). Therefore,
-make it optional; they will mean the same thing when the "continuable"
-option is not present.
+Great, keeping this commit purely mechanical sounds good to me if you
+prefer it that way (although one can argue that the refactor itself is
+also mostly mechanical as the end result shouldn't be more complex).
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- lib/find_bit_benchmark_rust.rs  |  2 +-
- rust/kernel/print.rs            | 82 ++++++++++++++++++++++++++++++++++++++---
- samples/rust/rust_print_main.rs |  4 +-
- 3 files changed, 80 insertions(+), 8 deletions(-)
+>
+>>
+>> And I suspect that once this is generalized, `Falcon` won't even need to
+>> store a reference to the `Bar0` (and potentially poke the I/O of other
+>> engines) anymore.
+>>
+>> Actually I would like to push that even further and replace the
+>> `pfalcon()` and `pfalcon2()` trait methods by associated constants used
+>> to construct the projected view in `Falcon::new`, since the projections
+>> are all constructed the same way, but doing so requires
+>> `generic_const_exprs`. :/
+>>
+>> We could make it work by moving the `OFFSET` generic argument of
+>> `subregion` into a regular argument and enforcing its invariants using
+>> `build_assert!`, but that would require `subregion` to be
+>> `#[inline(always)]`. I don't know if there is another trick we can use,
+>> if not otherwise I guess the trait methods are ok, especially if they
+>> are only called once in the constructor.
+>
+> This was definitely one option that I have considered, however as `NEW_SI=
+ZE`
+> still needs to be generic so we're not entirely turbofish-free. But if ma=
+king
+> `offset` become an effective const parameter helps nova impl, it might ma=
+ke
+> sense to use `build_assert!` for this.
 
-diff --git a/lib/find_bit_benchmark_rust.rs b/lib/find_bit_benchmark_rust.rs
-index 6bdc51de2f30..7fd7d4b26d0e 100644
---- a/lib/find_bit_benchmark_rust.rs
-+++ b/lib/find_bit_benchmark_rust.rs
-@@ -62,7 +62,7 @@ fn test_next_zero_bit(bitmap: &BitmapVec) {
- }
- 
- fn find_bit_test() {
--    pr_err!("Benchmark");
-+    pr_err!(continuable, "Benchmark");
-     pr_cont!("\nStart testing find_bit() Rust with random-filled bitmap");
- 
-     let mut bitmap = BitmapVec::new(BITMAP_LEN, GFP_KERNEL).expect("alloc bitmap failed");
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 2c82f5e82700..0382a0bf71ec 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -42,6 +42,7 @@ pub mod level {
-     use core::ffi::CStr;
- 
-     pub trait Level {
-+        const FORMAT_STRING_CONTINUABLE: &'static CStr;
-         const FORMAT_STRING: &'static CStr;
-     }
- 
-@@ -51,7 +52,7 @@ pub trait Level {
-     /// given `prefix`, which are the kernel's `KERN_*` constants.
-     ///
-     /// [`_printk`]: srctree/include/linux/printk.h
--    const fn generate(prefix: &[u8; 3]) -> [u8; 10] {
-+    const fn generate_continuable(prefix: &[u8; 3]) -> [u8; 10] {
-         // Ensure the `KERN_*` macros are what we expect.
-         assert!(prefix.len() == 3);
-         assert!(prefix[0] == b'\x01');
-@@ -63,12 +64,31 @@ pub trait Level {
-         fmt
-     }
- 
-+    const fn generate(prefix: &[u8; 3]) -> [u8; 11] {
-+        // Ensure the `KERN_*` macros are what we expect.
-+        assert!(prefix.len() == 3);
-+        assert!(prefix[0] == b'\x01');
-+        assert!(prefix[1] >= b'0' && prefix[1] <= b'7');
-+
-+        let mut fmt = *b"\0\0%s: %pA\n\0";
-+        fmt[0] = prefix[0];
-+        fmt[1] = prefix[1];
-+        fmt
-+    }
-+
-     // #[rustfmt::skip] // Rustfmt formats the macro awkwardly.
-     macro_rules! define_level {
-         ($lvl:ident) => {
-             pub struct $lvl;
- 
-             impl Level for $lvl {
-+                const FORMAT_STRING_CONTINUABLE: &'static CStr = match CStr::from_bytes_with_nul(
-+                    &generate_continuable(macros::paste!(bindings::[<KERN_ $lvl>])),
-+                ) {
-+                    Ok(v) => v,
-+                    Err(_) => unreachable!(),
-+                };
-+
-                 const FORMAT_STRING: &'static CStr = match CStr::from_bytes_with_nul(&generate(
-                     macros::paste!(bindings::[<KERN_ $lvl>]),
-                 )) {
-@@ -89,6 +109,26 @@ impl Level for $lvl {
-     define_level!(DEBUG);
- }
- 
-+/// Prints a message via the kernel's [`_printk`] without newline.
-+///
-+/// Public but hidden since it should only be used from public macros.
-+///
-+/// [`_printk`]: srctree/include/linux/_printk.h
-+#[doc(hidden)]
-+#[cfg_attr(not(CONFIG_PRINTK), allow(unused_variables))]
-+pub fn call_printk_continuable<Lvl: level::Level>(module_name: &CStr, args: fmt::Arguments<'_>) {
-+    // `_printk` does not seem to fail in any path.
-+    #[cfg(CONFIG_PRINTK)]
-+    // SAFETY: TODO.
-+    unsafe {
-+        bindings::_printk(
-+            Lvl::FORMAT_STRING_CONTINUABLE.as_char_ptr(),
-+            module_name.as_char_ptr(),
-+            core::ptr::from_ref(&args).cast::<c_void>(),
-+        );
-+    }
-+}
-+
- /// Prints a message via the kernel's [`_printk`].
- ///
- /// Public but hidden since it should only be used from public macros.
-@@ -147,16 +187,48 @@ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
- #[macro_export]
- #[expect(clippy::crate_in_macro_def)]
- macro_rules! print_macro (
--    ($level:ident, $($arg:tt)+) => (
--        match $crate::prelude::fmt!($($arg)+) {
-+    ($level:ident, continuable, $fmt:literal $($arg:tt)*) => (
-+        match $crate::prelude::fmt!($fmt $($arg)*) {
-             args => {
--                $crate::print::call_printk::<$crate::print::level::$level>(
-+                // Perform a check on the format string to ensure last byte is not "\n",
-+                // otherwise, the continuable option is pointless.
-+                const {
-+                    let bytes = str::as_bytes($fmt);
-+                    ::core::assert!(
-+                        bytes[bytes.len() - 1] != b'\n',
-+                        r#"continuable format should not terminate with "\n""#
-+                    );
-+                }
-+
-+                $crate::print::call_printk_continuable::<$crate::print::level::$level>(
-                     crate::__LOG_PREFIX,
-                     args,
-                 );
-             }
-         }
-     );
-+
-+    ($level:ident, $fmt:literal $($arg:tt)*) => (
-+        match $crate::prelude::fmt!($fmt $($arg)*) {
-+            args => {
-+                if const {
-+                    let bytes = str::as_bytes($fmt);
-+                    bytes[bytes.len() - 1] == b'\n'
-+                } {
-+                    // Format string already have newline, don't add extra ones.
-+                    $crate::print::call_printk_continuable::<$crate::print::level::$level>(
-+                        crate::__LOG_PREFIX,
-+                        args,
-+                    );
-+                } else {
-+                    $crate::print::call_printk::<$crate::print::level::$level>(
-+                        crate::__LOG_PREFIX,
-+                        args,
-+                    );
-+                }
-+            }
-+        }
-+    );
- );
- 
- /// Stub for doctests
-@@ -400,7 +472,7 @@ macro_rules! pr_debug (
- ///
- /// ```
- /// # use kernel::pr_cont;
--/// pr_info!("hello");
-+/// pr_info!(continuable, "hello");
- /// pr_cont!(" {}\n", "there");
- /// ```
- #[macro_export]
-diff --git a/samples/rust/rust_print_main.rs b/samples/rust/rust_print_main.rs
-index 682207c81fc2..b42a9e6c9d72 100644
---- a/samples/rust/rust_print_main.rs
-+++ b/samples/rust/rust_print_main.rs
-@@ -70,7 +70,7 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
-         pr_notice!("Notice message (level 5) without args\n");
-         pr_info!("Info message (level 6) without args\n");
- 
--        pr_info!("A line that");
-+        pr_info!(continuable, "A line that");
-         pr_cont!(" is continued");
-         pr_cont!(" without args\n");
- 
-@@ -82,7 +82,7 @@ fn init(_module: &'static ThisModule) -> Result<Self> {
-         pr_notice!("{} message (level {}) with args\n", "Notice", 5);
-         pr_info!("{} message (level {}) with args\n", "Info", 6);
- 
--        pr_info!("A {} that", "line");
-+        pr_info!(continuable, "A {} that", "line");
-         pr_cont!(" is {}", "continued");
-         pr_cont!(" with {}\n", "args");
- 
-
--- 
-2.54.0
-
+Maybe we can have another variant of `subregion` that operates that way,
+but your call. I don't see any obvious flaw with the current
+implementation, it's just that the `FalconEngine` methods should not be
+useful outside of the constructor eventually, so it seems a bit
+superfluous to have them visible to the whole crate.
