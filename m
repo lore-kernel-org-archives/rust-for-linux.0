@@ -1,104 +1,135 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D5F39D6E8
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 17:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9827A3A5443;
+	Tue, 28 Jul 2026 17:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785258639; cv=none; b=bsek9ffF6rbS9ALI5yBNEygkprma+VovEN8vAnVDHuCm9bYLSONuzZMDsaQBS65OR5H8Zg7L90HZH4bQyl8vtolohU8TTr1dK2JRwPCtbkSyFzBmW0KizrbfJgLVlCPKUVOOQWPgz9hYVEeFi8ojMG734gweCKcPrYxYhdZC2sQ=
+	t=1785259882; cv=none; b=kJN8npzx4LRejBsWT3YNSZEhHXhWKwQur6EbNx90UR8PsrBV7hz94PDazVWiTobuaRlJt/OAaJspyMKJAZb+QsYmQTdpxPJn6hgiftoM326FUio6KqvgK9PLUBc9W7i9ioaRPASeE9DqNBhEyenaVnsZwZWIa8cdBYfHskiyZSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785258639; c=relaxed/simple;
-	bh=aiAcjvqBDo/hZ57/7zDsAt4TmRAIXblduf55Q62ap74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JcreQQMY4qh1CIhr/aKxSaTDf4TpDVBfGDMVlsr9uunnhwLFNImybg7fepwVRrGJDcd53FnwmV9t7LDL02Osh0UiHsNNxgTXG2S9H+ZQoqBqwj6HFTYKuw6nDTsCe5I7NbFr2GJdPRfsfkLLHcpm6gTxj+xTVOVAr7Kng8Pg9V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ufb5oBd7; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1785259882; c=relaxed/simple;
+	bh=pVoLdUiYaCoewq3P1L24bf598pl03VPwHjg0JPQe1so=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MQTPMLkCP7S/C72L4VyOKyUDbH83zNiL18P7hdUgs100z85GY/2Bh8tSMK9x/2l9o5KwEoSYLMSh0Hilrh08KI/rA/3hcjxPSnE6w4gnUfUY34dGMydslKMZBkQSiI80NDsYUcZh/dyW1m25ftIUBgLGUcylYRMaOM3cmlQ54jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBXyZL2f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ufb5oBd7"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ccdf36f63dso4835ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 10:10:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785258638; x=1785863438; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Rtso/6MrMFRHVOUOKPRhobi5Os1VnnvXLg5WxwaI43c=;
-        b=ufb5oBd7ALRhPkjDZYBVj8fYT+BX1qsCkdfpBqYwGYqGp7LL5XO/sLY5SgRQZ6d8bR
-         ffs/6Wn4lLZOio4zBWw7kbaPozfi44st30pvCflVokll5WEBCpxCv5ml/zJw/k/bJXCw
-         qk8Cj+Jck9rkTIsapU+SEkVuDE/zFUxJQK5D/v21NBjYQ9ySKjzKhF3TWIMsVLY3Dih2
-         f1Gly/skhXHxa/E6os1RQ4lzb/u9ZsapHxv2oi6bJ5bhBn4XAIRXZzIXkceJSApKT7f8
-         7+1wpMrQ3Ma/G8/ejbqPjXHZDrXHDzumqhz0v2yxwLaUC53AvRh4Bjv/IkI1kMPqy49B
-         QiUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785258638; x=1785863438;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Rtso/6MrMFRHVOUOKPRhobi5Os1VnnvXLg5WxwaI43c=;
-        b=hPIBq2h1EUuoapKaBxmvkst1bJEEiMhd886if0zA2uE7VbuL/0u/PEaM3uIRI1wOqS
-         WN+AmzAmD5y8XIxe2ywYQMd497enhgxb4cGlFV1IfShjAQsD7TG4H3fXJ+JbeqrHJVfc
-         hb/cBsgx8ZB4K7E/HoWee4X1flNbTTeKvHbpe94LpZT4YgYCrPb4H2T1lHONkBopZo4f
-         YslJX9WXPxeJrdGMDdHdaz/AhT+Sz5zeAoudez5TA+0/EWSiKKqvYFn7uIogfwK0OIw3
-         Y+bZT34TSvM2CtC/qEerAGF4crtjOBsy46D0fII78boKkzWfAApIJgHKrFiRfs2p9irk
-         3LvQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rpgoje6GOXBxQkVjPHZRrO9sRTZeCdS4SXZ9kBc6mXX1MY3oERnMBCSrd6tgL8uFjPBuQYhbPgY1l5TkaYKzw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTbGN5zVD/JW2S3AvXnftpmeNEjfUfj1lLf8GQYkinPFikWyRo
-	3xjVIPugTREM8B9qXRJc6DzVlosO8tsn660tbSNEDvCdKeoBXLADaHhqmtFofE0wPA==
-X-Gm-Gg: AR+sD13erG3imxV9wlajF3Iep7GujXR+tOoEOqSm7nYh+6LVS+uXqCq61SeQfHf7kvt
-	tny0e64lTOtDb2Y77gg8BsG5cOhaRv/eBUkq6n4npjO2KSE7JRKLsl85FsyamuWqH2GIxO1qceL
-	lt7o+AjCTUVFXIe9DJpSiCBKqOgWtqRO7N1DqF/XPMP69Ilzn8qvSvR4i0AlHgzFlDvwU9p0uND
-	X4VZiQ9C1VgZdZKyiEvX/gYs7GmaeFu1OrfXtjXaNXMztfvDizr7j9oHX96HkJA3OaPLeZgMe2M
-	YxTljbrC94dk6FbxwrYvOzXMx5iM+DMierNZmYQJHEVPVQWbBubkEBLlHOzPjLdmKFrzzEStkmB
-	0C0lsT18EeQEEC8sYWrMeOrchD9XfSwHY83t2fGdOhBHn3KBKcWrZtOhq4qareymgvQcKPNnAmI
-	xOrCsaPeoGwAOh1iJnLl9/fVt9ohXWvRjHqSbasm3jjGYdILyhOWZeJ2zskYe4pzuTrKvWKxmCY
-	qNJvg1yC0hEfRn5Q1JTXre43w==
-X-Received: by 2002:a17:902:fd87:b0:2ca:6bf:5bac with SMTP id d9443c01a7336-2cfdb73e6cfmr7608015ad.8.1785258636718;
-        Tue, 28 Jul 2026 10:10:36 -0700 (PDT)
-Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cfde81dcb3sm55463025ad.82.2026.07.28.10.10.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 10:10:36 -0700 (PDT)
-Date: Tue, 28 Jul 2026 17:10:31 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] rust_binder: consolidate transaction failure
- prints
-Message-ID: <amjih6MHfDIAk0QA@google.com>
-References: <20260728-pr-ratelimited-v4-0-435f8d6e9605@google.com>
- <20260728-pr-ratelimited-v4-4-435f8d6e9605@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBXyZL2f"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 48F18C2BCC6;
+	Tue, 28 Jul 2026 17:31:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785259882;
+	bh=pVoLdUiYaCoewq3P1L24bf598pl03VPwHjg0JPQe1so=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=OBXyZL2fRA9DsgWDh34WTrAgkWPVKw9cRnE5d8yVbkPJG4JaqiagUdIhcRKz6CWjI
+	 rh4OAR946kT3dl3GTiwfmpufRq3z5nnUaUAc3O/2T3Rogm9cr/Rd5HjXPUt/+Yaj9e
+	 HwZgbQqTB7S1BEzK7lipt5ALKw+6sQbWH5QKqPEGeoIiVroeLpuRHe47NasD2e8e7f
+	 +phsjFkmiraQsA0gshbdYZUTZPALCsUVcrnixMVzoakSgynYYaRBAZjbQstYH3BUxs
+	 JBBmVV2gZ5GBrMIEAfZDvx53G2Yhl0e4a1nY8kHO9JgvwweCLijMp+elKKbNzPj5GX
+	 r1uCYLAQ6M9Qw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35E52C54F4D;
+	Tue, 28 Jul 2026 17:31:22 +0000 (UTC)
+From: Josef Ippisch via B4 Relay <devnull+josef.ippisch.dev.mailbox.org@kernel.org>
+Subject: [PATCH v2 0/2] rust: debugfs: migrate debugfs traits requirements
+ to zerocopy
+Date: Tue, 28 Jul 2026 19:31:18 +0200
+Message-Id: <20260728-migrate-binarywriter-to-zerocopy-intobytes-v2-0-0a4ec1d3ead4@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728-pr-ratelimited-v4-4-435f8d6e9605@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/52Oyw6CMBBFf8V07Zh2lIeu/A/josCAY5SSaUWR8
+ O8CbnSpy5PcnHN75UmYvNoteiXUsmdXj4DLhcpPtq4IuBhZocZYJ2YLV67EBoKMayvdXTiQQHD
+ wJHG5azrgOrisC+TBUFpuqNyubazVKGyESn7MscPxzf6WnSkPU2FanNgHJ938pjXT7q9wa0ADJ
+ lSsdWSQkmh/tXzJ3GPlpFJTusUPOUY/yXGUUxqhLdK4KE3yLR+G4QVc3HFvVQEAAA==
+X-Change-ID: 20260719-migrate-binarywriter-to-zerocopy-intobytes-1e8f4ef93a60
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Joshua Liebow-Feeser <joshlf@google.com>, 
+ Miguel Ojeda <ojeda@kernel.org>, 
+ Josef Ippisch <josef.ippisch.dev@mailbox.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785259881; l=2544;
+ i=josef.ippisch.dev@mailbox.org; s=20260719; h=from:subject:message-id;
+ bh=pVoLdUiYaCoewq3P1L24bf598pl03VPwHjg0JPQe1so=;
+ b=rvyOi85ebZ1AZVTJ2p5GAH/yDrtUfYVs1PVPi43lRceIk0YaBtm8PeHbmtNZG5BiiA+2Sa5y8
+ OxNWPMDl0MyBHXceV/1NDVun0v7ymi1vgE27dkH1oILbTExuXv3hS6V
+X-Developer-Key: i=josef.ippisch.dev@mailbox.org; a=ed25519;
+ pk=M4DnWHhz9yT9BkhXKzsmw6wTVrK2U1WBK0QiEjHoo1U=
+X-Endpoint-Received: by B4 Relay for josef.ippisch.dev@mailbox.org/20260719
+ with auth_id=884
+X-Original-From: Josef Ippisch <josef.ippisch.dev@mailbox.org>
+Reply-To: josef.ippisch.dev@mailbox.org
 
-On Tue, Jul 28, 2026 at 09:32:54AM +0000, Alice Ryhl wrote:
-> When a transaction fails, it currently hits multiple print statements
-> meaning that a single failure can result in several lines in the kernel
-> log. This is unnecessary, so consolidate them into one print used for
-> all transaction failures.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+Migrate `BinaryWriter` and `BinaryReaderMut`'s default implementation's
+requirements on T from `kernel::transmute` traits to `zerocopy` traits.
 
-Thanks,
-Acked-by: Carlos Llamas <cmllamas@google.com>
+This is part of a bigger migration from rust/kernel/transmute.rs to the
+zerocopy crate, see also [1] and [2]
+
+[1] https://github.com/Rust-for-Linux/linux/issues/975
+[2] https://github.com/Rust-for-Linux/linux/issues/1241
+
+The crate zerocopy was introduced with
+
+c37398010a05 rust: zerocopy: import crate
+
+This introduced among other things the `FromBytes` and `IntoBytes` traits
+that, when derived, do better checks on the actual requirements of the
+types they are implemented on than the existing
+`kernel::transmute::FromBytes` and `kernel::transmute::AsBytes` traits,
+respectively.
+
+This is my first kernel patch so please let me know if I do anything wrong
+process wise or regarding some other aspect!
+
+I noticed that we could probably get rid of the `BinaryWriter` and
+`BinaryReaderMut` implementations for `Vec` altogether if we implemented
+`FromBytes`, `Immutable` and `IntoBytes` for `Vec`.  These are already
+implemented for [T] after all. What do you think?
+
+Suggested-by: Joshua Liebow-Feeser <joshlf@google.com>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/975
+Link: https://github.com/Rust-for-Linux/linux/issues/1241
+Signed-off-by: Josef Ippisch <josef.ippisch.dev@mailbox.org>
+---
+Changes in v2:
+- Addresses Sashiko AI review's comment about also migrating
+  `BinaryReaderMut` to zerocopy to not bifurcate the API requirements of
+  debugfs/traits.rs.
+- Do not `use zerocopy::{FromBytes, IntoBytes}` as they are part of
+  `use kernel::prelude::*`.
+- For some reason sending v2 via SMTP server did not reach the mailing
+  list.  I apologize if some of you receive this twice now.  I did not
+  mark this RESEND because of the email never reaching the mailing list.
+- Link to v1: https://patch.msgid.link/20260719-migrate-binarywriter-to-zerocopy-intobytes-v1-0-27ed30512e75@mailbox.org
+
+---
+Josef Ippisch (2):
+      rust: debugfs: migrate debugfs traits requirements to zerocopy
+      rust: debugfs: remove unsafe blocks from traits impl for Vec
+
+ rust/kernel/debugfs/traits.rs | 41 +++++++++++------------------------------
+ 1 file changed, 11 insertions(+), 30 deletions(-)
+---
+base-commit: 7059bdf4f04a3e14f4fafb3ac35fdca913e3e21a
+change-id: 20260719-migrate-binarywriter-to-zerocopy-intobytes-1e8f4ef93a60
+
+Best regards,
+--  
+Josef Ippisch <josef.ippisch.dev@mailbox.org>
+
+
