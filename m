@@ -1,54 +1,53 @@
 Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021119.outbound.protection.outlook.com [52.101.100.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4496A45D1A2;
-	Tue, 28 Jul 2026 14:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404E645D1B5;
+	Tue, 28 Jul 2026 14:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.119
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785250357; cv=fail; b=Gr+sJPUhkS17xw6BhmLnVEcV4PKMNQDZaiOq5lpocgpsd1R0Ztn1UxCndA4B+I7NF5Oa7HtTwlTH1pJBJn6hc2gX0FlGKKPfiO/hTEcym2hHZPd1LYTy6wqi2/hLk1OqesegQi84MxND2MHOSxVQyziTMb93vNiB75IPoBLjd9Y=
+	t=1785250358; cv=fail; b=K/MiGeGHhwbdP7SYu58FPQpj9YZYan9f9k3G1gb8fYmLvl6AlmcH5xZ7PLDG89jqKf+64yl4KZrlOSEL7KICF3S8Rp2PTp1cSji769gdJLzPd3d6W5ISwLFruY/wVOvlZ7fhn9Db36fe86pD8h0Zt1Mk47fZZykMiJvQu7sAxHQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785250357; c=relaxed/simple;
-	bh=K4PiT+0S2oRlIs5uPEEFYBg7dDSlM7UQGLVlWMnWJpw=;
+	s=arc-20240116; t=1785250358; c=relaxed/simple;
+	bh=4bAiOF+byQpfqLzT79JFYNpLIAf4RWDiNp+b/b68jDQ=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=HwUAiuUSp20LLrpQ5yTLMYGIQ1Rohk6gs3tsA77BdC9Bzdy3ok+vi7c7OZ5BeW5R9I8OFvnpM2NGP0PoomMF7M1RrEdF/BTFSfctzTsax1Cb2ipFestYksKSgZyG0IODC5bVUfw3Rze43jyuaNo/wVQLrdrP4Th+Cbt6paOTJLw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=nirWP/y6; arc=fail smtp.client-ip=52.101.100.119
+	 To:Cc:MIME-Version; b=Fia56a/2RmGsHLhoG8uHQESjxivTu09/TYQ2nmzPO0FB+c/6UgHJk0lzB0ubqhcNiRKSsNia5xYrb6q8DHtbPvMPrkz2s3M+6VGk8ZHR9u7aDbNsSXsW9nGPlK4PEe47bRmYsY0IsTUooUcjd3w0VhX2mQpbEvY7MfCm4SXK8wU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=dvxKENRo; arc=fail smtp.client-ip=52.101.100.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="nirWP/y6"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="dvxKENRo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WKDXMaIvzFfrMfUmfxudOwOWel12BidwFwYkNmKNbw1p/dEWtJ5mH+lDxGupzW2IebahFjMIPfAz1T1E+IDmf/wrV00LO2ejcqWNjHczFyx7w/w5268mTjBTmmL7e+O1sBT7Q24wsBdMEQ+JlFuMsr+hGb6SGXshKKHpQyQ6awSmHOzzUWJLftRe1X5TnOoo1c6BFXZPSgtBVIGUHY89wqSDBoJGnUXTl7yGYvIYJ7QCVpsGfYN24ixNy6EFqQw06oLfcJwg8u1GKZFjLuo+40JZSZ+suxOR4lJKywGs4ZpNDUZHnr+35llvJDRr9yFXtYUXPGYO+yf1kmNoWhlLlg==
+ b=qm6pITnMs6n7subb2SqiEExa+InH0hQDVeOJx6AyRICQxoU33HbwUJF4iIhGYPNH/V0reZgdjI/KFIBTYW9Bdzb1WJuSYrSDRLANoiiiHE9fq0GQtZ8W0ZVKnvi2oN1FoUNI2UDrUELtOG61bvw1AJe356DCIh/U3ajp3qte/Th4CoTMXaN/29wtI4Q6BkmGKorExhXE8i9liNEROTi+MT07krk93kCpwAMISvpV/LyTpA7DKVL345eQvEjJsk1z2moBt/gR3ZBAbco9LWU9iVVi/GidQyyLc17sE0t8djI1dP4cR4OPeo8ETDoTcnVwRWUmVsrHhn/DBddVNt/ENw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WtDhgN3YAH0eX+Yc20f7EdjBNXur0tNlsXU1Mc6BbWs=;
- b=kleXSnuWDhkk/c53OdntFXZZNRwYf49ve1Q8K3V0B3HxwLohzB63K4c7Db8zyX/nkb4fMSem7Q/nHiW9tgn8QhhrTGT+S7lPQEQG4l4/FbUyUBQvf4MXv3R0FFH8HvbZZpsKfyvpUpZoSm5ujuZ1f2KTsRCHVg13iD9FSJCR5kIBU1+L50mm6GuO5fqiCUqNJjti9FzNLLKarx2CpYgdc4EWnbPWCqGIKjJ1eMq8McgFoZn9rVebCV5YbLV9OYc3MZ5NKJzDmtQfhm9S+rzfXkFzQaJ4v0gIVt0946vDbL9IpXa3FxDn5gEJxm3APBcO6v80vum0Rky8459o1IB/4Q==
+ bh=lOSyk64fqXJPRCrShwoi3NmoCNo28uVdkxYjfqAHYW0=;
+ b=pIvlfO65re5B4RuROB9tGFyhRE7KdTk5XAzZQK1gSQIPCbIrwUBt+lB9/b2oorcvmajCG0sXJ4u0Gd4URxCXGvph68FAo6n+gSplTCQw3AG7k9cNG7N+3cpp83Ii3O+GzYgSG5NTpXby9zG0KKdZ0GRWM+aWW45i3vKva6/0v3KlrxKIVo+s+RImnzBTufpyf6/jxx1zgdu1N3MS7nxDukqcEICk8mXxMKLsr2Zy5DTVJl1K2TqZ+VuA28aiVFUVQXuoQonBkXYO4kyqacRyRi1UW147L1RoGgvESNGl2hTj7jm9iD8hCVvCUh4BzU6bnnL0a/5DSK5K4FSg1awz4A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WtDhgN3YAH0eX+Yc20f7EdjBNXur0tNlsXU1Mc6BbWs=;
- b=nirWP/y6PYKX4gugj/ijZLhIg6gjQmPGNPXYXFAMfk9nEP1V6C+3LPw9PXzz+g/dtZ/IzbxQm+ktNTD/r+u9UcFJqgv8gTA5g6+LrrDZIYBfd1wTY3cNBOw3ttVqm7UfYpwPbX8Ub9q9buP0TDwHE2aIN6CRjxwF4AGm0nVwp+g=
+ bh=lOSyk64fqXJPRCrShwoi3NmoCNo28uVdkxYjfqAHYW0=;
+ b=dvxKENRozu5C9b5Z/a80JvIiA8rkhtMDBq2DSPgi+4cVUDaucSO/HOAehImCoMcXq1mENOQCjFeuyEYFgkYDUyPVuryKYU/kpYa/0Nicfb0aBDKqc6157ISAbkZPF/RKe4J91zc0+/zjoMq/6/K65ERFE2RoGur77s/QowjoC1o=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
  by LO6P265MB7374.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:31a::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 14:52:24 +0000
+ 2026 14:52:23 +0000
 Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 14:52:24 +0000
+ 14:52:23 +0000
 From: Gary Guo <gary@garyguo.net>
-Date: Tue, 28 Jul 2026 15:52:10 +0100
-Subject: [PATCH 3/5] rust: print: accept level in `print_macro` instead of
- expression
+Date: Tue, 28 Jul 2026 15:52:09 +0100
+Subject: [PATCH 2/5] rust: print: use `CStr` for __LOG_PREFIX
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-printk-v1-3-855606634d70@garyguo.net>
+Message-Id: <20260728-printk-v1-2-855606634d70@garyguo.net>
 References: <20260728-printk-v1-0-855606634d70@garyguo.net>
 In-Reply-To: <20260728-printk-v1-0-855606634d70@garyguo.net>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -64,11 +63,11 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785250342; l=7942;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785250342; l=3729;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=K4PiT+0S2oRlIs5uPEEFYBg7dDSlM7UQGLVlWMnWJpw=;
- b=Djw+2lJ8GyZx/a4+spZcz23zPq2dvaZyKbm7drlrmVo5duEllg78ws9YmOXSPUovs5oNcV3S4
- RZgODQ019l1DngHId4/lm02GFXQiVwpcU4m+PK6FOPrvubvEUoIvWOQ
+ bh=4bAiOF+byQpfqLzT79JFYNpLIAf4RWDiNp+b/b68jDQ=;
+ b=kxh8q+pSrkvUVcHoiFpW//fbA2UZnY69KZ0xDfBRmlc6DMFUShnB8jkX+kHuYBkwqB9Vw9MWR
+ 2cWnWIjO+H3AyIDq+TLUnXYNi5Gb9lD0F6f8dlKH7tAPsYHpPOOxF0B
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO2P123CA0107.GBRP123.PROD.OUTLOOK.COM
@@ -82,290 +81,161 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO6P265MB7374:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7071916d-adc8-4295-c783-08deecb7d59e
+X-MS-Office365-Filtering-Correlation-Id: 1e294744-2fdb-4819-0faf-08deecb7d554
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|23010399003|376014|7416014|18002099003|10067099003|22082099003|5023799004|56012099006|921020|6133799003;
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|23010399003|376014|7416014|18002099003|10067099003|22082099003|5023799004|56012099006|3023799007|921020|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	DLKUbeYaUxyXBdrIEDHQ8+g4NzmdpdwlG2bBymUGYXfX7SqSX8EbmPIbpqvKnaXwh0dagMKLY5G1ENzG2gkhIt1i7Qs5lUsaiAiWURF+hvlDrL5+FnfweC7SY+eBBPx7YuUe98OBxkQim/ZJNEwO2SsykwKv7ifICeYcgwEAKmKVSxs/J+FPxYM0uwwQ1znMJrzZX4XzlsBsfFByFeuPnxZrfnyRz796wCG1c1pmddaWdWPlm6+mayBgmM/kcfS/h0IOlDkEUnTk6hJDEB+KwpkTphhZor5YIrYQgH4l2bHkNDULZuerU9HN9ylxhq/2OTteZHIJXlO6jzDeEXtyolhGOhhpNvOAunGw9yLE14fyTZcXZRSQCOt7CPGlBW8pHegq573//0SCsK3e6EqNLciIYB1WqyiHQ6FuxIW4YiXjsmViFt6+0Qze0NcfOQNcrbGaiA3Iz1L/EDzpIVb71YZ1dUDj6NpueTvYEAt39s6Eeu04XveeEC6sq9mkeqdrzfY3NAKvC2hW/MzHy5q4ACPM96BpE53pRYuO+QkKHMztxhoNEUXUhIKA6DcosCEovNSefp7UQd1lM0+iGqU96PuvoBDfNFuTl1JTpyHbqHMaBUlPYiBCKg6OjNetRn+ycIO26psL7gxyElvVjYREvkmzdsTa6c5bGXLvQGeq7EmWVNSCbOaLcEMJuzz8v9abOziCrYtzv/SroGp2sdCxqg==
+	Q0WevSZhkERKLOvgsJzankc086fgXpXiLGzZiNsI9Ed3aHqsKquI7NH6icvPxmYu0ujue71ziTuXztLezU3YtcSx5gvS+54Htp05tK/V9Om/9udQM6a7linlGVNrxZAUbpl3mqLzIipS6tTkHIinVvo72iTUgD+p5PRH6RqkZ9ASfo/AE5TIorc36eH1rYXfbcPEqZs/0NiwMx7zAirHXLeZWk1V7AYfkKgsgDg4rNNt0S0+gND0P7Jtn0yIzOZlOmntejrAKrbB7v3Hxn8eEYFPV706ff9q4UzNtqsEmU+odLmf1K9eWyQVI5DA9rMWbg1hJizWtiumDMphRbvVxTe/xQyAra1yI7LoCoaGOlGSzdQ16W5p21XtjmrAUwuOHA76Q2BQmgh/dkoURnNw4TcuwqORn8L2w+48mbn9N0szgL+llKcdra7meTZKiFcub21FitC5D+PT1cekXqE3BiO6rgbBoIdBnlpoFq5OUi3X/u0ErkiABwvimyKPCi/p88F5S31InSer7D2Z6vWl/u6TwhvaKz7EpSUz/FL6/jpaxpU8wO2z3iMIjUdLEOfAp5w4N8PHBG2CaurU4P2vb9oPbVb+MtR7V8s/2ZUgP7uo+cWoVfNEvQp7Df+0m3BsWhJ808EGTomSnOEHa70krppB9ddK0H8KUIDeISGgDssekTSq5OJSuKoj7bn4WiornkJ5dqbRgLd4KWG2qyDPDw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(10067099003)(22082099003)(5023799004)(56012099006)(921020)(6133799003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(23010399003)(376014)(7416014)(18002099003)(10067099003)(22082099003)(5023799004)(56012099006)(3023799007)(921020)(6133799003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d1o3bDY4dFJVVldURlR0L0V6TGlnSWg2U1hpdVJxK0UwWHk2U2YyN05SQTJO?=
- =?utf-8?B?cnpwR2FhaFArRUYrU2hpNUZ1Yk5QSUpNSVJiK1lVWkhpU2ZYWnlVd2VzeXMy?=
- =?utf-8?B?QXdrN2FXUjhpTzhVdVFRTnQrcEFrczVpT0lHblk1VDlrOTBCN2lWOUFoMzNu?=
- =?utf-8?B?dXdtRjg3T1VGOWF6azA2UGpxTzFDRmRtbVJES3p3eWVCc2VLVjBkcXA3SWEv?=
- =?utf-8?B?dVg5UGFlVjNZVzhXT2xOdTZ4Tm5nMDFLL2FwbldwTEV0NndmdGgyN2hWeHk1?=
- =?utf-8?B?ZUNiVE1aQzlEWXJKZll0TWQxUXdxeVpzeUNSd3dBcFp6RGdvS2RKbDExelFm?=
- =?utf-8?B?Rzg3NEM4Vjd0clJnYnRzNFcyMFJOOWUycW96OW9Rbll3OVY3VThaaWFJRFF4?=
- =?utf-8?B?RGdYT2ZXL3BaSWxBU2tUdVRyK2U3ZGhTZWpMbkNLK1p2TGpsTWEvMHdpTTN1?=
- =?utf-8?B?OFY0M2tCZUZ5cU93Sm5CdzlaTXVzZ3R5U0NEdFVPZ0lnYnJXWFNlS05iODV3?=
- =?utf-8?B?cUtlNHdKaUNzb2krZXNURkRvdFArbkJ4VE11T0RiNU4rL2xQR09ZRjUyMW03?=
- =?utf-8?B?TUUxVVh4UitESmZ2VXc0WWxZakhISWx5QnRFWGhmWG8yYUpWN2dNcmpiVmh1?=
- =?utf-8?B?ZGlTQ2t4ZHpYcDhXZkM5RmtGSE4vSm8zRU9iRkZRNDdEY2lxWXJmMDNxNHV0?=
- =?utf-8?B?Q1lvbllrcnBHczAva3lZS2xCZzRQNE5Ydzd2THpJYzBHTEZHYUZwWXBSbmFk?=
- =?utf-8?B?MmVCWXlSQSt3cWtyMlNqV0JrK3pEa2FhM3FZaElkWXFWaDhtMEdWRmVGZkZy?=
- =?utf-8?B?R1pOSjhONFdyQjV5UERYdVFnRWpHcnd6Y2cyOU9hMkxHNmIrczRMVlFtQnRY?=
- =?utf-8?B?ZHVtSFFSUGsxcDNyUm9DS1hVeGZ6TzRvRE1KNU5XTDdGNWYzYVJYTUQ0dWd0?=
- =?utf-8?B?SXhodExZdFN2SUpOQ2NxVzI0a1Y3V3VqWDhlYWIwVnVKRmRtSUFQOUpxcWdT?=
- =?utf-8?B?MDVVL2dCZXozMm9TSk9YUjhTdGNWMmh5cnJseEtvMkhTL3pGVFZhazBrVFFM?=
- =?utf-8?B?ZjFDSWVkVVpsZ1d3UnQwOTc5eGU2S2lEOExtTmlVZTRMSlY5OFdXZVZtQk5P?=
- =?utf-8?B?WjZZM0pEQUpvbzEyVUNlK2JTSFlkMmtmWHBpTG9VeHd0Q01WcjFLODVvVElz?=
- =?utf-8?B?SnhtWXVwVXc4enUvUENMSzdic0c4bTF5V3NveW5ZSGxJaTVuTWlwMC9hdFFJ?=
- =?utf-8?B?TjEydG8xdHhuUDBOcDJib1RWRG0zUkhTVHJPS1EvUkxuaXVsV3FkR3ZlWWJP?=
- =?utf-8?B?RmtVWWNId3VSaGpGSWRhbTZoSjd5UFlRdGgrcXltanlId0NCZ2ZmZ0VjNC9C?=
- =?utf-8?B?d0ZSSXFWbElqVCtiVFprZmdEN3dJeUJjZXZESUF5ZGJnZ0tTUFVjMmZKczVI?=
- =?utf-8?B?WDFTMHQ2dWM4VEg4SUZGaFlTeVF5SVM5bjZjd2I1bHl0TTIyVCtLMjBtOWJy?=
- =?utf-8?B?ZG5pWkFyVXJLeHAycXdTaS9XT0NuZG91U2pXWHZKSGtzU3ZTMkxYMnY4ZFdZ?=
- =?utf-8?B?K25KZ2NNMFVwN2tmSFg2djV6aGwxbm1WenE2Y3dwTUl5WXp3cE9EUFpNcWlk?=
- =?utf-8?B?bkY3UzNGS1dtcGs3R2ZXQm03RG1EOVNpWnU0OU14YVJuUHdIOGxROVV6b25F?=
- =?utf-8?B?ZmQzdUliSWJnMzZjQlZING1vSmhPWVA1N0VpTkErZnBscXJnam5iYUxLSkZW?=
- =?utf-8?B?Y0Vldld5VzE5UU1GVEJoNzEyWi8wbFEzZWxXcTlRcEx4dGI2VW9pZGZFaTZV?=
- =?utf-8?B?N3JmMVlwT2FQK0g0d3V6ZDlVSkhQN1Q5bWo4YlBMVXQ3ajRBU1k3d1pzSFpJ?=
- =?utf-8?B?K2RXRlJLTTRUZm1tLzREV2YxekxZb09JWDUrVForZklkV3diUS9xaWVTVHp0?=
- =?utf-8?B?UDlGbitaaDc0TXMxbkp3U1ducHRldUg2eWYxdGJFV0t3ZCtKNDYxUFF1TDE3?=
- =?utf-8?B?N2FQb1ZrNlVrNFBZY2tiVU5qNnR3c3VHTURkK3RmUlJ5c0crVkRzbmFYekZH?=
- =?utf-8?B?NGZudXYwOTA1WUVtT3VNSVBpSkp6bDNJTHVuMHJEQk9kT21mekdyR0ZINDN1?=
- =?utf-8?B?TlVIMlNEeVAzSzdydXhlbmVWelNvZUV3Z3RsWlRUQWNFUUEyREhwUzRxb3NR?=
- =?utf-8?B?S3JxR3B6bEs5NmdxTlZsMm5nRWMrQTBUV01Ra3BOa1IvNW1RcGhQN3pHZ051?=
- =?utf-8?B?WXlNcVhhQ1VWQy9SYk55MlJib2RoM0hoeUJnNnMyZlM2eTVPRnRIdnl2ZE9o?=
- =?utf-8?B?V0I5TDMrb1hXcDIwY3RwdUZVVUFLTVBsajJjZE96eDJ5Q2ZJTG9UZz09?=
+	=?utf-8?B?OGM5OENzdUZ5ZmErZVNwN2dkYnB2LzJCb2NMb1B6TEYwVlJjdlpaM1NBSDBt?=
+ =?utf-8?B?WDBSYjJzYmE1OXE5N3paZUVITlFkaVAzdGc2TXJlK3d5T2xpa21JbzhMUzBP?=
+ =?utf-8?B?WEdLQ1RncWxZQ2V0ZlBOU3ladFRDUnliMUNGTVd1MU5KM1N1YkRxR2RrTm5Z?=
+ =?utf-8?B?YWt5VVhnU1dNOUE2N1FBdzE3WGwrZnowT2xJRHlLaisyMS80cERtK3FZYXlJ?=
+ =?utf-8?B?ODZjVUF6UFBWMGxqZENDSFNTaGFESGlZK1N5S1ROQkF5OGYyS3ZaVTE2KzRC?=
+ =?utf-8?B?MDBnWjU4MHNGcDF0MjRsUHBGUU1Sd0xXVXJONGZMOVdaMWFjTzFXL2lxWE5Z?=
+ =?utf-8?B?ZG50RHFvUTRVM1lWZVdiSFp5SnArOTljWTRjWjRBMDRGNXpvRVBLcG5jVWhu?=
+ =?utf-8?B?NHV2WjZEcWVTbWhETjdrcTRueEJtVDBDWHVSMi9pWEZuVjBwYkQwc2wzZjJo?=
+ =?utf-8?B?SFdVU1o2OFYrTG5tYXVHVithVDhybVZNQXZXRjBqUGJTcklzdDMvanNaRmlZ?=
+ =?utf-8?B?OWZWTWlUODZXWFlSL2Q4SzhHVjRhSkRZa3RrKzM5THlvd0JXU1ZDemZsbWlX?=
+ =?utf-8?B?RGtHVHd1U1RFSjhreTgwVll6eXlFYVZOSWlmL3JwVFc2c3ViUWgrdUtxMmQz?=
+ =?utf-8?B?dnBFN0hvbStIN0hnSERHdFhWTnNqbE5ZbHQxV0RSTmhlbjRMQndEWEtIYXVR?=
+ =?utf-8?B?RFJtaVY1V0ZNelJ0eW1wVTFXMk1iY2MxRGIwRzlvZXJJeW0waHJLS25BVnRh?=
+ =?utf-8?B?czl0dUJPL0Jrb3EzUDRrRW1qeVIyZ3A0R0JnVEZWcHkwTmU3T3lQeHVhNmhH?=
+ =?utf-8?B?R1pKNVd3cnkvRjl4V0JvWFhOL3RGd3RPOEYvL1B3dGFSRVdkVXhkM25QYjlE?=
+ =?utf-8?B?V2IvUzBZd3dEUUYzdkNPR3crcFN6OUZBaEVEQkZidncyWFI1RS9KcTluYkJ4?=
+ =?utf-8?B?Ti9TNVdqd2RIUzBpTUFrZXZHWmdJaU92SmdESmhoMHFkdW9WRkk3MjNDcnIr?=
+ =?utf-8?B?RitGcURhcnJxK0pNSlBBVVBmK1RqbVpQalZycWhpV1dKd280RTM5Y3VRUmty?=
+ =?utf-8?B?UjJnTXhYZ29FVzE3TURuWXEwa0NRdFI4NytNVmp5MDZSVi80RGJYRlNnblZa?=
+ =?utf-8?B?MWRSRG9vdVA1dU4zazFEYmMxaHZaSis5T3ZvTzI4VUJaYmlyR3AxbXBvblhi?=
+ =?utf-8?B?QnNCMHcxaFdrMVd1VmZ6TWJBY3U3UWtucldYUGRuUVZYUzY4VnlBS20xMU94?=
+ =?utf-8?B?Z0dXK1NMN1kwZWowYUs0QnMrOEh2WnM5SFh2V1BqWUVqOGpnK3ZxdGJ5ak1t?=
+ =?utf-8?B?SHJkV0ZvMnNmMFhDZS8xdTEybDdrT29WSnRRUEpNTTV6U082SXl1endLQmJj?=
+ =?utf-8?B?NjVjZWFlYlU4eEw1dXVBQ1JFVjlsR1pidklJTkxOYmNmcDYyMEs1WkRsQnB4?=
+ =?utf-8?B?VGVlaENEYTk0MzR3WkdwdW9FTU8zNXN0MUdjSENoS0ZHdEh5VFlkdXNXUWRS?=
+ =?utf-8?B?dEFRa1NuL2xVaGFac3U5NnpiaUhhczUwcVRLekhPOHZ3SzdDWHcrVVAvQVRq?=
+ =?utf-8?B?bUwzaHRtNVlTcTQ2T0xHY2I2VDRUMVRKOTNCaWgwSmx1Y1lwQ3pvTDgxZ01Z?=
+ =?utf-8?B?U2dkRGtwNWxnQ3FPYmJ2OGpEM0VuMVFiUmZ5L25EcjcvQ2JvQ1Q4YWdmdy83?=
+ =?utf-8?B?U3h1allaSWlXaDlaT2o5Wmd5RzZETTkxQ1lyWlNVNVYvZmQwNGJwNG80SFIz?=
+ =?utf-8?B?ZXlxc29uNTB3TGo5QnVmeDhCbUJIZGNaVEhiakRYMHpGZWlCY3pwcmZ3citK?=
+ =?utf-8?B?YjZUbGczNTRFN2tvaXVmM2NRZzRsdmpoMVY0MHBGOUlNbWlqMndUTmVreTFm?=
+ =?utf-8?B?MnFGNCs5aTJpclRtYXNLdDQ4VHc0eU9pN1JwZTFaYytqVE5nWTFld29odGx2?=
+ =?utf-8?B?c0Q5MmJiVmNOZU52UnB5QnlPdjcydVN2V0prT2xqd1Q1a3g4WEZIMkdPRlhv?=
+ =?utf-8?B?bC9LYkJBMndjWUdaUWxnZGhhUkJ0UjVRV2pIZUFSalBkWkZENnFqOENoSlps?=
+ =?utf-8?B?NDVKSVhFZDk0VnV3RHVUOTlFRTBjZUJNYUlMTnpTZnQzVVZSb3dYUVBMMktP?=
+ =?utf-8?B?OWRJTXFNc1o4UDJEUmQwY1NlUVMyaHlJNFRWdXhpUTFDMGJCK1RDSHFGa3Uy?=
+ =?utf-8?B?S2U2MFdrS3Z0a2E5Z3VDRkh0Nm40QnVTUVBWMThNTmJoOGNnWVMvQTRvbDM2?=
+ =?utf-8?B?OE5FeEdSenQvWXlVazdDQ3E3Mk4ra0phUlc2cFJxejJoRUVPZi8zbmN6SkNj?=
+ =?utf-8?B?Q1VTMk9mZHA3SVFQaWc2WWdvak9Ld1Z5RXc0aENqZ2Y3eXZWMU40UT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7071916d-adc8-4295-c783-08deecb7d59e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e294744-2fdb-4819-0faf-08deecb7d554
 X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 14:52:24.1099
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 14:52:23.6137
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: saZPxpe1iIXMP7mivfbRCnl00gkWbYEN9xZlmK5QaxafH5t86FsJmwfTolxdarsRnO/VNsGqjs7ApETexPHYTQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: QO+6dFSmxLQlTLwY5fEuncPgQLUmsLp1t2+GSbYFK7ES7HGtKJnOgjXGjMNZPsZgwuFsIvvtDrdpJvi3HD+Kmw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB7374
 
-Currently, `print_macro` (and `call_printk`) requires format string to be
-one of the predefined ones for soundness. Define a new marker type for each
-log level and encode the property on trait `level::Level` instead. This
-makes `call_printk` safe.
+Currently `call_printk` uses `&[u8]` for log prefix and as a safety
+precondition require it to be null-terminated. Change it to use `CStr` so
+this requirement is encoded in type invariant.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/print.rs | 105 +++++++++++++++++++++++----------------------------
- 1 file changed, 48 insertions(+), 57 deletions(-)
+ rust/kernel/lib.rs          |  2 +-
+ rust/kernel/print.rs        | 11 ++++-------
+ rust/macros/module.rs       |  2 +-
+ scripts/rustdoc_test_gen.rs |  2 +-
+ 4 files changed, 7 insertions(+), 10 deletions(-)
 
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 68f4d9a3425d..5436daa48ef5 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -146,7 +146,7 @@
+ pub use uapi;
+ 
+ /// Prefix to appear before log messages printed from within the `kernel` crate.
+-const __LOG_PREFIX: &[u8] = b"rust_kernel\0";
++const __LOG_PREFIX: &core::ffi::CStr = c"rust_kernel";
+ 
+ /// The top level entrypoint to implementing a kernel module.
+ ///
 diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 470c1001f37d..2c82f5e82700 100644
+index 066ef7a7d5ce..470c1001f37d 100644
 --- a/rust/kernel/print.rs
 +++ b/rust/kernel/print.rs
-@@ -34,16 +34,16 @@
-     w.pos().cast()
- }
- 
--/// Format strings.
-+/// Format levels.
+@@ -87,15 +87,14 @@ pub mod format_strings {
  ///
- /// Public but hidden since it should only be used from public macros.
- #[doc(hidden)]
--pub mod format_strings {
--    /// The length we copy from the `KERN_*` kernel prefixes.
--    const LENGTH_PREFIX: usize = 2;
-+pub mod level {
-+    use core::ffi::CStr;
- 
--    /// The length of the fixed format strings.
--    pub const LENGTH: usize = 10;
-+    pub trait Level {
-+        const FORMAT_STRING: &'static CStr;
-+    }
- 
-     /// Generates a fixed format string for the kernel's [`_printk`].
-     ///
-@@ -51,58 +51,58 @@ pub mod format_strings {
-     /// given `prefix`, which are the kernel's `KERN_*` constants.
-     ///
-     /// [`_printk`]: srctree/include/linux/printk.h
--    const fn generate(prefix: &[u8; 3]) -> [u8; LENGTH] {
-+    const fn generate(prefix: &[u8; 3]) -> [u8; 10] {
-         // Ensure the `KERN_*` macros are what we expect.
-+        assert!(prefix.len() == 3);
-         assert!(prefix[0] == b'\x01');
-         assert!(prefix[1] >= b'0' && prefix[1] <= b'7');
--        assert!(prefix[2] == b'\x00');
- 
--        let suffix: &[u8; LENGTH - LENGTH_PREFIX] = b"%s: %pA\0";
-+        let mut fmt = *b"\0\0%s: %pA\0";
-+        fmt[0] = prefix[0];
-+        fmt[1] = prefix[1];
-+        fmt
-+    }
- 
--        [
--            prefix[0], prefix[1], suffix[0], suffix[1], suffix[2], suffix[3], suffix[4], suffix[5],
--            suffix[6], suffix[7],
--        ]
-+    // #[rustfmt::skip] // Rustfmt formats the macro awkwardly.
-+    macro_rules! define_level {
-+        ($lvl:ident) => {
-+            pub struct $lvl;
-+
-+            impl Level for $lvl {
-+                const FORMAT_STRING: &'static CStr = match CStr::from_bytes_with_nul(&generate(
-+                    macros::paste!(bindings::[<KERN_ $lvl>]),
-+                )) {
-+                    Ok(v) => v,
-+                    Err(_) => unreachable!(),
-+                };
-+            }
-+        };
-     }
- 
--    // Generate the format strings at compile-time.
--    //
--    // This avoids the compiler generating the contents on the fly in the stack.
--    //
--    // Furthermore, `static` instead of `const` is used to share the strings
--    // for all the kernel.
--    pub static EMERG: [u8; LENGTH] = generate(bindings::KERN_EMERG);
--    pub static ALERT: [u8; LENGTH] = generate(bindings::KERN_ALERT);
--    pub static CRIT: [u8; LENGTH] = generate(bindings::KERN_CRIT);
--    pub static ERR: [u8; LENGTH] = generate(bindings::KERN_ERR);
--    pub static WARNING: [u8; LENGTH] = generate(bindings::KERN_WARNING);
--    pub static NOTICE: [u8; LENGTH] = generate(bindings::KERN_NOTICE);
--    pub static INFO: [u8; LENGTH] = generate(bindings::KERN_INFO);
--    pub static DEBUG: [u8; LENGTH] = generate(bindings::KERN_DEBUG);
-+    define_level!(EMERG);
-+    define_level!(ALERT);
-+    define_level!(CRIT);
-+    define_level!(ERR);
-+    define_level!(WARNING);
-+    define_level!(NOTICE);
-+    define_level!(INFO);
-+    define_level!(DEBUG);
- }
- 
- /// Prints a message via the kernel's [`_printk`].
+ /// # Safety
  ///
- /// Public but hidden since it should only be used from public macros.
+-/// The format string must be one of the ones in [`format_strings`], and
+-/// the module name must be null-terminated.
++/// The format string must be one of the ones in [`format_strings`].
  ///
--/// # Safety
--///
--/// The format string must be one of the ones in [`format_strings`].
--///
  /// [`_printk`]: srctree/include/linux/_printk.h
  #[doc(hidden)]
  #[cfg_attr(not(CONFIG_PRINTK), allow(unused_variables))]
--pub unsafe fn call_printk(
--    format_string: &[u8; format_strings::LENGTH],
--    module_name: &CStr,
--    args: fmt::Arguments<'_>,
--) {
-+pub fn call_printk<Lvl: level::Level>(module_name: &CStr, args: fmt::Arguments<'_>) {
+ pub unsafe fn call_printk(
+     format_string: &[u8; format_strings::LENGTH],
+-    module_name: &[u8],
++    module_name: &CStr,
+     args: fmt::Arguments<'_>,
+ ) {
      // `_printk` does not seem to fail in any path.
-     #[cfg(CONFIG_PRINTK)]
-     // SAFETY: TODO.
+@@ -104,7 +103,7 @@ pub unsafe fn call_printk(
      unsafe {
          bindings::_printk(
--            format_string.as_ptr(),
-+            Lvl::FORMAT_STRING.as_char_ptr(),
-             module_name.as_char_ptr(),
+             format_string.as_ptr(),
+-            module_name.as_ptr(),
++            module_name.as_char_ptr(),
              core::ptr::from_ref(&args).cast::<c_void>(),
          );
-@@ -147,19 +147,10 @@ pub fn call_printk_cont(args: fmt::Arguments<'_>) {
- #[macro_export]
- #[expect(clippy::crate_in_macro_def)]
- macro_rules! print_macro (
--    ($format_string:path, $($arg:tt)+) => (
--        // To remain sound, `arg`s must be expanded outside the `unsafe` block.
--        // Typically one would use a `let` binding for that; however, `format_args!`
--        // takes borrows on the arguments, but does not extend the scope of temporaries.
--        // Therefore, a `match` expression is used to keep them around, since
--        // the scrutinee is kept until the end of the `match`.
-+    ($level:ident, $($arg:tt)+) => (
+     }
+@@ -157,9 +156,7 @@ macro_rules! print_macro (
          match $crate::prelude::fmt!($($arg)+) {
--            // SAFETY: This hidden macro should only be called by the documented
--            // printing macros which ensure the format string is one of the fixed
--            // ones.
--            args => unsafe {
--                $crate::print::call_printk(
--                    &$format_string,
-+            args => {
-+                $crate::print::call_printk::<$crate::print::level::$level>(
-                     crate::__LOG_PREFIX,
-                     args,
-                 );
-@@ -207,7 +198,7 @@ macro_rules! print_macro (
- #[macro_export]
- macro_rules! pr_emerg (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::EMERG, $($arg)*)
-+        $crate::print_macro!(EMERG, $($arg)*)
-     )
- );
+             // SAFETY: This hidden macro should only be called by the documented
+             // printing macros which ensure the format string is one of the fixed
+-            // ones. All `__LOG_PREFIX`s are null-terminated as they are generated
+-            // by the `module!` proc macro or fixed values defined in a kernel
+-            // crate.
++            // ones.
+             args => unsafe {
+                 $crate::print::call_printk(
+                     &$format_string,
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 025323fb030d..cfc27a40b7f1 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -496,7 +496,7 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
+         /// The module name.
+         ///
+         /// Used by the printing macros, e.g. [`info!`].
+-        const __LOG_PREFIX: &[u8] = #name_cstr.to_bytes_with_nul();
++        const __LOG_PREFIX: &::core::ffi::CStr = #name_cstr;
  
-@@ -232,7 +223,7 @@ macro_rules! pr_emerg (
- #[macro_export]
- macro_rules! pr_alert (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::ALERT, $($arg)*)
-+        $crate::print_macro!(ALERT, $($arg)*)
-     )
- );
+         // SAFETY: `__this_module` is constructed by the kernel at load time and will not be
+         // freed until the module is unloaded.
+diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
+index d61a77219a8c..18fdeac305a7 100644
+--- a/scripts/rustdoc_test_gen.rs
++++ b/scripts/rustdoc_test_gen.rs
+@@ -230,7 +230,7 @@ macro_rules! assert_eq {{
+         BufWriter::new(File::create("rust/doctests_kernel_generated.rs").unwrap()),
+         r#"//! `kernel` crate documentation tests.
  
-@@ -257,7 +248,7 @@ macro_rules! pr_alert (
- #[macro_export]
- macro_rules! pr_crit (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::CRIT, $($arg)*)
-+        $crate::print_macro!(CRIT, $($arg)*)
-     )
- );
+-const __LOG_PREFIX: &[u8] = b"rust_doctests_kernel\0";
++const __LOG_PREFIX: &::core::ffi::CStr = c"rust_doctests_kernel";
  
-@@ -282,7 +273,7 @@ macro_rules! pr_crit (
- #[macro_export]
- macro_rules! pr_err (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::ERR, $($arg)*)
-+        $crate::print_macro!(ERR, $($arg)*)
-     )
- );
- 
-@@ -307,7 +298,7 @@ macro_rules! pr_err (
- #[macro_export]
- macro_rules! pr_warn (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::WARNING, $($arg)*)
-+        $crate::print_macro!(WARNING, $($arg)*)
-     )
- );
- 
-@@ -332,7 +323,7 @@ macro_rules! pr_warn (
- #[macro_export]
- macro_rules! pr_notice (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::NOTICE, $($arg)*)
-+        $crate::print_macro!(NOTICE, $($arg)*)
-     )
- );
- 
-@@ -358,7 +349,7 @@ macro_rules! pr_notice (
- #[doc(alias = "print")]
- macro_rules! pr_info (
-     ($($arg:tt)*) => (
--        $crate::print_macro!($crate::print::format_strings::INFO, $($arg)*)
-+        $crate::print_macro!(INFO, $($arg)*)
-     )
- );
- 
-@@ -386,7 +377,7 @@ macro_rules! pr_info (
- macro_rules! pr_debug (
-     ($($arg:tt)*) => (
-         if cfg!(debug_assertions) {
--            $crate::print_macro!($crate::print::format_strings::DEBUG, $($arg)*)
-+            $crate::print_macro!(DEBUG, $($arg)*)
-         }
-     )
- );
+ {rust_tests}
+ "#
 
 -- 
 2.54.0
