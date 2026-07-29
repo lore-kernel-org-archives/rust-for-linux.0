@@ -1,229 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [83.166.143.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB844756CB;
-	Wed, 29 Jul 2026 11:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDCB47CC6B
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Jul 2026 12:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785324149; cv=none; b=oqUWrooeUSmZNFxVfWMT+/U6scmEeePzPhmw84lbL0Uh2TZCwvm4pkviRQWVjjxOtCDe/4zN+bB0ZqYCLDYtEDNLTI72bZ4uMiwJJGpNXTEkB/dT3kbZaIoKA+mz7p9usq8C3lgspp/sFPsQLXgfKXvJTscGqaHU7nUumVRq2a4=
+	t=1785327159; cv=none; b=FoJ4Dem8pu6yRQH0BnsvhojP9JBgjfgOdaRYOM1KKNCWveRsYwtbXx3lB01hwHjWUC7Xs0BJmKeB9V5YCnXV0ijEtqYCGDb6sTkiJxEMcimJX8aid526on60+r3Vl3VqdE6EpgsTI9k4ZLN9HB2u1qtT3p+/eZnoo0DOAWuxcX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785324149; c=relaxed/simple;
-	bh=BKG7GXWYx2hlh9ZVoXNxYAVMuChl+jmv5WkVUEpNJhA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=AyMxaxv/P3mBgtJWWSriB3AKSNJDxfF/JhjacgVsmHUeKvjeNHsUqr/vPgMKgUO7+04s8HHRIJYSG6/Sv/m4pyrN59Frtce78GUohQmVLeXcrZxTlb8xHDAFsp+H71RJdvhBDvkTXbMWCmjUnJfm/qweaTaxrGnGtlc38mlqZ8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZeIv7HK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785327159; c=relaxed/simple;
+	bh=76in1GjWNLlOlP0uaHCT03/EpP1Uo4LBVjEQfT2jkCo=;
+	h=Subject:Message-ID:Date:From:To:Cc:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=J/5Ipj4bOPX1GEWs/jwPiuZpEfh7EGxjFpGhlyhk3cTgt66++ezapOJbOIaugMH4CPC7w0tvrQ/yNZTXoLflyjZriHQ0DR7r5zf71mawkVx9faz07+x9YLO/dOp21x6WMc77WWdTXskmAuvfVVfGRL671PAiYoA46CDalOCGy0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me; spf=pass smtp.mailfrom=ik.me; dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b=rcUc2SLJ; arc=none smtp.client-ip=83.166.143.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ik.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZeIv7HK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C921F00A3A;
-	Wed, 29 Jul 2026 11:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785324147;
-	bh=Iyvl6ldDVcJQRwOTFkwENJGNteJzfpY7qz7JnLdEsp8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=EZeIv7HKaQj5ikLdnyIfzVZQW6VzigiIgWHvW4Y0heigR5R7jvwRXgAexjhQ+U6dQ
-	 +6ulFhOAecMIUg7nbEySax7QhmUT6a8gTnf0+DR3fhKhjNJqfrgHN0zvs59AcZ7S5T
-	 J839jZLVkiUgEwKRIpRjrPmi+XLMeYYYaBqYV5os6gWZrP0A7m0gsbiSDMxu9iPteT
-	 QtEqAqKdzWnBJz5T1rBAg2l/359IW3Xlmn3UFR+esgerZm2ucSyr05L2ODoEEdce1Y
-	 xoDbfP5GIgLN4z6kBOYVGDnvRHVlAOzNeszd2PrVdDekJCmcUTZgaWE7FogKdN42Zv
-	 RxPMJJIvj9aaw==
+	dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b="rcUc2SLJ"
+Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4h9B6L0XGlzVsQ;
+	Wed, 29 Jul 2026 14:12:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
+	t=1785327145; bh=/Mf6oc8o3rgfoSd5qIUTbDR7145wWJf1XLsdkjAYlNw=;
+	h=Subject:Date:From:To:Cc:Reply-To:References:In-Reply-To:From;
+	b=rcUc2SLJbe1wzDhxkVtnNpyfZuacNYzGkoWzztqh41/Q9OMgk5a1JTmH9v/vlMYLn
+	 6IU7fZUwGKjqot+2Qsy3EA/CfVct3kB0DTt4baZ+z8izxFAfL8cY4mMilelunAAiTR
+	 c/HmWP8hggNo+QgRqxxaBCn3XHlN1pU5unx6SNvM=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4h9B6J68gszHKs;
+	Wed, 29 Jul 2026 14:12:24 +0200 (CEST)
+Subject: Re: [PATCH v2] drm/tyr: add Job IRQ handling
+Message-ID: <9cf1107a-3dfd-43a6-9f25-d8e01595c9e3@mail.infomaniak.com>
+Date: Wed, 29 Jul 2026 14:12:24 +0200
+From: Ewan Chorynski <ewan.chorynski@ik.me>
+To: Laura Nao <laura.nao@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Alice Ryhl
+ <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Tamir
+ Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, kernel@collabora.com, Deborah Brouwer
+ <deborah.brouwer@collabora.com>
+Reply-To: Ewan Chorynski <ewan.chorynski@ik.me>
+X-WS-Location: eJxzKUpMKykGAAfpAmU-
+References: <20260729-tyr-irq-v2-v2-1-c2750fc11d59@collabora.com>
+In-Reply-To: <20260729-tyr-irq-v2-v2-1-c2750fc11d59@collabora.com>
+X-Mailer: Infomaniak Workspace (1.3.1317)
+X-WS-User-Origin: eyJpdiI6InY2WER6UW9XQ0puUVJCN2l1NTVuUnc9PSIsInZhbHVlIjoiZWc1OFV4dktJWFJkWVlIbkdCL3h0dz09IiwibWFjIjoiNzVlMDczZjBkNThiZDVhYTlhOGI1OTgyYjU3ZGE5OWY1ZjFhMTkyODc0MmVmYzU2NzFmNWY1NjE0Y2IwY2U2ZSIsInRhZyI6IiJ9
+X-WS-User-Mbox: eyJpdiI6ImpKb3dxUHpkZWZvSWpyaW4zaVo0TlE9PSIsInZhbHVlIjoiWGVwbGprK1RQMkJqUVRsS1owNU12QT09IiwibWFjIjoiOGE0OTAxZWJjNDU0YzdlZmE3ZmYxMTI5MjhiMmQyYzBiMDBjZTA1NGU2YzdmZDE2MGE0YWQ3NjFhNDI1Y2RjYyIsInRhZyI6IiJ9
+X-WS-LOCALE: fr_FR
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jul 2026 13:22:23 +0200
-Message-Id: <DKB0L93Q3OKI.26PNHHQOIF3EH@kernel.org>
-Subject: Re: [PATCH v3 3/7] drm: nova: Add chipid enum to nova-drm UAPI
-Cc: "John Hubbard" <jhubbard@nvidia.com>, <nova-gpu@lists.linux.dev>, "Alice
- Ryhl" <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>,
- "Alexandre Courbot" <acourbot@nvidia.com>, "Benno Lossin"
- <lossin@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Eliot Courtney"
- <ecourtney@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260723063046.1265791-1-apopple@nvidia.com>
- <20260723063046.1265791-4-apopple@nvidia.com>
- <DK7R7PB91GUE.1PS77AQM8ZR99@kernel.org>
- <amhdA35CcMD_uY2f@nvdebian.thelocal>
- <DKAIVPSA45O9.1NZES5S3BII10@kernel.org>
- <57e2b956-89fd-43e8-8cb3-a15aee272660@nvidia.com>
- <DKAKR85QX9UM.1VYAAL82QBWJ5@kernel.org>
- <ammyfspYkXOwMsdU@nvdebian.thelocal>
-In-Reply-To: <ammyfspYkXOwMsdU@nvdebian.thelocal>
+Feedback-ID: :b8ff05a3410f642:ham:e74197f626dda86
+X-Infomaniak-Routing: alpha
 
-On Wed Jul 29, 2026 at 10:24 AM CEST, Alistair Popple wrote:
-> On 2026-07-29 at 08:57 +1000, Danilo Krummrich <dakr@kernel.org> wrote...
->> On Tue Jul 28, 2026 at 11:49 PM CEST, John Hubbard wrote:
->> > On 7/28/26 2:29 PM, Danilo Krummrich wrote:
->> >> On Tue Jul 28, 2026 at 10:00 AM CEST, Alistair Popple wrote:
->> >>> On 2026-07-26 at 01:23 +1000, Danilo Krummrich <dakr@kernel.org> wro=
-te...
->> >>>> On Thu Jul 23, 2026 at 8:30 AM CEST, Alistair Popple wrote:
->> > ...
->> >>>> For instance, what's valid for userspace to extract from this? Give=
-n chipid is a
->> >>>> composed value, is userspace e.g. allowed to make assumptions on ex=
-tracting the
->> >>>> architecture? Or is this something we want to expose separately and=
- tell
->> >>>> userspace that the chipid is an opaque value identifying a specific=
- chip only?
->> >>>
->> >>> I _think_ it makes sense for this to just be an opaque value, but it=
-'s a good
->> >>> question that I should probably try and get some internal feedback o=
-n as well.
->> >>> Reading the arch would then be a separate parameter.
->> >>=20
->> >> I'd prefer exposing it as an opaque value and provide other informati=
-on
->> >> separately; the kernel already does the work anyway, so why duplicate=
- it in
->> >> userspace. It would also remain much cleaner if encoding details ever=
- change.
+On Wed, Jul 29, 2026 at 11:58:29AM +0200, Laura Nao wrote:
+> [...]
+> +
+> +impl<T: TyrIrqTrait> TyrIrq<T> {
+> +    pub(crate) fn request<'a>(
+> +        pdev: &'a platform::Device<Bound>,
+> +        name: &'static CStr,
+> +        irq: T,
+> +    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + 'a=
 >
-> Yep, I agree. Just want to make sure we get everyone in agreement.
->
->> >
->> > Just to orient myself, I'm assuming that by "opaque values", you mean =
-using
->> > something that just counts up from, say, 1, instead of using real boot=
-42
->> > values below, right?
->
-> No. We'd just document these as a unique magic value that identifies the =
-GPU
-> chip rather than something that could be decoded into anything else.
->
->> > That seems like a good approach to me, too. Because I can't imagine an=
-ything
->> > particularly good coming from providing unnecessary details to user sp=
-ace
->> > here. :)
->>=20
->> I'd probably not be too worried about keeping it as is, but just documen=
-t it as
->> being an opaque value that shouldn't be messed with.
->
-> Yes, agree with this. I don't think we want to mess with the value. It ju=
-st
-> makes life hard when a new chip is added thats only difference from the n=
-ova-drm
-> perspective is a new chipid. You don't want to have to worry about backpo=
-rting
-> patches to distros and kernels just to add the identifier for say TU117 e=
-ven
-> though it's functionally the same as TU116 from a Nova perspective.
->
-> Obviously chipid would still get added to the header and eventually backp=
-orted,
-> but having been there and done that it's not a good user story to require=
- it.
->
->> If we expose the encoded information separately I don't see a huge incen=
-tive for
->> userspace to redo the work and mess with it anyway.
->>=20
->> The advantage of keeping the values as they are is that we avoid having =
-to deal
->> with mapping values back and forth. I kind of like that nova-core uses t=
-he
->> values from the uAPI header to define the Chipset struct, passes it to n=
-ova-drm
->> and nova-drm does use it to fill in the userspace exposed data.
->
-> So do I.
->
->> Something else worth to consider in this context is whether we really wa=
-nt to go
->> with the key-value pair GETPARAM approach, which can become a bit tediou=
-s.
->>=20
->> I think for the basic GPU information we could have a struct drm_nova_gp=
-u_info,
->> which contains all the relevant information obtained at probe time, such=
- as
->> chipid, architecture, VRAM size, etc.
->>=20
->> If everything is available in a single struct there should be no reason =
-for
->> userspace to mess with the chipid value. However, I'd also not object to=
- make it
->> a "real" opaque value.
->>=20
->> In order to deal with additions to the struct we could take a two stage =
-approach
->> to obtain the information from userspace; probe size first, then allocat=
-e with
->> the returned size:
->>=20
->> We can have a DRM_NOVA_INFO ioctl, which takes a struct containing the i=
-nfo
->> identifier (e.g. DRM_NOVA_GPU_INFO), a size and a pointer to the actual =
-info
->> structure.
->>=20
->> 	struct drm_nova_info {
->> 		__u32 id;
->> 		__u32 size;
->> 		__u64 info;
->> 	};
->>=20
->> Userspace can call the DRM_NOVA_INFO with the identifier (e.g.
->> DRM_NOVA_GPU_INFO), size and info pointer set to zero, and the kernel fi=
-lls in
->> the size of the info struct (e.g. struct drm_nova_gpu_info).
->>=20
->> Subsequently, userspace can allocate memory with the size reported by th=
-e kernel
->> and call the same ioctl with the info pointer set to the allocated memor=
-y.
->>=20
->> This way existing info structs remain extensible (as long as the layout =
-isn't
->> changed of course) and new ones can be added at any time.
->
-> I did consider an approach like this but having to do the two ioctl memor=
-y
-> allocation dance doesn't seem any less tedious.
+> +    where
+> +        T: 'a,
+> +    {
+> +        let handler =3D try_pin_init!(Self {
+> +            irq,
+> +            _pin: PhantomPinned,
+> +        });
+> +
+> +        // SAFETY: The resulting `PinInit` is not leaked, it is consumed=
+ by the caller to
+> +        // initialize a pinned `ThreadedRegistration`.
+> +        Ok(unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, nam=
+e, name, handler) })
 
-Well, it is two ioctls for a structured set of properties, whereas GETPARAM=
- is N
-ioctls with no structure and slightly less type information.
+I think your `request` function should be unsafe with the same
+requirements as `request_threaded_irq_by_name`, otherwise how do you
+guarantee that this safety justification holds ?
 
-> Also my experience is these structs tend to just grow over time and becom=
-e
-> unwieldy as new bits of info get added
-
-Note that there's no need to grow existing info groups endlessly; if someth=
-ing
-truly becomes a separate concern we can just add a new group, e.g.
-DRM_NOVA_MEMORY_INFO.
-
-> and old ones deprecated forcing userspace to allocate memory for things i=
-t
-> might no longer care about.
-
-This is equally true of GETPARAM; we accumulate keys that nobody uses anymo=
-re.
-
-Allocating for one or two deprecated fields for a single query doesn't seem=
- like
-a big deal; plus we can always create a new info group and leave the old on=
-e
-alone, just like a deprecated GETPARAM key.
-
-> Ultimately though I'm thinking (hoping?) there will not be a huge number =
-of
-> these - a lot of this info should probably get exposed via sysfs anyway.
-
-I don't think sysfs is a good fit; it seems tedious for a UMD to do a bunch=
- of
-sysfs file reads, each of them requiring at least three syscalls. Plus the
-effort to parse the value from the string sysfs provides, which is more err=
-or
-prone than reading a typed struct.
+> +    }
+> +}
+> [...]
