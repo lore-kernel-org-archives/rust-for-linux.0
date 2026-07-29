@@ -1,138 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258D432E128;
-	Wed, 29 Jul 2026 17:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DC5383C89;
+	Wed, 29 Jul 2026 17:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785345521; cv=none; b=kXjNyOtrgexvEilZdDwTyrGL/1BULKzngiY67s7f+hdcO9GjG1Ff2Q8uUJe3QStYvUqZPJyn/mnFz4gW/rwlK3u+yuQKKvMppeIQ0UQrS+ta0TBLMMN5EbcCBhmQr9mkmYcg9136Lh1jzKikBiHsZ6G+FCehAdMAkMSAfLIu/hQ=
+	t=1785346704; cv=none; b=XULgGjWIFR3IvomGD3s73q2CigJZgPFMQeJNUPXSmZdH58QTbissEtOBbLUGk6zUbh5m5Ll1O5SDEm1IZ3jop5mcJuG2yZfQPOeM0qxQ3y+5z56DZkJ3VJcr7OAdgaR4UeZci4orWIOBCNblG84DMhWfjiWrc4ISFaUm/b2jDW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785345521; c=relaxed/simple;
-	bh=PC05c5Xd905WO+gU0DSPasVN3zfp94uzDYug09i0bRs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uiHZ3FfVSdFwfxvYd+nJDXpfaVhvCbSmiuyDdL+OyqSxp42wSuThq4cvwBFjSksYWET1n3WdhLettFT+Wk3CNOhvnGekLuWZIX/vStsK6rRzegNSDzkfOC4bpurns4h7jPa93WgndD9ipsEVemczvHCwbD+8zXXSCqDo+sL5O5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/6ZIUL/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785346704; c=relaxed/simple;
+	bh=bsLvFynu/CXBMzHlGGgM/SFQd72ZoIg57HRnqcar0O0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I5avC22OjVDzEKSgwzIrBNQeaWYOZZ3nPygLxvARUPpquwliSDReMWpTc5V360gTdWb6eZONtC7C0XUlpYQSIjnhQxHCf6meNNOXaol3XKGjZ2SWmTQk7DJC6kq0MPE1eAcR6FXsk/nyD9bc172A07NHJK8l5fbSahhDaylvrlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2kYbAil; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/6ZIUL/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C0E1F000E9;
-	Wed, 29 Jul 2026 17:18:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2kYbAil"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480FF1F000E9;
+	Wed, 29 Jul 2026 17:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785345518;
-	bh=V4fqphSqGLyY1OSa6m/tjYmdpF1YTGlh/6RPGHROYy4=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To;
-	b=m/6ZIUL/eN8niD4PQkGkB/eF57W/SS8FJfNsbWh+uqFg0jzNTdx658Uf3rlqDMGE1
-	 oceZyiGSu2q9luzkAMpax5DHmnnrM9scd97SyAQ1FK/Sl3MEQnwlQS6cOfKAmM9SLY
-	 Y3HQarbZzD6Rm+9juCY0juSef+9crMHDuNi1aW8+OlkOha6Mip9XBb2YZwUVIUAIUM
-	 A9rse78v0SgTk2hXd2NtaKwa2A5cNplN917nHkoB2u+75hBJ45d1uinT5MuXWsbZkh
-	 OmwG0cWcQznlXI5u3QNyv+/HCxyj9Q8QWQDIaU+57oaX79OsrVVec/OfcFDgRhityn
-	 359/LtegkSwTw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 5116CCE0B67; Wed, 29 Jul 2026 10:18:38 -0700 (PDT)
-Date: Wed, 29 Jul 2026 10:18:38 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Philipp Stanner <phasta@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	s=k20260515; t=1785346697;
+	bh=cz3Xwd0Y4aNXwEwh2ZkPURxr8/lpAyUMfh9PAUbMSNQ=;
+	h=From:To:Cc:Subject:Date;
+	b=o2kYbAilKOp8oNGZlW7MTddzfR7pp/8dz0PSNFo/Ffi4RNDGafA6HNJ+DcInk2f2x
+	 b7ezGj1qX58jCgfqPLq6IEz7dxbous1YiX6ymgqAP51pvloyccDb8ySCrXzBKn7CH5
+	 Urg4pxIZ744ztzD0dzcXWKcZiQsaX2dC8okA7KYCOS2mTpd+GX/ds8XYiASZMd/q57
+	 UWOVjujp0xZeP9DMS1Rdr4L9WkCFDvweamu/BZhWoegkou2HOQEAYs0JLtxEGtJDjB
+	 SDP07vcN4oFCL+LlCUltHSH+GandNvNSH42Q9Bnga6BcPq2smvgs7dZb8teX0/jCRv
+	 THxao0tngdkSQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Asahi Lina <lina+kernel@asahilina.net>, Burak Emir <bqe@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Mirko Adzic <adzicmirko97@gmail.com>, Timur Tabi <ttabi@nvidia.com>,
-	Daniel del Castillo <delcastillodelarosadaniel@gmail.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, rcu@vger.kernel.org
-Subject: Re: [PATCH v7 3/5] rust: sync: Add abstraction for rcu_barrier()
-Message-ID: <296c71c4-4d2f-416d-bfbe-40fd911b44db@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260729094542.302965-2-phasta@kernel.org>
- <20260729094542.302965-5-phasta@kernel.org>
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	Antoni Boucher <bouanto@zoho.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] rust: kbuild: disambiguate `zerocopy` for `rusttest`
+Date: Wed, 29 Jul 2026 19:38:03 +0200
+Message-ID: <20260729173803.13459-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260729094542.302965-5-phasta@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 29, 2026 at 11:45:40AM +0200, Philipp Stanner wrote:
-> rcu_barrier() is a frequently used C function which is always safe to be
-> called.
+From: Antoni Boucher <bouanto@zoho.com>
 
-Just checking...  Here "always safe" means only from task level, with BH,
-preemption, and interrupts all enabled, correct?
+Starting with Rust 1.76.0, `zerocopy` was added as an (indirect)
+compiler dependency [1]. In turn, this meant that the `rustc-dev`
+component started including a precompiled `zerocopy` crate in the sysroot.
 
-In contrast, if you do this:
+This makes `rusttest` fail because the compiler finds several candidates:
 
-	preempt_disable();
-	rcu_barrier();
-	preempt_enable();
+    error[E0464]: multiple candidates for `rmeta` dependency `zerocopy` found
+      --> rust/kernel/prelude.rs:64:9
+       |
+    64 | pub use zerocopy::{
+       |         ^^^^^^^^
+       |
+       = note: candidate #1: .../lib/rustlib/x86_64-unknown-linux-gnu/lib/libzerocopy-dfef4cb07ca752aa.rmeta
+       = note: candidate #2: ./rust/test/libzerocopy.rlib
 
-the results won't be safe.
+We cannot use `--sysroot=/dev/null` for these, thus point to the dependency
+explicitly.
 
-							Thanx, Paul
+Assisted-by: LLM
+Not-yet-Signed-off-by: Antoni Boucher <bouanto@zoho.com>
+Link: https://github.com/rust-lang/rust/pull/118546 [1]
+Cc: stable@vger.kernel.org
+Fixes: 567621523ab7 ("rust: zerocopy: enable support in kbuild")
+[ Investigated when it started happening, reworded to add that and to
+  follow our usual style and sent on behalf of Antoni, who found this
+  during his work to support Rust for Linux with the GCC backend, i.e.
+  with `rustc_codegen_gcc`. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Add a safe abstraction for rcu_barrier().
-> 
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> ---
->  rust/kernel/sync/rcu.rs | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-> index a32bef6e490b..7031ca5d2473 100644
-> --- a/rust/kernel/sync/rcu.rs
-> +++ b/rust/kernel/sync/rcu.rs
-> @@ -50,3 +50,23 @@ fn drop(&mut self) {
->  pub fn read_lock() -> Guard {
->      Guard::new()
->  }
-> +
-> +/// Wait until all in-flight call_rcu() callbacks complete.
-> +///
-> +/// Note that this primitive does not necessarily wait for an RCU grace period
-> +/// to complete.  For example, if there are no RCU callbacks queued anywhere
-> +/// in the system, then rcu_barrier() is within its rights to return
-> +/// immediately, without waiting for anything, much less an RCU grace period.
-> +/// In fact, rcu_barrier() will normally not result in any RCU grace periods
-> +/// beyond those that were already destined to be executed.
-> +///
-> +/// In kernels built with CONFIG_RCU_LAZY=y, this function also hurries all
-> +/// pending lazy RCU callbacks.
-> +///
-> +/// Note that this is one of the RCU primitives which must not be called in
-> +/// atomic context.
-> +#[inline]
-> +pub fn rcu_barrier() {
-> +    // SAFETY: `rcu_barrier()` is always safe to be called. It just might wait for a grace period.
-> +    unsafe { bindings::rcu_barrier() };
-> +}
-> -- 
-> 2.55.0
-> 
+diff --git a/rust/Makefile b/rust/Makefile
+index 627ed79dc6f5..fbe0accc51a3 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -350,7 +350,7 @@ rusttestlib-pin_init: $(src)/pin-init/src/lib.rs rusttestlib-macros \
+ rusttestlib-kernel: private rustc_target_flags = --extern ffi \
+     --extern build_error --extern macros --extern pin_init \
+     --extern bindings --extern uapi \
+-    --extern zerocopy --extern zerocopy_derive
++    --extern zerocopy=$(objtree)/$(obj)/test/libzerocopy.rlib --extern zerocopy_derive
+ rusttestlib-kernel: $(src)/kernel/lib.rs rusttestlib-bindings rusttestlib-uapi \
+     rusttestlib-build_error rusttestlib-pin_init $(obj)/$(libmacros_name) \
+     $(obj)/bindings.o rusttestlib-zerocopy rusttestlib-zerocopy_derive FORCE
+
+base-commit: fc02acf6ac0ccde0c805c2daa9148683cdd01ba8
+-- 
+2.55.0
+
