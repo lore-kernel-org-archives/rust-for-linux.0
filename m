@@ -1,376 +1,236 @@
-Received: from mail-244107.protonmail.ch (mail-244107.protonmail.ch [109.224.244.107])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010024.outbound.protection.outlook.com [52.101.56.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAD7496906;
-	Wed, 29 Jul 2026 13:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.107
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785333530; cv=none; b=gy759wK6oGP/ocSCbZHpAJokwMTzMFa1JUINLuiHVZMevF/tM8dMRHBlHe8la5tlFn/743e6cUww+IixGBWPzhrxdymYl+mhhC/NN2JmP6b6q4+Aa+cRXuN+osIdZ1ML0G7r/A7YEzeSi9OYMkL8sQn4pA8oeNxALRev03wFYQs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785333530; c=relaxed/simple;
-	bh=7agwiNjT2Zbo4oK3OhnP10yj1z22bzUitQFouWfo0V8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wn1N0qt4Ehh4wzwU8cV35/QImdzhE1BOvar8nYDlUe4wrPVXSodzqu+of2S4Wg6SMJUo8nb55LWZAng5dcDNoVSXuksKx3ZyiWRFO7CHQOhhAvEJRtdy7Q4oTVMbZu0MUA3W2gxcuevvdGVm5HexVNIRE9w6aSa+hOp+XjjAw3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=tGN0snve; arc=none smtp.client-ip=109.224.244.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BDB48D899;
+	Wed, 29 Jul 2026 14:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.24
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785333967; cv=fail; b=BN1DiQYxA8XVX6G30o6lMuiCCZ3/vhOZGxdF12ZJ+kqTkCJzk9877IS4wGPs5fb3ut+TyEJEYoUQohQxr6ubVICM2tHoPFYko6NeoG7DNWFBg3mCUhBOSl3/+g1D7zcPVq5cb9JaJnrj3tqOPj+GA+2/SW/rLkPft0OucUP5QZU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785333967; c=relaxed/simple;
+	bh=o/gqhak8kx9Fti6cgjDaiwkfANe6c9+61ew3uzjYY80=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=siLsGd+2WNrKP45XUg3iza8R9zRIgiCylj4ksr2UrBMF0+GBhCyQPKIrnnfWwOACo+LqHusk+I4T1JOZgSw+8APt0eF0QXA5+yiLBL5/KHU70XSrexJwRf4Quobci24iAz+T7YKz4pRU1F4qjnhvOUmxcjoaeDld1CToztttX8c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bKYlWmeE; arc=fail smtp.client-ip=52.101.56.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="tGN0snve"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=protonmail; t=1785333514; x=1785592714;
-	bh=iRZrXScmBt7Xn5PKV2idbmZkaUeVgRzFQGtp98fuQIM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
-	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=tGN0snvepjHoyjKDELlbEe8O1GEUoghn2xmz5ljBPwvx53Cn+b+F3+wbkdRyywu/T
-	 aEcu5WNnBn9KZQfVmsqhFJ146kz8Wx+j32CVy3x6R33dKPDjIgorEA718f7+xEE1RC
-	 W/WwpHfH5TrDabjmT8LR6844hH3G3v8mTWJ0CzGexpgg18DekLszfAN02zY8wUvxQ8
-	 ATUReAotU7rPVFRZDCqSmssKQnrd2NHHoW5o5UaxcDbncU17lYOx9L7K1h6g0lG2Ou
-	 M/q9i5j5GpZEby6ZXctiXW8kGlMcEMIyjRk53piATPlVF6PTlffsgpH8BK1EAXRT8a
-	 MPH1Os3Mlbg2g==
-X-Pm-Submission-Id: 4h9DSm0stMz1DFF2
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: ojeda@kernel.org,
-	dakr@kernel.org,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com,
-	boris.brezillon@collabora.com,
-	samitolvanen@google.com,
-	rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] rust: add runtime PM support
-Date: Wed, 29 Jul 2026 16:58:28 +0300
-Message-ID: <20260729135830.412048-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <amnCwIMj5dIJevfk@arm.com>
-References: <20260721153617.869933-1-beata.michalska@arm.com> <20260721153617.869933-2-beata.michalska@arm.com> <20260727145622.904965-1-work@onurozkan.dev> <amnCwIMj5dIJevfk@arm.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bKYlWmeE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fw2VBLZ5c7hdqLIh8btU6v1XsKCdVVzShYngho1QkegMY1ZVbT9bXdIvo9dmlJUSO+EYQvKssyxuRzMr0Cy/J28Ar8fxeC4UxQPMObeX4nL4UgOGkesZhQjWugnlITja1iv4nG2DCW5isjKf3MPxNDeu+m/oYmCHJUjX0tcHMJIxkBONNRvM6+LYjs+aj/ipZ+CTAHxFzOT63GE1im1MTrgr0YL1JuQB/CHBMjE0fJVDH3dtpZbvCVgqJ3sf6fLVwyHrr47bD0FI3n1G67RyrTGRqVkkmTpHINU+RZHAsHbYMbptX1l04gfj4ffP8yodhvwc3UsVHHK1VtqtQf2Dmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UCBLZpViAM7UInKqUQSIF6oxKxvGtGHCvOE7+FAa4Cw=;
+ b=NWvXgK3Z8+YT2ASn/iAX/ODBVnlpZJrLmhnyBehYJvsE9KPPSJMveXOoXeNmWaiKAvUbtWobFsgEk+tb2JxJkyVdbijIWGxHg9PGf4bbVpOCiflakPmPRpZneDmnKgyQXl0Qkvc5qIswSWgmu2BrBegIBlfDlOO8WnsNaZSskqdPIpr7LEWulOX7GLYC3bXEgCmp4DDWCT2MWj6FumI7P4oya+DVHMTk8PkyXfy4Io96s/mSCpvd6ReFCFEAJHqY6XWChTcbMRIbybYC1Bj7w/32H4ME+eLVqJxAC4pHmJg3oDTsBj5Dr2051R9P0kZYxZJsSEUVfA6LLTjvETD0wQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UCBLZpViAM7UInKqUQSIF6oxKxvGtGHCvOE7+FAa4Cw=;
+ b=bKYlWmeEHsxFKa2L6d6TcmqtcmTGC2b9Gd1fSeNyFJoRawyKB2Oky0i+gM48O4sNg8mU1q9rzT/JYaEIfW956r2srbpPDjX6ldpPyMKGIyr/T4vnI/aQwZbIMtUTHg2Sf/iMHMzh9FhA9woiDyaYA7g4pNsDpRkx93RYf/GihnTSKw69RYm48JXoJp6nPcd87QGjc9tfVWeMjbOkM8rr8wT0X/FOHRjhGpFrdli6eFEDg4IYhlQsC8tEXCM3gz8oFgAaEz3WO3cGLLomqVZDKhgWFsCfoLpXYDUMJERw7kMyNiMRrVDK3UC8cSdOVTqbeuiy7hHR8z8+EecW2RhYFA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DM4PR12MB6037.namprd12.prod.outlook.com (2603:10b6:8:b0::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
+ 2026 14:05:58 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%6]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
+ 14:05:58 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Jul 2026 23:05:55 +0900
+Message-Id: <DKB42GHIZ8VZ.17ASJME0HTP5A@nvidia.com>
+Cc: "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>, "Lyude
+ Paul" <lyude@redhat.com>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Carlos Llamas" <cmllamas@google.com>, "Luis
+ Chamberlain" <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>,
+ "Daniel Gomez" <da.gomez@kernel.org>, "Sami Tolvanen"
+ <samitolvanen@google.com>, "Aaron Tomlin" <atomlin@atomlin.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Tamir Duberstein"
+ <tamird@kernel.org>, <linux-modules@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 2/3] rust: sync: add SetOnce::try_get_or_populate()
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
+References: <20260722-setonce-populate-v1-0-fa7455c26c42@google.com>
+ <20260722-setonce-populate-v1-2-fa7455c26c42@google.com>
+In-Reply-To: <20260722-setonce-populate-v1-2-fa7455c26c42@google.com>
+X-ClientProxiedBy: TYCPR01CA0142.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b7::11) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM4PR12MB6037:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82fb02e7-0b74-4439-5a01-08deed7a838b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|10070799003|1800799024|56012099006|4143699003|5023799004|11063799006|10067099003|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	iPYTSIBchss1Uabm1GwJ1M+Lk7lTuySOUkV10zyG8IALac6p23f8OEhC8sNdHS59QykoEXJoEtNT+23PBTp3ZN/TXoki5G1G1JahsFQUfZQ91diU+bywK+Nsz96HXVAJJLa7d0v1zIWmsTdmKPTYySHq3VZ9GOg/NbJt0L9DSeaoGSFiK1YDnr3dy6tGyC6/h8KaYQG6AHqHjuHq5KiXh685kzeuiPdD+G78R6eMPXVSWq/An0BYgC21s+qj1Y5288lcDncSgWCvlQ9nScfzFEqTwGpY7zKeX7oXmQRHszZIYET3elGltqb5n9yzF72obyOl3zT8l+ryIG1A3NlXYA+91Qbv5YXc43CdZ0zbqNOtXsONiWSsZ02D9mxuRUXPo1o1ke3YY7lsceV8NYY+9pSz8cgCPX7OtD1i3YoZQS2/C1KynWqRmweJFAzei5Vky3ENGsFznhUbMQOPRdtB+ykmVxMhaJez2TvarHQ5UxRwdjVggu8+x3T2QcnjWJ7jvoGTE5+d2XHr0svqqHPrm1onkP7ovwvMsuQCUJbS8UcorTP5bN2AwtNidzQiyqiUCfuPSo9ytjJI7jy/WRQc24vCOxhO8RYHPfp40esJ2cduMSmTsDF/lycT3I1y4wmH8Xb+fqgveCPslxaNvyN0JIuasrju9mV7vIUVnrtrdLs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(10070799003)(1800799024)(56012099006)(4143699003)(5023799004)(11063799006)(10067099003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SUM5RE15bFVFbEJDcDByTzUvL2tabks3RndZNHJRTzZac0RrV3RnS2hRTXVF?=
+ =?utf-8?B?TnM1blZGd3pZdFVwVkRSRjZIcWNVZkMwc0N6ai80dnlUUUlxMUlPZ291dVMz?=
+ =?utf-8?B?Vk11cTFQc3BDRXA2UUZiTXoxalVhZjB3cHhnRVJPTlFva1EwNW1lcVovV1Zi?=
+ =?utf-8?B?T2VHLzIvZ2hKT2lnOGJWa3dnLzZUMGFDczhZYytLL2VYa2RGYUY4MFFoa3li?=
+ =?utf-8?B?TVJ0MkVUUGdmcmJSTjliUTVkQ1VhS3RMRnliY2ZZYlJiVzRLaGQ1Z1NRR2Rt?=
+ =?utf-8?B?R3dyOW4zRGliSUNNSEVTNklpWFhZVllFTnlMSE80ZGU1eDVmWnMzQU1nSXVn?=
+ =?utf-8?B?blg3M1A3SUl0QlNRbEp6SXF2Rnc5NFI5SHlFdGduNTF6YjNZQ1lHazJZUHRI?=
+ =?utf-8?B?YklNRXNDeTNGTHYvNng3b0JzU0tjSFI3R1ZsdDJGT29QYy9CY1VjS3BFdjlJ?=
+ =?utf-8?B?OEhCMVlUWFh6MmNUSmhxeDFZTWdRUkppR3NpeXF6Rm1jRDc3MGFQMWgzWlR6?=
+ =?utf-8?B?MW5kaWRaY0lrWTRubFlaSXl2cUZJdTB4di84Z0N0SitlMFowVHUvRGFNRUFD?=
+ =?utf-8?B?d0oyS0FSbFBQVjRCYzc5TjVISGk5Vmk2WFJ5cjdJQ29xZmdaTko2ZWNHTXhZ?=
+ =?utf-8?B?cXh2WUJXaTJTKzZJMXBRbXVEQzRXMVZrRktDWDR0am8rcW1vNUx6OFJ2RG9V?=
+ =?utf-8?B?di9NZDYxK0R5NUdQZ255SVRmVk1HVG5XbzVIZjhPQWdyR1BMUWcvV25ZTTZV?=
+ =?utf-8?B?K1VmQTJ2eFg4bUtCWndJSGd6MTZLZjNWeTNmWitzTXNXWDNvRWl0T1o2OVpo?=
+ =?utf-8?B?Ri9qRjgrQlIvZWFobS96OHJOTFBkeERrYU5MUit3OWxGMUZESElpK2prckgw?=
+ =?utf-8?B?QlVvT0F6QVhxdlVYbjhuWmthQVJQaCsrY2pxQXFSRDNpRC9IL1Jnd1NuaWFq?=
+ =?utf-8?B?eHJVRmRCWjlNbDRuVFI5MFF0cjFEN2F4SjJ2MkxsMGVKYVRPdmNHUlU5aFd6?=
+ =?utf-8?B?RVBINVFINWJ1eXcwSVhBUCtEYTc0VEU3cmtpS0xrYUpJOUU1bFgyRjNCaGNK?=
+ =?utf-8?B?OXgvSGh5WXNYWVhzQi81cnRHVE11d2gvS053Sm5KRHIyYThBM0VCWjMxbkRW?=
+ =?utf-8?B?WUwxWTMvVEtwdmpnYTlTeHFKZGJTZ2RtcUJ4VVMzdVhlbWJwWkNsR2VObzBZ?=
+ =?utf-8?B?YWtLU29Hb0FPTjZNazNqY3gxbldTdDdMRjIyQ0RKcTBzYkU5cHgyV0NzT1cy?=
+ =?utf-8?B?aGdyM1ZDQUdUOEdsd3RudlU2UE9ZV0loa1hHVDM0N1Q1M2F5blNURDJXVlZm?=
+ =?utf-8?B?TVFKZ0tiTFZxMEEra3ZuMENBbVdVbG5jNThINGZ2RkdjRVFmWlF1QWpqUGdh?=
+ =?utf-8?B?bTNyU2dudUlFYmV4bFJsOW5ESGZNRVU5b0ZGaDVRbGJ5SjdTSHAza1JDd3Ew?=
+ =?utf-8?B?M0ZXVk4vV083cVo1VEpNQlcwbWpQa0VkSVNyQ1VrejFaOFpLR0tnK1dwWmxq?=
+ =?utf-8?B?aWpteFdRUnJxU0VqUnBxM0RIam4raWo0N3o3SnVQRHRDbVlRbUZZcExOR0s3?=
+ =?utf-8?B?a1U5SW43NWlQRTFsdmFXbTNzcUowbXNuQzM0ZEtRdXd6bXMwelhlb216cmhz?=
+ =?utf-8?B?dy9RYm02YlRPSmhIc0xvZDNVZE9JQ1d3U3BMa3NwZVhZRkxXUjV3YkowUkdG?=
+ =?utf-8?B?emh3SVp3M0JPcnJsb1ErMVVjWWNNYjEvaEdiM25SVnF0eURPS0RVU2d4ZWor?=
+ =?utf-8?B?THQ2TFBpNVkzSXgvS3djaEZXNjM4dE8wcTV5eFJJYm16TmhEK1RsdzZ5OWE4?=
+ =?utf-8?B?bTFoOEZ5bGdlbnBuNlBhWEhudkZsZVFGTDNEZGxScWI1VzdwRkZtRzhkeWxj?=
+ =?utf-8?B?eDNUUThnQUh5WkhueXBpNTZaR2YrRTVwbTZwdzY2RjlJS1ZuNnZDU044N25I?=
+ =?utf-8?B?ZDZtTmxOc2FGMmZoMHhXcUVabndadVVVSjI0NUZ1aFNGSkU5YlNBQnlyUzM0?=
+ =?utf-8?B?a29FZFoxQkNwaEpaT05GWEdxMDRBeGpZL0FoVVAvMHNHQ1IrQ1FOY1JmL2hV?=
+ =?utf-8?B?U3F3WGVjbmpBeVZQdVRxZGhuMVptRW9uT3RQSVZiYnYwNFkwOFUvSDZ5YzFi?=
+ =?utf-8?B?bnZ1MmJYb0ZicXE3VTRkSS9BRUwxTzdnSkhqTTJjNVBrT1BDaFdLTXBpMGNu?=
+ =?utf-8?B?enJFQTF4dkpuaVNZY3Y1TTF6aDNpQ1Y5OVdrNmIwNEVSeVhqUFRhQUtnM2RC?=
+ =?utf-8?B?WUU1SjNiQkFCUS93dFpvc1ZCblQrR2VtemRrVGxGVU9SNkI3UnRLenF4dEln?=
+ =?utf-8?B?NHdxMGlMbi91WUgyRkw4K2QrdHl1NzdKNG9jM281WE11cmJrbngxTXV5QVZq?=
+ =?utf-8?Q?DDbDn6KzJUfZnWyczUeIB0hMGVG9d0NiAU2DjquNQlOgk?=
+X-MS-Exchange-AntiSpam-MessageData-1: vDi+ROoZAWisHA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82fb02e7-0b74-4439-5a01-08deed7a838b
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 14:05:58.3953
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 77fmE1Cz9N76D/kvlKRJvrR8phDxVJMBMQxbKcIAjAXYadtL1GrJY8yatUXV7uzwZJWOURFgSqTaTm/YE+mUlw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6037
 
-On Wed, 29 Jul 2026 11:07:12 +0200=0D
-Beata Michalska <beata.michalska@arm.com> wrote:=0D
-=0D
-> On Mon, Jul 27, 2026 at 05:56:20PM +0300, Onur =C3=96zkan wrote:=0D
-> > On Tue, 21 Jul 2026 17:34:02 +0200=0D
-> > Beata Michalska <beata.michalska@arm.com> wrote:=0D
-> > =0D
-> > > Add a Rust abstraction for Linux runtime PM, allowing Rust drivers to=
-=0D
-> > > register runtime PM callbacks and use scoped runtime PM requests whil=
-e=0D
-> > > retaining the behavior and guarantees of the underlying C PM core.=0D
-> > > =0D
-> > > Runtime PM is managed through a registration object tied to the devic=
-e=0D
-> > > lifetime. The registration stores the callback payload and 'ensures' =
-that=0D
-> > > the registration, its `PMContext`, and the payload do not outlive the=
-=0D
-> > > device. All that while `PMContext` holds a lifetime-annotated device =
-reference=0D
-> > > so that runtime PM requests are made only while the device remains bo=
-und.=0D
-> > > =0D
-> > > Drivers define runtime PM callbacks through the `PMOps` trait. The=0D
-> > > generated `dev_pm_ops` callbacks take the stored payload, pass owners=
-hip=0D
-> > > to the corresponding Rust callback, and store the returned payload fo=
-r=0D
-> > > the next invocation. Each callback must return a valid payload,=0D
-> > > regardless of whether the power transition succeeds or not.=0D
-> > > =0D
-> > > `PMContext` provides scoped helpers for common runtime PM operations:=
-=0D
-> > > =0D
-> > > - `ResumeScope` resumes the device for the lifetime of the scope.=0D
-> > > - `AwakeScope`  resumes the device and holds a runtime PM usage refer=
-ence.=0D
-> > > - `RetainScope` increments the runtime PM usage count without resumin=
-g the=0D
-> > >   		device.=0D
-> > > =0D
-> > > Each scope performs the corresponding inverse operation when dropped,=
-=0D
-> > > according to the selected driver-defined profile.=0D
-> > > =0D
-> > > The abstraction does not change the semantics of the C runtime PM API=
-.=0D
-> > > Asynchronous requests may only queue work, non-waiting requests may f=
-ail=0D
-> > > instead of sleeping, and callbacks remain subject to the existing dri=
-ver=0D
-> > > core rules.=0D
-> > > =0D
-> > > The current implementation requires the PM registration and `PMOps`=0D
-> > > implementation to use the same type because callback dispatch interpr=
-ets=0D
-> > > the stored registration data using that relationship. This requiremen=
-t is=0D
-> > > not yet fully enforced by the type system.=0D
-> > > =0D
-> > > Signed-off-by: Beata Michalska <beata.michalska@arm.com>=0D
-> > > ---=0D
-> > >  drivers/base/base.h             |    3 +=0D
-> > >  rust/bindings/bindings_helper.h |    1 +=0D
-> > >  rust/helpers/helpers.c          |    1 +=0D
-> > >  rust/helpers/pm_runtime.c       |   44 ++=0D
-> > >  rust/kernel/lib.rs              |    1 +=0D
-> > >  rust/kernel/pm.rs               | 1020 +++++++++++++++++++++++++++++=
-++=0D
-> > >  6 files changed, 1070 insertions(+)=0D
-> > >  create mode 100644 rust/helpers/pm_runtime.c=0D
-> > >  create mode 100644 rust/kernel/pm.rs=0D
-> > > =0D
-> > > diff --git a/drivers/base/base.h b/drivers/base/base.h=0D
-> > > index a19f4cda2c83..c49303e4a86a 100644=0D
-> > > --- a/drivers/base/base.h=0D
-> > > +++ b/drivers/base/base.h=0D
-> > > @@ -119,6 +119,9 @@ struct device_private {=0D
-> > >  	const struct device_driver *async_driver;=0D
-> > >  	char *deferred_probe_reason;=0D
-> > >  	struct device *device;=0D
-> > > +#ifdef CONFIG_RUST=0D
-> > > +	void *rust_private;=0D
-> > > +#endif=0D
-> > >  	u8 dead:1;=0D
-> > >  };=0D
-> > >  #define to_device_private_parent(obj)	\=0D
-> > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings=
-_helper.h=0D
-> > > index 1124785e210b..78a9153c6a01 100644=0D
-> > > --- a/rust/bindings/bindings_helper.h=0D
-> > > +++ b/rust/bindings/bindings_helper.h=0D
-> > > @@ -77,6 +77,7 @@=0D
-> > >  #include <linux/pid_namespace.h>=0D
-> > >  #include <linux/platform_device.h>=0D
-> > >  #include <linux/pm_opp.h>=0D
-> > > +#include <linux/pm_runtime.h>=0D
-> > >  #include <linux/poll.h>=0D
-> > >  #include <linux/property.h>=0D
-> > >  #include <linux/pwm.h>=0D
-> > > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c=0D
-> > > index 4488a87223b9..14d93a5d8b1f 100644=0D
-> > > --- a/rust/helpers/helpers.c=0D
-> > > +++ b/rust/helpers/helpers.c=0D
-> > > @@ -76,6 +76,7 @@=0D
-> > >  #include "pci.c"=0D
-> > >  #include "pid_namespace.c"=0D
-> > >  #include "platform.c"=0D
-> > > +#include "pm_runtime.c"=0D
-> > >  #include "poll.c"=0D
-> > >  #include "processor.c"=0D
-> > >  #include "property.c"=0D
-> > > diff --git a/rust/helpers/pm_runtime.c b/rust/helpers/pm_runtime.c=0D
-> > > new file mode 100644=0D
-> > > index 000000000000..d0d71fcb0097=0D
-> > > --- /dev/null=0D
-> > > +++ b/rust/helpers/pm_runtime.c=0D
-> > > @@ -0,0 +1,44 @@=0D
-> > > +// SPDX-License-Identifier: GPL-2.0=0D
-> > > +=0D
-> > > +#include <linux/pm_runtime.h>=0D
-> > > +=0D
-> > > +__rust_helper void rust_helper_pm_runtime_get_noresume(struct device=
- *dev)=0D
-> > > +{=0D
-> > > +	pm_runtime_get_noresume(dev);=0D
-> > > +}=0D
-> > > +=0D
-> > > +__rust_helper void rust_helper_pm_runtime_put_noidle(struct device *=
-dev)=0D
-> > > +{=0D
-> > > +	pm_runtime_put_noidle(dev);=0D
-> > > +}=0D
-> > > +=0D
-> > > +__rust_helper void rust_helper_pm_runtime_mark_last_busy(struct devi=
-ce *dev)=0D
-> > > +{=0D
-> > > +	pm_runtime_mark_last_busy(dev) ;=0D
-> > > +}=0D
-> > > +=0D
-> > > +__rust_helper bool rust_helper_pm_runtime_active(struct device *dev)=
-=0D
-> > > +{=0D
-> > > +	return pm_runtime_active(dev);=0D
-=0D
-[...]=0D
-=0D
-> > > +        // The `Device<Bound>` reference provides that guarantee.=0D
-> > > +        unsafe {=0D
-> > > +            bindings::pm_runtime_mark_last_busy(dev.as_raw());=0D
-> > > +        }=0D
-> > > +    }=0D
-> > > +=0D
-> > > +    #[inline]=0D
-> > > +    fn suspend(dev: &device::Device<device::Bound>, mode: Mode) -> R=
-esult {=0D
-> > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to=0D
-> > > +        // `struct device` for the duration of the call.=0D
-> > > +        // The `Device<Bound>` reference provides that guarantee.=0D
-> > > +        to_result(unsafe { bindings::__pm_runtime_suspend(dev.as_raw=
-(), mode.into()) })=0D
-> > > +    }=0D
-> > > +=0D
-> > > +    #[inline]=0D
-> > > +    fn get_if_active(dev: &device::Device<device::Bound>) -> Result =
-{=0D
-> > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to=0D
-> > > +        // `struct device` for the duration of the call.=0D
-> > > +        // The `Device<Bound>` reference provides that guarantee.=0D
-> > > +        match unsafe { bindings::pm_runtime_get_if_active(dev.as_raw=
-()) } {=0D
-> > > +            ret if ret < 0 =3D> Err(Error::from_errno(ret)),=0D
-> > > +            0 =3D> Err(EAGAIN),=0D
-> > > +            _ =3D> Ok(()),=0D
-> > > +        }=0D
-> > > +    }=0D
-> > > +=0D
-> > > +    #[inline]=0D
-> > > +    fn runtime_enable(dev: &device::Device<device::Bound>) {=0D
-> > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to=0D
-> > > +        // `struct device` for the duration of the call.=0D
-> > > +        // The `Device<Bound>` reference provides that guarantee.=0D
-> > > +        unsafe { bindings::pm_runtime_enable(dev.as_raw()) }=0D
-> > > +    }=0D
-> > > +=0D
-> > > +    #[inline]=0D
-> > > +    fn runtime_disable(dev: &device::Device<device::Bound>) {=0D
-> > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to=0D
-> > > +        // `struct device` for the duration of the call.=0D
-> > > +        // The `Device<Bound>` reference provides that guarantee.=0D
-> > > +        unsafe { bindings::__pm_runtime_disable(dev.as_raw(), true) =
-};=0D
-> > > +    }=0D
-> > =0D
-> > What happens when you call these twice i.e. runtime_enable() when it's =
-already=0D
-> > enabled or runtime_disable() when it's already disabled?=0D
-> > =0D
-> For pm_runtime_enable  - this will drop a warning.=0D
-> For pm_runtime_disable - the disable_depth counter will be increased. Thi=
-s=0D
-> implies that for every extra disable call - enable one needs to be issued=
-.=0D
-> All handled by PM core.=0D
-=0D
-I see. I was about to suggest typestate pattern here as we can easily avoid=
-=0D
-these issues, but if you want to rely on PM core that's also fine I guess.=
-=0D
-=0D
-> > > +}=0D
-> > > +=0D
-> > > +#[cfg(not(CONFIG_PM))]=0D
-> > > +impl Request {=0D
-> > > +    #[inline]=0D
-> > > +    fn active(dev: &device::Device<device::Bound>) -> bool {=0D
-> > > +        true=0D
-> > > +    }=0D
-> > > +=0D
-> > > +    #[inline]=0D
-> > > +    fn suspended(dev: &device::Device<device::Bound>) -> bool {=0D
-> > > +        false=0D
-> > > +    }=0D
-> > > +=0D
-> > > +    #[inline]=0D
-> > > +    fn resume(_dev: &device::Device<device::Bound>, _mode: Mode) -> =
-Result {=0D
-> > > +        Ok(())=0D
-> > > +    }=0D
-> > > +=0D
-> > > +    #[inline]=0D
-> > > +    fn idle(_dev: &device::Device<device::Bound>, _mode: Mode) -> Re=
-sult {=0D
-> > > +        Err(ENOSYS)=0D
-> > > +    }=0D
-> > > +=0D
-=0D
-[...]=0D
-=0D
-> > > +    /// Returns the runtime PM context associated with this registra=
-tion.=0D
-> > > +    pub fn ctx(&self) -> &PMContext<'a, T> {=0D
-> > > +        &self.ctx=0D
-> > > +    }=0D
-> > > +}=0D
-> > > +=0D
-> > > +impl<'a, T: PMOps> Drop for Registration<'a, T> {=0D
-> > > +    fn drop(&mut self) {=0D
-> > > +        // SAFETY: `self.ctx.inner.dev` is the device this registrat=
-ion was=0D
-> > > +        // created for. Runtime PM is disabled first, and `pm_runtim=
-e_barrier`=0D
-> > > +        // waits for pending runtime PM work/callbacks before the ca=
-llback data=0D
-> > > +        // is removed below.=0D
-> > > +=0D
-> > > +        unsafe {=0D
-> > > +            bindings::__pm_runtime_disable(self.ctx.inner.dev.as_raw=
-(), true);=0D
-> > =0D
-> > Same here, is this safe to call even if it's not enabled? Registration =
-can drop=0D
-> > even when pm runtime is not enabled, right?=0D
-> True but that again is handled by PM core.=0D
-=0D
-You should at least document that.=0D
-=0D
-> > =0D
-> > > +            bindings::pm_runtime_barrier(self.ctx.inner.dev.as_raw()=
-);=0D
-> > > +        }=0D
-> > =0D
-> > You should not combine multiple unsafe calls in single unsafe block I t=
-hink.=0D
-> Why?=0D
-=0D
-To keep the scope of each unsafe block as small as possible.=0D
-=0D
-> Do not see much point in separating those.=0D
-> =0D
-> ---=0D
-> BR=0D
-> Beata=0D
-> > =0D
-> > > +        // SAFETY: The pointer, if non-null, was stored by `Registra=
-tion::new`=0D
-> > > +        // using `Pin<KBox<RegistrationData<T>>>::into_foreign`. Run=
-time PM has=0D
-> > > +        // been disabled and drained above, so generated callbacks c=
-an no longer=0D
-> > > +        // borrow this data. Clearing `rust_private` prevents later =
-lookup, and=0D
-> > > +        // `from_foreign` reconstructs the owning allocation so it i=
-s dropped.=0D
-> > > +        unsafe {=0D
-> > > +            let ptr =3D (*(*self.ctx.inner.dev.as_raw()).p).rust_pri=
-vate;=0D
-> > > +=0D
-> > > +            if !ptr.is_null() {=0D
-> > > +                (*(*self.ctx.inner.dev.as_raw()).p).rust_private =3D=
- core::ptr::null_mut();=0D
-> > > +                Pin::<KBox<RegistrationData<'_, T>>>::from_foreign(p=
-tr);=0D
-> > > +            }=0D
-> > > +        }=0D
-> > > +    }=0D
-> > > +}=0D
-> > > -- =0D
-> > > 2.43.0=0D
-> > > =0D
+On Wed Jul 22, 2026 at 6:16 PM JST, Alice Ryhl wrote:
+> The SetOnce::populate() method does not internally synchronize callers
+> that fail to populate the value with the successful call. This means
+> that naive loops using as_ref() and populate() can lead to spinning on
+> the initialization, which is best avoided. Thus, provide a helper that
+> avoids this issue using a user-provided lock.
+>
+> One potential alternative is to change populate() so that the failing
+> caller actually does synchronize with the successful call to populate().
+> However, this is somewhat tricky:
+>
+> * There are users of SetOnce that construct it in const context, and we
+>   currently don't have the ability to do that for most locks, so we
+>   cannot easily add a lock to SetOnce.
+> * Just spinning on the atomic is undesirable unless we disable
+>   preemption in the success path. If we do disable preemption, then that
+>   raises complications for handling the PREEMPT_RT case.
+> * It also raises questions about deadlocks if populate() is called from
+>   irqs.
+>
+> By using a user-provided lock, we do not have to worry about these
+> issues inside SetOnce.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/sync/set_once.rs | 43 ++++++++++++++++++++++++++++++++++++++=
++----
+>  1 file changed, 39 insertions(+), 4 deletions(-)
+>
+> diff --git a/rust/kernel/sync/set_once.rs b/rust/kernel/sync/set_once.rs
+> index a78f8c8e87db..d9cc598a8d78 100644
+> --- a/rust/kernel/sync/set_once.rs
+> +++ b/rust/kernel/sync/set_once.rs
+> @@ -2,11 +2,18 @@
+> =20
+>  //! A container that can be initialized at most once.
+> =20
+> -use super::atomic::{
+> -    ordering::{Acquire, Relaxed, Release},
+> -    Atomic,
+> -};
+>  use core::{cell::UnsafeCell, mem::MaybeUninit};
+> +use kernel::sync::{
+> +    atomic::{
+> +        ordering::{
+> +            Acquire,
+> +            Relaxed,
+> +            Release, //
+> +        },
+> +        Atomic, //
+> +    },
+> +    lock, //
+> +};
+> =20
+>  /// A container that can be populated at most once. Thread safe.
+>  ///
+> @@ -104,6 +111,34 @@ pub fn populate(&self, value: T) -> Result<&T, T> {
+>          }
+>      }
+> =20
+> +    /// Get the value, or populate it if it's missing.
+> +    ///
+> +    /// This method is useful to avoid spinning on the internal atomic s=
+tate. If all writers call
+> +    /// this method with the same lock, then they are synchronized with =
+each other and it's
+> +    /// guaranteed that no caller will attempt to invoke [`SetOnce::popu=
+late`] more than once.
+> +    pub fn try_get_or_populate<F, E, U, B>(&self, lock: &lock::Lock<U, B=
+>, f: F) -> Result<&T, E>
+
+From the API perspective, this still leaves the option of calling the
+method concurrently with different locks. What happens in this case?
+
+> +    where
+> +        B: lock::Backend,
+> +        F: FnOnce() -> Result<T, E>,
+> +    {
+> +        if let Some(value) =3D self.as_ref() {
+> +            return Ok(value);
+> +        }
+> +
+> +        let mut to_insert =3D f()?;
+
+This means that `f` can run more than once for a given `SetOnce`, which
+can lead to problems depending on `f`'s' side-effects.
+
+In the GEM shmem case, we would create a second `SGTableMap`, and since
+`SGTableMap` assumes it is the sole owner, the last instance to drop
+would create a use-after-free.
+
+Now this sounds more like a problem with `SGTableMap`, but if we cannot
+avoid calling `f` at least twice then I think it would help if this was
+documented.
