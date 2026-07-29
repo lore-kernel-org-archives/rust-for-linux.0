@@ -1,62 +1,62 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C968226B971
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Jul 2026 01:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD8A2853FD
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 Jul 2026 02:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785289445; cv=none; b=hreaXEHDHPd7ouSg+TN6oowVOtDlAc4no5g2IcZ44asaJKeBs/ul49vEKVkGCQSFA+ZbSbruNgVAeukvs/5JVUpVZBCktIGhSPztuzkxXEQ7Wx8253bFXZB+AtXqEHScwLkPSkF7IK6fQkA0avjDuoxWqzDlMhDxKk53NRjwl0I=
+	t=1785292473; cv=none; b=GJcqNf6yc6k39WOTf8mxZvwhYBPOeNizeSZtewKm38nmonpfucwG1gdXlkw5zNqGb1p1mSoVvU4wWTLYmiHj68A/i3wrmucHEfr9X88CzVUIoqLJ8ct2TJ01MgF9zBsl9209YM3XUbgyBIOIlg1qNxdod9Q3RSRMHvoKsmc+X9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785289445; c=relaxed/simple;
-	bh=p1+WZPY9iMyUHE77uorGtUqtSg/8ykpg6mH7vx6X7xg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oZU5Wrlo+E7NTmj97TOo0kcMytbhc0VojEQXUruBFtfjK8Dd3GAiEG5o8GU3jmoj4Rj6lurZuPi8s5cWh9ILnCtdEDQjAjVdUC/2YPu0DYNGre81eBmL3DjctTlzUT/jt3Cel5xkVFtqklLjzr5nrPtNtS71WZM51JdOfbZqLOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eYUHtnBe; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1785292473; c=relaxed/simple;
+	bh=/Q5echcs87wy5N8RHfDyZZ+0hVIvuqNt0jLKhKmhOyY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z7eWMnqBU7jCevfMSUStemMZ4RQhCOnD6l5ZEm+Yp+JM/4tigFX8GJXYkUg9HfKt4IUNCncouEM/b0wherBRDqj7IEADBWk+jqS1RHYcXZEZNkHPXAlDenig4Rka8eoz5P0d3McN/CEFYHClqr9ePkHq50p6+QKL3gAVwlTdekw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oDy8Kr8Y; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eYUHtnBe"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cc73e322dbso5800725ad.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 18:44:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oDy8Kr8Y"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cbb973e6749so482209a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 Jul 2026 19:34:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785289443; x=1785894243; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785292471; x=1785897271; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Vf6BATMJjhCFczLpr0p1PZtkcnXtQi/C3CVVFkL2lFA=;
-        b=eYUHtnBe7sgUU3PpGeUwE/QToSL2QC7L2U67x3YXf/fCPoV9+XHzg/JBvV2Qn+SdmF
-         KnalecYxqz7n3gkcdSWTGhTMs8EiKHfbv/DRb30GYQOCiSCGimuDAB/d3wtAYY2Cv00O
-         ucvEVlLJjng2f2O1nEqzIrADwwb3QFfm9dJbWe5g3jGDgm5iq2Apcls+9GIyVsXElE3d
-         nSGwbCKRspenIxqnRipTLgZ8UfnGyx42xz23m3DoXWB+INptmecayYtA9vHvVSxdxTSd
-         nFCaARoayNpc+J9aNeyzxg715cRQbTwmCInX5mkRIA//fSLhg4IWmlVK53flNIK0UYJG
-         wXqQ==
+        bh=Hu55ATVdvTnEPZwxrNu1KzdPadDnHGU4s3Uhcf1SLcg=;
+        b=oDy8Kr8Y1SbjW/ysQoqJOfsT3eRerauw9y0ywsCHTj5YmD8HgbTkKIixqBNsYx8H1J
+         wZQ+k0o6/8aEARdGBqPJyLgK8shenyGD+CXcdNXDkcRtU7RYFmoCMvT5zXmCF+wHxaj2
+         qHzMhB7BLKfuD/15atGS/u5hIB7xv+yuzQAhK26Z+7GOuVvbS0Nyd9j7RHGAGFNyv4Bf
+         r3hCLlK5bfPna1gv4Sn32ue+IHnn7U7n1BGiezd4xH8lqi78P7k4U5WTh1O4lGt58wsX
+         3EI+h/QnJqbADeC93dRnIaihbaMwWY0kUNQpyIgIG5XSHOTyNocOUi6Tf9S7r+2UHV4n
+         K5EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785289443; x=1785894243;
+        d=1e100.net; s=20251104; t=1785292471; x=1785897271;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Vf6BATMJjhCFczLpr0p1PZtkcnXtQi/C3CVVFkL2lFA=;
-        b=ndHEZcBS4za21wMQxNeWq/PKt/urdrYvk+kzTEN0s8Hnl6yu6l1ZgW7TGyYwcN1PP3
-         tL/DWAzBTgdJuDcZcN+rap+RO4Zqy3ZaCZwPCtb0tDnroKohqI6IzgATLodON0qqeyG+
-         mUzwkvyboMxSMdgNkg0BA96TXVaHF3t9bp6YlvFlFbUiumqcNMzn8wpFRLf+idpX7ptc
-         t/W6C7MBqLxW+bD8sUGc3Lhr5SJPaj1Gs+kLWwU/9xhQGI7EpbDuExzdvTb9bt0rdgwq
-         S5uuyy2GpvLbODchd2uNEV9uSNahdRZPcB8mX785j1pgh6XA+b6mkwkVf+xqqsI+uomM
-         1XlQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrIOivKActUzUqqPpI7AdfYDDP1oslO5z0NFeO5D0lxNxbGmBnvGFkO3iVCpH5UkmdM01MeazubSm/ZoEfatA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz18WP6X8encrG5dNFlSTCvOFwklzPm0vH55ma2+q9yEOCxMajc
-	mvUHxn6yfX275s5K/TcUw0Y0X09H7ASavtmQ+XDJlPIptimbTu2oBq7g
-X-Gm-Gg: AR+sD11T2o1pMEOzpG1IQ4uu3rJt51joG8sNJyfDSaihRt/Vn7GH5VbOPcMNWff01aq
-	nlFXi9dx+2Tr0tpksuvkEhozES8Ckra0WGBAB+JSIZSrZV/HUIPJoZBwNXBNXoQgDO++3GdQaFD
-	fe1AgjhMkNoUPM34W1rgIGiFNLaFIvLxs2kqIcxc8lN5qI5Pf8h4o9XuqWnpc5S5kIGTeCPu3OR
-	GZ4NVvUoTpI3JjpC0l4rReNl+u5ld+gCpWcRqF9XKDTsQvHvBe9zyunUyBg2OzR/mieRxslTE3q
-	7w3aXMoHk1ojpxbt38/U9DHWdLx1Fkf20L7Pxqmo1Q6loPRXIQ8JDAyJfSYNdKkMp/6qtW1ZlJT
-	xkQ+97eycJeHOL6X/wK2YXenpHDC/xLtZA70r2b4EF+goxJ5KR8b+WuuHh0rXrmpGWuEu36CqiW
-	h/o+aTqGUawREbsbfnE+UsUdJbrIjoL0TDI+ckg3go1IXLU7QeCfonI+looSdwPu3SAZMN6/Zi+
-	GScD3+kKeC+3rKPGfH6wV4GXbSq66k+tEdtyYSARAPln3I6HtJP
-X-Received: by 2002:a05:6a21:7308:b0:3c6:3c5b:ff1f with SMTP id adf61e73a8af0-3c8ab0e21afmr5962968637.22.1785289442976;
-        Tue, 28 Jul 2026 18:44:02 -0700 (PDT)
+        bh=Hu55ATVdvTnEPZwxrNu1KzdPadDnHGU4s3Uhcf1SLcg=;
+        b=XQpMeDmZifsnEzjO5MdjIF/lmUxIBINze+V3BvxD7Q8YvyXK+o3GYfOd4JSRESJc+L
+         GMQ8Sw+yuqw6AaA26dl0Jcn1EKnCv5bW+RDTMeHancwm+I+4g/1K2t6q5KsKe0KnRHHW
+         cppeEa8aIw1MFHm320zkAgs8fTc58gvsTQqE3LG3Gh5bmxBxzC8gVd49aWgTQQYJvAKQ
+         Sx4TFXCxw51ELAqGmezOwO8DhoWS2yAKr4MCYVrg3FyonYT91XyQGypTXNM1A0bVxKZV
+         7DXVMNtjDaFJbE7kRB+BNAJnC1dIfPQCrmqlOlhDQAHKKUtQgDh4nKOow1mfCdxm2Jos
+         k8eA==
+X-Forwarded-Encrypted: i=1; AHgh+RpXsopnaDuUyH9+QPLSV6DqP6wS2uCznmJ4CJ/+Dsxo3fl/eVVmS0vNF5YRZ6tTAf4bls7i61JaWS5q7jeQoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgC7bk0oE14gOFlv4g92ZQmvwn6hVWJAZFAPhiirE75bjYeq1w
+	+OOWTJwzw3iv1Cjlxequ1saUr3AL5oHo6gJci5hAt52wMQBG2WdAxivNtRcw3MDx
+X-Gm-Gg: AR+sD11hmtPq5cIeTplb9AzPN4Qlb7ou3y2pVggVb3eCCdTGjhUvPYJxaKfWXAvkewc
+	eu5bHv8Ayuz/mFr0sZatwxaKyDYM9m28MSodnBCYLEhhkV+y7XQCjSD7Yr1O91EZEyU80+QIOcs
+	FVSlN8EvYCODD4+PI/jlePzlO1nMB4HDdjnLlX7HPEkVRKC8etpaDblPJWR8+jveLzBIb5zrB4V
+	FV3YL3lY7RdkeV226RS+We3GkcytplHkhADkMz0rFev/zmeEMqgokpF31zNJmO/24QOs3ey19jr
+	HJxzfKHuWrfayN9NmDroUKF1dFL7xkg4MdrVEFBUGLLVHPmJz+0ZLOJQgdRQfeiPsOGRUQRj0AH
+	EE9HyaRN4NLttZwT1L3/umKktEN1z7ZPdF4nVwc1gxxiy0sYwatSqYSHR4w9e7c07Hb5DhGZTnb
+	O5JN4na9npQ3m/uP2PVofZFD6ibg7yKFrs4+p453mLCw1FPMlabo5XVhPbnWTbhAr4KPlfUNoau
+	r+jCvTJlUoljm3yckRonJ5+kDKHvIotfEN44nyo7lUohSegMdWE
+X-Received: by 2002:a05:6a20:4e92:b0:3c3:8440:f6da with SMTP id adf61e73a8af0-3c8ac242b76mr6100376637.29.1785292470746;
+        Tue, 28 Jul 2026 19:34:30 -0700 (PDT)
 Received: from pop-os.tail4f8d5c.ts.net ([2800:810:473:6eb:dbba:a18d:8690:2c5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13e7265547bsm3421904c88.7.2026.07.28.18.43.59
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31504d3250asm3657671eec.20.2026.07.28.19.34.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 18:44:02 -0700 (PDT)
+        Tue, 28 Jul 2026 19:34:30 -0700 (PDT)
 From: Juan Patricio Marchetto <juanpatriciomarchetto@gmail.com>
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Boqun Feng <boqun@kernel.org>,
@@ -74,9 +74,9 @@ Cc: Boqun Feng <boqun@kernel.org>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Juan Patricio Marchetto <juanpatriciomarchetto@gmail.com>
-Subject: [PATCH] rust: rbtree: document peek_next() on the immutable cursor
-Date: Tue, 28 Jul 2026 22:43:44 -0300
-Message-ID: <20260729014344.1244809-1-juanpatriciomarchetto@gmail.com>
+Subject: [PATCH v2] rust: rbtree: document peek_next() on the immutable cursor
+Date: Tue, 28 Jul 2026 23:34:20 -0300
+Message-ID: <20260729023420.1323906-1-juanpatriciomarchetto@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -93,29 +93,44 @@ belongs to CursorMut.
 That leaves the most common reason to hold an immutable cursor
 undocumented. cursor_lower_bound() stops on an exact match, so a caller
 looking for the first key strictly greater than the one it supplied has
-to peek past it. Getting that wrong yields the key the caller already
-has, which for an iterating caller means no forward progress at all.
+to peek past it. When the key was absent the cursor already holds the
+answer, and peeking there returns its successor instead, skipping an
+element.
 
-Document the idiom, including the case where the looked-up key is the
-largest in the tree and therefore has no successor.
+Document both branches, and the case where the looked-up key is the
+largest in the tree and has no successor.
 
 Assisted-by: Claude:claude-opus-5
 Signed-off-by: Juan Patricio Marchetto <juanpatriciomarchetto@gmail.com>
 ---
- rust/kernel/rbtree.rs | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+
+Notes:
+    v2: v1 documented only the exact-match branch, so the idiom as written
+    skipped an element whenever the looked-up key was absent. The example now
+    covers both branches and uses a four-element tree so the skipped element
+    is visible. Reported by the Sashiko review of v1.
+    
+    Verified with rust_doctests_kernel under ARCH=um: 321/321.
+    
+    v1:
+    https://lore.kernel.org/r/20260729014344.1244809-1-juanpatriciomarchetto@gmail.com
+
+ rust/kernel/rbtree.rs | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
 diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index 6fbd579d4a4..2a0379374e2 100644
+index 6fbd579d4a4..ea8df886df8 100644
 --- a/rust/kernel/rbtree.rs
 +++ b/rust/kernel/rbtree.rs
-@@ -811,6 +811,32 @@ pub struct CursorMut<'a, K, V> {
+@@ -811,6 +811,42 @@ pub struct CursorMut<'a, K, V> {
  ///
  /// # Ok::<(), Error>(())
  /// ```
 +///
-+/// [`Cursor::peek_next`] steps past a key that matched exactly, which is how a caller
-+/// reaches the first key strictly greater than the one it looked up.
++/// [`Cursor::peek_next`] completes a lookup for the first key strictly greater than a
++/// given one. [`RBTree::cursor_lower_bound`] stops on an exact match, so the peek is
++/// needed only when the key was present: when it was absent the cursor already holds
++/// the answer, and peeking there skips an element instead.
 +///
 +/// ```
 +/// use kernel::{alloc::flags, rbtree::RBTree};
@@ -123,18 +138,26 @@ index 6fbd579d4a4..2a0379374e2 100644
 +/// // Create a new tree.
 +/// let mut tree = RBTree::new();
 +///
-+/// // Insert three elements.
++/// // Insert four elements.
 +/// tree.try_create_and_insert(10, 100, flags::GFP_KERNEL)?;
 +/// tree.try_create_and_insert(20, 200, flags::GFP_KERNEL)?;
 +/// tree.try_create_and_insert(30, 300, flags::GFP_KERNEL)?;
++/// tree.try_create_and_insert(40, 400, flags::GFP_KERNEL)?;
 +///
-+/// // `cursor_lower_bound` stops on the exact match, so the successor is one peek away.
++/// // 20 is present, so the cursor stops on the key the caller already has and the
++/// // successor is one peek away.
 +/// let cursor = tree.cursor_lower_bound(&20).unwrap();
 +/// assert_eq!(cursor.current(), (&20, &200));
 +/// assert_eq!(cursor.peek_next().unwrap(), (&30, &300));
 +///
++/// // 25 is absent, so the cursor already sits on the answer. Peeking from here
++/// // returns 40 and skips 30.
++/// let cursor = tree.cursor_lower_bound(&25).unwrap();
++/// assert_eq!(cursor.current(), (&30, &300));
++/// assert_eq!(cursor.peek_next().unwrap(), (&40, &400));
++///
 +/// // The largest key has no successor.
-+/// let cursor = tree.cursor_lower_bound(&30).unwrap();
++/// let cursor = tree.cursor_lower_bound(&40).unwrap();
 +/// assert!(cursor.peek_next().is_none());
 +///
 +/// # Ok::<(), Error>(())
