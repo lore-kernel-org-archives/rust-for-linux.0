@@ -1,121 +1,201 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021102.outbound.protection.outlook.com [52.101.95.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BED4BC003;
-	Wed, 29 Jul 2026 14:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785335042; cv=none; b=DC09xxX3+hMFiy46ScKl03agQ1LTydG9rSN2RMTlADVdFMbi7XMkLw3rUjfez6FWNYoJu6VbwUSHlDuGCcyvSQuhG3Mq2PqR+9rF3rM8+wbnwB+Y4BFsXZKWM88iF3sZ8jEsiurVLa0cOrzkNrVf9er6YZ4Sk/WKDP61uWcfSu0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785335042; c=relaxed/simple;
-	bh=0d7Rg5BwmRCIW23il/Hg/oCp4Mj+VT5u/4XHQmf4cco=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cwxs/ylG1TkG/v1ihHlGUAl1OgLZHgFveSFcWMFoeU1MM0yp8FLszZrTyYbHDcBDU/HIE8ogGZ+J0ZJLzLhqtbTgG6xWIN3zXlnE03bMxp1S5jjIL9Ykm4XyNQw4WUcG2N3W/CxTzzY6OY1eU3ubHsK9d3fgmHxSokprCZAvWLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDquwMYS; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3834455166;
+	Wed, 29 Jul 2026 15:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.102
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785339535; cv=fail; b=GoZ+K1ADHT5rEoZHwEgYNHvtQCd8c4J/eZVaK2SuOhjjXWqnNcr7Y99o3SbeHq3PDsD82ZySTkw/NmHnHnDpaTi+jMKF8YKcgi6UTn0nfI9AwPYoVRWEVR21D+J/NR6rn+1rhP6p/TMfBEOuWFlKM3KwwezFomKSiQIBaXWcL8g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785339535; c=relaxed/simple;
+	bh=tP3Sp/IlJIQBEZJsLm7lObRnOMULMVjEuoKDDAjMt5w=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=nwTeKps73l+oDOXmxBAMeciCzl5S7bOwNVQhyFJJVXwNAeeHEO/CUalDWqY/gZA/k6n45nt5g0baOn7rcVRuIGMTukxTKnNWASLleBaUaldrrOi80CHK68zEjfaMC9Zo8uK4evky1Y11nR88GsQHjWa+lLIxr7oUCkUtz/a6RNo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=wAhkJdD2; arc=fail smtp.client-ip=52.101.95.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDquwMYS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178D11F00A3A;
-	Wed, 29 Jul 2026 14:24:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785335040;
-	bh=y9UyaQqkrLiI46oxG56D41N9AHaltzW+DnQMUtlsBPM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KDquwMYSo7uSPcUN9wd/bZQoVsSAjgd9xqrM+h8o7uwn97TsU6oaA5uIeC9Isa30F
-	 nsgVGX3ckvebUDdcSrE4M2Psn7gDAfezKf9O/ozGHeKAh0u11pMK50x21x2TmE7etM
-	 6WfilRjgelOmlmajCRi++9Z/S7LzD43eq23rgZb7j1GZGqEVvs18W0Ts3LLwkHGADa
-	 YRLwaCma2sgtSw+Y7397NW7JI5iNk/Bf+6YlaBWQBRZ+dF026xIR6iPJFg6C5dGzNs
-	 9V5UEj2T0jaX1dnobok7q6luxhm1wS9BMjnqbSAH3JaKtOmzA6ZdOJs8cip5nCaycx
-	 MyUy71riqnDhw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 46552F40067;
-	Wed, 29 Jul 2026 10:23:59 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 29 Jul 2026 10:23:59 -0400
-X-ME-Sender: <xms:_wxqar4dqBD2UAAZYJY34tWY_iHnd6QVQZdXpLmfybgsZBLOP8jiNQ>
-    <xme:_wxqasktGF7SvayUbSIIPR0A9On3GIMuf1-cnlvroNrz3_Xc3GdrzqOchfzROAyT_
-    qvpxVdU6Te-daG7Ef3bv01bd9sdyuhadw98fJZ_3fe2cLARtt_pAAM>
-X-ME-Received: <xmr:_wxqatJtAumgstpLM75MPTXTDohpVguK96DiqmFYd1mjt2n8Vktl9H6ki3wzkqLtgwFKMhWw28RYo4sqcZhUz0-o_rcGI2G5>
-X-ME-Proxy-Cause: dmFkZTEUCb/Ik8dMdiU33XRhWM/MkjrbXq4BUWZITAMXRIWXU3ukziOWVQOlDPQuT3pxXy
-    2JUeF17IZZULjTQQPvBGbTlCrZVL4q+IJGXbd1djwJGzrKbpjOioRIMDQaDXfY6zKBiBzi
-    n9kccYewLMKDoOvxjrbtN7fgit+1yxM1riZT7geVdDw8iUfDtjWmFpzPw2nfzxEcczn+k+
-    lTgOgpyDTnO6sf3qQdvX9cvjoECY6I3wPQJjaHVdBJduLJO3z1DtZgkgUUbW75J4pLJ1qO
-    axJsxwk+HKO67iam5m36MvKWKglmWZ4LegVBM6StD2SI0glcgFb68lzbawTiDhxcoJIwCe
-    6TTWyCwsiuF3JZ35KYwCTXm4DN0S3BfJdRGfpp69D2vv9ns3F9QHA/bHovfNkbvCPucdgw
-    ZhcKZ9PmrKE8nguGR2b1xJ0HbZCesQIcmo6MlD3Zoeik9pM7OCTfM2ulcBGkMnDTlyrT6F
-    7sXtPamMMQ9fhxfRmBjGuJvOHxgTWWFjVdfIedj8z3K5oEuHz8XckAl+PQXYfiL2AO8JME
-    EFOGa7y9EfR5Rdg7vR7FbGrcpFXNkR4Oe5vNcI5ZhDWW4VOY/wobdLDGerw0qOlIW05qBi
-    D1HN5EiTN24OHvEoDqHhblgDHyFV038UZbu/x1hkmGvhJlNt1ixxJMKePTmw
-X-ME-Proxy: <xmx:_wxqatG1dYxb6gyr1LPHjaALYRVTOP-0y2uPXA-9AldnSb0CWbEGQA>
-    <xmx:_wxqauNv4bJW-VEpxvX2rzFKC4Fs_3ZrkGNJ_AOpDEOPXYGwsGjg-A>
-    <xmx:_wxqan-moiWXkXWgsEwsDyXdYks8cerIb3r4zJLj7JpiFjp_2IrCiQ>
-    <xmx:_wxqar5Qs5VGb5job0fOWXXu0Yo7CPE15qnww5-jVZy4EF8mLiYfVA>
-    <xmx:_wxqasUmVQpUzlU06Y-tlqcqCE_FnV61n1S-nhvhlm8Qz6qZd_oJFG79>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 29 Jul 2026 10:23:58 -0400 (EDT)
-Date: Wed, 29 Jul 2026 07:23:57 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Aaron Tomlin <atomlin@atomlin.com>, Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>, linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: sync: add SetOnce::try_get_or_populate()
-Message-ID: <amoM_QJkwwoqsGHJ@tardis.local>
-References: <20260722-setonce-populate-v1-0-fa7455c26c42@google.com>
- <20260722-setonce-populate-v1-2-fa7455c26c42@google.com>
- <DKB42GHIZ8VZ.17ASJME0HTP5A@nvidia.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="wAhkJdD2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CMXuCenosoQfJyXqfP/3SzSwRYSKKXMTJWlxumXcY8hmX5XgVKzRxSo3eJxW1zlu/C2USMvrdsjCqWFMyqgbNJEjyJQTsOWixzAFbmWJBP716P8w77TrdIsREDr5rTgfGybTnV3svmndVkuWnXaDC/lE2JUTgXuvTeqJ48lBwDaREC4E1zESYdA1Av3AJhWzLxOFu5IdiaGFhIV4nNzrfOfY5nginmT1VLWOjxWhlKOwMgaGUyx3bxlEHeoxzAJ9TBjjLmHH0Oa0mJKfd7nVFAEngGSMMTBSNylyJpdHTFW/M55o1OI77zyna62sl63zd8TJiGZbe8jgg65jBjsnFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XRwoiQc/4HKBPn9bGC4mulvA7QkP6MRRF7To1lu0x8w=;
+ b=O5+G7EoyIsoxX9/u1yAE9XWq/2spguPGCd9SnbbiDT8rvE+isD9aEMHWEylJGqJ2EHlK+fgFFcv6M6tkV7NwvzNeVk+FOXgZRfPykA2/ZaKy63Yzb1xjT7eqdyddmgKkV3qzJ369Ze9hVTp4YxD8z0OjZp04OG8b3l4eLD1YUWi2m71LYzbYqHld/PJ4ocMElxBKkBhGHSvHXyv6bEO/Fx39bRwxW/g4Wyw6w3576xILG3d6VtvPcEc/N9ZhCrJzjFYP06UEmbR/lj4ob993y0cBWpPvLJtHucNUATM8pFdMoz8mi+Iw9lXkOtqc8SxAPo40XOMRBHrsUuEUJUxJ2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XRwoiQc/4HKBPn9bGC4mulvA7QkP6MRRF7To1lu0x8w=;
+ b=wAhkJdD2ElbcZ20mGZVawAdocUIJc2z4d0ofEzdHDTF7nN/l/vuPNdUp993bhroFI2Pk6HGmtewPb1BQufPnNM2LvXfP8BhuM005WPDE+JjrUaV9wpZQqQPWQ9YhEDgbFB8x89e9E5wwEO+DrYbk4Hhg1glmKHzQBR/2vZDTbbY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB7156.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:31d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Wed, 29 Jul
+ 2026 15:38:49 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
+ 15:38:49 +0000
+From: Gary Guo <gary@garyguo.net>
+Subject: [PATCH v2 0/5] rust: pin-init: merge `__init` and `__pinned_init`
+Date: Wed, 29 Jul 2026 16:38:42 +0100
+Message-Id: <20260729-merge-init-v2-0-26adf47109e7@garyguo.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIIeamoC/22Oyw6CMBBFf4V0bRXKs678D8OitAOMkWKmhUAI/
+ y7Frctzc++Z2ZgDQnDsHm2MYEaHoz1AXCKme2U74GgOZiIWRVwKwQegEFr0PAUjqzyRoMuWHYM
+ PQYvLKXvWP3ZT8wLtgyE0GuWAN6Ss7kP0Rjst3MLib4NyHih0enR+pPX8aE6C6+/xOeExN1kuM
+ wNlkafVo1O0dtN4teBZve/7F52NoXLcAAAA
+X-Change-ID: 20260722-merge-init-3ed98519ec7f
+To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: rust-for-linux@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Gary Guo <gary@garyguo.net>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785339529; l=2552;
+ i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
+ bh=tP3Sp/IlJIQBEZJsLm7lObRnOMULMVjEuoKDDAjMt5w=;
+ b=HZDM0J7MvhkX4NRp9IX/v1e86u8tCAafpgVGEaPGatBCAddIQviq2Mt0uQh/sJA7j9oPg/iye
+ ayzi5NW9kX1D/KLuxr9u7u/KLbEjJ/HLUZjwfbsQD3qy2zERGjUDmMq
+X-Developer-Key: i=gary@garyguo.net; a=ed25519;
+ pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
+X-ClientProxiedBy: LO4P123CA0031.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:151::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DKB42GHIZ8VZ.17ASJME0HTP5A@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB7156:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27222468-5131-4ef2-2f26-08deed877c59
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014|23010399003|18002099003|56012099006|6133799003|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	ZM30HnYbbZskxP/ZZGZvzanLlHnfWOMJfFcpdm/PpHphLV7odjko0/sb3/SAwDuz4YDEFwt0k17o1I68hiCGWJ/U8FbeLXCvIg/JbCqc+IRql4dH0yFsWBQ6SbQqQ9vLTLt32vDp8fkU+RRRQtlML36BSx8uzU6Gc06d/ZclhEyVmFla7DadCeBwjPDgl5+RNqy9YTCZJKXo8Xnta0XlShrfeHYP2O+YAO/dWcpmPLcphGNF0dWX2ZkmXL6lEQvNMk987KIn0G8uDYVLXm382an/+DYfTE/7kvJVxcQjeFk2bRivMeZpnqohq81CSAdpP4+IN95gmYPXTGUVSGMwchFpsoa8i8sGUR05J99VkUa9o6QEAumfOuaf4jYzGHkapFpUgqI4FiS9TZB/dfrdAiuT3Rp3QRzqcyYQl59G/h070XXza+XsGhk6hL6XeWUigxbGxh4xKR8D+vFf6c9y78w6Y46QDoEqp9XDDmWi2atljGz5u+u5WObE1COacXT+QPt01J0Zp7u+IwkU6TOlPbIVGq3dc7VrakL9YKjg7M9hmOvfLVjMj509GlovhMQ1TRLTKZ2GVjxqPgAqFRdGhU7OqOYusf5s8OejY2uZEQ7jF5+iHo1A8um3SWFyD408vxCUGf1eUbPYn6iXgezJSdA53B2tCGmx3WHqLwmKIJs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014)(23010399003)(18002099003)(56012099006)(6133799003)(10067099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dXpLNzZHc3lYTDFxUnoyQkVjV3JHOFRDMDBBSTlKcTRmZmh2cEp5Z2l6Qmp4?=
+ =?utf-8?B?enVOZ09Ya2laOWFleFd1ZVBHQmlpNldsbCs1ZzVMdHhld0ZrQ2pyNTY0SjBi?=
+ =?utf-8?B?RFFHdjVRQTVPd2krQlRLL2dFWXNlT29wajZNVmgwTEZSWVo5UlRFY0ZLTzkz?=
+ =?utf-8?B?RlYwY2FpYzFPZ2hxZXlRUnp4QS9sWnAyaVpUcy94UHdJZ20zNWhCTmdFTlQ4?=
+ =?utf-8?B?QUVsYVlTWWdaYllXV2x2bU85d1R2NnE5d2JIYlBhYmtNUjNwZG04bnJFZTVP?=
+ =?utf-8?B?OTVhcWpISGhEOW9udmtsL1VTL09lWVlwdlBYVG5SQXRvMm5nRmNLOFhubG4x?=
+ =?utf-8?B?OHdjVHBPV1JmVXFSb1EvbG9XN3BtRWxtcWp4SXo3Zy9rOVMvZlBhdzFJQXdU?=
+ =?utf-8?B?YlBjaUNkbDBmQTk1UUE4cHRSSHBYYVl3K2pUQUNaTFVzdmpVTFpPazF4eWFN?=
+ =?utf-8?B?YzM1MFBOVXBSY2JWVUpWcXdsMUxINCtob3hHY3lqWWxXdEd4WFpaUUFCZTNx?=
+ =?utf-8?B?aXVheDZzZEF2UDdSRkhBdHJaSzhjMDZ6eTAwc3FQUG1Yb2VYVnJsZFVWTlRW?=
+ =?utf-8?B?bzRsd08remUraEtpbWpPQVBwcnRpRm1BM05TVjhiTk1BakNFS1A4QlhMRFZ0?=
+ =?utf-8?B?RHVzM2QxTVJ3eHFVeVhDUml0OXJWSXRuQVU5ODY5bW5XN1AyaDROaGIrcjhj?=
+ =?utf-8?B?Z1luRFhGZ3pjY2VsS0pRcnA0VkVhNVhpM3Bza2RGQ2JwQll3YjdXTXRkMkJ6?=
+ =?utf-8?B?eTZlUndDREt3eXdaWHAvMHlKdnZNbkcxZ005QnQzdVNCMlNZUjRmMUNLbG5z?=
+ =?utf-8?B?RU1tL1UyVXVHRVZVdWZMVjNjMFhqNlFSdVljQklyVkNkSFJ6SStmVmt4M1pp?=
+ =?utf-8?B?ZWQzQ0szMnloTmdwTXlCbmlxVlVseXhpYU9CM2p2YnF3NFhERmNmcElBLzhU?=
+ =?utf-8?B?QlJ6cWo2Tkxzcmc4R2UzZlYvV2kxMzZqdjJCekZIUnlWelVNUVh0dVVSODJN?=
+ =?utf-8?B?dWk0b0cxSExkdFllQUlicmZrUjIwNW1QaFNIakNHcGlRTm9yRVhZZk9nQW01?=
+ =?utf-8?B?N1h5MnRWV1kySENXMFRRQklmdlV2ZU5JMFZtclZPSXdPdmx0ekZCRmVrcWdu?=
+ =?utf-8?B?VHdkcE5HRlVJVk1uZWtHb1ROcUdlNFNpaCtWYjhST25TUGRkWjZIRkVMeU1U?=
+ =?utf-8?B?ZFppWmt0QW1FZjV2QWd3WGV2aDYxM2Z4NytKWW02cWpGaWJuOWJDOUhmb3Zo?=
+ =?utf-8?B?RlloNjdIcFBYMTZ3N3ErUDBQWVhuUHg5SEduMVRJRElxdnpWbGdlWVlGRGtL?=
+ =?utf-8?B?bkVQQjcvaGdTTnhmQ0NtcTRKRkRlM21MdkZlQUdiQXlYV2xRY09xUlhPeTNz?=
+ =?utf-8?B?cnZhblVzZzEvUVpOaStyVW1vSFc1UmpkQWNwWTNDWnc2QjJkR3ZmK1RZWGlY?=
+ =?utf-8?B?ZWV1VStoWk4yR3FDVlFVbTBrNGZnYmVqc2g4Rlg3ZE1DbDlBQnRVU3l5M1dj?=
+ =?utf-8?B?Y2N5RFlzMFRGdzF0QnQvTWkvVzk4SVlQMkc4SUVRVTVuc2szM0k2WVExd2FD?=
+ =?utf-8?B?R2ZHQ09hNGYrOVN4MDdQYXB1R0RIQlNmZXFUbktCVXhXWWZlbWlNaXVZKzUr?=
+ =?utf-8?B?MGNQL0kySDlCQ0pKTGhsNHJDNmpNalNtQk1TbTc5VGFIdDUxMEhMN3p2YW1W?=
+ =?utf-8?B?Z3VJZEVkVmpSTEtiYndkdWVpN1g3b0hvdGxRenk4WnpXVmFmd1NtbFJGUE5i?=
+ =?utf-8?B?ZEM3Wk9ubERYWU9mMzhkM1pBT1V4VlZVLy9LenhVcUZFWndocG1qTi9kRmlM?=
+ =?utf-8?B?bWdLMnY5Mzd5NUtiR3VlK3pDQ2VLamRpUFk5YXM3c0Rvbk90SzB5RDhlc3Zn?=
+ =?utf-8?B?d0Q5TU0rWURYZUUzKzhJbFltN1BZSEFWSlU5ZE9GMUtwWVYvT1JSdng3eE44?=
+ =?utf-8?B?TUFtSW40TW0zR0g3bVd4S21QdzM5M0lnNEdOb3BlMnJ4c1cvR1k5RERJc2lw?=
+ =?utf-8?B?bEI5aE5IYmpNNUhVb2ZoRjA3RlRES1p0aitzS0R6YjhiaHdvWTYxWEtxUTBO?=
+ =?utf-8?B?aG1Ybk1FLzZUY3E2SnJaTFhKdGYrMVlaaFlYdXpwN3M0REZHYUlSTHp4c25J?=
+ =?utf-8?B?T01mbFJhR1FlL1R5eHcrUDQ4ZHZRNnBsRWZoRmVJczU0MGpTZFBkL2lIYnNk?=
+ =?utf-8?B?dGZlN2ZZcnRIaGdqQjg4L1ZLVDZVVk5PeXlITVJUY0QwQldkNnV5UWxmeWlT?=
+ =?utf-8?B?eHZ3YUFxd3JJT1I0NkxFRGpGRkdiTWxpdkxQQ21WaVI4SWJWVldydEF1SVB4?=
+ =?utf-8?B?NkFTcW1DWmRWR2lUeEloNXFjdERJbVpVc0VETWxMQnNieEhCaVFhZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27222468-5131-4ef2-2f26-08deed877c59
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 15:38:49.6638
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +B5Iwd6lwrKHoJ1nVn47C236KnD6ENew7gafVUyj/FmtBPRLlPfft8nqdqHzvSeX7uDFLk4xuABkUYSEqezHaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB7156
 
-On Wed, Jul 29, 2026 at 11:05:55PM +0900, Alexandre Courbot wrote:
-[...]
-> > +    /// Get the value, or populate it if it's missing.
-> > +    ///
-> > +    /// This method is useful to avoid spinning on the internal atomic state. If all writers call
-> > +    /// this method with the same lock, then they are synchronized with each other and it's
-> > +    /// guaranteed that no caller will attempt to invoke [`SetOnce::populate`] more than once.
-> > +    pub fn try_get_or_populate<F, E, U, B>(&self, lock: &lock::Lock<U, B>, f: F) -> Result<&T, E>
-> 
-> From the API perspective, this still leaves the option of calling the
-> method concurrently with different locks. What happens in this case?
-> 
+Currently we have `PinInit::__pinned_init` and `Init::__init` which has
+slightly different safety requirement but are required to do the same
+thing. Instead of having to duplicate impl everywhere, it's simpler to just
+use `Init` as a marker trait that cancels out the pinning requirement on
+`PinInit::__pinned_init`. This also simplifies code (and shorten the symbol
+name) so `__init` can always be used.
 
-Calling this function with different locks is not a correctness issue
-(SetOnce::populate() already handle the synchronization). User may want
-to synchronize different groups of writers with different locks.
+However, there are multiple users currently using `__pinned_init`. This is
+not designed to be public API; however `pin_init` failed to provide a
+public API alternative so it is still being used. Add `ptr_init` and
+`ptr_try_init` methods and convert users to use them instead. `__init`
+users can use these as well due to the super-trait relationship.
 
-Regards,
-Boqun
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+Changes in v2:
+- Add a public API for `__init` and convert users.
+- Remove the part about multiple cycles. Danilo suggests me to take the
+  entirety in single cycle as this doesn't conflict with other branches.
+- Link to v1: https://patch.msgid.link/20260722-merge-init-v1-0-d4594de76538@garyguo.net
 
-> > +    where
-> > +        B: lock::Backend,
-> > +        F: FnOnce() -> Result<T, E>,
-> > +    {
-> > +        if let Some(value) = self.as_ref() {
-> > +            return Ok(value);
-> > +        }
-> > +
-> > +        let mut to_insert = f()?;
-[...]
+---
+Gary Guo (5):
+      rust: pin-init: examples: use `Wrapper::pin_init` instead of manual reimplementation
+      rust: pin-init: merge `__pinned_init` and `__init`
+      rust: pin-init: add `ptr_init` and `ptr_try_init` and recommend over `__init`
+      rust: treewide: replace `__pinned_init` with `ptr_[try_]init`
+      rust: pin-init: remove `__pinned_init` method for `cfg(kernel)`
+
+ drivers/gpu/nova-core/gsp/cmdq.rs     |   4 +-
+ rust/kernel/alloc/kbox.rs             |   8 +-
+ rust/kernel/dma.rs                    |  10 +-
+ rust/kernel/drm/device.rs             |   2 +-
+ rust/kernel/drm/gpuvm/va.rs           |   2 +-
+ rust/kernel/drm/gpuvm/vm_bo.rs        |   2 +-
+ rust/kernel/init.rs                   |   6 +-
+ rust/kernel/pwm.rs                    |   2 +-
+ rust/kernel/sync/arc.rs               |   8 +-
+ rust/kernel/types.rs                  |   8 +-
+ rust/macros/module.rs                 |   2 +-
+ rust/pin-init/examples/mutex.rs       |   6 +-
+ rust/pin-init/examples/static_init.rs |  10 +-
+ rust/pin-init/src/__internal.rs       |   8 +-
+ rust/pin-init/src/alloc.rs            |   6 +-
+ rust/pin-init/src/lib.rs              | 177 +++++++++++++++++-----------------
+ 16 files changed, 128 insertions(+), 133 deletions(-)
+---
+base-commit: 6d0795b507fb1db2e6aefe533d949db3a4abf4c6
+change-id: 20260722-merge-init-3ed98519ec7f
+
+Best regards,
+--  
+Gary Guo <gary@garyguo.net>
+
