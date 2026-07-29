@@ -1,204 +1,179 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021121.outbound.protection.outlook.com [52.101.100.121])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9819E3A1A3C
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 Jul 2026 17:53:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785347615; cv=none; b=mNJmMMCUShzyAKbrbZi2ni5QB4TVYGNhfHkHurpiCgAm5mnnHSGlTTq0r2N4mxuMGm0GXZnHMuJ2vPsqnvyJaI40a+BHK7vac+uwYj/0c5r96m/723NiCQsPOUY9jNZsr05+TXZ1KD/Av5vP068WusMXVCB4sd9Rt2nHMgKocDM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785347615; c=relaxed/simple;
-	bh=ZuhohfsfGK8qZ1od6jkDkls25a4U3lt9iE+o1rAw39o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrPqn/OKZQtLJDUpP5CJZGnSf5zXFRUY9iHIiSgrcX5RT4s1nUat5LxK8X7sJzFs0hzX3eLQ196DcsWN29BnUu+Ifqguat5/wXp5/QRdXHIcx26T4d5m1sm/K91D4bd07dbusd6J4Ub5KiG6U4+B0qrVvgZp2fJS8v0VyutKRls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YVeAwbkX; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB723A1A2D;
+	Wed, 29 Jul 2026 18:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.121
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785350873; cv=fail; b=jo2y6/JeHI5tqXumUDLfzdtstyEpZu7fetEb6MeWJE9QbVSruMcCx/avqF916BTmLOj6y/0KZNgf8F/9zkk2YpHUDl9ZbnZpjjnttsATu+WApihm4y8ULRACjGnCugTaXHAs0QSigS8GsjyYRLSzbHFcLfbDoFX3MH/34qiuebY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785350873; c=relaxed/simple;
+	bh=Je4wbDErXhBwDsRww+kjS1FI1LeDLIguBPb0RUfSmV0=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=lSwmxFjeBvFOTa8FD6dQn2AA9SbUFyDWg+VK5muG373Vuj1/8psuMdOhyrKQDjvQkTvvis0924xtohCfGYbzddifhsaIPwxrf3gSCH7t5Z24Sm/3GG8aSi//tpRaN29Wiv/bpguN+HWqKN38QTFXEs9c4MJPUpmHf+NBXLnaBI0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=iWjgQq5W; arc=fail smtp.client-ip=52.101.100.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YVeAwbkX"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-47f97d310caso1251623f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 Jul 2026 10:53:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785347607; x=1785952407; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9+S9PMJhfL90g3gQkXITMLd3dkVmP3fQHpI001CMZSI=;
-        b=YVeAwbkX8txcjNgonal3BDDX/U4ihui3gqW7A1v/YfP0xSfSp2mqIhW2DM4EcSCPHj
-         blXEVcUSjk2/o8tq/D0HakF1vh9lSJRlsItL++cYyCg0gwm0Ndaz5Rl0PmSV8VXX9tgS
-         lrRtK8OIXwNNaVvsD8J/amU8uezVFKdA0IRBCunbkFK3fqZHRkqKX1c71lt3Sd1yg0Dm
-         mUUg4jveHMyoLoYCT25rF/Qs7C96IfYgJSdtDEywztBeAkv4Wx8zmyB3L4hO8gxr1nE4
-         rs4S8KwdY4pwObzekFOAfzEN28FFb24baTAEMePQgKE4P1PUa10LtwZJ7zwcLQxl0HIL
-         dIVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785347607; x=1785952407;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9+S9PMJhfL90g3gQkXITMLd3dkVmP3fQHpI001CMZSI=;
-        b=eTJcehzIQ4UyZ+6gSLRn8maYTWWh9lTM5PjwdX0syANLitYCAGrQ+pga3mfOPLy0pl
-         NTs5vCilNhz2MFHYQnMOMEGuiRd8DTMcMT2cHKcjsw9InJrAUbPx6uwvr6/OSoj5TOrn
-         Y0+KFeJc4UVH4eBAEw/ZSo/isMB96QXe9gUaMSTw0DQ1yLKq/8Cm/0WjiJB/tJeFigiK
-         doPqE9e+DnddXipVTnXJJYwyo/X1DtKRM/UIstj4h9wHlIU3e/qlXTDI2DP2fzzN9Sgt
-         dYHgW9Fy2jGaZuqulNTeXl8mox5orqOZm7Ps9P7UfOjYlLldPNG4A7M1peTNpvOV9lu6
-         E42Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rqtw4mwR/3WimWylH25QAPZYKi6lcj17NCSzXwU3GWrApzuc5totX+f/0Hf9K2s3RX7iMdiu0vmDWZWEbRD/A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw55SaZXXjYBU+FkEZ3K2St0ZbETvlyaY/6fevii8kVnteEE7l6
-	K4w1tbNO4jjuk2a3QcnGiOVLB/Os9hkNfiboDH532p1I36OySxuroZ4Y
-X-Gm-Gg: AR+sD11aRyecF9sacR1dBD6KJXUdHuCvZGh/7H6eF5sTUFeKYqwI+ykZINpNuUmbZkB
-	nw9jidI8gyxzhXPLWxEnmzswk7uS9i/fCYTTc/pPw6zfwAm83SwGwNMNtxE5U/u+955lTBIYdYY
-	ojzLvx/inBrnRWHTQtBCfBPE2itEvbsE0EbtMavfjQ0P4gZbUWM1jKyri3r9AJxx7azLYQL7Hmq
-	Amn09lKPaxGPJPx/qzSl5PDIuraUhz6i4ZX0SRE2ZObyCMoFXX3utYw0DQAivhKtdpMXgI4qhhb
-	kmDXJSMkJgiT54tpeq2aoG2oTtPAfr5k0miuBLl40fqXBV/SgMM7gWhvCh6ZDVRtu1zZ/UQWcbv
-	E2LEyg3O0dS08Ih/Tko1UsqcP8ybksxZ/LkQY0UykYT6kWRmlk4UGOdJTVxCaJVASLlKm8YZIZf
-	5LYixQibQjIK712zBjsUk8Bvrl5/j4zKNk+SBUXo+2C5M3Jm9AoSo0XQNXtr654r/zqV5uYscdF
-	8BaTTjNM8iM73wdeW6PsgL5Fmrtr4vf7898oaVhrok=
-X-Received: by 2002:a5d:584a:0:b0:460:70ae:f1af with SMTP id ffacd0b85a97d-47fb1e9f9damr8878058f8f.27.1785347606865;
-        Wed, 29 Jul 2026 10:53:26 -0700 (PDT)
-Received: from Cian.taile2c8f4.ts.net ([2a02:8084:d03:fa00:819d:8e1d:c966:142d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6acb6c9sm10833311f8f.13.2026.07.29.10.53.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jul 2026 10:53:26 -0700 (PDT)
-From: cianM167 <cianmcguire167@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Cian McGuire <cianmcguire167@gmail.com>
-Subject: [PATCH v4 2/4] rust: print: document safety of _printk FFI calls
-Date: Wed, 29 Jul 2026 18:53:05 +0100
-Message-ID: <20260729175305.723486-1-cianmcguire167@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260726115929.82150-1-cianmcguire167@gmail.com>
-References: <20260726115929.82150-1-cianmcguire167@gmail.com>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="iWjgQq5W"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=npq9uT1rb1Vgs+ghsXamHrTILt81PhjxtoSkmeo7ymOSWOtTLYBbtZ9IdCH2SeYTNqIoSEVVPxrE/bG0SAw/KF/ynDRyRVsVOFUsawE/QS8EOWEbnk0sXyCynKuo1z8xCaIhG+oEnl7GnvT1cc1oWFkdf+GC3Qs9hzBTQozZTFlFGm0qOYHEJXm+4XQBOAuAYRoeaftr0mmtisV5Tjjui9HesVgitTKmUn4I0b2IHyGsanKFXVNhED1khz2+lPDdcZr+5f2T3EkL59bmdRXU/AyCoTCyYoswQgS6kpCZ+170cWNuQPUYJ1JeeByrnKJ4KHWr/C/lI+NAXU2m/GUKtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Iu+uHmUP7kZo/sRlTsh4r5GE3nXPmGh5eVcgXyZ0ZmI=;
+ b=DgyLP/sb3kPCECvZDlrSRK9xGTAIBIi8nnPxbFMxdyOohY7OMwUuAD5XUp9CDefMLcWjpeClmDiZUBwC412VUz9ObPg6jVKAQP/YNutfdoQmxqUR9C5Clhly5zxzBfSiP9kmIs/TOPTuQXWjrzm9J9c/1TfdYJI0re4pfkTXJ/pJzgQg6Tzv2Ty8lcKROKVUYwfaqXrdcz3HQ91vjHLtqqyW0SQOCISpS0cewNnOJqH57YUuqtdh943OS3yZvc6LAjLp5C/yLzwmErzV2l6R9e3WNIrQbd15udmu7lZQ22qFUvJG+c092N9eoIiY/J8lPqP5jkWLhtF/A/gEQfJP3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Iu+uHmUP7kZo/sRlTsh4r5GE3nXPmGh5eVcgXyZ0ZmI=;
+ b=iWjgQq5WX3E8NCPzqXpe0eZSi+Xr7wshanvojwMCsDEm7i+KzBVwExQepgpYiNMAyYuT4uh5nh9luZm1RDUyuJDb+kTIldJKx347tFr4HrSms8+wb3JgxSZB2RpWLaCoLvU9OvzsPcSVvGEufigURI+q5d/oZmPOgyJu5Q5Tmow=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO8P265MB7766.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3ae::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.13; Wed, 29 Jul
+ 2026 18:47:48 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%2]) with mapi id 15.21.0270.009; Wed, 29 Jul 2026
+ 18:47:47 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Jul 2026 19:47:46 +0100
+Message-Id: <DKBA29HOEUIX.H4CDPOQQXRD0@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Sumit Semwal"
+ <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, "Lyude Paul" <lyude@redhat.com>, "Frederic
+ Weisbecker" <frederic@kernel.org>, "Neeraj Upadhyay"
+ <neeraj.upadhyay@kernel.org>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Josh Triplett" <josh@joshtriplett.org>, "Uladzislau Rezki"
+ <urezki@gmail.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, "Lai Jiangshan"
+ <jiangshanlai@gmail.com>, "Zqiang" <qiang.zhang@linux.dev>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Asahi Lina"
+ <lina+kernel@asahilina.net>, "Burak Emir" <bqe@google.com>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
+ "Eliot Courtney" <ecourtney@nvidia.com>, "Mirko Adzic"
+ <adzicmirko97@gmail.com>, "Timur Tabi" <ttabi@nvidia.com>, "Daniel del
+ Castillo" <delcastillodelarosadaniel@gmail.com>, "Boris Brezillon"
+ <boris.brezillon@collabora.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
+ <rcu@vger.kernel.org>
+Subject: Re: [PATCH v7 3/5] rust: sync: Add abstraction for rcu_barrier()
+From: "Gary Guo" <gary@garyguo.net>
+To: <paulmck@kernel.org>, "Philipp Stanner" <phasta@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260729094542.302965-2-phasta@kernel.org>
+ <20260729094542.302965-5-phasta@kernel.org>
+ <296c71c4-4d2f-416d-bfbe-40fd911b44db@paulmck-laptop>
+In-Reply-To: <296c71c4-4d2f-416d-bfbe-40fd911b44db@paulmck-laptop>
+X-ClientProxiedBy: LO2P123CA0082.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:138::15) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO8P265MB7766:EE_
+X-MS-Office365-Filtering-Correlation-Id: c2637ef5-b49a-4c33-35e0-08deeda1e268
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|7416014|376014|1800799024|23010399003|366016|18002099003|22082099003|6133799003|56012099006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	j/asv5XhjFCAWXDbG80BzrUU+SeuuFlL7+0fapyflFLvnAmHiHD1M9/QYNKv7BfKtERRlN/UaUJSyLMhyyOVpxFs5iIySOgUtWombBr5ShB8u8/o4lqMJQBqui+eDelbnwak+DMwT/wjf0To6nEWQ2e35ssvijQXj7hK1QAd+L0u+r9khB3tQhUCpyMm4TSggJU2nf5xQZ3wSPyq3BAgW1BAO7aOvaDrq/oJ/aEa8DmTh4u7PWRlQbekfbiRMl78mfDkMTPZZshdyLxbGcJFQsGN2314ZAreI2ZxtAyayfBatsFBFdN/THMQRj/QkQUQfWLhKygLnqhm7NHFH9fA+H7VyXIhKvWiN83m43tvpCj7EfzIcZ9rezu+a0sFGhjDlJv0LBDwydXqQIBom3J1xx3OwJmnLWB9qOU7hzjGTtsKXeBg6X8nXoNN0xdVW61mNENNU6IOiYch8h8/EHJgrjJ9KrdUFosPCUL9Swi6DXkN4tJYdzltHlMSndegI0DNkLT5YU7Ek7cIqV4w26H3Spdypc8J4mcTX0VhGLjf2He/YKYDsrWHrjuZFAcizMwDy1b/tj9SgGKzi0DkToR2MfKF4c1yao8bUBEtczso9f7fGyGE2N99rxJH7gw/u/C/ly68tjCHmrr4DEcgcTpAU97HItq0DAOlIPog3CVfQHg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(7416014)(376014)(1800799024)(23010399003)(366016)(18002099003)(22082099003)(6133799003)(56012099006)(4143699003)(10067099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TitwMlZmZzlMS3hkVDM1OURjVENkbk55Q0EzdCtUdVJqT09UK0FMbTJHMWp1?=
+ =?utf-8?B?dXB6bmFxZjRQcjRPanJoQjV2ci9FZ2wyMTZ4bHZPQUxXS0o3SDM2TnZrcFFZ?=
+ =?utf-8?B?OGE3cDQrVGlRSFcrRVlubU1VQlYvQm0xRFRLMUJDV0xBRElScVc2aFBlU2Zi?=
+ =?utf-8?B?MXJGdHluck42NmhQaTVPUCtxK2pkMU83OHJZcEMyWi9kNUpiU2tiSHI2blJn?=
+ =?utf-8?B?RW1rWDAxQ00yZURXR1U5L0owY3B6dkEwTis1elI0bUROcUNYbDFZckU3c0FD?=
+ =?utf-8?B?SjFyODJPSFB4WksvdSs5cWg1UGpINTZCY282Y2U2TUNRbDRWWC9NblhETXpp?=
+ =?utf-8?B?cE9xYUI0azRDTmVxNWdPdEkvL0ozdHNIMFhtY1dvNzVRU0M5blZSNGhpZUR1?=
+ =?utf-8?B?dmdBdFErWGlmQnptdkgxeHJZWjNCZnozYnVIQ0ZrUDZ5WW4zeTdlKzkxc1FB?=
+ =?utf-8?B?RmFoOEpVUVREWUZXV2lER3BPWDVCUFAvR0VTejhJS2JCOXpBZ3o4K2FqcDA5?=
+ =?utf-8?B?UEEvT0tlald2Z1BNMmpZS2tPVGY0RlJrSndGaEl0R2RJRmE4OXZ0dHNOMGF3?=
+ =?utf-8?B?cS9NL0ZaaURkRHFWd3hid292R0ovUlIwRGNtSTZKaWprWEZKSGVHWUtMQ043?=
+ =?utf-8?B?RmNlUEhFRUxPT3RSTldHTlhHYUNCY3J3MzNCU0g4WXFBa05pOTdFTGlmOUN2?=
+ =?utf-8?B?Skc0enNCVWtzbXR0WWtNU0ZZOFJzRGlLSW1TUS9TekZ4NGF0Z28yRC83bUVG?=
+ =?utf-8?B?ZWhFOUF3cW5YbTVJbDJ1S0M5bFMzRnJUYWxZbkxFSVRkUXVuVHcrdHU4YmJh?=
+ =?utf-8?B?czA5U2cweXZXOWpndGZaZXBZUkk5cG9uRmJlWk5YcU5sWEprZ1BBQnFzcVRj?=
+ =?utf-8?B?Y3FuUUlmUkZGa1B5OFNwQnNRZW8wNW5IcjJ2QWRIdklDZkF6bGMxTGhrdU81?=
+ =?utf-8?B?RG5rUUZFVGw0Wkc1WHMvUUlYMmVabFV2cmlNWnMwRE1oQW1EQjJjSUM0eXVB?=
+ =?utf-8?B?NjJ6S0lMYXFUQllyQjJSQWYvZEN1bnJRK3hmVkVFci9tWHpsaERXemdiVURE?=
+ =?utf-8?B?ckhTa1NNbnd3cFZvUDNDQ1BVcUdLZnhTTXpFb2VaUTlsczRXK2gxNzE5bkdu?=
+ =?utf-8?B?MkV6V0FheWhCZVVwYUJwUjFJR3VkcmRIc0xodUxSOFNUL2dwR0hhRWRwUHQ4?=
+ =?utf-8?B?bHBmUFVYaFBYTHNnOVFCNWtVYzk2QXVyc3M1TUJmcndoL1h4dGkrR1hhMlFP?=
+ =?utf-8?B?QXBQOFcwcWNYaFJKalZzMWwzdHE5eXVYYzQ1VVZzMmdhN3BPcllwZzJxK1RZ?=
+ =?utf-8?B?ejBpeUFldWF5NmdjK05hb0JIblhvTjlSY08rZElpWUowb3IyZ3JHWVFQbWlJ?=
+ =?utf-8?B?TTBscll5clhsb0RMNzJVZHNqQkdCUFc5UUszd0xXUitKZXJYSUdldnZWM1Zo?=
+ =?utf-8?B?emh6RGFGZnNwVGZSZk9rdjZabHJNK2hKSitXWlBWbE5HN2MrcGVxdWV4azY2?=
+ =?utf-8?B?bkE2cGszRk1TeEx0UUhFRWpPaDVwQWRINTh6d2tvUFFqTk05TXh5MXNZVGVI?=
+ =?utf-8?B?Rms5Q3hkbXJ3Unh4azNvTm1HaG5kRU0vM0R6cTNyM2tHV2krckNmUnN2U2I2?=
+ =?utf-8?B?bjFNemwrNitCVGxQaGszV24wQ2p0elQ5VFdRckxMTE1ESFIySWxUR1cyZE5z?=
+ =?utf-8?B?OENNbUczVGJPSEhLRlU3MDlCVUFHdFNCOW1SK09BMGMwZWxLenJ3VW1DNVdi?=
+ =?utf-8?B?c0V1RldsVGw5czlUcVp3dVluZTFnalpVMncxaFN0OEVtSmY0T1FMUUFDdDhN?=
+ =?utf-8?B?OVU0ekczL3FyVkxqQmQyczFOYUlKUW5XZGNHOHRwa1RiOHFsMUIwYmNxbWN0?=
+ =?utf-8?B?dEUzVmxXSFpDNmpaaGNIRHhrVUUySDNlWFd0eDltSjRCZWhMd3YvMUhYUjNC?=
+ =?utf-8?B?THprYkFkR3dXNDRzcmVMajJseEJxbDI4Kys2aHNlYUxrVkdzQnBzZ1BaRDV3?=
+ =?utf-8?B?RWtBVmhtVmZIaEZJanMrendlcC9XakNuZHBlc2h4N0NPbWo1S1N3V2JpeUJu?=
+ =?utf-8?B?Uk95cmh2dS9OK3hoU0c4K0J4Y0dpMHFmYzVTbTRZbmk3RnNIWTZpUFF5TnhN?=
+ =?utf-8?B?YTMrQVNqVW9tSWgyTlZhc1ZBVzBydUYwU0swcDZMWndhd2ZLRHFsSXB6WjFo?=
+ =?utf-8?B?dGc3Q2dlQ1FZdnRwZHdJeTBIdkliazRjR2Y4N01INlFlaTdBVGdsSjIxVUZi?=
+ =?utf-8?B?YzVrUkNrd2RkL3duY0ZXYmJNalA4Zy9sUkF4N2NRQ2JqRmpIY25qMGEzZ28v?=
+ =?utf-8?B?Zmp5RSs2Sm5WWDJYM1RGTEZ2Vzd0ckdobm93OFdzbnArT01RQUZTQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2637ef5-b49a-4c33-35e0-08deeda1e268
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2026 18:47:47.8058
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 33re0y3Jb8hqd8iXfq7GUzs5A+i2JACQ7qCVMlCNxP1UNAlSfucXNZtiRXpm2Y6YS0IDxUysqSOqLyI3V1OKig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7766
 
-From: Cian McGuire <cianmcguire167@gmail.com>
+On Wed Jul 29, 2026 at 6:18 PM BST, Paul E. McKenney wrote:
+> On Wed, Jul 29, 2026 at 11:45:40AM +0200, Philipp Stanner wrote:
+>> rcu_barrier() is a frequently used C function which is always safe to be
+>> called.
+>
+> Just checking...  Here "always safe" means only from task level, with BH,
+> preemption, and interrupts all enabled, correct?
+>
+> In contrast, if you do this:
+>
+> 	preempt_disable();
+> 	rcu_barrier();
+> 	preempt_enable();
+>
+> the results won't be safe.
 
-Two calls in this file had their SAFETY comments left as "TODO.": the
-cast back to `fmt::Arguments` in `rust_fmt_argument`, and the call to
-`bindings::_printk` in `call_printk`.
+This is same for all sleepable functions. In order to avoid having to mark =
+all
+sleeping function unsafe, we've decided that sleeping from non-preemptable
+context is "safe", but is a bug regardless.
 
-`rust_fmt_argument` is only reachable through the `%pA` format
-specifier. Every in-tree Rust caller that uses `%pA` -- `call_printk`,
-`device::printk`, `kunit::printk`, and `seq_file::call_printf` -- invokes
-it synchronously with a pointer derived from its own live
-`fmt::Arguments`, as one call in a `switch` dispatch in
-`lib/vsprintf.c`'s pointer formatter that returns its result immediately;
-there is no deferred use or storage of the pointer on the C side. So the
-`fmt::Arguments` value stays alive on the caller's stack for the whole
-time `rust_fmt_argument` is running with `ptr` pointing at it.
-
-The `_printk` call itself is justified by this function's `# Safety`
-section, which this patch also tightens: `format_string` must be one of
-the non-continuation `format_strings` statics, not
-`format_strings::CONT`. `call_printk` always supplies two extra
-arguments -- `module_name` for `%s` and `args` for `%pA` -- which only
-matches the `"%s: %pA"` shape shared by every non-continuation string;
-`CONT`'s format string is `"%pA"` only, so passing it here would make
-`_printk` consume `module_name`'s pointer for `%pA` instead, and
-`rust_fmt_argument` would then reinterpret that `*const c_char` as a
-`*const fmt::Arguments` and dereference it. No caller does this today --
-`call_printk` is only reached from `print_macro!`'s non-continuation arm;
-the continuation arm calls the separate, safe `call_printk_cont`, which
-hardcodes `CONT` together with the single argument it expects -- but the
-previous, broader contract permitted it. With `format_string` guaranteed
-non-`CONT`, and `module_name` guaranteed null-terminated by both of its
-possible origins (`kernel::__LOG_PREFIX` and the one generated by the
-`module!` proc macro), the specifiers always match the supplied
-arguments.
-
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/351
-Signed-off-by: Cian McGuire <cianmcguire167@gmail.com>
----
-v4:
-- Trim the `// SAFETY:` comment on the `_printk` call in `call_printk`
-  down to what's specific to this call site (that `args` stays valid and
-  is read back synchronously). The shape-matching reasoning it used to
-  repeat is already covered by the `# Safety` section above it, which is
-  the right place for it as a precondition rather than a per-call-site
-  justification. (Gary Guo)
-v3:
-- Tightened `call_printk`'s `# Safety` contract to require a
-  non-continuation format string (i.e. not `format_strings::CONT`),
-  since the function always supplies both a `%s` and a `%pA` argument,
-  which only matches the non-continuation strings' `"%s: %pA"` shape.
-  Passing `CONT` under the old, broader contract would make `_printk`
-  consume `module_name`'s pointer for `%pA` instead of `args`, which
-  `rust_fmt_argument` would then wrongly reinterpret as a
-  `*const fmt::Arguments` and dereference. Updated the inline SAFETY
-  comment to match.
-v2:
-- Reworded the SAFETY comment on `rust_fmt_argument`'s cast to argue
-  from the property that makes every `%pA` call site safe (synchronous
-  invocation with a live `&fmt::Arguments`), instead of enumerating
-  callers by name, so it doesn't go stale if a new caller is added.
-
- rust/kernel/print.rs | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 6fd84389a858..3111f8f4c2e1 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -29,7 +29,10 @@
-     use fmt::Write;
-     // SAFETY: The C contract guarantees that `buf` is valid if it's less than `end`.
-     let mut w = unsafe { RawFormatter::from_ptrs(buf.cast(), end.cast()) };
--    // SAFETY: TODO.
-+    // SAFETY: This function is only reachable via the `%pA` format specifier; using `%pA` from
-+    // Rust requires the caller to invoke it synchronously with a `ptr` derived from a live
-+    // `&fmt::Arguments`, before that reference's scope can end. `ptr` is therefore valid and
-+    // properly aligned for a `fmt::Arguments<'_>` for the duration of this call.
-     let _ = w.write_fmt(unsafe { *ptr.cast::<fmt::Arguments<'_>>() });
-     w.pos().cast()
- }
-@@ -96,8 +99,11 @@ pub mod format_strings {
- ///
- /// # Safety
- ///
--/// The format string must be one of the ones in [`format_strings`], and
--/// the module name must be null-terminated.
-+/// The format string must be one of the non-continuation strings in
-+/// [`format_strings`] (i.e. not [`format_strings::CONT`]): this function
-+/// always supplies both `module_name` and `args` as arguments, which only
-+/// matches the `"%s: %pA"` shape used by the non-continuation strings, not
-+/// `CONT`'s `"%pA"`-only shape. The module name must be null-terminated.
- ///
- /// [`_printk`]: srctree/include/linux/_printk.h
- #[doc(hidden)]
-@@ -109,7 +115,9 @@ pub unsafe fn call_printk(
- ) {
-     // `_printk` does not seem to fail in any path.
-     #[cfg(CONFIG_PRINTK)]
--    // SAFETY: TODO.
-+    // SAFETY: By this function's safety requirements, `format_string` and `module_name` match
-+    // `_printk`'s expectations. `args` remains valid for the duration of this call and is only
-+    // read back synchronously, through `%pA`, by `rust_fmt_argument`.
-     unsafe {
-         bindings::_printk(
-             format_string.as_ptr(),
--- 
-2.55.0
+Best,
+Gary
 
