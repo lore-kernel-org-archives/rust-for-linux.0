@@ -1,34 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4983438DC57;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4979D35C180;
 	Thu, 30 Jul 2026 17:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785431151; cv=none; b=hS4ZQ1cd9srTrPBARwi5V0HmoymRet0yjvA7mLGhfM+mb6UWF9O6pJYrcn0HNb2ggDjA+K6DbbKmworLj8Jtv4R+7fmSpLFcgciAubRwRtourvLvQJvKcKqpPrlqLWrgd/UXb5t4Twt6IRoN6nJzbHvPVRCxh3NlxgzELvYbxX0=
+	t=1785431151; cv=none; b=bkgjuhqpYRTVAXaFwZGCgB5lH7iwbetGhPVqjscxcceolmteUTjeercfbOETJ0d3a9VEYMPSFnbHTFa3Y2PWFUnUEJG6b/NmvOas3yIjLxhp5cB+KkeAJralx0s2gSXduWqxyPyUuxrbwa6klJu3Se5nPH1OuewPDaHUEkW57fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1785431151; c=relaxed/simple;
-	bh=SGD5eo0FIbmV4lmWi2duA/OCEdF+gG3Y3sHkHFC6+qY=;
+	bh=WZR8Y42ND9E/OAlX111HbpPcKsxTChsq0oOfQ3+9UZM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WDFk2YhTgaTG8esdNOyhPGBwK8/5Xf1SJIG/dq00yYKDg5otsn/NmqtWHO1g5zbGeftMUB+MWjkorTwMW9eJAI6oGvaBx2aViIQcnePbbfIWdeVlIb8JikejjX6JWXxuwMuvXgj2vlPi92xfrKyqNve7vtmkyfdf3gjU/8U5IJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o3I/cCk8; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=eXB7v0Zyh7QTLW2xmOwQlERd0ej4+4w1wWYhefa7LHUc8BxDb/W1DMVbT7EYmzffnnu2sw1183Ri2xKlCcTXlGgAJroFZLmbUPJbkmHiV9D5L78m5E0OMgDdFKU44/yt6fzPfEPar8GIvrLxArEZUnAzW1m5wvsQp3DsLnCw0kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U0OgeggQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o3I/cCk8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DDEC3C2BCFA;
-	Thu, 30 Jul 2026 17:05:50 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U0OgeggQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 03FBEC2BCFC;
+	Thu, 30 Jul 2026 17:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1785431150; bh=SGD5eo0FIbmV4lmWi2duA/OCEdF+gG3Y3sHkHFC6+qY=;
+	t=1785431151; bh=WZR8Y42ND9E/OAlX111HbpPcKsxTChsq0oOfQ3+9UZM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=o3I/cCk8NbA8FbfJjnw5/y8iQoNyd6c8J7mJU1z/XZ2WLz4SuFTezsp4EebY5Mo9w
-	 eCcEFwfiX9emFjFd+RKaXpMlVCkS1rBA7oFwrgxlatZHtpvizrbLSFykhos2Qqukg2
-	 IRyiIpmon0CY/abU5MGwN07Ti775w39LUMYU73Bo=
+	b=U0OgeggQO9XAL00a0Lyi35OLQFTK+lgiPeKS4qmN72pWx387JkERQVbhaBtOVKxdJ
+	 sJd6YYGWsuOVxaSSQoYbyIEuRiRPoFytyPFKfSKxYw6JA5XO9HnFuJ6vYAEboU5uLI
+	 7IX0+x5h0g9equU+dLAiCNGM5Adka3vWJXdsZZfU=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFA33C5516D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DCF18C55171;
 	Thu, 30 Jul 2026 17:05:50 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Date: Fri, 31 Jul 2026 01:05:40 +0800
-Subject: [PATCH v2 2/9] rust: debugfs: add SeqShow trait and seq_file file
- operations
+Date: Fri, 31 Jul 2026 01:05:42 +0800
+Subject: [PATCH v2 4/9] drm: move debugfs_init after dev->registered is set
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,7 +36,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-tyr-debugfs-v2-v2-2-aea19eccb996@linux.dev>
+Message-Id: <20260731-tyr-debugfs-v2-v2-4-aea19eccb996@linux.dev>
 References: <20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev>
 In-Reply-To: <20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -65,254 +64,56 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
  dri-devel@lists.freedesktop.org, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785431148; l=8068;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785431148; l=1502;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=SGD5eo0FIbmV4lmWi2duA/OCEdF+gG3Y3sHkHFC6+qY=;
- b=ZbN8jfSO8mO1NUyNg4kgvyxZuKB9v982mSoav+JY9M42DkDPL3/MwAzOth958SFZc08oGbjHa
- kiiiHyssAURA0wD6C+M+KVO74JouoVzZCGSKA2zOpRj7SxVBnC5rAoj
+ bh=WZR8Y42ND9E/OAlX111HbpPcKsxTChsq0oOfQ3+9UZM=;
+ b=Nu6+7BcxiJjyRPpf2u+1b0iaiSQBOJe051oW2rzfFeF1mot84+/iQEuu/d+7bnherhoaUo22G
+ PErAWGVIR6SCpdLLCp+QzHtk1b2X3Lol0rBTsYH8E7OtNJA4IEi52sW
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
 
-Add SeqShow trait for seq_file-backed debugfs files with optional
-open/release lifecycle hooks. Needed by DRM and other subsystems to
-expose readable debugfs state via seq_file.
+The debugfs_init callback was invoked by drm_debugfs_register before
+dev->registered is set to true. Moving it to drm_dev_register after
+dev->registered = true fixes the Ioctl type invariant violation.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- rust/kernel/debugfs.rs          | 16 ++++++-
- rust/kernel/debugfs/file_ops.rs | 97 +++++++++++++++++++++++++++++++++++++++++
- rust/kernel/debugfs/traits.rs   | 30 ++++++++++++-
- 3 files changed, 141 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_debugfs.c | 3 ---
+ drivers/gpu/drm/drm_drv.c     | 5 +++++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-index d7b8014a64746..dea0e2c953039 100644
---- a/rust/kernel/debugfs.rs
-+++ b/rust/kernel/debugfs.rs
-@@ -24,7 +24,7 @@
-         PhantomData,
-         PhantomPinned, //
-     },
--    ops::Deref,
-+    ops::Deref, //
- };
+diff --git a/drivers/gpu/drm/drm_debugfs.c b/drivers/gpu/drm/drm_debugfs.c
+index ae1c6126c2c59..38cf6ce387cc8 100644
+--- a/drivers/gpu/drm/drm_debugfs.c
++++ b/drivers/gpu/drm/drm_debugfs.c
+@@ -442,9 +442,6 @@ int drm_debugfs_register(struct drm_minor *minor, int minor_id)
+ 	/* TODO: Only for compatibility with drivers */
+ 	minor->debugfs_root = dev->debugfs_root;
  
- mod traits;
-@@ -33,6 +33,7 @@
-     BinaryReaderMut,
-     BinaryWriter,
-     Reader,
-+    SeqShow,
-     Writer, //
- };
- 
-@@ -51,6 +52,7 @@
-     FileOps,
-     ReadFile,
-     ReadWriteFile,
-+    SeqReadFile,
-     WriteFile, //
- };
- 
-@@ -588,6 +590,18 @@ pub fn read_callback_file<T, F>(&self, name: &CStr, data: &'data T, _f: &'static
-         self.create_file(name, data, vtable)
-     }
- 
-+    /// Creates a seq_file debugfs file in this directory.
-+    ///
-+    /// The file's contents are produced by invoking [`SeqShow::show`] with
-+    /// `data` on each read.
-+    ///
-+    /// This function does not produce an owning handle to the file. The created
-+    /// file is removed when the [`Scope`] that this directory belongs to is
-+    /// dropped.
-+    pub fn seq_file<S: SeqShow<U>, U: Sync + 'static>(&self, name: &CStr, data: &'data U) {
-+        self.create_file(name, data, &<S as SeqReadFile<U>>::FILE_OPS)
-+    }
-+
-     /// Creates a read-write file in this directory.
-     ///
-     /// Reading the file uses the [`Writer`] implementation on `data`. Writing to the file uses
-diff --git a/rust/kernel/debugfs/file_ops.rs b/rust/kernel/debugfs/file_ops.rs
-index f15908f71c4a2..20a4362785a44 100644
---- a/rust/kernel/debugfs/file_ops.rs
-+++ b/rust/kernel/debugfs/file_ops.rs
-@@ -5,11 +5,13 @@
-     BinaryReader,
-     BinaryWriter,
-     Reader,
-+    SeqShow,
-     Writer, //
- };
- 
- use crate::{
-     debugfs::callback_adapters::Adapter,
-+    error::from_result,
-     fmt,
-     fs::file,
-     prelude::*,
-@@ -19,6 +21,7 @@
- };
- 
- use core::marker::PhantomData;
-+use core::ptr::NonNull;
- 
- #[cfg(CONFIG_DEBUG_FS)]
- use core::ops::Deref;
-@@ -123,6 +126,100 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-     0
+-	if (dev->driver->debugfs_init && dev->render != minor)
+-		dev->driver->debugfs_init(minor);
+-
+ 	return 0;
  }
  
-+/// Show callback for `SeqShow` types.
-+///
-+/// # Safety
-+///
-+/// The seq_file core guarantees that `seq` points to a live `seq_file` and that
-+/// `seq->private` is a valid pointer to a `T` with no outstanding mutable
-+/// references.
-+unsafe extern "C" fn seq_file_show<S: SeqShow<T>, T: Sync>(
-+    seq: *mut bindings::seq_file,
-+    _: *mut crate::ffi::c_void,
-+) -> crate::ffi::c_int {
-+    // SAFETY: `seq->private` is a valid `T` pointer with no outstanding
-+    // mutable references.
-+    let data = unsafe { &*((*seq).private.cast::<T>()) };
-+    // SAFETY: `seq` points to a live `seq_file`.
-+    let m = unsafe { SeqFile::from_raw(seq) };
-+    from_result(|| S::show(data, m).map(|()| 0))
-+}
-+
-+/// Open callback for `SeqShow` types.
-+///
-+/// # Safety
-+///
-+/// The VFS guarantees that `inode` is valid with `i_private` pointing to a
-+/// valid `T` that remains valid for the duration of the call, and that `file`
-+/// points to a live, uninitialized file object.
-+unsafe extern "C" fn seq_file_open<S: SeqShow<T>, T: Sync>(
-+    inode: *mut bindings::inode,
-+    file: *mut bindings::file,
-+) -> crate::ffi::c_int {
-+    // SAFETY: `inode` is valid per VFS. `i_private` points to a valid `T`
-+    // (guaranteed by the `FileOps<T>` invariants).
-+    let data = unsafe { (*inode).i_private.cast::<T>() };
-+    // SAFETY: `data` is a valid `T` pointer from `i_private` per the `FileOps` invariants.
-+    let data_ref = unsafe { &*data };
-+
-+    if let Err(e) = S::open(data_ref) {
-+        return e.to_errno();
-+    }
-+
-+    // SAFETY: `file` is valid per VFS; `data` matches `seq_file_show`'s contract.
-+    let ret = unsafe { bindings::single_open(file, Some(seq_file_show::<S, T>), data.cast()) };
-+    if ret != 0 {
-+        // SAFETY: Since `S::open` has already succeeded, `data` is valid. `data` came from
-+        // `i_private` (a `&T` reference), so it is non-null.
-+        unsafe { S::release(NonNull::new_unchecked(data)) };
-+    }
-+    ret
-+}
-+
-+/// Release callback for `SeqShow` types.
-+///
-+/// # Safety
-+///
-+/// The VFS guarantees that `file` is valid, and that `private_data` points to
-+/// a live `seq_file` whose `private` field is a valid pointer to `T`.
-+unsafe extern "C" fn seq_file_release<S: SeqShow<T>, T: Sync>(
-+    inode: *mut bindings::inode,
-+    file: *mut bindings::file,
-+) -> crate::ffi::c_int {
-+    // SAFETY: `file->private_data` is the seq_file from `single_open`.
-+    let seq = unsafe { (*file).private_data.cast::<bindings::seq_file>() };
-+
-+    // SAFETY: `seq->private` was set by `single_open` to the `i_private` value.
-+    let data = unsafe { (*seq).private };
-+
-+    // SAFETY: `data` came from `i_private` (a `&T` reference), so it is
-+    // non-null.
-+    unsafe { S::release(NonNull::new_unchecked(data.cast::<T>())) };
-+
-+    // SAFETY: `inode` and `file` are valid per VFS.
-+    unsafe { bindings::single_release(inode, file) }
-+}
-+
-+pub(crate) trait SeqReadFile<T> {
-+    const FILE_OPS: FileOps<T>;
-+}
-+
-+impl<S: SeqShow<T>, T: Sync + 'static> SeqReadFile<T> for S {
-+    const FILE_OPS: FileOps<T> = {
-+        let operations = bindings::file_operations {
-+            read: Some(bindings::seq_read),
-+            llseek: Some(bindings::seq_lseek),
-+            release: Some(seq_file_release::<Self, T>),
-+            open: Some(seq_file_open::<Self, T>),
-+            ..pin_init::zeroed()
-+        };
-+        // SAFETY: `read` and `llseek` are stock `seq_file` implementations.
-+        // `seq_file_open` and `seq_file_release` treat `inode->i_private` as a
-+        // valid `&T` reference, satisfying the `FileOps::new` contract.
-+        unsafe { FileOps::new(operations, 0o400) }
-+    };
-+}
-+
- // Work around lack of generic const items.
- pub(crate) trait ReadFile<T> {
-     const FILE_OPS: FileOps<T>;
-diff --git a/rust/kernel/debugfs/traits.rs b/rust/kernel/debugfs/traits.rs
-index 8c39524b6a990..4cbdfdf511a88 100644
---- a/rust/kernel/debugfs/traits.rs
-+++ b/rust/kernel/debugfs/traits.rs
-@@ -8,6 +8,7 @@
-     fmt,
-     fs::file,
-     prelude::*,
-+    seq_file::SeqFile,
-     sync::{
-         atomic::{
-             Atomic,
-@@ -33,7 +34,8 @@
-         Deref,
-         DerefMut, //
-     },
--    str::FromStr,
-+    ptr::NonNull,
-+    str::FromStr, //
- };
+diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
+index e890052061f30..15669764fe625 100644
+--- a/drivers/gpu/drm/drm_drv.c
++++ b/drivers/gpu/drm/drm_drv.c
+@@ -1101,6 +1101,11 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
+ 	dev->registered = true;
+ 	dev->unplugged = false;
  
- /// A trait for types that can be written into a string.
-@@ -338,3 +340,29 @@ fn read_from_slice(
-         self.deref().read_from_slice(reader, offset)
-     }
- }
++	/* Call debugfs_init after the device is fully registered. */
++	if (dev->driver->debugfs_init && dev->primary &&
++	    dev->render != dev->primary)
++		dev->driver->debugfs_init(dev->primary);
 +
-+/// Renders `data` into a seq_file.
-+///
-+/// `data` is the value stashed as the debugfs file's `i_private` at creation
-+/// time. `show` is invoked on each read to produce the file's contents.
-+///
-+/// `open` and `release` are optional lifecycle hooks called during file open
-+/// and release. They can be used to manage the lifetime of `data` (e.g.,
-+/// reference counting). Default implementations are no-ops.
-+pub trait SeqShow<T> {
-+    /// Writes debugfs output for the file.
-+    fn show(data: &T, m: &SeqFile) -> Result;
-+
-+    /// Called during file open, before `single_open`.
-+    fn open(_data: &T) -> Result {
-+        Ok(())
-+    }
-+
-+    /// Called during file release, before `single_release`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `data` must point to valid memory, kept alive by actions taken in
-+    /// [`Self::open`] (e.g., incrementing a reference count).
-+    unsafe fn release(_data: NonNull<T>) {}
-+}
+ 	if (driver->load) {
+ 		ret = driver->load(dev, flags);
+ 		if (ret)
 
 -- 
 2.43.0
