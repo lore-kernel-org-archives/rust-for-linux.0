@@ -1,57 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0264E36B07E
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 20:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F23379EC8
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 20:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785529842; cv=none; b=P+VeDjIR/0wkFQNIMg6Ct96Dld7li+R/x2KA4M6M4o8h3enc3QUT8stouTAdXwOpQeQI/iWERPop9+vO0SMcSw++OHX9Ne0M0EypyL02zH2N0HJPcJWI5X7CNxxhPgExiPwdBkoGUx8Sqm0wqcJroEtNkrZMstSx5VcPSxdjIck=
+	t=1785529845; cv=none; b=rBjw4qr49k/w7ysWM7Qc3VAUruGpagGj/EMGTiKIk4qEARHhIMUSuZJXdqYs9/ZnkRQtsNB+Imhs9te604M6B6wPPkHzOFVVSSkwOvRlsqCy58HThHuLWh7oYWuQkSNhzvFN1Lrt66N8KbH1dj91eDpGXDeCNpswt1illEWrgHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785529842; c=relaxed/simple;
-	bh=4BkVH0/j/Gwh34+8M3f7Tf2d6QCZi99x/X2fObTdrXo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HGNf7ulc9Mhn3Um1L0rAbbysE7LUlHaY803wP3L56ifcULEjphXDQrX1DWuaSUDahyw474fCATpufv0Oy2kYcCBtHzbGM3EO0prT3cNBeQ5+wD6eslhlvS0PXhM3yXP7JM3GJ097YRQS0mD6COcTGfAABb6K0lXHMu6oMwR1/8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WmE5Y5nb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785529845; c=relaxed/simple;
+	bh=k6E9T3RdSQ8la9/9Bg2w9Nv7e++ulTqGtk8Wi6e/JeA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=b5f941B2Ar9qbDCuDZE/6JnYJlz+EWWEhQ5g4QXw6LRzOiIn7oAJRFaV4jJ/pdYdFjSJlN5YpsJdIvgJyVer1KkTZrO/x6H02io9OEhIkc0JwAn0jvUKUbaHs0TMm3FfbgQX2H7sa80Xz73/ZiHis7nRFShOy1lpcDq0woEmXYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVM+wHcZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WmE5Y5nb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C09C1F00ACF;
-	Fri, 31 Jul 2026 20:30:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVM+wHcZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36FB1F00ADE;
+	Fri, 31 Jul 2026 20:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785529840;
-	bh=fQ4AaC8H0CX0x0IrCa68P6L0DHE1akOk2IAMbYKQ2xI=;
-	h=From:To:Cc:Subject:Date;
-	b=WmE5Y5nbjMS4lZ+NQnVUkN4qJMqHRdNBCokV1Gh48zoNFACdD1Tv186SsL8eyK7Mb
-	 O75uiEwEk0Knd8BDnzDDk5z9HvAU6iv9XChQoD7JTKHMpFF0d6bqC9p74WYz9TEwkN
-	 TRCvi+hEmUK/qCeFbeulRPfq3VaNgTr2VsytDfmBO1INwNV3PvST/uPpETchmVoBn3
-	 G7cVc22o3paS3IPICkPnBolSnGQL7gnlYjPNbFknsXmQDCgwaa313mcG3GzFtoMbC1
-	 IHQ0YwAZlTQl+zUasJAQTbvQ3MA8HoRAv2w+2Vo1tWC/rW+BbRy4Sk+W8UziselNP/
-	 uMDICUZGs/Ilg==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5174AF40077;
-	Fri, 31 Jul 2026 16:30:39 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 31 Jul 2026 16:30:39 -0400
-X-ME-Sender: <xms:7wVtaqgBAgxBpg_ywiOymi5irlRB-WAcsNaJj9Z791bR-xuP_JsW2w>
-    <xme:7wVtagPst1GiIVziMgXPH2zbUR8k0Ce3mdHbF8-MBJp6ySmNiMAC9BSi1W5hXG0SP
-    yBC6DBsKObGREyWHNq6-RJXc2qdiiJEpyFsHM1Ogjr5Nj97PLhZFw>
-X-ME-Received: <xmr:7wVtale3iFW74MTca0H5aYq617WfKntbcrMdXtBkn6jO4KkYnMXbCJe7SneTVCntiSnRD2NmwNsGkYbuDBFpjd4eW10pHI_o>
-X-ME-Proxy-Cause: dmFkZTEd4/pmsDuZlwvEyfWP1meg6cHnYCF2dXuUGa6l8w8IY0R74pPF6Ji56vm7lwMe4e
-    wc755Qkaf/+LUMByk+RmBGNqoNJy820EjsB/M03QpZO9FyNJMZweSomkoCieWs4nqP+2IU
-    kOu8y1079cg+uga0ZazhoCnF+S5ezHTwnwZG2L7YP6iA3k+Rou9onwUeMZ4heXpUoyhmgu
-    qjvRZWRZE3pMEjRplJfD72B+py/OGAmQPpXsuav8wVU+8D0AkT2G+/dPMoePYojg19VOJb
-    58VUcUkiVZrVY97rDl1jKSehuh7PfWsovWTFd2OgW+me6gGLKTgxolf5geP/sYQo1I0eMg
-    VdYAIwopldjeWgA5wQUW+ZpHFJf6oT24HfAPEXt1XHdRca5I0PXdDgNBMBNYVefwUtIivy
-    N3WymnetCcu8G4exL1jPUJOmRLbZyeO7Vpuk5iqUUM1g4IhMgNVNaaPDM1WojKajN4aKT8
-    MXeLEOQ8BX0UZBdJPCfnNr87neoNZA2HjRwuEptWH+r8HtxkfguJ2gLVbTR8epHd0u0ki2
-    0Obxzok6969HZzurmj/U7bPj6FErfPpvQXALqBZosr0pw2m8tq1ZdmClL4zAGB6Vjptt9K
-    NMXOy9UXcOwOw1CcepyFtg1ZCRSrIG4iwDP6GEfyW0RZaAoThUnQNpSOBI3g
-X-ME-Proxy: <xmx:7wVtaix5QFR0TFYL4PI_oy-RZU0NHhxNB_MvekR_z_RtQSxYBszOlA>
-    <xmx:7wVtai2zXItB06FMh9pJJXrolFIGtsHu9PLZKLUn8VnfQdzrVrFwrA>
-    <xmx:7wVtahc4zxMF7lZkAWLRXUisnXXPFJaeq7XC0O2e6uLHOfDWuyPI5g>
-    <xmx:7wVtavUcj4XgRYAYfXbLmDhEfj7jfbUC2j5lavHrb7hWMLJdLbd3iQ>
-    <xmx:7wVtah-HBCE3fw_2DvGddtLEtT6IlAPHSaYIlbkxdIPWpoVhye8X0oqw>
+	s=k20260515; t=1785529842;
+	bh=WiO5r9en3b3j6Z1SoF27ACEmDDEt+2SFG5r2qfaLJ+U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bVM+wHcZcmlCkJsJyu6Hkza2i8CtybDdk0EFmBTHq7nMdb/wFHl72S0szDjsxYLvk
+	 mq9tczjKsbzoTZMzQvz2lXBQlZh9UMJPwNgv/BGbXVM6qzJaWuw8wzzf99PAIIGNvo
+	 WBSR4b1IwZZBKEF+fd+Pmdb3CnxKIEflo/GUmN0TR9/2Sv4WQOrXajC9KEs9jgpz2W
+	 3O0qEqNUgUZvr5DYvXudvtk1wOZVwKGJOUrxhHTWw2JhP1FkssYRIxKbnYEaDOYNHj
+	 kJzv5yL/EE7Wh6dgWwpM9dmjUrG0DskplhDboRDKq6oF4btksPYP+IkQUW64la8OpS
+	 P2uWb9okz81sA==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E1A87F40077;
+	Fri, 31 Jul 2026 16:30:40 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Fri, 31 Jul 2026 16:30:40 -0400
+X-ME-Sender: <xms:8AVtagiO0R6lhTzUq8c4hfRREwnEv1BF_Z16oMoRXXajmiOrsPRlHA>
+    <xme:8AVtaja-acsIDeVxBAPK2Y6RVA_iaHKd_mNzjqu5XIV9sF-JSl65-WB8EwxRwiq-Z
+    vPstNve4HBRU52ZZkjVNNZ1SZmWjm16TZvNo9tuDMarAHLMSZjdAA>
+X-ME-Received: <xmr:8AVtauMgeXf2UAhC1G0VqqrptXLGC_9EXRLMy-AVQpIVJROYJyX7hkvHmfLi18y6id5ZERoO1aEH2HorsmTFjxEFZ8Khw4wu>
+X-ME-Proxy-Cause: dmFkZTFdRdBIF8ZH/aPs2g1lRw7GATpB3kPZdHQ9SRq3TCfYELIaqSZraFLrXlLQvfZ+Zw
+    L2FnPfSJd952oWr+y28mIfAsYcvh2g32U0J8iwTV49f0k9Q8hXOe/2BgVhInUEnjhmC2lX
+    03vYTAlN0bq9NjF03uLbRgPGL4766SVn/XbgM9h+YDdXpmZY+TYoTPsYcygLFMbtetKCiX
+    MKKxau189OoX/tBJGac9kkLntk5lYAb6ORV5iOKO0UE2KpFdBfn5cZVhjAZINCJF+DQAjd
+    IJX9TqJvKbTOKjLKBWundtWMSfFqKbkgkDYizysOgKGZkbbhOs1gMmPcuy0Gf54a13j8SY
+    BsLS4AhaphsYC31TNG3SgAjWtldfFFLoqnwREbfJsO18aSConmL5I8Ko/dYwJS0xO9XdlI
+    08ZIoev6MdmKsrc9XJWrbgki7BUAQeMt+8cF8SkUl8lmNzbr+CVkPY7K0HZVOM4znHeF2w
+    iBTUweF5HV6Pn6dKOoBMOaswFmdVkSFMENwkQknMeNXUVgFJ1h+9nfs0EE//kEu8ii+JsM
+    zSsB07IV1Dp/xm1N3dazcJLt7i0+CTnQesSK37zkN8wuzdXmwDvvq7pKg2FSoxjyb4Ke6v
+    XSZnJ4Uqh1IksIwPUQaPJf2Y8jObTUbaIEBJCz+VCzdMw+ctDsLY1swtHd4g
+X-ME-Proxy: <xmx:8AVtasYWyvigcJbcMMFcYDr-kpTxCUUvogG-jsBxDGEiEm6PxMqeeA>
+    <xmx:8AVtamWbNMVVK0wmoCLBjmmy9klXDAAMk7vG4NNmDAnfVfnz9bzG4w>
+    <xmx:8AVtajBbyUWsP-KKD_lKQJ_uVH9HbIclH4t1pjFHNP5VQuo0c1x-Vw>
+    <xmx:8AVtaqJjzK98Kxo_5mXTiVZ1MR4ufEs4P0CnR8voS_cozDUzl0njCQ>
+    <xmx:8AVtapvHcycBsSUWPd1X-tfi8F2eZtYVKSPg3TRgkHDbty8hIE5py_6N>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 16:30:38 -0400 (EDT)
+ 31 Jul 2026 16:30:40 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -66,160 +67,155 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	"Miguel Ojeda" <ojeda@kernel.org>,
 	"Danilo Krummrich" <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [GIT PULL] [PATCH 00/24] Rust synchronization changes for v7.3
-Date: Fri, 31 Jul 2026 13:30:01 -0700
-Message-ID: <20260731203031.13679-1-boqun@kernel.org>
+	rust-for-linux@vger.kernel.org,
+	Joel Fernandes <joelagnelf@nvidia.com>
+Subject: [PATCH 01/24] preempt: Track NMI nesting to separate per-CPU counter
+Date: Fri, 31 Jul 2026 13:30:02 -0700
+Message-ID: <20260731203031.13679-2-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260731203031.13679-1-boqun@kernel.org>
+References: <20260731203031.13679-1-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Peter,
+From: Joel Fernandes <joelagnelf@nvidia.com>
 
-Please pull this Rust synchronization changes for v7.3 into tip.
+Move NMI nesting tracking from the preempt_count bits to a separate per-CPU
+counter (nmi_nesting). This is to free up the NMI bits in the preempt_count,
+allowing those bits to be repurposed for other uses.
 
-The major changes are the introduction of preempt_count backed interrupt
-disabling level tracking, i.e. the local_interrupt_{enable, disable}(),
-along with the user (the Rust SpinLockIrq). This should unblock a few
-drivers in Rust. For other changes, please refer the following change
-log.
+Reduce NMI_BITS from 4 to 1, using it only to detect if we're in an NMI.
+The per-CPU counter currently caps nesting at 15.
 
-The following changes since commit 5e601ab3615c86be7c4068ce992f94654693a032:
+[boqun: Solve Steven Rostedt's comment on the BUG_ON() condition]
+[boqun: Use preempt_count_set() in __nmi_exit() to avoid underflow]
 
-  futex: Optimise the size check get_futex_key() (2026-07-29 13:17:52 +0200)
+Suggested-by: Boqun Feng <boqun@kernel.org>
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Boqun Feng <boqun@kernel.org>
+Link: https://patch.msgid.link/20260121223933.1568682-3-lyude@redhat.com
+---
+ include/linux/hardirq.h                        | 17 +++++++++++++----
+ include/linux/preempt.h                        |  9 +++++++--
+ kernel/softirq.c                               |  2 ++
+ tools/testing/selftests/bpf/bpf_experimental.h |  2 +-
+ 4 files changed, 23 insertions(+), 7 deletions(-)
 
-are available in the Git repository at:
+diff --git a/include/linux/hardirq.h b/include/linux/hardirq.h
+index d57cab4d4c06..8d4895531a45 100644
+--- a/include/linux/hardirq.h
++++ b/include/linux/hardirq.h
+@@ -10,6 +10,8 @@
+ #include <linux/vtime.h>
+ #include <asm/hardirq.h>
+ 
++DECLARE_PER_CPU(unsigned int, nmi_nesting);
++
+ extern void synchronize_irq(unsigned int irq);
+ extern bool synchronize_hardirq(unsigned int irq);
+ 
+@@ -102,14 +104,17 @@ void irq_exit_rcu(void);
+  */
+ 
+ /*
+- * nmi_enter() can nest up to 15 times; see NMI_BITS.
++ * nmi_enter() can nest - nesting is tracked in a per-CPU counter.
+  */
+ #define __nmi_enter()						\
+ 	do {							\
+ 		lockdep_off();					\
+ 		arch_nmi_enter();				\
+-		BUG_ON(in_nmi() == NMI_MASK);			\
+-		__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);	\
++		/* Maximum NMI nesting is 15. */		\
++		BUG_ON(__this_cpu_read(nmi_nesting) >= 15);	\
++		__this_cpu_inc(nmi_nesting);			\
++		__preempt_count_add(HARDIRQ_OFFSET);		\
++		preempt_count_set(preempt_count() | NMI_MASK);	\
+ 	} while (0)
+ 
+ #define nmi_enter()						\
+@@ -124,8 +129,12 @@ void irq_exit_rcu(void);
+ 
+ #define __nmi_exit()						\
+ 	do {							\
++		unsigned int nesting;				\
+ 		BUG_ON(!in_nmi());				\
+-		__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);	\
++		__preempt_count_sub(HARDIRQ_OFFSET);		\
++		nesting = __this_cpu_dec_return(nmi_nesting);	\
++		if (!nesting)					\
++			preempt_count_set(preempt_count() & ~NMI_MASK);	\
+ 		arch_nmi_exit();				\
+ 		lockdep_on();					\
+ 	} while (0)
+diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+index d964f965c8ff..586f96688325 100644
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -17,6 +17,8 @@
+  *
+  * - bits 0-7 are the preemption count (max preemption depth: 256)
+  * - bits 8-15 are the softirq count (max # of softirqs: 256)
++ * - bits 16-19 are the hardirq count (max # of hardirqs: 16)
++ * - bit 20 is the NMI flag (no nesting count, tracked separately)
+  *
+  * The hardirq count could in theory be the same as the number of
+  * interrupts in the system, but we run all interrupt handlers with
+@@ -24,16 +26,19 @@
+  * there are a few palaeontologic drivers which reenable interrupts in
+  * the handler, so we need more than one bit here.
+  *
++ * NMI nesting depth is tracked in a separate per-CPU variable
++ * (nmi_nesting) to save bits in preempt_count.
++ *
+  *         PREEMPT_MASK:	0x000000ff
+  *         SOFTIRQ_MASK:	0x0000ff00
+  *         HARDIRQ_MASK:	0x000f0000
+- *             NMI_MASK:	0x00f00000
++ *             NMI_MASK:	0x00100000
+  * PREEMPT_NEED_RESCHED:	0x80000000
+  */
+ #define PREEMPT_BITS	8
+ #define SOFTIRQ_BITS	8
+ #define HARDIRQ_BITS	4
+-#define NMI_BITS	4
++#define NMI_BITS	1
+ 
+ #define PREEMPT_SHIFT	0
+ #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
+diff --git a/kernel/softirq.c b/kernel/softirq.c
+index 4425d8dce44b..10af5ed859e7 100644
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -88,6 +88,8 @@ EXPORT_PER_CPU_SYMBOL_GPL(hardirqs_enabled);
+ EXPORT_PER_CPU_SYMBOL_GPL(hardirq_context);
+ #endif
+ 
++DEFINE_PER_CPU(unsigned int, nmi_nesting);
++
+ /*
+  * SOFTIRQ_OFFSET usage:
+  *
+diff --git a/tools/testing/selftests/bpf/bpf_experimental.h b/tools/testing/selftests/bpf/bpf_experimental.h
+index 67ff7882299e..e4e12001fce9 100644
+--- a/tools/testing/selftests/bpf/bpf_experimental.h
++++ b/tools/testing/selftests/bpf/bpf_experimental.h
+@@ -367,7 +367,7 @@ extern int bpf_cgroup_read_xattr(struct cgroup *cgroup, const char *name__str,
+ #define PREEMPT_BITS	8
+ #define SOFTIRQ_BITS	8
+ #define HARDIRQ_BITS	4
+-#define NMI_BITS	4
++#define NMI_BITS	1
+ 
+ #define PREEMPT_SHIFT	0
+ #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
+-- 
+2.50.1 (Apple Git-155)
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git tags/rust-sync.20260731a
-
-for you to fetch changes up to 93ff5657a5f1d0d8577b58e66bc116a1e0f38a87:
-
-  rust: revocable: Use LKMM atomics instead of Rust atomics (2026-07-30 13:38:53 -0700)
-
-----------------------------------------------------------------
-Rust synchronization changes for v7.3:
-
-* Safe SpinLockIrq
-  - Introduce refcounted interrupt disabling and corresponding spinlock
-    primitives, which tracks the interrupt disabling "level" in
-    preempt_count, as a result, this set of primitives can automatically
-    restore the interrupt disabling status when the outermost critical
-    section exits.
-
-  - Based on the above, a SpinLockIrq is introduced on the Rust side,
-    the guard of which will automatically restore the interrupt
-    disabling status when dropped. This avoid playing unsafe games when
-    using irq disabled spinlocks.
-
-* Add synchronize_rcu() safe abstraction.
-
-* Generic memory barrier: this extends our Rust barrier primitives to
-  include more barriers for DMA as well.
-
-* Replace the atomic usage in Revocable with LKMM atomics.
------BEGIN PGP SIGNATURE-----
-
-iQFhBAABCABLFiEEj5IosQTPz8XU1wRHSXnow7UH+rgFAmptA2MbFIAAAAAABAAO
-bWFudTIsMi41KzEuMTIsMCwzERxib3F1bkBrZXJuZWwub3JnAAoJEEl56MO1B/q4
-UBAH/108a8dCkDaK3MUuS0SeuqY57EPwLCTE/k4gJK35XlF0fCpEPfFtqfEs6xkG
-E0rMhSx3bDmtfccEo16LOkmbcrSx3NSsc9KlSRiYRywptT+CRld5FPqmJqDd2nCh
-mYYUsNppEXFd4rUiGfKAcVeLHD+PCio0/ElNN7X3TCfQgtWUuDp4pcB23m9t6ste
-Re4idhKoTmqeKTX3N8AuQ0QMsr1FNNLu0ESpUv1n6/DrEB1g8XevF1J2PKYr9fxt
-aahCMk2qQF3vDCi4Ydh9o9AWqSkinU2yIW64ZBWRC2S7QBVRIrPAEtX4V/n7d/n+
-2irbb1ZuVu5zFD0/CyNkgyQM/og=
-=DzLT
------END PGP SIGNATURE-----
-
-
-Regards,
-Boqun
-
-----------------------------------------------------------------
-Boqun Feng (10):
-      preempt: Introduce HARDIRQ_DISABLE_BITS
-      preempt: Introduce __preempt_count_{sub, add}_return()
-      irq & spin_lock: Add counted interrupt disabling/enabling
-      locking: Switch to _irq_{disable,enable}() variants in cleanup guards
-      sched: Remove the unused preempt_offset parameter of __cant_sleep()
-      sched: Avoid signed comparison of preempt_count() in __cant_migrate()
-      preempt: Introduce HAS_SEPARATE_PREEMPT_RESCHED_BITS
-      arm64: sched/preempt: Enable HAS_SEPARATE_PREEMPT_RESCHED_BITS
-      irq: Optimize reschedule check in local_interrupt_enable()
-      rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
-
-Gary Guo (3):
-      rust: sync: Add helpers for mb, dma_mb and friends
-      rust: sync: Add generic memory barriers
-      rust: revocable: Use LKMM atomics instead of Rust atomics
-
-Heiko Carstens (1):
-      s390/preempt: Enable HAS_SEPARATE_PREEMPT_RESCHED_BITS
-
-Joel Fernandes (1):
-      preempt: Track NMI nesting to separate per-CPU counter
-
-Lyude Paul (6):
-      openrisc: Include <linux/cpumask.h> in smp.h
-      irq: Add KUnit test for refcounted interrupt enable/disable
-      rust: Introduce interrupt module
-      rust: sync: use super::* in spinlock.rs
-      rust: sync: Add SpinLockIrq
-      rust: sync: Introduce SpinLockIrq::lock_with() and friends
-
-Philipp Stanner (3):
-      rust: sync: Add abstraction for synchronize_rcu()
-      rust: revocable: Use safe synchronize_rcu() abstraction
-      rust: sync: Use safe synchronize_rcu() abstraction in poll
-
- arch/arm64/Kconfig                             |   1 +
- arch/arm64/include/asm/preempt.h               |  18 ++
- arch/openrisc/include/asm/smp.h                |   2 +
- arch/s390/Kconfig                              |   1 +
- arch/s390/include/asm/lowcore.h                |  13 +-
- arch/s390/include/asm/preempt.h                |  49 ++--
- arch/x86/Kconfig                               |   1 +
- arch/x86/include/asm/preempt.h                 |  61 +++--
- arch/x86/kernel/cpu/common.c                   |   2 +-
- include/asm-generic/preempt.h                  |  14 ++
- include/linux/hardirq.h                        |  41 ++-
- include/linux/interrupt_rc.h                   |  76 ++++++
- include/linux/kernel.h                         |   4 +-
- include/linux/preempt.h                        |  35 ++-
- include/linux/spinlock.h                       |  35 ++-
- include/linux/spinlock_api_smp.h               |  41 +++
- include/linux/spinlock_api_up.h                |  16 ++
- include/linux/spinlock_rt.h                    |  18 ++
- kernel/Kconfig.preempt                         |   4 +
- kernel/irq/Makefile                            |   1 +
- kernel/irq/refcount_interrupt_test.c           | 109 ++++++++
- kernel/locking/spinlock.c                      |  29 +++
- kernel/sched/core.c                            |  18 +-
- kernel/softirq.c                               |  22 +-
- lib/locking-selftest.c                         |   2 +-
- rust/helpers/barrier.c                         |  30 +++
- rust/helpers/helpers.c                         |   1 +
- rust/helpers/interrupt.c                       |  18 ++
- rust/helpers/spinlock.c                        |  15 ++
- rust/helpers/sync.c                            |   5 +
- rust/kernel/interrupt.rs                       |  89 +++++++
- rust/kernel/lib.rs                             |   1 +
- rust/kernel/revocable.rs                       |  28 ++-
- rust/kernel/sync.rs                            |   9 +-
- rust/kernel/sync/atomic/ordering.rs            |   2 +-
- rust/kernel/sync/barrier.rs                    | 127 +++++++---
- rust/kernel/sync/lock/global.rs                |   3 +
- rust/kernel/sync/lock/spinlock.rs              | 331 ++++++++++++++++++++++++-
- rust/kernel/sync/poll.rs                       |  10 +-
- rust/kernel/sync/rcu.rs                        |  16 ++
- tools/testing/selftests/bpf/bpf_experimental.h |   7 +-
- 41 files changed, 1184 insertions(+), 121 deletions(-)
- create mode 100644 include/linux/interrupt_rc.h
- create mode 100644 kernel/irq/refcount_interrupt_test.c
- create mode 100644 rust/helpers/interrupt.c
- create mode 100644 rust/kernel/interrupt.rs
