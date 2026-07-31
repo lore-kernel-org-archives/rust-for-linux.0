@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7AA37CD41;
-	Fri, 31 Jul 2026 20:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC3637AA77
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 20:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785529854; cv=none; b=J2+6nvDtLN2pUXnhWXxknJBIXIcezMTjQ34eD2PdyqJSg90g7jXbHL+JahKg8X75MHWw1kpvqjfmCLhIG4rNoWYEZS9uaWWRGS5szoLtDDDqYibghLfkFF2ysbH8sFx96u1QbMSRprbOJn46i1So6TNKSkGSTlNMEzm5t2IEwTg=
+	t=1785529856; cv=none; b=D2NGOYeumRXfxLn+6HVkKsHaG9J3EsVPYYnPmdF28Wp/aPqokvtqFvp5vVC34flidGSpW5tcU3Q+jDcfgsaMGei4XnIa5GzbUot6L6Hukcm6wDTjNg9N+o+r8q9/958jsoZ3Pji7TtJjzvfWFegnqnsEAvYLZahoW0GACjxIGEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785529854; c=relaxed/simple;
-	bh=bGbp7ZAovMFSYOk12em7HB3rK+s0+f5BMcq+64sn+xI=;
+	s=arc-20240116; t=1785529856; c=relaxed/simple;
+	bh=8OKC93kjB3OAypdTgsLvav/Sby5CFIUSiI4GpwugfeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVmCXvep9dbvr0ldzwNLW0fFEFni7a+xUCK9OpDKavkgsVX8abrogj4EpJvEoPbgGfUp8ruk4ywY+KgRS/6o+rfzeI0YgN/RfQKzRIcsMGI87wcQy9F58PdrxqrSz0df/btsJmQNA+JHjHzvsqHffdO1MSDUCVDuPEU7c4odh24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N18D/Gi/; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=EApwsuJAoUbHBiZoVPzeMoK6yKW9W5VBPJa2GonCUh97Z70MrKaRlRK5xyY9b/qxeU2x0cofIjYUK+N4mqUXGvgb8x/BNJP3R7jt6BA4a96Iy7Add7lxO1NTVrlYYv3ObVlmTxwrpW45gI9EsFcAu27WQg02XCtybsNJHxtPWKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=htBRWhnk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N18D/Gi/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437231F01558;
-	Fri, 31 Jul 2026 20:30:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="htBRWhnk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1721F00AC4;
+	Fri, 31 Jul 2026 20:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785529849;
-	bh=5OPx7quzXUSGt6ByZC5s4NaWSZlJv3l+K0FTPDFDBPE=;
+	s=k20260515; t=1785529852;
+	bh=IbUwG4eVfO2Hr5V4NtBdJhOCd9mCcXdlK71q0O4GZ2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N18D/Gi/z4RcA+Ro9K7tMf1Mg9WDD670V/x6FLoA7JndmUFsQa9QVnFsXT2e00Wgw
-	 jaz+nAg57XF35M4zVSh8kM/rUm7eIDw3nnrIoDjf7rrrurjKKO58lNbBL0+mC/G0pq
-	 h9+Bt4l1LREMs5Jp+30VFpUN0b2Kbu97TJuS8JclmrOrgCs3FADgiwVaU+j2EBdxUi
-	 /WJLe84/SeYFgG+M2YlNSqxZkaqnPVHoKM+7LzeoV4ioCzjjdlbKhpVBNaEhE5r7tt
-	 JF2YKNkyPhaGqxLB0CZ0bJsdJ9D3FImiKxmkEMcoAOW/7KKPK151X27x9d1MJcbpgZ
-	 KjnmvBh+9AmFg==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 71BD3F4007A;
-	Fri, 31 Jul 2026 16:30:48 -0400 (EDT)
+	b=htBRWhnkYkIibQ3i/CWMFx8xJlmExYUtHIORxKGTHNEHzPQsU54XIlEvyI0iRJzC9
+	 5EWxTNpSFcAXH9ds9/UwbNmQU+4rW1UAOcNLnV/5LBLK2Vr4rqb097sBHu9UsNXx6M
+	 Rvs9DM1piPn2asSNYcvxlKnkzncJZ1m4XllvpzyvpZyadrUVpNj+e01I1bQ1ndp4C8
+	 KwCp8iHmDIUxAZ/LrJ6yZewtiIzEeMFEm425ZZSOTvk4F5Dyr6bA/k4NespxD+vaDu
+	 t3CQvRXFKTkBaihkh2oPiwbY98ChPeHKgkmEtwDGkcol4hp87ttQ9I/wUjr28Kyub5
+	 +41C9MFv/q/0Q==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 49D0EF4007A;
+	Fri, 31 Jul 2026 16:30:51 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 31 Jul 2026 16:30:48 -0400
-X-ME-Sender: <xms:-AVtagYS5Tj19CTxjoHfRPoSrQibYSyk0aktEtf8dADMT7Sr87CRQQ>
-    <xme:-AVtaglYwgnfEYXiXi3jjUuL3nrg6PpARZIb6HYm8Puu1yaUs--7RpTtAuKyC815j
-    J7j3qjBKwUW7IYNl-Yk-GCz_KG78gkgPwGiDMTj1mop5kinG88t_A>
-X-ME-Received: <xmr:-AVtauUZjthHzavuW0ouuD7FgO_m_FIJrFQAtCTKrWcDi3wN6belQlqO6Fo71XghhNZnxF1mjToaKD3uPOoPIYdkYrXWNb-P>
-X-ME-Proxy-Cause: dmFkZTFdRdBIF8ZH/aPs2g1lRw7GATpB3kPZdHQ9SRq3TCfYELIaqSZraFLrXlLQvfZ+Zw
-    L2FnPfSJd952oWr+y28mIfAsYcvh2g32U0J8iwTV49f0k9Q8hXOe/2BgVhInUEnjhmC2lX
-    03vYTAlN0bq9NjF03uLbRgPGL4766SVn/XbgM9h+YDdXpmZY+TYoTPsYcygLFMbtetKCiX
-    MKKxau189OoX/tBJGac9kkLntk5lYAb6ORV5iOKO0UE2KpFdBfn5cZVhjAZINCJF+DQAjd
-    IJX9TqJvKbTOKjLKBWundtWMSfFqKbkgkDYizysOgKGZkbbhOs1gMmPcuy0Gf54a13j8cR
-    pRoCl8cr0A8gEDTfqmAcSL6gX7sjXZrmC7yrKNjSu0IamfpnIG/9xd76hqh+6hv2ROKCsD
-    swFhlt6jYTOmO5PBxXpLgRjGtqh360dZxELLjD2t4JwnvE4QfrX0eD+EODi97V2rgMQros
-    w0a+jIWhVLYesU1viaqj28r8Tml6H150tNPJMql9EtjA/9lQKhPGKQj3wj4oizPjHPeQw5
-    gG0x3cF9AUb2rVeEPZnpg31lekXFlpABqMhF/36zkGwg47FDc6/7SwSRa2HZZ3OwFELKbk
-    SbOI22rZQ3ZUArwpqOq0nUZn+tIIRH7CM5TEPtzGjPGJZYtJ6zIzeRABtblQ
-X-ME-Proxy: <xmx:-AVtaqID__IxbG1QaSE939eVmzpqJhBs_soak-h2_Cw-GWouiRgPAA>
-    <xmx:-AVtamurq0vkZnE9Spp60g58BU2nobmhZqrMwf5fDvaksslS6o_VLw>
-    <xmx:-AVtan2enoXHZcJmUCht6B6sfmhDFi6Wgnf1M6oaMpbdGuV3vy9F7g>
-    <xmx:-AVtamNa5SpjaCJ3VTKhzGgByjahpc1TAN0I9d7geq6eh8F3fC7QnQ>
-    <xmx:-AVtavWCVQfXcgSAS4IECh5WJ88cHos1lkWjs25XwG8mqddcBUuWOCow>
+  by phl-compute-06.internal (MEProxy); Fri, 31 Jul 2026 16:30:51 -0400
+X-ME-Sender: <xms:-wVtai9MSSHRsxbwS5VuIzdPD_Fbcb4TZlL7BPxe4YXFXlClFbn-ug>
+    <xme:-wVtan7xezRE6O_5xFeJ-fc2iTn9VXZoOe8Q0yrc1_GX3uj4KKjofOidr43rKb1Vw
+    toL_gcvVyGGwicpBXYmPm4g31d5EvEJP03Yb3uSFarXteo4ub8Uqjo>
+X-ME-Received: <xmr:-wVtaraOT7dcYYspzJuNoALYjkqa7TG0QcwurJQil27qVDp6SA59H7BTfngrgvXzGY2tmmh6hZG9WKlSPIgmDXZIIRnkWbW4>
+X-ME-Proxy-Cause: dmFkZTFIC2VVTLK13uDkALWshPgkkwS9DC5Q8ljHaA42IPRnmgkrxQSeK5HYsDRhN4GhLk
+    6Lg9dLbHgT0DH+qVaNoW+UUFxptAXHUIdqGwEJPczm0ywmTmF9/CSNIQrGZfaA0/SYDXt9
+    FCHeSX4ZePBeVl3Top6EjJd42yXsFqp+L0LPuLnabUXIo8fT3yX5hMg5WmOramFVWkXrXb
+    dtjJi0qTpjt7TXVawGUwOyoJ/Q6jP1wNaVQH+6xYGS7UXVpHVglHDWcX7SjmpbiByeHS7C
+    oLMM3JHkGXdP7WkAt31sGvl3IAmYfCODupTHvovIO6+oDBZmEBw2YefLw5AUKyninHXIXr
+    uU/aqZFDbwNRTuq+1lI9CTvFVdIPMn2W/4VbpaHwADVTXn7+LRw/juI6GV1qY58R3RNgFQ
+    W3lq0jHm9OqmqYu76jnoEZYpMtIHUw7gsMYB0j6tSirJ8Gb9xN6hizDFmhtK5jFBWtNM7e
+    3v34M0evk1u2PrF+7KdfkDWe0s+5yP56Q5k9D1bqwESGSlfvHh7PtiJmNDhrFsFIcBJlqz
+    9+QlAOSbV+rp5rFAlBW8OOYAr/K0c++465XjATKopuI70y7VP6Z1UQnse93nlYdQefsPME
+    JX3rVMdSY391nQrwT0v34tVUP7notG4f4YvRMj07GI1c7YQ0nKuNV6XLTD0Q
+X-ME-Proxy: <xmx:-wVtap-G_Yhsy4onW0JLkBfiTrh6N5N-M8kCI9S1qKZkCwQiSfxhmA>
+    <xmx:-wVtaiS_9Pn40SeFMRN40VivZ0BJBj7yk1h8zyP3j9RzrpKhAEQQ0Q>
+    <xmx:-wVtakI6AP8w2Fwg2hLkxdG80UGQTbxlD0UopYfoGbzYFr8KD82wdA>
+    <xmx:-wVtakSrA_t0MYI7JqkJl29JFrUbJxUGHXAb-Qvy-m6elAhaFHISfw>
+    <xmx:-wVtasIYVI5RrKquqtLYa0GZKZ5gnXNFu0iNZF3vblk5L3WN-YAA9nl4>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 16:30:47 -0400 (EDT)
+ 31 Jul 2026 16:30:50 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -68,9 +68,9 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	"Danilo Krummrich" <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH 06/24] irq: Add KUnit test for refcounted interrupt enable/disable
-Date: Fri, 31 Jul 2026 13:30:07 -0700
-Message-ID: <20260731203031.13679-7-boqun@kernel.org>
+Subject: [PATCH 08/24] sched: Remove the unused preempt_offset parameter of __cant_sleep()
+Date: Fri, 31 Jul 2026 13:30:09 -0700
+Message-ID: <20260731203031.13679-9-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260731203031.13679-1-boqun@kernel.org>
 References: <20260731203031.13679-1-boqun@kernel.org>
@@ -82,146 +82,60 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lyude Paul <lyude@redhat.com>
+The preempt_offset is always 0 in all the callsites of __cant_sleep(),
+hence remove it. It also allows us to clear the code a bit by stopping
+using a "preempt_count() > .." comparison.
 
-While making changes to the refcounted interrupt patch series, at some
-point on my local branch I broke something and ended up writing some kunit
-tests for testing refcounted interrupts as a result. So, let's include
-these tests now that we have refcounted interrupts.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260121223933.1568682-7-lyude@redhat.com
 ---
- kernel/irq/Makefile                  |   1 +
- kernel/irq/refcount_interrupt_test.c | 109 +++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+)
- create mode 100644 kernel/irq/refcount_interrupt_test.c
+ include/linux/kernel.h | 4 ++--
+ kernel/sched/core.c    | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
-index 86a2e5ae08f9..44c4d6fc502a 100644
---- a/kernel/irq/Makefile
-+++ b/kernel/irq/Makefile
-@@ -16,3 +16,4 @@ obj-$(CONFIG_SMP) += affinity.o
- obj-$(CONFIG_GENERIC_IRQ_DEBUGFS) += debugfs.o
- obj-$(CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR) += matrix.o
- obj-$(CONFIG_IRQ_KUNIT_TEST) += irq_test.o
-+obj-$(CONFIG_KUNIT) += refcount_interrupt_test.o
-diff --git a/kernel/irq/refcount_interrupt_test.c b/kernel/irq/refcount_interrupt_test.c
-new file mode 100644
-index 000000000000..b4f224595f26
---- /dev/null
-+++ b/kernel/irq/refcount_interrupt_test.c
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KUnit test for refcounted interrupt enable/disables.
-+ */
-+
-+#include <kunit/test.h>
-+#include <linux/interrupt_rc.h>
-+
-+#define TEST_IRQ_ON() KUNIT_EXPECT_FALSE(test, irqs_disabled())
-+#define TEST_IRQ_OFF() KUNIT_EXPECT_TRUE(test, irqs_disabled())
-+
-+/* ===== Test cases ===== */
-+static void test_single_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+}
-+
-+static void test_nested_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
-+
-+static void test_multiple_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
-+
-+static void test_irq_save(struct kunit *test)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_irq_restore(flags);
-+	TEST_IRQ_ON();
-+
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_irq_save(flags);
-+	TEST_IRQ_OFF();
-+	local_irq_restore(flags);
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
-+
-+static struct kunit_case test_cases[] = {
-+	KUNIT_CASE(test_single_irq_change),
-+	KUNIT_CASE(test_nested_irq_change),
-+	KUNIT_CASE(test_multiple_irq_change),
-+	KUNIT_CASE(test_irq_save),
-+	{},
-+};
-+
-+/* (init and exit are the same */
-+static int test_init(struct kunit *test)
-+{
-+	TEST_IRQ_ON();
-+
-+	return 0;
-+}
-+
-+static void test_exit(struct kunit *test)
-+{
-+	TEST_IRQ_ON();
-+}
-+
-+static struct kunit_suite refcount_interrupt_test_suite = {
-+	.name = "refcount_interrupt",
-+	.test_cases = test_cases,
-+	.init = test_init,
-+	.exit = test_exit,
-+};
-+
-+kunit_test_suite(refcount_interrupt_test_suite);
-+MODULE_AUTHOR("Lyude Paul <lyude@redhat.com>");
-+MODULE_DESCRIPTION("Refcounted interrupt unit test suite");
-+MODULE_LICENSE("GPL");
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index e5570a16cbb1..24414c79e59a 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -72,7 +72,7 @@ extern int dynamic_might_resched(void);
+ #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+ extern void __might_resched(const char *file, int line, unsigned int offsets);
+ extern void __might_sleep(const char *file, int line);
+-extern void __cant_sleep(const char *file, int line, int preempt_offset);
++extern void __cant_sleep(const char *file, int line);
+ extern void __cant_migrate(const char *file, int line);
+ 
+ /**
+@@ -95,7 +95,7 @@ extern void __cant_migrate(const char *file, int line);
+  * this macro will print a stack trace if it is executed with preemption enabled
+  */
+ # define cant_sleep() \
+-	do { __cant_sleep(__FILE__, __LINE__, 0); } while (0)
++	do { __cant_sleep(__FILE__, __LINE__); } while (0)
+ # define sched_annotate_sleep()	(current->task_state_change = 0)
+ 
+ /**
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 96226707c2f6..aa116daf21bd 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9199,7 +9199,7 @@ void __might_resched(const char *file, int line, unsigned int offsets)
+ }
+ EXPORT_SYMBOL(__might_resched);
+ 
+-void __cant_sleep(const char *file, int line, int preempt_offset)
++void __cant_sleep(const char *file, int line)
+ {
+ 	static unsigned long prev_jiffy;
+ 
+@@ -9209,7 +9209,7 @@ void __cant_sleep(const char *file, int line, int preempt_offset)
+ 	if (!IS_ENABLED(CONFIG_PREEMPT_COUNT))
+ 		return;
+ 
+-	if (preempt_count() > preempt_offset)
++	if (preempt_count())
+ 		return;
+ 
+ 	if (time_before(jiffies, prev_jiffy + HZ) && prev_jiffy)
 -- 
 2.50.1 (Apple Git-155)
 
