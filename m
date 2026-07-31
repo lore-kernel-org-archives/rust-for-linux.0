@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF9837A85E
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 20:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7AA37CD41;
+	Fri, 31 Jul 2026 20:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785529852; cv=none; b=c+t2UAV5gZnoXxYU1Mns+qHj/5R5OeAvdlQ12O+GrMyHeFFNWhOzE4jnoD01CHY71Mjf9cqNDU9mE6jpt9sgDknhkzpnhdUiR51fklUSoRZQJWIVZSkA2xZjjzZqC/0/SqSzhlR8C3ro8Sa9cDRhNGLmkinzlCZnzZqEa444YJg=
+	t=1785529854; cv=none; b=J2+6nvDtLN2pUXnhWXxknJBIXIcezMTjQ34eD2PdyqJSg90g7jXbHL+JahKg8X75MHWw1kpvqjfmCLhIG4rNoWYEZS9uaWWRGS5szoLtDDDqYibghLfkFF2ysbH8sFx96u1QbMSRprbOJn46i1So6TNKSkGSTlNMEzm5t2IEwTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785529852; c=relaxed/simple;
-	bh=YaVjrXKhfpqvIJygzREE5zKBOLGP3K/KF1IwfTEAxVo=;
+	s=arc-20240116; t=1785529854; c=relaxed/simple;
+	bh=bGbp7ZAovMFSYOk12em7HB3rK+s0+f5BMcq+64sn+xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLdCQ7IurAv2qh/+Dn2tDhyi/j7RjniuqytUEzU6r5wudyjuFr7F4q3apcRK7/77V7qJXKSWTKM2OsExuOmPjBhv0rxV5IkhRtZEEmxX8e8gaM8V/3bIODN4oPGAaWW+V5G5ScS/1Ha9okrVyQmhQGDKFiVrqE1SaWGvh+0JpFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NV1kmXLg; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=gVmCXvep9dbvr0ldzwNLW0fFEFni7a+xUCK9OpDKavkgsVX8abrogj4EpJvEoPbgGfUp8ruk4ywY+KgRS/6o+rfzeI0YgN/RfQKzRIcsMGI87wcQy9F58PdrxqrSz0df/btsJmQNA+JHjHzvsqHffdO1MSDUCVDuPEU7c4odh24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N18D/Gi/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NV1kmXLg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CB81F00ADE;
-	Fri, 31 Jul 2026 20:30:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N18D/Gi/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437231F01558;
+	Fri, 31 Jul 2026 20:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785529846;
-	bh=u8OFyi867RVcm393aEUm2p/F0THxOCKpMTZFIKs3ThQ=;
+	s=k20260515; t=1785529849;
+	bh=5OPx7quzXUSGt6ByZC5s4NaWSZlJv3l+K0FTPDFDBPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NV1kmXLgL8w4igoA7q0CvnAGyuQkefzpZQ+6Icvk4JS80KcW5OBxyQQlRW4VyH0UN
-	 1ihm2dQyV/ibl0LaiyqZ812xFCKfTzGBEVXyb1sBDiHSzHMfUp/+BpRE+kpZp8T11W
-	 F7DmZotbQNgGOlTlpgwUaKuNH0Me9v7ITef1RsmflHjtrFa801rxP6BhDpsBRYonuF
-	 aY0LfcrbfKiEkTDNJsH3XSo0ad3PzDcCPiGph45BPaq6KOapG/G8HNUQMbXLVJLJJ+
-	 VeiV7HEcLvxXx8Ogl2FVRpj1T9o7nipjwHKTXJnhnRpJzbhCcepGPv2n4pMdRY5+SQ
-	 SJooiGxTIOkCQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 77711F40077;
-	Fri, 31 Jul 2026 16:30:45 -0400 (EDT)
+	b=N18D/Gi/z4RcA+Ro9K7tMf1Mg9WDD670V/x6FLoA7JndmUFsQa9QVnFsXT2e00Wgw
+	 jaz+nAg57XF35M4zVSh8kM/rUm7eIDw3nnrIoDjf7rrrurjKKO58lNbBL0+mC/G0pq
+	 h9+Bt4l1LREMs5Jp+30VFpUN0b2Kbu97TJuS8JclmrOrgCs3FADgiwVaU+j2EBdxUi
+	 /WJLe84/SeYFgG+M2YlNSqxZkaqnPVHoKM+7LzeoV4ioCzjjdlbKhpVBNaEhE5r7tt
+	 JF2YKNkyPhaGqxLB0CZ0bJsdJ9D3FImiKxmkEMcoAOW/7KKPK151X27x9d1MJcbpgZ
+	 KjnmvBh+9AmFg==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 71BD3F4007A;
+	Fri, 31 Jul 2026 16:30:48 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Fri, 31 Jul 2026 16:30:45 -0400
-X-ME-Sender: <xms:9QVtarlUm1ctz8WyYoa0lVXAfJIaAzRx_3bWX6JBPqoEGPmMU6WpEg>
-    <xme:9QVtapNdAusYqgvOTuHiF1GkTFVWkJ5xYwdM1kQo1s1CQETy7apIXjfeNLRE3yD-r
-    3mgHAuj_Wa1NGiwa1jbUJwh-oUSkDrgspwaoVBMEacjLFh2-T1q6g>
-X-ME-Received: <xmr:9QVtanyJXpo7A1yDhCITYerRNUDJU4Cj74xb3gEzcAYZj0Gbpx5PxwnYY-LgVqa3QTlKwj9nSoiRKW0IGBw1PXniWRqAFMKG>
-X-ME-Proxy-Cause: dmFkZTFYc6116FG2quGqEuyKIxKnFMEmlYb32kQQ7CtbFGYD9qEYkru11crvm5k1myTjrD
-    mprk+Q3zryg6Sw+VBlHk+Fh2dsP+vkQ+R6SId6D6PQHJ2MNR0r6gfBCLOd3kp8148kZ7F/
-    KLgIA+5OGrlMzKnGLja63bpFSrAh19/D1KowErF7/fMLoXr6/uBxuTdAfInIovWJuydywf
-    zjiEDrBy2ZQGTG+wDuq3UDJInF4v///JGqWliNx3oB8ndvgTYjGjYM24OlzqaeVHYGQ/UH
-    n/uNgL2CgUXmcpbS+mAJlGjkfOgTDC/OpURLEQyF+W0WAZBtt5IfiFk+NFnrr0x50+KqCH
-    wBaR2L1NGEhuJ5gFtE9UfELjCUn20ByVkTai443w5pGYQyilOMUTcSvnCN5pJbLS/Xl8Km
-    /2t5w9SqtaJ6T5RX/6w/8CArOQTwePpOIBreezPuQw2Zuwr3mEfNdDsNNde15wJtoO3T5y
-    U0DQYel3bjf/sEaGpRn1PWSr9xiCPwyDv1i14QGnQZp/d52dEOyAuxUT1obdfvm/pK2h26
-    7SKHwU14cj5U8T7XgUXNRb9GMlLV48lYmE/KJJ/7VNaGvRbun958yK+0nzFe5CFkaMjtW/
-    Ey233q2kGhKJlmOXFWY3z3YsUtPOKR/ZviUo5Eheuojtsq2291zhyyTVU0UQ
-X-ME-Proxy: <xmx:9QVtausVfQvVBjHKsLP4st3tMAY-1JcpkxmpBNP4rfeEj6jCukJvBg>
-    <xmx:9QVtaiZ8wtj3eq_oI4gLmGGgPSgCjtnxEVOngqDbxRuUBge-wEtMww>
-    <xmx:9QVtal1zC6EEEPKzJX-CUYT44gG61_kXImAkFE5ctMvjIH5AE5ec3A>
-    <xmx:9QVtasscJTwGT7Q3ZFSEPvjIlQU_ECRHy8lg54RU5Kug2F3Cw5zSgA>
-    <xmx:9QVtahB0Yd8-_LrpceqGuqNCNfayVPrd7uxwYKvVeJlM10eezAi1x9LW>
+  by phl-compute-05.internal (MEProxy); Fri, 31 Jul 2026 16:30:48 -0400
+X-ME-Sender: <xms:-AVtagYS5Tj19CTxjoHfRPoSrQibYSyk0aktEtf8dADMT7Sr87CRQQ>
+    <xme:-AVtaglYwgnfEYXiXi3jjUuL3nrg6PpARZIb6HYm8Puu1yaUs--7RpTtAuKyC815j
+    J7j3qjBKwUW7IYNl-Yk-GCz_KG78gkgPwGiDMTj1mop5kinG88t_A>
+X-ME-Received: <xmr:-AVtauUZjthHzavuW0ouuD7FgO_m_FIJrFQAtCTKrWcDi3wN6belQlqO6Fo71XghhNZnxF1mjToaKD3uPOoPIYdkYrXWNb-P>
+X-ME-Proxy-Cause: dmFkZTFdRdBIF8ZH/aPs2g1lRw7GATpB3kPZdHQ9SRq3TCfYELIaqSZraFLrXlLQvfZ+Zw
+    L2FnPfSJd952oWr+y28mIfAsYcvh2g32U0J8iwTV49f0k9Q8hXOe/2BgVhInUEnjhmC2lX
+    03vYTAlN0bq9NjF03uLbRgPGL4766SVn/XbgM9h+YDdXpmZY+TYoTPsYcygLFMbtetKCiX
+    MKKxau189OoX/tBJGac9kkLntk5lYAb6ORV5iOKO0UE2KpFdBfn5cZVhjAZINCJF+DQAjd
+    IJX9TqJvKbTOKjLKBWundtWMSfFqKbkgkDYizysOgKGZkbbhOs1gMmPcuy0Gf54a13j8cR
+    pRoCl8cr0A8gEDTfqmAcSL6gX7sjXZrmC7yrKNjSu0IamfpnIG/9xd76hqh+6hv2ROKCsD
+    swFhlt6jYTOmO5PBxXpLgRjGtqh360dZxELLjD2t4JwnvE4QfrX0eD+EODi97V2rgMQros
+    w0a+jIWhVLYesU1viaqj28r8Tml6H150tNPJMql9EtjA/9lQKhPGKQj3wj4oizPjHPeQw5
+    gG0x3cF9AUb2rVeEPZnpg31lekXFlpABqMhF/36zkGwg47FDc6/7SwSRa2HZZ3OwFELKbk
+    SbOI22rZQ3ZUArwpqOq0nUZn+tIIRH7CM5TEPtzGjPGJZYtJ6zIzeRABtblQ
+X-ME-Proxy: <xmx:-AVtaqID__IxbG1QaSE939eVmzpqJhBs_soak-h2_Cw-GWouiRgPAA>
+    <xmx:-AVtamurq0vkZnE9Spp60g58BU2nobmhZqrMwf5fDvaksslS6o_VLw>
+    <xmx:-AVtan2enoXHZcJmUCht6B6sfmhDFi6Wgnf1M6oaMpbdGuV3vy9F7g>
+    <xmx:-AVtamNa5SpjaCJ3VTKhzGgByjahpc1TAN0I9d7geq6eh8F3fC7QnQ>
+    <xmx:-AVtavWCVQfXcgSAS4IECh5WJ88cHos1lkWjs25XwG8mqddcBUuWOCow>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 16:30:44 -0400 (EDT)
+ 31 Jul 2026 16:30:47 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -67,11 +67,10 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	"Miguel Ojeda" <ojeda@kernel.org>,
 	"Danilo Krummrich" <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Stafford Horne <shorne@gmail.com>
-Subject: [PATCH 04/24] openrisc: Include <linux/cpumask.h> in smp.h
-Date: Fri, 31 Jul 2026 13:30:05 -0700
-Message-ID: <20260731203031.13679-5-boqun@kernel.org>
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 06/24] irq: Add KUnit test for refcounted interrupt enable/disable
+Date: Fri, 31 Jul 2026 13:30:07 -0700
+Message-ID: <20260731203031.13679-7-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260731203031.13679-1-boqun@kernel.org>
 References: <20260731203031.13679-1-boqun@kernel.org>
@@ -85,74 +84,144 @@ Content-Transfer-Encoding: 8bit
 
 From: Lyude Paul <lyude@redhat.com>
 
-While OpenRISC currently doesn't fail to build upstream, it appears that
-include <asm/smp.h> in the right headers is enough to break that -
-primarily because OpenRISC's asm/smp.h header doesn't actually provide any
-definition for struct cpumask. Which means the only reason we aren't
-failing to build kernel is because we've been lucky enough that every spot
-including asm/smp.h already has definitions for struct cpumask pulled in.
-
-This became evident when trying to work on a patch series for adding
-ref-counted interrupt enable/disables to the kernel, where introducing a
-new interrupt_rc.h header suddenly introduced a build error on OpenRISC:
-
-     In file included from include/linux/interrupt_rc.h:17,
-                      from include/linux/spinlock.h:60,
-                      from include/linux/mmzone.h:8,
-                      from include/linux/gfp.h:7,
-                      from include/linux/mm.h:7,
-                      from arch/openrisc/include/asm/pgalloc.h:20,
-                      from arch/openrisc/include/asm/io.h:18,
-                      from include/linux/io.h:12,
-                      from drivers/irqchip/irq-ompic.c:61:
-     arch/openrisc/include/asm/smp.h:21:59: warning: 'struct cpumask'
-     declared inside parameter list will not be visible outside of this
-     definition or declaration
-        21 | extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
-           |                                                           ^~~~~~~
-     arch/openrisc/include/asm/smp.h:23:54: warning: 'struct cpumask'
-     declared inside parameter list will not be visible outside of this
-     definition or declaration
-        23 | extern void set_smp_cross_call(void (*)(const struct cpumask *, unsigned int));
-           |                                                      ^~~~~~~
-     drivers/irqchip/irq-ompic.c: In function 'ompic_of_init':
-  >> drivers/irqchip/irq-ompic.c:191:28: error: passing argument 1 of
-     'set_smp_cross_call' from incompatible pointer type
-     [-Werror=incompatible-pointer-types]
-       191 |         set_smp_cross_call(ompic_raise_softirq);
-           |                            ^~~~~~~~~~~~~~~~~~~
-           |                            |
-           |                            void (*)(const struct cpumask *, unsigned int)
-     arch/openrisc/include/asm/smp.h:23:32: note: expected 'void (*)(const
-     struct cpumask *, unsigned int)' but argument is of type 'void
-     (*)(const struct cpumask *, unsigned int)'
-        23 | extern void set_smp_cross_call(void (*)(const struct cpumask *, unsigned int));
-
-To fix this, let's take an example from the smp.h headers of other
-architectures (x86, hexagon, arm64, probably more): just include
-linux/cpumask.h at the top.
+While making changes to the refcounted interrupt patch series, at some
+point on my local branch I broke something and ended up writing some kunit
+tests for testing refcounted interrupts as a result. So, let's include
+these tests now that we have refcounted interrupts.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
-Acked-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260121223933.1568682-5-lyude@redhat.com
+Link: https://patch.msgid.link/20260121223933.1568682-7-lyude@redhat.com
 ---
- arch/openrisc/include/asm/smp.h | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/irq/Makefile                  |   1 +
+ kernel/irq/refcount_interrupt_test.c | 109 +++++++++++++++++++++++++++
+ 2 files changed, 110 insertions(+)
+ create mode 100644 kernel/irq/refcount_interrupt_test.c
 
-diff --git a/arch/openrisc/include/asm/smp.h b/arch/openrisc/include/asm/smp.h
-index 007296f160ef..84653aaffa96 100644
---- a/arch/openrisc/include/asm/smp.h
-+++ b/arch/openrisc/include/asm/smp.h
-@@ -9,6 +9,8 @@
- #ifndef __ASM_OPENRISC_SMP_H
- #define __ASM_OPENRISC_SMP_H
- 
-+#include <linux/cpumask.h>
+diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
+index 86a2e5ae08f9..44c4d6fc502a 100644
+--- a/kernel/irq/Makefile
++++ b/kernel/irq/Makefile
+@@ -16,3 +16,4 @@ obj-$(CONFIG_SMP) += affinity.o
+ obj-$(CONFIG_GENERIC_IRQ_DEBUGFS) += debugfs.o
+ obj-$(CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR) += matrix.o
+ obj-$(CONFIG_IRQ_KUNIT_TEST) += irq_test.o
++obj-$(CONFIG_KUNIT) += refcount_interrupt_test.o
+diff --git a/kernel/irq/refcount_interrupt_test.c b/kernel/irq/refcount_interrupt_test.c
+new file mode 100644
+index 000000000000..b4f224595f26
+--- /dev/null
++++ b/kernel/irq/refcount_interrupt_test.c
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * KUnit test for refcounted interrupt enable/disables.
++ */
 +
- #include <asm/spr.h>
- #include <asm/spr_defs.h>
- 
++#include <kunit/test.h>
++#include <linux/interrupt_rc.h>
++
++#define TEST_IRQ_ON() KUNIT_EXPECT_FALSE(test, irqs_disabled())
++#define TEST_IRQ_OFF() KUNIT_EXPECT_TRUE(test, irqs_disabled())
++
++/* ===== Test cases ===== */
++static void test_single_irq_change(struct kunit *test)
++{
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++}
++
++static void test_nested_irq_change(struct kunit *test)
++{
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
++}
++
++static void test_multiple_irq_change(struct kunit *test)
++{
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
++
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
++}
++
++static void test_irq_save(struct kunit *test)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	TEST_IRQ_OFF();
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_OFF();
++	local_irq_restore(flags);
++	TEST_IRQ_ON();
++
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_irq_save(flags);
++	TEST_IRQ_OFF();
++	local_irq_restore(flags);
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
++}
++
++static struct kunit_case test_cases[] = {
++	KUNIT_CASE(test_single_irq_change),
++	KUNIT_CASE(test_nested_irq_change),
++	KUNIT_CASE(test_multiple_irq_change),
++	KUNIT_CASE(test_irq_save),
++	{},
++};
++
++/* (init and exit are the same */
++static int test_init(struct kunit *test)
++{
++	TEST_IRQ_ON();
++
++	return 0;
++}
++
++static void test_exit(struct kunit *test)
++{
++	TEST_IRQ_ON();
++}
++
++static struct kunit_suite refcount_interrupt_test_suite = {
++	.name = "refcount_interrupt",
++	.test_cases = test_cases,
++	.init = test_init,
++	.exit = test_exit,
++};
++
++kunit_test_suite(refcount_interrupt_test_suite);
++MODULE_AUTHOR("Lyude Paul <lyude@redhat.com>");
++MODULE_DESCRIPTION("Refcounted interrupt unit test suite");
++MODULE_LICENSE("GPL");
 -- 
 2.50.1 (Apple Git-155)
 
