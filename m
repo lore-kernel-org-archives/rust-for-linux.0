@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0256390992
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 20:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE01638A701
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 20:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785529872; cv=none; b=fnC5K5KJ9THvYq/FIcJrUYb0/atpb2VpgDY8s+P+Q6zA4OaY1BJB/wUmA00FHF2LwMRMnrOHv+4Ro82OVTfQK+PrzI1750af81P3aBviaGkVFLKUFnj2N8qybCAtEdble2X7pD5OABdBHwUbaiJpXswam6RMvLgNXJt7DiXRBFI=
+	t=1785529874; cv=none; b=fqVzyAYNZ+dVmnxAgg4PUut+nP5PLTe0wXISs0MykNNq6lWRQKi0m4cudSEpOmhuVF/fr4HlyyjmgSbeDPKfuLtWYnz6VP8iuzjKKC6/fqiL3Uvbx2L05KhQOtt63+qg797xoi0hBwtvT4YaqlFhl7k8QXXALWN1sY5b4MCr++I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785529872; c=relaxed/simple;
-	bh=2f7f3gbtPo/Uq28ZOW5NymCCIuSaR6PvKX7O22oZJ9w=;
+	s=arc-20240116; t=1785529874; c=relaxed/simple;
+	bh=/R9Xt2cq7wR9LFr7KE/IiwroZVU+4G7lhcrzcWPSLzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sifuEDXLjGX2bm1w2NMHrTeArN5mFtlfki5j/mRnPPrGCRD0slpnHJGWeE7dtQN+ek1k7Ol+iQu9RR+2evg5DQw0tLhywvqPSJDtOHUadjTbpkibHHT9iXW4Qpwbdnn/zmSp8gH3l8+3Udl+Lp3jw600TV1taZwHdJhU/HNPyd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ma3yYNF8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Z1lHIxYp+IZcuiPjrR6BBrP3EHXEJFHZSWdIDfOSEbRvKjykYqtcn9TH38j9Mjn9+87vdwhGJnpAjx/ir/EvQNVScOK29IS9/RYcSLjbVulPw9jw1nPDjeiv1a+xugo30w33+/5qU0JpJ+75/gqVSNxhvwiY89iH0F3NiCoNQ00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHAOdbwa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ma3yYNF8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1121F00ADF;
-	Fri, 31 Jul 2026 20:31:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHAOdbwa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FD01F00ACA;
+	Fri, 31 Jul 2026 20:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785529870;
-	bh=MsIDZiwSPmskK9n5nhtTssL2Y1o3vOS3ZV20vncjul0=;
+	s=k20260515; t=1785529872;
+	bh=yS8RNIIgYjKxdhvNp8TorwPekD/QFVeixdVx0VMVBqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ma3yYNF8izHoiKeiPE/lFK8PynI/lAU9XNRinAfqcoUzj9O0LCQ101kkcqJEsgwdf
-	 wavpDCiVp0m8MiPjixK/3kH8Uq0bEpJdYAh4G8FdmFXjgUFFRB2MGn+c6y6xp9dMLs
-	 kOXkJoYxve04Ia2898cAG9k7jeITyctCLO9mAZDTrfZJmdUGEUeoFTvwDhVNeAC+35
-	 gbbpEeZar9J7g2aNkehRWSoH2To0nZlQ+pXoQJURdvn761BsCCR8SvsbNrV3njVJZQ
-	 5G52GJcrMJKf27ttsFF5Nu/A7DJYEL8M3qKRd3x9y4tR0CDFHzmenphHuj1kAcoQxT
-	 6/sJHA0zFJTyw==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 58F68F4007B;
-	Fri, 31 Jul 2026 16:31:09 -0400 (EDT)
+	b=HHAOdbwaPRnuPgkWwGKGLx/kAs5QH9BjzRlyvjTMak/YpUTem64q61grCCTFMC+bV
+	 UbjzT3RMv8POgW/sDtcGbfi+L2kblk4KBxKtXM3SZ66O9nTe3M3M/fifW4Ht4dzhQ0
+	 8762rSYkNTYJIRnXNNNcSjmvynSXfqUdCpo2ToC3rMZHEXeW1KWyFb8Q/+p3Z+1uet
+	 CSaqk+6lrBbG6T8M4rxQ09RtIOz0PWEcuG9ujLRvozR2V/Qqa9FCygOcMQKH24gCW0
+	 mCSR5EJLCz0jlJARZ33UW9CJFL1e0rfqIZkRum2T1svxk84Dv5do2Oj2Wx4bkahOm1
+	 M37wObdArrfeA==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C78AFF4007C;
+	Fri, 31 Jul 2026 16:31:10 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 31 Jul 2026 16:31:09 -0400
-X-ME-Sender: <xms:DQZtarW-zKTM4S2GVIwW10Dclvz3i4z42VXtqXlqXaIMvJoGUKxlug>
-    <xme:DQZtat_llGpowB_h2qfbioSiE6TbPjSK7_0AWObfzaErMuBh9io8rTDL02pEvOmTb
-    Irq_CuYuw8t6sRIg-Is-Qz3GIsKoaP0JIAKwHFrV3NpskfShPFd_A>
-X-ME-Received: <xmr:DQZtatjZRiBRiUZWVU2afr7oWF3zvs-ZponaT2hr41MaeWehHLDApHyXAgTi1dOXrwgoO33K-85ZiTHHXGD_-oi--TQLKZ7O>
-X-ME-Proxy-Cause: dmFkZTEx/5S6G4+/qWahub76rD+/ZVHwV35J6FmUal1s+rCkFqtdmVSwk6K0IcMoYNBriQ
-    jzkD/QIWyBCXxFXrUxewwooRRYY1snGImAM8ms1J0rQ4yousOqpNJ30B7CHK//nNcomy4W
-    I6ocsiYNJ0mCNaJmOgh+Pf7hXCJ/QEJRpl7PHOpTLOD8FaU/mgJ38GevRTx88Y8aOyNMPA
-    RxPFyEJNVBAYxKhXvQwp05QVk4kSq+dG3VxPm0kHYbTYKcWf4HJeBmpgQRwXCF1tnzxJ3p
-    u5VrXdml3B2K+pxowi0aeuUo4V1i7eGjDAPpMqKgE9ULEmEwsndt/ZtUBMuM3XtcdFbydq
-    cozzsDoeyagIZHo14etb/oYSZt+8QWLZ7vnFKvZkxuFb8hDYpkszdxNLKkUQFE5Q+wCkoA
-    NPPhEQ4VvwBEIb7M6Uh/FXp8LvcPyre2JffvbgObG6y/e0lhAd3YxuPs3/Al+j4fy0vTCP
-    o1Vt3U7VAF156MFqK3yDvg1m80eIJ60n5bImutblaWA9uO2qC4yu55Og0GaylvElS6TGQv
-    XtpvGS3bSwgSJul1qk1tY4OLmFI3k8z+unbequ5U8jUCbl88j6ZdgSCzPQTkMpcDnPl/ay
-    v3DnwzcBnDQH9Isee1CU22DUuUYpGb92efjZLD4sDFIYVZsSzhSlOjSQXwQw
-X-ME-Proxy: <xmx:DQZtahf1aaQa-kklOVaZ0wq8wpt6XgFYlSPcwtkjrg9NH8xYBQE3eA>
-    <xmx:DQZtauIJr6rgGFVCV-mLCHbuNh5v7lC21ICDbWvGZ1YAm7S-I-H5bQ>
-    <xmx:DQZtamm0ajsZnZII2QjXNVfQd3AvxFpxBKmEHSCm-uIHjPo7sea9pg>
-    <xmx:DQZtaueWNOq_xB-F1dqSxqOzRn_LGDgIOBPAahI9hZ7xkxMMaSIm-g>
-    <xmx:DQZtavyZfb3FHaFJckkHM0AEUs3xLfUrZKuR097Gn2TbjsWV8sqdVhov>
+  by phl-compute-03.internal (MEProxy); Fri, 31 Jul 2026 16:31:10 -0400
+X-ME-Sender: <xms:DgZtagfYn9O4_iWrdqPSkYRdbm0wQ8AmjmNcDFml-MJOsP7qyDbtlw>
+    <xme:DgZtaslZznZOu8O6vLBULo4afIhcJXqksEdqc0110LjLPQiFHZ2_By2EN5JlPdNru
+    KfQKGfCVAuHnv2oqE26xUKbfBJG49LuN9rYpsWLRlyZYGExgi5H2w>
+X-ME-Received: <xmr:DgZtanpwmbqfE3I6RjfDwTkWKQGr5sIcNreGNK1A6D1L9KC4mzICJSfw1n5MBZAJ431wLMFhRRzBJEaY_TBrJOJBoEMNLihx>
+X-ME-Proxy-Cause: dmFkZTF86Va7Dqpiv0HRB/Rt3CM1ZfwUI8sFdbNEysl2vjWzKGQHPL0vtJNxMWzwq4RCT7
+    5MXz8yAQaenZ+l6ReNiQBMk90me+gM63MoAJ/OG6881cu1guy8MfcdgMgPRXqCdnOwY3UU
+    Yre4T7XNVpX+hYLj1cR+5sDPDlXBwMgddj0S3Pt9EBEeMQP2C2QxRT89euxxh1RusxuOUE
+    pjdPkRkdvSWh4KDKL7SA/RMgPi4/GzhXt7G4+N2ySbTjJeyTz6zE/2g6iZFhSAe8C+XsYy
+    rTsuNdtrWKoEzpDq2SUPcIxKOwDbQW+j2sU4NoAonSXuB6sJUYCYCWtPGQc2h06l1wGha3
+    VbqFlrpaSvkUv4cSFs/CIJZekmAwTH7l3kfd4bn136EBs1v7idVNEtI9xOp4t/6dYFYoZj
+    HNOiwWO7BCYFcV86/PgAej8VCrrAn4x35QwnZ5IqN4BBMr28qVpGCj6kJN1xx4dwTLLt7l
+    kFyGCjoNvm+ex0wlejYEREQe+6JPMXlzrlNlFaNFyE5mQoTWk3m4OxcpN0Oag2DIM720KN
+    jP/YnkStKA4tkGWd+eCWSdlduwDEMcYWRoClRGFG2purHU6z0ts5HIiGTGxaiKe4iJY6lR
+    megd0Ra+E6E9h6NTlhpvMgCOjoQcrVUbWV27mPjlI+HhP00RxJSjNfa7zK2w
+X-ME-Proxy: <xmx:DgZtahGkQeb3UNVsPxWzTYq3rf1X5q-UXq5iW56AEZpbCAjfAYc11w>
+    <xmx:DgZtalQmMZUjbakWLVACLIOpls7Dj3A5YokefBmNVJeLsLdF4LoJsw>
+    <xmx:DgZtavM8dw9GgJ-vgZE5qkh46oInFJZEePVHiOmGuJTxx2qGHBNfRg>
+    <xmx:DgZtaqm1bgE2_dxa9c-opZiSypTOBKxfZ5q0homd-gIQb0Y5MWkY8g>
+    <xmx:DgZtapb-tm-KZMFKcJKAvqEUnmYUCzIx__fD6WCNSFeKtCT2vpvZ_yCi>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 16:31:08 -0400 (EDT)
+ 31 Jul 2026 16:31:10 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -69,9 +69,9 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Philipp Stanner <phasta@kernel.org>
-Subject: [PATCH 20/24] rust: revocable: Use safe synchronize_rcu() abstraction
-Date: Fri, 31 Jul 2026 13:30:21 -0700
-Message-ID: <20260731203031.13679-21-boqun@kernel.org>
+Subject: [PATCH 21/24] rust: sync: Use safe synchronize_rcu() abstraction in poll
+Date: Fri, 31 Jul 2026 13:30:22 -0700
+Message-ID: <20260731203031.13679-22-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260731203031.13679-1-boqun@kernel.org>
 References: <20260731203031.13679-1-boqun@kernel.org>
@@ -88,45 +88,46 @@ From: Philipp Stanner <phasta@kernel.org>
 
 We now have a safe wrapper for the foreign function synchronize_rcu().
 
-Use it in revocable.rs.
+Use it in poll.rs.
 
 Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Onur Özkan <work@onurozkan.dev>
 Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260624150704.1504001-4-phasta@kernel.org
+Link: https://patch.msgid.link/20260624150704.1504001-5-phasta@kernel.org
 ---
- rust/kernel/revocable.rs | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ rust/kernel/sync/poll.rs | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-index 0f4ae673256d..f539603349f1 100644
---- a/rust/kernel/revocable.rs
-+++ b/rust/kernel/revocable.rs
-@@ -7,7 +7,11 @@
+diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
+index 0ec985d560c8..5aa0ce9ba01b 100644
+--- a/rust/kernel/sync/poll.rs
++++ b/rust/kernel/sync/poll.rs
+@@ -8,7 +8,11 @@
+     bindings,
+     fs::File,
+     prelude::*,
+-    sync::{CondVar, LockClassKey},
++    sync::{
++        rcu::synchronize_rcu,
++        CondVar,
++        LockClassKey, //
++    }, //
+ };
+ use core::{marker::PhantomData, ops::Deref};
  
- use pin_init::Wrapper;
+@@ -99,8 +103,6 @@ fn drop(self: Pin<&mut Self>) {
+         unsafe { bindings::__wake_up_pollfree(self.inner.wait_queue_head.get()) };
  
--use crate::{bindings, prelude::*, sync::rcu, types::Opaque};
-+use crate::{
-+    prelude::*,
-+    sync::rcu,
-+    types::Opaque, //
-+};
- use core::{
-     marker::PhantomData,
-     ops::Deref,
-@@ -161,8 +165,7 @@ unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
- 
-         if revoke {
-             if SYNC {
--                // SAFETY: Just an FFI call, there are no further requirements.
--                unsafe { bindings::synchronize_rcu() };
-+                rcu::synchronize_rcu();
-             }
- 
-             // SAFETY: We know `self.data` is valid because only one CPU can succeed the
+         // Wait for epoll items to be properly removed.
+-        //
+-        // SAFETY: Just an FFI call.
+-        unsafe { bindings::synchronize_rcu() };
++        synchronize_rcu();
+     }
+ }
 -- 
 2.50.1 (Apple Git-155)
 
