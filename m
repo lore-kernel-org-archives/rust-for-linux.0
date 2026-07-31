@@ -1,134 +1,118 @@
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEE640A953
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 16:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7275D478E52;
+	Fri, 31 Jul 2026 18:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785517105; cv=none; b=GLt/r/Q8gsSOU8vlIvB/zIZ+WKJDEf79CbxccVmlajGg4izBFDZN6jvJbJ68XAogW28nU5XcIeSCL6OIrDuZA/A7H8tjQdh0WAaKgiB0g3ZNkPn9nT81KNE03JXmBQhvDN5pidxCuSL2gVbdnQOFYjL6V6GPzkx82TtvZ7VBx3A=
+	t=1785523403; cv=none; b=uI3zdD97UxSV8MFYws9EZwZ845Zo64Vggnr0tJrH6nKFyYC7je4S3IZS8BcmHsEQn8fA227eRNElEc72nfV+GF70ALicksoh6LHSeSGR4QXPk0RZOnjvryuF1g4tG0tbvlZLEdd33CBRMfLQqXDXAxfr3IKjw5KscprKrdYxalA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785517105; c=relaxed/simple;
-	bh=7Wkc5vnPJfK8+T6cj+GxOwF6aP8t3LLmOUCwYz0pevc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eJ6ywt5LQddsv6DbL9zYscSuBYI4mO/g9VXKeoiaCX1K3r7dl/C2yKi7y0cZFaQN1AmDxh8ZlXg7dm7PKzKDWo1Tkr3JBTkZ5qRyMejbJGFdZIZ1ptQ/Tf4ppI6UP93ubrbnZJ/EjVBk8Aa8ZhAEG+glxuCG1myMsxuckSWkNXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QDupzw9e; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1785523403; c=relaxed/simple;
+	bh=QX8ngt/RJVbMf++KJL/LBPCKbYcnuLZIg6/5Rygib5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z6acxYHVUPUomp3wa6xV1WW28ezIMNaUbGiM9Xn0ZTWI8jIJzm7aazRTBKbmBZdY58zlHFuAsfe1HgXAgdp7P5JfHUIUEk9DVhSdYPnAMcka1/mbZDzKDastSJraVSLM8x04wwqnSkeFjoWHCdWlTZJnvTM+Z7Qear9ET8mtyXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=gzoExSRN; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=CRle3Rz5; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QDupzw9e"
-Message-ID: <191efe80-24d1-4aab-8746-21afb4c379bc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1785517090;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="gzoExSRN";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="CRle3Rz5"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hBZZ64kDxzMlGX;
+	Fri, 31 Jul 2026 20:37:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1785523070;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7Wkc5vnPJfK8+T6cj+GxOwF6aP8t3LLmOUCwYz0pevc=;
-	b=QDupzw9eNh0JVgtVkhnk9fpyAzqrfoSZcykUG5rIYn9PyeUrXBswOnBQUHvPKBV/p2MNUf
-	mfRJ1cQlIl9txEmp6iCYbDFObuLFKeBZy0GRG3CtTIljNnrDbkEdkJiywNamh8zB4FrxIM
-	8PggOuJ4D54cvOEyYOsxvLigg1zLIWo=
-Date: Sat, 1 Aug 2026 00:57:22 +0800
+	bh=QX8ngt/RJVbMf++KJL/LBPCKbYcnuLZIg6/5Rygib5s=;
+	b=gzoExSRNvHZcdOCPoO55JXjok5xMfupZPyI/NBgzPnR63eLTEuB//AEwjHH0xiPHUdU6UX
+	Je/NQrriZ+RAHLA6bLfodoQa70ANfsPdI0B9c1GVpg0o+C6MYvuzZtGCFMhRiqBtJM+rve
+	5zC8tVzK4v2wbmpfhBthQbe17HY6AWGMyP0NAbd1RP3T9GcGI7Z+KLCAnV/J8dDWSBYzNl
+	w/J4tqvtxKkPAW2buNOFJ2krpAj42XHbKJ1pNTiy1FW1vyoiHwMRSuRPqmT9rOfcUIW8ZA
+	8ww8GZH4bxTTX31rCvQRqsatj34bREJAzIUqGm6b9za6eYjAIijraDua+rbaKw==
+From: Maurice Hieronymus <mhi@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1785523068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QX8ngt/RJVbMf++KJL/LBPCKbYcnuLZIg6/5Rygib5s=;
+	b=CRle3Rz5W/Z6Iu/JZeK7rglhJKdRD8g1Qv6wYQ0gghE+uslGkZb85l2Cy/MCTCAz3ahKc7
+	wMfxejBSJPhmN9ykA53tH7BtzuhLaCY5KLbQ/QmqamAxYjs7HBuJGchwqt/I1crtHTekvD
+	CR/cz3jc5DfB41DJb+4GM3/7hZ9dJZd4fFPQSettPWa7ywhQt2Nb0Jeu8klf2nKLe/XbHp
+	i/cd4x5t2E8BzG95QG9GVu5iPYboX98nvpuCSff0uhc4OHrSzd14nSJjM8ngH4/ec3eSrs
+	I/VkWDh4O4WA0GTj6EwuGpJJlN9J1I4iuH8KkzBeCR/8Oc4bbKHf8Rq64xxAfw==
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Maurice Hieronymus <mhi@mailbox.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Drew Fustini <fustini@kernel.org>,
+	Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Boqun Feng <boqun@kernel.org>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-riscv@lists.infradead.org,
+	linux-pwm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 0/4] Clk improvements
+Date: Fri, 31 Jul 2026 20:37:33 +0200
+Message-ID: <20260731183735.15036-1-mhi@mailbox.org>
+In-Reply-To: <20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com>
+References: <20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v9 00/10] Fix missing fops.owner in Rust DRM/misc
- abstractions
-To: Gary Guo <gary@garyguo.net>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann
- <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
- Igor Korotin <igor.korotin@linux.dev>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
- linux-modules@vger.kernel.org, driver-core@lists.linux.dev,
- dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>
-References: <20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev>
- <CANiq72m59O-ruHUvUcZC7yCvu0KV0w_m5vMO4e0rxyHdRmihJw@mail.gmail.com>
- <68c43a03-5fa0-42a8-b886-2c756e39515e@linux.dev>
- <DKCWO60T6JPR.1P3AAJAATMXBI@garyguo.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <DKCWO60T6JPR.1P3AAJAATMXBI@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-MBO-RS-META: xyozd5q8pkgd7wa6h1p6spxmwcpuquit
+X-MBO-RS-ID: 693f47d480cfe3c056c
 
+Hi Daniel,
 
-On 8/1/26 00:43, Gary Guo wrote:
-> On Fri Jul 31, 2026 at 5:34 PM BST, Alvin Sun wrote:
->> Hi Miguel,
->>
->> Thanks for taking a look!
->>
->> On 7/31/26 14:46, Miguel Ojeda wrote:
->>> On Thu, Jul 23, 2026 at 4:11 AM Alvin Sun <alvin.sun@linux.dev> wrote:
->>>> base-commit: b7e5ac83cb16f7ffd11dc23736f84276602100ed
->>> Was this old tag used for some reason?
->> That was an oversight on my part - I forgot to rebase onto the latest
->> tag before sending v9. The series is now based on v7.2-rc4.
->>
->>>> prerequisite-change-id: 20260519-miscdev-use-format-9ab7e83b1c11:v3
->>>> prerequisite-patch-id: 405b334ff0d48ad350014f05a2321bdbaa025400
->>>> prerequisite-patch-id: 604b631c81d5423f4ebb2e12ba2d22e9ce371bfc
->>>> prerequisite-patch-id: cb550d94cefe01920e0d3ced2b2bcbecd76f3907
->>>> prerequisite-patch-id: 3bc830839742591460cb86d9472c04f4686dc600
->>>> prerequisite-patch-id: 571058244bc8c7088638d2e3225713011246c7e9
->>>> prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
->>>> prerequisite-patch-id: 3e202d988b56b88446f7535e90d3f00cf5f15701
->>> Are all these actually needed? Some seem unrelated (some were already
->>> applied too).
->> The prerequisites were just some import formatting changes that the
->> series depended on at the time. After rebasing onto v7.2-rc4, I was
->> able to drop all of them - the rebase was clean with no conflicts.
->>
->> I'll send v10 shortly.
-> If the patch applies cleanly then there's a no need to send a new version.
+at your suggestion [0] I rebased my `clk_rate_exclusive_get()` binding for
+pwm-th1520 on top of this series, so it is now waiting on it to land. As v5
+has not seen any comments in the last few weeks, I wanted to ask what the
+current status is.
 
-Sounds good. I'll hold off on v10 then. Thanks!
+If there are no blockers left and you expect it to be merged soon, I am
+happy to keep waiting. Otherwise I would offer to send my series standalone
+against the current `Clk` API and let you rebase on top of mine - it is the
+much smaller of the two, touching only `Clk::rate_exclusive_get()` and
+pwm_th1520.rs.
 
-Best regards,
-Alvin
+[0]: https://lore.kernel.org/rust-for-linux/140FE1B3-73CA-45EA-B978-648A1A48B577@collabora.com/
 
->
-> Best,
-> Gary
->
->> Best regards,
->> Alvin
->>
->>> The only one that seems needed has Andreas' Acked-by, so
->>> I guess it is fine.
->>>
->>> (By the way, I will use this second message to take this chance to
->>> move the modules maintainers in the To: in case it helps, since I
->>> didn't do it in my previous message)
->>>
->>> Thanks!
->>>
->>> Cheers,
->>> Miguel
->
+Thanks a lot,
+
+Maurice
