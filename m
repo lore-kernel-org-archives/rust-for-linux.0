@@ -1,193 +1,201 @@
-Received: from smtp-8fa9.mail.infomaniak.ch (smtp-8fa9.mail.infomaniak.ch [83.166.143.169])
+Received: from sender4.zoho.com (sender4.zoho.com [136.143.188.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50EC42D752
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 14:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785507965; cv=none; b=ilSpk34kBx07ss/hnzgJQ+/Pf99trRvIyQaM7lsjvi4g5S6OoBUaHTqb91jUfShVd8P5dPD17Zr4ib035lyg8TcGwk1tv4piO0eKWdmdF03GaaL/vv9Ug4PYgtLrfZz0nkHWNX2Pl4PqIlGABZ1UwIGvh4JDoPtpa5Dr6tHUYJk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785507965; c=relaxed/simple;
-	bh=HK32QY2bTBz4twRlmCUK+iHtLSZj1u6rKDQuhVCulD4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Tf+ExQWdNHzaAqOaNX5fS8q/Nd2LSpt2vAfDGw568U/1NFmGk2QWR+vLYcbEmka1OT3SiQBI8X5X0FnqwGjqHmT7QOWYX3wH3Atv/Wo5PDMU+KwwPIS/7uhtNn8M8xujNgE2IgX2t1GB+cY9WKT6W/C/Msg20RjRkHq4wmyzG/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me; spf=pass smtp.mailfrom=ik.me; dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b=nu64XEc9; arc=none smtp.client-ip=83.166.143.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ik.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ik.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EFE46DFF5
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 16:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785515457; cv=pass; b=Yk/SWA4wgm83Ubvmly7ZmgLDAidI90NIWSSW2vrzlteQHckb4Cqxt8XIet2xW6Lg4z0TSha6tghTAXFerTJAu8gtXwIWZPNUmyqTOuuhfj8DFBe+AHgqQAxA7XJnj88W8Bn3sGFp2WszgQERc3atyQS3w5YgP81EBXIKlwUUE7w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785515457; c=relaxed/simple;
+	bh=7J2FlyYxuEKNxeo+fHK8baPwDJWuD/TchjguUdI4PtE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NKewjoTlbM3CP6sU9v6Dvf0lmLz8V7zD1d9KdVls22sMgLtrdXHMC/1r8caUYJVA/XfHLUE9DxSQEgnfo42B4aabPjvTCfmeLN6Q13856uPw9nNkbpOT+Tw3jRzonIG/6TV7KHYQYH2x2+QPosKEk+tOb0xupupdTm8txHlexnI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bkycZpoF; arc=pass smtp.client-ip=136.143.188.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ik.me header.i=@ik.me header.b="nu64XEc9"
-Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4hBSzQ441bzkNr;
-	Fri, 31 Jul 2026 16:25:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ik.me; s=20200325;
-	t=1785507954; bh=Ro0OrBt7Qgvxk9SnIboKoEvZ/3a0b8ekvOKzWQC4oqo=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nu64XEc9eQaTDP4YbSSd1aNsZD078jm4dCZ79luGoCkfl8vBrsoLhJlWjQvxx9FZp
-	 w9+Jj1zuz0U1OQ5yuwvU2f+HCalOaIgkRv7xevMpr8h8XuBVXKoWxo2CoWE9jBR8mj
-	 fSiNB6GjyPo/vzWv42OQI28KIEqHqMww0Zpkzqso=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4hBSzM6Hb3zCGF;
-	Fri, 31 Jul 2026 16:25:51 +0200 (CEST)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bkycZpoF"
+ARC-Seal: i=1; a=rsa-sha256; t=1785515391; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=BnAvaKmRq2RyR2IItLBnECqoMu/K+JFBJoIMtHsxph/ZHlu84d8LKCnuu9J3H17xE63CVFeCYJ+w3dTFFvC+MA66Di9ASwLZoQn2Zq7sxA+LY4E6f6Uv8pFYRv5TozSZhh+AS/R39wWeZFEiprty9++p+pUCGJ+b/IUaEl7lZwE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1785515391; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Ty2Us3CSr4duHioWtKFDmBPTA9uycF2Ft1Lo5esOmzw=; 
+	b=VqbdE8lO28seeCfnH0WndahOcXPxieysULj90ttG3TEuCGXNiC/8dUFAdegJTbVYby/Uo1PlNjIeH6wicEFVtDpaDJe7uAhjoQF3T1p067/7q+k/Ed93pc0gMPIB0xRqOxYm4qIvZARYYcdQBtxsNWSm+kAtGKVSFFVvOag0IRs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785515391;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
+	bh=Ty2Us3CSr4duHioWtKFDmBPTA9uycF2Ft1Lo5esOmzw=;
+	b=bkycZpoFSwuPEfFj9mE0BFLRmuFrOkp79oDiImZR4lMPd+SMQaLExXHTqE7teuaR
+	pdY5k6GPIELKrWFIOvoubtqbmtTO0iAD676+1vkxHqlw8U9MuiA2cv5R29AbCAy7aXk
+	JU+piG8sndXbI7rAIDrVh8WnWiHRk8PbM+PiOpqE=
+Received: by mx.zohomail.com with SMTPS id 1785515389919883.983345609444;
+	Fri, 31 Jul 2026 09:29:49 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 8/9] drm/tyr: add gpuvas debugfs file
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <amycPnwWUS1qwGs9@google.com>
+Date: Fri, 31 Jul 2026 13:29:28 -0300
+Cc: Alvin Sun <alvin.sun@linux.dev>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>,
+ =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>,
+ Matthew Brost <matthew.brost@intel.com>,
+ =?utf-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Melissa Wen <mwen@igalia.com>,
+ Wambui Karuga <wambui.karugax@gmail.com>,
+ Eric Anholt <eric@anholt.net>,
+ Ben Gamari <bgamari@gmail.com>,
+ rust-for-linux@vger.kernel.org,
+ driver-core@lists.linux.dev,
+ dri-devel@lists.freedesktop.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 31 Jul 2026 16:25:51 +0200
-Message-Id: <DKCTQT2XK3O9.33AVSQ4182B9N@ik.me>
-Cc: "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Lyude Paul" <lyude@redhat.com>,
- <linux-pci@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 4/4] rust: samples: add EDU PCI driver sample
-From: "Ewan Chorynski" <ewan.chorynski@ik.me>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Maurice Hieronymus"
- <mhi@mailbox.org>
-X-Mailer: aerc 0.21.0
-References: <20260620-b4-rust-pci-edu-driver-v2-0-6fd6684f2c14@mailbox.org>
- <20260620-b4-rust-pci-edu-driver-v2-4-6fd6684f2c14@mailbox.org>
- <DJEQ64V8HE19.2DMBHY4XRPMG6@kernel.org>
- <DJP8UPM9XT95.102LJRRRY4P2S@kernel.org>
-In-Reply-To: <DJP8UPM9XT95.102LJRRRY4P2S@kernel.org>
-Feedback-ID: :dc0b6b835638593:ham:e74197f626dda86
-X-Infomaniak-Routing: alpha
+Message-Id: <065E32DC-303F-46A5-838B-203A38502F8D@collabora.com>
+References: <20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev>
+ <20260731-tyr-debugfs-v2-v2-8-aea19eccb996@linux.dev>
+ <amycPnwWUS1qwGs9@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.700.81)
+X-ZohoMailClient: External
 
-Hi,=20
 
-On Fri Jul 3, 2026 at 11:12 PM CEST, Danilo Krummrich wrote:
-> On Sun Jun 21, 2026 at 2:27 PM CEST, Danilo Krummrich wrote:
->> I'm going to send a patch to make the irq::Registration compatible with =
-the
->> device driver lifetime rework soon. Please rebase onto that once it's se=
-nt, so
->> this sample can land as idiomatic as possible.
->
-> Please find the patch in [1]; purely mechanical conversion of the EDU dri=
-ver for
-> testing purposes in [2].
->
-> [1] https://lore.kernel.org/driver-core/20260703210936.1128698-1-dakr@ker=
-nel.org/
->
-> [2]
->
-> diff --git a/samples/rust/rust_driver_edu.rs b/samples/rust/rust_driver_e=
-du.rs
-> index 5f4efd514032..301b780773cb 100644
-> --- a/samples/rust/rust_driver_edu.rs
-> +++ b/samples/rust/rust_driver_edu.rs
-> @@ -6,7 +6,6 @@
->
 
-<snip>
+> On 31 Jul 2026, at 09:59, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Fri, Jul 31, 2026 at 01:05:46AM +0800, Alvin Sun wrote:
+>> Add a gpuvas debugfs file listing all GPU VAs for the Tyr DRM driver.
+>> Collects VMs into a shared list during firmware init and renders them
+>> via dump_gpuva_info on read.
+>>=20
+>> Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+>> ---
+>> drivers/gpu/drm/tyr/debugfs.rs | 65 =
+++++++++++++++++++++++++++++++++++++++++++
+>> drivers/gpu/drm/tyr/driver.rs  | 16 +++++++++++
+>> drivers/gpu/drm/tyr/fw.rs      |  8 ++++++
+>> drivers/gpu/drm/tyr/tyr.rs     |  1 +
+>> drivers/gpu/drm/tyr/vm.rs      |  5 ++++
+>> 5 files changed, 95 insertions(+)
+>>=20
+>> diff --git a/drivers/gpu/drm/tyr/debugfs.rs =
+b/drivers/gpu/drm/tyr/debugfs.rs
+>> new file mode 100644
+>> index 0000000000000..d381b1901bd08
+>> --- /dev/null
+>> +++ b/drivers/gpu/drm/tyr/debugfs.rs
+>> @@ -0,0 +1,65 @@
+>> +// SPDX-License-Identifier: GPL-2.0 or MIT
+>> +
+>> +//! Debugfs support for the Tyr DRM driver.
+>> +
+>> +use kernel::{
+>> +    alloc::KVec,
+>> +    drm,
+>> +    new_mutex,
+>> +    prelude::*,
+>> +    seq_file,
+>> +    sync::{
+>> +        Arc,
+>> +        Mutex, //
+>> +    }, //
+>> +};
+>> +
+>> +use crate::{
+>> +    driver::TyrDrmDriver,
+>> +    vm::Vm, //
+>> +};
+>> +
+>> +/// Registry of VMs for debugfs access.
+>> +#[pin_data]
+>> +pub(crate) struct VmRegistry<'drm> {
+>> +    #[pin]
+>> +    vms: Mutex<KVec<Arc<Vm<'drm>>>>,
+>> +}
+>> +
+>> +impl<'drm> VmRegistry<'drm> {
+>> +    pub(crate) fn new() -> impl PinInit<Self> {
+>> +        pin_init!(Self { vms <- new_mutex!(KVec::new()) })
+>> +    }
+>> +
+>> +    pub(crate) fn register(&self, vm: Arc<Vm<'drm>>) -> Result {
+>> +        Ok(self.vms.lock().push(vm, GFP_KERNEL)?)
+>> +    }
+>> +
+>> +    fn for_each(&self, mut f: impl FnMut(&Vm<'drm>) -> Result) -> =
+Result {
+>> +        for vm in self.vms.lock().iter() {
+>> +            f(vm)?;
+>> +        }
+>> +        Ok(())
+>> +    }
+>> +}
+>=20
+> This code maintains a separate list of all of the vms for access from
+> debugfs, but I would have expected that this is not necessary. If we
+> already store the vms inside the driver's private data, then can't we
+> just access them from the normal storage location?
 
-> @@ -275,76 +279,61 @@ fn probe<'bound>(
->                  .alloc_irq_vectors(1, 1, IrqTypes::default().with(pci::I=
-rqType::Msi))
->                  .inspect_err(|e| dev_err!(pdev, "alloc_irq_vectors faile=
-d: {:?}\n", e))?;
->
-> -            // State shared with the IRQ handler (the BAR and the comple=
-tion the
-> -            // handler signals) lives in an `Arc<EduDriverData>`. `EduDr=
-iverData`
-> -            // itself implements `irq::Handler`, and the registration ta=
-kes an
-> -            // `Arc<T>` via the `impl Handler for Arc<T>` blanket impl. =
-This keeps
-> -            // the handler's state out of `EduDriver` and avoids a self-=
-reference.
-> -            let data =3D Arc::pin_init(
-> -                try_pin_init!(EduDriverData {
-> -                    bar <- pdev
-> -                        .iomap_region_sized(0, c"rust_driver_edu")
-> -                        .and_then(|bar| bar.into_devres()),
-> -                    irq_test_completion <- Completion::new(),
-> -                    irq_dma_completion <- Completion::new(),
-> -                    dma: ca,
-> -                }),
-> -                GFP_KERNEL,
-> -            )?;
-> -
-> -            let req =3D irq::Registration::new(
-> -                (*irq.start()).try_into()?,
-> -                Flags::TRIGGER_NONE,
-> -                c"rust_edu_irq",
-> -                Ok(data.clone()),
-> -            );
-> +            let bar =3D pdev.iomap_region_sized::<{ regs::END }>(0, c"ru=
-st_driver_edu")?;
->
-> -            // Ordering matters: the handler is registered (`irq_handler=
- <- req`)
-> -            // *before* the `_:` block runs the self-tests, one of which=
- raises an
-> -            // interrupt and waits for the handler. Raising before the h=
-andler is
-> -            // registered would hang (the completion is never signalled)=
-.
-> -            Ok(try_pin_init!(Self {
-> +            // SAFETY: The Registration is not leaked.
-This comment uses the knowledge that the initializer returned by probe
-won't create and leak the registration. Shouldn't the probe function be
-unsafe to formalize this guarantee ?=20
+Panthor also has a similar concept. I agree that we can reach the VMs
+from other places, but they=E2=80=99re scattered, and this type buys the =
+convenience
+to do so, which we will need for other, non-debugfs-related features.
 
-> +            let req =3D unsafe {
-> +                irq::Registration::new(
-> +                    (*irq.start()).try_into()?,
-> +                    Flags::TRIGGER_NONE,
-> +                    c"rust_edu_irq",
-> +                    try_pin_init!(IrqHandler {
-> +                        pdev,
-> +                        bar,
-> +                        irq_test_completion <- Completion::new(),
-> +                        irq_dma_completion <- Completion::new(),
-> +                        dma: ca,
-> +                    }? Error),
-> +                )
-> +            };
-> +
-> +            Ok(try_pin_init!(EduDriverData {
->                  irq_handler <- req,
-> -                // Side-effect block: run the staged self-tests against =
-the mapped
-> -                // BAR now that the handler is live. A failure here abor=
-ts probe.
-> +                // Ordering matters: the handler is registered (`irq_han=
-dler <- req`)
-> +                // *before* the `_:` block runs the self-tests, one of w=
-hich raises an
-> +                // interrupt and waits for the handler. Raising before t=
-he handler is
-> +                // registered would hang (the completion is never signal=
-led).
->                  _: {
-> -                    let bar =3D data.bar.access(pdev.as_ref())?;
-> -                    EduDriver::init(pdev, bar, &data)?;
-> +                    let handler =3D irq_handler.handler();
-> +                    EduDriver::init(pdev, &handler.bar, handler)?;
->                      dev_info!(
->                          pdev,
->                          "rust_driver_edu successfully initialized\n",
->                      );
->                  },
-> -                data,
-> -                pdev: pdev.into()
-> +                pdev,
->              }))
->          })
->      }
->  }
+I wonder if we should move the registry to the top level in the private =
+data,
+though:
 
-Regards,
-Ewan
+i.e.: {
+  fw: ..=20
+  mmu: =E2=80=A6
+  registry: VmRegistry
+}
+
+
+>=20
+> By having multiple copies of the same information, you risk that they
+> get out of sync. In this case, you never remove vms from the list even
+> if the vm stops being used, which seems wrong.
+>=20
+> Alice
+
+I think this can be solved by having vm::new() take a &VmRegistry =
+argument,
+same for vm::destroy(). This forces callers to provide the list so it =
+can be kept
+in sync.
+
+This is just one approach though, perhaps someone has a better idea?
+
+=E2=80=94 Daniel
+
