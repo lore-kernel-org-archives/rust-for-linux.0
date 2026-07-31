@@ -1,161 +1,126 @@
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9A4416D1A
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 13:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.71
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785503287; cv=none; b=nviuQgDZuwTyFxnNit7p64XhLjDkVWdkkIAG7f8yX0ri/WZmVU6pEG3MmtRgZbtTlNlcSIV5SMl5mFwEBHWKSLvArCYPvGojiTerP8vMzV+CSdmcFTTSserEniuosAGFAm5tjtpBx60sFsiUsSw5dQpUdmvMpuBxNnznHdl/Ckw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785503287; c=relaxed/simple;
-	bh=ViuDCFjmw/dzx0vsIBMgcReYNsdp4Yi1k2soTurBsFY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K3uwvAZ959JIC1r0dJ/RpltArHJ1W6I9ZlWKFkETyVoddp0Edr5W+OZSInEIp3YHOrOvQsniFMbUgUiQg/bN5mtaoVwnzd0QLfevyv5Prsn20VUBJPVkzbaEKvAHTMFOaQI45n91yDMuj0DA3cdjKL5b5O06m2JD8l9gxd2stgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HaPTC8rW; arc=none smtp.client-ip=209.85.221.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF0D427A10;
+	Fri, 31 Jul 2026 13:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785503435; cv=pass; b=Ik3Op+KvyHMsc6aU0svIgPbVMgf0iy28zpXqUq/ZokGfwu02ePpc4cEyNOSaBx3AcZxL9odAO3CE1Ra9gtXML1x8w0oCuQiuXXWUdcPEzJL3OPTr51IQjghu/GA53plq9oqQ8G8xhZDz+MA49RDjcod96qup6R4MU1H8jIXLWtk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785503435; c=relaxed/simple;
+	bh=Zlqz4cL9Fdb1ZE0BE2QIsGlegmTlz7+NlX5WIZk8tIo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=imdXi/SzAZQvbsutO+U0S7/heYfRW8T+Z1BYAPvSTnKSJ+LAd9pr0iBBONa8j+DgDULXyUjSVldP7R1f5jURqGK/sn6JQEPSlVeP16+gPAdTcQF09o8SIa/iHC7/D9IFiM85xNbkMCAkqU5EJohouLg4WU3sOqMtRda72EoF5oM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b=bFXbcDgd; arc=pass smtp.client-ip=136.143.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HaPTC8rW"
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-474170b59dfso802059f8f.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 06:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785503284; x=1786108084; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vKUpFb/0BO0No/UvKwO/5M2fcWH3/wzCNVF4fPxlP2k=;
-        b=HaPTC8rW38HemPVq3sDigRkaEdSKSAjkdFUdyHMaSXNj5OiU6KHB/oDkXzTE7Krtmh
-         GQ0wr/MiWRtK8y9qrNC7gCh6rIKSG3o8cM4J/C3HXBFgd8Z1e5EfOMDqk3Q/v6+wroTr
-         +SWEEqfEZgWFJq1jRln+fQbQ/PodkmcOSG5Le2PN3WPxPEaIbFrlkb/O4nALP3AnNI45
-         joUuES+8C9X4/RsuVJMH3ynI2KIegbUxFd2I91pzxS1XJ/vJcFpmqYzEDaMDYf+CS5Hi
-         0jIxcouqSEQpymOdUnHRoE1ULYNJIzkwKO+5Xmz+nXVKuH6JXbosiAteFXeBouKG6YBe
-         e2sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785503284; x=1786108084;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vKUpFb/0BO0No/UvKwO/5M2fcWH3/wzCNVF4fPxlP2k=;
-        b=DImOIf26zv6wwzPA+/qFKTMmF7BJ/asdzH07T9RjE6XgL/MaSsr2VgPYMJMvITfHaM
-         2L8jc47yH8OtBARMjiZS8KHeCMiAZ1uS23weOxPUcNUzKBcz6UQtZR206ZqCfWJo0s/w
-         xfZ494Gt+FDBfR/OGKcSTtDHuKoIXj1859SOdv4SQL1ekXU3w59ef0ClBUXURBi5ce2o
-         FfU2i7RoRro1e1sl5lzTicdKxBC1RVpgL7Zrop5kS2kXETOJIe7tGy83/VPkb6QzvTmq
-         MjXv9icSIR5n5i4kCKhNst1PzYFc77Wmaz/Ao5705F8LQrjZfpeJkiYhu3xT/Xyc9zFQ
-         hXbg==
-X-Forwarded-Encrypted: i=1; AHgh+RoGnz8z06Gut5wlUOOQauW3jsvGDLnQsTqRslM0igEeJmfAutKgI9uJUeoM96UeloXL6Ig8+MKUkfCMhRWlqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFC71XLXMr5+bIiO10z2FQTZ/fq04p7HooFvo2ItmPapSodcMa
-	lWl+cvJfwD8aUsFYDD3NJHukE8b+HXSwRJ4sQG5G70rlUM8g+8RDaVaZdM5G0nC7eYLajAbpVb9
-	ozBCrBDPRpI0u4CtfRw==
-X-Received: from wrui12.prod.google.com ([2002:a5d:630c:0:b0:47f:4f56:2046])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2882:b0:472:3090:d878 with SMTP id ffacd0b85a97d-47fd2ab92c4mr4245682f8f.4.1785503283539;
- Fri, 31 Jul 2026 06:08:03 -0700 (PDT)
-Date: Fri, 31 Jul 2026 13:08:02 +0000
-In-Reply-To: <20260731-tyr-debugfs-v2-v2-2-aea19eccb996@linux.dev>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="bFXbcDgd"
+ARC-Seal: i=1; a=rsa-sha256; t=1785503398; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Cq+zrzQoz00J2wlNPrXBe4dHSshzxf7DJsXSzdyM1dhrzXiOXivQ9GnF95OQuUyb6VSxXRzJ2QFWADOA3wb5XMjSjD6kZOx7xaK9lj/Yfgdw50yq1bLoZ+oPcRkpD+VfwRp+bQi35nM3q0NfeYJpm+ob2JqZWUUO8mCEGE87MUw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1785503398; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=gGSgysdGBniHJR9h7AGR/IccbsptGQN5ulgBb8yos5g=; 
+	b=fVK/MdqbhBPuyKWj797w54MesVOIEs/S3U1uK5zwJCWBA89OZVsUkvE3WoVHfMbBWc3cyM//vQApFuo66puuxwHx7ufaNAqycTlo2VSYaFepASKn7+tFIX6L3NXA8yWTXxNvEbB56mNNn/sfyVygEFqPNkwl1zchdCQY2Dofmag=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+	dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785503397;
+	s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=gGSgysdGBniHJR9h7AGR/IccbsptGQN5ulgBb8yos5g=;
+	b=bFXbcDgdz+ZI1krxPJZfO4Rt2IgTzmjuIGQwkE7gE3R8u//X5q5H/Oap3o+hx8J+
+	zgs5pXBl99TvR/Mx+Qs0Rgo1wM4yDBHEMXydCkxC/jpejI2yGP2kTCsTWIZ9c/Lmz5X
+	CMWCAGghBmzri88XJ1WytKJkkBcO6gODE1w0OIaY=
+Received: by mx.zohomail.com with SMTPS id 1785503396790153.8585271194745;
+	Fri, 31 Jul 2026 06:09:56 -0700 (PDT)
+Date: Fri, 31 Jul 2026 06:09:55 -0700
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, laura.nao@collabora.com,
+	samitolvanen@google.com, lyude@redhat.com, beata.michalska@arm.com,
+	boris.brezillon@collabora.com, steven.price@arm.com,
+	alvin.sun@linux.dev
+Subject: Re: [PATCH v10 4/7] drm/tyr: add GPU virtual memory (VM) support
+Message-ID: <amyeozYr_SZC5FbY@um790>
+References: <20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com>
+ <20260728-fw-boot-b4-v10-4-9187aefa3f2f@collabora.com>
+ <CAH5fLgjDoWT09Kdp0Jtg=XtmWVdnUM71yT_TsQG+TX1RJ6GqaQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev> <20260731-tyr-debugfs-v2-v2-2-aea19eccb996@linux.dev>
-Message-ID: <amyeMmmfEBpuVclw@google.com>
-Subject: Re: [PATCH v2 2/9] rust: debugfs: add SeqShow trait and seq_file file operations
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	"Thomas =?utf-8?Q?Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, 
-	"=?utf-8?B?TWHDrXJh?= Canal" <mcanal@igalia.com>, Melissa Wen <mwen@igalia.com>, 
-	Wambui Karuga <wambui.karugax@gmail.com>, Eric Anholt <eric@anholt.net>, 
-	Ben Gamari <bgamari@gmail.com>, rust-for-linux@vger.kernel.org, 
-	driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgjDoWT09Kdp0Jtg=XtmWVdnUM71yT_TsQG+TX1RJ6GqaQ@mail.gmail.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.10.1.5.2/285.486.37
 
-On Fri, Jul 31, 2026 at 01:05:40AM +0800, Alvin Sun wrote:
-> +/// Show callback for `SeqShow` types.
-> +///
-> +/// # Safety
-> +///
-> +/// The seq_file core guarantees that `seq` points to a live `seq_file` and that
-> +/// `seq->private` is a valid pointer to a `T` with no outstanding mutable
-> +/// references.
-> +unsafe extern "C" fn seq_file_show<S: SeqShow<T>, T: Sync>(
-> +    seq: *mut bindings::seq_file,
-> +    _: *mut crate::ffi::c_void,
-> +) -> crate::ffi::c_int {
-> +    // SAFETY: `seq->private` is a valid `T` pointer with no outstanding
-> +    // mutable references.
-> +    let data = unsafe { &*((*seq).private.cast::<T>()) };
-> +    // SAFETY: `seq` points to a live `seq_file`.
-> +    let m = unsafe { SeqFile::from_raw(seq) };
-> +    from_result(|| S::show(data, m).map(|()| 0))
-> +}
-> +
+On Thu, Jul 30, 2026 at 04:40:36PM +0200, Alice Ryhl wrote:
+> On Tue, Jul 28, 2026 at 8:39 PM Deborah Brouwer
+> <deborah.brouwer@collabora.com> wrote:
+> >
+> > From: Boris Brezillon <boris.brezillon@collabora.com>
+> >
+> > Add GPU virtual address space management using the DRM GPUVM framework.
+> > Each virtual memory (VM) space is backed by ARM64 LPAE Stage 1 page tables
+> > and can be mapped into hardware address space (AS) slots for GPU execution.
+> >
+> > The implementation provides memory isolation and virtual address
+> > allocation. VMs support mapping GEM buffer objects with configurable
+> > protection flags (readonly, noexec, uncached) and handle both 4KB and 2MB
+> > page sizes. A new_dummy_object() helper is provided to create a dummy GEM
+> > object for use as a GPUVM root.
+> >
+> > The vm module integrates with the MMU for address space activation and
+> > provides map/unmap/remap operations with page table synchronization.
+> >
+> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> > Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+> 
+> There's a 32-bit build failure :(
+> 
+> error[E0308]: mismatched types
+>    --> /home/runner/work/linux/linux/linux/drivers/gpu/drm/tyr/vm.rs:873:17
+>     |
+> 871 |             pt.map_pages(
+>     |                --------- arguments to this method are incorrect
+> 872 |                 curr_iova,
+> 873 |                 curr_paddr,
+>     |                 ^^^^^^^^^^ expected `u32`, found `u64`
+>     |
+> note: method defined here
+>    --> /home/runner/work/linux/linux/linux/rust/kernel/iommu/pgtable.rs:152:19
+>     |
+> 152 |     pub unsafe fn map_pages(
+>     |                   ^^^^^^^^^
+> help: you can convert a `u64` to a `u32` and panic if the converted
+> value doesn't fit
+>     |
+> 873 |                 curr_paddr.try_into().unwrap(),
+>     |                           ++++++++++++++++++++
 
-> +/// Renders `data` into a seq_file.
-> +///
-> +/// `data` is the value stashed as the debugfs file's `i_private` at creation
-> +/// time. `show` is invoked on each read to produce the file's contents.
-> +///
-> +/// `open` and `release` are optional lifecycle hooks called during file open
-> +/// and release. They can be used to manage the lifetime of `data` (e.g.,
-> +/// reference counting). Default implementations are no-ops.
-> +pub trait SeqShow<T> {
-> +    /// Writes debugfs output for the file.
-> +    fn show(data: &T, m: &SeqFile) -> Result;
-> +
-> +    /// Called during file open, before `single_open`.
-> +    fn open(_data: &T) -> Result {
-> +        Ok(())
-> +    }
-> +
-> +    /// Called during file release, before `single_release`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `data` must point to valid memory, kept alive by actions taken in
-> +    /// [`Self::open`] (e.g., incrementing a reference count).
-> +    unsafe fn release(_data: NonNull<T>) {}
-> +}
+Alice, I see you fixed it in drm-rust-next by casting curr_paddr to
+PhysAddr, thank you. I must have added this 32 bit regression trying to
+double check all of the sizes.
 
-Hmm. So in a later patch you implement SeqShow in the following manner:
-
-    fn open(dev: &drm::Device<T, drm::Normal>) -> Result {
-        // Hold a device reference so the device is not freed while the file is open.
-        dev.inc_ref();
-        Ok(())
-    }
-
-    unsafe fn release(dev: NonNull<drm::Device<T, drm::Normal>>) {
-        // Drop the reference taken in `open`.
-        // SAFETY: `dev` is valid per this function's safety contract.
-        unsafe { drm::Device::<T>::dec_ref(dev) };
-    }
-
-I don't understand why this increment/decrement pair is necessary.
-Just based on the code, it *looks* like you have them because otherwise
-`show()` might get called with a dangling pointer to the drm device, but
-the inc_ref() in open() ensures it stays alive.
-
-However, earlier in this patch you said:
-
-> The seq_file core guarantees that `seq` points to a live `seq_file` and
-> that `seq->private` is a valid pointer to a `T` with no outstanding
-> mutable references.
-
-So based on this, you are saying that open()/release() do not need to do
-anything special for the value to stay alive.
-
-These seem contradictory. Could you clarify the situation?
-
-Alice
