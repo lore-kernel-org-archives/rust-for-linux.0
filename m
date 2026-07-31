@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054D23806D8;
-	Fri, 31 Jul 2026 20:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CD0394793
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 20:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785529875; cv=none; b=bCvUHVCBGkRNnKGA43ycqKGjvsvEuvdxkCH5qoyOrQV3ZZWC4Rs6UbFwV6OJ+wGvwovTDoSKFu/I4oE/BbD9G1DzWf6dnIJTIESPgC24NSswG/PsvV5ZDa8F0mTXr4PcXeClRdDZ/EyPW+gdHs1zlzJWwGpKH2aedX/89ZGeeyc=
+	t=1785529876; cv=none; b=NCSXwamRWB9eicxu9CyfphZUWRBabVGa4XzhklCYu9WcAIWbyhtEJnNVg5R5bILYO2mnsY3XsSLbgTixPr7zPzCVLXi7Ck2gl3EM8ITeW5WxA1WhXZkupiuP7kmMu7HmW/V3OKR30z1zNamLHpeFBHzU6pNWC7VgQSdOxa+t8ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785529875; c=relaxed/simple;
-	bh=g7dAukeoDvfLBNcg9vE5PsrRy89rj838ZPJP9rjLfKE=;
+	s=arc-20240116; t=1785529876; c=relaxed/simple;
+	bh=BnZY+ssx1FNk1UN/oxDrG+BGtBCN1VUyUUnZuJBcyTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4vwSnAMFPnM7nkj8raKwcgWWgq+VOwMwaYqYEfxR41GCMcHbODY2Aox7fk76O7h6XaCUzn+IJYo4kQ5QDPRxP5LLSEVKDtXaiHqCg+6VTNuK/Ip02CQeogjgyreBaGmuYkmU/r6VZsRXmTOMMGBU3A7WJTyKeAiSeSjOizukgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5VJVBfk; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=PDkhvk24T8ZwDr9MnWMlXSeTdBQUcY9AaH4/Zl/osFTlxSGZDHTu86cDnhtv8uPJ2x3sCLo8y7UJRek9XooWY6FrfY1Npa/UC+tOJ9n2QwDhcMvK5h7KOu2OLKGBV2V0XVYz6yqP9zpvapOXiCMuqcqWd9Ns4feUTYpe+e/B4mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTzEUwxn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5VJVBfk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8C31F00ACF;
-	Fri, 31 Jul 2026 20:31:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTzEUwxn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A651B1F00ADB;
+	Fri, 31 Jul 2026 20:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785529873;
-	bh=4pwt7mRy78FKv5uQ/1ds1AYEuqBc5vFVkMphAXXIIeA=;
+	s=k20260515; t=1785529875;
+	bh=ee35tIBuiy+GnxuKIVMP3Asj7TkW4wEaj81yaDPH2Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F5VJVBfk6EHmMO4O0Fz4asw+X6uK4VSta4XKhjLSW+J7ciePHOBHddptNb3GN0iDR
-	 IS7swtxm5ck/q0dA5yWUULRJAB1589VuXbTC9jgR5Upg1PRYTIiwsrXUYteu3mzSvE
-	 8NtE0WU7TIKh6R7fDsWq6khWgbJYcKwr0uayUm/tUhGSX2WhWwRunLdTKCrEoQfllC
-	 k0OfcH2VP1UpbmDl1xYGOO35idex0jzEDjpboLuXtHQaP1KxJ9DJYv807OWOUHWnhn
-	 jw6Sa3vsdefxr+4zx0n2bRjg0C2jE3qXxojT+tGdMeMG82xjJEEY1UQ+OLo+/fHLLk
-	 w8XstG+hbx8Bg==
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5B6F7F4007B;
-	Fri, 31 Jul 2026 16:31:12 -0400 (EDT)
+	b=ZTzEUwxnno6uRD24iznbybhVEyK6LadMYqj3meMYLyPhPjA6sZkSBBDK0OaeuCOzG
+	 24ofHrw/UaaWQPa3Qgq4GxlBny273vSWFLLARt2FGE46f4SVGBIzM8QgGKoJE+Ccob
+	 jvxy5rXX924T5eyUhmIKmu4KMgPeDuQl3RpIbyQmyhfChBUp0tznoI/h95AYcHQW+h
+	 KWNtxKBZrbFE2E09It5swGeu+hajWoPZmb33T+hpfn+t0vvX+/sS1jTuyLlaTw07ti
+	 c+oaT7xTWBJWLrNs6sSe8eCWz5ViZitw94L8NkAS+E82qZkduBuzuG4d0X0Q6gJMI1
+	 NoeBl3AtvVwYA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D4F6CF4007B;
+	Fri, 31 Jul 2026 16:31:13 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Fri, 31 Jul 2026 16:31:12 -0400
-X-ME-Sender: <xms:EAZtamJQpMz5vrqUaUovJP8Idu6ejQXQd5I_2-AadNSITNtaUOFMdg>
-    <xme:EAZtaohau19l_Z2VrRvtqV_zqHfF6tF01hl4J73P261260T4J9s5sgbKaJbhSqGgl
-    WXmVvEgV---h82GbderO5DbEA-XWWYPOHwiWP7TDB0Og20kKYLOqg>
-X-ME-Received: <xmr:EAZtas1bQijz2skUagYNeXsSdNSkqQ088IhcBGjF6sjwMUllr1aSfoNnamKlcQL7ypH5BcOImpzGLIYXeeF4mbgJfABpPn40>
-X-ME-Proxy-Cause: dmFkZTFps7Fcl2lDQN8QuKjkQ2Twray9XFETCWlSba0KMthHKuWpzT2QuJsxYlE+Jfwxxk
-    r4LumXM/JVSIx3esVw1aDMeAJaVHLr+c+QoTtbKWA/cjowqeMJQoXkNExL9SUShkGISMJN
-    I4Jxy+s/E1/lkenAlXh9Q30vQuf9rA/PbrkWD4pKxMAkC+U6f3km0ithIr0S+TXfbV+4FM
-    rMsII+vjt3nbbUrqTbYDv01BF1FGDJ2EkkIzsv92rcLPomBtS/DYv0HD/S/dv1En38CiLr
-    u6+5RUMJmyRxjeZZwQND0Q2Cx0WP3XHFSY1h6xZNSfNwcAc/Ongt++m0x7heb8YD7IrwXo
-    YkIhG6KuZJPuVeQrNTB2UMxd1Uoq8IIA9r4H/UGvxMjS3M4ZE7BaK5Z1k2Q3zSvQVJ928j
-    m1Na/eOtEqKoCbXz0RR7pxMaablV2LIs8dyV5GXjrRFey8/c14lDSARIJu+/MVuBcf6Gkf
-    93/FCbLPkncFFoAkpdCJeQj648mUu++7TauqMQyPF/2t62QiyPGRZ1fIqEML7KpzKjaSGC
-    HewsjQNPVMQBDjNkrbsqDt7Cokh39zo65s6QNxjCFEAO5v/rLi5N4YhcoVLt7KaF9zLbmd
-    0O3uWWQcATkYYyl/C12E9w7QS6qF9epWYq7z8B/AIfduXheV9gy/sojp6CMg
-X-ME-Proxy: <xmx:EAZtamhoHkVDCXdmbRk0ldbVyF3cG4CYjGL1lW9d8CuxmZlzc_Tomg>
-    <xmx:EAZtal_pysMhiwvUVPH5PVLWrzF8Xz386Qc2Un737tTe6VQGSAxzXA>
-    <xmx:EAZtaqIqT2QTWqWcYNS6zQ5OcoJhkrVYY-rYHqoRucthiv6IgvKHlw>
-    <xmx:EAZtaiwjPgB0jAj8UrpPs0MX24ry4lTGJsaAnIJXKJ8yV9_5cZiq7g>
-    <xmx:EAZtal1RMNnOZxUtnfCQXtjl1v9DfIY4DvRCTIoaB7N2M9_wHLmTZvlq>
+  by phl-compute-06.internal (MEProxy); Fri, 31 Jul 2026 16:31:13 -0400
+X-ME-Sender: <xms:EQZtamC_xCu4fdZjCFbCpStLsrK6AZTYtc7qD8DeVF4X2eaYNrPPSA>
+    <xme:EQZtalsDtkMH-_R7Tye1GkOPF8DJpdFJxqYea7bwrEN0prpQL8_-JvabCn4_ChluW
+    XEYP8LdCuHJ0eoLfo7T3wNWX85KRE6a1VIZpsUUcVBRu-nh2OzQrQ>
+X-ME-Received: <xmr:EQZtas-30XyAGIrGo8-fZh5cgTQ0At8Xf2c44qibNpFj3gb5L8nFj5Bks84sm4RNg1qFqW7J5oa6_2aAxaJhDnvDZXkjkaK7>
+X-ME-Proxy-Cause: dmFkZTEbBIfeSlo9prBcK5SQKPeqygxB1v/cLTVgZ5l5/ASlZ9vahSgThT0iqkqsNP7FqK
+    9zw6YF1XG3UNmEM3u6nsEDmLcFtKi/7cfe9xQqiaIubHunNfY02XRK8wlY6K0FXtf9SRo/
+    1VhrSN/M5RNZuHROCh24ulCrPMyClee0/fhnnz4fOUOZI3q/RLZ6x47wJ8LNHHXBj1sqg0
+    b5NEuj6hbqItE5byv8n020XMXAOwtwYIaLnMGB3SEjNqrhWWOtqs6CUvr8EJZH2Eus7heN
+    HM0Lm9s3y2ZTjZXTsYc0ZE4AKwqpvayt6n7d2o32foshM6FX1uxJb77wm/zD1mFUlsqeFO
+    BH1yQ7M16W+COuLmbkYrpywWYFxLYn1MsVfNSkehl1kbBbS5aSCV9DZODkwyx8HBrq2M2T
+    OwZO5o6kx3UD1/PYVo4ZHjY92hv7+0X0VsPIslkiBQ/QboJ0GRYyH9lx/1OI694XfOu2aK
+    bSwVQVwlVWEStRbQb7H+uGtFB25JCAViVYAMW1ArzEilw3rzBhdbpbl9LBIPm6EuANrdS2
+    lPdYSfEg5cub4rVa+KOnWQsZpPqLlG53vfzxx9q4ZccNnPXc6/Z1hJA/itJFNilqJ69ohK
+    cLguu45uKprn3Jytr5v1tnbiq7aNnSaJtgjh8YH/ojjMPJmN2JS7OdwWcOCg
+X-ME-Proxy: <xmx:EQZtakR8YSMoVsD_6c8LAf6u5oJxzmotAqqBnurwwnpg9pL881qRdQ>
+    <xmx:EQZtamWUUg80NAlq6Rltwh9G2ldLVMfb3Set2WQHJV7FLECQ2Y-LdQ>
+    <xmx:EQZtau9seFtbOYBkkczY-4d7cs3uXDOabaA4y-wM25_itL-8RIprtw>
+    <xmx:EQZtau2sNBXQ3bRRDDfQMmOWiKY-GEajxSztgHXI4u-pyz6cytLQDA>
+    <xmx:EQZtareje9KsL-8WgzGLjITLwNbtrJBJwTBodfKOM3k-g9ELXFdXe-uh>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 31 Jul 2026 16:31:11 -0400 (EDT)
+ 31 Jul 2026 16:31:13 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -67,11 +67,10 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	"Miguel Ojeda" <ojeda@kernel.org>,
 	"Danilo Krummrich" <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Eliot Courtney <ecourtney@nvidia.com>
-Subject: [PATCH 22/24] rust: sync: Add helpers for mb, dma_mb and friends
-Date: Fri, 31 Jul 2026 13:30:23 -0700
-Message-ID: <20260731203031.13679-23-boqun@kernel.org>
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 23/24] rust: sync: Add generic memory barriers
+Date: Fri, 31 Jul 2026 13:30:24 -0700
+Message-ID: <20260731203031.13679-24-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260731203031.13679-1-boqun@kernel.org>
 References: <20260731203031.13679-1-boqun@kernel.org>
@@ -85,57 +84,193 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-They supplement the existing smp_mb, smp_rmb and smp_wmb.
+Implement a generic interface for memory barriers (full system/DMA/SMP).
+The interface uses a parameter to force user to specify their intent
+with barriers.
 
-Reviewed-by: Eliot Courtney <ecourtney@nvidia.com>
+Provide `Read`, `Write`, `Full` orderings which map to the existing
+`rmb()`, `wmb()` and `mb()`. Generic is used here instead of providing
+individual standalone functions to reduce code duplication; for example,
+the `CONFIG_SMP` check in `smp_mb` is uniformly implemented for all SMP
+barriers. This could extend to `virt_mb`'s if they're introduced in the
+future. It would also make it easier if new ordering types are
+introduced in the future (e.g. `Acquire`, `Release`).
+
 Signed-off-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
-Link: https://patch.msgid.link/20260609-rust-barrier-v2-1-30fcc48e1cd0@garyguo.net
+Link: https://patch.msgid.link/20260609-rust-barrier-v2-2-30fcc48e1cd0@garyguo.net
 ---
- rust/helpers/barrier.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ rust/kernel/sync/atomic/ordering.rs |   2 +-
+ rust/kernel/sync/barrier.rs         | 127 ++++++++++++++++++++++------
+ 2 files changed, 100 insertions(+), 29 deletions(-)
 
-diff --git a/rust/helpers/barrier.c b/rust/helpers/barrier.c
-index fed8853745c8..dbc7a3017c78 100644
---- a/rust/helpers/barrier.c
-+++ b/rust/helpers/barrier.c
-@@ -2,6 +2,36 @@
+diff --git a/rust/kernel/sync/atomic/ordering.rs b/rust/kernel/sync/atomic/ordering.rs
+index 3f103aa8db99..c4e732e7212f 100644
+--- a/rust/kernel/sync/atomic/ordering.rs
++++ b/rust/kernel/sync/atomic/ordering.rs
+@@ -15,7 +15,7 @@
+ //!   - It provides ordering between the annotated operation and all the following memory accesses.
+ //!   - It provides ordering between all the preceding memory accesses and all the following memory
+ //!     accesses.
+-//!   - All the orderings are the same strength as a full memory barrier (i.e. `smp_mb()`).
++//!   - All the orderings are the same strength as a full memory barrier (i.e. `smp_mb(Full)`).
+ //! - [`Relaxed`] provides no ordering except the dependency orderings. Dependency orderings are
+ //!   described in "DEPENDENCY RELATIONS" in [`LKMM`]'s [`explanation`].
+ //!
+diff --git a/rust/kernel/sync/barrier.rs b/rust/kernel/sync/barrier.rs
+index 8f2d435fcd94..1180695d533a 100644
+--- a/rust/kernel/sync/barrier.rs
++++ b/rust/kernel/sync/barrier.rs
+@@ -7,6 +7,38 @@
+ //!
+ //! [`LKMM`]: srctree/tools/memory-model/
  
- #include <asm/barrier.h>
++#![expect(private_bounds, reason = "sealed implementation")]
++
++/// Memory barrier orderings.
++///
++/// The semantics of these orderings follows the [`LKMM`] definitions and rules.
++///
++/// - [`Read`] provides ordering between preceding load operations and succeeding load operations.
++/// - [`Write`] provides ordering between preceding store operations and succeeding store
++///   operations.
++/// - [`Full`] provides ordering between all the preceding memory accesses and succeeding memory
++///   accesses.
++///
++/// [`LKMM`]: srctree/tools/memory-model/
++pub mod ordering {
++    pub use crate::sync::atomic::ordering::Full;
++
++    /// The annotation type for read-read barrier ordering.
++    pub struct Read;
++
++    /// The annotation type for write-write barrier ordering.
++    pub struct Write;
++}
++
++pub use ordering::{
++    Full,
++    Read,
++    Write, //
++};
++
++struct Smp;
++struct Dma;
++
+ /// A compiler barrier.
+ ///
+ /// A barrier that prevents compiler from reordering memory accesses across the barrier.
+@@ -19,43 +51,82 @@ pub(crate) fn barrier() {
+     unsafe { core::arch::asm!("") };
+ }
  
-+__rust_helper void rust_helper_mb(void)
-+{
-+	mb();
+-/// A full memory barrier.
++trait MemoryBarrier<Flavour = ()> {
++    fn run();
 +}
 +
-+__rust_helper void rust_helper_rmb(void)
-+{
-+	rmb();
++macro_rules! define_barrier {
++    ($([$flavour:ident])? $ordering:ident, $binding:ident) => {
++        impl MemoryBarrier$(<$flavour>)? for $ordering {
++            #[inline]
++            fn run() {
++                // SAFETY: barrier methods are safe to call.
++                unsafe { bindings::$binding() };
++            }
++        }
++    };
 +}
 +
-+__rust_helper void rust_helper_wmb(void)
-+{
-+	wmb();
-+}
++define_barrier!(Full, mb);
++define_barrier!(Read, rmb);
++define_barrier!(Write, wmb);
++define_barrier!([Dma] Full, dma_mb);
++define_barrier!([Dma] Read, dma_rmb);
++define_barrier!([Dma] Write, dma_wmb);
++define_barrier!([Smp] Full, smp_mb);
++define_barrier!([Smp] Read, smp_rmb);
++define_barrier!([Smp] Write, smp_wmb);
 +
-+__rust_helper void rust_helper_dma_mb(void)
-+{
-+	dma_mb();
-+}
-+
-+__rust_helper void rust_helper_dma_rmb(void)
-+{
-+	dma_rmb();
-+}
-+
-+__rust_helper void rust_helper_dma_wmb(void)
-+{
-+	dma_wmb();
-+}
-+
- __rust_helper void rust_helper_smp_mb(void)
- {
- 	smp_mb();
++/// Memory barrier.
+ ///
+ /// A barrier that prevents compiler and CPU from reordering memory accesses across the barrier.
+-#[inline(always)]
+-pub fn smp_mb() {
+-    if cfg!(CONFIG_SMP) {
+-        // SAFETY: `smp_mb()` is safe to call.
+-        unsafe { bindings::smp_mb() };
+-    } else {
+-        barrier();
+-    }
++///
++/// The specific forms of reordering can be specified using the parameter.
++/// - `mb(Read)` provides a read-read barrier.
++/// - `mb(Write)` provides a write-write barrier.
++/// - `mb(Full)` provides a full barrier.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::sync::barrier::*;
++/// mb(Read);
++/// mb(Write);
++/// mb(Full);
++/// ```
++#[inline]
++#[doc(alias = "rmb")]
++#[doc(alias = "wmb")]
++pub fn mb<T: MemoryBarrier>(_: T) {
++    T::run()
+ }
+ 
+-/// A write-write memory barrier.
++/// Memory barrier between CPUs.
+ ///
+-/// A barrier that prevents compiler and CPU from reordering memory write accesses across the
+-/// barrier.
+-#[inline(always)]
+-pub fn smp_wmb() {
++/// A barrier that prevents compiler and CPU from reordering memory accesses across the barrier.
++/// Does not prevent re-ordering with respect to other bus-mastering devices.
++///
++/// See [`mb`] for usage.
++#[inline]
++#[doc(alias = "smp_rmb")]
++#[doc(alias = "smp_wmb")]
++pub fn smp_mb<T: MemoryBarrier<Smp>>(_: T) {
+     if cfg!(CONFIG_SMP) {
+-        // SAFETY: `smp_wmb()` is safe to call.
+-        unsafe { bindings::smp_wmb() };
++        T::run()
+     } else {
+-        barrier();
++        barrier()
+     }
+ }
+ 
+-/// A read-read memory barrier.
++/// Memory barrier between local CPU and bus-mastering devices.
+ ///
+-/// A barrier that prevents compiler and CPU from reordering memory read accesses across the
+-/// barrier.
+-#[inline(always)]
+-pub fn smp_rmb() {
+-    if cfg!(CONFIG_SMP) {
+-        // SAFETY: `smp_rmb()` is safe to call.
+-        unsafe { bindings::smp_rmb() };
+-    } else {
+-        barrier();
+-    }
++/// A barrier that prevents compiler and CPU from reordering memory accesses across the barrier.
++/// Does not prevent re-ordering with respect to other CPUs.
++///
++/// See [`mb`] for usage.
++#[inline]
++#[doc(alias = "dma_rmb")]
++#[doc(alias = "dma_wmb")]
++pub fn dma_mb<T: MemoryBarrier<Dma>>(_: T) {
++    T::run()
+ }
 -- 
 2.50.1 (Apple Git-155)
 
