@@ -1,101 +1,151 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3AD3A6B76
-	for <rust-for-linux@vger.kernel.org>; Sat,  1 Aug 2026 02:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E592EEE77
+	for <rust-for-linux@vger.kernel.org>; Sat,  1 Aug 2026 02:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785551013; cv=none; b=MqidLwHkyP53CVilc+0WjCUADLeVgpC8ALErzLO/qroiuF6g4dc9RsDLva2bumuqX+q3AvIAyMMYw3UU+cds6ACJuX52rIo4t+aT7l9vAlAX6VwfUHENu9snXnR57owAIrCNfPwxTWm2yE/EHuzW9nJlvsrMcp0zV2YP1+m/zjg=
+	t=1785551123; cv=none; b=m4HYk4Jl3AcS0rSV6WCH9NVXGEOMMQoU/cHzLz6yCwL5V02MukqACUS+dqfgq53r3LY+Ub7He56h+Wu05zFBDuwjGW7QG20/N3C1eaGooQaP+bN+kh6xlyCO6UpSIjjEwmUtb47UZfGE7OFb8i/3Ad6lQ7rRb3c7JtLFh7nsBsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785551013; c=relaxed/simple;
-	bh=rPf3/79Ct9yT++Fk2GOpTyZMRy9tMo2ywlH0Xw9EJ4E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=F+2VwkmjwQegbLsT5IqxwbIYqoH9k1BjUb4BbZRnz+lTs47mouPJjX1r+SxpvdDFzydUsLfT5M9OvCTZzD/ymT3yl4zELaSxFbKoXelErcLBGRCYut0jcMQxWC4W7/dLC0/PPFUhwuR8n34uQIVGqh8iPxGHDEuk37ldJp3atOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wyliodrin.com; spf=pass smtp.mailfrom=wyliodrin.com; dkim=pass (1024-bit key) header.d=wyliodrin.com header.i=@wyliodrin.com header.b=ess4JQCO; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wyliodrin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wyliodrin.com
+	s=arc-20240116; t=1785551123; c=relaxed/simple;
+	bh=dhsqqvmI58Zm/hN27PZXdr1eGkLDS48c+ixQpLFwDf0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hpzG6c5cxNxkv8lTUKrKuoQ5whjAsXShF+JEDXwG1sWkP9C9nK1yC9Vwvb2gfX9K5IwDILCoZctXUGdLC+Bjop5sx1Ocnd4kqTnmu4PZ887Qmin1r43clAC8Ru4Eo+YXF0J/w3ceFkDWGh85QbIQJ0CNNQIG7R6Iht1zaooTt+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=WbWcBIaV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=M5d+pvAC; arc=none smtp.client-ip=202.12.124.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wyliodrin.com header.i=@wyliodrin.com header.b="ess4JQCO"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-47de008b020so1166609f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 Jul 2026 19:23:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=wyliodrin.com; s=google; t=1785551010; x=1786155810; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=rPf3/79Ct9yT++Fk2GOpTyZMRy9tMo2ywlH0Xw9EJ4E=;
-        b=ess4JQCOPWuJyHzzNFCKEGx2grXyfef7H6f4Pb0Qt3kGPKfFltVEKMGSz0DBakiqgw
-         wuQYcRpATaKBr5eHsfdcuf0Qh2aGYfAqOijHhUHUwAgNJ1+AcI84thJiN7b6W8qiH82F
-         mfUcWL1HevNwb9dBZuKIKOKMs2cys3tOWYYjo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785551010; x=1786155810;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rPf3/79Ct9yT++Fk2GOpTyZMRy9tMo2ywlH0Xw9EJ4E=;
-        b=Jqx0VTQ+FNIKhdMwiz9GfVBpiuiy+/I0eluxk3VXyC3yx95GpiiyPjqDslUS1cFBsp
-         aR4ouFS/xhl8l4RWF8EkEkT/gd6yP3vvB6AcuXs/KbSU1Rr1XoUz7L3NCaKi9+55Jt8k
-         +6socQQ/E5DXQ29AwwxCi1JpBNvFSmnAZot1JOjhTeglRMiwBr3NftcG5EwNiiN2z2KF
-         pHJGMAfJbHYiKDv/JiPyLNBFk/TlBya+YsdLMuL6rONKmDtaZjrW23wH39YiwyzIH1lY
-         aDWsfBMJoO0qOEyDDQh8SdSv+YWh279CZHC/kEPLnduuHqZn0uXmWc0d5E7ym67y8EnI
-         qQpg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrh0Lg/JJJkUU3BGMIGimt8LHuay16CJooq28K3RVcQN8o8Oqgzg01te+UVPl4D53Vm4N53qJQnfFHPHviySQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywh/GCUIYA7eqO0itqNcnfh268S/2vTjOnsh0dY0lzgUUYq7NBG
-	NGophb68wwo8pPq8Mwm9qIdQurHLOmq5+hqgRFiyleBnAjeSRw066tJm2xj5svu4pPY=
-X-Gm-Gg: AR+sD13nkqAEI+LoVVXgbtaMIFJxGnFAdUunTCIJZCU1d3Yx9MMw5KAnnQpvKgiRKC2
-	5oOfqtXKNFq6A28OdP75FvY/kPILDBvWxEcD1ZNtvN7G7r2py9B6J4TDMV4iLuaxVhDyEH5TRS0
-	OYO3+pb+u1/35Dadzgq8eNqSCRMpRLVE1Jjo0/6Av5TytTqr8fnCwkPp4+IWX6RGi8WU9Kfp4br
-	LSqyDHeWmFfkyRYMqWQT+9krASTQ7j6U85iq6Hb6yRkAIZJVhVm/1DaH2O/bdhDdQ135KLSnyg9
-	JtLJe2X8kT9H2+qrFUtBYe9QWw/7Mwd0noXGOJ2Y4LTv4M/MUVzK17NJGlRfpJNpCKJQ7DJhfLE
-	ulBO3skJ5qH9Tr4iSkxn9pHE0ngKCaMlqaXKX2H5ze9y7vQEfJdStrOE6EFdkDJBUlgmiXuhR9K
-	/tNJ3lsKWjVybRLjlHkyMtVZV5Zr0vHE6rvFvkPvVsRWIEo2B6ZR5k3w37rqUtCZIsgxsIueKoB
-	nadoOkpupbDC0FIF+/hRZik/7btQsiV5A==
-X-Received: by 2002:a05:6000:480c:b0:47d:f6a5:1fbb with SMTP id ffacd0b85a97d-47fd7270145mr3362412f8f.13.1785551009970;
-        Fri, 31 Jul 2026 19:23:29 -0700 (PDT)
-Received: from localhost ([86.122.199.88])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd456a6d7sm12176466f8f.19.2026.07.31.19.23.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jul 2026 19:23:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="WbWcBIaV";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="M5d+pvAC"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id A1A0713000FB;
+	Fri, 31 Jul 2026 22:25:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 31 Jul 2026 22:25:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1785551119; x=1785554719; bh=2NkahgXZy6YDg1lPmebO5
+	GP6GO2GHrUW6hHkjH7vCl4=; b=WbWcBIaVUqNumIAMbyD/lb9w7tepm/swKiEuv
+	haGd60AtRfw0zsktjoub6OxuivcVg/49ZVFrHRnnEXkAjuzl1SQoeelyxZNSnoW3
+	6coo0dCYNGxXczh4iRJEkJKlZ1P9aRibKIqDyycbTncQeuhbLPYLT3ORbmXkD5aT
+	UxM9v7aGhgshvFZKF8ZOgBeuSQeokBsx51sr/xjNyOiHD3BaOSa1v/IKOJ2myYzk
+	LhD9J4DbrQiIjFXW6MEGKDPUnJA/PvrMBCSLHJ4DFZ84esrJtdKzCxc9iQRvseKl
+	vzvJRsi5qLpbNZcDc0amwB6k3IwNpn7OIDQnh3vtpgvCQooYw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1785551119; x=1785554719; bh=2NkahgXZy6YDg1lPmebO5GP6GO2GHrUW6hH
+	kjH7vCl4=; b=M5d+pvAC+vSztueDF0HPaAcxAkCDZXM40xWoT8TPF0j6kwWpOja
+	gMuJ4rulnI5clpFPyAwT5DIy/6+blQl+91iaNu4uj0FD8+55IJvh36mycW8/nAmY
+	9eJ1UytGjAM5mCXRodFWN5wU4h2P3F459RizY3gk2Fze3lh7jw36HUhcbsi1+oj9
+	bnHJtrDbrIrE9kodYKnNarPw79Hf09FOYYfUm6ON7moysYXfq3g+enNwReFn3Wc9
+	AagaomjoMJeQzJvNBStpBYMXntAuZq3OaoDi9Eu5jq2hhlYMOJ+S/HEhRQXW8qjp
+	xl2U7AfLGIRcjOpx4lKz6AkZsY6EkYHIX3A==
+X-ME-Sender: <xms:Dlltam6w00lsomeB3oZOly55xZ4soLWNMk7CRnck7LW7oERsvGz4vQ>
+    <xme:DlltahSKJwv81NtWn2Huf8K1XVRADpzpVRzAENmu726YEHeEUGfp_75pzWwwsvQef
+    xCGB_cA6kzVmBUQFYY0BynkRQOkNWyK9jqptyc5UdRbIBTuSq8hu6DS>
+X-ME-Received: <xmr:DlltauuBCoTvlc4tWRLhKEEBgZv0S4Et9IQtz9TsUoZLnwLqSuBno7FvQeR35-ugTf5mFJycZU_abhbI_KQ>
+X-ME-Proxy-Cause: dmFkZTFL5J+P3pBhS0sKQbc/ZRVTPm4LUnoO0xtwI75u0TJ+UrrGHSt1EOQOXsM5/8z5v8
+    RmiJ3Ze86Cmxr84EVGJU+ip7PJMLS7+/aDPAuYvkjYYrjMdSZpydaKSYBGMjie0qOf2T5V
+    7lU5SCzo14e+4dAovEVadn9kZcZeDwJHDbZNnCLBT0wynVzw/5vlsHsCUj4W6Y/4l7qJj2
+    q/o6I56dHl0HkTSbLaz5sqN896VMumBGPzvYtBY4N7E0rQrH70J7eY6svBvfo+T0ELbmMn
+    7UHE4dH5RU3HrrgITESCwZT9ncgOf+A5DiIvolGM8vlB6wZm5TP/ZyxAG5+is1iWbaFHUw
+    f+Lwxtsz25XMCmL4X7rzUh+kE/LCUXXUecbEfS0jBLjQVqcxfF2e4+LQvqw5lJMTcNKM+9
+    ZEIlFiLFzjurVFVMvAtF1mFXVKjiqKxLFy5weM2Q/pq91xixMFi5axowRHPRcyfK7aEk4d
+    a1VuhQN4ieCe7tenixgSbqi0r5nKfqJbrG5snrs0Hbx/eqJXemT/jt/ZbRN2natNVZM6uG
+    4lPzSBSG34K30Gdry+MmLu2uYaLJmoVLGhPt7CbM4xwhxKLOqYWbucxNTKpO+vZoyV/dCK
+    8iAwQ1CgeJThd5ghXnRiSBs8gkth0/WEL5TsSEJv9RA1X0+I/N3YAUF+dWrA
+X-ME-Proxy: <xmx:DlltarYpzTsSBbcCSuqzrs5gCvJu5phpVhupDjGBW7gOmzd11BcItw>
+    <xmx:Dlltag9QQif9fch7Bz7czA9sjYSOI05470kQ5QLCl3Bdf78hsq8krQ>
+    <xmx:Dlltavrt4C-ERPoo-jMNB2aawzBooRnUBKtvb5hYe0LsR5aBRCMzlg>
+    <xmx:DlltarFB-1j9yL74dR-VPbOlgpcthvqXWwdAOXiAux-sEZXhStrzzg>
+    <xmx:D1ltalXlFq1a-AQwYXfQ1CpY5iGWkAcYeSLHA0g72jEvbqJ6fFO7mkIB>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 31 Jul 2026 22:25:14 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: ojeda@kernel.org,
+	richard@nod.at,
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	lossin@kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1] rust: bug: fix warn_on macro build error on UML
+Date: Sat,  1 Aug 2026 11:25:01 +0900
+Message-ID: <20260801022501.722493-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 01 Aug 2026 05:23:26 +0300
-Message-Id: <DKD908MWMH7D.2UF27D0IWQ77P@wyliodrin.com>
-Cc: <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH RFC 0/2] rust: usb: abstractions towards the port of
- usbsevseg.c to Rust
-From: "Alrexandru Radovici" <alexandru.radovici@wyliodrin.com>
-To: "Alexandru Radovici" <alexandru.radovici@wyliodrin.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: aerc 0.21.0
-References: <20260801-rust-usb_control_msg-v1-0-124cf21c82ee@wyliodrin.com>
-In-Reply-To: <20260801-rust-usb_control_msg-v1-0-124cf21c82ee@wyliodrin.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Sat Aug 1, 2026 at 2:59 AM EEST, Alexandru Radovici wrote:
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Fixed some mistakes, will include them in v2:
-- use `Duration` instead of `i32` for control functions timeout
-- fix control function 0 value timeout from "for ever" to `USB_MAX_SYNCHRON=
-OUS_TIMEOUT`
-- add `#[inline]` to short functions
-- use `u16::from_le` to read `wMaxPacketSize`
-- rename `Generic` generic type to `Dir`
-- impl `max_nak_rate` for `HostEndpoint<Bidirectional, Control>`
-- make data `&mut [u8]` for `receive_control_message`
+Callers that go through `kernel::prelude` have `CStrExt` in scope, but
+code inside the `kernel` crate imports explicitly and may not. Using
+`warn_on!` from such a module fails to build on UML, which is the only
+configuration where `warn_flags!` needs a C string pointer rather than an
+inline asm bug entry:
 
-Alexandru
+error[E0599]: no method named `as_char_ptr` found for reference `&ffi::CStr` in the current scope
+   --> linux/rust/kernel/bug.rs:83:49
+    |
+ 83 |                 $crate::c_str!(::core::file!()).as_char_ptr(),
+    |                                                 ^^^^^^^^^^^
+    |
+   ::: linux/rust/kernel/time.rs:427:9
+    |
+427 |         warn_on!(self.nanos < 0);
+    |         ------------------------ in this macro invocation
+    |
+    = help: items from traits can only be used if the trait is in scope
+    = note: this error originates in the macro `$crate::warn_flags` which comes from the expansion of the macro `warn_on` (in Nightly builds, run with -Z mac)
+help: trait `CStrExt` which provides `as_char_ptr` is implemented but not in scope; perhaps you want to import it
+   --> linux/rust/kernel/time.rs:27:1
+    |
+ 27 + use crate::str::CStrExt;
+
+Use the free function `as_char_ptr_in_const_context()` instead, as other exported macros already do.
+
+Fixes: dff64b072708 ("rust: Add warn_on macro")
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+ rust/kernel/bug.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
+index ed943960f851..ca1ab69c977b 100644
+--- a/rust/kernel/bug.rs
++++ b/rust/kernel/bug.rs
+@@ -80,7 +80,7 @@ macro_rules! warn_flags {
+         // with a valid null-terminated string.
+         unsafe {
+             $crate::bindings::warn_slowpath_fmt(
+-                $crate::c_str!(::core::file!()).as_char_ptr(),
++                $crate::str::as_char_ptr_in_const_context($crate::c_str!(::core::file!())),
+                 line!() as $crate::ffi::c_int,
+                 $flags as $crate::ffi::c_uint,
+                 ::core::ptr::null(),
+
+base-commit: 11028ab62899e4191e074ee364c712b77823a9c4
+-- 
+2.43.0
+
