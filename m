@@ -1,91 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-106113.protonmail.ch (mail-106113.protonmail.ch [79.135.106.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09623909A4;
-	Sun,  2 Aug 2026 08:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3193AF656
+	for <rust-for-linux@vger.kernel.org>; Sun,  2 Aug 2026 13:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785660078; cv=none; b=mMCvPciD5ZDQ9qOqSJy0r402PoF1dPKSr6vc14Zj8eoya781W1k6DaixAydUjf1lRxAdk9WTqBTO9ieNeqoKz4L8Kb9U3gPcfB61B13EusKTEDrEqFVli38Xrj1fuOdP2T6Lc7f74ounjNy37rL2zGoIcTUa+UXpMEETL1TrfvE=
+	t=1785678901; cv=none; b=F8ZaOv0z0KNHvg0W2vD0dLCIHQu9zwBL9X5dXNcDjMR58ZHVUts5npIu4ylAJYFryystg83u54so8n5Eklxn7mt0y9iUdUGlZsIv/J9qe8xEzc1LqluS6UyeR0ajwJh3Ax/mFgIUQsE6q/Ih3Bl79VDzVqhKyqUVu0nE7fyQ2p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785660078; c=relaxed/simple;
-	bh=sz3ZY5jc70+A6sPlXIERJcepPzsWc5VTzUJzQEUCm7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i8FXq7Y/JyKIVeck+PZpDFvGr9ZJ6qjZBLwDmp64AMbSCJDPmOFqdYdEhtiAq+TPqX5DmDJa+G9xeOfdbTzsFoN8RqlzVa66Wa0m9RIg+7IbT5Qnio/NByQPOnURikVRvXNwoFUt1RgxtuAzf6FpOCtiimv8bQr7QGJyx9R3oNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNrpjQlm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785678901; c=relaxed/simple;
+	bh=IOB/WfmqhRmkwDDdH0EXSEYltS2um3BGIGOdI7r3EaU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FdPOl1mi3qNxeejINfeuo9WREkBlQeM/CUbiBZA5na2gp4amqhRQN5XL3If+XTgSgmf8VYRvMdEsHvT9kobH8IyRJKKWRH+QtY8KyAtxoIO9O4QBdpv1D103HVCVXc5gwl+WNWyHXDw1y6cF4qD/ALRdataiIsIXjkCSlJGNBVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=nUozsqO/; arc=none smtp.client-ip=79.135.106.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNrpjQlm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BE21F00AC4;
-	Sun,  2 Aug 2026 08:41:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1785660076;
-	bh=LP+xGuOirTyq9Ob92FPWuGnj3Wd1osEGtU6OKAF+RZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QNrpjQlmIHBKbPH84f7RMOOQMZhCMBELGF79hA4XWb+OEDr6ngzlTUtl2uh/5eqCi
-	 cisuC0+fEiLEGehGwrMpRiVcqM9lW/bF4YJaypg2HqalTSk1on/nixQ1u4i+bb4pWX
-	 efHs7V+Swl/ayQ09wush93Gju5fNyeb8nS5X99KU=
-Date: Sun, 2 Aug 2026 10:39:47 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="nUozsqO/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1785678893; x=1785938093;
+	bh=jswMA/xWAM4IlmqJdBTjszdMEWLqZ6QbpQBjgHnbAAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:From:To:
+	 Cc:Date:Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=nUozsqO/DdWzjwNVYHVPT6NaRuVstVrAg+AqSVlhpQcmH86ovFSrPnGSZgrARnlJl
+	 pT0vwkuFsfxqZPDf03y46WjnfCt9FHyoA7obSTgcw1TcjGsZTbI7Ui4qJBvzskmk4G
+	 7wtWfwybxarOCinmrD5/dxCQbdiEyD/nWWkm7dyHzYRfs7BWEOTdKsE2y84VpqTgnz
+	 r2lsue2BSBBZhP6JpaZgSQINIfJ6UH4rK6/Q9e3ie3FMoD/0Xb7+ZKhBvCOU1bdhos
+	 Y/9JL/7U1TtLiHLBfy3W09D0B9EhO/iyk2EgBxIBOSvmCmRV6RSzcUzOZQ/+y4f5YB
+	 PyesL3lbnBsKA==
+X-Pm-Submission-Id: 4hChBW20q5z1DDrb
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RFC 1/2] rust: usb: add endpoint abstraction
-Message-ID: <2026080205-falsify-stalemate-175b@gregkh>
-References: <20260801-rust-usb_control_msg-v1-0-655bb444b52c@wyliodrin.com>
- <20260801-rust-usb_control_msg-v1-1-655bb444b52c@wyliodrin.com>
+	Timur Tabi <ttabi@nvidia.com>,
+	driver-core@lists.linux.dev,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Younes Akhouayri <git@younes.io>
+Subject: Re: [PATCH v2] rust: dma: return zero for Coherent reads past EOF
+Date: Sun,  2 Aug 2026 16:54:40 +0300
+Message-ID: <20260802135442.140218-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260730-fix-dma-coherent-eof-v2-1-8aff21054afa@younes.io>
+References: <20260730-fix-dma-coherent-eof-v2-1-8aff21054afa@younes.io>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260801-rust-usb_control_msg-v1-1-655bb444b52c@wyliodrin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 01, 2026 at 03:01:07AM +0300, Alexandru Radovici wrote:
-> Add an abstraction for `struct usb_host_endpoint`, together with the
-> accessors needed to reach one: `AlternateSetting` wrapping
-> `struct usb_host_interface`, `Interface::alternate_settings()` and
-> `Interface::current_alternate_setting()`, and `Device::control_endpoint()`
-> for the default control endpoint, which no interface descriptor lists.
-
-Why?  USB drivers shouldn't be messing with usb_host_endpoint structures
-for the most part, what user do you have for this?
-
-> `HostEndpoint` is generic over two sealed marker traits,
-> `EndpointDirection` and `EndpointTransferType`, whose implementors are
-> 1-ZSTs held in `PhantomData`. An endpoint borrowed from an alternate
-> setting starts out generic in both; `as_in()`, `as_out()` and
-> `as_control()` check the descriptor once and return a reference
-> carrying the corresponding marker, so a function taking
-> `&HostEndpoint<In, Bulk>` needs no check of its own. The type is
-> `#[repr(transparent)]` over the C struct and the markers are
-> zero-sized, so the refinement costs nothing and a slice of endpoints
-> can be borrowed directly from the C array.
-> 
-> Control endpoints get a distinct `Bidirectional` marker rather than an
-> IN or OUT one. A control transfer takes its direction from bit 7 of the
-> setup packet's bmRequestType, and USB 2.0 section 9.6.6 defines the
-> corresponding bit of bEndpointAddress as ignored for control endpoints.
-> `as_in()` and `as_out()` are not implemented for `Bidirectional`, making
-> calling them a compile error rather than a misleading result.
-
-Don't over-think USB endpoints, they are "just" a pipe that contain a
-numbering scheme that the USB core uses.  Is that what you are trying to
-create here?  What are you trying to "enforce" here that the C code does
-not already do?
-
-thanks,
-
-greg k-h
+On Thu, 30 Jul 2026 18:34:38 +0200=0D
+Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org> wrote:=0D
+=0D
+> From: Younes Akhouayri <git@younes.io>=0D
+> =0D
+> Coherent<T>::write_to_slice() calculates a zero-byte copy when the file=0D
+> offset is beyond the allocation, but still calls=0D
+> UserSliceWriter::write_dma(). The latter rejects offsets beyond the=0D
+> allocation even when the copy length is zero, so a debugfs read past EOF=
+=0D
+> returns -ERANGE.=0D
+> =0D
+> Return before calling write_dma() when the offset is at or beyond the=0D
+> allocation, matching simple_read_from_buffer() EOF semantics.=0D
+> =0D
+> Fixes: 016818513936 ("rust: dma: implement BinaryWriter for Coherent<[u8]=
+>")=0D
+> Cc: stable@vger.kernel.org=0D
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library=
+/topic/.E2.9C.94.20Possible.20past-EOF.20bug.20in.20Coherent.3CT.3E.3A.3Awr=
+ite_to_slice/near/611677095=0D
+> Signed-off-by: Younes Akhouayri <git@younes.io>=0D
+> ---=0D
+> Changes in v2:=0D
+> - Use ordinary subtraction after the explicit EOF check, which makes=0D
+>   underflow impossible.=0D
+> - Link to v1: https://patch.msgid.link/20260720-fix-dma-coherent-eof-v1-1=
+-d92685db8da6@younes.io=0D
+> ---=0D
+>  rust/kernel/dma.rs | 6 +++++-=0D
+>  1 file changed, 5 insertions(+), 1 deletion(-)=0D
+> =0D
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs=0D
+> index 200def84fb69..556424b88fb9 100644=0D
+> --- a/rust/kernel/dma.rs=0D
+> +++ b/rust/kernel/dma.rs=0D
+> @@ -1005,7 +1005,11 @@ fn write_to_slice(=0D
+>              return Ok(0);=0D
+>          };=0D
+>  =0D
+> -        let count =3D self.size().saturating_sub(offset_val).min(writer.=
+len());=0D
+=0D
+Nit: I would probably just check if `count` is zero next to this line.=0D
+=0D
+> +        if offset_val >=3D self.size() {=0D
+> +            return Ok(0);=0D
+> +        }=0D
+> +=0D
+> +        let count =3D (self.size() - offset_val).min(writer.len());=0D
+>  =0D
+>          writer.write_dma(self, offset_val, count)?;=0D
+>  =0D
+> =0D
+> ---=0D
+> base-commit: 667d0fb32149f023b8b34a1f6f3d384556eafb5a=0D
+> change-id: 20260720-fix-dma-coherent-eof-d0d08c91e013=0D
+> =0D
+> Best regards,=0D
+> --  =0D
+> Younes Akhouayri <git@younes.io>=0D
+> =0D
+> =0D
