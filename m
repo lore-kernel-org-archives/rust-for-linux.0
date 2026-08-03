@@ -1,59 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89E8314D0D;
-	Mon,  3 Aug 2026 14:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFF330D416
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Aug 2026 15:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785767989; cv=none; b=rOxrfJM3T2MW2H4JbZuSEn8uRvMlMugx+QTY5avyiFHpEoWVBSSv9lzBNRpyAu7wegfr/UUeZCDiAUCido7OVjjbdHYtmLj626FIZAXBhn/+Lb8+8RZRq2TPv6LZtMPYTT4ekEG+NJdJeKMEIdM7M+9U3VfAJFjfnLyiEPlsdVU=
+	t=1785769503; cv=none; b=UjgxOLpg4EN1XunKbdTENe2GG1wniLCOcVmxTNlGLGBkUXRGqrCR8dgJs9FQ4J3Xg2/TnSwrjm2IReObS6qVJVVxqkdHTNt9++nGmDbLM9Y92qkBOrD4QwhyRgVYednW1CHdVCMrGlZmZHQCRIINYmPCSGFHb0d+ct+/JMa27LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785767989; c=relaxed/simple;
-	bh=0g2EljvuC9h0pqwj8+ZuBqyGledG6k3jGZEjHv3qjMQ=;
+	s=arc-20240116; t=1785769503; c=relaxed/simple;
+	bh=2iU1UAs+sm+48yzFX7vpjGm3HzL21Y8twGh0LZy2UgM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M0hEEk5p4pdbvPbzngrUfI24MHUKkWCNdMQNC3qMRFQf5d/NEtkyCQSe2Q93lceiZjDvOlqX3rPatX+zYJFYd0AUVSmsueJ7kODRuVHiSk1LsZdTp/2GlKKO4UGI7toRuypqAvUDVTezZCUtTglJnW9OIppmwvLCKyqV1ujZyfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/Bua6Cg; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=bcTvcRJpsWbB0J6/U2EFO3iK+88fOdzwfADLuQzS9zOT0N6JQGNigUqW5Za6imqlWV607Sz24K4PtsI7G23u5edXfjp/v7e5hbJg701sOPVzDJ4GDqSg4/RgivbyXX1yvu/KGiEYP9MCrxCMNFW+WrJu+WadrVnuC+XHtHOUSKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LyFteE6c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/Bua6Cg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AE51F00A3A;
-	Mon,  3 Aug 2026 14:39:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LyFteE6c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DF01F000E9;
+	Mon,  3 Aug 2026 15:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785767987;
-	bh=Motr8DJ4Boelkn/MqZDUFGt12uok8eRJlM4+sHMnUhw=;
+	s=k20260515; t=1785769501;
+	bh=ZoA0ZzcmNg6/H7+zDVrgZ61YpGl4SyWjGUZLYGSn7FU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M/Bua6Cg7QiWrMJRe0bMVhhUefRtvtDcROnEUn81bRas7m61kFhqqg8m7Po5NTEtU
-	 Lp9wMHJCtd/0FHPbZdKCG8nhOHQVQaGfqBXHBREmlCsnNcbkJqSs1z9HM95HbB4KGa
-	 7juGIYkNuFq/p6ng80nAsfWSpvhBf4DhutHyZGhaSQKFFix4gw/iUAyofxXqh7pCQ4
-	 Fpa0B6I6ypFdUZs7QRpDUMrShXMl1ohZLujY/wyD8HbKAj7KMRC8P8juJzZGO75dq6
-	 ejdA1Q5R0npA8eoT4z4HfPZzCnP8wPSCE3ZTG/lGDGfwrzEOFhfL1cDu13WKKXdqfz
-	 1vY//NTxb7KxQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 29B7AF40068;
-	Mon,  3 Aug 2026 10:39:46 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 03 Aug 2026 10:39:46 -0400
-X-ME-Sender: <xms:MqhwautJwQr-h2dB-nEjxB4W5fukeEZi6BxKWJu2NW0t9Qa6SZBZdw>
-    <xme:Mqhwat2vjrI4fjha-AQh2M_Vu6-lK-0o-Jix8KMByEXX0b_R-04Mn8Z1K-Oyms9f6
-    Xduf-8QnykO8JUg1WWVhreXj-wfP7H9LsVz5iMhnHifEvcvrSLFhQ>
-X-ME-Received: <xmr:Mqhwav4ORKvosWCsCOK5k3m2hWuPeFhKXynIaF45bN59_WmVXsUC_ERwzk6Vb0OhJegB_HdpUmmDJhpkefOkHiclmeb4PqVt>
-X-ME-Proxy-Cause: dmFkZTERKNLZ4Poq7ApBDtsDpJcdzXJyw5GtePICMqCNqul9pjRNQsUrStn5JfDhXLFsR0
-    OS+yLTOZIGxmsJdjEmHROoZexfP+bYk/QKMlt64Spuyy1kq4y5wnm32LTggvR4EiTbytYF
-    bWz8hX6n9Uxoqs+tUzAqGExtvLBKoGyE0fAbatbGGmjwp5NcI2e+2TerQejbb/lrVDPDoz
-    fWB/Stb97TS6yIHJi4eeveZNibpf5jRTW1LQWr/4CDwmfluqB2Du/xgKefRbFVqNU0huHu
-    e3+REwqIAjseuBJmqYQo1MnQiKbKL87jxnGTEvZ6OBwkzxATd4rjd9EiFBeu7hxL+YeeCR
-    9Ft5uv3lokOWpat7fBrXkOqwvc61d3FZrPW6ie7NCBbdRs0ziuufaM124cazusVmLZEBE0
-    oWfQQy8bND+6H3rTABQZVO4mTtgbKBQWZQJZr3s8kVcG6dFyCiC3g1kG47U1KGpDMkDN+h
-    gfT3XIlepPyiqavvzj9OGioTHoRO7zb4MzrJ0nNW0pglzQqN7LSB7GOwRfElhf4rWd7Ryu
-    TOzs+MDUZiUXSDwfXMn3cwK8DUaVWOoaN1etFLSom4oUilDaacKDiYz41f+n06/Zujw1si
-    eQeePjZ52rITMekLz5FUsTYLzSHybz2KG1EQFo4JSNLxUaWQEdyvfOnGf/2w
-X-ME-Proxy: <xmx:MqhwakW6AUMFC6odTyfxS_25aaptEuyaGMNcupypFHVCV4Htq-ls4Q>
-    <xmx:MqhwanhS3TbjxczCHjDDxJnoSSF9wZPvxINv5esGc0UqdkfFc0DhiA>
-    <xmx:Mqhwakdgnn6r-fp1fwJ2PoqYuERtJESazGjzAG07xaf5vuAE3MERYw>
-    <xmx:Mqhwam04RujBTg-l-ALOGDc4I-dvJfllXqa8nmI0TvBqJNgmKQcikw>
-    <xmx:MqhwagrEpd1ykrqFN-_kmhXb8ObmJSoG06uAOh_ppLIaFCa7uAz-vdYp>
+	b=LyFteE6cpmwp8TPBZE2fI8p+TOdaFZkScoimGxhynw5vXrCw0MJA4fsJ/vmTaEhJR
+	 1MwYVqJ7B+wXFhqUELQgUkM1VTjdhkoQLNE/x3wvn3BUpAM7MuMJ73QkIeE0enjklm
+	 1TH61KA3Fi22LNH2kRabuFNs7d3i3Ws5VZZpBnBLDXIHnJl63y2OJ6tn0YJjKsfVww
+	 RXc+ZQalqpaCZyH9W3Z7ckXfOJn53M/t2s3QWJDXBHvbYKDlBNVG2jLVqNiKGzgvDW
+	 pxuz+TxTS5JWBvd1cpkfbXteXUX93+BxJJGKPTdH6z2lWNT3XW83shjm35szy5cTl3
+	 4E4smNfwjc+Og==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C01C1F40066;
+	Mon,  3 Aug 2026 11:05:00 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 03 Aug 2026 11:05:00 -0400
+X-ME-Sender: <xms:HK5waiyLtA4gpJHO95cTKCKN3sSV0jkWCWwj_aq9QNO4rCH1xIqbUw>
+    <xme:HK5wajcR-RwHyhapoDzfpmMxIiqj5jMGKZqji-ptTtXWY5Au9NRSOVVT9tC-wSIRF
+    qaGzPxUbMlUnOsn7gGOuaZA6QvMf3UBfFvn5rt5w74Po0cYHUul>
+X-ME-Received: <xmr:HK5wantGosudkheszJY1urZLLNbp-yFa0EQY6o-PX_Y8aW5bLcoOaapkS3cx025xsqnWRWrEt5bAmZpBXwaqgVjPVJSJJATd>
+X-ME-Proxy-Cause: dmFkZTEcqG3YFCZivVR4TevQhnVl9dzrI+z92TSR0P+WfPPUE8y0SNKyMas+dlxt+mTgWD
+    9q8m3pvDoT23yONJYjnXa+MpDjUwXmCTQI8A8N1B8L/tGkpyxuHc81I6651Tiuh61vVCNL
+    0oey3LjOy2gAJsYcZ2ejtZuhNT2R7SIAt4rzfn/+LA3xJHq7nx8eDIQCwjg7VbUoCbB/TO
+    r/gbYzQYG6Y9zxf88rN5YmdQPAwdTagnD3k2/8A+G5P88sAN2kqZUzDQ3wjU9appDStGv8
+    WyXIrvLJluQZShsK+dneBPyiDQUKy4ZUo/g+09o+7Dru4VT8jFRAL1oU8ZN4/MtPht9Lgk
+    kT9pLfmHVz1CJp6UVxG9wGVOSrtyVxwc9y1VyoHD/OT4NIzCgQWiBUvE1xujKcNtukqfIo
+    rmAJ5X2PkEvJ4GRq2AJVgBbfISht08vIH33Ex1k98K9GH/OftdB1qX8uhDALR73Hw6LU8y
+    SX9ZxXqkdjWXCLTU9iIKs4wBlkt/PFz5IHrhpAyUI8l7Y7o4/WYM19cliE8NoPCGRcnm7h
+    SHrU82xEHO07HwyjoJ+5Ba4ALcfi/eG2tgVkpdn2BsR1VvKQKBm689kI3LTtVMisXCbiiS
+    Cd3RWWV61qJz2z0GbwPrC1QZKcgmmnkr0ldVx6bgwoAtL1QyljAmgg/7HtzQ
+X-ME-Proxy: <xmx:HK5waoDD7MC0k_8ZTCrDUEFkPjjynY6eUY7ap6ZjCZJM1F4pNB4vzQ>
+    <xmx:HK5wavHQ7_iqZcZr4_L_smqgr7Y4nV3mApeW9mCckCMU1d38-Lcixw>
+    <xmx:HK5waov84FAI1w-d8GEcr2zJZHDUuwwbITLc5C_ncgP999PXaHks8w>
+    <xmx:HK5waln6jy_-UI-NBD5WJV3eYaCV6DaiJUmgq_A9rLoj_93QssF5iQ>
+    <xmx:HK5warOieho_nONIF5eZr4btZyn56X4iq1fiR3ZuorntWDKvUY3C9ZPy>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Aug 2026 10:39:45 -0400 (EDT)
-Date: Mon, 3 Aug 2026 07:39:44 -0700
+ 3 Aug 2026 11:05:00 -0400 (EDT)
+Date: Mon, 3 Aug 2026 08:04:59 -0700
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
@@ -62,16 +62,13 @@ Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
 	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
- disabling/enabling
-Message-ID: <anCoMLTS2-OtaTrt@tardis.local>
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 10/24] preempt: Introduce
+ HAS_SEPARATE_PREEMPT_RESCHED_BITS
+Message-ID: <anCuG683z-iDfq9o@tardis.local>
 References: <20260731203031.13679-1-boqun@kernel.org>
- <20260731203031.13679-6-boqun@kernel.org>
- <20260803102155.GI49951@noisy.programming.kicks-ass.net>
- <anCgfqYg0vYCgZr-@tardis.local>
- <20260803142106.GF687043@noisy.programming.kicks-ass.net>
+ <20260731203031.13679-11-boqun@kernel.org>
+ <20260803113817.GB687043@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,109 +77,120 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260803142106.GF687043@noisy.programming.kicks-ass.net>
+In-Reply-To: <20260803113817.GB687043@noisy.programming.kicks-ass.net>
 
-On Mon, Aug 03, 2026 at 04:21:06PM +0200, Peter Zijlstra wrote:
-> On Mon, Aug 03, 2026 at 07:06:54AM -0700, Boqun Feng wrote:
-> > On Mon, Aug 03, 2026 at 12:21:55PM +0200, Peter Zijlstra wrote:
-> > > On Fri, Jul 31, 2026 at 01:30:06PM -0700, Boqun Feng wrote:
-> > > > +static inline void local_interrupt_disable(void)
-> > > > +{
-> > > > +	unsigned long flags;
-> > > > +	int new_count;
-> > > > +
-> > > > +	WARN_ON_ONCE(in_nmi());
-> > > > +
-> > > > +	new_count = hardirq_disable_enter();
-> > > > +
-> > > > +	/* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
-> > > > +
-> > > > +	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET) {
-> > > > +		local_irq_save(flags);
-> > > > +		raw_cpu_write(local_interrupt_disable_state.flags, flags);
-> > > > +	}
-> > > > +}
-> > > > +
-> > > > +static inline void local_interrupt_enable(void)
-> > > > +{
-> > > > +	int new_count;
-> > > > +
-> > > > +	new_count = hardirq_disable_exit();
-> > > > +
-> > > > +	if ((new_count & HARDIRQ_DISABLE_MASK) == 0) {
-> > > > +		unsigned long flags;
-> > > > +
-> > > > +		flags = raw_cpu_read(local_interrupt_disable_state.flags);
-> > > > +		local_irq_restore(flags);
-> > > > +		/*
-> > > > +		 * TODO: re-read preempt count can be avoided, but it needs
-> > > > +		 * should_resched() taking another parameter as the current
-> > > > +		 * preempt count
-> > > > +		 */
-> > > > +#ifdef CONFIG_PREEMPTION
-> > > > +		if (should_resched(0))
-> > > > +			__preempt_schedule();
-> > > 
-> > > I'm confused by this one. This should not be needed. If there was a
-> > > preemption while IRQs were disabled, there should be a pending
-> > > IPI.
-> > > 
-> > > Notably local_irq_restore() also doesn't do this, since otherwise you
-> > > would not have needed to add this here, since you already call that.
-> > > 
-> > 
-> > I should probably have made a comment on this instead of keeping it in
-> > my head ;-)
-> > 
-> > Note that since we use preempt_count to record irq disabling, then in
-> > the spinlock version i.e. spin_{,un}lock_irq_{disable,enable}(), we
-> > don't need (and don't have) preempt_disable/enable() any more. So we
-> > need to rely on this for the following case:
-> > 
-> > 	spin_lock_irq_disable();
-> > 	<set NEED_RESCHED for the current task>
-> > 	spin_unlock_irq_enable():
-> > 	  do_raw_spin_unlock(lock);
-> > 	  local_interrupt_enable(); // <- need this to trigger a
-> > 	                            // reschedule, because no
-> > 				    // preempt_enable here.
-> > 
-> > Make sense?
+On Mon, Aug 03, 2026 at 01:38:17PM +0200, Peter Zijlstra wrote:
+> On Fri, Jul 31, 2026 at 01:30:11PM -0700, Boqun Feng wrote:
 > 
-> No; for one, you cannot elide the preempt_disable/enable() from this
-> thing.
+> > diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
+> > index 1220656f3370..12353eeebc52 100644
+> > --- a/arch/x86/include/asm/preempt.h
+> > +++ b/arch/x86/include/asm/preempt.h
 > 
-> It has always been valid to do:
+> > @@ -24,18 +34,26 @@ DECLARE_PER_CPU_CACHE_HOT(int, __preempt_count);
+> >   */
+> >  static __always_inline int preempt_count(void)
+> >  {
+> > -	return raw_cpu_read_4(__preempt_count) & ~PREEMPT_NEED_RESCHED;
+> > +	return __pc_op(read, __preempt_count) & ~PREEMPT_NEED_RESCHED;
+> >  }
+> >  
+> > -static __always_inline void preempt_count_set(int pc)
+> > +/*
+> > + * unsigned long preempt count parameter works for both 32bit and 64bit cases:
+> > + *
+> > + * - For 32bit, "int" (the return of preempt_count()) and "unsigned long" have
+> > + *   the same size.
+> > + * - For 64bit, the effective bits of a preempt count sits in 32bit, and we
+> > + *   reserve the NEED_RESCHED bit from the old count.
+> > + */
 > 
-> 	raw_spin_lock_irq(lock);
-> 	...
-> 	raw_spin_unlock(lock);
-> 	...
-> 	local_irq_enable();
+> The 64bit comment doesn't really make sense to me.
 > 
-> And since raw_spin_unlock() does have the preemption thing,
 
-Good point!
+Ah, I meant "preserve" instead of "reserve"..
 
-However, IIRC, the elision was trying to optimize two preempt_count
-accesses (one for irq disable, one for preempt disable) into one in
-raw_spin_lock_irq_disable() or raw_spin_unlock_irq_enable(). We may
-still want to do it in the future, if that's the case, we will still
-have should_resched() check in raw_spin_unlock_irq_enable()?
++/*
++ * unsigned long preempt count parameter works for both 32bit and 64bit cases:
++ *
++ * - For 32bit, "int" (the return of preempt_count()) and "unsigned long" have
++ *   the same size.
++ * - For 64bit, the effective bits of a preempt count sits in 32bit, and we
++ *   preserve the NEED_RESCHED bit from the old count.
++ */
 
-> raw_spin_lock_irq() must too. And the very same argument is still valid
-> if you now write:
+It means we won't change the NEED_RESCHED bit regardless that `pc` has
+it set or not.
+
+> > +static __always_inline void preempt_count_set(unsigned long pc)
+> >  {
+> > -	int old, new;
+> > +	unsigned long old, new;
+> >  
+> > -	old = raw_cpu_read_4(__preempt_count);
+> > +	old = __pc_op(read, __preempt_count);
+> >  	do {
+> >  		new = (old & PREEMPT_NEED_RESCHED) |
+> >  			(pc & ~PREEMPT_NEED_RESCHED);
+> > -	} while (!raw_cpu_try_cmpxchg_4(__preempt_count, &old, new));
+> > +	} while (!__pc_op(try_cmpxchg, __preempt_count, &old, new));
+> >  }
 > 
-> 	raw_spin_lock_irq_disable(lock);
-> 	...
-> 	raw_spin_unlock(lock);
-> 	...
-> 	local_interrupt_enable();
+> > diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+> > index 33fc4c814a9f..87d5367f986c 100644
+> > --- a/include/linux/preempt.h
+> > +++ b/include/linux/preempt.h
+> > @@ -30,18 +30,20 @@
+> >   * NMI nesting depth is tracked in a separate per-CPU variable
+> >   * (nmi_nesting) to save bits in preempt_count.
+> >   *
+> > - *         PREEMPT_MASK:	0x000000ff
+> > - *         SOFTIRQ_MASK:	0x0000ff00
+> > - * HARDIRQ_DISABLE_MASK:	0x00ff0000
+> > - *         HARDIRQ_MASK:	0x0f000000
+> > - *             NMI_MASK:	0x10000000
+> > - * PREEMPT_NEED_RESCHED:	0x80000000
+> > + *				32bit		HAS_SEPARATE_PREEMPT_RESCHED_BITS
+> > + *
+> > + *         PREEMPT_MASK:	0x000000ff	0x00000000000000ff
+> > + *         SOFTIRQ_MASK:	0x0000ff00	0x000000000000ff00
+> > + * HARDIRQ_DISABLE_MASK:	0x00ff0000	0x0000000000ff0000
+> > + *         HARDIRQ_MASK:	0x0f000000	0x000000000f000000
+> > + *             NMI_MASK:	0x10000000	0x00000000f0000000
+> > + * PREEMPT_NEED_RESCHED:	0x80000000	0x8000000000000000
+> >   */
 > 
-> Secondly, nothing should 'set' NEED_RESCHED without also immediately
-> causing a preemption.
+> Perhaps add a comment about how HAS_SEPARATE_PREEMPT_RESCHED_BITS really
+> is about having PREEMPT_NEED_RESCHED in its own word, rather than
+> preempt_count() being 64bit.
+> 
+> Because as presented it is very easy to confuse these two options.
+> Ideally it would explain the LOAD-STORE issue with NEED_RESCHED and
+> point to ARM64 or something.
 
-Thanks for the information.
+How about organizing the comments as following:
+
++ *
++ *         PREEMPT_MASK:	0x000000ff
++ *         SOFTIRQ_MASK:	0x0000ff00
++ * HARDIRQ_DISABLE_MASK:	0x00ff0000
++ *         HARDIRQ_MASK:	0x0f000000
++ *
++ * Depending on HAS_SEPARATE_PREEMPT_RESCHED_BITS, NEED_RESCHED bit
++ * is put in a separate 32bits.
++ *
++ * HAS_SEPARATE_PREEMPT_RESCHED_BITS=n:
++ *
++ *             NMI_MASK:	0x10000000
++ * PREEMPT_NEED_RESCHED:	0x80000000
++ *
++ * HAS_SEPARATE_PREEMPT_RESCHED_BITS=y:
++ *
++ * (NMI_MASK can use all the 4 bits)
++ *
++ *             NMI_MASK:	0xf0000000
+
+Thoughts?
 
 Regards,
 Boqun
