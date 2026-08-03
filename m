@@ -1,38 +1,38 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD9A3E5585;
-	Mon,  3 Aug 2026 09:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6438361960;
+	Mon,  3 Aug 2026 10:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785749683; cv=none; b=SI+8xbrxG4MhJ+1ZPMWLF3RgkkWwezNJ/+FcifSCSmEYho2UNhUCLqfKGNjpcy33cH8nt+9gBpGpoL0IleylI4U8UdjbBepAXLjvAx8VQQjJ8Clm+HRZs96YUXZT2tWPJK1fwuV+UXqLfkobH2iLjP6g7yBrjC3EbbKszLCnzi8=
+	t=1785752222; cv=none; b=Nuy9f1CWa2sme1W3KSzeBSSJyzS/YyEwIfI59cCwUdyiPUyDfkH5cCM7aNWWML5+aerYDv/3zbMlGH1zcR6D5wuAN4rDTL095j3ikYXig6JX7TWyXVroyhA9bT7v1q1HdppQVimjJPyhVxNp2YRhTyiM/XksFmmOtDbs8LfAPqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785749683; c=relaxed/simple;
-	bh=Zu/81nEssvAK/tSxHLvbKrWbrum5LP5OI+GjBHqSyPE=;
+	s=arc-20240116; t=1785752222; c=relaxed/simple;
+	bh=o8kBNrv1UfJ26Kd/8zf/oVxgeetFCR0GEd0ENtW5cVY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FRx+huenDXDFEzpnchFutSJttjDepKR6m8hfdPAcTyCoQ5YDupWallQbjumi7cIVhPF+3J2CyLOdP0548LrwxfPyx26hKzHb0+fkdS83X4UqcFBCwr0j4EVLTlgS1rDXFYbKRor/zwHVcTigEKK2xhOw++hAxb1X2Ejjp8zelRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=f4WDZHIk; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:Content-Disposition:In-Reply-To; b=uGSOksPXXL1O4xqCAKgK/nU9aFcHHbRrjxx95XWj5P/kGxMVcFWWHQBvoFzysul6+d6TrxcdXhtRMgn5pKy24oQ8EU0PWDQf9R6GUsReVi5Ybgdz6Stki3H6DN02+k+PHGfQKDdtvWpWBSNJYFH43zWbdYc153RLUdTuPs9DfH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pwwcyOSt; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="f4WDZHIk"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pwwcyOSt"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=t2p+3bhoDrDud7iU6bwphGdeYQ3+IsVgsXV5VKrsjXA=; b=f4WDZHIky5hxiXPYzZo3G49qkw
-	TZshdKf8PFuD0GToS7YYOyfSRq5xg3J3qB88S4D7bE/HkVXlQSWOLnQIOUtLG6EpiLDIy7/43Xvn0
-	1L+5zOHB9HwzBgj++5VHdUX7nozUkZS3ZN+0QNzGTshL5J4LFBKp4qA3x/7z/N35O8tJHgc+8flYE
-	4LAIZj2my7uMlDDeK2vUhUt5X3mRrSQ23pZrJ7U/RJ0bju1wg7StiOtXGpJTwYhoOM/169aPM+pas
-	tfRgSO8XlYOGZYVIuJvGCNY2sBDYvD7cwwE2Mpn9rBVuvrEWMfKmCb0WCu9e1+4KMVVt6SVZJyTtc
-	wYAA2V+A==;
+	bh=GxS9RDwU6IbCM8ZYn4WWoFXZfvEsVVX7w4lWl+B7HIM=; b=pwwcyOStuGWcu2yutMhjXQPMFo
+	binNUpjBxQvorlS9awBzyv6ZdhR7Ws2cX/HtS2GPPceT2JlE/LUOVX80Ao8ux2qPDD0nDvR0tutgj
+	XQgETt1wvvZU+/TEfYHsdY8yRq10+SfQNJmbf1xnhlRs0tmk0sJKEbawy0pJHQlS3ELptuCuvCREy
+	4qdazcaOqMo7VyjcUq8WAtOtXOys5Sy58+CuF9Rx3yEPCd3qQnY+fnWGoq/fOxXlfZajZ6j87naTD
+	x02tedCpGVUZkDFDd8veGAkXOIgy2U2vhXdW2gwwrPuWIfYObsPLsSkz8+qqaDBbwmDluObm38rMS
+	i7NCoCJw==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqp46-0000000CzBb-1wbg;
-	Mon, 03 Aug 2026 09:34:34 +0000
+	id 1wqpj3-0000000D9s7-1XzX;
+	Mon, 03 Aug 2026 10:16:53 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id EC0653012AB; Mon, 03 Aug 2026 11:34:33 +0200 (CEST)
-Date: Mon, 3 Aug 2026 11:34:33 +0200
+	id E2E85301127; Mon, 03 Aug 2026 12:16:52 +0200 (CEST)
+Date: Mon, 3 Aug 2026 12:16:52 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Boqun Feng <boqun@kernel.org>
 Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
@@ -43,11 +43,11 @@ Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH 07/24] locking: Switch to _irq_{disable,enable}()
- variants in cleanup guards
-Message-ID: <20260803093433.GE49951@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20260803101652.GH49951@noisy.programming.kicks-ass.net>
 References: <20260731203031.13679-1-boqun@kernel.org>
- <20260731203031.13679-8-boqun@kernel.org>
+ <20260731203031.13679-6-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,62 +56,85 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260731203031.13679-8-boqun@kernel.org>
+In-Reply-To: <20260731203031.13679-6-boqun@kernel.org>
 
-On Fri, Jul 31, 2026 at 01:30:08PM -0700, Boqun Feng wrote:
-> From: Boqun Feng <boqun.feng@gmail.com>
-> 
-> The semantics of various irq disabling guards match what
-> *_irq_{disable,enable}() provide, i.e. the interrupt disabling is
-> properly nested, therefore it's OK to switch to use
-> *_irq_{disable,enable}() primitives.
-> 
-> Signed-off-by: Boqun Feng <boqun@kernel.org>
-> Link: https://patch.msgid.link/20260121223933.1568682-17-lyude@redhat.com
-> ---
->  include/linux/spinlock.h | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
-> index 3d405cc4c121..a9d169dad6d4 100644
-> --- a/include/linux/spinlock.h
-> +++ b/include/linux/spinlock.h
-> @@ -572,12 +572,12 @@ DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __acquires(_T), __releases(*(raw
->  #define class_raw_spinlock_nested_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, _T)
->  
->  DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
-> -		    raw_spin_lock_irq(_T->lock),
-> -		    raw_spin_unlock_irq(_T->lock))
-> +		    raw_spin_lock_irq_disable(_T->lock),
-> +		    raw_spin_unlock_irq_enable(_T->lock))
->  DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
->  #define class_raw_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, _T)
->  
-> -DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
-> +DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq_disable(_T->lock))
->  DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
->  #define class_raw_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, _T)
->  
-> @@ -618,13 +618,13 @@ DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __acquires(_T), __releases(*(spinlock_t
->  #define class_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_try, _T)
->  
->  DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
-> -		    spin_lock_irq(_T->lock),
-> -		    spin_unlock_irq(_T->lock))
-> +		    spin_lock_irq_disable(_T->lock),
-> +		    spin_unlock_irq_enable(_T->lock))
->  DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __acquires(_T), __releases(*(spinlock_t **)_T))
->  #define class_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq, _T)
->  
->  DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
-> -			 spin_trylock_irq(_T->lock))
-> +			 spin_trylock_irq_disable(_T->lock))
->  DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __acquires(_T), __releases(*(spinlock_t **)_T))
->  #define class_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq_try, _T)
+On Fri, Jul 31, 2026 at 01:30:06PM -0700, Boqun Feng wrote:
 
-What about the _irqsave() guards?
+> diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
+> new file mode 100644
+> index 000000000000..dd4444c61330
+> --- /dev/null
+> +++ b/include/linux/interrupt_rc.h
+> @@ -0,0 +1,67 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * include/linux/interrupt_rc.h - refcounted local processor interrupt
+> + * management.
+> + *
+> + * Since the implementation of this API currently depends on
+> + * local_irq_save()/local_irq_restore(), we split this into it's own header to
+> + * make it easier to include without hitting circular header dependencies.
+> + */
+> +
+> +#ifndef __LINUX_INTERRUPT_RC_H
+> +#define __LINUX_INTERRUPT_RC_H
+> +
+> +#include <linux/irqflags.h>
 
-Is the goal to replace _irqsave guard usage with _irq and then remove
-the _irqsave guards?
+My lsp/clangd insists on:
 
-If so, this should probably we mentioned somewhere.
+#include <linux/preempt.h>
+
+> +#include <asm/processor.h>
+> +#ifdef CONFIG_SMP
+> +#include <asm/smp.h>
+> +#endif
+> +
+> +/* Per-cpu interrupt disabling state for local_interrupt_{disable,enable}() */
+> +struct interrupt_disable_state {
+> +	unsigned long flags;
+> +};
+> +
+> +DECLARE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
+> +
+> +static inline void local_interrupt_disable(void)
+> +{
+> +	unsigned long flags;
+> +	int new_count;
+> +
+> +	WARN_ON_ONCE(in_nmi());
+> +
+> +	new_count = hardirq_disable_enter();
+> +
+> +	/* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
+> +
+> +	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET) {
+> +		local_irq_save(flags);
+> +		raw_cpu_write(local_interrupt_disable_state.flags, flags);
+> +	}
+> +}
+> +
+> +static inline void local_interrupt_enable(void)
+> +{
+> +	int new_count;
+> +
+> +	new_count = hardirq_disable_exit();
+> +
+> +	if ((new_count & HARDIRQ_DISABLE_MASK) == 0) {
+> +		unsigned long flags;
+> +
+> +		flags = raw_cpu_read(local_interrupt_disable_state.flags);
+> +		local_irq_restore(flags);
+> +		/*
+> +		 * TODO: re-read preempt count can be avoided, but it needs
+> +		 * should_resched() taking another parameter as the current
+> +		 * preempt count
+> +		 */
+> +#ifdef CONFIG_PREEMPTION
+> +		if (should_resched(0))
+> +			__preempt_schedule();
+> +#endif
+> +	}
+> +}
+> +
+> +#endif /* !__LINUX_INTERRUPT_RC_H */
