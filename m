@@ -1,321 +1,162 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9FA399352;
-	Mon,  3 Aug 2026 13:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325862D3739;
+	Mon,  3 Aug 2026 13:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785762885; cv=none; b=g8Omg27IvxZDgiTllTQ1byiMXyVdgYL1zL8Q3gFUJkZvZt4cW3FrQCeQpONGLIHf98hJR3cjOJ17VGttDxCWs4+a65H2b0xbP31kqyLR5utb6ipJkqLJDo4WNXVM42Aq/04tonjHrmMUUmMsQZ0e7hjiU2yHL9DNjPPgIqdA+r0=
+	t=1785763457; cv=none; b=msOdHLKhqQsiIditfxX4ZphgVh5B9QPWAeEpi6Bwkrwh8tsBqSdV6RhDaETedEC1LA0jTJtLHIiqtQQ8zIgDetpFxW+COpM6xqnxL07/Hpkwl/DC3ojBeo6vwzWdpr1o3j33ReUeAXjz4KEllbTIddkNJ5Rq6+e/1hzTAvYVfqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785762885; c=relaxed/simple;
-	bh=w+UiGIXQoTX3+c5vRVaZ6rNDChmYJmKgfUq6H1DZv64=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nt90xr/oyaxPN+1oWX1b9wm4BPWijIsl2vywjbduo/mIyWmuKT7gwTj8gmT35FL7LG1z5ibGuKz0Sxg1+OVgnGDSU0BcV1OaPKRWhvf/Sa9WABs2doC1+ZF1GiO6bBxBtihIpROINUfiCx2u2Km97BIBdmOA4ikDL5CoUFRTbgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKa5+jEZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785763457; c=relaxed/simple;
+	bh=io70q+vRuGk3N5ExD5UOvCDVL7S+IOqFzLmaleXV1fY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zf3xZ7JESP+SjGvrFbRRsSMGmtjKgBZCLcJbOxfqBPGZ8MCpBx/eyghXTtLrdidu/0G5hurhWb1Q6l5m+6COOUttEqlHMIvn3UNTdaTycx5owbpZLdh3fkAiMdoGwsHZtPkiNJN/sEpthReOfOSZArSJeSX4UwoYHf58H8cQsPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvHjvcLW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKa5+jEZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397C61F000E9;
-	Mon,  3 Aug 2026 13:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785762876;
-	bh=b00Hv1SwJEv+jeOSrrMmBeLV5dKUbiarlnq1jKy9Fik=;
-	h=From:To:Cc:Subject:Date:Reply-To;
-	b=FKa5+jEZfyD113L9Vbh2qAfzefWoB2cJavrdHzd3NKfLoZh7dh2Q9oLYs/TrxCkKm
-	 QGtosIfbJ6mw5H0sHgbybu1Rjo02IYB4UwQw9UgeW4Zqob1u1z2fAidhoQ5nWi7AkF
-	 7mkrJLASSby2k8MFPYG4bOqKsY+d3ZckICk6RbaA5mSCd5bVQR68iwsoH3dfrR03Kn
-	 ZilZx+Jpcx4yRPVFBS34goiM9A4DUf5+wFgQQvJxLvfqEB7YtXfAs9gd9/1SJ0cM5C
-	 huF+dJ550TruH8binpHw9FdQykn8TZ+5ODm5Zp73nem5jO+5+PJZGcuB4oEzF0dug+
-	 jPOdUg1bWbRPw==
-From: Gary Guo <gary@kernel.org>
-To: Benno Lossin <lossin@kernel.org>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvHjvcLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4821F00A3A;
+	Mon,  3 Aug 2026 13:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1785763448;
+	bh=BTw1PP4fGyh+lRmHukTr2trbQrcwcQX1uZG9P9Zp3Qw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KvHjvcLWDOOyMJ33VGFRUfBVCf6m6vjo7KffKuOiA7h43lMQChtX3FNKhtybT7a4Y
+	 GlHjVfUTxvaOSC77/XLoj/0Nh+cuOafK+wyHj0wa3vx39joWhjDwROIzhpx2kt7YgT
+	 zxWBCP0UX4VSUMQW8w2rlv/yhxLzdq9wqbYThEMw=
+Date: Mon, 3 Aug 2026 15:23:53 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alrexandru Radovici <alexandru.radovici@wyliodrin.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: pin-init: add `#[inline]` to small functions
-Date: Mon,  3 Aug 2026 14:14:19 +0100
-Message-ID: <20260803131421.3560736-1-gary@kernel.org>
-X-Mailer: git-send-email 2.54.0
-Reply-To: Gary Guo <gary@garyguo.net>
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH RFC 1/2] rust: usb: add endpoint abstraction
+Message-ID: <2026080315-detective-cadet-3d6b@gregkh>
+References: <20260801-rust-usb_control_msg-v1-0-655bb444b52c@wyliodrin.com>
+ <20260801-rust-usb_control_msg-v1-1-655bb444b52c@wyliodrin.com>
+ <2026080205-falsify-stalemate-175b@gregkh>
+ <DKFBIK6S4RR4.2PB6HTV910C1J@wyliodrin.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DKFBIK6S4RR4.2PB6HTV910C1J@wyliodrin.com>
 
-From: Gary Guo <gary@garyguo.net>
+On Mon, Aug 03, 2026 at 03:46:44PM +0300, Alrexandru Radovici wrote:
+> On Sun Aug 2, 2026 at 11:39 AM EEST, Greg Kroah-Hartman wrote:
+> > On Sat, Aug 01, 2026 at 03:01:07AM +0300, Alexandru Radovici wrote:
+> >> Add an abstraction for `struct usb_host_endpoint`, together with the
+> >> accessors needed to reach one: `AlternateSetting` wrapping
+> >> `struct usb_host_interface`, `Interface::alternate_settings()` and
+> >> `Interface::current_alternate_setting()`, and `Device::control_endpoint()`
+> >> for the default control endpoint, which no interface descriptor lists.
+> >
+> > Why?  USB drivers shouldn't be messing with usb_host_endpoint structures
+> > for the most part, what user do you have for this?
+> 
+> The more I think of this, I think you are right. `HostEndpoint`'s accessor
+> methods are only used for debug, as the `kernel` crate can access
+> the actual `usb_host_endpoint` underneeth. For debug purposes, we should
+> just derive the `Debug` trait instead.
 
-Currently `pin-init` crate is missing many inline annotations. They are all
-generic so still get inlined in normal builds, but are not inlined in
-`-C opt-level=s` build. Mark these functions as `#[inline]` so they are
-considered for inlining regardless.
+Great, if it's even really needed.  Let's see how that works out, as I
+don't know what you want to provide for debugging.
 
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
-I've found this by inspecting pin-init related symbols when testing
-pin-init-next. I think it's good to include this for 7.3, so I am
-putting this into pin-init-next right away so it's in linux-next ASAP.
+> >> `HostEndpoint` is generic over two sealed marker traits,
+> >> `EndpointDirection` and `EndpointTransferType`, whose implementors are
+> >> 1-ZSTs held in `PhantomData`. An endpoint borrowed from an alternate
+> >> setting starts out generic in both; `as_in()`, `as_out()` and
+> >> `as_control()` check the descriptor once and return a reference
+> >> carrying the corresponding marker, so a function taking
+> >> `&HostEndpoint<In, Bulk>` needs no check of its own. The type is
+> >> `#[repr(transparent)]` over the C struct and the markers are
+> >> zero-sized, so the refinement costs nothing and a slice of endpoints
+> >> can be borrowed directly from the C array.
+> >> 
+> >> Control endpoints get a distinct `Bidirectional` marker rather than an
+> >> IN or OUT one. A control transfer takes its direction from bit 7 of the
+> >> setup packet's bmRequestType, and USB 2.0 section 9.6.6 defines the
+> >> corresponding bit of bEndpointAddress as ignored for control endpoints.
+> >> `as_in()` and `as_out()` are not implemented for `Bidirectional`, making
+> >> calling them a compile error rather than a misleading result.
+> >
+> > Don't over-think USB endpoints, they are "just" a pipe that contain a
+> > numbering scheme that the USB core uses.  Is that what you are trying to
+> > create here?  What are you trying to "enforce" here that the C code does
+> > not already do?
+> 
+> My USB knowledge is limited, so I hope I am not saying something
+> stupid here. My understanding is that drivers should not expect
+> interfaces to map the same endpoints (numbers) every time.
 
-Reviews or feedbacks are still welcome until I send out pull request.
----
- rust/pin-init/internal/src/pin_data.rs |  2 ++
- rust/pin-init/src/__internal.rs        |  5 +++++
- rust/pin-init/src/alloc.rs             |  4 ++++
- rust/pin-init/src/lib.rs               | 17 +++++++++++++++++
- 4 files changed, 28 insertions(+)
+Why not?  Well, they can, or can not, depending on the device, and the
+driver knows this.  For some drivers, a specific endpoint will _ALWAYS_
+be a specific number, while for others, they are dynamically determined.
+It depends on the device/protocol being used.
 
-diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
-index 3c9d9c7364e2..ff194d27565e 100644
---- a/rust/pin-init/internal/src/pin_data.rs
-+++ b/rust/pin-init/internal/src/pin_data.rs
-@@ -468,6 +468,7 @@ fn generate_the_pin_data(
-         impl #impl_generics ::core::clone::Clone for __ThePinData #ty_generics
-             #whr
-         {
-+            #[inline]
-             fn clone(&self) -> Self { *self }
-         }
- 
-@@ -499,6 +500,7 @@ unsafe impl #impl_generics ::pin_init::__internal::HasPinData for #struct_name #
-         {
-             type PinData = __ThePinData #ty_generics;
- 
-+            #[inline]
-             unsafe fn __pin_data() -> Self::PinData {
-                 __ThePinData { __phantom: ::pin_init::__internal::PhantomInvariant::new() }
-             }
-diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
-index ae9a0e68cd75..8e9fd18b993f 100644
---- a/rust/pin-init/src/__internal.rs
-+++ b/rust/pin-init/src/__internal.rs
-@@ -105,6 +105,7 @@ pub unsafe trait HasInitData {
- pub struct AllData<T: ?Sized>(PhantomInvariant<T>);
- 
- impl<T: ?Sized> Clone for AllData<T> {
-+    #[inline]
-     fn clone(&self) -> Self {
-         *self
-     }
-@@ -127,6 +128,7 @@ pub fn __make_closure<F, E>(self, f: F) -> F
- unsafe impl<T: ?Sized> HasInitData for T {
-     type InitData = AllData<T>;
- 
-+    #[inline]
-     unsafe fn __init_data() -> Self::InitData {
-         AllData(PhantomInvariant::new())
-     }
-@@ -385,12 +387,14 @@ pub struct AlwaysFail<T: ?Sized> {
- 
- impl<T: ?Sized> AlwaysFail<T> {
-     /// Creates a new initializer that always fails.
-+    #[inline]
-     pub fn new() -> Self {
-         Self { _t: PhantomData }
-     }
- }
- 
- impl<T: ?Sized> Default for AlwaysFail<T> {
-+    #[inline]
-     fn default() -> Self {
-         Self::new()
-     }
-@@ -398,6 +402,7 @@ fn default() -> Self {
- 
- // SAFETY: `__init` always fails, which is always okay.
- unsafe impl<T: ?Sized> PinInit<T, ()> for AlwaysFail<T> {
-+    #[inline]
-     unsafe fn __init(self, _slot: *mut T) -> Result<(), ()> {
-         Err(())
-     }
-diff --git a/rust/pin-init/src/alloc.rs b/rust/pin-init/src/alloc.rs
-index 641f4c7ce890..471652e8663a 100644
---- a/rust/pin-init/src/alloc.rs
-+++ b/rust/pin-init/src/alloc.rs
-@@ -35,6 +35,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
-     /// type.
-     ///
-     /// If `T: !Unpin` it will not be able to move afterwards.
-+    #[inline]
-     fn pin_init(init: impl PinInit<T>) -> Result<Pin<Self>, AllocError> {
-         // SAFETY: We delegate to `init` and only change the error type.
-         let init = unsafe {
-@@ -52,6 +53,7 @@ fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
-         E: From<AllocError>;
- 
-     /// Use the given initializer to in-place initialize a `T`.
-+    #[inline]
-     fn init(init: impl Init<T>) -> Result<Self, AllocError> {
-         // SAFETY: We delegate to `init` and only change the error type.
-         let init = unsafe {
-@@ -136,6 +138,7 @@ fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
- impl<T> InPlaceWrite<T> for Box<MaybeUninit<T>> {
-     type Initialized = Box<T>;
- 
-+    #[inline]
-     fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
-         let slot = self.as_mut_ptr();
-         // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-@@ -145,6 +148,7 @@ fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E
-         Ok(unsafe { self.assume_init() })
-     }
- 
-+    #[inline]
-     fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
-         let slot = self.as_mut_ptr();
-         // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 16f60dcb8330..49c18e73330c 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -955,6 +955,7 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
-     ///     Ok(())
-     /// });
-     /// ```
-+    #[inline]
-     fn pin_chain<F>(self, f: F) -> ChainPinInit<Self, F, T, E>
-     where
-         F: FnOnce(Pin<&mut T>) -> Result<(), E>,
-@@ -1003,6 +1004,7 @@ unsafe impl<T: ?Sized, E, I, F> PinInit<T, E> for ChainPinInit<I, F, T, E>
-     I: PinInit<T, E>,
-     F: FnOnce(Pin<&mut T>) -> Result<(), E>,
- {
-+    #[inline]
-     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
-         // SAFETY: All requirements fulfilled since this function is `__init`.
-         let slot = unsafe { __internal::Slot::<__internal::Pinned, _>::new(slot) };
-@@ -1068,6 +1070,7 @@ pub unsafe trait Init<T: ?Sized, E = Infallible>: PinInit<T, E> {
-     ///     Ok(())
-     /// });
-     /// ```
-+    #[inline]
-     fn chain<F>(self, f: F) -> ChainInit<Self, F, T, E>
-     where
-         F: FnOnce(&mut T) -> Result<(), E>,
-@@ -1095,6 +1098,7 @@ unsafe impl<T: ?Sized, E, I, F> PinInit<T, E> for ChainInit<I, F, T, E>
-     I: Init<T, E>,
-     F: FnOnce(&mut T) -> Result<(), E>,
- {
-+    #[inline]
-     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
-         // SAFETY: All requirements fulfilled since this function is `__init`.
-         let slot = unsafe { __internal::Slot::<__internal::Unpinned, _>::new(slot) };
-@@ -1175,6 +1179,7 @@ unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
- ///
- /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
- ///   pointer must result in a valid `U`.
-+#[inline]
- pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
-@@ -1187,6 +1192,7 @@ unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
- ///
- /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
- ///   pointer must result in a valid `U`.
-+#[inline]
- pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
-@@ -1283,6 +1289,7 @@ fn drop(&mut self) {
- /// let array: Box<[usize; 1_000]> = Box::init(init_array_from_fn(|i| i)).unwrap();
- /// assert_eq!(array.len(), 1_000);
- /// ```
-+#[inline]
- pub fn init_array_from_fn<I, const N: usize, T, E>(
-     make_init: impl FnMut(usize) -> I,
- ) -> impl Init<[T; N], E>
-@@ -1307,6 +1314,7 @@ pub fn init_array_from_fn<I, const N: usize, T, E>(
- ///     Arc::pin_init(pin_init_array_from_fn(|i| CMutex::new(i))).unwrap();
- /// assert_eq!(array.len(), 1_000);
- /// ```
-+#[inline]
- pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
-     make_init: impl FnMut(usize) -> I,
- ) -> impl PinInit<[T; N], E>
-@@ -1342,6 +1350,7 @@ pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
- /// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
- /// initializer itself will fail with that error. If it returned `Ok`, then it will run the
- /// initializer returned by the [`pin_init!`] invocation.
-+#[inline]
- pub fn pin_init_scope<T, E, F, I>(make_init: F) -> impl PinInit<T, E>
- where
-     F: FnOnce() -> Result<I, E>,
-@@ -1385,6 +1394,7 @@ pub fn pin_init_scope<T, E, F, I>(make_init: F) -> impl PinInit<T, E>
- /// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
- /// initializer itself will fail with that error. If it returned `Ok`, then it will run the
- /// initializer returned by the [`init!`] invocation.
-+#[inline]
- pub fn init_scope<T, E, F, I>(make_init: F) -> impl Init<T, E>
- where
-     F: FnOnce() -> Result<I, E>,
-@@ -1409,6 +1419,7 @@ unsafe impl<T> Init<T> for T {}
- // SAFETY: the `__init` function always returns `Ok(())` and initializes every field of
- // `slot`. Additionally, all pinning invariants of `T` are upheld.
- unsafe impl<T> PinInit<T> for T {
-+    #[inline]
-     unsafe fn __init(self, slot: *mut T) -> Result<(), Infallible> {
-         // SAFETY: `slot` is valid for writes by the safety requirements of this function.
-         unsafe { slot.write(self) };
-@@ -1423,6 +1434,7 @@ unsafe impl<T, E> Init<T, E> for Result<T, E> {}
- // - `Ok(())`, `slot` was initialized and all pinned invariants of `T` are upheld.
- // - `Err(err)`, slot was not written to.
- unsafe impl<T, E> PinInit<T, E> for Result<T, E> {
-+    #[inline]
-     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
-         // SAFETY: `slot` is valid for writes by the safety requirements of this function.
-         unsafe { slot.write(self?) };
-@@ -1449,6 +1461,7 @@ pub trait InPlaceWrite<T> {
- impl<T> InPlaceWrite<T> for &'static mut MaybeUninit<T> {
-     type Initialized = &'static mut T;
- 
-+    #[inline]
-     fn write_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
-         let slot = self.as_mut_ptr();
- 
-@@ -1459,6 +1472,7 @@ fn write_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
-         unsafe { Ok(self.assume_init_mut()) }
-     }
- 
-+    #[inline]
-     fn write_pin_init<E>(self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
-         let slot = self.as_mut_ptr();
- 
-@@ -1764,6 +1778,7 @@ pub trait Wrapper<T> {
- }
- 
- impl<T> Wrapper<T> for UnsafeCell<T> {
-+    #[inline]
-     fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-         // SAFETY: `UnsafeCell<T>` has a compatible layout to `T`.
-         unsafe { cast_pin_init(value_init) }
-@@ -1771,6 +1786,7 @@ fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
- }
- 
- impl<T> Wrapper<T> for MaybeUninit<T> {
-+    #[inline]
-     fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-         // SAFETY: `MaybeUninit<T>` has a compatible layout to `T`.
-         unsafe { cast_pin_init(value_init) }
-@@ -1779,6 +1795,7 @@ fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
- 
- #[cfg(all(feature = "unsafe-pinned", CONFIG_RUSTC_HAS_UNSAFE_PINNED))]
- impl<T> Wrapper<T> for core::pin::UnsafePinned<T> {
-+    #[inline]
-     fn pin_init<E>(init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
-         // SAFETY: `UnsafePinned<T>` has a compatible layout to `T`.
-         unsafe { cast_pin_init(init) }
+> A driver should expect an interface to expose a certain number of
+> endpoints, each one with a certain type, but the actual number of each
+> exposed endpoint is not to be considered hardcoded. This means that drivers
+> should anyway iterate over the endpoints to discover the numbers
+> of the required endpoints.
 
-base-commit: cc973e15689e210b3de3fb7fb7909607d3545fab
--- 
-2.54.0
+Again, sometimes, but not always.  What a driver SHOULD always do is
+verify that the device is providing the specific number and types of
+endpoints that it is expecting at probe time and call the core to "find"
+the expected endpoints that are present.  In the C api we do that with
+the usb_find_common_endpoints() or the usb_check_bulk_endpoints() type
+functions.
 
+> My idea is to leaverage Rust's type system to prevent users from supplying
+> the wrong endpoint type at compile time rather then at runtime. By making
+> the `HostEndpoint` its own Rust type with no public constructor,
+> users will be forced to iterate the endpoints to discover the correct
+> number for each endpoint that they require. Once they have it, users
+> can hold to the reference as long as the interface is valid.
+
+Having a reference is great, but really, these are things that you
+should just call the core for and get a reference back.  No need for the
+special encoding logic, see how "simple" the C code is for this please.
+
+> By adding the `Dir` and `Type` generic markers, suplying the wrong endpoint
+> to a function will be caught at compile time rather than at runtime. This
+> should hopefully shorthen the debug work needed for a driver, as some of
+> the errors become impossible.
+
+functions should be taking any "type" of endpoint as this will be
+checked when the USB core actually submits the data to the device, so no
+driver will get very far if all is not correct.  No real need to attempt
+to provide many different types and check it all in the api as the api
+needs to handle all endpoint types, right?
+
+> As endpoint 0 is always provided and basically _almost hardcoded_``, I added
+> the `control_endpoint` function. 
+
+That's great, but again, we "know" what that endpoint type is, and it
+will be used for both read and write operations, BUT you need to specify
+it somehow which way you want that operation to happen when you make the
+API call, right?
+
+I would recommend actually porting/writing a USB driver using the apis
+while you are attempting to make these bindings, as I think a lot of
+these issues will fall out automatically when doing so.  USB really
+isn't that complicated, it's just a dumb and slow "pipe" that for every
+message, is triggered by a host request, no matter which way the data is
+flowing.
+
+thanks,
+
+greg k-h
