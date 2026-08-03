@@ -1,113 +1,95 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D85028D831;
-	Mon,  3 Aug 2026 13:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785763537; cv=pass; b=PRxcUX/VME+Iwtk6OSflbr1bh7RunztCV/LIBUfLOt5w+3p0WIv9O9FpYiBH2geeCHWTHimake4s7XZ+KzKK3j4+Lgb9QSCnvNnTuIC8ZCZNj7QX3/rnu47OMPEukMnfSEGDZWdyiLcgt3uoGrh3lHkg04QHMnNG2ysgA8CW/Gg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785763537; c=relaxed/simple;
-	bh=lQ7W80MyLGC4g6TQVRHVS4jqxiCOFRgPhA4MHHto2h4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=HbutwilvEsERANRuq5OXKgbj2HcfRakz+CJUngs5/NSd02Nlb8SREpCZzfnXOJ6ShzEFmslxvvq2eukQUuuuBNKcOeyFXEmdnrlm04ef7i6e+S3lw082rzCL5CjcJTI8lEn2QLLy6mzhqyPI+kSBBe0KXUdqwsmjViR/IQLCYXM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=C2BVDXKK; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CF540DB46;
+	Mon,  3 Aug 2026 13:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785764028; cv=none; b=SN/ZFfuLhgvZlR5KLbc0JZMuKWjcWXvU1CU68p7NIy8tAbLUXUt9kVmNpdddt1RFs/68abn6IJdNS3NW6KSA2TjSmcPX8Ycutoi6FhSuWXGaMFcIlN++uy9/9UDJjqHMOIA9Ya74O4Dt0dYIZTl7NVY83kVKn/f8jglJrwPXW8A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785764028; c=relaxed/simple;
+	bh=OHFDOAhweiUuFLDQ/3BK15YmODizrF5SWYOHKSqAtYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kUykqnylphjvm2inMjjWAnz1ripVZddLt/xalEJ14imNuhwsMhyCjvup1f6zfMlvvFqAh0G1A96rajFMjnnkUDmqdHXGM/f0v5YXcAELcUrAt54ftsawOIvyQq0B2nJbIQJeQtHpCPR3Wkyvq5DCHo5v/DSA+Lb06DKaW6zxhzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=moXEov3z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="C2BVDXKK"
-ARC-Seal: i=1; a=rsa-sha256; t=1785763466; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=iQda+jXa4ObWd1OpAuOfe8pVvgRFkZcFAhHlQVrSgVPc49t25B1clVVSA2q8yt1BMqT1ETiDUJKcEk6JFPydngJtZTsRQ+mJTDYMDiraUs5nah1xlEwQSLgaC3gvzl/bim1jYqDLI5Y2Fqpiskdei4r+H5HuoO9rqzq3vCP22W8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1785763466; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lQ7W80MyLGC4g6TQVRHVS4jqxiCOFRgPhA4MHHto2h4=; 
-	b=DQO+XsfpR4SuneJRvJMVC1mIiH+N/OrSB7YkVAKjfdxuP0X3shK7JVCGRTrHB1b5J8oyBWsg4Sy/KUXbK0zRQto5y/Kc7iQgkawU2WSYTi4JrLpJfmyXoAZ21EvXmwqYkFszWPRIh/uMwSfvz87Q+EcQLhyt74KWmMddIDxqef4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785763466;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=lQ7W80MyLGC4g6TQVRHVS4jqxiCOFRgPhA4MHHto2h4=;
-	b=C2BVDXKK+fe1ExBLpGmi9cFtGO/+HeSpprIrmumVp09xPwoaNmpviVgltTRkd+8f
-	9/rwc0v3QEmaWg15gQzCjpdVCq2sL+g4WGiy4yANNvkx70g2YbDmvvuW5bM5f9PIldB
-	smcOO220uadEIoYOO+35eQt2Qzrxg24+3mCkTzwo=
-Received: by mx.zohomail.com with SMTPS id 1785763465078767.4008380254238;
-	Mon, 3 Aug 2026 06:24:25 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="moXEov3z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485CE1F000E9;
+	Mon,  3 Aug 2026 13:33:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785764018;
+	bh=d41hCeiycC+wWgDxm6kt/c4vnyXjZ/50o5dbGR9UOsM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=moXEov3z9/GaGpjIOMhDSuHArd0J5h9w1UNqcET3NAuEzYp8YhRRbhEWIkocL9GKF
+	 vN22SYE04BM6pPrOJHeRV1XaRj5Rb/RwyORxmpd9t7fBWCQ2Q/vr323NQX7UMEWf+g
+	 jpwa2slezMLdSoDBDC7XByMNSYGH6OxoT07nL55WZ+wVxC40TVemJeGCvMYhFsNCM5
+	 ROhSwAaypiMeNpgWZ2WhgPY+bw5ne8c+QAI6IKqey6PwuFAC5JpAJU6JFSbodysisp
+	 vbjH/fIjZLl7Mw2WekKRccrO8oantAZ5iH/BM50yiSUdn7wvu9X8ZJdUm3/2WKmR3B
+	 SdKK79qYlWuKw==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4F7CEF40066;
+	Mon,  3 Aug 2026 09:33:36 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 03 Aug 2026 09:33:36 -0400
+X-ME-Sender: <xms:sJhwaqzi1v5jh6m8iMOolG8aRZex4ykx3zY0a4DqNiiZqw-dKS33bg>
+    <xme:sJhwagog6jZroS-1o_YeGn03ioYZnyZ6U-pcdkpWvAZmlIaWZv6ZdSmNLqzfIX9VN
+    17uSTBkRzfGQKEY4MAmGGMSD--Lcc2687kgW_St73YclepcjaI9>
+X-ME-Received: <xmr:sJhwaidAd5wWJpqSRbb-pRTrn5sejzw6KN8DrPLyA3oM5BWW4SQ2a-RQW0BkPnswMARJlcqxcqH91D4N22etcjbCE4A6dXnt>
+X-ME-Proxy-Cause: dmFkZTE3XmN7zYcFm9FeRyHbBKMzCw8RHVKEBEa27dI7hQsrmgTXJgSCSK10CNEG/UpzR3
+    lkDcTaGwYhE7SiHZ1Rvs1D8ZviHeaDVuzcepd72tXquseyUZimY60Zw7xwVVjxCTY92XOk
+    zrKjlVDzqO52Po0dlU/nlFMlgomOHsGJZg71BQFczrVSfKjYkfOLhJpczVFt3ilJ6DyKSW
+    rOTSyN+KncoswOIo+T9WaTTCj2QdjNWNT4ewHCkZZStaKW9ywfbCKKRHuCWTU6+UAE6mIE
+    LBobuEgzgjQ/kKq+k9MDufD8DKH53jozSlv7xsvBtMVqR6G309VP6pk2i74QbSm7R9HHAf
+    6pnJ7MoSSe1exE0AcKSs20uI7o06lQmN91/AuZBN/QxhL1kC1U4iNPkJWsaCeOMAQ0NxvJ
+    jNSPfr9EIow6JJ2gVywZY1DGOH1xfPm2SQlQ48Sl7Rqa0mdGoxpCscNlpFdKprHFkN3jGw
+    A8BM9/CYWFDU/8mUAptz1kMbMxyvL9njueUstGMAgvmNm+U0atI6yixDfXp+jwzQoYvJtX
+    uzSXk7TTTtehTkMCIBI7UAndGqbMiRG3KS0pZ8efDkbL7hDXvuJmPd5siBlOlJY4LDgsyq
+    HUnkZ63JWNeL33JeqvgABfPYXAxoK+jB031OZw4xMVDr3lhK+dRqx3A0Hn3g
+X-ME-Proxy: <xmx:sJhwarp-xNNOaTEGoA-ZpUhic2W-T4DX0K7xi0HP3NMwC3x1rArJgw>
+    <xmx:sJhwakkWKGhjcUH2ZcNedFvRCJfqzT_C7_txyoyqbfnMajYN3v4XNg>
+    <xmx:sJhwakSGDWoqBwJZHK8GxoEY8c8fUGIcUDF6Mirloi31JHjpHM4jMw>
+    <xmx:sJhwaiaz9m31ujW7fopxuQg8DckTcw_E7iy2RZlUYwTImTVHhHOsGA>
+    <xmx:sJhwas86mOjDiNFF8eXhN5ADMwtt9GV4qqg5BbPh8G5s3-E952FToIei>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Aug 2026 09:33:35 -0400 (EDT)
+Date: Mon, 3 Aug 2026 06:33:34 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <anCYrn_3Nb9qpBAA@tardis.local>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-6-boqun@kernel.org>
+ <20260803091919.GC49951@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v5 0/4] Clk improvements
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <anCSTCxDpFtKmOgj@redhat.com>
-Date: Mon, 3 Aug 2026 10:24:02 -0300
-Cc: Maurice Hieronymus <mhi@mailbox.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Drew Fustini <fustini@kernel.org>,
- Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>,
- =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Michal Wilczynski <m.wilczynski@samsung.com>,
- Boqun Feng <boqun@kernel.org>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linux-riscv@lists.infradead.org,
- linux-pwm@vger.kernel.org,
- linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <B6441EFC-C2E4-437A-9FDF-F18E2CAD36C3@collabora.com>
-References: <20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com>
- <20260731183735.15036-1-mhi@mailbox.org>
- <E20E4FD3-F4DA-4029-99F7-DB4F93AA2994@collabora.com>
- <anCSTCxDpFtKmOgj@redhat.com>
-To: Brian Masney <bmasney@redhat.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803091919.GC49951@noisy.programming.kicks-ass.net>
 
-Hi Brian,
+On Mon, Aug 03, 2026 at 11:19:19AM +0200, Peter Zijlstra wrote:
+[...]
+> > 
+> > Signed-off-by: Lyude Paul <lyude@redhat.com>
+> > Signed-off-by: Boqun Feng <boqun@kernel.org>
+> > Link: https://patch.msgid.link/20260121223933.1568682-6-lyude@redhat.com
+> 
+> Same SoB chain issue.
 
-> I can also provide an Acked-by here for clk. I'll admit that I'm not a
-> rust programmer yet (planning to learn this coming Winter), however if =
-the
-> rust maintainers are happy with this, then I'm good.
->=20
-> It looks like there may be some outstanding comments on this series =
-just
-> skimming the comments. I'll wait for the next version to leave an
-> Acked-by.
->=20
-> Brian
->=20
+Fixed, thank you!
 
-Yeah, more people chimed in :)
-
-Cool, I will ping you again when I send a new version.
-
-=E2=80=94 Daniel=
+Regards,
+Boqun
