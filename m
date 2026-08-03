@@ -1,156 +1,321 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EEE340DB2C
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Aug 2026 13:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9FA399352;
+	Mon,  3 Aug 2026 13:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785762402; cv=none; b=LYIasz5CvU5O9YV0SfWO8vusfumBdv5Q/SXagRT+bgBpYWei2HK2VMoo7IqiUPtEyX8y3oSyGHQRKiN+qHHybFndOdjYBwwa1SMvlsyqWFo21XWhy268eQI/wZlAsYdRKRUWDNY9nzkZQE9m7tWvs6kT1JPefMX7YW477YcdKJU=
+	t=1785762885; cv=none; b=g8Omg27IvxZDgiTllTQ1byiMXyVdgYL1zL8Q3gFUJkZvZt4cW3FrQCeQpONGLIHf98hJR3cjOJ17VGttDxCWs4+a65H2b0xbP31kqyLR5utb6ipJkqLJDo4WNXVM42Aq/04tonjHrmMUUmMsQZ0e7hjiU2yHL9DNjPPgIqdA+r0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785762402; c=relaxed/simple;
-	bh=V+e6I8CNt2H2Pif5e46ZpWFaoWmgkmQxUFOA2DWiX2o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=eBm4D9zevceHTT+ODdy1y4Je317tsNzc55NfWre1vZu2MtGOSHK+wEFrB066KrhkOa6oGeM7WXhh6HzzVhqva0GGPVNlJoeS1QKGaArgBuYVJf2uInkvHIgjxuIAaMTmhM0+DmLlAXUB0QoJu4vMGW1RNNgXizbAwjiJKBK8+nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=crR3K2hO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1785762885; c=relaxed/simple;
+	bh=w+UiGIXQoTX3+c5vRVaZ6rNDChmYJmKgfUq6H1DZv64=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nt90xr/oyaxPN+1oWX1b9wm4BPWijIsl2vywjbduo/mIyWmuKT7gwTj8gmT35FL7LG1z5ibGuKz0Sxg1+OVgnGDSU0BcV1OaPKRWhvf/Sa9WABs2doC1+ZF1GiO6bBxBtihIpROINUfiCx2u2Km97BIBdmOA4ikDL5CoUFRTbgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKa5+jEZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="crR3K2hO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1785762399;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TpAYiTbcaQ0jvMB05FtqLWtuoGIYX5W9PtOm3b1H6mI=;
-	b=crR3K2hOK57YUbZNXOT8kIXaN97ruEq3wltYuO6JSBJlIoWIO/Ji14KtGB0TOkqiaf2ocm
-	+0vmmKTH6BHKje+nbPb3ZbaNeBf0DCGysl3XB8NAUORRwIrBOuqa8bcDVCln4nTk6ad63I
-	/Lc2Rf93m8KBUWQN1B3bfg05XfykxZQ=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-101-9LvQkXGdPTqbJ0Ecee43tA-1; Mon, 03 Aug 2026 09:06:28 -0400
-X-MC-Unique: 9LvQkXGdPTqbJ0Ecee43tA-1
-X-Mimecast-MFC-AGG-ID: 9LvQkXGdPTqbJ0Ecee43tA_1785762388
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-81e6bb29581so122255527b3.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Aug 2026 06:06:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785762388; x=1786367188;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:content-type:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TpAYiTbcaQ0jvMB05FtqLWtuoGIYX5W9PtOm3b1H6mI=;
-        b=DC2Gn05Nxdswt1RrCZZOzzErhHqnekmqFnSU/oISiSKeGUhbwWO9fDsSfvRwnMwrhF
-         BkkGWBSM8MDM98Oh8V7wKvTegUnEejhRsVSHdvWHt98WrooprFaXz2upiyw2y4dM5zpy
-         b2w9JcDqC4K6Pq3SNyIYQol5dfcDdaSOiYtH1tbhiyESwTIMc90T61lQdu/UBTbZ9Hjp
-         izJamcvuN2CYJmGQ/ZMzkHru5HX6iButV4qC72zCIG5sM+cl/eI/j0UjJk6jmLr9ySjt
-         /+/GXlXaVVq6Idvz/ZZsLaD6NeLhZ1bDt4ZO6y8ApfKbLMV4T8ZdtVIcKlZwj4KQtn75
-         mxKw==
-X-Forwarded-Encrypted: i=1; AHgh+RrHSDd8UD9t1Z036+wB6GsEoJUU/5Rsppel9pvW+SATI0vhsykwpSYUnv8qu1Qsr237cxMwXNSreQ5kWzkFog==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws+yAjaPUfzLXGJPM30S9iJ4av4EMjtAPArbIWfVBkZ5xjg4JT
-	QPaFyukYEYE4Ebij4zkQtI4bmA1bDEHCABZDQCvoSDV9IvTQ6fZ1NenF1tCe86AGGt1HVqLcRIA
-	EPV+mvJLZ414iqpL6YOSrKS8pkoacvUVWWwj195bv4xXLf4/1N9gFISTNZbHatEmljAXE
-X-Gm-Gg: AR+sD13Vb90Ryw5cbKeoF13GAgO3uK7SHc+u7iwhlJISHRlpdvA4dH5snbxf3RTH4zJ
-	vHr81FwuHOkRXosrGkesxNDQ1l6u4ilKgL9NL17Rtk0f1JWQWTDQRCaoPc6Tn29LjO0dIELONkU
-	6ZoIIa/otq7a9x5yWD6QUeW2ikilL40CoZ/+uyaXH8qEiqm1Mjzr3+Qgfb7tRdz+yze6M4t6m0g
-	Gg7+Hqe4yn63/VkDNSLgiCUYRLrP7fMO3RWXVxyCBJEPfFf0JRdvQRCm0/c8ablZene4UhCflXx
-	VDuV+u0dQDbYsOY93T9D4WP0KTwuSi8IM7YXQe88AC1G92R9UqoH9mSg5TfBufOj80rahM/JPQW
-	w5sApeYm0SbZKN2EfwZKbidKgC7goMEVhRdU=
-X-Received: by 2002:a05:690c:4b11:b0:81c:872a:5152 with SMTP id 00721157ae682-81fd4bda24fmr120206907b3.30.1785762387682;
-        Mon, 03 Aug 2026 06:06:27 -0700 (PDT)
-X-Received: by 2002:a05:690c:4b11:b0:81c:872a:5152 with SMTP id 00721157ae682-81fd4bda24fmr120206447b3.30.1785762387273;
-        Mon, 03 Aug 2026 06:06:27 -0700 (PDT)
-Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-81fccf60a76sm54295687b3.13.2026.08.03.06.06.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 06:06:26 -0700 (PDT)
-Date: Mon, 3 Aug 2026 09:06:20 -0400
-From: Brian Masney <bmasney@redhat.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Maurice Hieronymus <mhi@mailbox.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKa5+jEZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397C61F000E9;
+	Mon,  3 Aug 2026 13:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785762876;
+	bh=b00Hv1SwJEv+jeOSrrMmBeLV5dKUbiarlnq1jKy9Fik=;
+	h=From:To:Cc:Subject:Date:Reply-To;
+	b=FKa5+jEZfyD113L9Vbh2qAfzefWoB2cJavrdHzd3NKfLoZh7dh2Q9oLYs/TrxCkKm
+	 QGtosIfbJ6mw5H0sHgbybu1Rjo02IYB4UwQw9UgeW4Zqob1u1z2fAidhoQ5nWi7AkF
+	 7mkrJLASSby2k8MFPYG4bOqKsY+d3ZckICk6RbaA5mSCd5bVQR68iwsoH3dfrR03Kn
+	 ZilZx+Jpcx4yRPVFBS34goiM9A4DUf5+wFgQQvJxLvfqEB7YtXfAs9gd9/1SJ0cM5C
+	 huF+dJ550TruH8binpHw9FdQykn8TZ+5ODm5Zp73nem5jO+5+PJZGcuB4oEzF0dug+
+	 jPOdUg1bWbRPw==
+From: Gary Guo <gary@kernel.org>
+To: Benno Lossin <lossin@kernel.org>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Boqun Feng <boqun@kernel.org>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-riscv@lists.infradead.org,
-	linux-pwm@vger.kernel.org, linux-clk@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] Clk improvements
-Message-ID: <anCSTCxDpFtKmOgj@redhat.com>
-References: <20260706-clk-type-state-v5-0-67c5f326a16c@collabora.com>
- <20260731183735.15036-1-mhi@mailbox.org>
- <E20E4FD3-F4DA-4029-99F7-DB4F93AA2994@collabora.com>
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: pin-init: add `#[inline]` to small functions
+Date: Mon,  3 Aug 2026 14:14:19 +0100
+Message-ID: <20260803131421.3560736-1-gary@kernel.org>
+X-Mailer: git-send-email 2.54.0
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <E20E4FD3-F4DA-4029-99F7-DB4F93AA2994@collabora.com>
-User-Agent: Mutt/2.4.0 (2026-06-19)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: UL9RaLWWz3rzj3GJ9H1uHQuWd0AAtwfKTxT7mEtvgIA_1785762388
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-Hi Daniel,
+From: Gary Guo <gary@garyguo.net>
 
-On Fri, Jul 31, 2026 at 06:32:48PM -0300, Daniel Almeida wrote:
-> > On 31 Jul 2026, at 15:37, Maurice Hieronymus <mhi@mailbox.org> wrote:
-> > at your suggestion [0] I rebased my `clk_rate_exclusive_get()` binding for
-> > pwm-th1520 on top of this series, so it is now waiting on it to land. As v5
-> > has not seen any comments in the last few weeks, I wanted to ask what the
-> > current status is.
-> 
-> Nobody has replied so far. I don’t think there are any further comments.
-> 
-> > 
-> > If there are no blockers left and you expect it to be merged soon, I am
-> > happy to keep waiting. Otherwise I would offer to send my series standalone
-> > against the current `Clk` API and let you rebase on top of mine - it is the
-> > much smaller of the two, touching only `Clk::rate_exclusive_get()` and
-> > pwm_th1520.rs.
-> > 
-> > [0]: https://lore.kernel.org/rust-for-linux/140FE1B3-73CA-45EA-B978-648A1A48B577@collabora.com/
-> > 
-> > Thanks a lot,
-> > 
-> > Maurice
-> 
-> Your series might hit the same blocker as this one. Perhaps we can try to get
-> both merged at the same time?
-> 
-> @Stephen gentle ping here :)
+Currently `pin-init` crate is missing many inline annotations. They are all
+generic so still get inlined in normal builds, but are not inlined in
+`-C opt-level=s` build. Mark these functions as `#[inline]` so they are
+considered for inlining regardless.
 
-I can also provide an Acked-by here for clk. I'll admit that I'm not a
-rust programmer yet (planning to learn this coming Winter), however if the
-rust maintainers are happy with this, then I'm good.
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+I've found this by inspecting pin-init related symbols when testing
+pin-init-next. I think it's good to include this for 7.3, so I am
+putting this into pin-init-next right away so it's in linux-next ASAP.
 
-It looks like there may be some outstanding comments on this series just
-skimming the comments. I'll wait for the next version to leave an
-Acked-by.
+Reviews or feedbacks are still welcome until I send out pull request.
+---
+ rust/pin-init/internal/src/pin_data.rs |  2 ++
+ rust/pin-init/src/__internal.rs        |  5 +++++
+ rust/pin-init/src/alloc.rs             |  4 ++++
+ rust/pin-init/src/lib.rs               | 17 +++++++++++++++++
+ 4 files changed, 28 insertions(+)
 
-Brian
+diff --git a/rust/pin-init/internal/src/pin_data.rs b/rust/pin-init/internal/src/pin_data.rs
+index 3c9d9c7364e2..ff194d27565e 100644
+--- a/rust/pin-init/internal/src/pin_data.rs
++++ b/rust/pin-init/internal/src/pin_data.rs
+@@ -468,6 +468,7 @@ fn generate_the_pin_data(
+         impl #impl_generics ::core::clone::Clone for __ThePinData #ty_generics
+             #whr
+         {
++            #[inline]
+             fn clone(&self) -> Self { *self }
+         }
+ 
+@@ -499,6 +500,7 @@ unsafe impl #impl_generics ::pin_init::__internal::HasPinData for #struct_name #
+         {
+             type PinData = __ThePinData #ty_generics;
+ 
++            #[inline]
+             unsafe fn __pin_data() -> Self::PinData {
+                 __ThePinData { __phantom: ::pin_init::__internal::PhantomInvariant::new() }
+             }
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index ae9a0e68cd75..8e9fd18b993f 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -105,6 +105,7 @@ pub unsafe trait HasInitData {
+ pub struct AllData<T: ?Sized>(PhantomInvariant<T>);
+ 
+ impl<T: ?Sized> Clone for AllData<T> {
++    #[inline]
+     fn clone(&self) -> Self {
+         *self
+     }
+@@ -127,6 +128,7 @@ pub fn __make_closure<F, E>(self, f: F) -> F
+ unsafe impl<T: ?Sized> HasInitData for T {
+     type InitData = AllData<T>;
+ 
++    #[inline]
+     unsafe fn __init_data() -> Self::InitData {
+         AllData(PhantomInvariant::new())
+     }
+@@ -385,12 +387,14 @@ pub struct AlwaysFail<T: ?Sized> {
+ 
+ impl<T: ?Sized> AlwaysFail<T> {
+     /// Creates a new initializer that always fails.
++    #[inline]
+     pub fn new() -> Self {
+         Self { _t: PhantomData }
+     }
+ }
+ 
+ impl<T: ?Sized> Default for AlwaysFail<T> {
++    #[inline]
+     fn default() -> Self {
+         Self::new()
+     }
+@@ -398,6 +402,7 @@ fn default() -> Self {
+ 
+ // SAFETY: `__init` always fails, which is always okay.
+ unsafe impl<T: ?Sized> PinInit<T, ()> for AlwaysFail<T> {
++    #[inline]
+     unsafe fn __init(self, _slot: *mut T) -> Result<(), ()> {
+         Err(())
+     }
+diff --git a/rust/pin-init/src/alloc.rs b/rust/pin-init/src/alloc.rs
+index 641f4c7ce890..471652e8663a 100644
+--- a/rust/pin-init/src/alloc.rs
++++ b/rust/pin-init/src/alloc.rs
+@@ -35,6 +35,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>) -> Result<Pin<Self>, E>
+     /// type.
+     ///
+     /// If `T: !Unpin` it will not be able to move afterwards.
++    #[inline]
+     fn pin_init(init: impl PinInit<T>) -> Result<Pin<Self>, AllocError> {
+         // SAFETY: We delegate to `init` and only change the error type.
+         let init = unsafe {
+@@ -52,6 +53,7 @@ fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
+         E: From<AllocError>;
+ 
+     /// Use the given initializer to in-place initialize a `T`.
++    #[inline]
+     fn init(init: impl Init<T>) -> Result<Self, AllocError> {
+         // SAFETY: We delegate to `init` and only change the error type.
+         let init = unsafe {
+@@ -136,6 +138,7 @@ fn try_init<E>(init: impl Init<T, E>) -> Result<Self, E>
+ impl<T> InPlaceWrite<T> for Box<MaybeUninit<T>> {
+     type Initialized = Box<T>;
+ 
++    #[inline]
+     fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
+         let slot = self.as_mut_ptr();
+         // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+@@ -145,6 +148,7 @@ fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E
+         Ok(unsafe { self.assume_init() })
+     }
+ 
++    #[inline]
+     fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
+         let slot = self.as_mut_ptr();
+         // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 16f60dcb8330..49c18e73330c 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -955,6 +955,7 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+     ///     Ok(())
+     /// });
+     /// ```
++    #[inline]
+     fn pin_chain<F>(self, f: F) -> ChainPinInit<Self, F, T, E>
+     where
+         F: FnOnce(Pin<&mut T>) -> Result<(), E>,
+@@ -1003,6 +1004,7 @@ unsafe impl<T: ?Sized, E, I, F> PinInit<T, E> for ChainPinInit<I, F, T, E>
+     I: PinInit<T, E>,
+     F: FnOnce(Pin<&mut T>) -> Result<(), E>,
+ {
++    #[inline]
+     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
+         // SAFETY: All requirements fulfilled since this function is `__init`.
+         let slot = unsafe { __internal::Slot::<__internal::Pinned, _>::new(slot) };
+@@ -1068,6 +1070,7 @@ pub unsafe trait Init<T: ?Sized, E = Infallible>: PinInit<T, E> {
+     ///     Ok(())
+     /// });
+     /// ```
++    #[inline]
+     fn chain<F>(self, f: F) -> ChainInit<Self, F, T, E>
+     where
+         F: FnOnce(&mut T) -> Result<(), E>,
+@@ -1095,6 +1098,7 @@ unsafe impl<T: ?Sized, E, I, F> PinInit<T, E> for ChainInit<I, F, T, E>
+     I: Init<T, E>,
+     F: FnOnce(&mut T) -> Result<(), E>,
+ {
++    #[inline]
+     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
+         // SAFETY: All requirements fulfilled since this function is `__init`.
+         let slot = unsafe { __internal::Slot::<__internal::Unpinned, _>::new(slot) };
+@@ -1175,6 +1179,7 @@ unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
++#[inline]
+ pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+@@ -1187,6 +1192,7 @@ unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
+ ///
+ /// - `*mut U` must be castable to `*mut T` and any value of type `T` written through such a
+ ///   pointer must result in a valid `U`.
++#[inline]
+ pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
+     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
+     // requirements.
+@@ -1283,6 +1289,7 @@ fn drop(&mut self) {
+ /// let array: Box<[usize; 1_000]> = Box::init(init_array_from_fn(|i| i)).unwrap();
+ /// assert_eq!(array.len(), 1_000);
+ /// ```
++#[inline]
+ pub fn init_array_from_fn<I, const N: usize, T, E>(
+     make_init: impl FnMut(usize) -> I,
+ ) -> impl Init<[T; N], E>
+@@ -1307,6 +1314,7 @@ pub fn init_array_from_fn<I, const N: usize, T, E>(
+ ///     Arc::pin_init(pin_init_array_from_fn(|i| CMutex::new(i))).unwrap();
+ /// assert_eq!(array.len(), 1_000);
+ /// ```
++#[inline]
+ pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
+     make_init: impl FnMut(usize) -> I,
+ ) -> impl PinInit<[T; N], E>
+@@ -1342,6 +1350,7 @@ pub fn pin_init_array_from_fn<I, const N: usize, T, E>(
+ /// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
+ /// initializer itself will fail with that error. If it returned `Ok`, then it will run the
+ /// initializer returned by the [`pin_init!`] invocation.
++#[inline]
+ pub fn pin_init_scope<T, E, F, I>(make_init: F) -> impl PinInit<T, E>
+ where
+     F: FnOnce() -> Result<I, E>,
+@@ -1385,6 +1394,7 @@ pub fn pin_init_scope<T, E, F, I>(make_init: F) -> impl PinInit<T, E>
+ /// This initializer will first execute `lookup_bar()`, match on it, if it returned an error, the
+ /// initializer itself will fail with that error. If it returned `Ok`, then it will run the
+ /// initializer returned by the [`init!`] invocation.
++#[inline]
+ pub fn init_scope<T, E, F, I>(make_init: F) -> impl Init<T, E>
+ where
+     F: FnOnce() -> Result<I, E>,
+@@ -1409,6 +1419,7 @@ unsafe impl<T> Init<T> for T {}
+ // SAFETY: the `__init` function always returns `Ok(())` and initializes every field of
+ // `slot`. Additionally, all pinning invariants of `T` are upheld.
+ unsafe impl<T> PinInit<T> for T {
++    #[inline]
+     unsafe fn __init(self, slot: *mut T) -> Result<(), Infallible> {
+         // SAFETY: `slot` is valid for writes by the safety requirements of this function.
+         unsafe { slot.write(self) };
+@@ -1423,6 +1434,7 @@ unsafe impl<T, E> Init<T, E> for Result<T, E> {}
+ // - `Ok(())`, `slot` was initialized and all pinned invariants of `T` are upheld.
+ // - `Err(err)`, slot was not written to.
+ unsafe impl<T, E> PinInit<T, E> for Result<T, E> {
++    #[inline]
+     unsafe fn __init(self, slot: *mut T) -> Result<(), E> {
+         // SAFETY: `slot` is valid for writes by the safety requirements of this function.
+         unsafe { slot.write(self?) };
+@@ -1449,6 +1461,7 @@ pub trait InPlaceWrite<T> {
+ impl<T> InPlaceWrite<T> for &'static mut MaybeUninit<T> {
+     type Initialized = &'static mut T;
+ 
++    #[inline]
+     fn write_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
+         let slot = self.as_mut_ptr();
+ 
+@@ -1459,6 +1472,7 @@ fn write_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
+         unsafe { Ok(self.assume_init_mut()) }
+     }
+ 
++    #[inline]
+     fn write_pin_init<E>(self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
+         let slot = self.as_mut_ptr();
+ 
+@@ -1764,6 +1778,7 @@ pub trait Wrapper<T> {
+ }
+ 
+ impl<T> Wrapper<T> for UnsafeCell<T> {
++    #[inline]
+     fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+         // SAFETY: `UnsafeCell<T>` has a compatible layout to `T`.
+         unsafe { cast_pin_init(value_init) }
+@@ -1771,6 +1786,7 @@ fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+ }
+ 
+ impl<T> Wrapper<T> for MaybeUninit<T> {
++    #[inline]
+     fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+         // SAFETY: `MaybeUninit<T>` has a compatible layout to `T`.
+         unsafe { cast_pin_init(value_init) }
+@@ -1779,6 +1795,7 @@ fn pin_init<E>(value_init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+ 
+ #[cfg(all(feature = "unsafe-pinned", CONFIG_RUSTC_HAS_UNSAFE_PINNED))]
+ impl<T> Wrapper<T> for core::pin::UnsafePinned<T> {
++    #[inline]
+     fn pin_init<E>(init: impl PinInit<T, E>) -> impl PinInit<Self, E> {
+         // SAFETY: `UnsafePinned<T>` has a compatible layout to `T`.
+         unsafe { cast_pin_init(init) }
+
+base-commit: cc973e15689e210b3de3fb7fb7909607d3545fab
+-- 
+2.54.0
 
