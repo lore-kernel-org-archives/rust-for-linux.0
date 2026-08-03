@@ -1,73 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D3A368D59;
-	Mon,  3 Aug 2026 14:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573BF2EA75E;
+	Mon,  3 Aug 2026 14:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785767025; cv=none; b=PECqc2HHh+9XBEC3nbtfqINlvac7N8KAcnMjTWEFn1Gy1ZLRTCz72CGUFtJi6iq5cJwgLpbU0zMwG1eADJLuJL59fXsXTyzQa3/fA2FB0gsMDwU72p06ZqTG+prlDaL6GXqTM2H+ceh6XzqJOo7HgKS/z5XgE0RgWFxtL3OBhik=
+	t=1785767430; cv=none; b=OnGlB0GbHndK+zOnSBve3OiT07JbgCiUTTIQk/UM+bA4EWsm4asG8Iah2C+At2a3IN2Gp4OaI4PBB3zVV4AcC6eqj+dDW89qB7II7fg8KvsD3uRs8fQAknsCCfaSUPJpkqKnZGifVj7YUn86yRa+VIJoBWbkeQeo7D73V2p+kK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785767025; c=relaxed/simple;
-	bh=fxkQonVO9Rff1Y9V8bg6kixmfUGo70RKbQuuTZH9JTI=;
+	s=arc-20240116; t=1785767430; c=relaxed/simple;
+	bh=0ylbr2e+UhF90GrPAgiwQl2i+ENO0yXSLMl5gsN/X0I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u2KyTiFVk7PmznzlPrsvXqO+N0xSLjIAei2zE9lAQsEbiuSX5mQvWmC9rDb7Ty+/A+FSVnei2Wur9Bs5tfQApOWXUM/mxclsMLo9vSmMTDtR1YbqpCStdWSWqF9wg8kLuuOk+ZxORB6kgmeV9fyWz6fJY3zFpOE56Tv20nvoFp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXwvmP7I; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=lr0khSfu8/IS99ytZ01ufHrMR4N/4wQIVqRSkvdXyuYcNFJX6gs81HGklWPfY7htCLwjIQkE08Eq5MFftHmFsVPXB5jeHYHXF9YnQdQCLKWTKtTk+dFVuetSzRT6DXIXvYANDT8cDMWQou2iAGCsQ5ulIj/RMOnH6FAE/E6fKQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hegr8Cz8; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXwvmP7I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5763A1F000E9;
-	Mon,  3 Aug 2026 14:23:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785767023;
-	bh=p4M5Ck3vaFA1ijzvvyQQ87ztJ0uCW3dfEB6ZYqWcQsE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oXwvmP7Igqol0GEgRaf62V/g8otyRzOzycLrBFQ8xOcdSvP1zw0feg5M1L6nuGTo6
-	 yfOAwaanUZdi2D84X0ky3bAePlfXNcadVQtV/fidh3qUcSFbxDOTqLcV+1bWZL0Ky6
-	 Fhl666cehngpZw2QBw7RTQVHElQPMGAUrrDrePsCcIQUw1mvOy5GUksw1c+aHsfcEl
-	 C32/cPRWsGQt417sItvP2vrdOp5G7rIlsGS9RuA5YCilxHXHIpV0dt/fjqPsuapkuz
-	 YPhR+3ZssWtFOrD2uZ40sASJ7fCVy0FfGOHS+gpfHLW43Dxk5JCgAjKvhIHJuxeYT9
-	 t7F7p96HCcyRA==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8550BF40066;
-	Mon,  3 Aug 2026 10:23:42 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 03 Aug 2026 10:23:42 -0400
-X-ME-Sender: <xms:bqRwajJPdKB0OP6Tx50CdXWJCYDiJ3Tg1g9QdCWNNCLw4M0y-dQPig>
-    <xme:bqRwajB3qSUFLEPZ4KLsrxvBzxtR_E0VtV0HpYeZY1e7sCNpU-MVTOd_k9Oi_gROa
-    -M1nNpKB2l97aaGruI5VCTND8PPFxQIk9c1lyjgHYBM-wP-kqulRXg>
-X-ME-Received: <xmr:bqRwaov6R5rC0zqDIA9eIiWRQAUAfiaUDGMePbZJpDlBBdjdZDBcx3Uhrlhv2zJ_p3FgLQ-OagEajlXzh4OSnJOjYGfjusBS>
-X-ME-Proxy-Cause: dmFkZTFOIMa5HkOlsByHIHFkyZkwbu+g3jJmeZzKNGu7erJa/Zz47nrsFx4C6pdhBM0Nmy
-    b011kwlZIibyywX+jGInz8bZ/f7MNYAqro48Y3VhgcOCinNqgtyyfpAyDRA5HbhX3EYAB5
-    hkq3mdOYiX2UvFKA/dlguC87Upa2avZM7c+i1X9ywYTVLmarsDCvilWY+zh4oqzh/42yh+
-    l2CCaAV8538xlMPvvpMKUC93aagVndBw4eKPxcb401evLHULE10xbPuvVMHrPs7Eun6P1h
-    aovPizZBSLPUtuiI1zVcoY5s8YJB+ttPhAB50O5Nb0P4frF+MIu0qfzmpxXmmNMGFVxJVL
-    f7BHTGsWjoGwe8+eWUnIIl8tGJL3WiAHPVTP9rm5b6402VTrz15PMicq5lqWvL8sDFC57i
-    VErHfCzouq9sPqVA2g2XmUGY9tMuuRunKlnmMgJo2UM0dR65rF1K2H33j9rsrzntMDmaWg
-    r0qYKby0OSRivdjKGAQQZGja8Ip1uogy/PgfAXQLZic1+e/gowENR2g0TAHflMbp6bypJN
-    MZqEJzmMCEHaoxS0iXuedLPTDXwMWllv1Fjnezg60LatgBRRPGWQABQwiv2ZIAtkQqBId9
-    LseXpSc48NKG3cDWsxarsm8h6uQK6O7xBb6JSNhBiY48OZPwkxKwWSPsLW/g
-X-ME-Proxy: <xmx:bqRwahT6E5siaTy85tO19qxdxLDrA-uBiLhixQ7La-g99tsPCYTkrw>
-    <xmx:bqRwavKr8KQXCiKOILFI8AFl_AevIvowh46KyYhbkg3Xk4tEQ4y9tg>
-    <xmx:bqRwakvfugZN04-VRyiHp3DcPsBZ8_q42qAK5g5QcfKECZ4LGRqCOg>
-    <xmx:bqRwam8L3euu2bFtLkxgzWnNcqzoezJYeEnO0t0nYnWnqZh3W5Uf0g>
-    <xmx:bqRwau1ptvy5LmY6n-myP4CajL-ZKsgaVQSS8yaFtEGq1Q1JJO82pGv8>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Aug 2026 10:23:42 -0400 (EDT)
-Date: Mon, 3 Aug 2026 07:23:40 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Bert Karwatzki <spasswolf@web.de>, Harry Yoo <harry@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: rust compile failure in next-20260730
-Message-ID: <anCkbMyUIscmAheK@tardis.local>
-References: <20260731122826.737703-1-spasswolf@web.de>
- <20260731192522.GA1014697@ax162>
- <DKFD0ZKHC2I8.19PUYUR6N6KFN@garyguo.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hegr8Cz8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1785767428; x=1817303428;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0ylbr2e+UhF90GrPAgiwQl2i+ENO0yXSLMl5gsN/X0I=;
+  b=Hegr8Cz8lQVxt/SOqenDeIxuToDcfSqW431Db2OypHN9ZKxL4M1n1LDL
+   D4EP6z/HFdi9cqtVX4wm8vuTJaq3fi8zM2o45H19ZH6NBR/ElSLhQVx4M
+   /rVsJNRjmJwChK3Alp1zV0oJX1xMATMuQ10Iy0PjFify2gYmuQxJ/pu8V
+   //e5njiFr82SiRjYULCTvbfMgSCsMyKyBJpIKv+MeLTno93Wo7gz+dOxI
+   rcTNjkfWKU04jhOEAOdb++H/PCerm+qknKOUSJHfOtb7tU7U9LVDr/fiY
+   qCo9V3dO1ii68lF4WXf2pJsicGc4dgyh0xMCyW8eXeezuN8fREO7yb2Ee
+   Q==;
+X-CSE-ConnectionGUID: QEp2I2YvSzaTNKaxiSmO6w==
+X-CSE-MsgGUID: p4Z/SJGvRoG5/df4MTdcwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="96958818"
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; 
+   d="scan'208";a="96958818"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 07:30:19 -0700
+X-CSE-ConnectionGUID: Mg2PfLUTTgaiZdjDlK/WMA==
+X-CSE-MsgGUID: vBbIqnJoR5urgr7iZYpsTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; 
+   d="scan'208";a="291165749"
+Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 03 Aug 2026 07:30:12 -0700
+Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wqtfv-0000000077Z-35zH;
+	Mon, 03 Aug 2026 14:29:56 +0000
+Date: Mon, 3 Aug 2026 22:29:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Trevor Chan <trev@trevrosa.dev>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, dakr@kernel.org, ojeda@kernel.org,
+	a.hindborg@kernel.org, paul@paul-moore.com, aliceryhl@google.com,
+	airlied@gmail.com, simona@ffwll.ch, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, igor.korotin@linux.dev, vireshk@kernel.org,
+	nm@ti.com, sboyd@kernel.org, m.wilczynski@samsung.com,
+	boqun@kernel.org, gary@garyguo.net, axboe@kernel.dk,
+	daniel.almeida@collabora.com, shankari.ak0208@gmail.com,
+	lyude@redhat.com, j@jananu.net, lossin@kernel.org,
+	acourbot@nvidia.com, markus.probst@posteo.de,
+	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v6] rust: aref: make `AlwaysRefCounted::inc_ref` an
+ associated function
+Message-ID: <202608032252.nPlw6icN-lkp@intel.com>
+References: <20260628095132.47753-1-trev@trevrosa.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,88 +74,49 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DKFD0ZKHC2I8.19PUYUR6N6KFN@garyguo.net>
+In-Reply-To: <20260628095132.47753-1-trev@trevrosa.dev>
 
-On Mon, Aug 03, 2026 at 02:57:49PM +0100, Gary Guo wrote:
-> On Fri Jul 31, 2026 at 8:25 PM BST, Nathan Chancellor wrote:
-> > + folks from e5e86df8b666
-> >
-> > On Fri, Jul 31, 2026 at 02:28:25PM +0200, Bert Karwatzki wrote:
-> >> With next-20260730 building a kernel with CONFIG_RUST=y fails with
-> >> the following error:
-> >> 
-> >>  RUSTC L rust/kernel.o
-> >> error[E0308]: mismatched types
-> >>      --> rust/kernel/sync/poll.rs:175:44
-> >>       |
-> >>   175 |         unsafe { bindings::kvfree_call_rcu((*ptr).rcu.get(), ptr.cast::<ffi::c_void>()) };
-> >>       |                  ------------------------- ^^^^^^^^^^^^^^^^ expected `*mut kvfree_rcu_head`, found `*mut callback_head`
-> >>       |                  |
-> >>       |                  arguments to this function are incorrect
-> >>       |
-> >>       = note: expected raw pointer `*mut bindings::kvfree_rcu_head`
-> >>                  found raw pointer `*mut bindings::callback_head`
-> >> note: function defined here
-> >>      --> /mnt/data/linux-forest/linux-next/rust/bindings/bindings_generated.rs:73708:12
-> >>       |
-> >> 73708 |     pub fn kvfree_call_rcu(head: *mut kvfree_rcu_head, ptr: *mut ffi::c_void);
-> >>       |            ^^^^^^^^^^^^^^^
-> >> 
-> >> error: aborting due to 1 previous error
-> >> 
-> >> For more information about this error, try `rustc --explain E0308`.
-> >> make[5]: *** [rust/Makefile:781: rust/kernel.o] Fehler 1
-> >> make[4]: *** [Makefile:1420: prepare] Fehler 2
-> >> make[3]: *** [debian/rules:80: build-arch] Fehler 2
-> >> 
-> >> Reverting the following commits:
-> >> ef32a74f8f6a ("mm/slab: introduce kfree_rcu_nolock()")
-> >> bdd0cc9f0ffc ("mm/slab: introduce struct kvfree_rcu_head for kvfree_rcu batching")
-> >>     
-> >> make the compilation work again.   
-> >
-> > This is a collision between commit e5e86df8b666 ("rust: poll: use
-> > kfree_rcu() for PollCondVar") in the char-misc tree and the
-> > aforementioned commit bdd0cc9f0ffc ("mm/slab: introduce struct
-> > kvfree_rcu_head for kvfree_rcu batching") in the slab tree.
-> >
-> > Something like this avoids the error for me but I am not sure if it is
-> > a proper fix.
-> >
-> > diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
-> > index 684dfa242b1a..5b12d5d4e9af 100644
-> > --- a/rust/kernel/sync/poll.rs
-> > +++ b/rust/kernel/sync/poll.rs
-> > @@ -124,6 +124,9 @@ pub struct PollCondVarBox {
-> >  struct PollCondVarBoxInner {
-> >      #[pin]
-> >      inner: PollCondVar,
-> > +    #[cfg(CONFIG_KVFREE_RCU_BATCHED)]
-> > +    rcu: Opaque<bindings::kvfree_rcu_head>,
-> > +    #[cfg(not(CONFIG_KVFREE_RCU_BATCHED))]
-> >      rcu: Opaque<bindings::callback_head>,
-> 
-> We could also unconditionally use `kvfree_rcu_head` here, and
-> add
-> 
->     #[cfg(not(CONFIG_KVFREE_RCU_BATCHED))]
->     pub type kvfree_rcu_head = callback_head;
-> 
-> to bindings.rs?
-> 
+Hi Trevor,
 
-This option is currently not maintainable unless it becomes a
-maintainer-aware way to handle things like this.
+kernel test robot noticed the following build errors:
 
-> (Or even better, changing `#define` to `typedef` so bindgen takes care of
-> everything).
-> 
+[auto build test ERROR on rust/rust-next]
+[also build test ERROR on driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus drm/drm-next drm-misc/drm-misc-next akpm-mm/mm-everything linus/master v7.2-rc6]
+[cannot apply to next-20260731]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Yes, this is better IMO, but it's up to slab maintainers. :-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Trevor-Chan/rust-aref-make-AlwaysRefCounted-inc_ref-an-associated-function/20260803-160221
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20260628095132.47753-1-trev%40trevrosa.dev
+patch subject: [PATCH v6] rust: aref: make `AlwaysRefCounted::inc_ref` an associated function
+config: x86_64-buildonly-randconfig-001-20260803 (https://download.01.org/0day-ci/archive/20260803/202608032252.nPlw6icN-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260803/202608032252.nPlw6icN-lkp@intel.com/reproduce)
 
-Regards,
-Boqun
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608032252.nPlw6icN-lkp@intel.com/
 
-> Best,
-> Gary
-> 
+All errors (new ones prefixed by >>):
+
+>> error[E0424]: expected value, found module `self`
+   --> rust/kernel/pwm.rs:637:50
+   |
+   634 |     fn inc_ref(obj: &Self) {
+   |        ------- this function doesn't have a `self` parameter
+   ...
+   637 |         unsafe { bindings::get_device(&raw mut (*self.0.get()).dev) };
+   |                                                  ^^^^ `self` value is a keyword only available in methods with a `self` parameter
+   |
+   help: add a `self` receiver parameter to make the associated `fn` a method
+   |
+   634 |     fn inc_ref(&self, obj: &Self) {
+   |                ++++++
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
