@@ -1,144 +1,106 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5860B40DB46;
-	Mon,  3 Aug 2026 15:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975E02F8EB0;
+	Mon,  3 Aug 2026 15:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785770391; cv=none; b=Lv9Of8kfPdnSxKv50Qc25aqb3PFt2Wpp9hi5el/a70+DMXMLbrMrJJPnaNnivFaDAKT6swtGPfAmLz+RevAffva2ZuXznsGLKCp22aPsUOWrJaK7ymN2pmJ/QIZCg79grOHxRVkOSWY/UEZXnqZRKyqf1CYmfDYiViT48A6bMyw=
+	t=1785770601; cv=none; b=AtBpG64Lfw7R1I6grlTvt8XJ+rWiQW/11J5ZWS4/yUgn8zk5SHmYFHFDgR14eh0F4UN7V8vdx9FEj5bynlvhOuto42JNlscb1Y8SttZMBnKg1CQifX118xNV+HX/zeOzOcVj9ldJ5iCZqjKzL6Tk0hMU8seoWZQQo4mSFTf2Ebg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785770391; c=relaxed/simple;
-	bh=qgLHzyLqO+f5jaWyUJGppAjLf5MPGv8EZZGPyEaa9js=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FI14XFOwfT4kYIywhbPUbW1xkMepI8QT5JZU1LF3OBdBieG06Gz1RIG1AGu+OtptgmzSZXnX5lZdNoGzprKya9IIIWeAhocpJ0bX94Jd5EwYdWjTNQDA46rnxRpcqtQkDIprHIFbET6DFUN8ZyeTiiGCL9kqF1ijj5CPdEf63dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=MGOgDsDQ; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1785770601; c=relaxed/simple;
+	bh=EP/91TNB8ZE38GEZ9jeQaJ09odZVPtG1g+tHlXxSuFM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=pMYBuK6vjYxyPhsCjmcZIMUqLHYogpf6LdVDS0OjErGmN7827Spy7HS2NGCuje8e5W4/n4DxwX78IYnHacRjAFuaq5xEFlz8x0I7qSPmtunzSnvWBM+FT7xYVVkaJGp5hLTERLj5FrUnXv8tWPhPPmu9ohlXkMHzxASx1Xz+b0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=McHnZ3pC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MGOgDsDQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=msUVGJ06Pr7eVkB13/3ehWqQx5dEKKB1ZdPa7btkIKE=; b=MGOgDsDQ4h0fb3jTRYyHr8FJ4+
-	facejFjyUP/1FZmv24khUVSiZne3GdEl2jJaAukQV3dwUYDpu8uEa8WfDd8aVyB3NisKGTGouikzE
-	winijiFFcTKBC5gaq2n0ONW33fI/M4jnnJ5w5RY+F7EZ4BVbgZGKF8o8/K3buVOvHToGSsgVdS2qQ
-	avbeN+MoHEM6i5qPQkwMnqyVK/noEuov32Gs5TwKRoYFChF5y5iw4RmLgalPoSi9YCwusra9uZghc
-	UPP7WZZH7fFHo6tQZAZtePo97JJg2Sfmn1U7FeS0jth/eLMSt+mAr1zkGk4NhSw415Giqyxi9qI+9
-	EsMHaRXA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wquS8-000000095MQ-0uZ1;
-	Mon, 03 Aug 2026 15:19:44 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 609E73012AB; Mon, 03 Aug 2026 17:19:43 +0200 (CEST)
-Date: Mon, 3 Aug 2026 17:19:43 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 10/24] preempt: Introduce
- HAS_SEPARATE_PREEMPT_RESCHED_BITS
-Message-ID: <20260803151943.GH687043@noisy.programming.kicks-ass.net>
-References: <20260731203031.13679-1-boqun@kernel.org>
- <20260731203031.13679-11-boqun@kernel.org>
- <20260803113817.GB687043@noisy.programming.kicks-ass.net>
- <anCuG683z-iDfq9o@tardis.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="McHnZ3pC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854601F000E9;
+	Mon,  3 Aug 2026 15:23:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785770600;
+	bh=dZYSC8erIMTeSh377JsLNybfBrVvBlw03e2MC63a0C8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To;
+	b=McHnZ3pCySk8fLXiiGo5wXe4OJjJWo58uagpdWKQDFTAx4nQ2d/r+SnOraAkdLDB2
+	 A1/6uqdxAYJe+ts8DdgzcmgBs1M6SsykUmM6TY8LA9NQ21G6N24VLiu09lnKjz4E8G
+	 yu54GeI9py8SIpx9PkYNtM1dStanHHKTqYhy1GVXlWRouNoq2RpzJOSu558rndcYwe
+	 JRJfuxQc+8ZpHXEc5lBNnUMabSud9oBVFOqsYcML9IQpUVvvf4lQuU97UokHm8cHxj
+	 az87oZgxYJkw2hWxktzPnQxPr353on+nyeckr/kGMTtP/IgE1sWlQkXGNgyttr0FvC
+	 0LmxW7b/V05Lg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <anCuG683z-iDfq9o@tardis.local>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 03 Aug 2026 17:23:12 +0200
+Message-Id: <DKFEUD1RMRZA.2ILHJ8I3TPLUR@kernel.org>
+Subject: Re: [PATCH v2 2/9] rust: debugfs: add SeqShow trait and seq_file
+ file operations
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Jan
+ Kara" <jack@suse.cz>, "Matthew Brost" <matthew.brost@intel.com>,
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>, "Melissa Wen"
+ <mwen@igalia.com>, "Wambui Karuga" <wambui.karugax@gmail.com>, "Eric
+ Anholt" <eric@anholt.net>, "Ben Gamari" <bgamari@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>
+To: "Alvin Sun" <alvin.sun@linux.dev>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev>
+ <20260731-tyr-debugfs-v2-v2-2-aea19eccb996@linux.dev>
+In-Reply-To: <20260731-tyr-debugfs-v2-v2-2-aea19eccb996@linux.dev>
 
-On Mon, Aug 03, 2026 at 08:04:59AM -0700, Boqun Feng wrote:
+On Thu Jul 30, 2026 at 7:05 PM CEST, Alvin Sun wrote:
+> +/// Renders `data` into a seq_file.
+> +///
+> +/// `data` is the value stashed as the debugfs file's `i_private` at cre=
+ation
+> +/// time. `show` is invoked on each read to produce the file's contents.
+> +///
+> +/// `open` and `release` are optional lifecycle hooks called during file=
+ open
+> +/// and release. They can be used to manage the lifetime of `data` (e.g.=
+,
+> +/// reference counting). Default implementations are no-ops.
 
-> > > +/*
-> > > + * unsigned long preempt count parameter works for both 32bit and 64bit cases:
-> > > + *
-> > > + * - For 32bit, "int" (the return of preempt_count()) and "unsigned long" have
-> > > + *   the same size.
-> > > + * - For 64bit, the effective bits of a preempt count sits in 32bit, and we
-> > > + *   reserve the NEED_RESCHED bit from the old count.
-> > > + */
-> > 
-> > The 64bit comment doesn't really make sense to me.
-> > 
-> 
-> Ah, I meant "preserve" instead of "reserve"..
+The open() and release() callbacks shouldn't be needed. The existing C (pro=
+xy
+file ops) and Rust code already ensures to wait for in-flight file operatio=
+ns,
+so show() can't run after debugfs_remove().
 
-Ah, yes, that makes sense.
+Both the existing Rust debugfs code and the DRM code use the full proxy fop=
+s.
 
-> > > diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-> > > index 33fc4c814a9f..87d5367f986c 100644
-> > > --- a/include/linux/preempt.h
-> > > +++ b/include/linux/preempt.h
-> > > @@ -30,18 +30,20 @@
-> > >   * NMI nesting depth is tracked in a separate per-CPU variable
-> > >   * (nmi_nesting) to save bits in preempt_count.
-> > >   *
-> > > - *         PREEMPT_MASK:	0x000000ff
-> > > - *         SOFTIRQ_MASK:	0x0000ff00
-> > > - * HARDIRQ_DISABLE_MASK:	0x00ff0000
-> > > - *         HARDIRQ_MASK:	0x0f000000
-> > > - *             NMI_MASK:	0x10000000
-> > > - * PREEMPT_NEED_RESCHED:	0x80000000
-> > > + *				32bit		HAS_SEPARATE_PREEMPT_RESCHED_BITS
-> > > + *
-> > > + *         PREEMPT_MASK:	0x000000ff	0x00000000000000ff
-> > > + *         SOFTIRQ_MASK:	0x0000ff00	0x000000000000ff00
-> > > + * HARDIRQ_DISABLE_MASK:	0x00ff0000	0x0000000000ff0000
-> > > + *         HARDIRQ_MASK:	0x0f000000	0x000000000f000000
-> > > + *             NMI_MASK:	0x10000000	0x00000000f0000000
-> > > + * PREEMPT_NEED_RESCHED:	0x80000000	0x8000000000000000
-> > >   */
-> > 
-> > Perhaps add a comment about how HAS_SEPARATE_PREEMPT_RESCHED_BITS really
-> > is about having PREEMPT_NEED_RESCHED in its own word, rather than
-> > preempt_count() being 64bit.
-> > 
-> > Because as presented it is very easy to confuse these two options.
-> > Ideally it would explain the LOAD-STORE issue with NEED_RESCHED and
-> > point to ARM64 or something.
-> 
-> How about organizing the comments as following:
-> 
-> + *
-> + *         PREEMPT_MASK:	0x000000ff
-> + *         SOFTIRQ_MASK:	0x0000ff00
-> + * HARDIRQ_DISABLE_MASK:	0x00ff0000
-> + *         HARDIRQ_MASK:	0x0f000000
-> + *
-> + * Depending on HAS_SEPARATE_PREEMPT_RESCHED_BITS, NEED_RESCHED bit
-> + * is put in a separate 32bits.
-> + *
-> + * HAS_SEPARATE_PREEMPT_RESCHED_BITS=n:
-> + *
-> + *             NMI_MASK:	0x10000000
-> + * PREEMPT_NEED_RESCHED:	0x80000000
-> + *
-> + * HAS_SEPARATE_PREEMPT_RESCHED_BITS=y:
-> + *
-> + * (NMI_MASK can use all the 4 bits)
-> + *
-> + *             NMI_MASK:	0xf0000000
-> 
-> Thoughts?
-
-Perhaps add something like:
-
-"Having PREEMPT_NEED_RESCHED in a separate word allows 64bit load-store
-architectures to 'set' PREEMPT_NEED_RESCHED without messing up the
-otherwise symmetric modifications used on preempt_count and still load
-the whole thing (single-copy) atomically, without having to resort to
-full atomic operations."
-
-
+> +pub trait SeqShow<T> {
+> +    /// Writes debugfs output for the file.
+> +    fn show(data: &T, m: &SeqFile) -> Result;
+> +
+> +    /// Called during file open, before `single_open`.
+> +    fn open(_data: &T) -> Result {
+> +        Ok(())
+> +    }
+> +
+> +    /// Called during file release, before `single_release`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `data` must point to valid memory, kept alive by actions taken i=
+n
+> +    /// [`Self::open`] (e.g., incrementing a reference count).
+> +    unsafe fn release(_data: NonNull<T>) {}
+> +}
