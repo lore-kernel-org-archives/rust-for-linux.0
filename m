@@ -1,71 +1,56 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573BF2EA75E;
-	Mon,  3 Aug 2026 14:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8A04156E5;
+	Mon,  3 Aug 2026 14:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785767430; cv=none; b=OnGlB0GbHndK+zOnSBve3OiT07JbgCiUTTIQk/UM+bA4EWsm4asG8Iah2C+At2a3IN2Gp4OaI4PBB3zVV4AcC6eqj+dDW89qB7II7fg8KvsD3uRs8fQAknsCCfaSUPJpkqKnZGifVj7YUn86yRa+VIJoBWbkeQeo7D73V2p+kK8=
+	t=1785767605; cv=none; b=r2BSNw7OkUkWcU4CqDMcFwty9JOianv9UNkwg2ebZf8wGfnqJNdzGh1dLv+cyiqnAEE/MFE+A1BFyi77RRK0FIeo67ZZE/zGsIq99L69IWHEUn6+r3C0MVsBrA0JyZHRpX9j0Fl8KwJ1/IUPy/DAaIlGNTDPXktkbvF0F2ElFwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785767430; c=relaxed/simple;
-	bh=0ylbr2e+UhF90GrPAgiwQl2i+ENO0yXSLMl5gsN/X0I=;
+	s=arc-20240116; t=1785767605; c=relaxed/simple;
+	bh=cdjtm7y8sQ8KvaSXQ6RTib7Bd80T3eEGWbErjDzP5Rc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lr0khSfu8/IS99ytZ01ufHrMR4N/4wQIVqRSkvdXyuYcNFJX6gs81HGklWPfY7htCLwjIQkE08Eq5MFftHmFsVPXB5jeHYHXF9YnQdQCLKWTKtTk+dFVuetSzRT6DXIXvYANDT8cDMWQou2iAGCsQ5ulIj/RMOnH6FAE/E6fKQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hegr8Cz8; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RJKWjr/YKf4+ysXw+LGPNELVFhkLT5IRgxt4yIQcW+fs3EfqxBJUdy53JXQqg+qzT4sBT+e4lKRBU1zljZJDnIdepksoQ8Ow8RoJ+vchTePMQwcUC4LT1GKVEOkL7FO8yzlZrLWrTYJBChdbj8zb2OCmKp14RspjxuZxNfEbzS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=X9WCOrk0; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hegr8Cz8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785767428; x=1817303428;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0ylbr2e+UhF90GrPAgiwQl2i+ENO0yXSLMl5gsN/X0I=;
-  b=Hegr8Cz8lQVxt/SOqenDeIxuToDcfSqW431Db2OypHN9ZKxL4M1n1LDL
-   D4EP6z/HFdi9cqtVX4wm8vuTJaq3fi8zM2o45H19ZH6NBR/ElSLhQVx4M
-   /rVsJNRjmJwChK3Alp1zV0oJX1xMATMuQ10Iy0PjFify2gYmuQxJ/pu8V
-   //e5njiFr82SiRjYULCTvbfMgSCsMyKyBJpIKv+MeLTno93Wo7gz+dOxI
-   rcTNjkfWKU04jhOEAOdb++H/PCerm+qknKOUSJHfOtb7tU7U9LVDr/fiY
-   qCo9V3dO1ii68lF4WXf2pJsicGc4dgyh0xMCyW8eXeezuN8fREO7yb2Ee
-   Q==;
-X-CSE-ConnectionGUID: QEp2I2YvSzaTNKaxiSmO6w==
-X-CSE-MsgGUID: p4Z/SJGvRoG5/df4MTdcwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="96958818"
-X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; 
-   d="scan'208";a="96958818"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2026 07:30:19 -0700
-X-CSE-ConnectionGUID: Mg2PfLUTTgaiZdjDlK/WMA==
-X-CSE-MsgGUID: vBbIqnJoR5urgr7iZYpsTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; 
-   d="scan'208";a="291165749"
-Received: from lkp-server01.sh.intel.com (HELO 6eda058d650d) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 03 Aug 2026 07:30:12 -0700
-Received: from kbuild by 6eda058d650d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wqtfv-0000000077Z-35zH;
-	Mon, 03 Aug 2026 14:29:56 +0000
-Date: Mon, 3 Aug 2026 22:29:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Trevor Chan <trev@trevrosa.dev>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, ojeda@kernel.org,
-	a.hindborg@kernel.org, paul@paul-moore.com, aliceryhl@google.com,
-	airlied@gmail.com, simona@ffwll.ch, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, igor.korotin@linux.dev, vireshk@kernel.org,
-	nm@ti.com, sboyd@kernel.org, m.wilczynski@samsung.com,
-	boqun@kernel.org, gary@garyguo.net, axboe@kernel.dk,
-	daniel.almeida@collabora.com, shankari.ak0208@gmail.com,
-	lyude@redhat.com, j@jananu.net, lossin@kernel.org,
-	acourbot@nvidia.com, markus.probst@posteo.de,
-	driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v6] rust: aref: make `AlwaysRefCounted::inc_ref` an
- associated function
-Message-ID: <202608032252.nPlw6icN-lkp@intel.com>
-References: <20260628095132.47753-1-trev@trevrosa.dev>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="X9WCOrk0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SHqeYdMFLe2SuCrvaXaRB/rLWEkPMlLMtR7Ww3H9UK8=; b=X9WCOrk0ZdGuOEOWzqYVkk4JBK
+	He9kYt7HU0Tk/L4Gb4xGH9+sIWu2xwsqTvvLFGRuiri/n5+kgg1TNQ7UjqsB11BZ6sx0kSUEwzgCs
+	mb4g+p++o5mk41/vSeIQ6DWOBK82AXIaITLEG8Dg1mVPal4IQkKK53vUYUGlF1vqzBTjloifTpQdL
+	wMwbUbI7/LPKyKxslLYtxvv00IYz1QLToVmaO7uFPQ1EEPXWjd/L04H3np3Y0bocKQJa/IKLFdxmr
+	Fq0fMRm0GZ2j769mL0DIaNcss/Clqk1qwkd26i5bDmCoV66N/+Gu5hm0PIO9A0lzxl3OqGNwn2BtE
+	saOUX4+w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wqtjA-0000000DmOB-0JJu;
+	Mon, 03 Aug 2026 14:33:16 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9F49B301127; Mon, 03 Aug 2026 16:33:15 +0200 (CEST)
+Date: Mon, 3 Aug 2026 16:33:15 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20260803143315.GC788244@noisy.programming.kicks-ass.net>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-6-boqun@kernel.org>
+ <20260803102155.GI49951@noisy.programming.kicks-ass.net>
+ <anCgfqYg0vYCgZr-@tardis.local>
+ <20260803142106.GF687043@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,49 +59,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260628095132.47753-1-trev@trevrosa.dev>
+In-Reply-To: <20260803142106.GF687043@noisy.programming.kicks-ass.net>
 
-Hi Trevor,
+On Mon, Aug 03, 2026 at 04:21:06PM +0200, Peter Zijlstra wrote:
 
-kernel test robot noticed the following build errors:
+> No; for one, you cannot elide the preempt_disable/enable() from this
+> thing.
+> 
+> It has always been valid to do:
+> 
+> 	raw_spin_lock_irq(lock);
+> 	...
+> 	raw_spin_unlock(lock);
+> 	...
+> 	local_irq_enable();
+> 
+> And since raw_spin_unlock() does have the preemption thing,
+> raw_spin_lock_irq() must too. And the very same argument is still valid
+> if you now write:
+> 
+> 	raw_spin_lock_irq_disable(lock);
+> 	...
+> 	raw_spin_unlock(lock);
+> 	...
+> 	local_interrupt_enable();
+> 
+> Secondly, nothing should 'set' NEED_RESCHED without also immediately
+> causing a preemption.
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on driver-core/driver-core-testing driver-core/driver-core-next driver-core/driver-core-linus drm/drm-next drm-misc/drm-misc-next akpm-mm/mm-everything linus/master v7.2-rc6]
-[cannot apply to next-20260731]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Notably, scheduler_ipi() is the one that folds TIF_NEED_RESCHED into
+PREEMPT_NEED_RESCHED for remote reschedules.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Trevor-Chan/rust-aref-make-AlwaysRefCounted-inc_ref-an-associated-function/20260803-160221
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20260628095132.47753-1-trev%40trevrosa.dev
-patch subject: [PATCH v6] rust: aref: make `AlwaysRefCounted::inc_ref` an associated function
-config: x86_64-buildonly-randconfig-001-20260803 (https://download.01.org/0day-ci/archive/20260803/202608032252.nPlw6icN-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260803/202608032252.nPlw6icN-lkp@intel.com/reproduce)
+Other than that, set_preempt_need_resched() must always be used from
+hardirq context or inside the schedule() loop on current. When used from
+hardirq context, the interrupt-return path will handle the reschedule,
+when used inside the schedule() loop, the loop will.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608032252.nPlw6icN-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0424]: expected value, found module `self`
-   --> rust/kernel/pwm.rs:637:50
-   |
-   634 |     fn inc_ref(obj: &Self) {
-   |        ------- this function doesn't have a `self` parameter
-   ...
-   637 |         unsafe { bindings::get_device(&raw mut (*self.0.get()).dev) };
-   |                                                  ^^^^ `self` value is a keyword only available in methods with a `self` parameter
-   |
-   help: add a `self` receiver parameter to make the associated `fn` a method
-   |
-   634 |     fn inc_ref(&self, obj: &Self) {
-   |                ++++++
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+No other fiddling of NEED_RESCHED should occur.
