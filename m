@@ -1,56 +1,56 @@
 Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA1A3AAF53
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Aug 2026 07:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566113A9DB9
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Aug 2026 07:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785742216; cv=none; b=KXgN/YwjJElLNzDyYs3NgJrquW+SjlD0MeIbG1gvLM/c/PitMTQAX1snJ1Az/wkCxZ4GnvXpwvcrNRZFgEGciwz3NCBB/g09zisZl1fsc5wKTHe/B0P/A50eD30bmCCg3FjCTP+MSBAj5WuUQ7cBBguBq7+k5jcCO8C5d2aCXn0=
+	t=1785742218; cv=none; b=gDMGnmbyXRkrAs/6n9xCfB5EcLpFpAq395gFxdvH43xbOioW7OXVdyYeEdbh6AGPQCMX/LKvYnzkZ9Zefw9mv/QIT8eZq00lDUFqMaWAdr7hCC6RZDyZ/MkWVCqIzlvGE9sR9NdsRRlxHI/ynU9pR+cN1w7ZLaZKgXj6DqdqG6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785742216; c=relaxed/simple;
-	bh=kR3igSBMNuHw5DyXS0ecHl3gAcxwBpKtHQmxuHd74C8=;
+	s=arc-20240116; t=1785742218; c=relaxed/simple;
+	bh=jZtA4btUnK/WE6VCz/a9wAHo5F9tvlXIrAO6APJvdm8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oAO6xp+bRPMOmv4NgpAcf47t8Yh8k+l4zXF+5cyJ9/xIZP8qJk4tmLDQeebS0/SN26kW8cQIdhkxPihrM6uADqosOiN5D4AsjqQirBpjYIqwS1+mrN4r3JsnwUMufagGucOE6wEoQy1DsHvMGkyxT1WqjF1j0oZU5E2MTDJ75s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=biub70tV; arc=none smtp.client-ip=209.85.128.69
+	 To:Cc:Content-Type; b=EwvKTNg7cZ2X6BWCPTbRvCC9dSaagPk6lc8U0uQkEoY1uCa6iiwYhhZPpOLCwy9aPVZoGyuauRQ82W2eXEEr6nCZ8FWhVAxYEtkqIEfSTQA9g5Ze24X+EeoWgQFa/+UOal65Atyl4Teso+I3R7/SAtc8+fB+QBJ7v26XaqjHMFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G9cc37LT; arc=none smtp.client-ip=209.85.128.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="biub70tV"
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955ce558d8so18711885e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Aug 2026 00:30:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G9cc37LT"
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso12755395e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Aug 2026 00:30:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785742210; x=1786347010; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785742212; x=1786347012; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ATqpTG9YB6fyY1MztwiHEaptgvNM5wT6TJQAgysBebM=;
-        b=biub70tVb6Bwk4ZON7XxRcty7a58HMCjAoKjbO04VwU9jr06cbA2CKZIPgzj2DuQmO
-         Im/g0fz6RL9opKgcfb+GdJ/5W5llNXG0i1XrG7SHNYV2gu91erpn9XdUSUA+SxK8iLIh
-         lJBvNdpwe7KRlxGjKjZr/P48Hs9XOuRRP12tACKjM6PG1MFyspVH0FY0+eGP5e3FtkzO
-         8YDl8Wpv1cw0TX9mB9hlWVJKVLCkSz0WsSUsz0BAh+AW9ERinpypTGImXJOjRV6pDdzF
-         5XCfXxFY/x4iS8xCi5evE+oOlIr9/hOnQ6rmqZ39j8GXGF4f4mJrYp7/sz1owlk631L8
-         Y66A==
+        bh=EfNnoZZ44LCF1XN6afiqGdcJEcUhvO5gU6dm9Kyebuk=;
+        b=G9cc37LT2v3jczsGTJbyfRcdn87f0f76nwnf2VYYNZgtgVElhMByWlFefD/GjqtUXo
+         uwkulwvjaAItwAtlxKlJDu7NO3fG+6vL8w01/CwyI3BJ8wOu/RCQ8PwoR4PGsOY1Vxe6
+         L8lMD6QXBAtBwJvWC8Vd2S0yT9+Al75G0dOktr/wAjPlciKSM8F6j2SQskEdWtsYLHoM
+         T3BCUsVgZ6hpuKiCX5RE8EQpFa2oMLOl2QojkOyDqfxM2BBhVzbR9XEZh39trCUeUK5t
+         KEucaEZ4cSzv2LBNT0xD2juEPE81zSjUB/SMXccs2bT3Xia91YL61rIXH/BKBH3G9Fkt
+         qJHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785742210; x=1786347010;
+        d=1e100.net; s=20251104; t=1785742212; x=1786347012;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ATqpTG9YB6fyY1MztwiHEaptgvNM5wT6TJQAgysBebM=;
-        b=q/0xO2brpsqLv5kVd+/zHzNjoCGTMkOSBRxxAe+HQ9nb5fh2+fEKf0KZtjvJGrzUg0
-         CRKln6ynyizw1u+jOXo0KXbbKuyMXz9ZuMqUnuZgHrkrREd29a+2E8ktbXYiLn0SJAFy
-         MyOvFrpujhVkHkZIAh4RxFJ3aDMfyPCbRDen22/1UIbLtSlLqcCt0Wmapu2R5DitVsIW
-         Tn8YboEAtZ8ZdW0eyFVEA7pAidVyw9TAnQlBwK/XV/L4cQoE9dIaSxkPyF8xg4SXA2HV
-         VHIa9Dd7Ez/3qzHCyAUImikv7CqB6wvKk2s50y2cyZYFe/S9Q1p7PLuDQBYXSY+kBhn5
-         IOuQ==
-X-Forwarded-Encrypted: i=1; AHgh+RolbEPlnlYSfta1r4WUyMqm5RPZ0dkZyBk+byE2E3ikHKrkoKVqk6bBqJ1lbGIoEYqxrWOLndhPkUp2O1zWWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv3iZdSxmyOQDzMeEd2l35VP2Jk1e1MTHrGnvOugjycfd8sGM+
-	qspuspb+16L76Zi818STHFtlcRIBDMllcKgA2d2rf+skx2iKGZxMPE2yIVuXGxRMYyuHZjglCle
-	ZD27169FQq5Fb80zekg==
-X-Received: from wmbfp13.prod.google.com ([2002:a05:600c:698d:b0:490:b058:c623])
+        bh=EfNnoZZ44LCF1XN6afiqGdcJEcUhvO5gU6dm9Kyebuk=;
+        b=a6dQMy7b4nnPWzGvKvDBX+o2bF8ulT2D+cVNLOFEZmZ+4etSjEG7O3xa2bEST5uoS4
+         bz4Vwo8vIAh7ZnGN9hY4j1oQHZCx5VRTGYuCV2pJMgpS7oaCG+MW1qqYHo8j0zb8OPtd
+         vABl1n5rP38c0h/qiMaorR6VartarOxJDO+CzkhTLJcEmUGa6L5S183LdXNJAxai8pJR
+         MGiUe/q5BBUyYHfFrtn3ndItqZMw9rEzJ6rExIIw4XbQHCU8792aCki/WSQ3NXXtrJZ8
+         3QFAUBtp7tP+FE1Jjb8X6s5s4kV9pvlK5pisclTFB7ckwys70tf44idEXAGGGpknAq3f
+         gnOg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrmx/8xLr+Wuu6b7/1oB0ayJQxo1vJCAQEHChG69aJCVm9IN/UfwNeb0fF3zJqQirPdulteWINm7smK2d0p8Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM15hpfphQuZ/Vz6wecyxkDHIRngUtvXn1A9PJVu2XiZfnpK3l
+	FNz2TBLNRzW89YkBkTs8MWY/yaDylRssBd9y7xOlWocmph2yo3+hlfnNJEn5fGT92vRbLU8f+rb
+	LxMzLQFgy1gDRavvueQ==
+X-Received: from wmdd23.prod.google.com ([2002:a05:600c:a217:b0:493:b84e:17fe])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:6990:b0:495:4d00:2fc0 with SMTP id 5b1f17b1804b1-4980c673907mr201254305e9.12.1785742209796;
- Mon, 03 Aug 2026 00:30:09 -0700 (PDT)
-Date: Mon, 03 Aug 2026 07:29:55 +0000
+ 2002:a05:600c:34c6:b0:493:a966:d5b5 with SMTP id 5b1f17b1804b1-4980c66b50emr209869865e9.2.1785742211277;
+ Mon, 03 Aug 2026 00:30:11 -0700 (PDT)
+Date: Mon, 03 Aug 2026 07:29:56 +0000
 In-Reply-To: <20260803-pr-ratelimited-v5-0-a77d456de974@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -60,22 +60,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260803-pr-ratelimited-v5-0-a77d456de974@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8830; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=kR3igSBMNuHw5DyXS0ecHl3gAcxwBpKtHQmxuHd74C8=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqcEN4USNgBKMPS/gQxSmcvb68AG7oIC/QpzoEd
- GPcd5J6t8iJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCanBDeAAKCRAEWL7uWMY5
- RnDQD/0X+OLrvYqM1gR4NCPrZ8ULyFKn30S8aZqZlU41NH1O+SMjYtdCvIuyG69u/qtehQispd0
- r13yxBFVUHLXuaP8JRl7qEasuxwHR0EofD8hnmR1v+wI/oy8OHNUen+L6FETiEKw6QDMp9k48Vn
- aAnEDa8VL44OMGfgcrrvXZLZEyRERE6GLcrE8uNdymXwoJmsMWePw/dEn7VB93+Ev8wOd6L4sGV
- KJReaAffs/tlvXUC+JeFjGIuGR75UnKNtBVEZHvLQGBaI0/M6MHeaX4TnKUlMunujCVapzbHSfP
- Qotvnyr6fhnR/lRFEVbqf7BGnXSZSLuhLEdaJU/WoFyheu3KEuYEeCkCb6WSyDo8/l5R4ofZqZd
- JcAZO8cKRrtM1wpUBEUHrPtHDYK9SEKGVmCIKpUgJ4JNyM/XEzQ6hriSdSoU2EmstuEZ2VadmMH
- U6KYXjgVZIeb7LkrSV5sfsM3tAQWk4+tVAkNBBFXT8DuBWYm8ynGAypWzq1uhtdFJdcKdzfYJ/H
- vx5s/rMm8j9d3kWWrHN46Ghqzo69O6riM+2nigMlmFr9kSMiruTQSuBL19ov8kWrhT865QShosy
- T0ANZBlkBwaCmGxEYwFMfvgli0R3F2RrYEdWP6NjNQcm0EGoLr5TuezzROo2YFgxzhOYHP4e/Rs nORHAjAphiY2yZQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=22433; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=jZtA4btUnK/WE6VCz/a9wAHo5F9tvlXIrAO6APJvdm8=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqcEN4uFPQxjOrQB9S3+fWwjcunkXa5Ftt8U/2l
+ nyxz2hgQqiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCanBDeAAKCRAEWL7uWMY5
+ Rn3fD/9dlB6hagjGd+WWYoyka8p4MUDKvfO79f+M1Pe0CoFEWIdkySx5GD1bPaRh5+LRqL0TdI5
+ Dc9Wk+rhdJLIVHm63N6DZ9LDFN28AlRscGyTEs6ejlb9pm8NG0qZ1XJTFFZw+t8vozWFAYMxU16
+ 6EnEu8SDzdg8N82cYP1GQRafpjBYWUv79H2nkyA+huGH53FMsHreLY48vS+yOGm4diIudOzFd8L
+ 3OlCYc0TuTauKqhjFvkDlkULRUNsE8Nx3vBY2SxTkDcA/qITPCOcdXYXrKf6huBm1O7Qt2XPgKa
+ J/WpsIXMWSEVwnJX5InuO6uKPKBesuj6qLEmuDLHFpEYshcMEU5NWE0yvgmUsN99ZNbxKBLuwZz
+ TjWSUnGzAb4FZ84XITJS6l3wcExsWAjGVUs1aU1++XtDeOMSYS3tDS+mcvLjCmhPDGzYcizrBLm
+ Jxdtc0QIxNRkWleWapQjclHfmL6t149pffnLksJ8LlO2MpOdKmB5eIoatXUoodaCU+7nazu2Lrw
+ Xy3D+3KViO2abeD6rUANFh5XGm+CsFk0Jd/F4nfv+5oFJGxxVzbYnj9XuD1Jv3JHOYc72aPbS79
+ oJhQrTRWypTW1TPRVDWN9fFXIWx6G4CeP0S5lKfV/imqbRaQHBtOHVt8ww43/UPsO/IvqLkG3c+ zko0ob0RvMdV2NQ==
 X-Mailer: b4 0.14.3
-Message-ID: <20260803-pr-ratelimited-v5-4-a77d456de974@google.com>
-Subject: [PATCH v5 4/5] rust_binder: consolidate transaction failure prints
+Message-ID: <20260803-pr-ratelimited-v5-5-a77d456de974@google.com>
+Subject: [PATCH v5 5/5] rust_binder: use pr_*_ratelimited! for printing
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
 	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>
@@ -89,210 +89,461 @@ Cc: "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, Andreas Hindborg <a.hind
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-When a transaction fails, it currently hits multiple print statements
-meaning that a single failure can result in several lines in the kernel
-log. This is unnecessary, so consolidate them into one print used for
-all transaction failures.
+To avoid DoS from printing too much, make printing in Binder rate
+limited.
+
+A big portion of these print statements have been updated to use
+binder_debug!, but some still remain to be converted. For now, just
+update them to use pr_*_ratelimted! until we get around to converting
+them to use binder_debug! too. While we're at it, fix the missing
+newlines at the end of some of those println statements.
 
 Acked-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/binder/error.rs       |  4 --
- drivers/android/binder/thread.rs      | 71 +++++++++++++++--------------------
- drivers/android/binder/transaction.rs | 20 ++--------
- rust/kernel/error.rs                  |  2 +-
- 4 files changed, 34 insertions(+), 63 deletions(-)
+ drivers/android/binder/allocation.rs  |  4 +--
+ drivers/android/binder/context.rs     |  6 ++---
+ drivers/android/binder/debug.rs       |  4 +--
+ drivers/android/binder/freeze.rs      |  2 +-
+ drivers/android/binder/node.rs        |  4 +--
+ drivers/android/binder/page_range.rs  | 12 ++++-----
+ drivers/android/binder/process.rs     | 22 ++++++++--------
+ drivers/android/binder/thread.rs      | 48 ++++++++++++++++++++---------------
+ drivers/android/binder/transaction.rs |  4 +--
+ 9 files changed, 57 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/android/binder/error.rs b/drivers/android/binder/error.rs
-index 1296072c35d9..aed1c747640b 100644
---- a/drivers/android/binder/error.rs
-+++ b/drivers/android/binder/error.rs
-@@ -37,10 +37,6 @@ pub(crate) fn new_frozen_oneway() -> Self {
-             source: None,
-         }
-     }
--
--    pub(crate) fn is_dead(&self) -> bool {
--        self.reply == BR_DEAD_REPLY
--    }
- }
+diff --git a/drivers/android/binder/allocation.rs b/drivers/android/binder/allocation.rs
+index 165cb797eb1e..8151ba3ea7f4 100644
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -261,7 +261,7 @@ fn drop(&mut self) {
+                 let view = AllocationView::new(self, offsets.start);
+                 for i in offsets.step_by(size_of::<u64>()) {
+                     if view.cleanup_object(i).is_err() {
+-                        pr_warn!("Error cleaning up object at offset {}\n", i)
++                        pr_warn_ratelimited!("Error cleaning up object at offset {}\n", i)
+                     }
+                 }
+             }
+@@ -286,7 +286,7 @@ fn drop(&mut self) {
  
- /// Convert an errno into a `BinderError` and store the errno used to construct it. The errno
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 18a14aa8a835..bdc43864f5bd 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -26,7 +26,7 @@
- use crate::{
-     allocation::{Allocation, AllocationView, BinderObject, BinderObjectRef, NewAllocation},
-     defs::*,
--    error::BinderResult,
-+    error::{BinderError, BinderResult},
-     process::{GetWorkOrRegister, Process},
-     ptr_align,
-     stats::GLOBAL_STATS,
-@@ -1034,17 +1034,7 @@ pub(crate) fn copy_transaction_data(
-             size_of::<u64>(),
-         );
-         let secctx_off = aligned_data_size + offsets_size + buffers_size;
--        let mut alloc = match to_process.buffer_alloc(debug_id, len, info) {
--            Ok(alloc) => alloc,
--            Err(err) => {
--                pr_warn!(
--                    "Failed to allocate buffer. len:{}, is_oneway:{}",
--                    len,
--                    info.is_oneway(),
--                );
--                return Err(err);
--            }
--        };
-+        let mut alloc = to_process.buffer_alloc(debug_id, len, info)?;
- 
-         let mut buffer_reader = UserSlice::new(info.data_ptr, data_size).reader();
-         let mut end_of_previous_object = 0;
-@@ -1295,6 +1285,9 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-             self.transaction_inner(&mut info)
-         };
- 
-+        // This runs when return work is passed to the caller. This is not
-+        // always the same as the transaction failing, as reply errors are
-+        // delivered to the remote process.
-         if let Err(err) = ret {
-             self.push_return_work(err.reply);
-             if err.reply != BR_TRANSACTION_COMPLETE {
-@@ -1302,29 +1295,8 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-                 if let Some(source) = &err.source {
-                     info.errno = source.to_errno();
- 
--                    {
--                        let mut inner = self.inner.lock();
--                        inner.extended_error =
--                            ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
--                    }
--
--                    binder_debug!(
--                        FailedTransaction,
--                        "transaction {} to {}:{} failed {:?}, code {} size {}-{}",
--                        if info.is_reply {
--                            "reply"
--                        } else if info.is_oneway() {
--                            "async"
--                        } else {
--                            "call"
--                        },
--                        info.to_pid,
--                        info.to_tid,
--                        err,
--                        info.code,
--                        info.data_size,
--                        info.offsets_size
--                    );
-+                    self.inner.lock().extended_error =
-+                        ExtendedError::new(info.debug_id as u32, err.reply, source.to_errno());
+             if info.clear_on_free {
+                 if let Err(e) = self.fill_zero() {
+-                    pr_warn!("Failed to clear data on free: {:?}", e);
++                    pr_warn_ratelimited!("Failed to clear data on free: {:?}\n", e);
                  }
              }
          }
-@@ -1334,8 +1306,31 @@ fn transaction(self: &Arc<Self>, cmd: u32, reader: &mut UserSliceReader) -> Resu
-             // useful in case the transaction failed with BR_TRANSACTION_PENDING_FROZEN.
-             info.report_netlink(BR_ONEWAY_SPAM_SUSPECT, &self.process.ctx);
-         }
-+        // This runs when the transaction failed.
-         if info.reply != 0 {
-             info.report_netlink(info.reply, &self.process.ctx);
-+            if info.errno != 0 {
-+                binder_debug!(
-+                    FailedTransaction,
-+                    "transaction {} to {}:{} failed {:?}, code {} size {}-{}",
-+                    if info.is_reply {
-+                        "reply"
-+                    } else if info.is_oneway() {
-+                        "async"
-+                    } else {
-+                        "call"
-+                    },
-+                    info.to_pid,
-+                    info.to_tid,
-+                    BinderError {
-+                        reply: info.reply,
-+                        source: Error::try_from_errno(info.errno),
-+                    },
-+                    info.code,
-+                    info.data_size,
-+                    info.offsets_size
-+                );
-+            }
-         }
+diff --git a/drivers/android/binder/context.rs b/drivers/android/binder/context.rs
+index ddddb66b3557..431d6007a9b1 100644
+--- a/drivers/android/binder/context.rs
++++ b/drivers/android/binder/context.rs
+@@ -80,7 +80,7 @@ pub(crate) fn deregister(self: &Arc<Self>) {
  
-         Ok(())
-@@ -1419,12 +1414,6 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
-             // At this point we only return `BR_TRANSACTION_COMPLETE` to the caller, and we must let
-             // the sender know that the transaction has completed (with an error in this case).
+     pub(crate) fn register_process(self: &Arc<Self>, proc: Arc<Process>) -> Result {
+         if !Arc::ptr_eq(self, &proc.ctx) {
+-            pr_err!("Context::register_process called on the wrong context.");
++            pr_err_ratelimited!("Context::register_process called on the wrong context.\n");
+             return Err(EINVAL);
+         }
+         self.manager.lock().all_procs.push(proc, GFP_KERNEL)?;
+@@ -89,7 +89,7 @@ pub(crate) fn register_process(self: &Arc<Self>, proc: Arc<Process>) -> Result {
  
+     pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+         if !Arc::ptr_eq(self, &proc.ctx) {
+-            pr_err!("Context::deregister_process called on the wrong context.");
++            pr_err_ratelimited!("Context::deregister_process called on the wrong context.\n");
+             return;
+         }
+         let mut manager = self.manager.lock();
+@@ -110,7 +110,7 @@ pub(crate) fn deregister_process(self: &Arc<Self>, proc: &Arc<Process>) {
+     pub(crate) fn set_manager_node(&self, node_ref: NodeRef) -> Result {
+         let mut manager = self.manager.lock();
+         if manager.node.is_some() {
+-            pr_warn!("BINDER_SET_CONTEXT_MGR already set");
++            pr_warn_ratelimited!("BINDER_SET_CONTEXT_MGR already set\n");
+             return Err(EBUSY);
+         }
+         security::binder_set_context_mgr(&node_ref.node.owner.cred)?;
+diff --git a/drivers/android/binder/debug.rs b/drivers/android/binder/debug.rs
+index 824b10c004c3..6d8dcddf4619 100644
+--- a/drivers/android/binder/debug.rs
++++ b/drivers/android/binder/debug.rs
+@@ -53,7 +53,7 @@ macro_rules! binder_debug {
+     // Rule to explicitly specify a PID (used in kworkers).
+     (pid=$pid:expr, $mask:ident, $($arg:tt)*) => {
+         if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$mask) {
+-            kernel::pr_info!(
++            kernel::pr_info_ratelimited!(
+                 "{}: {}\n",
+                 $pid,
+                 kernel::prelude::fmt!($($arg)*)
+@@ -65,7 +65,7 @@ macro_rules! binder_debug {
+     ($mask:ident, $($arg:tt)*) => {
+         if $crate::debug::debug_mask_enabled($crate::debug::DebugMask::$mask) {
+             let thread = kernel::current!();
+-            kernel::pr_info!(
++            kernel::pr_info_ratelimited!(
+                 "{}:{} {}\n",
+                 thread.tgid(),
+                 thread.pid(),
+diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
+index 66912b4cb527..7fbde3345ced 100644
+--- a/drivers/android/binder/freeze.rs
++++ b/drivers/android/binder/freeze.rs
+@@ -412,7 +412,7 @@ fn find_freeze_recipients(&self) -> Result<KVVec<(DArc<Node>, Arc<Process>)>, Al
+                 recipients
+                     .push_within_capacity(node_proc_pair)
+                     .map_err(|_| {
+-                        pr_err!(
++                        pr_err_ratelimited!(
+                             "push_within_capacity failed even though we checked the capacity\n"
+                         );
+                         AllocError
+diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
+index 0a82af14cda3..69b36951dbbe 100644
+--- a/drivers/android/binder/node.rs
++++ b/drivers/android/binder/node.rs
+@@ -405,7 +405,7 @@ pub(crate) fn update_refcount_locked(
+             !is_dead && !state.has_count
+         } else {
+             if state.count < count {
+-                pr_err!("Failure: refcount underflow!");
++                pr_err_ratelimited!("Failure: refcount underflow!\n");
+                 return None;
+             }
+             state.count -= count;
+@@ -693,7 +693,7 @@ pub(crate) fn remove_freeze_listener(&self, p: &Process) -> KVVec<Arc<Process>>
+             .freeze_list
+             .retain(|proc| !core::ptr::eq::<Process>(&**proc, p));
+         if len == inner.freeze_list.len() {
 -            pr_warn!(
--                "{}:{} reply to {} failed: {err:?}",
--                info.from_pid,
--                info.from_tid,
--                info.to_pid
--            );
-             let param = err.source.as_ref().map_or(0, |e| e.to_errno());
-             let ee = ExtendedError::new(info.debug_id as u32, err.reply, param);
-             orig.from
++            pr_warn_ratelimited!(
+                 "Could not remove freeze listener for {}\n",
+                 p.pid_in_current_ns()
+             );
+diff --git a/drivers/android/binder/page_range.rs b/drivers/android/binder/page_range.rs
+index 52ffbf3504e7..c1f4f635c2c0 100644
+--- a/drivers/android/binder/page_range.rs
++++ b/drivers/android/binder/page_range.rs
+@@ -212,7 +212,7 @@ unsafe fn set_page(me: *mut PageInfo, page: Page) {
+ 
+         // SAFETY: The pointer is valid for writing, so also valid for reading.
+         if unsafe { (*ptr).is_some() } {
+-            pr_err!("set_page called when there is already a page");
++            pr_err_ratelimited!("set_page called when there is already a page\n");
+             // SAFETY: We will initialize the page again below.
+             unsafe { ptr::drop_in_place(ptr) };
+         }
+@@ -300,11 +300,11 @@ pub(crate) fn register_with_vma(&self, vma: &virt::VmaNew) -> Result<usize> {
+         let num_pages = num_bytes >> PAGE_SHIFT;
+ 
+         if !ptr::eq::<Mm>(&*self.mm, &**vma.mm()) {
+-            pr_debug!("Failed to register with vma: invalid vma->vm_mm");
++            pr_debug_ratelimited!("Failed to register with vma: invalid vma->vm_mm\n");
+             return Err(EINVAL);
+         }
+         if num_pages == 0 {
+-            pr_debug!("Failed to register with vma: size zero");
++            pr_debug_ratelimited!("Failed to register with vma: size zero\n");
+             return Err(EINVAL);
+         }
+ 
+@@ -325,7 +325,7 @@ pub(crate) fn register_with_vma(&self, vma: &virt::VmaNew) -> Result<usize> {
+ 
+         let mut inner = self.lock.lock();
+         if inner.size > 0 {
+-            pr_debug!("Failed to register with vma: already registered");
++            pr_debug_ratelimited!("Failed to register with vma: already registered\n");
+             drop(inner);
+             return Err(EBUSY);
+         }
+@@ -380,7 +380,7 @@ pub(crate) fn use_range(&self, start: usize, end: usize) -> Result<()> {
+                 match unsafe { self.use_page_slow(i) } {
+                     Ok(()) => {}
+                     Err(err) => {
+-                        pr_warn!("Error in use_page_slow: {:?}", err);
++                        pr_warn_ratelimited!("Error in use_page_slow: {:?}\n", err);
+                         return Err(err);
+                     }
+                 }
+@@ -529,7 +529,7 @@ unsafe fn iterate<T>(&self, mut offset: usize, mut size: usize, mut cb: T) -> Re
+             // duration of this call to `iterate`, so nobody will change the page.
+             let page = unsafe { PageInfo::get_page(page_info) };
+             if page.is_none() {
+-                pr_warn!("Page is null!");
++                pr_warn_ratelimited!("Page is null!\n");
+             }
+             let page = page.ok_or(EFAULT)?;
+             cb(page, offset, available)?;
+diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
+index 1778628d8acd..87628e7a3306 100644
+--- a/drivers/android/binder/process.rs
++++ b/drivers/android/binder/process.rs
+@@ -324,7 +324,7 @@ pub(crate) fn death_delivered(&mut self, death: DArc<NodeDeath>) {
+         if let Some(death) = ListArc::try_from_arc_or_drop(death) {
+             self.delivered_deaths.push_back(death);
+         } else {
+-            pr_warn!("Notification added to `delivered_deaths` twice.");
++            pr_warn_ratelimited!("Notification added to `delivered_deaths` twice.\n");
+         }
+     }
+ 
+@@ -701,7 +701,7 @@ fn get_current_thread(self: ArcBorrow<'_, Self>) -> Result<Arc<Thread>> {
+         let id = {
+             let current = kernel::current!();
+             if self.task != current.group_leader() {
+-                pr_err!("get_current_thread was called from the wrong process.");
++                pr_err_ratelimited!("get_current_thread was called from the wrong process.\n");
+                 return Err(EINVAL);
+             }
+             current.pid()
+@@ -725,7 +725,7 @@ fn get_current_thread(self: ArcBorrow<'_, Self>) -> Result<Arc<Thread>> {
+                 Ok(ta)
+             }
+             rbtree::Entry::Occupied(_entry) => {
+-                pr_err!("Cannot create two threads with the same id.");
++                pr_err_ratelimited!("Cannot create two threads with the same id.\n");
+                 Err(EINVAL)
+             }
+         }
+@@ -861,7 +861,9 @@ pub(crate) fn insert_or_update_handle(
+                 match refs.by_handle.entry(res.as_u32()) {
+                     rbtree::Entry::Vacant(entry) => break (res, entry),
+                     rbtree::Entry::Occupied(_) => {
+-                        pr_err!("Detected mismatch between handle_is_present and by_handle");
++                        pr_err_ratelimited!(
++                            "Detected mismatch between handle_is_present and by_handle\n"
++                        );
+                         res.acquire();
+                         kernel::warn_on!(true);
+                         return Err(EINVAL);
+@@ -1101,7 +1103,7 @@ pub(crate) fn buffer_alloc(
+         ) {
+             Ok(()) => {}
+             Err(err) => {
+-                pr_warn!("use_range failure {:?}", err);
++                pr_warn_ratelimited!("use_range failure {:?}\n", err);
+                 return Err(err.into());
+             }
+         }
+@@ -1132,7 +1134,7 @@ pub(crate) fn buffer_raw_free(&self, ptr: usize) {
+             let freed_range = match mapping.alloc.reservation_abort(offset) {
+                 Ok(freed_range) => freed_range,
+                 Err(_) => {
+-                    pr_warn!(
++                    pr_warn_ratelimited!(
+                         "Pointer {:x} failed to free, base = {:x}\n",
+                         ptr,
+                         mapping.address
+@@ -1154,7 +1156,7 @@ pub(crate) fn buffer_make_freeable(&self, offset: usize, mut data: Option<Alloca
+         let mut inner = self.inner.lock();
+         if let Some(ref mut mapping) = &mut inner.mapping {
+             if mapping.alloc.reservation_commit(offset, &mut data).is_err() {
+-                pr_warn!("Offset {} failed to be marked freeable\n", offset);
++                pr_warn_ratelimited!("Offset {} failed to be marked freeable\n", offset);
+             }
+         }
+     }
+@@ -1516,7 +1518,7 @@ pub(crate) fn drop_outstanding_txn(&self) {
+         let wake = {
+             let mut inner = self.inner.lock();
+             if inner.outstanding_txns == 0 {
+-                pr_err!("outstanding_txns underflow");
++                pr_err_ratelimited!("outstanding_txns underflow\n");
+                 return;
+             }
+             inner.outstanding_txns -= 1;
+@@ -1832,7 +1834,7 @@ fn new(thread: &'a Arc<Thread>, guard: &mut Guard<'_, ProcessInner, SpinLockBack
+             // It is an error to hit this branch, and it should not be reachable. We try to do
+             // something reasonable when the failure path happens. Most likely, the thread in
+             // question will sleep forever.
+-            pr_err!("Same thread registered with `ready_threads` twice.");
++            pr_err_ratelimited!("Same thread registered with `ready_threads` twice.\n");
+         }
+         Self { thread }
+     }
+@@ -1857,7 +1859,7 @@ impl Drop for WithNodes<'_> {
+     fn drop(&mut self) {
+         core::mem::swap(&mut self.nodes, &mut self.inner.nodes);
+         if self.nodes.iter().next().is_some() {
+-            pr_err!("nodes array was modified while using lock_with_nodes\n");
++            pr_err_ratelimited!("nodes array was modified while using lock_with_nodes\n");
+         }
+     }
+ }
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index bdc43864f5bd..5b0c29cf8320 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -160,8 +160,8 @@ fn validate_parent_fixup(
+         let sg_entry = match self.sg_entries.get(sg_idx) {
+             Some(sg_entry) => sg_entry,
+             None => {
+-                pr_err!(
+-                    "self.ancestors[{}] is {}, but self.sg_entries.len() is {}",
++                pr_err_ratelimited!(
++                    "self.ancestors[{}] is {}, but self.sg_entries.len() is {}\n",
+                     ancestors_i,
+                     sg_idx,
+                     self.sg_entries.len()
+@@ -170,8 +170,8 @@ fn validate_parent_fixup(
+             }
+         };
+         if sg_entry.fixup_min_offset > parent_offset {
+-            pr_warn!(
+-                "validate_parent_fixup: fixup_min_offset={}, parent_offset={}",
++            pr_warn_ratelimited!(
++                "validate_parent_fixup: fixup_min_offset={}, parent_offset={}\n",
+                 sg_entry.fixup_min_offset,
+                 parent_offset
+             );
+@@ -179,8 +179,8 @@ fn validate_parent_fixup(
+         }
+         let new_min_offset = parent_offset.checked_add(length).ok_or(EINVAL)?;
+         if new_min_offset > sg_entry.length {
+-            pr_warn!(
+-                "validate_parent_fixup: new_min_offset={}, sg_entry.length={}",
++            pr_warn_ratelimited!(
++                "validate_parent_fixup: new_min_offset={}, sg_entry.length={}\n",
+                 new_min_offset,
+                 sg_entry.length
+             );
+@@ -339,7 +339,7 @@ fn push_reply_work(&mut self, code: u32) -> PushWorkRes {
+             work.set_error_code(code);
+             self.push_work(work)
+         } else {
+-            pr_warn!("Thread reply work is already in use.");
++            pr_warn_ratelimited!("Thread reply work is already in use.\n");
+             PushWorkRes::Ok
+         }
+     }
+@@ -350,7 +350,7 @@ fn push_return_work(&mut self, reply: u32) {
+             // Not notifying: Reply to current thread.
+             let _ = self.push_work(work);
+         } else {
+-            pr_warn!("Thread return work is already in use.");
++            pr_warn_ratelimited!("Thread return work is already in use.\n");
+         }
+     }
+ 
+@@ -803,8 +803,8 @@ fn translate_object(
+                     let parent_entry = match sg_state.sg_entries.get_mut(info.parent_sg_index) {
+                         Some(parent_entry) => parent_entry,
+                         None => {
+-                            pr_err!(
+-                                "validate_parent_fixup returned index out of bounds for sg.entries"
++                            pr_err_ratelimited!(
++                                "validate_parent_fixup returned index out of bounds for sg.entries\n"
+                             );
+                             return Err(EINVAL.into());
+                         }
+@@ -850,8 +850,8 @@ fn translate_object(
+                 let parent_entry = match sg_state.sg_entries.get_mut(info.parent_sg_index) {
+                     Some(parent_entry) => parent_entry,
+                     None => {
+-                        pr_err!(
+-                            "validate_parent_fixup returned index out of bounds for sg.entries"
++                        pr_err_ratelimited!(
++                            "validate_parent_fixup returned index out of bounds for sg.entries\n"
+                         );
+                         return Err(EINVAL.into());
+                     }
+@@ -884,7 +884,9 @@ fn translate_object(
+                     .read_all(&mut fda_bytes, GFP_KERNEL)?;
+ 
+                 if fds_len != fda_bytes.len() {
+-                    pr_err!("UserSlice::read_all returned wrong length in BINDER_TYPE_FDA");
++                    pr_err_ratelimited!(
++                        "UserSlice::read_all returned wrong length in BINDER_TYPE_FDA\n"
++                    );
+                     return Err(EINVAL.into());
+                 }
+ 
+@@ -999,7 +1001,11 @@ pub(crate) fn copy_transaction_data(
+             let ctx = match security::SecurityCtx::from_secid(secid) {
+                 Ok(ctx) => ctx,
+                 Err(err) => {
+-                    pr_warn!("Failed to get security ctx for id {}: {:?}", secid, err);
++                    pr_warn_ratelimited!(
++                        "Failed to get security ctx for id {}: {:?}\n",
++                        secid,
++                        err
++                    );
+                     return Err(err.into());
+                 }
+             };
+@@ -1223,7 +1229,7 @@ fn top_of_transaction_stack(&self) -> Result<Option<DArc<Transaction>>> {
+         let inner = self.inner.lock();
+         if let Some(cur) = &inner.current_transaction {
+             if core::ptr::eq(self, cur.from.as_ref()) {
+-                pr_warn!("got new transaction with bad transaction stack");
++                pr_warn_ratelimited!("got new transaction with bad transaction stack\n");
+                 return Err(EINVAL);
+             }
+             Ok(Some(cur.clone()))
+@@ -1551,7 +1557,7 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+         let mut has_noop_placeholder = false;
+         if req.read_consumed == 0 {
+             if let Err(err) = writer.write_code(BR_NOOP) {
+-                pr_warn!("Failure when writing BR_NOOP at beginning of buffer.");
++                pr_warn_ratelimited!("Failure when writing BR_NOOP at beginning of buffer.\n");
+                 return Err(err);
+             }
+             has_noop_placeholder = true;
+@@ -1574,7 +1580,7 @@ fn read(self: &Arc<Self>, req: &mut BinderWriteRead, wait: bool) -> Result {
+                 Err(err) => {
+                     // Propagate the error if we haven't written anything else.
+                     if err != EINTR && err != EAGAIN {
+-                        pr_warn!("Failure in work getter: {:?}", err);
++                        pr_warn_ratelimited!("Failure in work getter: {:?}\n", err);
+                     }
+                     if initial_len == writer.len() {
+                         return Err(err);
+@@ -1609,8 +1615,8 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
+             ret = self.write(&mut req);
+             crate::trace::trace_write_done(ret);
+             if let Err(err) = ret {
+-                pr_warn!(
+-                    "Write failure {:?} in pid:{}",
++                pr_warn_ratelimited!(
++                    "Write failure {:?} in pid:{}\n",
+                     err,
+                     self.process.pid_in_current_ns()
+                 );
+@@ -1626,8 +1632,8 @@ pub(crate) fn write_read(self: &Arc<Self>, data: UserSlice, wait: bool) -> Resul
+             ret = self.read(&mut req, wait);
+             crate::trace::trace_read_done(ret);
+             if ret.is_err() && ret != Err(EINTR) {
+-                pr_warn!(
+-                    "Read failure {:?} in pid:{}",
++                pr_warn_ratelimited!(
++                    "Read failure {:?} in pid:{}\n",
+                     ret,
+                     self.process.pid_in_current_ns()
+                 );
 diff --git a/drivers/android/binder/transaction.rs b/drivers/android/binder/transaction.rs
-index 245f1556b5db..81df588d96ad 100644
+index 81df588d96ad..227e98ed1393 100644
 --- a/drivers/android/binder/transaction.rs
 +++ b/drivers/android/binder/transaction.rs
-@@ -166,21 +166,13 @@ pub(crate) fn new(
-         let txn_security_ctx = node_ref.node.flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX != 0;
-         let mut txn_security_ctx_off = if txn_security_ctx { Some(0) } else { None };
-         let to = node_ref.node.owner.clone();
--        let mut alloc = match from.copy_transaction_data(
-+        let mut alloc = from.copy_transaction_data(
-             to.clone(),
-             info,
-             info.debug_id,
-             allow_fds,
-             txn_security_ctx_off.as_mut(),
--        ) {
--            Ok(alloc) => alloc,
--            Err(err) => {
--                if !err.is_dead() {
--                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
--                }
--                return Err(err);
--            }
--        };
-+        )?;
+@@ -175,7 +175,7 @@ pub(crate) fn new(
+         )?;
          if info.is_oneway() {
              if from_parent.is_some() {
-                 pr_warn!("Oneway transaction should not be in a transaction stack.");
-@@ -221,13 +213,7 @@ pub(crate) fn new_reply(
-         allow_fds: bool,
-     ) -> BinderResult<DLArc<Self>> {
-         let mut alloc =
--            match from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None) {
--                Ok(alloc) => alloc,
--                Err(err) => {
--                    pr_warn!("Failure in copy_transaction_data: {:?}", err);
--                    return Err(err);
--                }
--            };
-+            from.copy_transaction_data(to.clone(), info, info.debug_id, allow_fds, None)?;
-         if info.flags.contains(TransactionFlag::ClearBuf) {
-             alloc.set_info_clear_on_drop();
+-                pr_warn!("Oneway transaction should not be in a transaction stack.");
++                pr_warn_ratelimited!("Oneway transaction should not be in a transaction stack.\n");
+                 return Err(EINVAL.into());
+             }
+             alloc.set_info_oneway_node(node_ref.node.clone());
+@@ -370,7 +370,7 @@ pub(crate) fn submit(self: DLArc<Self>, info: &mut TransactionInfo) -> BinderRes
+                     return Ok(());
+                 }
+             } else {
+-                pr_err!("Failed to submit oneway transaction to node.");
++                pr_err_ratelimited!("Failed to submit oneway transaction to node.\n");
+             }
          }
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index a56ba6309594..380cd3f7276b 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -135,7 +135,7 @@ pub fn from_errno(errno: crate::ffi::c_int) -> Error {
-     /// Creates an [`Error`] from a kernel error code.
-     ///
-     /// Returns [`None`] if `errno` is out-of-range.
--    const fn try_from_errno(errno: crate::ffi::c_int) -> Option<Error> {
-+    pub const fn try_from_errno(errno: crate::ffi::c_int) -> Option<Error> {
-         if errno < -(bindings::MAX_ERRNO as i32) || errno >= 0 {
-             return None;
-         }
+ 
 
 -- 
 2.55.0.508.g3f0d502094-goog
