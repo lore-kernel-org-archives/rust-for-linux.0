@@ -1,148 +1,157 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7328E4137B0;
-	Mon,  3 Aug 2026 12:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6B9411FA5
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Aug 2026 12:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785760965; cv=none; b=bjAfs1dpnbgsil6kkbsJEc5Acsqh+tXJv0QO0zi86rdnZww4CJwT4s7bzgSCBU6gJKV3KlXs7zVi6R622jWRz2ZFGlUtX+aRk2fs2KCH3xzbqav+Z1CE7Ii2nI63JW23ZcnA24d6gN+Abv9oi+Ql8j1wG4WqB15+YzA4WIfzV/E=
+	t=1785761217; cv=none; b=X4HvCU3uQBaRDG9F/ffH+IPiU4PWFkl61b5jxx9kE/Jk+OIKpq6ozB93Ms2H+FE1K53AC3ggV+/posqAnGtGCp9aBwFSHCYdLKzINuTW3n9INL0luKRG5p962hSw/i+tv1HiczXYW7bYvf5AXUqAGDF16x3BjvgQ5umF8kWEwDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785760965; c=relaxed/simple;
-	bh=qmsuEV+bp0/q8D7ofuZkzrp6vPYie8RxygDkcJ6QirA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aoHeZ4GIfBDDMOwVIS4AfGsVi9qvPHzpxL2zQ89tgl/iYH5Hf2JDYbeIsWDDTGYccc6EhysZQ1Do9tv0ih0F++R4Fyb70CXvgQASj07EZapqPnqk47+0mKzGNXMcZQhIqG2OybKARFBJ33ze/Relpqny8QbeO1x1BiP9iCIREWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LsKSXulL; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1785761217; c=relaxed/simple;
+	bh=3t2Y19LKMm77Slx5NukqzKKFy6+5z1A41mGry0j7HLY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=LUf2XGwzytUjBNc0A7pKwtPDIMgSZvyl/daxxaqhDk14Y9Oe2hvCYfByTu6+cOA890trIKXk5RsY8MnUqyHB+TE6v19X36d5uaLf9r2qMAieb56+XYJ4893ZJ9VqK6ttCrGkaQBFViJYEwZ/sr0jhgdM2j9whxKfjbD9C/lnJ0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wyliodrin.com; spf=pass smtp.mailfrom=wyliodrin.com; dkim=pass (1024-bit key) header.d=wyliodrin.com header.i=@wyliodrin.com header.b=LvlzEj+u; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wyliodrin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wyliodrin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LsKSXulL"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673CIHmU1939178;
-	Mon, 3 Aug 2026 12:42:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=IPehTeyd9fD12V4YG+PaH+z+/0/db5
-	MRBksmfQUr3vw=; b=LsKSXulLT5FCXavn6ufQ1TIRJRR/bQT+Xp7RLMWw86xhk7
-	FanoXvsJdEOr7UYtqglT0FmOtpIaRqCWeOqICU0BaF5R+++bLtJBXLTuTaI4yS/E
-	Os/whTRvxhX3waX8zdR8CiI4ERpWkfRdmT4tBpm/19SBQqn6vFoRcsyRcEILPpyf
-	AtEcNPyXmOzA5W/dVfdRZLo1m/eWH+FCYP39cLEO1a6OAvmsNFJbH6fOEK6xb8Vc
-	qrW0x87T5b7LtnKXiixgHceYbPG4kqiGopPPGHv4R1EBXuOYDGfP26eQ2tE8OoJE
-	yuGtucAI4wAUuqsXr/BgjjEUOvcHIUR9JvJjzUiw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67hgqkf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 12:42:23 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673CfJt9027897;
-	Mon, 3 Aug 2026 12:42:22 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmh59y3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Aug 2026 12:42:22 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673CgK8B25887110
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Aug 2026 12:42:20 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 79E1C2004B;
-	Mon,  3 Aug 2026 12:42:20 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 01DF620040;
-	Mon,  3 Aug 2026 12:42:20 +0000 (GMT)
-Received: from osiris (unknown [9.111.54.91])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  3 Aug 2026 12:42:19 +0000 (GMT)
-Date: Mon, 3 Aug 2026 14:42:18 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-        Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-        Lyude Paul <lyude@redhat.com>,
-        Daniel Almeida <daniel.almeida@collabora.com>,
-        Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-        Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 12/24] s390/preempt: Enable
- HAS_SEPARATE_PREEMPT_RESCHED_BITS
-Message-ID: <20260803124218.14792D9d-hca@linux.ibm.com>
-References: <20260731203031.13679-1-boqun@kernel.org>
- <20260731203031.13679-13-boqun@kernel.org>
- <20260803114032.GC687043@noisy.programming.kicks-ass.net>
+	dkim=pass (1024-bit key) header.d=wyliodrin.com header.i=@wyliodrin.com header.b="LvlzEj+u"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49555a0e68bso9706515e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 03 Aug 2026 05:46:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=wyliodrin.com; s=google; t=1785761214; x=1786366014; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=eTIIU0RK6De8tsthf1eFYkTZzNYuQyIWVcByhEPLnjo=;
+        b=LvlzEj+utmZe7TfshZDJHNYEQjGPFPwLrfiSYVzqwHM+9C0WbvGt0FTksPy1vx85Zc
+         s5QPSZh5uI0lU0zXe9ApobOQyWx6KpIAfwAipsbGyjIBlbjM89LrvRRtrE7r6u8BOcoj
+         b/NML6QqiV9XnmrHRsHWVlvCKwdFhIxoz2230=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785761214; x=1786366014;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eTIIU0RK6De8tsthf1eFYkTZzNYuQyIWVcByhEPLnjo=;
+        b=E89x8kGuue9tz0LPSuvwID2bzjsSLqdMFi4zIhorBSRZJHAyiJ/JIhtpvnB5A4roWS
+         G731cAnbLSwSaI0gOdi46A1AYWqS+U9N9lwXZzzpq7AiVr+xEULEnB7hKyZ+LMx64WHX
+         8f1+HAqGcczp22DvyDNwQWRGl1ic1d88cXEZl4X6JHPKxcDT2umW5j8mCiXhIGRjNu7b
+         6vd5JaULd7PAGCxrS277K1he9cotcrC2v3rJUZXnjOpwT4AnvtgZUyDeXmSrxiEQ5ZZc
+         esuosvOO6tH+PAiLj3BQVxXSPg08ilDKjeNi5Br0lXJdWk+468DrWsRTvaX6G7HvdOK7
+         Qqkg==
+X-Forwarded-Encrypted: i=1; AHgh+RolUXXQo4dEi/MMyb33cbMwYnAx9Yox5F/zEK7Bhazpf2vuTL0Qy942PgrNKpS21mK80ktpqYIKJGIeA3xSzA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYkhmCJWWjjqPd8mjObCZDG6D4uxqaR3FJk88bB4TAqTFLa8Pt
+	qyLt3Q1A7vvNz3s4jkiBnEFB/jsxLhbzgzQk5fFseGMtAOtSvIsxPN/ZJyt3geInbgQ=
+X-Gm-Gg: AR+sD13Xk2oBjZfvbrtRJyCrpLv3zOVNYdM0U+8Hi+x6zsVx/6X944rgr3RUpDPC5TT
+	aFcJh9EF8cuz9cY5MMCCnUvKHYjqW96Y0LXM4/UNIulwtdF37RgIr28Sfs+LjamJoHW8+O/nFBN
+	hMCsexNyHlZoBkg0kimy2/7/I/JsRU6Iygn9PjHi8Ao2F1WUryi/P5B0/JXTkJb26/O1VZBUhXI
+	xjUy9nUDO6md9vTamxJOWWMp6Mv2u4Ox+pwGcMnJ2lrGiiI9N+XKlfjTc8ffA8C+KU3Ux5J/NaI
+	YBrRjIQY7jjEMBTCfoNvWGao0F9WjIdJBPssUolP/tasNInV8QL+NG3NuEzswCgKS2MDW2X9jml
+	GJtQlnxmuacUg3brir1IbvgnTJ3eb9AvH5Mvm/91/j5OsY/BF3nWkrRcmTIbou9f9YXVRnKLodQ
+	Wilg6cZPSpj9EI7vDYI0ayTeYRN3XXFGbBL/3QS9TYdEbQODCjI+zvlvmbk6jlfeqo0Siv3g5zf
+	agulazYnRew9UV1ttge4kJekZR0tevAfA==
+X-Received: by 2002:a05:600c:5494:b0:493:bfad:9d99 with SMTP id 5b1f17b1804b1-4980c679d64mr214413325e9.13.1785761214212;
+        Mon, 03 Aug 2026 05:46:54 -0700 (PDT)
+Received: from localhost ([217.73.170.83])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49807b85be7sm278310995e9.2.2026.08.03.05.46.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Aug 2026 05:46:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260803114032.GC687043@noisy.programming.kicks-ass.net>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDExMCBTYWx0ZWRfX6qvSVzlZ+Eyo
- zZs9svSabCiTxRnddEc8R2/aNIM03mhJiQNBm1GJh8iSsWw9ghc9bHZPPHbuhoWNnrBBowaMOWo
- OJdsXze8M4FUpaHXEIADVh6e+ZdQmS8=
-X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a708caf cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=csveCD0TJrq5keC42VAA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDExMCBTYWx0ZWRfXya3Tgv7of0Ij
- HOkc2wTvQVnzwuzfss9m6sxJvq6nJ5OaQ2qZNYPK+R1JKCd6sPfzVH16X7CR0gJsytfJyVIK2sb
- q93NLICXeVpxXJbQxFisemxh+2ZQe0aUnkqt7phsijC15IujgduFUcDKi6mue6lVUetqST3ULoG
- dB6dLqf/9ex8xVSTgb21tEXrvuH4pwRLbRa4kF/KQXKEeidr1AlURm14F3lhdIDq6D2uKV9jcrn
- SIm9q3W5JsNPpb2vKOjZ+bgNFrYcJo0LofQgb5DouFXDAiEN1nqd/CIR+XJKzrQsu7XPFGlA7Qp
- 8IykrwsJwsV9uj/JbzHtDNDZwcdobSBjycaXyJ6xaUOLHmemyT8w8/mzv77LA8pt0C7yIf2dXqx
- blfNe6IMT/AvKp7pV+/IqqQU0pvGIxTDqsjkH88sK7Ru8nZajrumSGg/EAfOCYnxZR0HM3N8nYy
- LvxLEEY/auxJojweysA==
-X-Proofpoint-ORIG-GUID: iQtphIMzdyn36CQrAuvIMeg3nnYM3N_u
-X-Proofpoint-GUID: KOh4Q5_5sk-g9411JdzStURiIJhf4W2A
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-03_03,2026-07-30_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030110
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 03 Aug 2026 15:46:44 +0300
+Message-Id: <DKFBIK6S4RR4.2PB6HTV910C1J@wyliodrin.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH RFC 1/2] rust: usb: add endpoint abstraction
+From: "Alrexandru Radovici" <alexandru.radovici@wyliodrin.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Alexandru Radovici"
+ <alexandru.radovici@wyliodrin.com>
+X-Mailer: aerc 0.21.0
+References: <20260801-rust-usb_control_msg-v1-0-655bb444b52c@wyliodrin.com>
+ <20260801-rust-usb_control_msg-v1-1-655bb444b52c@wyliodrin.com>
+ <2026080205-falsify-stalemate-175b@gregkh>
+In-Reply-To: <2026080205-falsify-stalemate-175b@gregkh>
 
-On Mon, Aug 03, 2026 at 01:40:32PM +0200, Peter Zijlstra wrote:
-> On Fri, Jul 31, 2026 at 01:30:13PM -0700, Boqun Feng wrote:
-> 
-> > @@ -26,25 +23,25 @@
-> >   */
-> >  static __always_inline int preempt_count(void)
-> >  {
-> > -	unsigned long lc_preempt, count;
-> > +	unsigned long lc_preempt;
-> > +	int count;
-> >  
-> > -	BUILD_BUG_ON(sizeof_field(struct lowcore, preempt_count) != sizeof(int));
-> > -	lc_preempt = offsetof(struct lowcore, preempt_count);
-> > +	lc_preempt = offsetof(struct lowcore, preempt.count);
-> >  	/* READ_ONCE(get_lowcore()->preempt_count) & ~PREEMPT_NEED_RESCHED */
-> 
-> If I'm not mistaken, this comment is no longer accurate, since
-> NEED_RESCHED lives in the high word and you're only loading the low
-> word.
+On Sun Aug 2, 2026 at 11:39 AM EEST, Greg Kroah-Hartman wrote:
+> On Sat, Aug 01, 2026 at 03:01:07AM +0300, Alexandru Radovici wrote:
+>> Add an abstraction for `struct usb_host_endpoint`, together with the
+>> accessors needed to reach one: `AlternateSetting` wrapping
+>> `struct usb_host_interface`, `Interface::alternate_settings()` and
+>> `Interface::current_alternate_setting()`, and `Device::control_endpoint(=
+)`
+>> for the default control endpoint, which no interface descriptor lists.
+>
+> Why?  USB drivers shouldn't be messing with usb_host_endpoint structures
+> for the most part, what user do you have for this?
 
-True. Something like
+The more I think of this, I think you are right. `HostEndpoint`'s accessor
+methods are only used for debug, as the `kernel` crate can access
+the actual `usb_host_endpoint` underneeth. For debug purposes, we should
+just derive the `Debug` trait instead.
 
-  	/* READ_ONCE(get_lowcore()->preempt.count) (without PREEMPT_NEED_RESCHED) */
+>
+>> `HostEndpoint` is generic over two sealed marker traits,
+>> `EndpointDirection` and `EndpointTransferType`, whose implementors are
+>> 1-ZSTs held in `PhantomData`. An endpoint borrowed from an alternate
+>> setting starts out generic in both; `as_in()`, `as_out()` and
+>> `as_control()` check the descriptor once and return a reference
+>> carrying the corresponding marker, so a function taking
+>> `&HostEndpoint<In, Bulk>` needs no check of its own. The type is
+>> `#[repr(transparent)]` over the C struct and the markers are
+>> zero-sized, so the refinement costs nothing and a slice of endpoints
+>> can be borrowed directly from the C array.
+>>=20
+>> Control endpoints get a distinct `Bidirectional` marker rather than an
+>> IN or OUT one. A control transfer takes its direction from bit 7 of the
+>> setup packet's bmRequestType, and USB 2.0 section 9.6.6 defines the
+>> corresponding bit of bEndpointAddress as ignored for control endpoints.
+>> `as_in()` and `as_out()` are not implemented for `Bidirectional`, making
+>> calling them a compile error rather than a misleading result.
+>
+> Don't over-think USB endpoints, they are "just" a pipe that contain a
+> numbering scheme that the USB core uses.  Is that what you are trying to
+> create here?  What are you trying to "enforce" here that the C code does
+> not already do?
 
-might be better.
+My USB knowledge is limited, so I hope I am not saying something
+stupid here. My understanding is that drivers should not expect
+interfaces to map the same endpoints (numbers) every time.
+A driver should expect an interface to expose a certain number of
+endpoints, each one with a certain type, but the actual number of each
+exposed endpoint is not to be considered hardcoded. This means that drivers
+should anyway iterate over the endpoints to discover the numbers
+of the required endpoints.
 
-> >  	asm_inline(
-> > -		ALTERNATIVE("llgt	%[count],%[offzero](%%r0)\n",
-> > -			    "llgt	%[count],%[offalt](%%r0)\n",
-> > +		ALTERNATIVE("ly		%[count],%[offzero](%%r0)\n",
-> > +			    "ly		%[count],%[offalt](%%r0)\n",
-> >  			    ALT_FEATURE(MFEATURE_LOWCORE))
-> >  		: [count] "=d" (count)
-> >  		: [offzero] "i" (lc_preempt),
-> >  		  [offalt] "i" (lc_preempt + LOWCORE_ALT_ADDRESS),
-> > -		  "m" (((struct lowcore *)0)->preempt_count));
-> > +		  "m" (((struct lowcore *)0)->preempt.count));
-> >  	return count;
-> >  }
+My idea is to leaverage Rust's type system to prevent users from supplying
+the wrong endpoint type at compile time rather then at runtime. By making
+the `HostEndpoint` its own Rust type with no public constructor,
+users will be forced to iterate the endpoints to discover the correct
+number for each endpoint that they require. Once they have it, users
+can hold to the reference as long as the interface is valid.
+
+By adding the `Dir` and `Type` generic markers, suplying the wrong endpoint
+to a function will be caught at compile time rather than at runtime. This
+should hopefully shorthen the debug work needed for a driver, as some of
+the errors become impossible.
+
+As endpoint 0 is always provided and basically _almost hardcoded_``, I adde=
+d
+the `control_endpoint` function.=20
+
+Best regards,
+Alexandru
