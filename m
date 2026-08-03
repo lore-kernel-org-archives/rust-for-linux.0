@@ -1,55 +1,73 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8222DC350;
-	Mon,  3 Aug 2026 14:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D3A368D59;
+	Mon,  3 Aug 2026 14:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785766875; cv=none; b=VJMThaJ0ov0LPufrILucUqbDdNM+vix1pgBY8u9oLJ0lEhw8gbW8Y5qSj4meaxPwhTm7wjVgu/gJHhqFQJBSzRNyFUNgKjT9foTvRFVX8lGyDBWrm+VAVKWmJnGd63mlxFrj8Rp6hujUxQ4U3tscO1Iiwp+xP4wl05SVcUpa0YI=
+	t=1785767025; cv=none; b=PECqc2HHh+9XBEC3nbtfqINlvac7N8KAcnMjTWEFn1Gy1ZLRTCz72CGUFtJi6iq5cJwgLpbU0zMwG1eADJLuJL59fXsXTyzQa3/fA2FB0gsMDwU72p06ZqTG+prlDaL6GXqTM2H+ceh6XzqJOo7HgKS/z5XgE0RgWFxtL3OBhik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785766875; c=relaxed/simple;
-	bh=0+ws57Mni6NFUPjAqcbESNcyvsLHHP/3YpmsqZrXiwU=;
+	s=arc-20240116; t=1785767025; c=relaxed/simple;
+	bh=fxkQonVO9Rff1Y9V8bg6kixmfUGo70RKbQuuTZH9JTI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QcxP+BpSY9thfhPOFK8Y+endVXB6of73uaPe0yqYRz2yRmV2GSfLginnAwfK4vEct9gR34F6PSrP+H/q9ECYUlXL7gmKFYIxHPHNQWBOmj7YkePgdfufWMyJIbS6gZ0BJ73F410B/o8f6Fn9pEOZx2dDe+VFUf/ITKJLt9WoQfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=RKw1yPO0; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=u2KyTiFVk7PmznzlPrsvXqO+N0xSLjIAei2zE9lAQsEbiuSX5mQvWmC9rDb7Ty+/A+FSVnei2Wur9Bs5tfQApOWXUM/mxclsMLo9vSmMTDtR1YbqpCStdWSWqF9wg8kLuuOk+ZxORB6kgmeV9fyWz6fJY3zFpOE56Tv20nvoFp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXwvmP7I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RKw1yPO0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CfSTbGPt5AShRDVI9WoDTHEy2qqp09u8MIuXKLViHm0=; b=RKw1yPO0JY3jbx7lHACZx1sZ3J
-	uwq6qbc7iaDfwbqjRXw0kun40Q+IvyW4F7gZ/gbHqnH2y4+QBHYIiivhqOHga7t4gyye3lljc37hr
-	5jLaVDHaKh817h+0qEOBxVwondB/SqGDFfNnvUhVti73p83RWW2qohDR56BS78af4xbd0NRZL6x4R
-	KTY3rSkr4PVRkcbPoFiZWuqOAQei6rkbUdHzP74ELgPl9kSdVCRdhH8o5+k+wVg9HIHY/UW2pSEXT
-	LoYfmuXisF+Emzaf/T87rc2zeQTUWHYVCD34mD+bKEqNiDEOoOmiA+bAhHGbiX4OSMCNVPEwbwJ61
-	75EkaO7g==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqtXP-0000000Dl2u-29vG;
-	Mon, 03 Aug 2026 14:21:07 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 83BF9301127; Mon, 03 Aug 2026 16:21:06 +0200 (CEST)
-Date: Mon, 3 Aug 2026 16:21:06 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
-	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
- disabling/enabling
-Message-ID: <20260803142106.GF687043@noisy.programming.kicks-ass.net>
-References: <20260731203031.13679-1-boqun@kernel.org>
- <20260731203031.13679-6-boqun@kernel.org>
- <20260803102155.GI49951@noisy.programming.kicks-ass.net>
- <anCgfqYg0vYCgZr-@tardis.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXwvmP7I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5763A1F000E9;
+	Mon,  3 Aug 2026 14:23:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785767023;
+	bh=p4M5Ck3vaFA1ijzvvyQQ87ztJ0uCW3dfEB6ZYqWcQsE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oXwvmP7Igqol0GEgRaf62V/g8otyRzOzycLrBFQ8xOcdSvP1zw0feg5M1L6nuGTo6
+	 yfOAwaanUZdi2D84X0ky3bAePlfXNcadVQtV/fidh3qUcSFbxDOTqLcV+1bWZL0Ky6
+	 Fhl666cehngpZw2QBw7RTQVHElQPMGAUrrDrePsCcIQUw1mvOy5GUksw1c+aHsfcEl
+	 C32/cPRWsGQt417sItvP2vrdOp5G7rIlsGS9RuA5YCilxHXHIpV0dt/fjqPsuapkuz
+	 YPhR+3ZssWtFOrD2uZ40sASJ7fCVy0FfGOHS+gpfHLW43Dxk5JCgAjKvhIHJuxeYT9
+	 t7F7p96HCcyRA==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8550BF40066;
+	Mon,  3 Aug 2026 10:23:42 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 03 Aug 2026 10:23:42 -0400
+X-ME-Sender: <xms:bqRwajJPdKB0OP6Tx50CdXWJCYDiJ3Tg1g9QdCWNNCLw4M0y-dQPig>
+    <xme:bqRwajB3qSUFLEPZ4KLsrxvBzxtR_E0VtV0HpYeZY1e7sCNpU-MVTOd_k9Oi_gROa
+    -M1nNpKB2l97aaGruI5VCTND8PPFxQIk9c1lyjgHYBM-wP-kqulRXg>
+X-ME-Received: <xmr:bqRwaov6R5rC0zqDIA9eIiWRQAUAfiaUDGMePbZJpDlBBdjdZDBcx3Uhrlhv2zJ_p3FgLQ-OagEajlXzh4OSnJOjYGfjusBS>
+X-ME-Proxy-Cause: dmFkZTFOIMa5HkOlsByHIHFkyZkwbu+g3jJmeZzKNGu7erJa/Zz47nrsFx4C6pdhBM0Nmy
+    b011kwlZIibyywX+jGInz8bZ/f7MNYAqro48Y3VhgcOCinNqgtyyfpAyDRA5HbhX3EYAB5
+    hkq3mdOYiX2UvFKA/dlguC87Upa2avZM7c+i1X9ywYTVLmarsDCvilWY+zh4oqzh/42yh+
+    l2CCaAV8538xlMPvvpMKUC93aagVndBw4eKPxcb401evLHULE10xbPuvVMHrPs7Eun6P1h
+    aovPizZBSLPUtuiI1zVcoY5s8YJB+ttPhAB50O5Nb0P4frF+MIu0qfzmpxXmmNMGFVxJVL
+    f7BHTGsWjoGwe8+eWUnIIl8tGJL3WiAHPVTP9rm5b6402VTrz15PMicq5lqWvL8sDFC57i
+    VErHfCzouq9sPqVA2g2XmUGY9tMuuRunKlnmMgJo2UM0dR65rF1K2H33j9rsrzntMDmaWg
+    r0qYKby0OSRivdjKGAQQZGja8Ip1uogy/PgfAXQLZic1+e/gowENR2g0TAHflMbp6bypJN
+    MZqEJzmMCEHaoxS0iXuedLPTDXwMWllv1Fjnezg60LatgBRRPGWQABQwiv2ZIAtkQqBId9
+    LseXpSc48NKG3cDWsxarsm8h6uQK6O7xBb6JSNhBiY48OZPwkxKwWSPsLW/g
+X-ME-Proxy: <xmx:bqRwahT6E5siaTy85tO19qxdxLDrA-uBiLhixQ7La-g99tsPCYTkrw>
+    <xmx:bqRwavKr8KQXCiKOILFI8AFl_AevIvowh46KyYhbkg3Xk4tEQ4y9tg>
+    <xmx:bqRwakvfugZN04-VRyiHp3DcPsBZ8_q42qAK5g5QcfKECZ4LGRqCOg>
+    <xmx:bqRwam8L3euu2bFtLkxgzWnNcqzoezJYeEnO0t0nYnWnqZh3W5Uf0g>
+    <xmx:bqRwau1ptvy5LmY6n-myP4CajL-ZKsgaVQSS8yaFtEGq1Q1JJO82pGv8>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Aug 2026 10:23:42 -0400 (EDT)
+Date: Mon, 3 Aug 2026 07:23:40 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Bert Karwatzki <spasswolf@web.de>, Harry Yoo <harry@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: rust compile failure in next-20260730
+Message-ID: <anCkbMyUIscmAheK@tardis.local>
+References: <20260731122826.737703-1-spasswolf@web.de>
+ <20260731192522.GA1014697@ax162>
+ <DKFD0ZKHC2I8.19PUYUR6N6KFN@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,94 +76,88 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <anCgfqYg0vYCgZr-@tardis.local>
+In-Reply-To: <DKFD0ZKHC2I8.19PUYUR6N6KFN@garyguo.net>
 
-On Mon, Aug 03, 2026 at 07:06:54AM -0700, Boqun Feng wrote:
-> On Mon, Aug 03, 2026 at 12:21:55PM +0200, Peter Zijlstra wrote:
-> > On Fri, Jul 31, 2026 at 01:30:06PM -0700, Boqun Feng wrote:
-> > > +static inline void local_interrupt_disable(void)
-> > > +{
-> > > +	unsigned long flags;
-> > > +	int new_count;
-> > > +
-> > > +	WARN_ON_ONCE(in_nmi());
-> > > +
-> > > +	new_count = hardirq_disable_enter();
-> > > +
-> > > +	/* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
-> > > +
-> > > +	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET) {
-> > > +		local_irq_save(flags);
-> > > +		raw_cpu_write(local_interrupt_disable_state.flags, flags);
-> > > +	}
-> > > +}
-> > > +
-> > > +static inline void local_interrupt_enable(void)
-> > > +{
-> > > +	int new_count;
-> > > +
-> > > +	new_count = hardirq_disable_exit();
-> > > +
-> > > +	if ((new_count & HARDIRQ_DISABLE_MASK) == 0) {
-> > > +		unsigned long flags;
-> > > +
-> > > +		flags = raw_cpu_read(local_interrupt_disable_state.flags);
-> > > +		local_irq_restore(flags);
-> > > +		/*
-> > > +		 * TODO: re-read preempt count can be avoided, but it needs
-> > > +		 * should_resched() taking another parameter as the current
-> > > +		 * preempt count
-> > > +		 */
-> > > +#ifdef CONFIG_PREEMPTION
-> > > +		if (should_resched(0))
-> > > +			__preempt_schedule();
-> > 
-> > I'm confused by this one. This should not be needed. If there was a
-> > preemption while IRQs were disabled, there should be a pending
-> > IPI.
-> > 
-> > Notably local_irq_restore() also doesn't do this, since otherwise you
-> > would not have needed to add this here, since you already call that.
-> > 
+On Mon, Aug 03, 2026 at 02:57:49PM +0100, Gary Guo wrote:
+> On Fri Jul 31, 2026 at 8:25 PM BST, Nathan Chancellor wrote:
+> > + folks from e5e86df8b666
+> >
+> > On Fri, Jul 31, 2026 at 02:28:25PM +0200, Bert Karwatzki wrote:
+> >> With next-20260730 building a kernel with CONFIG_RUST=y fails with
+> >> the following error:
+> >> 
+> >>  RUSTC L rust/kernel.o
+> >> error[E0308]: mismatched types
+> >>      --> rust/kernel/sync/poll.rs:175:44
+> >>       |
+> >>   175 |         unsafe { bindings::kvfree_call_rcu((*ptr).rcu.get(), ptr.cast::<ffi::c_void>()) };
+> >>       |                  ------------------------- ^^^^^^^^^^^^^^^^ expected `*mut kvfree_rcu_head`, found `*mut callback_head`
+> >>       |                  |
+> >>       |                  arguments to this function are incorrect
+> >>       |
+> >>       = note: expected raw pointer `*mut bindings::kvfree_rcu_head`
+> >>                  found raw pointer `*mut bindings::callback_head`
+> >> note: function defined here
+> >>      --> /mnt/data/linux-forest/linux-next/rust/bindings/bindings_generated.rs:73708:12
+> >>       |
+> >> 73708 |     pub fn kvfree_call_rcu(head: *mut kvfree_rcu_head, ptr: *mut ffi::c_void);
+> >>       |            ^^^^^^^^^^^^^^^
+> >> 
+> >> error: aborting due to 1 previous error
+> >> 
+> >> For more information about this error, try `rustc --explain E0308`.
+> >> make[5]: *** [rust/Makefile:781: rust/kernel.o] Fehler 1
+> >> make[4]: *** [Makefile:1420: prepare] Fehler 2
+> >> make[3]: *** [debian/rules:80: build-arch] Fehler 2
+> >> 
+> >> Reverting the following commits:
+> >> ef32a74f8f6a ("mm/slab: introduce kfree_rcu_nolock()")
+> >> bdd0cc9f0ffc ("mm/slab: introduce struct kvfree_rcu_head for kvfree_rcu batching")
+> >>     
+> >> make the compilation work again.   
+> >
+> > This is a collision between commit e5e86df8b666 ("rust: poll: use
+> > kfree_rcu() for PollCondVar") in the char-misc tree and the
+> > aforementioned commit bdd0cc9f0ffc ("mm/slab: introduce struct
+> > kvfree_rcu_head for kvfree_rcu batching") in the slab tree.
+> >
+> > Something like this avoids the error for me but I am not sure if it is
+> > a proper fix.
+> >
+> > diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
+> > index 684dfa242b1a..5b12d5d4e9af 100644
+> > --- a/rust/kernel/sync/poll.rs
+> > +++ b/rust/kernel/sync/poll.rs
+> > @@ -124,6 +124,9 @@ pub struct PollCondVarBox {
+> >  struct PollCondVarBoxInner {
+> >      #[pin]
+> >      inner: PollCondVar,
+> > +    #[cfg(CONFIG_KVFREE_RCU_BATCHED)]
+> > +    rcu: Opaque<bindings::kvfree_rcu_head>,
+> > +    #[cfg(not(CONFIG_KVFREE_RCU_BATCHED))]
+> >      rcu: Opaque<bindings::callback_head>,
 > 
-> I should probably have made a comment on this instead of keeping it in
-> my head ;-)
+> We could also unconditionally use `kvfree_rcu_head` here, and
+> add
 > 
-> Note that since we use preempt_count to record irq disabling, then in
-> the spinlock version i.e. spin_{,un}lock_irq_{disable,enable}(), we
-> don't need (and don't have) preempt_disable/enable() any more. So we
-> need to rely on this for the following case:
+>     #[cfg(not(CONFIG_KVFREE_RCU_BATCHED))]
+>     pub type kvfree_rcu_head = callback_head;
 > 
-> 	spin_lock_irq_disable();
-> 	<set NEED_RESCHED for the current task>
-> 	spin_unlock_irq_enable():
-> 	  do_raw_spin_unlock(lock);
-> 	  local_interrupt_enable(); // <- need this to trigger a
-> 	                            // reschedule, because no
-> 				    // preempt_enable here.
+> to bindings.rs?
 > 
-> Make sense?
 
-No; for one, you cannot elide the preempt_disable/enable() from this
-thing.
+This option is currently not maintainable unless it becomes a
+maintainer-aware way to handle things like this.
 
-It has always been valid to do:
+> (Or even better, changing `#define` to `typedef` so bindgen takes care of
+> everything).
+> 
 
-	raw_spin_lock_irq(lock);
-	...
-	raw_spin_unlock(lock);
-	...
-	local_irq_enable();
+Yes, this is better IMO, but it's up to slab maintainers. :-)
 
-And since raw_spin_unlock() does have the preemption thing,
-raw_spin_lock_irq() must too. And the very same argument is still valid
-if you now write:
+Regards,
+Boqun
 
-	raw_spin_lock_irq_disable(lock);
-	...
-	raw_spin_unlock(lock);
-	...
-	local_interrupt_enable();
-
-Secondly, nothing should 'set' NEED_RESCHED without also immediately
-causing a preemption.
+> Best,
+> Gary
+> 
