@@ -1,96 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F7B429CFF;
-	Mon,  3 Aug 2026 18:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DCC43552B;
+	Mon,  3 Aug 2026 19:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785780587; cv=none; b=kO9tUPlH/Wevb8PIhutvgjlb64Z5wlDMaUVzae7723qvrgPdf1tW+/d+wGKfD0wOj1sRUA/YQvSmHbKqMxKkVmGMsVq0VSGQJ+ygOZTRuth/zlOJhyVZaodD/BoSBO7IMtLqr+ty9PmT1jK375UZyhA4tI1xOgvWp7gZEjcgfgY=
+	t=1785784189; cv=none; b=rgI25xfLIorRYGvWshK8FwTw0LPdOnwG8fBq1cr47yK/Tirml0r8GXpZydYPqnmdXw3t36A7Dcbvb4ru8ykbEwn1P/bWCYasP7CLPfmvcVi6n1ORkmz0T51m+2RtwccyJc2WUfXaAeydXHV38rMSOdcfQFFc0ZaITxuBzLCJwis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785780587; c=relaxed/simple;
-	bh=3djY4vwK3kLP1cCs5kxM6oytgwV2KyswPnSYuVc5pJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hoAxVMSdS30SIMbomy76BQ1+WT/NOsMFZgGnCPbLYQihNmqfAGN5Zb1ixdgCU6aAJL7fvQqzPyEckevJFXEU3pyVMH2yvzcVtK1ieFu7tz8FKHILlfM00/ECfIZlU3HhlWyczXKwnmKuWVupDeaFO2TKFJ/B9M+CXS5t158W6Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AGxgPME/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785784189; c=relaxed/simple;
+	bh=lkoVIrPDfyGgjVKmeRIkVqC2RCpq+w+xnOMI15LjtEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vieac5m/OuuHH4tok/rqiT5NkSs1gPvoxNaLvdzFvIrhM8PLlQU2tVpVsw30FixsLVGEXYUDti6jrcExo7KO5e94rR/+yAsrhml3wseGc3ZypENtArQXv/uH8Dgfx3/FpPodIEZqzx9d5u2J34V+DtGELt1SabkHx5SYabesIJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M5UTH+vO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AGxgPME/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F841F000E9;
-	Mon,  3 Aug 2026 18:09:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M5UTH+vO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A54C1F000E9;
+	Mon,  3 Aug 2026 19:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785780585;
-	bh=Rv8BRseyPOtn/uKpF41HrKkmiFykHz8FnOEF3H4yMyg=;
-	h=From:To:Cc:Subject:Date;
-	b=AGxgPME/8ZjDQ09hO2RmyKexLkzG7hg2vwfCMB8w1zaY07he5rcxTb9GhSFeeMNyc
-	 m3oezVSK0M2nEz02KuX/RhyIUzanu9Oee70SZzTMVaCVxhA9N7oJsrNya594iO0Exj
-	 19lN4nEb+VhtLx2UwM1EEGKLr2xNSHPCJ4oHyAOCa3Kktd9VEkSx6KaAdfkYge4tR7
-	 X6Eg4cY6GUb6oyRCUo3cWxfgb4yuR64MIOLW810wODamUZeEI/+fsxBmpNRCnRyAxV
-	 L/nrwY25ZI5AEwylO6/khW77C7kAdH53V5sfjBVaylpt9oUejBiRbHFGF9OsMF3sm4
-	 U4Czpw43k25OA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
+	s=k20260515; t=1785784187;
+	bh=oKCTlQGeDXcsDChXq0Gsca6FLaEn0r/nUq256E6Lt7c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M5UTH+vOcTfg1bMavACiFtwZhvTRZ5n1Zoo/kl//azLvm5bpqkOB9l4q7e8Qo8riV
+	 9sIgvtWPYjW4G9fFdlgwqEo65Xab2tit6a03gTlOibk1zjj9eaiBy0BYBu5EHqA2pD
+	 WNGfa/VLAbY3KPZoqa7HDi4tVf3Kr4znTgnEyNKTNpiTG6ZnElV0jJid0ATOnluyrT
+	 onFC0j3RD1f3dFB0MGhUhgebzVpsvr3pT4QEidrwQj+j69zlS1F+dZr+/+fjiZSUW7
+	 FA2FDBVh6u1FfrUpAI0cnJKnctxfYMcdOjF0aCOOo5bnT7cyGyhA4cd7EQgyW6nBj0
+	 o+r/8yCTBaXIw==
+Date: Mon, 3 Aug 2026 21:09:41 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Miguel Ojeda <ojeda@kernel.org>
-Cc: driver-core@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	linux-s390@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org
-Subject: `io{re,un}map()` build error in s390 under `!CONFIG_HAS_IOMEM`
-Date: Mon,  3 Aug 2026 20:09:31 +0200
-Message-ID: <20260803180931.97202-1-ojeda@kernel.org>
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <anDndQlfuVIneMe4@gmail.com>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-6-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731203031.13679-6-boqun@kernel.org>
 
-Hi all,
 
-s390 does not provide `ioremap()`/`iounmap()` under `!CONFIG_HAS_IOMEM`:
+* Boqun Feng <boqun@kernel.org> wrote:
 
-    In file included from rust/helpers/helpers.c:68:
-    rust/helpers/io.c:8:9: error: call to undeclared function 'ioremap'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-        8 |         return ioremap(offset, size);
-          |                ^
-    rust/helpers/io.c:8:9: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'void *' [-Wint-conversion]
-        8 |         return ioremap(offset, size);
-          |                ^~~~~~~~~~~~~~~~~~~~~
-    rust/helpers/io.c:19:2: error: call to undeclared function 'iounmap'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-       19 |         iounmap(addr);
-          |         ^
-    ./arch/s390/include/asm/io.h:31:17: note: expanded from macro 'iounmap'
-       31 | #define iounmap iounmap
-          |                 ^
-    rust/helpers/io.c:19:2: note: did you mean 'kunmap'?
-    ./arch/s390/include/asm/io.h:31:17: note: expanded from macro 'iounmap'
-       31 | #define iounmap iounmap
-          |                 ^
-    ./include/linux/highmem.h:46:20: note: 'kunmap' declared here
-       46 | static inline void kunmap(const struct page *page);
-          |                    ^
+> diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
+> new file mode 100644
+> index 000000000000..dd4444c61330
+> --- /dev/null
+> +++ b/include/linux/interrupt_rc.h
+> @@ -0,0 +1,67 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * include/linux/interrupt_rc.h - refcounted local processor interrupt
+> + * management.
+> + *
+> + * Since the implementation of this API currently depends on
+> + * local_irq_save()/local_irq_restore(), we split this into it's own header to
+> + * make it easier to include without hitting circular header dependencies.
+> + */
+> +
+> +#ifndef __LINUX_INTERRUPT_RC_H
+> +#define __LINUX_INTERRUPT_RC_H
 
-so e.g. an `allnoconfig` with Rust fails.
+That's not the customary placement for header guards, please try to
+follow existing patterns as much as possible.
 
-I assume we will need to `#ifdef` the helpers, plus the users; or stub
-at some layer to avoid changing callers.
+> +/* Per-cpu interrupt disabling state for local_interrupt_{disable,enable}() */
 
-I hope that helps & thanks!
+That's not the standard spelling of per-CPU.
 
-Cheers,
-Miguel
+> +struct interrupt_disable_state {
+> +	unsigned long flags;
+> +};
+
+Unless this structure is extended in the same series - and it isn't
+AFICT, why this layer of obfuscation of type and purpose?
+
+> +		/*
+> +		 * TODO: re-read preempt count can be avoided, but it needs
+> +		 * should_resched() taking another parameter as the current
+> +		 * preempt count
+> +		 */
+> +#ifdef CONFIG_PREEMPTION
+> +		if (should_resched(0))
+> +			__preempt_schedule();
+> +#endif
+
+Let's not add TODOs and call it an upstream-ready patch ...
+
+  	preempt_count_sub(HARDIRQ_OFFSET);
+> -	if (!in_interrupt() && local_softirq_pending()) {
+> +	/*
+> +	 * Interrupts may happen between hardirq_disable_enter() and
+> +	 * local_irq_save() in local_interrupt_disable(), if irq_exit() invokes
+> +	 * softirq here, we may have a softirq handler calling
+> +	 * local_interrupt_disable() but it won't disable the irq because
+> +	 * hardirq disabling count is already 1, hence we need to prevent
+> +	 * invoking softirq when a local_interrupt_disable() is ongoing.
+
+Non-standard spelling of 'IRQ'.
+
+> +	 */
+> +	if (!in_interrupt() && !hardirq_disable_count() &&
+> +	    local_softirq_pending()) {
+>  		/*
+>  		 * If we left hrtimers unarmed, make sure to arm them now,
+>  		 * before enabling interrupts to run SoftIRQ.
+
+Non-standard spelling of 'softirq' here.
+
+There's also new spelling errors in some of the comments introduced
+by this patch.
+
+This is a very low quality patch, it should never have been included
+and declared 'ready' for upstream. It's not even close!
+
+Thanks,
+
+	Ingo
