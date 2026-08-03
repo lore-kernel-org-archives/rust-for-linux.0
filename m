@@ -1,370 +1,154 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2974F389115;
-	Mon,  3 Aug 2026 13:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99162431A33
+	for <rust-for-linux@vger.kernel.org>; Mon,  3 Aug 2026 13:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785764121; cv=none; b=BT/MqNASbjKu5Mukf8RbGFpQHQbsPeATTEO1nrQk10NOKihiGtSUMOGg27gFormURJMiGp65dWKCeZ5o5Ldi6kMRSVqrHjc/Thi7XWxIPNhqwHWMqA/jI7rFIYXH71Zm5Lf7vq0iKd0YTlA0aPyY4FMnRbvu3toKRPpHvDoZs6Q=
+	t=1785764783; cv=none; b=lYQsiUHJtF7Ov0HxxHojMY7DVe8Xojz0HcW0UMk8Rw2bTRP0Y7rpLoGhdirqOiWAbDdM7fwEqOg49JqnQQwMHqjOkE9yRrnmgOGMNukvgKZzN+S+Z9WmP282WTi0ta0XwViMdyQ6BGlB1Wic1BUO8gBDscx5DDLY4RCIqJqvZa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785764121; c=relaxed/simple;
-	bh=XzsGxzL8veD03nVOlHlCFLXdrc/IJj0H0YrLQTsM4BM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S112VZZDTUZ0QGdMdQxe/e2XBFCoZuSmeci46TmAzaMlMQy71B7jHgNsJX906WAfU+h7bHawMkml88cyOWH0vcJZM+Za3SnZ+RvJRR7jj9TBwluu6d1zO7OBPmjtuynfMfyw+FmaQYVgwTuPG1esufFLG9fShmcJPkAW9gjlfc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=NRpf0MO4; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1785764783; c=relaxed/simple;
+	bh=kfuaXLnbdkalw7FunwLgP6C1dG+NoPVdMtAyB4bkPRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G7hE/0viml/H9vGI2fssLK2S1E3enUylSZ43wFrs0GGbyjbHPx87JPK7qp0s/6+hOSWkXuNTvNHQwCcNP6fW3ocSB9QPyuf277J3AvptuEgjdr3V4p93Fv6ubc666dI+QJa5nry0QyvAnmb3prkvmpaD5z07y6Sm6GBC6loQbLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWPHLdiZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="NRpf0MO4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1785764117;
-	bh=XzsGxzL8veD03nVOlHlCFLXdrc/IJj0H0YrLQTsM4BM=;
-	h=From:Date:Subject:To:Cc:From;
-	b=NRpf0MO4WzvyrpxUht38nCO76dSFLnOuRAvH9UMbr/j7maOKWtagg55xmJTSGAX/U
-	 MRMuUuhmmBum+dXhaIC1MFhiq+y5tGLPseXwqMgQOyJE0mWS8CC0nOj/KC3I9Dze+T
-	 omFOIZ4YpPLSbx5YTOMlcCPrxLMNux3JnvDrPrPL+OpXLfRUCg5GB0aDxeoH9L4JYv
-	 WyJ4dmCxfrHMteZxx/hL4GXdMYPd3HrcTD1qToGUeQ2kmgMb5wDPay1eTdLS9KkYv+
-	 E1aL+uvFZ+2fiXKIP6a+MXzQ7UuAoZkdsZ1eeO2Upu7h0Z+CkW26286B6PVRZxlu/X
-	 q5j3FzfKKRL3A==
-Received: from laura.lan (unknown [100.64.0.215])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6EAD817E0177;
-	Mon, 03 Aug 2026 15:35:16 +0200 (CEST)
-From: Laura Nao <laura.nao@collabora.com>
-Date: Mon, 03 Aug 2026 15:34:37 +0200
-Subject: [PATCH v3] drm/tyr: add Job IRQ handling
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWPHLdiZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8AD1F00A3A;
+	Mon,  3 Aug 2026 13:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785764782;
+	bh=vSzluyrP0FwcZp24jjD06OBE/gIIanS/16B7LK71Iic=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JWPHLdiZrZR2upl9F8LH8294rStZ1dTOLjB5iNpvqpmrAgMUaW0zWlMzojC3lOTFx
+	 2bliTiJAwh6eJ1DHxplD9ES8cLy+hDceoStXi4pcVPt9Yd0Y767FTNqJG1TyLLsjmd
+	 mLZ0hHBugf8B9gJtf9IUmQVYrroCZTRao5ZY49j9BzIgcdPl5aPcFPjDn3TCqUXOIK
+	 B6MR3oKZuqqXw9blvZ0z8oB7/xDIGAs5HDt2ObIgflHpc6PCWuvKJr6UOgdfP8Dea/
+	 j7FmcgPjhG9gZULo30SK+eIbXa5Dhsk8uI9khL0avOzMSjx+M3/TtvaSPnaeDBs6QZ
+	 Ib6qlzLZPdkEA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 03133F40066;
+	Mon,  3 Aug 2026 09:46:21 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 03 Aug 2026 09:46:21 -0400
+X-ME-Sender: <xms:rJtwaooc-IWO5jl_r8z7ZcE8MLuzY-hJMIPGb_UV9RAvoBBP-aMEtA>
+    <xme:rJtwapA3tXazwRXUQBMI11uBqcnLw9r-zHzrRDpk6279M0iypH8MqtamoWXDqgcgB
+    Pphi-h99WQyNCwk_FYPYwBYASAyf3VrP2OiWoqsbvezok_FEEli0A>
+X-ME-Received: <xmr:rJtwajWomiCSzcGkORQ1qfsMSjwm4h8ZQcUpE4K9fkEL39Y3VKhkwy2XE_VMwnm25gC1dGtrgu3bqVoMkmIdc0MCskFIAKtC>
+X-ME-Proxy-Cause: dmFkZTEMI+dFIC3ilS+ST3y6UE3vWWjZQT53cH1S96rtzQnazZj/VAWsvb4b0AUTdFk6uG
+    G6et2TpwGWZQ3OUe9Y3btkRSL2CQDIPg5FwdVWYQOhdFEY4JT6+GODB1W750ckJzRh99uq
+    jInfhc1Qg65xMJFIgU20tc1gjq3d5xjNW9bdE+uqi1NTjqQCVI+RGyS2Os+vTVE4BKpqc8
+    kfMBSa1TLdQzf6c+jh/4h6qJ351bzDRDsv+ae9E1Fal4VzOmlPdRPwZu9uOuuaf9t1LPXD
+    Y0a/So4vDKWskCHDXDzKePN9la4tlRN2hfSIKpPeUKB4SIHJvNttWwI9lACo7ciwP/y7bT
+    W5AG9V1z7kuihpvewkacQnpdCN66U2GW29lyLRLJcl9BcTdiETJAFFEijTDEzx6QArAV0X
+    V4UIgN5di7bGUqkxnWRpCrFvyACO5yx9CkxAa72rBUwZx10OXBPd9wvKwSok/oiBmECfMx
+    tnxwpACERwG+8d6HXKM6i6yPIMIe4kXObt1bL4vHRV6iDLvDBr647K5RwTeCx1xJLlbO5P
+    2/LMyZ+b1RNMrxsg2l9cNUSnBHP1Vd8MZA7zqhXM4DL9gf3Cms11O1CT44ROyqbjNpxT30
+    NMEpla80mhd0htcMsYLj2C0nQ6572UNl2Bi5jPCb2LDn8pWuLP1sproKy2Hg
+X-ME-Proxy: <xmx:rJtwarBgPPfZB7Sf84GKhZ9GrpP19buq5LH1GQYjAZ2ua-Ju0ILHfQ>
+    <xmx:rJtwagdQ_tl5JlUkOLUL-KorSGvxuevglJgjEKweXHUMi68-qRkLRA>
+    <xmx:rJtwairQTFmvp9GjH2Ur7mWc-qLdXY2BAF374uckfTkTMcWorEgGNw>
+    <xmx:rJtwahTOVbzXidY1ljRx4_tyBw8SPP9D8coQO5pEHVccX4_SpK204A>
+    <xmx:rJtwaiWGsPAwp6VOOn9EzncFvQpUs96-n-vCZMFfRK8NTtbAhKPgKzmW>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Aug 2026 09:46:20 -0400 (EDT)
+Date: Mon, 3 Aug 2026 06:46:19 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 07/24] locking: Switch to _irq_{disable,enable}()
+ variants in cleanup guards
+Message-ID: <anCbq2gh1uIcYHRU@tardis.local>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-8-boqun@kernel.org>
+ <20260803093433.GE49951@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-tyr-irq-v2-v3-1-9c9bc5c029c5@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAOyYcGoC/03MQQrCMBCF4auUWRtJJ8RaV95DukjS1A7URiclW
- ErubiwIwmz+gfdtED2Tj3CpNmCfKFKYS6hDBW40890L6ksDSjzJBs9iWVkQv0RCIa1yWiJarxS
- UwZP9QO8du3WlR4pL4HW3E36/P6b9Z8rVwmGj5eDqutft1YVpMjawObrwgC7n/AFYeyhhqAAAA
- A==
-To: Daniel Almeida <daniel.almeida@collabora.com>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- rust-for-linux@vger.kernel.org, kernel@collabora.com, 
- Deborah Brouwer <deborah.brouwer@collabora.com>, 
- Laura Nao <laura.nao@collabora.com>
-X-Mailer: b4 0.12.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803093433.GE49951@noisy.programming.kicks-ass.net>
 
-Add a threaded IRQ wrapper for Tyr interrupt sources and use it to
-handle the firmware Job IRQ.
+On Mon, Aug 03, 2026 at 11:34:33AM +0200, Peter Zijlstra wrote:
+> On Fri, Jul 31, 2026 at 01:30:08PM -0700, Boqun Feng wrote:
+> > From: Boqun Feng <boqun.feng@gmail.com>
+> > 
+> > The semantics of various irq disabling guards match what
+> > *_irq_{disable,enable}() provide, i.e. the interrupt disabling is
+> > properly nested, therefore it's OK to switch to use
+> > *_irq_{disable,enable}() primitives.
+> > 
+> > Signed-off-by: Boqun Feng <boqun@kernel.org>
+> > Link: https://patch.msgid.link/20260121223933.1568682-17-lyude@redhat.com
+> > ---
+> >  include/linux/spinlock.h | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+> > index 3d405cc4c121..a9d169dad6d4 100644
+> > --- a/include/linux/spinlock.h
+> > +++ b/include/linux/spinlock.h
+> > @@ -572,12 +572,12 @@ DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __acquires(_T), __releases(*(raw
+> >  #define class_raw_spinlock_nested_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, _T)
+> >  
+> >  DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
+> > -		    raw_spin_lock_irq(_T->lock),
+> > -		    raw_spin_unlock_irq(_T->lock))
+> > +		    raw_spin_lock_irq_disable(_T->lock),
+> > +		    raw_spin_unlock_irq_enable(_T->lock))
+> >  DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
+> >  #define class_raw_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, _T)
+> >  
+> > -DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
+> > +DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq_disable(_T->lock))
+> >  DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
+> >  #define class_raw_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, _T)
+> >  
+> > @@ -618,13 +618,13 @@ DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __acquires(_T), __releases(*(spinlock_t
+> >  #define class_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_try, _T)
+> >  
+> >  DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
+> > -		    spin_lock_irq(_T->lock),
+> > -		    spin_unlock_irq(_T->lock))
+> > +		    spin_lock_irq_disable(_T->lock),
+> > +		    spin_unlock_irq_enable(_T->lock))
+> >  DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __acquires(_T), __releases(*(spinlock_t **)_T))
+> >  #define class_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq, _T)
+> >  
+> >  DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
+> > -			 spin_trylock_irq(_T->lock))
+> > +			 spin_trylock_irq_disable(_T->lock))
+> >  DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __acquires(_T), __releases(*(spinlock_t **)_T))
+> >  #define class_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq_try, _T)
+> 
+> What about the _irqsave() guards?
+> 
+> Is the goal to replace _irqsave guard usage with _irq and then remove
+> the _irqsave guards?
+> 
 
-The Job IRQ reports requests from the CSF firmware, including global
-interface requests and CSG attention bits. Only the GLB bit is currently
-handled, as it will be used to check firmware readiness. CSG bits
-handling will be added at a later stage. Add a Job IRQ handler that
-masks the interrupt in the primary IRQ handler, processes pending raw
-status in the threaded handler, clears the handled bit, and reenables
-the mask before returning.
-Add a wait queue and a bool flag so the handler can signal firmware
-readiness when the GLB bit is set.
+Yes, that's the goal. I had that in previous version. However in
+1abbecd1d2d2 ("sched/fair: Convert cfs bandwidth throttling to use
+guards"), we have a user that explicitly plays with the .flags in guard. 
+Lyude also spotted that too. We could adjust that user to the new API
+(Lyude already has the diff for that) but I decided to simply drop that
+part for now given the current size of the changes. But if you think
+it's a must for merge this, I will add it.
 
-Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
-Changes in v3:
-- Propagated request_threaded_irq_by_name safety requirement up the
-  call chain, made TyrIrq::request() and job_irq_init() unsafe
-- Dropped CSG bits masking, added TODO comment to note this will be
-  handled at a later stage. Reworded commit message to reflect the
-  change.
-- Added documentation for TyrIrqTrait, TyrIrq, JobIrq and job_irq_init()
-- Link to v2: https://lore.kernel.org/r/20260729-tyr-irq-v2-v2-1-c2750fc11d59@collabora.com
+> If so, this should probably we mentioned somewhere.
 
-Changes in v2:
-- Dropped Wait custom type in favor of WaitQueue
-- Renamed JobIrq lifetime to generic 'a
+I will at least add this part. Thanks!
 
-This patch follows up to [1], which adds support for firmware loading
-and MCU booting to the Tyr driver. The changes included here were
-originally introduced in its v4[2], then dropped to reduce the scope of
-the series, and have been adjusted to work with the HRT (Higher-Ranked
-Lifetime Types) driver architecture recently introduced.
-
-The patch adds a threaded IRQ wrapper for the firmware Job interrupts,
-used to signal events from the global CSF (GLB) and Command Stream Group
-(CSG) interfaces.
-
-These changes will be later used to wait for global CSF interface
-readiness after firmware boot, as part of the CSF firmware interfaces
-support that will be submitted as a separate series.
-
-This patch is based on drm-rust-next and depends on:
-- [PATCH v2] rust: irq: make Registration compatible with lifetime-bound drivers[3]
-- [PATCH 0/5] rust: sync: add WaitQueue infrastructure[4]
-
-Note: [4] doesn't apply cleanly on drm-rust-next at the moment, due to
-missing changes in rust/kernel/sync/lock/spinlock.rs[5]. I've applied
-all dependencies and fixed conflicts for the purpose of testing this
-patch on top of drm-rust-next, a branch with these changes is available
-here: https://gitlab.freedesktop.org/laura.nao/linux/-/commits/b4/tyr-irq-v3
-
-[1] https://lore.kernel.org/all/20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com/ 
-[2] https://lore.kernel.org/rust-for-linux/20260424-b4-fw-boot-v4-v4-15-a5d91050789d@collabora.com/
-[3] https://lore.kernel.org/rust-for-linux/20260719153631.559341-1-dakr@kernel.org/
-[4] https://lore.kernel.org/rust-for-linux/20260726223613.1242940-1-dakr@kernel.org/
-[5] https://lore.kernel.org/all/20260302232154.861916-1-lyude@redhat.com/
----
- drivers/gpu/drm/tyr/driver.rs |  97 ++++++++++++++++++++++++++++++++++++++
- drivers/gpu/drm/tyr/fw/irq.rs | 105 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 202 insertions(+)
-
-diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
-index d78ad9d292ff..53e15f7da853 100644
---- a/drivers/gpu/drm/tyr/driver.rs
-+++ b/drivers/gpu/drm/tyr/driver.rs
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 or MIT
- 
-+use core::marker::PhantomPinned;
-+
- use kernel::{
-     clk::{
-         Clk,
-@@ -21,6 +23,13 @@
-         poll,
-         Io, //
-     },
-+    irq::{
-+        Flags,
-+        IrqReturn,
-+        ThreadedHandler,
-+        ThreadedIrqReturn,
-+        ThreadedRegistration, //
-+    },
-     new_mutex,
-     of,
-     platform,
-@@ -236,3 +245,91 @@ struct Regulators {
-     _mali: Regulator<regulator::Enabled>,
-     _sram: Regulator<regulator::Enabled>,
- }
-+
-+/// Trait describing the operations required to service a Tyr interrupt source.
-+pub(crate) trait TyrIrqTrait: Sync {
-+    /// Returns the masked interrupt status.
-+    fn read_status(&self) -> u32;
-+
-+    /// Clears all bits in the mask register, disabling the interrupt sources.
-+    fn clear_mask(&self);
-+
-+    /// Sets the mask register to re-enable the interrupt sources.
-+    fn reenable_mask(&self);
-+
-+    /// Returns the raw interrupt status, regardless of the current mask.
-+    fn read_raw_status(&self) -> u32;
-+
-+    /// Clears the given bits in the interrupt status register.
-+    fn clear_status(&self, status: u32);
-+
-+    /// Returns the bitmask of interrupt sources handled by this instance.
-+    fn mask(&self) -> u32;
-+
-+    /// Handles the given pending, unmasked interrupt bits.
-+    fn handle(&self, status: u32);
-+}
-+
-+/// A threaded IRQ wrapper shared by all Tyr interrupt sources.
-+#[pin_data]
-+pub(crate) struct TyrIrq<T: TyrIrqTrait> {
-+    /// The interrupt source.
-+    irq: T,
-+    #[pin]
-+    _pin: PhantomPinned,
-+}
-+
-+impl<T: TyrIrqTrait> TyrIrq<T> {
-+    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
-+    /// [`Drop`] implementation from running.
-+    #[allow(dead_code)]
-+    pub(crate) unsafe fn request<'a>(
-+        pdev: &'a platform::Device<Bound>,
-+        name: &'static CStr,
-+        irq: T,
-+    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + 'a>
-+    where
-+        T: 'a,
-+    {
-+        let handler = try_pin_init!(Self {
-+            irq,
-+            _pin: PhantomPinned,
-+        });
-+
-+        // SAFETY: The caller guarantees the resulting registration will not be leaked.
-+        Ok(unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, name, name, handler) })
-+    }
-+}
-+
-+impl<T: TyrIrqTrait> ThreadedHandler for TyrIrq<T> {
-+    fn handle(&self) -> ThreadedIrqReturn {
-+        let masked_status = self.irq.read_status();
-+
-+        if masked_status == 0 {
-+            return ThreadedIrqReturn::None;
-+        }
-+        self.irq.clear_mask();
-+        ThreadedIrqReturn::WakeThread
-+    }
-+
-+    fn handle_threaded(&self) -> IrqReturn {
-+        let mut ret = IrqReturn::None;
-+
-+        loop {
-+            let raw_status = self.irq.read_raw_status() & self.irq.mask();
-+            if raw_status == 0 {
-+                break;
-+            }
-+            self.irq.handle(raw_status);
-+            self.irq.clear_status(raw_status);
-+            ret = IrqReturn::Handled;
-+        }
-+
-+        self.irq.reenable_mask();
-+        ret
-+    }
-+}
-diff --git a/drivers/gpu/drm/tyr/fw/irq.rs b/drivers/gpu/drm/tyr/fw/irq.rs
-new file mode 100644
-index 000000000000..6eeb1399a7b3
---- /dev/null
-+++ b/drivers/gpu/drm/tyr/fw/irq.rs
-@@ -0,0 +1,105 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+
-+//! IRQ handling for the Job IRQ.
-+//!
-+//! The Job IRQ signals events from the MCU, including global interface acknowledgements.
-+#![allow(dead_code)]
-+
-+use core::sync::atomic::{
-+    AtomicBool,
-+    Ordering, //
-+};
-+
-+use kernel::{
-+    c_str,
-+    device::Bound, //
-+    io::Io,
-+    irq::ThreadedRegistration,
-+    platform,
-+    prelude::*,
-+    sync::{
-+        Arc,
-+        WaitQueue, //
-+    },
-+};
-+
-+use crate::{
-+    driver::{
-+        IoMem,
-+        TyrIrq,
-+        TyrIrqTrait, //
-+    },
-+    regs::job_control::{
-+        JOB_IRQ_CLEAR,
-+        JOB_IRQ_MASK,
-+        JOB_IRQ_RAWSTAT,
-+        JOB_IRQ_STATUS, //
-+    }, //
-+};
-+
-+// The Job IRQ, signalling requests or notification from the MCU.
-+pub(crate) struct JobIrq<'a> {
-+    /// GPU MMIO register mapping.
-+    iomem: Arc<IoMem<'a>>,
-+    /// Flag to signal firmware readiness.
-+    fw_ready: Arc<AtomicBool>,
-+    /// Wait queue used to signal firmware events to waiters.
-+    job_irq_wait: Arc<WaitQueue>,
-+}
-+
-+/// Requests a threaded IRQ registration for the Job IRQ.
-+///
-+/// # Safety
-+///
-+/// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
-+/// [`Drop`] implementation from running.
-+pub(crate) unsafe fn job_irq_init<'a>(
-+    pdev: &'a platform::Device<Bound>,
-+    iomem: Arc<IoMem<'a>>,
-+    fw_ready: Arc<AtomicBool>,
-+    job_irq_wait: Arc<WaitQueue>,
-+) -> Result<impl PinInit<ThreadedRegistration<'a, TyrIrq<JobIrq<'a>>>, Error> + 'a> {
-+    iomem.write_reg(JOB_IRQ_MASK::zeroed().with_glb(true));
-+    let job_irq = JobIrq {
-+        iomem: iomem.clone(),
-+        fw_ready,
-+        job_irq_wait,
-+    };
-+    // SAFETY: The caller guarantees the resulting registration will not be leaked.
-+    unsafe { TyrIrq::request(pdev, c_str!("job"), job_irq) }
-+}
-+
-+impl TyrIrqTrait for JobIrq<'_> {
-+    fn read_status(&self) -> u32 {
-+        self.iomem.read(JOB_IRQ_STATUS).into_raw()
-+    }
-+
-+    fn clear_mask(&self) {
-+        self.iomem.write_reg(JOB_IRQ_MASK::zeroed());
-+    }
-+
-+    fn reenable_mask(&self) {
-+        self.iomem.write_reg(JOB_IRQ_MASK::zeroed().with_glb(true));
-+    }
-+
-+    fn read_raw_status(&self) -> u32 {
-+        self.iomem.read(JOB_IRQ_RAWSTAT).into_raw()
-+    }
-+
-+    fn clear_status(&self, status: u32) {
-+        self.iomem.write_reg(JOB_IRQ_CLEAR::from_raw(status));
-+    }
-+
-+    fn mask(&self) -> u32 {
-+        JOB_IRQ_MASK::zeroed().with_glb(true).into_raw()
-+    }
-+
-+    fn handle(&self, status: u32) {
-+        // TODO: handle other Job IRQ events (e.g. CSG attention bits) here once
-+        // support for them is added.
-+        if JOB_IRQ_RAWSTAT::from_raw(status).glb() {
-+            self.fw_ready.store(true, Ordering::Release);
-+            self.job_irq_wait.wake_up_all();
-+        }
-+    }
-+}
-
----
-base-commit: 98ae54f97175c4992b4e5bff53f3c6bc24f0f491
-change-id: 20260728-tyr-irq-v2-0b3c5022be33
-
-Best regards,
--- 
-Laura Nao <laura.nao@collabora.com>
-
+Regards,
+Boqun
