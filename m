@@ -1,326 +1,117 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFFD3769F8;
-	Mon,  3 Aug 2026 09:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD9A3E5585;
+	Mon,  3 Aug 2026 09:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785749469; cv=none; b=QZmvV3pqbCUZgDgaEwLxiwZeBOTWj5J/cZwC29UW8byiP02ihhES0LsLHFJlZi8cEDkP8mJTY4wt18iPqMjLDLiE3tR7I+TAr7Gu6tedhKJrrSciE6isupwqMXvaiWrW08cOTxfBkl3FovYT/WKdlhi3A8g3wW3Kt/Ez0KngliA=
+	t=1785749683; cv=none; b=SI+8xbrxG4MhJ+1ZPMWLF3RgkkWwezNJ/+FcifSCSmEYho2UNhUCLqfKGNjpcy33cH8nt+9gBpGpoL0IleylI4U8UdjbBepAXLjvAx8VQQjJ8Clm+HRZs96YUXZT2tWPJK1fwuV+UXqLfkobH2iLjP6g7yBrjC3EbbKszLCnzi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785749469; c=relaxed/simple;
-	bh=MutnWZ70OZX6YobuvPPiKQs59LIJbeSGdq5w03ht+gY=;
+	s=arc-20240116; t=1785749683; c=relaxed/simple;
+	bh=Zu/81nEssvAK/tSxHLvbKrWbrum5LP5OI+GjBHqSyPE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JWdgMpvkaSUpsgTrco1hOoZOnroMk2cRb7Zw/rFiKvS/gwihgX3chMKIAACdmSYphYpAowXpY25ASG6SUFBqvUawSY6O9zAdV3+AgbBQjrazRsV/6YvYPnOKtgHT1mBn4D5ZC1AJJYOXD6FR5Xm2QTQbn42jIpLxoYKLQTW6jnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tXwXFlSh; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=FRx+huenDXDFEzpnchFutSJttjDepKR6m8hfdPAcTyCoQ5YDupWallQbjumi7cIVhPF+3J2CyLOdP0548LrwxfPyx26hKzHb0+fkdS83X4UqcFBCwr0j4EVLTlgS1rDXFYbKRor/zwHVcTigEKK2xhOw++hAxb1X2Ejjp8zelRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=f4WDZHIk; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tXwXFlSh"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D63F1476;
-	Mon,  3 Aug 2026 02:30:52 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B833D3F66F;
-	Mon,  3 Aug 2026 02:30:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1785749456; bh=MutnWZ70OZX6YobuvPPiKQs59LIJbeSGdq5w03ht+gY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tXwXFlSh9voL1WApq6ooDsyYD45CD1RmSCWOh/mh/+6SAqhmuMS8J3SrNGubs6oEE
-	 YUMxxv9rhHHWrwhjECjo/uXNdMeCRwY53jBDlpJR2It8Ox1fcQ0PVM7AlM2FjwGHK3
-	 Sxf042pJAxyfvjNSj6i9VGV2PYPqcLUxJo89Ux2s=
-Date: Mon, 3 Aug 2026 11:30:42 +0200
-From: Beata Michalska <beata.michalska@arm.com>
-To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
-Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org,
-	rafael@kernel.org, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu,
-	daniel.almeida@collabora.com, boris.brezillon@collabora.com,
-	samitolvanen@google.com, rust-for-linux@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] rust: add runtime PM support
-Message-ID: <anBfwkA0y6Ney850@arm.com>
-References: <20260721153617.869933-1-beata.michalska@arm.com>
- <20260721153617.869933-2-beata.michalska@arm.com>
- <20260727145622.904965-1-work@onurozkan.dev>
- <amnCwIMj5dIJevfk@arm.com>
- <20260729135830.412048-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="f4WDZHIk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=t2p+3bhoDrDud7iU6bwphGdeYQ3+IsVgsXV5VKrsjXA=; b=f4WDZHIky5hxiXPYzZo3G49qkw
+	TZshdKf8PFuD0GToS7YYOyfSRq5xg3J3qB88S4D7bE/HkVXlQSWOLnQIOUtLG6EpiLDIy7/43Xvn0
+	1L+5zOHB9HwzBgj++5VHdUX7nozUkZS3ZN+0QNzGTshL5J4LFBKp4qA3x/7z/N35O8tJHgc+8flYE
+	4LAIZj2my7uMlDDeK2vUhUt5X3mRrSQ23pZrJ7U/RJ0bju1wg7StiOtXGpJTwYhoOM/169aPM+pas
+	tfRgSO8XlYOGZYVIuJvGCNY2sBDYvD7cwwE2Mpn9rBVuvrEWMfKmCb0WCu9e1+4KMVVt6SVZJyTtc
+	wYAA2V+A==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wqp46-0000000CzBb-1wbg;
+	Mon, 03 Aug 2026 09:34:34 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id EC0653012AB; Mon, 03 Aug 2026 11:34:33 +0200 (CEST)
+Date: Mon, 3 Aug 2026 11:34:33 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 07/24] locking: Switch to _irq_{disable,enable}()
+ variants in cleanup guards
+Message-ID: <20260803093433.GE49951@noisy.programming.kicks-ass.net>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-8-boqun@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260729135830.412048-1-work@onurozkan.dev>
+In-Reply-To: <20260731203031.13679-8-boqun@kernel.org>
 
-On Wed, Jul 29, 2026 at 04:58:28PM +0300, Onur Özkan wrote:
-> On Wed, 29 Jul 2026 11:07:12 +0200
-> Beata Michalska <beata.michalska@arm.com> wrote:
+On Fri, Jul 31, 2026 at 01:30:08PM -0700, Boqun Feng wrote:
+> From: Boqun Feng <boqun.feng@gmail.com>
 > 
-> > On Mon, Jul 27, 2026 at 05:56:20PM +0300, Onur Özkan wrote:
-> > > On Tue, 21 Jul 2026 17:34:02 +0200
-> > > Beata Michalska <beata.michalska@arm.com> wrote:
-> > > 
-> > > > Add a Rust abstraction for Linux runtime PM, allowing Rust drivers to
-> > > > register runtime PM callbacks and use scoped runtime PM requests while
-> > > > retaining the behavior and guarantees of the underlying C PM core.
-> > > > 
-> > > > Runtime PM is managed through a registration object tied to the device
-> > > > lifetime. The registration stores the callback payload and 'ensures' that
-> > > > the registration, its `PMContext`, and the payload do not outlive the
-> > > > device. All that while `PMContext` holds a lifetime-annotated device reference
-> > > > so that runtime PM requests are made only while the device remains bound.
-> > > > 
-> > > > Drivers define runtime PM callbacks through the `PMOps` trait. The
-> > > > generated `dev_pm_ops` callbacks take the stored payload, pass ownership
-> > > > to the corresponding Rust callback, and store the returned payload for
-> > > > the next invocation. Each callback must return a valid payload,
-> > > > regardless of whether the power transition succeeds or not.
-> > > > 
-> > > > `PMContext` provides scoped helpers for common runtime PM operations:
-> > > > 
-> > > > - `ResumeScope` resumes the device for the lifetime of the scope.
-> > > > - `AwakeScope`  resumes the device and holds a runtime PM usage reference.
-> > > > - `RetainScope` increments the runtime PM usage count without resuming the
-> > > >   		device.
-> > > > 
-> > > > Each scope performs the corresponding inverse operation when dropped,
-> > > > according to the selected driver-defined profile.
-> > > > 
-> > > > The abstraction does not change the semantics of the C runtime PM API.
-> > > > Asynchronous requests may only queue work, non-waiting requests may fail
-> > > > instead of sleeping, and callbacks remain subject to the existing driver
-> > > > core rules.
-> > > > 
-> > > > The current implementation requires the PM registration and `PMOps`
-> > > > implementation to use the same type because callback dispatch interprets
-> > > > the stored registration data using that relationship. This requirement is
-> > > > not yet fully enforced by the type system.
-> > > > 
-> > > > Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> > > > ---
-> > > >  drivers/base/base.h             |    3 +
-> > > >  rust/bindings/bindings_helper.h |    1 +
-> > > >  rust/helpers/helpers.c          |    1 +
-> > > >  rust/helpers/pm_runtime.c       |   44 ++
-> > > >  rust/kernel/lib.rs              |    1 +
-> > > >  rust/kernel/pm.rs               | 1020 +++++++++++++++++++++++++++++++
-> > > >  6 files changed, 1070 insertions(+)
-> > > >  create mode 100644 rust/helpers/pm_runtime.c
-> > > >  create mode 100644 rust/kernel/pm.rs
-> > > > 
-> > > > diff --git a/drivers/base/base.h b/drivers/base/base.h
-> > > > index a19f4cda2c83..c49303e4a86a 100644
-> > > > --- a/drivers/base/base.h
-> > > > +++ b/drivers/base/base.h
-> > > > @@ -119,6 +119,9 @@ struct device_private {
-> > > >  	const struct device_driver *async_driver;
-> > > >  	char *deferred_probe_reason;
-> > > >  	struct device *device;
-> > > > +#ifdef CONFIG_RUST
-> > > > +	void *rust_private;
-> > > > +#endif
-> > > >  	u8 dead:1;
-> > > >  };
-> > > >  #define to_device_private_parent(obj)	\
-> > > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> > > > index 1124785e210b..78a9153c6a01 100644
-> > > > --- a/rust/bindings/bindings_helper.h
-> > > > +++ b/rust/bindings/bindings_helper.h
-> > > > @@ -77,6 +77,7 @@
-> > > >  #include <linux/pid_namespace.h>
-> > > >  #include <linux/platform_device.h>
-> > > >  #include <linux/pm_opp.h>
-> > > > +#include <linux/pm_runtime.h>
-> > > >  #include <linux/poll.h>
-> > > >  #include <linux/property.h>
-> > > >  #include <linux/pwm.h>
-> > > > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> > > > index 4488a87223b9..14d93a5d8b1f 100644
-> > > > --- a/rust/helpers/helpers.c
-> > > > +++ b/rust/helpers/helpers.c
-> > > > @@ -76,6 +76,7 @@
-> > > >  #include "pci.c"
-> > > >  #include "pid_namespace.c"
-> > > >  #include "platform.c"
-> > > > +#include "pm_runtime.c"
-> > > >  #include "poll.c"
-> > > >  #include "processor.c"
-> > > >  #include "property.c"
-> > > > diff --git a/rust/helpers/pm_runtime.c b/rust/helpers/pm_runtime.c
-> > > > new file mode 100644
-> > > > index 000000000000..d0d71fcb0097
-> > > > --- /dev/null
-> > > > +++ b/rust/helpers/pm_runtime.c
-> > > > @@ -0,0 +1,44 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > +
-> > > > +#include <linux/pm_runtime.h>
-> > > > +
-> > > > +__rust_helper void rust_helper_pm_runtime_get_noresume(struct device *dev)
-> > > > +{
-> > > > +	pm_runtime_get_noresume(dev);
-> > > > +}
-> > > > +
-> > > > +__rust_helper void rust_helper_pm_runtime_put_noidle(struct device *dev)
-> > > > +{
-> > > > +	pm_runtime_put_noidle(dev);
-> > > > +}
-> > > > +
-> > > > +__rust_helper void rust_helper_pm_runtime_mark_last_busy(struct device *dev)
-> > > > +{
-> > > > +	pm_runtime_mark_last_busy(dev) ;
-> > > > +}
-> > > > +
-> > > > +__rust_helper bool rust_helper_pm_runtime_active(struct device *dev)
-> > > > +{
-> > > > +	return pm_runtime_active(dev);
+> The semantics of various irq disabling guards match what
+> *_irq_{disable,enable}() provide, i.e. the interrupt disabling is
+> properly nested, therefore it's OK to switch to use
+> *_irq_{disable,enable}() primitives.
 > 
-> [...]
+> Signed-off-by: Boqun Feng <boqun@kernel.org>
+> Link: https://patch.msgid.link/20260121223933.1568682-17-lyude@redhat.com
+> ---
+>  include/linux/spinlock.h | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> > > > +        // The `Device<Bound>` reference provides that guarantee.
-> > > > +        unsafe {
-> > > > +            bindings::pm_runtime_mark_last_busy(dev.as_raw());
-> > > > +        }
-> > > > +    }
-> > > > +
-> > > > +    #[inline]
-> > > > +    fn suspend(dev: &device::Device<device::Bound>, mode: Mode) -> Result {
-> > > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to
-> > > > +        // `struct device` for the duration of the call.
-> > > > +        // The `Device<Bound>` reference provides that guarantee.
-> > > > +        to_result(unsafe { bindings::__pm_runtime_suspend(dev.as_raw(), mode.into()) })
-> > > > +    }
-> > > > +
-> > > > +    #[inline]
-> > > > +    fn get_if_active(dev: &device::Device<device::Bound>) -> Result {
-> > > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to
-> > > > +        // `struct device` for the duration of the call.
-> > > > +        // The `Device<Bound>` reference provides that guarantee.
-> > > > +        match unsafe { bindings::pm_runtime_get_if_active(dev.as_raw()) } {
-> > > > +            ret if ret < 0 => Err(Error::from_errno(ret)),
-> > > > +            0 => Err(EAGAIN),
-> > > > +            _ => Ok(()),
-> > > > +        }
-> > > > +    }
-> > > > +
-> > > > +    #[inline]
-> > > > +    fn runtime_enable(dev: &device::Device<device::Bound>) {
-> > > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to
-> > > > +        // `struct device` for the duration of the call.
-> > > > +        // The `Device<Bound>` reference provides that guarantee.
-> > > > +        unsafe { bindings::pm_runtime_enable(dev.as_raw()) }
-> > > > +    }
-> > > > +
-> > > > +    #[inline]
-> > > > +    fn runtime_disable(dev: &device::Device<device::Bound>) {
-> > > > +        // SAFETY: `dev.as_raw()` must provide a valid pointer to
-> > > > +        // `struct device` for the duration of the call.
-> > > > +        // The `Device<Bound>` reference provides that guarantee.
-> > > > +        unsafe { bindings::__pm_runtime_disable(dev.as_raw(), true) };
-> > > > +    }
-> > > 
-> > > What happens when you call these twice i.e. runtime_enable() when it's already
-> > > enabled or runtime_disable() when it's already disabled?
-> > > 
-> > For pm_runtime_enable  - this will drop a warning.
-> > For pm_runtime_disable - the disable_depth counter will be increased. This
-> > implies that for every extra disable call - enable one needs to be issued.
-> > All handled by PM core.
-> 
-> I see. I was about to suggest typestate pattern here as we can easily avoid
-> these issues, but if you want to rely on PM core that's also fine I guess.
-> 
-> > > > +}
-> > > > +
-> > > > +#[cfg(not(CONFIG_PM))]
-> > > > +impl Request {
-> > > > +    #[inline]
-> > > > +    fn active(dev: &device::Device<device::Bound>) -> bool {
-> > > > +        true
-> > > > +    }
-> > > > +
-> > > > +    #[inline]
-> > > > +    fn suspended(dev: &device::Device<device::Bound>) -> bool {
-> > > > +        false
-> > > > +    }
-> > > > +
-> > > > +    #[inline]
-> > > > +    fn resume(_dev: &device::Device<device::Bound>, _mode: Mode) -> Result {
-> > > > +        Ok(())
-> > > > +    }
-> > > > +
-> > > > +    #[inline]
-> > > > +    fn idle(_dev: &device::Device<device::Bound>, _mode: Mode) -> Result {
-> > > > +        Err(ENOSYS)
-> > > > +    }
-> > > > +
-> 
-> [...]
-> 
-> > > > +    /// Returns the runtime PM context associated with this registration.
-> > > > +    pub fn ctx(&self) -> &PMContext<'a, T> {
-> > > > +        &self.ctx
-> > > > +    }
-> > > > +}
-> > > > +
-> > > > +impl<'a, T: PMOps> Drop for Registration<'a, T> {
-> > > > +    fn drop(&mut self) {
-> > > > +        // SAFETY: `self.ctx.inner.dev` is the device this registration was
-> > > > +        // created for. Runtime PM is disabled first, and `pm_runtime_barrier`
-> > > > +        // waits for pending runtime PM work/callbacks before the callback data
-> > > > +        // is removed below.
-> > > > +
-> > > > +        unsafe {
-> > > > +            bindings::__pm_runtime_disable(self.ctx.inner.dev.as_raw(), true);
-> > > 
-> > > Same here, is this safe to call even if it's not enabled? Registration can drop
-> > > even when pm runtime is not enabled, right?
-> > True but that again is handled by PM core.
-> 
-> You should at least document that.
-Noted,
-> 
-> > > 
-> > > > +            bindings::pm_runtime_barrier(self.ctx.inner.dev.as_raw());
-> > > > +        }
-> > > 
-> > > You should not combine multiple unsafe calls in single unsafe block I think.
-> > Why?
-> 
-> To keep the scope of each unsafe block as small as possible.
-Right, though I do not see much point in doing that in this case.
-Both calls rely on the same safety assumptions.
-Unless I am missing smth.
+> diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
+> index 3d405cc4c121..a9d169dad6d4 100644
+> --- a/include/linux/spinlock.h
+> +++ b/include/linux/spinlock.h
+> @@ -572,12 +572,12 @@ DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, __acquires(_T), __releases(*(raw
+>  #define class_raw_spinlock_nested_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_nested, _T)
+>  
+>  DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
+> -		    raw_spin_lock_irq(_T->lock),
+> -		    raw_spin_unlock_irq(_T->lock))
+> +		    raw_spin_lock_irq_disable(_T->lock),
+> +		    raw_spin_unlock_irq_enable(_T->lock))
+>  DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
+>  #define class_raw_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq, _T)
+>  
+> -DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
+> +DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq_disable(_T->lock))
+>  DECLARE_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, __acquires(_T), __releases(*(raw_spinlock_t **)_T))
+>  #define class_raw_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(raw_spinlock_irq_try, _T)
+>  
+> @@ -618,13 +618,13 @@ DECLARE_LOCK_GUARD_1_ATTRS(spinlock_try, __acquires(_T), __releases(*(spinlock_t
+>  #define class_spinlock_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_try, _T)
+>  
+>  DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
+> -		    spin_lock_irq(_T->lock),
+> -		    spin_unlock_irq(_T->lock))
+> +		    spin_lock_irq_disable(_T->lock),
+> +		    spin_unlock_irq_enable(_T->lock))
+>  DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq, __acquires(_T), __releases(*(spinlock_t **)_T))
+>  #define class_spinlock_irq_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq, _T)
+>  
+>  DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
+> -			 spin_trylock_irq(_T->lock))
+> +			 spin_trylock_irq_disable(_T->lock))
+>  DECLARE_LOCK_GUARD_1_ATTRS(spinlock_irq_try, __acquires(_T), __releases(*(spinlock_t **)_T))
+>  #define class_spinlock_irq_try_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(spinlock_irq_try, _T)
 
----
-BR
-Beata
+What about the _irqsave() guards?
 
-> 
-> > Do not see much point in separating those.
-> > 
-> > ---
-> > BR
-> > Beata
-> > > 
-> > > > +        // SAFETY: The pointer, if non-null, was stored by `Registration::new`
-> > > > +        // using `Pin<KBox<RegistrationData<T>>>::into_foreign`. Runtime PM has
-> > > > +        // been disabled and drained above, so generated callbacks can no longer
-> > > > +        // borrow this data. Clearing `rust_private` prevents later lookup, and
-> > > > +        // `from_foreign` reconstructs the owning allocation so it is dropped.
-> > > > +        unsafe {
-> > > > +            let ptr = (*(*self.ctx.inner.dev.as_raw()).p).rust_private;
-> > > > +
-> > > > +            if !ptr.is_null() {
-> > > > +                (*(*self.ctx.inner.dev.as_raw()).p).rust_private = core::ptr::null_mut();
-> > > > +                Pin::<KBox<RegistrationData<'_, T>>>::from_foreign(ptr);
-> > > > +            }
-> > > > +        }
-> > > > +    }
-> > > > +}
-> > > > -- 
-> > > > 2.43.0
-> > > > 
+Is the goal to replace _irqsave guard usage with _irq and then remove
+the _irqsave guards?
+
+If so, this should probably we mentioned somewhere.
