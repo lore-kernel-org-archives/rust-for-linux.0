@@ -1,576 +1,148 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010005.outbound.protection.outlook.com [52.101.46.5])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D323440862C;
-	Mon,  3 Aug 2026 12:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785760915; cv=fail; b=GobevHx9vKsaRQpxo0R6f1Ekd86YXrE+QPpiQhUrDVyvNfFEWq1OfuhdFQn+bDePu3SV9u/+kPpCQYmgwCx81wZs+MDHlSGRzlfCuCWLrvvhHULC6Tuf6iruZXAmzlRRBPpLRhwcVgIMwEUE274h5h/OaQtEO0samkYxJVMsys4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785760915; c=relaxed/simple;
-	bh=0Sxdr0GwZRMzqDc9KmtokxeXaILgGGlOXtnndzemlaE=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=WgInlh5tVejHRdNFg5RBlFdzvvPoGN243YxHdLtubLIES64Cm4ypZG+BIyvAeQWwZVZtA2U+my3Bx1Fc4ko+OhdTpJKljOin28BDCNC4lZT9sIcXPAScaOgUjDUm3PbVWjAx1pPRdIDFnjH2/pcHzj3SvJjoqvXVhsclpQzAhNA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Wb/IVO3+; arc=fail smtp.client-ip=52.101.46.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7328E4137B0;
+	Mon,  3 Aug 2026 12:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785760965; cv=none; b=bjAfs1dpnbgsil6kkbsJEc5Acsqh+tXJv0QO0zi86rdnZww4CJwT4s7bzgSCBU6gJKV3KlXs7zVi6R622jWRz2ZFGlUtX+aRk2fs2KCH3xzbqav+Z1CE7Ii2nI63JW23ZcnA24d6gN+Abv9oi+Ql8j1wG4WqB15+YzA4WIfzV/E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785760965; c=relaxed/simple;
+	bh=qmsuEV+bp0/q8D7ofuZkzrp6vPYie8RxygDkcJ6QirA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aoHeZ4GIfBDDMOwVIS4AfGsVi9qvPHzpxL2zQ89tgl/iYH5Hf2JDYbeIsWDDTGYccc6EhysZQ1Do9tv0ih0F++R4Fyb70CXvgQASj07EZapqPnqk47+0mKzGNXMcZQhIqG2OybKARFBJ33ze/Relpqny8QbeO1x1BiP9iCIREWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=LsKSXulL; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Wb/IVO3+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y4khwSvF+BR6Qr/IDZE5THJoo7cCx3fY2ZWkiQNiqHBefv4G4aXJT7Kbs55i9LJJmcJS8cEVSeBHXNUB3vPYSkUp9QCM03lPrs8qaLPVildlW5+8mqzz35v7g7R2bDcUGlfs9KpYKTYxntZZbw961LWwNxXYK2n7O88UyrYpiIHBqcr3awUboraJAYAM0vRDN6z+dT1ou5INgN/7PFVpDRScO05rIFFNQcOOqKmZOPyFiRyo6+A5Oo5XEmlC19AEIKHWV2VBdyWnpBVIQ6/phO41QGpB684grLZeUQxPpeB6uNNtD4p5xueVejgt8bWZ8n/rE2NZf9h2pu5eEqiBKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FHkT2CX3mAORT2Ymj5VDNFZhJRo3uLww8Vcfv3wsNT4=;
- b=MhHizLdoQ9ZEo8ZodKshmHP79PfIakRf/44MR+QywEV/ljIy6J1kkk8jV6y7WW7tKpUokx3w5VBAkHsQr6lrf9jAJmfWoU1CTs8cAg5gQ6r+YDStDIhb6vT1sKCMIjl+4vJUWQoXYdUghJE+xqO99AD2BJHBLNQP0eloOUCbifpWIVSshEVVEx05b7WZTsiv7qqtp8dPYAtr/YtzX51BPZKLyzOM1PRkQcRAjsiBoGzAeusWcQZQDDv5GyIjtAI7Scr/v//RfTmDVjwr2n7lYcHoGlDnZSr/aBHGQn34Zu7Wl28O0ci0gQ76xy1PkEma5VVIoyCH8QKn7j4sjan7rw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FHkT2CX3mAORT2Ymj5VDNFZhJRo3uLww8Vcfv3wsNT4=;
- b=Wb/IVO3+0K04fKKo+r2Z6uGLKLldaQzk/0f4UJ2YyFvsl3Fe/RWu8iMJMcR9vYuOXk1YHnfkpzGIL6sGSkU50rvnd4DiJfqOp4J4znoPDh55vhJXyxehl8ol29i6Gq49T1nHc+fCk4FEYWGvA3Zp3DnNCxo/40zJsKJUry6+6A6f1Zv8gAJ7RcnnSRz5ZO7Zxd9OKEEr2rOIDBF1lhDXSlYimP87hLpeYj/YORKfrjWoKya+W9onYHs1ylpDMZ1cqU8ofwcC1DLakZX1tTs8mmfLj0Z+/6e7mZjQDz/yJgHm9MGxliZNpwl32jdapPKBVjTUGb8fYLfUMZwtSMrhyQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by PH7PR12MB6659.namprd12.prod.outlook.com (2603:10b6:510:210::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
- 2026 12:41:47 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0270.017; Mon, 3 Aug 2026
- 12:41:47 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Aug 2026 21:41:42 +0900
-Message-Id: <DKFBEPDNAD1V.1LFARFHMO5WKC@nvidia.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Burak Emir"
- <burak.emir@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v3 2/4] rust: bitmap: add contiguous area operations
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Yury Norov" <ynorov@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260729-chid-v3-0-20cc08032bbc@nvidia.com>
- <20260729-chid-v3-2-20cc08032bbc@nvidia.com> <amrZcX33BGJCTDMp@yury>
-In-Reply-To: <amrZcX33BGJCTDMp@yury>
-X-ClientProxiedBy: TYCP301CA0031.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:380::8) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="LsKSXulL"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 673CIHmU1939178;
+	Mon, 3 Aug 2026 12:42:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=IPehTeyd9fD12V4YG+PaH+z+/0/db5
+	MRBksmfQUr3vw=; b=LsKSXulLT5FCXavn6ufQ1TIRJRR/bQT+Xp7RLMWw86xhk7
+	FanoXvsJdEOr7UYtqglT0FmOtpIaRqCWeOqICU0BaF5R+++bLtJBXLTuTaI4yS/E
+	Os/whTRvxhX3waX8zdR8CiI4ERpWkfRdmT4tBpm/19SBQqn6vFoRcsyRcEILPpyf
+	AtEcNPyXmOzA5W/dVfdRZLo1m/eWH+FCYP39cLEO1a6OAvmsNFJbH6fOEK6xb8Vc
+	qrW0x87T5b7LtnKXiixgHceYbPG4kqiGopPPGHv4R1EBXuOYDGfP26eQ2tE8OoJE
+	yuGtucAI4wAUuqsXr/BgjjEUOvcHIUR9JvJjzUiw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67hgqkf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 12:42:23 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 673CfJt9027897;
+	Mon, 3 Aug 2026 12:42:22 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmh59y3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Aug 2026 12:42:22 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 673CgK8B25887110
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Aug 2026 12:42:20 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 79E1C2004B;
+	Mon,  3 Aug 2026 12:42:20 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 01DF620040;
+	Mon,  3 Aug 2026 12:42:20 +0000 (GMT)
+Received: from osiris (unknown [9.111.54.91])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  3 Aug 2026 12:42:19 +0000 (GMT)
+Date: Mon, 3 Aug 2026 14:42:18 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+        Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Daniel Almeida <daniel.almeida@collabora.com>,
+        Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+        Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 12/24] s390/preempt: Enable
+ HAS_SEPARATE_PREEMPT_RESCHED_BITS
+Message-ID: <20260803124218.14792D9d-hca@linux.ibm.com>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-13-boqun@kernel.org>
+ <20260803114032.GC687043@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|PH7PR12MB6659:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6667d1fc-9d25-496e-60ce-08def15c94af
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|7416014|376014|23010399003|22082099003|18002099003|4143699003|5023799004|56012099006|11063799006|3023799007|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	e8Cw9j0nxW1gPUB+Pjz7RnKZPLj3js/hNAm4++U6nUkOpD/PNhu1xfebsDQeyKnP5Ee2nNgSo+aji/KuSUTf1JmiF9HS7RV5Pboj0pLGm/96oeCdrPRXC66JyYq+4R/qlFHR2vwSG4EUHrRwgj2hIw61tmPOXdbsDkk9WEB7C5nZp7iCqXBk1STtciQg1T8SmqwOQGSzQ/AGcSD+hx1/gC9PzpnwxV+XvW17tcT9Jfvs5J8aa1d7f8jeqLBdVUCEWk7l9dRm+W345rY6Ez2GBLMWpPHGyi0y1cymhhKOuaFXy2WDUBhju6ULsYgJCVKotD+ZGEsCYPTgKS+Pyy0nsopiusvvXiVe2DxnOj3erUSLnWqbSLEfaCcmyMDziqUgx7ksWihWF2kagJuO9HvRDCT9LBwaGgwOpRQ1VYD1mV7bIMftreAoNK+eebxd5A96aB6g0hVxlhNSA2ydbsqcZE+uhC2Yy7u2phrcGgS25dseb9tLT9u3vZ752MsA9Ue/Ze2gKXzOQQEzsOHwZALK8n+ngPwcM5QL3atpFf6eBWxWzRq++wYE5ilW46i8K94l1p8Lua58ohrGsreieg4O8Cu3UvPFQwm9RcYOiOY7YQ/tGGojy3cxWBmb6uWd4vsstkoWAUcVnfkMQQpnsXzu271RysbUqZDMQB+/UgnyzAk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(4143699003)(5023799004)(56012099006)(11063799006)(3023799007)(6133799003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OHh4STU2d2VDQ3NWekhBNzZha1pjV1dpVU5EUFVabUVVcEhPbTM5eXhjWHpK?=
- =?utf-8?B?Ry9RanhxQkVuWnRkZ2lWV3R5R1c4aVhWOElRaEtJWGt4blo0NDJsRnRaQ0Rl?=
- =?utf-8?B?QzdzbzNMVkFvVTcvc3BrVU5jbGZiMEdOeHZsUkxsekR3bVBJektpQmhLVFh5?=
- =?utf-8?B?VWlRTUNVdWVpVnFuSytTSUZ5VFJzR25KcmRrM2lDamkzNXAzZGF1d2ZPVkQv?=
- =?utf-8?B?Si9pcHNFRHdjU281Tkl6YjFmbnFIbmhWSlhPaVJGWE1nZDVMK1B3NEJmVndK?=
- =?utf-8?B?MlhUUW14V3hoWU5hQ3NKdjZLRjhkandjZUpOMFAwanpxV3gxQThaMk8zbnhr?=
- =?utf-8?B?eUM4RnRnMW5jRGlDTDFMUXNHWWNpTmJqOW1zVTVhZk1WcmFKa2ZZdzdIalZF?=
- =?utf-8?B?QURMeHgrbG1CcmJaWURwVWJLaFVPRjJad0xBMG1naE80Vk5xNXpCaXNHY290?=
- =?utf-8?B?UjhKbS9YK2RkMDJZa2p6NklaazAwZWxoOUFjU294MzZ3T3hTWFBJYmJIRHE2?=
- =?utf-8?B?QzdqNmc5R2Ivc0xDQmFSRk9kcFdOS2xyek15MWZXQzJXSzN1a0tsb1hWTTE1?=
- =?utf-8?B?VWNIbUxBa1A4dVJEMDAwY2w4SjN6M2xXeE9ZQ1c5ZFVadzczdmRsdENlOEZp?=
- =?utf-8?B?UWVINGhvNXdxdjl0K1hGOXBkSitRRUJaZ3Fhdi9yaC85M3ozUWNvaTVEN3Av?=
- =?utf-8?B?OXdhdElCMVN3V2U0Q1hZanlVU08zQXZEQ1MxRTdsNWlqRWs0bFk5OGNIZEVy?=
- =?utf-8?B?R0tab0FkTUlhRnh1YXdsMlZzYWhubjM2Sk9Ma3FaNkZMTHlBSkxHMHo4dVI2?=
- =?utf-8?B?MUZSZDYxeDlqdlA5Sm1NMGFZMklUOGNZbkRNTFVDYTNodzUrVVB1SlR2U3hB?=
- =?utf-8?B?dWcwUW12TFFPQnRNOC9wLzZocHBhSlRpVE4rNnhSL3JxWUtoZWE2SWhuKzE2?=
- =?utf-8?B?Nk5GUmNJaHIrdDZJUGlKMG5WN0RldEFQSXlyemJlVmtnZVN3YnN2OGJOTGRD?=
- =?utf-8?B?WE1LVWUrVHFMT2xqUVdsaXdYbzBYL1A2djRQRW8xb3FxMm1hQzE3SVpVM0tR?=
- =?utf-8?B?anFONFZGbW5YYXlxaW4xbDFzOTUzVFpITHdWL2NoVnRTMWRmZERMdXBNa05r?=
- =?utf-8?B?V2lJS0hieFJlQkdUelZhZGZpV25QdVEwVVB1N01XZ0h6YkVBd0NFc2NsaVp3?=
- =?utf-8?B?ZVdUeHExajAxd2JVYiszdE9ZaFhBdnR2ODJNSHJXMkZJWGt3b0IzbDdjeklE?=
- =?utf-8?B?SXp0dm9hSzJKZjNkSVVYTkpjVEZDSStWaDJQeDdqak8xOU56cnVCbEU5UEt6?=
- =?utf-8?B?T0VnWHVnSEd1amdJNGVtQVRRYjgvTmFKRG1vQTZsYXFpbXF3L1hQeTBLVnpL?=
- =?utf-8?B?WE5xNmpzekZIVHROamxEdm5mOUlXdlM3MmVlTElndGZhTTgvV1h1Tjh4VEpx?=
- =?utf-8?B?WHpFNjIvYitsbEZGMWp1MGtRWFdWS2RjRkRoY0NGeG9TRS9MSlp4emJrd3A1?=
- =?utf-8?B?UUJGVUpNZVAxRHE2S2tJWkdTZE5wa3krekhVL1FxbVFnTkVmV2xSSHVQNC9V?=
- =?utf-8?B?T1lKS2JCOXptVzJVMktFR2YxSk8zY3ZrM0RhTHFnRG1sMUVuOXRKQWxHSGxL?=
- =?utf-8?B?bWZML0oraUpIUnI2NFVaa2ZuZjRMZFhtakR5UmJLb1Nwd0tuSWVjRGlxY2Jm?=
- =?utf-8?B?WFN2UEpuQ2JURWxOemF1Zk1nUCtxL05KTllSNWhFbVgreGhJejdJQWUyVjFz?=
- =?utf-8?B?bVIyMjUyT3Q3RnB4OG5iY0lMeVAzT3F0cGVnZDk0Q3pBQlBnUGFvS0R4c3VS?=
- =?utf-8?B?TkwyazJHdkV0QkJDUTVqMEpBd0I0ajRsZTVUYXlLR3FUd3U1SktBaTNYbVNZ?=
- =?utf-8?B?aEZveDRyTFhVaWRicWVNd1BLWkV0VW5xN0IvelVaaFJ1cHNMeG42a24rMllK?=
- =?utf-8?B?NHgzbWJIa21GOFNYM0M1Y0VlVlFqMVkzMk9CYlgvbVJ0M1hUaTZwU3N3U3Bl?=
- =?utf-8?B?UEdrenc4bWJHckVxOGhWdDMrL3FKVjJUSmJrMzNsYUVxd3RJWFVCZE5iNnVW?=
- =?utf-8?B?dUthT3VGY3cyODl2Y0NoL2RiNnphUEtuOEJtM3EzdzJ1QlU4b2p5OWtreVgr?=
- =?utf-8?B?VlFjWlJ2dHZWVmlyYUtHekVrcTJrVGZOUDl4aHNqaERTbGNhY0Z5MGU2a1Nx?=
- =?utf-8?B?UDUxMWtaYnFzNFBWS0Y3elB6YXZGdkdnM2MrVS9SRW5WT2xsZWo2aGNNTVln?=
- =?utf-8?B?ZHRsaDVFME1lazEzY21sRDFVdHZ5Z0RXMmZlVjA1WnFMV0tHRDFCUjQ3TGpJ?=
- =?utf-8?B?ZlRQQlo5ZG4xd1BaK3UvZUxISFA4QVNFYzNFY1ZDalVlRVdVYjVadE52R2F2?=
- =?utf-8?Q?hJyv3cQlLrx+KdWkeWsYYzAk9CiqPmgVwfdPh+w/mBw06?=
-X-MS-Exchange-AntiSpam-MessageData-1: aRDW3XRofbyD0g==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6667d1fc-9d25-496e-60ce-08def15c94af
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 12:41:46.8948
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RvfKtRBSAXPZxkbWN6VcnqE5+xF/rg+8u9N3TCoI+Cgf9gm5qaizhJZL0Mltinani+893PUyCDNCk5cukokIPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6659
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803114032.GC687043@noisy.programming.kicks-ass.net>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDExMCBTYWx0ZWRfX6qvSVzlZ+Eyo
+ zZs9svSabCiTxRnddEc8R2/aNIM03mhJiQNBm1GJh8iSsWw9ghc9bHZPPHbuhoWNnrBBowaMOWo
+ OJdsXze8M4FUpaHXEIADVh6e+ZdQmS8=
+X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a708caf cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=csveCD0TJrq5keC42VAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDExMCBTYWx0ZWRfXya3Tgv7of0Ij
+ HOkc2wTvQVnzwuzfss9m6sxJvq6nJ5OaQ2qZNYPK+R1JKCd6sPfzVH16X7CR0gJsytfJyVIK2sb
+ q93NLICXeVpxXJbQxFisemxh+2ZQe0aUnkqt7phsijC15IujgduFUcDKi6mue6lVUetqST3ULoG
+ dB6dLqf/9ex8xVSTgb21tEXrvuH4pwRLbRa4kF/KQXKEeidr1AlURm14F3lhdIDq6D2uKV9jcrn
+ SIm9q3W5JsNPpb2vKOjZ+bgNFrYcJo0LofQgb5DouFXDAiEN1nqd/CIR+XJKzrQsu7XPFGlA7Qp
+ 8IykrwsJwsV9uj/JbzHtDNDZwcdobSBjycaXyJ6xaUOLHmemyT8w8/mzv77LA8pt0C7yIf2dXqx
+ blfNe6IMT/AvKp7pV+/IqqQU0pvGIxTDqsjkH88sK7Ru8nZajrumSGg/EAfOCYnxZR0HM3N8nYy
+ LvxLEEY/auxJojweysA==
+X-Proofpoint-ORIG-GUID: iQtphIMzdyn36CQrAuvIMeg3nnYM3N_u
+X-Proofpoint-GUID: KOh4Q5_5sk-g9411JdzStURiIJhf4W2A
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-03_03,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030110
 
-On Thu Jul 30, 2026 at 1:56 PM JST, Yury Norov wrote:
-> On Wed, Jul 29, 2026 at 03:54:13PM +0900, Eliot Courtney wrote:
->> Add bindings for area operations on bitmaps. Each one is
->> made safe by adding some extra checks compared to the underlying C code
->> (for example, checking bounds) and with additional checks to catch
->> likely erroneous usage if `CONFIG_RUST_BITMAP_HARDENED` is on.
->>=20
->> The C code uses signed integers for some parameters, for example the
->> length for `__bitmap_set`, so bounds check against i32::MAX. We can't
->> rely on `BitmapVec::MAX_LEN` because `Bitmap` may not necessarily be
->> backed by `BitmapVec`.
->>=20
->> Add tests demonstrating the edge cases.
->>=20
->> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->> ---
->>  rust/kernel/bitmap.rs | 194 +++++++++++++++++++++++++++++++++++++++++++=
-+++++++
->>  1 file changed, 194 insertions(+)
->>=20
->> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
->> index a43bfe0ec3dc..f4b0b8ae39d8 100644
->> --- a/rust/kernel/bitmap.rs
->> +++ b/rust/kernel/bitmap.rs
->> @@ -10,6 +10,7 @@
->>  use crate::bindings;
->>  #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
->>  use crate::pr_err;
->> +use crate::ptr::Alignment;
->>  use core::ptr::NonNull;
->> =20
->>  /// Represents a C bitmap. Wraps underlying C bitmap API.
->
-> Some comments use indicative form in the file, but the imperative
-> 'represent' is a more standard way. Can you please use it instead?
+On Mon, Aug 03, 2026 at 01:40:32PM +0200, Peter Zijlstra wrote:
+> On Fri, Jul 31, 2026 at 01:30:13PM -0700, Boqun Feng wrote:
+> 
+> > @@ -26,25 +23,25 @@
+> >   */
+> >  static __always_inline int preempt_count(void)
+> >  {
+> > -	unsigned long lc_preempt, count;
+> > +	unsigned long lc_preempt;
+> > +	int count;
+> >  
+> > -	BUILD_BUG_ON(sizeof_field(struct lowcore, preempt_count) != sizeof(int));
+> > -	lc_preempt = offsetof(struct lowcore, preempt_count);
+> > +	lc_preempt = offsetof(struct lowcore, preempt.count);
+> >  	/* READ_ONCE(get_lowcore()->preempt_count) & ~PREEMPT_NEED_RESCHED */
+> 
+> If I'm not mistaken, this comment is no longer accurate, since
+> NEED_RESCHED lives in the high word and you're only loading the low
+> word.
 
-I think in rust, indicative is the standard even in the kernel - e.g.
-see Documentation/rust/coding-guidelines.rst around line 208-ish, and
-that's also what I see generally in code. But please let me know if
-you'd like me to use it in this file regardless.
+True. Something like
 
->
->> @@ -497,6 +498,116 @@ pub fn next_zero_bit(&self, start: usize) -> Optio=
-n<usize> {
->>              Some(index)
->>          }
->>      }
->> +
->> +    /// Finds a contiguous area of `nbits` zero bits at or after `start=
-`, aligned to `align`.
->> +    ///
->> +    /// Returns the bit index of the start of the area, or [`None`] if =
-no such area fitting in
->> +    /// the bitmap exists.
->> +    ///
->> +    /// The returned index is a multiple of `align`. Alignments where `=
-self.len() + align - 1`
->> +    /// overflows a `usize` can hang the underlying C code.
->> +    ///
->> +    /// # Panics
->> +    ///
->> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and `start` is=
- out of bounds.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// ```
->> +    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
->> +    /// use kernel::bitmap::BitmapVec;
->> +    /// use kernel::ptr::Alignment;
->> +    ///
->> +    /// let mut b =3D BitmapVec::new(64, GFP_KERNEL)?;
->> +    /// let unaligned =3D Alignment::new::<1>();
->> +    ///
->> +    /// assert_eq!(Some(0), b.next_zero_area(0, 8, unaligned));
->> +    /// b.set(0, 5);
->> +    /// assert_eq!(Some(5), b.next_zero_area(0, 8, unaligned));
->> +    /// assert_eq!(Some(8), b.next_zero_area(0, 8, Alignment::new::<8>(=
-)));
->> +    /// assert_eq!(None, b.next_zero_area(0, 65, unaligned));
->> +    /// # Ok::<(), AllocError>(())
->> +    /// ```
->> +    #[inline]
->> +    pub fn next_zero_area(&self, start: usize, nbits: usize, align: Ali=
-gnment) -> Option<usize> {
->
-> Please create the rust wrapper next_zero_area_off() around
-> bitmap_find_next_zero_area_off(), then in rust create the
-> next_zero_area(), if you need it.
+  	/* READ_ONCE(get_lowcore()->preempt.count) (without PREEMPT_NEED_RESCHED) */
 
-Will do.
+might be better.
 
->
->> +        bitmap_assert!(
->> +            start < self.len(),
->> +            "`start` must be < {}, was {}",
->> +            self.len(),
->> +            start
->> +        );
->> +
->> +        let nr =3D u32::try_from(nbits).ok()?;
->> +
->> +        // SAFETY: `bitmap_find_next_zero_area_off` is safe to use with=
- an out of bounds `start`
->> +        // value and never reads beyond `self.len()` bits.
->> +        let index =3D unsafe {
->> +            bindings::bitmap_find_next_zero_area_off(
->> +                self.as_ptr().cast_mut(),
->> +                self.len(),
->> +                start,
->> +                nr,
->> +                align.as_usize() - 1,
->> +                0,
->> +            )
->> +        };
->> +
->> +        // In case of overflow, we may get back a range outside of what=
- we requested.
->
-> No, we can't. We've got the test_bitmap_find_next_zero_area_off() for
-> it (in next). If you think the test is incomplete, please extend it.
->
-> If you believe that bitmap_find_next_zero_area_off() may return something
-> like that, it means the function is buggy, and you shouldn't trust it at
-> all.
-
-TL;DR: Included some tests below that demonstrate overflow/OOB issues on
-32-bit (with increased vmalloc) in some extreme cases. To keep the rust
-code completely safe we need to check for these, or update the C code,
-but not sure if the perf tradeoff is worth it. Please let me know.
-
-Ok it seems I was looking at the code previous to df81d444dc74 ("lib:
-bitmap: optimize bitmap_find_next_zero_area_off()"), but overflows can
-still cause wrong behaviour after this commit too:
-
-[1] On 32-bit, suppose we have an empty bitmap with size=3D=3D64, start=3D=
-=3D32,
-nr=3D=3D2^32-1, and align_mask=3D=3D0. Then, computing `end` overflows to 3=
-1.
-Computing `end - off` then underflows (31 - 32) which can cause OOB
-reads. So actually we need a check before calling
-`bitmap_find_next_zero_area_off` to avoid this case.
-
-[2] On 32-bit, suppose we have a bitmap with size=3D=3D2^31+2 and all bits
-set except the 0th and 2^31+1st bit, and start=3D=3D1, nr=3D=3D1,
-align_mask=3D=3D2^31-1. We'll compute start=3D=3D2^31+1+2^31-1 which overfl=
-ows
-to 0. Then we'll end up returning 0 which is below start. So we need the
-`index < start` check.
-
-The C side function looks very perf sensitive to me which is why I
-didn't update it (plus it's 32 bit only issues, essentially), instead
-putting the checks in the rust side, but what do you reckon?
-
-Previous to df81d444dc74 ("lib: bitmap: optimize
-bitmap_find_next_zero_area_off()") overflow can happen and cause issues
-although the cases are slightly different for what it's worth:
-
-[3] On 32-bit, if we pass start + nr overflowing a u32 then bitmap.c
-`end =3D index + nr;` can overflow and we can return a value less than the
-size of the bitmap even though we couldn't possibly allocate something
-of size `nr`. So the check of index.checked_add(nbits) is needed. For
-example, in bitmap_find_next_zero_area_off, if size=3D=3D2, start=3D=3D1,
-nr=3D2^32 - 1, align_mask=3D0, then we calculate index=3D=3D1 (if no bits i=
-n the
-bitmap), end=3D=3D0, i=3D=3D0, then return 1, even though we should return
-something >=3D 2 to indicate it's not possible.
-
-[4] Harder to trigger, but with a full bitmap (except the 0th bit) of
-size=3D=3D2^31+1 on 32 bit hardware with start=3D=3D1, then we compute `ind=
-ex =3D
-find_next_zero_bit(map, size, start);` as index=3D=3D2^31+1, which then
-overflows to 0 if align_mask=3D=3D2^31-1. Then for nr=3D=3D1 we have end=3D=
-=3D1, and
-compute i=3D=3D1 (since end=3D=3D1,index=3D=3D0 and the 0th bit is zero) an=
-d return
-0. So the check `index < start` is necessary.
-
-Here are some tests demonstrating some of these issues:
-
-diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-index 56bd23059b26..0ba735aafefc 100644
---- a/lib/test_bitmap.c
-+++ b/lib/test_bitmap.c
-@@ -238,6 +238,7 @@ static void __init
- test_bitmap_find_next_zero_area_off(void)
- {
- 	DECLARE_BITMAP(bmap, 192);
-+	unsigned long *big;
-=20
- 	bitmap_set(bmap, 0, 192);
-=20
-@@ -269,6 +270,30 @@ test_bitmap_find_next_zero_area_off(void)
- 		bitmap_find_next_zero_area_off(bmap, 192, 0, 32, 0, 0));
- 	expect_eq_uint(1,
- 		!!(bitmap_find_next_zero_area_off(bmap, 192, 0, 33, 0, 0) >=3D 192));
-+
-+	/* Reads out of bounds on 32-bit. */
-+	bitmap_zero(bmap, 64);
-+	expect_eq_uint(1,
-+		!!(bitmap_find_next_zero_area_off(bmap, 64, 32, UINT_MAX, 0, 0) >=3D 64)=
-);
-+
-+	big =3D kvmalloc_array(BITS_TO_LONGS(BIT(31) + 2), sizeof(*big), GFP_KERN=
-EL);
-+	if (big) {
-+		/* Returns below start on 32-bit. */
-+		big[0] =3D 0;
-+		big[BIT_WORD(BIT(31) + 1)] =3D 0;
-+		expect_eq_uint(1,
-+			!!(bitmap_find_next_zero_area_off(big, BIT(31) + 2,
-+							  BIT(31) + 1, 1,
-+							  BIT(31) - 1, 0) >=3D BIT(31) + 2));
-+
-+		/* Reads out of bounds on 32-bit. */
-+		big[BIT_WORD(BIT(31) - 2)] =3D 0;
-+		expect_eq_uint(1,
-+			!!(bitmap_find_next_zero_area_off(big, BIT(31) - 1,
-+							  BIT(31) - 2, 3,
-+							  BIT(31) - 1, 3) >=3D BIT(31) - 1));
-+		kvfree(big);
-+	}
- }
-=20
- static void __init test_fill_set(void)
-
->
->> +        let end =3D index.checked_add(nbits)?;
->> +        if index < start || index >=3D self.len() || end > self.len() {
->> +            None
->> +        } else {
->> +            Some(index)
->> +        }
->
-> So, this should be a simple:
->
->         (i < len).then_some(i)
-
-For [3] we need the checked_add. For [2], [4] we need `index < start`.
-`index >=3D self.len()` is the regular check. But you are right, we don't
-need to check `end
-> self.len()` here.
-
-Alternatively, if we restrict Bitmap (not just BitmapVec) to a size of
-i32::MAX and  check that `nbits <=3D self.len()` (to handle [1]) before
-calling `bitmap_find_next_zero_area_off` then we can reduce this to just
-`(i < len).then_some(i)` as you say. For non-zero offsets
-(next_zero_area_off) we need an additional overflow check though.
-
->> +    }
->> +
->> +    /// Sets a contiguous area of `nbits` bits starting at `start`.
->> +    ///
->> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and the area `sta=
-rt..start + nbits` is out of
->> +    /// bounds, does nothing.
->> +    ///
->> +    /// # Panics
->> +    ///
->> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and the area `=
-start..start + nbits` is out
->> +    /// of bounds.
->> +    #[inline]
->> +    pub fn set(&mut self, start: usize, nbits: usize) {
->> +        bitmap_assert_return!(
->> +            start
->> +                .checked_add(nbits)
->> +                .is_some_and(|end| end <=3D self.len() && end <=3D i32:=
-:MAX as usize),
->> +            "Area `start..start + nbits` ({}..{}) must be within bounds=
- {}",
->> +            start,
->> +            start.saturating_add(nbits),
->> +            self.len()
->> +        );
->> +        // SAFETY: The area `start..start + nbits` is within bounds.
->
-> Not sure I understand. In the above assertion block you check for it,
-> now you say it's always true...
->
-> I think, your language should be similar to the
-> find_next_zero_area_off() case: it's safe to call the function with
-> the out-of-bounds start and nbits.
-
-The assertion block still checks, even if CONFIG_RUST_BITMAP_HARDENED is
-off (just prints an error returns in this case), so at this point we
-know that the assert predicate is true. In this case, per the file
-convention we take start and nbits in usize, but the C function doesn't,
-so we need to make sure we don't truncate when converting to u32 and
-i32. Also, it's not safe to call __bitmap_set with start and nbits such
-that start+nbits is greater than self.len(), or we can write out of
-bounds, so we can't use the same language + we need the check.
-
->
->> +        unsafe { bindings::__bitmap_set(self.as_mut_ptr(), start as u32=
-, nbits as i32) };
->> +    }
->> +
->> +    /// Clears a contiguous area of `nbits` bits starting at `start`.
->> +    ///
->> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and the area `sta=
-rt..start + nbits` is out of
->> +    /// bounds, does nothing.
->> +    ///
->> +    /// # Panics
->> +    ///
->> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and the area `=
-start..start + nbits` is out
->> +    /// of bounds.
->> +    #[inline]
->> +    pub fn clear(&mut self, start: usize, nbits: usize) {
->> +        bitmap_assert_return!(
->> +            start
->> +                .checked_add(nbits)
->> +                .is_some_and(|end| end <=3D self.len() && end <=3D i32:=
-:MAX as usize),
->> +            "Area `start..start + nbits` ({}..{}) must be within bounds=
- {}",
->> +            start,
->> +            start.saturating_add(nbits),
->> +            self.len()
->> +        );
->> +        // SAFETY: The area `start..start + nbits` is within bounds.
->> +        unsafe { bindings::__bitmap_clear(self.as_mut_ptr(), start as u=
-32, nbits as i32) };
->> +    }
->>  }
->> =20
->>  #[cfg(CONFIG_RUST_BITMAP_KUNIT_TEST)]
->> @@ -614,4 +725,87 @@ fn bitmap_copy_and_extend() -> Result<(), AllocErro=
-r> {
->>          assert_eq!(Some(17), long_bitmap.last_bit());
->>          Ok(())
->>      }
->> +
->> +    #[test]
->> +    fn bitmap_area_set_clear_find() -> Result<(), AllocError> {
->> +        let mut b =3D BitmapVec::new(128, GFP_KERNEL)?;
->> +        let unaligned =3D Alignment::new::<1>();
->> +
->> +        assert_eq!(Some(0), b.next_zero_area(0, 5, unaligned));
->> +        b.set(0, 5); // Now contains {[0, 5)}.
->> +
->> +        assert_eq!(Some(0), b.next_bit(0));
->> +        assert_eq!(Some(4), b.next_bit(4));
->> +        assert_eq!(Some(5), b.next_zero_bit(0));
->> +        assert_eq!(Some(5), b.next_zero_area(0, 5, unaligned));
->> +        assert_eq!(Some(8), b.next_zero_area(0, 5, Alignment::new::<8>(=
-)));
->> +
->> +        b.set(8, 8); // Now contains {[0, 5), [8, 16)}.
->> +        assert_eq!(Some(16), b.next_zero_area(0, 4, Alignment::new::<16=
->()));
->> +        assert_eq!(Some(16), b.next_zero_area(0, 4, unaligned));
->> +
->> +        b.clear(0, 5); // Now contains {[8, 16)}.
->> +        assert_eq!(Some(0), b.next_zero_area(0, 5, unaligned));
->> +        assert_eq!(Some(8), b.next_bit(0));
->> +        assert_eq!(Some(15), b.last_bit());
->> +
->> +        b.clear(16, 0); // Zero-length in-bounds clears are no-ops.
->> +        assert_eq!(Some(8), b.next_bit(0));
->> +        assert_eq!(Some(15), b.last_bit());
->> +
->> +        // A zero-length request returns the first aligned position at =
-or
->> +        // after the next zero bit, even if that position's own bit is =
-set.
->> +        assert_eq!(Some(1), b.next_zero_area(1, 0, unaligned));
->> +        assert_eq!(Some(8), b.next_zero_area(1, 0, Alignment::new::<8>(=
-)));
->> +
->> +        b.set(60, 10); // Now contains {[8, 16), [60, 70)}.
->> +        assert_eq!(Some(60), b.next_bit(16));
->> +        assert_eq!(Some(69), b.last_bit());
->> +        assert_eq!(Some(16), b.next_zero_area(9, 40, unaligned));
->> +        assert_eq!(Some(70), b.next_zero_area(0, 45, unaligned));
->> +
->> +        b.clear(62, 6); // Now contains {[8, 16), [60, 62), [68, 70)}.
->> +        assert_eq!(Some(62), b.next_zero_area(60, 6, unaligned));
->> +        assert_eq!(Some(61), b.next_bit(61));
->> +        assert_eq!(Some(69), b.last_bit());
->> +
->> +        b.set(64, 0); // Zero-length in-bounds sets are no-ops.
->> +        assert_eq!(Some(62), b.next_zero_bit(62));
->> +        Ok(())
->> +    }
->> +
->> +    #[test]
->> +    fn bitmap_area_exhaustion() -> Result<(), AllocError> {
->> +        let mut b =3D BitmapVec::new(64, GFP_KERNEL)?;
->> +        let unaligned =3D Alignment::new::<1>();
->> +
->> +        assert_eq!(None, b.next_zero_area(0, 65, unaligned));
->> +        assert_eq!(None, b.next_zero_area(0, usize::MAX, unaligned));
->> +        assert_eq!(None, b.next_zero_area(1, usize::MAX, unaligned));
->> +
->> +        b.set_bit(0); // Now contains {[0, 1)}.
->> +        assert_eq!(None, b.next_zero_area(0, usize::MAX, unaligned));
->> +
->> +        b.set(0, 61); // Now contains {[0, 61)}.
->> +        assert_eq!(None, b.next_zero_area(0, 4, unaligned));
->> +        assert_eq!(Some(61), b.next_zero_area(0, 3, unaligned));
->> +        assert_eq!(None, b.next_zero_area(0, 1, Alignment::new::<64>())=
-);
->> +        Ok(())
->> +    }
->> +
->> +    #[test]
->> +    #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
->> +    fn owned_bitmap_area_out_of_bounds() -> Result<(), AllocError> {
->> +        let mut b =3D BitmapVec::new(64, GFP_KERNEL)?;
->> +
->> +        // Should be ignored since out of bounds.
->> +        b.set(64, 4);
->> +        b.set(62, 8);
->> +        b.set(usize::MAX, 0);
->> +        b.clear(usize::MAX, 0);
->> +        b.clear(2048, 8);
->> +        assert_eq!(None, b.next_bit(0));
->> +        assert_eq!(None, b.next_zero_area(64, 1, Alignment::new::<1>())=
-);
->> +        Ok(())
->> +    }
->>  }
->>=20
->> --=20
->> 2.55.0
-
+> >  	asm_inline(
+> > -		ALTERNATIVE("llgt	%[count],%[offzero](%%r0)\n",
+> > -			    "llgt	%[count],%[offalt](%%r0)\n",
+> > +		ALTERNATIVE("ly		%[count],%[offzero](%%r0)\n",
+> > +			    "ly		%[count],%[offalt](%%r0)\n",
+> >  			    ALT_FEATURE(MFEATURE_LOWCORE))
+> >  		: [count] "=d" (count)
+> >  		: [offzero] "i" (lc_preempt),
+> >  		  [offalt] "i" (lc_preempt + LOWCORE_ALT_ADDRESS),
+> > -		  "m" (((struct lowcore *)0)->preempt_count));
+> > +		  "m" (((struct lowcore *)0)->preempt.count));
+> >  	return count;
+> >  }
