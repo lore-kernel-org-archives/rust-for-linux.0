@@ -1,222 +1,110 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBF6340402
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Aug 2026 15:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785769571; cv=pass; b=rs3s2v1c4gNUvNoksubgJfB3WRvfK7VqFikaHKqqSuPlURjatQwk4RD8UKZa1Jbgk+foPi1kbzRhecnDUC/9qUYKnuc2Yg1glfRUk3ncfIa0lMjuf1KPgoVtgT46J3QVEA+2iDNnXODYT7CEZWO9YvAldsi2cDKutepE6ZZhXGQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785769571; c=relaxed/simple;
-	bh=vJQ85GMhPd27rokuLxPgrmhCOeWEsn68yRurzB2w63U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VxSea19V6LpFW181NhQECfakEKS5FefwSRRC8XDuJXmRqEa23zJd7yki0Mq9zRuUuzfH7vNWo30PGs4c/F0SQ5fUbAwaO5T9WDTdFqoJWx+3LKH7YNk8SOqn2CmH2NKY+/0eGuAhtff/5gGt7Job9ieQ1HlHoIG6mo4iK2SjHRQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nzUzzaKx; arc=pass smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9D53B994A;
+	Mon,  3 Aug 2026 15:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785769630; cv=none; b=mzpqbCSW1vv8sgeYG6en206WrnXx+khR2EaBlrFrK98REf5PdBZujWf7zARq2rc6rUilM5q3TFpSp/Q05tiDsc3pGMHPrujJNbiC2g2EHSef/ipSWBM4yaoDSXJvuefsnu5NQyUblDalzb54Ojqb0R9k734m30bzq8QvicUbT2c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785769630; c=relaxed/simple;
+	bh=zY5wLJJ1PNpViytGrY6x+pIbuJ0+nb1wHP/b6mB23Qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YIgW0/dFC+ZKgjH1yWryWuRsfgtxynfRCTf1zlixBegXE8EamvSafUO/pXP08R/A45MMhtY4PZB+rONSV7eCadZb4IJP0P46QoirkbJuyjbsmNCHVua5tuuKtIrCFMvIZuOTBNuS+qjVUUrbpzPBjGniLAqM5oMRgO9Rk9nXxjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NtGw06cK; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nzUzzaKx"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-47fdd674e17so936126f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Aug 2026 08:06:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785769568; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kojlY78A57d0wISB3vnySc5zzT0oJkC5z4C9pY6yi2RGTcRibrkVumC9aFu+L2QiSI
-         q3Y5u6mGIPG1U/yOsx0j6RbnE89a8xaYPNH4DPVi21Q1JmKCjU6jDHoX4x+hBs2/BpKp
-         70FEUdx8WeA5gt0M5QsPkqdr1BWyNuk97uqsUgefZNgmzhCcZedym7Dbj5YWR/gnKlv4
-         0kzvIAXYjFgnkL4bjLAekYdgEJ/sj8t0V0s6PtNIqcvTkJvyVd4+WwXUnPrM1IXxG4lD
-         laO3yZ1bGhh4BNuuN1996Tk7vkz/dd9aLtT61Js2rXqWSMSs3zmYqB/v+h9xvkkwKLwh
-         1uEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3Q8NiBv1owB+m2z5E0qzw1M2JQ8N4hGqbVT+Vkq10LI=;
-        fh=BapPgKfuKPE+enRMesRN+XDwfMgNL5O6UsIiEK3x864=;
-        b=BFOVix59r5BpB1ZiHt3IpUKH1cPvX5iZ7Fa3nGkihMB02ACo2y1jsSIKDTmQyk3AKt
-         89//v5W25caykI8ZkoolpaUXqJVqyMxOHGVpHmPQGHEr2hZH/RmPdI2zwl65v2oZ5g/6
-         cBDoUEJY5LGGRpi0fScYAfHYc2hfXAeWc/zQv5S0bx1ivZwZhX5DS2epPHY/SHdWzhm+
-         e/V2rKfWbPPbWqPgoCqdLmAWBIFKuza1/HcCJumg3SDVq1hqcTobvH9tDNjefrsob/sw
-         nO/AW6nT/VR0f98eTWmnrL3TVcht0AWk5QBsSZxjPTW1CjSdJyymWG+N53NbyuqHNQi5
-         Byng==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785769568; x=1786374368; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3Q8NiBv1owB+m2z5E0qzw1M2JQ8N4hGqbVT+Vkq10LI=;
-        b=nzUzzaKxoo1sENHqmLtQc+ecsBGyJV1sub54tXJ43YCjws7lU3ycnhhpCrrrwVD+fp
-         2PIN3+nu+tZDc8yAHaD2fuoV3RjpizKq0QPqBv/+LYL6Um1BXDhBPtdHYXBRimM058IS
-         27SahQmG0UCpZvPeuhSWlL9mL4iHmO1VPAHB0+sNromtGEgmjqLlPmjTj5vzt4NGWpA4
-         hz/LfJtgLjbJj7q8GTK8gGpoI8lc6U7gL0UIfFxQVL8GUCu+4Fl5n8XSvuhXXdk/q9op
-         5yoIz7i4IO3/Uw2aTGi+36q84CM17uSvQEMYaSiNK+HVnX83mnPJK+VuI5szw1Xxuxhs
-         qNvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785769568; x=1786374368;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3Q8NiBv1owB+m2z5E0qzw1M2JQ8N4hGqbVT+Vkq10LI=;
-        b=ibhTBRIVpWNcBKxmjbwgIH3e8NKxDnA7X+R41JILY3nxBZ3tV+CeEMyILcdb70CfYY
-         EST8PRDjnlZXeGfE43+gWF9K4Be3fcHgb2owYPgnCKoAg4PgdyfwoV/FWoaXFLpvWsne
-         i/em/+ZBhpp/C0242KM4EZ3PMXNoRROeEmO1TgfCyK+zdcZhXlsHZuNBvbOHB5JIgirW
-         u6+mcp8h9dXXNvCcYnbxg8SY6E6RNrZjN15EjXq02JvAd2gYJaDcQc9dhER1jW1dhNpt
-         UhsDuyJnWipsND8C+JxRGsk+WOS1Ki+W7Yqbcm46+Ne5K5Ran+5101ywLmL3NjP2zZza
-         06Pw==
-X-Forwarded-Encrypted: i=1; AHgh+RqtT92RAD2XD1XzAubRHMHrx2WzIf25qLBlWGmTUd+88e/e2WtzM+7wMEhnj6HJsGRyWBW7RIaYG6MdyA7rqw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztIR9Ty89iguFKJVZzTb54PiCEJl89GnJdst8MxetGFgdV1pzE
-	8GpJO6HNg+RzWVEAAmT4ai+RdS/VAreAal3LT4lcnKzCxf/FXEFyhZFJGd6gPIHZfBk1beQ7r/k
-	sVwiKPWJdeNfFClQsMxbShZZc7sCDMhk16an8CoMF
-X-Gm-Gg: AR+sD118C3CGOcoeA00y8lGMFPvp0woH0daJ9qUNkELnA8yM3/nUbNMashNrBMVVi7P
-	G1DqRXSjqDRZ1+yWxebommAf+kRZ1muOuRj7DS4wTzfVcxU37tPoXG4ELuZBIfzrA5SIisNpyuP
-	haVahsNiRUBlhX0WsEBt3OVxrX1MEWU3Plulv15WCqGa/ENonMqo0QjfJWnSL0x0ALMu0pUy5ur
-	qvVCa5T0jJ7DfHgkj2fKGCrnCozPMK7QL9Zo27toPSh9Fe0CO4J6RBItgf+979SrFgVhtVE2fEt
-	aBEo6GRiPodPd+WWhUKBH/pG2+lwWMwBAd5qB92pXz6aI67o3JAvzgwfEMouIXPoWMdS8rl01HU
-	=
-X-Received: by 2002:a05:6000:4615:b0:47f:8887:3b07 with SMTP id
- ffacd0b85a97d-47fd72d320amr27491657f8f.13.1785769567433; Mon, 03 Aug 2026
- 08:06:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NtGw06cK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lDKC16hU69X6rScMzzGverp5AkU//ffxTRaJqQopOTg=; b=NtGw06cKc6z6QNXVsmSSWnGXcq
+	vQiY5fsLP5hnYJyRH+6oiCIqlj5ePitU/BcON7U5XH5VJ4KTQT6arIYBASUNysjYuCe2ZnQJWtGow
+	XHxpzy577mX2rHlYf5AhLyXO9Wt2g5m9ogShBmQSrHFoSVy2WZ8IZDuqt1Vwk0UsU8dFV1yhPXPFK
+	fOqj2O658Dy+9VkVSWE04H8zDdPxrRcI2hDJpSKeRF8BJEl40JhnzwmZXafQ6ObtZMdnifIYKoI6L
+	iLNBw/1Tqqb/Wt5+4qYHzILQNcNDECl+SREG9NvunMmltTE4xAWOG4751jeX7Z0OZdZ3CxQufv8OS
+	+PMeDc/w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wquFp-000000094mg-3NfV;
+	Mon, 03 Aug 2026 15:07:01 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 857B1301127; Mon, 03 Aug 2026 17:06:59 +0200 (CEST)
+Date: Mon, 3 Aug 2026 17:06:59 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20260803150659.GG687043@noisy.programming.kicks-ass.net>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-6-boqun@kernel.org>
+ <20260803102155.GI49951@noisy.programming.kicks-ass.net>
+ <anCgfqYg0vYCgZr-@tardis.local>
+ <20260803142106.GF687043@noisy.programming.kicks-ass.net>
+ <anCoMLTS2-OtaTrt@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev>
- <20260731-tyr-debugfs-v2-v2-2-aea19eccb996@linux.dev> <amyeMmmfEBpuVclw@google.com>
- <d42d6ce2-7160-457f-be04-ff84551e9b9a@linux.dev>
-In-Reply-To: <d42d6ce2-7160-457f-be04-ff84551e9b9a@linux.dev>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Aug 2026 17:05:55 +0200
-X-Gm-Features: AUfX_mwlQH6Z-tduzlfCZ86MznBGj1HOcIQs7EHUIsZkQr1iKQzeu-QfbRXr-F4
-Message-ID: <CAH5fLgh9oZ9jRATbLM+s+tNR_KjJvdYuJ4w_vxXKwCmRd28E5w@mail.gmail.com>
-Subject: Re: [PATCH v2 2/9] rust: debugfs: add SeqShow trait and seq_file file operations
-To: Alvin Sun <alvin.sun@linux.dev>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	=?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Melissa Wen <mwen@igalia.com>, Wambui Karuga <wambui.karugax@gmail.com>, 
-	Eric Anholt <eric@anholt.net>, Ben Gamari <bgamari@gmail.com>, rust-for-linux@vger.kernel.org, 
-	driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <anCoMLTS2-OtaTrt@tardis.local>
 
-On Fri, Jul 31, 2026 at 6:52=E2=80=AFPM Alvin Sun <alvin.sun@linux.dev> wro=
-te:
->
->
-> On 7/31/26 21:08, Alice Ryhl wrote:
-> > On Fri, Jul 31, 2026 at 01:05:40AM +0800, Alvin Sun wrote:
-> >> +/// Show callback for `SeqShow` types.
-> >> +///
-> >> +/// # Safety
-> >> +///
-> >> +/// The seq_file core guarantees that `seq` points to a live `seq_fil=
-e` and that
-> >> +/// `seq->private` is a valid pointer to a `T` with no outstanding mu=
-table
-> >> +/// references.
-> >> +unsafe extern "C" fn seq_file_show<S: SeqShow<T>, T: Sync>(
-> >> +    seq: *mut bindings::seq_file,
-> >> +    _: *mut crate::ffi::c_void,
-> >> +) -> crate::ffi::c_int {
-> >> +    // SAFETY: `seq->private` is a valid `T` pointer with no outstand=
-ing
-> >> +    // mutable references.
-> >> +    let data =3D unsafe { &*((*seq).private.cast::<T>()) };
-> >> +    // SAFETY: `seq` points to a live `seq_file`.
-> >> +    let m =3D unsafe { SeqFile::from_raw(seq) };
-> >> +    from_result(|| S::show(data, m).map(|()| 0))
-> >> +}
-> >> +
-> >> +/// Renders `data` into a seq_file.
-> >> +///
-> >> +/// `data` is the value stashed as the debugfs file's `i_private` at =
-creation
-> >> +/// time. `show` is invoked on each read to produce the file's conten=
-ts.
-> >> +///
-> >> +/// `open` and `release` are optional lifecycle hooks called during f=
-ile open
-> >> +/// and release. They can be used to manage the lifetime of `data` (e=
-.g.,
-> >> +/// reference counting). Default implementations are no-ops.
-> >> +pub trait SeqShow<T> {
-> >> +    /// Writes debugfs output for the file.
-> >> +    fn show(data: &T, m: &SeqFile) -> Result;
-> >> +
-> >> +    /// Called during file open, before `single_open`.
-> >> +    fn open(_data: &T) -> Result {
-> >> +        Ok(())
-> >> +    }
-> >> +
-> >> +    /// Called during file release, before `single_release`.
-> >> +    ///
-> >> +    /// # Safety
-> >> +    ///
-> >> +    /// `data` must point to valid memory, kept alive by actions take=
-n in
-> >> +    /// [`Self::open`] (e.g., incrementing a reference count).
-> >> +    unsafe fn release(_data: NonNull<T>) {}
-> >> +}
-> > Hmm. So in a later patch you implement SeqShow in the following manner:
-> >
-> >      fn open(dev: &drm::Device<T, drm::Normal>) -> Result {
-> >          // Hold a device reference so the device is not freed while th=
-e file is open.
-> >          dev.inc_ref();
-> >          Ok(())
-> >      }
-> >
-> >      unsafe fn release(dev: NonNull<drm::Device<T, drm::Normal>>) {
-> >          // Drop the reference taken in `open`.
-> >          // SAFETY: `dev` is valid per this function's safety contract.
-> >          unsafe { drm::Device::<T>::dec_ref(dev) };
-> >      }
-> >
-> > I don't understand why this increment/decrement pair is necessary.
-> > Just based on the code, it *looks* like you have them because otherwise
-> > `show()` might get called with a dangling pointer to the drm device, bu=
-t
-> > the inc_ref() in open() ensures it stays alive.
-> >
-> > However, earlier in this patch you said:
-> >
-> >> The seq_file core guarantees that `seq` points to a live `seq_file` an=
-d
-> >> that `seq->private` is a valid pointer to a `T` with no outstanding
-> >> mutable references.
-> > So based on this, you are saying that open()/release() do not need to d=
-o
-> > anything special for the value to stay alive.
-> >
-> > These seem contradictory. Could you clarify the situation?
->
-> You're right. The `SeqShow` trait documentation was inaccurate -- the
-> framework does not manage the lifetime of `data`, so `inc_ref`/`dec_ref`
-> in `DrmSeqShow` is necessary to prevent `show()` from accessing a freed
-> device.
->
-> Will fix the doc in the next revision.
+On Mon, Aug 03, 2026 at 07:39:44AM -0700, Boqun Feng wrote:
+> On Mon, Aug 03, 2026 at 04:21:06PM +0200, Peter Zijlstra wrote:
 
-I'm not convinced that works soundness-wise. If I just leave
-open/release empty, then I will be able to access a &T inside of
-show(), but there's nothing keeping it alive, so I could dereference a
-freed &T in safe code that way.
+> > No; for one, you cannot elide the preempt_disable/enable() from this
+> > thing.
+> > 
+> > It has always been valid to do:
+> > 
+> > 	raw_spin_lock_irq(lock);
+> > 	...
+> > 	raw_spin_unlock(lock);
+> > 	...
+> > 	local_irq_enable();
+> > 
+> > And since raw_spin_unlock() does have the preemption thing,
+> 
+> Good point!
+> 
+> However, IIRC, the elision was trying to optimize two preempt_count
+> accesses (one for irq disable, one for preempt disable) into one in
+> raw_spin_lock_irq_disable() or raw_spin_unlock_irq_enable().
 
-I think we need the seq file to instead own some sort of value. Then,
-show() can be passed the a reference to value it has ownership of, and
-release() can be said type's destructor.
+It is relatively easy to fold the increments in
+raw_spin_lock_irq_disable(), the enable (see below) is going to be a
+little more tricky.
 
-Alice
+> We may
+> still want to do it in the future, if that's the case, we will still
+> have should_resched() check in raw_spin_unlock_irq_enable()?
+
+So if you have raw_spin_unlock_irq_enable() *and* you've managed to fold
+the preempt_count() accesses of hardirq_disable_exit() and
+preempt_enable(), then yes. Consider:
+
+	preempt_disable();
+
+	<IRQ happens, set TIF_NEED_RESCHED and folds PREEMPT_NEED_RESCHED>
+
+	raw_spin_lock_irq_disable(lock);
+	preempt_enable(); // can't reschedule
+	...
+	raw_spin_unlock_irq_enable(lock); // drops to 0 without an interrupt pending
+
+So the folding of hardirq_disable_exit() and preempt_enable() needs to
+take care of *both* special cases: 1) the local_irq_restore() and 2)
+calling __preempt_schedule() when 0.
