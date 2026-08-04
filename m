@@ -1,155 +1,176 @@
-Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2560E463B8B;
-	Tue,  4 Aug 2026 15:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D9F46C848;
+	Tue,  4 Aug 2026 16:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785858768; cv=none; b=uUMCgE08cXar0JeWViqh0bGjqUH0Z0xB1W78WWG/tKm6uqrBccYS8X3BmZGXMxQBVbLKRfCR+owbApgghWx5ix71oZniEU+nhafd8wNNCySLdcfWSvXEyCN5mralK4968elMYI+aWV4IwQwfj2lQnscb+TE8W8tK/h16P+bEFIg=
+	t=1785860105; cv=none; b=Ql+s9h0TQ7k8gGBm51uOYUky9X6eGAcMtPUyRSUVqTNmdA7rBNHk3gD7IXJxjuwGOW81ODem+6D0/izdcKtTsPJpp9YSpdC5Vpm2PikZpsys+VOcWW1MEL88w2pulsQR+Wqm6bNEPN9idYm2Nj+8b1+PX78HdkkEJGFxV5Sq5Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785858768; c=relaxed/simple;
-	bh=4IMYxJH0hPLNM/inpTfFxvUD3zVh0AxAaEUPOIGaumM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ChbjsP/M0NFdAJYAVHGnvne6McIGNhu2D1zyixlrJorr7k/z/Gb3lLNv/PfFYBgAzsEE9Gzs+lEipoKjbPxO+iXcnqB/hGrrl4AZg43hzcQ+jg46ldc/IvMP+xrqDCanvF+M6ftrSzPF3qbnEIWwGyyJluKqK7xuFYz29zefHTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=XlbuGjOj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OJ6wdfMW; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1785860105; c=relaxed/simple;
+	bh=aiHijWNQm0YQ2K//WRkVXFStJF9o81GlXW3EAC/DKkk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=thGshhPhFs5WRDN9HDO4utpjDHyNtYhxYOdF8x5VgQbp8GVAHECYcoIuEMemEBZDrA9BYSlzK0+uG70eM8kuLWmdxxViA54v52ZAZmqIYZx2vQLG+sBZ5d/gyfuzBk5QXWCIQz99gEdr+IPijoQgiax9qH+bkfApOQA1a6spYYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OkwUHhXX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="XlbuGjOj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OJ6wdfMW"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 3BF3B14000DD;
-	Tue,  4 Aug 2026 11:52:44 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Tue, 04 Aug 2026 11:52:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1785858763;
-	 x=1785945163; bh=tvHNcStby7mA2MTedxkPfcu3psZZkC2QAAIerdvv5BY=; b=
-	XlbuGjOjzvtkwwzyaMzIY5/q2c25pE6974gbbyEj7QvtE+brS+TEWKMENWwMZnsV
-	2S8YvnEK2FkgyXvMcn8EMGGDmmjJdFct/1IGy6y8LlDJu000B5gRyKlho7EbfK+V
-	6yGqTT+mH7A+XQiNhkpYXKJSXgxSLg52dvK2lK/QrlMvkVkNfROqZSilXrMjwOMY
-	xqDsYcS2bhdSaS9yYPCYg/+g6F/ehTZH+3pbvUs9mgccsYzFj1fQExZOGLPaZS7B
-	ZSwokkKQAuMtSTKfbxNXtoE2ku76npIPOayG7OIWqP7iOAEptk18oAufdjgpeVH6
-	MPsBicPq4XmrXVUAnNCj1Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785858763; x=
-	1785945163; bh=tvHNcStby7mA2MTedxkPfcu3psZZkC2QAAIerdvv5BY=; b=O
-	J6wdfMWMFi6sSQVuySFR9sQBwgSkRoQZrH/FrkqWgbbr2B4VgyODxgJ/GOqc2tnH
-	WyzRJlle83RX7n+7Tb6TpLKlS4A8TImzYhrd8U2WjsBEW08WBoBvwuEUHEIZXYJS
-	xVqaMJtHkq+KVy660rz2HDKI9HcyYQrX8PtNol2zPTKfARZdCuwoLauFWAiYD8W9
-	YKrbijhAysnw9o45BfgSXH46rfZXrzfnTcCCD/TmNMIgKdxZ7/8bcJv0x0XAYew9
-	NYkyNDDKIn/7jVpL0Fxx/4T9eouYSgmf2G4Nsp3zCysNm3tFT5veebLMj8vTx7NI
-	6FefIOwtuGg1FcrKHWgag==
-X-ME-Sender: <xms:wwpyaoq7LvcUG1u5yPw1YP8DuLa49jXieUbG9ZUvcDjALEQs8-ZZjw>
-    <xme:wwpyapepKqYvi_mjS2Iqlm1WRhHNbniW52G0hm9jnwHY1fsY7O9XEiPCjV70_qovC
-    0qncrywDQQefIAg-8Ha2a14YWbuBMAjTGoiGxF1ShlQaWhz5eHv6g>
-X-ME-Proxy-Cause: dmFkZTE6dy9+2lfDYpR/aLw8faXRHD8Gp+7LDACqd3lgKT3c4TyXY77vVtGtLw+6ogbHJt
-    RQ1TcE3RozZ2SKSmFDQ6m+eaxPt+BvQoXFQNJf/uoDzOfVqb/mG16Mwn/s7DlM4yc2yb49
-    KqKdeyu0ECs1bNgAJjzJESLzzlkIf0BZuC0WhY+1LlN6Fyh3O1wK1s8ROBp4its/Y5r3z3
-    rHRnJxh4mhXbgVgBBbG0AmBtLAdNkpPdL0fZenjvt9OqJUBbiLS7ZUo3URb0a+JLqe4w/m
-    bQ0bEWkC7SLImMlL6TzmuBBUG87+UKpXuU5ju0aJK7x1js7JJA4rslTuh12IbmKBX7oKAn
-    urSEe69AN5eGR0KvqNwOedlZJrHWtZWlZourX2PWybBQABypSOaW83p/qBhxIsuF85qNo9
-    mjeUBE74+saty+KLxFHj4x2WGuO/DrpZquCsNpYIjc5vHoBITY912R314E6ui9iYM7SeTm
-    nDECyBPa3JKyvK4OFU55sVReSbFX1vcbYN9DEc6TtYNp1YgszM89KBfoC/E/8NOvk+oBgW
-    kIi8sqfCFsN3r70rDTFc49YEiXttdApHS8Kk7/D4yJf6q6ziMy9DC3gUx0SxPqWu/NPXbw
-    aSkSsuGlxI0I4jiSIaWl0kpiHX5H9f0C6cjiItFdijVgv8TVNUoyR6LYA24Q
-X-ME-Proxy: <xmx:xwpyavYPzTKZOjVb8fu8GS0IEVwQN7nOXJGsR7JmK1MP7clHDC_R_g>
-    <xmx:xwpyar0VSTueGpVxBppRaCHJM-ikHwG8H45GxiLXRWFuE9U658R2Sw>
-    <xmx:xwpyah7LMvaEgXxgr59Kw0hgurcTrjwXrbyboi6IVxkJn5Has5HslQ>
-    <xmx:xwpyanQICiQWRhTwGF4MAcLA67CAWFE3lIzG2FwgY-7_vnAtykEpXw>
-    <xmx:ywpyaq4ADYVlAyWSIOHnXxaVtWE4TeJi2fviLbyhkM-YiVQ47DG6-y3A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 4743132A0062; Tue,  4 Aug 2026 11:52:35 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OkwUHhXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F32F1F00A3D;
+	Tue,  4 Aug 2026 16:14:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785860096;
+	bh=L+PSkzfSlH4+/ohMeWS5xc5xrhRB7+qexjNxX1/DAZE=;
+	h=From:To:Cc:Subject:Date;
+	b=OkwUHhXX+diFU+fAYymTMumLSZzw0Ja1o0EHFYpGEByU/hJVvw2my4WcBSshpf3uA
+	 Y3WXsz80CJAm2h8bfpr7nsa4Yncp81t+pUIpJdbleKgXgEzLjNIZk93F2H3KC21f6I
+	 gTlhlqWM/3ZTOzAOZqjtQah1MiM8diZeSZylYZ8h9rsJTxWsnmh9J6slu/yjeNnBBT
+	 0nI6FlfOLdu++ABYmh/9t6iXD6wLlNyWhEDy6/5OqQolwJ2j8aKAgpbOTHIwwSjw5S
+	 a+QO0oVUee/TUuW4arfvP/74nzNHRbxEILsQpxbwe+GujyqGSBcTaUpMQ8mssOL1Oi
+	 EEm5YqIbaGpPQ==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5A47FF40066;
+	Tue,  4 Aug 2026 12:14:55 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 04 Aug 2026 12:14:55 -0400
+X-ME-Sender: <xms:_w9yanBQy1XndJFV47e5W9KgsKiEuIHt2o3zBsW2xKrGWgdygBfIEw>
+    <xme:_w9yaisnlqnWlnxtbedyMjNXU7T6GON-aE7S0qrImlkMtMoyLXHTr7G7ulya1leWA
+    HOuetgKGm4OmRbVT5_-xvlHO8jr29RFzsEsztLR_BFr8GXKGh17aGk>
+X-ME-Received: <xmr:_w9yal_XLaGTmSJ6xdXeD80Vxi_GVRpQI3ODty-NUNSDJwGkjP_IYF8qpWQ7LWTXrvJHS6NtvzTFsYM9vGs3la6smbeRaEKO>
+X-ME-Proxy-Cause: dmFkZTEatUNGtY50+RUN6sNEeEQC8etDAdN2xmsDtZ3qIVVcd16vndR+ESBXkIhDZ/lmFZ
+    PLJy5/h2tFrY5vrVHsuk+ZxdPR04rFlTxB8EjNRSVnMrTXR46isWdFc/c9/8oRnq3UG+1i
+    RX+SJL6vsHC7fr0+elQHbKOkc4ZtIGlANyFcmKbme5pNvpqrml+WupFVT1GwQdEUuZQgFZ
+    3mCE2s59V4JeB8RaYhdtUrwDYv489G8OWVZk3B6BwBqDzTY4U93mUB2QDEBw3P1MdXYZfr
+    kCLtz67AVe08hhFyJ/f3EESAZH25HZCYqE8HomgW9hl4lTtFrowMphBFBQwfNB4rh0JkKZ
+    oRu2MWJFg3oHJQ3MfNYxejG1AnV+5iL3/hH6EBln7kBw2PzYKI5KNUB1wR0u7aEmqBKWpU
+    ybLSbVvZeggPDiNSnuE5epWRWTk7bk2tJQFpO9Usx8T4KYtkhUrt5CajhYHh7qt2BVYMpj
+    KJX5qp1d1KdUIjtUtMZ6gfT2gU9aF6rICfjXDSaLmP64zZP1x/B1lwNXPfnOXPQyM8/enM
+    ipJO6bD/+fxYQSvJYxXt1D2Wvlq/ltY77e0UqsCcTUYlC5V0s/AI2ytfySpas/QtfPtg3T
+    panH1/KN3O+1TiauefEwVmpW/I2AaeqkUcFbX6FtOI4E62O2xoBoWDTNroyA
+X-ME-Proxy: <xmx:_w9yapRMtls7HHlBYZsHRIaD1lbiIiYVGMBvXCccO7kyhN95AiYBWA>
+    <xmx:_w9yanUmV6j_NvK-hsuwBasDlAySOIzhzgm-Va4CEiUKYrAq2LdvIQ>
+    <xmx:_w9yar_9ZCS4b8Rs90ihy6VY5xcsKzCeLcSSz-lnVDJzlZbI5gFv1A>
+    <xmx:_w9yan01yQtTzMYhowRvMI3gFlKQfpPDnE8JDW1DtuO3NhIh7FCXZA>
+    <xmx:_w9yagcpKwflSoI9V7-2284lWsQ2CBn8LJdxX8SCOWACCSr213qCmuzu>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 4 Aug 2026 12:14:54 -0400 (EDT)
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: "Ingo Molnar" <mingo@kernel.org>,
+	"Will Deacon" <will@kernel.org>,
+	"Boqun Feng" <boqun@kernel.org>,
+	"Waiman Long" <longman@redhat.com>,
+	"Gary Guo" <gary@garyguo.net>,
+	"Alice Ryhl" <aliceryhl@google.com>,
+	"Lyude Paul" <lyude@redhat.com>,
+	"Daniel Almeida" <daniel.almeida@collabora.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	"Miguel Ojeda" <ojeda@kernel.org>,
+	"Danilo Krummrich" <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v4 00/17] Refcounted interrupt disable and SpinLockIrq for Rust
+Date: Tue,  4 Aug 2026 09:14:22 -0700
+Message-ID: <20260804161447.84806-1-boqun@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Ag8nwV6tN_57
-Date: Tue, 04 Aug 2026 17:52:14 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Niklas Schnelle" <schnelle@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>, "Danilo Krummrich" <dakr@kernel.org>,
- "Gerd Bayer" <gbayer@linux.ibm.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Daniel Almeida" <daniel.almeida@collabora.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>, driver-core@lists.linux.dev,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, "Boqun Feng" <boqun@kernel.org>,
- "Gary Guo" <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <lossin@kernel.org>,
- "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>,
- =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- rust-for-linux@vger.kernel.org
-Message-Id: <57ac7553-4034-49e2-b686-b7272591da00@app.fastmail.com>
-In-Reply-To: <1aac654b8d333cc058a345b03ae0f798f1724ced.camel@linux.ibm.com>
-References: <20260803180931.97202-1-ojeda@kernel.org>
- <fb2daae7-4eba-4ca1-95a5-60f8157eb66b@app.fastmail.com>
- <DKFKXA6YWW8R.1NDZ44Q13XFQH@kernel.org>
- <20260804071330.24760Aaf-hca@linux.ibm.com>
- <33ecacea-ed2a-409c-ab1c-a136e06b1b7a@app.fastmail.com>
- <1aac654b8d333cc058a345b03ae0f798f1724ced.camel@linux.ibm.com>
-Subject: Re: `io{re,un}map()` build error in s390 under `!CONFIG_HAS_IOMEM`
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 4, 2026, at 14:21, Niklas Schnelle wrote:
->
-> I think there is also an interesting interaction with memremap(). 
-> That calls ioremap() under some circumstances and it's a known issue that on
-> s390 memremap() will work if the PCI memory-I/O (MIO) instructions are
-> enabled (e.g. on modern LPARs) because then ioremap() actually maps,
-> but won't work if they aren't enabled. With your proposal it would also
-> work for !PCI.
+Hi Peter & Ingo,
 
-Right, that is an interesting one, as there are somewhat conflicting
-requirements:
+Please take a look at this updated series for SpinLockIrq.
 
-- On PCI MMIO areas, memremap() and memremap_wt() should return a
-  normal kernel pointer that can be dereferenced, e.g. for
-  option ROM contents for a framebuffer console. This can't work
-  on non-MIO guests but might work on MIO depending on which
-  instructions are allowed those mappings (I can never quite
-  remember how this part works on z, does this have to use
-  pcistgi or does a normal aligned load/store work as well?).
+Changes since the PR attempt [1]:
 
-- On areas that are backed by physical RAM but not part of the
-  kernel memory (something like z/VM DCSS) should be mapped
-  using memremap(), which would fail with the current !MIO
-  implementation. On x86 and arm, this is done for mapping
-  firmware blobs, but I don't think anything tries to do
-  this on s390.
-  Right now, not having memremap() defined on !PCI configs is
-  the one thing that lets you know if some non-PCI code ever
-  start using it, other than crashing a non-MIO guest.
+* Removed the preempt_count check in local_interrupt_enable() per Peter.
+* Simplified the local_interrupt_disable_state struct to avoid
+  unnecessary wrapper (Thanks Peter).
+* Adjusted the user side changes in do_sched_cfs_*_timer().
+* Improved the documentation on the preempt_count layout regarding
+  HAS_SEPARATE_PREEMPT_RESCHED_BITS
+* Updated the asm block comment for s390 (Thanks Heiko!).
+* SoB chain/typo/format fixes.
 
-> I actually have a prototype lying around where ioremap() always remaps
-> by mapping the address cookies much like we do for user-space access
-> via the s390 specific MMIO syscalls and then doing a page table walk in
-> the accessors for the case where we don't have PCI MIO support. That
-> would also allow us to implement the s390 MMIO syscall via
-> generic_access_phys() getting rid of quite nasty inline assembly and
-> over 300 lines removed in total. On the other hand it would cause
-> overhead for non-MIO systems and sadly this currently includes all KVM
-> and z/VM guests which is why it remains on my prototype pile. I haven't
-> actually been able to measure the overhead but clearly more work is
-> done.
+(Lyude, I dropped the Link tags of your original patchset, since I did
+some significant changes and let's just use the new links).
 
-This would not help with either memremap() or the !CONFIG_HAS_MMIO
-issue though, right?
+[1]: https://lore.kernel.org/rust-for-linux/20260731203031.13679-1-boqun@kernel.org/
 
-       Arnd
+Thanks!
+
+Regards,
+Boqun
+
+Boqun Feng (9):
+  preempt: Introduce HARDIRQ_DISABLE_BITS
+  preempt: Introduce __preempt_count_{sub,add}_return()
+  irq & spin_lock: Add counted interrupt disabling/enabling
+  locking: Switch to _irq_{disable,enable}() variants in cleanup guards
+  sched: Remove the unused preempt_offset parameter of __cant_sleep()
+  sched: Avoid signed comparison of preempt_count() in __cant_migrate()
+  preempt: Introduce HAS_SEPARATE_PREEMPT_RESCHED_BITS
+  arm64: sched/preempt: Enable HAS_SEPARATE_PREEMPT_RESCHED_BITS
+  rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
+
+Heiko Carstens (1):
+  s390/preempt: Enable HAS_SEPARATE_PREEMPT_RESCHED_BITS
+
+Joel Fernandes (1):
+  preempt: Track NMI nesting to separate per-CPU counter
+
+Lyude Paul (6):
+  openrisc: Include <linux/cpumask.h> in smp.h
+  irq: Add KUnit test for refcounted interrupt enable/disable
+  rust: Introduce interrupt module
+  rust: sync: Use super::* in spinlock.rs
+  rust: sync: Add SpinLockIrq
+  rust: sync: Introduce SpinLockIrq::lock_with() and friends
+
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/preempt.h              |  20 ++
+ arch/openrisc/include/asm/smp.h               |   2 +
+ arch/s390/Kconfig                             |   1 +
+ arch/s390/include/asm/lowcore.h               |  13 +-
+ arch/s390/include/asm/preempt.h               |  51 +--
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/include/asm/preempt.h                |  61 +++-
+ arch/x86/kernel/cpu/common.c                  |   2 +-
+ include/asm-generic/preempt.h                 |  14 +
+ include/linux/hardirq.h                       |  40 ++-
+ include/linux/interrupt_rc.h                  |  82 +++++
+ include/linux/kernel.h                        |   4 +-
+ include/linux/preempt.h                       |  44 ++-
+ include/linux/spinlock.h                      |  49 ++-
+ include/linux/spinlock_api_smp.h              |  43 +++
+ include/linux/spinlock_api_up.h               |  15 +
+ include/linux/spinlock_rt.h                   |  18 +
+ kernel/Kconfig.preempt                        |   4 +
+ kernel/irq/Makefile                           |   1 +
+ kernel/irq/refcount_interrupt_test.c          | 109 ++++++
+ kernel/locking/spinlock.c                     |  31 ++
+ kernel/sched/core.c                           |  18 +-
+ kernel/sched/fair.c                           |  12 +-
+ kernel/softirq.c                              |  36 +-
+ lib/locking-selftest.c                        |   2 +-
+ rust/helpers/helpers.c                        |   1 +
+ rust/helpers/interrupt.c                      |  18 +
+ rust/helpers/spinlock.c                       |  15 +
+ rust/helpers/sync.c                           |   5 +
+ rust/kernel/interrupt.rs                      |  89 +++++
+ rust/kernel/lib.rs                            |   1 +
+ rust/kernel/sync.rs                           |   9 +-
+ rust/kernel/sync/lock/global.rs               |   3 +
+ rust/kernel/sync/lock/spinlock.rs             | 329 +++++++++++++++++-
+ .../testing/selftests/bpf/bpf_experimental.h  |   7 +-
+ 36 files changed, 1060 insertions(+), 91 deletions(-)
+ create mode 100644 include/linux/interrupt_rc.h
+ create mode 100644 kernel/irq/refcount_interrupt_test.c
+ create mode 100644 rust/helpers/interrupt.c
+ create mode 100644 rust/kernel/interrupt.rs
+
+-- 
+2.50.1 (Apple Git-155)
+
