@@ -1,79 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010052.outbound.protection.outlook.com [40.93.198.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EED647728A
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 16:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785860136; cv=none; b=E3bdDOuONTfd6Rt9ydi7Y5BPU3tI9+1pem6cqVzDrtK2RLERGtFKsMPvhh5ncqDzO3+9hz4dSaWfdaC3iOsiURbbs9vpT0D/r8MadkdQcNRn0UUwEaCewSF+O9wZjS1tdN0N1ZwlXGWAzXGNBQ26Bdv4df1Il8qC7eCquDqz/8U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785860136; c=relaxed/simple;
-	bh=yOW+vEyMmlLd/rvdAQOpfI7rRLssPojgy8OC8Xdb7b8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwh3Cb/zAJKoLsF5Wz6JXw3VtP4FuOAk/+Oed9XXUurnrs3wwGZCQw4G6CSWQRj4qPbqFUkaOHWPhyR9kNb0yiBRwhzR4Nez2bv/X/WTLPIKYOEz+LvWCF4NooQ94d2ocFwL1wWxa1d3ybSAyzJRmcldMvS7ccYC5SmuaQlnO4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhtIyMs+; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C4D28B7DA;
+	Tue,  4 Aug 2026 16:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785860218; cv=fail; b=klq3yusmOnxxYN54M1otN+qBHOdNSWTyW/al/uSMhzQpaFwuMYKMLggs18V7QQmE9Q8uTgS7nEyrax2Gc5B8ER3g5EWvCp+CqFOoIaR4TIm1HY8dwowutv0ZF4d1EBYcz5AyIGCA2pWby2dAZFOx9tzj7+1m4iLNawoXkowBit0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785860218; c=relaxed/simple;
+	bh=j6iRxEX4bao3PaH9l0Uns7uPNixGAV6FDUeTGDBRcsk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=igyhvqmFVEdnX5eobo9xzGcRNu9NhQCmQxUEyoYeUCuqh1AFlFEB7cIWZCXn9fhudRGVI8q97Y0ooT8mwwLUM034gZfAzr6+M27RgG86isbBJIYHqdQSMkTqFjDpN9TjJPIUqDdd4ePhkMtUrVC4/Dca5nQUqdxKcfZkS9X4CVg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RVHQUOT2; arc=fail smtp.client-ip=40.93.198.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhtIyMs+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29011F00ADE;
-	Tue,  4 Aug 2026 16:15:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785860124;
-	bh=J5r9F5NVhPBA6Gj8qaTBPl3yuPTDh/upo+Mtrw3vN6s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GhtIyMs+lDB/3WxFofpCVhr5lrAJAfiK/2Jmz7Yb5ccySl6rQotVGNNSWbwDzH6Om
-	 5Gcqpn8c9dn9yEjLDupABxeqD8aVZe+jNHQt87w51hpe8Aisu1n5gTEB6hUN1sr04K
-	 Gny5kXFM855sCVusdcQx1PtuOiBbXj8qOONk6gmFMWgll6rYu9ErqsC+PaKfP1Lm6M
-	 Jh1Azipm7vIi1qGfu7hC+ZpJ+Szgs3w82j/m63cJlIG/rS2gm2Xp0JWO7BIoMO5oT8
-	 GudAFFM60dImjdkX3Ev5dYcZgnd9t96v4w5AE2gcX8M1Mf0udewI2WxnGcHSnz3tCB
-	 yY/hvJOLy2TiQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E0698F40068;
-	Tue,  4 Aug 2026 12:15:23 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 04 Aug 2026 12:15:23 -0400
-X-ME-Sender: <xms:GxByarzlpXaux7O9gV0aXWNeGaifR_j2lMjnSCieJKCdU7R9hryG4Q>
-    <xme:GxByaocA2pLvgbgThVLO-KvhrQ15Xry2TLLLrveHTSeonnLZTdA65P84mQCTa6TbW
-    OjEGedpaUod6CwMv09wovtgng8PH5S6vhuNu5pQfahg2fDjwBuWZsc>
-X-ME-Received: <xmr:GxByaosLKhGxpZc4s15Kf1XOw7PEvxSFsgyPKPmqK9NL0NXn2DwD423yU5c8t9tfq3c5O-DBTR1eGtucQvP7Y8HERJ-6g9Cw>
-X-ME-Proxy-Cause: dmFkZTE6f1b/PLD7WfUEjv3UPH0IuooDzdONFOoQTajOMPpDZsgOHZQOVqJ4v+RHATO1sj
-    EZSfNibFX853su8vPqAqnUSuvHiUbplQY0egsm0mTGT1lvu1S/5Nh/tuqaumzTAbEEqn88
-    A4HuRrhsSYsTxma98RYyzM2Gbo4E2wg96qbDSuNUia/kyZtd9PuUf9ikEEX+FWBaYhk2LZ
-    4A6T9U94iL3j6tNfmRpUMp/Z8p6+0GWHZbXf2pAo98Kg1ESY7btybSSSUnrcHypkA1CoVm
-    T+WboQPfBLNhjm5E0DtWi31bTX/atiaNKg8ICM8aktklu407EF+Nx0w3ySFDe9rX99/5c7
-    VHxd0IBeRLjSglLmGGu4qcFo6l3dFM8dlqsmahN6miVS0lDN1uZWPAhgUWk58n5dNfTejY
-    O3XlDdY3zr/a45OAr6aLsOyn9N9frGmsOzWcXGIDsrsKwxBBbBdBSHbc7U+/PXIzYEdnIp
-    XLi0Fm5TYkwEKFgsBYim6ZlA6G3VRnEbfq+bx4qUJtD9jjD+UHYqCmFNGzXeZZUwbGHCjb
-    0FrfHhihkhv4i0JVaWFshEQPJ8wWTnJhu59no68G7UkSd/B0+bGTmdVG/7sYc/sGzR0Guq
-    kHc5SXgxoWcLPZfgI2Ldw1o/s1T7ccCNIeshuUsOQ+f6gYWEB4R/m+m9jv2g
-X-ME-Proxy: <xmx:GxByalALiOH3Z-M2Ya-bFo3RManis0F8E9_tVsM4_c7orteAQ17UJQ>
-    <xmx:GxByaoFEUvEDIpWeIi7oKi_l09-bcoNw82QYmIkJXuq-fyxzq3j4EQ>
-    <xmx:GxByatuQX--GZ4js9Pzxqlc-BMH8Rz-O1-GW34JqymYgjHp6jzaQ4A>
-    <xmx:GxByamkAdX7Lx4bKzwJqHKK0jlIr31L89gwqbR-6DcZqqZ1S1_7HPQ>
-    <xmx:GxByaoOXMOyeLEPrFqQ4P8qA0R_eM4rwGoaqbC1jeBaBRn_nHyjkRqNO>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Aug 2026 12:15:23 -0400 (EDT)
-From: Boqun Feng <boqun@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: "Ingo Molnar" <mingo@kernel.org>,
-	"Will Deacon" <will@kernel.org>,
-	"Boqun Feng" <boqun@kernel.org>,
-	"Waiman Long" <longman@redhat.com>,
-	"Gary Guo" <gary@garyguo.net>,
-	"Alice Ryhl" <aliceryhl@google.com>,
-	"Lyude Paul" <lyude@redhat.com>,
-	"Daniel Almeida" <daniel.almeida@collabora.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	"Miguel Ojeda" <ojeda@kernel.org>,
-	"Danilo Krummrich" <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v4 17/17] rust: sync: Introduce SpinLockIrq::lock_with() and friends
-Date: Tue,  4 Aug 2026 09:14:39 -0700
-Message-ID: <20260804161447.84806-18-boqun@kernel.org>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260804161447.84806-1-boqun@kernel.org>
-References: <20260804161447.84806-1-boqun@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RVHQUOT2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C5ds9qDMosb53qdMsqhT85gnPU9uqUIAm6gSV8hcH1w/GDOp70kzqhVXPtLLcU4qDOvvoatKwirz9rQEu/r3pfZKvF7NeIk0SYgX2ezSd5m9xSo4TGUAQusWbnxyh6dYCpEBejxig66WtHg7UzJgumLCFWfk6XihPMOq1sImtZLNzonecU7o2npmBIDdS8PMQH2K7wNLDoU/8gSB76NDZYqEPv0tLf3BQBzqAXPLopaJCoBFlzFhZjP6FKT9RaqXqRgZtILaRn/H2CyRgrCDBiG0HgyskqsHCHucYQ+p/o/PTvkJ6ZDPpNxlj6vJ+aDSGsrtIj205KAvgyfeOLT2zQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2260ZyVlAiJVC870oAq0DDE6CGiUspoSvGJZp4JYaME=;
+ b=HPXRwcbz01w2eCIq/LL48kDlUZT0qfvckxe7Ou9pNHp4g5o2R59EAgHyoSFd4EQTYEtj95gyuyR+YHJHRqX6pk9HxgrG+uornaY1N5ibK2FPrQNcW7t0HmQJt80r4NPnx/aetMDBNM021rpDNke1ODpAS0Np7vFyntVoRE3DWho+2lol1Zs7RVISE8qYBq6kM7CrETmrRaVMUV2t0dDY74IFZsvAgIQJ7ZiZ9ArMmvUp3Net5e8WgaxBezLnq0/L9J1z5xvKbsVegxfJLgrojZ14AxoOkDfNa4eChZecgFZNgXH5astr0N6E89zv5Bb8z71j4QJkBxvdgfBlFTbV3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2260ZyVlAiJVC870oAq0DDE6CGiUspoSvGJZp4JYaME=;
+ b=RVHQUOT21Yo7/0abG6Ungya1nw0X8xSusmBRdtWjsjt+PNvnBcKqt5ekxILDmBYvtejrhT3Sxv3EyVmZimqxsKUH1BqVR1IWLL4ANzJFkjdIo1FYnRdyB35w+/8g1ZbVv6P8CPrIWkyNeMHN83rKKdl3W6R700afnlHw0U2QcjaKxOMoV6xBkku6o5dKVmGK0EnICVS293qscW0u6J2DFsf4FjjEgdcPEC2STHWRKDGTH/zzffey+4HLlbmBQDsT7qT9B1nIC0cZvUwLiYNSPT/+XEk+iHHJ+HGaCQ9+lyYgNRyZ3iDqfC4bSQUCnC9+vpjrZJq5A87K1ThqJ4MeSA==
+Received: from SJ2P221CA0008.NAMP221.PROD.OUTLOOK.COM (2603:10b6:a03:5db::11)
+ by PH7PR12MB6666.namprd12.prod.outlook.com (2603:10b6:510:1a8::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.16; Tue, 4 Aug
+ 2026 16:16:50 +0000
+Received: from BY1PEPF0001AE1D.namprd04.prod.outlook.com
+ (2603:10b6:a03:5db:cafe::e) by SJ2P221CA0008.outlook.office365.com
+ (2603:10b6:a03:5db::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.16 via Frontend Transport; Tue, 4
+ Aug 2026 16:16:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BY1PEPF0001AE1D.mail.protection.outlook.com (10.167.242.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Tue, 4 Aug 2026 16:16:48 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Aug
+ 2026 09:16:26 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 4 Aug 2026 09:16:25 -0700
+Received: from inno-dell.home (10.127.8.14) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Tue, 4 Aug 2026 09:16:17 -0700
+From: Zhi Wang <zhiw@nvidia.com>
+To: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <dakr@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
+	<kwilczynski@kernel.org>, <ojeda@kernel.org>, <boqun@kernel.org>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+	<a.hindborg@kernel.org>, <tmgross@umich.edu>, <markus.probst@posteo.de>,
+	<cjia@nvidia.com>, <smitra@nvidia.com>, <ankita@nvidia.com>,
+	<aniketa@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<kjaju@nvidia.com>, <alkumar@nvidia.com>, <acourbot@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>, "Zhi
+ Wang" <zhiw@nvidia.com>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+	<work@onurozkan.dev>
+Subject: [PATCH v7 0/1] Rust PCI capability infrastructure and SR-IOV support
+Date: Tue, 4 Aug 2026 19:16:10 +0300
+Message-ID: <20260804161612.776752-1-zhiw@nvidia.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,193 +86,158 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1D:EE_|PH7PR12MB6666:EE_
+X-MS-Office365-Filtering-Correlation-Id: e78c63ac-4207-4aa8-09c4-08def243c916
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|23010399003|82310400026|376014|7416014|5023799004|11063799006|56012099006|10067099003|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	hk9uVaa3DpJdLxWDn2xsWay8QTUl6ypQFUdcMTJ5OV6UHIN8MKFvD/KOxLn4PLVk6KmujOSOHgZDnU96ZdDDCd7oUGf8kzVgJGUOzVGrw15DXI52QBfsWP3OS9W+FjrvzSoDzeEYJ38lk0w1S6ktN14HD4aW1aWLF4PnOm6+3edPfX+XLHd1c2Xv+KqBDDKZLULHvMtcHO1XwCXoAMypSS9o3Ql10eav7akpWc4EfwfX/42TnirpLARnxSgVqgvvSKqND1XrS8afpBuF+4AMDBYBK53Mm2PYmUI3JKpto/Fw7iXLrqY/ERpAz1yBwvrLPgrOiF0RTFPNkjIbQca+lLNMFU0da9pXUT4grb8MojJvWP5zO5T6Ddt8rHWN1JNQVUz1RqlnYI5o1zUBjHSDEL7JhI90mCS8kWKuEHYyG2eKGLVtxbLqateukv/MvEYKnz70AHjLJmMyPp4gxafZn9TZVbYekuIEojysiymQPA0AeeTaI+HebZAnVGIgeQxzKw6C+sBX+5pCBQtsawzwN1A8ko0Y8zRQc/teoO2znqnNB8U/uHHe6JSYbfsj3ETkeUszhcYI/8d3ZlQqUIQX0eLX0kCffH9GPSgjzFBA6xtSswG61nJ495XJlP7qTAIXimimrhTn4l7CZqbG333/DBt5jfc9+Sid4S572E10BKI2EPmDIADvlx8A7YgFzeZM0Ovio1y85coD/34hYwU0/w==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(23010399003)(82310400026)(376014)(7416014)(5023799004)(11063799006)(56012099006)(10067099003)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	JkbHVEp/REWccHL3cwE9T2O/UpPOFes87Pe6zsqiSyG3SnGKrkfOu0UjYy/WJYDACye5M2dDzM9hs2Ks7bUq06d0GyfqINuSME2gtdI5IIZPYcKI5MQvayCBIy4uJBAfESPDbB35HJj7OUJwdS8rfB/gnQ41WGI1Rp8/rSV3+eTbO192iFLxKnt2rf+1hLH7ttV7wptHM7KPRfOixXrJjHIbFTOS/b+xYi4RRa5AMsXTB8nzy+cmsafCfFI9IK09Igv1wyTanlwsN/QMwMoOCUiX55cPJN1S7avuMQ2dDlDCVgnG2d1DjlvdbxO7PjUu6w8d720jqgcdTUqEXQkPtimRS3KqorZ98CIRHSoOL9DZnTw5jJuyle02J+aGvcXarIy7EYJXZqE4Bcyb+xw8ogr7/wVquzAl/oyEmIWpUbsPkGaOwvugA3XcHeyUWYfU
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 16:16:48.3399
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e78c63ac-4207-4aa8-09c4-08def243c916
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE1D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6666
 
-From: Lyude Paul <lyude@redhat.com>
+This is a follow-up to v6 [10].
 
-`SpinLockIrq` and `SpinLock` use the exact same underlying C structure,
-with the only real difference being that the former uses the
-irq_disable() and irq_enable() variants for locking/unlocking. These
-variants can introduce some minor overhead in contexts where we already
-know that local processor interrupts are disabled, and as such we want a
-way to be able to skip modifying processor interrupt state in said
-contexts in order to avoid some overhead - just like the current C API
-allows us to do.
+This patch has been used in the Boot GSP with vGPU enabled series [6].
 
-In order to do this, we add some special functions for SpinLockIrq:
-lock_with() and try_lock_with(), which allow acquiring the lock without
-changing the interrupt state - as long as the caller can provide a
-LocalInterruptDisabled reference to prove that local processor
-interrupts have been disabled.
+The patch defines an ExtCapability trait that associates an extended
+capability ID with its register layout. The generic
+ConfigSpace::find_ext_capability() finder locates the capability, bounds
+it at the next capability or the end of extended configuration space,
+and projects the ConfigSpace view to the requested layout. It returns
+None when the capability is absent and propagates errors encountered
+while constructing the view. This lets the existing I/O projection and
+access macros operate on capability registers.
 
-In some hacked-together benchmarks we ran, most of the time this did
-actually seem to lead to a noticeable difference in overhead:
+ExtSriovRegs provides the SR-IOV register layout.
+ExtSriovCapability::vf_bars() validates the six raw VF BAR slots and
+returns an iterator over logical BARs. The iterator handles the different
+slot widths of 32-bit and 64-bit BARs internally and yields decoded
+ExtSriovVfBar values containing the address and width. A typed bitfield
+decodes each low DWORD while the register layout remains an array of raw
+u32 values. ExtSriovCapability remains as a convenience alias.
 
-  From an aarch64 VM running on a MacBook M4:
-    lock() when irq is disabled, 100 times cost Delta { nanos: 500 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 292 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 834 }
+Changes since v6:
+- Changed ConfigSpace::find_ext_capability() to return
+  Result<Option<...>>, using None rather than ENODEV when the capability
+  is absent. (Gary)
+- Made calculate_ext_cap_size() propagate errors instead of treating a
+  failed read as the end of capability. (Alex)
+- Replaced indexed VF BAR access with an iterator so callers cannot select
+  the high DWORD of a 64-bit BAR. (Gary, Alex)
+- Validated all six VF BAR slots before iteration, made normal iterator
+  exhaustion return None, and logged invalid BAR encodings before returning
+  EINVAL. (Gary)
+- Decoded VF BAR low DWORDs through a typed bitfield while retaining u32 in
+  ExtSriovRegs for entries that may be 64-bit BAR high DWORDs. (Alex)
+- Made ExtSriovVfBar fields public and documented, removed their trivial
+  getters, used the ExtSriovCapability alias for its impl block, and applied
+  the suggested local cleanups. (Alex)
+- Updated the doctest for the optional finder result and VF BAR iterator.
+  (Zhi)
+- Added #[inline] to the ExtCapId::as_raw() abstraction method. (Sashiko)
+- Rebased onto the latest drm-rust-next. (Zhi)
 
-    lock() when irq is disabled, 100 times cost Delta { nanos: 459 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 291 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 709 }
+Changes since v5:
+- Removed the unused ConfigSpace<Region<0>> offset() and size() inherent
+  methods; ConfigSpace already provides size through the Io trait.
+  (Sashiko, Zhi)
+- Removed the doctest write to the SR-IOV NumVFs register, avoiding an
+  example that bypasses PCI core SR-IOV state management. (Sashiko)
+- Corrected Function Dependency Link to an 8-bit field followed by its
+  reserved byte, matching the PCIe SR-IOV register layout. (Sashiko)
 
-  From an x86_64 VM (qemu/kvm) running on a i7-13700H
-    lock() when irq is disabled, 100 times cost Delta { nanos: 1002 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 729 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 1516 }
+Changes since v4:
+- Replaced the separate is_vf_bar_64bit() and read_vf_bar64() helpers
+  with read_vf_bar(), returning a decoded ExtSriovVfBar. (Zhi)
+- Moved memory BAR attribute stripping into the PCI abstraction and used
+  named PCI attribute definitions rather than an open-coded mask. (Zhi)
+- Exposed the next logical BAR slot so callers can walk mixed 32-bit and
+  64-bit VF BAR layouts without duplicating slot arithmetic. (Zhi)
+- Updated the doctest and PCI exports for the decoded BAR API. (Zhi)
 
-    lock() when irq is disabled, 100 times cost Delta { nanos: 754 }
-    lock_with() when irq is disabled, 100 times cost Delta { nanos: 966 }
-    lock() when irq is enabled, 100 times cost Delta { nanos: 1227 }
+Changes since v3:
+- Replaced the custom ExtCapability<T> I/O wrapper with the existing
+  ConfigSpace view infrastructure. (Alex)
+- Reused ExtCapability as a trait carrying the capability ID, and made
+  ConfigSpace::find_ext_capability() generic over register layouts.
+  (Alex)
+- Removed public cast_sized() and unused find_next_ext_capability().
+  (Alex)
+- Kept capability construction in the generic finder and documented
+  calculate_ext_cap_size(). (Alex)
+- Used PCI_SRIOV_NUM_BARS rather than a literal VF BAR count.
+  (Alex, Zhi)
+- Added is_vf_bar_64bit() and made read_vf_bar64() reject BARs that are
+  not 64-bit memory BARs. (Alex, Zhi)
+- Kept indexed VF BAR helpers because the Nova user accesses fixed BAR
+  slots rather than iterating over them. (Alex)
+- Adapted the implementation and doctest to the current ConfigSpace I/O
+  APIs. (Zhi)
 
-    (note that there were some runs on x86_64 where lock() on irq
-    disabled vs. lock_with() on irq disabled had equivalent benchmarks,
-    but it very much appeared to be a minority of test runs.)
+Changes since RFC v2:
+- Hardened calculate_ext_cap_size() against corrupt capability lists.
+  (Zhi)
+- Added // INVARIANT: comments at all ExtCapability construction sites
+  (make_ext_capability and cast_sized). (Zhi)
+- Added #[inline] to small forwarding methods (find, read_vf_bar64).
+  (Zhi)
 
-While it's not clear how this affects real-world workloads yet, let's
-add this for the time being so we can find out.
+Changes since RFC:
+- Rebased on io_projection branch, using Gary's Io/IoCapable traits.
+  (Gary)
+- ExtCapability implements Io and delegates IoCapable to ConfigSpace
+  instead of duplicating config read/write logic. (Gary)
+- Dropped the fallible I/O patch (now upstream in this tree). (Zhi)
+- Added Rust helper for PCI_EXT_CAP_NEXT() macro. (Zhi)
+- Replaced raw `as` casts with From conversions where possible. (Zhi)
+- Renamed SriovRegs/SriovCapability to ExtSriovRegs/ExtSriovCapability.
+  (Zhi)
 
-This makes it so that a `SpinLockIrq` will work like a `SpinLock` if
-interrupts are disabled. So a function:
+[1] https://lore.kernel.org/rust-for-linux/20260409185254.3869808-1-zhiw@nvidia.com/
+[2] https://lore.kernel.org/rust-for-linux/DHRTUAF52GNI.1J98TSAG1LS6Q@nvidia.com/
+[3] https://lore.kernel.org/rust-for-linux/DI2SL4G5INLY.2W1IFTR081ID3@nvidia.com/
+[4] https://lore.kernel.org/rust-for-linux/20260225180449.1813833-1-zhiw@nvidia.com/
+[5] https://lore.kernel.org/rust-for-linux/20260323153807.1360705-1-gary@kernel.org/
+[6] https://lore.kernel.org/rust-for-linux/20260313165336.935771-1-zhiw@nvidia.com/
+[7] https://lore.kernel.org/rust-for-linux/20260714165827.2937960-1-zhiw@nvidia.com/
+[8] https://lore.kernel.org/rust-for-linux/20260730180349.771719-1-zhiw@nvidia.com/
+[9] https://sashiko.dev/#/patchset/20260730180349.771719-2-zhiw@nvidia.com?part=1
+[10] https://lore.kernel.org/rust-for-linux/20260730182954.783568-1-zhiw@nvidia.com/
+[11] https://lore.kernel.org/rust-for-linux/DKC4MR1ZBQMP.3L7X2C96OJLFU@garyguo.net/
+[12] https://lore.kernel.org/rust-for-linux/DKCOUE9DRG5R.2VAVA78UTVKST@nvidia.com/
+[13] https://lore.kernel.org/rust-for-linux/DKCRGMZJXO6X.1SWGREC78DH0W@garyguo.net/
+[14] https://lore.kernel.org/linux-pci/20260730183913.B00061F000E9@smtp.kernel.org/
 
-        (&'a SpinLockIrq, &'a LocalInterruptDisabled) -> Guard<'a, .., SpinLockBackend>
+Zhi Wang (1):
+  rust: pci: add extended capability and SR-IOV support
 
-makes sense. Note that due to `Guard` and `LocalInterruptDisabled`
-having the same lifetime, interrupts cannot be enabled while the Guard
-exists.
+ rust/helpers/pci.c     |   5 +
+ rust/kernel/pci.rs     |   8 ++
+ rust/kernel/pci/cap.rs | 317 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 330 insertions(+)
+ create mode 100644 rust/kernel/pci/cap.rs
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
----
- rust/kernel/sync/lock/spinlock.rs | 92 ++++++++++++++++++++++++++++++-
- 1 file changed, 91 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 872544948e5d..aafc80125f59 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,7 +4,10 @@
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
- use super::*;
--use crate::prelude::*;
-+use crate::{
-+    interrupt::LocalInterruptDisabled,
-+    prelude::*, //
-+};
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
- ///
-@@ -160,6 +163,16 @@ macro_rules! new_spinlock_irq {
- 
- /// A variant of `SpinLock` that ensures interrupts are disabled in the critical section.
- ///
-+/// This lock can be acquired in two ways:
-+///
-+/// - Using [`lock()`] like any other type of lock, in which case the bindings will modify the
-+///   interrupt state to ensure that local processor interrupts remain disabled for at least as
-+///   long as the [`SpinLockIrqGuard`] exists.
-+/// - Using [`lock_with()`] in contexts where a [`LocalInterruptDisabled`] token is present and
-+///   local processor interrupts are already known to be disabled, in which case the local
-+///   interrupt state will not be touched. This method should be preferred if a
-+///   [`LocalInterruptDisabled`] token is present in the scope.
-+///
- /// For more info on spinlocks, see [`SpinLock`]. For more information on interrupts,
- /// [see the interrupt module](kernel::interrupt).
- ///
-@@ -213,7 +226,47 @@ macro_rules! new_spinlock_irq {
- /// # Ok::<(), Error>(())
- /// ```
- ///
-+/// The next example demonstrates locking a [`SpinLockIrq`] using [`lock_with()`] in a function
-+/// which can only be called when local processor interrupts are already disabled.
-+///
-+/// ```
-+/// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
-+/// use kernel::interrupt::*;
-+///
-+/// struct Inner {
-+///     a: u32,
-+/// }
-+///
-+/// #[pin_data]
-+/// struct Example {
-+///     #[pin]
-+///     inner: SpinLockIrq<Inner>,
-+/// }
-+///
-+/// impl Example {
-+///     fn new() -> impl PinInit<Self> {
-+///         pin_init!(Self {
-+///             inner <- new_spinlock_irq!(Inner { a: 20 }),
-+///         })
-+///     }
-+/// }
-+///
-+/// // Accessing an `Example` from a function that can only be called in no-interrupt contexts.
-+/// fn noirq_work(e: &Example, interrupt_disabled: &LocalInterruptDisabled) {
-+///     // Because we know interrupts are disabled from interrupt_disable, we can skip toggling
-+///     // interrupt state using lock_with() and the provided token
-+///     assert_eq!(e.inner.lock_with(interrupt_disabled).a, 20);
-+/// }
-+///
-+/// # let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
-+/// # let interrupt_guard = local_interrupt_disable();
-+/// # noirq_work(&e, &interrupt_guard);
-+/// #
-+/// # Ok::<(), Error>(())
-+/// ```
-+///
- /// [`lock()`]: SpinLockIrq::lock
-+/// [`lock_with()`]: SpinLockIrq::lock_with
- pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
- 
- /// A kernel `spinlock_t` lock backend that can only be acquired in interrupt disabled contexts.
-@@ -278,6 +331,43 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
-     }
- }
- 
-+impl<T: ?Sized> Lock<T, SpinLockIrqBackend> {
-+    /// Casts the lock as a `Lock<T, SpinLockBackend>`.
-+    #[inline]
-+    fn as_lock_in_interrupt<'a>(&'a self, _context: &'a LocalInterruptDisabled) -> &'a SpinLock<T> {
-+        // SAFETY:
-+        // - `Lock<T, SpinLockBackend>` and `Lock<T, SpinLockIrqBackend>` both have identical data
-+        //   layouts.
-+        // - As long as local interrupts are disabled (which is proven to be true by _context), it
-+        //   is safe to treat a lock with SpinLockIrqBackend as a SpinLockBackend lock.
-+        unsafe { core::mem::transmute(self) }
-+    }
-+
-+    /// Acquires the lock without modifying local interrupt state.
-+    ///
-+    /// This function should be used in place of the more expensive [`Lock::lock()`] function when
-+    /// possible for [`SpinLockIrq`] locks.
-+    #[inline]
-+    pub fn lock_with<'a>(&'a self, context: &'a LocalInterruptDisabled) -> SpinLockGuard<'a, T> {
-+        self.as_lock_in_interrupt(context).lock()
-+    }
-+
-+    /// Tries to acquire the lock without modifying local interrupt state.
-+    ///
-+    /// This function should be used in place of the more expensive [`Lock::try_lock()`] function
-+    /// when possible for [`SpinLockIrq`] locks.
-+    ///
-+    /// Returns a guard that can be used to access the data protected by the lock if successful.
-+    #[must_use = "if unused, the lock will be immediately unlocked"]
-+    #[inline]
-+    pub fn try_lock_with<'a>(
-+        &'a self,
-+        context: &'a LocalInterruptDisabled,
-+    ) -> Option<SpinLockGuard<'a, T>> {
-+        self.as_lock_in_interrupt(context).try_lock()
-+    }
-+}
-+
- #[kunit_tests(rust_spinlock_irq_condvar)]
- mod tests {
-     use super::*;
+base-commit: 44e7e7f7cffb10a93bb88e7cb59b7b8b3e2deb1c
 -- 
-2.50.1 (Apple Git-155)
-
+2.53.0
