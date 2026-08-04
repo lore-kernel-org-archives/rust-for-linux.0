@@ -1,351 +1,325 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010030.outbound.protection.outlook.com [52.101.193.30])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010067.outbound.protection.outlook.com [52.101.61.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFB735FF5B;
-	Tue,  4 Aug 2026 08:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834A541E6A8;
+	Tue,  4 Aug 2026 09:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785832681; cv=fail; b=OXEakKX89dA2vTJxRrbYXITtUNrBbrGCRTHYvrvlK4YmZMOAJ/oh/7XmkVlWV99OxzSto5xuXGrZsu4JfIVrTpO6XERhsEm2W6huXKDqnzNYeKBlB9ztqI9jPJ7R6A8XtSJ/GWSqlVydvGR84Q3/MxRmGQ6kgpDbTwO6B2J9YZI=
+	t=1785834709; cv=fail; b=MyVa7MEwqcqGHv+6uRetAMpQp06JIgFUf2808t7Q1UFrRT2AOatyzwlYUZLQHsdoLaFeKyT+A6NYHNGbbDjnfvF4jz6HjW6wFJErBMN28H4tGpdWawJNz4pMWmK+B0F3sFTQKsClq46e55M0yLzpzXJZqhucyge9LyDCW6CRrwU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785832681; c=relaxed/simple;
-	bh=xL4LgtM/g9cwzRJ3WnA1ZJ6HAV1trgTVfQU8t3ApNLk=;
-	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
-	 In-Reply-To:MIME-Version; b=bRf77kRB6J/wdtNvJXXAE25xptGNSTd/4QnVOC2cU2AoDh4lgVDzHBKnQgQo42/LcIj67cVRsTmuR1TwINXzLP5KEj+EUyZ0oZm+bXYwlrZCQLiWp0D0nkl44nbsWmCwuNBdzX/zuP7l0Qxk9ri07tM+G6idP9+9t+BFF9hzLmo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uYYzJRno; arc=fail smtp.client-ip=52.101.193.30
+	s=arc-20240116; t=1785834709; c=relaxed/simple;
+	bh=Eo0DSQJ83nppCyjcL8gmc1mTL+iU/A9LcTBiC80TK1c=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CGAQ0BtKp8GDfttgYAAwBM2dBF/x4pV37mOWNXzgRukIFv7w4IiNMuFuKU5H6GLdWrqhDm11Zw/ck3gz5pG1tQMYnfJvbWa0W0IKRJbsHMfU8U8UjHw6FOAA+c9q21oNC9V+jUgPiPcyvXws5aCtl0ATCxBfxWmAUIqlC3stCLU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Kww9pC0f; arc=fail smtp.client-ip=52.101.61.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uYYzJRno"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Kww9pC0f"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wxt7rCbdx1a8nYEd/Zw+J20C00bUpOqUuzhgP2rVAz5TlrCtaCPvm0afIjXuyEbt6ltXNzJ+w+s+OsB+fGVeD+Sm+HBO8k5r6ngivxCYN8S2E/q3fCgg3Vq71w4BynxfUnZAXsiPjflPzX8663GyuBl6VAo3891eHACbNIZY7A565omtUa/ysi2ny2UiT1+kH+NHL8B89ptMtskUjaVZdJ28NgJzO8ZV9JCJyUeSL33Gg8ZWmBumqMOWowdgUHgA6VJw/1D+lAOLSqXDi3j/jRSUqerHBUpAyD8cGY1LQrm3AM/ndjTi0x9mZPzGdMfRPchjkE3Nsp1yeaWcZbiutg==
+ b=f5KE5tlMQgHHgasrJTJLvm3hcJF8R0oercde6CFKL4/uSKGlMlPAYudkl/IWrK41NNRyDILnA5roiox10hBL9XqvPsWG5cgetbHk+OjpWsvua4+rPpqe+h+IQbGvoPLsnUgdEBD8JSLofxYVmKJxTsm2So/sYpx8JcMNmUnX0LC1gmG4TNh0wsGWxamFH+7NhQ3noTOWkGg04lxIfviGWR9iPi0aBCi9E9ywtT+kPgccW207fmmeP2NJVQkvURgPte+KaFW0xVu/n67yvjTaJE3KxHFoLZf0jY1OIo7NVwwSoj6ND61WlYci/gJqZ/jVJUVvan5HCyBi2A2RAvj8Bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7C1ppodPgGEKAbw5a43DRy79IxJrmOjGRUWQYc6Knfs=;
- b=PS7YtazYZZ1FHRhYNibTQAqBgsTw70t9CD+5GSFjiOsz0vkHmOGhuomDtmCOEbsqhYoa/HODblCw4YKRsWfq1pky7eK+V8RBBdDxNASWKSSXq38o0DfxekoogAWzPZoGA/XSQWkqKJVKgY0ipkmB/bz5dAPV2eySuXFspY+Uz3rYjhSdpYWBhMa84XydcSpMbyw7eabRveVd+vEt88yfpvfONtdLzzXR492iajN76LeiKH4wywgYP4g885U8Ep7v31yLkrtb0UEgPTmnGqlAxxqNLYnUNYMI4csIvZrnkMqAbe6GlKVB6yKDOyXvDgex0R4gTKC4Va8YAVUYXQ9tYw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
+ bh=wFxTViKjiSBxv09QAkJXz96qYZnuG8iQ+mmbd6SkVxY=;
+ b=UIsD3JLwPw3JYub1LTKPUDJw0qtIQKlHAomSSrpnX1BIG7QX2kK2grJ4yHvl+62acZgxWpx7E39J+Vgm8zgkajgfzrhOh6/kVUmEqnOacBSs3zMDXuMywxxLbIk1M5tI/PmCcHjPCzBTpsndarDCys4QQXtEgTvQ8GWxm8nseKTdfv1Cd4T1LM+8NSMECaMHsmpltb0PGLUFhfuPcPoctu/TZAUVS/7KLHFAktdzVyvcJNwes9Ibk+ADWiHnTmo9nWNtT2blw3yvXhpmRp7zfwxTLpEq4Ijz4NcccG7bCjX9d5lBmAhn/1GTpFcz03zKLZsI2BgkDzoG00WIZEIyhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=posteo.de smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7C1ppodPgGEKAbw5a43DRy79IxJrmOjGRUWQYc6Knfs=;
- b=uYYzJRnonTGi0+RQ/75Z/FCesG8hxOqaKxA/EhLLt1pSJ5GBB+lximAqf1weTiXdOz5b9Xtkpy/ovzvOXOSXW8BCljLWcprFB0mO5e7PbgT7kfWVCg9MDqPf5+jX0J3E8RS3+j73Ma5n/O2Zwv9vA1r1IX2b414XGvDYsivi0AMzZsMYC4GEtjmSaBbum6zr9lcI4iiJW+QulUKlScIMRoZVcTx1rbxRku3oon++uLT8y3PpFmVJ8Lt3OCY0uSwWGrlpcALk7g1TU6ucm5DdfbciiLb3n2jp55ezBxjhqIGxfzJASF0FOJxHevxZtij526/lxk6AnKTCE08CK5yM+A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com (2603:10b6:207:4c::31)
- by CH3PR12MB7762.namprd12.prod.outlook.com (2603:10b6:610:151::16) with
+ bh=wFxTViKjiSBxv09QAkJXz96qYZnuG8iQ+mmbd6SkVxY=;
+ b=Kww9pC0f/QGATorVx8fmKjRFK84ls8UMdGQv9+E0fcK4r8lLwLEehaINln+IUn6vkdYLVSxAB+F8YKBZPhQMmLZ3uzbt3oTWxGXiG+fvNZfG+vOiLxihP99XM+pwDNoRm7k6jWq5pyRJRCCPm0Yy5m+5wvtMEkmyyHodDDTAlEHq6dfw1nMXM9ubbbiDcHx3VJs/Ho9jkD92BipiUheZ2Ua7iO1Z2ncAwoJCYLqmR6MbZrrioosh1RBt2HoAFIyNK9B9OQsU6bAw8z1kbCMW8vLeSf6hh85Wqwk6Ow+PzBf9r3jyw+Oz5ce6BHX4tbv0qpHQctDR56/AyraUthaP5A==
+Received: from BL1PR13CA0159.namprd13.prod.outlook.com (2603:10b6:208:2bd::14)
+ by CY8PR12MB7292.namprd12.prod.outlook.com (2603:10b6:930:53::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Tue, 4 Aug
- 2026 08:37:32 +0000
-Received: from BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0]) by BL0PR12MB2353.namprd12.prod.outlook.com
- ([fe80::99b:dcff:8d6d:78e0%4]) with mapi id 15.21.0270.017; Tue, 4 Aug 2026
- 08:37:32 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Aug 2026 17:37:28 +0900
-Message-Id: <DKG0U8RLO7LZ.2I1AIH0S38PAP@nvidia.com>
-Subject: Re: [PATCH v3 2/4] rust: bitmap: add contiguous area operations
-From: "Eliot Courtney" <ecourtney@nvidia.com>
-To: "Yury Norov" <ynorov@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Burak Emir"
- <burak.emir@gmail.com>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>, "dri-devel"
- <dri-devel-bounces@lists.freedesktop.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260729-chid-v3-0-20cc08032bbc@nvidia.com>
- <20260729-chid-v3-2-20cc08032bbc@nvidia.com> <amrZcX33BGJCTDMp@yury>
- <DKFBEPDNAD1V.1LFARFHMO5WKC@nvidia.com> <anELwosZSI5MZR4d@yury>
-In-Reply-To: <anELwosZSI5MZR4d@yury>
-X-ClientProxiedBy: TY4PR01CA0070.jpnprd01.prod.outlook.com
- (2603:1096:405:370::18) To BL0PR12MB2353.namprd12.prod.outlook.com
- (2603:10b6:207:4c::31)
+ 2026 09:11:42 +0000
+Received: from BN3PEPF0000B373.namprd21.prod.outlook.com
+ (2603:10b6:208:2bd:cafe::7e) by BL1PR13CA0159.outlook.office365.com
+ (2603:10b6:208:2bd::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.15 via Frontend Transport; Tue, 4
+ Aug 2026 09:11:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BN3PEPF0000B373.mail.protection.outlook.com (10.167.243.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.315.0 via Frontend Transport; Tue, 4 Aug 2026 09:11:40 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 4 Aug
+ 2026 02:11:25 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Tue, 4 Aug 2026 02:11:24 -0700
+Received: from inno-dell (10.127.8.14) by mail.nvidia.com (10.126.190.181)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Tue, 4 Aug 2026 02:11:18 -0700
+Date: Tue, 4 Aug 2026 12:11:16 +0300
+From: Zhi Wang <zhiw@nvidia.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <aliceryhl@google.com>,
+	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+	<boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<markus.probst@posteo.de>, <cjia@nvidia.com>, <smitra@nvidia.com>,
+	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
+	<targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
+	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>
+Subject: Re: [PATCH v6 1/1] rust: pci: add extended capability and SR-IOV
+ support
+Message-ID: <20260804121116.23d9347d@inno-dell>
+In-Reply-To: <DKCOUE9DRG5R.2VAVA78UTVKST@nvidia.com>
+References: <20260730182954.783568-1-zhiw@nvidia.com>
+ <20260730182954.783568-2-zhiw@nvidia.com>
+ <DKCOUE9DRG5R.2VAVA78UTVKST@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR12MB2353:EE_|CH3PR12MB7762:EE_
-X-MS-Office365-Filtering-Correlation-Id: b975420d-1275-4a41-a1a6-08def203a024
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B373:EE_|CY8PR12MB7292:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65c9d78e-4436-4dae-297c-08def208659f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|7416014|376014|4143699003|5023799004|56012099006|10067099003|11063799006|6133799003|18002099003|22082099003|3023799007;
+	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|376014|1800799024|7416014|56012099006|10067099003|11063799006|4143699003|3023799007|6133799003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	6aQwGbKFycT52roOQSHWxGxtYtwI/ZTfMEKpOugl1NsrEJca2rots5XfUoOiETV+VvZmAGc07DNFuw6Mtg1BsB4R3QvWXdPxIXngENH/T4wh8SmYOlOl6q/nNwba2PXOxEbLSsQZY34MAfG/gVyUnVobIAvO+u5jfNW0eEZYYio6Azt/+clBioG4BC/hL4uETnP+IuYscwstbMB1Ids6Y0FctJSEX7uVdHIw7jK1rhOIDbXcoSg5veUWIhyc3T6d1uIdiVRzC1KFDmiDO0C6X9IkZlvTGKUUrF2SWiMCnKDb3lsOJxbxqL36pF5n6STAfWdUAPLD753wGaWbpIfnu/H0h/69Ze7Pi5ly84p9tyJr4TebUJWw4aZw0CRJcq2AEQU85XkzM1T8mnUFp+hezJ6AZEsOv3oPHP8o7hK9RGGcz6Z2NiyTgaEP4n56TpysneweZ4EjKST1QZTdKPhYbj9J+NRHpGYVprTqd2JUYryqZKguQR8bnCRo0a581/4mi/qd7As8cPIrwFuKJb3tVRZ8GR24T05bbOI66Kg1K8whP6kOCIgZTD+yHTF2XXAjmeHLYSIo6kA1VY3Ik+4OJXYa7wA6vnBGzdeVb5SlBq5jw8dLab+nv9IQukryPeroTvMJna6xKfR7sLkR2oixIpyCNR24iZjAbdR/n4zrRcg=
+	ifyveZGX7ysccn+AU85Ozh5JEEF04FMgpLI1BEKUCQ9wJMSvJaudpzDbEdqIBOl5PRY93Yu8umnE/RElFJuV/bPvJ0CuOh1Sq1p88HZf9wtcF4ODDl9zfEOzK21SDp5NLALv+ZhOVO6pxdPev8r8nL7t/sUKbrawr3W4GUAoq4YlwI8SHOmqRCYbdxt8JV0CUWz1KAyEGv9oYeAeoAQ2vMOmBkZBY6jZ8ZFHPkugmyGrGam4WMgKOE1Re7wIe9OK+flDP3pUy8+sNsRAWpPnBKCzqedfASrJcof4yQSkjnND9qhnlIg99y/3ovjrAwGrdLgk+fqwQL/A+az19trfXo3seQ5JjkypH/d7OICDwtsM6Pb+PFs1aZJzUdaRQFoGM//bHhiFzJDAy6y697HtsebxMjSLOHTFRiR1mT28lSMUKyXb7WrYfd53XbSaEYJe0OK4IOr/mUp0aeFbVZUqAcuLd7NP8GUOLNr/+/l2TcPrtvmLKPaQZBLbGDseJYCAXOBGXBLUTEnOk5Jo46NUf3oonovpjEHs0lpO/zPBR9xTHpa/fUZCOA51ZOkiF5QyQ3lFFPNjLJXufmOzn3QHY48jZY+qWV4n+4U7GwyYRAcPWVn9p+txX4R4LRbWo0mTEDtC81TNzomUDBF9ju7GA7/lefycKg5pXMrfBb/MbDX4RT126Y9NQ1pL8QmF1s/iIJbiMwLtUonYHC59PgRP9A==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB2353.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(7416014)(376014)(4143699003)(5023799004)(56012099006)(10067099003)(11063799006)(6133799003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(376014)(1800799024)(7416014)(56012099006)(10067099003)(11063799006)(4143699003)(3023799007)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TE9LMWxVSlFaMkpEaHlyckx3WG5JT1JSYVc3ZTBOM0psOHNDMmM4Z3ZldmFn?=
- =?utf-8?B?T0sxVys0czJvSE4wbnhyUTdFdWFHOG03a21OU3BMc3B1MU0zc1VxUEQ0dEJV?=
- =?utf-8?B?VCsxdlZJN0tzTHUyZTIwZnV1dUo3UDZZa3QvL1ROd2pkVG84ZGUyYjVTRFpM?=
- =?utf-8?B?MkNIN2NJUHozcFBZd2xNVWdjcVVRMk5kYTdSSm5FSi9mZUVmOFQ1NTU4VlNw?=
- =?utf-8?B?SmVuNGc3YUNmcHhxVjdQenZQZWpSRmM4WHRrN21jMlhrU3NlTTY0eUlubjBG?=
- =?utf-8?B?em5PRDNkeUhlbHc2Q1lxVzhiOVNHVC9ZclNaRGtJOUljejQvRkVHZDJTOGhI?=
- =?utf-8?B?KzBMbWpSZVFQeHZhU1BhcFc2YjhCRXVOZlFDUlRVckU4WUF0M2lJdDdmcVRZ?=
- =?utf-8?B?RUFWNTRhZFplU1g2RWtZM0hEai94Qjd6VHcrbWYxODhycUd0YXNjMFVZQ3Iz?=
- =?utf-8?B?NG5qK3ViU1dnMmsxTm9IamtZQU5kcFptZno0OGxwbU5SWGEvakN1cW1wbGtD?=
- =?utf-8?B?c1lNVzZVN08rVXlXMU5CTEl5TWcyM01kME9rZi81ZmptRzRHUjVTTVc2bmli?=
- =?utf-8?B?TkR3K1A3Yy93c3RVVThFZWlveURKbG1kdktCaThoY0w1c3BKUDlFUGNIeHNM?=
- =?utf-8?B?QU5nb1JrVXBMd0pGMzJXaHFtU2FYYnhxc1pwc2ZWbnJnZkdtQTNTWE9WdThK?=
- =?utf-8?B?b2NyeDJIaTErRE9Hd21Jd2lmV0FKc0F1dHFZeXFlZlZlUS9Vczk3SnI5eWE4?=
- =?utf-8?B?QVVrUkFhc1pEeWJJY3BSTklNUyswQmhYeVBxZ2VSb3l6MHVSSGR3Ujdrbzk1?=
- =?utf-8?B?Tms5VGdFaUVmQ2lQRkVwUUs2dDFMWGlCTTd4QXNyRUhNdS85ZER5Mjk5MUlC?=
- =?utf-8?B?WlJ2Nk1tcTFnWi9GL1AxMmgrQUo3SG45S1ExVTJHSTZqMSs5Rm1JQU1TLy9x?=
- =?utf-8?B?M05QNlVzZ3lIVGVrem5jQlpqVnlEOGFkT1B4Slo5cVY5OGx1OFVQbWtkVGtU?=
- =?utf-8?B?VElTdFhhWXdlTk5QYjVsU204NTd5Mmg4WWYxZlR3VW5Xd2NzaXE5QlVFZmQ0?=
- =?utf-8?B?RmVwRlEzWWJyWFltdTdwOUVOMjEvYkg2d1FMTy9vVmpURVk3MW9XTTJCcC9L?=
- =?utf-8?B?UmJVeTVzRUI0MWJJMUV4c3pzakd6cFdyVWpoQUNjUWFCRnVSUlJ2Ry96SDJr?=
- =?utf-8?B?L2x4S2pjcWRIeGhoc1Y3UkNEZ1ZhanpxY0FUcmpiemdDR2JMclcrcjlEeHI1?=
- =?utf-8?B?OWRoVGwzVVNwVjFXaWZqdjBQZmNIa25uSFZpOHk2Sk56bjFXb2lmMElrQTdM?=
- =?utf-8?B?cUZZQUErQUNnbk9rc0liclZtZTRLMkc5YUZnWENpTDFmVElqNVpCZ1UrR3h5?=
- =?utf-8?B?c0hldVdXZGN4TGovSlQzejNLSHZUY2NRdTJQTjNUbjBOdmVnODZLREY3UnFK?=
- =?utf-8?B?L0cvUFRDaS8wcURJQWFPVmVXaXJHWGU1bXB1cGc1dWF5Rjd3Z3d4OUhNSjln?=
- =?utf-8?B?c2kyb0x1QlRZcDNDT3BpWGZYQVVaVWhYSjl4dHpjQTFOdzI0SkVOTDcyaktk?=
- =?utf-8?B?elJmS0tpbjhKVzROYXdjT3c5Z1F4OUxkZlk0YlJVWkFpUjk4Yk1mK0lLb1Fi?=
- =?utf-8?B?dFM2WDNIcGxzVTlMaHFacFNkRVFCL24xdjZ3WFJrOFlSemlUU0ZQd3pYS0Uv?=
- =?utf-8?B?VzVJRmREbWhwem1xRHFGOTZNTVBMRCtZYTJsQ05vdHVxZ3diZkkwMzJCYkpU?=
- =?utf-8?B?c1JQZTllYWp2KzZrRXkwLzRUU2ozc3dycGJhc0Uxc2ViWWx5Qy9pdko1Y0ZX?=
- =?utf-8?B?ZFJzQndVeDgwVnpkMC9GY2lMbWRIRncxUFZPZENHaFdJK0Rmam1BS09FajZN?=
- =?utf-8?B?bU52cFdqcEtNU3l4RERNNkZQZ3ZDYld1Z3o0SnRnbjBIMUpWVGJma09tVFlO?=
- =?utf-8?B?MWNTWi93MlB5VmZuRFhiN3ZCVkNQZGliamx5L3VVdXV4M0plaW50UnpVMENz?=
- =?utf-8?B?R1dGR3dsbmxwSWowWVdmOWdCNWtlLzhHbzNoSlV2ZUY2Qm16VjJUVXpJZkpO?=
- =?utf-8?B?eWl2M3VoYVI2Ylp5bmlMazlHMjR2SUIrWmcxUGdDSU0xYzBPQTJaRUg1MWQx?=
- =?utf-8?B?UTV5aVJVZ0piZUdxdXI2MUV1N1YrVzRkS3dVYlVXc1kvaWt4YWxkV1BVV3Z6?=
- =?utf-8?B?bitnalhyVXdEYVZyS2tBTzZMRDRQcHh0UVZSc3VqV3c2SDJRcEVLZnpYQ0F5?=
- =?utf-8?B?YThrNVRnZ0l6LzhRN29MUVVRRW4xOUlLZ1YvZVlHNExqWVA0OVNTWHVEOFhN?=
- =?utf-8?B?WjBsRTVqYytGVzU2QW5PUlE4T2YrZlA5OGticktjQWtjSWRWWGwvK1hTZFhL?=
- =?utf-8?Q?MmpG/EcCzMgRWp1dkRcdvGSAg1LSvztLgib2HYc0/R2Sc?=
-X-MS-Exchange-AntiSpam-MessageData-1: DCO+W6KfnBoi7A==
+	q38c79Z5YOMVkooIpx6p6xp5xyRfNm0IDQ5j037wvRwhnAEb8e2pbslrn/KAAiUXyoLRRduHMSQRZRNicaQhUQkpQcE6ocdyMTzA7kwGru292rwHnAQSRjvL/IfZsiq0wWNcHNJGpZOLdh8LsdcgmIPCf04SSQ1QfAwq1i6GfD/9na3MmbCTg7pchBevG4wcu1EAYASsYZbxLvo9kWNERyHDeqhh8GeYYo8+RUqi3YNxE3R0LrzPVRwVzEvkwLN8ZReE5fBMbxKQn1vagbSbWGvKQdVko+LL2+QiB/Cz9hA0CGxCs6Ox+nrh7WIaClQ/6bSB6M/tuTSke9doVlcU/ijBAtYy1tr1vKSRynAw2ktSj7R25L0PYIXOovtGMhM43fpQg0TFe8bOTXW/NAR8vrto/JOqiCg1eNdvyQTBBfyf8ciqZrEmoIVX1LHXj1pO
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b975420d-1275-4a41-a1a6-08def203a024
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB2353.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 08:37:32.0476
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 09:11:40.9640
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65c9d78e-4436-4dae-297c-08def208659f
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3bce3thWjc8+lTrUlv7/ClXH05G7LBq1Jnf5uNeC2PS4B1RKpOz84kwOboJ3q7yO2bjsQ99uMlilG68FaYYN+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7762
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B373.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7292
 
-On Tue Aug 4, 2026 at 6:44 AM JST, Yury Norov wrote:
-> On Mon, Aug 03, 2026 at 09:41:42PM +0900, Eliot Courtney wrote:
->> On Thu Jul 30, 2026 at 1:56 PM JST, Yury Norov wrote:
->> > On Wed, Jul 29, 2026 at 03:54:13PM +0900, Eliot Courtney wrote:
->> >> Add bindings for area operations on bitmaps. Each one is
->> >> made safe by adding some extra checks compared to the underlying C co=
-de
->> >> (for example, checking bounds) and with additional checks to catch
->> >> likely erroneous usage if `CONFIG_RUST_BITMAP_HARDENED` is on.
->> >>=20
->> >> The C code uses signed integers for some parameters, for example the
->> >> length for `__bitmap_set`, so bounds check against i32::MAX. We can't
->> >> rely on `BitmapVec::MAX_LEN` because `Bitmap` may not necessarily be
->> >> backed by `BitmapVec`.
->> >>=20
->> >> Add tests demonstrating the edge cases.
->> >>=20
->> >> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->> >> ---
->> >>  rust/kernel/bitmap.rs | 194 ++++++++++++++++++++++++++++++++++++++++=
-++++++++++
->> >>  1 file changed, 194 insertions(+)
->> >>=20
->> >> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
->> >> index a43bfe0ec3dc..f4b0b8ae39d8 100644
->> >> --- a/rust/kernel/bitmap.rs
->> >> +++ b/rust/kernel/bitmap.rs
->> >> @@ -10,6 +10,7 @@
->> >>  use crate::bindings;
->> >>  #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
->> >>  use crate::pr_err;
->> >> +use crate::ptr::Alignment;
->> >>  use core::ptr::NonNull;
->> >> =20
->> >>  /// Represents a C bitmap. Wraps underlying C bitmap API.
->> >
->> > Some comments use indicative form in the file, but the imperative
->> > 'represent' is a more standard way. Can you please use it instead?
->>=20
->> I think in rust, indicative is the standard even in the kernel - e.g.
->> see Documentation/rust/coding-guidelines.rst around line 208-ish, and
->> that's also what I see generally in code. But please let me know if
->> you'd like me to use it in this file regardless.
->
-> The documentation you've mentioned doesn't say: use indicative. This
-> is just a one example.
-> =20
-> This is what my AI machine says:
->
->   Among the 1,266 verb-led function comments, that is:
->
->   - 67.1% indicative
->   - 32.9% imperative
->
-> So, unless there's a strong (and not aligning with the rest of the
-> kernel) rule, please use imperative form in bitmaps.
+On Fri, 31 Jul 2026 19:35:26 +0900
+"Alexandre Courbot" <acourbot@nvidia.com> wrote:
 
-Yeah I got a similar result using my AI machine too~~
+> On Fri Jul 31, 2026 at 3:29 AM JST, Zhi Wang wrote:
 
-There is a strong rule for rust specifically and it's encoded in RFC
-1574 [1].
+snip
 
-[1]: https://github.com/rust-lang/rfcs/blob/master/text/1574-more-api-docum=
-entation-conventions.md#summary-sentence
+> > +/// Number of VF BAR register slots in an SR-IOV capability.
+> > +// CAST: `PCI_SRIOV_NUM_BARS` is 6, which fits in `usize`.
+> > +const NUM_VF_BARS: usize =3D bindings::PCI_SRIOV_NUM_BARS as usize;
+> > +
+> > +/// Attribute bits encoded in the low DWORD of a memory BAR.
+> > +const VF_MEMORY_BAR_ATTRIBUTE_BITS: u32 =3D
+> > bindings::PCI_BASE_ADDRESS_SPACE
+> > +    | bindings::PCI_BASE_ADDRESS_MEM_TYPE_MASK
+> > +    | bindings::PCI_BASE_ADDRESS_MEM_PREFETCH;
+>=20
+> This is only used in `read_vf_bar` and can be local to it.
+>=20
 
->
-> ...
->
->> >> +        bitmap_assert!(
->> >> +            start < self.len(),
->> >> +            "`start` must be < {}, was {}",
->> >> +            self.len(),
->> >> +            start
->> >> +        );
->> >> +
->> >> +        let nr =3D u32::try_from(nbits).ok()?;
->> >> +
->> >> +        // SAFETY: `bitmap_find_next_zero_area_off` is safe to use w=
-ith an out of bounds `start`
->> >> +        // value and never reads beyond `self.len()` bits.
->> >> +        let index =3D unsafe {
->> >> +            bindings::bitmap_find_next_zero_area_off(
->> >> +                self.as_ptr().cast_mut(),
->> >> +                self.len(),
->> >> +                start,
->> >> +                nr,
->> >> +                align.as_usize() - 1,
->> >> +                0,
->> >> +            )
->> >> +        };
->> >> +
->> >> +        // In case of overflow, we may get back a range outside of w=
-hat we requested.
->> >
->> > No, we can't. We've got the test_bitmap_find_next_zero_area_off() for
->> > it (in next). If you think the test is incomplete, please extend it.
->> >
->> > If you believe that bitmap_find_next_zero_area_off() may return someth=
-ing
->> > like that, it means the function is buggy, and you shouldn't trust it =
-at
->> > all.
->>=20
->> TL;DR: Included some tests below that demonstrate overflow/OOB issues on
->> 32-bit (with increased vmalloc) in some extreme cases. To keep the rust
->> code completely safe we need to check for these, or update the C code,
->> but not sure if the perf tradeoff is worth it. Please let me know.
->>=20
->> Ok it seems I was looking at the code previous to df81d444dc74 ("lib:
->> bitmap: optimize bitmap_find_next_zero_area_off()"), but overflows can
->> still cause wrong behaviour after this commit too:
->>=20
->> [1] On 32-bit, suppose we have an empty bitmap with size=3D=3D64, start=
-=3D=3D32,
->> nr=3D=3D2^32-1, and align_mask=3D=3D0. Then, computing `end` overflows t=
-o 31.
->> Computing `end - off` then underflows (31 - 32) which can cause OOB
->> reads. So actually we need a check before calling
->> `bitmap_find_next_zero_area_off` to avoid this case.
->>=20
->> [2] On 32-bit, suppose we have a bitmap with size=3D=3D2^31+2 and all bi=
-ts
->> set except the 0th and 2^31+1st bit, and start=3D=3D1, nr=3D=3D1,
->> align_mask=3D=3D2^31-1. We'll compute start=3D=3D2^31+1+2^31-1 which ove=
-rflows
->> to 0. Then we'll end up returning 0 which is below start. So we need the
->> `index < start` check.
->
-> Both examples overflow int32::MAX. It is not supported in rust.
-> See the BitmapVec code. Your case is just 2048 bits, so it's not
-> a limitation for you.
->
-> On the C side, there's a historical mess - some functions work with
-> unsigned longs, some with unsigned ints, and so on. I'm aware of it,
-> and there's a process of unification the API toward the unsigned
-> longs. That wouldn't help 32-bit architectures because they are all
-> ILP32, but there's no real use case for them that would overflow the
-> 32 bit.
+Yup.
 
-Currently it's possible to construct a non-BitmapVec backed Bitmap using
-Bitmap::from_raw that is larger than i32::MAX, and it's not part of the
-unsafe requirements. If we can restrict all Bitmaps (even non-BitmapVec
-backed ones) to have a max size of i32::MAX then that simplifies a few
-things. If ok, I'll add a patch adding that requirement to the unsafe
-requirements on Bitmap::from_raw, Bitmap::from_raw_mut, and the
-invariants on Bitmap.
+> > +
+> > +/// PCI extended capability IDs.
+> > +#[repr(u16)]
+> > +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+> > +pub enum ExtCapId {
+> > +    /// Single Root I/O Virtualization.
+> > +    // CAST: `PCI_EXT_CAP_ID_SRIOV` is `0x10`, which fits in `u16`.
+> > +    Sriov =3D bindings::PCI_EXT_CAP_ID_SRIOV as u16,
+> > +}
+> > +
 
-But, if we want to keep the rust code completely safe even with
-requiring all Bitmaps to have max length i32::MAX we still need a check
-somewhere since OOB reads can occur even for a small bitmap. IIUC, we
-want to make sure all rust code is safe regardless of the inputs.
+snip
 
-In particular, we need to check that `self.len() + align - 1 + nbits`
-does not overflow in `Bitmap::next_zero_area`. e.g. on bitmap-for-next,
-an empty bitmap with size=3D=3D2 called with
-Bitmap::next_zero_area(start=3D=3D1, nbits=3D=3D2^31, align=3D=3D2^31) read=
-s OOB (on
-32-bit).
+> > +    /// Calculates the size of the extended capability at `offset`.
+> > +    ///
+> > +    /// The capability extends to the next extended capability, or
+> > to the end of the extended
+> > +    /// configuration space if it is the last one. `offset` must
+> > be a DWORD-aligned offset within
+> > +    /// the extended configuration space returned by
+> > `pci_find_ext_capability`. If its header
+> > +    /// cannot be read, the capability is treated as the last one.
+> > +    fn calculate_ext_cap_size(&self, offset: usize) -> usize {
+> > +        let header =3D self.try_read32(offset).unwrap_or(0);
+>=20
+> The special behavior on invalid index is intriguing - is this part of
+> the PCI specification? Or can it return an error if `offset` is out of
+> bounds?
+>=20
 
-Alternatively, an exact fix for this in the C implementation is as
-follows (obviating any need for the rust side check I mentioned above).
-I briefly benchmarked it (region_alloc_benchmark) and didn't see a
-slowdown, at least on x64. I'm not necessarily suggesting this, since in
-C I think the answer is just don't call with nonsense parameters, but
-just for reference:
+I was thinking to keep this helper infallible. Since offset
+is returned by pci_find_ext_capability(), I assumed that
+it had already been validated.
 
-diff --git a/lib/bitmap.c b/lib/bitmap.c
-index ed685127a107..e500091c7e6a 100644
---- a/lib/bitmap.c
-+++ b/lib/bitmap.c
-@@ -435,18 +435,21 @@ unsigned long bitmap_find_next_zero_area_off(unsigned=
- long *map,
- 					     unsigned long align_mask,
- 					     unsigned long align_offset)
- {
--	unsigned long end, i, off;
-+	unsigned long index, end, i, off;
-+
-+	if (nr > size)
-+		return size;
-=20
- 	for_each_clear_bit_from(start, map, size) {
--		start =3D __ALIGN_MASK(start + align_offset, align_mask) - align_offset;
--		end =3D start + nr;
--		if (end > size)
-+		index =3D __ALIGN_MASK(start + align_offset, align_mask) - align_offset;
-+		if (index < start || index > size - nr)
- 			break;
-=20
--		off =3D round_down(start, BITS_PER_LONG);
--		i =3D find_last_bit(map + start / BITS_PER_LONG, end - off) + off;
--		if (i >=3D end || i < start)
--			return start;
-+		end =3D index + nr;
-+		off =3D round_down(index, BITS_PER_LONG);
-+		i =3D find_last_bit(map + index / BITS_PER_LONG, end - off) + off;
-+		if (i >=3D end || i < index)
-+			return index;
-=20
- 		start =3D i;
- 	}
+The spec only says the cap offset of zero in a successfully read
+indicates the end of the cap. For aligning with the spec, I think we
+should propagate the errors.
 
+> If we can, I'd probably prefer that as the fallback path relies on
+> `pci_ext_cap_next` to leave the `0` value untouched, which is not
+> super obvious. Or if we keep the current behavior, let's at least
+> document this fallback path a bit more.
+>=20
+> > +        // SAFETY: Pure bit manipulation, no preconditions.
+> > +        // CAST: The next-cap pointer is a 12-bit field (max
+> > 0xFFC), always fits in `usize`.
+> > +        let next =3D unsafe { bindings::pci_ext_cap_next(header) }
+> > as usize; +
+> > +        if next > offset {
+> > +            next - offset
+> > +        } else {
+> > +            (*self).size() - offset
+>=20
+> The `try_read32(offset)` above failing means that `offset + 4 >=3D
+> (*self).size()`, so this will either underflow, or return a bogus
+> size. Which is another argument in favor of handling the special case
+> with an error if the current behavior is not warranted by the spec.
+>=20
+> Note also that this can just be `self.size() - offset`, but it's fine
+> if you want to keep the deref explicit.
+>=20
 
+Sure will address it.
+
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +/// SR-IOV register layout per PCIe spec (64 bytes starting at cap
+> > offset). +#[repr(C)]
+> > +#[derive(FromBytes, IntoBytes)]
+> > +pub struct ExtSriovRegs {
+> > +    /// Extended capability header.
+> > +    pub header: u32,
+> > +    /// SR-IOV capabilities.
+> > +    pub cap: u32,
+> > +    /// SR-IOV control.
+> > +    pub ctrl: u16,
+> > +    /// SR-IOV status.
+> > +    pub status: u16,
+> > +    /// Initial VFs.
+> > +    pub initial_vfs: u16,
+> > +    /// Total VFs.
+> > +    pub total_vfs: u16,
+> > +    /// Number of VFs.
+> > +    pub num_vfs: u16,
+> > +    /// Function dependency link.
+> > +    pub func_dep_link: u8,
+> > +    _reserved_0: u8,
+> > +    /// First VF offset.
+> > +    pub vf_offset: u16,
+> > +    /// VF stride.
+> > +    pub vf_stride: u16,
+> > +    _reserved_1: u16,
+> > +    /// VF device ID.
+> > +    pub vf_device_id: u16,
+> > +    /// Supported page sizes.
+> > +    pub supported_page_sizes: u32,
+> > +    /// System page size.
+> > +    pub system_page_size: u32,
+> > +    /// VF BARs (BAR0=E2=80=93BAR5).
+> > +    pub vf_bar: [u32; NUM_VF_BARS],
+> > +    /// VF migration state array offset.
+> > +    pub migration_state: u32,
+> > +}
+>=20
+> Side-note: It would be interesting if we could end up representing
+> every I/O space this way, although padding and keeping the fields
+> offsets visible would make this challenging. But if we can eventually
+> generalize this, then I guess we can retire the `register!` macro. :)
+>=20
+
+That sounds interesting idea. :) My understanding is io projection
+covers the operations of the registers but not about the fields in the
+registers. Are you thinking to extend it to cover the register fields
+as well?
+
+> > +
+> > +impl ExtSriovVfBar {
+> > +    /// Returns the BAR address without PCI attribute bits.
+> > +    #[inline]
+> > +    pub fn address(&self) -> u64 {
+> > +        self.address
+> > +    }
+> > +
+> > +    /// Returns whether the BAR is 64-bit.
+> > +    #[inline]
+> > +    pub fn is_64bit(&self) -> bool {
+> > +        self.is_64bit
+> > +    }
+> > +
+> > +    /// Returns the configuration-space slot index of the next
+> > logical BAR.
+> > +    #[inline]
+> > +    pub fn next_index(&self) -> usize {
+> > +        self.next_index
+> > +    }
+> > +}
+>=20
+> How about making all the members public (and documenting them)? We
+> won't be working with mutable values, and that way we can remove this
+> entire impl block.
+>=20
+
+Sure.
+
+> > +
+> > +impl ConfigSpace<'_, ExtSriovRegs> {
+>=20
+> Since you have a typed variant defined, let this be
+>=20
+>     impl ExtSriovCapability<'_> {
+>=20
+> > +    /// Reads and decodes the VF memory BAR at configuration-space
+> > slot `bar_index`.
+> > +    #[inline]
+> > +    pub fn read_vf_bar(&self, bar_index: usize) ->
+> > Result<ExtSriovVfBar> {
+> > +        if bar_index >=3D NUM_VF_BARS {
+> > +            return Err(EINVAL);
+> > +        }
+> > +
+> > +        let low =3D crate::io_read!(*self, .vf_bar[try: bar_index]);
+> > +        if low & bindings::PCI_BASE_ADDRESS_SPACE !=3D
+> > bindings::PCI_BASE_ADDRESS_SPACE_MEMORY {
+> > +            return Err(EINVAL);
+> > +        }
+> > +
+> > +        let is_64bit =3D low &
+> > bindings::PCI_BASE_ADDRESS_MEM_TYPE_MASK
+> > +            =3D=3D bindings::PCI_BASE_ADDRESS_MEM_TYPE_64;
+> > +        let following_index =3D
+> > bar_index.checked_add(1).ok_or(EINVAL)?;
+>=20
+> Looks like these BAR registers should be bitfields? The `vf_bar`
+> member will need to stay a regular `u32` because we don't know ahead
+> of time whether a given entry is the high part of a 64-bit BAR or
+> not, but once we read the value we could create a typed bitfield from
+> it and avoid doing the shifting/masking magic ourselves.
+
+Sure.
