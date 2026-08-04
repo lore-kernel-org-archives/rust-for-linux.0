@@ -1,325 +1,195 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010067.outbound.protection.outlook.com [52.101.61.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834A541E6A8;
-	Tue,  4 Aug 2026 09:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785834709; cv=fail; b=MyVa7MEwqcqGHv+6uRetAMpQp06JIgFUf2808t7Q1UFrRT2AOatyzwlYUZLQHsdoLaFeKyT+A6NYHNGbbDjnfvF4jz6HjW6wFJErBMN28H4tGpdWawJNz4pMWmK+B0F3sFTQKsClq46e55M0yLzpzXJZqhucyge9LyDCW6CRrwU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785834709; c=relaxed/simple;
-	bh=Eo0DSQJ83nppCyjcL8gmc1mTL+iU/A9LcTBiC80TK1c=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CGAQ0BtKp8GDfttgYAAwBM2dBF/x4pV37mOWNXzgRukIFv7w4IiNMuFuKU5H6GLdWrqhDm11Zw/ck3gz5pG1tQMYnfJvbWa0W0IKRJbsHMfU8U8UjHw6FOAA+c9q21oNC9V+jUgPiPcyvXws5aCtl0ATCxBfxWmAUIqlC3stCLU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Kww9pC0f; arc=fail smtp.client-ip=52.101.61.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98C243CE48
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 09:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785834976; cv=none; b=UbyErnsy/wpXZccWH+gqQRG/j9RiWbNnDDmRZjGCMQGAOhWu0eqpJk0BVu1bXz95C5ShE06UPO0y4tiw8sEEAfzMnqFVuNRq+dLiBNJxzss6OnkshSKZPv9yOowLanWaEVB381hioZT2PYMKwBcyn/3GGGaAAaakLJGb/RZGQvE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785834976; c=relaxed/simple;
+	bh=seQi5dHm7N0iENzPndBuyLMvlINbZuNsFgRvyq8o0Jo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MIidTdQMCqk7A4YPIQjZgnbJS7FEzENOvTV56At4LhH9CZkmybRtYmJU+ejUeVFeqWfV8aQMfvAneoode706VKekBlQhoQc4OrQjOp7J9DrEkIOKfjPzOdL1WuWEMi/j2sLPf3dmOV7upCfywdLebvgkhtNXCGgqHg3Uns2Uoro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OrQBhyTc; arc=none smtp.client-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Kww9pC0f"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f5KE5tlMQgHHgasrJTJLvm3hcJF8R0oercde6CFKL4/uSKGlMlPAYudkl/IWrK41NNRyDILnA5roiox10hBL9XqvPsWG5cgetbHk+OjpWsvua4+rPpqe+h+IQbGvoPLsnUgdEBD8JSLofxYVmKJxTsm2So/sYpx8JcMNmUnX0LC1gmG4TNh0wsGWxamFH+7NhQ3noTOWkGg04lxIfviGWR9iPi0aBCi9E9ywtT+kPgccW207fmmeP2NJVQkvURgPte+KaFW0xVu/n67yvjTaJE3KxHFoLZf0jY1OIo7NVwwSoj6ND61WlYci/gJqZ/jVJUVvan5HCyBi2A2RAvj8Bg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wFxTViKjiSBxv09QAkJXz96qYZnuG8iQ+mmbd6SkVxY=;
- b=UIsD3JLwPw3JYub1LTKPUDJw0qtIQKlHAomSSrpnX1BIG7QX2kK2grJ4yHvl+62acZgxWpx7E39J+Vgm8zgkajgfzrhOh6/kVUmEqnOacBSs3zMDXuMywxxLbIk1M5tI/PmCcHjPCzBTpsndarDCys4QQXtEgTvQ8GWxm8nseKTdfv1Cd4T1LM+8NSMECaMHsmpltb0PGLUFhfuPcPoctu/TZAUVS/7KLHFAktdzVyvcJNwes9Ibk+ADWiHnTmo9nWNtT2blw3yvXhpmRp7zfwxTLpEq4Ijz4NcccG7bCjX9d5lBmAhn/1GTpFcz03zKLZsI2BgkDzoG00WIZEIyhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=posteo.de smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wFxTViKjiSBxv09QAkJXz96qYZnuG8iQ+mmbd6SkVxY=;
- b=Kww9pC0f/QGATorVx8fmKjRFK84ls8UMdGQv9+E0fcK4r8lLwLEehaINln+IUn6vkdYLVSxAB+F8YKBZPhQMmLZ3uzbt3oTWxGXiG+fvNZfG+vOiLxihP99XM+pwDNoRm7k6jWq5pyRJRCCPm0Yy5m+5wvtMEkmyyHodDDTAlEHq6dfw1nMXM9ubbbiDcHx3VJs/Ho9jkD92BipiUheZ2Ua7iO1Z2ncAwoJCYLqmR6MbZrrioosh1RBt2HoAFIyNK9B9OQsU6bAw8z1kbCMW8vLeSf6hh85Wqwk6Ow+PzBf9r3jyw+Oz5ce6BHX4tbv0qpHQctDR56/AyraUthaP5A==
-Received: from BL1PR13CA0159.namprd13.prod.outlook.com (2603:10b6:208:2bd::14)
- by CY8PR12MB7292.namprd12.prod.outlook.com (2603:10b6:930:53::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Tue, 4 Aug
- 2026 09:11:42 +0000
-Received: from BN3PEPF0000B373.namprd21.prod.outlook.com
- (2603:10b6:208:2bd:cafe::7e) by BL1PR13CA0159.outlook.office365.com
- (2603:10b6:208:2bd::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.15 via Frontend Transport; Tue, 4
- Aug 2026 09:11:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- BN3PEPF0000B373.mail.protection.outlook.com (10.167.243.170) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.315.0 via Frontend Transport; Tue, 4 Aug 2026 09:11:40 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 4 Aug
- 2026 02:11:25 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Tue, 4 Aug 2026 02:11:24 -0700
-Received: from inno-dell (10.127.8.14) by mail.nvidia.com (10.126.190.181)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 4 Aug 2026 02:11:18 -0700
-Date: Tue, 4 Aug 2026 12:11:16 +0300
-From: Zhi Wang <zhiw@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-CC: <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <aliceryhl@google.com>,
-	<bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
-	<boqun@kernel.org>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
-	<lossin@kernel.org>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
-	<markus.probst@posteo.de>, <cjia@nvidia.com>, <smitra@nvidia.com>,
-	<ankita@nvidia.com>, <aniketa@nvidia.com>, <kwankhede@nvidia.com>,
-	<targupta@nvidia.com>, <kjaju@nvidia.com>, <alkumar@nvidia.com>,
-	<joelagnelf@nvidia.com>, <jhubbard@nvidia.com>, <zhiwang@kernel.org>
-Subject: Re: [PATCH v6 1/1] rust: pci: add extended capability and SR-IOV
- support
-Message-ID: <20260804121116.23d9347d@inno-dell>
-In-Reply-To: <DKCOUE9DRG5R.2VAVA78UTVKST@nvidia.com>
-References: <20260730182954.783568-1-zhiw@nvidia.com>
- <20260730182954.783568-2-zhiw@nvidia.com>
- <DKCOUE9DRG5R.2VAVA78UTVKST@nvidia.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OrQBhyTc"
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-496bbcf7d1eso19916345e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Aug 2026 02:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785834973; x=1786439773; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f7xJl7liXrGedcihtRFOy204jJIb+lTqMppbYEP+Pf0=;
+        b=OrQBhyTcDRQPJ5KqhK1HKgtUqG0Jxc5xUNLRsrRPlID6T3Q0kISmeqvkGPKCXuQBOD
+         m381kPvGmBBuN3cWw2YJXIBsI4rLeKqgKvlOdfFVCyFRiFcMncz+BwB0lqp8ntgKee8T
+         Z797A05tpZaxroswQX243bSIqvRmKULg/dh2Tz4+RereDFpiRKMB/SrBd2jaUAV7vq9j
+         whxEHQqkY3kagNHoLfRc4CkAqtih8gDd/dV7QfdcPWLuMApf7ljpxUhbk1sA9AHJ1vsv
+         gypIKeItAPZ+9MZFySNGjCbOzeoRbEWvqjoQYokdznrDVSB8Ct6X2Bq6gMBCZ4tx//zq
+         vTmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785834973; x=1786439773;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=f7xJl7liXrGedcihtRFOy204jJIb+lTqMppbYEP+Pf0=;
+        b=jT2DYLyzXwryhE1OYVJtPzlTr9iCSwi6ly7Uw2EqFfkqDZ/7iN+zrJXHlOg7YAecy6
+         VlsBZxP8d/aUYera5+twP4xIdKuu8zhGRvAH93sDr/J7BWun0+6vTI9LGNfyhkG0um5O
+         0dJ0DIMc3tvm+9rbQZxd7cGr5Sd+IAVX1k4b9UK1Z0nigtyb7Vf3H4ckgHgHoyYAtRQc
+         bnxQCMpyviv6ACSmcT/WUOEpk8ty65S76jxrsHuIwo9pEcHr+axWW2r/ec8fxtEk/eCb
+         oQBaeOOMN5OGDjmO7+T0coV2WnCEUd7JIVbLrVpW7hjieXWmuLCcFzhFd/zDS8aZvF5K
+         C8kA==
+X-Forwarded-Encrypted: i=1; AHgh+RqUnsxVCkeYwr40l6Fn9XAgxbG8RgKDbmGn9H5mu/p2RQ4v7lLjIGAxBkngD33AHud7zZaX2EutGqMllIiSnw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3t4g34iNbpY4wPsiJ6YqzIzUQZ+Ca/3LjP26smqBcpkrBBH5f
+	UNUHmmZqhqFOgDl9csaWkcQc9uxjo7yqCPf6rrFrte6x3FmC1h7YO5cHG37cYUWJ1rNs8O1F2OC
+	Hge9A8IQIeZKflcFSIQ==
+X-Received: from wmjl15.prod.google.com ([2002:a7b:c34f:0:b0:487:3739:c5c4])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3b01:b0:493:f0f5:f2d7 with SMTP id 5b1f17b1804b1-4980c66c90fmr247655025e9.7.1785834972482;
+ Tue, 04 Aug 2026 02:16:12 -0700 (PDT)
+Date: Tue, 4 Aug 2026 09:16:11 +0000
+In-Reply-To: <20260721153617.869933-3-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B373:EE_|CY8PR12MB7292:EE_
-X-MS-Office365-Filtering-Correlation-Id: 65c9d78e-4436-4dae-297c-08def208659f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|376014|1800799024|7416014|56012099006|10067099003|11063799006|4143699003|3023799007|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ifyveZGX7ysccn+AU85Ozh5JEEF04FMgpLI1BEKUCQ9wJMSvJaudpzDbEdqIBOl5PRY93Yu8umnE/RElFJuV/bPvJ0CuOh1Sq1p88HZf9wtcF4ODDl9zfEOzK21SDp5NLALv+ZhOVO6pxdPev8r8nL7t/sUKbrawr3W4GUAoq4YlwI8SHOmqRCYbdxt8JV0CUWz1KAyEGv9oYeAeoAQ2vMOmBkZBY6jZ8ZFHPkugmyGrGam4WMgKOE1Re7wIe9OK+flDP3pUy8+sNsRAWpPnBKCzqedfASrJcof4yQSkjnND9qhnlIg99y/3ovjrAwGrdLgk+fqwQL/A+az19trfXo3seQ5JjkypH/d7OICDwtsM6Pb+PFs1aZJzUdaRQFoGM//bHhiFzJDAy6y697HtsebxMjSLOHTFRiR1mT28lSMUKyXb7WrYfd53XbSaEYJe0OK4IOr/mUp0aeFbVZUqAcuLd7NP8GUOLNr/+/l2TcPrtvmLKPaQZBLbGDseJYCAXOBGXBLUTEnOk5Jo46NUf3oonovpjEHs0lpO/zPBR9xTHpa/fUZCOA51ZOkiF5QyQ3lFFPNjLJXufmOzn3QHY48jZY+qWV4n+4U7GwyYRAcPWVn9p+txX4R4LRbWo0mTEDtC81TNzomUDBF9ju7GA7/lefycKg5pXMrfBb/MbDX4RT126Y9NQ1pL8QmF1s/iIJbiMwLtUonYHC59PgRP9A==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(376014)(1800799024)(7416014)(56012099006)(10067099003)(11063799006)(4143699003)(3023799007)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	q38c79Z5YOMVkooIpx6p6xp5xyRfNm0IDQ5j037wvRwhnAEb8e2pbslrn/KAAiUXyoLRRduHMSQRZRNicaQhUQkpQcE6ocdyMTzA7kwGru292rwHnAQSRjvL/IfZsiq0wWNcHNJGpZOLdh8LsdcgmIPCf04SSQ1QfAwq1i6GfD/9na3MmbCTg7pchBevG4wcu1EAYASsYZbxLvo9kWNERyHDeqhh8GeYYo8+RUqi3YNxE3R0LrzPVRwVzEvkwLN8ZReE5fBMbxKQn1vagbSbWGvKQdVko+LL2+QiB/Cz9hA0CGxCs6Ox+nrh7WIaClQ/6bSB6M/tuTSke9doVlcU/ijBAtYy1tr1vKSRynAw2ktSj7R25L0PYIXOovtGMhM43fpQg0TFe8bOTXW/NAR8vrto/JOqiCg1eNdvyQTBBfyf8ciqZrEmoIVX1LHXj1pO
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 09:11:40.9640
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65c9d78e-4436-4dae-297c-08def208659f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B373.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7292
+Mime-Version: 1.0
+References: <20260721153617.869933-1-beata.michalska@arm.com> <20260721153617.869933-3-beata.michalska@arm.com>
+Message-ID: <anGt2_OAK2UWtXuO@google.com>
+Subject: Re: [PATCH v2 2/3] rust: platform: wire runtime PM callbacks
+From: Alice Ryhl <aliceryhl@google.com>
+To: Beata Michalska <beata.michalska@arm.com>, dakr@kernel.org
+Cc: ojeda@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
+	daniel.almeida@collabora.com, boris.brezillon@collabora.com, 
+	work@onurozkan.dev, samitolvanen@google.com, rust-for-linux@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, 31 Jul 2026 19:35:26 +0900
-"Alexandre Courbot" <acourbot@nvidia.com> wrote:
+On Tue, Jul 21, 2026 at 05:34:03PM +0200, Beata Michalska wrote:
+> Allow Rust platform drivers to expose runtime PM callbacks to the driver core.
+> 
+> The runtime PM abstraction builds a dev_pm_ops table for the concrete driver
+> implementation, but the platform bus still needs to receive that table through
+> struct platform_driver. Add an optional PM_OPS associated constant to
+> platform::Driver and initialize the coresponding C device_driver struct
+> accordingly during registration. The platform glue only wires the callback
+> table into the C driver model; ownership of the callback payload and
+> runtime PM teardown remain with the pm module.
+> 
+> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+> ---
+>  rust/kernel/platform.rs | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+> index d8d48f60b0b9..b7e422388634 100644
+> --- a/rust/kernel/platform.rs
+> +++ b/rust/kernel/platform.rs
+> @@ -72,6 +72,11 @@ unsafe fn register(
+>              None => core::ptr::null(),
+>          };
+>  
+> +        let pm_ops = match T::PM_OPS {
+> +            Some(ops) => ops,
+> +            None => core::ptr::null(),
+> +        };
+> +
+>          // SAFETY: It's safe to set the fields of `struct platform_driver` on initialization.
+>          unsafe {
+>              (*pdrv.get()).driver.name = name.as_char_ptr();
+> @@ -79,6 +84,7 @@ unsafe fn register(
+>              (*pdrv.get()).remove = Some(Self::remove_callback);
+>              (*pdrv.get()).driver.of_match_table = of_table;
+>              (*pdrv.get()).driver.acpi_match_table = acpi_table;
+> +            (*pdrv.get()).driver.pm = pm_ops;
+>          }
+>  
+>          // SAFETY: `pdrv` is guaranteed to be a valid `DriverType`.
+> @@ -222,6 +228,9 @@ pub trait Driver {
+>      /// The table of ACPI device ids supported by the driver.
+>      const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
+>  
+> +    /// Runtime PM callbacks
+> +    const PM_OPS: Option<&'static bindings::dev_pm_ops> = None;
+> +
+>      /// Platform driver probe.
+>      ///
+>      /// Called when a new platform device is added or discovered.
 
-> On Fri Jul 31, 2026 at 3:29 AM JST, Zhi Wang wrote:
+I've been thinking more about this, and I can't help but wonder whether
+we could significantly simplify it. Why not just do this:
 
-snip
+1. Update rust/kernel/platform.rs Driver trait to include pm ops
+directly in the trait:
 
-> > +/// Number of VF BAR register slots in an SR-IOV capability.
-> > +// CAST: `PCI_SRIOV_NUM_BARS` is 6, which fits in `usize`.
-> > +const NUM_VF_BARS: usize =3D bindings::PCI_SRIOV_NUM_BARS as usize;
-> > +
-> > +/// Attribute bits encoded in the low DWORD of a memory BAR.
-> > +const VF_MEMORY_BAR_ATTRIBUTE_BITS: u32 =3D
-> > bindings::PCI_BASE_ADDRESS_SPACE
-> > +    | bindings::PCI_BASE_ADDRESS_MEM_TYPE_MASK
-> > +    | bindings::PCI_BASE_ADDRESS_MEM_PREFETCH;
->=20
-> This is only used in `read_vf_bar` and can be local to it.
->=20
+	#[vtable]
+	pub trait Driver {
+	    type IdInfo: 'static;
+	    type Data<'bound>: Send + 'bound;
+	    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
+	    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
+	
+	    fn probe<'bound>(
+	        dev: &'bound Device<device::Core<'_>>,
+	        id_info: Option<&'bound Self::IdInfo>,
+	    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
+	
+	    fn unbind<'bound>(dev: &'bound Device<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
+	        let _ = (dev, this);
+	    }
+	
+	    // Add these methods.
+	    fn runtime_suspend<'bound>(
+	        dev: &'bound Device<device::Bound>,
+	        data: &Self::Data<'bound>,
+	    ) -> Result
+	    {
+	        build_error!(VTABLE_DEFAULT_ERROR)
+	    }
+	
+	    fn runtime_resume<'bound>(
+	        dev: &'bound Device<device::Bound>,
+	        data: &Self::Data<'bound>,
+	    ) -> Result
+	    {
+	        build_error!(VTABLE_DEFAULT_ERROR)
+	    }
+	}
 
-Yup.
+By marking the trait with #[vtable], we know whether the user has
+overridden runtime_suspend() and runtime_resume() and then the platform
+abstraction can enable PM in that scenario:
 
-> > +
-> > +/// PCI extended capability IDs.
-> > +#[repr(u16)]
-> > +#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-> > +pub enum ExtCapId {
-> > +    /// Single Root I/O Virtualization.
-> > +    // CAST: `PCI_EXT_CAP_ID_SRIOV` is `0x10`, which fits in `u16`.
-> > +    Sriov =3D bindings::PCI_EXT_CAP_ID_SRIOV as u16,
-> > +}
-> > +
+ - If `T::HAS_RUNTIME_SUSPEND && T::HAS_RUNTIME_RESUME` then set
+   `(*pdrv.get()).driver.pm` to a table using those methods in
+   register().
+ - If `T::HAS_RUNTIME_SUSPEND && T::HAS_RUNTIME_RESUME` then invoke
+   `pm_runtime_enable()` from `probe_callback()` after the
+   `set_callback()` line. Note that this call is infallible.
+ - Do the same from unplug to disable PM.
 
-snip
+And then you automatically PM whenever you implement those two methods
+in the `platform::Driver` trait, and that's all you need to do. Since we
+invoke `pm_runtime_enable()` in `probe_callback()` after setting the
+private data, there's no issue with passing the device private data to
+the callbacks.
 
-> > +    /// Calculates the size of the extended capability at `offset`.
-> > +    ///
-> > +    /// The capability extends to the next extended capability, or
-> > to the end of the extended
-> > +    /// configuration space if it is the last one. `offset` must
-> > be a DWORD-aligned offset within
-> > +    /// the extended configuration space returned by
-> > `pci_find_ext_capability`. If its header
-> > +    /// cannot be read, the capability is treated as the last one.
-> > +    fn calculate_ext_cap_size(&self, offset: usize) -> usize {
-> > +        let header =3D self.try_read32(offset).unwrap_or(0);
->=20
-> The special behavior on invalid index is intriguing - is this part of
-> the PCI specification? Or can it return an error if `offset` is out of
-> bounds?
->=20
+Note that we can trigger a const eval panic on `T::HAS_RUNTIME_SUSPEND
+!= T::HAS_RUNTIME_RESUME` to enforce that you must implement both
+methods if you implement either one.
 
-I was thinking to keep this helper infallible. Since offset
-is returned by pci_find_ext_capability(), I assumed that
-it had already been validated.
+Thoughts? I know we have gone down this route before, but I just think
+it would be so so much simpler than the current approach. I know that
+this diverges from IRQ and such by not having a Registration, but I
+actually think that's ok. PM is already different from IRQ callbacks in
+the sense that the platform abstractions need PM-specific code *anyway*
+to properly set pm_ops in the `struct platform_device`.
 
-The spec only says the cap offset of zero in a successfully read
-indicates the end of the cap. For aligning with the spec, I think we
-should propagate the errors.
-
-> If we can, I'd probably prefer that as the fallback path relies on
-> `pci_ext_cap_next` to leave the `0` value untouched, which is not
-> super obvious. Or if we keep the current behavior, let's at least
-> document this fallback path a bit more.
->=20
-> > +        // SAFETY: Pure bit manipulation, no preconditions.
-> > +        // CAST: The next-cap pointer is a 12-bit field (max
-> > 0xFFC), always fits in `usize`.
-> > +        let next =3D unsafe { bindings::pci_ext_cap_next(header) }
-> > as usize; +
-> > +        if next > offset {
-> > +            next - offset
-> > +        } else {
-> > +            (*self).size() - offset
->=20
-> The `try_read32(offset)` above failing means that `offset + 4 >=3D
-> (*self).size()`, so this will either underflow, or return a bogus
-> size. Which is another argument in favor of handling the special case
-> with an error if the current behavior is not warranted by the spec.
->=20
-> Note also that this can just be `self.size() - offset`, but it's fine
-> if you want to keep the deref explicit.
->=20
-
-Sure will address it.
-
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +/// SR-IOV register layout per PCIe spec (64 bytes starting at cap
-> > offset). +#[repr(C)]
-> > +#[derive(FromBytes, IntoBytes)]
-> > +pub struct ExtSriovRegs {
-> > +    /// Extended capability header.
-> > +    pub header: u32,
-> > +    /// SR-IOV capabilities.
-> > +    pub cap: u32,
-> > +    /// SR-IOV control.
-> > +    pub ctrl: u16,
-> > +    /// SR-IOV status.
-> > +    pub status: u16,
-> > +    /// Initial VFs.
-> > +    pub initial_vfs: u16,
-> > +    /// Total VFs.
-> > +    pub total_vfs: u16,
-> > +    /// Number of VFs.
-> > +    pub num_vfs: u16,
-> > +    /// Function dependency link.
-> > +    pub func_dep_link: u8,
-> > +    _reserved_0: u8,
-> > +    /// First VF offset.
-> > +    pub vf_offset: u16,
-> > +    /// VF stride.
-> > +    pub vf_stride: u16,
-> > +    _reserved_1: u16,
-> > +    /// VF device ID.
-> > +    pub vf_device_id: u16,
-> > +    /// Supported page sizes.
-> > +    pub supported_page_sizes: u32,
-> > +    /// System page size.
-> > +    pub system_page_size: u32,
-> > +    /// VF BARs (BAR0=E2=80=93BAR5).
-> > +    pub vf_bar: [u32; NUM_VF_BARS],
-> > +    /// VF migration state array offset.
-> > +    pub migration_state: u32,
-> > +}
->=20
-> Side-note: It would be interesting if we could end up representing
-> every I/O space this way, although padding and keeping the fields
-> offsets visible would make this challenging. But if we can eventually
-> generalize this, then I guess we can retire the `register!` macro. :)
->=20
-
-That sounds interesting idea. :) My understanding is io projection
-covers the operations of the registers but not about the fields in the
-registers. Are you thinking to extend it to cover the register fields
-as well?
-
-> > +
-> > +impl ExtSriovVfBar {
-> > +    /// Returns the BAR address without PCI attribute bits.
-> > +    #[inline]
-> > +    pub fn address(&self) -> u64 {
-> > +        self.address
-> > +    }
-> > +
-> > +    /// Returns whether the BAR is 64-bit.
-> > +    #[inline]
-> > +    pub fn is_64bit(&self) -> bool {
-> > +        self.is_64bit
-> > +    }
-> > +
-> > +    /// Returns the configuration-space slot index of the next
-> > logical BAR.
-> > +    #[inline]
-> > +    pub fn next_index(&self) -> usize {
-> > +        self.next_index
-> > +    }
-> > +}
->=20
-> How about making all the members public (and documenting them)? We
-> won't be working with mutable values, and that way we can remove this
-> entire impl block.
->=20
-
-Sure.
-
-> > +
-> > +impl ConfigSpace<'_, ExtSriovRegs> {
->=20
-> Since you have a typed variant defined, let this be
->=20
->     impl ExtSriovCapability<'_> {
->=20
-> > +    /// Reads and decodes the VF memory BAR at configuration-space
-> > slot `bar_index`.
-> > +    #[inline]
-> > +    pub fn read_vf_bar(&self, bar_index: usize) ->
-> > Result<ExtSriovVfBar> {
-> > +        if bar_index >=3D NUM_VF_BARS {
-> > +            return Err(EINVAL);
-> > +        }
-> > +
-> > +        let low =3D crate::io_read!(*self, .vf_bar[try: bar_index]);
-> > +        if low & bindings::PCI_BASE_ADDRESS_SPACE !=3D
-> > bindings::PCI_BASE_ADDRESS_SPACE_MEMORY {
-> > +            return Err(EINVAL);
-> > +        }
-> > +
-> > +        let is_64bit =3D low &
-> > bindings::PCI_BASE_ADDRESS_MEM_TYPE_MASK
-> > +            =3D=3D bindings::PCI_BASE_ADDRESS_MEM_TYPE_64;
-> > +        let following_index =3D
-> > bar_index.checked_add(1).ok_or(EINVAL)?;
->=20
-> Looks like these BAR registers should be bitfields? The `vf_bar`
-> member will need to stay a regular `u32` because we don't know ahead
-> of time whether a given entry is the high part of a 64-bit BAR or
-> not, but once we read the value we could create a typed bitfield from
-> it and avoid doing the shifting/masking magic ourselves.
-
-Sure.
+Alice
