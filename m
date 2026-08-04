@@ -1,133 +1,122 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A66EEA8;
-	Mon,  3 Aug 2026 22:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652331F3B85
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 02:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785795683; cv=none; b=eZR5x7OKLl0QOURqzB4hRSc+nM0DKWEYyMgIOtR5kHNOcnKmoKoAERGcujGcZ7rYYr/lCHXP2pSMHjJ4pNLRBPEdX5meUkuleaPD5gn9MCKprYinnBMCB23lDzg5HQLFFD/lPEwzxAwfnJVbRlxOGKSzGzb0NAxKMfmaPdjb1IQ=
+	t=1785809920; cv=none; b=Lr8URD4qV854mJlW0vmJJ5sPslN7L0MUY7dxub7MNvO3fy8YMO9mQYysXGYCw3X2Cgll4bkxXKM2Fn953x24WQiJzSRZKv+79gsr5bAKfiEZiyITIALozzX77HDGXt1Gk/UbrFt4ni5bk9Q0Pktf7IlwSZ+JogCKYNvZF13Z25U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785795683; c=relaxed/simple;
-	bh=xuXdgySlvCgHLOdGmGL+MubfZyFQvRssa94WG2HMgWk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=g1hIOYFYKeOSercxnK+fqfGmUI5JYL/jVB5dDpenLoC52N20mFN35Qq5W8lvquKyWvuEL8s8lvHF7gwrOc4iuSucJnQ0emdujNETMatuglvyy0799IbsAYj2g0xSEOtVIR7QiAJlalMtllVFF33sTfsfiubmqqhFg9XFxF1Stm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FaJ7jRrU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785809920; c=relaxed/simple;
+	bh=+0YWcmsVTy379jOId4ITg5DrYEYN/aWR9RmhPJDX4Ao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W0O2boHZUjHr+WHT8OesS9wCSF4Dgy5Ca46HR3ZUPd4uuJR9EhXGBDWrLKGFvf3NxfbfEn+vKqZn5lZxh8d68qurRQSrSZQ6VzMXJnH1+7PT2bxNCUZCI1tjW8STjW6o+ILvfpE+afnNx8b7HuXNBIw13IMjJAQxfJh8wXXR1Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fHqeAz6U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FaJ7jRrU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9351F000E9;
-	Mon,  3 Aug 2026 22:21:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fHqeAz6U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470EE1F000E9;
+	Tue,  4 Aug 2026 02:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785795681;
-	bh=xuXdgySlvCgHLOdGmGL+MubfZyFQvRssa94WG2HMgWk=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To;
-	b=FaJ7jRrUDw+YHd7ugnUXOXor7JZhM+UUcWKDINySpl5cQx2bO8jMqX/wC397GZSyU
-	 zJqsJB5YBrtwPkIKKV41nNw2/NoungOXZyJpw4ixxlBnP1SebwPOh1EOUKDOwiGEe1
-	 yOVP6+a2nW9sy3aoMYik+k98YSEVriSQsokd1f1Tv2JSqi8/PizDpIhQyQp49ubaFd
-	 aUllZmB0ilb1vPaxfZcSksVN9Q6a7KVZcq3/G3grPHDwwjTJ5GLpj/7YwCuvVuQHDH
-	 0GTcUwegITQ1WrlNZPl61fkr94LoxuZzn5RFLRiMAyegun1jncAGK9Byy6aisS+sAv
-	 I6VE42CpgeO5g==
+	s=k20260515; t=1785809919;
+	bh=X/e8VfGjWFsnUsuoG7ShElDN3ZycmSqss7gVem/UxIU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fHqeAz6UsSqdjKOaf52847EDHwqB6lWsbasrABwOw3rvQmKcxIVZN47RC+xTrJyoE
+	 LQKB0aVm2PO/WpeEqasXbntOi9D6GDK6lp8+oDD8s/fu3fyZxYP7OIBJiB6JJm86fu
+	 rO4otjsDxRUDzjPCnSCs5aTSR/Owu2EZW6iYBnbhzPz4o1U6a7EzgZlkz7RqFYIpBj
+	 Jahu7AJgs2Q2x1oBxZl5yqzhpkyTm6C6G7KC/3kD5MCZ7rTwTKcZBWVW75Z5FzPVK4
+	 bqmaVU4QK7DpN/GKz1H/fevxQOuui8bgbcl+83t0MOlXFjfLR0uvllyFQl0KE6dS44
+	 W6rkCX2mVsVHg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5B8ADF4006B;
+	Mon,  3 Aug 2026 22:18:37 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Mon, 03 Aug 2026 22:18:37 -0400
+X-ME-Sender: <xms:_UtxauSACHvZor8YLMJp2J4bIqSjxveHs3aGbVF4wlMss7kE4UEn2Q>
+    <xme:_UtxalFqbS57xgv6Me2JUcwdo_jZrA3W7ld71nAJKy7gplrvuL7iFnPNukdeLbOFq
+    HVzi_6dGQlvFFLZkLcrh3j0OdGADUVSo7Q299tCdVsdutbCsuYQ4Yw>
+X-ME-Received: <xmr:_UtxagcP9u0tzj8lqRkLlkC0Q6q63CFTvzpGcDnafOYUdTwlDESUMBQuZQ0zdbCY90Nz_slLJXXY1zTnG3y57v6tlnMEEZaw>
+X-ME-Proxy-Cause: dmFkZTEhPEKvSEggqM4yF8fEfaf9rcGPwMWlwUs4V2DeGpqmRCZumpBmmsJy08E/MoioOa
+    5kP4a1CBCWFO9Y7Jq9tXPifABiuqHQXbfg57ckdxk1nurpNKjBDHsvoPRkg0EtthrF6o9H
+    QsejqLonLXKcgwqwiJtX6zk23qhsxSKxKII8SQwjuGi2Wwiaw92eZtQ5esznLakm63bxld
+    Cg2PLfjDRB86d/8O0F/wmsVEeFnWo0DS7TxxQ5/hRHtCzPcUgIyLKTLadfJLPRyseMtm9P
+    4vCKD99OkoxG3DuTlUQp39TUrznY2qUO35IzXXmgzCb+WCqqgAescsSK1JfiTKWgoVUpIl
+    pnZR/PrZ1PJqgvAOKFXtRsJ8X2BQA8/7wc5bdJjPU2bHBYuL5MtsXcimFt3R3VNW8mH9sv
+    8M8nmalvaQVPxZ7LziYFrxoPTQeFO1jUA/x1rKesdYfTHm96ogcbQ8NO7xItWAq3xIIMaa
+    iFFoTxjVDhEFBIbK5u3jp1hHDZLzgjJAmRt9B+lUVOfUZhc2EzpRsJiVxuq3RnS8RtUcPj
+    Ii/p7dYwJvlPyFXJHcEQFoxx5ytNu8UaQYUX8nchA3mYpN0SH0jW/eGlRxqxz8F4Vy3qsr
+    nNU0ZqKvawkHlGxjn+iMwmcUzWJ/+6Ng5sUFgEdFWp+XTUSGWuijxY5kTrjA
+X-ME-Proxy: <xmx:_UtxastXdPqQZ4RLH5-H3mrLHY236cxGVmG8qFW3Fef9fsHZBPKUPQ>
+    <xmx:_Utxaudgs2nSv23UEZmPusiieEZYZBCsuOMbswqKQvfBX5LfvThoxQ>
+    <xmx:_UtxaoqT0OyZKTuiQlxgMdTpAtUSmCOyi1vZNnCcEIvuOVtkIHKdjg>
+    <xmx:_Utxak8RU705DuDXk3zTeSKegJsrKELZ-bsiG3iQsDHL2W9EE79DuA>
+    <xmx:_Utxap6v98p-7TR37qqpGGuCrghlj2Uf39UzvN6nw0jkQmb0N0Ke4CDR>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Aug 2026 22:18:36 -0400 (EDT)
+Date: Mon, 3 Aug 2026 19:18:35 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>, Gary Guo <gary@garyguo.net>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Lyude Paul <lyude@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Trevor Gross <tmgross@umich.edu>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+Subject: Re: [PATCH v4 0/5] Rate limited printing for Rust
+Message-ID: <anFL-74hn6QZjZGd@tardis.local>
+References: <20260728-pr-ratelimited-v4-0-435f8d6e9605@google.com>
+ <2026073148-cushy-mocha-2ecf@gregkh>
+ <CANiq72ksdfw57QE1+FsMW3uE5p056tTn=xxK1m3fg-ABhHU8cQ@mail.gmail.com>
+ <CAH5fLgjZuKGBX7R4O1fat1s__mR2LHhQWD7tWdz6F_FxECFOGw@mail.gmail.com>
+ <CANiq72kuB3dHDcsw0WApcVOrJJs3kS_BWt9ELqm8YmcEz6yeSg@mail.gmail.com>
+ <2026080337-careless-viper-7a1f@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Aug 2026 00:21:18 +0200
-Message-Id: <DKFNQH0FLP11.1JGXFSKVTOBMF@kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v7 3/8] gpu: nova-core: add TLV parser for firmware
- files
-Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "John Hubbard"
- <jhubbard@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>, "Eliot
- Courtney" <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- "russ.weight@linux.dev" <russ.weight@linux.dev>, "mcgrof@kernel.org"
- <mcgrof@kernel.org>, "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>, "driver-core@lists.linux.dev"
- <driver-core@lists.linux.dev>, "nova-gpu@lists.linux.dev"
- <nova-gpu@lists.linux.dev>
-References: <20260731201017.2580713-1-ttabi@nvidia.com>
- <20260731201017.2580713-4-ttabi@nvidia.com>
- <DKFMSHHGF3DE.2SUUP3FB7WXTK@kernel.org>
- <0c53c38adec26bc5df6b4658d3da53075001d93a.camel@nvidia.com>
-In-Reply-To: <0c53c38adec26bc5df6b4658d3da53075001d93a.camel@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2026080337-careless-viper-7a1f@gregkh>
 
-On Tue Aug 4, 2026 at 12:05 AM CEST, Timur Tabi wrote:
-> On Mon, 2026-08-03 at 23:36 +0200, Danilo Krummrich wrote:
->> @Miguel: One consideration for you below.
->>=20
->> On Fri Jul 31, 2026 at 10:10 PM CEST, Timur Tabi wrote:
->> > +=C2=A0=C2=A0=C2=A0 fn find(&self, tag: &[u8; 4]) -> Result<TlvBlock<'=
-a>> {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.iter().find(|b| b.tag=
- =3D=3D *tag).ok_or(EINVAL)
->> > +=C2=A0=C2=A0=C2=A0 }
->>=20
->> NIT: Do we really know the tag is invalid just because it wasn't found?
->
-> Well, maybe this is where we should return ENODATA?
+On Mon, Aug 03, 2026 at 08:24:16AM +0200, Greg Kroah-Hartman wrote:
+> On Mon, Aug 03, 2026 at 06:56:50AM +0200, Miguel Ojeda wrote:
+> > On Fri, Jul 31, 2026 at 2:20 PM Alice Ryhl <aliceryhl@google.com> wrote:
+> > >
+> > > It's not too long until the next cycle so going via Rust tree is ok with me.
+> > >
+> > > I'd appreciate if at least the first three could go together so we
+> > > don't have split it over three release cycles, though.
+> > 
+> > Ok, Boqun: I think you didn't pick the first two for your tip PR,
+> > shall I or Greg do it then?
 
-Or maybe just ENOENT.
+Yeah.. I didn't find the time to pick these up, sorry about that.
 
-> I am expecting future Nova code to handle tags that may be legitimately a=
-bsent, so maybe having
-> it return ENODATA if the tag is missing, and EINVAL in all other situatio=
-ns is better.
+> > 
+> > Greg: should I pick all this through Rust, i.e. including Binder's, or
+> > leave the Binder ones out, or do you want to pick them all?
+> 
+> I'd love to just take them all at once if no one objects, as odds are
+> there are going to be binder merge conflicts due to the printk() changes
+> in that codebase in the char-misc-next tree.
+> 
 
-In this case it makes sense to differenciate; AFAIC this can be a follow-up
-patch.
+Thanks a lot!
 
->> > +=C2=A0=C2=A0=C2=A0 /// Return a slice of bytes.=C2=A0 Returns ENODATA=
- if the value is empty.
->> > +=C2=A0=C2=A0=C2=A0 pub(crate) fn get_bytes(&self, tag: &[u8; 4]) -> R=
-esult<&'a [u8]> {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let tlv =3D self.find(tag)=
-?;
->> > +
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // Treat empty value as an=
- error, to avoid trying to parse nothing.
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if tlv.value.is_empty() {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 re=
-turn Err(ENODATA);
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>=20
->> This one seems resonable; but we don't have the error code in place. The=
- commit
->> message says the series depends on [1], but this likely goes through the=
- Rust
->> tree.
->
-> Can't you just pick it up from the Rust tree and put it in drm-rust-next?
+Regards,
+Boqun
 
-This is what I refer to below as "signed tag".
-
-Some background on this: We can't have patches as duplicate commits going t=
-o
-Linus. So in order for me to pull from the Rust tree, it has to guarantee t=
-o not
-change its histroy (which it does not). Besides that, we don't want all the
-commits from another tree, but just a specific one. The normal process for =
-this
-is to put the commit on a separate branch based on a commit base, e.g. some=
- -rc,
-typically -rc1. Then we can create a signed tag from this that can be merge=
-d
-into both (or multiple) trees, so the commit only exists exactly once.
-
-However, this kind of logistics typically only makes sense for features, et=
-c. In
-order to avoid a trivial conflict, it is usually overkill. Which is also wh=
-y I
-said I'd go for the former.
-
->> Either we just add this single error code in a separate patch or Miguel =
-provides
->> a signed tag for [1].
->>=20
->> Since this is a perfectly trivial conflict, I'd go for the former.
->
-> The latter seems simpler to me, and would avoid an annoying merge conflic=
-t.
+> thanks,
+> 
+> greg k-h
