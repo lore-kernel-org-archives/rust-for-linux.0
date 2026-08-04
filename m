@@ -1,155 +1,254 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010022.outbound.protection.outlook.com [52.101.56.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007BA2F5324;
-	Tue,  4 Aug 2026 04:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785816239; cv=fail; b=gRcEIwOv0Ckg5LodNYSCrNrmU7XUBLH7y6Vn2z/ChwNaw1tx7u5LkvWWmpEx63E+NikmT0nMmdkhHaX1LBxujAzx8a+m9CUtoOwsj90uRyc4D48ghX8Xk+z3oj8lQNMp6Sl8MjCuyXxAc6ABEKX092/oq8S8FBdC2JqGpfbZqgI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785816239; c=relaxed/simple;
-	bh=bma62/wUyB9rEyVGTLQAwnEhUM1zrffmLdwMyG1F/So=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=mDLC/NjV6SavH9i2+rRqVwl2oGtE0+dH+ReJhvXHd9wrvR46WP2mqQma5A0ttlrD+uxMbzEzlFLLX82nHvOFO0M2Y+YTzE31zi/0uFn0h5FXaaIxQRnGCOx7/f1eR6Nl7BwIwD1adzr6DS8Yxek5iyjeaW5MhpvMZVmTAcDZj98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Vw+YXfI/; arc=fail smtp.client-ip=52.101.56.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6591032B10D
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 04:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785818466; cv=none; b=hDiBgdCgdCgvfCLMDPznm/FgYyL5kXFB8anHGzUzuoHZHxJi009SBxzSMDVh0Nfqkacb9ccJ6t5ZyuwUVfnnQpgJmZIxTst3aA3ubOsj4/SonA2SQYT7WIZcU/O9kMShAWym1LlIOhxWEda10Fw0xMDxgd6WwiHWYYRXHrLgH/s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785818466; c=relaxed/simple;
+	bh=E/QMJtRC1jMdMGDKIqUCRLVVeAV/9Q8uCRCj+cj9f70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IA3Da13IXCstyKRnwEtW/1uOxkH237focgcZqKVfDLn7BT1oMv4URCARv7m7zf8Ehuo4fSXhle3fknr75rKmFL0QeL3oLj6BufcHjzv31nwunDdLhS2VvU3MkPXmCgf39Aa7bqgH/kFSjUkxDoC8oCC8vua/eDQxCQL/fnIlilg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWI/MDeu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Vw+YXfI/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EbuJCP64Tiz2poT2XTNldZRNkVZgYN4yBpkLhiLhQNu2/xP+dTGDsa3x5b35ICHpjvsAVEDMcx8RXE0ngSzJ7pFdw3h1rtDPOd8bjKl45xU0f7CGVafjGD9qXPNSLAglms67SI4u2Sf5tVMLUfkkEU/TBOXsL/ixfMJc9V5bYVvwBUeH9Rk5RhmHdN2lUXCQqRr8nYyxPAkQQF9QI0kHxbIqPyIK6IfVbHpGQi8kUxTtU0OLqQYcLqOrT02fCVOaT2P8hWYZ4dUIr3sFrZhk7+JBFLnvaCuxzi8UzBAw3OFksc22eFeasIpITd0KG3v6hv/InETIgaw0tWoPFFH6Wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bma62/wUyB9rEyVGTLQAwnEhUM1zrffmLdwMyG1F/So=;
- b=selQOiLrqfmzCCJHrgO7UnQei4VWf7iWuY+jVRdmKQGy/5DmWyGUroAFzuGN4OSjOm94Xl+a2lxo3/krRDn0snScKLtEg3d71+3qr/H0Of0wuCQySKDcQp2LJ1JqR7Mi6v5gdVLelHiBOpbi5AzsY0Wa/kNmCS+I3y3sj5OzctJPRcjw/v/ynqtZjiWAfe0GSKQ2mJed2uapQ+iJ6E9M75WR9hOfzqNEmmKDW9ZlvWt8nRImNGAC9ybg+fff8iaXCWl4DZfSwZjufAB+QcdvVlbyQ3AF7uKuzFnuKrbriuA2Pwq0/1Ed9fgC3mMoff67FMKMMAJdmbMOHSravwmZMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bma62/wUyB9rEyVGTLQAwnEhUM1zrffmLdwMyG1F/So=;
- b=Vw+YXfI/MRTUVYdnDRyTVkUWnUX2vJeKhnNzyUNLxjyr74jovfPdYHbJQj+Q/P7YpB11LumdHxy9y5I1DMbuARvW/bMOX8kX+WrGVeb5/1K9heohytolRLAZwpKCw17iaLn3mMigHANba+/u/E2x3aJ5IUsohF+0WyvLJBFPTXE4R0Y1jaQXJtAn8TuNnipztMmMrlGWPgjYkbNnJDH1qzab+ggQaJAdkkfUHlkMTqV3WvfyTrPlqOxqSpk5TD+WXS3UB0W4f/I8OWXs1ZL1fkPFOSSNd2OcbOWZSX6lNtZiiLpbl5W76eO/6VXZn6VQT9n49h/Cs1T6wAeLDTadFw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SA1PR12MB8723.namprd12.prod.outlook.com (2603:10b6:806:385::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Tue, 4 Aug
- 2026 04:03:53 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0270.016; Tue, 4 Aug 2026
- 04:03:53 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Aug 2026 13:03:49 +0900
-Message-Id: <DKFV0QE0ITFR.32W3KLYUQ897T@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Benno Lossin" <lossin@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 4/5] gpu: nova-core: split FbLayout into FSP and
- non-FSP versions
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-References: <20260724-blackwell-fixes-v3-0-01aa6a54e3fd@nvidia.com>
- <20260724-blackwell-fixes-v3-4-01aa6a54e3fd@nvidia.com>
-In-Reply-To: <20260724-blackwell-fixes-v3-4-01aa6a54e3fd@nvidia.com>
-X-ClientProxiedBy: TY6P286CA0011.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:3b8::9) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWI/MDeu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AC51F000E9;
+	Tue,  4 Aug 2026 04:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785818465;
+	bh=zDDRvNpwIcPJaOmZXUWamxaIiadF1tSKMFLhidGIlDo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aWI/MDeuJj9ZNfXic7t4yXDK6AVS0if4Dv1nHiBYAL2R9LbJDuB5Ecs97xUpSO0My
+	 piNCgssUVaYWhekiaBmY4rt2Yr52uYJ+aQnONXX6fn2B37XmgEQJlPBQccKwka06wF
+	 Fuo2SHicKveMkutIkGwrFKToksl78QCrD08Tjxwd2Rq5xwxLX9qAlrXWg2d5ffPo4l
+	 sph50F0FIFCcukPnXSWaiqqG0ynU5ZhLg+yKhYWyJTr2e6lJEOp5EVLCGrseVKOPyK
+	 r/sGfl5P2qwAhVJQFRh/y/V0KLB0KwhvOhJXPCI47fmHP8gHInOYatGjngREalZ0PO
+	 V52CpRjyvDPqw==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BC280F40066;
+	Tue,  4 Aug 2026 00:41:03 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Tue, 04 Aug 2026 00:41:03 -0400
+X-ME-Sender: <xms:X21xaii8W90ECcrOimhu6F4uq7cQpMYAAQxS_T5HetGkt74_DyzKOg>
+    <xme:X21xatYhMFflyat_N0LYEAwz5OandPGIpQoSnva_Ok0EGOWPkzgdHO-KCYzIV2NLw
+    IruMjGbtSHZqrTGrPKggamewSEG368Pq96McemudEcBIYLStdT0YQ>
+X-ME-Received: <xmr:X21xagNM88-TMOc_EPzdoLY8nf2jt9-SbA4sORMh0VRjJtCMNbDNGqhTyS4vczktpWvuZeRBtiIOgWR9n6q2JN-ZDu-a0k4W>
+X-ME-Proxy-Cause: dmFkZTFuAJM6oCOos/T1GcS3aHgvFInzwzGj4iWatViKQDrVJ8KYRVKSwilnhen7UVf7lW
+    3E6EZKG/zcyGqkWMBr+u5CwtYVJCw/XmJRCiOJNDcKr9v+SD1Owy85t6Z2bztkGuLVQXKX
+    4804TT60oGV+1LImvAI3XGJfH/pLWVlaJVVd93+6jHGHPuUKgDq2Uc2nAPg0nYtxmnEXxW
+    Ya/pfDtno1Gp6S5kL6YJZ4ioiLMl4pBtFIYufcKFgO1aQyi0pE7AaUf3AcShY7Y2Oe7N1Y
+    Rmua8FvWmEU7rkTP+K8/edNzK5djADug2oRMu6GHVQjlqY221uaWXoog1UnFde35QPnfdl
+    BvV3rgQji7DK0j/doswwKyDSorlNd1Kdnco7oWKvG6sVFoUyxIyiahOcrLNKRzsS2/RIH0
+    CBRDLqgMD/pct+Zokfzd7XoLzH0n/KKn/rN0K4BO5HQsxQfZzcnx81KrOlyWadVeI1lAkU
+    wNik6AKjKi8OyNjSyxfamYMwl5kTF8itQ99ZBAEjocHIwRs0OPCEYtgCHUhqPlkEk+WU/d
+    l6xgbuFn0zgHjg6mgnOj3EqdvJNLY75VCMv4nJi+PGdyA6kUkAu7WcikNlz9qQNyWuCUGe
+    HuvCdwPdKBeHPYBvEMO9fPgxgVSev6xj0CjhW4vuRM0j/R9ijvL6orwEpr1Q
+X-ME-Proxy: <xmx:X21xamYzDelndUg2QAqel9koBh0z6Ou_GGfwHTdNh4-zu9DVDyDtFQ>
+    <xmx:X21xaoWL_4ADAMx9hR9ZChvGCGwyNJneKyOspq_wRqtncO3e6Vs3rw>
+    <xmx:X21xatBYbqygthQi_dwZ0bL8Z3JD9h9iy1eMcw03Ef0N-X89DOrk3Q>
+    <xmx:X21xasIgai9nxFIUmtvSdI-jtTOC1Y4KKCquBioVvOPxte0c6fr7gA>
+    <xmx:X21xajsOCE9ln78_wfal9d0DqN0URjBWFRd1C8I9le50Xbexx8g6ePvw>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 4 Aug 2026 00:41:03 -0400 (EDT)
+Date: Mon, 3 Aug 2026 21:41:02 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 05/24] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <anFtXgGUiTmqimkz@tardis.local>
+References: <20260731203031.13679-1-boqun@kernel.org>
+ <20260731203031.13679-6-boqun@kernel.org>
+ <20260803092910.GD49951@noisy.programming.kicks-ass.net>
+ <20260803104321.GL49529@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB8723:EE_
-X-MS-Office365-Filtering-Correlation-Id: ed51c01d-9141-42b8-7e1e-08def1dd65aa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|10070799003|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	RNEXOOeCDth9DupSDXp2BMKja3Isovb4Zf2Cr1AWBIT7/JOBc364hDO/EaqRH11KVOcgxtJ6MWF2INShVu3qlg/eFgQ1S2jTg/Ep+9Df1Nvu/id2ceb7t+DR2PMoalFDu9609tA2alM9Lcods1sqcNjATmPDSedG1OI4oyA4tu7oC6IzF7QZz2p8Ktowv7xgxTLYn8xLrzwbVMXJhagoNjddnqfZP/AQlJ4xZxEmpwZir+27ipjNrJBWgmQch4gJiaLskvihBEQEmOAgget5get/2Q68t2BdXidQRxNshhCq2QzcBhYOf4UPF+IF1WPqQAxtNYKhTBR29MRVRD0tNAsgJ21GiTo04jg//p196SFAnmJdJhhuqMV11Wa2TGLkqCBP6QGBL5vD/EDJB4rikC2LmTWcZxHMvYriKdWsIxw95ICBtvEpZIAxqAlVA6+xkTHbIu5xbpK8an/yGSBMOcyiYircQN++FpLH0c1HidOYBUl6yZXqy8KCrPoFIK84aX7WpeKgz83ghDM/wdUrN099X7sBaaZW+maLfkI54uz4YJGtUzE96pjm2GcCTCn16AoxYPujE5QZuVBXfHa6XgTqtgKcJ0zMvFPiUOZQm6eeypAX56L7rf4xTdIE1Nqm++q4T4s0lMmRBqZL3k1VQVdObJeOSZr7nRO4RGwM/CA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(10070799003)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXM4QXp5OW9XSXpSSE5OUUt5ZGd0SWxXSXJuSFNKVVNMVmh0SVYwNU1OUXB6?=
- =?utf-8?B?U1h4Y1ZwUU1JR1E2VVR0WXJTRTA0czc0MEdlZ0p6WHJRTTFJRGJYaWJqREEw?=
- =?utf-8?B?Sm5xL3VkMVh4SGlUMUxiUXdSV2RwaHRlalJidHpNSWZWcEFVR1FOSnBKalhw?=
- =?utf-8?B?SWt2Rm9yOHoyNjYrSU5ZRnZSRjdYdk5mV3lkMzJRWHgrTEExY0RBL2xxcElP?=
- =?utf-8?B?QU9pR2JBaXdGSUE2SmlZZ2ZFanJBTm0xVkhIL2N2OWZ0MXhab1UrTzV6U1pK?=
- =?utf-8?B?U1VFc013Y1haSEVFNE1OSUtSTTVoTTRoeWlCamZkaWU4c0RKNjZUc0JlL1h3?=
- =?utf-8?B?MStPdlM2MFpsSGNmM243N3FwS25yRzM3Ris5TVJCUjl3MGxVMW15SU9DbU1w?=
- =?utf-8?B?NHd6QWVrazU5T0lsMXdRQ1owRGlteGhSMkt6b3loMzdJZnl6alhXV0N6Qkdl?=
- =?utf-8?B?dGVFRXVLVUhIam5iYVRidFpsTGJiVnk2TkU4amU3dXRuVU4vdkMwZ24ycTMz?=
- =?utf-8?B?dml4bkVHNmJuRHlLY1ZuQjJoS1JoaFk2dmtuT3J5eEhOV2Ivem5hNWdXMVBy?=
- =?utf-8?B?eEEvUnZOcjNrREJySEtvbEFmdVpRQTdOMkxaa3FMVUsvYmkreDY0ckN4SnRQ?=
- =?utf-8?B?NCtqRTUwRGRrTEUxSitUN0c3ZGxYNUJkMmJiME56aUxQZGRuQ0FxZkcwNUVE?=
- =?utf-8?B?V0pCUy9aYk05WW52NFl4b2o3T0JJcThwbW5kaWltR1R6WjlkR1h3VmsrU3cw?=
- =?utf-8?B?WXQyNURCTllKZlRGSE4vV0srY1JCNHE2VFBpamxFZlN2SjJPcW5ITGlyTHJW?=
- =?utf-8?B?d2R0WkhRdjVNekZXUG5sbUNuQStzMlVTbm1qUWs5TWFyU1owQ3lTL1pocy9C?=
- =?utf-8?B?NXFCU0ZBRjVUdHhvVktrS0pYQVp4Wk1qZXBnRktOamovR1RHZkJxYzR5WWty?=
- =?utf-8?B?VEtTOW5BTWFJdm45bU5Dand4Um1RRkZ2Q0JvQysrQjMvUHM1eFRlVktOSlJ5?=
- =?utf-8?B?Mk1GTnp2UFVacjZ4V2NvTnlPTndVRlU3TU0rN1VjTks4cklCWWQrZkxqOXJn?=
- =?utf-8?B?WmNCR3VKOXdNSUtvdi8yTFVqMllseWI5b0g1Z2pJWk5KdEhVM0E4MHFnOUda?=
- =?utf-8?B?d2NCNXBKN0ZnY1lYNGZmeWJtMWxkbkZENzVHbXRaaU14Qjd5SFVkRStlV3Ar?=
- =?utf-8?B?MlVPaExJdkx1cnF0dGdkaDU1aU1TMGxkZzd6b1J5US9rV1ROUEFOWkY0Z1Yz?=
- =?utf-8?B?aU5OTnlSOUhlWVFzWEZNSWJLUDhsN0xjRytaNFY3T2d5ckF2S3J4TnBYYndQ?=
- =?utf-8?B?MGgyQkNqcXBhdXRKbSsrU2FNeGluNVN0MXh5YlRzZWkweGEzQ01UOW1PdVND?=
- =?utf-8?B?RGxscTBZWUx5enF4YmNybDgrZEt6WVYwZDJObTZkV3cvRFdwZkpJRGJ3bmZ3?=
- =?utf-8?B?LzRjbDlBNkFpVTZobG10WWZwWk84Y0FrTXM1Ukd2b29sTHkrVVV5L3JZb1Vw?=
- =?utf-8?B?NEpYanN4Ny9JbCtLMzhNaEpSbCttS0F0N3BvdEovYm9ZRnVzV3lqUzdsdTZw?=
- =?utf-8?B?SDdWbkltV3crS0VnUGxrdVZzbnVaSTNmZVhhaWZpVWFxRTY3UXVjS0c3emtq?=
- =?utf-8?B?TDhjVUpYUTJBRFpVVHh3M011WjVyL2tqRVc4RUpBd2I3bHNReFdKV2RhaDZn?=
- =?utf-8?B?bGpMZlFVVEVVU3hVWEZjSHlncXQ4d2s2MVU2S2xuOHk3dzJvNVZ6aS8vemlm?=
- =?utf-8?B?SElhRHJuTThISWxvd3VHOE9XTDR1RlJlMjNZd1FoMG1xd3RXTFI0Z2Q4VkhQ?=
- =?utf-8?B?eXRVY0hVODBOMnorOGtySitBU2tacnJub01lTnBwVUFhUFZsa25JeXMvOWF0?=
- =?utf-8?B?OHdneHNlOWVnNk9zaEVHOGlwakhzVUVRY1N6OC9HNFNONUtMNGFiYi96MmpN?=
- =?utf-8?B?Z01oK0p2R0lZT0lzS2h0YkdCcFN0RmNLL2xRV05hZlB6YktYdi9TVUZpT3JN?=
- =?utf-8?B?b001a0R2U3dsZnVYWFg2TmMrcWRCVGlvbFhma3FhZzdadUl6NGs4NzJhNlZs?=
- =?utf-8?B?YTZIdldwSVV4NlMwRWdoR0RJekJabXVRUWFla2ZQNnJ5ZEF6bjN6Q0xmaWkx?=
- =?utf-8?B?NldPSGlxdExKOWJQY1JtMFhyUjdWdlFvTjBIRnRwK1Rvc2JJM0VqTHVtdDkx?=
- =?utf-8?B?V0NOUUhnTk5CNURUUUJ2RHUxcFM2RFZkVkxBUXkrOGVoRGFNWk1FQ3UyYXE5?=
- =?utf-8?B?MXJzWlhMNXdDVHZKdGlxdm56MnFSeXVDbGREZTlXSUE5LzFuN1JRbFpsQlVr?=
- =?utf-8?B?Z21kOFNZY2duQzFsYnZjUmZpZXk5UU1QSVg5YzBULytxcW9FSnExcVpiWmF2?=
- =?utf-8?Q?M0mnSf+MTAoPf3qwH9IrT6VXsmH6Cg/KAQecChipE+ui1?=
-X-MS-Exchange-AntiSpam-MessageData-1: 3D1qo82RQxA8aQ==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ed51c01d-9141-42b8-7e1e-08def1dd65aa
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 04:03:53.3661
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: njX4tKmlwFfFAervE3HGfOGWyCrgw1fn7TkVmhk4oGAsZSSSedw5N/GSvSWGX7dmqdo8KAZL/tukpJj3TYtYQA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8723
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260803104321.GL49529@noisy.programming.kicks-ass.net>
 
-On Fri Jul 24, 2026 at 3:56 PM JST, Eliot Courtney wrote:
-> `FbLayout` is currently used for both pre and post FSP architectures. It
-> contains ranges for each region of framebuffer, but on post FSP
-> architectures, only the size is actually used by GSP. The offsets are
-> not decided by the driver. So, for post FSP architectures `FbLayout`
-> contains essentially guesses for the offsets. Instead, make separate
-> types so that we only store the information that's actually needed,
-> rather than keeping around offsets that may not be correct.
->
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+On Mon, Aug 03, 2026 at 12:43:21PM +0200, Peter Zijlstra wrote:
+> On Mon, Aug 03, 2026 at 11:29:10AM +0200, Peter Zijlstra wrote:
+> > On Fri, Jul 31, 2026 at 01:30:06PM -0700, Boqun Feng wrote:
+> > > +++ b/include/linux/interrupt_rc.h
+> > > @@ -0,0 +1,67 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0 */
+> > > +/*
+> > > + * include/linux/interrupt_rc.h - refcounted local processor interrupt
+> > > + * management.
+> > > + *
+> > > + * Since the implementation of this API currently depends on
+> > > + * local_irq_save()/local_irq_restore(), we split this into it's own header to
+> > > + * make it easier to include without hitting circular header dependencies.
+> > > + */
+> > > +
+> > > +#ifndef __LINUX_INTERRUPT_RC_H
+> > > +#define __LINUX_INTERRUPT_RC_H
+> > > +
+> > > +#include <linux/irqflags.h>
+> > > +#include <asm/processor.h>
+> > > +#ifdef CONFIG_SMP
+> > > +#include <asm/smp.h>
+> > > +#endif
+> > > +
+> > > +/* Per-cpu interrupt disabling state for local_interrupt_{disable,enable}() */
+> > > +struct interrupt_disable_state {
+> > > +	unsigned long flags;
+> > > +};
+> > > +
+> > > +DECLARE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
+> > 
+> > I'm a bit confused by the need for this struct; afaict there aren't any
+> > additional members in the rest of the series. So at this point this is
+> > pointless wrappery, no?
+> > 
+> > Having this variable exported is unfortunate.
+> 
+> One option to get rid of that EXPORT would be something like so I
+> suppose.
+> 
+> ---
+> --- a/include/linux/interrupt_rc.h
+> +++ b/include/linux/interrupt_rc.h
+> @@ -12,21 +12,52 @@
+>  #define __LINUX_INTERRUPT_RC_H
+>  
+>  #include <linux/irqflags.h>
+> +#include <linux/preempt.h>
+>  #include <asm/processor.h>
+>  #ifdef CONFIG_SMP
+>  #include <asm/smp.h>
+>  #endif
+>  
+> +#ifndef MODULE
+>  /* Per-cpu interrupt disabling state for local_interrupt_{disable,enable}() */
+> -struct interrupt_disable_state {
+> +DECLARE_PER_CPU(unsigned long, local_interrupt_disable_state);
+> +
+> +static __always_inline void __local_interrupt_disable(void)
+> +{
+>  	unsigned long flags;
+> -};
+>  
+> -DECLARE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
+> +	local_irq_save(flags);
+> +	raw_cpu_write(local_interrupt_disable_state, flags);
+> +}
+> +
+> +static __always_inline void __local_interrupt_enable(void)
+> +{
+> +	unsigned long flags = raw_cpu_read(local_interrupt_disable_state);
+> +	local_irq_restore(flags);
+> +}
+> +
+> +#ifndef INSTANTIATE_EXPORTED_INTERRUPT_DISABLE
+> +static __always_inline void _local_interrupt_disable(void)
+> +{
+> +	__local_interrupt_disable();
+> +}
+> +
+> +static __always_inline void _local_interrupt_enable(void)
+> +{
+> +	__local_interrupt_enable();
+> +}
+> +#else
+> +extern void _local_interrupt_disable(void);
+> +extern void _local_interrupt_enable(void);
+> +#endif
+> +
+> +#else /* !MODULE */
+> +extern void _local_interrupt_disable(void);
+> +extern void _local_interrupt_enable(void);
 
-This one doesn't apply anymore after the vGPU series; rebasing is not
-too difficult, but I prefer to let you decide how to do it. I guess we
-will need a new function to compute `(vf_partition_count,
-wpr2_heap_size)` that is shared between `FbRanges` and `FbSizes`.
+I think the "extern" keywords are not necessary and ..
 
-With this and Danilo's comments addressed this looks clean and ready to
-merge. Thanks for reordering the patches!
+> +#endif /* !MODULE */
+>  
+>  static inline void local_interrupt_disable(void)
+>  {
+> -	unsigned long flags;
+>  	unsigned long new_count;
+>  
+>  	WARN_ON_ONCE(in_nmi());
+> @@ -35,10 +66,8 @@ static inline void local_interrupt_disab
+>  
+>  	/* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
+>  
+> -	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET) {
+> -		local_irq_save(flags);
+> -		raw_cpu_write(local_interrupt_disable_state.flags, flags);
+> -	}
+> +	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
+> +		_local_interrupt_disable();
+>  }
+>  
+>  #ifdef CONFIG_PREEMPTION
+> @@ -63,14 +92,8 @@ static inline void local_interrupt_enabl
+>  
+>  	new_count = hardirq_disable_exit();
+>  
+> -	if ((new_count & HARDIRQ_DISABLE_MASK) == 0) {
+> -		unsigned long flags;
+> -
+> -		flags = raw_cpu_read(local_interrupt_disable_state.flags);
+> -		local_irq_restore(flags);
+> -
+> -		local_interrupt_enable_reched(new_count);
+> -	}
+> +	if ((new_count & HARDIRQ_DISABLE_MASK) == 0)
+> +		_local_interrupt_enable();
+>  }
+>  
+>  #endif /* !__LINUX_INTERRUPT_RC_H */
+> --- a/kernel/softirq.c
+> +++ b/kernel/softirq.c
+> @@ -9,6 +9,7 @@
+>  
+>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+>  
+> +#define INSTANTIATE_EXPORTED_INTERRUPT_DISABLE
+>  #include <linux/export.h>
+>  #include <linux/kernel_stat.h>
+>  #include <linux/interrupt.h>
+> @@ -88,8 +89,17 @@ EXPORT_PER_CPU_SYMBOL_GPL(hardirqs_enabl
+>  EXPORT_PER_CPU_SYMBOL_GPL(hardirq_context);
+>  #endif
+>  
+> -DEFINE_PER_CPU(struct interrupt_disable_state, local_interrupt_disable_state);
+> -EXPORT_PER_CPU_SYMBOL_GPL(local_interrupt_disable_state);
+> +DEFINE_PER_CPU(unsigned long, local_interrupt_disable_state);
+> +
+> +void _local_interrupt_disable(void)
+> +{
+> +	__local_interrupt_disable();
+> +}
+> +
+> +void _local_interrupt_enable(void)
+> +{
+> +	__local_interrupt_enable();
+> +}
+>  
+
+We need to EXPORT_SYMBOL_GPL() for these two functions.
+
+Right?
+
+Regards,
+Boqun
+
+>  #ifndef CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS
+>  /*
