@@ -1,237 +1,143 @@
-Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
+Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5FB3DEAEC;
-	Tue,  4 Aug 2026 13:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A984469828;
+	Tue,  4 Aug 2026 13:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785850853; cv=none; b=jYei98HwfvcQOyFYOV0DGmlwwS/Yd3hRH+Kum3n15tJiaJoNjdRZdpKQpMF+6TH2++UOMiYCMHPTxz98CctbybhZiMuDmshjzfshSh1zoCfY7x8ohyPrKDNv0D4Wszrm8IXeM8FoOrM8vyu6sAsBnlG5vkoDjnCNeORtexnBEnM=
+	t=1785851986; cv=none; b=DKNb4RVUOGGrT5lQVBbMTnYSvFwq29fd7CYx5auEAybLrTk4YgCQtmq2pnMByGPo2TUCrjGu7U6elp2QvUHQVdrzcVKPKKBpLWXa5gW6fXLeIfPMB/XbkAuxoW43ny+iTyv8ZvEN08UwzphSe121e9GxIWSDKd8n2pGgh8e+HvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785850853; c=relaxed/simple;
-	bh=Ei0nC6o3VFk5Hi+P363oPEanjTU1vQlPyAM5kCKHQKk=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=QoqJheHFmKxiC2gpQ2Va3THtQ2BfEDEkply9EXwZNY8u5e1ikoNWLyCDgyvLyCtxmRZTpbs/su83xyUkF56/1TuzN0lKv2VlAUp0L2T0K333dKItjmpBwyrJ4q9tT3RKfypdSUzbcVWmn4160PNcEsaaRC7KFHamdY+uFeHqCA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=LYHS1ghz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=YPq5TFZj; arc=none smtp.client-ip=202.12.124.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="LYHS1ghz";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YPq5TFZj"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 61EAD130019F;
-	Tue,  4 Aug 2026 09:40:49 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 04 Aug 2026 09:40:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1785850849;
-	 x=1785854449; bh=NIbc0K2StO7BcCgQ5CKrDLLWWeUMON+1oM/RNYmggp8=; b=
-	LYHS1ghzBp8q3k0NzkeFLfi77/qqwwkZ7C4ZezdZomIolet9puj/xEnPW9MZHQzi
-	+RpcuXqy+2xzNH8uAEAkywgDQzo2BFlAwtHGf5ZnNEe+h7XTon0gKu4A8bTCRzXG
-	CU0/Gq++TB03tfS+FR7HJSJ8TzlNgLfIT5gOzcCVLDWkLUD4p54BH3fxtw0i/IE5
-	JPY5f2SuKQ5KlAtCEe4VAhpTBmKv9K0dCrHwZHIFbedbo3SBAIdC/L0BSYKyq1Hd
-	YbAdlBUH88oEFLWhr7SMwByAZF+Pi7EviuvIB9vqq69hSWNgUH4Yvo/ZXj9qrFFz
-	AQnbY53s3Kq7jgldvUzUfA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785850849; x=
-	1785854449; bh=NIbc0K2StO7BcCgQ5CKrDLLWWeUMON+1oM/RNYmggp8=; b=Y
-	Pq5TFZj399J+/fLTUjxUcneICGMajyBW0R7N8h24FScGXVNRIJBdQL/lzuAitDTN
-	yu587S8eZYRUpGFu0eXzyG2quYRPEpUVt7aGSMLJ3Kk+qxuSebmXOlXI6l8Aw3pf
-	Hl5We2Wd1BqKT0zRCNWL79WRKCqPnNCCh8EEosuPZvrA7PtK6DreZ9Wjfepo6OcX
-	y/KtPXWvYjLqd5nUmeXYZD5+aQgL49xMvw/SkhokAJAsyMFAy6pASlONl42aqWUy
-	0GAxAaPjoudGRlzNktqHx+5LYKTqTiSrMO6FdCiDQmrmwExQec2U3tjaEp1gl8q3
-	1zBWgrXIB1rQ87IbzgKnA==
-X-ME-Sender: <xms:3-txaojAtWWjriFj4-SxDhzATZ62i6BasVkL1NsTSbmG-2k5kJQ6Ew>
-    <xme:3-txasKSMEtqzXXiy8JOPG4QlNriudVQqBRM5m0jBHWz96QB6uTNpBff1f2rMf19E
-    hYCfx-L12qHlbBt8LUw7g_78I6q9QXX4Kl4njP98WiwMFeYFX6hkAVa>
-X-ME-Received: <xmr:3-txamdvDsEeM0hTOjDjsiUO6GcM3mVgrBjXU2bJd26bQRjFd7YcSlhenDB0kEYG-DxQXs7E1ePse1Llz2nNBiDi>
-X-ME-Proxy-Cause: dmFkZTGtXecbawDpvriCKcFN9iS+RrBAxu/yPKAHhyfKjKEgzYVc5Wk4JyGyKuPVxauwbe
-    ybv/17EzmXYiLoMh+Z6pE86f9SJQ1Ro4F5EBeuMbK98dOy36dVepIBMUsp2fuDCYWYciVz
-    9jLhxokDTufHUzIbkLxz1pO1o2/rYqNr5muHUDAfo1Gz6Gp4barEZW9/RBlpwGwIU4KfAb
-    0hJW5nDGhYyfTQYuh4PSXfZMll7AV1kFHYcKEBYhGVLZISyRfKFRVQB5qtLWlcnPnu0jEs
-    Lkl/OpxOX5cUR+ZXHMNAbj9dfo8YdZBqdnw0YFDQAJ5xB6ZjJN9dmb7X77ARCnjTtdiJnm
-    tU4sGrCBtsikDbGbMgMv9u7M+5VEdJY9gEUyK5st9U69y66U5NDWbksVtLQ7q7Z+CcHuJY
-    pM3Jp49maRpeOLVyKfj8DVj25bv+pi2aWFlmF6le+LtUlVv0IqYNxKE2k7opuqhVmmwPKj
-    PYsQyrVGVaKM6o/1RN7d34mruJcOGLN0sedia9uyrDWnNA3/wTcVFkqx6FEXQcVs3fu+sn
-    GC+WVbFFM8GR9KzongTjMCQXqh9EEDnXH+T9wG0DBcMgvmvj1Y+mMRqjC/Wl/03lqyuytP
-    PFKwqkkeOelgPqNi/JXkm5fW4EjqzbDAnGf+XadvyfseMVetIJBYmfMGhogA
-X-ME-Proxy: <xmx:3-txakPpwnI2Dp4yleLxd7JH4RfHtO6VLo6aan9lWl3ZODT2KefR7g>
-    <xmx:3-txaoK4A_KvEEEPF8QnVnMfSw6orurPTp7P37bO5C-XSZBLNj8jaw>
-    <xmx:3-txaj2pNcz568qAv2-nqk7gpGSd83qwOMt5leao2dluheMqoCg60Q>
-    <xmx:3-txasV6Xc0c4DlwWD_csKRnmDNzGwc3cCZqEgOXJj7Cx0yNl2SfrQ>
-    <xmx:4OtxanWAlXJ8KrV4c0xAHFPr0IQYul3sAd7ZEJgUCB2Qdy-ZspDz_mQw>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Aug 2026 09:40:39 -0400 (EDT)
-Date: Tue, 04 Aug 2026 22:40:35 +0900 (JST)
-Message-Id: <20260804.224035.269658578200153488.tomo@flapping.org>
-To: linkmauve@linkmauve.fr
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- chleroy@kernel.org, peterz@infradead.org, jpoimboe@kernel.org,
- jbaron@akamai.com, aliceryhl@google.com, rostedt@goodmis.org,
- ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
- tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
- nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
- justinstitt@google.com, fujita.tomonori@gmail.com, joelagnelf@nvidia.com,
- gregkh@linuxfoundation.org, prafulrai522@gmail.com, nsc@kernel.org,
- japo@linux.ibm.com, lina+kernel@asahilina.net, j@jannau.net,
- airlied@gmail.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- llvm@lists.linux.dev, mkchauras@gmail.com
-Subject: Re: [PATCH V17 0/7] Rust Support for powerpc
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <anG67Q6Y59kDqh-c@desktop>
-References: <20260708082454.1254320-1-mkchauras@gmail.com>
-	<178574013457.29744.6211258618175255546.b4-ty@linux.ibm.com>
-	<anG67Q6Y59kDqh-c@desktop>
+	s=arc-20240116; t=1785851986; c=relaxed/simple;
+	bh=8jtHXts22NMPFAisUu0L5owsq6SoZk1pOpwgPhZuu7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kXuL7/7ZUfZTKHm8ybxXGG7VpgJHTHSG8Xl2VxOBRanKtGuolNmpgiMEkqqNfM+2UwhAeIyiQpXgO0bMrrZoucwY/rcwTPLnnR/4OnOrI6qGTDb51+LFWcBSel2lTzxq1wwGW0hsJn7L7RXO4PXV2dBXDeh6nH9YZPG0b1YpeKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by linkmauve.fr (Postfix, from userid 1000)
+	id 4C1C870A0552; Tue, 04 Aug 2026 15:59:42 +0200 (CEST)
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: Srinivas Kandagatla <srini@kernel.org>
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Sasha Finkelstein <k@chaosmail.tech>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Sven Peter <sven@kernel.org>,
+	Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Kalyani Akula <kalyani.akula@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	Johan Hovold <johan@kernel.org>,
+	Ronald Claveau <linux-kernel-dev@aliel.fr>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v5 1/3] firmware: meson: pass a const buffer to meson_sm_call_write()
+Date: Tue,  4 Aug 2026 15:59:35 +0200
+Message-ID: <20260804135940.2378737-2-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260804135940.2378737-1-linkmauve@linkmauve.fr>
+References: <20260804135940.2378737-1-linkmauve@linkmauve.fr>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 4 Aug 2026 12:11:57 +0200
-Link Mauve <linkmauve@linkmauve.fr> wrote:
+This was found while introducing the new nvmem-provider reg_write_const
+callback in meson_sm_call_write()’s only user, in meson-efuse.
 
-> Hi,
-> 
-> On Mon, Aug 03, 2026 at 12:27:13PM +0530, Madhavan Srinivasan wrote:
->> On Wed, 08 Jul 2026 13:54:47 +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
->> > Enable experimental rust support for ppc64le and ppc32be. The patch for
->> > ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
->> > merged over it. ppc32 needs some toolchain fixes mentioned in the patch
->> > `rust: Add PowerPC support` and the discussion for that is done here[1].
->> > 
->> > This has been tested on
->> > - powernv9 hardware
->> > - pseries P11 hardware
->> > - pseries(9, 10) qemu
->> > - powernv(9, 10) qemu
->> > - rustdoc on x86 and powerpc64le
->> > - rusttest on x86 and powerpc64le
->> > 
->> > [...]
->> 
->> Applied to powerpc/next.
->> 
->> [1/7] rust: Fix "multiple candidates for rmeta dependency core" error
->>       https://git.kernel.org/powerpc/c/00cdfd072c709c608606461d7d44d4613119bfa9
->> [2/7] dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER is disabled
->>       https://git.kernel.org/powerpc/c/be809b60cbb61aab96179f44ac3670242ae72996
->> [3/7] powerpc/jump_label: adjust inline asm to be consistent
->>       https://git.kernel.org/powerpc/c/13244c0a40139fe66c4c5c5655f4d732a6002957
->> [4/7] rust/powerpc: Set min rustc version for powerpc
->>       https://git.kernel.org/powerpc/c/e299147cdc8e19c6421a6b7863dc82a35b09d967
->> [5/7] rust: Make __udivdi3() and __umoddi3() panic
->>       https://git.kernel.org/powerpc/c/c93c194e4ee71a734986fd99a8b1ec9fbb7a9b8b
->> [6/7] rust: Add PowerPC support
->>       https://git.kernel.org/powerpc/c/73b741adb264967093ef4eb59905618a7e0d0de0
->> [7/7] powerpc: Enable Rust for ppc64le
->>       https://git.kernel.org/powerpc/c/bc87cbdb952e9223616b839d64bdb4723aa2ed1d
->> 
->> cheers
->> 
-> 
-> I just tested those again in linux-next, with the Wii support series on
-> top, but now the kernel fails to build due to ARCH_WARN_ASM and
-> ARCH_WARN_REACHABLE not being defined on PowerPC:
-> ```
-> error: no rules expected `ARCH_WARN_ASM`
->    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
->     |
->   1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
->     |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
->     |
->    ::: ../rust/kernel/lib.rs:279:1
->     |
-> 279 | macro_rules! concat_literals {
->     | ---------------------------- when calling this macro
->     |
->     = note: while trying to match sequence start
-> 
-> error: no rules expected `ARCH_WARN_REACHABLE`
->    --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
->     |
->   1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
->     |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
->     |
->    ::: ../rust/kernel/lib.rs:279:1
->     |
-> 279 | macro_rules! concat_literals {
->     | ---------------------------- when calling this macro
->     |
->     = note: while trying to match sequence start
-> 
-> error: aborting due to 2 previous errors
-> ```
-> 
-> This is in addition to the bindings::kvfree_call_rcu() call, but that
-> one is already being handled in a different thread.
+Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+---
+ drivers/firmware/meson/meson_sm.c       | 2 +-
+ drivers/nvmem/meson-efuse.c             | 4 ++--
+ include/linux/firmware/meson/meson_sm.h | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-Looks like powerpc needs something like the followings:
-
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index 0db48977c70c..8aba39e0cf26 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -32,34 +32,38 @@
- #endif /* verbose */
+diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
+index ab9751a59b55..5d4da2e3c3a9 100644
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -196,7 +196,7 @@ EXPORT_SYMBOL(meson_sm_call_read);
+  *
+  * Return:	size of sent data on success, a negative value on error
+  */
+-int meson_sm_call_write(struct meson_sm_firmware *fw, void *buffer,
++int meson_sm_call_write(struct meson_sm_firmware *fw, const void *buffer,
+ 			unsigned int size, unsigned int cmd_index, u32 arg0,
+ 			u32 arg1, u32 arg2, u32 arg3, u32 arg4)
+ {
+diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
+index d7f9ac99a212..f71854f89950 100644
+--- a/drivers/nvmem/meson-efuse.c
++++ b/drivers/nvmem/meson-efuse.c
+@@ -20,7 +20,7 @@ static int meson_efuse_read(void *context, unsigned int offset,
+ 	struct meson_sm_firmware *fw = context;
+ 	int ret;
  
- #else /* !__ASSEMBLER__ */
--/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
--   sizeof(struct bug_entry), respectively */
- #ifdef CONFIG_DEBUG_BUGVERBOSE
--#define _EMIT_BUG_ENTRY				\
-+#define _EMIT_BUG_ENTRY(file, line, flags)	\
- 	".section __bug_table,\"aw\"\n"		\
- 	"2:	.4byte 1b - .\n"		\
--	"	.4byte %0 - .\n"		\
--	"	.short %1, %2\n"		\
--	".org 2b+%3\n"				\
--	".previous\n"
-+	"	.4byte " file " - .\n"		\
-+	"	.short " line ", " flags "\n"
- #else
--#define _EMIT_BUG_ENTRY				\
-+#define _EMIT_BUG_ENTRY(file, line, flags)	\
- 	".section __bug_table,\"aw\"\n"		\
- 	"2:	.4byte 1b - .\n"		\
--	"	.short %2\n"			\
--	".org 2b+%3\n"				\
--	".previous\n"
-+	"	.short " flags "\n"
- #endif
+-	ret = meson_sm_call_read(fw, (u8 *)val, bytes, SM_EFUSE_READ, offset,
++	ret = meson_sm_call_read(fw, val, bytes, SM_EFUSE_READ, offset,
+ 				 bytes, 0, 0, 0);
  
- #define BUG_ENTRY(cond_str, insn, flags, ...)		\
- 	__asm__ __volatile__(				\
- 		"1:	" insn "\n"			\
--		_EMIT_BUG_ENTRY				\
-+		_EMIT_BUG_ENTRY("%0", "%1", "%2")	\
-+		".org 2b+%3\n"				\
-+		".previous\n"				\
- 		: : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),	\
- 		  "i" (flags),				\
- 		  "i" (sizeof(struct bug_entry)),	\
- 		  ##__VA_ARGS__)
+ 	return ret < 0 ? ret : 0;
+@@ -32,7 +32,7 @@ static int meson_efuse_write(void *context, unsigned int offset,
+ 	struct meson_sm_firmware *fw = context;
+ 	int ret;
  
-+#define ARCH_WARN_ASM(file, line, flags, size)		\
-+		"1:	twi 31, 0, 0\n"			\
-+		_EMIT_BUG_ENTRY(file, line, flags)	\
-+		".org 2b+" size "\n"			\
-+		".previous\n"
-+
-+#define ARCH_WARN_REACHABLE
-+
- /*
-  * BUG_ON() and WARN_ON() do their best to cooperate with compile-time
-  * optimisations. However depending on the complexity of the condition
+-	ret = meson_sm_call_write(fw, (u8 *)val, bytes, SM_EFUSE_WRITE, offset,
++	ret = meson_sm_call_write(fw, val, bytes, SM_EFUSE_WRITE, offset,
+ 				  bytes, 0, 0, 0);
+ 
+ 	return ret < 0 ? ret : 0;
+diff --git a/include/linux/firmware/meson/meson_sm.h b/include/linux/firmware/meson/meson_sm.h
+index 3ebc2bd9a976..92cc61f3a1c0 100644
+--- a/include/linux/firmware/meson/meson_sm.h
++++ b/include/linux/firmware/meson/meson_sm.h
+@@ -21,7 +21,7 @@ struct meson_sm_firmware;
+ 
+ int meson_sm_call(struct meson_sm_firmware *fw, unsigned int cmd_index,
+ 		  s32 *ret, u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4);
+-int meson_sm_call_write(struct meson_sm_firmware *fw, void *buffer,
++int meson_sm_call_write(struct meson_sm_firmware *fw, const void *buffer,
+ 			unsigned int b_size, unsigned int cmd_index, u32 arg0,
+ 			u32 arg1, u32 arg2, u32 arg3, u32 arg4);
+ int meson_sm_call_read(struct meson_sm_firmware *fw, void *buffer,
+-- 
+2.55.0
+
