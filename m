@@ -1,206 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A664446EA;
-	Tue,  4 Aug 2026 10:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455C6443AB3;
+	Tue,  4 Aug 2026 10:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785839748; cv=none; b=MQqHzKlJahpcapTBBrvfImOQSKCn/XiUlLxOLe1Oo0c+N4F0Lk6CGrIPmSswFkCyzKkfqMystmrCZ59dTsuUc2RmDLRsoSWDrmhQwkdR5+ftfE0jIQ20gx6sOQ2Q0DJuRJyK9SQuxbPmpbbzk8YWPZ2l0lcwGnIHw5esrrQp3OU=
+	t=1785839882; cv=none; b=kXfXGInjVoVIi2yxIgIVCMlq6aaP1n2rCiudlf87IcqtMfO2fdzj6MX14hSpnvlIuAOz2wSYs0Zq2L9gOb/pKqTnRC4VrNVzkXTgoeZrrjvS4juLKg61tIjUbMR8xWtlhnDq5LCIVCqttYw/ZTXM39/SOEXt6wL2BM+6palac4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785839748; c=relaxed/simple;
-	bh=e71vPC77gj6gAv8DhE4ZznJ/hxieNPyUeDo98rW2PZI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kzl9sQwMQfj698Oe0g1QwizFmKWeNgOBWTCNpOnNDanay5I3oLjluR1Gzk38upQw/J1A1D+DxydZ0eAFS8a6EvTgz2deGWMxmXHWiXSril6B4R+Yx3VX9QGzpNr70uNoXuMF9vftnc/h2oVXmC3xUtREmZPulrNkMnf2mbDOkHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVWRqRSl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785839882; c=relaxed/simple;
+	bh=OrxO8UMvnRmqyE88a6CFXNXz3h4yiX9451oSEJ4OxQw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=XViNcVYVQZT8YfcyYfsvKDueVmgEBDzxBPfsCfYhm3witt62h2b/UL9fXfteTNTWAGUCOTiOa8zcRBN7twAHfkhJ6EauzYoQ+RHDOg3FktAL1MmRAp2YxRW1+xUr24I7FYHVRH49AKLueowL+toHq11wq6FbVvnMtycQ/njYC4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=hcOP2sL0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SKmh0jv1; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVWRqRSl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE311F000E9;
-	Tue,  4 Aug 2026 10:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785839746;
-	bh=Fsy6Tb63CU1Ad3Kp3knM6xPa/jSSeaOo1zveF5t3YuM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lVWRqRSlWbCrpYE1cx/LysJJuWXC3nwwY5FHDuKT6a6lfzdDrwrsB0jjMTMyQcBkC
-	 o70HU6H0nFr5JqmOHvHjdQW42f9OxUrzH/IsB/EyvvazYKoEZ5vwIOTjYADS4fc3yj
-	 lAT9GOEfGi68GVguMRJhSyRZwS3JUVbeAjq2IBQUuKgD1HVKIFVFqHAw1UQ0K8xQev
-	 I6nefBOfohdB8xKrrgTpLY4klyP5G6Ph0IeOQrXh/Ju5t9kC06Pz4KIdjoBn+S2lwA
-	 J0oWjfQUxPfOqPg5NL+Bo9x+biV+0z30e+QRf9OecM2gQ5z6zLcumuc9P+8b5HZoea
-	 35l0BFpklzISw==
-Message-ID: <7189ebb5-ae48-4466-9055-1ab1b0b5ef7c@kernel.org>
-Date: Tue, 4 Aug 2026 12:35:42 +0200
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hcOP2sL0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SKmh0jv1"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id BC34F7A015C;
+	Tue,  4 Aug 2026 06:37:56 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Tue, 04 Aug 2026 06:37:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1785839875;
+	 x=1785926275; bh=F4TNC91ioxOgNojCv765eiTbs22V5ZqIXXQg2UnPWNE=; b=
+	hcOP2sL0DOuM/T8+IQO1srl/9Nn67kOI+dItr5bYPEcLuZSANNE08vAxqgK9eHjY
+	UwQao2g7lLVrCooo6Xl8OeqM2BoC+o4cIdZL2245TOdMwV6hbNx1zkuah69qv4MR
+	mH2rlQBYkvHnrjfgwdBYoAUNGyIluknj2ts5wmjYhrdU+4Baphy1lEY5oM08z8/J
+	ddoERL9iCmKKgmQRrYzD0T8NUa83M2W5nngfD2pm14vMZcU/Htt1KZxH6RQXSZCM
+	xaHh3/eucDyfmQJQjwHHbnaSLBmb8nemkUq93tll/Q7wHx+hsJtdH/trWSNZLiWl
+	UzLVLFKwao9c4x24P3SBtQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1785839875; x=
+	1785926275; bh=F4TNC91ioxOgNojCv765eiTbs22V5ZqIXXQg2UnPWNE=; b=S
+	Kmh0jv1MklLUpLLqEGoqrZjKuNqLkvIoKPnSOlegZYxLQqDvkWDauKWD5uBJzGPN
+	rvGL9kpgSTVufehNl4m4Z39b2/zBbruMDWjy3smuqns0lo+OrqxQNopzeZIyaitK
+	4V4dI1BljoJBYmDFP+mfnIm683VF6sc/c3BaldHhV1gSi6Dk+u2nrK1QoinyvQL0
+	JCG0EzG1Xl7ESfFFMgLd9FGCyaHJM2KLD0PCWJT+0wnAH9u1fPvz1M8+GxyaTxTC
+	z/MFkWBvMLQbw6E53TAJwN2q2VCvp2Wrhqa8NrqKFzFCcKWEbU8GiAJGRarprxRJ
+	vDDx4OPp0GwC3ZMJqPV1A==
+X-ME-Sender: <xms:-8BxakgbdoVssp9VyX3satUcncJNssTNEXomIqjLhco0dTAt6aWqZw>
+    <xme:-8Bxan0hu2HwexDEIvVkKuVK6OylYAbt7eyPxH2MsmAYw_48FhqLZYjCGTK_5J5Vk
+    NV_Z1hMQlSMEaAPvZPieoARY0bibyzQ8bPfWIHDXKyPi4CoCvwYLfvI>
+X-ME-Proxy-Cause: dmFkZTEzWoc1rRS2QGP5Ror8Me2RezHRZNOW5bRyQijA6olHMpglaJSjZpBcJfpt9+aVy5
+    jGcl71RdlVGMk6ztaFwER71xCKHvpSFL9cN05e1ig2PrttXiQBvhIVkeErkqhZkHUXZkCD
+    dhbyCYQp+QnRXmFwTny8PbiSiD5NupnCAfSYA7dxRhuVRur+uM58cNjrL19FFTzQh/9Cc6
+    t+8uWbk9B5cP6x58jjTXywc1cFXLwuyhiDW7bBqTpnTj8s+kWRD3SvFx5qpAkVdVewVFhV
+    JbHle7kOIXw8iZYcKQFWZhE+3ccjjXIarD9OycjQXrO/Fa/DDPqDdSNHjp3BMpLYfvXfre
+    /Ejk+vIfIheLDjxxY1MSjLid1BuHvYydVEKMvJbYjYwd/XEoUO9Im1bmEmk9RRXOdhn0BU
+    9o7X+TNLmlMt/yCgSpr6uQh5R0fRBcNbX74Uy5ZkdXXufvlygdrBCc6KF06JTsO+O+poVP
+    /w50emSMTKMuSiaULLPQzrATJVSBMw/CdsKjSnK0U3kvwbit8qVSfIsXqS7QuG5hIfco3t
+    3Fs1SBjZo9bB7owVBvW74PVaMFAGUcgD6Bd0ON/S8Tp4dF/zQSbTsEXhxipsc2TFCcr4r0
+    AkmkZyPeqJdpCySz+iHzRODQ4Tg/JoDbR679E98or4vCcMrO2/PpveZVc4pg
+X-ME-Proxy: <xmx:_8BxanRcay9-nq3bb8ocIFDodOTaUUiaVIECPhc4wW23bbI5BC6iYg>
+    <xmx:AMFxamPbkMvnMXkKZYT4LrSvj8H1tqizoRrRe4IcLo11r8k7ANOVFg>
+    <xmx:AMFxaswWXQkWEYXGCUd4M9-7T7KyeLCOHPzhw9k1KEZs2Vm6eTCkPw>
+    <xmx:AMFxaoqVcvVwdwzk93aYwPlHvOH47D31aNL0J5YwAjDRB0_oZ6-25w>
+    <xmx:A8FxatSn_KNlSmS-NtACd7V5STkdfaaWCQ-C6aN2sg0wkGlEz9mNt_uG>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id DFC5132A0065; Tue,  4 Aug 2026 06:37:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: rust compile failure in next-20260730
-Content-Language: en-US
-To: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Bert Karwatzki <spasswolf@web.de>,
- Harry Yoo <harry@kernel.org>, linux-kernel@vger.kernel.org,
- linux-next@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Mark Brown <broonie@kernel.org>
-References: <20260731122826.737703-1-spasswolf@web.de>
- <20260731192522.GA1014697@ax162> <DKFD0ZKHC2I8.19PUYUR6N6KFN@garyguo.net>
- <anCkbMyUIscmAheK@tardis.local>
- <7c39e6cb-0ccf-4a50-a853-0f6012b05044@kernel.org>
- <DKFF147BG8PR.I12RKSRFQS1B@garyguo.net>
- <11a8bf75-8fc1-4d32-a350-6bf8156dd8ab@kernel.org>
- <DKG2TQ94TGLB.3EO7ZNVKB50KY@garyguo.net>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <DKG2TQ94TGLB.3EO7ZNVKB50KY@garyguo.net>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: Ag8nwV6tN_57
+Date: Tue, 04 Aug 2026 12:36:55 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Heiko Carstens" <hca@linux.ibm.com>,
+ "Danilo Krummrich" <dakr@kernel.org>,
+ "Niklas Schnelle" <schnelle@linux.ibm.com>,
+ "Gerd Bayer" <gbayer@linux.ibm.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>, driver-core@lists.linux.dev,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Linux-Arch <linux-arch@vger.kernel.org>, "Boqun Feng" <boqun@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ rust-for-linux@vger.kernel.org
+Message-Id: <33ecacea-ed2a-409c-ab1c-a136e06b1b7a@app.fastmail.com>
+In-Reply-To: <20260804071330.24760Aaf-hca@linux.ibm.com>
+References: <20260803180931.97202-1-ojeda@kernel.org>
+ <fb2daae7-4eba-4ca1-95a5-60f8157eb66b@app.fastmail.com>
+ <DKFKXA6YWW8R.1NDZ44Q13XFQH@kernel.org>
+ <20260804071330.24760Aaf-hca@linux.ibm.com>
+Subject: Re: `io{re,un}map()` build error in s390 under `!CONFIG_HAS_IOMEM`
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On 8/4/26 12:10, Gary Guo wrote:
-> On Mon Aug 3, 2026 at 10:04 PM BST, Vlastimil Babka (SUSE) wrote:
->> On 8/3/26 17:32, Gary Guo wrote:
->>> On Mon Aug 3, 2026 at 4:10 PM BST, Vlastimil Babka (SUSE) wrote:
->>>> On 8/3/26 16:23, Boqun Feng wrote:
->>>>> On Mon, Aug 03, 2026 at 02:57:49PM +0100, Gary Guo wrote:
->>>>>> 
->>>>>> We could also unconditionally use `kvfree_rcu_head` here, and
->>>>>> add
->>>>>> 
->>>>>>     #[cfg(not(CONFIG_KVFREE_RCU_BATCHED))]
->>>>>>     pub type kvfree_rcu_head = callback_head;
->>>>>> 
->>>>>> to bindings.rs?
->>>>>> 
->>>>> 
->>>>> This option is currently not maintainable unless it becomes a
->>>>> maintainer-aware way to handle things like this.
->>>>> 
->>>>>> (Or even better, changing `#define` to `typedef` so bindgen takes care of
->>>>>> everything).
->>>>>> 
->>>>> 
->>>>> Yes, this is better IMO, but it's up to slab maintainers. :-)
->>>>
->>>> Can you elaborate a bit please, how would that look like?
->>> 
->>> I was thinking of doing `typedef struct rcu_head kvfree_rcu_head;` but of course
->>> that didn't work because you can't use typedef to create `kvfree_rcu_head` :)
->>> 
->>> However, something like this could work?
->>> 
->>>     #ifdef CONFIG_KVFREE_RCU_BATCHED
->>>     ...
->>>     #else
->>>     struct kvfree_rcu_head {
->>>         struct rcu_head head;
->>>     };
->>>     #endif
->>> 
->>> and everywhere add a cast everywhere that expects kvfree_rcu_head == rcu_head.
->>> 
->>> but this would indeed be more complex :(
->>
->> So you mean like this? Doesn't seem so complex and seems to compile here
->> with CONFIG_KVFREE_RCU_BATCHED both disabled and enabled.
-> 
-> I thought that a lot more places have to be updated, but it looks from your diff
-> below that this is simple enough.
+On Tue, Aug 4, 2026, at 09:13, Heiko Carstens wrote:
+> On Mon, Aug 03, 2026 at 10:09:08PM +0200, Danilo Krummrich wrote:
+>> On Mon Aug 3, 2026 at 9:56 PM CEST, Arnd Bergmann wrote:
+>> > In theory you should be able to use rust code without PCI MMIO
+>> > support, but I can't see any practical downsides to making rust
+>> > 'depends on HAS_MMIO' to avoid having to add those #ifdef.
+>> 
+>> I think the implications should be minor without making Rust depend on
+>> CONFIG_HAS_IOMEM.
+>> 
+>> I just sent out a fix [1]; the only annoying part is [2], but we should change
+>> those doc-tests anyway. For the one in rust/kernel/io.rs we already did in
+>> driver-core-next.
+>> 
+>> [1] https://lore.kernel.org/driver-core/20260803200249.3494259-1-dakr@kernel.org/
 
-Thanks. The slab/for-next branch now includes the slab changes.
-The merge commit should thus perform the rust/kernel/sync/poll.rs change.
+This looks like you still provide the rust version of ioremap(),
+turning what is supposed to be a link failure into a runtime
+error.
 
-> Best,
-> Gary
-> 
->> I can apply the slab part in slab tree, but AFAICS the poll.rs
->> change still needs to be done in the merge commit. Unless there's
->> some way to make things conditional on whether kvfree_rcu_head exists?
->>
->> diff --git a/include/linux/types.h b/include/linux/types.h
->> index 79bf419c69e4..53e0adca4b9f 100644
->> --- a/include/linux/types.h
->> +++ b/include/linux/types.h
->> @@ -262,7 +262,9 @@ struct kvfree_rcu_head {
->>  	struct kvfree_rcu_head *next;
->>  };
->>  #else
->> -#define kvfree_rcu_head rcu_head
->> +struct kvfree_rcu_head {
->> +	struct rcu_head head;
->> +};
->>  #endif
->>  
->>  typedef void (*rcu_callback_t)(struct rcu_head *head);
->> diff --git a/mm/slab_common.c b/mm/slab_common.c
->> index 64845ac81b79..aecbe9b9df4c 100644
->> --- a/mm/slab_common.c
->> +++ b/mm/slab_common.c
->> @@ -1325,11 +1325,11 @@ EXPORT_SYMBOL_GPL(kfree_call_rcu_nolock);
->>  
->>  #ifndef CONFIG_KVFREE_RCU_BATCHED
->>  
->> -void kvfree_call_rcu(struct rcu_head *head, void *ptr)
->> +void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr)
->>  {
->>  	if (head) {
->>  		kasan_record_aux_stack(ptr);
->> -		call_rcu(head, kvfree_rcu_cb);
->> +		call_rcu(&head->head, kvfree_rcu_cb);
->>  		return;
->>  	}
->>  
->> diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
->> index 684dfa242b1a..f3cdf95db12d 100644
->> --- a/rust/kernel/sync/poll.rs
->> +++ b/rust/kernel/sync/poll.rs
->> @@ -124,7 +124,7 @@ pub struct PollCondVarBox {
->>  struct PollCondVarBoxInner {
->>      #[pin]
->>      inner: PollCondVar,
->> -    rcu: Opaque<bindings::callback_head>,
->> +    rcu: Opaque<bindings::kvfree_rcu_head>,
->>  }
->>  
->>  // SAFETY: PollCondVar is Send
-> 
-> 
+> I'm wondering if it would make sense to make HAS_IOMEM always available
+> on s390, even though it doesn't make too much sense without PCI.
+> But at least it would make s390 again a bit less special.
 
+I see that with CONFIG_PCI=y, s390 already falls back to
+generic_ioremap_prot() and just maps any phys_addr_t into the
+page table as PAGE_KERNEL, regardless of whether this is an MMIO
+address or not.
+
+The simple change below would just extend that behavior to !PCI
+and make that consistent with CONFIG_PCI=y on machines without
+actual PCI hardware. Of course any code that might rely on this
+is now a bug that likely never gets caught at build time.
+
+This still relies on implementing the __raw_* helpers as nop
+to have the same behavior as the PCI=y version, as the generic
+version would just end up dereferencing the invalid pointers.
+
+     Arnd
+
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 84404e6778d5..806782acf6f6 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -173,7 +173,7 @@ config S390
+ 	select GENERIC_ENTRY
+ 	select GENERIC_GETTIMEOFDAY
+ 	select GENERIC_SMP_IDLE_THREAD
+-	select GENERIC_IOREMAP if PCI
++	select GENERIC_IOREMAP
+ 	select GLOB
+ 	select HAVE_ALIGNED_STRUCT_PAGE
+ 	select HAVE_ARCH_AUDITSYSCALL
+@@ -756,9 +756,6 @@ config PCI_NR_FUNCTIONS
+ 
+ endif # PCI
+ 
+-config HAS_IOMEM
+-	def_bool PCI
+-
+ config CHSC_SCH
+ 	def_tristate m
+ 	prompt "Support for CHSC subchannels"
+diff --git a/arch/s390/include/asm/io.h b/arch/s390/include/asm/io.h
+index faddb9aef3b8..fa5a9dd1c47f 100644
+--- a/arch/s390/include/asm/io.h
++++ b/arch/s390/include/asm/io.h
+@@ -22,30 +22,16 @@ void *xlate_dev_mem_ptr(phys_addr_t phys);
+ #define kc_unxlate_dev_mem_ptr unxlate_dev_mem_ptr
+ void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr);
+ 
+-#define IO_SPACE_LIMIT 0
+-
+-/*
+- * I/O memory mapping functions.
+- */
+-#define ioremap_prot ioremap_prot
+-#define iounmap iounmap
+-
+ #define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL)
+ 
+ #define ioremap_wc(addr, size)  \
+ 	ioremap_prot((addr), (size), pgprot_writecombine(PAGE_KERNEL))
+ 
+-static inline void __iomem *ioport_map(unsigned long port, unsigned int nr)
+-{
+-	return NULL;
+-}
+-
+-static inline void ioport_unmap(void __iomem *p)
+-{
+-}
+-
+ #ifdef CONFIG_PCI
+ 
++#define ioremap_prot ioremap_prot
++#define iounmap iounmap
++
+ /*
+  * s390 needs a private implementation of pci_iomap since ioremap with its
+  * offset parameter isn't sufficient. That's because BAR spaces are not
+@@ -88,6 +74,49 @@ static inline void __iowrite64_copy(void __iomem *to, const void *from,
+ }
+ #define __iowrite64_copy __iowrite64_copy
+ 
++#else
++/*
++ * ioremap_prot() without PCI behaves like memremap(),
++ * MMIO accessors do nothing
++ */
++#define ioremap_prot generic_ioremap_prot
++#define iounmap generic_iounmap
++static inline u8 __raw_readb(const volatile void __iomem *addr)
++{
++	return 0xff;
++}
++#define __raw_readb __raw_readb
++static inline u16 __raw_readw(const volatile void __iomem *addr)
++{
++	return 0xffff;
++}
++#define __raw_readw __raw_readw
++static inline u32 __raw_readl(const volatile void __iomem *addr)
++{
++	return 0xffffffffu;
++}
++#define __raw_readl __raw_readl
++static inline u64 __raw_readq(const volatile void __iomem *addr)
++{
++	return 0xffffffffffffffffull;
++}
++#define __raw_readq __raw_readq
++static inline void __raw_writeb(u8 val, volatile void __iomem *addr)
++{
++}
++#define __raw_writeb __raw_writeb
++static inline void __raw_writew(u16 val, volatile void __iomem *addr)
++{
++}
++#define __raw_writew __raw_writew
++static inline void __raw_writel(u32 val, volatile void __iomem *addr)
++{
++}
++#define __raw_writel __raw_writel
++static inline void __raw_writeq(u64 val, volatile void __iomem *addr)
++{
++}
++#define __raw_writeq __raw_writeq
+ #endif /* CONFIG_PCI */
+ 
+ #include <asm-generic/io.h>
+diff --git a/init/Kconfig b/init/Kconfig
+index 5230d4879b1c..2a4e3ecbfddd 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -237,7 +237,6 @@ config INIT_ENV_ARG_LIMIT
+ 
+ config COMPILE_TEST
+ 	bool "Compile also drivers which will not load"
+-	depends on HAS_IOMEM
+ 	help
+ 	  Some drivers can be compiled on a different platform than they are
+ 	  intended to be run on. Despite they cannot be loaded there (or even
