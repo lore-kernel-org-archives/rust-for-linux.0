@@ -1,128 +1,206 @@
-Received: from linkmauve.fr (82-65-109-163.subs.proxad.net [82.65.109.163])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA1F439320;
-	Tue,  4 Aug 2026 10:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A664446EA;
+	Tue,  4 Aug 2026 10:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785838328; cv=none; b=D9VrIMSmZdu1Il/SFTB89Dtv4xEPGvEFCzKT3URxPmPJSBoHUFkqE/kOCx/nJd9DPTi3TDSOrUWOAbQMUuNBqhZVe5Epevzy8yRIFaUA9GnkDd/p+90z6WUfTLnvilPTC8xGWqZz5R2kVyr+B3kezhuerAWV9WScCizXWSiuYp0=
+	t=1785839748; cv=none; b=MQqHzKlJahpcapTBBrvfImOQSKCn/XiUlLxOLe1Oo0c+N4F0Lk6CGrIPmSswFkCyzKkfqMystmrCZ59dTsuUc2RmDLRsoSWDrmhQwkdR5+ftfE0jIQ20gx6sOQ2Q0DJuRJyK9SQuxbPmpbbzk8YWPZ2l0lcwGnIHw5esrrQp3OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785838328; c=relaxed/simple;
-	bh=E6vlVZcAvaRJu2HM3NBQiziSGME76eVY7ZVPFBuh4Pw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sgKDRtBPhdbmkMP4rlJgJaac380laYxwvEsgYRk3qF1HQue93Ng4ViuxuqnOBK4nJBJBOWA9ugrinWozWG65Q3vMOIcO+OYEp08Ub24k7bfeqwdiwqBo/Hu02rQoNIoCHBssk9WRn/YyxHIxSvqopeY0qdEpKEHpVu7jOkAS0uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 2B6E970A02F6; Tue, 04 Aug 2026 12:11:57 +0200 (CEST)
-Date: Tue, 4 Aug 2026 12:11:57 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-	peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
-	aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org,
-	ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
-	tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
-	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
-	justinstitt@google.com, fujita.tomonori@gmail.com,
-	joelagnelf@nvidia.com, gregkh@linuxfoundation.org,
-	prafulrai522@gmail.com, nsc@kernel.org, japo@linux.ibm.com,
-	lina+kernel@asahilina.net, j@jannau.net, airlied@gmail.com,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev,
-	"Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Subject: Re: [PATCH V17 0/7] Rust Support for powerpc
-Message-ID: <anG67Q6Y59kDqh-c@desktop>
-References: <20260708082454.1254320-1-mkchauras@gmail.com>
- <178574013457.29744.6211258618175255546.b4-ty@linux.ibm.com>
+	s=arc-20240116; t=1785839748; c=relaxed/simple;
+	bh=e71vPC77gj6gAv8DhE4ZznJ/hxieNPyUeDo98rW2PZI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kzl9sQwMQfj698Oe0g1QwizFmKWeNgOBWTCNpOnNDanay5I3oLjluR1Gzk38upQw/J1A1D+DxydZ0eAFS8a6EvTgz2deGWMxmXHWiXSril6B4R+Yx3VX9QGzpNr70uNoXuMF9vftnc/h2oVXmC3xUtREmZPulrNkMnf2mbDOkHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVWRqRSl; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVWRqRSl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE311F000E9;
+	Tue,  4 Aug 2026 10:35:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785839746;
+	bh=Fsy6Tb63CU1Ad3Kp3knM6xPa/jSSeaOo1zveF5t3YuM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lVWRqRSlWbCrpYE1cx/LysJJuWXC3nwwY5FHDuKT6a6lfzdDrwrsB0jjMTMyQcBkC
+	 o70HU6H0nFr5JqmOHvHjdQW42f9OxUrzH/IsB/EyvvazYKoEZ5vwIOTjYADS4fc3yj
+	 lAT9GOEfGi68GVguMRJhSyRZwS3JUVbeAjq2IBQUuKgD1HVKIFVFqHAw1UQ0K8xQev
+	 I6nefBOfohdB8xKrrgTpLY4klyP5G6Ph0IeOQrXh/Ju5t9kC06Pz4KIdjoBn+S2lwA
+	 J0oWjfQUxPfOqPg5NL+Bo9x+biV+0z30e+QRf9OecM2gQ5z6zLcumuc9P+8b5HZoea
+	 35l0BFpklzISw==
+Message-ID: <7189ebb5-ae48-4466-9055-1ab1b0b5ef7c@kernel.org>
+Date: Tue, 4 Aug 2026 12:35:42 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178574013457.29744.6211258618175255546.b4-ty@linux.ibm.com>
-Jabber-ID: linkmauve@linkmauve.fr
+User-Agent: Mozilla Thunderbird
+Subject: Re: rust compile failure in next-20260730
+Content-Language: en-US
+To: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Bert Karwatzki <spasswolf@web.de>,
+ Harry Yoo <harry@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-next@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Mark Brown <broonie@kernel.org>
+References: <20260731122826.737703-1-spasswolf@web.de>
+ <20260731192522.GA1014697@ax162> <DKFD0ZKHC2I8.19PUYUR6N6KFN@garyguo.net>
+ <anCkbMyUIscmAheK@tardis.local>
+ <7c39e6cb-0ccf-4a50-a853-0f6012b05044@kernel.org>
+ <DKFF147BG8PR.I12RKSRFQS1B@garyguo.net>
+ <11a8bf75-8fc1-4d32-a350-6bf8156dd8ab@kernel.org>
+ <DKG2TQ94TGLB.3EO7ZNVKB50KY@garyguo.net>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <DKG2TQ94TGLB.3EO7ZNVKB50KY@garyguo.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On Mon, Aug 03, 2026 at 12:27:13PM +0530, Madhavan Srinivasan wrote:
-> On Wed, 08 Jul 2026 13:54:47 +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
-> > Enable experimental rust support for ppc64le and ppc32be. The patch for
-> > ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
-> > merged over it. ppc32 needs some toolchain fixes mentioned in the patch
-> > `rust: Add PowerPC support` and the discussion for that is done here[1].
-> > 
-> > This has been tested on
-> > - powernv9 hardware
-> > - pseries P11 hardware
-> > - pseries(9, 10) qemu
-> > - powernv(9, 10) qemu
-> > - rustdoc on x86 and powerpc64le
-> > - rusttest on x86 and powerpc64le
-> > 
-> > [...]
+On 8/4/26 12:10, Gary Guo wrote:
+> On Mon Aug 3, 2026 at 10:04 PM BST, Vlastimil Babka (SUSE) wrote:
+>> On 8/3/26 17:32, Gary Guo wrote:
+>>> On Mon Aug 3, 2026 at 4:10 PM BST, Vlastimil Babka (SUSE) wrote:
+>>>> On 8/3/26 16:23, Boqun Feng wrote:
+>>>>> On Mon, Aug 03, 2026 at 02:57:49PM +0100, Gary Guo wrote:
+>>>>>> 
+>>>>>> We could also unconditionally use `kvfree_rcu_head` here, and
+>>>>>> add
+>>>>>> 
+>>>>>>     #[cfg(not(CONFIG_KVFREE_RCU_BATCHED))]
+>>>>>>     pub type kvfree_rcu_head = callback_head;
+>>>>>> 
+>>>>>> to bindings.rs?
+>>>>>> 
+>>>>> 
+>>>>> This option is currently not maintainable unless it becomes a
+>>>>> maintainer-aware way to handle things like this.
+>>>>> 
+>>>>>> (Or even better, changing `#define` to `typedef` so bindgen takes care of
+>>>>>> everything).
+>>>>>> 
+>>>>> 
+>>>>> Yes, this is better IMO, but it's up to slab maintainers. :-)
+>>>>
+>>>> Can you elaborate a bit please, how would that look like?
+>>> 
+>>> I was thinking of doing `typedef struct rcu_head kvfree_rcu_head;` but of course
+>>> that didn't work because you can't use typedef to create `kvfree_rcu_head` :)
+>>> 
+>>> However, something like this could work?
+>>> 
+>>>     #ifdef CONFIG_KVFREE_RCU_BATCHED
+>>>     ...
+>>>     #else
+>>>     struct kvfree_rcu_head {
+>>>         struct rcu_head head;
+>>>     };
+>>>     #endif
+>>> 
+>>> and everywhere add a cast everywhere that expects kvfree_rcu_head == rcu_head.
+>>> 
+>>> but this would indeed be more complex :(
+>>
+>> So you mean like this? Doesn't seem so complex and seems to compile here
+>> with CONFIG_KVFREE_RCU_BATCHED both disabled and enabled.
 > 
-> Applied to powerpc/next.
+> I thought that a lot more places have to be updated, but it looks from your diff
+> below that this is simple enough.
+
+Thanks. The slab/for-next branch now includes the slab changes.
+The merge commit should thus perform the rust/kernel/sync/poll.rs change.
+
+> Best,
+> Gary
 > 
-> [1/7] rust: Fix "multiple candidates for rmeta dependency core" error
->       https://git.kernel.org/powerpc/c/00cdfd072c709c608606461d7d44d4613119bfa9
-> [2/7] dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER is disabled
->       https://git.kernel.org/powerpc/c/be809b60cbb61aab96179f44ac3670242ae72996
-> [3/7] powerpc/jump_label: adjust inline asm to be consistent
->       https://git.kernel.org/powerpc/c/13244c0a40139fe66c4c5c5655f4d732a6002957
-> [4/7] rust/powerpc: Set min rustc version for powerpc
->       https://git.kernel.org/powerpc/c/e299147cdc8e19c6421a6b7863dc82a35b09d967
-> [5/7] rust: Make __udivdi3() and __umoddi3() panic
->       https://git.kernel.org/powerpc/c/c93c194e4ee71a734986fd99a8b1ec9fbb7a9b8b
-> [6/7] rust: Add PowerPC support
->       https://git.kernel.org/powerpc/c/73b741adb264967093ef4eb59905618a7e0d0de0
-> [7/7] powerpc: Enable Rust for ppc64le
->       https://git.kernel.org/powerpc/c/bc87cbdb952e9223616b839d64bdb4723aa2ed1d
+>> I can apply the slab part in slab tree, but AFAICS the poll.rs
+>> change still needs to be done in the merge commit. Unless there's
+>> some way to make things conditional on whether kvfree_rcu_head exists?
+>>
+>> diff --git a/include/linux/types.h b/include/linux/types.h
+>> index 79bf419c69e4..53e0adca4b9f 100644
+>> --- a/include/linux/types.h
+>> +++ b/include/linux/types.h
+>> @@ -262,7 +262,9 @@ struct kvfree_rcu_head {
+>>  	struct kvfree_rcu_head *next;
+>>  };
+>>  #else
+>> -#define kvfree_rcu_head rcu_head
+>> +struct kvfree_rcu_head {
+>> +	struct rcu_head head;
+>> +};
+>>  #endif
+>>  
+>>  typedef void (*rcu_callback_t)(struct rcu_head *head);
+>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+>> index 64845ac81b79..aecbe9b9df4c 100644
+>> --- a/mm/slab_common.c
+>> +++ b/mm/slab_common.c
+>> @@ -1325,11 +1325,11 @@ EXPORT_SYMBOL_GPL(kfree_call_rcu_nolock);
+>>  
+>>  #ifndef CONFIG_KVFREE_RCU_BATCHED
+>>  
+>> -void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+>> +void kvfree_call_rcu(struct kvfree_rcu_head *head, void *ptr)
+>>  {
+>>  	if (head) {
+>>  		kasan_record_aux_stack(ptr);
+>> -		call_rcu(head, kvfree_rcu_cb);
+>> +		call_rcu(&head->head, kvfree_rcu_cb);
+>>  		return;
+>>  	}
+>>  
+>> diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
+>> index 684dfa242b1a..f3cdf95db12d 100644
+>> --- a/rust/kernel/sync/poll.rs
+>> +++ b/rust/kernel/sync/poll.rs
+>> @@ -124,7 +124,7 @@ pub struct PollCondVarBox {
+>>  struct PollCondVarBoxInner {
+>>      #[pin]
+>>      inner: PollCondVar,
+>> -    rcu: Opaque<bindings::callback_head>,
+>> +    rcu: Opaque<bindings::kvfree_rcu_head>,
+>>  }
+>>  
+>>  // SAFETY: PollCondVar is Send
 > 
-> cheers
 > 
 
-I just tested those again in linux-next, with the Wii support series on
-top, but now the kernel fails to build due to ARCH_WARN_ASM and
-ARCH_WARN_REACHABLE not being defined on PowerPC:
-```
-error: no rules expected `ARCH_WARN_ASM`
-   --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
-    |
-  1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
-    |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
-    |
-   ::: ../rust/kernel/lib.rs:279:1
-    |
-279 | macro_rules! concat_literals {
-    | ---------------------------- when calling this macro
-    |
-    = note: while trying to match sequence start
-
-error: no rules expected `ARCH_WARN_REACHABLE`
-   --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
-    |
-  1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
-    |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
-    |
-   ::: ../rust/kernel/lib.rs:279:1
-    |
-279 | macro_rules! concat_literals {
-    | ---------------------------- when calling this macro
-    |
-    = note: while trying to match sequence start
-
-error: aborting due to 2 previous errors
-```
-
-This is in addition to the bindings::kvfree_call_rcu() call, but that
-one is already being handled in a different thread.
-
--- 
-Link Mauve
