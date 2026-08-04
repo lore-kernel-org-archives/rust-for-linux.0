@@ -1,56 +1,56 @@
 Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929173F9277
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 08:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FEF4266AA
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 08:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785830773; cv=none; b=aeG5Xtff/wFA+f3xJe3qjRVYy+PgiTDURJ7lR60yBauecfGWHUudLOc2x8lX0Bdt9kLUqCaigjUtfl4mMuiFp/ZbVI/aHTZFM4pFEnCfhPX0iEkVIci7fJd4c8BkOkLzB8uwBk3QDU4avV9HD5KCkTSKRMG4Her4nUKg7YRSOM0=
+	t=1785831197; cv=none; b=APT1oyxeOzhDIEy5b28iSFV5/9QUvbzTFq601uNq4NE6dcVNGkiIw23VkerzA1MyHBn3aU+VDq0//jL+TLrquRWERBOXqy99HZa6O0k4BXAfQfcduYs/wlQPO7o1sDvDxx9TngvknccOGdRFv4cMksxMrsdReeYJ9YLfztcfhyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785830773; c=relaxed/simple;
-	bh=MVVKP78YlyvBivjm/FAklbGYYY8cS4jJQzm2/4HHWug=;
+	s=arc-20240116; t=1785831197; c=relaxed/simple;
+	bh=LAsOEtzxkMYoh59OODdN+yuBYdhcMYsLZPgZzAuESiM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i4UOpREeR1vgxk/wAtalJlk4nHNCnAzBw3IQw5mQYnR7olIkoFc+UntD3KwgOSnW3UWag6+EdHhABYdNKc8Kf03R8cRVw9w8ClHnMQoH9TFrGNlAp/gPAfu777xYQYGWuuD6BkWx3v6SlxqAcX51VxINenQblZT5GEbWA9k1Pac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qoKhQ9k1; arc=none smtp.client-ip=209.85.221.69
+	 To:Cc:Content-Type; b=fKtaMGIHMphrG60m1H8841A+H4RiEmmE+Tqn97S+2z0YSmEoT493ePTqC/mdyxyhNAm/uBhtB2hJbjfgz5uHqB4v1Cj18ZeSMly3yjyF2ZPVNiCt6ncXMXap56dl8jcqXfKF3Ko+7xtkHQyEe5z1P7gwE2tdDEHY+tAHfjGQnDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f89qypL6; arc=none smtp.client-ip=209.85.221.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qoKhQ9k1"
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-474170b59dfso2426043f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Aug 2026 01:06:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f89qypL6"
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47f4bff865cso2606494f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Aug 2026 01:13:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785830769; x=1786435569; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785831194; x=1786435994; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=teTYxUWmHQCyWrHWF5GYbye4/UxtKhpRLE5s5SK2UzI=;
-        b=qoKhQ9k1uVHK51rlicMq5VQtWs8VXA7QSCINb0gCfOh6eVTDwViJdeHpRQZklfVXqg
-         ZppDuDpILljQw4d3YQuukUP1Nj7+jnufwXQXusPapB1mETZSz61fHA88xoVfUy5ITUBE
-         63J1H59Q6dx5nYnNbR1qQaa4VRGoQS+XToLBmap6DJFBeqYh2+d1abKSr0XN5wO/IlUA
-         2NzM0xH2R4sdu7u085JYcX/zceVWJXM/QyeP0SCdpPMEO8QmwMfyY14GUCvgUR4l5hp4
-         hcwX73E7LLbG+536Iy52DdrHsEM2zpuhW4xpU444UkEetYnPUICYAuOaY8cEW0tQLOI8
-         y+4w==
+        bh=+5Xh3KzsVxqqcicEBvZF6wQ7Jh9PvamLGM+WRhr6wnk=;
+        b=f89qypL6GWzc2JvNJlAo70VASaiXEbniyzCrkj67nhZ6yLfnmDL9cYnI5idUH8O1qE
+         vRnh0GRsPMejFF+TwRoQ+wuqG3F1OrrKaMC+BV/TZKyGv8IB3zpFyZM6bvMM9NRGuZ7g
+         3fgnFagn4Njr9OuOWZIdFiJ8Cco/c4AuemttAeMZ9DlqjPpHvHuUKfZpvvWHJOZDt5+V
+         2bzRWB9nD11EunyeRAMvFlr9oAPN5Poj2ElvaHHopAMC1usVcN041XAN8ZjzTJ0Zji55
+         0QYbrqkq7rDdBO8k4yvlRWy7IqKyo+eDmMasMVY+GpQJBWK+szBbYl+Enmf0R6mDA8eK
+         uYTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785830769; x=1786435569;
+        d=1e100.net; s=20251104; t=1785831194; x=1786435994;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=teTYxUWmHQCyWrHWF5GYbye4/UxtKhpRLE5s5SK2UzI=;
-        b=NwsIv+YZdoQ1I46HU5wu4k2+0Cw/g5JRn6k1X6cHKoK4k+DlqdLZsY+VoO/5GiY+yA
-         aCc8+PQK/Ihh/T7cit1TLqssV0/8RfE9mUqYUHVvQ/NWm9rosYhXhiRyugs7HVbbmIMt
-         DJMO+qnfcRO/9wBo6g/tM15fVRZZ/BX7rTWM3RlL1JBqbd3ac49NnbCkFYv+hBARXl+x
-         aTqAVxHFsopoJPmy0MyIVkm4ZjaxzJi4VXXjg2D0HQatA47rdYYo3SkvVNV4mPkFQGp8
-         Uo6Ip5DScD2426vjQgPwIGg5D328ssFphfQDExF+V6fp5kDoTGAvmlQN5xf+GCvJGSDe
-         ykBw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr6Rs4/cB00mWX0lC83/2/Z2AWPEwv1hz/shOwF5Sk0hVy5C2nggdLsoefNjTZQvfKp45Mwzk8mhBKSUCxHmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfuRYX8M7im+VKwRQKEGva7JSX5A1KwGJ5C7hLbbKpqx8KDCpH
-	JUpqsagQPnoDau1ZSEfY95H8hXT+NFQtbffgrbxWtSrbtCMSmXEOBV/iKAtdotcIZ24aHyW2RUS
-	d+raCs/5uDvaizPzjeg==
-X-Received: from wrwz3.prod.google.com ([2002:a05:6000:1103:b0:47f:2943:2f1f])
+        bh=+5Xh3KzsVxqqcicEBvZF6wQ7Jh9PvamLGM+WRhr6wnk=;
+        b=UqeW5r5HstEJoobRKVSDwnJtikS+Eubb/9/N57ETWC/MOtCUhe4eBRjkuub+oTnfpV
+         NIAa8zHeMJ+Es7BZwYhEJ9zYMFHTuhNXp+tw4NZGVo8m92psAdyR7maA9Ms3mj7kEU/B
+         ogQ3S3a3e8baiYQCtA0148spRpXv5QL+0E1ruiPa0O2G/vNwGkoXRSjfcIRVzIcHdoJ+
+         bIpUmexlBV7KqS7b9nqmkxhlp+hDv6TcjJDbwE0TPuDDctl9ccCLlM5oqu3YobeDSxNi
+         7OoBdesC5yFE1my9TlgCB94KooEDWQ82BKVBIDax7hI9RLxrjMDwEei02v8BVsgXBDMb
+         NKfA==
+X-Forwarded-Encrypted: i=1; AHgh+RqwbQhls7RYJ6332elXQc5DqqhXg8POktxlFPT4HbaoKZngwcszrhXbcqHWuKP9zUduWcpVVkrZVpa0RjeXGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOELBPO3MK9aQFPgmzzIC31Ulmwf4tbDjMBQHeDJ/D61bG3zrf
+	eLrqedcf+0FJ0hd6Z3Y0LxxWRrKm+vI9dhdnSdD2yWhnMta5700qtJLobDS2X2PLiv5d+IigyPG
+	clHK+UU6Fsuu6thwekg==
+X-Received: from wmlu6.prod.google.com ([2002:a05:600c:2106:b0:490:b1af:78f3])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2282:b0:47f:e76a:e8cc with SMTP id ffacd0b85a97d-47fe76ae95emr8683087f8f.22.1785830768095;
- Tue, 04 Aug 2026 01:06:08 -0700 (PDT)
-Date: Tue, 4 Aug 2026 08:06:07 +0000
+ 2002:a05:600c:350c:b0:495:4d00:2fda with SMTP id 5b1f17b1804b1-4980f23180fmr233843235e9.2.1785831193972;
+ Tue, 04 Aug 2026 01:13:13 -0700 (PDT)
+Date: Tue, 4 Aug 2026 08:13:13 +0000
 In-Reply-To: <20260721153617.869933-2-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,7 +59,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260721153617.869933-1-beata.michalska@arm.com> <20260721153617.869933-2-beata.michalska@arm.com>
-Message-ID: <anGdb0C_j-OUsDVJ@google.com>
+Message-ID: <anGfGWWxiuZj4i2U@google.com>
 Subject: Re: [PATCH v2 1/3] rust: add runtime PM support
 From: Alice Ryhl <aliceryhl@google.com>
 To: Beata Michalska <beata.michalska@arm.com>
@@ -73,54 +73,105 @@ Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org,
 Content-Type: text/plain; charset="utf-8"
 
 On Tue, Jul 21, 2026 at 05:34:02PM +0200, Beata Michalska wrote:
-> diff --git a/rust/helpers/pm_runtime.c b/rust/helpers/pm_runtime.c
-> new file mode 100644
-> index 000000000000..d0d71fcb0097
-> --- /dev/null
-> +++ b/rust/helpers/pm_runtime.c
-> @@ -0,0 +1,44 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +/// Runtime PM callbacks implemented by a driver.
+> +///
+> +/// Defines the [`PMOps`] trait and its corresponding [`bindings::dev_pm_ops`].
+> +///
+> +/// Each generated C callback recovers the Rust bus device from the raw
+> +/// `struct device *`, borrows the registered runtime PM payload, and delegates
+> +/// to the matching [`PMOps`] trait method.
+> +///
+> +/// # Safety
+> +///
+> +/// `PMContext::<T>::PM_OPS` must only be installed for devices whose concrete
+> +/// bus type is `T::DeviceType`, and whose runtime PM registration data was
+> +/// installed by [`Registration::new`] for the same `T`.
+> +///
+> +macro_rules! define_pm_ops {
+> +    ($($name:ident $( : $desc:tt )? ),+ $(,)?) => {
+> +        $( define_pm_callback!( @parse_desc $name $( $desc )?); )+
+> +        define_pm_ops!(@common $( $name ), +);
+> +    };
 > +
-> +#include <linux/pm_runtime.h>
+> +    (@common $( $name:ident),+ ) => {
+> +        /// Runtime PM callbacks implemented by a driver
+> +        #[vtable]
+> +        pub trait PMOps: Sized
+> +        {
+> +            /// Type of a bus device
+> +            type DeviceType: AsBusDevice<device::Bound>;
+> +            /// Type of the data associated with a PM transitions:
+> +            type RuntimePayloadType: Send;
 > +
-> +__rust_helper void rust_helper_pm_runtime_get_noresume(struct device *dev)
-> +{
-> +	pm_runtime_get_noresume(dev);
-> +}
+> +            $(
+> +                #[allow(missing_docs)]
+> +                // Callback-specific docs are provided by the generated `dev_pm_ops`
+> +                // contract on `PMOps`.
 > +
-> +__rust_helper void rust_helper_pm_runtime_put_noidle(struct device *dev)
-> +{
-> +	pm_runtime_put_noidle(dev);
+> +                fn $name<'a>(
+> +                    _dev:  &'a Self::DeviceType,
+> +                    _payload: Option<Self::RuntimePayloadType>,
+> +                ) -> Result<Option<Self::RuntimePayloadType>, (Option<Self::RuntimePayloadType>, Error)> {
+> +                    build_error!(VTABLE_DEFAULT_ERROR)
+> +                }
+> +            )+
+> +        }
+> +        paste!(
+> +            impl<'a, T:PMOps> PMContext<'a, T> {
+> +                /// Driver-provided runtime PM operations.
+> +                ///
+> +                /// A driver implements this trait to handle runtime PM
+> +                /// transitions for its device type.
+> +                ///
+> +                /// Each callback receives the device and the current payload.
+> +                /// On success, it returns the payload to keep for the next
+> +                /// transition. On failure, it returns the payload together
+> +                /// with the error so the previous, or otherwise sane state
+> +                /// can be preserved.
+> +                pub const PM_OPS: bindings::dev_pm_ops = bindings::dev_pm_ops {
+> +                    $( [<$name>]: if T::[<HAS_ $name:upper>] {
+> +                        Some([<$name _callback>]::<T>)
+> +                    } else {
+> +                        None
+> +                    }, )+
+> +                    ..PMOPS_NONE
+> +                };
+> +            }
+> +        );
+> +    }
 > +}
 
-Should this file be wrapped in `#ifdef !CONFIG_PM` or similar?
-
-> +/// Runtime Power Management modes that determine how a particular PM
-> +/// transition is to be carried out.
-> +/// Corresponds to C Runtime PM flag argument bits:
-> +/// - `RPM_ASYNC`
-> +/// - `RPM_NOWAIT`
-> +/// - `RPM_GET_PUT`
-> +/// - `RPM_AUTO`
-> +#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-> +struct Mode(u32);
-
-Nit: we have a macro for bit flags.
-
-See for example:
-https://lore.kernel.org/rust-for-linux/20260719-b4-rust_binder_impl_flags-v3-0-f8d0b3ea1b87@google.com/
-
-> +#[cfg(CONFIG_PM)]
-> +impl Request {
-> +    ...
-> +}
 > +
-> +#[cfg(not(CONFIG_PM))]
-> +impl Request {
-> +    ...
-> +}
+> +define_pm_ops!(
+> +    // PM state change
+> +    runtime_suspend,
+> +    runtime_resume,
+> +);
 
-Doesn't your rust/helpers file already handle these for you? The methods
-exist as stubs in the C header on not(CONFIG_PM), I think?
+I think using a macro to define this trait is overkill. Just write it
+out:
+
+pub trait PMOps: Sized {
+    /// Type of a bus device
+    type DeviceType: AsBusDevice<device::Bound>;
+    /// Type of the data associated with a PM transitions:
+    type RuntimePayloadType: Send;
+
+    fn runtime_suspend<'a>(
+        _dev:  &'a Self::DeviceType,
+        _payload: Option<Self::RuntimePayloadType>,
+    ) -> Result<Option<Self::RuntimePayloadType>, (Option<Self::RuntimePayloadType>, Error)> {
+        build_error!(VTABLE_DEFAULT_ERROR)
+    }
+
+    fn runtime_resume<'a>(
+        _dev:  &'a Self::DeviceType,
+        _payload: Option<Self::RuntimePayloadType>,
+    ) -> Result<Option<Self::RuntimePayloadType>, (Option<Self::RuntimePayloadType>, Error)> {
+        build_error!(VTABLE_DEFAULT_ERROR)
+    }
+}
+
+This is a lot easier to read.
 
 Alice
