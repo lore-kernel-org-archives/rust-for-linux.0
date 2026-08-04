@@ -1,66 +1,66 @@
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D776543B3E5
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 08:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929173F9277
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Aug 2026 08:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785830538; cv=none; b=n/bhFzTlTiN5slAqw8YRX2+Vd+eIxHDPKnvpAz7mnmsY1bMbEJslpgy3TlfjSugj+BN2co1RVVmuri2k59pfbxPKtRVko4rmKrkXYtooD8vgv6ZzrSgA+q9aS+/Oya/I6MGCU4AFCnHpKdqmzU6WUpk3dY8ILshPvM+7aEHI5ts=
+	t=1785830773; cv=none; b=aeG5Xtff/wFA+f3xJe3qjRVYy+PgiTDURJ7lR60yBauecfGWHUudLOc2x8lX0Bdt9kLUqCaigjUtfl4mMuiFp/ZbVI/aHTZFM4pFEnCfhPX0iEkVIci7fJd4c8BkOkLzB8uwBk3QDU4avV9HD5KCkTSKRMG4Her4nUKg7YRSOM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785830538; c=relaxed/simple;
-	bh=CB5SYoKg/5ZxEr5pPhwxBoe4hMu1CcWGN7cso8dfp4M=;
+	s=arc-20240116; t=1785830773; c=relaxed/simple;
+	bh=MVVKP78YlyvBivjm/FAklbGYYY8cS4jJQzm2/4HHWug=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=a0XWZYfg5iAtxp5H7aRHmxS9cjmdUCUSA38VczfZvLlP6wI5ez/FaKrCEGg8gzkO1krk96RUP51DDJkozQETkdmUD7CzgTiBd38Yfl9+2DvIyPJTyJU2bOop2vZQzqiAU4FgfcaYQYy5oPv64lEvpyumjduQWgFVAiFK0aapldo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZZ79MWYP; arc=none smtp.client-ip=209.85.128.70
+	 To:Cc:Content-Type; b=i4UOpREeR1vgxk/wAtalJlk4nHNCnAzBw3IQw5mQYnR7olIkoFc+UntD3KwgOSnW3UWag6+EdHhABYdNKc8Kf03R8cRVw9w8ClHnMQoH9TFrGNlAp/gPAfu777xYQYGWuuD6BkWx3v6SlxqAcX51VxINenQblZT5GEbWA9k1Pac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qoKhQ9k1; arc=none smtp.client-ip=209.85.221.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZZ79MWYP"
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4957287363bso18524565e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Aug 2026 01:02:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qoKhQ9k1"
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-474170b59dfso2426043f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Aug 2026 01:06:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785830533; x=1786435333; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1785830769; x=1786435569; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nEJITv1WcGLvr9b4sfSYJz2GZb00MTzVJtJ1pz53UrA=;
-        b=ZZ79MWYP6Jvv2LYutooK1TErsMloJ3F3TgfvrnqLUsOPlsz3FZzocV4yQN6HtjvukC
-         U9Fq9TbiBIrLUpCCj6kK5NjHjKeUzAN0wwrclDIrPC3uQmZeaeAF35jReVIpC6ipDEsp
-         CLb1WIQLVYhhJNp347imKwpxMqlAikgxvnEEb8iO0EaTfYqG8Lquoj+q7YsN0xJxDgUy
-         YZB+JrDp0yLKkaDv174XLfweyqZCLIgD1l6juoezzXtTk6YpTWP1Es3DOF1XpFiebOaW
-         PqdOHGCCGNm1i+YHtfGxVddWHq+2zsQuiD3AGzPeI6u54xHMVBkr0n/w8GLn6tkZNIre
-         5ENQ==
+        bh=teTYxUWmHQCyWrHWF5GYbye4/UxtKhpRLE5s5SK2UzI=;
+        b=qoKhQ9k1uVHK51rlicMq5VQtWs8VXA7QSCINb0gCfOh6eVTDwViJdeHpRQZklfVXqg
+         ZppDuDpILljQw4d3YQuukUP1Nj7+jnufwXQXusPapB1mETZSz61fHA88xoVfUy5ITUBE
+         63J1H59Q6dx5nYnNbR1qQaa4VRGoQS+XToLBmap6DJFBeqYh2+d1abKSr0XN5wO/IlUA
+         2NzM0xH2R4sdu7u085JYcX/zceVWJXM/QyeP0SCdpPMEO8QmwMfyY14GUCvgUR4l5hp4
+         hcwX73E7LLbG+536Iy52DdrHsEM2zpuhW4xpU444UkEetYnPUICYAuOaY8cEW0tQLOI8
+         y+4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785830533; x=1786435333;
+        d=1e100.net; s=20251104; t=1785830769; x=1786435569;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nEJITv1WcGLvr9b4sfSYJz2GZb00MTzVJtJ1pz53UrA=;
-        b=PHvE9YHGW1wJUDrQAg2KalPicVFWcUNyzz7+ASSQV5TQTnDUcCw1l29Oga8w0Dv1vT
-         PXhdmvWpTE5DJlfivlE5ZBgHACORt+6+ihyw81BvVdgv/f/tDcT/64Fkup3+nuQFPRg3
-         1kcHN/+xHKOFOKcirZ06BLSCtAXLwwyDPoBrC+YMhl085eJ8MR8td5LZfmhH27q9JkjV
-         V5nZMxbDCfz+gp2cAtb6sxxDOuWs+XoitVtXTAidgmN/ouDoCymDHGLvUx7rNYCmiyyj
-         pgVt7gQzEp8Q++d9XzAFPAsfL4iNqB7+aZTwhNv3T6G8NxungYpi5Xcx2a777s30UuiZ
-         DLSw==
-X-Forwarded-Encrypted: i=1; AHgh+RoZAq3SoASirKovUcWtvn0VDAR6ZEwWR3lh7TKz1tga8AP5qvsGMsPy2KjnhwIlxlqif4v1VPIQzGELR76jAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN3iXWecjpCIzMkK244w8zq2/G7w/dlK4XdKHn9YPwE+UOtZkF
-	vBGl46vc5GY+JjB5KelId3ohVATnNWL6D9G8OIE2aKbsE+tUM01d02Dn9a5wdJ53ErKBVDJG6sI
-	vi14CmuvrzpocB0ihkw==
-X-Received: from wmpx38.prod.google.com ([2002:a05:600c:18a6:b0:495:49a0:9476])
+        bh=teTYxUWmHQCyWrHWF5GYbye4/UxtKhpRLE5s5SK2UzI=;
+        b=NwsIv+YZdoQ1I46HU5wu4k2+0Cw/g5JRn6k1X6cHKoK4k+DlqdLZsY+VoO/5GiY+yA
+         aCc8+PQK/Ihh/T7cit1TLqssV0/8RfE9mUqYUHVvQ/NWm9rosYhXhiRyugs7HVbbmIMt
+         DJMO+qnfcRO/9wBo6g/tM15fVRZZ/BX7rTWM3RlL1JBqbd3ac49NnbCkFYv+hBARXl+x
+         aTqAVxHFsopoJPmy0MyIVkm4ZjaxzJi4VXXjg2D0HQatA47rdYYo3SkvVNV4mPkFQGp8
+         Uo6Ip5DScD2426vjQgPwIGg5D328ssFphfQDExF+V6fp5kDoTGAvmlQN5xf+GCvJGSDe
+         ykBw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr6Rs4/cB00mWX0lC83/2/Z2AWPEwv1hz/shOwF5Sk0hVy5C2nggdLsoefNjTZQvfKp45Mwzk8mhBKSUCxHmg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfuRYX8M7im+VKwRQKEGva7JSX5A1KwGJ5C7hLbbKpqx8KDCpH
+	JUpqsagQPnoDau1ZSEfY95H8hXT+NFQtbffgrbxWtSrbtCMSmXEOBV/iKAtdotcIZ24aHyW2RUS
+	d+raCs/5uDvaizPzjeg==
+X-Received: from wrwz3.prod.google.com ([2002:a05:6000:1103:b0:47f:2943:2f1f])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f84:b0:496:bbcb:b0bb with SMTP id 5b1f17b1804b1-4980c674e31mr299591655e9.18.1785830532277;
- Tue, 04 Aug 2026 01:02:12 -0700 (PDT)
-Date: Tue, 4 Aug 2026 08:02:11 +0000
-In-Reply-To: <20260721153617.869933-3-beata.michalska@arm.com>
+ 2002:a05:6000:2282:b0:47f:e76a:e8cc with SMTP id ffacd0b85a97d-47fe76ae95emr8683087f8f.22.1785830768095;
+ Tue, 04 Aug 2026 01:06:08 -0700 (PDT)
+Date: Tue, 4 Aug 2026 08:06:07 +0000
+In-Reply-To: <20260721153617.869933-2-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260721153617.869933-1-beata.michalska@arm.com> <20260721153617.869933-3-beata.michalska@arm.com>
-Message-ID: <anGcgxwNXz5_RzD1@google.com>
-Subject: Re: [PATCH v2 2/3] rust: platform: wire runtime PM callbacks
+References: <20260721153617.869933-1-beata.michalska@arm.com> <20260721153617.869933-2-beata.michalska@arm.com>
+Message-ID: <anGdb0C_j-OUsDVJ@google.com>
+Subject: Re: [PATCH v2 1/3] rust: add runtime PM support
 From: Alice Ryhl <aliceryhl@google.com>
 To: Beata Michalska <beata.michalska@arm.com>
 Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org, 
@@ -72,70 +72,55 @@ Cc: ojeda@kernel.org, dakr@kernel.org, gregkh@linuxfoundation.org,
 	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jul 21, 2026 at 05:34:03PM +0200, Beata Michalska wrote:
-> Allow Rust platform drivers to expose runtime PM callbacks to the driver core.
-> 
-> The runtime PM abstraction builds a dev_pm_ops table for the concrete driver
-> implementation, but the platform bus still needs to receive that table through
-> struct platform_driver. Add an optional PM_OPS associated constant to
-> platform::Driver and initialize the coresponding C device_driver struct
-> accordingly during registration. The platform glue only wires the callback
-> table into the C driver model; ownership of the callback payload and
-> runtime PM teardown remain with the pm module.
-> 
-> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> ---
->  rust/kernel/platform.rs | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> index d8d48f60b0b9..b7e422388634 100644
-> --- a/rust/kernel/platform.rs
-> +++ b/rust/kernel/platform.rs
-> @@ -72,6 +72,11 @@ unsafe fn register(
->              None => core::ptr::null(),
->          };
->  
-> +        let pm_ops = match T::PM_OPS {
-> +            Some(ops) => ops,
-> +            None => core::ptr::null(),
-> +        };
+On Tue, Jul 21, 2026 at 05:34:02PM +0200, Beata Michalska wrote:
+> diff --git a/rust/helpers/pm_runtime.c b/rust/helpers/pm_runtime.c
+> new file mode 100644
+> index 000000000000..d0d71fcb0097
+> --- /dev/null
+> +++ b/rust/helpers/pm_runtime.c
+> @@ -0,0 +1,44 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/pm_runtime.h>
+> +
+> +__rust_helper void rust_helper_pm_runtime_get_noresume(struct device *dev)
+> +{
+> +	pm_runtime_get_noresume(dev);
+> +}
+> +
+> +__rust_helper void rust_helper_pm_runtime_put_noidle(struct device *dev)
+> +{
+> +	pm_runtime_put_noidle(dev);
+> +}
 
-This value is just any user-provided &bindings::pm_ops, which I think is
-too lax. There is no guarantee that the Registration and the PM_OPS
-table agree on what the type T is, which can lead to type confusion.
+Should this file be wrapped in `#ifdef !CONFIG_PM` or similar?
 
-Most likely, you must instead give `trait Driver` an associated type
-saying "the PmOps type is this particular type", and then here you can
-do `Some(T::PM_OPS)` to actually get the associated table.
+> +/// Runtime Power Management modes that determine how a particular PM
+> +/// transition is to be carried out.
+> +/// Corresponds to C Runtime PM flag argument bits:
+> +/// - `RPM_ASYNC`
+> +/// - `RPM_NOWAIT`
+> +/// - `RPM_GET_PUT`
+> +/// - `RPM_AUTO`
+> +#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+> +struct Mode(u32);
 
-And then in the registration, you can further require that the types
-also match there. E.g., maybe make the registration generic over the
-Driver type and then the inner type T is just D::PmData or similar.
+Nit: we have a macro for bit flags.
+
+See for example:
+https://lore.kernel.org/rust-for-linux/20260719-b4-rust_binder_impl_flags-v3-0-f8d0b3ea1b87@google.com/
+
+> +#[cfg(CONFIG_PM)]
+> +impl Request {
+> +    ...
+> +}
+> +
+> +#[cfg(not(CONFIG_PM))]
+> +impl Request {
+> +    ...
+> +}
+
+Doesn't your rust/helpers file already handle these for you? The methods
+exist as stubs in the C header on not(CONFIG_PM), I think?
 
 Alice
-
->          // SAFETY: It's safe to set the fields of `struct platform_driver` on initialization.
->          unsafe {
->              (*pdrv.get()).driver.name = name.as_char_ptr();
-> @@ -79,6 +84,7 @@ unsafe fn register(
->              (*pdrv.get()).remove = Some(Self::remove_callback);
->              (*pdrv.get()).driver.of_match_table = of_table;
->              (*pdrv.get()).driver.acpi_match_table = acpi_table;
-> +            (*pdrv.get()).driver.pm = pm_ops;
->          }
->  
->          // SAFETY: `pdrv` is guaranteed to be a valid `DriverType`.
-> @@ -222,6 +228,9 @@ pub trait Driver {
->      /// The table of ACPI device ids supported by the driver.
->      const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
->  
-> +    /// Runtime PM callbacks
-> +    const PM_OPS: Option<&'static bindings::dev_pm_ops> = None;
-> +
->      /// Platform driver probe.
->      ///
->      /// Called when a new platform device is added or discovered.
-> -- 
-> 2.43.0
-> 
