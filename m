@@ -1,501 +1,218 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EDE4854F8;
-	Tue,  4 Aug 2026 19:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D906747AF61;
+	Tue,  4 Aug 2026 20:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785873216; cv=none; b=SQdqNph9SIlxvJh5Nu7cWPhnHZ+woYJVidraap7FxA7UgwbnJ1KXtseuZ/QuBc2kRcn0eBBcDIZhM8Hz9f8H1Q4+yaP3Qjc7qflTQnse428GDyx/fmG9irodYm5i5ech26bzQahu27EaLEAtSpGPE9ziIPkLGTEQvxyT+1V038U=
+	t=1785874343; cv=none; b=nb3pUl37qfAvB99YcUHIh4qg8R6XZV6rQWZIUY8MZ4+7nV94Zi//ld0qs5smM4kFFvYPz7UKy4UEYyM6S06/7IDVzbHfXyDLzBF5EV0zcdZckFGv1+TXSO/7aGnsatB8xWBjoHORvZ/Bjmgmoc/II56AGVzeWoBj8F258JSHwCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785873216; c=relaxed/simple;
-	bh=saFGcA/IOUitefqNF3vJ3rxLlfNRxVOxpqAeEZdGio4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8poCAwXhpKB3L+rbx+Pl0GJdvaKnHcZ4KWcTFDEuPyYXAKwB+lw5GN6Kb4eoaeqnOnsJnH1lfQZCqxnTWAnTwWliuGpf6o9xaVomzY3YEC1byI03GrXBaOmG70H3gnJBG2GZN0UWa1/W50QVVx9dUJFCzASA1ZXhZySDLqgL0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVHa2mIj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785874343; c=relaxed/simple;
+	bh=nkVw3aMq7XatDKQwudkBZpNtmUVvJW5KamMz8jiIWKA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FuqbEVw/+jPTZiXg95tRWuy3RxMc76OV5ou+Fi8J1bBInBUPjdzbSI8pzO2XGwulW0yiPeR62JStLKC94x8OtVO77cpQsyudaUovkW5ehFg0xcCZZdyyIlGL7jGiUN031EcldiCbkq7rMaQy0RINi9TvnA8MRqEc57NNlztRNV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nRF3NP8M; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVHa2mIj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D721F00A3A;
-	Tue,  4 Aug 2026 19:53:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785873214;
-	bh=Y6vPxA08WuImsttgLjCe+Pyt9z/RPuUU3Pfcz/EgmVA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WVHa2mIjnd3KP4pbou0g5duJ8uTfldF1py8QF2FiTsRGUP1WLkj8P9GUEJhw0NFAW
-	 btb6A2FPna0zg66Dqh9YVk/xQvIiv7i+GWvOkiJZRmkCgQ9Ez5HtQVdK6lX1eQ7bWQ
-	 fXJks/5tw+qYEzZseb8YHzk3Ug+PCc9P50AMYAw6+L3A8NwKTuxD2udnz0iETTIkHj
-	 +yMC0+ghZ1EmMbAIBh1PaliFyEllCKQZc/pp0A8sG1inxgrfqbigBxQMMr4jlKwrgB
-	 DEiLf8NWbz2Ihocz2pcsZMYf51g2xA7HvFQ1u5mNqGzHClOXkXyLyf8zxCM3I7HwXE
-	 jfQNxtOVxK1sg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: tj@kernel.org,
-	jiangshanlai@gmail.com,
-	aliceryhl@google.com,
-	ojeda@kernel.org,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com,
-	tamird@kernel.org,
-	acourbot@nvidia.com,
-	work@onurozkan.dev,
-	jhubbard@nvidia.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 7/7] rust: workqueue: add ScopedWork for non-'static work items
-Date: Tue,  4 Aug 2026 21:52:09 +0200
-Message-ID: <20260804195248.665636-8-dakr@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260804195248.665636-1-dakr@kernel.org>
-References: <20260804195248.665636-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nRF3NP8M"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 674Jo5Pw1859543;
+	Tue, 4 Aug 2026 20:11:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QBJDBN
+	S/78YZvDno5mLz9Us9RPEoc05oaTYaNHUn5xA=; b=nRF3NP8M4nDconFvKfyFPj
+	w7LLpu9z+k8YYkgQ2HWAuOzRQasalxGUcq2bzMvqFlOWXUdvpa3irDTIVKlo83/a
+	6kih2mXyygZr6HpSwjPSVY/MpaeIRgsM5l+FActe2xdffSz0VFKBgKRXasP48dvw
+	v74WJAcC4Qia9Fp0L4vSU7EKMXKKwXVvnlwifz8U6GHh0LjnU3FKsMjC7IOtGRwm
+	Xrt1JMARvsRl7wMBy81wFlFx25mq+nPKkz5l/MhTfwV/8c8fW6sYI76N/Z3qLU/J
+	mmIoLMCRGsRtECnzlqpLkgxZeVuiRsJri/NVeU+xJQCy9i5J5ETLR510kHJs9LBQ
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs8euq9mv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 20:11:55 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 674KBJYx025644;
+	Tue, 4 Aug 2026 20:11:54 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhbgpj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Aug 2026 20:11:54 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 674KBq0i28442968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Aug 2026 20:11:52 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A48D820043;
+	Tue,  4 Aug 2026 20:11:52 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 41A1120040;
+	Tue,  4 Aug 2026 20:11:49 +0000 (GMT)
+Received: from [9.39.27.209] (unknown [9.39.27.209])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Aug 2026 20:11:49 +0000 (GMT)
+Message-ID: <2a9aec78-fe1b-49c9-884f-a59eb36c8905@linux.ibm.com>
+Date: Wed, 5 Aug 2026 01:41:48 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/17] preempt: Introduce
+ HAS_SEPARATE_PREEMPT_RESCHED_BITS
+To: Boqun Feng <boqun@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+        Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+        Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+        Daniel Almeida <daniel.almeida@collabora.com>,
+        =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+        Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20260804161447.84806-1-boqun@kernel.org>
+ <20260804161447.84806-11-boqun@kernel.org>
+Content-Language: en-US
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+In-Reply-To: <20260804161447.84806-11-boqun@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: Ens6O40a7TE4yzmYogM-L86PRSJ_GViP
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODA0MDE2MCBTYWx0ZWRfX+QDHBLCczLTB
+ 2N6J5++bGOByXufmDmaJ8UAwAkMobeNmnZLmjwPGuZHFE1wxN0K2ZmHlPt+CRbm6pzuyr3tFAFL
+ hH5cTPlOACqgeNyaFB1WWBaEl32GsnM=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA0MDE2MCBTYWx0ZWRfX4227pYUAY40c
+ Tv+p+TGPxGppqWDyOQUr6Rp5ttK8D2l5WjbGuvMILcbVLqZbXnOadgjZJclwyOafOByv+5vXtBB
+ F/Sl4gJy8hpNws2vkiugXW/jfScbJQCvTaVuuNDFuLKMMXyyyOU8zzBKzvKpmnzo800ivjPEZ7F
+ 3ZmDKJUDBnoiu/O+5arVVb4avLZqHU2wpN2PoyGB3XkHGoNt6LKJILjT5k8vBy2Gu4r8HzG6l2G
+ HJJYbyNRJD6Ta3VwZh1rwmKAY9PjUqavpDwpe/0koG9fcXFxdcViKRpqTI6k2DLkuVNBRH3jedo
+ 3HpxK0i2Czd8juN6rLnJ8w5Pg7JwIJNG2Jm/hC7cXCF1eiSg6olVOJLY22s2tC6pwUzwZfQJs8b
+ wXnMKXRWEXmz+41vzk/ZzNwvwJrtupulfTpDDdpZVdCzFq8tzq2wrFAc5kmIllY+JPfNb0SFgak
+ VioM+OvfAwnEZunvKZw==
+X-Proofpoint-GUID: 7PjqqsxZLKef0b0JjLCFoG1bTFFDuvM8
+X-Authority-Analysis: v=2.4 cv=KfzidwYD c=1 sm=1 tr=0 ts=6a72478c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=8qcXNv606LjFGKxQDKUA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-04_05,2026-08-04_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ adultscore=0 clxscore=1011 priorityscore=1501 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608040160
 
-Add ScopedWork<T>, a work item wrapper whose destructor calls
-cancel_work_sync(), allowing T to carry non-'static lifetimes. Ownership
-of the data is not transferred to the workqueue; instead, the
-synchronous cancellation on drop guarantees the work function is not
-running when the data is freed.
+Hi Boqun,
 
-ScopedWork uses the existing Work/HasWork/WorkItem infrastructure with
-NonNull<Self> as WorkItem::Pointer for the callback path, and implements
-RawWorkItem for Pin<&ScopedWork<T>> for the enqueue path (requiring T:
-Sync for cross-thread shared access safety).
+On 8/4/26 9:44 PM, Boqun Feng wrote:
+> With the changes that enable preempt count to track IRQ disabling
+> nesting, we don't have enough bits in 32-bit preempt count
+> implementation, as a result we move NMI nesting bits out of the 32-bit
+> preempt count. However on the architectures that can support 64-bit
+> preempt count implementation, we can keep the NMI nesting bits in the
+> 32-bit preempt count and avoid maintaining NMI nesting bits outside of
+> the same cache line.
+> 
 
-Two enqueue paths are provided:
-  - Queue::enqueue_scoped() / ScopedQueue::enqueue_scoped() (unsafe):
-    the caller must ensure the work item is not forgotten.
-  - ScopedQueue::enqueue() (safe): when the work item's lifetime
-    satisfies the queue's 'scope bound.
+[...]
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/workqueue/mod.rs          |  43 +++-
- rust/kernel/workqueue/scoped_queue.rs |  37 +++-
- rust/kernel/workqueue/scoped_work.rs  | 290 ++++++++++++++++++++++++++
- 3 files changed, 348 insertions(+), 22 deletions(-)
- create mode 100644 rust/kernel/workqueue/scoped_work.rs
+> --- a/include/linux/hardirq.h
+> +++ b/include/linux/hardirq.h
+> @@ -10,8 +10,6 @@
+>   #include <linux/vtime.h>
+>   #include <asm/hardirq.h>
+>   
+> -DECLARE_PER_CPU(unsigned int, nmi_nesting);
+> -
+>   extern void synchronize_irq(unsigned int irq);
+>   extern bool synchronize_hardirq(unsigned int irq);
+>   
+> @@ -94,6 +92,37 @@ void irq_exit_rcu(void);
+>   #define arch_nmi_exit()		do { } while (0)
+>   #endif
+>   
+> +#ifdef CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS
+> +static __always_inline void __preempt_count_nmi_enter(void)
+> +{
+> +	__preempt_count_add(NMI_OFFSET + HARDIRQ_OFFSET);
+> +}
+> +
+> +static __always_inline void __preempt_count_nmi_exit(void)
+> +{
+> +	__preempt_count_sub(NMI_OFFSET + HARDIRQ_OFFSET);
+> +}
+> +#else
+> +DECLARE_PER_CPU(unsigned int, nmi_nesting);
+> +
+> +#define __preempt_count_nmi_enter()				\
+> +	do {							\
+> +		__preempt_count_add(HARDIRQ_OFFSET);		\
 
-diff --git a/rust/kernel/workqueue/mod.rs b/rust/kernel/workqueue/mod.rs
-index 2b87f935712a..11477d42020b 100644
---- a/rust/kernel/workqueue/mod.rs
-+++ b/rust/kernel/workqueue/mod.rs
-@@ -215,6 +215,13 @@
- mod scoped_queue;
- pub use self::scoped_queue::ScopedQueue;
- 
-+mod scoped_work;
-+pub use self::scoped_work::{
-+    new_scoped_work,
-+    ScopedWork,
-+    ScopedWorkItem, //
-+};
-+
- /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
- #[macro_export]
- macro_rules! new_work {
-@@ -286,20 +293,34 @@ pub unsafe fn from_raw<'a>(ptr: *const bindings::workqueue_struct) -> &'a Queue
-     pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-     where
-         W: RawWorkItem<ID> + Send + 'static,
-+    {
-+        // SAFETY: `W: 'static` guarantees the work item remains valid indefinitely,
-+        // so the `enqueue_scoped` requirement that the work item stays valid until
-+        // the work function runs (or is cancelled) is trivially satisfied.
-+        unsafe { self.enqueue_scoped(w) }
-+    }
-+
-+    /// Enqueues a work item that may not be `'static`.
-+    ///
-+    /// Unlike [`Queue::enqueue`], this does not require the work item to be `'static`.
-+    ///
-+    /// The work item will be submitted using `WORK_CPU_UNBOUND`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that the work item's destructor runs before any
-+    /// lifetime it captures expires (i.e., the work item must not be forgotten).
-+    pub unsafe fn enqueue_scoped<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-+    where
-+        W: RawWorkItem<ID> + Send,
-     {
-         let queue_ptr = self.0.get();
- 
--        // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The other
--        // `__enqueue` requirements are not relevant since `W` is `Send` and static.
--        //
--        // The call to `bindings::queue_work_on` will dereference the provided raw pointer, which
--        // is ok because `__enqueue` guarantees that the pointer is valid for the duration of this
--        // closure.
--        //
--        // Furthermore, if the C workqueue code accesses the pointer after this call to
--        // `__enqueue`, then the work item was successfully enqueued, and `bindings::queue_work_on`
--        // will have returned true. In this case, `__enqueue` promises that the raw pointer will
--        // stay valid until we call the function pointer in the `work_struct`, so the access is ok.
-+        // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The
-+        // caller guarantees the work item remains valid until the work function runs or the item
-+        // is cancelled, satisfying the `__enqueue` requirement that the pointer stays valid until
-+        // the function pointer in the `work_struct` is called. `W: Send` satisfies the
-+        // cross-thread safety requirement.
-         unsafe {
-             w.__enqueue(move |work_ptr| {
-                 bindings::queue_work_on(
-diff --git a/rust/kernel/workqueue/scoped_queue.rs b/rust/kernel/workqueue/scoped_queue.rs
-index d4b9a03fd93c..21928d60a63b 100644
---- a/rust/kernel/workqueue/scoped_queue.rs
-+++ b/rust/kernel/workqueue/scoped_queue.rs
-@@ -152,20 +152,35 @@ pub unsafe fn new(name: &'static CStr) -> Result<Self> {
-     pub fn enqueue<W, const ID: u64>(&self, work: W) -> W::EnqueueOutput
-     where
-         W: RawWorkItem<ID> + Send + 'scope,
-+    {
-+        // SAFETY: `W: 'scope` and dropck keep borrowed data alive until this queue
-+        // is dropped. The constructor requires that the queue is not leaked and
-+        // dropping `inner` drains pending and running work, so the function pointer
-+        // is not called after any lifetime in `W` expires.
-+        unsafe { self.enqueue_scoped(work) }
-+    }
-+
-+    /// Enqueues a work item without the `'scope` lifetime bound.
-+    ///
-+    /// Unlike [`ScopedQueue::enqueue`], this does not require `W: 'scope`.
-+    ///
-+    /// Prefer [`ScopedQueue::enqueue`] when the work item's lifetime satisfies
-+    /// `'scope`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that the work item's destructor runs before any
-+    /// lifetime it captures expires (i.e., the work item must not be forgotten).
-+    pub unsafe fn enqueue_scoped<W, const ID: u64>(&self, work: W) -> W::EnqueueOutput
-+    where
-+        W: RawWorkItem<ID> + Send,
-     {
-         let queue_ptr = self.inner.0.get();
- 
--        // SAFETY:
--        // - Closure returns `false` only if `queue_work_on` returns `false`
--        //   and that means `work_ptr` is already in a workqueue.
--        //
--        // - `W: 'scope` and dropck keep borrowed data alive until this queue is
--        //   dropped. The constructor requires that the queue is not leaked and
--        //   dropping `inner` drains pending and running work so the function
--        //   pointer is not called after any lifetime in `W` expires.
--        //
--        // - The last requirement of `__enqueue` is not relevant here because `W`
--        //   is `Send`.
-+        // SAFETY: The caller guarantees the work item remains valid until the work
-+        // function runs or the item is cancelled. `W: Send` satisfies the
-+        // cross-thread safety requirement. The closure only returns `false` if the
-+        // `work_struct` is already in a workqueue.
-         unsafe {
-             work.__enqueue(move |work_ptr| {
-                 bindings::queue_work_on(
-diff --git a/rust/kernel/workqueue/scoped_work.rs b/rust/kernel/workqueue/scoped_work.rs
-new file mode 100644
-index 000000000000..bdc834a9a08d
---- /dev/null
-+++ b/rust/kernel/workqueue/scoped_work.rs
-@@ -0,0 +1,290 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Scoped work items.
-+//!
-+//! Provides [`ScopedWork`] for work items whose inner data may carry non-`'static` lifetimes.
-+//!
-+//! Unlike [`Work`]-based work items, [`ScopedWork`] cancels work synchronously on drop via
-+//! `cancel_work_sync()`, so ownership of the data is not transferred to the workqueue.
-+//!
-+//! # Examples
-+//!
-+//! Enqueue on the system workqueue (unsafe, caller must not forget the work):
-+//!
-+//! ```
-+//! # use kernel::time::{Delta, delay::fsleep};
-+//! use kernel::workqueue::{
-+//!     self,
-+//!     new_scoped_work,
-+//!     ScopedWork,
-+//!     ScopedWorkItem,
-+//! };
-+//!
-+//! struct MyWork {
-+//!     value: u32,
-+//! }
-+//!
-+//! impl ScopedWorkItem for MyWork {
-+//!     fn run(self: Pin<&Self>) {
-+//!         pr_info!("value = {}\n", self.value);
-+//!     }
-+//! }
-+//!
-+//! let work = KBox::pin_init(
-+//!     new_scoped_work!("MyWork", MyWork { value: 42 }),
-+//!     GFP_KERNEL,
-+//! )?;
-+//!
-+//! // SAFETY: `work` is not forgotten.
-+//! unsafe { workqueue::system_dfl().enqueue_scoped(&*work) };
-+//! # // Allow the worker thread to pick up and execute the work.
-+//! # fsleep(Delta::from_millis(100));
-+//! # Ok::<(), Error>(())
-+//! ```
-+//!
-+//! Enqueue on a [`ScopedQueue`] using the safe path (work outlives the queue):
-+//!
-+//! ```
-+//! use kernel::workqueue::{
-+//!     new_scoped_work,
-+//!     ScopedQueue,
-+//!     ScopedWork,
-+//!     ScopedWorkItem,
-+//! };
-+//!
-+//! struct MyWork {
-+//!     value: u32,
-+//! }
-+//!
-+//! impl ScopedWorkItem for MyWork {
-+//!     fn run(self: Pin<&Self>) {
-+//!         pr_info!("value = {}\n", self.value);
-+//!     }
-+//! }
-+//!
-+//! let work = KBox::pin_init(
-+//!     new_scoped_work!("MyWork", MyWork { value: 42 }),
-+//!     GFP_KERNEL,
-+//! )?;
-+//!
-+//! // SAFETY: The queue is not forgotten.
-+//! let queue = unsafe { ScopedQueue::new(c"example_wq")? };
-+//!
-+//! // Safe since `work` outlives `queue`.
-+//! queue.enqueue(&*work);
-+//! # Ok::<(), Error>(())
-+//! ```
-+
-+use super::{
-+    impl_has_work,
-+    HasWork,
-+    RawWorkItem,
-+    Work,
-+    WorkItem,
-+    WorkItemPointer, //
-+};
-+
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    sync::LockClassKey, //
-+};
-+
-+use core::{
-+    ops::Deref,
-+    ptr::NonNull, //
-+};
-+
-+/// Trait for types that can be used as scoped work items.
-+///
-+/// Implementers define the work function that executes when the item is dequeued by a workqueue
-+/// thread. The callback receives a shared pinned reference; mutation should use interior mutability
-+/// (e.g., [`Mutex`](crate::sync::Mutex)).
-+pub trait ScopedWorkItem {
-+    /// Called when the work item is executed.
-+    fn run(self: Pin<&Self>);
-+}
-+
-+// SAFETY: The `run` callback uses the `work_struct` pointer to recover a pointer to `ScopedWork<T>`
-+// via `HasWork`, wraps it in `NonNull`, and calls `WorkItem::run`.
-+unsafe impl<T: ScopedWorkItem, const ID: u64> WorkItemPointer<ID> for NonNull<ScopedWork<T>>
-+where
-+    ScopedWork<T>: WorkItem<ID, Pointer = Self>,
-+    ScopedWork<T>: HasWork<ScopedWork<T>, ID>,
-+{
-+    unsafe extern "C" fn run(ptr: *mut bindings::work_struct) {
-+        let ptr = ptr.cast::<Work<ScopedWork<T>, ID>>();
-+
-+        // SAFETY: The `work_struct` is embedded in `ScopedWork<T>` via `HasWork`.
-+        let ptr = unsafe { <ScopedWork<T> as HasWork<ScopedWork<T>, ID>>::work_container_of(ptr) };
-+
-+        // SAFETY: `work_container_of` returns a valid, non-null pointer.
-+        let nn = unsafe { NonNull::new_unchecked(ptr) };
-+
-+        <ScopedWork<T> as WorkItem<ID>>::run(nn);
-+    }
-+}
-+
-+// Required because `WorkItemPointer<ID>: RawWorkItem<ID>` is a supertrait bound. This `__enqueue`
-+// is never called; the enqueue path goes through the `RawWorkItem` impl for `&ScopedWork<T>`
-+// instead.
-+//
-+// SAFETY: `__enqueue` is unreachable.
-+unsafe impl<T: ScopedWorkItem, const ID: u64> RawWorkItem<ID> for NonNull<ScopedWork<T>>
-+where
-+    ScopedWork<T>: HasWork<ScopedWork<T>, ID>,
-+{
-+    type EnqueueOutput = bool;
-+
-+    unsafe fn __enqueue<F>(self, _queue_work_on: F) -> Self::EnqueueOutput
-+    where
-+        F: FnOnce(*mut bindings::work_struct) -> bool,
-+    {
-+        unreachable!()
-+    }
-+}
-+
-+// SAFETY: `&ScopedWork<T>` points to a valid, pinned `ScopedWork` with a valid `work_struct`.
-+// The pointer remains valid until `cancel_work_sync()` completes.
-+unsafe impl<'a, T: ScopedWorkItem + Sync, const ID: u64> RawWorkItem<ID> for &'a ScopedWork<T>
-+where
-+    ScopedWork<T>: HasWork<ScopedWork<T>, ID>,
-+{
-+    type EnqueueOutput = bool;
-+
-+    unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-+    where
-+        F: FnOnce(*mut bindings::work_struct) -> bool,
-+    {
-+        let self_ptr = core::ptr::from_ref(self);
-+
-+        // SAFETY: `self_ptr` points to a valid `ScopedWork` with a `Work` field.
-+        let work_ptr = unsafe {
-+            <ScopedWork<T> as HasWork<ScopedWork<T>, ID>>::raw_get_work(self_ptr.cast_mut())
-+        };
-+
-+        // SAFETY: `work_ptr` points to a valid `Work`.
-+        let work_ptr = unsafe { Work::raw_get(work_ptr) };
-+
-+        queue_work_on(work_ptr)
-+    }
-+}
-+
-+/// A scoped work item that cancels synchronously on drop.
-+///
-+/// `ScopedWork<T>` contains both a `work_struct` and the user data `T`. Its destructor calls
-+/// `cancel_work_sync()`, guaranteeing the work function is not running when the data is dropped.
-+///
-+/// This allows `T` to carry non-`'static` lifetimes.
-+///
-+/// Construct via [`new_scoped_work!`] which returns an `impl PinInit` suitable for embedding
-+/// in-place inside other pinned structs.
-+#[pin_data(PinnedDrop)]
-+pub struct ScopedWork<T: ScopedWorkItem> {
-+    #[pin]
-+    work: Work<Self>,
-+    #[pin]
-+    data: T,
-+}
-+
-+impl_has_work! {
-+    impl{T: ScopedWorkItem} HasWork<ScopedWork<T>> for ScopedWork<T> { self.work }
-+}
-+
-+impl<T: ScopedWorkItem> WorkItem for ScopedWork<T> {
-+    type Pointer = NonNull<Self>;
-+
-+    fn run(this: NonNull<Self>) {
-+        // SAFETY: `this` points to a valid, pinned `ScopedWork`. `cancel_work_sync()` in
-+        // `PinnedDrop` prevents use-after-drop.
-+        let data = unsafe { Pin::new_unchecked(&(*this.as_ptr()).data) };
-+
-+        T::run(data);
-+    }
-+}
-+
-+impl<T: ScopedWorkItem> Deref for ScopedWork<T> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &T {
-+        &self.data
-+    }
-+}
-+
-+impl<T: ScopedWorkItem> ScopedWork<T> {
-+    /// Creates a pin-initializer for a new scoped work item.
-+    ///
-+    /// Use [`new_scoped_work!`] to automatically provide the lock class key.
-+    pub fn new<E>(
-+        name: &'static CStr,
-+        key: Pin<&'static LockClassKey>,
-+        init: impl PinInit<T, E>,
-+    ) -> impl PinInit<Self, Error>
-+    where
-+        Error: From<E>,
-+    {
-+        try_pin_init!(Self {
-+            work <- Work::new(name, key),
-+            data <- init,
-+        })
-+    }
-+
-+    /// Synchronously cancels pending work and waits for any running work function to complete.
-+    ///
-+    /// Returns `true` if the work was pending, `false` otherwise.
-+    pub fn cancel_work_sync(&self) -> bool {
-+        self.work.cancel_work_sync()
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T: ScopedWorkItem> PinnedDrop for ScopedWork<T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        self.cancel_work_sync();
-+    }
-+}
-+
-+/// Creates a [`ScopedWork`] pin-initializer with a new lock class.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::workqueue::{
-+///     new_scoped_work,
-+///     ScopedWork,
-+///     ScopedWorkItem,
-+/// };
-+///
-+/// struct MyWork {
-+///     value: u32,
-+/// }
-+///
-+/// impl ScopedWorkItem for MyWork {
-+///     fn run(self: Pin<&Self>) {
-+///         pr_info!("value = {}\n", self.value);
-+///     }
-+/// }
-+///
-+/// #[pin_data]
-+/// struct MyData {
-+///     #[pin]
-+///     work: ScopedWork<MyWork>,
-+/// }
-+///
-+/// fn init_data() -> impl PinInit<MyData, Error> {
-+///     try_pin_init!(MyData {
-+///         work <- new_scoped_work!("MyWork", MyWork { value: 7 }),
-+///     })
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! new_scoped_work {
-+    ($name:literal, $init:expr) => {
-+        $crate::workqueue::ScopedWork::new(
-+            $crate::c_str!($name),
-+            $crate::static_lock_class!(),
-+            $init,
-+        )
-+    };
-+}
-+pub use new_scoped_work;
--- 
-2.55.0
+nit: This limit is because to have the same behavior as other case when
+NMI_BITS=4 right?
+It is not easy to infer that from comment.
 
+> +		/* Maximum NMI nesting is 15. */		\
+> +		BUG_ON(__this_cpu_read(nmi_nesting) >= 15);	\
+> +		__this_cpu_inc(nmi_nesting);			\
+> +		preempt_count_set(preempt_count() | NMI_MASK);  \
+
+
+Is there a reason preempt count updates are split rather than
+folded into a single preempt_count update?
+
+> +	} while (0)
+> +
+> +#define __preempt_count_nmi_exit()				\
+> +	do {							\
+> +		__preempt_count_sub(HARDIRQ_OFFSET);		\
+> +		if (!__this_cpu_dec_return(nmi_nesting))	\
+> +			preempt_count_set(preempt_count() & ~NMI_MASK); \
+> +	} while (0)
+> +
+> +#endif
+> +
+>   /*
+>    * NMI vs Tracing
+>    * --------------
+> @@ -110,18 +139,14 @@ void irq_exit_rcu(void);
+>   	do {							\
+>   		lockdep_off();					\
+>   		arch_nmi_enter();				\
+> -		/* Maximum NMI nesting is 15. */		\
+> -		BUG_ON(__this_cpu_read(nmi_nesting) >= 15);	\
+> -		__this_cpu_inc(nmi_nesting);			\
+> -		__preempt_count_add(HARDIRQ_OFFSET);		\
+> -		preempt_count_set(preempt_count() | NMI_MASK);	\
+> +		__preempt_count_nmi_enter();			\
+>   	} while (0)
+>   
+>   #define nmi_enter()						\
+>   	do {							\
+>   		__nmi_enter();					\
+>   		lockdep_hardirq_enter();			\
+> -		ct_nmi_enter();				\
+> +		ct_nmi_enter();					\
+>   		instrumentation_begin();			\
+>   		ftrace_nmi_enter();				\
+>   		instrumentation_end();				\
+> @@ -129,12 +154,8 @@ void irq_exit_rcu(void);
+>   
+>   #define __nmi_exit()						\
+>   	do {							\
+> -		unsigned int nesting;				\
+>   		BUG_ON(!in_nmi());				\
+> -		__preempt_count_sub(HARDIRQ_OFFSET);		\
+> -		nesting = __this_cpu_dec_return(nmi_nesting);	\
+> -		if (!nesting)					\
+> -			preempt_count_set(preempt_count() & ~NMI_MASK);	\
+> +		__preempt_count_nmi_exit();			\
+>   		arch_nmi_exit();				\
+>   		lockdep_on();					\
+>   	} while (0)
