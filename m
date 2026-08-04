@@ -1,223 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EAA3DDAED;
-	Tue,  4 Aug 2026 23:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690092EEE61;
+	Tue,  4 Aug 2026 23:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785885266; cv=none; b=ViWzCMDP6B48iZGzhB1jMCxpZijJ1/NpndLiAtaolx2PgMnvzYUm7WiifTkk+b1Gjgzd0Q8qiTDQbepwJAfzSz/ddt+HZtODhO8Y3s6B3/5nDE7AY+TDAKeGf+2WV+yfOP2KNaM5wWxH4g/3yypLNXVdGuNtptHljyqS8k9iF7E=
+	t=1785885868; cv=none; b=mNz7Pk9p3wUpJlKdm4u/Opi6OdZMv0xAJy39mpUNFmH98U3Be4MHJViwIscGFDtHQFqeUJiD2+JIC88aalfFfp1aTdd8e4HU4HI5MY3OE+bD95Xnnq/ac1l+V1OpjfG1WsY4YIgq5mkXEjOAuNtI4uYi4f7QRIQeB/AL+cXwiJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785885266; c=relaxed/simple;
-	bh=c8s9t74R63al0gIsZzerShuDk8UPb3xr3jPc6weyEm4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z1Ghev9q1RujtV5IVwqx6QL3oURQkmhmmmjq82htjaqoRQkUdG5EYgMxhT33HiE6zeKo4Tv5QQKP1V4joU7c3pEqLxx2BhIlAuNzFdDur/iGXDJJNtaEEw9Q5lQyuHJCdO5+Pz/qNVGCDH8A1Ay3ACx2TjIoJngpbP41eLMvfHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCI4umYS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785885868; c=relaxed/simple;
+	bh=r6YWrTSSZ/fVvahnW52FQdLveWySWKDiTBbHwwFFWJQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rEDVoSOPVrTumouXoQLqb1bj3IxVqynFhLjTkN9DxVEUOkj1BdqSutcl4E4Ca/g9zg1p6hQLLA2JPNLAm5b9JbOho7YtP0eksVkN8KAaURXsAWhjk64UsA7SRkviJn4Sd2qdAMXFHK5yr3ZMdqbOo5XhR5+HcibY0Euk/HLxp74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c78WDMft; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCI4umYS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF1C1F00A3A;
-	Tue,  4 Aug 2026 23:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785885264;
-	bh=ircKCw5UOA4dkAYrhVvksoma3ZpqmqgSFuzNYMdCbM8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SCI4umYS7KSAruJUhQXRXLBDC78zB3MM+4Y3PT6KnFrnG3RSkiBGHxMlbjr4inRsC
-	 hkACqhsT9nbV37i7SY8o+n7XwQabUJ3rcL6Q1MDcscmq3KXx4gdM819jeKUU+8jB6A
-	 WIPHoD6enQhAoplatCSkM7UFq/qj570r6DW/qHWCeYpgyiNQxegIVPn4iRaiYkMFYt
-	 buEEveNtAIG8a1MFj3rQ9t0ca4yRuFLvAtVwqnmczmaCvRfxjvkOFvoVGCEWN9PlyQ
-	 9O8m2OO2g7zkoUW6mxDAr4fZkbJoYYuKLZjYvy+4IvYnX130h31w+Ww1r37G2AhfZO
-	 DzH30p4wMlCJg==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 46DA5F40068;
-	Tue,  4 Aug 2026 19:14:23 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 04 Aug 2026 19:14:23 -0400
-X-ME-Sender: <xms:T3JyamA2MJSomqvMRRH354dMDHUpjsEFnnkCkiNLjC2VkWvv-UNHSg>
-    <xme:T3Jyav-KSOUfUvibHVY1fZZFMnPCoycrZTVm2tTcXKrOb7Q3gzqj5VSYCMtyPo7ba
-    yZTX2uFBmYIgtULx_Onb8-BfOAtYXRIyG8d4AvqQmSB-yPu1-NS_kw>
-X-ME-Received: <xmr:T3JyaqpNA6Y_ts5VemSFMNRK2Iefob3uYiXbJQ-uC4jimqf6-dyizXxVhPBvOggPukYpto7YTryzGyRCw1sFCOGXDOg-8NGv>
-X-ME-Proxy-Cause: dmFkZTGrZwd5jG6Ka3hrO+04TfQx7li3NQOMdiDaVoSL82z8IMsBQ4rct7W/xZcoEHZwXU
-    6XoTHzl5EdJIMHk25AtjN56IK0RCIA7gBKgmB4aw1TeKstMhRSYFU0MJuy003FPzpzAMyC
-    vLbPF5S0/RPpC9I7k3i94F710cRS9b7o7DrZ07MFue4UuWBl7HkZTQZVAucL+YrBrPwjm7
-    YKy+g3mRxlcpTphsV9CNzCbtoDG0heFGQUuCgC9UVlxmC42F5P/q50xswINSSYnCC3f0gA
-    +h6Rj3xf30Dn8kCNlpheBHwJpiyWzfg9A+0FK7AkdPIWDke9nPkryRmIJZ2ylqBWQr8sAO
-    O14gsWMfHMDi5Q32XwBDPosnAu6J7BXz9FjZpCh+XOionJIDh0pSX5M3PDqInHyPH5aNNw
-    l5nQK1Z3JwlP2U4hnRVVCOxEAr4htgvV8M9OC/7aYHgAmgiY/P0TAUJEaSbEz016BUSGdp
-    jQMkltIxzS2aYp0gxfcA8mP+SE5PEcDVuaHb81vhf0nXdHv2MdEZwWZl5itrETPxkvwKOQ
-    GC3+OjF7xG4LN5ft5rUG71SVfYdovX+DmQQY4yTInou+Cg5Ma+9kPN43P5kQNm9J87eJQm
-    kIXyACUMKCLrUKTak6IOIYN7mzHdenScaq/iDJ6rebhWUvbeFZt1f5ekvCwA
-X-ME-Proxy: <xmx:T3JyapFAkd_rW0wsb7nRYjZData-ojcUt1WKRXNWw-y9dAQfDN5l7A>
-    <xmx:T3Jyau8zalVYiIYPeLNcjKjPRMTXVgX9Ug3gS4TbS5MUhsJfwPfSfQ>
-    <xmx:T3JyamSmxkG_zS4QiKDm_Q5HSzqksHgJsrFgS2zAtYIxx3g0BpOfsQ>
-    <xmx:T3Jyajq77bEQAPWCTdS20dpx5kq_D-MFnr6rkj9y1b9WyHGHQ68oXA>
-    <xmx:T3JyajMzmvEHDVxMFg-upCpJNAwGwOwL3hymmpqKkFrUVWmcZjIUUwGj>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 4 Aug 2026 19:14:22 -0400 (EDT)
-Date: Tue, 4 Aug 2026 16:14:21 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 10/17] preempt: Introduce
- HAS_SEPARATE_PREEMPT_RESCHED_BITS
-Message-ID: <anJyTS_3sr9Oh7ZL@tardis.local>
-References: <20260804161447.84806-1-boqun@kernel.org>
- <20260804161447.84806-11-boqun@kernel.org>
- <3513cd3b-5b6a-4a3a-bf56-79bbd40b3bec@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c78WDMft"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 00D3BC2BCF4;
+	Tue,  4 Aug 2026 23:24:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785885868;
+	bh=r6YWrTSSZ/fVvahnW52FQdLveWySWKDiTBbHwwFFWJQ=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=c78WDMft3E92kYhv54gb878Gx8MIDTtp8wp0l/ic2oCggUn3KlSM/9gwoYMeg0YF0
+	 6S22MEOP/vpGPTQitON6yOMHL8nUaC8Ei59FMtqUBZs+YblK3yuR3iYF57L+y+Ge98
+	 N+qBqTBDJlrIU9gVqRERNkzaJ4nTd720OQZ9WXIjtNA7yOTxg8iZBQgnjx4wQI54WH
+	 AiU5IoDcaPpeA7Pm/JZiEp3c0LkbRb3rqORh1E+s95VDzPA7g19Zco92rQysZ764yG
+	 +ptmKXBOoLLP9dmQBY6waFaFkqNckojgCN9eG/tFBnrCrffrNT5/GduR54QvjbUTOz
+	 pEzntq53mp4oQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDD76C55184;
+	Tue,  4 Aug 2026 23:24:27 +0000 (UTC)
+From: Ethan Plant via B4 Relay <devnull+plant.ethan.gmail.com@kernel.org>
+Date: Tue, 04 Aug 2026 16:24:25 -0700
+Subject: [PATCH] rust: pci: Mark Device refcount methods inline
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3513cd3b-5b6a-4a3a-bf56-79bbd40b3bec@linux.ibm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260804-inline-wrappers-v1-1-16916db867e5@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMywqDMBBG4VeRWRuIIkF9ldKFl992RGKYsVUQ3
+ 92oy29xzk4KYSjVyU6CPyvPPiJLE+q+jf/AcB9Nuc2dLW1h2E/sYVZpQoCoGUpXtQ6FsxkoVkE
+ w8HYfX+/H+mtHdMu1oeM4Ad+QKANzAAAA
+X-Change-ID: 20260804-inline-wrappers-f869b6e4601e
+To: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ethan Plant <plant.ethan@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1692;
+ i=plant.ethan@gmail.com; h=from:subject:message-id;
+ bh=9Vpgdz4Y5wf49bgzEW37pW0bIiE7fP8d5f85n0neKYk=;
+ b=owGbwMvMwCXmcODvRtktquaMp9WSGLKKSlY/ZivYJxtf+nl+7uG8UHEdiXvKPfsnWOqbzctv0
+ SlI2PWso5SFQYyLQVZMkSX0y9T9W5PPeCx5K8UEM4eVCWQIAxenAEyEl5vhn+2S+wL1TXnHUkM/
+ RM3KL0oODvaSCGhQjXsjWvHm4+xbuQz/kw58DxY7eDOn9/jptdcab4fKh0859+bgVLXpcs99lYy
+ bmQE=
+X-Developer-Key: i=plant.ethan@gmail.com; a=openpgp;
+ fpr=55F495BFB563CC48A4ED1A0240C0FDB11DB42537
+X-Endpoint-Received: by B4 Relay for plant.ethan@gmail.com/default with
+ auth_id=917
+X-Original-From: Ethan Plant <plant.ethan@gmail.com>
+Reply-To: plant.ethan@gmail.com
 
-On Wed, Aug 05, 2026 at 02:39:20AM +0530, Shrikanth Hegde wrote:
-> Hi.
-> 
-> > diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-> > index 33fc4c814a9f..8299657f0f86 100644
-> > --- a/include/linux/preempt.h
-> > +++ b/include/linux/preempt.h
-> > @@ -34,14 +34,31 @@
-> >    *         SOFTIRQ_MASK:	0x0000ff00
-> >    * HARDIRQ_DISABLE_MASK:	0x00ff0000
-> >    *         HARDIRQ_MASK:	0x0f000000
-> > + *
-> > + * When HAS_SEPARATE_PREEMPT_RESCHED_BITS=y, PREEMPT_NEED_RESCHED is put in a
-> > + * separate word and that allows 64bit load-store architectures to 'set'
-> > + * PREEMPT_NEED_RESCHED without messing up the otherwise symmetric
-> > + * modifications used on preempt_count and still load the whole thing
-> > + * (single-copy) atomically, without having to resort to full atomic
-> > + * operations.
-> > + *
-> > + * Because of the above, NMI_MASK bits are different depending on
-> > + * HAS_SEPARATE_PREEMPT_RESCHED_BITS:
-> > + *
-> > + * - HAS_SEPARATE_PREEMPT_RESCHED_BITS=n:
-> > + *
-> >    *             NMI_MASK:	0x10000000
-> >    * PREEMPT_NEED_RESCHED:	0x80000000
-> > + *
-> > + * - HAS_SEPARATE_PREEMPT_RESCHED_BITS=y:
-> > + *             NMI_MASK:	0xf0000000
-> > + * (PREEMPT_NEED_RESCHED is in a different word)
-> >    */
-> >   #define PREEMPT_BITS	8
-> >   #define SOFTIRQ_BITS	8
-> >   #define HARDIRQ_DISABLE_BITS	8
-> >   #define HARDIRQ_BITS	4
-> > -#define NMI_BITS	1
-> > +#define NMI_BITS	(1 + 3*IS_ENABLED(CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS))
-> 
-> 
-> Shouldn't testing/selftests/bpf/bpf_experimental.h also be updated with
-> same?
-> 
+From: Ethan Plant <plant.ethan@gmail.com>
 
-Yeah, sashiko found out the same thing.
+When building the kernel, the following Rust symbols are generated:
+$ nm vmlinux | grep ' _R' | rustfilt | grep -E 'pci::Device.*(inc_ref|dec_ref)'
+... T <kernel::pci::Device as kernel::sync::aref::AlwaysRefCounted>::dec_ref
+... T <kernel::pci::Device as kernel::sync::aref::AlwaysRefCounted>::inc_ref
 
-> 
-> >   #define PREEMPT_SHIFT	0
-> >   #define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
-> > @@ -116,8 +133,8 @@ static __always_inline unsigned char interrupt_context_level(void)
-> >    * preempt_count() is commonly implemented with READ_ONCE().
-> >    */
-> > -#define nmi_count()	(preempt_count() & NMI_MASK)
-> > -#define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
-> > +#define nmi_count()		(preempt_count() & NMI_MASK)
-> > +#define hardirq_count()		(preempt_count() & HARDIRQ_MASK)
-> >   #ifdef CONFIG_PREEMPT_RT
-> >   # define softirq_count()	(current->softirq_disable_cnt & SOFTIRQ_MASK)
-> >   # define irq_count()		((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | softirq_count())
-> > diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
-> > index 88c594c6d7fc..35f546a042b1 100644
-> > --- a/kernel/Kconfig.preempt
-> > +++ b/kernel/Kconfig.preempt
-> > @@ -122,6 +122,10 @@ config PREEMPT_RT_NEEDS_BH_LOCK
-> >   config PREEMPT_COUNT
-> >          bool
-> > +config HAS_SEPARATE_PREEMPT_RESCHED_BITS
-> > +	bool
-> > +	depends on PREEMPT_COUNT && 64BIT
-> > +
-> >   config PREEMPTION
-> >          bool
-> >          select PREEMPT_COUNT
-> > diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> > index 9b3f1764fa9e..6d88343c3bad 100644
-> > --- a/kernel/sched/core.c
-> > +++ b/kernel/sched/core.c
-> > @@ -5973,8 +5973,13 @@ void preempt_count_add(int val)
-> >   #ifdef CONFIG_DEBUG_PREEMPT
-> >   	/*
-> >   	 * Underflow?
-> > +	 *
-> > +	 * Cannot detect underflow based on the current preempt_count() value
-> > +	 * if using HAS_SEPARATE_PREEMPT_RESCHED_BITS because preempt count takes all 32
-> > +	 * bits.
-> >   	 */
-> > -	if (DEBUG_LOCKS_WARN_ON((preempt_count() < 0)))
-> > +	if (!IS_ENABLED(CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS) &&
-> > +	    DEBUG_LOCKS_WARN_ON((preempt_count() < 0)))
-> >   		return;
-> >   #endif
-> >   	__preempt_count_add(val);
-> > @@ -6006,7 +6011,10 @@ void preempt_count_sub(int val)
-> >   	/*
-> >   	 * Underflow?
-> >   	 */
-> > -	if (DEBUG_LOCKS_WARN_ON(val > preempt_count()))
-> > +	unsigned int uval = val;
-> > +	unsigned int pc = preempt_count();
-> > +
-> > +	if (DEBUG_LOCKS_WARN_ON(pc - uval > pc))
-> >   		return;
-> >   	/*
-> >   	 * Is the spinlock portion underflowing?
-> > diff --git a/kernel/softirq.c b/kernel/softirq.c
-> > index 0c9b2269a8d6..7980a4a232f9 100644
-> > --- a/kernel/softirq.c
-> > +++ b/kernel/softirq.c
-> > @@ -103,7 +103,13 @@ void _local_interrupt_enable(void)
-> >   }
-> >   EXPORT_SYMBOL(_local_interrupt_enable);
-> > +#ifndef CONFIG_HAS_SEPARATE_PREEMPT_RESCHED_BITS
-> > +/*
-> > + * Any 32bit architecture that still cares about performance should
-> > + * probably ensure this is near preempt_count.
-> > + */
-> >   DEFINE_PER_CPU(unsigned int, nmi_nesting);
-> > +#endif
-> >   /*
-> >    * SOFTIRQ_OFFSET usage:
-> > diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
-> > index bfafe1204c7b..c3d976c801bb 100644
-> > --- a/lib/locking-selftest.c
-> > +++ b/lib/locking-selftest.c
-> > @@ -1429,7 +1429,7 @@ static int unexpected_testcase_failures;
-> >   static void dotest(void (*testcase_fn)(void), int expected, int lockclass_mask)
-> >   {
-> > -	int saved_preempt_count = preempt_count();
-> > +	long saved_preempt_count = preempt_count();
-> 
-> nit: Isn't preempt_count still returns int?
-> 
+These Rust symbols are trivial wrappers around pci_dev_put() and
+pci_dev_get(), respectively. It doesn't make sense to go through a
+trivial wrapper for these functions, so mark them inline.
 
-Right, let me fix that. Thank you!
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://github.com/Rust-for-Linux/linux/issues/1145
+Signed-off-by: Ethan Plant <plant.ethan@gmail.com>
+---
+ rust/kernel/pci.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Regards,
-Boqun
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 5071cae6543f..3e80ec1160b3 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -482,11 +482,13 @@ impl<'a> crate::dma::Device<'a> for Device<device::Core<'a>> {}
+ 
+ // SAFETY: Instances of `Device` are always reference-counted.
+ unsafe impl crate::sync::aref::AlwaysRefCounted for Device {
++    #[inline]
+     fn inc_ref(&self) {
+         // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
+         unsafe { bindings::pci_dev_get(self.as_raw()) };
+     }
+ 
++    #[inline]
+     unsafe fn dec_ref(obj: NonNull<Self>) {
+         // SAFETY: The safety requirements guarantee that the refcount is non-zero.
+         unsafe { bindings::pci_dev_put(obj.cast().as_ptr()) }
 
-> >   #ifdef CONFIG_PREEMPT_RT
-> >   	int saved_mgd_count = current->migration_disabled;
-> >   	int saved_rcu_count = current->rcu_read_lock_nesting;
-> 
+---
+base-commit: dc01dfb37b34beeefcfe1c3055364d41a4070c7e
+change-id: 20260804-inline-wrappers-f869b6e4601e
+
+Best regards,
+--  
+Ethan Plant <plant.ethan@gmail.com>
+
+
