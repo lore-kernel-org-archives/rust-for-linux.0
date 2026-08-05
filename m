@@ -1,49 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0135C470421;
-	Wed,  5 Aug 2026 13:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA22473C97;
+	Wed,  5 Aug 2026 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785935634; cv=none; b=UyhFuh7//re5vgzVZjJFn7cM9rLXrpusgjOHkqkfJd1EnJQVcJblD0HCACvMW9N1w7Bb+vvtZXOFe9XNN1yTTwfWiJ8kA/9XN5YqAjcg97hO4Wa9wQ06aQzC8ER9KbwzwMs/DO0T2Vbku3KIygDDL/jJW3tZmWqkCJ9cE9WbdDY=
+	t=1785938014; cv=none; b=QVjx/HQNDY7bjCbQFNERHYlK2wy/bKzf70uNN303dORVrYQtVvQO6Y8TmCGrqamcxP/8cTiXI/IqX7siCth9nO0kuB63Jrz/I5hzWo/GxKoUo5QIrXfIGnol0tP5uhXCyg9+9aWrL6bgDSFPhnqX6Id4bq9LfqSINTC5xVMmUAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785935634; c=relaxed/simple;
-	bh=JZo2Fe28l9Cb54aJQ8mA5kv3g+6ndtyA1PBwjFZXef4=;
+	s=arc-20240116; t=1785938014; c=relaxed/simple;
+	bh=V11JtsD6ylKzqOLpBHAl94eL2UbNCAJfNs3KoMZsv8o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=boSWIS260hcsbGeKSKZKnd1zr6uMKss/6Haa90qEZd50pa62PON/Ozdy1xfFgkT0boe2cgugfS1KWo+Kg5dnPy27RLF2mdG1AvAf9o49/6Zn+HYM3VXcm+hOVXkwC9mW3Xq4pLnV23yNvlza73s6Hm78IyPW/PmyvSq0R7Zz4Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uylWJi2f; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=gjCnNvJ0oNVi7ol3wjzeSNcnEAK9+p6DLzLknrfUvTWEsvl0QsTkhOQfFAk52UnLlA9t0cArisBzZiZ+yONl3Fskp64j2vGYHoqbE9TloleLjRi1ILpMhG/KrQs3tFTTGaI5KV8m1ffvq4Kt+LShLAwlqF9XRhrRuqM381pt6zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fS+09sNh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uylWJi2f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA62B1F00A3A;
-	Wed,  5 Aug 2026 13:13:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1785935632;
-	bh=uRZvLzvY+BexwU0DY6pvu+r0r0+jPZx2Ig4ipkkVKYQ=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fS+09sNh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90CC1F00A3F;
+	Wed,  5 Aug 2026 13:53:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785938013;
+	bh=145NE5OGoOJ01zyHOiCQHmEWW5VEhp51oQzQp+twISU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=uylWJi2fAd7Z8O7hl1nic03QRmTHc3c5gwuaDaIj3dqxMpO1rgyqGxy1xMnHcJhS/
-	 MMbhDHRad4ho7KEyrLl2r42hk9z4wL9aaKwmoA1qF3j/h850GT/inadUPmhFkGuTOB
-	 meV+sraidG7ZFHXyA698etu64ApOEkld0vWXF92U=
-Date: Wed, 5 Aug 2026 15:13:35 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: d4n11l@proton.me
-Cc: Todd Kjos <tkjos@android.com>, Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	b=fS+09sNhIEg4urOpie5OddouUbsTmn7J8LiRskAhdnqFnmHSddEi5pkS2i1sikIiu
+	 uz2Qq9hPpaQOBQxJMWyP99zxQesjLMMI0E0e9BQvopibRpKDhfEoPhOyIpL/2TP2L/
+	 k/tgtPGgUKFNz6e/xUpPJNWKWP4m83iLTIKKOeVhkd3upl+m5OIW9xn6TaJVYg/T/j
+	 gC7W73wYnN49yAOeQSHz4zp8HkC3u+o/1SGlydReob90oK/sFD8OOJMPxFW6fMzt44
+	 VSFjUnlyVXhNomdHuoO+mJJ5bAczjhWZwK3AoDybsteMNxzbc5+E1/KyR/OhukE2DN
+	 K36GiP5l8uo1w==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0A595F40068;
+	Wed,  5 Aug 2026 09:53:32 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 05 Aug 2026 09:53:32 -0400
+X-ME-Sender: <xms:W0Bzas2euMn8wIeXjzYdInVbfG9JMMuUDKl1p5-bCi67gmnrHAtbQw>
+    <xme:W0Bzamjvqgj50rxkjkUgREzlW5basG-giyS9BACjPfuTX7KvqU8ymDJ8ZOlS0qJyy
+    W60XNyePNdU1FXiaZfXnpI1oHFp58Luv_uZRPcBLQ3qvIVs_M2x00k>
+X-ME-Received: <xmr:W0Bzal9k6ruS1_2F_DAU0WV4GYF_z2BjXqtI7SGkK8XK3iLHV2Q-NGMV5yHRXQJBvfqvrbwK_a0_vzJm7AJ20E6PJvv6bZJJ>
+X-ME-Proxy-Cause: dmFkZTFRoJXWpjBKn0Jjq5qKg0vq0PfDTCWk/ELqOmIknJw408VvpLitMj/U+68XOfHyRh
+    qU+EKdy/Xn7f5lGBZdX/WSENcBB1RThDQVHB+LKywQABfbYXL7G0rxL9FsgS6k9lIACwX4
+    cL8iD5Dgv7IulWfbAHrNbBbm0xD3SPvaE9wNJGtQpPvkSlW8Lc/5SijuPMJBB4r2bNKQL9
+    GCX7h9tYmITTL5tv08UsdqEqR3tUyA3qnZb8Li0q9rHIO+lO1nCuoKThsXqWZeP7L4T1+R
+    3/4ny0aMUy3WLcFlRPUqz5/IWa0v9ChR301kW4gNJKFIYazWp7RYL++vrBKbtwyFcwSNiP
+    ygfxkOzc7itUrJMkJj/lpO9EdvajIYHsUXayZKpbKoaU7oXCPzmT6sNWziHR1O+riWoyvE
+    0hmrceC7xHroFxm88v3FPvZRI2p5dCV0isBaEVKZWEQWbgkAFuVuyHNZetMkaAbm9k/P4M
+    UxJ9uHkex5+xP2Jz95iNAWhLY8Bj+Rwwev9JMEaq/HpRdTXhAFck4u/tpBqLyE5pwowJFr
+    HaVg+1wQrxBntHD+0cL/QpgXvWzqQsAbBbz1kRa6ipfIoEopTd/vWBlubW6+m/MtYGi4H0
+    5c1YIPV9qENM7joL5kO2zRTfWgMY2jzWPSXCpiT52paGgmtJBeRubS1D/mVw
+X-ME-Proxy: <xmx:W0BzaqKJOLbq9b5Xs1LWYVfyQdzHFt1AZTFZYSAneNs4qsxkNZjLpQ>
+    <xmx:XEBzaiyW9R8TCmHQvq9iiXk5i2YRjXEJ1C0AbdIn4F2oafW-cIYkag>
+    <xmx:XEBzal1Ini9HHneVoWEyaaFGedeXDPTHGsfy_WxUsnAWYP-XicxEKA>
+    <xmx:XEBzaj9oz_GVAzFRwgcLQybM-3p3zt6gFVnlu-jnvfQ0VrhSDALwmw>
+    <xmx:XEBzalRcv7yW7EGf3O0Xd_OgoDTqGBX7XbTWWJ8Bz6r7yDDu-EZ2F-yW>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 5 Aug 2026 09:53:31 -0400 (EDT)
+Date: Wed, 5 Aug 2026 06:53:30 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH] rust_binder: enforce delivered death process ownership
-Message-ID: <2026080523-mothball-giant-c5a5@gregkh>
-References: <20260805-fix-rust-binder-death-ownership-v1-1-a89594c3b5db@proton.me>
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 05/17] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <anNAWmjK4_jfMHkl@tardis.local>
+References: <20260804161447.84806-1-boqun@kernel.org>
+ <20260804161447.84806-6-boqun@kernel.org>
+ <2fc01d90-e081-4ddf-a842-b68eda15ca9e@linux.ibm.com>
+ <anJUuzBcWRwyw6NJ@tardis.local>
+ <20260805063645.GO776954@noisy.programming.kicks-ass.net>
+ <anLhM8xTlB6bN2N7@tardis.local>
+ <1a6dd561-f529-433d-bc09-094924d861fe@linux.ibm.com>
+ <anLj_Ryl635sxvI8@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,32 +83,91 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260805-fix-rust-binder-death-ownership-v1-1-a89594c3b5db@proton.me>
+In-Reply-To: <anLj_Ryl635sxvI8@tardis.local>
 
-On Wed, Aug 05, 2026 at 05:50:56PM +0500, Daniil Detkov via B4 Relay wrote:
-> From: Daniil Detkov <d4n11l@proton.me>
+On Wed, Aug 05, 2026 at 12:19:25AM -0700, Boqun Feng wrote:
+> On Wed, Aug 05, 2026 at 12:39:36PM +0530, Shrikanth Hegde wrote:
+> > 
+> > 
+> > On 8/5/26 12:37 PM, Boqun Feng wrote:
+> > > On Wed, Aug 05, 2026 at 08:36:45AM +0200, Peter Zijlstra wrote:
+> > > > On Tue, Aug 04, 2026 at 02:08:11PM -0700, Boqun Feng wrote:
+> > > > 
+> > > > > > > +	/* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
+> > > > > > > +
+> > > > > > > +	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
+> > > > > > > +		_local_interrupt_disable();
+> > > > > > > +}
+> > > > > > 
+> > > > > > Maximum nesting possible is 256 right? Whats is stopping here to do more than that?
+> > > > > 
+> > > > > Yes. Currently similar as softirq, we don't detect the overflow.
+> > > > > 
+> > > > > > Should there be a warn_on?
+> > > > > 
+> > > > > A simple warn_on could be problematic because warn_on() itself may take
+> > > > > an irq-disabling lock, and that may trigger another overflow on top of
+> > > > > the existing overflow. It's a bit tricky to do a proper detection. But
+> > > > > I'm open to ideas.
+> > > > 
+> > > > DEBUG_PREEMPT's preempt_count_add() does:
+> > > > 
+> > > >          DEBUG_LOCKS_WARN_ON((preempt_count() & PREEMPT_MASK) >= PREEMPT_MASK - 10);
+> > > > 
+> > > 
+> > > Yeah, but this is behind a kconfig (DEBUG_PREEMPT), so not sure whether
+> > > it's what Shrikanth asked here.
+> > > 
+> > 
+> > I was suggesting to have a mechanism which allows to debug it/
+> > find the callers.
+> > 
 > 
-> The delivered_links field of NodeDeath may only be linked into the
-> delivered_deaths list owned by NodeDeath::process. The existing safe
-> ProcessInner::death_delivered method does not enforce that relationship,
-> so safe Rust can violate the invariant relied on by a later unsafe list
-> removal.
+> Ok, I can reuse the DEBUG_PREEMPT kconfig and the DEBUG_LOCKS_WARN_ON()
+> here, but it'll be similar to the detection here, not a 256 maximum
+> nesting but a 256 - 10 value (and I'm not going to explain why we think
+> 10 is a good buffer, unless you think we should have a discussion about
+> it ;-) )
 > 
-> Move the insertion boundary to Process and validate both the supplied
-> guard and the NodeDeath owner before mutating the list. Keep the existing
-> lock order and duplicate-insertion behavior unchanged.
-> 
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1238
-> Assisted-by: Codex:5.6-Sol
-> Signed-off-by: Daniil Detkov <d4n11l@proton.me>
-> ---
->  drivers/android/binder/node.rs    |  6 +++++-
->  drivers/android/binder/process.rs | 23 +++++++++++++++--------
->  2 files changed, 20 insertions(+), 9 deletions(-)
 
-Cool, how was this tested?
+Something as below? Going to send it to kernel build bot and see if it
+works for all configs.
 
-thanks,
+----------------->8
+diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
+index b9a7f05ecf42..39f30bc65548 100644
+--- a/include/linux/interrupt_rc.h
++++ b/include/linux/interrupt_rc.h
+@@ -12,6 +12,7 @@
+  */
 
-greg k-h
+ #include <linux/irqflags.h>
++#include <linux/debug_locks.h>
+ #include <linux/preempt.h>
+ #include <linux/processor.h>
+ #include <linux/smp.h>
+@@ -63,6 +64,12 @@ static inline void local_interrupt_disable(void)
+
+        new_count = hardirq_disable_enter();
+
++       /* Is hardirq disable count overflow soon? */
++       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT))
++               DEBUG_LOCKS_WARN_ON((new_count & HARDIRQ_DISABLE_MASK) +
++                                   (10 << HARDIRQ_DISABLE_SHIFT) >
++                                   HARDIRQ_DISABLE_MASK);
++
+        /* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
+
+        if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
+@@ -73,6 +80,11 @@ static inline void local_interrupt_enable(void)
+ {
+        int new_count;
+
++       /* Unpaired local_interrupt_enable()? Warn and abort. */
++       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
++           DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) == 0))
++               return;
++
+        new_count = hardirq_disable_exit();
+
+        if ((new_count & HARDIRQ_DISABLE_MASK) == 0) > 
