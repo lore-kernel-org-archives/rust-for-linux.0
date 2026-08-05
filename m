@@ -1,70 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D6A1A9F85;
-	Wed,  5 Aug 2026 12:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47624570C2
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 12:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785933843; cv=none; b=iDQdRr/vYsVh2574QNWke3AXDFwVQCCHS/BYiZ64lvr/KxhVrOI2I6jAbbWhlryaslMzlYiG15k+YN+XS2dLNuUgAbWXAdzYyBpmPxXHIuZ0Qamcg9kzEFBo5o7FDjdrhiRf4Ep6C1hg6p5+0pJBpZkd1vRXtIkkII05GFaAmhw=
+	t=1785933845; cv=none; b=XenEMv+Ky8M0LWw2zCTIxw0hHT7BjYsewU0lERYWUI7tvkgc/HWhspzS+4BWa15EeuvfAtdoPzzEBhnNn7Rqang0PbZyaLM4TnjFSe6J+Eoz5ske9ZM+B3kNqt0sJ7xRAyb8pmP9iC73Mm00j1j5F9kVfRda6y6nFY1pvne8akE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785933843; c=relaxed/simple;
-	bh=izEyKJwJU8JN0mgUvP8uxPMbAavjAQKE5ldwVfK1kDM=;
+	s=arc-20240116; t=1785933845; c=relaxed/simple;
+	bh=iRAUITz8jzjD6ATZl8638qS0zF9HwZk15Iuyd1CL/rA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=pKOJSkf9iucY7Mt2ZkDMNTT/UdP2FNLrLfHy/LTtAwLy7BAFpIUZy7vmu314swD2xd+Xsh+WEy/VxnC8Yp+kMNVfVF7R5qA0lt7VtGNEgQqa2tK+XQqP7PMV3q7JBDMPUqn+ckLv9rHOTr6jySwcgNKPAqKqTmn/AG6CAluj4lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qd5GPen+; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=RzSweDFw9q2fTI1jjDqeCZ9lXuTtg7fbJALPYvZ/3Zgp5amYDPYIbTkGKcxw2fTizi6Q7Mv+UKlgetXz1ozNgh2bRA+skiMveIa0U/T+1MT4U6tmyVmur4VaOhAyNyX+9CmYnWDsLOUm1EwkiVbb/NXyhIxOUucOkVunuFm1cDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrXY/r7z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qd5GPen+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A0C1F000E9;
-	Wed,  5 Aug 2026 12:44:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrXY/r7z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F641F00A3A;
+	Wed,  5 Aug 2026 12:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785933841;
-	bh=izEyKJwJU8JN0mgUvP8uxPMbAavjAQKE5ldwVfK1kDM=;
+	s=k20260515; t=1785933844;
+	bh=iRAUITz8jzjD6ATZl8638qS0zF9HwZk15Iuyd1CL/rA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Qd5GPen+ewYReMI9+mAikMsL7DYQHfR9EpJbrm5uV+eirWTXndmslEnnK0jbDPvSL
-	 8IQDgcqP8zbWODK3ps4h3NDV8He8H6TreU/eGnv6kYTOU1UAEw3anBS4Ea+u4e39il
-	 usVhD8+OjZ2PzJBursJ+igyA86SqOqdP7RD2C5TCWi+tXzJ3IBOYLvCCyE/+S67a7l
-	 WZKzFSty0RE50mvbaeITC9Hiq8M7bQl7PPndeL8EKV/VYLyuh42de0xqNiAbVERatr
-	 Es8XT/GwQ3jMqlNrTNItGJpAfYixUfLnMUCpmGZuZDTMR6jwvXFaOP0nenYs17IB4r
-	 TrF9/ND3yG0tw==
+	b=OrXY/r7zQHDQlGsxUvxKqFNG+JxWjxPWym5BGyTU5ASjP+R1ElvjM8+0HsQ7yhT9v
+	 C0qxi8q2pmPu9mHvjKnmRnMuqjuwt7USfpCSYjZ6tIK1k/MzVNWDrKZ0M8/E1lfYEO
+	 srotnRWhFahbDsFaSxMNaO+dpPyRc/pkgj0F6XnRYE+2Je9I3gh3hEaPr7fspmdpAy
+	 4GGgyojpCwTpi4oklIRzKmtuwuyRDMV1W1e7u4LMypjkzkO74N/YWKRvEmJXQGOXNU
+	 2/UwYVglsPAGTwu+jkhp15gbBpUeup4qxAXZJvF8MdjW4XAS//DsfMlTrj6lhtupgm
+	 5IbtETXUwi40A==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Yilin Chen <1479826151@qq.com>, Breno Leitao <leitao@debian.org>,
- rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org, Yilin
- Chen <1479826151@qq.com>
-Subject: Re: [PATCH v2] rust: configfs: fix release safety documentation
-In-Reply-To: <87h5l8975c.fsf@t14s.mail-host-address-is-not-set>
-References: <tencent_928148924004787BD355EAB1EA3348E30106@qq.com>
- <tencent_9FAFC60382D724C608F0F6BFABFC63BB6707@qq.com>
- <87h5l8975c.fsf@t14s.mail-host-address-is-not-set>
-Date: Wed, 05 Aug 2026 14:43:51 +0200
-Message-ID: <87zez07n5k.fsf@t14s.mail-host-address-is-not-set>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>, Boqun Feng <boqun@kernel.org>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, Thomas Gleixner
+ <tglx@kernel.org>, John Stultz <jstultz@google.com>, Stephen Boyd
+ <sboyd@kernel.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>, rust-for-linux@vger.kernel.org,
+ Onur =?utf-8?Q?=C3=96zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH v3] rust: time: warn and assert out-of-range input in
+ fsleep() and udelay()
+In-Reply-To: <87jyq497bs.fsf@t14s.mail-host-address-is-not-set>
+References: <20260621105909.4055210-1-ekffu200098@gmail.com>
+ <87jyq497bs.fsf@t14s.mail-host-address-is-not-set>
+Date: Wed, 05 Aug 2026 14:43:25 +0200
+Message-ID: <8733ws91qq.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 Andreas Hindborg <a.hindborg@kernel.org> writes:
 
-> Yilin Chen <1479826151@qq.com> writes:
+> Sang-Heon Jeon <ekffu200098@gmail.com> writes:
 >
->> ItemOperationsVTable<Group<Data>, Data>::release() receives a pointer
->> to a config_item, not a config_group.
+>> fsleep() documents out-of-range input as a bug but does not check
+>> it, unlike udelay(). Add `debug_assert!` calls to catch it in
+>> debug builds.
 >>
->> The old Safety docs described the pointer as a config_group embedded in
->> Group<Parent>. Update them to state that the pointer must be the cg_item
->> field of a config_group embedded in a valid Group<Data>.
+>> Also add `pr_warn_once!` calls in both fsleep() and udelay() so
+>> the clamped path is observable at runtime.
 >>
->> Assisted-by: Codex:GPT-5
->> Signed-off-by: Yilin Chen <1479826151@qq.com>
+>> Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>
+>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 >
-> Due to vacation activity, I missed v6.3 for this one. I plan on queuing
-> it for v6.4.
+> Just FYI, I plan to queue this after the next merge window (for v6.4).
 
 v7.4 of course.
-
 
 Best regards,
 Andreas Hindborg
