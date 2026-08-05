@@ -1,169 +1,209 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678A23546F6;
-	Wed,  5 Aug 2026 12:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2216046D57C;
+	Wed,  5 Aug 2026 12:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785934269; cv=none; b=EwYTtNUcRjW+xe/yA35dke7qgolYQ/KYLeiaMp2F93r9/9eVaq+sTdXycyDC4iXKeM6VyhlfAs/3xx7wxmN4vy19W9ge005sCr/u+mWVYpCxENgfOeza1oA77k0B/oQaPGtggvrBbinaqMNUHdim8y61/M2gnNjwTuG+kORAqMw=
+	t=1785934622; cv=none; b=DRn9Ptod8NQQOLocSilpohykyh5v0m48bAbgNGsGL8c8oBErtsUFCN/gMgUlCOfuLiCDS068F4kyGZFPLexO1hTHFzgdE4F2HbkiSht5dCoXNv74q8Fp9uTUvDbjODJkzfS7KTGaTTASGAG3wt77FT15mzVVMIFVhFDbiERSZqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785934269; c=relaxed/simple;
-	bh=UZqfpLOyX58UXxFhLh3SR6nG3wBZDezxPO+JwTg4L44=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JNJJKH/xhBc7VsJ2i1C4fO2Ik8kh3f9ttF0iLPo4mmzuNazfzsNzOI7w6ak0ihX3vppNAqdLtN0XZGioJp3Y+N2iiwMwHhiH8nkQzXwez8V/ppqDbkqfHwPPUz4QyILTmx+hKsqp0DaPJ3PFI/2wN9kJs/6jXWWY7y1WSa02gsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pQEZwJC5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1785934622; c=relaxed/simple;
+	bh=p0twuRWJ8uycwzsjOOm1b3Zo+AKXNJAF083u54/qqDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GHnuW6OBD3s9b1pY3K3K7rxjeIdGidTmqtqwQ14I4AegvBbwUoE5yVVBb1WhEfGkRHLSCwrkyIqgtvT3GeFcXu+1gCaJOo6xEjhlZdwzz3lNEs5pS239JBGxqsB3GvReA8m4eMkXuaTJ2hkgbh00wkpGuXpmA/HHQ7sHGWyGA4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Anioibwu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pQEZwJC5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DAAEBC19425;
-	Wed,  5 Aug 2026 12:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785934268;
-	bh=UZqfpLOyX58UXxFhLh3SR6nG3wBZDezxPO+JwTg4L44=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=pQEZwJC5ddP2oqmbAcL6rqYKa2GVF7HkQhlx/1e6565MNCqaesnpOc/IMKMCEAL2w
-	 jVVLJVS7dRgn1A6ZKrgGJqGYrO1uArlEtyYEXWBqRcgvNoAgKrXAV7Kojour/Dv676
-	 IJ09Q9lYfViIc9kRwRTF38hASpyJEyaVhbxkIn8m/rGAMA1BH7ecAW6ZxbCZSM9Kdf
-	 kueGTVqLOywnBUNSOGwXGD1bRMPSxPbFr1UZmV9BLS3QReUziq7LGeRHCxMNgb8DJH
-	 s343uSJ1qykvexMnIP64vcmHng9QwYfJDe8RyYpcqQKEJQxlF9iHZUBU27yRsdqBPD
-	 uUuBDglzaXWkQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1A37C55ABF;
-	Wed,  5 Aug 2026 12:51:08 +0000 (UTC)
-From: Daniil Detkov via B4 Relay <devnull+d4n11l.proton.me@kernel.org>
-Date: Wed, 05 Aug 2026 17:50:56 +0500
-Subject: [PATCH] rust_binder: enforce delivered death process ownership
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Anioibwu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0801F00A3E;
+	Wed,  5 Aug 2026 12:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785934620;
+	bh=YFATTYMHaqzZjbRgAS5gchqmnq4INnTFQL5meIkL3P0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AnioibwuiNfUKvIMwFOZlUoMKROErwHnkh/ugizWQDyoH61TxV7pFUA9xoaxIgTQH
+	 DP4ZeaY7v3qsA8C79AjEaeI+d6zCQ1eBRcQpaq2HP+FRYXzBNLFh06rcLdGrv9JqPL
+	 RPtTV3rRFhfUm96jQNCjztZOBfYvRq1OMyeart09EVOAlGMag8FIkfiN4wPld2eIHy
+	 lKGK+qYnKNQHu3iq5a3LQkzC4EBFGYt7SOYnzfVfqPoFNCr7gW3R90hEjrqMBF8Ii1
+	 mHI0a03Disds30l3BNjsuUtqYbmaAjak2BVCfBt+d6s6xRcEFviUKD36C+0veCn5p6
+	 2Yb4NGHxt7qcw==
+Message-ID: <d347de18-10ee-41e9-a672-b08f70bc88e4@kernel.org>
+Date: Wed, 5 Aug 2026 14:56:41 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260805-fix-rust-binder-death-ownership-v1-1-a89594c3b5db@proton.me>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWNSw7CMAwFr1J5jUVoBUJcBbFwUqfxxqns8pGq3
- p1QliPNm7eCswk73LoVjF/iUrXB6dBBKqQTo4yNoQ/9JVzDGbN80J6+YBQd2XBkWgrWt7J5kRk
- pZ0pD5jxQhFaZjdtkf7g/Gkdyxmikqfy61WQSPe7Fv7dtX2eaOmCVAAAA
-X-Change-ID: 20260805-fix-rust-binder-death-ownership-affac3fef3ab
-To: Todd Kjos <tkjos@android.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Miguel Ojeda <ojeda@kernel.org>, Christian Brauner <brauner@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- Andreas Hindborg <a.hindborg@kernel.org>, 
- Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
- rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785934267; l=3577;
- i=d4n11l@proton.me; s=20260805; h=from:subject:message-id;
- bh=IWSU6zQf1qTqHaWNUN2CFAVgjNV4N27WuU++TwUxhgc=;
- b=ud4r7edXqNZXOmk2DSHsp9/stTop420f/c4+I0ku20ojT0dVVU8HGsdOwkeW5vczmdwvw3ovE
- jB7AHsxhOeDB30rTkYo+fl44fVEEgRgkDrd9sNwN+V6AV9XjWtNqw4+
-X-Developer-Key: i=d4n11l@proton.me; a=ed25519;
- pk=lhWhUROF4Ygx4xYQrngLRbK6h4QpiHWk++S1vtq/s+A=
-X-Endpoint-Received: by B4 Relay for d4n11l@proton.me/20260805 with
- auth_id=921
-X-Original-From: Daniil Detkov <d4n11l@proton.me>
-Reply-To: d4n11l@proton.me
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V17 0/7] Rust Support for powerpc
+To: FUJITA Tomonori <tomo@flapping.org>, linkmauve@linkmauve.fr
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com,
+ aliceryhl@google.com, rostedt@goodmis.org, ardb@kernel.org,
+ ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
+ justinstitt@google.com, fujita.tomonori@gmail.com, joelagnelf@nvidia.com,
+ gregkh@linuxfoundation.org, prafulrai522@gmail.com, nsc@kernel.org,
+ japo@linux.ibm.com, lina+kernel@asahilina.net, j@jannau.net,
+ airlied@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ llvm@lists.linux.dev, mkchauras@gmail.com
+References: <20260708082454.1254320-1-mkchauras@gmail.com>
+ <178574013457.29744.6211258618175255546.b4-ty@linux.ibm.com>
+ <anG67Q6Y59kDqh-c@desktop>
+ <20260804.224035.269658578200153488.tomo@flapping.org>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260804.224035.269658578200153488.tomo@flapping.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Daniil Detkov <d4n11l@proton.me>
 
-The delivered_links field of NodeDeath may only be linked into the
-delivered_deaths list owned by NodeDeath::process. The existing safe
-ProcessInner::death_delivered method does not enforce that relationship,
-so safe Rust can violate the invariant relied on by a later unsafe list
-removal.
 
-Move the insertion boundary to Process and validate both the supplied
-guard and the NodeDeath owner before mutating the list. Keep the existing
-lock order and duplicate-insertion behavior unchanged.
+Le 04/08/2026 à 15:40, FUJITA Tomonori a écrit :
+> [Vous ne recevez pas souvent de courriers de tomo@flapping.org. D?couvrez pourquoi ceci est important ? https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> On Tue, 4 Aug 2026 12:11:57 +0200
+> Link Mauve <linkmauve@linkmauve.fr> wrote:
+> 
+>> Hi,
+>>
+>> On Mon, Aug 03, 2026 at 12:27:13PM +0530, Madhavan Srinivasan wrote:
+>>> On Wed, 08 Jul 2026 13:54:47 +0530, Mukesh Kumar Chaurasiya (IBM) wrote:
+>>>> Enable experimental rust support for ppc64le and ppc32be. The patch for
+>>>> ppc32 has been provided by Link Mauve[1] and ppc64le support[2] has been
+>>>> merged over it. ppc32 needs some toolchain fixes mentioned in the patch
+>>>> `rust: Add PowerPC support` and the discussion for that is done here[1].
+>>>>
+>>>> This has been tested on
+>>>> - powernv9 hardware
+>>>> - pseries P11 hardware
+>>>> - pseries(9, 10) qemu
+>>>> - powernv(9, 10) qemu
+>>>> - rustdoc on x86 and powerpc64le
+>>>> - rusttest on x86 and powerpc64le
+>>>>
+>>>> [...]
+>>>
+>>> Applied to powerpc/next.
+>>>
+>>> [1/7] rust: Fix "multiple candidates for rmeta dependency core" error
+>>>        https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2F00cdfd072c709c608606461d7d44d4613119bfa9&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639214476617198585%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=4qQe1qS37TGv6%2Bf9H56kWVqMYSAHsWiDx5oz8WHZ8%2Bg%3D&reserved=0
+>>> [2/7] dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER is disabled
+>>>        https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fbe809b60cbb61aab96179f44ac3670242ae72996&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639214476617235654%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=cw2l64D3ah%2FM3pxFmvMpUnNmcqcSvN3RFoDiYAIR76g%3D&reserved=0
+>>> [3/7] powerpc/jump_label: adjust inline asm to be consistent
+>>>        https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2F13244c0a40139fe66c4c5c5655f4d732a6002957&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639214476617259593%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=xNvcH9k5RA5ktJupn90VdDuwx4YBvezuDcapqKlYfjs%3D&reserved=0
+>>> [4/7] rust/powerpc: Set min rustc version for powerpc
+>>>        https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fe299147cdc8e19c6421a6b7863dc82a35b09d967&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639214476617280683%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=uNZA7AulROQGv%2B2l4M%2FqC5W4ncWktRoSRRp8eaF%2FcCY%3D&reserved=0
+>>> [5/7] rust: Make __udivdi3() and __umoddi3() panic
+>>>        https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fc93c194e4ee71a734986fd99a8b1ec9fbb7a9b8b&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639214476617303292%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=znZPWXM7k5FpRlekIyUN1bHzmMyk1YESR56WsiwBuMA%3D&reserved=0
+>>> [6/7] rust: Add PowerPC support
+>>>        https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2F73b741adb264967093ef4eb59905618a7e0d0de0&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639214476617326590%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=aFHGhd7RX%2Ft5%2BMjqt6pBmIKPKAKmFEQndKP1F%2F8HSxk%3D&reserved=0
+>>> [7/7] powerpc: Enable Rust for ppc64le
+>>>        https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fbc87cbdb952e9223616b839d64bdb4723aa2ed1d&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C639214476617346994%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=ITEFv9C1CSUVLqJNe5Y8sStUE3KoOVYVzSzbP0qis74%3D&reserved=0
+>>>
+>>> cheers
+>>>
+>>
+>> I just tested those again in linux-next, with the Wii support series on
+>> top, but now the kernel fails to build due to ARCH_WARN_ASM and
+>> ARCH_WARN_REACHABLE not being defined on PowerPC:
+>> ```
+>> error: no rules expected `ARCH_WARN_ASM`
+>>     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_warn_asm.rs:1:28
+>>      |
+>>    1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}", "{flags}", "{size}"))
+>>      |                            ^^^^^^^^^^^^^ no rules expected this token in macro call
+>>      |
+>>     ::: ../rust/kernel/lib.rs:279:1
+>>      |
+>> 279 | macro_rules! concat_literals {
+>>      | ---------------------------- when calling this macro
+>>      |
+>>      = note: while trying to match sequence start
+>>
+>> error: no rules expected `ARCH_WARN_REACHABLE`
+>>     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_reachable_asm.rs:1:28
+>>      |
+>>    1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
+>>      |                            ^^^^^^^^^^^^^^^^^^^ no rules expected this token in macro call
+>>      |
+>>     ::: ../rust/kernel/lib.rs:279:1
+>>      |
+>> 279 | macro_rules! concat_literals {
+>>      | ---------------------------- when calling this macro
+>>      |
+>>      = note: while trying to match sequence start
+>>
+>> error: aborting due to 2 previous errors
+>> ```
+>>
+>> This is in addition to the bindings::kvfree_call_rcu() call, but that
+>> one is already being handled in a different thread.
+> 
+> Looks like powerpc needs something like the followings:
+> 
+> diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+> index 0db48977c70c..8aba39e0cf26 100644
+> --- a/arch/powerpc/include/asm/bug.h
+> +++ b/arch/powerpc/include/asm/bug.h
+> @@ -32,34 +32,38 @@
+>   #endif /* verbose */
+> 
+>   #else /* !__ASSEMBLER__ */
+> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags and
+> -   sizeof(struct bug_entry), respectively */
+>   #ifdef CONFIG_DEBUG_BUGVERBOSE
+> -#define _EMIT_BUG_ENTRY                                \
+> +#define _EMIT_BUG_ENTRY(file, line, flags)     \
+>          ".section __bug_table,\"aw\"\n"         \
+>          "2:     .4byte 1b - .\n"                \
+> -       "       .4byte %0 - .\n"                \
+> -       "       .short %1, %2\n"                \
+> -       ".org 2b+%3\n"                          \
+> -       ".previous\n"
+> +       "       .4byte " file " - .\n"          \
+> +       "       .short " line ", " flags "\n"
+>   #else
+> -#define _EMIT_BUG_ENTRY                                \
+> +#define _EMIT_BUG_ENTRY(file, line, flags)     \
+>          ".section __bug_table,\"aw\"\n"         \
+>          "2:     .4byte 1b - .\n"                \
+> -       "       .short %2\n"                    \
+> -       ".org 2b+%3\n"                          \
+> -       ".previous\n"
+> +       "       .short " flags "\n"
+>   #endif
+> 
+>   #define BUG_ENTRY(cond_str, insn, flags, ...)          \
+>          __asm__ __volatile__(                           \
+>                  "1:     " insn "\n"                     \
+> -               _EMIT_BUG_ENTRY                         \
+> +               _EMIT_BUG_ENTRY("%0", "%1", "%2")       \
+> +               ".org 2b+%3\n"                          \
+> +               ".previous\n"                           \
+>                  : : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i" (__LINE__),        \
+>                    "i" (flags),                          \
+>                    "i" (sizeof(struct bug_entry)),       \
+>                    ##__VA_ARGS__)
+> 
+> +#define ARCH_WARN_ASM(file, line, flags, size)         \
+> +               "1:     twi 31, 0, 0\n"                 \
+> +               _EMIT_BUG_ENTRY(file, line, flags)      \
+> +               ".org 2b+" size "\n"                    \
+> +               ".previous\n"
 
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Closes: https://github.com/Rust-for-Linux/linux/issues/1238
-Assisted-by: Codex:5.6-Sol
-Signed-off-by: Daniil Detkov <d4n11l@proton.me>
----
- drivers/android/binder/node.rs    |  6 +++++-
- drivers/android/binder/process.rs | 23 +++++++++++++++--------
- 2 files changed, 20 insertions(+), 9 deletions(-)
+Will this build ? Isn't ARCH_WARN_ASM() for use in ASM .S files ? 
+_EMIT_BUG_ENTRY is defined in a !__ASSEMBLER__ ifdef.
 
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index c10148e90..813718486 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -978,6 +978,10 @@ pub(crate) fn new(
-         ))
-     }
- 
-+    pub(crate) fn belongs_to_process(&self, process: &Process) -> bool {
-+        core::ptr::eq(&*self.process, process)
-+    }
-+
-     /// Sets the cleared flag to `true`.
-     ///
-     /// It removes `self` from the node's death notification list if needed.
-@@ -1103,7 +1107,7 @@ fn do_work(
-             }
-             // We're still holding the inner lock, so it cannot be aborted while we insert it into
-             // the delivered list.
--            process_inner.death_delivered(self.clone());
-+            process.death_delivered(&mut process_inner, self.clone());
-             BR_DEAD_BINDER
-         };
- 
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index cdd1a9079..5c5ce7c01 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -309,14 +309,6 @@ fn pull_delivered_death(&mut self, cookie: u64) -> Option<DArc<NodeDeath>> {
-         None
-     }
- 
--    pub(crate) fn death_delivered(&mut self, death: DArc<NodeDeath>) {
--        if let Some(death) = ListArc::try_from_arc_or_drop(death) {
--            self.delivered_deaths.push_back(death);
--        } else {
--            pr_warn!("Notification added to `delivered_deaths` twice.");
--        }
--    }
--
-     pub(crate) fn add_outstanding_txn(&mut self) {
-         self.outstanding_txns += 1;
-     }
-@@ -920,6 +912,21 @@ pub(crate) fn get_node_from_handle(&self, handle: u32, strong: bool) -> Result<N
-             .clone(strong)
-     }
- 
-+    pub(crate) fn death_delivered(
-+        &self,
-+        inner: &mut Guard<'_, ProcessInner, SpinLockBackend>,
-+        death: DArc<NodeDeath>,
-+    ) {
-+        assert!(core::ptr::eq(&self.inner, inner.lock_ref()));
-+        assert!(death.belongs_to_process(self));
-+
-+        if let Some(death) = ListArc::try_from_arc_or_drop(death) {
-+            inner.delivered_deaths.push_back(death);
-+        } else {
-+            pr_warn!("Notification added to `delivered_deaths` twice.");
-+        }
-+    }
-+
-     pub(crate) fn remove_from_delivered_deaths(&self, death: &DArc<NodeDeath>) {
-         let mut inner = self.inner.lock();
-         // SAFETY: By the invariant on the `delivered_links` field, this is the right linked list.
+powerpc already has EMIT_BUG_ENTRY macro for ASM for that. Why do you 
+need to modify _EMIT_BUG_ENTRY and BUG_ENTRY() which are for C only (in 
+a #ifdef !__ASSEMBLER__) ?
 
----
-base-commit: 075b74841bd0065a3bda3440873c747938e69b68
-change-id: 20260805-fix-rust-binder-death-ownership-affac3fef3ab
+https://elixir.bootlin.com/linux/v7.2-rc5/source/arch/powerpc/include/asm/bug.h#L10
 
-Best regards,
--- 
-Daniil Detkov <d4n11l@proton.me>
-
+Christophe
 
