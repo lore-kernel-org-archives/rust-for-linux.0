@@ -1,136 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5350541B8F7;
-	Wed,  5 Aug 2026 15:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5913B8BA5;
+	Wed,  5 Aug 2026 15:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785942143; cv=none; b=cHDNviRzM4USMy++tJoZR6S0LS+W0dX945DlFCro15Xq2pnfVFwEH/9Hz2hOZlNSJxGHj1eJn4yaKHwm/yABhM/+TwaTHzJXohqbWTJbbGD++5eo3VBeuX9Ki6iWSjU/fBOQriwApgMSxN8HKJkit3YjrYLJAIm6RA3pCtBCeco=
+	t=1785942544; cv=none; b=QlDqTARWLEwndA31o9u0MeoTzYxwbXu6AEhGuFHwdrAqr9XvwGTO/5zGw0huu4Er0eu6HIVl87YbgToXGf8OnuAgbnmJ96gM/XSjSWCnAUXvGKmunCs8nBUsBbxJp+mSSmHAqFVBBsq/ASbNXfxGf6PWy/IvOAVDIQ53/daGFs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785942143; c=relaxed/simple;
-	bh=sFODsdZOcNm0gekpE5+jEpQIm/WtPGZmb8Mtayj7aCg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XoUyn5474DDSvmb/KYI7lXy6plcq6ZnC2okhI7cJAiazLwXHmF6UkNJNs9XwciPP/8p2uzFQ0NSxheHzacVDKRpkt80MfCbRjKAx92t0Bdm+BpY6yAc7+ME1LAmesxQGvqCaamjWvC/R1GeVDH9zwtmAIS1o1WXhXHK8JS1cNaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvCROgCH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785942544; c=relaxed/simple;
+	bh=xCP0AJsN0LWwcut9uH1FrBmQbAr/ubD4ThGJWwDnJq8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=fvShLo3OZ8QtGZrPmXbn37dO1RIzhEDSLx2s4SE3gNoUSHWTivLcsUXHOfSI74OoIyicz5AXk+L85cHVpEAdoW/LnihdEzXVEdUA3f9xuqWLXuoYh8v2TZQT8DiTgRDn+Xb5vNw0awwdL2K4+3t5ZK9uSlE4rTSShcJsXzoRUOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIfHY7e/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvCROgCH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEDB1F00A3A;
-	Wed,  5 Aug 2026 15:02:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIfHY7e/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482CF1F000E9;
+	Wed,  5 Aug 2026 15:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785942141;
-	bh=FZuzxmSnBQOpaEeW/8N4DI3loKXJJljrvFvwaulbdt0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nvCROgCHdRxyoQdTn0wFqFs/M6fXGN8BTVra+4ncUbziaXq7v/IDMK7dcx6aRo2Pq
-	 frEakPOGjsZmaVG1eBIVlu557ihK3UAdnqhU5fm2gwF1v9kKMQ9yuU9JpaghdIfxJ/
-	 2QloWrjozOiLOpVT5wTs0ri2h3O/aHPhydEiVOPmwJD/E67NpZ2c3V6EIM6FMAfMub
-	 YXzm+nikoxnoySdVseeqDQkTwWPbKYSSbCs1BlEmzsUZszPL/4uUowtourZponrqep
-	 mUfX10NVbBr+iq1Lig9TRRWDlgtzcLmibomXMSKFvKtR5hwtoy7/DI6l/Q6KvPSjSz
-	 pUhIkSj9pdv3Q==
-From: Philipp Stanner <phasta@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Burak Emir <bqe@google.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Eliot Courtney <ecourtney@nvidia.com>,
-	Mirko Adzic <adzicmirko97@gmail.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Daniel del Castillo <delcastillodelarosadaniel@gmail.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	rcu@vger.kernel.org
-Subject: [PATCH v9 5/5] MAINTAINERS: Add entry for Rust dma-buf
-Date: Wed,  5 Aug 2026 16:59:47 +0200
-Message-ID: <20260805145949.938505-7-phasta@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805145949.938505-2-phasta@kernel.org>
-References: <20260805145949.938505-2-phasta@kernel.org>
+	s=k20260515; t=1785942540;
+	bh=qN+jBzY4sO4wQKae/TxHUsaRK5FcAIoanVdZo53PTCE=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=lIfHY7e/6dc3DEO6uPgih9oX3DUVdvwadv9Y7ffQmiG/M3DEph7BQ9SIZ56tg9mEa
+	 l8IyrNbHpjuWifpBuz75KrCBzPV3Cucxbhj5sRHLBKgmBfJsFByGJdr3KkzJzj8S/t
+	 +dzF5XT7FkyPUeOHVj6I6ZetDd4P4j3xSHzDKaF8IwLRYy7DnPoDwGoU3Dh+Ob0hgV
+	 T96pORwnxM2oBa18+gaCn7VFftJ1prW3brtGAkAeZ86iibX70hf+XBc7gVIwT0C7Ix
+	 J7ne0JYS0H8dy+/BKZGyfFFcaw2OOlFk10+i65gMxO4wb3nrR4+EQNwbAXjvQHR02a
+	 +TGFp/IA/1jrg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Wed, 05 Aug 2026 17:08:54 +0200
+Message-Id: <DKH3SHX3Q95W.3UTJEVH2K3H75@kernel.org>
+Cc: "Heiko Carstens" <hca@linux.ibm.com>, "Niklas Schnelle"
+ <schnelle@linux.ibm.com>, "Gerd Bayer" <gbayer@linux.ibm.com>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Vasily Gorbik"
+ <gor@linux.ibm.com>, "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ <driver-core@lists.linux.dev>, "Christian Borntraeger"
+ <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>,
+ <linux-s390@vger.kernel.org>, "Linux-Arch" <linux-arch@vger.kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
+ "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, <rust-for-linux@vger.kernel.org>
+To: "Arnd Bergmann" <arnd@arndb.de>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: `io{re,un}map()` build error in s390 under `!CONFIG_HAS_IOMEM`
+References: <20260803180931.97202-1-ojeda@kernel.org>
+ <fb2daae7-4eba-4ca1-95a5-60f8157eb66b@app.fastmail.com>
+ <DKFKXA6YWW8R.1NDZ44Q13XFQH@kernel.org>
+ <20260804071330.24760Aaf-hca@linux.ibm.com>
+ <33ecacea-ed2a-409c-ab1c-a136e06b1b7a@app.fastmail.com>
+ <DKG43HF7A2EN.PC1LBC0QUP93@kernel.org>
+ <f0e0c069-23eb-443a-800d-267cfe4c2aa2@app.fastmail.com>
+In-Reply-To: <f0e0c069-23eb-443a-800d-267cfe4c2aa2@app.fastmail.com>
 
-Rust does now have abstractions for dma_fence. These abstractions are
-quite complicated and require expertise with both the C and the Rust
-side. Therefore, using the existing entry also for maintenance of the
-Rust code appears reasonable.
+On Tue Aug 4, 2026 at 2:02 PM CEST, Arnd Bergmann wrote:
+> In that case, it would make sense to also change the CONFIG_PCI=3Dy
+> version to fail the same way when the address points outside of
+> the PCI memory space range. The current version in
+> arch/s390/pci/pci.c just falls back to generic_ioremap_prot(),
+> which is what I would use here directly:
+>
+> void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+>                            pgprot_t prot)
+> {
+>         if (!static_branch_unlikely(&have_mio))
+>                 return (void __iomem *)phys_addr;
+>         return generic_ioremap_prot(phys_addr, size, prot);
+> }
+>
+> The two methods here (generic_ioremap_prot() and the cast)
+> are machine specific to refer to two different ways that PCI
+> devices can be accessed if present, but there is no case
+> for PCI being unavailable altogether.
 
-Philipp volunteers to help maintain the dma_fence abstractions. Add a
-corresponding MAINTAINERS entry.
+I think we agree the correct solution is to fix things in s390. But the
+conversation seems to suggest that this rather results into merge window
+material, so I will go ahead and pull in the other fixes for -rc7.
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Acked-by: Christian König <christian.koenig@amd.com>
-Acked-by: Sumit Semwal <sumit.semwal@linaro.org>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 721ecafe4b2a..e00e8ea312dc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7622,6 +7622,7 @@ F:	fs/dlm/
- DMA BUFFER SHARING FRAMEWORK
- M:	Sumit Semwal <sumit.semwal@linaro.org>
- M:	Christian König <christian.koenig@amd.com>
-+M:	Philipp Stanner <phasta@kernel.org>
- L:	linux-media@vger.kernel.org
- L:	dri-devel@lists.freedesktop.org
- L:	linaro-mm-sig@lists.linaro.org (moderated for non-subscribers)
-@@ -7635,6 +7636,8 @@ F:	include/linux/dma-buf.h
- F:	include/linux/dma-buf/
- F:	include/linux/dma-resv.h
- F:	rust/helpers/dma-resv.c
-+F:	rust/helpers/dma_fence.c
-+F:	rust/kernel/dma_buf/
- K:	\bdma_(?:buf|fence|resv)\b
- 
- DMA GENERIC OFFLOAD ENGINE SUBSYSTEM
-@@ -8627,7 +8630,9 @@ T:	git https://gitlab.freedesktop.org/drm/rust/kernel.git
- F:	drivers/gpu/drm/nova/
- F:	drivers/gpu/drm/tyr/
- F:	drivers/gpu/nova-core/
-+F:	rust/helpers/dma_fence.c
- F:	rust/helpers/gpu.c
-+F:	rust/kernel/dma_buf/
- F:	rust/kernel/drm/
- F:	rust/kernel/gpu.rs
- F:	rust/kernel/gpu/
--- 
-2.55.0
-
+Thanks,
+Danilo
