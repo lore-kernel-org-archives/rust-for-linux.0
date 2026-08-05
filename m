@@ -1,165 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0A437C11E;
-	Wed,  5 Aug 2026 14:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785939662; cv=none; b=iz+nKiyLi5OqBWGfHOLPOG2zlEtQzGLWQmWaOItbqTKJt8A+R7rTCK+oLuhiU857I6h3uQTJmLlVfTnqZrHmm1EUqdG3npAW20gn3kVT1uwnn2SQN8Kl77a8m6DDiJ+fNr94RwRPUxoO12NkPDKsznTTBXivHx+YUvwivsWMw8I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785939662; c=relaxed/simple;
-	bh=6ICyW0V7IVJlfQOi+qd9kZF1KcI5Q0vO42CMNGShS6I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sVH7avy8ZrLg4mR0S2QrKWB8Y1LmNjJiG5ODySbf3AptgjUTvKtzwe/F48mCjmwcWMEN2xT+LFHDd8qQ7SGSobQGoQy/gR0GnGPXI5y+U2f6IZEDNKdxQLN340FGKNrLj7jr8Od+ujteKwmvujv6+77X77TjJYqYOhGXcvKKsPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcqAAula; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857BA37F30C
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 14:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785939708; cv=pass; b=B7/JpVzaHhr4T5ADkJuLnBCieOvU+Ku36RYB/i7TfMJ5mv++sJT6oOXhBmtaIW5QctF/ludaWJJYfm+M4kUbz/J3Gz4yRYq7ArPV2DaBkvG4mru4x+slwZJNxNiat+6ehItiVHunvKIuL7a3yX4ewmgSg0vpO0G32bl8LOJW5BQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785939708; c=relaxed/simple;
+	bh=t9KKJs8gOzuq4RuyUZvo3auMMuF8q8NzDX5FBo3XykA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RL45TYTviQOXElFeRWMdG/61b4EeWrzqfb9eb7O3h+dbIF7rfYyjAEdVxAAOZkIffmNd1PilbDqYG+AHIMy1NOLpkmN7mUqzb04K/+HZzgB1uTYHQatCc7plvHenbP3b481mbKayQFdb/pbtetchCBXfU/lt+o/bK+069k2DUYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gl+LFEff; arc=pass smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcqAAula"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DA41F00A3A;
-	Wed,  5 Aug 2026 14:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785939652;
-	bh=gWkBd+NMfsoWi0xyoMJCH8i9uSob1Fobwp1ZlKFHagQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bcqAAulaTs9KercETcZNqeO/9FzAv8TTymNExz9Hj9jMLH5CTZ2h7PaGAACYI7Z6A
-	 YUxUWkjR15qzmLTiybi9KPFqzQF48cPcHLMAOPYMx2bDMwDu+Z/In6IJIl1+oprEVQ
-	 cvboLtx50CmqthBBlQLFNBE8Njw4DmNvCSiyGJb+qNB1jKore5UZqtPD3V1F6AqJT+
-	 Iq1rrHQoSFlxOBp+/a4/caXz8T+2k6C3zq0C76ogpafZOb0qXs+Fwaz8jeflEOvkxP
-	 gWqR3P8Ht7nufyUdkuf90vfRkhnoSxZFB0lwp7kf+EZKMfKVpMFWbbKm2prcQpw/Pa
-	 bXbQkl+1g+W2A==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7F323F40067;
-	Wed,  5 Aug 2026 10:20:50 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 05 Aug 2026 10:20:50 -0400
-X-ME-Sender: <xms:wkZzavm_-GRvhgBlyFcUz8-t_goPEWVpO4oJ6H-V_7zBOikfN1qChA>
-    <xme:wkZzaiSXVn0c4ekpoZhpa8JPq_USvitw-ObUMcCWZxrllEDipLoTDVtGBNJ-u_G1D
-    EVGdYX8SniFQuGjZppb9ZjhJAsU_I_lgaWUCTxKXXoELalviCzsIg>
-X-ME-Received: <xmr:wkZzamu3A0u_NTf-Ee4gP8KMKu0F805y4GN-jS6B0_vcBb7LI24NCC5ou9HUo3osZIJIXdinkpV-gxsRT3NsekrtK6ZZYUKQ>
-X-ME-Proxy-Cause: dmFkZTEhoGnHqqYRTSVptv5rP4s4ObDAB6VgvtxvsQo4/f2Abtx9VoYeGzFGKSpLinA4I9
-    Kcq41BXIihxEcnSkk6lGbf4WgnAmMPD0zQXCWxH3BWxIaWO8xCSZfU+y2cC46HakhQFYAJ
-    FeaJQFC5vWAJN8ypODx2AljCNHUwma0olTgSemT0IeHJkbXXv092rOSq7/cygS6tvFkKja
-    0/jhSN85RX4WxFI6Bc3wigpfTYk+7c7Op2vkPzN1dB+XNDGBGkTtOiqRwtEEx8PmVwhjty
-    cE+z0L/0FTIrBN4nkMzNgwv6kEOWTc5vaVCvfi3QzpD4VB44UjsGUvBBp2WM2mTso3ZJsc
-    E3JlRd4CSu3V6BzP59byOl93+HiXGd1kFLqLY8Zwqk+mELUphBzBI8Ym9ENy/kbmYT0RyL
-    Sp1lCoTkq7ENQ3/OBqShVRiFz9zuaLt1ZJ1lErt1IJ9uptFeQy9sAgQMG0/wDP04La5BIM
-    hqwWINh3VystAHPQQ/jX6R6Cq6sBhqGn4NQ+BuLZlz4Nmv+l6mLiIzh8e27zpNc9DPyfhR
-    //awfsgEBkn/zj2ypVPtbUidecFGMKq6jiSdRGhR/M0IB1h/SR2RWLgVClkkIqLvlA479G
-    RF5GnwZedT23u0L7Ja+UmIzevVC7pvSFAJ6K1/As8Zf7nrm9wfFp0RhZUC1Q
-X-ME-Proxy: <xmx:wkZzar6trVtfPgopNckp8B4pCmkTpIV6ZV0rRzj09B0FG6m8jsekCg>
-    <xmx:wkZzahgeF2NxfdVnF2Mgr-7GcOXfRTSnkrA9i-R9KL0itzOEbkOTrQ>
-    <xmx:wkZzatkvk9oeDVFm7bIdU_motwV8Zfpm0qF1Tt3UTukRdDVv6sdqfQ>
-    <xmx:wkZzagtgX7K3osfqgMwG4y9AiXC6a2Jh_pLuqxOKylMuIzj67qAM4A>
-    <xmx:wkZzajAmvWrOqvSl21b98t5rcAaN1ekrHJsjhJbtArKnGnX52tKshuoI>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 5 Aug 2026 10:20:49 -0400 (EDT)
-Date: Wed, 5 Aug 2026 07:20:49 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 05/17] irq & spin_lock: Add counted interrupt
- disabling/enabling
-Message-ID: <anNGwaegou9WJHC_@tardis.local>
-References: <20260804161447.84806-1-boqun@kernel.org>
- <20260804161447.84806-6-boqun@kernel.org>
- <2fc01d90-e081-4ddf-a842-b68eda15ca9e@linux.ibm.com>
- <anJUuzBcWRwyw6NJ@tardis.local>
- <20260805063645.GO776954@noisy.programming.kicks-ass.net>
- <anLhM8xTlB6bN2N7@tardis.local>
- <1a6dd561-f529-433d-bc09-094924d861fe@linux.ibm.com>
- <anLj_Ryl635sxvI8@tardis.local>
- <anNAWmjK4_jfMHkl@tardis.local>
- <1eccb39d-f4bf-41d3-a999-e4bf45833c04@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gl+LFEff"
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-43ce24c4978so55161fac.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Aug 2026 07:21:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785939698; cv=none;
+        d=google.com; s=arc-20260327;
+        b=NBrgrS6AtqAZc/Uzsgdh3/wBUhGaVt6ZompQFyB+qTFNCv80FAV1/YpA6rW6m01vQw
+         je+4uoJc0dNK1Jt7/uJT8bAnsCyBUhua1xuKGQe8G3n7C1LZzK0ItGeiKvo0pTwZ6JOT
+         hMTKrYpGYBVVq8ika/IgVEoOMYlMLD0aGXTE1Xg03N0z3Qyma/KrekEnqH5KMR6L/rD2
+         Ekhvub2VsRtIbKTOauOk3bJ3TKUYuGfcQl9xI9GpKg+OdjuRPY0quuz3RIREk7BPZHCx
+         FPOTSlA4ohB1gCU5mjNgQ0tyKDiY6tOeZdAJ26jNwW2OeHyupYa/gcmJ1o4YYO3QJ4er
+         ELxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=t9KKJs8gOzuq4RuyUZvo3auMMuF8q8NzDX5FBo3XykA=;
+        fh=HNB/SKRVU9EGuVE7bqiQac8ZEYTnroF1dp6yoUfF4W8=;
+        b=XzcOVZrg/pAQUSoiK2LwPW+ZLfBn/0Z3MTgQ9g0DfeJMGPcENo89M3ryVRfmIJa0wg
+         YKYUL+Rjx1dAG3+88VqsW54UxHd/rz7z52TR74enVROqUOqpe6O20K6e8peClodN+epu
+         Sp7LaD9/R/G32vDmhU1XpcBWM8OkV0jFITfv4bONgNJXTlxCZ/XpgzlFQSNMGBaRoyvd
+         kv1TT7zCcpkLZmlGByqGre7HhZfcd8qQlpH3oNH+NP2HgkpmQKFyfRhhaTaeoF8tAkGy
+         z/V+yUI2PBWlzX70SQS9zr3cBo8XOCmKnKHGwAw123lQCUbD7CZ7RYZ8uihIntWLXB+k
+         YlBA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785939698; x=1786544498; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=t9KKJs8gOzuq4RuyUZvo3auMMuF8q8NzDX5FBo3XykA=;
+        b=Gl+LFEffJJR6xKlDhBUmIidXL+3AMNwzsOqifqBHxUMh11yKyqAUFQkl0qOStecd9o
+         w0dgAh004lDmkIfkZEPDRSOtotW3vKW7M2MmE8xfQi4dm1OampwxAr9RKALeXakEupLI
+         ZIGm75IfK2KjlUty/iXI/aTKfoiWnYI+yb8xNGuq1Ch3YMCoQ1yWWKtigt895TYNxQt/
+         PPX6HIi934nwXfF6n4Ksrtus5I9f7f8qUjNbyAf0FNreDSfTszLbEf3QtrB6FR3Z6UwL
+         nTsi7bSiqs2aHqPv2YYk+VHBkICOfVPCdlq+Hf+9Wa6adObnYeAP6T59qfjMGBU++3Y3
+         WtBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785939698; x=1786544498;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t9KKJs8gOzuq4RuyUZvo3auMMuF8q8NzDX5FBo3XykA=;
+        b=X9swC/vs2VgK7MJptSNRNNEUd3aIzx+zUpcaQvXDbZmizd4YAMcZqJPdUfcgUAUxmQ
+         T73zrLTvcQkeR5wEmAuR5l/fkmAwKhAMqGdFOTLVLAFtiMUY4zu03//SUwyh9uCcRhj6
+         gt1kHupi/uvgLq+FBACoFXId6HhaKQEQNXWMimeZ7mxUcPpaZNkdTvs+9liFfyZ283Nu
+         aBQ35WuZvPMpnxJ3ogpMhX32wlnSSk8/Um5+xqWM1m5a+PT0ANhmVOiy/VzzBh/FzIBw
+         BVQaA8LGzqpFvZ0UVgsOtDSHUQFqH577ySlcp3+/raH8HtkIez0DFUCn3mJ/WANJBWXb
+         8kEw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqp9AQDyqIpkbLfxbPdC5ObrNW5nCO0b/12x9PH9pcIK3JPPVLx7CJJAhTLC+LapvO1zWF6o2TkbaJ1hcXW/g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOLYgMf7INrjctSxhamqsKlWBvgu0OAMO8d2Wa3YNxP8DHIKCH
+	k7XS8KSS8OVuyq60df8tGfPUy5IVERtUuEOnuHEf+nKDxybYGISoNLGapsbw7PHUaj+hF8eKGJU
+	S3rYaADCCFU4KNiOXjeQiXhHSCzH0aaA=
+X-Gm-Gg: AR+sD10m5idjVLwo+dW4uIQ+F/hpWeq4wcwwGptYvzn97bsOyYxjc/SqADG0zEKvqHv
+	2fko0+78w6PrEkGssQBFj9UHVyQxwZh5sukdqBefbSzbh4QEZDuCxeGKq9QU4k0XKcMQSSrP25I
+	c0cZyOJq1SodlLPwNO/1rjs5/9siMNnB/geA9MxgSQddPN2l7VMBMCORV7IHuPHfqXvxpp9bDMi
+	h225jiKDq7jrhQ/OkBjVF2hNjKRv0fRBxNPEIl37R7wPoMxZzaLp/pj9Fc2XKoz3JV/7a8qDR2/
+	41dYS/jZhy/CdAUHvr88iUurK+Gqh9PDVdu3nuLY7tI0245fL4rbjOGVhEVTEr2TTgsC/OLTOjy
+	24EbQ8NnTVnPL7YXznCahjDMFYYXw1olfTr+1k3q6AXxa3LHjtRftV/cZqE7B
+X-Received: by 2002:a05:6870:21ea:b0:447:4cf0:eb19 with SMTP id
+ 586e51a60fabf-4599eecd55bmr2013818fac.4.1785939698138; Wed, 05 Aug 2026
+ 07:21:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1eccb39d-f4bf-41d3-a999-e4bf45833c04@linux.ibm.com>
+References: <20260722214951.72941-1-tomo@flapping.org> <DKBXI6A044JX.3OXFT3R8DIK2K@garyguo.net>
+ <FenzX1BbXwDwhxl2RJ8sf7OnFwsAi3prmxcHhYKtfyXwJ_l88xtj5rr-z8T90Dqj1Em0RGPwvxQNqlo0pl2e8A==@protonmail.internalid>
+ <20260731.224825.536098581345512332.tomo@flapping.org> <87v79o7myg.fsf@t14s.mail-host-address-is-not-set>
+ <DKH2NGL7W29L.2K5MVFFHP84JX@garyguo.net>
+In-Reply-To: <DKH2NGL7W29L.2K5MVFFHP84JX@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 5 Aug 2026 16:21:23 +0200
+X-Gm-Features: AUfX_mzd-J2vx9Ey014cLy8VRibY-eC17UFAN9PyxIH4MmeEpmHRJgz-3aChkpY
+Message-ID: <CANiq72m5ZWTAs8XXfPYkEfDj9CT4_N7ZShXSj33WqcWwNV=NWA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/7] rust: use Delta instead of raw jiffies for
+ timeouts and delays
+To: Gary Guo <gary@garyguo.net>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, FUJITA Tomonori <tomo@flapping.org>, aliceryhl@google.com, 
+	arve@android.com, boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, 
+	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
+	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
+	jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, 
+	tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 05, 2026 at 07:40:18PM +0530, Shrikanth Hegde wrote:
-> 
-> Hi Boqun,
-> 
-> > 
-> > Something as below? Going to send it to kernel build bot and see if it
-> > works for all configs.
-> > 
-> > ----------------->8
-> > diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
-> > index b9a7f05ecf42..39f30bc65548 100644
-> > --- a/include/linux/interrupt_rc.h
-> > +++ b/include/linux/interrupt_rc.h
-> > @@ -12,6 +12,7 @@
-> >    */
-> > 
-> >   #include <linux/irqflags.h>
-> > +#include <linux/debug_locks.h>
-> >   #include <linux/preempt.h>
-> >   #include <linux/processor.h>
-> >   #include <linux/smp.h>
-> > @@ -63,6 +64,12 @@ static inline void local_interrupt_disable(void)
-> > 
-> >          new_count = hardirq_disable_enter();
-> > 
-> > +       /* Is hardirq disable count overflow soon? */
-> > +       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT))
-> > +               DEBUG_LOCKS_WARN_ON((new_count & HARDIRQ_DISABLE_MASK) +
-> > +                                   (10 << HARDIRQ_DISABLE_SHIFT) >
-> > +                                   HARDIRQ_DISABLE_MASK);
-> > +
-> 
-> This needs a return here right? Else we will see warning for 10 times
-> and then overflow happens and we will call _local_interrupt_disable. No?
-> 
+On Wed, Aug 5, 2026 at 4:15=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> Ideally we can still take them this cycle so we can add users in the next=
+ one.
+> I suppose otherwise we might want a topic branch early next cycle.
+>
+> I think if you can pick timekeeping patches today or tomorrow then they'l=
+l still
+> have a round or two in linux-next before rc7. Or perhaps Miguel can pick =
+these
+> instead?
 
-DEBUG_LOCKS_WARN_ON() uses debug_locks_off() to avoid this, so we won't
-see it 10 times. The reason not using return here, because we would
-introduce unpaired local_interrupt_disable() if we returned:
+If it is late for timekeeping, then yeah, I am happy to help.
 
-	// hardirq disable count is n
-	local_interrupt_disable(); // hardirq disable count is n + 1
-
-	local_interrupt_disable(); <- trigger the warning, if we return
-				   // hardirq disable count is n + 1
-
-	local_interrupt_enable(); // hardirq disable count is n
-
-	local_interrupt_enable(); // hardirq disable count is n - 1
-
-Regards,
-Boqun
-
-> Not sure, if below is any better? (Igore whitespace mangling)
-> 
-> if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
->     DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) >=
-> 			 HARDIRQ_DISABLE_MASK - (10 << HARDIRQ_DISABLE_SHIFT)))
-> 	return;
-> 
-> >          /* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
-> > 
-> >          if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
-> > @@ -73,6 +80,11 @@ static inline void local_interrupt_enable(void)
-> >   {
-> >          int new_count;
-> > 
-> > +       /* Unpaired local_interrupt_enable()? Warn and abort. */
-> > +       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
-> > +           DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) == 0))
-> > +               return;
-> > +
-> >          new_count = hardirq_disable_exit();
-> > 
-> >          if ((new_count & HARDIRQ_DISABLE_MASK) == 0) >
-> 
+Cheers,
+Miguel
