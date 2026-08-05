@@ -1,133 +1,92 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44D9395240;
-	Wed,  5 Aug 2026 10:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7604D395240;
+	Wed,  5 Aug 2026 10:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785926916; cv=none; b=npjQ2R/xWgXDo5qH1/9wUvv8sXr1zQbaNQjhFkuc+hzPZ63se59ErMBl035EZhs87I04vMkJGVdLaphxdmDd1psm7Hgva/vQeRBIcVh8pU/O9+81XGnql26cart5+tS9sIUnP3HM4mguzQvEXHlWaqiGKDCwVdxN/uTGlwM8760=
+	t=1785926960; cv=none; b=d1HCueXf8N0Mhzbk9lsDZgRRh54oBPJj88ZIiMGpau07qccz+kEokjoYW9KXIHaxD5xJgX9I8kPMEB8zvnSJAdO8sU28faQ25sKdH3vOHRgVys55PNpnDf1m1mEseVQqeHH6vUHsSzycuRcww6d7OwCgnH26JgnVOjjl345MPnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785926916; c=relaxed/simple;
-	bh=spzxP1pzKJWjRwkbVK/MSgF6DfFR+VSFmyP2BL7haHA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QAGQfj2fRg4qrFpEIcwBIqmNva8sSiwHoLGdlM/TMHBWIwv/CHgL3vgy0mX815dcNF4n1Yzb6OcO+6n0ShwetbZI1jq/CWRafylV6xzkY6UVkpBo0HUazpOgCex4Uj+IqW9TKjIUeSE4lHGcTbKHBl9VKXCNMR1NUhQ+dSLTwaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=NJZyD6pI; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1785926960; c=relaxed/simple;
+	bh=aoD/8/1rOkU6dw5q8BatbQAD+dzeArBlFEInxDyYqfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cj9CVhw3/PXhcsoby9jKGUmSoXE9RbWtdC2AQWvLtf1ulBhfnMbL/y+JrxNlVzg+dhbM8bifCJ1wWhtCGNGXB7yuPukPuYUDeobb5zCOgGmDyg6T0LpRj4iuYHCW50fNnHAjsD/VLiQXY1akJABnjvMTz70pZO4tazcJ0yh3w94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=vNa/D+Cd; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="NJZyD6pI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1785926907;
-	bh=spzxP1pzKJWjRwkbVK/MSgF6DfFR+VSFmyP2BL7haHA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJZyD6pIGKH3LWqia0HrIORJf/cAaZ9i90JvVfFomghswDy6qTlCdJUL5S6NJBiCu
-	 X3Ict9mx0NZRwlmb9nxBLxVM4IVcgU0jQP+xa3y/VuW255oTWpOTPZ/+KM4xzt901E
-	 YxHOj28RzaX109JnNMpgOa+OJT4pXWQPecuQpmMUhl6t0TTAQrY79XtCeP4EzBWVLa
-	 hZ+JpZFtCp732kMIKy5kojkG81WqwJW9213xo05glrpZDg06ouQ2+C7vPORQOVMAY2
-	 r7wk5HDJ6FwXxbqFE/1zkI6iOBbfOQXazKxr3rEEaNigAJ2HD2oVPMF0fA5kkfZR7Q
-	 hq3FYz5hC1VEA==
-Received: from laura.lan (unknown [100.64.0.215])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 791E917E0048;
-	Wed, 05 Aug 2026 12:48:26 +0200 (CEST)
-From: Laura Nao <laura.nao@collabora.com>
-To: linkmauve@linkmauve.fr
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	airlied@gmail.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	deborah.brouwer@collabora.com,
-	dri-devel@lists.freedesktop.org,
-	gary@garyguo.net,
-	kernel@collabora.com,
-	laura.nao@collabora.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	simona@ffwll.ch,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev
-Subject: Re: [PATCH v3] drm/tyr: add Job IRQ handling
-Date: Wed,  5 Aug 2026 12:48:15 +0200
-Message-Id: <20260805104815.104154-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <anHZpHh_5CZhH5N3@desktop>
-References: <anHZpHh_5CZhH5N3@desktop>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="vNa/D+Cd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UbrOXul+0gfZDUnSzuW045Fm9Rg7ZjjUqlD/EelI48c=; b=vNa/D+CdvoaCuTqElHssEIbqzj
+	xbW+Xz+ulkj3ZVqRL0uizaEMF2cOfJVoMI87EH3uSy5lY6kc+li4irraEUEAqjQKAs1I2HyVSOK5B
+	ognfe93l/ptoc2a4Qr5Q8yfrISYy+A7y0wN9VTapeHcbl+d7Knx45crj5quYkWT8d24EKP2Bl9y1e
+	CLKzZiqk443Ir9GhchYsKKlUkVoTVkS7amVu2hPFD/YiumHF9X8hMZw9F9gvShYnNemvp2Jk+BR28
+	V435Jc32E7TKyOeC9oiXHV1Wpxb5kkiZNzbaFCEDfHqN2PgtBhDVcUNIBirgs8EzKIGOG2I9GMxDX
+	i8g/Fgjw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wrY92-00000001dOV-0Bw3;
+	Wed, 05 Aug 2026 09:42:40 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 8D38F300E7E; Wed, 05 Aug 2026 11:42:19 +0200 (CEST)
+Date: Wed, 5 Aug 2026 11:42:19 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: Re: [PATCH v4 12/17] s390/preempt: Enable
+ HAS_SEPARATE_PREEMPT_RESCHED_BITS
+Message-ID: <20260805094219.GM687043@noisy.programming.kicks-ass.net>
+References: <20260804161447.84806-1-boqun@kernel.org>
+ <20260804161447.84806-13-boqun@kernel.org>
+ <367a9709-eb79-4579-9405-fb8d89576413@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <367a9709-eb79-4579-9405-fb8d89576413@linux.ibm.com>
 
-Hello,
+On Wed, Aug 05, 2026 at 01:57:04AM +0530, Shrikanth Hegde wrote:
+> +maddy, christophe,
+> 
+> On 8/4/26 9:44 PM, Boqun Feng wrote:
+> > From: Heiko Carstens <hca@linux.ibm.com>
+> > 
+> > Convert s390's preempt_count to 64 bit, and change the preempt
+> > primitives accordingly.
+> > 
+> 
+> > +	union {
+> > +		struct {
+> > +			__u32	need_resched;	/* 0x03a8 */
+> > +			__u32	count;		/* 0x03ac */
+> > +		} preempt;
+> > +		__u64	preempt_count;		/* 0x03a8 */
+> > +	};
+> 
+> 
+> This is interesting. So arm64, s390 will have similar implementation
+> w.r.t to preempt_count.
+> 
+> I guess PoC that i was trying for ppc64 is worth pursuing even more,
+> since ppc64 is one missing major arch which still uses old method
+> of querying tif_need_resched.
+> With similar change ppc64 can set HAS_SEPARATE_PREEMPT_RESCHED_BITS too.
 
-On 8/4/26 14:23, Link Mauve wrote:
-> Hi,
->
-> On Mon, Aug 03, 2026 at 03:34:37PM +0200, Laura Nao wrote:
->> Add a threaded IRQ wrapper for Tyr interrupt sources and use it to
->> handle the firmware Job IRQ.
->>
->> The Job IRQ reports requests from the CSF firmware, including global
->> interface requests and CSG attention bits. Only the GLB bit is currently
->> handled, as it will be used to check firmware readiness. CSG bits
->> handling will be added at a later stage. Add a Job IRQ handler that
->> masks the interrupt in the primary IRQ handler, processes pending raw
->> status in the threaded handler, clears the handled bit, and reenables
->> the mask before returning.
->> Add a wait queue and a bool flag so the handler can signal firmware
->> readiness when the GLB bit is set.
-> […]
->> diff --git a/drivers/gpu/drm/tyr/fw/irq.rs b/drivers/gpu/drm/tyr/fw/irq.rs
->> new file mode 100644
->> index 000000000000..6eeb1399a7b3
->> --- /dev/null
->> +++ b/drivers/gpu/drm/tyr/fw/irq.rs
->> @@ -0,0 +1,105 @@
-> […]
->> +/// Requests a threaded IRQ registration for the Job IRQ.
->> +///
->> +/// # Safety
->> +///
->> +/// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
->> +/// [`Drop`] implementation from running.
->> +pub(crate) unsafe fn job_irq_init<'a>(
->> +    pdev: &'a platform::Device<Bound>,
->> +    iomem: Arc<IoMem<'a>>,
->> +    fw_ready: Arc<AtomicBool>,
->> +    job_irq_wait: Arc<WaitQueue>,
->> +) -> Result<impl PinInit<ThreadedRegistration<'a, TyrIrq<JobIrq<'a>>>, Error> + 'a> {
->> +    iomem.write_reg(JOB_IRQ_MASK::zeroed().with_glb(true));
->> +    let job_irq = JobIrq {
->> +        iomem: iomem.clone(),
->> +        fw_ready,
->> +        job_irq_wait,
->> +    };
->> +    // SAFETY: The caller guarantees the resulting registration will not be leaked.
->> +    unsafe { TyrIrq::request(pdev, c_str!("job"), job_irq) }
->
-> Nowadays we use the shorter c"job" way of creating a &CStr, and I think
-> the macro will even generate warnings in some configurations (perhaps
-> CLIPPY=1?).
->
-
-Got it, I didn't get the warning with CLIPPY=1, I'll double check my
-configuration. 
-
-I'll fix this in the next revision. Thanks for the heads up!
-
-Best,
-
-Laura
+Yes. PPC should be able to the same thing ARM64 does.
