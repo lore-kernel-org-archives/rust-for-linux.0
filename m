@@ -1,118 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846D83E3169
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 07:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785914825; cv=none; b=nAJ7hS8HbrQJxp08LtvpRgaOBGKiahPiys3on7cP52pV2hSSHUPXN0yUdOzk+LwPbgrqOuE8z+cIu5eNTb5H3b28cFYZKpMTYajSiYGU5l+i4T79OruaAyx8Sdth2fXlskDB8DkaZAPDe2HJ7ApxMCsP7banZE8oxS0kJojF6zw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785914825; c=relaxed/simple;
-	bh=OyIRKOU6FFOzwyVcqEPwIxYV58F55DTu6YJhG9Khg40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YTUetu0DgJOl2Q7dXFMnxfQ5aAJpCcD/juZfb1uunmq/hUdFUxGzHv3DZnI1OEQoSKQm2V2BsBxbhH5KQIO9Jp+xOWAnCXSPH6koRD9/Xjso00Paa1tGuTDYObt+vVcFN3hmzJzWP2suQynjbQW49RKBmdyq3H/Y9Duuir2yB+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mor0uICK; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723D93E0C4F
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 07:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785916359; cv=pass; b=g4b3DKTI6NITZATurSVIHWMtVOCq6d2rZ9vr2V6R1xife+PGtx67W0xVBTd+jE5wKvvYeiQy1oWnAoo002SaijZ3WOgtMjjkD69WtEzNES8g0KZ77Fv2E6J9h3gOSAepfTM1R+rJuJ0aWzVMAUjEdbXTmHc0wfQjOqaIkdwhxt4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785916359; c=relaxed/simple;
+	bh=pNEDEGkvhsjz0oUUfWOaI2HwjcWdvqQEyqTxD4WWlEc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QwDjDl3G4+pUMzSTAd7SiCL0IbdwKoE/qA5OKx8KDwf0YZKEPKoDdRabo4IdgsM8MSneKP9H/R2EE2GVccHzU+hykemXzx/WWcZs11SNMzO5axpwmzhcaJGEeNO0CaLZHzNHdhUoez4awKKknhXYv/GIua1zB1LNQDshr+sImQI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=doCVckUf; arc=pass smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mor0uICK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C161F00A3A;
-	Wed,  5 Aug 2026 07:27:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785914824;
-	bh=8GZMhrlelyQXjiEYt8Ds+xa5bbGR+RyYTrRWTrmUDRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mor0uICKfEhmlLbFBgEyGn2badUHuA9r1zMQwjf1FJjx1xeTxEToDFeRRr9pIxszA
-	 yg5MCz1O1tvgwy6fW29gG4EdBSUu/7M+UTdkR1/ryVL4xefOYKcdEY4TyRAHsxlQRL
-	 y1nkK+0iWeTFjvf2S5ztbQLegp34+LIfaMphYAjYE2FIcDZTiViWd8n+3L/Qq1I2gs
-	 m2qV4SehFQd2NQzLi3AIU310qEHe9/tf7+a2K9Dc1svLWmdxJwQvym13lrLzglXZ0V
-	 oK/uFUsaF8PBr86Zhqvb9hHREM59tvM+Kpx1TN54kkyEIrHdgFCjs47NEWUXUCLjeN
-	 HioqBDeH5lcSA==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 078BEF40066;
-	Wed,  5 Aug 2026 03:27:03 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 05 Aug 2026 03:27:03 -0400
-X-ME-Sender: <xms:xuVyajwc52SMFqOiEFYF17qmRxr7Bt_W3US4ZYoZXGobIXp2i_-O_w>
-    <xme:xuVyaqsRfMTJc_41M0UYLk8-L-DEKonQDfQh2hFc0EQxn-KRlDu_eQXQAy0EZGFxO
-    dBC05Us-0dfgWp3MyaE9uPETAT7aBLk06TQbpiOYTqpBu0WXbjxXw>
-X-ME-Received: <xmr:xuVyauYsgkjP6GXhtOfCDXW6lYXTQPKyjBk9Lhs4Jmg2N_qozrkOhpKMOGySzRYPvNwBpBP96LyVpiN-2RFnkwqQ2o08M065>
-X-ME-Proxy-Cause: dmFkZTF9MNeVhl9OV1AEuolpCY0ecCT1hI97/OwajzlJ9aNF58j2zY08JvUZUhZ86n1Fe8
-    uDvYi9jbdI+g3nBXU1A/uf4msuH6151ohJoDHM6UXtfAqGkFQ3ux4z2eq6HUtUY2PnHHyP
-    l2dopuYNc4Gih/BqsP7lckcv1oKmdGG7r6pblhY+AkU8LffPMR0a6sxmj7kVaSZw2z7vlL
-    QKLcqXQSGVCkPepdx2XZB696QWxU93cW6zGekqUUC/1oYoKGTUQhE8BddCTli5p5GMuca1
-    mxEXW7VEeaRSnCi4eu0W4CJpKYb9l5MoBz4BQ9fCsrAnTX/RhfE7/9zQc1oQjcv9HoCIAe
-    wAsPiKJHc3qhQ/4ySJ/nTH6slfgFog70raHY+MlFitn5h2XobVgqdRgCq0RmPnsdDpDUmY
-    7OLoPGNFcVy0nnMhaSWuk2Wmio15umYuGPxHS7p5iUW50speBmcFA7an2t4XFn+C+ZgXrk
-    dri5hzJu2KAvvmJehpBqq/0KPdzr6ZfoyVg/f36XDfrAcnQgsIp8RDXk6hw7t+tmGtAod5
-    WIYiNWf3jPktdsw+Dw4UB6bU7D2SCCq0NaueK7R7APNqGj/+NrStza8ShCWji5JBBqu6ap
-    BVUPjWPIinitrq6ebCqCbui9/TLha6RsrJsCpYRhp9t60g6QV5skKaTNP62g
-X-ME-Proxy: <xmx:xuVyah01dt_8XCe08-q7CHOLWMbz0SsX-ZQYcW-phhpWwpXtpeUg_A>
-    <xmx:x-VyaosbrNZbw9RVRfH3Ir54i95X6CB_J9kY1BQQkPGOQO1YBMFgww>
-    <xmx:x-VyatBrvEyR4lRBdwQmXL4pyxIavUBSVUrRigq4gNUm4o3iAt7dXg>
-    <xmx:x-VyajbSgdMMa7EIjlkmz5oqkHtkYxMb409yb3agjFXpLauludcG_Q>
-    <xmx:x-Vyan9kngJ11RRduu88sG5uMIqPvmRvt7k7jeY0BNsKLzKnqB5q5Sro>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 5 Aug 2026 03:27:02 -0400 (EDT)
-Date: Wed, 5 Aug 2026 00:27:01 -0700
-From: Boqun Feng <boqun@kernel.org>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 10/17] preempt: Introduce
- HAS_SEPARATE_PREEMPT_RESCHED_BITS
-Message-ID: <anLlxZ0Qwh6PKzz_@tardis.local>
-References: <20260804161447.84806-1-boqun@kernel.org>
- <20260804161447.84806-11-boqun@kernel.org>
- <2a9aec78-fe1b-49c9-884f-a59eb36c8905@linux.ibm.com>
- <anLeKu7X6SndqFR4@tardis.local>
- <9c59f7d4-03f3-4d7f-b77a-fdbab9a82ce7@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="doCVckUf"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-47c2b362ee2so476299f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Aug 2026 00:52:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1785916355; cv=none;
+        d=google.com; s=arc-20260327;
+        b=T83V45tpC3+mglN8I3n1QmRTg3XOp7BY91VZ78HhFaT7egI0mMjR5pdZtuzGJlShVj
+         dQRMaI/PoZf+kEAzNm33ODi0Hro7h65trFD0FBJ2jUyTGtbVmt2w8OVmox+NsSQibEtF
+         NP9BFoJsh6KN4vPO3qS8dsMOVnh1rL5Lltrkbo6O9AHV7FQotKhzZ6Z4RI+kSNc/SB8p
+         Va2bw7vU6lWGzZrZnYKZcldkIZJGSEpyAZyPXt+13bWV+7c9QBSOLXbrnbMpv8Md91Hk
+         wLjMxzSznMz0v6EtROKBUqnfX9fKquVH7K5s+e2wdgt0HY4v9ny2xR4bfQsbqiOwGWYO
+         l3rw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pNEDEGkvhsjz0oUUfWOaI2HwjcWdvqQEyqTxD4WWlEc=;
+        fh=HRYGk3J+YbJAVzdqrONi1htQGcqs6q8E/GmIvXJgLAI=;
+        b=IH0nFpjWe/OrnisFtffrTDrmNcEzXtELfUnjhxylK0/vGRPTDMfJ0cDsluzfP1kZT9
+         c3ahjBPjwsxb0vfpT6nbxXt+RbEy3RVT4LYUhJPlEOAoCnUZay1xYi62K2LC2SCRRkSp
+         Yn0WabWsbIQnK8VlVcjbpmklZT/x4moVQWPA/9cBov8M8Vn0e+7A8k5LoCVURJFrsZBw
+         3KGk0Ky3W+zIScO5pNADAuG1lDsmwDuOCuxX4C3+jzrDlgbyWVdL8XkFXmo9mDlBSRTQ
+         rbluEtkek0Gv9n78jdfd1+foNjhkHHccg1xZaFG60gQo+hv7jaf9bhf8IXDwp+igaHrM
+         6bBg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1785916355; x=1786521155; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pNEDEGkvhsjz0oUUfWOaI2HwjcWdvqQEyqTxD4WWlEc=;
+        b=doCVckUfF9YfZ7BvDitmSAr8L1OkJtxwgdwmh4PvADmlvpMuFPg9G1GVL3wu1BxvCf
+         Xj5x1jpluejugpRBybCGwH3LIANFoiX5yxdolDfvQD3Zg9kK+n9z02rZh00+8m8W8RYe
+         fBBNTEX1u6UNEnICIj1tvADzWIWNb8MM/HBMtyECIZR/m/d9xWTq03xTpy/5jvuPZsU7
+         CFck9Fs/VEYPMC39CrnM2XTqcRdPPREqdBHdhLaCgNDyYwhcQYxCB9k+O5+p5QCKX2bC
+         jgrUuZPPFd0fF2fRA2XyX7lFI47wfv1dT+g6FOYuaab25PFTlGgBoqDXaxPEosggfNQS
+         HEEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785916355; x=1786521155;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pNEDEGkvhsjz0oUUfWOaI2HwjcWdvqQEyqTxD4WWlEc=;
+        b=gRrQqcd+SrOTTR5XDo62IxU6dr+pEnLZ2ubt4TN4xVsytJrZNYAOL+F3uSWd9Widtz
+         LxpjBGpCftcsM+hFP5zULVfyh0a4E3V3sk1x3FU/oOb9+9wtPj3izgYK/G+UbV9tPENl
+         ZRs+BmtnqIYxlH76SA6s6b78XQTzRmHmSoNxHDVxE4LN4ELDQixj25lqGSz4pHAqxG11
+         4QaDpf5r82eqp143kX2lbwMHwgTrzMc+gDOXAokhG+u7ppQwEmvhXOBonvMHPxFsVVs/
+         TmUg1Y0B8lf7n851LiXNwHV6ZEW5yYxtZDudrWGEldOU0q/A6WRiLxkoeBmDIsT+qx+H
+         UlZA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqurzr02APsHo52zEHV+wyPq2Ekl0f4VTVaFroydf6XPpnzEgIcCNlYzTM7RZnoBmxU828yZhsXdLkg+rBvAg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ8Qj/NqNny/duZr938gw0IkXVEXf4Omp1puCYo57fHtfijzeF
+	BNSpfiEhaMiWgIaspEBt+W8olxhL6R0BP9kchd6yZdep7MUDArQjLO18y7PLnT5B+oV4gmhKBzX
+	6YB9wntUU/xUvH9t39Fot5eOP8/MHmlU5PaTf/rxo
+X-Gm-Gg: AR+sD10X56AA1/IHJnxntOQCaMKg810axH9p1LrujLMv7gkH7ps3KTaWOf1beywMYkZ
+	zPovWRTjgbhFWPdJidLBYzwCqZcPUG3LbdEJDr6BGceuUefG+/9YO1X1P5q3rXki2JrHVFg3ksT
+	POZsvx49DhU2ZMomFnv7GfWyhPBy97Fh9nDtBy2wrYtA5dDR2VOevRvSA3G3a4AU+9YuFy+WRKj
+	7qgT/1kaukorlrQ38i3xr5RD18co+KYPdW1llG4W/Ip3oYQnljmrXFSeBBkGijWFMHNJezY07c7
+	tJaSmeha7CaS5Dczn5S1oYcfWqX0Du57LHXros/aplEpx2u5hmEw13H9G6zrVfCJV0Dg0AldVhw
+	=
+X-Received: by 2002:a05:6000:46cf:b0:475:3a97:8e2c with SMTP id
+ ffacd0b85a97d-47fec62d8b8mr5492989f8f.16.1785916354952; Wed, 05 Aug 2026
+ 00:52:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9c59f7d4-03f3-4d7f-b77a-fdbab9a82ce7@linux.ibm.com>
+References: <20260804-inline-wrappers-v1-1-16916db867e5@gmail.com>
+In-Reply-To: <20260804-inline-wrappers-v1-1-16916db867e5@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 5 Aug 2026 09:52:23 +0200
+X-Gm-Features: AUfX_mxXQfbIfIRglagIcJY8aXRXibWNJw_m0iRmxH8ggsi6AStaB60A1hf5LBk
+Message-ID: <CAH5fLgghsXHTWfdQ8j44kXO3+Da-YzhJxxP8ncTbfmw-c=fW4A@mail.gmail.com>
+Subject: Re: [PATCH] rust: pci: Mark Device refcount methods inline
+To: plant.ethan@gmail.com
+Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, linux-pci@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 05, 2026 at 12:45:04PM +0530, Shrikanth Hegde wrote:
-> 
-> Hi Boqun.
-> 
-> > > nit: This limit is because to have the same behavior as other case when
-> > > NMI_BITS=4 right?
-> > > It is not easy to infer that from comment.
-> > > 
-> > 
-> > It's sort of design by implementation IIUC, previously because of
-> > NMI_BITS=4, we could only support nesting level being 15. And here we
-> > just want to keep the same behavior here.
-> 
-> That I understood.
-> 
-> > 
-> > If your question is why 15 was a good number before this change, I guess
-> > would be it's just a number that is neither too big or too small.
-> 
-> Its more about below comment. Something like below is better?
-> 
-> /* NMI nesting is represented in 4 bits. */
-> 
+On Wed, Aug 5, 2026 at 1:24=E2=80=AFAM Ethan Plant via B4 Relay
+<devnull+plant.ethan.gmail.com@kernel.org> wrote:
+>
+> From: Ethan Plant <plant.ethan@gmail.com>
+>
+> When building the kernel, the following Rust symbols are generated:
+> $ nm vmlinux | grep ' _R' | rustfilt | grep -E 'pci::Device.*(inc_ref|dec=
+_ref)'
+> ... T <kernel::pci::Device as kernel::sync::aref::AlwaysRefCounted>::dec_=
+ref
+> ... T <kernel::pci::Device as kernel::sync::aref::AlwaysRefCounted>::inc_=
+ref
+>
+> These Rust symbols are trivial wrappers around pci_dev_put() and
+> pci_dev_get(), respectively. It doesn't make sense to go through a
+> trivial wrapper for these functions, so mark them inline.
+>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1145
+> Signed-off-by: Ethan Plant <plant.ethan@gmail.com>
 
-Sounds good, I will apply this, thank you!
-
-Regards,
-Boqun
-
-> > 
-> > > > +		/* Maximum NMI nesting is 15. */		\
-> > > > +		BUG_ON(__this_cpu_read(nmi_nesting) >= 15);	\
-> > > > +		__this_cpu_inc(nmi_nesting);			\
-> > > > +		preempt_count_set(preempt_count() | NMI_MASK);  \
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
