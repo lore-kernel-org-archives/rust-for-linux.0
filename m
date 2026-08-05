@@ -1,48 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC363E5EEA
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 12:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F0645D1B1
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 12:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785934101; cv=none; b=jgdn5zNr26cqb6DORTwIqq1YND7e9FJeIhuSRQWRKAhNleCcOef3L5Z6tDrbLhT6ckzxnrNayJWcaJXWvVSsS3VQ9JWEFrcDqR/UznZeFcJhEO/7kKo6Ho8K4met3aWbiIUF8P99vVhQD02FZjVhmaLqfNvGNRNBZ1ZjLzZZFfM=
+	t=1785934107; cv=none; b=IiNnGlzqPGsJu09zebJ13Bn6QDphWBcd1mI7i2O+RyhgxXrkfo8WD4CVR+odZZpnZJzZkrhMT/rDxoZfAkAv0gARyvmBqKN+w0Sc0Ry/7hjNQx7NJO2OraKOajiGtiY/21JV3yzwbcM4y9ms4PQuiR9jxem6wWKX4SWrerGCL/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785934101; c=relaxed/simple;
-	bh=SQw5wqJFwZb9+0zuw80c7fOxyDd1YgrzzmH0o1R6z+U=;
+	s=arc-20240116; t=1785934107; c=relaxed/simple;
+	bh=HqtdBpUrJivtUkiWVx6Xlzlqa92WtZ3QFGgQL4NxEsw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=adp+paH5xxeffGqsLqlY9IJDWwWLQi4HwUsXhsjCwx0YXyNW8y4BAzNcT/ozWkgpbU7c3LGw+zJllTLPiTemOgxSIgsztkK7nO5R32UoBjEMjSvjjuzyIprEBnDlAv89jWDDMT/c4FPnKur82ri8MOXilIUtRuH6Yj5R6B/m2lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NEoN881B; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=itgpg0mNMeUjpcXGG4sHQS7rcS2K+KP6rXVr9aguqUHnF0PrA6MFXuOJ426ySsFYQVPyXcHuWvGM+Hbpqdydj/UzuhYOkefc9YL2Oh8EvX4i7bjFWT4PDydQOMAd1UJ/tr1ZZ54JNQsS2e74301c6NHdjkaYKUkCXPKGRjalzDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iNIun0cR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NEoN881B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FA91F000E9;
-	Wed,  5 Aug 2026 12:48:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iNIun0cR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45321F00A3A;
+	Wed,  5 Aug 2026 12:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785934098;
-	bh=SQw5wqJFwZb9+0zuw80c7fOxyDd1YgrzzmH0o1R6z+U=;
+	s=k20260515; t=1785934104;
+	bh=HqtdBpUrJivtUkiWVx6Xlzlqa92WtZ3QFGgQL4NxEsw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=NEoN881Bb2Eytok25uNaf3v5d1aww3nNSu0rL95/IKTeS1/4B0/EIHvw6R0CN5ocA
-	 56qx9v4mky4xNBT387bAadRnN4DNE9+9K99xqTpB5M2CYl6fyVO/7oVZYgkhBaBBRq
-	 QgFbSXNdyaXnCOcEKAzCd/WhZQpPluQipKpQxs/JmDZhYN4whfh2qT2/hiXXByjZFp
-	 rm80kA8ccyPWuMNGxPumlqRJIZZxbAkhVNB7cRusiNHBmtHf6eSN9kDqztsV7yDDzg
-	 biFSiqydYa1aHqLrd96I5FAog/o3Ti49Gi2+aceyeSerP9em/1xvcUfAVmr+aq0o50
-	 jYIJwP8dz02tQ==
+	b=iNIun0cRrBIfE/e44BIEM7mP/w7vHI+ngpxxmPY/6CqFYCUxSJm0g7GfH3S/oaeeO
+	 rZuAxAbPxdBh7f+Sl433aLtHmiSBVeWlnoQ1RKSuU4z6+5uekyksHOXIg5A4gQ1xMV
+	 u+H7dtgNke6ldcA3iyTymYr7cypHvFuAMf/vYvW9ovMO6/+7aU/mJUfL62UA0ll/J/
+	 jw+W7X8wRjooyIbYd+PevsicOY5dfTtzlYA9p54mneRw+5Ib9zDJXJ0LwxH8LgEeFH
+	 PpOSays9Kp4ALT30oflFGyRLCojXs7yDtS/zUpw63cVwhGp06yaKf6rOU2BEY7vgM/
+	 36f3KHpJaWCiA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>, aliceryhl@google.com,
- arve@android.com, boqun@kernel.org, brauner@kernel.org,
- cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org,
- ojeda@kernel.org, tkjos@android.com
-Cc: acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+To: FUJITA Tomonori <tomo@flapping.org>, gary@garyguo.net
+Cc: tomo@flapping.org, aliceryhl@google.com, arve@android.com,
+ boqun@kernel.org, brauner@kernel.org, cmllamas@google.com,
+ gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com,
+ acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
  dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org,
  jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
  tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, FUJITA Tomonori
- <fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v4 3/7] rust: time: add Delta::as_millis_ceil()
-In-Reply-To: <20260722214951.72941-4-tomo@flapping.org>
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH v4 0/7] rust: use Delta instead of raw jiffies for
+ timeouts and delays
+In-Reply-To: <20260731.224825.536098581345512332.tomo@flapping.org>
 References: <20260722214951.72941-1-tomo@flapping.org>
- <20260722214951.72941-4-tomo@flapping.org>
-Date: Wed, 05 Aug 2026 14:47:14 +0200
-Message-ID: <87wlu47mzx.fsf@t14s.mail-host-address-is-not-set>
+ <DKBXI6A044JX.3OXFT3R8DIK2K@garyguo.net>
+ <FenzX1BbXwDwhxl2RJ8sf7OnFwsAi3prmxcHhYKtfyXwJ_l88xtj5rr-z8T90Dqj1Em0RGPwvxQNqlo0pl2e8A==@protonmail.internalid>
+ <20260731.224825.536098581345512332.tomo@flapping.org>
+Date: Wed, 05 Aug 2026 14:48:07 +0200
+Message-ID: <87v79o7myg.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,20 +53,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-FUJITA Tomonori <tomo@flapping.org> writes:
+"FUJITA Tomonori" <tomo@flapping.org> writes:
 
-> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> On Thu, 30 Jul 2026 14:09:59 +0100
+> "Gary Guo" <gary@garyguo.net> wrote:
 >
-> Add a ceiling variant, mirroring the existing as_micros_ceil() since
-> the existing as_millis() truncates towards zero.
+>> On Wed Jul 22, 2026 at 10:49 PM BST, FUJITA Tomonori wrote:
+>>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>>
+>>> CondVar::wait_interruptible_timeout() and Queue::enqueue_delayed() use
+>>> a raw jiffies count (a plain c_ulong alias with no type
+>>> safety). Callers have to know on their own that the value meant
+>>> jiffies and convert to/from it themselves, which is easy to get wrong
+>>> (e.g. passing a millisecond value where a jiffies value is expected).
+>>>
+>>> Both APIs just take a span of time so, they can use the Delta type
+>>> instead.
+>>>
+>>> This series makes Delta generic over its time unit with Nsec and Jiffy
+>>> types, switches CondVar and Queue to use Delta instead of raw jiffies
+>>> (updating binder's ioctl_freeze(), the only caller of
+>>> wait_interruptible_timeout()), and then removes the now-unused Jiffies
+>>> and Msecs type aliases.
+>>
+>> There are more jiffy users being added so we should take this sooner than later:
+>> https://lore.kernel.org/rust-for-linux/20260726223613.1242940-1-dakr@kernel.org/#t
+>>
+>> Andreas, any plan on taking this via timekeeping-next? I suppose Boqun
+>> could also be taken via rust-sync tree if you give an ack?
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Agreed. Getting this into the next merge window would be great.
 
-Won't this change hit the same bug you fixed in [1]?
+I was on vacation, back now.
+
+Getting this in the merge window for v7.3 is probably a little tight. We
+should aim for v7.4.
+
+I will take closer look this week.
+
 
 Best regards,
 Andreas Hindborg
 
-
-[1] https://lore.kernel.org/r/20260723120907.209643-1-tomo@flapping.org
 
