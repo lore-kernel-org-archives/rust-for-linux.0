@@ -1,213 +1,265 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020109.outbound.protection.outlook.com [52.101.196.109])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DED3A0E99;
-	Wed,  5 Aug 2026 19:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.109
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785956918; cv=fail; b=Gb5c2CoDP2l2cF4sFZeOlY71G2rKkebiqHtZ0Aljky5ZPC9r41vzzNROST3oF+l+Nyz7QsNF+4s3b0iBWociFriXKZJmmeiArvsSSpj4FUfFxaB47tWgYMMniazwXanRVFSO/aqglBjYjTRn8VNEhMLljNRhzltaxGIm5GP7MV4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785956918; c=relaxed/simple;
-	bh=xDsbwwRsMPaDRZnuaiClh2Sh8SG+E9TXpEKYfMXpbWA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=f8UHHhug3nzbyUWCGE7vhrDQyA2vDW0YfQzor0DLZL6HkRPas1faY8rVIrHAjuT6UfQaGlyg+hV8DI9Wu9bV+OMMwISFndr4qfuIMIMfXX4+UJUOnu65LE6crPPJcwkmUVGo2gkXkPczV0hK1bJCf8L8D1JBwyY03daczOrWyTU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=mM0kYcc3; arc=fail smtp.client-ip=52.101.196.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD1B3F8236
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 19:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785957659; cv=none; b=THAWMJ4SdPaL3ra7pDQlvCYDvQHR0U1/pBVBfGhHMk8pJFns1BY1h+jo275r2feOT0MrYYs0EoccPTiE/kl62/eSLwaS+T4GNu/U/OgZPOqtJEUxY+RYR0NNviLeB6FwoHdrF2ow3lbltsn+gp5RHKvSq+yvuKLTVt7d69+cz1w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785957659; c=relaxed/simple;
+	bh=M7+Xp5G3tZjyNJEGVQVB6k60p7Qw9FijqopxCE9sFOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tLLCP2tzZGVDWahCvYQX8GBkTwO27EH04kkQ1G2zrzncLmoZ0BCTeADJ+xqxn78pEIU/DtkZjtZy+lmi/UPs+NqoE+iMCJJFyNtMd2aN3aV3nQaV9GUOL2atctCJSTAS+WpIFwxrdgfQ5SyO7t1XYUcsanaurBZOEV6He8SlSSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qc/cEU7w; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="mM0kYcc3"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P1EOx/5fYvCLvqyrRdtevQrRsqSfeb3nZPTHm6iVYqZYKpnU53IT8jm8q0knqBz4vemytmZ6bQlJ8jVOuW7PtJBhWAelILpNf/GsIx3uWOQnwVseacG8AzPBDNn8rGJ9N6JMbZPUy5mcRYYt3cNvfQZUDRdmvlBtqPKjIWibc5+BN9rLs/a2/s1hqlgoLsnjhJlqSEbdGTLML1b3D1exdEeBLPkqeS8/zg9gDvnItv1U6VSTHC0nEwdEnYAMpgQ0l5YbFoZfOpa0qXmJnVe19LhLMQl344VNHIFWSGZdQAZXUF+emsD+JObx5lnBA7mjPLKLLNsfZPkMhWk5eRQwgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sPp4m/WvIoiEWOkzVlhX0LmXd5VncSdZuqX8H4yeCTw=;
- b=P0eGoPwWdEz/HlbmUr5/ectdD4YyLNJWKsfhCzI5W3QX10vMjmbHZsIHeLVTBgG/w8PYElZL35rl4jYbTDRxvIoIzC1HP4LxaMeJsQ5ChwleqTlGwQwZ/5szbijwHSJqPO1xcuXNempTqBkbtIsTBnyGxEP73MJeRazFIzlo93wC321tp5xtl+LYoEM8BGU8w//bjbjZjmVb6OuMeL3GzY0Mi3mbNw840ET4MUnLdbl/KbBypKVxjn/HVnxO8T2OYmAdMKe2gc8aB/0dQD6ChUeEM96n7YrGbKD5JaISRrZK8rfeQ0FbQhhfUN0+x6J8ojYYAa/KMtqLB3McaN01ZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sPp4m/WvIoiEWOkzVlhX0LmXd5VncSdZuqX8H4yeCTw=;
- b=mM0kYcc3EoW5HpdlRmd7JXV2lsxXk9fCBIPUNEfykJsRNYXi7q81lDrlhZsgViz7eA5BTIbqR3mhwLmgs3pgyqwn+MiCUGkuV92r5mpluRUlLXSYXm34f2Ae2b8UcF0Fj2F4ZZi9j0r54JA4srNM24Pgc1m93Gk704jLnlFN/uo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO6P265MB6144.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2b0::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Wed, 5 Aug
- 2026 19:08:33 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0292.018; Wed, 5 Aug 2026
- 19:08:32 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 05 Aug 2026 20:08:31 +0100
-Message-Id: <DKH8VYS6DMRS.1K1JHX4IVMYZ0@garyguo.net>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linaro-mm-sig@lists.linaro.org>, <rcu@vger.kernel.org>
-Subject: Re: [PATCH v9 3/5] rust: sync: Add abstraction for rcu_barrier()
-From: "Gary Guo" <gary@garyguo.net>
-To: "Philipp Stanner" <phasta@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Boqun Feng" <boqun@kernel.org>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Daniel Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Sumit Semwal"
- <sumit.semwal@linaro.org>, =?utf-8?q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, "Lyude Paul" <lyude@redhat.com>, "Paul E.
- McKenney" <paulmck@kernel.org>, "Frederic Weisbecker"
- <frederic@kernel.org>, "Neeraj Upadhyay" <neeraj.upadhyay@kernel.org>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Josh Triplett"
- <josh@joshtriplett.org>, "Uladzislau Rezki" <urezki@gmail.com>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Mathieu Desnoyers"
- <mathieu.desnoyers@efficios.com>, "Lai Jiangshan" <jiangshanlai@gmail.com>,
- "Zqiang" <qiang.zhang@linux.dev>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Asahi Lina" <lina+kernel@asahilina.net>,
- "Burak Emir" <bqe@google.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "FUJITA
- Tomonori" <fujita.tomonori@gmail.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Mirko Adzic" <adzicmirko97@gmail.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Daniel del Castillo"
- <delcastillodelarosadaniel@gmail.com>, "Boris Brezillon"
- <boris.brezillon@collabora.com>
-X-Mailer: aerc 0.21.0
-References: <20260805145949.938505-2-phasta@kernel.org>
- <20260805145949.938505-5-phasta@kernel.org>
-In-Reply-To: <20260805145949.938505-5-phasta@kernel.org>
-X-ClientProxiedBy: LO4P265CA0142.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c4::16) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qc/cEU7w"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ce98cb8165so2623845ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 05 Aug 2026 12:20:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785957648; x=1786562448; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CJyM/9okkHYCeVF069aAYJMZJUD0kZWBXu8tJw0Mi1w=;
+        b=qc/cEU7w42YEzgIaid8rWB0Bp+RokkA+FLzQ3J8+fxw+cSoTJtfNvWX//c4oz7yLuS
+         l0Wm8Y/lKv22jbb3seFhvEe2tmRLUvzmV1HOcTdA8TgVZEU5JBwJx4FOvUJFlaaIwyv0
+         gaSD5QP+BRGdqDeVooIcdtvx2cxvrUBtJSu7CfPMzwBZcqZrLFTOy0bv2lYX3nfLbv0t
+         jHwsS9INh/RHTy8uYbqyGItjS26pT+xGxzuVdfK4htD0Iesds2+0UThgETEaZiYn9BNM
+         VzdixjRJ3rXF1zBBgSaozGtwx3RVDu4P2syxtb6GfrMh0RnwH1arAxP+i7AZG10rYO8P
+         CcRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785957648; x=1786562448;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CJyM/9okkHYCeVF069aAYJMZJUD0kZWBXu8tJw0Mi1w=;
+        b=oueJN3cR58RI9suaEw/veDExqvH6sjMVx0axeU9VrE58AiKV+BeYjjLFPbpV/ZfjP5
+         KyxHiesTWgz+i0Xsj60tke1TKVQhGTrMXSdVR8UqsgKF+IAJMjsf9gkCRFB7KY0Wd39H
+         VbXze03cyFSo6yAKTn8O9hj6zxjCfi+gHEiAiS6xb5wxHGqX70dOitzFN+RWNkMIyvmU
+         4fUkwne+ygjUyw/Xx0ZLrzEKMlJRhKexg+R3qKwaEvQeCwwg+Gbe68CQi0n6zRDbUMyJ
+         t+PH0hFuzbx0f0nknncyZp8ij3ENOsoN4UMbDgB5a9VEoLLbR1/WT+4ZuM6T7+n84U+K
+         /sDg==
+X-Forwarded-Encrypted: i=1; AHgh+RrCGF7JeLCio9GctIoyo1DuHvXPvsGxzYIsRUf4tJzLKm35r2bj2LySwzdZjEaPlv6hO9gjo0LmBmKZkEjMKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9IQAKSnealVB8BivAOhpkS4StnuKPRu+P6AEc6RkNycIiKXK6
+	zqBtSz+o3s6c3h4Ob+APB+lM2izwG/BlKpoF1G487kHNhYvWo7zInrRK
+X-Gm-Gg: AR+sD12NfNN4Qr0b8lanq9mcoFd9qLAvJ2DxwY1LKESvqvPBfJbyNSUHPrQRNvli2wY
+	CHxEiNcfMAcwSWpzW+C/B7VviF63kvWGKDMxD5aqXaQhHYyYGJWZZhINo3kFT48OYSXr5U2OfWO
+	wPdgjUYhUPQ6LvC9FB3G8xgSj7f/szLZWBvLOu7T+ozEvHJfLLrbYNcCfea+wnPt46iTha3Q4jo
+	As4csTQFcMRVB2g2Y3NDRCie+5Olp2rbzpsy9AGMwlMg+ljQ2i7y0i6aa7/HFHya59k4taI2+a9
+	taNCkj8cjZG6glcG/eXw/q0AXDUE6cnbqjTjHU+dPOche2mkXTJ30zFhB6yIVJLXmxVgFsBBp8S
+	+K5YpEbYFwdV2jRyF3dbS+L9GSCCt3tXQzBlTDKLWf9LX8wYn919EtpdbUkjkZEC9UdJo8E6+C6
+	l+IMccya252C4gC7v7feZc8I0cvR8TqZeXEATAKOlCm+g23cxJcLl5dGRfIaRPX8k=
+X-Received: by 2002:a17:902:da87:b0:2d0:401c:2edc with SMTP id d9443c01a7336-2d0f185d642mr11951815ad.1.1785957648176;
+        Wed, 05 Aug 2026 12:20:48 -0700 (PDT)
+Received: from archlinux ([2402:e280:411b:ec:aa93:b1ec:5a6b:5fce])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315863b76cfsm18043913eec.4.2026.08.05.12.20.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2026 12:20:47 -0700 (PDT)
+From: Adarsh Das <adarshdas950@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Adarsh Das <adarshdas950@gmail.com>
+Subject: [PATCH] rust: block: set GenDisk block_device_operations.owner to THIS_MODULE
+Date: Thu,  6 Aug 2026 00:50:20 +0530
+Message-ID: <20260805192020.107601-1-adarshdas950@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO6P265MB6144:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f20ec9d-08b8-4b1e-c9df-08def324f16b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|10070799003|366016|1800799024|921020|6133799003|10067099003|56012099006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	WSzDE6KP42SAODiL4HCeH/KDX9JNnAmMYbM7iKBacaJBfR1oxy1At2VZq2iiR74MuRqxGjImHl7paX2Nu4tvLPI3Pad1Gy2PCACGiio7qf6kKjZDqMX62Z9YNDCo3Eabc+blqipBRmw584r2pV5BtYF/kOXfEP9eqrLp3qK1xzSeOAyNSj55H+pkVQ7mBQNUKnYTf7vGsN+mzMOdCWgPZdbcO6PvwgkdD1sWtFwjZbz6mtB28rBnEmnbCYQPUYhif8r+PGp79FKZV+lUsWVr4dJnI62HGJgWjJA3OB/aFMtxonRMbQtnewmVfqThY+zbeWCVCvFOBj/4qzubeFWRY15VoQNqt3rdDdJDCtTMw7T1AoeFwEmfrVIq37K2S3eBtC1T9K8x5GbDx6GGzn1AhEO8zELTY6llOFyjY1HEdJ0v/LQ/oZF7vpwMkJ80Oe3FT+30w0/uArtBUOcClh+IwyhLWXbFhDGsU9UVdzNFFQwC8lu0jFLXg0mNhYuCfTu8KgZiEUQ0KZW4VOJL3uZsNPCyr9o0Hi+VPER2H9Wt6Fk6BoDXpFnzU6UiaBgp504NacBWiVW5CZryKr2MI2gGkgWHONy1AP0+CNj7x65E7G7C7Q4E3+w2k+zPtCJHn1IucFcM6EV3c/xUc4l7YaCW3cJGi4186KS2Lus1v5BmbsZcY1ypaPzbGfsO+nwEBQZ8oj1fwkhkw2btZpJnQfV78A==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(10070799003)(366016)(1800799024)(921020)(6133799003)(10067099003)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NGIxZFpvekJ0eVgyNzlIdjZrY29rMWwvK0IxVWRCNjFCRlJDdzRGc2xubFZ1?=
- =?utf-8?B?eXlKWldLZGEwRHRTMmlTU2xrNUM3TzVLQ0lpN2JtbVlsSmFxOWFvNTJzcnkw?=
- =?utf-8?B?R0xRZm9KUDYvemQ4MVZFb3lvbmplU2hFb09kaDZ4dEIwSWo4QWszRUhrdHNr?=
- =?utf-8?B?anRkTkZva0tzYnNvVk9NMDd5cUlvUU9GMDFBRHlSY2NHUVh6T2FhR2NMWXI1?=
- =?utf-8?B?cENlT0lXVUdsNCtTR1dTRGNTbk5RZ3ludDd0L0RLYk5TYkNzUEN4SU42NUow?=
- =?utf-8?B?Y24wWVljRU8zaHZOZ1UyRTcwQ2dCS2hyMXY1Sk9HeU13RDgzNG9HQ3cyZVJI?=
- =?utf-8?B?QVFMOHdvTXlHUzRjcllMMDRBQjFIR1hQVEUrbGJmMnBCcDB3UTBaazdpNkZn?=
- =?utf-8?B?d3QxaFBoSzNzRFJ6WlNsQkJ6Tk0wK09qMGc3SVlCOTVFKzFBVllReTlMMGRS?=
- =?utf-8?B?eUdTUkVONWZ1ZnI4NUdFeE54Z21EQkdLdnpzMzBpcFpzcDNuUUhZWGRxemxo?=
- =?utf-8?B?MFlIVml2bjkvVitxNmM2MDZCYTk2Vm1KRDBCWUg5YXMzVXpldDJ1VHZLc2p1?=
- =?utf-8?B?dkpNMms3cDkrQjRUeldXMHE2Qzl1bkFPZVJqdko1WTdzQnRHeHhYU2hDUmh4?=
- =?utf-8?B?LzRqcHYwQk14Z0NTanlGY2ZpMmJVQ3ZlZHFscG5QZ0lqZmZORHNMQVpXeFlV?=
- =?utf-8?B?WG5PUVVvVkxISk42N0NkWE45cXQ4MCsxWjhwUHRnY3pZV0d6dW0zeWFPQXh1?=
- =?utf-8?B?QmRDNTJiZWZnR2RFQ0ZJNk5kaTR4SklyREdMdGd4ZktJVThrdjQxWUgyS21x?=
- =?utf-8?B?QXlqY3FkNnhyOVZzcHJQcWQ5U1lnTTVjcGNwTzMwMnBlTWRQL0ZmcUpETEFn?=
- =?utf-8?B?T1FRMkh3KzRqcmpockN5ZWh3ZlRiTEpoUDg4WU9HWEFRRUJ3aW9pMDlHMlZr?=
- =?utf-8?B?M05jMWE5UXhTTHY2QmFTZkFOcWExM0RjMEFhMXlHaG4zVGRjV2t4eVRrVTcy?=
- =?utf-8?B?M2IxdkM5dUFMZG9WUmJyTlcybzFIY3F4QjV2SGU0VkhwT0VMTHc3UmJqWFJj?=
- =?utf-8?B?SXRFWGpPNkhZYXNoYTN5QjAvT2RCK3ZHZW1DWXh5V0lxNE5CR1Nlb3l6cHJQ?=
- =?utf-8?B?b1RCN0dWR05KdHNXekRzUE9YbktVR2pKVDdqNnFvZ2lHbW9QNmV0QjlQblZu?=
- =?utf-8?B?R2tSK1lHWnBTakE5UUFuaFNOZTZyN1h5NXVTamM5UkNacjg5aml0d3dBRDZI?=
- =?utf-8?B?SVlXc2p2OVVDdXFZNk42aG82SXRPMFltbVhDV0VJSlJPM2FIT1ZuVUJWVmdQ?=
- =?utf-8?B?ckF3dnMrNGlmVXNOUVFDdm1yNDJlZDJpeTczZzlXWlc1QUQ3VkpYTURXNVRK?=
- =?utf-8?B?b3VwWDZKK2cyU2pqL24wNDQrVGZ2OTRwaHJDNncwSFBEU0NvVkxnWkRSS3FI?=
- =?utf-8?B?U3A1WjVoOG03R2dlTUhCQnlGL3NyUmlIaHg0cFNOaEtFcFdBcGJxTDQyM3Fl?=
- =?utf-8?B?QmhrckJMSnhNUDk0YytCTXcwbHBHcm9wOEVvMUlIc29YVk1DWTZWckxMdWtv?=
- =?utf-8?B?NkVnZ0hDUUVDcGlMOVFUc3pSVGVIbXNCUGJ0U092Q0ZyNlNWV0pXNmM3VWlB?=
- =?utf-8?B?NDd0RlZmUEU4WGE3OE11TnNEMUNYSFd1anlQWlowdmtQNGYyRXBoS3hmd0ha?=
- =?utf-8?B?VDIraUlVY1ZTNTBaOGZmdnBINTNRM2hqaVFGWGhIdjk0WTMwaTlDY1E0ejdo?=
- =?utf-8?B?aWIwN0FTbzllbjJEMHBIQWRiSk5MTUlsbXVBWENvUFNIbGV0dVJLRTYwekZj?=
- =?utf-8?B?RFJPeWc5dXIzZkwySmdDRCsyT1dySStCTExXVHVGNklCT0tWTC9QbHRSbFk2?=
- =?utf-8?B?M0M2RkNYSkhCM3JOaUxHaERKOFhBRTlqeTB5bUVwYlhVNStXdk1oTXNySTFE?=
- =?utf-8?B?TGVvL2hobm5hU2Q5QkF1ZVRUWWVKWkg3SkRHZkwrRjh0OGZvcFcyZU1FTms4?=
- =?utf-8?B?OC9lQlJ4RVVqNGorVWVaN3hRalFnTS9FTE1GZDc0dnRuMVNFN3RsYmJkZ1Jt?=
- =?utf-8?B?NzFvNk9pY3NEYVJvYnpyWGhkaUNUelN6d1lxT0VyNjZnZnh6MTd5aXhlSys0?=
- =?utf-8?B?Q3lwWmVXVDd3NkkvS09MRVFOZzlyczFKK29rTEgxaFBlWUR0aUptbjF0cWtw?=
- =?utf-8?B?YnlGRGJPbERYV20xQzNMazZmZXEydk5IQzY4RElqT1NzYzV6ZnFaRi9HS0Q1?=
- =?utf-8?B?M2psMkpnck8xNldEOG1JRkUwSnlheHhHcVpwTG9KRDRVd3phRVNrQXhRWm9y?=
- =?utf-8?B?MDlqeWF6Q2dmWDNUUUxLMkhQdGlUWE5kQlVhazdEWXRhYjdyNmh2QT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f20ec9d-08b8-4b1e-c9df-08def324f16b
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 19:08:32.8749
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6nFcTt7H9AWK5ztZlB4E2xOwgxY5cavNJmVE+BDlEZAW7cZL+Klsd8cDFWSQeNFNXoakwB16WeQ1dXVnXKzjjw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6144
+Content-Transfer-Encoding: 8bit
 
-On Wed Aug 5, 2026 at 3:59 PM BST, Philipp Stanner wrote:
-> rcu_barrier() is a frequently used C function which is always safe to be
-> called.
->
-> Add a safe abstraction for rcu_barrier().
->
-> Signed-off-by: Philipp Stanner <phasta@kernel.org>
-> Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+GenDiskBuilder currently installs block_device_operations with owner set
+to NULL. The block layer uses this field to pin the driver module while
+block device file operations are in use.
 
-Acked-by: Gary Guo <gary@garyguo.net>
+Take the driver's ThisModule in GenDiskBuilder::build() and store the
+operations table in GenDisk so gendisk->fops stays valid if the disk is
+moved, such as when rnull keeps it in an Option behind configfs. Update
+rnull as the in-tree caller.
 
-> ---
->  rust/kernel/sync/rcu.rs | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
-> index a32bef6e490b..7031ca5d2473 100644
-> --- a/rust/kernel/sync/rcu.rs
-> +++ b/rust/kernel/sync/rcu.rs
-> @@ -50,3 +50,23 @@ fn drop(&mut self) {
->  pub fn read_lock() -> Guard {
->      Guard::new()
->  }
-> +
-> +/// Wait until all in-flight call_rcu() callbacks complete.
+Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
+---
+ drivers/block/rnull/configfs.rs  |  1 +
+ drivers/block/rnull/rnull.rs     |  3 +-
+ rust/kernel/block/mq.rs          |  9 +++--
+ rust/kernel/block/mq/gen_disk.rs | 58 +++++++++++++++++++-------------
+ 4 files changed, 43 insertions(+), 28 deletions(-)
 
-This misses some `` quoting but these can be applied on fixup.
-
-Best,
-Gary
-
-> +///
-> +/// Note that this primitive does not necessarily wait for an RCU grace =
-period
-> +/// to complete.  For example, if there are no RCU callbacks queued anyw=
-here
-> +/// in the system, then rcu_barrier() is within its rights to return
-> +/// immediately, without waiting for anything, much less an RCU grace pe=
-riod.
-> +/// In fact, rcu_barrier() will normally not result in any RCU grace per=
-iods
-> +/// beyond those that were already destined to be executed.
-> +///
-> +/// In kernels built with CONFIG_RCU_LAZY=3Dy, this function also hurrie=
-s all
-> +/// pending lazy RCU callbacks.
-> +///
-> +/// Note that this is one of the RCU primitives which must not be called=
- in
-> +/// atomic context.
-> +#[inline]
-> +pub fn rcu_barrier() {
-> +    // SAFETY: `rcu_barrier()` is always safe to be called. It just migh=
-t wait for a grace period.
-> +    unsafe { bindings::rcu_barrier() };
-> +}
-
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index 7c2eb5c0b722..bba30d590f68 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -147,6 +147,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ 
+         if !guard.powered && power_op {
+             guard.disk = Some(NullBlkDevice::new(
++                &THIS_MODULE,
+                 &guard.name,
+                 guard.block_size,
+                 guard.rotational,
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 0ca8715febe8..4265a133cbf0 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -46,6 +46,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+ 
+ impl NullBlkDevice {
+     fn new(
++        this_module: &'static ThisModule,
+         name: &CStr,
+         block_size: u32,
+         rotational: bool,
+@@ -61,7 +62,7 @@ fn new(
+             .logical_block_size(block_size)?
+             .physical_block_size(block_size)?
+             .rotational(rotational)
+-            .build(fmt!("{}", name.to_str()?), tagset, queue_data)
++            .build(this_module, fmt!("{}", name.to_str()?), tagset, queue_data)
+     }
+ }
+ 
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index 1fd0d54dd549..33561e0f67af 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -8,8 +8,8 @@
+ //! - Implement [`Operations`] for a type `T`.
+ //! - Create a [`TagSet<T>`].
+ //! - Create a [`GenDisk<T>`], via the [`GenDiskBuilder`].
+-//! - Add the disk to the system by calling [`GenDiskBuilder::build`] passing in
+-//!   the `TagSet` reference.
++//! - Add the disk to the system by calling [`GenDiskBuilder::build`], passing in
++//!   the driver's [`ThisModule`], the disk name, the `TagSet`, and queue data.
+ //!
+ //! The types available in this module that have direct C counterparts are:
+ //!
+@@ -86,9 +86,12 @@
+ //!
+ //! let tagset: Arc<TagSet<MyBlkDevice>> =
+ //!     Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
++//! # // SAFETY: Dummy `ThisModule` for doctest compilation only.
++//! # static THIS_MODULE: ThisModule =
++//! #     unsafe { ThisModule::from_ptr(core::ptr::null_mut()) };
+ //! let mut disk = gen_disk::GenDiskBuilder::new()
+ //!     .capacity_sectors(4096)
+-//!     .build(fmt!("myblk"), tagset, ())?;
++//!     .build(&THIS_MODULE, fmt!("myblk"), tagset, ())?;
+ //!
+ //! # Ok::<(), kernel::error::Error>(())
+ //! ```
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index fc97dd873974..ff079223d31a 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -95,8 +95,12 @@ pub fn capacity_sectors(mut self, capacity: u64) -> Self {
+     }
+ 
+     /// Build a new `GenDisk` and add it to the VFS.
++    ///
++    /// `this_module` must be the [`ThisModule`] for the kernel module registering
++    /// the disk.
+     pub fn build<T: Operations>(
+         self,
++        this_module: &'static ThisModule,
+         name: fmt::Arguments<'_>,
+         tagset: Arc<TagSet<T>>,
+         queue_data: T::QueueData,
+@@ -125,30 +129,32 @@ pub fn build<T: Operations>(
+             )
+         })?;
+ 
+-        const TABLE: bindings::block_device_operations = bindings::block_device_operations {
+-            submit_bio: None,
+-            open: None,
+-            release: None,
+-            ioctl: None,
+-            compat_ioctl: None,
+-            check_events: None,
+-            unlock_native_capacity: None,
+-            getgeo: None,
+-            set_read_only: None,
+-            swap_slot_free_notify: None,
+-            report_zones: None,
+-            devnode: None,
+-            alternative_gpt_sector: None,
+-            get_unique_id: None,
+-            // TODO: Set to `THIS_MODULE`.
+-            owner: core::ptr::null_mut(),
+-            pr_ops: core::ptr::null_mut(),
+-            free_disk: None,
+-            poll_bio: None,
+-        };
+-
+-        // SAFETY: `gendisk` is a valid pointer as we initialized it above
+-        unsafe { (*gendisk).fops = &TABLE };
++        let fops = KBox::new(
++            bindings::block_device_operations {
++                submit_bio: None,
++                open: None,
++                release: None,
++                ioctl: None,
++                compat_ioctl: None,
++                check_events: None,
++                unlock_native_capacity: None,
++                getgeo: None,
++                set_read_only: None,
++                swap_slot_free_notify: None,
++                report_zones: None,
++                devnode: None,
++                alternative_gpt_sector: None,
++                get_unique_id: None,
++                owner: this_module.as_ptr(),
++                pr_ops: core::ptr::null_mut(),
++                free_disk: None,
++                poll_bio: None,
++            },
++            GFP_KERNEL,
++        )?;
++
++        // SAFETY: `gendisk` is a valid pointer as we initialized it above.
++        unsafe { (*gendisk).fops = core::ptr::from_ref(&*fops) };
+ 
+         let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
+             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
+@@ -193,6 +199,7 @@ pub fn build<T: Operations>(
+         // `__blk_mq_alloc_disk` above.
+         Ok(GenDisk {
+             _tagset: tagset,
++            _fops: fops,
+             gendisk,
+         })
+     }
+@@ -206,8 +213,11 @@ pub fn build<T: Operations>(
+ ///  - `gendisk` was added to the VFS through a call to
+ ///    `bindings::device_add_disk`.
+ ///  - `self.gendisk.queue.queuedata` is initialized by a call to `ForeignOwnable::into_foreign`.
++///  - `self._fops` stores the [`bindings::block_device_operations`] pointed to by
++///    `gendisk.fops`.
+ pub struct GenDisk<T: Operations> {
+     _tagset: Arc<TagSet<T>>,
++    _fops: KBox<bindings::block_device_operations>,
+     gendisk: *mut bindings::gendisk,
+ }
+ 
+-- 
+2.55.0
 
