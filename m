@@ -1,272 +1,200 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022131.outbound.protection.outlook.com [52.101.96.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176CF348C6F;
-	Wed,  5 Aug 2026 16:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785948832; cv=none; b=fQP6TXK+PEWggQoYrkNJWmhf2o19fch2zcJ4ExKvpHKes2yH8xzzf2MfnJlIgdF7oLzgSMucP7VvSZ/lOlc4ZyOy4rS6UvYXGD51SY6gLKXrDhPRSbidbf1aPfJNjC2aqtPD3DnPbjIgVVBpBiMurtl8lz/iSGz/spQswAd1FZE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785948832; c=relaxed/simple;
-	bh=pdMwAEJd8sc8yST7RvpsNFWrOCEY5Qim4bS8kK5JYrk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SDX7MQUac6O9HOaK8nwcrmDXnrAar0TWEFhyDSMbFA/dY4C5YvhmkRPJr2uHuPt3dQkQgLUJqUPj9KyFaPJ3+GcrI0nkAprjCZ1C9hht8AcylUUAowEJDU3XOnuqqOeMmqAdXHSR8Ur0KZcUBVq32+5nbnRhQFpR7vn1RXOX8ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=qgldQs+p; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8963A254D;
+	Wed,  5 Aug 2026 16:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785949157; cv=fail; b=ba2uTbUAb8r7E8aciouWM+kb1xSGC5WeWrHXi3GGiIaSUXiII0fQe44lSVgM/pxHPJTuhp36fq5ZFnC06dT4zCWZqPAA1iO+zIl+9/dv3uCRMMUxP6J1N4W/rTt7dvcZwl99CWfKpNLJKEfe0reqdCSkxH74p9LoievZEwm5g9A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785949157; c=relaxed/simple;
+	bh=AwUFYBaFjOmqZQYyFToL+XGEC4fQJn1LKhjmmbVTYA0=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=aETc4Q7A0czYW6nvaqu4Nbh6SQrK6SdtC0kfUklZRLo4fyCbH5qbL0kOSO5VjFzG3s/sozTTg4I3J7VeDr0P/JwPRalwhvOU301tNAZFh8w10tGk5GTmuGLsM9tkFr252MovCKaTGmHT1+zhGuYQp/KOfbsSqep6MGW9jLMja2U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=aN/mLPL1; arc=fail smtp.client-ip=52.101.96.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="qgldQs+p"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 675FmajK4181773;
-	Wed, 5 Aug 2026 16:53:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Pn1c/k
-	XApYGS0Zv+2uIioCKpVjhKMb737yS1GxCXR7g=; b=qgldQs+pBSFTNoou3QeBpk
-	XzoBJFV/RUzoMZkHn+7q2CxIB9BxbJ8Nx+RDgDzO7r4xQkiQAaJ7Es6E2VQvNqSf
-	WnsvYe4iUvVJzFmJhjdjW4xIpWm2A7RJyE387gjiiikgnR3SAc7SBNyRDKdB+I/J
-	r7sFYEnjE4YTOYjZ6D53aRO9sPZKgPinM73iGMyQ8TRS7O6pl/cVtp0U3lQeT4Fo
-	TlAFeDI4NGMuPkp6m5IC8D5TAQHYxtN/uMRxAQp7WkEhe11TEIAYn7S6fSIWdipF
-	dfY4LMftIPnKU+sty5O2l1gE6DmRXD69fHERzNEqeSwEV7QRP3zGE5M6hDLR8wkA
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4fs67huusk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 16:53:28 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 675GfJOx032408;
-	Wed, 5 Aug 2026 16:53:28 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4fsvmhfbk2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Aug 2026 16:53:27 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 675GrPSM42402048
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Aug 2026 16:53:26 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D774A2004F;
-	Wed,  5 Aug 2026 16:53:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD5602004B;
-	Wed,  5 Aug 2026 16:53:21 +0000 (GMT)
-Received: from [9.39.28.91] (unknown [9.39.28.91])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Aug 2026 16:53:21 +0000 (GMT)
-Message-ID: <f1d73456-73ee-46e3-aaf7-6a6fe40f3196@linux.ibm.com>
-Date: Wed, 5 Aug 2026 22:23:20 +0530
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="aN/mLPL1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Gfp2PLN0LDopNaDooJ7MAMmPwtmORwUsORZ6dH30KxgQR/LkV/fYfWsY+Py1HhtNMeyhVBtBVd4ngAtVXdZoqdFUfJ4Xh6dgb16wsKHj8rz23V0GWZLPqBmDU/b6cP+JascxQFbuPi1x/3yx2GwbQF+MfA/7xIY+f4ZzM0a3jbiulszwQTSNX9W/QAzw0y/dI5XxNFkEhDif+6YOv08ZItbgmmRyqwHxVWUj2/WkesXXQRKn/ZI5Hdc+QOhAgZBU8a6bx6gAcoK5UJ93xYOzxQXyomnlj3AexzdfEyiGxsmtW70dcDcl26+KgjuCb2YaWgGvwJL2HBdMq24w/tfogg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gjn3ts974cxwP/aoNxSdo2bIz4oWxsLvrOFSv5BM40M=;
+ b=S06a0pAiyyA20bNlcuREwEcwUWXWdJMFIgFuSW9oqffAKEBc/nEf4PUSFHckd2+sSrMztFKnC9mqB4e/OqSKAdPFQie54d0hGqi/wFQnISh3SbiMCOcVfSEVsA4knNbAP4WYQ62jOoPhrout5r+T6KGduzEza8IzQ0DplP8jKyHlCCY4uY+DA6i/ek59glJdNq4aRRifn4nrmA6lqwa4U+KqLd6OMk+NnlP14sgbRnM0cE7j/3v8/wycCpdozFee/0olQx5DLUMA+fx+IZy1TxooswOpC4yFccZHl/jpMEU0gF4NMF9S76tGNBAiWva3QcMl95TdSaKuBuFoz1uiyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gjn3ts974cxwP/aoNxSdo2bIz4oWxsLvrOFSv5BM40M=;
+ b=aN/mLPL1/8zGgi24lpbFNsittNs623lplb2LP8XXY55M+DwbzeeTFdbhHwyz87FpxBKE7MJeohng5ScRFK25H/KeU8P9kU+ZrWAuJ1IvZetTgVaNM6uEQMUh/wzjSlVfJqXWylv15QMRlc4rXmpOLj8J2br6m6CDkWq+QS8RiAY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4b4::24)
+ by CWXP265MB3319.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:e7::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.19; Wed, 5 Aug
+ 2026 16:59:11 +0000
+Received: from LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::c07d:488c:d4aa:2a4a]) by LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::c07d:488c:d4aa:2a4a%4]) with mapi id 15.21.0270.017; Wed, 5 Aug 2026
+ 16:59:11 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Aug 2026 17:59:09 +0100
+Message-Id: <DKH64WXJI76V.3PA6HHOB9NNTW@garyguo.net>
+Subject: Re: [PATCH v2 08/16] drm/tyr: specify base type for registers
+From: "Gary Guo" <gary@garyguo.net>
+To: "Gary Guo" <gary@garyguo.net>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Tamir Duberstein" <tamird@kernel.org>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-pci@vger.kernel.org>
+X-Mailer: aerc 0.21.0
+References: <20260805-typed_register-v2-0-c3ca142220a0@garyguo.net>
+ <20260805-typed_register-v2-8-c3ca142220a0@garyguo.net>
+In-Reply-To: <20260805-typed_register-v2-8-c3ca142220a0@garyguo.net>
+X-ClientProxiedBy: LO4P265CA0005.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ad::17) To LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4b4::24)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/17] irq & spin_lock: Add counted interrupt
- disabling/enabling
-To: Boqun Feng <boqun@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-        Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-        Lyude Paul <lyude@redhat.com>,
-        Daniel Almeida
- <daniel.almeida@collabora.com>,
-        =?UTF-8?Q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>,
-        Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <2fc01d90-e081-4ddf-a842-b68eda15ca9e@linux.ibm.com>
- <anJUuzBcWRwyw6NJ@tardis.local>
- <20260805063645.GO776954@noisy.programming.kicks-ass.net>
- <anLhM8xTlB6bN2N7@tardis.local>
- <1a6dd561-f529-433d-bc09-094924d861fe@linux.ibm.com>
- <anLj_Ryl635sxvI8@tardis.local> <anNAWmjK4_jfMHkl@tardis.local>
- <1eccb39d-f4bf-41d3-a999-e4bf45833c04@linux.ibm.com>
- <anNGwaegou9WJHC_@tardis.local>
- <0367352e-5578-4d70-88ae-1bfa446ec377@linux.ibm.com>
- <anNSocuKlbA7cLKk@tardis.local>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <anNSocuKlbA7cLKk@tardis.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODA1MDEzNyBTYWx0ZWRfXzw1FmmuazF0I
- rya6iHsRUMVO0XYvLT0g/TNS7umd2wuJvjeuWhesWEBPR7JjNkj7Yz9AJ5VRdroXPPhxf44lplc
- 9XfZ6P7yP3yM3mlB+phVp6R2RIg1q00=
-X-Authority-Analysis: v=2.4 cv=I7VVgtgg c=1 sm=1 tr=0 ts=6a736a89 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=zzF01kqBtHAwm6PMAN8A:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODA1MDEzNyBTYWx0ZWRfX8bK1qG4xzq4M
- +YbzQkrj+ClSL3LTEVRG5KQGsq+8tS/mSb0ojvmLnRVmOS+obNwFpRKDMEy6bb0/tQw1HTJi3Ix
- v2SNaQSBkUaFhCo40wvdqRqdLPv45m+CQ3FJMQgcXo3Nt8UEvqToC8YiuXRMHO2xoKgEIAgmXfT
- 4GnZE69u7R0k+2Rb5XgAWtDpEmmHT9WOhr9/4b3JXv7ZoeyX7ESNv+bWbCNuHCXPSl09aQIE7Tz
- 8HM9R6QoLVgQbN4p/MS21LQ1wEe3GZCuSgQg7JUUdB++ZK4jFk1sTjZK68UvsxHf1qv0glyxuik
- 9OQjornvJQkQb/bP2QTFn/qimwcbTqegNzlreVnyE1WFW9XGav4bsCdwYH+VU92fJr0++AS0sxq
- eUmCv2ZwxdjWkBkqaa/hdZoRpgG6B+pV/kmdBATPNctiKNhBWRN9+45KmyqyUa2OK+OxD2DNBC2
- CrgLwBTY7V/WdB2/YzQ==
-X-Proofpoint-ORIG-GUID: UYagqJUwepW1B4XGg9sFbPrj4yiz_VQl
-X-Proofpoint-GUID: rVPgtFMWkQEN6x6VgwKH1zIt28ic1reO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-05_05,2026-08-04_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
- malwarescore=0 adultscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608050137
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOZP265MB8551:EE_|CWXP265MB3319:EE_
+X-MS-Office365-Filtering-Correlation-Id: 55d13f5c-d0c2-4bd9-c275-08def312deee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014|23010399003|22082099003|18002099003|56012099006|4143699003|3023799007|10067099003|921020;
+X-Microsoft-Antispam-Message-Info:
+	rkbsX6IC9uod52I2brmw6YYzGdPmmlmA06DiHR/4V6n4+65fUZx2/zVAFEjAFKQdpRnzZhubGU9lRJKCgQ2Mp7YnfA5bGCT+QeddgvytEDPiqLCBslU/SrqRrssxF+vo8R8jnMCxMQbKVh0Nde+xYUGpmJVxlZp7trVZ6sM1lGYJorTJLkoPlzrymwCJo4eQY/+FUKnALH9eNF8Lkc9WdSakrpAokaymc+IebyNPbzO/pU2sLlsa2lnDyepp+Q3RBbAFOm80OTAmvLNEwMgmZv+Qb6XUvbfvdmvqTMPuFWyAPKmIAk5OOH/a+ZjiNUZRCy1kdFPSYLuzcNLcTSPnVSS1bPPWZwjeb9y3mpoU30LvfQnpTnY49v9Zpf2UO21kx0H7vDSuC3xlEbln5+j3PcMcjZOE0DwPWBnjRyYi7gJYvM3Yj9SMRbLD++l5K2KcZKMDCYRm7K2bi4zy4HNb79NOENuUsTMzcP44A8QEXDAv9XPuzalBVs86wNu1TLctVAsKHLTgYADIDU9t1qfPXi3dor7UdpC34aRt7KrXwfJQ8QZKvKIhKzhL6Wz7UmJybQIZC2k76weKJaYm60COgT7iiCKLyfqZqyxKKI3/I8bs/6cCe1s9Yhj2U/MXv97B5dngLF3wRjirK64QF6rF8sjgodrkXvcaw7B/gvSuxwv1IQCFi0ShJnv1Jna1DvH1n3wjGdxvSk89wreEqVP7EQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014)(23010399003)(22082099003)(18002099003)(56012099006)(4143699003)(3023799007)(10067099003)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MGxnSko0UnZ4WStWMnlZWWM0d01MNW9lZXBRSTQwdWxSdFVXUkE4MjF0Tzk0?=
+ =?utf-8?B?WFpWTTkxL0xXQlFvYW5OSERCMTRTNENKTFR3c2NlMmI5c1h0d1FUWTJlMDkx?=
+ =?utf-8?B?QzNZSXNkWmlHcURYRVBWbGJQTVFzQyt2OUM1UUhzeVpROFZOcHR5bVg1Z2VG?=
+ =?utf-8?B?L09yUStoTDNWMjQyZ1BHaGthMjhHcm96VEZsb2JPN0RvYStNVGRJaVllZis4?=
+ =?utf-8?B?b2c0aVZXV0NzakJMcm50UDJ2TjVYK0NyMWlMTnIvSTRwK2FXSUZ0QUJWYjZi?=
+ =?utf-8?B?TU9LYjNwUjJxNW1nT01POWxsd25qSDllOG0zS3JvbUtVMm9icVk3MDN5K2k3?=
+ =?utf-8?B?OGx2WGdXU3VXVHJEMlhLZGJHWGdabkZjUk5mTnQrZWxGSytLc2NlcUZKZ0Jo?=
+ =?utf-8?B?T3RRRWRRZVRXUmxYWlVvdTN5dHQyOXpmbzZLOGw3UVNlMVlLYlB2OGFPalRu?=
+ =?utf-8?B?YzRpdFRpT1Zzd1RXazQvOTVMYVcweGF4eFAvNUVHcVFzUDB2M2VCbnRKZWxy?=
+ =?utf-8?B?NlJNUVFockhoUDNwRTdWdS9Ec0ZZU0xtZVRaU1JrQUlycnhCUWJVcVpxbVJZ?=
+ =?utf-8?B?SXJ2OXZYUjBJY1A3MWhQTUcveE9uaS9QMDFRNGtwd1YrQlpFdDQ4dlRENXZr?=
+ =?utf-8?B?N3g0cHFnNDhIa0d3RFZ1c09yNWRxdHdpZDMzWnVHbUFDaFlOSUViU3piMzJY?=
+ =?utf-8?B?MzgwNURNQ1Y3WkJQRUFvWjI0YXpaVGs5WEtJb29IVnhTejNsVWRMSmd5TVRi?=
+ =?utf-8?B?TU1kRTJPWk9xSlIrcnlZN1Bya1Q4UzlPb3lrdmprYUd3KzE3U0szZWM0Y0ov?=
+ =?utf-8?B?b0FNSUpnKzlFbnpIRGpWNmdHcldmVFRNZmRnWjNjOWsvenlrV214NXRFV3lM?=
+ =?utf-8?B?RVIxcUpobHV1TzVwbFpxdGxSNnpycC9Ra3hvMU12aHdHRFN1UHozVWIwSWtt?=
+ =?utf-8?B?WDh1dElwa1ZLVkx0cnZMT2J2bGRZREwzZTN3N0kwd1k0QWUwT1BwMktrcVgv?=
+ =?utf-8?B?bjluWGlkSGNKWDN6R0tVLzJzTTFLRUQ0TUg2ckkrZG40L1puOS8wSGFXdi9F?=
+ =?utf-8?B?aGEyY01CZ3ZmbThiNWwvVGFUekhzVnRtU3FCbjVkVzZXSFR5QWJZVmVhMi90?=
+ =?utf-8?B?cTBaWWFCTTRsNFpER2lBc2U4N3ZZaGRLUlNVN0dQVFovN3loR1ltdWxsSERT?=
+ =?utf-8?B?a3JzWTJLZThhMnBaVE02Q04yZlBmZUlCYW5WSjc4NlhEUnJRaVVMcTl5eCs2?=
+ =?utf-8?B?T2pFV2w0WDVqc0FIMDBzeDRnbWdrZmZOOVFaaGFYY05KU2ZKc29ORVd1T1R0?=
+ =?utf-8?B?UnNtSk96RFJ4ZVA4b0xiZGJsL2svMFpmUTRSU1ZncThTVGQ3SkZnOU4vQUU3?=
+ =?utf-8?B?WnBKYjUydUluSlFNYVE4U2MwMlE0S3BoYUN0VnZqTG4zY0pVVHlwZWJvc3hI?=
+ =?utf-8?B?b2xhNmRHRy9qK3pFdVdveUY3WjdBRXBKSmFWL2R5NWRaU0wwc3pMd1FzYVJ0?=
+ =?utf-8?B?M3FXeE82RVBueXR6NDNvWFQwbkY0VmQ1WjR5MGUwcE9PK1hHN3UxQnQybi94?=
+ =?utf-8?B?Rk1MOFNJNTBzYXRYVzdVVVdnZGxnQWJOVEJaTTdwZnRxMDcvRU5TV2Zva3c5?=
+ =?utf-8?B?UFBObWxTbTNHVktHT0w4dDFiS2VsS1lBb2dxaUtvSWtTa1FSR2JVeGJicEk0?=
+ =?utf-8?B?SHc5Z1hyc1FBbjF2MzJNNnVPVU5hTWF3NEtUNUVtVEd2bWxNbG9Oc2hYYzlE?=
+ =?utf-8?B?SUh1UzR0UTdmV1d4N0FmNkVLcWcyNUpCL0QyQmRURVdLNThYdGR3bzNPdXJk?=
+ =?utf-8?B?bDZNN0NiSnhnQWJvbXBENExBOEdyUkJuVVNDV2w1MDdkdkk0RHpWZHV0eWVk?=
+ =?utf-8?B?bDI0MmNPcXM5S1IxSk9Kalg3OWtEY3EyQk40OXgzRjYrS0dvYkRzcGlzTGZD?=
+ =?utf-8?B?Mm9heHBLV3BDN1BtaHlVME1GaFJMRFBqZUVXdjFVc3BickRJcktibWh4OXM1?=
+ =?utf-8?B?RldGemRqUTdNZy8yWDE4Qm9sNzFHKzllcVgwbnJxTjNZckFJR0w0NFh3TjI4?=
+ =?utf-8?B?WHJFblBReU1ETDdzc25Pa0tEU2wyTjNtS0xmcTVKODBrV0x5blpJN3BvaVdv?=
+ =?utf-8?B?WkhQaWh5YjFWWk5jV0hCTHB5Y2dCUzIyamhUM2Fydis0M1N3TTZPQlF1a3Fy?=
+ =?utf-8?B?WFRPQjhIcXlROW9wV01NS3dqM081U1JEQ3RFOFFTYW1uWEZ5WGRpajhDZ0s5?=
+ =?utf-8?B?ZUxiQjhhNUp1d0VSaHZHZDlMK2RpeWYyZzB1SW1uYUxnRUpLUC9XejNtTDlw?=
+ =?utf-8?B?MlBMWXFSMnphUVpEL1dyQnZ5MHdGUkJZZ2sxb25hRjZuemdWejNRUT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 55d13f5c-d0c2-4bd9-c275-08def312deee
+X-MS-Exchange-CrossTenant-AuthSource: LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2026 16:59:10.9708
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wnAGblyZ8fy0w98OdJKdQSWnIzNOW59aan/z71sqo9J9HVIDfINbgesU4m3mHCD8VkEIwf7nC3cvLNLL9vAhKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3319
 
-Hi Boqun.
+On Wed Aug 5, 2026 at 5:35 PM BST, Gary Guo wrote:
+> All registers use the same base type, which is `<IoMem as IO>::Target`.
+> Thus add the base parameter to `register!` invocation.
 
-On 8/5/26 8:41 PM, Boqun Feng wrote:
-> On Wed, Aug 05, 2026 at 08:26:49PM +0530, Shrikanth Hegde wrote:
->>
->>
->> On 8/5/26 7:50 PM, Boqun Feng wrote:
->>> On Wed, Aug 05, 2026 at 07:40:18PM +0530, Shrikanth Hegde wrote:
->>>>
->>>> Hi Boqun,
->>>>
->>>>>
->>>>> Something as below? Going to send it to kernel build bot and see if it
->>>>> works for all configs.
->>>>>
->>>>> ----------------->8
->>>>> diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
->>>>> index b9a7f05ecf42..39f30bc65548 100644
->>>>> --- a/include/linux/interrupt_rc.h
->>>>> +++ b/include/linux/interrupt_rc.h
->>>>> @@ -12,6 +12,7 @@
->>>>>      */
->>>>>
->>>>>     #include <linux/irqflags.h>
->>>>> +#include <linux/debug_locks.h>
->>>>>     #include <linux/preempt.h>
->>>>>     #include <linux/processor.h>
->>>>>     #include <linux/smp.h>
->>>>> @@ -63,6 +64,12 @@ static inline void local_interrupt_disable(void)
->>>>>
->>>>>            new_count = hardirq_disable_enter();
->>>>>
->>>>> +       /* Is hardirq disable count overflow soon? */
->>>>> +       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT))
->>>>> +               DEBUG_LOCKS_WARN_ON((new_count & HARDIRQ_DISABLE_MASK) +
->>>>> +                                   (10 << HARDIRQ_DISABLE_SHIFT) >
->>>>> +                                   HARDIRQ_DISABLE_MASK);
->>>>> +
->>>>
->>>> This needs a return here right? Else we will see warning for 10 times
->>>> and then overflow happens and we will call _local_interrupt_disable. No?
-> 
-> Oh, seems I overlooked something... could you elaborate on this? What's
-> the scenario in your mind? You said we hit 10 times warning and *then*
-> overflow?
-> 
+This is missing a few `register!` invocation that's introduced in the new
+linux-next base, as Sashiko points out. Will include in the next version.
 
+Best,
+Gary
 
-(the “10 times” wording was for the possible wraparound.
-I didn't know DEBUG_LOCKS_WARN_ON() will turn debug_locks
-off after the first warning, I thought it will print 10 times.)
-
-Main concern is the wraparound itself. If the HARDIRQ_DISABLE field reaches
-0xff and we increment it once more, the field becomes zero after masking
-(ff + 1 -> 100 in the shifted field). Then local_interrupt_enable() can
-observe:
-
-         (new_count & HARDIRQ_DISABLE_MASK) == 0
-
-and treat it as the outermost enable, potentially calling
-_local_interrupt_enable() while there are still outstanding logical
-local_interrupt_disable() users.
-
-So I think the useful debug check is one that catches the count before it
-gets close enough to wrap. Thing I wanted to avoid is silently making the
-HARDIRQ_DISABLE field look like zero after overflow.
-
-Whether it returns or just warns, I am not sure. As recovery may
-not be easy. It is meant more to be a damage contol than recovery.
-
-
-My line of thought is,
-
-If we return after debug checks in local_interrupt_disable(), we wont advance the preempt count
-further, so it wont wrap around. Now, there will be corresponding local_interrupt_enable(),
-at some point it will reach 0, we enable the interrupts. There will be some more
-local_interrupt_enable() still, but they will be caught with your debug check in
-local_interrupt_enable() and preempt count won't be decremented further.
-So if we put return we may have a damage control.
-
->>>>
->>>
->>> DEBUG_LOCKS_WARN_ON() uses debug_locks_off() to avoid this, so we won't
->>> see it 10 times. The reason not using return here, because we would
->>> introduce unpaired local_interrupt_disable() if we returned:
->>
->> Yes, it could be a weird case if the overflow actually happens.
->> So just warning maybe enough to catch such callers.
->>
->> Maybe your kunit test can actually help test the behavior with the loop
->> count.
->>
->>>
->>> 	// hardirq disable count is n
->>> 	local_interrupt_disable(); // hardirq disable count is n + 1
->>>
->>> 	local_interrupt_disable(); <- trigger the warning, if we return
->>> 				   // hardirq disable count is n + 1
->>
->> Likely i am missing to understand.
->>
-> 
-> No, it was me who misunderstand ;-)
-> 
->> Isn't the count incremented earlier than return?
->> I.e even if return happens it should be n + 2 right?
->>
-> 
-> Yeah, you're right, but then why do we want to return earlier? Since the
-> following if:
-> 
-> 	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
-> 
-> will be false, and we will just return from the function, no?
-> 
-> Regards,
-> Boqun
-> 
->>>
->>> 	local_interrupt_enable(); // hardirq disable count is n
->>>
->>> 	local_interrupt_enable(); // hardirq disable count is n - 1
->>>
->>> Regards,
->>> Boqun
->>>
->>>> Not sure, if below is any better? (Igore whitespace mangling)
->>>>
->>>> if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
->>>>       DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) >=
->>>> 			 HARDIRQ_DISABLE_MASK - (10 << HARDIRQ_DISABLE_SHIFT)))
->>>> 	return;
->>>>
->>>>>            /* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
->>>>>
->>>>>            if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
->>>>> @@ -73,6 +80,11 @@ static inline void local_interrupt_enable(void)
->>>>>     {
->>>>>            int new_count;
->>>>>
->>>>> +       /* Unpaired local_interrupt_enable()? Warn and abort. */
->>>>> +       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
->>>>> +           DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) == 0))
->>>>> +               return;
->>>>> +
->>>>>            new_count = hardirq_disable_exit();
->>>>>
->>>>>            if ((new_count & HARDIRQ_DISABLE_MASK) == 0) >
->>>>
->>
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+> ---
+>  drivers/gpu/drm/tyr/driver.rs |  1 +
+>  drivers/gpu/drm/tyr/regs.rs   | 43 +++++++++++++++++++++++++++++++++++++=
++++++-
+>  2 files changed, 43 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.r=
+s
+> index bfb0ba19caff..730b84e37a54 100644
+> --- a/drivers/gpu/drm/tyr/driver.rs
+> +++ b/drivers/gpu/drm/tyr/driver.rs
+> @@ -46,6 +46,7 @@
+>  };
+> =20
+>  pub(crate) type IoMem<'a> =3D kernel::io::mem::IoMem<'a, SZ_2M>;
+> +pub(crate) type TyrRegisters =3D kernel::io::Region<SZ_2M>;
+> =20
+>  pub(crate) struct TyrDrmDriver;
+> =20
+> diff --git a/drivers/gpu/drm/tyr/regs.rs b/drivers/gpu/drm/tyr/regs.rs
+> index a62724378ced..3e6edae6e27f 100644
+> --- a/drivers/gpu/drm/tyr/regs.rs
+> +++ b/drivers/gpu/drm/tyr/regs.rs
+> @@ -57,7 +57,11 @@ pub(crate) mod gpu_control {
+>          uapi, //
+>      };
+> =20
+> +    use crate::driver::TyrRegisters;
+> +
+>      register! {
+> +        base: TyrRegisters;
+> +
+>          /// GPU identification register.
+>          pub(crate) GPU_ID(u32) @ 0x0 {
+>              /// Status of the GPU release.
+> @@ -315,6 +319,8 @@ fn from(mode: FlushMode) -> Self {
+>      }
+> =20
+>      register! {
+> +        base: TyrRegisters;
+> +
+>          /// GPU command register.
+>          ///
+>          /// Use the constructor methods to create commands:
+> @@ -380,6 +386,8 @@ pub(crate) fn clear_fault() -> Self {
+>      }
 
