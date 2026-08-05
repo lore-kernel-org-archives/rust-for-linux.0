@@ -1,59 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CFC3CF212;
-	Wed,  5 Aug 2026 17:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C587A3C7E1D
+	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785951491; cv=none; b=l8dDT9/XexIq15AS+qr4r+vvcoWs6bVL7huC/mXpV6hcVOJTP05PGsDN21PvgNP7RExM21QgiSTpxhCNgUv48NHsu4ETYe/nWfGZE0AUmqnoVafWp3UdOBuS/hvHPHliMb7fyH9/IMey1OMf6q1EVY/JhTwtWxsv9fD3nq087IU=
+	t=1785953262; cv=none; b=nSJ4w4l6OYXyWbwjHvsvGulbRuSch9Vhw0YrheR0t3DL/RIuOihdYDYpgp5VqFRbQceFovp6z+asNTwC7IkchPoxxLAKt3rrc7ZOmWSFKCjeMK1NfSMzakKFHyDTCsdoxlYWKQ7chR8vySERCmDNzsRXL0kv115uOMH9X51lo4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785951491; c=relaxed/simple;
-	bh=yfHIDv02CPaAuW6SSkAcnUHYSa6+aRYEpET1F/O3ZH0=;
+	s=arc-20240116; t=1785953262; c=relaxed/simple;
+	bh=LMXN7CclmokUO+ND2Iod9/rEAYouniZoPjbHWOHZhYA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U/R0+qe6gLMwgmbb3LXnuzU0YHvVEYit8VLx8pAH8JAqwWSGbVAftBJtDgrGEQh6cnMQzlTMW5xnp5ukPZgvp4bdHshS/PFK5HCHQiazlzmVYMXzR6Z/W7UjDnpjIn9BOSKwjvkq8BHR07XkDzspPTjPz6ZtHgGVOMcZMpI3Rsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hjjgicyq; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=W71ZvTZDh6agBOcIZH5IBEuTexnqMNZq0MLN2fF3XGH6ylYuuBWG/DQS1rPUzeQFGKKVhhiH/neAhI7sl3AtLOXFZDCKxhXodCOWs+noOdxvd263VcQYDM9aSctlZMpK1PjLfJ/I8gIzXXC8NkMpy8FVIiOD+3c1Swvs7WpiXp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1fSg8lZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hjjgicyq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E851F00A3D;
-	Wed,  5 Aug 2026 17:38:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1fSg8lZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB451F00A3D;
+	Wed,  5 Aug 2026 18:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785951490;
-	bh=EF0Q1J2jjFDGm1qxB+XwlidFK5+nWr/yg2BUs849nYM=;
+	s=k20260515; t=1785953258;
+	bh=Zd2WEqRmKBa5vsuEZboBRxR3wTNuv7JxA7C5QT3nU84=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Hjjgicyq+/K5ho8hwt4zLJq4u8rAJhWKfzt14EBHR6EsIlZIYLVYPbmqpwnWzca3z
-	 PzSe64PLgqxHjg5ECIPVy60Lw9293EhqvBKs40ladwl61ceffWV7wLW7+SCKXKKPUX
-	 NrmOroIUaOHue4vymRWDkact+sKvKKGSSXOii4WM8M7zOS6o19e0Pq3wPkh6uEF+Tx
-	 2sYuOYaCmQkxe63Y3z92kkC43FT5v/1j7fuUVEJt2xHxTkShT8BziipcngPR31dtJl
-	 zL5Yw+5vieavJrNqOBSGCE1foqW2hz8O5DmkV2h5oZCSd+HSXJD/Ywcpef82X+129V
-	 S6mO2TGPcCbiw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CC60BF40068;
-	Wed,  5 Aug 2026 13:38:08 -0400 (EDT)
+	b=f1fSg8lZVHOpbxEABhI7N8NiRbLb83xxq4kY79Er3ahd5H8IAcW7IP+qcebVrAqY0
+	 TRN+tyd7VNGMbo3Ip+gxDf7eyrQMl+53gesGhIXvG6PDT3UUWqfQFm3B1lln1/ZUMB
+	 qxEIzLqXkfUE6jo2h+/TQpyaA+jfj8X8k5rY2HYDrdIs9hwVzl82PJJc7pb/GDhT6M
+	 9iWylGpBaXM2COlc0HFK47U1RoWsHVayF6MM+wtYRydkEfWYdcnzCewDO1BWHuVFT1
+	 rx3uuA2jPrH0IFJ5GiY0dL5nBlTtihDVrnWPbv4xpzgoVPu6AvxZMHZmNCldf9wC8n
+	 WwXh/lOpQFo+g==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C2DACF40067;
+	Wed,  5 Aug 2026 14:07:37 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 05 Aug 2026 13:38:08 -0400
-X-ME-Sender: <xms:AHVzauzuZEYSxqMo2TQTYCga-sz4IzoRITZ--RWyj1HdDhypl9BBIw>
-    <xme:AHVzapvmmKzCY8ghsTdyAQ2hzjDJgwjaXWHNPqGbsyPrOiossCpeQFZu1KQ99iKQl
-    _C8K3On7ts8zeXxAkWKL7mSWvtRvu08brggcsd145oW_EGYCAsHUA>
-X-ME-Received: <xmr:AHVzahZ3WHH1OghtddYWXQ1UVa0te1tFbTMHCj5NTwhUq8TXIMYw7InW4a3QZTeZWGFL4oiJhQS2No_UiAhjR0uQOUEkTXNV>
-X-ME-Proxy-Cause: dmFkZTGKEYHELQbNNbIOdUGpWFNAbpXLbQVK+aYxl96DaHHP6dJv/1XbASsRC90wj3qDPF
-    +Zyfc8Ze8/8Y40yLvAMrtWNo6BVwS6rQFtgnZCrklbxROhOQ6MBxdZ883UO8icvzSATLbH
-    klDeAfK4aq7SgaT4RD6bZx/El+XWTSANzSlHfjv3czD0DeX/JUwhWMAYy1+ABg1g5sL04o
-    q3dk8mCIdQt14VmcqdTUUOMSKEuVZtuq4qnQL1sO0ttbR9t0OYVgI4vq1knZ/fFNLFowmH
-    i925Ck4WZC783EOyw3xZ+qS3Tsvtbpx0K9IuTEJpbPPpdM1mefTIK3nceRyv389r0CB1ee
-    rop9Wx+PKfAJrxySNSVT9WSCobrI+MDM9RymXkBYWaZVpgMnj0Y2Vj39A/G+9bswberb6X
-    2CzK64bFVvuK0/HlOcUQK15cl5C2EUUP75kblVlPeL2Q92cCa4Q3u4chLnl7dv09V3Hp+t
-    oiuqeUQoBwz9Z+MlN/eyO3ZLRErsFDL1KfrnQZwS0IPu2/2U9EXVg2hzaxQo7c/0o2QFyk
-    sYn0UG/svNpqFDOlgaGAPNf06izkvvh3zMMx8Xg4wr6pfYBq9mpYHJNQrror53HGmcaDlG
-    92OCE0GtR7HPCU/AmaS4NxNGPcih2X+Zcru3i7tk36MwLSMJQINTDywk3drA
-X-ME-Proxy: <xmx:AHVzao3rms3gqQSbakRNeTtEqyzsKO6ei8ozkmonl8XHyBNubVbvEA>
-    <xmx:AHVzajtpdoe96awEkXaYJcuRv7t56c9a6t_MzJKwp8GMQEv2AD84CQ>
-    <xmx:AHVzasCf65Ij2RS0Ec8HNE9HoMmvaofxpiku2a-nUOUwalkRruI7QA>
-    <xmx:AHVzamaPhB-QpQ2rQVRvD0HVzB2-1qQMwSes67pXr4b1DYFor9Q-5A>
-    <xmx:AHVzau8RAt7pXQZocwlnMduiYoA-yOhAUhKRaCE2GD-12LGOIwr6uGWn>
+  by phl-compute-06.internal (MEProxy); Wed, 05 Aug 2026 14:07:37 -0400
+X-ME-Sender: <xms:6Xtzau39nSCwTCDPsgJZZERpgKpe2-5BPmKuclbez46h324cDWmZ6A>
+    <xme:6XtzaggwS41c3UT0TwsREn_2NKBJu9-QH_vio14myadhdY1AFz8OEVcZCulSw2c6H
+    3XZ4fEnPDuNFB7teaMzrJYA5q-OEyk1WOzgDWOUO8sicY4wheD0Ag>
+X-ME-Received: <xmr:6Xtzan-otYFI0rxiboPCk3X0nSKCIy2vQkdoReLCHEInI9Dk_uSsuap2zOFGXi8feqx8-hUdEq00vEwnk8v7wlowJNFGaARu>
+X-ME-Proxy-Cause: dmFkZTFv2lYQxXDkx3+b8ZbbUVVFLle47SEO8kj/x7HBFs1Z2T/LiWFdHqJfwMCzVA5w8G
+    PHdK1UylLmM05QBMpbU5Dowzk1AHKD0V0DcnvKXXty0AtSqxD4vKnORo66QkKhPM0Anb9U
+    rkT4/j18GUkVwVAMS8ZQQomYZaJqRmwWT9NlfP87lzjQ2TkGC4ADvMEwydR+nyOCue9YRO
+    ibr8kYYihQTFyGBMrsc4Ie7PyXIhVDBo2y1WWIrAzzzovNEM7DdRo9X2HUscL8cBTN76SZ
+    6NAbXuLUnPlrERpoJDwCnrJ0QQzXc0BS1aEkvzKN9oe1Sr/+flrbM9uPetfmdsUrelV1hk
+    UI6uFLNU9n+PXde4c982amyM3t6+fPC/2pGrPWgAw2kym2Shq2aV7CIE2pbKMM8+4G6JYJ
+    GgmuAUZ5z/ihfKnhQnGdeH0O4W30pkiqnaAA9VIRkPli62/jKj9NZ6PaWUVbj9Ehp9YCke
+    T2HW02Foetw3lUnRP8VwOJKphF+9Sqro1kMz0xsnV2XgUDI3Ki8I/8hx0Fll59NcXRvigi
+    bKEIfLRavJ/ZaKMURX6svWWe6QV5BnNH++3Jk19HzzqCR9QdoYgwxJK/qfS1Djt7Uip+Ju
+    oKARvsdd1XxINF6cO5DleLvr5JLrbA5gDRlVMAspwpna7Yehg5JMzbvXwwDw
+X-ME-Proxy: <xmx:6XtzakJLeRpoX4kNfcBKSDHXL0ta-sgJT_0tmme6IkNGDD12yrfC_A>
+    <xmx:6XtzakzH_Tw146_mgdli9TOrzE3G6DQHAmQt7Zr4MudanEICSoWfOg>
+    <xmx:6Xtzav3yvfFr8WGAayUl5Lsp5yVivBc43HM1KdhWSgnlbcdx2wlP4Q>
+    <xmx:6Xtzal_OFhh1gUgm0HJJ_g4m0k5m3onuOK4IEYCM0kScxavwOe2t7w>
+    <xmx:6XtzavSXZhQ2zlqVTSQxgWTcNGw4dh58-ljguQ4YCphXNH7qL9ha0zFx>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 5 Aug 2026 13:38:08 -0400 (EDT)
-Date: Wed, 5 Aug 2026 10:38:07 -0700
+ 5 Aug 2026 14:07:37 -0400 (EDT)
+Date: Wed, 5 Aug 2026 11:07:36 -0700
 From: Boqun Feng <boqun@kernel.org>
 To: Shrikanth Hegde <sshegde@linux.ibm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
@@ -66,8 +66,10 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Subject: Re: [PATCH v4 05/17] irq & spin_lock: Add counted interrupt
  disabling/enabling
-Message-ID: <anN0_z--Mnuw3IK-@tardis.local>
-References: <20260805063645.GO776954@noisy.programming.kicks-ass.net>
+Message-ID: <anN76PiBzRingT-c@tardis.local>
+References: <2fc01d90-e081-4ddf-a842-b68eda15ca9e@linux.ibm.com>
+ <anJUuzBcWRwyw6NJ@tardis.local>
+ <20260805063645.GO776954@noisy.programming.kicks-ass.net>
  <anLhM8xTlB6bN2N7@tardis.local>
  <1a6dd561-f529-433d-bc09-094924d861fe@linux.ibm.com>
  <anLj_Ryl635sxvI8@tardis.local>
@@ -75,181 +77,129 @@ References: <20260805063645.GO776954@noisy.programming.kicks-ass.net>
  <1eccb39d-f4bf-41d3-a999-e4bf45833c04@linux.ibm.com>
  <anNGwaegou9WJHC_@tardis.local>
  <0367352e-5578-4d70-88ae-1bfa446ec377@linux.ibm.com>
- <anNSocuKlbA7cLKk@tardis.local>
- <f1d73456-73ee-46e3-aaf7-6a6fe40f3196@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f1d73456-73ee-46e3-aaf7-6a6fe40f3196@linux.ibm.com>
+In-Reply-To: <0367352e-5578-4d70-88ae-1bfa446ec377@linux.ibm.com>
 
-On Wed, Aug 05, 2026 at 10:23:20PM +0530, Shrikanth Hegde wrote:
-> Hi Boqun.
+On Wed, Aug 05, 2026 at 08:26:49PM +0530, Shrikanth Hegde wrote:
 > 
-> On 8/5/26 8:41 PM, Boqun Feng wrote:
-> > On Wed, Aug 05, 2026 at 08:26:49PM +0530, Shrikanth Hegde wrote:
+> 
+> On 8/5/26 7:50 PM, Boqun Feng wrote:
+> > On Wed, Aug 05, 2026 at 07:40:18PM +0530, Shrikanth Hegde wrote:
 > > > 
+> > > Hi Boqun,
 > > > 
-> > > On 8/5/26 7:50 PM, Boqun Feng wrote:
-> > > > On Wed, Aug 05, 2026 at 07:40:18PM +0530, Shrikanth Hegde wrote:
-> > > > > 
-> > > > > Hi Boqun,
-> > > > > 
-> > > > > > 
-> > > > > > Something as below? Going to send it to kernel build bot and see if it
-> > > > > > works for all configs.
-> > > > > > 
-> > > > > > ----------------->8
-> > > > > > diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
-> > > > > > index b9a7f05ecf42..39f30bc65548 100644
-> > > > > > --- a/include/linux/interrupt_rc.h
-> > > > > > +++ b/include/linux/interrupt_rc.h
-> > > > > > @@ -12,6 +12,7 @@
-> > > > > >      */
-> > > > > > 
-> > > > > >     #include <linux/irqflags.h>
-> > > > > > +#include <linux/debug_locks.h>
-> > > > > >     #include <linux/preempt.h>
-> > > > > >     #include <linux/processor.h>
-> > > > > >     #include <linux/smp.h>
-> > > > > > @@ -63,6 +64,12 @@ static inline void local_interrupt_disable(void)
-> > > > > > 
-> > > > > >            new_count = hardirq_disable_enter();
-> > > > > > 
-> > > > > > +       /* Is hardirq disable count overflow soon? */
-> > > > > > +       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT))
-> > > > > > +               DEBUG_LOCKS_WARN_ON((new_count & HARDIRQ_DISABLE_MASK) +
-> > > > > > +                                   (10 << HARDIRQ_DISABLE_SHIFT) >
-> > > > > > +                                   HARDIRQ_DISABLE_MASK);
-> > > > > > +
-> > > > > 
-> > > > > This needs a return here right? Else we will see warning for 10 times
-> > > > > and then overflow happens and we will call _local_interrupt_disable. No?
+> > > > 
+> > > > Something as below? Going to send it to kernel build bot and see if it
+> > > > works for all configs.
+> > > > 
+> > > > ----------------->8
+> > > > diff --git a/include/linux/interrupt_rc.h b/include/linux/interrupt_rc.h
+> > > > index b9a7f05ecf42..39f30bc65548 100644
+> > > > --- a/include/linux/interrupt_rc.h
+> > > > +++ b/include/linux/interrupt_rc.h
+> > > > @@ -12,6 +12,7 @@
+> > > >     */
+> > > > 
+> > > >    #include <linux/irqflags.h>
+> > > > +#include <linux/debug_locks.h>
+> > > >    #include <linux/preempt.h>
+> > > >    #include <linux/processor.h>
+> > > >    #include <linux/smp.h>
+> > > > @@ -63,6 +64,12 @@ static inline void local_interrupt_disable(void)
+> > > > 
+> > > >           new_count = hardirq_disable_enter();
+> > > > 
+> > > > +       /* Is hardirq disable count overflow soon? */
+> > > > +       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT))
+> > > > +               DEBUG_LOCKS_WARN_ON((new_count & HARDIRQ_DISABLE_MASK) +
+> > > > +                                   (10 << HARDIRQ_DISABLE_SHIFT) >
+> > > > +                                   HARDIRQ_DISABLE_MASK);
+> > > > +
+> > > 
+> > > This needs a return here right? Else we will see warning for 10 times
+> > > and then overflow happens and we will call _local_interrupt_disable. No?
+> > > 
 > > 
-> > Oh, seems I overlooked something... could you elaborate on this? What's
-> > the scenario in your mind? You said we hit 10 times warning and *then*
-> > overflow?
-> > 
+> > DEBUG_LOCKS_WARN_ON() uses debug_locks_off() to avoid this, so we won't
+> > see it 10 times. The reason not using return here, because we would
+> > introduce unpaired local_interrupt_disable() if we returned:
 > 
+> Yes, it could be a weird case if the overflow actually happens.
+> So just warning maybe enough to catch such callers.
 > 
-> (the "10 times" wording was for the possible wraparound.
-> I didn't know DEBUG_LOCKS_WARN_ON() will turn debug_locks
-> off after the first warning, I thought it will print 10 times.)
-> 
-> Main concern is the wraparound itself. If the HARDIRQ_DISABLE field reaches
-> 0xff and we increment it once more, the field becomes zero after masking
-> (ff + 1 -> 100 in the shifted field). Then local_interrupt_enable() can
-> observe:
-> 
->         (new_count & HARDIRQ_DISABLE_MASK) == 0
-> 
-> and treat it as the outermost enable, potentially calling
-> _local_interrupt_enable() while there are still outstanding logical
-> local_interrupt_disable() users.
-> 
-> So I think the useful debug check is one that catches the count before it
-> gets close enough to wrap. Thing I wanted to avoid is silently making the
-> HARDIRQ_DISABLE field look like zero after overflow.
+> Maybe your kunit test can actually help test the behavior with the loop
+> count.
 > 
 
-Given that the detection is only on debug kernel, I think the damage of
-keeping increment after warn triggered is low (this is assuming that we
-can detect all the issues with the debug kernel, similar treatment as
-the preempt_count nowadays). However, your suggestion does look better
-for the corner cases and it's a better damage control, so I will add the
-return part, thank you!
-
-For the future, we need better detection and report for these counters
-for sure.
+I'm sure that we can have more tests, but this is a good start, thank
+you!
 
 Regards,
 Boqun
 
-> Whether it returns or just warns, I am not sure. As recovery may
-> not be easy. It is meant more to be a damage contol than recovery.
-> 
-> 
-> My line of thought is,
-> 
-> If we return after debug checks in local_interrupt_disable(), we wont advance the preempt count
-> further, so it wont wrap around. Now, there will be corresponding local_interrupt_enable(),
-> at some point it will reach 0, we enable the interrupts. There will be some more
-> local_interrupt_enable() still, but they will be caught with your debug check in
-> local_interrupt_enable() and preempt count won't be decremented further.
-> So if we put return we may have a damage control.
-> 
-> > > > > 
-> > > > 
-> > > > DEBUG_LOCKS_WARN_ON() uses debug_locks_off() to avoid this, so we won't
-> > > > see it 10 times. The reason not using return here, because we would
-> > > > introduce unpaired local_interrupt_disable() if we returned:
-> > > 
-> > > Yes, it could be a weird case if the overflow actually happens.
-> > > So just warning maybe enough to catch such callers.
-> > > 
-> > > Maybe your kunit test can actually help test the behavior with the loop
-> > > count.
-> > > 
-> > > > 
-> > > > 	// hardirq disable count is n
-> > > > 	local_interrupt_disable(); // hardirq disable count is n + 1
-> > > > 
-> > > > 	local_interrupt_disable(); <- trigger the warning, if we return
-> > > > 				   // hardirq disable count is n + 1
-> > > 
-> > > Likely i am missing to understand.
-> > > 
-> > 
-> > No, it was me who misunderstand ;-)
-> > 
-> > > Isn't the count incremented earlier than return?
-> > > I.e even if return happens it should be n + 2 right?
-> > > 
-> > 
-> > Yeah, you're right, but then why do we want to return earlier? Since the
-> > following if:
-> > 
-> > 	if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
-> > 
-> > will be false, and we will just return from the function, no?
-> > 
-> > Regards,
-> > Boqun
-> > 
-> > > > 
-> > > > 	local_interrupt_enable(); // hardirq disable count is n
-> > > > 
-> > > > 	local_interrupt_enable(); // hardirq disable count is n - 1
-> > > > 
-> > > > Regards,
-> > > > Boqun
-> > > > 
-> > > > > Not sure, if below is any better? (Igore whitespace mangling)
-> > > > > 
-> > > > > if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
-> > > > >       DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) >=
-> > > > > 			 HARDIRQ_DISABLE_MASK - (10 << HARDIRQ_DISABLE_SHIFT)))
-> > > > > 	return;
-> > > > > 
-> > > > > >            /* Interrupts can happen here, but it's OK, see __irq_exit_rcu(). */
-> > > > > > 
-> > > > > >            if ((new_count & HARDIRQ_DISABLE_MASK) == HARDIRQ_DISABLE_OFFSET)
-> > > > > > @@ -73,6 +80,11 @@ static inline void local_interrupt_enable(void)
-> > > > > >     {
-> > > > > >            int new_count;
-> > > > > > 
-> > > > > > +       /* Unpaired local_interrupt_enable()? Warn and abort. */
-> > > > > > +       if (IS_ENABLED(CONFIG_DEBUG_PREEMPT) &&
-> > > > > > +           DEBUG_LOCKS_WARN_ON((preempt_count() & HARDIRQ_DISABLE_MASK) == 0))
-> > > > > > +               return;
-> > > > > > +
-> > > > > >            new_count = hardirq_disable_exit();
-> > > > > > 
-> > > > > >            if ((new_count & HARDIRQ_DISABLE_MASK) == 0) >
-> > > > > 
-> > > 
-> 
+------------->8
+Subject: [PATCH] irq: Add max local_interrupt_disable() nesting level kunit
+ test case
+
+To confirm the max nesting level of local_interrupt_disable() works, a
+kunit test is added to the whole test suite.
+
+Note that when DEBUG_PREEMPT=y, it'll generate a warning which is
+expected.
+
+Suggested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Boqun Feng <boqun@kernel.org>
+---
+ kernel/irq/refcount_interrupt_test.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/kernel/irq/refcount_interrupt_test.c b/kernel/irq/refcount_interrupt_test.c
+index ca904dba24b9..38dfccbaa4d4 100644
+--- a/kernel/irq/refcount_interrupt_test.c
++++ b/kernel/irq/refcount_interrupt_test.c
+@@ -52,6 +52,27 @@ static void test_multiple_irq_change(struct kunit *test)
+ 	TEST_IRQ_ON();
+ }
+ 
++static void test_max_nesting_irq_change(struct kunit *test)
++{
++	for (int i = 0; i < __IRQ_MASK(HARDIRQ_DISABLE_BITS); i++) {
++		local_interrupt_disable();
++		TEST_IRQ_OFF();
++	}
++
++
++	for (int i = 0; i < __IRQ_MASK(HARDIRQ_DISABLE_BITS); i++) {
++		TEST_IRQ_OFF();
++		local_interrupt_enable();
++	}
++
++	TEST_IRQ_ON();
++
++	local_interrupt_disable();
++	TEST_IRQ_OFF();
++	local_interrupt_enable();
++	TEST_IRQ_ON();
++}
++
+ static void test_irq_save(struct kunit *test)
+ {
+ 	unsigned long flags;
+@@ -79,6 +100,7 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_single_irq_change),
+ 	KUNIT_CASE(test_nested_irq_change),
+ 	KUNIT_CASE(test_multiple_irq_change),
++	KUNIT_CASE(test_max_nesting_irq_change),
+ 	KUNIT_CASE(test_irq_save),
+ 	{},
+ };
+-- 
+2.50.1 (Apple Git-155)
+
