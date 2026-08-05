@@ -1,117 +1,106 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24426.protonmail.ch (mail-24426.protonmail.ch [109.224.244.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14CF3812DB
-	for <rust-for-linux@vger.kernel.org>; Wed,  5 Aug 2026 14:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785939767; cv=pass; b=HjLQyfTcsE2PWxCVGVMZwSIPIeI8MQHXzWs3ErMXVH2buzXUadYWQ6EF0yiPAj9E9QJUOmheuM+jLKlrdrA1gSmkxvOCR0IhJRPDoDtyWJaiHjyqr7rCv20apvKxYW5RXWbNj/pqqiBekXO2lXA1zHI7R1lBmMlMNigrMhBHriQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785939767; c=relaxed/simple;
-	bh=NfHtMYv4QN+Dcg5DJMn9rLD+T5RYMVpxyClG9vZmrRU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jUjr0+sWIPi0ddaziH/lGhu+btjxUFtFYxPADBXtt//Dg1rt9OhOKubYP3+jMR5dMkwnes3/4b56yESPr877YqKlhzLH21EZh3cWWUwAcgVKABcdzMHe8vB7YRhwJ1ysnqR1qMhp466B01N9QXDKTHL0b7kZfTD8+GwX8wsKQVE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pd/esPmY; arc=pass smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ECB364024;
+	Wed,  5 Aug 2026 14:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.26
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785940148; cv=none; b=OjzZf72XI/cqBxQzM0b9gJ7SHk0w+Id574WkYlKIskEE8CfSHB2JueWYmCWRttLUluasGGmlCoHv3aXTy+bVlt6tekWGfZ509yB81bpqOgymPhMShRCh3kHXB+0g7fRKwxxBG+lutWqefhFw+BHrub0Ag0zpv78NE/+GCXaa95s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785940148; c=relaxed/simple;
+	bh=mJQE4EquGiWBRuG6TJJ3HJ3sVO9ktZiHkzUjhlbZVXY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TBNG576qX/CoStSE5b7bjQrgFiFFgev8qGAr/iY0z7iTHdvdeDZYaUkP0SOXocWgol7upuJyybX4xD04M9k9xoe8zc/9nJaCL8MNGRIs6pwSQ6xByPWVUcAgf95s7DyHm/ZYoXH59Au4/uPFPS4HA/DN6rkzw5PeilAaMUUgYvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=UVxiAlRX; arc=none smtp.client-ip=109.224.244.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pd/esPmY"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cffd93cdedso1564045ad.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Aug 2026 07:22:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1785939761; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XzED3SdeNmxMgUouZu4zv/gMz7wn6HzHuyjVVsIp+O83Kl6mvM5wAI5OuSXcYEYElJ
-         m822/9TaTFq4pzBCIvC/aRGIkEP79K1/ffgI6Dk3xBLu+YDSeWO+5srlijBOuWVT21w1
-         L/wS890IxH5zw0tKyJ5zalaxqJaPz83rVgzAAlcA/gbHD0fbntkGMwTnL/PKvqcbINgt
-         /bVCyr0A0D2tBQuWj8641DyqoqxmZtvuL0NApA77wWaOpAQElhQkC1dcTAJ10k5EQ2fk
-         b5zGbsq7MJ59G066qJO28t+i+Zl036wOl3Qkebb/jDgmh6IbFK/RmIwhVtJbRj9XzTD9
-         ISLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NfHtMYv4QN+Dcg5DJMn9rLD+T5RYMVpxyClG9vZmrRU=;
-        fh=LAmGvpFx6GtBxy6LuZkwHhMLiteTghnOiBhMlc8XBrE=;
-        b=EUZYSZVuS6wP7RaCkbRPZ3DEncwPdjmbYGm+AqWXsFXY5iKhH6D9db9GwmHx3H/vKb
-         K+ruy/ok7bJ4g/e5+qCP7QHeAw/uqIJ/W15ya+bFGOZN73ziY4SfZaPwNf+OnOaroz3H
-         EJlkALB9BqNmQ2w2pZZCnKUxKAY7lbBTZCamTP5uiiM3xdyqStJU2IlrLMSBkBdNV/nm
-         bTaTrfuFoMbru0RVOMYkoLDQOMJRCeUf0FteJrCw/ImKIQ6AqNc6Exr2uVm7lgK7YG4R
-         WWzxKpWGev6ZF/+tcvTc+NEEUgr4JsdjJAHNxMB/0ytyoZXnhv5j6rq9qzGJLcNBWvYr
-         8OpQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785939761; x=1786544561; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NfHtMYv4QN+Dcg5DJMn9rLD+T5RYMVpxyClG9vZmrRU=;
-        b=pd/esPmYjzNfW66ONCD4a+RRgl96NTLHYoeCfqMdJZAsr8rmE0RFYDpdWokav0gAxa
-         afltfKGRbgSq27G7hKJ8ObLvS7s/KaxGOEAzfqX6mkWEs11jUquq5/ZuhWf+yEasJBzH
-         YozYrqCkTZ8ztJOduUXIo5BO23gCDDaIRPzIXL+sf4HXZH2Ed96gR6hx2UZ4QaUAPD9C
-         X4EvnRP4i2Utjo+HeHFT8cIHn4jDcrUlug4kGSXTBrVWEMHv2Yof001FuxxWXUZRZWfW
-         80CEiL22MaBvpIEDTvv8CDIi5EaJytUw7oJJR7HFDNHWcSKLIlZMBd3+u17Dh3OlmEJp
-         Vxdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785939761; x=1786544561;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NfHtMYv4QN+Dcg5DJMn9rLD+T5RYMVpxyClG9vZmrRU=;
-        b=orfYW4w7tC9GD9+aeFYasZAOh0XoVJoKceT1Wy9z4mSG+BjnFYkrjbEfJKWO8yWnC0
-         RsR0trgo+tduo0oUeT8T1rHLKBHlUNSq9JM8r2s1OKOSUbIT1XNgxILuvsWjeTdFwqM0
-         WFrqqFwVQdjuXOgp9yBO2tZelChb75sesdTeg7Bo6nIfBMznMCGFkmoZ4XeKapOK/ta4
-         7BbJoWq1BG/FvHuVMivARTA5yV1/O5qDLPFbzlfi0AxO+GYXdgi+tes6Sd6Ppb0umbcU
-         /bX7WNhCgr3NfO9uTKG3yzd0Zpb1m350Ksk4JaxJE74Crr/PiIwjxS+sselon+Tq5PUM
-         FDnA==
-X-Forwarded-Encrypted: i=1; AHgh+RrgmqTwxA3NJk6+lmut+kNkpJWvElFAtm9jWP+borMKTjNfEzV9Ji7tU+0MyRg5P909V/PRME8pSOw1HBfFPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6PhS+odtDNXGwstTfieitxSv0if7hF9fiLgbtfkOZHh7AcdYk
-	x6rG/8okTXyjRunVDNGMXRZvBULb+inWu4eX9zMZz81HOVMIiRkCrMTLaeGSs83rggkvOA1gMGn
-	FRCvA/a+pFBUwt0o6IBJEiC7r5dwAEg4=
-X-Gm-Gg: AR+sD10cSVYZ32/KNn/bYQKwTMpYG3u6G91WRB1ftf8A0tbQeBzs+Uecn28gsgZXso3
-	W9HjmfymOWlr4y0h3YPZ300xiJvI6F0/VFqm0QrD1HLILNAR3dGvu4OVjnlGuG/ElWyltj/3ngy
-	7u/QLIMMjoX09jsNk39s/Nusvo+egAWSQAC9poDAm/am0P+eba0ePzG9WQFBjWjVhDt2BmWm5CS
-	8hQ5DO4Zt2UHbYUjO41FrAiqnywKWw0Vf01JLTLhOUsCnd47W8gd9re5q8p62YV+la+l+jTizvG
-	y7E9pDbO5HynWqmkaNNNp/WIsXsCxfR2KmTfBnyRjUJni50Zt3TFN8WplWV3FM3aaGKlmVOiXqW
-	9sDLGYpI0F67RkCuCNyN7/uLvnxbD5ZU4LzgdkoV2x9C7DVD3E6AyQ7CiYEmckc0BNQgNgdw=
-X-Received: by 2002:a17:903:19cf:b0:2cc:f4d4:29a0 with SMTP id
- d9443c01a7336-2d0cab0db0dmr70044675ad.3.1785939760927; Wed, 05 Aug 2026
- 07:22:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UVxiAlRX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1785940124; x=1786199324;
+	bh=4qy3z3jNhoiG4DGN/ItIT1Isb7Y3IgZbkcI2XLGTctY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=UVxiAlRXriVau7trkkyJkUd25b2O99/LUHEariClj/8TfkZWIxnTs0lZMpAuZ7l2q
+	 GB5CdXo7t2x23PbBG4Kxfg5n+BUUSfVJCA7hSBSIIRYj0YJW8h4qOrGOB10PI6xa8V
+	 cC+q79QYEflPiTg213Hno+VhM6sEjYoNIz+a1X3SlgyijKFu/ufq3eU7uk2JOHt5d+
+	 LDRCVnPFB2KcN5ZIrhzo7gS+8bBmHTr4CMZk8p+TJ55YyUY4qL3I3Wmmz5t4wzvICF
+	 OnIn5QM0HLtbGDFY1Cbc2lTJ3Q0mmnL9xuK2orQl/JU+Kshii5YChYDMn8g6nBgemG
+	 F91v7yApl0C4g==
+Date: Wed, 05 Aug 2026 14:28:38 +0000
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Daniil Detkov <d4n11l@proton.me>
+Cc: Todd Kjos <tkjos@android.com>, Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Miguel Ojeda <ojeda@kernel.org>, Christian Brauner <brauner@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH] rust_binder: enforce delivered death process ownership
+Message-ID: <LkLJ6kna_XlfWWj0zhJ4JNfzildMiCWFyD-Nfn2iFVvRINHEiDhrWZ2kXEPSz24jcoIGquTtxQDxnPxcULgZY10H4Usp6PGd5NkIu7ho5lk=@proton.me>
+In-Reply-To: <2026080523-mothball-giant-c5a5@gregkh>
+References: <20260805-fix-rust-binder-death-ownership-v1-1-a89594c3b5db@proton.me> <2026080523-mothball-giant-c5a5@gregkh>
+Feedback-ID: 204876372:user:proton
+X-Pm-Message-ID: 25a5de78ee48d2464d57f4e9311b0bb951df1286
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260722214951.72941-1-tomo@flapping.org> <DKBXI6A044JX.3OXFT3R8DIK2K@garyguo.net>
- <FenzX1BbXwDwhxl2RJ8sf7OnFwsAi3prmxcHhYKtfyXwJ_l88xtj5rr-z8T90Dqj1Em0RGPwvxQNqlo0pl2e8A==@protonmail.internalid>
- <20260731.224825.536098581345512332.tomo@flapping.org> <87v79o7myg.fsf@t14s.mail-host-address-is-not-set>
- <DKH2NGL7W29L.2K5MVFFHP84JX@garyguo.net> <CANiq72m5ZWTAs8XXfPYkEfDj9CT4_N7ZShXSj33WqcWwNV=NWA@mail.gmail.com>
-In-Reply-To: <CANiq72m5ZWTAs8XXfPYkEfDj9CT4_N7ZShXSj33WqcWwNV=NWA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 5 Aug 2026 16:22:25 +0200
-X-Gm-Features: AUfX_mwFoPp58Ui2TNDVft2gX0cUA8LrkZSTpBNELyqSfwVJon4IJg8ufeFZb3Y
-Message-ID: <CANiq72kRN+mrq=fYZ=D_ZerJUn5=yOrgD-FNBzPq-ep__V4fTQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/7] rust: use Delta instead of raw jiffies for
- timeouts and delays
-To: Gary Guo <gary@garyguo.net>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, FUJITA Tomonori <tomo@flapping.org>, aliceryhl@google.com, 
-	arve@android.com, boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, 
-	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
-	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
-	jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, 
-	tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 5, 2026 at 4:21=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> If it is late for timekeeping, then yeah, I am happy to help.
+On Wednesday, August 5th, 2026 at 6:13 PM, Greg Kroah-Hartman <gregkh@linux=
+foundation.org> wrote:
 
-By the way, in any case, I want to pick the fix at the very least.
+> On Wed, Aug 05, 2026 at 05:50:56PM +0500, Daniil Detkov via B4 Relay wrot=
+e:
+> > From: Daniil Detkov <d4n11l@proton.me>
+> >
+> > The delivered_links field of NodeDeath may only be linked into the
+> > delivered_deaths list owned by NodeDeath::process. The existing safe
+> > ProcessInner::death_delivered method does not enforce that relationship=
+,
+> > so safe Rust can violate the invariant relied on by a later unsafe list
+> > removal.
+> >
+> > Move the insertion boundary to Process and validate both the supplied
+> > guard and the NodeDeath owner before mutating the list. Keep the existi=
+ng
+> > lock order and duplicate-insertion behavior unchanged.
+> >
+> > Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+> > Closes: https://github.com/Rust-for-Linux/linux/issues/1238
+> > Assisted-by: Codex:5.6-Sol
+> > Signed-off-by: Daniil Detkov <d4n11l@proton.me>
+> > ---
+> >  drivers/android/binder/node.rs    |  6 +++++-
+> >  drivers/android/binder/process.rs | 23 +++++++++++++++--------
+> >  2 files changed, 20 insertions(+), 9 deletions(-)
+>=20
+> Cool, how was this tested?
+>=20
+> thanks,
+>=20
+> greg k-h
+>=20
 
-Cheers,
-Miguel
+Hi Greg,
+
+It was built and checked against rust-fixes with:
+
+  make LLVM=3D1 CLIPPY=3D1 O=3D... -j32 drivers/android/binder/
+  make LLVM=3D1 O=3D... rustfmtcheck
+  make LLVM=3D1 O=3D... -j32 bzImage
+
+I booted the resulting x86_64 kernel with
+CONFIG_ANDROID_BINDER_IPC_RUST=3Dy under QEMU/KVM, mounted the binder
+filesystem, opened the binder device, and verified that BINDER_VERSION
+returned protocol 8. The boot completed without a BUG, Oops, or panic.
+
+This covered the valid Binder open/ioctl path. The issue report contains
+an in-kernel PoC for the mismatched NodeDeath/Process insertion; I had
+not run that PoC when submitting v1.
+
+If it would be useful, I can also set up and run the in-kernel PoC from
+the report against both the pre-fix and patched trees.
+
+Thanks,
+Daniil
