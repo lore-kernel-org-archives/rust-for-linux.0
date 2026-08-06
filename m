@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF9736655C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95082371D05;
 	Thu,  6 Aug 2026 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786036195; cv=none; b=clbQNSD7BahDf0G7L7HH6zH6sOzYhGfn3yxGLs+impS3VLLUCmy2oPo2nfxU6YhrWSP164qWwQBx+c+f9nWitRKTsJ9Ju4FVSJkLP5THRHGcAPcHgx4WxJ91RlgjqOCabsLxW9mltZfOWdjkzByDKt818tJvocCAD6sxML7hrF8=
+	t=1786036195; cv=none; b=LKsLdO6Et5KGUm6/aNxUCpCC2ZJ6y70ySwAY9bYGdcbSiNQV+Sgl0HdIA/8ST3NjAt12IW+W6njcafzSHm5HFNQ1R5q8UsvNK6i9CBqnMziAyRhKvKBpbjsr8CbIrKi1LK1ysUuIKCtprjTCFBAqBMdAAecYjPDcxXDPYgwGORc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786036195; c=relaxed/simple;
-	bh=RuhGFQg/miapkcuhF9rScJiktA9Kr0LCS5Epiji8ajo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Q0VqIs/9+jKK8gU1rXf9O/8rqfcBOQbBNVsv5O+SUOox7jk3yxPXiEayiom6oXd75nV86iWoU9YMJNQNR3ndIdrVOY4uQtQmpuaru4jKow5SKgvxMsNwNb3qh4Qohw14Vdimhw+GoooNOrrt3b2j2LyzFuneyuIzFd7EkO9ttGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Yqyfy1tY; arc=none smtp.client-ip=10.30.226.201
+	bh=gBeCwzgG77EObc2Yyji4wjMjI8hg1cHLHMj7opVab9g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=qz4MsI3BeiVR/XT5l8vb+ds46JDBsvjGvX4LOArjKUC2S2MO7ZNWBJEvX2lihmWld5HwwN2OoIx5o42AviHZW7pef6UwXJj2lJTnbTH/4+025Mmh/HvhhF5TQuerJemQMol3izn8wvfi/7qf1/MFOSRnTkDnqFK6QvjBQ1uBTdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GCiSK5T0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Yqyfy1tY"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 301ACC2BCB9;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GCiSK5T0"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D319C2BCFF;
 	Thu,  6 Aug 2026 17:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1786036195; bh=RuhGFQg/miapkcuhF9rScJiktA9Kr0LCS5Epiji8ajo=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Yqyfy1tYjNbjY6Gmbrk7qy/zG9Dl936c6E73oY/5vVOJFQ0ZIf23qGnt5OWDWoiRA
-	 d8xNt0PS2mer4vsSUK1lPyv9TDYWpFggTyDKVnopbTYMEgc8T00WvGaXDCAWU6SrKe
-	 Q9ui4tcZr+H8PsBVuPZaAB4rezbVxX7ZkzQD1Yfg=
+	t=1786036195; bh=gBeCwzgG77EObc2Yyji4wjMjI8hg1cHLHMj7opVab9g=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=GCiSK5T0hiEC5OWWinNef8l0w0S59cnZ4eiis4qiKM2SP2J8mqKNWX/8+kBy1wv4u
+	 9gHtavzhiTJs6KYKfAHYZ6mNpieX2vkKWPHMOMp7og06IE446chia4qldYXcrJoFA8
+	 Vkng0SCWDkUW53V5DimQevcIbSlDdhWFKvlPcC+M=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05EF3C5AC7C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F2B2C5AC81;
 	Thu,  6 Aug 2026 17:09:55 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Subject: [PATCH v3 0/8] drm/tyr: add debugfs support
-Date: Fri, 07 Aug 2026 01:07:22 +0800
-Message-Id: <20260807-tyr-debugfs-v2-v3-0-ff5595ac66ae@linux.dev>
+Date: Fri, 07 Aug 2026 01:07:25 +0800
+Subject: [PATCH v3 3/8] rust: debugfs: add ScopeRef for existing dentries
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -36,11 +36,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEu/dGoC/12OywqDMBBFf0Wy7pQ8JNGu+h+lizxGDRQtiQZF/
- PdGuygWZnMunMOsJGLwGMmtWEnA5KMf+gziUhDb6b5F8C4z4ZRLqgSFcQng0ExtEyFxkLSy2Cj
- lJNYkS++AjZ+P4OOZufNxHMJy9BPb129KcAmmPNcYUKCqNNo5Vikm7y/fT/PVYSJ7KvGfrgT7/
- yQfBY2a1WitqeuTvm3bB0wxIp/rAAAA
-X-Change-ID: 20260730-tyr-debugfs-v2-608cef77d6e9
+Message-Id: <20260807-tyr-debugfs-v2-v3-3-ff5595ac66ae@linux.dev>
+References: <20260807-tyr-debugfs-v2-v3-0-ff5595ac66ae@linux.dev>
+In-Reply-To: <20260807-tyr-debugfs-v2-v3-0-ff5595ac66ae@linux.dev>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -63,91 +61,192 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
  dri-devel@lists.freedesktop.org, Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786036192; l=3511;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786036192; l=5737;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=RuhGFQg/miapkcuhF9rScJiktA9Kr0LCS5Epiji8ajo=;
- b=X5XkghnYmEdXOxcW0VBUwCwj7xAmV82mVDRAHfY3fbEbBTkooxL4P2Hu+pDHRz2Ki3LxhWX84
- uRg1MouoXGwCgflzX6SsVcIYbQLAGi0vhGy2YS0apDzCXpe6bAlAuIO
+ bh=gBeCwzgG77EObc2Yyji4wjMjI8hg1cHLHMj7opVab9g=;
+ b=fxzLoGbcjbRzQmSV14JVKvUk4fBi1ynRhqiyz7qnp7FIftA+IE4Nb9DENs0oXyil0ol6jTgeP
+ JEV56FGjnhKA1XGbIUv7oY2yk1r/Wc2/Ms4IZJbHAe1n4Z0EL0ROo+b
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
 
-Add debugfs support for the Tyr DRM driver.
+Add methods to construct debugfs abstractions from raw C dentry
+pointers. Needed by DRM debugfs_init callback to create ScopedDir
+from an existing dentry.
 
-The series adds a SeqShow trait for seq_file-backed debugfs files, a
-debugfs_init callback on the DRM Driver trait, and a gpuvas debugfs
-file in Tyr exposing GPU VA space information.
+Add ScopeRef<'a, T>, a debugfs directory handle that carries a
+reference to associated data of type T.
 
-This is based on drm-rust-next and depends on:
-
-[PATCH v10 0/7] drm/tyr: firmware loading and MCU boot support
-  https://lore.kernel.org/r/20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com
-
-See the full dependency and commit history at [1].
-
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/11
-Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/59 [1]
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
-Changes in v3:
-- Drop the DrmSeqShow adapter and use SeqShow directly, per Danilo's
-  feedback. Simplify the debugfs_init callback signature accordingly.
-- Redesign VmRegistry per Daniel's and Alice's feedback: move it to
-  vm.rs at the top level of the registration data, use Arc<VmRegistry>
-  for shared ownership, and separate register/unregister from Vm::new
-  and Vm::kill. Registration failure is non-fatal (dev_warn) since the
-  registry is a debugfs convenience.
-- Add VmRegistry::unregister to remove VMs on teardown, addressing
-  Alice's concern about the list going out of sync.
-- Drop the "hold device reference for open files" patch; the debugfs
-  proxy fops already ensure file operations cannot outlive
-  debugfs_remove().
-- Improve SAFETY comments and fix style issues identified during review.
-- Link to v2: https://lore.kernel.org/r/20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev
+ rust/kernel/debugfs.rs       | 84 ++++++++++++++++++++++++++++++++++++++++++--
+ rust/kernel/debugfs/entry.rs | 15 +++++++-
+ 2 files changed, 96 insertions(+), 3 deletions(-)
 
-Changes in v2:
-- Reworked the debugfs implementation per feedback from Danilo on v1:
-  dropped the hazptr/revocable-based approach in favor of the DRM
-  debugfs_init callback and generic seq_file abstractions.
-- Fixed a UAF in drm_debugfs where a device could be unregistered while
-  a debugfs file remains open (drm_dev_get/put across file lifetime).
-- Link to v1: https://lore.kernel.org/r/20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev
+diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
+index d7b8014a64746..831d6750a34ba 100644
+--- a/rust/kernel/debugfs.rs
++++ b/rust/kernel/debugfs.rs
+@@ -24,7 +24,7 @@
+         PhantomData,
+         PhantomPinned, //
+     },
+-    ops::Deref,
++    ops::Deref, //
+ };
+ 
+ mod traits;
+@@ -33,6 +33,7 @@
+     BinaryReaderMut,
+     BinaryWriter,
+     Reader,
++    SeqShow,
+     Writer, //
+ };
+ 
+@@ -51,6 +52,7 @@
+     FileOps,
+     ReadFile,
+     ReadWriteFile,
++    SeqReadFile,
+     WriteFile, //
+ };
+ 
+@@ -538,7 +540,7 @@ pub fn dir<'dir2>(&'dir2 self, name: &CStr) -> ScopedDir<'data, 'dir2> {
+         }
+     }
+ 
+-    fn create_file<T: Sync>(&self, name: &CStr, data: &'data T, vtable: &'static FileOps<T>) {
++    fn create_file<T: Sync>(&self, name: &CStr, data: &'data T, vtable: &FileOps<T>) {
+         #[cfg(CONFIG_DEBUG_FS)]
+         core::mem::forget(Entry::file(name, &self.entry, data, vtable));
+     }
+@@ -588,6 +590,14 @@ pub fn read_callback_file<T, F>(&self, name: &CStr, data: &'data T, _f: &'static
+         self.create_file(name, data, vtable)
+     }
+ 
++    /// Creates a seq_file debugfs file in this directory.
++    ///
++    /// The file's contents are produced by invoking [`SeqShow::show`] with
++    /// `data` on each read.
++    pub fn seq_file<S: SeqShow<U>, U: Sync>(&self, name: &CStr, data: &'data U) {
++        self.create_file(name, data, &<S as SeqReadFile<U>>::FILE_OPS)
++    }
++
+     /// Creates a read-write file in this directory.
+     ///
+     /// Reading the file uses the [`Writer`] implementation on `data`. Writing to the file uses
+@@ -721,4 +731,74 @@ fn new(name: &CStr) -> ScopedDir<'data, 'static> {
+             _phantom: PhantomData,
+         }
+     }
++
++    /// Creates a [`ScopedDir`] wrapping an existing debugfs dentry.
++    ///
++    /// Files created under this directory are not automatically removed on drop;
++    /// their lifetime is tied to the dentry owner.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure the dentry remains valid for the lifetime of the
++    /// returned `ScopedDir`.
++    pub unsafe fn from_dentry(dentry: *mut bindings::dentry) -> Self {
++        let _ = dentry;
++        ScopedDir {
++            #[cfg(CONFIG_DEBUG_FS)]
++            // SAFETY: The caller guarantees the dentry is valid and outlives this `ScopedDir`.
++            entry: ManuallyDrop::new(unsafe { Entry::from_raw(dentry) }),
++            _phantom: PhantomData,
++        }
++    }
++}
++
++/// A reference to a debugfs directory that also holds a reference to
++/// associated data of type `T`.
++///
++/// Created from an existing debugfs dentry (e.g. the DRM debugfs root).
++/// `data` must remain valid while the debugfs files created under this
++/// scope may be accessed.
++pub struct ScopeRef<'a, T> {
++    #[cfg(CONFIG_DEBUG_FS)]
++    inner: ScopedDir<'a, 'a>,
++    data: &'a T,
++}
++
++impl<'a, T> ScopeRef<'a, T> {
++    /// Creates a [`ScopeRef`] from an existing debugfs dentry and a data reference.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `dentry` remains valid for the lifetime of
++    /// the returned [`ScopeRef`] and that `data` remains valid while the
++    /// debugfs files created under this scope may be accessed.
++    pub unsafe fn new(dentry: *mut bindings::dentry, data: &'a T) -> Self {
++        let _ = dentry;
++        ScopeRef {
++            #[cfg(CONFIG_DEBUG_FS)]
++            // SAFETY: By the safety preconditions of `new`, `dentry` is valid
++            // and remains valid for the lifetime of the returned `ScopeRef`.
++            inner: unsafe { ScopedDir::from_dentry(dentry) },
++            data,
++        }
++    }
++
++    /// Creates a seq_file debugfs file in this directory.
++    ///
++    /// The file's contents are produced by invoking [`SeqShow::show`] with
++    /// `data` on each read.
++    #[cfg(CONFIG_DEBUG_FS)]
++    pub fn seq_file<S: SeqShow<T>>(&self, name: &CStr)
++    where
++        T: Sync,
++    {
++        self.inner.seq_file::<S, T>(name, self.data);
++    }
++
++    #[cfg(not(CONFIG_DEBUG_FS))]
++    pub fn seq_file<S: SeqShow<T>>(&self, _name: &CStr)
++    where
++        T: Sync,
++    {
++    }
+ }
+diff --git a/rust/kernel/debugfs/entry.rs b/rust/kernel/debugfs/entry.rs
+index 46aad64896ecb..7643ff0fa6093 100644
+--- a/rust/kernel/debugfs/entry.rs
++++ b/rust/kernel/debugfs/entry.rs
+@@ -8,7 +8,7 @@
+         CStr,
+         CStrExt as _, //
+     },
+-    sync::Arc,
++    sync::Arc, //
+ };
+ 
+ use core::marker::PhantomData;
+@@ -87,6 +87,19 @@ pub(crate) unsafe fn dynamic_file<T>(
+ }
+ 
+ impl<'a> Entry<'a> {
++    /// Wraps a raw dentry pointer.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure the dentry is valid and outlives this `Entry`.
++    pub(crate) unsafe fn from_raw(entry: *mut bindings::dentry) -> Self {
++        Self {
++            entry,
++            _parent: None,
++            _phantom: PhantomData,
++        }
++    }
++
+     pub(crate) fn dir(name: &CStr, parent: Option<&'a Entry<'_>>) -> Self {
+         let parent_ptr = match &parent {
+             Some(entry) => entry.as_ptr(),
 
----
-Alvin Sun (8):
-      rust: seq_file: add as_raw() method
-      rust: debugfs: add seq_file support
-      rust: debugfs: add ScopeRef for existing dentries
-      drm: move debugfs_init after dev->registered is set
-      rust: drm: add debugfs_init callback to Driver trait
-      rust: drm: gpuvm: add dump_gpuva_info to UniqueRefGpuVm
-      drm/tyr: track VMs in a registry
-      drm/tyr: add gpuvas debugfs file
-
- drivers/gpu/drm/drm_debugfs.c   |  3 --
- drivers/gpu/drm/drm_drv.c       |  5 +++
- drivers/gpu/drm/tyr/debugfs.rs  | 20 ++++++++++
- drivers/gpu/drm/tyr/driver.rs   | 16 +++++++-
- drivers/gpu/drm/tyr/fw.rs       | 18 +++++++--
- drivers/gpu/drm/tyr/tyr.rs      |  1 +
- drivers/gpu/drm/tyr/vm.rs       | 33 ++++++++++++++++
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/debugfs.rs          | 84 ++++++++++++++++++++++++++++++++++++++++-
- rust/kernel/debugfs/entry.rs    | 15 +++++++-
- rust/kernel/debugfs/file_ops.rs | 60 +++++++++++++++++++++++++++++
- rust/kernel/debugfs/traits.rs   | 11 ++++++
- rust/kernel/drm/device.rs       | 41 +++++++++++++++++++-
- rust/kernel/drm/driver.rs       | 11 ++++++
- rust/kernel/drm/gpuvm/mod.rs    |  9 +++++
- rust/kernel/seq_file.rs         |  6 +++
- 16 files changed, 323 insertions(+), 11 deletions(-)
----
-base-commit: 0ffc014cb2abfc79d161662b125e085b3e7107e7
-change-id: 20260730-tyr-debugfs-v2-608cef77d6e9
-
-Best regards,
 -- 
-Alvin Sun <alvin.sun@linux.dev>
+2.43.0
 
 
