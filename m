@@ -1,111 +1,97 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C230723BD17;
-	Thu,  6 Aug 2026 00:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785974845; cv=pass; b=byo8e1aSFvNpMKg9qi2wX1eHjvzX7/dPu82UC8N5Pmh9gscyTq037HTbdOTkILl6qjdOF1effh2Gkq07Z/gdX6MD0bo+vQQ66dwD5eWPpFpwvWh+Mjh1ZbKZz1K+ADNHKyHYg04kncKecbTRTtx5nCqfwZWkyJsKzxBbqLpQI+U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785974845; c=relaxed/simple;
-	bh=i0OYm55VnGqgGb0VFbxOmWFfxkHnHHoaKYh8LfQZVtM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=JkF27KsgbKOkeYmHHnUGggNI5hIljG1HIiOZ32B+yk9ZdlTs316WluLZNrjCWeSwn2qKRtXW8VLm/ZMgBv3SWNyycHRDUK5ltQFZu0X1psdmqcODnrWeb9x653S76VdpfToBtwMUnj/BJhDHPldSKyyedzQrZQAoQrUjkccKDII=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=gqDpxPtP; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB78926C3BD;
+	Thu,  6 Aug 2026 00:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785975174; cv=none; b=iwJn9DmfSithb/2NEVDjDUSqpLLjiKq3preaVn0+EqwfJlntwBidYJNosl9ghlE7UL9PvDcBZR2WkPqqGuz35dDb7+9TJO9WZfASNjY07mCThB6IigxVczNkd8pp17Y2hCFFtGupgpYjZruxD6aIpOlJ6l1Brv0cO3Kw0sMdHSo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785975174; c=relaxed/simple;
+	bh=Cgy+RnO3bTkvrGbychnDMXBZNu+7GYnhAHyL9/L6F3M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DLuAN3yYFJcgvqtM5qcE1sGZCz6Uszvmb5aNsqvR3IeAkd/Mr8zIozmDjtdDgVhyrUntF84lwzOncLz3FOCAmf72kJmAswlj95VcTTMeCRN6IW5d4Lu3gJXyAO/9f8iHDqEDTBGrJhKShTMRJokEFRN/t8YWb5YICJi95FbhipE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRJLTyHc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="gqDpxPtP"
-ARC-Seal: i=1; a=rsa-sha256; t=1785974811; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=F8szQjloI2HGbswnB6GC8fbCZwhihcCrn+BQ6UcWK/tSHtq+iBPuHO9TWxjDYJvUodIFhO7jGrP/kufDjIm1DxqDFnlz7YyTzqgaml1mQoIAVQFOYRYDatjwiu3USAa9USamYyIBSSy3CbeYEBbQK2CHBWKXmt0LsguhUbKTHOA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1785974811; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=i0OYm55VnGqgGb0VFbxOmWFfxkHnHHoaKYh8LfQZVtM=; 
-	b=SIeoYuWM+gvgFPcATFE6+tUlzSEJzyAwnzL+G3Kq68DtBMM1h3S1Y3QI4KAnJKOF8q/hL7QxtIrqqzG+2AgkRloaBuWsK3DKHjXDKpKGijG83U1qh7166zDWrxw3a4BC88D/f+hKc86KtwtEphbGh2I6tEgzYix/n7b2uMsEoMQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1785974811;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=i0OYm55VnGqgGb0VFbxOmWFfxkHnHHoaKYh8LfQZVtM=;
-	b=gqDpxPtPAhkDzKfENdNEwBY1Ra4gzCP6UqsC/9mOqbkb9ujjqqe/dbj1SBK3j1O1
-	Y3qNSWJQI/EwpnzQUVVuXVVGXFgaZs/YpDzqopvhYjktOPrVwgv0y64Z7XoBV1u/Si4
-	Ry0+WFzY6E2elWwC7voNP1ZNRNnx+5QryZoW0r3w=
-Received: by mx.zohomail.com with SMTPS id 1785974809483389.16040687769885;
-	Wed, 5 Aug 2026 17:06:49 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRJLTyHc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108B11F000E9;
+	Thu,  6 Aug 2026 00:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785975173;
+	bh=oHj5gm7mBnp4Yq4Le8hJRYzxkoHyagURN4jCk1R4UpA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BRJLTyHcbXlPXHGZKaq40CNS5IgSvIYt96EIeyUy8sHmH9a8SBZmxfPykSpbi3qEX
+	 WWSV4TgSEfO3NzIu8gHepxEZ2fvFD3zKmtN7c10eUtNbTy+fC9OD/Fa5hq96TUCHc7
+	 xCGQ7TLp9f/z6YwmT1S3+JojRi8WcLspzmQxS1NYxGKzKtFMM0uZQgC1thXkpfCyw2
+	 eJilHSobxSDnkC2YE0ETSK5wkOIdzRzovqTLXIF1QESJjKWKOjYD4xcZMmxJz0lUMV
+	 BNuAaCNJh7q6ATOPG8wviWTJiOGt9ZwP6666cE5Snxvo6hTzGi/kiUAVeBxHbf6bW9
+	 Pug44hFbgFt3A==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Gary Guo <gary@garyguo.net>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	zhiw@nvidia.com,
+	rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	nova-gpu@lists.linux.dev
+Subject: Re: [PATCH v7 0/8] Transition Nova Core to TLV firmware images
+Date: Thu,  6 Aug 2026 02:12:48 +0200
+Message-ID: <20260806001248.2279964-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260731201017.2580713-1-ttabi@nvidia.com>
+References: <20260731201017.2580713-1-ttabi@nvidia.com>
+X-Patch-Reply: applied
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 0/3] implement GPU reset API
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260708114358.957305-1-work@onurozkan.dev>
-Date: Wed, 5 Aug 2026 21:06:31 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- dakr@kernel.org,
- aliceryhl@google.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- ojeda@kernel.org,
- boqun@kernel.org,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- tmgross@umich.edu
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <ED267FF1-08A7-4C77-B0ED-F74D250DA93F@collabora.com>
-References: <20260708114358.957305-1-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Onur,
+On Fri, 31 Jul 2026 15:10:09 -0500, Timur Tabi wrote:
+> [PATCH v7 0/8] Transition Nova Core to TLV firmware images
 
-I went through this and Sami's downstream implementation as asked. I =
-think we
-can strike a middle ground here, because it looks like the two trees =
-need
-different things at the moment.
+Applied, thanks!
 
-Upstream tyr today has no scheduler and no jobs. It seems like =
-everywhere we
-might want to issue resets can get a hold of &Device<Bound>: probe,
-ScopedQueue, IRQ handlers and etc. For this, I think your 'bound design =
-fits,
-and I'd like v4 to keep it.
+  Branch: drm-rust-next
+  Tree:   https://gitlab.freedesktop.org/drm/rust/kernel.git
 
-I think the problem starts when the job queue lands, because now we =
-might find
-ourselves in places that only have access to the DRM device data which =
-has a
-'static bound and thus a hard requirement on Devres, AFAIU. I think we =
-can keep
-that in tyr-dev for now and land on top of your code later, if we shape =
-a few
-things accordingly. I will leave comments on 3/3.
+[1/8] rust: alloc: add Vec::zeroed method
+      commit: 60782beb112e
+[2/8] rust: firmware: add request_into_buf()
+      commit: e6c2c6265521
 
-In any case, there are changes in !74 which I think are improvements =
-regardless
-of the 'bound vs devres question, and I also think v4 should come with a =
-user.
-How about adding the GLB_PING watchdog? It would exercise schedule(), =
-give
-ScopedQueue its first user and lets us test this on the board.
+      [ Declare fw as *const to match the FFI out-parameter type and pass
+        &raw mut directly, removing the redundant cast chain. - Danilo ]
 
-Lastly, can you use b4 to manage the dependencies for this series, if =
-you
-haven't yet? It would make it easier to apply.
+[3/8] gpu: nova-core: add TLV parser for firmware files
+      commit: 33f40117c0c5
 
+      [ Drop unnecessary payload.is_empty() check in Tlv::new(), use EINVAL
+        instead of ENODATA in Tlv::get_bytes() and add a corresponding TODO
+        comment. - Danilo ]
 
--- Daniel
+[4/8] gpu: nova-core: transition booter to TLV images
+      commit: ad5157827522
+[5/8] gpu: nova-core: transition gsp to TLV images
+      commit: ccdcefb71acd
+[6/8] gpu: nova-core: transition gen_bootloader to TLV images
+      commit: ebc053cf0b4c
+[7/8] gpu: nova-core: transition fsp to TLV images
+      commit: 08994a0f2936
+[8/8] gpu: nova-core: update firmware module info for TLV images
+      commit: 7923d0bc8ede
 
+The patches will appear in the next linux-next integration (typically within 24
+hours on weekdays).
+
+The patches are queued up for the upcoming merge window for the next major
+kernel release.
