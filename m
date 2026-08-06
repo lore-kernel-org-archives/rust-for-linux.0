@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A063E4248A0;
-	Thu,  6 Aug 2026 09:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06713242D9
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 09:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786007295; cv=none; b=pG44HjFfQACB0KtzlJYfMaRpIGsSz/JS+9rCbxONIU4ja2T7Wol8VBKXQNtsHz8QC79gYv0tBLlB6YO8WgePPdA0hop+pygyv8KVQ50CFaIY2rGurnO5x+InQBhTwnK/Y/wVHyrMtgZgiEDEwIFnBkY0nMlWOBVKaTMXbhw0PXM=
+	t=1786009474; cv=none; b=fPggC6UOqJWwWv3lSO+TFWNWlIjpu8jN9u+RTHIezJ+/YrkfgJPg/P5Yktf6BSaAE8DPc3eOo5xl46Nl+BxM7gUekYTaMSwQLi2x9YrOeQxjTiZUvSTGlDA7nRVnQRMMrK5Gpjp1j86eq8pU6NEwpPauqvSGr0nFxuEAOGgkFbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786007295; c=relaxed/simple;
-	bh=3bicg5ORZDq72OfBoeTcOeYRJc6o7mFDrz62Q7IALxA=;
+	s=arc-20240116; t=1786009474; c=relaxed/simple;
+	bh=DdWyCrlfKrFfM7oIzAqMQzeboWlv+W/CvBtd+2lsg/c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CI2U+p8R74d4vWlOrJZMRuwCW8Y9mTT2BJYR7ooHnKP0gRii0a6WLfDvic8m1aA66SLl4l82d89L6u9AEI/ZOvUyP1FS7giOrrbpA54C/8XffffdjNlFrl49MhUNATQg04VbMX92ri5SmWIdO9tHpxLc9cvJDUbqseX023uUPbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBpzU+3H; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=XwYZRHV7Sv0Y/5no5+6CL255caQsmPaCVXZS9lVgUdhBiui2AwLtumlHguVvHAQtTlWjb+fZp0JFyWB8qRA1imKyUtFuAXIfLy1hiCHgtxt++tLZpSCyDP+RPM/Us0IUm7texoQRnDRx/ztuYn9ruZLDOhY6mNjIyzaSzJ4KZiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZoabGSF9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBpzU+3H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FFF1F000E9;
-	Thu,  6 Aug 2026 09:08:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZoabGSF9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FBA61F000E9;
+	Thu,  6 Aug 2026 09:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786007294;
-	bh=c4YQ4eAwJRsD3hueQPNwT8y097gGy2FPUFHvT2YMrGQ=;
+	s=k20260515; t=1786009472;
+	bh=k7A2ZQmOgDgPs8v2esMf6scIu0kEFNVohGMgj4n/c8A=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=nBpzU+3HnAiAV9v6gVEL7FlftXr4KwbfEqTPr2E/7q4QCgdiR9nM9YaCU0bHMV/rT
-	 rtyhNqdg9KLtU1vYmvbkYlLhoR1APKVEZQcEKlOlrjL7lC70FSpZVwoevXV2vSBR0l
-	 F6/OfCgojtwcea62VNOUmaukYzpLddwV0Xp1yRAOvX1tU+Egsso894Y+uD1ygJQo5H
-	 dYHEpu8toipmJl9wTLPnvyUXAFI4W0N5UKdClOqEx7NR6sZDx8S34R8Iv+3XrsZMRq
-	 3aKkj38vq18A6Fs7lYzUHJ+ELfIlUsPG1whyt6mNpE3QwX2k2cKUk7zS5PU/tKkLow
-	 qHSEPCbGF+7UA==
+	b=ZoabGSF9ifc0guYvC8h4xT4NSbFvOOxuBfRFXGjW9AgBkXfcuunGn4Eg/kQdHTb91
+	 17TspP5WwVAbcNvoC8STKaVVZCfrXrQrd5KyMpexsSxkCUE1LsjI/BTseYcmZkl+q1
+	 rfxvBSDZXEz3qY3aJJh4FEJ184KHTb0ff1nxSl+QnXzoUaXo3Fa9Y1i9T7bIeioVnQ
+	 I5naSb9AGydvbuH2nyVzVGTMYK/WeRNzcqqEilE410Sr/WGCJczKIxD3aCcbkxq+Pc
+	 nSsOAxeYnjwIEIaQAg1lD5CIDvXQ0FSLr/bAhY3A3bOMtLIW5t9jA6kgvG5CWw81UD
+	 BnKaQOc+crPlQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Adarsh Das <adarshdas950@gmail.com>, adarshdas950@gmail.com
-Cc: acourbot@nvidia.com, aliceryhl@google.com, axboe@kernel.dk,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, gary@garyguo.net,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
- tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev
-Subject: Re: [PATCH v2] rust: block: set GenDisk
- block_device_operations.owner to THIS_MODULE
-In-Reply-To: <20260806083655.23161-1-adarshdas950@gmail.com>
-References: <20260805192020.107601-1-adarshdas950@gmail.com>
- <HxcdCGoRqPsQe1B2W6AuOT-Gsob7jMsUKVOjssQEAOVChpwJ7vPp1bwsGiQ9PzvRT-tq6HvhO98nEw64UY90NQ==@protonmail.internalid>
- <20260806083655.23161-1-adarshdas950@gmail.com>
-Date: Thu, 06 Aug 2026 11:08:05 +0200
-Message-ID: <87bjbf4nwq.fsf@t14s.mail-host-address-is-not-set>
+To: FUJITA Tomonori <tomo@flapping.org>, aliceryhl@google.com,
+ arve@android.com, boqun@kernel.org, brauner@kernel.org,
+ cmllamas@google.com, gary@garyguo.net, gregkh@linuxfoundation.org,
+ ojeda@kernel.org, tkjos@android.com
+Cc: acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+ dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org,
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
+ tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v5 1/7] rust: time: make Delta generic over its time unit
+In-Reply-To: <20260806073241.1024319-2-tomo@flapping.org>
+References: <20260806073241.1024319-1-tomo@flapping.org>
+ <20260806073241.1024319-2-tomo@flapping.org>
+Date: Thu, 06 Aug 2026 11:44:21 +0200
+Message-ID: <878q6j4m8a.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,34 +51,111 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Adarsh Das" <adarshdas950@gmail.com> writes:
+FUJITA Tomonori <tomo@flapping.org> writes:
 
-> GenDiskBuilder left block_device_operations.owner NULL. Pass the driver's
-> ThisModule into GenDiskBuilder::build(), heap-allocate the operations
-> table, and keep it alive until the gendisk is released via free_disk.
-> Update rnull as the in-tree caller.
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 >
-> v2:
-> - Free fops in free_disk instead of GenDisk::drop to fix use-after-free
->   when the device stays open after removal. (Sashiko)
-> - Install the cleanup guard before fops allocation to avoid leaking gendisk
->   on -ENOMEM. (Sashiko)
-> - Link to v1: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
+> Delta hardcodes its value as i64 nanoseconds. A later patch adds a
+> jiffies span, whose natural representation is isize jiffies rather than
+> i64 nanoseconds, and a separate type per unit would duplicate the
+> arithmetic and comparison machinery.
 >
-> Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
+> Make Delta generic over its time unit so the jiffies span can reuse that
+> machinery. The nanosecond Delta keeps its current representation and API
+> via the default unit parameter, so no functional change.
+> users.
+>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/kernel/time.rs | 72 ++++++++++++++++++++++++++++++---------------
+>  1 file changed, 48 insertions(+), 24 deletions(-)
+>
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index b8463823aed9..589bd7827523 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -246,7 +246,7 @@ impl<C: ClockSource> ops::Sub for Instant<C> {
+>      #[inline]
+>      fn sub(self, other: Instant<C>) -> Delta {
+>          Delta {
+> -            nanos: self.inner - other.inner,
+> +            value: self.inner - other.inner,
+>          }
+>      }
+>  }
+> @@ -258,7 +258,7 @@ impl<T: ClockSource> ops::Add<Delta> for Instant<T> {
+>      fn add(self, rhs: Delta) -> Self::Output {
+>          // INVARIANT: With arithmetic over/underflow checks enabled, this will panic if we overflow
+>          // (e.g. go above `KTIME_MAX`)
+> -        let res = self.inner + rhs.nanos;
+> +        let res = self.inner + rhs.value;
+>  
+>          // INVARIANT: With overflow checks enabled, we verify here that the value is >= 0
+>          #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
+> @@ -278,7 +278,7 @@ impl<T: ClockSource> ops::Sub<Delta> for Instant<T> {
+>      fn sub(self, rhs: Delta) -> Self::Output {
+>          // INVARIANT: With arithmetic over/underflow checks enabled, this will panic if we overflow
+>          // (e.g. go above `KTIME_MAX`)
+> -        let res = self.inner - rhs.nanos;
+> +        let res = self.inner - rhs.value;
+>  
+>          // INVARIANT: With overflow checks enabled, we verify here that the value is >= 0
+>          #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
+> @@ -291,14 +291,38 @@ fn sub(self, rhs: Delta) -> Self::Output {
+>      }
+>  }
+>  
+> +mod private {
+> +    pub trait Sealed {}
+> +
+> +    impl Sealed for super::Nsec {}
+> +}
+> +
+> +/// A trait for time units.
+> +pub trait TimeUnit: private::Sealed {
+> +    /// The underlying representation of the time unit.
+> +    type Repr: Copy + Clone + PartialEq + PartialOrd + Eq + Ord + core::fmt::Debug;
+> +}
+> +
+> +/// A time unit of nanoseconds.
+> +///
+> +/// A [`Delta<Nsec>`] stores its value as `i64` nanoseconds and can represent
+> +/// any `i64` value, including negative, zero, and positive numbers.
+> +#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
+> +pub struct Nsec;
 
-The reason `owner` is not set is that we want to keep the vtable const.
-But with Alvins recent series [1], we should be able to set owner in
-const context.
+Should we make these enum with zero variants to indicate they should not
+be constructed?
 
-Can you rebase on his series and see if you can make it work in const context?
+> +
+> +impl TimeUnit for Nsec {
+> +    type Repr = i64;
+> +}
+> +
+>  /// A span of time.
+>  ///
+> -/// This struct represents a span of time, with its value stored as nanoseconds.
+> -/// The value can represent any valid i64 value, including negative, zero, and
+> -/// positive numbers.
+> +/// The span is stored in the unit given by the type parameter `U` (see
+> +/// [`TimeUnit`]); its value has type `U::Repr`. `U` defaults to [`Nsec`], so a
+> +/// plain [`Delta`] is a span in nanoseconds. The value can be negative, zero, or
+> +/// positive.
+>  #[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
+> -pub struct Delta {
+> -    nanos: i64,
+> +pub struct Delta<U: TimeUnit = Nsec> {
+> +    value: U::Repr,
+>  }
+>  
+>  impl ops::Add for Delta {
 
+When you add `Jiffy` later, this impl block will only cover
+`Delta<Nsec>`. Is that intentional, or did you intend to support
+all these operations operations for `Delta<Jiffy>` as well?
 
 Best regards,
 Andreas Hindborg
-
-
-[1] https://lore.kernel.org/r/20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev
-
 
 
