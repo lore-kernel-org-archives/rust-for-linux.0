@@ -1,127 +1,141 @@
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC62C3E6DD9
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 08:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39943E6DD9
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 08:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786004609; cv=none; b=gBwfMXB+Lf/5bx2ng+u8i6KL55sMe20/uYF2wjLRx+skz1qv7QXg4TJucm29TSHULnQZ5um7fmkJzqvagKDYN9hdGp/xJLnYaHbJD6cAih5nzwPU+CZfzTZ60kFEA/uQzCv6sDBuQWy0wyLSqnTQcKcK0ymxc2IzyUN9xLBR0Mw=
+	t=1786004850; cv=none; b=Qvw3Zfyx8EeQymF/SuiYyU4Zyv9bjAqocf9kMO097ddoZcgzNjsFnMhf4YT4QRrfSguRc/dOMVKjDeHXB8slb8rqXJ12BKnXM3WlyX5ROwpKS/npfusUfdJQB9fMVG17Didy286YJ5OsPbfpZEk/aK/UZlmIJ8aQlyaEdxVl+vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786004609; c=relaxed/simple;
-	bh=x5phXPoPmg5wz1xiXdhbj6a/n9TD4iNVEKMkv5Xc+lE=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=i7RdqHGY/5i2wpP9hD+LDeuq5vZk8KxVhfBEmWofOmpXPyf46fcrzwZSmdQqgqSBdK3VIwSHlc0sGqU9nMxllBNyiXN8tPpdZCCLjnUPdiXSD6rSMETidL+feDESRjAtcK8zzEr31bA09FIQUmsf8qUyl6eE/qkH3nh5lnq5Emw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=BksZwodt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JAM793t1; arc=none smtp.client-ip=103.168.172.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1786004850; c=relaxed/simple;
+	bh=RaZq+ylxQETsG2grpkNGQnzDvEI7yp2tMeXTkC8BLko=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TVCPkmtZLk7gkXY9HamTG8ha8wGs/kw7Lh0wEXmy+PGIMh2BBuTf5CZ0rf1r4Iv8q8UmB8Rfu37I3QJzaKaseRX44jmsCkOKv8W8K9ez9U1bjfl4x9dXOC2h3rxBPiWkMi2R5YZOV4pZXaag9v/zvZfI1JQ1+8f+X89CIb1I8ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IK0tQADd; arc=none smtp.client-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="BksZwodt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JAM793t1"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id A5CBF1380055;
-	Thu,  6 Aug 2026 04:23:26 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 06 Aug 2026 04:23:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1786004606;
-	 x=1786008206; bh=HwSnRZ/iiQwkJ8f3P8sGSdY6wrqf9Zxm8y1DalyzYyI=; b=
-	BksZwodt24crOx297p+6ex+dQC94W+Y87241/1bpjwBAv92UqUiVj+7Q2f+DlEgv
-	jZOipD+nl6YE08Hx9A8yLVjqQtE5jMYIEfxMboJYHHHQRKzKgUAZfgvjSB8Lq2gn
-	XdYLnCWqX6iob6ASJof6B9OK3Uq3BAsXuzt+Zjg3ZGDIsZ/3jRYg6C34Mkmacb1o
-	DROIP6oNPTt27xlpm3/2PV38mdzPv6f5JlqzgUjQ91JtdRbwxoOfckJt9N8643oe
-	XPmyaqWyleNouqIjRE5/YJA4NHvq2LhEl6A5L0Ot1EfNEqtQjbYshfPRZ4Zl7ejq
-	zhEAXaUvs33hEi3ocWVbeA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786004606; x=
-	1786008206; bh=HwSnRZ/iiQwkJ8f3P8sGSdY6wrqf9Zxm8y1DalyzYyI=; b=J
-	AM793t1QlTP8DPtszkNzfATrCF3/DPMrv0Ex+pZVqesO/PyqsFtmhPhazvqMTOFB
-	065odYg9VZM8UHNI9nSYuDFRwXope/Lm89ht754xunJqKSbQmuj95yzENFgfEKSf
-	GFwTUa4DbovTE7tzU8AcqGtk2/VzkNRQEPcW7k3mgHjzvzr13QjR/DWHWa9/Tt3m
-	0t0bzRs9/qKa2b5kk1OIsz163rZv667vwDSGxPbd/pl6rliNtDuPhkiYGTuIAzet
-	HvH8HjyGFVCi4a2Ed73hAc3y/lVMq/aRvrZyLUBXFmPhtyU0vRrMuM3Ka+tmHnSb
-	LzBuTFl4BsCpPiCkasovg==
-X-ME-Sender: <xms:fkR0aojH-ZMqg1cUAUBJA8PT9YU1jZFwR94P_kLeD2MiebJeEzIqOg>
-    <xme:fkR0ahfsamchFR_WW-Z29asAzfrmWjeX5baMpHJ-F4Vev7BetNtpCaeDdaqLD-R4x
-    5x6jPA4Xl2U-hb1nE2b3QU8F3wp8APqBqRi09V_fDyLW-hGxtV2fxg>
-X-ME-Received: <xmr:fkR0alhzlYRfCSrkiTMIr9DIxBgJX4U38W1zdCH8xBCyBnDuy3TXjb9R_qr-jeSeudLqr5OeD0hFLZyZOLNzObxD>
-X-ME-Proxy-Cause: dmFkZTGxIILnURZoapVW/2PJxT+ECKsKd1DYHkIeVGppQYKR+tMsVDCUOa4rCfSOfYeV6g
-    6+f/0ULL2gWCFAVwwdb6+dnZ9hpH8mmBjSH14fx6QyB32ZZfcmvi1fcDKbab99rDcOMMGf
-    8fyNv/fQ2u+uMiZioFhjXK8sMnj7nZfY+PHS0rHud2hjYReI1x9mQG6rxama+xy/yTx9fl
-    fejVpKc1SxfqVAocBY6DHFQ/jLFzpEZws4bib29rN4zxbLEsPnudOcKv5qc7cODTIoYDj+
-    CUZyCw+VXu729+KBHz5sWp894qJtGjoss1+W2nxqB7GrqDvmv0zjXri3UD52lUxWydQBpV
-    WYUmF3DnDztZzBtju1oRc9HokSawpEFMqwM5gU0+YArAe28p8+mUOcmlCtwBoTuz9oZ/4M
-    zd9W1SvLM8cFhgqoEy6cugmuMd+Py5b+eiPpV8U19sAgZQPsqr6TeXKLYtdDMwmI9UOzI2
-    V5JoD68ql6gMFbBl9AX+Gl5rKHqrbTYGp96FKtuhkCtoHqFOcpE13i5xcyL+B35abck52p
-    BTdaLY20BhPP1cg8zDCHl1X4HhVvIv2ljVaniPjP/ofGX6e3eAbc34F3V5siBH4Y7w37E7
-    m0aO5mJMkcE9M52ego0B8nMQxOaErro0B9IU4VshvjWRHni9y6M4+QZa37qg
-X-ME-Proxy: <xmx:fkR0anODm3Qubon-n3gDG8GrOysAcN6XrTro5nWw9gxZD238aRR1cQ>
-    <xmx:fkR0apnCCz7Y9a50QEzAMdJUoDiR1HmdkEm2OEov_BqscWCzKJzgRQ>
-    <xmx:fkR0amdYrCQNoC-xZcQfjl03Rv1AqGtI6gQD9Z7h3ul0_r78Dx4TwQ>
-    <xmx:fkR0ajsThKzTqmOnSkmN2qnLgkb1q8eorZjP20u-YMv3KbkDt2sCLQ>
-    <xmx:fkR0anmWhs0tRWBkKobRK82oFQWJyNOtjeUSJoDNJDqrD4pBRwYxXWO2>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Aug 2026 04:23:21 -0400 (EDT)
-Date: Thu, 06 Aug 2026 17:23:19 +0900 (JST)
-Message-Id: <20260806.172319.1970353690506890750.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, ojeda@kernel.org, acourbot@nvidia.com,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com,
- miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() rounding near
- i64::MAX
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <87a4r094ow.fsf@t14s.mail-host-address-is-not-set>
-References: <pnFuloASX9OPRE4rxnDZmJLS4_GaTn6IAT2OPZgNSvUK8JSWvobnoTZr6EifpDauCqMlUcmFmi6zeLTeBxsYsw==@protonmail.internalid>
-	<20260723120907.209643-1-tomo@flapping.org>
-	<87a4r094ow.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IK0tQADd"
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-496b6f97676so18980205e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 01:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786004836; x=1786609636; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BAOIkOcqalO/o7wmswIlVoL44WUmFncYhIvpomELsHc=;
+        b=IK0tQADdCf8/KVhOQP3RWiCiJVjotuMmstTkKSOmuMzwI+ue2CDtLhtVUPn08XRFml
+         3aUj/ztIwuBbxQV/vFC/XrgxH3vf1/AKmBvWFELahp2EFF6ktIeYFj7nTaDP1J2gq+xa
+         tMchVAWFfjSa20c9P07ALmE5PEU7SV7UXlOlH3TSzQdsgS2fklfcNCjFkW8SbsPcOT/q
+         /MbUEK3N0tMwXT4b+mqbxyGrtN7cHGXK26jaxyJ6tcVc70If7QPh4CeXCdnd9RDnSyf6
+         I7yjualeHt2HgQN4pu0K7zayCmZ39sJA0bZlgte/LZNIgjXCeEkLKPyZuYJ0zbZUsu2f
+         JNLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786004836; x=1786609636;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BAOIkOcqalO/o7wmswIlVoL44WUmFncYhIvpomELsHc=;
+        b=kAA+k5wpBJIY9svP5M5QEL11vYd/DV48BlLlAT64yB/Hh0PIVirXIoKjbJf21VtDoj
+         8rCxiLi3NixqfM6HrFDUfPadlnxqhROmLdGASPvb47ul0WydZvgKIMEEPSLemNlCbMLO
+         prP1w5KvhhHz1HLnuwBwmrfIQrpCUKPzLPqx8uAQNmYTSAciNc9Ohbekowf+TXVn0Fv0
+         lV9bPKHLLGpvwxiEbmnGrhivmGDkhm3nMQaX/uMAlYnrNvGgNN23WMi1rK2ZegMIiR+8
+         kWLXEH5/Ha0fOmDxxxX9q5s3YaQ1WNkd9Gpdo27+CBgy+hDhA4vm8s+FAMIAxjnH9KmI
+         EbMg==
+X-Forwarded-Encrypted: i=1; AHgh+Rqo4SDN3IWSzGstt4cndbWTE7GfNmTJ6bYtTKD/LZRpshRSb7/mT7DNkQ03o3wUAi7TgfCPypUaQvJUF70RaQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSOC8H9oEh/jaOIevBLdqwL9a81GGgnJrJz8zyEAjPicG3XhWi
+	rEuYhsqf/pNV/oGfZFDMpwTt2c6qRsi/RHw0oRaOLuuueIrICHxdPMtk1egLGBA0UKe5YjurOZB
+	g+GkoUpPUnbvrE9sVKA==
+X-Received: from wmix24-n2.prod.google.com ([2002:a05:600c:e558:20b0:497:ffd5:d12])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a21b:b0:495:4e89:3f30 with SMTP id 5b1f17b1804b1-4994e7c5e49mr131672365e9.15.1786004835498;
+ Thu, 06 Aug 2026 01:27:15 -0700 (PDT)
+Date: Thu, 6 Aug 2026 08:27:14 +0000
+In-Reply-To: <20260805104815.104154-1-laura.nao@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <anHZpHh_5CZhH5N3@desktop> <20260805104815.104154-1-laura.nao@collabora.com>
+Message-ID: <anRFYgjaEswOCB2L@google.com>
+Subject: Re: [PATCH v3] drm/tyr: add Job IRQ handling
+From: Alice Ryhl <aliceryhl@google.com>
+To: Laura Nao <laura.nao@collabora.com>
+Cc: linkmauve@linkmauve.fr, a.hindborg@kernel.org, acourbot@nvidia.com, 
+	airlied@gmail.com, bjorn3_gh@protonmail.com, boqun@kernel.org, 
+	dakr@kernel.org, daniel.almeida@collabora.com, deborah.brouwer@collabora.com, 
+	dri-devel@lists.freedesktop.org, gary@garyguo.net, kernel@collabora.com, 
+	linux-kernel@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, simona@ffwll.ch, tamird@kernel.org, 
+	tmgross@umich.edu, work@onurozkan.dev
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 05 Aug 2026 13:39:43 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Wed, Aug 05, 2026 at 12:48:15PM +0200, Laura Nao wrote:
+> Hello,
+>=20
+> On 8/4/26 14:23, Link Mauve wrote:
+> > Hi,
+> >
+> > On Mon, Aug 03, 2026 at 03:34:37PM +0200, Laura Nao wrote:
+> >> Add a threaded IRQ wrapper for Tyr interrupt sources and use it to
+> >> handle the firmware Job IRQ.
+> >>
+> >> The Job IRQ reports requests from the CSF firmware, including global
+> >> interface requests and CSG attention bits. Only the GLB bit is current=
+ly
+> >> handled, as it will be used to check firmware readiness. CSG bits
+> >> handling will be added at a later stage. Add a Job IRQ handler that
+> >> masks the interrupt in the primary IRQ handler, processes pending raw
+> >> status in the threaded handler, clears the handled bit, and reenables
+> >> the mask before returning.
+> >> Add a wait queue and a bool flag so the handler can signal firmware
+> >> readiness when the GLB bit is set.
+> > [=E2=80=A6]
+> >> diff --git a/drivers/gpu/drm/tyr/fw/irq.rs b/drivers/gpu/drm/tyr/fw/ir=
+q.rs
+> >> new file mode 100644
+> >> index 000000000000..6eeb1399a7b3
+> >> --- /dev/null
+> >> +++ b/drivers/gpu/drm/tyr/fw/irq.rs
+> >> @@ -0,0 +1,105 @@
+> > [=E2=80=A6]
+> >> +/// Requests a threaded IRQ registration for the Job IRQ.
+> >> +///
+> >> +/// # Safety
+> >> +///
+> >> +/// Callers must not `mem::forget()` the resulting registration or ot=
+herwise prevent its
+> >> +/// [`Drop`] implementation from running.
+> >> +pub(crate) unsafe fn job_irq_init<'a>(
+> >> +    pdev: &'a platform::Device<Bound>,
+> >> +    iomem: Arc<IoMem<'a>>,
+> >> +    fw_ready: Arc<AtomicBool>,
+> >> +    job_irq_wait: Arc<WaitQueue>,
+> >> +) -> Result<impl PinInit<ThreadedRegistration<'a, TyrIrq<JobIrq<'a>>>=
+, Error> + 'a> {
+> >> +    iomem.write_reg(JOB_IRQ_MASK::zeroed().with_glb(true));
+> >> +    let job_irq =3D JobIrq {
+> >> +        iomem: iomem.clone(),
+> >> +        fw_ready,
+> >> +        job_irq_wait,
+> >> +    };
+> >> +    // SAFETY: The caller guarantees the resulting registration will =
+not be leaked.
+> >> +    unsafe { TyrIrq::request(pdev, c_str!("job"), job_irq) }
+> >
+> > Nowadays we use the shorter c"job" way of creating a &CStr, and I think
+> > the macro will even generate warnings in some configurations (perhaps
+> > CLIPPY=3D1?).
+> >
+>=20
+> Got it, I didn't get the warning with CLIPPY=3D1, I'll double check my
+> configuration.=20
 
-> "FUJITA Tomonori" <tomo@flapping.org> writes:
-> 
->> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>
->> The ceiling adjustment used saturating_add(NSEC_PER_USEC - 1) before
->> dividing. Once the nanosecond value gets within NSEC_PER_USEC - 1 of
->> i64::MAX the addition saturates to i64::MAX, which drops the ceiling
->> bias and yields a result one microsecond too small.
->>
->> Fixes: fae0cdc12340 ("rust: time: Introduce Delta type")
->> Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
->> Closes: https://lore.kernel.org/rust-for-linux/CANiq72mtS0ABA2JnT5tpz6J9c_mnxY+vyPvghV_ukngWvN8F2w@mail.gmail.com/
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> 
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> 
-> It took me a little while to understand this one. Perhaps a few comments
-> explaining the boundary conditions could be warranted here?
+There's not any warning for using it, because macros still need it
+sometimes.
 
-I added the comments for as_millis_ceil() [1]. You want the similar
-comments for as_micros_ceil() too?
-
-Or we could add a small helper for _ceil() and keep the explanation in
-one place.
-
-[1] https://lore.kernel.org/rust-for-linux/20260806073241.1024319-4-tomo@flapping.org/
-
+Alice
