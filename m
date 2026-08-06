@@ -1,257 +1,159 @@
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858CC3E1692
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 06:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EC9392811
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 07:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785998706; cv=none; b=k1qd2pb+Ra7OeRGuX7wcjIIPavHp3KKNgjAI7Scuc8hh1Kxb2vsJTGlllgCOkTjl9nNWKnzel3cjUS2hgDo8xGkwxSFJ0mtaFHgk1tEwwp1Io1a6P61mPn0/mS5g+WcBX1xyk/8n16lK+jrBbpAGagNH+voE9pVKBuXpabV0/cg=
+	t=1786001588; cv=none; b=dCoTcJAU2IYh4yk1Ogdpxxfep/Up+QSPraaCgT3D3TCvZibyUU2lW8YqK5daIpUGiF8AnM4tMzZvQdh97Jqu0LD45gOWgykky+83odpLG40hFtdyGf78+npck28474QPft/hvi0HUOi0AHWVy2Q32fJi1m7AwBNNqLc4Jlb0Pgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785998706; c=relaxed/simple;
-	bh=fRTJ1SJFWkaeN99T099jlMEWWDBrUQRgB6IQGkMC//0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=j6rRLNSmbovI0aB6gLySQl3v/128FcqAbk42YZofxFTEx0xUYQBB97HO/20HizO4csipOC/vjK4D8jPN81AQnJwo9DHEe8IH6zlgPMiRMf+Ewd1QDMOlep1IhE2PBFCUwFOIH/RDGhSuLdbsYhFbmKt4x5yCcfFA96CuPuwdjV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LHqtjjYy; arc=none smtp.client-ip=209.85.128.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1786001588; c=relaxed/simple;
+	bh=5ykYl1rhbstT5kH52tkMWI2ILqiSDPHD7Ual8jbn404=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YuWiEvjgi3mIOrZn7LrjY9lqJSqysaNQT2WKWaJbT/ndCQkVyW/et2BJNkNQFmmIDNXRqbAvEw2Pvuf4nGepTn2ZS4k8JpdhoZXWg8qrBz9nBOdQnoW6mDRo05ltDqPt4bgYpQOmfmks0FPsNPL0kJP0P/YIERDz+NifgT2e4NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Y5PTEPSD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XOjYDtvp; arc=none smtp.client-ip=103.168.172.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LHqtjjYy"
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-496bbcf7d1eso10880955e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 05 Aug 2026 23:45:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1785998703; x=1786603503; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zRICwH8NrYFqbtAQ5CUI1CBNEXWJgmDrqZQyPRGCMDg=;
-        b=LHqtjjYyc7p50lFWb++MNoxu50vjQThWRpPfuzM7kf7LQYMt1cM3xK5/PfrBKQSqxQ
-         bG2yMsusCOHYOEzmhVCabWqj+Hl36iTDCk5BevenidVqwWG3J45DDbY8LJgQSfqRWzLk
-         I+cbUu+3YXivb8ey4ekr4dnk7s1IaCNxrbDka7RWBJ8FRs1aAraZsBqXIHaLOj+/3BnD
-         cuSWJM2FpZixERUjr9eipUd+nG3Aomh/C46SKB7HE6x+KL96il+QyLO4OjomF2dvSGdE
-         p6WjYJd2SUpNJ5JGP2ZhKFwk1EAyPFCYgVfpQ4H8+37YZsgCTGErjOm75x9mYBOT28yO
-         /HDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785998703; x=1786603503;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zRICwH8NrYFqbtAQ5CUI1CBNEXWJgmDrqZQyPRGCMDg=;
-        b=pM3xQgAXolywd+3lkY5L7DZ8aYDfekvjTAx30X4YakJphhAkbZmfqyUBTywY0lpmin
-         4+zHzZ/yTryqUN+tdQZxF1nFksL1SRjzZeDvZZmdXq9IPnu3Bn2Z0Vt1DRZed42BDOxh
-         t0/zIEB6HodrVCJWPPvuTcbzTCrmL5GqDxGzENnpsdyK5IxcQrNz9Arql19FQuwttyDO
-         f5lUXIZq2NykrTP3F/4lekMDGu8QzNaN5qMpcGAnookghh3FZO4Omy4kssCUV75tugin
-         k9L/T5ZWgLT9bGnqgdRra7pYHGLUKlEcvu3wWy15EwQXit+AQxs3/Z56cV5SET6vQGi0
-         E3AA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp43GcdKHXyMdLdDq6OXN4Qk/XqgQSzda8l4NSyhEkSPBhBGofGPxawCKUpx2dsNXtpXVeL3sgQI8rcn8Ejdw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZS2Q67X3RQA5cLKT23lDqm+Bzm6UilgSC8UskFXoi8c9ws3mC
-	KGYoIpve2iqDwSYXm9r5FN7BomGeUxx+A03vv8ob7I9v5mSiJepiSs3a+34tvqF4YXeN+KkQD8O
-	QeZhl7JPLTczK5sKD7Q==
-X-Received: from wmbjo7.prod.google.com ([2002:a05:600c:6b47:b0:493:c2c9:129b])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f86:b0:499:52ab:a50c with SMTP id 5b1f17b1804b1-49952aba5b3mr58567965e9.1.1785998702236;
- Wed, 05 Aug 2026 23:45:02 -0700 (PDT)
-Date: Thu, 6 Aug 2026 06:45:01 +0000
-In-Reply-To: <anHa43G9-aln8wik@arm.com>
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Y5PTEPSD";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XOjYDtvp"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.phl.internal (Postfix) with ESMTP id 3DC92138022E;
+	Thu,  6 Aug 2026 03:33:05 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 06 Aug 2026 03:33:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1786001585; x=1786005185; bh=gwdTHGlSc1xyQJypHyaz1
+	U5oVZ/LQo2GXvh8r4kGCfU=; b=Y5PTEPSDJdcis57DFjPoNlBVFORNuPChxV77e
+	PUa0NC7DZBKiSaIc4oKJXXo+KB/EQWK3v8xML8asqegRCG0UhzUXi4cvBEXd1Gk1
+	W2irs4QcDo0eGebZZlYCh/0Dn4yNgsn7MJDnW8v60nCS0l3p3FBnuOplxjyJw/7+
+	zLdJQlJTCH6R7sCz5YKRZSJeQuK0Ljpl/CitRwFE+FnS8FXDOKWEhTbhLAenmKty
+	EKA8oTH+VLuJ9234mOyusRxtmAUOXAQdeJnPhYo6HrB2qw/jnFqGPk6msIwBLT1z
+	vRBvOk/esRMQObq/FnRp0dhc5PWJ4bkqwgrM5qDmMz7COmlxg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786001585; x=1786005185; bh=gwdTHGlSc1xyQJypHyaz1U5oVZ/LQo2GXvh
+	8r4kGCfU=; b=XOjYDtvpy6mqhfcV87+45LkhJ/RBQHbFDz1tN3NgE60OPvziqXs
+	v+tO48bGZTJP7X+0ZXJWiEYzCAx1ao83rwh01YTPoul3is/5wUdl+dQyA/vk58AR
+	ngPpRJPjTOCULZY00VHCD/UCaVEUH3+GtMLgBlnG+hz1su10esoquKJGajWvvku+
+	0T6Gaz6h+RctZn6T7jfLKZho8f36Wbi9ZSoPM9g9VGuTzSUjU2jsxiH83WWfhJ4O
+	qDhRnEgklTiUd6knF9ff7t1hBkJuYljoo5e0zpEkqvPVPbn52McCt8VlPUYS2+D0
+	0qufsqA5SGGbeBGM+dG9wgfkdN9zghA7w/A==
+X-ME-Sender: <xms:sDh0ahBz3qzAKC8vJvl0xJ7XVatzV_5Zd82JiJLVdeOn2BOlXVqcDw>
+    <xme:sDh0arqMecHirZg_IpCvBgqpBmsmQhzDpqweVvE39f4LIurbiGK-f1jEsAmhSWsIJ
+    EU0xCZPQWkC9-li3Ms6ZItpdx4mWQrdmjy-jLPLDBhFtQiyLgdgNeo>
+X-ME-Received: <xmr:sDh0aoZT8sQJUpXVtAX4sEKBnz-zKCqpLDJLM0ppJWn98UfIy0YhwtrBf1LSMxuLmVc-nine3SX-EWRtZ_4>
+X-ME-Proxy-Cause: dmFkZTFBNNOj+FqaBpOa7k4iTaCR5SHSpWdocC2NpNn0WBlNjgB3iYHVkyEkl/zDQaJyUS
+    SCHBn3Yl8w4kHYgBVgKYsqTgX6cOJkiKeY4voIynzO72AGGaAnnd6wCP19pZsMbS1Bpw7T
+    RZj4777SBR7n19awkx33hAjGtgMyZilGW7ZEUwQ1mbW6HvdLo8Xu0SOphwuzameKo7ByH+
+    W1n57GpxXHb5tLa1OYgr+VvHMIWtibceELI7+MlWHo14DlFvfjhZfyJyhz8oequtm1+mtV
+    BKHszeVr+SFjbKAzqnJocleqJatz240isVm3c/gwLzimt1Nhc5w1m+Z/4KkE4bw+vnDaUy
+    6SjqMOEsQnCeCxAlVodmh7YvpQ3hnQuhvWw5Vz+Apn1vTfVlhdk7VhmW2UowCCVvakVSm2
+    FK1qiUnhoGxOCe2s+XRDZ5Vbo4SaA6RceU9mP8x+NV3KQA47uwJrL3eYchBB/v0s/RIwKZ
+    HI1Fjc/eyj7YV0flcW9Mn9UXNOdBeNaVCdAk39pTnkUKAZ0b6MJxtFJ4+Wu6+tH6kDvZ9B
+    /eECPVQzEQPEYi+F5jRyjQi59OQAv3zSRQI/2cFjjfm2DAx3ED/uUz9SBGGIGm36HgaQYb
+    xjH4BvZyEe4NYb3mcTqMWATd4pQAQXBTyzqhGrNpUPZiDE4elC1PHzF6YMxA
+X-ME-Proxy: <xmx:sDh0alGPHFn6Nkyi4Yhja3jFlcA7Yl4HF8jHhrbmee1K1DEHlBBqrw>
+    <xmx:sDh0amZ8lvM6R4Rc44vu4RgL1zzXTefD8Fdpv0J4DhEGG2BCwfym5A>
+    <xmx:sDh0aieRTWbL2sZWkK9xqhdHRviejRO-_AQCUYTZgmHpg_JBF2bhEQ>
+    <xmx:sDh0aqA00OU8C0Qv7hkGZZAeUmJYQj0LqigOJ4WIgorirb2f-uwSnA>
+    <xmx:sDh0atGW8R7J1hpA0g6aN04R3q9G1titT5bB4ZcYp26bmjWelkw8uUry>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 6 Aug 2026 03:32:58 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	arve@android.com,
+	boqun@kernel.org,
+	brauner@kernel.org,
+	cmllamas@google.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	ojeda@kernel.org,
+	tkjos@android.com
+Cc: acourbot@nvidia.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	frederic@kernel.org,
+	jstultz@google.com,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	sboyd@kernel.org,
+	tamird@kernel.org,
+	tglx@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v5 0/7] rust: use Delta instead of raw jiffies for timeouts and delays
+Date: Thu,  6 Aug 2026 16:32:34 +0900
+Message-ID: <20260806073241.1024319-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260721153617.869933-1-beata.michalska@arm.com>
- <20260721153617.869933-3-beata.michalska@arm.com> <anGt2_OAK2UWtXuO@google.com>
- <anHa43G9-aln8wik@arm.com>
-Message-ID: <anQtbRH9SB5H1zRe@google.com>
-Subject: Re: [PATCH v2 2/3] rust: platform: wire runtime PM callbacks
-From: Alice Ryhl <aliceryhl@google.com>
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: dakr@kernel.org, ojeda@kernel.org, gregkh@linuxfoundation.org, 
-	rafael@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, daniel.almeida@collabora.com, 
-	boris.brezillon@collabora.com, work@onurozkan.dev, samitolvanen@google.com, 
-	rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 04, 2026 at 02:28:19PM +0200, Beata Michalska wrote:
-> On Tue, Aug 04, 2026 at 09:16:11AM +0000, Alice Ryhl wrote:
-> > On Tue, Jul 21, 2026 at 05:34:03PM +0200, Beata Michalska wrote:
-> > > Allow Rust platform drivers to expose runtime PM callbacks to the driver core.
-> > > 
-> > > The runtime PM abstraction builds a dev_pm_ops table for the concrete driver
-> > > implementation, but the platform bus still needs to receive that table through
-> > > struct platform_driver. Add an optional PM_OPS associated constant to
-> > > platform::Driver and initialize the coresponding C device_driver struct
-> > > accordingly during registration. The platform glue only wires the callback
-> > > table into the C driver model; ownership of the callback payload and
-> > > runtime PM teardown remain with the pm module.
-> > > 
-> > > Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> > > ---
-> > >  rust/kernel/platform.rs | 9 +++++++++
-> > >  1 file changed, 9 insertions(+)
-> > > 
-> > > diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-> > > index d8d48f60b0b9..b7e422388634 100644
-> > > --- a/rust/kernel/platform.rs
-> > > +++ b/rust/kernel/platform.rs
-> > > @@ -72,6 +72,11 @@ unsafe fn register(
-> > >              None => core::ptr::null(),
-> > >          };
-> > >  
-> > > +        let pm_ops = match T::PM_OPS {
-> > > +            Some(ops) => ops,
-> > > +            None => core::ptr::null(),
-> > > +        };
-> > > +
-> > >          // SAFETY: It's safe to set the fields of `struct platform_driver` on initialization.
-> > >          unsafe {
-> > >              (*pdrv.get()).driver.name = name.as_char_ptr();
-> > > @@ -79,6 +84,7 @@ unsafe fn register(
-> > >              (*pdrv.get()).remove = Some(Self::remove_callback);
-> > >              (*pdrv.get()).driver.of_match_table = of_table;
-> > >              (*pdrv.get()).driver.acpi_match_table = acpi_table;
-> > > +            (*pdrv.get()).driver.pm = pm_ops;
-> > >          }
-> > >  
-> > >          // SAFETY: `pdrv` is guaranteed to be a valid `DriverType`.
-> > > @@ -222,6 +228,9 @@ pub trait Driver {
-> > >      /// The table of ACPI device ids supported by the driver.
-> > >      const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-> > >  
-> > > +    /// Runtime PM callbacks
-> > > +    const PM_OPS: Option<&'static bindings::dev_pm_ops> = None;
-> > > +
-> > >      /// Platform driver probe.
-> > >      ///
-> > >      /// Called when a new platform device is added or discovered.
-> > 
-> > I've been thinking more about this, and I can't help but wonder whether
-> > we could significantly simplify it. Why not just do this:
-> > 
-> > 1. Update rust/kernel/platform.rs Driver trait to include pm ops
-> > directly in the trait:
-> > 
-> > 	#[vtable]
-> > 	pub trait Driver {
-> > 	    type IdInfo: 'static;
-> > 	    type Data<'bound>: Send + 'bound;
-> > 	    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-> > 	    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-> > 	
-> > 	    fn probe<'bound>(
-> > 	        dev: &'bound Device<device::Core<'_>>,
-> > 	        id_info: Option<&'bound Self::IdInfo>,
-> > 	    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
-> > 	
-> > 	    fn unbind<'bound>(dev: &'bound Device<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
-> > 	        let _ = (dev, this);
-> > 	    }
-> > 	
-> > 	    // Add these methods.
-> > 	    fn runtime_suspend<'bound>(
-> > 	        dev: &'bound Device<device::Bound>,
-> > 	        data: &Self::Data<'bound>,
-> > 	    ) -> Result
-> > 	    {
-> > 	        build_error!(VTABLE_DEFAULT_ERROR)
-> > 	    }
-> > 	
-> > 	    fn runtime_resume<'bound>(
-> > 	        dev: &'bound Device<device::Bound>,
-> > 	        data: &Self::Data<'bound>,
-> > 	    ) -> Result
-> > 	    {
-> > 	        build_error!(VTABLE_DEFAULT_ERROR)
-> > 	    }
-> > 	}
-> > 
-> > By marking the trait with #[vtable], we know whether the user has
-> > overridden runtime_suspend() and runtime_resume() and then the platform
-> > abstraction can enable PM in that scenario:
-> > 
-> >  - If `T::HAS_RUNTIME_SUSPEND && T::HAS_RUNTIME_RESUME` then set
-> >    `(*pdrv.get()).driver.pm` to a table using those methods in
-> >    register().
-> >  - If `T::HAS_RUNTIME_SUSPEND && T::HAS_RUNTIME_RESUME` then invoke
-> >    `pm_runtime_enable()` from `probe_callback()` after the
-> >    `set_callback()` line. Note that this call is infallible.
-> >  - Do the same from unplug to disable PM.
-> > 
-> > And then you automatically PM whenever you implement those two methods
-> > in the `platform::Driver` trait, and that's all you need to do. Since we
-> > invoke `pm_runtime_enable()` in `probe_callback()` after setting the
-> > private data, there's no issue with passing the device private data to
-> > the callbacks.
-> > 
-> > Note that we can trigger a const eval panic on `T::HAS_RUNTIME_SUSPEND
-> > != T::HAS_RUNTIME_RESUME` to enforce that you must implement both
-> > methods if you implement either one.
-> > 
-> > Thoughts? I know we have gone down this route before, but I just think
-> > it would be so so much simpler than the current approach. I know that
-> > this diverges from IRQ and such by not having a Registration, but I
-> > actually think that's ok. PM is already different from IRQ callbacks in
-> > the sense that the platform abstractions need PM-specific code *anyway*
-> > to properly set pm_ops in the `struct platform_device`.
-> > 
-> 
-> This is a sound idea, though there are few caveats.
-> This patchset only introduces runtime_resume and runtime_suspend, though the
-> range of pm ops is wider than that. So if we go the way you suggest, we need to
-> accept that all of those would finally end up in that trait's implementation.
-> Further more this would need to be replicated for other bus devices.
-> Which makes the implementation pretty noisy.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-You can potentially do this:
+CondVar::wait_interruptible_timeout() and Queue::enqueue_delayed() use
+a raw jiffies count (a plain c_ulong alias with no type
+safety). Callers have to know on their own that the value meant
+jiffies and convert to/from it themselves, which is easy to get wrong
+(e.g. passing a millisecond value where a jiffies value is expected).
 
-	#[vtable]
-	pub trait Driver {
-	    type IdInfo: 'static;
-	    type Data<'bound>: Send + 'bound;
-	    type PMOps: PMOps; // set to Self or () for no PM
-	    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-	    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-	
-	    fn probe<'bound>(
-	        dev: &'bound Device<device::Core<'_>>,
-	        id_info: Option<&'bound Self::IdInfo>,
-	    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
-	
-	    fn unbind<'bound>(dev: &'bound Device<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
-	        let _ = (dev, this);
-	    }
-	}
-	
-	trait PMOps {
-	    fn runtime_suspend<'bound>(
-	        dev: &'bound Device<device::Bound>,
-	        data: &Self::Data<'bound>,
-	    ) -> Result
-	    {
-	        build_error!(VTABLE_DEFAULT_ERROR)
-	    }
-	
-	    fn runtime_resume<'bound>(
-	        dev: &'bound Device<device::Bound>,
-	        data: &Self::Data<'bound>,
-	    ) -> Result
-	    {
-	        build_error!(VTABLE_DEFAULT_ERROR)
-	    }
-	}
+Both APIs just take a span of time so, they can use the Delta type
+instead.
 
-To avoid that duplication.
+This series makes Delta generic over its time unit with Nsec and Jiffy
+types, switches CondVar and Queue to use Delta instead of raw jiffies
+(updating binder's ioctl_freeze(), the only caller of
+wait_interruptible_timeout()), and then removes the now-unused Jiffies
+and Msecs type aliases.
 
-> Offloading enabling runtime PM to bus driver might not be suitable for all
-> potential users of runtime PM either. Some drivers might want to enable it
-> while in probe, call device resume and do some early setup. With this approach,
-> using drvdata is still an issue.
-> The sample implementation for Tyr is just one way of doing things.
+---
+v5:
+- Fix as_millis_ceil() rounding near i64::MAX
+- Import Delta instead of using kernel::time::Delta twice
+v4: https://lore.kernel.org/rust-for-linux/20260722214951.72941-1-tomo@flapping.org/
+- Make Delta generic over its time unit with Nsec and Jiffy types
+v3: https://lore.kernel.org/rust-for-linux/20260717042247.3634961-1-tomo@flapping.org/
+- Add new Jiffies type and convert the APIs to take impl Into<Jiffies>
+v2: https://lore.kernel.org/rust-for-linux/20260712235246.3069713-1-tomo@flapping.org/
+- Fix potential overflow in from_jiffies()
+- Fix inflating bug in as_jiffies_ceil()
+- Add a patch to convert enqueue_delayed()
+- Add a patch to remove Jiffies/Msecs aliases
+v1: https://lore.kernel.org/rust-for-linux/20260704132558.2253275-1-tomo@aliasing.net/
 
-Ok, it of course depends on how these things are actually used, but it
-was not clear to me that this does not fit all actual use-cases in
-practice.
+---
+FUJITA Tomonori (7):
+  rust: time: make Delta generic over its time unit
+  rust: time: add jiffies time unit for Delta
+  rust: time: add Delta::as_millis_ceil()
+  rust: time: add Delta::to_jiffies() for timeout conversion
+  rust: workqueue: take a Delta<Jiffy> for the enqueue delay
+  rust: sync: condvar: use Delta<Jiffy> for timeout and result
+  rust: time: remove unused Jiffies/Msecs helpers
 
-Alice
+ drivers/android/binder/process.rs |   7 +-
+ rust/kernel/sync/condvar.rs       |  29 ++++--
+ rust/kernel/time.rs               | 159 +++++++++++++++++++++++-------
+ rust/kernel/workqueue.rs          |  12 ++-
+ 4 files changed, 154 insertions(+), 53 deletions(-)
+
+
+base-commit: dc01dfb37b34beeefcfe1c3055364d41a4070c7e
+-- 
+2.43.0
+
