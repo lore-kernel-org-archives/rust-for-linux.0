@@ -1,314 +1,308 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECF52BD022
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 10:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DD64483A9;
+	Thu,  6 Aug 2026 11:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786012850; cv=none; b=Q4r4l28xBSzqgPz3+hPFyrFA6MRTULpGaYD1cgGSXRFOwSWuoB9iaZidLTBb6elmB84/Q1PSrVCpNrX0B0HXXQYGBQcBVhf8mpln4iNEXxSy12lhwDxqqiNNHqVd8ut9E2hTP0oCD19jnlZX0c83szfmdQKD1RH3oC6x9CuCATE=
+	t=1786015431; cv=none; b=kfOWOeZbOmOQYyrAdWzE53eOLzTKzGBUK9XBwV0n2rOuwueEChQ9+r3d49m885kMddyJ0A/kLDTRPgbTwH3JstWdBFsvE2gg9F5knBRe0fpHzExnp+KiuNmPfWsftyDzeyqM8Q86yZf+vfgxt0rqwHzLPgoc8A8Sgav1dgkiMtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786012850; c=relaxed/simple;
-	bh=tRfdsI9jyfAUpbfjwgHz3vA8D9iLRveb6evE1cckkuc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mz3rsuUzzdNkjzs1xtgA7M99qX3n8HYNPjDdeSw+Fjz35O3f6uzZXXV3CEU8msx/wiLbSOqyEAOqWfeDYpQ88LlM3DozeYVtXup49hL11Q/Xc6awoT/NQBbvGP5BLkL9mdKQPNrQBKdDNIn7J+42KN9Ev5UVUiK8M4H62Klvw5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmfT4Wnu; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786015431; c=relaxed/simple;
+	bh=c2Gipq472dZI6V9ZDKpSMkoj+IqRzm9wm1cHn3mUero=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E5uHumrp55KcDewz5T3wjfC84A+yonNwlupXXwgm42CzKAd6t/guiiRwgPc8zct2IQp8oJuwO2Kj2F6Xz2HvQexoZgybWd/p5jsfexBvidfjUnhZdUpdupP2+6BiNgeqz6aXIySahTZng7qgfcgFEkdtgCsPDbxUYEixaNl+lB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=NhZkcbGy; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmfT4Wnu"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso19017105ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 03:40:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786012847; x=1786617647; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aHhG+liuZTafcPBdaHPAIlQHTjNuSYOZDbFN67Y2dRk=;
-        b=cmfT4Wnu6akDEB0lEmy/TKIcp8XKNy3n4AQKj7EM5FF9mxC1tptqSFsuaLLZTdew6n
-         QUFaUl6Z/1xchVvwl+STnPzgRhjFzO397ZKRz0BSRD+bL1onx0CoOAuhslDQVlDagjmm
-         AlavUSf89ezB0fTm0XNlZpnWpXStLf0KPvumGYnTpu6SfFaaecF8foMe+wUbKLFxyBC2
-         WsNMdtl+TV98BIn37FSvTGO25P10sWcpsylfbkoa4/OHo+gvpki1xihDMx/wP5sMCggI
-         UEf5wE78yprPPG169rBcMWK6J3Xv/RCV2mQbOFi0ascNknMtNYkwOQd8fq1rOAG5SS8R
-         0Sjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786012847; x=1786617647;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aHhG+liuZTafcPBdaHPAIlQHTjNuSYOZDbFN67Y2dRk=;
-        b=ftMqv2k6XZmV1miQE9l7FigaSOvZzaYoAsCXb4L+opH/o8gWGhVE/glTDeQcr9KEfD
-         3tEXOPhj5GGsmcLcYSdwBvgK0HkKyTWNNX29i1pI4+tCG4IW1ZGWMeHESaie8mm3GZuN
-         OoF3gaeo0dnMTL9pj7sqV4Kt80cHr1j+ULAWANefN17srUzG/fMShvY028ZhI3q9heVT
-         V6lhOtblOTzBvHa0rNR5ZXi4jv9I/RkzgYx6Rcwtsp2BO8HzIWLCqOuyCPlRwk0Eiu6l
-         2N/dPe/guEo/TF1X3l0XwhHN//pex/vprEenX4J7elS1g2qj1Um1Z5Rpi3gB41l/So9Q
-         pF/w==
-X-Forwarded-Encrypted: i=1; AHgh+RoQkFy9szkg/60PIC4GKJuARTafpZPCGLFW5XffGLn5WVADd2lTY4xcpXwdRr9cloRZQpQRpCU6XHllsnu1PQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrZkpQR9PvJzmphE1Hvutut6/oyplrZ9+ymgm3isw5WKyR8tUV
-	PsYDSf+nuIbpsmpAYsnsssZvDuH5vjPqFwYc0YZ2FYfHVWOWfd7y+Tk7
-X-Gm-Gg: AR+sD10MNE2RYjoqVEQnIN8q/8KPvFNFIypM19Cd9ASu3db2IhKcRyyIXRcnavwQYHf
-	fYARRYfEpe1U3m7+IAeyy19lBF2SkCcJr2Xox/tMA/h9QkutnLpLVsjZsuTIffoqymkUvpOXLzW
-	MNlo5B98edbOlvHg8S/XELNLyyFZc7sPwZVmTQFRxGZ0znLtEYFgcYsNqgU7Ql8gh/SxHYRd5vs
-	MWYXefGTzbdZ0h8s4UieoO3jcqPBO8i9rDc5Hq3G5kxy/IKTvkkDL8lUDcazzfYNx7YHt94xURJ
-	VaSapZyqlloXieNSvx5bNSBfXQQs8nllUc1d27n7tFb3P2SW45RVTbGExwmQKPKElNnctQPGuLY
-	Syds46Ce+n/cGYQB7WPiXqKub/NB0I9Vqr53ILh04CFsk18Hou9yez+q50AMM8E6saIuSNfH629
-	OFmW5pwlTE8qHzxRpAzg1u4HmlCJDmlNJZ+FWElKzzEuxjfa3nF/0the36qGhOYg==
-X-Received: by 2002:a05:6a20:6a10:b0:3bf:6237:4d46 with SMTP id adf61e73a8af0-3cb85ef7e35mr15288484637.28.1786012847127;
-        Thu, 06 Aug 2026 03:40:47 -0700 (PDT)
-Received: from archlinux ([2402:e280:411b:ec:aa93:b1ec:5a6b:5fce])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315863b761asm39061397eec.1.2026.08.06.03.40.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 03:40:46 -0700 (PDT)
-From: Adarsh Das <adarshdas950@gmail.com>
-To: adarshdas950@gmail.com
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	axboe@kernel.dk,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev
-Subject: [PATCH v3] rust: block: set GenDisk block_device_operations.owner to THIS_MODULE
-Date: Thu,  6 Aug 2026 16:10:27 +0530
-Message-ID: <20260806104027.83940-1-adarshdas950@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260806083655.23161-1-adarshdas950@gmail.com>
-References: <20260806083655.23161-1-adarshdas950@gmail.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="NhZkcbGy"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 753BF16F2;
+	Thu,  6 Aug 2026 04:23:41 -0700 (PDT)
+Received: from [10.57.42.103] (unknown [10.57.42.103])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D08093F66F;
+	Thu,  6 Aug 2026 04:23:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1786015425; bh=c2Gipq472dZI6V9ZDKpSMkoj+IqRzm9wm1cHn3mUero=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NhZkcbGyQ71yn3t2AAGo0omBfU0NeJlv8oO83g80xqPMh9oJCroHiZo2hxXbkXLtT
+	 x4oUcVTKLCU4h8srSplWJt65L5IFfzQYcy2idzuzIa4T4hAaBhqPttWL4yGCj/eKkR
+	 MRjFTETLO/3ZvK3OI0EkN7rPdbgITYQDOU2u7i6Q=
+Message-ID: <cc71c517-8097-48c4-80b3-77ad9f6d4759@arm.com>
+Date: Thu, 6 Aug 2026 12:23:32 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: dma: add `Range` type
+To: Vasileios Almpanis <vasilisalmpanis@gmail.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>
+Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260806-dma-v1-1-e8a39327c7f5@gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260806-dma-v1-1-e8a39327c7f5@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-GenDiskBuilder left block_device_operations.owner NULL. Set owner from a
-const block_device_operations table using this_module::<M>() and update
-rnull to pass NullBlkModule.
+On 2026-08-06 8:46 am, Vasileios Almpanis wrote:
+> The base dma address of `Coherent` and `CoherentHandle` is a bare
+> `DmaAddress` integer so any arithmetic, a driver does on it is unchecked
+> and can potentially go past the end of the allocation or overflow.
+> 
+> Add a `dma::Range` type that couples a base `DmaAddress` with a length
+> and only hands out addresses and sub-ranges within `[start, start + len)`
+> with all arithmetics checked against both the length and the overflow of
+> of the underlying `dma_addr_t`. Let `Coherent` and `CoherentHandle`
+> provide the `Range` covering their allocation.
+> 
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1248
+> Signed-off-by: Vasileios Almpanis <vasilisalmpanis@gmail.com>
+> ---
+> This is one of my first rust-for-linux patches, so any suggestions are
+> extremely welcome. Some words about the decisions taken:
+> 
+> - I chose lengths offsets to be `DmaAddress` instead of usize since the
+>    bus space can be 64-bit on 32-bit CPUS.
 
-Add ModuleMetadata::THIS_MODULE and this_module() so the owner pointer is
-available in const context. Rebased on Alvins fix-fops-owner series [1].
+The base address may be 64-bit, but the underlying dma_alloc_*/dma_map_* 
+APIs all express lengths in size_t, so we shouldn't need to accommodate 
+anything larger in Rust either. Sizes-as-address-types always seem a bit 
+weird and clunky (lookin' at you, resource_size_t...), so probably 
+better avoided if not absolutely necessary, IMO.
 
-Link: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
+Thanks,
+Robin.
 
-v2:
-- Free fops in free_disk instead of GenDisk::drop to fix use-after-free
-  when the device stays open after removal. (Sashiko)
-- Install the cleanup guard before fops allocation to avoid leaking gendisk
-  on -ENOMEM. (Sashiko)
-- Link to v1: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
-
-v3:
-- Use const fops with this_module::<M>() instead of heap allocation
-  (as suggested by Andreas).
-- Integrate ModuleMetadata::THIS_MODULE from [1].
-- Dismiss recover_data before fallible build steps after the cleanup guard.
-  (Sashiko)
-- Link to v2: https://lore.kernel.org/all/20260806083655.23161-1-adarshdas950@gmail.com/
-
-[1] https://lore.kernel.org/r/20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev
-
-Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
----
- drivers/block/rnull/rnull.rs     |  2 +-
- rust/kernel/block/mq.rs          | 13 ++++++--
- rust/kernel/block/mq/gen_disk.rs | 56 +++++++++++++++++---------------
- rust/kernel/lib.rs               |  9 +++++
- rust/macros/module.rs            | 16 +++++++++
- 5 files changed, 65 insertions(+), 31 deletions(-)
-
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 0ca8715febe8..912526be4ec2 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -61,7 +61,7 @@ fn new(
-             .logical_block_size(block_size)?
-             .physical_block_size(block_size)?
-             .rotational(rotational)
--            .build(fmt!("{}", name.to_str()?), tagset, queue_data)
-+            .build::<NullBlkModule, Self>(fmt!("{}", name.to_str()?), tagset, queue_data)
-     }
- }
- 
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index 1fd0d54dd549..faa9fcbac935 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -8,8 +8,8 @@
- //! - Implement [`Operations`] for a type `T`.
- //! - Create a [`TagSet<T>`].
- //! - Create a [`GenDisk<T>`], via the [`GenDiskBuilder`].
--//! - Add the disk to the system by calling [`GenDiskBuilder::build`] passing in
--//!   the `TagSet` reference.
-+//! - Add the disk to the system by calling [`GenDiskBuilder::build`], passing in
-+//!   the module type, the disk name, the `TagSet`, and queue data.
- //!
- //! The types available in this module that have direct C counterparts are:
- //!
-@@ -86,9 +86,16 @@
- //!
- //! let tagset: Arc<TagSet<MyBlkDevice>> =
- //!     Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
-+//! # struct MyModule;
-+//! # impl kernel::ModuleMetadata for MyModule {
-+//! #     const NAME: &'static kernel::str::CStr = c"myblk";
-+//! #     // SAFETY: Doctest stub; no module is loaded.
-+//! #     const THIS_MODULE: ThisModule =
-+//! #         unsafe { ThisModule::from_ptr(core::ptr::null_mut()) };
-+//! # }
- //! let mut disk = gen_disk::GenDiskBuilder::new()
- //!     .capacity_sectors(4096)
--//!     .build(fmt!("myblk"), tagset, ())?;
-+//!     .build::<MyModule, MyBlkDevice>(fmt!("myblk"), tagset, ())?;
- //!
- //! # Ok::<(), kernel::error::Error>(())
- //! ```
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index fc97dd873974..4a503f183cc9 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -15,8 +15,34 @@
-     str::NullTerminatedFormatter,
-     sync::Arc,
-     types::{ForeignOwnable, ScopeGuard},
-+    ModuleMetadata,
- };
- 
-+struct BlockFops<M: ModuleMetadata>(core::marker::PhantomData<M>);
-+
-+impl<M: ModuleMetadata> BlockFops<M> {
-+    const TABLE: bindings::block_device_operations = bindings::block_device_operations {
-+        submit_bio: None,
-+        open: None,
-+        release: None,
-+        ioctl: None,
-+        compat_ioctl: None,
-+        check_events: None,
-+        unlock_native_capacity: None,
-+        getgeo: None,
-+        set_read_only: None,
-+        swap_slot_free_notify: None,
-+        report_zones: None,
-+        devnode: None,
-+        alternative_gpt_sector: None,
-+        get_unique_id: None,
-+        owner: crate::this_module::<M>().as_ptr(),
-+        pr_ops: core::ptr::null_mut(),
-+        free_disk: None,
-+        poll_bio: None,
-+    };
-+}
-+
- /// A builder for [`GenDisk`].
- ///
- /// Use this struct to configure and add new [`GenDisk`] to the VFS.
-@@ -95,7 +121,7 @@ pub fn capacity_sectors(mut self, capacity: u64) -> Self {
-     }
- 
-     /// Build a new `GenDisk` and add it to the VFS.
--    pub fn build<T: Operations>(
-+    pub fn build<M: ModuleMetadata, T: Operations>(
-         self,
-         name: fmt::Arguments<'_>,
-         tagset: Arc<TagSet<T>>,
-@@ -125,30 +151,8 @@ pub fn build<T: Operations>(
-             )
-         })?;
- 
--        const TABLE: bindings::block_device_operations = bindings::block_device_operations {
--            submit_bio: None,
--            open: None,
--            release: None,
--            ioctl: None,
--            compat_ioctl: None,
--            check_events: None,
--            unlock_native_capacity: None,
--            getgeo: None,
--            set_read_only: None,
--            swap_slot_free_notify: None,
--            report_zones: None,
--            devnode: None,
--            alternative_gpt_sector: None,
--            get_unique_id: None,
--            // TODO: Set to `THIS_MODULE`.
--            owner: core::ptr::null_mut(),
--            pr_ops: core::ptr::null_mut(),
--            free_disk: None,
--            poll_bio: None,
--        };
--
--        // SAFETY: `gendisk` is a valid pointer as we initialized it above
--        unsafe { (*gendisk).fops = &TABLE };
-+        // SAFETY: `gendisk` is a valid pointer as we initialized it above.
-+        unsafe { (*gendisk).fops = &BlockFops::<M>::TABLE };
- 
-         let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
-             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
-@@ -159,8 +163,6 @@ pub fn build<T: Operations>(
-             drop(unsafe { T::QueueData::from_foreign(data) });
-         });
- 
--        // The failure guard now owns both pieces of cleanup; the early guard
--        // must not run on this path anymore.
-         recover_data.dismiss();
- 
-         let mut writer = NullTerminatedFormatter::new(
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 9512af7156df..9bbabaf84e20 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -185,6 +185,15 @@ fn init(module: &'static ThisModule) -> impl pin_init::PinInit<Self, error::Erro
- pub trait ModuleMetadata {
-     /// The name of the module as specified in the `module!` macro.
-     const NAME: &'static crate::str::CStr;
-+
-+    /// The module's `THIS_MODULE` pointer.
-+    const THIS_MODULE: ThisModule;
-+}
-+
-+/// Returns the [`ThisModule`] pointer for the given module type.
-+#[inline]
-+pub const fn this_module<M: ModuleMetadata>() -> &'static ThisModule {
-+    &M::THIS_MODULE
- }
- 
- /// Equivalent to `THIS_MODULE` in the C API.
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 06c18e207508..8df38718224b 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -519,6 +519,22 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
- 
-         impl ::kernel::ModuleMetadata for #type_ {
-             const NAME: &'static ::kernel::str::CStr = #name_cstr;
-+
-+            #[cfg(MODULE)]
-+            const THIS_MODULE: ::kernel::ThisModule = {
-+                extern "C" {
-+                    static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
-+                }
-+
-+                // SAFETY: `__this_module` is constructed by the kernel at load time and lives
-+                // until the module is unloaded.
-+                unsafe { ::kernel::ThisModule::from_ptr(__this_module.get()) }
-+            };
-+
-+            #[cfg(not(MODULE))]
-+            const THIS_MODULE: ::kernel::ThisModule = unsafe {
-+                ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
-+            };
-         }
- 
-         // Double nested modules, since then nobody can access the public items inside.
--- 
-2.55.0
+> - The constructor returns EOVERFLOW for `dma_addr_t` overflow, while
+>    out-of-bounds requests return EINVAL; happy to use a single error
+>    code if preferred.
+> 
+> - `dma_range()` is added to both `Coherent` and `CoherentHandle` so the
+>    type has users from the start. I could split it into a follow-up if
+>    that is preferred.
+> 
+> Tested with `make rustdoc`, `make rustfmtcheck`, `CLIPPY=1`, and the
+> KUnit doctests `rust_doctests_kernel`.
+> ---
+>   rust/kernel/dma.rs | 174 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 174 insertions(+)
+> 
+> diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
+> index 200def84fb69e006bca0b1c578bac9f1dc8da708..e65e99ae4d915ac2e385df8b72fc518c07e4c82d 100644
+> --- a/rust/kernel/dma.rs
+> +++ b/rust/kernel/dma.rs
+> @@ -41,6 +41,142 @@
+>   /// Note that this may be `u64` even on 32-bit architectures.
+>   pub type DmaAddress = bindings::dma_addr_t;
+>   
+> +/// A range of DMA addresses.
+> +///
+> +/// Couples a base [`DmaAddress`] with the length in bytes of the region it belongs to,
+> +/// representing the half-open range `[start, start + len)` of DMA addresses.
+> +///
+> +/// Unlike a bare [`DmaAddress`], a [`Range`] only hands out addresses and sub-ranges that are
+> +/// guaranteed to lie within `[start, start + len)`; all arithmetic is checked against both the
+> +/// length of the range and overflow of the underlying [`DmaAddress`].
+> +///
+> +/// # Invariants
+> +///
+> +/// `start + len` does not overflow [`DmaAddress`].
+> +#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+> +pub struct Range {
+> +    start: DmaAddress,
+> +    len: DmaAddress,
+> +}
+> +
+> +impl Range {
+> +    /// Creates a new [`Range`] of `len` bytes, starting at `start`.
+> +    ///
+> +    /// Returns [`EOVERFLOW`] if `start + len` overflows [`DmaAddress`].
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::dma::{DmaAddress, Range};
+> +    ///
+> +    /// let range = Range::new(0x1000, 0x200)?;
+> +    /// assert_eq!(range.start(), 0x1000);
+> +    /// assert_eq!(range.end(), 0x1200);
+> +    /// assert_eq!(range.len(), 0x200);
+> +    ///
+> +    /// assert!(Range::new(DmaAddress::MAX, 1).is_err());
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub const fn new(start: DmaAddress, len: DmaAddress) -> Result<Self> {
+> +        if start.checked_add(len).is_none() {
+> +            return Err(EOVERFLOW);
+> +        }
+> +
+> +        // INVARIANT: We just checked that `start + len` does not overflow `DmaAddress`.
+> +        Ok(Self { start, len })
+> +    }
+> +
+> +    /// Returns the first address of the range.
+> +    #[inline]
+> +    pub const fn start(&self) -> DmaAddress {
+> +        self.start
+> +    }
+> +
+> +    /// Returns the first address after the end of the range.
+> +    #[inline]
+> +    pub const fn end(&self) -> DmaAddress {
+> +        // By the type invariant, `start + len` does not overflow `DmaAddress`.
+> +        self.start + self.len
+> +    }
+> +
+> +    /// Returns the length of the range in bytes.
+> +    #[inline]
+> +    pub const fn len(&self) -> DmaAddress {
+> +        self.len
+> +    }
+> +
+> +    /// Returns `true` if the range is empty.
+> +    #[inline]
+> +    pub const fn is_empty(&self) -> bool {
+> +        self.len == 0
+> +    }
+> +
+> +    /// Returns the address at `offset` bytes into the range.
+> +    ///
+> +    /// The returned address is guaranteed to lie within the range; returns [`EINVAL`] if `offset`
+> +    /// is not smaller than the length of the range.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::dma::Range;
+> +    ///
+> +    /// let range = Range::new(0x1000, 0x200)?;
+> +    ///
+> +    /// assert_eq!(range.address(0)?, 0x1000);
+> +    /// assert_eq!(range.address(0x1ff)?, 0x11ff);
+> +    /// assert!(range.address(0x200).is_err());
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub const fn address(&self, offset: DmaAddress) -> Result<DmaAddress> {
+> +        if offset >= self.len {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // By the type invariant, `start + offset < start + len` does not overflow `DmaAddress`.
+> +        Ok(self.start + offset)
+> +    }
+> +
+> +    /// Returns the sub-range of `len` bytes, starting `offset` bytes into the range.
+> +    ///
+> +    /// The returned range is guaranteed to lie within the range; returns [`EINVAL`] if
+> +    /// `offset + len` overflows [`DmaAddress`] or exceeds the length of the range.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::dma::Range;
+> +    ///
+> +    /// let range = Range::new(0x1000, 0x200)?;
+> +    ///
+> +    /// let sub = range.subrange(0x100, 0x80)?;
+> +    /// assert_eq!(sub.start(), 0x1100);
+> +    /// assert_eq!(sub.end(), 0x1180);
+> +    ///
+> +    /// assert!(range.subrange(0x100, 0x101).is_err());
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub const fn subrange(&self, offset: DmaAddress, len: DmaAddress) -> Result<Self> {
+> +        let Some(end) = offset.checked_add(len) else {
+> +            return Err(EINVAL);
+> +        };
+> +
+> +        if end > self.len {
+> +            return Err(EINVAL);
+> +        }
+> +
+> +        // INVARIANT: `start + offset + len <= start + self.len`, which by the type invariant of
+> +        // `self` does not overflow `DmaAddress`.
+> +        Ok(Self {
+> +            start: self.start + offset,
+> +            len,
+> +        })
+> +    }
+> +}
+> +
+>   /// Trait to be implemented by DMA capable bus devices.
+>   ///
+>   /// The [`dma::Device`](Device) trait should be implemented by bus specific device representations,
+> @@ -626,6 +762,25 @@ pub fn dma_handle(&self) -> DmaAddress {
+>           self.dma_handle
+>       }
+>   
+> +    /// Returns the [`Range`] of DMA addresses covering this allocation.
+> +    ///
+> +    /// Unlike [`Self::dma_handle`], which hands out the base address as a bare integer, the
+> +    /// returned [`Range`] couples the base address with the size of the allocation, such that
+> +    /// any offset arithmetic performed on it is checked.
+> +    #[inline]
+> +    pub fn dma_range(&self) -> Range {
+> +        // INVARIANT: By the type invariants of `Self`, `dma_handle` is the DMA address base of an
+> +        // allocated region of `self.size()` bytes; the DMA API guarantees that a mapped region
+> +        // never wraps the DMA address space, hence `dma_handle + size` does not overflow
+> +        // `DmaAddress`.
+> +        Range {
+> +            start: self.dma_handle,
+> +            // CAST: `usize` always fits in `DmaAddress`, which is at least 32 bits wide and
+> +            // always 64 bits wide on 64-bit architectures.
+> +            len: self.size() as DmaAddress,
+> +        }
+> +    }
+> +
+>       /// Returns a reference to the data in the region.
+>       ///
+>       /// # Safety
+> @@ -1101,6 +1256,25 @@ pub fn dma_handle(&self) -> DmaAddress {
+>           self.dma_handle
+>       }
+>   
+> +    /// Returns the [`Range`] of DMA addresses covering this allocation.
+> +    ///
+> +    /// Unlike [`Self::dma_handle`], which hands out the base address as a bare integer, the
+> +    /// returned [`Range`] couples the base address with the size of the allocation, such that
+> +    /// any offset arithmetic performed on it is checked.
+> +    #[inline]
+> +    pub fn dma_range(&self) -> Range {
+> +        // INVARIANT: By the type invariants of `Self`, `dma_handle` is the DMA address base of an
+> +        // allocated region of `self.size` bytes; the DMA API guarantees that a mapped region
+> +        // never wraps the DMA address space, hence `dma_handle + size` does not overflow
+> +        // `DmaAddress`.
+> +        Range {
+> +            start: self.dma_handle,
+> +            // CAST: `usize` always fits in `DmaAddress`, which is at least 32 bits wide and
+> +            // always 64 bits wide on 64-bit architectures.
+> +            len: self.size as DmaAddress,
+> +        }
+> +    }
+> +
+>       /// Returns the size in bytes of this allocation.
+>       #[inline]
+>       pub fn size(&self) -> usize {
+> 
+> ---
+> base-commit: dc01dfb37b34beeefcfe1c3055364d41a4070c7e
+> change-id: 20260805-dma-7c5330baadb6
+> 
+> Best regards,
 
