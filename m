@@ -1,50 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA153FBB4D
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 08:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A063E4248A0;
+	Thu,  6 Aug 2026 09:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786006750; cv=none; b=gcp779RdNjIaACWz4hm8Fbgd8Ixgdqdan4kiIhoItuRnuHc3qtB/wLXJB4ti2VpZUaDqm3lsz41u6Dz/MOxhguvsr9YvBQUbLHeme6R7NVRMwqxKfG21APCol2KtISIiBSEQ7vXBFbHQqf8a/QkfM9I/3mkhZTTEnugVZbDxvao=
+	t=1786007295; cv=none; b=pG44HjFfQACB0KtzlJYfMaRpIGsSz/JS+9rCbxONIU4ja2T7Wol8VBKXQNtsHz8QC79gYv0tBLlB6YO8WgePPdA0hop+pygyv8KVQ50CFaIY2rGurnO5x+InQBhTwnK/Y/wVHyrMtgZgiEDEwIFnBkY0nMlWOBVKaTMXbhw0PXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786006750; c=relaxed/simple;
-	bh=0KZJa/xdu9XeiRLpB5IPbHBO2SVMpSwgVa1hUG0MkOE=;
+	s=arc-20240116; t=1786007295; c=relaxed/simple;
+	bh=3bicg5ORZDq72OfBoeTcOeYRJc6o7mFDrz62Q7IALxA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ofQmZWo91kTKC3T5AXnyiCjurzeZA/37doQG0pdKR4y48IW/gyFmOEQXkxZioqCSY9xyOoHMiPKuUYhyEOyn5JBmn4ThwKpPROyudn5R/uBUKr92Oj36GDdyaX7fyhQkxNue3m/BXXcgFEARU/bhbevz/opzw6MuUWKDEHbWfrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkdoduJF; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=CI2U+p8R74d4vWlOrJZMRuwCW8Y9mTT2BJYR7ooHnKP0gRii0a6WLfDvic8m1aA66SLl4l82d89L6u9AEI/ZOvUyP1FS7giOrrbpA54C/8XffffdjNlFrl49MhUNATQg04VbMX92ri5SmWIdO9tHpxLc9cvJDUbqseX023uUPbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBpzU+3H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkdoduJF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920DC1F000E9;
-	Thu,  6 Aug 2026 08:59:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBpzU+3H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FFF1F000E9;
+	Thu,  6 Aug 2026 09:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786006748;
-	bh=0KZJa/xdu9XeiRLpB5IPbHBO2SVMpSwgVa1hUG0MkOE=;
+	s=k20260515; t=1786007294;
+	bh=c4YQ4eAwJRsD3hueQPNwT8y097gGy2FPUFHvT2YMrGQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=IkdoduJFlzuv3+f18h7K1jkaPdTYzNNe055KWG7JmvetVeoQsByLnbOp+2mSizUaD
-	 87weL1aHSV2dJq+vOJ3mOLgkWm4i2HLXlOENsA9W8XPawWA0y8QrgtUvMjODfnTBGI
-	 HH77gwVOygrBkPCV4BbxL/65Gv8WrLdi4QLm0AFNk7VqOMBY6K2XKmsnzUR6AH1WxQ
-	 gZgTRGvMGw1GkUzFKLyITkkOtDPRVbs7vfewnTAxKtDq8CqFTh0oZBU5Km/uJ6x6ZO
-	 S0rK+FM9jbAhtIlHXabt8QLngzhSWA0FcSIRABCKBwhystwQWDQBWajHj2WrjLfBRp
-	 JOVADzXESJkgg==
+	b=nBpzU+3HnAiAV9v6gVEL7FlftXr4KwbfEqTPr2E/7q4QCgdiR9nM9YaCU0bHMV/rT
+	 rtyhNqdg9KLtU1vYmvbkYlLhoR1APKVEZQcEKlOlrjL7lC70FSpZVwoevXV2vSBR0l
+	 F6/OfCgojtwcea62VNOUmaukYzpLddwV0Xp1yRAOvX1tU+Egsso894Y+uD1ygJQo5H
+	 dYHEpu8toipmJl9wTLPnvyUXAFI4W0N5UKdClOqEx7NR6sZDx8S34R8Iv+3XrsZMRq
+	 3aKkj38vq18A6Fs7lYzUHJ+ELfIlUsPG1whyt6mNpE3QwX2k2cKUk7zS5PU/tKkLow
+	 qHSEPCbGF+7UA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: tomo@flapping.org, ojeda@kernel.org, acourbot@nvidia.com,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com,
- miguel.ojeda.sandonis@gmail.com
-Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() rounding near i64::MAX
-In-Reply-To: <20260806.172319.1970353690506890750.tomo@flapping.org>
-References: <pnFuloASX9OPRE4rxnDZmJLS4_GaTn6IAT2OPZgNSvUK8JSWvobnoTZr6EifpDauCqMlUcmFmi6zeLTeBxsYsw==@protonmail.internalid>
- <20260723120907.209643-1-tomo@flapping.org>
- <87a4r094ow.fsf@t14s.mail-host-address-is-not-set>
- <xmgXpLeIWJFLUmY87yO6GRUJIsmtdLNWduv1daKl87Kxb5GFwNFolMcDnnT58_tQZm9lxrwd4W3P3b7cuYGi7A==@protonmail.internalid>
- <20260806.172319.1970353690506890750.tomo@flapping.org>
-Date: Thu, 06 Aug 2026 10:58:47 +0200
-Message-ID: <87ecgb4oc8.fsf@t14s.mail-host-address-is-not-set>
+To: Adarsh Das <adarshdas950@gmail.com>, adarshdas950@gmail.com
+Cc: acourbot@nvidia.com, aliceryhl@google.com, axboe@kernel.dk,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, gary@garyguo.net,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
+ tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev
+Subject: Re: [PATCH v2] rust: block: set GenDisk
+ block_device_operations.owner to THIS_MODULE
+In-Reply-To: <20260806083655.23161-1-adarshdas950@gmail.com>
+References: <20260805192020.107601-1-adarshdas950@gmail.com>
+ <HxcdCGoRqPsQe1B2W6AuOT-Gsob7jMsUKVOjssQEAOVChpwJ7vPp1bwsGiQ9PzvRT-tq6HvhO98nEw64UY90NQ==@protonmail.internalid>
+ <20260806083655.23161-1-adarshdas950@gmail.com>
+Date: Thu, 06 Aug 2026 11:08:05 +0200
+Message-ID: <87bjbf4nwq.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,43 +50,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"FUJITA Tomonori" <tomo@flapping.org> writes:
+"Adarsh Das" <adarshdas950@gmail.com> writes:
 
-> On Wed, 05 Aug 2026 13:39:43 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+> GenDiskBuilder left block_device_operations.owner NULL. Pass the driver's
+> ThisModule into GenDiskBuilder::build(), heap-allocate the operations
+> table, and keep it alive until the gendisk is released via free_disk.
+> Update rnull as the in-tree caller.
 >
->> "FUJITA Tomonori" <tomo@flapping.org> writes:
->>
->>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>>
->>> The ceiling adjustment used saturating_add(NSEC_PER_USEC - 1) before
->>> dividing. Once the nanosecond value gets within NSEC_PER_USEC - 1 of
->>> i64::MAX the addition saturates to i64::MAX, which drops the ceiling
->>> bias and yields a result one microsecond too small.
->>>
->>> Fixes: fae0cdc12340 ("rust: time: Introduce Delta type")
->>> Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
->>> Closes: https://lore.kernel.org/rust-for-linux/CANiq72mtS0ABA2JnT5tpz6J9c_mnxY+vyPvghV_ukngWvN8F2w@mail.gmail.com/
->>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>
->> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->>
->> It took me a little while to understand this one. Perhaps a few comments
->> explaining the boundary conditions could be warranted here?
+> v2:
+> - Free fops in free_disk instead of GenDisk::drop to fix use-after-free
+>   when the device stays open after removal. (Sashiko)
+> - Install the cleanup guard before fops allocation to avoid leaking gendisk
+>   on -ENOMEM. (Sashiko)
+> - Link to v1: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
 >
-> I added the comments for as_millis_ceil() [1]. You want the similar
-> comments for as_micros_ceil() too?
->
-> Or we could add a small helper for _ceil() and keep the explanation in
-> one place.
+> Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
 
-Let's add the comment to this one, as it will go in with rust tree fixes
-asap. Then you can extract to reduce duplication in your other series.
-Ok with you?
+The reason `owner` is not set is that we want to keep the vtable const.
+But with Alvins recent series [1], we should be able to set owner in
+const context.
+
+Can you rebase on his series and see if you can make it work in const context?
 
 
 Best regards,
 Andreas Hindborg
+
+
+[1] https://lore.kernel.org/r/20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev
 
 
 
