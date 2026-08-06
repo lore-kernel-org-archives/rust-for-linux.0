@@ -1,72 +1,72 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022127.outbound.protection.outlook.com [52.101.101.127])
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021104.outbound.protection.outlook.com [52.101.95.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD976FC5;
-	Thu,  6 Aug 2026 11:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C85047045E
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 11:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.104
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786016678; cv=fail; b=i61urn/x18NFTOK3ts4xNB94U/Y4jbGlfxHGVG2fQ6e+431jurBA4XvWUYGiCTY4QuJHV/K2iQz1M5cgSuHTgEnCdbUiLy7ZXe20NKPI/yS5tWceUKauI9mraAmueHfFCdgWfvnEPf7KAo1qZZH3obekUiNvBtsA06U7cnBpjys=
+	t=1786017061; cv=fail; b=jzzjmT1MuxOVnBmMPlH6331RpJQov+eE22RsMTVRN2VlA9IyzgdDArS1C1qGik1KAMQHtecxZtQ0GLvMgvngtUKEtri/62VHyEDeryFOeIcLz1By8siZlx65Kthyn6KaLgD8I9VDALOVrCh/vjS6tCzo7mAkyVzCgvt7cHC3Qo8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786016678; c=relaxed/simple;
-	bh=/CgOpKfO7KcG/cpThiUtzKZZBCxu1YYket1Z+fcs4/Q=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=UXXQMLV8PMjGyvDvNa9eAiJAcpVP5Q7nj6tNTwSnppU5KcRlajAkCblCiQm8+7sbG4TdpDeF4j+nJRnui1NCRFgjpwnCiQYzB7OsiwBwBfwXPxX31KQeI5YHYtRoPJbRwRTEQY1qFaH+w7O1IiVEW9kfuHPinqHK7OgbzWYpQ7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=geltjk6g; arc=fail smtp.client-ip=52.101.101.127
+	s=arc-20240116; t=1786017061; c=relaxed/simple;
+	bh=BGmmku8oRVAde0w3tRBVfJPlrEWIo1DwugNQW1wE0Ug=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=Gk3z7Hf/sKuB+wZYaJyHQdZM4j5o3aaTzanfpUkk+nDuH8+PMRRE//jrpJH+4fmw+pwdsnNsRiE256pJiy0TDRHiLP8dzDEDW8QDKU8walgUOzclBQ20mNi9o/08pR8XpXwPBc4OFXEh+4++JFp7HvECmgCZnYWxq8dZ9q9yP1I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=JrgGtFOh; arc=fail smtp.client-ip=52.101.95.104
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="geltjk6g"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="JrgGtFOh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RgZFTwuExuvUMtd5yZh3chvLXvtPBJxW2yvCfErfyxtSFY1RB2HgmIBqxQPcsNWFlcgcVHpE/JS90deSCosQlAUEhQa8e62mASFn8Z+XXMMT85IO0hWZiWEf+0nu7bqef8H9SvxqrC1kBlvvC+CRJncE5GtdXazrSDlfbeJaWVx6hQrpSUQotmz/npqWaV/y9Y7K3CsnW/taiw/FDR1VA4ByWbzcxiGePG4YuRkD5NRRRfDoLt63n8h/nKh5crslaVVFPmDQh1r+X9xIzYuM95jeJZZh8wUJ9VLqtZFMD7BOdDyJGmwtw132Xhhm33ZXUB5fBlP8wAOpujnB4pfQpA==
+ b=JaF9l4UAhIQXj4rv7FlUghwSFmWgMzy+Zx2JclJ/g7c/xuhVib5bWJ70AU1krPKZbAZcVcOJ+yJW+TQGvgeFl8wPwkfV3cHGA+7ZQkIFeky26wwcz55t1ZmyXVERymtsA0MyJZyXtJbHchCE+/89YeW0VFdeTIh5PfMzoV0Wa0E2+rttwa5Zd06g3cQawJVQ+UzSWLKzJ0ag3EVVt/rv8QLopEGG5MJHyxkUmfAp/tcWj38CkIMZ5wLvyvUuWnAQqMrGYPuZ5pEuh5NW9Kz8vtt+O5jLO/NUGttvzrhSJ0+S2gHEwjR6PzE5yqCXd7RGGDialaw7Tyx70aPZXUa0Nw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2dkFK1BQ1IfMNe3+Q4FkBiA3s8P3wBBWUxSoSTXwElY=;
- b=C7yTAmA06EAeEQ/2Told23Lh4Qwr4wwEibRuf36mLLG6BMKzl9WQrsJdLg199zA9Xi9CwxB03+rQd6weNSNKM8gLLXIzOeWt4sOZSV969SWSwDQNIfngNqbtxq1w1mKfKI819AB6cZGYIJGd3kCBYn0oluahjAFRRA182SxTEFWJU/t69uE5lK8h2bPziJSFVU1yfEXmFcUndgtB5eui8IJoCUNsVFXPPSdWFBsfMdslqLkwIpNu942I+ZURvKhvhNNE/XdsGXs/1eabcbZ0HNxWa2ifDwNibr5v1aMGsR+54H1enVpntdLsyGVfjyEs6tMrufcyiJ/xl/NdT49MyA==
+ bh=Nb+uLfbL30VbXEB+8OnYvObilB8jvhqZVXo0UAkj9zE=;
+ b=NYyOnuVUpat4f+nxsI5psOfVIx2YRpKLcoJFuKODlVacK/hvnaNdHRG7l5vYPyTMEJFPWXAsCaVDIbIdwyrFY23F3NnlEDTyfweTJhKgLWWGdi32mBYLe1OAYUcxJMnGAW0rCzG7FE0LQbGd8yDkIJDsv3MT11KhqYI6qpSh0Nh6HXr+HkWEwCZ6ZVQLgb5z/x8+qm9EjhDL8EoKRl3L9X0QU27LIYw1AysiqJXT2cQIgTPknFbKB4Racz/sfYTCzPBxxdOY37L5lxwURUfsowp2Ts9JsC3FfjZtBsh8rS2duvsZ3GZKa+6McVjGar2E/Ko9rplJNWMQwz795sd9nA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2dkFK1BQ1IfMNe3+Q4FkBiA3s8P3wBBWUxSoSTXwElY=;
- b=geltjk6gYxi7Kag6xcTy4mX8Y8cTm1BTknbFXj8IJhXKM4dKHURgrfqD4JzBabge8ZpBe0Kf2aXl+YOjay6tAgTyNPL6MofK9+04JIah1ZdWcqliIf/XiwDOn/i2nqIllCCPv+P28QZIljOKa96ueMVRPwjEf1HOBFx9CqJz1QU=
+ bh=Nb+uLfbL30VbXEB+8OnYvObilB8jvhqZVXo0UAkj9zE=;
+ b=JrgGtFOhFHCbpWMYU/3wIYRz8waPymLi52163+tyVy2/Thn+XZvH2X/SqfJ2LIjrUrE511ngc/ukqfm0wZlO/3udt5cTn6B9UunC9TNFy0MQ8n5pKoEhEysIqW8F6hYO0dAEV7n+pSg/kAgf/dTspzg53lnzZ8gBIrW1yig/VJg=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4b4::24)
- by CWXP265MB5624.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:158::13) with
+ by LO7P265MB7590.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:40c::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Thu, 6 Aug
- 2026 11:44:32 +0000
+ 2026 11:50:56 +0000
 Received: from LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
  ([fe80::c07d:488c:d4aa:2a4a]) by LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
  ([fe80::c07d:488c:d4aa:2a4a%4]) with mapi id 15.21.0292.019; Thu, 6 Aug 2026
- 11:44:32 +0000
+ 11:50:56 +0000
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 06 Aug 2026 12:44:31 +0100
-Message-Id: <DKHU2JQ95D67.33B9B0U3539IA@garyguo.net>
-To: "Link Mauve" <linkmauve@linkmauve.fr>, <rust-for-linux@vger.kernel.org>
-Cc: "Ethan Plant" <plant.ethan@gmail.com>, "Michael Garofalo"
- <officialTechflashYT@gmail.com>, "Ash Logan" <ash@heyquark.com>,
- =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, "Sasha
- Finkelstein" <k@chaosmail.tech>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
- Krummrich" <dakr@kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <linux-kernel@vger.kernel.org>,
- <driver-core@lists.linux.dev>
-Subject: Re: [PATCH v2] rust: io: Add a BigEndianMmio wrapper
+Date: Thu, 06 Aug 2026 12:50:55 +0100
+Message-Id: <DKHU7G936M2Z.3A8B6AQLWLEN2@garyguo.net>
+Cc: <acourbot@nvidia.com>, <anna-maria@linutronix.de>,
+ <bjorn3_gh@protonmail.com>, <dakr@kernel.org>,
+ <daniel.almeida@collabora.com>, <frederic@kernel.org>,
+ <jstultz@google.com>, <lossin@kernel.org>, <lyude@redhat.com>,
+ <sboyd@kernel.org>, <tamird@kernel.org>, <tglx@kernel.org>,
+ <tmgross@umich.edu>, <work@onurozkan.dev>,
+ <rust-for-linux@vger.kernel.org>, "FUJITA Tomonori"
+ <fujita.tomonori@gmail.com>
+Subject: Re: [PATCH v5 4/7] rust: time: add Delta::to_jiffies() for timeout
+ conversion
 From: "Gary Guo" <gary@garyguo.net>
+To: "FUJITA Tomonori" <tomo@flapping.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <arve@android.com>, <boqun@kernel.org>,
+ <brauner@kernel.org>, <cmllamas@google.com>, <gary@garyguo.net>,
+ <gregkh@linuxfoundation.org>, <ojeda@kernel.org>, <tkjos@android.com>
 X-Mailer: aerc 0.21.0
-References: <20260806062207.3024012-1-linkmauve@linkmauve.fr>
-In-Reply-To: <20260806062207.3024012-1-linkmauve@linkmauve.fr>
-X-ClientProxiedBy: LO4P123CA0281.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:195::16) To LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
+References: <20260806073241.1024319-1-tomo@flapping.org>
+ <20260806073241.1024319-5-tomo@flapping.org>
+In-Reply-To: <20260806073241.1024319-5-tomo@flapping.org>
+X-ClientProxiedBy: LO4P265CA0188.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:311::17) To LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:4b4::24)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -75,285 +75,128 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOZP265MB8551:EE_|CWXP265MB5624:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a54c2e6-6411-4704-7e26-08def3b01489
+X-MS-TrafficTypeDiagnostic: LOZP265MB8551:EE_|LO7P265MB7590:EE_
+X-MS-Office365-Filtering-Correlation-Id: c961a46d-e7c2-49ed-fa8b-08def3b0f986
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|23010399003|1800799024|7416014|376014|5023799004|56012099006|10067099003|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|10070799003|23010399003|366016|1800799024|376014|7416014|4143699003|56012099006|10067099003|6133799003|18002099003|22082099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	ikJE6nH3LCzVOpySVNmgoKZf3c8D7wp6WYHEllQ3QSSEagqyWUxE2ZVjg/NHFZ5AlMhyVcBY126od+LPperuZCKcdvJalz/0bOPvJLQtRRlU1o23udO/SO2CsPMHbpLFcllmjIBa7d/LYiVkgsYhwAkCNTLZX7UDV2ORt2iEXGaWylWvorXfWD9AsJ7ecZkfAV9RhycncwJSwQLpshfZGo4FfwTA3lmvKF/qR73AakuugzJmytAUqZt5PtXQQm8LjFmZ2dsXPYavtamfKVs7pmB2EXJs252Ml09v+J6YFSMxd5Ry6NUTASAd3hmRu601Ts46ejI3dfantjW5u3bT5Rpd/V5PIoANqxmlXWg/RYvrJ23pu0luGyIKrbxuQ4pHPksCeQYx6PvqOTyuKbUkf0PUIZ9cwXd4SPpZe3D2kVWBMw6JWjXQqWgtsFvarC14SkymuFAzxw/hWbyQ07QL6R+2gEFEX1ZWhC9iHV/iPrzTHa1zsgFpW6/K5Gt1gGnet16jNMETr5ZJBbGVhshOzpmgoudb7Y3qGutcbbeDyZLQguxjODCTHp7O9LeOiot5PmtNSMCqfv006TUwB2b7hXwVVnA4UQVNs65lZTmg6niw1iYBKfgwjvd6OjBQ8kS4johaB55Yi9Nr+KmoF/ASqKMRQASCe/Ha+/4rsH72JVo=
+	beJzyx1BnHuCZCfyBqgOVaHqDJunq13Y1+vx3kIdI/D37kl87o7JGosHnYKE1xjRSmqLt7gFm2avBsK4DAMqVUGFHxY7VT/ZeOoBCiVkAVgCctS5e2njg8OZZbsPMkqKoWXCZr8uwFrDeakgXKuJ1WrE/PJ4im/WqOemYx9IMUiBm65niG7vOpdJ3gFoxQIjlRqnGdc8n43L2vRyNdliYgPgNH1deDlUhfYsAqnVEYJyyhDhemiV2i7R9lkRNRRJFMJzatUJ43HG6Nx0thpD6NWR1uaxanNILZNmIlGLHTDSCkj4jhGC6A4ehkGnM6jb7rU7gdxCw+upbltkCZIAAVPEYq34xSx4NJFYVF1403+KpWoBeBBWd8F5mX/pV1TBCJUDaLfyFtLxLk0H+WxeTjrs1uH6nkbpr+V8w1Sjz086SeiyuXEVmQHTEfYgz9AgpLDLTMvbF6PIxLksCylcUc9/hwurpBxwSFn39Ds+fubBSdOdFbuzWErBydIOkpAK7rsuzeXl0TCZEX9YWO3wu0tylJ1X2peNAC632lbOgP4aRaDNFtyUrsz0XmTAuhCE5E7SVMuyrxtGY3/QluyKwT3PJ+Ad7ufMDEBRCVcHUx2sB1qXbzmxOktU/Lo6yZ9w5FH8JJ1ccUCzCh0P2U4UFu35A7EiedtHW+wSGoqAMaE/+wQUZIgliGWZ6qc3eEN6k+BO+b0HOCMDel5A3IMzKA==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(23010399003)(1800799024)(7416014)(376014)(5023799004)(56012099006)(10067099003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(23010399003)(366016)(1800799024)(376014)(7416014)(4143699003)(56012099006)(10067099003)(6133799003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TFdTSkR2dVFwMDEzUEl0UEtsemI1SStoQjExTGh1Skl5Q2dVRU9kb0g3clJ5?=
- =?utf-8?B?NVB5VnRPdytrdVpSYjZyUlpYR1hraGZKS1RaMnpPL2lhZmlzMlBQaWFoOG9y?=
- =?utf-8?B?ekprL01pTHcxdDNPSXFOWWJOSXNDclMzU1RyVUF0QytJcHhlS28rajREOFA3?=
- =?utf-8?B?dUdEcTdxYXhhQktZeTU3cEdld1J5NGtaRWFLcmhadGNkWW5LZlQzRTZJVzNx?=
- =?utf-8?B?WEc3d0RrWlFwZ3Q2OWtFRGlLNjA1Y2p4eFY4ODlQQU1sNjZzT0tHeGNkUXlC?=
- =?utf-8?B?Tlp3dTlTbGxETGp0b0QzWWJvdk5mdHMwSDVFSmNwNmV2Y3dPbU56QnNIejlR?=
- =?utf-8?B?MDdvYXFyUXJxNXg2Zjd1WURCTXc0SlEwb1ZlOEdrdUpwKzQxZEFGdWNsZDgr?=
- =?utf-8?B?bkFqT1RSaDdXNWlLaENUSGZ2WUc5dllFYlNqem1jRGplR3hyejNPbzdaanYx?=
- =?utf-8?B?UWdDSjdxNWNNK1A2cmhmOGx4MG5jLzJBTjZEL2xKNWI3bnVEYVExSlA4Skpm?=
- =?utf-8?B?aTU1SUtGREZUNkx2K1YrY0FnT2Zvem1TWHEzZm5rdHF0aDFQQlFTVjZjNm9s?=
- =?utf-8?B?MFBkck0zamtHOFpOYit4eENLNUVXR3hZUmxUU1hRV1lhdFhtSWYxMnVWZ29m?=
- =?utf-8?B?ODRFN1hPWWEvRFhaMStQbTN4dlhyQURHVmRDcCtZRVJhUFhWZXJFY0VJd0d3?=
- =?utf-8?B?ODdqaDJ6N1c5ZWhMNnhueGhQcFZDQkJ0Q0VXTmlyNmExajIraklTa3FHblRh?=
- =?utf-8?B?WUtmZGdzc0J4SzhKNmZpTWk5WjdNUnN3VGkzaHFObW16VHhlejUrU1BFVWdh?=
- =?utf-8?B?SWx3UW1LU2V1OGlLK3pTd2kzeE5uSm1zY1lVN09uWlM1V0d5QXR3WW9PZzdG?=
- =?utf-8?B?eEtYY1R5Vys4QVNXM3pXaXl5WVdRbS9MelFQT3A0dWUybS9XaFl5b0RKUFJG?=
- =?utf-8?B?bjY2Qk5waDFsK0IxaU5meXdxZDlTK0dtalhnZS9UeDlYK1E1T3NoV3NLSFV5?=
- =?utf-8?B?OXRocnF4MXVLdTg4R0trWFo3QkJPcnVkb3RGUDVTdnZqS1NCdHNSeTZTV3lU?=
- =?utf-8?B?UTFsUDI5dm5jR1A5ZUFtdXpxQVdqUW9kNzhnUXU2UERCNko0M3NhNTNaOHZE?=
- =?utf-8?B?MGt1VFF6WmJjTUhaTTJ5ZUNKSzZXVmRpY2VtZVo3RWYrOFdEa1I3TFFhcnpl?=
- =?utf-8?B?TFE1NEtJK1ZwVGdkUG5VVkowTkdEUWt1SzRQeG1KOGVocG93Q012cmNHSUlE?=
- =?utf-8?B?cHdVZ1hWbm02em9MR1dLWXNJblZWSlBWL2JtZTRvSUpoQ0lQRWwxdS9FUVhF?=
- =?utf-8?B?ajAweUpsSHpEcVIxTGhvcVhPMXlQdHA2VmRwVU1FRHppOSt4WS8yc3NVODN0?=
- =?utf-8?B?T0huVkF5RmZNZElVYmp5WTFQQ0c1Uy93eTQxT1dkL090azB4d2I0WCtydkxO?=
- =?utf-8?B?SUxZWkpTbi8zWXVKYzRJRXdtN0RBTzI4OHpwZFREcmhDdXpuTWU5b0FLVitW?=
- =?utf-8?B?VUVRM1NQdEZ6cnJpbmgwVWk5ZDlyYjFndlRSczZoZVdqQ0JPMmlJMGpwSVps?=
- =?utf-8?B?Tkpubm0ycjJmYVNSdXJrS0MrNEhGcElnTU0vVE1NQWpsUnZvdTkwSitMQ1lB?=
- =?utf-8?B?VEFVekpmTUVVL1hNNHIwSk9FdlljVXFlSWJ3andlRVk1MUg2ZmRrVUtqZnc2?=
- =?utf-8?B?azBNbTNCdW1JVy9pdDJYR0p6RURjYkhQY01PSmxiNUJkeDdmc3l3NE01ZzNM?=
- =?utf-8?B?ZEg1Yi8wdk1ZajhUNGxXRklLOTVoNGhDeSs0N09NbzEwOWRIRVZhSnM4RUdD?=
- =?utf-8?B?cmorVmd3Q3crVFR6TEU3cUNzTzJERVZLQ0Jld3IwTWlPaEZkL29QNEh5YlF3?=
- =?utf-8?B?K1pjd1RJYmg3bjZCb285aGhkaFJFMXJudW5QOFc1NVZVQTI3YVV4NExSUHg4?=
- =?utf-8?B?Uzk5MjUrSnN0VTlaMG54cTRSVHFDQmpvTWtQR0wyS3RQTHYzYkw0cnNZZmdR?=
- =?utf-8?B?VzJFRml4Z0l4eFkrTHdId2prNFNrdHd4SWpVOXJzTGx3b1JydTdNd2dPMFdq?=
- =?utf-8?B?YWRNVUIvMEd6QXpvTXZGOU9PeENrTlYzTnVaTjVhNk9ndkdPcjBpTzQ2RW51?=
- =?utf-8?B?T3Nka3M5YjU2QjlvS0JUWHZuZHV3L2ZKNktkRGhOcTlsNUt1KyttUGNMU3lQ?=
- =?utf-8?B?RDY5dlF0SHlZYWN4aUZpM0V1ay9NZWY4dml3QkdnTUt2bXd1TzV1a25sWjBq?=
- =?utf-8?B?MFI1bmhIVlBOV25BdllycVgzNXpBaTg1T2tMK2oraVpIM3dJMjFqY1RKUE4r?=
- =?utf-8?B?UVBiWm9wR0ptbTR1OThvNHdPT1MvaWlQRHQ0Y1VBN0pvZ2kySFNPUT09?=
+	=?utf-8?B?SVcxQjRNRGt0Z0xjck5rVVlJdkdEd0ptRzJqdXNVenN0ajZSbklIOS9ZM2tU?=
+ =?utf-8?B?bXN6bTljaG9rYU5VdStacjhOd2FvbHdNREhCQUNxOTdKUWFELzR6Q0pKNERi?=
+ =?utf-8?B?QmlpRTlFTVNuNDV2Yk5hbzF0SlFsM2kySVRqUXArWnlHcHVqQWRzZE80em1x?=
+ =?utf-8?B?WGtIY0IwbDFpMXJEajE1aVJXSXJ1Vzk1UDlBOTRSQWdRbTFTOUkrdU1JNTha?=
+ =?utf-8?B?Mmw3VHdnWGROb2tqVVF5eElNbjE5Q1FLUDhiK3lmWEZXYjdJTWcwcDg4ZzBp?=
+ =?utf-8?B?NzVINUtvS1R5eE8wTFhYbTlWRlBtc2JyZ0xVK25Xbjd1Mm9yUUUvVis0dHZ0?=
+ =?utf-8?B?eUVPQjAwSXRBcmpZOFY5TFcxQ1dnbGUwTGx3OUtmaUxaTlJCVDMrUzFSNUIz?=
+ =?utf-8?B?U3p2cWNQbjR1QTFMMXh1YzMxRHU3MWRoWFVuQjNMMDlYZnZCSG90TFU1bmxi?=
+ =?utf-8?B?alRBeDRJZlFKRzM4UFN3ZXh0VkNkd2dEZlY4bWVyKzFIaUl3bm1ENnUzYzR2?=
+ =?utf-8?B?cjJFSUtyYmZHQjI4bWVudERiRWV0WTdBOWVZWnhXMzJxUjJUKzFRTEcwV3cy?=
+ =?utf-8?B?MHJOUTVPRkZaQXY5R3U4RDVxVWZ0alphRWUyVWU0c09EL0lGelVFdHhIUHdG?=
+ =?utf-8?B?eHpIUVk0eEZLc3BLckxqTDZLWFNrLzltMDhzU0dJemlNK214SHdPQitNZzBZ?=
+ =?utf-8?B?TEhMV0o5V3c2N0VHdzhuWUpVQnNiY0JQcHBYUDgrcjN3eS9sUWZyWUR0R1hJ?=
+ =?utf-8?B?THVXd0s3MFF1ZWlEaGhTT0M5cVVMOUd0TzVhVlpIWkZ5MDBJS3BsRVJ1Tm1x?=
+ =?utf-8?B?TkNJdHVKMGpLZStxdDFKY005VjlJWFIveVBkbXNhZVdEUC9RMDIvT3FYc01U?=
+ =?utf-8?B?R2FNYmk4aWtqYzVCd0JuYUl4Y21PZFVqNDhuZkhGNytNU1R0NlplTytURWln?=
+ =?utf-8?B?dXI1WDVxOE1mcElTMkFmOVY0L0VLelBPQmErVlRTNGh6dklNTzBqZzJQbGx4?=
+ =?utf-8?B?VGdqWTZycUx3NTVGLzdEeCtCa05sb25aN2JYaFR5eWVMM1RuZXZweS9BaFdq?=
+ =?utf-8?B?dFlhV2pwUnpzNEs2dy83UlNHVVhOa2N4TjJrTXFueWdEeDI5YTRta09sTzBm?=
+ =?utf-8?B?YWJkY1Q1TUgzakwrVHF4WEVLa1ZITi9xd3NjMWphWlFVSTEwaEp2Rm1IT0Fh?=
+ =?utf-8?B?UTMzVTRXTjdGMjNTWTZVRkZxZzA4a3MvSTRERm1EUmp1UDdHQTJvQ2RrQm5n?=
+ =?utf-8?B?NDZRVnp6aHJrOHlOODFwdk0wd1VkK05CbXpBM0wzNC9rOEs0cVRTMjRFME5T?=
+ =?utf-8?B?S0NWeXFNUDhpbWRlWGErdGlPMGtTb1dyTUVvQ2s1U085ZlRIdVphWndwYXpy?=
+ =?utf-8?B?dzkyMXdMYmhHUTBnODF1bkZTZGc3V2ozV2JUVFNkc3M0MXZ0TEYwZ2Y1SlFm?=
+ =?utf-8?B?SGVnNkJTK0djbVU0ZFJkczhSMm0wemVrR3lJNStmekdrQkViY2F0SnVqS2M3?=
+ =?utf-8?B?MTk5dTZHdTNCV24vb1JLSFVqOVhFVG00YnJFY3lPOFp6dFh5bDJXTS9icWRU?=
+ =?utf-8?B?UCtUaTVuMDNnZDFpOThDUS9MWnhTM0dJOVMxK1JLaVdPbVdSWUdRVENybHlz?=
+ =?utf-8?B?Z09NQmhBU0RSbXRNbzdkVm5vcVAvTmNGWEVpSVFlSEVIQjkyenJPVmJqV0tt?=
+ =?utf-8?B?U1F4RTU2bm1sbmQ4Y1NxZEsvNXZRRlJwMXZyYld3cldNYXlwTG1kZlliM3Nr?=
+ =?utf-8?B?K00wRnk1V2Fvc3c2MVNCNUlhYlU1Rkl5RE9yVjJQaGxSVTUwb0ZXSUtyc0VY?=
+ =?utf-8?B?akVYQ1NBUU9QK3B5U0dVM1laWnRROVovckpkZFVDSk1UaFg2RXRLT2RTck0r?=
+ =?utf-8?B?ZlIzY3VUdTZVWklxemRJNXJveUJuZmV5Z1ZmSDFycjczbzNLRFhmVFdDNUZh?=
+ =?utf-8?B?ajNyWFhFbzFEazlneXNLbFhhUE5GckNZb3lVTEU2bXBjOHcrWjN4a3ZoRU9Q?=
+ =?utf-8?B?dkxBUkhmQTd0c2Zvc0Y1YUxqRmZEazNuZjN5cVczSEdLbDg5c2laTXZBVWV1?=
+ =?utf-8?B?K3hZWVJwS3dYRkd1NTJwdHZ4Zi9VSWt5eUR6anlJTjJlalM3VWhMSjkwejlK?=
+ =?utf-8?B?aEl5Zk1pN3AzbnRveFBvMDNaZG5zUUE3MlA1NWs4NURuQy8vdTBqQ2o4ajh4?=
+ =?utf-8?B?eTlUTHB2QUJFM3N6UDF4WitYL0k1ODgxUFZQZU5NbUZ5Ri9NSHdVd3hIVWFt?=
+ =?utf-8?B?MnhKVktiZlVMclNyS3NZOFg5WXFZVk1XT0YvbjdnUHpveHdzbXl5ckpoNXdo?=
+ =?utf-8?B?WnlzS0FiclFhTGttVVhPWk9USXRtSXo4Y1pnUnBWWFMrM29JTXF6QT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a54c2e6-6411-4704-7e26-08def3b01489
+X-MS-Exchange-CrossTenant-Network-Message-Id: c961a46d-e7c2-49ed-fa8b-08def3b0f986
 X-MS-Exchange-CrossTenant-AuthSource: LOZP265MB8551.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 11:44:31.9337
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 11:50:56.0576
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tjgGJRT9gNTUz+P4NGFC0jeIu0jVzzYfIetzpaTHYvtUwbpUXiUeoYN+Wrpqn4Y+TgzxcccLSOldilQqlhACvQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB5624
+X-MS-Exchange-CrossTenant-UserPrincipalName: /sUSR4cdjbcsVz9YqozJE14AtwhF+xebvYuAB6n2JZF/RjH9lu9WMeT271Ltv57yWppyIwPIIYyhcEXZ3vRdSA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO7P265MB7590
 
-On Thu Aug 6, 2026 at 7:22 AM BST, Link Mauve wrote:
-> This allows the user to read from and write to big-endian MMIO devices,
-> such as those found on PowerPC systems.
+On Thu Aug 6, 2026 at 8:32 AM BST, FUJITA Tomonori wrote:
+> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 >
-> The implementation is pretty much a copy-paste of the RelaxedMmio type,
-> with the business logic changed.
+> Add Delta<Nsec>::to_jiffies() conversion that rounds up so the
+> resulting timeout is never shorter than the requested span, clamps a
+> negative span to an immediate timeout, and saturates an overlong span
+> to the kernel's MAX_JIFFY_OFFSET "wait forever" value.
 >
-> This has been tested with various WIP drivers on the Nintendo Wii, and I
-> thought it would be nicer to upstream it before those are completely
-> ready, to get some review.
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/kernel/time.rs | 21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+>
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 9d65a6c1992a..5844ee985a7b 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -551,6 +551,27 @@ pub fn as_millis_ceil(self) -> i64 {
+>          }
+>      }
+> =20
+> +    /// Convert this span to a [`Delta<Jiffy>`] suitable for use as a ti=
+meout.
+> +    ///
+> +    /// The value is rounded up to the next whole jiffy, so the resultin=
+g
+> +    /// timeout is never shorter than `self` (as `msecs_to_jiffies()` do=
+es).
+> +    /// A negative span clamps to zero jiffies (an immediate timeout).
+> +    #[inline]
+> +    pub fn to_jiffies(self) -> Delta<Jiffy> {
+> +        let msecs =3D self.as_millis_ceil();
+> +
+> +        // CAST: `msecs` is clamped to `0..=3Dc_uint::MAX`, so it is non=
+-negative and
+> +        // fits in `c_uint`.
+> +        let msecs =3D msecs.clamp(0, i64::from(crate::ffi::c_uint::MAX))=
+ as crate::ffi::c_uint;
+> +
+> +        // SAFETY: `__msecs_to_jiffies()` is always safe to call.
+> +        let jiffies =3D unsafe { bindings::__msecs_to_jiffies(msecs) };
+> +
+> +        // CAST: `__msecs_to_jiffies()` returns a value in `0..=3DMAX_JI=
+FFY_OFFSET`, i.e.
+> +        // `((LONG_MAX >> 1) - 1)`, which is non-negative and well withi=
+n `isize`.
+> +        Delta::<Jiffy>::from_jiffies(jiffies as isize)
+> +    }
 
-An alternative approach would be to have a generic wrapper `BigEndian<IO>` =
-where
-it performs byte-swapping in its `IoCapable` implementation. This is more
-composable as it works for all I/O.
-
-Of course, this means that it won't be using the specialized BE I/O impl, b=
-ut
-then the only architectures that have specialized ioread16be are PPC32 and
-SPARC, so maybe it's a reasonable trade-off to make?
+This should be using nsec_to_jiffies?
 
 Best,
 Gary
 
->
-> Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
-> ---
->  rust/helpers/io.c | 34 ++++++++++++++++++
->  rust/kernel/io.rs | 88 +++++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 120 insertions(+), 2 deletions(-)
->
-> Changes since v1:
-> - Link to v1:
->   https://lore.kernel.org/rust-for-linux/178598049138.1212746.24431515070=
-74972963.b4-review@b4/T/
-> - Fix copy/paste mistake in backend docstring (thank you Ethan Plant!)
-> - Fix safety comment in macro documentation.
->
-> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-> index 7ed9a4f77f1b..3bbb86a00d67 100644
-> --- a/rust/helpers/io.c
-> +++ b/rust/helpers/io.c
-> @@ -120,6 +120,40 @@ __rust_helper void rust_helper_writeq_relaxed(u64 va=
-lue, void __iomem *addr)
->  }
->  #endif
-> =20
-> +__rust_helper u16 rust_helper_ioread16be(const void __iomem *addr)
-> +{
-> +	return ioread16be(addr);
-> +}
 > +
-> +__rust_helper u32 rust_helper_ioread32be(const void __iomem *addr)
-> +{
-> +	return ioread32be(addr);
-> +}
-> +
-> +#ifdef CONFIG_64BIT
-> +__rust_helper u64 rust_helper_ioread64be(const void __iomem *addr)
-> +{
-> +	return ioread64be(addr);
-> +}
-> +#endif
-> +
-> +__rust_helper void rust_helper_iowrite16be(u16 value, void __iomem *addr=
-)
-> +{
-> +	iowrite16be(value, addr);
-> +}
-> +
-> +__rust_helper void rust_helper_iowrite32be(u32 value, void __iomem *addr=
-)
-> +{
-> +	iowrite32be(value, addr);
-> +}
-> +
-> +#ifdef CONFIG_64BIT
-> +__rust_helper void rust_helper_iowrite64be(u64 value, void __iomem *addr=
-)
-> +{
-> +	iowrite64be(value, addr);
-> +}
-> +#endif
-> +
->  __rust_helper resource_size_t rust_helper_resource_size(struct resource =
-*res)
->  {
->  	return resource_size(res);
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index a38c20ba3d23..ab8b7864298a 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -1194,14 +1194,14 @@ impl IoCapable<$ty> for $backend {
->              #[inline]
->              fn io_read(view: <$backend as IoBackend>::View<'_, $ty>) -> =
-$ty {
->                  // SAFETY: `$backend::as_ptr(view)` is a valid pointer f=
-or MMIO operations for both
-> -                // `MmioBackend` and `RelaxedMmioBackend`.
-> +                // `MmioBackend`, `RelaxedMmioBackend` and `BigEndianMmi=
-oBackend`.
->                  unsafe { bindings::$read_fn($backend::as_ptr(view).cast_=
-const().cast()) }
->              }
-> =20
->              #[inline]
->              fn io_write(view: <$backend as IoBackend>::View<'_, $ty>, va=
-lue: $ty) {
->                  // SAFETY: `$backend::as_ptr(view)` is a valid pointer f=
-or MMIO operations for both
-> -                // `MmioBackend` and `RelaxedMmioBackend`.
-> +                // `MmioBackend`, `RelaxedMmioBackend` and `BigEndianMmi=
-oBackend`.
->                  unsafe { bindings::$write_fn(value, $backend::as_ptr(vie=
-w).cast()) }
->              }
->          }
-> @@ -1751,3 +1751,87 @@ macro_rules! io_write {
->  }
->  #[doc(inline)]
->  pub use crate::io_write;
-> +
-> +/// [`Mmio`] wrapper using big-endian accessors.
-> +///
-> +/// This type provides an implementation of [`Io`] that uses big-endian =
-I/O MMIO operands instead of
-> +/// the regular little-endian ones.
-> +///
-> +/// See [`Mmio::big_endian`] for a usage example.
-> +#[repr(transparent)]
-> +pub struct BigEndianMmio<'a, T: ?Sized>(Mmio<'a, T>);
-> +
-> +impl<T: ?Sized> Copy for BigEndianMmio<'_, T> {}
-> +impl<T: ?Sized> Clone for BigEndianMmio<'_, T> {
-> +    #[inline]
-> +    fn clone(&self) -> Self {
-> +        *self
-> +    }
-> +}
-> +
-> +/// I/O Backend for memory-mapped I/O using big-endian accessors.
-> +pub struct BigEndianMmioBackend;
-> +
-> +impl IoBackend for BigEndianMmioBackend {
-> +    type View<'a, T: ?Sized + KnownSize> =3D BigEndianMmio<'a, T>;
-> +
-> +    #[inline]
-> +    fn as_ptr<'a, T: ?Sized + KnownSize>(view: Self::View<'a, T>) -> *mu=
-t T {
-> +        MmioBackend::as_ptr(view.0)
-> +    }
-> +
-> +    #[inline]
-> +    unsafe fn project_view<'a, T: ?Sized + KnownSize, U: ?Sized + KnownS=
-ize>(
-> +        view: Self::View<'a, T>,
-> +        ptr: *mut U,
-> +    ) -> Self::View<'a, U> {
-> +        // SAFETY: Per safety requirement.
-> +        BigEndianMmio(unsafe { MmioBackend::project_view(view.0, ptr) })
-> +    }
-> +}
-> +
-> +impl<'a, T: ?Sized + KnownSize> IoBase<'a> for BigEndianMmio<'a, T> {
-> +    type Backend =3D BigEndianMmioBackend;
-> +    type Target =3D T;
-> +
-> +    #[inline]
-> +    fn as_view(self) -> BigEndianMmio<'a, T> {
-> +        self
-> +    }
-> +}
-> +
-> +impl<'a, T: ?Sized> Mmio<'a, T> {
-> +    /// Returns a [`BigEndianMmio`] reference that performs big-endian I=
-/O operations.
-> +    ///
-> +    /// Big-endian makes no change to 8-bit accesses, but will invert th=
-e bytes of 16-, 32- and
-> +    /// 64-bit accesses, to ensure numbers will be read in their correct=
- order.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```no_run
-> +    /// use kernel::io::{
-> +    ///     Io,
-> +    ///     Mmio,
-> +    ///     Region,
-> +    ///     BigEndianMmio,
-> +    /// };
-> +    ///
-> +    /// fn do_io(io: Mmio<'_, Region<0x100>>) {
-> +    ///     // The access is performed using `ioread32be` instead of `re=
-adl`.
-> +    ///     let v =3D io.big_endian().read32(0x10);
-> +    /// }
-> +    ///
-> +    /// ```
-> +    #[inline]
-> +    pub fn big_endian(self) -> BigEndianMmio<'a, T> {
-> +        BigEndianMmio(self)
-> +    }
-> +}
-> +
-> +// MMIO regions support 8, 16, and 32-bit accesses.
-> +impl_mmio_io_capable!(BigEndianMmioBackend, u8, readb, writeb);
-> +impl_mmio_io_capable!(BigEndianMmioBackend, u16, ioread16be, iowrite16be=
-);
-> +impl_mmio_io_capable!(BigEndianMmioBackend, u32, ioread32be, iowrite32be=
-);
-> +// MMIO regions on 64-bit systems also support 64-bit accesses.
-> +#[cfg(CONFIG_64BIT)]
-> +impl_mmio_io_capable!(BigEndianMmioBackend, u64, ioread64be, iowrite64be=
-);
->
-> base-commit: 1701fda2f58e345c050f4309971bdc07cd6146ba
+>      /// Return `self % dividend` where `dividend` is in nanoseconds.
+>      ///
+>      /// The kernel doesn't have any emulation for `s64 % s64` on 32 bit =
+platforms, so this is
 
 
