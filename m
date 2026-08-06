@@ -1,169 +1,314 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B884343BDA7
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 10:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECF52BD022
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 10:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786011306; cv=none; b=kMUxOhRPhPjStuBx/4IWGEycDgQPfzhYRlW6lwKtegt4ppczG4EzzPY47pv2n7bvFhtOFtM5AK83ta/GO+LS1I9RecBbVjKV9BztmI4JyuTBBsaQVV02LHCdyJ3sph+DY/WxiseAnAqOEp2TYpX0gXLXZ9ScYYGs7T9MP1hSGQ8=
+	t=1786012850; cv=none; b=Q4r4l28xBSzqgPz3+hPFyrFA6MRTULpGaYD1cgGSXRFOwSWuoB9iaZidLTBb6elmB84/Q1PSrVCpNrX0B0HXXQYGBQcBVhf8mpln4iNEXxSy12lhwDxqqiNNHqVd8ut9E2hTP0oCD19jnlZX0c83szfmdQKD1RH3oC6x9CuCATE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786011306; c=relaxed/simple;
-	bh=/1IThqNZdMCBQDkEFek6hXi6ulwTTyOpmnCMtAXyxtc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=M74m4nVT6cfq1ppVOQorLXPiUtja3ahLYCDAcFG6gmwu0Lrtwn6VtYtQjSOGxvyub/QF+gUadMc2DxrJNfVNJGYNqgY1yHHiU8n3QrBz2hedgRSRwKFymDHDEwIJ+pSEX1RGntsEiLQU3AKHR3yB8T4nwlFhHmVWP2xpld7zcH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WfciAAWJ; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1786012850; c=relaxed/simple;
+	bh=tRfdsI9jyfAUpbfjwgHz3vA8D9iLRveb6evE1cckkuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mz3rsuUzzdNkjzs1xtgA7M99qX3n8HYNPjDdeSw+Fjz35O3f6uzZXXV3CEU8msx/wiLbSOqyEAOqWfeDYpQ88LlM3DozeYVtXup49hL11Q/Xc6awoT/NQBbvGP5BLkL9mdKQPNrQBKdDNIn7J+42KN9Ev5UVUiK8M4H62Klvw5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmfT4Wnu; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WfciAAWJ"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso18825765ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 03:15:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmfT4Wnu"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2cfbbdfa60bso19017105ad.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 03:40:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786011304; x=1786616104; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wV7tV6jRZ/wrxgtJ8vfKgjHl3r8tGZBMqdy8W9OvNng=;
-        b=WfciAAWJ/Hpmo5ukdXb/rh8u5cIs+a84g08ew2B1k2ER+dHI0b+1IQNxdlUjFgQ57t
-         m1gy95pWUSBnuFht9FrdsQr4kwm6ZWkC4/Eqmx553iYjvBY5pvydSfxmZBytenvA97bP
-         P9s7yv3YZON5nZTOptcuOW624DNpdy1eNtdOt22ebcM+dzf/5FxPjjVoA7HIWXanwb3U
-         +Z3ouLCnlrHHtW30LG9KGZUQ7e8+ve9I9P/rhqgCmQKh9uAbT4u+wsMyCiavRtOHUUDq
-         Pznw5OHXEoZzzTg1ijdNg60IQZmkTrgeLHW4oFIBdwjEKYU4A4lA2zztgrlzwI4C9Avs
-         k/sw==
+        d=gmail.com; s=20251104; t=1786012847; x=1786617647; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aHhG+liuZTafcPBdaHPAIlQHTjNuSYOZDbFN67Y2dRk=;
+        b=cmfT4Wnu6akDEB0lEmy/TKIcp8XKNy3n4AQKj7EM5FF9mxC1tptqSFsuaLLZTdew6n
+         QUFaUl6Z/1xchVvwl+STnPzgRhjFzO397ZKRz0BSRD+bL1onx0CoOAuhslDQVlDagjmm
+         AlavUSf89ezB0fTm0XNlZpnWpXStLf0KPvumGYnTpu6SfFaaecF8foMe+wUbKLFxyBC2
+         WsNMdtl+TV98BIn37FSvTGO25P10sWcpsylfbkoa4/OHo+gvpki1xihDMx/wP5sMCggI
+         UEf5wE78yprPPG169rBcMWK6J3Xv/RCV2mQbOFi0ascNknMtNYkwOQd8fq1rOAG5SS8R
+         0Sjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786011304; x=1786616104;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=wV7tV6jRZ/wrxgtJ8vfKgjHl3r8tGZBMqdy8W9OvNng=;
-        b=N0cnhX5B2faE/Njbq1T2OyS1pTcvAJGDdb3cgsGwkg7k17SQKZry0FrbL8ns/GveIO
-         dfdMShcl70aET1Fu/oOFUzPencJGX5z+SdAoStrv/XhjTgr1AOCNJd5JH+UH7m6Ogf5n
-         hgj4QJsX2hxji42KJQtxZNeZ/YV2ZlLd/DOrGx23ETFU6nUOyoOHXX6fDklCMOvfPMmm
-         8x12zk2rpy2aoOizOaZxzh1laaxsyBAgUX3JCMDyM6qMUwwNGWDr1NRX6ZUGvLRFIaEl
-         9/QOEu4NdLS8Z4Re2aonLpmCgoGBJU414Mm6p1PqDmyGRu+ENr33XA5gYWEH5tg/Q8Kk
-         BOWQ==
-X-Gm-Message-State: AOJu0Ywsl7Yqe+BouoJGW0qal9sLA1a9rsd7YFWZb3yV1WR1/lhH9M7N
-	vro4dfcypRgq9n6mzeFQj3I7VETJHyaXznxQnoshGuLioYrCea3rU1hz
-X-Gm-Gg: AR+sD11mAZQsr99d70nN/VYMkmKLuFkmRtq22hA+jnRZogJDBjqfc7LMP9yf7WwBGIi
-	zG82aF1sb58P9ZjDnPLkfcpzVWXfOXbvNbtdd5pKro286kYT10wab2hTsvPi6LzSDb9LudCR1rO
-	9ZCRPrPuC/jEw7PGd8OATDM61tTwGDHmNpKvIE9lQC+GlAnN+cqXMxnu8R0nwX4zIIMyBlIzYo8
-	Ck0aTwO/xgLiUqarF6UYuxE7I11zEGav+g53ZDLOaSk3wq3GsRWDnk0HRBlgNn9azYHXiFn/OYu
-	pNhQtk4CmiZXkyaINITEtV14MTEDDtYPofbdQGWQmJfQuhUCNEpVeJGoAPKq+AImVRBE3hMWKf0
-	1T4hiJr2q8eCnSf9zPHB7KnLV7v47pDSllSjOsBxcpSyC0DxLrx+eV8xqctEqinWAEcrV2ebBH3
-	tmlBrsn+SVtbwUSGmaCfw95OiPEZRB2hunFoEfGaRnrLFp1bOFDoC1jfHvMIwDfMQBxIIzW8cfD
-	dYIDkFJya2MEk15RuiQ4ud6
-X-Received: by 2002:a17:902:d986:b0:2c0:e2ea:6b0c with SMTP id d9443c01a7336-2d0caa031e5mr167981045ad.21.1786011303938;
-        Thu, 06 Aug 2026 03:15:03 -0700 (PDT)
-Received: from localhost (S0106c4509ca6eb5e.vc.shawcable.net. [24.80.190.145])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d0a9f8fc8csm30758685ad.15.2026.08.06.03.15.03
+        d=1e100.net; s=20251104; t=1786012847; x=1786617647;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aHhG+liuZTafcPBdaHPAIlQHTjNuSYOZDbFN67Y2dRk=;
+        b=ftMqv2k6XZmV1miQE9l7FigaSOvZzaYoAsCXb4L+opH/o8gWGhVE/glTDeQcr9KEfD
+         3tEXOPhj5GGsmcLcYSdwBvgK0HkKyTWNNX29i1pI4+tCG4IW1ZGWMeHESaie8mm3GZuN
+         OoF3gaeo0dnMTL9pj7sqV4Kt80cHr1j+ULAWANefN17srUzG/fMShvY028ZhI3q9heVT
+         V6lhOtblOTzBvHa0rNR5ZXi4jv9I/RkzgYx6Rcwtsp2BO8HzIWLCqOuyCPlRwk0Eiu6l
+         2N/dPe/guEo/TF1X3l0XwhHN//pex/vprEenX4J7elS1g2qj1Um1Z5Rpi3gB41l/So9Q
+         pF/w==
+X-Forwarded-Encrypted: i=1; AHgh+RoQkFy9szkg/60PIC4GKJuARTafpZPCGLFW5XffGLn5WVADd2lTY4xcpXwdRr9cloRZQpQRpCU6XHllsnu1PQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrZkpQR9PvJzmphE1Hvutut6/oyplrZ9+ymgm3isw5WKyR8tUV
+	PsYDSf+nuIbpsmpAYsnsssZvDuH5vjPqFwYc0YZ2FYfHVWOWfd7y+Tk7
+X-Gm-Gg: AR+sD10MNE2RYjoqVEQnIN8q/8KPvFNFIypM19Cd9ASu3db2IhKcRyyIXRcnavwQYHf
+	fYARRYfEpe1U3m7+IAeyy19lBF2SkCcJr2Xox/tMA/h9QkutnLpLVsjZsuTIffoqymkUvpOXLzW
+	MNlo5B98edbOlvHg8S/XELNLyyFZc7sPwZVmTQFRxGZ0znLtEYFgcYsNqgU7Ql8gh/SxHYRd5vs
+	MWYXefGTzbdZ0h8s4UieoO3jcqPBO8i9rDc5Hq3G5kxy/IKTvkkDL8lUDcazzfYNx7YHt94xURJ
+	VaSapZyqlloXieNSvx5bNSBfXQQs8nllUc1d27n7tFb3P2SW45RVTbGExwmQKPKElNnctQPGuLY
+	Syds46Ce+n/cGYQB7WPiXqKub/NB0I9Vqr53ILh04CFsk18Hou9yez+q50AMM8E6saIuSNfH629
+	OFmW5pwlTE8qHzxRpAzg1u4HmlCJDmlNJZ+FWElKzzEuxjfa3nF/0the36qGhOYg==
+X-Received: by 2002:a05:6a20:6a10:b0:3bf:6237:4d46 with SMTP id adf61e73a8af0-3cb85ef7e35mr15288484637.28.1786012847127;
+        Thu, 06 Aug 2026 03:40:47 -0700 (PDT)
+Received: from archlinux ([2402:e280:411b:ec:aa93:b1ec:5a6b:5fce])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315863b761asm39061397eec.1.2026.08.06.03.40.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 03:15:03 -0700 (PDT)
-From: Ethan Plant <plant.ethan@gmail.com>
-Date: Thu, 06 Aug 2026 03:14:32 -0700
-Subject: [PATCH] rust: macros: Allow omitting trailing commas in module!
+        Thu, 06 Aug 2026 03:40:46 -0700 (PDT)
+From: Adarsh Das <adarshdas950@gmail.com>
+To: adarshdas950@gmail.com
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	axboe@kernel.dk,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev
+Subject: [PATCH v3] rust: block: set GenDisk block_device_operations.owner to THIS_MODULE
+Date: Thu,  6 Aug 2026 16:10:27 +0530
+Message-ID: <20260806104027.83940-1-adarshdas950@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260806083655.23161-1-adarshdas950@gmail.com>
+References: <20260806083655.23161-1-adarshdas950@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260806-module-optional-trailing-comma-v1-1-d04811335e59@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNywrCMBCF4Vcps3YgtiGoryIuxmRaR3IpSSqF0
- ndv1OUHh/9sUDgLF7h1G2T+SJEUG86nDuyL4sQorhl61Rt1UQZDcotnTHNtS/JYM4mXOKFNIRB
- qTcNgnBuNvkKLzJlHWX8H98ffZXm+2dZvFfb9AAmF12KCAAAA
-X-Change-ID: 20260806-module-optional-trailing-comma-44a336ddf649
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
- Aaron Tomlin <atomlin@atomlin.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-modules@vger.kernel.org, Ethan Plant <plant.ethan@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2181; i=plant.ethan@gmail.com;
- h=from:subject:message-id; bh=/1IThqNZdMCBQDkEFek6hXi6ulwTTyOpmnCMtAXyxtc=;
- b=owGbwMvMwCXmcODvRtktquaMp9WSGLJK4pZJR6j3xv1lr/69+Uq8+2Zxsxc6io/6DTmzwv9d8
- fmT9v9FRykLgxgXg6yYIkvol6n7tyaf8VjyVooJZg4rE8gQBi5OAZiIjgQjw96t/nf3C30oMljb
- o5RUm7Znkeu2AB2lE/Mmd2hKcKtf4mT4p26/PvZ9IMscy2UhvqLOv+M+f5mktNLTcpfOX+15LX1
- pXAA=
-X-Developer-Key: i=plant.ethan@gmail.com; a=openpgp;
- fpr=55F495BFB563CC48A4ED1A0240C0FDB11DB42537
+Content-Transfer-Encoding: 8bit
 
-The module! macro currently requires a trailing comma after the final
-argument, despite using syntax modeled on Rust struct initializers,
-where trailing commas are optional.
+GenDiskBuilder left block_device_operations.owner NULL. Set owner from a
+const block_device_operations table using this_module::<M>() and update
+rnull to pass NullBlkModule.
 
-Allow parsing to finish after the final field when the input stream is
-empty. If more input remains, continue requiring a comma, so missing
-separators between fields are still rejected.
+Add ModuleMetadata::THIS_MODULE and this_module() so the owner pointer is
+available in const context. Rebased on Alvins fix-fops-owner series [1].
 
-Document that the final trailing comma is optional and update an existing
-module! doctest to exercise the syntax without one.
+Link: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1172
-Signed-off-by: Ethan Plant <plant.ethan@gmail.com>
+v2:
+- Free fops in free_disk instead of GenDisk::drop to fix use-after-free
+  when the device stays open after removal. (Sashiko)
+- Install the cleanup guard before fops allocation to avoid leaking gendisk
+  on -ENOMEM. (Sashiko)
+- Link to v1: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
+
+v3:
+- Use const fops with this_module::<M>() instead of heap allocation
+  (as suggested by Andreas).
+- Integrate ModuleMetadata::THIS_MODULE from [1].
+- Dismiss recover_data before fallible build steps after the cleanup guard.
+  (Sashiko)
+- Link to v2: https://lore.kernel.org/all/20260806083655.23161-1-adarshdas950@gmail.com/
+
+[1] https://lore.kernel.org/r/20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev
+
+Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
 ---
- rust/macros/lib.rs    | 4 +++-
- rust/macros/module.rs | 7 ++++++-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/block/rnull/rnull.rs     |  2 +-
+ rust/kernel/block/mq.rs          | 13 ++++++--
+ rust/kernel/block/mq/gen_disk.rs | 56 +++++++++++++++++---------------
+ rust/kernel/lib.rs               |  9 +++++
+ rust/macros/module.rs            | 16 +++++++++
+ 5 files changed, 65 insertions(+), 31 deletions(-)
 
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 4a48fabbc2682..f6474b194687f 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -61,6 +61,8 @@
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 0ca8715febe8..912526be4ec2 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -61,7 +61,7 @@ fn new(
+             .logical_block_size(block_size)?
+             .physical_block_size(block_size)?
+             .rotational(rotational)
+-            .build(fmt!("{}", name.to_str()?), tagset, queue_data)
++            .build::<NullBlkModule, Self>(fmt!("{}", name.to_str()?), tagset, queue_data)
+     }
+ }
+ 
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index 1fd0d54dd549..faa9fcbac935 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -8,8 +8,8 @@
+ //! - Implement [`Operations`] for a type `T`.
+ //! - Create a [`TagSet<T>`].
+ //! - Create a [`GenDisk<T>`], via the [`GenDiskBuilder`].
+-//! - Add the disk to the system by calling [`GenDiskBuilder::build`] passing in
+-//!   the `TagSet` reference.
++//! - Add the disk to the system by calling [`GenDiskBuilder::build`], passing in
++//!   the module type, the disk name, the `TagSet`, and queue data.
+ //!
+ //! The types available in this module that have direct C counterparts are:
+ //!
+@@ -86,9 +86,16 @@
+ //!
+ //! let tagset: Arc<TagSet<MyBlkDevice>> =
+ //!     Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
++//! # struct MyModule;
++//! # impl kernel::ModuleMetadata for MyModule {
++//! #     const NAME: &'static kernel::str::CStr = c"myblk";
++//! #     // SAFETY: Doctest stub; no module is loaded.
++//! #     const THIS_MODULE: ThisModule =
++//! #         unsafe { ThisModule::from_ptr(core::ptr::null_mut()) };
++//! # }
+ //! let mut disk = gen_disk::GenDiskBuilder::new()
+ //!     .capacity_sectors(4096)
+-//!     .build(fmt!("myblk"), tagset, ())?;
++//!     .build::<MyModule, MyBlkDevice>(fmt!("myblk"), tagset, ())?;
+ //!
+ //! # Ok::<(), kernel::error::Error>(())
+ //! ```
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index fc97dd873974..4a503f183cc9 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -15,8 +15,34 @@
+     str::NullTerminatedFormatter,
+     sync::Arc,
+     types::{ForeignOwnable, ScopeGuard},
++    ModuleMetadata,
+ };
+ 
++struct BlockFops<M: ModuleMetadata>(core::marker::PhantomData<M>);
++
++impl<M: ModuleMetadata> BlockFops<M> {
++    const TABLE: bindings::block_device_operations = bindings::block_device_operations {
++        submit_bio: None,
++        open: None,
++        release: None,
++        ioctl: None,
++        compat_ioctl: None,
++        check_events: None,
++        unlock_native_capacity: None,
++        getgeo: None,
++        set_read_only: None,
++        swap_slot_free_notify: None,
++        report_zones: None,
++        devnode: None,
++        alternative_gpt_sector: None,
++        get_unique_id: None,
++        owner: crate::this_module::<M>().as_ptr(),
++        pr_ops: core::ptr::null_mut(),
++        free_disk: None,
++        poll_bio: None,
++    };
++}
++
+ /// A builder for [`GenDisk`].
  ///
- /// [`Module`]: ../kernel/trait.Module.html
- ///
-+/// The trailing comma after the final field is optional.
-+///
- /// # Examples
- ///
- /// ```ignore
-@@ -112,7 +114,7 @@
- ///     authors: ["Rust for Linux Contributors"],
- ///     description: "My device driver requires firmware",
- ///     license: "GPL",
--///     firmware: ["my_device_firmware1.bin", "my_device_firmware2.bin"],
-+///     firmware: ["my_device_firmware1.bin", "my_device_firmware2.bin"]
- /// }
- ///
- /// struct MyDeviceDriverModule;
+ /// Use this struct to configure and add new [`GenDisk`] to the VFS.
+@@ -95,7 +121,7 @@ pub fn capacity_sectors(mut self, capacity: u64) -> Self {
+     }
+ 
+     /// Build a new `GenDisk` and add it to the VFS.
+-    pub fn build<T: Operations>(
++    pub fn build<M: ModuleMetadata, T: Operations>(
+         self,
+         name: fmt::Arguments<'_>,
+         tagset: Arc<TagSet<T>>,
+@@ -125,30 +151,8 @@ pub fn build<T: Operations>(
+             )
+         })?;
+ 
+-        const TABLE: bindings::block_device_operations = bindings::block_device_operations {
+-            submit_bio: None,
+-            open: None,
+-            release: None,
+-            ioctl: None,
+-            compat_ioctl: None,
+-            check_events: None,
+-            unlock_native_capacity: None,
+-            getgeo: None,
+-            set_read_only: None,
+-            swap_slot_free_notify: None,
+-            report_zones: None,
+-            devnode: None,
+-            alternative_gpt_sector: None,
+-            get_unique_id: None,
+-            // TODO: Set to `THIS_MODULE`.
+-            owner: core::ptr::null_mut(),
+-            pr_ops: core::ptr::null_mut(),
+-            free_disk: None,
+-            poll_bio: None,
+-        };
+-
+-        // SAFETY: `gendisk` is a valid pointer as we initialized it above
+-        unsafe { (*gendisk).fops = &TABLE };
++        // SAFETY: `gendisk` is a valid pointer as we initialized it above.
++        unsafe { (*gendisk).fops = &BlockFops::<M>::TABLE };
+ 
+         let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
+             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
+@@ -159,8 +163,6 @@ pub fn build<T: Operations>(
+             drop(unsafe { T::QueueData::from_foreign(data) });
+         });
+ 
+-        // The failure guard now owns both pieces of cleanup; the early guard
+-        // must not run on this path anymore.
+         recover_data.dismiss();
+ 
+         let mut writer = NullTerminatedFormatter::new(
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 9512af7156df..9bbabaf84e20 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -185,6 +185,15 @@ fn init(module: &'static ThisModule) -> impl pin_init::PinInit<Self, error::Erro
+ pub trait ModuleMetadata {
+     /// The name of the module as specified in the `module!` macro.
+     const NAME: &'static crate::str::CStr;
++
++    /// The module's `THIS_MODULE` pointer.
++    const THIS_MODULE: ThisModule;
++}
++
++/// Returns the [`ThisModule`] pointer for the given module type.
++#[inline]
++pub const fn this_module<M: ModuleMetadata>() -> &'static ThisModule {
++    &M::THIS_MODULE
+ }
+ 
+ /// Equivalent to `THIS_MODULE` in the C API.
 diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 06c18e2075083..57ee79b49a7ec 100644
+index 06c18e207508..8df38718224b 100644
 --- a/rust/macros/module.rs
 +++ b/rust/macros/module.rs
-@@ -261,8 +261,13 @@ macro_rules! parse_ordered_fields {
-                 }
-             }
+@@ -519,6 +519,22 @@ pub(crate) fn module(info: ModuleInfo) -> Result<TokenStream> {
  
--            $input.parse::<Token![,]>()?;
-             seen_keys.push(key);
+         impl ::kernel::ModuleMetadata for #type_ {
+             const NAME: &'static ::kernel::str::CStr = #name_cstr;
 +
-+            if $input.is_empty() {
-+                break;
-+            }
++            #[cfg(MODULE)]
++            const THIS_MODULE: ::kernel::ThisModule = {
++                extern "C" {
++                    static __this_module: ::kernel::types::Opaque<::kernel::bindings::module>;
++                }
 +
-+            $input.parse::<Token![,]>()?;
++                // SAFETY: `__this_module` is constructed by the kernel at load time and lives
++                // until the module is unloaded.
++                unsafe { ::kernel::ThisModule::from_ptr(__this_module.get()) }
++            };
++
++            #[cfg(not(MODULE))]
++            const THIS_MODULE: ::kernel::ThisModule = unsafe {
++                ::kernel::ThisModule::from_ptr(::core::ptr::null_mut())
++            };
          }
  
-         for key in REQUIRED_KEYS {
-
----
-base-commit: dc01dfb37b34beeefcfe1c3055364d41a4070c7e
-change-id: 20260806-module-optional-trailing-comma-44a336ddf649
-
-Best regards,
---  
-Ethan Plant <plant.ethan@gmail.com>
+         // Double nested modules, since then nobody can access the public items inside.
+-- 
+2.55.0
 
