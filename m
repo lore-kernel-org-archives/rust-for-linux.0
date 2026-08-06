@@ -1,341 +1,316 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16568381EBA
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 07:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640403CF1F2;
+	Thu,  6 Aug 2026 07:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786002415; cv=none; b=IKZcyq6odtP/1WeMGJBuQ0IqUJ6f0X9mMSL6MZQ9l2Ziw5DQMuhTDBqfg5y4bQ1xOrIs27SHL5eZinqWUFrV2A+SbseVJxHDT2n91tk/pco0D/7SGXZvwo+dZ+j/ccylRbXIy0oearo2Kye8rzauvnh0+JaM9yoRBMCKnO1ALP0=
+	t=1786002822; cv=none; b=fKj948HJM9gqUY5ZC/AyBVvDjdK2tOfqS0OKWk5d3JLRMmZ9+Xr+pqiUmpuA3U+0vbjvwJAUe1SqS+BBeeDvAz0c0SXu1y0hPk1q19JQzULkYrWwZTEmJK36vrUo+6j2a13SjoCIsWsQIoRAtl3s8CAv4UbobhddlsW6KBabBV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786002415; c=relaxed/simple;
-	bh=6HAzSHpgsk4thzZV85s9gSOIZZSMVAZ44XXT3FDiRL4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HlbSagEEARMi1vndI4jEg3K7g4rqBmWY5suJIj853UoGwA3PGp6WxYOtRq7x0RELCC5a10jPwsqxOGj/H8WZ+77C2EW2m7YL1XcYWo/r+wS5WIre/gikR5qwUlSDD3OS92bkGD7zCpflgZEDRzrxgioCGvbDOwmLixjClB0vJrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UEyl3ef5; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786002822; c=relaxed/simple;
+	bh=APdQA7u0s7we4Bg32aytKO5SGFPihzNgTXaoExnRMTY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=CuhAHjGAINGMR62wQrMbx5VPZEvVIIQNmF4nH+1ZuvbajvUhoD9UKllGtf8rdHFHAN3Rr7xauSYRSFoICUU5flxUTOUPNwP6AeShpz2IDc58+861Nvc756L6BLHs9RbMyohRhDpUxDzppmQlCW48vzEqzZV5x2i8ZfUTLQFAR/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=egPJEGkj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZWijIyTZ; arc=none smtp.client-ip=103.168.172.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UEyl3ef5"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4799b3f7c83so1116348f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 00:46:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786002411; x=1786607211; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=lE6JyKTSI6vd0outqfFXmkTwfpKlomoTyCU2FFqTLwM=;
-        b=UEyl3ef5rbDLJYrAICX0E0uiixppjrutdBuITK7AuXcsSNcJ4ImNiBQ42gtOw9dyKJ
-         +TshzSJAwh9k6LxSADkUMa54PdFj/n3ZLN/ycHIUCbvO5UYOwUTm5Q2UdWu7K1dloGID
-         gLpYRXn1G346rF6CVJN7Ljw6RjKOuKP5pt1I0UHcidKrOLANE0+HwspX+Zxhm5RxHk7b
-         MplURHeWBBxxxLIPnaRAh5iABbIpCT0QOBdmrn81O+H7GSpbM8BC/ak/qNZOP7nkbBR2
-         ZCTVFd/06eJHRe+fZWg/CXy/qWR5/A4ESyf/nHeeD/785sp8oMLck5/mror/B1FA83Q9
-         Eakw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786002411; x=1786607211;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=lE6JyKTSI6vd0outqfFXmkTwfpKlomoTyCU2FFqTLwM=;
-        b=RHWFhq8offC01zZQ2pRjXNGlZWxBv9uezgsMABPteMyZDd/3cdr/onUo2uifUuesR/
-         aaAmEdIBCUaWtKCkaC7XJld+6WCHAWe34bT/o4u4tAhI33tQxICr3dp1I3QP3IXcvtyX
-         H64OCh7gf9IEnj7iRB4JXLiy+cUuiHrZ/cchmq6lOscEjHZ+KbKrFXrd/e/4jf3tWLUp
-         f6bfRNMVKuOAa8R2sCDEVxwsGCJejwLLw05Wd3ZcB2L/0rRQBO3lmSHWxdBT74cLMCv+
-         csJLubiruOJsRNpl/XqNSVFZpdTnzFuUnv9uL/oKivZceQlXbwD1GHtLbPsSBlKtaFv7
-         wwAQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrUTR9gZEsTYNZ2yoM8BKJrXc3S9+Ui79AetVkcHpztIRvG3Rg/nOl3/+/mMzx1vbILaxuD0u3BRQL7iMRDpw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoT0y65LoHROnDg2OLLgGYs6ZKuZRGPDudqrQhAv9vqrzJN+NS
-	sQQ0TcaUrwPyFZ3l9gLdmj6/VMfD7KA4ihhm9qYLgA3u3LmlyeBkMAwB
-X-Gm-Gg: AR+sD10QIspAbm/v9ZrL01t38/vLg2XBNtvPXz4J+h7eagAx/MU0GXFmZlkLWzIP73s
-	U4Msyjnl0JTGU7hT4wJxKpHA29wlZ0nUOVASI9i5IuRefKeMU3rNNWl9yN3/FZvfOUA6g7Z2a9t
-	MKIsVOOBBxUtuSDMG8YZ775AKWKv4CQLS/ji2y58J01XU0y3gMenM+qVgkRlZoCrUrKlnqPZxUB
-	7JLqdhuQVeGnGUaPtbqAPAtqdzIh32yK5Eg+iOsyH8QNgSMDAw27tOwWZXJ8ojRRTWt3wfsEBAI
-	sWhS82zLlIM6898fBewyFXLGfSb9spLvS/WCzGpAoSmKPrXunX+ZrjV3elA2DzgsnIlu3mEfVLT
-	UrIIFilxQDtioNb+jqOJzA5XEDwukFvTSt4PUzRuJifPvnTh+ZawABpcTJOaDCLVq/Uvrzp8rZI
-	qWVhn1nYOAWlOHFeDEnuCRgnVQEXHCwyAN02khyIyd1knN+AwS48jhvDWiHeJkh+9WVPGce4qOo
-	cyxzoLoeWlmvbBJ7Prd0AkMPPkSrpmLI4iotq/SyvaTmHaq7/vt55HU
-X-Received: by 2002:a05:6000:40c9:b0:47f:93b4:2def with SMTP id ffacd0b85a97d-47fec63ebcdmr20292429f8f.28.1786002411036;
-        Thu, 06 Aug 2026 00:46:51 -0700 (PDT)
-Received: from valmpani.valmpani (cgn-195-14-217-60.nc.de. [195.14.217.60])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47ff79a71a2sm3841321f8f.6.2026.08.06.00.46.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 00:46:50 -0700 (PDT)
-From: Vasileios Almpanis <vasilisalmpanis@gmail.com>
-Date: Thu, 06 Aug 2026 09:46:14 +0200
-Subject: [PATCH] rust: dma: add `Range` type
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="egPJEGkj";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZWijIyTZ"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.phl.internal (Postfix) with ESMTP id 63DA6138020C;
+	Thu,  6 Aug 2026 03:53:38 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 06 Aug 2026 03:53:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1786002818;
+	 x=1786006418; bh=LD9ImqlIwH6oeN7pmBkN0TXKzq62mCPW1c400six0EM=; b=
+	egPJEGkjiHQFhksFyQs6njKum2R6mjsKp77i7wKapRMZytD/ZMCUf6skygPzuCOP
+	+islbK1gtxlkCIKS1mZg/6zOJ/zebc+DTvbH46mCB5YJouplVK503uRqq7W15I/o
+	3TgO48JjjlnSaL0YcH3UoKNGRkmzLcgsbYDPbBjfmF3WeJIw/rw80wvazrsz+/xt
+	391na+sZX7WxAZbeMVMhRnRvtrYYlaS0D7OwFckvyIv9wUAoENYDq5bCm9u8zkN5
+	yFhvIWjhHXh0imufYp/Ou/xYEKENAl9Y2L4lnioa9/u74xxtsvMocdSw6yBs84aB
+	h9ZpKmCJYt68sgE6nXGuhA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786002818; x=
+	1786006418; bh=LD9ImqlIwH6oeN7pmBkN0TXKzq62mCPW1c400six0EM=; b=Z
+	WijIyTZVqCgYF8yEJsG9No+5i1j/eLJ4jHZnEiVZUztXSOYRW2kpLiPpXctlzrvd
+	QjG9lS1udZ0s4VwyJATEGHIBpwQ4mKEokFZi1POoTAmESpd/wCo3QvyLOmOXu30G
+	S3VwfLAy42HT4otDBGdCh3X1sNbrdsmjC8diS/7Un0/yOcAVQQF6xGzp4hyUcy0P
+	MO+gPOU/YN+Q5kYAo2yzwJTHhUvW23qiduRIL0hBmulv6qMpYAuGFqou/OLY5csf
+	4+14uuM71HYvnsDayhIGyhIFkrAoyAcKOQgNVtWRtU4SfkjReU238fTBr+9pZLRu
+	zbzv0mRvDGOKV/lPWHp8w==
+X-ME-Sender: <xms:gD10atsuyjsKUGFggi9pHLdlrO9l2L-0Xw54vpyijCZgrUKv_iHXFw>
+    <xme:gD10ariDFCROd4tfT0-1IOZLsUSGolX0CkJcm4k8MdJ76gYxKX9HonMn-mV0YgGXg
+    aqRBIW0S4wsA85c4J55d0lyti7662mELieircjuYxos5GagAo8_PPwb>
+X-ME-Received: <xmr:gD10atyq2bOYKHFLYZ0HNTKNtS7Y7QbfYmuS7F1kTqEkJfQclF0Pk7FT0CZqjxbJ42w0JQOjPZH-qAfd-uQ3H2iU>
+X-ME-Proxy-Cause: dmFkZTFbzfkfUcr/Inba17tKt3JJ3fMrX1N2IUQX31//l4d7tbGDIvsDLekSwrzIspHZhe
+    o+VTNd8j7u+Iie4/vsjYzHSLs0OWqSktFzQQhv8+NgGQIag2veIThRlj6+GB4jPUZxbvRv
+    7OcvW9OzYxQuUr1i11mPCdpCcP7JRmOC0AJubMcCqZzfBmd1SK+vQp2JnmKLkWhMihSU6c
+    fuDLRKKIqB0TdhjglBxB6X+eg2BrSYejmwu+bPOgNY8XxzIAOT7HNAjxMRX3DU+DWoXY+3
+    iqGQXmHWNriOrJNH10CsO0qMQAf0vVKqv3pavtuHNTRXYCSn7ZXnVkmSYj7XLAxVtRClJ5
+    uMxrtDYXoXwt9dN3I6Zq2DXu0tisA4QU9oyBVOhL/MGaUvPN7ENRu1ubiEqgWezdnSFkGd
+    R+WSh6dUTjILfP/1fC8AHH9gAYn1ifQx8fttklkGOY9PvdOInMy9A2QWtcBTVoKuq4ZJ87
+    jGRPUzoTJn3s/Z85CJAyst7sBa7zZyubtPJDRIXnzVy4moi33ZTVd73Yow/k2k93qDJoPn
+    ujLeIUX8ykSirlln1YstkTapUdKLSL+ZlQz92GTjCPH3yT2ke++BySC86l/RQ8xt9yHtpq
+    HuQ5KAsbuce3wRDzwJuS1P1E6hwRg/AlR2acSfHVRXzCEhfs1zUl4PXcH5Jg
+X-ME-Proxy: <xmx:gD10ah4JLuOZHllR0vjlTCUtzn-Mc5_uuX65vuzFNNPm_EyBpFehJg>
+    <xmx:gD10avdsAz76rOQyAp-33iSXydJPZZ1b0Zgq1DMJi_-_OwSSQaVdcA>
+    <xmx:gD10appd7HS1t5mf-1wS6rEoYY6l6WqnOPKEdonqQWVh2-JLyYqbiA>
+    <xmx:gD10aj1L7da9tdvfPV6TtI5ekFlRIJ2Z_J0Ytzk0_II-t1ZwjfeLag>
+    <xmx:gT10agEzz7xbZ8Ik0es4bQ2PmLSZWo8Vxh-Sz_rMo4P0HwUZ3ojOOAA8>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 6 Aug 2026 03:53:28 -0400 (EDT)
+Date: Thu, 06 Aug 2026 16:53:26 +0900 (JST)
+Message-Id: <20260806.165326.1361973663671179487.tomo@flapping.org>
+To: chleroy@kernel.org
+Cc: tomo@flapping.org, linkmauve@linkmauve.fr, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, peterz@infradead.org,
+ jpoimboe@kernel.org, jbaron@akamai.com, aliceryhl@google.com,
+ rostedt@goodmis.org, ardb@kernel.org, ojeda@kernel.org, boqun@kernel.org,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev, nathan@kernel.org, ndesaulniers@google.com,
+ morbo@google.com, justinstitt@google.com, fujita.tomonori@gmail.com,
+ joelagnelf@nvidia.com, gregkh@linuxfoundation.org, prafulrai522@gmail.com,
+ nsc@kernel.org, japo@linux.ibm.com, lina+kernel@asahilina.net,
+ j@jannau.net, airlied@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ llvm@lists.linux.dev, mkchauras@gmail.com
+Subject: Re: [PATCH V17 0/7] Rust Support for powerpc
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <d347de18-10ee-41e9-a672-b08f70bc88e4@kernel.org>
+References: <anG67Q6Y59kDqh-c@desktop>
+	<20260804.224035.269658578200153488.tomo@flapping.org>
+	<d347de18-10ee-41e9-a672-b08f70bc88e4@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260806-dma-v1-1-e8a39327c7f5@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMU7dGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDCwNT3ZTcRF3zZFNjY4OkxMSUJDMloMqCotS0zAqwKdGxtbUAaipBpVU
- AAAA=
-X-Change-ID: 20260805-dma-7c5330baadb6
-To: Danilo Krummrich <dakr@kernel.org>, 
- Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Robin Murphy <robin.murphy@arm.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Vasileios Almpanis <vasilisalmpanis@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786002409; l=9021;
- i=vasilisalmpanis@gmail.com; s=20260731; h=from:subject:message-id;
- bh=6HAzSHpgsk4thzZV85s9gSOIZZSMVAZ44XXT3FDiRL4=;
- b=Ih/f4+tFcg6Fj+sGhKoKUu6yS0WPAKdTe7R5cAmOE5hru18JzsavPJX+POJvKb3f5fAMT38gH
- d0xC0C/tNcjBA+WXMXhDsuOrNpfyNdnL7nf+Zd0y8ZM+UUoExSS4KIP
-X-Developer-Key: i=vasilisalmpanis@gmail.com; a=ed25519;
- pk=gn5Uo6yL8Tlpq5uATxA3nqoq+U8eWLRbjD+bOk0qSpU=
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-The base dma address of `Coherent` and `CoherentHandle` is a bare
-`DmaAddress` integer so any arithmetic, a driver does on it is unchecked
-and can potentially go past the end of the allocation or overflow.
+On Wed, 5 Aug 2026 14:56:41 +0200
+"Christophe Leroy (CS GROUP)" <chleroy@kernel.org> wrote:
 
-Add a `dma::Range` type that couples a base `DmaAddress` with a length
-and only hands out addresses and sub-ranges within `[start, start + len)`
-with all arithmetics checked against both the length and the overflow of
-of the underlying `dma_addr_t`. Let `Coherent` and `CoherentHandle`
-provide the `Range` covering their allocation.
+> =
 
-Suggested-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1248
-Signed-off-by: Vasileios Almpanis <vasilisalmpanis@gmail.com>
----
-This is one of my first rust-for-linux patches, so any suggestions are
-extremely welcome. Some words about the decisions taken:
+> =
 
-- I chose lengths offsets to be `DmaAddress` instead of usize since the
-  bus space can be 64-bit on 32-bit CPUS.
+> Le 04/08/2026 =E0 15:40, FUJITA Tomonori a =E9crit=A0:
+>> [Vous ne recevez pas souvent de courriers de
+>> tomo@flapping.org. D?couvrez pourquoi ceci est important ?
+>> https://aka.ms/LearnAboutSenderIdentification ]
+>> On Tue, 4 Aug 2026 12:11:57 +0200
+>> Link Mauve <linkmauve@linkmauve.fr> wrote:
+>> =
 
-- The constructor returns EOVERFLOW for `dma_addr_t` overflow, while
-  out-of-bounds requests return EINVAL; happy to use a single error
-  code if preferred.
+>>> Hi,
+>>>
+>>> On Mon, Aug 03, 2026 at 12:27:13PM +0530, Madhavan Srinivasan wrote=
+:
+>>>> On Wed, 08 Jul 2026 13:54:47 +0530, Mukesh Kumar Chaurasiya (IBM)
+>>>> wrote:
+>>>>> Enable experimental rust support for ppc64le and ppc32be. The pat=
+ch
+>>>>> for
+>>>>> ppc32 has been provided by Link Mauve[1] and ppc64le support[2] h=
+as
+>>>>> been
+>>>>> merged over it. ppc32 needs some toolchain fixes mentioned in the=
 
-- `dma_range()` is added to both `Coherent` and `CoherentHandle` so the
-  type has users from the start. I could split it into a follow-up if
-  that is preferred.
+>>>>> patch
+>>>>> `rust: Add PowerPC support` and the discussion for that is done
+>>>>> here[1].
+>>>>>
+>>>>> This has been tested on
+>>>>> - powernv9 hardware
+>>>>> - pseries P11 hardware
+>>>>> - pseries(9, 10) qemu
+>>>>> - powernv(9, 10) qemu
+>>>>> - rustdoc on x86 and powerpc64le
+>>>>> - rusttest on x86 and powerpc64le
+>>>>>
+>>>>> [...]
+>>>>
+>>>> Applied to powerpc/next.
+>>>>
+>>>> [1/7] rust: Fix "multiple candidates for rmeta dependency core" er=
+ror
+>>>>        https://eur01.safelinks.protection.outlook.com/?url=3Dhttps=
+%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2F00cdfd072c709c608606461d7d44d46=
+13119bfa9&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d=
+41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63921=
+4476617198585%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwL=
+jAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7=
+C&sdata=3D4qQe1qS37TGv6%2Bf9H56kWVqMYSAHsWiDx5oz8WHZ8%2Bg%3D&reserved=3D=
+0
+>>>> [2/7] dma-resv: Fix undefined symbol when CONFIG_DMA_SHARED_BUFFER=
+ is
+>>>> disabled
+>>>>        https://eur01.safelinks.protection.outlook.com/?url=3Dhttps=
+%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fbe809b60cbb61aab96179f44ac36702=
+42ae72996&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d=
+41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63921=
+4476617235654%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwL=
+jAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7=
+C&sdata=3Dcw2l64D3ah%2FM3pxFmvMpUnNmcqcSvN3RFoDiYAIR76g%3D&reserved=3D0=
 
-Tested with `make rustdoc`, `make rustfmtcheck`, `CLIPPY=1`, and the
-KUnit doctests `rust_doctests_kernel`.
----
- rust/kernel/dma.rs | 174 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 174 insertions(+)
+>>>> [3/7] powerpc/jump_label: adjust inline asm to be consistent
+>>>>        https://eur01.safelinks.protection.outlook.com/?url=3Dhttps=
+%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2F13244c0a40139fe66c4c5c5655f4d73=
+2a6002957&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d=
+41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63921=
+4476617259593%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwL=
+jAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7=
+C&sdata=3DxNvcH9k5RA5ktJupn90VdDuwx4YBvezuDcapqKlYfjs%3D&reserved=3D0
+>>>> [4/7] rust/powerpc: Set min rustc version for powerpc
+>>>>        https://eur01.safelinks.protection.outlook.com/?url=3Dhttps=
+%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fe299147cdc8e19c6421a6b7863dc82a=
+35b09d967&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d=
+41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63921=
+4476617280683%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwL=
+jAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7=
+C&sdata=3DuNZA7AulROQGv%2B2l4M%2FqC5W4ncWktRoSRRp8eaF%2FcCY%3D&reserved=
+=3D0
+>>>> [5/7] rust: Make __udivdi3() and __umoddi3() panic
+>>>>        https://eur01.safelinks.protection.outlook.com/?url=3Dhttps=
+%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fc93c194e4ee71a734986fd99a8b1ec9=
+fbb7a9b8b&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d=
+41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63921=
+4476617303292%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwL=
+jAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7=
+C&sdata=3DznZPWXM7k5FpRlekIyUN1bHzmMyk1YESR56WsiwBuMA%3D&reserved=3D0
+>>>> [6/7] rust: Add PowerPC support
+>>>>        https://eur01.safelinks.protection.outlook.com/?url=3Dhttps=
+%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2F73b741adb264967093ef4eb59905618=
+a7e0d0de0&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d=
+41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63921=
+4476617326590%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwL=
+jAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7=
+C&sdata=3DaFHGhd7RX%2Ft5%2BMjqt6pBmIKPKAKmFEQndKP1F%2F8HSxk%3D&reserved=
+=3D0
+>>>> [7/7] powerpc: Enable Rust for ppc64le
+>>>>        https://eur01.safelinks.protection.outlook.com/?url=3Dhttps=
+%3A%2F%2Fgit.kernel.org%2Fpowerpc%2Fc%2Fbc87cbdb952e9223616b839d64bdb47=
+23aa2ed1d&data=3D05%7C02%7Cchristophe.leroy%40csgroup.eu%7C34e4deafcc1d=
+41c1738a08def22e01b0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C63921=
+4476617346994%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwL=
+jAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7=
+C&sdata=3DITEFv9C1CSUVLqJNe5Y8sStUE3KoOVYVzSzbP0qis74%3D&reserved=3D0
+>>>>
+>>>> cheers
+>>>>
+>>>
+>>> I just tested those again in linux-next, with the Wii support serie=
+s
+>>> on
+>>> top, but now the kernel fails to build due to ARCH_WARN_ASM and
+>>> ARCH_WARN_REACHABLE not being defined on PowerPC:
+>>> ```
+>>> error: no rules expected `ARCH_WARN_ASM`
+>>>     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_wa=
+rn_asm.rs:1:28
+>>>      |
+>>>    1 | ::kernel::concat_literals!(ARCH_WARN_ASM("{file}", "{line}",=
 
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 200def84fb69e006bca0b1c578bac9f1dc8da708..e65e99ae4d915ac2e385df8b72fc518c07e4c82d 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -41,6 +41,142 @@
- /// Note that this may be `u64` even on 32-bit architectures.
- pub type DmaAddress = bindings::dma_addr_t;
- 
-+/// A range of DMA addresses.
-+///
-+/// Couples a base [`DmaAddress`] with the length in bytes of the region it belongs to,
-+/// representing the half-open range `[start, start + len)` of DMA addresses.
-+///
-+/// Unlike a bare [`DmaAddress`], a [`Range`] only hands out addresses and sub-ranges that are
-+/// guaranteed to lie within `[start, start + len)`; all arithmetic is checked against both the
-+/// length of the range and overflow of the underlying [`DmaAddress`].
-+///
-+/// # Invariants
-+///
-+/// `start + len` does not overflow [`DmaAddress`].
-+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-+pub struct Range {
-+    start: DmaAddress,
-+    len: DmaAddress,
-+}
-+
-+impl Range {
-+    /// Creates a new [`Range`] of `len` bytes, starting at `start`.
-+    ///
-+    /// Returns [`EOVERFLOW`] if `start + len` overflows [`DmaAddress`].
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::dma::{DmaAddress, Range};
-+    ///
-+    /// let range = Range::new(0x1000, 0x200)?;
-+    /// assert_eq!(range.start(), 0x1000);
-+    /// assert_eq!(range.end(), 0x1200);
-+    /// assert_eq!(range.len(), 0x200);
-+    ///
-+    /// assert!(Range::new(DmaAddress::MAX, 1).is_err());
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    #[inline]
-+    pub const fn new(start: DmaAddress, len: DmaAddress) -> Result<Self> {
-+        if start.checked_add(len).is_none() {
-+            return Err(EOVERFLOW);
-+        }
-+
-+        // INVARIANT: We just checked that `start + len` does not overflow `DmaAddress`.
-+        Ok(Self { start, len })
-+    }
-+
-+    /// Returns the first address of the range.
-+    #[inline]
-+    pub const fn start(&self) -> DmaAddress {
-+        self.start
-+    }
-+
-+    /// Returns the first address after the end of the range.
-+    #[inline]
-+    pub const fn end(&self) -> DmaAddress {
-+        // By the type invariant, `start + len` does not overflow `DmaAddress`.
-+        self.start + self.len
-+    }
-+
-+    /// Returns the length of the range in bytes.
-+    #[inline]
-+    pub const fn len(&self) -> DmaAddress {
-+        self.len
-+    }
-+
-+    /// Returns `true` if the range is empty.
-+    #[inline]
-+    pub const fn is_empty(&self) -> bool {
-+        self.len == 0
-+    }
-+
-+    /// Returns the address at `offset` bytes into the range.
-+    ///
-+    /// The returned address is guaranteed to lie within the range; returns [`EINVAL`] if `offset`
-+    /// is not smaller than the length of the range.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::dma::Range;
-+    ///
-+    /// let range = Range::new(0x1000, 0x200)?;
-+    ///
-+    /// assert_eq!(range.address(0)?, 0x1000);
-+    /// assert_eq!(range.address(0x1ff)?, 0x11ff);
-+    /// assert!(range.address(0x200).is_err());
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    #[inline]
-+    pub const fn address(&self, offset: DmaAddress) -> Result<DmaAddress> {
-+        if offset >= self.len {
-+            return Err(EINVAL);
-+        }
-+
-+        // By the type invariant, `start + offset < start + len` does not overflow `DmaAddress`.
-+        Ok(self.start + offset)
-+    }
-+
-+    /// Returns the sub-range of `len` bytes, starting `offset` bytes into the range.
-+    ///
-+    /// The returned range is guaranteed to lie within the range; returns [`EINVAL`] if
-+    /// `offset + len` overflows [`DmaAddress`] or exceeds the length of the range.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::dma::Range;
-+    ///
-+    /// let range = Range::new(0x1000, 0x200)?;
-+    ///
-+    /// let sub = range.subrange(0x100, 0x80)?;
-+    /// assert_eq!(sub.start(), 0x1100);
-+    /// assert_eq!(sub.end(), 0x1180);
-+    ///
-+    /// assert!(range.subrange(0x100, 0x101).is_err());
-+    /// # Ok::<(), Error>(())
-+    /// ```
-+    #[inline]
-+    pub const fn subrange(&self, offset: DmaAddress, len: DmaAddress) -> Result<Self> {
-+        let Some(end) = offset.checked_add(len) else {
-+            return Err(EINVAL);
-+        };
-+
-+        if end > self.len {
-+            return Err(EINVAL);
-+        }
-+
-+        // INVARIANT: `start + offset + len <= start + self.len`, which by the type invariant of
-+        // `self` does not overflow `DmaAddress`.
-+        Ok(Self {
-+            start: self.start + offset,
-+            len,
-+        })
-+    }
-+}
-+
- /// Trait to be implemented by DMA capable bus devices.
- ///
- /// The [`dma::Device`](Device) trait should be implemented by bus specific device representations,
-@@ -626,6 +762,25 @@ pub fn dma_handle(&self) -> DmaAddress {
-         self.dma_handle
-     }
- 
-+    /// Returns the [`Range`] of DMA addresses covering this allocation.
-+    ///
-+    /// Unlike [`Self::dma_handle`], which hands out the base address as a bare integer, the
-+    /// returned [`Range`] couples the base address with the size of the allocation, such that
-+    /// any offset arithmetic performed on it is checked.
-+    #[inline]
-+    pub fn dma_range(&self) -> Range {
-+        // INVARIANT: By the type invariants of `Self`, `dma_handle` is the DMA address base of an
-+        // allocated region of `self.size()` bytes; the DMA API guarantees that a mapped region
-+        // never wraps the DMA address space, hence `dma_handle + size` does not overflow
-+        // `DmaAddress`.
-+        Range {
-+            start: self.dma_handle,
-+            // CAST: `usize` always fits in `DmaAddress`, which is at least 32 bits wide and
-+            // always 64 bits wide on 64-bit architectures.
-+            len: self.size() as DmaAddress,
-+        }
-+    }
-+
-     /// Returns a reference to the data in the region.
-     ///
-     /// # Safety
-@@ -1101,6 +1256,25 @@ pub fn dma_handle(&self) -> DmaAddress {
-         self.dma_handle
-     }
- 
-+    /// Returns the [`Range`] of DMA addresses covering this allocation.
-+    ///
-+    /// Unlike [`Self::dma_handle`], which hands out the base address as a bare integer, the
-+    /// returned [`Range`] couples the base address with the size of the allocation, such that
-+    /// any offset arithmetic performed on it is checked.
-+    #[inline]
-+    pub fn dma_range(&self) -> Range {
-+        // INVARIANT: By the type invariants of `Self`, `dma_handle` is the DMA address base of an
-+        // allocated region of `self.size` bytes; the DMA API guarantees that a mapped region
-+        // never wraps the DMA address space, hence `dma_handle + size` does not overflow
-+        // `DmaAddress`.
-+        Range {
-+            start: self.dma_handle,
-+            // CAST: `usize` always fits in `DmaAddress`, which is at least 32 bits wide and
-+            // always 64 bits wide on 64-bit architectures.
-+            len: self.size as DmaAddress,
-+        }
-+    }
-+
-     /// Returns the size in bytes of this allocation.
-     #[inline]
-     pub fn size(&self) -> usize {
+>>>    "{flags}", "{size}"))
+>>>      |                            ^^^^^^^^^^^^^ no rules expected t=
+his token in macro call
+>>>      |
+>>>     ::: ../rust/kernel/lib.rs:279:1
+>>>      |
+>>> 279 | macro_rules! concat_literals {
+>>>      | ---------------------------- when calling this macro
+>>>      |
+>>>      =3D note: while trying to match sequence start
+>>>
+>>> error: no rules expected `ARCH_WARN_REACHABLE`
+>>>     --> /home/linkmauve/dev/linux/wii/rust/kernel/generated_arch_re=
+achable_asm.rs:1:28
+>>>      |
+>>>    1 | ::kernel::concat_literals!(ARCH_WARN_REACHABLE)
+>>>      |                            ^^^^^^^^^^^^^^^^^^^ no rules expe=
+cted this token in macro call
+>>>      |
+>>>     ::: ../rust/kernel/lib.rs:279:1
+>>>      |
+>>> 279 | macro_rules! concat_literals {
+>>>      | ---------------------------- when calling this macro
+>>>      |
+>>>      =3D note: while trying to match sequence start
+>>>
+>>> error: aborting due to 2 previous errors
+>>> ```
+>>>
+>>> This is in addition to the bindings::kvfree_call_rcu() call, but th=
+at
+>>> one is already being handled in a different thread.
+>> Looks like powerpc needs something like the followings:
+>> diff --git a/arch/powerpc/include/asm/bug.h
+>> b/arch/powerpc/include/asm/bug.h
+>> index 0db48977c70c..8aba39e0cf26 100644
+>> --- a/arch/powerpc/include/asm/bug.h
+>> +++ b/arch/powerpc/include/asm/bug.h
+>> @@ -32,34 +32,38 @@
+>>   #endif /* verbose */
+>>   #else /* !__ASSEMBLER__ */
+>> -/* _EMIT_BUG_ENTRY expects args %0,%1,%2,%3 to be FILE, LINE, flags=
 
----
-base-commit: dc01dfb37b34beeefcfe1c3055364d41a4070c7e
-change-id: 20260805-dma-7c5330baadb6
+>> -and
+>> -   sizeof(struct bug_entry), respectively */
+>>   #ifdef CONFIG_DEBUG_BUGVERBOSE
+>> -#define _EMIT_BUG_ENTRY                                \
+>> +#define _EMIT_BUG_ENTRY(file, line, flags)     \
+>>          ".section __bug_table,\"aw\"\n"         \
+>>          "2:     .4byte 1b - .\n"                \
+>> -       "       .4byte %0 - .\n"                \
+>> -       "       .short %1, %2\n"                \
+>> -       ".org 2b+%3\n"                          \
+>> -       ".previous\n"
+>> +       "       .4byte " file " - .\n"          \
+>> +       "       .short " line ", " flags "\n"
+>>   #else
+>> -#define _EMIT_BUG_ENTRY                                \
+>> +#define _EMIT_BUG_ENTRY(file, line, flags)     \
+>>          ".section __bug_table,\"aw\"\n"         \
+>>          "2:     .4byte 1b - .\n"                \
+>> -       "       .short %2\n"                    \
+>> -       ".org 2b+%3\n"                          \
+>> -       ".previous\n"
+>> +       "       .short " flags "\n"
+>>   #endif
+>>   #define BUG_ENTRY(cond_str, insn, flags, ...)          \
+>>          __asm__ __volatile__(                           \
+>>                  "1:     " insn "\n"                     \
+>> -               _EMIT_BUG_ENTRY                         \
+>> +               _EMIT_BUG_ENTRY("%0", "%1", "%2")       \
+>> +               ".org 2b+%3\n"                          \
+>> +               ".previous\n"                           \
+>>                  : : "i" (WARN_CONDITION_STR(cond_str) __FILE__), "i=
+" (__LINE__), \
+>>                    "i" (flags),                          \
+>>                    "i" (sizeof(struct bug_entry)),       \
+>>                    ##__VA_ARGS__)
+>> +#define ARCH_WARN_ASM(file, line, flags, size)         \
+>> +               "1:     twi 31, 0, 0\n"                 \
+>> +               _EMIT_BUG_ENTRY(file, line, flags)      \
+>> +               ".org 2b+" size "\n"                    \
+>> +               ".previous\n"
+> =
 
-Best regards,
--- 
-Vasileios Almpanis <vasilisalmpanis@gmail.com>
+> Will this build ? Isn't ARCH_WARN_ASM() for use in ASM .S files ?
+
+No. It's used by Rust code; the C preprocessor uses ARCH_WARN_ASM() to
+generate the code for Rust inline assembly.
 
