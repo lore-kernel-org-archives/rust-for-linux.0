@@ -1,87 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8449048A2DD;
-	Thu,  6 Aug 2026 18:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2731A3D88E7;
+	Thu,  6 Aug 2026 21:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786040484; cv=none; b=solgCCuY8gIdAmCb5AUITxZqRAlUU7zQFBZmDu7w30EQer5ceVYpiWCaoN0OGNiaFY0jfNl4UDATXHjii3kkcKq7oo33kE67yQdVlGYDBgJOGAgwomC3LVAGuJP492F8JlX0ulnP7C2uhBMH1fmsJ5CZ0fxlGU3XI/+sKILC1I8=
+	t=1786050634; cv=none; b=ZusYAR82q6++qdPebVbeWjRmPFRA1CLkJE/K9yLeaAbkco/kv7zn+5CW9xOk3t6nLf3iY6tuiKoQzXc7MFv13u0XPBl0695AQ1GX7QFQZLehU2Y9iF0jtJqfXr7jk10yOJy0baWQuCfGw0EQEMAVOpTBga/602EWrRoOuv6gRW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786040484; c=relaxed/simple;
-	bh=xPuwthsu+FLNZm9K8avhVOx4b9YAP/eBMgBB7ygt8nk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EsFBRs7jwL8MPCoRsoVggPUsXVifR/ofqK698moKoXL2uDokH8TzE39v6ECM9qOlJtGS761w6hbxn7NTbz5MAbruGlF7LHxzPisbHj55mGmoCSaOkNLUIoS5rxizLmq2zKSulUuWCy/RIWZJ/TOCpJ9XiXt2sMSMXaiuJ/zHJbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OZRyKrcD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786050634; c=relaxed/simple;
+	bh=FS+7TawYwzQVrDijTxZcjXDpiIhf9B0F89jYkJ55Ito=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=S5UFdh6Ir7mPGF7E7JllNQeMSLvEnVuW3AbYqszEZzWZCmV5dUHjiF+hk8WhzbA/FHl5LoP5bbe+Zkp2cgz1mJqeFrp69PeMd+Vl51j2KXRNbwbCobmRSzof4pJLBWwuCUYw/mdy040c6i76mEwmNaU8oIGg/hI6nAg+JqXpp1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6aIvd/u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZRyKrcD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048A71F000E9;
-	Thu,  6 Aug 2026 18:21:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6aIvd/u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866DC1F00A3D;
+	Thu,  6 Aug 2026 21:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786040483;
-	bh=+M2sh8XBulOkRf4S8y2053lmdd7XaENfOoPyDPt+9t8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OZRyKrcD0Jy2qlI1rlbCFZ0vouPPhXkUwA7opmZLyholqiBPoGaazHYuwJVMBmtgn
-	 sZazLkRd8AE+bgSJOjciFZeoTVYuP7gxD7z+1Ys7ptmjqAsuC1BE42d+xnAw9Skd7j
-	 bbS3HeWzYKD7W8XK9dduXtYIGZNfPn7agwJE56PnRuajJyyVfB83jt2FGRRTghpqkr
-	 6wiM6Rw1FLBX4mQM64SjOX0U/PWKjbsnCeQ5WE5v7UHvvJ7tagGhRAlEtd+XnhYw1N
-	 Ihn3ZtNfsTEgpEVCYd+6VS/mWLGiGGzoznWt69Ric5cqBayJ6W54ptDytLu69YoSG5
-	 kdi67elBmZNtw==
-Date: Thu, 6 Aug 2026 19:21:15 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, gary@kernel.org,
-	linux-next@vger.kernel.org, a.hindborg@kernel.org,
-	acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
-	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
-	gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
-	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev
-Subject: Re: [GIT PULL] pin-init changes for v7.3-rc1
-Message-ID: <5ce12a15-3f1e-4279-9b1a-57d6b2faf7c9@sirena.org.uk>
-References: <20260805190012.2934907-1-gary@kernel.org>
- <20260806170101.67544-1-ojeda@kernel.org>
- <ace18b0e-bda1-417b-adb2-2ba7c36f1c1c@sirena.org.uk>
- <CANiq72k9hzdU8QF32HEdvpaz9K7JxE2vxfyRFVjaePciyzgnTg@mail.gmail.com>
- <d743e4e9-94ea-482b-984f-cfb1a3b60393@sirena.org.uk>
- <CANiq72mzVuEfaf0xuDLMy1M25Xu+G2WvEVC-E8Xna52hPTn9Pg@mail.gmail.com>
+	s=k20260515; t=1786050632;
+	bh=aPit3AqpEpHocssBZXpj0d77/btUoL4yO0l85om5cAU=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To;
+	b=F6aIvd/ubPJ7QRzrJzn/D3Iz2bvGeVvI7TmdLFbkG5MTBebhHoI/97wUWaL1BK8KC
+	 ofWlS24sEpLfP2UiTt3jhDK9zC6U8RmipSTzPYSskAWlfx/ub+tNT2rAIfOTRm3kC6
+	 JIYaoWBJPenL7szmPlD5Us/if/r3bHqrNLfMy2fqoyliGqo1vFXI2BnNrqnBdHHqxS
+	 UULWdYVTcstKgThZ0jj3jg47Nh0kMj9PkPaxlklVDBDA3OXp4CaSbF9qKccMJqbPtk
+	 oJxqbjqfP0eExdWw0Fqt+HmG68d/NYo8cs9uP+Gtp5LUE0vav3d8DuRp4UkC0NDyle
+	 AxmMvUdux0sOA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hknfrg9Eow0WkSeX"
-Content-Disposition: inline
-In-Reply-To: <CANiq72mzVuEfaf0xuDLMy1M25Xu+G2WvEVC-E8Xna52hPTn9Pg@mail.gmail.com>
-X-Cookie: Brain fried -- Core dumped
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 06 Aug 2026 23:10:27 +0200
+Message-Id: <DKI63UYZ600R.2M9IMDUGV4QTB@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 0/2] rust: add functions and traits for lossless
+ integer conversions
+Cc: "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Boqun Feng" <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
+ <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
+ <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+References: <20260806-as_casts-v2-0-cb76a4d3a6ef@nvidia.com>
+In-Reply-To: <20260806-as_casts-v2-0-cb76a4d3a6ef@nvidia.com>
 
+On Thu Aug 6, 2026 at 9:35 AM CEST, Alexandre Courbot wrote:
+> Alexandre Courbot (2):
+>       rust: add functions and traits for lossless integer conversions
+>       gpu: nova-core: use kernel lossless integer conversion module
 
---hknfrg9Eow0WkSeX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Aug 06, 2026 at 07:53:41PM +0200, Miguel Ojeda wrote:
-
-> (Please let me know if you prefer a proper patch etc., of course)
-
-In general that's going to be easier and more reliable than copying me
-into the middle of a thread with a patch buried in the middle of it,
-there's a chance that if a subject line isn't obviously relevant I might
-just drop an email unread.  I get copies on *lots* of stuff.
-
---hknfrg9Eow0WkSeX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp00JoACgkQJNaLcl1U
-h9BHjAf/U+IetpBgXfzsbOeAW9renFIc3/jjOaRggadcvGqfwXqgTZrU8PHuTJZh
-BaVSazxkhLX/ZY7VyuTlNU+eS6cZvVuGCSYsTCGrPeCBgbnuByqp65hZJ9GbzU8H
-19lU78TIY5ldjZ+A7TVjQCcOcvKsoaEwCpVzY5H5jg7bhmKkHWM4zhgsO932itdH
-YzWIxjIpWBAfMGVKi+J3uJsREs4f+LJYUaqxGhgA7BK0x7cl6GDplU4j5yQamVIb
-4l0hXy31PlT3ZsDKpGi/T4XChCvyxMe34gHB8A/oTuDY4AFjsA4iHoWFsrgBziGs
-NMLetkxNU+Jbnpyq2V2F4VHxooaRsw==
-=WGki
------END PGP SIGNATURE-----
-
---hknfrg9Eow0WkSeX--
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
