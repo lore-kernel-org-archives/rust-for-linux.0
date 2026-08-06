@@ -1,295 +1,95 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B949411FB2
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 08:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA153FBB4D
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 08:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786005466; cv=none; b=YoHoFYqz2dixPJwBL8Bg5Vg2wu87FUCYwEu59osROsJ3HRB8ZjbMH8Kmcv6A6vrSFhICIKHSJTvP4ZCwgYFTjC/xyNeQ43xDOOh8e2LOJaopXcIJoiIX4MHgtZ3cM2KnbTIq30WO60RP/xo34sJnW6Vy8EmNe/cdV6oSKeIw+0g=
+	t=1786006750; cv=none; b=gcp779RdNjIaACWz4hm8Fbgd8Ixgdqdan4kiIhoItuRnuHc3qtB/wLXJB4ti2VpZUaDqm3lsz41u6Dz/MOxhguvsr9YvBQUbLHeme6R7NVRMwqxKfG21APCol2KtISIiBSEQ7vXBFbHQqf8a/QkfM9I/3mkhZTTEnugVZbDxvao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786005466; c=relaxed/simple;
-	bh=K68TZ6Okn0Of995J9SNbWqHIkxrKzwj7KXt05vRCPIA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5s8H7/vv40J9r1mFnFEr7nYHmdF+mq+47xmXG4vfWgc1c791Ckq0FyULcV9yvyP46hCmv12COtWcOiSWlcWF6Js6W+7EclfRXmwKcJsgBl4f5Gnd+VP/zmFHNmsqLSTx1HnQbRYKnMY5qxGsI0T9kK6FKQVjjMKrRkrOIe/8z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EudU0Hrm; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786006750; c=relaxed/simple;
+	bh=0KZJa/xdu9XeiRLpB5IPbHBO2SVMpSwgVa1hUG0MkOE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ofQmZWo91kTKC3T5AXnyiCjurzeZA/37doQG0pdKR4y48IW/gyFmOEQXkxZioqCSY9xyOoHMiPKuUYhyEOyn5JBmn4ThwKpPROyudn5R/uBUKr92Oj36GDdyaX7fyhQkxNue3m/BXXcgFEARU/bhbevz/opzw6MuUWKDEHbWfrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IkdoduJF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EudU0Hrm"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8487088510aso2599074b3a.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 01:37:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786005447; x=1786610247; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tkD7BsMHZyGAvnJ70CwDbdJKVjJ2J7o8mq8tbWHVAjY=;
-        b=EudU0HrmP09D0vNctq2ksmx2aBX7kAiSbxx+m8q5RhNVJD9RXQ0KN+tEZhntFC+Z46
-         /SmVqTKWnGJ/K78OHlz745qX2UFPjtVTwv/WjbAETe/dzGIkseZRkOfiBp5EeSct9WMS
-         +7xSdrfGRuMlfUX0Ee3hVlS8YaiWZBA/Hm2vhMJyf6UFjrpHtCDhlXGWHEqfd2sFXxIT
-         K+uxyl4rb9ZCfXLWtYR05vYo+DJLV6BEL5PEcAqdQ6sYMoBjngNFM2wbsHJUDzoGoUff
-         5ebrmEURela4d65JeLJzLzSjQeShROtdB8eKE0s6uBb73tnlnZpAq/2TtaiT+/i+gF1k
-         iDmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786005447; x=1786610247;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tkD7BsMHZyGAvnJ70CwDbdJKVjJ2J7o8mq8tbWHVAjY=;
-        b=Hl+l8ewpcsQ1gD5un1NA1stChhd4c/OK/UvLltpUN9lIESvFSirEN1zHi7Rx5q6fZZ
-         HM20xGtMRwN7nFWTRgv5kVMw9IHikKL+JzKQ+hinRV6OPSdd+29jujAMHZAUtvWPi4Vn
-         wFz8EYpX7BSs24A4kj+mlj/yRfbQjTIqacmzIHHMQhcu+8as+c32sAkz349NjC70YnmD
-         v61VuT2B+8siD/WGIVH2JykgZfIwwqh5ULSzDHo0eMqr8OeqWVvOc2RSBAvuJTRD7oGt
-         huAU06GXGqvOFyq6RTyWmy8wizwzk+gfaG2meDwMMVEeFEjkPfJ3oS1gxedQE8Ju7AXD
-         XpLQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrZ9q2wEDkn+WSG1JNjQpQfxpSuMZejT6rIGySsuRA44Mr5iqqz9K3/1Mq26//coYbuZD66VwhenI2mqMHjeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLltlzRc4eyxpbSbzwETrfvZZMSBYoAn7t7NGsxqh2rBnwA6C7
-	sZZzHRIFu3dfiWASFtn0kLXLfRCJ3QJ2hydoW3UJxHO4+gzxQ8+jeI38
-X-Gm-Gg: AR+sD13JS5eyQ2bLYwBNQogT+t99pGOj5aNL08I7rjxCws/jG6A7m1NvKKGQlnJToCY
-	nRwV4q/n1rBpHMl+DxpuJCMH7/JGFRYBvu4ar4bjsNHcTiFpYOS/cpqXXaiFPh0YsOo/4ybD4/N
-	NAonq1gWoD6J81KXxYsRvTx0BdBemJxAJsP8sHXP7EN0UKMDJRmuFZQW+XRkwENEWOPSPJWvxQj
-	VeyE6w3j+mAxZX30KI3UD+CHYBDtDeTinH/LQKnl07gHXXIeY8DrrgoT88ebeEMm3FWpZbwfuKU
-	kiiqKZprc6DijlOMiNLnQo/plxC44kuwFgb68GmHMSvqdEwQ+7i3gqNs5eeGYC614zAyJMzw2ck
-	an98alDnuZyQFxBCEKa+AwziS5tX+UG57kNmrCi0vFOutZhIsTIxzl0ewfStKGjLdUX2B+Jx0J7
-	v2jsF0DPTrLrC9sIsFLvN7HZXAR8UUIDERWd/HM3fD1QLir/sOy+dxU7yJV0KbOLM=
-X-Received: by 2002:a05:6a20:e290:b0:3c4:3112:33 with SMTP id adf61e73a8af0-3cb85de7c9bmr15386526637.6.1786005447444;
-        Thu, 06 Aug 2026 01:37:27 -0700 (PDT)
-Received: from archlinux ([2402:e280:411b:ec:aa93:b1ec:5a6b:5fce])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca9111b6sm21986347c88.13.2026.08.06.01.37.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2026 01:37:26 -0700 (PDT)
-From: Adarsh Das <adarshdas950@gmail.com>
-To: adarshdas950@gmail.com
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	axboe@kernel.dk,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev
-Subject: [PATCH v2] rust: block: set GenDisk block_device_operations.owner to THIS_MODULE
-Date: Thu,  6 Aug 2026 14:06:55 +0530
-Message-ID: <20260806083655.23161-1-adarshdas950@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260805192020.107601-1-adarshdas950@gmail.com>
-References: <20260805192020.107601-1-adarshdas950@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IkdoduJF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920DC1F000E9;
+	Thu,  6 Aug 2026 08:59:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786006748;
+	bh=0KZJa/xdu9XeiRLpB5IPbHBO2SVMpSwgVa1hUG0MkOE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=IkdoduJFlzuv3+f18h7K1jkaPdTYzNNe055KWG7JmvetVeoQsByLnbOp+2mSizUaD
+	 87weL1aHSV2dJq+vOJ3mOLgkWm4i2HLXlOENsA9W8XPawWA0y8QrgtUvMjODfnTBGI
+	 HH77gwVOygrBkPCV4BbxL/65Gv8WrLdi4QLm0AFNk7VqOMBY6K2XKmsnzUR6AH1WxQ
+	 gZgTRGvMGw1GkUzFKLyITkkOtDPRVbs7vfewnTAxKtDq8CqFTh0oZBU5Km/uJ6x6ZO
+	 S0rK+FM9jbAhtIlHXabt8QLngzhSWA0FcSIRABCKBwhystwQWDQBWajHj2WrjLfBRp
+	 JOVADzXESJkgg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: tomo@flapping.org, ojeda@kernel.org, acourbot@nvidia.com,
+ aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+ boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
+ frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
+ lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
+ tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com,
+ miguel.ojeda.sandonis@gmail.com
+Subject: Re: [PATCH v1] rust: time: fix as_micros_ceil() rounding near i64::MAX
+In-Reply-To: <20260806.172319.1970353690506890750.tomo@flapping.org>
+References: <pnFuloASX9OPRE4rxnDZmJLS4_GaTn6IAT2OPZgNSvUK8JSWvobnoTZr6EifpDauCqMlUcmFmi6zeLTeBxsYsw==@protonmail.internalid>
+ <20260723120907.209643-1-tomo@flapping.org>
+ <87a4r094ow.fsf@t14s.mail-host-address-is-not-set>
+ <xmgXpLeIWJFLUmY87yO6GRUJIsmtdLNWduv1daKl87Kxb5GFwNFolMcDnnT58_tQZm9lxrwd4W3P3b7cuYGi7A==@protonmail.internalid>
+ <20260806.172319.1970353690506890750.tomo@flapping.org>
+Date: Thu, 06 Aug 2026 10:58:47 +0200
+Message-ID: <87ecgb4oc8.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-GenDiskBuilder left block_device_operations.owner NULL. Pass the driver's
-ThisModule into GenDiskBuilder::build(), heap-allocate the operations
-table, and keep it alive until the gendisk is released via free_disk.
-Update rnull as the in-tree caller.
+"FUJITA Tomonori" <tomo@flapping.org> writes:
 
-v2:
-- Free fops in free_disk instead of GenDisk::drop to fix use-after-free
-  when the device stays open after removal. (Sashiko)
-- Install the cleanup guard before fops allocation to avoid leaking gendisk
-  on -ENOMEM. (Sashiko)
-- Link to v1: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
+> On Wed, 05 Aug 2026 13:39:43 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>
+>> "FUJITA Tomonori" <tomo@flapping.org> writes:
+>>
+>>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>>
+>>> The ceiling adjustment used saturating_add(NSEC_PER_USEC - 1) before
+>>> dividing. Once the nanosecond value gets within NSEC_PER_USEC - 1 of
+>>> i64::MAX the addition saturates to i64::MAX, which drops the ceiling
+>>> bias and yields a result one microsecond too small.
+>>>
+>>> Fixes: fae0cdc12340 ("rust: time: Introduce Delta type")
+>>> Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+>>> Closes: https://lore.kernel.org/rust-for-linux/CANiq72mtS0ABA2JnT5tpz6J9c_mnxY+vyPvghV_ukngWvN8F2w@mail.gmail.com/
+>>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>
+>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>
+>> It took me a little while to understand this one. Perhaps a few comments
+>> explaining the boundary conditions could be warranted here?
+>
+> I added the comments for as_millis_ceil() [1]. You want the similar
+> comments for as_micros_ceil() too?
+>
+> Or we could add a small helper for _ceil() and keep the explanation in
+> one place.
 
-Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
----
- drivers/block/rnull/configfs.rs  |  1 +
- drivers/block/rnull/rnull.rs     |  3 +-
- rust/kernel/block/mq.rs          |  9 ++--
- rust/kernel/block/mq/gen_disk.rs | 82 ++++++++++++++++++++++----------
- 4 files changed, 66 insertions(+), 29 deletions(-)
+Let's add the comment to this one, as it will go in with rust tree fixes
+asap. Then you can extract to reduce duplication in your other series.
+Ok with you?
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index 7c2eb5c0b722..bba30d590f68 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -147,6 +147,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
- 
-         if !guard.powered && power_op {
-             guard.disk = Some(NullBlkDevice::new(
-+                &THIS_MODULE,
-                 &guard.name,
-                 guard.block_size,
-                 guard.rotational,
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index 0ca8715febe8..4265a133cbf0 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -46,6 +46,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
- 
- impl NullBlkDevice {
-     fn new(
-+        this_module: &'static ThisModule,
-         name: &CStr,
-         block_size: u32,
-         rotational: bool,
-@@ -61,7 +62,7 @@ fn new(
-             .logical_block_size(block_size)?
-             .physical_block_size(block_size)?
-             .rotational(rotational)
--            .build(fmt!("{}", name.to_str()?), tagset, queue_data)
-+            .build(this_module, fmt!("{}", name.to_str()?), tagset, queue_data)
-     }
- }
- 
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index 1fd0d54dd549..33561e0f67af 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -8,8 +8,8 @@
- //! - Implement [`Operations`] for a type `T`.
- //! - Create a [`TagSet<T>`].
- //! - Create a [`GenDisk<T>`], via the [`GenDiskBuilder`].
--//! - Add the disk to the system by calling [`GenDiskBuilder::build`] passing in
--//!   the `TagSet` reference.
-+//! - Add the disk to the system by calling [`GenDiskBuilder::build`], passing in
-+//!   the driver's [`ThisModule`], the disk name, the `TagSet`, and queue data.
- //!
- //! The types available in this module that have direct C counterparts are:
- //!
-@@ -86,9 +86,12 @@
- //!
- //! let tagset: Arc<TagSet<MyBlkDevice>> =
- //!     Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
-+//! # // SAFETY: Dummy `ThisModule` for doctest compilation only.
-+//! # static THIS_MODULE: ThisModule =
-+//! #     unsafe { ThisModule::from_ptr(core::ptr::null_mut()) };
- //! let mut disk = gen_disk::GenDiskBuilder::new()
- //!     .capacity_sectors(4096)
--//!     .build(fmt!("myblk"), tagset, ())?;
-+//!     .build(&THIS_MODULE, fmt!("myblk"), tagset, ())?;
- //!
- //! # Ok::<(), kernel::error::Error>(())
- //! ```
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index fc97dd873974..a51027e8c1c1 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -17,6 +17,23 @@
-     types::{ForeignOwnable, ScopeGuard},
- };
- 
-+/// # Safety
-+///
-+/// `disk` must be valid.
-+unsafe extern "C" fn free_fops(disk: *mut bindings::gendisk) {
-+    // SAFETY: `disk` is valid.
-+    let fops = unsafe { (*disk).fops };
-+    if fops.is_null() {
-+        return;
-+    }
-+
-+    // SAFETY: `disk` is valid; `fops` came from `KBox::into_raw` in `build`.
-+    unsafe {
-+        (*disk).fops = core::ptr::null_mut();
-+        drop(KBox::from_raw(fops.cast_mut()));
-+    }
-+}
-+
- /// A builder for [`GenDisk`].
- ///
- /// Use this struct to configure and add new [`GenDisk`] to the VFS.
-@@ -95,8 +112,12 @@ pub fn capacity_sectors(mut self, capacity: u64) -> Self {
-     }
- 
-     /// Build a new `GenDisk` and add it to the VFS.
-+    ///
-+    /// `this_module` must be the [`ThisModule`] for the kernel module registering
-+    /// the disk.
-     pub fn build<T: Operations>(
-         self,
-+        this_module: &'static ThisModule,
-         name: fmt::Arguments<'_>,
-         tagset: Arc<TagSet<T>>,
-         queue_data: T::QueueData,
-@@ -125,32 +146,16 @@ pub fn build<T: Operations>(
-             )
-         })?;
- 
--        const TABLE: bindings::block_device_operations = bindings::block_device_operations {
--            submit_bio: None,
--            open: None,
--            release: None,
--            ioctl: None,
--            compat_ioctl: None,
--            check_events: None,
--            unlock_native_capacity: None,
--            getgeo: None,
--            set_read_only: None,
--            swap_slot_free_notify: None,
--            report_zones: None,
--            devnode: None,
--            alternative_gpt_sector: None,
--            get_unique_id: None,
--            // TODO: Set to `THIS_MODULE`.
--            owner: core::ptr::null_mut(),
--            pr_ops: core::ptr::null_mut(),
--            free_disk: None,
--            poll_bio: None,
--        };
--
--        // SAFETY: `gendisk` is a valid pointer as we initialized it above
--        unsafe { (*gendisk).fops = &TABLE };
--
-         let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
-+            // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
-+            // has not been added to the VFS on this cleanup path.
-+            let fops = unsafe { (*gendisk).fops };
-+            if !fops.is_null() {
-+                // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above.
-+                unsafe { (*gendisk).fops = core::ptr::null_mut() };
-+                // SAFETY: `fops` came from `KBox::into_raw` below on this path.
-+                drop(unsafe { KBox::from_raw(fops.cast_mut()) });
-+            }
-             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
-             // has not been added to the VFS on this cleanup path.
-             unsafe { bindings::put_disk(gendisk) };
-@@ -159,6 +164,33 @@ pub fn build<T: Operations>(
-             drop(unsafe { T::QueueData::from_foreign(data) });
-         });
- 
-+        let fops = KBox::new(
-+            bindings::block_device_operations {
-+                submit_bio: None,
-+                open: None,
-+                release: None,
-+                ioctl: None,
-+                compat_ioctl: None,
-+                check_events: None,
-+                unlock_native_capacity: None,
-+                getgeo: None,
-+                set_read_only: None,
-+                swap_slot_free_notify: None,
-+                report_zones: None,
-+                devnode: None,
-+                alternative_gpt_sector: None,
-+                get_unique_id: None,
-+                owner: this_module.as_ptr(),
-+                pr_ops: core::ptr::null_mut(),
-+                free_disk: Some(free_fops),
-+                poll_bio: None,
-+            },
-+            GFP_KERNEL,
-+        )?;
-+
-+        // SAFETY: `gendisk` is a valid pointer as we initialized it above.
-+        unsafe { (*gendisk).fops = KBox::into_raw(fops).cast() };
-+
-         // The failure guard now owns both pieces of cleanup; the early guard
-         // must not run on this path anymore.
-         recover_data.dismiss();
--- 
-2.55.0
+
+Best regards,
+Andreas Hindborg
+
+
 
