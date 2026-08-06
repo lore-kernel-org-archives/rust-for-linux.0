@@ -1,153 +1,209 @@
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011065.outbound.protection.outlook.com [40.107.208.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F003DCDBF
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 07:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786001628; cv=none; b=gG5sWcqTeceUPhWvS5nQ94kmeXdtV+XUCYXMBwsPurQfZyecvg9YRROfAYXrkgYXjQG6tWF2rgB88yxSRrC9GABlQPtzNweyWosZ6zIzK/kYN1GxgE0x9kTbujM1etku1KlFlY8VdDHkHo4WGwHgcjkAeO8tdZZ7HjErpLFqOKs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786001628; c=relaxed/simple;
-	bh=YpmOP9N3ZZ3wRLSnxJ7pL0uFyT4ErnZugJLtS2lAUxI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfav4YdWKRUwShYCs/5X5jt98C+YecZreh8MsiWnv6cfucHUbEP1O/zYca9uwNS2Yl2dtMVq/Fpuxbp7fD6He1p0djV4HBx1AXXl9Fx0RkTEmLmKGeXzc8XSn1gZh1qNjeDgT+048E+CFRgejJwCZlxqJwzShuheagOA52CaPf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=LSd+TVhM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OtkIrdMp; arc=none smtp.client-ip=103.168.172.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672D830DEA3;
+	Thu,  6 Aug 2026 07:36:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786001798; cv=fail; b=gxTMhmD1iF67vooSSUs6n8IoYtrEpFIf0YIX4MXKLo9aKfbYWU8BECKh3wVaIJ5KfWUWMZkEWr2lFkQmE/TpzvasU6eFH09h+TFt3QHrnqebtYuQvaK2LpP4mkcpg6hTmbGlSoQv2M1ajzOhFpXUKuwLyQ2HD3+NiI/S8JptmBU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786001798; c=relaxed/simple;
+	bh=piQUQHwEWHAyVVSiz3y//CGypoFudwoLqB4B8GrvxXM=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=Vss39NXYNfBvr2waM11wqt29K7rUtxuk6NtIC1ckefKyG2SIy2Nx/SE4DZEcZjE7UHUoZtSSEpioEnMK1FswK30SPc3eqdq5/6G6jhAccsHha0uerx/3kmaj1IWQDFilhic3cjYFIsRd/hdu85BebIzmC2oJ18i8SZijDrBoyCs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nRNEGTIv; arc=fail smtp.client-ip=40.107.208.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="LSd+TVhM";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OtkIrdMp"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.phl.internal (Postfix) with ESMTP id D46F41380266;
-	Thu,  6 Aug 2026 03:33:45 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 06 Aug 2026 03:33:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786001625; x=
-	1786005225; bh=IIcnoibYK4haCPRSiqOAyyaCrU79FBNCsr3YIY7qX+s=; b=L
-	Sd+TVhM3fUx8euIKZNwQyhvjNTzoNYua4L0z82bwZwLJbfK9ja2Int2pyMzZ3R2N
-	PxL2IzXRGGzmIBKmXQF14TtLFeAOjCLPXPOpQ1m2Zv8z9KlKgipSmzRhNvDt8VRK
-	gRxHnZMnXdX9Hp9ZwEHNEkE6N84MvSK0QxUABT1CIN+IRQyiuHJ+dQLbbGjE+vcy
-	g1h94Q4oVW6W4npmzsxwZNuFZzts7ydrnKqqgZc//hE1PomVvgzaS51gEiklvQFy
-	Uxi1wEJgl4bJBR/duMC08skeGOy7fXZoJOGk9h+rAuV3HSc/ufin/THMo6nA0bxM
-	lxGfhR6LR7ZcPpHpvfNcg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786001625; x=1786005225; bh=I
-	IcnoibYK4haCPRSiqOAyyaCrU79FBNCsr3YIY7qX+s=; b=OtkIrdMpjw4xWp1MO
-	5HXVJSlMnOMwSP9UIEjP5ooOlIGt2q+CKKZE3pI80pOpnNMjIfW56dv6EpEItZrz
-	mx8z+1XjVc2ubdh02jynYAaQ2/yjuAWMsA+1J1uCRdTM0vPhb7IRKfnEkyI0PmOg
-	Y3lqATBBB3OiRMpB+2EZtDSW1dy1FHlcQyJMsOcVbs7PnQoidMbL7LLBFArmRukI
-	wCIY9SjRaxfW2ABO3Y9BlFve+kvje9VEWVEOHdX5pPTwXSaJIRuC7sH1SYNEL1K6
-	fehXZHEP9dXGnDWwgtIu5w2+Bg5fCU57l0+XcVmqrf4gdcUn441y4t0yBiHYVm0b
-	PlsnA==
-X-ME-Sender: <xms:2Th0avQJ4GNZC9yLQ7_5QoWbIOVUDtbQWdDFrTgrx8uFH1HnBpHZIQ>
-    <xme:2Th0as6j5-wxeuj5FbboQWJkCmvOjOOoEHXwt9-CTUSG8pY74W9mc5G2645ifOoi5
-    Pklg81bn9-NPQFsPD8sFYMyzAJF48mGg5nbU9wQ3NOO11wZiP-cIRft>
-X-ME-Received: <xmr:2Th0agof_skBaSzjQwswMUuqaIfcoAwQV0jK-YjDv1IjYWLNAgKnrNNxJ0c_c_A2i3z0P47Ml6DmQZlHyAU>
-X-ME-Proxy-Cause: dmFkZTE+kuDwT/qJuMsX1YpJS6zwEoKXuxGjh5vSgXC3h96de0f5IUqE8F/sbtJUAQX4WI
-    UyieCdA0ubi6p9Ib2Mmw5wQw+zQIhds3B/vlLhbx4/3LkN8rN98/3raNEPvdWIU49NwdJl
-    +ztM55v7XL/Y06gUazDrfR3d6EBU2B/hmje26EW8x9aG8+b7y3KGKbl+0tqYu3GE4ZBp1m
-    aD6wv4LvfsP/+AFVeHg4Z2+bnWsnCrIlmD/HSfNKJtxt25SmKHu+NDli8iBwIYR19HYUrm
-    F98LQCBCq/j+sumRF3bxW1jiwn73pFB0joPsZmcvxphMkhX6VA3fijHcswZ5vlWP5USQqb
-    gn3h3wYvQ3DevG9dQArtH1IlcKz4oGsyBgaRjg1pDmdqiG8Uh0D07+SkAAeSZSfCRLm585
-    NpvDvoJnsd9PV8AKNmfJKFBszp24XyyMQxLwckXqOG/yWkhsx6XBaQ5kTx41QmRjScYRdH
-    hVnsBT8BUHSDNPizmoFDXE/xsqjjAJoiX1wOVJWOiZ8Vnj2VKLozkyFqVjPL+ZMLDla/0k
-    mxu5Lu8bcwDF+xCl/OQMypYv9jc9EP9gTztaQQ4teEIRPYapPqU9OIP9LAlVktyD+PALp2
-    eTTydRr6HX1DY633GEMtR/HVMM8kWR8hSbfg85Pwwaf9iMMIUka0qTix5q3Q
-X-ME-Proxy: <xmx:2Th0aoXOqi1BZAfB7cu1KjcWy_fBZZRgSJfj00w8Ly3DAvlYq5x2HA>
-    <xmx:2Th0aood4JxTxK5Tvr8KzNUzrMb-6L-LuCysrmvc8EPgU74IpImmDg>
-    <xmx:2Th0anuFnWaqf5kefNDTtvxQY2nKbxEtdzJJjZad_jP867sTTvTtyQ>
-    <xmx:2Th0amS0zvKQUVsaYEJaC4bYED3s3VebBrWd-vTgeZxEp7r0dLfgRQ>
-    <xmx:2Th0asVaZVH7u6Dvw83cNu68VOSgKMw4U2g0K0MFnBa2e19E9Wfx4uu6>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Aug 2026 03:33:40 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	arve@android.com,
-	boqun@kernel.org,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	gary@garyguo.net,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	tkjos@android.com
-Cc: acourbot@nvidia.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	frederic@kernel.org,
-	jstultz@google.com,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	sboyd@kernel.org,
-	tamird@kernel.org,
-	tglx@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v5 7/7] rust: time: remove unused Jiffies/Msecs helpers
-Date: Thu,  6 Aug 2026 16:32:41 +0900
-Message-ID: <20260806073241.1024319-8-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260806073241.1024319-1-tomo@flapping.org>
-References: <20260806073241.1024319-1-tomo@flapping.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nRNEGTIv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RNDsam2Wk1mkFUJfKqb1MP5ha6bSIhRbqGV2JmqJwrMvji+uDsfnHTujqgrzUHQfS6CPycH/HbsuFuHd+4VSvH8xnCpKZzDqJ5gMG/mnYOUeLMSqOfwzXNTc+9I8BJqHW+cNGCy6y7XWrMxgmNSDmji2pEBpf4RscgnhYATblWN+5PMmUEaSxCxArLujV67j6C3MPqfWWb98KFpQ4eG94gdN7O1oHNkslgmLVdyDia/a3psOyc7NJ5bPh2rLARsD90aXBwiaucCfvdl6r/snyf0Ggqxjihg5Wi1hiPpjqh2tNLxbB3/q2UTZZxwuxLU/P5cXk251PRG26iN00Epq5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2JUHTzv2uggcNwjZssefcw3SBSjsr6E3PakgIUWpqes=;
+ b=t6OPphD+XaytW54u4CCSyQUsv2Bg4W3JCTuNAd25rdI2OlLPlzn6abgEKQ5ytPOvZXBuJe9E41J/7stlqaxIBLCWje6/Xuq10F0pzU8qgcVjCMqPxIOtIpfkp8dOFzHSkrdOYmYBsifQqk8kKRDEcgCygYelky9EEpoAG9LxNtoD0pJZbDSSa0a/n0f++whe+aKMIoklh3p2lOa7xiqSo6ayWRVQXYJd9RAsVtHAs1Ll0Rau4IarQ6OH40S90MMyjYXybLD4f7w/HUCTMXSqEZwa/W7IySkjhTCqrCw3ZTFM5S2F/TrI7LWW82VCWHFW/iDJbH7N7VEasCtgqLwv+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2JUHTzv2uggcNwjZssefcw3SBSjsr6E3PakgIUWpqes=;
+ b=nRNEGTIvsLyXzKjMkh1eJkFeKyHNc+ZXfRdhoSUrOOAQwfEEPT92MiJkjAZE9QtPPKh0HxDHAIpZXO2l4tAXgYVEBhsRQZpGX+3LjAzPOOl72tk9JUNq8mO1qmhugXbqjtGycaSB99AAUQ5X+qq/Fj2BS3u1dfnldxWTZJaIR1AZJIdOMkEp18qt7OUTlJecL+AEA2h8rOJS+DG7gn1Et1Lg/uyRbZM/xNz6AJkmU899r6wnN31TCtrZcZ5d57Xw426ehtvzdYM9LnBoLfJopoxfRrFZel8ETYSG96Lqr75GE2kaWMN4DQlztvHX+f7HZoCFHc4baIKTsOyP6AHsqg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by CH3PR12MB8878.namprd12.prod.outlook.com (2603:10b6:610:17e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Thu, 6 Aug
+ 2026 07:36:28 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0292.018; Thu, 6 Aug 2026
+ 07:36:27 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH v2 0/2] rust: add functions and traits for lossless integer
+ conversions
+Date: Thu, 06 Aug 2026 16:35:52 +0900
+Message-Id: <20260806-as_casts-v2-0-cb76a4d3a6ef@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22MywrCMBBFf6VkbWQy9JG68j+kyJiHnYWtJCUoJ
+ f9u2pWCy3O556wiusAuilO1iuASR56nAniohBlpujvJtrBAwEYpqCXFq6G4RNmS1hrJgOpRlPs
+ zOM+vPXUZCo8clzm893JS2/onkpRUEghc39wsUu/PU2LLdDTzY4sWo4UOux8DZOuog9p7bKz+N
+ oac8wfFtDOC0wAAAA==
+X-Change-ID: 20251104-as_casts-6a8882ac0192
+To: Alexandre Courbot <acourbot@nvidia.com>, 
+ Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: John Hubbard <jhubbard@nvidia.com>, 
+ Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>, 
+ Eliot Courtney <ecourtney@nvidia.com>, Zhi Wang <zhiw@nvidia.com>, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: TY4PR01CA0085.jpnprd01.prod.outlook.com
+ (2603:1096:405:36c::8) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH3PR12MB8878:EE_
+X-MS-Office365-Filtering-Correlation-Id: b610a7e1-bbfa-4ef6-f00a-08def38d6cb1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|10070799003|366016|1800799024|921020|6133799003|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	PtVBF4at6x1/9iUtQyTIjRW2RMV9R55RONKrQPsKqGuXO1wFYPJK2z0WRw0Zgaz6hyd0+eqCoTTbUbKf+Zq1TY6cEzf8MQDRqwCKLAUBmxmRkCooqRcBe6GAiTV51I5CpjC2Ireq1/w5jLCFBmb+eqHglj+8TYdoMG2PAsWXtgWtdFve/p0EIMtJEXgcaiZoYp0z020CE9mWnGudmuq5HoD3F7uoNbYVJ36GoPcvw3FZ8+GzsQlpqM/3M8omZixh4HxAwgR7RVDR9bn/5abJgysbgKCzJpHZgYcjhFTR3zT+lonRLLsmJDpqZAgKjPvKI/OpOYaLkOVkFfQ45ZGLlZTPGNFawh3qcUJ4CCIBEzH4mE+gHE4FWjIGfVoBnvxPovSDquZ8D+kbQOilZb2G0+AHinPY2KiFQhEjafX+ZRpofiCoJL4Ff/WBhkTEOm3/9SAlTsoptxFIaDVR53wdXanYpkjmruBK+I6mO26FFEb4CLewM2BEwOrw8m163buGyuqmkjfYDaoKApHGyzMEHk3zgQW0fQTYDliuqaD9Zyb4kGH3hhsWu9zzYs6SoYZ0Bq1QLnRJHG/5lB3C+L0nFmHqltiqDEgpjkHW1bxMgIfXZmkArYMQMUf1r3C3eU+698g2LVFIiBZ1/wSzyqthhnPcsQBTyZZEEZ0QmXEKstbbPe4TF+ISYEk7UiuQ2OJowYUAmzM0vRj3zie1ZbA3yg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(10070799003)(366016)(1800799024)(921020)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OEpnTURidlpRdVRtOHZuVnNLU2JlcW5rVjFGeUlGWnpocmZaZm9XdytWbmRJ?=
+ =?utf-8?B?Q2krNGx3cFhrWmQvdHdIUVYzRklVZFRESGdaNUVrekVRUlUxVDVJeE5oMkMr?=
+ =?utf-8?B?dlRNUm45V2t1UmNFZzg3ZnppWEVuQVpxdWVmNm1TN3NxUEJiWWV2Q3lMNEkx?=
+ =?utf-8?B?bitNakJUbndIa1pDVHdGcVByeGNTQ1FCNW9paUwydmJoaHVFeU52TTZKZ1JL?=
+ =?utf-8?B?Q1BSZTQwV1J1RzR4ZXVKSFFrNEFOOUMrQ3o4MmJ4RThkRU1MWFYxcmpnamtF?=
+ =?utf-8?B?aVFvT3RFSXRsYzJUdmtqUFRQZDVqa1doNGpIZFFEK0JZVHA1dGs3TGVxeVlo?=
+ =?utf-8?B?TDI3dGxPWEhBVWdpQWtrMkpjTm5Na1U1bFE4NWRsblZKZzU5dmU1cXN2MmZx?=
+ =?utf-8?B?TnE1RXdSSU55NHpETEVIclo5KytXNjVqRkJzbzNGaGw4dmhxYTBQamlLRTVN?=
+ =?utf-8?B?bEF0U3k3UnFkMmp6M3M4am5vUE9MMHVwZkZ4aWZueHdRVjI2dnJ3Nm5XUmR2?=
+ =?utf-8?B?Zzd5ZHJxbktZKzRjN0JkVVpEcmU4RWwrZ1cyQjlRZzRxZDRFdnhzSEtGemFC?=
+ =?utf-8?B?bHp3bUdKZUtNS21JYzZvUUJ6ZXVRdWVSUmltLzhPWVRrSkh6WG9oRGNleUhM?=
+ =?utf-8?B?SHNNakFiVjROYzlRTHdraWFFVTZ3QlBCeC9xclVDdUFGUHN2K01LSmwvcDN5?=
+ =?utf-8?B?ZVFkaWJBR3dWQjB3cHJHNzRSenM3RDBKaVEvdUhtaDRZNnBVR0poSkgrcUJQ?=
+ =?utf-8?B?RVByemhQUXNyUGxxdFVDSDQrT0VtcXNwekJuZ0JrazhMOEh5empleDdaWmZa?=
+ =?utf-8?B?QnRRRC94RXpjZW9mNVRTalNWYkFQbE9FNEE0WXNoenFPR3c2WXl3ZlI2NS9j?=
+ =?utf-8?B?Q0pHTS9tUUtUemlYZ1dYVm9lSVN6TmNMaXpTR21rbDhjZTBPMkpBWUlEbGpo?=
+ =?utf-8?B?MkpKZ3FzQXd1dEtMRDZtTTRwRDh3NTI4SEl6RkdFMWpHR2xweXozRlV5SGZG?=
+ =?utf-8?B?YURGaWlBeVdqa3VlQkpkUitOcHE3c1BvYm01M3E0QkEya0JlVEFpRnM2T09m?=
+ =?utf-8?B?VHdtNDM1UEZXK2VIVmhOQnRlUmJWRENtSHcyV0JIUmw3My9HZTEvNDhPdUtV?=
+ =?utf-8?B?eTZNaUY5NnI3SkNZVHVHdU1sVTZpWEdNSVFHaHhUZitCcS9wMHl3VUhTTFhh?=
+ =?utf-8?B?ZkhNMWw5dkVvbkU3Rm9UQ1RoejNXMHQvc1dEcExESjRPMzdwNG1tVklPdjYr?=
+ =?utf-8?B?ZGUrbDFIbkNqTnVJaVhsbHFBZnIvQUg4TTdWZDJValFOZWtzT09yQlhlNWlr?=
+ =?utf-8?B?MUV0WjZJQ3QwcXpLNGVpR3BnVmFrUU9TalhKd1dVci83b2cyUS90Y2R0eGdL?=
+ =?utf-8?B?K3FQVEJobVpoOTNHT0ZVbUpHWkZjQVlzN010eTlqNnA5OTFxcllGcDQ0Qm82?=
+ =?utf-8?B?VzhMcHpNME9uNW5obDhoZm0vcXVpZ3EyRG5NV3RoeUg5MXpkK0Q2QUJrNnVa?=
+ =?utf-8?B?aTZhRVlLckw1cG5CK0FNZDlaWVVZUER6YmJ6N3I0cW1yMjRzSHpZTEgvQnhR?=
+ =?utf-8?B?Vmx6VC9OZVk1RkNQU0dRRnRaZGluanJGaU16elVNVER2V2s5L2U5c1BzRURH?=
+ =?utf-8?B?UkFERFN5MTcrQ0xMUDU3cWRGQXVmSDMxMGxzMkpHUm9Ocm1pRlB6MkdaNkF4?=
+ =?utf-8?B?SmtnbzQzUFJJd2J3ZWpZQlBjKzRzRHZRU0JLR0NqZ3I1Nm5TQ3hMV1pQeXVL?=
+ =?utf-8?B?V0tKYWJ2cGJyWlFjbXZWZjJhWGFBVjZHUTFxVFhWVm4wMkpiNGtzZitDc3ZM?=
+ =?utf-8?B?VDRtSWNSdG5lZVRvS0FaUEVEMVFHdHczVlBwaGZrdFJzb0JsZFc5NE5aMUNL?=
+ =?utf-8?B?T3ZmSHhaTEt6eDBrR20zRUhhLzdjMi9lNkJNSGFialZJeC9abkhnRTR0VHRo?=
+ =?utf-8?B?TXQ5OU9WZTh4NjZBM1RySndEQ05pR2MybmxKa1MyV0s0Nm96Y0N0aXNCUjZU?=
+ =?utf-8?B?SnhiR3Bvd1FYQjJiMTZyTUk5SG9qMDFTKzE0Q2wzVTN6aHhqdmhCOWEzZ05q?=
+ =?utf-8?B?b2xBRU9qTWhmRG1kVmhGbkpyMkt0NHhWS2FQbzgwR29kVVdMWStUUHlKUkFF?=
+ =?utf-8?B?eFhpdGpOVFZqVXdmRjc3RE1ONTRwWlBGdjF3a2l6Q2c3Ui9DOTc3SWRxT0dG?=
+ =?utf-8?B?UjFPM1NVU3RQQXpoaVJFeENoN29mOWwxQjJiM3FkdC9PU2RIeXhuQlJ3UHNU?=
+ =?utf-8?B?aDM4RzRMNnc4MVc1WDJhQU1HZVRaKzR1b0Y2bklYVFhJMG1mYlB2WjhnRkxK?=
+ =?utf-8?B?OFp1cVFrV2t6dThYUTlPT1dNaFBHNTdKU3cxLzFkdWo2YzJOaXJpMHFwVkx6?=
+ =?utf-8?Q?ZWc6FvT/1KfR1fNIRaBHuKuKGVWtMa0Z1mCoXv4qK8xYE?=
+X-MS-Exchange-AntiSpam-MessageData-1: QujSba6bKQc+KA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b610a7e1-bbfa-4ef6-f00a-08def38d6cb1
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2026 07:36:27.5092
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OQTzSaORLeCykk82Qh8FPoNj5Ps6AimI0bD6arCvV4dVFfeHoM/8XcflM4EzGOBwJdp57d7BUvSpmZoTwOt/aQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8878
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+This series introduces a copy of the lossless integer conversion
+functions/traits of `nova-core` into the `kernel` crate, and makes
+`nova-core` use them.
 
-CondVar's wait_interruptible_timeout() and workqueue's
-enqueue_delayed() have both moved from raw jiffies counts to Delta, so
-nothing in the tree calls msecs_to_jiffies() or uses the Jiffies and
-Msecs aliases anymore.
+This revision addresses the feedback received on v1 by making
+architecture-dependent conversions available via a dedicated `arch`
+sub-module to make it more obvious that they are not portable.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+This series is based on `rust-next`.
+
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- rust/kernel/time.rs | 14 --------------
- 1 file changed, 14 deletions(-)
+Changes in v2:
+- Move architecture-dependent conversions into `arch` sub-module, and
+  use dedicated trait names.
+- Use `use crate::` instead of `use kernel::` for kernel imports.
+- Replace use of `build_assert!` with `const_assert!` (Sashiko).
+- `#[inline]` all the functions (Sashiko).
+- Remove stray `#[allow(unused)]`.
+- Group kernel imports properly (Sashiko).
+- Do not reexport the contents of `casts` in `num`.
+- Link to v1: https://patch.msgid.link/20260727-as_casts-v1-0-6ea704ff25d8@nvidia.com
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 5844ee985a7b..5a32d29f1db9 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -39,20 +39,6 @@
- /// The number of nanoseconds per second.
- pub const NSEC_PER_SEC: i64 = bindings::NSEC_PER_SEC as i64;
- 
--/// The time unit of Linux kernel. One jiffy equals (1/HZ) second.
--pub type Jiffies = crate::ffi::c_ulong;
--
--/// The millisecond time unit.
--pub type Msecs = crate::ffi::c_uint;
--
--/// Converts milliseconds to jiffies.
--#[inline]
--pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
--    // SAFETY: The `__msecs_to_jiffies` function is always safe to call no
--    // matter what the argument is.
--    unsafe { bindings::__msecs_to_jiffies(msecs) }
--}
--
- /// Trait for clock sources.
- ///
- /// Selection of the clock source depends on the use case. In some cases the usage of a
--- 
-2.43.0
+Changes in v1:
+- Update to latest version in `nova-core`.
+- Make `nova-core` use the kernel crate implementation and remove its
+  own.
+- Link to RFC: https://lore.kernel.org/r/20251104-as_casts-v1-1-0a0e95bd2a9f@nvidia.com
+
+---
+Alexandre Courbot (2):
+      rust: add functions and traits for lossless integer conversions
+      gpu: nova-core: use kernel lossless integer conversion module
+
+ drivers/gpu/nova-core/falcon.rs                    |  12 +-
+ drivers/gpu/nova-core/falcon/fsp.rs                |   4 +-
+ drivers/gpu/nova-core/fb.rs                        |   2 +-
+ drivers/gpu/nova-core/fb/hal/gb100.rs              |  11 +-
+ drivers/gpu/nova-core/firmware.rs                  |   8 +-
+ drivers/gpu/nova-core/firmware/booter.rs           |  10 +-
+ drivers/gpu/nova-core/firmware/fwsec.rs            |   2 +-
+ drivers/gpu/nova-core/firmware/fwsec/bootloader.rs |   2 +-
+ drivers/gpu/nova-core/firmware/gsp.rs              |   7 +-
+ drivers/gpu/nova-core/firmware/riscv.rs            |   6 +-
+ drivers/gpu/nova-core/fsp.rs                       |   4 +-
+ drivers/gpu/nova-core/gsp.rs                       |   4 +-
+ drivers/gpu/nova-core/gsp/cmdq.rs                  |  24 +-
+ drivers/gpu/nova-core/gsp/fw.rs                    |  42 +--
+ drivers/gpu/nova-core/gsp/sequencer.rs             |   2 +-
+ drivers/gpu/nova-core/num.rs                       | 211 ---------------
+ drivers/gpu/nova-core/vbios.rs                     |   2 +-
+ rust/kernel/num.rs                                 |   2 +
+ rust/kernel/num/casts.rs                           | 298 +++++++++++++++++++++
+ 19 files changed, 373 insertions(+), 280 deletions(-)
+---
+base-commit: dc01dfb37b34beeefcfe1c3055364d41a4070c7e
+change-id: 20251104-as_casts-6a8882ac0192
+
+Best regards,
+--  
+Alexandre Courbot <acourbot@nvidia.com>
 
