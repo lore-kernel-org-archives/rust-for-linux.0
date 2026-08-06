@@ -1,115 +1,233 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F75D344D8C;
-	Thu,  6 Aug 2026 05:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729443DB310;
+	Thu,  6 Aug 2026 06:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785995550; cv=none; b=sMDnjq9UakE79TnOlFDWQQBbXt7Iwkv8HtDgR+odaWdTh5GekYkGQUcSh5G+jOJOjpOZqm4LQi4A0Jh7IIphyRzl2kD6wD7YEEoSZfph0bLI8etcDCDn9m0EntmhP2ofbO39gTDQ+xJ8W9msBQLMJ2IRwkvMJ3YjFNJv33XRy5Y=
+	t=1785997333; cv=none; b=Lgt4o/7TYgi5+jOJX/BvTG+PpAhdbJZlu0QtowIGfOT+psLDh9X/WoJc13/7RBXoCIYKOQqc6EpTo8+KTrb8yUhF60GRVjFCWGlW7Z1WqcOJMn/n4WFn4Sv65PjI2Lqwq3f9frghCImPmn+uR7RYozRReUYG+89xabIqnnBjuuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785995550; c=relaxed/simple;
-	bh=B4Q49MV2oxYDlIScKgtBHV01axw+STZVEGPu9VuN4XI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cL+5giJXVvRcUz9n4pDVUMTQImEfUFLeat4Kqxi1V0HTPev60laIk0yRsIW/8No/EfoqCn05yt/ItdAzPCkddBTeVLIqEhHw6NmAC1Vcsgq0phxxCzYKeO6VVEvAEOkLzfeje0XOnZiX/r7MfB2IhoUg66KiFZ0sGmMDq9xLpi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIfyyRDj; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIfyyRDj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F341F000E9;
-	Thu,  6 Aug 2026 05:52:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785995549;
-	bh=554sNPfuHcR1Bkq2y9SrgHxmggPTwv4NEYX575dvhdo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GIfyyRDjCOOoMGRG4WgFrH0hTiYXek1GG9sebLVO8ijTWltfqIp5L2zDXD3XeyAZ4
-	 T6kkYkqA4j7xPJUqV5XNTFswarCjw0xhiRWrzvb3lH52Uwt8gwj8m+1nMFZ57BJIYX
-	 NAJ1eHfcV1MBFnvnamg9H5KbAyc+0wn5yB2YJyl7+6zNeQhEVaLNSSVTPlK87tWpSy
-	 FK64mVrmPHilh29HWSXb1qs6tVbwL/nZTsoUm3B9sTC67uNXQVJNhucih3Zv1DyvLL
-	 O4JnAiZCrcOFfe4Q6SZ79xTstgvfD5FHFRPXb79mnQR5QXDTWrBlzR1Zmp8EAp1oGr
-	 Wuhb73QFn5diw==
-Date: Thu, 6 Aug 2026 05:52:26 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Bert Karwatzki <spasswolf@web.de>, linux-kernel@vger.kernel.org, 
-	linux-next@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Mark Brown <broonie@kernel.org>
-Subject: Re: rust compile failure in next-20260730
-Message-ID: <anQftbfg8EWMmxZc@dev>
-References: <20260731122826.737703-1-spasswolf@web.de>
- <20260731192522.GA1014697@ax162>
- <DKFD0ZKHC2I8.19PUYUR6N6KFN@garyguo.net>
- <anCkbMyUIscmAheK@tardis.local>
- <7c39e6cb-0ccf-4a50-a853-0f6012b05044@kernel.org>
- <DKFF147BG8PR.I12RKSRFQS1B@garyguo.net>
- <11a8bf75-8fc1-4d32-a350-6bf8156dd8ab@kernel.org>
- <DKG2TQ94TGLB.3EO7ZNVKB50KY@garyguo.net>
- <7189ebb5-ae48-4466-9055-1ab1b0b5ef7c@kernel.org>
+	s=arc-20240116; t=1785997333; c=relaxed/simple;
+	bh=/4VEb4lu7jJv1J2369j6uGurfX24GvQlqc0cDhlc6pI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LT3RpczF24rS2IsAO446YrzLWFa2EfE+B6IJwg6x2d4MiVinGpBUinOpuXTI0ytzjuYczNVO5lMsVP4DxGPJlAQ8VunA93PWm0uOoOGA6Igjx/dNy8uKHa+jOwUjCVWBhonISG9tRR8LH9sH+Yj2e4Zt3I+PQAoKh5ffLjU9zUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
+Received: by linkmauve.fr (Postfix, from userid 1000)
+	id BF80270A28AC; Thu, 06 Aug 2026 08:22:08 +0200 (CEST)
+From: Link Mauve <linkmauve@linkmauve.fr>
+To: rust-for-linux@vger.kernel.org
+Cc: Link Mauve <linkmauve@linkmauve.fr>,
+	Ethan Plant <plant.ethan@gmail.com>,
+	Michael Garofalo <officialTechflashYT@gmail.com>,
+	Ash Logan <ash@heyquark.com>,
+	=?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Sasha Finkelstein <k@chaosmail.tech>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev
+Subject: [PATCH v2] rust: io: Add a BigEndianMmio wrapper
+Date: Thu,  6 Aug 2026 08:22:04 +0200
+Message-ID: <20260806062207.3024012-1-linkmauve@linkmauve.fr>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7189ebb5-ae48-4466-9055-1ab1b0b5ef7c@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 04, 2026 at 12:35:42PM +0200, Vlastimil Babka (SUSE) wrote:
-> On 8/4/26 12:10, Gary Guo wrote:
-> > On Mon Aug 3, 2026 at 10:04 PM BST, Vlastimil Babka (SUSE) wrote:
-> >> On 8/3/26 17:32, Gary Guo wrote:
-> >>> On Mon Aug 3, 2026 at 4:10 PM BST, Vlastimil Babka (SUSE) wrote:
-> >>>> On 8/3/26 16:23, Boqun Feng wrote:
-> >>>>> On Mon, Aug 03, 2026 at 02:57:49PM +0100, Gary Guo wrote:
-> >>>>>> 
-> >>>>>> We could also unconditionally use `kvfree_rcu_head` here, and
-> >>>>>> add
-> >>>>>> 
-> >>>>>>     #[cfg(not(CONFIG_KVFREE_RCU_BATCHED))]
-> >>>>>>     pub type kvfree_rcu_head = callback_head;
-> >>>>>> 
-> >>>>>> to bindings.rs?
-> >>>>>> 
-> >>>>> 
-> >>>>> This option is currently not maintainable unless it becomes a
-> >>>>> maintainer-aware way to handle things like this.
-> >>>>> 
-> >>>>>> (Or even better, changing `#define` to `typedef` so bindgen takes care of
-> >>>>>> everything).
-> >>>>>> 
-> >>>>> 
-> >>>>> Yes, this is better IMO, but it's up to slab maintainers. :-)
-> >>>>
-> >>>> Can you elaborate a bit please, how would that look like?
-> >>> 
-> >>> I was thinking of doing `typedef struct rcu_head kvfree_rcu_head;` but of course
-> >>> that didn't work because you can't use typedef to create `kvfree_rcu_head` :)
-> >>> 
-> >>> However, something like this could work?
-> >>> 
-> >>>     #ifdef CONFIG_KVFREE_RCU_BATCHED
-> >>>     ...
-> >>>     #else
-> >>>     struct kvfree_rcu_head {
-> >>>         struct rcu_head head;
-> >>>     };
-> >>>     #endif
-> >>> 
-> >>> and everywhere add a cast everywhere that expects kvfree_rcu_head == rcu_head.
-> >>> 
-> >>> but this would indeed be more complex :(
-> >>
-> >> So you mean like this? Doesn't seem so complex and seems to compile here
-> >> with CONFIG_KVFREE_RCU_BATCHED both disabled and enabled.
-> > 
-> > I thought that a lot more places have to be updated, but it looks from your diff
-> > below that this is simple enough.
-> 
-> Thanks. The slab/for-next branch now includes the slab changes.
+This allows the user to read from and write to big-endian MMIO devices,
+such as those found on PowerPC systems.
 
-The slab changes looks good to me, thanks!
+The implementation is pretty much a copy-paste of the RelaxedMmio type,
+with the business logic changed.
 
+This has been tested with various WIP drivers on the Nintendo Wii, and I
+thought it would be nicer to upstream it before those are completely
+ready, to get some review.
+
+Signed-off-by: Link Mauve <linkmauve@linkmauve.fr>
+---
+ rust/helpers/io.c | 34 ++++++++++++++++++
+ rust/kernel/io.rs | 88 +++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 120 insertions(+), 2 deletions(-)
+
+Changes since v1:
+- Link to v1:
+  https://lore.kernel.org/rust-for-linux/178598049138.1212746.2443151507074972963.b4-review@b4/T/
+- Fix copy/paste mistake in backend docstring (thank you Ethan Plant!)
+- Fix safety comment in macro documentation.
+
+diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+index 7ed9a4f77f1b..3bbb86a00d67 100644
+--- a/rust/helpers/io.c
++++ b/rust/helpers/io.c
+@@ -120,6 +120,40 @@ __rust_helper void rust_helper_writeq_relaxed(u64 value, void __iomem *addr)
+ }
+ #endif
+ 
++__rust_helper u16 rust_helper_ioread16be(const void __iomem *addr)
++{
++	return ioread16be(addr);
++}
++
++__rust_helper u32 rust_helper_ioread32be(const void __iomem *addr)
++{
++	return ioread32be(addr);
++}
++
++#ifdef CONFIG_64BIT
++__rust_helper u64 rust_helper_ioread64be(const void __iomem *addr)
++{
++	return ioread64be(addr);
++}
++#endif
++
++__rust_helper void rust_helper_iowrite16be(u16 value, void __iomem *addr)
++{
++	iowrite16be(value, addr);
++}
++
++__rust_helper void rust_helper_iowrite32be(u32 value, void __iomem *addr)
++{
++	iowrite32be(value, addr);
++}
++
++#ifdef CONFIG_64BIT
++__rust_helper void rust_helper_iowrite64be(u64 value, void __iomem *addr)
++{
++	iowrite64be(value, addr);
++}
++#endif
++
+ __rust_helper resource_size_t rust_helper_resource_size(struct resource *res)
+ {
+ 	return resource_size(res);
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index a38c20ba3d23..ab8b7864298a 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -1194,14 +1194,14 @@ impl IoCapable<$ty> for $backend {
+             #[inline]
+             fn io_read(view: <$backend as IoBackend>::View<'_, $ty>) -> $ty {
+                 // SAFETY: `$backend::as_ptr(view)` is a valid pointer for MMIO operations for both
+-                // `MmioBackend` and `RelaxedMmioBackend`.
++                // `MmioBackend`, `RelaxedMmioBackend` and `BigEndianMmioBackend`.
+                 unsafe { bindings::$read_fn($backend::as_ptr(view).cast_const().cast()) }
+             }
+ 
+             #[inline]
+             fn io_write(view: <$backend as IoBackend>::View<'_, $ty>, value: $ty) {
+                 // SAFETY: `$backend::as_ptr(view)` is a valid pointer for MMIO operations for both
+-                // `MmioBackend` and `RelaxedMmioBackend`.
++                // `MmioBackend`, `RelaxedMmioBackend` and `BigEndianMmioBackend`.
+                 unsafe { bindings::$write_fn(value, $backend::as_ptr(view).cast()) }
+             }
+         }
+@@ -1751,3 +1751,87 @@ macro_rules! io_write {
+ }
+ #[doc(inline)]
+ pub use crate::io_write;
++
++/// [`Mmio`] wrapper using big-endian accessors.
++///
++/// This type provides an implementation of [`Io`] that uses big-endian I/O MMIO operands instead of
++/// the regular little-endian ones.
++///
++/// See [`Mmio::big_endian`] for a usage example.
++#[repr(transparent)]
++pub struct BigEndianMmio<'a, T: ?Sized>(Mmio<'a, T>);
++
++impl<T: ?Sized> Copy for BigEndianMmio<'_, T> {}
++impl<T: ?Sized> Clone for BigEndianMmio<'_, T> {
++    #[inline]
++    fn clone(&self) -> Self {
++        *self
++    }
++}
++
++/// I/O Backend for memory-mapped I/O using big-endian accessors.
++pub struct BigEndianMmioBackend;
++
++impl IoBackend for BigEndianMmioBackend {
++    type View<'a, T: ?Sized + KnownSize> = BigEndianMmio<'a, T>;
++
++    #[inline]
++    fn as_ptr<'a, T: ?Sized + KnownSize>(view: Self::View<'a, T>) -> *mut T {
++        MmioBackend::as_ptr(view.0)
++    }
++
++    #[inline]
++    unsafe fn project_view<'a, T: ?Sized + KnownSize, U: ?Sized + KnownSize>(
++        view: Self::View<'a, T>,
++        ptr: *mut U,
++    ) -> Self::View<'a, U> {
++        // SAFETY: Per safety requirement.
++        BigEndianMmio(unsafe { MmioBackend::project_view(view.0, ptr) })
++    }
++}
++
++impl<'a, T: ?Sized + KnownSize> IoBase<'a> for BigEndianMmio<'a, T> {
++    type Backend = BigEndianMmioBackend;
++    type Target = T;
++
++    #[inline]
++    fn as_view(self) -> BigEndianMmio<'a, T> {
++        self
++    }
++}
++
++impl<'a, T: ?Sized> Mmio<'a, T> {
++    /// Returns a [`BigEndianMmio`] reference that performs big-endian I/O operations.
++    ///
++    /// Big-endian makes no change to 8-bit accesses, but will invert the bytes of 16-, 32- and
++    /// 64-bit accesses, to ensure numbers will be read in their correct order.
++    ///
++    /// # Examples
++    ///
++    /// ```no_run
++    /// use kernel::io::{
++    ///     Io,
++    ///     Mmio,
++    ///     Region,
++    ///     BigEndianMmio,
++    /// };
++    ///
++    /// fn do_io(io: Mmio<'_, Region<0x100>>) {
++    ///     // The access is performed using `ioread32be` instead of `readl`.
++    ///     let v = io.big_endian().read32(0x10);
++    /// }
++    ///
++    /// ```
++    #[inline]
++    pub fn big_endian(self) -> BigEndianMmio<'a, T> {
++        BigEndianMmio(self)
++    }
++}
++
++// MMIO regions support 8, 16, and 32-bit accesses.
++impl_mmio_io_capable!(BigEndianMmioBackend, u8, readb, writeb);
++impl_mmio_io_capable!(BigEndianMmioBackend, u16, ioread16be, iowrite16be);
++impl_mmio_io_capable!(BigEndianMmioBackend, u32, ioread32be, iowrite32be);
++// MMIO regions on 64-bit systems also support 64-bit accesses.
++#[cfg(CONFIG_64BIT)]
++impl_mmio_io_capable!(BigEndianMmioBackend, u64, ioread64be, iowrite64be);
+
+base-commit: 1701fda2f58e345c050f4309971bdc07cd6146ba
 -- 
-Cheers,
-Harry / Hyeonggon
+2.55.0
+
