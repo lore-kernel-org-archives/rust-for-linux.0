@@ -1,168 +1,295 @@
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073063F482E
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 08:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B949411FB2
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Aug 2026 08:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786004909; cv=none; b=fMqE99ul8u/C+PKaCSd+wyJrY2Ni0ckCoA/fzBZtFHJi+c/OYYPx4qG68ceOFpiR/e6FWWbar9Atu+OjVmF2qzs6rIdlJhPG0PuGhEPR/NTLApMIVsYIDQQYK1Oejx53biyQJ1+mT7YfSDe6FPbfSClrETcWwqRPjvSCk8trJcQ=
+	t=1786005466; cv=none; b=YoHoFYqz2dixPJwBL8Bg5Vg2wu87FUCYwEu59osROsJ3HRB8ZjbMH8Kmcv6A6vrSFhICIKHSJTvP4ZCwgYFTjC/xyNeQ43xDOOh8e2LOJaopXcIJoiIX4MHgtZ3cM2KnbTIq30WO60RP/xo34sJnW6Vy8EmNe/cdV6oSKeIw+0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786004909; c=relaxed/simple;
-	bh=j3yPQoqrGj24DA78KQYUgHZU2noVjIuvE8SivGuQOBo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=qa4D9nj3WOCRz2zgcH5dQLeVfiL9l8FE4ryyPGSxxlT0jAYZxV/NuFQnrHAl8AnNVOXqpDeuE5DpfMTCkCZ2xD0048CLRf2HrrgXiM3EfjtXDMESSyD11f2HFuTVOSG/1JhQzPt9WrF7naVH1nfTzdRA1SOFhF1OFjk96om+Nqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P5R1T6jP; arc=none smtp.client-ip=209.85.128.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1786005466; c=relaxed/simple;
+	bh=K68TZ6Okn0Of995J9SNbWqHIkxrKzwj7KXt05vRCPIA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o5s8H7/vv40J9r1mFnFEr7nYHmdF+mq+47xmXG4vfWgc1c791Ckq0FyULcV9yvyP46hCmv12COtWcOiSWlcWF6Js6W+7EclfRXmwKcJsgBl4f5Gnd+VP/zmFHNmsqLSTx1HnQbRYKnMY5qxGsI0T9kK6FKQVjjMKrRkrOIe/8z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EudU0Hrm; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P5R1T6jP"
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-493a7fa8481so4416455e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 01:28:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EudU0Hrm"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8487088510aso2599074b3a.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Aug 2026 01:37:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786004904; x=1786609704; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5OYizOyPkPXEuYIqzFOLigQQZGOQqkAaAqTRP0x1kvU=;
-        b=P5R1T6jPdVOij4s/51MTLfUvI72oFJeSE7kBfEUQQ6UsdIn8lsI0BlrFWalcr9FMIG
-         k1rHOLCPVm8HwXNBXAZhIE122ykWiAl5Ri5/gg8eVb7YjEno2wKjOrztJ92o17Ug0yj3
-         rNAyDsnRGKnE9FcPD9gLdYDLEM+4XHax3DNUCawo8JQ77H1Li6LLro/cvX44GUnmGZ/f
-         Al0GBCocPh8Vvet1QwpgDDXTpU2DlZb/3VZwa7YhJAg2oEtT2XshXmBTk3PGEKRt6Kah
-         xqoZdSstKbr8Jf6NvbayAUT0eCtPbvDy34oRqCldP5JRVOAcR22RdKTFU0K443XcJr5q
-         28Tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786004904; x=1786609704;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1786005447; x=1786610247; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5OYizOyPkPXEuYIqzFOLigQQZGOQqkAaAqTRP0x1kvU=;
-        b=f9ZkkO5MjfsMhlz1RRj3aAUaxcxcjOg3zNhB+tIYOZjDA3szShQlUCWC7v1xBhN2vt
-         yUH5dKPxrb0ssjy0rsTHLFbvnlHhL8tkGliDFRrswvzqZMRLJC2MmHh2aXkQzb1zMCh8
-         MJdMedwXvurgUfpsaH+11MfvLrl/jEX2k2ugvxUUejHYYOKPztQVAafXkTjMZ9x1fLWH
-         r82f5W8pTPVl+zl8Iq4u5uQ1dCDS20akH4NHSZuNtp3CkKelj+3Nupnbwj+S09eGRG7c
-         Eft1DtNuAadXGd/4Ap9uXP7l0bvzzATfDW0kd9PaulnGyIBtk50FNzZodkLhFOmflh9j
-         bjNw==
-X-Forwarded-Encrypted: i=1; AHgh+RqaFrDoyYA9lDxXKIuxWD45qMZO83Cuft1FlELLe5mk0/CYFtpV5gJ9qNasfrgqKr0/XKd3g8EhcjKtEgseTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPik1SsaNSgZ+KTaVzO6bBLXFrPTErnY9N/e7EhOdI925CWSdI
-	vnRpQ50HwO1YgCgcXhcuXyz+onHHyatYliVJ6TPAFyued+QtvFhj1+j8d1aVECyWWoUaQAI87lO
-	aIruOdSzzRvZWI47HJA==
-X-Received: from wmtk4.prod.google.com ([2002:a05:600c:c4a4:b0:493:ae35:2761])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1546:b0:495:3bc6:d381 with SMTP id 5b1f17b1804b1-499553bcbc8mr27546045e9.2.1786004904128;
- Thu, 06 Aug 2026 01:28:24 -0700 (PDT)
-Date: Thu, 6 Aug 2026 08:28:23 +0000
-In-Reply-To: <20260805-rust_tmp-v1-1-7851cc1c00e8@wyliodrin.com>
+        bh=tkD7BsMHZyGAvnJ70CwDbdJKVjJ2J7o8mq8tbWHVAjY=;
+        b=EudU0HrmP09D0vNctq2ksmx2aBX7kAiSbxx+m8q5RhNVJD9RXQ0KN+tEZhntFC+Z46
+         /SmVqTKWnGJ/K78OHlz745qX2UFPjtVTwv/WjbAETe/dzGIkseZRkOfiBp5EeSct9WMS
+         +7xSdrfGRuMlfUX0Ee3hVlS8YaiWZBA/Hm2vhMJyf6UFjrpHtCDhlXGWHEqfd2sFXxIT
+         K+uxyl4rb9ZCfXLWtYR05vYo+DJLV6BEL5PEcAqdQ6sYMoBjngNFM2wbsHJUDzoGoUff
+         5ebrmEURela4d65JeLJzLzSjQeShROtdB8eKE0s6uBb73tnlnZpAq/2TtaiT+/i+gF1k
+         iDmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786005447; x=1786610247;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tkD7BsMHZyGAvnJ70CwDbdJKVjJ2J7o8mq8tbWHVAjY=;
+        b=Hl+l8ewpcsQ1gD5un1NA1stChhd4c/OK/UvLltpUN9lIESvFSirEN1zHi7Rx5q6fZZ
+         HM20xGtMRwN7nFWTRgv5kVMw9IHikKL+JzKQ+hinRV6OPSdd+29jujAMHZAUtvWPi4Vn
+         wFz8EYpX7BSs24A4kj+mlj/yRfbQjTIqacmzIHHMQhcu+8as+c32sAkz349NjC70YnmD
+         v61VuT2B+8siD/WGIVH2JykgZfIwwqh5ULSzDHo0eMqr8OeqWVvOc2RSBAvuJTRD7oGt
+         huAU06GXGqvOFyq6RTyWmy8wizwzk+gfaG2meDwMMVEeFEjkPfJ3oS1gxedQE8Ju7AXD
+         XpLQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrZ9q2wEDkn+WSG1JNjQpQfxpSuMZejT6rIGySsuRA44Mr5iqqz9K3/1Mq26//coYbuZD66VwhenI2mqMHjeg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLltlzRc4eyxpbSbzwETrfvZZMSBYoAn7t7NGsxqh2rBnwA6C7
+	sZZzHRIFu3dfiWASFtn0kLXLfRCJ3QJ2hydoW3UJxHO4+gzxQ8+jeI38
+X-Gm-Gg: AR+sD13JS5eyQ2bLYwBNQogT+t99pGOj5aNL08I7rjxCws/jG6A7m1NvKKGQlnJToCY
+	nRwV4q/n1rBpHMl+DxpuJCMH7/JGFRYBvu4ar4bjsNHcTiFpYOS/cpqXXaiFPh0YsOo/4ybD4/N
+	NAonq1gWoD6J81KXxYsRvTx0BdBemJxAJsP8sHXP7EN0UKMDJRmuFZQW+XRkwENEWOPSPJWvxQj
+	VeyE6w3j+mAxZX30KI3UD+CHYBDtDeTinH/LQKnl07gHXXIeY8DrrgoT88ebeEMm3FWpZbwfuKU
+	kiiqKZprc6DijlOMiNLnQo/plxC44kuwFgb68GmHMSvqdEwQ+7i3gqNs5eeGYC614zAyJMzw2ck
+	an98alDnuZyQFxBCEKa+AwziS5tX+UG57kNmrCi0vFOutZhIsTIxzl0ewfStKGjLdUX2B+Jx0J7
+	v2jsF0DPTrLrC9sIsFLvN7HZXAR8UUIDERWd/HM3fD1QLir/sOy+dxU7yJV0KbOLM=
+X-Received: by 2002:a05:6a20:e290:b0:3c4:3112:33 with SMTP id adf61e73a8af0-3cb85de7c9bmr15386526637.6.1786005447444;
+        Thu, 06 Aug 2026 01:37:27 -0700 (PDT)
+Received: from archlinux ([2402:e280:411b:ec:aa93:b1ec:5a6b:5fce])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13fca9111b6sm21986347c88.13.2026.08.06.01.37.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 01:37:26 -0700 (PDT)
+From: Adarsh Das <adarshdas950@gmail.com>
+To: adarshdas950@gmail.com
+Cc: a.hindborg@kernel.org,
+	acourbot@nvidia.com,
+	aliceryhl@google.com,
+	axboe@kernel.dk,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	gary@garyguo.net,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	tamird@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev
+Subject: [PATCH v2] rust: block: set GenDisk block_device_operations.owner to THIS_MODULE
+Date: Thu,  6 Aug 2026 14:06:55 +0530
+Message-ID: <20260806083655.23161-1-adarshdas950@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260805192020.107601-1-adarshdas950@gmail.com>
+References: <20260805192020.107601-1-adarshdas950@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260805-rust_tmp-v1-1-7851cc1c00e8@wyliodrin.com>
-Message-ID: <anRFp0rqUomBOSkO@google.com>
-Subject: Re: [PATCH] rust: misc: add OWNER field to the `MiscDevice` trait
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 05, 2026 at 03:20:07PM +0300, Alexandru Radovici wrote:
-> Add `OWNER` constant to the `MiscDevice` trait to allow modules
-> to prevent unloading while the device is in use.
-> 
-> Set the `OWNER` field in the `rust_misc_device` example.
-> 
-> Signed-off-by: Alexandru Radovici <alexandru.radovici@wyliodrin.com>
+GenDiskBuilder left block_device_operations.owner NULL. Pass the driver's
+ThisModule into GenDiskBuilder::build(), heap-allocate the operations
+table, and keep it alive until the gendisk is released via free_disk.
+Update rnull as the in-tree caller.
 
-This is already being solved by:
-https://lore.kernel.org/all/20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev/
+v2:
+- Free fops in free_disk instead of GenDisk::drop to fix use-after-free
+  when the device stays open after removal. (Sashiko)
+- Install the cleanup guard before fops allocation to avoid leaking gendisk
+  on -ENOMEM. (Sashiko)
+- Link to v1: https://lore.kernel.org/all/20260805192020.107601-1-adarshdas950@gmail.com/
 
-> This patch exposes the `owner` field of `file_operations` to the
-> Rust API `MiscDevice` trait. It allows users to prevent the
-> unloading of their loadable modules written in Rust
-> while their `MiscDevice` is still in use.
-> 
-> Without this ability, writing a misc loadable module and running
-> the following commands will Oops the kernel.
-> 
->    # insmod misc_module.ko
->    # sleep 10 > /dev/misc_device
->    # rmmod misc_module
-> 
->    ... after the sleep, the kernel Oops
-> 
-> I added the `OWNER` field to the `rust_misc_device` example.
-> ---
->  rust/kernel/miscdevice.rs        | 13 ++++++++++++-
->  samples/rust/rust_misc_device.rs |  4 ++++
->  2 files changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> index 83ce50def5ac..21c5d88c5dc4 100644
-> --- a/rust/kernel/miscdevice.rs
-> +++ b/rust/kernel/miscdevice.rs
-> @@ -31,7 +31,7 @@
->          Opaque, //
->      },
->  };
-> -use core::marker::PhantomData;
-> +use core::{marker::PhantomData, ptr};
->  
->  /// Options for creating a misc device.
->  #[derive(Copy, Clone)]
-> @@ -126,6 +126,12 @@ pub trait MiscDevice: Sized {
->      /// What kind of pointer should `Self` be wrapped in.
->      type Ptr: ForeignOwnable + Send + Sync;
->  
-> +    /// Set the owner of this `MiscDevice` instance.
-> +    ///
-> +    /// In case this is compiled as a module, setting this prevents
-> +    /// the module unloading while the device is still in use.
-> +    const OWNER: Option<&'static ThisModule> = None;
-> +
->      /// Called when the misc device is opened.
->      ///
->      /// The returned pointer will be stored as the private data for the file.
-> @@ -430,6 +436,11 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
->          } else {
->              None
->          },
-> +        #[cfg(CONFIG_MODULES)]
-> +        owner: match T::OWNER {
-> +            Some(module) => module.as_ptr(),
-> +            None => ptr::null_mut(),
-> +        },
->          ..pin_init::zeroed()
->      };
->  
-> diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-> index 41e26c825060..bf8801ea3cb2 100644
-> --- a/samples/rust/rust_misc_device.rs
-> +++ b/samples/rust/rust_misc_device.rs
-> @@ -177,6 +177,10 @@ struct RustMiscDevice {
->  impl MiscDevice for RustMiscDevice {
->      type Ptr = Pin<KBox<Self>>;
->  
-> +    // Set the OWNER constant to the current module to prevent the unloading
-> +    // of this module while this device is in use.
-> +    const OWNER: Option<&'static ThisModule> = Some(&crate::THIS_MODULE);
-> +
->      fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
->          let dev = ARef::from(misc.device());
->  
-> 
-> ---
-> base-commit: c21bb4193868a8de71fc4693fa741e195fdf5d86
-> change-id: 20260805-rust_tmp-095994661956
-> 
-> Best regards,
-> -- 
-> Alexandru Radovici <alexandru.radovici@wyliodrin.com>
-> 
+Signed-off-by: Adarsh Das <adarshdas950@gmail.com>
+---
+ drivers/block/rnull/configfs.rs  |  1 +
+ drivers/block/rnull/rnull.rs     |  3 +-
+ rust/kernel/block/mq.rs          |  9 ++--
+ rust/kernel/block/mq/gen_disk.rs | 82 ++++++++++++++++++++++----------
+ 4 files changed, 66 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
+index 7c2eb5c0b722..bba30d590f68 100644
+--- a/drivers/block/rnull/configfs.rs
++++ b/drivers/block/rnull/configfs.rs
+@@ -147,6 +147,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
+ 
+         if !guard.powered && power_op {
+             guard.disk = Some(NullBlkDevice::new(
++                &THIS_MODULE,
+                 &guard.name,
+                 guard.block_size,
+                 guard.rotational,
+diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
+index 0ca8715febe8..4265a133cbf0 100644
+--- a/drivers/block/rnull/rnull.rs
++++ b/drivers/block/rnull/rnull.rs
+@@ -46,6 +46,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+ 
+ impl NullBlkDevice {
+     fn new(
++        this_module: &'static ThisModule,
+         name: &CStr,
+         block_size: u32,
+         rotational: bool,
+@@ -61,7 +62,7 @@ fn new(
+             .logical_block_size(block_size)?
+             .physical_block_size(block_size)?
+             .rotational(rotational)
+-            .build(fmt!("{}", name.to_str()?), tagset, queue_data)
++            .build(this_module, fmt!("{}", name.to_str()?), tagset, queue_data)
+     }
+ }
+ 
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index 1fd0d54dd549..33561e0f67af 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -8,8 +8,8 @@
+ //! - Implement [`Operations`] for a type `T`.
+ //! - Create a [`TagSet<T>`].
+ //! - Create a [`GenDisk<T>`], via the [`GenDiskBuilder`].
+-//! - Add the disk to the system by calling [`GenDiskBuilder::build`] passing in
+-//!   the `TagSet` reference.
++//! - Add the disk to the system by calling [`GenDiskBuilder::build`], passing in
++//!   the driver's [`ThisModule`], the disk name, the `TagSet`, and queue data.
+ //!
+ //! The types available in this module that have direct C counterparts are:
+ //!
+@@ -86,9 +86,12 @@
+ //!
+ //! let tagset: Arc<TagSet<MyBlkDevice>> =
+ //!     Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
++//! # // SAFETY: Dummy `ThisModule` for doctest compilation only.
++//! # static THIS_MODULE: ThisModule =
++//! #     unsafe { ThisModule::from_ptr(core::ptr::null_mut()) };
+ //! let mut disk = gen_disk::GenDiskBuilder::new()
+ //!     .capacity_sectors(4096)
+-//!     .build(fmt!("myblk"), tagset, ())?;
++//!     .build(&THIS_MODULE, fmt!("myblk"), tagset, ())?;
+ //!
+ //! # Ok::<(), kernel::error::Error>(())
+ //! ```
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index fc97dd873974..a51027e8c1c1 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -17,6 +17,23 @@
+     types::{ForeignOwnable, ScopeGuard},
+ };
+ 
++/// # Safety
++///
++/// `disk` must be valid.
++unsafe extern "C" fn free_fops(disk: *mut bindings::gendisk) {
++    // SAFETY: `disk` is valid.
++    let fops = unsafe { (*disk).fops };
++    if fops.is_null() {
++        return;
++    }
++
++    // SAFETY: `disk` is valid; `fops` came from `KBox::into_raw` in `build`.
++    unsafe {
++        (*disk).fops = core::ptr::null_mut();
++        drop(KBox::from_raw(fops.cast_mut()));
++    }
++}
++
+ /// A builder for [`GenDisk`].
+ ///
+ /// Use this struct to configure and add new [`GenDisk`] to the VFS.
+@@ -95,8 +112,12 @@ pub fn capacity_sectors(mut self, capacity: u64) -> Self {
+     }
+ 
+     /// Build a new `GenDisk` and add it to the VFS.
++    ///
++    /// `this_module` must be the [`ThisModule`] for the kernel module registering
++    /// the disk.
+     pub fn build<T: Operations>(
+         self,
++        this_module: &'static ThisModule,
+         name: fmt::Arguments<'_>,
+         tagset: Arc<TagSet<T>>,
+         queue_data: T::QueueData,
+@@ -125,32 +146,16 @@ pub fn build<T: Operations>(
+             )
+         })?;
+ 
+-        const TABLE: bindings::block_device_operations = bindings::block_device_operations {
+-            submit_bio: None,
+-            open: None,
+-            release: None,
+-            ioctl: None,
+-            compat_ioctl: None,
+-            check_events: None,
+-            unlock_native_capacity: None,
+-            getgeo: None,
+-            set_read_only: None,
+-            swap_slot_free_notify: None,
+-            report_zones: None,
+-            devnode: None,
+-            alternative_gpt_sector: None,
+-            get_unique_id: None,
+-            // TODO: Set to `THIS_MODULE`.
+-            owner: core::ptr::null_mut(),
+-            pr_ops: core::ptr::null_mut(),
+-            free_disk: None,
+-            poll_bio: None,
+-        };
+-
+-        // SAFETY: `gendisk` is a valid pointer as we initialized it above
+-        unsafe { (*gendisk).fops = &TABLE };
+-
+         let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
++            // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
++            // has not been added to the VFS on this cleanup path.
++            let fops = unsafe { (*gendisk).fops };
++            if !fops.is_null() {
++                // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above.
++                unsafe { (*gendisk).fops = core::ptr::null_mut() };
++                // SAFETY: `fops` came from `KBox::into_raw` below on this path.
++                drop(unsafe { KBox::from_raw(fops.cast_mut()) });
++            }
+             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
+             // has not been added to the VFS on this cleanup path.
+             unsafe { bindings::put_disk(gendisk) };
+@@ -159,6 +164,33 @@ pub fn build<T: Operations>(
+             drop(unsafe { T::QueueData::from_foreign(data) });
+         });
+ 
++        let fops = KBox::new(
++            bindings::block_device_operations {
++                submit_bio: None,
++                open: None,
++                release: None,
++                ioctl: None,
++                compat_ioctl: None,
++                check_events: None,
++                unlock_native_capacity: None,
++                getgeo: None,
++                set_read_only: None,
++                swap_slot_free_notify: None,
++                report_zones: None,
++                devnode: None,
++                alternative_gpt_sector: None,
++                get_unique_id: None,
++                owner: this_module.as_ptr(),
++                pr_ops: core::ptr::null_mut(),
++                free_disk: Some(free_fops),
++                poll_bio: None,
++            },
++            GFP_KERNEL,
++        )?;
++
++        // SAFETY: `gendisk` is a valid pointer as we initialized it above.
++        unsafe { (*gendisk).fops = KBox::into_raw(fops).cast() };
++
+         // The failure guard now owns both pieces of cleanup; the early guard
+         // must not run on this path anymore.
+         recover_data.dismiss();
+-- 
+2.55.0
+
