@@ -1,102 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B801048A2CC;
-	Thu,  6 Aug 2026 17:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF9736655C;
+	Thu,  6 Aug 2026 17:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786035945; cv=none; b=QGSMQ7EIXtmOWAKGakN6ix9IXjIs+ALoUZCQyCrGBbLV6fwQnWiqpIrD9cqQACi19m5clwNY2wJszLfwIpUzg4iX3TyBeRWnZRpqaZbehSSbL0PBIF/b0fftRpUMapXGClqTY7OuAVT4/or/KmS0JkdvyOg8YlRMFL8tEIpJzhQ=
+	t=1786036195; cv=none; b=clbQNSD7BahDf0G7L7HH6zH6sOzYhGfn3yxGLs+impS3VLLUCmy2oPo2nfxU6YhrWSP164qWwQBx+c+f9nWitRKTsJ9Ju4FVSJkLP5THRHGcAPcHgx4WxJ91RlgjqOCabsLxW9mltZfOWdjkzByDKt818tJvocCAD6sxML7hrF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786035945; c=relaxed/simple;
-	bh=R8bksiKUhR5UR9vA/uQlvpAWoMJlgQlWSjwnO7ZDpA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JZ/Wjt1Bd3nXnKXJJhXR6yftegHdRRvoVHPyryDPC6MmV8eYoQZwdgdj5a8FSDW4UcpW+Sgw3Foufm0iH6Xk243rWrsRSfGQDBhEbV858zA3XgaPlPT9RcgclPG8mNTzEk6NuZkx1aylnlBZzYhGTCd42I55Um6emfxcn3CAqnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfYBsa0B; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786036195; c=relaxed/simple;
+	bh=RuhGFQg/miapkcuhF9rScJiktA9Kr0LCS5Epiji8ajo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Q0VqIs/9+jKK8gU1rXf9O/8rqfcBOQbBNVsv5O+SUOox7jk3yxPXiEayiom6oXd75nV86iWoU9YMJNQNR3ndIdrVOY4uQtQmpuaru4jKow5SKgvxMsNwNb3qh4Qohw14Vdimhw+GoooNOrrt3b2j2LyzFuneyuIzFd7EkO9ttGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Yqyfy1tY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfYBsa0B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F881F000E9;
-	Thu,  6 Aug 2026 17:05:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786035944;
-	bh=01PXLsXXlp5vWpKujdsyD+Lq7fKOKOGlM4wiIx1SD04=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YfYBsa0Bd4f8yJqVrK0sT2lONl3KmwY1Ze4Cbn5XMq6QjKYfsixlUN7dufexSjauX
-	 CVYGabqkrb/JX3UjSiux/qbYyVvXaSegm76eTfVvxSbtReV2nuKqFgXY1ED6bQqOX3
-	 7e79SpGkw9oy6cy71vgBD4HZSWn8VIExDKweytVuwJjJy7MV6xqWfO4NXOgKcrsRG6
-	 +ETfXJB7uyMm5vYDf8UgcmAUBYTIRnXXoUTPl7W9LlyKEktC3LlB/BC32rmizH8FOS
-	 7qfVfz5MrOzJC52sf+zr69kJXozfUiFBPCisue5Uan17Y5zzoHKxVCo3aw8647L1nZ
-	 FfGebg0IHFWzQ==
-Date: Thu, 6 Aug 2026 18:05:38 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: gary@kernel.org, linux-next@vger.kernel.org, a.hindborg@kernel.org,
-	acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
-	boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
-	gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org,
-	tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev
-Subject: Re: [GIT PULL] pin-init changes for v7.3-rc1
-Message-ID: <ace18b0e-bda1-417b-adb2-2ba7c36f1c1c@sirena.org.uk>
-References: <20260805190012.2934907-1-gary@kernel.org>
- <20260806170101.67544-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Yqyfy1tY"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 301ACC2BCB9;
+	Thu,  6 Aug 2026 17:09:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
+	t=1786036195; bh=RuhGFQg/miapkcuhF9rScJiktA9Kr0LCS5Epiji8ajo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Yqyfy1tYjNbjY6Gmbrk7qy/zG9Dl936c6E73oY/5vVOJFQ0ZIf23qGnt5OWDWoiRA
+	 d8xNt0PS2mer4vsSUK1lPyv9TDYWpFggTyDKVnopbTYMEgc8T00WvGaXDCAWU6SrKe
+	 Q9ui4tcZr+H8PsBVuPZaAB4rezbVxX7ZkzQD1Yfg=
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05EF3C5AC7C;
+	Thu,  6 Aug 2026 17:09:55 +0000 (UTC)
+From: Alvin Sun <alvin.sun@linux.dev>
+Subject: [PATCH v3 0/8] drm/tyr: add debugfs support
+Date: Fri, 07 Aug 2026 01:07:22 +0800
+Message-Id: <20260807-tyr-debugfs-v2-v3-0-ff5595ac66ae@linux.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jSgN/m5QDQfwnWX8"
-Content-Disposition: inline
-In-Reply-To: <20260806170101.67544-1-ojeda@kernel.org>
-X-Cookie: Brain fried -- Core dumped
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEu/dGoC/12OywqDMBBFf0Wy7pQ8JNGu+h+lizxGDRQtiQZF/
+ PdGuygWZnMunMOsJGLwGMmtWEnA5KMf+gziUhDb6b5F8C4z4ZRLqgSFcQng0ExtEyFxkLSy2Cj
+ lJNYkS++AjZ+P4OOZufNxHMJy9BPb129KcAmmPNcYUKCqNNo5Vikm7y/fT/PVYSJ7KvGfrgT7/
+ yQfBY2a1WitqeuTvm3bB0wxIp/rAAAA
+X-Change-ID: 20260730-tyr-debugfs-v2-608cef77d6e9
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Greg Kroah-Hartman <gregkh@kernel.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Matthew Brost <matthew.brost@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ rust-for-linux@vger.kernel.org, driver-core@lists.linux.dev, 
+ dri-devel@lists.freedesktop.org, Alvin Sun <alvin.sun@linux.dev>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786036192; l=3511;
+ i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
+ bh=RuhGFQg/miapkcuhF9rScJiktA9Kr0LCS5Epiji8ajo=;
+ b=X5XkghnYmEdXOxcW0VBUwCwj7xAmV82mVDRAHfY3fbEbBTkooxL4P2Hu+pDHRz2Ki3LxhWX84
+ uRg1MouoXGwCgflzX6SsVcIYbQLAGi0vhGy2YS0apDzCXpe6bAlAuIO
+X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
+ auth_id=684
+
+Add debugfs support for the Tyr DRM driver.
+
+The series adds a SeqShow trait for seq_file-backed debugfs files, a
+debugfs_init callback on the DRM Driver trait, and a gpuvas debugfs
+file in Tyr exposing GPU VA space information.
+
+This is based on drm-rust-next and depends on:
+
+[PATCH v10 0/7] drm/tyr: firmware loading and MCU boot support
+  https://lore.kernel.org/r/20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com
+
+See the full dependency and commit history at [1].
+
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/11
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/merge_requests/59 [1]
+Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
+---
+Changes in v3:
+- Drop the DrmSeqShow adapter and use SeqShow directly, per Danilo's
+  feedback. Simplify the debugfs_init callback signature accordingly.
+- Redesign VmRegistry per Daniel's and Alice's feedback: move it to
+  vm.rs at the top level of the registration data, use Arc<VmRegistry>
+  for shared ownership, and separate register/unregister from Vm::new
+  and Vm::kill. Registration failure is non-fatal (dev_warn) since the
+  registry is a debugfs convenience.
+- Add VmRegistry::unregister to remove VMs on teardown, addressing
+  Alice's concern about the list going out of sync.
+- Drop the "hold device reference for open files" patch; the debugfs
+  proxy fops already ensure file operations cannot outlive
+  debugfs_remove().
+- Improve SAFETY comments and fix style issues identified during review.
+- Link to v2: https://lore.kernel.org/r/20260731-tyr-debugfs-v2-v2-0-aea19eccb996@linux.dev
+
+Changes in v2:
+- Reworked the debugfs implementation per feedback from Danilo on v1:
+  dropped the hazptr/revocable-based approach in favor of the DRM
+  debugfs_init callback and generic seq_file abstractions.
+- Fixed a UAF in drm_debugfs where a device could be unregistered while
+  a debugfs file remains open (drm_dev_get/put across file lifetime).
+- Link to v1: https://lore.kernel.org/r/20260326-b4-tyr-debugfs-v1-0-074badd18716@linux.dev
+
+---
+Alvin Sun (8):
+      rust: seq_file: add as_raw() method
+      rust: debugfs: add seq_file support
+      rust: debugfs: add ScopeRef for existing dentries
+      drm: move debugfs_init after dev->registered is set
+      rust: drm: add debugfs_init callback to Driver trait
+      rust: drm: gpuvm: add dump_gpuva_info to UniqueRefGpuVm
+      drm/tyr: track VMs in a registry
+      drm/tyr: add gpuvas debugfs file
+
+ drivers/gpu/drm/drm_debugfs.c   |  3 --
+ drivers/gpu/drm/drm_drv.c       |  5 +++
+ drivers/gpu/drm/tyr/debugfs.rs  | 20 ++++++++++
+ drivers/gpu/drm/tyr/driver.rs   | 16 +++++++-
+ drivers/gpu/drm/tyr/fw.rs       | 18 +++++++--
+ drivers/gpu/drm/tyr/tyr.rs      |  1 +
+ drivers/gpu/drm/tyr/vm.rs       | 33 ++++++++++++++++
+ rust/bindings/bindings_helper.h |  1 +
+ rust/kernel/debugfs.rs          | 84 ++++++++++++++++++++++++++++++++++++++++-
+ rust/kernel/debugfs/entry.rs    | 15 +++++++-
+ rust/kernel/debugfs/file_ops.rs | 60 +++++++++++++++++++++++++++++
+ rust/kernel/debugfs/traits.rs   | 11 ++++++
+ rust/kernel/drm/device.rs       | 41 +++++++++++++++++++-
+ rust/kernel/drm/driver.rs       | 11 ++++++
+ rust/kernel/drm/gpuvm/mod.rs    |  9 +++++
+ rust/kernel/seq_file.rs         |  6 +++
+ 16 files changed, 323 insertions(+), 11 deletions(-)
+---
+base-commit: 0ffc014cb2abfc79d161662b125e085b3e7107e7
+change-id: 20260730-tyr-debugfs-v2-608cef77d6e9
+
+Best regards,
+-- 
+Alvin Sun <alvin.sun@linux.dev>
 
 
---jSgN/m5QDQfwnWX8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Aug 06, 2026 at 07:01:01PM +0200, Miguel Ojeda wrote:
-
-> Thanks Gary -- we will need this on the merge commit in linux-next due
-> to the changes from driver-core-next (Cc'ing Mark):
-
-The merge commit for what?
-
->=20
-> diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
-> index c0cd24481ee3..a4927452016e 100644
-> --- a/rust/kernel/serdev.rs
-> +++ b/rust/kernel/serdev.rs
-> @@ -197,7 +197,7 @@ extern "C" fn probe_callback(sdev: *mut bindings::ser=
-dev_device) -> kernel::ffi:
->              // SAFETY:
->              // - `driver.as_mut_ptr()` is a valid pointer to uninitializ=
-ed data.
->              // - `private_data.driver` is pinned.
-> -            let result =3D unsafe { data.__pinned_init(driver.as_mut_ptr=
-()) };
-> +            let result =3D unsafe { pin_init::raw_try_init(driver.as_mut=
-_ptr(), data) };
->=20
->              *active =3D result.is_ok();
->=20
-> Cheers,
-> Miguel
-
---jSgN/m5QDQfwnWX8
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp0vuEACgkQJNaLcl1U
-h9DJVAf+PbjrZ35QnhyTpbI2uRfb2QUwsZGKmI8+7qjfJatSK3gFoRVmOP6h/rxG
-CKmFIZeVov4CRnf0CJr1uZF0JymPeXU6L0vbYFYZt7SJgr++jYkakvz9cGHYHHGU
-+p7QqMDXG9ynH7NDAHITJFX133RCPC6L5d3Ro2pY4t4G9k6bFWiMwFb9bbSsb8rb
-8a5LkxPsJaMmyI/A5Q2EEbEqXc6eTtiUZuQrzbEt1xZG8NKusZftPC2X5l1y4CAS
-xWm0k3N0GB3goE247syoj/r5SZ+oyV0RTruvvt3+/ZddCecI5S+hh6/oXzFnPo6a
-Sgn5M6QEYCh45BssPv8fG4/6buEgYg==
-=wn1A
------END PGP SIGNATURE-----
-
---jSgN/m5QDQfwnWX8--
