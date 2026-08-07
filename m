@@ -1,157 +1,280 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010005.outbound.protection.outlook.com [52.101.46.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F012B94;
-	Fri,  7 Aug 2026 19:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786131093; cv=fail; b=g/UBTeQWF5t0+k3LtQ0jce7kEM+4dOtYBcPeBwyFHok2OqJzMvPT5Uo+qKzYn4yB9eTAt3ehAn3UJGJF/g8Ux6cM7vvUog+m3C7OEpdAtqPInFoC0dYW3+r7MlbGkd534pejIEkNKgQj7t2JRT74e3ZtgiEzfrPFiQWi+T9czsY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786131093; c=relaxed/simple;
-	bh=x3R4ruAcYbCM6S1N5oeL3C9NVbhy/LE5+y9gyO9C/Ts=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DOpJhE2b55bnzL/QzPkJvUzqqXO3D0iSSjHaR/V8WAqc1G3i+aUA6VfLIk47HEBsko7NeFQu/nYc0K1Vgmn/G+O/zDMflL28M5+7FFKWG1ci55dNd/UWhr5S0LyZIFVw9xas01m1HuxuRzv/GkAUWYpeh+Z3oZ3A7h6WUvkmeVo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Hye5A0lX; arc=fail smtp.client-ip=52.101.46.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B7A395AD4;
+	Fri,  7 Aug 2026 20:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786134660; cv=none; b=ThKMrwxVGrjV81UhqZal93yNf687FSDlMa5nM2Zk26dKjKjgQlPtldtuSYGQzszGSagfOGU1m1vvZj1DCk8NZVu/yB2eNLq5S94Je9WYVhcYphdUWMrSu5Dz7nGWUAzTWREP+5d951hNz2yzEqbHfmQWdkztv3iA6A4UEw1aVwc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786134660; c=relaxed/simple;
+	bh=2RhuFsKN6eClD1RC3T8UCpobkmhVAFvGB9mXP6BU+tc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XwHKRoUpBE/M8sqBoX7MksCmGyF/hEJFtSO+sbC/nNEwbaoYqCkAxI4WBvvILOBpndRkNHJhlGz4aqS+soaYKXNkBLIzenGErEvX913oWa0AcLB0cMuAb99wPVs0JLyO/c98hy0Z6/Iyu6atZybm0oQQF/lnzG/Py2c6/cGzWpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3bVECdw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Hye5A0lX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IW9Dc3AqMHPXBFoWyWpT0t2fwB2monqFvBA7LAZbhfEbQy0sbrzvYx2TL69yFK0T2b3VE0IHsfNjAUuLw7gzmHsNMVX/vsBdJOqF+3jLhee0Oi1JNeHGUJQM8QwfkVLio0/Ht9+KUTOhNcFIRZ+XoNsd9iscQB/o05e76qp1UAyS3VBcfwi4TbKwyX8V1oq1MQTyUwGSMV8n8gtGDzK0O6ZMrBRV8DC7Z11ZGYrp7bt+xLkGVGEu3MhxnHAQ37Nk4S5+aCxLQdrjIv7Cepg34MR6qSUEgVg2K9tCa0B2i82pEG4bAGzeyfCcGHCkZCayKab+BBSLjvLB3913E4x/fw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Gmd0xwCLmpzS5UJQx2hHb9G8ToUqZSFrTj5sEp8s2Fo=;
- b=bF5LSHBEDnUYG8buDM5pkpvP/SIWNSWLBlB8DNHmG12juutOKocNsBN0FkFe4bYBjvgc/VsojuJrnTPA7qGRdWzc587AFuLCQDba78QVhzLkPN1GzmDkJIUb1ajH2KliYwrN1h/6hJ6DfzB993L8bua7QXMJSc2VK/tFFuev4Y6e6wihA8T2NYAJBeJsN8L9EGW01yvIzdzWPKmyCPO0borNen4dUH2aJ7kG2KyeozVsKc3PrRvkX44Tbg4Q3BswVrnosY/IwPG4J+tnAvkxwauULpuAaW4hIoV6EUCRcg0vFJsb7AHoR83I87tQ1A+iP+k5LEYdC1m1yJtOcWZYDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Gmd0xwCLmpzS5UJQx2hHb9G8ToUqZSFrTj5sEp8s2Fo=;
- b=Hye5A0lXkjqlYJohHYldTvJ5DAazyYrNR/+YHbhD7QCx7l+VhDGRG4QZVP/3+3j2h3msF2SYDcxd49F/ISf25zgcE9zMl+lPIwSTtIOXJAiojWZfErBLmF8DpMKXGZiUCmrygRKXay3soo+JoOBa5z5cWI52ICAAdQZpK0e0lS+35GwUShr+aNWJR8vP5mb1syxjXX6G3pJn27ZnILccaDQoo5wWdm0PxlHmT6/rJ6ea9T9vAnatDEy0F1hJVvfQy2TNtkCws50PwZ8UZPFFdXY2/aCAukYnh8jPPLLHXb3mri3AHl1Mw9cTMPqtIOFXVb33apsT10vHEQUb3xmXYg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- BY5PR12MB4196.namprd12.prod.outlook.com (2603:10b6:a03:205::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.24; Fri, 7 Aug
- 2026 19:31:28 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%4]) with mapi id 15.21.0292.022; Fri, 7 Aug 2026
- 19:31:28 +0000
-Message-ID: <4b889de5-418a-4f36-bfe8-f48d2f84ba60@nvidia.com>
-Date: Fri, 7 Aug 2026 12:31:26 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] rust: workqueue: add Work::cancel_work_sync()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: tj@kernel.org, jiangshanlai@gmail.com, aliceryhl@google.com,
- ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- tmgross@umich.edu, daniel.almeida@collabora.com, tamird@kernel.org,
- acourbot@nvidia.com, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-References: <20260804195248.665636-1-dakr@kernel.org>
- <20260804195248.665636-7-dakr@kernel.org>
- <c5fae595-2407-42cf-8040-384699df537d@nvidia.com>
- <DKIOSPRHO8V1.286KQFRH751TE@kernel.org>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <DKIOSPRHO8V1.286KQFRH751TE@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0165.namprd03.prod.outlook.com
- (2603:10b6:a03:338::20) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3bVECdw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2951F000E9;
+	Fri,  7 Aug 2026 20:30:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786134657;
+	bh=gpq8pVcKoYWI6ShJ4Tw663ZVtPNrDJrx2olDMJJFU+s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Z3bVECdwExlUJG4FrdRif9eDCRvs1Gue/J2+8PLKNUzWwdLmzSJp7xAXyvF8m1tFw
+	 364rjH51xfiOjfmBnoEGYgM7pCS0rq2BXoTbOIfL8jOIldpBUntPw4qUX51DdHOoZ0
+	 noCPpmnytuIEPDxPY5OotO57hLfGoqqksmuojSUkUtJFn2rj51/N0AZ2mlxxgnuLh4
+	 OLq3ixnA4ruA/UB1NFjFI1BniDX7ivGvInPGrfmxaMaM4mWCcnYfMFW5N3POIBsYuU
+	 N2wSTMIyXvmksU7SPHEv283XIMOOOW2B0dOGmCmYHEenawvOlazuOR4Y936VzW9tYA
+	 WXAdW0MkgZcXw==
+Date: Fri, 7 Aug 2026 17:30:53 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alan Maguire <alan.maguire@oracle.com>, Jiri Olsa <jolsa@kernel.org>,
+	Clark Williams <williams@redhat.com>, dwarves@vger.kernel.org,
+	bpf@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Mark Wieelard <mjw@redhat.com>,
+	rust-for-linux <rust-for-linux@vger.kernel.org>,
+	Gary Guo <gary@garyguo.net>
+Subject: Re: [PATCHES 00/12] pahole: Support more rust tags and references to
+ dwz alternate debug files
+Message-ID: <anZAfc7sikAx8ikS@x1>
+References: <20260731193102.110693-1-acme@kernel.org>
+ <18b557a8-e1ca-46cf-b03f-5e68490c9229@oracle.com>
+ <anXTAComw6XAvnXU@x1>
+ <CANiq72nHWY638h4mxJCfh_HFtzhwFEPyo6a-7k_3CxZsRV+Jiw@mail.gmail.com>
+ <anYpwcDBtkzE3WIt@x1>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|BY5PR12MB4196:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c91e0fb-20c2-4fb6-3b3e-08def4ba7a2b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|22082099003|18002099003|10067099003|4143699003|6133799003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	18P3qKYiGfSaVXR9hbcIQiu0pQiYyhIPKnY1HUp38wCYKh5157W7FaSB+XdBvFfRFtx+RbF0rJ0bS5AvDmGslNg1tjh7M19yraLYJSXcDNyPrDG+FRPRQzgWt2eD2aaffjgpkRdxaEmXVlKgVSazsoo2RxQuHg2jkydv58RNuBtBWLZ5UF7EtOJl6gAooltpsGak/Bjr5v5QXGBrK99p6TKXzXIP0rD8YWAyjIwThF3d2nBN3+t8jxQ5CkTGaHd6EW88vOXO9q59YGwAZKAEl7V2avXWPiTkGyyI4wa/fl9TbE/s9XjIy9ZZuBImLyxeOKbKP8ZqNUA9JC8kLiU7VDisDZDkm/L+Cnh03Nv5Tmzry5cdBqU3jtkZyMnmvF/lhFZkDVbYs9Bf7a82kZw9XFpgLjE62M3TuoFE5cJ82h+3TUGu/jWOcGiGt07QWRy9iIDaGsW2svcuzznYDKiqtZ7inIMGYrC01qOaOsRVmw1p0OQVfUlEXMTKbuAImN/F5ZOiy2UURZtpQ1AFMSJ/G2mchGozOQqk10EcBSCCufR4vD+lxBUL0YuEUgjFuhYxVk6x1NqOAa4dfx5fsoty9DjmrkhP3M8VjRsKJ3arj6TbevpgrTYYBiK4UeivMe4gJs29rvga85d4DUhxXbFEKVymkovaetVpVbP/eqdnqW4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(22082099003)(18002099003)(10067099003)(4143699003)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RTBxRFJob3QvUTBZeTdidGwxSHh3TzJRNWt0Z2dVa1VaT3NzekV3c2FqTms3?=
- =?utf-8?B?ZW5SS01DTGtYTmxNUnBmWjBROVh0dGJ3N1Y0Nzh1R3owcWJkck5DZXBhTVJT?=
- =?utf-8?B?a25EWHorMkFPd2M2UnpwV04xakthb2I5TmVrVjNvVWFRM1VaUFdTNlhLL3dv?=
- =?utf-8?B?YTJXdG1wQUR1WnB4NjRHS0dvejJ4WmpKZzZOcDVOaTdnREQzQzg4TURCTll2?=
- =?utf-8?B?T0prV2VOWXVIV29DQ0JzM1J0UzBrbk9qWEJQNHVxaFJwMFlHNGhhWGs5UWMy?=
- =?utf-8?B?ZTN4N1RxZEZBaFl3QVV0cW11aXRrSiszRmFVbXh3Z1RzcHZyQmlWODA0dng4?=
- =?utf-8?B?RmRrdytnY0xIMXVDSHhhdE9oTFRUNXNCS0Mvc0NGTVZSQk5ieGVJRWF0Uk5U?=
- =?utf-8?B?R3lBempRby9tMHEzQStzdEhVVjBFekQyVzdNNmR1YTN6dUN1NFVvclZxbGxZ?=
- =?utf-8?B?N2lWeVp5UGNHMlBONWRPRkZQK2pPYmo4Nnl5REszR29oSkhYS2lmYitmYWtt?=
- =?utf-8?B?YTg0bFMxTGVhMkVGZmtUOVpwOWtHaC9wMWRja2l6bGVTL0JjRThEN0ZPU2pN?=
- =?utf-8?B?Nzd2Sm5neFhrOTY1aE1JWGhFSnNqWGo0MTBFSGFQR1RkdjFRL2NLWUtLQXlz?=
- =?utf-8?B?TGlKanFLSFNpZmVZZlgzMFpRUktYUmlwTkNMVGpVSlJHN28xL1lXY0dDZ00v?=
- =?utf-8?B?a2FiSk9rT0JKNXVUeEFDQnRLZGhac2cyLy9HVk1TQnBMKzNKZVZ2REtWai9i?=
- =?utf-8?B?QXAxZm02VmlNbVF3NndteEJiTVRnUXFQM2ozN0V5YnRweVVoNVdnK3BmTDVj?=
- =?utf-8?B?a2N1R1dEUjZZK29mYWtOenMxUGFNOUplUEIyN2FJRldZbEt0VEx1TEVUQ1Ur?=
- =?utf-8?B?ZXc4NllQalpzT2Jybk9OeTQ1bDQrSm9iUXBJQ1dmaytTbUtiTERPaEEwMTBR?=
- =?utf-8?B?MDE1R2JVN3d4L1Z3NVJPeEYwYys1ekJmRWx2dHFhV0NEWWpHNjJlQVNZV2w1?=
- =?utf-8?B?QzFrN0htTW1JMUNRWnJSMXJxdGVkL3lWQkhsWjhRQkRYRVFWT0QvUjBjU091?=
- =?utf-8?B?SWRJdWlFZno1M0wydDBqamtmUmZXTThLd2hrNURUZmk4TXN3anc1aFNKemM5?=
- =?utf-8?B?MDM2WGR2c1RsYjFXNk5nZmt6YjFHNzRoT0pCNm13dGU2Yk1nbVpUNFdQbkN0?=
- =?utf-8?B?SVl6TEovUm5tNXRTVUtrQVNFalpGbElOeW5lanpFM1ExM2ZYTTlhZU1SbEpO?=
- =?utf-8?B?NUtjYWpiTnkvTTQ4Z2dGVURKZS9lT2Mya1FubTNpdit6bUVXMWFIemg3SGJK?=
- =?utf-8?B?VWgyNWIrVEp1SWdUNDhabTlrUlVoVlpYTVh4YlA3a1RzM3BtMHAvTVJRQzdO?=
- =?utf-8?B?QjZvZkMwYUF6enEwQklna2VOWW5RY3RlRlpkNXNtT1paam9OUEUzK01yMGJr?=
- =?utf-8?B?Rk5Ob2VGUm13cWt4U255U0YzSmx1VStVQ1BiWkVra1M5blJZL2x6SmE3VlB2?=
- =?utf-8?B?MkI4OExpY2xIY0pSaFdBNDN0dmJrdFBMcmpPT1pmcTk2eXFGT3F6WmtadzVI?=
- =?utf-8?B?d0pVR0pCemk1YTFtZC83MXZNRXJHY0JWUHRmQlhLL0o4Z3ovSXpOeDBtbFd6?=
- =?utf-8?B?N2JWRkZGTjEwYmM5bnorN2FGTEVzemlIem8vdWhGQzQ0eGpJaGM2VzF3SXhv?=
- =?utf-8?B?OEhVSEFOTkx0MFgyb3JhcHlLQjNNcHo0Vjh0c3JwcDlsNEFvOHV1dGU4WEhj?=
- =?utf-8?B?T3Ftc2JxUE9KdXJWVmM5SjluMWRDZ2x5RVp4R0Y2QkhvT0MrSGh3QzFtS1pq?=
- =?utf-8?B?dUprVVJSQmdaVzl5U0N4TDY5ODJlV0gxeGdMYzU1aXhiQU9UaksyNlBJaW5t?=
- =?utf-8?B?MUI1djJzbFBJZWE5QmNnYklVek9MekJjTnRvL2tFSm1tblVFcmQvdUlISUQv?=
- =?utf-8?B?S25wTlNhWVozbVoxazhSQWlDZElIWFl1THhON1hHbVNKOEJkWHRIMzNhRTJB?=
- =?utf-8?B?SVBSdlIxVm5Jck9YWEIzMnhyREVCSS9WaDRzQ1dIa0hJTUppV0RmclphY0FQ?=
- =?utf-8?B?dXYzY1h3ckovQnlXbDFua1FaR0FWVnRrY3BLb1FjbGZzQnB4dklHb3lNNEhW?=
- =?utf-8?B?U3Q3NXhpSzdUUGdLdXVjNnBnYkJKZ0MvQkhiTDF4SmVLeUQzd3FwTURROWJ5?=
- =?utf-8?B?MXUxaFU3djhmUHd0NnRqVEQvTXMzaVNmSlVORldSekNaNCsyYnZwV0lEL2x4?=
- =?utf-8?B?bUhlYXZ0Mnc4NzdNV0c3SWQycExDYmg2d1FtdEhnRG9qeGJhSk4xS2ZadGxp?=
- =?utf-8?B?eGdsVklQdGI1a3NDNjZZRmxWWjVhVnVTMnpKMXFDbjZCcmFubFV2dz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c91e0fb-20c2-4fb6-3b3e-08def4ba7a2b
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 19:31:28.6136
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /c6rt47O0CobRsHt3ABWHoOMPrAESZzVJbCVdLv0gs23J/DVKiH2CBCCO5QPz1geOLfTXGN7TANlAZ3LZ4bNJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4196
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <anYpwcDBtkzE3WIt@x1>
 
-On 8/7/26 4:49 AM, Danilo Krummrich wrote:
-> On Fri Aug 7, 2026 at 3:37 AM CEST, John Hubbard wrote:
->> This seems to expose a way for driver writers to leak work items,
->> doesn't it?
-> 
-> Yes, I forgot about this for a second; this should be on ScopedWork only (at
-> least without further effort to make it work properly for Work too).
-> 
-> Since you explicitly mention "driver writers", note that unbounded work
-> shouldn't really have any (valid) use-cases within drivers. So drivers should
-> either use ScopedQueue or ScopedWork.
+On Fri, Aug 07, 2026 at 03:53:53PM -0300, Arnaldo Carvalho de Melo wrote:
+> On Fri, Aug 07, 2026 at 07:34:10PM +0200, Miguel Ojeda wrote:
+> > On Fri, Aug 7, 2026 at 2:43 PM Arnaldo Carvalho de Melo <acme@kernel.org> wrote:
+> > > Adding Miguel to the CC list, Miguel we're trying to improve BTF support
+> > > for Rust, this series handles multiple enabling fixes/improvements that
+> > > gets us to the next level, i.e. we can load everything from DWARF, now
 
-Yes, agreed. Perhaps I shouldn't have used "drivers" as the example. I was just
-trying to show that this exposes an API that will leak refcounts.
+> > Thanks for the Cc! Cc'ing rust-for-linux and Gary.
+
+> > > its time to try to map it to existing BTF kinds and propose BTF
+> > > extensions when we can't use existing encodings.
+
+> > Sounds cool :)
+
+> > > Inferring from "does any member have a niche layout" means
+> > > reverse-engineering rustc's layout algorithm, which is explicitly
+> > > unstable and unspecified. It'd break silently on a compiler bump, with
+> > > no way to tell from the DWARF that you got it wrong.
+
+> > Yeah, the LLM is correct here: the Rust compiler gives very few
+> > guarantees for the default `repr`, i.e. in common cases it has the
+> > freedom to use whatever layout it wants (i.e. even for essentially
+> > equivalent types in the same compilation unit) -- the official docs
+> > are at:
+
+> >   https://doc.rust-lang.org/reference/type-layout.html
+
+> > >     u8                  __discriminant;      /*  0  1 */
+
+> > For the niche cases like `Option<NonZero<u32>>`, what would be printed?
+ 
+> Can you think about one such niche case that is present in the kernel
+> rust .o files right now? I tried finding the `Option<NonZero<u32>>` to
+> look at its DWARF but couldn't find one.
+
+Good, so I went ahead and built the exact case, together with the
+explicit `Option<u32>` one, so we can compare them.  The source,
+containing the struct I dump below:
+
+  use std::num::NonZeroU32;
+
+  #[no_mangle]
+  pub struct Container {
+  	pub a: Option<NonZeroU32>,  // niche: 4 bytes, tag == payload
+  	pub b: Option<u32>,        // explicit: tag at 0, payload at 4
+  	pub c: Option<i32>,
+  }
+
+  #[no_mangle]
+  pub fn consume(c: Container) -> u32 {
+  	c.a.map(|x| x.get()).unwrap_or(0) + c.b.unwrap_or(0)
+  }
+
+  fn main() {
+  	let c = Container { a: None, b: Some(3), c: Some(-1) };
+  	let _ = consume(c);
+  }
+
+Compile (rustc 1.93.x here, don't link, just get an object file,
+otherwise you'll debug 1M+ lines of std DWARF and the type will be
+there but buried):
+
+  acme@number:~/git/pahole$ rustc --edition 2021 --emit=obj -C debuginfo=2 \
+  				  option_non_zero.rs -o option_non_zero.o
+
+then dump the DWARF, note that the DW_AT_name has the expanded generic,
+i.e. 'Option<core::num::nonzero::NonZero<u32>>', the NonZeroU32 alias
+seems to be expanded at compile time and, thus, doesn't appear in DWARF:
+
+  acme@number:~/git/pahole$ readelf --debug-dump=info option_non_zero.o \
+  				  | grep -n 'nonzero::NonZero<u32>'
+				  acme@number:~$ readelf --debug-dump=info option_non_zero.o | grep -n 'nonzero::NonZero<u32>'
+  295: <2ca>   DW_AT_name  : (indirect string, offset: 0x213): Option<core::num::nonzero::NonZero<u32>>
+  348: <32e>   DW_AT_name  : (indirect string, offset: 0x2ef): map<core::num::nonzero::NonZero<u32>, u32, option_non_zero::consume::{closure_env#0}>
+  acme@number:~$
+
+and you can see the niche case layout, size 4, the discriminant member
+is the payload itself, same offset, same size, and the Some variant
+doesn't even get a DW_AT_discr_value, it is just the default, so the
+answer: nothing separate to print, the tag IS the payload.
+
+Here is the full DIE for the niche case:
+
+acme@number:~$ readelf --debug-dump=info option_non_zero.o | grep -B1 -A25 'Option<core::num::nonzero::NonZero<u32>>'
+ <3><2c9>: Abbrev Number: 19 (DW_TAG_structure_type)
+    <2ca>   DW_AT_name        : (indirect string, offset: 0x213): Option<core::num::nonzero::NonZero<u32>>
+    <2ce>   DW_AT_byte_size   : 4
+    <2cf>   DW_AT_accessibility: 1	(public)
+    <2d0>   DW_AT_alignment   : 4
+ <4><2d1>: Abbrev Number: 26 (DW_TAG_variant_part)
+    <2d2>   DW_AT_discr       : <0x2d6>
+ <5><2d6>: Abbrev Number: 27 (DW_TAG_member)
+    <2d7>   DW_AT_type        : <0x5b2>
+    <2db>   DW_AT_alignment   : 4
+    <2dc>   DW_AT_data_member_location: 0
+    <2dd>   DW_AT_artificial  : 1
+ <5><2dd>: Abbrev Number: 28 (DW_TAG_variant)
+    <2de>   DW_AT_discr_value : 0
+ <6><2df>: Abbrev Number: 4 (DW_TAG_member)
+    <2e0>   DW_AT_name        : (indirect string, offset: 0x1ce): None
+    <2e4>   DW_AT_type        : <0x2f9>
+    <2e8>   DW_AT_alignment   : 4
+    <2e9>   DW_AT_data_member_location: 0
+ <6><2ea>: Abbrev Number: 0
+ <5><2eb>: Abbrev Number: 29 (DW_TAG_variant)
+ <6><2ec>: Abbrev Number: 4 (DW_TAG_member)
+    <2ed>   DW_AT_name        : (indirect string, offset: 0x20e): Some
+    <2f1>   DW_AT_type        : <0x30b>
+    <2f5>   DW_AT_alignment   : 4
+    <2f6>   DW_AT_data_member_location: 0
+ <6><2f7>: Abbrev Number: 0
+acme@number:~$
+
+On the explicit `Option<u32>` case the picture is different, the tag is
+a real member at offset 0 with 4 bytes and Some.__0 moved to offset 4:
+
+acme@number:~$ readelf --debug-dump=info option_non_zero.o | grep -B1 -A25 'Option<u32>'
+ <3><360>: Abbrev Number: 19 (DW_TAG_structure_type)
+    <361>   DW_AT_name        : (indirect string, offset: 0x345): Option<u32>
+    <365>   DW_AT_byte_size   : 8
+    <366>   DW_AT_accessibility: 1	(public)
+    <367>   DW_AT_alignment   : 4
+ <4><368>: Abbrev Number: 26 (DW_TAG_variant_part)
+    <369>   DW_AT_discr       : <0x36d>
+ <5><36d>: Abbrev Number: 27 (DW_TAG_member)
+    <36e>   DW_AT_type        : <0x5b2>
+    <372>   DW_AT_alignment   : 4
+    <373>   DW_AT_data_member_location: 0
+    <374>   DW_AT_artificial  : 1
+ <5><374>: Abbrev Number: 28 (DW_TAG_variant)
+    <375>   DW_AT_discr_value : 0
+ <6><376>: Abbrev Number: 4 (DW_TAG_member)
+    <377>   DW_AT_name        : (indirect string, offset: 0x1ce): None
+    <37b>   DW_AT_type        : <0x391>
+    <37f>   DW_AT_alignment   : 4
+    <380>   DW_AT_data_member_location: 0
+ <6><381>: Abbrev Number: 0
+ <5><382>: Abbrev Number: 28 (DW_TAG_variant)
+    <383>   DW_AT_discr_value : 1
+ <6><384>: Abbrev Number: 4 (DW_TAG_member)
+    <385>   DW_AT_name        : (indirect string, offset: 0x20e): Some
+    <389>   DW_AT_type        : <0x3a3>
+    <38d>   DW_AT_alignment   : 4
+    <38e>   DW_AT_data_member_location: 0
+acme@number:~$
+
+So this is the one where we want a synthetic __discriminant member.
+
+And what we do today for the niche one, with current pahole (built from
+this series):
+
+acme@number:~$ pahole -C 'Option<core::num::nonzero::NonZero<u32>>' option_non_zero.o
+struct Option<core::num::nonzero::NonZero<u32>> {
+	struct None {
+
+		/* size: 4, cachelines: 1, members: 0 */
+		/* padding: 4 */
+		/* last cacheline: 4 bytes */
+	} __attribute__((__aligned__(4)));
+
+	struct Some {
+	public:
+
+		struct NonZero<u32>        __0 __attribute__((__aligned__(4))); /*     0     4 */
+
+		/* size: 4, cachelines: 1, members: 1 */
+		/* forced alignments: 1 */
+		/* last cacheline: 4 bytes */
+	} __attribute__((__aligned__(4)));
+
+	struct Option<u32> map<core::num::nonzero::NonZero<u32>, u32, option_non_zero::consume::{closure_env#0}>(struct Option<core::num::nonzero::NonZero<u32>>, struct {closure_env#0});
 
 
-thanks,
--- 
-John Hubbard
+	/* size: 4, cachelines: 1, members: 0 */
+	/* padding: 4 */
+	/* last cacheline: 4 bytes */
+} __attribute__((__aligned__(4)));
 
+acme@number:~$
+
+and on the BTF side, also with this series:
+
+acme@number:~$ pahole --btf_encode option_non_zero.o
+acme@number:~$ pahole -F btf -C 'Option<core::num::nonzero::NonZero<u32>>' option_non_zero.o
+union Option<core::num::nonzero::NonZero<u32>> {
+	struct None                None;               /*     0     4 */
+	struct Some                Some;               /*     0     4 */
+};
+
+acme@number:~$ pahole --expand_types -F btf -C 'Option<core::num::nonzero::NonZero<u32>>' option_non_zero.o
+union Option<core::num::nonzero::NonZero<u32>> {
+	struct None {
+	} __attribute__((__aligned__(8))) None;                           /*     0     4 */
+	struct Some {
+		struct NonZero<u32> {
+			struct NonZeroU32Inner {
+				u32 __0;                                                 /*     0     4 */
+			} __0; /*     0     4 */
+		} __0; /*     0     4 */
+	} Some; /*     0     4 */
+};
+
+acme@number:~$
+
+matches the real in-memory layout, size 4, no extra member.
+
+So for the future __discriminant work the rule should be: only emit it
+when its location doesn't overlap with the payload, i.e. on the explicit
+form; on the niche that field is the data itself, adding one would mean
+two members covering the same bytes, and we'd be lying about the layout.
+
+I'll add a test with both forms, pinning this behavior, so we don't
+regress it, and then, when we improve support for the synthetic
+discriminants, we can update it.
+
+And yes, I used OpenCode + DeepSeek to iterate multiple times and
+manually checked everything before hitting send, it helps me a lot and I
+hope that if I missed something, you will correct me so that we can make
+progress.
+
+Regards,
+
+- Arnaldo
