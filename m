@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DF41A238F
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 18:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645BE339B3D;
+	Fri,  7 Aug 2026 18:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786126309; cv=none; b=Ra+QulWBFBNF5LpnqGPuBEJOY5e8nREYkxdIenDZw6v4ZWtR50PDPhYdhmlFWtw9vtbeYs/q9hViCurucSWXwE2r3ohRUK0j5huyYIpYz7UPBe1HwmVgSt2dSBOHaDmNixwyzqeztPp7I8Sty3FWqgFMQl0QmDixsmQizDlW7hQ=
+	t=1786127723; cv=none; b=iE3mITlYLAmt2eSa7WZhexOKREXkVYz4a0HEIeTvR4Ro41z7wUSMiyl/a2zHAIZJ1jtXgmi/33dN7mh6Nuod90qFoYkB+dkcF7QBzDdeuvSRA1I4HwEZnMhsn8bJkC2cX0QD3nsLUwR14OAErb0Y7w9fNo72Yubz6zArcvNaE14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786126309; c=relaxed/simple;
-	bh=IORVI3U9Mau+jHI9tACoPuqKEBH1SLnxM0o6c8BfTrc=;
+	s=arc-20240116; t=1786127723; c=relaxed/simple;
+	bh=QSERNNd62lhKT68oqWG6jjteymLiUFg/TjNfnRSbhh8=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=Hmg8UJPC98ynl4pQ5cL7HQ3I8+lODJ3ZuJbR9yKfw+840LM44XJmWsXXb0BIphtPHatvcQuAK5/hpdwhPg8OrfKNaeCnnlKPqHT3geIu4ahpCZLMQTSldXN/BEIWTZOkuSnxuKK2PoTa+J1VY31fVT46GQcxumaE6xhBSI8H9tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKBkkJRj; arc=none smtp.client-ip=100.103.45.18
+	 References:In-Reply-To; b=hpWc1hVb3t9/fVltAcOrTDSPbC7mAyZ2M3c8nW78saVsv314oCz8/0cgWi7+lGEE36Rcc17ON1NidCrBAHaTuCsPivOefkfJNqhNXzMgBClfD737p/PdtUa+cVluSObr7vvNFDltj+sXkZk1ZZEwXQcne6Q8JAsV3h++fE7z4CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhyyGikY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKBkkJRj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1450D1F000E9;
-	Fri,  7 Aug 2026 18:11:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhyyGikY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866031F00A3A;
+	Fri,  7 Aug 2026 18:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786126308;
-	bh=Iuu8CTfmyvW4mOZPSBJvHQ5eAUXm+YVdu9qWa7f9fA8=;
+	s=k20260515; t=1786127722;
+	bh=vCNgfMN32KTg3vZXHCq9fkDSRPOTiciFR5mps/f3QSs=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=mKBkkJRjKCIJIAtT1wD/7ZMpkGG/iuv/QzkmE8u2cVCPHT5Qp1sbLKG4y4A+/Gmg2
-	 UkWlbHn5jaL2eW9P8rh02NWXZHEMLBPZfZvSFtQ4kAqt0nbqA1N5fyQHpQsAa6D1i6
-	 1x9O2TUq4uKo09xasB+ftIO1GLttJKjjyd2irOM28P2wx8jneXdFTHvUhgSgoAJ/lc
-	 HM4ap1aDzKjbz7ns4yHhduu4C7raLkm/w2B9vjUeakbq4H45PhXByUvqCBmNoxk5OM
-	 XxrCE6FZZTmg1t85DkX1NGk1OYjLmEscGf2HdKMFnHWOLYkNJUWFf8LUfNWtp9fVUK
-	 A7Vt39PfbscnQ==
+	b=BhyyGikYMJf3r3lxz8ut1bGWyX3JgUcNLloxYe/CM/JhPa+UEm2WyRkjvWkjRTGGK
+	 hS11shqGm2ltrkJhhEzSp4cv/5S/GgdzTi+AnHy65O5C1Ulal9/t0d5Em2hRYGYkjS
+	 3z6NH5AmuNpp+DdYNh000Sp+d5bPPNJfUXIiSuIDENpfZnL77JyEuXV1JWXkd6oenW
+	 FC/VFgEdxk50V/lSXUSM94mDXGOTRIY1+lUHqPP/m5QcQAtHnpPyXvWlhGdtVMALIr
+	 T0X+lCNB5WV4ler2ST3IhqCy5YlSnz3fHoxrjAWnYGhqAj4Kuq5D3ySuuADZatOF5l
+	 KYBerTp8PNJbA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,49 +34,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 07 Aug 2026 20:11:43 +0200
-Message-Id: <DKIWXK4YSI1Z.3O2QSQ04538XI@kernel.org>
-Subject: Re: [PATCH] rust: bitfield: always inline test conversions
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
- <yury.norov@gmail.com>, <rust-for-linux@vger.kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "Antoni Boucher" <bouanto@zoho.com>
-To: "Miguel Ojeda" <ojeda@kernel.org>
+Date: Fri, 07 Aug 2026 20:35:15 +0200
+Message-Id: <DKIXFKSP5V1U.12MPGENL0S0N1@kernel.org>
+Subject: Re: [PATCH v2 6/6] rust: workqueue: add ScopedWork for non-'static
+ work items
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <driver-core@lists.linux.dev>
+To: <tj@kernel.org>, <jiangshanlai@gmail.com>, <aliceryhl@google.com>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <acourbot@nvidia.com>, <work@onurozkan.dev>, <jhubbard@nvidia.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260807175012.142083-1-ojeda@kernel.org>
-In-Reply-To: <20260807175012.142083-1-ojeda@kernel.org>
+References: <20260807165252.3849875-1-dakr@kernel.org>
+ <20260807165252.3849875-7-dakr@kernel.org>
+In-Reply-To: <20260807165252.3849875-7-dakr@kernel.org>
 
-On Fri Aug 7, 2026 at 7:50 PM CEST, Miguel Ojeda wrote:
-> From: Antoni Boucher <bouanto@zoho.com>
->
-> When using the Rust GCC backend (i.e. `rustc_codegen_gcc`), GCC does not
-> inline enough these `Bounded::from_expr` calls:
->
->     /usr/bin/x86_64-linux-gnu-ld.bfd: rust/kernel.o: in function `<kernel=
-::num::bounded::Bounded<u16, 2> as core::convert::From<kernel::bitfield::te=
-sts::Priority>>::from':
->     fake.c:(.text.unlikely+0x7be): undefined reference to `rust_build_err=
-or'
->
->     /usr/bin/x86_64-linux-gnu-ld.bfd: rust/kernel.o: in function `<kernel=
-::num::bounded::Bounded<u64, 4> as core::convert::From<kernel::bitfield::te=
-sts::MemoryType>>::from':
->     fake.c:(.text.unlikely+0x90d): undefined reference to `rust_build_err=
-or'
->
-> Thus, similar to commit bc197e24a3ac ("rust: num: bounded: Always inline
-> fits_within and from_expr"), mark them as `#[inline(always)]`.
->
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Antoni Boucher <bouanto@zoho.com>
-> [ Reworded to add the error and to follow our usual style and sent on
->   behalf of Antoni, who found this during his work to support Rust for
->   Linux with the GCC backend, i.e. with `rustc_codegen_gcc`.- Miguel ]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Fri Aug 7, 2026 at 6:52 PM CEST, Danilo Krummrich wrote:
+> +#[pinned_drop]
+> +impl<T: ScopedWorkItem> PinnedDrop for ScopedWork<T> {
+> +    #[inline]
+> +    fn drop(self: Pin<&mut Self>) {
+> +        let inner =3D self.inner.get();
+> +
+> +        // SAFETY: `inner` points to a valid `ScopedWorkRef`. After `can=
+cel_work_sync()` returns,
+> +        // the work function is guaranteed to not be running.
+> +        unsafe { bindings::cancel_work_sync(Work::raw_get(&raw const (*i=
+nner).work)) };
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+	// SAFETY: `inner` is valid and no longer accessed by the work function.
+	unsafe { core::ptr::drop_in_place(inner) };
+
+> +    }
+> +}
