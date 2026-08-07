@@ -1,158 +1,123 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FC63F1ACE
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 22:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786141170; cv=pass; b=CGC7kb41Nu9+j8AgNA95HH+WCU6pUebCJPMMT9oEGieWKXgTF8DFrDxXCC2xT1g9xkFY7tySfQddChbtOMUqNA8aKrcfQTC7yabwhaq/tSR5+04eYyU27TXpvD9Z65QLTdpn9xXagtvpioJcZvUAIUoQXJ4EeA6npY0APXJ6Q+M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786141170; c=relaxed/simple;
-	bh=e8Y1Xf7NJBWvn3GcoXqfY0ReAr4Anku3u7aZBDyqicM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=scP3BsYjcLB0RINlT9kEGiH5NaU9/jLd3r3UiwJNmLH84YaCleFQPIYiRdbNWhXPFiJkFNlos+4MyEjJWA8Sp2FwYf8/Eczge4evOBb6G6ZVAhcLqQlxveQcAD9eZ9AfJFxmkyUpW54XNslqZIdZyPIVUz3xSTCF/OmHIUXmAC8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VaX76M3u; arc=pass smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F6132AABA;
+	Fri,  7 Aug 2026 22:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786142405; cv=none; b=LEDilFzX2OcWp7+TjSwY1UdGbr44/CJTnd0FKdHU+21p9R0ceLnKTpZnbAHSBQqZP66/6Fcb1ZTcEgUUn+XovJxLoZIgdB38XTditdlTzBVKgdAeCK3fpllTvVLl6qjC4ytYulTyM6dLA+Nvmxb68u2FjpWTRwVWeVHwiPPd43Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786142405; c=relaxed/simple;
+	bh=P+2ZA23tDwSyLp2EWalS3nmjKSjmfX9yAdWDjwmBRXo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=LeUaMpsB3MwD5JvuSZqiAzIGvrjL7yES8T/IcqTqlXuYC2OvDm/JjQRRIBhxas+ZFbA+UieNbb8ra4GrYrtX5BtswLvAgy7EPzVifGF+A7KHZQr+CFIWSjMC0wur7XxyokbwH6p9ZCXScga5mf14Pwj2zODTMdy0vTmX7RswqRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEql1828; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VaX76M3u"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d027b7c8easo236355ad.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Aug 2026 15:19:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786141169; cv=none;
-        d=google.com; s=arc-20260327;
-        b=EPmpcS3T3WZA4rtQgX7+KtPqjIKD+HYfb7xTWh2kNtf3WMsqcNm4nG9S7QJ8PQiX7b
-         vBzkv6qQ3q2xofUOgDPaO0JEwXSm5S5h3n1Gq2EAsK6nNcTc4yapY8vFZoKQwcp9Zw51
-         ISdPuoanYpBsRu18Qmc2yw0NSs08LQB556ZokRIFOWIfEQ7pJPtUCYCZ+k4rQteuxt1y
-         eKAH6J7nMnQOOEyA1Z1EfwMaNk5cH6GLFItfjvE/Iyy19wAfl32zELRIDsxfPzRHPB0d
-         LLcQrkoBzeAsx1BIHu3GUvxolzWgB2agTFdSrPe2EIfNewFRIdOhZMRbABzXyfbZiZDX
-         e/Qw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9kg8y3o57QGeppntQHDvu4FgsLPM5YrqCaAU724RNaQ=;
-        fh=kw/mMUumqmCYut5TStYENgJuQ5W9InaSEtVUpEUsrNE=;
-        b=f6a4SJPuOmCQ/GxT5s66Mslmv4jMhd74UtLNLETfNcBE9QQkpEHiDWEb9x9mY+0tWX
-         1o9BzQZHRUsJ5ihhA6BP5xh35+Ayc69htMa2gmm6vPaPZNpvqijcXoACX0A3315CJKNW
-         Vi2jzE/Ts2+BVbpzmiwBlYXcMZHR4UwOMdPuBx0YCSHX1b+uKDUZcUtJ/rIbd0VzyhNc
-         cN+OcyrFMPv1VLiy5djAcl6KRR3rqWVSHYPW2GdXwtver6RmyEQcVQ7VQRklIBkJegD4
-         CKEa8W8O1bL7osETPi28ShZmSXLfJLCKLDe18OyPYk5sWIGMiGeWH0ghJpZ5jUWJzxP6
-         A4Gw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786141169; x=1786745969; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9kg8y3o57QGeppntQHDvu4FgsLPM5YrqCaAU724RNaQ=;
-        b=VaX76M3uV0U7ynjUY6VIWK6Lh5U/jYu4k0l1104e16U7N9vWpql5u/QJlvVyeEVzZ8
-         Qse1Do9DmmSDDwEYxynDNyDPP5xEDhL5cVB1EZEn/a545pEDpn1XyHEbn4kLAit5Eiat
-         s6voTa/o+nlI/UOyY8i20d/fubia49euLOm7IS1G8YD6mVmvP2QhDWPLQuF8CS72uXiP
-         7YNBe7D2vukbEyoSA4Ud65TaF26xGvJWYSOePGhNrirRNvKZ78Tqw2Nzu5EpCnUypjVW
-         Oc1hWyi3XdyT/DOjmIlNghGZzDApP2Q/4n2EiVMEmxgPZDkVhImPmFu9tUtedoHP/qdS
-         kB4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786141169; x=1786745969;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9kg8y3o57QGeppntQHDvu4FgsLPM5YrqCaAU724RNaQ=;
-        b=KVC3mqjUzHnomQte4ZQQiwGHxJbDfAn8tXuQndnwyoTyOyfaauAXvAdujOTAonYBXb
-         L+YZaR8Gjt5QHaUeIcGf84TCEwwdPYDiSmbRQR9pIOEr0VwxQmwER3au1vFNCLVyeqZm
-         zQVSgxJBDwL6LVYg/rizLbSp/sDSQhL7qhIMKxJJpFWCOj9haehRvq87G89ytAqItinn
-         gQnbtOJ5UDJyBKovmbbEImv3oe90ixWSpfL7m284ghAchbo5mJqi8t9cG1bkbF04aRP1
-         3lzbqdIEhxobndArry+xteakjtuhQ2ndgBCEoL4SicpQqIp0DhF4rOtkkx7lpwdLMb9X
-         l/8A==
-X-Forwarded-Encrypted: i=1; AHgh+RoEdW+KgdeFontInySZo55tWWcnghKIW4pM28Tquw9dQNhpURWAC6UPddzCOiwyt6iW89guO1TdenQOc5900w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/QYQG3+092JhOl6/+PcVOYwhNjrvcT0gyq+NOxw/b3peHb2Es
-	8VA8KKkp3u9T3str4gCEA97rwdcVe3H8d0jLVrFTEHPhZteQxLTuU0UKJrE8l+E9/P0haBGk/b6
-	n11sGiBIlviSsidjh1G3joIvnIutd+U0=
-X-Gm-Gg: AR+sD11Ns+UymmB004vxSK9isnCwfCV2HmD5BVkMKgISRS5xuytKRqAqouwYyHML2jQ
-	J1l0rL7wHwd28f+k41ICpTRAKsrt1ik/wSlptOW9kuRyEsQs5Y3abY5upHRJh7EejoRGsruYCOv
-	s4150pbtvXv+HdZizq95syUEU1J5sGVP4WTL0wvpmnQoc1zXIQJLwUipb1T8XlO7tswPgXrPcif
-	vsiUrJfIwSTqwXMbGNLiXIQ/UhOYDziSRmvS1Pm7Gw86aJ/MRMD2WyNHcSdPqkwZAqZ28JeP/f7
-	VhS56QvydrNWJMae2oQKGWKeFzmS45/9FcRhCOz2S/f8KceLvmn5IBJf2nl4sL9/I5ha3JLf5q6
-	G+vhj2NNIihlWseIP227xtfffvhVYSD3hko6vwti7RyX1ujqe0nmEeKU9w8f1
-X-Received: by 2002:a17:903:2f8f:b0:2ca:d803:5c8f with SMTP id
- d9443c01a7336-2d0ca73a210mr199280125ad.1.1786141168638; Fri, 07 Aug 2026
- 15:19:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEql1828"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D5C1F000E9;
+	Fri,  7 Aug 2026 22:40:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786142404;
+	bh=mUnQ0qWJd3Lt0+uaWo2zLUBo0UIruoxxAKFVtb7Vqw0=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To;
+	b=HEql1828rxg2IafZe29rTUciRxh5yMLc08LrDV6YfSH2/g7zV2TSaLWpHz88xpJit
+	 6GB4c8bfrQY6DA7TSF/xOSm+IvWnqhDFYNHKFhqbFflgwYnLzWllR+WqBngEScaPhu
+	 9mPEVXZ+s1ruw/Gl5Mm3cliYbWSTYflCFIP3pCHlqChnR9hCE6F0YGypQUsFAfyQsD
+	 rNJQN5fgkE6Q47NsJb12Rs0Dw6IOIFv1w+WQ4OryIVPATNkH0D8XN3AvjmRyrvVmDB
+	 PKHHHglPBfZoBJ8hf1TL53WeOs0hxQkKkUCTncaC3Xkiy7NdooFZjHJ6SCFuUfg/gu
+	 UHKpliGnNDofg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260807221429.155946-1-ojeda@kernel.org>
-In-Reply-To: <20260807221429.155946-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 8 Aug 2026 00:19:13 +0200
-X-Gm-Features: AUfX_mwU-H5_dufTVjV8Trje33MyfE-Oane2tYYmAglrqJ8h4ShpzMvOIUP5krs
-Message-ID: <CANiq72kz2Ec119ZW2uiu0-RPHr=Zy5-WRA5tSOYk5it6PqpH2g@mail.gmail.com>
-Subject: Re: [PATCH] rust: bug: fix `dead_code` warning in `warn_on!`
-To: Miguel Ojeda <ojeda@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Linus Walleij <linusw@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-	rust-for-linux@vger.kernel.org, Drew Fustini <fustini@kernel.org>, 
-	moderated for non-subscribers <linux-arm-kernel@lists.infradead.org>, soc@lists.linux.dev, 
-	WANG Xuerui <kernel@xen0n.name>, loongarch@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 08 Aug 2026 00:39:59 +0200
+Message-Id: <DKJ2MYL3TYVB.3K1LIVYMLX0SV@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <driver-core@lists.linux.dev>
+To: <tj@kernel.org>, <jiangshanlai@gmail.com>, <aliceryhl@google.com>,
+ <ojeda@kernel.org>, <boqun@kernel.org>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+ <acourbot@nvidia.com>, <work@onurozkan.dev>, <jhubbard@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 4/6] rust: workqueue: add creation of workqueues
+References: <20260807165252.3849875-1-dakr@kernel.org>
+ <20260807165252.3849875-5-dakr@kernel.org>
+In-Reply-To: <20260807165252.3849875-5-dakr@kernel.org>
 
-On Sat, Aug 8, 2026 at 12:14=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> On arm and loongarch64, or under `CONFIG_BUG=3Dn`, the upcoming SRCU
-> abstractions from commit
->
->   59cf3a5bda61 ("rust: sync: add SRCU abstraction")
->
-> use `warn_on!`, which in turn warns:
->
->     error: constant `WARN_ON_FLAGS` is never used
->        --> rust/kernel/bug.rs:126:19
->         |
->     126 |               const WARN_ON_FLAGS: u32 =3D $crate::bug::bugflag=
-_taint($crate::bindings::TAINT_WARN);
->         |                     ^^^^^^^^^^^^^
->         |
->        ::: rust/kernel/sync/srcu.rs:106:12
->         |
->     106 |           if crate::warn_on!(
->         |  ____________-
->     107 | |             // SAFETY: By the type invariants, `self` contain=
-s a valid and pinned `struct srcu_struct`
->     108 | |             // and `srcu_readers_active()` only checks the ac=
-tive reader count.
->     109 | |             unsafe { bindings::srcu_readers_active(ptr) }
->     110 | |         ) {
->         | |_________- in this macro invocation
->         |
->         =3D note: `-D dead-code` implied by `-D warnings`
->         =3D help: to override `-D warnings` add `#[allow(dead_code)]`
->         =3D note: this error originates in the macro `crate::warn_on` (in=
- Nightly builds, run with -Z macro-backtrace for more info)
->
-> The reason is that `warn_flags!` discards both arguments in those cases,
-> and so the `const` becomes unused. And since it is a macro, it went
-> unnoticed so far.
->
-> Thus fix it by simplifying by removing the `const`.
->
-> Cc: stable@vger.kernel.org
-> Fixes: dff64b072708 ("rust: Add warn_on macro")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Fri Aug 7, 2026 at 6:52 PM CEST, Danilo Krummrich wrote:
+>   * new_power_efficient(): WQ_UNBOUND | WQ_POWER_EFFICIENT, add
+>     .percpu(),
 
-Sorry, I forgot the Cc to Tomonori:
+[...]
 
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> +    pub fn new_power_efficient() -> Builder<TypePowerEfficient> {
+> +        Builder {
+> +            flags: bindings::wq_flags_WQ_UNBOUND | bindings::wq_flags_WQ=
+_POWER_EFFICIENT,
 
-Cheers,
-Miguel
+I actually meant to add WQ_PERCPU, which should be the default for
+WQ_POWER_EFFICIENT, in order to avoid the warning below.
+
+But I somehow managed to fix it the wrong way around and made WQ_UNBOUND th=
+e
+default.
+
+So, this should just be bindings::wq_flags_WQ_PERCPU |
+bindings::wq_flags_WQ_POWER_EFFICIENT.
+
+- Danilo
+
+[    1.381581] workqueue: my-wq is using neither WQ_PERCPU or WQ_UNBOUND. S=
+etting WQ_PERCPU.
+[    1.382274] WARNING: kernel/workqueue.c:5852 at alloc_workqueue_va+0x794=
+/0x800, CPU#0: kunit_try_catch/851
+[    1.383088] Modules linked in:
+[    1.383359] CPU: 0 UID: 0 PID: 851 Comm: kunit_try_catch Tainted: G     =
+   W        N  7.2.0-rc1+ #67 PREEMPT(full)
+[    1.384236] Tainted: [W]=3DWARN, [N]=3DTEST
+[    1.384567] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS =
+Arch Linux 1.17.0-2-2 04/01/2014
+[    1.385364] RIP: 0010:alloc_workqueue_va+0x79b/0x800
+[    1.385784] Code: 49 8d 96 b8 00 00 00 b9 01 00 00 00 41 b8 00 08 00 00 =
+e8 08 83 ef ff e9 88 f9 ff ff 48 8d 3d cc 1c e2 01 49 8d b6 b8 00 00 00 <67=
+> 48 0f b9 3a 41 81 cc 00 01 00 00 e9 40 f9 ff ff 48 8d 3d bd 1c
+[    1.387337] RSP: 0018:ffffc90000473d58 EFLAGS: 00010246
+[    1.387779] RAX: 0000000000000000 RBX: ffff888102041600 RCX: 8313f7e158b=
+49600
+[    1.388382] RDX: ffff8881020416d8 RSI: ffff8881020416b8 RDI: ffffffff831=
+2e020
+[    1.388985] RBP: 0000000000000000 R08: 00000000ffffffff R09: 00000000fff=
+fffff
+[    1.389587] R10: ffff8881020416bd R11: 0000000000000000 R12: 00000000000=
+00080
+[    1.390192] R13: ffffffff82ad53fd R14: ffff888102041600 R15: ffffc900004=
+73de0
+[    1.390793] FS:  0000000000000000(0000) GS:ffff8881b81cf000(0000) knlGS:=
+0000000000000000
+[    1.391478] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.391968] CR2: ffff88813ffff000 CR3: 0000000002e22000 CR4: 00000000007=
+50ef0
+[    1.392568] PKRU: 55555554
+[    1.392804] Call Trace:
+[    1.393027]  <TASK>
+[    1.393219]  alloc_workqueue_noprof+0x5b/0x80
+[    1.393594]  rust_doctest_kernel_workqueue_builder_rs_12+0x3a/0x1f0
+[    1.394129]  ? _task_rq_lock+0x55/0x150
+[    1.394462]  ? call_rcu+0xec/0x270
+[    1.394756]  ? kvm_clock_get_cycles+0x18/0x40
+[    1.395136]  ? ktime_get_ts64+0x6d/0x170
+[    1.395477]  kunit_try_run_case+0x93/0x190
+[    1.395826]  kunit_generic_run_threadfn_adapter+0x22/0x40
+[    1.396290]  ? kunit_try_catch_run+0x210/0x210
+[    1.396670]  kthread+0xfb/0x120
+[    1.396942]  ? kthread_blkcg+0x40/0x40
+[    1.397270]  ret_from_fork+0xee/0x260
+[    1.397590]  ? kthread_blkcg+0x40/0x40
+[    1.397910]  ret_from_fork_asm+0x11/0x20
+[    1.398255]  </TASK>
+[    1.398453] ---[ end trace 0000000000000000 ]---
