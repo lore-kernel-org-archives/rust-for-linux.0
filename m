@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C1F3C65FD
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 07:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A88453A56;
+	Fri,  7 Aug 2026 07:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786086173; cv=none; b=Lk1gWQhbuJ7iC9tr9yJbjfzuaVmPuANQeruOeTlCZr6/aZ4hK0vpQyGAqUA2hgPijXFCcSYuBG80RWp12beywZ/D3EaZU1agbpTGGMyOBZp5kON9sAb81BYf/M4SfXLk8qumtW2Hexgw+0C3bJORv7p5JyQ5KHRwzYBrFWgSE7c=
+	t=1786086175; cv=none; b=nJZo2j3Hbgx5652TxmHhF7AysvWfhRBkjvnDhJvWtT/C1xOnZoGM8RAlUCw80E+WTBg+47+ZfvtLuYh6d3Kfq4Fy5dQhJBBh1g+URa2OOujLcyZCAzwUuOATIIvVE0RlDh6EwMgeVrQcAXUfkLEhUsSq9BiiazWTNpYmGaUL720=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786086173; c=relaxed/simple;
-	bh=kZU5uFqdjWiRbrVf1fTNRv9ePx+qKQEq8Hc6Bs6H2Cs=;
+	s=arc-20240116; t=1786086175; c=relaxed/simple;
+	bh=yOW+vEyMmlLd/rvdAQOpfI7rRLssPojgy8OC8Xdb7b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hepoJhVCpZKmYiXeAv3PQkvQLf+Mr8OZNkbs8kEgATKSjNoCmvYPf2QlvrQvkEVwdcWMO/uU+l8zBWMv6YGNXMACih1QEdBGPZQHoyIt3KE3HYZL1yNwjSnR/QLuPLldTpFurFYgfgOFy/NKKV4Z7yXsA0RV/2aK+nZ9dkk6l4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOwHgkn3; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=HRYek8cJmLzK3lCqyS6BpXzo6eWyTMFA/xkXPGAVo6XGX+CswgrwknX7vP6b/L9Xrz8+BkzwshiMzrOTs51SrjQJCvfE1RbP7Greji5+0HVENYEHkLfqxIEc4FYYQz3bm1HnAB3YfQSju8tD+io2ft4DKCafkD9iqihLD5xiw+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E667DoEu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOwHgkn3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FFE1F00A3A;
-	Fri,  7 Aug 2026 07:02:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E667DoEu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 520331F00A3E;
+	Fri,  7 Aug 2026 07:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786086171;
-	bh=2MYZgIP+osziR2bs888gmmBvgXIfwDVrZfFhcS+axXE=;
+	s=k20260515; t=1786086174;
+	bh=J5r9F5NVhPBA6Gj8qaTBPl3yuPTDh/upo+Mtrw3vN6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AOwHgkn3Zdc2Cjrg1ADruJb0ghMa1PzYZhoUlqK8rF54i6f06pKX/I3+L8dz9TgiO
-	 EDa41QMueaS65L6s+gjBdkj5OfclKIu3VYNU2TvmKNtHonSftyWayv+Y6yCppWYoih
-	 K0L+Mlh8Vkm2QDJdeXVrGsO1zlOeggbpFr6/i4vlz4ToliqmZ2iYczstrYdwnuy8rw
-	 qWhFLidHuEE4Pytc8oCGC+F6/n3CNCwh+7xYrzg1DtnWSKMA5flscKMPN8U5Iz2H3a
-	 bH6I0AmqdiyZUlAfYrVpHmxILemaLjf5a8+wbbUdPZBPzEBxYl/WJuY9lFfConZ/Nu
-	 C6Pce288JNh5Q==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E9751F40067;
-	Fri,  7 Aug 2026 03:02:49 -0400 (EDT)
+	b=E667DoEuUg5FLa1rShvLUT1sgtX8nZrv0/CNyUHS9tjTpKR3AHVE0rGTZU2faQXTR
+	 wxwZofYFNWikHwGFcwZFOd1QUjBFEReeGlmbvhtsYVr0VjqJlUDxhvcdN1EsHgWw9I
+	 jcHvBW6vipNO9bt7u33iNmx4suVEh6Npaq0tJ4v9Qh98LoJp/xnWr+3kJtV6gpx4bI
+	 69N90nLuiTPyigHV8xQW4VXRmCW649sl3yzH3Kt6t6JosrcsyTNapfhzWb5bcBc+Hr
+	 SgBBClSi1ugk5Fbl4GJKvfWbqXQ10amdKSA32DS+TmPw0jiJ7aF10ufYAtefOuhUyl
+	 lvDYsX2eDAGdw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 67C2DF40067;
+	Fri,  7 Aug 2026 03:02:52 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 07 Aug 2026 03:02:49 -0400
-X-ME-Sender: <xms:GYN1alCqGKApHoDS2uCZR9OYqkOokDRQykaGmeOYWH7mQD4-Yi8RcQ>
-    <xme:GYN1av0txmJxdBVgqyYAdXIDUPbz-m9gY6hSsMZjfbolJsYccWfz-G1ZcbCDoTS_1
-    S_JzEezKwhzIg8La6dWtbgch2NYnPj8qE8eJWHkuG4hOQ6FEhGBijI>
-X-ME-Received: <xmr:GYN1aiOF5KATnS-lxMcAi1d5zNfIEmZsNDduF-1kxO3LfH-P3BvHw7BOWrO5WFUyLLvSZkbNd45hh4m-3ACrP3Jm7fdT2QxZ>
-X-ME-Proxy-Cause: dmFkZTELsVbnxrvhPb2j61weS49pxhnQ59QQ/kkvzVAF7RfvMFBahj3W+J/ZYvUaUDGUKL
-    rkIpWI9Kqh7tdFeNxTw91APFY2yZOuGFzh0R7L9linn/K/VkHskzHhqZIAbhz+FzEI2/39
-    p/Gf/98yNPd7kqv7ASor+gx/DK4WZv4tGUkwpXImaVpTVn9yjG8Hsrc4m1zuPGR3jPjYfV
-    aGaWr2EDt/5hU/phchzQPFGxTjKWqqv3f39Pht190FqbXj8fyXB6xLi7X5zcPt/Liyw23y
-    b+4UgNbRpkgjQlqdkJa7EiS5FEj8Oxro36Xe5RlI+SlnX1fghWIXGuRondD8d1wH6SlNBW
-    5RQjxsaRGjdQy2PmDdfm40Cl5FkLsO02LGHI5fWvMZPCNy/BnMKs83zlmulKgzS45ZHh8Y
-    ui8slDvH0wg10uGffJs7CKt9/PxJgPgd1sG7EcpE2biN48Br+MlRK1WGFQp99CNTRGdMqk
-    A2eVnGdAOzEfWo/iCvmgGRf1s875yzUGh+hsP6FbkLctjRNrJJ6tYOdisyJx6U6Zke11ad
-    euXHrQwtYTWTyW3c+75B/0Iku4x3RLYLMu/BoQwdmlnZl4eO0qUqqUO2oGHZTvNQGI09xk
-    JMok34eac9v7wSw7eaLXJOZjDWC+NF9BrkhSxSK07DlNwjlhJCWlOXAsZk/g
-X-ME-Proxy: <xmx:GYN1as7gcjBCz-5pJpeRav54lCYmVwxsiIgEJiXst4XqKokMguN-dQ>
-    <xmx:GYN1avZnrHsd07ytcvwwrUQ9UZDHWk1MUlkXvH2cpFnSG6TlmNIVaw>
-    <xmx:GYN1apEgPdsz0kcxfyvPldgmWmAW29AHWd_X5Gxh6EPfWQIDiWN0aw>
-    <xmx:GYN1aonWtBRYheHKyUGm3q09nPyMyj8yP3JFSdu_SBMXnZE-MEYR1A>
-    <xmx:GYN1agkKM3tIJd941qusfObDrNx4_p9QAOlFU1a-kfgaXEIe7R6oypnS>
+  by phl-compute-05.internal (MEProxy); Fri, 07 Aug 2026 03:02:52 -0400
+X-ME-Sender: <xms:HIN1anuLJGpjw0JUjWKqciXQyJ38uvAwlamE8U7AiSreeqLxPRuORg>
+    <xme:HIN1akyvxfPniw3LtXk5oIkF69Jqzg1gLMVr_9E2PLGIMxG6IsMrrwjoNwEmjV5wV
+    LrmO8n35f551Idfk2pUxEnQHpnzbDCM3reqc9_uiC9TfXTpql36XDs>
+X-ME-Received: <xmr:HIN1asaNr6LpXxpU-73aiSHL1BDMNgTnei9uOrYh2CkV0nwQTb_-c7W5hmwMD6L7H8vx4oVSTFxedFNfTEsuXLHNJQmrZEo4>
+X-ME-Proxy-Cause: dmFkZTE8lydczuBK1/wbIQK6YmAUX4f+Ec5X1qeyT1wkaZMDCCrXPb/HwP7HtUh+NFCVhL
+    clfOjleQYAT5amWLr98/fJKXH/Ntk/RmBOsiX4zJwLbn9uvLVg0Z2RCdCAyc3px4IZj1/F
+    ZXlNyt+DCzc16VlaYTrYu1UhJyVcL7yhJjjdgA1mmIOIu4WyN8hdfZ77TUSFvr7zainkfb
+    /D4Vb+s510TJTP/ca9Uc2yFXK2vJOFV/1XWJhRwp5UtJWnttiGxniEnW/HP1Cjlu1j23Af
+    wuD2iIZFmRtkrayImScufIH/fO2ZEneI3YN/an93v1hbc/Xl2wv2f6L6jtPknYrY05temU
+    A4AyfVg5tI3rD7OfZHOqnLTfrnA8qYbt1WUCAaEWNw3uNyiqjssGxytnvcZEcG3Wxj1RmG
+    EpEmNJpld7TnmkxXF0FrfvaIHEILdREMWDo/tFvMDtZ5QPSUVxB7utLfnilcV1rsgMiKC1
+    qKFMAAIB6ZbGT+ttHZ6w0pNFLHbRrCUyJT9brHBy27MoX9uvyVYb1Jo4V+qC8WtbnxnpGJ
+    yaEY29CuWL6Vt0pTYHbdqyYTQpa+zzMnOdPBk4tVblMk8zOKSkjQIuG03dH1wHHgjE98kR
+    rPAGFfTx/X8lm6htFLxcPjzxYaTm1NV03d6C3tO7V1Oj/3n8zL7S8GOJYmJw
+X-ME-Proxy: <xmx:HIN1ajUA7K21OEwObadkv6VuKozGdII2v2hi1U9VvXplY3dlrXDGrw>
+    <xmx:HIN1atFQaf8m7Vc4T7GIPkBJ0ly0bI8tbFNDBXK1G2P_U8Izf2hXsg>
+    <xmx:HIN1atAHxT-JR2eOBwsNobSj-k5hbPm_TINdLu3eERps9yWc2fZqWw>
+    <xmx:HIN1alzmaMx2J3QnuaeF-Ig8OPo8gk1MmeXKFgHuy5tRcTnDylrDSQ>
+    <xmx:HIN1auBYmQnwBb05uVOKDD2288UCiNe_nl27zctJZMNiQvGi7rqF4kD7>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Aug 2026 03:02:49 -0400 (EDT)
+ 7 Aug 2026 03:02:51 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -71,9 +71,9 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Subject: [PATCH v5 17/18] rust: sync: Add SpinLockIrq
-Date: Fri,  7 Aug 2026 00:02:14 -0700
-Message-ID: <20260807070218.27144-18-boqun@kernel.org>
+Subject: [PATCH v5 18/18] rust: sync: Introduce SpinLockIrq::lock_with() and friends
+Date: Fri,  7 Aug 2026 00:02:15 -0700
+Message-ID: <20260807070218.27144-19-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260807070218.27144-1-boqun@kernel.org>
 References: <20260807070218.27144-1-boqun@kernel.org>
@@ -87,300 +87,190 @@ Content-Transfer-Encoding: 8bit
 
 From: Lyude Paul <lyude@redhat.com>
 
-A variant of `SpinLock` that ensures interrupts are disabled in the
-critical section. `lock()` will ensure that either interrupts are
-already disabled or disable them. `unlock()` will reverse the respective
-operation.
+`SpinLockIrq` and `SpinLock` use the exact same underlying C structure,
+with the only real difference being that the former uses the
+irq_disable() and irq_enable() variants for locking/unlocking. These
+variants can introduce some minor overhead in contexts where we already
+know that local processor interrupts are disabled, and as such we want a
+way to be able to skip modifying processor interrupt state in said
+contexts in order to avoid some overhead - just like the current C API
+allows us to do.
 
-[Boqun: Port to use spin_lock_irq_disable() and
-spin_unlock_irq_enable()]
+In order to do this, we add some special functions for SpinLockIrq:
+lock_with() and try_lock_with(), which allow acquiring the lock without
+changing the interrupt state - as long as the caller can provide a
+LocalInterruptDisabled reference to prove that local processor
+interrupts have been disabled.
+
+In some hacked-together benchmarks we ran, most of the time this did
+actually seem to lead to a noticeable difference in overhead:
+
+  From an aarch64 VM running on a MacBook M4:
+    lock() when irq is disabled, 100 times cost Delta { nanos: 500 }
+    lock_with() when irq is disabled, 100 times cost Delta { nanos: 292 }
+    lock() when irq is enabled, 100 times cost Delta { nanos: 834 }
+
+    lock() when irq is disabled, 100 times cost Delta { nanos: 459 }
+    lock_with() when irq is disabled, 100 times cost Delta { nanos: 291 }
+    lock() when irq is enabled, 100 times cost Delta { nanos: 709 }
+
+  From an x86_64 VM (qemu/kvm) running on a i7-13700H
+    lock() when irq is disabled, 100 times cost Delta { nanos: 1002 }
+    lock_with() when irq is disabled, 100 times cost Delta { nanos: 729 }
+    lock() when irq is enabled, 100 times cost Delta { nanos: 1516 }
+
+    lock() when irq is disabled, 100 times cost Delta { nanos: 754 }
+    lock_with() when irq is disabled, 100 times cost Delta { nanos: 966 }
+    lock() when irq is enabled, 100 times cost Delta { nanos: 1227 }
+
+    (note that there were some runs on x86_64 where lock() on irq
+    disabled vs. lock_with() on irq disabled had equivalent benchmarks,
+    but it very much appeared to be a minority of test runs.)
+
+While it's not clear how this affects real-world workloads yet, let's
+add this for the time being so we can find out.
+
+This makes it so that a `SpinLockIrq` will work like a `SpinLock` if
+interrupts are disabled. So a function:
+
+        (&'a SpinLockIrq, &'a LocalInterruptDisabled) -> Guard<'a, .., SpinLockBackend>
+
+makes sense. Note that due to `Guard` and `LocalInterruptDisabled`
+having the same lifetime, interrupts cannot be enabled while the Guard
+exists.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
 ---
- rust/kernel/sync.rs               |   9 +-
- rust/kernel/sync/lock/global.rs   |   3 +
- rust/kernel/sync/lock/spinlock.rs | 230 ++++++++++++++++++++++++++++++
- 3 files changed, 241 insertions(+), 1 deletion(-)
+ rust/kernel/sync/lock/spinlock.rs | 92 ++++++++++++++++++++++++++++++-
+ 1 file changed, 91 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 993dbf2caa0e..df4f2604ff9b 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -27,7 +27,14 @@
- pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
- pub use lock::global::{global_lock, GlobalGuard, GlobalLock, GlobalLockBackend, GlobalLockedBy};
- pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
--pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
-+pub use lock::spinlock::{
-+    new_spinlock,
-+    new_spinlock_irq,
-+    SpinLock,
-+    SpinLockGuard,
-+    SpinLockIrq,
-+    SpinLockIrqGuard, //
-+};
- pub use locked_by::LockedBy;
- pub use refcount::Refcount;
- pub use set_once::SetOnce;
-diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
-index ec2dd84316fc..ebb10521d8bd 100644
---- a/rust/kernel/sync/lock/global.rs
-+++ b/rust/kernel/sync/lock/global.rs
-@@ -306,4 +306,7 @@ macro_rules! global_lock_inner {
-     (backend SpinLock) => {
-         $crate::sync::lock::spinlock::SpinLockBackend
-     };
-+    (backend SpinLockIrq) => {
-+        $crate::sync::lock::spinlock::SpinLockIrqBackend
-+    };
- }
 diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index d75af32218ba..872544948e5d 100644
+index 872544948e5d..aafc80125f59 100644
 --- a/rust/kernel/sync/lock/spinlock.rs
 +++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -4,6 +4,7 @@
+@@ -4,7 +4,10 @@
  //!
  //! This module allows Rust code to use the kernel's `spinlock_t`.
  use super::*;
-+use crate::prelude::*;
+-use crate::prelude::*;
++use crate::{
++    interrupt::LocalInterruptDisabled,
++    prelude::*, //
++};
  
  /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
  ///
-@@ -143,3 +144,232 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
-         unsafe { bindings::spin_assert_is_held(ptr) }
-     }
- }
-+
-+/// Creates a [`SpinLockIrq`] initialiser with the given name and a newly-created lock class.
+@@ -160,6 +163,16 @@ macro_rules! new_spinlock_irq {
+ 
+ /// A variant of `SpinLock` that ensures interrupts are disabled in the critical section.
+ ///
++/// This lock can be acquired in two ways:
 +///
-+/// It uses the name if one is given, otherwise it generates one based on the file name and line
-+/// number.
-+#[macro_export]
-+macro_rules! new_spinlock_irq {
-+    ($inner:expr $(, $name:literal)? $(,)?) => {
-+        $crate::sync::SpinLockIrq::new(
-+            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
-+    };
-+}
-+pub use new_spinlock_irq;
-+
-+/// A variant of `SpinLock` that ensures interrupts are disabled in the critical section.
++/// - Using [`lock()`] like any other type of lock, in which case the bindings will modify the
++///   interrupt state to ensure that local processor interrupts remain disabled for at least as
++///   long as the [`SpinLockIrqGuard`] exists.
++/// - Using [`lock_with()`] in contexts where a [`LocalInterruptDisabled`] token is present and
++///   local processor interrupts are already known to be disabled, in which case the local
++///   interrupt state will not be touched. This method should be preferred if a
++///   [`LocalInterruptDisabled`] token is present in the scope.
 +///
-+/// For more info on spinlocks, see [`SpinLock`]. For more information on interrupts,
-+/// [see the interrupt module](kernel::interrupt).
-+///
-+/// # Examples
-+///
-+/// The following example shows how to declare, allocate initialise and access a struct (`Example`)
-+/// that contains an inner struct (`Inner`) that is protected by a spinlock that requires local
-+/// processor interrupts to be disabled.
+ /// For more info on spinlocks, see [`SpinLock`]. For more information on interrupts,
+ /// [see the interrupt module](kernel::interrupt).
+ ///
+@@ -213,7 +226,47 @@ macro_rules! new_spinlock_irq {
+ /// # Ok::<(), Error>(())
+ /// ```
+ ///
++/// The next example demonstrates locking a [`SpinLockIrq`] using [`lock_with()`] in a function
++/// which can only be called when local processor interrupts are already disabled.
 +///
 +/// ```
 +/// use kernel::sync::{new_spinlock_irq, SpinLockIrq};
++/// use kernel::interrupt::*;
 +///
 +/// struct Inner {
 +///     a: u32,
-+///     b: u32,
 +/// }
 +///
 +/// #[pin_data]
 +/// struct Example {
 +///     #[pin]
-+///     c: SpinLockIrq<Inner>,
-+///     #[pin]
-+///     d: SpinLockIrq<Inner>,
++///     inner: SpinLockIrq<Inner>,
 +/// }
 +///
 +/// impl Example {
 +///     fn new() -> impl PinInit<Self> {
 +///         pin_init!(Self {
-+///             c <- new_spinlock_irq!(Inner { a: 0, b: 10 }),
-+///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
++///             inner <- new_spinlock_irq!(Inner { a: 20 }),
 +///         })
 +///     }
 +/// }
 +///
-+/// // Allocate a boxed `Example`
-+/// let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
++/// // Accessing an `Example` from a function that can only be called in no-interrupt contexts.
++/// fn noirq_work(e: &Example, interrupt_disabled: &LocalInterruptDisabled) {
++///     // Because we know interrupts are disabled from interrupt_disable, we can skip toggling
++///     // interrupt state using lock_with() and the provided token
++///     assert_eq!(e.inner.lock_with(interrupt_disabled).a, 20);
++/// }
 +///
-+/// // Accessing an `Example` from a context where interrupts may not be disabled already.
-+/// let c_guard = e.c.lock(); // interrupts are disabled now, +1 interrupt disable refcount
-+/// let d_guard = e.d.lock(); // no interrupt state change, +1 interrupt disable refcount
-+///
-+/// assert_eq!(c_guard.a, 0);
-+/// assert_eq!(c_guard.b, 10);
-+/// assert_eq!(d_guard.a, 20);
-+/// assert_eq!(d_guard.b, 30);
-+///
-+/// drop(c_guard); // Dropping c_guard will not re-enable interrupts just yet, since d_guard is
-+///                // still in scope.
-+/// drop(d_guard); // Last interrupt disable reference dropped here, so interrupts are re-enabled
-+///                // now
++/// # let e = KBox::pin_init(Example::new(), GFP_KERNEL)?;
++/// # let interrupt_guard = local_interrupt_disable();
++/// # noirq_work(&e, &interrupt_guard);
++/// #
 +/// # Ok::<(), Error>(())
 +/// ```
 +///
-+/// [`lock()`]: SpinLockIrq::lock
-+pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
-+
-+/// A kernel `spinlock_t` lock backend that can only be acquired in interrupt disabled contexts.
-+pub struct SpinLockIrqBackend;
-+
-+/// A [`Guard`] acquired from locking a [`SpinLockIrq`] using [`lock()`].
-+///
-+/// This is simply a type alias for a [`Guard`] returned from locking a [`SpinLockIrq`] using
-+/// [`lock()`]. It will unlock the [`SpinLockIrq`] and decrement the local processor's interrupt
-+/// disablement refcount upon being dropped.
-+///
-+/// [`lock()`]: SpinLockIrq::lock
-+pub type SpinLockIrqGuard<'a, T> = Guard<'a, T, SpinLockIrqBackend>;
-+
-+// SAFETY: The underlying kernel `spinlock_t` object ensures mutual exclusion. `relock` uses the
-+// default implementation that always calls the same locking method.
-+unsafe impl Backend for SpinLockIrqBackend {
-+    type State = bindings::spinlock_t;
-+    type GuardState = ();
-+
+ /// [`lock()`]: SpinLockIrq::lock
++/// [`lock_with()`]: SpinLockIrq::lock_with
+ pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
+ 
+ /// A kernel `spinlock_t` lock backend that can only be acquired in interrupt disabled contexts.
+@@ -278,6 +331,43 @@ unsafe fn assert_is_held(ptr: *mut Self::State) {
+     }
+ }
+ 
++impl<T: ?Sized> Lock<T, SpinLockIrqBackend> {
++    /// Casts the lock as a `Lock<T, SpinLockBackend>`.
 +    #[inline]
-+    unsafe fn init(
-+        ptr: *mut Self::State,
-+        name: *const crate::ffi::c_char,
-+        key: *mut bindings::lock_class_key,
-+    ) {
-+        // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
-+        // `key` are valid for read indefinitely.
-+        unsafe { bindings::__spin_lock_init(ptr, name, key) }
++    fn as_lock_in_interrupt<'a>(&'a self, _context: &'a LocalInterruptDisabled) -> &'a SpinLock<T> {
++        // SAFETY:
++        // - `Lock<T, SpinLockBackend>` and `Lock<T, SpinLockIrqBackend>` both have identical data
++        //   layouts.
++        // - As long as local interrupts are disabled (which is proven to be true by _context), it
++        //   is safe to treat a lock with SpinLockIrqBackend as a SpinLockBackend lock.
++        unsafe { core::mem::transmute(self) }
 +    }
 +
++    /// Acquires the lock without modifying local interrupt state.
++    ///
++    /// This function should be used in place of the more expensive [`Lock::lock()`] function when
++    /// possible for [`SpinLockIrq`] locks.
 +    #[inline]
-+    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-+        // memory, and that it has been initialised before.
-+        unsafe { bindings::spin_lock_irq_disable(ptr) }
++    pub fn lock_with<'a>(&'a self, context: &'a LocalInterruptDisabled) -> SpinLockGuard<'a, T> {
++        self.as_lock_in_interrupt(context).lock()
 +    }
 +
++    /// Tries to acquire the lock without modifying local interrupt state.
++    ///
++    /// This function should be used in place of the more expensive [`Lock::try_lock()`] function
++    /// when possible for [`SpinLockIrq`] locks.
++    ///
++    /// Returns a guard that can be used to access the data protected by the lock if successful.
++    #[must_use = "if unused, the lock will be immediately unlocked"]
 +    #[inline]
-+    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
-+        // caller is the owner of the spinlock.
-+        unsafe { bindings::spin_unlock_irq_enable(ptr) }
-+    }
-+
-+    #[inline]
-+    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
-+        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-+        let result = unsafe { bindings::spin_trylock_irq_disable(ptr) };
-+
-+        if result != 0 {
-+            Some(())
-+        } else {
-+            None
-+        }
-+    }
-+
-+    #[inline]
-+    unsafe fn assert_is_held(ptr: *mut Self::State) {
-+        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-+        unsafe { bindings::spin_assert_is_held(ptr) }
++    pub fn try_lock_with<'a>(
++        &'a self,
++        context: &'a LocalInterruptDisabled,
++    ) -> Option<SpinLockGuard<'a, T>> {
++        self.as_lock_in_interrupt(context).try_lock()
 +    }
 +}
 +
-+#[kunit_tests(rust_spinlock_irq_condvar)]
-+mod tests {
-+    use super::*;
-+    use crate::{
-+        sync::*,
-+        workqueue::{
-+            self,
-+            impl_has_work,
-+            new_work,
-+            Work,
-+            WorkItem, //
-+        },
-+    };
-+
-+    struct TestState {
-+        value: u32,
-+        waiter_ready: bool,
-+    }
-+
-+    #[pin_data]
-+    struct Test {
-+        #[pin]
-+        state: SpinLockIrq<TestState>,
-+
-+        #[pin]
-+        state_changed: CondVar,
-+
-+        #[pin]
-+        waiter_state_changed: CondVar,
-+
-+        #[pin]
-+        wait_work: Work<Self>,
-+    }
-+
-+    impl_has_work! {
-+        impl HasWork<Self> for Test { self.wait_work }
-+    }
-+
-+    impl Test {
-+        pub(crate) fn new() -> Result<Arc<Self>> {
-+            Arc::try_pin_init(
-+                try_pin_init!(
-+                    Self {
-+                        state <- new_spinlock_irq!(TestState {
-+                            value: 1,
-+                            waiter_ready: false
-+                        }),
-+                        state_changed <- new_condvar!(),
-+                        waiter_state_changed <- new_condvar!(),
-+                        wait_work <- new_work!("IrqCondvarTest::wait_work")
-+                    }
-+                ),
-+                GFP_KERNEL,
-+            )
-+        }
-+    }
-+
-+    impl WorkItem for Test {
-+        type Pointer = Arc<Self>;
-+
-+        fn run(this: Arc<Self>) {
-+            // Wait for the test to be ready to wait for us
-+            let mut state = this.state.lock();
-+
-+            // Make sure the interrupts actually turned off
-+            // SAFETY: It's always safe to call `lockdep_assert_irqs_disabled()`
-+            unsafe { bindings::lockdep_assert_irqs_disabled() };
-+
-+            while !state.waiter_ready {
-+                this.waiter_state_changed.wait(&mut state);
-+            }
-+
-+            // Deliver the exciting value update our test has been waiting for
-+            state.value += 1;
-+            this.state_changed.notify_sync();
-+        }
-+    }
-+
-+    #[test]
-+    fn spinlock_irq_condvar() -> Result {
-+        let testdata = Test::new()?;
-+
-+        let _ = workqueue::system().enqueue(testdata.clone());
-+
-+        // Let the updater know when we're ready to wait
-+        let mut state = testdata.state.lock();
-+        state.waiter_ready = true;
-+        testdata.waiter_state_changed.notify_sync();
-+
-+        // Wait for the exciting value update
-+        testdata.state_changed.wait(&mut state);
-+        assert_eq!(state.value, 2);
-+        Ok(())
-+    }
-+}
+ #[kunit_tests(rust_spinlock_irq_condvar)]
+ mod tests {
+     use super::*;
 -- 
 2.50.1 (Apple Git-155)
 
