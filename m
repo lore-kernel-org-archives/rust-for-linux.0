@@ -1,79 +1,79 @@
 Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E10C4398E7
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 12:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDD84746B1
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786105002; cv=none; b=sndjaIGC1OOW42ZreLbTxhBZK/Qbcthb36Y9098hNDQNoAYlTNUym9MD6onDm39G7TQvHW/jcXiicGMiHFarh+n7PGrO9RyO5MQv5vAjs6UNBd0Nl62SU3OPBMOaSX6IjtnS/3p6If8jH7yjvLKLLWVFwMKMzKNHybcACt6ydfA=
+	t=1786106341; cv=none; b=bS9Fmnemv9vr3wbNQKyN+9TnmbFdRG0yuBoLgnVgXa91uGqStgj0iNirB7od16N5/nivRF/jAY6RAdEBv3foBSdWx3iwlLm5vv3yYiKr3bDpWqDytDukFIJfJ3GHGHUSAjWXR47GzIJh7OpVpK0CO03HIDA6vm+Mt3w8FFKXWao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786105002; c=relaxed/simple;
-	bh=HxphelmpubRWldZYLTJ9Ttw8/BIYVbR6Yb07TxNkWJY=;
+	s=arc-20240116; t=1786106341; c=relaxed/simple;
+	bh=fVJEosinVsnf5xvYgQ9QcB2ILKA4wSZ1FUAZbInLYLg=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=g3/z3lqitRBuzolcwaKTlHrDSM7jIwsv6sAS2hlsw2ktc1nC91qMdPT7fdREv+albbPexOI7DQmMdfc3sG7tWoLPPfVUJuPxZleJ16GArCx6IBWO9FKxgXj3WaNgXtO6ZmOz9RRShnX4JoeE7ivn8Ycm9FTxK144fTowWVBQBn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=ApXsI8wQ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Tdqw5b4U; arc=none smtp.client-ip=202.12.124.139
+	 Mime-Version:Content-Type; b=Pjw3BKySECOv91TDkUO4xrqYV5wI/Cmo+Ook793WPUf68DwXdTew5t+HyejEriOkPYlA0VzLDJWmkrDvMIO2m9IPIi4GF5PYT/ayhpQJ3ghrU7gU9qIj21KAb4n5NdRILx+UJl4htR5hERDvnZ5Xzxf+2vlrY9ylLACGKpAsatw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Al/HSok4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=LtJr42My; arc=none smtp.client-ip=202.12.124.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="ApXsI8wQ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Tdqw5b4U"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id DB47A1300019;
-	Fri,  7 Aug 2026 08:15:09 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Al/HSok4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LtJr42My"
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailflow.stl.internal (Postfix) with ESMTP id 87EBB13000AD;
+	Fri,  7 Aug 2026 08:38:45 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 07 Aug 2026 08:15:10 -0400
+  by phl-compute-08.internal (MEProxy); Fri, 07 Aug 2026 08:38:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1786104909;
-	 x=1786108509; bh=9t6vVWGin2/hV3L7j/TCmR1fJA0R9Q7skhWDlXyWNn0=; b=
-	ApXsI8wQiHGfrJWB2YMykX/LQvgfbTklsBWEKKV4c942bMomtG66ONlJLTB7tOxh
-	ajhfRol1f/6F8zHFq821JSRDyC2dMdieTSbfsbdRbBNzCun2pKGdrVnCszbHeing
-	TGnNxou99moYyQ71ZbqPm8CYFfU/Ebhg6ih0Y7jG7UPk2jrAqM8XPsbjm0pBj+jr
-	vV/0O0mOvvJwE27qaTH7//uRkg6iByppjhj5EwmEuIgeE+PBGy30P/KqTHnmbO8W
-	O8Bo/EoPFpvjqaPBLjPm5kCM104ldBuMiuBeT5MXsSYwEAA5Nn4zO2usbSly8ICa
-	aYoWW3KlBKZZrh1qWd7tiA==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1786106325;
+	 x=1786109925; bh=Q1E+g6bnUri6S+fG1/p0NTG7ojJNZuYRQtgrRDTGGeQ=; b=
+	Al/HSok48nTEvpMwUPiSx47ZeExBefM+esqQYlGoct3VFYKNxMc7nRPOZW1gh0ya
+	P7k+0pEWS3TiBxg40ngQ5PzA2SeTUERdlDHMpBIyRqQArLEYFIjQMtz8Mkn4O802
+	A1EmeAPdBgchmDwNhC7nMGu1+f9P6uqVw/NhjmrP/fw9NACiFq1ei2YzvpPBrRA/
+	CPD35Jbl5F1lxSh6vC0i2KZcOCA76HcM2Z09BeAdVGI5XEiv358doBT/O3Rr2I+t
+	MX1rdcF0JtcjM8H+ZreZm4rGZs0c9MlV4URRw7xasG26M3bcwwvKOG2WKw7poA9R
+	inkpcqxsdgYHnO1A3iF/Gg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786104909; x=
-	1786108509; bh=9t6vVWGin2/hV3L7j/TCmR1fJA0R9Q7skhWDlXyWNn0=; b=T
-	dqw5b4UKeeSA95WGzqpqvhJUZ92KbjYNp7hkbhykZw28iNiS8tsfDzDle+L9SmFU
-	GlTdmKIKoekYMczvMPc2DMMrFQ44msIe9xxmp+hA8FE/xunlyE5RdI9mSQ6aYPmF
-	OIzIffpin4Pw5h+OHDFiNHH7+k7qsZX76xsPadU7nm5SGAVAq1rAH1DsBq3xK7/H
-	gU0LZ05e6TUM5K1/j3jc2teuUBMaKq9iLjiXTFn48DhzYR6exOLuWD2c/wjrRpAo
-	AdvSAbYpeaZRxjDl27KdlHJ1aSQ0P/KsU6eU08U5txZ8Ercx2yt+8t6GwPrhpcRq
-	iepAq4xKIOJIUxfH+QlBQ==
-X-ME-Sender: <xms:Tcx1atSdMEkWFX2PEKoMEZFekF7vcpuvMYMfEVVhLGZieP2NsCp6-g>
-    <xme:Tcx1amoq0k8azR2YkHnbVmpcoFB8X_rHmI7qA780fWYDUmqxrsCTrOrLLIEJ2qPnb
-    qF-OtINSU2bxhsNpUr1oQs8I-nLjr6XivzlhGrSFAVRqPYaE37Qu5aS>
-X-ME-Received: <xmr:Tcx1agJSJytv-w-7-qz8w_J6DuAH74IIPNjtuq6LsK66mDbj0FNE0QiJq1-itIURLaOsdsaMp_lQ0IkX_is5iKqX>
-X-ME-Proxy-Cause: dmFkZTGVE/taVaZrMtVsPbnNsfT2IIfKBB+TPFEHi1JpTRTchhE9Gl9lvzsibj8Vg+pi0T
-    bYhQzm8VW4eEJEyCMKbahOAcU9jErbfGHi4jDTOGlVbHEnpm2JV9s4zlDeRGljxK2Vbh0+
-    UBn36WN5nvPoKfmXdYGws9BJILNVUCiYRmV9c4IjuRDV0eeF4vaftY4IhZSU1Eoc6eoDDh
-    hORGcVlQzheTcUQ3MAlwkqohmPryPHtCEL3bkIPZnYE5qto1GO5Rjlp5lICyKOTUFewMxH
-    Q1YakXuG/Ns4DXgtRwcs4eG5G2Hp07xKDBxNKkgawTA9bL0hfds6gvmSIcxFci+J/Varhq
-    tJSRtMnJDfO+lbXekv8oAenaND+1DCxtNikeyu9X4RAOD5/9ak2tR91V+8jqhlVz8nIYfv
-    RVQDgrbGwgLj73EmrVBVD73JXbkcuv0zHh1WR/mab3skJ9GWyOv0snO/0X06oJ7Yy+/NIM
-    1+PGHqzRXCA46BNsqHSReiUCeHS4sFRw4v5SYpynKP7NFf09yNXmSpN0w8j7IlprvJNp7Q
-    gU/z1apBRkxOL3ORHwhxjB94X/7LzTAdSKnY3i6Y/elr0w6y96UQ0Q/SEGKOthYgWXxZ+F
-    fAW9Wf3YLYnn9otPl03nxBhuvMbqKwBKrRE4cHIkFTL9XYhBClyrfQFMrBQw
-X-ME-Proxy: <xmx:Tcx1ahNu9PCQEKfeuO3GIXZs2qOwTc7--nZSUP09oZ9PrKBMxFaw0A>
-    <xmx:Tcx1ajrFA10Ux922A6LCLf8Oa3DiZtLIVRutRxFvoVYq8k9Uk2slgQ>
-    <xmx:Tcx1arFbH26CPn6KlC_gr4LrzSFRq9w78nrx9nHwKVEXav0jP7I4VQ>
-    <xmx:Tcx1agLMNzO0yKjbrWskjtWKXt70jNEMjaiUwo80zU7uAPZGfdQbXQ>
-    <xmx:Tcx1ahct-umyByNI94nxDY_iBYuUUPwsgtegElYJ0pjfpjBDomlS6q6u>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786106325; x=
+	1786109925; bh=Q1E+g6bnUri6S+fG1/p0NTG7ojJNZuYRQtgrRDTGGeQ=; b=L
+	tJr42Myn8ntbEpjQMzdecTiBVqBKqVvsu0Zae1XsWQQfMvWceQDOZqz8o7oKVK2k
+	F/v2PTbnVHmCLBEUzSX/bNsbrD7w55emVo0hj+OwvuyaxD2b4PHs1V7oA6vInYFP
+	HDu7G5I9tkBIQOTsJN1kIpLPrRo8NvyG7pi4ya0MGdqCpP7EENtC+dSYRl5xBKop
+	vuThEygZ3Xxo9UuMA98AdfcVSeAzVIMkpLUu7PXTIxLhqv/WtQEjdbXw8EEqdzOz
+	ODTtU4U3jLdTOOnHlVuPymQHoBWcMBN+IKdPazLEp7JoKog2nTwNnt0Nlg3i3mRb
+	iZbFJa52XyNQf0TDp/uDQ==
+X-ME-Sender: <xms:1NF1aln1yjoUcskVk1LJFcvYxFoufQ0LPLUJZS9RLCbz7fF58xl8nA>
+    <xme:1NF1asVzvBMSafwEoLEhxNLuftBKn-q43gGA5WZXcRBndhZ_5wfcCVuMNjfLpG8kX
+    YErCzVsWPuxQh4GLkmUyLgukdtS-_daP0usb8i4j_D6KGviuxMw8TH2>
+X-ME-Received: <xmr:1NF1ahoAjS7DEoPGC3z_bPBXs-_i7YKSaILxvl5JFHtEmvp8ZlH147Z-Vl592csN-Ov6V0ZOivUmThCVPlpK3hPX>
+X-ME-Proxy-Cause: dmFkZTEOaIt++PMr1KNKLbE8267UrsVrkIaqKR7bHGY2LdW6Uwdo91OjyQ1V0oMs6UNtkG
+    KJfN4yN34pHiybwzE8GjcVx0BHRh9oFCQaRaWviUAqWUQsyLGP7lndVeSfupiBIcQe1QWd
+    sEuVP3n8BCW8Q2KoT4yhy/hKV7cppi/CQ90UfkPbeehHcIKW8ZzYiogw1S3Vut3fcZqMLC
+    6TB5R/AQLvIQBJllQ0EAfJhCe0pMlaPUnaoVTW3ayIUW1j3A8UJhp43XO6mTPZcfWflh/n
+    Sx26gyXNvAYyidNuE90lFjjpHqcftmy82/+Th/2R7emXTuZThjsLhVedJLqBUV3tdSe6ba
+    i1MR/oOq6XmYIC7Cc30F1uqKyuD7t9o8a8ZDE4otCKTyDHomcNnvctMzXlXym12L2YkpHo
+    1wp0VoQkaNMhrkHWUovLu6KqQAPnesM1FhNAxFd4MBmeprHmEsvDmn0bpOIGcbJuRjeyKb
+    YVchq/EXdkBKMVyFcso1/CPxS9t/3kpPzrnpB1hsV3vqh6EimvS+uj9w94nhz//P9G/Npt
+    MkacE9oNpvvwBYAB7bRM+nRMUSf2ZcSwXBLeJK4tC/10snPZTEUG7ZAsUDCoXK4mtjaEQQ
+    prl9r0O0mcPYLagOv6zLCiA10J+DT34SdUIVwiKTnPgbY8MR0zP8PstAZU4g
+X-ME-Proxy: <xmx:1NF1ajU8oFq8bJI_WGTE4rsxgnYQQwzgqMUJ89SGCx--5Oc5Jz4IuQ>
+    <xmx:1NF1apCGB1anzbbPeZV_1jIlulytjdBT5L0230cq-gfidIJoCcteuA>
+    <xmx:1NF1avVmKm_8zt3TS_myDDte_fl1GcN2hhGzkbKxME4AzKZrqeGbTQ>
+    <xmx:1NF1av-MrjfBRzjciNJm8J55S3EMHeaRwTtgyZpK1Nw4xhHAULyDCA>
+    <xmx:1dF1akRuFH0Va_QZXjygo17BDrf69VnOIoAIA7P1KIMfIEvMkn8Iw7Iz>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Aug 2026 08:15:03 -0400 (EDT)
-Date: Fri, 07 Aug 2026 21:15:01 +0900 (JST)
-Message-Id: <20260807.211501.1592151404250813286.tomo@flapping.org>
-To: a.hindborg@kernel.org
-Cc: tomo@flapping.org, aliceryhl@google.com, arve@android.com,
- boqun@kernel.org, brauner@kernel.org, cmllamas@google.com,
- gary@garyguo.net, gregkh@linuxfoundation.org, ojeda@kernel.org,
+ 7 Aug 2026 08:38:39 -0400 (EDT)
+Date: Fri, 07 Aug 2026 21:38:37 +0900 (JST)
+Message-Id: <20260807.213837.477414639891260460.tomo@flapping.org>
+To: gary@garyguo.net
+Cc: tomo@flapping.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ arve@android.com, boqun@kernel.org, brauner@kernel.org,
+ cmllamas@google.com, gregkh@linuxfoundation.org, ojeda@kernel.org,
  tkjos@android.com, acourbot@nvidia.com, anna-maria@linutronix.de,
  bjorn3_gh@protonmail.com, dakr@kernel.org, daniel.almeida@collabora.com,
  frederic@kernel.org, jstultz@google.com, lossin@kernel.org,
@@ -83,10 +83,10 @@ Cc: tomo@flapping.org, aliceryhl@google.com, arve@android.com,
 Subject: Re: [PATCH v5 4/7] rust: time: add Delta::to_jiffies() for timeout
  conversion
 From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <871pcb4lxw.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <DKHU7G936M2Z.3A8B6AQLWLEN2@garyguo.net>
 References: <20260806073241.1024319-1-tomo@flapping.org>
 	<20260806073241.1024319-5-tomo@flapping.org>
-	<871pcb4lxw.fsf@t14s.mail-host-address-is-not-set>
+	<DKHU7G936M2Z.3A8B6AQLWLEN2@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -96,9 +96,23 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Thu, 06 Aug 2026 11:50:35 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Thu, 06 Aug 2026 12:50:55 +0100
+"Gary Guo" <gary@garyguo.net> wrote:
 
+> On Thu Aug 6, 2026 at 8:32 AM BST, FUJITA Tomonori wrote:
+>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>
+>> Add Delta<Nsec>::to_jiffies() conversion that rounds up so the
+>> resulting timeout is never shorter than the requested span, clamps a
+>> negative span to an immediate timeout, and saturates an overlong span
+>> to the kernel's MAX_JIFFY_OFFSET "wait forever" value.
+>>
+>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> ---
+>>  rust/kernel/time.rs | 21 +++++++++++++++++++++
+>>  1 file changed, 21 insertions(+)
+>>
 >> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
 >> index 9d65a6c1992a..5844ee985a7b 100644
 >> --- a/rust/kernel/time.rs
@@ -112,9 +126,33 @@ Andreas Hindborg <a.hindborg@kernel.org> wrote:
 >> +    /// The value is rounded up to the next whole jiffy, so the resulting
 >> +    /// timeout is never shorter than `self` (as `msecs_to_jiffies()` does).
 >> +    /// A negative span clamps to zero jiffies (an immediate timeout).
+>> +    #[inline]
+>> +    pub fn to_jiffies(self) -> Delta<Jiffy> {
+>> +        let msecs = self.as_millis_ceil();
+>> +
+>> +        // CAST: `msecs` is clamped to `0..=c_uint::MAX`, so it is non-negative and
+>> +        // fits in `c_uint`.
+>> +        let msecs = msecs.clamp(0, i64::from(crate::ffi::c_uint::MAX)) as crate::ffi::c_uint;
+>> +
+>> +        // SAFETY: `__msecs_to_jiffies()` is always safe to call.
+>> +        let jiffies = unsafe { bindings::__msecs_to_jiffies(msecs) };
+>> +
+>> +        // CAST: `__msecs_to_jiffies()` returns a value in `0..=MAX_JIFFY_OFFSET`, i.e.
+>> +        // `((LONG_MAX >> 1) - 1)`, which is non-negative and well within `isize`.
+>> +        Delta::<Jiffy>::from_jiffies(jiffies as isize)
+>> +    }
 > 
-> Should we rename this to `to_jiffies_timeout` to indicate the clamping
-> logic more clearly? I would expect a function with this name to have a
-> negative `Delta<Nsec>` convert to a negative `Delta<Jiffy>`.
+> This should be using nsec_to_jiffies?
 
-Make sense. I'll rename it.
+nsecs_to_jiffies() is documented as unsuitable here, time.c says:
+
+    Unlike {m,u}secs_to_jiffies, type of input is not unsigned int but
+    u64.  And this doesn't return MAX_JIFFY_OFFSET since this function
+    is designed for scheduler, not for use in device drivers to
+    calculate timeout value.
+
+It also truncates, so it's not suitable for a timeout.
+
+__msecs_to_jiffies() is the timeout-oriented helper: it rounds up and
+saturates to MAX_JIFFY_OFFSET, which is what a timeout wants.
+
