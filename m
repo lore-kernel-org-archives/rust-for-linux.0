@@ -1,114 +1,93 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28C238D40A
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 07:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECE53B47C1;
+	Fri,  7 Aug 2026 07:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786088746; cv=none; b=Nuf0fDTUo8OriLZ51GgA4OYEtgEa/lxIcTPyOwclwrb06r9Y5vZhjkvtUTDszwn3nQ+g7W0VzxNFwvnxO47JUQKm0DdXx9n2gC6HflG5OqyJm+nC647WwnyzqpM2jJe9eFd5m8fwM4H8ZnWbPALggPZ78rTdTD/ILFdQ50v7JGU=
+	t=1786088873; cv=none; b=BdlOlmtmB34a9kGXlfxBOYy8tt46oKABkQIssWPykw/cX0cI3rxEOBNAWmkjFWA7K4ztR1FC/fn/sYlN3NY1iRx1i6WQVC7Iq3TFsOMJGk7AsFJcB4L18knPwFE9mrkX2/GqX3rlrih8DhLWnn97V6q3DK8A43hTQ+JrQc3EkPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786088746; c=relaxed/simple;
-	bh=NTeZEZyafqPk8/2NoFpLPL+V8tanYZzlsAMKuDv00QM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dPXlXfYW2iAcbsgcROjDWwCScOO5vEdFjfL6Y50lbHI9GnLxRW7RGf6XX1pGNUkq6axk3suhwAAZ50wuMuscTNQu9NAMZoCqA5D9Z+/2PrVI5RAWnImn4keSCFOx4ofpcp7zGkpWaJKOOrdr+GY5LjD5PMChKK2ntkniGHXOfu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=A2BUcKrl; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1786088873; c=relaxed/simple;
+	bh=iqIKYNlmCv0hF3AVgPGXQqLOWJcFVEyfZDjmiiwFG6w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ElHmR+7UQ42YVUIQb40jNrx5/vQZYo1DB7fyNyU5lHsLaGDF/gTRlf237N/nwTF5lXW7/3cTpQoIEbRhdrHJqbwLTN4Xjh2HMYs/TBB4EJgTV8tr9/ffuMELZjcV8The6npOrZmEyq7hURzUukVUbyXGPbBuIcBrM4QssGufpJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhXJmGFR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="A2BUcKrl"
-Message-ID: <44744324-888d-44de-b037-11964fbaf037@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1786088741;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9vzjYZ4GSlV7vg5GLvIWnMkpY2opNiPR7FBbvalFXs4=;
-	b=A2BUcKrl6IRA6aZ3wDkjRqUytSUMG6KyzbSH5+11hHEakiM8og8mJNchdDZiUD/jyLUozn
-	AUWvDBBl9golousJyAywmoyTim5/P6RDUEmpj2PNYgadjeq1hKVUtaIPpH5tF8FMWT0u1n
-	DpQCmx6ERwtIaUaI0Jed7xDW1mUd7uw=
-Date: Fri, 7 Aug 2026 15:45:23 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhXJmGFR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DAB1F000E9;
+	Fri,  7 Aug 2026 07:47:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786088871;
+	bh=dpUOm8WmgFWx7EiOz6JPn3kiHIpyo9Na2Sj45FWRUPU=;
+	h=From:To:Cc:Subject:Date;
+	b=WhXJmGFRIWdClSkHdJv6rpV/ynGUh6oPLDCtAxK2j2+5G2s07mPIdR/CLA47LnBMy
+	 IunNkR+DTL5QNgIUNl8KYgKAJA7ShgKrvQdmYvh9lEVJfKEYtJ6P0Xdf0UoZy9lDXd
+	 Arp9quEtgSltFD7Rf3ngixMQ61y8wpEY9hFpLHHhC5WQmdDnXmJ4yBCm0a/SPMsm9q
+	 JbUZgXzb/YbQuM2yaOkWKbtSV1qYHbZ+Kiy2Ytb1zcyOG41ycxpeOttGak1HtntsZw
+	 bS1eulgppaPIdUwqnP/groYil6zYOwMy4dcX0zt4fPO/UZ1XVQr+c7g93pekxG6pB6
+	 1w+RyMHjeYUVw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: linux-next@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH] rust: serdev: replace `__pinned_init` with `raw_try_init`
+Date: Fri,  7 Aug 2026 09:47:29 +0200
+Message-ID: <20260807074729.108159-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH RESEND v13 2/2] rust: fmt: route {:p} through HashedPtr to
- prevent address leaks
-To: Link Mauve <linkmauve@linkmauve.fr>, Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-References: <20260706-hashedptr-v13-0-377a07f2f78d@kylinos.cn>
- <20260706-hashedptr-v13-2-377a07f2f78d@kylinos.cn>
- <anLxCshIflMu-1zI@google.com> <anSZIy78YzTH_CAb@desktop>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Alvin Sun <alvin.sun@linux.dev>
-In-Reply-To: <anSZIy78YzTH_CAb@desktop>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+
+Commit
+
+  ea7da3116015 ("rust: treewide: replace `__pinned_init` with `raw_[try_]init`")
+
+from the pin-init tree replaced the method before removing it, but commit
+
+  99f59aa82341 ("rust: add basic serial device bus abstractions")
+
+from the driver-core tree added a new use.
+
+Thus replace that one as well.
+
+Link: https://lore.kernel.org/rust-for-linux/5ce12a15-3f1e-4279-9b1a-57d6b2faf7c9@sirena.org.uk/
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/serdev.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/serdev.rs b/rust/kernel/serdev.rs
+index c0cd24481ee3..a4927452016e 100644
+--- a/rust/kernel/serdev.rs
++++ b/rust/kernel/serdev.rs
+@@ -197,7 +197,7 @@ extern "C" fn probe_callback(sdev: *mut bindings::serdev_device) -> kernel::ffi:
+             // SAFETY:
+             // - `driver.as_mut_ptr()` is a valid pointer to uninitialized data.
+             // - `private_data.driver` is pinned.
+-            let result = unsafe { data.__pinned_init(driver.as_mut_ptr()) };
++            let result = unsafe { pin_init::raw_try_init(driver.as_mut_ptr(), data) };
+
+             *active = result.is_ok();
 
 
-On 8/6/26 22:24, Link Mauve wrote:
-> On Wed, Aug 05, 2026 at 08:15:06AM +0000, Alice Ryhl wrote:
->> On Mon, Jul 06, 2026 at 01:18:44PM +0800, Ke Sun wrote:
->>> Define a custom `kernel::fmt::Pointer` trait and `HashedPtr` wrapper
->>> so that `{:p}` formatting uses the kernel's `%p` hashed format instead
->>> of printing raw pointer values, preventing kernel address space leaks.
->>>
->>> Signed-off-by: Ke Sun <sunke@kylinos.cn>
->> Overall looks good to me, but one thing:
->>
->>> +impl<T: ?Sized> Pointer for HashedPtr<T> {
->>> +    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
->>> +        use crate::str::CStrExt as _;
->>> +
->>> +        let mut buf = [0u8; 32];
->>> +
->>> +        // SAFETY: `buf` is a valid, writable buffer of 32 bytes, sufficient for all architectures
->>> +        // (max 19 bytes for 64-bit). The format string `c"0x%p"` is null-terminated and `%p`
->>> +        // matches the pointer argument.
->>> +        let len = unsafe {
->>> +            crate::bindings::scnprintf(
->>> +                buf.as_mut_ptr().cast(),
->>> +                buf.len(),
->>> +                // Rust's `{:p}` includes a "0x" prefix, the kernel's `%p` does not.
->>> +                c"0x%p".as_char_ptr(),
->>> +                self.0.cast::<core::ffi::c_void>(),
->>> +            )
->>> +        };
->> When given a null pointer, this will print 0x(null), which seems a bit
->> weird. It may also print 0x(ptrval) or 0x(____ptrval____) during early
->> boot.
-> I’ve also seen a bunch of 0x(ptrval) during testing.
-
-Same `0x(ptrval)` issue — also addressed in v14.
-
->
-> This series resolves a mystery where I thought I was crazy since
-> addresses of pointers and references were never what I thought they
-> were, and instead were always on the stack, thanks a lot for resolving
-> this!
-
-I was just as confused — spent quite a while debugging before
-realizing `{:p}` was the culprit. I'll send v14 shortly, would
-be great if you could give it another spin.
-
->
-> Tested-by: Link Mauve <linkmauve@linkmauve.fr>
-
-Thanks for testing!
-
-Best regards,
-Alvin
-
->
->> It seems like it'd be nice to special-case these to provide better
->> output in those cases.
->>
->> Alice
->>
+base-commit: 1fc711bb8253ffd6fdfcf262bbccac53e8e9ff67
+--
+2.55.0
