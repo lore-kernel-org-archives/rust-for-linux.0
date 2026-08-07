@@ -1,589 +1,179 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022123.outbound.protection.outlook.com [52.101.101.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E26314A95
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 14:09:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786111794; cv=none; b=GT0Yodc49CQbSWCh0KEYl+fmT/3Yv4257Wkx8YBoavKT9blfQdffOJZje4wX9mI+CtSjpBK0e7Ii3g9am9n6lbijtjjk2DLUKlM27s0OmgzryZlB/wZLqFsLU8nvZv/xAGbv+CsQc8iOc+Luwm6E/nC0yquyvoF1n8zzV63SrIY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786111794; c=relaxed/simple;
-	bh=qdMfsQ+6JUOykZrUESeVCQ9Wa6OegXUnhtn5Av4QOoo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=E3qFLcI59/6nx1jAxYF8vcBOV12xLE0Un19cvko0lJ69ajJnl4vAozVuBNrJ4AWTgOWXG0zDP2mPqaxkZjT4s2eDV5w95HqsDy1Tr0SkoM9aNlpC3MiqY0zHn2S8yPiRd6Hcwr/noDRnuQ0hm+sLgjFDR/pUgckXnXrESPq36BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HNXIVgeD; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B1D314A95;
+	Fri,  7 Aug 2026 14:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.123
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786111814; cv=fail; b=N1V4+E9n9wCs8UZ7ghfdTVB0gePVzsqtKL0ZIR9zY5ev5+xX2lOb+J+AM75vJlcJ9iJwglX0R6fp0FQwBKHufJhjEgjUav0snOca6k55CyWuF1jcRnJq6pmoFMIISHP2VKLKhrZ8ehzwKIvp7EtXt8jkiMluv8icwJiUI94eOio=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786111814; c=relaxed/simple;
+	bh=MQbv7uzhi8PiCardfobhTZG7xWrKmeadI7ddhzKNdmA=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=rYgoGj1lSMExyrlvNqeuTlyQVNGZe/OA7K4qfxCGL2gUmtT64ADM7yBp/OFtzKmmQ8WKJ9ZYWpEPT3JbTlC5kCC1SFwC7yVYpNtHtC92xE9vzdOMPc+AcxTlsygLTsR+XymjAtAHzR0P7HU66NNrpQSF6HyoUg7IVApo0x+knyM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=oS7kWMFD; arc=fail smtp.client-ip=52.101.101.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HNXIVgeD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786111787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WJmTmr1ovwUxvnG+63lZARMXkZbeLyPLyhAdbBxSq4U=;
-	b=HNXIVgeDcBBX1arm5VRvbBkGkc0iIb7HXdDFHHbSC4lntPErgVVM4SivA+8EaklD/Ba2N+
-	wPxcjgchuIJtJdt9AbQxNUAom7D7Ptufm78L5S+NbeaBaF24rzPOjckQpq6iMMZLALfwVy
-	uXSSNFVSN+PCk1ObrKqP1ikIOngRrnc=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-711-ocl9oQNhOM-KTdZTFAHE4w-1; Fri, 07 Aug 2026 10:09:43 -0400
-X-MC-Unique: ocl9oQNhOM-KTdZTFAHE4w-1
-X-Mimecast-MFC-AGG-ID: ocl9oQNhOM-KTdZTFAHE4w_1786111782
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4994cf6cdb9so23206195e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Aug 2026 07:09:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786111782; x=1786716582;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WJmTmr1ovwUxvnG+63lZARMXkZbeLyPLyhAdbBxSq4U=;
-        b=iFgV6Qw6aX2PykNa4NgmaOe6TjBy01lW6fw3Dvy2dYaWd+Dmfhy1LRbIoWcAbEr4Rp
-         z/nkxdvt86URAO5XXJPwdVTWLivmZ9VTLbtaWgfelrWynvHK/iehQRq0x0qOfIxHpNr2
-         /QJATa7iQwOfW0OdtpdxE+8bc00WOYZx3qrg08DSxgwshc7uRuJY9Q3DfjBc5EvHsqmW
-         9xnu4Xwmn9ju5ohWajkVfMdrQHoOjbr84WIxtYnMMHCmvv41jMgIYMwEv+gKH4m2c4NX
-         HLofmsbKTfaV+sUq75xpiY8aQe31ehDZuyLAk/pSFHGHeI8DfHCqmgSdA4aaOx14xEAj
-         tLWQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpG1TsLlGBGE4Jl6u7UaSzEwpS832jPFZx+gn0p/PE4iUV4ukqlr/XNE9WEONOFo2bTQhhVHuinsIJQ5fIU6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmDJdsGDuV7n9M1+CoToD/KWfX9YLlnW/+2MHXicVbygKInqsP
-	V6gOAF3j9U0MR45YkWnUXvgWfF5OhVZ/0jF8YCLIR/JDBmC35MRYFODpc4pa+GfL88lLGsSmKRL
-	g56QbFlweRYIFo/h7sRD5Jk8hAn5+PomSev+rx2ZlxYmUcwOPuA9qho3bhV4h5zhInDeU
-X-Gm-Gg: AR+sD11NQW5Q98ZlucHQh1Ad9ssgjMgGaPEax2Tmt1VrJYPjbFKJjnetWSO+nx96fXV
-	AE8Pny1rBQYe9HJTD/CKKzUkK3TNBl51klaCwFv9nCU7vsALtI8kuCcAfUg5AJOxbEbybHs8LHH
-	TNrl3Yqj+jJ+aqLnK/QD4IdzGgtky8Gwt1VZwDlKSOiZcNPqOxKVlqAJafif9VQLYyRncTTd+Vl
-	cBlfUVxlIptumScYdb4DdbhdtHVnugeWItp+3d1mzieGyIjm/uMhEGUD6P0FgyD5ew7uDwGZa56
-	WNekk1U4HCxu/hLxam540uKLAEgjP/CYgOqH2ZIfXYgNEvLxlXLTSJGg6lMtUKiw05mUgY+nz4/
-	QAA==
-X-Received: by 2002:a05:600c:a47:b0:496:c379:b2a1 with SMTP id 5b1f17b1804b1-4994e71296fmr296803595e9.2.1786111782127;
-        Fri, 07 Aug 2026 07:09:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:a47:b0:496:c379:b2a1 with SMTP id 5b1f17b1804b1-4994e71296fmr296802645e9.2.1786111781567;
-        Fri, 07 Aug 2026 07:09:41 -0700 (PDT)
-Received: from sgarzare-redhat ([5.77.96.150])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48002150804sm5963244f8f.13.2026.08.07.07.09.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 07:09:40 -0700 (PDT)
-Date: Fri, 7 Aug 2026 16:09:28 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Manos Pitsidianakis <manos@pitsidianak.is>
-Cc: Miguel Ojeda <ojeda@kernel.org>, 
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Peter Hilber <peter.hilber@oss.qualcomm.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, rust-for-linux@vger.kernel.org, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v3 6/6] samples/rust: Add sample virtio-rtc driver
- [WIP]
-Message-ID: <anXiIAJelE4aj3wq@sgarzare-redhat>
-References: <20260510-rust-virtio-v3-0-1427f14d67e1@pitsidianak.is>
- <20260510-rust-virtio-v3-6-1427f14d67e1@pitsidianak.is>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="oS7kWMFD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Fd8kxnJKyNVtECeFanCaLhXDBn/ktgVdrwzhSXVcl+zPAc2YMzVhVcXnPMN+kvXeU0tBP2EgwlYOmeGbiwv8c3aAAJftXVrxN+1hFn60sAAP4rZ/OpcEGn6H9XE+k7dGDHtDuEHvTfIjn3Am1bHxt+iu2CM3RXyKdVf1mex2xD5GVrWYKT6Prtmaakuu59RP69A3Hin+i/Yun/6RoVDhKwAQrKA7dVbwmZ3QKnLZ4sA7GY1lqgeUnUnuEEUQ2COcfIt+UGsmobuaFQIvjDyjj7JEMR5hx8PamqeEjjNbVbueeCEbLzJgny6vz9Do0lCjtD8u2hdIbs9WM8wwZtb6AA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jH/TMyEOp8vCdWsu8741PJyK49RZiXIG5EepoWIFO9c=;
+ b=s1WEWwXa3EB7UX3v6Zid4R+wXSfRRQqthuGn1qkMNZncfXZT6jdU3a2KQEPtYtGrsR3iIHhJt+RQhtbMK+EoRoaefdp4Mkf6D3OLDUdW0NmwEarTZBqE+rn/etyKnu1wQ/XPuXVHfLEl7PClawJ13lTjwJdZELuovDnLo1Kz0sZqoR4fz6ysOEQ8MSRyW+7W9CzR+Av9uE7dHaBSHvgpG6E2+Zjpta/VfwyQaJLNb1vwLeZRgXFlYNKDUEUIBAWb9gIPudhQQrtTLeLtIix0IGFDIbmLUOj5ikR2AWwJjljb3e6mx/brpR5Baxu7YtYVtDt/+NqWZIuFfORUfWb3nA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jH/TMyEOp8vCdWsu8741PJyK49RZiXIG5EepoWIFO9c=;
+ b=oS7kWMFDIy9Xqpch07O8nWQND6wztyhhUmpOT8JdKDotPB52hG9pn09JnLxWYMkiWd006ewvSe6nHde2nwypsGFUawwfhDflqGqc2bVYFsLBLUL6JPg0R3ZcHPfCS4pSJW7aQGHed6eVv0je0VM82NYmfmjYhrjDI56uCTxwHcY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
+ by CWLP265MB7211.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Fri, 7 Aug
+ 2026 14:09:59 +0000
+Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0292.022; Fri, 7 Aug 2026
+ 14:09:59 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 07 Aug 2026 15:09:58 +0100
+Message-Id: <DKIRSGJA6BM4.2D18NHUDLELEV@garyguo.net>
+Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
+ <work@onurozkan.dev>, "Yury Norov" <yury.norov@gmail.com>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
+ <dri-devel@lists.freedesktop.org>, <linux-doc@vger.kernel.org>
+Subject: Re: [PATCH 01/12] rust: io: add Region::try_subregion
+From: "Gary Guo" <gary@garyguo.net>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
+X-Mailer: aerc 0.21.0
+References: <20260805-pramin-split-v1-0-ff3e84a75dac@nvidia.com>
+ <20260805-pramin-split-v1-1-ff3e84a75dac@nvidia.com>
+ <DKGY508IDAS4.9E9983YWQ2F5@garyguo.net>
+ <DKIRN9CO8EGF.2U1743ODPICPU@nvidia.com>
+In-Reply-To: <DKIRN9CO8EGF.2U1743ODPICPU@nvidia.com>
+X-ClientProxiedBy: LO4P265CA0313.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:390::15) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:4ab::19)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260510-rust-virtio-v3-6-1427f14d67e1@pitsidianak.is>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: c_NkgZIMpF-E-lIHjI4n2dK9IWzV1_Bd2cE5W_zBTkc_1786111782
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB7211:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf547cab-a1fb-4a00-b80f-08def48d90b4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|10070799003|22082099003|18002099003|10067099003|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	NMxddiE3Y5FLyoHhq2OMKFvdhoHK4yBZQ4ytaKQ8BTUMkun/YhluzzEjv6CLfxYk9kb1pzCQua3i6wL/mwcvYqTCP3owZkZ0mCQyD7DibX9JSugW4a8Mq/ZN0+wxMpNKd9a4XlHxELf2L/bJIEX3sNiAFeE63emQc7IMmkUsfAC57qIhM1HW7Ktan363qbVGSBPQ2YZoEFV3kECXVd3zoRvo5K3xAM5qA7vpvdVFZ744Q9Fv2tofQgSuHd2X4nQQUI3fyRUViFIpG+Q9lOEwDQUc8UjlrjmUtMKKIW9pPM+LdMKRGkpF9y/UV4GjpNXc/bLvIu9VHjIYeKIo5AtqM0sRupM2lwGep6bxTHKEQvU5Qe3f7EL/Lj0WXdLoEZuerMhI4HgdBsSNNhJpySTd3Ixi9TwwWC5Ai8Z4uY7Drd2HfWZkSw6CmSNIVXNqdnRC7bxn7xZGApXXvwPj9L3aDNHg6F2o3Cd/3VYVhj0XUmGOe/ozfc0ATIhNwU60O6Df3xNpgH49Hci7ZqFXP9eleJXjJhE653KMs+hzG6NZs9bN8pl4an3GYjq79qJSGZxjqHbSFi2yO5+svaxV798xUuv/lpWb9C0LmgojJAQFxmJ1rH9UhAc22QsVJDE+wOU8nekzlJO5DAXEleSwQIpVnqp2Tv1URCNffAInlowg+8k=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(10070799003)(22082099003)(18002099003)(10067099003)(56012099006)(4143699003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?QnVJWkhSSjBxNHFhZUx0Q2xKYmR2Z20wdXYxQXJsRnpKVkVZOHJMRGxmQVVk?=
+ =?utf-8?B?V09OQVFzQXJJb3JRZTlTVmpGZy93Nk5lSVBIZDlCS1JLQjBkN3A1Tld1SFZ0?=
+ =?utf-8?B?YkMxOU1kQThMQVRCQ3drRllaRzJyR1BVZjRZWlFkZngxbzhOdjh3RWlhRnVi?=
+ =?utf-8?B?SWcrNTlKTE1vVWpPcHUxMnJ5TlN6YTlaK2plc1RhTkNLSnJXQ2ZlMjlrY0la?=
+ =?utf-8?B?bGt3dW9hNE1vVXVTNWRpSnA2RHNwUzYzSVhETVBKN3Y0VFZzVmUzOTNBVGtT?=
+ =?utf-8?B?N0tNL1I0SFpsUTF2TllXMnhYUndCZ3NpQVVDNjNvekpVM3d2RU9JYkRkaFlo?=
+ =?utf-8?B?L1F5YmVnN3VhMGs5bThCaE50MldVZ3JkRVB5UEc4bGRSVWZoV0pHS0pKeE5o?=
+ =?utf-8?B?OFp1S1l3T3Y4MWUvTUJpZngzSVQvNXNqamdOQTlKdVRYYTFLbzJCQlRqOTZq?=
+ =?utf-8?B?ak5XL0ttT0s2N3k0dGNXSFl5UzZ2Vi9FcUQ2ckN4RXZWZUt3d0FwZFRYRmxh?=
+ =?utf-8?B?cXhLMitXdmxvNjhialpJMVdROTRaa1R3UERJNjloQlNPMzZmbkpkcGwyL1da?=
+ =?utf-8?B?UWp2WlFna0RaUithV2UzMWJZT05lUGpLYjZWbUl6TTFjUEt4c1drWHAwb1A0?=
+ =?utf-8?B?aG1qVzJaa1RTcGdWVEhTR25UdkNTZXJsVUx4K0dhYjR0OXIyazQ5TmJmeGdS?=
+ =?utf-8?B?UnZlODJLSGg4azFOSmNjMkdZN1lJYUphQ3N0Vnh3L0pSbk1VZHc5Q0tBV3Z1?=
+ =?utf-8?B?T3dtU1pYbHlRdnVvby9YWDBSSzlETGRBUzlFNUZzVnN0Zy96a0ZzWXV1MTQw?=
+ =?utf-8?B?V085TTMwTVBXZ29NZXI1bUN3aGdoR1NjTWkyOUcrQzQ2cTdTT1pJVFNpVytH?=
+ =?utf-8?B?bmZZSEZ2Q1BwbnJnZ2FiQUNURDNpN2tOUUlNcWFvNlBwblhFOEJnbFg2Vnhv?=
+ =?utf-8?B?dnpHc2s2eGczU1d0QlExVjZqM0xEUWY2YTc4SGxJR2ltWE90QjJGTlV3Z05N?=
+ =?utf-8?B?M1NxUjRZU0tza2ZtdXpkODY3bE5ITzg1R2N5NnY3WEdlNHNDbVNwVVhab0Ji?=
+ =?utf-8?B?bDBySzZUOHdKenlSRmwzRTVvNVVHRUl3WXc1b2V2TzR5MkNFMUpLdG51L2l2?=
+ =?utf-8?B?b1N1K0ZDSm4zK3FlUzJqdzNCVDZoRTczOHc2cTNiZjJRUG5GeFpkQ1dNakl2?=
+ =?utf-8?B?RFFac0VFWE1SVGdnaU8xRjhPMWY5OGluWUJ0OVNqcFY2R0dxaWtzSVFSellE?=
+ =?utf-8?B?VGU0SGJOOUJ2OG1YVjMwa0xZSHRmNFlLeEZyYkZqKzJtMW12Y2hTS2lLbXBl?=
+ =?utf-8?B?RzgybXgwcUorcGE5NCsrMHluR2xxZkFVcWdYUU96c2tGcnlCeXdkRnpzOTRV?=
+ =?utf-8?B?aXl0NC9jZjFTcG9QZUtQbnhmWTZucWdyQ1lFRU54U3FucUlQLy9INXZ6V1FO?=
+ =?utf-8?B?dGd1dzlmMjg1WTBhYnQrdkxMb3hObnpFTzVrL2dPMDlXTVZWRGx0YkF1T2NK?=
+ =?utf-8?B?b1IzL1NsQjJEKzhxVENRKzBhc0RwdE5OZHU3b1lvN25GMnkvdHRtOFdRUlJs?=
+ =?utf-8?B?TDZZYmNFRjJBUDZIK0xMMjJWNU5jNmh3RVNRWXpLRWlkVmtCbkIzMHVUZFFw?=
+ =?utf-8?B?ZXdHck1ScEM2MFJsNXVzUC9qaXJnWlBncEpuWnJrZWZSS3Z0a0tYeW5xdmtH?=
+ =?utf-8?B?NVErUjZMWEV2UGFqd0dNK2dVZXhlMWZWTU0xVGI4ZG0vN0d0VmVmNUYvRHNl?=
+ =?utf-8?B?RnMzaXJrVU9XOG1rWHJaSHBOSjZMWkpCc29IK1ZMK0ZYNE1odTdxTHorMTF6?=
+ =?utf-8?B?NTR0N1lDZU5meUdpeis1b05JaHB4R1gxVUpOV0Z4anFaVU9RT3d4a2JsYW1a?=
+ =?utf-8?B?bzhMczJtSEtsZjl2UnpBdlhXOG9vQm11QmhmWW1INlZXZU03elFVY1RHdEU1?=
+ =?utf-8?B?a0FyeG9Fc0s0SDF5dzFuSVhuM1BNdVdqeGp2YnhUSFZsSS9uYkVvcElMQ0hW?=
+ =?utf-8?B?NmRRVTV6eXR0eU9FMSs5Y2JsMjJpRDMxQzM0MGJLWHBpQ2xYUE81TmVNWFMy?=
+ =?utf-8?B?SCs0cGZNOFNSdjBmcVcrRGsvQlF6MyswSzV1QXpvejZQOTZjbkt4Rm43NUhq?=
+ =?utf-8?B?TnMvb3lMdWx0amRZZW5nQzl5QzBBRzU4OHRUK1RSdXZmeWs2SnpiWGV4Vndo?=
+ =?utf-8?B?dVUvS0pBL2dzU09zb3k4YWdkYkpURko3eUxweU8yc1VIZG5ObXhVdktva2tm?=
+ =?utf-8?B?UU5VYStHQWJJVTQ1aVJrWkZaU3h6ZDFsU0N1QUdCeUw0cDdLbGVBQkpOUWIx?=
+ =?utf-8?B?VjYzQnNLSzJpVGJZL2E0dTJianIrbk42SDlMVUtsd2RpU3hTalpuZz09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf547cab-a1fb-4a00-b80f-08def48d90b4
+X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 14:09:58.9750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WAtAQMe/v4oszs+tSQBn0QZR0EhSekL9HEWhZUHvI3QiV7KX0IPsBjUsSpP9sQpjUSI9mscVKdn82aSzqJkRgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7211
 
-On Sun, May 10, 2026 at 04:38:19PM +0300, Manos Pitsidianakis wrote:
->While the driver queries clocks and capabilities for each clock, it
->doesn't actually register them yet (TODO).
+On Fri Aug 7, 2026 at 3:03 PM BST, Alexandre Courbot wrote:
+> On Wed Aug 5, 2026 at 7:43 PM JST, Gary Guo wrote:
+>> On Wed Aug 5, 2026 at 6:44 AM BST, Eliot Courtney wrote:
+>>> Add a helper to get a subregion of an IO view fallibly.
+>>>
+>>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+>>> ---
+>>>  rust/kernel/io.rs | 31 ++++++++++++++++++++++++++++++-
+>>>  1 file changed, 30 insertions(+), 1 deletion(-)
+>>
+>> Looks like the case where you need this don't actually require a `Region=
+`
+>> (dynamically sized type) but rather a fixed size window?
+>>
+>> In that case the next version of
+>> https://lore.kernel.org/rust-for-linux/20260721-typed_register-v1-0-452d=
+72b60262@garyguo.net/
+>> will contain what you need.
 >
->Until I implement missing functionality, there is some dead code and
->some missing SAFETY comments.
->
->Signed-off-by: Manos Pitsidianakis <manos@pitsidianak.is>
->---
-> MAINTAINERS                     |   1 +
-> samples/rust/Kconfig            |  15 ++
-> samples/rust/Makefile           |   1 +
-> samples/rust/rust_virtio_rtc.rs | 403 ++++++++++++++++++++++++++++++++++++++++
-> 4 files changed, 420 insertions(+)
->
->diff --git a/MAINTAINERS b/MAINTAINERS
->index e8012f708df5d4ee858c82aec3269e615fc8caad..3ed579e8d3cc64d1749cf261cd68f6338a830c4d 100644
->--- a/MAINTAINERS
->+++ b/MAINTAINERS
->@@ -27937,6 +27937,7 @@ S:	Maintained
-> F:	rust/helpers/virtio.c
-> F:	rust/kernel/virtio.rs
-> F:	rust/kernel/virtio/
->+F:	samples/rust/rust_virtio_rtc.rs
->
-> VIRTIO CRYPTO DRIVER
-> M:	Gonglei <arei.gonglei@huawei.com>
->diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
->index c49ab910634596aea4a1a73dac87585e084f420a..96a16aecc27198fd99f4ffd0ecdf0bc0876860c6 100644
->--- a/samples/rust/Kconfig
->+++ b/samples/rust/Kconfig
->@@ -179,4 +179,19 @@ config SAMPLE_RUST_HOSTPROGS
->
-> 	  If unsure, say N.
->
->+config SAMPLE_RUST_VIRTIO_RTC
->+	tristate "Rust Virtio RTC driver"
->+	depends on VIRTIO
->+	depends on PTP_1588_CLOCK_OPTIONAL
->+	help
->+	 This driver provides current time from a Virtio RTC device. The driver
->+	 provides the time through one or more clocks. The Virtio RTC PTP
->+	 clocks and/or the Real Time Clock driver for Virtio RTC must be
->+	 enabled to expose the clocks to userspace.
->+
->+	 To compile this code as a module, choose M here: the module will be
->+	 called rust_virtio_rtc.
->+
->+	 If unsure, say M.
->+
-> endif # SAMPLES_RUST
->diff --git a/samples/rust/Makefile b/samples/rust/Makefile
->index 6c0aaa58ccccfd12ef019f68ca784f6d977bc668..0142fd8656bb8cdc95b7ef54e3183b5e51358954 100644
->--- a/samples/rust/Makefile
->+++ b/samples/rust/Makefile
->@@ -16,6 +16,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
-> obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
-> obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
-> obj-$(CONFIG_SAMPLE_RUST_SOC)			+= rust_soc.o
->+obj-$(CONFIG_SAMPLE_RUST_VIRTIO_RTC)		+= rust_virtio_rtc.o
->
-> rust_print-y := rust_print_main.o rust_print_events.o
->
->diff --git a/samples/rust/rust_virtio_rtc.rs b/samples/rust/rust_virtio_rtc.rs
->new file mode 100644
->index 0000000000000000000000000000000000000000..81f8b377f6c92716c17ea11542fb4262cfd90e1c
->--- /dev/null
->+++ b/samples/rust/rust_virtio_rtc.rs
->@@ -0,0 +1,403 @@
->+// SPDX-License-Identifier: GPL-2.0
->+
->+//! Rust virtio driver sample.
->+
->+use core::{
->+    ptr::NonNull, //
->+    sync::atomic::{
->+        AtomicU16,
->+        Ordering, //
->+    },
->+};
->+
->+use kernel::{
->+    device::{
->+        Bound,
->+        Core, //
->+    },
->+    new_mutex,    //
->+    new_spinlock, //
->+    prelude::*,
->+    sync::{
->+        Completion,
->+        Mutex,
->+        SpinLock, //
->+    },
->+    virtio::{
->+        self,
->+        utils::*,
->+        virtqueue::*, //
->+    },
->+};
->+
->+use pin_init::{
->+    stack_pin_init,
->+    stack_try_pin_init, //
->+};
->+
->+#[pin_data]
->+struct Token {
->+    resp_actual_size: u32,
->+    #[pin]
->+    responded: Completion,
->+}
->+
->+#[derive(Copy, Clone, Debug, Zeroable)]
->+#[repr(C)]
->+#[doc(alias = "virtio_rtc_req_head")]
->+struct ReqHead {
->+    msg_type: Le16,
->+    reserved: [u8; 6],
->+}
->+
->+#[derive(Copy, Clone, Debug, Zeroable)]
->+#[repr(C)]
->+#[doc(alias = "virtio_rtc_resp_head")]
->+struct RespHead {
->+    status: u8,
->+    reserved: [u8; 7],
->+}
->+
->+#[derive(Copy, Clone, Debug, Zeroable)]
->+#[repr(C)]
->+#[doc(alias = "virtio_rtc_resp_cfg")]
->+struct RespCfg {
->+    head: RespHead,
->+    /** # of clocks -> clock ids < num_clocks are valid */
->+    num_clocks: Le16,
->+    reserved: [u8; 6],
->+}
->+
->+#[derive(Debug, Zeroable)]
->+#[repr(C)]
->+#[doc(alias = "virtio_rtc_req_clock_cap")]
->+struct ReqClockCap {
->+    head: ReqHead,
->+    clock_id: Le16,
->+    reserved: [u8; 6],
->+}
->+
->+#[derive(Copy, Clone, Debug, Zeroable)]
->+#[repr(C)]
->+#[doc(alias = "virtio_rtc_resp_clock_cap")]
->+struct RespClockCap {
->+    head: RespHead,
->+    clock_type: u8,
->+    leap_second_smearing: u8,
->+    flags: u8,
->+    reserved: [u8; 5],
->+}
->+
->+#[derive(Debug, Zeroable)]
->+#[repr(C)]
->+#[doc(alias = "virtio_rtc_req_read")]
->+struct ReqRead {
->+    head: ReqHead,
->+    clock_id: Le16,
->+    reserved: [u8; 6],
->+}
->+
->+#[derive(Copy, Clone, Debug, Zeroable)]
->+#[repr(C)]
->+#[doc(alias = "virtio_rtc_resp_read")]
->+struct RespRead {
->+    head: RespHead,
->+    clock_reading: Le64,
->+}
->+
->+#[repr(u8)]
->+enum ClockType {
->+    #[doc(alias = "VIRTIO_RTC_CLOCK_UTC")]
->+    Utc = 0,
->+    #[doc(alias = "VIRTIO_RTC_CLOCK_TAI")]
->+    Tai = 1,
->+    #[doc(alias = "VIRTIO_RTC_CLOCK_MONOTONIC")]
->+    Monotonic = 2,
->+    #[doc(alias = "VIRTIO_RTC_CLOCK_UTC_SMEARED")]
->+    UtcSmeared = 3,
->+    #[doc(alias = "VIRTIO_RTC_CLOCK_UTC_MAYBE_SMEARED")]
->+    UtcMaybeSmeared = 4,
->+}
->+
->+/// Send a message and receive reply
->+fn send<Request: Zeroable + 'static, Response: Zeroable + Copy + 'static>(
->+    req_data: Request,
->+    vq: &SpinLock<VirtioRtcVq>,
->+    timeout_jiffies: c_ulong,
->+) -> Result<Response> {
->+    // FIXME: This lock should also disable irqs.
->+    let guard = vq.lock();
->+
->+    let req = VBox::<Request>::new(req_data, GFP_KERNEL)?;
+> Looks like we are going to need to full series (or at least until and
+> including patch 11) before this can get in. Gary, what tree are you
+> planning to merge the register projection series into? It would be nice
+> if we could do it in a way that makes it possible for this series to be
+> merged shortly after (either through `drm-rust-next`, or a merged signed
+> tag) for the next cycle.
 
-I think we need to be careful with GFP_KERNEL allocations and spinlock, 
-since IIRC GFP_KERNEL allocations may sleep.
+I think a topic branch next cycle would be the best approach. That said, gi=
+ven
+that all non-sample drivers using it is drm, this can be taken through drm-=
+rust
+too. I guess it's Danilo's call.
 
->+    let mut resp = VBox::<Response>::new_uninit(GFP_KERNEL)?;
->+    let resp_ptr = NonNull::new(resp.as_mut_ptr()).unwrap();
->+
->+    stack_pin_init!(let token = pin_init!(Token {
->+        resp_actual_size: 0,
->+        responded <- Completion::new(),
->+    }));
->+    stack_try_pin_init!(let req_sgs = guard.reqvq().new_readable_sgtable(req, GFP_KERNEL));
->+    let req_sgs: Pin<&mut _> = req_sgs?;
->+    stack_try_pin_init!(let resp_sgs = guard.reqvq().new_writable_sgtable(resp, GFP_KERNEL));
->+    let resp_sgs: Pin<&mut _> = resp_sgs?;
->+
->+    guard
->+        .reqvq()
->+        .add_sgs(&req_sgs, &resp_sgs, token.as_ref(), GFP_ATOMIC)?;
->+
->+    if guard.reqvq().kick_prepare() {
->+        guard.reqvq().notify();
->+    }
->+    drop(guard);
->+
->+    if timeout_jiffies > 0 {
->+        token
->+            .responded
->+            .wait_for_completion_interruptible_timeout(timeout_jiffies)?;
->+    } else {
->+        token.responded.wait_for_completion_interruptible()?;
->+    }
->+
->+    if token.resp_actual_size as usize >= core::mem::size_of::<RespHead>() {
->+        // SAFETY: all response types contain a `RespHead` header at the start.
->+        let head: &RespHead = unsafe { resp_ptr.cast().as_ref() };
->+        match head.status {
->+            0 => {
->+                // OK, do nothing.
->+            }
->+            1 => return Err(ENOTSUPP),
->+            2 => return Err(ENODEV),
->+            3 => return Err(EINVAL),
->+            4 | 5_u8..=u8::MAX => return Err(EIO),
->+        }
->+    } else if token.resp_actual_size as usize != core::mem::size_of::<Response>() {
-
-I think we should remove the else here, or check this condition first.
-
->+        return Err(EINVAL);
->+    }
->+    // SAFETY: we have checked that the device wrote the correct amount of bytes for this type and
->+    // has returned a successful status code.
->+    let resp = unsafe { *resp_ptr.as_ref() };
->+
->+    Ok(resp)
->+}
->+
->+const VIRTIO_RTC_REQ_READ: u16 = 0x0001;
->+const VIRTIO_RTC_REQ_CFG: u16 = 0x1000;
->+const VIRTIO_RTC_REQ_CLOCK_CAP: u16 = 0x1001;
->+
->+struct VirtioRtcVq {
->+    inner: Virtqueues,
->+}
->+
->+// SAFETY: `VirtioRtcVq` is safe to be send to any task.
->+unsafe impl Send for VirtioRtcVq {}
->+
->+impl VirtioRtcVq {
->+    fn new(inner: Virtqueues) -> impl PinInit<SpinLock<Self>> {
->+        new_spinlock!(Self { inner })
->+    }
->+
->+    fn reqvq(&self) -> &Virtqueue {
->+        unsafe { self.inner[0].as_ref() }
->+    }
->+}
->+
->+#[pin_data(PinnedDrop)]
->+struct VirtioRtcDriver {
->+    #[pin]
->+    virtqueues: SpinLock<VirtioRtcVq>,
->+    num_clocks: AtomicU16,
->+    #[pin]
->+    registered_clocks: Mutex<KVec<()>>,
->+}
->+
->+#[pinned_drop]
->+impl PinnedDrop for VirtioRtcDriver {
->+    fn drop(self: Pin<&mut Self>) {
->+        pr_info!("Remove Rust virtio driver sample.\n");
->+    }
->+}
->+
->+extern "C" fn vq_requestq_callback(vq: *mut kernel::bindings::virtqueue) {
->+    // SAFETY: The kernel called this virtqueue callback and it must have provided a valid `vq`
->+    // pointer
->+    let vq = unsafe { Virtqueue::from_raw(vq) };
->+    let dev: &virtio::Device<Bound> = vq.dev().expect("Could not get device");
->+    let data = dev
->+        .as_ref()
->+        .drvdata::<VirtioRtcDriver>()
->+        .expect("Could not borrow drvdata");
->+    data.process_requestq();
->+}
->+
->+impl VirtioRtcDriver {
->+    /// Submit `VIRTIO_RTC_REQ_CFG` and return response (`num_clocks`)
->+    fn req_cfg(&self) -> Result<u16> {
->+        let head = ReqHead {
->+            msg_type: VIRTIO_RTC_REQ_CFG.into(),
->+            reserved: [0; 6],
->+        };
->+        let response: RespCfg = send(head, &self.virtqueues, 0)?;
->+        pr_info!("Got response! {response:?}\n");
->+
->+        Ok(response.num_clocks.into())
->+    }
->+
->+    fn process_requestq(&self) {
->+        let mut cb_enabled = true;
->+        loop {
->+            // FIXME: This lock should also disable irqs.
->+            let guard = self.virtqueues.lock();
->+            if cb_enabled {
->+                guard.reqvq().disable_cb();
->+                cb_enabled = false;
->+            }
->+            if let Some((token, len)) = guard.reqvq().get_buf() {
->+                drop(guard);
->+                pr_info!("process_requestq got buf {len} bytes\n");
->+                let mut token = token.cast::<Token>();
->+                // SAFETY: pointer points to a valid Token that we have added to the virtqueue.
->+                let token_ref = unsafe { token.as_mut() };
-
-Could this be an UB?
-
-IIUC send() still holds a Pin<&mut Token> on its stack, blocked in the 
-completion wait, so we will have 2 exclusive references to the same 
-object.
-
-
->+                token_ref.resp_actual_size = len;
->+                token_ref.responded.complete_all();
->+                pr_info!("process_requestq ok\n");
->+            } else {
->+                if guard.reqvq().enable_cb() {
->+                    return;
->+                }
->+                cb_enabled = true;
->+            }
->+        }
->+    }
->+
->+    fn clock_cap(&self, clock_id: u16) -> Result<RespClockCap> {
->+        let req = ReqClockCap {
->+            head: ReqHead {
->+                msg_type: VIRTIO_RTC_REQ_CLOCK_CAP.into(),
->+                reserved: [0; 6],
->+            },
->+            clock_id: clock_id.into(),
->+            reserved: [0; 6],
->+        };
->+        let response: RespClockCap = send(req, &self.virtqueues, 0)?;
->+        pr_info!("Got response: {response:?}\n");
->+        Ok(response)
->+    }
->+
->+    fn read(&self, clock_id: u16) -> Result<u64> {
->+        let req = ReqRead {
->+            head: ReqHead {
->+                msg_type: VIRTIO_RTC_REQ_READ.into(),
->+                reserved: [0; 6],
->+            },
->+            clock_id: clock_id.into(),
->+            reserved: [0; 6],
->+        };
->+        let response: RespRead = send(req, &self.virtqueues, 0)?;
->+        pr_info!("Got response: {response:?}\n");
->+        Ok(response.clock_reading.into())
->+    }
->+}
->+
->+impl virtio::Driver for VirtioRtcDriver {
->+    type IdInfo = ();
->+
->+    /// The table of device ids supported by the driver.
->+    const ID_TABLE: virtio::IdTable<Self::IdInfo> = &VIRTIO_RTC_TABLE;
->+
->+    fn probe(vdev: &virtio::Device<Core>) -> impl PinInit<Self, Error> {
->+        let vqs_info: [VirtqueueInfo; 1] = [
->+            VirtqueueInfo::new(c"requestq", false, Some(vq_requestq_callback)),
->+            //VirtqueueInfo::new(c"alarmq", false, vq_callback),
->+        ];
->+        try_pin_init!(Self {
->+            num_clocks: AtomicU16::new(0),
->+            virtqueues <- {
->+                pr_info!("Probe Rust virtio driver sample.\n");
->+                let vqs = match vdev.find_vqs(&vqs_info) {
->+                    Ok(vqs) => {
->+                        pr_info!("Found {} vqs.\n", vqs.len());
->+                        vqs
->+                    }
->+                    Err(err) => {
->+                        pr_info!("Could not find vqs: {err:?}.\n");
->+
->+                        return Err(err);
->+                    }
->+                };
->+
->+                VirtioRtcVq::new(vqs)
->+            },
->+            registered_clocks <- new_mutex!(KVec::with_capacity(0, GFP_KERNEL)?),
->+        })
->+    }
->+
->+    fn init(&self, vdev: &virtio::Device<Bound>) -> Result {
->+        let num_clocks = self.req_cfg()?;
->+        self.num_clocks.store(num_clocks, Ordering::SeqCst);
->+        for i in 0..num_clocks {
->+            let mut is_exposed = false;
->+
->+            let resp = self.clock_cap(i)?;
->+            let (clock_type, leap_second_smearing, flags) =
->+                (resp.clock_type, resp.leap_second_smearing, resp.flags);
->+            if cfg!(CONFIG_VIRTIO_RTC_CLASS)
->+                && (clock_type == ClockType::Utc as u8
->+                    || clock_type == ClockType::UtcSmeared as u8
->+                    || clock_type == ClockType::UtcMaybeSmeared as u8)
->+            {
->+                // TODO:
->+
->+                // 	ret = viortc_init_rtc_class_clock(viortc, vio_clk_id,
->+                // 					  clock_type, flags);
->+                // 	if (ret < 0)
->+                // 		return ret;
->+                // 	if (ret > 0)
->+                // 		is_exposed = true;
->+                dev_warn!(vdev.as_ref(), "CONFIG_VIRTIO_RTC_CLASS TODO ");
->+            }
->+
->+            if cfg!(CONFIG_VIRTIO_RTC_PTP) {
->+                // TODO:
->+
->+                // 	ret = viortc_init_ptp_clock(viortc, vio_clk_id, clock_type,
->+                // 				    leap_second_smearing);
->+                // 	if (ret < 0)
->+                // 		return ret;
->+                // 	if (ret > 0)
->+                // 		is_exposed = true;
->+                // todo!()
->+                dev_warn!(vdev.as_ref(), "CONFIG_VIRTIO_RTC_PTP TODO ");
->+            }
->+
->+            if !is_exposed {
->+                dev_warn!(
->+                    vdev.as_ref(),
->+                    "cannot expose clock {i} (type {clock_type}, variant {leap_second_smearing}, \
->+                    flags {flags}) to userspace\n"
->+                );
->+            }
->+            let clock_reading = self.read(i)?;
->+            pr_info!("#{i} clock reading = {clock_reading}\n");
->+        }
->+        Ok(())
->+    }
->+
->+    fn remove(_: &virtio::Device<Core>, _this: Pin<&Self>) {
->+        pr_info!("Removing Rust virtio driver sample.\n");
->+    }
->+}
->+
->+kernel::virtio_device_table!(
->+    VIRTIO_RTC_TABLE,
->+    MODULE_VIRTIO_RTC_TABLE,
->+    <VirtioRtcDriver as virtio::Driver>::IdInfo,
->+    [(virtio::DeviceId::new(virtio::VirtioID::Clock), ())]
->+);
->+
->+kernel::module_virtio_driver! {
->+    type: VirtioRtcDriver,
->+    name: "rust_virtio_rtc",
->+    authors: ["Manos Pitsidianakis"],
->+    description: "Rust virtio driver",
->+    license: "GPL v2",
->+}
->
->-- 
->2.47.3
->
-
+Best,
+Gary
