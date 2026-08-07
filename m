@@ -1,73 +1,69 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022088.outbound.protection.outlook.com [52.101.101.88])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010066.outbound.protection.outlook.com [52.101.201.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731792848A7;
-	Fri,  7 Aug 2026 01:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1275E38423A;
+	Fri,  7 Aug 2026 01:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786065986; cv=fail; b=H7VS+DErn5Y6XtoXAMuXj4kzf1AnEbg2Xqe5E2KKM7WFVsELhKwlsVwxY5SVNBz4rr/5k7oO0S1zZf+RR4RphVNQxpghQk+eNEqnYEuEJF9bv/p3fKITQTK2H/lH8guIYk0sKkIVRiyEkrRZ640wxV1Nbed44fdRC6akewzNI4g=
+	t=1786066690; cv=fail; b=fAhDkvWxLduFbDxSKEG4hOMw9Fm1uGcss3kpsh015Y6UY2+dYv9+1edy9KFohcE1o/M3YYb4GcYOXbnmdmd7g7W9C32yAlDXX4MiQe5cbGpiRKUyizPNCsrSpRm+ILWTMaecfI3ZE+HFRHoJ44/exyn+1g/MMyo15f9RzFlQpl0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786065986; c=relaxed/simple;
-	bh=ImVhxylc66HaNhGJ8iZimEfvBYGytgvWcibN8s/M8io=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dQ2qCn9wIJDgskxp0Gsvd0kFt4G3/Krr+rhLYoRNf7iFiLf0/bG7cw36SNm9bf/NKJtGBSPC9fZUz0yuv3ZbjlEeDG6npv/hHKyEPvPg4jQLyMt7lPqhHPUVv7TjGv0IzSGgF0d0r6uapnwJ73U/WiDho4/WJcja7bX/akRn4U0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com; spf=pass smtp.mailfrom=atomlin.com; arc=fail smtp.client-ip=52.101.101.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atomlin.com
+	s=arc-20240116; t=1786066690; c=relaxed/simple;
+	bh=dh5uOVVF9wrTGX8dFTlUwUEpeCqcLPbDmwZPFQCEl4Q=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=IG/rlOCI6lzYgS0ZbSRvxqJynGfzqKGnxs5SjgFPDvP5z4zdnada1moW9x4VDEvR90DMQLTjmxXa16NAji+ws4ch7/qWSLbTFC1DvlntFYMSIK+QPAXk0OApKQ1mXb/usDKjcg391xVifM162tp5ijFD9PD2OVfywaQyg0933JA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=W+uzjGAB; arc=fail smtp.client-ip=52.101.201.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="W+uzjGAB"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zIrtrhGRRPYoIvRYxnhjElkDCluX4XBlJudkbk+xSnJDGouZHCnlWdcxxA1NQBdza0iFzqbC65wp/UpF1U9BQKaIyyLsSkkxlmkUxiEsP9vzsdPUc4Q1zrH/kxdTxo0HzyMqaDAw/u2WoyyhuMrxr+KLHRa5q2cLzQYrqx7+nYapJ+hQP99/8q+R+rKgznMpHrGf2kuL9yAAFJa779IIkZxRLjMzPTK/BkfndIo6uIHAfMplHLHxFQJW1JfW4K5VAxg0NfuS4OQNzBI1r9vov0txU52FPpjGo6co3PRZLalfP1yYXoPVWicNcseFqyztPFzas/SzrJ2fojHH3psKOQ==
+ b=iqtOVb7RBfc3IhWAwrzgvB+mqwu380+jtRPq6AvQT9+Q57MQ6swLBaRsC6rCtlRqZ8nuiFhkJGvxi27Z1+v4l6pUlUTnjyuPx30b5UckNIV09JDU58xYsvPOs/tnUoxU5SVLIvH7T9gofY2/pRHh+Hqt2n/sF31Gyn5zR6oXVKVLSNlW5q9sBE2kZoYZnrYkf6CC7ti8T+kiutZGmosi0aq775h/TdsgQdsue4uN0Yk2mFqzQFar7ik1SoShGklM7os9Fo22arguPJNFvxBY6xDz0r6m+janxg13RmACTyLgfE1oycqt3f668zfXFOFwQJDVfCGyUyuLRo2mlEWZog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
- bh=0AFnfe52hbVxL0t88LiVjX5Q4Js9R0jzoIXJ4mWkGo4=;
- b=IHWTi1LeKzk303UOJz4IQm74IQZtxPOYCH2POKk5cW/2JKr8GWIzrokwBfyJXdpWBwf0o207w+VzAVhNJdjpIHDInBohfctJm+ChaZGz+45O+TM5NNY0ehA8Sm4lWECzig8ySn6v3+GSkf7UfaOVsSlhRSrkWRiLmLCGYxcV9c8/ymq0BmyIjTZFpn5nEvAYhuPGsuACM8LgJsFVA9mtrWZl8O2DDKPkGXXF8FhXY1xdPCoMx+GjJI2V0KWstzpFRPAp6lZZRjcwgNVyu8SLufgCdkTtAKVfkPm/kM7C82P852CrzgS7ZsXiC9JDzPdMDYDWxko1//+Y1wOxtG8LCw==
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x/kFY7caVr+CJO19u4aNehB+8SuGAcrg3RX4ACfwIvs=;
+ b=nI9z49gWo3PjK/YWs5g02whmSuRum8nJg2CEwXkt871u9pgd2eGQooOcG2hLwvvXrw9VlPENjM6naTZNZ69i4MinBHmYo3dmlZJDOK5CoyTNIt4gCbQ1rcc2UPGCLYYLMN6Ww9C/jh4ySWBnEXACfsA6KzsLCXh2W/89Kk+1EOWiT1OP2QziYC6WxWPVggCSs92WNlYMMN1LI8iLL2hG6OHSgliynf0E4vUyFevr3eDIUAZdprbk8w0Nfecm7xRsk9s9ZqybtC6ABpGiNAxUuE2D5k9L3R/a9uWV0qyxo7kILya761TISYTnSxZO/6xDeNstIAUldhtbL7emr2+HtQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
- dkim=pass header.d=atomlin.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x/kFY7caVr+CJO19u4aNehB+8SuGAcrg3RX4ACfwIvs=;
+ b=W+uzjGABk9YL4he4y2TeNiCKpTOoMrfOrMBt2ZmlNq23uf2Zpi/qf7w/9xX4VXm+VJMlATiV5466kob52XVy5H+ythPq2TJiSV9kAd6DbIt1KPJjT87+xtzfsRN61Aolt+gSM7ENj8iU9en3GrI+p4h/ca0W/jmfbfbsb/gtpqSzFqnY7sRNwNGkE4IFWOJSDmgpwrNKi/kg9KAGYh2VjFzpWO98cGuwldPHUs5+ZAucZc8PSZW1zAppYmzTFc7eXyxKNQlrXgw2p+brhiC6D+idcMj8yGwXFFPMZCI0gCR7EaFzo6SEJVBtgURnU3KdD6AmemOI8SgJEhEzsf7sfA==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=atomlin.com;
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:183::5)
- by LO3P123MB2825.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:fb::11) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ MW4PR12MB5666.namprd12.prod.outlook.com (2603:10b6:303:188::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Fri, 7 Aug
- 2026 01:26:13 +0000
-Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230]) by CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- ([fe80::cec4:77ab:262e:d230%4]) with mapi id 15.21.0292.022; Fri, 7 Aug 2026
- 01:26:13 +0000
-From: Aaron Tomlin <atomlin@atomlin.com>
-To: arnd@arndb.de,
-	mcgrof@kernel.org,
-	petr.pavlu@suse.com,
-	da.gomez@kernel.org,
-	samitolvanen@google.com,
-	peterz@infradead.org,
-	ojeda@kernel.org
-Cc: akpm@linux-foundation.org,
-	mhiramat@kernel.org,
-	boqun@kernel.org,
-	atomlin@atomlin.com,
-	neelx@suse.com,
-	da.anzani@gmail.com,
-	sean@ashe.io,
-	chjohnst@mail.com,
-	steve@abita.co,
-	mproche@mail.com,
-	nick.lane@mail.com,
-	linux-arch@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v9 2/2] module: Rename module_blacklist to module_denylist
-Date: Thu,  6 Aug 2026 21:26:01 -0400
-Message-ID: <20260807012601.360452-3-atomlin@atomlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260807012601.360452-1-atomlin@atomlin.com>
-References: <20260807012601.360452-1-atomlin@atomlin.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BN9PR03CA0034.namprd03.prod.outlook.com
- (2603:10b6:408:fb::9) To CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:183::5)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Fri, 7 Aug
+ 2026 01:37:58 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%4]) with mapi id 15.21.0292.019; Fri, 7 Aug 2026
+ 01:37:58 +0000
+Message-ID: <c5fae595-2407-42cf-8040-384699df537d@nvidia.com>
+Date: Thu, 6 Aug 2026 18:37:56 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/7] rust: workqueue: add Work::cancel_work_sync()
+To: Danilo Krummrich <dakr@kernel.org>, tj@kernel.org,
+ jiangshanlai@gmail.com, aliceryhl@google.com, ojeda@kernel.org,
+ boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+ daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com,
+ work@onurozkan.dev
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev
+References: <20260804195248.665636-1-dakr@kernel.org>
+ <20260804195248.665636-7-dakr@kernel.org>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20260804195248.665636-7-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR05CA0016.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b::21) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -75,173 +71,140 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CWLP123MB6607:EE_|LO3P123MB2825:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb94f421-3b1d-4844-d1ec-08def422de43
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MW4PR12MB5666:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25f25bf4-7d77-47df-5deb-08def42482b5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|18002099003|22082099003|3023799007|5023799004|10067099003|56012099006;
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|22082099003|18002099003|56012099006|4143699003|11063799006|6133799003|10067099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	7GQUggOSgYlCoSyoX8NQZ5nhw6QbhHWM+0Mpw58pcb5aBOGukAjJj9HwjmY7UnWmMdmSksLU7lQOJP6LYJyk/MxwuDvfbQasq4dy4rVYBTSjqRxA5fInvYFBvu4dZWKTY28OlCqYnDf+xDnwycujId9h3TqdOo+9LhtkUzqMcJjST4AAPWjzVZgW5i56pdKS8oQ/hHbKgezvvV/r1ZbMkCgPRM/7UsvfX2UCcqESWEUlaUAZDvrTVf44/HX6cJ01bSm7uqIB77MV7dXx+5SVZQhwZKj5yyL1h8rEPKwlGj00rDcT3CXnEi/iGq2SlUhqQ/WvPg+r1d7icH8oilwGugZ7A9dUd0txyz1o713gtKlwpt92Lexi+qBEv7Kmwg3cS2yQRXGNYNF8bVm6KcJCagln5aSUJAelSoKVItDhJDrsUI3vXOl6D23jdHMkLecRcQVIGPZzlNmhVgbSx8GIGzXDeDea8MA3eK7JWSYXXXiIQKZy6fB8GLh348btjt3hdXWbXNKPIGm59iLbkG4Qz7u+GGCHUMLnrKpxiKH03eydoMXgxaZHvkvUytHpOdPPo16iiKpdcNqDf8ehOj9PFZy28OnJlshWnwA26KTgSBxzuW1a2nPdCA/swhPB3mJgoZKLoE+GlXlUWePx3xGczLXSZ20uFP9A5rmoap/+ehw=
+	bBFh5Q9GHS7raj24NgkQOozwNrukAOEKL1mk/vZ5BwFT716Ses8MYe6xJ3CxeTMygrlx957DKVfLGQGKVkM6IeZ+WFOWNTky2OFpBPD3oiaPWlOY28xr8p+U5JYWBPLJTIVQSYHDbV/kjrCl81R6MYEdfgSHXFV/QKnYTE0d6MJx4Z9w9DjuXP7mQeu/yVbipN8qMpFAwy5E2rTmHZ+DU0A6b2z4YDsz3iL0t6Yb+vdtq5vwrQ0D6mrOLfbeU15fLj1Xyo5EoYrlBUkZMk0J3C7+XU+wor8NaNcIDpkByOFuVJVmibtfhh5jkmYtAv7+Xcc9kb6ukTVx6mPiXEr/P29nvXey1oPCIaq6KIWgAlOyzuOItIyipMBLXLQvWbDv40eH002vHf/0dR1WBrYQ4VlvEjbD23ngBPRS1I+QbmlCnpW55i6grF4jxagNnRItb3SmgP66jvn2ipdAwjFpYkMlz0UDvvTVGt6CAWZD+PfKxsLgcadWhTfEfJa8nnTFb7AAfgloAvWLelE/q7cxenaIc+YqC0UwmPHXUZt7zdoCJGyB6+hfIj3jaqG0WEbuF5+XZEFgQtaaaM7c7RGxz0bvVtcAKmG0F67Ze00KbwlITozXhgrheQErIgSxN8QfHs50WH95Ejmo498cnNs6qsUJQkiYN3lzu/1B0Pf2fT4SBbEtfuHifxocswBz/zPoAyEJfpGKg+3xjBd87qLbmw==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(18002099003)(22082099003)(3023799007)(5023799004)(10067099003)(56012099006);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(6133799003)(10067099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QICnhBo/HX3fHfNWTfTEVkbilZodeTuUz4vuY1q63j34TF1FGfd/751FzHqI?=
- =?us-ascii?Q?xEL3r+bEAsHttlQ8gHWpIUBM83WaMS8P5tghtSEv5WMTuxLQn3YE0WDikmii?=
- =?us-ascii?Q?j/nZyUsUwKDl0PK3xyjieSLi8q9qfip9nz3R8CxayPq4+qloW2xG/1WWVbQO?=
- =?us-ascii?Q?1EcSyVPkukuohlk+A0SUR/gZLbNala+qTLhv40kH6Rx8Eiacq1fdehhfME79?=
- =?us-ascii?Q?CEiclGQboVsAItsM4vyupeqPjcecu6iZ1ivNUssYter2LRIWG517oz+qGE3x?=
- =?us-ascii?Q?pg4DFQcKPXVdCc3NCUxKSDNbDY0fgcjNrFhRp/FvpAHjjYY0ELLpPdjO03/9?=
- =?us-ascii?Q?0X0nuC48Lq8PygMJ06uX64AGhttr4Jp3uf8Cw/gMYnZv9yYJX9laJ6Ppsheb?=
- =?us-ascii?Q?W+XnBi1Hjo4L89/G1c5eEoohJxlJr4gn8mk54OiMstFaOfQY69pbumYHxoP/?=
- =?us-ascii?Q?Qf6EMXaadWgUypfZCI6cEyW3kRFV/M0Em/bfFJfp6Axxk11IUkKA6zwKT/bR?=
- =?us-ascii?Q?aF6ILHvighqn5KfYgWpiAe5JV8QWqW2JgfHK/7KTWQ+5zy+E1riAxS0tLPuK?=
- =?us-ascii?Q?6WMFi3ZWZ6JVbZRlrtg56c9gqzKw8WTzj4olfl40rzZp1Hazk02VkNYDAZ5O?=
- =?us-ascii?Q?hhGfK6gbjcAwWXAn59BrouT8JW+1nE7uBH8w6gyoL/2RtqXicINIdMh9aqje?=
- =?us-ascii?Q?inykxDpU5tr/y5OLaCUk6MQixxjNhYpMsDTTxhwOgUP15WB0HxO3ES6ZGUiC?=
- =?us-ascii?Q?XPY1Hf3KRp9G8DJKvp91zcuOs3/dfi2fBc49Hd7HRcayaVIrhH7BUjMOvmaP?=
- =?us-ascii?Q?4/yGlbKvmvx8Ch3VudVwvJiFwgiRfc0np8a4nfcROaSi+ezdjurNYHFeqAft?=
- =?us-ascii?Q?kTcVEIKvLnpxp3nX0nSTt7LuX5oPcyx3OMDSL7Ozy2x3Gwhnawk5ejIoEMTq?=
- =?us-ascii?Q?l231wfjh8W3VYu9NEBH2FPGvQSozwwk8OZfVPscx/Im6nWtSUKMnTA4bu1D4?=
- =?us-ascii?Q?3uYp4734YSNtXzATLmIfzqzLKeYKxMEuQuzONov29U5FQwAuPkdj9kv6Bb6q?=
- =?us-ascii?Q?Ez9FSJZRoe+z960LIIkH0OfZG8smRRqYBq+X0hdOrpTJpOXx9jM7PaDhLzEY?=
- =?us-ascii?Q?Ylbqb3UFey2o+5HBBZTey6QubDRBiIHDzb+WBJwObpiXeU3qgfOyEa9iiE0c?=
- =?us-ascii?Q?v6u8ItM3lvRsClv63kmPs9XL6RTdDnlXsDLx7yJBY9R+D+hvF//4TJ9cNU3R?=
- =?us-ascii?Q?4s2Y2YfbSo9tq1BRi/lD8aOiaaGaXgCldmnaR9DPnNSLMtuotV9/IhuM2YeS?=
- =?us-ascii?Q?n+K/NMrGeyBvcmTxrWRH53ElwytRrUAiYQvOfyMQ1SMkSKmBVmgCsS6IQPfo?=
- =?us-ascii?Q?Ovsv4Im9MN6w9yzMbwWNloTBJAmrXHPU2RPP/wbNvVjhM4gXhEKo7RFvDbix?=
- =?us-ascii?Q?LlkrmzhoeGFQVkynn4z0UVUr8+/znuHvujO+I3pbmcaZ/Dv0khDvBWimw1BS?=
- =?us-ascii?Q?evxTgy4rF2h4l3d47Eg9FTu/p9dDD7nWhK2cW1475OVp0hAA7+QW24gAB16x?=
- =?us-ascii?Q?J7QNSw1Dnfzg5l4mn47H5iSBU+kqIozIzy+dxMWQezyyHEegVjYd+j66wCCy?=
- =?us-ascii?Q?vv90m+fbW/vsxL5GM78bpMs0yCDe/60V+A0i9RCFEy/pnkWPD2RYGomNdf6S?=
- =?us-ascii?Q?EL7tbtX6VNU1eUqZnpOIB25IG5x+iA/Ip4edHAAMXWbWotpH1/qvF+pekOdZ?=
- =?us-ascii?Q?PBVQF22pug=3D=3D?=
-X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb94f421-3b1d-4844-d1ec-08def422de43
-X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+	=?utf-8?B?b2F4blBBSEdHNVFVUU40Wk05dUtIanM4aysrOFF2KzdQR05NcXBjTWRabjBp?=
+ =?utf-8?B?QUJwMlpJcUZ6VnBWWkM2WElDeUxTeTIwdlFvT2ovNzZ1cmhPQlZEYk4ycU5X?=
+ =?utf-8?B?NzYyZUpZUXJNbjRyNjNPbG1abmNmalE2dzgyL1RjWTZCa3ArOHpIYVkxenlZ?=
+ =?utf-8?B?bHpjY3lKeE4reE54bzFma0Y0aHJmVCtabjIrNkJqVUpTdmwreDRKYUZkdXUr?=
+ =?utf-8?B?Mnd5VHJldFllOGsxWUIwbGlKb3VsNkdKNXpYcFc1ZEtZdmU1MUsrbzFWemEw?=
+ =?utf-8?B?c3lTSTFRMjA2WXNSMWVwbDdKN3lTT1VaZ2RFV0JzdXpFUm5WaktuZ09NWE1W?=
+ =?utf-8?B?K0E0QmRCK3l6VysvMmxiNm9qZVdOdmxJNnpGUG4wcnRGdVRQRWlJZ2lRZEhH?=
+ =?utf-8?B?NUV4Y0VKRkw1MnFwR2JVbkd1bDJoSEFSanAzRHFSLzlNUFdNWGl3WWRqS2Vw?=
+ =?utf-8?B?N3VYaUlNMTI1YWtPNmF2WG1RVkhNdm1lZ3d5aklQeGpUeERXRFVEZ1ZYNHlN?=
+ =?utf-8?B?eW9XYUhoOTY2ZkhnTy9sbjFIVmFrN2RndlpMWUdZaE9ySndiMnZFMHlDME5R?=
+ =?utf-8?B?Z1ViN0hPV3lsbWJUY3ZoQTRrSUdPZkxhWmxQekhKOERtaVZKOFdNVkZYVlQx?=
+ =?utf-8?B?ZHNOOFNkOUtSWDVjUmFxS1RxcFF2WC9jb2NIYWFBeFlCV1hETHJvaVY5WXRv?=
+ =?utf-8?B?MzlraGdlM1YwRWh0UGhIVVBoMUZsbk1ZVWswUExnZkkxTWtjeWZqVm41R2FN?=
+ =?utf-8?B?K3JSeWJ5UlZuNkZMTVFLajh2S2YyS2cwQms2V2cyR1JhZXlvT3VIM09sVzhj?=
+ =?utf-8?B?Tmhnd004dVNPS3BuUForTG1RUnZNQnlPVjZOTmJubSs4Tmtwd1FVVDJpbDFP?=
+ =?utf-8?B?T0kvbXZlelYzc3o3VFozSkRUVHdvWkFhU2wzZUlBR1U1MTQxeTJ4ZkpBT29K?=
+ =?utf-8?B?MVF3KzdZeldaeDNXUUErRUtDVlVMbXpFeDFPTk5SaFNXK0p5SHoyNUxja0k3?=
+ =?utf-8?B?ZG5tcmtPTEdPTyt0dmJPamR0Tkk5c0ZrRTN3L2F2a2FWQ240K2xYcElieFJh?=
+ =?utf-8?B?czRheUVVWU5RVXN1c1FudzlhUzNWeHZzQzVaZzI3cjF5Zm9HbG8veTkwamt1?=
+ =?utf-8?B?MFRySE8wOGloazRLVjdwdDhQQ0VxTkZsM1Rsa3ZCU2VTeC9oWXpJR3pkNHU0?=
+ =?utf-8?B?MG9lOE82N3VqNVE4QWJFWDlYWFNEM1JGY0ltcjA3YWFtcjhzd2N3NzN2YkpG?=
+ =?utf-8?B?NVJWRGVDanRnMG5sdEdiVUR1UytaQXFqRXZ3YmRuZWZDTVpFZE1vQjU1ejZn?=
+ =?utf-8?B?c1lQdlg2YVBrN2plNFpRVHlCNkdBRkRDMmFRUU9Dd0REdTlaVWRrTWlpZTJq?=
+ =?utf-8?B?TGtFOEFUeTRwb0FNZWRPU0M2T3VzS3lVVFBOd09GRlpVOWRQVllJNkg3aklq?=
+ =?utf-8?B?bFJta3cyY3c5OGY2dUhvVVMzZkVLS0trSDQ2UmxCUkhwZHN5STkwTUlSd0Nq?=
+ =?utf-8?B?WnBxZ3RzaitGTUpudTJXZmQzd1lZOE1NYWF6ZGZjMEhoV2ExalZ0bENGNUxC?=
+ =?utf-8?B?dDNYb0dobkNoaWFETHZMaEVmQnhIVjZ4MzhsNklnMkFraHVKbUhrU1lzQlNG?=
+ =?utf-8?B?b1VZT0RlMUFSeVhGenJ3aytNOUIvK2JKdWZLQVlWSFpQRnIwdmt0N0MrNElU?=
+ =?utf-8?B?NGlYUXpYVXBvb05SZCttR0c2VEx3eTdiK0dtNDB4SmdmMHJ4WmRoZ3VHZHU4?=
+ =?utf-8?B?bGlrYmRVZTBjb0krNEg1UkhvdVZTQ2xlako5NUx1S25iYlR0bURXNEdMTEJV?=
+ =?utf-8?B?TVQ5TTlRNE9TVzd4OWFzMExUc3hhaWpRNGxqSFV4bHBsUDFqSUpCTjVUUGRH?=
+ =?utf-8?B?VzM2Ty8xUTVnR1c4QzBHVUJhTzN6NWd3bVBHaEt2Ukw0SGcrVEhyaUd3MTFq?=
+ =?utf-8?B?OVl0RWhHTkgwdktoSUJ2VUxVSWZURUFKYjlMMjBKSnFsaVdBaXg3bmQ1TlJk?=
+ =?utf-8?B?T2YwajVzd2s0YTVhdGIydGlDalVvM0ZRYjhBMFZ0S3FBblNoWlhWSloyM25i?=
+ =?utf-8?B?ckpUM0VITG9rZkI0ZWR4aFA1Q3QyUzlheitReThtVzMyOExzb0pJUEx6UktN?=
+ =?utf-8?B?aWFHU1czREVDd3psQVdVR2pKZk5kaVVQQVBvSHAyN3cwRW9IdWozREdjdXZs?=
+ =?utf-8?B?OEV3bmU1M0JTdm5zTUdwRUtNUXlmVlpzYzlpd2J4NG9LWk9wRVptTTlXbER1?=
+ =?utf-8?B?RUhBY0l3NDdHM1A1ZTJDR0c4SmdGNXRNM1lIcjhXZkNNYnFqOGhDUXRsVkpC?=
+ =?utf-8?B?V2tCN2NEWXB2WHRFZ3BwNEZLbjh5cEZqMk5CeWp2b2xLVW4ydG5Rdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25f25bf4-7d77-47df-5deb-08def42482b5
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 01:26:13.0054
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 01:37:58.3933
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 83KVm790Jl1n1YXQnsb4hc3+sxNzMXBf6KrqIJOwE3/QTO3EdXorgPWNygsskRHCS5dlMemDzT7ncHCRcUOZXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P123MB2825
+X-MS-Exchange-CrossTenant-UserPrincipalName: Os+DN+FCf0nKXPU1S6D+td0S9N6ouTftjoi8LiUg8ZKWIwaRazy50w1H7HOFy7n9JKu63PiRu77tqDRVGlIrfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5666
 
-To preserve the existing user-space ABI, "module_blacklist=" is kept
-as a legacy alias pointing to the same module_denylist variable.
+On 8/4/26 12:52 PM, Danilo Krummrich wrote:
+> Add a method to cancel a work item and wait for it to finish if it is
+> currently running.
+> 
+> This will also be used by ScopedWork's destructor to synchronously
+> cancel work before dropping borrowed data.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/workqueue/mod.rs | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/rust/kernel/workqueue/mod.rs b/rust/kernel/workqueue/mod.rs
+> index 5de88c59b2e5..2b87f935712a 100644
+> --- a/rust/kernel/workqueue/mod.rs
+> +++ b/rust/kernel/workqueue/mod.rs
+> @@ -585,6 +585,14 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
+>          // the compiler does not complain that the `work` field is unused.
+>          unsafe { Opaque::cast_into(core::ptr::addr_of!((*ptr).work)) }
+>      }
+> +
+> +    /// Cancels the work item and waits for it to finish if it is running.
+> +    ///
+> +    /// Returns `true` if the work was pending, `false` otherwise.
+> +    pub fn cancel_work_sync(&self) -> bool {
+> +        // SAFETY: We have a reference to a valid, initialized Work, so the pointer is valid.
+> +        unsafe { bindings::cancel_work_sync(Self::raw_get(self)) }
+> +    }
 
-This patch addresses the documentation by marking "module_blacklist="
-as deprecated in admin-guide/kernel-parameters.txt, and documents
-the new "module_denylist=" parameter. All internal symbols, such as
-module_is_blacklisted(), have been renamed to use "denylist" and all
-log messages now use "denylisted".
+This seems to expose a way for driver writers to leak work items,
+doesn't it?
 
-Signed-off-by: Aaron Tomlin <atomlin@atomlin.com>
----
- .../admin-guide/kernel-parameters.txt         |  6 +++++-
- include/linux/module.h                        |  2 +-
- init/main.c                                   | 19 ++++++++++---------
- kernel/module/main.c                          |  4 ++--
- 4 files changed, 18 insertions(+), 13 deletions(-)
+Previously, work items were either run, or failed to enqueue, and
+both of those paths restored the Arc via Arc::from_raw().
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a68003c3599c..211aa16c53ef 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4179,7 +4179,11 @@ Kernel parameters
- 			Note that if CONFIG_MODULE_SIG_FORCE is set, that
- 			is always true, so this option does nothing.
- 
--	module_blacklist=  [KNL] Do not load a comma-separated list of
-+	module_blacklist=  [KNL] (deprecated)
-+			This parameter has been renamed to module_denylist=.
-+			Please use module_denylist= instead.
-+
-+	module_denylist=  [KNL] Do not load a comma-separated list of
- 			modules.  Useful for debugging problem modules.
- 
- 	mousedev.tap_time=
-diff --git a/include/linux/module.h b/include/linux/module.h
-index f0af821e038b..91414cecd84c 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -883,7 +883,7 @@ static inline void module_for_each_mod(int(*func)(struct module *mod, void *data
- }
- #endif /* CONFIG_MODULES */
- 
--bool module_is_blacklisted(const char *module_name);
-+bool module_is_denylisted(const char *module_name);
- 
- #ifdef CONFIG_SYSFS
- extern struct kset *module_kset;
-diff --git a/init/main.c b/init/main.c
-index 3747ccaeef42..f1da8e780cb4 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -1337,17 +1337,17 @@ static inline void do_trace_initcall_level(const char *level)
- extern struct initcall_modname __start_initcall_modnames[];
- extern struct initcall_modname __stop_initcall_modnames[];
- 
--/* module_blacklist is a comma-separated list of module names */
--static char *module_blacklist;
--bool __init_or_module module_is_blacklisted(const char *module_name)
-+/* module_denylist is a comma-separated list of module names */
-+static char *module_denylist;
-+bool __init_or_module module_is_denylisted(const char *module_name)
- {
- 	const char *p;
- 	size_t len;
- 
--	if (!module_blacklist)
-+	if (!module_denylist)
- 		return false;
- 
--	for (p = module_blacklist; *p; p += len) {
-+	for (p = module_denylist; *p; p += len) {
- 		len = strcspn(p, ",");
- 		if (strlen(module_name) == len && !memcmp(module_name, p, len))
- 			return true;
-@@ -1356,7 +1356,8 @@ bool __init_or_module module_is_blacklisted(const char *module_name)
- 	}
- 	return false;
- }
--core_param(module_blacklist, module_blacklist, charp, 0400);
-+core_param(module_denylist, module_denylist, charp, 0400);
-+core_param(module_blacklist, module_denylist, charp, 0400);
- 
- static const char *__init get_builtin_modname(initcall_t fn)
- {
-@@ -1373,10 +1374,10 @@ static void __init do_one_initcall_builtin(initcall_t fn)
- {
- 	const char *modname;
- 
--	if (module_blacklist) {
-+	if (module_denylist) {
- 		modname = get_builtin_modname(fn);
--		if (modname && module_is_blacklisted(modname)) {
--			pr_info("Skipping initcall for blacklisted built-in module %s\n",
-+		if (modname && module_is_denylisted(modname)) {
-+			pr_info("Skipping initcall for denylisted built-in module %s\n",
- 				modname);
- 			return;
- 		}
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index db1b63b7d876..bd7862234946 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -3370,8 +3370,8 @@ static int early_mod_check(struct load_info *info, int flags)
- 	 * Now that we know we have the correct module name, check
- 	 * if it's blacklisted.
- 	 */
--	if (module_is_blacklisted(info->name)) {
--		pr_err("Module %s is blacklisted\n", info->name);
-+	if (module_is_denylisted(info->name)) {
-+		pr_err("Module %s is denylisted\n", info->name);
- 		return -EPERM;
- 	}
- 
+But now with this new cancel_work_sync(), Arc::from_raw() never gets
+called. So for example:
+
+#[pin_data]
+struct MyStruct {
+    #[pin]
+    work: Work<MyStruct>,
+}
+
+impl_has_work! {
+    impl HasWork<Self> for MyStruct { self.work }
+}
+
+impl WorkItem for MyStruct {
+    type Pointer = Arc<MyStruct>;
+
+    fn run(_this: Arc<MyStruct>) {}
+}
+
+let obj = Arc::pin_init(
+    pin_init!(MyStruct {
+        work <- new_work!("MyStruct::work"),
+    }),
+    GFP_KERNEL,
+)?;
+
+// refcount 1 -> 2, and the workqueue owns the second one
+let _ = workqueue::system_dfl().enqueue(obj.clone());
+
+// takes it off the worklist, so run() never reclaims that reference
+obj.work.cancel_work_sync();
+
+// refcount 2 -> 1. MyStruct is never dropped.
+drop(obj);
+
+thanks,
 -- 
-2.55.0
+John Hubbard
 
