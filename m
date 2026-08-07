@@ -1,58 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1397B391832
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 07:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F63932F9
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 07:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786086157; cv=none; b=q1MaeOsUCK1gN6yABNqTESEzGcwUD77Wde110Ah43Xk9mUocBoMiFMc2WRkj8EtM7O+0lYSX6rXi2W56P9FS93FwkoZ9OgHAGko5bkxDP8639Ayg0tgJ8dxqIPBI3UUgkuhrGePAwvGLOYE5WtVLbSMpXn/TrhUcpMH5PDGtRjM=
+	t=1786086160; cv=none; b=sSrmtdoootet5DCGQJJZYwfIakJFCoThua6AbnfeZiVL6/9GxtrL9UbzLma0C+K4Wu8d/koHvI3kn7MUh54U49JPOVGdtymCZpE5TqmM7+CYvhAR3IiFIdKro6aL5x2SoQ2VHOgNlXTtRwgzvXRbgiD/r11fLV4J6LmnWCt9ei0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786086157; c=relaxed/simple;
-	bh=M6+m/0c8IuZ1xZ+UnruHtoqzFvPgWzMV2K9poAY63Gc=;
+	s=arc-20240116; t=1786086160; c=relaxed/simple;
+	bh=hqzDoFZ+FnJ+kwkQ1XUbPH87gH8HIR00iTIZdoqIJfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExJEmsqkOy5doyTkuAOjyv42wzTn88hhwp/tZag4IcfZJllDwhMn2NGRbs/TUzFNKsXkGJzMynpAPQhLHdmggB1ztudljeYtKxgMFp/73mYL4+wNGWhzKJ/ZBzdk74eFTLjf18pc/WYxhdheJHdf4hPr74aCgUnX/qt//1UZ9Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhtS8WTk; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=JvkF/ZDwFJZA44cFBjEtqd0sES3cyrzXQyIFQvq4bOAJ3l++hWWQHMdGYYgTVzRHKJP5SON66/6Nv0vtYhSciGto6kqX56yZU4chVPaurLD5Lw322qCnmb/zbBm9viEH2/ftxdfg7KMbaVOmuIxhslsEjjz19i28eM9n3KSijTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1JxGlJB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhtS8WTk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047EA1F000E9;
-	Fri,  7 Aug 2026 07:02:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1JxGlJB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E053C1F00A3D;
+	Fri,  7 Aug 2026 07:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786086155;
-	bh=+D9X1kYa+VRU9yRO4WbCcrFIABEuEB98nxaJDGa/Hfg=;
+	s=k20260515; t=1786086158;
+	bh=7uHnXoIwtSGCT9rqIiBE0UwPM81LBEEkAOAS7zp4QXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fhtS8WTkQfLEhFgeD5UbV1gqUpcGm7Rck9Xg4GbEBUiwXXLjWByeI2p/1vTmnlyk5
-	 rmHecua1jdZ1jLwdz6CDBfjSeS+MlzzOy/3vdPqFBVDLRSI+vQW8qW1QAIQs5mXzPk
-	 hyVHTTP29h/DSn7bC8uiBVEOZN5zWUvO8x7A3bvlPJNPe79mQDTpZb7Qq3ZgsHXjMN
-	 Y+v0wsEuYkdiUoqXQQsG1HT6UayWsa09wAmAczPJwSsTQ4pJtNBKy55vSIXHJD2psE
-	 91UoJQsCviribBzMfU6CM6I7zr7NZNKNQwpdlG8reNu3PES/b/g+HOOK5qyY/4TekN
-	 NvRFAHJngoOyQ==
+	b=O1JxGlJBh/hV9iLPY0jY9foQ/tgXlkqmGQEgVOa8+WglAjEqGp0D9pPdaoiBGsdQC
+	 oN/6PHI5pgmPmJ5DVJKLqLjQifQhCL3uCAoz1PKxUYtqLVK0YJtzsiOMkMTRzjc+30
+	 d0DDSi8L2a+3fr1VqhlLqE+cNwOHbX0N5UZ/GBr2ZbqWDPkue1LO5DgaSEa4jiO7dO
+	 ih6uNiqdTMaAmQVfaiHJzJKPZRyqnO1z3LGrkV7a/B+bG+n7c96vHoO5kv/kPDQcSg
+	 Wp+JZKtSG/MtlEqPnhp6WmtCo/U1/UF3oaxWWaiKVOmy8+nhRRI95kOVGo69yvCv3v
+	 CU61LTl7czpSw==
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1D774F40066;
-	Fri,  7 Aug 2026 03:02:34 -0400 (EDT)
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7E2EDF40068;
+	Fri,  7 Aug 2026 03:02:35 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Fri, 07 Aug 2026 03:02:34 -0400
-X-ME-Sender: <xms:CoN1aicGDXkFj08gORGawGs8A5SVCk50IFlwWwWAR1iqqM7ZdsZj2g>
-    <xme:CoN1aoJnSwWZvvNPjTyv4boTYL_lWncsGJulimPmtrAGN0K1G8IIfAgzU5Fc6wmJy
-    2BmSMgESD4hL_BpX0iUOzQmNCNl2FQo-db76J3rZAaNEg6ZXwMcOw>
-X-ME-Received: <xmr:CoN1app60-p0SKCV8jfHD-FHydc0FKR4a5hwfSZSkUhkK-hxtTDCCmAL0WPhWWtBQoq3mTcxD0a6agB5NThqHkbjWWhj7ZjW>
-X-ME-Proxy-Cause: dmFkZTELT6mPBN+tf+gYDjbmfxF2aJuNia3fHRbo+cksodwgHpv175RY/La8br7LVuLKD+
-    xpTrulxkYenRUqjuFjoYpWp5kB81fkgSYs4cUOn9Aimg2+sWPDBZPSJD0AkLNVKo9ymnEn
-    XwkNJDHucJ7KY3ALZ5VcWOWe5XHuNtoJV5e7Q54FFSKl7KOd+nrEm1L6dR4Jdu+LjwwV/e
-    gMJ05NqNZsVzzu9M3eDFzAUAJPeoh4s2jJHbhIzGNi7DAZxkNRx1H6hWOvNKjwmDuMbW1g
-    3/Yvg82sjVAOqgIP9o+xyvh3ddqbO1HSSPQ13n3n5YTt3W/2pxiARls47VLAs4X6PdSfH0
-    wdndMsJjTG3YJRTfVWddIDNZEXa2Bgy24oJasNFwLCsCmNNPB5bcP4ECzegpNSkN55J9mV
-    54kuc4ywcJYNiK5PAZKjnDCH8/7Tzihy4t4YMlOJvExlSntHmz1c5abnQTysgytqfLPvr3
-    F1BM+stAcS5QFoQYc+VO1vaSYyDRN4bdNDI9WPTy92hQW+dDm5dkpo1JrYa7mx2RlkNRNW
-    HSHXJLwSDSd/A3V8AOMBbzzZAJLaC3wP8E9ezecoLNy9FRACV5Elze3eicAW3uWjrqUFfT
-    vZFyihjZvqAVMC9xMdlJiICUo/VsYo/BF8DbeoEjgt0+t5CWKtxDWWYDDdvA
-X-ME-Proxy: <xmx:CoN1amVoz7BnV8QrCaTdKBqPU3aAYVFqrqsvWfPvT3KlktCXUwANrw>
-    <xmx:CoN1as3j9X95mjZ2NlD6fwhA8UbWERZAMuRuAhoGbuZbh9g4r6Fysg>
-    <xmx:CoN1av3HgMqkq6PxcEs3MdqH3SxWlOcwSFv8iRIB_eNo4dQ-1ZSd8g>
-    <xmx:CoN1ajmUXfqbuVUKLCXOEtRN6qQGQv05KepeOFwGzup2LmB-SePjvQ>
-    <xmx:CoN1aoPpqSET_frww8JpGHRchi84HhYrr33jCroTwgS4EEqjaW_lQ7em>
+  by phl-compute-05.internal (MEProxy); Fri, 07 Aug 2026 03:02:35 -0400
+X-ME-Sender: <xms:C4N1aqEuU0V81YmAivgpTXz21pD5lR-iFSCkbJUo5NY4U4Wxe8SwYA>
+    <xme:C4N1anpKPYjD6iSIR8-EQLl0yoApEfPi29dg5TqJBcG7jWmX-8sTY-gK05xo309dJ
+    P2vnUEyvYIHZk9sKmwZkGy7BjFo_K-1JG3DceUHFcvkJHxs6-nwMGI>
+X-ME-Received: <xmr:C4N1alz0b0FvdZsx_ugypD_-Z_d9oVJQbrCltPrI81rQC4-G0L3fpg0m-brE6nc1mg-EF9SKRTUs3lgV3Wv15GyDf4LP-U2r>
+X-ME-Proxy-Cause: dmFkZTGyvHdDd1GzGWN1VJTYexoeLWbYipFw83SRb2uXMsYl+KFTYaUEpOTqk5K+My00CP
+    NgJOi8LOILsVWSxl4ccyvtrBefkjyfVln7ypRQ+bh49utynffTDp/Bsg/I+mtxl14w83ED
+    50tRYjk+o0iP8mpu+QvCT+Dk+0ekkSaH2jaUkhQ2IGs7hn31QTDC3HO568nJzP+sCzaxl0
+    cNxOjeFWag8Xux4s5MnrVTP/LpOs6EV32l4U2+8ipe5mhbLBKcn8VxJg/bq9Q7Ww63Su+/
+    gyrSa0CaL2q4j6exaTekIVpxNJMTqSgpye9e2bSA0gixFi8opX6xU3WPxpol6ShOOMsGZJ
+    nFqkAbVEMZ00RZpD7c494NV/JTofmnieGnOaMXAmEQp5cypldMKVeKr5aDRiDSkYhlvQHF
+    7FMWicd4K3e/uHkITRvX43ehpJ+8ZHYuBnJ+epM8QXIGscLq3X2xt9S8chQJRllCiHL/3g
+    KWnXC3QTtIP5WAylRFy/i/nnTEAh1To4p95SiZkU+4mg7sgbe32PzSjvDo6BAcQ6kxVoAy
+    OuduM26mMDNEGxI/h3C1lqWheJp+jnj9NQnmicZWRumTS86LzbGpCY01SqghpygjQJVfVu
+    WFyaZPRjftJlzFaEYaqbUuOJi0HSqmGhQakDI4/IP/napRuNvInPRJHRvOTA
+X-ME-Proxy: <xmx:C4N1ahNySsjoyJ50v-mXOOdzO48tGKkXH9r_5DDs5Qh0ODj2-cF5_w>
+    <xmx:C4N1aldAlZAdfzCKFlm8VCC9GPDeubqEVd1plJBkCy0tTebfWx_A3A>
+    <xmx:C4N1at5nNIwEcWKGSSKK8DsNLB7EJv_KB4rQPfOwgJ-6dzJYzVrRyA>
+    <xmx:C4N1alJgCRkg4air3Igktj_I3Q3k70ZAYqTwE137mP3vl6_8TRvv_A>
+    <xmx:C4N1ap5KSJrJJzbSCCUAsrC1X6ctlAgx11JYHqo8jM31gFwu2ymIbXVd>
 Feedback-ID: i8dbe485b:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Aug 2026 03:02:33 -0400 (EDT)
+ 7 Aug 2026 03:02:35 -0400 (EDT)
 From: Boqun Feng <boqun@kernel.org>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: "Ingo Molnar" <mingo@kernel.org>,
@@ -71,9 +71,9 @@ Cc: "Ingo Molnar" <mingo@kernel.org>,
 	Shrikanth Hegde <sshegde@linux.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Subject: [PATCH v5 06/18] irq: Add KUnit test for refcounted interrupt enable/disable
-Date: Fri,  7 Aug 2026 00:02:03 -0700
-Message-ID: <20260807070218.27144-7-boqun@kernel.org>
+Subject: [PATCH v5 07/18] irq: Add max local_interrupt_disable() nesting level kunit test case
+Date: Fri,  7 Aug 2026 00:02:04 -0700
+Message-ID: <20260807070218.27144-8-boqun@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260807070218.27144-1-boqun@kernel.org>
 References: <20260807070218.27144-1-boqun@kernel.org>
@@ -85,82 +85,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lyude Paul <lyude@redhat.com>
+To confirm the max nesting level of local_interrupt_disable() works, a
+kunit test is added to the whole test suite.
 
-While making changes to the refcounted interrupt patch series, at some
-point on my local branch I broke something and ended up writing some kunit
-tests for testing refcounted interrupts as a result. So, let's include
-these tests now that we have refcounted interrupts.
+Note that when DEBUG_PREEMPT=y, it'll generate a warning which is
+expected.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Suggested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 Signed-off-by: Boqun Feng <boqun@kernel.org>
 ---
- kernel/irq/Makefile                  |   1 +
- kernel/irq/refcount_interrupt_test.c | 109 +++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+)
- create mode 100644 kernel/irq/refcount_interrupt_test.c
+ kernel/irq/refcount_interrupt_test.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
-index 86a2e5ae08f9..44c4d6fc502a 100644
---- a/kernel/irq/Makefile
-+++ b/kernel/irq/Makefile
-@@ -16,3 +16,4 @@ obj-$(CONFIG_SMP) += affinity.o
- obj-$(CONFIG_GENERIC_IRQ_DEBUGFS) += debugfs.o
- obj-$(CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR) += matrix.o
- obj-$(CONFIG_IRQ_KUNIT_TEST) += irq_test.o
-+obj-$(CONFIG_KUNIT) += refcount_interrupt_test.o
 diff --git a/kernel/irq/refcount_interrupt_test.c b/kernel/irq/refcount_interrupt_test.c
-new file mode 100644
-index 000000000000..ca904dba24b9
---- /dev/null
+index ca904dba24b9..38dfccbaa4d4 100644
+--- a/kernel/irq/refcount_interrupt_test.c
 +++ b/kernel/irq/refcount_interrupt_test.c
-@@ -0,0 +1,109 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * KUnit test for refcounted interrupt enable/disables.
-+ */
-+
-+#include <kunit/test.h>
-+#include <linux/interrupt_rc.h>
-+
-+#define TEST_IRQ_ON() KUNIT_EXPECT_FALSE(test, irqs_disabled())
-+#define TEST_IRQ_OFF() KUNIT_EXPECT_TRUE(test, irqs_disabled())
-+
-+/* ===== Test cases ===== */
-+static void test_single_irq_change(struct kunit *test)
+@@ -52,6 +52,27 @@ static void test_multiple_irq_change(struct kunit *test)
+ 	TEST_IRQ_ON();
+ }
+ 
++static void test_max_nesting_irq_change(struct kunit *test)
 +{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+}
++	for (int i = 0; i < __IRQ_MASK(HARDIRQ_DISABLE_BITS); i++) {
++		local_interrupt_disable();
++		TEST_IRQ_OFF();
++	}
 +
-+static void test_nested_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
 +
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
++	for (int i = 0; i < __IRQ_MASK(HARDIRQ_DISABLE_BITS); i++) {
++		TEST_IRQ_OFF();
++		local_interrupt_enable();
++	}
 +
-+static void test_multiple_irq_change(struct kunit *test)
-+{
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
 +	TEST_IRQ_ON();
 +
 +	local_interrupt_disable();
@@ -169,61 +126,17 @@ index 000000000000..ca904dba24b9
 +	TEST_IRQ_ON();
 +}
 +
-+static void test_irq_save(struct kunit *test)
-+{
-+	unsigned long flags;
-+
-+	local_irq_save(flags);
-+	TEST_IRQ_OFF();
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_OFF();
-+	local_irq_restore(flags);
-+	TEST_IRQ_ON();
-+
-+	local_interrupt_disable();
-+	TEST_IRQ_OFF();
-+	local_irq_save(flags);
-+	TEST_IRQ_OFF();
-+	local_irq_restore(flags);
-+	TEST_IRQ_OFF();
-+	local_interrupt_enable();
-+	TEST_IRQ_ON();
-+}
-+
-+static struct kunit_case test_cases[] = {
-+	KUNIT_CASE(test_single_irq_change),
-+	KUNIT_CASE(test_nested_irq_change),
-+	KUNIT_CASE(test_multiple_irq_change),
-+	KUNIT_CASE(test_irq_save),
-+	{},
-+};
-+
-+/* init and exit are the same. */
-+static int test_init(struct kunit *test)
-+{
-+	TEST_IRQ_ON();
-+
-+	return 0;
-+}
-+
-+static void test_exit(struct kunit *test)
-+{
-+	TEST_IRQ_ON();
-+}
-+
-+static struct kunit_suite refcount_interrupt_test_suite = {
-+	.name = "refcount_interrupt",
-+	.test_cases = test_cases,
-+	.init = test_init,
-+	.exit = test_exit,
-+};
-+
-+kunit_test_suite(refcount_interrupt_test_suite);
-+MODULE_AUTHOR("Lyude Paul <lyude@redhat.com>");
-+MODULE_DESCRIPTION("Refcounted interrupt unit test suite");
-+MODULE_LICENSE("GPL");
+ static void test_irq_save(struct kunit *test)
+ {
+ 	unsigned long flags;
+@@ -79,6 +100,7 @@ static struct kunit_case test_cases[] = {
+ 	KUNIT_CASE(test_single_irq_change),
+ 	KUNIT_CASE(test_nested_irq_change),
+ 	KUNIT_CASE(test_multiple_irq_change),
++	KUNIT_CASE(test_max_nesting_irq_change),
+ 	KUNIT_CASE(test_irq_save),
+ 	{},
+ };
 -- 
 2.50.1 (Apple Git-155)
 
