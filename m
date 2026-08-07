@@ -1,179 +1,236 @@
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022123.outbound.protection.outlook.com [52.101.101.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B1D314A95;
-	Fri,  7 Aug 2026 14:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.101.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786111814; cv=fail; b=N1V4+E9n9wCs8UZ7ghfdTVB0gePVzsqtKL0ZIR9zY5ev5+xX2lOb+J+AM75vJlcJ9iJwglX0R6fp0FQwBKHufJhjEgjUav0snOca6k55CyWuF1jcRnJq6pmoFMIISHP2VKLKhrZ8ehzwKIvp7EtXt8jkiMluv8icwJiUI94eOio=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786111814; c=relaxed/simple;
-	bh=MQbv7uzhi8PiCardfobhTZG7xWrKmeadI7ddhzKNdmA=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=rYgoGj1lSMExyrlvNqeuTlyQVNGZe/OA7K4qfxCGL2gUmtT64ADM7yBp/OFtzKmmQ8WKJ9ZYWpEPT3JbTlC5kCC1SFwC7yVYpNtHtC92xE9vzdOMPc+AcxTlsygLTsR+XymjAtAHzR0P7HU66NNrpQSF6HyoUg7IVApo0x+knyM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=oS7kWMFD; arc=fail smtp.client-ip=52.101.101.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F037383993
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 14:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786112581; cv=none; b=hV2oliHH/tHX5/7Ipvry5NdRd9EDVShxH4rVJhfKtCDQRVkc1Xjt49iEJANJGYNYl/i4k9KC4GZsI5f1tjyvjAs4t4h8xKvLDUhZ9Vd9WQnUWNG7GVifEB26aAZj6MdhwfLagvRoprR1f7rjpZirwFv0yBXHccy3vb3C9ApFuGg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786112581; c=relaxed/simple;
+	bh=vGj7Jdr6m8YPlzXYPqA9zX3+W7xmqCnwuHFUj8pM3CI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JTLZaV/VdKieXfxpYtlyQp4LxTqvrDBhrr7kU6mI86R4Yn6Zx2n0P0g7jxdlUPXApVWrrPyJF8m0R4woHpHhP4N8Pcnkv1ut2CSe2wfU0iRXs3XMZg/xD0NH0Nb0bwiZPgMIBajGduBguv7fKGELkPvQK7mBKYXwFVbd54eDFa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GMe3tjBD; arc=none smtp.client-ip=209.85.128.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="oS7kWMFD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fd8kxnJKyNVtECeFanCaLhXDBn/ktgVdrwzhSXVcl+zPAc2YMzVhVcXnPMN+kvXeU0tBP2EgwlYOmeGbiwv8c3aAAJftXVrxN+1hFn60sAAP4rZ/OpcEGn6H9XE+k7dGDHtDuEHvTfIjn3Am1bHxt+iu2CM3RXyKdVf1mex2xD5GVrWYKT6Prtmaakuu59RP69A3Hin+i/Yun/6RoVDhKwAQrKA7dVbwmZ3QKnLZ4sA7GY1lqgeUnUnuEEUQ2COcfIt+UGsmobuaFQIvjDyjj7JEMR5hx8PamqeEjjNbVbueeCEbLzJgny6vz9Do0lCjtD8u2hdIbs9WM8wwZtb6AA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jH/TMyEOp8vCdWsu8741PJyK49RZiXIG5EepoWIFO9c=;
- b=s1WEWwXa3EB7UX3v6Zid4R+wXSfRRQqthuGn1qkMNZncfXZT6jdU3a2KQEPtYtGrsR3iIHhJt+RQhtbMK+EoRoaefdp4Mkf6D3OLDUdW0NmwEarTZBqE+rn/etyKnu1wQ/XPuXVHfLEl7PClawJ13lTjwJdZELuovDnLo1Kz0sZqoR4fz6ysOEQ8MSRyW+7W9CzR+Av9uE7dHaBSHvgpG6E2+Zjpta/VfwyQaJLNb1vwLeZRgXFlYNKDUEUIBAWb9gIPudhQQrtTLeLtIix0IGFDIbmLUOj5ikR2AWwJjljb3e6mx/brpR5Baxu7YtYVtDt/+NqWZIuFfORUfWb3nA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jH/TMyEOp8vCdWsu8741PJyK49RZiXIG5EepoWIFO9c=;
- b=oS7kWMFDIy9Xqpch07O8nWQND6wztyhhUmpOT8JdKDotPB52hG9pn09JnLxWYMkiWd006ewvSe6nHde2nwypsGFUawwfhDflqGqc2bVYFsLBLUL6JPg0R3ZcHPfCS4pSJW7aQGHed6eVv0je0VM82NYmfmjYhrjDI56uCTxwHcY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by CWLP265MB7211.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f3::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Fri, 7 Aug
- 2026 14:09:59 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0292.022; Fri, 7 Aug 2026
- 14:09:59 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 07 Aug 2026 15:09:58 +0100
-Message-Id: <DKIRSGJA6BM4.2D18NHUDLELEV@garyguo.net>
-Cc: "Eliot Courtney" <ecourtney@nvidia.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Tamir Duberstein" <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, "Yury Norov" <yury.norov@gmail.com>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan Corbet"
- <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH 01/12] rust: io: add Region::try_subregion
-From: "Gary Guo" <gary@garyguo.net>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.21.0
-References: <20260805-pramin-split-v1-0-ff3e84a75dac@nvidia.com>
- <20260805-pramin-split-v1-1-ff3e84a75dac@nvidia.com>
- <DKGY508IDAS4.9E9983YWQ2F5@garyguo.net>
- <DKIRN9CO8EGF.2U1743ODPICPU@nvidia.com>
-In-Reply-To: <DKIRN9CO8EGF.2U1743ODPICPU@nvidia.com>
-X-ClientProxiedBy: LO4P265CA0313.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:390::15) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GMe3tjBD"
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-495569acf8dso21173455e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Aug 2026 07:22:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786112577; x=1786717377; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rzGbZEoBwqwrmqrq1fd896OnOvEqGPKdiH/Cain02vM=;
+        b=GMe3tjBDZIEKN+YWpPStlEv2X2GSQlZDsW6XhtOvIk9+nHVTmxjhILRpzXlFGDMD0i
+         O5EbrlqwFSqhOx11ej3WJILzzlbz0X9hdaiqsDkUoW3Hn2cyt2+DljMCB/6J17nAa6wP
+         ikfcB8xso+8J+RNi9F1d3wHZWARfwdTYEDTAT0OGJ1fJTTlInNZInLEzU6mghxH9L2Wn
+         I1MKGaVE7F7+wt3+lIM0OwTej9oa2lj56PSTjmaVVyapBqdjtA++JyZQuKoxtbeGNHss
+         s8cAOWptBsJFW3Myf4MhF4KsH0TZHuhAMuQoV3oo5k80QwODV2cYLHVix2Kzk37Y+z0c
+         vH3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786112577; x=1786717377;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rzGbZEoBwqwrmqrq1fd896OnOvEqGPKdiH/Cain02vM=;
+        b=sNawZbbJRMG33f96xaL5kx3AWTv2pYBk+sZsgtXE5db/juSB0C11kBRIYlWKoh9HTz
+         cCQ8Bl5MxuEi6OW62XznBawy5zVJY1JtKEBVZ/bsPOU9mlkexgefWGTpBFp0FNVVrHAF
+         3IrpuqqXsACnMR4ZN2YhEpraCIx67g2ulsPaX1XPpkXQDOQCHm2Ehhn4M/6w28g3Tr7z
+         CwTUAmckkarpPkySuJiIF2UP82ZudfsECuExQrVh+fjDtfocgu+4CU31l3K27TkSumpJ
+         3nXjK6G4D28zXIZWNzN1L4lTLyCzjlku0DYhX/wPzRw+zDWUK28oj1ungFJBLy5b4+Iw
+         uLnA==
+X-Forwarded-Encrypted: i=1; AHgh+RqOsjbuojgCxfgrvaLytLXKF1zUAKvFTtWU7koj7kPXs44vhqlLa6Fro6Cyaz2Yvpw8IN12vqP0pVRKUWlxaw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywdw38MyNeMnXPQUPgpsK67fiiAuP4LxdRaNnBIcoVqOO9Vtqdb
+	GCsXPUliyqwxYEVsA36ue33xSeJCKbOyWmIHGrxBQPEsuWY//l1VmWdsyP/DEpapXY2gZhSofWQ
+	XyS69sl/hiL6u2UdPcQ==
+X-Received: from wrmf10.prod.google.com ([2002:adf:e90a:0:b0:47f:6d90:86fa])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:46ca:b0:499:53c4:1daa with SMTP id 5b1f17b1804b1-49953c41e18mr169990915e9.15.1786112577044;
+ Fri, 07 Aug 2026 07:22:57 -0700 (PDT)
+Date: Fri, 07 Aug 2026 14:22:49 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|CWLP265MB7211:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf547cab-a1fb-4a00-b80f-08def48d90b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|23010399003|10070799003|22082099003|18002099003|10067099003|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	NMxddiE3Y5FLyoHhq2OMKFvdhoHK4yBZQ4ytaKQ8BTUMkun/YhluzzEjv6CLfxYk9kb1pzCQua3i6wL/mwcvYqTCP3owZkZ0mCQyD7DibX9JSugW4a8Mq/ZN0+wxMpNKd9a4XlHxELf2L/bJIEX3sNiAFeE63emQc7IMmkUsfAC57qIhM1HW7Ktan363qbVGSBPQ2YZoEFV3kECXVd3zoRvo5K3xAM5qA7vpvdVFZ744Q9Fv2tofQgSuHd2X4nQQUI3fyRUViFIpG+Q9lOEwDQUc8UjlrjmUtMKKIW9pPM+LdMKRGkpF9y/UV4GjpNXc/bLvIu9VHjIYeKIo5AtqM0sRupM2lwGep6bxTHKEQvU5Qe3f7EL/Lj0WXdLoEZuerMhI4HgdBsSNNhJpySTd3Ixi9TwwWC5Ai8Z4uY7Drd2HfWZkSw6CmSNIVXNqdnRC7bxn7xZGApXXvwPj9L3aDNHg6F2o3Cd/3VYVhj0XUmGOe/ozfc0ATIhNwU60O6Df3xNpgH49Hci7ZqFXP9eleJXjJhE653KMs+hzG6NZs9bN8pl4an3GYjq79qJSGZxjqHbSFi2yO5+svaxV798xUuv/lpWb9C0LmgojJAQFxmJ1rH9UhAc22QsVJDE+wOU8nekzlJO5DAXEleSwQIpVnqp2Tv1URCNffAInlowg+8k=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(23010399003)(10070799003)(22082099003)(18002099003)(10067099003)(56012099006)(4143699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QnVJWkhSSjBxNHFhZUx0Q2xKYmR2Z20wdXYxQXJsRnpKVkVZOHJMRGxmQVVk?=
- =?utf-8?B?V09OQVFzQXJJb3JRZTlTVmpGZy93Nk5lSVBIZDlCS1JLQjBkN3A1Tld1SFZ0?=
- =?utf-8?B?YkMxOU1kQThMQVRCQ3drRllaRzJyR1BVZjRZWlFkZngxbzhOdjh3RWlhRnVi?=
- =?utf-8?B?SWcrNTlKTE1vVWpPcHUxMnJ5TlN6YTlaK2plc1RhTkNLSnJXQ2ZlMjlrY0la?=
- =?utf-8?B?bGt3dW9hNE1vVXVTNWRpSnA2RHNwUzYzSVhETVBKN3Y0VFZzVmUzOTNBVGtT?=
- =?utf-8?B?N0tNL1I0SFpsUTF2TllXMnhYUndCZ3NpQVVDNjNvekpVM3d2RU9JYkRkaFlo?=
- =?utf-8?B?L1F5YmVnN3VhMGs5bThCaE50MldVZ3JkRVB5UEc4bGRSVWZoV0pHS0pKeE5o?=
- =?utf-8?B?OFp1S1l3T3Y4MWUvTUJpZngzSVQvNXNqamdOQTlKdVRYYTFLbzJCQlRqOTZq?=
- =?utf-8?B?ak5XL0ttT0s2N3k0dGNXSFl5UzZ2Vi9FcUQ2ckN4RXZWZUt3d0FwZFRYRmxh?=
- =?utf-8?B?cXhLMitXdmxvNjhialpJMVdROTRaa1R3UERJNjloQlNPMzZmbkpkcGwyL1da?=
- =?utf-8?B?UWp2WlFna0RaUithV2UzMWJZT05lUGpLYjZWbUl6TTFjUEt4c1drWHAwb1A0?=
- =?utf-8?B?aG1qVzJaa1RTcGdWVEhTR25UdkNTZXJsVUx4K0dhYjR0OXIyazQ5TmJmeGdS?=
- =?utf-8?B?UnZlODJLSGg4azFOSmNjMkdZN1lJYUphQ3N0Vnh3L0pSbk1VZHc5Q0tBV3Z1?=
- =?utf-8?B?T3dtU1pYbHlRdnVvby9YWDBSSzlETGRBUzlFNUZzVnN0Zy96a0ZzWXV1MTQw?=
- =?utf-8?B?V085TTMwTVBXZ29NZXI1bUN3aGdoR1NjTWkyOUcrQzQ2cTdTT1pJVFNpVytH?=
- =?utf-8?B?bmZZSEZ2Q1BwbnJnZ2FiQUNURDNpN2tOUUlNcWFvNlBwblhFOEJnbFg2Vnhv?=
- =?utf-8?B?dnpHc2s2eGczU1d0QlExVjZqM0xEUWY2YTc4SGxJR2ltWE90QjJGTlV3Z05N?=
- =?utf-8?B?M1NxUjRZU0tza2ZtdXpkODY3bE5ITzg1R2N5NnY3WEdlNHNDbVNwVVhab0Ji?=
- =?utf-8?B?bDBySzZUOHdKenlSRmwzRTVvNVVHRUl3WXc1b2V2TzR5MkNFMUpLdG51L2l2?=
- =?utf-8?B?b1N1K0ZDSm4zK3FlUzJqdzNCVDZoRTczOHc2cTNiZjJRUG5GeFpkQ1dNakl2?=
- =?utf-8?B?RFFac0VFWE1SVGdnaU8xRjhPMWY5OGluWUJ0OVNqcFY2R0dxaWtzSVFSellE?=
- =?utf-8?B?VGU0SGJOOUJ2OG1YVjMwa0xZSHRmNFlLeEZyYkZqKzJtMW12Y2hTS2lLbXBl?=
- =?utf-8?B?RzgybXgwcUorcGE5NCsrMHluR2xxZkFVcWdYUU96c2tGcnlCeXdkRnpzOTRV?=
- =?utf-8?B?aXl0NC9jZjFTcG9QZUtQbnhmWTZucWdyQ1lFRU54U3FucUlQLy9INXZ6V1FO?=
- =?utf-8?B?dGd1dzlmMjg1WTBhYnQrdkxMb3hObnpFTzVrL2dPMDlXTVZWRGx0YkF1T2NK?=
- =?utf-8?B?b1IzL1NsQjJEKzhxVENRKzBhc0RwdE5OZHU3b1lvN25GMnkvdHRtOFdRUlJs?=
- =?utf-8?B?TDZZYmNFRjJBUDZIK0xMMjJWNU5jNmh3RVNRWXpLRWlkVmtCbkIzMHVUZFFw?=
- =?utf-8?B?ZXdHck1ScEM2MFJsNXVzUC9qaXJnWlBncEpuWnJrZWZSS3Z0a0tYeW5xdmtH?=
- =?utf-8?B?NVErUjZMWEV2UGFqd0dNK2dVZXhlMWZWTU0xVGI4ZG0vN0d0VmVmNUYvRHNl?=
- =?utf-8?B?RnMzaXJrVU9XOG1rWHJaSHBOSjZMWkpCc29IK1ZMK0ZYNE1odTdxTHorMTF6?=
- =?utf-8?B?NTR0N1lDZU5meUdpeis1b05JaHB4R1gxVUpOV0Z4anFaVU9RT3d4a2JsYW1a?=
- =?utf-8?B?bzhMczJtSEtsZjl2UnpBdlhXOG9vQm11QmhmWW1INlZXZU03elFVY1RHdEU1?=
- =?utf-8?B?a0FyeG9Fc0s0SDF5dzFuSVhuM1BNdVdqeGp2YnhUSFZsSS9uYkVvcElMQ0hW?=
- =?utf-8?B?NmRRVTV6eXR0eU9FMSs5Y2JsMjJpRDMxQzM0MGJLWHBpQ2xYUE81TmVNWFMy?=
- =?utf-8?B?SCs0cGZNOFNSdjBmcVcrRGsvQlF6MyswSzV1QXpvejZQOTZjbkt4Rm43NUhq?=
- =?utf-8?B?TnMvb3lMdWx0amRZZW5nQzl5QzBBRzU4OHRUK1RSdXZmeWs2SnpiWGV4Vndo?=
- =?utf-8?B?dVUvS0pBL2dzU09zb3k4YWdkYkpURko3eUxweU8yc1VIZG5ObXhVdktva2tm?=
- =?utf-8?B?UU5VYStHQWJJVTQ1aVJrWkZaU3h6ZDFsU0N1QUdCeUw0cDdLbGVBQkpOUWIx?=
- =?utf-8?B?VjYzQnNLSzJpVGJZL2E0dTJianIrbk42SDlMVUtsd2RpU3hTalpuZz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf547cab-a1fb-4a00-b80f-08def48d90b4
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 14:09:58.9750
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WAtAQMe/v4oszs+tSQBn0QZR0EhSekL9HEWhZUHvI3QiV7KX0IPsBjUsSpP9sQpjUSI9mscVKdn82aSzqJkRgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7211
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIADjqdWoC/x2MQQqAIBAAvyJ7TtCFUvpKdDDdag9ZaEQg/j3pO
+ DAzBTIlpgyjKJDo4cxnbKA7AX53cSPJoTGgwkFZZeTB2YcmepLB3U4a7Q0asgtSD626Eq38/sd prvUDZ9wc2mEAAAA=
+X-Change-Id: 20260807-miscdevice-data-71c727e8b2e5
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5981; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=vGj7Jdr6m8YPlzXYPqA9zX3+W7xmqCnwuHFUj8pM3CI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqdeo6MMYXvfePHV3CU0BwW5pW4xW8S7PLMIlvK
+ Hdfosdb2VaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCanXqOgAKCRAEWL7uWMY5
+ RknbD/9BaDmSn0eaK4TsRMq+IQ8e2dw7bEUWDvr0IK85e4e6PDtKTNMC0izk//lozSVpVhsLuih
+ S4tEv4s4vv4p+tLbN75shuEfAnIqx4NRYMvGozGgvWrZrDgXfG0fW1uOkFN9wYNmBldWMSUYYz0
+ Ms7dRhymx7sgVNmThCYAVryM8fqoW40oih70cNUSdBfy8uh77cfesRhF1Ts5OqyPTScyK/hWwX1
+ YWE4BC6XfQFs/K+SMEbzD/OvA6Zb1ToKY4O8FZVI2ijH7VioZgSysgXDroHtCil/B71gLYVwnhd
+ NnYkhaRHhz2FBKKCsChkiUvcFE0KRv504zjIxbljobIfEXb03kcz69nr3DphQab1Bh9qi8UdDza
+ kkG8Zvd4UumeYtFGA4hpHiAD2XVAIPkb5gMNNznwNnAuy9M70xc5F6XlNhxisj/k55nY+ttqmxO
+ CvH1Q3zFqhec5JF8cD4meXqAGmAvLa/nwkm1rLnVr40F+aggJ1/lbdspIoyCUQjRytlIM/MQuvS
+ TZmZFeyo3mygxjnT++GGZMGiOWdx34LRvmxhfAYtCvcDPbBuekvaKI5nRmdRAU3eE627wg3SIXi
+ yz/8Ggpl7gz1qaZH0/alD/3X0ujgowAd2tZmC52YcnAYYPOm5uVezQcMeuuTK3K9+S1AKu0ZM5G Vmcx+qGrnN38JsQ==
+X-Mailer: b4 0.14.3
+Message-ID: <20260807-miscdevice-data-v1-1-43c4233e0b03@google.com>
+Subject: [PATCH] rust: miscdevice: add registration data to MiscDevice
+From: Alice Ryhl <aliceryhl@google.com>
+To: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "=?utf-8?q?Onur_=C3=96zkan?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri Aug 7, 2026 at 3:03 PM BST, Alexandre Courbot wrote:
-> On Wed Aug 5, 2026 at 7:43 PM JST, Gary Guo wrote:
->> On Wed Aug 5, 2026 at 6:44 AM BST, Eliot Courtney wrote:
->>> Add a helper to get a subregion of an IO view fallibly.
->>>
->>> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
->>> ---
->>>  rust/kernel/io.rs | 31 ++++++++++++++++++++++++++++++-
->>>  1 file changed, 30 insertions(+), 1 deletion(-)
->>
->> Looks like the case where you need this don't actually require a `Region=
-`
->> (dynamically sized type) but rather a fixed size window?
->>
->> In that case the next version of
->> https://lore.kernel.org/rust-for-linux/20260721-typed_register-v1-0-452d=
-72b60262@garyguo.net/
->> will contain what you need.
->
-> Looks like we are going to need to full series (or at least until and
-> including patch 11) before this can get in. Gary, what tree are you
-> planning to merge the register projection series into? It would be nice
-> if we could do it in a way that makes it possible for this series to be
-> merged shortly after (either through `drm-rust-next`, or a merged signed
-> tag) for the next cycle.
+Currently when fds for a miscdevice are opened, the only "global" data
+they are given access to is the MiscDeviceRegistration value. However,
+this value doesn't let you store any user-provided data, so there is no
+way for different fds from the same miscdevice to interact with each
+other. Thus, let the user specify a type to be stored in the
+MiscDeviceRegistration in which the user can store whichever data they
+would like.
 
-I think a topic branch next cycle would be the best approach. That said, gi=
-ven
-that all non-sample drivers using it is drm, this can be taken through drm-=
-rust
-too. I guess it's Danilo's call.
+The intended user of this patch is Rust course material. Miscdevice is a
+nice and relatively easy to use API for someone's first driver, and
+being able to persist data from fd to fd allows the student to interact
+with their driver using 'cat' and 'echo', even though each call opens a
+new fd.
 
-Best,
-Gary
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/miscdevice.rs        | 42 ++++++++++++++++++++++++++++++----------
+ samples/rust/rust_misc_device.rs |  3 ++-
+ 2 files changed, 34 insertions(+), 11 deletions(-)
+
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index 3abef1b8543d..c4910918cd15 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -31,7 +31,10 @@
+         Opaque, //
+     },
+ };
+-use core::marker::PhantomData;
++use core::{
++    marker::PhantomData,
++    ops::Deref, //
++};
+ 
+ /// Options for creating a misc device.
+ #[derive(Copy, Clone)]
+@@ -62,25 +65,30 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
+ /// - Deregistration occurs exactly once in [`Drop`] via `misc_deregister()`.
+ /// - `inner` wraps a valid, pinned `miscdevice` created using
+ ///   [`MiscDeviceOptions::into_raw`].
+-#[repr(transparent)]
++#[repr(C)]
+ #[pin_data(PinnedDrop)]
+-pub struct MiscDeviceRegistration<T> {
++pub struct MiscDeviceRegistration<T: MiscDevice> {
+     #[pin]
+     inner: Opaque<bindings::miscdevice>,
+-    _t: PhantomData<T>,
++    #[pin]
++    data: T::RegistrationData,
+ }
+ 
+ // SAFETY: It is allowed to call `misc_deregister` on a different thread from where you called
+ // `misc_register`.
+-unsafe impl<T> Send for MiscDeviceRegistration<T> {}
++unsafe impl<T: MiscDevice> Send for MiscDeviceRegistration<T> where T::RegistrationData: Send {}
+ // SAFETY: All `&self` methods on this type are written to ensure that it is safe to call them in
+-// parallel.
+-unsafe impl<T> Sync for MiscDeviceRegistration<T> {}
++// parallel. The `RegistrationData` type is always `Sync`.
++unsafe impl<T: MiscDevice> Sync for MiscDeviceRegistration<T> {}
+ 
+ impl<T: MiscDevice> MiscDeviceRegistration<T> {
+     /// Register a misc device.
+-    pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error> {
++    pub fn register(
++        opts: MiscDeviceOptions,
++        data: impl PinInit<T::RegistrationData, Error>,
++    ) -> impl PinInit<Self, Error> {
+         try_pin_init!(Self {
++            data <- data,
+             inner <- Opaque::try_ffi_init(move |slot: *mut bindings::miscdevice| {
+                 // SAFETY: The initializer can write to the provided `slot`.
+                 unsafe { slot.write(opts.into_raw::<T>()) };
+@@ -88,11 +96,14 @@ pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, Error> {
+                 // SAFETY: We just wrote the misc device options to the slot. The miscdevice will
+                 // get unregistered before `slot` is deallocated because the memory is pinned and
+                 // the destructor of this type deallocates the memory.
++                //
++                // The `data` field is `Sync + 'static`, so it's okay for the `open` callback to
++                // access it until the destructor is invoked.
++                //
+                 // INVARIANT: If this returns `Ok(())`, then the `slot` will contain a registered
+                 // misc device.
+                 to_result(unsafe { bindings::misc_register(slot) })
+             }),
+-            _t: PhantomData,
+         })
+     }
+ 
+@@ -112,8 +123,16 @@ pub fn device(&self) -> &Device {
+     }
+ }
+ 
++impl<T: MiscDevice> Deref for MiscDeviceRegistration<T> {
++    type Target = T::RegistrationData;
++    #[inline]
++    fn deref(&self) -> &T::RegistrationData {
++        &self.data
++    }
++}
++
+ #[pinned_drop]
+-impl<T> PinnedDrop for MiscDeviceRegistration<T> {
++impl<T: MiscDevice> PinnedDrop for MiscDeviceRegistration<T> {
+     fn drop(self: Pin<&mut Self>) {
+         // SAFETY: We know that the device is registered by the type invariants.
+         unsafe { bindings::misc_deregister(self.inner.get()) };
+@@ -126,6 +145,9 @@ pub trait MiscDevice: Sized {
+     /// What kind of pointer should `Self` be wrapped in.
+     type Ptr: ForeignOwnable + Send + Sync;
+ 
++    /// The registration data shared between all open files for this character device.
++    type RegistrationData: Sync + 'static;
++
+     /// Called when the misc device is opened.
+     ///
+     /// The returned pointer will be stored as the private data for the file.
+diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
+index 41e26c825060..0bde071743ef 100644
+--- a/samples/rust/rust_misc_device.rs
++++ b/samples/rust/rust_misc_device.rs
+@@ -156,7 +156,7 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
+         };
+ 
+         try_pin_init!(Self {
+-            _miscdev <- MiscDeviceRegistration::register(options),
++            _miscdev <- MiscDeviceRegistration::register(options, Ok(())),
+         })
+     }
+ }
+@@ -176,6 +176,7 @@ struct RustMiscDevice {
+ #[vtable]
+ impl MiscDevice for RustMiscDevice {
+     type Ptr = Pin<KBox<Self>>;
++    type RegistrationData = ();
+ 
+     fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
+         let dev = ARef::from(misc.device());
+
+---
+base-commit: 220190f97da558e67cd01c62f1b84fe77b267a5a
+change-id: 20260807-miscdevice-data-71c727e8b2e5
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
