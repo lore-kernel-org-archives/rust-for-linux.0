@@ -1,200 +1,106 @@
-Received: from linkmauve.fr (linkmauve.fr [82.65.109.163])
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CE841D107
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 10:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.65.109.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FB242FCD9
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 11:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786097619; cv=none; b=K8Udxtc22VSUkLLlgYFIZ7aaQA8EShyTqVaV85EsLKBFGUJdQeSO0MUJeBJrn6KNtkB3B+EWUVR9Zvns9hEoNnTqmHT+y2mwv6xY0M/7gUSAW/lWDe+fNXb2R+UXOKiDL/Nb/6hZEFqEVnRyo2FzM7jG6bmbSNcnV1SE6VvjJ5Y=
+	t=1786101572; cv=none; b=ZU5Fcij6bqo+4grP0wEiXgelfhKO/Jgo9EoVC/NJhLFyAvGgs5z7qzivIm3OCkt7dPdh7ATkivxq5982LDk8TVIYF85cA1Ve6ONyj4EPicqHfKzT2CiGAizVNvet+KqArQQjcJv+22KDbVuR5O6+cmplP8YoAnR1yCJ77P6A6Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786097619; c=relaxed/simple;
-	bh=cgVeXfY4D7XgRd61FmsMq2MxGZMe2bl5WW4aV8vgr7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jIRb5fxgYUSsHqjsDvNeMGCbXaOSy5Oc9w73R+J5UQvQFQIquQi0YobcQiIkE7hdIEOuEw80syH3K1n+zfIUwyRRGJgpLNvnyf65yMwUOVf1IB0OgQISd4BWgzPMU+YsSvpLI+AFff5quU3MLxJhRewrcQR25xQBjZacL/tlqlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr; spf=pass smtp.mailfrom=linkmauve.fr; arc=none smtp.client-ip=82.65.109.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linkmauve.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linkmauve.fr
-Received: by linkmauve.fr (Postfix, from userid 1000)
-	id 13D0870A36B4; Fri, 07 Aug 2026 12:13:28 +0200 (CEST)
-Date: Fri, 7 Aug 2026 12:13:28 +0200
-From: Link Mauve <linkmauve@linkmauve.fr>
-To: Ke Sun <sunke@kylinos.cn>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v14 0/2] rust: Add safe pointer formatting support
-Message-ID: <anWvyOP2rISjXkXn@desktop>
-References: <20260807-hashedptr-v14-0-817009769ffb@kylinos.cn>
+	s=arc-20240116; t=1786101572; c=relaxed/simple;
+	bh=zwDbWjZ+F+dYN5AWbUE6xH1Ki2RHVpIpeS0Dji7EX6s=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Qc0OLSYQd3OxFoav7PMI5JRfajvhgAZrOzczIleXywYTc/qMQQsWikdMUrXZc/YjZbf8LnxDzvEOs2yXDyryCe/cZ1OhGJHus78P+J7t2+rfXr4fDW8GmWh0rWPmSPnWPABQXxlfErbYaSJE4v1Mw/W1gl9bEXErBLtQBrVbGos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=FdKyCp1P; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DpDUu1cD; arc=none smtp.client-ip=202.12.124.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="FdKyCp1P";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DpDUu1cD"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id B2EA013001B3;
+	Fri,  7 Aug 2026 07:19:29 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 07 Aug 2026 07:19:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1786101569;
+	 x=1786105169; bh=zwDbWjZ+F+dYN5AWbUE6xH1Ki2RHVpIpeS0Dji7EX6s=; b=
+	FdKyCp1P5OxUffLpK0ALb147bFxYffDPiSyv7zTFQLUQcVDYIiGUb63C8RhLPGsi
+	6ex3aD0qbydGQZlrbQxO+JlR4o9Ed/jwhdc06YatDzr7GkjBKgEyEaz0U7XRn6iM
+	bVsMO//nXfJYV8+okYPt1Q77irvkcpQpsuqCKXnjqstPjeFei0klhfXMC5PdX88o
+	3fnaseK6byDgQ3DJdFwtXLa7xHSPlG/eXLAX41FGUBeRheJ33neOJwEw5J32D68N
+	/biwFWUxAeuopQvVdIuRVJPLWKzDV42QRIH0Hyv9qB1P4G+prfIpvplvyhcUKwym
+	cjoVokgBN2OwrjTS49si7A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786101569; x=
+	1786105169; bh=zwDbWjZ+F+dYN5AWbUE6xH1Ki2RHVpIpeS0Dji7EX6s=; b=D
+	pDUu1cDpCNMn7NkCAAaPl97mc75kH5BDt/xwqHc1iuDV5vO9wWYgTYwdEfqbTMox
+	R6kWYCeRAeuiLBVjrmAPdKFgJGZsm2PhhqFn+W9QACZn3S1W+l/8gjeJsa16ylyQ
+	SRvX6Cp8aiRJffPm1l0LvnsjR4VzxdiopqsBbGiQ7JKiVkZ+sFxzApkUDk6ly5x4
+	J+y6lloU45/JVR+QOEYlYb3fz64W7tp0sF6WhKFSI4ZR42+87EG24vnXQ1G0wjNC
+	tsNa548WZ3vtsvsbxi+RDtX56EI11gWqP/7WL2LnygGMZm1yzC3SW9KrxY5Z0nqv
+	bpqLZoe4OMYUTCJDvVLZw==
+X-ME-Sender: <xms:QL91aipULUjBhTbgcoaRhxqY24lYomAhVZzjva9TwlbnFrtgC48t3g>
+    <xme:QL91ah9DdBXnOeJFkTXXpjZT6gz7kgvD7bLl9MqAs1M2rEyEKib5dXeppcE2khsXJ
+    RILrSDjRXnnlf-xXMZ_3xBG-7iwfSPcEdOkHmx4mb4XtMcdRb8a9Bk>
+X-ME-Received: <xmr:QL91ar1ykfQavbNTrmp8Wuzd29-q7Ea3xFyR1qonNPqHTy96P0GmWqMkgDgOtD3D_JgN0gwmHHSidoAS3x8nG14a>
+X-ME-Proxy-Cause: dmFkZTEdBjjHuWv0Sw9dQDcqqfH4lb+njY4y0fsPCkON3454tsrUpVf+9rxqVq1Ax3NiaS
+    hs7s/3eDu6QxL4EqX1BGDBHqx2GqPAgoWnouPOzIZ1dey65QhpvDP/edNs0h0/LAtcMmr/
+    LFeHkdrnWJ2PFu2JgTOjVLaYZZLDs+Azh4zCWmXS/CFFlD2t5imOCG+fJXnnw9sWxTJ3d2
+    gcsjz7OkrvZDj4bHpb8Cbd2qPVn0IMEB5nuTnU8g9Jf5mmxmI8jy7v/oGYT2n3L9kssXO7
+    EfoS+7c1jD8TW1iRciozZ+tsM+gq1j41jo+WHyF+Oc7kb2may6lPxEACafahXe1pg+aGbk
+    LNzHY9/osVatmYKpV0HHIL+Vv07ZGyoOYz1tzJbBoxaRA2BN/QzsAY/8782iukwdC9UrGW
+    inPbI12VVRczRhy5C67temcGQ2MGIQuD/qOqW5zCm9OE2yaBn6WE9VJPHH5OSRbIHb8wW4
+    HvQ5Z9GsP5Sw/p2jVhxYBu5wahFQtfUijkRAk6b2q49bOaFF4zfe4eo34G7c3lUmrwsLln
+    dTOGlHwNdefap9rlD2dnG95oqhRwCUXP8bLmEDLOBj1wePhLlgk6pGirINA309fyKpaKzb
+    0dELhTzKEb3GRRdXlUTX4At83apsq/EvJjOOeCxKU19m05qb6KFcGXwcsnHQ
+X-ME-Proxy: <xmx:QL91aklQ-yWuS5GEID_ZIpKhgJhDB-Si3brRPJP4vYUK1Eco4eJHCw>
+    <xmx:QL91ao1ilI0DTTVguVjS4J7JV_CUfD4xfUM2a5mKEp5d3Kzd7gZkBQ>
+    <xmx:QL91ajhrIdQbZUZJyGCPJSQ4dLTSSyzQ_w0en9-rXjwxFOasrMh4ZQ>
+    <xmx:QL91amU67ZSMNL_1VzvFvj1sff3e_iXjWD0WnqxSkzN_fXhanEKufg>
+    <xmx:Qb91as40BQWtSD6o6G4RrgivA0NiJ3DdS684SRwVNT_NxZ5_KtedvXCv>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 7 Aug 2026 07:19:23 -0400 (EDT)
+Date: Fri, 07 Aug 2026 20:19:19 +0900 (JST)
+Message-Id: <20260807.201919.866808779586212952.tomo@flapping.org>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: tomo@flapping.org, ojeda@kernel.org, richard@nod.at,
+ anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+ a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
+ bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
+ daniel.almeida@collabora.com, gary@garyguo.net, lossin@kernel.org,
+ tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, linux-um@lists.infradead.org,
+ fujita.tomonori@gmail.com, david@davidgow.net
+Subject: Re: [PATCH v1] rust: bug: fix warn_on macro build error on UML
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <CANiq72kzmPnu_UPHryLMSwGMmTruirNUL5H+aD4tMiNUqqRELw@mail.gmail.com>
+References: <20260801022501.722493-1-tomo@flapping.org>
+	<CANiq72kzmPnu_UPHryLMSwGMmTruirNUL5H+aD4tMiNUqqRELw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260807-hashedptr-v14-0-817009769ffb@kylinos.cn>
-Jabber-ID: linkmauve@linkmauve.fr
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Hi,
-
-This v14 indeed fixes things, my driver now always prints (ptrval) when
-loaded the first time (I have to rmmod && modprobe it again for it to
-display actual virtual addresses, not sure if I’m doing something wrong
-here) instead of 0x(ptrval)!
-
-Tested-by: Link Mauve <linkmauve@linkmauve.fr>
-
-On Fri, Aug 07, 2026 at 04:14:52PM +0800, Ke Sun wrote:
-> This series fixes two issues with {:p} pointer formatting:
-> - The impl_fmt_adapter_forward! macro destructures self into a local
->   variable, causing {:p} to print a stack address instead of the actual
->   pointer
-> - Kernel address leak - {:p} prints raw pointer values, exposing kernel
->   address space layout
-> 
-> ---
-> Changes in v14:
-> - Use `%#0*p` for `0x` prefix and zero-padding (Gary); this also avoids
->   "0x(...)" for placeholder tokens like "(____ptrval____)" (Alice)
-> - Simplify pointer impls per Gary
-> - Link to v13: https://lore.kernel.org/r/20260706-hashedptr-v13-0-377a07f2f78d@kylinos.cn
-> 
-> Changes in v13:
-> - Add NonNull<T> pointer formatting support
-> - Add #[inline] to all Pointer impl methods
-> - Support zero-padding format ({:0width$p})
-> - Simplify SAFETY comments
-> - Rewrite tests: remove NoHashPointersGuard - modifying
->   no_hash_pointers after boot panics since it's __ro_after_init; read
->   current value and branch instead; expand format coverage
-> - Link to v12: https://lore.kernel.org/r/20260512-hashedptr-v12-0-61d5c7786889@kylinos.cn
-> 
-> Changes in v12:
-> - Split into 2 patches: fix {:p} printing stack addresses -> route {:p}
->   through HashedPtr
-> - Test cleanup: NoHashPointersGuard RAII guard replaces raw
->   save/restore; mod expected consolidates 32/64-bit constants
-> - Impl delegation: &T, &mut T, *mut T all forward to *const T (matching
->   core library conventions), replacing v11's blanket impl + macro
-> - Link to v11: https://lore.kernel.org/r/20260205-hashedptr-v11-1-bd0fec7fe6f1@kylinos.cn
-> 
-> Changes in v11:
-> - Fix inaccurate or inappropriate descriptions in comments
-> - Use as_char_ptr instead of as_ptr so that a *const u8 pointer is
->   always passed to scnprintf on all architectures
-> - Per Tamir's suggestion, replace doctests with mod tests and adjust
->   test content to make the tests more meaningful
-> - Remove the RawPtr wrapper type: it and HashedPtr use different
->   formatting mechanisms (HashedPtr uses scnprintf and pad; RawPtr would
->   call core's Pointer impl directly). This series focuses on fixing the
->   issue that without it {:p} would output the pointer's stack address,
->   and on using HashedPtr to safely format raw pointers and avoid leaking
->   kernel address space layout information
-> - Link to v10: https://lore.kernel.org/r/20260121050059.2315091-1-sunke@kylinos.cn
-> 
-> Changes in v10:
-> - Merge all patches into a single patch
-> - Improve `kernel::fmt::Pointer` trait implementation
-> Link to v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
-> 
-> Changes in v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
-> - Refactor implementation to use Pointer trait and Adapter pattern
->   instead of exporting ptr_to_hashval() from lib/vsprintf.c. Use
->   scnprintf directly in Rust for pointer hashing, eliminating the
->   need for C function export
-> - Move pointer wrapper types from rust/kernel/ptr.rs to
->   rust/kernel/fmt.rs
-> - Split implementation into more granular patches: Pointer trait
->   foundation, HashedPtr type, raw pointer default behavior, and
->   RawPtr type
-> - Remove documentation patch, integrate examples into code doctests
-> - Simplify API and improve code organization following Display trait
->   pattern
-> - Link to v8: https://lore.kernel.org/r/20260101081605.1300953-1-sunke@kylinos.cn
-> 
-> Changes in v8:
-> - Remove RestrictedPtr (%pK) support: only export ptr_to_hashval() with
->   EXPORT_SYMBOL_NS_GPL using "RUST_INTERNAL" namespace, provide only two
->   pointer wrapper types (HashedPtr, RawPtr) for %p and %px
-> - Change API from HashedPtr::from(ptr) to HashedPtr(ptr) for direct
->   construction
-> - Link to v7: https://lore.kernel.org/r/20251229072157.3857053-1-sunke@kylinos.cn
-> 
-> Changes in v7:
-> - Refactor kptr_restrict handling: extract kptr_restrict_value() from
->   restricted_pointer() in lib/vsprintf.c and export it for Rust use, and
->   improve RestrictedPtr::fmt() implementation to directly handle
->   kptr_restrict_value() return values (0, 1, 2, -1) for better code
->   clarity
-> - Remove Debug derive from pointer wrapper types (HashedPtr,
->   RestrictedPtr, RawPtr)
-> - Link to v6: https://lore.kernel.org/r/20251227033958.3713232-1-sunke@kylinos.cn
-> 
-> Changes in v6:
-> - Fix placeholder formatting to use `f.pad()` instead of `f.write_str()`
->   in format_hashed_ptr(), ensuring width, alignment, and padding options
->   are correctly applied to PTR_PLACEHOLDER
-> - Link to v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
-> 
-> Changes in v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
-> - Format use statements in rust/kernel/ptr.rs and rust/kernel/fmt.rs
->   using kernel vertical style with alphabetical ordering
-> - Remove unnecessary SAFETY comment in rust/kernel/ptr.rs (addressed
->   Clippy warning)
-> - Update type ordering to alphabetical (HashedPtr, RawPtr,
->   RestrictedPtr) in fmt.rs macro invocation
-> - Link to v4: https://lore.kernel.org/r/20251225225709.3944255-1-sunke@kylinos.cn
-> 
-> Changes in v4:
-> - Use Pointer::fmt() instead of write!(f, "{:p}", ...) to preserve
->   formatting options (width, alignment, padding characters)
-> - Improve code structure: reduce unsafe block scope, use early return
->   pattern
-> - Add doctests with formatting option tests for all pointer wrapper
->   types
-> - Enhance documentation with detailed formatting options section,
->   including examples for width, alignment, and padding
-> - Fix RestrictedPtr example to use pr_info! instead of seq_print! in
->   docs
-> - Link to v3: https://lore.kernel.org/r/20251224081315.729684-1-sunke@kylinos.cn
-> 
-> Changes in v3:
-> - Export ptr_to_hashval() from lib/vsprintf.c for Rust pointer hashing
-> - Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) in
->   rust/kernel/ptr.rs corresponding to %p, %pK, and %px
-> - Make raw pointers automatically use HashedPtr when formatted with {:p}
-> - Add documentation for pointer wrapper types
-> - Link to v2: https://lore.kernel.org/r/20251223033018.2814732-1-sunke@kylinos.cn
-> 
-> Changes in v2:
-> - Disabled {:p} raw pointer printing by default to prevent accidental
->   information leaks
-> - Link to v1: https://lore.kernel.org/r/20251218032709.2184890-1-sunke@kylinos.cn
-> 
-> Signed-off-by: Ke Sun <sunke@kylinos.cn>
-> 
-> ---
-> Ke Sun (2):
->       rust: fmt: fix {:p} printing stack addresses
->       rust: fmt: route {:p} through HashedPtr to prevent address leaks
-> 
->  rust/kernel/fmt.rs | 173 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 171 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 6946cd5d0aa4dd10a414ddcb7a10844fdb0ad345
-> change-id: 20260512-hashedptr-22469b930113
-> 
-> Best regards,
-> -- 
-> Ke Sun <sunke@kylinos.cn>
-> 
-> 
-
--- 
-Link Mauve
+T24gRnJpLCA3IEF1ZyAyMDI2IDA4OjUyOjM4ICswMjAwDQpNaWd1ZWwgT2plZGEgPG1pZ3VlbC5v
+amVkYS5zYW5kb25pc0BnbWFpbC5jb20+IHdyb3RlOg0KDQo+IE9uIFNhdCwgQXVnIDEsIDIwMjYg
+YXQgNTo0MeKAr0FNIEZVSklUQSBUb21vbm9yaSA8dG9tb0BmbGFwcGluZy5vcmc+IHdyb3RlOg0K
+Pj4NCj4+IFVzZSB0aGUgZnJlZSBmdW5jdGlvbiBgYXNfY2hhcl9wdHJfaW5fY29uc3RfY29udGV4
+dCgpYCBpbnN0ZWFkLCBhcyBvdGhlciBleHBvcnRlZCBtYWNyb3MgYWxyZWFkeSBkby4NCj4gDQo+
+IEkgcmVwcm9kdWNlZCB0aGlzIGFuZCB0aGUgZml4IHdvcmtzIC0tIHRoYW5rcyBUb21vbm9yaSEN
+Cj4gDQo+IERvIHdlIG5lZWQgdG8gdXNlIHRoZSBmcmVlIGZ1bmN0aW9uPyBpLmUuIHRoaXMgaXMg
+bm90IGEgY29uc3QgY29udGV4dCwNCj4gc28gc2hvdWxkIHdlIGRvIGUuZy4NCj4gDQo+ICAgICAk
+Y3JhdGU6OnN0cjo6Q1N0ckV4dDo6YXNfY2hhcl9wdHINCj4gDQo+ID8NCg0KVGhhbmtzLCB5b3Ug
+YXJlIHJpZ2h0LiBJJ2xsIHNlbmQgdjIgc2hvcnRseS4NCg0KPiBBbHNvOg0KPiANCj4gQ2M6IHN0
+YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCg0KT2suDQo=
