@@ -1,201 +1,164 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020113.outbound.protection.outlook.com [52.101.195.113])
+Received: from flow-b4-smtp.messagingengine.com (flow-b4-smtp.messagingengine.com [202.12.124.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8AD478859;
-	Fri,  7 Aug 2026 13:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.113
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786107906; cv=fail; b=i5RAgjXK+dCZ/Pmkqgs6j0ZEwMGiIgHfkAmJYWsnZ2dZWQ4BAPQqkXPVXZjg6hB39SM0LZLhMDXRGCnGeaHxvqmBRK6xH6OVo1gyC9S6wKw4tYD+jQk0O3VFipwwdLsEsyvT6mjpjztO0r3SIVcPwlowIH5l91YEeIPb4sTz/fo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786107906; c=relaxed/simple;
-	bh=gWXNHqTSFBgxyG395OO7kUtvj/6MRDCuk5ijMENUwEY=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=g/fBLx3T6uz90t0PYdu8mHJGm5MIZC02/pGWoCdcHZ/yeG2LfO20UpbBg6y5/MbI+WLbQOHFbvkVu1O4oW3xCpRsaNcaG2l92KakRqjW80oeZVhoVfDUkd6nf7guzes3J4HJIQreF2p0NMmFfDMHzjAPYLja0bfeFeoG29Q6XTc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=EFQ6JLjv; arc=fail smtp.client-ip=52.101.195.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0AC4749C1
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 13:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.139
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786107952; cv=none; b=UN+Fq48ABeZLLAu+sV+mtFaPUwcY08rdd+awk1kG6lm5HRlcaDx0lxL7cwW9AOd+LeBuGLDjNQb3N9enKTX2D/P2h4vMF0AOtnde4Ffg4oQJ5tx2cdF467LWI5JgCBH+qlGxHoavUilFdIkAz75BKodnD5QFlhJubjXTzOaB8fk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786107952; c=relaxed/simple;
+	bh=Ijy0eKkIdVOScVWKB0uJPD3BMiuacm6raTzZLeNGY1E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CDcZNJFFYqmGPoSeWR8+wx8xrOE2n6NTD1zPrVMiZBYe1vBPnDuEsC48FXKzZpjNEJi4Hvw9Ai0j04dPtM2vxffLPJwbzF82gJmNJ86sa9RrD4MIwF3eikX0Z+vTRFKwvS1O5BlSsfglpk9WouwBFSA5lg/SOx/JX5Tceb3m0AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=SZJ6iesK; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dmtNV1y4; arc=none smtp.client-ip=202.12.124.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="EFQ6JLjv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DilOBHx85W39MvYrcAqyaHD/BAdVWzRAkdVp4KkaFF1yLjxMebZh6G7Dp8G8Z8gpKXTuyT2VJgT3DXV7mw0MC6ONV7ZWbUhd+XaK4uXZSeAQIzzUq8YZINwAiif5IOxBcPfjjXt1dvVikWY0d1OHkgnkTXPHkq41emjhwc6UKwbOzuF9uYJmsi0iSscPIm0afRB7tjJz7XZVB9ekKoXDJKgzRHQZRkHxeeg0yQImAyT/w930XUp8vIoU4bkY6pxEkEBRgGHnOshtiWM9Ot/uevbg3qVZnvesn9689IQ4KxvfPKG+J53Wwjdcwc3mdihBYL4LBfHfzNwmx3X3RjuI6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gWXNHqTSFBgxyG395OO7kUtvj/6MRDCuk5ijMENUwEY=;
- b=axJnhOBnOl9R8kUbYDVph3kABvegR8Jhen2oJTTyzyaITQ+vYrTKr52/qpR9wxLk0O526gefJefyUrjUSag08yyqrBvdetBSiBHL/FRfwmsHF/9LR/4btJGiJCqcTqIGiZxsKbCSsPHu5/wh1rDIAEZxFWmmuL3mKa7vJjBLFgcs/MMK5itkI9Ix2UcjQ/X/+phvUmfnqMynQZGsl+nrQZoU97Ol1s7V0+ZIDYnCdQeOCvIKDVCS4ILnpUmiAQ7kQ7qY+GF+ahJ0EVA82qMsiL+MIkJF1fXv3J+7jZi9wdC8j7OfuukM29UakCCfBoJ/pCKgQKzwZ3UuaFskl47t9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gWXNHqTSFBgxyG395OO7kUtvj/6MRDCuk5ijMENUwEY=;
- b=EFQ6JLjvkxpe+kcgQyHUUNpX6WyfXP17tqdoMdIs7neOl2GG29lzkT5wDDzNYURgI6Cn0ZH403kzsdG7E/YW0hunOvb1EH0NagaV7ft1DPXcll+MkiBG55mtOBxIef5AWwgpplyLnt3MuCdHyzAelYAe7S4vy+eKwAGyxGxQR0g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
- by LO6P265MB6623.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:302::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Fri, 7 Aug
- 2026 13:04:48 +0000
-Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0292.022; Fri, 7 Aug 2026
- 13:04:48 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 07 Aug 2026 14:04:47 +0100
-Message-Id: <DKIQEJX6H5A0.1D3POLLNZB9YS@garyguo.net>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Trevor Gross" <tmgross@umich.edu>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>, "Eliot Courtney"
- <ecourtney@nvidia.com>, "Zhi Wang" <zhiw@nvidia.com>,
- <nova-gpu@lists.linux.dev>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] rust: dma: rename dma_handle to dma_address
-From: "Gary Guo" <gary@garyguo.net>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Robin Murphy"
- <robin.murphy@arm.com>
-X-Mailer: aerc 0.21.0
-References: <20260805-falcon-dma-projections-v2-0-4cc9f3f13ee9@nvidia.com>
- <20260805-falcon-dma-projections-v2-2-4cc9f3f13ee9@nvidia.com>
- <3a87960b-8a20-4947-a8b5-d5197174317c@arm.com>
- <DKHATVF1WAE7.NGVXJQD12XQ@kernel.org>
-In-Reply-To: <DKHATVF1WAE7.NGVXJQD12XQ@kernel.org>
-X-ClientProxiedBy: LO4P123CA0626.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:294::11) To LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:4ab::19)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="SZJ6iesK";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dmtNV1y4"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 23B6D13001EB;
+	Fri,  7 Aug 2026 09:05:43 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 07 Aug 2026 09:05:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1786107942; x=1786111542; bh=3nQ6nYMMLwkGnU1JTwP5I
+	n9xlQ3OHG8qCBN2m2hQGHA=; b=SZJ6iesKUUxi3m1V6t9xa8CYafpePJedczwBD
+	MbYqTA0DwwDOuwxlof/IMgUq0BGXE05gRyQMV3Oa2IOCILyJwyw2YetEa911IL4q
+	c1Q9MYrdpLyEXFeBO8RTZedrcg4jpVsZFJziivDY5ZTqB63nHDLVn6uAgdYCsuad
+	B4ISS4w42YbNmwWRnROvBdeT0KY06XU6pQBd+/lLlD2Tb8iGHdo90DFqh2JaHt9x
+	5KGu/EptCoYIFzy2pjHsoZOh72ApY5kHaY7O2JruU2Hd2r6n+VHh43m72CWgS9qj
+	paBb+NxwBE9qfL7cHqg90yUpBxuk7zg7ArmVKuBYavJaqZcIg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786107942; x=1786111542; bh=3nQ6nYMMLwkGnU1JTwP5In9xlQ3OHG8qCBN
+	2m2hQGHA=; b=dmtNV1y4HN2Ism9osGcAvXLqe5Hdyv8pO1eAz+3kJoeuVZ/rDaG
+	d8fTAmzTCRtlz4+KBiTThn2i7IgLTgy7WJRvyuISL5p8OhwWhmy6bfRDAkE3I9Hs
+	VxNkmK7QsTMR0zFMpK9vvnbjbfvo7AZ1aK69aazYLa7sctUd/kOVhKjqDSpxuiPE
+	R3EC1MmfY5KdQSWeiK0MxSpLGEUTgbCs3IOKy/GZ8RNaexVQx3qw7rcAuz+TtKIN
+	cUaYF1CgpWbXmOuJgYDnMlAf/eEBXXuQXngxkL/eIaB9CXVh7m/7R3q6H2uDsLKP
+	+IZSiGXDst7KFmZZ19d1s9S2iAYAPlXj/xA==
+X-ME-Sender: <xms:Jth1avXrYo0Pv0OSMlvyHuwHX4fZyyzBdNhoxcPLPU-Mv1FZRycnAg>
+    <xme:Jth1an9JB9m4NhpM1urniB9TsbXMz_ookpjfJCajrkHi2uSa3iMreOjhEw2eXTYOV
+    IHxb7lWOupbZzYrvPin1cpAah3jggG8rLC8imJC2l_UvveoGIj84uM>
+X-ME-Received: <xmr:Jth1ashy8FUFnAjGylDJ5wDSeKFskx9OEVQ6XI2FCC76Xwdzm6qAU3Mdbq_kqv93P12wpc-qROh6NLXiP1o>
+X-ME-Proxy-Cause: dmFkZTE6lBmfP6knYuNxSlrW+A0FA7pwoCcGF7dyMbw9BKqc1GOrdL3euEkYJVtdrPhBuk
+    lHyBx854SV6COykUCPpcvG3+zK2PLiyjc3FeN3U4UvBbDs3udS762fp4fvLuPMNWDtPWeB
+    KcGUCmfiI+9YHiwNBGhQUQL5kARnWNBvCFnQP7xLi6Y1uPeZ5Mi/igAzTze2wIEbkWCa96
+    XUjYl1WKwlWpGGVEHgI3LVltKh3ZsRBA+OOqYcIitgtUaSm2fk17aFvWnRGBNCB+DxUbGA
+    uiiT9+O1TwdeE9AmPlYl6Nk5V07cVyLfLE9Rqsbb/ZJF3wirPkS/1ntPEFk3Bam8RZ1oBv
+    4gpHKYM0LOLLBbz6tktI94CAgBSnscZ+bJv2Y+Sk5duXwr7W6m4UvEsFlnSh2g6yBgDHN3
+    PRZ/bvO4UT9mLBa3MRbftABGBa04Ist27MZ9xT0PErHm85wnFeJcvjy19p05j9a2FYqzid
+    1vvdI0Hnwx8bcE0zeMy0AeCyvXG/LClkgXQRdSieXthc6gOPMjtXqGrxZhG2h+m+smWSrl
+    a9HO6OthZNAraouYI16bh7BJOue4nkefV0DnikiKmMhj7TDp0YKyt6fUlpGVRtMjX0UeDj
+    +FYqv93omzBgBoVcAHCW5VvxBmoB2/fxh86GkYPCRy7oiV9c6I+YDGCVTAZQ
+X-ME-Proxy: <xmx:Jth1amVAsnwO8ZRPacs_qVk7zvWc1NXQLlwIEsEDj6PQDolnmP4GHA>
+    <xmx:Jth1aostC8wbDaeTFl6YGvC9CQ79B9tU8Vs88dLB1PwMC0UCcXZHrQ>
+    <xmx:Jth1av_tjBy_VdFBfGWbCus7QBw_e8jLZ_PqPlBRImfRlV8wPYVNrA>
+    <xmx:Jth1agsNDpXkzXvA5001jZtyIttZqx7s9fe9ThpxF6rC3zFm_ELOOg>
+    <xmx:Jth1arqeQvMbjl9TNcGwVXWx6eXMu_eFBRpBQJpOsQp7hMB6YkY1AHy6>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 7 Aug 2026 09:05:37 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: a.hindborg@kernel.org,
+	ojeda@kernel.org
+Cc: acourbot@nvidia.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	frederic@kernel.org,
+	gary@garyguo.net,
+	jstultz@google.com,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	sboyd@kernel.org,
+	tamird@kernel.org,
+	tglx@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Subject: [PATCH v2] rust: time: fix as_micros_ceil() rounding near i64::MAX
+Date: Fri,  7 Aug 2026 22:05:31 +0900
+Message-ID: <20260807130531.1056209-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO6P265MB6623:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff94e2c5-8c3c-4605-dd98-08def48475a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|10070799003|366016|1800799024|7416014|376014|22082099003|18002099003|56012099006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	nsLf+0eGfyFmtSaKY4Ak2BBDOshBwSc5z5xKvGSsJmJCxMxFFmJAooblPl4dlrXpMh4I0Mq1oCJkbLtkxlk4YL/oTXHNyFsIbBlmsaeHDDf2z9HWd9UvdKKljMTqZCpnIXtzaRLrN1/JXv416IfYfUVJwtaMsUubISrV5TJUjwoF9gio7sXbMN/G2xUzm+yLbDm0r/6oQ67fRmQugGYk9kpYu/fhtGf/6/5FiTXDcmuV/Qy5kcRGQiNZ7N0Rt10tNzSJ9SnQGQjhEw0n7dhKaYRtyp6keFqJdiu9hfkGDFOiYSa5hSQ+W9bnJeMOux5iVjkdsxSzE/SNZ2DwwR0DNX3n7HSLrwet6K+vCMlGP0oJ9HIExWUbCKU36XFsSFEnF9jbacMTYElKGXH3ALWFrM2AU30v7SUBPDbRpBcUdfq+rB0lluickQPXS9y00YI98xsj2EpyMhDeV2dzTmARUFWuHCgwR6CBXi0MJ5vOkUxXFH22AExegDucOLQED7JkDSXtnjwqXH3hVoQTqmqzDGlscl4bjL5IajefcUzT0b6RxPaYs8iGl2Lw522T3q4F+8dQj3yjiYVBcDgmj+5oaJopb9wKmJIe1eRps+s6WSlGYS4iVZzcTKP+3MOeOVjLDlMio7JYGTortf/8shqAPmPdcWiyAvNfQd2UxnUvRTs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(366016)(1800799024)(7416014)(376014)(22082099003)(18002099003)(56012099006)(4143699003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cmw2NGQwZXhEY3hiTHI4OHdQd3FxL3l4QTBTOXBRSG8wVGYxMkJPajkxL28z?=
- =?utf-8?B?Y3c3bmRhK29RRDVlU2g4RWFnZFpsZlRwclNrZnRaeGdoSEpjMDhsNC9YM1Rj?=
- =?utf-8?B?SEJqZWt2Z3RpR0RZU2VjRkhoa29tSjZiMmd3THhJZGhoNkdmaXVZQ29TK2FO?=
- =?utf-8?B?NmFtbExUUDIzYWJyUU44L0VPNTdhMlRidVZQNU5ES1NGVlVPNy9uQlM0TEt3?=
- =?utf-8?B?eGZoc3NudEFJV1c2dFo5Zm01eVQyeHdsZlA5U2tZVVJDaldWMVorcFJFS0Q3?=
- =?utf-8?B?dWxOdFI0eVR6cFg3VFpsY3pZaWk1SjRSTWI3aUJ5OUFvL2RQNG84cWw0YXA4?=
- =?utf-8?B?VTJjZ1Ira0lZNmN0WnIraldNMWg5dndUVGtnWGxoVFgxcVl1R0hGV2x6ZGV5?=
- =?utf-8?B?dzMrSVNJVzFTZkdiVUNudlMxT1l1aEVtMDBBOUZpT3J5SHJsNUM3dHI2MTFP?=
- =?utf-8?B?OWZHNVltYW1xRXByZzZtZ09qVXpYZkl2QXlxa0QrTzBjcmUxWHhNTGo2QzJK?=
- =?utf-8?B?TG9NM0s1RzFxTVI0T05QNUNyRk5yOEloM2xsWTk5b09OTmZBT3dMRkJmYlly?=
- =?utf-8?B?RHo2NzN5L2lUakFaTzJBT0hRc1NKWGdnVkhtbVhRdlpmdjVpUk5nNHczaGFx?=
- =?utf-8?B?OHFWNWhwOERyQ0dVd0V0Qjlsek1ieHArUjJHc1NlUHFGOFNzMGNCSUJUZTJX?=
- =?utf-8?B?QWlSckhrM1Y4ZnYvd0V1TEZvZ3FBVFlnaFQzS2NGUitZanZLSzJ1ZWc0LzFD?=
- =?utf-8?B?TWYySzNzQ2Z2WnFLbHlGYWxVT1BIRGFheUVQRTN4VEszOVpNWlRPbXRxNWt2?=
- =?utf-8?B?YUJyMDc5S2R5UnR3YlRtZlNGTWJnMlFDbmlTb2tHa1ZidVEvYk9VRkE1eTZK?=
- =?utf-8?B?R0hsaHVVZnRwaEdqZjJKS24vOVlTeFZwYkxFV0YyZGh5WGVXcG5SSFZCSGh3?=
- =?utf-8?B?M0FPMlB5NmZFZE82WFhySnlCalpvSHBDUXVDRXFWUjBNTWNJNy9XWFg2aWJO?=
- =?utf-8?B?VmdwVDVOYzFHVEcxb2UzajFJamVNNEpYMExJNDRIc2N0MUd0dDZJSWJzTmh2?=
- =?utf-8?B?cmRUMGdWM2xoaXJ6VzYvUG9IUFVsVjZsWlVCTTNiTWt2clQxSDBMaTZ1MzZq?=
- =?utf-8?B?b0JIQTlKSUM5TlgzbWZMeFpFbXhsRzEwS0ZYa3BmaEpJemQvYWVWczdXRTZP?=
- =?utf-8?B?VzRRelBCcWJlZUtta3ROeFR4NG1GU0hZR2ZiRE9Wc0dkZVZTRXZzbk5kNlZs?=
- =?utf-8?B?Q0RYSld4S3ZzaHB2NVBxM2VmbTIwRDNDUGF6cm4vcVhOSGlzYTM0WjBhWGVZ?=
- =?utf-8?B?d3h6VXVaK2lpTis2Z3NEV3pyU0ZHaEloOFkwQmY2SERUakhpc1htYk9zdFJx?=
- =?utf-8?B?V2FQMXg4K0FtMzAweklwTm9iU3ZpZjVYd1B3TEgzWGttRzBYVWJkcGhKb0pN?=
- =?utf-8?B?UUtxcjZxbjBUV29pOFpuamExUTErdU5jRE5SMW5IVEVwaTBQSGYwMFZwUmZP?=
- =?utf-8?B?WHpkWVlaMEU0d3E3TzBNQklyZVJ6WEpHMDNROG1nM01PbFJ1M2cxT01jcWpK?=
- =?utf-8?B?V0p2TWNMODJzOUZVbDZYUE5BUmY3WEtCK0VWczBOekthSDNTN0dIQUVRV0wr?=
- =?utf-8?B?eTBnaXBpMjdmbFB2aUZtakFlaC9JUjNwZXdBbEt2YUFEeVp3NHphQ2Q1SkJV?=
- =?utf-8?B?d29UaWFQcTRLRUJSOXJScllwYThaVXhDSUlhSFplcDRRWVJHNWJmWXZqSktM?=
- =?utf-8?B?TjhaMjYrUmd3eHVwd2FiemVBam5qL01tWGI1NEVVQnZSQ3RLR1pOZXZ1T01n?=
- =?utf-8?B?bFViUlVoeTA3Tnk0TVo4NnFjL1ROY01EdkM4UGgxU2ZKeDNDYUt0UDRIMytp?=
- =?utf-8?B?Mmd0OFJ4dWQ0QTlKMnhWcnE2SWFhbGoxeWwrTW1DWnVJcERWMEFTWUNKQ1VD?=
- =?utf-8?B?LzkrdU5oNlZ4aWtGTkU5Lzk3YUxFV3NtZnEvWjR6c1p0K2ZaRFFRa293ZC9U?=
- =?utf-8?B?RFJKbmU5RWwxbHhENWVVMDh6WjcrTWhwM3FZSFIzYjhHQk9iQ2ZHZkVmdmxO?=
- =?utf-8?B?WE9ncWRIdFlqSEJHVjc1dU1CK1Vpd3p3KzRVRTdCTnlBaGIvSGg2NXFFTHo4?=
- =?utf-8?B?c3crTGxjTTVyUUp3UnJXZWZ0VnZ4Q3hwRWtwRzJacmlXeTd6cmFLYStjT1Bm?=
- =?utf-8?B?UElSaCtzeDhHVU1mTUpXTHVzak16Z0ptbzFQbzl6VUlJUkJTc3Y5NnBwM0ky?=
- =?utf-8?B?MllDVmtZc1NTa0xhU3I2cEt3ZnNtaVRoODhSMThxYTdmZERKaHhiaEpnK1ZU?=
- =?utf-8?B?dFFpVUd2TExiVkFwdGwxTitXR282d3dEMWMyTC9sb0Q5SkxPRm1wUT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff94e2c5-8c3c-4605-dd98-08def48475a1
-X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2026 13:04:48.0457
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ap1daCNplDeLHXt8ziqRKARpzKK0utaqbRAsRmJdFtVq3YeDLJrx9DFHli9OjOR0JBSNaz5JRUVUsGL5YoypOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6623
+Content-Transfer-Encoding: 7bit
 
-On Wed Aug 5, 2026 at 9:39 PM BST, Danilo Krummrich wrote:
-> On Wed Aug 5, 2026 at 1:32 PM CEST, Robin Murphy wrote:
->> To be fair, that is sort of the intent in the C API as well, to be clear=
-=20
->> that DMA addresses must not simply be treated as physical addresses, and=
-=20
->> aren't necessarily address-like in general e.g. comparing two=20
->> dma_handles is pretty meaningless, since they could have different=20
->> values but still refer to the same underlying memory, or vice-versa.=20
->> Adding or subtracting offsets within the bounds of the original=20
->> allocation/mapping size is pretty much the only arithmetic that _is_ val=
-id.
->
-> Yes, I did suggest a dma::Range type [1] for this purpose, such that only=
- this
-> kind arithmetic is possible to do.
->
-> The dma::Range type should have a method returning its embedded raw value=
- which
-> then can be used to program registers etc.
->
-> This patch is only an intermediate step, that clarifies that intent of th=
-e
-> current usage of dma_handle() (or now dma_address()), which is not to ser=
-ve as a
-> handle.
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-I suppose with I/O projections now it's rarer that people need to operate o=
-n dma
-address directly? What do you envison as the use case for `dma::Range`?
+The ceiling adjustment used saturating_add(NSEC_PER_USEC - 1) before
+dividing. Once the nanosecond value gets within NSEC_PER_USEC - 1 of
+i64::MAX the addition saturates to i64::MAX, which drops the ceiling
+bias and can yield a result one microsecond too small.
 
-Also, I suppose we can also represent dma address ranges as `Io` views that=
- does
-not implement any accessor methods, so projection still works on them.
+Fixes: fae0cdc12340 ("rust: time: Introduce Delta type")
+Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Closes: https://lore.kernel.org/rust-for-linux/CANiq72mtS0ABA2JnT5tpz6J9c_mnxY+vyPvghV_ukngWvN8F2w@mail.gmail.com/
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+---
+v2
+- Add the comment; no functional change
+v1: https://lore.kernel.org/all/20260723120907.209643-1-tomo@flapping.org/
 
-Best,
-Gary
+---
+ rust/kernel/time.rs | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
->
-> [1] https://github.com/Rust-for-Linux/linux/issues/1248
->
->> However at the Rust level, the abstraction itself can convey (and even=20
->> enforce!) most of that, so for the sake of clarity here, particularly if=
-=20
->> Rust programmers are likely to have their own expectations of what=20
->> "address" and "handle" mean, then I'm inclined to agree.
->
-> Yeah, as mentioned in the link below, the handle that represents the allo=
-cation
-> are the DMA container types (such as dma::Coherent) themselves.
->
->>> Link: https://lore.kernel.org/all/DK75LUA4NLGI.3P29AIZQE20V2@kernel.org=
-/
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index b8463823aed9..54fc46d460b6 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -441,22 +441,25 @@ pub const fn as_nanos(self) -> i64 {
+     /// to the value in the [`Delta`].
+     #[inline]
+     pub fn as_micros_ceil(self) -> i64 {
++        // Only positive values need to be rounded up: truncating division already
++        // rounds towards zero, i.e. up, for negative values.
++        //
++        // The usual `(nanos + d - 1) / d` is not used because the addition overflows
++        // once `nanos` exceeds `i64::MAX - (d - 1)`; saturating the addition instead
++        // would drop the rounding bias and return a result one unit too small.
+         let n = self.as_nanos();
+-        let n = if n >= 0 {
+-            n.saturating_add(NSEC_PER_USEC - 1)
+-        } else {
+-            n
+-        };
++
++        let (n, add) = if n > 0 { (n - 1, 1) } else { (n, 0) };
+ 
+         #[cfg(CONFIG_64BIT)]
+         {
+-            n / NSEC_PER_USEC
++            n / NSEC_PER_USEC + add
+         }
+ 
+         #[cfg(not(CONFIG_64BIT))]
+         // SAFETY: It is always safe to call `ktime_to_us()` with any value.
+         unsafe {
+-            bindings::ktime_to_us(n)
++            bindings::ktime_to_us(n) + add
+         }
+     }
+ 
 
+base-commit: 075b74841bd0065a3bda3440873c747938e69b68
+-- 
+2.43.0
 
