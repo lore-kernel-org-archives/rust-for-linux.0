@@ -1,142 +1,123 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D996C3750A9
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 16:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22F53A8741
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Aug 2026 17:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786121921; cv=pass; b=P6sKApw/0EL7fBJRhPAWJbeXvT8ewoK7WSPpB+dg0ww9Qv4gaO9PD7ORgoVp/7fDjI1/1dZ29zFYHupJyYP36hBtTcTzBoYoUaPn8KXsswpS7VjduUqepg9wYnf9Nw3/ZyeM/k02OSt4JTu/XG5ffvJ080iV2byBDiI/95DvVNo=
+	t=1786122761; cv=pass; b=VXEPrP+nmuMLbsLkQBh3eTpPJA5sTATtf7bimSh9N7uL45vzPvGNe54xPBHdB3eZ+wFaAejlwpXZU1f879rKkNAIPoUzhgFc8LSyLvj8idPAy6sUycM+6Qc9GnX1LC811reeyNDRO8qHXNQap4FBecq/kMdmDNGahsbZhBKsfU8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786121921; c=relaxed/simple;
-	bh=+tCnoMwAZEVH6hwh/t816bcFUV2OI7xzKPLQHdVVPMs=;
+	s=arc-20240116; t=1786122761; c=relaxed/simple;
+	bh=rYN3WqMlSBD8p+Coyo0jjeKucvb7gFDKdiYxoZH2MVw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tttk6HXB5ntchNvdcTiMcLdnZ6QC3UigJxc7yXR8BPl0eSaIQuLrC3qKLqZMIcwUWTgStpyAkBSd29tgifhjeYSvvQbeFFIFgL+d/gA8x6vwvxbJWh9pgIYolVPTFlWTGsn8rlRwj22xP9bVOd5DMs/bxBirAqZ1DkWkpgnLRRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VXI5rzhw; arc=pass smtp.client-ip=209.85.214.179
+	 To:Cc:Content-Type; b=sJ2cF/pNHw9nYqsOvPiQ79qnckdFiO4/zPx8bg3vlcd16A5vNhlWMCiJT3WMs0szkx94ItVRWvZLpf64TjInoHXvhgmCY1SCIhIzm8zcoA1jRgMMseRkgSC27TesToBu9HiHAAQAb74gFrFJHrWie8BnstlpRTBpoYcbIyT3e6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EHYPMaZB; arc=pass smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VXI5rzhw"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ccdce28edeso4790715ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Aug 2026 09:58:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786121919; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EHYPMaZB"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-38f0f3c8da5so521758a91.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Aug 2026 10:12:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786122759; cv=none;
         d=google.com; s=arc-20260327;
-        b=dbCWDikuYVcSGuWn/d5EjFKaQyEKfcd/yU9hi2udqiqlDosedf6/LAKdsPlqtV2VFY
-         rEA5T5JMj7Jf0zPjNFWNa2TUuc80rGFyNFGdSW/X49XyompN2ZJZ06U/8V5TbTrcoQAZ
-         gu6wGYVlM11REZipawLiLctOsrf/alK07jxxqLVD39DamZXBnfcoxw4RkBpDmXIGeqy6
-         T1GMN/yjhx95HcFGlifOscwJhSGzMzpQfuTSpL1IxBc56QfD/l/0XvpKayH80Fb2+esm
-         u4EHe/hxbq2xX2eOJfaH+LEjwY5TJBUkI0rpGZOeFuA+B1dBeXcbp1DGXdhhpbWww7zk
-         asQg==
+        b=ZX7RHE13hXmFoZdDSQFPcYdZ8cs4dyW9z25UH9LNvjOaulkNKnRCixpb1vnRqz1g/Z
+         plnUijEjl7A5cbuLDbGVJseOWqB4AKP3qFrJ8DfNeAS8AdeM8zhMHAj8eswifvuvaS0J
+         /Sn4KtPyj27Lbrxs6jJ9ucZscObT9PvpAuGJNXnLAVSPFioNhiYZYTOAr/i1c2kTm71E
+         h9R0q1KoxgnQSKbJ+JCSuynqbnKKFwXKWnJYLLMYMHTuXrmHZNVt0Z/LZ5LGprkXzFW2
+         +J8x1+8mopEP0MDl/cF4O+Wdmnp+aR9d1NDpFrX+3tZCAaTRDz0juai5fhEI7zVmLpHe
+         qaPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=t5/8EoE3A4Oj0hVOSm9+FPla2LLANPRLURLGqzSc/qs=;
-        fh=PdqyO5XngU0XGhYf0t7hLansGS+HuHjFAgMuVwhbGJA=;
-        b=C87eErhk5WJ6quNRmEge79X4W/T72afLWSRsK+Alhfc88RWP7ORebiO3oivk84SY9v
-         qLfd5yCD8siSekeGNwFqMGwfl6Zi1QAbGwpgyyaFn7W0A+h/Yxa/InVkD9RmFN2WSBpG
-         mkyI6EfJvea48fNLXbEPdv0ZNj2LbcJgUZ9zK1vsmJDilBqQzCNNs03CWIOMsWWOd40G
-         O+UWmoFH6duVEzzW+JxTOaW75vz773NH4NkCkKCHhC9mOp4o4FXcQH40AXmkrU8sWGPs
-         ALAj7L4Eg4YMMOZ4TlWJ16DwI9BnBpyI1FP4zCn00gUhl9iGe4P/ePCrryMfTwBGa45F
-         q/8Q==;
+        bh=rYN3WqMlSBD8p+Coyo0jjeKucvb7gFDKdiYxoZH2MVw=;
+        fh=0T7QRIUM003CZzq1nzPKWrARgnVUQaljyyV5x/EntCU=;
+        b=mRqsvALKJCAAg+JUmkL4pizTSVN8+vyCOK5FaWDlFchFbKRgFiY65Sq0H3QxzmoBni
+         qddGq24Ftup3EdCK4zbn7/II+EwQDlj5a3+FyCKHJLihjxMV/zx3X42oIYCBCUD+Iraf
+         95vgQu1c53uiLGXiWVem9Hvlnrs8mDgInkJii1noH9gsWR2WCbru4vGAZ9twa0j0V6tA
+         HZrsRoLtVSrcRSvn7U6ItCRFK+OoNYyj+2bthFoZ8uTvIcaUOWTZzIpRYCz9d7Q99gHV
+         PNNKgMOdM/RtWdAJWZpWQh+lHHisJ7dtk1evP/+gYTiGUAbuThBph6t2RuxWOPCjvMYQ
+         5bew==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786121919; x=1786726719; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786122759; x=1786727559; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=t5/8EoE3A4Oj0hVOSm9+FPla2LLANPRLURLGqzSc/qs=;
-        b=VXI5rzhw3+KHlnZ9ng+7Al9FT+sv5GOO4owkoUjl3x7nX0mQthbzdav8d2OtcdJrPX
-         4qmkJTVQvUKEzD4Q0/xqqKM7F+4d2WppTp/jZugX1MpaTVu4jkjC2Cm3HDRl/QTsZZws
-         EvyFfiHpJ//gmti+nybh4pUMlr4L/4XwzNRKdlkatNslHqX+zmcq9yFQ4Z5QKTFLwZIv
-         r+Bkb5JZgNstwFrPbCfFcMY7jD69Jsuq0eI/h+3sNH/r4j/PuRqd/Yn60/uWSoNSZSup
-         yobrExJP+PiN+RdpY/uNffjBHSg3hJOdO2OyfG54xcfy6ELjOIF3IbmiiKSAOHqmFvFn
-         gO0w==
+        bh=rYN3WqMlSBD8p+Coyo0jjeKucvb7gFDKdiYxoZH2MVw=;
+        b=EHYPMaZBMz+4qGl436AEPpxDhPsRGe8iGQvvRzyUuHBYC4iNDJykV3dND4upD6TXVE
+         ggSneTgwnyqbXe3QasXupXScDQoNKrbEMFOoCbhppHt+tYo+CNZv7aWVCXmvjQSi3J2e
+         dQb09Jz/6eKr0+ars72RuFzqMQFFtMOlEapyoJulN0h4HbNBvxuPuznanu7h7J+UuEoJ
+         C0jiS+ez4H68dEt1ZVI/vD6pzie9muzozUcTJv7PeHe6X2uQByAJwwXA8QJINlN/3jpz
+         +XKQkDg//rZbUCrMY7jh/UeGR8cg91BIolAFu/vgFeWEMFf5X1EtNFzSs9WfbpGEx/tm
+         UJfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786121919; x=1786726719;
+        d=1e100.net; s=20251104; t=1786122759; x=1786727559;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=t5/8EoE3A4Oj0hVOSm9+FPla2LLANPRLURLGqzSc/qs=;
-        b=o4Xs2vnc7l3AzE5Zgvc0vNRp0N6SqCMvOOCYfHjghSaMXEmU5o93AuXnWAqzxyE5ak
-         epeL2aGrKpz/Y7Pxl63/CX5TEFnpBb/BZYUYpxFOCSDEhyPKDdDR7RytcEDqumg5w1VL
-         J04rXoPfbcylv++M9xH6H0PnlRS2AK0wX6gIZRSAnlHQk4YDjdoWfrDHqBVIdonyFaE9
-         Pt5rwWBRBYXReZTPSL3Dba017khI1mi7ncDMqbBbDG5+iBQPf92E/6+RZdex0B/BrcZz
-         eI4GIJ9IKlHk5C+1Q0ntOKF/aLxhsZv5dVQUXzlzEGP+UR/9U4FC1WfILOHipx0ehAVv
-         8XVg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqh5Pxs0r+D+GiHZ9v500gYUahVOS1MtMx/w4anI8+YN9ESz7a3uCgJb+OesGUc79Vhpzt+NoSXNgtZym7k7w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+UFDsW8odlV/JYSzJlQPPV6OXOjKV6ZcwwmfSbmP/IWOUAym2
-	ej7DZv32pSqcPzjB4w4WZ1zLEue/xJcDteRbJpx2IQ5NwDckfJaOZeEZjW6/VY4JAWIiT8wOj6c
-	Cn2+tDP2ASByzMzA3McBWzbVxIpYWJwQ=
-X-Gm-Gg: AR+sD11xROD6LFnpzzU4RACGZoa8pw7+bFBgzoLas6KcztIyMC+SY4yvQ3UzgJzKAcX
-	qBJWwt4XVhENaWghGC6t4tg/Gub1s3EYyvixMGpjk9sf8WFy24JZkv/R/3TFxC8YClVX2crsNZY
-	aVi1LAoAwfsVxQ3daZ1qLwyT7qOuqfuAUB9jxW1LkDrvPtauM6zfSiOODBJ8woPbFZirEPNXger
-	gH6yQIUKgxWJXUPONGE6OuoL0h8yDfoXMCW3DeOx4GAt3ST6sEfpFjmjWnGC9pS7BZzI+ugfEUZ
-	/9iy7mbw4p65hEMpDfj79bcjfEwJv4kz47td2dqgjWHbxcD/jo6KU1/SdpVq6HCySx8werT6r7f
-	wUGaEDINd4K0W78x/125Ek0fY0loOjuw1yT1pYWqtJFH/7d9X91bOL9JS7rM9
-X-Received: by 2002:a17:903:19cf:b0:2c9:fbde:ab68 with SMTP id
- d9443c01a7336-2d0caac211bmr212771735ad.3.1786121919232; Fri, 07 Aug 2026
- 09:58:39 -0700 (PDT)
+        bh=rYN3WqMlSBD8p+Coyo0jjeKucvb7gFDKdiYxoZH2MVw=;
+        b=TA5o5RyqhRVfve9YN6p4qXdrlyG6TBAJvqsGy6nQqS/HMIAbyFOh68yxfZ26eq3FSY
+         ssXISyJXo4SbNt3MKGAOKgr1uFFbPrR9T7c7ADLa1DBqLlpUIiqXhcK8E7qv+3bUwfeT
+         axJwHWKkJRsXXxg7pUS0/GvE69v36PHKJ2FvXY1rW/j9Xz6qfT4eN/nN9AuO2ILZLWOB
+         ZcZBFQYGlFGxO0bzqs9lThLGzRfOP3hsvVnu9ckHsH0XAQpiIbApBwUKmI3/N9+kTovb
+         ksMm2N3Cc/XPZ9quuzxceRqMids7Ce73nRpHtr5thDkTbTIVu2p2bsbA4l8TYNRBGupk
+         sKLg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrl1yYxY7TUG+YcT5DSH4Gm0qxjAbpCMhXRuXuGOfuFxfZMASHj1cayx0qGgW2jUJlFa31Mg1a7qsge0UAYOw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9AXpi/DRorHFAg3q9iLValHIkHi7vYwnxF1viAqplqzPPbIy3
+	eCSEqeJauiNEf9UAsbaHQefXO4W6Gze01hTIAnb//U9hL98tyRj++H/Y3Bpg5Cc7yFMSWeXrIyA
+	SL4Pttd/KZmvXb/vW/apBv3lnQSqcOis=
+X-Gm-Gg: AR+sD131xG4wfPCvzxlQxCx3TU/GMsayvVLo6DESyV7AHesg+B00HbtYp0u7h5OuPJg
+	dwvn8TyoJaj7TT4SOf2zhMhgIXrwpZ9iOAI4y63N/xDUzI4ycgAQTFniuRXJku+1ZXPFfv29HG8
+	fKgBQyig1ip24KoLgznmGE3zyLOdw7XK3Uis6ReymaFG8bGvy9c5htLSwg/ppJ/vFqLrw3lcys5
+	QhfcYf0Y7F0Tnq6nExUydLsW+c61yu+OGDc8v9/QDXNhdmaS0zA5ObLCfdAEWP6nYeECrGXBu9z
+	i49uAnxvQAZIKPfX9EW3eSAlGo0Gg3U7yEajRaR0SqYBYgMvK2WgPDBfnJhjyXl97H9K8xsXT5K
+	v7fzmGX2YuIw7DUlI0uwOHYqB7rNFW7SlXcW34IQjbMvILLD5AXaTjhKTP1jK
+X-Received: by 2002:a17:90b:1fc8:b0:38e:ab3f:2c99 with SMTP id
+ 98e67ed59e1d1-3903c628181mr18187876a91.2.1786122759120; Fri, 07 Aug 2026
+ 10:12:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260807151715.7247-1-chang.seok.bae@intel.com>
-In-Reply-To: <20260807151715.7247-1-chang.seok.bae@intel.com>
+References: <20260805-pramin-split-v1-0-ff3e84a75dac@nvidia.com>
+ <20260805-pramin-split-v1-2-ff3e84a75dac@nvidia.com> <DKIRNHGHK4O6.2IRJZGM6W79B@nvidia.com>
+In-Reply-To: <DKIRNHGHK4O6.2IRJZGM6W79B@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 7 Aug 2026 18:58:25 +0200
-X-Gm-Features: AUfX_mxB5cUeTLsklAcFAEo7uDCbOw1Ap5yy1mkxNcthyEJAuCZGMoHk7dyfwLg
-Message-ID: <CANiq72=bEB5-GvvroXigiCVtHjGtkhs1ARkk+mDbvjNAR4XKVQ@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/build/64: Prevent native builds from generating
- APX instructions
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	rust-for-linux@vger.kernel.org, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, ojeda@kernel.org, 
-	nathan@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
-	work@onurozkan.dev, Omar Avelar <omar.avelar@intel.com>, stable@vger.kernel.org
+Date: Fri, 7 Aug 2026 19:12:25 +0200
+X-Gm-Features: AUfX_mw-cYa1MKRYuhH-uVGjXrAOGt3b9pyVqsuViit8BjsQ3XkXMD2u-qTWwOs
+Message-ID: <CANiq72kYqPySwS8ci84CEsvjJqCTBjrveSx14xxnNWJZWRFAuw@mail.gmail.com>
+Subject: Re: [PATCH 02/12] rust: num: reject Bounded::shr overshifts at build time
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Eliot Courtney <ecourtney@nvidia.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	Yury Norov <yury.norov@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, driver-core@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nova-gpu@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+	linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 7, 2026 at 5:43=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel.c=
+On Fri, Aug 7, 2026 at 4:03=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
 om> wrote:
 >
-> Omar reported this broad concern to me, when resolving a separate issue
-> with his custom module. CONFIG_X86_NATIVE_CPU=3Dy allows builds to
-> opportunistically emit APX instructions when the build host supports APX
-> since the commit.
-
-I think this sentence may be cut? I guess this refers to the commit in
-the Fixes tag.
-
-> For Rust, APX must be explicitly disabled because any backend supporting
-> APX may otherwise emit APX instructions with target-cpu=3Dnative. Pass
-> features=3D-apxf through the generated JSON to avoid unstable-feature
-> warnings.
-
-So, just to confirm: is Rust 1.88 (with a new enough LLVM) enough to
-avoid the warnings? Maybe a link to the tracking issue would be nice:
-
-  https://github.com/rust-lang/rust/issues/139284
-
-> Support for this gating also depends on the Rust/LLVM combination. Rust
-> 1.88 introduced the `apxf` feature option, but versions prior to 1.93 may
-> emit an `apxf` attribute which LLVM 23 or later can interpret. Restrict
-> native Rust builds accordingly.
+> Indeed it looks like this would panic with the kernel build, and can be
+> easily caught at build-time since `SHIFT` is a constant.
 >
-> Fixes: ea1dcca1de12 ("x86/kbuild/64: Add the CONFIG_X86_NATIVE_CPU option=
- to locally optimize the kernel with '-march=3Dnative'")
+> Acked-by: Alexandre Courbot <acourbot@nvidia.com>
 
-This looks like it exists in 6.18.y+, so I assume this should have:
-
-Cc: stable@vger.kernel.org
-
-Thanks!
+Do you want me to take it this cycle? And maybe the next one too?
 
 Cheers,
 Miguel
