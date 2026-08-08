@@ -1,73 +1,73 @@
 Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A9F37EFFB
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Aug 2026 06:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9A03451A6
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Aug 2026 06:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786170558; cv=none; b=oli5zSa8mb/v0qMkq1KktVtcJv1VtHAuoQRJHPlTsLdCT8dB0R3H9QH7ZRNevLvJ3rZjVf9odv4TaA0KvLOxUyQEGLdK6eV/r3pyvw9GjiePJe08f0viRLc+/spvCp1Y+2BNMHSwYqeZ15lY5/6Zm+YRUmDGey3BuDOVLqAdTxQ=
+	t=1786170562; cv=none; b=B3qhyhO88NXSt+K8mC0l19bB/gN6u7cXXomrY1sqmqOexgpUduuN1Wy0p/Ew30RS6FCKXXB5avknfjGiTzI7Qx0cX3bInmrkAKKikUCUeUtiiFQxGEtUADnNSjnJGR+iTVMHTkns0CkkpEumH5SgJMNU1QU0tZdrRW5rseujkfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786170558; c=relaxed/simple;
-	bh=E4KcG3ktG/1GXn+zs7NazLflEOsln9uwx4fR2ITVoAY=;
+	s=arc-20240116; t=1786170562; c=relaxed/simple;
+	bh=4vPVq3793Uajr5tywnNOUJ2pEr2vPEp1GcUAT5xRRAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNzVvvZ0dZCBIsu/z958xTmhosnPCQR9USslJwosp6VsCzS28KYuMy23Aw8kzz990RF+LEP3Qdx09M4ja0r+PUCjLmlnIlRgTWIQy8n0xwTSL0lW/48wWLQnUotiOZlFn7uPQ1ZCD+Vkn+aNa4rNMw4bAGVVdfoWZ7lYglukTFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=OKOIhaR0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DXSrIy8K; arc=none smtp.client-ip=103.168.172.142
+	 MIME-Version; b=WDQq5vvf0dzdo5okF7hPInpQDu4QIoNLO6W/qwSRaVJjvkOl9b4Xipq4Km4Yop1XECxiQ366ZUUtC+EkiOIqhD8sPyQMkT1l+4dBMj0VHRt6Q9NjSv570NZ/k8OAG8E7QGjQ1bbBcxdRTr5b3PdJZdcenPcBD2tN7D93kuluIjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=IwZfIPEY; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=I4rY9wNs; arc=none smtp.client-ip=103.168.172.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="OKOIhaR0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DXSrIy8K"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.phl.internal (Postfix) with ESMTP id 9110C13801C5;
-	Sat,  8 Aug 2026 02:29:14 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="IwZfIPEY";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="I4rY9wNs"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 20A9613801C3;
+	Sat,  8 Aug 2026 02:29:20 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sat, 08 Aug 2026 02:29:14 -0400
+  by phl-compute-05.internal (MEProxy); Sat, 08 Aug 2026 02:29:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1786170554; x=
-	1786174154; bh=j0IhwqtK28rrP3EPOoZw0ICwwg2m/mfDLa95HXwnUAQ=; b=O
-	KOIhaR0mcCJu0yBgVu458gsAekRP8vQf9w78MIpOWHRhYgIyo88lpsiiooIuMavX
-	+wtSFLrO7zDPTGFQXCnyOklANEiXwFtFQGrgsgOkfnJkB6LXtXtII9SekV+PyLQh
-	vKq7+6TpPr3qLi3LcCNkOsyXbCtLIwEjMcS1WBADQEikoXY/NQ/8hBTFniqDYyXc
-	OQbWYLVbm1obQvMOBe433jRJt0O3QMXEkYyGH6NxPmhcEVA+Nlnm4v4BUhVI2C8I
-	QfUKA4b8v8b76E4guoNa/M+wm8qW2D7lB43X3vHQ491JZy42/Hb7waUgfilttglt
-	zDbPuxLWRwQKPPcgBXkMw==
+	:reply-to:subject:subject:to:to; s=fm1; t=1786170560; x=
+	1786174160; bh=eNVjaBVLaqWIslFsEOlJuPQyvoIjzLQf1Xsd7ypTTL8=; b=I
+	wZfIPEY1vEAa4qInqczy1lDbiNm1XQsic/4wbJclvJ5YNzrrO41VhrETBkNHpCn7
+	t/btfYd6AIjGGFkC2zrn/WvNA+E/TQYpza010wwCEuGFmDEpMndvzGPqNBTLcXRh
+	COI/CSJNBuHI2mRzZ0KiTqulvxm9FREHA/CSC5599864944n6atxWo/FVxFONlDx
+	eJNe7vwOO56Zi4vKw+BvsoaJe/h5BWhPk5YSdbCx/6MziVh5kUaukKFaBiGBSdfp
+	5UXijvPHSifeJwj+aWZFkZ8m1M8Qb+fy2ROGBsPhxkyJLdOTBQCtOz7S8yjvctJq
+	YgXtve8KEfuivm1o7hAJw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786170554; x=1786174154; bh=j
-	0IhwqtK28rrP3EPOoZw0ICwwg2m/mfDLa95HXwnUAQ=; b=DXSrIy8KA2LMS4JFO
-	qwJUX57AFiXLMg4eqG+UHyKywTvUI0WSZ9FYU9YLRoT9+mXsQEe7oxgdDtiCCCQE
-	ywL1GkjgHsetTEk8BDAdSH+k7LKSToQslh60+IO6Ag1wn51z94JlqkPlkZjVl46b
-	j7mA9TJ209unwOf3v/WLpJ1cDkU5L+QCqMCyeaM2h+29ZPjQP05vJq0wSxrtPInl
-	JEncyLG0pn4EH9ROohWp5ZSzsnj130mvjN+SqQeb5xTetNywOfYepVftAhydicWF
-	gEZmMdyEDf8u/bCB8P6cGtZ0mwf4APXFNDXN3xlvuVG7W+nRXwEJzdJpjwJI81W1
-	UDKFg==
-X-ME-Sender: <xms:usx2apVVgPDNcmebVz_2HRkFAQZsWE0-cNbDr0xMK3MnOWJdMQS9pw>
-    <xme:usx2alt9hiedZMdvTSJfBGsyMAU4Fp96GcSFiKwfbdqnoj_C8m6aeseC6vu5tmitQ
-    3kk8QHNT1-eoqYnAflofmFr7IuooJHYF-C4kwwuSARbpKtgNLF0Vbs>
-X-ME-Received: <xmr:usx2ahNuEUu5pGTWXa5bAAw_7KsdUQ2xVQ14Js0bQm_h3yu7JCtwqrfuxaD6vN00uqVSBBWJB8bouBjuxCE>
-X-ME-Proxy-Cause: dmFkZTGPkp/tjUF9QhjmhubFpVsEJiLyXpdymDQrM8aVQ3kZuefEetQxeEW0ZOf4RrEr9P
-    LsxjTKn60UCLD1q8TGml7nMYQgaOZD6UryIwVsYw9c3jQPw69RG55VceGwySH18w/RXixP
-    9ALHD292JMWwKQ2E2TR4oVe8cE/VF35DjCuy8p2zkKeBmUj7k5VChHrMhTMNGL9/0k+flN
-    D/XO/y8C66ZMkHzR5HQRnvxIGNJ22YhihAosFjsscruigf2Ki1At7aI9+pPQrR08nl/TLi
-    2PNvSDjqxzYH449vkP95HWg/wP5kxHrjdUvNcOiDpPYzwspfXJSX/omV4B8zmmoEMc26Zv
-    vLX24LGSBV36H5wWRj97YN7iJ8xf/SNCxjytY7odHWtXiq2VdhGePPqWfu2xvsZUraqm8t
-    7dctc1yLLv4qIFqINP4iZ1n+95G3sfFzlYh6vnXGILaVTpgg3g6pTNMNDlNwZPCVO7UVFQ
-    uGOZW+QevpT6JPeBVKHMeQu34REMjHFY1f3sBiabfwGnhP6gCXMywU58HR34lw0qOoBqMT
-    fPbHwhkalLF459I3HRamOT2CjMrqf+LdrXcQZLSfr5AgVYvwADrCTGx17BIS4LBBdvCZm8
-    so+UzY6lw0XS+dvYcunbFJBMCJF+o6qXGwSPiUk3X1IfJrnjFJFh3lFhwxoA
-X-ME-Proxy: <xmx:usx2alqLMSb_ghwbkgXuoL4xGddxIFaeairYMlBHyaUQZmRlY54Ryg>
-    <xmx:usx2ajviQUa9aaMBIeVrfWYeR_FhWsL0BTZKTf3h2lgCxrorqtpbCA>
-    <xmx:usx2athKIS1K6cd-yGm1wcUplL-RBfX6vWiNk10-XJEMx3FIPN4muQ>
-    <xmx:usx2av1K93MYGtilIAIKKVR-f6rPcom87Ditgc4gI_8gJsrAeCBcwQ>
-    <xmx:usx2agMBYT2dEuuhGcKmtWYo8ywb87R5kFvX2-Z4-BcGzV--UAyG0oFg>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786170560; x=1786174160; bh=e
+	NVjaBVLaqWIslFsEOlJuPQyvoIjzLQf1Xsd7ypTTL8=; b=I4rY9wNsEF5+jQCJY
+	nVliMbJLUsVwK7bFgDIEtIEh9f/uQ380W2sWTp5My12mpexXcDqNgoSmFYvYOQ4s
+	PbkCkax534HfJ5PgzfrwvTWLeJm8wxKgtzP4GNMQFNiYUKbDwKcev/eeCi22ErOy
+	gbtdTltHxjga730J2vzZSfNNtODBwo6Aw2mVT2Q6lSbfjbOQhjXGFRC9+iGRzgMq
+	lCXt+hB4sfCfCyQ0hjk76Gdc6IlvhWon4FWydnNaHAX0puyxYTBISSXxVlAtrww6
+	pL0XpuW1F9Z4pJjVeB+wTGHwcnTan0NrSqqXcF6c59pT5PB4sYLJhl7A9VfExW3y
+	+uJiQ==
+X-ME-Sender: <xms:v8x2arhxoCPlT9KaB7DvJMXeD1k5aWGEow_aAoE0OtlglAb1lE7Mrw>
+    <xme:v8x2akLqvQ8dROQvfakGmHlyhnUb8DdHEA6KMpwltorI-09TrFl60mAP_Wckq5-N9
+    LI60SjicBw4RNrKC83YhYgbDEMNKSI4gUtIOsfOg_WhkF5niEBcc87D>
+X-ME-Received: <xmr:v8x2am5Wdq3DgZB81GpmdGtbOPs-vNs7F__YyjDCrtCW5_MFAb2BrZ8vle3Jz3ZVMmsZ5IaZu9C1k08SkWE>
+X-ME-Proxy-Cause: dmFkZTF3LiQwhStKBGOXv9XWAnVq93qhZuZVYvK3ZumPXSwcPkIvWaRNcXdYOVftdhi+0F
+    E54pljEvIQmMQXhAr3evmVzrBNXQbo9yh9wvi1P5vI4ku3K/1o0EFPoEJ8jWgNWvXgMYYZ
+    0wovpoLfPfJAKfGwFVrVgyf3ofXmTQXG6Vxrcdu85DuTL9Xb4ELohhX81CbkaEOenHbFQK
+    WLA9vdUp4jcg3miW741RKBh5D4JLWR8gKInaLzQnaUQcHjBaljhUYcJYbswIrr5viXnMgO
+    j3mhUUMh6L973Xph/g1ZH6xC3gro0tiucLPjDvrSgd9Zh5rnyIYsDfzpeqgpM/58+rkakg
+    ekNnuGUYkq6GdlUl8JPwypm5RNL9Lpu7YQmIDivXDwysRTNWNeWfUlKI/H/mAg7+5jjYL4
+    +9JHKIQR9BIA6exOfMBvog0ahgz6Ml2J5QKb0cezEckLby0Q7ePa5oN4kCLYD4PsvhEplc
+    XfSBxEuZ0gv0lPNQJDoGR58/VNZsUzigUH4Km8ebyESNUDrZlnevBHsak7m6NMDDDFk/5M
+    KvlDgIXG7YRg7xjsExkvYIVkFxqpUU0FtxJSjgTFr0zAKgyHd2GZvYomMUgxTm/2X3qZlW
+    bqjJKhrgoFwTPiDzqQKJJMdRQf7MpEUBdLzybgoGuwOJWUTgme4ztz2rzf6g
+X-ME-Proxy: <xmx:v8x2ahk8ztFuiYY-YdHbhLwz2LK5DHDSSlBGmOH7-oLPVWUNjRVg-Q>
+    <xmx:v8x2ao692LCju2scBR8ejRTTfCk2m_KDUy2PTIuYrNS7ZMUelKf-ig>
+    <xmx:v8x2ai8_7UJo4GvYvYtaD4T7hN4cN27_bkffxj8DnZygcOddmv0xIA>
+    <xmx:v8x2agh-iKs5W5cUW2hhqi5ZioyA1yPLz6LspcVfmdWAAXFf0vmNjg>
+    <xmx:wMx2ahmnP8cN65D3LfXEycWfDjT4ZSnffAJz5IH1tzUhwGnleYwM4wNW>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 8 Aug 2026 02:29:09 -0400 (EDT)
+ 8 Aug 2026 02:29:14 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	aliceryhl@google.com,
@@ -95,9 +95,9 @@ Cc: acourbot@nvidia.com,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v6 2/7] rust: time: add jiffies time unit for Delta
-Date: Sat,  8 Aug 2026 15:28:34 +0900
-Message-ID: <20260808062839.1159990-3-tomo@flapping.org>
+Subject: [PATCH v6 3/7] rust: time: add Delta::as_millis_ceil()
+Date: Sat,  8 Aug 2026 15:28:35 +0900
+Message-ID: <20260808062839.1159990-4-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260808062839.1159990-1-tomo@flapping.org>
 References: <20260808062839.1159990-1-tomo@flapping.org>
@@ -111,15 +111,8 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Add a Jiffy time unit with isize as its representation and provide
-Delta<Jiffy>::from_jiffies() and as_jiffies() as the unit-specific
-constructor and accessor, mirroring from_nanos()/as_nanos() on the
-nanosecond Delta.
-
-Represent the jiffies span as isize: Delta is a signed span (nanoseconds
-use i64) and, as a timeout, the value only needs to reach
-MAX_JIFFY_OFFSET ((LONG_MAX >> 1) - 1). isize is signed and matches the
-kernel's c_long, so it meets both.
+Add a ceiling variant, mirroring the existing as_micros_ceil() since
+the existing as_millis() truncates towards zero.
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
@@ -128,56 +121,42 @@ Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
  1 file changed, 26 insertions(+)
 
 diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index afe35759bc15..bff72a4a0b0d 100644
+index bff72a4a0b0d..af144d251f47 100644
 --- a/rust/kernel/time.rs
 +++ b/rust/kernel/time.rs
-@@ -295,6 +295,7 @@ mod private {
-     pub trait Sealed {}
+@@ -525,6 +525,32 @@ pub fn as_millis(self) -> i64 {
+         }
+     }
  
-     impl Sealed for super::Nsec {}
-+    impl Sealed for super::Jiffy {}
- }
- 
- /// A trait for time units.
-@@ -314,6 +315,17 @@ impl TimeUnit for Nsec {
-     type Repr = i64;
- }
- 
-+/// A time unit of jiffies.
-+///
-+/// A [`Delta<Jiffy>`] stores its value as `isize` jiffies and can represent
-+/// any `isize` value, including negative, zero, and positive numbers.
-+#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
-+pub enum Jiffy {}
-+
-+impl TimeUnit for Jiffy {
-+    type Repr = isize;
-+}
-+
- /// A span of time.
- ///
- /// The span is stored in the unit given by the type parameter `U` (see
-@@ -325,6 +337,20 @@ pub struct Delta<U: TimeUnit = Nsec> {
-     value: U::Repr,
- }
- 
-+impl Delta<Jiffy> {
-+    /// Create a new [`Delta`] from a number of jiffies.
++    /// Return the smallest number of milliseconds greater than or equal
++    /// to the value in the [`Delta`].
 +    #[inline]
-+    pub const fn from_jiffies(jiffies: isize) -> Self {
-+        Self { value: jiffies }
++    pub fn as_millis_ceil(self) -> i64 {
++        // Only positive values need to be rounded up: truncating division already
++        // rounds towards zero, i.e. up, for negative values.
++        //
++        // The usual `(nanos + d - 1) / d` is not used because the addition overflows
++        // once `nanos` exceeds `i64::MAX - (d - 1)`; saturating the addition instead
++        // would drop the rounding bias and return a result one unit too small.
++        let n = self.as_nanos();
++
++        let (n, add) = if n > 0 { (n - 1, 1) } else { (n, 0) };
++
++        #[cfg(CONFIG_64BIT)]
++        {
++            n / NSEC_PER_MSEC + add
++        }
++
++        #[cfg(not(CONFIG_64BIT))]
++        // SAFETY: It is always safe to call `ktime_to_ms()` with any value.
++        unsafe {
++            bindings::ktime_to_ms(n) + add
++        }
 +    }
 +
-+    /// Return the number of jiffies in the [`Delta`].
-+    #[inline]
-+    pub const fn as_jiffies(self) -> isize {
-+        self.value
-+    }
-+}
-+
- impl ops::Add for Delta {
-     type Output = Self;
- 
+     /// Return `self % dividend` where `dividend` is in nanoseconds.
+     ///
+     /// The kernel doesn't have any emulation for `s64 % s64` on 32 bit platforms, so this is
 -- 
 2.43.0
 
