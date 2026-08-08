@@ -1,182 +1,223 @@
-Received: from flow-a5-smtp.messagingengine.com (flow-a5-smtp.messagingengine.com [103.168.172.140])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD96272803
-	for <rust-for-linux@vger.kernel.org>; Sat,  8 Aug 2026 02:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786155992; cv=none; b=g98R0Bz0UzJ2DxfC3yn4+yQnmCpA37/VPnStNmGVM3Jkc0Aw4rLknYkGlpwZmcpX6rk1aWTnLgEOBg+6+3PQEyx6fXAeL8UqbpwqrQclXQkmC98GTXMSSoW5vF2AvvZnJY41Ha50bKRGfAcGCOl4Dsu7TXhV5bKHb9PtN/EFqzU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786155992; c=relaxed/simple;
-	bh=uZUVRju81i1lLcrtRlX7ovg5SJNieRe7e3zQsSTWsZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HElOmfEH1O5u4EoDKng8K9WiAfzT3qBTEvugmzfUOBz0J/dBtsf2nqqcJf5qh6pGtCei2ixtxK2kyg5AvUA6iBikXuMkFvcebV5+DHxlPwCc2bD3OkuPO4HiZ5R4BckF4VHULOBKP48/RzrJ5ktmnJ20MqOBV65ArnoABU3Qcq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Maz/y+Hd; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bIsxOqwW; arc=none smtp.client-ip=103.168.172.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A183139281B;
+	Sat,  8 Aug 2026 03:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786159294; cv=fail; b=mO5AcXrKYKK/BpvpqS4VVbPh3/YHtasFUrAT0bYdpQ/WdjrUwGchcu4IieHmsIelil4MIyFxHmkN868oVni+qsdM4Mpxd9/UWUmzBOEw9YUKq/CSntgtgpa5NH8o0KdU3t+JVsvIYxoufusbFhNl7wdO8MdTWHKw/XDl2IuT9eM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786159294; c=relaxed/simple;
+	bh=+z54wCsnKpbohYWBSpvIEUPvr4Mrx+Z+28KlDN3z9mw=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ov07c3CV2hhU4fc0WVbFy79OOj0lzxIVZIOPYWqFA2RkaYGDB4L8asoI40sXKn3hS8VCCwMpg0HG4NtYyJgSk2QeSmknEZE/pmXHv5w41DaKS3xYIVfrS44jrPkPEhmrjdYCpY4Vnt4DvVlmLIA10uk/MQWhtKZbhAQTDnlUMG4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PmhsW+Iv; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Maz/y+Hd";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bIsxOqwW"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.phl.internal (Postfix) with ESMTP id 8D65B1380076;
-	Fri,  7 Aug 2026 22:26:29 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 07 Aug 2026 22:26:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm1; t=1786155989; x=1786159589; bh=DrZ/ugl0jrV+exNDvkqqv
-	jkGRbqAuIQ3t5N3+4zfSfU=; b=Maz/y+HdGNUap9xiQWmP9mz9PZCJOhCLf0mLl
-	QbdXplxcnj6ChdCaZ3f0gHGrHuzlJQTAb1wjs3H+tt9bePO4C1aYQcZHBuf70L83
-	Zq29ebDQh9ilyWhUeg0Gx0WIO9hy8+agc9N734zg0kN6LBPgmBKRecMko9jFbxzb
-	VKLtOo5/VGiZcM/AHyEYURPcnlx2sh1TIHDRGK4YoViyctzk0TtwIGaz9SE3ghJF
-	0WMdJ8AJPgmWv12Cc5195WscJaD57yb9s/r5YtYszgCvBCYu5PaksMBaY3Z3/ur5
-	hxRqcSTPSGljaUow7gCUzND1yAUNPQht/QZze5F088yI9VbgA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1786155989; x=1786159589; bh=DrZ/ugl0jrV+exNDvkqqvjkGRbqAuIQ3t5N
-	3+4zfSfU=; b=bIsxOqwWb852p7pKB8yFc35QfOppByme+f/HRTp+o3s9R7BbRFW
-	aZoMQSPp+5Lkrl3AEVSifJraJiA8U/wgaOgR1FjrSUUmunk/7HaVozYiYiP/yBdz
-	S1AJ6YyCNLMeFQY7xTEzJxNNk9neC5pXevpQTJXo6zMZe+JL8QGgxdnnHPzKxreS
-	EtZa6AUaBkb0NUFb83EFF3mpmLjTPWV7SLEFSmev4kKFFXgVLOmzUmUIZJAVDZuZ
-	sbxnz4Exsz2X/DVWIXXYv6L58hbrLlqOInbtILxa4CT9gLZ7kFYlsO336a7nv/vw
-	L65inazfVJ4yOWUZJtH4D8OtuHvcFh+lnaw==
-X-ME-Sender: <xms:1JN2ao1DuinhhZk7eiD9sL7DZv7qrSSZIyHXLA9ERVL60dSAeuLvmA>
-    <xme:1JN2avfw2-mb1rPUuIJk9kTlYayj6p4m3H58UcsVIaNNbFsJaDTTsNlVYAR2XiKpu
-    9PyjN8nG4f031ko9i2WToD4PgjGhlurz-D8MpoqDFr5XDvvO2r08kg>
-X-ME-Received: <xmr:1JN2alUUk8WQNdgZKc2ppBml4pGgHMM9nxzflzKY54EnUFJjxCgTx0B2j3lX5K4dGhTqXXCczJr1wgnqt4o>
-X-ME-Proxy-Cause: dmFkZTFfvvNoK8ROgdTVDZkURJ/qrqVzUu+GBYlvg3ZYU1Va342/z7kGrJgZeCaBM7hpgO
-    ZXwCHxpvCl5LYoh7o9f8PKLoACG7qREPtNjcQgtKcG0xkIhuPGqAxdeo7pXm48okWQ/okR
-    8PRp332MNsEduTnLCXw1zRn8Ro7HYdhfe65Zjc8uzEmnXP2p6YOsvnF5f4xf70nqMTN988
-    Izv2FWLcl8GRJDjQUfRpI8Dokvsg/VZiUOFBMrvuxaEbKFht7u+WtsTni7yf6A9F4k4b67
-    gwzvgdWqnB9bF3eWjf/GYrKz2phWpIHldi+owK6FZsa13mOxGZQD1rp8zFTAFrgEykQsEQ
-    VfVCsxllhBI/Kmm9NbGZJIupfVo4InWfGGpLzMDVlO8Q7EUMj0J9xBHhSPXZ9WWcDMVXFd
-    /pFQV3QUzIOVhBGv3LQdamjpPM3p28Ahp+4Epf+3sfcK1LvCe4eOFYrwCSy+r2nW+p4ohl
-    UMTNDbt/4OUHyxjW527SrJbxXVsTdxXLm7uXLIu3GpSlXkbScZEdexko7+J8CTOmFohPJp
-    hwXgmJFjm9tHKUDM3vFuLVc8jXOyOwII5fiRJSDfX3JLJPtMGHAmtYjqnov2UBN+wSubGu
-    F1U2yY+lnDEk7BoXLRpwP/BQdQSfPoCRJrCJod3f3uu3een9ZSWrHZ784tCg
-X-ME-Proxy: <xmx:1JN2av8adT9VQYc0TW-c6UgfFUspDf66-1jW37GX41qhLVrmXm0AOg>
-    <xmx:1JN2ang4-Ow1HqPpCrvH5rOVGLylW0LnuiRZ-fv0XaltI8UGDoyRwg>
-    <xmx:1JN2ajf_ciL4GrBotQ3dg5KYn0LJszBLFX5XlKstH8DKHRJ1JTch3w>
-    <xmx:1JN2aoIZIYkw6Z0_VKb2WQoMidfIGujSBC9WCevTk2QUFHC23-wWLQ>
-    <xmx:1ZN2aqKB3Hp8DDeOhV_8wIUmcuQpsDWy80-OKFHea4OVTPf4jaP4fO1F>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 7 Aug 2026 22:26:25 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: ojeda@kernel.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1] rust: bug: skip arch-specific asm in `testlib` builds
-Date: Sat,  8 Aug 2026 11:26:08 +0900
-Message-ID: <20260808022608.1125174-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PmhsW+Iv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786159290; x=1817695290;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=+z54wCsnKpbohYWBSpvIEUPvr4Mrx+Z+28KlDN3z9mw=;
+  b=PmhsW+IvNrBckb1KG+RJy0Rdxkm2LbbCJjpwnrB3+B5IvbHfNVXTQiUR
+   QuuN9RgCn9PASQEUqqwZynqBYC2rI5/HgElcxzR9T2WJj+lYYDUolu63K
+   b14F+N68d6wiHT9HGcI23zf0behxIHjBXwTEUGF56sdtc60JZOcCkW5UA
+   0681OTwiOXVUeZ0pof6Zy9+dmhsCGMMLunZV76ou7RyTWUWS7eMAPmfb5
+   WJJAoFWoabD8Z4mucZq9btaQ2tquJvBnNHXx+F+vDCk4cZrHu2p6b1Foy
+   deFDcG6yg3oeiMDCwpbvCBNKPQ31WtpbBGY3b331C2TJa9qR/bu9NKYMv
+   A==;
+X-CSE-ConnectionGUID: mM6bcwCMTH2Caa1nwDeXrg==
+X-CSE-MsgGUID: 57Lrp5gPRXGtjQKfQGIvCQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11868"; a="86795934"
+X-IronPort-AV: E=Sophos;i="6.25,211,1779174000"; 
+   d="scan'208";a="86795934"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2026 20:21:27 -0700
+X-CSE-ConnectionGUID: AmItD3IkTQu1ndF2RvOA5g==
+X-CSE-MsgGUID: yuKv4JoyR/WVgy9WTLr6fA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,211,1779174000"; 
+   d="scan'208";a="292458900"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2026 20:21:28 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 7 Aug 2026 20:21:27 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Fri, 7 Aug 2026 20:21:27 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.65) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 7 Aug 2026 20:21:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mLlv0bdJrpTdz66UFhoFNN6GmklgHEtH2d6qT2wu18Biv/tBhK3eUnFjR3b/HZ6Ef06Eib4RREICWjI50ODR3JTn6n+AxYPFYMwkuAvmHOYoeXZdHFBarHOY+Uq/EvykUX2suNjcf51KH7ywoEKsmzJJLt/PbGjlU4i2gcPYpyC4bTy5F8tALS8ff/63zdQvzAZylPs6iPqdDpl933WL+vpYht1SUhKzPDXgiwVHwq1I5e1FTSQjIYhu7Y5oT9v3HZ8JuhvkA6jjCVvEHGjXjDatS8U3WoCTTYPMTEZlAuFqBGYG0i1OHvJGdNY9hNqTgcXB2bbeuhgQ2kG05XLaSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1ETw4TY8Nws4CkYcWsiW53WWq1/gLKAbyV2VECW1GcY=;
+ b=ggNrxhT4h3c6TzvLEeAm63qeTmyQi6JwcvNbzhVTlsBshSx6YGP6lKXSxX2GTawpLjHPR64Y4nc5YE+jkDGx/fobpr9hJqKM6yTgDzwUgG1ye2faxW+ScfksDrjrSsq3FJI4Dk3ZO5HKOer+eBnKC0Rd9W9Gw29N5LZvbIYWwPTEAtGFZTksr5cmI1+efwtSf7FZi/XkfvCG0NuX8tP63ZFaReWy/UNYnKTrMGC/B2AmXOQ/OqHp3goCVX3D/w/Tt1HybzgkpSxkfPDGErhnDZ+oBh7YsfaPl4BFkMpTh877TlebfxmWJ1PHG69ohWDZfrmZ2Sdc4cvOlJgV0gS9kQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com (2603:10b6:8:f8::18) by
+ MW6PR11MB8309.namprd11.prod.outlook.com (2603:10b6:303:24c::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.19; Sat, 8 Aug
+ 2026 03:21:21 +0000
+Received: from DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84]) by DS0PR11MB7925.namprd11.prod.outlook.com
+ ([fe80::60af:89a0:65dc:9c84%3]) with mapi id 15.21.0292.022; Sat, 8 Aug 2026
+ 03:21:21 +0000
+Message-ID: <b00de567-f828-4ad8-a6ab-6ab1c47de68e@intel.com>
+Date: Fri, 7 Aug 2026 20:21:18 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] x86/build/64: Prevent native builds from generating
+ APX instructions
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: <linux-kernel@vger.kernel.org>, <x86@kernel.org>,
+	<rust-for-linux@vger.kernel.org>, <tglx@kernel.org>, <mingo@redhat.com>,
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<ojeda@kernel.org>, <nathan@kernel.org>, <boqun@kernel.org>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+	<a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+	<dakr@kernel.org>, <daniel.almeida@collabora.com>, <tamird@kernel.org>,
+	<acourbot@nvidia.com>, <work@onurozkan.dev>, Omar Avelar
+	<omar.avelar@intel.com>, <stable@vger.kernel.org>
+References: <20260807151715.7247-1-chang.seok.bae@intel.com>
+ <CANiq72=bEB5-GvvroXigiCVtHjGtkhs1ARkk+mDbvjNAR4XKVQ@mail.gmail.com>
+Content-Language: en-US
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+In-Reply-To: <CANiq72=bEB5-GvvroXigiCVtHjGtkhs1ARkk+mDbvjNAR4XKVQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR21CA0008.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::18) To DS0PR11MB7925.namprd11.prod.outlook.com
+ (2603:10b6:8:f8::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7925:EE_|MW6PR11MB8309:EE_
+X-MS-Office365-Filtering-Correlation-Id: e28e8854-8647-4772-43bf-08def4fc1e44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|23010399003|376014|1800799024|366016|6133799003|10067099003|11063799006|56012099006|4143699003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info: +OPACHFwDV78ibiv9ef3savk1rU3ezwML95iqcjB9k5tm7EExGIZJYvt82lai+xq/s07Ohb5eLPbn3ejh3rJFHpI96GVoR6QUrGSWl47K2F2LDIqlaFXfUGpBJDJ9qc4lHDfuZI2LqYLVdZb+ggdGEo/sWCHkpSrjyp8HWraeOR9Ltk3cqv1KdzHT3AOTgKdWmjIRWKz1jS9OwGBA4MWs8qBoekhkdklyf7ZpIUAoiQLgc6izrEJxrW/1RgxUMCC/mGS9eM1E5WGU4TfOFFgDHowMBTD4pq3vZZoLcjGDLudazP013GqfCrSDe/1JPlK5o5gGrjMvF96qOJOCKKbEQQTGXvwitg+QdYsxqM7vPULbpO2blCYYUvyBmlAzFNtTTXwFfILHKbMixPvksGP8840Ut7V5AAuqueOrzWEWCCQha9w1lg6UVlWXHsZl5q05iN7mgUkrBXqeRVWouMT51NaIwiBSeiMPqr6MDN77e42ublVkxpQ8PHu7Dfk5th0z/f6AvElaBfJ6PtkcJB+UJQx8v91+KEmbnXhhz1oxW6R0nGS9c5sFLUIKygkJqyC87NbKQHDK+YMbvvApx3iQy1WR3f/vcbBmeakLxA2sH+koA6pwUYLrW8ebUxEvBWhzyUCAUXoz5PV0cT+sDU0wOn+bei5j/WmBH4KQ45fpWY=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7925.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(376014)(1800799024)(366016)(6133799003)(10067099003)(11063799006)(56012099006)(4143699003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SHU5YXQ2K1VMa04zNnJRejVMUmYrZkc4SlRUOFBMcEsvMFlPd0ZQRVFKOVFP?=
+ =?utf-8?B?ZEFKRGExUXlyQ2lVNDB2eFU2a3FxMk9panlEbERpWkpNNnpKeEJwbkRPQUFq?=
+ =?utf-8?B?SHgxQmx4VjB4QkdrelhiUXF6Q0xCM0VPYms2VlJOWUF2UjBBbW5ZdlUybTUz?=
+ =?utf-8?B?eldSek94TWc1eWl1TjFTbUxIK0tVNStHTGVNNUQvVmNmOE5KRkpKNTVHNjRU?=
+ =?utf-8?B?aEtkZzdKTjBZMzdRalB0Z1VWd2JBN3hQNVlFRVJnbWpsU2NteUFhenJXZWxm?=
+ =?utf-8?B?Wk5SN2M2aGtQOWxMYjNLUEZ3WGYrNXhPZGJHV29sZTFZRmYvMzZIS3VMTVlC?=
+ =?utf-8?B?c0FtSWZybVBNelFyQ1RST3dLblBVazNkM3U1MlBGNFhTNS95M0pmQzV1aVNr?=
+ =?utf-8?B?M2hsSG9VN2pEenc3UnY2UEI3RG5YU3phMDNteDNpK3hmeEhFZXZ2YkdHaTlt?=
+ =?utf-8?B?ZkIzOXFqbVBNZHI0S3FnT2FNdVdkclhheHpHWUdtOHFCdnYvR09yWGRiaHVl?=
+ =?utf-8?B?ZHhtVTI4dE5ZTHJiOXYvRHk0ZlNqRzBjVlZWalhaZ3BrcW1BY3IyV3h6WUlY?=
+ =?utf-8?B?Z0IrNTlqMGJLand6QmxieHRQVXZuZmJHNjZ3cjRXQm4wUDJVNzJPay9SZHVt?=
+ =?utf-8?B?WTZOWlh6NmVmWUorV3ZxdHp1WkUxUHlaNTZIdTJjcklibTNxWjhYazQ0MHU1?=
+ =?utf-8?B?K2J6RmRaNXJzSXZlRHBzS0tKQWJoaE9oc3ZmRVpxZTk5Y1EwNVRWWDdQKzdD?=
+ =?utf-8?B?K2o2dDJqVXhKRjZSejFEODVSc3d2K3M3cCt1T3BlNVQ2YVZNdGxGL2FzMytq?=
+ =?utf-8?B?elRxR0dlZzBicTA2c3RGM1JGTzRjaG1XaUF4SUJ4VDk4dll5WlBzN1l2ZWhU?=
+ =?utf-8?B?YS9QU1BTTW91OHFUYmlOZWpJR2dmR1dYWjByOU93S0JLckluNmUzZUJDajVx?=
+ =?utf-8?B?dDcrM25MUkRIaFp3Tm5vK2hydDg3SFRwWDdXMUFHOHJQODcrRVV3RnAzM01O?=
+ =?utf-8?B?cWxZU0J0eU81QitJY1RrNzR6UjBIT3ozWWd0WTZkb3FNMDh6emw2Q0xmNFRh?=
+ =?utf-8?B?cWxYdVJpYmFIc1ljQTN1emx2dlBsa3U1RW1XM1AxNGUzT0RpNkV3TndtT1ds?=
+ =?utf-8?B?WnhYekx1aXNQL2l2YTVVWnNmM2Y0eVJPL0VwbGNseThqL0E2NEI1a2RBSEMr?=
+ =?utf-8?B?bEpFNm1sQ0NHdU5aU1FObENZcEUyZ2J1RUZ1WS9aSXkwSlozVytMbFEzWGly?=
+ =?utf-8?B?dmJUOXc4QlV4QUJ1VWMra1U0am5oSm9waU0ybDR5a2x5TGJVTmNQbmo4Sms3?=
+ =?utf-8?B?RXBlVzBoMUdxbmIxZFhrbnBNZ0xYc3ZSMFUvV05LUjFzbFlXaFk2ZnpDQ29i?=
+ =?utf-8?B?a3hIeloyUXRkbVl0N1RXU09hVHJDS2hWL1pLU3crWnRLKzNwbUduWHVjUDc0?=
+ =?utf-8?B?NlpHR0s4c3ZSZUY0K0xGWmg4YWpjQ2JLaEgzaGpCb3ZacVFJR01xNHU5dHRu?=
+ =?utf-8?B?ZzZmOGRXS05zZTZJRkJrYmQvdm0yRjkvbzRZbU1iU3lSUHcwQ1VaU3lscFBM?=
+ =?utf-8?B?WThBVCthNXZyb3QrMUkwTVZXb3AxKzRld3huRDg0RTlBTlkvVGRldEFZZDhq?=
+ =?utf-8?B?RmxSRTBiZmU4Y1FpR25zbTNHVmxjL0ZreldmR21TdnNMenFZRzlqOXJCUUZB?=
+ =?utf-8?B?RlViU0JhL05YRzBDNm5kT25IOWZCaklLYkF2NlA3S0lxVXhFMmxSVmViU05L?=
+ =?utf-8?B?WFdyVmk5eTdOQWZJU1RjQ3ZNUUhNYWZIaERaRFFCU2pJODZoMW5udG5tT1g3?=
+ =?utf-8?B?aUt4emdIVjZ1UWUyWXg1RlpWV1hyK204Tk1hUkp1YnRPeFh3UXZidTZ0K1Na?=
+ =?utf-8?B?MW81RThsY0lXSTJiYkpVbVFZTWZrUkxCYzBGQUo2QWFTQXVpcXlyVGNaK2ZZ?=
+ =?utf-8?B?MC9MTmRERkU3Z3ZsRnA2UFpqalFzQnk5U3ZkcjhDVnR0S0xBTE44eWs1N0FZ?=
+ =?utf-8?B?SFl5RWlObWFQWmZpUDZXYWpHTGJyRHpJZmNneVd2VzJTSXh0NjZaSWthaExC?=
+ =?utf-8?B?R2I2ME0vNkdZczBZd0FyV1RLQUc3UFo5NHkxOHQxdjMyU29vVk1Wekc5aVpk?=
+ =?utf-8?B?RHRPelJJa3V0U1JlaitXV2w4RlVhNmh5bG9lMmRIY2NhWEFCSkhYMjV2cDl2?=
+ =?utf-8?B?TWlXbDNzMTZlN3VLQjFMdmh1MG4yQ25JTUljeUt2T3pmSXpyQXJBbUxzTmFa?=
+ =?utf-8?B?V3ZaSDkzOUpJWENOZnpsQmgrK29XMFBJY3MwWlNheUtyZ0VHTFdiM2UxeUZD?=
+ =?utf-8?B?WHV0RHlLcVhTNHRJeUdydEhmN1NtUjROelpuTjRGdjNLaGJwZXBOQT09?=
+X-Exchange-RoutingPolicyChecked: E7zoVDyQk+3eWwPbkdjAv3p/ySAojjf0Y/nrGlcVLaDtgkBDFb1JANq2ydZ/FUTkZK7JF7EHmfpcYIaUAvo7D/u23O1HTMitBMJMgY0mJnFOusoBmpeu8FhkqAXFrKvrONmeTllOkjJg93hQOXxtuEbPJpcAuT9QnockYa5zOUH1O4aF4VKzUOcANcZX9kqc9Y8qez7HcqQtm6Ix0a6oYN+54DZH61aPXnEYPN7IhVS/ffgG3qW9HqQud6zNvohAhbaYY78+VoCQFMaJe2QpYQCf95ZWcG6DRWdzaXLWwNa/qfg9QAc8QbD5CocHGR1TsVuaqGxgZ+2i632cA6yFhg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e28e8854-8647-4772-43bf-08def4fc1e44
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7925.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Aug 2026 03:21:21.3129
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KktCrdqugrqExuWmBfGEWt+gr8lNEmD4f4bTUg90430Nxcxgx9Vn/pGBI1PRdSS641kzJl+eMECiAhlI5DsYw+OYG/KF0AyvuYHghCeCXfE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR11MB8309
+X-OriginatorOrg: intel.com
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On 8/7/2026 9:58 AM, Miguel Ojeda wrote:
+> On Fri, Aug 7, 2026 at 5:43 PM Chang S. Bae <chang.seok.bae@intel.com> wrote:
+>>
+>> Omar reported this broad concern to me, when resolving a separate issue
+>> with his custom module. CONFIG_X86_NATIVE_CPU=y allows builds to
+>> opportunistically emit APX instructions when the build host supports APX
+>> since the commit.
+> 
+> I think this sentence may be cut? I guess this refers to the commit in
+> the Fixes tag.
 
-Running `make rusttest` with `ARCH=` set to an architecture other than
-the host's fails, e.g. `ARCH=arm64` on an x86_64 host:
 
-error: invalid instruction mnemonic 'brk'
-  --> rust/kernel/bug.rs:63:17
+Yes, I intended “the commit” to refer to the one in the Fixes: tag. To 
+make it explicit, I can add the commit back here:
+
+   ea1dcca1de12 ("x86/kbuild/64: Add the CONFIG_X86_NATIVE_CPU ...")
+
+
+>> For Rust, APX must be explicitly disabled because any backend supporting
+>> APX may otherwise emit APX instructions with target-cpu=native. Pass
+>> features=-apxf through the generated JSON to avoid unstable-feature
+>> warnings.
+> 
+> So, just to confirm: is Rust 1.88 (with a new enough LLVM) enough to
+> avoid the warnings? Maybe a link to the tracking issue would be nice:
+> 
+>    https://github.com/rust-lang/rust/issues/139284
+
+
+Passing `-apxf` through the generated target JSON avoids this warning:
+
+warning: unstable feature specified for `-Ctarget-feature`: `apxf`
    |
-63 | /                 concat!(
-64 | |                     "/* {size} */",
-65 | |                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_warn_asm.rs")),
-66 | |                     include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_arch_reachable_asm.rs")));
-   | |_______________________________________________________________________________________________________^
-   |
-note: instantiated into assembly here
-  --> <inline asm>:1:115
-   |
- 1 |     /* 8 */.pushsection __bug_table,"aw"; .align 2; 14470: .long 14471f - .;.short 2305;.align 2; .popsection; 14471:brk 0x800
-   |                                                                                                                      ^^^
+   = note: this feature is not stably supported; its behavior can change 
+in the future
 
-The reason is that `rusttest` builds the `kernel` crate as a host
-library: it passes the `CONFIG_*` cfgs of the configured architecture,
-but not `--target`, so code generation happens for the
-host. `warn_flags!` then selects the arch-specific inline asm arm
-based on `CONFIG_*`, and the host assembler rejects it.
+I’ll add the link to reference the status of the Rust support. Thanks.
 
-This does not happen with the current `master` because `warn_on!` has
-no user inside the `kernel` crate itself yet, but it will as soon as
-one is added.
+>> Support for this gating also depends on the Rust/LLVM combination. Rust
+>> 1.88 introduced the `apxf` feature option, but versions prior to 1.93 may
+>> emit an `apxf` attribute which LLVM 23 or later can interpret. Restrict
+>> native Rust builds accordingly.
+>>
+>> Fixes: ea1dcca1de12 ("x86/kbuild/64: Add the CONFIG_X86_NATIVE_CPU option to locally optimize the kernel with '-march=native'")
+> 
+> This looks like it exists in 6.18.y+, so I assume this should have:
+> 
+> Cc: stable@vger.kernel.org
 
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/all/CANiq72n4=fz=JNKY0Jdm8BnLa=RmHB2B7s0bO47YTJ7hygqBZg@mail.gmail.com/
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/bug.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Yes, I have included it.
 
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index ed943960f851..8e4c21e393c9 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -8,6 +8,7 @@
- 
- #[macro_export]
- #[doc(hidden)]
-+#[cfg(not(testlib))]
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(CONFIG_DEBUG_BUGVERBOSE)]
- macro_rules! warn_flags {
-@@ -47,6 +48,7 @@ macro_rules! warn_flags {
- 
- #[macro_export]
- #[doc(hidden)]
-+#[cfg(not(testlib))]
- #[cfg(all(CONFIG_BUG, not(CONFIG_UML), not(CONFIG_LOONGARCH), not(CONFIG_ARM)))]
- #[cfg(not(CONFIG_DEBUG_BUGVERBOSE))]
- macro_rules! warn_flags {
-@@ -73,6 +75,7 @@ macro_rules! warn_flags {
- 
- #[macro_export]
- #[doc(hidden)]
-+#[cfg(not(testlib))]
- #[cfg(all(CONFIG_BUG, CONFIG_UML))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
-@@ -91,6 +94,7 @@ macro_rules! warn_flags {
- 
- #[macro_export]
- #[doc(hidden)]
-+#[cfg(not(testlib))]
- #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
-@@ -101,7 +105,7 @@ macro_rules! warn_flags {
- 
- #[macro_export]
- #[doc(hidden)]
--#[cfg(not(CONFIG_BUG))]
-+#[cfg(any(testlib, not(CONFIG_BUG)))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {};
- }
-
-base-commit: 075b74841bd0065a3bda3440873c747938e69b68
--- 
-2.43.0
-
+Thanks,
+Chang
