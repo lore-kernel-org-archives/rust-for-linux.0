@@ -1,92 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5DC40BCB2;
-	Sat,  8 Aug 2026 12:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAD83A4539
+	for <rust-for-linux@vger.kernel.org>; Sat,  8 Aug 2026 13:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786193490; cv=none; b=gSrDUXUHmzy5E939UUxAaAhnDDqvlzXKPFicYmsQQlNY4zDvNnu61tr7xaDIqKrxeVZaNhCbbj1wipot1CTCxEvTpg2jQ8gASQQDRmFx9z0deJLnPFjJkcL3Mm3sJqfciHm5HRKS3fJgJUjeLFKLoSuFSLbS/bQKRa/4RSw9NMU=
+	t=1786197201; cv=none; b=qtZa/IVubv9KK2bbRz29sHuko+gBv7fp3oOvWM9bz46+d84ud4NkpjFttY9tGnQW9FOTui40yx8ORyJ4tli/G8bktz7HNGlXnV+zRJp+1Je29pYpIT3GVEe90UQVOXaFSbSAflyWEEBA6QbRPo9MbCA6HnFv9V6Rg+8C5ouGL+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786193490; c=relaxed/simple;
-	bh=LVRB2jRTzHoGUDyZ38hv5VgcTRwr+o/ekwzeptWrFys=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From; b=e3SlrUaAEOT1C+VX1U+kVgGOEYmhUw088wx2gDbkH43xlhOKI4rhLEThBS8q9YUwJBEtgr96mjikMCH97naJAVy14hOfB2S34/9nQwiQIsOvLiScJL7Zuc7YXo4v6ozwcxWLwpUSy6jD7UR40zH4oVMRvhxLYuYPIZK+uXqnkfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9FDcd26; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786197201; c=relaxed/simple;
+	bh=IcthlcxHcH4F4JgAEetrapn+n9qKsljYE+7hUcANoKc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=gtHuP+ASoijsH2dxgv83yxA4ahvrJ+khZaYXCrA9Dhj5VXXJgx1RkFsXptJ7ZLj4UJugT/wj4XqwlHf5JKPrdiOO40fPMiGqebyPuIQrsCMw+bftr3UKEo5Tv/nt48YjXPYD96cHzA0SBMip2LgQrHCvy2Lzx/uJzLsHe63FUWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=giv/azpz; arc=none smtp.client-ip=209.85.128.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9FDcd26"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4761F000E9;
-	Sat,  8 Aug 2026 12:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786193487;
-	bh=oXL8G1PuYXoGfBFLeIxP7VDVqBkCegIIxCE+yt4WF1g=;
-	h=Date:Subject:Cc:To:From;
-	b=D9FDcd26Iw8fwDnWQs/7Sx+oE+cl7t1Hj4OTAxQfCwCCf4IzzwWFg4ZNdT5f36Bqb
-	 8wQZyaaiGDLOpiTIpgGVMcjXfTJ4jakcoZE1rn6woy58FVUQ4QQeB+AkiQ45xigtZA
-	 ssMgY5fWnlGPSAqVQ69uKI0dVc+2RNLk7nUseWu1BUE7XgSvGIAPbyHYbLUDRFaKj/
-	 kvcc959UoUBYBkeii3YBIRNjQdKj4247N6xomtSSFcCdlHwXb/o+PzQQ0B4zooUjlq
-	 CZLUmpZiMUN6ZcAVdYbo3vhPHZ9AhQBwPwIQH4EbQwzsKNbCK39MrxY3cdyZvsPcAH
-	 mn+mNd1eG1Ruw==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="giv/azpz"
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4955e865174so2113195e9.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 08 Aug 2026 06:53:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1786197198; x=1786801998; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=j6YhX/Efyy0dzXw6FSkTaS9JiJzp146xrTR9z+Cnp8M=;
+        b=giv/azpztd8d7ZWP1ThA4U87Sugq4D+sB4Jeq/5M4wHgV8xzcmgR8+IReR3sZPfdhF
+         vzOVBUUrxZ/b1DD8KmKnFNDImTy2u72ZbRGNv1gIUbxOpSSeoKhaPq8GYZtJvIrirbCh
+         Y1KIOyv2eM76lZOH/q6ARbzWNx/cTTTxJAse3q6apJWgchGQDEn7Xk/l/bweA6b22TsK
+         fWAdcOxsgO2iscxi2nSXatp5BvdSpEmexXFB726OM+bDU4xWfXK0rQL8psGKKkwIwiUu
+         sVsqDs/Zx5nJwDuA6FBRsi76EV602fx2wfLvt5LQHxNEMEZpI80OVC/fbNSzuM9a+fMF
+         TDEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786197198; x=1786801998;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j6YhX/Efyy0dzXw6FSkTaS9JiJzp146xrTR9z+Cnp8M=;
+        b=HsgX7Y55bJ+1XVei+f3Zvw/VrV6+6ih7JjGWhsVZ3oo2wt/75GJ1KLXvjv/aCjHPyi
+         Z6vUgF448ke44o0PpG9333WNIqJK1bcnPDAZqtHwkLCIuVBCcsydi/Z55BKo6XEebt/4
+         8/19w5ocAAc8jrbJt96ThoWmC+p3X3dnbeHdietOxkZymb1OdI5NRKUFTRjEPS2uLXuQ
+         kNOBSPpvzUDF+pvbEZKLU1QP6sNJrwxUZnO7a9lCszcAIh6xenFFqmI1QjZjOEuEx7C8
+         tlCVunIoWI7+d4lrDk6niF/tNNhXRFzF10iX+urfbKdt7fn3Q0y8qSUmuAT4Xbm9E/ta
+         Iedg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp/Lv6m7qIfDCZGfC+FeyFyMzXS/AYd5a2IBJ3QJFIpivmIsSAbdo9z9/ibuYJxBGMCQcqs2RPAluaMpWZDyw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzaa40fJhMYKad7XvZcnKe1zbDIAJ/ozpVyfJmAmS0ptArPkPUP
+	ZAn62yPLgNaKTHayuRzvMpG6n18jxBVUqzvc3LX98+DyOul3XtL+rXAME+mG/cwtgZLkybewMQQ
+	4RVf0UndUU8OjVLjXdg==
+X-Received: from wmjy11.prod.google.com ([2002:a7b:cd8b:0:b0:495:5ec9:83bb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3501:b0:495:5e86:4e11 with SMTP id 5b1f17b1804b1-49961983990mr87923605e9.12.1786197197577;
+ Sat, 08 Aug 2026 06:53:17 -0700 (PDT)
+Date: Sat, 8 Aug 2026 13:53:16 +0000
+In-Reply-To: <DKITW7C1POAV.QX2CZS7JQ6BM@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260807-miscdevice-data-v1-1-43c4233e0b03@google.com>
+ <DKISHUP2OL6U.1NEMCW4S0Z9FR@garyguo.net> <CAH5fLggVkEYB0_SXcSGVBgs2hDejSU8P_y-5BvbyNhEvBPY1eQ@mail.gmail.com>
+ <DKITW7C1POAV.QX2CZS7JQ6BM@garyguo.net>
+Message-ID: <anc0zESlTrEoBv8I@google.com>
+Subject: Re: [PATCH] rust: miscdevice: add registration data to MiscDevice
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 08 Aug 2026 14:51:24 +0200
-Message-Id: <DKJKQUUIZTWH.3KW3FBXD1831M@kernel.org>
-Subject: [GIT PULL] Driver core fixes for 7.2-rc7
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, <driver-core@lists.linux.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
 
-Hi Linus,
+On Fri, Aug 07, 2026 at 04:48:53PM +0100, Gary Guo wrote:
+> On Fri Aug 7, 2026 at 4:44 PM BST, Alice Ryhl wrote:
+> > On Fri, Aug 7, 2026 at 4:43=E2=80=AFPM Gary Guo <gary@garyguo.net> wrot=
+e:
+> >>
+> >> On Fri Aug 7, 2026 at 3:22 PM BST, Alice Ryhl wrote:
+> >> >  impl<T: MiscDevice> MiscDeviceRegistration<T> {
+> >> >      /// Register a misc device.
+> >> > -    pub fn register(opts: MiscDeviceOptions) -> impl PinInit<Self, =
+Error> {
+> >> > +    pub fn register(
+> >> > +        opts: MiscDeviceOptions,
+> >> > +        data: impl PinInit<T::RegistrationData, Error>,
+> >>
+> >> We can just skip the `RegistrationData` and use `T`?
+> >
+> > `T` is the type of the data stored per-fd. We do not separate types
+> > for those two concepts.
+>=20
+> This is getting backwards though, and won't work when we need to introduc=
+e
+> lifetimes.
+>=20
+> Per-fd data needs to be able to reference whatever lifetime is available =
+on
+> per-reg data, so it should be assoc type of the per-reg data type. The wa=
+y
+> around you current have causes `T::RegistrationData` to be able to refere=
+nce
+> lifetimes on `T` which is not okay and would only work with `'static` dat=
+a.
 
-Please pull these driver-core fixes.
+Unfortunately the fds can outlive the registration, so we can't have
+such lifetimes to begin with.
 
-Thanks,
-Danilo
+I know that miscdevice isn't currently built to work with the new device
+model. We should fix that, but it is out of scope for this patch. Until
+then, I think the current solution in this patch is sufficient.
 
-The following changes since commit dc59e4fea9d83f03bad6bddf3fa2e52491777482=
-:
-
-  Linux 7.2-rc1 (2026-06-28 12:01:31 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git=
- tags/driver-core-7.2-rc7
-
-for you to fetch changes up to f88db65aece9f9d26287b6377b7c7730ecf9f11a:
-
-  rust: io: gate ioremap doctests on CONFIG_HAS_IOMEM (2026-08-06 16:05:50 =
-+0200)
-
-----------------------------------------------------------------
-Driver core fixes for 7.2-rc7
-
-- Fix Rust build failure on s390 by gating ioremap() / iounmap() helpers
-  and the io::mem module on CONFIG_HAS_IOMEM; gate affected doctests as
-  well
-
-- Add missing kernel-doc for show_const / store_const union members in
-  struct device_attribute
-
-----------------------------------------------------------------
-Danilo Krummrich (2):
-      rust: io: gate ioremap/iounmap on CONFIG_HAS_IOMEM
-      rust: io: gate ioremap doctests on CONFIG_HAS_IOMEM
-
-Randy Dunlap (1):
-      driver core: add missing kernel-doc for union members
-
- include/linux/device.h  | 2 ++
- rust/helpers/io.c       | 2 ++
- rust/kernel/devres.rs   | 1 +
- rust/kernel/io.rs       | 2 ++
- rust/kernel/platform.rs | 9 +++++----
- 5 files changed, 12 insertions(+), 4 deletions(-)
+Alice
