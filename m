@@ -1,107 +1,119 @@
 Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8DE2AD2C
-	for <rust-for-linux@vger.kernel.org>; Sun,  9 Aug 2026 00:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1BB1DF248;
+	Sun,  9 Aug 2026 00:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786235665; cv=none; b=JvDfmuY/fyGZI3RIteXYbL+Gc0i7PG1ctzdjabSKuS79CnVeEmwgdSpAdsiHls7p+B62IgWB5O5vLgIcrI3MJXIZGwnJP7vy8jxjUrwJf356dk+7GAUNHB2ERq8zaX3D7BtS2/ttwM4vU1FFXZlvEbHBNjkOgW4/H2U2BytnZ2w=
+	t=1786236652; cv=none; b=ZufbEouLA/g0UZFrWK1StmmxHInUQKgDQMSQaEd43CpcOzKsJ0oFOFbQNwXA+2MBIGwvXDVT5Whm41RmV0stazyp0pz8vYwClbKbp/SlJGB71aQKqY/2Q1qB91CNEgQwj2FLyOwFBcn6SkhNQIq2Brv5yBVjsObPEIpHqfNpD6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786235665; c=relaxed/simple;
-	bh=Ii1jnjrWAx/xfDUxiNNXLI98nwKHF5WAn9U7cJ+Mbd0=;
+	s=arc-20240116; t=1786236652; c=relaxed/simple;
+	bh=UEhJ4fOnP6NvvbztpOOHCgRbwBRf2/ifUuwzgPha3lQ=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=JmQyZmACwoAv+E5i27Of35nf3Scbfoe2qlPCG7xw+P5ULrK35PBcFAOQle9NYyz35LpyrzNT48R7kdZO6RLFdLVEynHJ1594p64TPazSDYM6BwPgZLLIfV3PFg/uLijVHtJUGKq/nm2QKpmeEfyTui6DYK8I/qasQk9hYwWlWJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=kZO2x8d8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KJ68D97l; arc=none smtp.client-ip=202.12.124.138
+	 Mime-Version:Content-Type; b=qUTeSDWIbKZPLOEmJq6QZ5KxsRjEwQPBCYMHxFov/PicSFSDUu5ILd2D4BLUc25hiRiOgOEdYWPB3lJvj9ndOrDCdNyy5BOAXpsp+Y4Wp8bTR+qxxW/QSQ2cNIRE847i9RB9M1UnT/HIsVWTwzVZ2ehH/Tqu2uxjbc3dM2gFIyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=NU29sH9Z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cP0PZJUq; arc=none smtp.client-ip=202.12.124.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="kZO2x8d8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KJ68D97l"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 71C8B13000DE;
-	Sat,  8 Aug 2026 20:34:22 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="NU29sH9Z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cP0PZJUq"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.stl.internal (Postfix) with ESMTP id A53A813003E8;
+	Sat,  8 Aug 2026 20:50:49 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sat, 08 Aug 2026 20:34:22 -0400
+  by phl-compute-01.internal (MEProxy); Sat, 08 Aug 2026 20:50:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1786235662;
-	 x=1786239262; bh=Ii1jnjrWAx/xfDUxiNNXLI98nwKHF5WAn9U7cJ+Mbd0=; b=
-	kZO2x8d8VTQxHbNxpomB9sselSyTxw3q/a/OlMhqiH95EbwRwAy6DQGEBm+dE6Ki
-	BOmcF79IqHehrXAnczQKbU8tllxxhmq70py40+QDuhjW5rLwlo8OQ6EMkSj/amlE
-	SSib4N0UyiQCuERj/UxL82JyItdTMvK6rASd+2NldZVmzBtjQAEOt85IeSKY6kKr
-	aXFL8s9BtM6OPAbpsgMeHtPSxdUrHrRmNtkqFHuz9CPgedCSFo3kG+RyJkpVdjv0
-	6J7YWmM1wOFR0v6fafdmwPxI7F16U5ae4GDlRVaVbntiHGzM+gJM4x+1iR7ayV2K
-	57lxsnAD3AchgFEWiy4HBw==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1786236649;
+	 x=1786240249; bh=xCkSTHTpye1HwdVm99z+AnyQrg5wWGU9aIxGyfSTlQk=; b=
+	NU29sH9ZsRImhMnP8aT4p1yQuwbjPQGMO/KabwgRq2yYxQ/ry+1Z1Vn+aKswp0jA
+	72ClGAM+RK0CQbBBeNZoFnugrY5/elsoMjjCUxL3pA5zBDlm6jLWNbqUBYL41f67
+	qgDYhH/yx+ZZwLI3zLz4969SjC3Hkzs7OCF7+t7vBCb7HqeZjNkk229mhr6p/lmY
+	ofVWspjaKMqFx4U7KFt0wkexc8lm5XJzdfsl9ynow10v4Z14sNyO3MeFVTcyLQA1
+	WjDOG7H51LRjuwr8d4UA8IhwusSfUQ1QEcwc/NJhpbWu+E0RBf6I/XzedDPtAnCR
+	ZukGehUwfRxEDr4N10drrw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786235662; x=
-	1786239262; bh=Ii1jnjrWAx/xfDUxiNNXLI98nwKHF5WAn9U7cJ+Mbd0=; b=K
-	J68D97lCyl2Z1I16PXLIa6GABbGnzxjcTDJv8uUur6i0RY9MbCsT7ps5Ccoc0uI3
-	0NzO6jafuBd1D1EoaU2v4MFd0StXF9v00N8RDX6Swssd00OLNbTxQhCMU6uUr1Q7
-	ZkBjCo5dZYPZHlLgINCunh8esGhjKtx6OyAvyrspiEzEvdt3wPRArQ/7LiiAPoZh
-	iyJMMwWquRKgePQ9ROK/tTxZpcplVHpkQAMTmguBUDjRKC6ZuA++c4Qlfo4JWVXF
-	20+piypBENtV4qQGFqWQVqosYlefCpi+JvdZlk04VzQID4O5P3IkHkdvdodrtBse
-	IavTm+ooPxjIGeiwt4Tkw==
-X-ME-Sender: <xms:Dct3aoAVraWYUO1HxF37G8I0kOVztOZWiLldyx8uXsNNS45mjEKeug>
-    <xme:Dct3apBlib2272y1qQw-Vf-GaMxqwrqFSxcZrabn9weTeMEbPP2Tqdh78c2BsygcL
-    uyhYyd-gdUVWIZd5-6LoAZ0R-KG6DMb8D2hxT086cW-3rqru42eqQ>
-X-ME-Received: <xmr:Dct3aia6exuU_Vgms5RDdOaOF7l0FLk0Ok8Iiu_BwLPD5MDfhkaRiDU6M7TxSuUWSzAcUIFaKmBxS-9c1O2Lgjon>
-X-ME-Proxy-Cause: dmFkZTFfKCdzdtVKqicJm3G6LB0zxf6WXLLYKo10vxq56hadoy89HfWxzIjevoU+N0tRUR
-    r+IVgonjKTqO9ppzMIF8QYZquWuG2ebIELMtGWkRHhTTfqIHzFZ9ChDZalBV8xPIEeAkRp
-    6FCMx6DvOmGqnyDuxjuPeomC80ibZKGUhFudMTtPADs4Fj3ROcUjOwZ7k9z691WwRVFoLz
-    gybL7xYyXZiICn5ZNEehfLp8UA7W4H/GqO7Rvd6rzFUIbRj5YthaCk/HyKOkNuAlOxa5Vz
-    yCcBBvfoUyvdBYUgc1daCD4BlfVcjlf1ibuXesQTZffn1d4n1Bp6poIKQfUJlQWSZJPch7
-    pD1YqqrguG3TE2WkogKFzjur0lDO95tVBxocQvbLHzaNZ2VHiUWOD+xfMV6osNN8M0mUa9
-    q65YPZmHP8nEendpVwoaiMyoShjQiGKJZat50cB7vWsb+N/uq0DqL0S00xvytPGTht9kRd
-    0y5CROaT9d/pPoDgk4FjnoLkpniGqecNLInOMyvW66XGXoE9N10FBd2Y9AOuhv3iBFh6ag
-    dj+i6KjsH3U7MHn1XsHfHPO6KdNlUmvNaiYOxLcBWPBArPY16qN+mM7uDIHEY2ah88XghB
-    X5FbBe4pDNwIBJLl9sr2vlpci0f7NEP/E/8j0MHURijmXkh+s10AzbeyZhJw
-X-ME-Proxy: <xmx:Dct3auyxWj12V7qsRnJtkcMSn3ptL9Wh5ZmHTja3XlimdAWxXGcaNg>
-    <xmx:Dct3alcHBxlgcx_If-lzOkeJNvzuO6qOdNv8z7FP75LmTdtx58RbUw>
-    <xmx:Dct3akLIAmvje0nIaScGhLHZbyP-k8qyYWBq7R0WDwd1EqzVcbdPMQ>
-    <xmx:Dct3au2Vn8f7cYZMk9Ks6RPb2LFUl2RyaT0PTehONldQ1IVW4tI80Q>
-    <xmx:Dst3aqJ1dH6PEd0f7sR541BLWpgGNh706cOrS0AhlGpAqghtRxF8WJnL>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786236649; x=
+	1786240249; bh=xCkSTHTpye1HwdVm99z+AnyQrg5wWGU9aIxGyfSTlQk=; b=c
+	P0PZJUq0RL8Rlvcc1fesfcEMhNL6Ow9lK6nfrSGwEflLRYBFoLkzE1Yr5WMGJPYw
+	6Ls8irExU3Ub5sFTx5NcKRAH5xucWJFNRRvkhBduzCdqecm6LWGDrXtoGpRlheXG
+	UFpcHlztpRcjsaONfnp3vPT+8vfMpXaAfrIR19+vZMdYnDXfubUU4eupOvjcIaV4
+	R95/pGjewQ23PSePQl443aNXWIfsQ3xYKTpj+NGD3gg7BeA8hkv88pef8q7vCOHc
+	uIJqmRnetmYNvbFXUd9WY00og5FNwR45IRYTuMkmtVxMmUD0Ji1P5QW5iU0wfdhs
+	WDeCMFaGEthDDbIKAxoWQ==
+X-ME-Sender: <xms:6c53arGSkqmk3IqBNnnQ2VKcHffefbAAip61EJHMKqdmHgKe49MqKA>
+    <xme:6c53ahqtvY3uC-Hfvkr5IP-xm6o0Pileb7gQNwccdKBZKzJzhBjqdpIQ4cylfo457
+    xtuy5QOh6rmIIzNQtjutLHENNBv18XYy4-EnU7K8TUJ0q73feH64Os>
+X-ME-Received: <xmr:6c53alJ5ES3-_J3P-YGMPLo--aGyaHVuglFfyg0kYfADERmZrUU2geEkMC3ojc-Ixuau59UkdNyymLQWD8k7HpOO>
+X-ME-Proxy-Cause: dmFkZTEWyeKTFTOJEnerKErAGQhxs6jY8ZIIz/VM/JukQDWudLXGVHslkG7D0P1qYkOnvC
+    p/N/lf6zobEs4R09BmnLvcyKb6KEUV8BUTXqUMer/pYJTS3yxadkjhC7zWSmUyqan7H6wr
+    iOv96fl5zT6jrqOPwMso0ETzEouIFpNVaqEmeJP6dRigdDAu+IZwRJj3PRqh95KibXDSbH
+    Of4jjPRZQoMGfXL2I60hA+xQxKCbr/Il0tBfaPmtJlZB/9gh2yaivzrZ+UEJhRUq2avrt/
+    6MNUfnrwFjZeD8nPUgpooCWsWDJWaeXgePQ7pwjcD8pNyMNO3hgiId+X/6f2GyobvqrChX
+    NgkPoQKFCUKOdPrSSKZZaMsWyrbXtBaD570Fno2K/4e5Nb5VitmSOsXELC6wzq1o+MMDWY
+    BDRwN8HUmt9AECIMyFVNpR973AKW7u6uPbtbGxU+dTKN1KX7lX/ZxmF9ahMCplvW2k9Dce
+    3Wj2yJqgmIm4lxeGRLk8czefQ+PqJVNwKyd2c5DDek8AwYdsaBtjBXoESSJCZL126CgnZw
+    rh13jAEcLls9u8D5VHKwcbJvvTqbDM+mo/Yit0Ddsv8oXXiRSOEjzRdCiYx27+csmM/vgK
+    hVPN/Z9TSjlgnoTExldLSqYJPnlu92K0CYW1f/ZUOTAU2VW0QljkT4ZNSYpg
+X-ME-Proxy: <xmx:6c53aiyzFxtDYEEDIAstGaAJXGXzDY_IQtzrTj8ejlUY2ird5uDvow>
+    <xmx:6c53asZ7ksw7NU9kx_h8FiWRleYvZnx3smz_-wtFzjvcNQJrn2sdMg>
+    <xmx:6c53au7uETwpLa9d-ku27TH1Z02VJoAkMJxEJcp0Z_5NIXILFSfXrw>
+    <xmx:6c53atClWOEO2nw6sx0n4TuPtVeL-p1G5s-AlrhTW5lZwR2IMp7Zlg>
+    <xmx:6c53agQEeP9Ahk4NyUtA6jCafbY03DdegnZvbcQlkorROei3L2sIXvzX>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 8 Aug 2026 20:34:18 -0400 (EDT)
-Date: Sun, 09 Aug 2026 09:34:15 +0900 (JST)
-Message-Id: <20260809.093415.1407278992536442461.tomo@flapping.org>
+ 8 Aug 2026 20:50:43 -0400 (EDT)
+Date: Sun, 09 Aug 2026 09:50:41 +0900 (JST)
+Message-Id: <20260809.095041.602618436881623934.tomo@flapping.org>
 To: miguel.ojeda.sandonis@gmail.com
-Cc: gary@garyguo.net, tomo@flapping.org, ojeda@kernel.org,
- a.hindborg@kernel.org, acourbot@nvidia.com, aliceryhl@google.com,
- bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org,
- daniel.almeida@collabora.com, lossin@kernel.org, tamird@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v1] rust: bug: prevent dead_code warning from
- warn_on!'s flags constant
+Cc: tomo@flapping.org, ojeda@kernel.org, arnd@arndb.de, krzk@kernel.org,
+ alexandre.belloni@bootlin.com, linusw@kernel.org, chenhuacai@kernel.org,
+ boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, dakr@kernel.org, daniel.almeida@collabora.com,
+ tamird@kernel.org, acourbot@nvidia.com, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fustini@kernel.org,
+ linux-arm-kernel@lists.infradead.org, soc@lists.linux.dev,
+ kernel@xen0n.name, loongarch@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: bug: fix `dead_code` warning in `warn_on!`
 From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <CANiq72nWcqd3aSKdPqOSRRQBuwWNW-s2EOscYszQ9kSbmrKxcw@mail.gmail.com>
-References: <20260720035510.4048145-1-tomo@flapping.org>
-	<DK6CISNRMHJD.391EZL08Z6HM0@garyguo.net>
-	<CANiq72nWcqd3aSKdPqOSRRQBuwWNW-s2EOscYszQ9kSbmrKxcw@mail.gmail.com>
+In-Reply-To: <CANiq72m70uWCRFnhs3axdymSTGCirBrYAvKh2BiT0xqW2j_3jg@mail.gmail.com>
+References: <CANiq72n4=fz=JNKY0Jdm8BnLa=RmHB2B7s0bO47YTJ7hygqBZg@mail.gmail.com>
+	<20260808.143013.1251068388254615351.tomo@flapping.org>
+	<CANiq72m70uWCRFnhs3axdymSTGCirBrYAvKh2BiT0xqW2j_3jg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-T24gU2F0LCA4IEF1ZyAyMDI2IDIwOjE5OjI1ICswMjAwDQpNaWd1ZWwgT2plZGEgPG1pZ3VlbC5v
-amVkYS5zYW5kb25pc0BnbWFpbC5jb20+IHdyb3RlOg0KDQo+IE9uIEZyaSwgSnVsIDI0LCAyMDI2
-IGF0IDE6NDDigK9BTSBHYXJ5IEd1byA8Z2FyeUBnYXJ5Z3VvLm5ldD4gd3JvdGU6DQo+Pg0KPj4g
-QWxzbywgdGhlIHByb3BlciBmaXggd291bGQgYmUgdG8gbWFyayBpdCBhcyB1c2VkIGluIHRoZSBg
-d2Fybl9mbGFnc2AgbWFjcm8NCj4+IHRoYXQgZGlzY2FyZCB0aGUgZXhwcmVzc2lvbi4NCj4+DQo+
-PiAgICAgaWYgZmFsc2Ugew0KPj4gICAgICAgICBfID0gJGZsYWdzOw0KPj4gICAgIH0NCj4gDQo+
-IE1heWJlIGl0IGNvdWxkIGJlIG5pY2UgdG8gaGF2ZSBhIGBkaXNjYXJkIWAgbWFjcm8gbGF0ZXIg
-b24uDQoNCkxvb2tzIGxpa2UgZGVjbGFyZV90cmFjZSEgaW4gcnVzdC9rZXJuZWwvdHJhY2Vwb2lu
-dC5ycyBkb2VzIHRoZSBzYW1lDQp0aGluZyBzbyBJIHRoaW5rIGl0IGlzIHdvcnRoIGhhdmluZyBh
-cyBhIHN0YW5kYWxvbmUgbWFjcm8uDQoNClNpbmNlIGl0IG1hcmtzIHRoZSBleHByZXNzaW9ucyBh
-cyB1c2VkIHdpdGhvdXQgZXZhbHVhdGluZyB0aGVtLCBob3cNCmFib3V0IGBtYXJrX3VzZWQhYD8N
-Cg0KSSB3aWxsIHNlbmQgYSBwYXRjaCBvbmNlIHRoaXMgbGFuZHMuDQo=
+On Sat, 8 Aug 2026 21:40:49 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
+
+>> I posted a `cfg(testlib)` split for it:
+>>
+>> https://lore.kernel.org/all/20260808022608.1125174-1-tomo@flapping.org/
+> 
+> Thanks! It seems good to me.
+
+Thanks!
+
+>> While at it, a question: what is `rusttest` meant to cover when
+>> `ARCH=` is not the host's?
+> 
+> `rusttest` is meant to run tests on the host, regardless of the target.
+
+Then `jump_label.rs` needs the same treatment?
+
+`arch_static_branch!` embeds the generated arch asm too. It is not a
+problem today only because, like `warn_on!` until now, it has no user
+inside the `kernel` crate itself.
+
