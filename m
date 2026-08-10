@@ -1,128 +1,117 @@
-Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A971DD9AC
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 13:31:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786368687; cv=none; b=f4NKRscGoOgm1g0qLFANcOlpyPZDkAuNzodUYOQiZwcpXK8+KKZ+krS+mYwDUrgKHxaQy/qliGsUTD0fEuuY51gtt69UiKgsQeamL5rp9zl5qEpfaYYi2QH960IIV17fClAIb0NeeTD6Ks34tLcBqpKATd40p1T7c/WoYX/JRbE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786368687; c=relaxed/simple;
-	bh=SfnI2OxG49XDzSD2dPD74xWDqixJ5z0Mp8NFLoLuwFA=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=PngbYjo8laMfCwU3QyTKpi2gn4Kz/PKI95X+dcAOUzngNxwTR29XWd/cSPK6wA19+w7GcTbIIwx/z8MoKwYdWgzf5NdLvF9nvmCCRPuQDs+sPeioL/UqOrcCAxv8s2MkyGQLKWrGpy47Rqulh8Yd2x/DszaJ/sWnLBe7joXrUDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Z61DOuJe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TPbUpwop; arc=none smtp.client-ip=103.168.172.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0AB2D12EE
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 13:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786368780; cv=pass; b=RWDaaW9AwOYXXtKd6qwg0RUvgYENF0uNgRdHuoADDJJCzEtNLXle+muHPtVntyM937XtOOilAiNa4kA1m9gtWJSrbYiAqnEYPme5vIFypnOo7jw5IZq6yBcHX5DmD7IOi+zB+PbcDgJPtOOY7hMv0woqpydcn0QBPEeeJCrmdrU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786368780; c=relaxed/simple;
+	bh=zs7ev1uZCNzjpHhBWBorXCAL4i6om6rwL060s3imwzU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hqoAXG+pOBX24w1VpOIYmoeVcESczwiksPOYiH5iqrYlCMnJzVDTGW8HXoUbE9JEYTSy9KbSNdg4Xol0S42Dkgd5OD7Tw8FXvGgMtJE94UBQaWiA5iHfQKT+mIkilktmx2Fe+hPyidZVCvUqOup6aGko70NE2paXSqRlvkDTmP4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LM4zhkSo; arc=pass smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Z61DOuJe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TPbUpwop"
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailflow.phl.internal (Postfix) with ESMTP id 2342C1380553;
-	Mon, 10 Aug 2026 09:31:24 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Mon, 10 Aug 2026 09:31:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1786368684;
-	 x=1786372284; bh=yR3UNBcYED1C6JNTwdBc7WR8q/du1jzECjoFfmEll+U=; b=
-	Z61DOuJeXeD+C0f6pTqYwBxbwV/Hsuu2ILalgL7YP0h+94v5PTtcM5NKr5k6UQEp
-	T1tKAF+CmNXbXWfuPxMYTUjsgWirysQgK0uf4w6lkMnF8gCSpDxQIGNvTzDtNut7
-	/Lf2eEwImMBRf/TXnpYF2ZUxTKQ0DmhIEkqJlsWQfuODpqNsnJ/52oMmr56/4agq
-	GxiXTRt1ADXutpYmtEWRiaS9RwGeHO7WVwdksnMc95uEcAF2vabMGPm/2VTI5gwP
-	ZpSLm38dqesw4MT5KsR4W6L7eLIptVdtZXA1+Zc2Spx+C8WgXD3i7l0SClSv3MdW
-	ucxHKnt+M7V/ebucbh9Ctw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786368684; x=
-	1786372284; bh=yR3UNBcYED1C6JNTwdBc7WR8q/du1jzECjoFfmEll+U=; b=T
-	PbUpwop3QXifj1w9mGnv6yn3/5rUy91+DQ39Wnd4PcekVj+3JKNpQrPdtaTgzsT5
-	rgfGlMFNCTYR76HFomjdNXPYHZns0dyJ4wB0/cM2irCriuLLWwAMocB3j3zlta7y
-	YHo+Nx2K7FYSrUDzy6MnggUGZCr2rCu8PV2qVoKnBRqRbJnqPLI8MuQ/sbuwf/Xb
-	opPT9XOLTKJ6tFLSiKsuMS5iit+XnX8thwIFpZ5zGTGL/DKNw9f+qZ1p+d0cKKtX
-	i/DUuffSdUlgFTx5rrBrx2qBVv9sRL45VoHyR5YDKoe2z9Gt6bFHBL0g+/GCDuwi
-	eHmR6mAyD63AiqZ14t0cA==
-X-ME-Sender: <xms:q9J5auqvy5ZM1MEfKRUwF28WqqT-abtJito_k0vflQHuW1g3DRW7bw>
-    <xme:q9J5atDWjBbdGiabUHQt25YTfh7ihJaI7PhPMEPDj6_FlPVDoY-91UQACK_KRCtQb
-    VMdpABSHEezD1ywcTNrAz4Tq8u5egRRk4AEBfjYTBE9z6bldoMPx-w>
-X-ME-Received: <xmr:q9J5akVkcAmubLxGBIArAUWFXlqisNu8qin2zbT0Gr26Qn4sKSBngUPRnUOU_RpNsf4xlWPE9kHiZocAkqUM3kai>
-X-ME-Proxy-Cause: dmFkZTF4xRnlt6J5MeEefZ9k0j+YuAYjyN0QWm8Lmcn099UFzVK0XECOI01UaoMm6irtAY
-    1BffrNe6XY2Vcm1NSv2uGdUoEmxQZHCs2vC2mqT8aVx7KXEadQfB/VXlnTnPnH5AxmUBIO
-    aMjcwOF9ViUZyDCvroTizDJa7FZoAIDCyvUKCyCr79rjI+a9DP+eqzVYIuWbOr6/dIyiO4
-    s74uqMhDcV+9BzGg1hua+f2Yzd2d/aCQGm4xqFhIQRStCC9nPm0MYcix+GUvPWoKTXf72s
-    +ns0kJshx6NaMP1YkkbX+jBf+A9TrBWZK1fkS87TgU/xFsDfPyARY0xDQOEuCjcqwglAlc
-    tIVYXdO7dKyah0AZ+2uP/1pxenzuf5yrOZEUwaPT3AzHf+q/Tcpa4hq+Q1jkbIKfIvccsJ
-    UfMMYohoEAgEOPJ49wXrYF/2PtetVfSq1f0T9NE3Lr/awBtl8kTQyBh5yuAqEf7r6SBghE
-    kYZdUnvZXxDU5B1KXMfgmQ2LwXGySEDgcruGcXEBEWrmMrUaaNloSpQ+U4alPqK/jlrjRa
-    Bi1OVRgpux50KqT/auyyTI4gzN67oKHxXyyHXohegMglSuLVmci3ws+1i+Rs8BwEXhgH2P
-    CHVNfm5gwSwgosCKBljgXG1RMIFuRbPgQ0SgRgYR1/dbU1VvK0kiBIKZ658g
-X-ME-Proxy: <xmx:q9J5ap5gXuI66MRPYRDvPSjHqCHD5ELQ6CU9eti9Z8Av0XOpBNhzaw>
-    <xmx:q9J5atAb1N0Y9Zziv53EUZEYv3-p-jCAj_4jtLPdGX4weBgImwtmBA>
-    <xmx:q9J5amBfyLI6goBblbyILp2_Viz06FYnnNMyFqsGENkR-5i6Z0FbWA>
-    <xmx:q9J5alh5ppeqEs22rL5vmDM9at_GodDcsRregqNb-SvsWiQxO4Ndpw>
-    <xmx:rNJ5ask56EdqDxi3yxo4xuWVFtXdnsS8Jbp58iITmpA0V7ZqSyevlmyC>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Aug 2026 09:31:18 -0400 (EDT)
-Date: Mon, 10 Aug 2026 22:31:16 +0900 (JST)
-Message-Id: <20260810.223116.480833962545427592.tomo@flapping.org>
-To: a.hindborg@kernel.org, ojeda@kernel.org
-Cc: tomo@flapping.org, jstultz@google.com, acourbot@nvidia.com,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
- frederic@kernel.org, gary@garyguo.net, lossin@kernel.org,
- lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, tglx@kernel.org,
- tmgross@umich.edu, work@onurozkan.dev, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com
-Subject: Re: [PATCH v1] rust: time: rename ClockSource trait to ClockId
-From: FUJITA Tomonori <tomo@flapping.org>
-In-Reply-To: <87ecgc96gy.fsf@t14s.mail-host-address-is-not-set>
-References: <Xb3BqlziN0dz1513y4Pf4QcsWU4wtV9yldqqJnRxpJpDfcu8sMggyUlvbLFPRAVBPyTI698uvBbWntyliXl7Qg==@protonmail.internalid>
-	<20260722001050.4115708-1-tomo@flapping.org>
-	<87ecgc96gy.fsf@t14s.mail-host-address-is-not-set>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LM4zhkSo"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cad85b7b5aso2077025ad.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 06:32:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786368778; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sYrD97U/6UhbBJMPhNFiFaJ0c5ddQzYOfI3vzYuwC8f2gkLuuXnx1OC3PulFl3snki
+         iF4zVW4tYSTfdoWiZAEDDmoYTsV97T54LLtH192dcPbzwG6L7A+cBlbY+am9nJv6G3nH
+         OEZMAqviuhoWjLV/3cuP7ofV+anqfOkcYcVPa9VkNuS9bmG6hfYU24z2BdB15PQ3Msq8
+         bnxsiGB7gD0U6Po/69WkUKzXC0o0OrmVwQZ6oQsnltFk/ike/DOanD6EyhnbSq1cjVY2
+         RozfWAhOpGYAHDmN3ewuCTfdw8tKpTwIT+JEwHZm7pbngnRBky0PlSpWE6gY3WeRzxMY
+         c6kA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zs7ev1uZCNzjpHhBWBorXCAL4i6om6rwL060s3imwzU=;
+        fh=sHDJ5+dnC8H7xII+5riOFSYNt7Y+w/EJ4RTWj+bfL8s=;
+        b=j1N7KhlHWadjCJQLjM80aFoSk5JBPm88rAMXAfhGriR+LJ397F2bqiBo9zROR99AzA
+         lPaxGy/lhK5IYxnIxXV5tIHXzwJE02j7uo0TREsp9m8UBUUOMc74nr1pbk8MG41zsIuw
+         CU16EJvo4HUKq+X0/y+VYTi9KoqD0DhJiteTn519LFu7Xs7UgWAgwNuggx6U+kAVEemW
+         qeCQybyVD4Sr4gYFiNogFISI7OmNtaDD07WYs7S/e2i8pMBk3FfJWgrK/xGR7XXgzt8Q
+         kz1/YZXJv0BVw3Qz2TXau/RvyxRx+eJany1oqNltobtw0pxc5BN2LcaanH5GJXRZ2Qbt
+         IFKA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786368778; x=1786973578; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zs7ev1uZCNzjpHhBWBorXCAL4i6om6rwL060s3imwzU=;
+        b=LM4zhkSoK7bAVEp3bAOf0bXmMJ3moXK8V/Lk5k7Mo6p1QvKB2njhKgBimXK1PFVaA2
+         YzCxwp6hacYym5nGD/vPmX08Ok/J0ucANf7DNRaRc0swK2jjR33s90g31aui9V6BBa6U
+         WBt9RLEk8phx71ojBpJrtz8kJ0UZCJPTa6bX/m2sInB7Lbwc3f/A1EDaVpTMRaFe8k8C
+         /UCtLrB8ubGhCkbSZ9m5jMitIQamp274mNo9Prodt3yDukFs1haRNbM1IAXD4IDgo1cd
+         o71BSzk7oiadhHg9D1GzLLffzInpoTDLaC7sJEb2NYNYs8kTFJV515s78ATuWJzZOODK
+         c2rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786368778; x=1786973578;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zs7ev1uZCNzjpHhBWBorXCAL4i6om6rwL060s3imwzU=;
+        b=Q1O3JZbJ6wenn5Kh1mlalkjMDzXe20JPXDTGZfUcRK0H9FDtHE+AbIxGwu114lMD6s
+         ghMnCcPDHx2QNaLXo7cv52Jezv3IE9BSpW+VDv7Gb01ihY0g06dNLD9aPSGDY5bXCu0J
+         JA8P2nQ4eg9WvXvSYC2pYlZ11lVEobOPUmc9z07jqQyyoYTwvoizJLISlYp4MbU4m7x2
+         YSIJ8uYB8vFBKKGMPQFhuGW9pSixnLga6P8hTohVV09Dj9GqTTS5xhPzZQjNNvygPmYA
+         qZOvjmJgOyer7VkZeXNe2OpYEd2wd4J8Ybli/hfvQkK08ofv+KDzlR0dx/+fXIP7TnDz
+         ADPg==
+X-Forwarded-Encrypted: i=1; AHgh+RpWO5JWUqjAxFerGtf6RSLokk46LPjs/DnxAqqwNzDnqrCHFPLE0P5Zv1hA81F/CO9OphxDSivOpSeUn+/P9A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJzfnFgCX1U155XvAyDGyntvjp9WdWVaSINQ2vhQz7eIRiCgFE
+	WqG/RLu9AMtjcNbzj2OHfF1EPgHtZmIuzk6gF/z58IvNHz6MRmysFR5xdzKDwH6eOTM3Xj7qo52
+	7+WD7VM90OOggOyBPsz4t28Mc//R/wQ4=
+X-Gm-Gg: AR+sD10k3TAQWUGDfS/+FUkx7oGcKdwfPOeu1rfuLoj8aoU7csHt5hC+Mmu/Ei0Rgt1
+	Doput/Rp2bbbIZ1r9E7GfPGtv6O5HqEdTXBMMnzLrlMw2gFueQrwtcyM8LnNSFiwsrUP+zwDXv1
+	tKifxnNxqeK1WfvXG5nBFncQN5142xziw0EFWpATeGxYB7H3FZK6mwFDnUJIjJ2eJHEFhwRRVVn
+	s51n5OmVgNXwcHZbUXCq7wRRD9QGMvbjm3SxnDhTaYGUKvxdGRvzw6b29qVJQ3dRDHfoaDcKPRr
+	QI8XM9WXG5qTtppJdAcaE0eFs7UVCAYh00TEqLAJ+QxCFOSObsRUx+P2D6nMT1sYhoCb0b2XUK2
+	q6PRE24zfu834EChGGuFwbhWuoCUTzHMdtWCaI6E8HVrCJz4/bd0Mi4fz3RoH
+X-Received: by 2002:a17:902:dac3:b0:2c9:b96a:2855 with SMTP id
+ d9443c01a7336-2d0ca158b88mr319780985ad.0.1786368777744; Mon, 10 Aug 2026
+ 06:32:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <Xb3BqlziN0dz1513y4Pf4QcsWU4wtV9yldqqJnRxpJpDfcu8sMggyUlvbLFPRAVBPyTI698uvBbWntyliXl7Qg==@protonmail.internalid>
+ <20260722001050.4115708-1-tomo@flapping.org> <87ecgc96gy.fsf@t14s.mail-host-address-is-not-set>
+ <20260810.223116.480833962545427592.tomo@flapping.org>
+In-Reply-To: <20260810.223116.480833962545427592.tomo@flapping.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 10 Aug 2026 15:32:44 +0200
+X-Gm-Features: AUfX_mynLwy3JHYHlRMrpQZb58oI1NQcRCUl6tz905iqpk6P6Qz67vMk-DlxJuE
+Message-ID: <CANiq72mj2vTKN7QjqyDgKq4w8cwPWcrYsx3Nc2Hk6kceYDbLkw@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: time: rename ClockSource trait to ClockId
+To: FUJITA Tomonori <tomo@flapping.org>
+Cc: a.hindborg@kernel.org, ojeda@kernel.org, jstultz@google.com, 
+	acourbot@nvidia.com, aliceryhl@google.com, anna-maria@linutronix.de, 
+	bjorn3_gh@protonmail.com, boqun@kernel.org, dakr@kernel.org, 
+	daniel.almeida@collabora.com, frederic@kernel.org, gary@garyguo.net, 
+	lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org, 
+	tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
+	rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 05 Aug 2026 13:01:17 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Mon, Aug 10, 2026 at 3:31=E2=80=AFPM FUJITA Tomonori <tomo@flapping.org>=
+ wrote:
+>
+> Thanks!
+>
+> Miguel, Andreas, can we merge this via rust-next?
 
-> "FUJITA Tomonori" <tomo@flapping.org> writes:
-> 
->> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>
->> The `ClockSource` trait has nothing to do with the C `struct clocksource`
->> in `include/linux/clocksource.h`, which abstracts the hardware counter
->> used as a source of time for the majority of the clockids. The trait
->> instead carries a `clockid_t` `ID`, i.e. one of the IDs of "the various
->> system clocks (for POSIX.1b interval timers)" as described in
->> include/uapi/linux/time.h (CLOCK_MONOTONIC, CLOCK_REALTIME, ...). It thus
->> plays the role of a `clockid_t`, and the `ClockSource` name overlaps
->> confusingly with the C `clocksource` concept when reading across C and
->> Rust code.
->>
->> Rename the trait to `ClockId` to reflect that it represents a
->> `clockid_t`. This is a pure rename; there is no functional change.
->>
->> Suggested-by: John Stultz <jstultz@google.com>
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> Link: https://lore.kernel.org/rust-for-linux/CANDhNCrKMdHCmL76LWCROVF2Ly-9NxmfmQ2T+P=iv34aVkO2uQ@mail.gmail.com/
-> 
-> Makes sense to me.
-> 
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+If Andreas is OK with it, we can try, yeah -- he was mentioning to me
+earlier today about a few others.
 
-Thanks!
-
-Miguel, Andreas, can we merge this via rust-next?
-
-
+Cheers,
+Miguel
