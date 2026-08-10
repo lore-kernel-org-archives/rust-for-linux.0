@@ -1,209 +1,413 @@
-Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C2137E5D7;
-	Mon, 10 Aug 2026 07:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F11360EF0;
+	Mon, 10 Aug 2026 08:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786348327; cv=none; b=P6gpGQB2j/cebz0Oc9dIfufok7HeCjjVuW4nqS8wECXNsPIe+VjdZugJWouxMbUCklcPpFaK5eG/rPCvTV+KniJ4awQW9hMSZzGV195rH6E63MtVNjNZvSl41iyhPzkbeFm6gFqfj6rseHnWW7Pt2+4AMNF2apf2BBQrNiZeBkw=
+	t=1786349520; cv=none; b=if2Oo4QnoCzW4h4MOEVR5TbB5u5HOpPwIGLBd33dXPbz14S5uuJW0+KqVzlSwKRE/nNtDoFVrE0QKs0pHyOjRYS5TLxrI9NOjuG13NDQVM95rQutZWZLj0YkliPrsFK0IsNE9tQtSgz7EXWqLAydtvspRWx2L7EszHpH7iv4fOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786348327; c=relaxed/simple;
-	bh=5nsJRPmYnlG1W7N0Zj6R0f27BW+lbTE68Zj253FRIls=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LbvwbcaDvzEZHW7OOUJIRqiYdE2LKSzbXcqIHJoxIQFBvobCS+MGccjbPyyE5nq0bq7Zb85AsJFxFtoNy4dVsNn4YuBaMv9UO5ywzfc0PraNdF7W0mVAJ3zX3AOMJBF88ChH5wiSw6xGakH8qUzRSacFS07fYyv5v5UpULp7tXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=A4LvrrlP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ANsDxWRK; arc=none smtp.client-ip=202.12.124.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
+	s=arc-20240116; t=1786349520; c=relaxed/simple;
+	bh=B8ECLxTqX185rBSx7pg5nmBpje5EAUuD31go+NlGAAg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RGJ0VUk3yCZMBkAvZq+jTPFAQfz7yct7/UtJzSW6LA5h5hDtak8kV4oy8m15x//oSIlvr3k+HkJobYeNj7z5m5NpBgL8pXpdwYuvsBXt8QzRAKJDaT3g01JyDAFN9TOYCazBt6Tnaf6TFerobs5q9rqHyfhT5/5y0FbHBS99rKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=a22kh4Ru; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="A4LvrrlP";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ANsDxWRK"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id 4CE7D130000F;
-	Mon, 10 Aug 2026 03:52:04 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Mon, 10 Aug 2026 03:52:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=fm2; t=1786348324; x=1786351924; bh=iz1hQTzFiKW/UJPbecKdR
-	XkhuS6rZr3u9dqktxZ4RCo=; b=A4LvrrlPDT724BJSB8Wdkccb+nBDXFEo2oD1R
-	24EH8PvArJns8VjIjMIIubL75OKFQclzgaI00PeMeSUsk2Vk84LKzMzw51ymyu8E
-	t8Ab0DjJtEC1IJQ1FTC6VcDH00LyQTEH0Z+pFRczSWq2ND3o4UJZnU4zyVPr9aU6
-	gnpLMXoIvI2YFypA+VqO5q8Ugo+MrRK1/5uNxwQtVTyKQ52Fwfu30JzzKAfRb0tT
-	ESiRP1/BppDMPnRgjGmuHb11ewqS2yLnPICGKbZkOJYSb1ot2BIzK+XzpmcUjOU9
-	o5ImJp4eC9P/jriNKVgC1kuzp8C/lVydtnP/PyFI5pTnZQ7Iw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1786348324; x=1786351924; bh=iz1hQTzFiKW/UJPbecKdRXkhuS6rZr3u9dq
-	ktxZ4RCo=; b=ANsDxWRKoObSTZBXy3F8XVvCfXMnd9Y0eSMy9CvnmIRtCLOldfA
-	C9e2wZczWMD0f94D3stdvgKfmal+JSsDRSYnBIluZUy67TAG+u4XK1+VLX/R53rR
-	FKmWYoLXghmOqfO4cp0ayf4t879+HR66UqMEDXWz73mYPJKFfTgoWzj7xdSCO+lu
-	SLISc6JsIZFa66ug75d4hJhLaxPtDnn34jw2YR7JqDsRbH+y3YcFVIKQOXHKjJg4
-	s3qe2K05kFGPd2PV+5qYuYrVjdIBYoEMli/OjuQRiHpzcT4aBqDLwEbX1FZ5JDTm
-	T2OKsDJSKvHFeBXZGPtY/i3DFCGpfQO4XCQ==
-X-ME-Sender: <xms:I4N5aiMEAPs0EEudM4wc405eWkLtaMt9cLOQGPGQtzy7sD8doAUsAg>
-    <xme:I4N5aiXMF28jUPcE1_NnF8S7ieRE11q1iVKZaoElSyjgu8qiYcF7Gj69PzMGCF76_
-    9S-Nwpmz7Eza8-kSZBX8-YDv_AO6eNIAeX80T3R1Cg7n-4-CAWbfwI>
-X-ME-Received: <xmr:I4N5aijpXZJQ40zgYNEe4rDdlg2mREAn8M3qACZpAqkcNc4Tkronq5I67vB7N-VyONePSRFn-c63MD7mTkE>
-X-ME-Proxy-Cause: dmFkZTEg30fbMoIutivx8osKU0KSjAekgL1d+aiXaFyI3AFv2faqx2VVTVk5mB0nfbzfqu
-    +dykEUd4cqL07t5DbDW2lz24WDNlZro6/Va6wDzL2fX1zg88oasV6hJz8GLAdnFvSrlY7N
-    xWawTAvZiIvfIp6u6IrLaXq4/dhhj6XY01lK2jCdkmGhWf3qYnvuqF35JJP0RcOb8M1Rxx
-    IJ0CDAkUNbGxJdbV4xye7gbBtpV1dsoXFRX8Oz+2b214sJQLkEMDcaO1BZPS7F+nFBkUFn
-    Pzka3XjwXFeBMb6xjUfa673lQkGRrf8yqDhfpy/lrgLP4hSOIkHjQVqKWSDAwuD/qW4YgQ
-    XZMLhE6U+xTa78KN8p1LjdqM3Xxcdu9FjS/UcVGBdAuXAeNXWXVwaHvWG1DHy3BuAg/pVI
-    GBtZ8lGra4jGes5FWy7+8yp1frtmN5l6ITt6en3p7fRF2D65Am+qGXupgut7I2c1PJpAXz
-    psp7BULb8oPOjx1zGIHdhf0ciWqFtT47bD531SxNFVKzErm164E78JPf4RGvqvD+4uueWf
-    7ksZBZ967zzThk2LO5Bu/LESHDIxnVygfm3c8pm3ld1rv/7fAAlFerj4cbbrUlq0wUkCiU
-    ERHqi0G+/LbmWU52yjAcFK/J4mOIJQ+DVy6rVAtrMie8P8cvc9Y9WROKPaSQ
-X-ME-Proxy: <xmx:I4N5aq_sTFZXDhK2dpSyE3at4QysJU9oTwJLOpegipYcR00K6o1NqA>
-    <xmx:I4N5ahQKYOSsrvhzz3Q399-yXoQCi6fJmtgxoZuPHpkIN89x312GSw>
-    <xmx:I4N5ahugRT2U_w4UkpOyt7LEVkTk_4CdqgrEaKKH3F2PRDxbATGpOA>
-    <xmx:I4N5ar6_UFlSbKWJAnN1nRHG6NcC4VBLiLhaWls5vTSi8ECULcAWrQ>
-    <xmx:I4N5aru3Z24H1sw-tgJC40yMcCpdeh8cnOXPqD5ZUoZ86WBU3sqkM1O8>
-Feedback-ID: i51fe4b43:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Aug 2026 03:51:59 -0400 (EDT)
-From: FUJITA Tomonori <tomo@flapping.org>
-To: aliceryhl@google.com,
-	ojeda@kernel.org,
-	rostedt@goodmis.org
-Cc: a.hindborg@kernel.org,
-	acourbot@nvidia.com,
-	bjorn3_gh@protonmail.com,
-	boqun@kernel.org,
-	dakr@kernel.org,
-	daniel.almeida@collabora.com,
-	gary@garyguo.net,
-	lossin@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	mhiramat@kernel.org,
-	tamird@kernel.org,
-	tmgross@umich.edu,
-	work@onurozkan.dev,
-	linux-trace-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1] rust: add mark_used macro
-Date: Mon, 10 Aug 2026 16:51:44 +0900
-Message-ID: <20260810075144.1245761-1-tomo@flapping.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="a22kh4Ru"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1786349510;
+	bh=B8ECLxTqX185rBSx7pg5nmBpje5EAUuD31go+NlGAAg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=a22kh4Ruw8SReUkv9AuGMPJK8/pxLNYO5LzKR7MPIwgwM7sWS3k5VfaVk5RIDbSL/
+	 gSEGZf+KzvUY8qFKisAwpi4M7Rjih3rXJ52zii6PMC6RNvoXnab71wB4ZGqnVlb2gz
+	 VCcZEehMDCW00CvWvqE8VzfY9qBYRAQpww7KdG+W57xA8O+SkOMMDWPDJpJQXPChwt
+	 jF+8YiaV300hPqMdNGEsX2mZiHAtjAa23qGYVHqpLR7eDF9VAzwjqvX0Y9HAxtOF0Q
+	 KTCrQGGbqZJb5bBzc3kzBLHf7j08elk6zFoMp/K4qc9xCQe1/9wHWxal99IRT78KAE
+	 HbtQZWPE3S5qw==
+Received: from laura.lan (unknown [100.64.0.215])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: laura.nao)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id B854517E07F5;
+	Mon, 10 Aug 2026 10:11:49 +0200 (CEST)
+From: Laura Nao <laura.nao@collabora.com>
+Date: Mon, 10 Aug 2026 10:11:35 +0200
+Subject: [PATCH v5] drm/tyr: add Job IRQ handling
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260728-tyr-irq-v2-v5-1-59fd9dea952a@collabora.com>
+X-B4-Tracking: v=1; b=H4sIALaHeWoC/23O0QqCMBTG8VeRXbc4O3Pquuo9ogs9zRyYq01GE
+ r57K4g0gt18B35/9mDBeGsC22UP5k20wbohDbXJGHX1cDbcntJmCFhAiRUfJ8+tv/GIHBpJChA
+ bIyVL4OpNa+/v2OGYdmfD6Pz0bkd8XT8ZvcykJzhhqaAlIU5K78n1fd04X2/JXdgrFeWSr34RZ
+ eKadEOKADWpfzz/8grUiueJV6LOSxCFEAS/fJ7nJ1UDFUEmAQAA
+To: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ rust-for-linux@vger.kernel.org, kernel@collabora.com, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>, 
+ Laura Nao <laura.nao@collabora.com>
+X-Mailer: b4 0.12.0
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Add a threaded IRQ wrapper for Tyr interrupt sources and use it to
+handle the firmware Job IRQ.
 
-Macros whose expansion depends on the kernel configuration end up
-ignoring some of their arguments, resulting in unused warnings.
+The Job IRQ reports requests from the CSF firmware, including global
+interface requests and CSG attention bits. Only the GLB bit is currently
+handled, as it will be used to check firmware readiness. CSG bits
+handling will be added at a later stage. Add a Job IRQ handler that
+masks the interrupt in the primary IRQ handler, processes pending raw
+status in the threaded handler, clears the handled bit, and reenables
+the mask before returning.
+Add a wait queue and a bool flag so the handler can signal firmware
+readiness when the GLB bit is set.
 
-Add a macro for the `if false { _ = ...; }` idiom used to avoid them,
-and convert the existing open-coded users in `warn_flags!` and
-`declare_trace!`.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Co-developed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+Co-developed-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
 ---
- rust/kernel/bug.rs        | 18 ++++--------------
- rust/kernel/lib.rs        | 12 ++++++++++++
- rust/kernel/tracepoint.rs |  5 ++---
- 3 files changed, 18 insertions(+), 17 deletions(-)
+Changes in v5:
+- Implement PinnedDrop on TyrIrq to clear the interrupt mask on teardown 
+- Link to v4: https://lore.kernel.org/r/20260805-tyr-irq-v2-v4-1-81a4701611c0@collabora.com
 
-diff --git a/rust/kernel/bug.rs b/rust/kernel/bug.rs
-index 3566f0234ca4..c1e4eb7d4a70 100644
---- a/rust/kernel/bug.rs
-+++ b/rust/kernel/bug.rs
-@@ -55,9 +55,7 @@ macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
-         const FLAGS: u32 = $crate::bindings::BUGFLAG_WARNING | $flags;
+Changes in v4:
+- Replaced c_str! with C-String in irq.rs
+- Moved clear_status() before handle() in handle_threaded(), to avoid 
+  losing events if hw re-asserts the bit while handle() is running.
+- Only unmask interrupt sources in job_irq_init() when the handler is 
+  correctly registered.
+- Link to v3: https://lore.kernel.org/r/20260728-tyr-irq-v2-v3-1-9c9bc5c029c5@collabora.com
+
+Changes in v3:
+- Propagated request_threaded_irq_by_name safety requirement up the
+  call chain, made TyrIrq::request() and job_irq_init() unsafe
+- Dropped CSG bits masking, added TODO comment to note this will be
+  handled at a later stage. Reworded commit message to reflect the
+  change.
+- Added documentation for TyrIrqTrait, TyrIrq, JobIrq and job_irq_init()
+- Link to v2: https://lore.kernel.org/r/20260729-tyr-irq-v2-v2-1-c2750fc11d59@collabora.com
+
+Changes in v2:
+- Dropped Wait custom type in favor of WaitQueue
+- Renamed JobIrq lifetime to generic 'a
+
+This patch follows up to [1], which adds support for firmware loading
+and MCU booting to the Tyr driver. The changes included here were
+originally introduced in its v4[2], then dropped to reduce the scope of
+the series, and have been adjusted to work with the HRT (Higher-Ranked
+Lifetime Types) driver architecture recently introduced.
+
+The patch adds a threaded IRQ wrapper for the firmware Job interrupts,
+used to signal events from the global CSF (GLB) and Command Stream Group
+(CSG) interfaces.
+
+These changes will be later used to wait for global CSF interface
+readiness after firmware boot, as part of the CSF firmware interfaces
+support that will be submitted as a separate series.
+
+This patch is based on drm-rust-next and depends on:
+- [PATCH v2] rust: irq: make Registration compatible with lifetime-bound drivers[3]
+- [PATCH 0/5] rust: sync: add WaitQueue infrastructure[4]
+
+Note: [4] doesn't apply cleanly on drm-rust-next at the moment, due to
+missing changes in rust/kernel/sync/lock/spinlock.rs[5]. I've applied
+all dependencies and fixed conflicts for the purpose of testing this
+patch on top of drm-rust-next, a branch with these changes is available
+here: https://gitlab.freedesktop.org/laura.nao/linux/-/commits/b4/tyr-irq-v5
+
+[1] https://lore.kernel.org/all/20260728-fw-boot-b4-v10-0-9187aefa3f2f@collabora.com/ 
+[2] https://lore.kernel.org/rust-for-linux/20260424-b4-fw-boot-v4-v4-15-a5d91050789d@collabora.com/
+[3] https://lore.kernel.org/rust-for-linux/20260719153631.559341-1-dakr@kernel.org/
+[4] https://lore.kernel.org/rust-for-linux/20260726223613.1242940-1-dakr@kernel.org/
+[5] https://lore.kernel.org/all/20260302232154.861916-1-lyude@redhat.com/
+---
+ drivers/gpu/drm/tyr/driver.rs | 108 ++++++++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/fw.rs     |   1 +
+ drivers/gpu/drm/tyr/fw/irq.rs | 112 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 221 insertions(+)
+
+diff --git a/drivers/gpu/drm/tyr/driver.rs b/drivers/gpu/drm/tyr/driver.rs
+index d78ad9d292ff..495cc3baa98c 100644
+--- a/drivers/gpu/drm/tyr/driver.rs
++++ b/drivers/gpu/drm/tyr/driver.rs
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 or MIT
  
--        if false {
--            _ = $file;
--        }
-+        $crate::mark_used!($file);
- 
-         // SAFETY:
-         // - `flags` and `size` are all compile-time constants, preventing
-@@ -83,9 +81,7 @@ macro_rules! warn_flags {
- #[cfg(all(CONFIG_BUG, CONFIG_UML))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
--        if false {
--            _ = $file;
--        }
-+        $crate::mark_used!($file);
- 
-         // SAFETY: It is always safe to call `warn_slowpath_fmt()`
-         // with a valid null-terminated string.
-@@ -106,10 +102,7 @@ macro_rules! warn_flags {
- #[cfg(all(CONFIG_BUG, any(CONFIG_LOONGARCH, CONFIG_ARM)))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
--        if false {
--            _ = $file;
--            _ = $flags;
--        }
-+        $crate::mark_used!($file, $flags);
- 
-         // SAFETY: It is always safe to call `WARN_ON()`.
-         unsafe { $crate::bindings::WARN_ON(true) }
-@@ -121,10 +114,7 @@ macro_rules! warn_flags {
- #[cfg(any(testlib, not(CONFIG_BUG)))]
- macro_rules! warn_flags {
-     ($file:expr, $flags:expr) => {
--        if false {
--            _ = $file;
--            _ = $flags;
--        }
-+        $crate::mark_used!($file, $flags);
-     };
++use core::marker::PhantomPinned;
++
+ use kernel::{
+     clk::{
+         Clk,
+@@ -21,6 +23,13 @@
+         poll,
+         Io, //
+     },
++    irq::{
++        Flags,
++        IrqReturn,
++        ThreadedHandler,
++        ThreadedIrqReturn,
++        ThreadedRegistration, //
++    },
+     new_mutex,
+     of,
+     platform,
+@@ -236,3 +245,102 @@ struct Regulators {
+     _mali: Regulator<regulator::Enabled>,
+     _sram: Regulator<regulator::Enabled>,
  }
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 9512af7156df..2f770d80bd8a 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -266,6 +266,18 @@ macro_rules! container_of {
- #[doc(hidden)]
- pub fn assert_same_type<T>(_: T, _: T) {}
- 
-+/// Marks the given expressions as used.
-+///
-+/// This avoids "unused" warnings in kernel configurations that do not otherwise use them.
-+#[macro_export]
-+macro_rules! mark_used {
-+    ($($e:expr),* $(,)?) => {
-+        if false {
-+            $( _ = $e; )*
-+        }
-+    };
++
++/// Trait describing the operations required to service a Tyr interrupt source.
++pub(crate) trait TyrIrqTrait: Sync {
++    /// Returns the masked interrupt status.
++    fn read_status(&self) -> u32;
++
++    /// Clears all bits in the mask register, disabling the interrupt sources.
++    fn clear_mask(&self);
++
++    /// Sets the mask register to re-enable the interrupt sources.
++    fn reenable_mask(&self);
++
++    /// Returns the raw interrupt status, regardless of the current mask.
++    fn read_raw_status(&self) -> u32;
++
++    /// Clears the given bits in the interrupt status register.
++    fn clear_status(&self, status: u32);
++
++    /// Returns the bitmask of interrupt sources handled by this instance.
++    fn mask(&self) -> u32;
++
++    /// Handles the given pending, unmasked interrupt bits.
++    fn handle(&self, status: u32);
 +}
 +
- /// Helper for `.rs.S` files.
- #[doc(hidden)]
- #[macro_export]
-diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
-index c6e80aa99e8e..cb06fec4c4d9 100644
---- a/rust/kernel/tracepoint.rs
-+++ b/rust/kernel/tracepoint.rs
-@@ -38,9 +38,8 @@ macro_rules! declare_trace {
++/// A threaded IRQ wrapper shared by all Tyr interrupt sources.
++#[pin_data(PinnedDrop)]
++pub(crate) struct TyrIrq<T: TyrIrqTrait> {
++    /// The interrupt source.
++    irq: T,
++    #[pin]
++    _pin: PhantomPinned,
++}
++
++impl<T: TyrIrqTrait> TyrIrq<T> {
++    /// Requests a threaded IRQ registration for `irq`, using `name` to look up the interrupt.
++    ///
++    /// # Safety
++    ///
++    /// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
++    /// [`Drop`] implementation from running.
++    pub(crate) unsafe fn request<'a>(
++        pdev: &'a platform::Device<Bound>,
++        name: &'static CStr,
++        irq: T,
++    ) -> Result<impl PinInit<ThreadedRegistration<'a, Self>, Error> + 'a>
++    where
++        T: 'a,
++    {
++        let handler = try_pin_init!(Self {
++            irq,
++            _pin: PhantomPinned,
++        });
++
++        // SAFETY: The caller guarantees the resulting registration will not be leaked.
++        Ok(unsafe { pdev.request_threaded_irq_by_name(Flags::SHARED, name, name, handler) })
++    }
++
++    /// Returns a reference to the wrapped interrupt source.
++    pub(crate) fn irq(&self) -> &T {
++        &self.irq
++    }
++}
++
++impl<T: TyrIrqTrait> ThreadedHandler for TyrIrq<T> {
++    fn handle(&self) -> ThreadedIrqReturn {
++        let masked_status = self.irq.read_status();
++
++        if masked_status == 0 {
++            return ThreadedIrqReturn::None;
++        }
++        self.irq.clear_mask();
++        ThreadedIrqReturn::WakeThread
++    }
++
++    fn handle_threaded(&self) -> IrqReturn {
++        let mut ret = IrqReturn::None;
++
++        loop {
++            let raw_status = self.irq.read_raw_status() & self.irq.mask();
++            if raw_status == 0 {
++                break;
++            }
++            self.irq.clear_status(raw_status);
++            self.irq.handle(raw_status);
++            ret = IrqReturn::Handled;
++        }
++
++        self.irq.reenable_mask();
++        ret
++    }
++}
++
++#[pinned_drop]
++impl<T: TyrIrqTrait> PinnedDrop for TyrIrq<T> {
++    fn drop(self: Pin<&mut Self>) {
++        self.irq.clear_mask();
++    }
++}
+diff --git a/drivers/gpu/drm/tyr/fw.rs b/drivers/gpu/drm/tyr/fw.rs
+index 47d25c901bd0..8162b9806c97 100644
+--- a/drivers/gpu/drm/tyr/fw.rs
++++ b/drivers/gpu/drm/tyr/fw.rs
+@@ -69,6 +69,7 @@
+     vm::Vm, //
+ };
  
-             #[cfg(not(CONFIG_TRACEPOINTS))]
-             {
--                // If tracepoints are disabled, insert a trivial use of each argument
--                // to avoid unused argument warnings.
--                $( let _unused = $argname; )*
-+                // If tracepoints are disabled, the arguments are unused.
-+                $crate::mark_used!($($argname),*);
-             }
-         }
-     )*}
++pub(crate) mod irq;
+ mod parser;
+ 
+ pub(super) const CSF_MCU_SHARED_REGION_START: u32 = 0x04000000;
+diff --git a/drivers/gpu/drm/tyr/fw/irq.rs b/drivers/gpu/drm/tyr/fw/irq.rs
+new file mode 100644
+index 000000000000..fcdc0097f2dd
+--- /dev/null
++++ b/drivers/gpu/drm/tyr/fw/irq.rs
+@@ -0,0 +1,112 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++
++//! IRQ handling for the Job IRQ.
++//!
++//! The Job IRQ signals events from the MCU, including global interface acknowledgements.
++#![allow(dead_code)]
++
++use core::sync::atomic::{
++    AtomicBool,
++    Ordering, //
++};
++
++use kernel::{
++    device::Bound, //
++    io::Io,
++    irq::ThreadedRegistration,
++    platform,
++    prelude::*,
++    sync::{
++        Arc,
++        WaitQueue, //
++    },
++};
++
++use crate::{
++    driver::{
++        IoMem,
++        TyrIrq,
++        TyrIrqTrait, //
++    },
++    regs::job_control::{
++        JOB_IRQ_CLEAR,
++        JOB_IRQ_MASK,
++        JOB_IRQ_RAWSTAT,
++        JOB_IRQ_STATUS, //
++    }, //
++};
++
++// The Job IRQ, signalling requests or notification from the MCU.
++pub(crate) struct JobIrq<'a> {
++    /// GPU MMIO register mapping.
++    iomem: Arc<IoMem<'a>>,
++    /// Flag to signal firmware readiness.
++    fw_ready: Arc<AtomicBool>,
++    /// Wait queue used to signal firmware events to waiters.
++    job_irq_wait: Arc<WaitQueue>,
++}
++
++/// Requests a threaded IRQ registration for the Job IRQ.
++///
++/// # Safety
++///
++/// Callers must not `mem::forget()` the resulting registration or otherwise prevent its
++/// [`Drop`] implementation from running.
++pub(crate) unsafe fn job_irq_init<'a>(
++    pdev: &'a platform::Device<Bound>,
++    iomem: Arc<IoMem<'a>>,
++    fw_ready: Arc<AtomicBool>,
++    job_irq_wait: Arc<WaitQueue>,
++) -> Result<impl PinInit<ThreadedRegistration<'a, TyrIrq<JobIrq<'a>>>, Error> + 'a> {
++    let job_irq = JobIrq {
++        iomem,
++        fw_ready,
++        job_irq_wait,
++    };
++    // Ensure interrupt sources are disabled until the handler is registered.
++    job_irq.clear_mask();
++
++    // SAFETY: The caller guarantees the resulting registration will not be leaked.
++    let registration = unsafe { TyrIrq::request(pdev, c"job", job_irq) };
++
++    // Unmask once the handler has been successfully registered.
++    Ok(registration?.pin_chain(|reg| {
++        reg.handler().irq().reenable_mask();
++        Ok(())
++    }))
++}
++
++impl TyrIrqTrait for JobIrq<'_> {
++    fn read_status(&self) -> u32 {
++        self.iomem.read(JOB_IRQ_STATUS).into_raw()
++    }
++
++    fn clear_mask(&self) {
++        self.iomem.write_reg(JOB_IRQ_MASK::zeroed());
++    }
++
++    fn reenable_mask(&self) {
++        self.iomem.write_reg(JOB_IRQ_MASK::zeroed().with_glb(true));
++    }
++
++    fn read_raw_status(&self) -> u32 {
++        self.iomem.read(JOB_IRQ_RAWSTAT).into_raw()
++    }
++
++    fn clear_status(&self, status: u32) {
++        self.iomem.write_reg(JOB_IRQ_CLEAR::from_raw(status));
++    }
++
++    fn mask(&self) -> u32 {
++        JOB_IRQ_MASK::zeroed().with_glb(true).into_raw()
++    }
++
++    fn handle(&self, status: u32) {
++        // TODO: handle other Job IRQ events (e.g. CSG attention bits) here once
++        // support for them is added.
++        if JOB_IRQ_RAWSTAT::from_raw(status).glb() {
++            self.fw_ready.store(true, Ordering::Release);
++            self.job_irq_wait.wake_up_all();
++        }
++    }
++}
 
-base-commit: d8973c47544371613313ecb9a8c3e7b244aa9bbf
+---
+base-commit: 0710742e26a06c2c3167e77a8ea82b59632d9f7a
+change-id: 20260728-tyr-irq-v2-0b3c5022be33
+
+Best regards,
 -- 
-2.43.0
+Laura Nao <laura.nao@collabora.com>
 
