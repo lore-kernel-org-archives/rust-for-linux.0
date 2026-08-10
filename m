@@ -1,102 +1,103 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED95287510
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 09:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AC03A5433
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 09:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786354485; cv=none; b=tbudTGqy2d9wtI1CZDLQQ98/Uo2RgwUO76+1QyQASe33tMawxVU5nFwdvrkh+wKETWoRO3vpL8dNAqGN0RBs63ajzLvXM9SYyYobAtNTHTubfyyjQMucwb679Zj4rX6jyADoqjvrGsi/vWw/P45SczVFxvVnaeJGkUEzeKwC2vQ=
+	t=1786354918; cv=none; b=g4WEKFkFWPY2W/4+BCAZbFur03fOHw8+3bf8+7jHOcO0FFUqgHAfEhRJKbmvg/mv3Bu4MJlu5Dbu3NPAtL0Bx5ScXCC6NZ7grwSP/VRP7LV+TehheMwzeQ0gcKOSFzTw2U8UcRsG9nwNyETjOE8C738cyweb4g2ukuyDAYiOl1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786354485; c=relaxed/simple;
-	bh=awP4b9S1E1PqyGMivotHigr6bnAC9/fie3tWqis2a+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0KZxCUwcqoPqbaeKnTFMH+oc6qr07JmP69IKhBP3B+c71XPqlDWeUpSjyzxgp9plJbYndU/lMM2TUcM9LEn+f7vbcIBeuWDz1Sh6gVLmkyJEyToi2tXU7RV+A1ZSu/Y4nPXUWKPNmg+5jYkwxZQyBeqngRsAmvKAkumMyQOMw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NBbyLhak; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786354918; c=relaxed/simple;
+	bh=lAlJ21024iVEAiB1omuqDYIS76cnSpFr0AtgmGJNB4k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=nPg+bwlSEpEcLoSWQfg6W1nVQwZjrK/SjMJZXGplj6oRhF+Fr/NeVBDmee2zRZi7tVaz86S86exJkfYwsYx2YvZ3NNY68gbK8L3pmwxNcjwVyxocnDZkYMjIJm/0nSGLrhhDul83961/g3+IimHoIGqSuLlEqZbPPDm1x61C+lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ble4axPc; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NBbyLhak"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca957432c7fso1567371a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 02:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786354484; x=1786959284; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6vXJ2H37mHP6+/EYVHjsGlB+YpAJCKJOxj9JZ7HGOhQ=;
-        b=NBbyLhakJJ7dB/3SLpESmllv/o8j7b8T9824zXD1Bxo3+eC4sTjnXHdqJ5AoL7iYyx
-         QirM4a8xSQw69u1N2goP4HA5wnu/eVoShdNHhCbl2jN0+owhkDDD7HCgzokzDbcvNBT3
-         3lGe537FGTu6JHNN0XDNrWECdelZZPPlxuM/LEEsQ1JFoyFu2zd/W4vrMG2zenmQkc6n
-         uumz2+lKnQd7ze/4h7wtWoX+Kg83s28m6MuyLQgAlXbL8VAL2AcDVSIrNlgK+IfYcW7l
-         in5rgkpVtfbP3sgalpK1Rad7skTb3FslEDoXQb4TJftM5o8F9b7g5qXBlt5EM9Z31Bq6
-         g0Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786354484; x=1786959284;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6vXJ2H37mHP6+/EYVHjsGlB+YpAJCKJOxj9JZ7HGOhQ=;
-        b=qQ3lTqUFIx53lTk/rMpPxPdMkUuqTI0O6xkO9HIchgjYKmDN9AaYsH5+YgsSyzbKeB
-         yYIG12KnAbOnIl8wpAmue/xv+hsCQjwQnCpgWA6iG21RBPYDDzgMbC32vah/Y6ztqbbQ
-         B3yLNRifVbTjSzLyJNqHsaitUJA9UylMyl+Ztdy+1PXg294tLecEGT2oBoxqhV03bQ+G
-         SYRb3oARemIB5iAX1ix2ELNZ77FY6LjCVAjpObqph9uD3Jo/z2EOhRtuIDfq2Ax1EOV7
-         lnSOuZntVWS2hnmRZnb1auN976uCbsthZ8I9IiEJGFILrnmY1YFhqkepUZJdk9roh061
-         mQ7Q==
-X-Gm-Message-State: AOJu0YxDUB7eaLATBlWjtMmHDxbiJNEmGug/SNZduY1ndgpEJHfxVmCm
-	LjW6WSlseRYdgTOXrtKZVwaYcOw3l6Nyu+1obDR5x7VKeRM307KPLPot
-X-Gm-Gg: AR+sD10LzSEH0Wok2xXZwWlHD478z1YTKGLt9Q8xCkcwaV9jkWc1VFRCwDrkrfhFlE1
-	erpTl0HwhYLhGkzTIHSWXzch6PzWAHLQ+7O/2A/FnAN/vZvHq/rb/2gm2nSuqEoSFKVrNO58/E/
-	nAFOMtRbbq+sN7pCPZjk286/pRoVnecT/FXWCV1c0BIpt3iz/4VRDGYW+AlozS81AyCBXlrlS47
-	T6Lpb6Q3mgkpjKzR01m6mSkQD+XHWZWSVB7q0kRkRGTPX/JISaur/YqvktllEdywWdVSaL0x56n
-	7HhbQAAzBYsN+tiPdLl18QDvTm3gIdUNbhUCv3U/rn0GzizrhQVxpq8Or22qNtNq6NJtJPkzO1C
-	JAnNzvAhL2PKzATe1iBzK8JhDRl6QZoOlTVdJYNVys/9AaEEYYChOvrtNA70BhWKV0O+Hrj4Sb7
-	KXs3kDyGq9pe/RqwDe1iQqOVn2dtxctkEAyAdY00J/rVi2Fhl/mYuijn0Z
-X-Received: by 2002:a05:6a00:4b43:b0:845:e2da:91a3 with SMTP id d2e1a72fcca58-84f2e0276ddmr43520865b3a.30.1786354483824;
-        Mon, 10 Aug 2026 02:34:43 -0700 (PDT)
-Received: from localhost.localdomain ([2a12:a304:100:1e0::10a9])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe8f19842bsm3814525a12.4.2026.08.10.02.34.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 02:34:43 -0700 (PDT)
-From: Alvin Sun <sk.alvin.x@gmail.com>
-X-Google-Original-From: Alvin Sun <alvin.sun@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Cc: rust-for-linux@vger.kernel.org,
-	Alvin Sun <alvin.sun@linux.dev>
-Subject: Re: [PATCH v3 0/7] rust: use vertical import style and remove redundant imports
-Date: Mon, 10 Aug 2026 17:34:38 +0800
-Message-ID: <20260810093438.208557-1-alvin.sun@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260521-miscdev-use-format-v3-0-56240ca70d0c@linux.dev>
-References: <20260521-miscdev-use-format-v3-0-56240ca70d0c@linux.dev>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ble4axPc"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260810094154euoutp02265c68dafd24efa2e757d31edb3ceb45~KaFSdB0sz1629816298euoutp02K
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 09:41:54 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260810094154euoutp02265c68dafd24efa2e757d31edb3ceb45~KaFSdB0sz1629816298euoutp02K
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1786354914;
+	bh=AmOptGmSSwb48Q3nQS4iFyaNRaAar+3mAWyPKqr/PZc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=ble4axPczDpJRsTJenkxPmIfVecz+JLi0iHpAR4YcF2TnitaLf9xU89sxJ2AwaBgZ
+	 /JMG0I5RUxNOgAqqlbGedKylHLO58WWFx6CUtasFjhL8YGvVKF90lp9KTw8buQj1wm
+	 QuYm6V7Vke4seybUzDddIxlxx2jCaqqmquQ/kQvs=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260810094154eucas1p14114a0cb677a4b4da96242f50cae88c0~KaFR42qow0110201102eucas1p1u;
+	Mon, 10 Aug 2026 09:41:54 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260810094153eusmtip22c92126836a048d2e2c83409f520ae1c~KaFQzzhe_0770707707eusmtip2n;
+	Mon, 10 Aug 2026 09:41:53 +0000 (GMT)
+Message-ID: <7418f71a-cf53-4641-bdf3-e967e776b0a8@samsung.com>
+Date: Mon, 10 Aug 2026 11:41:52 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] pwm: th1520: use vertical import style
+To: Guru Das Srinagesh <linux@gurudas.dev>, Link Mauve
+	<linkmauve@linkmauve.fr>, Drew Fustini <fustini@kernel.org>, Guo Ren
+	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
+	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel
+	Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
+	<tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Nathan Chancellor
+	<nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	llvm@lists.linux.dev
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <20260721-pwm-rust-vert-imp-v2-1-9f91547f5e07@gurudas.dev>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260810094154eucas1p14114a0cb677a4b4da96242f50cae88c0
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260721074943eucas1p20eaf6768a8a3db90d29a9d45746554ab
+X-EPHeader: CA
+X-CMS-RootMailID: 20260721074943eucas1p20eaf6768a8a3db90d29a9d45746554ab
+References: <CGME20260721074943eucas1p20eaf6768a8a3db90d29a9d45746554ab@eucas1p2.samsung.com>
+	<20260721-pwm-rust-vert-imp-v2-1-9f91547f5e07@gurudas.dev>
 
-Hi Miguel and Andreas,
+Hi,
 
-I would like to follow up on the remaining patches from the "rust: use
-vertical import style and remove redundant imports" series:
+On 7/21/26 09:49, Guru Das Srinagesh wrote:
+> Convert `use` imports to vertical layout for better readability and
+> maintainability.
+> 
+> Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
+> ---
+> Came across a recent commit bc58905eb07 ("samples: rust_misc_device: use
+> vertical import style") and found a few more locations that could
+> benefit from this cleanup. No functional changes.
+> 
+> Separating out patches per-subsystem as per the review feedback in [0].
+> 
+> Tested via:
+> 
+>     $ make LLVM=1 rustfmtcheck || echo "fail"
+>     $
+> 
+> [0]: https://lore.kernel.org/lkml/20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev/
+> ---
 
-  rust: block: mq: use vertical import style
-  rust: block: mq: remove redundant imports and format
-  rust: block: rnull: use vertical import style
-  rust: doctest: use vertical import style
+Looks good to me,
 
-As far as I can tell, these have not been merged yet. Andreas already
-acked the block parts [1][2][3] and David Gow acked the doctest change
-[4]. Is there anything else needed from my side before they can be
-picked up, such as a rebase onto a newer base?
+Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
 
-[1] https://lore.kernel.org/rust-for-linux/87v7bgf8f3.fsf@t14s.mail-host-address-is-not-set/
-[2] https://lore.kernel.org/rust-for-linux/87se6kf8af.fsf@t14s.mail-host-address-is-not-set/
-[3] https://lore.kernel.org/rust-for-linux/87pl1of7ve.fsf@t14s.mail-host-address-is-not-set/
-[4] https://lore.kernel.org/rust-for-linux/5748f9ca-e684-42a0-9297-e587b178a47c@davidgow.net/
-
-Thanks,
-
-Alvin
