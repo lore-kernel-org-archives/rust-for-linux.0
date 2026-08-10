@@ -1,42 +1,38 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-101.mta1.migadu.com [95.215.58.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AC03A5433
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 09:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC783A1696
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 09:43:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786354918; cv=none; b=g4WEKFkFWPY2W/4+BCAZbFur03fOHw8+3bf8+7jHOcO0FFUqgHAfEhRJKbmvg/mv3Bu4MJlu5Dbu3NPAtL0Bx5ScXCC6NZ7grwSP/VRP7LV+TehheMwzeQ0gcKOSFzTw2U8UcRsG9nwNyETjOE8C738cyweb4g2ukuyDAYiOl1I=
+	t=1786355034; cv=none; b=K2ZOb72cEWQbLYB0CywxcOnuTLXf4Fe11srcvgCYvOvMmB9igmfiM/Wma29n29MHq7ooJt38i7SOtBftPcCvFeJ3uI8DLkbYjG29dUMPLEONiYmabivVyw04mR5xclplTSx/VbC9KETpWp/13ofv6YwfT+GbWr/I5l7gy7qQ7rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786354918; c=relaxed/simple;
-	bh=lAlJ21024iVEAiB1omuqDYIS76cnSpFr0AtgmGJNB4k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=nPg+bwlSEpEcLoSWQfg6W1nVQwZjrK/SjMJZXGplj6oRhF+Fr/NeVBDmee2zRZi7tVaz86S86exJkfYwsYx2YvZ3NNY68gbK8L3pmwxNcjwVyxocnDZkYMjIJm/0nSGLrhhDul83961/g3+IimHoIGqSuLlEqZbPPDm1x61C+lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ble4axPc; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1786355034; c=relaxed/simple;
+	bh=oM0nShtvENJ/IoYuzI4EAurH6RtVncCAM7zuaIO1J30=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b9RDgnX3DQTXvpLBGQMrdrXPzRMXEkelZZm5Ki+sxxrXMvfGCU79Tr0JLYGmv+2gPbTClC4/yYeWF7AAWZElkoWlkrxmAc3dlG6AZ/K9qQsfqKlUiaAsGi6ez81fKvQMfa85kstMVP+DZLCgXU9HSKI/DEDuU0VapBqkOBVvYoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MYaqsu/H; arc=none smtp.client-ip=95.215.58.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ble4axPc"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260810094154euoutp02265c68dafd24efa2e757d31edb3ceb45~KaFSdB0sz1629816298euoutp02K
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 09:41:54 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260810094154euoutp02265c68dafd24efa2e757d31edb3ceb45~KaFSdB0sz1629816298euoutp02K
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1786354914;
-	bh=AmOptGmSSwb48Q3nQS4iFyaNRaAar+3mAWyPKqr/PZc=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=ble4axPczDpJRsTJenkxPmIfVecz+JLi0iHpAR4YcF2TnitaLf9xU89sxJ2AwaBgZ
-	 /JMG0I5RUxNOgAqqlbGedKylHLO58WWFx6CUtasFjhL8YGvVKF90lp9KTw8buQj1wm
-	 QuYm6V7Vke4seybUzDddIxlxx2jCaqqmquQ/kQvs=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260810094154eucas1p14114a0cb677a4b4da96242f50cae88c0~KaFR42qow0110201102eucas1p1u;
-	Mon, 10 Aug 2026 09:41:54 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260810094153eusmtip22c92126836a048d2e2c83409f520ae1c~KaFQzzhe_0770707707eusmtip2n;
-	Mon, 10 Aug 2026 09:41:53 +0000 (GMT)
-Message-ID: <7418f71a-cf53-4641-bdf3-e967e776b0a8@samsung.com>
-Date: Mon, 10 Aug 2026 11:41:52 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MYaqsu/H"
+X-Envelope-To: rust-for-linux@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=oM0nShtvENJ/IoYuzI4EAurH6RtVncCAM7zuaIO1J30=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786355031; v=1; x=1786959831;
+ b=MYaqsu/H3U0KVOKCCen3mzHz8hT/6YK+6UUVA4iT+gKdsbqa82CVA1DmRqRUUAHtCHKNyJ+j
+ 56MOpFxJDVwapfWReUKuZFWyj9gJ0cGKpPTPhJ0r0D1/7XpOepj5S6zYhh+/Al/BVQFi6xlcekx
+ 9rCNgfYRtxes5DL7YleMLhzU=
+X-Envelope-To: rust-for-linux@vger.kernel.org
+Received: from [10.0.11.3] (2a11:3:200::10a9)
+	by mta10.migadu.com with ESMTPS id fe8757a2b2912904;
+	Mon, 10 Aug 2026 09:43:51 +0000
+X-Migadu-Scanner: mta10.migadu.com
+Authentication-Results: mta10.migadu.com;
+	none
+Message-ID: <a99bc12d-0103-4780-94b0-ecc82e4e0b95@linux.dev>
+Date: Mon, 10 Aug 2026 17:43:28 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,60 +40,63 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] pwm: th1520: use vertical import style
-To: Guru Das Srinagesh <linux@gurudas.dev>, Link Mauve
-	<linkmauve@linkmauve.fr>, Drew Fustini <fustini@kernel.org>, Guo Ren
-	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
-	=?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
-	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
-	<bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel
-	Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
-	<tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Nathan Chancellor
-	<nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
-Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <20260721-pwm-rust-vert-imp-v2-1-9f91547f5e07@gurudas.dev>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260810094154eucas1p14114a0cb677a4b4da96242f50cae88c0
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260721074943eucas1p20eaf6768a8a3db90d29a9d45746554ab
-X-EPHeader: CA
-X-CMS-RootMailID: 20260721074943eucas1p20eaf6768a8a3db90d29a9d45746554ab
-References: <CGME20260721074943eucas1p20eaf6768a8a3db90d29a9d45746554ab@eucas1p2.samsung.com>
-	<20260721-pwm-rust-vert-imp-v2-1-9f91547f5e07@gurudas.dev>
+Subject: Re: [PATCH v3 0/7] rust: use vertical import style and remove
+ redundant imports
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+References: <20260521-miscdev-use-format-v3-0-56240ca70d0c@linux.dev>
+ <CANiq72k3cjgHiimYqGfuQjPy+A3oOUEoMxUJCS-FgBm25D4MLA@mail.gmail.com>
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <CANiq72k3cjgHiimYqGfuQjPy+A3oOUEoMxUJCS-FgBm25D4MLA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
 
-On 7/21/26 09:49, Guru Das Srinagesh wrote:
-> Convert `use` imports to vertical layout for better readability and
-> maintainability.
-> 
-> Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
-> ---
-> Came across a recent commit bc58905eb07 ("samples: rust_misc_device: use
-> vertical import style") and found a few more locations that could
-> benefit from this cleanup. No functional changes.
-> 
-> Separating out patches per-subsystem as per the review feedback in [0].
-> 
-> Tested via:
-> 
->     $ make LLVM=1 rustfmtcheck || echo "fail"
->     $
-> 
-> [0]: https://lore.kernel.org/lkml/20260628-b4-rust-vertical-imports-v1-0-98bc71d4810b@gurudas.dev/
-> ---
+On 5/26/26 01:51, Miguel Ojeda wrote:
+> On Thu, May 21, 2026 at 8:57 AM Alvin Sun <alvin.sun@linux.dev> wrote:
+>> Adopt the vertical import style and drop redundant imports already
+>> re-exported via `kernel::prelude`.
+> I can take this if block and misc Ack. The changes are straightforward anyway.
 
-Looks good to me,
+Hi Miguel,
 
-Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
+I would like to follow up on the remaining patches from this series:
 
+   rust: block: mq: use vertical import style
+   rust: block: mq: remove redundant imports and format
+   rust: block: rnull: use vertical import style
+   rust: doctest: use vertical import style
+
+As far as I can tell, these have not been merged yet. Andreas already
+acked the block parts [1][2][3] and David Gow acked the doctest change
+[4]. Is there anything else needed from my side before they can be
+picked up, such as a rebase onto a newer base?
+
+[1] 
+https://lore.kernel.org/rust-for-linux/87v7bgf8f3.fsf@t14s.mail-host-address-is-not-set/
+[2] 
+https://lore.kernel.org/rust-for-linux/87se6kf8af.fsf@t14s.mail-host-address-is-not-set/
+[3] 
+https://lore.kernel.org/rust-for-linux/87pl1of7ve.fsf@t14s.mail-host-address-is-not-set/
+[4] 
+https://lore.kernel.org/rust-for-linux/5748f9ca-e684-42a0-9297-e587b178a47c@davidgow.net/
+
+Best regards,
+Alvin
+
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
