@@ -1,67 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E49D3B440E;
-	Mon, 10 Aug 2026 22:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B902D3B52EB;
+	Mon, 10 Aug 2026 22:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786400814; cv=none; b=nCpsHx/9/Xd77QWxsGORPx2JVzntSFEGZVNwgu3Mwoy8M1r2R3gkA9hjHGx7D3tpWg75cR9ZAljwwOGnNnEJ4ouXXGmNjG4tOMxeZjXwj/WXRs2mK89dZEyqQShi0WVLrUcvyk7Cp+7xwgfb7WCC6ajU6hcr441YWCtLYfp1zwk=
+	t=1786402197; cv=none; b=aKe1ta9i668XaXegG53+HxbHIKr/KDq2EnfT69EyTDEa0K4ZEj+yCk9mjpme6UoSefVBzwexmi5Kj/99mVw3PCkst4n9cb8g8EWD21wfpNpBV0wcrpGpiAVS9VrROFGvpA3Ztm6SvL3+jfX7wG7t1NRbeena4es4zdR5xpuZ5lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786400814; c=relaxed/simple;
-	bh=HG8sNycY7/JdHWzt4BeJ0OP8oxY3IOv4RnkBpAYb5ys=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=mLmhIqJIKzvXy6tDQHJt4KeLnVqYfnWyOF30HE0BUhsGi7CcdzAaWyVUN80g3VKSZ4h6DN3fELZFz/CvZGaV+zUD7819h7Wrr9NxiWx1sjj2KlkISAGIbgas/NCGhtBHnfYSi5uJvV0bcMviLc7fkBeV+bMctQ69e2dVqyubCXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXN6S5Kt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786402197; c=relaxed/simple;
+	bh=qklzyVeFLzY89YHoQjgLx4uqlsPSD4D0yWGgPKRoPFs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gKYs150kGzn3ssX6SbPXeI2Spte4T9YJu6yMO8f03IMSTdNUBoB2SJvQYm0E8CKVSyAouB49fleZhamnbncV6MNPAjMC3jmoSZdYGKRFSqMOW3B/HRsq+GTZYTXdGI/SedZHZIIT5cjfMO8UURiITAW4jp8tOjhKjde/UdRzgTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqdv8zin; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXN6S5Kt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1031F000E9;
-	Mon, 10 Aug 2026 22:26:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqdv8zin"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615F11F000E9;
+	Mon, 10 Aug 2026 22:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786400813;
-	bh=V6cX6xgSezSyWDmsfBjBZGliDfZrSefjTO1zwyWhJYo=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To;
-	b=jXN6S5Kt74HF5r2Mst7/RNL8JAqZtlICJpbKwcELfu+w5Q6f7mHYUfVgDiw7Jy1CK
-	 kktHtWvduuoWzqIxF6a3CDKcWbl+10S37gVBqY1bnAsLphmKtDqzLDI/fO2/tvMnPP
-	 L7j1KVRYxLVZt7kn5OKHdaX6w0v4EA6I6ooXt93TEDSm5hvy+5bzrOMw8+6PXYRuE/
-	 bxZph8bXbPd91beUTxanGDAHnk98FLhy6d+xwEPa9YIc5X/sYqtER9j8S+YxgYnJy+
-	 ogQ5i9P3itg6aMZJ5v97zd9YZpa03PVVgQ88JmL7AAkswb4vdYTzSd8TTFIqUjEMEx
-	 /8Eyqmyxy5PnA==
+	s=k20260515; t=1786402195;
+	bh=eeJrdRxXUrqpHD49pSukjrdxkEgjUundKC5UAdKXAy8=;
+	h=From:To:Cc:Subject:Date;
+	b=fqdv8zinO9JBx0MtGWKIeZGmJK8q1aHWtK1Tw4cnufqyp+Uz8YTbEDy+pjzwbtvMZ
+	 KBN409OO+IAj53t+XoeBvUVbEWSmT5ht1Bb2P68FcUxOKR8h0gLD1OkUQt2N0x8zCn
+	 a7IhCKvOJkSUmpEsQ8IH7tbJLrnq1+KSgpKJ4up4NS4HRL0cAC3jxYSlyQgPITaLCc
+	 5LxNbEPcY498PR/pz0zPNPWn75OF69UrbUEpXMArx5DtjBFcWBXecu3gDGamWHFCQX
+	 eyKJqZNBXf7hux+MUHzVmz/t+V6Xm3jhWAhDYpgxLCodqa8b+onAl+/eYS6gPyPoMu
+	 wlvxqmUkdYnag==
+From: Danilo Krummrich <dakr@kernel.org>
+To: bhelgaas@google.com,
+	dakr@kernel.org,
+	kwilczynski@kernel.org,
+	aliceryhl@google.com,
+	daniel.almeida@collabora.com,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	tamird@kernel.org,
+	acourbot@nvidia.com,
+	work@onurozkan.dev,
+	jhubbard@nvidia.com,
+	ttabi@nvidia.com,
+	apopple@nvidia.com,
+	ecourtney@nvidia.com,
+	shashanks@nvidia.com,
+	zhiw@nvidia.com
+Cc: driver-core@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] Rework PCI IRQ vector code
+Date: Tue, 11 Aug 2026 00:47:39 +0200
+Message-ID: <20260810224800.2314458-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Aug 2026 00:26:46 +0200
-Message-Id: <DKLM8GXJGFL1.302CSI4V1NF27@kernel.org>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Yury Norov"
- <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Jonathan
- Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "John
- Hubbard" <jhubbard@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <nova-gpu@lists.linux.dev>,
- <dri-devel@lists.freedesktop.org>, <linux-doc@vger.kernel.org>, "Joel
- Fernandes" <joelagnelf@nvidia.com>
-To: "Eliot Courtney" <ecourtney@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 00/12] gpu: nova-core: add PRAMIN window support
-References: <20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>
-In-Reply-To: <20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon Aug 10, 2026 at 3:55 PM CEST, Eliot Courtney wrote:
->       rust: num: use const_assert! in Bounded
->       rust: num: reject Bounded::shr overshifts at build time
->       rust: num: add Bounded::shr_exact
+This series reworks the Rust PCI interrupt vector abstractions, motivated by
+review feedback on the nova-core interrupt support series [1].
 
-I think it would make sense to route them through the Rust tree this cycle.
+Convert IrqVectorRegistration to a lifetime-managed owning type, replacing the
+devres-based approach. Add an anchor generic on IrqRequest and irq::Registration
+to create a borrow chain that prevents the vector allocation from being dropped
+while any IRQ handler is still registered.
+
+Remove IrqVector; resolve a vector index to an IrqRequest directly via
+IrqVectorRegistration::request().
+
+Add pci_irq_type() as a C function in include/linux/pci.h, replacing open-coded
+checks across drivers [2], and wrap it for Rust.
+
+[1] https://lore.kernel.org/all/20260808031120.363869-1-jhubbard@nvidia.com/
+[2] https://elixir.bootlin.com/linux/v7.1/source/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c#L196
+
+Danilo Krummrich (5):
+  rust: irq: add anchor generic to IrqRequest and Registration
+  rust: pci: convert IrqVectorRegistration to a lifetime-managed owning
+    type
+  rust: pci: remove IrqVector and resolve IrqRequest directly
+  PCI: add pci_irq_type() to query the allocated interrupt type
+  rust: pci: expose the allocated interrupt type
+
+ include/linux/pci.h        |  25 +++++
+ rust/helpers/pci.c         |   5 +
+ rust/kernel/irq.rs         |  10 +-
+ rust/kernel/irq/request.rs |  86 +++++++++++----
+ rust/kernel/pci.rs         |   2 +-
+ rust/kernel/pci/irq.rs     | 213 ++++++++++++++-----------------------
+ 6 files changed, 182 insertions(+), 159 deletions(-)
+
+
+base-commit: dbaafe9cc56a996931eedfe043eb34418cc9cd9b
+-- 
+2.55.0
+
