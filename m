@@ -1,115 +1,134 @@
-Received: from sender4-op-o11.zoho.com (sender4-op-o11.zoho.com [136.143.188.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7FA437447;
-	Mon, 10 Aug 2026 18:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786386927; cv=pass; b=Y2e/6O3kPw0Za0/gMRIeNjn8KS9n7qB0eVBMuUdB47PKQ5/mvMoW/ZjTetfiCGoN7fdlYzCR8Q/X55vbkGLl+NTxxFxfUX5CpVBEjxy99P3VCpUGRYDgj8R4gJo4OtpzvEwriBfTvHr/5CSaY5SpUCJbNZbvlxZ32W94IKxIJkM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786386927; c=relaxed/simple;
-	bh=/iaajojgPfw5aIwmlU7WpTDDLwtHbVMCj4QkpcHiby4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=hvI1SH+mSTqtL3qW20E+KwIHfrUkFbyzKsLVQvdewvi+aKJOoHtcDlNyzN/2yBs7CfjMYUZYTY9TEFs2e+4Me7WBEesGh4BAYIM5mQ7zSlrODbRJy04COL1seCmKo0FnMZWvlBo7RBXvDuV8OmbaHf3k2Jx9YVAdcVixi9WrH8s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=KSWjp/QX; arc=pass smtp.client-ip=136.143.188.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67B637F330
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 19:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786390203; cv=none; b=h5TAljuTg0JqJQfuTB3VgQ5xpYcV9vhkWGyjWfz62YWcMEJKAdF/xGgpxPY2tF50QllgBCbM9J4dN11rBKTmb69t2SGpQO+CRUJceocmsvbSBK7pULFQeKt+C9BtsVHICCwSI1JeLVqNMG0VxZ8CxLtgp7dqL/TH2/Fxum1AvbQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786390203; c=relaxed/simple;
+	bh=qwHMcZhX0XK9+92pxtlJFYdkI7ZtwZ3nCUvb7Za9iio=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T5olYrLrX9V2GKAydheAVfIyM+5VYm1dOFs7gXAJwBUxB4okA1MTOdiq+l7CQCD35dhDPV9eLLkr5deCFNUxYqHlhRCvCqJDS+Z9EUVIVPhNwzeu9fE5htSvCVDtiHypJOlzEF6vXBJF8B9AdxwSSlJeCB4zx5gwHlkgi/3H9qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gm7cb0hN; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="KSWjp/QX"
-ARC-Seal: i=1; a=rsa-sha256; t=1786386905; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Xdze7+6+lAmudxeU2EEGTDqnbwoExe7UW/F01OINVDIvnDUiYY3gEySUIzarfttHfz1StKBzcUXL8yX0SeKDldLpDEzT5tF4eN220EpvcNb23Ns4IW+wxs/27HOysZxVUHYpqCEJ1A78LyiaEYfH6mtXJ0KlyDNnmgqTsVGNGUg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1786386905; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wuiGyY1XGfwjwsb2Pw2tUN8ltgrhxl1qHkj0d5/SIUg=; 
-	b=P7I/Pjg7ddD1xXHvM9kD9h3DmnB3+97E1DYQ0mGefQOiJmxMT5rzYBmUZAK+iH/g2Z4gPvVq66C6diAmOhvsJqRlDU65yXhTS1mWt2hrfzR6ZIvySfiKcXSAVKCu7Q9EdQsDo7XygRWjBPMe1lDLXP7cT1sNykNSsMn9UKCoLdA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1786386905;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Reply-To;
-	bh=wuiGyY1XGfwjwsb2Pw2tUN8ltgrhxl1qHkj0d5/SIUg=;
-	b=KSWjp/QXN0ha6bqxfYdddC6eJ+y4VeXzWqltMZN0iW+AApN7asc+yHoS6cd7mhiJ
-	SoAQUT+HLuf8TsxyD1Tmxu3TzVM0tggo+zurz6u+kGbzWZ66N/YrA03JtFVnnl/cp0b
-	74opUQ6+cIfy/CMePZKuBFuWzI45Qr5ue90kFYUM=
-Received: by mx.zohomail.com with SMTPS id 1786386903952369.9569936119061;
-	Mon, 10 Aug 2026 11:35:03 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gm7cb0hN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1786390201; x=1817926201;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qwHMcZhX0XK9+92pxtlJFYdkI7ZtwZ3nCUvb7Za9iio=;
+  b=Gm7cb0hNfnXdtSioLLa4uzafU/eOHSFXWAzbpq3s5dp/DquMRtaFMHoq
+   tNiX2eP6ERDtk3RYHjqcwPUZpkL0MaGocn97RMGsilQJGP1jB8rzczSv3
+   FlLR5qiBOI7ZRay0TEIbYaxn+epvVszFfM2lvc7XJ8ycs5TXhJxxFsS8w
+   KE2WkfKdrdE+m5h4a7am3yIUCzZ/nu868G16/Pg/myMXSTRkvvLrZ6tUE
+   sXiLz1TWct1lRR/HW1qvkm2ItOBLV6gIYyw25QUy5WefAqTZaNjqkRBu3
+   gKWLhImCGeGX+r3XWrUODhMw10ODkEPGJkj30rHkgf9OI/HDzWIb1HKbc
+   Q==;
+X-CSE-ConnectionGUID: 4KqDRhL7SUuS//tM2Sxjug==
+X-CSE-MsgGUID: oCC2jeLXQKOLUZqv1D+ssQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="89440884"
+X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
+   d="scan'208";a="89440884"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 12:30:00 -0700
+X-CSE-ConnectionGUID: GmAhXK9nTFWGx+9bY0/w5g==
+X-CSE-MsgGUID: DrgpNPGOTombrWAQav5T6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,216,1779174000"; 
+   d="scan'208";a="301351096"
+Received: from igk-lkp-server01.igk.intel.com (HELO 3cba2a188a06) ([10.211.93.152])
+  by orviesa001.jf.intel.com with ESMTP; 10 Aug 2026 12:29:59 -0700
+Received: from kbuild by 3cba2a188a06 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wtVh6-000000005Uo-03T1;
+	Mon, 10 Aug 2026 19:29:56 +0000
+Date: Mon, 10 Aug 2026 21:29:00 +0200
+From: kernel test robot <lkp@intel.com>
+To: Rafael Passos <rafael@rcpassos.me>, rust-for-linux@vger.kernel.org,
+	aliceryhl@google.com, gregkh@linuxfoundation.org, arve@android.com,
+	tkjos@android.com, Christian Brauner <brauner@kernel.org>,
+	cmllamas@google.com
+Cc: oe-kbuild-all@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>,
+	Brigham Campbell <me@brighamcampbell.com>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	Rafael Passos <rafael@rcpassos.me>
+Subject: Re: [PATCH v2] rust_binder: speed up get_node_debug_info using
+ lower_bound iter
+Message-ID: <202608102134.Dygd1Kx3-lkp@intel.com>
+References: <20260731133253.661634-1-rafael@rcpassos.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [PATCH v3 2/3] drm/tyr: clear stale IRQ state before soft reset
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20260708114358.957305-3-work@onurozkan.dev>
-Date: Mon, 10 Aug 2026 15:34:45 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- dakr@kernel.org,
- aliceryhl@google.com,
- airlied@gmail.com,
- simona@ffwll.ch,
- ojeda@kernel.org,
- boqun@kernel.org,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- tmgross@umich.edu
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8E4EA286-887C-4B3D-8AE0-F83E2C838B0A@collabora.com>
-References: <20260708114358.957305-1-work@onurozkan.dev>
- <20260708114358.957305-3-work@onurozkan.dev>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260731133253.661634-1-rafael@rcpassos.me>
 
+Hi Rafael,
 
+kernel test robot noticed the following build errors:
 
-> On 8 Jul 2026, at 08:43, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> Previous reset may leave the reset completed IRQ set which can make =
-the
-> poll return too early.
->=20
-> Clear the IRQ first so the driver waits for the current reset to
-> complete.
->=20
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
-> drivers/gpu/drm/tyr/driver.rs | 3 +++
-> 1 file changed, 3 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/tyr/driver.rs =
-b/drivers/gpu/drm/tyr/driver.rs
-> index c5063b2be94d..90d6cd988cd2 100644
-> --- a/drivers/gpu/drm/tyr/driver.rs
-> +++ b/drivers/gpu/drm/tyr/driver.rs
-> @@ -86,6 +86,9 @@ pub(crate) struct TyrDrmRegistrationData<'bound> {
-> }
->=20
-> fn issue_soft_reset(dev: &Device, iomem: &IoMem<'_>) -> Result {
-> +    // Clear any stale reset IRQ state before issuing a new soft =
-reset.
-> +    =
-iomem.write_reg(GPU_IRQ_CLEAR::zeroed().with_reset_completed(true));
-> +
->     iomem.write_reg(GPU_COMMAND::reset(ResetMode::SoftReset));
->=20
->     poll::read_poll_timeout(
-> --=20
-> 2.51.2
->=20
+[auto build test ERROR on staging/staging-testing]
+[also build test ERROR on staging/staging-next staging/staging-linus linus/master v7.2-rc7 next-20260810]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Little has changed from v1 IIUC, where Boris gave his r-b already. I =
-think
-you can carry over the tag.
+url:    https://github.com/intel-lab-lkp/linux/commits/Rafael-Passos/rust_binder-speed-up-get_node_debug_info-using-lower_bound-iter/20260806-233902
+base:   staging/staging-testing
+patch link:    https://lore.kernel.org/r/20260731133253.661634-1-rafael%40rcpassos.me
+patch subject: [PATCH v2] rust_binder: speed up get_node_debug_info using lower_bound iter
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20260810/202608102134.Dygd1Kx3-lkp@intel.com/config)
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+rustc: rustc 1.96.0 (ac68faa20 2026-05-25)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260810/202608102134.Dygd1Kx3-lkp@intel.com/reproduce)
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202608102134.Dygd1Kx3-lkp@intel.com/
 
+All errors (new ones prefixed by >>):
+
+   PATH=/opt/cross/clang-22/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   INFO PATH=/opt/cross/rustc-1.96.0-bindgen-0.72.1/cargo/bin:/opt/cross/clang-22/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS=\ -fno-crash-diagnostics\ -Wno-error=return-type\ -Wreturn-type\ -funsigned-char\ -Wundef\ -falign-functions=64 W=1 --keep-going LLVM=1 -j384 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck 
+   make: Entering directory '/kbuild/src'
+   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+>> Diff in drivers/android/binder/process.rs:1175:
+            {
+                let inner = self.inner.lock();
+                // cursor_lower_bound retrieves the "key" passed or the next existing larger key
+   -            if let Some(cursor) = inner.nodes.cursor_lower_bound(&(ptr+1)){
+   +            if let Some(cursor) = inner.nodes.cursor_lower_bound(&(ptr + 1)) {
+                    let (_, node) = cursor.current();
+                    node.populate_debug_info(&mut out, &inner);
+                }
+>> Diff in drivers/android/binder/process.rs:1175:
+            {
+                let inner = self.inner.lock();
+                // cursor_lower_bound retrieves the "key" passed or the next existing larger key
+   -            if let Some(cursor) = inner.nodes.cursor_lower_bound(&(ptr+1)){
+   +            if let Some(cursor) = inner.nodes.cursor_lower_bound(&(ptr + 1)) {
+                    let (_, node) = cursor.current();
+                    node.populate_debug_info(&mut out, &inner);
+                }
+   make[2]: *** [Makefile:1998: rustfmt] Error 123
+   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
+   make[1]: *** [Makefile:248: __sub-make] Error 2
+   make[2]: Target 'rustfmtcheck' not remade because of errors.
+   make[1]: Target 'rustfmtcheck' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2
+   make: Target 'rustfmtcheck' not remade because of errors.
+   make: Leaving directory '/kbuild/src'
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
