@@ -1,124 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6FE28CF5D;
-	Mon, 10 Aug 2026 07:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5F534DCE4;
+	Mon, 10 Aug 2026 07:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786346868; cv=none; b=mjHHstmDpDUWvvKDeLiCbNLikbvp7UqbMU2gjg+2TfMDkXfbvsKwBYFM3xFJ+4zt96hFQy34cN2Tx8u4pDDm5Tc01JtbCxwJ6uxHuT4S0P31eamEWlQZIagdzYTTguV3eEXBMy1CtMNsWb/dXbPUO94RacqpUEWjrq0kdkUEb2g=
+	t=1786348104; cv=none; b=sgCb8Q8jNEof0yziW+heHd/xKEG0iDvSCevcQhpOS6DfcNxZRkzLeWY4ZumzjL7Al+kNaXRhTjRxh8jn4A1Dc7yjC/rWLJAsiB0tvfPLO6bJLnLCospuHgbBbFheIBrg7e9Z4p6PNMbv0+kcL4WNuMs7RidChjffFuMvUJwB8YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786346868; c=relaxed/simple;
-	bh=xQLhwS8wv9sFqYFOv/TIN/5z4j31qZTJrUsswVUaMwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mFjliel98VTyg0W7PMoFiZrMutW3OaP+esOCf/1L+ZRVUl50KGdI3ENmbCzacd89AIThR1H6xhGJ7z/dZz+d3e6152/GGQwvDZ+R2MLlTrCd4Y7UT8aaZMKAlmDIdxclUlThkj9J73j2AAYNVCBzXnCY3mSK08DToFFqDWdAH0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FG75gnP7; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786348104; c=relaxed/simple;
+	bh=wcfouqGkbtN6qbgtaKfsihWkqZ0FKvP4t7FAWyvgg3k=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Bb0Fa4tizdR8Oe7ufvcZm2dXSJakq87MqiuqXngns4Ze/9ikfl6H+MWhhL+EI+o4nxQUGzhhSbjjaNS4/L4A+63HKTlPiXaeGHekcW92PnXQqf+f4q05XHXeq/UWPhONvSyjMoaB6JL8EpeQws+vb7ARp97rqtrDCJKAE57rc/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ViiVWbZH; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FG75gnP7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786346867; x=1817882867;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xQLhwS8wv9sFqYFOv/TIN/5z4j31qZTJrUsswVUaMwY=;
-  b=FG75gnP7rW6eu0m595W1Sd3oeT2R0aMzbWX9W1zCQFqsMlKA0CcV9kUj
-   AXzCPoGefjFBqElLD2PjL6EqoJIU+XbHvzR2/eTE+vHvm4BphqQ3W/qoa
-   tz2qar7gTfUEMaP5/kVdO3QtzKedH5bjaT9Wvnb+Q3GkfKvS6EzvyKJ+E
-   kyo42KMBbf3YwsYX2Q8LQKVHwv3SwcrqTaEK+fFfNvLNo9ByX87PWYfSY
-   1itkPPUM0zC3/BoDwTQX+0Ks5czmbtP20m6KbO/LFc8V5kKFLCS9YFuMl
-   Kw+mvolaiDB6+p5DN9c354GC4dBh7619x93dCQdQI3Jj+r+cA6JOV/eEr
-   w==;
-X-CSE-ConnectionGUID: NPVHzscfQO+doNMdk+QHvA==
-X-CSE-MsgGUID: cCepRIf2TZq0ioTUrdhGXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="112400376"
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="112400376"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 00:27:46 -0700
-X-CSE-ConnectionGUID: fVqcRD4QTWCn0dQ6j9/S5A==
-X-CSE-MsgGUID: 7ZXTFfZuQhmUulcEeVHcvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; 
-   d="scan'208";a="263584571"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.99])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Aug 2026 00:27:36 -0700
-Date: Mon, 10 Aug 2026 10:27:33 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Link Mauve <linkmauve@linkmauve.fr>
-Cc: Srinivas Kandagatla <srini@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Sven Peter <sven@kernel.org>, Janne Grunau <j@jannau.net>,
-	Neal Gompa <neal@gompa.dev>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Vladimir Zapolskiy <vz@mleia.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Kalyani Akula <kalyani.akula@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Johan Hovold <johan@kernel.org>,
-	Ronald Claveau <linux-kernel-dev@aliel.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	asahi@lists.linux.dev, imx@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] nvmem: migrate to const void * in reg_write
-Message-ID: <anl9ZRM0REenBK8t@ashevche-desk.local>
-References: <20260726131724.15299-1-linkmauve@linkmauve.fr>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ViiVWbZH"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hJRgv2Mm8zMlDr;
+	Mon, 10 Aug 2026 09:48:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1786348091; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wcfouqGkbtN6qbgtaKfsihWkqZ0FKvP4t7FAWyvgg3k=;
+	b=ViiVWbZH8vUUunF8Vd0PWAu3HSRksIQ9wiOB+zo9xu3rhYOC84nlsH7di9G3hhbeYZxSP2
+	WCl+f9V615ix5sjUwX+AnN6Y0A4Xe5jpj+DBVdbYXLn1OmrOWiudIyoTWSWY7tg9exUXap
+	gVEPbTy+Yi4IB4GH1SKZQY4CgNeaM7vlh9om3T31EaSxe7Jz/i0XQb94Refz1BOCmbAGpe
+	OZd7lUsn/Nikk9iUfybN8obV24vjLwq8OzWUuJ3BnRUXsreuqhyKXmzYFaWidBOtk4ewfj
+	M2cG09kFLzRAg/3TFj4o2L/EE3ayEaFFUa9W6S85R5DyH8T50R5iXFox69UVsQ==
+Message-ID: <91325da652d7840509015c043c8cb7b4450a00f3.camel@mailbox.org>
+Subject: Re: [PATCH v9 0/5] rust / dma_buf: Add abstractions for dma_fence
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Philipp Stanner
+	 <phasta@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+	 <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron	
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg	 <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross	 <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Daniel Almeida	 <daniel.almeida@collabora.com>, Tamir Duberstein
+ <tamird@kernel.org>,  Alexandre Courbot <acourbot@nvidia.com>, Onur
+ =?ISO-8859-1?Q?=D6zkan?= <work@onurozkan.dev>, Sumit Semwal	
+ <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=	
+ <christian.koenig@amd.com>, Lyude Paul <lyude@redhat.com>, "Paul E.
+ McKenney"	 <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Josh Triplett	 <josh@joshtriplett.org>, Uladzislau
+ Rezki <urezki@gmail.com>, Steven Rostedt	 <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>,  Lai Jiangshan
+ <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>, Asahi Lina
+ <lina+kernel@asahilina.net>, Burak Emir <bqe@google.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, FUJITA Tomonori	 <fujita.tomonori@gmail.com>, Eliot
+ Courtney <ecourtney@nvidia.com>, Mirko Adzic	 <adzicmirko97@gmail.com>,
+ Timur Tabi <ttabi@nvidia.com>, Daniel del Castillo	
+ <delcastillodelarosadaniel@gmail.com>, Boris Brezillon	
+ <boris.brezillon@collabora.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	rcu@vger.kernel.org
+Date: Mon, 10 Aug 2026 09:47:55 +0200
+In-Reply-To: <CANiq72nZ25wkxVHpz9GTA_m5E_vyBmRKdDSUNMsJAZ=6zk=zhw@mail.gmail.com>
+References: <20260805145949.938505-2-phasta@kernel.org>
+	 <CANiq72nZ25wkxVHpz9GTA_m5E_vyBmRKdDSUNMsJAZ=6zk=zhw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260726131724.15299-1-linkmauve@linkmauve.fr>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-MBO-RS-META: e1q7rg1nfpbi93b8n3c9nfpegttm8ggb
+X-MBO-RS-ID: 32b232e1d19317e22c3
 
-On Sun, Jul 26, 2026 at 03:17:18PM +0200, Link Mauve wrote:
-> This callback used to take a mutable void * for no reason, which causes
-> the compiler to be unaware that the val buffer should never be modified
-> by the callback.
-> 
-> This was found while drafting the nvmem-provider Rust abstraction.
-> 
-> Thanks to the guidance of Andy Shevchenko, this now introduces a new
-> callback and deprecates the existing one, with the goal of renaming the
-> new one into the old one once no user remains in the kernel.
+On Mon, 2026-08-10 at 08:00 +0200, Miguel Ojeda wrote:
+> On Wed, Aug 5, 2026 at 5:01=E2=80=AFPM Philipp Stanner <phasta@kernel.org=
+> wrote:
+> >=20
+> > =C2=A0 rust: types: implement ForeignOwnable for ARef<T>
+> > =C2=A0 rust: sync: Add abstraction for rcu_barrier()
+> > =C2=A0 rust: error: add remaining error codes
+>=20
+> Applied (these three) to `rust-next` -- thanks everyone!
+>=20
+> Please note that your Signed-off-by is required when sending a patch
+> from someone else:
+>=20
+> =C2=A0 https://docs.kernel.org/process/submitting-patches.html#sign-your-=
+work-the-developer-s-certificate-of-origin
+>=20
+> I added it here on apply for you -- please let me know if that is not
+> what you intended!
 
-LGTM now, FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+No, fine by me, thank you for fixing it
 
-But I think you also need to provide a road map of finishing this job (the best
-is to provide a continuation in some of yours public Git trees to point out).
+P.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+>=20
+> =C2=A0=C2=A0=C2=A0 [ Formatted comments. Added the submitter's Signed-off=
+-by tag. - Miguel ]
+>=20
+> =C2=A0=C2=A0=C2=A0 [ Relaxed `'static` bound and added `#[inline]` as dis=
+cussed. Added
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the submitter's Signed-off-by tag. - Migue=
+l ]
+>=20
+> =C2=A0=C2=A0=C2=A0 [ Formatted documentation. Sorted tags. - Miguel ]
+>=20
+> Thanks!
+>=20
+> Cheers,
+> Miguel
