@@ -1,113 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B49B3DD51C
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 13:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5873C2796
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 13:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786368499; cv=none; b=kiOirWuxFcIlF6G8MgLe6NKzER1MWgMtfJ1FXu+S0SEiUrVZHZseaEAHqXiZ50f0C+bgUkXdQgDe8Mf6wDPycPVK6/EcW2RZF3TI8oz0U15Yi4v9slJdnitUM9Sm6Z29XKSAsBK+OtGPC0IJOYkB2na67SKZGKiwsW6de/Ut6gU=
+	t=1786368541; cv=none; b=SZcJHjH9y7YKt24x9KjuWE8rVa9qVrDFGdMWKaRBL4fQgmyxYic0s5pYJreCGXLw7OH1/GO6spr8MLzVVjiTBzK3fGuLENLhrRYc0Y+xS0O85YVo9qly8awz0gf4g85E2IRAKZddCyOaKjgO6+aV2FQJZuo2ZFIvcvLR+mO2noc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786368499; c=relaxed/simple;
-	bh=n+Qtm6ucKJRmCq7/X8Wr+Q4KB3Brkz/w+fiNQlz65yQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ZWV4YnDi2chqLSjtr4pCkF4RckV3zKqMKrDT7qsArJ6xr9Ox/+abWUr8TK4p8E4CEWfE3EHbWf0eE0nh2wjJzfvDWBZ5//NaGiQ91ttzBml76FckvPBggQ/iS/eCh+8aHuxfp1eYM/6brQp2K4vItm9O/oR6dYAg2i4Cup4JEBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqpF4laE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786368541; c=relaxed/simple;
+	bh=Cp2MfGC3hAzVpV6UQrQQlmkmGJoNpo/8VOssLdMUF8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WWI2wl710BW+jdCieJyUQHGCNXbAM1NceG+6+UGD+GUxqyqmxVVO9vTeDTgQITijbsHJzXZbbvi8qs+ARcpTtcRLxXwXyfdQT/CkWoi9HU79UKuP5E12gI26cXzuNtE9srD87wZlp71cXhy3dQW1V/icDPcnhXoU2aNPuWgBlYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YshI0+2c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqpF4laE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D371F000E9;
-	Mon, 10 Aug 2026 13:28:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YshI0+2c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549EE1F00A3D;
+	Mon, 10 Aug 2026 13:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786368498;
-	bh=3CsFlhEBnv5atXMEFmpywsUWJ8L5N6cZFTlYRYa5B5c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bqpF4laE2xj6kfo98tt7Wi+EUGeyc34q7Y+cfKei1wlNtz6bWwKCYPvQ5IvPlpxs/
-	 mnD8CCTsUfPYTJHIGeq/Fo/hPwUC7JiiUjseDf6tzDzvUaejgIopRdz8Yhgbrw3Ipr
-	 UAmivUmbP0MCgjbK19JjcV2BpzW50rSJF9q2eGUuecVVXkhWYXPMVVP8wuo6/Dv59X
-	 udi3+d/fObFW7kRDzB4XtkjcPAF5t3OSeC1jaD/Eihfq4ByKynOTqI8r6m23e4YHbT
-	 sXA9sxycC/sR1rPPoI2jqoBOoRWl8IXzrmtQT2kkoGOK1FtAgY34W7596FpnzuSTQZ
-	 JYEB2/k2h1B8Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: tomo@flapping.org, ojeda@kernel.org, acourbot@nvidia.com,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
- lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, tamird@kernel.org,
- tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
- rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
-Subject: Re: [PATCH v4 2/2] rust: hrtimer: Make HrTimer repr(transparent)
-In-Reply-To: <20260810.204248.1426065758894654964.tomo@flapping.org>
-References: <SL4Oc1gdHsbIunyjsqaDTEU_0hKdwRG6rLiKtGHoNhTKHL9fEPrjgTi4J-lCGhm1vlN-5jp4NCZZmdDa5ndfZg==@protonmail.internalid>
- <20260807233039.1091842-2-tomo@flapping.org> <87jypy2pzr.fsf@kernel.org>
- <20260810.204248.1426065758894654964.tomo@flapping.org>
-Date: Mon, 10 Aug 2026 15:28:06 +0200
-Message-ID: <87v79i14wp.fsf@kernel.org>
+	s=k20260515; t=1786368539;
+	bh=+6bKsFfDIiv+IduIk04mHForQDtudgwfB9t6mwUZ8MI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YshI0+2ctnN/CReqj1PLZt0OqCQ0yePEocrG/FP5i11FiOCydLckUnLcWq5hRCl04
+	 fRXLYjSprCdCsL95N7x0xeBr3tM0IybtaQkfi7guBAehcuTeWgbWjuXw0rOp3Y9Imx
+	 auGxDYsbIUbbxu0aATPZvjfXVIUCBJarYKpA9eRAIPour+BJiyh+LHP2GQc2Y0Ve9r
+	 iNu2cvsrrMMLl0SLfOXIqZLNgLYdArUXt48t/hAkaAXfbDtqL9naHxsdW8TS2u5mUr
+	 x516v0NEBdtmZrhtdZz/ru7IX2axIuUXsCj3lAGpxvaEmDSJBQs+Va7DKx1Aqw7/EI
+	 bjoqunBj290CA==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 73D16F40066;
+	Mon, 10 Aug 2026 09:28:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 10 Aug 2026 09:28:58 -0400
+X-ME-Sender: <xms:GtJ5avCbefIuZhurnMdKmRtXl9BnFcJZCuincP7AA_IABAUEWawpKg>
+    <xme:GtJ5asdiBHbhqTf2D_pMfLhgtqKFdI12EgGDdKrPFSX6bbXLrUXKnLKhpmC1p5E76
+    ub__1ziIwhoaHPLN_853aabyArXwzFmZxHSh3JF0wF_wrCrHZQnkrU>
+X-ME-Received: <xmr:GtJ5avoqAIRAr4Faru1AZOGBmoRre_74YuVHX6qBE1dn8MHlT8hM7X5gc9Vdt1IEB4laCLxTHySKR-rHYkSLsHrbmVIF5MDO>
+X-ME-Proxy-Cause: dmFkZTF4UMx8RYYpmrv1dSsb9d+vasit5QxiScAo6SMSFJD4Y76OOtuMW5bUzyfkl3rz3L
+    0RkmP7K5ZitnGbiSkElKfl7U+5xsqz2BlSzhiw9LrJhAJdjNpJwwFcwI748DaukKcNS8+4
+    AZlA2hujd8X2jS1X3EmgqrGkIMi+v1kJ7IyljOJHno+dBxfay0ReQnGLZE27PPuHxWm+Wm
+    OdNN02hDpz5vI3UhnrIHqjrJGILg4tlxDCHAonwtYWXnhxy9uoNcxPY2AEFAUOzEwHIk2n
+    cZGAaDbehcagyPlX9eMcFTCGAVQv4JONczcL8ovuCvYZ/CiMMfLypMkHStWnQ+bBHZf7bF
+    eR+2Uu0hlVKhDzlf0z8/7vByQy3MuSOD2x2zw07x6sL1n5QjRJg69cc+E1mhejskAhSnnY
+    6WfCy1rGBhFYvPGJdcMbDqrRgT3ENkZbvX+EaFNYVlmSZZLiyMESmJkeb7f/Al9vGjOxZs
+    efu0jg6fY0MZEO8BNxuxxaflvgoDDhaCRtmCwfKAfkC4r7rd1Bqd/A0VSD76PJagRQkOEA
+    CGdGzEyw/uLXSkvJbkXGbNlFJ85Bqqs0pu+V5Prxd0oQcquv2NfSJjlTUle+mBfHD6PDO8
+    xp0MYafVpEmXEaD1y5wYdxX1Lok9ENweTRJLvPJk/obcXWE/vBM+OVrdrX5g
+X-ME-Proxy: <xmx:GtJ5ao4g3ekjvqJRAfmbK2h4qD9rEzKrD-utlFOO8Gh_OnLkkfPVEQ>
+    <xmx:GtJ5avBkrX_JoaGitBjzEZdQKu8fV1R1rjp6Zr4rZOOtXR6tZaDkeQ>
+    <xmx:GtJ5aqZxlc8A9eCHCfrJp1Baui23fqDUIH0adgYNC6eOPUad2bQEpg>
+    <xmx:GtJ5ajLQEJMniZooZr7XOAy0FDy6J8ZnIW522AipmjCAphxJynTO2A>
+    <xmx:GtJ5ajDgUN-kT1wh2yN-xJzWtwOHKp8xeSlMZ4eBGrNIbkYTwATDvkHD>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Aug 2026 09:28:57 -0400 (EDT)
+Date: Mon, 10 Aug 2026 06:28:57 -0700
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: Re: [PATCH v5 14/18] rust: Introduce interrupt module
+Message-ID: <annSGYKwWXgR4VkD@tardis.local>
+References: <20260807070218.27144-1-boqun@kernel.org>
+ <20260807070218.27144-15-boqun@kernel.org>
+ <20260810085753.GF1642880@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810085753.GF1642880@noisy.programming.kicks-ass.net>
 
-FUJITA Tomonori <tomo@flapping.org> writes:
+On Mon, Aug 10, 2026 at 10:57:53AM +0200, Peter Zijlstra wrote:
+> On Fri, Aug 07, 2026 at 12:02:11AM -0700, Boqun Feng wrote:
+> > diff --git a/rust/helpers/interrupt.c b/rust/helpers/interrupt.c
+> > new file mode 100644
+> > index 000000000000..51b319bd4c00
+> > --- /dev/null
+> > +++ b/rust/helpers/interrupt.c
+> > @@ -0,0 +1,18 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/spinlock.h>
+> > +
+> > +__rust_helper void rust_helper_local_interrupt_disable(void)
+> > +{
+> > +	local_interrupt_disable();
+> > +}
+> > +
+> > +__rust_helper void rust_helper_local_interrupt_enable(void)
+> > +{
+> > +	local_interrupt_enable();
+> > +}
+> > +
+> > +__rust_helper bool rust_helper_irqs_disabled(void)
+> > +{
+> > +	return irqs_disabled();
+> > +}
+> 
+> This last one doesn't appear used in this patch; can I remove it?
 
-> On Mon, 10 Aug 2026 13:07:20 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->> "FUJITA Tomonori" <tomo@flapping.org> writes:
->> 
->>> From: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>>
->>> HrTimerCallbackContext acquires a &HrTimer<T> from a
->>> NonNull<HrTimer<T>> while a &mut HrTimer<T> can exist at the same
->>> time. This is sound only because HrTimer's sole field is
->>> Opaque<bindings::hrtimer>, which puts every byte behind an UnsafeCell.
->>> Adding a field to HrTimer that is not Opaque would make acquiring that
->>> shared reference unsound.
->>>
->>> Make HrTimer repr(transparent), which prevents multiple fields, so that
->>> such a refactor fails to compile instead of silently introducing
->>> unsoundness. This does not guarantee the remaining field stays behind
->>> Opaque, but it rules out the likely way of getting there.
->>>
->>> repr(transparent) cannot be combined with repr(C), so drop the latter.
->>>
->>> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
->>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->>> ---
->>>  rust/kernel/time/hrtimer.rs         | 6 +++++-
->>>  rust/kernel/time/hrtimer/arc.rs     | 2 +-
->>>  rust/kernel/time/hrtimer/pin.rs     | 2 +-
->>>  rust/kernel/time/hrtimer/pin_mut.rs | 2 +-
->>>  rust/kernel/time/hrtimer/tbox.rs    | 2 +-
->>>  5 files changed, 9 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
->>> index 1db84cd4cbe8..04f47af3541b 100644
->>> --- a/rust/kernel/time/hrtimer.rs
->>> +++ b/rust/kernel/time/hrtimer.rs
->>> @@ -418,8 +418,12 @@
->>>  /// # Invariants
->>>  ///
->>>  /// * `self.timer` is initialized by `bindings::hrtimer_setup`.
->>> +// `repr(transparent)` is not merely about layout. `HrTimerCallbackContext` acquires a
->>> +// `&HrTimer<T>` while a `&mut HrTimer<T>` may exist, which is sound only because every byte of
->>> +// this type sits inside `Opaque`. Being transparent rejects a second field at compile time,
->>> +// but it does not enforce that the remaining field stays `Opaque`.
->> 
->> Missing bullet. With that fixed:
->> 
->> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
->
-> This is a plain `//` comment, not documentation. Did you mean that you
-> want it documented as one of the `# Invariants` bullets instead?
+Yes. Previously this function was used for debugging, but we have moved
+to lockdep_assert_irqs_disabled(), so it's no longer used.
 
-Ah, thanks for clarifying, I did not see that. No I guess it is fine.
-Maybe add a newline?
-
-
-Best regards,
-Andreas Hindborg
-
-
+Regards,
+Boqun
