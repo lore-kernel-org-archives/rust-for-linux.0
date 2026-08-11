@@ -1,127 +1,113 @@
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448FA463B96
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 17:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529BB3603C2;
+	Tue, 11 Aug 2026 18:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786470014; cv=none; b=DsrXJTgYW3bXS7zfK+6fUE9d5B8xlp0t5MnogRIOdS5w4zR8p5sYaKUje6TQxT57ol0FvHgWQFrfXgCCGGIfLSFVD04IEzcObq6FQs6q1lloykAqQqmG+g5DZefXF/DE5dFTySAIv7odgdqgFdhyHRft805g1PHh1Q4kh9BXQrw=
+	t=1786473367; cv=none; b=C+ouSw3I9bHvpX7V4WJbvnaDcpX8K8OtZde/lZ1QB/rfsQ6KXdz2ZoOG6Za7vJdYLBQmyOxHx9PxC2scA3m13E4lC6wWMuQ3rDldhoxBVJfgIDan9JtHSXNhGOKQV+nfSZX0Wh9GjX1OgyDrB8KiFlLAjTrKVfPoeR7v0s0IPpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786470014; c=relaxed/simple;
-	bh=xU4gqfJXx8GMiVqUJEBxoIQzVscXQdVfbkrh2L/9qY8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=egepHUcCMyijLP54n47ZD6L+3LWoEQHzFTrY+D5n7Q3hdTftpQigIF13ZDtcbyTkS9d095lloOVcQuM/oG7CXmIvlDeXIhJynV1wn4pIfs92P8ibuYnadvPS5QlZ72SwwlUu8/nQvHbqZi2PZ9HKU4ldXfi++jiWCNhB+NuivbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mNadu1IS; arc=none smtp.client-ip=209.85.128.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1786473367; c=relaxed/simple;
+	bh=bcDNjEdQaPQPkOY5VGsJziPTr311stazIQAzHgxRWr4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SF9OnFsUs8XhG28YH9uFE6+TwHAaFEHVLq51JHoDku/Bv0Fzwg0UucUUA1x15hgKB4ltAMDUPDaG2y6F9BT36dKPcd4v15NzISkp/qZQJJmP/ylNab3RxYjGGKqs1CCW8Lp9S02FfJAoozcEIUNg7S0SAhbrRko3Vx9ulApsJ1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=maHL0IRQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mNadu1IS"
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4957287363bso342345e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 10:40:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786470010; x=1787074810; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0lgBCfWcHxEGTaZ2+pGA+Ib2UgPlCK4w8PO3e8rNA0E=;
-        b=mNadu1ISdygrph6p7MdyBRrDMdmQvQpKQLM/nJBayYqZak/AfgMXWhACiZdiJa/90R
-         JT0zZF0/lcUlAlCsVv0CmZikQYSWXvebfW8CEr59myQ1MwC6FZCgQM6mkxN4LWHRRbN/
-         agOR1RndsOnFWR9fJJ7RE8xhUaLOztgEL4KkO5oB7PYGCQEI5U1Y64Z18hrrXMoFGuYQ
-         AF5ggwyQNK5cSzZUiHw8QCW50hlHvDPV5KzTZgihoETHHLljHJodUMz42CV8ivTMvRYv
-         n+GO4ln008x4yVrBHnknn/qrauGy53uPtVZAXTgN1eofCu/kA2SA3qXEDZHSKUXMu55/
-         /xDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786470010; x=1787074810;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0lgBCfWcHxEGTaZ2+pGA+Ib2UgPlCK4w8PO3e8rNA0E=;
-        b=dtD02hEqNIrdjB1I9fDVwk4t0OVau5T/34ZK9D8DTNWStI6fIz+JmOPYSlfu+vDnJc
-         bAVsWtyLAlVQW3B9ZdgxGvQ9ZGbCFdxngZl2GHArOs0yJoSbupeey/rsrlBJWyDIsMTM
-         JkNI7eDjJ1hQSwyHixPVwfvLHo+qXX6I+k8SWaMbFIPmU8m2e6PplVfQ1BqiVkqYSRFY
-         yd8JOQONbtD64Vl/BYO+Cf8m05m4kNhY8evYBde+280V0yMEs/gPpDTPKf9PjFFirn/7
-         hCo0CmilUzckdVRLmJoqlSZt9MmqGPjiL7eBHh8Qs7b73Nrls0jhy7mLboVi+VHRu1xO
-         18mQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrAeI6LaHa+aWZ1bEKVXIT4+JEsC7bsg3Ud0oZDP1YjYc54TP3BhD+yJF0WYBEH5HsCl+aqpo+hp4KJV4zmRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydkeaylxwApA45XtX6If5cYbR/4t9aPP1o687FyIwjwOI1vk6L
-	42Aip+ghqGTjIr1gz72KpoWsjx1FDMMheY69iJFvUWWLLBc85S02XzaYL8DMNmG7A4O6RG2m99/
-	aTaryKDnAmEX7D1TaKA==
-X-Received: from wmcz23.prod.google.com ([2002:a05:600c:c297:b0:499:500a:27d6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1f83:b0:499:781e:25fc with SMTP id 5b1f17b1804b1-4997842c0e7mr74365885e9.3.1786470009475;
- Tue, 11 Aug 2026 10:40:09 -0700 (PDT)
-Date: Tue, 11 Aug 2026 17:40:07 +0000
-In-Reply-To: <anpinBy0adT0JDVn@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="maHL0IRQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CEE9CC2BCC7;
+	Tue, 11 Aug 2026 18:36:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1786473366;
+	bh=bcDNjEdQaPQPkOY5VGsJziPTr311stazIQAzHgxRWr4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=maHL0IRQpTRHWcJeW8WQlqpBl9Aw/9zs1OFRvRR+sE9bUPVcpnPYRJKtOnt4XCfn4
+	 BokCnUjclwciM9RvTmf+fWAhhmxQjzNehJ0oGSuxrEpT7GCIAIPTpk+8eNihEJ0+7i
+	 75KHkj2DSrvJ31GI1fFoMxSzNbgeARzIg9h4yh8zDjwLabsrpq5FJJT8md0hc9kZXR
+	 3jVYbsNhBUQrKXwjoSXg9HoDB9q+rx+HF57QksId+UNJQ8r+yjrudlKIN0/KifT5xC
+	 ezPj+4joeCWsLixzG+hYmw9qDyorbBJInx49yeWyrtq4cDEXDg8P4yqSAXGOakQ1TR
+	 CRGiZvv60pylw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9606C5AC67;
+	Tue, 11 Aug 2026 18:36:06 +0000 (UTC)
+From: Younes Akhouayri via B4 Relay <devnull+git.younes.io@kernel.org>
+Date: Tue, 11 Aug 2026 19:35:49 +0100
+Subject: [PATCH] rust: sync: completion: document Send and Sync safety
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260722-defer-complete-v2-1-6c67af0e2ac2@google.com> <anpinBy0adT0JDVn@google.com>
-Message-ID: <anted6Qc-yHE8cMh@google.com>
-Subject: Re: [PATCH v2] rust_binder: add TF_DEFER_COMPLETE flag for avoiding
- userspace roundtrip
-From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Todd Kjos <tkjos@android.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260811-docs-completion-send-sync-safety-v1-1-0bc663ae967f@younes.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWNQQ6CMBBFr0Jm7USKsVGvYlyU6QA1OiWdYiCEu
+ 1t0+X5e3l9BOQVWuFUrJP4EDVEKmEMFNDjpGYMvDE3d2PpiDPpIihTf44tzcVFZPOoihOo6zgs
+ 2V9sZ6605nQlKZkzchfl3cX/8Waf2yZT37m60Thnb5ISGfYop9EGOadKMwnOGbfsCZZU9X6cAA
+ AA=
+X-Change-ID: 20260811-docs-completion-send-sync-safety-296f16d6135c
+To: Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+ Alice Ryhl <aliceryhl@google.com>, Lyude Paul <lyude@redhat.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+ Miguel Ojeda <ojeda@kernel.org>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Younes Akhouayri <git@younes.io>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786473365; l=1455;
+ i=git@younes.io; s=20260712; h=from:subject:message-id;
+ bh=lUXX/8VrrDvj2MH58FPRom93+MLZWViupLexp9ZgA1g=;
+ b=/TKaSloBlVR3N8B0kkRVoB4Hh/LFDdl6iHWe0C6esiacLthEpsQQfCSyCHDJ2PZwKBu3GZSYb
+ D+W50kmgmhhCuR8HviE1KGKQHebeSl94EHUZ7ZkRONSiJAgGhKJzfAc
+X-Developer-Key: i=git@younes.io; a=ed25519;
+ pk=1DRfzPrQ04RQHHgGK28t+vjIAPv5oISPiAdLMU6J5dE=
+X-Endpoint-Received: by B4 Relay for git@younes.io/20260712 with
+ auth_id=866
+X-Original-From: Younes Akhouayri <git@younes.io>
+Reply-To: git@younes.io
 
-On Mon, Aug 10, 2026 at 11:45:32PM +0000, Carlos Llamas wrote:
-> On Wed, Jul 22, 2026 at 09:09:22PM +0000, Alice Ryhl wrote:
-> > Userspace only actually specifies TF_DEFER_COMPLETE when the Parcel does
-> > not contain fds or refcounts on binder objects. This is because
-> > otherwise said fd or binder node will not be freed until the binder
-> > thread receives another incoming transaction, which could be a long
-> > time. In the case of fds, this is especially important because delaying
-> > fclose() can result in processes hanging because they read from a pipe
-> > that isn't being closed due to fclose() not getting called. Note that
-> > even if TF_DEFER_COMPLETE is not specified for this transaction, it can
-> > still be useful to defer the BC_REPLY command, as it can still avoid a
-> > userspace roundtrip when a new incoming transaction is available right
-> > away.
-> 
-> The processing of a deferred COMPLETE doesn't change right? It doesn't
-> matter if the kernel rejects / ignores the new flag, userspace will
-> still follow the same path. 100% backward-compatible then.
+From: Younes Akhouayri <git@younes.io>
 
-Yes. In fact, if userspace passes the flag to a kernel without support
-for it, the only consequence is worse perf (extra userspace roundtrips).
-It will still work correctly.
+The existing safety comments only restate the guarantees provided by
+Send and Sync. Document that completions have no task affinity, that
+moving an owning pointer preserves pinning, and that the C API serializes
+access to the completion state with wait.lock.
+
+Signed-off-by: Younes Akhouayri <git@younes.io>
+---
+ rust/kernel/sync/completion.rs | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion.rs
+index 35ff049ff078..b5842f04887b 100644
+--- a/rust/kernel/sync/completion.rs
++++ b/rust/kernel/sync/completion.rs
+@@ -69,10 +69,12 @@ pub struct Completion {
+     inner: Opaque<bindings::completion>,
+ }
+ 
+-// SAFETY: `Completion` is safe to be send to any task.
++// SAFETY: `Completion` has no task affinity, and moving an owning pointer to another task preserves
++// the pinning of the underlying `struct completion`.
+ unsafe impl Send for Completion {}
+ 
+-// SAFETY: `Completion` is safe to be accessed concurrently.
++// SAFETY: The C completion API protects accesses to `done` and the wait queue with `wait.lock`, so
++// the operations exposed through shared references may be called concurrently.
+ unsafe impl Sync for Completion {}
+ 
+ impl Completion {
+
+---
+base-commit: 8fe5e5f62bdb9660999449a4b5eaebcc37d7f842
+change-id: 20260811-docs-completion-send-sync-safety-296f16d6135c
+
+Best regards,
+--  
+Younes Akhouayri <git@younes.io>
 
 
-> > +            // Note that if the thread list is empty, then the call to `pop_work()` has changed
-> > +            // `process_work_list` back to `false` even if we set it to `true` above.
-> > +            thread_has_deferred_work = inner.process_work_list;
-> 
-> I might be getting this wrong, but for the new TF_DEFER_COMPLETE case,
-> we have !process_work_list and !work_list.is_empty(). Then pop_work()
-> does not touch process_work_list because it's already false.
-> 
-> So we set thread_has_deferred_work to false? Maybe this was meant to be:
-> 	thread_has_deferred_work = !inner.work_list.is_empty()
-
-You're right.
-
-> > +            {
-> > +                // This performs a deferred push so that `read` can wait for the next incoming
-> > +                // transaction without a userspace roundtrip.
-> > +                let mut inner = self.inner.lock();
-> > +                inner.push_work_deferred(completion);
-> > +                // However, if `TF_DEFER_COMPLETE` is not set, then set `process_work_list` to make
-> > +                // the push non-deferred. This forces a userspace roundtrip.
-> > +                inner.process_work_list |= info.flags & TF_DEFER_COMPLETE == 0;
-> 
-> If there is already a push_work() and a push_work_deferred() why use
-> process_work_list directly? Is it to avoid an if/else?
-
-I guess so ...
-
-Alice
