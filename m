@@ -1,215 +1,266 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010063.outbound.protection.outlook.com [40.93.198.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65458302163;
-	Tue, 11 Aug 2026 02:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786414835; cv=fail; b=BbHo80F8sSZvGE41+5KTK8f7FbNyJhqYCPGqzyibIw/igY6+qF3SMR8Rn+JzroDFx2ZxFyuwLjtRodf08QBMoD1AfVB6PVk6BQRmZK7KeoxzPtqIrrVF5plC0GNYy1O464auUCVreicNK+WyJAWurDQOUDa6ipnj3fRUETEo/VE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786414835; c=relaxed/simple;
-	bh=4PPqWPT0R23C4oVePmD/WnbsmDqpkL3SrbrQLYWRwRc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=DKatfpVgvIT2T7o0w4dlEqQqwEbyzSvEPHV5SOENs9VTlZ7AL7VU5o6ibYnfY/LvCLTnKfz0mAnqNJASxT8Ng8BsxL1W/x9OrBL9uLyXWDkioYimod55i4bqkV1JZoWcAu2dbCUwEzA6wPjbj2ToH2JEEp14uc59AFmU3nTckiM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Wo9DklOk; arc=fail smtp.client-ip=40.93.198.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Wo9DklOk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sfyQehFYb00GKGrzy8Of9a0rliqd6Yra++nxgmxcniCDcR1dajG8jSWqO8fEzqI+0OxqUG6tPIsTUtYMRm6lM7NIl4Pu/s88Q2IdWzUmGzKvSDnqJBIMksHY6lMcM/xrsGdkugdAtSxPMc3ijggfIjkb/lhi0IkzFqy2ZbnBXQ97qbj0/p7nrQO/JddtgJClJ4dJ2enRCQJvcCxULZ/5Fi7/UU8bjG6m6J4uzweWV9Fn7wxSyYyPsuJInoyVZ1uJPJVcOP7H4eNT4KtDEeklVNTN6plfvLaehS65VUTnR0b2SOkzuQer/1Q8mF9fT8Xdr/V9M14ifqHbkPBfb7uBBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o31r5jby1J2rGOybn/hGxbpK9ITmy4DU+Qlq1Z0azpg=;
- b=L8B6mjuG2NjrPWpUQM0NJRZGZlSCd+Rhe6QIrZeh66FQziVytO+8sP26X0eqoI+6y8uSk+TWOkXyGcZu0dUEYgjPefpr5xfHPmIKkwGTmQxvL8O/aiTCWdltz9YfIGf7lTbiuuRGQYis8PpRllOiiKppamdolZYQQ4pZkqJKVOwZL2Kb3bgjc5RSY/MzmZSqeCOrr8zq50hUPH4aeWoVggtMo6yWnFjtkhskjWeSLiJajIeE7MnQ0m8ArzyrEoxbhrqq5YYJjdCWVvbiHfm25HNDdyr+TCIcTSirVzLpQFMOqkkjINrev3nBrle2UP55UZCEVwyCNbFLs2FITNeIGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o31r5jby1J2rGOybn/hGxbpK9ITmy4DU+Qlq1Z0azpg=;
- b=Wo9DklOkqwR+NU13H44IvEB7j6PUSMOtKo6tDLTxP5F4HysUJMr184qmuHH/xZFr7InxCCCwBgB8fZuxBf/1Q8SiwQ9ZV/cZ7QSgaQc75PEhYuvyBLO4wtzR6cSCjoqp6RIkGHIaG7BG/3OqUvSfG78dOKHhWo578xtjp7mKO3VkGrVsLQjcILkvdO+xmJh5ciGKHzRs8XPeOagg2GNXulFvKomexkbNMRtP/BXhvLZqwj0obeztB5kf9966seEUt6mdgmC9fqSAiAvTV8zWwvHPboXvXMUo4XkfM739u1d8TWJYvxMKBA5AmoEZeUUpPcsr9G8T22w2tac5+l3tpg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by MN2PR12MB4223.namprd12.prod.outlook.com (2603:10b6:208:1d3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
- 2026 02:20:29 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
- 02:20:29 +0000
-Date: Mon, 10 Aug 2026 22:20:26 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Eliot Courtney <ecourtney@nvidia.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>,
-	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814C31E9B37
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 02:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786415032; cv=none; b=LgpzeCRsNGS3iyl19r0TwqTkJJiKN9r61kqyK5qs2guon5cfIqvYMTisgPGhUChX1Tg9jpuzMHcIns/0wIitUklBqizsjJfKRokOFXz9EUiWp8s8fy/+G0bah+gn3TacLEb3sHH3iaZ54KsrKgiXbjg4fO+jq9yI2GPscLgYLmo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786415032; c=relaxed/simple;
+	bh=jqjA34bvJgy9gCGvJeh0cm/fqn3PuOKbFmUkrTzIfhs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KFVgUgFSy5LtBlJUrJD7QEkifNNsZUBoYls0Zw+iTNIYAtkhf6K9IKadP2jldaQLCBL19cxej5YtT/NkZ/v3cMjX72iRNlUWQdizYeyeGeVfAUqrciS6Pra47gAPW+wjUI0za24yBh3eGfSduvgkXp9PP5GB11HlCMn6DNAjM6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-84a2c90e383so393500b3a.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 19:23:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786415030; x=1787019830;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ehtZQIet9kzoz6zhTbiJw94Kc28YfT7TvEOKkYFitp0=;
+        b=RThgleS1Y668c9xyVceaNrJ8jcGK7GsflN2qJlpW0vJYPxmSWELJM0tQiWnIAZznci
+         vOjv4yDfuSiTE0OGw++Qri8yb6vM6g/dhMvzjMcAzqMDdL9rhNZLWsOoICemKF4Ij+ZM
+         5UDgatK7d+EYpEld0GVLpqPbaoyUMCAiHpWVA5qzKsT8j2FUhs0dJFiHryDw1IYo6tZA
+         gWTfO/3L/3e8H5yuxZf+H5xY45T8RaKi5pk7zZysysrM/WcBTP0tkGeioFoa4rYEcbe5
+         MiOZ4rxjjdyaRYWhO1FHxx2QstC0NjfDzkWmlBzWOH9gLFEdNXtQAyuTIUN1KaFmln3q
+         O+rQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqxgWOjnfjEsY4+H/TWnV7zGiyXKlupA8nBMW9An/tVfxiDiGZKeGrtI2Twyn5ZeOLy12GDlD++ERzGJFoWdg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyALSPeeR+zhx+mqSXo8meJ0AhIHpYvQvMNsQexiQZPNcb5onf1
+	W8W1hUGKifQFZNd2RdBVj/E21TEZMo/NRknRa3RY4EA3COfXCmLhwrBy
+X-Gm-Gg: AR+sD13GXNM+FEJmOGJQATYbJJc1lvhruOS44L534XBpxarwBOjVlK4Tkl0kz2MJvz8
+	gcmQZ8XuYCmzTTl47lYPB4/dpib/yBY/xrp7kN5FyH1wQwW77u/YIygRraaNT5j5T5oX0Yh5waN
+	tkiBp34i59qnfQDNzm5v3uaPZjY/Lz6aKiOkhSUa+ccrbq3CEWGRROObFCuzOmVXnuJvsJBS4li
+	BxT/XbnbO4ia41V22ke9y4m/oPH7N5qPurQQilcK4770XSIIo3uFjX4haZRDGGXnzLMGqo1Y3bn
+	0shfMWN8aCeza3qqGONOIyWINJWGBYjYCcU+hgYvqpkWNCPAqVgbntDh2kv4R4ALBXWMezlerSo
+	/Oj3AtouOYxDKeppsn3NJqvV3dS11Fy7zyGwwV1fWB1nw1Id4lEy8h1u3iaZWow5J5iULjUe8v8
+	sF1AUliA29BlBWWdOJAe21AMkppaCo4wNXC2x4hDLISmM=
+X-Received: by 2002:a05:6a21:4a81:b0:3cb:b6b0:1b83 with SMTP id adf61e73a8af0-3cc22ef3ed0mr3331482637.9.1786415029605;
+        Mon, 10 Aug 2026 19:23:49 -0700 (PDT)
+Received: from localhost.localdomain ([2a11:3:200::10a9])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-315be8d6074sm52491765eec.12.2026.08.10.19.23.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 19:23:48 -0700 (PDT)
+From: Ke Sun <sunke@kylinos.cn>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v4 2/5] rust: bitmap: restrict bitmap length to at most
- i32::MAX
-Message-ID: <anqG6jrrHTBuDis4@yury>
-References: <20260810-chid-v4-0-c9f206fdcb97@nvidia.com>
- <20260810-chid-v4-2-c9f206fdcb97@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260810-chid-v4-2-c9f206fdcb97@nvidia.com>
-X-ClientProxiedBy: BN9PR03CA0810.namprd03.prod.outlook.com
- (2603:10b6:408:13f::35) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	=?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: Ke Sun <sunke@kylinos.cn>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	rust-for-linux@vger.kernel.org,
+	Link Mauve <linkmauve@linkmauve.fr>
+Subject: [PATCH v16 2/2] rust: fmt: route {:p} through HashedPtr to prevent address leaks
+Date: Tue, 11 Aug 2026 10:23:34 +0800
+Message-ID: <20260811-hashedptr-v16-2-e21e70a58153@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260811-hashedptr-v16-0-e21e70a58153@kylinos.cn>
+References: <20260811-hashedptr-v16-0-e21e70a58153@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|MN2PR12MB4223:EE_
-X-MS-Office365-Filtering-Correlation-Id: a5fe73f2-66fa-4377-fd64-08def74f1cfb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|23010399003|6133799003|4143699003|11063799006|56012099006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	GX98B+C2viZDbiLrc223Sn54qBKblxZzy4iOUCr6qRNRLdN4gItk+AMbOxz4b4JPvAxR2qgZ4GzAnESQ4CpQdSdM4VPKMV5YLSHh6R7UBsH2Wc7fCaVSpFCdUWsLmwftGsfu9jJ7llaOXJt5iOmA3flPLDDe6mk+wHHxy+CLpdNZ/2n2J99Nh2WTZ570bmHhXev7ST+yvtyu+tzKFlciAnlsDGqn/XpYR5cL8OJL7bjACUHRv4FVeZxXJIICmQzodbGSXSgMZTbtLh/ks8hibMWhcESiMkb8qMWjfgvYPQSuG1ehQgM2J/wSJZLStTWhtRaM+X+KWGnBIow3ldZ8fsS+QUUa9UcbLb1weLvDY81BU45wZVlsx0qt7ZrO77NglJvKAZq27l6K8exdKMxuJmWWycPzni2ZxHmDz+vjIAPe0UUH/AUK0nHjPdUCCAPTWosTGynyxBHi+IAVnakvX/HoRYlatGtUnfmSLEccKyELt92503J1Ua1OhMk7MtnZDP5IzHkyTaXDKikv8nOF/jCqZDK7R1y9rxwwmBe89NbCQThVQRotjjs9ZS3wW5sTdlhPyoHtmVCAm4M19IcWuSP+52nbI+ma/24YzS46eO4lGEJz8WRY78bydw/suYwYa327eUXRKyE+bjkXYS9H1PPzyKj97z9f8QuYEPOj2QQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(23010399003)(6133799003)(4143699003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ubpx9nDdSsg9pv/6Xl8Vwv2EAkiiLpgxpY6QH/NgFN5keHzO+PlXKGbLjKge?=
- =?us-ascii?Q?wprTY3VI+DGNz9tY6N0PrkL5214DGrDE3RqiXlN4W1bbUwR0Ga2X9NG+9xqn?=
- =?us-ascii?Q?GVXn/zVVyK4v+R1MEke4ecRMlk1SmnSfDoLW50GGkbOay/VozPjtOT7YUDnx?=
- =?us-ascii?Q?I3jM7POOZcp6GuzcTVhEGmOFE/S1T497R3Uv69IzAB2gLrDIQJzL2UH6qfAI?=
- =?us-ascii?Q?4E+csu6M+n4iV9+FRT30W+E0eMBze7PF6MkIaW2QoOarNn2uVOP7ccrL+8EN?=
- =?us-ascii?Q?7fTX8oh2H7t+YnGVhi1wWY8A0fERAAN64OffSu6ODS04NViWqxqbd2zgOzpv?=
- =?us-ascii?Q?k2oJ3QVgBiB7xzOiylRg7XOflnJBVjNr6lfY0RXdWUgiIUlfY81TTasglRCb?=
- =?us-ascii?Q?t8vx973dpz3p7wW8zb1LtTfOD2SdWV5d7iRpVDMP9wP55ONSZ2zdou1Y8n04?=
- =?us-ascii?Q?VBlokdA7HFAACzxGZgmYnOVbQuTzHdnkvkgNtssTxzvBLgiLF1T2pKbo6BkJ?=
- =?us-ascii?Q?omq7o0TEzlufpQp3mVn0GRQo4U+2oNNTP5XOWtB5ziKMWF3ED4KvBbkquIy/?=
- =?us-ascii?Q?4bB75k0EI8IdvB06VRgapGEPmabLDtJvy+GzCX7bbvNMugmqCH10MnhOvhTb?=
- =?us-ascii?Q?VCC1hC1+gvoAr5Ale+YL5JkZ/GiizxcS9e+2URYmPwj/4CfRl1z8uzetnAFA?=
- =?us-ascii?Q?OzRED+uKcaWAszVBYOWRT0XJeGGU4uz+Cv8gyIEYsXBfmN9UQ1LWOOQxiuwG?=
- =?us-ascii?Q?U2wk1QnRim6zKn9oekijRyd0KNRP78uI/+ieAPj9CSzJlRMRIa0Y8lfuxrzF?=
- =?us-ascii?Q?mZiofL3VT/WzMcHYyh8ndMVgVjXs0EUG7omBnhVCfkmfhG4C0CLRthsoRMU8?=
- =?us-ascii?Q?xBtKe8M/oAsP4Wk/7hCg3CWzQ2qiK5saN8akM+hERUDJh6xWMED/sF1ShVlC?=
- =?us-ascii?Q?eol3jHNBy+z5224J2iepglSb0JMyqlbZBPdrft8Rp8DUa3pa6sX3hcmRkGGM?=
- =?us-ascii?Q?Dr059SYkdmwtHcXwfVKdl0gKzyq8F7XeKR7ZdfwJ9VMscc6ZZjfOCkPVJN00?=
- =?us-ascii?Q?CwLPOppvqoRW11291gyCwhADsMphu1J8XJPpKzG7f4Gh7e9oBbBqyqQ4WcYN?=
- =?us-ascii?Q?8yQrpLJX73XuY1Av2G7A1FHiM6Pu/g3q8MUlF/X7AsbXsN3gxC7b0RXJHnae?=
- =?us-ascii?Q?hlJ719syKHXo1ITogCScHA78BlfDulWtrGtW8w0E8Prv6YkzELbmRg9kMg3Q?=
- =?us-ascii?Q?dEnlb/UqLUFe5hEx5XhvEKlfKj5JDilhnuKIbUN/l4l9Qr+Hnxbam0IIHIyL?=
- =?us-ascii?Q?C/46xe8jIPKTif2vqmf1CQeHRWAshEHjjDXjlgYNMB8aB0Qff9Eb8GjEne8k?=
- =?us-ascii?Q?bVEt05JwfwpWZ8pcCStQUoo8rnlLrTXDm8HJGsAO8vqsYnnOwsfkqNEbQwvt?=
- =?us-ascii?Q?zxyCvVdIB8x8nsuck9TikWNUwLNybh/f4MOMUB7GqwSqfLhobWcyPp4FBb60?=
- =?us-ascii?Q?ct6viW1UyukEJvBGafki8vOLbq8slJQRkPgZr3msSHZofHsug4ji8Vd0EmXj?=
- =?us-ascii?Q?vEjREtb8RptKjRUJgfwb6oGnzbY34rs4IYTFlcgAtZC+rHYTk5+Dui3f6Faw?=
- =?us-ascii?Q?4SVP/4AIqBA41GBFa8gJSq7SQg5vkR+bTL5+eUEQQfcrkTdZir9+zjGQC0OO?=
- =?us-ascii?Q?hK+wx+tQqLbjDVHkqDbJB15875p7M1BefNykqMfKOswJ0SBpW3Ye+2TEY0ou?=
- =?us-ascii?Q?v11m+RrftA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5fe73f2-66fa-4377-fd64-08def74f1cfb
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 02:20:29.6625
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2KeBwuDueC3/16uQfTc+/0qEd+//dsOcE//Asi7sE+IrEjZoljixHBz1wQnOIzJL6ZBf0MWLj7QpW0lxKDdixQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4223
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786414719; l=6384; i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id; bh=jqjA34bvJgy9gCGvJeh0cm/fqn3PuOKbFmUkrTzIfhs=; b=MooNkAZDfLa2ktS0sU2kWLOYnUUg08dmzc+AMP4oUwMwH5peki+Bln85pAvpzMbuB8drxm4eA //xtVDce5TtASn2ohNWfgduya4Ua2Z8d9mC+dZm/I6SPaunQEJMLIxn
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519; pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 10, 2026 at 05:34:10PM +0900, Eliot Courtney wrote:
-> It is currently possible to construct a non-`BitmapVec` backed
-> `Bitmap` using `Bitmap::from_raw` that is larger than `i32::MAX`, and
-> it is not part of the unsafe requirements. Restricting all bitmaps
-> (even non-`BitmapVec` backed ones) to a maximum size of `i32::MAX`
-> simplifies a few things and matches `BitmapVec::MAX_LEN`.
-> 
-> Add that requirement to the unsafe requirements on `Bitmap::from_raw`
-> and `Bitmap::from_raw_mut`, and to the invariants on `Bitmap`.
-> 
-> This also fixes u32 casts truncating in `copy_and_extend`, which could
-> otherwise lead to OOB writes.
-> 
-> Fixes: 11eca92a2cae ("rust: add bitmap API.")
-> Link: https://lore.kernel.org/DKG0U8RLO7LZ.2I1AIH0S38PAP@nvidia.com
-> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
-> ---
->  rust/kernel/bitmap.rs | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-> index a43bfe0ec3dc..0d481d761f2a 100644
-> --- a/rust/kernel/bitmap.rs
-> +++ b/rust/kernel/bitmap.rs
-> @@ -17,6 +17,7 @@
->  /// # Invariants
->  ///
->  /// Must reference a `[c_ulong]` long enough to fit `data.len()` bits.
-> +/// Must not be longer than `i32::MAX` bits.
->  #[cfg_attr(CONFIG_64BIT, repr(align(8)))]
->  #[cfg_attr(not(CONFIG_64BIT), repr(align(4)))]
->  pub struct Bitmap {
-> @@ -30,11 +31,13 @@ impl Bitmap {
->      ///
->      /// * `ptr` holds a non-null address of an initialized array of `unsigned long`
->      ///   that is large enough to hold `nbits` bits.
-> +    /// * `nbits` must not exceed `i32::MAX`.
->      /// * the array must not be freed for the lifetime of this [`Bitmap`]
->      /// * concurrent access only happens through atomic operations
->      pub unsafe fn from_raw<'a>(ptr: *const usize, nbits: usize) -> &'a Bitmap {
->          let data: *const [()] = core::ptr::slice_from_raw_parts(ptr.cast(), nbits);
->          // INVARIANT: `data` references an initialized array that can hold `nbits` bits.
-> +        // INVARIANT: the caller guarantees that `nbits` does not exceed `i32::MAX`.
->          // SAFETY:
->          // The caller guarantees that `data` (derived from `ptr` and `nbits`)
->          // points to a valid, initialized, and appropriately sized memory region
-> @@ -55,11 +58,13 @@ pub unsafe fn from_raw<'a>(ptr: *const usize, nbits: usize) -> &'a Bitmap {
->      ///
->      /// * `ptr` holds a non-null address of an initialized array of `unsigned long`
->      ///   that is large enough to hold `nbits` bits.
-> +    /// * `nbits` must not exceed `i32::MAX`.
->      /// * the array must not be freed for the lifetime of this [`Bitmap`]
->      /// * no concurrent access may happen.
->      pub unsafe fn from_raw_mut<'a>(ptr: *mut usize, nbits: usize) -> &'a mut Bitmap {
->          let data: *mut [()] = core::ptr::slice_from_raw_parts_mut(ptr.cast(), nbits);
->          // INVARIANT: `data` references an initialized array that can hold `nbits` bits.
-> +        // INVARIANT: the caller guarantees that `nbits` does not exceed `i32::MAX`.
+Define a custom `kernel::fmt::Pointer` trait and `HashedPtr` wrapper
+so that `{:p}` formatting uses the kernel's `%p` hashed format instead
+of printing raw pointer values, preventing kernel address space leaks.
 
-Can you enforce it in code, instead of comments? Maybe under
-CONFIG_RUST_BITMAP_HARDENED?
+Tested-by: Link Mauve <linkmauve@linkmauve.fr>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+---
+ rust/kernel/fmt.rs | 141 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 139 insertions(+), 2 deletions(-)
 
->          // SAFETY:
->          // The caller guarantees that `data` (derived from `ptr` and `nbits`)
->          // points to a valid, initialized, and appropriately sized memory region
-> @@ -415,7 +420,8 @@ pub fn clear_bit_atomic(&self, index: usize) {
->      #[inline]
->      pub fn copy_and_extend(&mut self, src: &Bitmap) {
->          let len = core::cmp::min(src.len(), self.len());
-> -        // SAFETY: access to `self` and `src` is within bounds.
-> +        // SAFETY: access to `self` and `src` is within bounds. Both lengths fit in `u32`
-> +        // because a `Bitmap` is at most `i32::MAX` bits, so the casts are lossless.
->          unsafe {
->              bindings::bitmap_copy_and_extend(
->                  self.as_mut_ptr(),
-> 
-> -- 
-> 2.55.0
+diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+index cd7d9664ff5b9..29454c83dc6b7 100644
+--- a/rust/kernel/fmt.rs
++++ b/rust/kernel/fmt.rs
+@@ -4,6 +4,8 @@
+ //!
+ //! This module is intended to be used in place of `core::fmt` in kernel code.
+ 
++use kernel::prelude::*;
++
+ pub use core::fmt::{
+     Arguments,
+     Debug,
+@@ -39,13 +41,110 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+     LowerExp,
+     LowerHex,
+     Octal,
+-    Pointer,
+     UpperExp,
+     UpperHex, //
+ };
++use core::ptr::NonNull;
+ impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, LowerExp, UpperExp);
+ 
+-impl<T: ?Sized + Pointer> Pointer for Adapter<&T> {
++/// A copy of [`core::fmt::Pointer`] that allows implementing pointer formatting for foreign types.
++///
++/// Together with the [`Adapter`] type and [`fmt!`] macro, it enables raw pointer formatting to be
++/// intercepted and routed to [`HashedPtr`] (kernel's `%p` hashed format), preventing kernel address
++/// leaks.
++///
++/// [`fmt!`]: crate::prelude::fmt!
++pub trait Pointer {
++    /// Same as [`core::fmt::Pointer::fmt`].
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result;
++}
++
++/// A wrapper for pointers that formats them using kernel's `%p` format specifier.
++///
++/// By default, `%p` prints a hashed representation of the pointer address to prevent kernel address
++/// leaks. When the `no_hash_pointers` kernel command-line parameter is enabled, the real address is
++/// printed instead (for debugging purposes).
++pub struct HashedPtr<T: ?Sized>(pub *const T);
++
++impl<T: ?Sized> Pointer for HashedPtr<T> {
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        use crate::str::CStrExt as _;
++
++        let mut buf = [0u8; 32];
++
++        // Use `%#0*p` for the `0x` prefix and zero-padding; `+2` compensates for
++        // the prefix counting toward the field width.
++        let default_width = (2 * size_of::<usize>() + 2) as c_int;
++        let width = match (f.sign_aware_zero_pad(), f.width()) {
++            (true, Some(w)) if w > 0 => w.min(buf.len() - 1) as c_int,
++            _ => default_width,
++        };
++
++        // SAFETY: `buf` is a valid, writable 32-byte buffer, sufficient for
++        // all architectures (max 19 bytes for 64-bit under the default width).
++        // The format string is null-terminated; `width` (c_int) and pointer
++        // match the `%*` and `%p` specifiers.
++        let len = unsafe {
++            crate::bindings::scnprintf(
++                buf.as_mut_ptr().cast(),
++                buf.len(),
++                c"%#0*p".as_char_ptr(),
++                width,
++                self.0.cast::<c_void>(),
++            )
++        };
++
++        // SAFETY: `%#0*p` produces only ASCII, which is valid UTF-8.
++        let s = unsafe { core::str::from_utf8_unchecked(&buf[..len as usize]) };
++
++        if f.sign_aware_zero_pad() {
++            // `scnprintf` already applied the width and zero-padding via `%#0*p`.
++            f.write_str(s)
++        } else {
++            f.pad(s)
++        }
++    }
++}
++
++// Raw pointers are formatted via `HashedPtr` (kernel `%p`: hashed by default, plain with
++// `no_hash_pointers`).
++impl<T: ?Sized> Pointer for *const T {
++    #[inline]
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        Pointer::fmt(&HashedPtr(*self), f)
++    }
++}
++
++impl<T: ?Sized> Pointer for *mut T {
++    #[inline]
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        Pointer::fmt(&HashedPtr(*self), f)
++    }
++}
++
++impl<T: ?Sized> Pointer for &T {
++    #[inline]
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        Pointer::fmt(&HashedPtr(*self), f)
++    }
++}
++
++impl<T: ?Sized> Pointer for &mut T {
++    #[inline]
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        Pointer::fmt(&HashedPtr(core::ptr::from_ref(*self)), f)
++    }
++}
++
++impl<T: ?Sized> Pointer for NonNull<T> {
++    #[inline]
++    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
++        Pointer::fmt(&HashedPtr(self.as_ptr()), f)
++    }
++}
++
++// `Adapter<&T>` bridges our `Pointer` trait to `core::fmt::Pointer`
++impl<T: Pointer> core::fmt::Pointer for Adapter<&T> {
+     #[inline]
+     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+         Pointer::fmt(self.0, f)
+@@ -112,3 +211,41 @@ fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+     {<T: ?Sized>} crate::sync::Arc<T> {where crate::sync::Arc<T>: core::fmt::Display},
+     {<T: ?Sized>} crate::sync::UniqueArc<T> {where crate::sync::UniqueArc<T>: core::fmt::Display},
+ );
++
++#[macros::kunit_tests(rust_kernel_fmt)]
++mod tests {
++    use crate::{
++        prelude::fmt,
++        str::CString, //
++    };
++
++    #[cfg(CONFIG_64BIT)]
++    const PTR_VALUE: usize = 0xffffffffdeadbeef;
++
++    #[cfg(not(CONFIG_64BIT))]
++    const PTR_VALUE: usize = 0xdeadbeef;
++
++    #[test]
++    fn test_ptr_formatting() -> core::result::Result<(), crate::error::Error> {
++        let ptr: *const u8 = core::ptr::without_provenance(PTR_VALUE);
++
++        let cstr = CString::try_from_fmt(fmt!("{:p}", ptr))?;
++        let formatted = cstr.to_str()?;
++        // If the RNG is not yet ready, `"%p"` falls back to `"(ptrval)"` / `"(____ptrval____)"`.
++        let formatted = formatted.strip_prefix("0x").unwrap_or(formatted);
++
++        let cstr = CString::try_from_fmt(fmt!("{:>24p}", ptr))?;
++        let padded = cstr.to_str()?;
++        assert!(padded.ends_with(formatted));
++
++        let cstr = CString::try_from_fmt(fmt!("{:024p}", ptr))?;
++        let zero_padded = cstr.to_str()?;
++        assert!(zero_padded.ends_with(formatted));
++
++        let cstr = CString::try_from_fmt(fmt!("{:0100p}", ptr))?;
++        let clamped = cstr.to_str()?;
++        assert!(clamped.ends_with(formatted));
++
++        Ok(())
++    }
++}
+
+-- 
+2.43.0
+
