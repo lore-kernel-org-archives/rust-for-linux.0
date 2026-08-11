@@ -1,120 +1,156 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011056.outbound.protection.outlook.com [52.101.52.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762D843D4EC
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 12:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B675D42A150
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 12:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786450342; cv=pass; b=WbyDpNlaYvJ+hupERi+a3lx923S/cGyVZbdrud8rk6fEIekXQUh1XDTCUL06Yfo+E5+y9g8FGC4ZbvOEw5rCOvJtMLBBD8wjA7uLj/Vx6sHo2BWOVjiG8JqojmNnfF050ZiP408VAz98ipd6lTmQd/8tfARO866+N2mLBAarszA=
+	t=1786450366; cv=fail; b=CBAcXyzXw2Rdeus03LJn7oTrG2tsBfT3coePcF1TfG+sbw4dC/eIsG/wzvx6cQDXwgKRHKYwDWaE63l7YHWeRTGfZaT1A92IeWhUtFiUFnVIxFbsYZyIlR0JR2YTvvksUAZw1v8YXk5x8dJFVACZ3NIzWF7xHNGpomPCUaDDRss=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786450342; c=relaxed/simple;
-	bh=PIUnq1igHbM9QpSX+xU4mn+c1dccMUtp2c0HWqJv45k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sCR+r5s0VBUxOlwU8zzDD1XVfOddeFdkrF0z3dJgDXbLmaqcd8ivFwfI1g4CBE71mK3yTyLbUnj4FV6JGRRVXjF0LwXD0B9ONCH0UJybT012G7R/AFtFIp82mtrdXqLiGW2HRpZzrwdKKWif5h4RRqD3CKBDsX5I0aKCL4gypKE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ga2k87UQ; arc=pass smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786450366; c=relaxed/simple;
+	bh=noIilyBbHvKqomUESCbJBm4XQN0czrbaVFx6PQ71Rmg=;
+	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
+	 In-Reply-To:MIME-Version; b=G24o+ppQWhzDffJCTS3RdMsbbGUkTjkTw//b1nvs9nT6Lrwc1bCHH/3LvnmsPWul3w1FGZobu8ihOi73FBtYKmQPSODzMFS9fYJ9Utt9OHUZDrf6jVxqZaM66Xwtd0TvSVqkIixBffk216eZa/C3V45LBRr/IQWf2mDdFqWzy4Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mkM3Ep2J; arc=fail smtp.client-ip=52.101.52.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ga2k87UQ"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ccae46de39so3017685ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 05:12:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786450341; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A4/FB6Qc4l2UhRQDfbgtMu1Lf9kz3UbfM/BBX4QUJ0wGKy250KBoN6ObLgYv4yQKAo
-         vQ+UtOsHyk8ohJ+LNP8zCmLnpnG0JQWlrNJ1K+tZM9A875ltRuHf9cqintmsQ8ZFoyTH
-         0esVoWagY2QLureIaQ/0Ur9jJ/MrBjaP3Fz1s5E/SDybkJlFk5X+N7sfdCS1XIz8vXMW
-         +wd/bu4LB308N7Ttrf8sYMz9srXFlXBbGioQvtRQSY66Ee8oIycjFiO1snUqv1llBYj7
-         ewSPVMrudvPkeDfL9VzZr3XnEzDaOs372+vVJeCrY+MqCuq39NPSccdtQq8WaTf7Sfqi
-         /iqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1PrX3oMhgzL5kU/ehDAdHTIRMgST+xnXirGkVDz4tsQ=;
-        fh=/L4xoFv+yQ0h1ON/lBUSkc347maCpcQ3lzukZV1fk+U=;
-        b=CK87yRKVTi8V1mBk7lkWNo6dNttAGoHkQIuIQQwuecqxtyRiIwqp35vANbQJyn2eLU
-         At8J2Sp7NSiHLaTclruqi7nEGOYh5GxSsj4Q5CjM41jms///+vy0P9xcbYHUw0wOmFcZ
-         ywUirMHiNYLcGuTzJuQeSFj61ZPN/rC7Gs6X4MKfGzbTMh0wjNbhxLO//rEM5Ai9aX8L
-         +ymlZ4GAUGBd2vziapnJWTMjVsa7ZaQOsCA+W9fOkAw/MC5BZ87o9JYFUIe6FfvjJfdG
-         Diul15cLZ0bGMEYS11cvxemKoPenfxXfhn2QEBTBhFrC3lyNMYwmyhyixk1pcIb04H6J
-         d13g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786450341; x=1787055141; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1PrX3oMhgzL5kU/ehDAdHTIRMgST+xnXirGkVDz4tsQ=;
-        b=Ga2k87UQ+iLl33tKA5FP5c/gneHY+ObW37W+4Rkgh+e5/Ium/5QuQxgbhKQ6f2nanZ
-         Xh3s4bunwc3w0Zh/g+6AcZZ+8s0XPQYGBlC8kTkLK080cyaawAcbDaovxsQl2Rr08q1i
-         /hqYiVQVlYC6d4KDLNtqTHOZbeK0KVbSq2i5JT73TLqiKQ2ZJdUu8UXaIQjh/rb8GvRa
-         ILdVGNbaP8lwZYXbulul0PBvkW11+/XqDm8EiKOSlEYsNU3QD+Il+9W5sfbsNVT0ibhE
-         63MzulYvI4bCeccGKNOgVSZcuHa975J2irPEoVQAsHVSO0R/dsRwYVcCSM98DV2Tnba2
-         Jiow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786450341; x=1787055141;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1PrX3oMhgzL5kU/ehDAdHTIRMgST+xnXirGkVDz4tsQ=;
-        b=bTsKTZB+mK9K+QweRayht0DuYGhdxmpGRnZZ7nuYc7vjjzFJDJnHQ7zyQkqUwYTHy/
-         NoN7B4uyxzGnjRoBTnQUqFVkBFfpCSfWlMpZFOsXKMkeNTuk0zxTiVZoknGbOnB4lY/S
-         o8OfCU5GDxwTQ6pKa+zniIkdBftYm+wtAwaeA7cb6a7cl8y4eT4yny2kQVIHvHptDWoO
-         9LdEV4j93qibPWjNPM/qgWZoISZiN2knpRvbqXVNWQeqABgxzLU0vmvYZuFJeiWxF28a
-         ePVKSBfD83Ju0YLDD44Q+/dcow0CbcpsfPsob2aOaKPbDmAjX791abKMOSu3oCaK9g8S
-         8M9A==
-X-Forwarded-Encrypted: i=1; AHgh+Rqh+ZtGVqLsYSogc4oh4UltRoz928sIkKIVWA4VR66ZygATrLcdqb1K2aA36Ij9qqdAGTLiHymQUBKu8IgzBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBODWMXYvV9cZijpPKeoS4gYLGsffhl1Zlc+UQN5K3VbuTfJ4t
-	2RXOQw5zLL+jWmO7Ty84Ef+zlEaL1GYoZrsxwQigMqV6f173HOvebAQpJ8g0RTbZpYDk/1PFgyj
-	nBYwvO87N85FMEorw4Ms+zDl+2vCaQeU=
-X-Gm-Gg: AR+sD13YlyooUYnavk+qCsZSIlitPVcOo/ALQGWUKhFdqOs4decyypbNbJPEQ/xl0rd
-	lG3VBoGo4wwsDsq+l4G5OL6Roz5ZiTLgGC/myj3hgPSgZfdnCK0SwnCOLeMvOhrhGZ8nvpLMKXb
-	355FwY2dL8RBJ3aOrKNRmD48G2GxfpZkWyyB4urdrptUBRj5ftJQGpqro/uZNDSf33xRquCxg5f
-	3aCnlJ54W+4iD24CQy4oa+G5YvIHD9Le3GgPYf11i7KZZ6+ij/IotbIxh6jvswpD0ex+pNa9lHt
-	WHS5ATVq3+QT9f+5kOcFFmHB9CAsnkZqdP1v1VrsD8KxzS37c7SNM4DBUXEpOY22KP+hultHD1Z
-	4dEGgFYdvMV7PWsUwpE2Tvx/KxplpVS2i20GUUKR8UOcbCv7qwbFhqepwujXb
-X-Received: by 2002:a17:902:e80d:b0:2cf:9e90:8be with SMTP id
- d9443c01a7336-2d317ab0841mr24888665ad.4.1786450340502; Tue, 11 Aug 2026
- 05:12:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mkM3Ep2J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H3G7pbuhT7jr4o6Ier0k9fb4W9h21htJ/ySBjDoAdFIKiCe5nJxvq/o5qylyZO8wpA8zRh92AYhiZtdTgq479GJAxuT56TAiC4m3MZtl9GQQMOrb/3oec8ng8aBkcBI56XE6Ne6XuoDdH3Q3oF87sqgJTWZX49gkPf7LtNYHSY/QcAtyg133TIVSvQz5J3gJoQlLfEMihNDP0Ubf0fQq7+tP7oedR0T964LBcPKG5K2bbRb3BWv0TIvzYyZ4EN9U8p/2s+EtWkt8JKMsHkesi8uk9hs0XIW1xZ2zA2KW57l/camzA/9isNrni7YovcdEuXoFyAtpGPwY1OqdTdzwDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=raVlbPUKlbwS1sZlaTB4eDSLfz60PMFVcTKfP0vqcw0=;
+ b=MI6qZNj4bmkihvIbaEfZlPxfBq7Meke3Ep/UEOagoA3UlQir5Gu7yVXcYt4si0uNUvc5wHYk6oBO0MvEGIsrfK00fbuA7NtMT9pl0ApNzMuX5Rwyp9Jebl+16VNBAYFtWxL4mCXVhn6AGh5hQywHbmoEcIniwV9kcx05/aKH8pTXDpZwUyWIhWPkuzL0VB1cr/1izAB8ZWtawIF49VgZOjvpxA1Wcv3einMlpPzNX2WrfMFV5KIidayCGYqCJmy+8jmNfglCK/0seFwh2FfJs0VKlJJ2erfw0LdfT7WJDLEi7WD6l/EUOlHBmJhcX+pVpRZUIOPMpn/P+AgQbm8vpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=raVlbPUKlbwS1sZlaTB4eDSLfz60PMFVcTKfP0vqcw0=;
+ b=mkM3Ep2JX3NeY7P85WwpUIXgb7g5nyXdURT/d+6e+oxt+RscdFa+lewMo0jbgN05XcDpSHwKMK/foQ9hWrVTA+Xn9UMWW98tQ20rHf2gTh3iE0tVr//REt/PMul0skAsU2IhK4QiTmMFi8/3kOaPPGSxKqqV1BpNsjU3TUAQ33PPzyihDpydDuQ1/iQS9mxirHDQBq9cts+zZEHZbmFwqlpY+tZYEosDuFuHw36RiqwZ1eyZO33AwPMKCbEKPorVgkxG9UeJn8pQ+FC1kxbR3QHQ50Bgy4rVU2Q8LCSarIdorw8o85yqHf+ysmoCweGZjLEqfv3HYQ0ZSBDSov6aRQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SA1PR12MB6728.namprd12.prod.outlook.com (2603:10b6:806:257::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 12:12:39 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0315.008; Tue, 11 Aug 2026
+ 12:12:39 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 11 Aug 2026 21:12:35 +0900
+Message-Id: <DKM3SRUKRG7B.3B9E6YEE9JTST@nvidia.com>
+To: "liujinlong" <liujinlong176@163.com>
+Cc: <rust-for-linux@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Wedson Almeida Filho" <wedsonaf@gmail.com>, "liujinlong"
+ <liujinlong@kylinos.cn>
+Subject: Re: [PATCH 1/2] rust: mm: add VmaRef range query helpers
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+References: <20260811032603.2651065-1-liujinlong176@163.com>
+In-Reply-To: <20260811032603.2651065-1-liujinlong176@163.com>
+X-ClientProxiedBy: TY4P286CA0048.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:36e::9) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260808062839.1159990-1-tomo@flapping.org>
-In-Reply-To: <20260808062839.1159990-1-tomo@flapping.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Aug 2026 14:12:07 +0200
-X-Gm-Features: AUfX_mx2-7LiqvGaFVUtsaFzbmVsxEllNJuGQM6l_umGHownKEW-bfpWaUPQh1g
-Message-ID: <CANiq72nhLVU2MqZMoVtM7BfmEmvXGf-oq13bS8fJpfw=oSWofw@mail.gmail.com>
-Subject: Re: [PATCH v6 0/7] rust: use Delta instead of raw jiffies for
- timeouts and delays
-To: FUJITA Tomonori <tomo@flapping.org>
-Cc: a.hindborg@kernel.org, aliceryhl@google.com, arve@android.com, 
-	boqun@kernel.org, brauner@kernel.org, cmllamas@google.com, gary@garyguo.net, 
-	gregkh@linuxfoundation.org, ojeda@kernel.org, tkjos@android.com, 
-	acourbot@nvidia.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, daniel.almeida@collabora.com, frederic@kernel.org, 
-	jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org, 
-	tamird@kernel.org, tglx@kernel.org, tmgross@umich.edu, work@onurozkan.dev, 
-	rust-for-linux@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SA1PR12MB6728:EE_
+X-MS-Office365-Filtering-Correlation-Id: 65cf8b44-798c-4ac5-41c0-08def7a1d64a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|10070799003|23010399003|366016|1800799024|6133799003|18002099003|22082099003|11063799006|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	iTTjt2FFbXmvGh/k/k9dw3GUGZI9DMcNEKgQxby5vNNywCeh9EYio+NZmiH9MjuwQKW5qNb2az9CaEiCkQ3qR/Ui94PmlaARuFW2heENKnAecddKLKl7XtD7j8aNssm0SiRnWNX810nDV3WPwZCqV0Dml3C+NLWn/iSrs3hGJpVRMXZUSmvEFgPaY7LNHJABGtH1WMvykBwpDUt3MY3V94ij8KDePoCZxpQB5Us41MdRojmh1OB0V17mweJwi5iT3uOXfZKfr+7zHLZt+OVv19OIXHTxcxE3hxBwp4/4t1fdsJzjSVubkkRGYSbI5035X5948YKk94loyy4Wgw4MVEU5jUyOTbNfHDJaZWySaT0jkRmp66E0/F7eu4fBodbIAlv2TkilD+RehbqtuN1lpdjJTehbYQ76BLqg+gHuPUET/eETYte65xHfT0tSKO9TVMexMQ5mXg2rcb2L0cbKXiBc8tCUbMVrDG3VOPAZWSq6WPeo2gIJ6omat9knPk8jFKdvWUUJLcNkWOxE6Wl7ZVjg8vE1XNZurCro9F8ACmEnsPSlu5r16a/bxQSiaIrAzaGS+rTpNR3Eq2EiKO0vbFmpQlVdKWylNGUM+ECfAsWROcZiRkIZDAW2YUGFs0H6PzKjBCQbBe7s0yNc//9f+/gl/kGgTgpk+Xc575iGop0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(23010399003)(366016)(1800799024)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RTJMSXp1VVF3bk5MZmFMSWxBdC9rRS9ML2o4WVo0SjNHUUFRSFFGWFptSmZ4?=
+ =?utf-8?B?Q0w0VlB5SVVTbmpROTAvdW9BV05zM1hiZHh5MHg4WkZEaDVkT1o2VmtaRUlH?=
+ =?utf-8?B?azFFM2VqTW9hYVNNMmV2RzJ1ZmhXV1VqZW15dUVRRU1rOG9qRzRkb3BMR1NW?=
+ =?utf-8?B?WDVFMFNKL2ZUdE1mTDdzeHVoNFlhNktHMmJLbk96ZS9najlpMTd2dXZlUjlW?=
+ =?utf-8?B?aG9GemtMVGRaYWdZSGRyRENUQUQzM2x0Ulc3dDAvalpvbUVHRTJOQ0s3VWpK?=
+ =?utf-8?B?NVZVZU5yaXltekNhNGhsUU8zQVoxcFpHR1RjSHhxOVFGTjRCdEt4cHN1QWY1?=
+ =?utf-8?B?dnJCSUVzbDNKdHRrNFZNdzBneWczUGY3V0ZBRUJiRjJxN0JoYTJ1L0hDdkNW?=
+ =?utf-8?B?MDRlMVo1ak12WVRuQjU3OC9TTDVMMllBYXpBVFlwcFdONzAvVnB3dmVlZ1Zj?=
+ =?utf-8?B?N3ZjVHBGeWRFNGJzcUUwZTQ3bmp3alJzNm8yVE4walY5Rm9Lb0RqcVl5azZU?=
+ =?utf-8?B?ZXZ1cHoycjhxSjZuNVh2VzlVcnhzaERha3Q5bkZ1dDhDMUtXdURhUDlqdnhG?=
+ =?utf-8?B?dklvVk9yOXc1STlnTHM5M2dIYkVwblRySlBHUnJGblpuM1lFRGNkSVlIN08x?=
+ =?utf-8?B?T0l3RVZvQlhCTHZBZmMyamFiZjR6U2E5Q0ZIY0ZPZkdoSm12Y1JXcERScTlT?=
+ =?utf-8?B?MHYwcjhXL1N1Ykc3bVYvdWdVWEk2b01WSFZVZ1FMNXZmMndaeE0xRi9Yb1o3?=
+ =?utf-8?B?MXVxaVlvQUh3L010U2JsbDRtZUNkTkxsMWZkSVRTN092SHB0UGI4UHVQN0o2?=
+ =?utf-8?B?SE5nTFVSR0FBUHZ3YmRDWFhNNEsyZVRzTWZiWGxMa0tEZ1pUc1Bka2k2Y1FQ?=
+ =?utf-8?B?MDErajFXTG9CLzRMcjZKVE5GcHBrVGRoUzJzTnRaNHd2bnZCMGIwcEowWm1w?=
+ =?utf-8?B?U2dBNC9mdjEyV1Jkb0R3dlN4dm1YaEF6c0Z3ZWUrd1ZFUTRXbHpjTG1pdkE4?=
+ =?utf-8?B?cDF1UjhIT0dVTk5NRHV5cWwrQ2Yva0hrdHVIN2x1MXpxc2w3bk13ejZuWlJ3?=
+ =?utf-8?B?MHArMG5jRCtUQm14cWVyMDEwc2g4eWk4ZTgvRk9IWFFLVWc1aGE3WDMzODFs?=
+ =?utf-8?B?R25YSjk2T3NiTnlzaXBDZDcyRjhmZ1BJSG5YemxDaEdrRWc4RjBpc2xtQlFW?=
+ =?utf-8?B?OFdkQThvcmF2UmdMUkhDM29NaDdzelgwSjhwK0xjdUpkdVFRL0FVcndtdFB0?=
+ =?utf-8?B?cnJIZTl0ck0wcTRwSkxsdG1pVDFRUFMyRE5zK3hZT0E3bTh5cUJxendlVXB3?=
+ =?utf-8?B?WkRKZHJUei9DaS82WjVFM3BMSDJuWm85QjJBZXNESTkvSTkxZTg0S0FvYTNH?=
+ =?utf-8?B?U095Yi9pMkJRanIzYitrSGFxK0JjTHpIdHNaa3hHNmZpQ2ZIKzhsUWtTVWpv?=
+ =?utf-8?B?L3VERWRzendpWHN1dWNLVXBNdWsxdTJ6cVhZcVBGbEZ5d2ZuTmpWcmxxb0lW?=
+ =?utf-8?B?NnVwaTM5MDRYUmZiWUY3Y2U1RHpQMEdBUkZXQXpSUVpEMzhlQU9oYk5KdStF?=
+ =?utf-8?B?eE0rTFFtNHNiSjR6eEFrenJUL3luOUczdVJoZUZjR3YyblNQNjJnaUhYN0pV?=
+ =?utf-8?B?VWRnZWc5d1RXRUIrN2xJdm5jWDl2SVlaQTcrSXRpeEtkUFQvMkVKZ29mVVVD?=
+ =?utf-8?B?OGVDaC9qc0ZHcjRHYW8yeFRaaEo0S3NoMER4RFk4NWlJbStwVjBZbmpXb0NN?=
+ =?utf-8?B?WEJCdnYwUEw4TTN6cWRZWmtTa0pHQTBSNllodTF6ZUx6NGliVFFiSlgrekM0?=
+ =?utf-8?B?NUVoZy8ycEZOWUI5bFAwSThqWjdXcFhlYjNhbVpLcUxzbnpQTEpCL0g4N2JD?=
+ =?utf-8?B?cHRJN3ZkSGF3SVQ3ZXJUQ2ZQK0JmYkQrcEV2VXV1TGEzKy9jc2c5dVFyNE5w?=
+ =?utf-8?B?cG1Pd21jMS9NdDdjMzZoayt0bHJEV1VVUlc3Vmo0ZjE1Qi9ReFovcWNiMmkx?=
+ =?utf-8?B?ZU51eFhKc2JWT0RHUUgrVktrdWJpd3JiMTFOUm1QZ21qU3VzQlRXb1RUUUMw?=
+ =?utf-8?B?ejZNK1lhZ0RKVXNwYXRHTEN0djV1dTJpUnZ1My9Nakc2T2tTMDZSNnFMSzZv?=
+ =?utf-8?B?TGN4QS9wUEhVUml0TU44MGxRdmw0alZIWVdzQ1pyTkdDTEZkZC9mZzIvcnda?=
+ =?utf-8?B?L2NpZlRqZFUvODVFTmxKSnVFOHNadTVWQ3NCMHkyanVCbFVhT0dsWXZKbDVs?=
+ =?utf-8?B?am9BUDFwVjEzT0U5T291ckc1bUUzSU9jK2JqcFhrb1F3NEdjRHZHQXJJWkcv?=
+ =?utf-8?B?N0VJYUJka0tVS1N3a2xiTEE4SVA1ejU3ZFZRL2xmSm52ckZHd0dtL3A1UWdx?=
+ =?utf-8?Q?lGNWFPPsphcbJA80IxPpMigdUpg6vX6kKuD78YNJe0c6J?=
+X-MS-Exchange-AntiSpam-MessageData-1: NbtisT63S68UKA==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 65cf8b44-798c-4ac5-41c0-08def7a1d64a
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 12:12:39.3112
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iRTzMBxlzyAdSANQZxuPaw/E5InATp5WDhVKRkzZDmbDbwbpx8PhwpEnsia523nUiUbdSnZ3ErDgu9ou5Swe8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6728
 
-On Sat, Aug 8, 2026 at 9:44=E2=80=AFAM FUJITA Tomonori <tomo@flapping.org> =
-wrote:
+On Tue Aug 11, 2026 at 12:26 PM JST, liujinlong wrote:
+> From: liujinlong <liujinlong@kylinos.cn>
 >
->   rust: time: make Delta generic over its time unit
->   rust: time: add jiffies time unit for Delta
->   rust: time: add Delta::as_millis_ceil()
+> Add helpers on VmaRef to query the virtual address span and test
+> address membership:
+>
+>   len(), is_empty()       - byte span and zero-length check
+>   contains()              - single-address membership in
+>                            [vm_start, vm_end)
+>   contains_range()        - sub-range membership, returns false
+>                            on overflow
+>   is_page_aligned()       - PAGE_SIZE alignment for one address
+>   is_page_aligned_range() - PAGE_SIZE alignment for addr and size
+>
+> is_page_aligned() and is_page_aligned_range() are associated
+> functions rather than methods, since they do not reference any VMA
+> state.  They live here instead of a separate utility module to
+> keep the page-alignment helpers close to the range-checking code
+> that often uses them.
+>
+> Signed-off-by: liujinlong <liujinlong@kylinos.cn>
 
-Applied to `rust-next` -- thanks everyone!
-
-    [ Reworded to remove stray word. Added intra-doc links. - Miguel ]
-
-    [ Added intra-doc links. - Miguel ]
-
-Cheers,
-Miguel
+I guess a more useful implementation would be to just return a `Range`
+of `start..end` and benefit from all its methods, which cover most of
+those defined in this patch.
