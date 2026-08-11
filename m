@@ -1,34 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8107640B397;
-	Tue, 11 Aug 2026 06:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF33921FA;
+	Tue, 11 Aug 2026 06:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786430468; cv=none; b=Vj2+1hVQnw1JuVIxNELZWxEpOwU3i1hdCq2Yb7NK43SEuwD2ibSPvrI1UupRgygOA6CayRYZVqYibvQSKOxmHB8a08u+CAO48Yjr/JPjeAgd1Y7bwnsdOnk64Lh+2aB4DHfbUCm7CZD7zb72/Wx4SsfBV4oYRojhCT7XzSCeJcc=
+	t=1786431099; cv=none; b=jAzhCm2TMSBaKU3Tyh+jQQMECzhuzdyfXjE6xOCcFQ92DiDwZNbXG0u5VY1sfOzsuE7X0my1PJjg1m10PXRNgP/xb4ddhAOKPBk8kHvoXjo+SggILTUrrPJCFPKWnRCc210v4pxU0DaRyEgTD+hbhqHCtQgFSyPqoA3r3z8UipI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786430468; c=relaxed/simple;
-	bh=t9D2Px8pUwrEcOg/YTzMXGqqQKBGT5HfYznSBGN9YqI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CUdwvtm++oeKDhB9CkXDiw89JBF2opyaVEEqIue1d52jWiVbhAL6mFTY0Nus/BdwzcJSumc8Wm3rseMDk5gIY5oObYt9aMMLSvR9FzOE5TxZC4cgvsa3MUJrdJTiS8nCqORQ0XAg1eJL8HoKdeauhRrPd+k9nnWQJV0xk3LQKaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JFSor2hS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1786431099; c=relaxed/simple;
+	bh=pbm5nJARrive7EbKpkhyo8U1Z4SlieWC4PcXBCGvFvM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=EoKourZ6+WNiv5AukXoMEmmPE8mLheMyz8C7z3igLvHqXgGmBZs3+fJgFZQFj4MIcdRAfD6OxgSONeFaL0iyKZf3Xde9wVWMPSRzeGiiSHE6ak1e3aWk0aogfx9KuxMoqXzhNHvd+q/swZGP0YtZ7k6isRD+pUI6La3T2cqzK5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Yqf4+z4b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JFSor2hS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 67B00C2BCFA;
-	Tue, 11 Aug 2026 06:41:06 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Yqf4+z4b"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1C528C2BCF4;
+	Tue, 11 Aug 2026 06:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1786430466; bh=t9D2Px8pUwrEcOg/YTzMXGqqQKBGT5HfYznSBGN9YqI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=JFSor2hS5saK23uNOWSFZthothWmaXMnxBe0i93x7kOdIMBPvKjJhM1NXYcp18763
-	 ePvhNPHsnbi1K/5lHMTjAJGU1XH2ord61ZCfKBgqfcdj/JfWaTyjr6aUIsi3E2q77R
-	 ZNad6prv175RY5/mqFrJ49LkUWPd2DHKCUfiZcYs=
+	t=1786431099; bh=pbm5nJARrive7EbKpkhyo8U1Z4SlieWC4PcXBCGvFvM=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Yqf4+z4bUvdRvBRVTD3YjNXNRpqTWK5xKh7aKBQdIMsGFlKRbKQ99euVVZnbLhMUJ
+	 I02sbV9DOJzX0lspOb1yhVgSrw6iPdarLFsEghUBeg7CAgZHH9Xl4+Yuyk+dKfmnPj
+	 likAEiDNS9FS6YoqsZXs86eNd4KUbNsqpeCJISMw=
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50EE1C5B569;
-	Tue, 11 Aug 2026 06:41:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07901C5B570;
+	Tue, 11 Aug 2026 06:51:39 +0000 (UTC)
 From: Alvin Sun <alvin.sun@linux.dev>
-Date: Tue, 11 Aug 2026 14:39:49 +0800
-Subject: [PATCH v10 07/10] rust: configfs: use `LocalModule` for
- `THIS_MODULE`
+Date: Tue, 11 Aug 2026 14:51:36 +0800
+Subject: [PATCH] rust: block: gen_disk: set fops.owner from driver module
+ pointer
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -37,123 +36,123 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-fix-fops-owner-v10-7-7e71776f9dbe@linux.dev>
-References: <20260811-fix-fops-owner-v10-0-7e71776f9dbe@linux.dev>
-In-Reply-To: <20260811-fix-fops-owner-v10-0-7e71776f9dbe@linux.dev>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
- Gary Guo <gary@garyguo.net>, 
+Message-Id: <20260811-fix-gendisk-owner-v1-1-c0fe4a449ecb@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAHfGemoC/02OS47CMBBEr2L1eoz8SdKOr4JY2J02WCMSsENmJ
+ MTdxwqzYPlKXdXvCZVL5gpePKHwlmte5gb6SwBdwnxmmafGYJQZlNNKpvwrzzxPuX7L5WfmIoP
+ rJoWmD9FEaL1b4Xa0bx5Pby58f7Tp9R1CDJUlLddrXr3Y8GBkIdyrYaVL++iF7ZD6YGmYIqfRW
+ RMTsev0mMhYHli5GDrEBJ+iXuyavR53zbTc6r8j24AYo0EayG9awen1+gPRm4Dd/AAAAA==
+X-Change-ID: 20260810-fix-gendisk-owner-a84d0725ab2b
+To: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
- Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
  Daniel Almeida <daniel.almeida@collabora.com>, 
- Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>, 
- Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>, 
- Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>, 
- Igor Korotin <igor.korotin@linux.dev>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, 
- driver-core@lists.linux.dev, dri-devel@lists.freedesktop.org, 
- nova-gpu@lists.linux.dev, linux-kselftest@vger.kernel.org, 
- kunit-dev@googlegroups.com, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- linux-pci@vger.kernel.org, Alvin Sun <alvin.sun@linux.dev>
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786430463; l=2926;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786431097; l=3831;
  i=alvin.sun@linux.dev; s=20260317; h=from:subject:message-id;
- bh=t9D2Px8pUwrEcOg/YTzMXGqqQKBGT5HfYznSBGN9YqI=;
- b=qtMV7yeXqhaYZVvul4NqGhUUdcVoBe2tah6MnJR9lmmRAMqMf9KCsSFMqum5YtQXu+Xwjb+DI
- 5rNSgQBEO78AV7CBlIRkWjPfI8WZtXa/o3bEw/LNmfHh2b/LISgMfT0
+ bh=pbm5nJARrive7EbKpkhyo8U1Z4SlieWC4PcXBCGvFvM=;
+ b=T2ZchLdFCUfJ9WJciOwxNBzqrG3yMEJJcvWk+STpLw942FWZhVz/5uiYk3Bkx3TefgwMt8OcQ
+ S8YbB8njRigC12DooF4toA7GBCkvnR5XylzIjA7XUofshKJlfno4VZ5
 X-Developer-Key: i=alvin.sun@linux.dev; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for alvin.sun@linux.dev/20260317 with
  auth_id=684
 
-Replace the `THIS_MODULE` static reference in the `configfs_attrs!`
-macro with `this_module::<LocalModule>()`, and update
-rnull to import `LocalModule` instead of `THIS_MODULE`, consistent
-with the move of `THIS_MODULE` into the `ModuleMetadata` trait.
+Set `fops.owner` from the driver module pointer via
+`this_module::<T::OwnerModule>().as_ptr()` instead of defaulting to
+null, so the module cannot be unloaded while a block device is still
+in use.
 
-Assisted-by: opencode:glm-5.2
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/block/rnull/configfs.rs | 5 +----
- rust/kernel/configfs.rs         | 9 ++++++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+The fops.owner fix series [1] covered DRM, miscdevice, configfs and
+binder, but missed the block layer's `GenDisk` abstraction.
 
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-index c10a55fc58948..9b28be2150933 100644
---- a/drivers/block/rnull/configfs.rs
-+++ b/drivers/block/rnull/configfs.rs
-@@ -1,9 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use super::{
--    NullBlkDevice,
--    THIS_MODULE, //
--};
-+use super::NullBlkDevice;
- use kernel::{
-     block::mq::gen_disk::{
-         GenDisk,
-diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
-index 2339c6467325d..cd082b83e9e74 100644
---- a/rust/kernel/configfs.rs
-+++ b/rust/kernel/configfs.rs
-@@ -875,13 +875,14 @@ fn as_ptr(&self) -> *const bindings::config_item_type {
- ///                 configfs::Subsystem<Configuration>,
- ///                 Configuration
- ///                 >::new_with_child_ctor::<N,Child>(
--///             &THIS_MODULE,
-+///             ::kernel::module::this_module::<crate::LocalModule>(),
- ///             &CONFIGURATION_ATTRS
- ///         );
- ///
- ///     &CONFIGURATION_TPE
- /// }
- /// ```
-+#[allow(clippy::crate_in_macro_def)]
- #[macro_export]
- macro_rules! configfs_attrs {
-     (
-@@ -1021,7 +1022,8 @@ macro_rules! configfs_attrs {
- 
-                     static [< $data:upper _TPE >] : $crate::configfs::ItemType<$container, $data>  =
-                         $crate::configfs::ItemType::<$container, $data>::new::<N>(
--                            &THIS_MODULE, &[<$ data:upper _ATTRS >]
-+                            $crate::module::this_module::<crate::LocalModule>(),
-+                            &[<$ data:upper _ATTRS >]
-                         );
-                 )?
- 
-@@ -1030,7 +1032,8 @@ macro_rules! configfs_attrs {
-                         $crate::configfs::ItemType<$container, $data>  =
-                             $crate::configfs::ItemType::<$container, $data>::
-                             new_with_child_ctor::<N, $child>(
--                                &THIS_MODULE, &[<$ data:upper _ATTRS >]
-+                                $crate::module::this_module::<crate::LocalModule>(),
-+                                &[<$ data:upper _ATTRS >]
-                             );
-                 )?
- 
+This patch was meant to be sent separately, but I forgot to send it.
 
+[1] https://lore.kernel.org/r/20260723-fix-fops-owner-v9-0-c1c3af7f7bcb@linux.dev/
+---
+ rust/kernel/block/mq/gen_disk.rs | 34 ++++++++++------------------------
+ 1 file changed, 10 insertions(+), 24 deletions(-)
+
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index fc97dd8739746..215c407d466df 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -125,30 +125,9 @@ pub fn build<T: Operations>(
+             )
+         })?;
+ 
+-        const TABLE: bindings::block_device_operations = bindings::block_device_operations {
+-            submit_bio: None,
+-            open: None,
+-            release: None,
+-            ioctl: None,
+-            compat_ioctl: None,
+-            check_events: None,
+-            unlock_native_capacity: None,
+-            getgeo: None,
+-            set_read_only: None,
+-            swap_slot_free_notify: None,
+-            report_zones: None,
+-            devnode: None,
+-            alternative_gpt_sector: None,
+-            get_unique_id: None,
+-            // TODO: Set to `THIS_MODULE`.
+-            owner: core::ptr::null_mut(),
+-            pr_ops: core::ptr::null_mut(),
+-            free_disk: None,
+-            poll_bio: None,
+-        };
+-
+-        // SAFETY: `gendisk` is a valid pointer as we initialized it above
+-        unsafe { (*gendisk).fops = &TABLE };
++        // SAFETY: `gendisk` is a valid pointer. We have exclusive access,
++        // since the disk is not added to the VFS yet.
++        unsafe { (*gendisk).fops = &GenDisk::<T>::VTABLE };
+ 
+         let cleanup_failure = ScopeGuard::new_with_data((gendisk, data), |(gendisk, data)| {
+             // SAFETY: `gendisk` came from `__blk_mq_alloc_disk()` above and
+@@ -211,6 +190,13 @@ pub struct GenDisk<T: Operations> {
+     gendisk: *mut bindings::gendisk,
+ }
+ 
++impl<T: Operations> GenDisk<T> {
++    const VTABLE: bindings::block_device_operations = bindings::block_device_operations {
++        owner: crate::module::this_module::<T::OwnerModule>().as_ptr(),
++        ..pin_init::zeroed()
++    };
++}
++
+ // SAFETY: `GenDisk` is an owned pointer to a `struct gendisk` and an `Arc` to a
+ // `TagSet` It is safe to send this to other threads as long as T is Send.
+ unsafe impl<T: Operations + Send> Send for GenDisk<T> {}
+
+---
+base-commit: 2ee859ebf156157609f71060ae472711c8cbc326
+change-id: 20260810-fix-gendisk-owner-a84d0725ab2b
+prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
+prerequisite-change-id: 20260519-fix-fops-owner-e3a77bb27c6c:v10
+prerequisite-patch-id: 347c5a3c6dbef9832bfce8419fc23e6e08ba477f
+prerequisite-patch-id: 190cfd53d3430ade053b15db36cac9e372e2566d
+prerequisite-patch-id: fdb2387ea1074c3bf16028b58c3df73e2e1783b1
+prerequisite-patch-id: f38222c64f7d29781036ae8673808cf4e9a9d430
+prerequisite-patch-id: da94d5d3af25778145b976f65f7eac281dc6ae79
+prerequisite-patch-id: e5c034ff639d7eebe730922db0ed02492f401dd0
+prerequisite-patch-id: 502035d4e05da3ed939b8bd65801a6fd8a01d788
+prerequisite-patch-id: 0ccf22bbdee039964cb064f33a8c7a0925dbd57b
+prerequisite-patch-id: e0595d6120868cdf3e87fa335a81e10f0e346c80
+prerequisite-patch-id: f27fc645020b296d289c31fc73dbfef993294464
+prerequisite-patch-id: 159f88cf73892b94117070090a58c7b68e08b8c1
+
+Best regards,
 -- 
-2.43.0
+Alvin Sun <alvin.sun@linux.dev>
 
 
