@@ -1,41 +1,80 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7510386C20
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 03:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B426A22538F
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 04:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786418789; cv=none; b=HTXKck+O8qemjLez3vTTM0aBKyxzaxliJu4dvdXBiXJiCdlmB4+avqEcCQwU6nIKByVPbr8e20Za/EIn8C1EA+FoDNfi1EaR436AdFtpqIDDUcRxtmvzbPVBBwZLs0Q/lMTM1NVH0b3m2Gz8EpwxyMyb2/bAD+6b7wSlvmGkMpk=
+	t=1786421840; cv=none; b=mQq0Jhm3G6hVbu20MY211PbSjSDgo6luUrf/BuXjb0hCgnEHXwNelXLMLf0C6Ow5w9k56pyITWKJOrB0moK0XKrXF2uYJFwKAaZdN18fhTvJ10xWlwAamxqMf9+UuiE54I2yFHaxHV23KuJZzSjOtIqpf++7HFusqsGui36QN68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786418789; c=relaxed/simple;
-	bh=Y+PWjk99X/Q8DhiKWl56IUK9OZxUoA0htcBhWcd9p30=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GI4Wuurt4dQnCgY5sb1LaHl9wLDZCEWFy7VaXpn/lwHg8DSIF2vlp+2MNJz6FcDtx1BQ81LukBX0kz5Dwq1sOIXMpVFxuXyZgAwZ1dTAgs3K8IRJN3LwCHokLYeqk2rta8yFTBMCMonMO2Aj6Xq/ucmjywqHuqLZnJjj2XTFYkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XziTC5Ou; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1786421840; c=relaxed/simple;
+	bh=UEyXO9WfyWKHaBwDAx+RidIqEgxPHpBHN+mhEPplu/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o4gmJfmLv9Ig+a12CHBXsbL+6tfZ5OSo3s6auJFjDydLWTE+xyP6GRzJNpTAT3HwNqVDQ3lfTNuzRjzRWibMwnktkciwj6tXjUBtfB3NZZdxcNP9EyRMe3TuNQICQ25kA1+t6r2yhEYtSduBSSpQ3NZ/l0NsbutWv30PLvnZCDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jL2mO2Gr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XziTC5Ou"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=WZ
-	g59bZSdRh9eFnqGgrskG9MRTM/sTdIEaiqg9zL+Vs=; b=XziTC5OuNsrKHGt56u
-	oxJvIVjhxX6HuYkP/nffr6A+uClsrJMNyDUUPjC2H+tQPDxtn0EX9xCpbI2Nqlf5
-	MI+ZlSMJKs9/qVct8Rl4TFxjAu/1n3jdbQBT3qy9/k+fzpOz4qI0FNBnARoohm0O
-	3jBQIjmsLlDaEZsR5YGEhUXaY=
-Received: from 163.com (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3t2dOlnpqwtkmOQ--.1361S3;
-	Tue, 11 Aug 2026 11:26:09 +0800 (CST)
-From: liujinlong <liujinlong176@163.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	liujinlong <liujinlong@kylinos.cn>
-Subject: [PATCH 2/2] rust: mm: refactor zap_vma_range() to use contains_range()
-Date: Tue, 11 Aug 2026 11:26:03 +0800
-Message-Id: <20260811032603.2651065-2-liujinlong176@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260811032603.2651065-1-liujinlong176@163.com>
-References: <20260811032603.2651065-1-liujinlong176@163.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jL2mO2Gr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C251F000E9;
+	Tue, 11 Aug 2026 04:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786421839;
+	bh=lQO2IZ2Zm+w+DghjA8P/bYUMB7Da8sJv4fPPp4Rn+V4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jL2mO2GrTttviBEvPh071ujdULJ4bUsVrrfnQ7qlsmlu+RpAJPfPgrDzmYDAm4u0w
+	 qjSDonwkB69sCox3LhYfUJKkMR8xn1cg3QXHpZxkBR5RGpFrNN3Hsqk6pQdjRy+BDt
+	 7rPxHfMYycsFFOSGyfC+Otatfl39WVDHOfJVNTHwxYOjx36INaLMhWc8X4WmwWy0Yg
+	 /ukdqkEbh5kefTE2AhzQ/3O83k4taKsiDAu2fKNwcnNDRtYXoUXm4XRLp+TfHKUqYg
+	 qmPA2AUbJ/JtwR2AVl0L//jU9KMi2lrK5m1klARUPjFqwyfv5EAX/sSrN5mlYY72sG
+	 qHhzD+ovRAw8g==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 35EB1F40066;
+	Tue, 11 Aug 2026 00:17:18 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 11 Aug 2026 00:17:18 -0400
+X-ME-Sender: <xms:TqJ6avXnEAObD37moNKfqBBH0nGNfPXDV2Ct4cfI1-lPwQ22WtL0-A>
+    <xme:TqJ6anAF3OWv_pXBsbDi2vHyph6pVNJgF3qY5mkIUq4CvkSJOmU6b_hrlxjqwCv2H
+    PKjCGloLT-8mSzklvBBpUGg7mR1C5-qwxkcahoCLPXMqGJ-ip8J>
+X-ME-Received: <xmr:TqJ6asf1-0Jv-BAjs3FoFe65FMmXKC0rqHbFNs5qmP13CkTI8MgcxGGGCEGxespbPat7kvdrUbWyf6EnZFzSDatBCChme4B3>
+X-ME-Proxy-Cause: dmFkZTGhPmSJ2utFx5D+CERYZNZI0lWwnPoWtdGm1Q24HJV4wHGzzwHlMIG+Ha5+CXwcMV
+    A4Y9FRkPx4iKSOEUD0o2bsQuhlyU9EriC9Wg14EdheA+ghP28LE9/AWvwFlpxSSeaugzOB
+    7cy4mIL1Zm7HiOC+SZefKLt12lBqjCbJwen8IDKEhCYWwgAOLbn6601jx3eoTsUn+elAvW
+    +Nb62Q3PknpJ5JS/PGcU8W3OZCAnD6uTdZFXZQ5gjZYvJftgWnEBjoe2o4DqsJ8oOzcaMy
+    Yz2rdDjTzptNIY6+Mw8UVdo8kkEkZUhr3Jhp99XO6QkjjOLjPFF2Am+c3dLYLr4j2hpoMx
+    7PMXMiREQJSh+CN1UeANwAy81hWqf7DRpg0lryc+NxErKa1fKy03/kQwvM5xYCVtfQY3ff
+    iEomhnqrSeXjYBFY9CHxZUOjo3QmX0RzF/GdI7ykhwkgnptTjGpO5hlH0VwKp288DlFFlP
+    KgYzY32p7qDQnrPXwfRk+I1Y4SVjJNc0p/uxcL9sJHfRkZIRXGl9r9fnaK+UwLyhQ7IzJX
+    7GdNh12GQQcKHSIJp/pBwnemSmAhatNgqWJU34c5NmYnXQD4Myvvm1x5V/yoPnHTyja5Rl
+    aiiqnoxzAJckRkP2ST4aN6vYZetzE0A2/s+ZGKraTjJhklBpibitmtNza6BA
+X-ME-Proxy: <xmx:TqJ6auriNj1u23VdSLCdjwxSO4bPZp3FqS79LLEp2Ic77gYDv1f7sg>
+    <xmx:TqJ6atRJ2Nwf-3gKGxexpCKeqoTt0lbnKeyMxC2vb9kvRf2AMjO_Aw>
+    <xmx:TqJ6auW2bZjQ08Og4OT5CbmiRGPSt4UjksXtfMGh3HFZWmvXV0Xt6g>
+    <xmx:TqJ6aieoz8Q1B2Cj6ysOnlofRQi81UOO_okaS3cMK_7PS292gyoFwQ>
+    <xmx:TqJ6ahwCJeeg60-hSm0VIv0DfdGEDqoOcw_BoNBWml5jAW5my0QAYEbQ>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Aug 2026 00:17:17 -0400 (EDT)
+From: Boqun Feng <boqun@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: "Ingo Molnar" <mingo@kernel.org>,
+	"Will Deacon" <will@kernel.org>,
+	"Boqun Feng" <boqun@kernel.org>,
+	"Waiman Long" <longman@redhat.com>,
+	"Gary Guo" <gary@garyguo.net>,
+	"Alice Ryhl" <aliceryhl@google.com>,
+	"Lyude Paul" <lyude@redhat.com>,
+	"Daniel Almeida" <daniel.almeida@collabora.com>,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
+	"Miguel Ojeda" <ojeda@kernel.org>,
+	"Danilo Krummrich" <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: [PATCH 0/4] Improvements on SpinLockIrq patch series
+Date: Mon, 10 Aug 2026 21:17:10 -0700
+Message-ID: <20260811041714.27679-1-boqun@kernel.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260810085255.GE1642880@noisy.programming.kicks-ass.net>
+References: <20260810085255.GE1642880@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -43,48 +82,30 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3t2dOlnpqwtkmOQ--.1361S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar1xWF4rKFy3CFyxArWfAFb_yoW8Gw1Dpr
-	WDGa15Krs8uF1DCwsFvFykXa45Kw4DXFWrAF4DAw45CF15Zr17urWDKr1rur1vyrs2q3ya
-	vFyDXw4Yyw15uFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UHmhwUUUUU=
-X-CM-SenderInfo: xolxyxxqor0wqrxwqiywtou0bp/xtbCwBHyBmp6llFIQgAA34
 
-From: liujinlong <liujinlong@kylinos.cn>
+Hi Peter,
 
-Open-code the overflow and range check in zap_vma_range() with the
-contains_range() helper added in the previous patch.  Drop two local
-variables and three lines of hand-rolled arithmetic in the process.
+Per your request, I send those improvements as separate patches. I did a
+very light build and unit tests. I'm still waiting for the 0day build
+test report in case we missed something subtle, but figured maybe it's
+better if I send them out while I'm waiting.
 
-No functional change.
+Regards,
+Boqun
 
-Signed-off-by: liujinlong <liujinlong@kylinos.cn>
----
- rust/kernel/mm/virt.rs | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Boqun Feng (4):
+  irq: Add {over,under}flow detection for
+    local_interrupt_{enable,disable}
+  selftests/bpf: Use the new NMI_BITS definition
+  irq: Explain better on NMI_MASK overflow condition
+  irq: Add max local_interrupt_disable() nesting level kunit test case
 
-diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-index 5fdc3c616ef3..363c10f976f4 100644
---- a/rust/kernel/mm/virt.rs
-+++ b/rust/kernel/mm/virt.rs
-@@ -153,15 +153,14 @@ pub fn is_page_aligned_range(addr: usize, size: usize) -> bool {
-     /// we must only assume that the leaf level is cleared.
-     #[inline]
-     pub fn zap_vma_range(&self, address: usize, size: usize) {
--        let (end, did_overflow) = address.overflowing_add(size);
--        if did_overflow || address < self.start() || self.end() < end {
-+        if !self.contains_range(address, size) {
-             // TODO: call WARN_ONCE once Rust version of it is added
-             return;
-         }
- 
-         // SAFETY: By the type invariants, the caller has read access to this VMA, which is
-         // sufficient for this method call. This method has no requirements on the vma flags. The
--        // address range is checked to be within the vma.
-+        // address range is checked to be within the vma via `contains_range`.
-         unsafe { bindings::zap_vma_range(self.as_ptr(), address, size) };
-     }
- 
+ include/linux/hardirq.h                       |  2 +-
+ include/linux/interrupt_rc.h                  | 13 +++++++++++
+ kernel/irq/refcount_interrupt_test.c          | 22 +++++++++++++++++++
+ .../testing/selftests/bpf/bpf_experimental.h  |  2 +-
+ 4 files changed, 37 insertions(+), 2 deletions(-)
+
 -- 
-2.25.1
+2.50.1 (Apple Git-155)
 
