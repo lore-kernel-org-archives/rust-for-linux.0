@@ -1,125 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F2B388E69;
-	Tue, 11 Aug 2026 21:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C61035676A;
+	Tue, 11 Aug 2026 21:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786482697; cv=none; b=cchWeK4Kd2WsAW4BiBBQ845WWK6BCJcNDNnMpjF/c53nuYM7GQSn+Tf/shblIYIvMo0n5q4X4wxpepMvh9wbMjwM3elVcSFPEFK74KUFGdz64/398EeAzM/YAE7+M0jwGixWJ9psAeJITJm0B0jS5Nb5icPbTePos0kfN5BCFBI=
+	t=1786483051; cv=none; b=tEVKEy6i3o6e0k98UY2XoA3yllTx6vJky3aDOH19isNzR/LjmuAwE720JE9PhL6bzjEdbU6h7D+wFIro8oHxcHltKj60DxPJanZupzQss4RZLr2lp1lF6dZrlWb8nrpFID95T4raq1PsvR7n30zyWNlSqM8KG7oBtefzwQm5zhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786482697; c=relaxed/simple;
-	bh=726ER7+Rkh0JZGmxUeVNdHZr78o6KgDj3SrToq7xTXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OfZao2lckIND0oz7I9//3yVExICewAYLbTXdJV+PvbHcKCVM/FNUipH1bztXF5CsmIu4GmHp/rI1BN3cSubBlG+mXmpfr28lu+rzojU5riyX8HFcT+oFIdcDtgWz9AEUv5OvEYGtyJ8yKQIX0wisMILAvZsR+esAneUgl97t8QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfUz9R4O; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786483051; c=relaxed/simple;
+	bh=ebQzgh0vBvXvLeVlXwS7Pm1/HOi/G/gjQQbtBNsEW5c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SI8hZKG7SWewGhRfeLGH6xE1UMdDjQTmSDzi7p6xXqXWL1x180EkXUcbNC0Lkn4r/ld6IfQV2mggyIDmYpx+Ks8tWvSbDfwGj6CZlSd/f9hp7xoGxDiX41u4rBSnzgS+LaO+g663RwAvDuedXfIsPYngMmeXRlEaR8qrrMRN47Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MrL3jAHx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfUz9R4O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531041F000E9;
-	Tue, 11 Aug 2026 21:11:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MrL3jAHx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55541F000E9;
+	Tue, 11 Aug 2026 21:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786482695;
-	bh=ILHdH4cXPBLxh6nT49wDappOv61AuAEjgVWm00tLVfU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=QfUz9R4OiStbSCsEWR+GbTH/C+WSY/eyjF+98JE0AfmbQtgLP4sijxWm3jsSFksuU
-	 1X1tpASEr0+RciwCt7XEHtZxfN0I4XEfi188aY46wrzit4wPixGDZwST0bDBJ8n7Sp
-	 E4/Tzdi5cYLl7TSIMvkkzHvx+r2V25+coW7XG0UdWVNCxJrdP79YtoKR0CLf2ZXbK1
-	 uLvCsUG5XfI/f6AAO58IGlLZPcKtOE1RhQmIqn3z6SNbA5NoKXM4EjdBKAo+oGQyJ8
-	 j9TFkOVr1+wWFiU5MwIZ2BFRzgY8JC3JBh0SJJciMsw/+UZRDvL67d1iSFG9yBMgqs
-	 v0037z5NTLzrA==
-Date: Tue, 11 Aug 2026 16:11:34 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: bhelgaas@google.com, kwilczynski@kernel.org, aliceryhl@google.com,
-	daniel.almeida@collabora.com, ojeda@kernel.org, boqun@kernel.org,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, tmgross@umich.edu, tamird@kernel.org,
-	acourbot@nvidia.com, work@onurozkan.dev, jhubbard@nvidia.com,
-	ttabi@nvidia.com, apopple@nvidia.com, ecourtney@nvidia.com,
-	shashanks@nvidia.com, zhiw@nvidia.com, driver-core@lists.linux.dev,
-	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/5] PCI: add pci_irq_type() to query the allocated
- interrupt type
-Message-ID: <20260811211134.GA678959@bhelgaas>
+	s=k20260515; t=1786483050;
+	bh=xvp02moGcrU1G7UiUVcwIPIznMhC+B6E/q/bBG02qkY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MrL3jAHx8nDsygbWIiCNOjMsbgum7NTclyu+xVGTMx4pUwFMaXdUPHFte5DP01kG7
+	 wlW6VflMU2yLiudP4InktyqCY0t3//070dQguSaP+/M6P8rH9KxhFWRDQ1uN4NbPEJ
+	 DvuDRYtDokkMVq0zeanhd9KbaXpkLNjOF25SmRzDYfSnhE0jpMrLKchMjMNBopmcXe
+	 eVB4wGFscdo/AJ2pYYmICh3jMFeWGNMiVM4969P8g4cfxIzOxuMXCwYc4yV21FzTDg
+	 ToKkde1vwLXMlVkNXCh7UkZtTOAmyv+iKIlS+70UlGIBR1AwOsWJaO/P/oo1rCUS9L
+	 NFq2yVRboI/bA==
+Date: Tue, 11 Aug 2026 17:17:27 -0400
+From: Konstantin Ryabitsev <mricon@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+	Francis Laniel <laniel_francis@privacyrequired.com>, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Boqun Feng <boqun@kernel.org>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, tools@kernel.org
+Subject: Re: [PATCH v3] rust: pwm: replace `core::mem::zeroed` with
+ `pin_init::zeroed`
+Message-ID: <20260811-famous-convivial-iguana-d4b104@meerkat>
+References: <20260603160910.159307-1-laniel_francis@privacyrequired.com>
+ <anqsTVj5QGYGiEQ9@monoceros>
+ <20260811-garrulous-serpent-of-agreement-cf9b19@meerkat>
+ <CANiq72mb0RK=2Oaipzas9UZQiEy7FW331dosH0+cFKuVQNE6Hw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260810224800.2314458-5-dakr@kernel.org>
+In-Reply-To: <CANiq72mb0RK=2Oaipzas9UZQiEy7FW331dosH0+cFKuVQNE6Hw@mail.gmail.com>
 
-On Tue, Aug 11, 2026 at 12:47:43AM +0200, Danilo Krummrich wrote:
-> Add a helper that returns PCI_IRQ_MSIX, PCI_IRQ_MSI, or PCI_IRQ_INTX
-> based on the interrupt type the PCI core selected after
-> pci_alloc_irq_vectors().
+On Tue, Aug 11, 2026 at 11:00:54PM +0200, Miguel Ojeda wrote:
+> > I added a special case where we ignore trailers we find in the follow-up if
+> > these trailers already exist in the patch anyway, so, at least for this
+> > particular case, the problem shouldn't resurface.
 > 
-> Several drivers already open-code this check against pdev->msix_enabled
-> and pdev->msi_enabled, or even open code this helper [1].
-> 
-> A common helper avoids the duplication and keeps drivers from accessing
-> the bitfield directly (see also [2]).
-> 
-> Link: https://elixir.bootlin.com/linux/v7.1/source/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c#L196 [1]
-> Inspired-by: John Hubbard <jhubbard@nvidia.com>
-> Link: https://lore.kernel.org/all/DKKG2QM3YJYB.Z2H2B2UXJ75N@kernel.org/ [2]
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Hmm... I usually indent with 2 or 4 spaces my "non-tags" to
+> distinguish them from actual tags; perhaps I should mark them
+> differently? Is there a "standard" prefix to ignore them instead of
+> several spaces?
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Unfortunately, some prominent maintainers indent their code review trailers,
+which is why we have to pay attention to those.
 
-In the subject line, to match drivers/pci/ history,
+I generally recommend using "|" when adding trailers that aren't part of
+actual code review, e.g.:
 
-  PCI: Add pci_irq_type() ...
+| Fixes: abcde12345 ("Foo bar baz")
+| Reviewed-by: Alex Dev <adev@example.com>
 
-> ---
->  include/linux/pci.h | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 64b308b6e61c..80b8561b5be0 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -1783,6 +1783,26 @@ void pci_free_irq_vectors(struct pci_dev *dev);
->  int pci_irq_vector(struct pci_dev *dev, unsigned int nr);
->  const struct cpumask *pci_irq_get_affinity(struct pci_dev *pdev, int vec);
->  
-> +/**
-> + * pci_irq_type - Get the interrupt type of a PCI device
-> + * @pdev: the PCI device to operate on
-> + *
-> + * Discriminate the interrupt type the PCI core selected for this device
-> + * after a successful pci_alloc_irq_vectors() call.
-> + *
-> + * Return: %PCI_IRQ_MSIX, %PCI_IRQ_MSI, or %PCI_IRQ_INTX.
-> + */
-> +static inline unsigned int pci_irq_type(struct pci_dev *pdev)
-> +{
-> +	if (pdev->msix_enabled)
-> +		return PCI_IRQ_MSIX;
-> +
-> +	if (pdev->msi_enabled)
-> +		return PCI_IRQ_MSI;
-> +
-> +	return PCI_IRQ_INTX;
-> +}
-> +
->  #else
->  static inline int pci_msi_vec_count(struct pci_dev *dev) { return -ENOSYS; }
->  static inline void pci_disable_msi(struct pci_dev *dev) { }
-> @@ -1845,6 +1865,11 @@ static inline const struct cpumask *pci_irq_get_affinity(struct pci_dev *pdev,
->  {
->  	return cpu_possible_mask;
->  }
-> +
-> +static inline unsigned int pci_irq_type(struct pci_dev *pdev)
-> +{
-> +	return PCI_IRQ_INTX;
-> +}
->  #endif
->  
->  /**
-> -- 
-> 2.55.0
-> 
+These are guaranteed to be ignored.
+
+-K
