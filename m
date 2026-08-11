@@ -1,99 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010061.outbound.protection.outlook.com [40.93.198.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA54313277;
-	Tue, 11 Aug 2026 05:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786424779; cv=none; b=kx9cIq09ZN09Zz8hEUhWHsYvK/uH13uygHFmHJ9ZnEeOAYiABHMfEkhvMqf+GeuzlsZ5akgG1p+ARM6AE7dkr8oLP0e0JjodnEJkbWYjzrjYGnekkps9jqrN4T0EVyGqOhHB9K9hyFXM/kyQQEQMuY1f1Y7BMAdfltahS5JkXa0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786424779; c=relaxed/simple;
-	bh=mpE2XB834h2X/hqFfK1kaOkERcyI2OalamXk7sof+D8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FN2GdVpboAllWmuIqILxVEcms95ukgsSwRBT12JneVsGsHDZKu5+txHwRdiR+AXXTSpcXEKGE6RUWHFhwlI7p1WQbl8W/glCxpvq4ucXWnDRX84y4j8P6Kmw2xkrEUcsVzqvWfZ7u/l+Y4TQ4mpXfmsClws6pudQvHnmHcAjjKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOHWeplB; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425E6286409;
+	Tue, 11 Aug 2026 05:07:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786424833; cv=fail; b=mDD1oy6CMWxrGJQwDO63QfbnjXorqlYXuB40UfJmZ5XViddrEFFyIGaaC15EexSD5pRTFLY97I2ZPAZCRE9HzG7n913fgUioziE9+VUqmmn1gLierkkgRJ+v2OsP0H23TA25wwxw5rnRGO/ch+Fu+6cgPnbO0Q/r56/CFB6Ix2g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786424833; c=relaxed/simple;
+	bh=fkCAitF4fCPOTRsegjHmfe8BNRQncGEw7ExYFpJgidg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kh+ioNlrya7tDsUpGJYgL/ct1wK3RONoZ33ggh3zS+bz/8M4F9QmPs3xbfhSoS7Vn61jeptBw7diqXdq4JMk4ePm39aRQLbqTmBPX7OCLwjsuarWA144cfU7Zj/xsyyzWdGYTJwhHUlNk+vNmuh6h1fS8phOdIqZ/6LnB+8UCOY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RX923bsC; arc=fail smtp.client-ip=40.93.198.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOHWeplB"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id EE28A1F000E9;
-	Tue, 11 Aug 2026 05:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786424777;
-	bh=Nqy+J5LgCipC+94ySiuwoWjMwfZRvXtuneInmt6S518=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WOHWeplBFr7i8caT2T38Hz67fkTISy8BgAZrdlIPsFguZfNCN4lEgyw3mkTrwGLZj
-	 mBJ8estR/x3ylZkv1CcN3fnko7gnDdLTHLIJM1VQWM7csZXYEeA/eklBZ3TquucO9I
-	 VWbpwLfcmA6UKkXGxzLU+iGOHXaWFYizydOQ6+eE9ySl0gsJsF7SFxn4ddkcmDN9Vg
-	 mDy/obyHwRrl+0jYcjzbxm6Ik73H8LF8fERyB5wNwA5auu7WBE3Xsy2V4AwUnnjk5u
-	 QhVNa0xgQvJaen2FzPT3C0McLDz2TaXJavBnQJZybmKAeLdghOaXm7SrCzW7/ou3KF
-	 PDYP6himFHGHQ==
-Date: Tue, 11 Aug 2026 07:06:15 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Guru Das Srinagesh <linux@gurudas.dev>
-Cc: Michal Wilczynski <m.wilczynski@samsung.com>, 
-	Link Mauve <linkmauve@linkmauve.fr>, Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Fu Wei <wefu@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2] pwm: th1520: use vertical import style
-Message-ID: <anqtiNa76mzM9ZR3@monoceros>
-References: <20260721-pwm-rust-vert-imp-v2-1-9f91547f5e07@gurudas.dev>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RX923bsC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Cq2MVy2OZKHNKets4/f/wUS+AGxHLPS1c1cYdnbjkX4Sm2azZ52fy+Jh0cwdVfm+ru9QSoKupesekqcobLzAtTfNPSE4pwmqKCYNnsd04HD1x3o/k2Y7AuAEAH9EdIwAwPydlOtBSzt/q6w3Bn4/jtIYUCIk4/k0a5+MiKvU28KONpf5J0lQ9e6/NayuClvJ8qwIU0cZzDuHetiK2T1odSpl+qmM+6Mw+uMGL/p66jDBEYevweqJcHmWkS5KYp7kMlZVSqU/IH1/H6BcX3Cfk8dCL2VxfYmBLlMmzqFQyIT6RvuMenMsBKa9o69/VR4BwYWhqDuWKGFdQaZcwP5Cjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1tCkZn3VnqXFXlgIhUr8k/rMkkBpCNTvKgv2fd4sgW0=;
+ b=yZW5D3IR5uzbhykY/FSHYtLzzZapNEVhhkUSW0V/BePcX5L2FR29GXtkBB+N8Hee4UjW5f+iVcj6jHVK8M5yZAMi9puRbHdXNkiWLPBR3B5CPAE1MF/2jie0VQsyoHVFJtLF5TWQSK8vYc/iFu0jTQ5CTDruYjw1viHDSnLjotXhYwQmOQ35L4vZAGPfMrMhZATXIrztUvnvT/rfHb6wJtiZl/FnYeIbcJnlnXzkd6VnsePoBdD4ZT3l2lSBD4+LBGm5kkaEN42YGG1vAEu8lWgZN1AGN4+lFULZO2DPpLc/GyyCxDtcWlNbbYv8HqtFH2TyD6vZ/M7+MS1fwaWIxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1tCkZn3VnqXFXlgIhUr8k/rMkkBpCNTvKgv2fd4sgW0=;
+ b=RX923bsCFGaTYwB0LYxI6e1RpDW+ozvKeOFT5svOsSWAqgs/F148yxVmeNXcI0Cm8dBKoUNwhWdWMM4fC0yNwac+6C16OKCRvh93vfV818bS1gzqdx8NOiM1NMIHmS6NtNUKHu5bmjCKrYD3gm4YvNrW9vWOHhyWO7vQcdCZv3/ypSg0MP6rq8DcRER2an130hp+e81VMiJ254Sc3kG+fino45xBh9Mqi79Re3odEqOuKgMuzzzk3QSH5y2Mabha9cTgVJFGayr40Tmw+X5GYNF7f3leCJuB6HWq4JkbvSLqjAcNRNl8uYKusV5KBB64G7+mSDnz02ydDSIKBlA/OQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SJ2PR12MB9088.namprd12.prod.outlook.com (2603:10b6:a03:565::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
+ 2026 05:07:06 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
+ 05:07:06 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: nova-gpu <nova-gpu@lists.linux.dev>
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	David Airlie <airlied@gmail.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Eliot Courtney <ecourtney@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v4 0/7] gpu: nova: Export parameters from nova-core to nova-drm
+Date: Tue, 11 Aug 2026 15:06:50 +1000
+Message-ID: <20260811050657.646799-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MR1P264CA0126.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:501:50::29) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="suvxpmiughzydh4a"
-Content-Disposition: inline
-In-Reply-To: <20260721-pwm-rust-vert-imp-v2-1-9f91547f5e07@gurudas.dev>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SJ2PR12MB9088:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8af88a1f-a72e-40e4-2fe4-08def7666338
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|6133799003|56012099006|11063799006|10067099003|3023799007|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	cgiGAEf3oEUbKn8KjRo/oj/lElF8jqtwyrDrFt5xjCIFu5Zf/gRTLrqjvlXPtacYTlQEct8MMCCcDZ9a0q8WpRtiwaaqRiOS1FSOYSk3cAu5pUwJtl3qd+EkGPAEPbeClnExfC4RnxYWQCTHsVHeVD5Aor0dR/NIGOU5GjGSVsWSTBkP3kdQ6CKy//Un/rW0Yx1U+reVMJoiHgikd6Qp0l625DuDTWEgUMHoWby81E2XpUIzbkKfEryAoK22a6myu9yUnQO5usKcOLLhFUVOCLKxQrqN7L4Gyi1n+0V/RQaXuhCyqSnW6r81ANHUTWf7a3xJHhpsLY0AA+oiS3DY1CMndS042NULD3oPyR/GZG82h8BGAEE/c9WwtDD5DRO2K3OT0hqcSzuWkA0Ik7B3WsTYjooGoYhBqyqxphdcE9CXwIlPxk8p5otVltP7gy8APS7j4l89+AXhWX49EXPmO6DHj3dbRRpV7qayXUVt/ijesECeO2mCN7exlU4abjmBFOqsNZCETGsX449QdxGw6fKySYjXrEVLDHsCm5YXyYK8OT99tUYdpZcI1HGUH7+QuNnAR/rP81SKNMQEL9j37E2O1tkZsHlEdZaPinpaIQwWEf5uelQ8FeRTj8CtFxS1efBQYqLyvox/1vc6nvzhC3Ct+4yWf5lif8TeLk1+P34=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(6133799003)(56012099006)(11063799006)(10067099003)(3023799007)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4M7c2mHS1Zg+IdzBt8FmyZiROg/ZJqtKz3/n8jaXvRDnKAp18lmuVIGXDGux?=
+ =?us-ascii?Q?api/Lt9dXBUoSFXdj0zvQCU1y2KB/XIxI4+3QEdKmOD8SO1CnO4YqUtJRPAS?=
+ =?us-ascii?Q?W/RTI1WsZ4QhP0QFJgOmeTLsjLXulmpXH2VOdezCp8KJyQyF0PMf9bFGXSnz?=
+ =?us-ascii?Q?CmbF+b53MDQIIDlQ+J7xwfSv3+FHxwE7zU8nOHKfuEnNwPlQyuiW/LF/Anxb?=
+ =?us-ascii?Q?ByuQ7tNPjGx4AqyIwbz1DQg2w7dnXmYIabk7KrU9TslgaZdFF8N6/5eAqmrP?=
+ =?us-ascii?Q?bus4nJ4Hr9r2FtK350PAo2A0qSkow21I7NXSLCeSH4zSTfQErTX1cugc4wQO?=
+ =?us-ascii?Q?Mf47tTOXyON7arzVSIU260p6OI0GCDG8OU4eXH28Vj5MGRXQdA4VRI6fI0aP?=
+ =?us-ascii?Q?TW/Ylz7ONeBmOjmd3dTCxAD7tMfJD5vnrnm1Hyxadqnzi4nBX0MU1xGytVaJ?=
+ =?us-ascii?Q?985Y1STM7N8fJDVX/7kiMHbCA+lri6b+OGNHHw+FfnSs0dhPS6UA7VaYTUg5?=
+ =?us-ascii?Q?TYvoiHxLYi5dUCflOwbiaj4/jrjvftl1iwcji+N6+qO6LJDbXc/QnKEo6Cbf?=
+ =?us-ascii?Q?aK6h84emWclTLuJJuSa7lT961AaYi5R+2ctGA/w3rTO+F5Vj6myx0mt0WhVU?=
+ =?us-ascii?Q?qFjOWFagCKdzmpCHnrA9N/+sYVBnHqZ1T46ChR55c+nWO5GMQSyyVYmRco6Z?=
+ =?us-ascii?Q?oqDFrFX2Gm/8jydEf5DPfLEqcObYvUlzBgD2L8JVBc9SPSYEUfZWyqyzWFMY?=
+ =?us-ascii?Q?TQEOD2eLysFAZk9IkKKeL2UerX2XdZjrUTuXmre98K9d3sl2OaleMsBF5I9L?=
+ =?us-ascii?Q?Ud3RnYwQkQX45R3w82ZRBECN56F8R5nAAQ4N3+qsJ/3C/NVs+PIJ5GOrlHS0?=
+ =?us-ascii?Q?w1zAwJlQPzccLuo3/8NLN/3G4NVqtTYXUD42ztPeAm02lG/FWvy6Hc3uIj67?=
+ =?us-ascii?Q?QMNJ3aNhQuWzbcXgg5UEfT4ZGZNe3Wx7n18hSQ+WSSKbYBCoJBhMY8zsp1kW?=
+ =?us-ascii?Q?9PZmMkSE/wJauFpXWOHFzE6BcVnKLs09NL1eR7p8KpGQmp1kIw+LDGQWHfVq?=
+ =?us-ascii?Q?h9FMDKl/xVoy2HaxZ1+qbe26uRNIZ+uXrY8+6WFS469wmJwfRJzhMApAHNzt?=
+ =?us-ascii?Q?72adXvanaswK2Vxji6dhS1+V3GUG0Po+c/WUuuNv4WKEks7qbWSemL30MtHF?=
+ =?us-ascii?Q?Mfxqj3BS5SCXNj1kx0WAJspLit9d72RQCmJbDl2VjDtht2YLUC9qxBcaLHQO?=
+ =?us-ascii?Q?2y5uqks4zQbGBVmxe6JSrWIrTxbp6W7a9WCKXTSr49jMYYG1VMDcOGfTzDUg?=
+ =?us-ascii?Q?8RRJvnrKJ7aPx/Zy0i/Go/gVTqborAMFAO+R/VSUlZ3/62IDBeOweo91f5ID?=
+ =?us-ascii?Q?qHsASJta4RYNhb5hAmzzwNHzO9uoHVdDfP9MG2//21hMAxXK9fAeR9IJWLMw?=
+ =?us-ascii?Q?1QEiFSvmQlanLKoiObfxg7BS2r63DONOO9Yn7Dj69JGA+DcvPCMCDhQSd/Qb?=
+ =?us-ascii?Q?BMXsTp8cf+wfV1Bf3Lb/Tk1kacF4z6PKN8dbs01pnDgvlNdkJlcg9CT3JS29?=
+ =?us-ascii?Q?nmFqddpoopO6ldiP78CGWYucqPl0R49ehJdIROVcr8ikf45aIL7UGJIgev0h?=
+ =?us-ascii?Q?4HBJV5bwF1eBtgJ2Vp/sG8lsShoRhanmPHcS4z4xsuE4f8w0kpKiGbP/VVpl?=
+ =?us-ascii?Q?ypfXUvHLqWXb8rgk9vMyGNSlxQaql98Li3j2eSojn6Pt47ZC35FqX5kpEQEF?=
+ =?us-ascii?Q?ZTR06HNdzA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8af88a1f-a72e-40e4-2fe4-08def7666338
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 05:07:05.8765
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ziwHDGSOzkHyo1kEpzcBrUTMqD2KpUlocf406Z8Bd6agBxvqeR3TGjKH/OBOPEW3qdFmlOjO/pXFpVlkyQwh8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9088
 
+This patch series adds some basic GPU properties via a new GPU info ioctl. It
+builds on top of the "drm: Higher-Ranked Lifetime private data" series[1] to
+correctly manage lifetimes of registration data shared between DRM, auxbus and
+nova-core. It's also based on top of "ForLt/CovariantForLt split, auxiliary
+closure API and DevresLt"[2] although the functionality of that series isn't
+actually required.
 
---suvxpmiughzydh4a
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] pwm: th1520: use vertical import style
-MIME-Version: 1.0
+A tree with this series applied on top of all pre-requisites is available at
+[3].
 
-Hello,
+Properties are exported via a new NovaCoreApi type which implements methods to
+read data from the GPU. This has been implemented in a separate module to make
+the public API implementations obvious and to keep them in one place. Auxiliary
+bus drivers can obtain a handle to this type using NovaCoreApi::of().
 
-On Tue, Jul 21, 2026 at 12:49:27AM -0700, Guru Das Srinagesh wrote:
-> Convert `use` imports to vertical layout for better readability and
-> maintainability.
->=20
-> Signed-off-by: Guru Das Srinagesh <linux@gurudas.dev>
+This handle can then be stored as part of the DRM registration data and used to
+interact with the GPU via the nova-core driver.
 
-Added to
+Changes since v3:
 
-	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for=
--next
+ - Use an ioctl to return all parameters rather than multiple key/value queries
 
-for the 7.3 merge window.
+Changes since v2:
 
-Best regards and thanks for your contribution,
-Uwe
+ - Addressed review Danilo and Alex
+ - Minor renames to better align with HW based on internal feedback
 
---suvxpmiughzydh4a
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes since v1:
 
------BEGIN PGP SIGNATURE-----
+ - Address review comments from Danilo
+ - Add an API call to read VRAM PCI BAR size using nova-core
+ 
+[1] - https://lore.kernel.org/rust-for-linux/20260628145406.2107056-1-dakr@kernel.org/
+[2] - https://lore.kernel.org/driver-core/20260626183630.2585057-1-dakr@kernel.org/
+[3] - https://github.com/apopple-nvidia/linux/tree/nova-drm
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmp6rcQACgkQj4D7WH0S
-/k40RAf8CGH9Be1+oMoVPq6/vqGqzDyBVxFWcA3aybqtevEH+VheNYdSMMLnpuVD
-EvJcp3AnfnaSZJyK7wD/ag/8F2NxYp0Ihr4QgDUVGS8meuMxTk1UbNioIJjcgdg9
-aTlvKw6nxsPea5l910KUCc1xkNRjpEVy2x9F4JFJva3W7oVowM6xYlU4AVfDdWsv
-FhY15YPxfpnuxJQNkdr2NC0ue5wkRxJ8JBP9m5RvnQlewkGTp7R3XNpqV/o9txXn
-lu69Ka0RjGJL+QGBLCfj9RyesudoQcHLOK5tEAxS79lCl18rjmKXQaAfDdrlOl20
-9ox66Oaz/D4Uw+J8zBQJs8Lwk580mw==
-=CJ/r
------END PGP SIGNATURE-----
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Benno Lossin <lossin@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Eliot Courtney <ecourtney@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: nova-gpu@lists.linux.dev
+Cc: dri-devel@lists.freedesktop.org
+Cc: rust-for-linux@vger.kernel.org
 
---suvxpmiughzydh4a--
+Alistair Popple (7):
+  gpu: nova-core: Add public driver API to nova-core
+  drm: nova: Add DRM registration data
+  drm: nova: Add chipid enum to nova-drm UAPI
+  drm: nova: Add a GPU info ioctl
+  drm: nova: Add usable VRAM size to GPU info ioctl
+  drm: nova: Use nova-core to read VRAM_BAR_SIZE parameter
+  drm: nova: Expose a render node
+
+ drivers/gpu/drm/nova/driver.rs        | 18 ++++++-
+ drivers/gpu/drm/nova/file.rs          | 40 +++++++++-----
+ drivers/gpu/nova-core/api.rs          | 49 +++++++++++++++++
+ drivers/gpu/nova-core/driver.rs       | 44 +++++++++++----
+ drivers/gpu/nova-core/gpu.rs          | 78 ++++++++++++++-------------
+ drivers/gpu/nova-core/gsp/commands.rs |  8 +++
+ drivers/gpu/nova-core/gsp/hal.rs      |  2 +-
+ drivers/gpu/nova-core/nova_core.rs    |  1 +
+ include/uapi/drm/nova_drm.h           | 71 ++++++++++++++++++++++++
+ 9 files changed, 247 insertions(+), 64 deletions(-)
+ create mode 100644 drivers/gpu/nova-core/api.rs
+
+-- 
+2.54.0
+
