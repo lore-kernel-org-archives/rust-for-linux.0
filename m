@@ -1,35 +1,36 @@
 Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022105.outbound.protection.outlook.com [52.101.96.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99F5441612;
-	Tue, 11 Aug 2026 12:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA9A442FB6;
+	Tue, 11 Aug 2026 12:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.105
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786451166; cv=fail; b=DGsGFDvgqilSTNj/AG1pbVmRLVs7LJzjQZe4jo6WocKyf4giKGaIg6sHNFx/ZTV5aydgqc3QcJnjYE7VUc5ANhSYQrvpmpJXZsoAUaFt/25oD37XCvzSeSgdYsyiCDfn9RO6BwYIi5YKZOFMbB9r0rapX0SrdB0RacdJCa7y18o=
+	t=1786451168; cv=fail; b=A7fEGpDp2a9g3bGeQXQ7yEIW6WthPArZPy26ynQtHKiP366HUdb4DnL+cwXugETKWhWMHRCqN2g1hc790scRv77F0nRpAubp8Ju5GZub7Fkgc73IpN4Nv61Th7Q1AP11kW9Xp5eWpxDDmQrtKkH3xfDatjD2ZgeXSRpwL3YuAUQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786451166; c=relaxed/simple;
-	bh=b/ozt+mfLqYj7T6lORqKJemeCq4z/nK9dYTS7Q1gL3g=;
-	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=ObvrKU1pumU+Vt9zsf6bVW1WpBbVpLScc3OSvebfmq6atZ2w6zl3FDrnvbkFt/z9T6ZcRHt+a6DyF8ni5gulnU5pZYayQNLf4vW8fNgFdb9U+MIwbgFlvnojkISMXk0iFJEtoE3C5phic5sg6LDIbioPC65tEc04Thue3CFzBag=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=HccJvI8c; arc=fail smtp.client-ip=52.101.96.105
+	s=arc-20240116; t=1786451168; c=relaxed/simple;
+	bh=v2UMKMHfSJEXuVgNPjWQ3u38FxUfCwt+vLZTqmbuOTE=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=rDbLIDlQMPqky92LvSude/ArUC04z5jo+6/aq4XKGn56pZhT+EY3n9huGJjGf2RVKhgpQcP1vOMkrlp6yw77CmMX5lD66A9kGg5ORkZrje9M4xMLegpwOhVM1Axj35W2NRkaADgVMj43/i8O8WF5HglXABykxXQ8hqsaWkkTUcs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=O8FvfuTd; arc=fail smtp.client-ip=52.101.96.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="HccJvI8c"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="O8FvfuTd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lrHiEf8r07jDBXgO5VqVVmGvxXssR/BSmeLdKl4USVtSDtpWyiM2OgJt44TxRxZbpPErXoMyJDNkpWT8zNSp8AwOecd3706dFB3uXNedUL3XGCujd0cmSJdYCTtv0Csq9kLhv9JS44beK8PjuCPZjnuZxnaYsvnECbtyiA4dAUA1bNmK/VBbNonFl7pgSKpQHcCzpJyehoJcwtK3XVAADMGbsjItNgCIcC8eyQLjgVazsOt1m25yEJsvMFjAAHLEBHFuTS+292W0KuBIKw4kV97K16zRp7CPS950rfFMDLAbMElgAFps+qn11wuoaFQuMHTQ41HoEfq4Lc/RYBQSYA==
+ b=SIYY6d+LCUghQ4f/gVjQK++HA1g7Gsw3m2hXbADJKf5a+/hG9+B9+bTv6GEsCNJh9MQ4YrufN8Xy0FWElSKE2e9mivaWwMKvtY8UNUD4liF1CzbS+S2NXJU+16Cz8Z8sDYKU1pXirMMDpg1KyHHnSyprKH/qebhu/5bF+CbitK06G9zSuzq0ewe0qsI6PbR8zjBCoKbQPxyciEkYTByOU07pQGlqlOruvmlwPoOmJstcbZOvvYbRuxFGtbTBXhpc/XENDA1uunNzOlRgqkgpSumJkmqWmFUP5agrTy8kvEcHjSpLtoCF2OgPllW7awAw9UPZXeVGey0ysZCiusyCbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iTUkhQ+kZ8QRV2epOtZMvO95moaOgf9QCqymwo8BxRA=;
- b=dNnfjHhZVHrml3YH1onJr0vxZvmbFLJZaqDS097YaWLuYwtoWtYD5QfwcGZX5JOmzwbIKSUTsnmaIMcA65zWmSicolBe2OcBVwpx2nFeWxQelIOXO3uJYOq+XY3oo5Ns/I7mbkpXMCTgT0sAt78qs9VkXBGaMKyTqxvvukcvZqtmTMBM2lW9XE067qu8jADBRElok8h1htIb5H+UpdO0kmmhw8JBvIE09x9KNXhIRKhnJeezsjp6KMj7WV/mFrTObe22oB+wSnfSIk+IKBwCYc5mWQe3r3VM4u/FkSEyU8ZhVg0n/s0VgNIjJRcl1PFxwownzeAf4A+jql57nh3mgw==
+ bh=sgvLZ6xDFD1RJ3xRe9d0EaAnwnNocm7mK4OHTnRC8/0=;
+ b=fcJwP7Kb+n7V3Th2A6OXvMMfk6IAFULQRwg4aFRVKK30r2yAvNFQNfSE5f6IYWz66XsRO9jVCF9Pk19OS72cG1ZHnZQbxy9H5sWZF0Ng5tfkIWdZjR6YGx0kuUfmDRlG7OZdshQSbss7eLqOydwazrB4aeY7rosVU0lGScgMv6yV8WTQbu1d2topzQ6fqE1nahhe1iD5KhYtpV6pYC9HbEXiQ1tlphMwbO645X0EMokSppy1U+KCb/n2ihIchm+XnkuobTr3vl67ZZH7O3hz9dtVPFN91h60hmDTgxF4zTi+/zLzL149qIrKg1TrOMNn5aowgS8PEn08teMKRZVzcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iTUkhQ+kZ8QRV2epOtZMvO95moaOgf9QCqymwo8BxRA=;
- b=HccJvI8crVPj6kOBoCEZ16WNbL792kavghVD1l5DOo5YGHwimX4yjLFyW5PDWJqftHyfMFL+9Eg69wKw0rRoQXIH/CvEqyU9XVENJlnnbzEAtiDY8BDoytyWGY0FLjKWuUyOtZ68kQxjIP61OlA2JyXpmE+MjFUm8Vx53m72RlA=
+ bh=sgvLZ6xDFD1RJ3xRe9d0EaAnwnNocm7mK4OHTnRC8/0=;
+ b=O8FvfuTdVekqOXDYs/5+UVcbHvtLnJoZobc2b4r2AtD80dbKKvJZOivIQsPftgz/Ae8V8bw3rlaWiRD9wcmbD5bqREmmpiT5sP1lFcNSrk1aYxHjk7p+pkwfaJTWvXYeaiYEwufDWYxjod49UiTdfUWitWHzTkdfw3BWx3o6QYw=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
@@ -40,18 +41,15 @@ Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4ab::19)
 Received: from LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1]) by LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
  ([fe80::f60b:1537:68d7:4fc1%4]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
- 12:25:59 +0000
+ 12:26:00 +0000
 From: Gary Guo <gary@garyguo.net>
-Subject: [PATCH 0/4] rust: add `#[macro_export_scoped]` for scoped
- declarative macro
-Date: Tue, 11 Aug 2026 13:25:52 +0100
-Message-Id: <20260811-macro_export_scoped-v1-0-e7782b102819@garyguo.net>
+Date: Tue, 11 Aug 2026 13:25:53 +0100
+Subject: [PATCH 1/4] rust: macros: add `#[macro_export_scoped]`
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANAUe2oC/yWM2wrCMBAFf6Xss8G20hL9FSkll9VGbBJ2UwmU/
- ruJPs7hzOzASA4Zbs0OhB/HLvgC3akBsyj/ROFsYejbfmxl14lVGQoz5hgozWxCRCsGgxepB6u
- vo4RiRsKHy7/qffozb/qFJtVUfWjFKDQpb5Y6vZ3fsvCY03lVnJDgOL5gGVSimwAAAA==
-X-Change-ID: 20260811-macro_export_scoped-5ce38b5db968
+Message-Id: <20260811-macro_export_scoped-v1-1-e7782b102819@garyguo.net>
+References: <20260811-macro_export_scoped-v1-0-e7782b102819@garyguo.net>
+In-Reply-To: <20260811-macro_export_scoped-v1-0-e7782b102819@garyguo.net>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
  Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
@@ -66,11 +64,11 @@ To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>,
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  driver-core@lists.linux.dev, Gary Guo <gary@garyguo.net>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786451159; l=2438;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786451159; l=3645;
  i=gary@garyguo.net; s=20221204; h=from:subject:message-id;
- bh=b/ozt+mfLqYj7T6lORqKJemeCq4z/nK9dYTS7Q1gL3g=;
- b=opau12IBwbEVEXERK6XfrZknNgGbIQlO6lOkg855cNFiqTbY86WY6vad9nIyQbp4h9g4Ufmqv
- JHIoeS1NPPVDG1JMvyXnjGt3wcdDpCvn3bhN1Pbuh6JPgujnFLYhQRn
+ bh=v2UMKMHfSJEXuVgNPjWQ3u38FxUfCwt+vLZTqmbuOTE=;
+ b=pPvL+PBkatQMQk9gvOG0RLuZBfSjRz5vS0dPo0QpYaJNx5b1CXLkERGCngLnWVeXyV9bFP69O
+ Wm7r5w5wX0GAYw6w1vL5bV829J4ahM86KEzRERQtPTeCY9Gs6/XJQQ0
 X-Developer-Key: i=gary@garyguo.net; a=ed25519;
  pk=vB3uIX95SM4eVrIqo1DWNWKDKD2xzB+yLLLr0yOPYMo=
 X-ClientProxiedBy: LO6P123CA0059.GBRP123.PROD.OUTLOOK.COM
@@ -84,117 +82,188 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LOAP265MB8560:EE_|LO0P265MB5094:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8e186347-864b-4e5d-03fc-08def7a3b38b
+X-MS-Office365-Filtering-Correlation-Id: 728d64c3-bf98-43c6-3241-08def7a3b3ff
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|10070799003|376014|23010399003|18002099003|56012099006|5023799004|10067099003|921020;
+	BCL:0;ARA:13230040|1800799024|7416014|366016|10070799003|376014|23010399003|18002099003|22082099003|56012099006|5023799004|10067099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	CMAT3QqgPjlUjuscWcJP1ohnM9QVQdpIgTkoj4X7zK/6GdtJ0b5pRoWWTXDSyV+0VBB20mBKkhlkkgtd9jp90cf8IpdKae9bxUDJPZv/6EHCKJ6os5M0KYH4wyezUPSLpodJvugi8qAL9cvB+CE9iWkoWVw2l9t/vKPn1Gwvu1jHpfzRZX+14RP1YGM94erCXPZvoK5skNoo96yPFFd/kO9wiNwArEEXvaLn1wLUMqZthhVGKcpiVxgmnLO6fouUD3JluiIsAEZvwIKBb7Z5xCwyQ8yclGlXAluDKuHo2vrVvbOzcOMkoGLuI68KrssNuo5Tm8g9SkrVd2WTEGo33XYOXMyoAGIDnimGK/yPgPivUh8XrLYutRHEuKimkPvPTNRC1gC0fdkvrtmU/lhdJREVLtOG4+uzy2TZ3zABjJkSK1WJltKZl3JZPKZwRLxp1zk8sOmeTwuV81HAictN5Vw8uIolSoAUnFMfnFwH9X7OK65mobYs/CNV8aCgfbb5SUE28JGxnXLQwyUSezrmpnMEAK7tYczQCQn2d0mN4CuZrEReC/4NUz04MUahYys0MWIfrn17gSaKxyduYgft5qUB1gwEVw8JMBlCYyjVhl4GEazEltUA6E1sd/B+S0hnZQkSosabL9MKTS+usq0IBheiZB9wJwhpJ5D4KrFjSrKaI9XwmsUfD86lBsmALZyOinB/81xfu6ZZpmMpMF89MQ==
+	nJ0uaG2WHIrxtfFyGKm4CrGBSZ8GPRjZP5EGBOEE3FYE1i2+IVgqxoiaZS27ZuRrifCyge2T2vi3Ye7spfBSEDeeeE4w1SRbhDVmwf8Z2DvmCH884Ep0whExArDP02NC0JL1XBYsNY1wYd6wgDwSUXXtc8XeZA+t7hPoSDIuaCacavni0P5mpg9slsc/hKGso0/VfVgXcfpIVJBGlIw2w7TazwZALJGjz39JS22rvurmKfbMRvhB5Qemw2GFIuRO31KVfyaAITcFxVY1PydudAQgYtZ+8hfcx9z/HieRuO0shLdlP6mE3IC1AdozXXOekueev+IbTHHQGKlau2CsjtuZtAipieZagmfSTHuf2jBEzVLqU3wb6EHtKHwxo3TyiP/8dnPOcZnsNdg8CJQ0/bgnhlh5n21HGEMPJUDnHPRw0QATTRDsCtNuWnsyusBJkyyXcU2rZFd/APN5Lsm+kJrS3bmIVANeisyNdaIVXofuqLjFS+0J8K1oREclyayEyhDh0StLoOMxZuznoaVulIyCdJuOrUcEVFxLHrxCYZa001zW+wv4ym/e/4d5mbUL5yyw/THiDh7jiTHLauXz6bDVYSZKlB1ZSgnEWLYp5WhxJNBTZ6Unh63MO2E/nBp7EQYMmMVYqxc24yJtg2yRVy+nxZQWVSu0iyMASMgMVMfKbVLMwiN1ULHX/XMZX1qTyTUGVa/v+UbvTARk6Rm/9g==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(10070799003)(376014)(23010399003)(18002099003)(56012099006)(5023799004)(10067099003)(921020);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(10070799003)(376014)(23010399003)(18002099003)(22082099003)(56012099006)(5023799004)(10067099003)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NTV5UWlwWCs5clgxbm9xTm5GZmY5YkFJN09vd3cxZDJ6NWFjbjVqRXl1ZDZq?=
- =?utf-8?B?MktxeW1Tdytlb2MxRFhkbzBqS3ljUmxwdERwVTFjVlU5N01TWDlZekxGblZP?=
- =?utf-8?B?TitIVzdkaDArZThSSFlTMnlqeEVCQlZ4bVZMaGpIVVc2MithbmsvY0RYVmhm?=
- =?utf-8?B?VmNyN2xock9MUjkyRkdMRk9JcWRZTXZmaXFoRmZTQS83aktMTS9HMjJaUDd1?=
- =?utf-8?B?ZmtnM21mcUNEWUtwYnhkVVRTRUtGdWxHZkMxaEIvMFN4ZG9YWWM4eDZJMjdm?=
- =?utf-8?B?NDE1OFp4bFJlUzhWTWh2QTZTN1FWY2RETkxGd0c2VFU2VWNKOHZsMmZQSkZy?=
- =?utf-8?B?Mk5oZW01VFIzR1FVNTdsSnNjTG5pMi9TRy9PWXRjZUI1RnBQaEQwUndFendR?=
- =?utf-8?B?bStPZXUrSEJhSDhSVDJweFA2YURDL2h2TXZWdXVBY2R6bSttZ2llWTN3Wlg4?=
- =?utf-8?B?RnJUL3BLellLazBSZ0FyOUxZQU4zVEJmaldJSFNmZVNkRzZPSmk5dnhvdWZE?=
- =?utf-8?B?MmZ0S3BwYXk4dGVXQVFET2NDK2V5SGVXL3UyYWdRTEZ4eE5WVEgxdzAzMjhn?=
- =?utf-8?B?Z2ZZY1JUbmVCQzhXWGlPOU8wOVkzcmFJU2VTUWJyVTB3TUtKOE8vTWNJb0cx?=
- =?utf-8?B?eFlONVdHaERPOUhpZFcrR2tHbWJ5b3V0dnBOTDlPaWhUREF4QnVXNnZQZVdQ?=
- =?utf-8?B?SnlQTXY4R2o5M281b2pLRVJraEQxVTZqOGNkMjJ6Uk9wbGZ3azRLUjF3STQy?=
- =?utf-8?B?aUdYN2Q5N0hVOXJSdWxCa1QxRXlOY09nTUFDdkMzZmxIOUtHa3hUdWVFYlBG?=
- =?utf-8?B?VGpZZEM1M2JpUHN1blZuQVNDYXZXbFhxUXJaQjFaYUE4WGp4RkNmdDlTNzQy?=
- =?utf-8?B?RUpwdy9WT0ZmQWpoamhnL0dIdm5XbDVIaDNuK1AzTFdHM2k0eXFkZEtFQUs5?=
- =?utf-8?B?M0piT1I5bXJHQ0FTYlpqTUtMdzJIZXErQVlIZ3RjcGJpVzU4VEZYUTBVWUNw?=
- =?utf-8?B?QW14a3hoUlZEVHQ5WGxyUDdWSTZvVlNNY2pyL3NiMk1BUDdHK0hlYmtSNFEx?=
- =?utf-8?B?VGpjTHQzRFZVZHJHOGdKZzg5U3piZ1MrbTU2eGVHeDcvUEd0Wmx1clNCNmox?=
- =?utf-8?B?elJDTXFxbHFVeGh6Tk1PeDM5NHBURmNkcjJYTnQ2NGViZllOMCtLNXM5MFNW?=
- =?utf-8?B?ZkJIN09ZV2sxdGIzbHh0MGlteWhWcDhCS1pMU3R0YTFYWjlTU0N5S2I4RXFl?=
- =?utf-8?B?dHMzc2EzdnZLTjlpckJ1ZEgrSlIxN3BLTzd6Skt4czYwWHc1THBDckRWUFlY?=
- =?utf-8?B?U0J5aS92bUhBM0JpMGpYSG93N1lEcHN5bVdmd3g5VEtBZy80RlJvNkVHdmZM?=
- =?utf-8?B?N2pqbC9qbmlRUTM3WGlVaFBCTEtobE96MWhXdC8ybGhnRHk0Nm16amQvdWdh?=
- =?utf-8?B?TkFobDJVSUNqU2RCY2pOemNHSkpLczZvMjdGQW5ZS0lOWHdnUm43c0NpU3Az?=
- =?utf-8?B?dk10TGhzbmMvcEEwNFRNcGtJWmorbzRscDRxdHhTcHlOVm5KZ3RudFJZOTJl?=
- =?utf-8?B?M0lDWittT0g5QWFJQUpYUytYdThPTFBsSE9OWTAzWE5kazI0VDh0MFBIOFhR?=
- =?utf-8?B?Mk1JOW1jUkZ2bFRuRGUvN1A5bkJKTDhpV2FGeXlscnZkNjlLMGFiNWRTUmZv?=
- =?utf-8?B?WWRLU2VHTVZ5N2hKdkhnd0k2S0ZTVXBlQjR2V2dBUVpjR21YWC8yVjFNdXJN?=
- =?utf-8?B?OU5BWU55VmxEY3Y4ZkZmN0NUQ1B0MjQ5WGRSWnM5eHU2MXNITHZnRDZOR3E2?=
- =?utf-8?B?M1RMUHdpczNsWXN3WFNwc3EzRXBXdzVaSHVqbWlRamVMamdsVjBGdHpkWmpP?=
- =?utf-8?B?S1pqeUtkWGlsL1NvU2ZoVnhmdjl5ZmtpK24zWlJoZ3BCZmF4ZStQU2tORXRP?=
- =?utf-8?B?M2I1ZytTTFlKVkxoZWo5T2EwTjk5ZWg0anRvYklrTU0vRS9OdHlnU014KzUw?=
- =?utf-8?B?NnkrRFpHcm8rdndFMTRLTUNnTmUrYjhZM1NKNjJaYTg2QkVCOXJoVlgyNHRH?=
- =?utf-8?B?aUNTdlRvWXdrdHFaT3BLclg2YlM5ZXV4REc4OTBtL3FMZmhwMExUSVhwczdP?=
- =?utf-8?B?S2kwcEZqK3Q0RGFNOXNMblpFWWpzM0IrWGtxRlFabWRla3gwR0hnMVh4aDhB?=
- =?utf-8?B?eFF0UjQwQzJDdk51dUlTMFdPdlNVU0ZEWUh0R0laMXZSVDNwQTJDSjFrRjRR?=
- =?utf-8?B?OEgraGxua2cwOWphb2hkd1Ixa3I0Zi9mdFB6K09Ob09KY1poc1NpbUtHakJt?=
- =?utf-8?B?RkcwdU9pZEcyZVdpYWI2VExZUWQ0OTNqTlNUR0VtekswV2QzOUY1dz09?=
+	=?utf-8?B?d0s3SURaK2RwN0JVZ1NZVEpybzZzdUg5MlltRlUwcFZrc1BqNWVvNUIvTWVk?=
+ =?utf-8?B?MldnNTlycWpFTHZxT2NPaUpYSXRGRFNlaGllZloxR2xTVkRCMWNmaG9jQk9m?=
+ =?utf-8?B?bkdaQ2RHTWJFTE1zTUphTHd6cmZNcnoxeG0vVVZBTWtEUlRlbkNwRnBJcmND?=
+ =?utf-8?B?VTluengvbjdoKy9XRGJlU2VCbFlMY3hmcmdLZGh0RHRrYjlwcHFjSEtJc0RY?=
+ =?utf-8?B?d21XRDVIQi9vaGNQajNWejdZWUgvL0dhWlNjS3prU2wvOUdJcURXZGVVb3dC?=
+ =?utf-8?B?c1ovZjJZT1Y0ekpiU21ycDhYMlFFN2RVZkM4Qlh5UmZyRGZkbVI0VnJDanB5?=
+ =?utf-8?B?ZEhhQnlIbFpRMVFrWGFvQnBINkt6VjZSUXVuMlYzVFpjeEFkOUdFZjhsLzla?=
+ =?utf-8?B?TkxNKzdBaWhhVnRnUnBJWjQzNkhNc29oTEdlNmJsMDVDUkpIYllDYkJjd0Ra?=
+ =?utf-8?B?alNzUzBKN2V0S0g5ZkJWMXI0Uzc3ZDJ3bXZqL3pGalVaeFZOSHRmTHl0RDky?=
+ =?utf-8?B?RFhtUTRnUVhndWVNbW1PRFN2VE9HTW9WK3J1bUFUVjVTTHNwVXZQa0xZV3Vu?=
+ =?utf-8?B?Rm5pZnEzbThtVUpMcDV3RktybXRzYk9ZSUkxR3Q0S2ZOTy9TN1VaMVRwbk9z?=
+ =?utf-8?B?RDVTNEhDbVo4dXEzNDZ3SnVsdmI0WmpCYyt6Z1RXbFk2dnVoZEZVaG5HWHhN?=
+ =?utf-8?B?V1hRNmlqQ0R4Qm41c0N2VE9lalpTalZZQlY0TFFMajhSOEZ1Q1ZqMldzS25s?=
+ =?utf-8?B?cXgrSHVuZzd6NW4wdElNNlRUZHlIQjEyZ2pMTlRsWFVtbGViTUdLZldrYXFw?=
+ =?utf-8?B?MElSb0UvZXE1ekU4dFdTbEhOU0RLcG5uOHBhdzBQdDZOVW5MWjlyU1RCV2tn?=
+ =?utf-8?B?OVFyV1BuaUJYYmNlUkxDVTdsSjBlNDZWdldTcG51c3JFcGhLSjhrazlTbnVO?=
+ =?utf-8?B?NXY2OW1TWi9oLzd2OE9tRlJDbDBnK2c4eURhT2o3aGRXbGZhaktIeDB5NlB0?=
+ =?utf-8?B?QmxjNjRrTTVrMjA3SkxOeXo3N01UbWZSNVQ3aEt2M09YNytNUU9HMGt6cDF0?=
+ =?utf-8?B?RThqRWQzSU1SUEJaQmlXTTZuZzFnYUhiNDEySDN6elo1LzlQRFlGdXVMSGxq?=
+ =?utf-8?B?SGtlOS9uSEFYbENRemN0U0dSK3k0YjBxazlLZ2ZsZlpSbldPK1VVTHc5NFZK?=
+ =?utf-8?B?NFFMaDZVQjZEb00rWlM0dVBjWFpQdHNDNWErc3J3K09JTng2WGFucEtDQ2Yw?=
+ =?utf-8?B?UDFsSW9oU2V1Tk1pMTQ0RGozWlNIRUszek45VWhwMnhuZ0lWTHVHOVp0dDlL?=
+ =?utf-8?B?TXp1WHZGRDZ6blRja09wQVNTM2ozME5RQXJCa2NudEV6WUdqYWg0SlN4KzJP?=
+ =?utf-8?B?RjJVNFJnZ2h5dnNGSmNDanE4M2NWZlpYRlRtNXdEVUw3aUM2d04rTWk4R3dG?=
+ =?utf-8?B?V0QwSC9CVnhZaHFhOW1zNXVpVys0SGxWWW1pOWhCMXJyUWlLaVVyZWVuVklh?=
+ =?utf-8?B?amlCdGVSY09udTRUcTlzM2I2bktzcVhUQVF6VkhCUTZjdFZJS1ZwNEh3ZWlG?=
+ =?utf-8?B?eGVXazVZRis5TVlUZGhzcUZjZzhTVlR5b04wUFlEbVkzZ1pJYlhjV0JvdldK?=
+ =?utf-8?B?UHVzU1VsZmNUK3AwWmx4QTllSlJLVGlGNWtLK1NJZ3ZqYjVZMlJNTHRleHhZ?=
+ =?utf-8?B?WGxLakdkS1UybzVpbGNhaW9qZitnVzhxdDNPdzY5RE5IaHd1QVZ0YWhES29M?=
+ =?utf-8?B?VVVnYUVnY1lkMWhsNlB6NFZ2ZVk0dmtEZHhvM05iTWhKZ1l4QkhlVmtKMlpy?=
+ =?utf-8?B?REFBYjNoaEpHYVFqSFE0SVoraERLU2NSQkM0c0p4RVlrMVp5Vjk2R01hVUVQ?=
+ =?utf-8?B?dGZxTEV2dXZtazFMbkdHRXlSYVA0YjFidGpKREJhWDBuNjk0ajAxdXZSRkc4?=
+ =?utf-8?B?L08xZ0wxNmc0VFBmUUkyZ2lSdzdrNlh5RXlHdGZLU2svQUpsb1J4NytEcXpR?=
+ =?utf-8?B?MkNXVkJiL1U0N0VzNVAzOTE0ODhDODkwRWVOTzhjUi9iMXdTR1NzTkZmcFpR?=
+ =?utf-8?B?ajUrbysvbTFFNjZMOUYrS01BdUt0bW1qR2tnbjl5bTd1SDl2OGNTeEZtZ3RI?=
+ =?utf-8?B?L0ZxUi9XMVF2NVc1MGF6aTdWQmR1S0RsM1dOeGo4SFpWcWhJQVZXTVlNSFh3?=
+ =?utf-8?B?YXlCcGxqSHptMHJ4MmJrMUErWkpiTlpYVnRmMHhQdkZ6T2dvcEZ3c2RQMTh1?=
+ =?utf-8?B?VURNRjFRRTNuNTJiY3hoK0ZwQllkaTQrajl4aEZzbGs0bjA2eHFFWm5MWHlS?=
+ =?utf-8?B?T3FHMWpoeHFYYVdQVjdXSGZTTllDdm9idWFaZHNicmw1bzgrRGdzQT09?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e186347-864b-4e5d-03fc-08def7a3b38b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 728d64c3-bf98-43c6-3241-08def7a3b3ff
 X-MS-Exchange-CrossTenant-AuthSource: LOAP265MB8560.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 12:25:59.8975
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 12:26:00.6912
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BMqmEZoGU06uTFQhKtwA2NS/KbZ+S1rlJRipavUy/wWsTGxL4+78hJ+25W/9I9Fp+4MSnyHvRC9qWazibKWjJA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2sneAazSp/Ir+kksJYNjDdi82fk/rOQd4ykQ5rMl4Ub++YATan0iZ2amopcQh38jYjlkFaIF3bQW/pB9Nq5EcA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5094
 
-Rust's declarative macro scoping rule is confusing because it was
-historically purely textual scoped and the path-based scoping is added as
-an afterthought.
+Due to Rust macro scoping rules, macros that are exported with
+`#[macro_export_scoped]` gets added to the crate root, and this causes the
+crate root to get crowded with various macros.
 
-`#[macro_export]` will make the macro available for use outside the crate,
-but it also adds the macro to the root of crate. This has the issue where
-it prevents us from cleanly put things in modules where they belong. Macro
-2.0 is supposed to address this issue, but currently it seems that we are
-unlikely to get macro 2.0 any time soon.
+We used a trick of `#[doc(hidden)]` + `#[doc(inline)] pub use` to make
+these macros to appear to be only defined in the documentation, but this
+does not actually prevent them from being referenced from crate root.
 
-There is a way to approximate the scoping -- hide the macro from the crate
-root using `#[doc(hidden)]`, and then re-export the macro from where they
-are supposed to appear, and undo the `#[doc(hidden)]` with
-`#[doc(inline)]`. We have used this approach for a few macros already.
-This is not fully bullet-proof; users can still reference the items from
-crate root, as it is hidden from documentation but is still present in name
-resolution.
-
-Introduce a macro `#[macro_export_scoped]`, that implements the above
-trick, so people can create new properly-scoped macros easily. Also, adopt
-a solution where we assign the macros non-guessable names, and then just
-re-export them under intended name. This removes the possibility of
-using the macro from incorrect path unintentionally.
+Create a macro `#[macro_export_scoped]`, that automates these definition
+and re-export and also give these macro unique and non-guessable names.
 
 Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
-Gary Guo (4):
-      rust: macros: add `#[macro_export_scoped]`
-      rust: build_assert: remove macro from crate root
-      rust: list: convert to use `#[macro_export_scoped]`
-      rust: io: convert to use `#[macro_export_scoped]`
+ rust/macros/lib.rs                 | 25 ++++++++++++++++++
+ rust/macros/macro_export_scoped.rs | 53 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+)
 
- rust/kernel/build_assert.rs            | 24 +++++----------
- rust/kernel/configfs.rs                |  4 +--
- rust/kernel/firmware.rs                |  4 +--
- rust/kernel/io.rs                      | 27 +++++++----------
- rust/kernel/list/arc.rs                |  4 +--
- rust/kernel/list/arc_field.rs          |  4 +--
- rust/kernel/list/impl_list_item_mod.rs | 14 ++++-----
- rust/kernel/ptr.rs                     |  6 +---
- rust/kernel/sync/atomic.rs             |  2 +-
- rust/macros/lib.rs                     | 25 ++++++++++++++++
- rust/macros/macro_export_scoped.rs     | 53 ++++++++++++++++++++++++++++++++++
- 11 files changed, 108 insertions(+), 59 deletions(-)
----
-base-commit: 6b8c8af514d739d0335f5579b585e02babe8a727
-change-id: 20260811-macro_export_scoped-5ce38b5db968
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 0514fc7c0a55..6f8ef9043255 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -20,6 +20,7 @@
+ mod for_lt;
+ mod helpers;
+ mod kunit;
++mod macro_export_scoped;
+ mod module;
+ mod paste;
+ mod vtable;
+@@ -320,6 +321,30 @@ pub fn concat_idents(input: TokenStream) -> TokenStream {
+     concat_idents::concat_idents(parse_macro_input!(input)).into()
+ }
+ 
++/// Export a macro publicly, but from the current module instead of crate root.
++///
++/// # Examples
++///
++/// ```
++/// mod foo {
++///     #[kernel::macros::macro_export_scoped]
++///     macro_rules! my_macro {
++///         () => {}
++///     }
++/// }
++///
++/// foo::my_macro!();
++/// ```
++#[doc(hidden)]
++#[proc_macro_attribute]
++#[allow(non_snake_case)]
++pub fn macro_export_scoped(attr: TokenStream, input: TokenStream) -> TokenStream {
++    parse_macro_input!(attr as syn::parse::Nothing);
++    macro_export_scoped::macro_export_scoped(parse_macro_input!(input))
++        .unwrap_or_else(|e| e.into_compile_error())
++        .into()
++}
++
+ /// Paste identifiers together.
+ ///
+ /// Within the `paste!` macro, identifiers inside `[<` and `>]` are concatenated together to form a
+diff --git a/rust/macros/macro_export_scoped.rs b/rust/macros/macro_export_scoped.rs
+new file mode 100644
+index 000000000000..a14ee51d2d93
+--- /dev/null
++++ b/rust/macros/macro_export_scoped.rs
+@@ -0,0 +1,53 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use std::hash::{
++    DefaultHasher,
++    Hash,
++    Hasher, //
++};
++
++use proc_macro2::TokenStream;
++use quote::{
++    format_ident,
++    quote, //
++};
++use syn::{
++    Error,
++    ItemMacro,
++    Result, //
++};
++
++pub(crate) fn macro_export_scoped(mut input: ItemMacro) -> Result<TokenStream> {
++    if !input.mac.path.is_ident("macro_rules") {
++        return Err(Error::new_spanned(
++            input,
++            "#[macro_export_scoped] can only be used on `macro_rules!`",
++        ));
++    }
++
++    let Some(name) = input.ident else {
++        Err(Error::new_spanned(
++            input,
++            "`macro_rules!` definition missing an identifier",
++        ))?
++    };
++
++    // Hash together file name and macro name to create a hash that is likely to be unique. Use
++    // `DefaultHasher::new` which is free from RNG so the build is still reproducible.
++    let mut hasher = DefaultHasher::new();
++    crate::helpers::file().hash(&mut hasher);
++    name.hash(&mut hasher);
++    let hash = hasher.finish();
++
++    let unique_name = format_ident!("macro_{name}_{hash:x}");
++    input.ident = Some(unique_name.clone());
++
++    Ok(quote!(
++        #[doc(hidden)]
++        #[macro_export]
++        #input
++
++        #[doc(inline)]
++        pub use #unique_name as #name;
++    ))
++}
 
-Best regards,
---  
-Gary Guo <gary@garyguo.net>
+-- 
+2.54.0
 
