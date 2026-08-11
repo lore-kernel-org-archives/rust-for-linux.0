@@ -1,129 +1,125 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6846E418377
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 21:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786482069; cv=pass; b=c6/hNNxYoauDWWP3im5tQ2Ho/q8KVevvkYd9fIFClG36PFKbJjrc+XlaL6SZcRrZ9QPo3ChxvKEcjTwy0vB8w16wJWwLok5qGwiBifwanJFFNY3pu+yELmm4psqoC/tmUuFXYE4phhZu/nrIkOncEnLBkdwIwx6R6cMCCwYgklI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786482069; c=relaxed/simple;
-	bh=xHSrXLJhSdTyK4h/bnRaFJZbZafnqYoCBbPsiMsKwg0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oC+ZgIwHPVIXukyOpMQLMzhAKcZ80F1KmWNt6ztVSNT8ExU7xwHjXV/VFcdwlooEVF7cik1BaXR+5d/MTEv5rHbPMUvEDmFnG1a8WHXWLtB8FLHMqlPqFxjkRu/UDMM9vvxsMKlAsR6SPfHCvOfkRK+KX+Y0wHBF0sCoj40NsPY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G3CV34C9; arc=pass smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F2B388E69;
+	Tue, 11 Aug 2026 21:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786482697; cv=none; b=cchWeK4Kd2WsAW4BiBBQ845WWK6BCJcNDNnMpjF/c53nuYM7GQSn+Tf/shblIYIvMo0n5q4X4wxpepMvh9wbMjwM3elVcSFPEFK74KUFGdz64/398EeAzM/YAE7+M0jwGixWJ9psAeJITJm0B0jS5Nb5icPbTePos0kfN5BCFBI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786482697; c=relaxed/simple;
+	bh=726ER7+Rkh0JZGmxUeVNdHZr78o6KgDj3SrToq7xTXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=OfZao2lckIND0oz7I9//3yVExICewAYLbTXdJV+PvbHcKCVM/FNUipH1bztXF5CsmIu4GmHp/rI1BN3cSubBlG+mXmpfr28lu+rzojU5riyX8HFcT+oFIdcDtgWz9AEUv5OvEYGtyJ8yKQIX0wisMILAvZsR+esAneUgl97t8QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfUz9R4O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G3CV34C9"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-381f03d7be0so68610a91.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 14:01:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786482068; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QE4OJ1hxUbFJcTs7po19mlcyEhpvFEYdcOwxQc/kYObARusrvNJf9pirqZuHfXfm2G
-         BuoovTkBC4ekev5Mbvp9TaMsCdSoK6GGAXp5Iro6eYPGYnx+CmJKCphgj/1iSDYbgH4A
-         FAVUpJ9XEsL8dFGUST8TDIppmbn0r8LJ+87wUUlXtKHzcsG9vJCv1S1Gcdg97u18IvE3
-         K0jRqdeUkgTIn0CXHraZGPp3SZ0N4o9D6svAFe21IFxr+ku3UBkvyDq5PFrADl1ryTNC
-         ifjqd2LFscpMhxuF3T+7ytciKS7RvnXATggT7VAjIzThD6ZOveiBTkvEa2MnEGCMDgLj
-         XIaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xHSrXLJhSdTyK4h/bnRaFJZbZafnqYoCBbPsiMsKwg0=;
-        fh=RX8BhKJGKV73jW5TcPixUpxe9MxxfEBOpqADnwrJlOE=;
-        b=E0SBskflS0AwWcz7J8IUmiOnvSCSUQ5e64E5H4gittXeCkhBEdMTlkM1ogzwE3nz02
-         FEhqDI1XJCiDoHsJwiJPMUU8WLHu97BBoyft3gwqxBNLW45ypDztxZYFLQhqU6p/SoIb
-         EgjtipV4a+3cRfI8megTyt40lAW20NbktzKdj74+vKrwudIsbTIk495SISZwQLjeocBp
-         jP2hn483FRfegnhCcbFpS7mfWfKI0lhLAExj0DFTVuCc5XgWLooTb4tjJJFouAFMwTSk
-         YfqKDfv3Epu/NG2BOomaKGYXhS13E0GeXVZDZ2IIIzDMQ3j3lHg5eWoofw+tCDGe+w5p
-         7HNw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786482068; x=1787086868; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xHSrXLJhSdTyK4h/bnRaFJZbZafnqYoCBbPsiMsKwg0=;
-        b=G3CV34C9X27yrrJFsdYI3xlHCX245+zPcJgauH4WFJB1qNYD5cueQm9KOt1s/GFqxP
-         81ieXGMjtU9+VXyCruHlKJ4aB4huqLODASCeBuD+1w+Z3wvGApwz+F8nnQPOU8CFVjEO
-         Y7AwjyJs0fe3YHHFPFYiHZv7NJ6xvZvxABYQq2P/pfLrRD/OAb4ofJ3d3CZcVw2P57Fl
-         pMLZyd/7eIY+Zo21H9KTCboPHPql6xI5RqRbqM68Xqq7TokWu0EpCPXOWeOHgxvq+mTb
-         Cbf00aj0PJbqXCdjjVDYJVUZgSrf1ypt4vJ1+kGWAM2T1psPodzuPVqLjYza1lsBLNjP
-         xV1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786482068; x=1787086868;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xHSrXLJhSdTyK4h/bnRaFJZbZafnqYoCBbPsiMsKwg0=;
-        b=KtBPJ65WPqMrOX5Al7KbkzzoF8Wzkr5ci1MdXYN7NnLr22ph0QtsKsMA2VsE9sPE+O
-         T4sTG0l9NcjaHHcps4Qsc0NVB1v4VabLNxDLFR7PlAUu4dlhc7jQNBk04Xdt33kJC0My
-         J/PIkCvj6a1yyLwd2C2AnEvjt+sj7dQTnLC3EUetkp6rfyBDZpx5Yz3QoIugllinDnrd
-         DQ3xUMKaCZw8WXzCiYRsvKA1awASjTETTqUdzQt76iOOSX6lDrWkPwj5FDVJDY1gt4LV
-         DONRMdKbnwIAjeyjQ6/h7zN4cYuaShaSVSb+bE9BqTtoM3TzR8LjMfXch/W2n9nn6DmN
-         LJzA==
-X-Forwarded-Encrypted: i=1; AHgh+RrN9tLTSIV5EPe2VL2TYR61cszGr42KqCvYrAoIjytBKb+6/SFiEveLqQdAbpZeus2SNTgc2l2UPRBIHb07Yg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yys1YFd7yaicAAdegufcHzNS7XYnka+hggDlZRvhFpqS3rIbpcA
-	/TeidNrBh/hhnhjoCVq+jM2dhTt689dgUNcvwzk7Eu10edpE7lC6jleI32Ku6TzzrmCHyjDdq4K
-	smSEDBeOnSrl1zh1u0HttLccHTCJ8dU8=
-X-Gm-Gg: AR+sD13TvJsySz7L39XuYazUzPdxCythwzvJQ+E/lZ4jHrVA99TVGroChtRNc7XGPYe
-	ILm08DShg+9kQUGnGsXZcD1cUo9t4HwXLvliUjhuHVF4+f2nMs1lcesUrgpLeEOqNsrBJ/zyT42
-	ayFd89dJP6IHgP4Y6LxwvyD9C6hNwbggK+H0PxHNv2TOk37RzRzoBWHsqMUDMIr49JFueEmZD0H
-	yvO5NDUjo1gBmqY0tSdhg/hFcAsVKLa/1dparJAqvsL2wH7siJsSemsdAeq2d1Q7MqMRbGgmoPF
-	oj8SEUQQWrRc7j5G3+CID76wkMKNB1k/BFnsFfcy6RIYB8Bjb8y7pHPr/DwJOca9gacPY4m06UC
-	IEv4YA/4d3RL5inLw91MDUXeEWf2eiX1CmWXbOrTdv/uUZOrT0vSXATUiX+Iy
-X-Received: by 2002:a17:902:d552:b0:2cf:9e90:8be with SMTP id
- d9443c01a7336-2d3456e7622mr1975195ad.4.1786482067126; Tue, 11 Aug 2026
- 14:01:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfUz9R4O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531041F000E9;
+	Tue, 11 Aug 2026 21:11:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786482695;
+	bh=ILHdH4cXPBLxh6nT49wDappOv61AuAEjgVWm00tLVfU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=QfUz9R4OiStbSCsEWR+GbTH/C+WSY/eyjF+98JE0AfmbQtgLP4sijxWm3jsSFksuU
+	 1X1tpASEr0+RciwCt7XEHtZxfN0I4XEfi188aY46wrzit4wPixGDZwST0bDBJ8n7Sp
+	 E4/Tzdi5cYLl7TSIMvkkzHvx+r2V25+coW7XG0UdWVNCxJrdP79YtoKR0CLf2ZXbK1
+	 uLvCsUG5XfI/f6AAO58IGlLZPcKtOE1RhQmIqn3z6SNbA5NoKXM4EjdBKAo+oGQyJ8
+	 j9TFkOVr1+wWFiU5MwIZ2BFRzgY8JC3JBh0SJJciMsw/+UZRDvL67d1iSFG9yBMgqs
+	 v0037z5NTLzrA==
+Date: Tue, 11 Aug 2026 16:11:34 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: bhelgaas@google.com, kwilczynski@kernel.org, aliceryhl@google.com,
+	daniel.almeida@collabora.com, ojeda@kernel.org, boqun@kernel.org,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, tamird@kernel.org,
+	acourbot@nvidia.com, work@onurozkan.dev, jhubbard@nvidia.com,
+	ttabi@nvidia.com, apopple@nvidia.com, ecourtney@nvidia.com,
+	shashanks@nvidia.com, zhiw@nvidia.com, driver-core@lists.linux.dev,
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/5] PCI: add pci_irq_type() to query the allocated
+ interrupt type
+Message-ID: <20260811211134.GA678959@bhelgaas>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260603160910.159307-1-laniel_francis@privacyrequired.com>
- <anqsTVj5QGYGiEQ9@monoceros> <20260811-garrulous-serpent-of-agreement-cf9b19@meerkat>
-In-Reply-To: <20260811-garrulous-serpent-of-agreement-cf9b19@meerkat>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Aug 2026 23:00:54 +0200
-X-Gm-Features: AUfX_mx5xTNPSjPRZOiSX7b2JNTHPN7r0POqFAALJCuvChpsFwzRnqIauZY0U20
-Message-ID: <CANiq72mb0RK=2Oaipzas9UZQiEy7FW331dosH0+cFKuVQNE6Hw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: pwm: replace `core::mem::zeroed` with `pin_init::zeroed`
-To: Konstantin Ryabitsev <mricon@kernel.org>
-Cc: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Francis Laniel <laniel_francis@privacyrequired.com>, 
-	Michal Wilczynski <m.wilczynski@samsung.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Boqun Feng <boqun@kernel.org>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-pwm@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	tools@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260810224800.2314458-5-dakr@kernel.org>
 
-On Tue, Aug 11, 2026 at 10:54=E2=80=AFPM Konstantin Ryabitsev <mricon@kerne=
-l.org> wrote:
->
-> It was just Miguel responding with a suggestion how to better reorder
-> trailers. Since we can't tell this case from the case when someone actual=
-ly
-> replies with a follow-up trailer, hence the error.
->
-> I added a special case where we ignore trailers we find in the follow-up =
-if
-> these trailers already exist in the patch anyway, so, at least for this
-> particular case, the problem shouldn't resurface.
+On Tue, Aug 11, 2026 at 12:47:43AM +0200, Danilo Krummrich wrote:
+> Add a helper that returns PCI_IRQ_MSIX, PCI_IRQ_MSI, or PCI_IRQ_INTX
+> based on the interrupt type the PCI core selected after
+> pci_alloc_irq_vectors().
+> 
+> Several drivers already open-code this check against pdev->msix_enabled
+> and pdev->msi_enabled, or even open code this helper [1].
+> 
+> A common helper avoids the duplication and keeps drivers from accessing
+> the bitfield directly (see also [2]).
+> 
+> Link: https://elixir.bootlin.com/linux/v7.1/source/drivers/net/ethernet/aquantia/atlantic/aq_pci_func.c#L196 [1]
+> Inspired-by: John Hubbard <jhubbard@nvidia.com>
+> Link: https://lore.kernel.org/all/DKKG2QM3YJYB.Z2H2B2UXJ75N@kernel.org/ [2]
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Hmm... I usually indent with 2 or 4 spaces my "non-tags" to
-distinguish them from actual tags; perhaps I should mark them
-differently? Is there a "standard" prefix to ignore them instead of
-several spaces?
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Thanks!
+In the subject line, to match drivers/pci/ history,
 
-Cheers,
-Miguel
+  PCI: Add pci_irq_type() ...
+
+> ---
+>  include/linux/pci.h | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
+> 
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 64b308b6e61c..80b8561b5be0 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1783,6 +1783,26 @@ void pci_free_irq_vectors(struct pci_dev *dev);
+>  int pci_irq_vector(struct pci_dev *dev, unsigned int nr);
+>  const struct cpumask *pci_irq_get_affinity(struct pci_dev *pdev, int vec);
+>  
+> +/**
+> + * pci_irq_type - Get the interrupt type of a PCI device
+> + * @pdev: the PCI device to operate on
+> + *
+> + * Discriminate the interrupt type the PCI core selected for this device
+> + * after a successful pci_alloc_irq_vectors() call.
+> + *
+> + * Return: %PCI_IRQ_MSIX, %PCI_IRQ_MSI, or %PCI_IRQ_INTX.
+> + */
+> +static inline unsigned int pci_irq_type(struct pci_dev *pdev)
+> +{
+> +	if (pdev->msix_enabled)
+> +		return PCI_IRQ_MSIX;
+> +
+> +	if (pdev->msi_enabled)
+> +		return PCI_IRQ_MSI;
+> +
+> +	return PCI_IRQ_INTX;
+> +}
+> +
+>  #else
+>  static inline int pci_msi_vec_count(struct pci_dev *dev) { return -ENOSYS; }
+>  static inline void pci_disable_msi(struct pci_dev *dev) { }
+> @@ -1845,6 +1865,11 @@ static inline const struct cpumask *pci_irq_get_affinity(struct pci_dev *pdev,
+>  {
+>  	return cpu_possible_mask;
+>  }
+> +
+> +static inline unsigned int pci_irq_type(struct pci_dev *pdev)
+> +{
+> +	return PCI_IRQ_INTX;
+> +}
+>  #endif
+>  
+>  /**
+> -- 
+> 2.55.0
+> 
