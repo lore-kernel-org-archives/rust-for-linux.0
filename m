@@ -1,149 +1,115 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697B3442371
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 12:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF51443A87
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 12:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.178
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786450730; cv=pass; b=JnLpfnTBhbZoW2j1nbXlI9QgjYAuylsmedm6TvuGFQ6+jFxg3uwa4W3TmKpce52IazaVBIUVq4GMWA81nT8xLgNg8OQ6b7Hhp6G6WlyRvEe0WdjmNsObs25F1jhQGYOawWks2XTXN9k+fB3PwH29SS0yg+tuJCEqmS2nufldwrA=
+	t=1786450865; cv=pass; b=IyKdJdLInVkNYtAe/notneHJiDHIOHFZkQWROfeGJxcedzIIJunqQINPR/XYLI2dAZTXZgVdQ2i/IZNBFzll11/OhgePdeJU+Lto6XIkGwSFN4LzJ3oqErD8i1CjQAW7G/1l+O/F5K/gmka1J0QmGfPbHXM/m1C5cLdR2b3Vj2g=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786450730; c=relaxed/simple;
-	bh=otOwUfRtr8fuySYLKyp89W2pZkkLwyvGhG8YpNXMUf4=;
+	s=arc-20240116; t=1786450865; c=relaxed/simple;
+	bh=ql8A3rtHM+NQUqrzlSVzJ05Y2ne9Oefs6MH1bVuRUnM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WXVnAzR7ysIv5P3Zj2FEQtesyjsrFplXm/WWaA//iRNmclFOUySRFklFxhQFxcFHeifyrR08fpTE9rI0V5QIyplaAsdpsgZB5TSyATATWolZdWcyrL/lsuMmIeP1JY0csua24cti+PWnBBjgbim7+zDlzFBGz5+AsokHZS3loow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oej66qt1; arc=pass smtp.client-ip=209.85.214.173
+	 To:Cc:Content-Type; b=Lb0/4oyRx9/GPOaVIiFPK8tHwLIDMFnCn4TM9xCdOofotLiB7+DgOM89ND1ixiEossvhmb96wqHRwCWQsRdHPpNMBrxztzXnmvSj/INvDUxTj1p9DmiPiMzjT8/DMLVruvjXbmYjYufMRqX2hsbG1LJApY95ICghbOzBwF08TQ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jgwV61aI; arc=pass smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oej66qt1"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ceeee8c46bso7555085ad.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 05:18:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786450727; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jgwV61aI"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ccdce28edeso3824395ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 05:21:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786450863; cv=none;
         d=google.com; s=arc-20260327;
-        b=QrVhglcsA69KL09K2yzdt2rRnoIU9p9GfrCtNPB5+/8Zn5PEtx3tawGC6aowPLIN+3
-         MLyWj0Ty5Rwhzdzu9Iz7MLnVgZW33C/M6ivikPRs7sr24Yluvt7J39dM18wp28WxMZLz
-         J4/P4u6Xht6r6y/6Q44LT3Oc8rkqr5eYznJqEx+LG2FIfJ5MbZF1QYIRxMLU/7UET6VV
-         t63kZWYR0PHBJq3eSHfDbRfsbASj96p47GtfE6pjgrZLUB9YTypEz+BZI3Io+UoT2yVg
-         ZggqIDSJ0MfHyzQjllLw7BGLqWHPH8+Vv6xDjCvPrtQto44skpPxXFZIIfGJA+G1vy9y
-         Vvzw==
+        b=Ez2/D4vjsttQp2siFlIIvFz6abd3HYt7y74Ywssn179cFS2DAeBRLGPkBr0OIF7rxh
+         CAj6e2kWBShAfIa3I+aG+Tl1+IoWDPDSPXW9PSx3bkDvVtWYfBqBw9r3/NJjiy5KnVwS
+         EIvdxOSxdAloC3FSXvTlc27wdL2NA30MDzBSwjlSXqG7Cw4sCl2WYNg/dEfnzGFOMwNy
+         7uIcQkJFPh44Pm5mzSsi25dY4YpwEMr2QQ2R+0BtuH+AbmnnbChQQC96awsZ/By+biAu
+         FfX9T/BLEt6vsz6jcjdF440B4RgSLRrTloO7M/3q6dviz3Qoc2dkC0hw/f/AKGZiuG7F
+         +a8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=/RC1A2PguOF1hAQQY37c6brOTFPnjNMMKjohruTM4f4=;
-        fh=nnnHvsiFoiebPKtHbDsubNwXbfo+IeBqnK6ai24ZrxY=;
-        b=iEzbizrxL2sOHnHqF+JaqLgRtsdZ7N70xDiutQ8do5s/kh3VWdjqY1grSQEXYq+kw5
-         VzYk1Knahh5JpOqnYKRJ1mSa0AGCO80TcQngFERQ27h5kHz47z6YICHNYeYgdR+vnX5I
-         q5iceYTQrtyBzl7d4SueFLvm52g46M5l1nryy00JwHEtNmjWfHpuwbnUruouhvgArvUG
-         NscBxXF/G117X1/FlqCgp3CgALJ3jq9EGaT0cu94UbJC6RIP65mpNzKRtiJG3Qmn7QXv
-         btFQXORWSw4oRg1/3NGj9dvBLdL2LjVswMsME0MUILsoxhM6mDevB36glREwvUiO6pzq
-         5UHA==;
+        bh=ql8A3rtHM+NQUqrzlSVzJ05Y2ne9Oefs6MH1bVuRUnM=;
+        fh=d9ml9ul8d20amdoQSIG9gw2jChjbT6IV8FK4bRNrn4A=;
+        b=ZjCHSYposG74+l9aN0PgaNXYmCogaSklWNY8Eoq0WdENg774ZHo95+8Yw1IcEGZPZz
+         adMZYHeoXcyUEL/hDjcNfLIlcpMpCJr5+Ar0nkHrp2AWcjm8W5dGZ0KQMUoagEJ9E//i
+         VDKs5OihsvjorFf09Azg9hKPtsvsQrKueIWESs/qHUIZBSZGZ+LYTLSnZzwqp+fAQpuY
+         IiSlxPW9LZwTyifFn8lJ1NvBW/VC1hxNj/f+0U2jsmIZ+wtKxTc4ehSnFjP5/0mhhXQz
+         G5rkPkRUZX3LEFDZqTA4NQtUiNyIf2Hi3xTdY55mw9OytGFs8O04TSeW4mKE8tUvu0VH
+         fIig==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786450727; x=1787055527; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786450863; x=1787055663; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/RC1A2PguOF1hAQQY37c6brOTFPnjNMMKjohruTM4f4=;
-        b=oej66qt1SJufnzuYIy0CZiQ9bOJQdes49SDsT9uBI0rdJC/mxSR+bSvE6J8YNCQhb4
-         2aZJSLrJBmFmGxHYHvkS6dDExEUiOJqlmQy1Kkny2p3P9g+KwQSCzKNa5T7MhmBuLprg
-         dp/n/5S+fY/GuW/fuhE36nVEglpVQRUjkTZSXOoibPQUP7qLVF+sfVokf9ZQ1zF1DBH1
-         ZKRu3TINcBsJvJy/ZlFoc03A4I8QJXm0xMMNNFzzIwsLPcPHBzK5tEcNSXfuR4p9W0mV
-         ckSVBWISvEGKH8tyOkkgpImeUw2OKKtgWZKpB1HTUpjmn5b9yasMW8/xjMzVP+2RRU/W
-         eMoA==
+        bh=ql8A3rtHM+NQUqrzlSVzJ05Y2ne9Oefs6MH1bVuRUnM=;
+        b=jgwV61aI49T8CTwsNMQgTMM5NHJSH/+xg8JK+oxmoZXXwZDq5+ARrVFHvzTex1R5pF
+         UcbbuDK14RET/luK8VwV5Ix+5cIEit19wGH0A9LqMEkSc0aRYWrvMdhhIywKt3NJIzJ+
+         xipa4N+KZYk0BrxZBevyJZIIeed8y+SUH9fG561eDxKXVzp3/HUM0C6PHRzUfFrAWy9M
+         A1Y6O5oLvEN/4ZgP99ztGeo3T/Cu2e5a08e5Iv/1XAx8aFvhKVBvja7ilaULk8eHoS5B
+         zn9SFM5odi3KOhS20wJ44Tu/EEqNCjcrqOa1Pp37qjqchQK+iPwh63+T1JmVeG1aO0pd
+         awog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786450727; x=1787055527;
+        d=1e100.net; s=20251104; t=1786450863; x=1787055663;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/RC1A2PguOF1hAQQY37c6brOTFPnjNMMKjohruTM4f4=;
-        b=GjXlkYoJOG+e98C1CcvydA4i9YuB33bhcVf2gzOZ88hFhl5gjZ8bAuZPimkPILnt84
-         CbsM+CNwwdliexcJ17tANiz4HwbGphCEC2h3jlpHjC3BK1FxBPLbrQudsl254/O2Zaa+
-         VIDERSRQ7RJ8cF3O6AuosOl0zVP40XkPAljH5ZNjqSyJNDMYsV5UVILHx8yJQmJ86u6M
-         /rQBXU+wSuVLWfojv2srCzSBAXQrafsFwbczfl+IKOLTmwUj2B8B9LHxEimJYuL4Ka3T
-         irwh2wXQxbteuaDO9WpQQNiUfoScffVzRAkgdBxsiWz2KzmOL+1LVL+GEmW0moZhAfrp
-         u/7w==
-X-Forwarded-Encrypted: i=1; AHgh+RqYFiiSw6j2cHBVHOO3IjWrhJOTLpCw1V8eSlK6seLOSBQAy86KZXMNP8WtM0H63M8pPHRjkedqBdJfZ3HK0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSOYUX6UIPQzPq4evjFGYIE/xMwvqWgWWNZDXfCLXtL+tVFOLK
-	tukivXUk9+fNTcaMEFBbcDLsoexfRJMwFkyXPqr4uKwCwOVjqPrvMH6/GQcQw41Rb9Qd6BDS6xB
-	vVR94uGcHUSpCLs46XCtyzqw7ARLSS+o=
-X-Gm-Gg: AR+sD11/U86ubgKlx+oN8J8YSMCvIP6XuKwIliuYyFvfnBov0Sz/FVphUtuw662wNcY
-	KQ2pSGR3A0K6hD5Ef8/cN+s5ANvHlFb9xrkU9b/lWDzuuZQAf1cHMZgNM0qxsc+IHZpQgGOcAme
-	Vl+rRuNDk4DavCbN7VvscJmeAi4tCdIuyUIS15mc1ZY1xD/3oxqAoCLQWzZEaoQHkOrS0W8CQbF
-	pshu0vnWPsXnQX2hhyK3gzNClzCwoAjyUVsHI0VmT2lSqnHLgMK/vH5Oz5Jb0242LENYH2+23eT
-	1NElNNn7ESiW/OGTaGIxOorMEnVrTUCq7s0AfzWhztZtAHMf6Ra4IAGLTLuoum9/ff2WOovsHZq
-	Twf1Yq4wCMwlsj0EBiya4usFZBDZxYBRwAKEDHpER+7+LVuQLWZNsGQPDJnLJ
-X-Received: by 2002:a17:903:4583:b0:2cb:2b50:d9da with SMTP id
- d9443c01a7336-2d31791fa70mr26298785ad.3.1786450727089; Tue, 11 Aug 2026
- 05:18:47 -0700 (PDT)
+        bh=ql8A3rtHM+NQUqrzlSVzJ05Y2ne9Oefs6MH1bVuRUnM=;
+        b=VB9eunCgdMtLrduptCi6nB2jmfMIYWN05Az4Qo6hyIAHSOZhnKltU2kfm2TROvJtAr
+         v21IM3dWXvuCJ5DAeaMR72viFK0vaP5HbBuOJPFOIeVKIOrppGifrU0oClb/f7eNdP+0
+         VtRMg/anWj4Y016iC4tcek6UY2FlTxDdmuW8dnTvg/u3+ZmBq0GEbd0VzlernZ2qdmDN
+         ZdP5ZqZSbFVF28MYslsqDcC+69V5nIwfwTQALhAW1AWejF+vQcuzR5kGK9aCIGkkuoPo
+         t37wvduq7qgdquqXwYo+xV8sedOGwSPn6RYLNdv0hPwS46EbPdWf6OSUyM9rZodSVoJX
+         /RcA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqz9Z81/ApQ8vxAyStZlCmZKWTxh0xAc8MylgG9fePOi/vpfUQslnPEkz9b8rLYcFa2Z+bwwa7+Goxau8Y40g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2/bOSgY4IgjCWBtNOQYlc30/jU0Zr+KCrBRKFXEmdUCeHJpHr
+	mhnLleVYwythBx2QJ1f0C7EjpGwESo+U2jvfpbDGQc+I4Uob66Pv2KChqyM3DgwhBabCtJZzvt5
+	FPtoSyOSULWaaHqWPWNLv69ZC89cN9L8=
+X-Gm-Gg: AR+sD12/xmYevBy1AQBCv/wxH4Qk9MlQbMmk9y79coA3+Faq5IosYkmhtQPGRE+5mrv
+	1MKkWNZozppME8b9Rf5Whk1Z0xT+XE2BSJnVm2IFaQBxHpqUzNeZLc3mJhzn7semH8g4zAUG66x
+	nKaBG274xpDkgogkk/bg7NZKRP+P89TJjosiPgkIsITZFiEHDIsjDey969wr12kMbr0mTBfWGmK
+	CQGzYZgdqJNQG2jZH8+ekt6j+FWrnv2yAbpX2fZv16HqMMzRWWEcDAuoWewbhbrRT2V9B1zpAiF
+	h5z23DqnlWdOfgU1itAmmZIl4GhuYPByd7vD15e1xS0K6AlsM6qFozi7qtJ6bKm2s7REcYsX0Jx
+	BjsmoCVUYkuS00yxTpRIXBAfAQhS7TLM4nR/dylbrdyiOswa8+Dl1DLQjKYAwSLszuMJ0bNE=
+X-Received: by 2002:a17:903:234c:b0:2d3:b3e:711f with SMTP id
+ d9443c01a7336-2d3176158bamr22126975ad.0.1786450863209; Tue, 11 Aug 2026
+ 05:21:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260811063345.685884-1-mkchauras@gmail.com>
-In-Reply-To: <20260811063345.685884-1-mkchauras@gmail.com>
+References: <20260811-fix-gendisk-owner-v1-1-c0fe4a449ecb@linux.dev>
+In-Reply-To: <20260811-fix-gendisk-owner-v1-1-c0fe4a449ecb@linux.dev>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 11 Aug 2026 14:18:34 +0200
-X-Gm-Features: AUfX_myED_ed26Nu7gx_kle1gVGJiVIo0YquA2caUOf2Oc9Uqm0rk5SAR4nUG5k
-Message-ID: <CANiq72kVXHSKO2xEp9m3thexiXc8z0kg+hc8RUM2ZS=xfO2wuA@mail.gmail.com>
-Subject: Re: [PATCH V2] rust: uapi: replace direct asm-generic/ioctl.h include
- with linux/ioctl.h
-To: "Mukesh Kumar Chaurasiya (IBM)" <mkchauras@gmail.com>
-Cc: ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	daniel.almeida@collabora.com, tamird@kernel.org, acourbot@nvidia.com, 
-	work@onurozkan.dev, nathan@kernel.org, ndesaulniers@google.com, 
-	morbo@google.com, justinstitt@google.com, cmllamas@google.com, 
-	gregkh@linuxfoundation.org, paul@paul-moore.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, kernel test robot <lkp@intel.com>
+Date: Tue, 11 Aug 2026 14:20:50 +0200
+X-Gm-Features: AUfX_mwgX858ISyRxSrju8_-iXIGhuGuoOPR0M9UUR6UmwVl7OxBtn1Y5PK_2mc
+Message-ID: <CANiq72nmthEu5HQG9B2yOgLvhEJ+PMO7OBG-ki2uUQiUTTgciw@mail.gmail.com>
+Subject: Re: [PATCH] rust: block: gen_disk: set fops.owner from driver module pointer
+To: Alvin Sun <alvin.sun@linux.dev>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026 at 8:34=E2=80=AFAM Mukesh Kumar Chaurasiya (IBM)
-<mkchauras@gmail.com> wrote:
+On Tue, Aug 11, 2026 at 8:51=E2=80=AFAM Alvin Sun <alvin.sun@linux.dev> wro=
+te:
 >
-> rust/uapi/uapi_helper.h was directly including <uapi/asm-generic/ioctl.h>
-> instead of the proper <uapi/linux/ioctl.h>.
->
-> On powerpc, <uapi/linux/ioctl.h> pulls in <uapi/asm/ioctl.h> first, which
-> defines _IOC_SIZEBITS, _IOC_DIRBITS, _IOC_NONE, and _IOC_WRITE with the
-> arch-specific values, before falling through to <asm-generic/ioctl.h>.
-> By bypassing that chain and including <asm-generic/ioctl.h> directly,
-> the arch-specific overrides never ran first, so when other headers in
-> the compilation later brought in the full arch-aware chain, Clang saw
-> those four macros being defined a second time and emitted:
->
-> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:5:9: warning: '_IOC_SIZ=
-EBITS' macro redefined [-Wmacro-redefined]
-> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:6:9: warning: '_IOC_DIR=
-BITS' macro redefined [-Wmacro-redefined]
-> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:8:9: warning: '_IOC_NON=
-E' macro redefined [-Wmacro-redefined]
-> clang diag: arch/powerpc/include/uapi/asm/ioctl.h:10:9: warning: '_IOC_WR=
-ITE' macro redefined [-Wmacro-redefined]
->
-> Fix this by replacing the direct include of <uapi/asm-generic/ioctl.h>
-> with <uapi/linux/ioctl.h>, which is the correct arch-aware entry point
-> and already maintains the intended include order.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202608050618.9dekfjtF-lkp@i=
-ntel.com/
-> Signed-off-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
+> This patch was meant to be sent separately, but I forgot to send it.
 
-Applied to `rust-next` -- thanks!
+Do you mean "not separately"? i.e. in the series?
 
-    Fixes: 4e1746656839 ("rust: uapi: Add UAPI crate")
-
-We could, in principle, backport it if you think there may be
-downstream users that may backport powerpc -- I wanted to at least
-have the Fixes: tag even if not the Cc: stable@ so that they could
-find this commit if needed.
+I asked Andreas for his Acked-by.
 
 Cheers,
 Miguel
