@@ -1,160 +1,133 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from flow-a4-smtp.messagingengine.com (flow-a4-smtp.messagingengine.com [103.168.172.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26828442FB6
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 14:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B69F3002C8
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 15:02:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786459419; cv=none; b=I+jc1vkF4XkIUC/i67bDMHFD0wjEHDisOkgo43ErY/TWC5IdTBQ200J3V1OdG1r7xHLtN8j8z6m/G3SZID2oZGidBOanSODyEhRm6KbW3eUR4eil7WEk1wCKss7oSwaTs1QQSLpEYTFfpH0G5tW+NEEr3ZgPNp6xg8b4C2na3q4=
+	t=1786460527; cv=none; b=Rra626KTxbuu6XPTadV41w5W7fWoj4CyDQKKnT9h+/tnWretGbEz0zSuUdT6qIfHSMCEriUFPSpmhBKgIo2aLV2iDkosWmwooQxn/NpZdcp29schUhcghJ1Er7G6U4frLNUt6vyy/XWLtYHXcj/5SLSWRpRD93CZs3SW1UXbc1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786459419; c=relaxed/simple;
-	bh=1P9l62yx7Nzv3bIICI1uduDZAxBz+2R2qseDQnTY1Dc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IQu6XKW3df9g/7pzYO9TTZaIuriRhbV0E3DOniCl5O4e1Kb0MM+xXRwFT45xGj4lttSu/e1be2xEqf62Cfpy7OzpWJX4jGOdxnA594pVweshxZj3T9obzpm+rGZdNMptcI9xorxtiA0dLG3+D1uDFBtWJuTJZ9DNecPzCsvImT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YySpyG+1; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786460527; c=relaxed/simple;
+	bh=iZ7RtHuI/3mg+E7gwPOErtg7K3WLcF+5T6NWc2YeFVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rZoDiZ6BN8ket0dId/Be49m+w2vcKMlT4bLQPpuV66+NCo5kpnOto/VxlI6wSFawvvrjLYIGJ0T1XLuyr7qQ/XiK5DgzxKcdiAzvf0nFjwr1oDPhfnHtnycoFXyN31ONnDtl3flgoE4cWPl0EGPFFffYAkwQ1T9eNbjtQb15z6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=U76QZi2O; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=N+GRhws2; arc=none smtp.client-ip=103.168.172.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YySpyG+1"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-81e8fa1b8d6so42003807b3.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 07:43:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786459416; x=1787064216; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=lhr48ORyh4YoiC1XBSoZDdeizVPdbIlhjfg7vaMIrKA=;
-        b=YySpyG+1QEcz7DbOX2nr+KoWpfWCCS6OAJbRNdsQHuv4/Oz3WDj94RiZy+p/m1sXcn
-         q+jrE+ly83G8SGTyvFIy8sxd8OeTd+RyKh7i9bZwFTbRUaW57miGC+lukgMtZWRDBQhL
-         zzLTaWRB/ZoShZY+9ax5tMHPwdDiC8BQlLmP67KDp+igawnDeofcRhOP/bCeORrfyx1A
-         QWK0VAKCv43pMAr1lvjZcWnQGbJ+Cvlu+gWatULUcVp+i/5Y+HYy1q6tjj4iDFOh2+uw
-         1MGJASJTqm1DvvoV14wlEl1sNsehccWQaYDNkHT7VC2vuZdNX7LqYyUnfbf2St0dckWs
-         AD0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786459416; x=1787064216;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lhr48ORyh4YoiC1XBSoZDdeizVPdbIlhjfg7vaMIrKA=;
-        b=kARdhsyQAWoSTxf5tUPM3ItHUQSolQCjHgMgtKuRpM+QxIPSVDv0p/vzbjwTvEmLou
-         sXhA3hbeT3RYIf5gIHdgBa56YdoxOs6I49BW/S4RJruKecG6rr8ZaQaYyi2TfV9bOfnC
-         bMxAOGUqshigkss2AWlj12yNja7g8ow/0RPvQB1iXct9NMlyMAVzC3bDW7Q/v9abXhJz
-         Y4Ik5/WYzcS9IsuNFvXbZMX3NjvZi+mMGM84OVtHWaMP4IXzGq+2Wv5AxZM2TPk/SY2y
-         fLUbRV8Svl9Ym8gf6nMU/jBktCcqQu8whP548Vvg+RhNlUOoGc2uhJYd+QpEc/9cdWrI
-         e2pA==
-X-Forwarded-Encrypted: i=1; AHgh+RrZu7Lm56obJxjYdUj0uNyV4r7iZkn6eE6VxsAorQWeVcfayvi2VWUtilSFzONNlLnRLDK4dHF520OJYr3Kdg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywoc8dgcJKBTVPkwL4t1iTD0hp7A6LvXc1GFUaNCn10oE7tJ2cD
-	FBxZvxOdx/YuQrL/vT/B1vvcCa+V1y4/vp1fChm1nHg1HuvFWkZ3nUg=
-X-Gm-Gg: AR+sD11EZY4moNW2HIap1FKlsZwUZgJvFgMsK3zVncS9XAzPhbnKMtTN2x0wTN6r/36
-	JaIK0eC5CfyHfBAYovQYEePyimGLRfsYI76HGNJ3r0ntOVpN2e2iQA0p6NAKdwhKzFsxEjz/IHx
-	QvVE7PhsaSS54fidjNOFv6LvfAHt4WSOFFtHUquLJphjAnKBoB3MZr6AK8okv8t/f6tPRzzKj31
-	VpsqSPmgcmYzWTF0kotQKoAwc5T0wMlP07IB2rHhXY3BOv3FUR9293TdZY0tMO5o/AM+qD2kedv
-	dZ5jcDoUuXHLYeisliuPOC1/6aExb0OaTG3Nb9fHM3Ln/ORr5t+4/jYsRe/oFp81LNDwb268i1A
-	bdzygiXjftNivq/DFcsez+b2sP/1L/SdFYSm9BjU6L0vLN7YlC0nlt/Kjumrk16pzmx8ffkeGaC
-	Ih9z+ak9bwN1tFQfB2APE+enAH2OgWVp4bRZ3ycFIciir1goY2cYF9h1V9/9ChoIGo/fYQwfm3j
-	9zx70Z7oOvZkmMQ7rgqpAan
-X-Received: by 2002:a05:690c:9e:b0:7bd:cf35:e33b with SMTP id 00721157ae682-82f2cd0550cmr25224097b3.17.1786459416049;
-        Tue, 11 Aug 2026 07:43:36 -0700 (PDT)
-Received: from localhost ([186.158.238.108])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-82eb5fb7a22sm11871067b3.0.2026.08.11.07.43.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Aug 2026 07:43:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="U76QZi2O";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="N+GRhws2"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailflow.phl.internal (Postfix) with ESMTP id F40D513804B7;
+	Tue, 11 Aug 2026 11:02:04 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Tue, 11 Aug 2026 11:02:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm2; t=1786460524; x=1786464124; bh=P/d6qwPyOO8XZmt1FighG
+	TI0B1cUc8t+TOfU1c9OTUY=; b=U76QZi2OA8jIvZHpLrlyDyI5OqeMpR/yfVDAq
+	7ifsOjPR44O8DXHvZSy8U8GcuyUp7dB1MZNH2kvAZCbYGnIJx6K4HUcI1cZzOXE1
+	hHPGQbR2bKPtbEnvIjYbtNN33Bg5IbqESmMdPi+78utXklrTuZcLW7DRf04QELVz
+	zZz5+94r6budb0DWq0bXqr+Ed4Xozb2XiNTU/y9SIU5LqxEXJ+dpsHbEo/uD+bW4
+	QmhOKfJicnFmGoBCuZQyg3c+7ejP+4oLf/KLOv5ulIQTOuraBDFh8uxSEcIETcex
+	TT2iuYog9xxytP5gHQUDlPWlCKnytbDvF2NpvxT4EddqqJt9w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1786460524; x=1786464124; bh=P/d6qwPyOO8XZmt1FighGTI0B1cUc8t+TOf
+	U1c9OTUY=; b=N+GRhws2J1epjiP0cIiSFnGSH1gVQjlC5eEL/bIryIFYsUE692F
+	DDc3y8Q1IHpHtBOLDnS/o0LOOcdlvA9lE5yLllw0Ik4JdogFR3RRV0iuNJ3tdd7M
+	NKnk1PpY15qEQhJLDE6qrGlQj7iv2MBpputgqjraWARKwLhCQuU8hFvslrDMyOZP
+	AJuYaneqmuY9LTzrtzYbfMfVDsB/8bFenepyPTtYi+DjFdUXy4DjzmxOqrzlcWCr
+	MvXx4JskOpPPxQ4KnGxBF+enVL4ohMQCpUX1CavHG/OuhV+h/kLfR4/qZ0be91oL
+	VfnBSumcRmoKpldeXd7Vlqr1ggqYq+kObYA==
+X-ME-Sender: <xms:azl7aqx_5Z4Uf1_V3i4TH5scYpK2PPKIlAEHKJWU5Q4IR5HIOb2uDA>
+    <xme:azl7aiIz_466hT_kAxTaAvwfN_e8VS1DA8msrlrYjKCntdA-rdXFnfgCggHlk0xhH
+    qXGl3DpM8Ap696LiEizGb0s5kxlXzfYAYq1MPDtmrsL15NqxTBzlA>
+X-ME-Received: <xmr:azl7an04BdMHWTnye4z2EACwFTIWzZtebmRY5JsWW_BdGuKp5cWcw6cs8bn1Lby7BK3PAbBwDc25MhrmAkg>
+X-ME-Proxy-Cause: dmFkZTGRyisWZJnOTCYE4a18khsYl+Q/ZE6HzEIObVgIfRF8stx+J//G2JkTer1twapicD
+    EBWxfORtJTTKYbIgcnEr58l5/eTUbVykCYoRGjofy6GNfn4s57gi0cjBmXD8nRRznqwmJ9
+    5mKnT9svnHQsxMjJ+RpFX2e4/6QFXqbN4OmE+Vdj1SfSFRlu00xoay8zlZy8ZdKuQGkl78
+    xDaEme3fU6hdiMajBQVF4ZtjDgry5xhn9YjG6ZG0BGzgm8Rnqt+2M01OCXPNWpiey2VsXI
+    xbBM1DHmsDyMaZF9vMHlUR4TGPB+X+HOA9Zj1EEbIeXgty1i2xbYM8ZQcasr1oYQwS64au
+    xpg/koN9xjl1Z70Bg7X3SznokefvK8CMZQ5q8MLPCty0dHR+VExvwB6wfsN6MVzmOti+Cd
+    lCnLTK256eAfoLwXOsgjBQqgbpzXJtOF9GkV1mv47WRQWpVGSOd8E2faw3zeJb237EwVT2
+    DOndR+tV8Bf8QasziFpilCg+fNzEBVbfiflhtIMlRG5RoNn3CcEpNR7IUL2fvLpEOPgs70
+    UWq+IhxRlNKM6nLqfX7pO6LoDdduTTY4JGmfk3gXuw64PWVCER0RBl7GJL31NCWTxx/nSB
+    j0xu3R+B2z1UB5dOsrkaqP8GR3DO7IUuqD8r+jJ4pFO2V8FA0JZ0MqwGlnuQ
+X-ME-Proxy: <xmx:azl7akdFqFa1YcEP0PWIugR_pexBG7j1ny3FHJeAybR-EpZS3rE7vw>
+    <xmx:azl7aj4Cw_6yUlJFv6RGwcmRasksSOmCNZJM5ypEnphDeP4aXLXI2A>
+    <xmx:azl7av8-j0KBrKyL9WpC37rltnCbxkcevfyUNL0dtaEfmlOxsEEs1w>
+    <xmx:azl7aiIOdUjDj6jOibqOF53R446DHOGJxypD-mM3w3SBBGzIrqaagw>
+    <xmx:azl7anCAEuMMe8lHgp8HHpYcSXjoERjeOapid6M7DhVtMAKW2CpdHIW3>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 11 Aug 2026 11:01:58 -0400 (EDT)
+From: FUJITA Tomonori <tomo@flapping.org>
+To: a.hindborg@kernel.org,
+	ojeda@kernel.org
+Cc: acourbot@nvidia.com,
+	aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun@kernel.org,
+	dakr@kernel.org,
+	daniel.almeida@collabora.com,
+	frederic@kernel.org,
+	gary@garyguo.net,
+	jstultz@google.com,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	sboyd@kernel.org,
+	tamird@kernel.org,
+	tglx@kernel.org,
+	tmgross@umich.edu,
+	work@onurozkan.dev,
+	rust-for-linux@vger.kernel.org,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>
+Subject: [PATCH v1 0/2] Add Delta::to_jiffies_timeout() with tests
+Date: Wed, 12 Aug 2026 00:01:45 +0900
+Message-ID: <20260811150147.1360102-1-tomo@flapping.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 11 Aug 2026 11:43:29 -0300
-Message-Id: <DKM70AZE2094.3397PWQQ3TC3@gmail.com>
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Benno
- Lossin" <lossin@kernel.org>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Boqun Feng" <boqun@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Shuah Khan"
- <skhan@linuxfoundation.org>, "Tamir Duberstein" <tamird@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel-mentees@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Sashiko"
- <sashiko-bot@kernel.org>
-Subject: Re: [PATCH] rust: i2c: avoid locking when calling
- I2cAdapter::inc_ref
-From: =?utf-8?q?Nicol=C3=A1s_Antinori?= <nico.antinori.7@gmail.com>
-To: "Igor Korotin" <igor.korotin@linux.dev>, "Gary Guo" <gary@garyguo.net>
-X-Mailer: aerc 0.20.0
-References: <20260615201141.8920-1-nico.antinori.7@gmail.com>
- <DJBDWVUWH3OT.1GDEIJT0R4UTK@garyguo.net>
- <DJCA8F2F93US.1KMA54SKQ364K@gmail.com>
- <DJRJCCGCXYOL.2O4HP9N37SPAK@gmail.com>
- <178628144572.5226.7072490581990266256@linux.dev>
-In-Reply-To: <178628144572.5226.7072490581990266256@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Sun Aug 9, 2026 at 10:17 AM -03, Igor Korotin wrote:
-> Hello Nicol=C3=A1s
->
-> Sorry for the delay.
->
-> Yes, worth fixing regardless of real users -- inc_ref taking a lock it
-> doesn't need is a real bug, not speculative work.
->
-> Instead of adding a separate Rust-only wrapper, please consider splitting
-> i2c_get_adapter itself: pull the increment into a helper, export it, and
-> call it directly from inc_ref -- no lock, no lookup:
->
-> +bool __i2c_adapter_get(struct i2c_adapter *adapter)
-> +{
-> +	if (try_module_get(adapter->owner)) {
-> +		get_device(&adapter->dev);
-> +		return true;
-> +	}
-> +	return false;
-> +}
-> +EXPORT_SYMBOL(__i2c_adapter_get);
-> +
->  struct i2c_adapter *i2c_get_adapter(int nr)
->  {
->  	struct i2c_adapter *adapter;
->
->  	mutex_lock(&core_lock);
->  	adapter =3D idr_find(&i2c_adapter_idr, nr);
-> -	if (!adapter)
-> -		goto exit;
-> -
-> -	if (try_module_get(adapter->owner))
-> -		get_device(&adapter->dev);
-> -	else
-> +	if (adapter && !__i2c_adapter_get(adapter))
->  		adapter =3D NULL;
-> -
-> - exit:
->  	mutex_unlock(&core_lock);
->  	return adapter;
->  }
->  EXPORT_SYMBOL(i2c_get_adapter);
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Excellent! Thank you for this suggestion and the explanation!
+The first patch is new. It adds an example and a KUnit test for
+Delta::as_millis_ceil(), which Miguel asked for [1].
 
->
-> Heads up for v2: Trevor Chan has a patch changing AlwaysRefCounted::inc_r=
-ef
-> to an associated function (fn inc_ref(obj: &Self)). Not merged yet --
-> rebase onto it if it lands first.
+The second patch was previously posted as patch 4 of [2]; patches 1-3
+of that series have been applied. It has been reworked to fix the bug
+Miguel reported [1]: on 32 bit with HZ=1000, to_jiffies_timeout()
+could return a value larger than MAX_JIFFY_OFFSET.
 
-I think it is better to wait until Trevor Chan's patch gets merged since
-it is in v7 [1] and already has been reviewed by some mantainers. If I send=
-=20
-this fix and gets merged first he will probably have conflicts and have
-to send a v8.
+Both patches follow the format agreed in [3]: the examples show the
+behaviour, while the boundary inputs live in `#[test]` KUnit tests, with the
+magic numbers as named constants local to the test module rather than part
+of the exported API. 
 
-I'll keep an eye on the progress of that patch and once it is merged I
-am going to send this fix.
+[1] https://lore.kernel.org/rust-for-linux/CANiq72kHP1s7bGr4=xfJGR8KY=aUpjOB4OwLEG5E=TKULXg5Rg@mail.gmail.com/
+[2] https://lore.kernel.org/rust-for-linux/20260808062839.1159990-1-tomo@flapping.org/
+[3] https://lore.kernel.org/rust-for-linux/874ihxgxy0.fsf@kernel.org/
 
-Thank you,
-Nicol=C3=A1s
+FUJITA Tomonori (2):
+  rust: time: add example and KUnit test for Delta::as_millis_ceil()
+  rust: time: add Delta::to_jiffies_timeout() for timeout conversion
 
-[1] https://lore.kernel.org/rust-for-linux/20260628100731.64885-1-trev@trev=
-rosa.dev/T/#u
+ rust/kernel/Kconfig.test |  10 ++++
+ rust/kernel/time.rs      | 108 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 118 insertions(+)
+
+
+base-commit: 8fe5e5f62bdb9660999449a4b5eaebcc37d7f842
+-- 
+2.43.0
+
