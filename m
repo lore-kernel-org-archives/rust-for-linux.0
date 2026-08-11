@@ -1,342 +1,239 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04083C1D64
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 23:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECE43594A
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Aug 2026 02:17:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786405540; cv=none; b=IyppIo8Ugarn7WePQBnLDpvJz8aYndBc0ayiix3RA3n7pvkxdT6W9rOVQbHO25gF1xVIyYrJYrEvvP01OWRgR31fVr+/7DoAuXn+wxM4D6RkU+88afifw/JTmkBQwNklte6xD1OnOQez6bnwI7HXIwcR58/npV3SQNrsm2GvUtY=
+	t=1786414625; cv=none; b=cbas0ILS4ouQL8MBkB7uwWXZT0UjY8v8Yh3HZrTUU9N7Kf+aVWt3bpsyIKaI0EDYcgylvl7h0yf3luYSQfhQpQbNadLVXL6aJMgjqYKB5ETVLMqwu2odBWbyG+syItXllOB4qk6Zy5mFu+YZi3i6UjSIJwAP5onSOvSvx36V5n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786405540; c=relaxed/simple;
-	bh=7oQW9UEh4FhBjngWgpMYzrhLQbdG1TFOQZWs5Sts+3o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mHD61OjaQ0wA/2Ajd57+2G2NxTTCdLuXV2bzdGqqBjknxyfk/UubYp/E9aq0HP5LKsRMTyvx7MZC9cz1DOFhRiMEmT4fqm8OR4CqLRJkPcIfZ0RCiidosJuGmcWtQsmsGcAdQG+8pjq6t3ZTQ9Vd0it9LCWP9UWQBX0lJHOnvb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p1JyDKG4; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p1JyDKG4"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cab97c86bdso27395ad.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 16:45:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1786405538; x=1787010338; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BSmjiU1tDKbUzSU+Zv3NJ2dqrsW8qHiyYg0xERaQDKE=;
-        b=p1JyDKG459V2k/9iPaVzGHartjWXwzHXesSeBawjtll5VtDJ9g6RvW6ZE1dbJdeNfQ
-         gEpDWxH2AHyUTUr9xJytc0JWsHUWAWwjuGxgnp8rMjUS2Yztc1bIUJdMCCsbkg1n8S3I
-         I2bWDLEPGUOKCGY6/f3BTO8nD5nLP/Ll0bmfsGnHbQYtDxJWP0B9d8JeTavxEHUGYIfQ
-         mo6a9tZ46jMpMlWXBU7+sMK9tPXeao7VJtWnkUFA6exMKnrLrYzqmAB/9aiZ8bi6hxbk
-         oRKbiriK9Qs7R28rJzftR6w4KIHKqSjaLJv736p4nJE2xK3LFAsFQbk8Mz/hrK7Cbsuu
-         UWkg==
+	s=arc-20240116; t=1786414625; c=relaxed/simple;
+	bh=6TcbRPngxB1/4Xd7SQvMRW+SPTd6Os2KhlrgSEuWTQc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M1ndjBtWXgEXGdV0JpIX8Od1ytAJAKhy95BK+FuNNPjD4YRq1sh1Kd9Mtaz1dcxfmFZ4K0XNStubCMmWaxVwBivq+Sdj0plhajaGrmXd/WKL9bLexhuxGlwZU5XKX4YH421AvdS2lH41Bch5tdYKiD4Q95E6eVOSQLl2I/A/0BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so1953581a12.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Aug 2026 19:17:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786405538; x=1787010338;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BSmjiU1tDKbUzSU+Zv3NJ2dqrsW8qHiyYg0xERaQDKE=;
-        b=ss+L0bkEGZOqpoVkxFJ4Gmr7cSz0NzaMiKSBu0SJvV8juZ5O9uhmd5+72BYFGvGHsx
-         +IlCLCJ06WskEyNPKl1w0hXGFchBrMlX1n4bFxGB8s8e8TlBfDeP3dS7594QXZVcgZRh
-         7NhNn3/lKVVWDcVUq/49Tx+kBLIVz3E7JLD99rt4DlfdpzIDATzoGoU61127S/yW0Qm2
-         N1y9q++kxngRbFNG6/yFKkfFr/s+DLdM3EEwat1LLNH8Xl/LKnoI7Jw1iM9uGhHc0eiA
-         3XdREY5PaNGbMmo8HJMZssd/aBVwEEJSWCBR6HUtaKv/2WFZDXfvziTZ4zDatMrh/eHX
-         nQFA==
-X-Forwarded-Encrypted: i=1; AHgh+RqeUqmL+SBIulBCJ73qn1WlbU1dRC9GkD+5u5JnBCOZ2UBynvkO1sAyVJMsXlpzVw+p41Odev6Kq0fRhihBnw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUAstBeKDzWHGoXiRNd841e/TC7lkEAOOA1YeXQHNWvsD8mlbC
-	fnyv+Nid/r7hw5BQnvhGvsX9K1gjYJIFGcUPSwbjlLmh78EMEQi9YxbFYCS3YP5JmQ==
-X-Gm-Gg: AR+sD10tQQRfvFrWr9woGjTo9Kf9Q1guH8gOZcvP9PEz7Wi6q2EllsCaSqYeEwxSxeQ
-	DbWv/ZgL3sx2+NBCj25qk32Jh528QZO/ZxTTWgbFBEX5NYlJ04bzXr9RIeiJWX2mxO2Ankz0P4k
-	ZauXNwF4wJwfMnuyu8+I5CmPi/6wykZNirYfG6RK/pOEuTlQA8nk6LrUVNnAXSsCCKoHjpU0YAB
-	qRUJr3mCzuytPC1K8IDDGJBJ0EBn53uc7c3QeU5J0UcBOfeCKt1wi96Vr7MmBU8DcMeYqeEYHeU
-	znI7fbaC4jv2CNv2vQLYgHCSbjY1ZNCSj7lanhOVOLrO1BM9i6+ZSJyKuWqbMP/Pyoy4qWOTuA5
-	EigJsPE5ibu9x7kzgh7HsVg9n2lDTOVdg7Avwbr2f/DrUi72lIgaHFueeaafDPkVyE7zK7HWMpE
-	uJWSmKyOrZMNmL04C8XJEO2RJYJ30w6/YyMLDQZsGyTQ92BA3QuSmn4qMrHm/bH+I+wTNlH1s0B
-	JuIW3k4y1y3zw09W3dvW8WyiolKiJCHabMpW+WpjS9sXIAqtRZ85VcFI9u1csmYwS2jvILwFsUf
-	ckT4QIu7HSl+Fj18kA==
-X-Received: by 2002:a17:902:d984:b0:2cf:41ba:96b8 with SMTP id d9443c01a7336-2d3107ba82fmr1811185ad.6.1786405537222;
-        Mon, 10 Aug 2026 16:45:37 -0700 (PDT)
-Received: from google.com (193.67.125.34.bc.googleusercontent.com. [34.125.67.193])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392d5381dd3sm1242042a91.16.2026.08.10.16.45.35
+        d=1e100.net; s=20251104; t=1786414623; x=1787019423;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=0rTETrZQD80b0HbQOyMHNJ/NXLDgcpZh2UKWexYXibQ=;
+        b=WDKdf5zwHiuPpJVhsPe1GlKVLhoDqTZGSVLc0w1WPUtmbVf6OMRaNqbxuYsY3ebxIw
+         hRs3VhAvaNbwL3D65/PtrcmfcHwjpvMkQtQQ1LLRPDPpa+GslqWbzPe3+8SHJEcNbzi6
+         3wqcSSeRvZUGTrr3jAWU3tYIc2yWHhnQieCSGDZcZdOj4iHrvVk9FFIDrjVrwcYRoQQW
+         c9K5vRoMaqeWPZmY1VdXq1lBIK0s6sUvxr1ms07YXcKF9OWIejFSEH2ody5NI/ytUO3v
+         aUfhjOW648MiemIpLHqTQ3gprL+b1pSIzj926phHoDB/xnaJgc4a8xrrz2vKIbRjnWYT
+         ouBg==
+X-Forwarded-Encrypted: i=1; AHgh+RrM8yajHBxB0oofVQQ2q6Eqzv5e+eO1DP3vfImpNRUV8m3Ea5kkn/rmcFzgbo5p/QhOd0um8XCb9k4fm/VFYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyn8iQvwh2sdz30pOYyvkY88kV5Jtl2PvTE8NRLQVSJ4pFuWbs3
+	3DEQxgmhwQ7ZEjLafldogeHEE4h25c/aLBKVcnSIUvC+drl0yOKNOypqNnuLnYvJVNc=
+X-Gm-Gg: AR+sD12GRfIUQOJLdWcY1lLUtqFD8Ofaz3eCLqICeNMKj7AO7FdhcpfYAk8JxosABTw
+	kAIL+z33b2yXrrzrNmT19tg3SnGvppPW6FqPAtyt/5DirjkGw8A7bHp+BiW/UAj9ytfbGJgkRg2
+	h+drmo5s7yVtUBsmHgIfa1YPufBq6WxKSS/rHGY3L004lPPYh9WZZlBYI0nWcxi8y1ZkuD9UCg5
+	8Cs7HBSX9b0kw/btlkHCklI9FinApg1EuxH3G1gYhN08qm9qnad/sN3f429gNrNdp4EzEYAibjj
+	JV2y+DZX4WbKuGeziFH+keb+JLel9FlXRlPWJDF7UrmvL2Bk8LinYuq4yo1Xv7zVVn9fdreLO0H
+	C6LlV0jdsKrF2OU0mdULL/8NrTTDvDOqQ2v6o9VzJTlKX1B8M9BE4tCaH4lH5Q4+8Bgk18x8aOO
+	rN/SJWsu1tOi37amtjQ0AkAVpDHp5h
+X-Received: by 2002:a05:6a21:1b84:b0:3c3:875d:c52f with SMTP id adf61e73a8af0-3cc2b80bb73mr296764637.10.1786414622667;
+        Mon, 10 Aug 2026 19:17:02 -0700 (PDT)
+Received: from [127.0.1.1] ([2a11:3:200::10a9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14101a60867sm40073968c88.9.2026.08.10.19.16.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Aug 2026 16:45:36 -0700 (PDT)
-Date: Mon, 10 Aug 2026 23:45:32 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Todd Kjos <tkjos@android.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust_binder: add TF_DEFER_COMPLETE flag for avoiding
- userspace roundtrip
-Message-ID: <anpinBy0adT0JDVn@google.com>
-References: <20260722-defer-complete-v2-1-6c67af0e2ac2@google.com>
+        Mon, 10 Aug 2026 19:17:01 -0700 (PDT)
+From: Ke Sun <sunke@kylinos.cn>
+Subject: [PATCH v16 0/2] rust: Add safe pointer formatting support
+Date: Tue, 11 Aug 2026 10:16:47 +0800
+Message-Id: <20260811-hashedptr-v16-0-fc483a02b6c7@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260722-defer-complete-v2-1-6c67af0e2ac2@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA+GemoC/22RQW6DMBBFr4K8riPPGDyQVe9RdQF4XKw2kNoUN
+ Ypy9xqyAJosx5735kv/KiIHz1Ecs6sIPPnohz4NYF4y0XZ1/8HS2/QgUKFRBaDs6tixPY9BIua
+ maiqtALRI++fAzv8usrf3NLswnOTYBa5XA6piY5gAJMjGKsctOTYOXj8vX74f4qHtZ2Xn4ziEy
+ xJvApzNz5KkL6mkAVu0RKUpy2rrmbNMKeIKo9nBOsEac10ggeGm+hdiYUg9YYhqRQ4dlfbxYL4
+ eLBXt4DzBJZBSFZnKueYRLjYwqB1cJJhrZ5GsNjmZHXy79xD4+yd1Od7LEE0dWbbD6eTHYzbRA
+ WVoKS3f/gBJW+lAAAIAAA==
+X-Change-ID: 20260512-hashedptr-22469b930113
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, 
+ =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: Dirk Behme <dirk.behme@de.bosch.com>, rust-for-linux@vger.kernel.org, 
+ Ke Sun <sunke@kylinos.cn>, Link Mauve <linkmauve@linkmauve.fr>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786414612; l=7166;
+ i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
+ bh=6TcbRPngxB1/4Xd7SQvMRW+SPTd6Os2KhlrgSEuWTQc=;
+ b=147I0zmBww4JNKvLRoubAyYq5+XjmcT5wNHRewA6OYe3t9obULattosttBr6lYzti42WFziFV
+ eWgtlE4b8muDKKIXxw5D7n7ZkekQa/hJxWKNa+kaiLc3FypXBj6LSdv
+X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
+ pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 
-On Wed, Jul 22, 2026 at 09:09:22PM +0000, Alice Ryhl wrote:
-> Outgoing transactions are able to send a message and wait for its reply
-> in a single ioctl. Why not avoid a userspace roundtrip by applying the
-> same logic for replying to incoming messages and waiting for the next
-> incoming message?
-> 
-> Generally, when you send a reply using BC_REPLY, the kernel sends
-> BR_TRANSACTION_COMPLETE as a reply to BC_REPLY right away. The
-> BR_TRANSACTION_COMPLETE command indicates that it's safe for userspace
-> to free any resources associated with this message (such as embedded fds
-> or Binder nodes). However, the BR_TRANSACTION_COMPLETE message is
-> problematic because after BC_REPLY is issued, there will be a pending
-> message for userspace. The kernel will refuse to sleep for incoming
-> messages in this scenario.
-> 
-> The way this is handled for outgoing transaction is through a mechanism
-> known as deferred delivery of BR_TRANSACTION_COMPLETE. The idea is that
-> when you send an outgoing transaction, then we do not return to
-> userspace right away if BR_TRANSACTION_COMPLETE is the only pending
-> message. This patch adds a new flag called TF_DEFER_COMPLETE that lets
-> userspace opt-in to the same deferred delivery mechanism for
-> BR_TRANSACTION_COMPLETE when using BC_REPLY.
-> 
-> Given this new uapi, we can adjust sendReply in userspace libbinder
-> so that it writes the BC_REPLY command into mOut but does not flush the
-> buffer to the kernel. Then, userspace simply continues running until it
-> returns all the way out to the top-level joinThreadPool() loop, which
-> calls into the kernel to get the next incoming transaction. At this
-> point, mOut is flushed, sending the reply. The same ioctl then proceeds
-> to sleep for an incoming message.
-> 
-> Userspace only actually specifies TF_DEFER_COMPLETE when the Parcel does
-> not contain fds or refcounts on binder objects. This is because
-> otherwise said fd or binder node will not be freed until the binder
-> thread receives another incoming transaction, which could be a long
-> time. In the case of fds, this is especially important because delaying
-> fclose() can result in processes hanging because they read from a pipe
-> that isn't being closed due to fclose() not getting called. Note that
-> even if TF_DEFER_COMPLETE is not specified for this transaction, it can
-> still be useful to defer the BC_REPLY command, as it can still avoid a
-> userspace roundtrip when a new incoming transaction is available right
-> away.
+This series fixes two issues with {:p} pointer formatting:
+- The impl_fmt_adapter_forward! macro destructures self into a local
+  variable, causing {:p} to print a stack address instead of the actual
+  pointer
+- Kernel address leak - {:p} prints raw pointer values, exposing kernel
+  address space layout
 
-The processing of a deferred COMPLETE doesn't change right? It doesn't
-matter if the kernel rejects / ignores the new flag, userspace will
-still follow the same path. 100% backward-compatible then.
+---
+Changes in v16:
+- Reword `HashedPtr::fmt` comment, drop `no_hash` test branch, use
+  `without_provenance`, assert formats against the first `{:p}` output,
+  reduce clamped test width (Gary)
+- Link to v15: https://lore.kernel.org/r/20260810-hashedptr-v15-0-eafd27d36476@kylinos.cn
 
-> 
-> Observing the cuttlefish logs while booting with this change shows that
-> there were 4297 opportunities for this optimization to kick in (that is,
-> boot invoked BC_REPLY 4297 times). Out of those, 3441 binder ioctls sent
-> and received a transaction in the same ioctl. This indicates that we
-> successfully eliminated a syscall on the server side for 80% of incoming
-> transactions. Generally, this means that a server is now able to handle
-> incoming messages using one syscall per incoming message (for each
-> incoming transaction, the syscall handles one BC_FREE_BUFFER and
-> BC_REPLY command, and then waits for the next incoming transaction).
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Changes in v2:
-> - Return deferred thread work instead of the process global work if
->   there is work in the process global list.
-> - Link to v1: https://lore.kernel.org/r/20260716-defer-complete-v1-1-ce0e38d30dc6@google.com
-> ---
->  drivers/android/binder/defs.rs      |  3 +-
->  drivers/android/binder/process.rs   |  8 ++++++
->  drivers/android/binder/thread.rs    | 55 +++++++++++++++++++++++++++++++------
->  include/uapi/linux/android/binder.h |  1 +
->  4 files changed, 57 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/android/binder/defs.rs b/drivers/android/binder/defs.rs
-> index 8ac9bdd7a499..cc4becd6e168 100644
-> --- a/drivers/android/binder/defs.rs
-> +++ b/drivers/android/binder/defs.rs
-> @@ -77,7 +77,8 @@ macro_rules! pub_no_prefix {
->      TF_ONE_WAY,
->      TF_ACCEPT_FDS,
->      TF_CLEAR_BUF,
-> -    TF_UPDATE_TXN
-> +    TF_UPDATE_TXN,
-> +    TF_DEFER_COMPLETE,
->  );
->  
->  pub(crate) use uapi::{
-> diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-> index 1778628d8acd..4f23a7cf7352 100644
-> --- a/drivers/android/binder/process.rs
-> +++ b/drivers/android/binder/process.rs
-> @@ -686,8 +686,16 @@ pub(crate) fn get_work(&self) -> Option<DLArc<dyn DeliverToRead>> {
->      pub(crate) fn get_work_or_register<'a>(
->          &'a self,
->          thread: &'a Arc<Thread>,
-> +        thread_has_deferred_work: bool,
->      ) -> GetWorkOrRegister<'a> {
->          let mut inner = self.inner.lock();
-> +
-> +        if thread_has_deferred_work && !inner.work.is_empty() {
-> +            if let Some(work) = thread.pop_work_even_if_deferred() {
-> +                return GetWorkOrRegister::Work(work);
-> +            }
-> +        }
-> +
->          // Try to get work from the process queue.
->          if let Some(work) = inner.work.pop_front() {
->              return GetWorkOrRegister::Work(work);
-> diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-> index a51821dde0ad..c4d67b9ef39b 100644
-> --- a/drivers/android/binder/thread.rs
-> +++ b/drivers/android/binder/thread.rs
-> @@ -572,9 +572,21 @@ fn get_work_local(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn Deliv
->      // mangled symbol names.
->      #[export_name = "rust_binder_wait"]
->      fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRead>>> {
-> +        let thread_has_deferred_work;
-> +
->          // Try to get work from the thread's work queue, using only a local lock.
->          {
->              let mut inner = self.inner.lock();
-> +
-> +            // The process_work_list boolean is used to make us go to sleep even if there is work
-> +            // in the thread todo-list, but it doesn't apply to the process todo-list. Furthermore,
-> +            // work in the thread todo-list must still be delivered before the process list.
-> +            //
-> +            // Thus, in some scenarios we must return the thread work now even if we were requested
-> +            // to wait. Adjust `process_work_list` to `true` accordingly.
-> +            inner.process_work_list |= inner.looper_need_return;
-> +            inner.process_work_list |= !wait;
-> +
->              if let Some(work) = inner.pop_work() {
->                  return Ok(Some(work));
->              }
-> @@ -582,18 +594,26 @@ fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRe
->                  drop(inner);
->                  return Ok(self.process.get_work());
->              }
-> +
-> +            // Note that if the thread list is empty, then the call to `pop_work()` has changed
-> +            // `process_work_list` back to `false` even if we set it to `true` above.
-> +            thread_has_deferred_work = inner.process_work_list;
+Changes in v15:
+- Clamp zero-pad width to buffer size, add boundary tests (Sashiko, Miguel)
+- Fix {:00p} output mismatch introduced in v14
+- Link to v14: https://lore.kernel.org/r/20260807-hashedptr-v14-0-817009769ffb@kylinos.cn
 
-I might be getting this wrong, but for the new TF_DEFER_COMPLETE case,
-we have !process_work_list and !work_list.is_empty(). Then pop_work()
-does not touch process_work_list because it's already false.
+Changes in v14:
+- Use `%#0*p` for `0x` prefix and zero-padding (Gary); this also avoids
+  "0x(...)" for placeholder tokens like "(____ptrval____)" (Alice)
+- Simplify pointer impls per Gary
+- Link to v13: https://lore.kernel.org/r/20260706-hashedptr-v13-0-377a07f2f78d@kylinos.cn
 
-So we set thread_has_deferred_work to false? Maybe this was meant to be:
-	thread_has_deferred_work = !inner.work_list.is_empty()
+Changes in v13:
+- Add NonNull<T> pointer formatting support
+- Add #[inline] to all Pointer impl methods
+- Support zero-padding format ({:0width$p})
+- Simplify SAFETY comments
+- Rewrite tests: remove NoHashPointersGuard - modifying
+  no_hash_pointers after boot panics since it's __ro_after_init; read
+  current value and branch instead; expand format coverage
+- Link to v12: https://lore.kernel.org/r/20260512-hashedptr-v12-0-61d5c7786889@kylinos.cn
 
->          }
->  
->          // If the caller doesn't want to wait, try to grab work from the process queue.
->          //
->          // We know nothing will have been queued directly to the thread queue because it is not in
-> -        // a transaction and it is not in the process' ready list.
-> +        // a transaction and it is not in the process' ready list. We also know the thread list has
-> +        // no deferred work due to the `inner.process_work_list |= !wait` call above.
->          if !wait {
->              return self.process.get_work().ok_or(EAGAIN).map(Some);
->          }
->  
->          // Get work from the process queue. If none is available, atomically register as ready.
-> -        let reg = match self.process.get_work_or_register(self) {
-> +        let reg = match self
-> +            .process
-> +            .get_work_or_register(self, thread_has_deferred_work)
-> +        {
->              GetWorkOrRegister::Work(work) => return Ok(Some(work)),
->              GetWorkOrRegister::Register(reg) => reg,
->          };
-> @@ -609,14 +629,18 @@ fn get_work(self: &Arc<Self>, wait: bool) -> Result<Option<DLArc<dyn DeliverToRe
->              inner.looper_flags &= !(LOOPER_WAITING | LOOPER_WAITING_PROC);
->  
->              if signal_pending || inner.looper_need_return {
-> -                // We need to return now. We need to pull the thread off the list of ready threads
-> -                // (by dropping `reg`), then check the state again after it's off the list to
-> -                // ensure that something was not queued in the meantime. If something has been
-> -                // queued, we just return it (instead of the error).
-> +                // We need to return now.
-> +                //
-> +                // We need to pull the thread off the list of ready threads (by dropping `reg`),
-> +                // then check the state again after it's off the list to ensure that something was
-> +                // not queued in the meantime. If something has been queued (or if there is
-> +                // deferred work), we just return it (instead of the error).
->                  drop(inner);
->                  drop(reg);
->  
-> -                let res = match self.inner.lock().pop_work() {
-> +                inner = self.inner.lock();
-> +                inner.process_work_list = true;
-> +                let res = match inner.pop_work() {
->                      Some(work) => Ok(Some(work)),
->                      None if signal_pending => Err(EINTR),
->                      None => Ok(None),
-> @@ -674,6 +698,12 @@ pub(crate) fn push_return_work(&self, reply: u32) {
->          self.inner.lock().push_return_work(reply);
->      }
->  
-> +    pub(crate) fn pop_work_even_if_deferred(&self) -> Option<DLArc<dyn DeliverToRead>> {
-> +        let mut thread_inner = self.inner.lock();
-> +        thread_inner.process_work_list = true;
-> +        thread_inner.pop_work()
-> +    }
-> +
->      fn translate_object(
->          &self,
->          obj_index: usize,
-> @@ -1398,8 +1428,15 @@ fn reply_inner(self: &Arc<Self>, info: &mut TransactionInfo) -> BinderResult {
->              let process = orig.from.process.clone();
->              let allow_fds = orig.flags & TF_ACCEPT_FDS != 0;
->              let reply = Transaction::new_reply(self, process, info, allow_fds)?;
-> -            // Not notifying: Reply to current thread.
-> -            let _ = self.inner.lock().push_work(completion);
-> +            {
-> +                // This performs a deferred push so that `read` can wait for the next incoming
-> +                // transaction without a userspace roundtrip.
-> +                let mut inner = self.inner.lock();
-> +                inner.push_work_deferred(completion);
-> +                // However, if `TF_DEFER_COMPLETE` is not set, then set `process_work_list` to make
-> +                // the push non-deferred. This forces a userspace roundtrip.
-> +                inner.process_work_list |= info.flags & TF_DEFER_COMPLETE == 0;
+Changes in v12:
+- Split into 2 patches: fix {:p} printing stack addresses -> route {:p}
+  through HashedPtr
+- Test cleanup: NoHashPointersGuard RAII guard replaces raw
+  save/restore; mod expected consolidates 32/64-bit constants
+- Impl delegation: &T, &mut T, *mut T all forward to *const T (matching
+  core library conventions), replacing v11's blanket impl + macro
+- Link to v11: https://lore.kernel.org/r/20260205-hashedptr-v11-1-bd0fec7fe6f1@kylinos.cn
 
-If there is already a push_work() and a push_work_deferred() why use
-process_work_list directly? Is it to avoid an if/else?
+Changes in v11:
+- Fix inaccurate or inappropriate descriptions in comments
+- Use as_char_ptr instead of as_ptr so that a *const u8 pointer is
+  always passed to scnprintf on all architectures
+- Per Tamir's suggestion, replace doctests with mod tests and adjust
+  test content to make the tests more meaningful
+- Remove the RawPtr wrapper type: it and HashedPtr use different
+  formatting mechanisms (HashedPtr uses scnprintf and pad; RawPtr would
+  call core's Pointer impl directly). This series focuses on fixing the
+  issue that without it {:p} would output the pointer's stack address,
+  and on using HashedPtr to safely format raw pointers and avoid leaking
+  kernel address space layout information
+- Link to v10: https://lore.kernel.org/r/20260121050059.2315091-1-sunke@kylinos.cn
 
-> +            }
->              orig.from.deliver_reply(Ok(reply), &orig, None);
->              Ok(())
->          })()
-> diff --git a/include/uapi/linux/android/binder.h b/include/uapi/linux/android/binder.h
-> index 701cad36de43..96e5b0184a1b 100644
-> --- a/include/uapi/linux/android/binder.h
-> +++ b/include/uapi/linux/android/binder.h
-> @@ -296,6 +296,7 @@ enum transaction_flags {
->  	TF_ACCEPT_FDS	= 0x10,	/* allow replies with file descriptors */
->  	TF_CLEAR_BUF	= 0x20,	/* clear buffer on txn complete */
->  	TF_UPDATE_TXN	= 0x40,	/* update the outdated pending async txn */
-> +	TF_DEFER_COMPLETE = 0x80,	/* defer transaction complete to userspace */
->  };
->  
->  struct binder_transaction_data {
-> 
-> ---
-> base-commit: 2cedf2272f1bb42471e646868ac572cc5752bd91
-> change-id: 20260715-defer-complete-f1dea9af13a8
-> 
-> Best regards,
-> -- 
-> Alice Ryhl <aliceryhl@google.com>
-> 
+Changes in v10:
+- Merge all patches into a single patch
+- Improve `kernel::fmt::Pointer` trait implementation
+Link to v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
+
+Changes in v9: https://lore.kernel.org/r/20260119033006.1453006-1-sunke@kylinos.cn
+- Refactor implementation to use Pointer trait and Adapter pattern
+  instead of exporting ptr_to_hashval() from lib/vsprintf.c. Use
+  scnprintf directly in Rust for pointer hashing, eliminating the
+  need for C function export
+- Move pointer wrapper types from rust/kernel/ptr.rs to
+  rust/kernel/fmt.rs
+- Split implementation into more granular patches: Pointer trait
+  foundation, HashedPtr type, raw pointer default behavior, and
+  RawPtr type
+- Remove documentation patch, integrate examples into code doctests
+- Simplify API and improve code organization following Display trait
+  pattern
+- Link to v8: https://lore.kernel.org/r/20260101081605.1300953-1-sunke@kylinos.cn
+
+Changes in v8:
+- Remove RestrictedPtr (%pK) support: only export ptr_to_hashval() with
+  EXPORT_SYMBOL_NS_GPL using "RUST_INTERNAL" namespace, provide only two
+  pointer wrapper types (HashedPtr, RawPtr) for %p and %px
+- Change API from HashedPtr::from(ptr) to HashedPtr(ptr) for direct
+  construction
+- Link to v7: https://lore.kernel.org/r/20251229072157.3857053-1-sunke@kylinos.cn
+
+Changes in v7:
+- Refactor kptr_restrict handling: extract kptr_restrict_value() from
+  restricted_pointer() in lib/vsprintf.c and export it for Rust use, and
+  improve RestrictedPtr::fmt() implementation to directly handle
+  kptr_restrict_value() return values (0, 1, 2, -1) for better code
+  clarity
+- Remove Debug derive from pointer wrapper types (HashedPtr,
+  RestrictedPtr, RawPtr)
+- Link to v6: https://lore.kernel.org/r/20251227033958.3713232-1-sunke@kylinos.cn
+
+Changes in v6:
+- Fix placeholder formatting to use `f.pad()` instead of `f.write_str()`
+  in format_hashed_ptr(), ensuring width, alignment, and padding options
+  are correctly applied to PTR_PLACEHOLDER
+- Link to v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
+
+Changes in v5: https://lore.kernel.org/r/20251226140751.2215563-1-sunke@kylinos.cn
+- Format use statements in rust/kernel/ptr.rs and rust/kernel/fmt.rs
+  using kernel vertical style with alphabetical ordering
+- Remove unnecessary SAFETY comment in rust/kernel/ptr.rs (addressed
+  Clippy warning)
+- Update type ordering to alphabetical (HashedPtr, RawPtr,
+  RestrictedPtr) in fmt.rs macro invocation
+- Link to v4: https://lore.kernel.org/r/20251225225709.3944255-1-sunke@kylinos.cn
+
+Changes in v4:
+- Use Pointer::fmt() instead of write!(f, "{:p}", ...) to preserve
+  formatting options (width, alignment, padding characters)
+- Improve code structure: reduce unsafe block scope, use early return
+  pattern
+- Add doctests with formatting option tests for all pointer wrapper
+  types
+- Enhance documentation with detailed formatting options section,
+  including examples for width, alignment, and padding
+- Fix RestrictedPtr example to use pr_info! instead of seq_print! in
+  docs
+- Link to v3: https://lore.kernel.org/r/20251224081315.729684-1-sunke@kylinos.cn
+
+Changes in v3:
+- Export ptr_to_hashval() from lib/vsprintf.c for Rust pointer hashing
+- Add three pointer wrapper types (HashedPtr, RestrictedPtr, RawPtr) in
+  rust/kernel/ptr.rs corresponding to %p, %pK, and %px
+- Make raw pointers automatically use HashedPtr when formatted with {:p}
+- Add documentation for pointer wrapper types
+- Link to v2: https://lore.kernel.org/r/20251223033018.2814732-1-sunke@kylinos.cn
+
+Changes in v2:
+- Disabled {:p} raw pointer printing by default to prevent accidental
+  information leaks
+- Link to v1: https://lore.kernel.org/r/20251218032709.2184890-1-sunke@kylinos.cn
+
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+
+---
+Ke Sun (2):
+      rust: fmt: fix {:p} printing stack addresses
+      rust: fmt: route {:p} through HashedPtr to prevent address leaks
+
+ rust/kernel/fmt.rs | 148 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 146 insertions(+), 2 deletions(-)
+---
+base-commit: 2ee859ebf156157609f71060ae472711c8cbc326
+change-id: 20260512-hashedptr-22469b930113
+
+Best regards,
+-- 
+Ke Sun <sunke@kylinos.cn>
+
