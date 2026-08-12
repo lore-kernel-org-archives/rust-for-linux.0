@@ -1,69 +1,67 @@
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E765430CDD;
-	Wed, 12 Aug 2026 11:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E91435531;
+	Wed, 12 Aug 2026 11:34:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786533840; cv=none; b=f7QnFC3AVAzoaeWbgqWkeLbglh/VzLMHDy6kv1ghJSU+ouRyCI5COIR0JSO8vi2qz21BrZ3KbbbMYrQ0dgBVVGM47hY/Q7jI2s0OVSxYrG4PfpX97eIJkCuz8OypzQR+N4Q7OqxB9f/bOtPCa5EFHYx5IUPkvAndIo2FbnP0WqI=
+	t=1786534454; cv=none; b=RDaSCea45Cutv7jAvkmpc0YQuFAkj+pwKCqsP5GOAEsCJ3Fx7FkgvEI3SwKXa2LOO6t5y39ZLp4PZSboOCJMc/Fyvz0MYG4MG1a5gB8gL2PaDvOmvXZhHW6vsyX+7Uk4zfXLjVCvHYWyG7DING2TbNzATkawYA1n06WgojDKr1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786533840; c=relaxed/simple;
-	bh=ioMPHBkTbeYq7a69NyMZfdEHzCVK3LOwwzrU8x0yGj4=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=HqtflBqM/8fK8lDPTfAdZENmnAlZIzKN9QbLsPQhgnbhNT/ToJzUrKvNATYeYBIN7bVSOErLI+60JznQBhuiBNXxAXX+UOZ483MQLiasBsPZqzhIInA3Q8Q3TGH8YcIwka5mrwakNtmdCYsHF41GBOJGAFMDkiSe0k+bjw3kg40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id D342692009C; Wed, 12 Aug 2026 13:23:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id CDD2792009B;
-	Wed, 12 Aug 2026 12:23:57 +0100 (BST)
-Date: Wed, 12 Aug 2026 12:23:57 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Arnd Bergmann <arnd@arndb.de>
-cc: Niklas Schnelle <schnelle@linux.ibm.com>, 
-    Heiko Carstens <hca@linux.ibm.com>, Danilo Krummrich <dakr@kernel.org>, 
-    Gerd Bayer <gbayer@linux.ibm.com>, Miguel Ojeda <ojeda@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, 
-    Daniel Almeida <daniel.almeida@collabora.com>, 
-    Vasily Gorbik <gor@linux.ibm.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, driver-core@lists.linux.dev, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org, 
-    Linux-Arch <linux-arch@vger.kernel.org>, Boqun Feng <boqun@kernel.org>, 
-    Gary Guo <gary@garyguo.net>, 
-    =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-    Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
-    Alexandre Courbot <acourbot@nvidia.com>, 
-    =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
-    rust-for-linux@vger.kernel.org
-Subject: Re: `io{re,un}map()` build error in s390 under `!CONFIG_HAS_IOMEM`
-In-Reply-To: <f85a48cb-4ad9-412c-be00-a8227d6c8fb1@app.fastmail.com>
-Message-ID: <alpine.DEB.2.21.2608120426510.48788@angie.orcam.me.uk>
-References: <20260803180931.97202-1-ojeda@kernel.org> <fb2daae7-4eba-4ca1-95a5-60f8157eb66b@app.fastmail.com> <DKFKXA6YWW8R.1NDZ44Q13XFQH@kernel.org> <20260804071330.24760Aaf-hca@linux.ibm.com> <33ecacea-ed2a-409c-ab1c-a136e06b1b7a@app.fastmail.com>
- <1aac654b8d333cc058a345b03ae0f798f1724ced.camel@linux.ibm.com> <57ac7553-4034-49e2-b686-b7272591da00@app.fastmail.com> <94c3ebc645e80feae1044a57b8b5c82d4d4ff408.camel@linux.ibm.com> <f2002ee7-00a4-4a3f-a516-409886b724ab@app.fastmail.com>
- <2aaf01a4417cea313ce0cce7cfdbec65d350a41f.camel@linux.ibm.com> <f85a48cb-4ad9-412c-be00-a8227d6c8fb1@app.fastmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	s=arc-20240116; t=1786534454; c=relaxed/simple;
+	bh=nBTiRoEW8QO/FJFjHhrcmyDEv8teQSnGFnFzTPjcrzM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cRxIEF/sHBWsViLhHUwE7gusp8DziCaj1w2zavUTbdiObsqOMXFdG5E19dUzx9H0C+a54HgqdwIHAEdhzY9dk4PjrVAa+LoJwQADRljQDEmHw+pROZYpqjjF+wKTHaKTa+KudRkoI5znUULPxsDTtESXE64m5VOGgh8KnZcokZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ZRuPkjAn; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ZRuPkjAn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=sNc2iY5E2VBsuWmYwQX4hJPFb74Z6H8owBWeShbqwuo=; b=ZRuPkjAn5okDpRv5O3mn+fPScJ
+	urL/Qk6N0GLIzIRmL+MlVLaaC+dPVEmEL8HObIpiWcghhFULLfQ/hH0I/0bEGgYq4PBjzNWro2nQG
+	yDdBjre0iIRHQl+4oO61WhC8JfXFQRdQbZgaonBRzgTh+sJigs2gZaP35WF+MD8nDoylqcxBjuls1
+	1qSVYz2qS+LqKwotNEozVTOq0RJxOeLrgpnEz1+7E7jeYl+s7RxrGLigPNKBV9qh6/YYtGdP50QFT
+	KjOByMvtS9UzCpvPQLTDkSymuSufeix2uUfhj4RE3AK6cFin/hlDP5uLI78dGqdKTP167QbAJ77OB
+	yyUmN1UQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wu7DZ-004JR8-2U;
+	Wed, 12 Aug 2026 11:33:58 +0000
+Date: Wed, 12 Aug 2026 04:33:52 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] MAINTAINERS: configfs: split configfs entry in C and
+ Rust parts
+Message-ID: <anxaFDVTzvn7cclV@gmail.com>
+References: <20260812-configfs-maintainers-v1-1-ba1bd2f593f5@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812-configfs-maintainers-v1-1-ba1bd2f593f5@kernel.org>
+X-Debian-User: leitao
 
-On Thu, 6 Aug 2026, Arnd Bergmann wrote:
+On Wed, Aug 12, 2026 at 01:21:51PM +0200, Andreas Hindborg wrote:
+> Split configfs MAINTAINERS entry in C and Rust parts. Mark Breno Leitao as
+> maintainer of configfs C parts. Mark Andreas Hindborg as maintainer of
+> configfs Rust parts.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-> I think the reason is that there are a couple of architectures
-> (including non-MIO s390) that take a shortcut for normal
-> ioremap() that avoids actually mapping anything, e.g. mips
-> and related architectures have a fixed uncached mapping
-> of all MMIO space visible to kernel, while some alpha, m68k
-> powerpc, and s390 do something other than a pointer dereference
-> for MMIO.
-
- FWIW 32-bit MIPS configurations only have low 512MiB of MMIO accessible 
-via a fixed mapping and arrange for a regular mapping via the page table 
-for anything beyond.
-
-  Maciej
+Acked-by: Breno Leitao <leitao@debian.org>
