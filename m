@@ -1,120 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3523A9630;
-	Wed, 12 Aug 2026 11:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E765430CDD;
+	Wed, 12 Aug 2026 11:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786533822; cv=none; b=G1abTyS+sxUS+gNUEC9MIyL+aXH0z8Pb8q5bKstljsJeT3RYa9cHAoNrTzihBVJEWoG3mn/5Bgyk862ypMLVT404ET99va5RYcl1UWzhzuFrTQq+COiN5poZewm1/oCQFfqKel2iwHNWE2xyCilM17qVW/tKvzANMuvvvsVBkto=
+	t=1786533840; cv=none; b=f7QnFC3AVAzoaeWbgqWkeLbglh/VzLMHDy6kv1ghJSU+ouRyCI5COIR0JSO8vi2qz21BrZ3KbbbMYrQ0dgBVVGM47hY/Q7jI2s0OVSxYrG4PfpX97eIJkCuz8OypzQR+N4Q7OqxB9f/bOtPCa5EFHYx5IUPkvAndIo2FbnP0WqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786533822; c=relaxed/simple;
-	bh=xgiVtgKxF5HznEECamCfejOSlIA66ywB/87bdA1hv4A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BaXY3LYQo2EHHqYDtHu+o602fbccjoY4LPClxQ+JV3HEmQYUAJOrwt9tvSRyfMepgXxkt18AGt2GrjrmHeIneTZ5T/9V45SVtz2Gqu/34eAGphhGFhT6XccNLUEghynFD9OTHyYMWugOyVVDgaMELVNayel5YXyvUviDrFJ1B+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FygoDR5a; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FygoDR5a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2FF1F00A3A;
-	Wed, 12 Aug 2026 11:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786533821;
-	bh=+NRYyarB63MhOto3FLclENVrVqzfEP/Ij6tLUiwoG+I=;
-	h=From:Date:Subject:To:Cc;
-	b=FygoDR5akw7hbejsBGwKArvu/WTKVXv29Ez+66qSX52TBeqbSp2ie2UaD/8NkJ730
-	 Lx9PQpDFTalxLJ4as33uKIoXGLsgGOHX9sHwIuA6oDZOhbytgXJZD0jI8pDt3VIF+t
-	 3NzoMGNMgOdjsPz0UhWpvUPGnLQNy6JMZ+1ozo+LIQZYPHRwyOcpqZnLHEKRhUiQ7B
-	 u2i4TE14jGFFRsiDyf/qouV5O0I26sQ23n//heKkfQiTCRPtM2Ht/MlO+yuz2pYUWB
-	 QnbFSYgGIGWMIXteVxahFq/cmmGvK27ir0r+AuGoOPbHYAYovNxF1073fSTAGMFTeZ
-	 WboIZppNy24gg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 12 Aug 2026 13:21:51 +0200
-Subject: [PATCH] MAINTAINERS: configfs: split configfs entry in C and Rust
- parts
+	s=arc-20240116; t=1786533840; c=relaxed/simple;
+	bh=ioMPHBkTbeYq7a69NyMZfdEHzCVK3LOwwzrU8x0yGj4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=HqtflBqM/8fK8lDPTfAdZENmnAlZIzKN9QbLsPQhgnbhNT/ToJzUrKvNATYeYBIN7bVSOErLI+60JznQBhuiBNXxAXX+UOZ483MQLiasBsPZqzhIInA3Q8Q3TGH8YcIwka5mrwakNtmdCYsHF41GBOJGAFMDkiSe0k+bjw3kg40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id D342692009C; Wed, 12 Aug 2026 13:23:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id CDD2792009B;
+	Wed, 12 Aug 2026 12:23:57 +0100 (BST)
+Date: Wed, 12 Aug 2026 12:23:57 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Arnd Bergmann <arnd@arndb.de>
+cc: Niklas Schnelle <schnelle@linux.ibm.com>, 
+    Heiko Carstens <hca@linux.ibm.com>, Danilo Krummrich <dakr@kernel.org>, 
+    Gerd Bayer <gbayer@linux.ibm.com>, Miguel Ojeda <ojeda@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, 
+    Daniel Almeida <daniel.almeida@collabora.com>, 
+    Vasily Gorbik <gor@linux.ibm.com>, 
+    Alexander Gordeev <agordeev@linux.ibm.com>, driver-core@lists.linux.dev, 
+    Christian Borntraeger <borntraeger@linux.ibm.com>, 
+    Sven Schnelle <svens@linux.ibm.com>, linux-s390@vger.kernel.org, 
+    Linux-Arch <linux-arch@vger.kernel.org>, Boqun Feng <boqun@kernel.org>, 
+    Gary Guo <gary@garyguo.net>, 
+    =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+    Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, 
+    Alexandre Courbot <acourbot@nvidia.com>, 
+    =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
+    rust-for-linux@vger.kernel.org
+Subject: Re: `io{re,un}map()` build error in s390 under `!CONFIG_HAS_IOMEM`
+In-Reply-To: <f85a48cb-4ad9-412c-be00-a8227d6c8fb1@app.fastmail.com>
+Message-ID: <alpine.DEB.2.21.2608120426510.48788@angie.orcam.me.uk>
+References: <20260803180931.97202-1-ojeda@kernel.org> <fb2daae7-4eba-4ca1-95a5-60f8157eb66b@app.fastmail.com> <DKFKXA6YWW8R.1NDZ44Q13XFQH@kernel.org> <20260804071330.24760Aaf-hca@linux.ibm.com> <33ecacea-ed2a-409c-ab1c-a136e06b1b7a@app.fastmail.com>
+ <1aac654b8d333cc058a345b03ae0f798f1724ced.camel@linux.ibm.com> <57ac7553-4034-49e2-b686-b7272591da00@app.fastmail.com> <94c3ebc645e80feae1044a57b8b5c82d4d4ff408.camel@linux.ibm.com> <f2002ee7-00a4-4a3f-a516-409886b724ab@app.fastmail.com>
+ <2aaf01a4417cea313ce0cce7cfdbec65d350a41f.camel@linux.ibm.com> <f85a48cb-4ad9-412c-be00-a8227d6c8fb1@app.fastmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260812-configfs-maintainers-v1-1-ba1bd2f593f5@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAE5XfGoC/yXMyw5AMBCF4VeRWWuijbi9ilhUTRmJkk6JRLy7Y
- nEW3+L8FzB6QoYmucDjQUyri5BpAmbSbkRBQzSoTBVZJZUwq7M0WhaLJhfi0LOoZF3WJfa5Nhb
- idfNo6fyybfeb935GE94W3PcDu31J83gAAAA=
-X-Change-ID: 20260812-configfs-maintainers-819797eb4acf
-To: Breno Leitao <leitao@debian.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1461; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=xgiVtgKxF5HznEECamCfejOSlIA66ywB/87bdA1hv4A=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqfFer2aR7sTMZkXtLOhF75HWOd0P06tCIeykQG
- bcgrKkPEo+JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCanxXqwAKCRD6UCkIqsW9
- 0J3xD/oCP/MwMaF+ALoOrgL8DZWBF3F+4K8a2ZZklh2PYRzAl8gYj4gcoPAHUuKXOeEDpcq4Prk
- wnhP//XAXukyw5+Vvq9uXmqOyS2TObdktMf9qQIhWaEuL7WDHNYv7DA2pEAlwxPdBo0zBV6jkPg
- 7Spb+Iqjg9ggdN0v2Df9GlZ8OT/VQLJNNx/3Uh50d2PFpmtixG/J7ycC+L1o6nrz2zareltUS1d
- Jx3U+ZdkfZ79n3Aw6fN++WJhRPdoLFPdx5w9uH4S/S45nItRkpR0DBeM2jyqWZHVGJALJfRx7Ac
- nCWNODWk1u+r4ey4n2cXaqiyFh7lP7aqqS5IaVYG8HIpve5jRie0TRSXX4OBNBFtwESx1ZgTSDX
- /EKS4fF3SqdeNqvjG64QqKHove0XBb9gfrxzMLCdy2GiHnhiFw4AkoNaZFNTDK6K/jkfrlk8IRl
- dwHwLVaaXlVaw2AvwWvEvMX5uSRKoLLWzDObSvDX6PrOOlsp76/jW8iMkhDLyGBtkVRiCV8vElH
- waiBX34Gmg8yp1IBKkArVc627UgikJvmT6R+qFzZQrfwTjREYltNJ5E7qB92q3Z7mRxR8QAdvyg
- 9PqTXAI4OSd92MC453s0vu3UXoN+QmkR6QKe3jaT3uL6Ya6HKmwx+pK37YvhITUZSkMf8/yw/OO
- ALLa41JUEZGtLtA==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain; charset=US-ASCII
 
-Split configfs MAINTAINERS entry in C and Rust parts. Mark Breno Leitao as
-maintainer of configfs C parts. Mark Andreas Hindborg as maintainer of
-configfs Rust parts.
+On Thu, 6 Aug 2026, Arnd Bergmann wrote:
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- MAINTAINERS | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+> I think the reason is that there are a couple of architectures
+> (including non-MIO s390) that take a shortcut for normal
+> ioremap() that avoids actually mapping anything, e.g. mips
+> and related architectures have a fixed uncached mapping
+> of all MMIO space visible to kernel, while some alpha, m68k
+> powerpc, and s390 do something other than a pointer dereference
+> for MMIO.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8014b9f8253e..10e2f8fd1542 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6542,14 +6542,19 @@ S:	Maintained
- F:	Documentation/security/snp-tdx-threat-model.rst
- 
- CONFIGFS
--M:	Andreas Hindborg <a.hindborg@kernel.org>
--R:	Breno Leitao <leitao@debian.org>
-+M:	Breno Leitao <leitao@debian.org>
-+R:	Andreas Hindborg <a.hindborg@kernel.org>
-+T:	https://git.kernel.org/pub/scm/linux/kernel/git/leitao/linux.git configfs-next
- S:	Supported
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git configfs-next
- F:	fs/configfs/
- F:	include/linux/configfs.h
--F:	rust/kernel/configfs.rs
- F:	samples/configfs/
-+
-+CONFIGFS [RUST]
-+M:	Andreas Hindborg <a.hindborg@kernel.org>
-+S:	Supported
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git configfs-next
-+F:	rust/kernel/configfs.rs
- F:	samples/rust/rust_configfs.rs
- 
- CONGATEC BOARD CONTROLLER MFD DRIVER
+ FWIW 32-bit MIPS configurations only have low 512MiB of MMIO accessible 
+via a fixed mapping and arrange for a regular mapping via the page table 
+for anything beyond.
 
----
-base-commit: f5bbbfec59b4e2fb7520a91de3df8a6174325d6a
-change-id: 20260812-configfs-maintainers-819797eb4acf
-
-Best regards,
---  
-Andreas Hindborg <a.hindborg@kernel.org>
-
-
+  Maciej
