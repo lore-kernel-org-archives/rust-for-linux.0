@@ -1,184 +1,316 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010044.outbound.protection.outlook.com [52.101.201.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8E6331EB8
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Aug 2026 20:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786565789; cv=none; b=j2OPYhnyns5fpyPzq3HbCXeDpZCyIzRewEJLcwrHnHQHZr+w1rmE4w5CX7QCPapsT+Bm27KBats9MJ7pZhZ6z1vk1gO3V+Q+i6edPZzZiu7cwqnuE0YcocjIXmxm7O1/a91pxnO8kRQmk7SCu2lQVul/7OckW+D0R5+TlABEfew=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786565789; c=relaxed/simple;
-	bh=AiVQmdE36y6QXny0Mmw4Gw6HubeIeMk4S/c50LTZycs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:content-type; b=fMaYLDSJhlMiR1a5YG52Ni7rAH5GJq4JaBZxfSytZKoubcwO+gB/dsxBHdbUwEr2WX49/T5K0oasub7CHtWJCpmny+RLYIrQ/YYvdzjn2l+GexQiudxpnnsOZkXYly1lYMeIiz1uv7oeXuqFPvNpbmLBw5HSbvm2AlHL4wI47fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FBEWbMfS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22C334CFAB;
+	Wed, 12 Aug 2026 20:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786566706; cv=fail; b=f4anEcLnpnml2y+nTk7FraRTAAsqdnQTtKXzK77V+N8Kd9LViPpI/DClkj2jxKssKdtl4GCWQxW79BLN2ZO4rdfPBPEhbevlphjkmSzra7PqMpih1C8FB6OXeLaKBqVCjUjJIQSY+zGlAy6UB5we/JuarCRp4rRYnLtNmYSt91Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786566706; c=relaxed/simple;
+	bh=aZ32LlSqoLfzWCNNtHblkNcMemQajokqNVUBi+0EGlw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=MwUssFsGWVTzZ+FYo87keXiXOUhwphz2sjmZzSYSeuO11gIVlJk4mhbzygc+0PG3n/egKMb5VppjIlQ4zP9FH3r9MDA5FKahPIQUTvrt4E6wrgdFhVTkDNdB5UU1GeXyDfR2aKGlJz4X1r+jUV610/j+rUDHGm0e6NO0ryIK03w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rIQRwaQZ; arc=fail smtp.client-ip=52.101.201.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FBEWbMfS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1786565786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gbcpa277ERO4n9n/VE9xEGfG5jSz1Qxd5sN8vPZTwBk=;
-	b=FBEWbMfSpNnc9knMkdBpJm2XGdleLVMGYqXf9cFcaoVZsyLD622ZanWhP+RopDzY7tw2Uh
-	dJXqGkb4CC9vTy6H9OkvWtkqEgBRFFr/ef9UtFIf/EdsOelIHIHTgHNCUo6+xHzWL+Jb1p
-	tNU1So0RpXQnWuElHmqljkApl9BOTnQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-Rs2ig2MqOKyLS9wXj7Lc7A-1; Wed,
- 12 Aug 2026 16:16:24 -0400
-X-MC-Unique: Rs2ig2MqOKyLS9wXj7Lc7A-1
-X-Mimecast-MFC-AGG-ID: Rs2ig2MqOKyLS9wXj7Lc7A_1786565780
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A9E0C19560B5;
-	Wed, 12 Aug 2026 20:16:19 +0000 (UTC)
-Received: from paumurph-thinkpadp1gen7.redhat.corp (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4C6151800348;
-	Wed, 12 Aug 2026 20:16:14 +0000 (UTC)
-From: Paul Murphy <murp@redhat.com>
-To: Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rIQRwaQZ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wmKKo5MfmhmehWvy9zZvEpIO6c3qidbm73eJCMxMCeoc8K76Ki1+EPKdfp5w3+clNllt5DtP0WBfQmxSLyXLnhO6ArZRerDky8ESuekxPsGrcMR0ucMQkv8FSHoROAaOniU73vPftulJxGbO9f+5Qb8V+5NSfWj7s0SEO+bol/KDND48qKx8NpwQcljORQM/8F7mYBziNJAMt6hf3CmRpd6G+9ScUS1/2k2PMDQFtEOvUtowhpOMGV8bh4UhcAQAg500CVzRA7LYkywSRVlNNWDwF0bhnW+nfaOOww1qHkliOUHn4ycvhwVuXJUO/1BseEx4S7NYt1DlamGTcWesmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k1S5ppFM/ihwZ8v13+WSDYy7B6g876CCJerOayB2quE=;
+ b=QUPVmhc2QrYf2IXY3tADw4bBPxmzZsNKEhnrGFjqLMgYpSmGUUoDIVY80rLZoXdhXHKbJ3h3VTNy1MxwIlT3yMOsrObXJ2eZTpYMZ8h/RZa7i4abQlSF+UWv++zAExgdQL4H84nHs2vhcGWD8UFrnn7EPb89bb4ug/GVLnrkyHZBmdYLdDBRK1kIArWmyXGZe/U6tMooWrgdQScw7TRqyEb3PoT1Cv75wsr5A3MiXdUYW40RB7n6r1oYce+n9/kqyJdiC5rUR1h7xLLPNfTH7TNHVZYQuzFEO6NvfYlacuX2KxHRxCTgQBX425uzWi5UDZ/uKBlVgEFsWqjiwF1lqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k1S5ppFM/ihwZ8v13+WSDYy7B6g876CCJerOayB2quE=;
+ b=rIQRwaQZT3j4CVlIOZWxSz10kPpDt3LHiW8Zy61ReWkapwNxjHqXeNHQ1FWo4axvJomkHALvb52qbLef5NLgqTDI3Bke0M3CpfcWKgZHIrlEXOeXPyKhp+6wAq2yveAEhoiw3ry7RLs6F47/RUGALYwXM6skPlsElMs2q1g0zwWiqLzNw063F7uXgW+u+jeuVrIOZ4ZThQHZ03GITZ0Xdbn/1UZnDZLsiWl5mV12WduzU4dz6tMsXgcwJs32I6GfqoQUsPo2Hhor/0EyOCgV85rSIo3hFPV/lZsAjqZ63kyhlrtudGJG950ueEqemBzBFoGeBOfCSnBactDJ6DwbtQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
+ by PH0PR12MB7094.namprd12.prod.outlook.com (2603:10b6:510:21d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Wed, 12 Aug
+ 2026 20:31:37 +0000
+Received: from LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
+ ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0315.012; Wed, 12 Aug 2026
+ 20:31:37 +0000
+Date: Wed, 12 Aug 2026 16:31:34 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Eliot Courtney <ecourtney@nvidia.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Burak Emir <burak.emir@gmail.com>,
+	Yury Norov <yury.norov@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Daniel Almeida <daniel.almeida@collabora.com>,
 	Tamir Duberstein <tamird@kernel.org>,
 	Alexandre Courbot <acourbot@nvidia.com>,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Luis Augenstein <luis.augenstein@tngtech.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Andrew Jones <andrew.jones@linux.dev>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v2] rust: enable fentry support
-Date: Wed, 12 Aug 2026 15:16:06 -0500
-Message-ID: <20260812201613.1783592-1-murp@redhat.com>
+	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nova-gpu@lists.linux.dev,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v5 3/5] rust: bitmap: add contiguous area operations
+Message-ID: <anzYJhbIr-aix4qX@yury>
+References: <20260812-chid-v5-0-6c767770b3f4@nvidia.com>
+ <20260812-chid-v5-3-6c767770b3f4@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260812-chid-v5-3-6c767770b3f4@nvidia.com>
+X-ClientProxiedBy: BY3PR10CA0015.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::20) To LV3PR12MB9356.namprd12.prod.outlook.com
+ (2603:10b6:408:20c::21)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: dcKi280u-YWe4aNlKrREZsZbPxJUxT7Bgg--j9v-UrE_1786565780
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|PH0PR12MB7094:EE_
+X-MS-Office365-Filtering-Correlation-Id: af2bae3c-f364-4c9c-b79a-08def8b0b564
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|7416014|23010399003|1800799024|6133799003|10067099003|56012099006|11063799006|5023799004|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	PMt8K3lxNSMVuBgyGdJErC+hiuqEpNQhtdOd2KjBN0LviJS1slYur3odG9MC7q6Frlm01YkNhWbCnd7q9HsS3p+il0GGFFmPoqjXiPLjiH8akoM08vcn9/gEloEmwd5a8r0b08af6LZZvv98QqvXHChyhvak1EsrXPBWufGF9FDbVtP8wVxgH99Cmi0degDOzD/599YBsFuXN1tdeChuK3p09qsJJTR1i32eaxofWr6SgLMWh3zrjKJdCT2I1buYhhhoK4/TR8Q297RN+lnR3SFXLRf/QegZ5GNKr3wRQDrZnV80xzNoeusYXJpbRE0ZQZYlpaCiJNqWN/IP7yvy8UneucjKwhNnRZgncd57tSA+8zJYtwNEFOar483aJD8UsbfGrPRHbXexAlqvQimF8RrSEasoJNsDEd2d7j5ZElStCMqafs/XLs5cZmGsV/M8bDSYGnCQadQuvL3VG3rSMX/ntJskaZ49wulzyQf7/Bmst948afCSYIcacgbsTi3IXHhtezGamlkDOdNh41GrGa4YI3kNEu2AW3xsgANknD4th/GqD4UpHFECAFpxKTPIM0FxmYYYKpb05DQB7rdQt8np2BUdIsnGHjLCZLZbnbkSAvoLCfipT7LG39kV+pS/z58036t3ml42uu3k7hZ4etP+zXqZQ6ijeHgqPZ1HXA4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(23010399003)(1800799024)(6133799003)(10067099003)(56012099006)(11063799006)(5023799004)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hISZWmVSWnUWV7x4VjAqp4OvVg3sr+BdUOoAr/7CjaV7jvYs/jUN5JHewZ0d?=
+ =?us-ascii?Q?SDUzWR+zM08ieLL1iJQUu4dJwDDf/BBVohm2FZ3ENTRFSkJDceAxMLkYE2j7?=
+ =?us-ascii?Q?ISXxpNAI8I/di6q90C2vBHuuepBGS5SqKkKHlL96sEvKJjebQqB3XGVkbc5s?=
+ =?us-ascii?Q?XmOFd+iQM1y1ZBxlsOktySxZ4KqhGZLDeL5WJaZF67Ct7BnohYz2EE1YYKre?=
+ =?us-ascii?Q?TUfmvkFaWoYUk230WGi89YS3/46GUJMlPNn/zgLeT3GtGyGCLTaz+bdIzO/b?=
+ =?us-ascii?Q?29nUoUdSxZ7N7auCJjcsY7p/mhW30052gBe+Myy9CEPFrjgflw+91bAeh/Z+?=
+ =?us-ascii?Q?S7k2x8vC0BMghcUEVVMVq5NGZAdSfAeCzBNNSmuiFhYOnnoaXDBKHez59xUd?=
+ =?us-ascii?Q?uthGu0/HDkElnaO6U1ov/WN8ehloeLKy9ob3LGfQWc5Sb5WmAkxXzoJ77Po0?=
+ =?us-ascii?Q?8nIJlxMUrlasN4FNumlHv+y9MBvVQusMk5tXUVKidkGp/5rjwQMgzO+aBdLZ?=
+ =?us-ascii?Q?8Hmg82w7nNFbmehudt5RXJDORn3f5/DNfE1DTVB9R6+PeWvPiIi9dS0eOJvZ?=
+ =?us-ascii?Q?1ysmNF2P5oxjh+p+SidjbY9db/kR+dOgR2VyajNRfjsrK6mWPFjSWx0pO7NK?=
+ =?us-ascii?Q?ZT4S/A++3B7WP8RGU9ejvhZ8nTqhD7/RPQdemDwRUjxu09ABSkdwe3J3qoI6?=
+ =?us-ascii?Q?l2wNQ0ijyInmvY0mNN2+uI8PEj1teWjfFzOO7PmsPLldlX8aPOycjPQsSbfK?=
+ =?us-ascii?Q?IMDnTCixYbCj+cKYQRtxsw63pYfdnaLA999MBF+uiinhf69HXMOnUU0h/oat?=
+ =?us-ascii?Q?TyJhQ4UnD8ncYvyo7Z8p1sm87ReEHERv+w+lC59Ute5QY5A4vBfmUjcCyFzh?=
+ =?us-ascii?Q?jLNpf5eO8dXSDWUmAy94hIuVPeANN+gYxo6PZjdj824thqEliEzC5h8fMxVu?=
+ =?us-ascii?Q?PFW7xGaFE60N0NcmxaSccGN2HJCFnR/W85ybj84HglpZ8xQZFg3lfFtFpj5p?=
+ =?us-ascii?Q?wL45VWODuzhYE7aEPdkbJotaP+Be/r6rYMJP6uLPNW3YMNbletgMDYRgJx0l?=
+ =?us-ascii?Q?9Z98puSU7g7yURZWp8yGA5Q/dNvnE6M0R/lAvIe7dx04i/KCbvveAroBYCIN?=
+ =?us-ascii?Q?HbhOltZbIEvRBKgUMQ+ygVTRvvwD4DGJ4ZSzY5vyTMhEsWSZn8VuH1WrcpeE?=
+ =?us-ascii?Q?Dt+xUVxx6uogIxgv5ABlqr8IQR9+ZTp/3e2yvQT1zCY7SEAxOo1nGm8J8zaq?=
+ =?us-ascii?Q?ZF8dfEjJpbyWplX+qqAymDyj6XmdLqp94tUHjbKgcTiyDQXWL9XlMT6UEYH8?=
+ =?us-ascii?Q?suSEm77ewzHOe4Y1B2QZSWyOLP3e+kAiXcMnEYwnS+KYbWn93UxUZbxH8Zd+?=
+ =?us-ascii?Q?WwIUE88z/qrP13GEAjBWgMBkK/+WlmWOfq+v7YVpnKyxnfe+jCzy95QLM4Ma?=
+ =?us-ascii?Q?sXmWngks8yFHm26tcq2nrLCk8ew1jazBfoF2PS08F74UKlzZikAnYALLLxDl?=
+ =?us-ascii?Q?bJzTq6rAFgmzQAcPey4mtmYvDO6Yk0AS/y6QsV4RdqrUVpvqk+V9do4whS2W?=
+ =?us-ascii?Q?3t3CXMt6GqtL8fV67vxuUfNW2PI1pINs4ypbvkDbOIrlEklkV5IH75QE+/CF?=
+ =?us-ascii?Q?XLCp3zCIR86EPB/BnsFr84pFQID7IHE+nauAU3Ofl3klybEMHXzhcHWbDz5Z?=
+ =?us-ascii?Q?EVU7kx5DQYQE9ZfGU5qIPFQuPgx+qbxW6PydTJ31Q3UCEm0JbSG5USkLAdbs?=
+ =?us-ascii?Q?ohCMmMWoRA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: af2bae3c-f364-4c9c-b79a-08def8b0b564
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 20:31:37.6692
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /GTdRsNvJ69iapTbrnjNSn68WvgJNh1R0AquSz4+sKkosxzaq0Oo8z2BnKMKxU99sEg4kiq9lDoO9NoePc44nQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7094
 
-Turn it on if CONFIG_HAVE_FENTRY=y and rustc supports a compatible
-fentry option. Nightly rustc supports fentry, fentry-record, and
-fentry-nop-record. These are equivalent gcc's -mfentry, -mfentry
--mrecord-mcount, and -mfentry -mnop-mcount -mrecord-mcount.
+On Wed, Aug 12, 2026 at 05:51:23PM +0900, Eliot Courtney wrote:
+> Add bindings for area operations on bitmaps. Each one is
+> made safe by adding some extra checks compared to the underlying C code
+> (for example, checking bounds) and with additional checks to catch
+> likely erroneous usage if `CONFIG_RUST_BITMAP_HARDENED` is on.
+> 
+> Add tests demonstrating the edge cases.
+> 
+> Signed-off-by: Eliot Courtney <ecourtney@nvidia.com>
+> ---
+>  rust/kernel/bitmap.rs | 236 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 236 insertions(+)
+> 
+> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+> index fdcfc0409773..74c92cc452c9 100644
+> --- a/rust/kernel/bitmap.rs
+> +++ b/rust/kernel/bitmap.rs
+> @@ -10,6 +10,7 @@
+>  use crate::bindings;
+>  #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+>  use crate::pr_err;
+> +use crate::ptr::Alignment;
+>  use core::ptr::NonNull;
+>  
+>  /// Represents a C bitmap. Wraps underlying C bitmap API.
+> @@ -523,6 +524,139 @@ pub fn next_zero_bit(&self, start: usize) -> Option<usize> {
+>              Some(index)
+>          }
+>      }
+> +
+> +    /// Finds a contiguous area of `nbits` zero bits at or after `start`, where the area plus
+> +    /// `align_offset` is aligned to `align`.
+> +    ///
+> +    /// Returns the bit index of the start of the area, or [`None`] if no such area fitting in
+> +    /// the bitmap exists.
+> +    ///
+> +    /// The returned index plus `align_offset` is a multiple of `align`.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and `start` is out of bounds.
+> +    #[inline]
+> +    pub fn next_zero_area_off(
+> +        &self,
+> +        start: usize,
+> +        nbits: usize,
+> +        align: Alignment,
+> +        align_offset: usize,
+> +    ) -> Option<usize> {
+> +        bitmap_assert!(
+> +            start < self.len(),
+> +            "`start` must be < {}, was {}",
+> +            self.len(),
+> +            start
+> +        );
+> +
+> +        let nr = u32::try_from(nbits).ok()?;
 
-Rust 1.98 adds support for x86 and s390x targets for
--Zinstrument-mcount=fentry.
+What about nbits == 0? In C, this is a undef, and thus in the current
+rust implementation. Maybe make it NonZero?
 
-Rust nightly supports all three options on s390. x86 supports only
-fentry (this is a limitation of the x86 llvm backend). The expanded
-options should arrive with Rust 1.99.
+The same question about align and align_offset.
 
-Signed-off-by: Paul Murphy <murp@redhat.com>
-Link: https://github.com/rust-lang/rust/pull/152122
-Link: https://github.com/rust-lang/rust/pull/158036
-Link: https://github.com/rust-lang/rust/pull/160184
+> +        let align_mask = align.as_usize() - 1;
+> +
+> +        // The C alignment and end arithmetic must not overflow, or it can read out of bounds.
+> +        // Overflow is only possible on 32-bit.
+> +        #[cfg(not(CONFIG_64BIT))]
+> +        align_mask.checked_add(self.len())?.checked_add(nbits)?;
+> +
+> +        // SAFETY: `bitmap_find_next_zero_area_off` is safe to use with an out of bounds `start`
+> +        // value and, given the overflow check above, never reads beyond `self.len()` bits.
+> +        let index = unsafe {
+> +            bindings::bitmap_find_next_zero_area_off(
+> +                self.as_ptr().cast_mut(),
+> +                self.len(),
+> +                start,
+> +                nr,
+> +                align_mask,
+> +                align_offset,
+> +            )
+> +        };
+> +
+> +        (index < self.len()).then_some(index)
+> +    }
+> +
+> +    /// Finds a contiguous area of `nbits` zero bits at or after `start`, aligned to `align`.
+> +    ///
+> +    /// Returns the bit index of the start of the area, or [`None`] if no such area fitting in
+> +    /// the bitmap exists.
+> +    ///
+> +    /// The returned index is a multiple of `align`.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and `start` is out of bounds.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
+> +    /// use kernel::bitmap::BitmapVec;
+> +    /// use kernel::ptr::Alignment;
+> +    ///
+> +    /// let mut b = BitmapVec::new(64, GFP_KERNEL)?;
+> +    /// let unaligned = Alignment::new::<1>();
+> +    ///
+> +    /// assert_eq!(Some(0), b.next_zero_area(0, 8, unaligned));
+> +    /// b.set(0, 5);
+> +    /// assert_eq!(Some(5), b.next_zero_area(0, 8, unaligned));
+> +    /// assert_eq!(Some(8), b.next_zero_area(0, 8, Alignment::new::<8>()));
+> +    /// assert_eq!(None, b.next_zero_area(0, 65, unaligned));
+> +    /// # Ok::<(), AllocError>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn next_zero_area(&self, start: usize, nbits: usize, align: Alignment) -> Option<usize> {
+> +        self.next_zero_area_off(start, nbits, align, 0)
+> +    }
+> +
+> +    /// Sets a contiguous area of `nbits` bits starting at `start`.
+> +    ///
+> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and the area `start..start + nbits` is out of
+> +    /// bounds, does nothing.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and the area `start..start + nbits` is out
+> +    /// of bounds.
+> +    #[inline]
+> +    pub fn set(&mut self, start: usize, nbits: usize) {
+> +        bitmap_assert_return!(
+> +            start
+> +                .checked_add(nbits)
+> +                .is_some_and(|end| end <= self.len()),
+> +            "Area `start..start + nbits` ({}..{}) must be within bounds {}",
+> +            start,
+> +            start.saturating_add(nbits),
+> +            self.len()
+> +        );
+> +        // SAFETY: The area `start..start + nbits` is within bounds and a `Bitmap` is at most
+> +        // `i32::MAX` bits, so the casts are lossless.
+> +        unsafe { bindings::__bitmap_set(self.as_mut_ptr(), start as u32, nbits as i32) };
+> +    }
 
----
+In the case of bitmap_set/clear(), nbits == 0 makes it a no-op, and
+guarantees that the pointer is not dereferenced. So, no undefined
+behavior. But in rust case, I believe, it should be a stronger policy.
 
-Changes in v2:
-- Refactor for consistency
-- Export RUSTC_FLAGS_FTRACE
-- When FTRACE_MCOUNT_USE_CC is set, use rust's extended fentry support
-  if supported or not at all.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20260724170132.3783816-1-murp@redhat.com/
----
- Makefile                        | 20 +++++++++++++++++++-
- scripts/generate_rust_target.rs |  2 ++
- 2 files changed, 21 insertions(+), 1 deletion(-)
+I'd add an assertion, at least, or better make it NonZero.
 
-diff --git a/Makefile b/Makefile
-index bfb47ad8cb9a..7ece5a327c53 100644
---- a/Makefile
-+++ b/Makefile
-@@ -832,9 +832,11 @@ endif # KBUILD_EXTMOD
- # Defaults to vmlinux, but the arch makefile usually adds further targets
- all: vmlinux
- 
--# The arch Makefiles can override CC_FLAGS_FTRACE. We may also append it later.
-+# The arch Makefiles can override CC_FLAGS_FTRACE or RUSTC_FLAGS_FTRACE.
-+# We may also append them later.
- ifdef CONFIG_FUNCTION_TRACER
-   CC_FLAGS_FTRACE := -pg
-+  RUSTC_FLAGS_FTRACE :=
- endif
- 
- ifdef CONFIG_TRACEPOINTS
-@@ -1053,10 +1055,26 @@ ifdef CONFIG_HAVE_FENTRY
-     CC_FLAGS_FTRACE	+= -mfentry
-     CC_FLAGS_USING	+= -DCC_USING_FENTRY
-   endif
-+  ifdef CONFIG_FTRACE_MCOUNT_USE_CC
-+    # Support for mcount record/nop is not gated by rustc version for all architectures.
-+    ifdef CONFIG_HAVE_NOP_MCOUNT
-+      ifeq ($(call rustc-option-yn, -Zinstrument-mcount=fentry-nop-record),y)
-+        RUSTC_FLAGS_FTRACE += -Zinstrument-mcount=fentry-nop-record
-+      endif
-+    else
-+      ifeq ($(call rustc-option-yn, -Zinstrument-mcount=fentry-record),y)
-+        RUSTC_FLAGS_FTRACE += -Zinstrument-mcount=fentry-record
-+      endif
-+    endif
-+  else
-+      RUSTC_FLAGS_FTRACE += $(if $(call rustc-min-version,109800),-Zinstrument-mcount=fentry,)
-+  endif
- endif
- export CC_FLAGS_FTRACE
-+export RUSTC_FLAGS_FTRACE
- KBUILD_CFLAGS	+= $(CC_FLAGS_FTRACE) $(CC_FLAGS_USING)
- KBUILD_AFLAGS	+= $(CC_FLAGS_USING)
-+KBUILD_RUSTFLAGS += $(RUSTC_FLAGS_FTRACE)
- endif
- 
- # We trigger additional mismatches with less inlining
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 3bf296581a88..eb80a06d50d3 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -198,6 +198,7 @@ fn main() {
-         ts.push("arch", "x86_64");
-         if cfg.rustc_version_atleast(1, 98, 0) {
-             ts.push("rustc-abi", "softfloat");
-+            ts.push("supports-fentry", true);
-         } else if cfg.rustc_version_atleast(1, 86, 0) {
-             ts.push("rustc-abi", "x86-softfloat");
-         }
-@@ -240,6 +241,7 @@ fn main() {
-         ts.push("arch", "x86");
-         if cfg.rustc_version_atleast(1, 98, 0) {
-             ts.push("rustc-abi", "softfloat");
-+            ts.push("supports-fentry", true);
-         } else if cfg.rustc_version_atleast(1, 86, 0) {
-             ts.push("rustc-abi", "x86-softfloat");
-         }
+Thanks,
+Yury
 
-base-commit: 7059bdf4f04a3e14f4fafb3ac35fdca913e3e21a
--- 
-2.55.0
-
+> +
+> +    /// Clears a contiguous area of `nbits` bits starting at `start`.
+> +    ///
+> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and the area `start..start + nbits` is out of
+> +    /// bounds, does nothing.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and the area `start..start + nbits` is out
+> +    /// of bounds.
+> +    #[inline]
+> +    pub fn clear(&mut self, start: usize, nbits: usize) {
+> +        bitmap_assert_return!(
+> +            start
+> +                .checked_add(nbits)
+> +                .is_some_and(|end| end <= self.len()),
+> +            "Area `start..start + nbits` ({}..{}) must be within bounds {}",
+> +            start,
+> +            start.saturating_add(nbits),
+> +            self.len()
+> +        );
+> +        // SAFETY: The area `start..start + nbits` is within bounds and a `Bitmap` is at most
+> +        // `i32::MAX` bits, so the casts are lossless.
+> +        unsafe { bindings::__bitmap_clear(self.as_mut_ptr(), start as u32, nbits as i32) };
+> +    }
+>  }
