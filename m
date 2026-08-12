@@ -1,92 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66070315785;
-	Wed, 12 Aug 2026 13:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6ED244CADF;
+	Wed, 12 Aug 2026 13:15:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786540066; cv=none; b=uHOi+PQsBp+tl09y35qGiPxGVr7ckErLKzULfZ+wBKgeKjVeW1UaWQJvUDBj97YtPDojBrWlTumzYjCymlV2qmDJIMU+Z/s1OYH8UFcwZrAGMlk916dXFmq8j/vMaDVc/MwEGzwnqQFE9K3MoGc2cUlCwyAqO/8mbdWKd4ngQqg=
+	t=1786540531; cv=none; b=LLe6vJSzP2dD/2EA2mIVpaFDluxMkZF3YkEqFSljOyJV4FE3hYsdYuLcTGv8vaRK1D4ixFuW/4tQdFYM0AUsz8ZivFMbewOt+5pBvrRxO7sn/q26/BmtcIAlk0uz18ResJUhuEsPpLkAFYj+vEEV7mGqmWvYvL2qL6kqbdNBdSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786540066; c=relaxed/simple;
-	bh=8jV1of6OCDvTJ6rGcL7peMibBQ1Al1d3woY3yewAqpw=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=B8PPqYyHhzGtlhKzFskl0rbUht28xHXuoNDiBpQs/EDLAll2LQoGop2rO4fa9vLWdSJVFyXwqLan9J1hNEdW6+dJOjhqRSNhawV7Hmck/xWRaMRdzS4tMxwGMle3+w/ZWo3ZX3SMrU8kv4e21tvIGxBmT4iAh07qEDbTdSrCEW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qgauwko1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786540531; c=relaxed/simple;
+	bh=nmHxmY7iTPhC2SO4r0Cu7D2E52TxGJ2ANn9r911bmEc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WO1kPiml1TjCrlY8ynWGFUQF1JoMA0LNaksuc1ncHbZaqmow5N7Q64UAcu1zFDdrP3TuRqo8FtXE6nKxWPpMTAVYgJvZIxG+cl3ZmA4HcT8f+i2QENi92LPjY89BsBiWcMSF6rqcGksWDNmHlcvOtES8NcznGAreHSXj1KkA4Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=YjuSXfVF; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qgauwko1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA661F000E9;
-	Wed, 12 Aug 2026 13:07:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786540065;
-	bh=8jV1of6OCDvTJ6rGcL7peMibBQ1Al1d3woY3yewAqpw=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Qgauwko14ZtBrifbiwU9EwbyU0grV9F1ss/R1zJHsldlPk8OsU6boSme+VoUnc+Or
-	 xeZM9QeMcQnvEla96TVtZe3Pe88tM1zylVbzKyaG9+9Ard7GWhqy+A24VUZEXnFYUh
-	 PSddH9/c9jxBB9P6uivSBc44c1gnxZyYlbJsEJdpW8oDpsrpxs0JGnGNMXre3tNMLu
-	 CefhhsaQq+xRDYewC6KU2ter39StP2sKMvIcWD3Qk7qL7oKK1HHFZtMNcaHJ4/Cw6w
-	 2hTFeOHkNw3WufPeoBRxe3T9HH90sPyvooLXxA/zVgg4AqloIGQReJxqOZri3TrqOX
-	 jf5Oz4rkg+FaQ==
-Content-Type: multipart/mixed; boundary="===============0397126666267180240=="
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="YjuSXfVF"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net CE493408CC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1786540528; bh=JAXHudu46Eg+mqqdpRoOfueFzUFbPVJGGm+AfV0sLmA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=YjuSXfVFdNZsDUovgWNOnXrDWs1wY3mzRO64lCEOdBzQ4UsRfQncNKg6MQeD84dbH
+	 bLkHsiYHrxg688yhBdaz2B2Q68XFUbt6CEC++v0IkcHtNVTga+yEe8MqsyaF4Doazg
+	 AN6p2zh75ODIyTnguYSzN3Gphf2DObIsT6Eic8uYtSAfC0aPl0+O7aJrbUa9e6uYsW
+	 dcILL/QzRmjIQwFrG1O3taxFeWv03VqKb3B/DUAOVCvasWelTiEfbB4qdrPoAAkdv9
+	 rKaxWgR9X9gvKFI3he7IpfLgwKRk3QMn9Vw8YH9rQ3/9MCHkQLGxQ0KwrW5ieAi53E
+	 ir/C+ZzHhlVQQ==
+Received: from localhost (unknown [IPv6:2601:280:4600:27b::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id CE493408CC;
+	Wed, 12 Aug 2026 13:15:27 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Manuel Ebner <manuelebnerli@mailbox.org>, Shuah Khan
+ <skhan@linuxfoundation.org>, Federico Vaga <federico.vaga@vaga.pv.it>,
+ Akira Yokosawa <akiyks@gmail.com>, Daniel Pereira
+ <danielmaraboo@gmail.com>, Carlos Bilbao <carlos.bilbao@kernel.org>,
+ Avadhut Naik <avadhut.naik@amd.com>, Alex Shi <alexs@kernel.org>, Yanteng
+ Si <si.yanteng@linux.dev>, Dongliang Mu <dzm91@hust.edu.cn>, Hu Haowen
+ <2023002089@link.tyut.edu.cn>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi
+ <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
+ <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Daniel Almeida
+ <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>,
+ Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
+ bpf@vger.kernel.org, rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH 1/5] Docs: changes.rst: rename file and references and
+  add links
+In-Reply-To: <20260812121603.1633270-2-manuelebnerli@mailbox.org>
+References: <20260812120805.1631430-3-manuelebnerli@mailbox.org>
+ <20260812121603.1633270-2-manuelebnerli@mailbox.org>
+Date: Wed, 12 Aug 2026 07:15:26 -0600
+Message-ID: <87o6f7jx8x.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <1eab9fe487b6cba29d405e83619885945bf1143b42cc556aaf282abd0c5ad46a@mail.kernel.org>
-In-Reply-To: <20260812121603.1633270-2-manuelebnerli@mailbox.org>
-References: <20260812121603.1633270-2-manuelebnerli@mailbox.org>
-Subject: Re: [PATCH 1/5] Docs: changes.rst: rename file and references and  add links
-From: bot+bpf-ci@kernel.org
-To: manuelebnerli@mailbox.org,corbet@lwn.net,skhan@linuxfoundation.org,federico.vaga@vaga.pv.it,akiyks@gmail.com,danielmaraboo@gmail.com,carlos.bilbao@kernel.org,avadhut.naik@amd.com,alexs@kernel.org,si.yanteng@linux.dev,dzm91@hust.edu.cn,2023002089@link.tyut.edu.cn,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ojeda@kernel.org,boqun@kernel.org,gary@garyguo.net,bjorn3_gh@protonmail.com,lossin@kernel.org,a.hindborg@kernel.org,aliceryhl@google.com,tmgross@umich.edu,dakr@kernel.org,daniel.almeida@collabora.com,tamird@kernel.org,acourbot@nvidia.com,work@onurozkan.dev,nathan@kernel.org,nick.desaulniers+lkml@gmail.com,morbo@google.com,justinstitt@google.com
-Cc: manuelebnerli@mailbox.org,linux-doc@vger.kernel.org,linux-kernel@vger.kernel.org,workflows@vger.kernel.org,bpf@vger.kernel.org,rust-for-linux@vger.kernel.org,llvm@lists.linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Wed, 12 Aug 2026 13:07:42 +0000 (UTC)
+Content-Type: text/plain
 
---===============0397126666267180240==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
+Manuel Ebner <manuelebnerli@mailbox.org> writes:
 
-PiBUaGUgY3VycmVudCBuYW1lIGRvZXMgbm90IHJlZmxlY3QgdGhlIGNvbnRlbnQgb2YgdGhlIGZp
-bGUsIHRoZSBuZXcgbmFtZQo+IGRvZXMgc28uIFdpdGggdGhlIGxpbmtzIGxlZ2FjeSByZWZlcmVu
-Y2VzIHNob3VsZCBjb250aW51ZSB0byB3b3JrLgo+Cj4gQ2hhbmdlIG5hbWUgdG8gc29mdHdhcmUt
-cmVxdWlyZW1lbnRzLnJzdAo+IENoYW5nZSBuYW1lcyBpbiBEb2MvdHJhbnNsYXRpb25zLyoKPiBB
-ZGQgbGluayBEb2MvcHJvY2Vzcy9jaGFuZ2VzLnJzdCB0byBzb2Z0d2FyZS12ZXJzaW9uLnJzdC4K
-PiBBZGQgbGluayBEb2MvQ2hhbmdlcyB0byBzb2Z0d2FyZS12ZXJzaW9uLnJzdC4KPiBBZGQgbGlu
-a3MgaW4gRG9jL3RyYW5zbGF0aW9ucy8qCj4gQ2hhbmdlIGNoYW5nZXMucnN0IHRvIHNvZnR3YXJl
-LXZlcnNpb24ucnN0IGluQ2hhbmdlIGNoYW5nZXMucnN0IHRvIHNvZnR3YXJlLXZlcnNpb24ucnN0
-IGluCgpUaGUgY29tbWl0IG1lc3NhZ2UgdXNlcyB0aGUgd3JvbmcgZmlsZW5hbWUgaW4gc2V2ZXJh
-bCBwbGFjZXMuIFRoZSBwYXRjaApyZW5hbWVzIHRoZSBkb2N1bWVudCB0byAic29mdHdhcmUtcmVx
-dWlyZW1lbnRzLnJzdCIsIGJ1dCB0aGUgbWVzc2FnZSBzYXlzCiJzb2Z0d2FyZS12ZXJzaW9uLnJz
-dCIgaGVyZToKCiAgQWRkIGxpbmsgRG9jL3Byb2Nlc3MvY2hhbmdlcy5yc3QgdG8gc29mdHdhcmUt
-dmVyc2lvbi5yc3QuCiAgQWRkIGxpbmsgRG9jL0NoYW5nZXMgdG8gc29mdHdhcmUtdmVyc2lvbi5y
-c3QuCgpTaG91bGQgdGhlc2Ugc2F5ICJzb2Z0d2FyZS1yZXF1aXJlbWVudHMucnN0IiBpbnN0ZWFk
-PwoKVGhlIG1lc3NhZ2UgYWxzbyBoYXMgYSBkdXBsaWNhdGVkIGxpbmUgZnJhZ21lbnQ6CgogIENo
-YW5nZSBjaGFuZ2VzLnJzdCB0byBzb2Z0d2FyZS12ZXJzaW9uLnJzdCBpbkNoYW5nZSBjaGFuZ2Vz
-LnJzdCB0bwogIHNvZnR3YXJlLXZlcnNpb24ucnN0IGluCgpXYXMgdGhpcyBhIGNvcHktcGFzdGUg
-ZXJyb3I/CgpbIC4uLiBdCgo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL3RyYW5zbGF0aW9u
-cy96aF9UVy9hZG1pbi1ndWlkZS9SRUFETUUucnN0IGIvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlv
-bnMvemhfVFcvYWRtaW4tZ3VpZGUvUkVBRE1FLnJzdAo+IGluZGV4IDRiNzAxY2MyODYwZTYuLmJh
-MThhMDE2MzlkMmEgMTAwNjQ0Cj4gLS0tIGEvRG9jdW1lbnRhdGlvbi90cmFuc2xhdGlvbnMvemhf
-VFcvYWRtaW4tZ3VpZGUvUkVBRE1FLnJzdAo+ICsrKyBiL0RvY3VtZW50YXRpb24vdHJhbnNsYXRp
-b25zL3poX1RXL2FkbWluLWd1aWRlL1JFQURNRS5yc3QKClsgLi4uIF0KCj4gQEAgLTEwNyw3ICsx
-MDcsNyBAQAo+Cj4gICAgIOe3qOitr+WSjOmBi+ihjDYueOWFp+aguOmcgOimgeWQhOeorui7n+S7
-tuWMheeahOacgOaWsOeJiOacrOOAguiri+WPg+iAgwo+IC0gICA6cmVmOmBEb2N1bWVudGF0aW9u
-L3Byb2Nlc3MvY2hhbmdlcy5yc3QgPGNoYW5nZXM+YAo+ICsgICA6cmVmOmBEb2N1bWVudGF0aW9u
-L3Byb2Nlc3Mvc29mdHdhcmUtcmVxdWlyZW1lbnRzLnJzdCA8c29mdHdhcmUtcmVxdWlyZW1lbnRz
-LnJzdD5gCj4gICAgIOS+huS6huino+acgOS9jueJiOacrOimgeaxguS7peWPiuWmguS9leWNh+e0
-mui7n+S7tuWMheOAguiri+azqOaEj++8jOS9v+eUqOmBjuiIiueJiOacrOeahOmAmeS6m+WMheWP
-r+iDveacgwoKRG9lcyB0aGUgbGFiZWwgbmVlZCB0aGUgLnJzdCBleHRlbnNpb24/IFNwaGlueCA6
-cmVmOiBsYWJlbHMgYXJlIGlkZW50aWZpZXJzLApub3QgZmlsZW5hbWVzLiBMaW5lIDU4IGFuZCBs
-aW5lIDIzMSBpbiB0aGlzIHNhbWUgZmlsZSB1c2UgPHNvZnR3YXJlLXJlcXVpcmVtZW50cz4Kd2l0
-aG91dCB0aGUgZXh0ZW5zaW9uLCBhbmQgdGhlIGNvcnJlc3BvbmRpbmcgemhfQ04gZmlsZSBhbHNv
-IHVzZXMKPHNvZnR3YXJlLXJlcXVpcmVtZW50cz4uIFRoaXMgcHJvZHVjZXMgInVuZGVmaW5lZCBs
-YWJlbDogc29mdHdhcmUtcmVxdWlyZW1lbnRzLnJzdCIKZHVyaW5nIHRoZSBidWlsZC4KClRoZSBz
-YW1lIC5yc3QtaW4tbGFiZWwgaXNzdWUgYXBwZWFycyBpbgpEb2N1bWVudGF0aW9uL3RyYW5zbGF0
-aW9ucy9qYV9KUC9wcm9jZXNzL2hvd3RvLnJzdDoxMDguCgoKLS0tCkFJIHJldmlld2VkIHlvdXIg
-cGF0Y2guIFBsZWFzZSBmaXggdGhlIGJ1ZyBvciBlbWFpbCByZXBseSB3aHkgaXQncyBub3QgYSBi
-dWcuClNlZTogaHR0cHM6Ly9naXRodWIuY29tL2tlcm5lbC1wYXRjaGVzL3ZtdGVzdC9ibG9iL21h
-c3Rlci9jaS9jbGF1ZGUvUkVBRE1FLm1kCgpDSSBydW4gc3VtbWFyeTogaHR0cHM6Ly9naXRodWIu
-Y29tL2tlcm5lbC1wYXRjaGVzL2JwZi9hY3Rpb25zL3J1bnMvMzE1OTcyMzExNDg=
+> The current name does not reflect the content of the file, the new name
+> does so. With the links legacy references should continue to work.
+>
+> Change name to software-requirements.rst
+> Change names in Doc/translations/*
+> Add link Doc/process/changes.rst to software-version.rst.
+> Add link Doc/Changes to software-version.rst.
+> Add links in Doc/translations/*
+> Change changes.rst to software-version.rst inChange changes.rst to software-version.rst in
+>  Documentation/*
+>  README
+>  samples/bpf/README.rst
+>  scripts/min-tool-version.sh
+>  scripts/ver_linux
+>
+> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> ---
+>  Documentation/Changes                         |   2 +-
+>  Documentation/admin-guide/README.rst          |   6 +-
+>  Documentation/doc-guide/sphinx.rst            |   2 +-
+>  Documentation/filesystems/locks.rst           |   2 +-
+>  Documentation/process/changes.rst             | 576 +----------------
+>  Documentation/process/howto.rst               |   2 +-
+>  .../process/software-requirements.rst         | 575 +++++++++++++++++
+>  .../translations/it_IT/process/changes.rst    | 554 +----------------
+>  .../translations/it_IT/process/howto.rst      |   2 +-
+>  .../it_IT/process/software-requirements.rst   | 553 +++++++++++++++++
+>  .../translations/ja_JP/process/howto.rst      |   2 +-
+>  .../translations/ko_KR/process/howto.rst      |   2 +-
+>  .../translations/pt_BR/process/changes.rst    | 577 +-----------------
+>  .../pt_BR/process/software-requirements.rst   | 576 +++++++++++++++++
+>  .../translations/sp_SP/process/howto.rst      |   2 +-
+>  .../translations/zh_CN/admin-guide/README.rst |   6 +-
+>  .../translations/zh_CN/process/howto.rst      |   2 +-
+>  .../translations/zh_TW/admin-guide/README.rst |   6 +-
+>  .../translations/zh_TW/process/howto.rst      |   2 +-
+>  README                                        |   2 +-
+>  samples/bpf/README.rst                        |   2 +-
+>  scripts/min-tool-version.sh                   |   2 +-
+>  scripts/ver_linux                             |   2 +-
+>  23 files changed, 1730 insertions(+), 1727 deletions(-)
+>  mode change 100644 => 120000 Documentation/process/changes.rst
+>  create mode 100644 Documentation/process/software-requirements.rst
+>  mode change 100644 => 120000 Documentation/translations/it_IT/process/changes.rst
+>  create mode 100644 Documentation/translations/it_IT/process/software-requirements.rst
+>  mode change 100644 => 120000 Documentation/translations/pt_BR/process/changes.rst
+>  create mode 100644 Documentation/translations/pt_BR/process/software-requirements.rst
 
---===============0397126666267180240==--
+That is a *lot* of churn just because you don't like the name of the
+file.  The naming is not perfect - it is the result of decades of
+history - but I think we're better to live with it.
+
+jon
