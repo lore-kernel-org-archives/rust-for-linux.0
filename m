@@ -1,64 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-222.mta1.migadu.com [95.215.58.222])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0812241D641;
-	Thu, 13 Aug 2026 10:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C956F3BB138
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Aug 2026 11:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786618581; cv=none; b=MTNujGQKn3IusYHlvGIhMZwoBVPbJKp0jQBffyH99Uw7vThMpmN6GY7cI5qtMRg9oNWZEkqcVwxPcoOp5uTYZz6qNZZRtvAvPyupEV3x20/bAZEEHTAYrLu5NnsgU6LpWDE4tEjgrn3PigfMty8HqgLcHBmLJPoJ9qOKLezXlZw=
+	t=1786621964; cv=none; b=PEQk2nh8hQO0sZI4ymp7BEC1ITVWkzbwLYWqw6CQqxn99Ttgo8aztIVVez3LCkf0eqAGhCMU9uKUTcY57he8vCThbrKVIgfzza10+IWgnif+dcsG/814H6+MG03mp/fC88C3KgVOb65gQZQOBR5rU17TEL599a4vcw91eCYzEds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786618581; c=relaxed/simple;
-	bh=aWlrS+4xxmEiEVx+PtCe15f5FXxI0/nGpNI0TJWQmFs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=N7ne9UMan3CMKMA2u+P/5B7WKGVtyxIdQDxf7YlLJOQn5qI2nqX13LwrKk1278rPxWPNS+5IZiUuulQmuq495XQO5mMx/mx74Xq/y1vtYEZqoSJjpAckGbfwNj6eOFp/dicB8nOfSTl48Ufxz+N58U8K01G4xjrRY2YWK0rqu6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OpfjxN0c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786621964; c=relaxed/simple;
+	bh=R2f0PJtuTSVROgAmYKIuGCx86gpNuYMzhmVycIrzC/0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d81VTl5ZaE7OH4em62wPUEthOaU8UjcX5vJE96qn2RL4FAWp6Zb9hHZP+Ab2R4QwjQhey7z5p7p+7daIXTuD/OWHGtc48xEZBrkzL2SoYvbshfRH5TP/mR8Hi+QM7dy6jKBcs0uKsSqIoXi5Ao7qY2Kc2g6YAVA0o27Ho6HVQEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ubtiHOCi; arc=none smtp.client-ip=95.215.58.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OpfjxN0c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D401F000E9;
-	Thu, 13 Aug 2026 10:56:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786618567;
-	bh=aWlrS+4xxmEiEVx+PtCe15f5FXxI0/nGpNI0TJWQmFs=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To;
-	b=OpfjxN0c1LVRbGxyZr80QT7zpz9wsWqb5B325j6WFKxpVU/9xBggEmqKtmhGblnKR
-	 MpeFc9u2PAEwllykhqpcO1xAZDPGAyA05n0XZOvCZUhaghv+btZlAvOctd5JW07Xj0
-	 k6docWHSaO/WlaYTurttQD8Pk7AQfO5FD0pBh8hJucmayc5EJoIJdUQLD4A+I6bwUn
-	 sE4wbH57bZhu6rNMfuYpGLYM7SIrxI3ZI48i1efVGY7RF5a9uVhoaIqNdkhhTCMUIV
-	 iPx2s2scBSTW6nh80qlnUfjskQYPNSAK0n/3rEm06AuaLI2o46XX4Q/cu3uSBcOTm/
-	 kZ6JPrbZA+nOA==
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ubtiHOCi"
+X-Envelope-To: rust-for-linux@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=R2f0PJtuTSVROgAmYKIuGCx86gpNuYMzhmVycIrzC/0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1786621958; v=1; x=1787226758;
+ b=ubtiHOCiVF+6G2c57ZPAvI6l+awYjHl+AIb5taDvumN7OMQCvAXROI+r8LU1Uh4u47ZDTwcP
+ +c1G/hi9ZzkB30pl20V961orVKZoU3tfKI/qpVs+Jk6DnEGQfKo/qnEmgrN069VuLkPSLEc+jBz
+ c14PQhuIwKPL9sizx6dY8eoM=
+X-Envelope-To: rust-for-linux@vger.kernel.org
+Received: from [192.168.200.2] (2a11:3:200::10a9)
+	by smtp.migadu.com with ESMTPS id dd9de6576435b65a;
+	Thu, 13 Aug 2026 11:52:38 +0000
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <cfb5912c-514d-4a3c-b056-a1e8d2d4469f@linux.dev>
+Date: Thu, 13 Aug 2026 19:51:04 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 13 Aug 2026 12:56:02 +0200
-Message-Id: <DKNRF8W502AE.VFY7PMSK7T1H@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5] drm/tyr: add Job IRQ handling
-Cc: "Laura Nao" <laura.nao@collabora.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@kernel.org>,
- "Alexandre Courbot" <acourbot@nvidia.com>, =?utf-8?q?Onur_=C3=96zkan?=
- <work@onurozkan.dev>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <kernel@collabora.com>, "Deborah Brouwer" <deborah.brouwer@collabora.com>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-References: <20260728-tyr-irq-v2-v5-1-59fd9dea952a@collabora.com>
- <05F30B5D-B353-4AE3-933C-B42FBD35CA4A@collabora.com>
-In-Reply-To: <05F30B5D-B353-4AE3-933C-B42FBD35CA4A@collabora.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 00/10] Fix missing fops.owner in Rust DRM/misc
+ abstractions
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>,
+ Mark Brown <broonie@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Luis Chamberlain <mcgrof@kernel.org>,
+ Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Daniel Almeida <daniel.almeida@collabora.com>, Arnd Bergmann
+ <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>,
+ David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
+ Breno Leitao <leitao@debian.org>, Jens Axboe <axboe@kernel.dk>,
+ Dave Ertman <david.m.ertman@intel.com>, Leon Romanovsky <leon@kernel.org>,
+ Igor Korotin <igor.korotin@linux.dev>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
+ Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org,
+ linux-modules@vger.kernel.org, driver-core@lists.linux.dev,
+ dri-devel@lists.freedesktop.org, nova-gpu@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org
+References: <20260811-fix-fops-owner-v10-0-7e71776f9dbe@linux.dev>
+ <CANiq72=bhfofrbdf1qeA380-eWeKj5yXhC0NzaU_nbB9SpxYHA@mail.gmail.com>
+ <DKNAS52KYWLD.M15VEC6U0F6R@kernel.org>
+ <DKNDF3WD27GM.5VP6RBRXZBUS@garyguo.net>
+ <CANiq72=SP_nT7Z6NSH-GT51-8hJ8qLUa07Cs+SarSFTO9Z7vUw@mail.gmail.com>
+From: Alvin Sun <alvin.sun@linux.dev>
+In-Reply-To: <CANiq72=SP_nT7Z6NSH-GT51-8hJ8qLUa07Cs+SarSFTO9Z7vUw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu Aug 13, 2026 at 3:22 AM CEST, Daniel Almeida wrote:
->> - Renamed JobIrq lifetime to generic 'a
+
+On 8/13/26 17:32, Miguel Ojeda wrote:
+> On Thu, Aug 13, 2026 at 1:57 AM Gary Guo <gary@garyguo.net> wrote:
+>> IMO this is the correct way, also consistent with
+>>
+>> https://lore.kernel.org/rust-for-linux/20260811-fix-fops-owner-v10-3-7e71776f9dbe@linux.dev/
+>>
+>> It might make sense to add this to rust-next.
+> Yeah, it is also consistent (in the sense of adding a fallback) with
+> the other fix I added when applying the series for the `macros`
+> doctest; and the `kernel` crate is not an actual module yet.
 >
-> Why?
+> I guess yet another solution would be to have an even more local
+> fallback, but that would be too local in my opinion, i.e. we will want
+> to use it elsewhere sooner or later.
+>
+> So I could fold [2] into commit 98f256e27262, but a commit on top is
+> fine, I will reference that commit from the new one instead.
+>
+> Ok, done -- Danilo, I took your diff and converted it into a proper
+> commit, please double-check you are OK with the Signed-off-by:
+>
+>    ec6fcf8a175a ("rust: kernel: add `LocalModule` fallback for
+> `#[vtable]` `impl`s")
 
-Please see [1].
+I was just looking at the difference between the doctest and in-crate
+`#[kunit_tests]` test paths — thanks for taking care of this.
 
-[1] https://lore.kernel.org/all/DKAINVQDNE79.3JRKZDQJCSX9@kernel.org/
+I'll look into [3] once the new build system lands.
+
+Best regards,
+Alvin
+
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
