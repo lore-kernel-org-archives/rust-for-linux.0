@@ -1,73 +1,73 @@
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D40474261
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Aug 2026 13:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30233474261
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Aug 2026 13:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786628953; cv=none; b=e6CBibhV9xdB5QuIeCp4lTT6BpjUK8DFTsAPOz3b661ArQ5N/+ZbGzoS+ysKq0Cc6fopFlKwukmu69hxTnchzVd0idP5ZEdbMULRuCA+pb0hlpJ1w36WduaT/dwiAInTpVUwA/8aSfciq2cohMSGzeFcQI9XB6cCiVGjBxpH8Wg=
+	t=1786628959; cv=none; b=L5at3TVnMTkzn1Vt33IeAQRdBKGC5kNNr20AEjcOknsbG4Ia+le2+UuPA+nAhXatlzamJw6nevP8u3gleQM7Qi30TpWGDkyrfLtvHowUcSRbIB35uMNpF3JPK4lezZx0fCtjDFDv95vCjOcMBQm/zDUBaJnbcDy+XGfojp/g3wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786628953; c=relaxed/simple;
-	bh=Q2bH2NG1cNeNZeJAYFABnXDjGMLXSW1AJJh0iJeLaiQ=;
+	s=arc-20240116; t=1786628959; c=relaxed/simple;
+	bh=Kv5dlOOc/paFY6itC/e2aegQio8gp2MT/kpCo+ku5ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4ywLrnjh3IEm0xpttO2VN7BGNF9cOJnmx+Huqy3PPFTPwXBZXY0yao6jmDH7he5Wj/YkTO4DNLrLLsgDumlIN949CBp0cCbDAE4h6pQ0xUdV3qU8Rb9L0BDmHMXByEitqADD1TCoHlypb5SnFzgXLrPV9tR195jvbtPkw0z4eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=AtR9xo9h; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AWhQGzLm; arc=none smtp.client-ip=202.12.124.137
+	 MIME-Version; b=aEJAPn/tBP51ws1pp7Q4pgwCnH1Z8M8XUbqf5hgNhugxENmCBqHVl5cLO7jnqcmEq/1+gbMeatWC4jAemt0OqZBZPAvmg+1ER7OrYWfNZX0WJ7+Vheej9XuUAM/1xEADfn6SekiGQrj3wIWoXNtAi3r7EP3I7jD0gxT/xbE6834=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=mB4B6HmH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=K/AeBgJf; arc=none smtp.client-ip=202.12.124.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="AtR9xo9h";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AWhQGzLm"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 7EE0113004D1;
-	Thu, 13 Aug 2026 09:49:10 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="mB4B6HmH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="K/AeBgJf"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id E0E5A13004C4;
+	Thu, 13 Aug 2026 09:49:16 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 13 Aug 2026 09:49:11 -0400
+  by phl-compute-03.internal (MEProxy); Thu, 13 Aug 2026 09:49:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1786628950; x=
-	1786632550; bh=K9xEuPH/Jy/6vZ8VWZn5/892WSE9R3c7R5MqaTnm7uI=; b=A
-	tR9xo9hX100Qsn1hktrWUjzHamihtfbKfsofkvlXdAgXays8njSnYWdfrCgAvfir
-	+kgzKcIjSq3EJ+M4fwoTvuuCDXKctisjvfMHJWPrBCHQXfFU+EJiYEWTJHLUkQ5O
-	gTaZlU769jzAU1kpzDskQRRnTHt5w8nz0fbn6rql61z0qUIClWA4IQXMdKHyfCB0
-	/IhTDCzmaWiR1/VhcsSMZU60p8YcEeHLqtZ+ZfERQllrcZStdlqVo9YBdm+UwHtD
-	fOtbXdy6x6dKTLjaHOgGdq8IudHloJO5N1CuhLtJgxSej/w0rFLbgDQkve8jwLhZ
-	kQvz6kOJ4mvKp3siUMy9Q==
+	:reply-to:subject:subject:to:to; s=fm2; t=1786628956; x=
+	1786632556; bh=mWiZh8PyAaf2VUCC7sVtXHpVJD3Vxm+QMPRTKXURUS4=; b=m
+	B4B6HmH3SSMAggD5DRq/W2o7LW+zbTXGO65By7grgD7Hrdimqd6pMAnV/WUE63Or
+	8sc3IXbZYkNfXmnxM6IH0VpQjTqoKLDAAJaz5qvA/9yYtjajnvvuQEk+nZhpyck1
+	KllkD7vg6pTp0tzMo9Woqs1YVm2TNyvCsXWlw2mTtrwP81yp+YfJzqyyGV+Pe/I4
+	PpZ3BxiKGaFa3p7z+OF66S85lKGghWLkcGyFx0H4p8HHK4tUiM0N+Cwnpok0YLOC
+	aGdretF0C7kcJCT3sefVGhR5xc8WATSrs8zFrqJy3OmTk7VtL2YjKpL3vttXcqVB
+	cshqPCFgrphoXDzJHQm4w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786628950; x=1786632550; bh=K
-	9xEuPH/Jy/6vZ8VWZn5/892WSE9R3c7R5MqaTnm7uI=; b=AWhQGzLmTsP4T6MC6
-	GcgcLHTkESUWcdqHoxucSK5Dx5DpwjiZOjhFlBFAvxQIHQ2fOH/DM/9Zbjs0iYfP
-	DxeSwL8D9EV/TQRHY/+YTG8ksf+XMPlS3O9rPdbdOsHYftflDEEVH8XxKTQs/AlO
-	apKwZPLKVc+OD/aiE7HkSep0VcE3oKUAgHcanjELjs5nXgFJx4k2FLhP9XFEipy2
-	IOPgpZuLdhleaWbrlI/+SzLtS0ieua+yq2jD49on5kLeleLEgylq3zBMSL397lyP
-	QBDr/Y5gw2mXs5/cb2aOsUaTcLz3us4PUC4/HZ6ctxxPlWaOupE7ZKqpZJNVsP3/
-	zu5hQ==
-X-ME-Sender: <xms:Vst9aiXCDfejludvW3mG3Co-QoRx2w6WYbMQfKwIoyqvf6FyuuWocA>
-    <xme:Vst9aqc2aHmo-DIekUO3CF3iT2eDWYiIBNtene07xFnfcZVtMlhfidzkQa7_LjLOo
-    PWh9T7tSYvBGO8-jOnjWsjUsfK6e-MvaZxmdBBxaP1oQiJtMiDjeIEh>
-X-ME-Received: <xmr:Vst9ah42gY82X1KCacITC_tJO2jhQgVxaXQmwgIZ3NjgF9kD5sko3q95YcvCLSGG_B2bzue_I4XbgXLGMDg>
-X-ME-Proxy-Cause: dmFkZTF9+qeFgD3Ub/ObX5dw2JHcjNj3yUaai0Sbsvm/KfEPdnGBDRpG1TAEunNPVraCLj
-    kYswY5zIUVBZS0P6vISBKrCYYHNZ4EUTGQi/PbmOKeqv1kiIO3ZlFeQn8L8Otlqg9q2RV6
-    335Ki+rs7SWcVS2oZHvatKljSk/jU+Ppka06TvihgUFdRYnpwd7WPgI8AWQPzjfvde6hv7
-    /bUzoJdSRwSee6QGYa88jOge0Ct2ZotnSaIdiq677RfWDMOTin00iVbSMF3tZKxQ88whzj
-    GPXFriKKIU9FxXwQkDC59IDqNmn/ZoA2slNToXlr0iPyT8yWwETi8VKV8cUooE9t44fCAK
-    GlQBNNYOReATiJhP8cgHfchlly7SgxPTY0CiRMX7hLZgBYzb+PQSZdkEKdI9zj20NZXPQl
-    06J8AMeGNygFT4eqOSRHSBm4LW0gArP9aANg41D0gbHFPPHd2p7fLb5K8dTG1TRoN9PdHb
-    /tImj0m9z3ualaHI+N7gJOedCFcl85Ki0jWOY+UTHhKl0JfQu4/OnQnEWIeVdrI64IbXmM
-    Z4EGyPFOx19n5AHTRLvf9eRgn3vGkJX/ZAZ0qddfaqc8drBUbORbQU1KuYpIL6/mg9SXW9
-    s6lNU2lxUfH/6lirTQYT24G3NLz78UeygmKS68qJcjGxUFyOlNk9smaHxFlg
-X-ME-Proxy: <xmx:Vst9atTovWvj6rgX-ndvqrDT2DjWNezkdEvhn5g4TAavYlhJ1XnUvQ>
-    <xmx:Vst9akdT5nVc4gRFwfVm34iTi-UYU6EuH3jU6_mNyQRTfV8pvE6wCw>
-    <xmx:Vst9atTVsjmzj7o_lhrzxf7IxF8EZPADxCXS7JYNFiklt9o5-Fl1mA>
-    <xmx:Vst9atOkez7aDz72ftYZzquAcpMPnKlwuSWsI0AwwCNG72MjfThn-Q>
-    <xmx:Vst9aiHiIQ1krwAnOwofR8oWm6HDDSQYbuUqTqYJfz-RTWUbcukpv9Ht>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786628956; x=1786632556; bh=m
+	WiZh8PyAaf2VUCC7sVtXHpVJD3Vxm+QMPRTKXURUS4=; b=K/AeBgJf4kRzhlyCs
+	kFAkWooUG8dbkP7g4lX/boXK+CEiMrSWId2HFnEPbLO0OSgBkFvV5E9CEXONiEjy
+	GQ2mD+eBvklJR9dqdTVMBeXezZk/Hj9qJUh5Kx0+Cu7REz3uHLhBXtPlz41JjrVc
+	Id3HcJZS00KBFlxFhu42DtaRJXL5reouiTtZNsH6juZlgHiEhZqscs8i8MAGAUFe
+	d8FHA5B2tly4NnmQMn5rGNn73GSeNGT5UpSnYPzceM2eEBaxemn3PEeryjkZp59V
+	wWVDEGcv1Qe5kYmWMpqT3PSEq9sKV68ow5nBVRzo/gd+D93O8uIFWWBcJLa23mhj
+	40gUQ==
+X-ME-Sender: <xms:XMt9avlORQFz1P9SaZJmaC9LgxehaJYVbjsSbVtJZQFJNtE7XULuLg>
+    <xme:XMt9auukBWfjMAM3zafkj_jZdezUQgAAsRRxg6h9sy00emB-NOa01iwzl9cCspcgm
+    L1xJL90SXviLbJhbcZ21iOWSbLnZidQ8OTAtAsHPCVLXEVeLo3KRH9C>
+X-ME-Received: <xmr:XMt9ahJBSstfIKdxyZ7bz5_8mcjvHJ86DnylU9ECsm3dDwbetAZ3iCS5oVitL6xFcYJ04rrvtWNs0rsnE04>
+X-ME-Proxy-Cause: dmFkZTF3I+rSpJ81EPexp21Wh+EHaUEKnZU1S/1oYMO86q5LHzT7UCvtsgZuI2h7KrhSmN
+    viWUNpLvYqOt9vPzFtleF+1BVZc+B+jqvHJjKClCt5DcCNyvn4KYkdH1Z1AmPvnEyqefSK
+    adWfLqu5lDHotgQNd05+0GFncQI17PWVLlYjFrrEsmaWzkjgb3iXRRWShxt0ItPv3HzIBn
+    iR1FAukIByzEBs6V3GWQ/z1+2bZpgKNKUDDR/w95NDDKHPoAbULWVuMx/3mLmHjgPZ7TaT
+    N3ZbWRBx9Y3QaLMI0o3QKKw+eGO2rfjRfJ83SpYOpei4aGjkFZ0yMMoOE1fjud5VgPKWlK
+    hV2OoR2/FqHcEvWRvkLT9Mn3yRH9xkaSxTdMhlpQkUekWei4VHsc+uXNi81eXBpUHY+7WO
+    Q/PLA1RxY+MOB49/s5wfnrmw0YxvsLLXlDa9dWGger7GIgQNax87fqcFzjwXlCh0xWxsJ7
+    7WUamj8G5b1eEjHNqZGHO0bV1G/Pa9FwsYdxIG6Q1wpEJ4kYlVtAQktEyoLTGnjj6sW8E3
+    bqfaq5AJvxdjScI5p2p/sp+1hAs7LOBe8komLUcDuzjtXpugBWFB6feQ1jjcRjAWDXz1Qx
+    2e7cAgzQXjIEllkFB+MzjnheEMRvZVoJF6Jx6cjj1++8EfjPo0Hbql8RbzxQ
+X-ME-Proxy: <xmx:XMt9arjKHjGBuQkZJgfK0ATzASZVWQ8BqTj7q7waZtc_tDSikY380g>
+    <xmx:XMt9altZSYHXmEmkiV6JcqXoDt1WnH91WyaMZ2y6WRVcdTHYVYDavQ>
+    <xmx:XMt9alhkwvxyWJ4ekQ_7fmlb_KXNB7X-UPC29fx2rgq61skE5vCncQ>
+    <xmx:XMt9agfr1R81Zcd506UpqYGekyB6CEOz-Sn4lvdjpK4o4kJHyl1N0g>
+    <xmx:XMt9alUkAtAgG-xYTnn6Q9LIe5WPyNPqEZpigN_efm_mstPl_MS9ungG>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 09:49:05 -0400 (EDT)
+ 13 Aug 2026 09:49:11 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	ojeda@kernel.org
@@ -90,9 +90,9 @@ Cc: acourbot@nvidia.com,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1 3/4] rust: hrtimer: Restrict expires() to safe contexts
-Date: Thu, 13 Aug 2026 22:48:33 +0900
-Message-ID: <20260813134834.1562995-4-tomo@flapping.org>
+Subject: [PATCH v1 4/4] rust: hrtimer: Make HrTimer repr(transparent)
+Date: Thu, 13 Aug 2026 22:48:34 +0900
+Message-ID: <20260813134834.1562995-5-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260813134834.1562995-1-tomo@flapping.org>
 References: <20260813134834.1562995-1-tomo@flapping.org>
@@ -106,117 +106,101 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-HrTimer::expires() previously read node.expires via a volatile load, which
-can race with C-side updates. Rework the API so it is only callable with
-exclusive access or from the callback context.
+HrTimerCallbackContext acquires a &HrTimer<T> from a
+NonNull<HrTimer<T>> while a &mut HrTimer<T> can exist at the same
+time. This is sound only because HrTimer's sole field is
+Opaque<bindings::hrtimer>, which puts every byte behind an UnsafeCell.
+Adding a field to HrTimer that is not Opaque would make acquiring that
+shared reference unsound.
 
-Introduce expires_unchecked() with an explicit safety contract, switch
-HrTimer::expires() to Pin<&mut Self>, add
-HrTimerCallbackContext::expires(), and route the read through
-hrtimer_get_expires() via a Rust helper.
+Make HrTimer repr(transparent), which prevents multiple fields, so that
+such a refactor fails to compile instead of silently introducing
+unsoundness. This does not guarantee the remaining field stays behind
+Opaque, but it rules out the likely way of getting there.
 
-Fixes: 4b0147494275 ("rust: hrtimer: Add HrTimer::expires()")
-Closes: https://lore.kernel.org/rust-for-linux/87ldi7f4o1.fsf@t14s.mail-host-address-is-not-set/
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+repr(transparent) cannot be combined with repr(C), so drop the latter.
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/helpers/time.c         |  6 +++++
- rust/kernel/time/hrtimer.rs | 46 ++++++++++++++++++++++++++-----------
- 2 files changed, 39 insertions(+), 13 deletions(-)
+ rust/kernel/time/hrtimer.rs         | 6 +++++-
+ rust/kernel/time/hrtimer/arc.rs     | 2 +-
+ rust/kernel/time/hrtimer/pin.rs     | 2 +-
+ rust/kernel/time/hrtimer/pin_mut.rs | 2 +-
+ rust/kernel/time/hrtimer/tbox.rs    | 2 +-
+ 5 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/rust/helpers/time.c b/rust/helpers/time.c
-index 32f495970493..ef8999621399 100644
---- a/rust/helpers/time.c
-+++ b/rust/helpers/time.c
-@@ -2,6 +2,7 @@
- 
- #include <linux/delay.h>
- #include <linux/ktime.h>
-+#include <linux/hrtimer.h>
- #include <linux/timekeeping.h>
- 
- __rust_helper void rust_helper_fsleep(unsigned long usecs)
-@@ -38,3 +39,8 @@ __rust_helper void rust_helper_udelay(unsigned long usec)
- {
- 	udelay(usec);
- }
-+
-+__rust_helper ktime_t rust_helper_hrtimer_get_expires(const struct hrtimer *timer)
-+{
-+	return hrtimer_get_expires(timer);
-+}
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index d94275f2e93f..59e9559e7099 100644
+index 59e9559e7099..2130dd24cccb 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -557,27 +557,36 @@ pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
-         self.forward(HrTimerInstant::<T>::now(), interval)
-     }
+@@ -415,8 +415,12 @@
+ /// # Invariants
+ ///
+ /// * `self.timer` is initialized by `bindings::hrtimer_setup`.
++// `repr(transparent)` is not merely about layout. `HrTimerCallbackContext` acquires a
++// `&HrTimer<T>` while a `&mut HrTimer<T>` may exist, which is sound only because every byte of
++// this type sits inside `Opaque`. Being transparent rejects a second field at compile time,
++// but it does not enforce that the remaining field stays `Opaque`.
+ #[pin_data]
+-#[repr(C)]
++#[repr(transparent)]
+ pub struct HrTimer<T> {
+     #[pin]
+     timer: Opaque<bindings::hrtimer>,
+diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/arc.rs
+index 2134d12d558c..ce7cff7efe29 100644
+--- a/rust/kernel/time/hrtimer/arc.rs
++++ b/rust/kernel/time/hrtimer/arc.rs
+@@ -143,7 +143,7 @@ impl<T> RawHrTimerCallback for HrTimerArc<T>
+     type CallbackTarget<'a> = ArcBorrow<'a, T>;
  
-+    /// Return the time expiry for this [`HrTimer`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must either have exclusive access to `self`, or be within the context of the
-+    /// timer callback.
-+    #[inline]
-+    unsafe fn expires_unchecked(&self) -> HrTimerInstant<T>
-+    where
-+        T: HasHrTimer<T>,
-+    {
-+        // SAFETY:
-+        // - The C API requirements for this function are fulfilled by our safety contract.
-+        // - Timers cannot have negative `ktime_t` values as their expiration time.
-+        unsafe { Instant::from_ktime(bindings::hrtimer_get_expires(Self::raw_get(self))) }
-+    }
-+
-     /// Return the time expiry for this [`HrTimer`].
-     ///
-     /// This value should only be used as a snapshot, as the actual expiry time could change after
-     /// this function is called.
--    pub fn expires(&self) -> HrTimerInstant<T>
-+    pub fn expires(self: Pin<&mut Self>) -> HrTimerInstant<T>
-     where
-         T: HasHrTimer<T>,
-     {
--        // SAFETY: `self` is an immutable reference and thus always points to a valid `HrTimer`.
--        let c_timer_ptr = unsafe { HrTimer::raw_get(self) };
-+        // SAFETY: `expires_unchecked` does not move `Self`.
-+        let this = unsafe { self.get_unchecked_mut() };
+     unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
+-        // `HrTimer` is `repr(C)`
++        // `HrTimer` is `repr(transparent)`
+         let timer_ptr = ptr.cast::<super::HrTimer<T>>();
  
--        // SAFETY:
--        // - Timers cannot have negative ktime_t values as their expiration time.
--        // - There's no actual locking here, a racy read is fine and expected
--        unsafe {
--            Instant::from_ktime(
--                // This `read_volatile` is intended to correspond to a READ_ONCE call.
--                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
--                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
--            )
--        }
-+        // SAFETY: By existence of `Pin<&mut Self>`, we have exclusive access to `Self`.
-+        unsafe { this.expires_unchecked() }
-     }
- }
+         // SAFETY: By C API contract `ptr` is the pointer we passed when
+diff --git a/rust/kernel/time/hrtimer/pin.rs b/rust/kernel/time/hrtimer/pin.rs
+index f44ac07cb722..6a0ac4d7dedf 100644
+--- a/rust/kernel/time/hrtimer/pin.rs
++++ b/rust/kernel/time/hrtimer/pin.rs
+@@ -128,7 +128,7 @@ impl<'a, T> RawHrTimerCallback for HrTimerPin<'a, T>
+     type CallbackTarget<'b> = Pin<&'a T>;
  
-@@ -1060,6 +1069,17 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, interval: Delta) -> u64 {
-     pub fn forward_now(&mut self, duration: Delta) -> u64 {
-         self.forward(HrTimerInstant::<T>::now(), duration)
-     }
-+
-+    /// Return the time expiry for the timer.
-+    ///
-+    /// This function is identical to [`HrTimer::expires()`] except that it may only be used from
-+    /// within the context of a [`HrTimer`] callback.
-+    pub fn expires(&self) -> HrTimerInstant<T> {
-+        // SAFETY:
-+        // - We are guaranteed to be within the context of a timer callback by our type invariants.
-+        // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`.
-+        unsafe { self.0.as_ref().expires_unchecked() }
-+    }
- }
+     unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
+-        // `HrTimer` is `repr(C)`
++        // `HrTimer` is `repr(transparent)`
+         let timer_ptr = ptr.cast::<HrTimer<T>>();
  
- /// Use to implement the [`HasHrTimer<T>`] trait.
+         // SAFETY: By the safety requirement of this function, `timer_ptr`
+diff --git a/rust/kernel/time/hrtimer/pin_mut.rs b/rust/kernel/time/hrtimer/pin_mut.rs
+index 9d9447d4d57e..65172c9e55e9 100644
+--- a/rust/kernel/time/hrtimer/pin_mut.rs
++++ b/rust/kernel/time/hrtimer/pin_mut.rs
+@@ -86,7 +86,7 @@ impl<'a, T> RawHrTimerCallback for Pin<&'a mut T>
+     type CallbackTarget<'b> = Self;
+ 
+     unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
+-        // `HrTimer` is `repr(C)`
++        // `HrTimer` is `repr(transparent)`
+         let timer_ptr = ptr.cast::<HrTimer<T>>();
+ 
+         // SAFETY: By the safety requirement of this function, `timer_ptr`
+diff --git a/rust/kernel/time/hrtimer/tbox.rs b/rust/kernel/time/hrtimer/tbox.rs
+index aa1ee31a7195..1dd68fcf2bd6 100644
+--- a/rust/kernel/time/hrtimer/tbox.rs
++++ b/rust/kernel/time/hrtimer/tbox.rs
+@@ -103,7 +103,7 @@ impl<T, A> RawHrTimerCallback for Pin<Box<T, A>>
+     type CallbackTarget<'a> = Pin<&'a mut T>;
+ 
+     unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
+-        // `HrTimer` is `repr(C)`
++        // `HrTimer` is `repr(transparent)`
+         let timer_ptr = ptr.cast::<super::HrTimer<T>>();
+ 
+         // SAFETY: By C API contract `ptr` is the pointer we passed when
 -- 
 2.43.0
 
