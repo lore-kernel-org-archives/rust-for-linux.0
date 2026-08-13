@@ -1,73 +1,73 @@
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0F1331ECC
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Aug 2026 13:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B40474261
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Aug 2026 13:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786628939; cv=none; b=hWvS1qS9YO+H2G3Z4SlqjSPokzhhMFrcLsVqWgKaA+BQ/MsapwTkq+TfY5Y7IMvv9dwrKo6wM59gtu9Qtt4hBojrN8F32tKOEbHw9wBhXSmXg4UnhMiP/baiRUmyo2pokqT4DkeAWQAX1BU47Hl2dMAhoi6MUirZgYP7OWCGix0=
+	t=1786628947; cv=none; b=EZ1rd9ydY+FQqN1rxpp2BK6o71Tji23tArS1qc3gruDUKFWlG3kJ6C1w39YfuROzcjwCIYDtOSmkDCd2dDI1XFkx8kM4+qSMyklBpMWzV5DETI57GNJ/djJHtID4QI5b2MjyEHOl0oaHLnXdAQwsREoXkkUaN3q8Mf01QXiCpC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786628939; c=relaxed/simple;
-	bh=Z50X2ewzRr+VJF/J5bbH1paG7az0+povc3302L6Jya4=;
+	s=arc-20240116; t=1786628947; c=relaxed/simple;
+	bh=NlmAo9amUf2fFDxGLy/u98HwvmwHn5GIXB0beS6IFlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pb8KD5ns6sSgUTsqMkNSlmMyBS0mpvYIIsGGP5NAOV+QsiO0vs3Y6BHzz0TH7X6NpDk/aQuaDGmhw9NWo3cLL5uyTWMd0VX9mGAmsogZD+lMB9OsS87spWymZeZyF1EW+rVnClISQ7cVexUL38P7/mn9Lj32B+ZlNUq3Kvpt4pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=p1A+PKDB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PTNVx6aq; arc=none smtp.client-ip=202.12.124.137
+	 MIME-Version; b=UYbfjTZ/eAXjNfhwimG9NawW/tCJ39oROngkGjXy+dLS81IyMWVwnF6cOISs8kJzxd5yLdZR73dM6zSPf9seMVTeWFbtYT6AmU8ZoBYmNqHVFwxdOCMQYlCniB2TwE3u/0WCkhCRXbUFhUSx0iH19Pc1UfzdCNxjn8J0LbyMS98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=JUgd/BVs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eYF0iYMt; arc=none smtp.client-ip=202.12.124.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="p1A+PKDB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PTNVx6aq"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.stl.internal (Postfix) with ESMTP id 7983113004CD;
-	Thu, 13 Aug 2026 09:48:56 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="JUgd/BVs";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eYF0iYMt"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 3BB2D13004D0;
+	Thu, 13 Aug 2026 09:49:04 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 13 Aug 2026 09:48:57 -0400
+  by phl-compute-05.internal (MEProxy); Thu, 13 Aug 2026 09:49:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1786628936; x=
-	1786632536; bh=AwlPJZIYQp7aCPMNALKypQ3Jh0u94B8K/rHTOYPA/rk=; b=p
-	1A+PKDBKTPQBgx2Q64aQcmncdPJuaISXRerANCcRj/KPcaAyf0CzrOvYdq+S+8EW
-	Vkzvr2KW9ko3C/irS3JeLJ595oiySQvl4q6Z3HM1sl2UXYhO5vLni8ToClQ/6C3B
-	HxoMtWE3dj+qsUGtorrqUUI/0876xwJwFZ0Yt4h8Ws21xogEyLYBQmPCHDkhKzUW
-	j/1Ug26frX64dvssOROkhuVgrC5TaQd9oSUsNZ0lx8SnCT/OhvZCDz7r4chEuZb3
-	dbMbarCWYlhn28W3rUDnn6AqzGFrURlZhEFG8U+ZQPZHDqjW48oCErSn+84VNSAr
-	IcgJBc3ydnYFKc7+/uqug==
+	:reply-to:subject:subject:to:to; s=fm2; t=1786628944; x=
+	1786632544; bh=PikmuubGux3tfbc10124aAkJPW+rcpun9T/wNugA9lw=; b=J
+	Ugd/BVsYdePec1+1sgXyMyqk4oPLKkQUM5gDooZUIcpU8YR8ikbxff2IrqUJUOxn
+	Yjh8CNCTyo586W0BqvkjZ7qypMrt61cJdFqyA7w8nwxtyU0D9dyOhcsfN+KwOnZf
+	5mbeBYIoDPYsG3zoWl0bOpPq4JV1/qIrAUxnI9TXgGp5BUIEJMuKTCrFXpyqGrFC
+	UdyiZSrNYScfcCA/W5Nlsans6odxsb962kBj0/t7k2rrbP6c4b7XN1ppPcQ0A5Hk
+	T/dxp0UG82qkNLBoIRb/U1tHhqooJ1IEMKq8q155PIHFHCt0ajx1QrcvHXa8qT2q
+	7cHCQgW1VOiB+8h1TyE2w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1786628936; x=1786632536; bh=A
-	wlPJZIYQp7aCPMNALKypQ3Jh0u94B8K/rHTOYPA/rk=; b=PTNVx6aqywBSW7/ug
-	+iffKnEUmZsbyQWdnK7+5wJU0yARWSvLzLO3IinLs4e7KQuYfn76uePP6ijKHb+O
-	DbJkJRM+i582DHkgRuWWapZwR/Zd/d51bWtLhaG3q60ZuV3LIcBo654JS56MiuX6
-	G+PyuDEpy/QyKzEMew0qGs3zDt3Bux+3iHzTvL1LtTKj4UOfVUilGFh9nqOja+G1
-	U3ehZoOtVlnr6dlMkCmcAxXhRX+e9FOasiQJg/5aBDL5nF2bCg8hCmkWLrHCiYxt
-	dHobMetA9Q03VsiAgK5IGfm58dyaEhdtjWjJ1Q524puq4EqRAimayGJ5scG2V9DX
-	lrE3A==
-X-ME-Sender: <xms:SMt9alB4M1FJUljb-hXADtKkxzMjBe0J-ZcQxPSXRxgJWt-iifsvIw>
-    <xme:SMt9avZoxfYYk2f0VFHpLeY3_4ziZF7MLH4QXd8ycYueJqiFyLgDxd11gLxO_gG2m
-    JBiC2JrYPGdGA3j79EzQ0-n1JxO_xtIFKdOq6Y7WJzvhOg6aL8qJS_Y>
-X-ME-Received: <xmr:SMt9asGbNo4iuBv8q3kIaBZ7eMUBZTEafUooLrCEx5yRd8dWB8kJAHj-H4iQ-qfSSkj6O_YT0C0sqGJapp8>
-X-ME-Proxy-Cause: dmFkZTEpZrFsQA6lFB0ZuvhKE8ib6L2ObCjJzDZZ+xev36rK5clhcLRa3oqSvib5fsncav
-    Vhh7EXPyzwrDpREaN+3RDKFez6objhMHOUtDP/q6WvUcKLGb1N3X6WxwehttAoTY5e2Pob
-    6JtLwv8d3zYyTNF825ZlmefKABN3lRjvRfA9/FktUiY2tg5Yy7DxXgcMixbiiYzS7ETEr9
-    CtK+4EdkQ6tyul+PpNrqvf7Wwe3717dUDyieQGRCOAtdy3f9jkJH09u2D9nEL/5DJ2RHWr
-    5VXoOat0bOeTbdmNlH9ZUtk47VzEHl/eUxHFSmw2ov/ocaY57KR8LNPNeAwUMsuIrlraEr
-    hYrhpv8+XfBpvuVX087nu0mUUpB/EUTf3TCrIqYPAl7uH6DHL44IZnG25cefcTCGWombkn
-    1h9WeuTXyJsG6BbIS9KTAFzxgcjpbZaDilwFdq8QJZL2MEkISx5vndOvj0GDCPwtTySFbE
-    Ie3v9fN4/waOl2Z+fOkjZa2vvJfTBgBmvQ3Ry6JgeZ5KtAEwA5M5Z6/0qmtkEi0VGf/qHO
-    rqK6/hJnCmo+8Y2bzmQysGgxODD+Bu7RD2Bdi+iZ1uEaoE89Vbt74wGaUiUImvw27QsMR1
-    doRacRtoEIkFVgRTfK8ggMSkiH6kwg10qQmdnYnugwRE9E/6soADu5sh5X8g
-X-ME-Proxy: <xmx:SMt9ajuhjuRLwf6rTnI8R9jrhmIY2ZRDAhJyv5k6oysVKpdBvefidQ>
-    <xmx:SMt9aiJhZb13szQ9LhTU6djTj0Voai55jr7SuOW_Smd3kSOEYxcrzw>
-    <xmx:SMt9ahN-IoERtv8WGhpQtnnFDE6RE22mSesKeasWjchtxvUhSNj4QA>
-    <xmx:SMt9aqbhQrYBmqegyjpZ9Sfti1PXywjCb6RBfWjk_wS4M7rQezazfQ>
-    <xmx:SMt9avS_V9CQ5SrQqCEu3so-T62rtA25JigGczsoRdAjGET_fkIoqyPV>
+	:x-me-sender:x-sasl-enc; s=fm3; t=1786628944; x=1786632544; bh=P
+	ikmuubGux3tfbc10124aAkJPW+rcpun9T/wNugA9lw=; b=eYF0iYMtfgJWpjAjF
+	qCFxa2NWRWZcycSj32yID0nYG4DHtcTjdgqJWHTc4XZksD7cSq0Gxk4k7CYjiQqx
+	N3N/hFCrtQv3ss4dQWqe9WtHD5WffsCbECY0znthxi3+swCuvPkzC0XNYAcHfBPG
+	/tzi0IHnESjZpzZFIwpUsTlC9FGscxo0tlDinbXPXCJMMgc/hgGApLoc7noph5XS
+	Yg6R6QSpWNtouqe3aYnCZKX5qOuF2bim7TyrsdUjKvNF96a26c4fWpTMksSbH2jx
+	yO2OuVc65qwBIRpjUbKqh5ErtUHcYJ84W9fKSixEVSg8SmL35sp0NxX0cLUIY9+j
+	quSfQ==
+X-ME-Sender: <xms:T8t9avyWqr71fqTv8vhSUdb3JEIVt8A2wY-CJV7zgfSRz2FaY6CwKA>
+    <xme:T8t9ajIAnAYBnFPxXXfCCnJdJhQSSjR3Wwhx-qXMN2yKlZ-MwgGGr7LcCGfERJ-4l
+    glERnd8OC8I2arFmHj_Kifd0-Wa2i0L_ggYIbIsSTAxPOacGZj0K0Ep>
+X-ME-Received: <xmr:T8t9ak3oxIvBnhUO3HN-ImfhKsDTgryuV1Zgc9jx0PlkX-uOu98t_qb2LpWI2uRYNEWDV5qm5S8bJP_whvI>
+X-ME-Proxy-Cause: dmFkZTFHLk8/AeamtiqHNGJg6koFeN3TnQ269jIHIbGihXuRTlLVxZH4M6iiJNi6LcsHSg
+    aVLZDAX4WS3j3lRXAvni41LZbWa4VogNxef0JQK00rdER5VJb2q6b2bD9dBwe7KAUZM8k7
+    hJ98N1VEAa4h7m2EgYWbgu24hImph09thR7KqCQv42wMjY4jiRUr15ghsRLMJpZmkZAUTs
+    KFpyzUj+eZxjrknb7P1h/IOhKXiBlmF1IHonSoetMNCW4py/kh85gvx0cpBG8ojFUTtI01
+    SDJxDsXcZSpYSuXUv1AQGRxtxDWto3FdiPwy/mmzCA0H/1sGJWlp4Nxbr0bWcKmD2p63hG
+    HqsoCQ1J6GYGfIzMUsOPst538Go95PVNOuVaXyq5YJcOOl/sgrlimieAwkBv/i2D7/mm1R
+    ioS1kAxMNZ4wNT004v9+wI/UGZZm/4NtyMaVd5xAUy3VJDOEcI3KnPa2xk+w8CLCIV6Ril
+    s6sdkB1RRB0fsehtZhZTrvo+40X+B+a6jWqbJUgJ/MUPfAB69uJac58nbVdn0VwmFPc0yg
+    rWfrQR4UxGMzOyL2/wisfnJMihubYFUMXVHOGi9kzrEfxPuHi3N+QNWiXz9NTL3wlN4zae
+    VsTwSI4ZAThy/2UqGe7i9hhohaTxssF6wdHqH7xT4kOFLb7r4xqN20VwgFxg
+X-ME-Proxy: <xmx:T8t9atcA-6uhE1t4f1j2vBimgYQ7pBghPPiYr0gU6eojXR9o5k0Zrg>
+    <xmx:T8t9ao4-QHDA0hE7g1_I49WfFQdXsNNpOwMts-eZjygd27MtHLHaBQ>
+    <xmx:T8t9ag_N0RLGetGasVGo_s5waLVmgfViCNnLah8ffpQGm1QE83-pPQ>
+    <xmx:T8t9avLqLZcwTQ9gw8kx91uc4WTKVvcPzQ96f1XdwciBmADzN9ivQw>
+    <xmx:T8t9akBND1Imzkx4RSsAbPMtE1z8rf5lwXyp2AU1sRuZEKYhxQZ9HQux>
 Feedback-ID: i51fe4b43:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 13 Aug 2026 09:48:51 -0400 (EDT)
+ 13 Aug 2026 09:48:57 -0400 (EDT)
 From: FUJITA Tomonori <tomo@flapping.org>
 To: a.hindborg@kernel.org,
 	ojeda@kernel.org
@@ -90,9 +90,9 @@ Cc: acourbot@nvidia.com,
 	work@onurozkan.dev,
 	rust-for-linux@vger.kernel.org,
 	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Subject: [PATCH v1 1/4] rust: hrtimer: Introduce HrTimerArc to make arming exclusive
-Date: Thu, 13 Aug 2026 22:48:31 +0900
-Message-ID: <20260813134834.1562995-2-tomo@flapping.org>
+Subject: [PATCH v1 2/4] rust: hrtimer: Introduce HrTimerPin to make arming exclusive
+Date: Thu, 13 Aug 2026 22:48:32 +0900
+Message-ID: <20260813134834.1562995-3-tomo@flapping.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260813134834.1562995-1-tomo@flapping.org>
 References: <20260813134834.1562995-1-tomo@flapping.org>
@@ -106,275 +106,307 @@ Content-Transfer-Encoding: 7bit
 
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-A hrtimer callback may change its own expiry time with
-hrtimer_forward(), which is sound only because __run_hrtimer() dequeues
-the timer for the duration of the callback. Arming the same timer from
-another CPU puts it back into the rbtree while the callback runs, so
-that expiry update lands on a queued timer and the tree ordering goes
-stale. Arc<T> is Clone and Arc<T>::start() is safe, so safe Rust can arm
-a timer on any CPU, including while its callback is running.
+Pin<&T> has the same hole that Arc<T> had: it is Copy and
+ScopedHrTimerPointer::start_scoped() is safe, so a copy captured by the
+closure can arm a timer while it is already armed and its callback may
+be running.
 
-"No arming while the callback runs" cannot be expressed in the type
-system, because the callback begins when the timer expires rather than
-at any point in the Rust program, so use the stronger "no arming while
-armed" instead. hrtimer_cancel() waits for the handler to return, which
-makes that the point where the right to arm can be handed back.
-Pin<Box<T, A>> and Pin<&mut T> already work this way through ownership
-and exclusive borrow.
+Split the right to arm out of Pin<&T> into HrTimerPin<'a, T>, which is
+created from a Pin<&'a mut T> and consumed by start_scoped(). The borrow
+checker supplies the exclusivity here, and the closure keeps reading the
+object through the shared pinned reference returned by
+HrTimerPin::as_ref().
 
-Split the right to arm out of Arc<T> into HrTimerArc<T>, a non-clonable
-wrapper modelled on ListArc that is created from a Pin<UniqueArc<T>> and
-consumed by start(); the object stays shareable through plain Arc
-references.
+All four pointer types now separate sharing an object from arming its
+timer, so the restart operation no longer exists in the safe API. Drop
+it from the documentation.
 
 Fixes: 3f2a5ba784b8 ("rust: hrtimer: Add HrTimerCallbackContext and ::forward()")
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 ---
- rust/kernel/time/hrtimer.rs     |  33 +++++-----
- rust/kernel/time/hrtimer/arc.rs | 111 +++++++++++++++++++++++++-------
- 2 files changed, 103 insertions(+), 41 deletions(-)
+ rust/kernel/time/hrtimer.rs     |  50 +++++++--------
+ rust/kernel/time/hrtimer/pin.rs | 105 +++++++++++++++++++++++---------
+ 2 files changed, 98 insertions(+), 57 deletions(-)
 
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 2d7f1131a813..a7587db1d552 100644
+index a7587db1d552..d94275f2e93f 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -172,12 +172,12 @@
- //! #     sync::{
- //! #         atomic::{ordering, Atomic},
- //! #         completion::Completion,
--//! #         Arc, ArcBorrow,
-+//! #         ArcBorrow,
+@@ -9,15 +9,15 @@
+ //!
+ //! States:
+ //!
+-//! - Stopped: initialized but not started, or cancelled, or not restarted.
+-//! - Started: initialized and started or restarted.
++//! - Stopped: initialized but not started, cancelled, or the callback returned
++//!   `NoRestart`.
++//! - Started: initialized and started, or the callback returned `Restart`.
+ //! - Running: executing the callback.
+ //!
+ //! Operations:
+ //!
+ //! * Start
+ //! * Cancel
+-//! * Restart
+ //!
+ //! Events:
+ //!
+@@ -42,11 +42,7 @@
+ //! --------->|    Stopped      |                 |      Started     +---------->|     Running     |
+ //!           |                 |     Cancel      |                  |           |                 |
+ //!           |                 |<----------------+                  |           |                 |
+-//!           +-----------------+                 +---------------+--+           +-----------------+
+-//!                                                     ^         |
+-//!                                                     |         |
+-//!                                                     +---------+
+-//!                                                      Restart
++//!           +-----------------+                 +------------------+           +-----------------+
+ //! ```
+ //!
+ //!
+@@ -60,16 +56,13 @@
+ //! by the `cancel` operation. A timer that is cancelled enters the **stopped**
+ //! state.
+ //!
+-//! A `cancel` or `restart` operation on a timer in the **running** state takes
+-//! effect after the handler has returned and the timer has transitioned
+-//! out of the **running** state.
++//! A `cancel` operation on a timer in the **running** state takes effect after
++//! the handler has returned and the timer has transitioned out of the
++//! **running** state.
+ //!
+-//! A `restart` operation on a timer in the **stopped** state is equivalent to a
+-//! `start` operation.
+-//!
+-//! When a type implements both `HrTimerPointer` and `Clone`, it is possible to
+-//! issue the `start` operation while the timer is in the **started** state. In
+-//! this case the `start` operation is equivalent to the `restart` operation.
++//! The `start` operation consumes the pointer it is called on, so a timer in the
++//! **started** or **running** state cannot be started again. It has to be
++//! **cancelled** first.
+ //!
+ //! # Examples
+ //!
+@@ -253,8 +246,8 @@
  //! #     },
  //! #     time::{
  //! #         hrtimer::{
--//! #             RelativeMode, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
--//! #             HasHrTimer, HrTimerCallbackContext
-+//! #             RelativeMode, HrTimer, HrTimerArc, HrTimerCallback, HrTimerPointer,
-+//! #             HrTimerRestart, HasHrTimer, HrTimerCallbackContext
+-//! #             ScopedHrTimerPointer, HrTimer, HrTimerCallback, HrTimerPointer, HrTimerRestart,
+-//! #             HasHrTimer, RelativeMode, HrTimerCallbackContext
++//! #             ScopedHrTimerPointer, HrTimer, HrTimerCallback, HrTimerPin, HrTimerPointer,
++//! #             HrTimerRestart, HasHrTimer, RelativeMode, HrTimerCallbackContext
  //! #         },
  //! #         Delta, Monotonic,
  //! #     },
-@@ -204,7 +204,7 @@
+@@ -282,7 +275,7 @@
  //! }
  //!
- //! impl HrTimerCallback for ArcIntrusiveHrTimer {
--//!     type Pointer<'a> = Arc<Self>;
-+//!     type Pointer<'a> = HrTimerArc<Self>;
+ //! impl HrTimerCallback for IntrusiveHrTimer {
+-//!     type Pointer<'a> = Pin<&'a Self>;
++//!     type Pointer<'a> = HrTimerPin<'a, Self>;
  //!
- //!     fn run(
- //!         this: ArcBorrow<'_, Self>,
-@@ -229,11 +229,12 @@
+ //!     fn run(this: Pin<&Self>, _ctx: HrTimerCallbackContext<'_, Self>) -> HrTimerRestart {
+ //!         pr_info!("Timer called\n");
+@@ -301,9 +294,12 @@
+ //! }
+ //!
+ //! stack_pin_init!( let has_timer = IntrusiveHrTimer::new() );
+-//! has_timer.as_ref().start_scoped(Delta::from_micros(200), || {
+-//!     while has_timer.flag.load(ordering::Relaxed) != 1 {
+-//!         has_timer.cond.wait_for_completion();
++//! let timer_pin = HrTimerPin::new(has_timer);
++//! let shared = timer_pin.as_ref();
++//!
++//! timer_pin.start_scoped(Delta::from_micros(200), || {
++//!     while shared.flag.load(ordering::Relaxed) != 1 {
++//!         shared.cond.wait_for_completion();
  //!     }
- //! }
+ //! });
  //!
--//! let has_timer = Arc::pin_init(ArcIntrusiveHrTimer::new(), GFP_KERNEL)?;
--//! let _handle = has_timer.clone().start(Delta::from_micros(200));
-+//! let has_timer = HrTimerArc::pin_init(ArcIntrusiveHrTimer::new(), GFP_KERNEL)?;
-+//! let shared = has_timer.clone_arc();
-+//! let _handle = has_timer.start(Delta::from_micros(200));
- //!
--//! while has_timer.flag.load(ordering::Relaxed) != 5 {
--//!     has_timer.cond.wait_for_completion();
-+//! while shared.flag.load(ordering::Relaxed) != 5 {
-+//!     shared.cond.wait_for_completion();
- //! }
- //!
- //! pr_info!("Counted to 5\n");
-@@ -589,18 +590,17 @@ pub fn expires(&self) -> HrTimerInstant<T>
- /// `Self` must be [`Sync`] because it is passed to timer callbacks in another
- /// thread of execution (hard or soft interrupt context).
+@@ -618,7 +614,8 @@ pub trait HrTimerPointer: Sync + Sized {
+ /// [`HrTimerHandle`] returned by `start` would be unsound. This is the case for
+ /// stack allocated timers.
  ///
--/// Starting a timer returns a [`HrTimerHandle`] that can be used to manipulate
--/// the timer. Note that it is OK to call the start function repeatedly, and
--/// that more than one [`HrTimerHandle`] associated with a [`HrTimerPointer`] may
--/// exist. A timer can be manipulated through any of the handles, and a handle
--/// may represent a cancelled timer.
-+/// Starting a timer consumes `Self` and returns a [`HrTimerHandle`] that can be
-+/// used to manipulate the timer. As a timer in the **started** or **running**
-+/// state cannot be started again, at most one [`HrTimerHandle`] for a timer
-+/// exists at a time. A handle may represent a cancelled timer.
- pub trait HrTimerPointer: Sync + Sized {
-     /// The operational mode associated with this timer.
-     ///
-     /// This defines how the expiration value is interpreted.
-     type TimerMode: HrTimerMode;
- 
--    /// A handle representing a started or restarted timer.
-+    /// A handle representing a started timer.
-     ///
-     /// If the timer is running or if the timer callback is executing when the
-     /// handle is dropped, the drop method of [`HrTimerHandle`] should not return
-@@ -610,8 +610,7 @@ pub trait HrTimerPointer: Sync + Sized {
-     /// leak the handle.
+-/// Typical implementers are pinned references such as [`Pin<&T>`].
++/// Typical implementers are [`HrTimerPin`] and pinned references such as
++/// [`Pin<&mut T>`].
+ ///
+ /// # Safety
+ ///
+@@ -640,8 +637,7 @@ pub unsafe trait UnsafeHrTimerPointer: Sync + Sized {
+     /// until the timer is stopped and the callback has completed.
      type TimerHandle: HrTimerHandle;
  
--    /// Start the timer with expiry after `expires` time units. If the timer was
--    /// already running, it is restarted with the new expiry time.
-+    /// Start the timer with expiry after `expires` time units.
-     fn start(self, expires: <Self::TimerMode as HrTimerMode>::Expires) -> Self::TimerHandle;
- }
- 
-@@ -1110,7 +1109,7 @@ unsafe fn timer_container_of(
- }
- 
+-    /// Start the timer after `expires` time units. If the timer was already
+-    /// running, it is restarted at the new expiry time.
++    /// Start the timer after `expires` time units.
+     ///
+     /// # Safety
+     ///
+@@ -1111,7 +1107,7 @@ unsafe fn timer_container_of(
  mod arc;
--pub use arc::ArcHrTimerHandle;
-+pub use arc::{ArcHrTimerHandle, HrTimerArc};
+ pub use arc::{ArcHrTimerHandle, HrTimerArc};
  mod pin;
- pub use pin::PinHrTimerHandle;
+-pub use pin::PinHrTimerHandle;
++pub use pin::{HrTimerPin, PinHrTimerHandle};
  mod pin_mut;
-diff --git a/rust/kernel/time/hrtimer/arc.rs b/rust/kernel/time/hrtimer/arc.rs
-index 7be82bcb352a..2134d12d558c 100644
---- a/rust/kernel/time/hrtimer/arc.rs
-+++ b/rust/kernel/time/hrtimer/arc.rs
-@@ -8,47 +8,71 @@
- use super::HrTimerMode;
- use super::HrTimerPointer;
- use super::RawHrTimerCallback;
--use crate::sync::Arc;
--use crate::sync::ArcBorrow;
-+use crate::alloc::Flags;
-+use crate::error::{Error, Result};
-+use crate::init::InPlaceInit;
-+use crate::sync::{Arc, ArcBorrow, UniqueArc};
-+use core::pin::Pin;
-+use pin_init::PinInit;
+ pub use pin_mut::PinMutHrTimerHandle;
+ // `box` is a reserved keyword, so prefix with `t` for timer
+diff --git a/rust/kernel/time/hrtimer/pin.rs b/rust/kernel/time/hrtimer/pin.rs
+index 4d39ef781697..f44ac07cb722 100644
+--- a/rust/kernel/time/hrtimer/pin.rs
++++ b/rust/kernel/time/hrtimer/pin.rs
+@@ -10,50 +10,58 @@
+ use super::UnsafeHrTimerPointer;
+ use core::pin::Pin;
  
--/// A handle for an `Arc<HasHrTimer<T>>` returned by a call to
--/// [`HrTimerPointer::start`].
--pub struct ArcHrTimerHandle<T>
-+/// A wrapper around [`Arc`] that's guaranteed unique.
+-/// A handle for a `Pin<&HasHrTimer>`. When the handle exists, the timer might be
+-/// running.
+-pub struct PinHrTimerHandle<'a, T>
++/// A wrapper around a pinned shared reference that's guaranteed unique.
 +///
-+/// The `HrTimerArc` type can be thought of as a special reference to a refcounted object that owns
-+/// the permission to arm the [`HrTimer`] stored in the refcounted object. By ensuring that each
-+/// object has only one `HrTimerArc` reference, the owner of that reference is assured exclusive
-+/// access to the arming operation. When a timer is started, the returned [`ArcHrTimerHandle`] takes
-+/// ownership of the `HrTimerArc` reference.
++/// The `HrTimerPin` type can be thought of as a special pinned reference to an object that
++/// owns the permission to arm the [`HrTimer`] stored in the object. By ensuring that each
++/// object has only one `HrTimerPin`, the owner of it is assured exclusive access to the arming
++/// operation. Starting a timer consumes the `HrTimerPin`, and the returned
++/// [`PinHrTimerHandle`] keeps the object borrowed, so the timer cannot be armed again until the
++/// handle is dropped.
 +///
-+/// While this `HrTimerArc` is unique, there still might exist normal [`Arc`] references to the
-+/// object. Use [`HrTimerArc::clone_arc`] to obtain one.
++/// While this `HrTimerPin` is unique, shared pinned references to the object can still be
++/// obtained with [`HrTimerPin::as_ref`].
 +///
 +/// # Invariants
 +///
-+/// * Each reference counted object has at most one `HrTimerArc`.
-+pub struct HrTimerArc<T>
++/// * Each object has at most one `HrTimerPin`.
++pub struct HrTimerPin<'a, T>
  where
      T: HasHrTimer<T>,
  {
--    pub(crate) inner: Arc<T>,
-+    arc: Arc<T>,
+-    pub(crate) inner: Pin<&'a T>,
++    pin: Pin<&'a T>,
  }
  
--// SAFETY: We implement drop below, and we cancel the timer in the drop
--// implementation.
--unsafe impl<T> HrTimerHandle for ArcHrTimerHandle<T>
-+impl<T> HrTimerArc<T>
+-// SAFETY: We cancel the timer when the handle is dropped. The implementation of
+-// the `cancel` method will block if the timer handler is running.
+-unsafe impl<'a, T> HrTimerHandle for PinHrTimerHandle<'a, T>
++impl<'a, T> HrTimerPin<'a, T>
  where
      T: HasHrTimer<T>,
  {
 -    fn cancel(&mut self) -> bool {
--        let self_ptr = Arc::as_ptr(&self.inner);
+-        let self_ptr: *const T = self.inner.get_ref();
 -
--        // SAFETY: As we obtained `self_ptr` from a valid reference above, it
--        // must point to a valid `T`.
+-        // SAFETY: As we got `self_ptr` from a reference above, it must point to
+-        // a valid `T`.
 -        let timer_ptr = unsafe { <T as HasHrTimer<T>>::raw_get_timer(self_ptr) };
-+    /// Use the given pin-initializer to pin-initialize a `T` inside of a new `HrTimerArc`.
-+    #[inline]
-+    pub fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self>
-+    where
-+        Error: From<E>,
-+    {
-+        Ok(Self::from(UniqueArc::pin_init(init, flags)?))
-+    }
- 
--        // SAFETY: As `timer_ptr` points into `T` and `T` is valid, `timer_ptr`
--        // must point to a valid `HrTimer` instance.
+-
+-        // SAFETY: As `timer_ptr` is derived from a reference, it must point to
+-        // a valid and initialized `HrTimer`.
 -        unsafe { HrTimer::<T>::raw_cancel(timer_ptr) }
-+    /// Clone an [`Arc`] from this `HrTimerArc`.
-+    ///
-+    /// The returned [`Arc`] can be used to access the object, but not to arm its timer.
++    /// Create a `HrTimerPin` from an exclusive pinned reference to a `T`.
 +    #[inline]
-+    pub fn clone_arc(&self) -> Arc<T> {
-+        self.arc.clone()
-     }
- }
- 
--impl<T> Drop for ArcHrTimerHandle<T>
-+impl<T> From<Pin<UniqueArc<T>>> for HrTimerArc<T>
- where
-     T: HasHrTimer<T>,
- {
--    fn drop(&mut self) {
--        self.cancel();
-+    /// Convert a pinned [`UniqueArc`] into a [`HrTimerArc`].
-+    #[inline]
-+    fn from(unique: Pin<UniqueArc<T>>) -> Self {
-+        // INVARIANT: We have a `UniqueArc`, so there is no `HrTimerArc` for this object.
++    pub fn new(inner: Pin<&'a mut T>) -> Self {
++        // INVARIANT: We have an exclusive reference, so there is no `HrTimerPin` for this
++        // object.
 +        Self {
-+            arc: Arc::from(unique),
++            pin: inner.into_ref(),
 +        }
      }
- }
+-}
  
--impl<T> HrTimerPointer for Arc<T>
-+impl<T> HrTimerPointer for HrTimerArc<T>
- where
-     T: 'static,
-     T: Send + Sync,
-@@ -66,12 +90,51 @@ fn start(
-         //  - We keep `self` alive by wrapping it in a handle below.
-         //  - Since we generate the pointer passed to `start` from a valid
-         //    reference, it is a valid pointer.
--        unsafe { T::start(Arc::as_ptr(&self), expires) };
-+        unsafe { T::start(Arc::as_ptr(&self.arc), expires) };
-         ArcHrTimerHandle { inner: self }
+-impl<'a, T> Drop for PinHrTimerHandle<'a, T>
+-where
+-    T: HasHrTimer<T>,
+-{
+-    fn drop(&mut self) {
+-        self.cancel();
++    /// Get a shared pinned reference to the object.
++    ///
++    /// The returned reference can be used to access the object, but not to arm its timer.
++    #[inline]
++    pub fn as_ref(&self) -> Pin<&'a T> {
++        self.pin
      }
  }
  
--impl<T> RawHrTimerCallback for Arc<T>
-+/// A handle for a [`HrTimerArc`] returned by a call to [`HrTimerPointer::start`].
-+///
-+/// This handle owns the [`HrTimerArc`] reference for the object, so the timer cannot be armed
-+/// again while this handle exists.
-+pub struct ArcHrTimerHandle<T>
+ // SAFETY: We capture the lifetime of `Self` when we create a `PinHrTimerHandle`,
+ // so `Self` will outlive the handle.
+-unsafe impl<'a, T> UnsafeHrTimerPointer for Pin<&'a T>
++unsafe impl<'a, T> UnsafeHrTimerPointer for HrTimerPin<'a, T>
+ where
+     T: Send + Sync,
+     T: HasHrTimer<T>,
+-    T: HrTimerCallback<Pointer<'a> = Self>,
++    T: HrTimerCallback<Pointer<'a> = HrTimerPin<'a, T>>,
+ {
+     type TimerMode = <T as HasHrTimer<T>>::TimerMode;
+     type TimerHandle = PinHrTimerHandle<'a, T>;
+@@ -63,7 +71,7 @@ unsafe fn start(
+         expires: <<T as HasHrTimer<T>>::TimerMode as HrTimerMode>::Expires,
+     ) -> Self::TimerHandle {
+         // Cast to pointer
+-        let self_ptr: *const T = self.get_ref();
++        let self_ptr: *const T = self.pin.get_ref();
+ 
+         // SAFETY:
+         //  - As we derive `self_ptr` from a reference above, it must point to a
+@@ -71,16 +79,53 @@ unsafe fn start(
+         //  - We keep `self` alive by wrapping it in a handle below.
+         unsafe { T::start(self_ptr, expires) };
+ 
+-        PinHrTimerHandle { inner: self }
++        PinHrTimerHandle { inner: self.pin }
++    }
++}
++
++/// A handle for a `Pin<&HasHrTimer>`. When the handle exists, the timer might be
++/// running.
++pub struct PinHrTimerHandle<'a, T>
 +where
 +    T: HasHrTimer<T>,
 +{
-+    pub(crate) inner: HrTimerArc<T>,
++    pub(crate) inner: Pin<&'a T>,
 +}
 +
-+// SAFETY: We implement drop below, and we cancel the timer in the drop
-+// implementation.
-+unsafe impl<T> HrTimerHandle for ArcHrTimerHandle<T>
++// SAFETY: We cancel the timer when the handle is dropped. The implementation of
++// the `cancel` method will block if the timer handler is running.
++unsafe impl<'a, T> HrTimerHandle for PinHrTimerHandle<'a, T>
 +where
 +    T: HasHrTimer<T>,
 +{
 +    fn cancel(&mut self) -> bool {
-+        let self_ptr = Arc::as_ptr(&self.inner.arc);
++        let self_ptr: *const T = self.inner.get_ref();
 +
-+        // SAFETY: As we obtained `self_ptr` from a valid reference above, it
-+        // must point to a valid `T`.
++        // SAFETY: As we got `self_ptr` from a reference above, it must point to
++        // a valid `T`.
 +        let timer_ptr = unsafe { <T as HasHrTimer<T>>::raw_get_timer(self_ptr) };
 +
-+        // SAFETY: As `timer_ptr` points into `T` and `T` is valid, `timer_ptr`
-+        // must point to a valid `HrTimer` instance.
++        // SAFETY: As `timer_ptr` is derived from a reference, it must point to
++        // a valid and initialized `HrTimer`.
 +        unsafe { HrTimer::<T>::raw_cancel(timer_ptr) }
 +    }
 +}
 +
-+impl<T> Drop for ArcHrTimerHandle<T>
++impl<'a, T> Drop for PinHrTimerHandle<'a, T>
 +where
 +    T: HasHrTimer<T>,
 +{
 +    fn drop(&mut self) {
 +        self.cancel();
-+    }
-+}
-+
-+impl<T> RawHrTimerCallback for HrTimerArc<T>
+     }
+ }
+ 
+-impl<'a, T> RawHrTimerCallback for Pin<&'a T>
++impl<'a, T> RawHrTimerCallback for HrTimerPin<'a, T>
  where
-     T: 'static,
      T: HasHrTimer<T>,
+     T: HrTimerCallback<Pointer<'a> = Self>,
+ {
+-    type CallbackTarget<'b> = Self;
++    type CallbackTarget<'b> = Pin<&'a T>;
+ 
+     unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
+         // `HrTimer` is `repr(C)`
 -- 
 2.43.0
 
