@@ -1,112 +1,153 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-106112.protonmail.ch (mail-106112.protonmail.ch [79.135.106.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DA6406812
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Aug 2026 10:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786616218; cv=pass; b=Fm6XfAKbfC+n1adk5Lq6cmbuphPqS4I+SbsiQWpNhwiP2Z2DkPFPkqc4+geVuF1zGqPkUNNZCux8RFRvTuFEH0o2vi9NAI/uG/8Yi6/AzEDRJb+aOWnKSTG9V38+5Vmns4A2LSstYwiugSyZFci7m9+y7gBBE9jAcDB3OXfOwgw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786616218; c=relaxed/simple;
-	bh=dAcsec4MBjkQqQsnIuy1L+PURVXLbHBQ/8BxeZ0fXiY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q/RGY6JWIBdlQ5sqAlP7dq5stlTQPu6ZVhuHz6nu4uK9QmLQBR44ywxnkyel5bEOGWPby5fgH5yyGzqOtO523VkkMIKzzgIHSg0heFkHTQ1nHuBZRXA1iPktS1bQHABRXuxbjyjZVlWD1tkWQOWmAi3hwjhh3EH0o605M4o2AFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rr1cHEgb; arc=pass smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2118B402444;
+	Thu, 13 Aug 2026 10:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.112
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786617880; cv=none; b=OCKXUUwTBj/f/HQvKSRj75+BV7yN3WUPZwsAQ22RQED06Ritq0zU3Nml3ykB/8DgPniQJVTEL1N+L58C6ly9aZqcT1Af7UXOUmW4hb7WjIWiXYpD6BxMWRcqZMu43smXCNCV78d7ixRo/yMzP3fVCw0tEPy3fEYPZTqrF4+lZLo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786617880; c=relaxed/simple;
+	bh=ZzdSFT5vfsUpgWJVePLRuolLd4ccVuRF3mPKzZatAn0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K0dDQbiuyDnpkLtK/oYbid0z3oRl+BKgFxRmjlaVRV+D+dAxesMfY9K+e8GQ0blq7/h1ffAD5xCWROUm8M1LX7YFI9ZmlmWNhfRYS46UQhy5CYMA5WgyHzksinBFKNmNNSSaoAUftSiI1/i9+CrM9VV/QMl4IXxkRqEmi5psu7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=F8IeOX7u; arc=none smtp.client-ip=79.135.106.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rr1cHEgb"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cf49dc28ccso3671665ad.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Aug 2026 03:16:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786616216; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ndMwWxzhgCpPku6l5KeK7iD+reawDvOZSYZABOrhlYCYA5thm/1X0gz6eVJ6JVeJC/
-         aon32RpACDsD8honTXNreo/tBBocnCA4McX3qcd9UxD0+zHbSIvcK8CYZzVsEpQllrmH
-         HGpEoNFZRDGwwSM8rRrFzq2/vuC7s1w1gn/MAOgEABWh0tASK544gDxGm+z9+0QgtAVz
-         2ErsapjpR/kpBvPu6zIXpyH12woLjFhnbNpNKsXHpt6kGGViIRq2r6gK3crUpIi+mfX0
-         JPrsIKILXupREeLmsf2seBf+GGJ2F6teIjShftecYuV5yD/ALrbCP9hOoDoYZuzYtAh0
-         SawQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dAcsec4MBjkQqQsnIuy1L+PURVXLbHBQ/8BxeZ0fXiY=;
-        fh=XPFB8vVMkBrNyOYJTYZ8gAdM+QvP/Jwxv/G3eGCDu94=;
-        b=jgRbp5TDYmCpVD1DNTFbgcqvIe7gOteGdqoyINtsvUc7At5zqtdgSC1hBk7g1DqhXj
-         L+lb79hrMoMOaIV379oJbrOO7oLvCjoyev3eZcC2Vfya5zOO5CCablaYoY/U5WfxKmjM
-         QLQH5GsK6zXF5INWZ/0uy845SWSvCoVuUwYvueu+JSX9ynXY9va6rvlTRBhCpRAS3lY5
-         5Z9kIh1B2Sh85V4XeHaCU91RJ/sEFtliKpFb9+qHYwDuODYdTDUH26FZFUmnqzZuZ6DT
-         Dikrzs2Rn7PCpaevW3PwzkJPs2IjOZ1V+hAyjuY3ee92cVt9Z08dSZNu+rdEHNP2I6Ew
-         ZkjQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786616216; x=1787221016; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dAcsec4MBjkQqQsnIuy1L+PURVXLbHBQ/8BxeZ0fXiY=;
-        b=Rr1cHEgbaNtwXjpof1gWYKTmNzenY0vIi2Mlq8JTucfMFQSggnNDupJW3KWqfV2Z+v
-         oKuNb29d2VjWVOG2iddWA/pSV6FqpyVoRGJiLzlt3sFqxmwi7aC4v7Ggsz87zgPtD9ra
-         WUdpc/W6c4/kPdCKSZt/Z67MDtXxC0jHhwK6a8EsNX0b9AEanp/aLQh07bScbp5qvg0V
-         9CUeFx7azQ6R6MvEhAksc9+xohh2yxSF7HA0ABB7oZlDE+9ha2NJQFbh8UXU4lnkz13j
-         8BowKW4EVKzjb1RPa2XKKdTcU7CxcUgWQ5ve9y+njSNnx9fJEepcWLWal8XDaU/pIPD4
-         pLng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786616216; x=1787221016;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dAcsec4MBjkQqQsnIuy1L+PURVXLbHBQ/8BxeZ0fXiY=;
-        b=G+FbjKXV5FfXb5/X6jCVVG6VhLmEfUd1n4Hb3TICw2MiTtG8LRqGA3nJIwzzPlA1Q8
-         c2jI3J9f3m8QoQwiC1yIEPvY08zthWMYvV9PItPMZn+sBQpUdJKejcjg2qG0nu6bz1It
-         fxLvtPYh91SVwYXCqZiI77bTjbvRew++rsQBdKa1jHC02w9ApL2l0T79z7j7jD7ORtt9
-         JQ397f46++f3mfzxu/8pu7Ps1DGq1MCA2WqCs5RKgYSuU4W6o+fJ6OnlqGXfUjQMXmm8
-         p7pF+dR4LY9g4SSo/P3+mf9XuVl1farNXzsxB9bu7tGDmAu6AVhYVTLgV2mejLTfnVkt
-         YLQA==
-X-Gm-Message-State: AOJu0YwykUkemgY4wlneMLa22YQDlyxuH4ToBI5VPyfrpODqFiA48FyA
-	uEs99LEfOPDp1d8MnoqXfh6i5RsmZ5YTg1Oe794E766CHjEbsIcwMVe21S5qPnB3LFfx+xORXZW
-	LX2POkzjPMGtFJKJl87KVFR4ihPhxci0oyCL1bxU=
-X-Gm-Gg: AR+sD13SzJm9MCF3JavZsjiIG+oYosLMStrlLaCXSU7VZeCmrR5RmNmXNg1gv0wEjjk
-	lUMnJrrzExNf0CWxad48rd8V+UOwspENSLdAXFAwGym331wFBalkWXf0CbJR79FSyqGqt8LqPWP
-	KMtSbw9FZFLK3flB81rHALzZOfHx1JXreuaNHeqqL5uk94JmVglUiLT9c+PGXC4DM90q1XCIkaN
-	QA9oAoqGsESu3bYMBOrpWeCfMYOIPY4wmhTzmuTqBy6i9WqdtKQiYV3Qyb82pLvgo01eaaSl/T3
-	7UwZrE0f6Vc2HzlmwKChubhHDljwEfpbtUAqs7FP/WTy5SXMcBzS+sOFwAhkoJfVQXXqqO0itrq
-	ewOEBcoBlnqJ/OOuvCJYln67jCka4BglZGWL03CXVvbFSlwNwDm2mj0Lu8N7V
-X-Received: by 2002:a17:903:b8b:b0:2c4:397:dd7a with SMTP id
- d9443c01a7336-2d389bb91d2mr32117645ad.4.1786616216155; Thu, 13 Aug 2026
- 03:16:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="F8IeOX7u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=protonmail; t=1786617872; x=1786877072;
+	bh=oXnyXBetNsFigV4wWUyWSSxiW9A1MlKldbe+75RedRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:From:To:Cc:Date:Subject:
+	 Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=F8IeOX7udeF6emtZipnEScdUeBfiIkJLwamdyesk8OytQSedV2lTtYLrzHuU72AfI
+	 z5XvZN18MdO6qi6Peq8ZL4N1R2lTNrzsZNrIEq5FVx+5DEabsmJq6fCVPJ1q9DklTN
+	 6jP1pAKljSlUi19C0KXWvmomAomoupZ6j6hrJ6evwv+0NRf4keZ8Kp2EhOYEe6cTCn
+	 q0Q1z8iwsX0Ebnl3uj5nAdUTg/Gvs/9Cdq7CQnZKQP52ObWCOqB9BE/tJuBQGVAvnq
+	 UxAmqcEbXIMuaOVHFVUPUQaVgDzlImgasxw600htl4i1y8FljEsmn53nsDSgXg6lMh
+	 taZsQvnBcm6Kw==
+X-Pm-Submission-Id: 4hLMRy0K0rz2SchF
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: dakr@kernel.org,
+	aliceryhl@google.com,
+	daniel.almeida@collabora.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	ojeda@kernel.org,
+	boqun@kernel.org,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v4 0/3] drm/tyr: GPU reset infrastructure
+Date: Thu, 13 Aug 2026 13:42:03 +0300
+Message-ID: <20260813-tyr-reset-impl-v4-0-b36fcd0805b2@onurozkan.dev>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <OzuVxu0--J-9@younes.io>
-In-Reply-To: <OzuVxu0--J-9@younes.io>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 13 Aug 2026 12:16:43 +0200
-X-Gm-Features: AUfX_myRS-hC2b-Fgy2wgLElp9ZtexpC18yEJnlFXTodtdUnQe33gUamLZPyyNw
-Message-ID: <CANiq72mftC+b93Mx_BNcS1FzH5vNHgCykwsoO9hmbpJxaTeYuw@mail.gmail.com>
-Subject: Re: From<bool> and Bounded's invariant for signed N = 1
-To: Younes Akhouayri <git@younes.io>
-Cc: Rust For Linux <rust-for-linux@vger.kernel.org>, Acourbot <acourbot@nvidia.com>, 
-	Yury Norov <yury.norov@gmail.com>, Ojeda <ojeda@kernel.org>, 
-	Yu Whisper Personal <yu.whisper.personal@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20260813-tyr-reset-impl-93e951f996b4
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 13, 2026 at 11:46=E2=80=AFAM Younes Akhouayri <git@younes.io> w=
-rote:
->
-> Any thoughts?
+Add support for scheduling GPU resets on a dedicated workqueue. Track
+the reset state to avoid queueing another reset while one is already
+pending or in progress.
 
-Thanks for the report!
+Use an SRCU based gate with mutex-protected reader admission to block
+hardware accesses while reset work runs and wait for current users
+before resetting.
 
-That is correct, good eyes -- indeed, the `Deref` bites us again like
-in 223aa25aee82.
+Stop new reset requests during teardown and drain any queued or running
+reset work before releasing the device resources.
 
-Do you want to write a patch?
+This is the initial reset infrastructure only. It is not wired to a reset
+source yet as those will follow in separate work.
 
-Cheers,
-Miguel
+Based on 'commit 53441a9cae3c ("drm/tyr: program CSF global interface")'
+from tyr-for-upstream with the following patch series on the ML:
+	- rust: workqueue: add cancel_sync support [1]
+	- rust: add SRCU abstraction [2]
+	- rust: workqueue: add ScopedQueue for lifetime bound items [3]
+	- Creation of workqueues in Rust [4]
+
+TODOs:
+  - On reset failure, we don't do anything for now. We should unplug
+	  the GPU (that's what Panthor does) but we don't have the infrastructure
+    for that yet [5].
+  - In schedule(), similar to panthor_device_schedule_reset(), we should
+  	have a PM check but similar to the note above, we don't have the
+    infrastructure for that yet.
+
+Changes since v3:
+  - Dropped Resettable, ActiveHwState, pre/post-reset hooks and typestate.
+  - Removed ResetState::Enqueueing and teardown spinning.
+  - Replaced fail-fast try_access() and epoch tracking with a blocking
+    hardware-access gate.
+  - Used b4 for the prerequisites.
+
+Changes since v2:
+	- Replaced Work::disable_sync with Work::cancel_sync.
+	- Used type state pattern for reset stages.
+	- Using ScopedQueue with device lifetime instead of a static workqueue.
+	- Removed SRCU patch from this series.
+
+Changes since v1:
+  - Removed OrderedQueue and using Alice's workqueue implementation [1]
+    instead.
+  - Added Resettable trait with pre_reset and post_reset hooks to be
+    implemented by reset-managed hardwares.
+  - Added SRCU abstraction and used it to synchronize the reset work and
+    hardware access.
+
+v1: https://lore.kernel.org/rust-for-linux/20260313091646.16938-1-work@onurozkan.dev
+v2: https://lore.kernel.org/rust-for-linux/20260416171728.205141-1-work@onurozkan.dev
+
+Link: https://lore.kernel.org/all/20260617131731.145337-1-work@onurozkan.dev [1]
+Link: https://lore.kernel.org/all/20260613065348.96750-1-work@onurozkan.dev [2]
+Link: https://lore.kernel.org/all/20260617144645.253444-1-work@onurozkan.dev [3]
+Link: https://lore.kernel.org/all/20260312-create-workqueue-v4-0-ea39c351c38f@google.com [4]
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/work_items/29#note_3391826 [5]
+Link: https://gitlab.freedesktop.org/panfrost/linux/-/issues/28
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+Onur Özkan (3):
+      rust: workqueue: impl Send and Sync for OwnedQueue
+      drm/tyr: clear stale IRQ state before soft reset
+      drm/tyr: add GPU reset infrastructure
+
+ drivers/gpu/drm/tyr/driver.rs        |  39 ++----
+ drivers/gpu/drm/tyr/reset.rs         | 260 +++++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/tyr/reset/hw_gate.rs |  79 +++++++++++
+ drivers/gpu/drm/tyr/tyr.rs           |   1 +
+ rust/kernel/workqueue/mod.rs         |   8 ++
+ 5 files changed, 362 insertions(+), 25 deletions(-)
+---
+base-commit: 53441a9cae3c4be552fa8aefa6e61b0f1bceb8a5
+change-id: 20260813-tyr-reset-impl-93e951f996b4
+prerequisite-message-id: <20260312-create-workqueue-v4-0-ea39c351c38f@google.com>
+prerequisite-patch-id: f5e24f7b3717f2ab0445b5395c7f12b554861d78
+prerequisite-patch-id: 0bf6ae4abcef7090d0e48921d6ec627a59dc6a7a
+prerequisite-patch-id: f2bd17b7ba9f4626ddec56fec8e108872ddc6af1
+prerequisite-message-id: <20260617144645.253444-1-work@onurozkan.dev>
+prerequisite-patch-id: 5b966d09cfd455dd09fb0911d174b123efa02a16
+prerequisite-message-id: <20260613065348.96750-1-work@onurozkan.dev>
+prerequisite-patch-id: 9e1efee190d212ba1b01cd0acb5a4357e0b4da42
+prerequisite-patch-id: 26aba035f4d1e212fa6ea7078095febefff5c5ba
+prerequisite-patch-id: ffa25d5aadec4c04589af2bdd59a9c022f0fc9b0
+prerequisite-patch-id: c2e05a4ac9d665d331952b291a622df6be673e41
+prerequisite-patch-id: c14a4bd8a68b045356d61f7fa94690bd037ad08b
+prerequisite-message-id: <20260617131731.145337-1-work@onurozkan.dev>
+prerequisite-patch-id: b40e7a218c4e0467933e83c45b09eb78c7ebace2
+
+Best regards,
+--  
+Onur Özkan <work@onurozkan.dev>
