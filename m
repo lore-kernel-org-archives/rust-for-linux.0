@@ -1,144 +1,161 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010067.outbound.protection.outlook.com [52.101.201.67])
+Received: from flow-a1-smtp.messagingengine.com (flow-a1-smtp.messagingengine.com [103.168.172.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E0031A56D
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Aug 2026 13:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786715155; cv=fail; b=nVYWgL1Z5Ju4/pKrWVbu/9l0dVHlY7fzTykkWT6HWrehD4TbEsC0pL7zsesqGG3Y6Y7EwxRcJfPmWQ86r518Nxm9Rsmm5/H5G8Cii7D9sxLm9XyC8K4dI22bpCrHXIrzFJpCz7CtxoLMwAc3umiV9nYz/dZtnXmHRgS6ASsuuto=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786715155; c=relaxed/simple;
-	bh=lgT/8yz3OGNLObdsrG6ZXcwEdV7QIwxBMQmqTzz6HrI=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=W0FjeeI9/6yIScbmr9wHYxye71vm1rlG0OmXrXys0RrGFBIPXGQwP4ci3fcgiXBbbThumdPjeYawYrQfRTXpUbMWi24LLLEWr0bztjeraXr1t4aVvI7Ky79YLI268IqBNDFkWJS9/XNT+3LbK4CTf5NrNqUqbYBMDEcvgv/ZgZw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=adDh4u8Q; arc=fail smtp.client-ip=52.101.201.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937BD30EF97
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Aug 2026 13:48:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786715329; cv=none; b=SPOUUziMPrwvUpa0QBzHQSt7JZHcrhrFMiAJwCtmMVdbXvz4SGu3P9jO3P3xxnddFtqc/PbkjINjopLId7l5YfmjAQvOKxqtNgSkMrlv39/r3IQu+K65nxQfLrrJXN0wlKd7uW4S0LVQzbNSG/spNw7ISjj/gi6dEKer+DhU74Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786715329; c=relaxed/simple;
+	bh=O4bFivKTT3YJS3d1zdlCnHrhPKemHTtr+hWckkXtP3Q=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=hNS6RcM73BhGRPtwxu5dDcvhH0rKIANaX5lz2iO+1Kb9+VX56SFsNGUkwwPZiDrbaXT9ikVDEUNTSppW29CrX9NR1/YMfUMLHgfBHgzXndBtbqPuIfDK8+RG1X5UIhihBBXocdxix+p7Drwt3YpEOXZeSIJdFZvzEmrZzHeXLGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org; spf=pass smtp.mailfrom=flapping.org; dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b=Ts3GWJUo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iqJ+wW17; arc=none smtp.client-ip=103.168.172.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=flapping.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flapping.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="adDh4u8Q"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zKeOFXEaxXtApFyLpjE9m64a+6/OOhtUl1MtzCDRabq3Tgl9pik1QdxckxBN3K7pi8SmTIAwcURiuWzMIpzK9d4kPGCEFvyqd4biJlrPxab/OuokuX7T36MZivv5ysmJ8YPy11zeUSU5er/E1XXWY3jbnYnsAZNW+uysarjzMRr4+QKYWBvh0S/KGL6B4JKMMJZGzGxC7EdrMMiwiUzJNf360mc2r2JaX2UIFrDLhNOKKwkiP7tCsdoy7lMyFf1ldf1PMhKV4NoCnkfpZJu6zgnDNZE+ebrBAJVff62FmU1bhCjmxXH94eOdV8sKCArQ19QZpjJ7S7nusGiMuXgh6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lgT/8yz3OGNLObdsrG6ZXcwEdV7QIwxBMQmqTzz6HrI=;
- b=KOy8hfIkAiN5IRFoU+Okyr6IktRlm5mzHu03rjBH9wp3InvnuYuL3fhTyNU+O7TfPLb1wVuwLBPYhL5niB5yWcXaDoFNwgDY5gGofiE/z3N3ei3/rx+go/TRQh04x/l3toahYs40RA1jOt4nEgKI7lXYYm+yjd9MWNn1UZ9YaoUrervS8vdf5v7Rs+LQAJFgSUs0ExB5UK1/YVdbdBfA+lm8zJUETMs2vS4xvCpZQX5A8mFhigtyiBhTUlkw2CUXb56w+MmQLPuYLqnyWV8LHR26+33ceVZHa4/xo3PrPU8AgkhzJStk40ZPEU8xvec8o1s634M5/TVRX7QnatAlPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lgT/8yz3OGNLObdsrG6ZXcwEdV7QIwxBMQmqTzz6HrI=;
- b=adDh4u8Qv1G4Gbzm+8DfHiob4v2igMA8/kUraodFXMT7AcUq4s3y/BfGZeiuqItk2n9lSyD9dbX28vtfuyQe/27NtHV8RUuLDpHHx11Q4q9+FhiTJBOUXbJBI8p/sqiF3eLuUS6veCvNJvacdlfFigu02EKnImIAnKQ7n7a/pdX3fBrGlOpDVypRl0/aM0BWiBrlUOhRJ0hbw4Bg81WCviL1S5pfl7w0xIBe2/drRvSpGXE1ywpRzjhuCwpw5byy0UqRU8QE2xb87f/jwrHEf1vT1hVYpCmDDgF0gLIrJE77SDI9l1V0EDQane1a6dosu12Z4DMH8cFsRnIsNLzJaw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by BY5PR12MB4116.namprd12.prod.outlook.com (2603:10b6:a03:210::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.16; Fri, 14 Aug
- 2026 13:45:48 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::7de1:4fe5:8ead:5989%4]) with mapi id 15.21.0315.008; Fri, 14 Aug 2026
- 13:45:48 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Aug 2026 22:45:43 +0900
-Message-Id: <DKOPNPML7DW0.2XL1WMCACTTLW@nvidia.com>
-To: "Younes Akhouayri" <git@younes.io>
-Cc: "Rust For Linux" <rust-for-linux@vger.kernel.org>, "Yury Norov"
- <yury.norov@gmail.com>, "Ojeda" <ojeda@kernel.org>, "Yu Whisper Personal"
- <yu.whisper.personal@gmail.com>
-Subject: Re: From<bool> and Bounded's invariant for signed N = 1
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-References: <OzuVxu0--J-9@younes.io> <DKNU5IBDCA44.28C93KM4IQS44@nvidia.com>
- <OzwfgEC--F-9@younes.io>
-In-Reply-To: <OzwfgEC--F-9@younes.io>
-X-ClientProxiedBy: OSTP286CA0117.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:225::7) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=flapping.org header.i=@flapping.org header.b="Ts3GWJUo";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iqJ+wW17"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.phl.internal (Postfix) with ESMTP id 9C6EA13802F1;
+	Fri, 14 Aug 2026 09:48:46 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Fri, 14 Aug 2026 09:48:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flapping.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1786715326;
+	 x=1786718926; bh=liOCpc+Q+C0JMSTdiTUcxoWK3c6hbxKUr800jxZr2Hg=; b=
+	Ts3GWJUoGhbD+AQqm63h6Sd8nQW6CIXX2pE5kaaV+3SncQaDgTnqtAu0KvGqh3QC
+	2j1ZnJZTWWy4EDBhArSWTiqj1Tk2gMJeGxA612nZZxZbkzSiQ1ElyiwQpKVDl7TG
+	9JIfZn/xSNSHvSmD4d4Wc1L7HBsWF2y7m6l1/R15VGr0OKlJnR+gywXESr/aL/zA
+	u2IEF1yZHfi7kuYWaaAGNSNJlNKr8hKkl000pEral6WecnOQXepfzq8HBSnqQMx8
+	jUhXYL5oMEAM1Yk3uNKgl4y1F6BLpBNFzrp0az3V9aXS59wnrorsvNK/fQytq6zT
+	XToVa/+n5P0A8uSHVsD6jQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1786715326; x=
+	1786718926; bh=liOCpc+Q+C0JMSTdiTUcxoWK3c6hbxKUr800jxZr2Hg=; b=i
+	qJ+wW17nk4Qq+QHOwzZSiTKKHXGpY0tXoSMxcQ74wkLTdDDDc8qRrBEN9E8kb3Q2
+	8IXyVHZSN6e26K/sQ062fE23TRqNn1HatZbSe9xYJfiMoaZW7j5J+nBSpoK/1ww4
+	gtfLUSH98I7DZCSD5boifhW7h3+ZlGPVZZuJjd7L8Euyg4/dd08nn3JCd35pEY8z
+	GYlTPscPXDFz9/6p1ZAz0uIXPwYQehMkQ4B4U0JOibzzQlb6g72htqXzs8mNY5lx
+	v5hvQXsxpmGdI2wEO2Nz2av/uWqRGlODBE1zpAGeRVvYb6imAe9MRa8GGd5ukjEa
+	YOh0Q7FNH3ffwpbXxfERA==
+X-ME-Sender: <xms:vhx_alGf4FNRibCBDZx_UvfgBi1NDPXxhKVobCpOjEwoEAS17Fdpkg>
+    <xme:vhx_aqtPgWzY2DzHEVfK7no2Lhi1amuHflIK1qpPgCNOy2fWRB-BllaNtnTjzk-QO
+    B5GZMKrke_YS7zPWUx3sIeNEtmSswD7_ev2tovRJ_FSQJ1-gk9uNcfX>
+X-ME-Received: <xmr:vhx_aoSbAJta1ZBIuJnnoLYq-OgzYbG1iub5VSCQCia9aWDId7DpS9m8IKr83GwxBE-KmJOVDQZkPEMBkszLekJb>
+X-ME-Proxy-Cause: dmFkZTG2eJnBm8ejVMLAVCI7parqX04e0c9m+Rph4NKmSu7Gk6X2rHZBIzpdqu+W+bwua9
+    0zN3WQoJrgw3kg+9u8dJEveIHspbobmvwepIbvC/GGi01wsMxEsG2B05/XCxTrr4986u9u
+    ntW/sgp4wpqoHy44cvH1P0z/v4oqovrU8kszhqzc5F2yJ4gDLys90H40Ta1XYL+51QK0TP
+    qI2Sdw3k3KjCDNFocEv8aXyAJuu4907JG9u34W6QZ8O3ztEr4oQoPIZE+SK314ztHGgwDK
+    BaadVgrS78goNGXfIY71Osn2i0H2Ij0OLTYCdEFVOForBoVPwwPMYKqN4YTc8Jn+UnH6i0
+    CVOS+I3veEY8GWDmUwjTpD+y2FqPW6nK5NaBEORKR235jM6mpzOfz4vjr6m1wzEoGhX1bI
+    KwS2+quA0fV7XrgraCs9ECzdj3Qmc3HF+SOW38rwLbG8284/UiQBYZXjIpyeedPezJXYTb
+    puojm8ks4FLYWvdoYnLYiE9k/7RsGZLh1ho94B5Gst4HAwBd37XNSRutuEHMPoZtzaqKVk
+    21cf/eAqQxfIhrgIrXsIaSaYXxJxZjD9kXDpxPoxYgGZEOZ4gxvHHd3TM+8oET62p7lqBq
+    icD8KsJqoU56w2/opPrgCZJ5anYPoCMLUWlRQXd36k8Ifug8/HcXFw22UgpA
+X-ME-Proxy: <xmx:vhx_anGAfP6KxIKac8fiJuX1YMnwhRbFXAhX6ItsuynUs35_EruOmg>
+    <xmx:vhx_aqc6wzc-g-n9ZyQqBgmKGffEXb8RB_9855x-3inULH4QTgl2Sw>
+    <xmx:vhx_auuqgbMTTm8TnPTqlV1QbTxpnCpJ9eVOCjcZecj9M-gZsJ0ySA>
+    <xmx:vhx_aoeFjo4_dtx0D9DTA-0IOx2Ln-hVPHBjfX8zqi4xohO2xjJ5tg>
+    <xmx:vhx_aozowKrOVW6sRsfzqbJGCo1_9vYUUAR0R3w3rLQYgoY6pVEHLePK>
+Feedback-ID: i51fe4b43:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 14 Aug 2026 09:48:41 -0400 (EDT)
+Date: Fri, 14 Aug 2026 22:48:38 +0900 (JST)
+Message-Id: <20260814.224838.67768463960169120.tomo@flapping.org>
+To: gary@garyguo.net
+Cc: tomo@flapping.org, anna-maria@linutronix.de, frederic@kernel.org,
+ tglx@kernel.org, a.hindborg@kernel.org, ojeda@kernel.org,
+ acourbot@nvidia.com, aliceryhl@google.com, bjorn3_gh@protonmail.com,
+ boqun@kernel.org, dakr@kernel.org, daniel.almeida@collabora.com,
+ jstultz@google.com, lossin@kernel.org, lyude@redhat.com, sboyd@kernel.org,
+ tamird@kernel.org, tmgross@umich.edu, work@onurozkan.dev,
+ rust-for-linux@vger.kernel.org, fujita.tomonori@gmail.com
+Subject: Re: [PATCH 0/4] Fix forward()/expires() racing with concurrent
+ arming
+From: FUJITA Tomonori <tomo@flapping.org>
+In-Reply-To: <DKO995UPAESG.UQNZ5G92HCPQ@garyguo.net>
+References: <DKNVOU9JC15P.3DEBNZ56QK20E@garyguo.net>
+	<20260814.084700.1697518597717457311.tomo@flapping.org>
+	<DKO995UPAESG.UQNZ5G92HCPQ@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|BY5PR12MB4116:EE_
-X-MS-Office365-Filtering-Correlation-Id: 452c1245-884e-422e-27b5-08defa0a58aa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|10070799003|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ROeh9uQd2v7LJ48BvqbzKv2WFlaKnrx3mXqs6/w8GrxDLpDPhOH/0TqbrX5520l4cE81ibUV3FZiRt6nvr7JrP2dn1lcd7/6nik5z8H9N4xxV9I+uK6vYr/5MmPL0IwJM0xPwhdlT2+j6X7SpG8lzG2qZDS/Knb5s0gZ1t86elqtVKVe6v23Um0qRISfA3T463tqNL+cYKgnVBChE4ZymRRKe/oBK16uam+CY2QTKsCN6PZxvq/Mwz4ZyhDfh872nXFkWeWx4tbC1Ha1moLqZfhfAfolEo9CJo6vdhPNKXblJP4YUFUeElbCbn+A7pTeU0FmoMkBtM89mBLdjjsEbv7DwLnLuxi37JhtIE3xCci4E9OCQOtwnKw4vx8NwIgvchZ1PeNGskx+LUmo4CCX4ZQ9WAIQokhdBQFeAO8xNJaZ30dH+fH1cicvZUQZRn5zudhMfV1x3QaZz28s2q+Hw71b9kRR0yVk+OeJr98q9e1smNGv2143rj1ZEq+xsEZMIAF6FmZ5jxMv+e/8rrJWM1+HOXHhfEZ+ViOtx2rxPyU80RdRA4TUwPKN892KN2I9Hx6u/kpMV/yL2Lf8QuCeTjmN+OPD5P2AKIQhgx7fcPOjJEauZC1g6AfLl0CGkFykq41BAZWZ1l6OflNPoktH4GZdD8WaCaKK1Kvnz05hiu4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(10070799003)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGNpd3dKaEswTitwNmF1elczNEJ3WEJuNm5RZEVoWThRbmFuN2l6d3hDU3p6?=
- =?utf-8?B?SjlUMUN3SlV4QWIwYXFIVG9lL29WUU1LUkpDODh1ZTJVWkVvRWdzVkUwLytZ?=
- =?utf-8?B?b1R5VjVUaFU2ZXpDYTY3SUw4MVhmUEFLYnoxL3Fzb28wdUc2UE5iVjNYMVBs?=
- =?utf-8?B?NkVVTkkyR0p5UUxOZWJsT0JrcW4xUVFzSlBQU2xMMUtlMCtqbzdDaVlEZXZ1?=
- =?utf-8?B?RTFsWXhoWkZOeUZjK0FZeHZHZVV3VlU0RC8rWXVoVmJrU1I0eUZvSHEzMHBX?=
- =?utf-8?B?eG8rTncwSzBaYlE2SDdQZ2hRZHZwVHVFamI0Q2V1cHBHL1lyVFlOY1JteTNs?=
- =?utf-8?B?dmlvRjJBWlY0NE9tQ1hubGVYUXVyazYzY0JBS3dQekxFY2RzVmtpeWo0elRS?=
- =?utf-8?B?UWVCblJORy9CZUtLV2o0Z05VOW1rWjFuYW1nR01Ic3VvcG54M3BUWm9WMnc3?=
- =?utf-8?B?OVh2U0cyMGhmRVFwa3BBMk16TUFFWW1WcGxJaFJiVzdyT3MrVU1ONXp3U2U4?=
- =?utf-8?B?cWEvUS9IOUFWMlgwYzlWNGxkSW0yalJ0dnBxOE1WOGFQZmp3VmlzRTcxQkhN?=
- =?utf-8?B?RnRibW4veEtWYTFmQWZIeU1rNG96RVJPY0hSQ2kwZmd3bTFFRUVNTk9CcGVx?=
- =?utf-8?B?UzAyZHdOZXpPaDg2clJ1dXVpRlZ4aEQ0ZjFsN0JZYW1WYi9tRlJwWnZVTngz?=
- =?utf-8?B?cjBEMFgvcGRLZkFiVHBEYUFUTGx3TElhb050MWZJNitxNE1DWHVHaGJubTl4?=
- =?utf-8?B?ZjFmYzFtd2N3M1lkYkU1LytPV1NueGFOYnF6NUtpMFJCZDhaUEhaV2w3NWJF?=
- =?utf-8?B?bW5qNWJWN0hacXd5OFN6bG9icUtvcm5uUE1DMHl6ZTBSWTYya3dUZ2NBcVM1?=
- =?utf-8?B?WnhSNUJESFRnSGZlZ3BsQ2YzUXRwMG9WMksxSHFvVHdZRDhwWWoyNG05Tm5o?=
- =?utf-8?B?ekI5NEZYaWZBOVVCdzZWYkpObjJTSENmYUQ3UUk3eklsVnBnRHErWXV2NFVq?=
- =?utf-8?B?RDhTQzJETXhmblBrT0FOUmdoR0d0TEFEZE8rbFlsY1ZncXhTNCtRYVoxY1gr?=
- =?utf-8?B?M1pJZG1jNFJHWmtsMytqM1VnZGdBZHdGYnlzamRyT0ZxSy9vY1gwOEIzOHQw?=
- =?utf-8?B?cnRhWE5MM0pxZkpTOFk5dlhGSTVTU3Iwb2l2VGl2aWFxaFovbjRudkZjMkhl?=
- =?utf-8?B?UmEyM2V3d3NUa1hQM2ZuS2hRQ1FKelRaY2ZNTkgvMlRHd0MzT3F5SmVjWVJv?=
- =?utf-8?B?UE5CN1A3QUNxaElRcEFXQWthTG9SRWs1cmY5N1YzUU92bFBkWnNHTGk5RGdM?=
- =?utf-8?B?Y1FCY2RzRE9WODY4aTJaNVBCTTlGQnJlVFN6M3pSY01rbWJMdjdsNXFGRWRP?=
- =?utf-8?B?Ky9kK0E0OEZVU21LMkhQMUF0YXc0Q3BVQk1XTlhtTlR2dDFBNUdrNGcvdFhG?=
- =?utf-8?B?VHNHa1oxRlNTUjRjTmY3ZWk1MVRqazRqbS93M2taeVJGaFVrUUp4Rlh3dW9m?=
- =?utf-8?B?S3g1aGlXTUZ5eFQzaStvWnBKOStzZjI2aVA4U0VwN0lCUW5aLzRqY0o3Z3hj?=
- =?utf-8?B?ejZ3Wjd2WGRnUEx0ZWxmbVJSSG9valJLUzFaR3ZCUFJ0djhrdHo4VERaQVc1?=
- =?utf-8?B?dFBoMEZVOTRGS04vNm1YRWlLYkRhODJXcGplWUZWUEptNE5oWlE4ZTRBMGQ5?=
- =?utf-8?B?VWJaaXpsb05WY3A0c0JkeEdiSU05eG1wdFlBWmUrRFdWZjJpMmk3SjdJSnJE?=
- =?utf-8?B?MXZjakVYSTZtazMyMkU3bmlYWFY4a0dVVjFIcXhUcnorUEdZR0ZVUDlGRlU2?=
- =?utf-8?B?Szd1ckw4WU5weFJxYnA0b1Z2dE1VRytQQXFmbWk4c3FJTFhpK1RtbWVDbG5t?=
- =?utf-8?B?TjNST2dXTUNHRUoyN3FOb0haWktyK1RRbXliTGlTZk53VlNTQkxZaStCc0tN?=
- =?utf-8?B?b0JFSElldWI2cllQTzR6MDNxcnpWdXhpRmZpYkR3bXcvV1YwRWQ5MmdmQlJT?=
- =?utf-8?B?cTduNGlFdVd3R2Z2QUdOM295MElqTWtBdmNFNGFtdmRuQ1VybktGRytMUmth?=
- =?utf-8?B?SFR5dGZxeXYxbmhNaGkvVERROHZzWDJjTFJsd3NPdEFrU1haQWhCcTVTWjhB?=
- =?utf-8?B?TEJyb3hNT3BsRTJ4OEM2TXZ6MzY2a0QwbjhWUEVHOVU0ZXlmR3IzT1BsbGQw?=
- =?utf-8?B?aEhQbm1UeVVWZTVJNnFSNFpFQ2lzUGdzbnd1djc1S0hCR1RSbXdYcUxrUWc3?=
- =?utf-8?B?Z3BObEJhdFUyT2lnR04wWVVvSm0vUFhTRDdlaFlEQjNObUdUSzdpOXFYdkVI?=
- =?utf-8?B?MGd0N0hvZm40dHBWa1E3VFhvdCtTK0xvNjhjdlBQVU81THp0dTgyS1FFTXV6?=
- =?utf-8?Q?d4tD8e5FkNNJfNyEDSmX/2OrZK/1Vxe+IiQK6DND77YCo?=
-X-MS-Exchange-AntiSpam-MessageData-1: J7mtQYYWgfzp4g==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 452c1245-884e-422e-27b5-08defa0a58aa
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2026 13:45:47.9921
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lZ+2/qQpUqh/B5vxV2r/UoEN8fH+CUMy4ZFXUg47Qc7Y6gKi9GHIyVusp8GX9NEHGRzcrX/BwQbinsUhHNDNuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4116
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri Aug 14, 2026 at 4:52 AM JST, Younes Akhouayri wrote:
-> Thank you both for the feedback. Yes, I can send a patch.
->
-> Just to confirm the intended scope: excluding signed integers entirely wo=
-uld also remove valid conversions such as Bounded::<i8, 2>::from(true), sin=
-ce signed Bounded values with N >=3D 2 can represent both 0 and 1.
->
-> Would you prefer the simpler unsigned-only restriction, or should the pat=
-ch preserve signed conversions for N >=3D 2?
+On Fri, 14 Aug 2026 01:54:25 +0100
+"Gary Guo" <gary@garyguo.net> wrote:
 
-If you can preserve the latter without complicating the code too much,
-then I'd say that should be preferred yes.
+>>> But further complicating the type system to prevent concurrent restart sounds
+>>> like a bad approach to me.
+>>
+>> My intent is the opposite: I think this makes the design simpler.
+>>
+>> All four implementations of start() already take self by value. For
+>> Pin<Box<T, A>> and Pin<&mut T> that means what it says -- the box is moved
+>> into the handle, the exclusive borrow is consumed -- so "no arming while
+>> armed" is already the design there. For Arc<T> and Pin<&T> the same
+>> signature meant nothing, because Clone and Copy let you build another
+>> pointer and call start() again.
+>>
+>> So the contract depended on which pointer type you picked, and the module
+>> documentation had to spell that out: "When a type implements both
+>> HrTimerPointer and Clone, it is possible to issue the start operation
+>> while the timer is in the started state." After the series there is one
+>> rule for all four types, and that paragraph is gone together with the
+>> restart operation it described.
+> 
+> Let's ignore the implementation detail of all various Rust pointers. It is
+> something that I plan to overhaul and doesn't matter to the core issue here.
+> 
+> The change you're making is to remove the ability to concurrently start a timer
+> in Rust. So if you have a timer might be running, you'd need to first cancel it
+> before you can arm it again.
+> 
+> I do think it is conceptually cleaner -- however given this is explicitly added
+> in
+> https://lore.kernel.org/all/tip-5de2755c8c8b3a6b8414870e2c284914a2b42e4d@git.kernel.org/
+> and the pattern is what perf core uses; so I wouldn't just dismiss the existence
+> of this pattern. Perhaps cancelling before restarting is considered too
+> expensive and has to be avoided?
+
+The pattern perf core uses is "no arming while armed".
+
+While perf_mux_hrtimer_handler() returns HRTIMER_RESTART -- while the
+timer is active -- perf_mux_hrtimer_restart() does nothing. Only once
+the handler has cleared cpc->hrtimer_active and returned
+HRTIMER_NORESTART does perf_mux_hrtimer_restart() arm it again.
+
+That flag was added precisely to implement "no arming while armed", in
+4cfafd3082af ("sched,perf: Fix periodic timers"):
+
+    We do not want to race such that the handler has already decided
+    to stop, but the (external) restart sees the timer still active and we
+    end up with a 'lost' timer.
+
+    The problem with the current code is that the re-start can come before
+    the callback does the forward, at which point the forward from the
+    callback will WARN about forwarding an enqueued timer.
+
+
+With cpc->hrtimer_active in place, neither of the two conditions that
+5de2755c8c8b touches is reachable in perf's usage.
+
+v1 is missing the ability to restart a stopped timer: once the
+callback has returned NoRestart, the handle owns the right to arm and
+never gives it back. I'll add it in v2, including a non-blocking
+variant built on hrtimer_try_to_cancel(), so that a caller which
+cannot sleep can re-arm the way perf does. That makes perf's model
+expressible in the Rust abstraction.
+
